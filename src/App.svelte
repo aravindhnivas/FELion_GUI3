@@ -1,10 +1,14 @@
 <script>
 	import Navbar from "./components/Navbar.svelte"
 	import Footer from "./components/Footer.svelte"
-	import IconButton from "./testing/IconButton.svelte"
-	import Layout from "./Pages/Layout.svelte"
+	import Home from "./Pages/Home.svelte"
+	// import IconButton from "./testing/IconButton.svelte"
+	import Layout from "./components/Layout.svelte"
 	const navItems = ["Home", "Normline", "Masspec", "Timescan", "THz", "Powerfile", "Misc", "Settings"]
 
+	// import {onMount} from "svelte"
+
+	// onMount(()=>{document.getElementsByClassName("titlebar")[0].className += "animated fadeDown"})
 </script>
 
 <style>
@@ -16,10 +20,11 @@
 
 <Navbar {navItems}/>
 
+<Home />
 <div class="pageContainer">
-	{#each navItems as id}
+	{#each _.slice(navItems, 1) as id}
 		<Layout {id} />
 	{/each}
 </div>
-<IconButton />
+<!-- <IconButton /> -->
 <Footer />

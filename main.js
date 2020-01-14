@@ -11,7 +11,8 @@ function createWindow () {
       nodeIntegration: true
     },
 
-    icon: 'icon.png'
+    icon: 'icon.png',
+    backgroundColor: "#46307d"
   });
   mainWindow.loadFile('public/index.html');
 
