@@ -8161,16 +8161,16 @@ const file$a = "src\\App.svelte";
 
 function get_each_context$1(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[1] = list[i];
+	child_ctx[3] = list[i];
 	return child_ctx;
 }
 
-// (32:1) {#each _.slice(navItems, 1) as id}
+// (47:1) {#each _.slice(navItems, 1) as id}
 function create_each_block$1(ctx) {
 	let current;
 
 	const layout = new Layout({
-			props: { id: /*id*/ ctx[1] },
+			props: { id: /*id*/ ctx[3] },
 			$$inline: true
 		});
 
@@ -8201,7 +8201,7 @@ function create_each_block$1(ctx) {
 		block,
 		id: create_each_block$1.name,
 		type: "each",
-		source: "(32:1) {#each _.slice(navItems, 1) as id}",
+		source: "(47:1) {#each _.slice(navItems, 1) as id}",
 		ctx
 	});
 
@@ -8249,7 +8249,7 @@ function create_fragment$a(ctx) {
 			t2 = space();
 			create_component(footer.$$.fragment);
 			attr_dev(div, "class", "pageContainer");
-			add_location(div, file$a, 30, 0, 701);
+			add_location(div, file$a, 45, 0, 1296);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -8365,12 +8365,41 @@ function instance$a($$self) {
 		
 	});
 
+	window.Menu = remote.Menu;
+	window.MenuItem = remote.MenuItem;
+	let menu = new Menu();
+	let rightClickPosition;
+	menu.append(new MenuItem({ label: "Reload", role: "reload" }));
+
+	menu.append(new MenuItem({
+			label: "DevTools",
+			role: "toggledevtools"
+		}));
+
+	menu.append(new MenuItem({
+			label: "Inspect Element",
+			click() {
+				remote.getCurrentWindow().inspectElement(rightClickPosition.x, rightClickPosition.y);
+			}
+		}));
+
+	window.addEventListener(
+		"contextmenu",
+		e => {
+			e.preventDefault();
+			rightClickPosition = { x: e.x, y: e.y };
+			menu.popup(remote.getCurrentWindow());
+		},
+		false
+	);
+
 	$$self.$capture_state = () => {
 		return {};
 	};
 
 	$$self.$inject_state = $$props => {
-		
+		if ("menu" in $$props) menu = $$props.menu;
+		if ("rightClickPosition" in $$props) rightClickPosition = $$props.rightClickPosition;
 	};
 
 	return [navItems];

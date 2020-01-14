@@ -15,6 +15,21 @@
 		// tippy("button") //Remember to initial tippy with target
 	})
 
+	window.Menu = remote.Menu
+	window.MenuItem = remote.MenuItem
+
+	let menu = new Menu()
+	let rightClickPosition;
+	
+	menu.append(new MenuItem({ label: 'Reload', role:"reload" }))
+	menu.append(new MenuItem({ label: 'DevTools', role: 'toggledevtools' }))
+	menu.append(new MenuItem({ label: "Inspect Element", click() { remote.getCurrentWindow().inspectElement(rightClickPosition.x, rightClickPosition.y) } }))
+	window.addEventListener('contextmenu', (e) => {
+      e.preventDefault()
+      rightClickPosition = {x: e.x, y: e.y}
+      menu.popup(remote.getCurrentWindow())
+  }, false)
+
 </script>
 
 <style>
