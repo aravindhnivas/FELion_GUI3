@@ -5,6 +5,8 @@
     function doSomething() {
         alert('something');
     }
+
+    $: console.log(starred)
     
 </script>
 
