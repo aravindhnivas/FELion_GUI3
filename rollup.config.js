@@ -12,7 +12,7 @@ export default {
 	input: 'src/App.js',
 	output: {
 		sourcemap: true,
-		format: 'iife',
+		format: 'cjs',
 		name: 'app',
 		file: 'public/bundle.js'
 	},
@@ -82,5 +82,15 @@ export default {
 	],
 	watch: {
 		clearScreen: false
-	}
+	},
+	external: [
+		'electron',
+		'child_process',
+		'fs',
+		'path',
+		'url',
+		'module',
+		'os'
+	]
+
 };

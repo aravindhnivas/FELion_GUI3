@@ -1,7 +1,7 @@
 import App from './App.svelte';
 import svelte from 'svelte/compiler';
-import "./js/functions.js"
 import './App.scss';
+import "./js/functions.js"
 const app = new App({
 	target: document.body,
 	props: {

@@ -1,21 +1,28 @@
 <script>
 	import Navbar from "./components/Navbar.svelte"
 	import Footer from "./components/Footer.svelte"
-	import Home from "./Pages/Home.svelte"
-	// import IconButton from "./testing/IconButton.svelte"
 	import Layout from "./components/Layout.svelte"
+	import Home from "./Pages/Home.svelte"
 	const navItems = ["Home", "Normline", "Masspec", "Timescan", "THz", "Powerfile", "Misc", "Settings"]
+	import {onMount} from "svelte"
 
-	// import {onMount} from "svelte"
+	window.electron = require("electron")
+	window.remote = electron.remote
+	window.path = require("path")
+	window.fs = require("fs")
 
-	// onMount(()=>{document.getElementsByClassName("titlebar")[0].className += "animated fadeDown"})
+	onMount(()=>{
+		// tippy("button") //Remember to initial tippy with target
+	})
+
 </script>
 
 <style>
-	.pageContainer {
+
+	/* .pageContainer {
 		max-height: 70vh;
 		overflow-y: auto;
-	}
+	} */
 </style>
 
 <Navbar {navItems}/>
@@ -26,5 +33,4 @@
 		<Layout {id} />
 	{/each}
 </div>
-<!-- <IconButton /> -->
 <Footer />

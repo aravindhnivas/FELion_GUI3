@@ -21,6 +21,12 @@
 
 
 <style lang="scss">
+
+	#navbar {
+		position: fixed;
+		width: 100vw;
+
+	}
   .icon-indicators :global(.mdc-tab-indicator--active .mdc-tab-indicator__content) {
     opacity: 1;
   }
