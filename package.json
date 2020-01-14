@@ -4,12 +4,13 @@
   "license": "MIT",
   "author": "A.N.Marimuthu",
   "repository": {
-      "type": "git",
-      "url": "https://github.com/aravindhnivas/FELion_GUI3.git"
+    "type": "git",
+    "url": "https://github.com/aravindhnivas/FELion_GUI3.git"
   },
   "developer": true,
   "main": "main.js",
   "devDependencies": {
+    "bulma": "^0.8.0",
     "concurrently": "^4.1.0",
     "electron": "^7.1.8",
     "node-sass": "^4.12.0",
@@ -31,5 +32,8 @@
     "dev": "concurrently \"run-p start:dev autobuild\" \"electron .\"",
     "start": "sirv public",
     "start:dev": "sirv public --dev"
+  },
+  "dependencies": {
+    "custom-electron-titlebar": "^3.2.1"
   }
 }

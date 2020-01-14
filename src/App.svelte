@@ -1,7 +1,8 @@
 <script>
-	import Navbar from "./Pages/Navbar.svelte"
+	import Navbar from "./components/Navbar.svelte"
+	import Footer from "./components/Footer.svelte"
+	import IconButton from "./testing/IconButton.svelte"
 	import Layout from "./Pages/Layout.svelte"
-	import Table from "./components/Tables.svelte"
 	const navItems = ["Home", "Normline", "Masspec", "Timescan", "THz", "Powerfile", "Misc", "Settings"]
 
 </script>
@@ -20,4 +21,5 @@
 		<Layout {id} />
 	{/each}
 </div>
-<!-- <Table /> -->
+<IconButton />
+<Footer />

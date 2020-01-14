@@ -1,9 +1,16 @@
-// Import the typography styles.
-//
-// MDC Typography
-//
+
+// MDC
 @import "@material/typography/mdc-typography";
 
-.container {
-  padding: 30px;
-}
+// Bulma styles
+$text: #fafafa;
+@import "bulma/sass/utilities/_all.sass";
+
+// Navbar
+$navbar-breakpoint: 700px;
+@import "bulma/sass/components/navbar.sass";
+
+
+// @import "bulma/sass/grid/columns.sass";
+// @import "bulma/sass/elements/box.sass";
+.container {padding: 30px;}
