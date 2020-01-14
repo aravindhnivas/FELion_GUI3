@@ -1,6 +1,9 @@
+
 @font-face {
     font-family: "Roboto";
-    src: url("../fonts/Roboto-Regular.ttf")format('truetype'),
+    src: url(../fonts/Roboto-Regular.ttf),
+    url("CustomFont.otf") format("opentype"),
+    url("CustomFont.svg#filename") format("svg");
 }
 
 * {
@@ -16,10 +19,30 @@ html, body {
     user-select: none;
 }
 
-
-@font-face {
-    font-family: "Roboto";
-    src: url("../fonts/Roboto-Regular.ttf"),
-    url("CustomFont.otf") format("opentype"),
-    url("CustomFont.svg#filename") format("svg");
+body::-webkit-scrollbar {
+	width: 0 !important;
 }
+
+
+/* Scrollbar */
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	box-shadow: inset 0 0 5px grey;
+	border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: #f1f1f19d;
+	border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: #f1f1f1;
+}
+
