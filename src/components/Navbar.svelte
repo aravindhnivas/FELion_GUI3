@@ -8,10 +8,10 @@
 	
 	let active = 'Home';
 	const navigate = () =>{navItems.forEach(item=> item == active ? showpage(item) : hidepage(item))}
-	onMount(()=>{showpage("navbar"); showpage("Home")})
+	onMount(()=>{showpage("navbar");})
 </script>
 
-<section class="animated fadeInDown" id="navbar" style="display:none">
+<section class="box animated fadeInDown" id="navbar" style="display:none">
 	<div on:click={navigate}>
 		<TabBar tabs={navItems} let:tab bind:active>
 			<Tab {tab}> <Label>{tab}</Label> </Tab>
@@ -21,10 +21,7 @@
 
 
 <style lang="scss">
-  section > div {
-    margin-bottom: 40px;
-  }
   .icon-indicators :global(.mdc-tab-indicator--active .mdc-tab-indicator__content) {
-    opacity: .2;
+    opacity: 1;
   }
 </style>

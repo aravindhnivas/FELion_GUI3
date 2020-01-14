@@ -6009,12 +6009,11 @@ var app = (function () {
     			section = element("section");
     			div = element("div");
     			create_component(tabbar.$$.fragment);
-    			attr_dev(div, "class", "svelte-1e6tc1j");
-    			add_location(div, file$5, 14, 1, 456);
-    			attr_dev(section, "class", "animated fadeInDown svelte-1e6tc1j");
+    			add_location(div, file$5, 14, 1, 443);
+    			attr_dev(section, "class", "box animated fadeInDown");
     			attr_dev(section, "id", "navbar");
     			set_style(section, "display", "none");
-    			add_location(section, file$5, 13, 0, 383);
+    			add_location(section, file$5, 13, 0, 366);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -6079,7 +6078,6 @@ var app = (function () {
 
     	onMount(() => {
     		showpage("navbar");
-    		showpage("Home");
     	});
 
     	const writable_props = ["navItems"];
