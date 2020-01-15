@@ -11,23 +11,12 @@
 	onMount(()=>{showpage("navbar");})
 </script>
 
-<section class="box animated fadeInDown" id="navbar" style="display:none">
-	<div on:click={navigate}>
-		<TabBar tabs={navItems} let:tab bind:active>
-			<Tab {tab}> <Label>{tab}</Label> </Tab>
-		</TabBar>
-	</div>
-</section>
-
-
 <style lang="scss">
-
-	#navbar {
-		position: fixed;
-		width: 100vw;
-
-	}
-  .icon-indicators :global(.mdc-tab-indicator--active .mdc-tab-indicator__content) {
-    opacity: 1;
-  }
+	#navbar { padding: 0.2em; width: 100vw; }
 </style>
+
+<div class="box animated fadeInDown" id="navbar" style="display:none" on:click={navigate}>
+	<TabBar tabs={navItems} let:tab bind:active>
+		<Tab {tab}> <Label>{tab}</Label> </Tab>
+	</TabBar>
+</div>
