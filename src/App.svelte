@@ -1,10 +1,18 @@
 <script>
+
+	// Components
 	import Navbar from "./components/Navbar.svelte"
 	import Footer from "./components/Footer.svelte"
 	import Layout from "./components/Layout.svelte"
 	import LineAnimate from "./testing/LineAnimate.svelte"
+
+	// Pages
 	import Home from "./Pages/Home.svelte"
-	const navItems = ["Home", "Normline", "Masspec", "Timescan", "THz", "Powerfile", "Misc", "Settings"]
+	import Powerfile from "./Pages/Powerfile.svelte"
+	
+	const navItems = ["Home", "Normline", "Masspec", "Timescan", "THz", "Powerfile"]
+
+	const pages = ["Normline", "Masspec", "Timescan", "THz"]
 	import {onMount} from "svelte"
 
 	window.electron = require("electron")
@@ -34,17 +42,20 @@
 </script>
 
 <style>
-
+	.pageContainer {margin-top: 7em;}
 </style>
 
 <Navbar {navItems}/>
 <LineAnimate />
 
-
 <Home />
+
 <div class="pageContainer">
-	{#each _.slice(navItems, 1) as id}
+	{#each pages as id}
 		<Layout {id} />
 	{/each}
+	<Powerfile />
 </div>
+
+
 <Footer />

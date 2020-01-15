@@ -1,9 +1,23 @@
 // Variables
+$light: #f5f5f5b8;
 $mainColor:#fafafa;
-$secondaryColor: #46307d;
-//themecolor
+$secondaryColor: #6a50ad;
+
 $mdc-theme-primary: $mainColor;
 $mdc-theme-secondary: $secondaryColor;
 
-// Navbar
+// Text-field (input)
+$mdc-text-field-label: $light;
+$mdc-text-field-bottom-line-hover: $light;
+$mdc-text-field-bottom-line-idle: $light;
+
+// Text-area outline
+$mdc-text-field-outlined-idle-border: $light;
+$mdc-text-field-outlined-disabled-border: $light;
+
+$mdc-text-field-outlined-hover-border: $light;
+
+$mdc-text-field-focused-label-color: $mainColor;
+
+// Navbar Tab label text color
 $mdc-tab-text-label-color-default: $mainColor;

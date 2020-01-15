@@ -1,10 +1,18 @@
 // MDC
 @import "@material/typography/mdc-typography";
+$light: #fafafa;
 $mainColor: #46307d;
+
 .mdc-linear-progress__buffer {background-color: $mainColor;}
+.mdc-text-field  { width: 100%; }
+.mdc-text-field--textarea {height: 70%;}
+
+.mdc-text-field:not(.mdc-text-field--disabled) .mdc-text-field__input {color: #fafafa;}
+.powfilename, #powercontent_help {margin-bottom: 2em;}
+.mdc-text-field:not(.mdc-text-field--disabled)+.mdc-text-field-helper-line .mdc-text-field-helper-text {color: $light;}
 
 // Bulma styles
-$text: #fafafa;
+$text: $light;
 $scheme-main: $mainColor;
 
 @import "bulma/sass/utilities/_all.sass";
@@ -17,8 +25,10 @@ $navbar-breakpoint: 700px;
 @import "bulma/sass/elements/box.sass";
 
 // Bulma columns
-@import "bulma/sass/grid/columns.sass";
+// @import "bulma/sass/grid/columns.sass";
 @import "bulma/sass/grid/tiles.sass";
 @import "bulma/sass/elements/notification.sass";
+@import "bulma/sass/elements/container.sass";
+@import "bulma/sass/layout/section.sass";
 
 .container {padding: 30px;}

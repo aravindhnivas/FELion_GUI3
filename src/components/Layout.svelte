@@ -15,7 +15,7 @@
 
 <style>
 
-    .paper-container {margin-top: 7em;}
+    /* .paper-container {margin-top: 7em;} */
 </style>
 
 <section class="paper-container" data-tippy="test" {id} style="display:none">
