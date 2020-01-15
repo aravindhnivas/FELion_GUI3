@@ -7612,6 +7612,631 @@ class Layout extends SvelteComponentDev {
 	}
 }
 
+/**
+ * @license
+ * Copyright 2017 Google Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+var cssClasses$6 = {
+    CLOSED_CLASS: 'mdc-linear-progress--closed',
+    INDETERMINATE_CLASS: 'mdc-linear-progress--indeterminate',
+    REVERSED_CLASS: 'mdc-linear-progress--reversed',
+};
+var strings$8 = {
+    BUFFER_SELECTOR: '.mdc-linear-progress__buffer',
+    PRIMARY_BAR_SELECTOR: '.mdc-linear-progress__primary-bar',
+};
+//# sourceMappingURL=constants.js.map
+
+/**
+ * @license
+ * Copyright 2017 Google Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+var MDCLinearProgressFoundation = /** @class */ (function (_super) {
+    __extends(MDCLinearProgressFoundation, _super);
+    function MDCLinearProgressFoundation(adapter) {
+        return _super.call(this, __assign({}, MDCLinearProgressFoundation.defaultAdapter, adapter)) || this;
+    }
+    Object.defineProperty(MDCLinearProgressFoundation, "cssClasses", {
+        get: function () {
+            return cssClasses$6;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MDCLinearProgressFoundation, "strings", {
+        get: function () {
+            return strings$8;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MDCLinearProgressFoundation, "defaultAdapter", {
+        get: function () {
+            return {
+                addClass: function () { return undefined; },
+                getBuffer: function () { return null; },
+                getPrimaryBar: function () { return null; },
+                hasClass: function () { return false; },
+                removeClass: function () { return undefined; },
+                setStyle: function () { return undefined; },
+            };
+        },
+        enumerable: true,
+        configurable: true
+    });
+    MDCLinearProgressFoundation.prototype.init = function () {
+        this.isDeterminate_ = !this.adapter_.hasClass(cssClasses$6.INDETERMINATE_CLASS);
+        this.isReversed_ = this.adapter_.hasClass(cssClasses$6.REVERSED_CLASS);
+        this.progress_ = 0;
+    };
+    MDCLinearProgressFoundation.prototype.setDeterminate = function (isDeterminate) {
+        this.isDeterminate_ = isDeterminate;
+        if (this.isDeterminate_) {
+            this.adapter_.removeClass(cssClasses$6.INDETERMINATE_CLASS);
+            this.setScale_(this.adapter_.getPrimaryBar(), this.progress_);
+        }
+        else {
+            this.adapter_.addClass(cssClasses$6.INDETERMINATE_CLASS);
+            this.setScale_(this.adapter_.getPrimaryBar(), 1);
+            this.setScale_(this.adapter_.getBuffer(), 1);
+        }
+    };
+    MDCLinearProgressFoundation.prototype.setProgress = function (value) {
+        this.progress_ = value;
+        if (this.isDeterminate_) {
+            this.setScale_(this.adapter_.getPrimaryBar(), value);
+        }
+    };
+    MDCLinearProgressFoundation.prototype.setBuffer = function (value) {
+        if (this.isDeterminate_) {
+            this.setScale_(this.adapter_.getBuffer(), value);
+        }
+    };
+    MDCLinearProgressFoundation.prototype.setReverse = function (isReversed) {
+        this.isReversed_ = isReversed;
+        if (this.isReversed_) {
+            this.adapter_.addClass(cssClasses$6.REVERSED_CLASS);
+        }
+        else {
+            this.adapter_.removeClass(cssClasses$6.REVERSED_CLASS);
+        }
+    };
+    MDCLinearProgressFoundation.prototype.open = function () {
+        this.adapter_.removeClass(cssClasses$6.CLOSED_CLASS);
+    };
+    MDCLinearProgressFoundation.prototype.close = function () {
+        this.adapter_.addClass(cssClasses$6.CLOSED_CLASS);
+    };
+    MDCLinearProgressFoundation.prototype.setScale_ = function (el, scaleValue) {
+        if (!el) {
+            return;
+        }
+        var value = "scaleX(" + scaleValue + ")";
+        this.adapter_.setStyle(el, getCorrectPropertyName(window, 'transform'), value);
+    };
+    return MDCLinearProgressFoundation;
+}(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
+
+/**
+ * @license
+ * Copyright 2017 Google Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+var MDCLinearProgress = /** @class */ (function (_super) {
+    __extends(MDCLinearProgress, _super);
+    function MDCLinearProgress() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    MDCLinearProgress.attachTo = function (root) {
+        return new MDCLinearProgress(root);
+    };
+    Object.defineProperty(MDCLinearProgress.prototype, "determinate", {
+        set: function (value) {
+            this.foundation_.setDeterminate(value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MDCLinearProgress.prototype, "progress", {
+        set: function (value) {
+            this.foundation_.setProgress(value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MDCLinearProgress.prototype, "buffer", {
+        set: function (value) {
+            this.foundation_.setBuffer(value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MDCLinearProgress.prototype, "reverse", {
+        set: function (value) {
+            this.foundation_.setReverse(value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    MDCLinearProgress.prototype.open = function () {
+        this.foundation_.open();
+    };
+    MDCLinearProgress.prototype.close = function () {
+        this.foundation_.close();
+    };
+    MDCLinearProgress.prototype.getDefaultFoundation = function () {
+        var _this = this;
+        // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+        // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+        var adapter = {
+            addClass: function (className) { return _this.root_.classList.add(className); },
+            getBuffer: function () { return _this.root_.querySelector(MDCLinearProgressFoundation.strings.BUFFER_SELECTOR); },
+            getPrimaryBar: function () { return _this.root_.querySelector(MDCLinearProgressFoundation.strings.PRIMARY_BAR_SELECTOR); },
+            hasClass: function (className) { return _this.root_.classList.contains(className); },
+            removeClass: function (className) { return _this.root_.classList.remove(className); },
+            setStyle: function (el, styleProperty, value) { return el.style.setProperty(styleProperty, value); },
+        };
+        return new MDCLinearProgressFoundation(adapter);
+    };
+    return MDCLinearProgress;
+}(MDCComponent));
+//# sourceMappingURL=component.js.map
+
+/* node_modules\@smui\linear-progress\LinearProgress.svelte generated by Svelte v3.17.0 */
+const file$8 = "node_modules\\@smui\\linear-progress\\LinearProgress.svelte";
+
+function create_fragment$8(ctx) {
+	let div4;
+	let div0;
+	let t0;
+	let div1;
+	let t1;
+	let div2;
+	let span0;
+	let t2;
+	let div3;
+	let span1;
+	let useActions_action;
+	let forwardEvents_action;
+	let dispose;
+
+	let div4_levels = [
+		{
+			class: "\n    mdc-linear-progress\n    " + /*className*/ ctx[1] + "\n    " + (/*indeterminate*/ ctx[2]
+			? "mdc-linear-progress--indeterminate"
+			: "") + "\n    " + (/*reversed*/ ctx[3]
+			? "mdc-linear-progress--reversed"
+			: "") + "\n    " + (/*closed*/ ctx[4] ? "mdc-linear-progress--closed" : "") + "\n  "
+		},
+		{ role: "progressbar" },
+		exclude(/*$$props*/ ctx[7], ["use", "class", "indeterminate", "reversed", "closed", "progress"])
+	];
+
+	let div4_data = {};
+
+	for (let i = 0; i < div4_levels.length; i += 1) {
+		div4_data = assign(div4_data, div4_levels[i]);
+	}
+
+	const block = {
+		c: function create() {
+			div4 = element("div");
+			div0 = element("div");
+			t0 = space();
+			div1 = element("div");
+			t1 = space();
+			div2 = element("div");
+			span0 = element("span");
+			t2 = space();
+			div3 = element("div");
+			span1 = element("span");
+			attr_dev(div0, "class", "mdc-linear-progress__buffering-dots");
+			add_location(div0, file$8, 14, 2, 410);
+			attr_dev(div1, "class", "mdc-linear-progress__buffer");
+			add_location(div1, file$8, 15, 2, 468);
+			attr_dev(span0, "class", "mdc-linear-progress__bar-inner");
+			add_location(span0, file$8, 17, 4, 594);
+			attr_dev(div2, "class", "mdc-linear-progress__bar mdc-linear-progress__primary-bar");
+			add_location(div2, file$8, 16, 2, 518);
+			attr_dev(span1, "class", "mdc-linear-progress__bar-inner");
+			add_location(span1, file$8, 20, 4, 736);
+			attr_dev(div3, "class", "mdc-linear-progress__bar mdc-linear-progress__secondary-bar");
+			add_location(div3, file$8, 19, 2, 658);
+			set_attributes(div4, div4_data);
+			add_location(div4, file$8, 0, 0, 0);
+		},
+		l: function claim(nodes) {
+			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, div4, anchor);
+			append_dev(div4, div0);
+			append_dev(div4, t0);
+			append_dev(div4, div1);
+			append_dev(div4, t1);
+			append_dev(div4, div2);
+			append_dev(div2, span0);
+			append_dev(div4, t2);
+			append_dev(div4, div3);
+			append_dev(div3, span1);
+			/*div4_binding*/ ctx[11](div4);
+
+			dispose = [
+				action_destroyer(useActions_action = useActions.call(null, div4, /*use*/ ctx[0])),
+				action_destroyer(forwardEvents_action = /*forwardEvents*/ ctx[6].call(null, div4))
+			];
+		},
+		p: function update(ctx, [dirty]) {
+			set_attributes(div4, get_spread_update(div4_levels, [
+				dirty & /*className, indeterminate, reversed, closed*/ 30 && ({
+					class: "\n    mdc-linear-progress\n    " + /*className*/ ctx[1] + "\n    " + (/*indeterminate*/ ctx[2]
+					? "mdc-linear-progress--indeterminate"
+					: "") + "\n    " + (/*reversed*/ ctx[3]
+					? "mdc-linear-progress--reversed"
+					: "") + "\n    " + (/*closed*/ ctx[4] ? "mdc-linear-progress--closed" : "") + "\n  "
+				}),
+				{ role: "progressbar" },
+				dirty & /*exclude, $$props*/ 128 && exclude(/*$$props*/ ctx[7], ["use", "class", "indeterminate", "reversed", "closed", "progress"])
+			]));
+
+			if (useActions_action && is_function(useActions_action.update) && dirty & /*use*/ 1) useActions_action.update.call(null, /*use*/ ctx[0]);
+		},
+		i: noop,
+		o: noop,
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(div4);
+			/*div4_binding*/ ctx[11](null);
+			run_all(dispose);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_fragment$8.name,
+		type: "component",
+		source: "",
+		ctx
+	});
+
+	return block;
+}
+
+function instance$8($$self, $$props, $$invalidate) {
+	const forwardEvents = forwardEventsBuilder(current_component);
+	let { use = [] } = $$props;
+	let { class: className = "" } = $$props;
+	let { indeterminate = false } = $$props;
+	let { reversed = false } = $$props;
+	let { closed = false } = $$props;
+	let { progress = 0 } = $$props;
+	let { buffer = null } = $$props;
+	let element;
+	let linearProgress;
+
+	onMount(() => {
+		$$invalidate(10, linearProgress = new MDCLinearProgress(element));
+	});
+
+	onDestroy(() => {
+		linearProgress && linearProgress.destroy();
+	});
+
+	function div4_binding($$value) {
+		binding_callbacks[$$value ? "unshift" : "push"](() => {
+			$$invalidate(5, element = $$value);
+		});
+	}
+
+	$$self.$set = $$new_props => {
+		$$invalidate(7, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
+		if ("use" in $$new_props) $$invalidate(0, use = $$new_props.use);
+		if ("class" in $$new_props) $$invalidate(1, className = $$new_props.class);
+		if ("indeterminate" in $$new_props) $$invalidate(2, indeterminate = $$new_props.indeterminate);
+		if ("reversed" in $$new_props) $$invalidate(3, reversed = $$new_props.reversed);
+		if ("closed" in $$new_props) $$invalidate(4, closed = $$new_props.closed);
+		if ("progress" in $$new_props) $$invalidate(8, progress = $$new_props.progress);
+		if ("buffer" in $$new_props) $$invalidate(9, buffer = $$new_props.buffer);
+	};
+
+	$$self.$capture_state = () => {
+		return {
+			use,
+			className,
+			indeterminate,
+			reversed,
+			closed,
+			progress,
+			buffer,
+			element,
+			linearProgress
+		};
+	};
+
+	$$self.$inject_state = $$new_props => {
+		$$invalidate(7, $$props = assign(assign({}, $$props), $$new_props));
+		if ("use" in $$props) $$invalidate(0, use = $$new_props.use);
+		if ("className" in $$props) $$invalidate(1, className = $$new_props.className);
+		if ("indeterminate" in $$props) $$invalidate(2, indeterminate = $$new_props.indeterminate);
+		if ("reversed" in $$props) $$invalidate(3, reversed = $$new_props.reversed);
+		if ("closed" in $$props) $$invalidate(4, closed = $$new_props.closed);
+		if ("progress" in $$props) $$invalidate(8, progress = $$new_props.progress);
+		if ("buffer" in $$props) $$invalidate(9, buffer = $$new_props.buffer);
+		if ("element" in $$props) $$invalidate(5, element = $$new_props.element);
+		if ("linearProgress" in $$props) $$invalidate(10, linearProgress = $$new_props.linearProgress);
+	};
+
+	$$self.$$.update = () => {
+		if ($$self.$$.dirty & /*linearProgress, indeterminate*/ 1028) {
+			 if (linearProgress) {
+				$$invalidate(10, linearProgress.determinate = !indeterminate, linearProgress);
+			}
+		}
+
+		if ($$self.$$.dirty & /*linearProgress, progress*/ 1280) {
+			 if (linearProgress) {
+				$$invalidate(10, linearProgress.progress = progress, linearProgress);
+			}
+		}
+
+		if ($$self.$$.dirty & /*linearProgress, buffer*/ 1536) {
+			 if (linearProgress) {
+				$$invalidate(10, linearProgress.buffer = buffer, linearProgress);
+			}
+		}
+
+		if ($$self.$$.dirty & /*linearProgress, reversed*/ 1032) {
+			 if (linearProgress) {
+				$$invalidate(10, linearProgress.reverse = reversed, linearProgress);
+			}
+		}
+
+		if ($$self.$$.dirty & /*linearProgress, closed*/ 1040) {
+			 if (linearProgress) {
+				if (closed) {
+					linearProgress.close();
+				} else {
+					linearProgress.open();
+				}
+			}
+		}
+	};
+
+	$$props = exclude_internal_props($$props);
+
+	return [
+		use,
+		className,
+		indeterminate,
+		reversed,
+		closed,
+		element,
+		forwardEvents,
+		$$props,
+		progress,
+		buffer,
+		linearProgress,
+		div4_binding
+	];
+}
+
+class LinearProgress extends SvelteComponentDev {
+	constructor(options) {
+		super(options);
+
+		init(this, options, instance$8, create_fragment$8, safe_not_equal, {
+			use: 0,
+			class: 1,
+			indeterminate: 2,
+			reversed: 3,
+			closed: 4,
+			progress: 8,
+			buffer: 9
+		});
+
+		dispatch_dev("SvelteRegisterComponent", {
+			component: this,
+			tagName: "LinearProgress",
+			options,
+			id: create_fragment$8.name
+		});
+	}
+
+	get use() {
+		throw new Error("<LinearProgress>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set use(value) {
+		throw new Error("<LinearProgress>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get class() {
+		throw new Error("<LinearProgress>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set class(value) {
+		throw new Error("<LinearProgress>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get indeterminate() {
+		throw new Error("<LinearProgress>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set indeterminate(value) {
+		throw new Error("<LinearProgress>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get reversed() {
+		throw new Error("<LinearProgress>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set reversed(value) {
+		throw new Error("<LinearProgress>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get closed() {
+		throw new Error("<LinearProgress>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set closed(value) {
+		throw new Error("<LinearProgress>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get progress() {
+		throw new Error("<LinearProgress>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set progress(value) {
+		throw new Error("<LinearProgress>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get buffer() {
+		throw new Error("<LinearProgress>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set buffer(value) {
+		throw new Error("<LinearProgress>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+}
+
+/* src\testing\LineAnimate.svelte generated by Svelte v3.17.0 */
+const file$9 = "src\\testing\\LineAnimate.svelte";
+
+function create_fragment$9(ctx) {
+	let div;
+	let current;
+
+	const linearprogress = new LinearProgress({
+			props: {
+				indeterminate: true,
+				closed: /*closed*/ ctx[0]
+			},
+			$$inline: true
+		});
+
+	const block = {
+		c: function create() {
+			div = element("div");
+			create_component(linearprogress.$$.fragment);
+			attr_dev(div, "class", "line");
+			add_location(div, file$9, 11, 0, 225);
+		},
+		l: function claim(nodes) {
+			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, div, anchor);
+			mount_component(linearprogress, div, null);
+			current = true;
+		},
+		p: noop,
+		i: function intro(local) {
+			if (current) return;
+			transition_in(linearprogress.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(linearprogress.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(div);
+			destroy_component(linearprogress);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_fragment$9.name,
+		type: "component",
+		source: "",
+		ctx
+	});
+
+	return block;
+}
+
+function instance$9($$self) {
+	let closed = true;
+
+	$$self.$capture_state = () => {
+		return {};
+	};
+
+	$$self.$inject_state = $$props => {
+		if ("closed" in $$props) $$invalidate(0, closed = $$props.closed);
+	};
+
+	return [closed];
+}
+
+class LineAnimate extends SvelteComponentDev {
+	constructor(options) {
+		super(options);
+		init(this, options, instance$9, create_fragment$9, safe_not_equal, {});
+
+		dispatch_dev("SvelteRegisterComponent", {
+			component: this,
+			tagName: "LineAnimate",
+			options,
+			id: create_fragment$9.name
+		});
+	}
+}
+
 const subscriber_queue = [];
 /**
  * Create a `Writable` store that allows both updating and reading by subscription.
@@ -7774,9 +8399,9 @@ function spring(value, opts = {}) {
 }
 
 /* src\components\AnimateBox.svelte generated by Svelte v3.17.0 */
-const file$8 = "src\\components\\AnimateBox.svelte";
+const file$a = "src\\components\\AnimateBox.svelte";
 
-function create_fragment$8(ctx) {
+function create_fragment$a(ctx) {
 	let div;
 	let pannable_action;
 	let current;
@@ -7790,7 +8415,7 @@ function create_fragment$8(ctx) {
 			if (default_slot) default_slot.c();
 			attr_dev(div, "class", "container");
 			set_style(div, "transform", "translate(" + /*$coords*/ ctx[1].x + "px," + /*$coords*/ ctx[1].y + "px) rotate(" + /*$coords*/ ctx[1].x * 0.2 + "deg)");
-			add_location(div, file$8, 83, 0, 1770);
+			add_location(div, file$a, 83, 0, 1770);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -7838,7 +8463,7 @@ function create_fragment$8(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_fragment$8.name,
+		id: create_fragment$a.name,
 		type: "component",
 		source: "",
 		ctx
@@ -7884,7 +8509,7 @@ function pannable(node) {
 	};
 }
 
-function instance$8($$self, $$props, $$invalidate) {
+function instance$a($$self, $$props, $$invalidate) {
 	let $coords;
 	const coords = spring({ x: 0, y: 0 }, { stiffness: 0.2, damping: 0.4 });
 	validate_store(coords, "coords");
@@ -7927,19 +8552,19 @@ function instance$8($$self, $$props, $$invalidate) {
 class AnimateBox extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$8, create_fragment$8, safe_not_equal, {});
+		init(this, options, instance$a, create_fragment$a, safe_not_equal, {});
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
 			tagName: "AnimateBox",
 			options,
-			id: create_fragment$8.name
+			id: create_fragment$a.name
 		});
 	}
 }
 
 /* src\Pages\Home.svelte generated by Svelte v3.17.0 */
-const file$9 = "src\\Pages\\Home.svelte";
+const file$b = "src\\Pages\\Home.svelte";
 
 // (103:2) <AnimateBox>
 function create_default_slot$3(ctx) {
@@ -7976,20 +8601,20 @@ function create_default_slot$3(ctx) {
 			span5 = element("span");
 			span5.textContent = "To analyse FELIX data for FELion Instrument";
 			attr_dev(span0, "class", "line line1 svelte-19js14y");
-			add_location(span0, file$9, 105, 8, 2215);
+			add_location(span0, file$b, 105, 8, 2215);
 			attr_dev(span1, "class", "letters letters-left svelte-19js14y");
-			add_location(span1, file$9, 106, 8, 2252);
+			add_location(span1, file$b, 106, 8, 2252);
 			attr_dev(span2, "class", "letters letters-right svelte-19js14y");
-			add_location(span2, file$9, 107, 8, 2310);
+			add_location(span2, file$b, 107, 8, 2310);
 			attr_dev(span3, "class", "line line2 svelte-19js14y");
-			add_location(span3, file$9, 108, 8, 2380);
+			add_location(span3, file$b, 108, 8, 2380);
 			attr_dev(span4, "class", "text-wrapper svelte-19js14y");
-			add_location(span4, file$9, 104, 6, 2178);
-			add_location(br, file$9, 110, 6, 2430);
+			add_location(span4, file$b, 104, 6, 2178);
+			add_location(br, file$b, 110, 6, 2430);
 			attr_dev(span5, "class", "letters letters-subtitle svelte-19js14y");
-			add_location(span5, file$9, 111, 6, 2444);
+			add_location(span5, file$b, 111, 6, 2444);
 			attr_dev(h1, "class", "ml5 svelte-19js14y");
-			add_location(h1, file$9, 103, 4, 2154);
+			add_location(h1, file$b, 103, 4, 2154);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, h1, anchor);
@@ -8022,7 +8647,7 @@ function create_default_slot$3(ctx) {
 	return block;
 }
 
-function create_fragment$9(ctx) {
+function create_fragment$b(ctx) {
 	let section;
 	let current;
 
@@ -8040,7 +8665,7 @@ function create_fragment$9(ctx) {
 			create_component(animatebox.$$.fragment);
 			attr_dev(section, "class", "section svelte-19js14y");
 			attr_dev(section, "id", "Home");
-			add_location(section, file$9, 100, 0, 2095);
+			add_location(section, file$b, 100, 0, 2095);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -8076,7 +8701,7 @@ function create_fragment$9(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_fragment$9.name,
+		id: create_fragment$b.name,
 		type: "component",
 		source: "",
 		ctx
@@ -8085,7 +8710,7 @@ function create_fragment$9(ctx) {
 	return block;
 }
 
-function instance$9($$self) {
+function instance$b($$self) {
 	let animation_welcome;
 
 	onMount(() => {
@@ -8145,19 +8770,19 @@ function instance$9($$self) {
 class Home extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$9, create_fragment$9, safe_not_equal, {});
+		init(this, options, instance$b, create_fragment$b, safe_not_equal, {});
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
 			tagName: "Home",
 			options,
-			id: create_fragment$9.name
+			id: create_fragment$b.name
 		});
 	}
 }
 
 /* src\App.svelte generated by Svelte v3.17.0 */
-const file$a = "src\\App.svelte";
+const file$c = "src\\App.svelte";
 
 function get_each_context$1(ctx, list, i) {
 	const child_ctx = ctx.slice();
@@ -8165,7 +8790,7 @@ function get_each_context$1(ctx, list, i) {
 	return child_ctx;
 }
 
-// (47:1) {#each _.slice(navItems, 1) as id}
+// (46:1) {#each _.slice(navItems, 1) as id}
 function create_each_block$1(ctx) {
 	let current;
 
@@ -8201,18 +8826,19 @@ function create_each_block$1(ctx) {
 		block,
 		id: create_each_block$1.name,
 		type: "each",
-		source: "(47:1) {#each _.slice(navItems, 1) as id}",
+		source: "(46:1) {#each _.slice(navItems, 1) as id}",
 		ctx
 	});
 
 	return block;
 }
 
-function create_fragment$a(ctx) {
+function create_fragment$c(ctx) {
 	let t0;
 	let t1;
-	let div;
 	let t2;
+	let div;
+	let t3;
 	let current;
 
 	const navbar = new Navbar({
@@ -8220,6 +8846,7 @@ function create_fragment$a(ctx) {
 			$$inline: true
 		});
 
+	const lineanimate = new LineAnimate({ $$inline: true });
 	const home = new Home({ $$inline: true });
 	let each_value = _.slice(/*navItems*/ ctx[0], 1);
 	let each_blocks = [];
@@ -8238,18 +8865,20 @@ function create_fragment$a(ctx) {
 		c: function create() {
 			create_component(navbar.$$.fragment);
 			t0 = space();
-			create_component(home.$$.fragment);
+			create_component(lineanimate.$$.fragment);
 			t1 = space();
+			create_component(home.$$.fragment);
+			t2 = space();
 			div = element("div");
 
 			for (let i = 0; i < each_blocks.length; i += 1) {
 				each_blocks[i].c();
 			}
 
-			t2 = space();
+			t3 = space();
 			create_component(footer.$$.fragment);
 			attr_dev(div, "class", "pageContainer");
-			add_location(div, file$a, 45, 0, 1296);
+			add_location(div, file$c, 44, 0, 1301);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -8257,15 +8886,17 @@ function create_fragment$a(ctx) {
 		m: function mount(target, anchor) {
 			mount_component(navbar, target, anchor);
 			insert_dev(target, t0, anchor);
-			mount_component(home, target, anchor);
+			mount_component(lineanimate, target, anchor);
 			insert_dev(target, t1, anchor);
+			mount_component(home, target, anchor);
+			insert_dev(target, t2, anchor);
 			insert_dev(target, div, anchor);
 
 			for (let i = 0; i < each_blocks.length; i += 1) {
 				each_blocks[i].m(div, null);
 			}
 
-			insert_dev(target, t2, anchor);
+			insert_dev(target, t3, anchor);
 			mount_component(footer, target, anchor);
 			current = true;
 		},
@@ -8300,6 +8931,7 @@ function create_fragment$a(ctx) {
 		i: function intro(local) {
 			if (current) return;
 			transition_in(navbar.$$.fragment, local);
+			transition_in(lineanimate.$$.fragment, local);
 			transition_in(home.$$.fragment, local);
 
 			for (let i = 0; i < each_value.length; i += 1) {
@@ -8311,6 +8943,7 @@ function create_fragment$a(ctx) {
 		},
 		o: function outro(local) {
 			transition_out(navbar.$$.fragment, local);
+			transition_out(lineanimate.$$.fragment, local);
 			transition_out(home.$$.fragment, local);
 			each_blocks = each_blocks.filter(Boolean);
 
@@ -8324,18 +8957,20 @@ function create_fragment$a(ctx) {
 		d: function destroy(detaching) {
 			destroy_component(navbar, detaching);
 			if (detaching) detach_dev(t0);
-			destroy_component(home, detaching);
+			destroy_component(lineanimate, detaching);
 			if (detaching) detach_dev(t1);
+			destroy_component(home, detaching);
+			if (detaching) detach_dev(t2);
 			if (detaching) detach_dev(div);
 			destroy_each(each_blocks, detaching);
-			if (detaching) detach_dev(t2);
+			if (detaching) detach_dev(t3);
 			destroy_component(footer, detaching);
 		}
 	};
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_fragment$a.name,
+		id: create_fragment$c.name,
 		type: "component",
 		source: "",
 		ctx
@@ -8344,7 +8979,7 @@ function create_fragment$a(ctx) {
 	return block;
 }
 
-function instance$a($$self) {
+function instance$c($$self) {
 	const navItems = [
 		"Home",
 		"Normline",
@@ -8408,13 +9043,13 @@ function instance$a($$self) {
 class App extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$a, create_fragment$a, safe_not_equal, {});
+		init(this, options, instance$c, create_fragment$c, safe_not_equal, {});
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
 			tagName: "App",
 			options,
-			id: create_fragment$a.name
+			id: create_fragment$c.name
 		});
 	}
 }

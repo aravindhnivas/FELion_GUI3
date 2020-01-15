@@ -1,9 +1,11 @@
 // MDC
 @import "@material/typography/mdc-typography";
+$mainColor: #46307d;
+.mdc-linear-progress__buffer {background-color: $mainColor;}
 
 // Bulma styles
 $text: #fafafa;
-$scheme-main: #46307d;
+$scheme-main: $mainColor;
 
 @import "bulma/sass/utilities/_all.sass";
 

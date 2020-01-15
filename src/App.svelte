@@ -2,6 +2,7 @@
 	import Navbar from "./components/Navbar.svelte"
 	import Footer from "./components/Footer.svelte"
 	import Layout from "./components/Layout.svelte"
+	import LineAnimate from "./testing/LineAnimate.svelte"
 	import Home from "./Pages/Home.svelte"
 	const navItems = ["Home", "Normline", "Masspec", "Timescan", "THz", "Powerfile", "Misc", "Settings"]
 	import {onMount} from "svelte"
@@ -34,13 +35,11 @@
 
 <style>
 
-	/* .pageContainer {
-		max-height: 70vh;
-		overflow-y: auto;
-	} */
 </style>
 
 <Navbar {navItems}/>
+<LineAnimate />
+
 
 <Home />
 <div class="pageContainer">
