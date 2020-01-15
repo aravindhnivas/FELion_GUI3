@@ -1,34 +1,56 @@
 // MDC
 @import "@material/typography/mdc-typography";
-$light: #fafafa;
-$mainColor: #46307d;
 
+$white: #fafafa;
+$mainColor: #46307d;
+$light: #f5f5f5b8;
+
+
+// Custom styles
+
+// Linear progress line
 .mdc-linear-progress__buffer {background-color: $mainColor;}
+
+// Input text and textarea width ans heoght respectively
 .mdc-text-field  { width: 100%; }
-.mdc-text-field--textarea {height: 70%;}
+.mdc-text-field--textarea {height: 300px;}
 
 .mdc-text-field:not(.mdc-text-field--disabled) .mdc-text-field__input {color: #fafafa;}
-.powfilename, #powercontent_help {margin-bottom: 2em;}
-.mdc-text-field:not(.mdc-text-field--disabled)+.mdc-text-field-helper-line .mdc-text-field-helper-text {color: $light;}
+.mdc-text-field:not(.mdc-text-field--disabled)+.mdc-text-field-helper-line .mdc-text-field-helper-text {color: $white;}
+
+// Checkbbox: Inactive: border color
+.mdc-checkbox__native-control:enabled:not(:checked):not(:indeterminate)~.mdc-checkbox__background {border-color: $light;}
+
+// Checkbox: Active tickmark symbol
+.mdc-checkbox__checkmark {color: $white;}
+.mdc-checkbox__mixedmark {border-color: $white;} //Intermediate
+
 
 // Bulma styles
-$text: $light;
+$text: $white;
 $scheme-main: $mainColor;
 
+// Bulma: Utilities
 @import "bulma/sass/utilities/_all.sass";
 
-// Bulma Navbar
+// Bulma: Navbar
 $navbar-breakpoint: 700px;
 @import "bulma/sass/components/navbar.sass";
 
-// Bulma box
+// Bulma: box
 @import "bulma/sass/elements/box.sass";
 
-// Bulma columns
-// @import "bulma/sass/grid/columns.sass";
-@import "bulma/sass/grid/tiles.sass";
-@import "bulma/sass/elements/notification.sass";
+// Bulma: Container and section
 @import "bulma/sass/elements/container.sass";
 @import "bulma/sass/layout/section.sass";
 
-.container {padding: 30px;}
+// Bulma: Helper
+@import "bulma/sass/base/helpers.sass";
+
+// Bulma: columns
+@import "bulma/sass/grid/columns.sass";
+@import "bulma/sass/grid/tiles.sass";
+@import "bulma/sass/elements/notification.sass";
+
+
+// .container {padding: 30px;}
