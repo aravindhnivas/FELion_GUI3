@@ -12,7 +12,7 @@
 </script>
 
 <style lang="scss">
-	#navbar { padding: 0.2em; width: 100vw; }
+	#navbar { padding: 0.2em; width: 100vw; margin: 0; position: fixed;}
 </style>
 
 <div class="box animated fadeInDown" id="navbar" style="display:none" on:click={navigate}>

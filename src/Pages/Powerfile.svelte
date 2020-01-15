@@ -8,13 +8,13 @@
     
     function savefile() {
         console.log('Powerfile contents saving');
-        let message = SnackBar({
-            message: "File saved!",
-            status: "success",
-            container: "powfileContainer"
-        });
-
-}
+        // let message = SnackBar({
+        //     message: "File saved!",
+        //     status: "success",
+        //     container: "powfileContainer"
+        // });
+    }
+    
     let filename = '';
     let powerfileContent = '';
     let felixHz = 10;

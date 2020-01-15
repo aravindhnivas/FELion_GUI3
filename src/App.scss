@@ -47,10 +47,5 @@ $navbar-breakpoint: 700px;
 // Bulma: Helper
 @import "bulma/sass/base/helpers.sass";
 
-// Bulma: columns
+// Bulma: Columns
 @import "bulma/sass/grid/columns.sass";
-@import "bulma/sass/grid/tiles.sass";
-@import "bulma/sass/elements/notification.sass";
-
-
-// .container {padding: 30px;}

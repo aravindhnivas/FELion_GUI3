@@ -42,6 +42,7 @@
 </script>
 
 <style>
+	.pageContainer {margin-top: 4em;}
 </style>
 
 <Navbar {navItems}/>
