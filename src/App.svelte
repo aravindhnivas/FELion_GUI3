@@ -42,10 +42,10 @@
 </script>
 
 <style>
-	.pageContainer {margin-top: 7em;}
 </style>
 
 <Navbar {navItems}/>
+
 <LineAnimate />
 
 <Home />
@@ -54,8 +54,7 @@
 	{#each pages as id}
 		<Layout {id} />
 	{/each}
+
 	<Powerfile />
 </div>
-
-
 <Footer />
