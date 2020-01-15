@@ -1,10 +1,12 @@
 // Variables
 $light: #f5f5f5b8;
+$dark: #333;
 $mainColor:#fafafa;
 $secondaryColor: #6a50ad;
-
 $mdc-theme-primary: $mainColor;
 $mdc-theme-secondary: $secondaryColor;
+
+$mdc-theme-background: $dark;
 
 // Text-field (input)
 $mdc-text-field-label: $light;
