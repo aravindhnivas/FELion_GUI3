@@ -15,7 +15,7 @@ $light: #f5f5f5b8;
 .mdc-text-field  { width: 100%; }
 .mdc-text-field--textarea {height: 300px;}
 
-.mdc-text-field:not(.mdc-text-field--disabled) .mdc-text-field__input {color: #fafafa;}
+.mdc-text-field:not(.mdc-text-field--disabled) .mdc-text-field__input {color: $white;}
 .mdc-text-field:not(.mdc-text-field--disabled)+.mdc-text-field-helper-line .mdc-text-field-helper-text {color: $white;}
 
 // Checkbbox: Inactive: border color
@@ -29,6 +29,8 @@ $light: #f5f5f5b8;
 // Bulma styles
 $text: $white;
 $scheme-main: $mainColor;
+$primary: lighten($mainColor, 10);
+$success: #09814a;
 
 // Bulma: Utilities
 @import "bulma/sass/utilities/_all.sass";
@@ -48,4 +50,5 @@ $navbar-breakpoint: 700px;
 @import "bulma/sass/base/helpers.sass";
 
 // Bulma: Columns
+
 @import "bulma/sass/grid/columns.sass";
