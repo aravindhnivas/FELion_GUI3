@@ -33,9 +33,17 @@
     .filebrowser, .fileContainer {
         background-image: url(./assets/css/intro.svg);
         height: calc(100vh - 8em);
+    }
+    .plotContainer {
+        max-height: calc(100vh - 20em);
         overflow-y: auto;
     }
-
+     .filelist {
+        max-height: calc(100vh - 30em);
+        overflow-y: auto;
+     }
+    .folderfile-list {max-height: calc(100vh - 25em); overflow-y: auto;}
+    
     .align {
         display: flex;
         align-items: center;
@@ -59,7 +67,6 @@
 </style>
 
 <section {id} style="display:none" >
-
     <div class="columns">
 
         <div class="column is-2 box filebrowser" >
@@ -78,24 +85,26 @@
                     <span slot="label">Select All</span>
                 </FormField>
             </div>
+            <div class="folderfile-list">
+                <div class="align folderlist" >
+                    <IconButton  toggle on:click="{()=>window.togglepage("Folder1")}">
+                        <Icon class="material-icons">keyboard_arrow_down</Icon>
+                        <Icon class="material-icons" on>keyboard_arrow_right</Icon>
+                    </IconButton>
+                    <div class="mdc-typography--subtitle1">Folder1</div>
+                </div>
 
-            <div class="align" >
-                <IconButton  toggle on:click="{()=>window.togglepage("Folder1")}">
-                    <Icon class="material-icons">keyboard_arrow_down</Icon>
-                    <Icon class="material-icons" on>keyboard_arrow_right</Icon>
-                </IconButton>
-                <div class="mdc-typography--subtitle1">Folder1</div>
-            </div>
+                <div class="filelist" style="padding-left:1em;"  id="Folder1" >
 
-            <div style="padding-left:1em;" id="Folder1" >
-                <List checklist>
-                    {#each folderfile as file}
-                        <Item >
-                            <Label>{file}</Label>
-                            <Meta> <Checkbox bind:group={fileChecked} value={file} on:click="{()=>selectAll=false}"/> </Meta>
-                        </Item>
-                    {/each}
-                </List>
+                    <List checklist>
+                        {#each folderfile as file}
+                            <Item >
+                                <Label>{file}</Label>
+                                <Meta> <Checkbox bind:group={fileChecked} value={file} on:click="{()=>selectAll=false}"/> </Meta>
+                            </Item>
+                        {/each}
+                    </List>
+                </div>
             </div>
         </div>
 
@@ -105,6 +114,10 @@
                     <button class="button is-link gap">Browse</button>
                     <Textfield style="margin-bottom:1em;" bind:value={currentLocation} label="Current location" />
                 </div>
+
+                <div class="align buttonContainer"> <div class="mdc-typography--heading5">buttonContainer</div> </div>
+                <div class="align plotContainer"> <div class="mdc-typography--heading5">plotContainer</div> </div>
+                
             </div>
         </div>
 
