@@ -10,8 +10,8 @@
 	import Home from "./Pages/Home.svelte"
 	import Powerfile from "./Pages/Powerfile.svelte"
 	
-	const navItems = ["Home", "Normline", "Masspec", "Timescan", "THz", "Powerfile"]
 
+	const navItems = ["Home", "Normline", "Masspec", "Timescan", "THz", "Powerfile"]
 	const pages = ["Normline", "Masspec", "Timescan", "THz"]
 	import {onMount} from "svelte"
 
@@ -20,9 +20,8 @@
 	window.path = require("path")
 	window.fs = require("fs")
 
-	onMount(()=>{
-		// tippy("button") //Remember to initial tippy with target
-	})
+	export let version;
+	console.log("Svelte: ", version)
 
 	window.Menu = remote.Menu
 	window.MenuItem = remote.MenuItem
@@ -42,7 +41,7 @@
 </script>
 
 <style>
-	.pageContainer {margin-top: 4em;}
+	.pageContainer {margin-top: 3.6em;}
 </style>
 
 <Navbar {navItems}/>
