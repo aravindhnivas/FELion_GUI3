@@ -6,6 +6,8 @@
     import Checkbox from '@smui/checkbox';
     import IconButton, {Icon} from '@smui/icon-button';
 
+    import Fab from '@smui/fab';
+
     import FormField from '@smui/form-field';
     import Switch from '@smui/switch';
     import Textfield from '@smui/textfield'
@@ -21,12 +23,11 @@
         if (!searchKey) {folderfile = ["File1", "File2", "File3", "File4"]}
         else {folderfile = folderfile.filter(file=>file.includes(searchKey))}
     }
-    
+    let currentLocation="";
 </script>
 
 <style lang="scss">
 
-    // Variables
     $box1: #6a50ad59;
 
     .filebrowser, .fileContainer {
@@ -36,7 +37,6 @@
     }
 
     .align {
-
         display: flex;
         align-items: center;
     }
@@ -47,21 +47,19 @@
         padding-top: 1em;
         background-color: $box1;
         border-radius: 0;
-
     }
 
-    .container {padding: 5em;}
-    hr {margin: 1em 0;}
+    .fileContainer {margin-right: 2em; padding-bottom: 5rem;}
 
-    h1 {
-        font-weight: 300;
-    }
+    .gap {margin-right: 2em;}
 
     * :global(.mdc-list-item){height: 2em;}
     * :global(.mdc-switch.mdc-switch--checked .mdc-switch__thumb, .mdc-switch.mdc-switch--checked .mdc-switch__track){background-color: #ffffff}
+    
 </style>
 
 <section {id} style="display:none" >
+
     <div class="columns">
 
         <div class="column is-2 box filebrowser" >
@@ -72,7 +70,6 @@
                 <Icon class="material-icons" style="margin-right:0.2em; cursor:pointer;">arrow_back</Icon>
             </div>
 
-            <!-- <hr> -->
             <Textfield on:keyup={searchfile} style="margin-bottom:1em;" bind:value={searchKey} label="Seach" />
 
             <div class="align center">
@@ -102,11 +99,12 @@
             </div>
         </div>
 
-        <!-- {@debug fileChecked} -->
         <div class="column fileContainer">
             <div class="container box">
-                <h1>{id}</h1>
-                <hr>
+                <div class="align">
+                    <button class="button is-link gap">Browse</button>
+                    <Textfield style="margin-bottom:1em;" bind:value={currentLocation} label="Current location" />
+                </div>
             </div>
         </div>
 

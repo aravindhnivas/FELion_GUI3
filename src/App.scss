@@ -1,12 +1,12 @@
+
 // MDC
 @import "@material/typography/mdc-typography";
+
+// 
 
 $white: #fafafa;
 $mainColor: #513a8a5c;
 $light: #f5f5f5b8;
-
-
-// Custom styles
 
 // Linear progress line
 .mdc-linear-progress__buffer {background-color: $mainColor;}
@@ -52,3 +52,28 @@ $navbar-breakpoint: 700px;
 // Bulma: Columns
 
 @import "bulma/sass/grid/columns.sass";
+
+// Bulma: Buttons
+@import "bulma/sass/elements/button.sass";
+
+$link-color: #dbdbdb;
+$success-color: #09814a;
+$danger-color: #ff3860;
+$warning-color: #ffc402;
+
+.button.is-link, .button.is-warning, .button.is-danger, .button.is-success {background-color: rgba(0,0,0,0);}
+.button.is-link:focus:not(:active), .button.is-link.is-focused:not(:active) {box-shadow: 0 0 0 0.05em #fafafa;}
+.button.is-link {border-color: $link-color;}
+.button.is-link:hover, .button.is-link.is-hovered {background-color: var(--btnhoverColor);}
+
+.button.is-warning {border-color: $warning-color; color: $white;}
+.button.is-warning:hover, .button.is-warning.is-hovered {background-color: $warning-color; color: black;}
+.button.is-warning:focus, .button.is-warning.is-focused { border-color: #ffdd57; color: #fafafa;}
+
+.button.is-danger {border-color: $danger-color;}
+.button.is-danger:hover, .button.is-danger.is-hovered {background-color: $danger-color;}
+
+.button.is-success {border-color: $success-color;}
+.button.is-success:hover, .button.is-success.is-hovered {background-color: $success-color;}
+
+.button.is-static {background: transparent; color: $white;}
