@@ -48,10 +48,10 @@
         background-color: $box1;
         border-radius: 0;
     }
-
     .fileContainer {margin-right: 2em; padding-bottom: 5rem;}
-
     .gap {margin-right: 2em;}
+
+    * :global(.box){background-color: #654ca25c;}
 
     * :global(.mdc-list-item){height: 2em;}
     * :global(.mdc-switch.mdc-switch--checked .mdc-switch__thumb, .mdc-switch.mdc-switch--checked .mdc-switch__track){background-color: #ffffff}

@@ -18331,7 +18331,7 @@ function get_each_context$1(ctx, list, i) {
 	return child_ctx;
 }
 
-// (68:16) <Icon class="material-icons" style="margin-right:0.2em; cursor:pointer;">
+// (71:16) <Icon class="material-icons" style="margin-right:0.2em; cursor:pointer;">
 function create_default_slot_10(ctx) {
 	let t;
 
@@ -18351,14 +18351,14 @@ function create_default_slot_10(ctx) {
 		block,
 		id: create_default_slot_10.name,
 		type: "slot",
-		source: "(68:16) <Icon class=\\\"material-icons\\\" style=\\\"margin-right:0.2em; cursor:pointer;\\\">",
+		source: "(71:16) <Icon class=\\\"material-icons\\\" style=\\\"margin-right:0.2em; cursor:pointer;\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (69:16) <Icon class="material-icons" style="margin-right:0.2em; cursor:pointer;">
+// (72:16) <Icon class="material-icons" style="margin-right:0.2em; cursor:pointer;">
 function create_default_slot_9(ctx) {
 	let t;
 
@@ -18378,14 +18378,14 @@ function create_default_slot_9(ctx) {
 		block,
 		id: create_default_slot_9.name,
 		type: "slot",
-		source: "(69:16) <Icon class=\\\"material-icons\\\" style=\\\"margin-right:0.2em; cursor:pointer;\\\">",
+		source: "(72:16) <Icon class=\\\"material-icons\\\" style=\\\"margin-right:0.2em; cursor:pointer;\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (70:16) <Icon class="material-icons" style="margin-right:0.2em; cursor:pointer;">
+// (73:16) <Icon class="material-icons" style="margin-right:0.2em; cursor:pointer;">
 function create_default_slot_8(ctx) {
 	let t;
 
@@ -18405,14 +18405,14 @@ function create_default_slot_8(ctx) {
 		block,
 		id: create_default_slot_8.name,
 		type: "slot",
-		source: "(70:16) <Icon class=\\\"material-icons\\\" style=\\\"margin-right:0.2em; cursor:pointer;\\\">",
+		source: "(73:16) <Icon class=\\\"material-icons\\\" style=\\\"margin-right:0.2em; cursor:pointer;\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (78:20) <span slot="label">
+// (81:20) <span slot="label">
 function create_label_slot(ctx) {
 	let span;
 
@@ -18421,8 +18421,8 @@ function create_label_slot(ctx) {
 			span = element("span");
 			span.textContent = "Select All";
 			attr_dev(span, "slot", "label");
-			attr_dev(span, "class", "svelte-5gcx66");
-			add_location(span, file$p, 77, 20, 2408);
+			attr_dev(span, "class", "svelte-3d54v8");
+			add_location(span, file$p, 80, 20, 2460);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -18436,14 +18436,14 @@ function create_label_slot(ctx) {
 		block,
 		id: create_label_slot.name,
 		type: "slot",
-		source: "(78:20) <span slot=\\\"label\\\">",
+		source: "(81:20) <span slot=\\\"label\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (76:16) <FormField>
+// (79:16) <FormField>
 function create_default_slot_7(ctx) {
 	let updating_checked;
 	let t;
@@ -18503,14 +18503,14 @@ function create_default_slot_7(ctx) {
 		block,
 		id: create_default_slot_7.name,
 		type: "slot",
-		source: "(76:16) <FormField>",
+		source: "(79:16) <FormField>",
 		ctx
 	});
 
 	return block;
 }
 
-// (84:20) <Icon class="material-icons">
+// (87:20) <Icon class="material-icons">
 function create_default_slot_6(ctx) {
 	let t;
 
@@ -18530,14 +18530,14 @@ function create_default_slot_6(ctx) {
 		block,
 		id: create_default_slot_6.name,
 		type: "slot",
-		source: "(84:20) <Icon class=\\\"material-icons\\\">",
+		source: "(87:20) <Icon class=\\\"material-icons\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (85:20) <Icon class="material-icons" on>
+// (88:20) <Icon class="material-icons" on>
 function create_default_slot_5(ctx) {
 	let t;
 
@@ -18557,14 +18557,14 @@ function create_default_slot_5(ctx) {
 		block,
 		id: create_default_slot_5.name,
 		type: "slot",
-		source: "(85:20) <Icon class=\\\"material-icons\\\" on>",
+		source: "(88:20) <Icon class=\\\"material-icons\\\" on>",
 		ctx
 	});
 
 	return block;
 }
 
-// (83:16) <IconButton  toggle on:click="{()=>window.togglepage("Folder1")}">
+// (86:16) <IconButton  toggle on:click="{()=>window.togglepage("Folder1")}">
 function create_default_slot_4(ctx) {
 	let t;
 	let current;
@@ -18638,14 +18638,14 @@ function create_default_slot_4(ctx) {
 		block,
 		id: create_default_slot_4.name,
 		type: "slot",
-		source: "(83:16) <IconButton  toggle on:click=\\\"{()=>window.togglepage(\\\"Folder1\\\")}\\\">",
+		source: "(86:16) <IconButton  toggle on:click=\\\"{()=>window.togglepage(\\\"Folder1\\\")}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (94:28) <Label>
+// (97:28) <Label>
 function create_default_slot_3(ctx) {
 	let t_value = /*file*/ ctx[14] + "";
 	let t;
@@ -18669,14 +18669,14 @@ function create_default_slot_3(ctx) {
 		block,
 		id: create_default_slot_3.name,
 		type: "slot",
-		source: "(94:28) <Label>",
+		source: "(97:28) <Label>",
 		ctx
 	});
 
 	return block;
 }
 
-// (95:28) <Meta>
+// (98:28) <Meta>
 function create_default_slot_2$2(ctx) {
 	let updating_group;
 	let current;
@@ -18733,14 +18733,14 @@ function create_default_slot_2$2(ctx) {
 		block,
 		id: create_default_slot_2$2.name,
 		type: "slot",
-		source: "(95:28) <Meta>",
+		source: "(98:28) <Meta>",
 		ctx
 	});
 
 	return block;
 }
 
-// (93:24) <Item >
+// (96:24) <Item >
 function create_default_slot_1$3(ctx) {
 	let t0;
 	let t1;
@@ -18815,14 +18815,14 @@ function create_default_slot_1$3(ctx) {
 		block,
 		id: create_default_slot_1$3.name,
 		type: "slot",
-		source: "(93:24) <Item >",
+		source: "(96:24) <Item >",
 		ctx
 	});
 
 	return block;
 }
 
-// (92:20) {#each folderfile as file}
+// (95:20) {#each folderfile as file}
 function create_each_block$1(ctx) {
 	let current;
 
@@ -18869,14 +18869,14 @@ function create_each_block$1(ctx) {
 		block,
 		id: create_each_block$1.name,
 		type: "each",
-		source: "(92:20) {#each folderfile as file}",
+		source: "(95:20) {#each folderfile as file}",
 		ctx
 	});
 
 	return block;
 }
 
-// (91:16) <List checklist>
+// (94:16) <List checklist>
 function create_default_slot$5(ctx) {
 	let each_1_anchor;
 	let current;
@@ -18963,7 +18963,7 @@ function create_default_slot$5(ctx) {
 		block,
 		id: create_default_slot$5.name,
 		type: "slot",
-		source: "(91:16) <List checklist>",
+		source: "(94:16) <List checklist>",
 		ctx
 	});
 
@@ -19123,34 +19123,34 @@ function create_fragment$q(ctx) {
 			button.textContent = "Browse";
 			t10 = space();
 			create_component(textfield1.$$.fragment);
-			attr_dev(div0, "class", "align center svelte-5gcx66");
-			add_location(div0, file$p, 66, 12, 1704);
-			attr_dev(div1, "class", "align center svelte-5gcx66");
-			add_location(div1, file$p, 74, 12, 2196);
-			attr_dev(div2, "class", "mdc-typography--subtitle1 svelte-5gcx66");
-			add_location(div2, file$p, 86, 16, 2821);
-			attr_dev(div3, "class", "align svelte-5gcx66");
-			add_location(div3, file$p, 81, 12, 2510);
+			attr_dev(div0, "class", "align center svelte-3d54v8");
+			add_location(div0, file$p, 69, 12, 1756);
+			attr_dev(div1, "class", "align center svelte-3d54v8");
+			add_location(div1, file$p, 77, 12, 2248);
+			attr_dev(div2, "class", "mdc-typography--subtitle1 svelte-3d54v8");
+			add_location(div2, file$p, 89, 16, 2873);
+			attr_dev(div3, "class", "align svelte-3d54v8");
+			add_location(div3, file$p, 84, 12, 2562);
 			set_style(div4, "padding-left", "1em");
 			attr_dev(div4, "id", "Folder1");
-			attr_dev(div4, "class", "svelte-5gcx66");
-			add_location(div4, file$p, 89, 12, 2909);
-			attr_dev(div5, "class", "column is-2 box filebrowser svelte-5gcx66");
-			add_location(div5, file$p, 64, 8, 1646);
-			attr_dev(button, "class", "button is-link gap svelte-5gcx66");
-			add_location(button, file$p, 104, 20, 3516);
-			attr_dev(div6, "class", "align svelte-5gcx66");
-			add_location(div6, file$p, 103, 16, 3475);
-			attr_dev(div7, "class", "container box svelte-5gcx66");
-			add_location(div7, file$p, 102, 12, 3430);
-			attr_dev(div8, "class", "column fileContainer svelte-5gcx66");
-			add_location(div8, file$p, 101, 8, 3382);
-			attr_dev(div9, "class", "columns svelte-5gcx66");
-			add_location(div9, file$p, 62, 4, 1613);
+			attr_dev(div4, "class", "svelte-3d54v8");
+			add_location(div4, file$p, 92, 12, 2961);
+			attr_dev(div5, "class", "column is-2 box filebrowser svelte-3d54v8");
+			add_location(div5, file$p, 67, 8, 1698);
+			attr_dev(button, "class", "button is-link gap svelte-3d54v8");
+			add_location(button, file$p, 107, 20, 3568);
+			attr_dev(div6, "class", "align svelte-3d54v8");
+			add_location(div6, file$p, 106, 16, 3527);
+			attr_dev(div7, "class", "container box svelte-3d54v8");
+			add_location(div7, file$p, 105, 12, 3482);
+			attr_dev(div8, "class", "column fileContainer svelte-3d54v8");
+			add_location(div8, file$p, 104, 8, 3434);
+			attr_dev(div9, "class", "columns svelte-3d54v8");
+			add_location(div9, file$p, 65, 4, 1665);
 			attr_dev(section, "id", /*id*/ ctx[0]);
 			set_style(section, "display", "none");
-			attr_dev(section, "class", "svelte-5gcx66");
-			add_location(section, file$p, 60, 0, 1569);
+			attr_dev(section, "class", "svelte-3d54v8");
+			add_location(section, file$p, 63, 0, 1621);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
