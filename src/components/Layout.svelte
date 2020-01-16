@@ -6,17 +6,23 @@
     import Checkbox from '@smui/checkbox';
     import IconButton, {Icon} from '@smui/icon-button';
 
+    import FormField from '@smui/form-field';
+    import Switch from '@smui/switch';
+    import Textfield from '@smui/textfield'
     export let id;
 
-    let fileChecked=[];
     let folderfile = ["File1", "File2", "File3", "File4"]
+    let fileChecked=[];
+    let selectAll=false;
 
-    // $: console.log(fileChecked)
-    // onMount(()=>fileChecked=[])
-    afterUpdate(() => { console.log(fileChecked) });
-
+    let searchKey = "";
+    const searchfile = () => {
+        console.log(searchKey)
+        if (!searchKey) {folderfile = ["File1", "File2", "File3", "File4"]}
+        else {folderfile = folderfile.filter(file=>file.includes(searchKey))}
+    }
+    
 </script>
-
 
 <style lang="scss">
 
@@ -29,10 +35,19 @@
         overflow-y: auto;
     }
 
+    .align {
+
+        display: flex;
+        align-items: center;
+    }
+    .center {justify-content: center;}
+
     .filebrowser {
         padding-left: 2em;
         padding-top: 1em;
         background-color: $box1;
+        border-radius: 0;
+
     }
 
     .container {padding: 5em;}
@@ -43,25 +58,44 @@
     }
 
     * :global(.mdc-list-item){height: 2em;}
-
+    * :global(.mdc-switch.mdc-switch--checked .mdc-switch__thumb, .mdc-switch.mdc-switch--checked .mdc-switch__track){background-color: #ffffff}
 </style>
 
 <section {id} style="display:none" >
-
     <div class="columns">
 
         <div class="column is-2 box filebrowser" >
-            <div class="content" use:Ripple={[true, {color: 'surface'}]} tabindex="0" >
-                <Icon class="material-icons is-pulled-left" style="margin-right:0.2em">folder_open</Icon>
-                <h1 class="mdc-typography--headline5 ">FILE EXPLORER</h1>
+
+            <div class="align center">
+                <Icon class="material-icons" style="margin-right:0.2em; cursor:pointer;">home</Icon>
+                <Icon class="material-icons" style="margin-right:0.2em; cursor:pointer;">refresh</Icon>
+                <Icon class="material-icons" style="margin-right:0.2em; cursor:pointer;">arrow_back</Icon>
             </div>
-            <hr>
-            <div>
+
+            <!-- <hr> -->
+            <Textfield on:keyup={searchfile} style="margin-bottom:1em;" bind:value={searchKey} label="Seach" />
+
+            <div class="align center">
+                <FormField>
+                    <Switch bind:checked={selectAll} on:change="{()=>selectAll ? fileChecked = [...folderfile] : fileChecked = []}"/>
+                    <span slot="label">Select All</span>
+                </FormField>
+            </div>
+
+            <div class="align" >
+                <IconButton  toggle on:click="{()=>window.togglepage("Folder1")}">
+                    <Icon class="material-icons">keyboard_arrow_down</Icon>
+                    <Icon class="material-icons" on>keyboard_arrow_right</Icon>
+                </IconButton>
+                <div class="mdc-typography--subtitle1">Folder1</div>
+            </div>
+
+            <div style="padding-left:1em;" id="Folder1" >
                 <List checklist>
                     {#each folderfile as file}
-                        <Item>
+                        <Item >
                             <Label>{file}</Label>
-                            <Meta> <Checkbox bind:group={fileChecked} value={file} /> </Meta>
+                            <Meta> <Checkbox bind:group={fileChecked} value={file} on:click="{()=>selectAll=false}"/> </Meta>
                         </Item>
                     {/each}
                 </List>
@@ -73,7 +107,6 @@
             <div class="container box">
                 <h1>{id}</h1>
                 <hr>
-                
             </div>
         </div>
 

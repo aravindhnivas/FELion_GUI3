@@ -6,7 +6,7 @@
     import Checkbox from '@smui/checkbox';
     import FormField from '@smui/form-field';
 
-    import { Toast, Snackbar } from 'svelma'
+    import { Toast } from 'svelma'
     
     function savefile() {
         console.log('Powerfile contents saving');
@@ -48,7 +48,7 @@
         </div>
 
         <div style="margin-bottom:2em;">
-            <Textfield style="width:20%" bind:value={filename} label="Filename" />        
+            <Textfield style="width:20%" bind:value={filename} label="Filename" />
             <Textfield style="width:20%" bind:value={felixShots} label="FELIX Shots" on:change={()=>{console.log(felixShots)}}/>
             <Textfield style="width:20%" bind:value={felixHz} label="FELIX Hz" />
             <FormField>
