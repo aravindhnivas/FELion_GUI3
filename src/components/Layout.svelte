@@ -7,14 +7,16 @@
     import IconButton, {Icon} from '@smui/icon-button';
 
     import Fab from '@smui/fab';
-
     import FormField from '@smui/form-field';
     import Switch from '@smui/switch';
     import Textfield from '@smui/textfield'
     export let id;
 
+    export let fileChecked=[];
+    export let currentLocation="";
+    
     let folderfile = ["File1", "File2", "File3", "File4"]
-    let fileChecked=[];
+
     let selectAll=false;
 
     let searchKey = "";
@@ -23,7 +25,6 @@
         if (!searchKey) {folderfile = ["File1", "File2", "File3", "File4"]}
         else {folderfile = folderfile.filter(file=>file.includes(searchKey))}
     }
-    let currentLocation="";
 </script>
 
 <style lang="scss">

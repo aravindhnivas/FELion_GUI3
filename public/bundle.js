@@ -18331,7 +18331,7 @@ function get_each_context$1(ctx, list, i) {
 	return child_ctx;
 }
 
-// (93:16) <Icon class="material-icons" style="margin-right:0.2em; cursor:pointer;">
+// (94:16) <Icon class="material-icons" style="margin-right:0.2em; cursor:pointer;">
 function create_default_slot_10(ctx) {
 	let t;
 
@@ -18351,14 +18351,14 @@ function create_default_slot_10(ctx) {
 		block,
 		id: create_default_slot_10.name,
 		type: "slot",
-		source: "(93:16) <Icon class=\\\"material-icons\\\" style=\\\"margin-right:0.2em; cursor:pointer;\\\">",
+		source: "(94:16) <Icon class=\\\"material-icons\\\" style=\\\"margin-right:0.2em; cursor:pointer;\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (94:16) <Icon class="material-icons" style="margin-right:0.2em; cursor:pointer;">
+// (95:16) <Icon class="material-icons" style="margin-right:0.2em; cursor:pointer;">
 function create_default_slot_9(ctx) {
 	let t;
 
@@ -18378,14 +18378,14 @@ function create_default_slot_9(ctx) {
 		block,
 		id: create_default_slot_9.name,
 		type: "slot",
-		source: "(94:16) <Icon class=\\\"material-icons\\\" style=\\\"margin-right:0.2em; cursor:pointer;\\\">",
+		source: "(95:16) <Icon class=\\\"material-icons\\\" style=\\\"margin-right:0.2em; cursor:pointer;\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (95:16) <Icon class="material-icons" style="margin-right:0.2em; cursor:pointer;">
+// (96:16) <Icon class="material-icons" style="margin-right:0.2em; cursor:pointer;">
 function create_default_slot_8(ctx) {
 	let t;
 
@@ -18405,14 +18405,14 @@ function create_default_slot_8(ctx) {
 		block,
 		id: create_default_slot_8.name,
 		type: "slot",
-		source: "(95:16) <Icon class=\\\"material-icons\\\" style=\\\"margin-right:0.2em; cursor:pointer;\\\">",
+		source: "(96:16) <Icon class=\\\"material-icons\\\" style=\\\"margin-right:0.2em; cursor:pointer;\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (103:20) <span slot="label">
+// (104:20) <span slot="label">
 function create_label_slot(ctx) {
 	let span;
 
@@ -18422,7 +18422,7 @@ function create_label_slot(ctx) {
 			span.textContent = "Select All";
 			attr_dev(span, "slot", "label");
 			attr_dev(span, "class", "svelte-10t6p06");
-			add_location(span, file$p, 102, 20, 2836);
+			add_location(span, file$p, 103, 20, 2856);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -18436,14 +18436,14 @@ function create_label_slot(ctx) {
 		block,
 		id: create_label_slot.name,
 		type: "slot",
-		source: "(103:20) <span slot=\\\"label\\\">",
+		source: "(104:20) <span slot=\\\"label\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (101:16) <FormField>
+// (102:16) <FormField>
 function create_default_slot_7(ctx) {
 	let updating_checked;
 	let t;
@@ -18455,8 +18455,8 @@ function create_default_slot_7(ctx) {
 
 	let switch_1_props = {};
 
-	if (/*selectAll*/ ctx[3] !== void 0) {
-		switch_1_props.checked = /*selectAll*/ ctx[3];
+	if (/*selectAll*/ ctx[4] !== void 0) {
+		switch_1_props.checked = /*selectAll*/ ctx[4];
 	}
 
 	const switch_1 = new Switch({ props: switch_1_props, $$inline: true });
@@ -18476,9 +18476,9 @@ function create_default_slot_7(ctx) {
 		p: function update(ctx, dirty) {
 			const switch_1_changes = {};
 
-			if (!updating_checked && dirty & /*selectAll*/ 8) {
+			if (!updating_checked && dirty & /*selectAll*/ 16) {
 				updating_checked = true;
-				switch_1_changes.checked = /*selectAll*/ ctx[3];
+				switch_1_changes.checked = /*selectAll*/ ctx[4];
 				add_flush_callback(() => updating_checked = false);
 			}
 
@@ -18503,14 +18503,14 @@ function create_default_slot_7(ctx) {
 		block,
 		id: create_default_slot_7.name,
 		type: "slot",
-		source: "(101:16) <FormField>",
+		source: "(102:16) <FormField>",
 		ctx
 	});
 
 	return block;
 }
 
-// (110:24) <Icon class="material-icons">
+// (111:24) <Icon class="material-icons">
 function create_default_slot_6(ctx) {
 	let t;
 
@@ -18530,14 +18530,14 @@ function create_default_slot_6(ctx) {
 		block,
 		id: create_default_slot_6.name,
 		type: "slot",
-		source: "(110:24) <Icon class=\\\"material-icons\\\">",
+		source: "(111:24) <Icon class=\\\"material-icons\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (111:24) <Icon class="material-icons" on>
+// (112:24) <Icon class="material-icons" on>
 function create_default_slot_5(ctx) {
 	let t;
 
@@ -18557,14 +18557,14 @@ function create_default_slot_5(ctx) {
 		block,
 		id: create_default_slot_5.name,
 		type: "slot",
-		source: "(111:24) <Icon class=\\\"material-icons\\\" on>",
+		source: "(112:24) <Icon class=\\\"material-icons\\\" on>",
 		ctx
 	});
 
 	return block;
 }
 
-// (109:20) <IconButton  toggle on:click="{()=>window.togglepage("Folder1")}">
+// (110:20) <IconButton  toggle on:click="{()=>window.togglepage("Folder1")}">
 function create_default_slot_4(ctx) {
 	let t;
 	let current;
@@ -18638,14 +18638,14 @@ function create_default_slot_4(ctx) {
 		block,
 		id: create_default_slot_4.name,
 		type: "slot",
-		source: "(109:20) <IconButton  toggle on:click=\\\"{()=>window.togglepage(\\\"Folder1\\\")}\\\">",
+		source: "(110:20) <IconButton  toggle on:click=\\\"{()=>window.togglepage(\\\"Folder1\\\")}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (121:32) <Label>
+// (122:32) <Label>
 function create_default_slot_3(ctx) {
 	let t_value = /*file*/ ctx[14] + "";
 	let t;
@@ -18658,7 +18658,7 @@ function create_default_slot_3(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty & /*folderfile*/ 2 && t_value !== (t_value = /*file*/ ctx[14] + "")) set_data_dev(t, t_value);
+			if (dirty & /*folderfile*/ 8 && t_value !== (t_value = /*file*/ ctx[14] + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -18669,14 +18669,14 @@ function create_default_slot_3(ctx) {
 		block,
 		id: create_default_slot_3.name,
 		type: "slot",
-		source: "(121:32) <Label>",
+		source: "(122:32) <Label>",
 		ctx
 	});
 
 	return block;
 }
 
-// (122:32) <Meta>
+// (123:32) <Meta>
 function create_default_slot_2$2(ctx) {
 	let updating_group;
 	let current;
@@ -18687,8 +18687,8 @@ function create_default_slot_2$2(ctx) {
 
 	let checkbox_props = { value: /*file*/ ctx[14] };
 
-	if (/*fileChecked*/ ctx[2] !== void 0) {
-		checkbox_props.group = /*fileChecked*/ ctx[2];
+	if (/*fileChecked*/ ctx[0] !== void 0) {
+		checkbox_props.group = /*fileChecked*/ ctx[0];
 	}
 
 	const checkbox = new Checkbox({ props: checkbox_props, $$inline: true });
@@ -18705,11 +18705,11 @@ function create_default_slot_2$2(ctx) {
 		},
 		p: function update(ctx, dirty) {
 			const checkbox_changes = {};
-			if (dirty & /*folderfile*/ 2) checkbox_changes.value = /*file*/ ctx[14];
+			if (dirty & /*folderfile*/ 8) checkbox_changes.value = /*file*/ ctx[14];
 
-			if (!updating_group && dirty & /*fileChecked*/ 4) {
+			if (!updating_group && dirty & /*fileChecked*/ 1) {
 				updating_group = true;
-				checkbox_changes.group = /*fileChecked*/ ctx[2];
+				checkbox_changes.group = /*fileChecked*/ ctx[0];
 				add_flush_callback(() => updating_group = false);
 			}
 
@@ -18733,14 +18733,14 @@ function create_default_slot_2$2(ctx) {
 		block,
 		id: create_default_slot_2$2.name,
 		type: "slot",
-		source: "(122:32) <Meta>",
+		source: "(123:32) <Meta>",
 		ctx
 	});
 
 	return block;
 }
 
-// (120:28) <Item >
+// (121:28) <Item >
 function create_default_slot_1$3(ctx) {
 	let t0;
 	let t1;
@@ -18779,14 +18779,14 @@ function create_default_slot_1$3(ctx) {
 		p: function update(ctx, dirty) {
 			const label_changes = {};
 
-			if (dirty & /*$$scope, folderfile*/ 131074) {
+			if (dirty & /*$$scope, folderfile*/ 131080) {
 				label_changes.$$scope = { dirty, ctx };
 			}
 
 			label.$set(label_changes);
 			const meta_changes = {};
 
-			if (dirty & /*$$scope, folderfile, fileChecked, selectAll*/ 131086) {
+			if (dirty & /*$$scope, folderfile, fileChecked, selectAll*/ 131097) {
 				meta_changes.$$scope = { dirty, ctx };
 			}
 
@@ -18815,14 +18815,14 @@ function create_default_slot_1$3(ctx) {
 		block,
 		id: create_default_slot_1$3.name,
 		type: "slot",
-		source: "(120:28) <Item >",
+		source: "(121:28) <Item >",
 		ctx
 	});
 
 	return block;
 }
 
-// (119:24) {#each folderfile as file}
+// (120:24) {#each folderfile as file}
 function create_each_block$1(ctx) {
 	let current;
 
@@ -18845,7 +18845,7 @@ function create_each_block$1(ctx) {
 		p: function update(ctx, dirty) {
 			const item_changes = {};
 
-			if (dirty & /*$$scope, folderfile, fileChecked, selectAll*/ 131086) {
+			if (dirty & /*$$scope, folderfile, fileChecked, selectAll*/ 131097) {
 				item_changes.$$scope = { dirty, ctx };
 			}
 
@@ -18869,18 +18869,18 @@ function create_each_block$1(ctx) {
 		block,
 		id: create_each_block$1.name,
 		type: "each",
-		source: "(119:24) {#each folderfile as file}",
+		source: "(120:24) {#each folderfile as file}",
 		ctx
 	});
 
 	return block;
 }
 
-// (118:20) <List checklist>
+// (119:20) <List checklist>
 function create_default_slot$5(ctx) {
 	let each_1_anchor;
 	let current;
-	let each_value = /*folderfile*/ ctx[1];
+	let each_value = /*folderfile*/ ctx[3];
 	let each_blocks = [];
 
 	for (let i = 0; i < each_value.length; i += 1) {
@@ -18908,8 +18908,8 @@ function create_default_slot$5(ctx) {
 			current = true;
 		},
 		p: function update(ctx, dirty) {
-			if (dirty & /*folderfile, fileChecked, selectAll*/ 14) {
-				each_value = /*folderfile*/ ctx[1];
+			if (dirty & /*folderfile, fileChecked, selectAll*/ 25) {
+				each_value = /*folderfile*/ ctx[3];
 				let i;
 
 				for (i = 0; i < each_value.length; i += 1) {
@@ -18963,7 +18963,7 @@ function create_default_slot$5(ctx) {
 		block,
 		id: create_default_slot$5.name,
 		type: "slot",
-		source: "(118:20) <List checklist>",
+		source: "(119:20) <List checklist>",
 		ctx
 	});
 
@@ -19045,8 +19045,8 @@ function create_fragment$q(ctx) {
 		label: "Seach"
 	};
 
-	if (/*searchKey*/ ctx[4] !== void 0) {
-		textfield0_props.value = /*searchKey*/ ctx[4];
+	if (/*searchKey*/ ctx[5] !== void 0) {
+		textfield0_props.value = /*searchKey*/ ctx[5];
 	}
 
 	const textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
@@ -19093,8 +19093,8 @@ function create_fragment$q(ctx) {
 		label: "Current location"
 	};
 
-	if (/*currentLocation*/ ctx[5] !== void 0) {
-		textfield1_props.value = /*currentLocation*/ ctx[5];
+	if (/*currentLocation*/ ctx[1] !== void 0) {
+		textfield1_props.value = /*currentLocation*/ ctx[1];
 	}
 
 	const textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
@@ -19146,47 +19146,47 @@ function create_fragment$q(ctx) {
 			div12 = element("div");
 			div12.textContent = "plotContainer";
 			attr_dev(div0, "class", "align center svelte-10t6p06");
-			add_location(div0, file$p, 91, 12, 2132);
+			add_location(div0, file$p, 92, 12, 2152);
 			attr_dev(div1, "class", "align center svelte-10t6p06");
-			add_location(div1, file$p, 99, 12, 2624);
+			add_location(div1, file$p, 100, 12, 2644);
 			attr_dev(div2, "class", "mdc-typography--subtitle1 svelte-10t6p06");
-			add_location(div2, file$p, 112, 20, 3327);
+			add_location(div2, file$p, 113, 20, 3347);
 			attr_dev(div3, "class", "align folderlist svelte-10t6p06");
-			add_location(div3, file$p, 107, 16, 2985);
+			add_location(div3, file$p, 108, 16, 3005);
 			attr_dev(div4, "class", "filelist svelte-10t6p06");
 			set_style(div4, "padding-left", "1em");
 			attr_dev(div4, "id", "Folder1");
-			add_location(div4, file$p, 115, 16, 3423);
+			add_location(div4, file$p, 116, 16, 3443);
 			attr_dev(div5, "class", "folders svelte-10t6p06");
-			add_location(div5, file$p, 128, 20, 3995);
+			add_location(div5, file$p, 129, 20, 4015);
 			attr_dev(div6, "class", "otherFolderlist svelte-10t6p06");
-			add_location(div6, file$p, 127, 16, 3944);
+			add_location(div6, file$p, 128, 16, 3964);
 			attr_dev(div7, "class", "folderfile-list svelte-10t6p06");
-			add_location(div7, file$p, 105, 12, 2936);
+			add_location(div7, file$p, 106, 12, 2956);
 			attr_dev(div8, "class", "column is-2 box filebrowser svelte-10t6p06");
-			add_location(div8, file$p, 89, 8, 2074);
+			add_location(div8, file$p, 90, 8, 2094);
 			attr_dev(button, "class", "button is-link gap svelte-10t6p06");
-			add_location(button, file$p, 136, 20, 4228);
+			add_location(button, file$p, 137, 20, 4248);
 			attr_dev(div9, "class", "align svelte-10t6p06");
-			add_location(div9, file$p, 135, 16, 4187);
+			add_location(div9, file$p, 136, 16, 4207);
 			attr_dev(div10, "class", "mdc-typography--heading5 svelte-10t6p06");
-			add_location(div10, file$p, 140, 52, 4474);
+			add_location(div10, file$p, 141, 52, 4494);
 			attr_dev(div11, "class", "align buttonContainer svelte-10t6p06");
-			add_location(div11, file$p, 140, 16, 4438);
+			add_location(div11, file$p, 141, 16, 4458);
 			attr_dev(div12, "class", "mdc-typography--heading5 svelte-10t6p06");
-			add_location(div12, file$p, 141, 50, 4592);
+			add_location(div12, file$p, 142, 50, 4612);
 			attr_dev(div13, "class", "align plotContainer svelte-10t6p06");
-			add_location(div13, file$p, 141, 16, 4558);
+			add_location(div13, file$p, 142, 16, 4578);
 			attr_dev(div14, "class", "container box svelte-10t6p06");
-			add_location(div14, file$p, 134, 12, 4142);
+			add_location(div14, file$p, 135, 12, 4162);
 			attr_dev(div15, "class", "column fileContainer svelte-10t6p06");
-			add_location(div15, file$p, 133, 8, 4094);
+			add_location(div15, file$p, 134, 8, 4114);
 			attr_dev(div16, "class", "columns svelte-10t6p06");
-			add_location(div16, file$p, 87, 4, 2041);
-			attr_dev(section, "id", /*id*/ ctx[0]);
+			add_location(div16, file$p, 88, 4, 2061);
+			attr_dev(section, "id", /*id*/ ctx[2]);
 			set_style(section, "display", "none");
 			attr_dev(section, "class", "svelte-10t6p06");
-			add_location(section, file$p, 85, 0, 1997);
+			add_location(section, file$p, 86, 0, 2017);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -19257,16 +19257,16 @@ function create_fragment$q(ctx) {
 			icon2.$set(icon2_changes);
 			const textfield0_changes = {};
 
-			if (!updating_value && dirty & /*searchKey*/ 16) {
+			if (!updating_value && dirty & /*searchKey*/ 32) {
 				updating_value = true;
-				textfield0_changes.value = /*searchKey*/ ctx[4];
+				textfield0_changes.value = /*searchKey*/ ctx[5];
 				add_flush_callback(() => updating_value = false);
 			}
 
 			textfield0.$set(textfield0_changes);
 			const formfield_changes = {};
 
-			if (dirty & /*$$scope, selectAll, fileChecked, folderfile*/ 131086) {
+			if (dirty & /*$$scope, selectAll, fileChecked, folderfile*/ 131097) {
 				formfield_changes.$$scope = { dirty, ctx };
 			}
 
@@ -19280,23 +19280,23 @@ function create_fragment$q(ctx) {
 			iconbutton.$set(iconbutton_changes);
 			const list_changes = {};
 
-			if (dirty & /*$$scope, folderfile, fileChecked, selectAll*/ 131086) {
+			if (dirty & /*$$scope, folderfile, fileChecked, selectAll*/ 131097) {
 				list_changes.$$scope = { dirty, ctx };
 			}
 
 			list.$set(list_changes);
 			const textfield1_changes = {};
 
-			if (!updating_value_1 && dirty & /*currentLocation*/ 32) {
+			if (!updating_value_1 && dirty & /*currentLocation*/ 2) {
 				updating_value_1 = true;
-				textfield1_changes.value = /*currentLocation*/ ctx[5];
+				textfield1_changes.value = /*currentLocation*/ ctx[1];
 				add_flush_callback(() => updating_value_1 = false);
 			}
 
 			textfield1.$set(textfield1_changes);
 
-			if (!current || dirty & /*id*/ 1) {
-				attr_dev(section, "id", /*id*/ ctx[0]);
+			if (!current || dirty & /*id*/ 4) {
+				attr_dev(section, "id", /*id*/ ctx[2]);
 			}
 		},
 		i: function intro(local) {
@@ -19348,8 +19348,9 @@ function create_fragment$q(ctx) {
 
 function instance$q($$self, $$props, $$invalidate) {
 	let { id } = $$props;
+	let { fileChecked = [] } = $$props;
+	let { currentLocation = "" } = $$props;
 	let folderfile = ["File1", "File2", "File3", "File4"];
-	let fileChecked = [];
 	let selectAll = false;
 	let searchKey = "";
 
@@ -19357,14 +19358,13 @@ function instance$q($$self, $$props, $$invalidate) {
 		console.log(searchKey);
 
 		if (!searchKey) {
-			$$invalidate(1, folderfile = ["File1", "File2", "File3", "File4"]);
+			$$invalidate(3, folderfile = ["File1", "File2", "File3", "File4"]);
 		} else {
-			$$invalidate(1, folderfile = folderfile.filter(file => file.includes(searchKey)));
+			$$invalidate(3, folderfile = folderfile.filter(file => file.includes(searchKey)));
 		}
 	};
 
-	let currentLocation = "";
-	const writable_props = ["id"];
+	const writable_props = ["id", "fileChecked", "currentLocation"];
 
 	Object.keys($$props).forEach(key => {
 		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1.warn(`<Layout> was created with unknown prop '${key}'`);
@@ -19372,63 +19372,65 @@ function instance$q($$self, $$props, $$invalidate) {
 
 	function textfield0_value_binding(value) {
 		searchKey = value;
-		$$invalidate(4, searchKey);
+		$$invalidate(5, searchKey);
 	}
 
 	function switch_1_checked_binding(value) {
 		selectAll = value;
-		$$invalidate(3, selectAll);
+		$$invalidate(4, selectAll);
 	}
 
 	const change_handler = () => selectAll
-	? $$invalidate(2, fileChecked = [...folderfile])
-	: $$invalidate(2, fileChecked = []);
+	? $$invalidate(0, fileChecked = [...folderfile])
+	: $$invalidate(0, fileChecked = []);
 
 	const click_handler = () => window.togglepage("Folder1");
 
 	function checkbox_group_binding(value) {
 		fileChecked = value;
-		$$invalidate(2, fileChecked);
+		$$invalidate(0, fileChecked);
 	}
 
-	const click_handler_1 = () => $$invalidate(3, selectAll = false);
+	const click_handler_1 = () => $$invalidate(4, selectAll = false);
 
 	function textfield1_value_binding(value_1) {
 		currentLocation = value_1;
-		$$invalidate(5, currentLocation);
+		$$invalidate(1, currentLocation);
 	}
 
 	$$self.$set = $$props => {
-		if ("id" in $$props) $$invalidate(0, id = $$props.id);
+		if ("id" in $$props) $$invalidate(2, id = $$props.id);
+		if ("fileChecked" in $$props) $$invalidate(0, fileChecked = $$props.fileChecked);
+		if ("currentLocation" in $$props) $$invalidate(1, currentLocation = $$props.currentLocation);
 	};
 
 	$$self.$capture_state = () => {
 		return {
 			id,
-			folderfile,
 			fileChecked,
+			currentLocation,
+			folderfile,
 			selectAll,
-			searchKey,
-			currentLocation
+			searchKey
 		};
 	};
 
 	$$self.$inject_state = $$props => {
-		if ("id" in $$props) $$invalidate(0, id = $$props.id);
-		if ("folderfile" in $$props) $$invalidate(1, folderfile = $$props.folderfile);
-		if ("fileChecked" in $$props) $$invalidate(2, fileChecked = $$props.fileChecked);
-		if ("selectAll" in $$props) $$invalidate(3, selectAll = $$props.selectAll);
-		if ("searchKey" in $$props) $$invalidate(4, searchKey = $$props.searchKey);
-		if ("currentLocation" in $$props) $$invalidate(5, currentLocation = $$props.currentLocation);
+		if ("id" in $$props) $$invalidate(2, id = $$props.id);
+		if ("fileChecked" in $$props) $$invalidate(0, fileChecked = $$props.fileChecked);
+		if ("currentLocation" in $$props) $$invalidate(1, currentLocation = $$props.currentLocation);
+		if ("folderfile" in $$props) $$invalidate(3, folderfile = $$props.folderfile);
+		if ("selectAll" in $$props) $$invalidate(4, selectAll = $$props.selectAll);
+		if ("searchKey" in $$props) $$invalidate(5, searchKey = $$props.searchKey);
 	};
 
 	return [
+		fileChecked,
+		currentLocation,
 		id,
 		folderfile,
-		fileChecked,
 		selectAll,
 		searchKey,
-		currentLocation,
 		searchfile,
 		textfield0_value_binding,
 		switch_1_checked_binding,
@@ -19443,7 +19445,12 @@ function instance$q($$self, $$props, $$invalidate) {
 class Layout extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$q, create_fragment$q, safe_not_equal, { id: 0 });
+
+		init(this, options, instance$q, create_fragment$q, safe_not_equal, {
+			id: 2,
+			fileChecked: 0,
+			currentLocation: 1
+		});
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
@@ -19455,7 +19462,7 @@ class Layout extends SvelteComponentDev {
 		const { ctx } = this.$$;
 		const props = options.props || ({});
 
-		if (/*id*/ ctx[0] === undefined && !("id" in props)) {
+		if (/*id*/ ctx[2] === undefined && !("id" in props)) {
 			console_1.warn("<Layout> was created without expected prop 'id'");
 		}
 	}
@@ -19465,6 +19472,22 @@ class Layout extends SvelteComponentDev {
 	}
 
 	set id(value) {
+		throw new Error("<Layout>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get fileChecked() {
+		throw new Error("<Layout>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set fileChecked(value) {
+		throw new Error("<Layout>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get currentLocation() {
+		throw new Error("<Layout>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set currentLocation(value) {
 		throw new Error("<Layout>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 }
