@@ -9,11 +9,14 @@
 	// Pages
 	import Home from "./Pages/Home.svelte"
 	import Powerfile from "./Pages/Powerfile.svelte"
-	
+	import Normline from "./Pages/Normline.svelte"
+	import Masspec from "./Pages/Masspec.svelte"
+	import Timescan from "./Pages/Timescan.svelte"
+	import THz from "./Pages/THz.svelte"
+	import {onMount} from "svelte"
 
 	const navItems = ["Home", "Normline", "Masspec", "Timescan", "THz", "Powerfile"]
 	const pages = ["Normline", "Masspec", "Timescan", "THz"]
-	import {onMount} from "svelte"
 
 	window.electron = require("electron")
 	window.remote = electron.remote
@@ -42,22 +45,23 @@
 
 <style>
 	.pageContainer {
-		/* margin-top: 3.89em; */
 		overflow: hidden;
 	}
 </style>
 
 <Navbar {navItems}/>
 
-<LineAnimate />
-
 <Home />
 
 <div class="pageContainer">
-	{#each pages as id}
-		<Layout {id} />
-	{/each}
+	
+	<Normline />
+	<Masspec />
+	<Timescan />
+	<THz />
 
 	<Powerfile />
+
 </div>
+
 <Footer />
