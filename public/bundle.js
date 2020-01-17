@@ -22575,7 +22575,7 @@ function create_fragment$z(ctx) {
 			t6 = space();
 			create_component(footer.$$.fragment);
 			attr_dev(div, "class", "pageContainer svelte-omgd9g");
-			add_location(div, file$u, 55, 0, 1607);
+			add_location(div, file$u, 54, 0, 1548);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");

@@ -16,7 +16,6 @@
 	import {onMount} from "svelte"
 
 	const navItems = ["Home", "Normline", "Masspec", "Timescan", "THz", "Powerfile"]
-	const pages = ["Normline", "Masspec", "Timescan", "THz"]
 
 	window.electron = require("electron")
 	window.remote = electron.remote
@@ -59,7 +58,6 @@
 	<Masspec />
 	<Timescan />
 	<THz />
-
 	<Powerfile />
 
 </div>
