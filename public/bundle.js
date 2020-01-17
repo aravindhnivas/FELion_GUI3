@@ -22121,12 +22121,12 @@ function create_fragment$w(ctx) {
 		id: /*id*/ ctx[3]
 	};
 
-	if (/*felix_location*/ ctx[1] !== void 0) {
-		layout_props.currentLocation = /*felix_location*/ ctx[1];
+	if (/*mass_location*/ ctx[1] !== void 0) {
+		layout_props.currentLocation = /*mass_location*/ ctx[1];
 	}
 
-	if (/*felixfiles*/ ctx[0] !== void 0) {
-		layout_props.fileChecked = /*felixfiles*/ ctx[0];
+	if (/*massfiles*/ ctx[0] !== void 0) {
+		layout_props.fileChecked = /*massfiles*/ ctx[0];
 	}
 
 	const layout = new Layout({ props: layout_props, $$inline: true });
@@ -22147,15 +22147,15 @@ function create_fragment$w(ctx) {
 		p: function update(ctx, [dirty]) {
 			const layout_changes = {};
 
-			if (!updating_currentLocation && dirty & /*felix_location*/ 2) {
+			if (!updating_currentLocation && dirty & /*mass_location*/ 2) {
 				updating_currentLocation = true;
-				layout_changes.currentLocation = /*felix_location*/ ctx[1];
+				layout_changes.currentLocation = /*mass_location*/ ctx[1];
 				add_flush_callback(() => updating_currentLocation = false);
 			}
 
-			if (!updating_fileChecked && dirty & /*felixfiles*/ 1) {
+			if (!updating_fileChecked && dirty & /*massfiles*/ 1) {
 				updating_fileChecked = true;
-				layout_changes.fileChecked = /*felixfiles*/ ctx[0];
+				layout_changes.fileChecked = /*massfiles*/ ctx[0];
 				add_flush_callback(() => updating_fileChecked = false);
 			}
 
@@ -22189,17 +22189,17 @@ function create_fragment$w(ctx) {
 function instance$w($$self, $$props, $$invalidate) {
 	let filetype = "mass";
 	let id = "Masspec";
-	let felixfiles = [];
-	let felix_location = localStorage[`${filetype}_location`] || "";
+	let massfiles = [];
+	let mass_location = localStorage[`${filetype}_location`] || "";
 
 	function layout_currentLocation_binding(value) {
-		felix_location = value;
-		$$invalidate(1, felix_location);
+		mass_location = value;
+		$$invalidate(1, mass_location);
 	}
 
 	function layout_fileChecked_binding(value_1) {
-		felixfiles = value_1;
-		$$invalidate(0, felixfiles);
+		massfiles = value_1;
+		$$invalidate(0, massfiles);
 	}
 
 	$$self.$capture_state = () => {
@@ -22209,19 +22209,19 @@ function instance$w($$self, $$props, $$invalidate) {
 	$$self.$inject_state = $$props => {
 		if ("filetype" in $$props) $$invalidate(2, filetype = $$props.filetype);
 		if ("id" in $$props) $$invalidate(3, id = $$props.id);
-		if ("felixfiles" in $$props) $$invalidate(0, felixfiles = $$props.felixfiles);
-		if ("felix_location" in $$props) $$invalidate(1, felix_location = $$props.felix_location);
+		if ("massfiles" in $$props) $$invalidate(0, massfiles = $$props.massfiles);
+		if ("mass_location" in $$props) $$invalidate(1, mass_location = $$props.mass_location);
 	};
 
 	$$self.$$.update = () => {
-		if ($$self.$$.dirty & /*felix_location, felixfiles*/ 3) {
-			 console.log(`${filetype} updated: ${felix_location}\n${felixfiles}`);
+		if ($$self.$$.dirty & /*mass_location, massfiles*/ 3) {
+			 console.log(`${filetype} updated: ${mass_location}\n${massfiles}`);
 		}
 	};
 
 	return [
-		felixfiles,
-		felix_location,
+		massfiles,
+		mass_location,
 		filetype,
 		id,
 		layout_currentLocation_binding,
