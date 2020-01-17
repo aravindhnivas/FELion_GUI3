@@ -32,11 +32,12 @@
 
     .filebrowser, .fileContainer {
         background-image: url(./assets/css/intro.svg);
-        height: calc(100vh - 8em);
+        height: calc(100vh - 7em);
     }
     .plotContainer {
-        max-height: calc(100vh - 20em);
+        max-height: calc(100vh - 21em);
         overflow-y: auto;
+        padding-bottom: 5em;
     }
      .filelist {
         max-height: calc(100vh - 30em);
@@ -56,13 +57,22 @@
         background-color: $box1;
         border-radius: 0;
     }
-    .fileContainer {margin-right: 2em; padding-bottom: 5rem;}
+    .fileContainer {margin: 0 2em; padding-bottom: 5rem;}
     .gap {margin-right: 2em;}
 
     * :global(.box){background-color: #654ca25c;}
 
     * :global(.mdc-list-item){height: 2em;}
     * :global(.mdc-switch.mdc-switch--checked .mdc-switch__thumb, .mdc-switch.mdc-switch--checked .mdc-switch__track){background-color: #ffffff}
+
+    .buttonContainer {
+        max-height: 6em;
+        overflow-y: auto;
+
+    }
+
+    .box {border-radius: 0;}
+
     
 </style>
 
