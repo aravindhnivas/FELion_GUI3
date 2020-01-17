@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "custom-electron-titlebar": "^3.2.1",
+    "directory-tree": "^2.2.4",
     "svelma": "^0.3.0"
   }
 }

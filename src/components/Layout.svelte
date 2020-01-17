@@ -13,8 +13,8 @@
     export let id;
 
     export let fileChecked=[];
-    export let currentLocation="";
-    
+    export let currentLocation = localStorage["currentLocation"] || "";
+
     let folderfile = ["File1", "File2", "File3", "File4"]
 
     let selectAll=false;
@@ -25,6 +25,15 @@
         if (!searchKey) {folderfile = ["File1", "File2", "File3", "File4"]}
         else {folderfile = folderfile.filter(file=>file.includes(searchKey))}
     }
+
+    // Browse file
+    function browse_folder() {
+        let location = remote.dialog.showOpenDialogSync({ properties: ["openDirectory"] })
+        location == undefined ? console.log("No files selected") : localStorage["currentLocation"] = currentLocation = location[0]
+        console.log(currentLocation)
+    }
+    
+
 </script>
 
 <style lang="scss">
@@ -75,6 +84,8 @@
     }
     .box {border-radius: 0;}
 
+    * :global(.material-icons) {margin-right:0.2em; cursor:pointer;}
+
 </style>
 
 <section {id} style="display:none" >
@@ -84,9 +95,9 @@
         <div class="column is-2 box filebrowser" >
 
             <div class="align center">
-                <Icon class="material-icons" style="margin-right:0.2em; cursor:pointer;">home</Icon>
-                <Icon class="material-icons" style="margin-right:0.2em; cursor:pointer;">refresh</Icon>
-                <Icon class="material-icons" style="margin-right:0.2em; cursor:pointer;">arrow_back</Icon>
+                <Icon class="material-icons" >home</Icon>
+                <Icon class="material-icons" >refresh</Icon>
+                <Icon class="material-icons" >arrow_back</Icon>
             </div>
 
             <Textfield on:keyup={searchfile} style="margin-bottom:1em;" bind:value={searchKey} label="Seach" />
@@ -128,7 +139,7 @@
         <div class="column fileContainer">
             <div class="container box">
                 <div class="align">
-                    <button class="button is-link gap">Browse</button>
+                    <button class="button is-link gap" on:click={browse_folder}>Browse</button>
                     <Textfield style="margin-bottom:1em;" bind:value={currentLocation} label="Current location" />
                 </div>
 
