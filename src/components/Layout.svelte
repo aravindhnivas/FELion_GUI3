@@ -37,13 +37,15 @@
     .plotContainer {
         max-height: calc(100vh - 21em);
         overflow-y: auto;
-        padding-bottom: 5em;
     }
      .filelist {
         max-height: calc(100vh - 30em);
         overflow-y: auto;
-     }
-    .folderfile-list {max-height: calc(100vh - 25em); overflow-y: auto;}
+    
+    }
+
+    .plotContainer, .filelist, .otherFolderlist {padding-bottom: 5em}
+    .folderfile-list {max-height: calc(100vh - 20em); overflow-y: auto;}
     
     .align {
         display: flex;
@@ -68,15 +70,14 @@
     .buttonContainer {
         max-height: 6em;
         overflow-y: auto;
-
+        padding: 2em 0;
     }
-
     .box {border-radius: 0;}
 
-    
 </style>
 
 <section {id} style="display:none" >
+
     <div class="columns">
 
         <div class="column is-2 box filebrowser" >
@@ -96,6 +97,7 @@
                 </FormField>
             </div>
             <div class="folderfile-list">
+
                 <div class="align folderlist" >
                     <IconButton  toggle on:click="{()=>window.togglepage("Folder1")}">
                         <Icon class="material-icons">keyboard_arrow_down</Icon>
@@ -114,6 +116,10 @@
                             </Item>
                         {/each}
                     </List>
+                </div>
+
+                <div class="otherFolderlist">
+                    <div class="folders"></div>
                 </div>
             </div>
         </div>
