@@ -59,6 +59,7 @@
     }
 
     function getfiles(toast=false) {
+
         try {
             let folderfile = fs.readdirSync(currentLocation).map(file=>path.join(currentLocation, file))
             let allfiles = folderfile.filter(file=>fs.lstatSync(file).isFile())
@@ -78,8 +79,8 @@
     $: console.log(activated)
 
     const changeDirectory = (goto) => {
-        selectAll = false;
-        currentLocation = path.join(currentLocation, goto);
+        selectAll = false
+        currentLocation = path.resolve(currentLocation, goto)
         getfiles()
     }
 
@@ -103,7 +104,7 @@
         overflow-y: auto;
     }
 
-    .plotContainer, .filelist, .otherFolderlist {padding-bottom: 5em}
+    .plotContainer, .filelist, .otherFolderlist {padding-bottom: 3em}
     .folderfile-list {max-height: calc(100vh - 20em); overflow-y: auto;}
     .filebrowser {
         padding-left: 2em;
@@ -137,9 +138,9 @@
         <div class="column is-2 box filebrowser" >
 
             <div class="align center">
-                <Icon class="material-icons" >home</Icon>
+                <Icon class="material-icons" on:click="{()=>changeDirectory(localStorage[`${filetype}_location`])}">home</Icon>
                 <Icon class="material-icons" on:click="{()=>{getfiles(true)}}">refresh</Icon>
-                <Icon class="material-icons" on:click="{()=>changeDirectory("..")}">arrow_back</Icon>
+                <Icon class="material-icons" on:click="{()=>changeDirectory("../")}">arrow_back</Icon>
             </div>
 
             <Textfield on:keyup={searchfile} style="margin-bottom:1em;" bind:value={searchKey} label="Seach" />
@@ -161,7 +162,7 @@
                     <div class="mdc-typography--subtitle1">{parentFolder}</div>
                 </div>
 
-                {#if showfiles && files != ""}
+                {#if showfiles && files != "" }
                     <div class="filelist" style="padding-left:1em;" transition:fly="{{ y: -20, duration: 500 }}">
                         <List checklist>
                             {#each files as file}
