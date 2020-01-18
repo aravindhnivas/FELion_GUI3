@@ -56,7 +56,7 @@
     }
 
     function getfiles(toast=false) {
-
+        fileChecked = [], selectAll = false
         try {
             let folderfile = fs.readdirSync(currentLocation).map(file=>path.join(currentLocation, file))
             let allfiles = folderfile.filter(file=>fs.lstatSync(file).isFile())
@@ -75,9 +75,7 @@
     $: $activated ? console.log(`Modal activated for ${filetype}`) : console.log(`Modal deactivated for ${filetype}`)
 
     const changeDirectory = (goto) => {
-
-        fileChecked = []
-        selectAll = false
+        
         currentLocation = path.resolve(currentLocation, goto)
         getfiles()
     }
