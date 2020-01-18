@@ -27,16 +27,12 @@
 <style>
 
     .section {height: 70vh;}
-    
     .container {
         height: 100%;
         margin-bottom: 3em;
     }
-
-    @media only screen
-    and (max-height: 800px) {
-        .section {overflow-y: auto;}
-    }
+    @media only screen and (max-height: 800px) {.section {overflow-y: auto;}}
+    
 </style>
 
 <section class="section" id="Powerfile" style="display:none">

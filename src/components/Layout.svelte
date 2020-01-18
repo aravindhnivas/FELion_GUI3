@@ -1,10 +1,14 @@
+<script context="module">
+    export const createToast = (msg, type="primary") => Toast.create({ message: msg, position:"is-top", type:`is-${type}`})
+</script>
+
 <script>
     
     // IMPORTING MODULES
     import List, {Item, Meta, Label} from '@smui/list';
     import Checkbox from '@smui/checkbox';
     import IconButton, {Icon} from '@smui/icon-button';
-    import { fly } from 'svelte/transition';
+    import { fly, slide } from 'svelte/transition';
     import Fab from '@smui/fab';
     import FormField from '@smui/form-field';
     import Switch from '@smui/switch';
@@ -12,7 +16,7 @@
     import {onMount} from "svelte";
 
     import { Toast } from 'svelma'
-
+    import Modal from "./Modal.svelte"
     ////////////////////////////////////////////////////////////////////////////
 
     // EXPORTED variables
@@ -21,13 +25,16 @@
     export let fileChecked=[];
     export let filetype = "felix"
     export let currentLocation = localStorage[`${filetype}_location`] || "";
+
     ////////////////////////////////////////////////////////////////////////////
-    onMount(()=>{
-        if (currentLocation != "") {getfiles()}
-    })
+    
+    onMount(()=>{if (currentLocation != "") {getfiles()}})
 
     ////////////////////////////////////////////////////////////////////////////
 
+    // Bulma Modal
+    export let modalTitle="Error detail", modalContent="", activated = false;
+    
     $: parentFolder = path.basename(currentLocation)
     let files = []
     let otherfolders = []
@@ -44,23 +51,34 @@
 
     function browse_folder() {
         let location = remote.dialog.showOpenDialogSync({ properties: ["openDirectory"] })
-        location == undefined ? console.log("No files selected") : localStorage[`${filetype}_location`] = currentLocation = location[0]
-        console.log(currentLocation)
-        getfiles()
+        if (!location) { createToast("No files selected", "danger") } else {
+            localStorage[`${filetype}_location`] = currentLocation = location[0]
+            console.log(currentLocation)
+            getfiles(true)
+        }
     }
 
     function getfiles(toast=false) {
+        try {
+            let folderfile = fs.readdirSync(currentLocation).map(file=>path.join(currentLocation, file))
+            let allfiles = folderfile.filter(file=>fs.lstatSync(file).isFile())
+            let typefiles = allfiles.filter(file=>file.endsWith(filetype))
+            files = original_files = typefiles.map(file=>path.basename(file))
+            otherfolders = folderfile.filter(file=>fs.lstatSync(file).isDirectory()).map(file=>path.basename(file))
+            console.log("Folder updated for ", filetype, "\n", files)
+            if (toast) {createToast("Files updated")}
+        } catch (err) { 
 
-        let folderfile = fs.readdirSync(currentLocation).map(file=>path.join(currentLocation, file))
-        let allfiles = folderfile.filter(file=>fs.lstatSync(file).isFile())
-        let typefiles = allfiles.filter(file=>file.includes(filetype))
-        files = original_files = typefiles.map(file=>path.basename(file))
-        otherfolders = folderfile.filter(file=>fs.lstatSync(file).isDirectory()).map(file=>path.basename(file))
-        console.log("Folder updated for ", filetype, "\n", files)
-        if (toast) Toast.create({ message: 'Files updated!', position:"is-top", type:"is-primary"})
+            modalTitle = `${id}: Error detail`
+            modalContent = err;
+            activated = true;
+         }
     }
 
+    $: console.log(activated)
+
     const changeDirectory = (goto) => {
+        selectAll = false;
         currentLocation = path.join(currentLocation, goto);
         getfiles()
     }
@@ -75,25 +93,18 @@
         background-image: url(./assets/css/intro.svg);
         height: calc(100vh - 7em);
     }
+
     .plotContainer {
-        max-height: calc(100vh - 21em);
+        max-height: calc(100vh - 25em);
         overflow-y: auto;
     }
      .filelist {
         max-height: calc(100vh - 30em);
         overflow-y: auto;
-    
     }
 
     .plotContainer, .filelist, .otherFolderlist {padding-bottom: 5em}
     .folderfile-list {max-height: calc(100vh - 20em); overflow-y: auto;}
-    
-    .align {
-        display: flex;
-        align-items: center;
-    }
-    .center {justify-content: center;}
-
     .filebrowser {
         padding-left: 2em;
         padding-top: 1em;
@@ -101,32 +112,26 @@
         border-radius: 0;
     }
     .fileContainer {margin: 0 2em; padding-bottom: 5rem;}
-    .gap {margin-right: 2em;}
 
     * :global(.box){background-color: #654ca25c;}
-
     * :global(.mdc-list-item){height: 2em;}
     * :global(.mdc-switch.mdc-switch--checked .mdc-switch__thumb, .mdc-switch.mdc-switch--checked .mdc-switch__track){background-color: #ffffff}
-
+    * :global(.material-icons) {margin-right:0.2em; cursor:pointer;}
+    * :global(.align) { display: flex; align-items: center; margin-bottom: 1em; }
+    * :global(.center) {justify-content: center;}
+    * :global(.gap) {margin-right: 2em;}
     .buttonContainer {
-        max-height: 6em;
+        max-height: 20em;
         overflow-y: auto;
         padding: 2em 0;
+
     }
-
     .box {border-radius: 0;}
-
-    * :global(.material-icons) {margin-right:0.2em; cursor:pointer;}
-
-    // @media only screen
-    // and (max-width: 1500px) {
-    //     .filebrowser {width: 20%}
-    // }
-
 </style>
 
-<section {id} style="display:none" >
+<Modal bind:activated {modalTitle} {modalContent}/>
 
+<section {id} style="display:none" >
     <div class="columns">
 
         <div class="column is-2 box filebrowser" >
@@ -145,6 +150,7 @@
                     <span slot="label">Select All</span>
                 </FormField>
             </div>
+
             <div class="folderfile-list">
 
                 <div class="align folderlist" >
@@ -169,10 +175,9 @@
                 {:else if files == ""}
                     <div class="mdc-typography--subtitle1 align center">No {filetype} here!</div>        
                 {/if}
-
                 <div class="otherFolderlist" style="cursor:pointer">
                     {#each otherfolders as folder}
-                        <div class="align" on:click="{()=>changeDirectory(folder)}">
+                        <div class="align" on:click="{()=>changeDirectory(folder)}" transition:slide|local>
                             <Icon class="material-icons">keyboard_arrow_right</Icon>
                             <div class="mdc-typography--subtitle1">{folder}</div>
                         </div>
@@ -183,9 +188,10 @@
 
         <div class="column fileContainer">
             <div class="container box">
+
                 <div class="align">
                     <button class="button is-link gap" on:click={browse_folder}>Browse</button>
-                    <Textfield style="margin-bottom:1em;" bind:value={currentLocation} label="Current location" />
+                    <Textfield on:change={getfiles} style="margin-bottom:1em;" bind:value={currentLocation} label="Current location" />
                 </div>
 
                 <div class="align buttonContainer"> <slot name="buttonContainer" /></div>
