@@ -14,9 +14,7 @@
     import Switch from '@smui/switch';
     import Textfield from '@smui/textfield';
     import {onMount} from "svelte";
-
     import { Toast } from 'svelma'
-
     import {activated, modalContent, modalTitle} from "./Modal.svelte"
     ////////////////////////////////////////////////////////////////////////////
 
@@ -110,9 +108,10 @@
         padding-top: 1em;
         background-color: $box1;
         border-radius: 0;
-    
+        
     }
-    .fileContainer {margin: 0 2em; padding-bottom: 5rem;}
+
+    .fileContainer {margin: 0 2em; padding-bottom: 5rem; width: calc(70vw - 2em)}
     
     * :global(.box){background-color: #654ca25c;}
     * :global(.mdc-list-item){height: 2em;}
@@ -188,7 +187,7 @@
         </div>
 
         <div class="column fileContainer">
-            <div class="container box">
+            <div class="container button-plot-container box">
 
                 <div class="align">
                     <button class="button is-link gap" on:click={browse_folder}>Browse</button>
