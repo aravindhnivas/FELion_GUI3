@@ -1,16 +1,11 @@
-
-@font-face {
-    font-family: "Roboto";
-    src: url(../fonts/Roboto-Regular.ttf),
-    url("CustomFont.otf") format("opentype"),
-    url("CustomFont.svg#filename") format("svg");
-}
+@import url("../fonts/roboto-font.css");
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Roboto;
+  font-family: 'Roboto', sans-serif;
+  
 }
 
 html, body { 
