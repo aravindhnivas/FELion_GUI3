@@ -102,17 +102,18 @@
         max-height: calc(100vh - 30em);
         overflow-y: auto;
     }
-
     .plotContainer, .filelist, .otherFolderlist {padding-bottom: 3em}
     .folderfile-list {max-height: calc(100vh - 20em); overflow-y: auto;}
+    
     .filebrowser {
         padding-left: 2em;
         padding-top: 1em;
         background-color: $box1;
         border-radius: 0;
+    
     }
     .fileContainer {margin: 0 2em; padding-bottom: 5rem;}
-
+    
     * :global(.box){background-color: #654ca25c;}
     * :global(.mdc-list-item){height: 2em;}
     * :global(.mdc-switch.mdc-switch--checked .mdc-switch__thumb, .mdc-switch.mdc-switch--checked .mdc-switch__track){background-color: #ffffff}
@@ -120,6 +121,7 @@
     * :global(.align) { display: flex; align-items: center }
     * :global(.center) {justify-content: center;}
     * :global(.gap) {margin-right: 2em;}
+    // * :global(.filebrowser) {flex:none; width:auto;}
     .buttonContainer {
         max-height: 20em;
         overflow-y: auto;
@@ -127,12 +129,13 @@
 
     .box {border-radius: 0;}
     .container {min-height: calc(100vh - 10em);}
+    
 </style>
+
 
 <section {id} style="display:none" >
     <div class="columns">
-
-        <div class="column is-2 box filebrowser" >
+        <div class="column is-one-fifth-widescreen is-one-quarter-desktop box filebrowser" >
 
             <div class="align center">
                 <Icon class="material-icons" on:click="{()=>changeDirectory(localStorage[`${filetype}_location`])}">home</Icon>

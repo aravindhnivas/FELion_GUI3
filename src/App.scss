@@ -29,6 +29,10 @@ $text: $white;
 $scheme-main: $mainColor;
 $primary: lighten(#46307d, 10);
 $success: #09814a;
+// $tablet: 1000px;
+$desktop: 1100px;
+$widescreen: 1370px;
+
 
 // Bulma: Utilities
 @import "bulma/sass/utilities/_all.sass";

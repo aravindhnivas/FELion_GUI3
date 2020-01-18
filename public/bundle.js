@@ -18918,7 +18918,7 @@ function create_label_slot(ctx) {
 			span.textContent = "Select All";
 			attr_dev(span, "slot", "label");
 			attr_dev(span, "class", "svelte-pme1xn");
-			add_location(span, file$q, 166, 20, 5210);
+			add_location(span, file$q, 166, 20, 5252);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -19155,7 +19155,7 @@ function create_if_block_1$3(ctx) {
 			t1 = text(/*filetype*/ ctx[3]);
 			t2 = text(" here!");
 			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-pme1xn");
-			add_location(div, file$q, 192, 20, 6460);
+			add_location(div, file$q, 192, 20, 6502);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -19205,7 +19205,7 @@ function create_if_block$7(ctx) {
 			create_component(list.$$.fragment);
 			attr_dev(div, "class", "filelist svelte-pme1xn");
 			set_style(div, "padding-left", "1em");
-			add_location(div, file$q, 181, 20, 5839);
+			add_location(div, file$q, 181, 20, 5881);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -19642,9 +19642,9 @@ function create_each_block$1(ctx) {
 			t1 = text(t1_value);
 			t2 = space();
 			attr_dev(div0, "class", "mdc-typography--subtitle1 svelte-pme1xn");
-			add_location(div0, file$q, 198, 28, 6915);
+			add_location(div0, file$q, 198, 28, 6957);
 			attr_dev(div1, "class", "align svelte-pme1xn");
-			add_location(div1, file$q, 196, 24, 6716);
+			add_location(div1, file$q, 196, 24, 6758);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div1, anchor);
@@ -19915,38 +19915,38 @@ function create_fragment$r(ctx) {
 			div9 = element("div");
 			if (plotContainer_slot) plotContainer_slot.c();
 			attr_dev(div0, "class", "align center svelte-pme1xn");
-			add_location(div0, file$q, 155, 12, 4498);
+			add_location(div0, file$q, 155, 12, 4540);
 			attr_dev(div1, "class", "align center svelte-pme1xn");
-			add_location(div1, file$q, 163, 12, 5003);
+			add_location(div1, file$q, 163, 12, 5045);
 			attr_dev(div2, "class", "mdc-typography--subtitle1 svelte-pme1xn");
-			add_location(div2, file$q, 177, 20, 5683);
+			add_location(div2, file$q, 177, 20, 5725);
 			attr_dev(div3, "class", "align folderlist svelte-pme1xn");
-			add_location(div3, file$q, 172, 16, 5361);
+			add_location(div3, file$q, 172, 16, 5403);
 			attr_dev(div4, "class", "otherFolderlist svelte-pme1xn");
 			set_style(div4, "cursor", "pointer");
-			add_location(div4, file$q, 194, 16, 6586);
+			add_location(div4, file$q, 194, 16, 6628);
 			attr_dev(div5, "class", "folderfile-list svelte-pme1xn");
-			add_location(div5, file$q, 170, 12, 5312);
-			attr_dev(div6, "class", "column is-2 box filebrowser svelte-pme1xn");
+			add_location(div5, file$q, 170, 12, 5354);
+			attr_dev(div6, "class", "column is-one-fifth-widescreen is-one-quarter-desktop box filebrowser svelte-pme1xn");
 			add_location(div6, file$q, 153, 8, 4440);
 			attr_dev(button, "class", "button is-link gap svelte-pme1xn");
-			add_location(button, file$q, 209, 20, 7237);
+			add_location(button, file$q, 209, 20, 7279);
 			attr_dev(div7, "class", "align svelte-pme1xn");
-			add_location(div7, file$q, 208, 16, 7196);
+			add_location(div7, file$q, 208, 16, 7238);
 			attr_dev(div8, "class", "align buttonContainer svelte-pme1xn");
-			add_location(div8, file$q, 213, 16, 7493);
+			add_location(div8, file$q, 213, 16, 7535);
 			attr_dev(div9, "class", "align plotContainer svelte-pme1xn");
-			add_location(div9, file$q, 214, 16, 7584);
+			add_location(div9, file$q, 214, 16, 7626);
 			attr_dev(div10, "class", "container box svelte-pme1xn");
-			add_location(div10, file$q, 206, 12, 7149);
+			add_location(div10, file$q, 206, 12, 7191);
 			attr_dev(div11, "class", "column fileContainer svelte-pme1xn");
-			add_location(div11, file$q, 205, 8, 7101);
+			add_location(div11, file$q, 205, 8, 7143);
 			attr_dev(div12, "class", "columns svelte-pme1xn");
-			add_location(div12, file$q, 151, 4, 4407);
+			add_location(div12, file$q, 152, 4, 4409);
 			attr_dev(section, "id", /*id*/ ctx[2]);
 			set_style(section, "display", "none");
 			attr_dev(section, "class", "svelte-pme1xn");
-			add_location(section, file$q, 150, 0, 4365);
+			add_location(section, file$q, 151, 0, 4367);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
