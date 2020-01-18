@@ -5,7 +5,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Roboto', sans-serif;
-  
+
 }
 
 html, body { 
@@ -13,11 +13,7 @@ html, body {
     background-image: url(intro.svg);
     user-select: none;
 }
-
-body::-webkit-scrollbar {
-	width: 0 !important;
-}
-
+body::-webkit-scrollbar {width: 0 !important;}
 
 /* Scrollbar */
 ::-webkit-scrollbar {
