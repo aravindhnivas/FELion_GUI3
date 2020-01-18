@@ -7,13 +7,13 @@
   function openModal(err) {
 
     Snackbar.create({ 
-        message: msg, position:"is-top", type:`is-${type}`, 
+        message: msg, position:"is-top", type:`is-${type}`, duration: 5000,
         actionText: actionText, onAction: ()=>{ active = true; }
     })
 
+    activated = false;
   }
-
-  $: if (activated) openModal()
+  $: if(activated) openModal()
 
 </script>
 

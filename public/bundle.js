@@ -18583,22 +18583,22 @@ function create_fragment$q(ctx) {
 			button = element("button");
 			button.textContent = "Cancel";
 			attr_dev(div0, "class", "modal-background");
-			add_location(div0, file$p, 20, 2, 494);
+			add_location(div0, file$p, 20, 2, 530);
 			attr_dev(p, "class", "modal-card-title");
-			add_location(p, file$p, 23, 6, 604);
+			add_location(p, file$p, 23, 6, 640);
 			attr_dev(header, "class", "modal-card-head");
-			add_location(header, file$p, 22, 4, 564);
+			add_location(header, file$p, 22, 4, 600);
 			attr_dev(section, "class", "modal-card-body");
-			add_location(section, file$p, 25, 4, 669);
+			add_location(section, file$p, 25, 4, 705);
 			attr_dev(button, "class", "button is-link");
-			add_location(button, file$p, 28, 6, 776);
+			add_location(button, file$p, 28, 6, 812);
 			attr_dev(footer, "class", "modal-card-foot");
-			add_location(footer, file$p, 27, 4, 736);
+			add_location(footer, file$p, 27, 4, 772);
 			attr_dev(div1, "class", "modal-card");
-			add_location(div1, file$p, 21, 2, 534);
+			add_location(div1, file$p, 21, 2, 570);
 			attr_dev(div2, "class", "modal");
 			toggle_class(div2, "is-active", /*active*/ ctx[3]);
-			add_location(div2, file$p, 19, 0, 446);
+			add_location(div2, file$p, 19, 0, 482);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -18661,11 +18661,14 @@ function instance$q($$self, $$props, $$invalidate) {
 			message: msg,
 			position: "is-top",
 			type: `is-${type}`,
+			duration: 5000,
 			actionText,
 			onAction: () => {
 				$$invalidate(3, active = true);
 			}
 		});
+
+		$$invalidate(0, activated = false);
 	}
 
 	const writable_props = ["modalTitle", "modalContent", "activated", "type", "msg", "actionText"];
@@ -18919,7 +18922,7 @@ function create_label_slot(ctx) {
 			span.textContent = "Select All";
 			attr_dev(span, "slot", "label");
 			attr_dev(span, "class", "svelte-jc3kmm");
-			add_location(span, file$q, 168, 20, 5224);
+			add_location(span, file$q, 168, 20, 5311);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -19156,7 +19159,7 @@ function create_if_block_1$3(ctx) {
 			t1 = text(/*filetype*/ ctx[6]);
 			t2 = text(" here!");
 			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-jc3kmm");
-			add_location(div, file$q, 194, 20, 6474);
+			add_location(div, file$q, 194, 20, 6561);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -19206,7 +19209,7 @@ function create_if_block$7(ctx) {
 			create_component(list.$$.fragment);
 			attr_dev(div, "class", "filelist svelte-jc3kmm");
 			set_style(div, "padding-left", "1em");
-			add_location(div, file$q, 183, 20, 5853);
+			add_location(div, file$q, 183, 20, 5940);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -19643,9 +19646,9 @@ function create_each_block$1(ctx) {
 			t1 = text(t1_value);
 			t2 = space();
 			attr_dev(div0, "class", "mdc-typography--subtitle1 svelte-jc3kmm");
-			add_location(div0, file$q, 200, 28, 6929);
+			add_location(div0, file$q, 200, 28, 7016);
 			attr_dev(div1, "class", "align svelte-jc3kmm");
-			add_location(div1, file$q, 198, 24, 6730);
+			add_location(div1, file$q, 198, 24, 6817);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div1, anchor);
@@ -19936,38 +19939,38 @@ function create_fragment$r(ctx) {
 			div9 = element("div");
 			if (plotContainer_slot) plotContainer_slot.c();
 			attr_dev(div0, "class", "align center svelte-jc3kmm");
-			add_location(div0, file$q, 157, 12, 4512);
+			add_location(div0, file$q, 157, 12, 4599);
 			attr_dev(div1, "class", "align center svelte-jc3kmm");
-			add_location(div1, file$q, 165, 12, 5017);
+			add_location(div1, file$q, 165, 12, 5104);
 			attr_dev(div2, "class", "mdc-typography--subtitle1 svelte-jc3kmm");
-			add_location(div2, file$q, 179, 20, 5697);
+			add_location(div2, file$q, 179, 20, 5784);
 			attr_dev(div3, "class", "align folderlist svelte-jc3kmm");
-			add_location(div3, file$q, 174, 16, 5375);
+			add_location(div3, file$q, 174, 16, 5462);
 			attr_dev(div4, "class", "otherFolderlist svelte-jc3kmm");
 			set_style(div4, "cursor", "pointer");
-			add_location(div4, file$q, 196, 16, 6600);
+			add_location(div4, file$q, 196, 16, 6687);
 			attr_dev(div5, "class", "folderfile-list svelte-jc3kmm");
-			add_location(div5, file$q, 172, 12, 5326);
+			add_location(div5, file$q, 172, 12, 5413);
 			attr_dev(div6, "class", "column is-2 box filebrowser svelte-jc3kmm");
-			add_location(div6, file$q, 155, 8, 4454);
+			add_location(div6, file$q, 155, 8, 4541);
 			attr_dev(button, "class", "button is-link gap svelte-jc3kmm");
-			add_location(button, file$q, 211, 20, 7251);
+			add_location(button, file$q, 211, 20, 7338);
 			attr_dev(div7, "class", "align svelte-jc3kmm");
-			add_location(div7, file$q, 210, 16, 7210);
+			add_location(div7, file$q, 210, 16, 7297);
 			attr_dev(div8, "class", "align buttonContainer svelte-jc3kmm");
-			add_location(div8, file$q, 215, 16, 7507);
+			add_location(div8, file$q, 215, 16, 7594);
 			attr_dev(div9, "class", "align plotContainer svelte-jc3kmm");
-			add_location(div9, file$q, 216, 16, 7598);
+			add_location(div9, file$q, 216, 16, 7685);
 			attr_dev(div10, "class", "container box svelte-jc3kmm");
-			add_location(div10, file$q, 208, 12, 7163);
+			add_location(div10, file$q, 208, 12, 7250);
 			attr_dev(div11, "class", "column fileContainer svelte-jc3kmm");
-			add_location(div11, file$q, 207, 8, 7115);
+			add_location(div11, file$q, 207, 8, 7202);
 			attr_dev(div12, "class", "columns svelte-jc3kmm");
-			add_location(div12, file$q, 153, 4, 4421);
+			add_location(div12, file$q, 153, 4, 4508);
 			attr_dev(section, "id", /*id*/ ctx[5]);
 			set_style(section, "display", "none");
 			attr_dev(section, "class", "svelte-jc3kmm");
-			add_location(section, file$q, 152, 0, 4379);
+			add_location(section, file$q, 152, 0, 4466);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -20443,8 +20446,10 @@ function instance$r($$self, $$props, $$invalidate) {
 			 $$invalidate(12, parentFolder = path.basename(currentLocation));
 		}
 
-		if ($$self.$$.dirty[0] & /*activated*/ 16) {
-			 console.log(activated);
+		if ($$self.$$.dirty[0] & /*activated, filetype*/ 80) {
+			 activated
+			? console.log(`Modal activated for ${filetype}`)
+			: console.log(`Modal deactivated for ${filetype}`);
 		}
 	};
 

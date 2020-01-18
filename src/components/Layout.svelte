@@ -69,14 +69,14 @@
             console.log("Folder updated for ", filetype, "\n", files)
             if (toast) {createToast("Files updated")}
         } catch (err) { 
-
             modalTitle = `${id}: Error detail`
             modalContent = err;
             activated = true;
          }
+
     }
 
-    $: console.log(activated)
+    $: activated ? console.log(`Modal activated for ${filetype}`) : console.log(`Modal deactivated for ${filetype}`)
 
     const changeDirectory = (goto) => {
         selectAll = false
@@ -127,7 +127,9 @@
         padding: 2em 0;
 
     }
+
     .box {border-radius: 0;}
+
 </style>
 
 <Modal bind:activated {modalTitle} {modalContent}/>
