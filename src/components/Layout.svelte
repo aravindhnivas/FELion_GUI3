@@ -50,7 +50,7 @@
 
     function browse_folder() {
         let location = remote.dialog.showOpenDialogSync({ properties: ["openDirectory"] })
-        if (!location) { createToast("No files selected", "danger") } else {
+        if (!location) { createToast("No folder selected", "danger") } else {
             localStorage[`${filetype}_location`] = currentLocation = location[0]
             console.log(currentLocation)
             getfiles(true)

@@ -18918,7 +18918,7 @@ function create_label_slot(ctx) {
 			span.textContent = "Select All";
 			attr_dev(span, "slot", "label");
 			attr_dev(span, "class", "svelte-qklggi");
-			add_location(span, file$q, 164, 20, 5181);
+			add_location(span, file$q, 164, 20, 5182);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -19155,7 +19155,7 @@ function create_if_block_1$3(ctx) {
 			t1 = text(/*filetype*/ ctx[3]);
 			t2 = text(" here!");
 			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-qklggi");
-			add_location(div, file$q, 190, 20, 6431);
+			add_location(div, file$q, 190, 20, 6432);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -19205,7 +19205,7 @@ function create_if_block$7(ctx) {
 			create_component(list.$$.fragment);
 			attr_dev(div, "class", "filelist svelte-qklggi");
 			set_style(div, "padding-left", "1em");
-			add_location(div, file$q, 179, 20, 5810);
+			add_location(div, file$q, 179, 20, 5811);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -19642,9 +19642,9 @@ function create_each_block$1(ctx) {
 			t1 = text(t1_value);
 			t2 = space();
 			attr_dev(div0, "class", "mdc-typography--subtitle1 svelte-qklggi");
-			add_location(div0, file$q, 196, 28, 6886);
+			add_location(div0, file$q, 196, 28, 6887);
 			attr_dev(div1, "class", "align svelte-qklggi");
-			add_location(div1, file$q, 194, 24, 6687);
+			add_location(div1, file$q, 194, 24, 6688);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div1, anchor);
@@ -19915,38 +19915,38 @@ function create_fragment$r(ctx) {
 			div9 = element("div");
 			if (plotContainer_slot) plotContainer_slot.c();
 			attr_dev(div0, "class", "align center svelte-qklggi");
-			add_location(div0, file$q, 153, 12, 4469);
+			add_location(div0, file$q, 153, 12, 4470);
 			attr_dev(div1, "class", "align center svelte-qklggi");
-			add_location(div1, file$q, 161, 12, 4974);
+			add_location(div1, file$q, 161, 12, 4975);
 			attr_dev(div2, "class", "mdc-typography--subtitle1 svelte-qklggi");
-			add_location(div2, file$q, 175, 20, 5654);
+			add_location(div2, file$q, 175, 20, 5655);
 			attr_dev(div3, "class", "align folderlist svelte-qklggi");
-			add_location(div3, file$q, 170, 16, 5332);
+			add_location(div3, file$q, 170, 16, 5333);
 			attr_dev(div4, "class", "otherFolderlist svelte-qklggi");
 			set_style(div4, "cursor", "pointer");
-			add_location(div4, file$q, 192, 16, 6557);
+			add_location(div4, file$q, 192, 16, 6558);
 			attr_dev(div5, "class", "folderfile-list svelte-qklggi");
-			add_location(div5, file$q, 168, 12, 5283);
+			add_location(div5, file$q, 168, 12, 5284);
 			attr_dev(div6, "class", "column is-2 box filebrowser svelte-qklggi");
-			add_location(div6, file$q, 151, 8, 4411);
+			add_location(div6, file$q, 151, 8, 4412);
 			attr_dev(button, "class", "button is-link gap svelte-qklggi");
-			add_location(button, file$q, 207, 20, 7208);
+			add_location(button, file$q, 207, 20, 7209);
 			attr_dev(div7, "class", "align svelte-qklggi");
-			add_location(div7, file$q, 206, 16, 7167);
+			add_location(div7, file$q, 206, 16, 7168);
 			attr_dev(div8, "class", "align buttonContainer svelte-qklggi");
-			add_location(div8, file$q, 211, 16, 7464);
+			add_location(div8, file$q, 211, 16, 7465);
 			attr_dev(div9, "class", "align plotContainer svelte-qklggi");
-			add_location(div9, file$q, 212, 16, 7555);
+			add_location(div9, file$q, 212, 16, 7556);
 			attr_dev(div10, "class", "container box svelte-qklggi");
-			add_location(div10, file$q, 204, 12, 7120);
+			add_location(div10, file$q, 204, 12, 7121);
 			attr_dev(div11, "class", "column fileContainer svelte-qklggi");
-			add_location(div11, file$q, 203, 8, 7072);
+			add_location(div11, file$q, 203, 8, 7073);
 			attr_dev(div12, "class", "columns svelte-qklggi");
-			add_location(div12, file$q, 149, 4, 4378);
+			add_location(div12, file$q, 149, 4, 4379);
 			attr_dev(section, "id", /*id*/ ctx[2]);
 			set_style(section, "display", "none");
 			attr_dev(section, "class", "svelte-qklggi");
-			add_location(section, file$q, 148, 0, 4336);
+			add_location(section, file$q, 148, 0, 4337);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -20262,7 +20262,7 @@ function instance$r($$self, $$props, $$invalidate) {
 		let location = remote.dialog.showOpenDialogSync({ properties: ["openDirectory"] });
 
 		if (!location) {
-			createToast("No files selected", "danger");
+			createToast("No folder selected", "danger");
 		} else {
 			localStorage[`${filetype}_location`] = $$invalidate(1, currentLocation = location[0]);
 			console.log(currentLocation);
