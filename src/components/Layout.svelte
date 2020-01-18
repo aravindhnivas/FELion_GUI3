@@ -76,6 +76,7 @@
 
     const changeDirectory = (goto) => {
 
+        fileChecked = []
         selectAll = false
         currentLocation = path.resolve(currentLocation, goto)
         getfiles()
