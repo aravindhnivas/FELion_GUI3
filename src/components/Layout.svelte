@@ -16,7 +16,8 @@
     import {onMount} from "svelte";
 
     import { Toast } from 'svelma'
-    import Modal from "./Modal.svelte"
+
+    import {activated, modalContent, modalTitle} from "./Modal.svelte"
     ////////////////////////////////////////////////////////////////////////////
 
     // EXPORTED variables
@@ -31,9 +32,7 @@
     onMount(()=>{if (currentLocation != "") {getfiles()}})
 
     ////////////////////////////////////////////////////////////////////////////
-
-    // Bulma Modal
-    export let modalTitle="Error detail", modalContent="", activated = false;
+    
     
     $: parentFolder = path.basename(currentLocation)
     let files = []
@@ -69,16 +68,16 @@
             console.log("Folder updated for ", filetype, "\n", files)
             if (toast) {createToast("Files updated")}
         } catch (err) { 
-            modalTitle = `${id}: Error detail`
-            modalContent = err;
-            activated = true;
+            $modalTitle = `${id}: Error detail`
+            $modalContent = err;
+            $activated = true;
          }
 
     }
-
-    $: activated ? console.log(`Modal activated for ${filetype}`) : console.log(`Modal deactivated for ${filetype}`)
+    $: $activated ? console.log(`Modal activated for ${filetype}`) : console.log(`Modal deactivated for ${filetype}`)
 
     const changeDirectory = (goto) => {
+
         selectAll = false
         currentLocation = path.resolve(currentLocation, goto)
         getfiles()
@@ -124,15 +123,11 @@
     .buttonContainer {
         max-height: 20em;
         overflow-y: auto;
-        padding: 2em 0;
-
     }
 
     .box {border-radius: 0;}
 
 </style>
-
-<Modal bind:activated {modalTitle} {modalContent}/>
 
 <section {id} style="display:none" >
     <div class="columns">

@@ -11,12 +11,10 @@
     let location = localStorage[`${filetype}_location`] || ""
     $: console.log("Normline update: ", location)
 
-    // Modal variable
-    let modalContent="", modalTitle="", activated = false;
 </script>
 
-
 <style>
+
     * :global(.button) {margin: 0.4em;}
     * :global(.short-input) {
         width: 7em;
@@ -26,7 +24,7 @@
 
 </style>
 
-<Layout {filetype} {id} bind:currentLocation={location} bind:fileChecked={felixfiles} bind:activated {modalContent} {modalTitle}>
+<Layout {filetype} {id} bind:currentLocation={location} bind:fileChecked={felixfiles}>
 
     <div class="buttonSlot" slot="buttonContainer">
         <div class="align">

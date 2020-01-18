@@ -75,6 +75,10 @@ function exclude_internal_props(props) {
             result[k] = props[k];
     return result;
 }
+function set_store_value(store, ret, value = ret) {
+    store.set(value);
+    return ret;
+}
 function action_destroyer(action_result) {
     return action_result && is_function(action_result.destroy) ? action_result.destroy : noop;
 }
@@ -18547,6 +18551,58 @@ class Textfield extends SvelteComponentDev {
 
 function e(){}const t=e=>e;function n(e,t){for(const n in t)e[n]=t[n];return e}function s(e){return e()}function i(){return Object.create(null)}function o(e){e.forEach(s);}function a(e){return "function"==typeof e}function c(e,t){return e!=e?t==t:e!==t||e&&"object"==typeof e||"function"==typeof e}function u(e,t,n){if(e){const s=d(e,t,n);return e[0](s)}}function d(e,t,s){return e[1]?n({},n(t.$$scope.ctx,e[1](s?s(t):{}))):t.$$scope.ctx}function p(e,t,s,i){return e[1]?n({},n(t.$$scope.changed||{},e[1](i?i(s):{}))):t.$$scope.changed||{}}function f(e){const t={};for(const n in e)"$"!==n[0]&&(t[n]=e[n]);return t}const m="undefined"!=typeof window;let h=m?()=>window.performance.now():()=>Date.now(),g=m?e=>requestAnimationFrame(e):e;const v=new Set;let $,b=!1;function y(){v.forEach(e=>{e[0](h())||(v.delete(e),e[1]());}),(b=v.size>0)&&g(y);}function x(e){let t;return b||(b=!0,g(y)),{promise:new Promise(n=>{v.add(t=[e,n]);}),abort(){v.delete(t);}}}function w(e,t){e.appendChild(t);}function k(e,t,n){e.insertBefore(t,n||null);}function z(e){e.parentNode.removeChild(e);}function T(e){return document.createElement(e)}function C(e){return document.createTextNode(e)}function P(){return C(" ")}function _(){return C("")}function E(e,t,n,s){return e.addEventListener(t,n,s),()=>e.removeEventListener(t,n,s)}function I(e,t,n){null==n?e.removeAttribute(t):e.setAttribute(t,n);}function L(e){return Array.from(e.childNodes)}function B(e,t,n,s){for(let s=0;s<e.length;s+=1){const i=e[s];if(i.nodeName===t){for(let e=0;e<i.attributes.length;e+=1){const t=i.attributes[e];n[t.name]||i.removeAttribute(t.name);}return e.splice(s,1)[0]}}return s?function(e){return document.createElementNS("http://www.w3.org/2000/svg",e)}(t):T(t)}function S(e,t){for(let n=0;n<e.length;n+=1){const s=e[n];if(3===s.nodeType)return s.data=t,e.splice(n,1)[0]}return C(t)}function R(e,t){t=""+t,e.data!==t&&(e.data=t);}function A(e,t,n){e.classList[n?"add":"remove"](t);}function V(e,t){const n=document.createEvent("CustomEvent");return n.initCustomEvent(e,!1,!1,t),n}let M,N=0,F={};function q(e,t,n,s,i,o,a,c=0){const l=16.666/s;let r="{\n";for(let e=0;e<=1;e+=l){const s=t+(n-t)*o(e);r+=100*e+`%{${a(s,1-s)}}\n`;}const u=r+`100% {${a(n,1-n)}}\n}`,d=`__svelte_${function(e){let t=5381,n=e.length;for(;n--;)t=(t<<5)-t^e.charCodeAt(n);return t>>>0}(u)}_${c}`;if(!F[d]){if(!$){const e=T("style");document.head.appendChild(e),$=e.sheet;}F[d]=!0,$.insertRule(`@keyframes ${d} ${u}`,$.cssRules.length);}const p=e.style.animation||"";return e.style.animation=`${p?`${p}, `:""}${d} ${s}ms linear ${i}ms 1 both`,N+=1,d}function U(e,t){e.style.animation=(e.style.animation||"").split(", ").filter(t?e=>e.indexOf(t)<0:e=>-1===e.indexOf("__svelte")).join(", "),t&&!--N&&g(()=>{if(N)return;let e=$.cssRules.length;for(;e--;)$.deleteRule(e);F={};});}function H(e){M=e;}function Y(){if(!M)throw new Error("Function called outside component initialization");return M}function K(e){Y().$$.on_mount.push(e);}function W(){const e=M;return (t,n)=>{const s=e.$$.callbacks[t];if(s){const i=V(t,n);s.slice().forEach(t=>{t.call(e,i);});}}}const Q=[],Z=[],ee=[],te=[],ne=Promise.resolve();let se,ie=!1;function oe(){ie||(ie=!0,ne.then(le));}function ae(){return oe(),ne}function ce(e){ee.push(e);}function le(){const e=new Set;do{for(;Q.length;){const e=Q.shift();H(e),re(e.$$);}for(;Z.length;)Z.pop()();for(let t=0;t<ee.length;t+=1){const n=ee[t];e.has(n)||(n(),e.add(n));}ee.length=0;}while(Q.length);for(;te.length;)te.pop()();ie=!1;}function re(e){e.fragment&&(e.update(e.dirty),o(e.before_update),e.fragment.p(e.dirty,e.ctx),e.dirty=null,e.after_update.forEach(ce));}function ue(){return se||(se=Promise.resolve()).then(()=>{se=null;}),se}function de(e,t,n){e.dispatchEvent(V(`${t?"intro":"outro"}${n}`));}const pe=new Set;let fe;function me(){fe={r:0,c:[],p:fe};}function he(){fe.r||o(fe.c),fe=fe.p;}function ge(e,t){e&&e.i&&(pe.delete(e),e.i(t));}function ve(e,t,n,s){if(e&&e.o){if(pe.has(e))return;pe.add(e),fe.c.push(()=>{pe.delete(e),s&&(n&&e.d(1),s());}),e.o(t);}}const $e={duration:0};const ye="undefined"!=typeof window?window:global;function xe(e,t){const n={},s={},i={$$scope:1};let o=e.length;for(;o--;){const a=e[o],c=t[o];if(c){for(const e in a)e in c||(s[e]=1);for(const e in c)i[e]||(n[e]=c[e],i[e]=1);e[o]=c;}else for(const e in a)i[e]=1;}for(const e in s)e in n||(n[e]=void 0);return n}function we(e,t,n){const{fragment:i,on_mount:c,on_destroy:l,after_update:r}=e.$$;i.m(t,n),ce(()=>{const t=c.map(s).filter(a);l?l.push(...t):o(t),e.$$.on_mount=[];}),r.forEach(ce);}function ke(e,t){e.$$.fragment&&(o(e.$$.on_destroy),e.$$.fragment.d(t),e.$$.on_destroy=e.$$.fragment=null,e.$$.ctx={});}function ze(t,n,s,a,c,l){const r=M;H(t);const u=n.props||{},d=t.$$={fragment:null,ctx:null,props:l,update:e,not_equal:c,bound:i(),on_mount:[],on_destroy:[],before_update:[],after_update:[],context:new Map(r?r.$$.context:[]),callbacks:i(),dirty:null};let p=!1;d.ctx=s?s(t,u,(e,n)=>{d.ctx&&c(d.ctx[e],d.ctx[e]=n)&&(d.bound[e]&&d.bound[e](n),p&&function(e,t){e.$$.dirty||(Q.push(e),oe(),e.$$.dirty=i()),e.$$.dirty[t]=!0;}(t,e));}):u,d.update(),p=!0,o(d.before_update),d.fragment=a(d.ctx),n.target&&(n.hydrate?d.fragment.l(L(n.target)):d.fragment.c(),n.intro&&ge(t.$$.fragment),we(t,n.target,n.anchor),le()),H(r);}class Te{$destroy(){ke(this,1),this.$destroy=e;}$on(e,t){const n=this.$$.callbacks[e]||(this.$$.callbacks[e]=[]);return n.push(t),()=>{const e=n.indexOf(t);-1!==e&&n.splice(e,1);}}$set(){}}function Ee(e){return e<.5?4*e*e*e:.5*Math.pow(2*e-2,3)+1}function Ie(e){const t=e-1;return t*t*t+1}function je(e,{delay:t=0,duration:n=400}){const s=+getComputedStyle(e).opacity;return {delay:t,duration:n,css:e=>`opacity: ${e*s}`}}function Le(e,{delay:t=0,duration:n=400,easing:s=Ie,x:i=0,y:o=0,opacity:a=0}){const c=getComputedStyle(e),l=+c.opacity,r="none"===c.transform?"":c.transform,u=l*(1-a);return {delay:t,duration:n,easing:s,css:(e,t)=>`\n\t\t\ttransform: ${r} translate(${(1-e)*i}px, ${(1-e)*o}px);\n\t\t\topacity: ${l-u*t}`}}var Be=Object.freeze({crossfade:function(e){var{fallback:t}=e,s=function(e,t){var n={};for(var s in e)Object.prototype.hasOwnProperty.call(e,s)&&t.indexOf(s)<0&&(n[s]=e[s]);if(null!=e&&"function"==typeof Object.getOwnPropertySymbols){var i=0;for(s=Object.getOwnPropertySymbols(e);i<s.length;i++)t.indexOf(s[i])<0&&Object.prototype.propertyIsEnumerable.call(e,s[i])&&(n[s[i]]=e[s[i]]);}return n}(e,["fallback"]);const i=new Map,o=new Map;function c(e,i,o){return (c,l)=>(e.set(l.key,{rect:c.getBoundingClientRect()}),()=>{if(i.has(l.key)){const{rect:e}=i.get(l.key);return i.delete(l.key),function(e,t,i){const{delay:o=0,duration:c=(e=>30*Math.sqrt(e)),easing:l=Ie}=n(n({},s),i),r=t.getBoundingClientRect(),u=e.left-r.left,d=e.top-r.top,p=e.width/r.width,f=e.height/r.height,m=Math.sqrt(u*u+d*d),h=getComputedStyle(t),g="none"===h.transform?"":h.transform,v=+h.opacity;return {delay:o,duration:a(c)?c(m):c,easing:l,css:(e,t)=>`\n\t\t\t\topacity: ${e*v};\n\t\t\t\ttransform-origin: top left;\n\t\t\t\ttransform: ${g} translate(${t*u}px,${t*d}px) scale(${e+(1-e)*p}, ${e+(1-e)*f});\n\t\t\t`}}(e,c,l)}return e.delete(l.key),t&&t(c,l,o)})}return [c(o,i,!1),c(i,o,!0)]},draw:function(e,{delay:t=0,speed:n,duration:s,easing:i=Ee}){const o=e.getTotalLength();return void 0===s?s=void 0===n?800:o/n:"function"==typeof s&&(s=s(o)),{delay:t,duration:s,easing:i,css:(e,t)=>`stroke-dasharray: ${e*o} ${t*o}`}},fade:je,fly:Le,scale:function(e,{delay:t=0,duration:n=400,easing:s=Ie,start:i=0,opacity:o=0}){const a=getComputedStyle(e),c=+a.opacity,l="none"===a.transform?"":a.transform,r=1-i,u=c*(1-o);return {delay:t,duration:n,easing:s,css:(e,t)=>`\n\t\t\ttransform: ${l} scale(${1-r*t});\n\t\t\topacity: ${c-u*t}\n\t\t`}},slide:function(e,{delay:t=0,duration:n=400,easing:s=Ie}){const i=getComputedStyle(e),o=+i.opacity,a=parseFloat(i.height),c=parseFloat(i.paddingTop),l=parseFloat(i.paddingBottom),r=parseFloat(i.marginTop),u=parseFloat(i.marginBottom),d=parseFloat(i.borderTopWidth),p=parseFloat(i.borderBottomWidth);return {delay:t,duration:n,easing:s,css:e=>"overflow: hidden;"+`opacity: ${Math.min(20*e,1)*o};`+`height: ${e*a}px;`+`padding-top: ${e*c}px;`+`padding-bottom: ${e*l}px;`+`margin-top: ${e*r}px;`+`margin-bottom: ${e*u}px;`+`border-top-width: ${e*d}px;`+`border-bottom-width: ${e*p}px;`}}});function Ot(t){var n,s;return {c(){n=T("div"),this.h();},l(e){L(n=B(e,"DIV",{class:!0},!1)).forEach(z),this.h();},h(){I(n,"class",s="notices "+t.positionClass+" svelte-750nm");},m(e,s){k(e,n,s),t.div_binding(n);},p(e,t){e.positionClass&&s!==(s="notices "+t.positionClass+" svelte-750nm")&&I(n,"class",s);},i:e,o:e,d(e){e&&z(n),t.div_binding(null);}}}const At={};function Vt(e,t,n){let s,i,{position:o="top"}=t;return e.$set=(e=>{"position"in e&&n("position",o=e.position);}),e.$$.update=((e={position:1})=>{e.position&&n("positionClass",i="top"===o?"is-top":"is-bottom");}),{position:o,container:s,positionClass:i,insert:function(e){s.insertAdjacentElement("afterbegin",e);},div_binding:function(e){Z[e?"unshift":"push"](()=>{n("container",s=e);});}}}class Dt extends Te{constructor(e){var t;super(),document.getElementById("svelte-750nm-style")||((t=T("style")).id="svelte-750nm-style",t.textContent=".notices.svelte-750nm{position:fixed;top:0;left:0;right:0;bottom:0;overflow:hidden;padding:3em;z-index:1000;pointer-events:none;display:-webkit-box;display:-ms-flexbox;display:flex}.notices.is-top.svelte-750nm{-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column}.notices.is-bottom.svelte-750nm{-webkit-box-orient:vertical;-webkit-box-direction:reverse;-ms-flex-direction:column-reverse;flex-direction:column-reverse}.notices.svelte-750nm [class*='has-background-'] .text{color:transparent !important;-webkit-filter:invert(1) brightness(2.5) grayscale(1) contrast(9);filter:invert(1) brightness(2.5) grayscale(1) contrast(9);background:inherit;background-clip:text !important;-webkit-background-clip:text !important}",w(document.head,t)),ze(this,e,Vt,Ot,c,["position","insert"]);}get insert(){return this.$$.ctx.insert}}const{document:Mt}=ye;function Nt(n){var s,i,c,l,r,f,m;const g=n.$$slots.default,v=u(g,n,null);return {c(){s=T("div"),v&&v.c(),this.h();},l(e){var t=L(s=B(e,"DIV",{class:!0,"aria-hidden":!0},!1));v&&v.l(t),t.forEach(z),this.h();},h(){I(s,"class",i="notice "+n.position+" svelte-102rt1s"),I(s,"aria-hidden",c=!n.active),m=E(s,"outroend",n.remove);},m(e,t){k(e,s,t),v&&v.m(s,null),n.div_binding(s),f=!0;},p(e,t){v&&v.p&&e.$$scope&&v.p(p(g,t,e,null),d(g,t,null)),f&&!e.position||i===(i="notice "+t.position+" svelte-102rt1s")||I(s,"class",i),f&&!e.active||c===(c=!t.active)||I(s,"aria-hidden",c);},i(i){f||(ge(v,i),ce(()=>{r&&r.end(1),l||(l=function(n,s,i){let o,c,l=s(n,i),r=!1,u=0;function d(){o&&U(n,o);}function p(){const{delay:s=0,duration:i=300,easing:a=t,tick:p=e,css:f}=l||$e;f&&(o=q(n,0,1,i,s,a,f,u++)),p(0,1);const m=h()+s,g=m+i;c&&c.abort(),r=!0,ce(()=>de(n,!0,"start")),c=x(e=>{if(r){if(e>=g)return p(1,0),de(n,!0,"end"),d(),r=!1;if(e>=m){const t=a((e-m)/i);p(t,1-t);}}return r});}let f=!1;return {start(){f||(U(n),a(l)?(l=l(),ue().then(p)):p());},invalidate(){f=!1;},end(){r&&(d(),r=!1);}}}(s,Le,{y:n.transitionY})),l.start();}),f=!0);},o(i){ve(v,i),l&&l.invalidate(),r=function(n,s,i){let c,l=s(n,i),r=!0;const u=fe;function d(){const{delay:s=0,duration:i=300,easing:a=t,tick:d=e,css:p}=l||$e;p&&(c=q(n,1,0,i,s,a,p));const f=h()+s,m=f+i;ce(()=>de(n,!1,"start")),x(e=>{if(r){if(e>=m)return d(0,1),de(n,!1,"end"),--u.r||o(u.c),!1;if(e>=f){const t=a((e-f)/i);d(1-t,t);}}return r});}return u.r+=1,a(l)?ue().then(()=>{l=l(),d();}):d(),{end(e){e&&l.tick&&l.tick(1,0),r&&(c&&U(n,c),r=!1);}}}(s,je,{duration:n.transitionOut?400:0}),f=!1;},d(e){e&&z(s),v&&v.d(e),n.div_binding(null),e&&r&&r.end(),m();}}}function Ft(e){var t,n,s=e.active&&Nt(e);return {c(){s&&s.c(),t=_();},l(e){s&&s.l(e),t=_();},m(e,i){s&&s.m(e,i),k(e,t,i),n=!0;},p(e,n){n.active?s?(s.p(e,n),ge(s,1)):((s=Nt(n)).c(),ge(s,1),s.m(t.parentNode,t)):s&&(me(),ve(s,1,1,()=>{s=null;}),he());},i(e){n||(ge(s),n=!0);},o(e){ve(s),n=!1;},d(e){s&&s.d(e),e&&z(t);}}}const qt=["active","type","position","duration"];function Ut(e){const t={};return Object.keys(e).forEach(n=>{qt.includes(n)&&(t[n]=e[n]);}),t}function Ht(e,t,n){const s=W();let i,o,a,{active:c=!0,type:l="is-dark",position:r="is-top",duration:u=2e3,transitionOut:d=!0}=t;function p(){n("active",c=!1);}K(async()=>{await async function(){await ae,At.top||(At.top=new Dt({target:document.body,props:{position:"top"}})),At.bottom||(At.bottom=new Dt({target:document.body,props:{position:"bottom"}}));}(),o=At.top,r&&0===r.indexOf("is-bottom")&&(o=At.bottom),o.insert(i),a=setTimeout(()=>{p();},u);});let f,{$$slots:m={},$$scope:h}=t;return e.$set=(e=>{"active"in e&&n("active",c=e.active),"type"in e&&n("type",l=e.type),"position"in e&&n("position",r=e.position),"duration"in e&&n("duration",u=e.duration),"transitionOut"in e&&n("transitionOut",d=e.transitionOut),"$$scope"in e&&n("$$scope",h=e.$$scope);}),e.$$.update=((e={position:1})=>{e.position&&n("transitionY",f=~r.indexOf("is-top")?-200:200);}),{active:c,type:l,position:r,duration:u,transitionOut:d,el:i,close:p,remove:function(){clearTimeout(a),n("active",c=!1),s("destroyed");},transitionY:f,div_binding:function(e){Z[e?"unshift":"push"](()=>{n("el",i=e);});},$$slots:m,$$scope:h}}class Yt extends Te{constructor(e){var t;super(),Mt.getElementById("svelte-102rt1s-style")||((t=T("style")).id="svelte-102rt1s-style",t.textContent=".notice.svelte-102rt1s{display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;pointer-events:auto}.notice.is-top.svelte-102rt1s,.notice.is-bottom.svelte-102rt1s{-ms-flex-item-align:center;align-self:center}.notice.is-top-left.svelte-102rt1s,.notice.is-bottom-left.svelte-102rt1s{-ms-flex-item-align:start;align-self:flex-start}.notice.is-top-right.svelte-102rt1s,.notice.is-bottom-right.svelte-102rt1s{-ms-flex-item-align:end;align-self:flex-end}",w(Mt.head,t)),ze(this,e,Ht,Ft,c,["active","type","position","duration","transitionOut","close"]);}get close(){return this.$$.ctx.close}}function pn(e){var t,n,s,i,o;return {c(){t=T("div"),n=T("button"),s=C(e.actionText),this.h();},l(i){var o=L(t=B(i,"DIV",{class:!0},!1)),a=L(n=B(o,"BUTTON",{class:!0},!1));s=S(a,e.actionText),a.forEach(z),o.forEach(z),this.h();},h(){I(n,"class",i="button "+e.newType+" svelte-1jmu8to"),I(t,"class","action svelte-1jmu8to"),o=E(t,"click",e.action);},m(e,i){k(e,t,i),w(t,n),w(n,s);},p(e,t){e.actionText&&R(s,t.actionText),e.newType&&i!==(i="button "+t.newType+" svelte-1jmu8to")&&I(n,"class",i);},d(e){e&&z(t),o();}}}function fn(e){var t,n,s,i,o=e.actionText&&pn(e);return {c(){t=T("div"),n=T("div"),s=P(),o&&o.c(),this.h();},l(e){var i=L(t=B(e,"DIV",{class:!0,role:!0},!1));L(n=B(i,"DIV",{class:!0},!1)).forEach(z),s=S(i,"\n\n    "),o&&o.l(i),i.forEach(z),this.h();},h(){I(n,"class","text svelte-1jmu8to"),I(t,"class",i="snackbar "+e.background+" svelte-1jmu8to"),I(t,"role","alert"),A(t,"has-background-dark",!e.background);},m(i,a){k(i,t,a),w(t,n),n.innerHTML=e.message,w(t,s),o&&o.m(t,null);},p(e,s){e.message&&(n.innerHTML=s.message),s.actionText?o?o.p(e,s):((o=pn(s)).c(),o.m(t,null)):o&&(o.d(1),o=null),e.background&&i!==(i="snackbar "+s.background+" svelte-1jmu8to")&&I(t,"class",i),(e.background||e.background)&&A(t,"has-background-dark",!s.background);},d(e){e&&z(t),o&&o.d();}}}function mn(e){var t,s=[e.props,{transitionOut:!0}];let i={$$slots:{default:[fn]},$$scope:{ctx:e}};for(var o=0;o<s.length;o+=1)i=n(i,s[o]);var a=new Yt({props:i});return e.notice_1_binding(a),{c(){a.$$.fragment.c();},l(e){a.$$.fragment.l(e);},m(e,n){we(a,e,n),t=!0;},p(e,t){var n=e.props?xe(s,[t.props,s[1]]):{};(e.$$scope||e.background||e.actionText||e.newType||e.message)&&(n.$$scope={changed:e,ctx:t}),a.$set(n);},i(e){t||(ge(a.$$.fragment,e),t=!0);},o(e){ve(a.$$.fragment,e),t=!1;},d(t){e.notice_1_binding(null),ke(a,t);}}}function hn(e,t,s){let i,o,a,{message:c,duration:l=3500,position:r="is-bottom-right",type:u="is-primary",background:d="",actionText:p="OK",onAction:m=(()=>{})}=t;return K(()=>{if("function"!=typeof m)throw new Error(`onAction ${m} is not a function`)}),e.$set=(e=>{s("$$props",t=n(n({},t),e)),"message"in e&&s("message",c=e.message),"duration"in e&&s("duration",l=e.duration),"position"in e&&s("position",r=e.position),"type"in e&&s("type",u=e.type),"background"in e&&s("background",d=e.background),"actionText"in e&&s("actionText",p=e.actionText),"onAction"in e&&s("onAction",m=e.onAction);}),e.$$.update=((e={type:1,$$props:1,position:1,duration:1})=>{e.type&&s("newType",o=u&&u.replace(/^is-(.*)/,"has-text-$1")),s("props",a={...Ut(t),position:r,duration:l});}),{message:c,duration:l,position:r,type:u,background:d,actionText:p,onAction:m,notice:i,action:function(){Promise.resolve(m()).then(()=>i.close());},newType:o,props:a,notice_1_binding:function(e){Z[e?"unshift":"push"](()=>{s("notice",i=e);});},$$props:t=f(t)}}class gn extends Te{constructor(e){var t;super(),document.getElementById("svelte-1jmu8to-style")||((t=T("style")).id="svelte-1jmu8to-style",t.textContent=".snackbar.svelte-1jmu8to{display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-ms-flex-pack:distribute;justify-content:space-around;border-radius:4px;margin:0.5em 0;-webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);box-shadow:0 1px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);pointer-events:auto;min-height:3em}.snackbar.svelte-1jmu8to .text.svelte-1jmu8to{margin:.5em 1em}.snackbar.svelte-1jmu8to .action.svelte-1jmu8to{margin-left:auto;padding:0.5em;padding-left:0}.snackbar.svelte-1jmu8to .action .button.svelte-1jmu8to{font-weight:600;text-transform:uppercase;background:transparent;border:transparent;position:relative}.snackbar.svelte-1jmu8to .action .button.svelte-1jmu8to:hover::after{content:'';position:absolute;top:0;bottom:0;left:0;right:0;background:rgba(0, 0, 0, 0.1)}",w(document.head,t)),ze(this,e,hn,mn,c,["message","duration","position","type","background","actionText","onAction"]);}}gn.create=function(e){"string"==typeof e&&(e={message:e});const t=new gn({target:document.body,props:e,intro:!0});return t.$on("destroyed",t.$destroy),t};function jn(e){var t,n,s;return {c(){t=T("div"),n=T("div"),this.h();},l(e){var s=L(t=B(e,"DIV",{class:!0,role:!0},!1));L(n=B(s,"DIV",{class:!0},!1)).forEach(z),s.forEach(z),this.h();},h(){I(n,"class","text"),I(t,"class",s="toast "+e.type+" "+e.newBackground+" svelte-1uzjgds"),I(t,"role","alert");},m(s,i){k(s,t,i),w(t,n),n.innerHTML=e.message;},p(e,i){e.message&&(n.innerHTML=i.message),(e.type||e.newBackground)&&s!==(s="toast "+i.type+" "+i.newBackground+" svelte-1uzjgds")&&I(t,"class",s);},d(e){e&&z(t);}}}function Ln(e){var t,s=[Ut(e.$$props)];let i={$$slots:{default:[jn]},$$scope:{ctx:e}};for(var o=0;o<s.length;o+=1)i=n(i,s[o]);var a=new Yt({props:i});return {c(){a.$$.fragment.c();},l(e){a.$$.fragment.l(e);},m(e,n){we(a,e,n),t=!0;},p(e,t){var n=e.filterProps||e.$$props?xe(s,[Ut(t.$$props)]):{};(e.$$scope||e.type||e.newBackground||e.message)&&(n.$$scope={changed:e,ctx:t}),a.$set(n);},i(e){t||(ge(a.$$.fragment,e),t=!0);},o(e){ve(a.$$.fragment,e),t=!1;},d(e){ke(a,e);}}}function Bn(e,t,s){let i,{message:o,type:a="is-dark",background:c=""}=t;return e.$set=(e=>{s("$$props",t=n(n({},t),e)),"message"in e&&s("message",o=e.message),"type"in e&&s("type",a=e.type),"background"in e&&s("background",c=e.background);}),e.$$.update=((e={background:1,type:1})=>{(e.background||e.type)&&s("newBackground",i=c||a.replace(/^is-(.*)/,"has-background-$1"));}),{message:o,type:a,background:c,newBackground:i,$$props:t,$$props:t=f(t)}}class Sn extends Te{constructor(e){var t;super(),document.getElementById("svelte-1uzjgds-style")||((t=T("style")).id="svelte-1uzjgds-style",t.textContent=".toast.svelte-1uzjgds{text-align:center;padding:0.75em 1.5em;border-radius:2em;margin:0.5em 0;-webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);box-shadow:0 1px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);pointer-events:auto}",w(document.head,t)),ze(this,e,Bn,Ln,c,["message","type","background"]);}}Sn.create=function(e){"string"==typeof e&&(e={message:e});const t=new Sn({target:document.body,props:e,intro:!0});return t.$on("destroyed",t.$destroy),t};//# sourceMappingURL=module.js.map
 
+const subscriber_queue = [];
+/**
+ * Create a `Writable` store that allows both updating and reading by subscription.
+ * @param {*=}value initial value
+ * @param {StartStopNotifier=}start start and stop notifications for subscriptions
+ */
+function writable(value, start = noop) {
+    let stop;
+    const subscribers = [];
+    function set(new_value) {
+        if (safe_not_equal(value, new_value)) {
+            value = new_value;
+            if (stop) { // store is ready
+                const run_queue = !subscriber_queue.length;
+                for (let i = 0; i < subscribers.length; i += 1) {
+                    const s = subscribers[i];
+                    s[1]();
+                    subscriber_queue.push(s, value);
+                }
+                if (run_queue) {
+                    for (let i = 0; i < subscriber_queue.length; i += 2) {
+                        subscriber_queue[i][0](subscriber_queue[i + 1]);
+                    }
+                    subscriber_queue.length = 0;
+                }
+            }
+        }
+    }
+    function update(fn) {
+        set(fn(value));
+    }
+    function subscribe(run, invalidate = noop) {
+        const subscriber = [run, invalidate];
+        subscribers.push(subscriber);
+        if (subscribers.length === 1) {
+            stop = start(set) || noop;
+        }
+        run(value);
+        return () => {
+            const index = subscribers.indexOf(subscriber);
+            if (index !== -1) {
+                subscribers.splice(index, 1);
+            }
+            if (subscribers.length === 0) {
+                stop();
+                stop = null;
+            }
+        };
+    }
+    return { set, update, subscribe };
+}
+
 /* src\components\Modal.svelte generated by Svelte v3.17.0 */
 const file$p = "src\\components\\Modal.svelte";
 
@@ -18574,31 +18630,31 @@ function create_fragment$q(ctx) {
 			div1 = element("div");
 			header = element("header");
 			p = element("p");
-			t1 = text(/*modalTitle*/ ctx[1]);
+			t1 = text(/*$modalTitle*/ ctx[1]);
 			t2 = space();
 			section = element("section");
-			t3 = text(/*modalContent*/ ctx[2]);
+			t3 = text(/*$modalContent*/ ctx[2]);
 			t4 = space();
 			footer = element("footer");
 			button = element("button");
 			button.textContent = "Cancel";
 			attr_dev(div0, "class", "modal-background");
-			add_location(div0, file$p, 20, 2, 530);
+			add_location(div0, file$p, 28, 2, 743);
 			attr_dev(p, "class", "modal-card-title");
-			add_location(p, file$p, 23, 6, 640);
+			add_location(p, file$p, 31, 6, 853);
 			attr_dev(header, "class", "modal-card-head");
-			add_location(header, file$p, 22, 4, 600);
+			add_location(header, file$p, 30, 4, 813);
 			attr_dev(section, "class", "modal-card-body");
-			add_location(section, file$p, 25, 4, 705);
+			add_location(section, file$p, 34, 4, 921);
 			attr_dev(button, "class", "button is-link");
-			add_location(button, file$p, 28, 6, 812);
+			add_location(button, file$p, 37, 6, 1029);
 			attr_dev(footer, "class", "modal-card-foot");
-			add_location(footer, file$p, 27, 4, 772);
+			add_location(footer, file$p, 36, 4, 989);
 			attr_dev(div1, "class", "modal-card");
-			add_location(div1, file$p, 21, 2, 570);
+			add_location(div1, file$p, 29, 2, 783);
 			attr_dev(div2, "class", "modal");
-			toggle_class(div2, "is-active", /*active*/ ctx[3]);
-			add_location(div2, file$p, 19, 0, 482);
+			toggle_class(div2, "is-active", /*active*/ ctx[0]);
+			add_location(div2, file$p, 26, 0, 693);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -18620,11 +18676,11 @@ function create_fragment$q(ctx) {
 			dispose = listen_dev(button, "click", /*click_handler*/ ctx[8], false, false, false);
 		},
 		p: function update(ctx, [dirty]) {
-			if (dirty & /*modalTitle*/ 2) set_data_dev(t1, /*modalTitle*/ ctx[1]);
-			if (dirty & /*modalContent*/ 4) set_data_dev(t3, /*modalContent*/ ctx[2]);
+			if (dirty & /*$modalTitle*/ 2) set_data_dev(t1, /*$modalTitle*/ ctx[1]);
+			if (dirty & /*$modalContent*/ 4) set_data_dev(t3, /*$modalContent*/ ctx[2]);
 
-			if (dirty & /*active*/ 8) {
-				toggle_class(div2, "is-active", /*active*/ ctx[3]);
+			if (dirty & /*active*/ 1) {
+				toggle_class(div2, "is-active", /*active*/ ctx[0]);
 			}
 		},
 		i: noop,
@@ -18646,83 +18702,90 @@ function create_fragment$q(ctx) {
 	return block;
 }
 
-function instance$q($$self, $$props, $$invalidate) {
-	let { modalTitle } = $$props,
-		{ modalContent } = $$props,
-		{ activated = false } = $$props,
-		{ type = "danger" } = $$props,
-		{ msg = "Error Occured" } = $$props,
-		{ actionText = "Show in detail" } = $$props;
+const activated = writable(false), modalContent = writable("");
 
+const modalTitle = writable("Error detail"),
+	modalType = writable("danger"),
+	modalPreMsg = writable("Error Occured");
+
+function instance$q($$self, $$props, $$invalidate) {
+	let $modalPreMsg,
+		$$unsubscribe_modalPreMsg = noop;
+
+	let $modalType,
+		$$unsubscribe_modalType = noop;
+
+	let $activated,
+		$$unsubscribe_activated = noop;
+
+	let $modalTitle,
+		$$unsubscribe_modalTitle = noop;
+
+	let $modalContent,
+		$$unsubscribe_modalContent = noop;
+
+	validate_store(modalPreMsg, "modalPreMsg");
+	component_subscribe($$self, modalPreMsg, $$value => $$invalidate(3, $modalPreMsg = $$value));
+	validate_store(modalType, "modalType");
+	component_subscribe($$self, modalType, $$value => $$invalidate(4, $modalType = $$value));
+	validate_store(activated, "activated");
+	component_subscribe($$self, activated, $$value => $$invalidate(5, $activated = $$value));
+	validate_store(modalTitle, "modalTitle");
+	component_subscribe($$self, modalTitle, $$value => $$invalidate(1, $modalTitle = $$value));
+	validate_store(modalContent, "modalContent");
+	component_subscribe($$self, modalContent, $$value => $$invalidate(2, $modalContent = $$value));
+	$$self.$$.on_destroy.push(() => $$unsubscribe_modalPreMsg());
+	$$self.$$.on_destroy.push(() => $$unsubscribe_modalType());
+	$$self.$$.on_destroy.push(() => $$unsubscribe_activated());
+	$$self.$$.on_destroy.push(() => $$unsubscribe_modalTitle());
+	$$self.$$.on_destroy.push(() => $$unsubscribe_modalContent());
+	let actionText = "Show details";
 	let active = false;
 
 	function openModal(err) {
 		gn.create({
-			message: msg,
+			message: $modalPreMsg,
 			position: "is-top",
-			type: `is-${type}`,
+			type: `is-${$modalType}`,
 			duration: 5000,
 			actionText,
 			onAction: () => {
-				$$invalidate(3, active = true);
+				$$invalidate(0, active = true);
 			}
 		});
 
-		$$invalidate(0, activated = false);
+		set_store_value(activated, $activated = false);
 	}
 
-	const writable_props = ["modalTitle", "modalContent", "activated", "type", "msg", "actionText"];
-
-	Object.keys($$props).forEach(key => {
-		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Modal> was created with unknown prop '${key}'`);
-	});
-
-	const click_handler = () => $$invalidate(0, activated = $$invalidate(3, active = false));
-
-	$$self.$set = $$props => {
-		if ("modalTitle" in $$props) $$invalidate(1, modalTitle = $$props.modalTitle);
-		if ("modalContent" in $$props) $$invalidate(2, modalContent = $$props.modalContent);
-		if ("activated" in $$props) $$invalidate(0, activated = $$props.activated);
-		if ("type" in $$props) $$invalidate(4, type = $$props.type);
-		if ("msg" in $$props) $$invalidate(5, msg = $$props.msg);
-		if ("actionText" in $$props) $$invalidate(6, actionText = $$props.actionText);
-	};
+	const click_handler = () => $$invalidate(0, active = false);
 
 	$$self.$capture_state = () => {
-		return {
-			modalTitle,
-			modalContent,
-			activated,
-			type,
-			msg,
-			actionText,
-			active
-		};
+		return {};
 	};
 
 	$$self.$inject_state = $$props => {
-		if ("modalTitle" in $$props) $$invalidate(1, modalTitle = $$props.modalTitle);
-		if ("modalContent" in $$props) $$invalidate(2, modalContent = $$props.modalContent);
-		if ("activated" in $$props) $$invalidate(0, activated = $$props.activated);
-		if ("type" in $$props) $$invalidate(4, type = $$props.type);
-		if ("msg" in $$props) $$invalidate(5, msg = $$props.msg);
-		if ("actionText" in $$props) $$invalidate(6, actionText = $$props.actionText);
-		if ("active" in $$props) $$invalidate(3, active = $$props.active);
+		if ("actionText" in $$props) actionText = $$props.actionText;
+		if ("active" in $$props) $$invalidate(0, active = $$props.active);
+		if ("$modalPreMsg" in $$props) modalPreMsg.set($modalPreMsg = $$props.$modalPreMsg);
+		if ("$modalType" in $$props) modalType.set($modalType = $$props.$modalType);
+		if ("$activated" in $$props) activated.set($activated = $$props.$activated);
+		if ("$modalTitle" in $$props) modalTitle.set($modalTitle = $$props.$modalTitle);
+		if ("$modalContent" in $$props) modalContent.set($modalContent = $$props.$modalContent);
 	};
 
 	$$self.$$.update = () => {
-		if ($$self.$$.dirty & /*activated*/ 1) {
-			 if (activated) openModal();
+		if ($$self.$$.dirty & /*$activated*/ 32) {
+			 if ($activated) openModal();
 		}
 	};
 
 	return [
-		activated,
-		modalTitle,
-		modalContent,
 		active,
-		type,
-		msg,
+		$modalTitle,
+		$modalContent,
+		$modalPreMsg,
+		$modalType,
+		$activated,
 		actionText,
 		openModal,
 		click_handler
@@ -18732,15 +18795,7 @@ function instance$q($$self, $$props, $$invalidate) {
 class Modal extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-
-		init(this, options, instance$q, create_fragment$q, safe_not_equal, {
-			modalTitle: 1,
-			modalContent: 2,
-			activated: 0,
-			type: 4,
-			msg: 5,
-			actionText: 6
-		});
+		init(this, options, instance$q, create_fragment$q, safe_not_equal, {});
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
@@ -18748,65 +18803,6 @@ class Modal extends SvelteComponentDev {
 			options,
 			id: create_fragment$q.name
 		});
-
-		const { ctx } = this.$$;
-		const props = options.props || ({});
-
-		if (/*modalTitle*/ ctx[1] === undefined && !("modalTitle" in props)) {
-			console.warn("<Modal> was created without expected prop 'modalTitle'");
-		}
-
-		if (/*modalContent*/ ctx[2] === undefined && !("modalContent" in props)) {
-			console.warn("<Modal> was created without expected prop 'modalContent'");
-		}
-	}
-
-	get modalTitle() {
-		throw new Error("<Modal>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	set modalTitle(value) {
-		throw new Error("<Modal>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	get modalContent() {
-		throw new Error("<Modal>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	set modalContent(value) {
-		throw new Error("<Modal>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	get activated() {
-		throw new Error("<Modal>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	set activated(value) {
-		throw new Error("<Modal>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	get type() {
-		throw new Error("<Modal>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	set type(value) {
-		throw new Error("<Modal>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	get msg() {
-		throw new Error("<Modal>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	set msg(value) {
-		throw new Error("<Modal>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	get actionText() {
-		throw new Error("<Modal>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	set actionText(value) {
-		throw new Error("<Modal>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 }
 
@@ -18821,17 +18817,17 @@ const get_buttonContainer_slot_context = ctx => ({});
 
 function get_each_context$1(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[32] = list[i];
+	child_ctx[31] = list[i];
 	return child_ctx;
 }
 
 function get_each_context_1(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[35] = list[i];
+	child_ctx[34] = list[i];
 	return child_ctx;
 }
 
-// (159:16) <Icon class="material-icons" on:click="{()=>changeDirectory(localStorage[`${filetype}_location`])}">
+// (155:16) <Icon class="material-icons" on:click="{()=>changeDirectory(localStorage[`${filetype}_location`])}">
 function create_default_slot_11(ctx) {
 	let t;
 
@@ -18851,14 +18847,14 @@ function create_default_slot_11(ctx) {
 		block,
 		id: create_default_slot_11.name,
 		type: "slot",
-		source: "(159:16) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>changeDirectory(localStorage[`${filetype}_location`])}\\\">",
+		source: "(155:16) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>changeDirectory(localStorage[`${filetype}_location`])}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (160:16) <Icon class="material-icons" on:click="{()=>{getfiles(true)}}">
+// (156:16) <Icon class="material-icons" on:click="{()=>{getfiles(true)}}">
 function create_default_slot_10(ctx) {
 	let t;
 
@@ -18878,14 +18874,14 @@ function create_default_slot_10(ctx) {
 		block,
 		id: create_default_slot_10.name,
 		type: "slot",
-		source: "(160:16) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>{getfiles(true)}}\\\">",
+		source: "(156:16) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>{getfiles(true)}}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (161:16) <Icon class="material-icons" on:click="{()=>changeDirectory("../")}">
+// (157:16) <Icon class="material-icons" on:click="{()=>changeDirectory("../")}">
 function create_default_slot_9(ctx) {
 	let t;
 
@@ -18905,14 +18901,14 @@ function create_default_slot_9(ctx) {
 		block,
 		id: create_default_slot_9.name,
 		type: "slot",
-		source: "(161:16) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>changeDirectory(\\\"../\\\")}\\\">",
+		source: "(157:16) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>changeDirectory(\\\"../\\\")}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (169:20) <span slot="label">
+// (165:20) <span slot="label">
 function create_label_slot(ctx) {
 	let span;
 
@@ -18921,8 +18917,8 @@ function create_label_slot(ctx) {
 			span = element("span");
 			span.textContent = "Select All";
 			attr_dev(span, "slot", "label");
-			attr_dev(span, "class", "svelte-jc3kmm");
-			add_location(span, file$q, 168, 20, 5311);
+			attr_dev(span, "class", "svelte-qklggi");
+			add_location(span, file$q, 164, 20, 5181);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -18936,32 +18932,32 @@ function create_label_slot(ctx) {
 		block,
 		id: create_label_slot.name,
 		type: "slot",
-		source: "(169:20) <span slot=\\\"label\\\">",
+		source: "(165:20) <span slot=\\\"label\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (167:16) <FormField>
+// (163:16) <FormField>
 function create_default_slot_8(ctx) {
 	let updating_checked;
 	let t;
 	let current;
 
 	function switch_1_checked_binding(value) {
-		/*switch_1_checked_binding*/ ctx[24].call(null, value);
+		/*switch_1_checked_binding*/ ctx[23].call(null, value);
 	}
 
 	let switch_1_props = {};
 
-	if (/*selectAll*/ ctx[9] !== void 0) {
-		switch_1_props.checked = /*selectAll*/ ctx[9];
+	if (/*selectAll*/ ctx[6] !== void 0) {
+		switch_1_props.checked = /*selectAll*/ ctx[6];
 	}
 
 	const switch_1 = new Switch({ props: switch_1_props, $$inline: true });
 	binding_callbacks.push(() => bind(switch_1, "checked", switch_1_checked_binding));
-	switch_1.$on("change", /*change_handler*/ ctx[25]);
+	switch_1.$on("change", /*change_handler*/ ctx[24]);
 
 	const block = {
 		c: function create() {
@@ -18976,9 +18972,9 @@ function create_default_slot_8(ctx) {
 		p: function update(ctx, dirty) {
 			const switch_1_changes = {};
 
-			if (!updating_checked && dirty[0] & /*selectAll*/ 512) {
+			if (!updating_checked && dirty[0] & /*selectAll*/ 64) {
 				updating_checked = true;
-				switch_1_changes.checked = /*selectAll*/ ctx[9];
+				switch_1_changes.checked = /*selectAll*/ ctx[6];
 				add_flush_callback(() => updating_checked = false);
 			}
 
@@ -19003,14 +18999,14 @@ function create_default_slot_8(ctx) {
 		block,
 		id: create_default_slot_8.name,
 		type: "slot",
-		source: "(167:16) <FormField>",
+		source: "(163:16) <FormField>",
 		ctx
 	});
 
 	return block;
 }
 
-// (177:24) <Icon class="material-icons" on>
+// (173:24) <Icon class="material-icons" on>
 function create_default_slot_7(ctx) {
 	let t;
 
@@ -19030,14 +19026,14 @@ function create_default_slot_7(ctx) {
 		block,
 		id: create_default_slot_7.name,
 		type: "slot",
-		source: "(177:24) <Icon class=\\\"material-icons\\\" on>",
+		source: "(173:24) <Icon class=\\\"material-icons\\\" on>",
 		ctx
 	});
 
 	return block;
 }
 
-// (178:24) <Icon class="material-icons" >
+// (174:24) <Icon class="material-icons" >
 function create_default_slot_6(ctx) {
 	let t;
 
@@ -19057,14 +19053,14 @@ function create_default_slot_6(ctx) {
 		block,
 		id: create_default_slot_6.name,
 		type: "slot",
-		source: "(178:24) <Icon class=\\\"material-icons\\\" >",
+		source: "(174:24) <Icon class=\\\"material-icons\\\" >",
 		ctx
 	});
 
 	return block;
 }
 
-// (176:20) <IconButton  toggle bind:pressed={showfiles}>
+// (172:20) <IconButton  toggle bind:pressed={showfiles}>
 function create_default_slot_5(ctx) {
 	let t;
 	let current;
@@ -19103,14 +19099,14 @@ function create_default_slot_5(ctx) {
 		p: function update(ctx, dirty) {
 			const icon0_changes = {};
 
-			if (dirty[1] & /*$$scope*/ 1) {
+			if (dirty[0] & /*$$scope*/ 1073741824) {
 				icon0_changes.$$scope = { dirty, ctx };
 			}
 
 			icon0.$set(icon0_changes);
 			const icon1_changes = {};
 
-			if (dirty[1] & /*$$scope*/ 1) {
+			if (dirty[0] & /*$$scope*/ 1073741824) {
 				icon1_changes.$$scope = { dirty, ctx };
 			}
 
@@ -19138,14 +19134,14 @@ function create_default_slot_5(ctx) {
 		block,
 		id: create_default_slot_5.name,
 		type: "slot",
-		source: "(176:20) <IconButton  toggle bind:pressed={showfiles}>",
+		source: "(172:20) <IconButton  toggle bind:pressed={showfiles}>",
 		ctx
 	});
 
 	return block;
 }
 
-// (194:38) 
+// (190:38) 
 function create_if_block_1$3(ctx) {
 	let div;
 	let t0;
@@ -19156,10 +19152,10 @@ function create_if_block_1$3(ctx) {
 		c: function create() {
 			div = element("div");
 			t0 = text("No ");
-			t1 = text(/*filetype*/ ctx[6]);
+			t1 = text(/*filetype*/ ctx[3]);
 			t2 = text(" here!");
-			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-jc3kmm");
-			add_location(div, file$q, 194, 20, 6561);
+			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-qklggi");
+			add_location(div, file$q, 190, 20, 6431);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -19168,7 +19164,7 @@ function create_if_block_1$3(ctx) {
 			append_dev(div, t2);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*filetype*/ 64) set_data_dev(t1, /*filetype*/ ctx[6]);
+			if (dirty[0] & /*filetype*/ 8) set_data_dev(t1, /*filetype*/ ctx[3]);
 		},
 		i: noop,
 		o: noop,
@@ -19181,14 +19177,14 @@ function create_if_block_1$3(ctx) {
 		block,
 		id: create_if_block_1$3.name,
 		type: "if",
-		source: "(194:38) ",
+		source: "(190:38) ",
 		ctx
 	});
 
 	return block;
 }
 
-// (183:16) {#if showfiles && files != "" }
+// (179:16) {#if showfiles && files != "" }
 function create_if_block$7(ctx) {
 	let div;
 	let div_transition;
@@ -19207,9 +19203,9 @@ function create_if_block$7(ctx) {
 		c: function create() {
 			div = element("div");
 			create_component(list.$$.fragment);
-			attr_dev(div, "class", "filelist svelte-jc3kmm");
+			attr_dev(div, "class", "filelist svelte-qklggi");
 			set_style(div, "padding-left", "1em");
-			add_location(div, file$q, 183, 20, 5940);
+			add_location(div, file$q, 179, 20, 5810);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -19219,7 +19215,7 @@ function create_if_block$7(ctx) {
 		p: function update(ctx, dirty) {
 			const list_changes = {};
 
-			if (dirty[0] & /*files, fileChecked, selectAll*/ 641 | dirty[1] & /*$$scope*/ 1) {
+			if (dirty[0] & /*$$scope, files, fileChecked, selectAll*/ 1073741905) {
 				list_changes.$$scope = { dirty, ctx };
 			}
 
@@ -19253,16 +19249,16 @@ function create_if_block$7(ctx) {
 		block,
 		id: create_if_block$7.name,
 		type: "if",
-		source: "(183:16) {#if showfiles && files != \\\"\\\" }",
+		source: "(179:16) {#if showfiles && files != \\\"\\\" }",
 		ctx
 	});
 
 	return block;
 }
 
-// (188:36) <Label>
+// (184:36) <Label>
 function create_default_slot_4(ctx) {
-	let t_value = /*file*/ ctx[35] + "";
+	let t_value = /*file*/ ctx[34] + "";
 	let t;
 
 	const block = {
@@ -19273,7 +19269,7 @@ function create_default_slot_4(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*files*/ 128 && t_value !== (t_value = /*file*/ ctx[35] + "")) set_data_dev(t, t_value);
+			if (dirty[0] & /*files*/ 16 && t_value !== (t_value = /*file*/ ctx[34] + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -19284,23 +19280,23 @@ function create_default_slot_4(ctx) {
 		block,
 		id: create_default_slot_4.name,
 		type: "slot",
-		source: "(188:36) <Label>",
+		source: "(184:36) <Label>",
 		ctx
 	});
 
 	return block;
 }
 
-// (189:36) <Meta>
+// (185:36) <Meta>
 function create_default_slot_3(ctx) {
 	let updating_group;
 	let current;
 
 	function checkbox_group_binding(value) {
-		/*checkbox_group_binding*/ ctx[27].call(null, value);
+		/*checkbox_group_binding*/ ctx[26].call(null, value);
 	}
 
-	let checkbox_props = { value: /*file*/ ctx[35] };
+	let checkbox_props = { value: /*file*/ ctx[34] };
 
 	if (/*fileChecked*/ ctx[0] !== void 0) {
 		checkbox_props.group = /*fileChecked*/ ctx[0];
@@ -19308,7 +19304,7 @@ function create_default_slot_3(ctx) {
 
 	const checkbox = new Checkbox({ props: checkbox_props, $$inline: true });
 	binding_callbacks.push(() => bind(checkbox, "group", checkbox_group_binding));
-	checkbox.$on("click", /*click_handler_3*/ ctx[28]);
+	checkbox.$on("click", /*click_handler_3*/ ctx[27]);
 
 	const block = {
 		c: function create() {
@@ -19320,7 +19316,7 @@ function create_default_slot_3(ctx) {
 		},
 		p: function update(ctx, dirty) {
 			const checkbox_changes = {};
-			if (dirty[0] & /*files*/ 128) checkbox_changes.value = /*file*/ ctx[35];
+			if (dirty[0] & /*files*/ 16) checkbox_changes.value = /*file*/ ctx[34];
 
 			if (!updating_group && dirty[0] & /*fileChecked*/ 1) {
 				updating_group = true;
@@ -19348,14 +19344,14 @@ function create_default_slot_3(ctx) {
 		block,
 		id: create_default_slot_3.name,
 		type: "slot",
-		source: "(189:36) <Meta>",
+		source: "(185:36) <Meta>",
 		ctx
 	});
 
 	return block;
 }
 
-// (187:32) <Item>
+// (183:32) <Item>
 function create_default_slot_2$2(ctx) {
 	let t0;
 	let t1;
@@ -19394,14 +19390,14 @@ function create_default_slot_2$2(ctx) {
 		p: function update(ctx, dirty) {
 			const label_changes = {};
 
-			if (dirty[0] & /*files*/ 128 | dirty[1] & /*$$scope*/ 1) {
+			if (dirty[0] & /*$$scope, files*/ 1073741840) {
 				label_changes.$$scope = { dirty, ctx };
 			}
 
 			label.$set(label_changes);
 			const meta_changes = {};
 
-			if (dirty[0] & /*files, fileChecked, selectAll*/ 641 | dirty[1] & /*$$scope*/ 1) {
+			if (dirty[0] & /*$$scope, files, fileChecked, selectAll*/ 1073741905) {
 				meta_changes.$$scope = { dirty, ctx };
 			}
 
@@ -19430,14 +19426,14 @@ function create_default_slot_2$2(ctx) {
 		block,
 		id: create_default_slot_2$2.name,
 		type: "slot",
-		source: "(187:32) <Item>",
+		source: "(183:32) <Item>",
 		ctx
 	});
 
 	return block;
 }
 
-// (186:28) {#each files as file}
+// (182:28) {#each files as file}
 function create_each_block_1(ctx) {
 	let current;
 
@@ -19460,7 +19456,7 @@ function create_each_block_1(ctx) {
 		p: function update(ctx, dirty) {
 			const item_changes = {};
 
-			if (dirty[0] & /*files, fileChecked, selectAll*/ 641 | dirty[1] & /*$$scope*/ 1) {
+			if (dirty[0] & /*$$scope, files, fileChecked, selectAll*/ 1073741905) {
 				item_changes.$$scope = { dirty, ctx };
 			}
 
@@ -19484,18 +19480,18 @@ function create_each_block_1(ctx) {
 		block,
 		id: create_each_block_1.name,
 		type: "each",
-		source: "(186:28) {#each files as file}",
+		source: "(182:28) {#each files as file}",
 		ctx
 	});
 
 	return block;
 }
 
-// (185:24) <List checklist>
+// (181:24) <List checklist>
 function create_default_slot_1$3(ctx) {
 	let each_1_anchor;
 	let current;
-	let each_value_1 = /*files*/ ctx[7];
+	let each_value_1 = /*files*/ ctx[4];
 	let each_blocks = [];
 
 	for (let i = 0; i < each_value_1.length; i += 1) {
@@ -19523,8 +19519,8 @@ function create_default_slot_1$3(ctx) {
 			current = true;
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*files, fileChecked, selectAll*/ 641) {
-				each_value_1 = /*files*/ ctx[7];
+			if (dirty[0] & /*files, fileChecked, selectAll*/ 81) {
+				each_value_1 = /*files*/ ctx[4];
 				let i;
 
 				for (i = 0; i < each_value_1.length; i += 1) {
@@ -19578,14 +19574,14 @@ function create_default_slot_1$3(ctx) {
 		block,
 		id: create_default_slot_1$3.name,
 		type: "slot",
-		source: "(185:24) <List checklist>",
+		source: "(181:24) <List checklist>",
 		ctx
 	});
 
 	return block;
 }
 
-// (200:28) <Icon class="material-icons">
+// (196:28) <Icon class="material-icons">
 function create_default_slot$5(ctx) {
 	let t;
 
@@ -19605,19 +19601,19 @@ function create_default_slot$5(ctx) {
 		block,
 		id: create_default_slot$5.name,
 		type: "slot",
-		source: "(200:28) <Icon class=\\\"material-icons\\\">",
+		source: "(196:28) <Icon class=\\\"material-icons\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (198:20) {#each otherfolders as folder}
+// (194:20) {#each otherfolders as folder}
 function create_each_block$1(ctx) {
 	let div1;
 	let t0;
 	let div0;
-	let t1_value = /*folder*/ ctx[32] + "";
+	let t1_value = /*folder*/ ctx[31] + "";
 	let t1;
 	let t2;
 	let div1_transition;
@@ -19634,7 +19630,7 @@ function create_each_block$1(ctx) {
 		});
 
 	function click_handler_4(...args) {
-		return /*click_handler_4*/ ctx[29](/*folder*/ ctx[32], ...args);
+		return /*click_handler_4*/ ctx[28](/*folder*/ ctx[31], ...args);
 	}
 
 	const block = {
@@ -19645,10 +19641,10 @@ function create_each_block$1(ctx) {
 			div0 = element("div");
 			t1 = text(t1_value);
 			t2 = space();
-			attr_dev(div0, "class", "mdc-typography--subtitle1 svelte-jc3kmm");
-			add_location(div0, file$q, 200, 28, 7016);
-			attr_dev(div1, "class", "align svelte-jc3kmm");
-			add_location(div1, file$q, 198, 24, 6817);
+			attr_dev(div0, "class", "mdc-typography--subtitle1 svelte-qklggi");
+			add_location(div0, file$q, 196, 28, 6886);
+			attr_dev(div1, "class", "align svelte-qklggi");
+			add_location(div1, file$q, 194, 24, 6687);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div1, anchor);
@@ -19664,12 +19660,12 @@ function create_each_block$1(ctx) {
 			ctx = new_ctx;
 			const icon_changes = {};
 
-			if (dirty[1] & /*$$scope*/ 1) {
+			if (dirty[0] & /*$$scope*/ 1073741824) {
 				icon_changes.$$scope = { dirty, ctx };
 			}
 
 			icon.$set(icon_changes);
-			if ((!current || dirty[0] & /*otherfolders*/ 256) && t1_value !== (t1_value = /*folder*/ ctx[32] + "")) set_data_dev(t1, t1_value);
+			if ((!current || dirty[0] & /*otherfolders*/ 32) && t1_value !== (t1_value = /*folder*/ ctx[31] + "")) set_data_dev(t1, t1_value);
 		},
 		i: function intro(local) {
 			if (current) return;
@@ -19706,7 +19702,7 @@ function create_each_block$1(ctx) {
 		block,
 		id: create_each_block$1.name,
 		type: "each",
-		source: "(198:20) {#each otherfolders as folder}",
+		source: "(194:20) {#each otherfolders as folder}",
 		ctx
 	});
 
@@ -19714,59 +19710,41 @@ function create_each_block$1(ctx) {
 }
 
 function create_fragment$r(ctx) {
-	let updating_activated;
-	let t0;
 	let section;
 	let div12;
 	let div6;
 	let div0;
+	let t0;
 	let t1;
 	let t2;
-	let t3;
 	let updating_value;
-	let t4;
+	let t3;
 	let div1;
-	let t5;
+	let t4;
 	let div5;
 	let div3;
 	let updating_pressed;
-	let t6;
+	let t5;
 	let div2;
+	let t6;
 	let t7;
-	let t8;
 	let current_block_type_index;
 	let if_block;
-	let t9;
+	let t8;
 	let div4;
-	let t10;
+	let t9;
 	let div11;
 	let div10;
 	let div7;
 	let button;
-	let t12;
+	let t11;
 	let updating_value_1;
-	let t13;
+	let t12;
 	let div8;
-	let t14;
+	let t13;
 	let div9;
 	let current;
 	let dispose;
-
-	function modal_activated_binding(value) {
-		/*modal_activated_binding*/ ctx[19].call(null, value);
-	}
-
-	let modal_props = {
-		modalTitle: /*modalTitle*/ ctx[2],
-		modalContent: /*modalContent*/ ctx[3]
-	};
-
-	if (/*activated*/ ctx[4] !== void 0) {
-		modal_props.activated = /*activated*/ ctx[4];
-	}
-
-	const modal = new Modal({ props: modal_props, $$inline: true });
-	binding_callbacks.push(() => bind(modal, "activated", modal_activated_binding));
 
 	const icon0 = new Icon({
 			props: {
@@ -19777,7 +19755,7 @@ function create_fragment$r(ctx) {
 			$$inline: true
 		});
 
-	icon0.$on("click", /*click_handler*/ ctx[20]);
+	icon0.$on("click", /*click_handler*/ ctx[19]);
 
 	const icon1 = new Icon({
 			props: {
@@ -19788,7 +19766,7 @@ function create_fragment$r(ctx) {
 			$$inline: true
 		});
 
-	icon1.$on("click", /*click_handler_1*/ ctx[21]);
+	icon1.$on("click", /*click_handler_1*/ ctx[20]);
 
 	const icon2 = new Icon({
 			props: {
@@ -19799,10 +19777,10 @@ function create_fragment$r(ctx) {
 			$$inline: true
 		});
 
-	icon2.$on("click", /*click_handler_2*/ ctx[22]);
+	icon2.$on("click", /*click_handler_2*/ ctx[21]);
 
-	function textfield0_value_binding(value_1) {
-		/*textfield0_value_binding*/ ctx[23].call(null, value_1);
+	function textfield0_value_binding(value) {
+		/*textfield0_value_binding*/ ctx[22].call(null, value);
 	}
 
 	let textfield0_props = {
@@ -19810,13 +19788,13 @@ function create_fragment$r(ctx) {
 		label: "Seach"
 	};
 
-	if (/*searchKey*/ ctx[11] !== void 0) {
-		textfield0_props.value = /*searchKey*/ ctx[11];
+	if (/*searchKey*/ ctx[8] !== void 0) {
+		textfield0_props.value = /*searchKey*/ ctx[8];
 	}
 
 	const textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
-	textfield0.$on("keyup", /*searchfile*/ ctx[13]);
+	textfield0.$on("keyup", /*searchfile*/ ctx[10]);
 
 	const formfield = new FormField({
 			props: {
@@ -19829,8 +19807,8 @@ function create_fragment$r(ctx) {
 			$$inline: true
 		});
 
-	function iconbutton_pressed_binding(value_2) {
-		/*iconbutton_pressed_binding*/ ctx[26].call(null, value_2);
+	function iconbutton_pressed_binding(value_1) {
+		/*iconbutton_pressed_binding*/ ctx[25].call(null, value_1);
 	}
 
 	let iconbutton_props = {
@@ -19839,8 +19817,8 @@ function create_fragment$r(ctx) {
 		$$scope: { ctx }
 	};
 
-	if (/*showfiles*/ ctx[10] !== void 0) {
-		iconbutton_props.pressed = /*showfiles*/ ctx[10];
+	if (/*showfiles*/ ctx[7] !== void 0) {
+		iconbutton_props.pressed = /*showfiles*/ ctx[7];
 	}
 
 	const iconbutton = new IconButton({ props: iconbutton_props, $$inline: true });
@@ -19849,8 +19827,8 @@ function create_fragment$r(ctx) {
 	const if_blocks = [];
 
 	function select_block_type(ctx, dirty) {
-		if (/*showfiles*/ ctx[10] && /*files*/ ctx[7] != "") return 0;
-		if (/*files*/ ctx[7] == "") return 1;
+		if (/*showfiles*/ ctx[7] && /*files*/ ctx[4] != "") return 0;
+		if (/*files*/ ctx[4] == "") return 1;
 		return -1;
 	}
 
@@ -19858,7 +19836,7 @@ function create_fragment$r(ctx) {
 		if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
 	}
 
-	let each_value = /*otherfolders*/ ctx[8];
+	let each_value = /*otherfolders*/ ctx[5];
 	let each_blocks = [];
 
 	for (let i = 0; i < each_value.length; i += 1) {
@@ -19869,8 +19847,8 @@ function create_fragment$r(ctx) {
 		each_blocks[i] = null;
 	});
 
-	function textfield1_value_binding(value_3) {
-		/*textfield1_value_binding*/ ctx[30].call(null, value_3);
+	function textfield1_value_binding(value_2) {
+		/*textfield1_value_binding*/ ctx[29].call(null, value_2);
 	}
 
 	let textfield1_props = {
@@ -19884,149 +19862,145 @@ function create_fragment$r(ctx) {
 
 	const textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding));
-	textfield1.$on("change", /*getfiles*/ ctx[15]);
+	textfield1.$on("change", /*getfiles*/ ctx[12]);
 	const buttonContainer_slot_template = /*$$slots*/ ctx[18].buttonContainer;
-	const buttonContainer_slot = create_slot(buttonContainer_slot_template, ctx, /*$$scope*/ ctx[31], get_buttonContainer_slot_context);
+	const buttonContainer_slot = create_slot(buttonContainer_slot_template, ctx, /*$$scope*/ ctx[30], get_buttonContainer_slot_context);
 	const plotContainer_slot_template = /*$$slots*/ ctx[18].plotContainer;
-	const plotContainer_slot = create_slot(plotContainer_slot_template, ctx, /*$$scope*/ ctx[31], get_plotContainer_slot_context);
+	const plotContainer_slot = create_slot(plotContainer_slot_template, ctx, /*$$scope*/ ctx[30], get_plotContainer_slot_context);
 
 	const block = {
 		c: function create() {
-			create_component(modal.$$.fragment);
-			t0 = space();
 			section = element("section");
 			div12 = element("div");
 			div6 = element("div");
 			div0 = element("div");
 			create_component(icon0.$$.fragment);
-			t1 = space();
+			t0 = space();
 			create_component(icon1.$$.fragment);
-			t2 = space();
+			t1 = space();
 			create_component(icon2.$$.fragment);
-			t3 = space();
+			t2 = space();
 			create_component(textfield0.$$.fragment);
-			t4 = space();
+			t3 = space();
 			div1 = element("div");
 			create_component(formfield.$$.fragment);
-			t5 = space();
+			t4 = space();
 			div5 = element("div");
 			div3 = element("div");
 			create_component(iconbutton.$$.fragment);
-			t6 = space();
+			t5 = space();
 			div2 = element("div");
-			t7 = text(/*parentFolder*/ ctx[12]);
-			t8 = space();
+			t6 = text(/*parentFolder*/ ctx[9]);
+			t7 = space();
 			if (if_block) if_block.c();
-			t9 = space();
+			t8 = space();
 			div4 = element("div");
 
 			for (let i = 0; i < each_blocks.length; i += 1) {
 				each_blocks[i].c();
 			}
 
-			t10 = space();
+			t9 = space();
 			div11 = element("div");
 			div10 = element("div");
 			div7 = element("div");
 			button = element("button");
 			button.textContent = "Browse";
-			t12 = space();
+			t11 = space();
 			create_component(textfield1.$$.fragment);
-			t13 = space();
+			t12 = space();
 			div8 = element("div");
 			if (buttonContainer_slot) buttonContainer_slot.c();
-			t14 = space();
+			t13 = space();
 			div9 = element("div");
 			if (plotContainer_slot) plotContainer_slot.c();
-			attr_dev(div0, "class", "align center svelte-jc3kmm");
-			add_location(div0, file$q, 157, 12, 4599);
-			attr_dev(div1, "class", "align center svelte-jc3kmm");
-			add_location(div1, file$q, 165, 12, 5104);
-			attr_dev(div2, "class", "mdc-typography--subtitle1 svelte-jc3kmm");
-			add_location(div2, file$q, 179, 20, 5784);
-			attr_dev(div3, "class", "align folderlist svelte-jc3kmm");
-			add_location(div3, file$q, 174, 16, 5462);
-			attr_dev(div4, "class", "otherFolderlist svelte-jc3kmm");
+			attr_dev(div0, "class", "align center svelte-qklggi");
+			add_location(div0, file$q, 153, 12, 4469);
+			attr_dev(div1, "class", "align center svelte-qklggi");
+			add_location(div1, file$q, 161, 12, 4974);
+			attr_dev(div2, "class", "mdc-typography--subtitle1 svelte-qklggi");
+			add_location(div2, file$q, 175, 20, 5654);
+			attr_dev(div3, "class", "align folderlist svelte-qklggi");
+			add_location(div3, file$q, 170, 16, 5332);
+			attr_dev(div4, "class", "otherFolderlist svelte-qklggi");
 			set_style(div4, "cursor", "pointer");
-			add_location(div4, file$q, 196, 16, 6687);
-			attr_dev(div5, "class", "folderfile-list svelte-jc3kmm");
-			add_location(div5, file$q, 172, 12, 5413);
-			attr_dev(div6, "class", "column is-2 box filebrowser svelte-jc3kmm");
-			add_location(div6, file$q, 155, 8, 4541);
-			attr_dev(button, "class", "button is-link gap svelte-jc3kmm");
-			add_location(button, file$q, 211, 20, 7338);
-			attr_dev(div7, "class", "align svelte-jc3kmm");
-			add_location(div7, file$q, 210, 16, 7297);
-			attr_dev(div8, "class", "align buttonContainer svelte-jc3kmm");
-			add_location(div8, file$q, 215, 16, 7594);
-			attr_dev(div9, "class", "align plotContainer svelte-jc3kmm");
-			add_location(div9, file$q, 216, 16, 7685);
-			attr_dev(div10, "class", "container box svelte-jc3kmm");
-			add_location(div10, file$q, 208, 12, 7250);
-			attr_dev(div11, "class", "column fileContainer svelte-jc3kmm");
-			add_location(div11, file$q, 207, 8, 7202);
-			attr_dev(div12, "class", "columns svelte-jc3kmm");
-			add_location(div12, file$q, 153, 4, 4508);
-			attr_dev(section, "id", /*id*/ ctx[5]);
+			add_location(div4, file$q, 192, 16, 6557);
+			attr_dev(div5, "class", "folderfile-list svelte-qklggi");
+			add_location(div5, file$q, 168, 12, 5283);
+			attr_dev(div6, "class", "column is-2 box filebrowser svelte-qklggi");
+			add_location(div6, file$q, 151, 8, 4411);
+			attr_dev(button, "class", "button is-link gap svelte-qklggi");
+			add_location(button, file$q, 207, 20, 7208);
+			attr_dev(div7, "class", "align svelte-qklggi");
+			add_location(div7, file$q, 206, 16, 7167);
+			attr_dev(div8, "class", "align buttonContainer svelte-qklggi");
+			add_location(div8, file$q, 211, 16, 7464);
+			attr_dev(div9, "class", "align plotContainer svelte-qklggi");
+			add_location(div9, file$q, 212, 16, 7555);
+			attr_dev(div10, "class", "container box svelte-qklggi");
+			add_location(div10, file$q, 204, 12, 7120);
+			attr_dev(div11, "class", "column fileContainer svelte-qklggi");
+			add_location(div11, file$q, 203, 8, 7072);
+			attr_dev(div12, "class", "columns svelte-qklggi");
+			add_location(div12, file$q, 149, 4, 4378);
+			attr_dev(section, "id", /*id*/ ctx[2]);
 			set_style(section, "display", "none");
-			attr_dev(section, "class", "svelte-jc3kmm");
-			add_location(section, file$q, 152, 0, 4466);
+			attr_dev(section, "class", "svelte-qklggi");
+			add_location(section, file$q, 148, 0, 4336);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
 		},
 		m: function mount(target, anchor) {
-			mount_component(modal, target, anchor);
-			insert_dev(target, t0, anchor);
 			insert_dev(target, section, anchor);
 			append_dev(section, div12);
 			append_dev(div12, div6);
 			append_dev(div6, div0);
 			mount_component(icon0, div0, null);
-			append_dev(div0, t1);
+			append_dev(div0, t0);
 			mount_component(icon1, div0, null);
-			append_dev(div0, t2);
+			append_dev(div0, t1);
 			mount_component(icon2, div0, null);
-			append_dev(div6, t3);
+			append_dev(div6, t2);
 			mount_component(textfield0, div6, null);
-			append_dev(div6, t4);
+			append_dev(div6, t3);
 			append_dev(div6, div1);
 			mount_component(formfield, div1, null);
-			append_dev(div6, t5);
+			append_dev(div6, t4);
 			append_dev(div6, div5);
 			append_dev(div5, div3);
 			mount_component(iconbutton, div3, null);
-			append_dev(div3, t6);
+			append_dev(div3, t5);
 			append_dev(div3, div2);
-			append_dev(div2, t7);
-			append_dev(div5, t8);
+			append_dev(div2, t6);
+			append_dev(div5, t7);
 
 			if (~current_block_type_index) {
 				if_blocks[current_block_type_index].m(div5, null);
 			}
 
-			append_dev(div5, t9);
+			append_dev(div5, t8);
 			append_dev(div5, div4);
 
 			for (let i = 0; i < each_blocks.length; i += 1) {
 				each_blocks[i].m(div4, null);
 			}
 
-			append_dev(div12, t10);
+			append_dev(div12, t9);
 			append_dev(div12, div11);
 			append_dev(div11, div10);
 			append_dev(div10, div7);
 			append_dev(div7, button);
-			append_dev(div7, t12);
+			append_dev(div7, t11);
 			mount_component(textfield1, div7, null);
-			append_dev(div10, t13);
+			append_dev(div10, t12);
 			append_dev(div10, div8);
 
 			if (buttonContainer_slot) {
 				buttonContainer_slot.m(div8, null);
 			}
 
-			append_dev(div10, t14);
+			append_dev(div10, t13);
 			append_dev(div10, div9);
 
 			if (plotContainer_slot) {
@@ -20034,71 +20008,60 @@ function create_fragment$r(ctx) {
 			}
 
 			current = true;
-			dispose = listen_dev(button, "click", /*browse_folder*/ ctx[14], false, false, false);
+			dispose = listen_dev(button, "click", /*browse_folder*/ ctx[11], false, false, false);
 		},
 		p: function update(ctx, dirty) {
-			const modal_changes = {};
-			if (dirty[0] & /*modalTitle*/ 4) modal_changes.modalTitle = /*modalTitle*/ ctx[2];
-			if (dirty[0] & /*modalContent*/ 8) modal_changes.modalContent = /*modalContent*/ ctx[3];
-
-			if (!updating_activated && dirty[0] & /*activated*/ 16) {
-				updating_activated = true;
-				modal_changes.activated = /*activated*/ ctx[4];
-				add_flush_callback(() => updating_activated = false);
-			}
-
-			modal.$set(modal_changes);
 			const icon0_changes = {};
 
-			if (dirty[1] & /*$$scope*/ 1) {
+			if (dirty[0] & /*$$scope*/ 1073741824) {
 				icon0_changes.$$scope = { dirty, ctx };
 			}
 
 			icon0.$set(icon0_changes);
 			const icon1_changes = {};
 
-			if (dirty[1] & /*$$scope*/ 1) {
+			if (dirty[0] & /*$$scope*/ 1073741824) {
 				icon1_changes.$$scope = { dirty, ctx };
 			}
 
 			icon1.$set(icon1_changes);
 			const icon2_changes = {};
 
-			if (dirty[1] & /*$$scope*/ 1) {
+			if (dirty[0] & /*$$scope*/ 1073741824) {
 				icon2_changes.$$scope = { dirty, ctx };
 			}
 
 			icon2.$set(icon2_changes);
 			const textfield0_changes = {};
 
-			if (!updating_value && dirty[0] & /*searchKey*/ 2048) {
+			if (!updating_value && dirty[0] & /*searchKey*/ 256) {
 				updating_value = true;
-				textfield0_changes.value = /*searchKey*/ ctx[11];
+				textfield0_changes.value = /*searchKey*/ ctx[8];
 				add_flush_callback(() => updating_value = false);
 			}
 
 			textfield0.$set(textfield0_changes);
 			const formfield_changes = {};
 
-			if (dirty[0] & /*selectAll, fileChecked, files*/ 641 | dirty[1] & /*$$scope*/ 1) {
+			if (dirty[0] & /*$$scope, selectAll, fileChecked, files*/ 1073741905) {
 				formfield_changes.$$scope = { dirty, ctx };
 			}
 
 			formfield.$set(formfield_changes);
 			const iconbutton_changes = {};
 
-			if (dirty[1] & /*$$scope*/ 1) {
+			if (dirty[0] & /*$$scope*/ 1073741824) {
 				iconbutton_changes.$$scope = { dirty, ctx };
 			}
 
-			if (!updating_pressed && dirty[0] & /*showfiles*/ 1024) {
+			if (!updating_pressed && dirty[0] & /*showfiles*/ 128) {
 				updating_pressed = true;
-				iconbutton_changes.pressed = /*showfiles*/ ctx[10];
+				iconbutton_changes.pressed = /*showfiles*/ ctx[7];
 				add_flush_callback(() => updating_pressed = false);
 			}
 
 			iconbutton.$set(iconbutton_changes);
-			if (!current || dirty[0] & /*parentFolder*/ 4096) set_data_dev(t7, /*parentFolder*/ ctx[12]);
+			if (!current || dirty[0] & /*parentFolder*/ 512) set_data_dev(t6, /*parentFolder*/ ctx[9]);
 			let previous_block_index = current_block_type_index;
 			current_block_type_index = select_block_type(ctx);
 
@@ -20126,14 +20089,14 @@ function create_fragment$r(ctx) {
 					}
 
 					transition_in(if_block, 1);
-					if_block.m(div5, t9);
+					if_block.m(div5, t8);
 				} else {
 					if_block = null;
 				}
 			}
 
-			if (dirty[0] & /*changeDirectory, otherfolders*/ 65792) {
-				each_value = /*otherfolders*/ ctx[8];
+			if (dirty[0] & /*changeDirectory, otherfolders*/ 8224) {
+				each_value = /*otherfolders*/ ctx[5];
 				let i;
 
 				for (i = 0; i < each_value.length; i += 1) {
@@ -20169,21 +20132,20 @@ function create_fragment$r(ctx) {
 
 			textfield1.$set(textfield1_changes);
 
-			if (buttonContainer_slot && buttonContainer_slot.p && dirty[1] & /*$$scope*/ 1) {
-				buttonContainer_slot.p(get_slot_context(buttonContainer_slot_template, ctx, /*$$scope*/ ctx[31], get_buttonContainer_slot_context), get_slot_changes(buttonContainer_slot_template, /*$$scope*/ ctx[31], dirty, get_buttonContainer_slot_changes));
+			if (buttonContainer_slot && buttonContainer_slot.p && dirty[0] & /*$$scope*/ 1073741824) {
+				buttonContainer_slot.p(get_slot_context(buttonContainer_slot_template, ctx, /*$$scope*/ ctx[30], get_buttonContainer_slot_context), get_slot_changes(buttonContainer_slot_template, /*$$scope*/ ctx[30], dirty, get_buttonContainer_slot_changes));
 			}
 
-			if (plotContainer_slot && plotContainer_slot.p && dirty[1] & /*$$scope*/ 1) {
-				plotContainer_slot.p(get_slot_context(plotContainer_slot_template, ctx, /*$$scope*/ ctx[31], get_plotContainer_slot_context), get_slot_changes(plotContainer_slot_template, /*$$scope*/ ctx[31], dirty, get_plotContainer_slot_changes));
+			if (plotContainer_slot && plotContainer_slot.p && dirty[0] & /*$$scope*/ 1073741824) {
+				plotContainer_slot.p(get_slot_context(plotContainer_slot_template, ctx, /*$$scope*/ ctx[30], get_plotContainer_slot_context), get_slot_changes(plotContainer_slot_template, /*$$scope*/ ctx[30], dirty, get_plotContainer_slot_changes));
 			}
 
-			if (!current || dirty[0] & /*id*/ 32) {
-				attr_dev(section, "id", /*id*/ ctx[5]);
+			if (!current || dirty[0] & /*id*/ 4) {
+				attr_dev(section, "id", /*id*/ ctx[2]);
 			}
 		},
 		i: function intro(local) {
 			if (current) return;
-			transition_in(modal.$$.fragment, local);
 			transition_in(icon0.$$.fragment, local);
 			transition_in(icon1.$$.fragment, local);
 			transition_in(icon2.$$.fragment, local);
@@ -20202,7 +20164,6 @@ function create_fragment$r(ctx) {
 			current = true;
 		},
 		o: function outro(local) {
-			transition_out(modal.$$.fragment, local);
 			transition_out(icon0.$$.fragment, local);
 			transition_out(icon1.$$.fragment, local);
 			transition_out(icon2.$$.fragment, local);
@@ -20222,8 +20183,6 @@ function create_fragment$r(ctx) {
 			current = false;
 		},
 		d: function destroy(detaching) {
-			destroy_component(modal, detaching);
-			if (detaching) detach_dev(t0);
 			if (detaching) detach_dev(section);
 			destroy_component(icon0);
 			destroy_component(icon1);
@@ -20262,6 +20221,15 @@ const createToast = (msg, type = "primary") => Sn.create({
 });
 
 function instance$r($$self, $$props, $$invalidate) {
+	let $modalTitle;
+	let $modalContent;
+	let $activated;
+	validate_store(modalTitle, "modalTitle");
+	component_subscribe($$self, modalTitle, $$value => $$invalidate(15, $modalTitle = $$value));
+	validate_store(modalContent, "modalContent");
+	component_subscribe($$self, modalContent, $$value => $$invalidate(16, $modalContent = $$value));
+	validate_store(activated, "activated");
+	component_subscribe($$self, activated, $$value => $$invalidate(17, $activated = $$value));
 	let { id } = $$props;
 	let { fileChecked = [] } = $$props;
 	let { filetype = "felix" } = $$props;
@@ -20272,10 +20240,6 @@ function instance$r($$self, $$props, $$invalidate) {
 			getfiles();
 		}
 	});
-
-	let { modalTitle = "Error detail" } = $$props,
-		{ modalContent = "" } = $$props,
-		{ activated = false } = $$props;
 
 	let files = [];
 	let otherfolders = [];
@@ -20288,9 +20252,9 @@ function instance$r($$self, $$props, $$invalidate) {
 		console.log(searchKey);
 
 		if (!searchKey) {
-			$$invalidate(7, files = original_files);
+			$$invalidate(4, files = original_files);
 		} else {
-			$$invalidate(7, files = original_files.filter(file => file.includes(searchKey)));
+			$$invalidate(4, files = original_files.filter(file => file.includes(searchKey)));
 		}
 	};
 
@@ -20311,47 +20275,33 @@ function instance$r($$self, $$props, $$invalidate) {
 			let folderfile = fs.readdirSync(currentLocation).map(file => path.join(currentLocation, file));
 			let allfiles = folderfile.filter(file => fs.lstatSync(file).isFile());
 			let typefiles = allfiles.filter(file => file.endsWith(filetype));
-			$$invalidate(7, files = original_files = typefiles.map(file => path.basename(file)));
-			$$invalidate(8, otherfolders = folderfile.filter(file => fs.lstatSync(file).isDirectory()).map(file => path.basename(file)));
+			$$invalidate(4, files = original_files = typefiles.map(file => path.basename(file)));
+			$$invalidate(5, otherfolders = folderfile.filter(file => fs.lstatSync(file).isDirectory()).map(file => path.basename(file)));
 			console.log("Folder updated for ", filetype, "\n", files);
 
 			if (toast) {
 				createToast("Files updated");
 			}
 		} catch(err) {
-			$$invalidate(2, modalTitle = `${id}: Error detail`);
-			$$invalidate(3, modalContent = err);
-			$$invalidate(4, activated = true);
+			set_store_value(modalTitle, $modalTitle = `${id}: Error detail`);
+			set_store_value(modalContent, $modalContent = err);
+			set_store_value(activated, $activated = true);
 		}
 	}
 
 	const changeDirectory = goto => {
-		$$invalidate(9, selectAll = false);
+		$$invalidate(6, selectAll = false);
 		$$invalidate(1, currentLocation = path.resolve(currentLocation, goto));
 		getfiles();
 	};
 
-	const writable_props = [
-		"id",
-		"fileChecked",
-		"filetype",
-		"currentLocation",
-		"modalTitle",
-		"modalContent",
-		"activated"
-	];
+	const writable_props = ["id", "fileChecked", "filetype", "currentLocation"];
 
 	Object.keys($$props).forEach(key => {
 		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1.warn(`<Layout> was created with unknown prop '${key}'`);
 	});
 
 	let { $$slots = {}, $$scope } = $$props;
-
-	function modal_activated_binding(value) {
-		activated = value;
-		$$invalidate(4, activated);
-	}
-
 	const click_handler = () => changeDirectory(localStorage[`${filetype}_location`]);
 
 	const click_handler_1 = () => {
@@ -20360,23 +20310,23 @@ function instance$r($$self, $$props, $$invalidate) {
 
 	const click_handler_2 = () => changeDirectory("../");
 
-	function textfield0_value_binding(value_1) {
-		searchKey = value_1;
-		$$invalidate(11, searchKey);
+	function textfield0_value_binding(value) {
+		searchKey = value;
+		$$invalidate(8, searchKey);
 	}
 
 	function switch_1_checked_binding(value) {
 		selectAll = value;
-		$$invalidate(9, selectAll);
+		$$invalidate(6, selectAll);
 	}
 
 	const change_handler = () => selectAll
 	? $$invalidate(0, fileChecked = [...files])
 	: $$invalidate(0, fileChecked = []);
 
-	function iconbutton_pressed_binding(value_2) {
-		showfiles = value_2;
-		$$invalidate(10, showfiles);
+	function iconbutton_pressed_binding(value_1) {
+		showfiles = value_1;
+		$$invalidate(7, showfiles);
 	}
 
 	function checkbox_group_binding(value) {
@@ -20384,23 +20334,20 @@ function instance$r($$self, $$props, $$invalidate) {
 		$$invalidate(0, fileChecked);
 	}
 
-	const click_handler_3 = () => $$invalidate(9, selectAll = false);
+	const click_handler_3 = () => $$invalidate(6, selectAll = false);
 	const click_handler_4 = folder => changeDirectory(folder);
 
-	function textfield1_value_binding(value_3) {
-		currentLocation = value_3;
+	function textfield1_value_binding(value_2) {
+		currentLocation = value_2;
 		$$invalidate(1, currentLocation);
 	}
 
 	$$self.$set = $$props => {
-		if ("id" in $$props) $$invalidate(5, id = $$props.id);
+		if ("id" in $$props) $$invalidate(2, id = $$props.id);
 		if ("fileChecked" in $$props) $$invalidate(0, fileChecked = $$props.fileChecked);
-		if ("filetype" in $$props) $$invalidate(6, filetype = $$props.filetype);
+		if ("filetype" in $$props) $$invalidate(3, filetype = $$props.filetype);
 		if ("currentLocation" in $$props) $$invalidate(1, currentLocation = $$props.currentLocation);
-		if ("modalTitle" in $$props) $$invalidate(2, modalTitle = $$props.modalTitle);
-		if ("modalContent" in $$props) $$invalidate(3, modalContent = $$props.modalContent);
-		if ("activated" in $$props) $$invalidate(4, activated = $$props.activated);
-		if ("$$scope" in $$props) $$invalidate(31, $$scope = $$props.$$scope);
+		if ("$$scope" in $$props) $$invalidate(30, $$scope = $$props.$$scope);
 	};
 
 	$$self.$capture_state = () => {
@@ -20409,45 +20356,45 @@ function instance$r($$self, $$props, $$invalidate) {
 			fileChecked,
 			filetype,
 			currentLocation,
-			modalTitle,
-			modalContent,
-			activated,
 			files,
 			otherfolders,
 			selectAll,
 			showfiles,
 			original_files,
 			searchKey,
-			parentFolder
+			parentFolder,
+			$modalTitle,
+			$modalContent,
+			$activated
 		};
 	};
 
 	$$self.$inject_state = $$props => {
-		if ("id" in $$props) $$invalidate(5, id = $$props.id);
+		if ("id" in $$props) $$invalidate(2, id = $$props.id);
 		if ("fileChecked" in $$props) $$invalidate(0, fileChecked = $$props.fileChecked);
-		if ("filetype" in $$props) $$invalidate(6, filetype = $$props.filetype);
+		if ("filetype" in $$props) $$invalidate(3, filetype = $$props.filetype);
 		if ("currentLocation" in $$props) $$invalidate(1, currentLocation = $$props.currentLocation);
-		if ("modalTitle" in $$props) $$invalidate(2, modalTitle = $$props.modalTitle);
-		if ("modalContent" in $$props) $$invalidate(3, modalContent = $$props.modalContent);
-		if ("activated" in $$props) $$invalidate(4, activated = $$props.activated);
-		if ("files" in $$props) $$invalidate(7, files = $$props.files);
-		if ("otherfolders" in $$props) $$invalidate(8, otherfolders = $$props.otherfolders);
-		if ("selectAll" in $$props) $$invalidate(9, selectAll = $$props.selectAll);
-		if ("showfiles" in $$props) $$invalidate(10, showfiles = $$props.showfiles);
+		if ("files" in $$props) $$invalidate(4, files = $$props.files);
+		if ("otherfolders" in $$props) $$invalidate(5, otherfolders = $$props.otherfolders);
+		if ("selectAll" in $$props) $$invalidate(6, selectAll = $$props.selectAll);
+		if ("showfiles" in $$props) $$invalidate(7, showfiles = $$props.showfiles);
 		if ("original_files" in $$props) original_files = $$props.original_files;
-		if ("searchKey" in $$props) $$invalidate(11, searchKey = $$props.searchKey);
-		if ("parentFolder" in $$props) $$invalidate(12, parentFolder = $$props.parentFolder);
+		if ("searchKey" in $$props) $$invalidate(8, searchKey = $$props.searchKey);
+		if ("parentFolder" in $$props) $$invalidate(9, parentFolder = $$props.parentFolder);
+		if ("$modalTitle" in $$props) modalTitle.set($modalTitle = $$props.$modalTitle);
+		if ("$modalContent" in $$props) modalContent.set($modalContent = $$props.$modalContent);
+		if ("$activated" in $$props) activated.set($activated = $$props.$activated);
 	};
 
 	let parentFolder;
 
 	$$self.$$.update = () => {
 		if ($$self.$$.dirty[0] & /*currentLocation*/ 2) {
-			 $$invalidate(12, parentFolder = path.basename(currentLocation));
+			 $$invalidate(9, parentFolder = path.basename(currentLocation));
 		}
 
-		if ($$self.$$.dirty[0] & /*activated, filetype*/ 80) {
-			 activated
+		if ($$self.$$.dirty[0] & /*$activated, filetype*/ 131080) {
+			 $activated
 			? console.log(`Modal activated for ${filetype}`)
 			: console.log(`Modal deactivated for ${filetype}`);
 		}
@@ -20456,9 +20403,6 @@ function instance$r($$self, $$props, $$invalidate) {
 	return [
 		fileChecked,
 		currentLocation,
-		modalTitle,
-		modalContent,
-		activated,
 		id,
 		filetype,
 		files,
@@ -20472,8 +20416,10 @@ function instance$r($$self, $$props, $$invalidate) {
 		getfiles,
 		changeDirectory,
 		original_files,
+		$modalTitle,
+		$modalContent,
+		$activated,
 		$$slots,
-		modal_activated_binding,
 		click_handler,
 		click_handler_1,
 		click_handler_2,
@@ -20500,13 +20446,10 @@ class Layout extends SvelteComponentDev {
 			create_fragment$r,
 			safe_not_equal,
 			{
-				id: 5,
+				id: 2,
 				fileChecked: 0,
-				filetype: 6,
-				currentLocation: 1,
-				modalTitle: 2,
-				modalContent: 3,
-				activated: 4
+				filetype: 3,
+				currentLocation: 1
 			},
 			[-1, -1]
 		);
@@ -20521,7 +20464,7 @@ class Layout extends SvelteComponentDev {
 		const { ctx } = this.$$;
 		const props = options.props || ({});
 
-		if (/*id*/ ctx[5] === undefined && !("id" in props)) {
+		if (/*id*/ ctx[2] === undefined && !("id" in props)) {
 			console_1.warn("<Layout> was created without expected prop 'id'");
 		}
 	}
@@ -20555,30 +20498,6 @@ class Layout extends SvelteComponentDev {
 	}
 
 	set currentLocation(value) {
-		throw new Error("<Layout>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	get modalTitle() {
-		throw new Error("<Layout>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	set modalTitle(value) {
-		throw new Error("<Layout>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	get modalContent() {
-		throw new Error("<Layout>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	set modalContent(value) {
-		throw new Error("<Layout>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	get activated() {
-		throw new Error("<Layout>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	set activated(value) {
 		throw new Error("<Layout>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 }
@@ -20806,58 +20725,6 @@ var MDCLinearProgress = /** @class */ (function (_super) {
     return MDCLinearProgress;
 }(MDCComponent));
 //# sourceMappingURL=component.js.map
-
-const subscriber_queue = [];
-/**
- * Create a `Writable` store that allows both updating and reading by subscription.
- * @param {*=}value initial value
- * @param {StartStopNotifier=}start start and stop notifications for subscriptions
- */
-function writable(value, start = noop) {
-    let stop;
-    const subscribers = [];
-    function set(new_value) {
-        if (safe_not_equal(value, new_value)) {
-            value = new_value;
-            if (stop) { // store is ready
-                const run_queue = !subscriber_queue.length;
-                for (let i = 0; i < subscribers.length; i += 1) {
-                    const s = subscribers[i];
-                    s[1]();
-                    subscriber_queue.push(s, value);
-                }
-                if (run_queue) {
-                    for (let i = 0; i < subscriber_queue.length; i += 2) {
-                        subscriber_queue[i][0](subscriber_queue[i + 1]);
-                    }
-                    subscriber_queue.length = 0;
-                }
-            }
-        }
-    }
-    function update(fn) {
-        set(fn(value));
-    }
-    function subscribe(run, invalidate = noop) {
-        const subscriber = [run, invalidate];
-        subscribers.push(subscriber);
-        if (subscribers.length === 1) {
-            stop = start(set) || noop;
-        }
-        run(value);
-        return () => {
-            const index = subscribers.indexOf(subscriber);
-            if (index !== -1) {
-                subscribers.splice(index, 1);
-            }
-            if (subscribers.length === 0) {
-                stop();
-                stop = null;
-            }
-        };
-    }
-    return { set, update, subscribe };
-}
 
 function is_date(obj) {
     return Object.prototype.toString.call(obj) === '[object Date]';
@@ -22387,7 +22254,7 @@ class Powerfile extends SvelteComponentDev {
 /* src\Pages\Normline.svelte generated by Svelte v3.17.0 */
 const file$v = "src\\Pages\\Normline.svelte";
 
-// (44:8) {#if toggleRow}
+// (42:8) {#if toggleRow}
 function create_if_block$8(ctx) {
 	let div;
 	let button0;
@@ -22419,18 +22286,18 @@ function create_if_block$8(ctx) {
 			t7 = space();
 			button4 = element("button");
 			button4.textContent = "Create Baseline";
-			attr_dev(button0, "class", "button is-link svelte-1j0fyln");
-			add_location(button0, file$v, 45, 16, 1686);
-			attr_dev(button1, "class", "button is-link svelte-1j0fyln");
-			add_location(button1, file$v, 46, 16, 1759);
-			attr_dev(button2, "class", "button is-link svelte-1j0fyln");
-			add_location(button2, file$v, 47, 16, 1832);
-			attr_dev(button3, "class", "button is-link svelte-1j0fyln");
-			add_location(button3, file$v, 48, 16, 1905);
-			attr_dev(button4, "class", "button is-link svelte-1j0fyln");
-			add_location(button4, file$v, 49, 16, 1978);
-			attr_dev(div, "class", "align svelte-1j0fyln");
-			add_location(div, file$v, 44, 12, 1604);
+			attr_dev(button0, "class", "button is-link svelte-ju9u98");
+			add_location(button0, file$v, 43, 16, 1560);
+			attr_dev(button1, "class", "button is-link svelte-ju9u98");
+			add_location(button1, file$v, 44, 16, 1633);
+			attr_dev(button2, "class", "button is-link svelte-ju9u98");
+			add_location(button2, file$v, 45, 16, 1706);
+			attr_dev(button3, "class", "button is-link svelte-ju9u98");
+			add_location(button3, file$v, 46, 16, 1779);
+			attr_dev(button4, "class", "button is-link svelte-ju9u98");
+			add_location(button4, file$v, 47, 16, 1852);
+			attr_dev(div, "class", "align svelte-ju9u98");
+			add_location(div, file$v, 42, 12, 1478);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -22470,14 +22337,14 @@ function create_if_block$8(ctx) {
 		block,
 		id: create_if_block$8.name,
 		type: "if",
-		source: "(44:8) {#if toggleRow}",
+		source: "(42:8) {#if toggleRow}",
 		ctx
 	});
 
 	return block;
 }
 
-// (31:4) <div class="buttonSlot" slot="buttonContainer">
+// (29:4) <div class="buttonSlot" slot="buttonContainer">
 function create_buttonContainer_slot(ctx) {
 	let div0;
 	let div2;
@@ -22498,7 +22365,7 @@ function create_buttonContainer_slot(ctx) {
 	let dispose;
 
 	function textfield_value_binding(value) {
-		/*textfield_value_binding*/ ctx[10].call(null, value);
+		/*textfield_value_binding*/ ctx[7].call(null, value);
 	}
 
 	let textfield_props = {
@@ -22537,23 +22404,23 @@ function create_buttonContainer_slot(ctx) {
 			create_component(textfield.$$.fragment);
 			t10 = space();
 			if (if_block) if_block.c();
-			attr_dev(button0, "class", "button is-link svelte-1j0fyln");
-			add_location(button0, file$v, 33, 12, 1075);
-			attr_dev(button1, "class", "button is-link svelte-1j0fyln");
-			add_location(button1, file$v, 34, 12, 1144);
-			attr_dev(button2, "class", "button is-link svelte-1j0fyln");
-			add_location(button2, file$v, 35, 12, 1208);
-			attr_dev(button3, "class", "button is-link svelte-1j0fyln");
-			add_location(button3, file$v, 36, 12, 1312);
-			attr_dev(button4, "class", "button is-link svelte-1j0fyln");
-			add_location(button4, file$v, 37, 12, 1384);
-			attr_dev(div1, "class", "short-input svelte-1j0fyln");
-			add_location(div1, file$v, 39, 12, 1443);
-			attr_dev(div2, "class", "align svelte-1j0fyln");
-			add_location(div2, file$v, 31, 8, 1040);
-			attr_dev(div0, "class", "buttonSlot svelte-1j0fyln");
+			attr_dev(button0, "class", "button is-link svelte-ju9u98");
+			add_location(button0, file$v, 31, 12, 949);
+			attr_dev(button1, "class", "button is-link svelte-ju9u98");
+			add_location(button1, file$v, 32, 12, 1018);
+			attr_dev(button2, "class", "button is-link svelte-ju9u98");
+			add_location(button2, file$v, 33, 12, 1082);
+			attr_dev(button3, "class", "button is-link svelte-ju9u98");
+			add_location(button3, file$v, 34, 12, 1186);
+			attr_dev(button4, "class", "button is-link svelte-ju9u98");
+			add_location(button4, file$v, 35, 12, 1258);
+			attr_dev(div1, "class", "short-input svelte-ju9u98");
+			add_location(div1, file$v, 37, 12, 1317);
+			attr_dev(div2, "class", "align svelte-ju9u98");
+			add_location(div2, file$v, 29, 8, 914);
+			attr_dev(div0, "class", "buttonSlot svelte-ju9u98");
 			attr_dev(div0, "slot", "buttonContainer");
-			add_location(div0, file$v, 30, 4, 983);
+			add_location(div0, file$v, 28, 4, 857);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -22573,7 +22440,7 @@ function create_buttonContainer_slot(ctx) {
 			append_dev(div0, t10);
 			if (if_block) if_block.m(div0, null);
 			current = true;
-			dispose = listen_dev(button2, "click", /*click_handler*/ ctx[9], false, false, false);
+			dispose = listen_dev(button2, "click", /*click_handler*/ ctx[6], false, false, false);
 		},
 		p: function update(ctx, dirty) {
 			const textfield_changes = {};
@@ -22628,14 +22495,14 @@ function create_buttonContainer_slot(ctx) {
 		block,
 		id: create_buttonContainer_slot.name,
 		type: "slot",
-		source: "(31:4) <div class=\\\"buttonSlot\\\" slot=\\\"buttonContainer\\\">",
+		source: "(29:4) <div class=\\\"buttonSlot\\\" slot=\\\"buttonContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (29:0) <Layout {filetype} {id} bind:currentLocation={location} bind:fileChecked={felixfiles} bind:activated {modalContent} {modalTitle}>
+// (27:0) <Layout {filetype} {id} bind:currentLocation={location} bind:fileChecked={felixfiles}>
 function create_default_slot$8(ctx) {
 
 	const block = {
@@ -22651,7 +22518,7 @@ function create_default_slot$8(ctx) {
 		block,
 		id: create_default_slot$8.name,
 		type: "slot",
-		source: "(29:0) <Layout {filetype} {id} bind:currentLocation={location} bind:fileChecked={felixfiles} bind:activated {modalContent} {modalTitle}>",
+		source: "(27:0) <Layout {filetype} {id} bind:currentLocation={location} bind:fileChecked={felixfiles}>",
 		ctx
 	});
 
@@ -22661,26 +22528,19 @@ function create_default_slot$8(ctx) {
 function create_fragment$w(ctx) {
 	let updating_currentLocation;
 	let updating_fileChecked;
-	let updating_activated;
 	let current;
 
 	function layout_currentLocation_binding(value) {
-		/*layout_currentLocation_binding*/ ctx[11].call(null, value);
+		/*layout_currentLocation_binding*/ ctx[8].call(null, value);
 	}
 
 	function layout_fileChecked_binding(value_1) {
-		/*layout_fileChecked_binding*/ ctx[12].call(null, value_1);
-	}
-
-	function layout_activated_binding(value_2) {
-		/*layout_activated_binding*/ ctx[13].call(null, value_2);
+		/*layout_fileChecked_binding*/ ctx[9].call(null, value_1);
 	}
 
 	let layout_props = {
-		filetype: /*filetype*/ ctx[5],
-		id: /*id*/ ctx[6],
-		modalContent: /*modalContent*/ ctx[7],
-		modalTitle: /*modalTitle*/ ctx[8],
+		filetype: /*filetype*/ ctx[4],
+		id: /*id*/ ctx[5],
 		$$slots: {
 			default: [create_default_slot$8],
 			buttonContainer: [create_buttonContainer_slot]
@@ -22696,14 +22556,9 @@ function create_fragment$w(ctx) {
 		layout_props.fileChecked = /*felixfiles*/ ctx[0];
 	}
 
-	if (/*activated*/ ctx[4] !== void 0) {
-		layout_props.activated = /*activated*/ ctx[4];
-	}
-
 	const layout = new Layout({ props: layout_props, $$inline: true });
 	binding_callbacks.push(() => bind(layout, "currentLocation", layout_currentLocation_binding));
 	binding_callbacks.push(() => bind(layout, "fileChecked", layout_fileChecked_binding));
-	binding_callbacks.push(() => bind(layout, "activated", layout_activated_binding));
 
 	const block = {
 		c: function create() {
@@ -22719,7 +22574,7 @@ function create_fragment$w(ctx) {
 		p: function update(ctx, [dirty]) {
 			const layout_changes = {};
 
-			if (dirty & /*$$scope, toggleRow, delta*/ 16390) {
+			if (dirty & /*$$scope, toggleRow, delta*/ 1030) {
 				layout_changes.$$scope = { dirty, ctx };
 			}
 
@@ -22733,12 +22588,6 @@ function create_fragment$w(ctx) {
 				updating_fileChecked = true;
 				layout_changes.fileChecked = /*felixfiles*/ ctx[0];
 				add_flush_callback(() => updating_fileChecked = false);
-			}
-
-			if (!updating_activated && dirty & /*activated*/ 16) {
-				updating_activated = true;
-				layout_changes.activated = /*activated*/ ctx[4];
-				add_flush_callback(() => updating_activated = false);
 			}
 
 			layout.$set(layout_changes);
@@ -22776,7 +22625,6 @@ function instance$w($$self, $$props, $$invalidate) {
 		toggleRow = false;
 
 	let location = localStorage[`${filetype}_location`] || "";
-	let modalContent = "", modalTitle = "", activated = false;
 	const click_handler = () => $$invalidate(2, toggleRow = !toggleRow);
 
 	function textfield_value_binding(value) {
@@ -22794,25 +22642,17 @@ function instance$w($$self, $$props, $$invalidate) {
 		$$invalidate(0, felixfiles);
 	}
 
-	function layout_activated_binding(value_2) {
-		activated = value_2;
-		$$invalidate(4, activated);
-	}
-
 	$$self.$capture_state = () => {
 		return {};
 	};
 
 	$$self.$inject_state = $$props => {
-		if ("filetype" in $$props) $$invalidate(5, filetype = $$props.filetype);
-		if ("id" in $$props) $$invalidate(6, id = $$props.id);
+		if ("filetype" in $$props) $$invalidate(4, filetype = $$props.filetype);
+		if ("id" in $$props) $$invalidate(5, id = $$props.id);
 		if ("felixfiles" in $$props) $$invalidate(0, felixfiles = $$props.felixfiles);
 		if ("delta" in $$props) $$invalidate(1, delta = $$props.delta);
 		if ("toggleRow" in $$props) $$invalidate(2, toggleRow = $$props.toggleRow);
 		if ("location" in $$props) $$invalidate(3, location = $$props.location);
-		if ("modalContent" in $$props) $$invalidate(7, modalContent = $$props.modalContent);
-		if ("modalTitle" in $$props) $$invalidate(8, modalTitle = $$props.modalTitle);
-		if ("activated" in $$props) $$invalidate(4, activated = $$props.activated);
 	};
 
 	$$self.$$.update = () => {
@@ -22826,16 +22666,12 @@ function instance$w($$self, $$props, $$invalidate) {
 		delta,
 		toggleRow,
 		location,
-		activated,
 		filetype,
 		id,
-		modalContent,
-		modalTitle,
 		click_handler,
 		textfield_value_binding,
 		layout_currentLocation_binding,
-		layout_fileChecked_binding,
-		layout_activated_binding
+		layout_fileChecked_binding
 	];
 }
 
@@ -23287,12 +23123,13 @@ const file$w = "src\\App.svelte";
 function create_fragment$A(ctx) {
 	let t0;
 	let t1;
-	let div;
 	let t2;
+	let div;
 	let t3;
 	let t4;
 	let t5;
 	let t6;
+	let t7;
 	let current;
 
 	const navbar = new Navbar({
@@ -23300,6 +23137,7 @@ function create_fragment$A(ctx) {
 			$$inline: true
 		});
 
+	const modal = new Modal({ $$inline: true });
 	const home = new Home({ $$inline: true });
 	const normline = new Normline({ $$inline: true });
 	const masspec = new Masspec({ $$inline: true });
@@ -23312,22 +23150,24 @@ function create_fragment$A(ctx) {
 		c: function create() {
 			create_component(navbar.$$.fragment);
 			t0 = space();
-			create_component(home.$$.fragment);
+			create_component(modal.$$.fragment);
 			t1 = space();
+			create_component(home.$$.fragment);
+			t2 = space();
 			div = element("div");
 			create_component(normline.$$.fragment);
-			t2 = space();
-			create_component(masspec.$$.fragment);
 			t3 = space();
-			create_component(timescan.$$.fragment);
+			create_component(masspec.$$.fragment);
 			t4 = space();
-			create_component(thz.$$.fragment);
+			create_component(timescan.$$.fragment);
 			t5 = space();
-			create_component(powerfile.$$.fragment);
+			create_component(thz.$$.fragment);
 			t6 = space();
+			create_component(powerfile.$$.fragment);
+			t7 = space();
 			create_component(footer.$$.fragment);
 			attr_dev(div, "class", "pageContainer svelte-omgd9g");
-			add_location(div, file$w, 54, 0, 1548);
+			add_location(div, file$w, 60, 0, 1662);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -23335,19 +23175,21 @@ function create_fragment$A(ctx) {
 		m: function mount(target, anchor) {
 			mount_component(navbar, target, anchor);
 			insert_dev(target, t0, anchor);
-			mount_component(home, target, anchor);
+			mount_component(modal, target, anchor);
 			insert_dev(target, t1, anchor);
+			mount_component(home, target, anchor);
+			insert_dev(target, t2, anchor);
 			insert_dev(target, div, anchor);
 			mount_component(normline, div, null);
-			append_dev(div, t2);
-			mount_component(masspec, div, null);
 			append_dev(div, t3);
-			mount_component(timescan, div, null);
+			mount_component(masspec, div, null);
 			append_dev(div, t4);
-			mount_component(thz, div, null);
+			mount_component(timescan, div, null);
 			append_dev(div, t5);
+			mount_component(thz, div, null);
+			append_dev(div, t6);
 			mount_component(powerfile, div, null);
-			insert_dev(target, t6, anchor);
+			insert_dev(target, t7, anchor);
 			mount_component(footer, target, anchor);
 			current = true;
 		},
@@ -23355,6 +23197,7 @@ function create_fragment$A(ctx) {
 		i: function intro(local) {
 			if (current) return;
 			transition_in(navbar.$$.fragment, local);
+			transition_in(modal.$$.fragment, local);
 			transition_in(home.$$.fragment, local);
 			transition_in(normline.$$.fragment, local);
 			transition_in(masspec.$$.fragment, local);
@@ -23366,6 +23209,7 @@ function create_fragment$A(ctx) {
 		},
 		o: function outro(local) {
 			transition_out(navbar.$$.fragment, local);
+			transition_out(modal.$$.fragment, local);
 			transition_out(home.$$.fragment, local);
 			transition_out(normline.$$.fragment, local);
 			transition_out(masspec.$$.fragment, local);
@@ -23378,15 +23222,17 @@ function create_fragment$A(ctx) {
 		d: function destroy(detaching) {
 			destroy_component(navbar, detaching);
 			if (detaching) detach_dev(t0);
-			destroy_component(home, detaching);
+			destroy_component(modal, detaching);
 			if (detaching) detach_dev(t1);
+			destroy_component(home, detaching);
+			if (detaching) detach_dev(t2);
 			if (detaching) detach_dev(div);
 			destroy_component(normline);
 			destroy_component(masspec);
 			destroy_component(timescan);
 			destroy_component(thz);
 			destroy_component(powerfile);
-			if (detaching) detach_dev(t6);
+			if (detaching) detach_dev(t7);
 			destroy_component(footer, detaching);
 		}
 	};
@@ -49788,7 +49634,6 @@ window.togglepage = (item) => {
     let element = document.getElementById(item);
     let display = element.style.display;
     display == "none" ? element.style.display = "block" : element.style.display = "none";
-    
 };
 
 const app = new App({

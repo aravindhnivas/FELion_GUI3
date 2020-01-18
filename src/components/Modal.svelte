@@ -1,32 +1,41 @@
+<script context="module">
+  import {writable} from "svelte/store";
+  export const activated =  writable(false), modalContent =  writable("")
+  export const modalTitle =  writable("Error detail"), modalType =  writable("danger"), modalPreMsg = writable("Error Occured")
+
+</script>
 
 <script>
   
   import { Snackbar } from 'svelma'
-  export let modalTitle, modalContent, activated = false, type="danger", msg="Error Occured", actionText="Show in detail";
+  let actionText="Show details";
   let active=false;
+
   function openModal(err) {
 
     Snackbar.create({ 
-        message: msg, position:"is-top", type:`is-${type}`, duration: 5000,
-        actionText: actionText, onAction: ()=>{ active = true; }
+
+      message: $modalPreMsg, position:"is-top", type:`is-${$modalType}`, duration: 5000,
+      actionText: actionText, onAction: ()=>{ active = true; }
     })
-
-    activated = false;
+    $activated = false;
   }
-  $: if(activated) openModal()
 
+  $: if($activated) openModal()
 </script>
 
 <div class="modal" class:is-active={active}>
+
   <div class="modal-background"></div>
   <div class="modal-card">
     <header class="modal-card-head">
-      <p class="modal-card-title">{modalTitle}</p>
+      <p class="modal-card-title">{$modalTitle}</p>
     </header>
-    <section class="modal-card-body"> {modalContent} </section>
+
+    <section class="modal-card-body"> {$modalContent} </section>
 
     <footer class="modal-card-foot">
-      <button class="button is-link" on:click={()=>activated = active = false}>Cancel</button>
+      <button class="button is-link" on:click={()=>active = false}>Cancel</button>
     </footer>
 
   </div>

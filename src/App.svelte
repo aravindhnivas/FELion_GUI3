@@ -13,7 +13,12 @@
 	import Masspec from "./Pages/Masspec.svelte"
 	import Timescan from "./Pages/Timescan.svelte"
 	import THz from "./Pages/THz.svelte"
+
+	
+	import Modal from "./components/Modal.svelte"
+	// import {activated} from "./js/functions.js"
 	import {onMount} from "svelte"
+
 
 	const navItems = ["Home", "Normline", "Masspec", "Timescan", "THz", "Powerfile"]
 
@@ -49,6 +54,7 @@
 </style>
 
 <Navbar {navItems}/>
+<Modal/>
 
 <Home />
 
