@@ -1,5 +1,31 @@
 <script context="module">
     export const createToast = (msg, type="primary") => Toast.create({ message: msg, position:"is-top", type:`is-${type}`})
+    export function browse({filetype="", dir=true}={}) {
+        return new Promise((resolve, reject)=>{
+
+            const mainWindow = remote.getCurrentWindow()
+            let type;
+            dir ? type = "openDirectory" : type = "openFile"
+
+            const options = {
+                filters: [
+                    { name: filetype, extensions: [`*${filetype}`] },
+                    { name: 'All Files', extensions: ['*'] }
+
+                ],
+                properties: [type, "multiSelections"],
+            }
+            remote.dialog.showOpenDialog(mainWindow, options)
+            .then(result => {
+                console.log(result.canceled)
+                console.log(result.filePaths)
+                resolve(result)
+            }).catch(err => { 
+                createToast("Couldn't open", "danger")
+                reject(err) })
+        })
+    }
+
 </script>
 
 <script>
@@ -47,12 +73,15 @@
     }
 
     function browse_folder() {
-        let location = remote.dialog.showOpenDialogSync({ properties: ["openDirectory"] })
-        if (!location) { createToast("No folder selected", "danger") } else {
-            localStorage[`${filetype}_location`] = currentLocation = location[0]
-            console.log(currentLocation)
-            getfiles(true)
-        }
+
+        browse({dir:true}).then(result=>{
+            if (!result.canceled) {
+                localStorage[`${filetype}_location`] = currentLocation = result.filePaths[0]
+                getfiles(true)
+
+            }
+        })
+        
     }
 
     function getfiles(toast=false) {
@@ -66,7 +95,6 @@
             console.log("Folder updated for ", filetype, "\n", files)
             if (toast) {createToast("Files updated")}
         } catch (err) { 
-            $modalTitle = `${id}: Error detail`
             $modalContent = err;
             $activated = true;
          }
@@ -124,14 +152,13 @@
         max-height: 20em;
         overflow-y: auto;
     }
-
     .box {border-radius: 0;}
     .container {min-height: calc(100vh - 10em);}
     
 </style>
 
 
-<section {id} style="display:none" >
+<section {id} style="display:none" class="animated fadeIn">
     <div class="columns">
         <div class="column is-one-fifth-widescreen is-one-quarter-desktop box filebrowser" >
 

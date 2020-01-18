@@ -851,6 +851,17 @@ var __assign = function() {
     return __assign.apply(this, arguments);
 };
 
+function __values(o) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
+    if (m) return m.call(o);
+    return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+}
+
 function __read(o, n) {
     var m = typeof Symbol === "function" && o[Symbol.iterator];
     if (!m) return o;
@@ -18817,17 +18828,17 @@ const get_buttonContainer_slot_context = ctx => ({});
 
 function get_each_context$1(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[31] = list[i];
+	child_ctx[30] = list[i];
 	return child_ctx;
 }
 
 function get_each_context_1(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[34] = list[i];
+	child_ctx[33] = list[i];
 	return child_ctx;
 }
 
-// (155:16) <Icon class="material-icons" on:click="{()=>changeDirectory(localStorage[`${filetype}_location`])}">
+// (183:16) <Icon class="material-icons" on:click="{()=>changeDirectory(localStorage[`${filetype}_location`])}">
 function create_default_slot_11(ctx) {
 	let t;
 
@@ -18847,14 +18858,14 @@ function create_default_slot_11(ctx) {
 		block,
 		id: create_default_slot_11.name,
 		type: "slot",
-		source: "(155:16) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>changeDirectory(localStorage[`${filetype}_location`])}\\\">",
+		source: "(183:16) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>changeDirectory(localStorage[`${filetype}_location`])}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (156:16) <Icon class="material-icons" on:click="{()=>{getfiles(true)}}">
+// (184:16) <Icon class="material-icons" on:click="{()=>{getfiles(true)}}">
 function create_default_slot_10(ctx) {
 	let t;
 
@@ -18874,14 +18885,14 @@ function create_default_slot_10(ctx) {
 		block,
 		id: create_default_slot_10.name,
 		type: "slot",
-		source: "(156:16) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>{getfiles(true)}}\\\">",
+		source: "(184:16) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>{getfiles(true)}}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (157:16) <Icon class="material-icons" on:click="{()=>changeDirectory("../")}">
+// (185:16) <Icon class="material-icons" on:click="{()=>changeDirectory("../")}">
 function create_default_slot_9(ctx) {
 	let t;
 
@@ -18901,14 +18912,14 @@ function create_default_slot_9(ctx) {
 		block,
 		id: create_default_slot_9.name,
 		type: "slot",
-		source: "(157:16) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>changeDirectory(\\\"../\\\")}\\\">",
+		source: "(185:16) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>changeDirectory(\\\"../\\\")}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (165:20) <span slot="label">
+// (193:20) <span slot="label">
 function create_label_slot(ctx) {
 	let span;
 
@@ -18918,7 +18929,7 @@ function create_label_slot(ctx) {
 			span.textContent = "Select All";
 			attr_dev(span, "slot", "label");
 			attr_dev(span, "class", "svelte-171u0mf");
-			add_location(span, file$q, 164, 20, 5299);
+			add_location(span, file$q, 192, 20, 6086);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -18932,21 +18943,21 @@ function create_label_slot(ctx) {
 		block,
 		id: create_label_slot.name,
 		type: "slot",
-		source: "(165:20) <span slot=\\\"label\\\">",
+		source: "(193:20) <span slot=\\\"label\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (163:16) <FormField>
+// (191:16) <FormField>
 function create_default_slot_8(ctx) {
 	let updating_checked;
 	let t;
 	let current;
 
 	function switch_1_checked_binding(value) {
-		/*switch_1_checked_binding*/ ctx[23].call(null, value);
+		/*switch_1_checked_binding*/ ctx[22].call(null, value);
 	}
 
 	let switch_1_props = {};
@@ -18957,7 +18968,7 @@ function create_default_slot_8(ctx) {
 
 	const switch_1 = new Switch({ props: switch_1_props, $$inline: true });
 	binding_callbacks.push(() => bind(switch_1, "checked", switch_1_checked_binding));
-	switch_1.$on("change", /*change_handler*/ ctx[24]);
+	switch_1.$on("change", /*change_handler*/ ctx[23]);
 
 	const block = {
 		c: function create() {
@@ -18999,14 +19010,14 @@ function create_default_slot_8(ctx) {
 		block,
 		id: create_default_slot_8.name,
 		type: "slot",
-		source: "(163:16) <FormField>",
+		source: "(191:16) <FormField>",
 		ctx
 	});
 
 	return block;
 }
 
-// (173:24) <Icon class="material-icons" on>
+// (201:24) <Icon class="material-icons" on>
 function create_default_slot_7(ctx) {
 	let t;
 
@@ -19026,14 +19037,14 @@ function create_default_slot_7(ctx) {
 		block,
 		id: create_default_slot_7.name,
 		type: "slot",
-		source: "(173:24) <Icon class=\\\"material-icons\\\" on>",
+		source: "(201:24) <Icon class=\\\"material-icons\\\" on>",
 		ctx
 	});
 
 	return block;
 }
 
-// (174:24) <Icon class="material-icons" >
+// (202:24) <Icon class="material-icons" >
 function create_default_slot_6(ctx) {
 	let t;
 
@@ -19053,14 +19064,14 @@ function create_default_slot_6(ctx) {
 		block,
 		id: create_default_slot_6.name,
 		type: "slot",
-		source: "(174:24) <Icon class=\\\"material-icons\\\" >",
+		source: "(202:24) <Icon class=\\\"material-icons\\\" >",
 		ctx
 	});
 
 	return block;
 }
 
-// (172:20) <IconButton  toggle bind:pressed={showfiles}>
+// (200:20) <IconButton  toggle bind:pressed={showfiles}>
 function create_default_slot_5(ctx) {
 	let t;
 	let current;
@@ -19099,14 +19110,14 @@ function create_default_slot_5(ctx) {
 		p: function update(ctx, dirty) {
 			const icon0_changes = {};
 
-			if (dirty[0] & /*$$scope*/ 1073741824) {
+			if (dirty[0] & /*$$scope*/ 536870912) {
 				icon0_changes.$$scope = { dirty, ctx };
 			}
 
 			icon0.$set(icon0_changes);
 			const icon1_changes = {};
 
-			if (dirty[0] & /*$$scope*/ 1073741824) {
+			if (dirty[0] & /*$$scope*/ 536870912) {
 				icon1_changes.$$scope = { dirty, ctx };
 			}
 
@@ -19134,14 +19145,14 @@ function create_default_slot_5(ctx) {
 		block,
 		id: create_default_slot_5.name,
 		type: "slot",
-		source: "(172:20) <IconButton  toggle bind:pressed={showfiles}>",
+		source: "(200:20) <IconButton  toggle bind:pressed={showfiles}>",
 		ctx
 	});
 
 	return block;
 }
 
-// (190:38) 
+// (218:38) 
 function create_if_block_1$3(ctx) {
 	let div;
 	let t0;
@@ -19155,7 +19166,7 @@ function create_if_block_1$3(ctx) {
 			t1 = text(/*filetype*/ ctx[3]);
 			t2 = text(" here!");
 			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-171u0mf");
-			add_location(div, file$q, 190, 20, 6549);
+			add_location(div, file$q, 218, 20, 7336);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -19177,14 +19188,14 @@ function create_if_block_1$3(ctx) {
 		block,
 		id: create_if_block_1$3.name,
 		type: "if",
-		source: "(190:38) ",
+		source: "(218:38) ",
 		ctx
 	});
 
 	return block;
 }
 
-// (179:16) {#if showfiles && files != "" }
+// (207:16) {#if showfiles && files != "" }
 function create_if_block$7(ctx) {
 	let div;
 	let div_transition;
@@ -19205,7 +19216,7 @@ function create_if_block$7(ctx) {
 			create_component(list.$$.fragment);
 			attr_dev(div, "class", "filelist svelte-171u0mf");
 			set_style(div, "padding-left", "1em");
-			add_location(div, file$q, 179, 20, 5928);
+			add_location(div, file$q, 207, 20, 6715);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -19215,7 +19226,7 @@ function create_if_block$7(ctx) {
 		p: function update(ctx, dirty) {
 			const list_changes = {};
 
-			if (dirty[0] & /*$$scope, files, fileChecked, selectAll*/ 1073741905) {
+			if (dirty[0] & /*$$scope, files, fileChecked, selectAll*/ 536870993) {
 				list_changes.$$scope = { dirty, ctx };
 			}
 
@@ -19249,16 +19260,16 @@ function create_if_block$7(ctx) {
 		block,
 		id: create_if_block$7.name,
 		type: "if",
-		source: "(179:16) {#if showfiles && files != \\\"\\\" }",
+		source: "(207:16) {#if showfiles && files != \\\"\\\" }",
 		ctx
 	});
 
 	return block;
 }
 
-// (184:36) <Label>
+// (212:36) <Label>
 function create_default_slot_4(ctx) {
-	let t_value = /*file*/ ctx[34] + "";
+	let t_value = /*file*/ ctx[33] + "";
 	let t;
 
 	const block = {
@@ -19269,7 +19280,7 @@ function create_default_slot_4(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*files*/ 16 && t_value !== (t_value = /*file*/ ctx[34] + "")) set_data_dev(t, t_value);
+			if (dirty[0] & /*files*/ 16 && t_value !== (t_value = /*file*/ ctx[33] + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -19280,23 +19291,23 @@ function create_default_slot_4(ctx) {
 		block,
 		id: create_default_slot_4.name,
 		type: "slot",
-		source: "(184:36) <Label>",
+		source: "(212:36) <Label>",
 		ctx
 	});
 
 	return block;
 }
 
-// (185:36) <Meta>
+// (213:36) <Meta>
 function create_default_slot_3(ctx) {
 	let updating_group;
 	let current;
 
 	function checkbox_group_binding(value) {
-		/*checkbox_group_binding*/ ctx[26].call(null, value);
+		/*checkbox_group_binding*/ ctx[25].call(null, value);
 	}
 
-	let checkbox_props = { value: /*file*/ ctx[34] };
+	let checkbox_props = { value: /*file*/ ctx[33] };
 
 	if (/*fileChecked*/ ctx[0] !== void 0) {
 		checkbox_props.group = /*fileChecked*/ ctx[0];
@@ -19304,7 +19315,7 @@ function create_default_slot_3(ctx) {
 
 	const checkbox = new Checkbox({ props: checkbox_props, $$inline: true });
 	binding_callbacks.push(() => bind(checkbox, "group", checkbox_group_binding));
-	checkbox.$on("click", /*click_handler_3*/ ctx[27]);
+	checkbox.$on("click", /*click_handler_3*/ ctx[26]);
 
 	const block = {
 		c: function create() {
@@ -19316,7 +19327,7 @@ function create_default_slot_3(ctx) {
 		},
 		p: function update(ctx, dirty) {
 			const checkbox_changes = {};
-			if (dirty[0] & /*files*/ 16) checkbox_changes.value = /*file*/ ctx[34];
+			if (dirty[0] & /*files*/ 16) checkbox_changes.value = /*file*/ ctx[33];
 
 			if (!updating_group && dirty[0] & /*fileChecked*/ 1) {
 				updating_group = true;
@@ -19344,14 +19355,14 @@ function create_default_slot_3(ctx) {
 		block,
 		id: create_default_slot_3.name,
 		type: "slot",
-		source: "(185:36) <Meta>",
+		source: "(213:36) <Meta>",
 		ctx
 	});
 
 	return block;
 }
 
-// (183:32) <Item>
+// (211:32) <Item>
 function create_default_slot_2$2(ctx) {
 	let t0;
 	let t1;
@@ -19390,14 +19401,14 @@ function create_default_slot_2$2(ctx) {
 		p: function update(ctx, dirty) {
 			const label_changes = {};
 
-			if (dirty[0] & /*$$scope, files*/ 1073741840) {
+			if (dirty[0] & /*$$scope, files*/ 536870928) {
 				label_changes.$$scope = { dirty, ctx };
 			}
 
 			label.$set(label_changes);
 			const meta_changes = {};
 
-			if (dirty[0] & /*$$scope, files, fileChecked, selectAll*/ 1073741905) {
+			if (dirty[0] & /*$$scope, files, fileChecked, selectAll*/ 536870993) {
 				meta_changes.$$scope = { dirty, ctx };
 			}
 
@@ -19426,14 +19437,14 @@ function create_default_slot_2$2(ctx) {
 		block,
 		id: create_default_slot_2$2.name,
 		type: "slot",
-		source: "(183:32) <Item>",
+		source: "(211:32) <Item>",
 		ctx
 	});
 
 	return block;
 }
 
-// (182:28) {#each files as file}
+// (210:28) {#each files as file}
 function create_each_block_1(ctx) {
 	let current;
 
@@ -19456,7 +19467,7 @@ function create_each_block_1(ctx) {
 		p: function update(ctx, dirty) {
 			const item_changes = {};
 
-			if (dirty[0] & /*$$scope, files, fileChecked, selectAll*/ 1073741905) {
+			if (dirty[0] & /*$$scope, files, fileChecked, selectAll*/ 536870993) {
 				item_changes.$$scope = { dirty, ctx };
 			}
 
@@ -19480,14 +19491,14 @@ function create_each_block_1(ctx) {
 		block,
 		id: create_each_block_1.name,
 		type: "each",
-		source: "(182:28) {#each files as file}",
+		source: "(210:28) {#each files as file}",
 		ctx
 	});
 
 	return block;
 }
 
-// (181:24) <List checklist>
+// (209:24) <List checklist>
 function create_default_slot_1$3(ctx) {
 	let each_1_anchor;
 	let current;
@@ -19574,14 +19585,14 @@ function create_default_slot_1$3(ctx) {
 		block,
 		id: create_default_slot_1$3.name,
 		type: "slot",
-		source: "(181:24) <List checklist>",
+		source: "(209:24) <List checklist>",
 		ctx
 	});
 
 	return block;
 }
 
-// (196:28) <Icon class="material-icons">
+// (224:28) <Icon class="material-icons">
 function create_default_slot$5(ctx) {
 	let t;
 
@@ -19601,19 +19612,19 @@ function create_default_slot$5(ctx) {
 		block,
 		id: create_default_slot$5.name,
 		type: "slot",
-		source: "(196:28) <Icon class=\\\"material-icons\\\">",
+		source: "(224:28) <Icon class=\\\"material-icons\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (194:20) {#each otherfolders as folder}
+// (222:20) {#each otherfolders as folder}
 function create_each_block$1(ctx) {
 	let div1;
 	let t0;
 	let div0;
-	let t1_value = /*folder*/ ctx[31] + "";
+	let t1_value = /*folder*/ ctx[30] + "";
 	let t1;
 	let t2;
 	let div1_transition;
@@ -19630,7 +19641,7 @@ function create_each_block$1(ctx) {
 		});
 
 	function click_handler_4(...args) {
-		return /*click_handler_4*/ ctx[28](/*folder*/ ctx[31], ...args);
+		return /*click_handler_4*/ ctx[27](/*folder*/ ctx[30], ...args);
 	}
 
 	const block = {
@@ -19642,9 +19653,9 @@ function create_each_block$1(ctx) {
 			t1 = text(t1_value);
 			t2 = space();
 			attr_dev(div0, "class", "mdc-typography--subtitle1 svelte-171u0mf");
-			add_location(div0, file$q, 196, 28, 7004);
+			add_location(div0, file$q, 224, 28, 7791);
 			attr_dev(div1, "class", "align svelte-171u0mf");
-			add_location(div1, file$q, 194, 24, 6805);
+			add_location(div1, file$q, 222, 24, 7592);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div1, anchor);
@@ -19660,12 +19671,12 @@ function create_each_block$1(ctx) {
 			ctx = new_ctx;
 			const icon_changes = {};
 
-			if (dirty[0] & /*$$scope*/ 1073741824) {
+			if (dirty[0] & /*$$scope*/ 536870912) {
 				icon_changes.$$scope = { dirty, ctx };
 			}
 
 			icon.$set(icon_changes);
-			if ((!current || dirty[0] & /*otherfolders*/ 32) && t1_value !== (t1_value = /*folder*/ ctx[31] + "")) set_data_dev(t1, t1_value);
+			if ((!current || dirty[0] & /*otherfolders*/ 32) && t1_value !== (t1_value = /*folder*/ ctx[30] + "")) set_data_dev(t1, t1_value);
 		},
 		i: function intro(local) {
 			if (current) return;
@@ -19702,7 +19713,7 @@ function create_each_block$1(ctx) {
 		block,
 		id: create_each_block$1.name,
 		type: "each",
-		source: "(194:20) {#each otherfolders as folder}",
+		source: "(222:20) {#each otherfolders as folder}",
 		ctx
 	});
 
@@ -19755,7 +19766,7 @@ function create_fragment$r(ctx) {
 			$$inline: true
 		});
 
-	icon0.$on("click", /*click_handler*/ ctx[19]);
+	icon0.$on("click", /*click_handler*/ ctx[18]);
 
 	const icon1 = new Icon({
 			props: {
@@ -19766,7 +19777,7 @@ function create_fragment$r(ctx) {
 			$$inline: true
 		});
 
-	icon1.$on("click", /*click_handler_1*/ ctx[20]);
+	icon1.$on("click", /*click_handler_1*/ ctx[19]);
 
 	const icon2 = new Icon({
 			props: {
@@ -19777,10 +19788,10 @@ function create_fragment$r(ctx) {
 			$$inline: true
 		});
 
-	icon2.$on("click", /*click_handler_2*/ ctx[21]);
+	icon2.$on("click", /*click_handler_2*/ ctx[20]);
 
 	function textfield0_value_binding(value) {
-		/*textfield0_value_binding*/ ctx[22].call(null, value);
+		/*textfield0_value_binding*/ ctx[21].call(null, value);
 	}
 
 	let textfield0_props = {
@@ -19808,7 +19819,7 @@ function create_fragment$r(ctx) {
 		});
 
 	function iconbutton_pressed_binding(value_1) {
-		/*iconbutton_pressed_binding*/ ctx[25].call(null, value_1);
+		/*iconbutton_pressed_binding*/ ctx[24].call(null, value_1);
 	}
 
 	let iconbutton_props = {
@@ -19848,7 +19859,7 @@ function create_fragment$r(ctx) {
 	});
 
 	function textfield1_value_binding(value_2) {
-		/*textfield1_value_binding*/ ctx[29].call(null, value_2);
+		/*textfield1_value_binding*/ ctx[28].call(null, value_2);
 	}
 
 	let textfield1_props = {
@@ -19863,10 +19874,10 @@ function create_fragment$r(ctx) {
 	const textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding));
 	textfield1.$on("change", /*getfiles*/ ctx[12]);
-	const buttonContainer_slot_template = /*$$slots*/ ctx[18].buttonContainer;
-	const buttonContainer_slot = create_slot(buttonContainer_slot_template, ctx, /*$$scope*/ ctx[30], get_buttonContainer_slot_context);
-	const plotContainer_slot_template = /*$$slots*/ ctx[18].plotContainer;
-	const plotContainer_slot = create_slot(plotContainer_slot_template, ctx, /*$$scope*/ ctx[30], get_plotContainer_slot_context);
+	const buttonContainer_slot_template = /*$$slots*/ ctx[17].buttonContainer;
+	const buttonContainer_slot = create_slot(buttonContainer_slot_template, ctx, /*$$scope*/ ctx[29], get_buttonContainer_slot_context);
+	const plotContainer_slot_template = /*$$slots*/ ctx[17].plotContainer;
+	const plotContainer_slot = create_slot(plotContainer_slot_template, ctx, /*$$scope*/ ctx[29], get_plotContainer_slot_context);
 
 	const block = {
 		c: function create() {
@@ -19915,38 +19926,38 @@ function create_fragment$r(ctx) {
 			div9 = element("div");
 			if (plotContainer_slot) plotContainer_slot.c();
 			attr_dev(div0, "class", "align center svelte-171u0mf");
-			add_location(div0, file$q, 153, 12, 4587);
+			add_location(div0, file$q, 181, 12, 5374);
 			attr_dev(div1, "class", "align center svelte-171u0mf");
-			add_location(div1, file$q, 161, 12, 5092);
+			add_location(div1, file$q, 189, 12, 5879);
 			attr_dev(div2, "class", "mdc-typography--subtitle1 svelte-171u0mf");
-			add_location(div2, file$q, 175, 20, 5772);
+			add_location(div2, file$q, 203, 20, 6559);
 			attr_dev(div3, "class", "align folderlist svelte-171u0mf");
-			add_location(div3, file$q, 170, 16, 5450);
+			add_location(div3, file$q, 198, 16, 6237);
 			attr_dev(div4, "class", "otherFolderlist svelte-171u0mf");
 			set_style(div4, "cursor", "pointer");
-			add_location(div4, file$q, 192, 16, 6675);
+			add_location(div4, file$q, 220, 16, 7462);
 			attr_dev(div5, "class", "folderfile-list svelte-171u0mf");
-			add_location(div5, file$q, 168, 12, 5401);
+			add_location(div5, file$q, 196, 12, 6188);
 			attr_dev(div6, "class", "column is-one-fifth-widescreen is-one-quarter-desktop box filebrowser svelte-171u0mf");
-			add_location(div6, file$q, 151, 8, 4487);
+			add_location(div6, file$q, 179, 8, 5274);
 			attr_dev(button, "class", "button is-link gap svelte-171u0mf");
-			add_location(button, file$q, 207, 20, 7348);
+			add_location(button, file$q, 235, 20, 8135);
 			attr_dev(div7, "class", "align svelte-171u0mf");
-			add_location(div7, file$q, 206, 16, 7307);
+			add_location(div7, file$q, 234, 16, 8094);
 			attr_dev(div8, "class", "align buttonContainer svelte-171u0mf");
-			add_location(div8, file$q, 211, 16, 7604);
+			add_location(div8, file$q, 239, 16, 8391);
 			attr_dev(div9, "class", "align plotContainer svelte-171u0mf");
-			add_location(div9, file$q, 212, 16, 7695);
+			add_location(div9, file$q, 240, 16, 8482);
 			attr_dev(div10, "class", "container button-plot-container box svelte-171u0mf");
-			add_location(div10, file$q, 204, 12, 7238);
+			add_location(div10, file$q, 232, 12, 8025);
 			attr_dev(div11, "class", "column fileContainer svelte-171u0mf");
-			add_location(div11, file$q, 203, 8, 7190);
+			add_location(div11, file$q, 231, 8, 7977);
 			attr_dev(div12, "class", "columns svelte-171u0mf");
-			add_location(div12, file$q, 150, 4, 4456);
+			add_location(div12, file$q, 178, 4, 5243);
 			attr_dev(section, "id", /*id*/ ctx[2]);
 			set_style(section, "display", "none");
-			attr_dev(section, "class", "svelte-171u0mf");
-			add_location(section, file$q, 149, 0, 4414);
+			attr_dev(section, "class", "animated fadeIn svelte-171u0mf");
+			add_location(section, file$q, 177, 0, 5178);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -20013,21 +20024,21 @@ function create_fragment$r(ctx) {
 		p: function update(ctx, dirty) {
 			const icon0_changes = {};
 
-			if (dirty[0] & /*$$scope*/ 1073741824) {
+			if (dirty[0] & /*$$scope*/ 536870912) {
 				icon0_changes.$$scope = { dirty, ctx };
 			}
 
 			icon0.$set(icon0_changes);
 			const icon1_changes = {};
 
-			if (dirty[0] & /*$$scope*/ 1073741824) {
+			if (dirty[0] & /*$$scope*/ 536870912) {
 				icon1_changes.$$scope = { dirty, ctx };
 			}
 
 			icon1.$set(icon1_changes);
 			const icon2_changes = {};
 
-			if (dirty[0] & /*$$scope*/ 1073741824) {
+			if (dirty[0] & /*$$scope*/ 536870912) {
 				icon2_changes.$$scope = { dirty, ctx };
 			}
 
@@ -20043,14 +20054,14 @@ function create_fragment$r(ctx) {
 			textfield0.$set(textfield0_changes);
 			const formfield_changes = {};
 
-			if (dirty[0] & /*$$scope, selectAll, fileChecked, files*/ 1073741905) {
+			if (dirty[0] & /*$$scope, selectAll, fileChecked, files*/ 536870993) {
 				formfield_changes.$$scope = { dirty, ctx };
 			}
 
 			formfield.$set(formfield_changes);
 			const iconbutton_changes = {};
 
-			if (dirty[0] & /*$$scope*/ 1073741824) {
+			if (dirty[0] & /*$$scope*/ 536870912) {
 				iconbutton_changes.$$scope = { dirty, ctx };
 			}
 
@@ -20132,12 +20143,12 @@ function create_fragment$r(ctx) {
 
 			textfield1.$set(textfield1_changes);
 
-			if (buttonContainer_slot && buttonContainer_slot.p && dirty[0] & /*$$scope*/ 1073741824) {
-				buttonContainer_slot.p(get_slot_context(buttonContainer_slot_template, ctx, /*$$scope*/ ctx[30], get_buttonContainer_slot_context), get_slot_changes(buttonContainer_slot_template, /*$$scope*/ ctx[30], dirty, get_buttonContainer_slot_changes));
+			if (buttonContainer_slot && buttonContainer_slot.p && dirty[0] & /*$$scope*/ 536870912) {
+				buttonContainer_slot.p(get_slot_context(buttonContainer_slot_template, ctx, /*$$scope*/ ctx[29], get_buttonContainer_slot_context), get_slot_changes(buttonContainer_slot_template, /*$$scope*/ ctx[29], dirty, get_buttonContainer_slot_changes));
 			}
 
-			if (plotContainer_slot && plotContainer_slot.p && dirty[0] & /*$$scope*/ 1073741824) {
-				plotContainer_slot.p(get_slot_context(plotContainer_slot_template, ctx, /*$$scope*/ ctx[30], get_plotContainer_slot_context), get_slot_changes(plotContainer_slot_template, /*$$scope*/ ctx[30], dirty, get_plotContainer_slot_changes));
+			if (plotContainer_slot && plotContainer_slot.p && dirty[0] & /*$$scope*/ 536870912) {
+				plotContainer_slot.p(get_slot_context(plotContainer_slot_template, ctx, /*$$scope*/ ctx[29], get_plotContainer_slot_context), get_slot_changes(plotContainer_slot_template, /*$$scope*/ ctx[29], dirty, get_plotContainer_slot_changes));
 			}
 
 			if (!current || dirty[0] & /*id*/ 4) {
@@ -20220,16 +20231,41 @@ const createToast = (msg, type = "primary") => Sn.create({
 	type: `is-${type}`
 });
 
+function browse({ filetype = "", dir = true } = {}) {
+	return new Promise((resolve, reject) => {
+			const mainWindow = remote.getCurrentWindow();
+			let type;
+			dir ? type = "openDirectory" : type = "openFile";
+
+			const options = {
+				filters: [
+					{
+						name: filetype,
+						extensions: [`*${filetype}`]
+					},
+					{ name: "All Files", extensions: ["*"] }
+				],
+				properties: [type, "multiSelections"]
+			};
+
+			remote.dialog.showOpenDialog(mainWindow, options).then(result => {
+				console.log(result.canceled);
+				console.log(result.filePaths);
+				resolve(result);
+			}).catch(err => {
+				createToast("Couldn't open", "danger");
+				reject(err);
+			});
+		});
+}
+
 function instance$r($$self, $$props, $$invalidate) {
-	let $modalTitle;
 	let $modalContent;
 	let $activated;
-	validate_store(modalTitle, "modalTitle");
-	component_subscribe($$self, modalTitle, $$value => $$invalidate(15, $modalTitle = $$value));
 	validate_store(modalContent, "modalContent");
-	component_subscribe($$self, modalContent, $$value => $$invalidate(16, $modalContent = $$value));
+	component_subscribe($$self, modalContent, $$value => $$invalidate(15, $modalContent = $$value));
 	validate_store(activated, "activated");
-	component_subscribe($$self, activated, $$value => $$invalidate(17, $activated = $$value));
+	component_subscribe($$self, activated, $$value => $$invalidate(16, $activated = $$value));
 	let { id } = $$props;
 	let { fileChecked = [] } = $$props;
 	let { filetype = "felix" } = $$props;
@@ -20259,15 +20295,12 @@ function instance$r($$self, $$props, $$invalidate) {
 	};
 
 	function browse_folder() {
-		let location = remote.dialog.showOpenDialogSync({ properties: ["openDirectory"] });
-
-		if (!location) {
-			createToast("No folder selected", "danger");
-		} else {
-			localStorage[`${filetype}_location`] = $$invalidate(1, currentLocation = location[0]);
-			console.log(currentLocation);
-			getfiles(true);
-		}
+		browse({ dir: true }).then(result => {
+			if (!result.canceled) {
+				localStorage[`${filetype}_location`] = $$invalidate(1, currentLocation = result.filePaths[0]);
+				getfiles(true);
+			}
+		});
 	}
 
 	function getfiles(toast = false) {
@@ -20285,7 +20318,6 @@ function instance$r($$self, $$props, $$invalidate) {
 				createToast("Files updated");
 			}
 		} catch(err) {
-			set_store_value(modalTitle, $modalTitle = `${id}: Error detail`);
 			set_store_value(modalContent, $modalContent = err);
 			set_store_value(activated, $activated = true);
 		}
@@ -20348,7 +20380,7 @@ function instance$r($$self, $$props, $$invalidate) {
 		if ("fileChecked" in $$props) $$invalidate(0, fileChecked = $$props.fileChecked);
 		if ("filetype" in $$props) $$invalidate(3, filetype = $$props.filetype);
 		if ("currentLocation" in $$props) $$invalidate(1, currentLocation = $$props.currentLocation);
-		if ("$$scope" in $$props) $$invalidate(30, $$scope = $$props.$$scope);
+		if ("$$scope" in $$props) $$invalidate(29, $$scope = $$props.$$scope);
 	};
 
 	$$self.$capture_state = () => {
@@ -20364,7 +20396,6 @@ function instance$r($$self, $$props, $$invalidate) {
 			original_files,
 			searchKey,
 			parentFolder,
-			$modalTitle,
 			$modalContent,
 			$activated
 		};
@@ -20382,7 +20413,6 @@ function instance$r($$self, $$props, $$invalidate) {
 		if ("original_files" in $$props) original_files = $$props.original_files;
 		if ("searchKey" in $$props) $$invalidate(8, searchKey = $$props.searchKey);
 		if ("parentFolder" in $$props) $$invalidate(9, parentFolder = $$props.parentFolder);
-		if ("$modalTitle" in $$props) modalTitle.set($modalTitle = $$props.$modalTitle);
 		if ("$modalContent" in $$props) modalContent.set($modalContent = $$props.$modalContent);
 		if ("$activated" in $$props) activated.set($activated = $$props.$activated);
 	};
@@ -20394,7 +20424,7 @@ function instance$r($$self, $$props, $$invalidate) {
 			 $$invalidate(9, parentFolder = path.basename(currentLocation));
 		}
 
-		if ($$self.$$.dirty[0] & /*$activated, filetype*/ 131080) {
+		if ($$self.$$.dirty[0] & /*$activated, filetype*/ 65544) {
 			 $activated
 			? console.log(`Modal activated for ${filetype}`)
 			: console.log(`Modal deactivated for ${filetype}`);
@@ -20417,7 +20447,6 @@ function instance$r($$self, $$props, $$invalidate) {
 		getfiles,
 		changeDirectory,
 		original_files,
-		$modalTitle,
 		$modalContent,
 		$activated,
 		$$slots,
@@ -21526,7 +21555,7 @@ class HelperText extends SvelteComponentDev {
 /* src\Pages\Powerfile.svelte generated by Svelte v3.17.0 */
 const file$u = "src\\Pages\\Powerfile.svelte";
 
-// (43:70) <Label>
+// (37:70) <Label>
 function create_default_slot_5$1(ctx) {
 	let t;
 
@@ -21546,14 +21575,14 @@ function create_default_slot_5$1(ctx) {
 		block,
 		id: create_default_slot_5$1.name,
 		type: "slot",
-		source: "(43:70) <Label>",
+		source: "(37:70) <Label>",
 		ctx
 	});
 
 	return block;
 }
 
-// (43:12) <Fab class="is-pulled-right" on:click={savefile} extended>
+// (37:12) <Fab class="is-pulled-right" on:click={savefile} extended>
 function create_default_slot_4$1(ctx) {
 	let current;
 
@@ -21576,7 +21605,7 @@ function create_default_slot_4$1(ctx) {
 		p: function update(ctx, dirty) {
 			const label_changes = {};
 
-			if (dirty & /*$$scope*/ 8192) {
+			if (dirty & /*$$scope*/ 16384) {
 				label_changes.$$scope = { dirty, ctx };
 			}
 
@@ -21600,14 +21629,14 @@ function create_default_slot_4$1(ctx) {
 		block,
 		id: create_default_slot_4$1.name,
 		type: "slot",
-		source: "(43:12) <Fab class=\\\"is-pulled-right\\\" on:click={savefile} extended>",
+		source: "(37:12) <Fab class=\\\"is-pulled-right\\\" on:click={savefile} extended>",
 		ctx
 	});
 
 	return block;
 }
 
-// (52:16) <span slot="label">
+// (46:16) <span slot="label">
 function create_label_slot$1(ctx) {
 	let span;
 
@@ -21616,7 +21645,7 @@ function create_label_slot$1(ctx) {
 			span = element("span");
 			span.textContent = "Convert to µm";
 			attr_dev(span, "slot", "label");
-			add_location(span, file$u, 51, 16, 1894);
+			add_location(span, file$u, 45, 16, 1769);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -21630,21 +21659,21 @@ function create_label_slot$1(ctx) {
 		block,
 		id: create_label_slot$1.name,
 		type: "slot",
-		source: "(52:16) <span slot=\\\"label\\\">",
+		source: "(46:16) <span slot=\\\"label\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (50:12) <FormField>
+// (44:12) <FormField>
 function create_default_slot_3$1(ctx) {
 	let updating_checked;
 	let t;
 	let current;
 
 	function checkbox_checked_binding(value) {
-		/*checkbox_checked_binding*/ ctx[11].call(null, value);
+		/*checkbox_checked_binding*/ ctx[12].call(null, value);
 	}
 
 	let checkbox_props = {
@@ -21699,14 +21728,14 @@ function create_default_slot_3$1(ctx) {
 		block,
 		id: create_default_slot_3$1.name,
 		type: "slot",
-		source: "(50:12) <FormField>",
+		source: "(44:12) <FormField>",
 		ctx
 	});
 
 	return block;
 }
 
-// (58:8) <HelperText id="powercontent_help">
+// (52:8) <HelperText id="powercontent_help">
 function create_default_slot_2$3(ctx) {
 	let t0;
 	let t1;
@@ -21737,14 +21766,14 @@ function create_default_slot_2$3(ctx) {
 		block,
 		id: create_default_slot_2$3.name,
 		type: "slot",
-		source: "(58:8) <HelperText id=\\\"powercontent_help\\\">",
+		source: "(52:8) <HelperText id=\\\"powercontent_help\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (59:64) <Label>
+// (53:64) <Label>
 function create_default_slot_1$4(ctx) {
 	let t;
 
@@ -21764,14 +21793,14 @@ function create_default_slot_1$4(ctx) {
 		block,
 		id: create_default_slot_1$4.name,
 		type: "slot",
-		source: "(59:64) <Label>",
+		source: "(53:64) <Label>",
 		ctx
 	});
 
 	return block;
 }
 
-// (59:8) <Fab style="margin:2em 0;" on:click={savefile} extended>
+// (53:8) <Fab style="margin:2em 0;" on:click={savefile} extended>
 function create_default_slot$7(ctx) {
 	let current;
 
@@ -21794,7 +21823,7 @@ function create_default_slot$7(ctx) {
 		p: function update(ctx, dirty) {
 			const label_changes = {};
 
-			if (dirty & /*$$scope*/ 8192) {
+			if (dirty & /*$$scope*/ 16384) {
 				label_changes.$$scope = { dirty, ctx };
 			}
 
@@ -21818,7 +21847,7 @@ function create_default_slot$7(ctx) {
 		block,
 		id: create_default_slot$7.name,
 		type: "slot",
-		source: "(59:8) <Fab style=\\\"margin:2em 0;\\\" on:click={savefile} extended>",
+		source: "(53:8) <Fab style=\\\"margin:2em 0;\\\" on:click={savefile} extended>",
 		ctx
 	});
 
@@ -21846,7 +21875,7 @@ function create_fragment$v(ctx) {
 	let current;
 
 	function textfield0_value_binding(value) {
-		/*textfield0_value_binding*/ ctx[6].call(null, value);
+		/*textfield0_value_binding*/ ctx[7].call(null, value);
 	}
 
 	let textfield0_props = {
@@ -21871,10 +21900,10 @@ function create_fragment$v(ctx) {
 			$$inline: true
 		});
 
-	fab0.$on("click", savefile);
+	fab0.$on("click", /*savefile*/ ctx[6]);
 
 	function textfield1_value_binding(value_1) {
-		/*textfield1_value_binding*/ ctx[7].call(null, value_1);
+		/*textfield1_value_binding*/ ctx[8].call(null, value_1);
 	}
 
 	let textfield1_props = { style: "width:20%", label: "Filename" };
@@ -21887,7 +21916,7 @@ function create_fragment$v(ctx) {
 	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding));
 
 	function textfield2_value_binding(value_2) {
-		/*textfield2_value_binding*/ ctx[8].call(null, value_2);
+		/*textfield2_value_binding*/ ctx[9].call(null, value_2);
 	}
 
 	let textfield2_props = { style: "width:20%", label: "FELIX Shots" };
@@ -21898,10 +21927,10 @@ function create_fragment$v(ctx) {
 
 	const textfield2 = new Textfield({ props: textfield2_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield2, "value", textfield2_value_binding));
-	textfield2.$on("change", /*change_handler*/ ctx[9]);
+	textfield2.$on("change", /*change_handler*/ ctx[10]);
 
 	function textfield3_value_binding(value_3) {
-		/*textfield3_value_binding*/ ctx[10].call(null, value_3);
+		/*textfield3_value_binding*/ ctx[11].call(null, value_3);
 	}
 
 	let textfield3_props = { style: "width:20%", label: "FELIX Hz" };
@@ -21925,7 +21954,7 @@ function create_fragment$v(ctx) {
 		});
 
 	function textfield4_value_binding(value_4) {
-		/*textfield4_value_binding*/ ctx[12].call(null, value_4);
+		/*textfield4_value_binding*/ ctx[13].call(null, value_4);
 	}
 
 	let textfield4_props = {
@@ -21961,7 +21990,7 @@ function create_fragment$v(ctx) {
 			$$inline: true
 		});
 
-	fab1.$on("click", savefile);
+	fab1.$on("click", /*savefile*/ ctx[6]);
 
 	const block = {
 		c: function create() {
@@ -21987,16 +22016,16 @@ function create_fragment$v(ctx) {
 			t7 = space();
 			create_component(fab1.$$.fragment);
 			set_style(div0, "margin-bottom", "2em");
-			add_location(div0, file$u, 40, 8, 1184);
+			add_location(div0, file$u, 34, 8, 1059);
 			set_style(div1, "margin-bottom", "2em");
-			add_location(div1, file$u, 45, 8, 1436);
-			attr_dev(div2, "class", "container svelte-1lmwvpk");
+			add_location(div1, file$u, 39, 8, 1311);
+			attr_dev(div2, "class", "container svelte-12mre1z");
 			attr_dev(div2, "id", "powfileContainer");
-			add_location(div2, file$u, 38, 4, 1127);
-			attr_dev(section, "class", "section svelte-1lmwvpk");
+			add_location(div2, file$u, 32, 4, 1002);
+			attr_dev(section, "class", "section svelte-12mre1z");
 			attr_dev(section, "id", "Powerfile");
 			set_style(section, "display", "none");
-			add_location(section, file$u, 37, 0, 1060);
+			add_location(section, file$u, 31, 0, 935);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -22037,7 +22066,7 @@ function create_fragment$v(ctx) {
 			textfield0.$set(textfield0_changes);
 			const fab0_changes = {};
 
-			if (dirty & /*$$scope*/ 8192) {
+			if (dirty & /*$$scope*/ 16384) {
 				fab0_changes.$$scope = { dirty, ctx };
 			}
 
@@ -22071,7 +22100,7 @@ function create_fragment$v(ctx) {
 			textfield3.$set(textfield3_changes);
 			const formfield_changes = {};
 
-			if (dirty & /*$$scope, convert*/ 8208) {
+			if (dirty & /*$$scope, convert*/ 16400) {
 				formfield_changes.$$scope = { dirty, ctx };
 			}
 
@@ -22087,14 +22116,14 @@ function create_fragment$v(ctx) {
 			textfield4.$set(textfield4_changes);
 			const helpertext_changes = {};
 
-			if (dirty & /*$$scope, filename*/ 8193) {
+			if (dirty & /*$$scope, filename*/ 16385) {
 				helpertext_changes.$$scope = { dirty, ctx };
 			}
 
 			helpertext.$set(helpertext_changes);
 			const fab1_changes = {};
 
-			if (dirty & /*$$scope*/ 8192) {
+			if (dirty & /*$$scope*/ 16384) {
 				fab1_changes.$$scope = { dirty, ctx };
 			}
 
@@ -22150,22 +22179,18 @@ function create_fragment$v(ctx) {
 	return block;
 }
 
-function savefile() {
-	console.log("Powerfile contents saving");
-
-	Sn.create({
-		message: "File Saved!",
-		position: "is-top",
-		type: "is-primary"
-	});
-}
-
 function instance$v($$self, $$props, $$invalidate) {
-	let filename = "";
-	let powerfileContent = "";
-	let felixHz = 10;
-	let felixShots = 16;
-	let convert = null;
+	function savefile() {
+		console.log("Powerfile contents saving");
+		console.log(marked(powerfileContent));
+	}
+
+	let filename = "",
+		powerfileContent = "",
+		felixHz = 10,
+		felixShots = 16,
+		convert = null;
+
 	let location = localStorage["powerfile_location"] || "";
 
 	function textfield0_value_binding(value) {
@@ -22228,6 +22253,7 @@ function instance$v($$self, $$props, $$invalidate) {
 		felixShots,
 		convert,
 		location,
+		savefile,
 		textfield0_value_binding,
 		textfield1_value_binding,
 		textfield2_value_binding,
@@ -22252,85 +22278,2469 @@ class Powerfile extends SvelteComponentDev {
 	}
 }
 
-/* src\Pages\Normline.svelte generated by Svelte v3.17.0 */
-const file$v = "src\\Pages\\Normline.svelte";
+var candidateSelectors = [
+  'input',
+  'select',
+  'textarea',
+  'a[href]',
+  'button',
+  '[tabindex]',
+  'audio[controls]',
+  'video[controls]',
+  '[contenteditable]:not([contenteditable="false"])',
+];
+var candidateSelector = candidateSelectors.join(',');
 
-// (44:8) {#if toggleRow}
-function create_if_block$8(ctx) {
-	let div;
-	let button0;
-	let t1;
-	let button1;
-	let t3;
-	let button2;
-	let t5;
-	let button3;
-	let t7;
-	let button4;
-	let div_transition;
+var matches$1 = typeof Element === 'undefined'
+  ? function () {}
+  : Element.prototype.matches || Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
+
+function tabbable(el, options) {
+  options = options || {};
+
+  var regularTabbables = [];
+  var orderedTabbables = [];
+
+  var candidates = el.querySelectorAll(candidateSelector);
+
+  if (options.includeContainer) {
+    if (matches$1.call(el, candidateSelector)) {
+      candidates = Array.prototype.slice.apply(candidates);
+      candidates.unshift(el);
+    }
+  }
+
+  var i, candidate, candidateTabindex;
+  for (i = 0; i < candidates.length; i++) {
+    candidate = candidates[i];
+
+    if (!isNodeMatchingSelectorTabbable(candidate)) continue;
+
+    candidateTabindex = getTabindex(candidate);
+    if (candidateTabindex === 0) {
+      regularTabbables.push(candidate);
+    } else {
+      orderedTabbables.push({
+        documentOrder: i,
+        tabIndex: candidateTabindex,
+        node: candidate,
+      });
+    }
+  }
+
+  var tabbableNodes = orderedTabbables
+    .sort(sortOrderedTabbables)
+    .map(function(a) { return a.node })
+    .concat(regularTabbables);
+
+  return tabbableNodes;
+}
+
+tabbable.isTabbable = isTabbable;
+tabbable.isFocusable = isFocusable;
+
+function isNodeMatchingSelectorTabbable(node) {
+  if (
+    !isNodeMatchingSelectorFocusable(node)
+    || isNonTabbableRadio(node)
+    || getTabindex(node) < 0
+  ) {
+    return false;
+  }
+  return true;
+}
+
+function isTabbable(node) {
+  if (!node) throw new Error('No node provided');
+  if (matches$1.call(node, candidateSelector) === false) return false;
+  return isNodeMatchingSelectorTabbable(node);
+}
+
+function isNodeMatchingSelectorFocusable(node) {
+  if (
+    node.disabled
+    || isHiddenInput(node)
+    || isHidden(node)
+  ) {
+    return false;
+  }
+  return true;
+}
+
+var focusableCandidateSelector = candidateSelectors.concat('iframe').join(',');
+function isFocusable(node) {
+  if (!node) throw new Error('No node provided');
+  if (matches$1.call(node, focusableCandidateSelector) === false) return false;
+  return isNodeMatchingSelectorFocusable(node);
+}
+
+function getTabindex(node) {
+  var tabindexAttr = parseInt(node.getAttribute('tabindex'), 10);
+  if (!isNaN(tabindexAttr)) return tabindexAttr;
+  // Browsers do not return `tabIndex` correctly for contentEditable nodes;
+  // so if they don't have a tabindex attribute specifically set, assume it's 0.
+  if (isContentEditable(node)) return 0;
+  return node.tabIndex;
+}
+
+function sortOrderedTabbables(a, b) {
+  return a.tabIndex === b.tabIndex ? a.documentOrder - b.documentOrder : a.tabIndex - b.tabIndex;
+}
+
+function isContentEditable(node) {
+  return node.contentEditable === 'true';
+}
+
+function isInput(node) {
+  return node.tagName === 'INPUT';
+}
+
+function isHiddenInput(node) {
+  return isInput(node) && node.type === 'hidden';
+}
+
+function isRadio(node) {
+  return isInput(node) && node.type === 'radio';
+}
+
+function isNonTabbableRadio(node) {
+  return isRadio(node) && !isTabbableRadio(node);
+}
+
+function getCheckedRadio(nodes) {
+  for (var i = 0; i < nodes.length; i++) {
+    if (nodes[i].checked) {
+      return nodes[i];
+    }
+  }
+}
+
+function isTabbableRadio(node) {
+  if (!node.name) return true;
+  // This won't account for the edge case where you have radio groups with the same
+  // in separate forms on the same page.
+  var radioSet = node.ownerDocument.querySelectorAll('input[type="radio"][name="' + node.name + '"]');
+  var checked = getCheckedRadio(radioSet);
+  return !checked || checked === node;
+}
+
+function isHidden(node) {
+  // offsetParent being null will allow detecting cases where an element is invisible or inside an invisible element,
+  // as long as the element does not use position: fixed. For them, their visibility has to be checked directly as well.
+  return node.offsetParent === null || getComputedStyle(node).visibility === 'hidden';
+}
+
+var tabbable_1 = tabbable;
+
+var immutable = extend;
+
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+function extend() {
+    var target = {};
+
+    for (var i = 0; i < arguments.length; i++) {
+        var source = arguments[i];
+
+        for (var key in source) {
+            if (hasOwnProperty.call(source, key)) {
+                target[key] = source[key];
+            }
+        }
+    }
+
+    return target
+}
+
+var activeFocusDelay;
+
+var activeFocusTraps = (function() {
+  var trapQueue = [];
+  return {
+    activateTrap: function(trap) {
+      if (trapQueue.length > 0) {
+        var activeTrap = trapQueue[trapQueue.length - 1];
+        if (activeTrap !== trap) {
+          activeTrap.pause();
+        }
+      }
+
+      var trapIndex = trapQueue.indexOf(trap);
+      if (trapIndex === -1) {
+        trapQueue.push(trap);
+      } else {
+        // move this existing trap to the front of the queue
+        trapQueue.splice(trapIndex, 1);
+        trapQueue.push(trap);
+      }
+    },
+
+    deactivateTrap: function(trap) {
+      var trapIndex = trapQueue.indexOf(trap);
+      if (trapIndex !== -1) {
+        trapQueue.splice(trapIndex, 1);
+      }
+
+      if (trapQueue.length > 0) {
+        trapQueue[trapQueue.length - 1].unpause();
+      }
+    }
+  };
+})();
+
+function focusTrap(element, userOptions) {
+  var doc = document;
+  var container =
+    typeof element === 'string' ? doc.querySelector(element) : element;
+
+  var config = immutable(
+    {
+      returnFocusOnDeactivate: true,
+      escapeDeactivates: true
+    },
+    userOptions
+  );
+
+  var state = {
+    firstTabbableNode: null,
+    lastTabbableNode: null,
+    nodeFocusedBeforeActivation: null,
+    mostRecentlyFocusedNode: null,
+    active: false,
+    paused: false
+  };
+
+  var trap = {
+    activate: activate,
+    deactivate: deactivate,
+    pause: pause,
+    unpause: unpause
+  };
+
+  return trap;
+
+  function activate(activateOptions) {
+    if (state.active) return;
+
+    updateTabbableNodes();
+
+    state.active = true;
+    state.paused = false;
+    state.nodeFocusedBeforeActivation = doc.activeElement;
+
+    var onActivate =
+      activateOptions && activateOptions.onActivate
+        ? activateOptions.onActivate
+        : config.onActivate;
+    if (onActivate) {
+      onActivate();
+    }
+
+    addListeners();
+    return trap;
+  }
+
+  function deactivate(deactivateOptions) {
+    if (!state.active) return;
+
+    clearTimeout(activeFocusDelay);
+
+    removeListeners();
+    state.active = false;
+    state.paused = false;
+
+    activeFocusTraps.deactivateTrap(trap);
+
+    var onDeactivate =
+      deactivateOptions && deactivateOptions.onDeactivate !== undefined
+        ? deactivateOptions.onDeactivate
+        : config.onDeactivate;
+    if (onDeactivate) {
+      onDeactivate();
+    }
+
+    var returnFocus =
+      deactivateOptions && deactivateOptions.returnFocus !== undefined
+        ? deactivateOptions.returnFocus
+        : config.returnFocusOnDeactivate;
+    if (returnFocus) {
+      delay(function() {
+        tryFocus(getReturnFocusNode(state.nodeFocusedBeforeActivation));
+      });
+    }
+
+    return trap;
+  }
+
+  function pause() {
+    if (state.paused || !state.active) return;
+    state.paused = true;
+    removeListeners();
+  }
+
+  function unpause() {
+    if (!state.paused || !state.active) return;
+    state.paused = false;
+    updateTabbableNodes();
+    addListeners();
+  }
+
+  function addListeners() {
+    if (!state.active) return;
+
+    // There can be only one listening focus trap at a time
+    activeFocusTraps.activateTrap(trap);
+
+    // Delay ensures that the focused element doesn't capture the event
+    // that caused the focus trap activation.
+    activeFocusDelay = delay(function() {
+      tryFocus(getInitialFocusNode());
+    });
+
+    doc.addEventListener('focusin', checkFocusIn, true);
+    doc.addEventListener('mousedown', checkPointerDown, {
+      capture: true,
+      passive: false
+    });
+    doc.addEventListener('touchstart', checkPointerDown, {
+      capture: true,
+      passive: false
+    });
+    doc.addEventListener('click', checkClick, {
+      capture: true,
+      passive: false
+    });
+    doc.addEventListener('keydown', checkKey, {
+      capture: true,
+      passive: false
+    });
+
+    return trap;
+  }
+
+  function removeListeners() {
+    if (!state.active) return;
+
+    doc.removeEventListener('focusin', checkFocusIn, true);
+    doc.removeEventListener('mousedown', checkPointerDown, true);
+    doc.removeEventListener('touchstart', checkPointerDown, true);
+    doc.removeEventListener('click', checkClick, true);
+    doc.removeEventListener('keydown', checkKey, true);
+
+    return trap;
+  }
+
+  function getNodeForOption(optionName) {
+    var optionValue = config[optionName];
+    var node = optionValue;
+    if (!optionValue) {
+      return null;
+    }
+    if (typeof optionValue === 'string') {
+      node = doc.querySelector(optionValue);
+      if (!node) {
+        throw new Error('`' + optionName + '` refers to no known node');
+      }
+    }
+    if (typeof optionValue === 'function') {
+      node = optionValue();
+      if (!node) {
+        throw new Error('`' + optionName + '` did not return a node');
+      }
+    }
+    return node;
+  }
+
+  function getInitialFocusNode() {
+    var node;
+    if (getNodeForOption('initialFocus') !== null) {
+      node = getNodeForOption('initialFocus');
+    } else if (container.contains(doc.activeElement)) {
+      node = doc.activeElement;
+    } else {
+      node = state.firstTabbableNode || getNodeForOption('fallbackFocus');
+    }
+
+    if (!node) {
+      throw new Error(
+        'Your focus-trap needs to have at least one focusable element'
+      );
+    }
+
+    return node;
+  }
+
+  function getReturnFocusNode(previousActiveElement) {
+    var node = getNodeForOption('setReturnFocus');
+    return node ? node : previousActiveElement;
+  }
+
+  // This needs to be done on mousedown and touchstart instead of click
+  // so that it precedes the focus event.
+  function checkPointerDown(e) {
+    if (container.contains(e.target)) return;
+    if (config.clickOutsideDeactivates) {
+      deactivate({
+        returnFocus: !tabbable_1.isFocusable(e.target)
+      });
+      return;
+    }
+    // This is needed for mobile devices.
+    // (If we'll only let `click` events through,
+    // then on mobile they will be blocked anyways if `touchstart` is blocked.)
+    if (config.allowOutsideClick && config.allowOutsideClick(e)) {
+      return;
+    }
+    e.preventDefault();
+  }
+
+  // In case focus escapes the trap for some strange reason, pull it back in.
+  function checkFocusIn(e) {
+    // In Firefox when you Tab out of an iframe the Document is briefly focused.
+    if (container.contains(e.target) || e.target instanceof Document) {
+      return;
+    }
+    e.stopImmediatePropagation();
+    tryFocus(state.mostRecentlyFocusedNode || getInitialFocusNode());
+  }
+
+  function checkKey(e) {
+    if (config.escapeDeactivates !== false && isEscapeEvent(e)) {
+      e.preventDefault();
+      deactivate();
+      return;
+    }
+    if (isTabEvent(e)) {
+      checkTab(e);
+      return;
+    }
+  }
+
+  // Hijack Tab events on the first and last focusable nodes of the trap,
+  // in order to prevent focus from escaping. If it escapes for even a
+  // moment it can end up scrolling the page and causing confusion so we
+  // kind of need to capture the action at the keydown phase.
+  function checkTab(e) {
+    updateTabbableNodes();
+    if (e.shiftKey && e.target === state.firstTabbableNode) {
+      e.preventDefault();
+      tryFocus(state.lastTabbableNode);
+      return;
+    }
+    if (!e.shiftKey && e.target === state.lastTabbableNode) {
+      e.preventDefault();
+      tryFocus(state.firstTabbableNode);
+      return;
+    }
+  }
+
+  function checkClick(e) {
+    if (config.clickOutsideDeactivates) return;
+    if (container.contains(e.target)) return;
+    if (config.allowOutsideClick && config.allowOutsideClick(e)) {
+      return;
+    }
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  }
+
+  function updateTabbableNodes() {
+    var tabbableNodes = tabbable_1(container);
+    state.firstTabbableNode = tabbableNodes[0] || getInitialFocusNode();
+    state.lastTabbableNode =
+      tabbableNodes[tabbableNodes.length - 1] || getInitialFocusNode();
+  }
+
+  function tryFocus(node) {
+    if (node === doc.activeElement) return;
+    if (!node || !node.focus) {
+      tryFocus(getInitialFocusNode());
+      return;
+    }
+    node.focus();
+    state.mostRecentlyFocusedNode = node;
+    if (isSelectableInput(node)) {
+      node.select();
+    }
+  }
+}
+
+function isSelectableInput(node) {
+  return (
+    node.tagName &&
+    node.tagName.toLowerCase() === 'input' &&
+    typeof node.select === 'function'
+  );
+}
+
+function isEscapeEvent(e) {
+  return e.key === 'Escape' || e.key === 'Esc' || e.keyCode === 27;
+}
+
+function isTabEvent(e) {
+  return e.key === 'Tab' || e.keyCode === 9;
+}
+
+function delay(fn) {
+  return setTimeout(fn, 0);
+}
+
+var focusTrap_1 = focusTrap;
+
+/**
+ * @license
+ * Copyright 2016 Google Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+function createFocusTrapInstance(surfaceEl, focusTrapFactory, initialFocusEl) {
+    if (focusTrapFactory === void 0) { focusTrapFactory = focusTrap_1; }
+    return focusTrapFactory(surfaceEl, {
+        clickOutsideDeactivates: true,
+        escapeDeactivates: false,
+        initialFocus: initialFocusEl,
+    });
+}
+function isScrollable(el) {
+    return el ? el.scrollHeight > el.offsetHeight : false;
+}
+function areTopsMisaligned(els) {
+    var tops = new Set();
+    [].forEach.call(els, function (el) { return tops.add(el.offsetTop); });
+    return tops.size > 1;
+}
+//# sourceMappingURL=util.js.map
+
+/**
+ * @license
+ * Copyright 2016 Google Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+var cssClasses$h = {
+    CLOSING: 'mdc-dialog--closing',
+    OPEN: 'mdc-dialog--open',
+    OPENING: 'mdc-dialog--opening',
+    SCROLLABLE: 'mdc-dialog--scrollable',
+    SCROLL_LOCK: 'mdc-dialog-scroll-lock',
+    STACKED: 'mdc-dialog--stacked',
+};
+var strings$i = {
+    ACTION_ATTRIBUTE: 'data-mdc-dialog-action',
+    BUTTON_DEFAULT_ATTRIBUTE: 'data-mdc-dialog-button-default',
+    BUTTON_SELECTOR: '.mdc-dialog__button',
+    CLOSED_EVENT: 'MDCDialog:closed',
+    CLOSE_ACTION: 'close',
+    CLOSING_EVENT: 'MDCDialog:closing',
+    CONTAINER_SELECTOR: '.mdc-dialog__container',
+    CONTENT_SELECTOR: '.mdc-dialog__content',
+    DESTROY_ACTION: 'destroy',
+    INITIAL_FOCUS_ATTRIBUTE: 'data-mdc-dialog-initial-focus',
+    OPENED_EVENT: 'MDCDialog:opened',
+    OPENING_EVENT: 'MDCDialog:opening',
+    SCRIM_SELECTOR: '.mdc-dialog__scrim',
+    SUPPRESS_DEFAULT_PRESS_SELECTOR: [
+        'textarea',
+        '.mdc-menu .mdc-list-item',
+    ].join(', '),
+    SURFACE_SELECTOR: '.mdc-dialog__surface',
+};
+var numbers$6 = {
+    DIALOG_ANIMATION_CLOSE_TIME_MS: 75,
+    DIALOG_ANIMATION_OPEN_TIME_MS: 150,
+};
+//# sourceMappingURL=constants.js.map
+
+/**
+ * @license
+ * Copyright 2017 Google Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+var MDCDialogFoundation = /** @class */ (function (_super) {
+    __extends(MDCDialogFoundation, _super);
+    function MDCDialogFoundation(adapter) {
+        var _this = _super.call(this, __assign({}, MDCDialogFoundation.defaultAdapter, adapter)) || this;
+        _this.isOpen_ = false;
+        _this.animationFrame_ = 0;
+        _this.animationTimer_ = 0;
+        _this.layoutFrame_ = 0;
+        _this.escapeKeyAction_ = strings$i.CLOSE_ACTION;
+        _this.scrimClickAction_ = strings$i.CLOSE_ACTION;
+        _this.autoStackButtons_ = true;
+        _this.areButtonsStacked_ = false;
+        return _this;
+    }
+    Object.defineProperty(MDCDialogFoundation, "cssClasses", {
+        get: function () {
+            return cssClasses$h;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MDCDialogFoundation, "strings", {
+        get: function () {
+            return strings$i;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MDCDialogFoundation, "numbers", {
+        get: function () {
+            return numbers$6;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MDCDialogFoundation, "defaultAdapter", {
+        get: function () {
+            return {
+                addBodyClass: function () { return undefined; },
+                addClass: function () { return undefined; },
+                areButtonsStacked: function () { return false; },
+                clickDefaultButton: function () { return undefined; },
+                eventTargetMatches: function () { return false; },
+                getActionFromEvent: function () { return ''; },
+                getInitialFocusEl: function () { return null; },
+                hasClass: function () { return false; },
+                isContentScrollable: function () { return false; },
+                notifyClosed: function () { return undefined; },
+                notifyClosing: function () { return undefined; },
+                notifyOpened: function () { return undefined; },
+                notifyOpening: function () { return undefined; },
+                releaseFocus: function () { return undefined; },
+                removeBodyClass: function () { return undefined; },
+                removeClass: function () { return undefined; },
+                reverseButtons: function () { return undefined; },
+                trapFocus: function () { return undefined; },
+            };
+        },
+        enumerable: true,
+        configurable: true
+    });
+    MDCDialogFoundation.prototype.init = function () {
+        if (this.adapter_.hasClass(cssClasses$h.STACKED)) {
+            this.setAutoStackButtons(false);
+        }
+    };
+    MDCDialogFoundation.prototype.destroy = function () {
+        if (this.isOpen_) {
+            this.close(strings$i.DESTROY_ACTION);
+        }
+        if (this.animationTimer_) {
+            clearTimeout(this.animationTimer_);
+            this.handleAnimationTimerEnd_();
+        }
+        if (this.layoutFrame_) {
+            cancelAnimationFrame(this.layoutFrame_);
+            this.layoutFrame_ = 0;
+        }
+    };
+    MDCDialogFoundation.prototype.open = function () {
+        var _this = this;
+        this.isOpen_ = true;
+        this.adapter_.notifyOpening();
+        this.adapter_.addClass(cssClasses$h.OPENING);
+        // Wait a frame once display is no longer "none", to establish basis for animation
+        this.runNextAnimationFrame_(function () {
+            _this.adapter_.addClass(cssClasses$h.OPEN);
+            _this.adapter_.addBodyClass(cssClasses$h.SCROLL_LOCK);
+            _this.layout();
+            _this.animationTimer_ = setTimeout(function () {
+                _this.handleAnimationTimerEnd_();
+                _this.adapter_.trapFocus(_this.adapter_.getInitialFocusEl());
+                _this.adapter_.notifyOpened();
+            }, numbers$6.DIALOG_ANIMATION_OPEN_TIME_MS);
+        });
+    };
+    MDCDialogFoundation.prototype.close = function (action) {
+        var _this = this;
+        if (action === void 0) { action = ''; }
+        if (!this.isOpen_) {
+            // Avoid redundant close calls (and events), e.g. from keydown on elements that inherently emit click
+            return;
+        }
+        this.isOpen_ = false;
+        this.adapter_.notifyClosing(action);
+        this.adapter_.addClass(cssClasses$h.CLOSING);
+        this.adapter_.removeClass(cssClasses$h.OPEN);
+        this.adapter_.removeBodyClass(cssClasses$h.SCROLL_LOCK);
+        cancelAnimationFrame(this.animationFrame_);
+        this.animationFrame_ = 0;
+        clearTimeout(this.animationTimer_);
+        this.animationTimer_ = setTimeout(function () {
+            _this.adapter_.releaseFocus();
+            _this.handleAnimationTimerEnd_();
+            _this.adapter_.notifyClosed(action);
+        }, numbers$6.DIALOG_ANIMATION_CLOSE_TIME_MS);
+    };
+    MDCDialogFoundation.prototype.isOpen = function () {
+        return this.isOpen_;
+    };
+    MDCDialogFoundation.prototype.getEscapeKeyAction = function () {
+        return this.escapeKeyAction_;
+    };
+    MDCDialogFoundation.prototype.setEscapeKeyAction = function (action) {
+        this.escapeKeyAction_ = action;
+    };
+    MDCDialogFoundation.prototype.getScrimClickAction = function () {
+        return this.scrimClickAction_;
+    };
+    MDCDialogFoundation.prototype.setScrimClickAction = function (action) {
+        this.scrimClickAction_ = action;
+    };
+    MDCDialogFoundation.prototype.getAutoStackButtons = function () {
+        return this.autoStackButtons_;
+    };
+    MDCDialogFoundation.prototype.setAutoStackButtons = function (autoStack) {
+        this.autoStackButtons_ = autoStack;
+    };
+    MDCDialogFoundation.prototype.layout = function () {
+        var _this = this;
+        if (this.layoutFrame_) {
+            cancelAnimationFrame(this.layoutFrame_);
+        }
+        this.layoutFrame_ = requestAnimationFrame(function () {
+            _this.layoutInternal_();
+            _this.layoutFrame_ = 0;
+        });
+    };
+    /** Handles click on the dialog root element. */
+    MDCDialogFoundation.prototype.handleClick = function (evt) {
+        var isScrim = this.adapter_.eventTargetMatches(evt.target, strings$i.SCRIM_SELECTOR);
+        // Check for scrim click first since it doesn't require querying ancestors.
+        if (isScrim && this.scrimClickAction_ !== '') {
+            this.close(this.scrimClickAction_);
+        }
+        else {
+            var action = this.adapter_.getActionFromEvent(evt);
+            if (action) {
+                this.close(action);
+            }
+        }
+    };
+    /** Handles keydown on the dialog root element. */
+    MDCDialogFoundation.prototype.handleKeydown = function (evt) {
+        var isEnter = evt.key === 'Enter' || evt.keyCode === 13;
+        if (!isEnter) {
+            return;
+        }
+        var action = this.adapter_.getActionFromEvent(evt);
+        if (action) {
+            // Action button callback is handled in `handleClick`,
+            // since space/enter keydowns on buttons trigger click events.
+            return;
+        }
+        var isDefault = !this.adapter_.eventTargetMatches(evt.target, strings$i.SUPPRESS_DEFAULT_PRESS_SELECTOR);
+        if (isEnter && isDefault) {
+            this.adapter_.clickDefaultButton();
+        }
+    };
+    /** Handles keydown on the document. */
+    MDCDialogFoundation.prototype.handleDocumentKeydown = function (evt) {
+        var isEscape = evt.key === 'Escape' || evt.keyCode === 27;
+        if (isEscape && this.escapeKeyAction_ !== '') {
+            this.close(this.escapeKeyAction_);
+        }
+    };
+    MDCDialogFoundation.prototype.layoutInternal_ = function () {
+        if (this.autoStackButtons_) {
+            this.detectStackedButtons_();
+        }
+        this.detectScrollableContent_();
+    };
+    MDCDialogFoundation.prototype.handleAnimationTimerEnd_ = function () {
+        this.animationTimer_ = 0;
+        this.adapter_.removeClass(cssClasses$h.OPENING);
+        this.adapter_.removeClass(cssClasses$h.CLOSING);
+    };
+    /**
+     * Runs the given logic on the next animation frame, using setTimeout to factor in Firefox reflow behavior.
+     */
+    MDCDialogFoundation.prototype.runNextAnimationFrame_ = function (callback) {
+        var _this = this;
+        cancelAnimationFrame(this.animationFrame_);
+        this.animationFrame_ = requestAnimationFrame(function () {
+            _this.animationFrame_ = 0;
+            clearTimeout(_this.animationTimer_);
+            _this.animationTimer_ = setTimeout(callback, 0);
+        });
+    };
+    MDCDialogFoundation.prototype.detectStackedButtons_ = function () {
+        // Remove the class first to let us measure the buttons' natural positions.
+        this.adapter_.removeClass(cssClasses$h.STACKED);
+        var areButtonsStacked = this.adapter_.areButtonsStacked();
+        if (areButtonsStacked) {
+            this.adapter_.addClass(cssClasses$h.STACKED);
+        }
+        if (areButtonsStacked !== this.areButtonsStacked_) {
+            this.adapter_.reverseButtons();
+            this.areButtonsStacked_ = areButtonsStacked;
+        }
+    };
+    MDCDialogFoundation.prototype.detectScrollableContent_ = function () {
+        // Remove the class first to let us measure the natural height of the content.
+        this.adapter_.removeClass(cssClasses$h.SCROLLABLE);
+        if (this.adapter_.isContentScrollable()) {
+            this.adapter_.addClass(cssClasses$h.SCROLLABLE);
+        }
+    };
+    return MDCDialogFoundation;
+}(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
+
+/**
+ * @license
+ * Copyright 2017 Google Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+var strings$j = MDCDialogFoundation.strings;
+var MDCDialog = /** @class */ (function (_super) {
+    __extends(MDCDialog, _super);
+    function MDCDialog() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(MDCDialog.prototype, "isOpen", {
+        get: function () {
+            return this.foundation_.isOpen();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MDCDialog.prototype, "escapeKeyAction", {
+        get: function () {
+            return this.foundation_.getEscapeKeyAction();
+        },
+        set: function (action) {
+            this.foundation_.setEscapeKeyAction(action);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MDCDialog.prototype, "scrimClickAction", {
+        get: function () {
+            return this.foundation_.getScrimClickAction();
+        },
+        set: function (action) {
+            this.foundation_.setScrimClickAction(action);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MDCDialog.prototype, "autoStackButtons", {
+        get: function () {
+            return this.foundation_.getAutoStackButtons();
+        },
+        set: function (autoStack) {
+            this.foundation_.setAutoStackButtons(autoStack);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    MDCDialog.attachTo = function (root) {
+        return new MDCDialog(root);
+    };
+    MDCDialog.prototype.initialize = function (focusTrapFactory) {
+        var e_1, _a;
+        var container = this.root_.querySelector(strings$j.CONTAINER_SELECTOR);
+        if (!container) {
+            throw new Error("Dialog component requires a " + strings$j.CONTAINER_SELECTOR + " container element");
+        }
+        this.container_ = container;
+        this.content_ = this.root_.querySelector(strings$j.CONTENT_SELECTOR);
+        this.buttons_ = [].slice.call(this.root_.querySelectorAll(strings$j.BUTTON_SELECTOR));
+        this.defaultButton_ = this.root_.querySelector("[" + strings$j.BUTTON_DEFAULT_ATTRIBUTE + "]");
+        this.focusTrapFactory_ = focusTrapFactory;
+        this.buttonRipples_ = [];
+        try {
+            for (var _b = __values(this.buttons_), _c = _b.next(); !_c.done; _c = _b.next()) {
+                var buttonEl = _c.value;
+                this.buttonRipples_.push(new MDCRipple(buttonEl));
+            }
+        }
+        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+        finally {
+            try {
+                if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+            }
+            finally { if (e_1) throw e_1.error; }
+        }
+    };
+    MDCDialog.prototype.initialSyncWithDOM = function () {
+        var _this = this;
+        this.focusTrap_ = createFocusTrapInstance(this.container_, this.focusTrapFactory_, this.getInitialFocusEl_() || undefined);
+        this.handleClick_ = this.foundation_.handleClick.bind(this.foundation_);
+        this.handleKeydown_ = this.foundation_.handleKeydown.bind(this.foundation_);
+        this.handleDocumentKeydown_ = this.foundation_.handleDocumentKeydown.bind(this.foundation_);
+        this.handleLayout_ = this.layout.bind(this);
+        var LAYOUT_EVENTS = ['resize', 'orientationchange'];
+        this.handleOpening_ = function () {
+            LAYOUT_EVENTS.forEach(function (evtType) { return window.addEventListener(evtType, _this.handleLayout_); });
+            document.addEventListener('keydown', _this.handleDocumentKeydown_);
+        };
+        this.handleClosing_ = function () {
+            LAYOUT_EVENTS.forEach(function (evtType) { return window.removeEventListener(evtType, _this.handleLayout_); });
+            document.removeEventListener('keydown', _this.handleDocumentKeydown_);
+        };
+        this.listen('click', this.handleClick_);
+        this.listen('keydown', this.handleKeydown_);
+        this.listen(strings$j.OPENING_EVENT, this.handleOpening_);
+        this.listen(strings$j.CLOSING_EVENT, this.handleClosing_);
+    };
+    MDCDialog.prototype.destroy = function () {
+        this.unlisten('click', this.handleClick_);
+        this.unlisten('keydown', this.handleKeydown_);
+        this.unlisten(strings$j.OPENING_EVENT, this.handleOpening_);
+        this.unlisten(strings$j.CLOSING_EVENT, this.handleClosing_);
+        this.handleClosing_();
+        this.buttonRipples_.forEach(function (ripple) { return ripple.destroy(); });
+        _super.prototype.destroy.call(this);
+    };
+    MDCDialog.prototype.layout = function () {
+        this.foundation_.layout();
+    };
+    MDCDialog.prototype.open = function () {
+        this.foundation_.open();
+    };
+    MDCDialog.prototype.close = function (action) {
+        if (action === void 0) { action = ''; }
+        this.foundation_.close(action);
+    };
+    MDCDialog.prototype.getDefaultFoundation = function () {
+        var _this = this;
+        // DO NOT INLINE this variable. For backward compatibility, foundations take a Partial<MDCFooAdapter>.
+        // To ensure we don't accidentally omit any methods, we need a separate, strongly typed adapter variable.
+        var adapter = {
+            addBodyClass: function (className) { return document.body.classList.add(className); },
+            addClass: function (className) { return _this.root_.classList.add(className); },
+            areButtonsStacked: function () { return areTopsMisaligned(_this.buttons_); },
+            clickDefaultButton: function () { return _this.defaultButton_ && _this.defaultButton_.click(); },
+            eventTargetMatches: function (target, selector) { return target ? matches(target, selector) : false; },
+            getActionFromEvent: function (evt) {
+                if (!evt.target) {
+                    return '';
+                }
+                var element = closest(evt.target, "[" + strings$j.ACTION_ATTRIBUTE + "]");
+                return element && element.getAttribute(strings$j.ACTION_ATTRIBUTE);
+            },
+            getInitialFocusEl: function () { return _this.getInitialFocusEl_(); },
+            hasClass: function (className) { return _this.root_.classList.contains(className); },
+            isContentScrollable: function () { return isScrollable(_this.content_); },
+            notifyClosed: function (action) { return _this.emit(strings$j.CLOSED_EVENT, action ? { action: action } : {}); },
+            notifyClosing: function (action) { return _this.emit(strings$j.CLOSING_EVENT, action ? { action: action } : {}); },
+            notifyOpened: function () { return _this.emit(strings$j.OPENED_EVENT, {}); },
+            notifyOpening: function () { return _this.emit(strings$j.OPENING_EVENT, {}); },
+            releaseFocus: function () { return _this.focusTrap_.deactivate(); },
+            removeBodyClass: function (className) { return document.body.classList.remove(className); },
+            removeClass: function (className) { return _this.root_.classList.remove(className); },
+            reverseButtons: function () {
+                _this.buttons_.reverse();
+                _this.buttons_.forEach(function (button) {
+                    button.parentElement.appendChild(button);
+                });
+            },
+            trapFocus: function () { return _this.focusTrap_.activate(); },
+        };
+        return new MDCDialogFoundation(adapter);
+    };
+    MDCDialog.prototype.getInitialFocusEl_ = function () {
+        return document.querySelector("[" + strings$j.INITIAL_FOCUS_ATTRIBUTE + "]");
+    };
+    return MDCDialog;
+}(MDCComponent));
+//# sourceMappingURL=component.js.map
+
+/* node_modules\@smui\dialog\Dialog.svelte generated by Svelte v3.17.0 */
+const file$v = "node_modules\\@smui\\dialog\\Dialog.svelte";
+
+function create_fragment$w(ctx) {
+	let div3;
+	let div1;
+	let div0;
+	let t;
+	let div2;
+	let useActions_action;
+	let forwardEvents_action;
 	let current;
+	let dispose;
+	const default_slot_template = /*$$slots*/ ctx[19].default;
+	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[18], null);
+
+	let div3_levels = [
+		{
+			class: "mdc-dialog " + /*className*/ ctx[1]
+		},
+		{ role: "alertdialog" },
+		{ "aria-modal": "true" },
+		exclude(/*$$props*/ ctx[5], ["use", "class"])
+	];
+
+	let div3_data = {};
+
+	for (let i = 0; i < div3_levels.length; i += 1) {
+		div3_data = assign(div3_data, div3_levels[i]);
+	}
 
 	const block = {
 		c: function create() {
-			div = element("div");
-			button0 = element("button");
-			button0.textContent = "Create Baseline";
-			t1 = space();
-			button1 = element("button");
-			button1.textContent = "Create Baseline";
-			t3 = space();
-			button2 = element("button");
-			button2.textContent = "Create Baseline";
-			t5 = space();
-			button3 = element("button");
-			button3.textContent = "Create Baseline";
-			t7 = space();
-			button4 = element("button");
-			button4.textContent = "Create Baseline";
-			attr_dev(button0, "class", "button is-link svelte-ju9u98");
-			add_location(button0, file$v, 45, 16, 1659);
-			attr_dev(button1, "class", "button is-link svelte-ju9u98");
-			add_location(button1, file$v, 46, 16, 1732);
-			attr_dev(button2, "class", "button is-link svelte-ju9u98");
-			add_location(button2, file$v, 47, 16, 1805);
-			attr_dev(button3, "class", "button is-link svelte-ju9u98");
-			add_location(button3, file$v, 48, 16, 1878);
-			attr_dev(button4, "class", "button is-link svelte-ju9u98");
-			add_location(button4, file$v, 49, 16, 1951);
-			attr_dev(div, "class", "align svelte-ju9u98");
-			add_location(div, file$v, 44, 12, 1577);
+			div3 = element("div");
+			div1 = element("div");
+			div0 = element("div");
+			if (default_slot) default_slot.c();
+			t = space();
+			div2 = element("div");
+			attr_dev(div0, "class", "mdc-dialog__surface");
+			add_location(div0, file$v, 11, 4, 273);
+			attr_dev(div1, "class", "mdc-dialog__container");
+			add_location(div1, file$v, 10, 2, 233);
+			attr_dev(div2, "class", "mdc-dialog__scrim");
+			add_location(div2, file$v, 15, 2, 349);
+			set_attributes(div3, div3_data);
+			add_location(div3, file$v, 0, 0, 0);
+		},
+		l: function claim(nodes) {
+			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
 		},
 		m: function mount(target, anchor) {
-			insert_dev(target, div, anchor);
-			append_dev(div, button0);
-			append_dev(div, t1);
-			append_dev(div, button1);
-			append_dev(div, t3);
-			append_dev(div, button2);
-			append_dev(div, t5);
-			append_dev(div, button3);
-			append_dev(div, t7);
-			append_dev(div, button4);
+			insert_dev(target, div3, anchor);
+			append_dev(div3, div1);
+			append_dev(div1, div0);
+
+			if (default_slot) {
+				default_slot.m(div0, null);
+			}
+
+			append_dev(div3, t);
+			append_dev(div3, div2);
+			/*div3_binding*/ ctx[20](div3);
 			current = true;
+
+			dispose = [
+				action_destroyer(useActions_action = useActions.call(null, div3, /*use*/ ctx[0])),
+				action_destroyer(forwardEvents_action = /*forwardEvents*/ ctx[3].call(null, div3)),
+				listen_dev(div3, "MDCDialog:opened", /*handleDialogOpened*/ ctx[4], false, false, false)
+			];
+		},
+		p: function update(ctx, [dirty]) {
+			if (default_slot && default_slot.p && dirty & /*$$scope*/ 262144) {
+				default_slot.p(get_slot_context(default_slot_template, ctx, /*$$scope*/ ctx[18], null), get_slot_changes(default_slot_template, /*$$scope*/ ctx[18], dirty, null));
+			}
+
+			set_attributes(div3, get_spread_update(div3_levels, [
+				dirty & /*className*/ 2 && ({
+					class: "mdc-dialog " + /*className*/ ctx[1]
+				}),
+				{ role: "alertdialog" },
+				{ "aria-modal": "true" },
+				dirty & /*exclude, $$props*/ 32 && exclude(/*$$props*/ ctx[5], ["use", "class"])
+			]));
+
+			if (useActions_action && is_function(useActions_action.update) && dirty & /*use*/ 1) useActions_action.update.call(null, /*use*/ ctx[0]);
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(default_slot, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(default_slot, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(div3);
+			if (default_slot) default_slot.d(detaching);
+			/*div3_binding*/ ctx[20](null);
+			run_all(dispose);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_fragment$w.name,
+		type: "component",
+		source: "",
+		ctx
+	});
+
+	return block;
+}
+
+function instance$w($$self, $$props, $$invalidate) {
+	const forwardEvents = forwardEventsBuilder(current_component, [
+		"MDCDialog:opening",
+		"MDCDialog:opened",
+		"MDCDialog:closing",
+		"MDCDialog:closed"
+	]);
+
+	let { use = [] } = $$props;
+	let { class: className = "" } = $$props;
+	let { escapeKeyAction = "close" } = $$props;
+	let { scrimClickAction = "close" } = $$props;
+	let { autoStackButtons = true } = $$props;
+	let element;
+	let dialog;
+	let addLayoutListener = getContext("SMUI:addLayoutListener");
+	let removeLayoutListener;
+	let layoutListeners = [];
+
+	let addLayoutListenerFn = listener => {
+		layoutListeners.push(listener);
+
+		return () => {
+			const idx = layoutListeners.indexOf(listener);
+
+			if (idx >= 0) {
+				layoutListeners.splice(idx, 1);
+			}
+		};
+	};
+
+	setContext("SMUI:addLayoutListener", addLayoutListenerFn);
+
+	if (addLayoutListener) {
+		removeLayoutListener = addLayoutListener(layout);
+	}
+
+	onMount(() => {
+		$$invalidate(13, dialog = new MDCDialog(element));
+	});
+
+	onDestroy(() => {
+		dialog && dialog.destroy();
+
+		if (removeLayoutListener) {
+			removeLayoutListener();
+		}
+	});
+
+	function handleDialogOpened() {
+		layoutListeners.forEach(listener => listener());
+	}
+
+	function open(...args) {
+		return dialog.open(...args);
+	}
+
+	function close(...args) {
+		return dialog.close(...args);
+	}
+
+	function isOpen() {
+		return dialog.isOpen;
+	}
+
+	function layout(...args) {
+		return dialog.layout(...args);
+	}
+
+	let { $$slots = {}, $$scope } = $$props;
+
+	function div3_binding($$value) {
+		binding_callbacks[$$value ? "unshift" : "push"](() => {
+			$$invalidate(2, element = $$value);
+		});
+	}
+
+	$$self.$set = $$new_props => {
+		$$invalidate(5, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
+		if ("use" in $$new_props) $$invalidate(0, use = $$new_props.use);
+		if ("class" in $$new_props) $$invalidate(1, className = $$new_props.class);
+		if ("escapeKeyAction" in $$new_props) $$invalidate(6, escapeKeyAction = $$new_props.escapeKeyAction);
+		if ("scrimClickAction" in $$new_props) $$invalidate(7, scrimClickAction = $$new_props.scrimClickAction);
+		if ("autoStackButtons" in $$new_props) $$invalidate(8, autoStackButtons = $$new_props.autoStackButtons);
+		if ("$$scope" in $$new_props) $$invalidate(18, $$scope = $$new_props.$$scope);
+	};
+
+	$$self.$capture_state = () => {
+		return {
+			use,
+			className,
+			escapeKeyAction,
+			scrimClickAction,
+			autoStackButtons,
+			element,
+			dialog,
+			addLayoutListener,
+			removeLayoutListener,
+			layoutListeners,
+			addLayoutListenerFn
+		};
+	};
+
+	$$self.$inject_state = $$new_props => {
+		$$invalidate(5, $$props = assign(assign({}, $$props), $$new_props));
+		if ("use" in $$props) $$invalidate(0, use = $$new_props.use);
+		if ("className" in $$props) $$invalidate(1, className = $$new_props.className);
+		if ("escapeKeyAction" in $$props) $$invalidate(6, escapeKeyAction = $$new_props.escapeKeyAction);
+		if ("scrimClickAction" in $$props) $$invalidate(7, scrimClickAction = $$new_props.scrimClickAction);
+		if ("autoStackButtons" in $$props) $$invalidate(8, autoStackButtons = $$new_props.autoStackButtons);
+		if ("element" in $$props) $$invalidate(2, element = $$new_props.element);
+		if ("dialog" in $$props) $$invalidate(13, dialog = $$new_props.dialog);
+		if ("addLayoutListener" in $$props) addLayoutListener = $$new_props.addLayoutListener;
+		if ("removeLayoutListener" in $$props) removeLayoutListener = $$new_props.removeLayoutListener;
+		if ("layoutListeners" in $$props) layoutListeners = $$new_props.layoutListeners;
+		if ("addLayoutListenerFn" in $$props) addLayoutListenerFn = $$new_props.addLayoutListenerFn;
+	};
+
+	$$self.$$.update = () => {
+		if ($$self.$$.dirty & /*dialog, escapeKeyAction*/ 8256) {
+			 dialog && $$invalidate(13, dialog.escapeKeyAction = escapeKeyAction, dialog);
+		}
+
+		if ($$self.$$.dirty & /*dialog, scrimClickAction*/ 8320) {
+			 dialog && $$invalidate(13, dialog.scrimClickAction = scrimClickAction, dialog);
+		}
+
+		if ($$self.$$.dirty & /*dialog, autoStackButtons*/ 8448) {
+			 dialog && $$invalidate(13, dialog.autoStackButtons = autoStackButtons, dialog);
+		}
+	};
+
+	$$props = exclude_internal_props($$props);
+
+	return [
+		use,
+		className,
+		element,
+		forwardEvents,
+		handleDialogOpened,
+		$$props,
+		escapeKeyAction,
+		scrimClickAction,
+		autoStackButtons,
+		open,
+		close,
+		isOpen,
+		layout,
+		dialog,
+		removeLayoutListener,
+		addLayoutListener,
+		layoutListeners,
+		addLayoutListenerFn,
+		$$scope,
+		$$slots,
+		div3_binding
+	];
+}
+
+class Dialog extends SvelteComponentDev {
+	constructor(options) {
+		super(options);
+
+		init(this, options, instance$w, create_fragment$w, safe_not_equal, {
+			use: 0,
+			class: 1,
+			escapeKeyAction: 6,
+			scrimClickAction: 7,
+			autoStackButtons: 8,
+			open: 9,
+			close: 10,
+			isOpen: 11,
+			layout: 12
+		});
+
+		dispatch_dev("SvelteRegisterComponent", {
+			component: this,
+			tagName: "Dialog",
+			options,
+			id: create_fragment$w.name
+		});
+	}
+
+	get use() {
+		throw new Error("<Dialog>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set use(value) {
+		throw new Error("<Dialog>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get class() {
+		throw new Error("<Dialog>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set class(value) {
+		throw new Error("<Dialog>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get escapeKeyAction() {
+		throw new Error("<Dialog>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set escapeKeyAction(value) {
+		throw new Error("<Dialog>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get scrimClickAction() {
+		throw new Error("<Dialog>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set scrimClickAction(value) {
+		throw new Error("<Dialog>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get autoStackButtons() {
+		throw new Error("<Dialog>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set autoStackButtons(value) {
+		throw new Error("<Dialog>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get open() {
+		return this.$$.ctx[9];
+	}
+
+	set open(value) {
+		throw new Error("<Dialog>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get close() {
+		return this.$$.ctx[10];
+	}
+
+	set close(value) {
+		throw new Error("<Dialog>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get isOpen() {
+		return this.$$.ctx[11];
+	}
+
+	set isOpen(value) {
+		throw new Error("<Dialog>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get layout() {
+		return this.$$.ctx[12];
+	}
+
+	set layout(value) {
+		throw new Error("<Dialog>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+}
+
+/* node_modules\@smui\common\H2.svelte generated by Svelte v3.17.0 */
+const file$w = "node_modules\\@smui\\common\\H2.svelte";
+
+function create_fragment$x(ctx) {
+	let h2;
+	let useActions_action;
+	let forwardEvents_action;
+	let current;
+	let dispose;
+	const default_slot_template = /*$$slots*/ ctx[4].default;
+	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[3], null);
+	let h2_levels = [exclude(/*$$props*/ ctx[2], ["use"])];
+	let h2_data = {};
+
+	for (let i = 0; i < h2_levels.length; i += 1) {
+		h2_data = assign(h2_data, h2_levels[i]);
+	}
+
+	const block = {
+		c: function create() {
+			h2 = element("h2");
+			if (default_slot) default_slot.c();
+			set_attributes(h2, h2_data);
+			add_location(h2, file$w, 0, 0, 0);
+		},
+		l: function claim(nodes) {
+			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, h2, anchor);
+
+			if (default_slot) {
+				default_slot.m(h2, null);
+			}
+
+			current = true;
+
+			dispose = [
+				action_destroyer(useActions_action = useActions.call(null, h2, /*use*/ ctx[0])),
+				action_destroyer(forwardEvents_action = /*forwardEvents*/ ctx[1].call(null, h2))
+			];
+		},
+		p: function update(ctx, [dirty]) {
+			if (default_slot && default_slot.p && dirty & /*$$scope*/ 8) {
+				default_slot.p(get_slot_context(default_slot_template, ctx, /*$$scope*/ ctx[3], null), get_slot_changes(default_slot_template, /*$$scope*/ ctx[3], dirty, null));
+			}
+
+			set_attributes(h2, get_spread_update(h2_levels, [dirty & /*exclude, $$props*/ 4 && exclude(/*$$props*/ ctx[2], ["use"])]));
+			if (useActions_action && is_function(useActions_action.update) && dirty & /*use*/ 1) useActions_action.update.call(null, /*use*/ ctx[0]);
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(default_slot, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(default_slot, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(h2);
+			if (default_slot) default_slot.d(detaching);
+			run_all(dispose);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_fragment$x.name,
+		type: "component",
+		source: "",
+		ctx
+	});
+
+	return block;
+}
+
+function instance$x($$self, $$props, $$invalidate) {
+	const forwardEvents = forwardEventsBuilder(current_component);
+	let { use = [] } = $$props;
+	let { $$slots = {}, $$scope } = $$props;
+
+	$$self.$set = $$new_props => {
+		$$invalidate(2, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
+		if ("use" in $$new_props) $$invalidate(0, use = $$new_props.use);
+		if ("$$scope" in $$new_props) $$invalidate(3, $$scope = $$new_props.$$scope);
+	};
+
+	$$self.$capture_state = () => {
+		return { use };
+	};
+
+	$$self.$inject_state = $$new_props => {
+		$$invalidate(2, $$props = assign(assign({}, $$props), $$new_props));
+		if ("use" in $$props) $$invalidate(0, use = $$new_props.use);
+	};
+
+	$$props = exclude_internal_props($$props);
+	return [use, forwardEvents, $$props, $$scope, $$slots];
+}
+
+class H2 extends SvelteComponentDev {
+	constructor(options) {
+		super(options);
+		init(this, options, instance$x, create_fragment$x, safe_not_equal, { use: 0 });
+
+		dispatch_dev("SvelteRegisterComponent", {
+			component: this,
+			tagName: "H2",
+			options,
+			id: create_fragment$x.name
+		});
+	}
+
+	get use() {
+		throw new Error("<H2>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set use(value) {
+		throw new Error("<H2>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+}
+
+var Title = classAdderBuilder({
+  class: 'mdc-dialog__title',
+  component: H2,
+  contexts: {}
+});
+
+var Content = classAdderBuilder({
+  class: 'mdc-dialog__content',
+  component: Div,
+  contexts: {}
+});
+
+/* node_modules\@smui\common\Footer.svelte generated by Svelte v3.17.0 */
+const file$x = "node_modules\\@smui\\common\\Footer.svelte";
+
+function create_fragment$y(ctx) {
+	let footer;
+	let useActions_action;
+	let forwardEvents_action;
+	let current;
+	let dispose;
+	const default_slot_template = /*$$slots*/ ctx[4].default;
+	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[3], null);
+	let footer_levels = [exclude(/*$$props*/ ctx[2], ["use"])];
+	let footer_data = {};
+
+	for (let i = 0; i < footer_levels.length; i += 1) {
+		footer_data = assign(footer_data, footer_levels[i]);
+	}
+
+	const block = {
+		c: function create() {
+			footer = element("footer");
+			if (default_slot) default_slot.c();
+			set_attributes(footer, footer_data);
+			add_location(footer, file$x, 0, 0, 0);
+		},
+		l: function claim(nodes) {
+			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, footer, anchor);
+
+			if (default_slot) {
+				default_slot.m(footer, null);
+			}
+
+			current = true;
+
+			dispose = [
+				action_destroyer(useActions_action = useActions.call(null, footer, /*use*/ ctx[0])),
+				action_destroyer(forwardEvents_action = /*forwardEvents*/ ctx[1].call(null, footer))
+			];
+		},
+		p: function update(ctx, [dirty]) {
+			if (default_slot && default_slot.p && dirty & /*$$scope*/ 8) {
+				default_slot.p(get_slot_context(default_slot_template, ctx, /*$$scope*/ ctx[3], null), get_slot_changes(default_slot_template, /*$$scope*/ ctx[3], dirty, null));
+			}
+
+			set_attributes(footer, get_spread_update(footer_levels, [dirty & /*exclude, $$props*/ 4 && exclude(/*$$props*/ ctx[2], ["use"])]));
+			if (useActions_action && is_function(useActions_action.update) && dirty & /*use*/ 1) useActions_action.update.call(null, /*use*/ ctx[0]);
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(default_slot, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(default_slot, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(footer);
+			if (default_slot) default_slot.d(detaching);
+			run_all(dispose);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_fragment$y.name,
+		type: "component",
+		source: "",
+		ctx
+	});
+
+	return block;
+}
+
+function instance$y($$self, $$props, $$invalidate) {
+	const forwardEvents = forwardEventsBuilder(current_component);
+	let { use = [] } = $$props;
+	let { $$slots = {}, $$scope } = $$props;
+
+	$$self.$set = $$new_props => {
+		$$invalidate(2, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
+		if ("use" in $$new_props) $$invalidate(0, use = $$new_props.use);
+		if ("$$scope" in $$new_props) $$invalidate(3, $$scope = $$new_props.$$scope);
+	};
+
+	$$self.$capture_state = () => {
+		return { use };
+	};
+
+	$$self.$inject_state = $$new_props => {
+		$$invalidate(2, $$props = assign(assign({}, $$props), $$new_props));
+		if ("use" in $$props) $$invalidate(0, use = $$new_props.use);
+	};
+
+	$$props = exclude_internal_props($$props);
+	return [use, forwardEvents, $$props, $$scope, $$slots];
+}
+
+class Footer$1 extends SvelteComponentDev {
+	constructor(options) {
+		super(options);
+		init(this, options, instance$y, create_fragment$y, safe_not_equal, { use: 0 });
+
+		dispatch_dev("SvelteRegisterComponent", {
+			component: this,
+			tagName: "Footer",
+			options,
+			id: create_fragment$y.name
+		});
+	}
+
+	get use() {
+		throw new Error("<Footer>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set use(value) {
+		throw new Error("<Footer>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+}
+
+classAdderBuilder({
+  class: 'mdc-dialog__actions',
+  component: Footer$1,
+  contexts: {
+    'SMUI:button:context': 'dialog:action'
+  }
+});
+
+/* src\components\DialogChecklist.svelte generated by Svelte v3.17.0 */
+
+function get_each_context$2(ctx, list, i) {
+	const child_ctx = ctx.slice();
+	child_ctx[7] = list[i];
+	return child_ctx;
+}
+
+// (27:4) <Title id="dialogChecklist-title">
+function create_default_slot_6$1(ctx) {
+	let t;
+
+	const block = {
+		c: function create() {
+			t = text(/*title*/ ctx[3]);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, t, anchor);
+		},
+		p: noop,
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(t);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_default_slot_6$1.name,
+		type: "slot",
+		source: "(27:4) <Title id=\\\"dialogChecklist-title\\\">",
+		ctx
+	});
+
+	return block;
+}
+
+// (33:24) <Label>
+function create_default_slot_5$2(ctx) {
+	let t_value = /*file*/ ctx[7] + "";
+	let t;
+
+	const block = {
+		c: function create() {
+			t = text(t_value);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, t, anchor);
+		},
+		p: function update(ctx, dirty) {
+			if (dirty & /*$filelist*/ 2 && t_value !== (t_value = /*file*/ ctx[7] + "")) set_data_dev(t, t_value);
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(t);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_default_slot_5$2.name,
+		type: "slot",
+		source: "(33:24) <Label>",
+		ctx
+	});
+
+	return block;
+}
+
+// (34:24) <Meta>
+function create_default_slot_4$2(ctx) {
+	let updating_group;
+	let current;
+
+	function checkbox_group_binding(value) {
+		/*checkbox_group_binding*/ ctx[5].call(null, value);
+	}
+
+	let checkbox_props = { value: /*file*/ ctx[7] };
+
+	if (/*$filelistBinded*/ ctx[2] !== void 0) {
+		checkbox_props.group = /*$filelistBinded*/ ctx[2];
+	}
+
+	const checkbox = new Checkbox({ props: checkbox_props, $$inline: true });
+	binding_callbacks.push(() => bind(checkbox, "group", checkbox_group_binding));
+
+	const block = {
+		c: function create() {
+			create_component(checkbox.$$.fragment);
+		},
+		m: function mount(target, anchor) {
+			mount_component(checkbox, target, anchor);
+			current = true;
+		},
+		p: function update(ctx, dirty) {
+			const checkbox_changes = {};
+			if (dirty & /*$filelist*/ 2) checkbox_changes.value = /*file*/ ctx[7];
+
+			if (!updating_group && dirty & /*$filelistBinded*/ 4) {
+				updating_group = true;
+				checkbox_changes.group = /*$filelistBinded*/ ctx[2];
+				add_flush_callback(() => updating_group = false);
+			}
+
+			checkbox.$set(checkbox_changes);
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(checkbox.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(checkbox.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			destroy_component(checkbox, detaching);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_default_slot_4$2.name,
+		type: "slot",
+		source: "(34:24) <Meta>",
+		ctx
+	});
+
+	return block;
+}
+
+// (32:20) <Item>
+function create_default_slot_3$2(ctx) {
+	let t0;
+	let t1;
+	let current;
+
+	const label = new Label$1({
+			props: {
+				$$slots: { default: [create_default_slot_5$2] },
+				$$scope: { ctx }
+			},
+			$$inline: true
+		});
+
+	const meta = new Meta({
+			props: {
+				$$slots: { default: [create_default_slot_4$2] },
+				$$scope: { ctx }
+			},
+			$$inline: true
+		});
+
+	const block = {
+		c: function create() {
+			create_component(label.$$.fragment);
+			t0 = space();
+			create_component(meta.$$.fragment);
+			t1 = space();
+		},
+		m: function mount(target, anchor) {
+			mount_component(label, target, anchor);
+			insert_dev(target, t0, anchor);
+			mount_component(meta, target, anchor);
+			insert_dev(target, t1, anchor);
+			current = true;
+		},
+		p: function update(ctx, dirty) {
+			const label_changes = {};
+
+			if (dirty & /*$$scope, $filelist*/ 1026) {
+				label_changes.$$scope = { dirty, ctx };
+			}
+
+			label.$set(label_changes);
+			const meta_changes = {};
+
+			if (dirty & /*$$scope, $filelist, $filelistBinded*/ 1030) {
+				meta_changes.$$scope = { dirty, ctx };
+			}
+
+			meta.$set(meta_changes);
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(label.$$.fragment, local);
+			transition_in(meta.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(label.$$.fragment, local);
+			transition_out(meta.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			destroy_component(label, detaching);
+			if (detaching) detach_dev(t0);
+			destroy_component(meta, detaching);
+			if (detaching) detach_dev(t1);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_default_slot_3$2.name,
+		type: "slot",
+		source: "(32:20) <Item>",
+		ctx
+	});
+
+	return block;
+}
+
+// (31:16) {#each $filelist as file}
+function create_each_block$2(ctx) {
+	let current;
+
+	const item = new Item({
+			props: {
+				$$slots: { default: [create_default_slot_3$2] },
+				$$scope: { ctx }
+			},
+			$$inline: true
+		});
+
+	const block = {
+		c: function create() {
+			create_component(item.$$.fragment);
+		},
+		m: function mount(target, anchor) {
+			mount_component(item, target, anchor);
+			current = true;
+		},
+		p: function update(ctx, dirty) {
+			const item_changes = {};
+
+			if (dirty & /*$$scope, $filelist, $filelistBinded*/ 1030) {
+				item_changes.$$scope = { dirty, ctx };
+			}
+
+			item.$set(item_changes);
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(item.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(item.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			destroy_component(item, detaching);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_each_block$2.name,
+		type: "each",
+		source: "(31:16) {#each $filelist as file}",
+		ctx
+	});
+
+	return block;
+}
+
+// (30:12) <List checklist>
+function create_default_slot_2$4(ctx) {
+	let each_1_anchor;
+	let current;
+	let each_value = /*$filelist*/ ctx[1];
+	let each_blocks = [];
+
+	for (let i = 0; i < each_value.length; i += 1) {
+		each_blocks[i] = create_each_block$2(get_each_context$2(ctx, each_value, i));
+	}
+
+	const out = i => transition_out(each_blocks[i], 1, 1, () => {
+		each_blocks[i] = null;
+	});
+
+	const block = {
+		c: function create() {
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+
+			each_1_anchor = empty();
+		},
+		m: function mount(target, anchor) {
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(target, anchor);
+			}
+
+			insert_dev(target, each_1_anchor, anchor);
+			current = true;
+		},
+		p: function update(ctx, dirty) {
+			if (dirty & /*$filelist, $filelistBinded*/ 6) {
+				each_value = /*$filelist*/ ctx[1];
+				let i;
+
+				for (i = 0; i < each_value.length; i += 1) {
+					const child_ctx = get_each_context$2(ctx, each_value, i);
+
+					if (each_blocks[i]) {
+						each_blocks[i].p(child_ctx, dirty);
+						transition_in(each_blocks[i], 1);
+					} else {
+						each_blocks[i] = create_each_block$2(child_ctx);
+						each_blocks[i].c();
+						transition_in(each_blocks[i], 1);
+						each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
+					}
+				}
+
+				group_outros();
+
+				for (i = each_value.length; i < each_blocks.length; i += 1) {
+					out(i);
+				}
+
+				check_outros();
+			}
 		},
 		i: function intro(local) {
 			if (current) return;
 
+			for (let i = 0; i < each_value.length; i += 1) {
+				transition_in(each_blocks[i]);
+			}
+
+			current = true;
+		},
+		o: function outro(local) {
+			each_blocks = each_blocks.filter(Boolean);
+
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				transition_out(each_blocks[i]);
+			}
+
+			current = false;
+		},
+		d: function destroy(detaching) {
+			destroy_each(each_blocks, detaching);
+			if (detaching) detach_dev(each_1_anchor);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_default_slot_2$4.name,
+		type: "slot",
+		source: "(30:12) <List checklist>",
+		ctx
+	});
+
+	return block;
+}
+
+// (29:8) <Content id="dialogChecklist-content">
+function create_default_slot_1$5(ctx) {
+	let current;
+
+	const list = new List({
+			props: {
+				checklist: true,
+				$$slots: { default: [create_default_slot_2$4] },
+				$$scope: { ctx }
+			},
+			$$inline: true
+		});
+
+	const block = {
+		c: function create() {
+			create_component(list.$$.fragment);
+		},
+		m: function mount(target, anchor) {
+			mount_component(list, target, anchor);
+			current = true;
+		},
+		p: function update(ctx, dirty) {
+			const list_changes = {};
+
+			if (dirty & /*$$scope, $filelist, $filelistBinded*/ 1030) {
+				list_changes.$$scope = { dirty, ctx };
+			}
+
+			list.$set(list_changes);
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(list.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(list.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			destroy_component(list, detaching);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_default_slot_1$5.name,
+		type: "slot",
+		source: "(29:8) <Content id=\\\"dialogChecklist-content\\\">",
+		ctx
+	});
+
+	return block;
+}
+
+// (25:0) <Dialog bind:this={$bindDialog} aria-labelledby="dialogChecklist-title"      aria-describedby="dialogChecklist-content" class="dialogCheckList">
+function create_default_slot$8(ctx) {
+	let t;
+	let current;
+
+	const title_1 = new Title({
+			props: {
+				id: "dialogChecklist-title",
+				$$slots: { default: [create_default_slot_6$1] },
+				$$scope: { ctx }
+			},
+			$$inline: true
+		});
+
+	const content = new Content({
+			props: {
+				id: "dialogChecklist-content",
+				$$slots: { default: [create_default_slot_1$5] },
+				$$scope: { ctx }
+			},
+			$$inline: true
+		});
+
+	const block = {
+		c: function create() {
+			create_component(title_1.$$.fragment);
+			t = space();
+			create_component(content.$$.fragment);
+		},
+		m: function mount(target, anchor) {
+			mount_component(title_1, target, anchor);
+			insert_dev(target, t, anchor);
+			mount_component(content, target, anchor);
+			current = true;
+		},
+		p: function update(ctx, dirty) {
+			const title_1_changes = {};
+
+			if (dirty & /*$$scope*/ 1024) {
+				title_1_changes.$$scope = { dirty, ctx };
+			}
+
+			title_1.$set(title_1_changes);
+			const content_changes = {};
+
+			if (dirty & /*$$scope, $filelist, $filelistBinded*/ 1030) {
+				content_changes.$$scope = { dirty, ctx };
+			}
+
+			content.$set(content_changes);
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(title_1.$$.fragment, local);
+			transition_in(content.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(title_1.$$.fragment, local);
+			transition_out(content.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			destroy_component(title_1, detaching);
+			if (detaching) detach_dev(t);
+			destroy_component(content, detaching);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_default_slot$8.name,
+		type: "slot",
+		source: "(25:0) <Dialog bind:this={$bindDialog} aria-labelledby=\\\"dialogChecklist-title\\\"      aria-describedby=\\\"dialogChecklist-content\\\" class=\\\"dialogCheckList\\\">",
+		ctx
+	});
+
+	return block;
+}
+
+function create_fragment$z(ctx) {
+	let current;
+
+	let dialog_props = {
+		"aria-labelledby": "dialogChecklist-title",
+		"aria-describedby": "dialogChecklist-content",
+		class: "dialogCheckList",
+		$$slots: { default: [create_default_slot$8] },
+		$$scope: { ctx }
+	};
+
+	const dialog = new Dialog({ props: dialog_props, $$inline: true });
+	/*dialog_binding*/ ctx[6](dialog);
+
+	const block = {
+		c: function create() {
+			create_component(dialog.$$.fragment);
+		},
+		l: function claim(nodes) {
+			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		},
+		m: function mount(target, anchor) {
+			mount_component(dialog, target, anchor);
+			current = true;
+		},
+		p: function update(ctx, [dirty]) {
+			const dialog_changes = {};
+
+			if (dirty & /*$$scope, $filelist, $filelistBinded*/ 1030) {
+				dialog_changes.$$scope = { dirty, ctx };
+			}
+
+			dialog.$set(dialog_changes);
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(dialog.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(dialog.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			/*dialog_binding*/ ctx[6](null);
+			destroy_component(dialog, detaching);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_fragment$z.name,
+		type: "component",
+		source: "",
+		ctx
+	});
+
+	return block;
+}
+
+const filelist = writable([]), filelistBinded = writable([]);
+const bindDialog = writable(0);
+
+function instance$z($$self, $$props, $$invalidate) {
+	let $bindDialog,
+		$$unsubscribe_bindDialog = noop;
+
+	let $filelist,
+		$$unsubscribe_filelist = noop;
+
+	let $filelistBinded,
+		$$unsubscribe_filelistBinded = noop;
+
+	validate_store(bindDialog, "bindDialog");
+	component_subscribe($$self, bindDialog, $$value => $$invalidate(0, $bindDialog = $$value));
+	validate_store(filelist, "filelist");
+	component_subscribe($$self, filelist, $$value => $$invalidate(1, $filelist = $$value));
+	validate_store(filelistBinded, "filelistBinded");
+	component_subscribe($$self, filelistBinded, $$value => $$invalidate(2, $filelistBinded = $$value));
+	$$self.$$.on_destroy.push(() => $$unsubscribe_bindDialog());
+	$$self.$$.on_destroy.push(() => $$unsubscribe_filelist());
+	$$self.$$.on_destroy.push(() => $$unsubscribe_filelistBinded());
+	let title = "List", id = "dialogChecklist";
+
+	function checkbox_group_binding(value) {
+		$filelistBinded = value;
+		filelistBinded.set($filelistBinded);
+	}
+
+	function dialog_binding($$value) {
+		binding_callbacks[$$value ? "unshift" : "push"](() => {
+			bindDialog.set($bindDialog = $$value);
+		});
+	}
+
+	$$self.$capture_state = () => {
+		return {};
+	};
+
+	$$self.$inject_state = $$props => {
+		if ("title" in $$props) $$invalidate(3, title = $$props.title);
+		if ("id" in $$props) id = $$props.id;
+		if ("$bindDialog" in $$props) bindDialog.set($bindDialog = $$props.$bindDialog);
+		if ("$filelist" in $$props) filelist.set($filelist = $$props.$filelist);
+		if ("$filelistBinded" in $$props) filelistBinded.set($filelistBinded = $$props.$filelistBinded);
+	};
+
+	return [
+		$bindDialog,
+		$filelist,
+		$filelistBinded,
+		title,
+		id,
+		checkbox_group_binding,
+		dialog_binding
+	];
+}
+
+class DialogChecklist extends SvelteComponentDev {
+	constructor(options) {
+		super(options);
+		init(this, options, instance$z, create_fragment$z, safe_not_equal, {});
+
+		dispatch_dev("SvelteRegisterComponent", {
+			component: this,
+			tagName: "DialogChecklist",
+			options,
+			id: create_fragment$z.name
+		});
+	}
+}
+
+/* src\Pages\Normline.svelte generated by Svelte v3.17.0 */
+
+const file$y = "src\\Pages\\Normline.svelte";
+
+// (68:8) {#if toggleRow}
+function create_if_block$8(ctx) {
+	let div2;
+	let button0;
+	let t1;
+	let button1;
+	let t3;
+	let div0;
+	let updating_value;
+	let t4;
+	let div1;
+	let updating_value_1;
+	let t5;
+	let button2;
+	let t7;
+	let button3;
+	let div2_transition;
+	let current;
+	let dispose;
+
+	function textfield0_value_binding(value) {
+		/*textfield0_value_binding*/ ctx[20].call(null, value);
+	}
+
+	let textfield0_props = { variant: "outlined", label: "Sigma" };
+
+	if (/*sigma*/ ctx[4] !== void 0) {
+		textfield0_props.value = /*sigma*/ ctx[4];
+	}
+
+	const textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
+	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
+
+	function textfield1_value_binding(value_1) {
+		/*textfield1_value_binding*/ ctx[21].call(null, value_1);
+	}
+
+	let textfield1_props = { variant: "outlined", label: "Scale" };
+
+	if (/*scale*/ ctx[5] !== void 0) {
+		textfield1_props.value = /*scale*/ ctx[5];
+	}
+
+	const textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
+	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding));
+
+	const block = {
+		c: function create() {
+			div2 = element("div");
+			button0 = element("button");
+			button0.textContent = "Browse File";
+			t1 = space();
+			button1 = element("button");
+			button1.textContent = "Show files";
+			t3 = space();
+			div0 = element("div");
+			create_component(textfield0.$$.fragment);
+			t4 = space();
+			div1 = element("div");
+			create_component(textfield1.$$.fragment);
+			t5 = space();
+			button2 = element("button");
+			button2.textContent = "Open in Matplotlib";
+			t7 = space();
+			button3 = element("button");
+			button3.textContent = "Submit";
+			attr_dev(button0, "class", "button is-link svelte-vg1kv1");
+			add_location(button0, file$y, 69, 16, 2762);
+			attr_dev(button1, "class", "button is-link svelte-vg1kv1");
+			add_location(button1, file$y, 70, 16, 2858);
+			attr_dev(div0, "class", "short-input svelte-vg1kv1");
+			add_location(div0, file$y, 71, 16, 2954);
+			attr_dev(div1, "class", "short-input svelte-vg1kv1");
+			add_location(div1, file$y, 72, 16, 3068);
+			attr_dev(button2, "class", "button is-link svelte-vg1kv1");
+			add_location(button2, file$y, 73, 16, 3182);
+			attr_dev(button3, "class", "button is-link svelte-vg1kv1");
+			add_location(button3, file$y, 74, 16, 3258);
+			attr_dev(div2, "class", "align svelte-vg1kv1");
+			add_location(div2, file$y, 68, 12, 2680);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, div2, anchor);
+			append_dev(div2, button0);
+			append_dev(div2, t1);
+			append_dev(div2, button1);
+			append_dev(div2, t3);
+			append_dev(div2, div0);
+			mount_component(textfield0, div0, null);
+			append_dev(div2, t4);
+			append_dev(div2, div1);
+			mount_component(textfield1, div1, null);
+			append_dev(div2, t5);
+			append_dev(div2, button2);
+			append_dev(div2, t7);
+			append_dev(div2, button3);
+			current = true;
+
+			dispose = [
+				listen_dev(button0, "click", /*get_theoryfiles*/ ctx[9], false, false, false),
+				listen_dev(
+					button1,
+					"click",
+					function () {
+						if (is_function(/*$bindDialog*/ ctx[6].open)) /*$bindDialog*/ ctx[6].open.apply(this, arguments);
+					},
+					false,
+					false,
+					false
+				)
+			];
+		},
+		p: function update(new_ctx, dirty) {
+			ctx = new_ctx;
+			const textfield0_changes = {};
+
+			if (!updating_value && dirty & /*sigma*/ 16) {
+				updating_value = true;
+				textfield0_changes.value = /*sigma*/ ctx[4];
+				add_flush_callback(() => updating_value = false);
+			}
+
+			textfield0.$set(textfield0_changes);
+			const textfield1_changes = {};
+
+			if (!updating_value_1 && dirty & /*scale*/ 32) {
+				updating_value_1 = true;
+				textfield1_changes.value = /*scale*/ ctx[5];
+				add_flush_callback(() => updating_value_1 = false);
+			}
+
+			textfield1.$set(textfield1_changes);
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(textfield0.$$.fragment, local);
+			transition_in(textfield1.$$.fragment, local);
+
 			add_render_callback(() => {
-				if (!div_transition) div_transition = create_bidirectional_transition(div, fly, { y: -20, duration: 500 }, true);
-				div_transition.run(1);
+				if (!div2_transition) div2_transition = create_bidirectional_transition(div2, fly, { y: -20, duration: 500 }, true);
+				div2_transition.run(1);
 			});
 
 			current = true;
 		},
 		o: function outro(local) {
-			if (!div_transition) div_transition = create_bidirectional_transition(div, fly, { y: -20, duration: 500 }, false);
-			div_transition.run(0);
+			transition_out(textfield0.$$.fragment, local);
+			transition_out(textfield1.$$.fragment, local);
+			if (!div2_transition) div2_transition = create_bidirectional_transition(div2, fly, { y: -20, duration: 500 }, false);
+			div2_transition.run(0);
 			current = false;
 		},
 		d: function destroy(detaching) {
-			if (detaching) detach_dev(div);
-			if (detaching && div_transition) div_transition.end();
+			if (detaching) detach_dev(div2);
+			destroy_component(textfield0);
+			destroy_component(textfield1);
+			if (detaching && div2_transition) div2_transition.end();
+			run_all(dispose);
 		}
 	};
 
@@ -22338,14 +24748,14 @@ function create_if_block$8(ctx) {
 		block,
 		id: create_if_block$8.name,
 		type: "if",
-		source: "(44:8) {#if toggleRow}",
+		source: "(68:8) {#if toggleRow}",
 		ctx
 	});
 
 	return block;
 }
 
-// (31:4) <div class="buttonSlot" slot="buttonContainer">
+// (56:4) <div class="buttonSlot" slot="buttonContainer">
 function create_buttonContainer_slot(ctx) {
 	let div0;
 	let div2;
@@ -22367,7 +24777,7 @@ function create_buttonContainer_slot(ctx) {
 	let dispose;
 
 	function textfield_value_binding(value) {
-		/*textfield_value_binding*/ ctx[7].call(null, value);
+		/*textfield_value_binding*/ ctx[19].call(null, value);
 	}
 
 	let textfield_props = {
@@ -22406,24 +24816,24 @@ function create_buttonContainer_slot(ctx) {
 			create_component(textfield.$$.fragment);
 			t10 = space();
 			if (if_block) if_block.c();
-			attr_dev(button0, "class", "button is-link svelte-ju9u98");
-			add_location(button0, file$v, 33, 12, 995);
-			attr_dev(button1, "class", "button is-link svelte-ju9u98");
-			add_location(button1, file$v, 34, 12, 1064);
-			attr_dev(button2, "class", "button is-link svelte-ju9u98");
+			attr_dev(button0, "class", "button is-link svelte-vg1kv1");
+			add_location(button0, file$y, 58, 12, 2100);
+			attr_dev(button1, "class", "button is-link svelte-vg1kv1");
+			add_location(button1, file$y, 59, 12, 2169);
+			attr_dev(button2, "class", "button is-link svelte-vg1kv1");
 			attr_dev(button2, "tabindex", "0");
-			add_location(button2, file$v, 35, 12, 1128);
-			attr_dev(button3, "class", "button is-link svelte-ju9u98");
-			add_location(button3, file$v, 36, 12, 1285);
-			attr_dev(button4, "class", "button is-link svelte-ju9u98");
-			add_location(button4, file$v, 37, 12, 1357);
-			attr_dev(div1, "class", "short-input svelte-ju9u98");
-			add_location(div1, file$v, 39, 12, 1416);
-			attr_dev(div2, "class", "align svelte-ju9u98");
-			add_location(div2, file$v, 31, 8, 960);
-			attr_dev(div0, "class", "buttonSlot svelte-ju9u98");
+			add_location(button2, file$y, 60, 12, 2233);
+			attr_dev(button3, "class", "button is-link svelte-vg1kv1");
+			add_location(button3, file$y, 61, 12, 2390);
+			attr_dev(button4, "class", "button is-link svelte-vg1kv1");
+			add_location(button4, file$y, 62, 12, 2462);
+			attr_dev(div1, "class", "short-input svelte-vg1kv1");
+			add_location(div1, file$y, 63, 12, 2519);
+			attr_dev(div2, "class", "align svelte-vg1kv1");
+			add_location(div2, file$y, 56, 8, 2065);
+			attr_dev(div0, "class", "buttonSlot svelte-vg1kv1");
 			attr_dev(div0, "slot", "buttonContainer");
-			add_location(div0, file$v, 30, 4, 903);
+			add_location(div0, file$y, 55, 4, 2008);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -22446,7 +24856,7 @@ function create_buttonContainer_slot(ctx) {
 
 			dispose = [
 				action_destroyer(Ripple_action = Ripple.call(null, button2, [true, { color: "primary" }])),
-				listen_dev(button2, "click", /*click_handler*/ ctx[6], false, false, false)
+				listen_dev(button2, "click", /*click_handler*/ ctx[18], false, false, false)
 			];
 		},
 		p: function update(ctx, dirty) {
@@ -22461,13 +24871,14 @@ function create_buttonContainer_slot(ctx) {
 			textfield.$set(textfield_changes);
 
 			if (/*toggleRow*/ ctx[2]) {
-				if (!if_block) {
+				if (if_block) {
+					if_block.p(ctx, dirty);
+					transition_in(if_block, 1);
+				} else {
 					if_block = create_if_block$8(ctx);
 					if_block.c();
 					transition_in(if_block, 1);
 					if_block.m(div0, null);
-				} else {
-					transition_in(if_block, 1);
 				}
 			} else if (if_block) {
 				group_outros();
@@ -22502,15 +24913,15 @@ function create_buttonContainer_slot(ctx) {
 		block,
 		id: create_buttonContainer_slot.name,
 		type: "slot",
-		source: "(31:4) <div class=\\\"buttonSlot\\\" slot=\\\"buttonContainer\\\">",
+		source: "(56:4) <div class=\\\"buttonSlot\\\" slot=\\\"buttonContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (29:0) <Layout {filetype} {id} bind:currentLocation={location} bind:fileChecked={felixfiles}>
-function create_default_slot$8(ctx) {
+// (54:0) <Layout {filetype} {id} bind:currentLocation={location} bind:fileChecked={felixfiles}>
+function create_default_slot$9(ctx) {
 
 	const block = {
 		c: noop,
@@ -22523,33 +24934,33 @@ function create_default_slot$8(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot$8.name,
+		id: create_default_slot$9.name,
 		type: "slot",
-		source: "(29:0) <Layout {filetype} {id} bind:currentLocation={location} bind:fileChecked={felixfiles}>",
+		source: "(54:0) <Layout {filetype} {id} bind:currentLocation={location} bind:fileChecked={felixfiles}>",
 		ctx
 	});
 
 	return block;
 }
 
-function create_fragment$w(ctx) {
+function create_fragment$A(ctx) {
 	let updating_currentLocation;
 	let updating_fileChecked;
 	let current;
 
 	function layout_currentLocation_binding(value) {
-		/*layout_currentLocation_binding*/ ctx[8].call(null, value);
+		/*layout_currentLocation_binding*/ ctx[22].call(null, value);
 	}
 
 	function layout_fileChecked_binding(value_1) {
-		/*layout_fileChecked_binding*/ ctx[9].call(null, value_1);
+		/*layout_fileChecked_binding*/ ctx[23].call(null, value_1);
 	}
 
 	let layout_props = {
-		filetype: /*filetype*/ ctx[4],
-		id: /*id*/ ctx[5],
+		filetype: /*filetype*/ ctx[7],
+		id: /*id*/ ctx[8],
 		$$slots: {
-			default: [create_default_slot$8],
+			default: [create_default_slot$9],
 			buttonContainer: [create_buttonContainer_slot]
 		},
 		$$scope: { ctx }
@@ -22581,7 +24992,7 @@ function create_fragment$w(ctx) {
 		p: function update(ctx, [dirty]) {
 			const layout_changes = {};
 
-			if (dirty & /*$$scope, toggleRow, delta*/ 1030) {
+			if (dirty & /*$$scope, toggleRow, scale, sigma, $bindDialog, delta*/ 16777334) {
 				layout_changes.$$scope = { dirty, ctx };
 			}
 
@@ -22615,7 +25026,7 @@ function create_fragment$w(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_fragment$w.name,
+		id: create_fragment$A.name,
 		type: "component",
 		source: "",
 		ctx
@@ -22624,7 +25035,24 @@ function create_fragment$w(ctx) {
 	return block;
 }
 
-function instance$w($$self, $$props, $$invalidate) {
+function instance$A($$self, $$props, $$invalidate) {
+	let $bindDialog;
+	let $filelist;
+	let $filelistBinded;
+	let $modalContent;
+	let $activated;
+	validate_store(bindDialog, "bindDialog");
+	component_subscribe($$self, bindDialog, $$value => $$invalidate(6, $bindDialog = $$value));
+	validate_store(filelist, "filelist");
+	component_subscribe($$self, filelist, $$value => $$invalidate(12, $filelist = $$value));
+	validate_store(filelistBinded, "filelistBinded");
+	component_subscribe($$self, filelistBinded, $$value => $$invalidate(13, $filelistBinded = $$value));
+	validate_store(modalContent, "modalContent");
+	component_subscribe($$self, modalContent, $$value => $$invalidate(14, $modalContent = $$value));
+	validate_store(activated, "activated");
+	component_subscribe($$self, activated, $$value => $$invalidate(15, $activated = $$value));
+	console.log($bindDialog);
+
 	let filetype = "felix",
 		id = "Normline",
 		felixfiles = [],
@@ -22632,11 +25060,40 @@ function instance$w($$self, $$props, $$invalidate) {
 		toggleRow = false;
 
 	let location = localStorage[`${filetype}_location`] || "";
+	let sigma = 20, scale = 1, thoeryfiles = [], theoryfile_location = "";
+	let theorylistDialog;
+	let theoryfile_filtered;
+
+	const get_theoryfiles = () => {
+		browse({ dir: false }).then(result => {
+			if (!result.canceled) {
+				let files = result.filePaths;
+				theoryfile_location = path.dirname(files[0]);
+				set_store_value(filelist, $filelist = thoeryfiles = files.map(file => file = path.basename(file)));
+				set_store_value(filelistBinded, $filelistBinded = []);
+				createToast("Theoryfiles selected", "success");
+			}
+		}).catch(err => {
+			set_store_value(modalContent, $modalContent = err);
+			set_store_value(activated, $activated = true);
+		});
+	};
+
 	const click_handler = () => $$invalidate(2, toggleRow = !toggleRow);
 
 	function textfield_value_binding(value) {
 		delta = value;
 		$$invalidate(1, delta);
+	}
+
+	function textfield0_value_binding(value) {
+		sigma = value;
+		$$invalidate(4, sigma);
+	}
+
+	function textfield1_value_binding(value_1) {
+		scale = value_1;
+		$$invalidate(5, scale);
 	}
 
 	function layout_currentLocation_binding(value) {
@@ -22654,29 +25111,56 @@ function instance$w($$self, $$props, $$invalidate) {
 	};
 
 	$$self.$inject_state = $$props => {
-		if ("filetype" in $$props) $$invalidate(4, filetype = $$props.filetype);
-		if ("id" in $$props) $$invalidate(5, id = $$props.id);
+		if ("filetype" in $$props) $$invalidate(7, filetype = $$props.filetype);
+		if ("id" in $$props) $$invalidate(8, id = $$props.id);
 		if ("felixfiles" in $$props) $$invalidate(0, felixfiles = $$props.felixfiles);
 		if ("delta" in $$props) $$invalidate(1, delta = $$props.delta);
 		if ("toggleRow" in $$props) $$invalidate(2, toggleRow = $$props.toggleRow);
 		if ("location" in $$props) $$invalidate(3, location = $$props.location);
+		if ("sigma" in $$props) $$invalidate(4, sigma = $$props.sigma);
+		if ("scale" in $$props) $$invalidate(5, scale = $$props.scale);
+		if ("thoeryfiles" in $$props) thoeryfiles = $$props.thoeryfiles;
+		if ("theoryfile_location" in $$props) theoryfile_location = $$props.theoryfile_location;
+		if ("theorylistDialog" in $$props) theorylistDialog = $$props.theorylistDialog;
+		if ("theoryfile_filtered" in $$props) $$invalidate(17, theoryfile_filtered = $$props.theoryfile_filtered);
+		if ("$bindDialog" in $$props) bindDialog.set($bindDialog = $$props.$bindDialog);
+		if ("$filelist" in $$props) filelist.set($filelist = $$props.$filelist);
+		if ("$filelistBinded" in $$props) filelistBinded.set($filelistBinded = $$props.$filelistBinded);
+		if ("$modalContent" in $$props) modalContent.set($modalContent = $$props.$modalContent);
+		if ("$activated" in $$props) activated.set($activated = $$props.$activated);
 	};
 
 	$$self.$$.update = () => {
 		if ($$self.$$.dirty & /*location*/ 8) {
-			 console.log("Normline update: ", location);
+			 console.log(`${filetype} Update: \n${location}`);
 		}
 	};
+
+	 console.log("Filtered theory files: ", theoryfile_filtered);
 
 	return [
 		felixfiles,
 		delta,
 		toggleRow,
 		location,
+		sigma,
+		scale,
+		$bindDialog,
 		filetype,
 		id,
+		get_theoryfiles,
+		thoeryfiles,
+		theoryfile_location,
+		$filelist,
+		$filelistBinded,
+		$modalContent,
+		$activated,
+		theorylistDialog,
+		theoryfile_filtered,
 		click_handler,
 		textfield_value_binding,
+		textfield0_value_binding,
+		textfield1_value_binding,
 		layout_currentLocation_binding,
 		layout_fileChecked_binding
 	];
@@ -22685,20 +25169,20 @@ function instance$w($$self, $$props, $$invalidate) {
 class Normline extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$w, create_fragment$w, safe_not_equal, {});
+		init(this, options, instance$A, create_fragment$A, safe_not_equal, {});
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
 			tagName: "Normline",
 			options,
-			id: create_fragment$w.name
+			id: create_fragment$A.name
 		});
 	}
 }
 
 /* src\Pages\Masspec.svelte generated by Svelte v3.17.0 */
 
-function create_fragment$x(ctx) {
+function create_fragment$B(ctx) {
 	let updating_currentLocation;
 	let updating_fileChecked;
 	let current;
@@ -22772,7 +25256,7 @@ function create_fragment$x(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_fragment$x.name,
+		id: create_fragment$B.name,
 		type: "component",
 		source: "",
 		ctx
@@ -22781,7 +25265,7 @@ function create_fragment$x(ctx) {
 	return block;
 }
 
-function instance$x($$self, $$props, $$invalidate) {
+function instance$B($$self, $$props, $$invalidate) {
 	let filetype = "mass";
 	let id = "Masspec";
 	let massfiles = [];
@@ -22827,20 +25311,20 @@ function instance$x($$self, $$props, $$invalidate) {
 class Masspec extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$x, create_fragment$x, safe_not_equal, {});
+		init(this, options, instance$B, create_fragment$B, safe_not_equal, {});
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
 			tagName: "Masspec",
 			options,
-			id: create_fragment$x.name
+			id: create_fragment$B.name
 		});
 	}
 }
 
 /* src\Pages\Timescan.svelte generated by Svelte v3.17.0 */
 
-function create_fragment$y(ctx) {
+function create_fragment$C(ctx) {
 	let updating_currentLocation;
 	let updating_fileChecked;
 	let current;
@@ -22914,7 +25398,7 @@ function create_fragment$y(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_fragment$y.name,
+		id: create_fragment$C.name,
 		type: "component",
 		source: "",
 		ctx
@@ -22923,7 +25407,7 @@ function create_fragment$y(ctx) {
 	return block;
 }
 
-function instance$y($$self, $$props, $$invalidate) {
+function instance$C($$self, $$props, $$invalidate) {
 	let filetype = "scan";
 	let id = "Timescan";
 	let scanfiles = [];
@@ -22969,20 +25453,20 @@ function instance$y($$self, $$props, $$invalidate) {
 class Timescan extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$y, create_fragment$y, safe_not_equal, {});
+		init(this, options, instance$C, create_fragment$C, safe_not_equal, {});
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
 			tagName: "Timescan",
 			options,
-			id: create_fragment$y.name
+			id: create_fragment$C.name
 		});
 	}
 }
 
 /* src\Pages\THz.svelte generated by Svelte v3.17.0 */
 
-function create_fragment$z(ctx) {
+function create_fragment$D(ctx) {
 	let updating_currentLocation;
 	let updating_fileChecked;
 	let current;
@@ -23056,7 +25540,7 @@ function create_fragment$z(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_fragment$z.name,
+		id: create_fragment$D.name,
 		type: "component",
 		source: "",
 		ctx
@@ -23065,7 +25549,7 @@ function create_fragment$z(ctx) {
 	return block;
 }
 
-function instance$z($$self, $$props, $$invalidate) {
+function instance$D($$self, $$props, $$invalidate) {
 	let filetype = "thz";
 	let id = "THz";
 	let thzfiles = [];
@@ -23111,13 +25595,13 @@ function instance$z($$self, $$props, $$invalidate) {
 class THz extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$z, create_fragment$z, safe_not_equal, {});
+		init(this, options, instance$D, create_fragment$D, safe_not_equal, {});
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
 			tagName: "THz",
 			options,
-			id: create_fragment$z.name
+			id: create_fragment$D.name
 		});
 	}
 }
@@ -23125,18 +25609,19 @@ class THz extends SvelteComponentDev {
 /* src\App.svelte generated by Svelte v3.17.0 */
 
 const { console: console_1$1 } = globals;
-const file$w = "src\\App.svelte";
+const file$z = "src\\App.svelte";
 
-function create_fragment$A(ctx) {
+function create_fragment$E(ctx) {
 	let t0;
 	let t1;
 	let t2;
-	let div;
 	let t3;
+	let div;
 	let t4;
 	let t5;
 	let t6;
 	let t7;
+	let t8;
 	let current;
 
 	const navbar = new Navbar({
@@ -23145,6 +25630,7 @@ function create_fragment$A(ctx) {
 		});
 
 	const modal = new Modal({ $$inline: true });
+	const dialogchecklist = new DialogChecklist({ $$inline: true });
 	const home = new Home({ $$inline: true });
 	const normline = new Normline({ $$inline: true });
 	const masspec = new Masspec({ $$inline: true });
@@ -23159,22 +25645,24 @@ function create_fragment$A(ctx) {
 			t0 = space();
 			create_component(modal.$$.fragment);
 			t1 = space();
-			create_component(home.$$.fragment);
+			create_component(dialogchecklist.$$.fragment);
 			t2 = space();
+			create_component(home.$$.fragment);
+			t3 = space();
 			div = element("div");
 			create_component(normline.$$.fragment);
-			t3 = space();
-			create_component(masspec.$$.fragment);
 			t4 = space();
-			create_component(timescan.$$.fragment);
+			create_component(masspec.$$.fragment);
 			t5 = space();
-			create_component(thz.$$.fragment);
+			create_component(timescan.$$.fragment);
 			t6 = space();
-			create_component(powerfile.$$.fragment);
+			create_component(thz.$$.fragment);
 			t7 = space();
+			create_component(powerfile.$$.fragment);
+			t8 = space();
 			create_component(footer.$$.fragment);
-			attr_dev(div, "class", "pageContainer svelte-omgd9g");
-			add_location(div, file$w, 60, 0, 1662);
+			attr_dev(div, "class", "pageContainer svelte-1a0nbm8");
+			add_location(div, file$z, 61, 0, 1748);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -23184,19 +25672,21 @@ function create_fragment$A(ctx) {
 			insert_dev(target, t0, anchor);
 			mount_component(modal, target, anchor);
 			insert_dev(target, t1, anchor);
-			mount_component(home, target, anchor);
+			mount_component(dialogchecklist, target, anchor);
 			insert_dev(target, t2, anchor);
+			mount_component(home, target, anchor);
+			insert_dev(target, t3, anchor);
 			insert_dev(target, div, anchor);
 			mount_component(normline, div, null);
-			append_dev(div, t3);
-			mount_component(masspec, div, null);
 			append_dev(div, t4);
-			mount_component(timescan, div, null);
+			mount_component(masspec, div, null);
 			append_dev(div, t5);
-			mount_component(thz, div, null);
+			mount_component(timescan, div, null);
 			append_dev(div, t6);
+			mount_component(thz, div, null);
+			append_dev(div, t7);
 			mount_component(powerfile, div, null);
-			insert_dev(target, t7, anchor);
+			insert_dev(target, t8, anchor);
 			mount_component(footer, target, anchor);
 			current = true;
 		},
@@ -23205,6 +25695,7 @@ function create_fragment$A(ctx) {
 			if (current) return;
 			transition_in(navbar.$$.fragment, local);
 			transition_in(modal.$$.fragment, local);
+			transition_in(dialogchecklist.$$.fragment, local);
 			transition_in(home.$$.fragment, local);
 			transition_in(normline.$$.fragment, local);
 			transition_in(masspec.$$.fragment, local);
@@ -23217,6 +25708,7 @@ function create_fragment$A(ctx) {
 		o: function outro(local) {
 			transition_out(navbar.$$.fragment, local);
 			transition_out(modal.$$.fragment, local);
+			transition_out(dialogchecklist.$$.fragment, local);
 			transition_out(home.$$.fragment, local);
 			transition_out(normline.$$.fragment, local);
 			transition_out(masspec.$$.fragment, local);
@@ -23231,22 +25723,24 @@ function create_fragment$A(ctx) {
 			if (detaching) detach_dev(t0);
 			destroy_component(modal, detaching);
 			if (detaching) detach_dev(t1);
-			destroy_component(home, detaching);
+			destroy_component(dialogchecklist, detaching);
 			if (detaching) detach_dev(t2);
+			destroy_component(home, detaching);
+			if (detaching) detach_dev(t3);
 			if (detaching) detach_dev(div);
 			destroy_component(normline);
 			destroy_component(masspec);
 			destroy_component(timescan);
 			destroy_component(thz);
 			destroy_component(powerfile);
-			if (detaching) detach_dev(t7);
+			if (detaching) detach_dev(t8);
 			destroy_component(footer, detaching);
 		}
 	};
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_fragment$A.name,
+		id: create_fragment$E.name,
 		type: "component",
 		source: "",
 		ctx
@@ -23255,7 +25749,7 @@ function create_fragment$A(ctx) {
 	return block;
 }
 
-function instance$A($$self, $$props, $$invalidate) {
+function instance$E($$self, $$props, $$invalidate) {
 	const navItems = ["Home", "Normline", "Masspec", "Timescan", "THz", "Powerfile"];
 	window.electron = require("electron");
 	window.remote = electron.remote;
@@ -23317,13 +25811,13 @@ function instance$A($$self, $$props, $$invalidate) {
 class App extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$A, create_fragment$A, safe_not_equal, { version: 1 });
+		init(this, options, instance$E, create_fragment$E, safe_not_equal, { version: 1 });
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
 			tagName: "App",
 			options,
-			id: create_fragment$A.name
+			id: create_fragment$E.name
 		});
 
 		const { ctx } = this.$$;

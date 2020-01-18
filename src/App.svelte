@@ -16,6 +16,7 @@
 
 	
 	import Modal from "./components/Modal.svelte"
+	import DialogChecklist from "./components/DialogChecklist.svelte"
 	// import {activated} from "./js/functions.js"
 	import {onMount} from "svelte"
 
@@ -48,14 +49,14 @@
 </script>
 
 <style>
-	.pageContainer {
-		overflow: hidden;
-	}
+	.pageContainer { overflow: hidden; }
+
 </style>
 
 <Navbar {navItems}/>
-<Modal/>
 
+<Modal/>
+<DialogChecklist />
 <Home />
 
 <div class="pageContainer">

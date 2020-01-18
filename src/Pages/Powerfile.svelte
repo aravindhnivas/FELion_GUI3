@@ -1,38 +1,32 @@
 <script>
     
+    // Importing modules
     import Textfield from '@smui/textfield'
     import HelperText from '@smui/textfield/helper-text/index';
     import Fab, {Icon, Label} from '@smui/fab';
     import Checkbox from '@smui/checkbox';
     import FormField from '@smui/form-field';
 
-    import { Toast } from 'svelma'
-    
+    //////////////////////////////////////////////////////////////////////////////////
+
     function savefile() {
+
         console.log('Powerfile contents saving');
-        
-        // is-top, is-bottom, is-top-left, is-top-right, is-bottom-left, is-bottom-right
-        Toast.create({ message: 'File Saved!', position:"is-top", type:"is-primary"})
+        console.log(marked(powerfileContent))
     }
-    
-    let filename = '';
-    let powerfileContent = '';
-    let felixHz = 10;
-    let felixShots = 16;
-    let convert = null;
+
+    let filename = '', powerfileContent = '', felixHz = 10, felixShots = 16, convert = null;
     let location = localStorage["powerfile_location"] || "";
     $: console.log("Powerfile convert: ", convert)
+
 </script>
 
 <style>
-
     .section {height: 70vh;}
-    .container {
-        height: 100%;
-        margin-bottom: 3em;
-    }
-    @media only screen and (max-height: 800px) {.section {overflow-y: auto;}}
+
+    .container { height: 100%; margin-bottom: 3em; }
     
+    @media only screen and (max-height: 800px) {.section {overflow-y: auto;}}
 </style>
 
 <section class="section" id="Powerfile" style="display:none">
