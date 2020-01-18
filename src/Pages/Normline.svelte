@@ -4,6 +4,8 @@
     import HelperText from '@smui/textfield/helper-text/index';
     import Layout from "../components/Layout.svelte"
     import { fly } from 'svelte/transition';
+    import Ripple from '@smui/ripple';
+    
     ///////////////////////////////////////////////////////////////////////
 
     // Variables
@@ -31,7 +33,7 @@
 
             <button class="button is-link">Create Baseline</button>
             <button class="button is-link">FELIX Plot</button>
-            <button class="button is-link" on:click="{()=>toggleRow = !toggleRow}">Add Theory</button>
+            <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click="{()=>toggleRow = !toggleRow}">Add Theory</button>
             <button class="button is-link">Open in Matplotlib</button>
             <button class="button is-link">OPO</button>
 

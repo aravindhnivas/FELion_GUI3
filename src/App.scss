@@ -63,9 +63,9 @@ $warning-color: #ffc402;
 // General button background
 .button.is-link, .button.is-warning, .button.is-danger, .button.is-success {background-color: $transparent;}
 
-
 // Link
-.button.is-link:focus:not(:active), .button.is-link.is-focused:not(:active) {box-shadow: 0 0 0 0.1em $white;}
+
+.button.is-link:focus:not(:active), .button.is-link.is-focused:not(:active) {border-color: $white; box-shadow: none;}
 .button.is-link {border-color: $link-color;}
 .button.is-link:hover, .button.is-link.is-hovered {background-color: $transparent; border-color: $white;}
 

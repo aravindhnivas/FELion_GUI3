@@ -117,7 +117,7 @@
     * :global(.mdc-list-item){height: 2em;}
     * :global(.mdc-switch.mdc-switch--checked .mdc-switch__thumb, .mdc-switch.mdc-switch--checked .mdc-switch__track){background-color: #ffffff}
     * :global(.material-icons) {margin-right:0.2em; cursor:pointer;}
-    * :global(.align) { display: flex; align-items: center; margin-bottom: 1em; }
+    * :global(.align) { display: flex; align-items: center }
     * :global(.center) {justify-content: center;}
     * :global(.gap) {margin-right: 2em;}
     .buttonContainer {
@@ -126,7 +126,7 @@
     }
 
     .box {border-radius: 0;}
-
+    .container {min-height: calc(100vh - 10em);}
 </style>
 
 <section {id} style="display:none" >
