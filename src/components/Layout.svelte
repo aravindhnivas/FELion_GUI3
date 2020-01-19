@@ -122,12 +122,12 @@
     .plotContainer {
         max-height: calc(100vh - 25em);
         overflow-y: auto;
+        padding-bottom: 3em;
     }
      .filelist {
         max-height: calc(100vh - 30em);
         overflow-y: auto;
     }
-    .plotContainer, .filelist, .otherFolderlist {padding-bottom: 3em}
     .folderfile-list {max-height: calc(100vh - 20em); overflow-y: auto;}
     
     .filebrowser {

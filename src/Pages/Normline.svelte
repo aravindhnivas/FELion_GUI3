@@ -8,7 +8,9 @@
 
     import {activated, modalContent} from "../components/Modal.svelte"
     import {bindDialog, filelist, filelistBinded} from "../components/DialogChecklist.svelte"
+    import IconButton, {Icon} from '@smui/icon-button';
     console.log($bindDialog)
+
     ///////////////////////////////////////////////////////////////////////
 
     // Variables
@@ -35,8 +37,9 @@
             }
         }).catch(err=>{$modalContent = err; $activated=true})
     }
-
     ///////////////////////////////////////////////////////////////////////
+
+    let openShell = false;
 
 </script>
 
@@ -47,21 +50,29 @@
         max-width: 7em;
         margin: 0 1em;
     }
-    * :global(.mdc-text-field--outlined) {height: 2.5em;}
+
+* :global(.mdc-text-field--outlined) {height: 2.5em;}
 
 </style>
 
 <Layout {filetype} {id} bind:currentLocation={location} bind:fileChecked={felixfiles}>
-
     <div class="buttonSlot" slot="buttonContainer">
+
         <div class="align">
 
             <button class="button is-link">Create Baseline</button>
             <button class="button is-link">FELIX Plot</button>
             <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click="{()=>toggleRow = !toggleRow}">Add Theory</button>
             <button class="button is-link">Open in Matplotlib</button>
+            
             <button class="button is-link">OPO</button>
             <div class="short-input"><Textfield variant="outlined" bind:value={delta} label="Delta value" /></div>
+            <div class="">
+                <IconButton toggle bind:pressed={openShell}>
+                    <Icon class="material-icons">code</Icon>
+                    <Icon class="material-icons" on>settings_ethernet</Icon>
+                </IconButton>
+            </div>
 
         </div>
 
@@ -77,5 +88,4 @@
         {/if}
 
     </div>
-
 </Layout>
