@@ -1,0 +1,50 @@
+/* Flex container ROW */
+
+.flex-row {
+    padding-left: 2em;
+    list-style: none;
+    display: flex;
+    width: 100%;
+    flex-direction: row !important;
+}
+
+
+/* Flex row default and long width */
+
+.flex-row li {
+    text-align: center;
+    width: auto;
+}
+
+.flex-row .flex-long {
+    width: 80%;
+}
+
+.flex-row .flex-full {
+    width: 100%;
+}
+
+
+/* Flex container Column */
+
+.flex-col {
+    list-style: none;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column !important;
+    float: left !important;
+}
+
+
+/* Flex col default and long width */
+
+.flex-col li {
+    text-align: center;
+    height: auto;
+}
+
+.flex-col .flex-long {
+    height: 80% !important;
+}
