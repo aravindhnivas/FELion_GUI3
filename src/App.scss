@@ -106,3 +106,6 @@ $background: lighten($mainColor, 20);
 $modal-card-title-color: $white;
 
 @import "bulma/sass/components/modal.sass";
+
+// Bulma: Level
+@import "bulma/sass/components/level.sass";

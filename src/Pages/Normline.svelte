@@ -19,7 +19,10 @@
     import Switch from '@smui/switch'
     import DataTable, {Head, Body, Row, Cell} from '@smui/data-table'
     import Checkbox from '@smui/checkbox';
-
+    import CustomCheckbox from '../components/CustomCheckbox.svelte';
+    // import Level from '../components/Level.svelte';
+    // window.jsPDF = require('../public/assets/js/jspdf.min.js')
+	// window.html2canvas = require("../public/assets/js/html2canvas.min.js")
    ///////////////////////////////////////////////////////////////////////
 
     let filetype="felix", id="Normline", fileChecked=[], delta=1, toggleRow=false;
@@ -74,7 +77,7 @@
         let target = event.target
         target.classList.toggle("is-loading")
         
-        if (filetype == "felix") {graphPlotted = false, output_name = "averaged", showDataTable=false}
+        if (filetype == "felix") {graphPlotted = false, output_name = "averaged"}
         if (filetype == "exp_fit") {if (index.length < 2) {
             target.classList.toggle("is-loading")
             return createToast("Range not found!!. Select a range using Box-select", "danger")
@@ -289,7 +292,6 @@
                         Plotly.relayout("avgplot", { annotations: annotations })
                         
                         dataTable = [...dataTable, {name: output_name, freq:dataFromPython["freq"], line: dataFromPython["fit"].name}]
-                        showDataTable = true
 
                         console.log("Line fitted")
                         createToast("Line fitted with gaussian function", "success")
@@ -343,13 +345,9 @@
         if (line.length === 0) {ready_to_fit = false}
     }
 
-    const exportToPdf = () => {
 
-		let doc = new jsPDF()
-        // doc.autoTable({ html: '#felixTable table' })
-        doc.save('table.pdf')
-    }
-
+    let reportTitle = "", reportComments = "", reportMethod = "info"
+    let include_table = true, include_avgplot = true, include_saplot = false, include_bplot = false;
 </script>
 
 <style>
@@ -366,6 +364,16 @@
     .dataTable {
         display: flex;
         justify-content: center;
+    }
+    * :global(hr) {
+        width: 90%;
+        margin: 1em 0;
+    }
+
+    * :global(.report) {
+        display: block;
+        width: 90%;
+        margin-bottom: 1em;
     }
 </style>
 
@@ -422,6 +430,8 @@
         <div id="avgplot"></div>
 
         {#if graphPlotted}
+            
+            <!-- Pos-processing felix data -->
             <div transition:fade>
                 <Select bind:value={output_name} label="Output filename">
                     {#each ["averaged", ...plottedFiles] as file}
@@ -435,16 +445,16 @@
                 <button class="button is-link" on:click="{(e)=>plotData(e, "exp_fit")}">Exp Fit.</button>
                 <button class="button is-warning" on:click={clearLastPeak}>Clear Last</button>
                 <button class="button is-danger" on:click={clearAllPeak}>Clear All</button>
-                {#if showDataTable}
-                    <button class="button is-danger" on:click="{()=>dataTable = []}">Clear Table</button>
-                {/if}
+                <button class="button is-danger" on:click="{()=>dataTable = []}">Clear Table</button>
             </div>
-        {/if}
 
-        {#if showDataTable}
+            <!-- Frequency table list -->
+            <div class=""><h1 class="mdc-typography--headline4">Frequency table</h1></div>
+            <hr>
+            
             <div class="dataTable" transition:fade>
 
-                <DataTable table$aria-label="felixfile line-list" id="felixTable">
+                <DataTable table$aria-label="felixfile line-list" table$id="felixTable">
                     <Head>
                         <Row>
                             {#each dataTableHead as item}
@@ -465,8 +475,29 @@
             
             </div>
 
-            <div class="exportToPDF">
-                <button class="button is-link" on:click={exportToPdf}>Export</button>
+            <!-- Add to report/notes taking section -->
+            <div class=""><h1 class="mdc-typography--headline4">Add to report</h1></div>
+            <hr>
+
+            <div class="align report" id="felixreport" >
+                {#each [{name:"info", color:"white"}, {name:"warning", color:"yellow"}, {name:"danger", color:"red"}] as method}
+                    <FormField >
+                        <Radio bind:group={reportMethod} value={method.name}  />
+                        <span slot="label" style="color:{method.color}">{method.name}</span>
+                    </FormField>
+                {/each}
+                <CustomCheckbox bind:selected={include_table} label={"Include table"}/>
+                <CustomCheckbox bind:selected={include_avgplot} label={"Final plot"}/>
+                <CustomCheckbox bind:selected={include_bplot} label={"Original plot"}/>
+                <CustomCheckbox bind:selected={include_saplot} label={"Power & SA plot"}/>
+                <Textfield style="height:3em; margin-bottom:1em;" variant="outlined" bind:value={reportTitle} label="Title" />
+                <Textfield textarea bind:value={reportComments} label="Comments"  
+                    input$aria-controls="felixreport_comments" input$aria-describedby="felixreport_comments"/>
+                <HelperText id="felixreport_comments">
+                    NOTE: You can write in markdown format (eg: # Title, **bold**, __italics__, 1., 2. for list, etc.,)
+                </HelperText>
+                <button class="button is-link">Add to Report</button>
+                <button class="button is-link">Show Report</button>
             </div>
         {/if}
     
