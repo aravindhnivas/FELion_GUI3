@@ -1,0 +1,54 @@
+@import url("./roboto-font.css");
+
+* {
+  margin: 0;
+  padding: 0 1em;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+body, html {background: #fafafa;}
+hr {background-color: #7a7a7a;}
+
+.notification {
+
+  border-radius: 4px;
+  padding: 1.25rem 2.5rem 1.25rem 1.5rem;
+  position: relative;
+
+}
+
+
+.notification.is-danger {
+
+  background-color: #f14668;
+  color: #fff;
+}
+.notification.is-link {
+
+  background-color: #3273dc;
+  color: #fff;
+}
+
+.notification.is-warning {
+  background-color: #ffdd57;
+  color: rgba(0,0,0,.7);
+}
+
+.notification.is-success {
+  background-color: #48c774;
+  color: #fff;
+}
+
+h1 {
+  display: block;
+  word-break: break-word;
+  color: #363636;
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.125;
+}
+
+.section {padding: 3em;}
+p, hr, h1{margin: 1em 0;}
+
+p {padding: 0 3em;}
