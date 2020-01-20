@@ -32919,30 +32919,30 @@ const file$H = "src\\Pages\\Normline.svelte";
 
 function get_each_context$3(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[51] = list[i];
+	child_ctx[52] = list[i];
 	return child_ctx;
 }
 
 function get_each_context_1$1(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[54] = list[i];
+	child_ctx[55] = list[i];
 	return child_ctx;
 }
 
 function get_each_context_2(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[57] = list[i];
+	child_ctx[58] = list[i];
 	return child_ctx;
 }
 
 function get_each_context_3(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[60] = list[i];
+	child_ctx[61] = list[i];
 	return child_ctx;
 }
 
-// (378:20) <Icon class="material-icons">
-function create_default_slot_15(ctx) {
+// (385:20) <Icon class="material-icons">
+function create_default_slot_16(ctx) {
 	let t;
 
 	const block = {
@@ -32959,17 +32959,17 @@ function create_default_slot_15(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_15.name,
+		id: create_default_slot_16.name,
 		type: "slot",
-		source: "(378:20) <Icon class=\\\"material-icons\\\">",
+		source: "(385:20) <Icon class=\\\"material-icons\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (379:20) <Icon class="material-icons" on>
-function create_default_slot_14$1(ctx) {
+// (386:20) <Icon class="material-icons" on>
+function create_default_slot_15(ctx) {
 	let t;
 
 	const block = {
@@ -32986,24 +32986,24 @@ function create_default_slot_14$1(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_14$1.name,
+		id: create_default_slot_15.name,
 		type: "slot",
-		source: "(379:20) <Icon class=\\\"material-icons\\\" on>",
+		source: "(386:20) <Icon class=\\\"material-icons\\\" on>",
 		ctx
 	});
 
 	return block;
 }
 
-// (377:17) <IconButton toggle bind:pressed={openShell}>
-function create_default_slot_13$1(ctx) {
+// (384:17) <IconButton toggle bind:pressed={openShell}>
+function create_default_slot_14$1(ctx) {
 	let t;
 	let current;
 
 	const icon0 = new Icon({
 			props: {
 				class: "material-icons",
-				$$slots: { default: [create_default_slot_15] },
+				$$slots: { default: [create_default_slot_16] },
 				$$scope: { ctx }
 			},
 			$$inline: true
@@ -33013,7 +33013,7 @@ function create_default_slot_13$1(ctx) {
 			props: {
 				class: "material-icons",
 				on: true,
-				$$slots: { default: [create_default_slot_14$1] },
+				$$slots: { default: [create_default_slot_15] },
 				$$scope: { ctx }
 			},
 			$$inline: true
@@ -33034,14 +33034,14 @@ function create_default_slot_13$1(ctx) {
 		p: function update(ctx, dirty) {
 			const icon0_changes = {};
 
-			if (dirty[2] & /*$$scope*/ 2) {
+			if (dirty[2] & /*$$scope*/ 4) {
 				icon0_changes.$$scope = { dirty, ctx };
 			}
 
 			icon0.$set(icon0_changes);
 			const icon1_changes = {};
 
-			if (dirty[2] & /*$$scope*/ 2) {
+			if (dirty[2] & /*$$scope*/ 4) {
 				icon1_changes.$$scope = { dirty, ctx };
 			}
 
@@ -33067,16 +33067,16 @@ function create_default_slot_13$1(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_13$1.name,
+		id: create_default_slot_14$1.name,
 		type: "slot",
-		source: "(377:17) <IconButton toggle bind:pressed={openShell}>",
+		source: "(384:17) <IconButton toggle bind:pressed={openShell}>",
 		ctx
 	});
 
 	return block;
 }
 
-// (384:8) {#if toggleRow}
+// (391:8) {#if toggleRow}
 function create_if_block_4$2(ctx) {
 	let div2;
 	let button0;
@@ -33097,7 +33097,7 @@ function create_if_block_4$2(ctx) {
 	let dispose;
 
 	function textfield0_value_binding(value) {
-		/*textfield0_value_binding*/ ctx[42].call(null, value);
+		/*textfield0_value_binding*/ ctx[43].call(null, value);
 	}
 
 	let textfield0_props = { variant: "outlined", label: "Sigma" };
@@ -33110,7 +33110,7 @@ function create_if_block_4$2(ctx) {
 	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
 
 	function textfield1_value_binding(value_1) {
-		/*textfield1_value_binding*/ ctx[43].call(null, value_1);
+		/*textfield1_value_binding*/ ctx[44].call(null, value_1);
 	}
 
 	let textfield1_props = { variant: "outlined", label: "Scale" };
@@ -33143,19 +33143,19 @@ function create_if_block_4$2(ctx) {
 			button3 = element("button");
 			button3.textContent = "Submit";
 			attr_dev(button0, "class", "button is-link svelte-1nluiar");
-			add_location(button0, file$H, 385, 16, 16264);
+			add_location(button0, file$H, 392, 16, 16458);
 			attr_dev(button1, "class", "button is-link svelte-1nluiar");
-			add_location(button1, file$H, 386, 16, 16360);
+			add_location(button1, file$H, 393, 16, 16554);
 			attr_dev(div0, "class", "short-input svelte-1nluiar");
-			add_location(div0, file$H, 387, 16, 16456);
+			add_location(div0, file$H, 394, 16, 16650);
 			attr_dev(div1, "class", "short-input svelte-1nluiar");
-			add_location(div1, file$H, 388, 16, 16570);
+			add_location(div1, file$H, 395, 16, 16764);
 			attr_dev(button2, "class", "button is-link svelte-1nluiar");
-			add_location(button2, file$H, 389, 16, 16684);
+			add_location(button2, file$H, 396, 16, 16878);
 			attr_dev(button3, "class", "button is-link svelte-1nluiar");
-			add_location(button3, file$H, 390, 16, 16760);
+			add_location(button3, file$H, 397, 16, 16954);
 			attr_dev(div2, "class", "align svelte-1nluiar");
-			add_location(div2, file$H, 384, 12, 16182);
+			add_location(div2, file$H, 391, 12, 16376);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div2, anchor);
@@ -33241,14 +33241,14 @@ function create_if_block_4$2(ctx) {
 		block,
 		id: create_if_block_4$2.name,
 		type: "if",
-		source: "(384:8) {#if toggleRow}",
+		source: "(391:8) {#if toggleRow}",
 		ctx
 	});
 
 	return block;
 }
 
-// (400:20) <span slot="label">
+// (407:20) <span slot="label">
 function create_label_slot_1(ctx) {
 	let span;
 	let t;
@@ -33256,10 +33256,10 @@ function create_label_slot_1(ctx) {
 	const block = {
 		c: function create() {
 			span = element("span");
-			t = text(/*method*/ ctx[60]);
+			t = text(/*method*/ ctx[61]);
 			attr_dev(span, "slot", "label");
 			attr_dev(span, "class", "svelte-1nluiar");
-			add_location(span, file$H, 399, 20, 17089);
+			add_location(span, file$H, 406, 20, 17283);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -33275,25 +33275,25 @@ function create_label_slot_1(ctx) {
 		block,
 		id: create_label_slot_1.name,
 		type: "slot",
-		source: "(400:20) <span slot=\\\"label\\\">",
+		source: "(407:20) <span slot=\\\"label\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (398:16) <FormField >
-function create_default_slot_12$1(ctx) {
+// (405:16) <FormField >
+function create_default_slot_13$1(ctx) {
 	let updating_group;
 	let t0;
 	let t1;
 	let current;
 
 	function radio_group_binding(value) {
-		/*radio_group_binding*/ ctx[44].call(null, value);
+		/*radio_group_binding*/ ctx[45].call(null, value);
 	}
 
-	let radio_props = { value: /*method*/ ctx[60] };
+	let radio_props = { value: /*method*/ ctx[61] };
 
 	if (/*normMethod*/ ctx[8] !== void 0) {
 		radio_props.group = /*normMethod*/ ctx[8];
@@ -33343,23 +33343,23 @@ function create_default_slot_12$1(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_12$1.name,
+		id: create_default_slot_13$1.name,
 		type: "slot",
-		source: "(398:16) <FormField >",
+		source: "(405:16) <FormField >",
 		ctx
 	});
 
 	return block;
 }
 
-// (397:12) {#each ["Log", "Relative", "IntensityPerPhoton"] as method}
+// (404:12) {#each ["Log", "Relative", "IntensityPerPhoton"] as method}
 function create_each_block_3(ctx) {
 	let current;
 
 	const formfield = new FormField({
 			props: {
 				$$slots: {
-					default: [create_default_slot_12$1],
+					default: [create_default_slot_13$1],
 					label: [create_label_slot_1]
 				},
 				$$scope: { ctx }
@@ -33378,7 +33378,7 @@ function create_each_block_3(ctx) {
 		p: function update(ctx, dirty) {
 			const formfield_changes = {};
 
-			if (dirty[0] & /*normMethod*/ 256 | dirty[2] & /*$$scope*/ 2) {
+			if (dirty[0] & /*normMethod*/ 256 | dirty[2] & /*$$scope*/ 4) {
 				formfield_changes.$$scope = { dirty, ctx };
 			}
 
@@ -33402,14 +33402,14 @@ function create_each_block_3(ctx) {
 		block,
 		id: create_each_block_3.name,
 		type: "each",
-		source: "(397:12) {#each [\\\"Log\\\", \\\"Relative\\\", \\\"IntensityPerPhoton\\\"] as method}",
+		source: "(404:12) {#each [\\\"Log\\\", \\\"Relative\\\", \\\"IntensityPerPhoton\\\"] as method}",
 		ctx
 	});
 
 	return block;
 }
 
-// (367:4) <div class="buttonSlot" slot="buttonContainer">
+// (374:4) <div class="buttonSlot" slot="buttonContainer">
 function create_buttonContainer_slot(ctx) {
 	let div0;
 	let div3;
@@ -33436,7 +33436,7 @@ function create_buttonContainer_slot(ctx) {
 	let dispose;
 
 	function textfield_value_binding(value) {
-		/*textfield_value_binding*/ ctx[40].call(null, value);
+		/*textfield_value_binding*/ ctx[41].call(null, value);
 	}
 
 	let textfield_props = { variant: "outlined", label: "Delta" };
@@ -33449,12 +33449,12 @@ function create_buttonContainer_slot(ctx) {
 	binding_callbacks.push(() => bind(textfield, "value", textfield_value_binding));
 
 	function iconbutton_pressed_binding(value_1) {
-		/*iconbutton_pressed_binding*/ ctx[41].call(null, value_1);
+		/*iconbutton_pressed_binding*/ ctx[42].call(null, value_1);
 	}
 
 	let iconbutton_props = {
 		toggle: true,
-		$$slots: { default: [create_default_slot_13$1] },
+		$$slots: { default: [create_default_slot_14$1] },
 		$$scope: { ctx }
 	};
 
@@ -33510,27 +33510,27 @@ function create_buttonContainer_slot(ctx) {
 			}
 
 			attr_dev(button0, "class", "button is-link svelte-1nluiar");
-			add_location(button0, file$H, 370, 12, 15296);
+			add_location(button0, file$H, 377, 12, 15490);
 			attr_dev(button1, "class", "button is-link svelte-1nluiar");
-			add_location(button1, file$H, 371, 12, 15365);
+			add_location(button1, file$H, 378, 12, 15559);
 			attr_dev(button2, "class", "button is-link svelte-1nluiar");
 			attr_dev(button2, "tabindex", "0");
-			add_location(button2, file$H, 372, 12, 15468);
+			add_location(button2, file$H, 379, 12, 15662);
 			attr_dev(button3, "class", "button is-link svelte-1nluiar");
-			add_location(button3, file$H, 373, 12, 15625);
+			add_location(button3, file$H, 380, 12, 15819);
 			attr_dev(button4, "class", "button is-link svelte-1nluiar");
-			add_location(button4, file$H, 374, 12, 15697);
+			add_location(button4, file$H, 381, 12, 15891);
 			attr_dev(div1, "class", "short-input svelte-1nluiar");
-			add_location(div1, file$H, 375, 12, 15791);
+			add_location(div1, file$H, 382, 12, 15985);
 			attr_dev(div2, "class", "svelte-1nluiar");
-			add_location(div2, file$H, 376, 12, 15901);
+			add_location(div2, file$H, 383, 12, 16095);
 			attr_dev(div3, "class", "align svelte-1nluiar");
-			add_location(div3, file$H, 368, 8, 15260);
+			add_location(div3, file$H, 375, 8, 15454);
 			attr_dev(div4, "class", "align svelte-1nluiar");
-			add_location(div4, file$H, 395, 8, 16855);
+			add_location(div4, file$H, 402, 8, 17049);
 			attr_dev(div0, "class", "buttonSlot svelte-1nluiar");
 			attr_dev(div0, "slot", "buttonContainer");
-			add_location(div0, file$H, 366, 4, 15201);
+			add_location(div0, file$H, 373, 4, 15395);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -33562,10 +33562,10 @@ function create_buttonContainer_slot(ctx) {
 			current = true;
 
 			dispose = [
-				listen_dev(button1, "click", /*click_handler*/ ctx[37], false, false, false),
+				listen_dev(button1, "click", /*click_handler*/ ctx[38], false, false, false),
 				action_destroyer(Ripple_action = Ripple.call(null, button2, [true, { color: "primary" }])),
-				listen_dev(button2, "click", /*click_handler_1*/ ctx[38], false, false, false),
-				listen_dev(button4, "click", /*click_handler_2*/ ctx[39], false, false, false),
+				listen_dev(button2, "click", /*click_handler_1*/ ctx[39], false, false, false),
+				listen_dev(button4, "click", /*click_handler_2*/ ctx[40], false, false, false),
 				listen_dev(div4, "change", /*replot*/ ctx[20], false, false, false)
 			];
 		},
@@ -33581,7 +33581,7 @@ function create_buttonContainer_slot(ctx) {
 			textfield.$set(textfield_changes);
 			const iconbutton_changes = {};
 
-			if (dirty[2] & /*$$scope*/ 2) {
+			if (dirty[2] & /*$$scope*/ 4) {
 				iconbutton_changes.$$scope = { dirty, ctx };
 			}
 
@@ -33678,14 +33678,14 @@ function create_buttonContainer_slot(ctx) {
 		block,
 		id: create_buttonContainer_slot.name,
 		type: "slot",
-		source: "(367:4) <div class=\\\"buttonSlot\\\" slot=\\\"buttonContainer\\\">",
+		source: "(374:4) <div class=\\\"buttonSlot\\\" slot=\\\"buttonContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (409:8) {#if show_theoryplot}
+// (416:8) {#if show_theoryplot}
 function create_if_block_3$2(ctx) {
 	let div;
 	let div_transition;
@@ -33696,7 +33696,7 @@ function create_if_block_3$2(ctx) {
 			div = element("div");
 			attr_dev(div, "id", "exp-theory-plot");
 			attr_dev(div, "class", "svelte-1nluiar");
-			add_location(div, file$H, 409, 12, 17302);
+			add_location(div, file$H, 416, 12, 17496);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -33727,14 +33727,14 @@ function create_if_block_3$2(ctx) {
 		block,
 		id: create_if_block_3$2.name,
 		type: "if",
-		source: "(409:8) {#if show_theoryplot}",
+		source: "(416:8) {#if show_theoryplot}",
 		ctx
 	});
 
 	return block;
 }
 
-// (417:8) {#if graphPlotted}
+// (424:8) {#if graphPlotted}
 function create_if_block_1$5(ctx) {
 	let div;
 	let updating_value;
@@ -33751,12 +33751,12 @@ function create_if_block_1$5(ctx) {
 	let dispose;
 
 	function select_value_binding(value) {
-		/*select_value_binding*/ ctx[45].call(null, value);
+		/*select_value_binding*/ ctx[46].call(null, value);
 	}
 
 	let select_props = {
 		label: "Output filename",
-		$$slots: { default: [create_default_slot_10$1] },
+		$$slots: { default: [create_default_slot_11$1] },
 		$$scope: { ctx }
 	};
 
@@ -33771,7 +33771,7 @@ function create_if_block_1$5(ctx) {
 			props: {
 				style: "margin: 0 1em; padding-bottom: 1em;",
 				$$slots: {
-					default: [create_default_slot_9$1],
+					default: [create_default_slot_10$1],
 					label: [create_label_slot$2]
 				},
 				$$scope: { ctx }
@@ -33799,13 +33799,13 @@ function create_if_block_1$5(ctx) {
 			t7 = space();
 			if (if_block) if_block.c();
 			attr_dev(button0, "class", "button is-link svelte-1nluiar");
-			add_location(button0, file$H, 427, 16, 18069);
+			add_location(button0, file$H, 434, 16, 18263);
 			attr_dev(button1, "class", "button is-warning svelte-1nluiar");
-			add_location(button1, file$H, 428, 16, 18176);
+			add_location(button1, file$H, 435, 16, 18370);
 			attr_dev(button2, "class", "button is-danger svelte-1nluiar");
-			add_location(button2, file$H, 429, 16, 18272);
+			add_location(button2, file$H, 436, 16, 18466);
 			attr_dev(div, "class", "svelte-1nluiar");
-			add_location(div, file$H, 417, 12, 17514);
+			add_location(div, file$H, 424, 12, 17708);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -33823,7 +33823,7 @@ function create_if_block_1$5(ctx) {
 			current = true;
 
 			dispose = [
-				listen_dev(button0, "click", /*click_handler_3*/ ctx[47], false, false, false),
+				listen_dev(button0, "click", /*click_handler_3*/ ctx[48], false, false, false),
 				listen_dev(button1, "click", /*clearLastPeak*/ ctx[23], false, false, false),
 				listen_dev(button2, "click", /*clearAllPeak*/ ctx[22], false, false, false)
 			];
@@ -33831,7 +33831,7 @@ function create_if_block_1$5(ctx) {
 		p: function update(ctx, dirty) {
 			const select_changes = {};
 
-			if (dirty[0] & /*plottedFiles, output_name*/ 2056 | dirty[2] & /*$$scope*/ 2) {
+			if (dirty[0] & /*plottedFiles, output_name*/ 2056 | dirty[2] & /*$$scope*/ 4) {
 				select_changes.$$scope = { dirty, ctx };
 			}
 
@@ -33844,7 +33844,7 @@ function create_if_block_1$5(ctx) {
 			select.$set(select_changes);
 			const formfield_changes = {};
 
-			if (dirty[0] & /*overwrite_expfit*/ 1024 | dirty[2] & /*$$scope*/ 2) {
+			if (dirty[0] & /*overwrite_expfit*/ 1024 | dirty[2] & /*$$scope*/ 4) {
 				formfield_changes.$$scope = { dirty, ctx };
 			}
 
@@ -33896,16 +33896,16 @@ function create_if_block_1$5(ctx) {
 		block,
 		id: create_if_block_1$5.name,
 		type: "if",
-		source: "(417:8) {#if graphPlotted}",
+		source: "(424:8) {#if graphPlotted}",
 		ctx
 	});
 
 	return block;
 }
 
-// (421:24) <Option value={file} selected={output_name === file}>
-function create_default_slot_11$1(ctx) {
-	let t_value = /*file*/ ctx[57] + "";
+// (428:24) <Option value={file} selected={output_name === file}>
+function create_default_slot_12$1(ctx) {
+	let t_value = /*file*/ ctx[58] + "";
 	let t;
 
 	const block = {
@@ -33916,7 +33916,7 @@ function create_default_slot_11$1(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*plottedFiles*/ 8 && t_value !== (t_value = /*file*/ ctx[57] + "")) set_data_dev(t, t_value);
+			if (dirty[0] & /*plottedFiles*/ 8 && t_value !== (t_value = /*file*/ ctx[58] + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -33925,24 +33925,24 @@ function create_default_slot_11$1(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_11$1.name,
+		id: create_default_slot_12$1.name,
 		type: "slot",
-		source: "(421:24) <Option value={file} selected={output_name === file}>",
+		source: "(428:24) <Option value={file} selected={output_name === file}>",
 		ctx
 	});
 
 	return block;
 }
 
-// (420:20) {#each ["averaged", ...plottedFiles] as file}
+// (427:20) {#each ["averaged", ...plottedFiles] as file}
 function create_each_block_2(ctx) {
 	let current;
 
 	const option = new Option({
 			props: {
-				value: /*file*/ ctx[57],
-				selected: /*output_name*/ ctx[11] === /*file*/ ctx[57],
-				$$slots: { default: [create_default_slot_11$1] },
+				value: /*file*/ ctx[58],
+				selected: /*output_name*/ ctx[11] === /*file*/ ctx[58],
+				$$slots: { default: [create_default_slot_12$1] },
 				$$scope: { ctx }
 			},
 			$$inline: true
@@ -33958,10 +33958,10 @@ function create_each_block_2(ctx) {
 		},
 		p: function update(ctx, dirty) {
 			const option_changes = {};
-			if (dirty[0] & /*plottedFiles*/ 8) option_changes.value = /*file*/ ctx[57];
-			if (dirty[0] & /*output_name, plottedFiles*/ 2056) option_changes.selected = /*output_name*/ ctx[11] === /*file*/ ctx[57];
+			if (dirty[0] & /*plottedFiles*/ 8) option_changes.value = /*file*/ ctx[58];
+			if (dirty[0] & /*output_name, plottedFiles*/ 2056) option_changes.selected = /*output_name*/ ctx[11] === /*file*/ ctx[58];
 
-			if (dirty[0] & /*plottedFiles*/ 8 | dirty[2] & /*$$scope*/ 2) {
+			if (dirty[0] & /*plottedFiles*/ 8 | dirty[2] & /*$$scope*/ 4) {
 				option_changes.$$scope = { dirty, ctx };
 			}
 
@@ -33985,15 +33985,15 @@ function create_each_block_2(ctx) {
 		block,
 		id: create_each_block_2.name,
 		type: "each",
-		source: "(420:20) {#each [\\\"averaged\\\", ...plottedFiles] as file}",
+		source: "(427:20) {#each [\\\"averaged\\\", ...plottedFiles] as file}",
 		ctx
 	});
 
 	return block;
 }
 
-// (419:16) <Select bind:value={output_name} label="Output filename">
-function create_default_slot_10$1(ctx) {
+// (426:16) <Select bind:value={output_name} label="Output filename">
+function create_default_slot_11$1(ctx) {
 	let each_1_anchor;
 	let current;
 	let each_value_2 = ["averaged", .../*plottedFiles*/ ctx[3]];
@@ -34077,16 +34077,16 @@ function create_default_slot_10$1(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_10$1.name,
+		id: create_default_slot_11$1.name,
 		type: "slot",
-		source: "(419:16) <Select bind:value={output_name} label=\\\"Output filename\\\">",
+		source: "(426:16) <Select bind:value={output_name} label=\\\"Output filename\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (426:20) <span slot="label">
+// (433:20) <span slot="label">
 function create_label_slot$2(ctx) {
 	let span;
 
@@ -34096,7 +34096,7 @@ function create_label_slot$2(ctx) {
 			span.textContent = "Overwrite";
 			attr_dev(span, "slot", "label");
 			attr_dev(span, "class", "svelte-1nluiar");
-			add_location(span, file$H, 425, 20, 17986);
+			add_location(span, file$H, 432, 20, 18180);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -34110,21 +34110,21 @@ function create_label_slot$2(ctx) {
 		block,
 		id: create_label_slot$2.name,
 		type: "slot",
-		source: "(426:20) <span slot=\\\"label\\\">",
+		source: "(433:20) <span slot=\\\"label\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (424:16) <FormField style="margin: 0 1em; padding-bottom: 1em;">
-function create_default_slot_9$1(ctx) {
+// (431:16) <FormField style="margin: 0 1em; padding-bottom: 1em;">
+function create_default_slot_10$1(ctx) {
 	let updating_checked;
 	let t;
 	let current;
 
 	function switch_1_checked_binding(value) {
-		/*switch_1_checked_binding*/ ctx[46].call(null, value);
+		/*switch_1_checked_binding*/ ctx[47].call(null, value);
 	}
 
 	let switch_1_props = {};
@@ -34174,16 +34174,16 @@ function create_default_slot_9$1(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_9$1.name,
+		id: create_default_slot_10$1.name,
 		type: "slot",
-		source: "(424:16) <FormField style=\\\"margin: 0 1em; padding-bottom: 1em;\\\">",
+		source: "(431:16) <FormField style=\\\"margin: 0 1em; padding-bottom: 1em;\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (431:16) {#if showDataTable}
+// (438:16) {#if showDataTable}
 function create_if_block_2$4(ctx) {
 	let button;
 	let dispose;
@@ -34193,11 +34193,11 @@ function create_if_block_2$4(ctx) {
 			button = element("button");
 			button.textContent = "Clear Table";
 			attr_dev(button, "class", "button is-danger svelte-1nluiar");
-			add_location(button, file$H, 431, 20, 18406);
+			add_location(button, file$H, 438, 20, 18600);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, button, anchor);
-			dispose = listen_dev(button, "click", /*click_handler_4*/ ctx[48], false, false, false);
+			dispose = listen_dev(button, "click", /*click_handler_4*/ ctx[49], false, false, false);
 		},
 		p: noop,
 		d: function destroy(detaching) {
@@ -34210,22 +34210,27 @@ function create_if_block_2$4(ctx) {
 		block,
 		id: create_if_block_2$4.name,
 		type: "if",
-		source: "(431:16) {#if showDataTable}",
+		source: "(438:16) {#if showDataTable}",
 		ctx
 	});
 
 	return block;
 }
 
-// (437:8) {#if showDataTable}
+// (444:8) {#if showDataTable}
 function create_if_block$b(ctx) {
-	let div;
-	let div_transition;
+	let div0;
+	let div0_transition;
+	let t0;
+	let div1;
+	let button;
 	let current;
+	let dispose;
 
 	const datatable = new DataTable({
 			props: {
 				"table$aria-label": "felixfile line-list",
+				id: "felixTable",
 				$$slots: { default: [create_default_slot_1$7] },
 				$$scope: { ctx }
 			},
@@ -34234,20 +34239,32 @@ function create_if_block$b(ctx) {
 
 	const block = {
 		c: function create() {
-			div = element("div");
+			div0 = element("div");
 			create_component(datatable.$$.fragment);
-			attr_dev(div, "class", "dataTable svelte-1nluiar");
-			add_location(div, file$H, 437, 12, 18594);
+			t0 = space();
+			div1 = element("div");
+			button = element("button");
+			button.textContent = "Export";
+			attr_dev(div0, "class", "dataTable svelte-1nluiar");
+			add_location(div0, file$H, 444, 12, 18788);
+			attr_dev(button, "class", "button is-link svelte-1nluiar");
+			add_location(button, file$H, 468, 16, 19705);
+			attr_dev(div1, "class", "exportToPDF svelte-1nluiar");
+			add_location(div1, file$H, 467, 12, 19662);
 		},
 		m: function mount(target, anchor) {
-			insert_dev(target, div, anchor);
-			mount_component(datatable, div, null);
+			insert_dev(target, div0, anchor);
+			mount_component(datatable, div0, null);
+			insert_dev(target, t0, anchor);
+			insert_dev(target, div1, anchor);
+			append_dev(div1, button);
 			current = true;
+			dispose = listen_dev(button, "click", /*exportToPdf*/ ctx[24], false, false, false);
 		},
 		p: function update(ctx, dirty) {
 			const datatable_changes = {};
 
-			if (dirty[0] & /*dataTable*/ 4096 | dirty[2] & /*$$scope*/ 2) {
+			if (dirty[0] & /*dataTable*/ 4096 | dirty[2] & /*$$scope*/ 4) {
 				datatable_changes.$$scope = { dirty, ctx };
 			}
 
@@ -34258,22 +34275,25 @@ function create_if_block$b(ctx) {
 			transition_in(datatable.$$.fragment, local);
 
 			add_render_callback(() => {
-				if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, true);
-				div_transition.run(1);
+				if (!div0_transition) div0_transition = create_bidirectional_transition(div0, fade, {}, true);
+				div0_transition.run(1);
 			});
 
 			current = true;
 		},
 		o: function outro(local) {
 			transition_out(datatable.$$.fragment, local);
-			if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, false);
-			div_transition.run(0);
+			if (!div0_transition) div0_transition = create_bidirectional_transition(div0, fade, {}, false);
+			div0_transition.run(0);
 			current = false;
 		},
 		d: function destroy(detaching) {
-			if (detaching) detach_dev(div);
+			if (detaching) detach_dev(div0);
 			destroy_component(datatable);
-			if (detaching && div_transition) div_transition.end();
+			if (detaching && div0_transition) div0_transition.end();
+			if (detaching) detach_dev(t0);
+			if (detaching) detach_dev(div1);
+			dispose();
 		}
 	};
 
@@ -34281,16 +34301,16 @@ function create_if_block$b(ctx) {
 		block,
 		id: create_if_block$b.name,
 		type: "if",
-		source: "(437:8) {#if showDataTable}",
+		source: "(444:8) {#if showDataTable}",
 		ctx
 	});
 
 	return block;
 }
 
-// (444:32) <Cell >
-function create_default_slot_8$1(ctx) {
-	let t_value = /*item*/ ctx[54] + "";
+// (451:32) <Cell >
+function create_default_slot_9$1(ctx) {
+	let t_value = /*item*/ ctx[55] + "";
 	let t;
 
 	const block = {
@@ -34308,22 +34328,22 @@ function create_default_slot_8$1(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_8$1.name,
+		id: create_default_slot_9$1.name,
 		type: "slot",
-		source: "(444:32) <Cell >",
+		source: "(451:32) <Cell >",
 		ctx
 	});
 
 	return block;
 }
 
-// (443:28) {#each dataTableHead as item}
+// (450:28) {#each dataTableHead as item}
 function create_each_block_1$1(ctx) {
 	let current;
 
 	const cell = new Cell({
 			props: {
-				$$slots: { default: [create_default_slot_8$1] },
+				$$slots: { default: [create_default_slot_9$1] },
 				$$scope: { ctx }
 			},
 			$$inline: true
@@ -34340,7 +34360,7 @@ function create_each_block_1$1(ctx) {
 		p: function update(ctx, dirty) {
 			const cell_changes = {};
 
-			if (dirty[2] & /*$$scope*/ 2) {
+			if (dirty[2] & /*$$scope*/ 4) {
 				cell_changes.$$scope = { dirty, ctx };
 			}
 
@@ -34364,15 +34384,15 @@ function create_each_block_1$1(ctx) {
 		block,
 		id: create_each_block_1$1.name,
 		type: "each",
-		source: "(443:28) {#each dataTableHead as item}",
+		source: "(450:28) {#each dataTableHead as item}",
 		ctx
 	});
 
 	return block;
 }
 
-// (442:24) <Row>
-function create_default_slot_7$1(ctx) {
+// (449:24) <Row>
+function create_default_slot_8$1(ctx) {
 	let each_1_anchor;
 	let current;
 	let each_value_1 = /*dataTableHead*/ ctx[19];
@@ -34456,22 +34476,22 @@ function create_default_slot_7$1(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_7$1.name,
+		id: create_default_slot_8$1.name,
 		type: "slot",
-		source: "(442:24) <Row>",
+		source: "(449:24) <Row>",
 		ctx
 	});
 
 	return block;
 }
 
-// (441:20) <Head>
-function create_default_slot_6$2(ctx) {
+// (448:20) <Head>
+function create_default_slot_7$1(ctx) {
 	let current;
 
 	const row = new Row({
 			props: {
-				$$slots: { default: [create_default_slot_7$1] },
+				$$slots: { default: [create_default_slot_8$1] },
 				$$scope: { ctx }
 			},
 			$$inline: true
@@ -34488,7 +34508,7 @@ function create_default_slot_6$2(ctx) {
 		p: function update(ctx, dirty) {
 			const row_changes = {};
 
-			if (dirty[2] & /*$$scope*/ 2) {
+			if (dirty[2] & /*$$scope*/ 4) {
 				row_changes.$$scope = { dirty, ctx };
 			}
 
@@ -34510,18 +34530,18 @@ function create_default_slot_6$2(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_6$2.name,
+		id: create_default_slot_7$1.name,
 		type: "slot",
-		source: "(441:20) <Head>",
+		source: "(448:20) <Head>",
 		ctx
 	});
 
 	return block;
 }
 
-// (451:28) <Cell>
-function create_default_slot_5$3(ctx) {
-	let t_value = /*table*/ ctx[51].name + "";
+// (458:28) <Cell>
+function create_default_slot_6$2(ctx) {
+	let t_value = /*table*/ ctx[52].name + "";
 	let t;
 
 	const block = {
@@ -34532,7 +34552,38 @@ function create_default_slot_5$3(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*dataTable*/ 4096 && t_value !== (t_value = /*table*/ ctx[51].name + "")) set_data_dev(t, t_value);
+			if (dirty[0] & /*dataTable*/ 4096 && t_value !== (t_value = /*table*/ ctx[52].name + "")) set_data_dev(t, t_value);
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(t);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_default_slot_6$2.name,
+		type: "slot",
+		source: "(458:28) <Cell>",
+		ctx
+	});
+
+	return block;
+}
+
+// (459:28) <Cell>
+function create_default_slot_5$3(ctx) {
+	let t_value = /*table*/ ctx[52].freq + "";
+	let t;
+
+	const block = {
+		c: function create() {
+			t = text(t_value);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, t, anchor);
+		},
+		p: function update(ctx, dirty) {
+			if (dirty[0] & /*dataTable*/ 4096 && t_value !== (t_value = /*table*/ ctx[52].freq + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -34543,16 +34594,16 @@ function create_default_slot_5$3(ctx) {
 		block,
 		id: create_default_slot_5$3.name,
 		type: "slot",
-		source: "(451:28) <Cell>",
+		source: "(459:28) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (452:28) <Cell>
+// (460:28) <Cell>
 function create_default_slot_4$4(ctx) {
-	let t_value = /*table*/ ctx[51].line + "";
+	let t_value = /*table*/ ctx[52].line + "";
 	let t;
 
 	const block = {
@@ -34563,7 +34614,7 @@ function create_default_slot_4$4(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*dataTable*/ 4096 && t_value !== (t_value = /*table*/ ctx[51].line + "")) set_data_dev(t, t_value);
+			if (dirty[0] & /*dataTable*/ 4096 && t_value !== (t_value = /*table*/ ctx[52].line + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -34574,20 +34625,29 @@ function create_default_slot_4$4(ctx) {
 		block,
 		id: create_default_slot_4$4.name,
 		type: "slot",
-		source: "(452:28) <Cell>",
+		source: "(460:28) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (450:24) <Row>
+// (457:24) <Row>
 function create_default_slot_3$4(ctx) {
 	let t0;
 	let t1;
+	let t2;
 	let current;
 
 	const cell0 = new Cell({
+			props: {
+				$$slots: { default: [create_default_slot_6$2] },
+				$$scope: { ctx }
+			},
+			$$inline: true
+		});
+
+	const cell1 = new Cell({
 			props: {
 				$$slots: { default: [create_default_slot_5$3] },
 				$$scope: { ctx }
@@ -34595,7 +34655,7 @@ function create_default_slot_3$4(ctx) {
 			$$inline: true
 		});
 
-	const cell1 = new Cell({
+	const cell2 = new Cell({
 			props: {
 				$$slots: { default: [create_default_slot_4$4] },
 				$$scope: { ctx }
@@ -34609,39 +34669,52 @@ function create_default_slot_3$4(ctx) {
 			t0 = space();
 			create_component(cell1.$$.fragment);
 			t1 = space();
+			create_component(cell2.$$.fragment);
+			t2 = space();
 		},
 		m: function mount(target, anchor) {
 			mount_component(cell0, target, anchor);
 			insert_dev(target, t0, anchor);
 			mount_component(cell1, target, anchor);
 			insert_dev(target, t1, anchor);
+			mount_component(cell2, target, anchor);
+			insert_dev(target, t2, anchor);
 			current = true;
 		},
 		p: function update(ctx, dirty) {
 			const cell0_changes = {};
 
-			if (dirty[0] & /*dataTable*/ 4096 | dirty[2] & /*$$scope*/ 2) {
+			if (dirty[0] & /*dataTable*/ 4096 | dirty[2] & /*$$scope*/ 4) {
 				cell0_changes.$$scope = { dirty, ctx };
 			}
 
 			cell0.$set(cell0_changes);
 			const cell1_changes = {};
 
-			if (dirty[0] & /*dataTable*/ 4096 | dirty[2] & /*$$scope*/ 2) {
+			if (dirty[0] & /*dataTable*/ 4096 | dirty[2] & /*$$scope*/ 4) {
 				cell1_changes.$$scope = { dirty, ctx };
 			}
 
 			cell1.$set(cell1_changes);
+			const cell2_changes = {};
+
+			if (dirty[0] & /*dataTable*/ 4096 | dirty[2] & /*$$scope*/ 4) {
+				cell2_changes.$$scope = { dirty, ctx };
+			}
+
+			cell2.$set(cell2_changes);
 		},
 		i: function intro(local) {
 			if (current) return;
 			transition_in(cell0.$$.fragment, local);
 			transition_in(cell1.$$.fragment, local);
+			transition_in(cell2.$$.fragment, local);
 			current = true;
 		},
 		o: function outro(local) {
 			transition_out(cell0.$$.fragment, local);
 			transition_out(cell1.$$.fragment, local);
+			transition_out(cell2.$$.fragment, local);
 			current = false;
 		},
 		d: function destroy(detaching) {
@@ -34649,6 +34722,8 @@ function create_default_slot_3$4(ctx) {
 			if (detaching) detach_dev(t0);
 			destroy_component(cell1, detaching);
 			if (detaching) detach_dev(t1);
+			destroy_component(cell2, detaching);
+			if (detaching) detach_dev(t2);
 		}
 	};
 
@@ -34656,14 +34731,14 @@ function create_default_slot_3$4(ctx) {
 		block,
 		id: create_default_slot_3$4.name,
 		type: "slot",
-		source: "(450:24) <Row>",
+		source: "(457:24) <Row>",
 		ctx
 	});
 
 	return block;
 }
 
-// (449:20) {#each dataTable.sort((x, y)=>x[0]-y[0]) as table (table.line)}
+// (456:20) {#each dataTable.sort((x, y)=>x[1]-y[1]) as table (table.freq)}
 function create_each_block$3(key_1, ctx) {
 	let first;
 	let current;
@@ -34692,7 +34767,7 @@ function create_each_block$3(key_1, ctx) {
 		p: function update(ctx, dirty) {
 			const row_changes = {};
 
-			if (dirty[0] & /*dataTable*/ 4096 | dirty[2] & /*$$scope*/ 2) {
+			if (dirty[0] & /*dataTable*/ 4096 | dirty[2] & /*$$scope*/ 4) {
 				row_changes.$$scope = { dirty, ctx };
 			}
 
@@ -34717,21 +34792,21 @@ function create_each_block$3(key_1, ctx) {
 		block,
 		id: create_each_block$3.name,
 		type: "each",
-		source: "(449:20) {#each dataTable.sort((x, y)=>x[0]-y[0]) as table (table.line)}",
+		source: "(456:20) {#each dataTable.sort((x, y)=>x[1]-y[1]) as table (table.freq)}",
 		ctx
 	});
 
 	return block;
 }
 
-// (448:20) <Body>
+// (455:20) <Body>
 function create_default_slot_2$6(ctx) {
 	let each_blocks = [];
 	let each_1_lookup = new Map();
 	let each_1_anchor;
 	let current;
 	let each_value = /*dataTable*/ ctx[12].sort(func);
-	const get_key = ctx => /*table*/ ctx[51].line;
+	const get_key = ctx => /*table*/ ctx[52].freq;
 
 	for (let i = 0; i < each_value.length; i += 1) {
 		let child_ctx = get_each_context$3(ctx, each_value, i);
@@ -34790,21 +34865,21 @@ function create_default_slot_2$6(ctx) {
 		block,
 		id: create_default_slot_2$6.name,
 		type: "slot",
-		source: "(448:20) <Body>",
+		source: "(455:20) <Body>",
 		ctx
 	});
 
 	return block;
 }
 
-// (440:16) <DataTable table$aria-label="felixfile line-list">
+// (447:16) <DataTable table$aria-label="felixfile line-list" id="felixTable">
 function create_default_slot_1$7(ctx) {
 	let t;
 	let current;
 
 	const head = new Head({
 			props: {
-				$$slots: { default: [create_default_slot_6$2] },
+				$$slots: { default: [create_default_slot_7$1] },
 				$$scope: { ctx }
 			},
 			$$inline: true
@@ -34833,14 +34908,14 @@ function create_default_slot_1$7(ctx) {
 		p: function update(ctx, dirty) {
 			const head_changes = {};
 
-			if (dirty[2] & /*$$scope*/ 2) {
+			if (dirty[2] & /*$$scope*/ 4) {
 				head_changes.$$scope = { dirty, ctx };
 			}
 
 			head.$set(head_changes);
 			const body_changes = {};
 
-			if (dirty[0] & /*dataTable*/ 4096 | dirty[2] & /*$$scope*/ 2) {
+			if (dirty[0] & /*dataTable*/ 4096 | dirty[2] & /*$$scope*/ 4) {
 				body_changes.$$scope = { dirty, ctx };
 			}
 
@@ -34868,14 +34943,14 @@ function create_default_slot_1$7(ctx) {
 		block,
 		id: create_default_slot_1$7.name,
 		type: "slot",
-		source: "(440:16) <DataTable table$aria-label=\\\"felixfile line-list\\\">",
+		source: "(447:16) <DataTable table$aria-label=\\\"felixfile line-list\\\" id=\\\"felixTable\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (407:4) <div class="plotSlot" slot="plotContainer">
+// (414:4) <div class="plotSlot" slot="plotContainer">
 function create_plotContainer_slot(ctx) {
 	let div0;
 	let t0;
@@ -34907,16 +34982,16 @@ function create_plotContainer_slot(ctx) {
 			if (if_block2) if_block2.c();
 			attr_dev(div1, "id", "bplot");
 			attr_dev(div1, "class", "svelte-1nluiar");
-			add_location(div1, file$H, 412, 8, 17381);
+			add_location(div1, file$H, 419, 8, 17575);
 			attr_dev(div2, "id", "saPlot");
 			attr_dev(div2, "class", "svelte-1nluiar");
-			add_location(div2, file$H, 413, 8, 17413);
+			add_location(div2, file$H, 420, 8, 17607);
 			attr_dev(div3, "id", "avgplot");
 			attr_dev(div3, "class", "svelte-1nluiar");
-			add_location(div3, file$H, 414, 8, 17446);
+			add_location(div3, file$H, 421, 8, 17640);
 			attr_dev(div0, "class", "plotSlot svelte-1nluiar");
 			attr_dev(div0, "slot", "plotContainer");
-			add_location(div0, file$H, 406, 4, 17212);
+			add_location(div0, file$H, 413, 4, 17406);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -34999,14 +35074,14 @@ function create_plotContainer_slot(ctx) {
 		block,
 		id: create_plotContainer_slot.name,
 		type: "slot",
-		source: "(407:4) <div class=\\\"plotSlot\\\" slot=\\\"plotContainer\\\">",
+		source: "(414:4) <div class=\\\"plotSlot\\\" slot=\\\"plotContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (365:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>
+// (372:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>
 function create_default_slot$c(ctx) {
 	let t;
 
@@ -35029,7 +35104,7 @@ function create_default_slot$c(ctx) {
 		block,
 		id: create_default_slot$c.name,
 		type: "slot",
-		source: "(365:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>",
+		source: "(372:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>",
 		ctx
 	});
 
@@ -35042,11 +35117,11 @@ function create_fragment$K(ctx) {
 	let current;
 
 	function layout_currentLocation_binding(value) {
-		/*layout_currentLocation_binding*/ ctx[49].call(null, value);
+		/*layout_currentLocation_binding*/ ctx[50].call(null, value);
 	}
 
 	function layout_fileChecked_binding(value_1) {
-		/*layout_fileChecked_binding*/ ctx[50].call(null, value_1);
+		/*layout_fileChecked_binding*/ ctx[51].call(null, value_1);
 	}
 
 	let layout_props = {
@@ -35086,7 +35161,7 @@ function create_fragment$K(ctx) {
 		p: function update(ctx, dirty) {
 			const layout_changes = {};
 
-			if (dirty[0] & /*showDataTable, dataTable, graphPlotted, overwrite_expfit, output_name, plottedFiles, normMethod, toggleRow, scale, sigma, $bindDialog, openShell, delta*/ 32750 | dirty[2] & /*$$scope*/ 2) {
+			if (dirty[0] & /*showDataTable, dataTable, graphPlotted, overwrite_expfit, output_name, plottedFiles, normMethod, toggleRow, scale, sigma, $bindDialog, openShell, delta*/ 32750 | dirty[2] & /*$$scope*/ 4) {
 				layout_changes.$$scope = { dirty, ctx };
 			}
 
@@ -35129,7 +35204,7 @@ function create_fragment$K(ctx) {
 	return block;
 }
 
-const func = (x, y) => x[0] - y[0];
+const func = (x, y) => x[1] - y[1];
 
 function instance$K($$self, $$props, $$invalidate) {
 	let $filelist;
@@ -35138,13 +35213,13 @@ function instance$K($$self, $$props, $$invalidate) {
 	let $activated;
 	let $bindDialog;
 	validate_store(filelist, "filelist");
-	component_subscribe($$self, filelist, $$value => $$invalidate(31, $filelist = $$value));
+	component_subscribe($$self, filelist, $$value => $$invalidate(32, $filelist = $$value));
 	validate_store(filelistBinded, "filelistBinded");
-	component_subscribe($$self, filelistBinded, $$value => $$invalidate(32, $filelistBinded = $$value));
+	component_subscribe($$self, filelistBinded, $$value => $$invalidate(33, $filelistBinded = $$value));
 	validate_store(modalContent, "modalContent");
-	component_subscribe($$self, modalContent, $$value => $$invalidate(33, $modalContent = $$value));
+	component_subscribe($$self, modalContent, $$value => $$invalidate(34, $modalContent = $$value));
 	validate_store(activated, "activated");
-	component_subscribe($$self, activated, $$value => $$invalidate(34, $activated = $$value));
+	component_subscribe($$self, activated, $$value => $$invalidate(35, $activated = $$value));
 	validate_store(bindDialog, "bindDialog");
 	component_subscribe($$self, bindDialog, $$value => $$invalidate(14, $bindDialog = $$value));
 
@@ -35181,7 +35256,7 @@ function instance$K($$self, $$props, $$invalidate) {
 	let graphPlotted = false, overwrite_expfit = false;
 	let line = [], index = [], annotations = [];
 	let output_name = "averaged";
-	let dataTableHead = ["Filename", "Frequency, Ampl., FWHM - (cm-1 units)"];
+	let dataTableHead = ["Filename", "Line (cm-1)", "Frequency, Ampl., FWHM - (cm-1)"];
 	let dataTable = [], showDataTable = false;
 
 	const replot = () => {
@@ -35405,6 +35480,7 @@ function instance$K($$self, $$props, $$invalidate) {
 							...dataTable,
 							{
 								name: output_name,
+								freq: dataFromPython["freq"],
 								line: dataFromPython["fit"].name
 							}
 						]);
@@ -35465,6 +35541,11 @@ function instance$K($$self, $$props, $$invalidate) {
 		if (line.length === 0) {
 			ready_to_fit = false;
 		}
+	};
+
+	const exportToPdf = () => {
+		let doc = new jsPDF();
+		doc.save("table.pdf");
 	};
 
 	const click_handler = e => plotData(e, "felix");
@@ -35536,7 +35617,7 @@ function instance$K($$self, $$props, $$invalidate) {
 		if ("thoeryfiles" in $$props) thoeryfiles = $$props.thoeryfiles;
 		if ("theoryfile_location" in $$props) theoryfile_location = $$props.theoryfile_location;
 		if ("theorylistDialog" in $$props) theorylistDialog = $$props.theorylistDialog;
-		if ("theoryfile_filtered" in $$props) $$invalidate(36, theoryfile_filtered = $$props.theoryfile_filtered);
+		if ("theoryfile_filtered" in $$props) $$invalidate(37, theoryfile_filtered = $$props.theoryfile_filtered);
 		if ("show_theoryplot" in $$props) $$invalidate(17, show_theoryplot = $$props.show_theoryplot);
 		if ("openShell" in $$props) $$invalidate(7, openShell = $$props.openShell);
 		if ("normMethod" in $$props) $$invalidate(8, normMethod = $$props.normMethod);
@@ -35597,6 +35678,7 @@ function instance$K($$self, $$props, $$invalidate) {
 		plotData,
 		clearAllPeak,
 		clearLastPeak,
+		exportToPdf,
 		thoeryfiles,
 		theoryfile_location,
 		normMethod_datas,
@@ -36122,8 +36204,9 @@ function create_fragment$O(ctx) {
 			create_component(powerfile.$$.fragment);
 			t8 = space();
 			create_component(footer.$$.fragment);
-			attr_dev(div, "class", "pageContainer svelte-1a0nbm8");
-			add_location(div, file$I, 64, 0, 1946);
+			attr_dev(div, "class", "pageContainer");
+			set_style(div, "overflow", "hidden");
+			add_location(div, file$I, 61, 0, 1841);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");

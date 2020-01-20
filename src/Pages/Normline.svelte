@@ -18,7 +18,8 @@
     import Select, {Option} from '@smui/select'
     import Switch from '@smui/switch'
     import DataTable, {Head, Body, Row, Cell} from '@smui/data-table'
-     import Checkbox from '@smui/checkbox';
+    import Checkbox from '@smui/checkbox';
+
    ///////////////////////////////////////////////////////////////////////
 
     let filetype="felix", id="Normline", fileChecked=[], delta=1, toggleRow=false;
@@ -57,7 +58,7 @@
     let line = [], index = [], annotations = []
     let output_name = "averaged"
 
-    let dataTableHead = ["Filename", "Frequency, Ampl., FWHM - (cm-1 units)"]
+    let dataTableHead = ["Filename", "Line (cm-1)", "Frequency, Ampl., FWHM - (cm-1)"]
     let dataTable = [], showDataTable=false;
 
     const replot = () => {
@@ -287,7 +288,7 @@
                         annotations = [...annotations, dataFromPython["annotations"]]
                         Plotly.relayout("avgplot", { annotations: annotations })
                         
-                        dataTable = [...dataTable, {name: output_name, line: dataFromPython["fit"].name}]
+                        dataTable = [...dataTable, {name: output_name, freq:dataFromPython["freq"], line: dataFromPython["fit"].name}]
                         showDataTable = true
 
                         console.log("Line fitted")
@@ -342,6 +343,12 @@
         if (line.length === 0) {ready_to_fit = false}
     }
 
+    const exportToPdf = () => {
+
+		let doc = new jsPDF()
+        // doc.autoTable({ html: '#felixTable table' })
+        doc.save('table.pdf')
+    }
 
 </script>
 
@@ -437,7 +444,7 @@
         {#if showDataTable}
             <div class="dataTable" transition:fade>
 
-                <DataTable table$aria-label="felixfile line-list">
+                <DataTable table$aria-label="felixfile line-list" id="felixTable">
                     <Head>
                         <Row>
                             {#each dataTableHead as item}
@@ -446,15 +453,20 @@
                         </Row>
                     </Head>
                     <Body>
-                    {#each dataTable.sort((x, y)=>x[0]-y[0]) as table (table.line)}
+                    {#each dataTable.sort((x, y)=>x[1]-y[1]) as table (table.freq)}
                         <Row>
                             <Cell>{table.name}</Cell>
+                            <Cell>{table.freq}</Cell>
                             <Cell>{table.line}</Cell>
                         </Row>
                     {/each}
                     </Body>
                 </DataTable>
             
+            </div>
+
+            <div class="exportToPDF">
+                <button class="button is-link" on:click={exportToPdf}>Export</button>
             </div>
         {/if}
     

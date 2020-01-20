@@ -17,8 +17,8 @@
 	
 	import Modal from "./components/Modal.svelte"
 	import DialogChecklist from "./components/DialogChecklist.svelte"
-	// import {activated} from "./js/functions.js"
 	import {onMount} from "svelte"
+
 	onMount(()=>{
 		let allbuttons = Array.from(document.querySelectorAll(".button"))
 		allbuttons.forEach(button=>button.classList.add("hvr-glow"))
@@ -31,7 +31,9 @@
 	window.path = require("path")
 	window.fs = require("fs")
 	window.spawn = require("child_process").spawn
+
 	export let version;
+
 	console.log("Svelte: ", version)
 
 	window.Menu = remote.Menu
@@ -51,18 +53,13 @@
 
 </script>
 
-<style>
-	.pageContainer { overflow: hidden; }
-
-</style>
-
 <Navbar {navItems}/>
 
 <Modal/>
 <DialogChecklist />
 <Home />
 
-<div class="pageContainer">
+<div class="pageContainer" style="overflow: hidden;">
 	
 	<Normline />
 	<Masspec />
