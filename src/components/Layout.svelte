@@ -143,7 +143,7 @@
     * :global(.mdc-list-item){height: 2em;}
     * :global(.mdc-switch.mdc-switch--checked .mdc-switch__thumb, .mdc-switch.mdc-switch--checked .mdc-switch__track){background-color: #ffffff}
     * :global(.material-icons) {margin-right:0.2em; cursor:pointer;}
-    * :global(.align) { display: flex; align-items: center }
+    * :global(.align) { display: flex; align-items: center; flex-wrap: wrap; }
     * :global(.center) {justify-content: center;}
     * :global(.gap) {margin-right: 2em;}
     // * :global(.filebrowser) {flex:none; width:auto;}

@@ -20,9 +20,7 @@
     import DataTable, {Head, Body, Row, Cell} from '@smui/data-table'
     import Checkbox from '@smui/checkbox';
     import CustomCheckbox from '../components/CustomCheckbox.svelte';
-    // import Level from '../components/Level.svelte';
-    // window.jsPDF = require('../public/assets/js/jspdf.min.js')
-	// window.html2canvas = require("../public/assets/js/html2canvas.min.js")
+    const {BrowserWindow} = remote
    ///////////////////////////////////////////////////////////////////////
 
     let filetype="felix", id="Normline", fileChecked=[], delta=1, toggleRow=false;
@@ -299,7 +297,6 @@
                 
                 } catch (err) { $modalContent = err; $activated = true }
             }
-            // if (filetype == "exp_fit") {dataTable = dataTable.sort((x, y)=>x[0]-y[0])}
             console.log("Process closed")
             target.classList.toggle("is-loading")
         })
@@ -321,21 +318,19 @@
         for (let i=0; i<plottedFiles_length; i++) {Plotly.deleteTraces("avgplot", [-1])}
         line = []
         ready_to_fit = false
-
     }
 
     const clearLastPeak = () => {
-        
-        
         if (line.length > 0) {
         
-        //   delete_file_line()
+            //   delete_file_line()
 
-        Plotly.deleteTraces("avgplot", [-1])
-        console.log("Last fitted peak removed")
-        } else {
-        if (annotations.length === 0) {createToast("No fitted lines found", "danger")}
-        console.log("No line fit is found to remove")
+            Plotly.deleteTraces("avgplot", [-1])
+            
+            console.log("Last fitted peak removed")
+            } else {
+            if (annotations.length === 0) {createToast("No fitted lines found", "danger")}
+            console.log("No line fit is found to remove")
         }
         
         line = line.slice(0, line.length - 2)
@@ -345,8 +340,105 @@
         if (line.length === 0) {ready_to_fit = false}
     }
 
+    function pdfSettings() {
+        let paperSizeArray = ["A4", "A5"];
+        let option = {
 
-    let reportTitle = "", reportComments = "", reportMethod = "info"
+            landscape: false,
+            marginsType: 0,
+            printBackground: false,
+            printSelectionOnly: false,
+            pageSize: paperSizeArray[settingCache.getPrintPaperSize()-1],
+        };
+        return option;
+    }
+
+    const getHTMLContent = (content) =>{
+        return (
+            `<!DOCTYPE html>
+            <html lang="en">
+                <head>
+                    <meta charset='utf8'>
+                    <meta name="viewport" content="width=device-width, initial-scale=1">
+                    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                    <title>Reports</title>
+                    <link rel="stylesheet" href="./bulma.min.css">
+                    <link rel="stylesheet" href="./template.css">
+                </head>
+
+                <body>
+                    <section class="section" id="mainSection">
+                        <button class="button is-link" id="exportButton">Export as PDF</button>
+                        <h1 class="title" id="mainTitle">${reportMolecule}</h1>
+                        ${content}
+                    </section>
+                </body>
+            </html>`
+            
+        )
+    }
+    
+
+    let reportTitleContents = "", loadContent = "";
+    let reportCount = 0
+    const addReport = () => {
+
+        reportCount++
+        // let d3 = Plotly.d3
+
+        if (reportTitle.length == 0) reportTitle = "-"
+        if (reportComments.length == 0) reportComments = "-"
+        
+        reportTitleContents += `\n<h1 class="title notification is-${reportMethod}">${reportTitle}</h1>\n` 
+            + marked(reportComments) 
+            + `<img id='img-${reportCount}'>Image</img>`
+            + `<table class='table is-bordered is-hoverable'>${document.getElementById("felixTable").innerHTML}</table>`
+            + "\n<hr>\n"
+
+        loadContent = getHTMLContent(reportTitleContents)
+        console.log(loadContent)
+        reportComments = reportTitle = ""
+        let template = path.resolve(__dirname, "assets/reports/template.html")
+        fs.writeFile(template, loadContent, function(err) {
+            if(err) {
+                createToast("Report couldn't be added.", "danger")
+                return console.log(err);
+            }
+            console.log("The file was saved!");
+            createToast("Report added", "success")
+        });
+    }
+    
+
+
+    const showReport = () => {
+        console.log(loadContent)
+
+        // let win = window.open("./assets/reports/template.html", "reportModal")
+        const file = path.resolve(__dirname, "./assets/reports/template.html")
+        window.reportWindow = new BrowserWindow({ width: 1200, minWidth :600, height: 600, parent: remote.getCurrentWindow()})
+        window.reportWindow.on('closed', () => { window.reportWindow = null; console.log("Report window closed") })
+        window.reportWindow.loadURL(file)
+
+        window.reportWindow.webContents.on('did-finish-load', ()=>{
+
+            console.log("Report loaded")
+            let code = `document.getElementById("exportButton").addEventListener("click",function(){alert("clicked!");});`;
+            window.reportWindow.webContents.executeJavaScript(code)
+
+        });
+
+        // let plotImg = "avgplot"
+        // let img_jpg= d3.select(`img-${reportCount}`)
+        // Plotly.toImage(plotImg, {height:300,width:300})
+        //  .then(url => {
+        //      img_jpg.attr("src", url);
+        //      return Plotly.toImage(plotImg,{format:'jpeg',height:400,width:400});
+        //  }
+        // )
+    }
+
+    let reportTitle = "", reportComments = "", reportMethod = "info", reportMolecule = ""
     let include_table = true, include_avgplot = true, include_saplot = false, include_bplot = false;
 </script>
 
@@ -388,11 +480,11 @@
             <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click="{()=>toggleRow = !toggleRow}">Add Theory</button>
             <button class="button is-link">Open in Matplotlib</button>
             <button class="button is-link" on:click="{(e)=>plotData(e, "opo")}">OPO</button>
-            <div class="short-input"><Textfield variant="outlined" bind:value={delta} label="Delta" /></div>
-            <div><IconButton toggle bind:pressed={openShell}>
-                    <Icon class="material-icons">code</Icon>
-                    <Icon class="material-icons" on>settings_ethernet</Icon>
-            </IconButton></div>
+            <Textfield style="width:7em" variant="outlined" bind:value={delta} label="Delta" />
+            <IconButton toggle bind:pressed={openShell}>
+                <Icon class="material-icons">code</Icon>
+                <Icon class="material-icons" on>settings_ethernet</Icon>
+            </IconButton>
 
         </div>
 
@@ -400,8 +492,8 @@
             <div class="align" transition:fly="{{ y: -20, duration: 500 }}">
                 <button class="button is-link" on:click={get_theoryfiles}>Browse File</button>
                 <button class="button is-link" on:click={$bindDialog.open}>Show files</button>
-                <div class="short-input"><Textfield variant="outlined" bind:value={sigma} label="Sigma" /></div>
-                <div class="short-input"><Textfield variant="outlined" bind:value={scale} label="Scale" /></div>
+                <Textfield style="width:7em; margin-right:0.5em;" variant="outlined" bind:value={sigma} label="Sigma" />
+                <Textfield style="width:7em" variant="outlined" bind:value={scale} label="Scale" />
                 <button class="button is-link">Open in Matplotlib</button>
                 <button class="button is-link">Submit</button>
             </div>
@@ -454,7 +546,7 @@
             
             <div class="dataTable" transition:fade>
 
-                <DataTable table$aria-label="felixfile line-list" table$id="felixTable">
+                <DataTable table$aria-label="felixfile line-list" table$id="felixTable" id="felixTableContainer">
                     <Head>
                         <Row>
                             {#each dataTableHead as item}
@@ -479,8 +571,12 @@
             <div class=""><h1 class="mdc-typography--headline4">Add to report</h1></div>
             <hr>
 
+            <div style="margin-bottom:1em;">
+                <Textfield style="height:3em; width:20em;" variant="outlined" bind:value={reportMolecule} label="Molecule Name" />
+            </div>
+
             <div class="align report" id="felixreport" >
-                {#each [{name:"info", color:"white"}, {name:"warning", color:"yellow"}, {name:"danger", color:"red"}] as method}
+                {#each [{name:"info", color:"white"}, {name:"success", color:"#00ff00"}, {name:"warning", color:"yellow"}, {name:"danger", color:"red"}] as method}
                     <FormField >
                         <Radio bind:group={reportMethod} value={method.name}  />
                         <span slot="label" style="color:{method.color}">{method.name}</span>
@@ -496,11 +592,11 @@
                 <HelperText id="felixreport_comments">
                     NOTE: You can write in markdown format (eg: # Title, **bold**, __italics__, 1., 2. for list, etc.,)
                 </HelperText>
-                <button class="button is-link">Add to Report</button>
-                <button class="button is-link">Show Report</button>
+            
+                <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click={addReport}>Add to Report</button>
+                <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click={showReport}>Show Report</button>
             </div>
         {/if}
     
     </div>
-
 </Layout>
