@@ -24,6 +24,11 @@
   $: if($activated) openModal()
 </script>
 
+<style>
+
+.modal-card-body {color: black;}
+</style>
+
 <div class="modal" class:is-active={active}>
 
   <div class="modal-background"></div>

@@ -407,10 +407,10 @@ class normplot:
                         return int(line.split(" ")[1])
 
 if __name__ == "__main__":
-
+    print("Argument received for normline.py: \n", sys.argv[1:][0])
     args = sys.argv[1:][0].split(",")
-    filepaths = args[:-2]
-    delta = float(args[-2])
-    output_filename = args[-1]
+    print("Argument procesed:\n", args)
 
-    normplot(filepaths, delta, output_filename)
+    filepaths = args[:-1]
+    delta = float(args[-1])
+    normplot(filepaths, delta)

@@ -19,7 +19,10 @@
 	import DialogChecklist from "./components/DialogChecklist.svelte"
 	// import {activated} from "./js/functions.js"
 	import {onMount} from "svelte"
-
+	onMount(()=>{
+		let allbuttons = Array.from(document.querySelectorAll(".button"))
+		allbuttons.forEach(button=>button.classList.add("hvr-glow"))
+	})
 
 	const navItems = ["Home", "Normline", "Masspec", "Timescan", "THz", "Powerfile"]
 
@@ -27,7 +30,7 @@
 	window.remote = electron.remote
 	window.path = require("path")
 	window.fs = require("fs")
-
+	window.spawn = require("child_process").spawn
 	export let version;
 	console.log("Svelte: ", version)
 
