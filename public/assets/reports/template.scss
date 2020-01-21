@@ -1,4 +1,4 @@
-@import url("./roboto-font.css");
+@media print { body { -webkit-print-color-adjust: exact; } }
 * {
     margin: 0;
     padding: 0 1em;

@@ -362,12 +362,12 @@
     }
 
     * :global(.report) {
-
         display: block;
         width: 90%;
         margin-bottom: 1em;
     }
 </style>
+
 
 <Layout {filetype} {id} bind:currentLocation bind:fileChecked>
 
