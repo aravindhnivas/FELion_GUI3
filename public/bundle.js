@@ -33170,7 +33170,7 @@ function get_each_context_4(ctx, list, i) {
 	return child_ctx;
 }
 
-// (485:16) <Icon class="material-icons">
+// (476:16) <Icon class="material-icons">
 function create_default_slot_18(ctx) {
 	let t;
 
@@ -33190,14 +33190,14 @@ function create_default_slot_18(ctx) {
 		block,
 		id: create_default_slot_18.name,
 		type: "slot",
-		source: "(485:16) <Icon class=\\\"material-icons\\\">",
+		source: "(476:16) <Icon class=\\\"material-icons\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (486:16) <Icon class="material-icons" on>
+// (477:16) <Icon class="material-icons" on>
 function create_default_slot_17(ctx) {
 	let t;
 
@@ -33217,14 +33217,14 @@ function create_default_slot_17(ctx) {
 		block,
 		id: create_default_slot_17.name,
 		type: "slot",
-		source: "(486:16) <Icon class=\\\"material-icons\\\" on>",
+		source: "(477:16) <Icon class=\\\"material-icons\\\" on>",
 		ctx
 	});
 
 	return block;
 }
 
-// (484:12) <IconButton toggle bind:pressed={openShell}>
+// (475:12) <IconButton toggle bind:pressed={openShell}>
 function create_default_slot_16(ctx) {
 	let t;
 	let current;
@@ -33298,14 +33298,14 @@ function create_default_slot_16(ctx) {
 		block,
 		id: create_default_slot_16.name,
 		type: "slot",
-		source: "(484:12) <IconButton toggle bind:pressed={openShell}>",
+		source: "(475:12) <IconButton toggle bind:pressed={openShell}>",
 		ctx
 	});
 
 	return block;
 }
 
-// (491:8) {#if toggleRow}
+// (482:8) {#if toggleRow}
 function create_if_block_2$4(ctx) {
 	let div;
 	let button0;
@@ -33376,15 +33376,15 @@ function create_if_block_2$4(ctx) {
 			button3 = element("button");
 			button3.textContent = "Submit";
 			attr_dev(button0, "class", "button is-link svelte-17zi02x");
-			add_location(button0, file$I, 492, 16, 20344);
+			add_location(button0, file$I, 483, 16, 20051);
 			attr_dev(button1, "class", "button is-link svelte-17zi02x");
-			add_location(button1, file$I, 493, 16, 20440);
+			add_location(button1, file$I, 484, 16, 20147);
 			attr_dev(button2, "class", "button is-link svelte-17zi02x");
-			add_location(button2, file$I, 496, 16, 20759);
+			add_location(button2, file$I, 487, 16, 20466);
 			attr_dev(button3, "class", "button is-link svelte-17zi02x");
-			add_location(button3, file$I, 497, 16, 20835);
+			add_location(button3, file$I, 488, 16, 20542);
 			attr_dev(div, "class", "align svelte-17zi02x");
-			add_location(div, file$I, 491, 12, 20262);
+			add_location(div, file$I, 482, 12, 19969);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -33468,14 +33468,14 @@ function create_if_block_2$4(ctx) {
 		block,
 		id: create_if_block_2$4.name,
 		type: "if",
-		source: "(491:8) {#if toggleRow}",
+		source: "(482:8) {#if toggleRow}",
 		ctx
 	});
 
 	return block;
 }
 
-// (507:20) <span slot="label">
+// (498:20) <span slot="label">
 function create_label_slot_2(ctx) {
 	let span;
 	let t;
@@ -33486,7 +33486,7 @@ function create_label_slot_2(ctx) {
 			t = text(/*method*/ ctx[74]);
 			attr_dev(span, "slot", "label");
 			attr_dev(span, "class", "svelte-17zi02x");
-			add_location(span, file$I, 506, 20, 21164);
+			add_location(span, file$I, 497, 20, 20871);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -33502,14 +33502,14 @@ function create_label_slot_2(ctx) {
 		block,
 		id: create_label_slot_2.name,
 		type: "slot",
-		source: "(507:20) <span slot=\\\"label\\\">",
+		source: "(498:20) <span slot=\\\"label\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (505:16) <FormField >
+// (496:16) <FormField >
 function create_default_slot_15(ctx) {
 	let updating_group;
 	let t0;
@@ -33572,14 +33572,14 @@ function create_default_slot_15(ctx) {
 		block,
 		id: create_default_slot_15.name,
 		type: "slot",
-		source: "(505:16) <FormField >",
+		source: "(496:16) <FormField >",
 		ctx
 	});
 
 	return block;
 }
 
-// (504:12) {#each ["Log", "Relative", "IntensityPerPhoton"] as method}
+// (495:12) {#each ["Log", "Relative", "IntensityPerPhoton"] as method}
 function create_each_block_4(ctx) {
 	let current;
 
@@ -33629,14 +33629,14 @@ function create_each_block_4(ctx) {
 		block,
 		id: create_each_block_4.name,
 		type: "each",
-		source: "(504:12) {#each [\\\"Log\\\", \\\"Relative\\\", \\\"IntensityPerPhoton\\\"] as method}",
+		source: "(495:12) {#each [\\\"Log\\\", \\\"Relative\\\", \\\"IntensityPerPhoton\\\"] as method}",
 		ctx
 	});
 
 	return block;
 }
 
-// (474:4) <div class="buttonSlot" slot="buttonContainer">
+// (465:4) <div class="buttonSlot" slot="buttonContainer">
 function create_buttonContainer_slot(ctx) {
 	let div0;
 	let div1;
@@ -33737,23 +33737,23 @@ function create_buttonContainer_slot(ctx) {
 			}
 
 			attr_dev(button0, "class", "button is-link svelte-17zi02x");
-			add_location(button0, file$I, 477, 12, 19408);
+			add_location(button0, file$I, 468, 12, 19115);
 			attr_dev(button1, "class", "button is-link svelte-17zi02x");
-			add_location(button1, file$I, 478, 12, 19477);
+			add_location(button1, file$I, 469, 12, 19184);
 			attr_dev(button2, "class", "button is-link svelte-17zi02x");
 			attr_dev(button2, "tabindex", "0");
-			add_location(button2, file$I, 479, 12, 19580);
+			add_location(button2, file$I, 470, 12, 19287);
 			attr_dev(button3, "class", "button is-link svelte-17zi02x");
-			add_location(button3, file$I, 480, 12, 19737);
+			add_location(button3, file$I, 471, 12, 19444);
 			attr_dev(button4, "class", "button is-link svelte-17zi02x");
-			add_location(button4, file$I, 481, 12, 19809);
+			add_location(button4, file$I, 472, 12, 19516);
 			attr_dev(div1, "class", "align svelte-17zi02x");
-			add_location(div1, file$I, 475, 8, 19372);
+			add_location(div1, file$I, 466, 8, 19079);
 			attr_dev(div2, "class", "align svelte-17zi02x");
-			add_location(div2, file$I, 502, 8, 20930);
+			add_location(div2, file$I, 493, 8, 20637);
 			attr_dev(div0, "class", "buttonSlot svelte-17zi02x");
 			attr_dev(div0, "slot", "buttonContainer");
-			add_location(div0, file$I, 473, 4, 19313);
+			add_location(div0, file$I, 464, 4, 19020);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -33899,14 +33899,14 @@ function create_buttonContainer_slot(ctx) {
 		block,
 		id: create_buttonContainer_slot.name,
 		type: "slot",
-		source: "(474:4) <div class=\\\"buttonSlot\\\" slot=\\\"buttonContainer\\\">",
+		source: "(465:4) <div class=\\\"buttonSlot\\\" slot=\\\"buttonContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (516:8) {#if show_theoryplot}
+// (507:8) {#if show_theoryplot}
 function create_if_block_1$5(ctx) {
 	let div;
 	let div_transition;
@@ -33917,7 +33917,7 @@ function create_if_block_1$5(ctx) {
 			div = element("div");
 			attr_dev(div, "id", "exp-theory-plot");
 			attr_dev(div, "class", "svelte-17zi02x");
-			add_location(div, file$I, 516, 12, 21377);
+			add_location(div, file$I, 507, 12, 21084);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -33948,14 +33948,14 @@ function create_if_block_1$5(ctx) {
 		block,
 		id: create_if_block_1$5.name,
 		type: "if",
-		source: "(516:8) {#if show_theoryplot}",
+		source: "(507:8) {#if show_theoryplot}",
 		ctx
 	});
 
 	return block;
 }
 
-// (524:8) {#if graphPlotted}
+// (515:8) {#if graphPlotted}
 function create_if_block$b(ctx) {
 	let div0;
 	let updating_value;
@@ -34259,41 +34259,41 @@ function create_if_block$b(ctx) {
 			button5 = element("button");
 			button5.textContent = "Show Report";
 			attr_dev(button0, "class", "button is-link svelte-17zi02x");
-			add_location(button0, file$I, 536, 16, 22206);
+			add_location(button0, file$I, 527, 16, 21913);
 			attr_dev(button1, "class", "button is-warning svelte-17zi02x");
-			add_location(button1, file$I, 537, 16, 22313);
+			add_location(button1, file$I, 528, 16, 22020);
 			attr_dev(button2, "class", "button is-danger svelte-17zi02x");
-			add_location(button2, file$I, 538, 16, 22409);
+			add_location(button2, file$I, 529, 16, 22116);
 			attr_dev(button3, "class", "button is-danger svelte-17zi02x");
-			add_location(button3, file$I, 539, 16, 22502);
+			add_location(button3, file$I, 530, 16, 22209);
 			attr_dev(div0, "class", "svelte-17zi02x");
-			add_location(div0, file$I, 526, 12, 21651);
+			add_location(div0, file$I, 517, 12, 21358);
 			attr_dev(h10, "class", "mdc-typography--headline4 svelte-17zi02x");
-			add_location(h10, file$I, 543, 26, 22680);
+			add_location(h10, file$I, 534, 26, 22387);
 			attr_dev(div1, "class", " svelte-17zi02x");
-			add_location(div1, file$I, 543, 12, 22666);
+			add_location(div1, file$I, 534, 12, 22373);
 			attr_dev(hr0, "class", "svelte-17zi02x");
-			add_location(hr0, file$I, 544, 12, 22758);
+			add_location(hr0, file$I, 535, 12, 22465);
 			attr_dev(div2, "class", "dataTable svelte-17zi02x");
-			add_location(div2, file$I, 546, 12, 22790);
+			add_location(div2, file$I, 537, 12, 22497);
 			attr_dev(h11, "class", "mdc-typography--headline4 svelte-17zi02x");
-			add_location(h11, file$I, 570, 26, 23766);
+			add_location(h11, file$I, 561, 26, 23473);
 			attr_dev(div3, "class", " svelte-17zi02x");
-			add_location(div3, file$I, 570, 12, 23752);
+			add_location(div3, file$I, 561, 12, 23459);
 			attr_dev(hr1, "class", "svelte-17zi02x");
-			add_location(hr1, file$I, 571, 12, 23842);
+			add_location(hr1, file$I, 562, 12, 23549);
 			set_style(div4, "margin-bottom", "1em");
 			attr_dev(div4, "class", "svelte-17zi02x");
-			add_location(div4, file$I, 573, 12, 23862);
+			add_location(div4, file$I, 564, 12, 23569);
 			attr_dev(button4, "class", "button is-link svelte-17zi02x");
 			attr_dev(button4, "tabindex", "0");
-			add_location(button4, file$I, 595, 16, 25462);
+			add_location(button4, file$I, 586, 16, 25169);
 			attr_dev(button5, "class", "button is-link svelte-17zi02x");
 			attr_dev(button5, "tabindex", "0");
-			add_location(button5, file$I, 596, 16, 25607);
+			add_location(button5, file$I, 587, 16, 25314);
 			attr_dev(div5, "class", "align report svelte-17zi02x");
 			attr_dev(div5, "id", "felixreport");
-			add_location(div5, file$I, 577, 12, 24062);
+			add_location(div5, file$I, 568, 12, 23769);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -34589,14 +34589,14 @@ function create_if_block$b(ctx) {
 		block,
 		id: create_if_block$b.name,
 		type: "if",
-		source: "(524:8) {#if graphPlotted}",
+		source: "(515:8) {#if graphPlotted}",
 		ctx
 	});
 
 	return block;
 }
 
-// (530:24) <Option value={file} selected={output_name === file}>
+// (521:24) <Option value={file} selected={output_name === file}>
 function create_default_slot_14$1(ctx) {
 	let t_value = /*file*/ ctx[83] + "";
 	let t;
@@ -34620,14 +34620,14 @@ function create_default_slot_14$1(ctx) {
 		block,
 		id: create_default_slot_14$1.name,
 		type: "slot",
-		source: "(530:24) <Option value={file} selected={output_name === file}>",
+		source: "(521:24) <Option value={file} selected={output_name === file}>",
 		ctx
 	});
 
 	return block;
 }
 
-// (529:20) {#each ["averaged", ...plottedFiles] as file}
+// (520:20) {#each ["averaged", ...plottedFiles] as file}
 function create_each_block_3(ctx) {
 	let current;
 
@@ -34678,14 +34678,14 @@ function create_each_block_3(ctx) {
 		block,
 		id: create_each_block_3.name,
 		type: "each",
-		source: "(529:20) {#each [\\\"averaged\\\", ...plottedFiles] as file}",
+		source: "(520:20) {#each [\\\"averaged\\\", ...plottedFiles] as file}",
 		ctx
 	});
 
 	return block;
 }
 
-// (528:16) <Select bind:value={output_name} label="Output filename">
+// (519:16) <Select bind:value={output_name} label="Output filename">
 function create_default_slot_13$1(ctx) {
 	let each_1_anchor;
 	let current;
@@ -34772,14 +34772,14 @@ function create_default_slot_13$1(ctx) {
 		block,
 		id: create_default_slot_13$1.name,
 		type: "slot",
-		source: "(528:16) <Select bind:value={output_name} label=\\\"Output filename\\\">",
+		source: "(519:16) <Select bind:value={output_name} label=\\\"Output filename\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (535:20) <span slot="label">
+// (526:20) <span slot="label">
 function create_label_slot_1(ctx) {
 	let span;
 
@@ -34789,7 +34789,7 @@ function create_label_slot_1(ctx) {
 			span.textContent = "Overwrite";
 			attr_dev(span, "slot", "label");
 			attr_dev(span, "class", "svelte-17zi02x");
-			add_location(span, file$I, 534, 20, 22123);
+			add_location(span, file$I, 525, 20, 21830);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -34803,14 +34803,14 @@ function create_label_slot_1(ctx) {
 		block,
 		id: create_label_slot_1.name,
 		type: "slot",
-		source: "(535:20) <span slot=\\\"label\\\">",
+		source: "(526:20) <span slot=\\\"label\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (533:16) <FormField style="margin: 0 1em; padding-bottom: 1em;">
+// (524:16) <FormField style="margin: 0 1em; padding-bottom: 1em;">
 function create_default_slot_12$1(ctx) {
 	let updating_checked;
 	let t;
@@ -34869,14 +34869,14 @@ function create_default_slot_12$1(ctx) {
 		block,
 		id: create_default_slot_12$1.name,
 		type: "slot",
-		source: "(533:16) <FormField style=\\\"margin: 0 1em; padding-bottom: 1em;\\\">",
+		source: "(524:16) <FormField style=\\\"margin: 0 1em; padding-bottom: 1em;\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (553:32) <Cell >
+// (544:32) <Cell >
 function create_default_slot_11$1(ctx) {
 	let t_value = /*item*/ ctx[80] + "";
 	let t;
@@ -34898,14 +34898,14 @@ function create_default_slot_11$1(ctx) {
 		block,
 		id: create_default_slot_11$1.name,
 		type: "slot",
-		source: "(553:32) <Cell >",
+		source: "(544:32) <Cell >",
 		ctx
 	});
 
 	return block;
 }
 
-// (552:28) {#each dataTableHead as item}
+// (543:28) {#each dataTableHead as item}
 function create_each_block_2(ctx) {
 	let current;
 
@@ -34952,14 +34952,14 @@ function create_each_block_2(ctx) {
 		block,
 		id: create_each_block_2.name,
 		type: "each",
-		source: "(552:28) {#each dataTableHead as item}",
+		source: "(543:28) {#each dataTableHead as item}",
 		ctx
 	});
 
 	return block;
 }
 
-// (551:24) <Row>
+// (542:24) <Row>
 function create_default_slot_10$1(ctx) {
 	let each_1_anchor;
 	let current;
@@ -35046,14 +35046,14 @@ function create_default_slot_10$1(ctx) {
 		block,
 		id: create_default_slot_10$1.name,
 		type: "slot",
-		source: "(551:24) <Row>",
+		source: "(542:24) <Row>",
 		ctx
 	});
 
 	return block;
 }
 
-// (550:20) <Head>
+// (541:20) <Head>
 function create_default_slot_9$1(ctx) {
 	let current;
 
@@ -35100,14 +35100,14 @@ function create_default_slot_9$1(ctx) {
 		block,
 		id: create_default_slot_9$1.name,
 		type: "slot",
-		source: "(550:20) <Head>",
+		source: "(541:20) <Head>",
 		ctx
 	});
 
 	return block;
 }
 
-// (560:28) <Cell>
+// (551:28) <Cell>
 function create_default_slot_8$1(ctx) {
 	let t_value = /*table*/ ctx[77].name + "";
 	let t;
@@ -35131,14 +35131,14 @@ function create_default_slot_8$1(ctx) {
 		block,
 		id: create_default_slot_8$1.name,
 		type: "slot",
-		source: "(560:28) <Cell>",
+		source: "(551:28) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (561:28) <Cell>
+// (552:28) <Cell>
 function create_default_slot_7$1(ctx) {
 	let t_value = /*table*/ ctx[77].freq + "";
 	let t;
@@ -35162,14 +35162,14 @@ function create_default_slot_7$1(ctx) {
 		block,
 		id: create_default_slot_7$1.name,
 		type: "slot",
-		source: "(561:28) <Cell>",
+		source: "(552:28) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (562:28) <Cell>
+// (553:28) <Cell>
 function create_default_slot_6$2(ctx) {
 	let t_value = /*table*/ ctx[77].line + "";
 	let t;
@@ -35193,14 +35193,14 @@ function create_default_slot_6$2(ctx) {
 		block,
 		id: create_default_slot_6$2.name,
 		type: "slot",
-		source: "(562:28) <Cell>",
+		source: "(553:28) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (559:24) <Row>
+// (550:24) <Row>
 function create_default_slot_5$3(ctx) {
 	let t0;
 	let t1;
@@ -35299,14 +35299,14 @@ function create_default_slot_5$3(ctx) {
 		block,
 		id: create_default_slot_5$3.name,
 		type: "slot",
-		source: "(559:24) <Row>",
+		source: "(550:24) <Row>",
 		ctx
 	});
 
 	return block;
 }
 
-// (558:20) {#each dataTable.sort((x, y)=>x[1]-y[1]) as table (table.freq)}
+// (549:20) {#each dataTable.sort((x, y)=>x[1]-y[1]) as table (table.freq)}
 function create_each_block_1$1(key_1, ctx) {
 	let first;
 	let current;
@@ -35360,14 +35360,14 @@ function create_each_block_1$1(key_1, ctx) {
 		block,
 		id: create_each_block_1$1.name,
 		type: "each",
-		source: "(558:20) {#each dataTable.sort((x, y)=>x[1]-y[1]) as table (table.freq)}",
+		source: "(549:20) {#each dataTable.sort((x, y)=>x[1]-y[1]) as table (table.freq)}",
 		ctx
 	});
 
 	return block;
 }
 
-// (557:20) <Body>
+// (548:20) <Body>
 function create_default_slot_4$4(ctx) {
 	let each_blocks = [];
 	let each_1_lookup = new Map();
@@ -35433,14 +35433,14 @@ function create_default_slot_4$4(ctx) {
 		block,
 		id: create_default_slot_4$4.name,
 		type: "slot",
-		source: "(557:20) <Body>",
+		source: "(548:20) <Body>",
 		ctx
 	});
 
 	return block;
 }
 
-// (549:16) <DataTable table$aria-label="felixfile line-list" table$id="felixTable" id="felixTableContainer">
+// (540:16) <DataTable table$aria-label="felixfile line-list" table$id="felixTable" id="felixTableContainer">
 function create_default_slot_3$4(ctx) {
 	let t;
 	let current;
@@ -35511,14 +35511,14 @@ function create_default_slot_3$4(ctx) {
 		block,
 		id: create_default_slot_3$4.name,
 		type: "slot",
-		source: "(549:16) <DataTable table$aria-label=\\\"felixfile line-list\\\" table$id=\\\"felixTable\\\" id=\\\"felixTableContainer\\\">",
+		source: "(540:16) <DataTable table$aria-label=\\\"felixfile line-list\\\" table$id=\\\"felixTable\\\" id=\\\"felixTableContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (582:24) <span slot="label" style="color:{method.color}">
+// (573:24) <span slot="label" style="color:{method.color}">
 function create_label_slot$3(ctx) {
 	let span;
 	let t_value = /*method*/ ctx[74].name + "";
@@ -35531,7 +35531,7 @@ function create_label_slot$3(ctx) {
 			attr_dev(span, "slot", "label");
 			set_style(span, "color", /*method*/ ctx[74].color);
 			attr_dev(span, "class", "svelte-17zi02x");
-			add_location(span, file$I, 581, 24, 24413);
+			add_location(span, file$I, 572, 24, 24120);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -35547,14 +35547,14 @@ function create_label_slot$3(ctx) {
 		block,
 		id: create_label_slot$3.name,
 		type: "slot",
-		source: "(582:24) <span slot=\\\"label\\\" style=\\\"color:{method.color}\\\">",
+		source: "(573:24) <span slot=\\\"label\\\" style=\\\"color:{method.color}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (580:20) <FormField >
+// (571:20) <FormField >
 function create_default_slot_2$6(ctx) {
 	let updating_group;
 	let t;
@@ -35613,14 +35613,14 @@ function create_default_slot_2$6(ctx) {
 		block,
 		id: create_default_slot_2$6.name,
 		type: "slot",
-		source: "(580:20) <FormField >",
+		source: "(571:20) <FormField >",
 		ctx
 	});
 
 	return block;
 }
 
-// (579:16) {#each [{name:"info", color:"white"}, {name:"success", color:"#00ff00"}, {name:"warning", color:"yellow"}, {name:"danger", color:"red"}] as method}
+// (570:16) {#each [{name:"info", color:"white"}, {name:"success", color:"#00ff00"}, {name:"warning", color:"yellow"}, {name:"danger", color:"red"}] as method}
 function create_each_block$3(ctx) {
 	let current;
 
@@ -35670,14 +35670,14 @@ function create_each_block$3(ctx) {
 		block,
 		id: create_each_block$3.name,
 		type: "each",
-		source: "(579:16) {#each [{name:\\\"info\\\", color:\\\"white\\\"}, {name:\\\"success\\\", color:\\\"#00ff00\\\"}, {name:\\\"warning\\\", color:\\\"yellow\\\"}, {name:\\\"danger\\\", color:\\\"red\\\"}] as method}",
+		source: "(570:16) {#each [{name:\\\"info\\\", color:\\\"white\\\"}, {name:\\\"success\\\", color:\\\"#00ff00\\\"}, {name:\\\"warning\\\", color:\\\"yellow\\\"}, {name:\\\"danger\\\", color:\\\"red\\\"}] as method}",
 		ctx
 	});
 
 	return block;
 }
 
-// (592:16) <HelperText id="felixreport_comments">
+// (583:16) <HelperText id="felixreport_comments">
 function create_default_slot_1$7(ctx) {
 	let t;
 
@@ -35697,14 +35697,14 @@ function create_default_slot_1$7(ctx) {
 		block,
 		id: create_default_slot_1$7.name,
 		type: "slot",
-		source: "(592:16) <HelperText id=\\\"felixreport_comments\\\">",
+		source: "(583:16) <HelperText id=\\\"felixreport_comments\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (514:4) <div class="plotSlot" slot="plotContainer">
+// (505:4) <div class="plotSlot" slot="plotContainer">
 function create_plotContainer_slot(ctx) {
 	let div0;
 	let t0;
@@ -35732,16 +35732,16 @@ function create_plotContainer_slot(ctx) {
 			if (if_block1) if_block1.c();
 			attr_dev(div1, "id", "bplot");
 			attr_dev(div1, "class", "svelte-17zi02x");
-			add_location(div1, file$I, 519, 8, 21456);
+			add_location(div1, file$I, 510, 8, 21163);
 			attr_dev(div2, "id", "saPlot");
 			attr_dev(div2, "class", "svelte-17zi02x");
-			add_location(div2, file$I, 520, 8, 21488);
+			add_location(div2, file$I, 511, 8, 21195);
 			attr_dev(div3, "id", "avgplot");
 			attr_dev(div3, "class", "svelte-17zi02x");
-			add_location(div3, file$I, 521, 8, 21521);
+			add_location(div3, file$I, 512, 8, 21228);
 			attr_dev(div0, "class", "plotSlot svelte-17zi02x");
 			attr_dev(div0, "slot", "plotContainer");
-			add_location(div0, file$I, 513, 4, 21287);
+			add_location(div0, file$I, 504, 4, 20994);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -35799,14 +35799,14 @@ function create_plotContainer_slot(ctx) {
 		block,
 		id: create_plotContainer_slot.name,
 		type: "slot",
-		source: "(514:4) <div class=\\\"plotSlot\\\" slot=\\\"plotContainer\\\">",
+		source: "(505:4) <div class=\\\"plotSlot\\\" slot=\\\"plotContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (472:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>
+// (463:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>
 function create_default_slot$d(ctx) {
 	let t;
 
@@ -35829,7 +35829,7 @@ function create_default_slot$d(ctx) {
 		block,
 		id: create_default_slot$d.name,
 		type: "slot",
-		source: "(472:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>",
+		source: "(463:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>",
 		ctx
 	});
 
@@ -36282,7 +36282,7 @@ function instance$L($$self, $$props, $$invalidate) {
 
                 <body>
                     <section class="section" id="mainSection">
-                        <button class="button is-link" id="exportButton">Export as PDF</button>
+                        <button class="button is-link" id="exportButton">Export to PDF</button>
                         <h1 class="title" id="mainTitle">${reportMolecule}</h1>
                         ${content}
                     </section>
@@ -36293,29 +36293,50 @@ function instance$L($$self, $$props, $$invalidate) {
 	let reportTitleContents = "", loadContent = "";
 	let reportCount = 0;
 
-	const addReport = () => {
+	let reportTitle = "",
+		reportComments = "",
+		reportMethod = "info",
+		reportMolecule = "";
+
+	let include_table = true,
+		include_avgplot = true,
+		include_saplot = false,
+		include_bplot = false;
+
+	const addReport = async () => {
 		reportCount++;
-		if (reportTitle.length == 0) $$invalidate(13, reportTitle = "-");
+		if (reportTitle.length == 0) $$invalidate(13, reportTitle = `Title-${reportCount}`);
 		if (reportComments.length == 0) $$invalidate(14, reportComments = "-");
-		reportTitleContents += `\n<h1 class="title notification is-${reportMethod}">${reportTitle}</h1>\n` + marked(reportComments) + `<img id='img-${reportCount}'>Image</img>` + `<table class='table is-bordered is-hoverable'>${document.getElementById("felixTable").innerHTML}</table>` + "\n<hr>\n";
-		loadContent = getHTMLContent(reportTitleContents);
-		console.log(loadContent);
-		$$invalidate(14, reportComments = $$invalidate(13, reportTitle = ""));
-		let template = path.resolve(__dirname, "assets/reports/template.html");
+		let tableData, avg_plot;
 
-		fs.writeFile(template, loadContent, function (err) {
-			if (err) {
-				createToast("Report couldn't be added.", "danger");
-				return console.log(err);
-			}
+		html2canvas(document.getElementById("avgplot")).then(canvasElm => {
+			include_table
+			? tableData = `<table class='table is-bordered is-hoverable'>${document.getElementById("felixTable").innerHTML}</table>`
+			: tableData = "\n";
 
-			console.log("The file was saved!");
-			createToast("Report added", "success");
+			include_avgplot
+			? avg_plot = `<img id='img-a${reportCount}' src='${canvasElm.toDataURL()}'>`
+			: avg_plot = "\n";
+
+			reportTitleContents += `\n<h1 class="title notification is-${reportMethod}">${reportTitle}</h1>\n` + marked(reportComments) + avg_plot + tableData + "\n<hr>\n";
+			loadContent = getHTMLContent(reportTitleContents);
+			console.log(loadContent);
+			$$invalidate(14, reportComments = $$invalidate(13, reportTitle = ""));
+			let template = path.resolve(__dirname, "assets/reports/template.html");
+
+			fs.writeFile(template, loadContent, function (err) {
+				if (err) {
+					createToast("Report couldn't be added.", "danger");
+					return console.log(err);
+				}
+
+				console.log("The file was saved!");
+				createToast("Report added", "success");
+			});
 		});
 	};
 
 	const showReport = () => {
-		console.log(loadContent);
 		const file = path.resolve(__dirname, "./assets/reports/template.html");
 
 		window.reportWindow = new BrowserWindow({
@@ -36334,20 +36355,21 @@ function instance$L($$self, $$props, $$invalidate) {
 
 		window.reportWindow.webContents.on("did-finish-load", () => {
 			console.log("Report loaded");
-			let code = `document.getElementById("exportButton").addEventListener("click",function(){alert("clicked!");});`;
-			window.reportWindow.webContents.executeJavaScript(code);
+		});
+
+		window.reportWindow.webContents.printToPDF({ printBackground: true, landscape: false }, function (err, data) {
+			if (err) {
+				throw err;
+			}
+
+			try {
+				fs.writeFileSync(path.resolve(__dirname, "report.pdf"), data);
+			} catch(err) {
+				set_store_value(modalContent, $modalContent = err);
+				set_store_value(activated, $activated = true);
+			}
 		});
 	};
-
-	let reportTitle = "",
-		reportComments = "",
-		reportMethod = "info",
-		reportMolecule = "";
-
-	let include_table = true,
-		include_avgplot = true,
-		include_saplot = false,
-		include_bplot = false;
 
 	const click_handler = e => plotData(e, "felix");
 	const click_handler_1 = () => $$invalidate(2, toggleRow = !toggleRow);

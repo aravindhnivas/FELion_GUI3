@@ -340,19 +340,6 @@
         if (line.length === 0) {ready_to_fit = false}
     }
 
-    function pdfSettings() {
-        let paperSizeArray = ["A4", "A5"];
-        let option = {
-
-            landscape: false,
-            marginsType: 0,
-            printBackground: false,
-            printSelectionOnly: false,
-            pageSize: paperSizeArray[settingCache.getPrintPaperSize()-1],
-        };
-        return option;
-    }
-
     const getHTMLContent = (content) =>{
         return (
             `<!DOCTYPE html>
@@ -368,78 +355,82 @@
 
                 <body>
                     <section class="section" id="mainSection">
-                        <button class="button is-link" id="exportButton">Export as PDF</button>
+                        <button class="button is-link" id="exportButton">Export to PDF</button>
                         <h1 class="title" id="mainTitle">${reportMolecule}</h1>
                         ${content}
                     </section>
                 </body>
             </html>`
-            
+
         )
     }
-    
-
     let reportTitleContents = "", loadContent = "";
     let reportCount = 0
-    const addReport = () => {
 
+    let reportTitle = "", reportComments = "", reportMethod = "info", reportMolecule = ""
+    let include_table = true, include_avgplot = true, include_saplot = false, include_bplot = false;
+
+    const addReport = async () => {
         reportCount++
-        // let d3 = Plotly.d3
 
-        if (reportTitle.length == 0) reportTitle = "-"
+        if (reportTitle.length == 0) reportTitle = `Title-${reportCount}`
         if (reportComments.length == 0) reportComments = "-"
-        
-        reportTitleContents += `\n<h1 class="title notification is-${reportMethod}">${reportTitle}</h1>\n` 
-            + marked(reportComments) 
-            + `<img id='img-${reportCount}'>Image</img>`
-            + `<table class='table is-bordered is-hoverable'>${document.getElementById("felixTable").innerHTML}</table>`
-            + "\n<hr>\n"
 
-        loadContent = getHTMLContent(reportTitleContents)
-        console.log(loadContent)
-        reportComments = reportTitle = ""
-        let template = path.resolve(__dirname, "assets/reports/template.html")
-        fs.writeFile(template, loadContent, function(err) {
-            if(err) {
-                createToast("Report couldn't be added.", "danger")
-                return console.log(err);
-            }
-            console.log("The file was saved!");
-            createToast("Report added", "success")
-        });
+        let tableData, avg_plot
+
+        html2canvas(document.getElementById("avgplot"))
+        .then(canvasElm => {
+
+            include_table ? tableData = `<table class='table is-bordered is-hoverable'>${document.getElementById("felixTable").innerHTML}</table>` : tableData = "\n"
+            include_avgplot ? avg_plot = `<img id='img-a${reportCount}' src='${canvasElm.toDataURL()}'>` : avg_plot = "\n"
+
+            reportTitleContents += `\n<h1 class="title notification is-${reportMethod}">${reportTitle}</h1>\n` 
+                + marked(reportComments)
+                + avg_plot
+                + tableData
+                + "\n<hr>\n"
+
+            loadContent = getHTMLContent(reportTitleContents)
+            console.log(loadContent)
+            reportComments = reportTitle = ""
+            let template = path.resolve(__dirname, "assets/reports/template.html")
+            fs.writeFile(template, loadContent, function(err) {
+                if(err) {
+                    createToast("Report couldn't be added.", "danger")
+                    return console.log(err);
+                }
+                console.log("The file was saved!");
+                createToast("Report added", "success")
+            });
+        })
+        
+
     }
     
-
-
     const showReport = () => {
-        console.log(loadContent)
-
-        // let win = window.open("./assets/reports/template.html", "reportModal")
+        
         const file = path.resolve(__dirname, "./assets/reports/template.html")
         window.reportWindow = new BrowserWindow({ width: 1200, minWidth :600, height: 600, parent: remote.getCurrentWindow()})
         window.reportWindow.on('closed', () => { window.reportWindow = null; console.log("Report window closed") })
         window.reportWindow.loadURL(file)
-
         window.reportWindow.webContents.on('did-finish-load', ()=>{
-
             console.log("Report loaded")
-            let code = `document.getElementById("exportButton").addEventListener("click",function(){alert("clicked!");});`;
-            window.reportWindow.webContents.executeJavaScript(code)
 
         });
 
-        // let plotImg = "avgplot"
-        // let img_jpg= d3.select(`img-${reportCount}`)
-        // Plotly.toImage(plotImg, {height:300,width:300})
-        //  .then(url => {
-        //      img_jpg.attr("src", url);
-        //      return Plotly.toImage(plotImg,{format:'jpeg',height:400,width:400});
-        //  }
-        // )
+        window.reportWindow.webContents.printToPDF({printBackground: true, landscape: false}, function(err, data) {
+
+            if (err) {throw err}
+            try{ fs.writeFileSync(path.resolve(__dirname, "report.pdf"), data) }catch(err){
+                $modalContent = err;
+                $activated = true;
+            }
+            
+        })
+
     }
 
-    let reportTitle = "", reportComments = "", reportMethod = "info", reportMolecule = ""
-    let include_table = true, include_avgplot = true, include_saplot = false, include_bplot = false;
+    
 </script>
 
 <style>
