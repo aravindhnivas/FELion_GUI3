@@ -33179,7 +33179,7 @@ function create_label_slot_1(ctx) {
 			t = text(t_value);
 			attr_dev(span, "slot", "label");
 			set_style(span, "color", /*method*/ ctx[38].color);
-			add_location(span, file$I, 172, 12, 6677);
+			add_location(span, file$I, 172, 12, 6680);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -33486,7 +33486,7 @@ function create_default_slot_3$4(ctx) {
 	return block;
 }
 
-// (197:12) <span slot="label" style="color:{method}">
+// (200:12) <span slot="label" style="color:{method}">
 function create_label_slot$3(ctx) {
 	let span;
 	let t;
@@ -33497,7 +33497,7 @@ function create_label_slot$3(ctx) {
 			t = text(/*method*/ ctx[38]);
 			attr_dev(span, "slot", "label");
 			set_style(span, "color", /*method*/ ctx[38]);
-			add_location(span, file$I, 196, 12, 8070);
+			add_location(span, file$I, 199, 12, 8212);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -33513,14 +33513,14 @@ function create_label_slot$3(ctx) {
 		block,
 		id: create_label_slot$3.name,
 		type: "slot",
-		source: "(197:12) <span slot=\\\"label\\\" style=\\\"color:{method}\\\">",
+		source: "(200:12) <span slot=\\\"label\\\" style=\\\"color:{method}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (195:8) <FormField style="margin-bottom:2em;">
+// (198:8) <FormField style="margin-bottom:2em;">
 function create_default_slot_2$6(ctx) {
 	let updating_group;
 	let t;
@@ -33579,14 +33579,14 @@ function create_default_slot_2$6(ctx) {
 		block,
 		id: create_default_slot_2$6.name,
 		type: "slot",
-		source: "(195:8) <FormField style=\\\"margin-bottom:2em;\\\">",
+		source: "(198:8) <FormField style=\\\"margin-bottom:2em;\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (194:4) {#each ["landscape", "portrait"] as method}
+// (196:4) {#each ["landscape", "portrait"] as method}
 function create_each_block_1$1(ctx) {
 	let current;
 
@@ -33637,14 +33637,14 @@ function create_each_block_1$1(ctx) {
 		block,
 		id: create_each_block_1$1.name,
 		type: "each",
-		source: "(194:4) {#each [\\\"landscape\\\", \\\"portrait\\\"] as method}",
+		source: "(196:4) {#each [\\\"landscape\\\", \\\"portrait\\\"] as method}",
 		ctx
 	});
 
 	return block;
 }
 
-// (203:12) <Option value={file} selected={pageSize  === file}>
+// (206:12) <Option value={file} selected={pageSize  === file}>
 function create_default_slot_1$7(ctx) {
 	let t;
 
@@ -33665,14 +33665,14 @@ function create_default_slot_1$7(ctx) {
 		block,
 		id: create_default_slot_1$7.name,
 		type: "slot",
-		source: "(203:12) <Option value={file} selected={pageSize  === file}>",
+		source: "(206:12) <Option value={file} selected={pageSize  === file}>",
 		ctx
 	});
 
 	return block;
 }
 
-// (202:8) {#each ["A3", "A4", "A5", "Legal", "Letter"] as file}
+// (205:8) {#each ["A3", "A4", "A5", "Legal", "Letter"] as file}
 function create_each_block$3(ctx) {
 	let current;
 
@@ -33722,14 +33722,14 @@ function create_each_block$3(ctx) {
 		block,
 		id: create_each_block$3.name,
 		type: "each",
-		source: "(202:8) {#each [\\\"A3\\\", \\\"A4\\\", \\\"A5\\\", \\\"Legal\\\", \\\"Letter\\\"] as file}",
+		source: "(205:8) {#each [\\\"A3\\\", \\\"A4\\\", \\\"A5\\\", \\\"Legal\\\", \\\"Letter\\\"] as file}",
 		ctx
 	});
 
 	return block;
 }
 
-// (201:4) <Select bind:value={pageSize} label="pageSize" style="margin-left:1em;">
+// (204:4) <Select bind:value={pageSize} label="pageSize" style="margin-left:1em;">
 function create_default_slot$d(ctx) {
 	let each_1_anchor;
 	let current;
@@ -33816,7 +33816,7 @@ function create_default_slot$d(ctx) {
 		block,
 		id: create_default_slot$d.name,
 		type: "slot",
-		source: "(201:4) <Select bind:value={pageSize} label=\\\"pageSize\\\" style=\\\"margin-left:1em;\\\">",
+		source: "(204:4) <Select bind:value={pageSize} label=\\\"pageSize\\\" style=\\\"margin-left:1em;\\\">",
 		ctx
 	});
 
@@ -34023,23 +34023,23 @@ function create_fragment$L(ctx) {
 			t16 = space();
 			create_component(select.$$.fragment);
 			attr_dev(h1, "class", "mdc-typography--headline4");
-			add_location(h1, file$I, 160, 5, 6148);
-			add_location(div0, file$I, 160, 0, 6143);
-			add_location(hr, file$I, 162, 0, 6214);
+			add_location(h1, file$I, 160, 5, 6151);
+			add_location(div0, file$I, 160, 0, 6146);
+			add_location(hr, file$I, 162, 0, 6217);
 			set_style(div1, "margin-bottom", "1em");
-			add_location(div1, file$I, 164, 0, 6222);
+			add_location(div1, file$I, 164, 0, 6225);
 			attr_dev(button0, "class", "button is-link");
 			attr_dev(button0, "tabindex", "0");
-			add_location(button0, file$I, 190, 4, 7476);
+			add_location(button0, file$I, 190, 4, 7479);
 			attr_dev(button1, "class", "button is-link");
 			attr_dev(button1, "tabindex", "0");
-			add_location(button1, file$I, 191, 4, 7609);
+			add_location(button1, file$I, 191, 4, 7612);
 			attr_dev(button2, "class", "button is-link");
 			attr_dev(button2, "tabindex", "0");
-			add_location(button2, file$I, 192, 4, 7741);
+			add_location(button2, file$I, 193, 4, 7750);
 			attr_dev(div2, "class", "align report");
 			attr_dev(div2, "id", /*id*/ ctx[0]);
-			add_location(div2, file$I, 168, 0, 6386);
+			add_location(div2, file$I, 168, 0, 6389);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -34355,7 +34355,7 @@ async function asyncForEach(array, callback) {
 
 function getImage(imgID) {
 	return new Promise(resolve => {
-			html2canvas(document.getElementById(imgID)).then(canvasElm => {
+			html2canvas(document.getElementById(imgID), { dpi: 100 }).then(canvasElm => {
 				resolve(canvasElm.toDataURL());
 			});
 		});

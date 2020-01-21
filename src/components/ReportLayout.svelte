@@ -63,9 +63,9 @@
     }
 
     function getImage(imgID) {
-        
         return new Promise(resolve => {
-            html2canvas(document.getElementById(imgID)).then(canvasElm =>{resolve(canvasElm.toDataURL())})
+
+            html2canvas(document.getElementById(imgID), {dpi:100}).then(canvasElm =>{resolve(canvasElm.toDataURL())})
         });
     }
     
@@ -190,8 +190,11 @@
 
     <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click={addReport}>Add to Report</button>
     <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click={showReport}>Show Report</button>
+    
     <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click="{()=>showReport({export_pdf:true})}">EXPORT to PDF</button>
+    <!-- <Textfield style="height:3em; margin-bottom:1em; width:20%" variant="outlined" bind:value={reportDPI} label="DPI" /> -->
     {#each ["landscape", "portrait"] as method}
+
         <FormField style="margin-bottom:2em;">
             <Radio bind:group={exportMethod} value={method}  />
             <span slot="label" style="color:{method}">{method}</span>
