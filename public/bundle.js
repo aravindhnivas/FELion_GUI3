@@ -18606,7 +18606,7 @@ class Textfield extends SvelteComponentDev {
 	}
 }
 
-function e(){}const t=e=>e;function n(e,t){for(const n in t)e[n]=t[n];return e}function s(e){return e()}function i(){return Object.create(null)}function o(e){e.forEach(s);}function a(e){return "function"==typeof e}function c(e,t){return e!=e?t==t:e!==t||e&&"object"==typeof e||"function"==typeof e}function u(e,t,n){if(e){const s=d(e,t,n);return e[0](s)}}function d(e,t,s){return e[1]?n({},n(t.$$scope.ctx,e[1](s?s(t):{}))):t.$$scope.ctx}function p(e,t,s,i){return e[1]?n({},n(t.$$scope.changed||{},e[1](i?i(s):{}))):t.$$scope.changed||{}}function f(e){const t={};for(const n in e)"$"!==n[0]&&(t[n]=e[n]);return t}const m="undefined"!=typeof window;let h=m?()=>window.performance.now():()=>Date.now(),g=m?e=>requestAnimationFrame(e):e;const v=new Set;let $,b=!1;function y(){v.forEach(e=>{e[0](h())||(v.delete(e),e[1]());}),(b=v.size>0)&&g(y);}function x(e){let t;return b||(b=!0,g(y)),{promise:new Promise(n=>{v.add(t=[e,n]);}),abort(){v.delete(t);}}}function w(e,t){e.appendChild(t);}function k(e,t,n){e.insertBefore(t,n||null);}function z(e){e.parentNode.removeChild(e);}function T(e){return document.createElement(e)}function C(e){return document.createTextNode(e)}function P(){return C(" ")}function _(){return C("")}function E(e,t,n,s){return e.addEventListener(t,n,s),()=>e.removeEventListener(t,n,s)}function I(e,t,n){null==n?e.removeAttribute(t):e.setAttribute(t,n);}function L(e){return Array.from(e.childNodes)}function B(e,t,n,s){for(let s=0;s<e.length;s+=1){const i=e[s];if(i.nodeName===t){for(let e=0;e<i.attributes.length;e+=1){const t=i.attributes[e];n[t.name]||i.removeAttribute(t.name);}return e.splice(s,1)[0]}}return s?function(e){return document.createElementNS("http://www.w3.org/2000/svg",e)}(t):T(t)}function S(e,t){for(let n=0;n<e.length;n+=1){const s=e[n];if(3===s.nodeType)return s.data=t,e.splice(n,1)[0]}return C(t)}function R(e,t){t=""+t,e.data!==t&&(e.data=t);}function A(e,t,n){e.classList[n?"add":"remove"](t);}function V(e,t){const n=document.createEvent("CustomEvent");return n.initCustomEvent(e,!1,!1,t),n}let M,N=0,F={};function q(e,t,n,s,i,o,a,c=0){const l=16.666/s;let r="{\n";for(let e=0;e<=1;e+=l){const s=t+(n-t)*o(e);r+=100*e+`%{${a(s,1-s)}}\n`;}const u=r+`100% {${a(n,1-n)}}\n}`,d=`__svelte_${function(e){let t=5381,n=e.length;for(;n--;)t=(t<<5)-t^e.charCodeAt(n);return t>>>0}(u)}_${c}`;if(!F[d]){if(!$){const e=T("style");document.head.appendChild(e),$=e.sheet;}F[d]=!0,$.insertRule(`@keyframes ${d} ${u}`,$.cssRules.length);}const p=e.style.animation||"";return e.style.animation=`${p?`${p}, `:""}${d} ${s}ms linear ${i}ms 1 both`,N+=1,d}function U(e,t){e.style.animation=(e.style.animation||"").split(", ").filter(t?e=>e.indexOf(t)<0:e=>-1===e.indexOf("__svelte")).join(", "),t&&!--N&&g(()=>{if(N)return;let e=$.cssRules.length;for(;e--;)$.deleteRule(e);F={};});}function H(e){M=e;}function Y(){if(!M)throw new Error("Function called outside component initialization");return M}function K(e){Y().$$.on_mount.push(e);}function W(){const e=M;return (t,n)=>{const s=e.$$.callbacks[t];if(s){const i=V(t,n);s.slice().forEach(t=>{t.call(e,i);});}}}const Q=[],Z=[],ee=[],te=[],ne=Promise.resolve();let se,ie=!1;function oe(){ie||(ie=!0,ne.then(le));}function ae(){return oe(),ne}function ce(e){ee.push(e);}function le(){const e=new Set;do{for(;Q.length;){const e=Q.shift();H(e),re(e.$$);}for(;Z.length;)Z.pop()();for(let t=0;t<ee.length;t+=1){const n=ee[t];e.has(n)||(n(),e.add(n));}ee.length=0;}while(Q.length);for(;te.length;)te.pop()();ie=!1;}function re(e){e.fragment&&(e.update(e.dirty),o(e.before_update),e.fragment.p(e.dirty,e.ctx),e.dirty=null,e.after_update.forEach(ce));}function ue(){return se||(se=Promise.resolve()).then(()=>{se=null;}),se}function de(e,t,n){e.dispatchEvent(V(`${t?"intro":"outro"}${n}`));}const pe=new Set;let fe;function me(){fe={r:0,c:[],p:fe};}function he(){fe.r||o(fe.c),fe=fe.p;}function ge(e,t){e&&e.i&&(pe.delete(e),e.i(t));}function ve(e,t,n,s){if(e&&e.o){if(pe.has(e))return;pe.add(e),fe.c.push(()=>{pe.delete(e),s&&(n&&e.d(1),s());}),e.o(t);}}const $e={duration:0};const ye="undefined"!=typeof window?window:global;function xe(e,t){const n={},s={},i={$$scope:1};let o=e.length;for(;o--;){const a=e[o],c=t[o];if(c){for(const e in a)e in c||(s[e]=1);for(const e in c)i[e]||(n[e]=c[e],i[e]=1);e[o]=c;}else for(const e in a)i[e]=1;}for(const e in s)e in n||(n[e]=void 0);return n}function we(e,t,n){const{fragment:i,on_mount:c,on_destroy:l,after_update:r}=e.$$;i.m(t,n),ce(()=>{const t=c.map(s).filter(a);l?l.push(...t):o(t),e.$$.on_mount=[];}),r.forEach(ce);}function ke(e,t){e.$$.fragment&&(o(e.$$.on_destroy),e.$$.fragment.d(t),e.$$.on_destroy=e.$$.fragment=null,e.$$.ctx={});}function ze(t,n,s,a,c,l){const r=M;H(t);const u=n.props||{},d=t.$$={fragment:null,ctx:null,props:l,update:e,not_equal:c,bound:i(),on_mount:[],on_destroy:[],before_update:[],after_update:[],context:new Map(r?r.$$.context:[]),callbacks:i(),dirty:null};let p=!1;d.ctx=s?s(t,u,(e,n)=>{d.ctx&&c(d.ctx[e],d.ctx[e]=n)&&(d.bound[e]&&d.bound[e](n),p&&function(e,t){e.$$.dirty||(Q.push(e),oe(),e.$$.dirty=i()),e.$$.dirty[t]=!0;}(t,e));}):u,d.update(),p=!0,o(d.before_update),d.fragment=a(d.ctx),n.target&&(n.hydrate?d.fragment.l(L(n.target)):d.fragment.c(),n.intro&&ge(t.$$.fragment),we(t,n.target,n.anchor),le()),H(r);}class Te{$destroy(){ke(this,1),this.$destroy=e;}$on(e,t){const n=this.$$.callbacks[e]||(this.$$.callbacks[e]=[]);return n.push(t),()=>{const e=n.indexOf(t);-1!==e&&n.splice(e,1);}}$set(){}}function Ee(e){return e<.5?4*e*e*e:.5*Math.pow(2*e-2,3)+1}function Ie(e){const t=e-1;return t*t*t+1}function je(e,{delay:t=0,duration:n=400}){const s=+getComputedStyle(e).opacity;return {delay:t,duration:n,css:e=>`opacity: ${e*s}`}}function Le(e,{delay:t=0,duration:n=400,easing:s=Ie,x:i=0,y:o=0,opacity:a=0}){const c=getComputedStyle(e),l=+c.opacity,r="none"===c.transform?"":c.transform,u=l*(1-a);return {delay:t,duration:n,easing:s,css:(e,t)=>`\n\t\t\ttransform: ${r} translate(${(1-e)*i}px, ${(1-e)*o}px);\n\t\t\topacity: ${l-u*t}`}}var Be=Object.freeze({crossfade:function(e){var{fallback:t}=e,s=function(e,t){var n={};for(var s in e)Object.prototype.hasOwnProperty.call(e,s)&&t.indexOf(s)<0&&(n[s]=e[s]);if(null!=e&&"function"==typeof Object.getOwnPropertySymbols){var i=0;for(s=Object.getOwnPropertySymbols(e);i<s.length;i++)t.indexOf(s[i])<0&&Object.prototype.propertyIsEnumerable.call(e,s[i])&&(n[s[i]]=e[s[i]]);}return n}(e,["fallback"]);const i=new Map,o=new Map;function c(e,i,o){return (c,l)=>(e.set(l.key,{rect:c.getBoundingClientRect()}),()=>{if(i.has(l.key)){const{rect:e}=i.get(l.key);return i.delete(l.key),function(e,t,i){const{delay:o=0,duration:c=(e=>30*Math.sqrt(e)),easing:l=Ie}=n(n({},s),i),r=t.getBoundingClientRect(),u=e.left-r.left,d=e.top-r.top,p=e.width/r.width,f=e.height/r.height,m=Math.sqrt(u*u+d*d),h=getComputedStyle(t),g="none"===h.transform?"":h.transform,v=+h.opacity;return {delay:o,duration:a(c)?c(m):c,easing:l,css:(e,t)=>`\n\t\t\t\topacity: ${e*v};\n\t\t\t\ttransform-origin: top left;\n\t\t\t\ttransform: ${g} translate(${t*u}px,${t*d}px) scale(${e+(1-e)*p}, ${e+(1-e)*f});\n\t\t\t`}}(e,c,l)}return e.delete(l.key),t&&t(c,l,o)})}return [c(o,i,!1),c(i,o,!0)]},draw:function(e,{delay:t=0,speed:n,duration:s,easing:i=Ee}){const o=e.getTotalLength();return void 0===s?s=void 0===n?800:o/n:"function"==typeof s&&(s=s(o)),{delay:t,duration:s,easing:i,css:(e,t)=>`stroke-dasharray: ${e*o} ${t*o}`}},fade:je,fly:Le,scale:function(e,{delay:t=0,duration:n=400,easing:s=Ie,start:i=0,opacity:o=0}){const a=getComputedStyle(e),c=+a.opacity,l="none"===a.transform?"":a.transform,r=1-i,u=c*(1-o);return {delay:t,duration:n,easing:s,css:(e,t)=>`\n\t\t\ttransform: ${l} scale(${1-r*t});\n\t\t\topacity: ${c-u*t}\n\t\t`}},slide:function(e,{delay:t=0,duration:n=400,easing:s=Ie}){const i=getComputedStyle(e),o=+i.opacity,a=parseFloat(i.height),c=parseFloat(i.paddingTop),l=parseFloat(i.paddingBottom),r=parseFloat(i.marginTop),u=parseFloat(i.marginBottom),d=parseFloat(i.borderTopWidth),p=parseFloat(i.borderBottomWidth);return {delay:t,duration:n,easing:s,css:e=>"overflow: hidden;"+`opacity: ${Math.min(20*e,1)*o};`+`height: ${e*a}px;`+`padding-top: ${e*c}px;`+`padding-bottom: ${e*l}px;`+`margin-top: ${e*r}px;`+`margin-bottom: ${e*u}px;`+`border-top-width: ${e*d}px;`+`border-bottom-width: ${e*p}px;`}}});function Ot(t){var n,s;return {c(){n=T("div"),this.h();},l(e){L(n=B(e,"DIV",{class:!0},!1)).forEach(z),this.h();},h(){I(n,"class",s="notices "+t.positionClass+" svelte-750nm");},m(e,s){k(e,n,s),t.div_binding(n);},p(e,t){e.positionClass&&s!==(s="notices "+t.positionClass+" svelte-750nm")&&I(n,"class",s);},i:e,o:e,d(e){e&&z(n),t.div_binding(null);}}}const At={};function Vt(e,t,n){let s,i,{position:o="top"}=t;return e.$set=(e=>{"position"in e&&n("position",o=e.position);}),e.$$.update=((e={position:1})=>{e.position&&n("positionClass",i="top"===o?"is-top":"is-bottom");}),{position:o,container:s,positionClass:i,insert:function(e){s.insertAdjacentElement("afterbegin",e);},div_binding:function(e){Z[e?"unshift":"push"](()=>{n("container",s=e);});}}}class Dt extends Te{constructor(e){var t;super(),document.getElementById("svelte-750nm-style")||((t=T("style")).id="svelte-750nm-style",t.textContent=".notices.svelte-750nm{position:fixed;top:0;left:0;right:0;bottom:0;overflow:hidden;padding:3em;z-index:1000;pointer-events:none;display:-webkit-box;display:-ms-flexbox;display:flex}.notices.is-top.svelte-750nm{-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column}.notices.is-bottom.svelte-750nm{-webkit-box-orient:vertical;-webkit-box-direction:reverse;-ms-flex-direction:column-reverse;flex-direction:column-reverse}.notices.svelte-750nm [class*='has-background-'] .text{color:transparent !important;-webkit-filter:invert(1) brightness(2.5) grayscale(1) contrast(9);filter:invert(1) brightness(2.5) grayscale(1) contrast(9);background:inherit;background-clip:text !important;-webkit-background-clip:text !important}",w(document.head,t)),ze(this,e,Vt,Ot,c,["position","insert"]);}get insert(){return this.$$.ctx.insert}}const{document:Mt}=ye;function Nt(n){var s,i,c,l,r,f,m;const g=n.$$slots.default,v=u(g,n,null);return {c(){s=T("div"),v&&v.c(),this.h();},l(e){var t=L(s=B(e,"DIV",{class:!0,"aria-hidden":!0},!1));v&&v.l(t),t.forEach(z),this.h();},h(){I(s,"class",i="notice "+n.position+" svelte-102rt1s"),I(s,"aria-hidden",c=!n.active),m=E(s,"outroend",n.remove);},m(e,t){k(e,s,t),v&&v.m(s,null),n.div_binding(s),f=!0;},p(e,t){v&&v.p&&e.$$scope&&v.p(p(g,t,e,null),d(g,t,null)),f&&!e.position||i===(i="notice "+t.position+" svelte-102rt1s")||I(s,"class",i),f&&!e.active||c===(c=!t.active)||I(s,"aria-hidden",c);},i(i){f||(ge(v,i),ce(()=>{r&&r.end(1),l||(l=function(n,s,i){let o,c,l=s(n,i),r=!1,u=0;function d(){o&&U(n,o);}function p(){const{delay:s=0,duration:i=300,easing:a=t,tick:p=e,css:f}=l||$e;f&&(o=q(n,0,1,i,s,a,f,u++)),p(0,1);const m=h()+s,g=m+i;c&&c.abort(),r=!0,ce(()=>de(n,!0,"start")),c=x(e=>{if(r){if(e>=g)return p(1,0),de(n,!0,"end"),d(),r=!1;if(e>=m){const t=a((e-m)/i);p(t,1-t);}}return r});}let f=!1;return {start(){f||(U(n),a(l)?(l=l(),ue().then(p)):p());},invalidate(){f=!1;},end(){r&&(d(),r=!1);}}}(s,Le,{y:n.transitionY})),l.start();}),f=!0);},o(i){ve(v,i),l&&l.invalidate(),r=function(n,s,i){let c,l=s(n,i),r=!0;const u=fe;function d(){const{delay:s=0,duration:i=300,easing:a=t,tick:d=e,css:p}=l||$e;p&&(c=q(n,1,0,i,s,a,p));const f=h()+s,m=f+i;ce(()=>de(n,!1,"start")),x(e=>{if(r){if(e>=m)return d(0,1),de(n,!1,"end"),--u.r||o(u.c),!1;if(e>=f){const t=a((e-f)/i);d(1-t,t);}}return r});}return u.r+=1,a(l)?ue().then(()=>{l=l(),d();}):d(),{end(e){e&&l.tick&&l.tick(1,0),r&&(c&&U(n,c),r=!1);}}}(s,je,{duration:n.transitionOut?400:0}),f=!1;},d(e){e&&z(s),v&&v.d(e),n.div_binding(null),e&&r&&r.end(),m();}}}function Ft(e){var t,n,s=e.active&&Nt(e);return {c(){s&&s.c(),t=_();},l(e){s&&s.l(e),t=_();},m(e,i){s&&s.m(e,i),k(e,t,i),n=!0;},p(e,n){n.active?s?(s.p(e,n),ge(s,1)):((s=Nt(n)).c(),ge(s,1),s.m(t.parentNode,t)):s&&(me(),ve(s,1,1,()=>{s=null;}),he());},i(e){n||(ge(s),n=!0);},o(e){ve(s),n=!1;},d(e){s&&s.d(e),e&&z(t);}}}const qt=["active","type","position","duration"];function Ut(e){const t={};return Object.keys(e).forEach(n=>{qt.includes(n)&&(t[n]=e[n]);}),t}function Ht(e,t,n){const s=W();let i,o,a,{active:c=!0,type:l="is-dark",position:r="is-top",duration:u=2e3,transitionOut:d=!0}=t;function p(){n("active",c=!1);}K(async()=>{await async function(){await ae,At.top||(At.top=new Dt({target:document.body,props:{position:"top"}})),At.bottom||(At.bottom=new Dt({target:document.body,props:{position:"bottom"}}));}(),o=At.top,r&&0===r.indexOf("is-bottom")&&(o=At.bottom),o.insert(i),a=setTimeout(()=>{p();},u);});let f,{$$slots:m={},$$scope:h}=t;return e.$set=(e=>{"active"in e&&n("active",c=e.active),"type"in e&&n("type",l=e.type),"position"in e&&n("position",r=e.position),"duration"in e&&n("duration",u=e.duration),"transitionOut"in e&&n("transitionOut",d=e.transitionOut),"$$scope"in e&&n("$$scope",h=e.$$scope);}),e.$$.update=((e={position:1})=>{e.position&&n("transitionY",f=~r.indexOf("is-top")?-200:200);}),{active:c,type:l,position:r,duration:u,transitionOut:d,el:i,close:p,remove:function(){clearTimeout(a),n("active",c=!1),s("destroyed");},transitionY:f,div_binding:function(e){Z[e?"unshift":"push"](()=>{n("el",i=e);});},$$slots:m,$$scope:h}}class Yt extends Te{constructor(e){var t;super(),Mt.getElementById("svelte-102rt1s-style")||((t=T("style")).id="svelte-102rt1s-style",t.textContent=".notice.svelte-102rt1s{display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;pointer-events:auto}.notice.is-top.svelte-102rt1s,.notice.is-bottom.svelte-102rt1s{-ms-flex-item-align:center;align-self:center}.notice.is-top-left.svelte-102rt1s,.notice.is-bottom-left.svelte-102rt1s{-ms-flex-item-align:start;align-self:flex-start}.notice.is-top-right.svelte-102rt1s,.notice.is-bottom-right.svelte-102rt1s{-ms-flex-item-align:end;align-self:flex-end}",w(Mt.head,t)),ze(this,e,Ht,Ft,c,["active","type","position","duration","transitionOut","close"]);}get close(){return this.$$.ctx.close}}function pn(e){var t,n,s,i,o;return {c(){t=T("div"),n=T("button"),s=C(e.actionText),this.h();},l(i){var o=L(t=B(i,"DIV",{class:!0},!1)),a=L(n=B(o,"BUTTON",{class:!0},!1));s=S(a,e.actionText),a.forEach(z),o.forEach(z),this.h();},h(){I(n,"class",i="button "+e.newType+" svelte-1jmu8to"),I(t,"class","action svelte-1jmu8to"),o=E(t,"click",e.action);},m(e,i){k(e,t,i),w(t,n),w(n,s);},p(e,t){e.actionText&&R(s,t.actionText),e.newType&&i!==(i="button "+t.newType+" svelte-1jmu8to")&&I(n,"class",i);},d(e){e&&z(t),o();}}}function fn(e){var t,n,s,i,o=e.actionText&&pn(e);return {c(){t=T("div"),n=T("div"),s=P(),o&&o.c(),this.h();},l(e){var i=L(t=B(e,"DIV",{class:!0,role:!0},!1));L(n=B(i,"DIV",{class:!0},!1)).forEach(z),s=S(i,"\n\n    "),o&&o.l(i),i.forEach(z),this.h();},h(){I(n,"class","text svelte-1jmu8to"),I(t,"class",i="snackbar "+e.background+" svelte-1jmu8to"),I(t,"role","alert"),A(t,"has-background-dark",!e.background);},m(i,a){k(i,t,a),w(t,n),n.innerHTML=e.message,w(t,s),o&&o.m(t,null);},p(e,s){e.message&&(n.innerHTML=s.message),s.actionText?o?o.p(e,s):((o=pn(s)).c(),o.m(t,null)):o&&(o.d(1),o=null),e.background&&i!==(i="snackbar "+s.background+" svelte-1jmu8to")&&I(t,"class",i),(e.background||e.background)&&A(t,"has-background-dark",!s.background);},d(e){e&&z(t),o&&o.d();}}}function mn(e){var t,s=[e.props,{transitionOut:!0}];let i={$$slots:{default:[fn]},$$scope:{ctx:e}};for(var o=0;o<s.length;o+=1)i=n(i,s[o]);var a=new Yt({props:i});return e.notice_1_binding(a),{c(){a.$$.fragment.c();},l(e){a.$$.fragment.l(e);},m(e,n){we(a,e,n),t=!0;},p(e,t){var n=e.props?xe(s,[t.props,s[1]]):{};(e.$$scope||e.background||e.actionText||e.newType||e.message)&&(n.$$scope={changed:e,ctx:t}),a.$set(n);},i(e){t||(ge(a.$$.fragment,e),t=!0);},o(e){ve(a.$$.fragment,e),t=!1;},d(t){e.notice_1_binding(null),ke(a,t);}}}function hn(e,t,s){let i,o,a,{message:c,duration:l=3500,position:r="is-bottom-right",type:u="is-primary",background:d="",actionText:p="OK",onAction:m=(()=>{})}=t;return K(()=>{if("function"!=typeof m)throw new Error(`onAction ${m} is not a function`)}),e.$set=(e=>{s("$$props",t=n(n({},t),e)),"message"in e&&s("message",c=e.message),"duration"in e&&s("duration",l=e.duration),"position"in e&&s("position",r=e.position),"type"in e&&s("type",u=e.type),"background"in e&&s("background",d=e.background),"actionText"in e&&s("actionText",p=e.actionText),"onAction"in e&&s("onAction",m=e.onAction);}),e.$$.update=((e={type:1,$$props:1,position:1,duration:1})=>{e.type&&s("newType",o=u&&u.replace(/^is-(.*)/,"has-text-$1")),s("props",a={...Ut(t),position:r,duration:l});}),{message:c,duration:l,position:r,type:u,background:d,actionText:p,onAction:m,notice:i,action:function(){Promise.resolve(m()).then(()=>i.close());},newType:o,props:a,notice_1_binding:function(e){Z[e?"unshift":"push"](()=>{s("notice",i=e);});},$$props:t=f(t)}}class gn extends Te{constructor(e){var t;super(),document.getElementById("svelte-1jmu8to-style")||((t=T("style")).id="svelte-1jmu8to-style",t.textContent=".snackbar.svelte-1jmu8to{display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-ms-flex-pack:distribute;justify-content:space-around;border-radius:4px;margin:0.5em 0;-webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);box-shadow:0 1px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);pointer-events:auto;min-height:3em}.snackbar.svelte-1jmu8to .text.svelte-1jmu8to{margin:.5em 1em}.snackbar.svelte-1jmu8to .action.svelte-1jmu8to{margin-left:auto;padding:0.5em;padding-left:0}.snackbar.svelte-1jmu8to .action .button.svelte-1jmu8to{font-weight:600;text-transform:uppercase;background:transparent;border:transparent;position:relative}.snackbar.svelte-1jmu8to .action .button.svelte-1jmu8to:hover::after{content:'';position:absolute;top:0;bottom:0;left:0;right:0;background:rgba(0, 0, 0, 0.1)}",w(document.head,t)),ze(this,e,hn,mn,c,["message","duration","position","type","background","actionText","onAction"]);}}gn.create=function(e){"string"==typeof e&&(e={message:e});const t=new gn({target:document.body,props:e,intro:!0});return t.$on("destroyed",t.$destroy),t};function jn(e){var t,n,s;return {c(){t=T("div"),n=T("div"),this.h();},l(e){var s=L(t=B(e,"DIV",{class:!0,role:!0},!1));L(n=B(s,"DIV",{class:!0},!1)).forEach(z),s.forEach(z),this.h();},h(){I(n,"class","text"),I(t,"class",s="toast "+e.type+" "+e.newBackground+" svelte-1uzjgds"),I(t,"role","alert");},m(s,i){k(s,t,i),w(t,n),n.innerHTML=e.message;},p(e,i){e.message&&(n.innerHTML=i.message),(e.type||e.newBackground)&&s!==(s="toast "+i.type+" "+i.newBackground+" svelte-1uzjgds")&&I(t,"class",s);},d(e){e&&z(t);}}}function Ln(e){var t,s=[Ut(e.$$props)];let i={$$slots:{default:[jn]},$$scope:{ctx:e}};for(var o=0;o<s.length;o+=1)i=n(i,s[o]);var a=new Yt({props:i});return {c(){a.$$.fragment.c();},l(e){a.$$.fragment.l(e);},m(e,n){we(a,e,n),t=!0;},p(e,t){var n=e.filterProps||e.$$props?xe(s,[Ut(t.$$props)]):{};(e.$$scope||e.type||e.newBackground||e.message)&&(n.$$scope={changed:e,ctx:t}),a.$set(n);},i(e){t||(ge(a.$$.fragment,e),t=!0);},o(e){ve(a.$$.fragment,e),t=!1;},d(e){ke(a,e);}}}function Bn(e,t,s){let i,{message:o,type:a="is-dark",background:c=""}=t;return e.$set=(e=>{s("$$props",t=n(n({},t),e)),"message"in e&&s("message",o=e.message),"type"in e&&s("type",a=e.type),"background"in e&&s("background",c=e.background);}),e.$$.update=((e={background:1,type:1})=>{(e.background||e.type)&&s("newBackground",i=c||a.replace(/^is-(.*)/,"has-background-$1"));}),{message:o,type:a,background:c,newBackground:i,$$props:t,$$props:t=f(t)}}class Sn extends Te{constructor(e){var t;super(),document.getElementById("svelte-1uzjgds-style")||((t=T("style")).id="svelte-1uzjgds-style",t.textContent=".toast.svelte-1uzjgds{text-align:center;padding:0.75em 1.5em;border-radius:2em;margin:0.5em 0;-webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);box-shadow:0 1px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);pointer-events:auto}",w(document.head,t)),ze(this,e,Bn,Ln,c,["message","type","background"]);}}Sn.create=function(e){"string"==typeof e&&(e={message:e});const t=new Sn({target:document.body,props:e,intro:!0});return t.$on("destroyed",t.$destroy),t};//# sourceMappingURL=module.js.map
+function e(){}const t=e=>e;function n(e,t){for(const n in t)e[n]=t[n];return e}function s(e){return e()}function i(){return Object.create(null)}function o(e){e.forEach(s);}function a(e){return "function"==typeof e}function c(e,t){return e!=e?t==t:e!==t||e&&"object"==typeof e||"function"==typeof e}function u(e,t,n){if(e){const s=d(e,t,n);return e[0](s)}}function d(e,t,s){return e[1]?n({},n(t.$$scope.ctx,e[1](s?s(t):{}))):t.$$scope.ctx}function p(e,t,s,i){return e[1]?n({},n(t.$$scope.changed||{},e[1](i?i(s):{}))):t.$$scope.changed||{}}function f(e){const t={};for(const n in e)"$"!==n[0]&&(t[n]=e[n]);return t}const m="undefined"!=typeof window;let h=m?()=>window.performance.now():()=>Date.now(),g=m?e=>requestAnimationFrame(e):e;const v=new Set;let $,b=!1;function y(){v.forEach(e=>{e[0](h())||(v.delete(e),e[1]());}),(b=v.size>0)&&g(y);}function x(e){let t;return b||(b=!0,g(y)),{promise:new Promise(n=>{v.add(t=[e,n]);}),abort(){v.delete(t);}}}function w(e,t){e.appendChild(t);}function k(e,t,n){e.insertBefore(t,n||null);}function z(e){e.parentNode.removeChild(e);}function T(e){return document.createElement(e)}function C(e){return document.createTextNode(e)}function P(){return C(" ")}function _$1(){return C("")}function E(e,t,n,s){return e.addEventListener(t,n,s),()=>e.removeEventListener(t,n,s)}function I(e,t,n){null==n?e.removeAttribute(t):e.setAttribute(t,n);}function L(e){return Array.from(e.childNodes)}function B(e,t,n,s){for(let s=0;s<e.length;s+=1){const i=e[s];if(i.nodeName===t){for(let e=0;e<i.attributes.length;e+=1){const t=i.attributes[e];n[t.name]||i.removeAttribute(t.name);}return e.splice(s,1)[0]}}return s?function(e){return document.createElementNS("http://www.w3.org/2000/svg",e)}(t):T(t)}function S(e,t){for(let n=0;n<e.length;n+=1){const s=e[n];if(3===s.nodeType)return s.data=t,e.splice(n,1)[0]}return C(t)}function R(e,t){t=""+t,e.data!==t&&(e.data=t);}function A(e,t,n){e.classList[n?"add":"remove"](t);}function V(e,t){const n=document.createEvent("CustomEvent");return n.initCustomEvent(e,!1,!1,t),n}let M,N=0,F={};function q(e,t,n,s,i,o,a,c=0){const l=16.666/s;let r="{\n";for(let e=0;e<=1;e+=l){const s=t+(n-t)*o(e);r+=100*e+`%{${a(s,1-s)}}\n`;}const u=r+`100% {${a(n,1-n)}}\n}`,d=`__svelte_${function(e){let t=5381,n=e.length;for(;n--;)t=(t<<5)-t^e.charCodeAt(n);return t>>>0}(u)}_${c}`;if(!F[d]){if(!$){const e=T("style");document.head.appendChild(e),$=e.sheet;}F[d]=!0,$.insertRule(`@keyframes ${d} ${u}`,$.cssRules.length);}const p=e.style.animation||"";return e.style.animation=`${p?`${p}, `:""}${d} ${s}ms linear ${i}ms 1 both`,N+=1,d}function U(e,t){e.style.animation=(e.style.animation||"").split(", ").filter(t?e=>e.indexOf(t)<0:e=>-1===e.indexOf("__svelte")).join(", "),t&&!--N&&g(()=>{if(N)return;let e=$.cssRules.length;for(;e--;)$.deleteRule(e);F={};});}function H(e){M=e;}function Y(){if(!M)throw new Error("Function called outside component initialization");return M}function K(e){Y().$$.on_mount.push(e);}function W(){const e=M;return (t,n)=>{const s=e.$$.callbacks[t];if(s){const i=V(t,n);s.slice().forEach(t=>{t.call(e,i);});}}}const Q=[],Z=[],ee=[],te=[],ne=Promise.resolve();let se,ie=!1;function oe(){ie||(ie=!0,ne.then(le));}function ae(){return oe(),ne}function ce(e){ee.push(e);}function le(){const e=new Set;do{for(;Q.length;){const e=Q.shift();H(e),re(e.$$);}for(;Z.length;)Z.pop()();for(let t=0;t<ee.length;t+=1){const n=ee[t];e.has(n)||(n(),e.add(n));}ee.length=0;}while(Q.length);for(;te.length;)te.pop()();ie=!1;}function re(e){e.fragment&&(e.update(e.dirty),o(e.before_update),e.fragment.p(e.dirty,e.ctx),e.dirty=null,e.after_update.forEach(ce));}function ue(){return se||(se=Promise.resolve()).then(()=>{se=null;}),se}function de(e,t,n){e.dispatchEvent(V(`${t?"intro":"outro"}${n}`));}const pe=new Set;let fe;function me(){fe={r:0,c:[],p:fe};}function he(){fe.r||o(fe.c),fe=fe.p;}function ge(e,t){e&&e.i&&(pe.delete(e),e.i(t));}function ve(e,t,n,s){if(e&&e.o){if(pe.has(e))return;pe.add(e),fe.c.push(()=>{pe.delete(e),s&&(n&&e.d(1),s());}),e.o(t);}}const $e={duration:0};const ye="undefined"!=typeof window?window:global;function xe(e,t){const n={},s={},i={$$scope:1};let o=e.length;for(;o--;){const a=e[o],c=t[o];if(c){for(const e in a)e in c||(s[e]=1);for(const e in c)i[e]||(n[e]=c[e],i[e]=1);e[o]=c;}else for(const e in a)i[e]=1;}for(const e in s)e in n||(n[e]=void 0);return n}function we(e,t,n){const{fragment:i,on_mount:c,on_destroy:l,after_update:r}=e.$$;i.m(t,n),ce(()=>{const t=c.map(s).filter(a);l?l.push(...t):o(t),e.$$.on_mount=[];}),r.forEach(ce);}function ke(e,t){e.$$.fragment&&(o(e.$$.on_destroy),e.$$.fragment.d(t),e.$$.on_destroy=e.$$.fragment=null,e.$$.ctx={});}function ze(t,n,s,a,c,l){const r=M;H(t);const u=n.props||{},d=t.$$={fragment:null,ctx:null,props:l,update:e,not_equal:c,bound:i(),on_mount:[],on_destroy:[],before_update:[],after_update:[],context:new Map(r?r.$$.context:[]),callbacks:i(),dirty:null};let p=!1;d.ctx=s?s(t,u,(e,n)=>{d.ctx&&c(d.ctx[e],d.ctx[e]=n)&&(d.bound[e]&&d.bound[e](n),p&&function(e,t){e.$$.dirty||(Q.push(e),oe(),e.$$.dirty=i()),e.$$.dirty[t]=!0;}(t,e));}):u,d.update(),p=!0,o(d.before_update),d.fragment=a(d.ctx),n.target&&(n.hydrate?d.fragment.l(L(n.target)):d.fragment.c(),n.intro&&ge(t.$$.fragment),we(t,n.target,n.anchor),le()),H(r);}class Te{$destroy(){ke(this,1),this.$destroy=e;}$on(e,t){const n=this.$$.callbacks[e]||(this.$$.callbacks[e]=[]);return n.push(t),()=>{const e=n.indexOf(t);-1!==e&&n.splice(e,1);}}$set(){}}function Ee(e){return e<.5?4*e*e*e:.5*Math.pow(2*e-2,3)+1}function Ie(e){const t=e-1;return t*t*t+1}function je(e,{delay:t=0,duration:n=400}){const s=+getComputedStyle(e).opacity;return {delay:t,duration:n,css:e=>`opacity: ${e*s}`}}function Le(e,{delay:t=0,duration:n=400,easing:s=Ie,x:i=0,y:o=0,opacity:a=0}){const c=getComputedStyle(e),l=+c.opacity,r="none"===c.transform?"":c.transform,u=l*(1-a);return {delay:t,duration:n,easing:s,css:(e,t)=>`\n\t\t\ttransform: ${r} translate(${(1-e)*i}px, ${(1-e)*o}px);\n\t\t\topacity: ${l-u*t}`}}var Be=Object.freeze({crossfade:function(e){var{fallback:t}=e,s=function(e,t){var n={};for(var s in e)Object.prototype.hasOwnProperty.call(e,s)&&t.indexOf(s)<0&&(n[s]=e[s]);if(null!=e&&"function"==typeof Object.getOwnPropertySymbols){var i=0;for(s=Object.getOwnPropertySymbols(e);i<s.length;i++)t.indexOf(s[i])<0&&Object.prototype.propertyIsEnumerable.call(e,s[i])&&(n[s[i]]=e[s[i]]);}return n}(e,["fallback"]);const i=new Map,o=new Map;function c(e,i,o){return (c,l)=>(e.set(l.key,{rect:c.getBoundingClientRect()}),()=>{if(i.has(l.key)){const{rect:e}=i.get(l.key);return i.delete(l.key),function(e,t,i){const{delay:o=0,duration:c=(e=>30*Math.sqrt(e)),easing:l=Ie}=n(n({},s),i),r=t.getBoundingClientRect(),u=e.left-r.left,d=e.top-r.top,p=e.width/r.width,f=e.height/r.height,m=Math.sqrt(u*u+d*d),h=getComputedStyle(t),g="none"===h.transform?"":h.transform,v=+h.opacity;return {delay:o,duration:a(c)?c(m):c,easing:l,css:(e,t)=>`\n\t\t\t\topacity: ${e*v};\n\t\t\t\ttransform-origin: top left;\n\t\t\t\ttransform: ${g} translate(${t*u}px,${t*d}px) scale(${e+(1-e)*p}, ${e+(1-e)*f});\n\t\t\t`}}(e,c,l)}return e.delete(l.key),t&&t(c,l,o)})}return [c(o,i,!1),c(i,o,!0)]},draw:function(e,{delay:t=0,speed:n,duration:s,easing:i=Ee}){const o=e.getTotalLength();return void 0===s?s=void 0===n?800:o/n:"function"==typeof s&&(s=s(o)),{delay:t,duration:s,easing:i,css:(e,t)=>`stroke-dasharray: ${e*o} ${t*o}`}},fade:je,fly:Le,scale:function(e,{delay:t=0,duration:n=400,easing:s=Ie,start:i=0,opacity:o=0}){const a=getComputedStyle(e),c=+a.opacity,l="none"===a.transform?"":a.transform,r=1-i,u=c*(1-o);return {delay:t,duration:n,easing:s,css:(e,t)=>`\n\t\t\ttransform: ${l} scale(${1-r*t});\n\t\t\topacity: ${c-u*t}\n\t\t`}},slide:function(e,{delay:t=0,duration:n=400,easing:s=Ie}){const i=getComputedStyle(e),o=+i.opacity,a=parseFloat(i.height),c=parseFloat(i.paddingTop),l=parseFloat(i.paddingBottom),r=parseFloat(i.marginTop),u=parseFloat(i.marginBottom),d=parseFloat(i.borderTopWidth),p=parseFloat(i.borderBottomWidth);return {delay:t,duration:n,easing:s,css:e=>"overflow: hidden;"+`opacity: ${Math.min(20*e,1)*o};`+`height: ${e*a}px;`+`padding-top: ${e*c}px;`+`padding-bottom: ${e*l}px;`+`margin-top: ${e*r}px;`+`margin-bottom: ${e*u}px;`+`border-top-width: ${e*d}px;`+`border-bottom-width: ${e*p}px;`}}});function Ot(t){var n,s;return {c(){n=T("div"),this.h();},l(e){L(n=B(e,"DIV",{class:!0},!1)).forEach(z),this.h();},h(){I(n,"class",s="notices "+t.positionClass+" svelte-750nm");},m(e,s){k(e,n,s),t.div_binding(n);},p(e,t){e.positionClass&&s!==(s="notices "+t.positionClass+" svelte-750nm")&&I(n,"class",s);},i:e,o:e,d(e){e&&z(n),t.div_binding(null);}}}const At={};function Vt(e,t,n){let s,i,{position:o="top"}=t;return e.$set=(e=>{"position"in e&&n("position",o=e.position);}),e.$$.update=((e={position:1})=>{e.position&&n("positionClass",i="top"===o?"is-top":"is-bottom");}),{position:o,container:s,positionClass:i,insert:function(e){s.insertAdjacentElement("afterbegin",e);},div_binding:function(e){Z[e?"unshift":"push"](()=>{n("container",s=e);});}}}class Dt extends Te{constructor(e){var t;super(),document.getElementById("svelte-750nm-style")||((t=T("style")).id="svelte-750nm-style",t.textContent=".notices.svelte-750nm{position:fixed;top:0;left:0;right:0;bottom:0;overflow:hidden;padding:3em;z-index:1000;pointer-events:none;display:-webkit-box;display:-ms-flexbox;display:flex}.notices.is-top.svelte-750nm{-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column}.notices.is-bottom.svelte-750nm{-webkit-box-orient:vertical;-webkit-box-direction:reverse;-ms-flex-direction:column-reverse;flex-direction:column-reverse}.notices.svelte-750nm [class*='has-background-'] .text{color:transparent !important;-webkit-filter:invert(1) brightness(2.5) grayscale(1) contrast(9);filter:invert(1) brightness(2.5) grayscale(1) contrast(9);background:inherit;background-clip:text !important;-webkit-background-clip:text !important}",w(document.head,t)),ze(this,e,Vt,Ot,c,["position","insert"]);}get insert(){return this.$$.ctx.insert}}const{document:Mt}=ye;function Nt(n){var s,i,c,l,r,f,m;const g=n.$$slots.default,v=u(g,n,null);return {c(){s=T("div"),v&&v.c(),this.h();},l(e){var t=L(s=B(e,"DIV",{class:!0,"aria-hidden":!0},!1));v&&v.l(t),t.forEach(z),this.h();},h(){I(s,"class",i="notice "+n.position+" svelte-102rt1s"),I(s,"aria-hidden",c=!n.active),m=E(s,"outroend",n.remove);},m(e,t){k(e,s,t),v&&v.m(s,null),n.div_binding(s),f=!0;},p(e,t){v&&v.p&&e.$$scope&&v.p(p(g,t,e,null),d(g,t,null)),f&&!e.position||i===(i="notice "+t.position+" svelte-102rt1s")||I(s,"class",i),f&&!e.active||c===(c=!t.active)||I(s,"aria-hidden",c);},i(i){f||(ge(v,i),ce(()=>{r&&r.end(1),l||(l=function(n,s,i){let o,c,l=s(n,i),r=!1,u=0;function d(){o&&U(n,o);}function p(){const{delay:s=0,duration:i=300,easing:a=t,tick:p=e,css:f}=l||$e;f&&(o=q(n,0,1,i,s,a,f,u++)),p(0,1);const m=h()+s,g=m+i;c&&c.abort(),r=!0,ce(()=>de(n,!0,"start")),c=x(e=>{if(r){if(e>=g)return p(1,0),de(n,!0,"end"),d(),r=!1;if(e>=m){const t=a((e-m)/i);p(t,1-t);}}return r});}let f=!1;return {start(){f||(U(n),a(l)?(l=l(),ue().then(p)):p());},invalidate(){f=!1;},end(){r&&(d(),r=!1);}}}(s,Le,{y:n.transitionY})),l.start();}),f=!0);},o(i){ve(v,i),l&&l.invalidate(),r=function(n,s,i){let c,l=s(n,i),r=!0;const u=fe;function d(){const{delay:s=0,duration:i=300,easing:a=t,tick:d=e,css:p}=l||$e;p&&(c=q(n,1,0,i,s,a,p));const f=h()+s,m=f+i;ce(()=>de(n,!1,"start")),x(e=>{if(r){if(e>=m)return d(0,1),de(n,!1,"end"),--u.r||o(u.c),!1;if(e>=f){const t=a((e-f)/i);d(1-t,t);}}return r});}return u.r+=1,a(l)?ue().then(()=>{l=l(),d();}):d(),{end(e){e&&l.tick&&l.tick(1,0),r&&(c&&U(n,c),r=!1);}}}(s,je,{duration:n.transitionOut?400:0}),f=!1;},d(e){e&&z(s),v&&v.d(e),n.div_binding(null),e&&r&&r.end(),m();}}}function Ft(e){var t,n,s=e.active&&Nt(e);return {c(){s&&s.c(),t=_$1();},l(e){s&&s.l(e),t=_$1();},m(e,i){s&&s.m(e,i),k(e,t,i),n=!0;},p(e,n){n.active?s?(s.p(e,n),ge(s,1)):((s=Nt(n)).c(),ge(s,1),s.m(t.parentNode,t)):s&&(me(),ve(s,1,1,()=>{s=null;}),he());},i(e){n||(ge(s),n=!0);},o(e){ve(s),n=!1;},d(e){s&&s.d(e),e&&z(t);}}}const qt=["active","type","position","duration"];function Ut(e){const t={};return Object.keys(e).forEach(n=>{qt.includes(n)&&(t[n]=e[n]);}),t}function Ht(e,t,n){const s=W();let i,o,a,{active:c=!0,type:l="is-dark",position:r="is-top",duration:u=2e3,transitionOut:d=!0}=t;function p(){n("active",c=!1);}K(async()=>{await async function(){await ae,At.top||(At.top=new Dt({target:document.body,props:{position:"top"}})),At.bottom||(At.bottom=new Dt({target:document.body,props:{position:"bottom"}}));}(),o=At.top,r&&0===r.indexOf("is-bottom")&&(o=At.bottom),o.insert(i),a=setTimeout(()=>{p();},u);});let f,{$$slots:m={},$$scope:h}=t;return e.$set=(e=>{"active"in e&&n("active",c=e.active),"type"in e&&n("type",l=e.type),"position"in e&&n("position",r=e.position),"duration"in e&&n("duration",u=e.duration),"transitionOut"in e&&n("transitionOut",d=e.transitionOut),"$$scope"in e&&n("$$scope",h=e.$$scope);}),e.$$.update=((e={position:1})=>{e.position&&n("transitionY",f=~r.indexOf("is-top")?-200:200);}),{active:c,type:l,position:r,duration:u,transitionOut:d,el:i,close:p,remove:function(){clearTimeout(a),n("active",c=!1),s("destroyed");},transitionY:f,div_binding:function(e){Z[e?"unshift":"push"](()=>{n("el",i=e);});},$$slots:m,$$scope:h}}class Yt extends Te{constructor(e){var t;super(),Mt.getElementById("svelte-102rt1s-style")||((t=T("style")).id="svelte-102rt1s-style",t.textContent=".notice.svelte-102rt1s{display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;pointer-events:auto}.notice.is-top.svelte-102rt1s,.notice.is-bottom.svelte-102rt1s{-ms-flex-item-align:center;align-self:center}.notice.is-top-left.svelte-102rt1s,.notice.is-bottom-left.svelte-102rt1s{-ms-flex-item-align:start;align-self:flex-start}.notice.is-top-right.svelte-102rt1s,.notice.is-bottom-right.svelte-102rt1s{-ms-flex-item-align:end;align-self:flex-end}",w(Mt.head,t)),ze(this,e,Ht,Ft,c,["active","type","position","duration","transitionOut","close"]);}get close(){return this.$$.ctx.close}}function pn(e){var t,n,s,i,o;return {c(){t=T("div"),n=T("button"),s=C(e.actionText),this.h();},l(i){var o=L(t=B(i,"DIV",{class:!0},!1)),a=L(n=B(o,"BUTTON",{class:!0},!1));s=S(a,e.actionText),a.forEach(z),o.forEach(z),this.h();},h(){I(n,"class",i="button "+e.newType+" svelte-1jmu8to"),I(t,"class","action svelte-1jmu8to"),o=E(t,"click",e.action);},m(e,i){k(e,t,i),w(t,n),w(n,s);},p(e,t){e.actionText&&R(s,t.actionText),e.newType&&i!==(i="button "+t.newType+" svelte-1jmu8to")&&I(n,"class",i);},d(e){e&&z(t),o();}}}function fn(e){var t,n,s,i,o=e.actionText&&pn(e);return {c(){t=T("div"),n=T("div"),s=P(),o&&o.c(),this.h();},l(e){var i=L(t=B(e,"DIV",{class:!0,role:!0},!1));L(n=B(i,"DIV",{class:!0},!1)).forEach(z),s=S(i,"\n\n    "),o&&o.l(i),i.forEach(z),this.h();},h(){I(n,"class","text svelte-1jmu8to"),I(t,"class",i="snackbar "+e.background+" svelte-1jmu8to"),I(t,"role","alert"),A(t,"has-background-dark",!e.background);},m(i,a){k(i,t,a),w(t,n),n.innerHTML=e.message,w(t,s),o&&o.m(t,null);},p(e,s){e.message&&(n.innerHTML=s.message),s.actionText?o?o.p(e,s):((o=pn(s)).c(),o.m(t,null)):o&&(o.d(1),o=null),e.background&&i!==(i="snackbar "+s.background+" svelte-1jmu8to")&&I(t,"class",i),(e.background||e.background)&&A(t,"has-background-dark",!s.background);},d(e){e&&z(t),o&&o.d();}}}function mn(e){var t,s=[e.props,{transitionOut:!0}];let i={$$slots:{default:[fn]},$$scope:{ctx:e}};for(var o=0;o<s.length;o+=1)i=n(i,s[o]);var a=new Yt({props:i});return e.notice_1_binding(a),{c(){a.$$.fragment.c();},l(e){a.$$.fragment.l(e);},m(e,n){we(a,e,n),t=!0;},p(e,t){var n=e.props?xe(s,[t.props,s[1]]):{};(e.$$scope||e.background||e.actionText||e.newType||e.message)&&(n.$$scope={changed:e,ctx:t}),a.$set(n);},i(e){t||(ge(a.$$.fragment,e),t=!0);},o(e){ve(a.$$.fragment,e),t=!1;},d(t){e.notice_1_binding(null),ke(a,t);}}}function hn(e,t,s){let i,o,a,{message:c,duration:l=3500,position:r="is-bottom-right",type:u="is-primary",background:d="",actionText:p="OK",onAction:m=(()=>{})}=t;return K(()=>{if("function"!=typeof m)throw new Error(`onAction ${m} is not a function`)}),e.$set=(e=>{s("$$props",t=n(n({},t),e)),"message"in e&&s("message",c=e.message),"duration"in e&&s("duration",l=e.duration),"position"in e&&s("position",r=e.position),"type"in e&&s("type",u=e.type),"background"in e&&s("background",d=e.background),"actionText"in e&&s("actionText",p=e.actionText),"onAction"in e&&s("onAction",m=e.onAction);}),e.$$.update=((e={type:1,$$props:1,position:1,duration:1})=>{e.type&&s("newType",o=u&&u.replace(/^is-(.*)/,"has-text-$1")),s("props",a={...Ut(t),position:r,duration:l});}),{message:c,duration:l,position:r,type:u,background:d,actionText:p,onAction:m,notice:i,action:function(){Promise.resolve(m()).then(()=>i.close());},newType:o,props:a,notice_1_binding:function(e){Z[e?"unshift":"push"](()=>{s("notice",i=e);});},$$props:t=f(t)}}class gn extends Te{constructor(e){var t;super(),document.getElementById("svelte-1jmu8to-style")||((t=T("style")).id="svelte-1jmu8to-style",t.textContent=".snackbar.svelte-1jmu8to{display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-ms-flex-pack:distribute;justify-content:space-around;border-radius:4px;margin:0.5em 0;-webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);box-shadow:0 1px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);pointer-events:auto;min-height:3em}.snackbar.svelte-1jmu8to .text.svelte-1jmu8to{margin:.5em 1em}.snackbar.svelte-1jmu8to .action.svelte-1jmu8to{margin-left:auto;padding:0.5em;padding-left:0}.snackbar.svelte-1jmu8to .action .button.svelte-1jmu8to{font-weight:600;text-transform:uppercase;background:transparent;border:transparent;position:relative}.snackbar.svelte-1jmu8to .action .button.svelte-1jmu8to:hover::after{content:'';position:absolute;top:0;bottom:0;left:0;right:0;background:rgba(0, 0, 0, 0.1)}",w(document.head,t)),ze(this,e,hn,mn,c,["message","duration","position","type","background","actionText","onAction"]);}}gn.create=function(e){"string"==typeof e&&(e={message:e});const t=new gn({target:document.body,props:e,intro:!0});return t.$on("destroyed",t.$destroy),t};function jn(e){var t,n,s;return {c(){t=T("div"),n=T("div"),this.h();},l(e){var s=L(t=B(e,"DIV",{class:!0,role:!0},!1));L(n=B(s,"DIV",{class:!0},!1)).forEach(z),s.forEach(z),this.h();},h(){I(n,"class","text"),I(t,"class",s="toast "+e.type+" "+e.newBackground+" svelte-1uzjgds"),I(t,"role","alert");},m(s,i){k(s,t,i),w(t,n),n.innerHTML=e.message;},p(e,i){e.message&&(n.innerHTML=i.message),(e.type||e.newBackground)&&s!==(s="toast "+i.type+" "+i.newBackground+" svelte-1uzjgds")&&I(t,"class",s);},d(e){e&&z(t);}}}function Ln(e){var t,s=[Ut(e.$$props)];let i={$$slots:{default:[jn]},$$scope:{ctx:e}};for(var o=0;o<s.length;o+=1)i=n(i,s[o]);var a=new Yt({props:i});return {c(){a.$$.fragment.c();},l(e){a.$$.fragment.l(e);},m(e,n){we(a,e,n),t=!0;},p(e,t){var n=e.filterProps||e.$$props?xe(s,[Ut(t.$$props)]):{};(e.$$scope||e.type||e.newBackground||e.message)&&(n.$$scope={changed:e,ctx:t}),a.$set(n);},i(e){t||(ge(a.$$.fragment,e),t=!0);},o(e){ve(a.$$.fragment,e),t=!1;},d(e){ke(a,e);}}}function Bn(e,t,s){let i,{message:o,type:a="is-dark",background:c=""}=t;return e.$set=(e=>{s("$$props",t=n(n({},t),e)),"message"in e&&s("message",o=e.message),"type"in e&&s("type",a=e.type),"background"in e&&s("background",c=e.background);}),e.$$.update=((e={background:1,type:1})=>{(e.background||e.type)&&s("newBackground",i=c||a.replace(/^is-(.*)/,"has-background-$1"));}),{message:o,type:a,background:c,newBackground:i,$$props:t,$$props:t=f(t)}}class Sn extends Te{constructor(e){var t;super(),document.getElementById("svelte-1uzjgds-style")||((t=T("style")).id="svelte-1uzjgds-style",t.textContent=".toast.svelte-1uzjgds{text-align:center;padding:0.75em 1.5em;border-radius:2em;margin:0.5em 0;-webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);box-shadow:0 1px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);pointer-events:auto}",w(document.head,t)),ze(this,e,Bn,Ln,c,["message","type","background"]);}}Sn.create=function(e){"string"==typeof e&&(e={message:e});const t=new Sn({target:document.body,props:e,intro:!0});return t.$on("destroyed",t.$destroy),t};//# sourceMappingURL=module.js.map
 
 const subscriber_queue = [];
 /**
@@ -33137,41 +33137,1092 @@ class CustomCheckbox extends SvelteComponentDev {
 	}
 }
 
-/* src\Pages\Normline.svelte generated by Svelte v3.17.0 */
-const file$I = "src\\Pages\\Normline.svelte";
+/* src\components\ReportLayout.svelte generated by Svelte v3.17.0 */
+
+const { console: console_1$1 } = globals;
+const file$I = "src\\components\\ReportLayout.svelte";
 
 function get_each_context$3(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[74] = list[i];
+	child_ctx[26] = list[i];
+	child_ctx[28] = i;
 	return child_ctx;
 }
 
 function get_each_context_1$1(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[77] = list[i];
+	child_ctx[29] = list[i];
+	return child_ctx;
+}
+
+// (135:12) <span slot="label" style="color:{method.color}">
+function create_label_slot$3(ctx) {
+	let span;
+	let t_value = /*method*/ ctx[29].name + "";
+	let t;
+
+	const block = {
+		c: function create() {
+			span = element("span");
+			t = text(t_value);
+			attr_dev(span, "slot", "label");
+			set_style(span, "color", /*method*/ ctx[29].color);
+			add_location(span, file$I, 134, 12, 5009);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, span, anchor);
+			append_dev(span, t);
+		},
+		p: noop,
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(span);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_label_slot$3.name,
+		type: "slot",
+		source: "(135:12) <span slot=\\\"label\\\" style=\\\"color:{method.color}\\\">",
+		ctx
+	});
+
+	return block;
+}
+
+// (133:8) <FormField >
+function create_default_slot_1$7(ctx) {
+	let updating_group;
+	let t;
+	let current;
+
+	function radio_group_binding(value) {
+		/*radio_group_binding*/ ctx[21].call(null, value);
+	}
+
+	let radio_props = { value: /*method*/ ctx[29].name };
+
+	if (/*reportMethod*/ ctx[6] !== void 0) {
+		radio_props.group = /*reportMethod*/ ctx[6];
+	}
+
+	const radio = new Radio({ props: radio_props, $$inline: true });
+	binding_callbacks.push(() => bind(radio, "group", radio_group_binding));
+
+	const block = {
+		c: function create() {
+			create_component(radio.$$.fragment);
+			t = space();
+		},
+		m: function mount(target, anchor) {
+			mount_component(radio, target, anchor);
+			insert_dev(target, t, anchor);
+			current = true;
+		},
+		p: function update(ctx, dirty) {
+			const radio_changes = {};
+
+			if (!updating_group && dirty[0] & /*reportMethod*/ 64) {
+				updating_group = true;
+				radio_changes.group = /*reportMethod*/ ctx[6];
+				add_flush_callback(() => updating_group = false);
+			}
+
+			radio.$set(radio_changes);
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(radio.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(radio.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			destroy_component(radio, detaching);
+			if (detaching) detach_dev(t);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_default_slot_1$7.name,
+		type: "slot",
+		source: "(133:8) <FormField >",
+		ctx
+	});
+
+	return block;
+}
+
+// (132:4) {#each [{name:"info", color:"white"}, {name:"success", color:"#00ff00"}, {name:"warning", color:"yellow"}, {name:"danger", color:"red"}] as method}
+function create_each_block_1$1(ctx) {
+	let current;
+
+	const formfield = new FormField({
+			props: {
+				$$slots: {
+					default: [create_default_slot_1$7],
+					label: [create_label_slot$3]
+				},
+				$$scope: { ctx }
+			},
+			$$inline: true
+		});
+
+	const block = {
+		c: function create() {
+			create_component(formfield.$$.fragment);
+		},
+		m: function mount(target, anchor) {
+			mount_component(formfield, target, anchor);
+			current = true;
+		},
+		p: function update(ctx, dirty) {
+			const formfield_changes = {};
+
+			if (dirty[0] & /*reportMethod*/ 64 | dirty[1] & /*$$scope*/ 2) {
+				formfield_changes.$$scope = { dirty, ctx };
+			}
+
+			formfield.$set(formfield_changes);
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(formfield.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(formfield.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			destroy_component(formfield, detaching);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_each_block_1$1.name,
+		type: "each",
+		source: "(132:4) {#each [{name:\\\"info\\\", color:\\\"white\\\"}, {name:\\\"success\\\", color:\\\"#00ff00\\\"}, {name:\\\"warning\\\", color:\\\"yellow\\\"}, {name:\\\"danger\\\", color:\\\"red\\\"}] as method}",
+		ctx
+	});
+
+	return block;
+}
+
+// (139:4) {#if includeTable}
+function create_if_block$b(ctx) {
+	let updating_selected;
+	let current;
+
+	function customcheckbox_selected_binding(value) {
+		/*customcheckbox_selected_binding*/ ctx[22].call(null, value);
+	}
+
+	let customcheckbox_props = { label: "Include table" };
+
+	if (/*include_table*/ ctx[8] !== void 0) {
+		customcheckbox_props.selected = /*include_table*/ ctx[8];
+	}
+
+	const customcheckbox = new CustomCheckbox({
+			props: customcheckbox_props,
+			$$inline: true
+		});
+
+	binding_callbacks.push(() => bind(customcheckbox, "selected", customcheckbox_selected_binding));
+
+	const block = {
+		c: function create() {
+			create_component(customcheckbox.$$.fragment);
+		},
+		m: function mount(target, anchor) {
+			mount_component(customcheckbox, target, anchor);
+			current = true;
+		},
+		p: function update(ctx, dirty) {
+			const customcheckbox_changes = {};
+
+			if (!updating_selected && dirty[0] & /*include_table*/ 256) {
+				updating_selected = true;
+				customcheckbox_changes.selected = /*include_table*/ ctx[8];
+				add_flush_callback(() => updating_selected = false);
+			}
+
+			customcheckbox.$set(customcheckbox_changes);
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(customcheckbox.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(customcheckbox.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			destroy_component(customcheckbox, detaching);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_if_block$b.name,
+		type: "if",
+		source: "(139:4) {#if includeTable}",
+		ctx
+	});
+
+	return block;
+}
+
+// (143:4) {#each plotID as ID, index}
+function create_each_block$3(ctx) {
+	let updating_selected;
+	let current;
+
+	function customcheckbox_selected_binding_1(value) {
+		/*customcheckbox_selected_binding_1*/ ctx[23].call(null, value, /*index*/ ctx[28]);
+	}
+
+	let customcheckbox_props = { label: /*ID*/ ctx[26] };
+
+	if (/*extra_plotInclude*/ ctx[3][/*index*/ ctx[28]] !== void 0) {
+		customcheckbox_props.selected = /*extra_plotInclude*/ ctx[3][/*index*/ ctx[28]];
+	}
+
+	const customcheckbox = new CustomCheckbox({
+			props: customcheckbox_props,
+			$$inline: true
+		});
+
+	binding_callbacks.push(() => bind(customcheckbox, "selected", customcheckbox_selected_binding_1));
+
+	const block = {
+		c: function create() {
+			create_component(customcheckbox.$$.fragment);
+		},
+		m: function mount(target, anchor) {
+			mount_component(customcheckbox, target, anchor);
+			current = true;
+		},
+		p: function update(new_ctx, dirty) {
+			ctx = new_ctx;
+			const customcheckbox_changes = {};
+			if (dirty[0] & /*plotID*/ 2) customcheckbox_changes.label = /*ID*/ ctx[26];
+
+			if (!updating_selected && dirty[0] & /*extra_plotInclude*/ 8) {
+				updating_selected = true;
+				customcheckbox_changes.selected = /*extra_plotInclude*/ ctx[3][/*index*/ ctx[28]];
+				add_flush_callback(() => updating_selected = false);
+			}
+
+			customcheckbox.$set(customcheckbox_changes);
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(customcheckbox.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(customcheckbox.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			destroy_component(customcheckbox, detaching);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_each_block$3.name,
+		type: "each",
+		source: "(143:4) {#each plotID as ID, index}",
+		ctx
+	});
+
+	return block;
+}
+
+// (149:4) <HelperText id="{id}_comments">
+function create_default_slot$d(ctx) {
+	let t;
+
+	const block = {
+		c: function create() {
+			t = text("NOTE: You can write in markdown format (eg: # Title, **bold**, __italics__, 1., 2. for list, etc.,)");
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, t, anchor);
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(t);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_default_slot$d.name,
+		type: "slot",
+		source: "(149:4) <HelperText id=\\\"{id}_comments\\\">",
+		ctx
+	});
+
+	return block;
+}
+
+function create_fragment$L(ctx) {
+	let div0;
+	let h1;
+	let t1;
+	let hr;
+	let t2;
+	let div1;
+	let updating_value;
+	let t3;
+	let div2;
+	let t4;
+	let t5;
+	let t6;
+	let updating_value_1;
+	let t7;
+	let updating_value_2;
+	let t8;
+	let t9;
+	let button0;
+	let Ripple_action;
+	let t11;
+	let button1;
+	let Ripple_action_1;
+	let current;
+	let dispose;
+
+	function textfield0_value_binding(value) {
+		/*textfield0_value_binding*/ ctx[20].call(null, value);
+	}
+
+	let textfield0_props = {
+		style: "height:3em; width:20em;",
+		variant: "outlined",
+		label: "Molecule Name"
+	};
+
+	if (/*reportMolecule*/ ctx[7] !== void 0) {
+		textfield0_props.value = /*reportMolecule*/ ctx[7];
+	}
+
+	const textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
+	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
+
+	let each_value_1 = [
+		{ name: "info", color: "white" },
+		{ name: "success", color: "#00ff00" },
+		{ name: "warning", color: "yellow" },
+		{ name: "danger", color: "red" }
+	];
+
+	let each_blocks_1 = [];
+
+	for (let i = 0; i < 4; i += 1) {
+		each_blocks_1[i] = create_each_block_1$1(get_each_context_1$1(ctx, each_value_1, i));
+	}
+
+	const out = i => transition_out(each_blocks_1[i], 1, 1, () => {
+		each_blocks_1[i] = null;
+	});
+
+	let if_block = /*includeTable*/ ctx[2] && create_if_block$b(ctx);
+	let each_value = /*plotID*/ ctx[1];
+	let each_blocks = [];
+
+	for (let i = 0; i < each_value.length; i += 1) {
+		each_blocks[i] = create_each_block$3(get_each_context$3(ctx, each_value, i));
+	}
+
+	const out_1 = i => transition_out(each_blocks[i], 1, 1, () => {
+		each_blocks[i] = null;
+	});
+
+	function textfield1_value_binding(value_1) {
+		/*textfield1_value_binding*/ ctx[24].call(null, value_1);
+	}
+
+	let textfield1_props = {
+		style: "height:3em; margin-bottom:1em;",
+		variant: "outlined",
+		label: "Title"
+	};
+
+	if (/*reportTitle*/ ctx[4] !== void 0) {
+		textfield1_props.value = /*reportTitle*/ ctx[4];
+	}
+
+	const textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
+	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding));
+
+	function textfield2_value_binding(value_2) {
+		/*textfield2_value_binding*/ ctx[25].call(null, value_2);
+	}
+
+	let textfield2_props = {
+		textarea: true,
+		label: "Comments",
+		"input$aria-controls": "" + (/*id*/ ctx[0] + "_comments"),
+		"input$aria-describedby": "" + (/*id*/ ctx[0] + "_comments")
+	};
+
+	if (/*reportComments*/ ctx[5] !== void 0) {
+		textfield2_props.value = /*reportComments*/ ctx[5];
+	}
+
+	const textfield2 = new Textfield({ props: textfield2_props, $$inline: true });
+	binding_callbacks.push(() => bind(textfield2, "value", textfield2_value_binding));
+
+	const helpertext = new HelperText({
+			props: {
+				id: "" + (/*id*/ ctx[0] + "_comments"),
+				$$slots: { default: [create_default_slot$d] },
+				$$scope: { ctx }
+			},
+			$$inline: true
+		});
+
+	const block = {
+		c: function create() {
+			div0 = element("div");
+			h1 = element("h1");
+			h1.textContent = "Add to report";
+			t1 = space();
+			hr = element("hr");
+			t2 = space();
+			div1 = element("div");
+			create_component(textfield0.$$.fragment);
+			t3 = space();
+			div2 = element("div");
+
+			for (let i = 0; i < 4; i += 1) {
+				each_blocks_1[i].c();
+			}
+
+			t4 = space();
+			if (if_block) if_block.c();
+			t5 = space();
+
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+
+			t6 = space();
+			create_component(textfield1.$$.fragment);
+			t7 = space();
+			create_component(textfield2.$$.fragment);
+			t8 = space();
+			create_component(helpertext.$$.fragment);
+			t9 = space();
+			button0 = element("button");
+			button0.textContent = "Add to Report";
+			t11 = space();
+			button1 = element("button");
+			button1.textContent = "Show Report";
+			attr_dev(h1, "class", "mdc-typography--headline4");
+			add_location(h1, file$I, 123, 14, 4482);
+			attr_dev(div0, "class", "");
+			add_location(div0, file$I, 123, 0, 4468);
+			add_location(hr, file$I, 124, 0, 4546);
+			set_style(div1, "margin-bottom", "1em");
+			add_location(div1, file$I, 126, 0, 4554);
+			attr_dev(button0, "class", "button is-link");
+			attr_dev(button0, "tabindex", "0");
+			add_location(button0, file$I, 152, 4, 5808);
+			attr_dev(button1, "class", "button is-link");
+			attr_dev(button1, "tabindex", "0");
+			add_location(button1, file$I, 153, 4, 5941);
+			attr_dev(div2, "class", "align report");
+			attr_dev(div2, "id", /*id*/ ctx[0]);
+			add_location(div2, file$I, 130, 0, 4718);
+		},
+		l: function claim(nodes) {
+			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, div0, anchor);
+			append_dev(div0, h1);
+			insert_dev(target, t1, anchor);
+			insert_dev(target, hr, anchor);
+			insert_dev(target, t2, anchor);
+			insert_dev(target, div1, anchor);
+			mount_component(textfield0, div1, null);
+			insert_dev(target, t3, anchor);
+			insert_dev(target, div2, anchor);
+
+			for (let i = 0; i < 4; i += 1) {
+				each_blocks_1[i].m(div2, null);
+			}
+
+			append_dev(div2, t4);
+			if (if_block) if_block.m(div2, null);
+			append_dev(div2, t5);
+
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(div2, null);
+			}
+
+			append_dev(div2, t6);
+			mount_component(textfield1, div2, null);
+			append_dev(div2, t7);
+			mount_component(textfield2, div2, null);
+			append_dev(div2, t8);
+			mount_component(helpertext, div2, null);
+			append_dev(div2, t9);
+			append_dev(div2, button0);
+			append_dev(div2, t11);
+			append_dev(div2, button1);
+			current = true;
+
+			dispose = [
+				action_destroyer(Ripple_action = Ripple.call(null, button0, [true, { color: "primary" }])),
+				listen_dev(button0, "click", /*addReport*/ ctx[9], false, false, false),
+				action_destroyer(Ripple_action_1 = Ripple.call(null, button1, [true, { color: "primary" }])),
+				listen_dev(button1, "click", /*showReport*/ ctx[10], false, false, false)
+			];
+		},
+		p: function update(ctx, dirty) {
+			const textfield0_changes = {};
+
+			if (!updating_value && dirty[0] & /*reportMolecule*/ 128) {
+				updating_value = true;
+				textfield0_changes.value = /*reportMolecule*/ ctx[7];
+				add_flush_callback(() => updating_value = false);
+			}
+
+			textfield0.$set(textfield0_changes);
+
+			if (dirty[0] & /*reportMethod*/ 64) {
+				each_value_1 = [
+					{ name: "info", color: "white" },
+					{ name: "success", color: "#00ff00" },
+					{ name: "warning", color: "yellow" },
+					{ name: "danger", color: "red" }
+				];
+
+				let i;
+
+				for (i = 0; i < 4; i += 1) {
+					const child_ctx = get_each_context_1$1(ctx, each_value_1, i);
+
+					if (each_blocks_1[i]) {
+						each_blocks_1[i].p(child_ctx, dirty);
+						transition_in(each_blocks_1[i], 1);
+					} else {
+						each_blocks_1[i] = create_each_block_1$1(child_ctx);
+						each_blocks_1[i].c();
+						transition_in(each_blocks_1[i], 1);
+						each_blocks_1[i].m(div2, t4);
+					}
+				}
+
+				group_outros();
+
+				for (i = 4; i < 4; i += 1) {
+					out(i);
+				}
+
+				check_outros();
+			}
+
+			if (/*includeTable*/ ctx[2]) {
+				if (if_block) {
+					if_block.p(ctx, dirty);
+					transition_in(if_block, 1);
+				} else {
+					if_block = create_if_block$b(ctx);
+					if_block.c();
+					transition_in(if_block, 1);
+					if_block.m(div2, t5);
+				}
+			} else if (if_block) {
+				group_outros();
+
+				transition_out(if_block, 1, 1, () => {
+					if_block = null;
+				});
+
+				check_outros();
+			}
+
+			if (dirty[0] & /*plotID, extra_plotInclude*/ 10) {
+				each_value = /*plotID*/ ctx[1];
+				let i;
+
+				for (i = 0; i < each_value.length; i += 1) {
+					const child_ctx = get_each_context$3(ctx, each_value, i);
+
+					if (each_blocks[i]) {
+						each_blocks[i].p(child_ctx, dirty);
+						transition_in(each_blocks[i], 1);
+					} else {
+						each_blocks[i] = create_each_block$3(child_ctx);
+						each_blocks[i].c();
+						transition_in(each_blocks[i], 1);
+						each_blocks[i].m(div2, t6);
+					}
+				}
+
+				group_outros();
+
+				for (i = each_value.length; i < each_blocks.length; i += 1) {
+					out_1(i);
+				}
+
+				check_outros();
+			}
+
+			const textfield1_changes = {};
+
+			if (!updating_value_1 && dirty[0] & /*reportTitle*/ 16) {
+				updating_value_1 = true;
+				textfield1_changes.value = /*reportTitle*/ ctx[4];
+				add_flush_callback(() => updating_value_1 = false);
+			}
+
+			textfield1.$set(textfield1_changes);
+			const textfield2_changes = {};
+			if (dirty[0] & /*id*/ 1) textfield2_changes["input$aria-controls"] = "" + (/*id*/ ctx[0] + "_comments");
+			if (dirty[0] & /*id*/ 1) textfield2_changes["input$aria-describedby"] = "" + (/*id*/ ctx[0] + "_comments");
+
+			if (!updating_value_2 && dirty[0] & /*reportComments*/ 32) {
+				updating_value_2 = true;
+				textfield2_changes.value = /*reportComments*/ ctx[5];
+				add_flush_callback(() => updating_value_2 = false);
+			}
+
+			textfield2.$set(textfield2_changes);
+			const helpertext_changes = {};
+			if (dirty[0] & /*id*/ 1) helpertext_changes.id = "" + (/*id*/ ctx[0] + "_comments");
+
+			if (dirty[1] & /*$$scope*/ 2) {
+				helpertext_changes.$$scope = { dirty, ctx };
+			}
+
+			helpertext.$set(helpertext_changes);
+
+			if (!current || dirty[0] & /*id*/ 1) {
+				attr_dev(div2, "id", /*id*/ ctx[0]);
+			}
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(textfield0.$$.fragment, local);
+
+			for (let i = 0; i < 4; i += 1) {
+				transition_in(each_blocks_1[i]);
+			}
+
+			transition_in(if_block);
+
+			for (let i = 0; i < each_value.length; i += 1) {
+				transition_in(each_blocks[i]);
+			}
+
+			transition_in(textfield1.$$.fragment, local);
+			transition_in(textfield2.$$.fragment, local);
+			transition_in(helpertext.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(textfield0.$$.fragment, local);
+			each_blocks_1 = each_blocks_1.filter(Boolean);
+
+			for (let i = 0; i < 4; i += 1) {
+				transition_out(each_blocks_1[i]);
+			}
+
+			transition_out(if_block);
+			each_blocks = each_blocks.filter(Boolean);
+
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				transition_out(each_blocks[i]);
+			}
+
+			transition_out(textfield1.$$.fragment, local);
+			transition_out(textfield2.$$.fragment, local);
+			transition_out(helpertext.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(div0);
+			if (detaching) detach_dev(t1);
+			if (detaching) detach_dev(hr);
+			if (detaching) detach_dev(t2);
+			if (detaching) detach_dev(div1);
+			destroy_component(textfield0);
+			if (detaching) detach_dev(t3);
+			if (detaching) detach_dev(div2);
+			destroy_each(each_blocks_1, detaching);
+			if (if_block) if_block.d();
+			destroy_each(each_blocks, detaching);
+			destroy_component(textfield1);
+			destroy_component(textfield2);
+			destroy_component(helpertext);
+			run_all(dispose);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_fragment$L.name,
+		type: "component",
+		source: "",
+		ctx
+	});
+
+	return block;
+}
+
+async function asyncForEach(array, callback) {
+	for (let index = 0; index < array.length; index++) {
+		await callback(array[index], index, array);
+	}
+}
+
+function getImage(imgID) {
+	return new Promise(resolve => {
+			html2canvas(document.getElementById(imgID)).then(canvasElm => {
+				resolve(canvasElm.toDataURL());
+			});
+		});
+}
+
+function instance$L($$self, $$props, $$invalidate) {
+	const { BrowserWindow } = remote;
+
+	let { currentLocation = "" } = $$props,
+		{ id = "report" } = $$props,
+		{ plotID = [] } = $$props,
+		{ tableID = "felixTable" } = $$props,
+		{ includeTable = false } = $$props;
+
+	let extra_plotInclude = _.fill(Array(plotID.length), false);
+
+	let reportTitle = "",
+		reportComments = "",
+		reportMethod = "info",
+		reportMolecule = "",
+		reportCount = 0;
+
+	let include_table = includeTable, include_plot = true;
+	let reportTitleContents = "", loadContent = "";
+	localStorage["reportStyle"] = path.resolve(__dirname, "assets/reports/template.css");
+
+	const getHTMLContent = content => {
+		return `<!DOCTYPE html>
+            <html lang="en">
+                <head>
+                    <meta charset='utf8'>
+                    <meta name="viewport" content="width=device-width, initial-scale=1">
+                    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                    <title>${reportMolecule} Reports</title>
+                    <link rel="stylesheet" href="${localStorage["reportStyle"]}">
+                </head>
+
+                <body>
+                    <section class="section" id="mainSection">
+                        <div class="content">
+                            <h1 id="mainTitle">${reportMolecule}</h1>
+                            ${content}
+                        </div>
+                    </section>
+                </body>
+            </html>`;
+	};
+
+	const addReport = async () => {
+		reportCount++;
+		if (reportTitle.length == 0) $$invalidate(4, reportTitle = `Title-${reportCount}`);
+		if (reportComments.length == 0) $$invalidate(5, reportComments = "-");
+		let tableData, imgList_HTML = [];
+
+		include_table
+		? tableData = `<table class='table is-bordered is-hoverable'>${document.getElementById(tableID).innerHTML}</table>`
+		: tableData = "\n";
+
+		index = 0;
+
+		await asyncForEach(extra_plotInclude, async value => {
+			if (value) {
+				console.log("Request Image URL for ", plotID[index]);
+				let imgURL = await getImage(plotID[index]);
+				console.log(`Received Image URL for ${plotID[index]}\n`, imgURL);
+				imgList_HTML = [...imgList_HTML, `<img id='img-${plotID[index]}' src='${imgURL}'>`];
+				console.log(`${plotID[index]} Included in HTML`);
+			}
+
+			index++;
+		});
+
+		console.log("Combining HTML to write");
+		reportTitleContents += `\n<h1 class="notification is-${reportMethod}">${reportTitle}</h1>\n` + marked(reportComments) + imgList_HTML.toString() + tableData + "\n<hr>\n";
+		loadContent = getHTMLContent(reportTitleContents);
+		$$invalidate(5, reportComments = $$invalidate(4, reportTitle = ""));
+
+		fs.writeFile(reportFile, loadContent, function (err) {
+			if (err) {
+				createToast("Report couldn't be added.", "danger");
+				return console.log(err);
+			}
+
+			console.log("The file was saved!");
+			createToast("Report added", "success");
+		});
+	};
+
+	const showReport = () => {
+		let reportWindow = new BrowserWindow({
+				width: 1200,
+				minWidth: 600,
+				height: 600,
+				parent: remote.getCurrentWindow()
+			});
+
+		reportWindow.on("closed", () => {
+			reportWindow = null;
+			console.log("Report window closed");
+		});
+
+		reportWindow.loadURL(reportFile);
+
+		reportWindow.webContents.on("did-finish-load", () => {
+			console.log("Report loaded");
+		});
+	};
+
+	const writable_props = ["currentLocation", "id", "plotID", "tableID", "includeTable"];
+
+	Object.keys($$props).forEach(key => {
+		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1$1.warn(`<ReportLayout> was created with unknown prop '${key}'`);
+	});
+
+	function textfield0_value_binding(value) {
+		reportMolecule = value;
+		$$invalidate(7, reportMolecule);
+	}
+
+	function radio_group_binding(value) {
+		reportMethod = value;
+		$$invalidate(6, reportMethod);
+	}
+
+	function customcheckbox_selected_binding(value) {
+		include_table = value;
+		$$invalidate(8, include_table);
+	}
+
+	function customcheckbox_selected_binding_1(value, index) {
+		extra_plotInclude[index] = value;
+		$$invalidate(3, extra_plotInclude);
+	}
+
+	function textfield1_value_binding(value_1) {
+		reportTitle = value_1;
+		$$invalidate(4, reportTitle);
+	}
+
+	function textfield2_value_binding(value_2) {
+		reportComments = value_2;
+		$$invalidate(5, reportComments);
+	}
+
+	$$self.$set = $$props => {
+		if ("currentLocation" in $$props) $$invalidate(11, currentLocation = $$props.currentLocation);
+		if ("id" in $$props) $$invalidate(0, id = $$props.id);
+		if ("plotID" in $$props) $$invalidate(1, plotID = $$props.plotID);
+		if ("tableID" in $$props) $$invalidate(12, tableID = $$props.tableID);
+		if ("includeTable" in $$props) $$invalidate(2, includeTable = $$props.includeTable);
+	};
+
+	$$self.$capture_state = () => {
+		return {
+			currentLocation,
+			id,
+			plotID,
+			tableID,
+			includeTable,
+			extra_plotInclude,
+			reportTitle,
+			reportComments,
+			reportMethod,
+			reportMolecule,
+			reportCount,
+			include_table,
+			include_plot,
+			reportTitleContents,
+			loadContent,
+			reportFile
+		};
+	};
+
+	$$self.$inject_state = $$props => {
+		if ("currentLocation" in $$props) $$invalidate(11, currentLocation = $$props.currentLocation);
+		if ("id" in $$props) $$invalidate(0, id = $$props.id);
+		if ("plotID" in $$props) $$invalidate(1, plotID = $$props.plotID);
+		if ("tableID" in $$props) $$invalidate(12, tableID = $$props.tableID);
+		if ("includeTable" in $$props) $$invalidate(2, includeTable = $$props.includeTable);
+		if ("extra_plotInclude" in $$props) $$invalidate(3, extra_plotInclude = $$props.extra_plotInclude);
+		if ("reportTitle" in $$props) $$invalidate(4, reportTitle = $$props.reportTitle);
+		if ("reportComments" in $$props) $$invalidate(5, reportComments = $$props.reportComments);
+		if ("reportMethod" in $$props) $$invalidate(6, reportMethod = $$props.reportMethod);
+		if ("reportMolecule" in $$props) $$invalidate(7, reportMolecule = $$props.reportMolecule);
+		if ("reportCount" in $$props) reportCount = $$props.reportCount;
+		if ("include_table" in $$props) $$invalidate(8, include_table = $$props.include_table);
+		if ("include_plot" in $$props) include_plot = $$props.include_plot;
+		if ("reportTitleContents" in $$props) reportTitleContents = $$props.reportTitleContents;
+		if ("loadContent" in $$props) loadContent = $$props.loadContent;
+		if ("reportFile" in $$props) reportFile = $$props.reportFile;
+	};
+
+	let reportFile;
+
+	$$self.$$.update = () => {
+		if ($$self.$$.dirty[0] & /*currentLocation, reportMolecule*/ 2176) {
+			 reportFile = path.resolve(currentLocation, `${reportMolecule}_report.html`);
+		}
+
+		if ($$self.$$.dirty[0] & /*extra_plotInclude, plotID*/ 10) {
+			 console.log(extra_plotInclude, plotID);
+		}
+	};
+
+	return [
+		id,
+		plotID,
+		includeTable,
+		extra_plotInclude,
+		reportTitle,
+		reportComments,
+		reportMethod,
+		reportMolecule,
+		include_table,
+		addReport,
+		showReport,
+		currentLocation,
+		tableID,
+		reportCount,
+		reportTitleContents,
+		loadContent,
+		reportFile,
+		BrowserWindow,
+		include_plot,
+		getHTMLContent,
+		textfield0_value_binding,
+		radio_group_binding,
+		customcheckbox_selected_binding,
+		customcheckbox_selected_binding_1,
+		textfield1_value_binding,
+		textfield2_value_binding
+	];
+}
+
+class ReportLayout extends SvelteComponentDev {
+	constructor(options) {
+		super(options);
+
+		init(
+			this,
+			options,
+			instance$L,
+			create_fragment$L,
+			safe_not_equal,
+			{
+				currentLocation: 11,
+				id: 0,
+				plotID: 1,
+				tableID: 12,
+				includeTable: 2
+			},
+			[-1, -1]
+		);
+
+		dispatch_dev("SvelteRegisterComponent", {
+			component: this,
+			tagName: "ReportLayout",
+			options,
+			id: create_fragment$L.name
+		});
+	}
+
+	get currentLocation() {
+		throw new Error("<ReportLayout>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set currentLocation(value) {
+		throw new Error("<ReportLayout>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get id() {
+		throw new Error("<ReportLayout>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set id(value) {
+		throw new Error("<ReportLayout>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get plotID() {
+		throw new Error("<ReportLayout>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set plotID(value) {
+		throw new Error("<ReportLayout>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get tableID() {
+		throw new Error("<ReportLayout>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set tableID(value) {
+		throw new Error("<ReportLayout>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get includeTable() {
+		throw new Error("<ReportLayout>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set includeTable(value) {
+		throw new Error("<ReportLayout>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+}
+
+/* src\Pages\Normline.svelte generated by Svelte v3.17.0 */
+const file$J = "src\\Pages\\Normline.svelte";
+
+function get_each_context$4(ctx, list, i) {
+	const child_ctx = ctx.slice();
+	child_ctx[53] = list[i];
+	return child_ctx;
+}
+
+function get_each_context_1$2(ctx, list, i) {
+	const child_ctx = ctx.slice();
+	child_ctx[56] = list[i];
 	return child_ctx;
 }
 
 function get_each_context_2(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[80] = list[i];
+	child_ctx[59] = list[i];
 	return child_ctx;
 }
 
 function get_each_context_3(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[83] = list[i];
+	child_ctx[62] = list[i];
 	return child_ctx;
 }
 
-function get_each_context_4(ctx, list, i) {
-	const child_ctx = ctx.slice();
-	child_ctx[74] = list[i];
-	return child_ctx;
-}
-
-// (476:16) <Icon class="material-icons">
-function create_default_slot_18(ctx) {
+// (385:16) <Icon class="material-icons">
+function create_default_slot_16(ctx) {
 	let t;
 
 	const block = {
@@ -33188,17 +34239,17 @@ function create_default_slot_18(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_18.name,
+		id: create_default_slot_16.name,
 		type: "slot",
-		source: "(476:16) <Icon class=\\\"material-icons\\\">",
+		source: "(385:16) <Icon class=\\\"material-icons\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (477:16) <Icon class="material-icons" on>
-function create_default_slot_17(ctx) {
+// (386:16) <Icon class="material-icons" on>
+function create_default_slot_15(ctx) {
 	let t;
 
 	const block = {
@@ -33215,24 +34266,24 @@ function create_default_slot_17(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_17.name,
+		id: create_default_slot_15.name,
 		type: "slot",
-		source: "(477:16) <Icon class=\\\"material-icons\\\" on>",
+		source: "(386:16) <Icon class=\\\"material-icons\\\" on>",
 		ctx
 	});
 
 	return block;
 }
 
-// (475:12) <IconButton toggle bind:pressed={openShell}>
-function create_default_slot_16(ctx) {
+// (384:12) <IconButton toggle bind:pressed={openShell}>
+function create_default_slot_14$1(ctx) {
 	let t;
 	let current;
 
 	const icon0 = new Icon({
 			props: {
 				class: "material-icons",
-				$$slots: { default: [create_default_slot_18] },
+				$$slots: { default: [create_default_slot_16] },
 				$$scope: { ctx }
 			},
 			$$inline: true
@@ -33242,7 +34293,7 @@ function create_default_slot_16(ctx) {
 			props: {
 				class: "material-icons",
 				on: true,
-				$$slots: { default: [create_default_slot_17] },
+				$$slots: { default: [create_default_slot_15] },
 				$$scope: { ctx }
 			},
 			$$inline: true
@@ -33263,14 +34314,14 @@ function create_default_slot_16(ctx) {
 		p: function update(ctx, dirty) {
 			const icon0_changes = {};
 
-			if (dirty[2] & /*$$scope*/ 67108864) {
+			if (dirty[2] & /*$$scope*/ 8) {
 				icon0_changes.$$scope = { dirty, ctx };
 			}
 
 			icon0.$set(icon0_changes);
 			const icon1_changes = {};
 
-			if (dirty[2] & /*$$scope*/ 67108864) {
+			if (dirty[2] & /*$$scope*/ 8) {
 				icon1_changes.$$scope = { dirty, ctx };
 			}
 
@@ -33296,16 +34347,16 @@ function create_default_slot_16(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_16.name,
+		id: create_default_slot_14$1.name,
 		type: "slot",
-		source: "(475:12) <IconButton toggle bind:pressed={openShell}>",
+		source: "(384:12) <IconButton toggle bind:pressed={openShell}>",
 		ctx
 	});
 
 	return block;
 }
 
-// (482:8) {#if toggleRow}
+// (391:8) {#if toggleRow}
 function create_if_block_2$4(ctx) {
 	let div;
 	let button0;
@@ -33324,7 +34375,7 @@ function create_if_block_2$4(ctx) {
 	let dispose;
 
 	function textfield0_value_binding(value) {
-		/*textfield0_value_binding*/ ctx[57].call(null, value);
+		/*textfield0_value_binding*/ ctx[43].call(null, value);
 	}
 
 	let textfield0_props = {
@@ -33341,7 +34392,7 @@ function create_if_block_2$4(ctx) {
 	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
 
 	function textfield1_value_binding(value_1) {
-		/*textfield1_value_binding*/ ctx[58].call(null, value_1);
+		/*textfield1_value_binding*/ ctx[44].call(null, value_1);
 	}
 
 	let textfield1_props = {
@@ -33375,16 +34426,16 @@ function create_if_block_2$4(ctx) {
 			t7 = space();
 			button3 = element("button");
 			button3.textContent = "Submit";
-			attr_dev(button0, "class", "button is-link svelte-17zi02x");
-			add_location(button0, file$I, 483, 16, 20051);
-			attr_dev(button1, "class", "button is-link svelte-17zi02x");
-			add_location(button1, file$I, 484, 16, 20147);
-			attr_dev(button2, "class", "button is-link svelte-17zi02x");
-			add_location(button2, file$I, 487, 16, 20466);
-			attr_dev(button3, "class", "button is-link svelte-17zi02x");
-			add_location(button3, file$I, 488, 16, 20542);
-			attr_dev(div, "class", "align svelte-17zi02x");
-			add_location(div, file$I, 482, 12, 19969);
+			attr_dev(button0, "class", "button is-link svelte-1sfup9s");
+			add_location(button0, file$J, 392, 16, 16480);
+			attr_dev(button1, "class", "button is-link svelte-1sfup9s");
+			add_location(button1, file$J, 393, 16, 16576);
+			attr_dev(button2, "class", "button is-link svelte-1sfup9s");
+			add_location(button2, file$J, 396, 16, 16895);
+			attr_dev(button3, "class", "button is-link svelte-1sfup9s");
+			add_location(button3, file$J, 397, 16, 16971);
+			attr_dev(div, "class", "align svelte-1sfup9s");
+			add_location(div, file$J, 391, 12, 16398);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -33402,12 +34453,12 @@ function create_if_block_2$4(ctx) {
 			current = true;
 
 			dispose = [
-				listen_dev(button0, "click", /*get_theoryfiles*/ ctx[25], false, false, false),
+				listen_dev(button0, "click", /*get_theoryfiles*/ ctx[17], false, false, false),
 				listen_dev(
 					button1,
 					"click",
 					function () {
-						if (is_function(/*$bindDialog*/ ctx[21].open)) /*$bindDialog*/ ctx[21].open.apply(this, arguments);
+						if (is_function(/*$bindDialog*/ ctx[13].open)) /*$bindDialog*/ ctx[13].open.apply(this, arguments);
 					},
 					false,
 					false,
@@ -33468,25 +34519,25 @@ function create_if_block_2$4(ctx) {
 		block,
 		id: create_if_block_2$4.name,
 		type: "if",
-		source: "(482:8) {#if toggleRow}",
+		source: "(391:8) {#if toggleRow}",
 		ctx
 	});
 
 	return block;
 }
 
-// (498:20) <span slot="label">
-function create_label_slot_2(ctx) {
+// (407:20) <span slot="label">
+function create_label_slot_1(ctx) {
 	let span;
 	let t;
 
 	const block = {
 		c: function create() {
 			span = element("span");
-			t = text(/*method*/ ctx[74]);
+			t = text(/*method*/ ctx[62]);
 			attr_dev(span, "slot", "label");
-			attr_dev(span, "class", "svelte-17zi02x");
-			add_location(span, file$I, 497, 20, 20871);
+			attr_dev(span, "class", "svelte-1sfup9s");
+			add_location(span, file$J, 406, 20, 17300);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -33500,27 +34551,27 @@ function create_label_slot_2(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_label_slot_2.name,
+		id: create_label_slot_1.name,
 		type: "slot",
-		source: "(498:20) <span slot=\\\"label\\\">",
+		source: "(407:20) <span slot=\\\"label\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (496:16) <FormField >
-function create_default_slot_15(ctx) {
+// (405:16) <FormField >
+function create_default_slot_13$1(ctx) {
 	let updating_group;
 	let t0;
 	let t1;
 	let current;
 
 	function radio_group_binding(value) {
-		/*radio_group_binding*/ ctx[59].call(null, value);
+		/*radio_group_binding*/ ctx[45].call(null, value);
 	}
 
-	let radio_props = { value: /*method*/ ctx[74] };
+	let radio_props = { value: /*method*/ ctx[62] };
 
 	if (/*normMethod*/ ctx[8] !== void 0) {
 		radio_props.group = /*normMethod*/ ctx[8];
@@ -33570,24 +34621,24 @@ function create_default_slot_15(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_15.name,
+		id: create_default_slot_13$1.name,
 		type: "slot",
-		source: "(496:16) <FormField >",
+		source: "(405:16) <FormField >",
 		ctx
 	});
 
 	return block;
 }
 
-// (495:12) {#each ["Log", "Relative", "IntensityPerPhoton"] as method}
-function create_each_block_4(ctx) {
+// (404:12) {#each ["Log", "Relative", "IntensityPerPhoton"] as method}
+function create_each_block_3(ctx) {
 	let current;
 
 	const formfield = new FormField({
 			props: {
 				$$slots: {
-					default: [create_default_slot_15],
-					label: [create_label_slot_2]
+					default: [create_default_slot_13$1],
+					label: [create_label_slot_1]
 				},
 				$$scope: { ctx }
 			},
@@ -33605,7 +34656,7 @@ function create_each_block_4(ctx) {
 		p: function update(ctx, dirty) {
 			const formfield_changes = {};
 
-			if (dirty[0] & /*normMethod*/ 256 | dirty[2] & /*$$scope*/ 67108864) {
+			if (dirty[0] & /*normMethod*/ 256 | dirty[2] & /*$$scope*/ 8) {
 				formfield_changes.$$scope = { dirty, ctx };
 			}
 
@@ -33627,16 +34678,16 @@ function create_each_block_4(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_each_block_4.name,
+		id: create_each_block_3.name,
 		type: "each",
-		source: "(495:12) {#each [\\\"Log\\\", \\\"Relative\\\", \\\"IntensityPerPhoton\\\"] as method}",
+		source: "(404:12) {#each [\\\"Log\\\", \\\"Relative\\\", \\\"IntensityPerPhoton\\\"] as method}",
 		ctx
 	});
 
 	return block;
 }
 
-// (465:4) <div class="buttonSlot" slot="buttonContainer">
+// (374:4) <div class="buttonSlot" slot="buttonContainer">
 function create_buttonContainer_slot(ctx) {
 	let div0;
 	let div1;
@@ -33661,7 +34712,7 @@ function create_buttonContainer_slot(ctx) {
 	let dispose;
 
 	function textfield_value_binding(value) {
-		/*textfield_value_binding*/ ctx[55].call(null, value);
+		/*textfield_value_binding*/ ctx[41].call(null, value);
 	}
 
 	let textfield_props = {
@@ -33678,12 +34729,12 @@ function create_buttonContainer_slot(ctx) {
 	binding_callbacks.push(() => bind(textfield, "value", textfield_value_binding));
 
 	function iconbutton_pressed_binding(value_1) {
-		/*iconbutton_pressed_binding*/ ctx[56].call(null, value_1);
+		/*iconbutton_pressed_binding*/ ctx[42].call(null, value_1);
 	}
 
 	let iconbutton_props = {
 		toggle: true,
-		$$slots: { default: [create_default_slot_16] },
+		$$slots: { default: [create_default_slot_14$1] },
 		$$scope: { ctx }
 	};
 
@@ -33694,11 +34745,11 @@ function create_buttonContainer_slot(ctx) {
 	const iconbutton = new IconButton({ props: iconbutton_props, $$inline: true });
 	binding_callbacks.push(() => bind(iconbutton, "pressed", iconbutton_pressed_binding));
 	let if_block = /*toggleRow*/ ctx[2] && create_if_block_2$4(ctx);
-	let each_value_4 = ["Log", "Relative", "IntensityPerPhoton"];
+	let each_value_3 = ["Log", "Relative", "IntensityPerPhoton"];
 	let each_blocks = [];
 
 	for (let i = 0; i < 3; i += 1) {
-		each_blocks[i] = create_each_block_4(get_each_context_4(ctx, each_value_4, i));
+		each_blocks[i] = create_each_block_3(get_each_context_3(ctx, each_value_3, i));
 	}
 
 	const out = i => transition_out(each_blocks[i], 1, 1, () => {
@@ -33736,24 +34787,24 @@ function create_buttonContainer_slot(ctx) {
 				each_blocks[i].c();
 			}
 
-			attr_dev(button0, "class", "button is-link svelte-17zi02x");
-			add_location(button0, file$I, 468, 12, 19115);
-			attr_dev(button1, "class", "button is-link svelte-17zi02x");
-			add_location(button1, file$I, 469, 12, 19184);
-			attr_dev(button2, "class", "button is-link svelte-17zi02x");
+			attr_dev(button0, "class", "button is-link svelte-1sfup9s");
+			add_location(button0, file$J, 377, 12, 15544);
+			attr_dev(button1, "class", "button is-link svelte-1sfup9s");
+			add_location(button1, file$J, 378, 12, 15613);
+			attr_dev(button2, "class", "button is-link svelte-1sfup9s");
 			attr_dev(button2, "tabindex", "0");
-			add_location(button2, file$I, 470, 12, 19287);
-			attr_dev(button3, "class", "button is-link svelte-17zi02x");
-			add_location(button3, file$I, 471, 12, 19444);
-			attr_dev(button4, "class", "button is-link svelte-17zi02x");
-			add_location(button4, file$I, 472, 12, 19516);
-			attr_dev(div1, "class", "align svelte-17zi02x");
-			add_location(div1, file$I, 466, 8, 19079);
-			attr_dev(div2, "class", "align svelte-17zi02x");
-			add_location(div2, file$I, 493, 8, 20637);
-			attr_dev(div0, "class", "buttonSlot svelte-17zi02x");
+			add_location(button2, file$J, 379, 12, 15716);
+			attr_dev(button3, "class", "button is-link svelte-1sfup9s");
+			add_location(button3, file$J, 380, 12, 15873);
+			attr_dev(button4, "class", "button is-link svelte-1sfup9s");
+			add_location(button4, file$J, 381, 12, 15945);
+			attr_dev(div1, "class", "align svelte-1sfup9s");
+			add_location(div1, file$J, 375, 8, 15508);
+			attr_dev(div2, "class", "align svelte-1sfup9s");
+			add_location(div2, file$J, 402, 8, 17066);
+			attr_dev(div0, "class", "buttonSlot svelte-1sfup9s");
 			attr_dev(div0, "slot", "buttonContainer");
-			add_location(div0, file$I, 464, 4, 19020);
+			add_location(div0, file$J, 373, 4, 15449);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -33783,11 +34834,11 @@ function create_buttonContainer_slot(ctx) {
 			current = true;
 
 			dispose = [
-				listen_dev(button1, "click", /*click_handler*/ ctx[52], false, false, false),
+				listen_dev(button1, "click", /*click_handler*/ ctx[38], false, false, false),
 				action_destroyer(Ripple_action = Ripple.call(null, button2, [true, { color: "primary" }])),
-				listen_dev(button2, "click", /*click_handler_1*/ ctx[53], false, false, false),
-				listen_dev(button4, "click", /*click_handler_2*/ ctx[54], false, false, false),
-				listen_dev(div2, "change", /*replot*/ ctx[27], false, false, false)
+				listen_dev(button2, "click", /*click_handler_1*/ ctx[39], false, false, false),
+				listen_dev(button4, "click", /*click_handler_2*/ ctx[40], false, false, false),
+				listen_dev(div2, "change", /*replot*/ ctx[19], false, false, false)
 			];
 		},
 		p: function update(ctx, dirty) {
@@ -33802,7 +34853,7 @@ function create_buttonContainer_slot(ctx) {
 			textfield.$set(textfield_changes);
 			const iconbutton_changes = {};
 
-			if (dirty[2] & /*$$scope*/ 67108864) {
+			if (dirty[2] & /*$$scope*/ 8) {
 				iconbutton_changes.$$scope = { dirty, ctx };
 			}
 
@@ -33835,17 +34886,17 @@ function create_buttonContainer_slot(ctx) {
 			}
 
 			if (dirty[0] & /*normMethod*/ 256) {
-				each_value_4 = ["Log", "Relative", "IntensityPerPhoton"];
+				each_value_3 = ["Log", "Relative", "IntensityPerPhoton"];
 				let i;
 
 				for (i = 0; i < 3; i += 1) {
-					const child_ctx = get_each_context_4(ctx, each_value_4, i);
+					const child_ctx = get_each_context_3(ctx, each_value_3, i);
 
 					if (each_blocks[i]) {
 						each_blocks[i].p(child_ctx, dirty);
 						transition_in(each_blocks[i], 1);
 					} else {
-						each_blocks[i] = create_each_block_4(child_ctx);
+						each_blocks[i] = create_each_block_3(child_ctx);
 						each_blocks[i].c();
 						transition_in(each_blocks[i], 1);
 						each_blocks[i].m(div2, null);
@@ -33899,14 +34950,14 @@ function create_buttonContainer_slot(ctx) {
 		block,
 		id: create_buttonContainer_slot.name,
 		type: "slot",
-		source: "(465:4) <div class=\\\"buttonSlot\\\" slot=\\\"buttonContainer\\\">",
+		source: "(374:4) <div class=\\\"buttonSlot\\\" slot=\\\"buttonContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (507:8) {#if show_theoryplot}
+// (416:8) {#if show_theoryplot}
 function create_if_block_1$5(ctx) {
 	let div;
 	let div_transition;
@@ -33916,8 +34967,8 @@ function create_if_block_1$5(ctx) {
 		c: function create() {
 			div = element("div");
 			attr_dev(div, "id", "exp-theory-plot");
-			attr_dev(div, "class", "svelte-17zi02x");
-			add_location(div, file$I, 507, 12, 21084);
+			attr_dev(div, "class", "svelte-1sfup9s");
+			add_location(div, file$J, 416, 12, 17513);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -33948,15 +34999,15 @@ function create_if_block_1$5(ctx) {
 		block,
 		id: create_if_block_1$5.name,
 		type: "if",
-		source: "(507:8) {#if show_theoryplot}",
+		source: "(416:8) {#if show_theoryplot}",
 		ctx
 	});
 
 	return block;
 }
 
-// (515:8) {#if graphPlotted}
-function create_if_block$b(ctx) {
+// (424:8) {#if graphPlotted}
+function create_if_block$c(ctx) {
 	let div0;
 	let updating_value;
 	let t0;
@@ -33971,51 +35022,24 @@ function create_if_block$b(ctx) {
 	let div0_transition;
 	let t9;
 	let div1;
-	let h10;
+	let h1;
 	let t11;
-	let hr0;
+	let hr;
 	let t12;
 	let div2;
 	let div2_transition;
 	let t13;
-	let div3;
-	let h11;
-	let t15;
-	let hr1;
-	let t16;
-	let div4;
-	let updating_value_1;
-	let t17;
-	let div5;
-	let t18;
-	let updating_selected;
-	let t19;
-	let updating_selected_1;
-	let t20;
-	let updating_selected_2;
-	let t21;
-	let updating_selected_3;
-	let t22;
-	let updating_value_2;
-	let t23;
-	let updating_value_3;
-	let t24;
-	let t25;
-	let button4;
-	let Ripple_action;
-	let t27;
-	let button5;
-	let Ripple_action_1;
+	let updating_currentLocation;
 	let current;
 	let dispose;
 
 	function select_value_binding(value) {
-		/*select_value_binding*/ ctx[60].call(null, value);
+		/*select_value_binding*/ ctx[46].call(null, value);
 	}
 
 	let select_props = {
 		label: "Output filename",
-		$$slots: { default: [create_default_slot_13$1] },
+		$$slots: { default: [create_default_slot_11$1] },
 		$$scope: { ctx }
 	};
 
@@ -34030,8 +35054,8 @@ function create_if_block$b(ctx) {
 			props: {
 				style: "margin: 0 1em; padding-bottom: 1em;",
 				$$slots: {
-					default: [create_default_slot_12$1],
-					label: [create_label_slot_1]
+					default: [create_default_slot_10$1],
+					label: [create_label_slot$4]
 				},
 				$$scope: { ctx }
 			},
@@ -34043,157 +35067,33 @@ function create_if_block$b(ctx) {
 				"table$aria-label": "felixfile line-list",
 				table$id: "felixTable",
 				id: "felixTableContainer",
-				$$slots: { default: [create_default_slot_3$4] },
+				$$slots: { default: [create_default_slot_1$8] },
 				$$scope: { ctx }
 			},
 			$$inline: true
 		});
 
-	function textfield0_value_binding_1(value_1) {
-		/*textfield0_value_binding_1*/ ctx[64].call(null, value_1);
+	function reportlayout_currentLocation_binding(value_1) {
+		/*reportlayout_currentLocation_binding*/ ctx[50].call(null, value_1);
 	}
 
-	let textfield0_props = {
-		style: "height:3em; width:20em;",
-		variant: "outlined",
-		label: "Molecule Name"
+	let reportlayout_props = {
+		id: "felixreport",
+		",": true,
+		plotID: ["bplot", "saPlot", "avgplot", "exp-theory-plot"],
+		includeTable: true
 	};
 
-	if (/*reportMolecule*/ ctx[16] !== void 0) {
-		textfield0_props.value = /*reportMolecule*/ ctx[16];
+	if (/*currentLocation*/ ctx[4] !== void 0) {
+		reportlayout_props.currentLocation = /*currentLocation*/ ctx[4];
 	}
 
-	const textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
-	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding_1));
-
-	let each_value = [
-		{ name: "info", color: "white" },
-		{ name: "success", color: "#00ff00" },
-		{ name: "warning", color: "yellow" },
-		{ name: "danger", color: "red" }
-	];
-
-	let each_blocks = [];
-
-	for (let i = 0; i < 4; i += 1) {
-		each_blocks[i] = create_each_block$3(get_each_context$3(ctx, each_value, i));
-	}
-
-	const out = i => transition_out(each_blocks[i], 1, 1, () => {
-		each_blocks[i] = null;
-	});
-
-	function customcheckbox0_selected_binding(value_2) {
-		/*customcheckbox0_selected_binding*/ ctx[66].call(null, value_2);
-	}
-
-	let customcheckbox0_props = { label: "Include table" };
-
-	if (/*include_table*/ ctx[17] !== void 0) {
-		customcheckbox0_props.selected = /*include_table*/ ctx[17];
-	}
-
-	const customcheckbox0 = new CustomCheckbox({
-			props: customcheckbox0_props,
+	const reportlayout = new ReportLayout({
+			props: reportlayout_props,
 			$$inline: true
 		});
 
-	binding_callbacks.push(() => bind(customcheckbox0, "selected", customcheckbox0_selected_binding));
-
-	function customcheckbox1_selected_binding(value_3) {
-		/*customcheckbox1_selected_binding*/ ctx[67].call(null, value_3);
-	}
-
-	let customcheckbox1_props = { label: "Final plot" };
-
-	if (/*include_avgplot*/ ctx[18] !== void 0) {
-		customcheckbox1_props.selected = /*include_avgplot*/ ctx[18];
-	}
-
-	const customcheckbox1 = new CustomCheckbox({
-			props: customcheckbox1_props,
-			$$inline: true
-		});
-
-	binding_callbacks.push(() => bind(customcheckbox1, "selected", customcheckbox1_selected_binding));
-
-	function customcheckbox2_selected_binding(value_4) {
-		/*customcheckbox2_selected_binding*/ ctx[68].call(null, value_4);
-	}
-
-	let customcheckbox2_props = { label: "Original plot" };
-
-	if (/*include_bplot*/ ctx[20] !== void 0) {
-		customcheckbox2_props.selected = /*include_bplot*/ ctx[20];
-	}
-
-	const customcheckbox2 = new CustomCheckbox({
-			props: customcheckbox2_props,
-			$$inline: true
-		});
-
-	binding_callbacks.push(() => bind(customcheckbox2, "selected", customcheckbox2_selected_binding));
-
-	function customcheckbox3_selected_binding(value_5) {
-		/*customcheckbox3_selected_binding*/ ctx[69].call(null, value_5);
-	}
-
-	let customcheckbox3_props = { label: "Power & SA plot" };
-
-	if (/*include_saplot*/ ctx[19] !== void 0) {
-		customcheckbox3_props.selected = /*include_saplot*/ ctx[19];
-	}
-
-	const customcheckbox3 = new CustomCheckbox({
-			props: customcheckbox3_props,
-			$$inline: true
-		});
-
-	binding_callbacks.push(() => bind(customcheckbox3, "selected", customcheckbox3_selected_binding));
-
-	function textfield1_value_binding_1(value_6) {
-		/*textfield1_value_binding_1*/ ctx[70].call(null, value_6);
-	}
-
-	let textfield1_props = {
-		style: "height:3em; margin-bottom:1em;",
-		variant: "outlined",
-		label: "Title"
-	};
-
-	if (/*reportTitle*/ ctx[13] !== void 0) {
-		textfield1_props.value = /*reportTitle*/ ctx[13];
-	}
-
-	const textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
-	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding_1));
-
-	function textfield2_value_binding(value_7) {
-		/*textfield2_value_binding*/ ctx[71].call(null, value_7);
-	}
-
-	let textfield2_props = {
-		textarea: true,
-		label: "Comments",
-		"input$aria-controls": "felixreport_comments",
-		"input$aria-describedby": "felixreport_comments"
-	};
-
-	if (/*reportComments*/ ctx[14] !== void 0) {
-		textfield2_props.value = /*reportComments*/ ctx[14];
-	}
-
-	const textfield2 = new Textfield({ props: textfield2_props, $$inline: true });
-	binding_callbacks.push(() => bind(textfield2, "value", textfield2_value_binding));
-
-	const helpertext = new HelperText({
-			props: {
-				id: "felixreport_comments",
-				$$slots: { default: [create_default_slot_1$7] },
-				$$scope: { ctx }
-			},
-			$$inline: true
-		});
+	binding_callbacks.push(() => bind(reportlayout, "currentLocation", reportlayout_currentLocation_binding));
 
 	const block = {
 		c: function create() {
@@ -34215,85 +35115,33 @@ function create_if_block$b(ctx) {
 			button3.textContent = "Clear Table";
 			t9 = space();
 			div1 = element("div");
-			h10 = element("h1");
-			h10.textContent = "Frequency table";
+			h1 = element("h1");
+			h1.textContent = "Frequency table";
 			t11 = space();
-			hr0 = element("hr");
+			hr = element("hr");
 			t12 = space();
 			div2 = element("div");
 			create_component(datatable.$$.fragment);
 			t13 = space();
-			div3 = element("div");
-			h11 = element("h1");
-			h11.textContent = "Add to report";
-			t15 = space();
-			hr1 = element("hr");
-			t16 = space();
-			div4 = element("div");
-			create_component(textfield0.$$.fragment);
-			t17 = space();
-			div5 = element("div");
-
-			for (let i = 0; i < 4; i += 1) {
-				each_blocks[i].c();
-			}
-
-			t18 = space();
-			create_component(customcheckbox0.$$.fragment);
-			t19 = space();
-			create_component(customcheckbox1.$$.fragment);
-			t20 = space();
-			create_component(customcheckbox2.$$.fragment);
-			t21 = space();
-			create_component(customcheckbox3.$$.fragment);
-			t22 = space();
-			create_component(textfield1.$$.fragment);
-			t23 = space();
-			create_component(textfield2.$$.fragment);
-			t24 = space();
-			create_component(helpertext.$$.fragment);
-			t25 = space();
-			button4 = element("button");
-			button4.textContent = "Add to Report";
-			t27 = space();
-			button5 = element("button");
-			button5.textContent = "Show Report";
-			attr_dev(button0, "class", "button is-link svelte-17zi02x");
-			add_location(button0, file$I, 527, 16, 21913);
-			attr_dev(button1, "class", "button is-warning svelte-17zi02x");
-			add_location(button1, file$I, 528, 16, 22020);
-			attr_dev(button2, "class", "button is-danger svelte-17zi02x");
-			add_location(button2, file$I, 529, 16, 22116);
-			attr_dev(button3, "class", "button is-danger svelte-17zi02x");
-			add_location(button3, file$I, 530, 16, 22209);
-			attr_dev(div0, "class", "svelte-17zi02x");
-			add_location(div0, file$I, 517, 12, 21358);
-			attr_dev(h10, "class", "mdc-typography--headline4 svelte-17zi02x");
-			add_location(h10, file$I, 534, 26, 22387);
-			attr_dev(div1, "class", " svelte-17zi02x");
-			add_location(div1, file$I, 534, 12, 22373);
-			attr_dev(hr0, "class", "svelte-17zi02x");
-			add_location(hr0, file$I, 535, 12, 22465);
-			attr_dev(div2, "class", "dataTable svelte-17zi02x");
-			add_location(div2, file$I, 537, 12, 22497);
-			attr_dev(h11, "class", "mdc-typography--headline4 svelte-17zi02x");
-			add_location(h11, file$I, 561, 26, 23473);
-			attr_dev(div3, "class", " svelte-17zi02x");
-			add_location(div3, file$I, 561, 12, 23459);
-			attr_dev(hr1, "class", "svelte-17zi02x");
-			add_location(hr1, file$I, 562, 12, 23549);
-			set_style(div4, "margin-bottom", "1em");
-			attr_dev(div4, "class", "svelte-17zi02x");
-			add_location(div4, file$I, 564, 12, 23569);
-			attr_dev(button4, "class", "button is-link svelte-17zi02x");
-			attr_dev(button4, "tabindex", "0");
-			add_location(button4, file$I, 586, 16, 25169);
-			attr_dev(button5, "class", "button is-link svelte-17zi02x");
-			attr_dev(button5, "tabindex", "0");
-			add_location(button5, file$I, 587, 16, 25314);
-			attr_dev(div5, "class", "align report svelte-17zi02x");
-			attr_dev(div5, "id", "felixreport");
-			add_location(div5, file$I, 568, 12, 23769);
+			create_component(reportlayout.$$.fragment);
+			attr_dev(button0, "class", "button is-link svelte-1sfup9s");
+			add_location(button0, file$J, 436, 16, 18342);
+			attr_dev(button1, "class", "button is-warning svelte-1sfup9s");
+			add_location(button1, file$J, 437, 16, 18449);
+			attr_dev(button2, "class", "button is-danger svelte-1sfup9s");
+			add_location(button2, file$J, 438, 16, 18545);
+			attr_dev(button3, "class", "button is-danger svelte-1sfup9s");
+			add_location(button3, file$J, 439, 16, 18638);
+			attr_dev(div0, "class", "svelte-1sfup9s");
+			add_location(div0, file$J, 426, 12, 17787);
+			attr_dev(h1, "class", "mdc-typography--headline4 svelte-1sfup9s");
+			add_location(h1, file$J, 443, 17, 18807);
+			attr_dev(div1, "class", "svelte-1sfup9s");
+			add_location(div1, file$J, 443, 12, 18802);
+			attr_dev(hr, "class", "svelte-1sfup9s");
+			add_location(hr, file$J, 444, 12, 18885);
+			attr_dev(div2, "class", "dataTable svelte-1sfup9s");
+			add_location(div2, file$J, 445, 12, 18903);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -34310,62 +35158,27 @@ function create_if_block$b(ctx) {
 			append_dev(div0, button3);
 			insert_dev(target, t9, anchor);
 			insert_dev(target, div1, anchor);
-			append_dev(div1, h10);
+			append_dev(div1, h1);
 			insert_dev(target, t11, anchor);
-			insert_dev(target, hr0, anchor);
+			insert_dev(target, hr, anchor);
 			insert_dev(target, t12, anchor);
 			insert_dev(target, div2, anchor);
 			mount_component(datatable, div2, null);
 			insert_dev(target, t13, anchor);
-			insert_dev(target, div3, anchor);
-			append_dev(div3, h11);
-			insert_dev(target, t15, anchor);
-			insert_dev(target, hr1, anchor);
-			insert_dev(target, t16, anchor);
-			insert_dev(target, div4, anchor);
-			mount_component(textfield0, div4, null);
-			insert_dev(target, t17, anchor);
-			insert_dev(target, div5, anchor);
-
-			for (let i = 0; i < 4; i += 1) {
-				each_blocks[i].m(div5, null);
-			}
-
-			append_dev(div5, t18);
-			mount_component(customcheckbox0, div5, null);
-			append_dev(div5, t19);
-			mount_component(customcheckbox1, div5, null);
-			append_dev(div5, t20);
-			mount_component(customcheckbox2, div5, null);
-			append_dev(div5, t21);
-			mount_component(customcheckbox3, div5, null);
-			append_dev(div5, t22);
-			mount_component(textfield1, div5, null);
-			append_dev(div5, t23);
-			mount_component(textfield2, div5, null);
-			append_dev(div5, t24);
-			mount_component(helpertext, div5, null);
-			append_dev(div5, t25);
-			append_dev(div5, button4);
-			append_dev(div5, t27);
-			append_dev(div5, button5);
+			mount_component(reportlayout, target, anchor);
 			current = true;
 
 			dispose = [
-				listen_dev(button0, "click", /*click_handler_3*/ ctx[62], false, false, false),
-				listen_dev(button1, "click", /*clearLastPeak*/ ctx[30], false, false, false),
-				listen_dev(button2, "click", /*clearAllPeak*/ ctx[29], false, false, false),
-				listen_dev(button3, "click", /*click_handler_4*/ ctx[63], false, false, false),
-				action_destroyer(Ripple_action = Ripple.call(null, button4, [true, { color: "primary" }])),
-				listen_dev(button4, "click", /*addReport*/ ctx[31], false, false, false),
-				action_destroyer(Ripple_action_1 = Ripple.call(null, button5, [true, { color: "primary" }])),
-				listen_dev(button5, "click", /*showReport*/ ctx[32], false, false, false)
+				listen_dev(button0, "click", /*click_handler_3*/ ctx[48], false, false, false),
+				listen_dev(button1, "click", /*clearLastPeak*/ ctx[22], false, false, false),
+				listen_dev(button2, "click", /*clearAllPeak*/ ctx[21], false, false, false),
+				listen_dev(button3, "click", /*click_handler_4*/ ctx[49], false, false, false)
 			];
 		},
 		p: function update(ctx, dirty) {
 			const select_changes = {};
 
-			if (dirty[0] & /*plottedFiles, output_name*/ 2056 | dirty[2] & /*$$scope*/ 67108864) {
+			if (dirty[0] & /*plottedFiles, output_name*/ 2056 | dirty[2] & /*$$scope*/ 8) {
 				select_changes.$$scope = { dirty, ctx };
 			}
 
@@ -34378,122 +35191,27 @@ function create_if_block$b(ctx) {
 			select.$set(select_changes);
 			const formfield_changes = {};
 
-			if (dirty[0] & /*overwrite_expfit*/ 1024 | dirty[2] & /*$$scope*/ 67108864) {
+			if (dirty[0] & /*overwrite_expfit*/ 1024 | dirty[2] & /*$$scope*/ 8) {
 				formfield_changes.$$scope = { dirty, ctx };
 			}
 
 			formfield.$set(formfield_changes);
 			const datatable_changes = {};
 
-			if (dirty[0] & /*dataTable*/ 4096 | dirty[2] & /*$$scope*/ 67108864) {
+			if (dirty[0] & /*dataTable*/ 4096 | dirty[2] & /*$$scope*/ 8) {
 				datatable_changes.$$scope = { dirty, ctx };
 			}
 
 			datatable.$set(datatable_changes);
-			const textfield0_changes = {};
+			const reportlayout_changes = {};
 
-			if (!updating_value_1 && dirty[0] & /*reportMolecule*/ 65536) {
-				updating_value_1 = true;
-				textfield0_changes.value = /*reportMolecule*/ ctx[16];
-				add_flush_callback(() => updating_value_1 = false);
+			if (!updating_currentLocation && dirty[0] & /*currentLocation*/ 16) {
+				updating_currentLocation = true;
+				reportlayout_changes.currentLocation = /*currentLocation*/ ctx[4];
+				add_flush_callback(() => updating_currentLocation = false);
 			}
 
-			textfield0.$set(textfield0_changes);
-
-			if (dirty[0] & /*reportMethod*/ 32768) {
-				each_value = [
-					{ name: "info", color: "white" },
-					{ name: "success", color: "#00ff00" },
-					{ name: "warning", color: "yellow" },
-					{ name: "danger", color: "red" }
-				];
-
-				let i;
-
-				for (i = 0; i < 4; i += 1) {
-					const child_ctx = get_each_context$3(ctx, each_value, i);
-
-					if (each_blocks[i]) {
-						each_blocks[i].p(child_ctx, dirty);
-						transition_in(each_blocks[i], 1);
-					} else {
-						each_blocks[i] = create_each_block$3(child_ctx);
-						each_blocks[i].c();
-						transition_in(each_blocks[i], 1);
-						each_blocks[i].m(div5, t18);
-					}
-				}
-
-				group_outros();
-
-				for (i = 4; i < 4; i += 1) {
-					out(i);
-				}
-
-				check_outros();
-			}
-
-			const customcheckbox0_changes = {};
-
-			if (!updating_selected && dirty[0] & /*include_table*/ 131072) {
-				updating_selected = true;
-				customcheckbox0_changes.selected = /*include_table*/ ctx[17];
-				add_flush_callback(() => updating_selected = false);
-			}
-
-			customcheckbox0.$set(customcheckbox0_changes);
-			const customcheckbox1_changes = {};
-
-			if (!updating_selected_1 && dirty[0] & /*include_avgplot*/ 262144) {
-				updating_selected_1 = true;
-				customcheckbox1_changes.selected = /*include_avgplot*/ ctx[18];
-				add_flush_callback(() => updating_selected_1 = false);
-			}
-
-			customcheckbox1.$set(customcheckbox1_changes);
-			const customcheckbox2_changes = {};
-
-			if (!updating_selected_2 && dirty[0] & /*include_bplot*/ 1048576) {
-				updating_selected_2 = true;
-				customcheckbox2_changes.selected = /*include_bplot*/ ctx[20];
-				add_flush_callback(() => updating_selected_2 = false);
-			}
-
-			customcheckbox2.$set(customcheckbox2_changes);
-			const customcheckbox3_changes = {};
-
-			if (!updating_selected_3 && dirty[0] & /*include_saplot*/ 524288) {
-				updating_selected_3 = true;
-				customcheckbox3_changes.selected = /*include_saplot*/ ctx[19];
-				add_flush_callback(() => updating_selected_3 = false);
-			}
-
-			customcheckbox3.$set(customcheckbox3_changes);
-			const textfield1_changes = {};
-
-			if (!updating_value_2 && dirty[0] & /*reportTitle*/ 8192) {
-				updating_value_2 = true;
-				textfield1_changes.value = /*reportTitle*/ ctx[13];
-				add_flush_callback(() => updating_value_2 = false);
-			}
-
-			textfield1.$set(textfield1_changes);
-			const textfield2_changes = {};
-
-			if (!updating_value_3 && dirty[0] & /*reportComments*/ 16384) {
-				updating_value_3 = true;
-				textfield2_changes.value = /*reportComments*/ ctx[14];
-				add_flush_callback(() => updating_value_3 = false);
-			}
-
-			textfield2.$set(textfield2_changes);
-			const helpertext_changes = {};
-
-			if (dirty[2] & /*$$scope*/ 67108864) {
-				helpertext_changes.$$scope = { dirty, ctx };
-			}
-
-			helpertext.$set(helpertext_changes);
+			reportlayout.$set(reportlayout_changes);
 		},
 		i: function intro(local) {
 			if (current) return;
@@ -34512,19 +35230,7 @@ function create_if_block$b(ctx) {
 				div2_transition.run(1);
 			});
 
-			transition_in(textfield0.$$.fragment, local);
-
-			for (let i = 0; i < 4; i += 1) {
-				transition_in(each_blocks[i]);
-			}
-
-			transition_in(customcheckbox0.$$.fragment, local);
-			transition_in(customcheckbox1.$$.fragment, local);
-			transition_in(customcheckbox2.$$.fragment, local);
-			transition_in(customcheckbox3.$$.fragment, local);
-			transition_in(textfield1.$$.fragment, local);
-			transition_in(textfield2.$$.fragment, local);
-			transition_in(helpertext.$$.fragment, local);
+			transition_in(reportlayout.$$.fragment, local);
 			current = true;
 		},
 		o: function outro(local) {
@@ -34535,20 +35241,7 @@ function create_if_block$b(ctx) {
 			transition_out(datatable.$$.fragment, local);
 			if (!div2_transition) div2_transition = create_bidirectional_transition(div2, fade, {}, false);
 			div2_transition.run(0);
-			transition_out(textfield0.$$.fragment, local);
-			each_blocks = each_blocks.filter(Boolean);
-
-			for (let i = 0; i < 4; i += 1) {
-				transition_out(each_blocks[i]);
-			}
-
-			transition_out(customcheckbox0.$$.fragment, local);
-			transition_out(customcheckbox1.$$.fragment, local);
-			transition_out(customcheckbox2.$$.fragment, local);
-			transition_out(customcheckbox3.$$.fragment, local);
-			transition_out(textfield1.$$.fragment, local);
-			transition_out(textfield2.$$.fragment, local);
-			transition_out(helpertext.$$.fragment, local);
+			transition_out(reportlayout.$$.fragment, local);
 			current = false;
 		},
 		d: function destroy(detaching) {
@@ -34559,46 +35252,31 @@ function create_if_block$b(ctx) {
 			if (detaching) detach_dev(t9);
 			if (detaching) detach_dev(div1);
 			if (detaching) detach_dev(t11);
-			if (detaching) detach_dev(hr0);
+			if (detaching) detach_dev(hr);
 			if (detaching) detach_dev(t12);
 			if (detaching) detach_dev(div2);
 			destroy_component(datatable);
 			if (detaching && div2_transition) div2_transition.end();
 			if (detaching) detach_dev(t13);
-			if (detaching) detach_dev(div3);
-			if (detaching) detach_dev(t15);
-			if (detaching) detach_dev(hr1);
-			if (detaching) detach_dev(t16);
-			if (detaching) detach_dev(div4);
-			destroy_component(textfield0);
-			if (detaching) detach_dev(t17);
-			if (detaching) detach_dev(div5);
-			destroy_each(each_blocks, detaching);
-			destroy_component(customcheckbox0);
-			destroy_component(customcheckbox1);
-			destroy_component(customcheckbox2);
-			destroy_component(customcheckbox3);
-			destroy_component(textfield1);
-			destroy_component(textfield2);
-			destroy_component(helpertext);
+			destroy_component(reportlayout, detaching);
 			run_all(dispose);
 		}
 	};
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_if_block$b.name,
+		id: create_if_block$c.name,
 		type: "if",
-		source: "(515:8) {#if graphPlotted}",
+		source: "(424:8) {#if graphPlotted}",
 		ctx
 	});
 
 	return block;
 }
 
-// (521:24) <Option value={file} selected={output_name === file}>
-function create_default_slot_14$1(ctx) {
-	let t_value = /*file*/ ctx[83] + "";
+// (430:24) <Option value={file} selected={output_name === file}>
+function create_default_slot_12$1(ctx) {
+	let t_value = /*file*/ ctx[59] + "";
 	let t;
 
 	const block = {
@@ -34609,7 +35287,7 @@ function create_default_slot_14$1(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*plottedFiles*/ 8 && t_value !== (t_value = /*file*/ ctx[83] + "")) set_data_dev(t, t_value);
+			if (dirty[0] & /*plottedFiles*/ 8 && t_value !== (t_value = /*file*/ ctx[59] + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -34618,24 +35296,24 @@ function create_default_slot_14$1(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_14$1.name,
+		id: create_default_slot_12$1.name,
 		type: "slot",
-		source: "(521:24) <Option value={file} selected={output_name === file}>",
+		source: "(430:24) <Option value={file} selected={output_name === file}>",
 		ctx
 	});
 
 	return block;
 }
 
-// (520:20) {#each ["averaged", ...plottedFiles] as file}
-function create_each_block_3(ctx) {
+// (429:20) {#each ["averaged", ...plottedFiles] as file}
+function create_each_block_2(ctx) {
 	let current;
 
 	const option = new Option({
 			props: {
-				value: /*file*/ ctx[83],
-				selected: /*output_name*/ ctx[11] === /*file*/ ctx[83],
-				$$slots: { default: [create_default_slot_14$1] },
+				value: /*file*/ ctx[59],
+				selected: /*output_name*/ ctx[11] === /*file*/ ctx[59],
+				$$slots: { default: [create_default_slot_12$1] },
 				$$scope: { ctx }
 			},
 			$$inline: true
@@ -34651,10 +35329,10 @@ function create_each_block_3(ctx) {
 		},
 		p: function update(ctx, dirty) {
 			const option_changes = {};
-			if (dirty[0] & /*plottedFiles*/ 8) option_changes.value = /*file*/ ctx[83];
-			if (dirty[0] & /*output_name, plottedFiles*/ 2056) option_changes.selected = /*output_name*/ ctx[11] === /*file*/ ctx[83];
+			if (dirty[0] & /*plottedFiles*/ 8) option_changes.value = /*file*/ ctx[59];
+			if (dirty[0] & /*output_name, plottedFiles*/ 2056) option_changes.selected = /*output_name*/ ctx[11] === /*file*/ ctx[59];
 
-			if (dirty[0] & /*plottedFiles*/ 8 | dirty[2] & /*$$scope*/ 67108864) {
+			if (dirty[0] & /*plottedFiles*/ 8 | dirty[2] & /*$$scope*/ 8) {
 				option_changes.$$scope = { dirty, ctx };
 			}
 
@@ -34676,294 +35354,20 @@ function create_each_block_3(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_each_block_3.name,
-		type: "each",
-		source: "(520:20) {#each [\\\"averaged\\\", ...plottedFiles] as file}",
-		ctx
-	});
-
-	return block;
-}
-
-// (519:16) <Select bind:value={output_name} label="Output filename">
-function create_default_slot_13$1(ctx) {
-	let each_1_anchor;
-	let current;
-	let each_value_3 = ["averaged", .../*plottedFiles*/ ctx[3]];
-	let each_blocks = [];
-
-	for (let i = 0; i < each_value_3.length; i += 1) {
-		each_blocks[i] = create_each_block_3(get_each_context_3(ctx, each_value_3, i));
-	}
-
-	const out = i => transition_out(each_blocks[i], 1, 1, () => {
-		each_blocks[i] = null;
-	});
-
-	const block = {
-		c: function create() {
-			for (let i = 0; i < each_blocks.length; i += 1) {
-				each_blocks[i].c();
-			}
-
-			each_1_anchor = empty();
-		},
-		m: function mount(target, anchor) {
-			for (let i = 0; i < each_blocks.length; i += 1) {
-				each_blocks[i].m(target, anchor);
-			}
-
-			insert_dev(target, each_1_anchor, anchor);
-			current = true;
-		},
-		p: function update(ctx, dirty) {
-			if (dirty[0] & /*plottedFiles, output_name*/ 2056) {
-				each_value_3 = ["averaged", .../*plottedFiles*/ ctx[3]];
-				let i;
-
-				for (i = 0; i < each_value_3.length; i += 1) {
-					const child_ctx = get_each_context_3(ctx, each_value_3, i);
-
-					if (each_blocks[i]) {
-						each_blocks[i].p(child_ctx, dirty);
-						transition_in(each_blocks[i], 1);
-					} else {
-						each_blocks[i] = create_each_block_3(child_ctx);
-						each_blocks[i].c();
-						transition_in(each_blocks[i], 1);
-						each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
-					}
-				}
-
-				group_outros();
-
-				for (i = each_value_3.length; i < each_blocks.length; i += 1) {
-					out(i);
-				}
-
-				check_outros();
-			}
-		},
-		i: function intro(local) {
-			if (current) return;
-
-			for (let i = 0; i < each_value_3.length; i += 1) {
-				transition_in(each_blocks[i]);
-			}
-
-			current = true;
-		},
-		o: function outro(local) {
-			each_blocks = each_blocks.filter(Boolean);
-
-			for (let i = 0; i < each_blocks.length; i += 1) {
-				transition_out(each_blocks[i]);
-			}
-
-			current = false;
-		},
-		d: function destroy(detaching) {
-			destroy_each(each_blocks, detaching);
-			if (detaching) detach_dev(each_1_anchor);
-		}
-	};
-
-	dispatch_dev("SvelteRegisterBlock", {
-		block,
-		id: create_default_slot_13$1.name,
-		type: "slot",
-		source: "(519:16) <Select bind:value={output_name} label=\\\"Output filename\\\">",
-		ctx
-	});
-
-	return block;
-}
-
-// (526:20) <span slot="label">
-function create_label_slot_1(ctx) {
-	let span;
-
-	const block = {
-		c: function create() {
-			span = element("span");
-			span.textContent = "Overwrite";
-			attr_dev(span, "slot", "label");
-			attr_dev(span, "class", "svelte-17zi02x");
-			add_location(span, file$I, 525, 20, 21830);
-		},
-		m: function mount(target, anchor) {
-			insert_dev(target, span, anchor);
-		},
-		d: function destroy(detaching) {
-			if (detaching) detach_dev(span);
-		}
-	};
-
-	dispatch_dev("SvelteRegisterBlock", {
-		block,
-		id: create_label_slot_1.name,
-		type: "slot",
-		source: "(526:20) <span slot=\\\"label\\\">",
-		ctx
-	});
-
-	return block;
-}
-
-// (524:16) <FormField style="margin: 0 1em; padding-bottom: 1em;">
-function create_default_slot_12$1(ctx) {
-	let updating_checked;
-	let t;
-	let current;
-
-	function switch_1_checked_binding(value) {
-		/*switch_1_checked_binding*/ ctx[61].call(null, value);
-	}
-
-	let switch_1_props = {};
-
-	if (/*overwrite_expfit*/ ctx[10] !== void 0) {
-		switch_1_props.checked = /*overwrite_expfit*/ ctx[10];
-	}
-
-	const switch_1 = new Switch({ props: switch_1_props, $$inline: true });
-	binding_callbacks.push(() => bind(switch_1, "checked", switch_1_checked_binding));
-
-	const block = {
-		c: function create() {
-			create_component(switch_1.$$.fragment);
-			t = space();
-		},
-		m: function mount(target, anchor) {
-			mount_component(switch_1, target, anchor);
-			insert_dev(target, t, anchor);
-			current = true;
-		},
-		p: function update(ctx, dirty) {
-			const switch_1_changes = {};
-
-			if (!updating_checked && dirty[0] & /*overwrite_expfit*/ 1024) {
-				updating_checked = true;
-				switch_1_changes.checked = /*overwrite_expfit*/ ctx[10];
-				add_flush_callback(() => updating_checked = false);
-			}
-
-			switch_1.$set(switch_1_changes);
-		},
-		i: function intro(local) {
-			if (current) return;
-			transition_in(switch_1.$$.fragment, local);
-			current = true;
-		},
-		o: function outro(local) {
-			transition_out(switch_1.$$.fragment, local);
-			current = false;
-		},
-		d: function destroy(detaching) {
-			destroy_component(switch_1, detaching);
-			if (detaching) detach_dev(t);
-		}
-	};
-
-	dispatch_dev("SvelteRegisterBlock", {
-		block,
-		id: create_default_slot_12$1.name,
-		type: "slot",
-		source: "(524:16) <FormField style=\\\"margin: 0 1em; padding-bottom: 1em;\\\">",
-		ctx
-	});
-
-	return block;
-}
-
-// (544:32) <Cell >
-function create_default_slot_11$1(ctx) {
-	let t_value = /*item*/ ctx[80] + "";
-	let t;
-
-	const block = {
-		c: function create() {
-			t = text(t_value);
-		},
-		m: function mount(target, anchor) {
-			insert_dev(target, t, anchor);
-		},
-		p: noop,
-		d: function destroy(detaching) {
-			if (detaching) detach_dev(t);
-		}
-	};
-
-	dispatch_dev("SvelteRegisterBlock", {
-		block,
-		id: create_default_slot_11$1.name,
-		type: "slot",
-		source: "(544:32) <Cell >",
-		ctx
-	});
-
-	return block;
-}
-
-// (543:28) {#each dataTableHead as item}
-function create_each_block_2(ctx) {
-	let current;
-
-	const cell = new Cell({
-			props: {
-				$$slots: { default: [create_default_slot_11$1] },
-				$$scope: { ctx }
-			},
-			$$inline: true
-		});
-
-	const block = {
-		c: function create() {
-			create_component(cell.$$.fragment);
-		},
-		m: function mount(target, anchor) {
-			mount_component(cell, target, anchor);
-			current = true;
-		},
-		p: function update(ctx, dirty) {
-			const cell_changes = {};
-
-			if (dirty[2] & /*$$scope*/ 67108864) {
-				cell_changes.$$scope = { dirty, ctx };
-			}
-
-			cell.$set(cell_changes);
-		},
-		i: function intro(local) {
-			if (current) return;
-			transition_in(cell.$$.fragment, local);
-			current = true;
-		},
-		o: function outro(local) {
-			transition_out(cell.$$.fragment, local);
-			current = false;
-		},
-		d: function destroy(detaching) {
-			destroy_component(cell, detaching);
-		}
-	};
-
-	dispatch_dev("SvelteRegisterBlock", {
-		block,
 		id: create_each_block_2.name,
 		type: "each",
-		source: "(543:28) {#each dataTableHead as item}",
+		source: "(429:20) {#each [\\\"averaged\\\", ...plottedFiles] as file}",
 		ctx
 	});
 
 	return block;
 }
 
-// (542:24) <Row>
-function create_default_slot_10$1(ctx) {
+// (428:16) <Select bind:value={output_name} label="Output filename">
+function create_default_slot_11$1(ctx) {
 	let each_1_anchor;
 	let current;
-	let each_value_2 = /*dataTableHead*/ ctx[26];
+	let each_value_2 = ["averaged", .../*plottedFiles*/ ctx[3]];
 	let each_blocks = [];
 
 	for (let i = 0; i < each_value_2.length; i += 1) {
@@ -34991,8 +35395,8 @@ function create_default_slot_10$1(ctx) {
 			current = true;
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*dataTableHead*/ 67108864) {
-				each_value_2 = /*dataTableHead*/ ctx[26];
+			if (dirty[0] & /*plottedFiles, output_name*/ 2056) {
+				each_value_2 = ["averaged", .../*plottedFiles*/ ctx[3]];
 				let i;
 
 				for (i = 0; i < each_value_2.length; i += 1) {
@@ -35044,22 +35448,296 @@ function create_default_slot_10$1(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_10$1.name,
+		id: create_default_slot_11$1.name,
 		type: "slot",
-		source: "(542:24) <Row>",
+		source: "(428:16) <Select bind:value={output_name} label=\\\"Output filename\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (541:20) <Head>
+// (435:20) <span slot="label">
+function create_label_slot$4(ctx) {
+	let span;
+
+	const block = {
+		c: function create() {
+			span = element("span");
+			span.textContent = "Overwrite";
+			attr_dev(span, "slot", "label");
+			attr_dev(span, "class", "svelte-1sfup9s");
+			add_location(span, file$J, 434, 20, 18259);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, span, anchor);
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(span);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_label_slot$4.name,
+		type: "slot",
+		source: "(435:20) <span slot=\\\"label\\\">",
+		ctx
+	});
+
+	return block;
+}
+
+// (433:16) <FormField style="margin: 0 1em; padding-bottom: 1em;">
+function create_default_slot_10$1(ctx) {
+	let updating_checked;
+	let t;
+	let current;
+
+	function switch_1_checked_binding(value) {
+		/*switch_1_checked_binding*/ ctx[47].call(null, value);
+	}
+
+	let switch_1_props = {};
+
+	if (/*overwrite_expfit*/ ctx[10] !== void 0) {
+		switch_1_props.checked = /*overwrite_expfit*/ ctx[10];
+	}
+
+	const switch_1 = new Switch({ props: switch_1_props, $$inline: true });
+	binding_callbacks.push(() => bind(switch_1, "checked", switch_1_checked_binding));
+
+	const block = {
+		c: function create() {
+			create_component(switch_1.$$.fragment);
+			t = space();
+		},
+		m: function mount(target, anchor) {
+			mount_component(switch_1, target, anchor);
+			insert_dev(target, t, anchor);
+			current = true;
+		},
+		p: function update(ctx, dirty) {
+			const switch_1_changes = {};
+
+			if (!updating_checked && dirty[0] & /*overwrite_expfit*/ 1024) {
+				updating_checked = true;
+				switch_1_changes.checked = /*overwrite_expfit*/ ctx[10];
+				add_flush_callback(() => updating_checked = false);
+			}
+
+			switch_1.$set(switch_1_changes);
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(switch_1.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(switch_1.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			destroy_component(switch_1, detaching);
+			if (detaching) detach_dev(t);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_default_slot_10$1.name,
+		type: "slot",
+		source: "(433:16) <FormField style=\\\"margin: 0 1em; padding-bottom: 1em;\\\">",
+		ctx
+	});
+
+	return block;
+}
+
+// (452:32) <Cell >
 function create_default_slot_9$1(ctx) {
+	let t_value = /*item*/ ctx[56] + "";
+	let t;
+
+	const block = {
+		c: function create() {
+			t = text(t_value);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, t, anchor);
+		},
+		p: noop,
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(t);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_default_slot_9$1.name,
+		type: "slot",
+		source: "(452:32) <Cell >",
+		ctx
+	});
+
+	return block;
+}
+
+// (451:28) {#each dataTableHead as item}
+function create_each_block_1$2(ctx) {
+	let current;
+
+	const cell = new Cell({
+			props: {
+				$$slots: { default: [create_default_slot_9$1] },
+				$$scope: { ctx }
+			},
+			$$inline: true
+		});
+
+	const block = {
+		c: function create() {
+			create_component(cell.$$.fragment);
+		},
+		m: function mount(target, anchor) {
+			mount_component(cell, target, anchor);
+			current = true;
+		},
+		p: function update(ctx, dirty) {
+			const cell_changes = {};
+
+			if (dirty[2] & /*$$scope*/ 8) {
+				cell_changes.$$scope = { dirty, ctx };
+			}
+
+			cell.$set(cell_changes);
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(cell.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(cell.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			destroy_component(cell, detaching);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_each_block_1$2.name,
+		type: "each",
+		source: "(451:28) {#each dataTableHead as item}",
+		ctx
+	});
+
+	return block;
+}
+
+// (450:24) <Row>
+function create_default_slot_8$1(ctx) {
+	let each_1_anchor;
+	let current;
+	let each_value_1 = /*dataTableHead*/ ctx[18];
+	let each_blocks = [];
+
+	for (let i = 0; i < each_value_1.length; i += 1) {
+		each_blocks[i] = create_each_block_1$2(get_each_context_1$2(ctx, each_value_1, i));
+	}
+
+	const out = i => transition_out(each_blocks[i], 1, 1, () => {
+		each_blocks[i] = null;
+	});
+
+	const block = {
+		c: function create() {
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+
+			each_1_anchor = empty();
+		},
+		m: function mount(target, anchor) {
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(target, anchor);
+			}
+
+			insert_dev(target, each_1_anchor, anchor);
+			current = true;
+		},
+		p: function update(ctx, dirty) {
+			if (dirty[0] & /*dataTableHead*/ 262144) {
+				each_value_1 = /*dataTableHead*/ ctx[18];
+				let i;
+
+				for (i = 0; i < each_value_1.length; i += 1) {
+					const child_ctx = get_each_context_1$2(ctx, each_value_1, i);
+
+					if (each_blocks[i]) {
+						each_blocks[i].p(child_ctx, dirty);
+						transition_in(each_blocks[i], 1);
+					} else {
+						each_blocks[i] = create_each_block_1$2(child_ctx);
+						each_blocks[i].c();
+						transition_in(each_blocks[i], 1);
+						each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
+					}
+				}
+
+				group_outros();
+
+				for (i = each_value_1.length; i < each_blocks.length; i += 1) {
+					out(i);
+				}
+
+				check_outros();
+			}
+		},
+		i: function intro(local) {
+			if (current) return;
+
+			for (let i = 0; i < each_value_1.length; i += 1) {
+				transition_in(each_blocks[i]);
+			}
+
+			current = true;
+		},
+		o: function outro(local) {
+			each_blocks = each_blocks.filter(Boolean);
+
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				transition_out(each_blocks[i]);
+			}
+
+			current = false;
+		},
+		d: function destroy(detaching) {
+			destroy_each(each_blocks, detaching);
+			if (detaching) detach_dev(each_1_anchor);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_default_slot_8$1.name,
+		type: "slot",
+		source: "(450:24) <Row>",
+		ctx
+	});
+
+	return block;
+}
+
+// (449:20) <Head>
+function create_default_slot_7$1(ctx) {
 	let current;
 
 	const row = new Row({
 			props: {
-				$$slots: { default: [create_default_slot_10$1] },
+				$$slots: { default: [create_default_slot_8$1] },
 				$$scope: { ctx }
 			},
 			$$inline: true
@@ -35076,7 +35754,7 @@ function create_default_slot_9$1(ctx) {
 		p: function update(ctx, dirty) {
 			const row_changes = {};
 
-			if (dirty[2] & /*$$scope*/ 67108864) {
+			if (dirty[2] & /*$$scope*/ 8) {
 				row_changes.$$scope = { dirty, ctx };
 			}
 
@@ -35098,80 +35776,18 @@ function create_default_slot_9$1(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_9$1.name,
-		type: "slot",
-		source: "(541:20) <Head>",
-		ctx
-	});
-
-	return block;
-}
-
-// (551:28) <Cell>
-function create_default_slot_8$1(ctx) {
-	let t_value = /*table*/ ctx[77].name + "";
-	let t;
-
-	const block = {
-		c: function create() {
-			t = text(t_value);
-		},
-		m: function mount(target, anchor) {
-			insert_dev(target, t, anchor);
-		},
-		p: function update(ctx, dirty) {
-			if (dirty[0] & /*dataTable*/ 4096 && t_value !== (t_value = /*table*/ ctx[77].name + "")) set_data_dev(t, t_value);
-		},
-		d: function destroy(detaching) {
-			if (detaching) detach_dev(t);
-		}
-	};
-
-	dispatch_dev("SvelteRegisterBlock", {
-		block,
-		id: create_default_slot_8$1.name,
-		type: "slot",
-		source: "(551:28) <Cell>",
-		ctx
-	});
-
-	return block;
-}
-
-// (552:28) <Cell>
-function create_default_slot_7$1(ctx) {
-	let t_value = /*table*/ ctx[77].freq + "";
-	let t;
-
-	const block = {
-		c: function create() {
-			t = text(t_value);
-		},
-		m: function mount(target, anchor) {
-			insert_dev(target, t, anchor);
-		},
-		p: function update(ctx, dirty) {
-			if (dirty[0] & /*dataTable*/ 4096 && t_value !== (t_value = /*table*/ ctx[77].freq + "")) set_data_dev(t, t_value);
-		},
-		d: function destroy(detaching) {
-			if (detaching) detach_dev(t);
-		}
-	};
-
-	dispatch_dev("SvelteRegisterBlock", {
-		block,
 		id: create_default_slot_7$1.name,
 		type: "slot",
-		source: "(552:28) <Cell>",
+		source: "(449:20) <Head>",
 		ctx
 	});
 
 	return block;
 }
 
-// (553:28) <Cell>
+// (459:28) <Cell>
 function create_default_slot_6$2(ctx) {
-	let t_value = /*table*/ ctx[77].line + "";
+	let t_value = /*table*/ ctx[53].name + "";
 	let t;
 
 	const block = {
@@ -35182,7 +35798,7 @@ function create_default_slot_6$2(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*dataTable*/ 4096 && t_value !== (t_value = /*table*/ ctx[77].line + "")) set_data_dev(t, t_value);
+			if (dirty[0] & /*dataTable*/ 4096 && t_value !== (t_value = /*table*/ ctx[53].name + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -35193,15 +35809,77 @@ function create_default_slot_6$2(ctx) {
 		block,
 		id: create_default_slot_6$2.name,
 		type: "slot",
-		source: "(553:28) <Cell>",
+		source: "(459:28) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (550:24) <Row>
+// (460:28) <Cell>
 function create_default_slot_5$3(ctx) {
+	let t_value = /*table*/ ctx[53].freq + "";
+	let t;
+
+	const block = {
+		c: function create() {
+			t = text(t_value);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, t, anchor);
+		},
+		p: function update(ctx, dirty) {
+			if (dirty[0] & /*dataTable*/ 4096 && t_value !== (t_value = /*table*/ ctx[53].freq + "")) set_data_dev(t, t_value);
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(t);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_default_slot_5$3.name,
+		type: "slot",
+		source: "(460:28) <Cell>",
+		ctx
+	});
+
+	return block;
+}
+
+// (461:28) <Cell>
+function create_default_slot_4$4(ctx) {
+	let t_value = /*table*/ ctx[53].line + "";
+	let t;
+
+	const block = {
+		c: function create() {
+			t = text(t_value);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, t, anchor);
+		},
+		p: function update(ctx, dirty) {
+			if (dirty[0] & /*dataTable*/ 4096 && t_value !== (t_value = /*table*/ ctx[53].line + "")) set_data_dev(t, t_value);
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(t);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_default_slot_4$4.name,
+		type: "slot",
+		source: "(461:28) <Cell>",
+		ctx
+	});
+
+	return block;
+}
+
+// (458:24) <Row>
+function create_default_slot_3$4(ctx) {
 	let t0;
 	let t1;
 	let t2;
@@ -35209,7 +35887,7 @@ function create_default_slot_5$3(ctx) {
 
 	const cell0 = new Cell({
 			props: {
-				$$slots: { default: [create_default_slot_8$1] },
+				$$slots: { default: [create_default_slot_6$2] },
 				$$scope: { ctx }
 			},
 			$$inline: true
@@ -35217,7 +35895,7 @@ function create_default_slot_5$3(ctx) {
 
 	const cell1 = new Cell({
 			props: {
-				$$slots: { default: [create_default_slot_7$1] },
+				$$slots: { default: [create_default_slot_5$3] },
 				$$scope: { ctx }
 			},
 			$$inline: true
@@ -35225,7 +35903,7 @@ function create_default_slot_5$3(ctx) {
 
 	const cell2 = new Cell({
 			props: {
-				$$slots: { default: [create_default_slot_6$2] },
+				$$slots: { default: [create_default_slot_4$4] },
 				$$scope: { ctx }
 			},
 			$$inline: true
@@ -35252,21 +35930,21 @@ function create_default_slot_5$3(ctx) {
 		p: function update(ctx, dirty) {
 			const cell0_changes = {};
 
-			if (dirty[0] & /*dataTable*/ 4096 | dirty[2] & /*$$scope*/ 67108864) {
+			if (dirty[0] & /*dataTable*/ 4096 | dirty[2] & /*$$scope*/ 8) {
 				cell0_changes.$$scope = { dirty, ctx };
 			}
 
 			cell0.$set(cell0_changes);
 			const cell1_changes = {};
 
-			if (dirty[0] & /*dataTable*/ 4096 | dirty[2] & /*$$scope*/ 67108864) {
+			if (dirty[0] & /*dataTable*/ 4096 | dirty[2] & /*$$scope*/ 8) {
 				cell1_changes.$$scope = { dirty, ctx };
 			}
 
 			cell1.$set(cell1_changes);
 			const cell2_changes = {};
 
-			if (dirty[0] & /*dataTable*/ 4096 | dirty[2] & /*$$scope*/ 67108864) {
+			if (dirty[0] & /*dataTable*/ 4096 | dirty[2] & /*$$scope*/ 8) {
 				cell2_changes.$$scope = { dirty, ctx };
 			}
 
@@ -35297,23 +35975,23 @@ function create_default_slot_5$3(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_5$3.name,
+		id: create_default_slot_3$4.name,
 		type: "slot",
-		source: "(550:24) <Row>",
+		source: "(458:24) <Row>",
 		ctx
 	});
 
 	return block;
 }
 
-// (549:20) {#each dataTable.sort((x, y)=>x[1]-y[1]) as table (table.freq)}
-function create_each_block_1$1(key_1, ctx) {
+// (457:20) {#each dataTable.sort((x, y)=>x[1]-y[1]) as table (table.freq)}
+function create_each_block$4(key_1, ctx) {
 	let first;
 	let current;
 
 	const row = new Row({
 			props: {
-				$$slots: { default: [create_default_slot_5$3] },
+				$$slots: { default: [create_default_slot_3$4] },
 				$$scope: { ctx }
 			},
 			$$inline: true
@@ -35335,7 +36013,7 @@ function create_each_block_1$1(key_1, ctx) {
 		p: function update(ctx, dirty) {
 			const row_changes = {};
 
-			if (dirty[0] & /*dataTable*/ 4096 | dirty[2] & /*$$scope*/ 67108864) {
+			if (dirty[0] & /*dataTable*/ 4096 | dirty[2] & /*$$scope*/ 8) {
 				row_changes.$$scope = { dirty, ctx };
 			}
 
@@ -35358,28 +36036,28 @@ function create_each_block_1$1(key_1, ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_each_block_1$1.name,
+		id: create_each_block$4.name,
 		type: "each",
-		source: "(549:20) {#each dataTable.sort((x, y)=>x[1]-y[1]) as table (table.freq)}",
+		source: "(457:20) {#each dataTable.sort((x, y)=>x[1]-y[1]) as table (table.freq)}",
 		ctx
 	});
 
 	return block;
 }
 
-// (548:20) <Body>
-function create_default_slot_4$4(ctx) {
+// (456:20) <Body>
+function create_default_slot_2$6(ctx) {
 	let each_blocks = [];
 	let each_1_lookup = new Map();
 	let each_1_anchor;
 	let current;
-	let each_value_1 = /*dataTable*/ ctx[12].sort(func);
-	const get_key = ctx => /*table*/ ctx[77].freq;
+	let each_value = /*dataTable*/ ctx[12].sort(func);
+	const get_key = ctx => /*table*/ ctx[53].freq;
 
-	for (let i = 0; i < each_value_1.length; i += 1) {
-		let child_ctx = get_each_context_1$1(ctx, each_value_1, i);
+	for (let i = 0; i < each_value.length; i += 1) {
+		let child_ctx = get_each_context$4(ctx, each_value, i);
 		let key = get_key(child_ctx);
-		each_1_lookup.set(key, each_blocks[i] = create_each_block_1$1(key, child_ctx));
+		each_1_lookup.set(key, each_blocks[i] = create_each_block$4(key, child_ctx));
 	}
 
 	const block = {
@@ -35399,15 +36077,15 @@ function create_default_slot_4$4(ctx) {
 			current = true;
 		},
 		p: function update(ctx, dirty) {
-			const each_value_1 = /*dataTable*/ ctx[12].sort(func);
+			const each_value = /*dataTable*/ ctx[12].sort(func);
 			group_outros();
-			each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value_1, each_1_lookup, each_1_anchor.parentNode, outro_and_destroy_block, create_each_block_1$1, each_1_anchor, get_each_context_1$1);
+			each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value, each_1_lookup, each_1_anchor.parentNode, outro_and_destroy_block, create_each_block$4, each_1_anchor, get_each_context$4);
 			check_outros();
 		},
 		i: function intro(local) {
 			if (current) return;
 
-			for (let i = 0; i < each_value_1.length; i += 1) {
+			for (let i = 0; i < each_value.length; i += 1) {
 				transition_in(each_blocks[i]);
 			}
 
@@ -35431,23 +36109,23 @@ function create_default_slot_4$4(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_4$4.name,
+		id: create_default_slot_2$6.name,
 		type: "slot",
-		source: "(548:20) <Body>",
+		source: "(456:20) <Body>",
 		ctx
 	});
 
 	return block;
 }
 
-// (540:16) <DataTable table$aria-label="felixfile line-list" table$id="felixTable" id="felixTableContainer">
-function create_default_slot_3$4(ctx) {
+// (448:16) <DataTable table$aria-label="felixfile line-list" table$id="felixTable" id="felixTableContainer">
+function create_default_slot_1$8(ctx) {
 	let t;
 	let current;
 
 	const head = new Head({
 			props: {
-				$$slots: { default: [create_default_slot_9$1] },
+				$$slots: { default: [create_default_slot_7$1] },
 				$$scope: { ctx }
 			},
 			$$inline: true
@@ -35455,7 +36133,7 @@ function create_default_slot_3$4(ctx) {
 
 	const body = new Body({
 			props: {
-				$$slots: { default: [create_default_slot_4$4] },
+				$$slots: { default: [create_default_slot_2$6] },
 				$$scope: { ctx }
 			},
 			$$inline: true
@@ -35476,14 +36154,14 @@ function create_default_slot_3$4(ctx) {
 		p: function update(ctx, dirty) {
 			const head_changes = {};
 
-			if (dirty[2] & /*$$scope*/ 67108864) {
+			if (dirty[2] & /*$$scope*/ 8) {
 				head_changes.$$scope = { dirty, ctx };
 			}
 
 			head.$set(head_changes);
 			const body_changes = {};
 
-			if (dirty[0] & /*dataTable*/ 4096 | dirty[2] & /*$$scope*/ 67108864) {
+			if (dirty[0] & /*dataTable*/ 4096 | dirty[2] & /*$$scope*/ 8) {
 				body_changes.$$scope = { dirty, ctx };
 			}
 
@@ -35509,202 +36187,16 @@ function create_default_slot_3$4(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_3$4.name,
+		id: create_default_slot_1$8.name,
 		type: "slot",
-		source: "(540:16) <DataTable table$aria-label=\\\"felixfile line-list\\\" table$id=\\\"felixTable\\\" id=\\\"felixTableContainer\\\">",
+		source: "(448:16) <DataTable table$aria-label=\\\"felixfile line-list\\\" table$id=\\\"felixTable\\\" id=\\\"felixTableContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (573:24) <span slot="label" style="color:{method.color}">
-function create_label_slot$3(ctx) {
-	let span;
-	let t_value = /*method*/ ctx[74].name + "";
-	let t;
-
-	const block = {
-		c: function create() {
-			span = element("span");
-			t = text(t_value);
-			attr_dev(span, "slot", "label");
-			set_style(span, "color", /*method*/ ctx[74].color);
-			attr_dev(span, "class", "svelte-17zi02x");
-			add_location(span, file$I, 572, 24, 24120);
-		},
-		m: function mount(target, anchor) {
-			insert_dev(target, span, anchor);
-			append_dev(span, t);
-		},
-		p: noop,
-		d: function destroy(detaching) {
-			if (detaching) detach_dev(span);
-		}
-	};
-
-	dispatch_dev("SvelteRegisterBlock", {
-		block,
-		id: create_label_slot$3.name,
-		type: "slot",
-		source: "(573:24) <span slot=\\\"label\\\" style=\\\"color:{method.color}\\\">",
-		ctx
-	});
-
-	return block;
-}
-
-// (571:20) <FormField >
-function create_default_slot_2$6(ctx) {
-	let updating_group;
-	let t;
-	let current;
-
-	function radio_group_binding_1(value) {
-		/*radio_group_binding_1*/ ctx[65].call(null, value);
-	}
-
-	let radio_props = { value: /*method*/ ctx[74].name };
-
-	if (/*reportMethod*/ ctx[15] !== void 0) {
-		radio_props.group = /*reportMethod*/ ctx[15];
-	}
-
-	const radio = new Radio({ props: radio_props, $$inline: true });
-	binding_callbacks.push(() => bind(radio, "group", radio_group_binding_1));
-
-	const block = {
-		c: function create() {
-			create_component(radio.$$.fragment);
-			t = space();
-		},
-		m: function mount(target, anchor) {
-			mount_component(radio, target, anchor);
-			insert_dev(target, t, anchor);
-			current = true;
-		},
-		p: function update(ctx, dirty) {
-			const radio_changes = {};
-
-			if (!updating_group && dirty[0] & /*reportMethod*/ 32768) {
-				updating_group = true;
-				radio_changes.group = /*reportMethod*/ ctx[15];
-				add_flush_callback(() => updating_group = false);
-			}
-
-			radio.$set(radio_changes);
-		},
-		i: function intro(local) {
-			if (current) return;
-			transition_in(radio.$$.fragment, local);
-			current = true;
-		},
-		o: function outro(local) {
-			transition_out(radio.$$.fragment, local);
-			current = false;
-		},
-		d: function destroy(detaching) {
-			destroy_component(radio, detaching);
-			if (detaching) detach_dev(t);
-		}
-	};
-
-	dispatch_dev("SvelteRegisterBlock", {
-		block,
-		id: create_default_slot_2$6.name,
-		type: "slot",
-		source: "(571:20) <FormField >",
-		ctx
-	});
-
-	return block;
-}
-
-// (570:16) {#each [{name:"info", color:"white"}, {name:"success", color:"#00ff00"}, {name:"warning", color:"yellow"}, {name:"danger", color:"red"}] as method}
-function create_each_block$3(ctx) {
-	let current;
-
-	const formfield = new FormField({
-			props: {
-				$$slots: {
-					default: [create_default_slot_2$6],
-					label: [create_label_slot$3]
-				},
-				$$scope: { ctx }
-			},
-			$$inline: true
-		});
-
-	const block = {
-		c: function create() {
-			create_component(formfield.$$.fragment);
-		},
-		m: function mount(target, anchor) {
-			mount_component(formfield, target, anchor);
-			current = true;
-		},
-		p: function update(ctx, dirty) {
-			const formfield_changes = {};
-
-			if (dirty[0] & /*reportMethod*/ 32768 | dirty[2] & /*$$scope*/ 67108864) {
-				formfield_changes.$$scope = { dirty, ctx };
-			}
-
-			formfield.$set(formfield_changes);
-		},
-		i: function intro(local) {
-			if (current) return;
-			transition_in(formfield.$$.fragment, local);
-			current = true;
-		},
-		o: function outro(local) {
-			transition_out(formfield.$$.fragment, local);
-			current = false;
-		},
-		d: function destroy(detaching) {
-			destroy_component(formfield, detaching);
-		}
-	};
-
-	dispatch_dev("SvelteRegisterBlock", {
-		block,
-		id: create_each_block$3.name,
-		type: "each",
-		source: "(570:16) {#each [{name:\\\"info\\\", color:\\\"white\\\"}, {name:\\\"success\\\", color:\\\"#00ff00\\\"}, {name:\\\"warning\\\", color:\\\"yellow\\\"}, {name:\\\"danger\\\", color:\\\"red\\\"}] as method}",
-		ctx
-	});
-
-	return block;
-}
-
-// (583:16) <HelperText id="felixreport_comments">
-function create_default_slot_1$7(ctx) {
-	let t;
-
-	const block = {
-		c: function create() {
-			t = text("NOTE: You can write in markdown format (eg: # Title, **bold**, __italics__, 1., 2. for list, etc.,)");
-		},
-		m: function mount(target, anchor) {
-			insert_dev(target, t, anchor);
-		},
-		d: function destroy(detaching) {
-			if (detaching) detach_dev(t);
-		}
-	};
-
-	dispatch_dev("SvelteRegisterBlock", {
-		block,
-		id: create_default_slot_1$7.name,
-		type: "slot",
-		source: "(583:16) <HelperText id=\\\"felixreport_comments\\\">",
-		ctx
-	});
-
-	return block;
-}
-
-// (505:4) <div class="plotSlot" slot="plotContainer">
+// (414:4) <div class="plotSlot" slot="plotContainer">
 function create_plotContainer_slot(ctx) {
 	let div0;
 	let t0;
@@ -35715,8 +36207,8 @@ function create_plotContainer_slot(ctx) {
 	let div3;
 	let t3;
 	let current;
-	let if_block0 = /*show_theoryplot*/ ctx[24] && create_if_block_1$5(ctx);
-	let if_block1 = /*graphPlotted*/ ctx[9] && create_if_block$b(ctx);
+	let if_block0 = /*show_theoryplot*/ ctx[16] && create_if_block_1$5(ctx);
+	let if_block1 = /*graphPlotted*/ ctx[9] && create_if_block$c(ctx);
 
 	const block = {
 		c: function create() {
@@ -35731,17 +36223,17 @@ function create_plotContainer_slot(ctx) {
 			t3 = space();
 			if (if_block1) if_block1.c();
 			attr_dev(div1, "id", "bplot");
-			attr_dev(div1, "class", "svelte-17zi02x");
-			add_location(div1, file$I, 510, 8, 21163);
+			attr_dev(div1, "class", "svelte-1sfup9s");
+			add_location(div1, file$J, 419, 8, 17592);
 			attr_dev(div2, "id", "saPlot");
-			attr_dev(div2, "class", "svelte-17zi02x");
-			add_location(div2, file$I, 511, 8, 21195);
+			attr_dev(div2, "class", "svelte-1sfup9s");
+			add_location(div2, file$J, 420, 8, 17624);
 			attr_dev(div3, "id", "avgplot");
-			attr_dev(div3, "class", "svelte-17zi02x");
-			add_location(div3, file$I, 512, 8, 21228);
-			attr_dev(div0, "class", "plotSlot svelte-17zi02x");
+			attr_dev(div3, "class", "svelte-1sfup9s");
+			add_location(div3, file$J, 421, 8, 17657);
+			attr_dev(div0, "class", "plotSlot svelte-1sfup9s");
 			attr_dev(div0, "slot", "plotContainer");
-			add_location(div0, file$I, 504, 4, 20994);
+			add_location(div0, file$J, 413, 4, 17423);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -35762,7 +36254,7 @@ function create_plotContainer_slot(ctx) {
 					if_block1.p(ctx, dirty);
 					transition_in(if_block1, 1);
 				} else {
-					if_block1 = create_if_block$b(ctx);
+					if_block1 = create_if_block$c(ctx);
 					if_block1.c();
 					transition_in(if_block1, 1);
 					if_block1.m(div0, null);
@@ -35799,15 +36291,15 @@ function create_plotContainer_slot(ctx) {
 		block,
 		id: create_plotContainer_slot.name,
 		type: "slot",
-		source: "(505:4) <div class=\\\"plotSlot\\\" slot=\\\"plotContainer\\\">",
+		source: "(414:4) <div class=\\\"plotSlot\\\" slot=\\\"plotContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (463:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>
-function create_default_slot$d(ctx) {
+// (372:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>
+function create_default_slot$e(ctx) {
 	let t;
 
 	const block = {
@@ -35827,33 +36319,33 @@ function create_default_slot$d(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot$d.name,
+		id: create_default_slot$e.name,
 		type: "slot",
-		source: "(463:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>",
+		source: "(372:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>",
 		ctx
 	});
 
 	return block;
 }
 
-function create_fragment$L(ctx) {
+function create_fragment$M(ctx) {
 	let updating_currentLocation;
 	let updating_fileChecked;
 	let current;
 
 	function layout_currentLocation_binding(value) {
-		/*layout_currentLocation_binding*/ ctx[72].call(null, value);
+		/*layout_currentLocation_binding*/ ctx[51].call(null, value);
 	}
 
 	function layout_fileChecked_binding(value_1) {
-		/*layout_fileChecked_binding*/ ctx[73].call(null, value_1);
+		/*layout_fileChecked_binding*/ ctx[52].call(null, value_1);
 	}
 
 	let layout_props = {
-		filetype: /*filetype*/ ctx[22],
-		id: /*id*/ ctx[23],
+		filetype: /*filetype*/ ctx[14],
+		id: /*id*/ ctx[15],
 		$$slots: {
-			default: [create_default_slot$d],
+			default: [create_default_slot$e],
 			plotContainer: [create_plotContainer_slot],
 			buttonContainer: [create_buttonContainer_slot]
 		},
@@ -35886,7 +36378,7 @@ function create_fragment$L(ctx) {
 		p: function update(ctx, dirty) {
 			const layout_changes = {};
 
-			if (dirty[0] & /*graphPlotted, reportComments, reportTitle, include_saplot, include_bplot, include_avgplot, include_table, reportMethod, reportMolecule, dataTable, overwrite_expfit, output_name, plottedFiles, normMethod, toggleRow, scale, sigma, $bindDialog, openShell, delta*/ 4194286 | dirty[2] & /*$$scope*/ 67108864) {
+			if (dirty[0] & /*graphPlotted, currentLocation, dataTable, overwrite_expfit, output_name, plottedFiles, normMethod, toggleRow, scale, sigma, $bindDialog, openShell, delta*/ 16382 | dirty[2] & /*$$scope*/ 8) {
 				layout_changes.$$scope = { dirty, ctx };
 			}
 
@@ -35920,7 +36412,7 @@ function create_fragment$L(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_fragment$L.name,
+		id: create_fragment$M.name,
 		type: "component",
 		source: "",
 		ctx
@@ -35931,22 +36423,22 @@ function create_fragment$L(ctx) {
 
 const func = (x, y) => x[1] - y[1];
 
-function instance$L($$self, $$props, $$invalidate) {
+function instance$M($$self, $$props, $$invalidate) {
 	let $filelist;
 	let $filelistBinded;
 	let $modalContent;
 	let $activated;
 	let $bindDialog;
 	validate_store(filelist, "filelist");
-	component_subscribe($$self, filelist, $$value => $$invalidate(43, $filelist = $$value));
+	component_subscribe($$self, filelist, $$value => $$invalidate(30, $filelist = $$value));
 	validate_store(filelistBinded, "filelistBinded");
-	component_subscribe($$self, filelistBinded, $$value => $$invalidate(44, $filelistBinded = $$value));
+	component_subscribe($$self, filelistBinded, $$value => $$invalidate(31, $filelistBinded = $$value));
 	validate_store(modalContent, "modalContent");
-	component_subscribe($$self, modalContent, $$value => $$invalidate(45, $modalContent = $$value));
+	component_subscribe($$self, modalContent, $$value => $$invalidate(32, $modalContent = $$value));
 	validate_store(activated, "activated");
-	component_subscribe($$self, activated, $$value => $$invalidate(46, $activated = $$value));
+	component_subscribe($$self, activated, $$value => $$invalidate(33, $activated = $$value));
 	validate_store(bindDialog, "bindDialog");
-	component_subscribe($$self, bindDialog, $$value => $$invalidate(21, $bindDialog = $$value));
+	component_subscribe($$self, bindDialog, $$value => $$invalidate(13, $bindDialog = $$value));
 	const { BrowserWindow } = remote;
 
 	let filetype = "felix",
@@ -36268,109 +36760,6 @@ function instance$L($$self, $$props, $$invalidate) {
 		}
 	};
 
-	const getHTMLContent = content => {
-		return `<!DOCTYPE html>
-            <html lang="en">
-                <head>
-                    <meta charset='utf8'>
-                    <meta name="viewport" content="width=device-width, initial-scale=1">
-                    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-                    <title>Reports</title>
-                    <link rel="stylesheet" href="./bulma.min.css">
-                    <link rel="stylesheet" href="./template.css">
-                </head>
-
-                <body>
-                    <section class="section" id="mainSection">
-                        <button class="button is-link" id="exportButton">Export to PDF</button>
-                        <h1 class="title" id="mainTitle">${reportMolecule}</h1>
-                        ${content}
-                    </section>
-                </body>
-            </html>`;
-	};
-
-	let reportTitleContents = "", loadContent = "";
-	let reportCount = 0;
-
-	let reportTitle = "",
-		reportComments = "",
-		reportMethod = "info",
-		reportMolecule = "";
-
-	let include_table = true,
-		include_avgplot = true,
-		include_saplot = false,
-		include_bplot = false;
-
-	const addReport = async () => {
-		reportCount++;
-		if (reportTitle.length == 0) $$invalidate(13, reportTitle = `Title-${reportCount}`);
-		if (reportComments.length == 0) $$invalidate(14, reportComments = "-");
-		let tableData, avg_plot;
-
-		html2canvas(document.getElementById("avgplot")).then(canvasElm => {
-			include_table
-			? tableData = `<table class='table is-bordered is-hoverable'>${document.getElementById("felixTable").innerHTML}</table>`
-			: tableData = "\n";
-
-			include_avgplot
-			? avg_plot = `<img id='img-a${reportCount}' src='${canvasElm.toDataURL()}'>`
-			: avg_plot = "\n";
-
-			reportTitleContents += `\n<h1 class="title notification is-${reportMethod}">${reportTitle}</h1>\n` + marked(reportComments) + avg_plot + tableData + "\n<hr>\n";
-			loadContent = getHTMLContent(reportTitleContents);
-			console.log(loadContent);
-			$$invalidate(14, reportComments = $$invalidate(13, reportTitle = ""));
-			let template = path.resolve(__dirname, "assets/reports/template.html");
-
-			fs.writeFile(template, loadContent, function (err) {
-				if (err) {
-					createToast("Report couldn't be added.", "danger");
-					return console.log(err);
-				}
-
-				console.log("The file was saved!");
-				createToast("Report added", "success");
-			});
-		});
-	};
-
-	const showReport = () => {
-		const file = path.resolve(__dirname, "./assets/reports/template.html");
-
-		window.reportWindow = new BrowserWindow({
-				width: 1200,
-				minWidth: 600,
-				height: 600,
-				parent: remote.getCurrentWindow()
-			});
-
-		window.reportWindow.on("closed", () => {
-			window.reportWindow = null;
-			console.log("Report window closed");
-		});
-
-		window.reportWindow.loadURL(file);
-
-		window.reportWindow.webContents.on("did-finish-load", () => {
-			console.log("Report loaded");
-		});
-
-		window.reportWindow.webContents.printToPDF({ printBackground: true, landscape: false }, function (err, data) {
-			if (err) {
-				throw err;
-			}
-
-			try {
-				fs.writeFileSync(path.resolve(__dirname, "report.pdf"), data);
-			} catch(err) {
-				set_store_value(modalContent, $modalContent = err);
-				set_store_value(activated, $activated = true);
-			}
-		});
-	};
-
 	const click_handler = e => plotData(e, "felix");
 	const click_handler_1 = () => $$invalidate(2, toggleRow = !toggleRow);
 	const click_handler_2 = e => plotData(e, "opo");
@@ -36413,44 +36802,9 @@ function instance$L($$self, $$props, $$invalidate) {
 	const click_handler_3 = e => plotData(e, "exp_fit");
 	const click_handler_4 = () => $$invalidate(12, dataTable = []);
 
-	function textfield0_value_binding_1(value_1) {
-		reportMolecule = value_1;
-		$$invalidate(16, reportMolecule);
-	}
-
-	function radio_group_binding_1(value) {
-		reportMethod = value;
-		$$invalidate(15, reportMethod);
-	}
-
-	function customcheckbox0_selected_binding(value_2) {
-		include_table = value_2;
-		$$invalidate(17, include_table);
-	}
-
-	function customcheckbox1_selected_binding(value_3) {
-		include_avgplot = value_3;
-		$$invalidate(18, include_avgplot);
-	}
-
-	function customcheckbox2_selected_binding(value_4) {
-		include_bplot = value_4;
-		$$invalidate(20, include_bplot);
-	}
-
-	function customcheckbox3_selected_binding(value_5) {
-		include_saplot = value_5;
-		$$invalidate(19, include_saplot);
-	}
-
-	function textfield1_value_binding_1(value_6) {
-		reportTitle = value_6;
-		$$invalidate(13, reportTitle);
-	}
-
-	function textfield2_value_binding(value_7) {
-		reportComments = value_7;
-		$$invalidate(14, reportComments);
+	function reportlayout_currentLocation_binding(value_1) {
+		currentLocation = value_1;
+		$$invalidate(4, currentLocation);
 	}
 
 	function layout_currentLocation_binding(value) {
@@ -36468,8 +36822,8 @@ function instance$L($$self, $$props, $$invalidate) {
 	};
 
 	$$self.$inject_state = $$props => {
-		if ("filetype" in $$props) $$invalidate(22, filetype = $$props.filetype);
-		if ("id" in $$props) $$invalidate(23, id = $$props.id);
+		if ("filetype" in $$props) $$invalidate(14, filetype = $$props.filetype);
+		if ("id" in $$props) $$invalidate(15, id = $$props.id);
 		if ("fileChecked" in $$props) $$invalidate(0, fileChecked = $$props.fileChecked);
 		if ("delta" in $$props) $$invalidate(1, delta = $$props.delta);
 		if ("toggleRow" in $$props) $$invalidate(2, toggleRow = $$props.toggleRow);
@@ -36480,8 +36834,8 @@ function instance$L($$self, $$props, $$invalidate) {
 		if ("thoeryfiles" in $$props) thoeryfiles = $$props.thoeryfiles;
 		if ("theoryfile_location" in $$props) theoryfile_location = $$props.theoryfile_location;
 		if ("theorylistDialog" in $$props) theorylistDialog = $$props.theorylistDialog;
-		if ("theoryfile_filtered" in $$props) $$invalidate(49, theoryfile_filtered = $$props.theoryfile_filtered);
-		if ("show_theoryplot" in $$props) $$invalidate(24, show_theoryplot = $$props.show_theoryplot);
+		if ("theoryfile_filtered" in $$props) $$invalidate(36, theoryfile_filtered = $$props.theoryfile_filtered);
+		if ("show_theoryplot" in $$props) $$invalidate(16, show_theoryplot = $$props.show_theoryplot);
 		if ("openShell" in $$props) $$invalidate(7, openShell = $$props.openShell);
 		if ("normMethod" in $$props) $$invalidate(8, normMethod = $$props.normMethod);
 		if ("normMethod_datas" in $$props) normMethod_datas = $$props.normMethod_datas;
@@ -36491,20 +36845,9 @@ function instance$L($$self, $$props, $$invalidate) {
 		if ("index" in $$props) index = $$props.index;
 		if ("annotations" in $$props) annotations = $$props.annotations;
 		if ("output_name" in $$props) $$invalidate(11, output_name = $$props.output_name);
-		if ("dataTableHead" in $$props) $$invalidate(26, dataTableHead = $$props.dataTableHead);
+		if ("dataTableHead" in $$props) $$invalidate(18, dataTableHead = $$props.dataTableHead);
 		if ("dataTable" in $$props) $$invalidate(12, dataTable = $$props.dataTable);
 		if ("showDataTable" in $$props) showDataTable = $$props.showDataTable;
-		if ("reportTitleContents" in $$props) reportTitleContents = $$props.reportTitleContents;
-		if ("loadContent" in $$props) loadContent = $$props.loadContent;
-		if ("reportCount" in $$props) reportCount = $$props.reportCount;
-		if ("reportTitle" in $$props) $$invalidate(13, reportTitle = $$props.reportTitle);
-		if ("reportComments" in $$props) $$invalidate(14, reportComments = $$props.reportComments);
-		if ("reportMethod" in $$props) $$invalidate(15, reportMethod = $$props.reportMethod);
-		if ("reportMolecule" in $$props) $$invalidate(16, reportMolecule = $$props.reportMolecule);
-		if ("include_table" in $$props) $$invalidate(17, include_table = $$props.include_table);
-		if ("include_avgplot" in $$props) $$invalidate(18, include_avgplot = $$props.include_avgplot);
-		if ("include_saplot" in $$props) $$invalidate(19, include_saplot = $$props.include_saplot);
-		if ("include_bplot" in $$props) $$invalidate(20, include_bplot = $$props.include_bplot);
 		if ("felixfiles" in $$props) felixfiles = $$props.felixfiles;
 		if ("$filelist" in $$props) filelist.set($filelist = $$props.$filelist);
 		if ("$filelistBinded" in $$props) filelistBinded.set($filelistBinded = $$props.$filelistBinded);
@@ -36541,14 +36884,6 @@ function instance$L($$self, $$props, $$invalidate) {
 		overwrite_expfit,
 		output_name,
 		dataTable,
-		reportTitle,
-		reportComments,
-		reportMethod,
-		reportMolecule,
-		include_table,
-		include_avgplot,
-		include_saplot,
-		include_bplot,
 		$bindDialog,
 		filetype,
 		id,
@@ -36559,17 +36894,12 @@ function instance$L($$self, $$props, $$invalidate) {
 		plotData,
 		clearAllPeak,
 		clearLastPeak,
-		addReport,
-		showReport,
 		thoeryfiles,
 		theoryfile_location,
 		normMethod_datas,
 		line,
 		index,
 		annotations,
-		reportTitleContents,
-		loadContent,
-		reportCount,
 		felixfiles,
 		$filelist,
 		$filelistBinded,
@@ -36579,7 +36909,6 @@ function instance$L($$self, $$props, $$invalidate) {
 		theorylistDialog,
 		theoryfile_filtered,
 		showDataTable,
-		getHTMLContent,
 		click_handler,
 		click_handler_1,
 		click_handler_2,
@@ -36592,14 +36921,7 @@ function instance$L($$self, $$props, $$invalidate) {
 		switch_1_checked_binding,
 		click_handler_3,
 		click_handler_4,
-		textfield0_value_binding_1,
-		radio_group_binding_1,
-		customcheckbox0_selected_binding,
-		customcheckbox1_selected_binding,
-		customcheckbox2_selected_binding,
-		customcheckbox3_selected_binding,
-		textfield1_value_binding_1,
-		textfield2_value_binding,
+		reportlayout_currentLocation_binding,
 		layout_currentLocation_binding,
 		layout_fileChecked_binding
 	];
@@ -36608,20 +36930,20 @@ function instance$L($$self, $$props, $$invalidate) {
 class Normline extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$L, create_fragment$L, safe_not_equal, {}, [-1, -1, -1]);
+		init(this, options, instance$M, create_fragment$M, safe_not_equal, {}, [-1, -1, -1]);
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
 			tagName: "Normline",
 			options,
-			id: create_fragment$L.name
+			id: create_fragment$M.name
 		});
 	}
 }
 
 /* src\Pages\Masspec.svelte generated by Svelte v3.17.0 */
 
-function create_fragment$M(ctx) {
+function create_fragment$N(ctx) {
 	let updating_currentLocation;
 	let updating_fileChecked;
 	let current;
@@ -36695,7 +37017,7 @@ function create_fragment$M(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_fragment$M.name,
+		id: create_fragment$N.name,
 		type: "component",
 		source: "",
 		ctx
@@ -36704,7 +37026,7 @@ function create_fragment$M(ctx) {
 	return block;
 }
 
-function instance$M($$self, $$props, $$invalidate) {
+function instance$N($$self, $$props, $$invalidate) {
 	let filetype = "mass";
 	let id = "Masspec";
 	let massfiles = [];
@@ -36750,20 +37072,20 @@ function instance$M($$self, $$props, $$invalidate) {
 class Masspec extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$M, create_fragment$M, safe_not_equal, {});
+		init(this, options, instance$N, create_fragment$N, safe_not_equal, {});
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
 			tagName: "Masspec",
 			options,
-			id: create_fragment$M.name
+			id: create_fragment$N.name
 		});
 	}
 }
 
 /* src\Pages\Timescan.svelte generated by Svelte v3.17.0 */
 
-function create_fragment$N(ctx) {
+function create_fragment$O(ctx) {
 	let updating_currentLocation;
 	let updating_fileChecked;
 	let current;
@@ -36837,7 +37159,7 @@ function create_fragment$N(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_fragment$N.name,
+		id: create_fragment$O.name,
 		type: "component",
 		source: "",
 		ctx
@@ -36846,7 +37168,7 @@ function create_fragment$N(ctx) {
 	return block;
 }
 
-function instance$N($$self, $$props, $$invalidate) {
+function instance$O($$self, $$props, $$invalidate) {
 	let filetype = "scan";
 	let id = "Timescan";
 	let scanfiles = [];
@@ -36892,20 +37214,20 @@ function instance$N($$self, $$props, $$invalidate) {
 class Timescan extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$N, create_fragment$N, safe_not_equal, {});
+		init(this, options, instance$O, create_fragment$O, safe_not_equal, {});
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
 			tagName: "Timescan",
 			options,
-			id: create_fragment$N.name
+			id: create_fragment$O.name
 		});
 	}
 }
 
 /* src\Pages\THz.svelte generated by Svelte v3.17.0 */
 
-function create_fragment$O(ctx) {
+function create_fragment$P(ctx) {
 	let updating_currentLocation;
 	let updating_fileChecked;
 	let current;
@@ -36979,7 +37301,7 @@ function create_fragment$O(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_fragment$O.name,
+		id: create_fragment$P.name,
 		type: "component",
 		source: "",
 		ctx
@@ -36988,7 +37310,7 @@ function create_fragment$O(ctx) {
 	return block;
 }
 
-function instance$O($$self, $$props, $$invalidate) {
+function instance$P($$self, $$props, $$invalidate) {
 	let filetype = "thz";
 	let id = "THz";
 	let thzfiles = [];
@@ -37034,23 +37356,23 @@ function instance$O($$self, $$props, $$invalidate) {
 class THz extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$O, create_fragment$O, safe_not_equal, {});
+		init(this, options, instance$P, create_fragment$P, safe_not_equal, {});
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
 			tagName: "THz",
 			options,
-			id: create_fragment$O.name
+			id: create_fragment$P.name
 		});
 	}
 }
 
 /* src\App.svelte generated by Svelte v3.17.0 */
 
-const { console: console_1$1 } = globals;
-const file$J = "src\\App.svelte";
+const { console: console_1$2 } = globals;
+const file$K = "src\\App.svelte";
 
-function create_fragment$P(ctx) {
+function create_fragment$Q(ctx) {
 	let t0;
 	let t1;
 	let t2;
@@ -37102,7 +37424,7 @@ function create_fragment$P(ctx) {
 			create_component(footer.$$.fragment);
 			attr_dev(div, "class", "pageContainer");
 			set_style(div, "overflow", "hidden");
-			add_location(div, file$J, 61, 0, 1841);
+			add_location(div, file$K, 61, 0, 1841);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -37180,7 +37502,7 @@ function create_fragment$P(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_fragment$P.name,
+		id: create_fragment$Q.name,
 		type: "component",
 		source: "",
 		ctx
@@ -37189,7 +37511,7 @@ function create_fragment$P(ctx) {
 	return block;
 }
 
-function instance$P($$self, $$props, $$invalidate) {
+function instance$Q($$self, $$props, $$invalidate) {
 	onMount(() => {
 		let allbuttons = Array.from(document.querySelectorAll(".button"));
 		allbuttons.forEach(button => button.classList.add("hvr-glow"));
@@ -37234,7 +37556,7 @@ function instance$P($$self, $$props, $$invalidate) {
 	const writable_props = ["version"];
 
 	Object.keys($$props).forEach(key => {
-		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1$1.warn(`<App> was created with unknown prop '${key}'`);
+		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1$2.warn(`<App> was created with unknown prop '${key}'`);
 	});
 
 	$$self.$set = $$props => {
@@ -37257,20 +37579,20 @@ function instance$P($$self, $$props, $$invalidate) {
 class App extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$P, create_fragment$P, safe_not_equal, { version: 1 });
+		init(this, options, instance$Q, create_fragment$Q, safe_not_equal, { version: 1 });
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
 			tagName: "App",
 			options,
-			id: create_fragment$P.name
+			id: create_fragment$Q.name
 		});
 
 		const { ctx } = this.$$;
 		const props = options.props || ({});
 
 		if (/*version*/ ctx[1] === undefined && !("version" in props)) {
-			console_1$1.warn("<App> was created without expected prop 'version'");
+			console_1$2.warn("<App> was created without expected prop 'version'");
 		}
 	}
 

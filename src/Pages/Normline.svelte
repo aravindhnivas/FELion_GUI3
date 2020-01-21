@@ -20,6 +20,7 @@
     import DataTable, {Head, Body, Row, Cell} from '@smui/data-table'
     import Checkbox from '@smui/checkbox';
     import CustomCheckbox from '../components/CustomCheckbox.svelte';
+    import ReportLayout from '../components/ReportLayout.svelte';
     const {BrowserWindow} = remote
    ///////////////////////////////////////////////////////////////////////
 
@@ -301,7 +302,6 @@
             target.classList.toggle("is-loading")
         })
     }
-
     const clearAllPeak = () => {
 
         console.log("Removing all found peak values")
@@ -319,7 +319,6 @@
         line = []
         ready_to_fit = false
     }
-
     const clearLastPeak = () => {
         if (line.length > 0) {
         
@@ -340,97 +339,6 @@
         if (line.length === 0) {ready_to_fit = false}
     }
 
-    const getHTMLContent = (content) =>{
-        return (
-            `<!DOCTYPE html>
-            <html lang="en">
-                <head>
-                    <meta charset='utf8'>
-                    <meta name="viewport" content="width=device-width, initial-scale=1">
-                    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-                    <title>Reports</title>
-                    <link rel="stylesheet" href="./bulma.min.css">
-                    <link rel="stylesheet" href="./template.css">
-                </head>
-
-                <body>
-                    <section class="section" id="mainSection">
-                        <button class="button is-link" id="exportButton">Export to PDF</button>
-                        <h1 class="title" id="mainTitle">${reportMolecule}</h1>
-                        ${content}
-                    </section>
-                </body>
-            </html>`
-
-        )
-    }
-    let reportTitleContents = "", loadContent = "";
-    let reportCount = 0
-
-    let reportTitle = "", reportComments = "", reportMethod = "info", reportMolecule = ""
-    let include_table = true, include_avgplot = true, include_saplot = false, include_bplot = false;
-
-    const addReport = async () => {
-        reportCount++
-
-        if (reportTitle.length == 0) reportTitle = `Title-${reportCount}`
-        if (reportComments.length == 0) reportComments = "-"
-
-        let tableData, avg_plot
-
-        html2canvas(document.getElementById("avgplot"))
-        .then(canvasElm => {
-
-            include_table ? tableData = `<table class='table is-bordered is-hoverable'>${document.getElementById("felixTable").innerHTML}</table>` : tableData = "\n"
-            include_avgplot ? avg_plot = `<img id='img-a${reportCount}' src='${canvasElm.toDataURL()}'>` : avg_plot = "\n"
-
-            reportTitleContents += `\n<h1 class="title notification is-${reportMethod}">${reportTitle}</h1>\n` 
-                + marked(reportComments)
-                + avg_plot
-                + tableData
-                + "\n<hr>\n"
-
-            loadContent = getHTMLContent(reportTitleContents)
-            console.log(loadContent)
-            reportComments = reportTitle = ""
-            let template = path.resolve(__dirname, "assets/reports/template.html")
-            fs.writeFile(template, loadContent, function(err) {
-                if(err) {
-                    createToast("Report couldn't be added.", "danger")
-                    return console.log(err);
-                }
-                console.log("The file was saved!");
-                createToast("Report added", "success")
-            });
-        })
-        
-
-    }
-    
-    const showReport = () => {
-        
-        const file = path.resolve(__dirname, "./assets/reports/template.html")
-        window.reportWindow = new BrowserWindow({ width: 1200, minWidth :600, height: 600, parent: remote.getCurrentWindow()})
-        window.reportWindow.on('closed', () => { window.reportWindow = null; console.log("Report window closed") })
-        window.reportWindow.loadURL(file)
-        window.reportWindow.webContents.on('did-finish-load', ()=>{
-            console.log("Report loaded")
-
-        });
-
-        window.reportWindow.webContents.printToPDF({printBackground: true, landscape: false}, function(err, data) {
-
-            if (err) {throw err}
-            try{ fs.writeFileSync(path.resolve(__dirname, "report.pdf"), data) }catch(err){
-                $modalContent = err;
-                $activated = true;
-            }
-            
-        })
-
-    }
-
-    
 </script>
 
 <style>
@@ -454,6 +362,7 @@
     }
 
     * :global(.report) {
+
         display: block;
         width: 90%;
         margin-bottom: 1em;
@@ -532,9 +441,8 @@
             </div>
 
             <!-- Frequency table list -->
-            <div class=""><h1 class="mdc-typography--headline4">Frequency table</h1></div>
+            <div><h1 class="mdc-typography--headline4">Frequency table</h1></div>
             <hr>
-            
             <div class="dataTable" transition:fade>
 
                 <DataTable table$aria-label="felixfile line-list" table$id="felixTable" id="felixTableContainer">
@@ -558,36 +466,9 @@
             
             </div>
 
-            <!-- Add to report/notes taking section -->
-            <div class=""><h1 class="mdc-typography--headline4">Add to report</h1></div>
-            <hr>
-
-            <div style="margin-bottom:1em;">
-                <Textfield style="height:3em; width:20em;" variant="outlined" bind:value={reportMolecule} label="Molecule Name" />
-            </div>
-
-            <div class="align report" id="felixreport" >
-                {#each [{name:"info", color:"white"}, {name:"success", color:"#00ff00"}, {name:"warning", color:"yellow"}, {name:"danger", color:"red"}] as method}
-                    <FormField >
-                        <Radio bind:group={reportMethod} value={method.name}  />
-                        <span slot="label" style="color:{method.color}">{method.name}</span>
-                    </FormField>
-                {/each}
-                <CustomCheckbox bind:selected={include_table} label={"Include table"}/>
-                <CustomCheckbox bind:selected={include_avgplot} label={"Final plot"}/>
-                <CustomCheckbox bind:selected={include_bplot} label={"Original plot"}/>
-                <CustomCheckbox bind:selected={include_saplot} label={"Power & SA plot"}/>
-                <Textfield style="height:3em; margin-bottom:1em;" variant="outlined" bind:value={reportTitle} label="Title" />
-                <Textfield textarea bind:value={reportComments} label="Comments"  
-                    input$aria-controls="felixreport_comments" input$aria-describedby="felixreport_comments"/>
-                <HelperText id="felixreport_comments">
-                    NOTE: You can write in markdown format (eg: # Title, **bold**, __italics__, 1., 2. for list, etc.,)
-                </HelperText>
-            
-                <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click={addReport}>Add to Report</button>
-                <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click={showReport}>Show Report</button>
-            </div>
+            <ReportLayout bind:currentLocation id="felixreport", plotID={["bplot", "saPlot", "avgplot", "exp-theory-plot"]} includeTable={true}/>
         {/if}
     
     </div>
+
 </Layout>
