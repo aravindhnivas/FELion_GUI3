@@ -17,7 +17,7 @@
 	
 	import Modal from "./components/Modal.svelte"
 	import DialogChecklist from "./components/DialogChecklist.svelte"
-	import {onMount} from "svelte"
+	import {onMount, afterUpdate} from "svelte"
 
 	onMount(()=>{
 		let allbuttons = Array.from(document.querySelectorAll(".button"))
@@ -31,7 +31,7 @@
 	window.path = require("path")
 	window.fs = require("fs")
 	window.spawn = require("child_process").spawn
-
+	
 	export let version;
 
 	console.log("Svelte: ", version)

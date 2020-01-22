@@ -110,8 +110,8 @@
     let toggleBrowser = true;
 
 </script>
-<style lang="scss">
 
+<style lang="scss">
     $box1: #6a50ad59;
     .filebrowser, .fileContainer {
         background-image: url(./assets/css/intro.svg);

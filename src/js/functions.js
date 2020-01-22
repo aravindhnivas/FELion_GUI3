@@ -1,16 +1,18 @@
-window.showpage = (item) => {document.getElementById(item).style.display = "block"; console.log(`Opened: ${item}`)}
-window.hidepage = (item) => {document.getElementById(item).style.display = "none"; console.log(`Closed: ${item}`)}
+window.showpage = (item) => {document.getElementById(item).style.display = "block"}
+window.hidepage = (item) => {document.getElementById(item).style.display = "none"}
 window.togglepage = (item) => {
+
     let element = document.getElementById(item);
     let display = element.style.display;
     display == "none" ? element.style.display = "block" : element.style.display = "none"
 }
 
 export function resizableDiv({div, change={width:true, height:true} ,cursor={left:false, right:false, bottom:false, top:false}}={}) {
+
     interact(div).resizable({
+    
         edges: cursor,
         modifiers: [
-
             // keep the edges inside the parent
             interact.modifiers.restrictEdges({outer: 'parent'}),
             interact.modifiers.restrictSize({min: { width: 50, height: 50 }, max: { width: 500 }})
@@ -43,6 +45,7 @@ export function resizableDiv({div, change={width:true, height:true} ,cursor={lef
 }
 
 resizableDiv({div:".filebrowser", cursor:{right:true}, change:{width:true, height:false}})
+// resizableDiv({div:".quickview", cursor:{left:true}, change:{width:true, height:false}})
 
 export function plot(mainTitle, xtitle, ytitle, data, plotArea, filetype = null) {
     let dataLayout = {

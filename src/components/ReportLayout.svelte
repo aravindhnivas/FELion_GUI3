@@ -1,5 +1,5 @@
 <script context="module">
-    async function asyncForEach(array, callback) {
+    export async function asyncForEach(array, callback) {
         for (let index = 0; index < array.length; index++) {
             await callback(array[index], index, array);
         }
@@ -154,6 +154,7 @@
                 }).catch(error => { $modalContent = error; $activated = true }) 
             }
         })
+        
     }
 
 </script>
@@ -161,12 +162,12 @@
 <div><h1 class="mdc-typography--headline4">Add to report</h1></div>
 
 <hr>
-
 <div style="margin-bottom:1em;">
+
     <Textfield style="height:3em; width:20em;" variant="outlined" bind:value={reportMolecule} label="Molecule Name" />
 </div>
-
 <div class="align report" {id} >
+
     {#each [{name:"info", color:"white"}, {name:"success", color:"#00ff00"}, {name:"warning", color:"yellow"}, {name:"danger", color:"red"}] as method}
         <FormField >
             <Radio bind:group={reportMethod} value={method.name}  />

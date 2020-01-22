@@ -15,15 +15,20 @@
 	
 </head>
 
-<body class="mdc-typography has-navbar-fixed-top has-navbar-fixed-bottom">
+<body class="mdc-typography">
 
-	<script>window._ = require('./assets/js/lodash.js')</script>
+	<script>
+		window._ = require('./assets/js/lodash.js')
+		window.$ = window.jQuery = require('./assets/js/jquery-3.4.1.min')
+	</script>
 	<script src='./assets/js/anime.min.js'></script>
+	<script src='./assets/js/bulma-extensions.min.js'></script>
 	<script src='./assets/js/interact.min.js'></script>
 	<script src='./assets/js/marked.min.js'></script>
 	<script src='./assets/js/html2canvas.min.js'></script>
 	<script src='./bundle.js'></script>
 	<script src='./assets/js/renderer.js'></script>
+
 </body>
 
 </html>

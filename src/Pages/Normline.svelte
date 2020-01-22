@@ -21,7 +21,11 @@
     import Checkbox from '@smui/checkbox';
     import CustomCheckbox from '../components/CustomCheckbox.svelte';
     import ReportLayout from '../components/ReportLayout.svelte';
+    import QuickView from '../components/QuickView.svelte';
+    import List, {Item, Meta, Label} from '@smui/list';
+
     const {BrowserWindow} = remote
+
    ///////////////////////////////////////////////////////////////////////
 
     let filetype="felix", id="Normline", fileChecked=[], delta=1, toggleRow=false;
@@ -45,8 +49,8 @@
             if (!result.canceled) {
                 let files = result.filePaths
                 theoryfile_location = path.dirname(files[0])
-                $filelist = thoeryfiles = files.map(file=>file = path.basename(file))
-                $filelistBinded = []
+                thoeryfiles = files.map(file=>file = path.basename(file))
+                theoryfile_filtered = []
                 createToast("Theoryfiles selected", "success")
             }
         }).catch(err=>{$modalContent = err; $activated=true})
@@ -55,6 +59,7 @@
     ///////////////////////////////////////////////////////////////////////
     
     let openShell = false;
+
     let normMethod = "Relative", normMethod_datas = {}
     let graphPlotted = false, overwrite_expfit = false
     let line = [], index = [], annotations = []
@@ -62,25 +67,25 @@
 
     let dataTableHead = ["Filename", "Line (cm-1)", "Frequency, Ampl., FWHM - (cm-1)"]
     let dataTable = [], showDataTable=false;
-
+    let showTheoryFiles = false
     const replot = () => {
-     
         if (graphPlotted) {Plotly.react("avgplot", normMethod_datas[normMethod].data, normMethod_datas[normMethod].layout, { editable: true })}
     }
-    localStorage["pythonpath"] = path.resolve("C:\\ProgramData\\Miniconda3\\python")
+
+    localStorage["pythonpath"] = path.resolve("D:\\FELion_GUI2.2\\python3.7\\python")
     localStorage["pythonscript"] = path.resolve(__dirname, "assets/python_files")
 
     function plotData(event=null, filetype="felix", general=null){
 
-        if (fileChecked.length === 0) return createToast("No files selected", "danger")
+        if (fileChecked.length === 0) {return createToast("No files selected", "danger")}
+
         let target = event.target
         target.classList.toggle("is-loading")
-        
         if (filetype == "felix") {graphPlotted = false, output_name = "averaged"}
+
         if (filetype == "exp_fit") {if (index.length < 2) {
             target.classList.toggle("is-loading")
             return createToast("Range not found!!. Select a range using Box-select", "danger")
-
         }}
 
         let pyfileInfo = {
@@ -342,13 +347,13 @@
 </script>
 
 <style>
+
     * :global(.button) {margin: 0.4em;}
     * :global(.short-input) { max-width: 7em; margin: 0 1em; }
     * :global(.mdc-text-field--outlined) {height: 2.5em;}
     * :global(.plotSlot) { width: 100%}
 
     * :global(option) { color: black; }
-
     * :global(.mdc-data-table) {min-width: 30em}
     .plotSlot > div { width: calc(100% - 1em); margin-top: 1em; }
 
@@ -360,14 +365,26 @@
         width: 90%;
         margin: 1em 0;
     }
-
     * :global(.report) {
         display: block;
         width: 90%;
         margin-bottom: 1em;
     }
+
+    * :global(table th:not([align])) {text-align: center; padding: 1em;}
+    * :global(table td:not([align])) {text-align: center; padding: 1em;}
 </style>
 
+<QuickView bind:active={showTheoryFiles} title="Theory files">
+    <List checklist>
+        {#each thoeryfiles as file}
+            <Item>
+                <Label>{file}</Label>
+                <Meta> <Checkbox bind:group={theoryfile_filtered} value={file}/> </Meta>
+            </Item>
+        {/each}
+    </List>
+</QuickView>
 
 <Layout {filetype} {id} bind:currentLocation bind:fileChecked>
 
@@ -391,7 +408,7 @@
         {#if toggleRow}
             <div class="align" transition:fly="{{ y: -20, duration: 500 }}">
                 <button class="button is-link" on:click={get_theoryfiles}>Browse File</button>
-                <button class="button is-link" on:click={$bindDialog.open}>Show files</button>
+                <button class="button is-link" on:click="{()=>showTheoryFiles = !showTheoryFiles}">Show files</button>
                 <Textfield style="width:7em; margin-right:0.5em;" variant="outlined" bind:value={sigma} label="Sigma" />
                 <Textfield style="width:7em" variant="outlined" bind:value={scale} label="Scale" />
                 <button class="button is-link">Open in Matplotlib</button>
@@ -421,6 +438,7 @@
         <div id="saPlot"></div>
         <div id="avgplot"></div>
 
+        <!-- <div class="is-divider" data-content="Graph END"></div> -->
         {#if graphPlotted}
             
             <!-- Pos-processing felix data -->

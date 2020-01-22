@@ -12,7 +12,7 @@
 }
 
 html, body { 
-    background-color: #513a8a;
+    background-color: #513a8a!important;
     background-image: url(intro.svg);
 
     user-select: none;
