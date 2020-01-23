@@ -26,35 +26,27 @@
 
     const {BrowserWindow} = remote
 
+    import FileBrowser from "../components/FileBrowser.svelte"
+
    ///////////////////////////////////////////////////////////////////////
 
     let filetype="felix", id="Normline", fileChecked=[], delta=1, toggleRow=false;
 
     $: felixfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
-    let plottedFiles = []
-    let currentLocation = localStorage[`${filetype}_location`] || ""
+    let plottedFiles = [], theoryLocation = ""
+
+    let currentLocation = theoryLocation= localStorage[`${filetype}_location`] || ""
+    
     $: console.log(`${filetype} Update: \n${currentLocation}`)
 
     ///////////////////////////////////////////////////////////////////////
 
     // Theory file
-    let sigma = 20, scale=1, thoeryfiles = [], theoryfile_location="";
-    let theorylistDialog 
-    let theoryfile_filtered;
-    let show_theoryplot = false;
-    $: console.log("Filtered theory files: ", theoryfile_filtered)
+    let sigma = 20, scale=1, thoeryfiles = [], show_theoryplot = false, theoryRefresh = true;
 
-    const get_theoryfiles = () => {
-        browse({dir:false}).then(result=>{
-            if (!result.canceled) {
-                let files = result.filePaths
-                theoryfile_location = path.dirname(files[0])
-                thoeryfiles = files.map(file=>file = path.basename(file))
-                theoryfile_filtered = []
-                createToast("Theoryfiles selected", "success")
-            }
-        }).catch(err=>{$modalContent = err; $activated=true})
-    }
+    $: console.log("Theory files: ", thoeryfiles, theoryLocation)
+    $: console.log("Theory Location", theoryLocation)
+
 
     ///////////////////////////////////////////////////////////////////////
     
@@ -62,17 +54,18 @@
 
     let normMethod = "Relative", normMethod_datas = {}
     let graphPlotted = false, overwrite_expfit = false
+
     let line = [], index = [], annotations = []
     let output_name = "averaged"
-
     let dataTableHead = ["Filename", "Line (cm-1)", "Frequency, Ampl., FWHM - (cm-1)"]
-    let dataTable = [], showDataTable=false;
-    let showTheoryFiles = false
+    let dataTable = [], showDataTable=false, showTheoryFiles = false
+
     const replot = () => {
+
         if (graphPlotted) {Plotly.react("avgplot", normMethod_datas[normMethod].data, normMethod_datas[normMethod].layout, { editable: true })}
     }
 
-    localStorage["pythonpath"] = path.resolve("D:\\FELion_GUI2.2\\python3.7\\python")
+    localStorage["pythonpath"] = path.resolve("C:\\ProgramData\\Miniconda3\\python")
     localStorage["pythonscript"] = path.resolve(__dirname, "assets/python_files")
 
     function plotData(event=null, filetype="felix", general=null){
@@ -80,6 +73,7 @@
         if (fileChecked.length === 0) {return createToast("No files selected", "danger")}
 
         let target = event.target
+
         target.classList.toggle("is-loading")
         if (filetype == "felix") {graphPlotted = false, output_name = "averaged"}
 
@@ -115,11 +109,15 @@
         }
 
         let py;
-        try {
 
-            py = spawn( localStorage["pythonpath"], [path.resolve(localStorage["pythonscript"], pyfile), args] )
-            createToast("Process Started")
-        } catch (err) { $modalContent = err; $activated = true }
+        try {py = spawn( localStorage["pythonpath"], [path.resolve(localStorage["pythonscript"], pyfile), args] )}
+        catch (err) {
+            $modalContent = "Error accessing python. Set python location properly in Settings"
+            $activated = true
+            target.classList.toggle("is-loading")
+            return
+        }
+        createToast("Process Started")
 
         py.stdout.on("data", data => {
 
@@ -129,6 +127,7 @@
         });
 
         let error_occured_py = false;
+
         py.stderr.on("data", err => {
             $modalContent = err
             $activated = true
@@ -343,7 +342,6 @@
         Plotly.relayout("avgplot", { annotations: annotations, shapes: line })
         if (line.length === 0) {ready_to_fit = false}
     }
-
 </script>
 
 <style>
@@ -375,18 +373,12 @@
     * :global(table td:not([align])) {text-align: center; padding: 1em;}
 </style>
 
-<QuickView bind:active={showTheoryFiles} title="Theory files">
-    <List checklist>
-        {#each thoeryfiles as file}
-            <Item>
-                <Label>{file}</Label>
-                <Meta> <Checkbox bind:group={theoryfile_filtered} value={file}/> </Meta>
-            </Item>
-        {/each}
-    </List>
+<QuickView style="padding:1em;" footer={false} bind:active={showTheoryFiles} title="Browse Theory files">
+
+    <FileBrowser bind:currentLocation={theoryLocation} bind:fileChecked={thoeryfiles} />
 </QuickView>
 
-<Layout {filetype} {id} bind:currentLocation bind:fileChecked>
+<Layout {filetype} {id} bind:currentLocation bind:fileChecked >
 
     <div class="buttonSlot" slot="buttonContainer">
 
@@ -407,8 +399,8 @@
 
         {#if toggleRow}
             <div class="align" transition:fly="{{ y: -20, duration: 500 }}">
-                <button class="button is-link" on:click={get_theoryfiles}>Browse File</button>
-                <button class="button is-link" on:click="{()=>showTheoryFiles = !showTheoryFiles}">Show files</button>
+                <button class="button is-link" on:click="{()=>showTheoryFiles = !showTheoryFiles}">Browse File</button>
+                <!-- <button class="button is-link" on:click="{()=>showTheoryFiles = !showTheoryFiles}">Show files</button> -->
                 <Textfield style="width:7em; margin-right:0.5em;" variant="outlined" bind:value={sigma} label="Sigma" />
                 <Textfield style="width:7em" variant="outlined" bind:value={scale} label="Scale" />
                 <button class="button is-link">Open in Matplotlib</button>
