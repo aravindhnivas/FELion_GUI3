@@ -11,11 +11,13 @@
     import {plot, subplot} from "../js/functions.js"
     import { flip } from 'svelte/animate'
     
-    import DataTable, {Head, Body, Row, Cell} from '@smui/data-table'
+    import {Row, Cell} from '@smui/data-table'
     import CustomCheckbox from '../components/CustomCheckbox.svelte';
     import CustomSwitch from '../components/CustomSwitch.svelte';
 
     import CustomSelect from '../components/CustomSelect.svelte';
+
+    import CustomTable from '../components/CustomTable.svelte';
     
     import CustomRadio from '../components/CustomRadio.svelte';
     import ReportLayout from '../components/ReportLayout.svelte';
@@ -443,15 +445,7 @@
             <hr>
             <div class="dataTable" transition:fade>
 
-                <DataTable table$aria-label="felixfile line-list" table$id="felixTable" id="felixTableContainer">
-                    <Head>
-                        <Row>
-                            {#each dataTableHead as item}
-                                <Cell >{item}</Cell>
-                            {/each}
-                        </Row>
-                    </Head>
-                    <Body>
+                <CustomTable id="felixTable" bind:dataTableHead>
                     {#if !show_dataTable_only_averaged}
                         {#each dataTable as table (table.id)}
                             <Row style="background-color: {table.color};">
@@ -473,8 +467,7 @@
                             </Row>
                         {/each}
                     {/if}
-                    </Body>
-                </DataTable>
+                </CustomTable>
                 <div class="is-pulled-right">
                     <button class="button is-warning" on:click="{()=>dataTable = window._.dropRight(dataTable, 1)}">Clear Last</button>
                     <button class="button is-danger" on:click="{()=>dataTable = []}">Clear Table</button>

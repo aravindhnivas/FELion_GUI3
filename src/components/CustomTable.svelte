@@ -1,10 +1,10 @@
 <script>
     import DataTable, {Head, Body, Row, Cell} from '@smui/data-table'
 
-    export let dataTableHead = [], dataTableRow=[], id="table", styleHead="", styleRow="", rowOptions=[], className=""
+    export let dataTableHead = [], id="table", styleHead=""
 </script>
 
-<DataTable table$aria-label={className} table$id={id} id="{id}Container">
+<DataTable table$aria-label="{id}-tableAriaLabel" table$id={id} id="{id}Container">
 
     <Head style={styleHead}>
         <Row>
@@ -15,13 +15,7 @@
     </Head>
     <Body>
 
-    {#each dataTableRow as table (table.id)}
-        <Row style={styleRow}>
-            {#each rowOptions as option (option)}
-                <Cell>{table[option]}</Cell>
-            {/each}
-        </Row>
-    {/each}
+    <slot ><!-- optional fallback --></slot>
         
     </Body>
 </DataTable>
