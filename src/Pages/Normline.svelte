@@ -7,7 +7,7 @@
     import Ripple from '@smui/ripple'
 
     import {activated, modalContent} from "../components/Modal.svelte"
-    import {bindDialog, filelist, filelistBinded} from "../components/DialogChecklist.svelte"
+    // import {bindDialog, filelist, filelistBinded} from "../components/DialogChecklist.svelte"
     import IconButton, {Icon} from '@smui/icon-button'
     import {plot, subplot} from "../js/functions.js"
 

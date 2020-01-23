@@ -81,7 +81,6 @@
         padding-bottom: 3em;
     }
      
-    
     .filebrowser {
         padding-left: 2em;
         padding-top: 1em;

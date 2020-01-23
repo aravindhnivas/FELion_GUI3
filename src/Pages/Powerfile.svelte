@@ -8,29 +8,26 @@
     import FormField from '@smui/form-field';
     import {createToast, browse} from "../components/Layout.svelte"
     import {modalContent, activated} from "../components/Modal.svelte"
-
+    import CustomDialog from "../components/CustomDialog.svelte"
     //////////////////////////////////////////////////////////////////////////////////
 
-    function savefile() {
-
-        if (location.length == 0) {return createToast("Location is not set. Browse folder to set location", "danger")}
-
-        console.log('Powerfile contents saving')
-
-        let powfile = path.resolve(location, `${filename}.pow`)
-        if (fs.existsSync(powfile)){
-            createToast("Powerfile overwritten to existing file", "warning")
-        }
-
+    const writePowfile = () => {
         let contents = `${initContent}\n${powerfileContent}`
         fs.writeFile(powfile, contents , function(err) {
-            if(err) {
 
+            if(err) {
                 createToast("Power file couldn't be saved.", "danger")
                 return console.log(err);
             }
             createToast("Power file saved", "success")
         })
+    }
+    async function savefile() {
+
+        if (location.length == 0) {return createToast("Location is not set. Browse folder to set location", "danger")}
+
+        const overwrite = await fs.existsSync(powfile)
+        overwrite ? overwrite_dialog.open() : writePowfile()
     }
 
     function openFolder() {
@@ -53,6 +50,8 @@
     const yy = today.getFullYear().toString().substr(2)
     let filename = `${dd}_${mm}_${yy}-#`;
 
+    $: powfile = path.resolve(location, `${filename}.pow`)
+
     $: conversion = "_no_"
     $: convert ? conversion = "_" : conversion = "_no_"
 
@@ -63,15 +62,26 @@
         `#    IN${conversion}UM (if one deletes the no the firs number will be in \mu m\n` +
         `# wavelength/cm-1      energy/pulse/mJ\n`
 
+    let overwrite_dialog;
+    const handleOverwrite = (e) => {
+
+        let action = e.detail.action
+        // console.log(action)
+        if (action === "Cancel" || action === "close") createToast("Powerfile saving cancelled", "warning")
+        if (action === "Yes") writePowfile()
+    }
 </script>
 
 <style>
-
+   
     .section {height: 70vh;}
     .container { height: 100%; margin-bottom: 3em; }
     @media only screen and (max-height: 800px) {.section {overflow-y: auto;}}
 
 </style>
+
+<CustomDialog id="powerfile-overwrite" bind:dialog={overwrite_dialog} on:response={handleOverwrite}
+    title={"Overwrite?"} content={`${filename} already exists. Do you want to overwrite it?`}/>
 
 <section class="section" id="Powerfile" style="display:none">
     <div class="container" id="powfileContainer">

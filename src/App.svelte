@@ -16,7 +16,7 @@
 
 	
 	import Modal from "./components/Modal.svelte"
-	import DialogChecklist from "./components/DialogChecklist.svelte"
+	// import DialogChecklist from "./components/DialogChecklist.svelte"
 	import {onMount, afterUpdate} from "svelte"
 
 	onMount(()=>{
@@ -56,7 +56,7 @@
 <Navbar {navItems}/>
 
 <Modal/>
-<DialogChecklist />
+<!-- <DialogChecklist /> -->
 <Home />
 
 <div class="pageContainer" style="overflow: hidden;">
