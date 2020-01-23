@@ -22,22 +22,18 @@ def exp_fit(location, norm_method, start_wn, end_wn, output_filename, overwrite=
     readfile = f"{datfile_location}/{output_filename}.dat"
     wn, inten = read_dat_file(readfile, norm_method)
 
-    # if not getvalue:
-        
-    # if output_filename == "averaged": line_color = "black"
-    # else:
-    #     index = fullfiles.index(output_filename)
+    if output_filename == "averaged": line_color = "black"
+    else:
+        index = fullfiles.index(output_filename)
 
-    #     index = 2*index
+        index = 2*index
 
-    #     if index > len(colors): 
-    #         index = (index - len(colors)) - 1
-    #         line_color = f"rgb{colors[index]}"
-    #     else: line_color = f"rgb{colors[index]}"
+        if index > len(colors): 
+            index = (index - len(colors)) - 1
+            line_color = f"rgb{colors[index]}"
+        else: line_color = f"rgb{colors[index]}"
 
-    # else: line_color = "black"
-
-    line_color = "black"
+    # line_color = "black"
 
     # Getting data from the selected range
     index = np.logical_and(wn > start_wn, wn < end_wn)
@@ -57,7 +53,7 @@ def exp_fit(location, norm_method, start_wn, end_wn, output_filename, overwrite=
 
     data = {
 
-        "freq":f"{uline_freq.nominal_value:.2f}",
+        "freq":f"{uline_freq.nominal_value:.2f}", "table": f"{uline_freq:.2uP}, {uamplitude:.2uP}, {ufwhm:.2uP}, {usigma:.2uP}",
         "fit": {"x":list(wn), "y":list(fit_data), "name":f"{uline_freq:.2uP}; A: {uamplitude:.2uP}, {_del}: {ufwhm:.2uP}", "mode": "lines", "line": {"color":line_color}},
         "line": [
             {"type":"line", "x0":line_freq_fit, "x1":line_freq_fit, "y0":0, "y1":amplitude, "line":{"color":line_color}},

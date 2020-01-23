@@ -37,7 +37,7 @@
     ///////////////////////////////////////////////////////////////////////
 
     // Theory file
-    let sigma = 20, scale=1, thoeryfiles = [], show_theoryplot = false, theoryRefresh = true;
+    let sigma = 20, scale=1, thoeryfiles = [], show_theoryplot = false, theoryRefresh = true, showTheoryFiles = false
     $: console.log("Theory files: ", thoeryfiles, theoryLocation)
     $: console.log("Theory Location", theoryLocation)
 
@@ -50,11 +50,18 @@
 
     let line = [], index = [], annotations = []
     let output_name = "averaged"
-    let dataTableHead = ["Filename", "Line (cm-1)", "Frequency, Ampl., FWHM - (cm-1)"]
-    let dataTable = [], showDataTable=false, showTheoryFiles = false
+    let dataTableHead = ["Filename", "Frequency (cm-1)", "Amplitude", "FWHM", "Sigma"]
+    let dataTable = [], showDataTable=false
+
+    let show_dataTable_only_averaged = false
 
     const replot = () => {
-        if (graphPlotted) {Plotly.react("avgplot", normMethod_datas[normMethod].data, normMethod_datas[normMethod].layout, { editable: true })}
+        if (graphPlotted) {
+            let {data, layout} = normMethod_datas[normMethod]
+            Plotly.react("avgplot",data, layout, { editable: true })
+
+            // dataTable = dataTable.map((y, index)=>y.amp = data["averaged"].y[index])
+        }
     }
 
     localStorage["pythonpath"] = path.resolve("D:\\FELion_GUI2.2\\python3.7\\python")
@@ -64,8 +71,8 @@
 
         if (fileChecked.length === 0) {return createToast("No files selected", "danger")}
         let target = event.target
-
         target.classList.toggle("is-loading")
+
         if (filetype == "felix") {graphPlotted = false, output_name = "averaged"}
         else if (filetype == "exp_fit") {if (index.length < 2) {
             target.classList.toggle("is-loading")
@@ -79,20 +86,12 @@
         }
 
         let {pyfile, args} = pyfileInfo[filetype]
-
-        // let args = pyfileInfo[filetype].args
-
         if (filetype == "general") {
-
             console.log("Sending general arguments: ", general.args)
             spawn(
                 localStorage["pythonpath"],
                 ["-i", path.join(localStorage["pythonscript"], general.pyfile), ...general_args],
-                {
-                    detached: true,
-                    stdio: 'ignore',
-                    shell: openShell
-                }
+                { detached: true, stdio: 'ignore', shell: openShell }
             )
             py.unref()
             createToast("General process sent. Expect an response soon...")
@@ -109,7 +108,6 @@
             return
         }
         createToast("Process Started")
-
         py.stdout.on("data", data => {
 
             console.log("Ouput from python")
@@ -118,7 +116,6 @@
         });
 
         let error_occured_py = false;
-
         py.stderr.on("data", err => {
             $modalContent = err
             $activated = true
@@ -132,7 +129,6 @@
                 
                     let dataFromPython = fs.readFileSync(path.join(localStorage["pythonscript"], "data.json"))
                     dataFromPython = JSON.parse(dataFromPython.toString("utf-8"))
-                    
                     console.log(dataFromPython)
 
                     if (filetype == "felix") {
@@ -140,9 +136,9 @@
                         line = []
                         index = []
                         annotations = []
+                        dataTable = []
 
                         let avgdataToPlot;
-
                         let signal_formula;
                         let ylabel;
 
@@ -256,6 +252,9 @@
                         graphPlotted = true
                         plottedFiles = fileChecked.map(file=>file.split(".")[0])
 
+                        // let sticky = new Sticky(".sticky")
+                        // sticky.update()
+
                     } else if (filetype == "opofile") {
                         plot("OPO spectrum", "Wavenumber (cm-1)", "Counts", dataFromPython["real"], "opoplot");
                         plot("OPO spectrum: Depletion (%)", "Wavenumber (cm-1)", "Depletion (%)", dataFromPython["relative"], "opoRelPlot");
@@ -284,8 +283,10 @@
 
                         annotations = [...annotations, dataFromPython["annotations"]]
                         Plotly.relayout("avgplot", { annotations: annotations })
-                        
-                        dataTable = [...dataTable, {name: output_name, freq:dataFromPython["freq"], line: dataFromPython["fit"].name}]
+                        let [freq, amp, fwhm, sig] = dataFromPython["table"].split(", ")
+                        let color;
+                        output_name === "averaged" ? color = "#513a8a80" : color = "#fafafa"
+                        dataTable = [...dataTable, {name: output_name, id:dataFromPython["freq"], freq:freq, amp:amp, fwhm:fwhm, sig:sig, color:color}]
 
                         console.log("Line fitted")
                         createToast("Line fitted with gaussian function", "success")
@@ -297,12 +298,11 @@
             target.classList.toggle("is-loading")
         })
     }
-    const clearAllPeak = () => {
 
+    const clearAllPeak = () => {
         console.log("Removing all found peak values")
 
         if (line.length === 0 & annotations.length === 0) {createToast("No fitted lines found", "danger")}
-
         annotations = []
         index = []
         Plotly.relayout("avgplot", { annotations: [], shapes: [] })
@@ -314,10 +314,13 @@
         line = []
         ready_to_fit = false
     }
+
+
     const clearLastPeak = () => {
+
         if (line.length > 0) {
-        
             //   delete_file_line()
+            dataTable = _.dropRight(dataTable, 1)
 
             Plotly.deleteTraces("avgplot", [-1])
             
@@ -332,7 +335,9 @@
         index = []
         Plotly.relayout("avgplot", { annotations: annotations, shapes: line })
         if (line.length === 0) {ready_to_fit = false}
+
     }
+
 </script>
 
 <style>
@@ -362,6 +367,8 @@
 
     * :global(table th:not([align])) {text-align: center; padding: 1em;}
     * :global(table td:not([align])) {text-align: center; padding: 1em;}
+    * :global(#felixTableContainer) {border: 1px solid #5b3ea2;}
+    * :global(#felixTableContainer thead) {background-color: #e1e1e1;}
 </style>
 
 <QuickView style="padding:1em;" footer={false} bind:active={showTheoryFiles} title="Browse Theory files">
@@ -391,7 +398,6 @@
         {#if toggleRow}
             <div class="align" transition:fly="{{ y: -20, duration: 500 }}">
                 <button class="button is-link" on:click="{()=>showTheoryFiles = !showTheoryFiles}">Browse File</button>
-                <!-- <button class="button is-link" on:click="{()=>showTheoryFiles = !showTheoryFiles}">Show files</button> -->
                 <Textfield style="width:7em; margin-right:0.5em;" variant="outlined" bind:value={sigma} label="Sigma" />
                 <Textfield style="width:7em" variant="outlined" bind:value={scale} label="Scale" />
                 <button class="button is-link">Open in Matplotlib</button>
@@ -438,11 +444,17 @@
                 <button class="button is-link" on:click="{(e)=>plotData(e, "exp_fit")}">Exp Fit.</button>
                 <button class="button is-warning" on:click={clearLastPeak}>Clear Last</button>
                 <button class="button is-danger" on:click={clearAllPeak}>Clear All</button>
-                <button class="button is-danger" on:click="{()=>dataTable = []}">Clear Table</button>
+                
             </div>
 
             <!-- Frequency table list -->
-            <div><h1 class="mdc-typography--headline4">Frequency table</h1></div>
+            <div class="align">
+                <h1 class="mdc-typography--headline4">Frequency table</h1>
+                <FormField style="margin: 0 5em">
+                    <Switch bind:checked={show_dataTable_only_averaged} />
+                    <span slot="label">Only Averaged</span>
+                </FormField>
+            </div>
             <hr>
             <div class="dataTable" transition:fade>
 
@@ -455,16 +467,33 @@
                         </Row>
                     </Head>
                     <Body>
-                    {#each dataTable.sort((x, y)=>x[1]-y[1]) as table (table.freq)}
-                        <Row>
-                            <Cell>{table.name}</Cell>
-                            <Cell>{table.freq}</Cell>
-                            <Cell>{table.line}</Cell>
-                        </Row>
-                    {/each}
+                    {#if !show_dataTable_only_averaged}
+                        {#each dataTable as table (table.id)}
+                            <Row style="background-color: {table.color};">
+                                <Cell>{table.name}</Cell>
+                                <Cell>{table.freq}</Cell>
+                                <Cell>{table.amp}</Cell>
+                                <Cell>{table.fwhm}</Cell>
+                                <Cell>{table.sig}</Cell>
+                            </Row>
+                        {/each}
+                    {:else}
+                        {#each dataTable.filter(data=>data.name=="averaged") as table, index (table.id)}
+                            <Row>
+                                <Cell>Line #{index}</Cell>
+                                <Cell>{table.freq}</Cell>
+                                <Cell>{table.amp}</Cell>
+                                <Cell>{table.fwhm}</Cell>
+                                <Cell>{table.sig}</Cell>
+                            </Row>
+                        {/each}
+                    {/if}
                     </Body>
                 </DataTable>
-            
+                <div class="is-pulled-right">
+                    <button class="button is-warning" on:click="{()=>dataTable = window._.dropRight(dataTable, 1)}">Clear Last</button>
+                    <button class="button is-danger" on:click="{()=>dataTable = []}">Clear Table</button>
+                </div>
             </div>
 
             <ReportLayout bind:currentLocation id="felixreport", plotID={["bplot", "saPlot", "avgplot", "exp-theory-plot"]} includeTable={true}/>
