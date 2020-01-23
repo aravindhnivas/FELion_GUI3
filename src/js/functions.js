@@ -28,7 +28,7 @@ export function resizableDiv({div, change={width:true, height:true} ,cursor={lef
 
             if (event.rect.width <= 50) {
 
-                target.style.display = "none"
+                if(target.classList.contains("filebrowser")) {target.style.display = "none"}
             }
         }
         if (change.height) target.style.height = event.rect.height + 'px'
@@ -44,7 +44,7 @@ export function resizableDiv({div, change={width:true, height:true} ,cursor={lef
 
 }
 
-resizableDiv({div:".filebrowser", cursor:{right:true}, change:{width:true, height:false}})
+resizableDiv({div:".adjust-right", cursor:{right:true}, change:{width:true, height:false}})
 // resizableDiv({div:".quickview", cursor:{left:true}, change:{width:true, height:false}})
 
 export function plot(mainTitle, xtitle, ytitle, data, plotArea, filetype = null) {

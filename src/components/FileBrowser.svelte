@@ -10,9 +10,11 @@
     import { fly, slide } from 'svelte/transition';
     import FormField from '@smui/form-field';
     import Switch from '@smui/switch';
+
     import Textfield from '@smui/textfield';
     import { Toast } from 'svelma'
     import {activated, modalContent, modalTitle} from "./Modal.svelte"
+    
     import {onMount} from "svelte"
 
     ///////////////////////////////////////////////////////////////////////////

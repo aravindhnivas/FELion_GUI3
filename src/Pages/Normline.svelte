@@ -62,12 +62,8 @@
             let {data, layout} = normMethod_datas[normMethod]
 
             Plotly.react("avgplot",data, layout, { editable: true })
-
         }
     }
-
-    localStorage["pythonpath"] = path.resolve("D:\\FELion_GUI2.2\\python3.7\\python")
-    localStorage["pythonscript"] = path.resolve(__dirname, "assets/python_files")
 
     function plotData(event=null, filetype="felix", general=null){
 

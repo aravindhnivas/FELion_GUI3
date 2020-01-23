@@ -18,10 +18,14 @@ html, body {
     user-select: none;
 
 }
+
 table {user-select: text;}
+
 body::-webkit-scrollbar {width: 0 !important;}
 hr {background-color: #dbdbdb;}
+
 /* Scrollbar */
+
 ::-webkit-scrollbar {
 	width: 0.5em;
 }
@@ -43,3 +47,4 @@ hr {background-color: #dbdbdb;}
 	background: #fafafa66;
 }
 
+.adjust-right {touch-action: none;}

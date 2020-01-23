@@ -13,6 +13,7 @@
 	import Masspec from "./Pages/Masspec.svelte"
 	import Timescan from "./Pages/Timescan.svelte"
 	import THz from "./Pages/THz.svelte"
+	import Settings from "./Pages/Settings.svelte"
 
 	
 	import Modal from "./components/Modal.svelte"
@@ -24,7 +25,7 @@
 		allbuttons.forEach(button=>button.classList.add("hvr-glow"))
 	})
 
-	const navItems = ["Home", "Normline", "Masspec", "Timescan", "THz", "Powerfile"]
+	const navItems = ["Home", "Normline", "Masspec", "Timescan", "THz", "Powerfile", "Settings"]
 
 	window.electron = require("electron")
 	window.remote = electron.remote
@@ -66,6 +67,7 @@
 	<Timescan />
 	<THz />
 	<Powerfile />
+	<Settings />
 
 </div>
 

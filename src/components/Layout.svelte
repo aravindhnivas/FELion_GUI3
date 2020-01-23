@@ -98,7 +98,7 @@
     <div class="columns">
 
         {#if toggleBrowser}
-            <div class="column is-one-fifth-widescreen is-one-quarter-desktop box filebrowser" transition:fly="{{ x: -100, duration: 500 }}">
+            <div class="column is-one-fifth-widescreen is-one-quarter-desktop box filebrowser adjust-right" transition:fly="{{ x: -100, duration: 500 }}">
                 <FileBrowser bind:currentLocation {filetype} bind:fileChecked />
             </div>
         {/if}
