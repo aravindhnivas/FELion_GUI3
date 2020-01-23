@@ -7,15 +7,14 @@
     import Ripple from '@smui/ripple'
 
     import {activated, modalContent} from "../components/Modal.svelte"
-    // import {bindDialog, filelist, filelistBinded} from "../components/DialogChecklist.svelte"
     import IconButton, {Icon} from '@smui/icon-button'
     import {plot, subplot} from "../js/functions.js"
-
     import Radio from '@smui/radio'
+
     import FormField from '@smui/form-field'
     import { flip } from 'svelte/animate'
-
     import Select, {Option} from '@smui/select'
+    
     import Switch from '@smui/switch'
     import DataTable, {Head, Body, Row, Cell} from '@smui/data-table'
     import Checkbox from '@smui/checkbox';
@@ -23,35 +22,29 @@
     import ReportLayout from '../components/ReportLayout.svelte';
     import QuickView from '../components/QuickView.svelte';
     import List, {Item, Meta, Label} from '@smui/list';
+    import FileBrowser from "../components/FileBrowser.svelte"
 
     const {BrowserWindow} = remote
-
-    import FileBrowser from "../components/FileBrowser.svelte"
 
    ///////////////////////////////////////////////////////////////////////
 
     let filetype="felix", id="Normline", fileChecked=[], delta=1, toggleRow=false;
-
     $: felixfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
     let plottedFiles = [], theoryLocation = ""
-
     let currentLocation = theoryLocation= localStorage[`${filetype}_location`] || ""
-    
     $: console.log(`${filetype} Update: \n${currentLocation}`)
 
     ///////////////////////////////////////////////////////////////////////
 
     // Theory file
     let sigma = 20, scale=1, thoeryfiles = [], show_theoryplot = false, theoryRefresh = true;
-
     $: console.log("Theory files: ", thoeryfiles, theoryLocation)
     $: console.log("Theory Location", theoryLocation)
 
-
     ///////////////////////////////////////////////////////////////////////
     
-    let openShell = false;
 
+    let openShell = false;
     let normMethod = "Relative", normMethod_datas = {}
     let graphPlotted = false, overwrite_expfit = false
 
@@ -61,35 +54,33 @@
     let dataTable = [], showDataTable=false, showTheoryFiles = false
 
     const replot = () => {
-
         if (graphPlotted) {Plotly.react("avgplot", normMethod_datas[normMethod].data, normMethod_datas[normMethod].layout, { editable: true })}
     }
 
-    localStorage["pythonpath"] = path.resolve("C:\\ProgramData\\Miniconda3\\python")
+    localStorage["pythonpath"] = path.resolve("D:\\FELion_GUI2.2\\python3.7\\python")
     localStorage["pythonscript"] = path.resolve(__dirname, "assets/python_files")
 
     function plotData(event=null, filetype="felix", general=null){
 
         if (fileChecked.length === 0) {return createToast("No files selected", "danger")}
-
         let target = event.target
 
         target.classList.toggle("is-loading")
         if (filetype == "felix") {graphPlotted = false, output_name = "averaged"}
-
-        if (filetype == "exp_fit") {if (index.length < 2) {
+        else if (filetype == "exp_fit") {if (index.length < 2) {
             target.classList.toggle("is-loading")
             return createToast("Range not found!!. Select a range using Box-select", "danger")
         }}
 
         let pyfileInfo = {
         
-            felix: {file:"normline.py" , args:[...felixfiles, delta]},
-            exp_fit: {file:"exp_gauss_fit.py" , args:[...felixfiles, overwrite_expfit, output_name, normMethod, currentLocation, ...index]},
+            felix: {pyfile:"normline.py" , args:[...felixfiles, delta]},
+            exp_fit: {pyfile:"exp_gauss_fit.py" , args:[...felixfiles, overwrite_expfit, output_name, normMethod, currentLocation, ...index]},
         }
 
-        let pyfile = pyfileInfo[filetype].file
-        let args = pyfileInfo[filetype].args
+        let {pyfile, args} = pyfileInfo[filetype]
+
+        // let args = pyfileInfo[filetype].args
 
         if (filetype == "general") {
 
