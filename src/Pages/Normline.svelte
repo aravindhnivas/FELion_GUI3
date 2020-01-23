@@ -18,11 +18,13 @@
     import CustomSelect from '../components/CustomSelect.svelte';
 
     import CustomTable from '../components/CustomTable.svelte';
-    
     import CustomRadio from '../components/CustomRadio.svelte';
     import ReportLayout from '../components/ReportLayout.svelte';
     import QuickView from '../components/QuickView.svelte';
     import FileBrowser from "../components/FileBrowser.svelte"
+
+    import Checkbox from '@smui/checkbox';
+    import FormField from '@smui/form-field';
 
     const {BrowserWindow} = remote
 
@@ -55,7 +57,6 @@
     
     let dataTable = [], showDataTable=false
     let show_dataTable_only_averaged = false, keepTable = true
-
     const replot = () => {
         if (graphPlotted) {
             let {data, layout} = normMethod_datas[normMethod]
@@ -331,8 +332,8 @@
             console.log("No line fit is found to remove")
         }
         
-        line = line.slice(0, line.length - 2)
-        annotations = annotations.slice(0, annotations.length - 1)
+        line = _.dropRight(line, 2)
+        annotations = _.dropRight(annotations, 1)
         // index = []
         Plotly.relayout("avgplot", { annotations: annotations, shapes: line })
         if (line.length === 0) {ready_to_fit = false}
@@ -370,6 +371,7 @@
     * :global(table td:not([align])) {text-align: center; padding: 1em;}
     * :global(#felixTableContainer) {border: 1px solid #5b3ea2;}
     * :global(#felixTableContainer thead) {background-color: #e1e1e1;}
+    * :global(.mdc-data-table__row-checkbox .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background) {background-color: #5b3ea2;}
 </style>
 
 <QuickView style="padding:1em;" footer={false} bind:active={showTheoryFiles} title="Browse Theory files">
@@ -427,7 +429,7 @@
         {#if graphPlotted}
             
             <!-- Pos-processing felix data -->
-            <div transition:fade>
+            <div class="content" transition:fade>
                 <CustomSelect bind:picked={output_name} label="Output filename" options={["averaged", ...plottedFiles]}/>
                 <CustomSwitch style="margin: 0 1em; padding-bottom: 1em;" bind:selected={overwrite_expfit} label="Overwrite"/>
                 <button class="button is-link" on:click="{(e)=>plotData(e, "exp_fit")}">Exp Fit.</button>
@@ -437,12 +439,14 @@
             </div>
 
             <!-- Frequency table list -->
-            <div class="align">
+            <div class="align content">
                 <h1 class="mdc-typography--headline4">Frequency table</h1>
-                <CustomCheckbox bind:selected={show_dataTable_only_averaged} label="Only Averaged" style="margin: 0 5em"/>
-                <CustomCheckbox bind:selected={keepTable} label="Keep table" style="margin: 0 5em"/>
+                <hr>
+                <CustomCheckbox bind:selected={show_dataTable_only_averaged} label="Only Averaged" />
+                <CustomCheckbox bind:selected={keepTable} label="Keep table" />
+                <button class="button is-warning" on:click="{()=>dataTable = window._.dropRight(dataTable, 1)}">Clear Last</button>
+                <button class="button is-danger" on:click="{()=>dataTable = []}">Clear Table</button>
             </div>
-            <hr>
             <div class="dataTable" transition:fade>
 
                 <CustomTable id="felixTable" bind:dataTableHead>
@@ -468,10 +472,9 @@
                         {/each}
                     {/if}
                 </CustomTable>
-                <div class="is-pulled-right">
-                    <button class="button is-warning" on:click="{()=>dataTable = window._.dropRight(dataTable, 1)}">Clear Last</button>
-                    <button class="button is-danger" on:click="{()=>dataTable = []}">Clear Table</button>
-                </div>
+                <!-- <div class="is-pulled-right">
+                    
+                </div> -->
             </div>
 
             <ReportLayout bind:currentLocation id="felixreport", plotID={["bplot", "saPlot", "avgplot", "exp-theory-plot"]} includeTable={true}/>

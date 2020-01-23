@@ -12,7 +12,7 @@
 }
 
 html, body { 
-    background-color: #513a8a!important;
+    background-color: #513a8a;
     background-image: url(intro.svg);
 
     user-select: none;
@@ -20,7 +20,7 @@ html, body {
 }
 table {user-select: text;}
 body::-webkit-scrollbar {width: 0 !important;}
-
+hr {background-color: #dbdbdb;}
 /* Scrollbar */
 ::-webkit-scrollbar {
 	width: 0.5em;

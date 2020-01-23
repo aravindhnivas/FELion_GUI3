@@ -37333,7 +37333,7 @@ function get_each_context$6(ctx, list, i) {
 	return child_ctx;
 }
 
-// (375:0) <QuickView style="padding:1em;" footer={false} bind:active={showTheoryFiles} title="Browse Theory files">
+// (377:0) <QuickView style="padding:1em;" footer={false} bind:active={showTheoryFiles} title="Browse Theory files">
 function create_default_slot_17(ctx) {
 	let updating_currentLocation;
 	let updating_fileChecked;
@@ -37404,14 +37404,14 @@ function create_default_slot_17(ctx) {
 		block,
 		id: create_default_slot_17.name,
 		type: "slot",
-		source: "(375:0) <QuickView style=\\\"padding:1em;\\\" footer={false} bind:active={showTheoryFiles} title=\\\"Browse Theory files\\\">",
+		source: "(377:0) <QuickView style=\\\"padding:1em;\\\" footer={false} bind:active={showTheoryFiles} title=\\\"Browse Theory files\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (393:16) <Icon class="material-icons">
+// (395:16) <Icon class="material-icons">
 function create_default_slot_16(ctx) {
 	let t;
 
@@ -37431,14 +37431,14 @@ function create_default_slot_16(ctx) {
 		block,
 		id: create_default_slot_16.name,
 		type: "slot",
-		source: "(393:16) <Icon class=\\\"material-icons\\\">",
+		source: "(395:16) <Icon class=\\\"material-icons\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (394:16) <Icon class="material-icons" on>
+// (396:16) <Icon class="material-icons" on>
 function create_default_slot_15(ctx) {
 	let t;
 
@@ -37458,14 +37458,14 @@ function create_default_slot_15(ctx) {
 		block,
 		id: create_default_slot_15.name,
 		type: "slot",
-		source: "(394:16) <Icon class=\\\"material-icons\\\" on>",
+		source: "(396:16) <Icon class=\\\"material-icons\\\" on>",
 		ctx
 	});
 
 	return block;
 }
 
-// (392:12) <IconButton toggle bind:pressed={openShell}>
+// (394:12) <IconButton toggle bind:pressed={openShell}>
 function create_default_slot_14(ctx) {
 	let t;
 	let current;
@@ -37539,14 +37539,14 @@ function create_default_slot_14(ctx) {
 		block,
 		id: create_default_slot_14.name,
 		type: "slot",
-		source: "(392:12) <IconButton toggle bind:pressed={openShell}>",
+		source: "(394:12) <IconButton toggle bind:pressed={openShell}>",
 		ctx
 	});
 
 	return block;
 }
 
-// (399:8) {#if toggleRow}
+// (401:8) {#if toggleRow}
 function create_if_block_3$2(ctx) {
 	let div;
 	let button0;
@@ -37611,14 +37611,14 @@ function create_if_block_3$2(ctx) {
 			t5 = space();
 			button2 = element("button");
 			button2.textContent = "Submit";
-			attr_dev(button0, "class", "button is-link svelte-1rwd765");
-			add_location(button0, file$O, 400, 16, 17121);
-			attr_dev(button1, "class", "button is-link svelte-1rwd765");
-			add_location(button1, file$O, 403, 16, 17465);
-			attr_dev(button2, "class", "button is-link svelte-1rwd765");
-			add_location(button2, file$O, 404, 16, 17541);
-			attr_dev(div, "class", "align svelte-1rwd765");
-			add_location(div, file$O, 399, 12, 17039);
+			attr_dev(button0, "class", "button is-link svelte-18p7lff");
+			add_location(button0, file$O, 402, 16, 17326);
+			attr_dev(button1, "class", "button is-link svelte-18p7lff");
+			add_location(button1, file$O, 405, 16, 17670);
+			attr_dev(button2, "class", "button is-link svelte-18p7lff");
+			add_location(button2, file$O, 406, 16, 17746);
+			attr_dev(div, "class", "align svelte-18p7lff");
+			add_location(div, file$O, 401, 12, 17244);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -37686,14 +37686,14 @@ function create_if_block_3$2(ctx) {
 		block,
 		id: create_if_block_3$2.name,
 		type: "if",
-		source: "(399:8) {#if toggleRow}",
+		source: "(401:8) {#if toggleRow}",
 		ctx
 	});
 
 	return block;
 }
 
-// (382:4) <div class="buttonSlot" slot="buttonContainer">
+// (384:4) <div class="buttonSlot" slot="buttonContainer">
 function create_buttonContainer_slot(ctx) {
 	let div0;
 	let div1;
@@ -37795,24 +37795,24 @@ function create_buttonContainer_slot(ctx) {
 			t12 = space();
 			div2 = element("div");
 			create_component(customradio.$$.fragment);
-			attr_dev(button0, "class", "button is-link svelte-1rwd765");
-			add_location(button0, file$O, 385, 12, 16185);
-			attr_dev(button1, "class", "button is-link svelte-1rwd765");
-			add_location(button1, file$O, 386, 12, 16254);
-			attr_dev(button2, "class", "button is-link svelte-1rwd765");
+			attr_dev(button0, "class", "button is-link svelte-18p7lff");
+			add_location(button0, file$O, 387, 12, 16390);
+			attr_dev(button1, "class", "button is-link svelte-18p7lff");
+			add_location(button1, file$O, 388, 12, 16459);
+			attr_dev(button2, "class", "button is-link svelte-18p7lff");
 			attr_dev(button2, "tabindex", "0");
-			add_location(button2, file$O, 387, 12, 16357);
-			attr_dev(button3, "class", "button is-link svelte-1rwd765");
-			add_location(button3, file$O, 388, 12, 16514);
-			attr_dev(button4, "class", "button is-link svelte-1rwd765");
-			add_location(button4, file$O, 389, 12, 16586);
-			attr_dev(div1, "class", "align svelte-1rwd765");
-			add_location(div1, file$O, 383, 8, 16149);
-			attr_dev(div2, "class", "align svelte-1rwd765");
-			add_location(div2, file$O, 409, 8, 17636);
-			attr_dev(div0, "class", "buttonSlot svelte-1rwd765");
+			add_location(button2, file$O, 389, 12, 16562);
+			attr_dev(button3, "class", "button is-link svelte-18p7lff");
+			add_location(button3, file$O, 390, 12, 16719);
+			attr_dev(button4, "class", "button is-link svelte-18p7lff");
+			add_location(button4, file$O, 391, 12, 16791);
+			attr_dev(div1, "class", "align svelte-18p7lff");
+			add_location(div1, file$O, 385, 8, 16354);
+			attr_dev(div2, "class", "align svelte-18p7lff");
+			add_location(div2, file$O, 411, 8, 17841);
+			attr_dev(div0, "class", "buttonSlot svelte-18p7lff");
 			attr_dev(div0, "slot", "buttonContainer");
-			add_location(div0, file$O, 381, 4, 16090);
+			add_location(div0, file$O, 383, 4, 16295);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -37928,14 +37928,14 @@ function create_buttonContainer_slot(ctx) {
 		block,
 		id: create_buttonContainer_slot.name,
 		type: "slot",
-		source: "(382:4) <div class=\\\"buttonSlot\\\" slot=\\\"buttonContainer\\\">",
+		source: "(384:4) <div class=\\\"buttonSlot\\\" slot=\\\"buttonContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (418:8) {#if show_theoryplot}
+// (420:8) {#if show_theoryplot}
 function create_if_block_2$3(ctx) {
 	let div;
 	let div_transition;
@@ -37945,8 +37945,8 @@ function create_if_block_2$3(ctx) {
 		c: function create() {
 			div = element("div");
 			attr_dev(div, "id", "exp-theory-plot");
-			attr_dev(div, "class", "svelte-1rwd765");
-			add_location(div, file$O, 418, 12, 17909);
+			attr_dev(div, "class", "svelte-18p7lff");
+			add_location(div, file$O, 420, 12, 18114);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -37977,14 +37977,14 @@ function create_if_block_2$3(ctx) {
 		block,
 		id: create_if_block_2$3.name,
 		type: "if",
-		source: "(418:8) {#if show_theoryplot}",
+		source: "(420:8) {#if show_theoryplot}",
 		ctx
 	});
 
 	return block;
 }
 
-// (427:8) {#if graphPlotted}
+// (429:8) {#if graphPlotted}
 function create_if_block$f(ctx) {
 	let div0;
 	let updating_picked;
@@ -38001,20 +38001,19 @@ function create_if_block$f(ctx) {
 	let div1;
 	let h1;
 	let t9;
-	let updating_selected_1;
-	let t10;
-	let updating_selected_2;
-	let t11;
 	let hr;
+	let t10;
+	let updating_selected_1;
+	let t11;
+	let updating_selected_2;
 	let t12;
-	let div3;
-	let updating_dataTableHead;
-	let t13;
-	let div2;
 	let button3;
-	let t15;
+	let t14;
 	let button4;
-	let div3_transition;
+	let t16;
+	let div2;
+	let updating_dataTableHead;
+	let div2_transition;
 	let t17;
 	let updating_currentLocation;
 	let current;
@@ -38064,10 +38063,7 @@ function create_if_block$f(ctx) {
 		/*customcheckbox0_selected_binding*/ ctx[51].call(null, value_2);
 	}
 
-	let customcheckbox0_props = {
-		label: "Only Averaged",
-		style: "margin: 0 5em"
-	};
+	let customcheckbox0_props = { label: "Only Averaged" };
 
 	if (/*show_dataTable_only_averaged*/ ctx[17] !== void 0) {
 		customcheckbox0_props.selected = /*show_dataTable_only_averaged*/ ctx[17];
@@ -38084,10 +38080,7 @@ function create_if_block$f(ctx) {
 		/*customcheckbox1_selected_binding*/ ctx[52].call(null, value_3);
 	}
 
-	let customcheckbox1_props = {
-		label: "Keep table",
-		style: "margin: 0 5em"
-	};
+	let customcheckbox1_props = { label: "Keep table" };
 
 	if (/*keepTable*/ ctx[18] !== void 0) {
 		customcheckbox1_props.selected = /*keepTable*/ ctx[18];
@@ -38101,7 +38094,7 @@ function create_if_block$f(ctx) {
 	binding_callbacks.push(() => bind(customcheckbox1, "selected", customcheckbox1_selected_binding));
 
 	function customtable_dataTableHead_binding(value_4) {
-		/*customtable_dataTableHead_binding*/ ctx[53].call(null, value_4);
+		/*customtable_dataTableHead_binding*/ ctx[55].call(null, value_4);
 	}
 
 	let customtable_props = {
@@ -38159,45 +38152,42 @@ function create_if_block$f(ctx) {
 			h1 = element("h1");
 			h1.textContent = "Frequency table";
 			t9 = space();
-			create_component(customcheckbox0.$$.fragment);
-			t10 = space();
-			create_component(customcheckbox1.$$.fragment);
-			t11 = space();
 			hr = element("hr");
+			t10 = space();
+			create_component(customcheckbox0.$$.fragment);
+			t11 = space();
+			create_component(customcheckbox1.$$.fragment);
 			t12 = space();
-			div3 = element("div");
-			create_component(customtable.$$.fragment);
-			t13 = space();
-			div2 = element("div");
 			button3 = element("button");
 			button3.textContent = "Clear Last";
-			t15 = space();
+			t14 = space();
 			button4 = element("button");
 			button4.textContent = "Clear Table";
+			t16 = space();
+			div2 = element("div");
+			create_component(customtable.$$.fragment);
 			t17 = space();
 			create_component(reportlayout.$$.fragment);
-			attr_dev(button0, "class", "button is-link svelte-1rwd765");
-			add_location(button0, file$O, 432, 16, 18547);
-			attr_dev(button1, "class", "button is-warning svelte-1rwd765");
-			add_location(button1, file$O, 433, 16, 18654);
-			attr_dev(button2, "class", "button is-danger svelte-1rwd765");
-			add_location(button2, file$O, 434, 16, 18750);
-			attr_dev(div0, "class", "svelte-1rwd765");
-			add_location(div0, file$O, 429, 12, 18257);
-			attr_dev(h1, "class", "mdc-typography--headline4 svelte-1rwd765");
-			add_location(h1, file$O, 440, 16, 18959);
-			attr_dev(div1, "class", "align svelte-1rwd765");
-			add_location(div1, file$O, 439, 12, 18922);
-			attr_dev(hr, "class", "svelte-1rwd765");
-			add_location(hr, file$O, 444, 12, 19277);
-			attr_dev(button3, "class", "button is-warning svelte-1rwd765");
-			add_location(button3, file$O, 471, 20, 20621);
-			attr_dev(button4, "class", "button is-danger svelte-1rwd765");
-			add_location(button4, file$O, 472, 20, 20758);
-			attr_dev(div2, "class", "is-pulled-right svelte-1rwd765");
-			add_location(div2, file$O, 470, 16, 20570);
-			attr_dev(div3, "class", "dataTable svelte-1rwd765");
-			add_location(div3, file$O, 445, 12, 19295);
+			attr_dev(button0, "class", "button is-link svelte-18p7lff");
+			add_location(button0, file$O, 434, 16, 18768);
+			attr_dev(button1, "class", "button is-warning svelte-18p7lff");
+			add_location(button1, file$O, 435, 16, 18875);
+			attr_dev(button2, "class", "button is-danger svelte-18p7lff");
+			add_location(button2, file$O, 436, 16, 18971);
+			attr_dev(div0, "class", "content svelte-18p7lff");
+			add_location(div0, file$O, 431, 12, 18462);
+			attr_dev(h1, "class", "mdc-typography--headline4 svelte-18p7lff");
+			add_location(h1, file$O, 442, 16, 19188);
+			attr_dev(hr, "class", "svelte-18p7lff");
+			add_location(hr, file$O, 443, 16, 19264);
+			attr_dev(button3, "class", "button is-warning svelte-18p7lff");
+			add_location(button3, file$O, 446, 16, 19470);
+			attr_dev(button4, "class", "button is-danger svelte-18p7lff");
+			add_location(button4, file$O, 447, 16, 19603);
+			attr_dev(div1, "class", "align content svelte-18p7lff");
+			add_location(div1, file$O, 441, 12, 19143);
+			attr_dev(div2, "class", "dataTable svelte-18p7lff");
+			add_location(div2, file$O, 449, 12, 19722);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -38214,19 +38204,18 @@ function create_if_block$f(ctx) {
 			insert_dev(target, div1, anchor);
 			append_dev(div1, h1);
 			append_dev(div1, t9);
-			mount_component(customcheckbox0, div1, null);
+			append_dev(div1, hr);
 			append_dev(div1, t10);
+			mount_component(customcheckbox0, div1, null);
+			append_dev(div1, t11);
 			mount_component(customcheckbox1, div1, null);
-			insert_dev(target, t11, anchor);
-			insert_dev(target, hr, anchor);
-			insert_dev(target, t12, anchor);
-			insert_dev(target, div3, anchor);
-			mount_component(customtable, div3, null);
-			append_dev(div3, t13);
-			append_dev(div3, div2);
-			append_dev(div2, button3);
-			append_dev(div2, t15);
-			append_dev(div2, button4);
+			append_dev(div1, t12);
+			append_dev(div1, button3);
+			append_dev(div1, t14);
+			append_dev(div1, button4);
+			insert_dev(target, t16, anchor);
+			insert_dev(target, div2, anchor);
+			mount_component(customtable, div2, null);
 			insert_dev(target, t17, anchor);
 			mount_component(reportlayout, target, anchor);
 			current = true;
@@ -38235,8 +38224,8 @@ function create_if_block$f(ctx) {
 				listen_dev(button0, "click", /*click_handler_4*/ ctx[50], false, false, false),
 				listen_dev(button1, "click", /*clearLastPeak*/ ctx[26], false, false, false),
 				listen_dev(button2, "click", /*clearAllPeak*/ ctx[25], false, false, false),
-				listen_dev(button3, "click", /*click_handler_5*/ ctx[54], false, false, false),
-				listen_dev(button4, "click", /*click_handler_6*/ ctx[55], false, false, false)
+				listen_dev(button3, "click", /*click_handler_5*/ ctx[53], false, false, false),
+				listen_dev(button4, "click", /*click_handler_6*/ ctx[54], false, false, false)
 			];
 		},
 		p: function update(ctx, dirty) {
@@ -38315,8 +38304,8 @@ function create_if_block$f(ctx) {
 			transition_in(customtable.$$.fragment, local);
 
 			add_render_callback(() => {
-				if (!div3_transition) div3_transition = create_bidirectional_transition(div3, fade, {}, true);
-				div3_transition.run(1);
+				if (!div2_transition) div2_transition = create_bidirectional_transition(div2, fade, {}, true);
+				div2_transition.run(1);
 			});
 
 			transition_in(reportlayout.$$.fragment, local);
@@ -38330,8 +38319,8 @@ function create_if_block$f(ctx) {
 			transition_out(customcheckbox0.$$.fragment, local);
 			transition_out(customcheckbox1.$$.fragment, local);
 			transition_out(customtable.$$.fragment, local);
-			if (!div3_transition) div3_transition = create_bidirectional_transition(div3, fade, {}, false);
-			div3_transition.run(0);
+			if (!div2_transition) div2_transition = create_bidirectional_transition(div2, fade, {}, false);
+			div2_transition.run(0);
 			transition_out(reportlayout.$$.fragment, local);
 			current = false;
 		},
@@ -38344,12 +38333,10 @@ function create_if_block$f(ctx) {
 			if (detaching) detach_dev(div1);
 			destroy_component(customcheckbox0);
 			destroy_component(customcheckbox1);
-			if (detaching) detach_dev(t11);
-			if (detaching) detach_dev(hr);
-			if (detaching) detach_dev(t12);
-			if (detaching) detach_dev(div3);
+			if (detaching) detach_dev(t16);
+			if (detaching) detach_dev(div2);
 			destroy_component(customtable);
-			if (detaching && div3_transition) div3_transition.end();
+			if (detaching && div2_transition) div2_transition.end();
 			if (detaching) detach_dev(t17);
 			destroy_component(reportlayout, detaching);
 			run_all(dispose);
@@ -38360,14 +38347,14 @@ function create_if_block$f(ctx) {
 		block,
 		id: create_if_block$f.name,
 		type: "if",
-		source: "(427:8) {#if graphPlotted}",
+		source: "(429:8) {#if graphPlotted}",
 		ctx
 	});
 
 	return block;
 }
 
-// (459:20) {:else}
+// (463:20) {:else}
 function create_else_block$9(ctx) {
 	let each_blocks = [];
 	let each_1_lookup = new Map();
@@ -38433,14 +38420,14 @@ function create_else_block$9(ctx) {
 		block,
 		id: create_else_block$9.name,
 		type: "else",
-		source: "(459:20) {:else}",
+		source: "(463:20) {:else}",
 		ctx
 	});
 
 	return block;
 }
 
-// (449:20) {#if !show_dataTable_only_averaged}
+// (453:20) {#if !show_dataTable_only_averaged}
 function create_if_block_1$5(ctx) {
 	let each_blocks = [];
 	let each_1_lookup = new Map();
@@ -38506,14 +38493,14 @@ function create_if_block_1$5(ctx) {
 		block,
 		id: create_if_block_1$5.name,
 		type: "if",
-		source: "(449:20) {#if !show_dataTable_only_averaged}",
+		source: "(453:20) {#if !show_dataTable_only_averaged}",
 		ctx
 	});
 
 	return block;
 }
 
-// (462:32) <Cell>
+// (466:32) <Cell>
 function create_default_slot_13(ctx) {
 	let t0;
 	let t1_value = /*index*/ ctx[19] + "";
@@ -38541,14 +38528,14 @@ function create_default_slot_13(ctx) {
 		block,
 		id: create_default_slot_13.name,
 		type: "slot",
-		source: "(462:32) <Cell>",
+		source: "(466:32) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (463:32) <Cell>
+// (467:32) <Cell>
 function create_default_slot_12(ctx) {
 	let t_value = /*table*/ ctx[59].freq + "";
 	let t;
@@ -38572,14 +38559,14 @@ function create_default_slot_12(ctx) {
 		block,
 		id: create_default_slot_12.name,
 		type: "slot",
-		source: "(463:32) <Cell>",
+		source: "(467:32) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (464:32) <Cell>
+// (468:32) <Cell>
 function create_default_slot_11$1(ctx) {
 	let t_value = /*table*/ ctx[59].amp + "";
 	let t;
@@ -38603,14 +38590,14 @@ function create_default_slot_11$1(ctx) {
 		block,
 		id: create_default_slot_11$1.name,
 		type: "slot",
-		source: "(464:32) <Cell>",
+		source: "(468:32) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (465:32) <Cell>
+// (469:32) <Cell>
 function create_default_slot_10$1(ctx) {
 	let t_value = /*table*/ ctx[59].fwhm + "";
 	let t;
@@ -38634,14 +38621,14 @@ function create_default_slot_10$1(ctx) {
 		block,
 		id: create_default_slot_10$1.name,
 		type: "slot",
-		source: "(465:32) <Cell>",
+		source: "(469:32) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (466:32) <Cell>
+// (470:32) <Cell>
 function create_default_slot_9$1(ctx) {
 	let t_value = /*table*/ ctx[59].sig + "";
 	let t;
@@ -38665,14 +38652,14 @@ function create_default_slot_9$1(ctx) {
 		block,
 		id: create_default_slot_9$1.name,
 		type: "slot",
-		source: "(466:32) <Cell>",
+		source: "(470:32) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (461:28) <Row>
+// (465:28) <Row>
 function create_default_slot_8$1(ctx) {
 	let t0;
 	let t1;
@@ -38819,14 +38806,14 @@ function create_default_slot_8$1(ctx) {
 		block,
 		id: create_default_slot_8$1.name,
 		type: "slot",
-		source: "(461:28) <Row>",
+		source: "(465:28) <Row>",
 		ctx
 	});
 
 	return block;
 }
 
-// (460:24) {#each dataTable.filter(data=>data.name=="averaged") as table, index (table.id)}
+// (464:24) {#each dataTable.filter(data=>data.name=="averaged") as table, index (table.id)}
 function create_each_block_1$2(key_1, ctx) {
 	let first;
 	let current;
@@ -38880,14 +38867,14 @@ function create_each_block_1$2(key_1, ctx) {
 		block,
 		id: create_each_block_1$2.name,
 		type: "each",
-		source: "(460:24) {#each dataTable.filter(data=>data.name==\\\"averaged\\\") as table, index (table.id)}",
+		source: "(464:24) {#each dataTable.filter(data=>data.name==\\\"averaged\\\") as table, index (table.id)}",
 		ctx
 	});
 
 	return block;
 }
 
-// (452:32) <Cell>
+// (456:32) <Cell>
 function create_default_slot_7$2(ctx) {
 	let t_value = /*table*/ ctx[59].name + "";
 	let t;
@@ -38911,14 +38898,14 @@ function create_default_slot_7$2(ctx) {
 		block,
 		id: create_default_slot_7$2.name,
 		type: "slot",
-		source: "(452:32) <Cell>",
+		source: "(456:32) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (453:32) <Cell>
+// (457:32) <Cell>
 function create_default_slot_6$2(ctx) {
 	let t_value = /*table*/ ctx[59].freq + "";
 	let t;
@@ -38942,14 +38929,14 @@ function create_default_slot_6$2(ctx) {
 		block,
 		id: create_default_slot_6$2.name,
 		type: "slot",
-		source: "(453:32) <Cell>",
+		source: "(457:32) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (454:32) <Cell>
+// (458:32) <Cell>
 function create_default_slot_5$3(ctx) {
 	let t_value = /*table*/ ctx[59].amp + "";
 	let t;
@@ -38973,14 +38960,14 @@ function create_default_slot_5$3(ctx) {
 		block,
 		id: create_default_slot_5$3.name,
 		type: "slot",
-		source: "(454:32) <Cell>",
+		source: "(458:32) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (455:32) <Cell>
+// (459:32) <Cell>
 function create_default_slot_4$6(ctx) {
 	let t_value = /*table*/ ctx[59].fwhm + "";
 	let t;
@@ -39004,14 +38991,14 @@ function create_default_slot_4$6(ctx) {
 		block,
 		id: create_default_slot_4$6.name,
 		type: "slot",
-		source: "(455:32) <Cell>",
+		source: "(459:32) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (456:32) <Cell>
+// (460:32) <Cell>
 function create_default_slot_3$6(ctx) {
 	let t_value = /*table*/ ctx[59].sig + "";
 	let t;
@@ -39035,14 +39022,14 @@ function create_default_slot_3$6(ctx) {
 		block,
 		id: create_default_slot_3$6.name,
 		type: "slot",
-		source: "(456:32) <Cell>",
+		source: "(460:32) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (451:28) <Row style="background-color: {table.color};">
+// (455:28) <Row style="background-color: {table.color};">
 function create_default_slot_2$9(ctx) {
 	let t0;
 	let t1;
@@ -39189,14 +39176,14 @@ function create_default_slot_2$9(ctx) {
 		block,
 		id: create_default_slot_2$9.name,
 		type: "slot",
-		source: "(451:28) <Row style=\\\"background-color: {table.color};\\\">",
+		source: "(455:28) <Row style=\\\"background-color: {table.color};\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (450:24) {#each dataTable as table (table.id)}
+// (454:24) {#each dataTable as table (table.id)}
 function create_each_block$6(key_1, ctx) {
 	let first;
 	let current;
@@ -39252,14 +39239,14 @@ function create_each_block$6(key_1, ctx) {
 		block,
 		id: create_each_block$6.name,
 		type: "each",
-		source: "(450:24) {#each dataTable as table (table.id)}",
+		source: "(454:24) {#each dataTable as table (table.id)}",
 		ctx
 	});
 
 	return block;
 }
 
-// (448:16) <CustomTable id="felixTable" bind:dataTableHead>
+// (452:16) <CustomTable id="felixTable" bind:dataTableHead>
 function create_default_slot_1$b(ctx) {
 	let current_block_type_index;
 	let if_block;
@@ -39330,14 +39317,14 @@ function create_default_slot_1$b(ctx) {
 		block,
 		id: create_default_slot_1$b.name,
 		type: "slot",
-		source: "(448:16) <CustomTable id=\\\"felixTable\\\" bind:dataTableHead>",
+		source: "(452:16) <CustomTable id=\\\"felixTable\\\" bind:dataTableHead>",
 		ctx
 	});
 
 	return block;
 }
 
-// (416:4) <div class="plotSlot" slot="plotContainer">
+// (418:4) <div class="plotSlot" slot="plotContainer">
 function create_plotContainer_slot(ctx) {
 	let div0;
 	let t0;
@@ -39364,17 +39351,17 @@ function create_plotContainer_slot(ctx) {
 			t3 = space();
 			if (if_block1) if_block1.c();
 			attr_dev(div1, "id", "bplot");
-			attr_dev(div1, "class", "svelte-1rwd765");
-			add_location(div1, file$O, 421, 8, 17988);
+			attr_dev(div1, "class", "svelte-18p7lff");
+			add_location(div1, file$O, 423, 8, 18193);
 			attr_dev(div2, "id", "saPlot");
-			attr_dev(div2, "class", "svelte-1rwd765");
-			add_location(div2, file$O, 422, 8, 18020);
+			attr_dev(div2, "class", "svelte-18p7lff");
+			add_location(div2, file$O, 424, 8, 18225);
 			attr_dev(div3, "id", "avgplot");
-			attr_dev(div3, "class", "svelte-1rwd765");
-			add_location(div3, file$O, 423, 8, 18053);
-			attr_dev(div0, "class", "plotSlot svelte-1rwd765");
+			attr_dev(div3, "class", "svelte-18p7lff");
+			add_location(div3, file$O, 425, 8, 18258);
+			attr_dev(div0, "class", "plotSlot svelte-18p7lff");
 			attr_dev(div0, "slot", "plotContainer");
-			add_location(div0, file$O, 415, 4, 17819);
+			add_location(div0, file$O, 417, 4, 18024);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -39432,14 +39419,14 @@ function create_plotContainer_slot(ctx) {
 		block,
 		id: create_plotContainer_slot.name,
 		type: "slot",
-		source: "(416:4) <div class=\\\"plotSlot\\\" slot=\\\"plotContainer\\\">",
+		source: "(418:4) <div class=\\\"plotSlot\\\" slot=\\\"plotContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (380:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked >
+// (382:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked >
 function create_default_slot$j(ctx) {
 	let t;
 
@@ -39462,7 +39449,7 @@ function create_default_slot$j(ctx) {
 		block,
 		id: create_default_slot$j.name,
 		type: "slot",
-		source: "(380:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked >",
+		source: "(382:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked >",
 		ctx
 	});
 
@@ -39557,7 +39544,7 @@ function create_fragment$T(ctx) {
 			quickview.$set(quickview_changes);
 			const layout_changes = {};
 
-			if (dirty[0] & /*graphPlotted, currentLocation, dataTable, dataTableHead, show_dataTable_only_averaged, keepTable, overwrite_expfit, plottedFiles, output_name, normMethod, toggleRow, scale, sigma, showTheoryFiles, openShell, delta*/ 524014 | dirty[2] & /*$$scope*/ 2) {
+			if (dirty[0] & /*graphPlotted, currentLocation, dataTableHead, show_dataTable_only_averaged, dataTable, keepTable, overwrite_expfit, plottedFiles, output_name, normMethod, toggleRow, scale, sigma, showTheoryFiles, openShell, delta*/ 524014 | dirty[2] & /*$$scope*/ 2) {
 				layout_changes.$$scope = { dirty, ctx };
 			}
 
@@ -39933,8 +39920,8 @@ function instance$T($$self, $$props, $$invalidate) {
 			console.log("No line fit is found to remove");
 		}
 
-		line = line.slice(0, line.length - 2);
-		annotations = annotations.slice(0, annotations.length - 1);
+		line = _.dropRight(line, 2);
+		annotations = _.dropRight(annotations, 1);
 		Plotly.relayout("avgplot", { annotations, shapes: line });
 
 		if (line.length === 0) {
@@ -40010,13 +39997,13 @@ function instance$T($$self, $$props, $$invalidate) {
 		$$invalidate(18, keepTable);
 	}
 
+	const click_handler_5 = () => $$invalidate(16, dataTable = window._.dropRight(dataTable, 1));
+	const click_handler_6 = () => $$invalidate(16, dataTable = []);
+
 	function customtable_dataTableHead_binding(value_4) {
 		dataTableHead = value_4;
 		$$invalidate(15, dataTableHead);
 	}
-
-	const click_handler_5 = () => $$invalidate(16, dataTable = window._.dropRight(dataTable, 1));
-	const click_handler_6 = () => $$invalidate(16, dataTable = []);
 
 	function reportlayout_currentLocation_binding(value_5) {
 		currentLocation = value_5;
@@ -40145,9 +40132,9 @@ function instance$T($$self, $$props, $$invalidate) {
 		click_handler_4,
 		customcheckbox0_selected_binding,
 		customcheckbox1_selected_binding,
-		customtable_dataTableHead_binding,
 		click_handler_5,
 		click_handler_6,
+		customtable_dataTableHead_binding,
 		reportlayout_currentLocation_binding,
 		layout_currentLocation_binding,
 		layout_fileChecked_binding
