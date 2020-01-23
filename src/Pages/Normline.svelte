@@ -9,19 +9,17 @@
     import {activated, modalContent} from "../components/Modal.svelte"
     import IconButton, {Icon} from '@smui/icon-button'
     import {plot, subplot} from "../js/functions.js"
-    import Radio from '@smui/radio'
-
-    import FormField from '@smui/form-field'
     import { flip } from 'svelte/animate'
-    import Select, {Option} from '@smui/select'
     
-    import Switch from '@smui/switch'
     import DataTable, {Head, Body, Row, Cell} from '@smui/data-table'
-    import Checkbox from '@smui/checkbox';
     import CustomCheckbox from '../components/CustomCheckbox.svelte';
+    import CustomSwitch from '../components/CustomSwitch.svelte';
+
+    import CustomSelect from '../components/CustomSelect.svelte';
+    
+    import CustomRadio from '../components/CustomRadio.svelte';
     import ReportLayout from '../components/ReportLayout.svelte';
     import QuickView from '../components/QuickView.svelte';
-    import List, {Item, Meta, Label} from '@smui/list';
     import FileBrowser from "../components/FileBrowser.svelte"
 
     const {BrowserWindow} = remote
@@ -50,17 +48,18 @@
 
     let line = [], index = [], annotations = []
     let output_name = "averaged"
-    let dataTableHead = ["Filename", "Frequency (cm-1)", "Amplitude", "FWHM", "Sigma"]
-    let dataTable = [], showDataTable=false
 
-    let show_dataTable_only_averaged = false
+    let dataTableHead = ["Filename", "Frequency (cm-1)", "Amplitude", "FWHM", "Sigma"]
+    
+    let dataTable = [], showDataTable=false
+    let show_dataTable_only_averaged = false, keepTable = true
 
     const replot = () => {
         if (graphPlotted) {
             let {data, layout} = normMethod_datas[normMethod]
+
             Plotly.react("avgplot",data, layout, { editable: true })
 
-            // dataTable = dataTable.map((y, index)=>y.amp = data["averaged"].y[index])
         }
     }
 
@@ -136,7 +135,7 @@
                         line = []
                         index = []
                         annotations = []
-                        dataTable = []
+                        if (!keepTable) {dataTable = []}
 
                         let avgdataToPlot;
                         let signal_formula;
@@ -332,7 +331,7 @@
         
         line = line.slice(0, line.length - 2)
         annotations = annotations.slice(0, annotations.length - 1)
-        index = []
+        // index = []
         Plotly.relayout("avgplot", { annotations: annotations, shapes: line })
         if (line.length === 0) {ready_to_fit = false}
 
@@ -407,12 +406,7 @@
 
 
         <div class="align" on:change={replot}>
-            {#each ["Log", "Relative", "IntensityPerPhoton"] as method}
-                <FormField >
-                    <Radio bind:group={normMethod} value={method}  />
-                    <span slot="label">{method}</span>
-                </FormField>
-            {/each}
+            <CustomRadio bind:selected={normMethod} options={["Log", "Relative", "IntensityPerPhoton"]}/>
         </div>
 
     </div>
@@ -432,15 +426,8 @@
             
             <!-- Pos-processing felix data -->
             <div transition:fade>
-                <Select bind:value={output_name} label="Output filename">
-                    {#each ["averaged", ...plottedFiles] as file}
-                        <Option value={file} selected={output_name === file}>{file}</Option>
-                    {/each}
-                </Select>
-                <FormField style="margin: 0 1em; padding-bottom: 1em;">
-                    <Switch bind:checked={overwrite_expfit} />
-                    <span slot="label">Overwrite</span>
-                </FormField>
+                <CustomSelect bind:picked={output_name} label="Output filename" options={["averaged", ...plottedFiles]}/>
+                <CustomSwitch style="margin: 0 1em; padding-bottom: 1em;" bind:selected={overwrite_expfit} label="Overwrite"/>
                 <button class="button is-link" on:click="{(e)=>plotData(e, "exp_fit")}">Exp Fit.</button>
                 <button class="button is-warning" on:click={clearLastPeak}>Clear Last</button>
                 <button class="button is-danger" on:click={clearAllPeak}>Clear All</button>
@@ -450,10 +437,8 @@
             <!-- Frequency table list -->
             <div class="align">
                 <h1 class="mdc-typography--headline4">Frequency table</h1>
-                <FormField style="margin: 0 5em">
-                    <Switch bind:checked={show_dataTable_only_averaged} />
-                    <span slot="label">Only Averaged</span>
-                </FormField>
+                <CustomCheckbox bind:selected={show_dataTable_only_averaged} label="Only Averaged" style="margin: 0 5em"/>
+                <CustomCheckbox bind:selected={keepTable} label="Keep table" style="margin: 0 5em"/>
             </div>
             <hr>
             <div class="dataTable" transition:fade>
