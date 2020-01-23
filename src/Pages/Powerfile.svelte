@@ -24,18 +24,23 @@
     }
     async function savefile() {
 
-        if (location.length == 0) {return createToast("Location is not set. Browse folder to set location", "danger")}
+        if (location.length == 0) {
+
+            return openFolder({save:true})
+            // return createToast("Location is not set. Browse folder to set location", "danger")
+        }
 
         const overwrite = await fs.existsSync(powfile)
         overwrite ? overwrite_dialog.open() : writePowfile()
     }
 
-    function openFolder() {
-
+    function openFolder({save=false}={}) {
         browse({dir:true}).then(result=>{
+
             if (!result.canceled) {
                 location = localStorage["powerfile_location"] = result.filePaths[0]
                 createToast("Location updated", "success")
+                if (save) savefile()
             }
         }).catch(err=>{$modalContent = err; $activated=true})
 

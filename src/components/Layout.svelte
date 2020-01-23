@@ -1,8 +1,7 @@
 <script context="module">
     export const createToast = (msg, type="primary") => Toast.create({ message: msg, position:"is-top", type:`is-${type}`})
-    export function browse({filetype="", dir=true}={}) {
+    export function browse({filetype="", dir=true, defaultPath=""}={}) {
         return new Promise((resolve, reject)=>{
-
             const mainWindow = remote.getCurrentWindow()
             let type;
             dir ? type = "openDirectory" : type = "openFile"
@@ -14,6 +13,8 @@
 
                 ],
                 properties: [type, "multiSelections"],
+                defaultPath: defaultPath
+                
             }
             remote.dialog.showOpenDialog(mainWindow, options)
             .then(result => {
@@ -30,39 +31,25 @@
 
 <script>
     
-    // IMPORTING MODULES
     import IconButton, {Icon} from '@smui/icon-button';
     import { fly, slide } from 'svelte/transition';
     import Textfield from '@smui/textfield';
     import {onMount} from "svelte";
     import { Toast } from 'svelma'
-    // import {activated, modalContent, modalTitle} from "./Modal.svelte"
     import FileBrowser from "./FileBrowser.svelte"
     
     ////////////////////////////////////////////////////////////////////////////
-
-    // EXPORTED variables
-
-    export let id;
-    export let fileChecked=[];
-    export let filetype = "felix"
+    export let id, fileChecked=[], filetype = "felix"
     export let currentLocation = localStorage[`${filetype}_location`] || "";
-
-    // let refresh = false;
-    // onMount(()=>{if (currentLocation != "") {refresh = true}})
 
     function browse_folder() {
         browse({dir:true}).then(result=>{
 
             if (!result.canceled) {
                 currentLocation= localStorage[`${filetype}_location`] = result.filePaths[0]
-                // refresh = true;
-
             }
         })
-        
     }
-
     let toggleBrowser = true;
 
 </script>
@@ -107,12 +94,12 @@
 </style>
 
 <section {id} style="display:none" class="animated fadeIn">
+
     <div class="columns">
 
         {#if toggleBrowser}
             <div class="column is-one-fifth-widescreen is-one-quarter-desktop box filebrowser" transition:fly="{{ x: -100, duration: 500 }}">
                 <FileBrowser bind:currentLocation {filetype} bind:fileChecked />
-
             </div>
         {/if}
 

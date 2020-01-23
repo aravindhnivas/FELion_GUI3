@@ -20674,7 +20674,7 @@ const get_plotContainer_slot_context = ctx => ({});
 const get_buttonContainer_slot_changes = dirty => ({});
 const get_buttonContainer_slot_context = ctx => ({});
 
-// (131:8) {#if toggleBrowser}
+// (119:8) {#if toggleBrowser}
 function create_if_block$9(ctx) {
 	let div;
 	let updating_currentLocation;
@@ -20709,7 +20709,7 @@ function create_if_block$9(ctx) {
 			div = element("div");
 			create_component(filebrowser.$$.fragment);
 			attr_dev(div, "class", "column is-one-fifth-widescreen is-one-quarter-desktop box filebrowser svelte-1p3mpgh");
-			add_location(div, file$r, 131, 12, 3441);
+			add_location(div, file$r, 119, 12, 3205);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -20762,14 +20762,14 @@ function create_if_block$9(ctx) {
 		block,
 		id: create_if_block$9.name,
 		type: "if",
-		source: "(131:8) {#if toggleBrowser}",
+		source: "(119:8) {#if toggleBrowser}",
 		ctx
 	});
 
 	return block;
 }
 
-// (143:24) <Icon class="material-icons" on>
+// (130:24) <Icon class="material-icons" on>
 function create_default_slot_2$3(ctx) {
 	let t;
 
@@ -20789,14 +20789,14 @@ function create_default_slot_2$3(ctx) {
 		block,
 		id: create_default_slot_2$3.name,
 		type: "slot",
-		source: "(143:24) <Icon class=\\\"material-icons\\\" on>",
+		source: "(130:24) <Icon class=\\\"material-icons\\\" on>",
 		ctx
 	});
 
 	return block;
 }
 
-// (144:24) <Icon class="material-icons" >
+// (131:24) <Icon class="material-icons" >
 function create_default_slot_1$4(ctx) {
 	let t;
 
@@ -20816,14 +20816,14 @@ function create_default_slot_1$4(ctx) {
 		block,
 		id: create_default_slot_1$4.name,
 		type: "slot",
-		source: "(144:24) <Icon class=\\\"material-icons\\\" >",
+		source: "(131:24) <Icon class=\\\"material-icons\\\" >",
 		ctx
 	});
 
 	return block;
 }
 
-// (142:20) <IconButton  toggle bind:pressed={toggleBrowser}>
+// (129:20) <IconButton  toggle bind:pressed={toggleBrowser}>
 function create_default_slot$6(ctx) {
 	let t;
 	let current;
@@ -20897,7 +20897,7 @@ function create_default_slot$6(ctx) {
 		block,
 		id: create_default_slot$6.name,
 		type: "slot",
-		source: "(142:20) <IconButton  toggle bind:pressed={toggleBrowser}>",
+		source: "(129:20) <IconButton  toggle bind:pressed={toggleBrowser}>",
 		ctx
 	});
 
@@ -20983,23 +20983,23 @@ function create_fragment$s(ctx) {
 			div2 = element("div");
 			if (plotContainer_slot) plotContainer_slot.c();
 			attr_dev(button, "class", "button is-link gap svelte-1p3mpgh");
-			add_location(button, file$r, 145, 20, 4106);
+			add_location(button, file$r, 132, 20, 3868);
 			attr_dev(div0, "class", "align svelte-1p3mpgh");
-			add_location(div0, file$r, 140, 16, 3818);
+			add_location(div0, file$r, 127, 16, 3580);
 			attr_dev(div1, "class", "align buttonContainer svelte-1p3mpgh");
-			add_location(div1, file$r, 149, 16, 4341);
+			add_location(div1, file$r, 136, 16, 4103);
 			attr_dev(div2, "class", "plotContainer svelte-1p3mpgh");
-			add_location(div2, file$r, 150, 16, 4432);
+			add_location(div2, file$r, 137, 16, 4194);
 			attr_dev(div3, "class", "container button-plot-container box svelte-1p3mpgh");
-			add_location(div3, file$r, 138, 12, 3749);
+			add_location(div3, file$r, 125, 12, 3511);
 			attr_dev(div4, "class", "column fileContainer svelte-1p3mpgh");
-			add_location(div4, file$r, 137, 8, 3701);
+			add_location(div4, file$r, 124, 8, 3463);
 			attr_dev(div5, "class", "columns svelte-1p3mpgh");
-			add_location(div5, file$r, 128, 4, 3375);
+			add_location(div5, file$r, 116, 4, 3139);
 			attr_dev(section, "id", /*id*/ ctx[2]);
 			set_style(section, "display", "none");
 			attr_dev(section, "class", "animated fadeIn svelte-1p3mpgh");
-			add_location(section, file$r, 127, 0, 3310);
+			add_location(section, file$r, 114, 0, 3072);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -21135,7 +21135,7 @@ const createToast$1 = (msg, type = "primary") => Sn.create({
 	type: `is-${type}`
 });
 
-function browse({ filetype = "", dir = true } = {}) {
+function browse({ filetype = "", dir = true, defaultPath = "" } = {}) {
 	return new Promise((resolve, reject) => {
 			const mainWindow = remote.getCurrentWindow();
 			let type;
@@ -21149,7 +21149,8 @@ function browse({ filetype = "", dir = true } = {}) {
 					},
 					{ name: "All Files", extensions: ["*"] }
 				],
-				properties: [type, "multiSelections"]
+				properties: [type, "multiSelections"],
+				defaultPath
 			};
 
 			remote.dialog.showOpenDialog(mainWindow, options).then(result => {
@@ -21164,9 +21165,10 @@ function browse({ filetype = "", dir = true } = {}) {
 }
 
 function instance$s($$self, $$props, $$invalidate) {
-	let { id } = $$props;
-	let { fileChecked = [] } = $$props;
-	let { filetype = "felix" } = $$props;
+	let { id } = $$props,
+		{ fileChecked = [] } = $$props,
+		{ filetype = "felix" } = $$props;
+
 	let { currentLocation = localStorage[`${filetype}_location`] || "" } = $$props;
 
 	function browse_folder() {
@@ -24890,7 +24892,7 @@ class CustomDialog extends SvelteComponentDev {
 /* src\Pages\Powerfile.svelte generated by Svelte v3.17.0 */
 const file$z = "src\\Pages\\Powerfile.svelte";
 
-// (91:72) <Label>
+// (96:72) <Label>
 function create_default_slot_5$2(ctx) {
 	let t;
 
@@ -24910,14 +24912,14 @@ function create_default_slot_5$2(ctx) {
 		block,
 		id: create_default_slot_5$2.name,
 		type: "slot",
-		source: "(91:72) <Label>",
+		source: "(96:72) <Label>",
 		ctx
 	});
 
 	return block;
 }
 
-// (91:12) <Fab class="is-pulled-right" on:click={openFolder} extended>
+// (96:12) <Fab class="is-pulled-right" on:click={openFolder} extended>
 function create_default_slot_4$2(ctx) {
 	let current;
 
@@ -24964,14 +24966,14 @@ function create_default_slot_4$2(ctx) {
 		block,
 		id: create_default_slot_4$2.name,
 		type: "slot",
-		source: "(91:12) <Fab class=\\\"is-pulled-right\\\" on:click={openFolder} extended>",
+		source: "(96:12) <Fab class=\\\"is-pulled-right\\\" on:click={openFolder} extended>",
 		ctx
 	});
 
 	return block;
 }
 
-// (100:16) <span slot="label">
+// (105:16) <span slot="label">
 function create_label_slot$1(ctx) {
 	let span;
 
@@ -24980,7 +24982,7 @@ function create_label_slot$1(ctx) {
 			span = element("span");
 			span.textContent = "Convert to µm";
 			attr_dev(span, "slot", "label");
-			add_location(span, file$z, 99, 16, 3973);
+			add_location(span, file$z, 104, 16, 4099);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -24994,14 +24996,14 @@ function create_label_slot$1(ctx) {
 		block,
 		id: create_label_slot$1.name,
 		type: "slot",
-		source: "(100:16) <span slot=\\\"label\\\">",
+		source: "(105:16) <span slot=\\\"label\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (98:12) <FormField>
+// (103:12) <FormField>
 function create_default_slot_3$2(ctx) {
 	let updating_checked;
 	let t;
@@ -25063,14 +25065,14 @@ function create_default_slot_3$2(ctx) {
 		block,
 		id: create_default_slot_3$2.name,
 		type: "slot",
-		source: "(98:12) <FormField>",
+		source: "(103:12) <FormField>",
 		ctx
 	});
 
 	return block;
 }
 
-// (106:8) <HelperText id="powercontent_help">
+// (111:8) <HelperText id="powercontent_help">
 function create_default_slot_2$5(ctx) {
 	let t0;
 	let t1;
@@ -25101,14 +25103,14 @@ function create_default_slot_2$5(ctx) {
 		block,
 		id: create_default_slot_2$5.name,
 		type: "slot",
-		source: "(106:8) <HelperText id=\\\"powercontent_help\\\">",
+		source: "(111:8) <HelperText id=\\\"powercontent_help\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (107:64) <Label>
+// (112:64) <Label>
 function create_default_slot_1$6(ctx) {
 	let t;
 
@@ -25128,14 +25130,14 @@ function create_default_slot_1$6(ctx) {
 		block,
 		id: create_default_slot_1$6.name,
 		type: "slot",
-		source: "(107:64) <Label>",
+		source: "(112:64) <Label>",
 		ctx
 	});
 
 	return block;
 }
 
-// (107:8) <Fab style="margin:2em 0;" on:click={savefile} extended>
+// (112:8) <Fab style="margin:2em 0;" on:click={savefile} extended>
 function create_default_slot$9(ctx) {
 	let current;
 
@@ -25182,7 +25184,7 @@ function create_default_slot$9(ctx) {
 		block,
 		id: create_default_slot$9.name,
 		type: "slot",
-		source: "(107:8) <Fab style=\\\"margin:2em 0;\\\" on:click={savefile} extended>",
+		source: "(112:8) <Fab style=\\\"margin:2em 0;\\\" on:click={savefile} extended>",
 		ctx
 	});
 
@@ -25377,16 +25379,16 @@ function create_fragment$B(ctx) {
 			t8 = space();
 			create_component(fab1.$$.fragment);
 			set_style(div0, "margin-bottom", "2em");
-			add_location(div0, file$z, 88, 8, 3261);
+			add_location(div0, file$z, 93, 8, 3387);
 			set_style(div1, "margin-bottom", "2em");
-			add_location(div1, file$z, 93, 8, 3515);
+			add_location(div1, file$z, 98, 8, 3641);
 			attr_dev(div2, "class", "container svelte-iqabrh");
 			attr_dev(div2, "id", "powfileContainer");
-			add_location(div2, file$z, 86, 4, 3204);
+			add_location(div2, file$z, 91, 4, 3330);
 			attr_dev(section, "class", "section svelte-iqabrh");
 			attr_dev(section, "id", "Powerfile");
 			set_style(section, "display", "none");
-			add_location(section, file$z, 85, 0, 3137);
+			add_location(section, file$z, 90, 0, 3263);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -25579,18 +25581,19 @@ function instance$B($$self, $$props, $$invalidate) {
 
 	async function savefile() {
 		if (location.length == 0) {
-			return createToast$1("Location is not set. Browse folder to set location", "danger");
+			return openFolder({ save: true });
 		}
 
 		const overwrite = await fs.existsSync(powfile);
 		overwrite ? overwrite_dialog.open() : writePowfile();
 	}
 
-	function openFolder() {
+	function openFolder({ save = false } = {}) {
 		browse({ dir: true }).then(result => {
 			if (!result.canceled) {
 				$$invalidate(4, location = localStorage["powerfile_location"] = result.filePaths[0]);
 				createToast$1("Location updated", "success");
+				if (save) savefile();
 			}
 		}).catch(err => {
 			set_store_value(modalContent, $modalContent = err);
