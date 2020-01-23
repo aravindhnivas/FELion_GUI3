@@ -12,23 +12,19 @@
     //////////////////////////////////////////////////////////////////////////////////
 
     const writePowfile = () => {
+
         let contents = `${initContent}\n${powerfileContent}`
+
         fs.writeFile(powfile, contents , function(err) {
 
-            if(err) {
-                createToast("Power file couldn't be saved.", "danger")
-                return console.log(err);
-            }
+            if(err) { return createToast("Power file couldn't be saved.", "danger") }
             createToast("Power file saved", "success")
         })
     }
+    
     async function savefile() {
 
-        if (location.length == 0) {
-
-            return openFolder({save:true})
-            // return createToast("Location is not set. Browse folder to set location", "danger")
-        }
+        if (location.length == 0) { return openFolder({save:true}) }
 
         const overwrite = await fs.existsSync(powfile)
         overwrite ? overwrite_dialog.open() : writePowfile()
@@ -40,26 +36,26 @@
             if (!result.canceled) {
                 location = localStorage["powerfile_location"] = result.filePaths[0]
                 createToast("Location updated", "success")
+
                 if (save) savefile()
             }
         }).catch(err=>{$modalContent = err; $activated=true})
-
     }
 
     let powerfileContent = '', felixHz = 10, felixShots = 16, convert = null;
+
     let location = localStorage["powerfile_location"] || "";
 
     let today = new Date();
     const dd = String(today.getDate()).padStart(2, '0')
     const mm = String(today.getMonth() + 1).padStart(2, '0')
     const yy = today.getFullYear().toString().substr(2)
+
     let filename = `${dd}_${mm}_${yy}-#`;
 
     $: powfile = path.resolve(location, `${filename}.pow`)
-
     $: conversion = "_no_"
     $: convert ? conversion = "_" : conversion = "_no_"
-
     $: initContent = `#POWER file\n` +
         `# ${felixHz} Hz FELIX\n` +
         `#SHOTS=${felixShots}\n` +
@@ -68,14 +64,15 @@
         `# wavelength/cm-1      energy/pulse/mJ\n`
 
     let overwrite_dialog;
-    const handleOverwrite = (e) => {
 
+    const handleOverwrite = (e) => {
         let action = e.detail.action
-        // console.log(action)
         if (action === "Cancel" || action === "close") createToast("Powerfile saving cancelled", "warning")
         if (action === "Yes") writePowfile()
     }
+
 </script>
+
 
 <style>
    
@@ -84,6 +81,7 @@
     @media only screen and (max-height: 800px) {.section {overflow-y: auto;}}
 
 </style>
+
 
 <CustomDialog id="powerfile-overwrite" bind:dialog={overwrite_dialog} on:response={handleOverwrite}
     title={"Overwrite?"} content={`${filename} already exists. Do you want to overwrite it?`}/>
@@ -112,4 +110,5 @@
         <Fab style="margin:2em 0;" on:click={savefile} extended><Label>Save</Label></Fab>
     
     </div>
+
 </section>
