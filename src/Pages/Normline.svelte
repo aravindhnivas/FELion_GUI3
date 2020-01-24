@@ -17,15 +17,13 @@
 
     import CustomSelect from '../components/CustomSelect.svelte';
 
-    // import CustomTable from '../components/CustomTable.svelte';
     import CustomRadio from '../components/CustomRadio.svelte';
     import ReportLayout from '../components/ReportLayout.svelte';
     import QuickView from '../components/QuickView.svelte';
     import FileBrowser from "../components/FileBrowser.svelte"
-
     import Checkbox from '@smui/checkbox';
-    import FormField from '@smui/form-field';
 
+    import FormField from '@smui/form-field';
     const {BrowserWindow} = remote
 
    ///////////////////////////////////////////////////////////////////////
