@@ -7,7 +7,7 @@
     import Ripple from '@smui/ripple'
 
     import {activated, modalContent} from "../components/Modal.svelte"
-    import IconButton, {Icon} from '@smui/icon-button'
+    
     import {plot, subplot} from "../js/functions.js"
     import { flip } from 'svelte/animate'
     
@@ -17,6 +17,7 @@
 
     import CustomSelect from '../components/CustomSelect.svelte';
 
+    import CustomIconSwitch from '../components/CustomIconSwitch.svelte';
     import CustomRadio from '../components/CustomRadio.svelte';
     import ReportLayout from '../components/ReportLayout.svelte';
     import QuickView from '../components/QuickView.svelte';
@@ -47,6 +48,7 @@
     
 
     let openShell = false;
+    $: console.log("Open Shell: ", filetype, openShell)
     let normMethod = "Relative", normMethod_datas = {}
     let graphPlotted = false, overwrite_expfit = false
 
@@ -62,10 +64,7 @@
     let show_dataTable_only_averaged = false, keepTable = true
 
     //////// OPO Plot ///////////
-
     let opoPlotted = false;
-
-
 
     ///////////////////////////////////////////////////////////////////////////////////
     
@@ -385,11 +384,15 @@
         width: 90%;
         margin-bottom: 1em;
     }
-
     * :global(table th:not([align])) {text-align: center; padding: 1em;}
     * :global(table td:not([align])) {text-align: center; padding: 1em;}
     * :global(#felixTableContainer) {border: 1px solid #5b3ea2;}
     * :global(#felixTableContainer thead) {background-color: #e1e1e1;}
+
+    .active {display: block!important;}
+    .hide {display: none;}
+    .felixPlot > div {margin-bottom: 1em;}
+    .notification {width: 100%; border: 1px solid;}
 </style>
 
 <QuickView style="padding:1em;" footer={false} bind:active={showTheoryFiles} title="Browse Theory files">
@@ -405,15 +408,13 @@
 
             <button class="button is-link">Create Baseline</button>
             <button class="button is-link" on:click="{(e)=>plotData(e, "felix")}">FELIX Plot</button>
-            <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click="{()=>toggleRow = !toggleRow}">Add Theory</button>
-            <button class="button is-link">Open in Matplotlib</button>
-            <button class="button is-link" on:click="{(e)=>plotData(e, "opofile")}">OPO</button>
             <Textfield style="width:7em" variant="outlined" bind:value={delta} label="Delta" />
-            <IconButton toggle bind:pressed={openShell}>
-                <Icon class="material-icons">code</Icon>
-                <Icon class="material-icons" on>settings_ethernet</Icon>
-            </IconButton>
-
+            <button class="button is-link">Open in Matplotlib</button>
+            <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
+            <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click="{()=>toggleRow = !toggleRow}">Add Theory</button>
+            <button class="button is-link" on:click="{(e)=>plotData(e, "opofile")}">OPO</button>
+            <CustomIconSwitch bind:toggler={opoPlotted} icons={["keyboard_arrow_up", "keyboard_arrow_down"]}/>
+            
         </div>
 
         {#if toggleRow}
@@ -435,21 +436,15 @@
 
     <div class="plotSlot" slot="plotContainer">
 
-        {#if show_theoryplot}
-            <div id="exp-theory-plot" transition:fade></div>
-        {/if}
-    
-        <div id="bplot"></div>
-        <div id="saPlot"></div>
-        <div id="avgplot"></div>
+        <div class="felixPlot">
+            <div class="animated fadeIn hide" class:active={show_theoryplot} id="exp-theory-plot"></div>
+            <div id="bplot"></div>
+            <div id="saPlot"></div>
+            <div id="avgplot"></div>
+            <div class="animated fadeIn hide" class:active={opoPlotted} id="opoplot"></div>
+            <div class="animated fadeIn hide" class:active={opoPlotted} id="opoRelPlot"></div>
+        </div>
 
-        {#if opoPlotted}
-            
-            <div id="opoplot" transition:fade></div>
-            <div id="opoRelPlot" transition:fade></div>
-        {/if}
-
-        <!-- <div class="is-divider" data-content="Graph END"></div> -->
         {#if graphPlotted}
             
             <!-- Pos-processing felix data -->
@@ -463,14 +458,14 @@
             </div>
 
             <!-- Frequency table list -->
-            <div class="align content">
-                <h1 class="mdc-typography--headline4">Frequency table</h1>
-                <hr>
+            <div class="align">
+                <div class="title notification is-link">Frequency table</div>
                 <CustomCheckbox bind:selected={show_dataTable_only_averaged} label="Only Averaged" />
                 <CustomCheckbox bind:selected={keepTable} label="Keep table" />
                 <button class="button is-warning" on:click="{()=>dataTable = window._.dropRight(dataTable, 1)}">Clear Last</button>
                 <button class="button is-danger" on:click="{()=>dataTable = []}">Clear Table</button>
             </div>
+
             <div class="dataTable" transition:fade>
 
                 <DataTable table$aria-label="{filetype}-tableAriaLabel" table$id="{filetype}Table" id="{filetype}TableContainer">
@@ -507,6 +502,7 @@
                 </DataTable>
 
             </div>
+
             <ReportLayout bind:currentLocation={currentLocation} 
                 id="felixreport", plotID={["bplot", "saPlot", "avgplot", "exp-theory-plot"]} 
                 includeTable={true}/>

@@ -159,9 +159,13 @@
 
 </script>
 
-<div><h1 class="mdc-typography--headline4">Add to report</h1></div>
+<style>
+    .notification {margin-right: 1em; margin-top: 1em; ; border: 1px solid; }
 
-<hr>
+</style>
+
+<div class="title notification is-link">Add to report</div>
+
 <div style="margin-bottom:1em;">
 
     <Textfield style="height:3em; width:20em;" variant="outlined" bind:value={reportMolecule} label="Molecule Name" />
