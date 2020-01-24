@@ -191,7 +191,7 @@
         <div id="mplot"></div>
         <div class="animated fadeIn hide" class:active={graphPlotted} style="flex-direction:column "><ReportLayout bind:currentLocation id="masspecreport", plotID={["mplot"]}/></div>
 
-        <div class="hide animated fadeIn" class:active={toggleRow2} style="margin-top: 1em; display:none; flex-direction:column; paddin-bottom:3em;">
+        <div class="hide animated fadeIn" class:active={toggleRow2} style="margin-top: 1em; display:none; flex-direction:column;">
             <div style="margin:1em;">
                 <Icon on:click="{()=>window.nist_webview.goToIndex(0)}" class="material-icons hvr-glow">home</Icon>
 
@@ -200,10 +200,10 @@
                 <Icon on:click="{()=>{if(window.nist_webview.canGoForward()) {window.nist_webview.goForward()}}}" class="material-icons hvr-glow">arrow_right</Icon>
             </div>
             <div class="">
-                <webview src={nist_url} id="nist_webview" style="height: 50vh;"></webview>
+                <webview src={nist_url} id="nist_webview" style="height: 50vh; padding-bottom:3em;"></webview>
             </div>
         </div>
-        
+
     </div>
 
 </Layout>
