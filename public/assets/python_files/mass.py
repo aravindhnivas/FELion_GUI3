@@ -58,7 +58,6 @@ def massplot(massfiles, tkplot):
 
     if not tkplot:
         dataJson = json.dumps(data)
-        print(dataJson)
         sendData(data)
 
     else:
@@ -68,11 +67,9 @@ def massplot(massfiles, tkplot):
 
 if __name__ == "__main__":
     args = sys.argv[1:][0].split(",")
-
     massfiles = [pt(i) for i in args[:-1]]
 
     tkplot = args[-1]
     if tkplot == "plot": tkplot = True
     else: tkplot = False
-    # print(args)
     massplot(massfiles, tkplot)
