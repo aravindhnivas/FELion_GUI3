@@ -150,8 +150,7 @@
             <button class="button is-link" on:click="{()=>{toggleRow2 = !toggleRow2}}">NIST Webbook</button>
             <button class="button is-link" on:click="{(e)=>plotData(e, "general")}">Open in Matplotlib</button>
             <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
-
-            <CustomSwitch style="margin: 0 1em; padding-bottom: 1em;" on:click={linearlogCheck} bind:selected={logScale} label="Log"/>
+            <CustomSwitch style="margin: 0 1em; padding-bottom: 1em;" on:change={linearlogCheck} bind:selected={logScale} label="Log"/>
             
         </div>
 
