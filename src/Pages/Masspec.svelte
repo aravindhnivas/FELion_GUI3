@@ -15,6 +15,7 @@
     import {createToast} from "../components/Layout.svelte"
     import {afterUpdate} from "svelte"
 
+    import {Icon} from '@smui/icon-button'
     /////////////////////////////////////////////////////////////////////////
 
     // Initialisation
@@ -32,6 +33,19 @@
     // NIST 
     let toggleRow2 = false, nist_molecule = localStorage["nist_molecule"] || "", nist_formula = localStorage["nist_formula"] || ""
     let style2 = "width:12em; height:3em; margin-right:0.5em"
+
+    $: nist_molecule_name = `Name=${nist_molecule}`
+    $: nist_molecule_formula = `Formula=${nist_formula}`
+    let nist_url = localStorage["nist_url"] || "https://webbook.nist.gov/cgi/cbook.cgi?Name=&Units=SI&Mask=200#Mass-Spec"
+
+    const set_nist_url = (format="") => {
+        let fmt;
+        format == "by_name" ? fmt = nist_molecule_name : fmt = nist_molecule_formula
+        nist_url = `https://webbook.nist.gov/cgi/cbook.cgi?${fmt}&Units=SI&Mask=200#Mass-Spec`
+        localStorage["nist_url"] = nist_url
+        localStorage["nist_formula"] =  nist_formula
+        localStorage["nist_molecule"] = nist_molecule
+    }
 
     // Linear log
     let logScale = true;
@@ -129,7 +143,6 @@
         Plotly.relayout("mplot", layout)
     };
 
-
 </script>
 
 <style>
@@ -165,8 +178,8 @@
         </div>
 
         <div class="animated fadeIn hide align buttonRow" class:active={toggleRow2}>
-            <Textfield style={style2} variant="outlined" on:change="{()=>console.log(nist_molecule)}" bind:value={nist_molecule} label="Molecule Name" />
-            <Textfield style={style2} variant="outlined" bind:value={nist_formula} label="Molecule Formula" />
+            <Textfield style={style2} variant="outlined" on:change="{()=>set_nist_url("by_name")}" bind:value={nist_molecule} label="Molecule Name" />
+            <Textfield style={style2} variant="outlined" on:change={set_nist_url} bind:value={nist_formula} label="Molecule Formula" />
         </div>
 
     </div>
@@ -175,6 +188,18 @@
 
         <div id="mplot"></div>
         <div class="animated fadeIn hide" class:active={graphPlotted}><ReportLayout bind:currentLocation id="masspecreport", plotID={["mplot"]}/></div>
+
+        <div class="hide animated fadeIn" class:active={toggleRow2} style="margin-top: 1em; display:none">
+
+            <div style="margin:1em;">
+                <Icon on:click="{()=>window.nist_webview.goToIndex(0)}" class="material-icons hvr-glow">home</Icon>
+                <Icon on:click="{()=>window.nist_webview.reload()}" class="material-icons hvr-glow">refresh</Icon>
+
+                <Icon on:click="{()=>{if(window.nist_webview.canGoBack()) {window.nist_webview.goBack()}}}" class="material-icons hvr-glow">arrow_left</Icon>
+                <Icon on:click="{()=>{if(window.nist_webview.canGoForward()) {window.nist_webview.goForward()}}}" class="material-icons hvr-glow">arrow_right</Icon>
+            </div>
+            <webview src={nist_url} id="nist_webview" style="height: 50vh;"></webview>
+        </div>
     </div>
 
 </Layout>

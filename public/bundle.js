@@ -37428,25 +37428,25 @@ function create_buttonContainer_slot(ctx) {
 			attr_dev(button1, "class", "button is-link svelte-1wyfjoi");
 			add_location(button1, file$O, 411, 12, 17543);
 			attr_dev(button2, "class", "button is-link svelte-1wyfjoi");
-			add_location(button2, file$O, 413, 12, 17743);
+			add_location(button2, file$O, 414, 12, 17744);
 			attr_dev(button3, "class", "button is-link svelte-1wyfjoi");
 			attr_dev(button3, "tabindex", "0");
-			add_location(button3, file$O, 416, 12, 18031);
+			add_location(button3, file$O, 417, 12, 18032);
 			attr_dev(button4, "class", "button is-link svelte-1wyfjoi");
-			add_location(button4, file$O, 417, 12, 18188);
+			add_location(button4, file$O, 418, 12, 18189);
 			attr_dev(div1, "class", "align svelte-1wyfjoi");
 			add_location(div1, file$O, 407, 8, 17338);
 			attr_dev(button5, "class", "button is-link svelte-1wyfjoi");
-			add_location(button5, file$O, 422, 12, 18491);
+			add_location(button5, file$O, 423, 12, 18492);
 			attr_dev(button6, "class", "button is-link svelte-1wyfjoi");
-			add_location(button6, file$O, 425, 12, 18823);
+			add_location(button6, file$O, 426, 12, 18824);
 			attr_dev(button7, "class", "button is-link svelte-1wyfjoi");
-			add_location(button7, file$O, 427, 12, 19049);
+			add_location(button7, file$O, 428, 12, 19050);
 			attr_dev(div2, "class", "align animated fadeIn hide svelte-1wyfjoi");
 			toggle_class(div2, "active", /*toggleRow*/ ctx[2]);
-			add_location(div2, file$O, 421, 8, 18412);
+			add_location(div2, file$O, 422, 8, 18413);
 			attr_dev(div3, "class", "align svelte-1wyfjoi");
-			add_location(div3, file$O, 430, 8, 19163);
+			add_location(div3, file$O, 431, 8, 19164);
 			attr_dev(div0, "class", "buttonSlot svelte-1wyfjoi");
 			attr_dev(div0, "slot", "buttonContainer");
 			add_location(div0, file$O, 405, 4, 17279);
@@ -37601,7 +37601,7 @@ function create_buttonContainer_slot(ctx) {
 	return block;
 }
 
-// (474:32) <Cell>
+// (475:32) <Cell>
 function create_default_slot_17(ctx) {
 	let t_value = /*item*/ ctx[68] + "";
 	let t;
@@ -37623,14 +37623,14 @@ function create_default_slot_17(ctx) {
 		block,
 		id: create_default_slot_17.name,
 		type: "slot",
-		source: "(474:32) <Cell>",
+		source: "(475:32) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (473:28) {#each dataTableHead as item}
+// (474:28) {#each dataTableHead as item}
 function create_each_block_2$1(ctx) {
 	let current;
 
@@ -37677,14 +37677,14 @@ function create_each_block_2$1(ctx) {
 		block,
 		id: create_each_block_2$1.name,
 		type: "each",
-		source: "(473:28) {#each dataTableHead as item}",
+		source: "(474:28) {#each dataTableHead as item}",
 		ctx
 	});
 
 	return block;
 }
 
-// (472:24) <Row>
+// (473:24) <Row>
 function create_default_slot_16(ctx) {
 	let each_1_anchor;
 	let current;
@@ -37771,14 +37771,14 @@ function create_default_slot_16(ctx) {
 		block,
 		id: create_default_slot_16.name,
 		type: "slot",
-		source: "(472:24) <Row>",
+		source: "(473:24) <Row>",
 		ctx
 	});
 
 	return block;
 }
 
-// (471:20) <Head >
+// (472:20) <Head >
 function create_default_slot_15(ctx) {
 	let current;
 
@@ -37825,14 +37825,14 @@ function create_default_slot_15(ctx) {
 		block,
 		id: create_default_slot_15.name,
 		type: "slot",
-		source: "(471:20) <Head >",
+		source: "(472:20) <Head >",
 		ctx
 	});
 
 	return block;
 }
 
-// (489:24) {:else}
+// (490:24) {:else}
 function create_else_block$9(ctx) {
 	let each_blocks = [];
 	let each_1_lookup = new Map();
@@ -37900,14 +37900,14 @@ function create_else_block$9(ctx) {
 		block,
 		id: create_else_block$9.name,
 		type: "else",
-		source: "(489:24) {:else}",
+		source: "(490:24) {:else}",
 		ctx
 	});
 
 	return block;
 }
 
-// (479:24) {#if show_dataTable_only_averaged}
+// (480:24) {#if show_dataTable_only_averaged}
 function create_if_block$f(ctx) {
 	let each_blocks = [];
 	let each_1_lookup = new Map();
@@ -37975,14 +37975,14 @@ function create_if_block$f(ctx) {
 		block,
 		id: create_if_block$f.name,
 		type: "if",
-		source: "(479:24) {#if show_dataTable_only_averaged}",
+		source: "(480:24) {#if show_dataTable_only_averaged}",
 		ctx
 	});
 
 	return block;
 }
 
-// (492:36) <Cell>
+// (493:36) <Cell>
 function create_default_slot_14(ctx) {
 	let t_value = /*table*/ ctx[64].name + "";
 	let t;
@@ -38006,14 +38006,14 @@ function create_default_slot_14(ctx) {
 		block,
 		id: create_default_slot_14.name,
 		type: "slot",
-		source: "(492:36) <Cell>",
+		source: "(493:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (493:36) <Cell>
+// (494:36) <Cell>
 function create_default_slot_13(ctx) {
 	let t_value = /*table*/ ctx[64].freq + "";
 	let t;
@@ -38037,14 +38037,14 @@ function create_default_slot_13(ctx) {
 		block,
 		id: create_default_slot_13.name,
 		type: "slot",
-		source: "(493:36) <Cell>",
+		source: "(494:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (494:36) <Cell>
+// (495:36) <Cell>
 function create_default_slot_12(ctx) {
 	let t_value = /*table*/ ctx[64].amp + "";
 	let t;
@@ -38068,14 +38068,14 @@ function create_default_slot_12(ctx) {
 		block,
 		id: create_default_slot_12.name,
 		type: "slot",
-		source: "(494:36) <Cell>",
+		source: "(495:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (495:36) <Cell>
+// (496:36) <Cell>
 function create_default_slot_11$1(ctx) {
 	let t_value = /*table*/ ctx[64].fwhm + "";
 	let t;
@@ -38099,14 +38099,14 @@ function create_default_slot_11$1(ctx) {
 		block,
 		id: create_default_slot_11$1.name,
 		type: "slot",
-		source: "(495:36) <Cell>",
+		source: "(496:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (496:36) <Cell>
+// (497:36) <Cell>
 function create_default_slot_10$1(ctx) {
 	let t_value = /*table*/ ctx[64].sig + "";
 	let t;
@@ -38130,14 +38130,14 @@ function create_default_slot_10$1(ctx) {
 		block,
 		id: create_default_slot_10$1.name,
 		type: "slot",
-		source: "(496:36) <Cell>",
+		source: "(497:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (491:32) <Row style="background-color: {table.color};">
+// (492:32) <Row style="background-color: {table.color};">
 function create_default_slot_9$1(ctx) {
 	let t0;
 	let t1;
@@ -38284,14 +38284,14 @@ function create_default_slot_9$1(ctx) {
 		block,
 		id: create_default_slot_9$1.name,
 		type: "slot",
-		source: "(491:32) <Row style=\\\"background-color: {table.color};\\\">",
+		source: "(492:32) <Row style=\\\"background-color: {table.color};\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (490:28) {#each dataTable as table (table.id)}
+// (491:28) {#each dataTable as table (table.id)}
 function create_each_block_1$2(key_1, ctx) {
 	let first;
 	let current;
@@ -38347,14 +38347,14 @@ function create_each_block_1$2(key_1, ctx) {
 		block,
 		id: create_each_block_1$2.name,
 		type: "each",
-		source: "(490:28) {#each dataTable as table (table.id)}",
+		source: "(491:28) {#each dataTable as table (table.id)}",
 		ctx
 	});
 
 	return block;
 }
 
-// (482:36) <Cell>
+// (483:36) <Cell>
 function create_default_slot_8$1(ctx) {
 	let t0;
 	let t1_value = /*index*/ ctx[23] + "";
@@ -38382,14 +38382,14 @@ function create_default_slot_8$1(ctx) {
 		block,
 		id: create_default_slot_8$1.name,
 		type: "slot",
-		source: "(482:36) <Cell>",
+		source: "(483:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (483:36) <Cell>
+// (484:36) <Cell>
 function create_default_slot_7$2(ctx) {
 	let t_value = /*table*/ ctx[64].freq + "";
 	let t;
@@ -38413,14 +38413,14 @@ function create_default_slot_7$2(ctx) {
 		block,
 		id: create_default_slot_7$2.name,
 		type: "slot",
-		source: "(483:36) <Cell>",
+		source: "(484:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (484:36) <Cell>
+// (485:36) <Cell>
 function create_default_slot_6$2(ctx) {
 	let t_value = /*table*/ ctx[64].amp + "";
 	let t;
@@ -38444,14 +38444,14 @@ function create_default_slot_6$2(ctx) {
 		block,
 		id: create_default_slot_6$2.name,
 		type: "slot",
-		source: "(484:36) <Cell>",
+		source: "(485:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (485:36) <Cell>
+// (486:36) <Cell>
 function create_default_slot_5$3(ctx) {
 	let t_value = /*table*/ ctx[64].fwhm + "";
 	let t;
@@ -38475,14 +38475,14 @@ function create_default_slot_5$3(ctx) {
 		block,
 		id: create_default_slot_5$3.name,
 		type: "slot",
-		source: "(485:36) <Cell>",
+		source: "(486:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (486:36) <Cell>
+// (487:36) <Cell>
 function create_default_slot_4$5(ctx) {
 	let t_value = /*table*/ ctx[64].sig + "";
 	let t;
@@ -38506,14 +38506,14 @@ function create_default_slot_4$5(ctx) {
 		block,
 		id: create_default_slot_4$5.name,
 		type: "slot",
-		source: "(486:36) <Cell>",
+		source: "(487:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (481:32) <Row>
+// (482:32) <Row>
 function create_default_slot_3$5(ctx) {
 	let t0;
 	let t1;
@@ -38660,14 +38660,14 @@ function create_default_slot_3$5(ctx) {
 		block,
 		id: create_default_slot_3$5.name,
 		type: "slot",
-		source: "(481:32) <Row>",
+		source: "(482:32) <Row>",
 		ctx
 	});
 
 	return block;
 }
 
-// (480:28) {#each dataTable_avg as table, index (table.id)}
+// (481:28) {#each dataTable_avg as table, index (table.id)}
 function create_each_block$5(key_1, ctx) {
 	let first;
 	let current;
@@ -38721,14 +38721,14 @@ function create_each_block$5(key_1, ctx) {
 		block,
 		id: create_each_block$5.name,
 		type: "each",
-		source: "(480:28) {#each dataTable_avg as table, index (table.id)}",
+		source: "(481:28) {#each dataTable_avg as table, index (table.id)}",
 		ctx
 	});
 
 	return block;
 }
 
-// (478:20) <Body>
+// (479:20) <Body>
 function create_default_slot_2$9(ctx) {
 	let current_block_type_index;
 	let if_block;
@@ -38799,14 +38799,14 @@ function create_default_slot_2$9(ctx) {
 		block,
 		id: create_default_slot_2$9.name,
 		type: "slot",
-		source: "(478:20) <Body>",
+		source: "(479:20) <Body>",
 		ctx
 	});
 
 	return block;
 }
 
-// (470:16) <DataTable table$aria-label="{filetype}-tableAriaLabel" table$id="{filetype}Table" id="{filetype}TableContainer">
+// (471:16) <DataTable table$aria-label="{filetype}-tableAriaLabel" table$id="{filetype}Table" id="{filetype}TableContainer">
 function create_default_slot_1$b(ctx) {
 	let t;
 	let current;
@@ -38877,14 +38877,14 @@ function create_default_slot_1$b(ctx) {
 		block,
 		id: create_default_slot_1$b.name,
 		type: "slot",
-		source: "(470:16) <DataTable table$aria-label=\\\"{filetype}-tableAriaLabel\\\" table$id=\\\"{filetype}Table\\\" id=\\\"{filetype}TableContainer\\\">",
+		source: "(471:16) <DataTable table$aria-label=\\\"{filetype}-tableAriaLabel\\\" table$id=\\\"{filetype}Table\\\" id=\\\"{filetype}TableContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (436:4) <div class="plotSlot" slot="plotContainer">
+// (437:4) <div class="plotSlot" slot="plotContainer">
 function create_plotContainer_slot(ctx) {
 	let div0;
 	let div7;
@@ -39090,50 +39090,50 @@ function create_plotContainer_slot(ctx) {
 			attr_dev(div1, "class", "animated fadeIn hide svelte-1wyfjoi");
 			attr_dev(div1, "id", "exp-theory-plot");
 			toggle_class(div1, "active", /*show_theoryplot*/ ctx[8]);
-			add_location(div1, file$O, 438, 12, 19436);
+			add_location(div1, file$O, 439, 12, 19437);
 			attr_dev(div2, "id", "bplot");
 			attr_dev(div2, "class", "svelte-1wyfjoi");
-			add_location(div2, file$O, 439, 12, 19542);
+			add_location(div2, file$O, 440, 12, 19543);
 			attr_dev(div3, "id", "saPlot");
 			attr_dev(div3, "class", "svelte-1wyfjoi");
-			add_location(div3, file$O, 440, 12, 19578);
+			add_location(div3, file$O, 441, 12, 19579);
 			attr_dev(div4, "id", "avgplot");
 			attr_dev(div4, "class", "svelte-1wyfjoi");
-			add_location(div4, file$O, 441, 12, 19615);
+			add_location(div4, file$O, 442, 12, 19616);
 			attr_dev(div5, "class", "animated fadeIn hide svelte-1wyfjoi");
 			attr_dev(div5, "id", "opoplot");
 			toggle_class(div5, "active", /*opoPlotted*/ ctx[19]);
-			add_location(div5, file$O, 442, 12, 19653);
+			add_location(div5, file$O, 443, 12, 19654);
 			attr_dev(div6, "class", "animated fadeIn hide svelte-1wyfjoi");
 			attr_dev(div6, "id", "opoRelPlot");
 			toggle_class(div6, "active", /*opoPlotted*/ ctx[19]);
-			add_location(div6, file$O, 443, 12, 19746);
+			add_location(div6, file$O, 444, 12, 19747);
 			attr_dev(div7, "class", "felixPlot svelte-1wyfjoi");
-			add_location(div7, file$O, 437, 8, 19399);
+			add_location(div7, file$O, 438, 8, 19400);
 			attr_dev(button0, "class", "button is-link svelte-1wyfjoi");
-			add_location(button0, file$O, 451, 16, 20286);
+			add_location(button0, file$O, 452, 16, 20287);
 			attr_dev(button1, "class", "button is-warning svelte-1wyfjoi");
-			add_location(button1, file$O, 452, 16, 20393);
+			add_location(button1, file$O, 453, 16, 20394);
 			attr_dev(button2, "class", "button is-danger svelte-1wyfjoi");
-			add_location(button2, file$O, 453, 16, 20489);
+			add_location(button2, file$O, 454, 16, 20490);
 			attr_dev(div8, "class", "content svelte-1wyfjoi");
-			add_location(div8, file$O, 448, 12, 19980);
+			add_location(div8, file$O, 449, 12, 19981);
 			attr_dev(div9, "class", "title notification is-link svelte-1wyfjoi");
-			add_location(div9, file$O, 459, 16, 20698);
+			add_location(div9, file$O, 460, 16, 20699);
 			attr_dev(button3, "class", "button is-warning svelte-1wyfjoi");
-			add_location(button3, file$O, 462, 16, 20961);
+			add_location(button3, file$O, 463, 16, 20962);
 			attr_dev(button4, "class", "button is-danger svelte-1wyfjoi");
-			add_location(button4, file$O, 463, 16, 21094);
+			add_location(button4, file$O, 464, 16, 21095);
 			attr_dev(div10, "class", "align svelte-1wyfjoi");
-			add_location(div10, file$O, 458, 12, 20661);
+			add_location(div10, file$O, 459, 12, 20662);
 			attr_dev(div11, "class", "dataTable svelte-1wyfjoi");
-			add_location(div11, file$O, 467, 12, 21248);
+			add_location(div11, file$O, 468, 12, 21249);
 			attr_dev(div12, "class", "animated fadeIn hide svelte-1wyfjoi");
 			toggle_class(div12, "active", /*graphPlotted*/ ctx[13]);
-			add_location(div12, file$O, 446, 8, 19856);
+			add_location(div12, file$O, 447, 8, 19857);
 			attr_dev(div0, "class", "plotSlot svelte-1wyfjoi");
 			attr_dev(div0, "slot", "plotContainer");
-			add_location(div0, file$O, 435, 4, 19344);
+			add_location(div0, file$O, 436, 4, 19345);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -39311,7 +39311,7 @@ function create_plotContainer_slot(ctx) {
 		block,
 		id: create_plotContainer_slot.name,
 		type: "slot",
-		source: "(436:4) <div class=\\\"plotSlot\\\" slot=\\\"plotContainer\\\">",
+		source: "(437:4) <div class=\\\"plotSlot\\\" slot=\\\"plotContainer\\\">",
 		ctx
 	});
 
@@ -40123,7 +40123,7 @@ class Normline extends SvelteComponentDev {
 /* src\Pages\Masspec.svelte generated by Svelte v3.17.3 */
 const file$P = "src\\Pages\\Masspec.svelte";
 
-// (147:4) <div class="masspec_buttonContainer" slot="buttonContainer">
+// (160:4) <div class="masspec_buttonContainer" slot="buttonContainer">
 function create_buttonContainer_slot$1(ctx) {
 	let div0;
 	let div1;
@@ -40160,7 +40160,7 @@ function create_buttonContainer_slot$1(ctx) {
 	let dispose;
 
 	function customiconswitch_toggler_binding(value) {
-		/*customiconswitch_toggler_binding*/ ctx[25].call(null, value);
+		/*customiconswitch_toggler_binding*/ ctx[29].call(null, value);
 	}
 
 	let customiconswitch_props = { icons: ["settings_ethernet", "code"] };
@@ -40177,7 +40177,7 @@ function create_buttonContainer_slot$1(ctx) {
 	binding_callbacks.push(() => bind(customiconswitch, "toggler", customiconswitch_toggler_binding));
 
 	function customswitch_selected_binding(value_1) {
-		/*customswitch_selected_binding*/ ctx[26].call(null, value_1);
+		/*customswitch_selected_binding*/ ctx[30].call(null, value_1);
 	}
 
 	let customswitch_props = {
@@ -40185,8 +40185,8 @@ function create_buttonContainer_slot$1(ctx) {
 		label: "Log"
 	};
 
-	if (/*logScale*/ ctx[12] !== void 0) {
-		customswitch_props.selected = /*logScale*/ ctx[12];
+	if (/*logScale*/ ctx[13] !== void 0) {
+		customswitch_props.selected = /*logScale*/ ctx[13];
 	}
 
 	const customswitch = new CustomSwitch({
@@ -40195,10 +40195,10 @@ function create_buttonContainer_slot$1(ctx) {
 		});
 
 	binding_callbacks.push(() => bind(customswitch, "selected", customswitch_selected_binding));
-	customswitch.$on("change", /*linearlogCheck*/ ctx[18]);
+	customswitch.$on("change", /*linearlogCheck*/ ctx[20]);
 
 	function customselect_picked_binding(value_2) {
-		/*customselect_picked_binding*/ ctx[27].call(null, value_2);
+		/*customselect_picked_binding*/ ctx[31].call(null, value_2);
 	}
 
 	let customselect_props = {
@@ -40219,11 +40219,11 @@ function create_buttonContainer_slot$1(ctx) {
 	binding_callbacks.push(() => bind(customselect, "picked", customselect_picked_binding));
 
 	function textfield0_value_binding(value_3) {
-		/*textfield0_value_binding*/ ctx[28].call(null, value_3);
+		/*textfield0_value_binding*/ ctx[32].call(null, value_3);
 	}
 
 	let textfield0_props = {
-		style: /*style1*/ ctx[15],
+		style: /*style1*/ ctx[16],
 		variant: "outlined",
 		label: "Prominance"
 	};
@@ -40234,14 +40234,14 @@ function create_buttonContainer_slot$1(ctx) {
 
 	const textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
-	textfield0.$on("change", /*change_handler*/ ctx[29]);
+	textfield0.$on("change", /*change_handler*/ ctx[33]);
 
 	function textfield1_value_binding(value_4) {
-		/*textfield1_value_binding*/ ctx[30].call(null, value_4);
+		/*textfield1_value_binding*/ ctx[34].call(null, value_4);
 	}
 
 	let textfield1_props = {
-		style: /*style1*/ ctx[15],
+		style: /*style1*/ ctx[16],
 		variant: "outlined",
 		label: "Width"
 	};
@@ -40252,14 +40252,14 @@ function create_buttonContainer_slot$1(ctx) {
 
 	const textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding));
-	textfield1.$on("change", /*change_handler_1*/ ctx[31]);
+	textfield1.$on("change", /*change_handler_1*/ ctx[35]);
 
 	function textfield2_value_binding(value_5) {
-		/*textfield2_value_binding*/ ctx[32].call(null, value_5);
+		/*textfield2_value_binding*/ ctx[36].call(null, value_5);
 	}
 
 	let textfield2_props = {
-		style: /*style1*/ ctx[15],
+		style: /*style1*/ ctx[16],
 		variant: "outlined",
 		label: "Height"
 	};
@@ -40270,14 +40270,14 @@ function create_buttonContainer_slot$1(ctx) {
 
 	const textfield2 = new Textfield({ props: textfield2_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield2, "value", textfield2_value_binding));
-	textfield2.$on("change", /*change_handler_2*/ ctx[33]);
+	textfield2.$on("change", /*change_handler_2*/ ctx[37]);
 
 	function textfield3_value_binding(value_6) {
-		/*textfield3_value_binding*/ ctx[36].call(null, value_6);
+		/*textfield3_value_binding*/ ctx[40].call(null, value_6);
 	}
 
 	let textfield3_props = {
-		style: /*style2*/ ctx[16],
+		style: /*style2*/ ctx[17],
 		variant: "outlined",
 		label: "Molecule Name"
 	};
@@ -40288,14 +40288,14 @@ function create_buttonContainer_slot$1(ctx) {
 
 	const textfield3 = new Textfield({ props: textfield3_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield3, "value", textfield3_value_binding));
-	textfield3.$on("change", /*change_handler_3*/ ctx[37]);
+	textfield3.$on("change", /*change_handler_3*/ ctx[41]);
 
 	function textfield4_value_binding(value_7) {
-		/*textfield4_value_binding*/ ctx[38].call(null, value_7);
+		/*textfield4_value_binding*/ ctx[42].call(null, value_7);
 	}
 
 	let textfield4_props = {
-		style: /*style2*/ ctx[16],
+		style: /*style2*/ ctx[17],
 		variant: "outlined",
 		label: "Molecule Formula"
 	};
@@ -40306,6 +40306,7 @@ function create_buttonContainer_slot$1(ctx) {
 
 	const textfield4 = new Textfield({ props: textfield4_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield4, "value", textfield4_value_binding));
+	textfield4.$on("change", /*set_nist_url*/ ctx[18]);
 
 	const block = {
 		c: function create() {
@@ -40347,28 +40348,28 @@ function create_buttonContainer_slot$1(ctx) {
 			t18 = space();
 			create_component(textfield4.$$.fragment);
 			attr_dev(button0, "class", "button is-link svelte-7yzxv2");
-			add_location(button0, file$P, 149, 12, 5462);
+			add_location(button0, file$P, 162, 12, 6146);
 			attr_dev(button1, "class", "button is-link svelte-7yzxv2");
-			add_location(button1, file$P, 150, 12, 5548);
+			add_location(button1, file$P, 163, 12, 6232);
 			attr_dev(button2, "class", "button is-link svelte-7yzxv2");
-			add_location(button2, file$P, 151, 12, 5656);
+			add_location(button2, file$P, 164, 12, 6340);
 			attr_dev(button3, "class", "button is-link svelte-7yzxv2");
-			add_location(button3, file$P, 152, 12, 5766);
+			add_location(button3, file$P, 165, 12, 6450);
 			attr_dev(div1, "class", "content buttonRow svelte-7yzxv2");
-			add_location(div1, file$P, 148, 8, 5417);
+			add_location(div1, file$P, 161, 8, 6101);
 			attr_dev(button4, "class", "button is-link svelte-7yzxv2");
-			add_location(button4, file$P, 162, 12, 6810);
+			add_location(button4, file$P, 175, 12, 7494);
 			attr_dev(button5, "class", "button is-danger svelte-7yzxv2");
-			add_location(button5, file$P, 163, 12, 6917);
+			add_location(button5, file$P, 176, 12, 7601);
 			attr_dev(div2, "class", "animated fadeIn hide align buttonRow svelte-7yzxv2");
 			toggle_class(div2, "active", /*toggleRow1*/ ctx[4]);
-			add_location(div2, file$P, 157, 8, 6126);
+			add_location(div2, file$P, 170, 8, 6810);
 			attr_dev(div3, "class", "animated fadeIn hide align buttonRow svelte-7yzxv2");
 			toggle_class(div3, "active", /*toggleRow2*/ ctx[9]);
-			add_location(div3, file$P, 166, 8, 7063);
+			add_location(div3, file$P, 179, 8, 7747);
 			attr_dev(div0, "class", "masspec_buttonContainer svelte-7yzxv2");
 			attr_dev(div0, "slot", "buttonContainer");
-			add_location(div0, file$P, 146, 4, 5345);
+			add_location(div0, file$P, 159, 4, 6029);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -40405,12 +40406,12 @@ function create_buttonContainer_slot$1(ctx) {
 			current = true;
 
 			dispose = [
-				listen_dev(button0, "click", /*plotData*/ ctx[17], false, false, false),
-				listen_dev(button1, "click", /*click_handler*/ ctx[22], false, false, false),
-				listen_dev(button2, "click", /*click_handler_1*/ ctx[23], false, false, false),
-				listen_dev(button3, "click", /*click_handler_2*/ ctx[24], false, false, false),
-				listen_dev(button4, "click", /*click_handler_3*/ ctx[34], false, false, false),
-				listen_dev(button5, "click", /*click_handler_4*/ ctx[35], false, false, false)
+				listen_dev(button0, "click", /*plotData*/ ctx[19], false, false, false),
+				listen_dev(button1, "click", /*click_handler*/ ctx[26], false, false, false),
+				listen_dev(button2, "click", /*click_handler_1*/ ctx[27], false, false, false),
+				listen_dev(button3, "click", /*click_handler_2*/ ctx[28], false, false, false),
+				listen_dev(button4, "click", /*click_handler_3*/ ctx[38], false, false, false),
+				listen_dev(button5, "click", /*click_handler_4*/ ctx[39], false, false, false)
 			];
 		},
 		p: function update(ctx, dirty) {
@@ -40425,9 +40426,9 @@ function create_buttonContainer_slot$1(ctx) {
 			customiconswitch.$set(customiconswitch_changes);
 			const customswitch_changes = {};
 
-			if (!updating_selected && dirty[0] & /*logScale*/ 4096) {
+			if (!updating_selected && dirty[0] & /*logScale*/ 8192) {
 				updating_selected = true;
-				customswitch_changes.selected = /*logScale*/ ctx[12];
+				customswitch_changes.selected = /*logScale*/ ctx[13];
 				add_flush_callback(() => updating_selected = false);
 			}
 
@@ -40538,24 +40539,141 @@ function create_buttonContainer_slot$1(ctx) {
 		block,
 		id: create_buttonContainer_slot$1.name,
 		type: "slot",
-		source: "(147:4) <div class=\\\"masspec_buttonContainer\\\" slot=\\\"buttonContainer\\\">",
+		source: "(160:4) <div class=\\\"masspec_buttonContainer\\\" slot=\\\"buttonContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (174:4) <div style="margin-right: 1em;" slot="plotContainer">
+// (195:16) <Icon on:click="{()=>window.nist_webview.goToIndex(0)}" class="material-icons hvr-glow">
+function create_default_slot_4$6(ctx) {
+	let t;
+
+	const block = {
+		c: function create() {
+			t = text("home");
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, t, anchor);
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(t);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_default_slot_4$6.name,
+		type: "slot",
+		source: "(195:16) <Icon on:click=\\\"{()=>window.nist_webview.goToIndex(0)}\\\" class=\\\"material-icons hvr-glow\\\">",
+		ctx
+	});
+
+	return block;
+}
+
+// (196:16) <Icon on:click="{()=>window.nist_webview.reload()}" class="material-icons hvr-glow">
+function create_default_slot_3$6(ctx) {
+	let t;
+
+	const block = {
+		c: function create() {
+			t = text("refresh");
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, t, anchor);
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(t);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_default_slot_3$6.name,
+		type: "slot",
+		source: "(196:16) <Icon on:click=\\\"{()=>window.nist_webview.reload()}\\\" class=\\\"material-icons hvr-glow\\\">",
+		ctx
+	});
+
+	return block;
+}
+
+// (198:16) <Icon on:click="{()=>{if(window.nist_webview.canGoBack()) {window.nist_webview.goBack()}}}" class="material-icons hvr-glow">
+function create_default_slot_2$a(ctx) {
+	let t;
+
+	const block = {
+		c: function create() {
+			t = text("arrow_left");
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, t, anchor);
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(t);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_default_slot_2$a.name,
+		type: "slot",
+		source: "(198:16) <Icon on:click=\\\"{()=>{if(window.nist_webview.canGoBack()) {window.nist_webview.goBack()}}}\\\" class=\\\"material-icons hvr-glow\\\">",
+		ctx
+	});
+
+	return block;
+}
+
+// (199:16) <Icon on:click="{()=>{if(window.nist_webview.canGoForward()) {window.nist_webview.goForward()}}}" class="material-icons hvr-glow">
+function create_default_slot_1$c(ctx) {
+	let t;
+
+	const block = {
+		c: function create() {
+			t = text("arrow_right");
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, t, anchor);
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(t);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_default_slot_1$c.name,
+		type: "slot",
+		source: "(199:16) <Icon on:click=\\\"{()=>{if(window.nist_webview.canGoForward()) {window.nist_webview.goForward()}}}\\\" class=\\\"material-icons hvr-glow\\\">",
+		ctx
+	});
+
+	return block;
+}
+
+// (187:4) <div style="margin-right: 1em;" slot="plotContainer">
 function create_plotContainer_slot$1(ctx) {
 	let div0;
 	let div1;
-	let t;
+	let t0;
 	let div2;
 	let updating_currentLocation;
+	let t1;
+	let div4;
+	let div3;
+	let t2;
+	let t3;
+	let t4;
+	let t5;
+	let webview;
+	let webview_src_value;
 	let current;
 
 	function reportlayout_currentLocation_binding(value) {
-		/*reportlayout_currentLocation_binding*/ ctx[39].call(null, value);
+		/*reportlayout_currentLocation_binding*/ ctx[43].call(null, value);
 	}
 
 	let reportlayout_props = {
@@ -40575,30 +40693,111 @@ function create_plotContainer_slot$1(ctx) {
 
 	binding_callbacks.push(() => bind(reportlayout, "currentLocation", reportlayout_currentLocation_binding));
 
+	const icon0 = new Icon({
+			props: {
+				class: "material-icons hvr-glow",
+				$$slots: { default: [create_default_slot_4$6] },
+				$$scope: { ctx }
+			},
+			$$inline: true
+		});
+
+	icon0.$on("click", /*click_handler_5*/ ctx[44]);
+
+	const icon1 = new Icon({
+			props: {
+				class: "material-icons hvr-glow",
+				$$slots: { default: [create_default_slot_3$6] },
+				$$scope: { ctx }
+			},
+			$$inline: true
+		});
+
+	icon1.$on("click", /*click_handler_6*/ ctx[45]);
+
+	const icon2 = new Icon({
+			props: {
+				class: "material-icons hvr-glow",
+				$$slots: { default: [create_default_slot_2$a] },
+				$$scope: { ctx }
+			},
+			$$inline: true
+		});
+
+	icon2.$on("click", /*click_handler_7*/ ctx[46]);
+
+	const icon3 = new Icon({
+			props: {
+				class: "material-icons hvr-glow",
+				$$slots: { default: [create_default_slot_1$c] },
+				$$scope: { ctx }
+			},
+			$$inline: true
+		});
+
+	icon3.$on("click", /*click_handler_8*/ ctx[47]);
+
 	const block = {
 		c: function create() {
 			div0 = element("div");
 			div1 = element("div");
-			t = space();
+			t0 = space();
 			div2 = element("div");
 			create_component(reportlayout.$$.fragment);
+			t1 = space();
+			div4 = element("div");
+			div3 = element("div");
+			create_component(icon0.$$.fragment);
+			t2 = space();
+			create_component(icon1.$$.fragment);
+			t3 = space();
+			create_component(icon2.$$.fragment);
+			t4 = space();
+			create_component(icon3.$$.fragment);
+			t5 = space();
+			webview = element("webview");
 			attr_dev(div1, "id", "mplot");
 			attr_dev(div1, "class", "svelte-7yzxv2");
-			add_location(div1, file$P, 175, 8, 7509);
+			add_location(div1, file$P, 188, 8, 8215);
 			attr_dev(div2, "class", "animated fadeIn hide svelte-7yzxv2");
 			toggle_class(div2, "active", /*graphPlotted*/ ctx[3]);
-			add_location(div2, file$P, 176, 8, 7541);
+			add_location(div2, file$P, 189, 8, 8247);
+			set_style(div3, "margin", "1em");
+			attr_dev(div3, "class", "svelte-7yzxv2");
+			add_location(div3, file$P, 193, 12, 8516);
+			if (webview.src !== (webview_src_value = /*nist_url*/ ctx[12])) attr_dev(webview, "src", webview_src_value);
+			attr_dev(webview, "id", "nist_webview");
+			set_style(webview, "height", "50vh");
+			attr_dev(webview, "class", "svelte-7yzxv2");
+			add_location(webview, file$P, 200, 12, 9135);
+			attr_dev(div4, "class", "hide animated fadeIn svelte-7yzxv2");
+			set_style(div4, "margin-top", "1em");
+			set_style(div4, "display", "none");
+			toggle_class(div4, "active", /*toggleRow2*/ ctx[9]);
+			add_location(div4, file$P, 191, 8, 8402);
 			set_style(div0, "margin-right", "1em");
 			attr_dev(div0, "slot", "plotContainer");
 			attr_dev(div0, "class", "svelte-7yzxv2");
-			add_location(div0, file$P, 173, 4, 7444);
+			add_location(div0, file$P, 186, 4, 8150);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
 			append_dev(div0, div1);
-			append_dev(div0, t);
+			append_dev(div0, t0);
 			append_dev(div0, div2);
 			mount_component(reportlayout, div2, null);
+			append_dev(div0, t1);
+			append_dev(div0, div4);
+			append_dev(div4, div3);
+			mount_component(icon0, div3, null);
+			append_dev(div3, t2);
+			mount_component(icon1, div3, null);
+			append_dev(div3, t3);
+			mount_component(icon2, div3, null);
+			append_dev(div3, t4);
+			mount_component(icon3, div3, null);
+			append_dev(div4, t5);
+			append_dev(div4, webview);
 			current = true;
 		},
 		p: function update(ctx, dirty) {
@@ -40615,19 +40814,68 @@ function create_plotContainer_slot$1(ctx) {
 			if (dirty[0] & /*graphPlotted*/ 8) {
 				toggle_class(div2, "active", /*graphPlotted*/ ctx[3]);
 			}
+
+			const icon0_changes = {};
+
+			if (dirty[1] & /*$$scope*/ 524288) {
+				icon0_changes.$$scope = { dirty, ctx };
+			}
+
+			icon0.$set(icon0_changes);
+			const icon1_changes = {};
+
+			if (dirty[1] & /*$$scope*/ 524288) {
+				icon1_changes.$$scope = { dirty, ctx };
+			}
+
+			icon1.$set(icon1_changes);
+			const icon2_changes = {};
+
+			if (dirty[1] & /*$$scope*/ 524288) {
+				icon2_changes.$$scope = { dirty, ctx };
+			}
+
+			icon2.$set(icon2_changes);
+			const icon3_changes = {};
+
+			if (dirty[1] & /*$$scope*/ 524288) {
+				icon3_changes.$$scope = { dirty, ctx };
+			}
+
+			icon3.$set(icon3_changes);
+
+			if (!current || dirty[0] & /*nist_url*/ 4096 && webview.src !== (webview_src_value = /*nist_url*/ ctx[12])) {
+				attr_dev(webview, "src", webview_src_value);
+			}
+
+			if (dirty[0] & /*toggleRow2*/ 512) {
+				toggle_class(div4, "active", /*toggleRow2*/ ctx[9]);
+			}
 		},
 		i: function intro(local) {
 			if (current) return;
 			transition_in(reportlayout.$$.fragment, local);
+			transition_in(icon0.$$.fragment, local);
+			transition_in(icon1.$$.fragment, local);
+			transition_in(icon2.$$.fragment, local);
+			transition_in(icon3.$$.fragment, local);
 			current = true;
 		},
 		o: function outro(local) {
 			transition_out(reportlayout.$$.fragment, local);
+			transition_out(icon0.$$.fragment, local);
+			transition_out(icon1.$$.fragment, local);
+			transition_out(icon2.$$.fragment, local);
+			transition_out(icon3.$$.fragment, local);
 			current = false;
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(div0);
 			destroy_component(reportlayout);
+			destroy_component(icon0);
+			destroy_component(icon1);
+			destroy_component(icon2);
+			destroy_component(icon3);
 		}
 	};
 
@@ -40635,14 +40883,14 @@ function create_plotContainer_slot$1(ctx) {
 		block,
 		id: create_plotContainer_slot$1.name,
 		type: "slot",
-		source: "(174:4) <div style=\\\"margin-right: 1em;\\\" slot=\\\"plotContainer\\\">",
+		source: "(187:4) <div style=\\\"margin-right: 1em;\\\" slot=\\\"plotContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (146:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>
+// (159:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>
 function create_default_slot$k(ctx) {
 	let t;
 
@@ -40665,7 +40913,7 @@ function create_default_slot$k(ctx) {
 		block,
 		id: create_default_slot$k.name,
 		type: "slot",
-		source: "(146:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>",
+		source: "(159:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>",
 		ctx
 	});
 
@@ -40678,16 +40926,16 @@ function create_fragment$U(ctx) {
 	let current;
 
 	function layout_currentLocation_binding(value) {
-		/*layout_currentLocation_binding*/ ctx[40].call(null, value);
+		/*layout_currentLocation_binding*/ ctx[48].call(null, value);
 	}
 
 	function layout_fileChecked_binding(value_1) {
-		/*layout_fileChecked_binding*/ ctx[41].call(null, value_1);
+		/*layout_fileChecked_binding*/ ctx[49].call(null, value_1);
 	}
 
 	let layout_props = {
-		filetype: /*filetype*/ ctx[13],
-		id: /*id*/ ctx[14],
+		filetype: /*filetype*/ ctx[14],
+		id: /*id*/ ctx[15],
 		$$slots: {
 			default: [create_default_slot$k],
 			plotContainer: [create_plotContainer_slot$1],
@@ -40722,7 +40970,7 @@ function create_fragment$U(ctx) {
 		p: function update(ctx, dirty) {
 			const layout_changes = {};
 
-			if (dirty[0] & /*graphPlotted, currentLocation, toggleRow2, nist_formula, nist_molecule, toggleRow1, peak_height, peak_width, peak_prominance, fileChecked, selected_file, logScale, openShell*/ 8191 | dirty[1] & /*$$scope*/ 2048) {
+			if (dirty[0] & /*toggleRow2, nist_url, graphPlotted, currentLocation, nist_formula, nist_molecule, toggleRow1, peak_height, peak_width, peak_prominance, fileChecked, selected_file, logScale, openShell*/ 16383 | dirty[1] & /*$$scope*/ 524288) {
 				layout_changes.$$scope = { dirty, ctx };
 			}
 
@@ -40769,9 +41017,9 @@ function instance$U($$self, $$props, $$invalidate) {
 	let $modalContent;
 	let $activated;
 	validate_store(modalContent, "modalContent");
-	component_subscribe($$self, modalContent, $$value => $$invalidate(20, $modalContent = $$value));
+	component_subscribe($$self, modalContent, $$value => $$invalidate(24, $modalContent = $$value));
 	validate_store(activated, "activated");
-	component_subscribe($$self, activated, $$value => $$invalidate(21, $activated = $$value));
+	component_subscribe($$self, activated, $$value => $$invalidate(25, $activated = $$value));
 	let filetype = "mass", id = "Masspec", fileChecked = [];
 	let currentLocation = localStorage[`${filetype}_location`] || "";
 	let openShell = false, graphPlotted = false;
@@ -40788,6 +41036,20 @@ function instance$U($$self, $$props, $$invalidate) {
 		nist_formula = localStorage["nist_formula"] || "";
 
 	let style2 = "width:12em; height:3em; margin-right:0.5em";
+	let nist_url = localStorage["nist_url"] || "https://webbook.nist.gov/cgi/cbook.cgi?Name=&Units=SI&Mask=200#Mass-Spec";
+
+	const set_nist_url = (format = "") => {
+		let fmt;
+
+		format == "by_name"
+		? fmt = nist_molecule_name
+		: fmt = nist_molecule_formula;
+
+		$$invalidate(12, nist_url = `https://webbook.nist.gov/cgi/cbook.cgi?${fmt}&Units=SI&Mask=200#Mass-Spec`);
+		localStorage["nist_url"] = nist_url;
+		localStorage["nist_formula"] = nist_formula;
+		localStorage["nist_molecule"] = nist_molecule;
+	};
 
 	// Linear log
 	let logScale = true;
@@ -40930,7 +41192,7 @@ function instance$U($$self, $$props, $$invalidate) {
 
 	function customswitch_selected_binding(value_1) {
 		logScale = value_1;
-		$$invalidate(12, logScale);
+		$$invalidate(13, logScale);
 	}
 
 	function customselect_picked_binding(value_2) {
@@ -40966,7 +41228,7 @@ function instance$U($$self, $$props, $$invalidate) {
 		$$invalidate(10, nist_molecule);
 	}
 
-	const change_handler_3 = () => console.log(nist_molecule);
+	const change_handler_3 = () => set_nist_url("by_name");
 
 	function textfield4_value_binding(value_7) {
 		nist_formula = value_7;
@@ -40977,6 +41239,21 @@ function instance$U($$self, $$props, $$invalidate) {
 		currentLocation = value;
 		$$invalidate(1, currentLocation);
 	}
+
+	const click_handler_5 = () => window.nist_webview.goToIndex(0);
+	const click_handler_6 = () => window.nist_webview.reload();
+
+	const click_handler_7 = () => {
+		if (window.nist_webview.canGoBack()) {
+			window.nist_webview.goBack();
+		}
+	};
+
+	const click_handler_8 = () => {
+		if (window.nist_webview.canGoForward()) {
+			window.nist_webview.goForward();
+		}
+	};
 
 	function layout_currentLocation_binding(value) {
 		currentLocation = value;
@@ -40993,8 +41270,8 @@ function instance$U($$self, $$props, $$invalidate) {
 	};
 
 	$$self.$inject_state = $$props => {
-		if ("filetype" in $$props) $$invalidate(13, filetype = $$props.filetype);
-		if ("id" in $$props) $$invalidate(14, id = $$props.id);
+		if ("filetype" in $$props) $$invalidate(14, filetype = $$props.filetype);
+		if ("id" in $$props) $$invalidate(15, id = $$props.id);
 		if ("fileChecked" in $$props) $$invalidate(0, fileChecked = $$props.fileChecked);
 		if ("currentLocation" in $$props) $$invalidate(1, currentLocation = $$props.currentLocation);
 		if ("openShell" in $$props) $$invalidate(2, openShell = $$props.openShell);
@@ -41004,22 +41281,35 @@ function instance$U($$self, $$props, $$invalidate) {
 		if ("peak_prominance" in $$props) $$invalidate(6, peak_prominance = $$props.peak_prominance);
 		if ("peak_width" in $$props) $$invalidate(7, peak_width = $$props.peak_width);
 		if ("peak_height" in $$props) $$invalidate(8, peak_height = $$props.peak_height);
-		if ("style1" in $$props) $$invalidate(15, style1 = $$props.style1);
+		if ("style1" in $$props) $$invalidate(16, style1 = $$props.style1);
 		if ("toggleRow2" in $$props) $$invalidate(9, toggleRow2 = $$props.toggleRow2);
 		if ("nist_molecule" in $$props) $$invalidate(10, nist_molecule = $$props.nist_molecule);
 		if ("nist_formula" in $$props) $$invalidate(11, nist_formula = $$props.nist_formula);
-		if ("style2" in $$props) $$invalidate(16, style2 = $$props.style2);
-		if ("logScale" in $$props) $$invalidate(12, logScale = $$props.logScale);
+		if ("style2" in $$props) $$invalidate(17, style2 = $$props.style2);
+		if ("nist_url" in $$props) $$invalidate(12, nist_url = $$props.nist_url);
+		if ("logScale" in $$props) $$invalidate(13, logScale = $$props.logScale);
 		if ("massfiles" in $$props) massfiles = $$props.massfiles;
+		if ("nist_molecule_name" in $$props) nist_molecule_name = $$props.nist_molecule_name;
+		if ("nist_molecule_formula" in $$props) nist_molecule_formula = $$props.nist_molecule_formula;
 		if ("$modalContent" in $$props) modalContent.set($modalContent = $$props.$modalContent);
 		if ("$activated" in $$props) activated.set($activated = $$props.$activated);
 	};
 
 	let massfiles;
+	let nist_molecule_name;
+	let nist_molecule_formula;
 
 	$$self.$$.update = () => {
 		if ($$self.$$.dirty[0] & /*fileChecked, currentLocation*/ 3) {
 			 massfiles = fileChecked.map(file => path.resolve(currentLocation, file));
+		}
+
+		if ($$self.$$.dirty[0] & /*nist_molecule*/ 1024) {
+			 nist_molecule_name = `Name=${nist_molecule}`;
+		}
+
+		if ($$self.$$.dirty[0] & /*nist_formula*/ 2048) {
+			 nist_molecule_formula = `Formula=${nist_formula}`;
 		}
 	};
 
@@ -41036,14 +41326,18 @@ function instance$U($$self, $$props, $$invalidate) {
 		toggleRow2,
 		nist_molecule,
 		nist_formula,
+		nist_url,
 		logScale,
 		filetype,
 		id,
 		style1,
 		style2,
+		set_nist_url,
 		plotData,
 		linearlogCheck,
 		massfiles,
+		nist_molecule_name,
+		nist_molecule_formula,
 		$modalContent,
 		$activated,
 		click_handler,
@@ -41064,6 +41358,10 @@ function instance$U($$self, $$props, $$invalidate) {
 		change_handler_3,
 		textfield4_value_binding,
 		reportlayout_currentLocation_binding,
+		click_handler_5,
+		click_handler_6,
+		click_handler_7,
+		click_handler_8,
 		layout_currentLocation_binding,
 		layout_fileChecked_binding
 	];

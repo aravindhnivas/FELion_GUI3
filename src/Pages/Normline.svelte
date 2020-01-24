@@ -410,7 +410,8 @@
             <button class="button is-link" 
                 on:click="{(e)=>plotData(e, "general", {args:felixfiles, pyfile:"baseline.py"})}">Create Baseline</button>
             <button class="button is-link" on:click="{(e)=>plotData(e, "felix")}">FELIX Plot</button>
-            <Textfield style="width:7em" variant="outlined" bind:value={delta} label="Delta" />
+
+            <Textfield style="width:7em" variant="outlined" bind:value={delta} label="Delta"/>
             <button class="button is-link" 
                 on:click="{(e)=>plotData(e, "general", {args:[...felixfiles, normMethod], pyfile:"norm_tkplot.py"})}">Open in Matplotlib</button>
             <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
