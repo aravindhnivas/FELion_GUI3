@@ -57,26 +57,29 @@
     .side-panel, .main-panel {height: calc(100vh - 7em);}
     .box { background-color: #6a50ad8a}
     .main-panel {margin: 0 5em;}
-    .left .title {
-        letter-spacing: 0.1em; text-transform: uppercase; padding: 0.5em;
-        font-size: larger; cursor: pointer;
+    .left .title { letter-spacing: 0.1em; text-transform: uppercase; padding: 0.5em;
+        font-size: larger; cursor: pointer; border-radius: 20px 0; margin-bottom: 1em;
+
     }
 
-    .container {padding: 2em}
-    .clicked {border-left: 2px solid #fafafa; background-color: #6a50ad; border-radius: 20px 0;}
+    .container {padding: 2em; display: grid;}
+    .clicked {border-left: 2px solid #fafafa; background-color: #6a50ad;}
+
     .right > div {display: none;}
     .active {display: block!important; }
+
 
 </style>
 
 <section class="section animated fadeIn" id="Settings" style="display:none">
     <div class="columns">
+
         <div class="column side-panel is-2-widescreen is-3-desktop is-4-tablet box adjust-right">
         
             <div class="container left">
-                <div class="title nav" class:clicked={selected==="Configuration"} on:click={navigate}>Configuration</div>
-                <div class="title nav" class:clicked={selected==="Update"} on:click={navigate}>Update</div>
-                <div class="title nav" class:clicked={selected==="About"} on:click={navigate}>About</div>
+                <div class="title nav hvr-glow" class:clicked={selected==="Configuration"} on:click={navigate}>Configuration</div>
+                <div class="title nav hvr-glow" class:clicked={selected==="Update"} on:click={navigate}>Update</div>
+                <div class="title nav hvr-glow" class:clicked={selected==="About"} on:click={navigate}>About</div>
             </div>
 
         </div>
