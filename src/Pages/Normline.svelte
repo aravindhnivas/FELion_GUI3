@@ -84,7 +84,6 @@
 
         if (filetype == "general") {
 
-            // target.classList.add("animated bounce")
             console.log("Sending general arguments: ", general.args)
             let py = spawn(
                 localStorage["pythonpath"],
@@ -145,7 +144,6 @@
                     dataFromPython = JSON.parse(dataFromPython.toString("utf-8"))
 
                     console.log(dataFromPython)
-
                     if (filetype == "felix") {
 
                         line = []
@@ -510,10 +508,13 @@
                 </DataTable>
 
             </div>
+            
+            
+            
+            <!-- Report -->
 
             <ReportLayout bind:currentLocation={currentLocation} 
-                id="felixreport", plotID={["bplot", "saPlot", "avgplot", "exp-theory-plot"]} 
-                includeTable={true}/>
+                id="felixreport", plotID={["bplot", "saPlot", "avgplot", "exp-theory-plot"]} includeTable={true}/>
         {/if}
     </div>
 </Layout>
