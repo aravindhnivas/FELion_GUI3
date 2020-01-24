@@ -6,7 +6,7 @@
     export let selected = false, style="", label=""
 </script>
 
-<FormField {style}>
+<FormField {style} on:change on:click>
     <Switch bind:checked={selected} />
     <span slot="label">{label}</span>
 </FormField>

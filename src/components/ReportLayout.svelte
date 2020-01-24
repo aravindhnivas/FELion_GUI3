@@ -160,7 +160,9 @@
 </script>
 
 <style>
+
     .notification {margin-right: 1em; margin-top: 1em; ; border: 1px solid; }
+    .button {margin-right: 1em;}
 
 </style>
 
@@ -193,22 +195,24 @@
         NOTE: You can write in markdown format (eg: # Title, **bold**, __italics__, 1., 2. for list, etc.,)
     </HelperText>
 
-    <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click={addReport}>Add to Report</button>
-    <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click={showReport}>Show Report</button>
+    <div class="align" style="margin-top:1em;">
     
-    <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click="{()=>showReport({export_pdf:true})}">EXPORT to PDF</button>
-    {#each ["landscape", "portrait"] as method}
-
-        <FormField style="margin-bottom:2em;">
-            <Radio bind:group={exportMethod} value={method}  />
-            <span slot="label" style="color:{method}">{method}</span>
-        </FormField>
-    {/each}
-
-    <Select bind:value={pageSize} label="pageSize" style="margin-left:1em;">
-        {#each ["A3", "A4", "A5", "Legal", "Letter"] as file}
-            <Option value={file} selected={pageSize  === file}>{file}</Option>
+        <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click={addReport}>Add to Report</button>
+        <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click={showReport}>Show Report</button>
+        <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click="{()=>showReport({export_pdf:true})}">EXPORT to PDF</button>
+        {#each ["landscape", "portrait"] as method}
+            <FormField >
+                <Radio bind:group={exportMethod} value={method}  />
+                <span slot="label" style="color:{method}">{method}</span>
+            </FormField>
         {/each}
-    </Select>
+
+        <Select bind:value={pageSize} label="pageSize" style="margin-left:1em;">
+            {#each ["A3", "A4", "A5", "Legal", "Letter"] as file}
+                <Option value={file} selected={pageSize  === file}>{file}</Option>
+            {/each}
+        </Select>
+
+    </div>
 
 </div>

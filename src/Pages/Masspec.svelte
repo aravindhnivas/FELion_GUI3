@@ -1,12 +1,186 @@
 <script>
 
+    //  Importing
     import Layout from "../components/Layout.svelte"
-    let filetype = "mass"
-    let id = "Masspec"
-    let massfiles = [];
-    let mass_location = localStorage[`${filetype}_location`] || ""
+    import CustomIconSwitch from "../components/CustomIconSwitch.svelte"
+    import CustomSelect from "../components/CustomSelect.svelte"
+    import CustomSwitch from "../components/CustomSwitch.svelte"
 
-    $: console.log(`${filetype} updated: ${mass_location}\n${massfiles}`)
+    import ReportLayout from "../components/ReportLayout.svelte"
+    import Textfield from '@smui/textfield'
+    import { fly, fade } from 'svelte/transition'
+    import {plot, subplot} from "../js/functions.js"
+
+    import {activated, modalContent} from "../components/Modal.svelte"
+    import {createToast} from "../components/Layout.svelte"
+    import {afterUpdate} from "svelte"
+
+    /////////////////////////////////////////////////////////////////////////
+
+    // Initialisation
+    let filetype = "mass", id = "Masspec", fileChecked = [];
+    let currentLocation = localStorage[`${filetype}_location`] || ""
+    $: massfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
+    let openShell = false, graphPlotted = false
+
+    // Find peaks
+    let toggleRow1 = false
+
+    let selected_file = "", peak_prominance = 3, peak_width = 2, peak_height = 40;
+    let style1 = "width:7em; height:2.5em; margin-right:0.5em"
+
+    // NIST 
+    let toggleRow2 = false, nist_molecule = localStorage["nist_molecule"] || "", nist_formula = localStorage["nist_formula"] || ""
+    let style2 = "width:12em; height:3em; margin-right:0.5em"
+
+    // Linear log
+    let logScale = true;
+
+    // Functions
+    function plotData(event=null, filetype="mass"){
+
+        if (fileChecked.length === 0) {return createToast("No files selected", "danger")}
+
+        let pyfileInfo = {
+            mass: {pyfile:"mass.py" , args:[...massfiles, "run"]},
+            general: {pyfile:"mass.py" , args:[...massfiles, "plot"]},
+            find_peaks: {pyfile:"find_peaks_masspec.py" , args:[path.resolve(currentLocation, selected_file), peak_prominance, peak_width, peak_height]},
+
+        }
+        
+        let {pyfile, args} = pyfileInfo[filetype]
+
+        if (filetype == "general") {
+            console.log("Sending general arguments: ", args)
+            let py = spawn(
+                localStorage["pythonpath"],
+                ["-i", path.join(localStorage["pythonscript"], pyfile), args],
+                { detached: true, stdio: 'ignore', shell: openShell }
+            )
+            py.unref()
+            createToast("General process sent. Expect an response soon...")
+            return;
+        }
+
+        let target = event.target
+        target.classList.toggle("is-loading")
+
+        if (filetype == "mass") {graphPlotted = false}
+        
+        let py;
+
+        try {py = spawn( localStorage["pythonpath"], [path.resolve(localStorage["pythonscript"], pyfile), args] )}
+        catch (err) {
+            $modalContent = "Error accessing python. Set python location properly in Settings"
+            $activated = true
+            target.classList.toggle("is-loading")
+            return
+        }
+        
+        createToast("Process Started")
+        py.stdout.on("data", data => {
+            console.log("Ouput from python")
+            let dataReceived = data.toString("utf8")
+            console.log(dataReceived)
+        });
+
+        let error_occured_py = false
+
+        py.stderr.on("data", err => {
+            $modalContent = err
+            $activated = true
+            error_occured_py = true;
+        });
+
+        py.on("close", () => {
+            if (!error_occured_py) {
+
+                try {
+                    let dataFromPython = fs.readFileSync(path.join(localStorage["pythonscript"], "data.json"))
+                    dataFromPython = JSON.parse(dataFromPython.toString("utf-8"))
+                    console.log(dataFromPython)
+                    if (filetype=="mass") {
+                        plot("Mass spectrum", "Mass [u]", "Counts", dataFromPython, "mplot", "mass")
+                    } else if (filetype =="find_peaks") {
+
+                        Plotly.relayout("mplot", { yaxis: { title: "Counts", type: "" } })
+                        Plotly.relayout("mplot", { annotations: [] })
+                        Plotly.relayout("mplot", { annotations: dataFromPython["annotations"] })
+                        Plotly.relayout("mplot", { yaxis: { title: "Counts", type: "log" } })
+
+                    }
+
+                    createToast("Graph plotted", "success")
+                    graphPlotted = true
+
+                } catch (err) { $modalContent = err; $activated = true }
+
+            }
+            console.log("Process closed")
+            target.classList.toggle("is-loading")
+        })
+    }
+
+    // Linearlog check
+    const linearlogCheck = (event) => {
+        let layout = {
+            yaxis: { title: "Counts", type: logScale ? "log" : null }
+        }
+        Plotly.relayout("mplot", layout)
+    };
+
+
 </script>
 
-<Layout {filetype} {id} bind:currentLocation={mass_location} bind:fileChecked={massfiles}></Layout> 
+<style>
+    .masspec_buttonContainer {min-height: 5em;}
+    .button {margin-right: 0.5em;}
+    .buttonRow {margin-bottom: 1em!important;}
+
+    * :global(.mdc-select__native-control option) {color: black}
+
+</style>
+
+<Layout {filetype} {id} bind:currentLocation bind:fileChecked>
+
+    <div class="masspec_buttonContainer" slot="buttonContainer">
+        <div class="content buttonRow">
+            <button class="button is-link" on:click={plotData}>Masspec Plot</button>
+            <button class="button is-link" on:click="{()=>{toggleRow1 = !toggleRow1}}">Find Peaks</button>
+            <button class="button is-link" on:click="{()=>{toggleRow2 = !toggleRow2}}">NIST Webbook</button>
+            <button class="button is-link" on:click="{(e)=>plotData(e, "general")}">Open in Matplotlib</button>
+            <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
+
+            <CustomSwitch style="margin: 0 1em; padding-bottom: 1em;" on:click={linearlogCheck} bind:selected={logScale} label="Log"/>
+            
+        </div>
+
+        {#if toggleRow1}
+            <div class="align buttonRow" transition:fly="{{ y: -20, duration: 500 }}">
+                <CustomSelect style="width:12em; height:3.5em; margin-right:0.5em" bind:picked={selected_file} label="Filename" options={fileChecked}/>
+                <Textfield style={style1} variant="outlined" on:change="{(e)=>plotData(e, "find_peaks")}" bind:value={peak_prominance} label="Prominance" />
+                <Textfield style={style1} variant="outlined" on:change="{(e)=>plotData(e, "find_peaks")}" bind:value={peak_width} label="Width" />
+                <Textfield style={style1} variant="outlined" on:change="{(e)=>plotData(e, "find_peaks")}" bind:value={peak_height} label="Height" />
+                <button class="button is-link" on:click="{(e)=>plotData(e, "find_peaks")}">Get Peaks</button>
+                <button class="button is-danger" on:click="{(e)=>window.Plotly.relayout("mplot", { annotations: [] })}">Clear</button>
+            </div>
+        {/if}
+    
+
+        {#if toggleRow2}
+            <div class="align buttonRow" transition:fly="{{ y: -20, duration: 500 }}">
+                <Textfield style={style2} variant="outlined" on:change="{()=>console.log(nist_molecule)}" bind:value={nist_molecule} label="Molecule Name" />
+                <Textfield style={style2} variant="outlined" bind:value={nist_formula} label="Molecule Formula" />
+            </div>
+        {/if}
+    </div>
+
+    <div style="margin-right: 1em;" slot="plotContainer">
+        <div id="mplot"></div>
+        {#if graphPlotted}
+            <ReportLayout bind:currentLocation id="masspecreport", plotID={["mplot"]}/>
+        {/if}
+    </div>
+
+
+</Layout>

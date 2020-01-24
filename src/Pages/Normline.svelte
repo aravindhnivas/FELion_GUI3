@@ -408,7 +408,6 @@
     <div class="buttonSlot" slot="buttonContainer">
 
         <div class="align" >
-
             <button class="button is-link" 
                 on:click="{(e)=>plotData(e, "general", {args:felixfiles, pyfile:"baseline.py"})}">Create Baseline</button>
             <button class="button is-link" on:click="{(e)=>plotData(e, "felix")}">FELIX Plot</button>
@@ -429,13 +428,12 @@
                 <button class="button is-link" 
                     on:click="{(e)=>plotData(e, "general", {args:[...theoryfiles, normMethod, sigma, scale, theoryLocation, "plot"], pyfile:"theory.py"})}">Open in Matplotlib</button>
                 <button class="button is-link" on:click="{(e)=>plotData(e, "theory")}">Submit</button>
-
             </div>
         {/if}
 
-
         <div class="align" on:change={replot}>
             <CustomRadio bind:selected={normMethod} options={["Log", "Relative", "IntensityPerPhoton"]}/>
+
         </div>
 
     </div>
@@ -472,6 +470,7 @@
                 <button class="button is-danger" on:click="{()=>dataTable = []}">Clear Table</button>
             </div>
 
+            <!-- Data Table -->
             <div class="dataTable" transition:fade>
 
                 <DataTable table$aria-label="{filetype}-tableAriaLabel" table$id="{filetype}Table" id="{filetype}TableContainer">
@@ -508,11 +507,8 @@
                 </DataTable>
 
             </div>
-            
-            
-            
-            <!-- Report -->
 
+            <!-- Report -->
             <ReportLayout bind:currentLocation={currentLocation} 
                 id="felixreport", plotID={["bplot", "saPlot", "avgplot", "exp-theory-plot"]} includeTable={true}/>
         {/if}

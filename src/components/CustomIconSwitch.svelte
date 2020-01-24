@@ -6,7 +6,7 @@
 
 </script>
 
-<IconButton toggle bind:pressed={toggler}>
+<IconButton toggle bind:pressed={toggler} on:click>
     <Icon class="material-icons" on>{icons[0]}</Icon>
     <Icon class="material-icons">{icons[1]}</Icon>
 </IconButton>
