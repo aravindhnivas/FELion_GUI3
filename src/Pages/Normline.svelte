@@ -399,15 +399,14 @@
 </style>
 
 <QuickView style="padding:1em;" footer={false} bind:active={showTheoryFiles} title="Browse Theory files">
-
     <FileBrowser bind:currentLocation={theoryLocation} bind:fileChecked={theoryfilesChecked} />
 </QuickView>
 
 <Layout {filetype} {id} bind:currentLocation bind:fileChecked >
-
     <div class="buttonSlot" slot="buttonContainer">
 
         <div class="align" >
+
             <button class="button is-link" 
                 on:click="{(e)=>plotData(e, "general", {args:felixfiles, pyfile:"baseline.py"})}">Create Baseline</button>
             <button class="button is-link" on:click="{(e)=>plotData(e, "felix")}">FELIX Plot</button>
@@ -420,22 +419,18 @@
             <CustomIconSwitch bind:toggler={opoPlotted} icons={["keyboard_arrow_up", "keyboard_arrow_down"]}/>
         </div>
 
-        {#if toggleRow}
-            <div class="align" transition:fly="{{ y: -20, duration: 500 }}">
-                <button class="button is-link" on:click="{()=>showTheoryFiles = !showTheoryFiles}">Browse File</button>
-                <Textfield style="width:7em; margin-right:0.5em;" variant="outlined" bind:value={sigma} label="Sigma" />
-                <Textfield style="width:7em" variant="outlined" bind:value={scale} label="Scale" />
-                <button class="button is-link" 
-                    on:click="{(e)=>plotData(e, "general", {args:[...theoryfiles, normMethod, sigma, scale, theoryLocation, "plot"], pyfile:"theory.py"})}">Open in Matplotlib</button>
-                <button class="button is-link" on:click="{(e)=>plotData(e, "theory")}">Submit</button>
-            </div>
-        {/if}
+        <div class="align animated fadeIn hide" class:active={toggleRow}>
+            <button class="button is-link" on:click="{()=>showTheoryFiles = !showTheoryFiles}">Browse File</button>
+            <Textfield style="width:7em; margin-right:0.5em;" variant="outlined" bind:value={sigma} label="Sigma" />
+            <Textfield style="width:7em" variant="outlined" bind:value={scale} label="Scale" />
+            <button class="button is-link" 
+                on:click="{(e)=>plotData(e, "general", {args:[...theoryfiles, normMethod, sigma, scale, theoryLocation, "plot"], pyfile:"theory.py"})}">Open in Matplotlib</button>
+            <button class="button is-link" on:click="{(e)=>plotData(e, "theory")}">Submit</button>
+        </div>
 
         <div class="align" on:change={replot}>
             <CustomRadio bind:selected={normMethod} options={["Log", "Relative", "IntensityPerPhoton"]}/>
-
         </div>
-
     </div>
 
     <div class="plotSlot" slot="plotContainer">
@@ -449,8 +444,7 @@
             <div class="animated fadeIn hide" class:active={opoPlotted} id="opoRelPlot"></div>
         </div>
 
-        {#if graphPlotted}
-            
+        <div class="animated fadeIn hide" class:active={graphPlotted}>
             <!-- Pos-processing felix data -->
             <div class="content" transition:fade>
                 <CustomSelect bind:picked={output_name} label="Output filename" options={["averaged", ...plottedFiles]}/>
@@ -511,6 +505,6 @@
             <!-- Report -->
             <ReportLayout bind:currentLocation={currentLocation} 
                 id="felixreport", plotID={["bplot", "saPlot", "avgplot", "exp-theory-plot"]} includeTable={true}/>
-        {/if}
+        </div>
     </div>
 </Layout>

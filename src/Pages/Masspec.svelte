@@ -138,12 +138,14 @@
     .buttonRow {margin-bottom: 1em!important;}
 
     * :global(.mdc-select__native-control option) {color: black}
-
+    .active {display: block!important;}
+    .hide {display: none;}
 </style>
 
-<Layout {filetype} {id} bind:currentLocation bind:fileChecked>
 
+<Layout {filetype} {id} bind:currentLocation bind:fileChecked>
     <div class="masspec_buttonContainer" slot="buttonContainer">
+
         <div class="content buttonRow">
             <button class="button is-link" on:click={plotData}>Masspec Plot</button>
             <button class="button is-link" on:click="{()=>{toggleRow1 = !toggleRow1}}">Find Peaks</button>
@@ -151,35 +153,28 @@
             <button class="button is-link" on:click="{(e)=>plotData(e, "general")}">Open in Matplotlib</button>
             <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
             <CustomSwitch style="margin: 0 1em; padding-bottom: 1em;" on:change={linearlogCheck} bind:selected={logScale} label="Log"/>
-            
         </div>
 
-        {#if toggleRow1}
-            <div class="align buttonRow" transition:fly="{{ y: -20, duration: 500 }}">
-                <CustomSelect style="width:12em; height:3.5em; margin-right:0.5em" bind:picked={selected_file} label="Filename" options={fileChecked}/>
-                <Textfield style={style1} variant="outlined" on:change="{(e)=>plotData(e, "find_peaks")}" bind:value={peak_prominance} label="Prominance" />
-                <Textfield style={style1} variant="outlined" on:change="{(e)=>plotData(e, "find_peaks")}" bind:value={peak_width} label="Width" />
-                <Textfield style={style1} variant="outlined" on:change="{(e)=>plotData(e, "find_peaks")}" bind:value={peak_height} label="Height" />
-                <button class="button is-link" on:click="{(e)=>plotData(e, "find_peaks")}">Get Peaks</button>
-                <button class="button is-danger" on:click="{(e)=>window.Plotly.relayout("mplot", { annotations: [] })}">Clear</button>
-            </div>
-        {/if}
-    
+        <div class="animated fadeIn hide align buttonRow" class:active={toggleRow1} >
+            <CustomSelect style="width:12em; height:3.5em; margin-right:0.5em" bind:picked={selected_file} label="Filename" options={fileChecked}/>
+            <Textfield style={style1} variant="outlined" on:change="{(e)=>plotData(e, "find_peaks")}" bind:value={peak_prominance} label="Prominance" />
+            <Textfield style={style1} variant="outlined" on:change="{(e)=>plotData(e, "find_peaks")}" bind:value={peak_width} label="Width" />
+            <Textfield style={style1} variant="outlined" on:change="{(e)=>plotData(e, "find_peaks")}" bind:value={peak_height} label="Height" />
+            <button class="button is-link" on:click="{(e)=>plotData(e, "find_peaks")}">Get Peaks</button>
+            <button class="button is-danger" on:click="{(e)=>window.Plotly.relayout("mplot", { annotations: [] })}">Clear</button>
+        </div>
 
-        {#if toggleRow2}
-            <div class="align buttonRow" transition:fly="{{ y: -20, duration: 500 }}">
-                <Textfield style={style2} variant="outlined" on:change="{()=>console.log(nist_molecule)}" bind:value={nist_molecule} label="Molecule Name" />
-                <Textfield style={style2} variant="outlined" bind:value={nist_formula} label="Molecule Formula" />
-            </div>
-        {/if}
+        <div class="animated fadeIn hide align buttonRow" class:active={toggleRow2}>
+            <Textfield style={style2} variant="outlined" on:change="{()=>console.log(nist_molecule)}" bind:value={nist_molecule} label="Molecule Name" />
+            <Textfield style={style2} variant="outlined" bind:value={nist_formula} label="Molecule Formula" />
+        </div>
+
     </div>
 
     <div style="margin-right: 1em;" slot="plotContainer">
-        <div id="mplot"></div>
-        {#if graphPlotted}
-            <ReportLayout bind:currentLocation id="masspecreport", plotID={["mplot"]}/>
-        {/if}
-    </div>
 
+        <div id="mplot"></div>
+        <div class="animated fadeIn hide" class:active={graphPlotted}><ReportLayout bind:currentLocation id="masspecreport", plotID={["mplot"]}/></div>
+    </div>
 
 </Layout>

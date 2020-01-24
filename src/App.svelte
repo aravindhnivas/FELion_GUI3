@@ -15,9 +15,7 @@
 	import THz from "./Pages/THz.svelte"
 	import Settings from "./Pages/Settings.svelte"
 
-	
 	import Modal from "./components/Modal.svelte"
-	// import DialogChecklist from "./components/DialogChecklist.svelte"
 	import {onMount, afterUpdate} from "svelte"
 
 	onMount(()=>{
