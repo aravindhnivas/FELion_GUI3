@@ -74,18 +74,19 @@ def exp_theory(theoryfiles, location, norm_method, sigma, scale, tkplot, output_
         widget.plot_legend = ax.legend()
         widget.mainloop()
 
-    # data_tosend = json.dumps(data)
-    # print(data_tosend)
-
 if __name__ == "__main__":
+
+    print("Argument received for theory.py: \n", sys.argv[1:][0])
+    
     args = sys.argv[1:][0].split(",")
+    
+    print("Argument procesed:\n", args)
 
     theoryfiles = [pt(i) for i in args[0:-5]]
     tkplot = args[-1]
 
     if tkplot == "plot": tkplot=True
     else: tkplot = False
-
     location = args[-2]
     scale = float(args[-3])
     sigma = float(args[-4])

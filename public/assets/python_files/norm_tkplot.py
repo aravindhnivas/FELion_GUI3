@@ -37,7 +37,11 @@ def main(felixfiles, location, norm_method, output_filename="averaged"):
 
 if __name__ == "__main__":
 
+    print("Argument received for normline_tkplot.py: \n", sys.argv[1:][0])
     args = sys.argv[1:][0].split(",")
+    print("Argument procesed:\n", args)
+
+    
     filenames = args[0:-1]
     norm_method = args[-1]
     

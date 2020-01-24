@@ -39,10 +39,12 @@
     ///////////////////////////////////////////////////////////////////////
 
     // Theory file
-    let sigma = 20, scale=1, thoeryfiles = [], show_theoryplot = false,  showTheoryFiles = false,
+    let sigma = 20, scale=1, theoryfilesChecked = [], show_theoryplot = false,  showTheoryFiles = false,
      theoryLocation = currentLocation
-    $: console.log("Theory files: ", thoeryfiles)
+    $: console.log("Theory files: ", theoryfilesChecked)
     $: console.log("Theory Location", theoryLocation)
+
+    $: theoryfiles = theoryfilesChecked.map(file=>path.resolve(theoryLocation, file))
 
     ///////////////////////////////////////////////////////////////////////
     
@@ -67,7 +69,6 @@
     let opoPlotted = false;
 
     ///////////////////////////////////////////////////////////////////////////////////
-    
     const replot = () => {
     
         if (graphPlotted) {
@@ -80,6 +81,21 @@
     function plotData(event=null, filetype="felix", general=null){
 
         if (fileChecked.length === 0) {return createToast("No files selected", "danger")}
+
+        if (filetype == "general") {
+
+            // target.classList.add("animated bounce")
+            console.log("Sending general arguments: ", general.args)
+            let py = spawn(
+                localStorage["pythonpath"],
+                ["-i", path.join(localStorage["pythonscript"], general.pyfile), general.args],
+                { detached: true, stdio: 'ignore', shell: openShell }
+            )
+            py.unref()
+            createToast("General process sent. Expect an response soon...")
+            return;
+        }
+
         let target = event.target
         target.classList.toggle("is-loading")
 
@@ -90,25 +106,13 @@
         }} else if (filetype == "opofile") {opoPlotted = true}
 
         let pyfileInfo = {
-        
             felix: {pyfile:"normline.py" , args:[...felixfiles, delta]},
             exp_fit: {pyfile:"exp_gauss_fit.py" , args:[...felixfiles, overwrite_expfit, output_name, normMethod, currentLocation, ...index]},
             opofile: {pyfile:"oposcan.py" , args:[...felixfiles, "run"]},
+            theory: {pyfile:"theory.py" , args:[...theoryfiles, normMethod, sigma, scale, theoryLocation, "run"]},
         }
 
         let {pyfile, args} = pyfileInfo[filetype]
-        if (filetype == "general") {
-            console.log("Sending general arguments: ", general.args)
-            spawn(
-                localStorage["pythonpath"],
-                ["-i", path.join(localStorage["pythonscript"], general.pyfile), ...general_args],
-                { detached: true, stdio: 'ignore', shell: openShell }
-            )
-            py.unref()
-            createToast("General process sent. Expect an response soon...")
-            return;
-        }
-
         let py;
 
         try {py = spawn( localStorage["pythonpath"], [path.resolve(localStorage["pythonscript"], pyfile), args] )}
@@ -147,6 +151,7 @@
                         line = []
                         index = []
                         annotations = []
+                        show_theoryplot = false
                         if (!keepTable) {dataTable = []}
 
                         let avgdataToPlot;
@@ -269,10 +274,9 @@
                         
                     } else if (filetype == "theory") {
 
-                        let normethod = this.args[0];
                         let ylabel;
-                        if (normethod === "Log") { ylabel = "Normalised Intensity per J" }
-                        else if (normethod === "Relative") { ylabel = "Relative Depletion (%)" }
+                        if (normMethod === "Log") { ylabel = "Normalised Intensity per J" }
+                        else if (normMethod === "Relative") { ylabel = "Relative Depletion (%)" }
                         else { ylabel = "Normalised Intensity per Photon" }
 
                         let theoryData = [];
@@ -283,7 +287,8 @@
                             "Calibrated Wavelength (cm-1)",
                             ylabel, [dataFromPython["averaged"], ...theoryData],
                             "exp-theory-plot"
-                        );
+                        )
+                        show_theoryplot = true
                     } else if (filetype == "exp_fit") {
 
                         Plotly.addTraces("avgplot", dataFromPython["fit"])
@@ -397,7 +402,7 @@
 
 <QuickView style="padding:1em;" footer={false} bind:active={showTheoryFiles} title="Browse Theory files">
 
-    <FileBrowser bind:currentLocation={theoryLocation} bind:fileChecked={thoeryfiles} />
+    <FileBrowser bind:currentLocation={theoryLocation} bind:fileChecked={theoryfilesChecked} />
 </QuickView>
 
 <Layout {filetype} {id} bind:currentLocation bind:fileChecked >
@@ -406,15 +411,16 @@
 
         <div class="align" >
 
-            <button class="button is-link">Create Baseline</button>
+            <button class="button is-link" 
+                on:click="{(e)=>plotData(e, "general", {args:felixfiles, pyfile:"baseline.py"})}">Create Baseline</button>
             <button class="button is-link" on:click="{(e)=>plotData(e, "felix")}">FELIX Plot</button>
             <Textfield style="width:7em" variant="outlined" bind:value={delta} label="Delta" />
-            <button class="button is-link">Open in Matplotlib</button>
+            <button class="button is-link" 
+                on:click="{(e)=>plotData(e, "general", {args:[...felixfiles, normMethod], pyfile:"norm_tkplot.py"})}">Open in Matplotlib</button>
             <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
             <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click="{()=>toggleRow = !toggleRow}">Add Theory</button>
             <button class="button is-link" on:click="{(e)=>plotData(e, "opofile")}">OPO</button>
             <CustomIconSwitch bind:toggler={opoPlotted} icons={["keyboard_arrow_up", "keyboard_arrow_down"]}/>
-            
         </div>
 
         {#if toggleRow}
@@ -422,8 +428,10 @@
                 <button class="button is-link" on:click="{()=>showTheoryFiles = !showTheoryFiles}">Browse File</button>
                 <Textfield style="width:7em; margin-right:0.5em;" variant="outlined" bind:value={sigma} label="Sigma" />
                 <Textfield style="width:7em" variant="outlined" bind:value={scale} label="Scale" />
-                <button class="button is-link">Open in Matplotlib</button>
-                <button class="button is-link">Submit</button>
+                <button class="button is-link" 
+                    on:click="{(e)=>plotData(e, "general", {args:[...theoryfiles, normMethod, sigma, scale, theoryLocation, "plot"], pyfile:"theory.py"})}">Open in Matplotlib</button>
+                <button class="button is-link" on:click="{(e)=>plotData(e, "theory")}">Submit</button>
+
             </div>
         {/if}
 
