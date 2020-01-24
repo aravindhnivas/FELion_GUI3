@@ -45,12 +45,13 @@
     let powerfileContent = '', felixHz = 10, felixShots = 16, convert = null;
 
     let location = localStorage["powerfile_location"] || "";
+    let overwrite_dialog;
 
     let today = new Date();
     const dd = String(today.getDate()).padStart(2, '0')
     const mm = String(today.getMonth() + 1).padStart(2, '0')
+    
     const yy = today.getFullYear().toString().substr(2)
-
     let filename = `${dd}_${mm}_${yy}-#`;
 
     $: powfile = path.resolve(location, `${filename}.pow`)
@@ -63,8 +64,7 @@
         `#    IN${conversion}UM (if one deletes the no the firs number will be in \mu m\n` +
         `# wavelength/cm-1      energy/pulse/mJ\n`
 
-    let overwrite_dialog;
-
+    
     const handleOverwrite = (e) => {
         let action = e.detail.action
         if (action === "Cancel" || action === "close") createToast("Powerfile saving cancelled", "warning")

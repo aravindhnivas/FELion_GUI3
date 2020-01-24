@@ -11,13 +11,13 @@
     import {plot, subplot} from "../js/functions.js"
     import { flip } from 'svelte/animate'
     
-    import {Row, Cell} from '@smui/data-table'
+    import DataTable, {Head, Body, Row, Cell} from '@smui/data-table'
     import CustomCheckbox from '../components/CustomCheckbox.svelte';
     import CustomSwitch from '../components/CustomSwitch.svelte';
 
     import CustomSelect from '../components/CustomSelect.svelte';
 
-    import CustomTable from '../components/CustomTable.svelte';
+    // import CustomTable from '../components/CustomTable.svelte';
     import CustomRadio from '../components/CustomRadio.svelte';
     import ReportLayout from '../components/ReportLayout.svelte';
     import QuickView from '../components/QuickView.svelte';
@@ -34,6 +34,7 @@
     $: felixfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
     let plottedFiles = [], theoryLocation = ""
     let currentLocation = theoryLocation= localStorage[`${filetype}_location`] || ""
+    
     $: console.log(`${filetype} Update: \n${currentLocation}`)
 
     ///////////////////////////////////////////////////////////////////////
@@ -54,10 +55,15 @@
     let output_name = "averaged"
 
     let dataTableHead = ["Filename", "Frequency (cm-1)", "Amplitude", "FWHM", "Sigma"]
-    
-    let dataTable = [], showDataTable=false
+    let dataTable = []
+    $: dataTable_avg = dataTable.filter(data=>data.name === "averaged")
+    $: console.log("dataTable", dataTable)
+    $: console.log("dataTable_avg", dataTable_avg)
+
     let show_dataTable_only_averaged = false, keepTable = true
+
     const replot = () => {
+    
         if (graphPlotted) {
             let {data, layout} = normMethod_datas[normMethod]
 
@@ -250,9 +256,6 @@
                         graphPlotted = true
                         plottedFiles = fileChecked.map(file=>file.split(".")[0])
 
-                        // let sticky = new Sticky(".sticky")
-                        // sticky.update()
-
                     } else if (filetype == "opofile") {
                         plot("OPO spectrum", "Wavenumber (cm-1)", "Counts", dataFromPython["real"], "opoplot");
                         plot("OPO spectrum: Depletion (%)", "Wavenumber (cm-1)", "Depletion (%)", dataFromPython["relative"], "opoRelPlot");
@@ -284,7 +287,19 @@
                         let [freq, amp, fwhm, sig] = dataFromPython["table"].split(", ")
                         let color;
                         output_name === "averaged" ? color = "#513a8a80" : color = "#fafafa"
-                        dataTable = [...dataTable, {name: output_name, id:dataFromPython["freq"], freq:freq, amp:amp, fwhm:fwhm, sig:sig, color:color}]
+                        let id = dataFromPython["freq"];
+                        let prevId = ""
+
+                        if (dataTable.length >=1) prevId = _.nth(dataTable, -1).id
+
+                        dataTable = [...dataTable, {name: output_name, id:id, freq:freq, amp:amp, fwhm:fwhm, sig:sig, color:color}]
+                        
+                        if ( prevId !== "" && prevId == id ) {
+                            console.log("Resolving same Id bug for FELIX frequency table", dataTable)
+                            dataTable = _.dropRight(dataTable, 1)
+                            console.log("Resolved")
+                        }
+                        
 
                         console.log("Line fitted")
                         createToast("Line fitted with gaussian function", "success")
@@ -333,7 +348,6 @@
         // index = []
         Plotly.relayout("avgplot", { annotations: annotations, shapes: line })
         if (line.length === 0) {ready_to_fit = false}
-
     }
 
 </script>
@@ -367,7 +381,6 @@
     * :global(table td:not([align])) {text-align: center; padding: 1em;}
     * :global(#felixTableContainer) {border: 1px solid #5b3ea2;}
     * :global(#felixTableContainer thead) {background-color: #e1e1e1;}
-    * :global(.mdc-data-table__row-checkbox .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background) {background-color: #5b3ea2;}
 </style>
 
 <QuickView style="padding:1em;" footer={false} bind:active={showTheoryFiles} title="Browse Theory files">
@@ -445,37 +458,43 @@
             </div>
             <div class="dataTable" transition:fade>
 
-                <CustomTable id="felixTable" bind:dataTableHead>
-                    {#if !show_dataTable_only_averaged}
-                        {#each dataTable as table (table.id)}
-                            <Row style="background-color: {table.color};">
-                                <Cell>{table.name}</Cell>
-                                <Cell>{table.freq}</Cell>
-                                <Cell>{table.amp}</Cell>
-                                <Cell>{table.fwhm}</Cell>
-                                <Cell>{table.sig}</Cell>
-                            </Row>
-                        {/each}
-                    {:else}
-                        {#each dataTable.filter(data=>data.name=="averaged") as table, index (table.id)}
-                            <Row>
-                                <Cell>Line #{index}</Cell>
-                                <Cell>{table.freq}</Cell>
-                                <Cell>{table.amp}</Cell>
-                                <Cell>{table.fwhm}</Cell>
-                                <Cell>{table.sig}</Cell>
-                            </Row>
-                        {/each}
-                    {/if}
-                </CustomTable>
-                <!-- <div class="is-pulled-right">
-                    
-                </div> -->
+                <DataTable table$aria-label="{filetype}-tableAriaLabel" table$id="{filetype}Table" id="{filetype}TableContainer">
+                    <Head >
+                        <Row>
+                            {#each dataTableHead as item}
+                                <Cell>{item}</Cell>
+                            {/each}
+                        </Row>
+                    </Head>
+                    <Body>
+                        {#if show_dataTable_only_averaged}
+                            {#each dataTable_avg as table, index}
+                                <Row>
+                                    <Cell>Line #{index}</Cell>
+                                    <Cell>{table.freq}</Cell>
+                                    <Cell>{table.amp}</Cell>
+                                    <Cell>{table.fwhm}</Cell>
+                                    <Cell>{table.sig}</Cell>
+                                </Row>
+                            {/each}
+                        {:else}
+                            {#each dataTable as table}
+                                <Row style="background-color: {table.color};">
+                                    <Cell>{table.name}</Cell>
+                                    <Cell>{table.freq}</Cell>
+                                    <Cell>{table.amp}</Cell>
+                                    <Cell>{table.fwhm}</Cell>
+                                    <Cell>{table.sig}</Cell>
+                                </Row>
+                            {/each}
+                        {/if}
+                    </Body>
+                </DataTable>
+
             </div>
-
-            <ReportLayout bind:currentLocation id="felixreport", plotID={["bplot", "saPlot", "avgplot", "exp-theory-plot"]} includeTable={true}/>
+            <ReportLayout bind:currentLocation={currentLocation} 
+                id="felixreport", plotID={["bplot", "saPlot", "avgplot", "exp-theory-plot"]} 
+                includeTable={true}/>
         {/if}
-    
     </div>
-
 </Layout>
