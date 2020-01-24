@@ -28,7 +28,7 @@
     let toggleRow1 = false
 
     let selected_file = "", peak_prominance = 3, peak_width = 2, peak_height = 40;
-    let style1 = "width:7em; height:2.5em; margin-right:0.5em"
+    let style = "width:7em; height:3.5em; margin-right:0.5em"
 
     // NIST 
     let toggleRow2 = false, nist_molecule = localStorage["nist_molecule"] || "", nist_formula = localStorage["nist_formula"] || ""
@@ -148,38 +148,40 @@
 <style>
     .masspec_buttonContainer {min-height: 5em;}
     .button {margin-right: 0.5em;}
-    .buttonRow {margin-bottom: 1em!important;}
+    .buttonRow {margin-bottom: 1em!important; align-items: center;}
 
     * :global(.mdc-select__native-control option) {color: black}
-    .active {display: block!important;}
+    .active {display: flex!important;}
     .hide {display: none;}
+    .align {display: flex; align-items: center;}
+
 </style>
 
 
 <Layout {filetype} {id} bind:currentLocation bind:fileChecked>
     <div class="masspec_buttonContainer" slot="buttonContainer">
 
-        <div class="content buttonRow">
+        <div class="content align buttonRow">
             <button class="button is-link" on:click={plotData}>Masspec Plot</button>
             <button class="button is-link" on:click="{()=>{toggleRow1 = !toggleRow1}}">Find Peaks</button>
             <button class="button is-link" on:click="{()=>{toggleRow2 = !toggleRow2}}">NIST Webbook</button>
             <button class="button is-link" on:click="{(e)=>plotData(e, "general")}">Open in Matplotlib</button>
-            <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
-            <CustomSwitch style="margin: 0 1em; padding-bottom: 1em;" on:change={linearlogCheck} bind:selected={logScale} label="Log"/>
+            <CustomIconSwitch style="padding:0;" bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
+            <CustomSwitch style="margin: 0 1em;" on:change={linearlogCheck} bind:selected={logScale} label="Log"/>
         </div>
 
-        <div class="animated fadeIn hide align buttonRow" class:active={toggleRow1} >
+        <div class="animated fadeIn hide buttonRow" class:active={toggleRow1} >
             <CustomSelect style="width:12em; height:3.5em; margin-right:0.5em" bind:picked={selected_file} label="Filename" options={fileChecked}/>
-            <Textfield style={style1} variant="outlined" on:change="{(e)=>plotData(e, "find_peaks")}" bind:value={peak_prominance} label="Prominance" />
-            <Textfield style={style1} variant="outlined" on:change="{(e)=>plotData(e, "find_peaks")}" bind:value={peak_width} label="Width" />
-            <Textfield style={style1} variant="outlined" on:change="{(e)=>plotData(e, "find_peaks")}" bind:value={peak_height} label="Height" />
+            <Textfield {style} on:change="{(e)=>plotData(e, "find_peaks")}" bind:value={peak_prominance} label="Prominance" />
+            <Textfield {style} on:change="{(e)=>plotData(e, "find_peaks")}" bind:value={peak_width} label="Width" />
+            <Textfield {style} on:change="{(e)=>plotData(e, "find_peaks")}" bind:value={peak_height} label="Height" />
             <button class="button is-link" on:click="{(e)=>plotData(e, "find_peaks")}">Get Peaks</button>
             <button class="button is-danger" on:click="{(e)=>window.Plotly.relayout("mplot", { annotations: [] })}">Clear</button>
         </div>
 
-        <div class="animated fadeIn hide align buttonRow" class:active={toggleRow2}>
-            <Textfield style={style2} variant="outlined" on:change="{()=>set_nist_url("by_name")}" bind:value={nist_molecule} label="Molecule Name" />
-            <Textfield style={style2} variant="outlined" on:change={set_nist_url} bind:value={nist_formula} label="Molecule Formula" />
+        <div class="animated fadeIn hide buttonRow" class:active={toggleRow2}>
+            <Textfield {style} on:change="{()=>set_nist_url("by_name")}" bind:value={nist_molecule} label="Molecule Name" />
+            <Textfield {style} on:change={set_nist_url} bind:value={nist_formula} label="Molecule Formula" />
         </div>
 
     </div>
@@ -187,18 +189,19 @@
     <div style="margin-right: 1em;" slot="plotContainer">
 
         <div id="mplot"></div>
-        <div class="animated fadeIn hide" class:active={graphPlotted}><ReportLayout bind:currentLocation id="masspecreport", plotID={["mplot"]}/></div>
+        <div class="animated fadeIn hide" class:active={graphPlotted} style="flex-direction:column "><ReportLayout bind:currentLocation id="masspecreport", plotID={["mplot"]}/></div>
 
-        <div class="hide animated fadeIn" class:active={toggleRow2} style="margin-top: 1em; display:none">
-
+        <div class="hide animated fadeIn" class:active={toggleRow2} style="margin-top: 1em; display:none; flex-direction:column; paddin-bottom:3em;">
             <div style="margin:1em;">
                 <Icon on:click="{()=>window.nist_webview.goToIndex(0)}" class="material-icons hvr-glow">home</Icon>
-                <Icon on:click="{()=>window.nist_webview.reload()}" class="material-icons hvr-glow">refresh</Icon>
 
+                <Icon on:click="{()=>window.nist_webview.reload()}" class="material-icons hvr-glow">refresh</Icon>
                 <Icon on:click="{()=>{if(window.nist_webview.canGoBack()) {window.nist_webview.goBack()}}}" class="material-icons hvr-glow">arrow_left</Icon>
                 <Icon on:click="{()=>{if(window.nist_webview.canGoForward()) {window.nist_webview.goForward()}}}" class="material-icons hvr-glow">arrow_right</Icon>
             </div>
-            <webview src={nist_url} id="nist_webview" style="height: 50vh;"></webview>
+            <div class="">
+                <webview src={nist_url} id="nist_webview" style="height: 50vh;"></webview>
+            </div>
         </div>
     </div>
 

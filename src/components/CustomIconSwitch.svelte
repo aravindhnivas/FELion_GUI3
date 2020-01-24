@@ -2,11 +2,11 @@
     
     import IconButton, {Icon} from '@smui/icon-button'
     
-    export let icons = [], toggler=""
+    export let icons = [], toggler="", style=""
 
 </script>
 
-<IconButton toggle bind:pressed={toggler} on:click>
+<IconButton {style} toggle bind:pressed={toggler} on:click>
     <Icon class="material-icons" on>{icons[0]}</Icon>
     <Icon class="material-icons">{icons[1]}</Icon>
 </IconButton>

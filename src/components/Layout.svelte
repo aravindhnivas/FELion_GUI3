@@ -65,7 +65,7 @@
     .plotContainer {
         max-height: calc(100vh - 25em);
         overflow-y: auto;
-        padding-bottom: 3em;
+        padding-bottom: 5em;
     }
      
     .filebrowser {

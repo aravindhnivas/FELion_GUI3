@@ -20753,7 +20753,7 @@ function create_if_block$9(ctx) {
 		c: function create() {
 			div = element("div");
 			create_component(filebrowser.$$.fragment);
-			attr_dev(div, "class", "column is-one-fifth-widescreen is-one-quarter-desktop box filebrowser adjust-right svelte-1p3mpgh");
+			attr_dev(div, "class", "column is-one-fifth-widescreen is-one-quarter-desktop box filebrowser adjust-right svelte-1v7l62r");
 			add_location(div, file$r, 119, 12, 3205);
 		},
 		m: function mount(target, anchor) {
@@ -21027,23 +21027,23 @@ function create_fragment$s(ctx) {
 			t5 = space();
 			div2 = element("div");
 			if (plotContainer_slot) plotContainer_slot.c();
-			attr_dev(button, "class", "button is-link gap svelte-1p3mpgh");
+			attr_dev(button, "class", "button is-link gap svelte-1v7l62r");
 			add_location(button, file$r, 132, 20, 3881);
-			attr_dev(div0, "class", "align svelte-1p3mpgh");
+			attr_dev(div0, "class", "align svelte-1v7l62r");
 			add_location(div0, file$r, 127, 16, 3593);
-			attr_dev(div1, "class", "align buttonContainer svelte-1p3mpgh");
+			attr_dev(div1, "class", "align buttonContainer svelte-1v7l62r");
 			add_location(div1, file$r, 136, 16, 4116);
-			attr_dev(div2, "class", "plotContainer svelte-1p3mpgh");
+			attr_dev(div2, "class", "plotContainer svelte-1v7l62r");
 			add_location(div2, file$r, 137, 16, 4207);
-			attr_dev(div3, "class", "container button-plot-container box svelte-1p3mpgh");
+			attr_dev(div3, "class", "container button-plot-container box svelte-1v7l62r");
 			add_location(div3, file$r, 125, 12, 3524);
-			attr_dev(div4, "class", "column fileContainer svelte-1p3mpgh");
+			attr_dev(div4, "class", "column fileContainer svelte-1v7l62r");
 			add_location(div4, file$r, 124, 8, 3476);
-			attr_dev(div5, "class", "columns svelte-1p3mpgh");
+			attr_dev(div5, "class", "columns svelte-1v7l62r");
 			add_location(div5, file$r, 116, 4, 3139);
 			attr_dev(section, "id", /*id*/ ctx[2]);
 			set_style(section, "display", "none");
-			attr_dev(section, "class", "animated fadeIn svelte-1p3mpgh");
+			attr_dev(section, "class", "animated fadeIn svelte-1v7l62r");
 			add_location(section, file$r, 114, 0, 3072);
 		},
 		l: function claim(nodes) {
@@ -34104,7 +34104,7 @@ function create_default_slot_1$9(ctx) {
 	return block;
 }
 
-// (9:0) <IconButton toggle bind:pressed={toggler} on:click>
+// (9:0) <IconButton {style} toggle bind:pressed={toggler} on:click>
 function create_default_slot$g(ctx) {
 	let t;
 	let current;
@@ -34143,14 +34143,14 @@ function create_default_slot$g(ctx) {
 		p: function update(ctx, dirty) {
 			const icon0_changes = {};
 
-			if (dirty & /*$$scope, icons*/ 18) {
+			if (dirty & /*$$scope, icons*/ 34) {
 				icon0_changes.$$scope = { dirty, ctx };
 			}
 
 			icon0.$set(icon0_changes);
 			const icon1_changes = {};
 
-			if (dirty & /*$$scope, icons*/ 18) {
+			if (dirty & /*$$scope, icons*/ 34) {
 				icon1_changes.$$scope = { dirty, ctx };
 			}
 
@@ -34178,7 +34178,7 @@ function create_default_slot$g(ctx) {
 		block,
 		id: create_default_slot$g.name,
 		type: "slot",
-		source: "(9:0) <IconButton toggle bind:pressed={toggler} on:click>",
+		source: "(9:0) <IconButton {style} toggle bind:pressed={toggler} on:click>",
 		ctx
 	});
 
@@ -34190,10 +34190,11 @@ function create_fragment$O(ctx) {
 	let current;
 
 	function iconbutton_pressed_binding(value) {
-		/*iconbutton_pressed_binding*/ ctx[2].call(null, value);
+		/*iconbutton_pressed_binding*/ ctx[3].call(null, value);
 	}
 
 	let iconbutton_props = {
+		style: /*style*/ ctx[2],
 		toggle: true,
 		$$slots: { default: [create_default_slot$g] },
 		$$scope: { ctx }
@@ -34205,7 +34206,7 @@ function create_fragment$O(ctx) {
 
 	const iconbutton = new IconButton({ props: iconbutton_props, $$inline: true });
 	binding_callbacks.push(() => bind(iconbutton, "pressed", iconbutton_pressed_binding));
-	iconbutton.$on("click", /*click_handler*/ ctx[3]);
+	iconbutton.$on("click", /*click_handler*/ ctx[4]);
 
 	const block = {
 		c: function create() {
@@ -34220,8 +34221,9 @@ function create_fragment$O(ctx) {
 		},
 		p: function update(ctx, [dirty]) {
 			const iconbutton_changes = {};
+			if (dirty & /*style*/ 4) iconbutton_changes.style = /*style*/ ctx[2];
 
-			if (dirty & /*$$scope, icons*/ 18) {
+			if (dirty & /*$$scope, icons*/ 34) {
 				iconbutton_changes.$$scope = { dirty, ctx };
 			}
 
@@ -34259,8 +34261,8 @@ function create_fragment$O(ctx) {
 }
 
 function instance$O($$self, $$props, $$invalidate) {
-	let { icons = [] } = $$props, { toggler = "" } = $$props;
-	const writable_props = ["icons", "toggler"];
+	let { icons = [] } = $$props, { toggler = "" } = $$props, { style = "" } = $$props;
+	const writable_props = ["icons", "toggler", "style"];
 
 	Object.keys($$props).forEach(key => {
 		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<CustomIconSwitch> was created with unknown prop '${key}'`);
@@ -34278,24 +34280,26 @@ function instance$O($$self, $$props, $$invalidate) {
 	$$self.$set = $$props => {
 		if ("icons" in $$props) $$invalidate(1, icons = $$props.icons);
 		if ("toggler" in $$props) $$invalidate(0, toggler = $$props.toggler);
+		if ("style" in $$props) $$invalidate(2, style = $$props.style);
 	};
 
 	$$self.$capture_state = () => {
-		return { icons, toggler };
+		return { icons, toggler, style };
 	};
 
 	$$self.$inject_state = $$props => {
 		if ("icons" in $$props) $$invalidate(1, icons = $$props.icons);
 		if ("toggler" in $$props) $$invalidate(0, toggler = $$props.toggler);
+		if ("style" in $$props) $$invalidate(2, style = $$props.style);
 	};
 
-	return [toggler, icons, iconbutton_pressed_binding, click_handler];
+	return [toggler, icons, style, iconbutton_pressed_binding, click_handler];
 }
 
 class CustomIconSwitch extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$O, create_fragment$O, safe_not_equal, { icons: 1, toggler: 0 });
+		init(this, options, instance$O, create_fragment$O, safe_not_equal, { icons: 1, toggler: 0, style: 2 });
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
@@ -34318,6 +34322,14 @@ class CustomIconSwitch extends SvelteComponentDev {
 	}
 
 	set toggler(value) {
+		throw new Error("<CustomIconSwitch>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get style() {
+		throw new Error("<CustomIconSwitch>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set style(value) {
 		throw new Error("<CustomIconSwitch>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 }
@@ -40123,7 +40135,7 @@ class Normline extends SvelteComponentDev {
 /* src\Pages\Masspec.svelte generated by Svelte v3.17.3 */
 const file$P = "src\\Pages\\Masspec.svelte";
 
-// (160:4) <div class="masspec_buttonContainer" slot="buttonContainer">
+// (162:4) <div class="masspec_buttonContainer" slot="buttonContainer">
 function create_buttonContainer_slot$1(ctx) {
 	let div0;
 	let div1;
@@ -40163,7 +40175,10 @@ function create_buttonContainer_slot$1(ctx) {
 		/*customiconswitch_toggler_binding*/ ctx[29].call(null, value);
 	}
 
-	let customiconswitch_props = { icons: ["settings_ethernet", "code"] };
+	let customiconswitch_props = {
+		style: "padding:0;",
+		icons: ["settings_ethernet", "code"]
+	};
 
 	if (/*openShell*/ ctx[2] !== void 0) {
 		customiconswitch_props.toggler = /*openShell*/ ctx[2];
@@ -40180,10 +40195,7 @@ function create_buttonContainer_slot$1(ctx) {
 		/*customswitch_selected_binding*/ ctx[30].call(null, value_1);
 	}
 
-	let customswitch_props = {
-		style: "margin: 0 1em; padding-bottom: 1em;",
-		label: "Log"
-	};
+	let customswitch_props = { style: "margin: 0 1em;", label: "Log" };
 
 	if (/*logScale*/ ctx[13] !== void 0) {
 		customswitch_props.selected = /*logScale*/ ctx[13];
@@ -40195,7 +40207,7 @@ function create_buttonContainer_slot$1(ctx) {
 		});
 
 	binding_callbacks.push(() => bind(customswitch, "selected", customswitch_selected_binding));
-	customswitch.$on("change", /*linearlogCheck*/ ctx[20]);
+	customswitch.$on("change", /*linearlogCheck*/ ctx[19]);
 
 	function customselect_picked_binding(value_2) {
 		/*customselect_picked_binding*/ ctx[31].call(null, value_2);
@@ -40223,8 +40235,7 @@ function create_buttonContainer_slot$1(ctx) {
 	}
 
 	let textfield0_props = {
-		style: /*style1*/ ctx[16],
-		variant: "outlined",
+		style: /*style*/ ctx[16],
 		label: "Prominance"
 	};
 
@@ -40240,11 +40251,7 @@ function create_buttonContainer_slot$1(ctx) {
 		/*textfield1_value_binding*/ ctx[34].call(null, value_4);
 	}
 
-	let textfield1_props = {
-		style: /*style1*/ ctx[16],
-		variant: "outlined",
-		label: "Width"
-	};
+	let textfield1_props = { style: /*style*/ ctx[16], label: "Width" };
 
 	if (/*peak_width*/ ctx[7] !== void 0) {
 		textfield1_props.value = /*peak_width*/ ctx[7];
@@ -40259,8 +40266,7 @@ function create_buttonContainer_slot$1(ctx) {
 	}
 
 	let textfield2_props = {
-		style: /*style1*/ ctx[16],
-		variant: "outlined",
+		style: /*style*/ ctx[16],
 		label: "Height"
 	};
 
@@ -40277,8 +40283,7 @@ function create_buttonContainer_slot$1(ctx) {
 	}
 
 	let textfield3_props = {
-		style: /*style2*/ ctx[17],
-		variant: "outlined",
+		style: /*style*/ ctx[16],
 		label: "Molecule Name"
 	};
 
@@ -40295,8 +40300,7 @@ function create_buttonContainer_slot$1(ctx) {
 	}
 
 	let textfield4_props = {
-		style: /*style2*/ ctx[17],
-		variant: "outlined",
+		style: /*style*/ ctx[16],
 		label: "Molecule Formula"
 	};
 
@@ -40306,7 +40310,7 @@ function create_buttonContainer_slot$1(ctx) {
 
 	const textfield4 = new Textfield({ props: textfield4_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield4, "value", textfield4_value_binding));
-	textfield4.$on("change", /*set_nist_url*/ ctx[18]);
+	textfield4.$on("change", /*set_nist_url*/ ctx[17]);
 
 	const block = {
 		c: function create() {
@@ -40347,29 +40351,29 @@ function create_buttonContainer_slot$1(ctx) {
 			create_component(textfield3.$$.fragment);
 			t18 = space();
 			create_component(textfield4.$$.fragment);
-			attr_dev(button0, "class", "button is-link svelte-7yzxv2");
-			add_location(button0, file$P, 162, 12, 6146);
-			attr_dev(button1, "class", "button is-link svelte-7yzxv2");
-			add_location(button1, file$P, 163, 12, 6232);
-			attr_dev(button2, "class", "button is-link svelte-7yzxv2");
-			add_location(button2, file$P, 164, 12, 6340);
-			attr_dev(button3, "class", "button is-link svelte-7yzxv2");
-			add_location(button3, file$P, 165, 12, 6450);
-			attr_dev(div1, "class", "content buttonRow svelte-7yzxv2");
-			add_location(div1, file$P, 161, 8, 6101);
-			attr_dev(button4, "class", "button is-link svelte-7yzxv2");
-			add_location(button4, file$P, 175, 12, 7494);
-			attr_dev(button5, "class", "button is-danger svelte-7yzxv2");
-			add_location(button5, file$P, 176, 12, 7601);
-			attr_dev(div2, "class", "animated fadeIn hide align buttonRow svelte-7yzxv2");
+			attr_dev(button0, "class", "button is-link svelte-1fuwsex");
+			add_location(button0, file$P, 164, 12, 6223);
+			attr_dev(button1, "class", "button is-link svelte-1fuwsex");
+			add_location(button1, file$P, 165, 12, 6309);
+			attr_dev(button2, "class", "button is-link svelte-1fuwsex");
+			add_location(button2, file$P, 166, 12, 6417);
+			attr_dev(button3, "class", "button is-link svelte-1fuwsex");
+			add_location(button3, file$P, 167, 12, 6527);
+			attr_dev(div1, "class", "content align buttonRow svelte-1fuwsex");
+			add_location(div1, file$P, 163, 8, 6172);
+			attr_dev(button4, "class", "button is-link svelte-1fuwsex");
+			add_location(button4, file$P, 177, 12, 7485);
+			attr_dev(button5, "class", "button is-danger svelte-1fuwsex");
+			add_location(button5, file$P, 178, 12, 7592);
+			attr_dev(div2, "class", "animated fadeIn hide buttonRow svelte-1fuwsex");
 			toggle_class(div2, "active", /*toggleRow1*/ ctx[4]);
-			add_location(div2, file$P, 170, 8, 6810);
-			attr_dev(div3, "class", "animated fadeIn hide align buttonRow svelte-7yzxv2");
+			add_location(div2, file$P, 172, 8, 6885);
+			attr_dev(div3, "class", "animated fadeIn hide buttonRow svelte-1fuwsex");
 			toggle_class(div3, "active", /*toggleRow2*/ ctx[9]);
-			add_location(div3, file$P, 179, 8, 7747);
-			attr_dev(div0, "class", "masspec_buttonContainer svelte-7yzxv2");
+			add_location(div3, file$P, 181, 8, 7738);
+			attr_dev(div0, "class", "masspec_buttonContainer svelte-1fuwsex");
 			attr_dev(div0, "slot", "buttonContainer");
-			add_location(div0, file$P, 159, 4, 6029);
+			add_location(div0, file$P, 161, 4, 6100);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -40406,7 +40410,7 @@ function create_buttonContainer_slot$1(ctx) {
 			current = true;
 
 			dispose = [
-				listen_dev(button0, "click", /*plotData*/ ctx[19], false, false, false),
+				listen_dev(button0, "click", /*plotData*/ ctx[18], false, false, false),
 				listen_dev(button1, "click", /*click_handler*/ ctx[26], false, false, false),
 				listen_dev(button2, "click", /*click_handler_1*/ ctx[27], false, false, false),
 				listen_dev(button3, "click", /*click_handler_2*/ ctx[28], false, false, false),
@@ -40539,14 +40543,14 @@ function create_buttonContainer_slot$1(ctx) {
 		block,
 		id: create_buttonContainer_slot$1.name,
 		type: "slot",
-		source: "(160:4) <div class=\\\"masspec_buttonContainer\\\" slot=\\\"buttonContainer\\\">",
+		source: "(162:4) <div class=\\\"masspec_buttonContainer\\\" slot=\\\"buttonContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (195:16) <Icon on:click="{()=>window.nist_webview.goToIndex(0)}" class="material-icons hvr-glow">
+// (196:16) <Icon on:click="{()=>window.nist_webview.goToIndex(0)}" class="material-icons hvr-glow">
 function create_default_slot_4$6(ctx) {
 	let t;
 
@@ -40566,14 +40570,14 @@ function create_default_slot_4$6(ctx) {
 		block,
 		id: create_default_slot_4$6.name,
 		type: "slot",
-		source: "(195:16) <Icon on:click=\\\"{()=>window.nist_webview.goToIndex(0)}\\\" class=\\\"material-icons hvr-glow\\\">",
+		source: "(196:16) <Icon on:click=\\\"{()=>window.nist_webview.goToIndex(0)}\\\" class=\\\"material-icons hvr-glow\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (196:16) <Icon on:click="{()=>window.nist_webview.reload()}" class="material-icons hvr-glow">
+// (198:16) <Icon on:click="{()=>window.nist_webview.reload()}" class="material-icons hvr-glow">
 function create_default_slot_3$6(ctx) {
 	let t;
 
@@ -40593,14 +40597,14 @@ function create_default_slot_3$6(ctx) {
 		block,
 		id: create_default_slot_3$6.name,
 		type: "slot",
-		source: "(196:16) <Icon on:click=\\\"{()=>window.nist_webview.reload()}\\\" class=\\\"material-icons hvr-glow\\\">",
+		source: "(198:16) <Icon on:click=\\\"{()=>window.nist_webview.reload()}\\\" class=\\\"material-icons hvr-glow\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (198:16) <Icon on:click="{()=>{if(window.nist_webview.canGoBack()) {window.nist_webview.goBack()}}}" class="material-icons hvr-glow">
+// (199:16) <Icon on:click="{()=>{if(window.nist_webview.canGoBack()) {window.nist_webview.goBack()}}}" class="material-icons hvr-glow">
 function create_default_slot_2$a(ctx) {
 	let t;
 
@@ -40620,14 +40624,14 @@ function create_default_slot_2$a(ctx) {
 		block,
 		id: create_default_slot_2$a.name,
 		type: "slot",
-		source: "(198:16) <Icon on:click=\\\"{()=>{if(window.nist_webview.canGoBack()) {window.nist_webview.goBack()}}}\\\" class=\\\"material-icons hvr-glow\\\">",
+		source: "(199:16) <Icon on:click=\\\"{()=>{if(window.nist_webview.canGoBack()) {window.nist_webview.goBack()}}}\\\" class=\\\"material-icons hvr-glow\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (199:16) <Icon on:click="{()=>{if(window.nist_webview.canGoForward()) {window.nist_webview.goForward()}}}" class="material-icons hvr-glow">
+// (200:16) <Icon on:click="{()=>{if(window.nist_webview.canGoForward()) {window.nist_webview.goForward()}}}" class="material-icons hvr-glow">
 function create_default_slot_1$c(ctx) {
 	let t;
 
@@ -40647,14 +40651,14 @@ function create_default_slot_1$c(ctx) {
 		block,
 		id: create_default_slot_1$c.name,
 		type: "slot",
-		source: "(199:16) <Icon on:click=\\\"{()=>{if(window.nist_webview.canGoForward()) {window.nist_webview.goForward()}}}\\\" class=\\\"material-icons hvr-glow\\\">",
+		source: "(200:16) <Icon on:click=\\\"{()=>{if(window.nist_webview.canGoForward()) {window.nist_webview.goForward()}}}\\\" class=\\\"material-icons hvr-glow\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (187:4) <div style="margin-right: 1em;" slot="plotContainer">
+// (189:4) <div style="margin-right: 1em;" slot="plotContainer">
 function create_plotContainer_slot$1(ctx) {
 	let div0;
 	let div1;
@@ -40662,12 +40666,13 @@ function create_plotContainer_slot$1(ctx) {
 	let div2;
 	let updating_currentLocation;
 	let t1;
-	let div4;
+	let div5;
 	let div3;
 	let t2;
 	let t3;
 	let t4;
 	let t5;
+	let div4;
 	let webview;
 	let webview_src_value;
 	let current;
@@ -40745,7 +40750,7 @@ function create_plotContainer_slot$1(ctx) {
 			div2 = element("div");
 			create_component(reportlayout.$$.fragment);
 			t1 = space();
-			div4 = element("div");
+			div5 = element("div");
 			div3 = element("div");
 			create_component(icon0.$$.fragment);
 			t2 = space();
@@ -40755,30 +40760,36 @@ function create_plotContainer_slot$1(ctx) {
 			t4 = space();
 			create_component(icon3.$$.fragment);
 			t5 = space();
+			div4 = element("div");
 			webview = element("webview");
 			attr_dev(div1, "id", "mplot");
-			attr_dev(div1, "class", "svelte-7yzxv2");
-			add_location(div1, file$P, 188, 8, 8215);
-			attr_dev(div2, "class", "animated fadeIn hide svelte-7yzxv2");
+			attr_dev(div1, "class", "svelte-1fuwsex");
+			add_location(div1, file$P, 190, 8, 8148);
+			attr_dev(div2, "class", "animated fadeIn hide svelte-1fuwsex");
+			set_style(div2, "flex-direction", "column ");
 			toggle_class(div2, "active", /*graphPlotted*/ ctx[3]);
-			add_location(div2, file$P, 189, 8, 8247);
+			add_location(div2, file$P, 191, 8, 8180);
 			set_style(div3, "margin", "1em");
-			attr_dev(div3, "class", "svelte-7yzxv2");
-			add_location(div3, file$P, 193, 12, 8516);
+			attr_dev(div3, "class", "svelte-1fuwsex");
+			add_location(div3, file$P, 194, 12, 8521);
 			if (webview.src !== (webview_src_value = /*nist_url*/ ctx[12])) attr_dev(webview, "src", webview_src_value);
 			attr_dev(webview, "id", "nist_webview");
 			set_style(webview, "height", "50vh");
-			attr_dev(webview, "class", "svelte-7yzxv2");
-			add_location(webview, file$P, 200, 12, 9135);
-			attr_dev(div4, "class", "hide animated fadeIn svelte-7yzxv2");
-			set_style(div4, "margin-top", "1em");
-			set_style(div4, "display", "none");
-			toggle_class(div4, "active", /*toggleRow2*/ ctx[9]);
-			add_location(div4, file$P, 191, 8, 8402);
+			attr_dev(webview, "class", "svelte-1fuwsex");
+			add_location(webview, file$P, 202, 16, 9172);
+			attr_dev(div4, "class", " svelte-1fuwsex");
+			add_location(div4, file$P, 201, 12, 9140);
+			attr_dev(div5, "class", "hide animated fadeIn svelte-1fuwsex");
+			set_style(div5, "margin-top", "1em");
+			set_style(div5, "display", "none");
+			set_style(div5, "flex-direction", "column");
+			set_style(div5, "paddin-bottom", "3em");
+			toggle_class(div5, "active", /*toggleRow2*/ ctx[9]);
+			add_location(div5, file$P, 193, 8, 8366);
 			set_style(div0, "margin-right", "1em");
 			attr_dev(div0, "slot", "plotContainer");
-			attr_dev(div0, "class", "svelte-7yzxv2");
-			add_location(div0, file$P, 186, 4, 8150);
+			attr_dev(div0, "class", "svelte-1fuwsex");
+			add_location(div0, file$P, 188, 4, 8083);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -40787,8 +40798,8 @@ function create_plotContainer_slot$1(ctx) {
 			append_dev(div0, div2);
 			mount_component(reportlayout, div2, null);
 			append_dev(div0, t1);
-			append_dev(div0, div4);
-			append_dev(div4, div3);
+			append_dev(div0, div5);
+			append_dev(div5, div3);
 			mount_component(icon0, div3, null);
 			append_dev(div3, t2);
 			mount_component(icon1, div3, null);
@@ -40796,7 +40807,8 @@ function create_plotContainer_slot$1(ctx) {
 			mount_component(icon2, div3, null);
 			append_dev(div3, t4);
 			mount_component(icon3, div3, null);
-			append_dev(div4, t5);
+			append_dev(div5, t5);
+			append_dev(div5, div4);
 			append_dev(div4, webview);
 			current = true;
 		},
@@ -40849,7 +40861,7 @@ function create_plotContainer_slot$1(ctx) {
 			}
 
 			if (dirty[0] & /*toggleRow2*/ 512) {
-				toggle_class(div4, "active", /*toggleRow2*/ ctx[9]);
+				toggle_class(div5, "active", /*toggleRow2*/ ctx[9]);
 			}
 		},
 		i: function intro(local) {
@@ -40883,14 +40895,14 @@ function create_plotContainer_slot$1(ctx) {
 		block,
 		id: create_plotContainer_slot$1.name,
 		type: "slot",
-		source: "(187:4) <div style=\\\"margin-right: 1em;\\\" slot=\\\"plotContainer\\\">",
+		source: "(189:4) <div style=\\\"margin-right: 1em;\\\" slot=\\\"plotContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (159:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>
+// (161:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>
 function create_default_slot$k(ctx) {
 	let t;
 
@@ -40913,7 +40925,7 @@ function create_default_slot$k(ctx) {
 		block,
 		id: create_default_slot$k.name,
 		type: "slot",
-		source: "(159:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>",
+		source: "(161:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>",
 		ctx
 	});
 
@@ -41017,9 +41029,9 @@ function instance$U($$self, $$props, $$invalidate) {
 	let $modalContent;
 	let $activated;
 	validate_store(modalContent, "modalContent");
-	component_subscribe($$self, modalContent, $$value => $$invalidate(24, $modalContent = $$value));
+	component_subscribe($$self, modalContent, $$value => $$invalidate(23, $modalContent = $$value));
 	validate_store(activated, "activated");
-	component_subscribe($$self, activated, $$value => $$invalidate(25, $activated = $$value));
+	component_subscribe($$self, activated, $$value => $$invalidate(24, $activated = $$value));
 	let filetype = "mass", id = "Masspec", fileChecked = [];
 	let currentLocation = localStorage[`${filetype}_location`] || "";
 	let openShell = false, graphPlotted = false;
@@ -41028,7 +41040,7 @@ function instance$U($$self, $$props, $$invalidate) {
 	let toggleRow1 = false;
 
 	let selected_file = "", peak_prominance = 3, peak_width = 2, peak_height = 40;
-	let style1 = "width:7em; height:2.5em; margin-right:0.5em";
+	let style = "width:7em; height:3.5em; margin-right:0.5em";
 
 	// NIST 
 	let toggleRow2 = false,
@@ -41281,11 +41293,11 @@ function instance$U($$self, $$props, $$invalidate) {
 		if ("peak_prominance" in $$props) $$invalidate(6, peak_prominance = $$props.peak_prominance);
 		if ("peak_width" in $$props) $$invalidate(7, peak_width = $$props.peak_width);
 		if ("peak_height" in $$props) $$invalidate(8, peak_height = $$props.peak_height);
-		if ("style1" in $$props) $$invalidate(16, style1 = $$props.style1);
+		if ("style" in $$props) $$invalidate(16, style = $$props.style);
 		if ("toggleRow2" in $$props) $$invalidate(9, toggleRow2 = $$props.toggleRow2);
 		if ("nist_molecule" in $$props) $$invalidate(10, nist_molecule = $$props.nist_molecule);
 		if ("nist_formula" in $$props) $$invalidate(11, nist_formula = $$props.nist_formula);
-		if ("style2" in $$props) $$invalidate(17, style2 = $$props.style2);
+		if ("style2" in $$props) style2 = $$props.style2;
 		if ("nist_url" in $$props) $$invalidate(12, nist_url = $$props.nist_url);
 		if ("logScale" in $$props) $$invalidate(13, logScale = $$props.logScale);
 		if ("massfiles" in $$props) massfiles = $$props.massfiles;
@@ -41330,8 +41342,7 @@ function instance$U($$self, $$props, $$invalidate) {
 		logScale,
 		filetype,
 		id,
-		style1,
-		style2,
+		style,
 		set_nist_url,
 		plotData,
 		linearlogCheck,
@@ -41340,6 +41351,7 @@ function instance$U($$self, $$props, $$invalidate) {
 		nist_molecule_formula,
 		$modalContent,
 		$activated,
+		style2,
 		click_handler,
 		click_handler_1,
 		click_handler_2,
