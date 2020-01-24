@@ -15,21 +15,16 @@
     import { Toast } from 'svelma'
     import {activated, modalContent, modalTitle} from "./Modal.svelte"
     
-    import {onMount} from "svelte"
+    import {onMount, afterUpdate, beforeUpdate} from "svelte"
 
     ///////////////////////////////////////////////////////////////////////////
 
     export let fileChecked = [],  currentLocation = "", filetype = ""
 
-    // $: refresh ? getfiles() : console.log("folder refresh Idle mode") 
-    let parentFolder = path.basename(currentLocation)
     let original_location = currentLocation
-    let files = []
-    let otherfolders = []
-    let selectAll=false;
-    let showfiles = true;
-    let original_files = [];
+    let files = [], otherfolders = [], selectAll=false, showfiles = true, original_files = [];
     let searchKey = "";
+    $: parentFolder = path.basename(currentLocation)
 
     const searchfile = () => {
         console.log(searchKey)
@@ -46,9 +41,8 @@
             let typefiles = allfiles.filter(file=>file.endsWith(filetype))
             original_files = files = typefiles.map(file=>path.basename(file))
             otherfolders = folderfile.filter(file=>fs.lstatSync(file).isDirectory()).map(file=>path.basename(file))
-            console.log("Folder updated for ", filetype, "\n", files)
+            original_location = currentLocation
             if (toast) {createToast("Files updated")}
-            // refresh = false;
         } catch (err) { 
             $modalContent = err;
             $activated = true;
@@ -57,19 +51,20 @@
 
     const changeDirectory = (goto) => {
         currentLocation = path.resolve(currentLocation, goto)
-        parentFolder = path.basename(currentLocation)
         getfiles()
     }
+    onMount(()=> {if(currentLocation !== "") {getfiles(); console.log("onMount Updating location for ", filetype)}} )
 
-    onMount(()=> {if(currentLocation !== "") getfiles()} )
-
-
+    afterUpdate(() => {
+        if (original_location !== currentLocation) {getfiles(); console.log("Updating location for ", filetype)}
+    });
 </script>
 
-
 <style>
+
     .filelist { max-height: calc(100vh - 30em); overflow-y: auto; }
     .folderfile-list {max-height: calc(100vh - 20em); overflow-y: auto;}
+
     .align {display: flex; align-items: center;}
     .center {justify-content: center;}
     .browseIcons {cursor: pointer;}
@@ -78,13 +73,16 @@
 
 <div class="align center browseIcons">
     <Icon class="material-icons" on:click="{()=>changeDirectory(original_location)}">home</Icon>
+    
     <Icon class="material-icons" on:click="{()=>{getfiles(true)}}">refresh</Icon>
     <Icon class="material-icons" on:click="{()=>changeDirectory("../")}">arrow_back</Icon>
 </div>
+
 <Textfield on:keyup={searchfile} style="margin-bottom:1em;" bind:value={searchKey} label="Seach" />
 
 <div class="align center">
     <FormField>
+
         <Switch bind:checked={selectAll} on:change="{()=>selectAll ? fileChecked = [...files] : fileChecked = []}"/>
         <span slot="label">Select All</span>
     </FormField>

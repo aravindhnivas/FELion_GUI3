@@ -30,16 +30,17 @@
 
     let filetype="felix", id="Normline", fileChecked=[], delta=1, toggleRow=false;
     $: felixfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
-    let plottedFiles = [], theoryLocation = ""
-    let currentLocation = theoryLocation= localStorage[`${filetype}_location`] || ""
+    let plottedFiles = []
+    let currentLocation = localStorage[`${filetype}_location`] || ""
     
     $: console.log(`${filetype} Update: \n${currentLocation}`)
 
     ///////////////////////////////////////////////////////////////////////
 
     // Theory file
-    let sigma = 20, scale=1, thoeryfiles = [], show_theoryplot = false, theoryRefresh = true, showTheoryFiles = false
-    $: console.log("Theory files: ", thoeryfiles, theoryLocation)
+    let sigma = 20, scale=1, thoeryfiles = [], show_theoryplot = false,  showTheoryFiles = false,
+     theoryLocation = currentLocation
+    $: console.log("Theory files: ", thoeryfiles)
     $: console.log("Theory Location", theoryLocation)
 
     ///////////////////////////////////////////////////////////////////////
@@ -60,6 +61,14 @@
 
     let show_dataTable_only_averaged = false, keepTable = true
 
+    //////// OPO Plot ///////////
+
+    let opoPlotted = false;
+
+
+
+    ///////////////////////////////////////////////////////////////////////////////////
+    
     const replot = () => {
     
         if (graphPlotted) {
@@ -79,12 +88,13 @@
         else if (filetype == "exp_fit") {if (index.length < 2) {
             target.classList.toggle("is-loading")
             return createToast("Range not found!!. Select a range using Box-select", "danger")
-        }}
+        }} else if (filetype == "opofile") {opoPlotted = true}
 
         let pyfileInfo = {
         
             felix: {pyfile:"normline.py" , args:[...felixfiles, delta]},
             exp_fit: {pyfile:"exp_gauss_fit.py" , args:[...felixfiles, overwrite_expfit, output_name, normMethod, currentLocation, ...index]},
+            opofile: {pyfile:"oposcan.py" , args:[...felixfiles, "run"]},
         }
 
         let {pyfile, args} = pyfileInfo[filetype]
@@ -111,7 +121,6 @@
         }
         createToast("Process Started")
         py.stdout.on("data", data => {
-
             console.log("Ouput from python")
             let dataReceived = data.toString("utf8")
             console.log(dataReceived)
@@ -127,10 +136,11 @@
         py.on("close", () => {
 
             if (!error_occured_py) {
+
                 try {
-                
                     let dataFromPython = fs.readFileSync(path.join(localStorage["pythonscript"], "data.json"))
                     dataFromPython = JSON.parse(dataFromPython.toString("utf-8"))
+
                     console.log(dataFromPython)
 
                     if (filetype == "felix") {
@@ -257,6 +267,7 @@
                     } else if (filetype == "opofile") {
                         plot("OPO spectrum", "Wavenumber (cm-1)", "Counts", dataFromPython["real"], "opoplot");
                         plot("OPO spectrum: Depletion (%)", "Wavenumber (cm-1)", "Depletion (%)", dataFromPython["relative"], "opoRelPlot");
+                        
                     } else if (filetype == "theory") {
 
                         let normethod = this.args[0];
@@ -396,7 +407,7 @@
             <button class="button is-link" on:click="{(e)=>plotData(e, "felix")}">FELIX Plot</button>
             <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click="{()=>toggleRow = !toggleRow}">Add Theory</button>
             <button class="button is-link">Open in Matplotlib</button>
-            <button class="button is-link" on:click="{(e)=>plotData(e, "opo")}">OPO</button>
+            <button class="button is-link" on:click="{(e)=>plotData(e, "opofile")}">OPO</button>
             <Textfield style="width:7em" variant="outlined" bind:value={delta} label="Delta" />
             <IconButton toggle bind:pressed={openShell}>
                 <Icon class="material-icons">code</Icon>
@@ -432,6 +443,12 @@
         <div id="saPlot"></div>
         <div id="avgplot"></div>
 
+        {#if opoPlotted}
+            
+            <div id="opoplot" transition:fade></div>
+            <div id="opoRelPlot" transition:fade></div>
+        {/if}
+
         <!-- <div class="is-divider" data-content="Graph END"></div> -->
         {#if graphPlotted}
             
@@ -466,7 +483,7 @@
                     </Head>
                     <Body>
                         {#if show_dataTable_only_averaged}
-                            {#each dataTable_avg as table, index}
+                            {#each dataTable_avg as table, index (table.id)}
                                 <Row>
                                     <Cell>Line #{index}</Cell>
                                     <Cell>{table.freq}</Cell>
@@ -476,7 +493,7 @@
                                 </Row>
                             {/each}
                         {:else}
-                            {#each dataTable as table}
+                            {#each dataTable as table (table.id)}
                                 <Row style="background-color: {table.color};">
                                     <Cell>{table.name}</Cell>
                                     <Cell>{table.freq}</Cell>

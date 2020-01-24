@@ -67,7 +67,7 @@
 
     .right > div {display: none;}
     .active {display: block!important; }
-
+    .right .title {letter-spacing: 0.1em; text-transform: uppercase;}
 
 </style>
 
@@ -75,43 +75,41 @@
     <div class="columns">
 
         <div class="column side-panel is-2-widescreen is-3-desktop is-4-tablet box adjust-right">
-        
             <div class="container left">
                 <div class="title nav hvr-glow" class:clicked={selected==="Configuration"} on:click={navigate}>Configuration</div>
                 <div class="title nav hvr-glow" class:clicked={selected==="Update"} on:click={navigate}>Update</div>
                 <div class="title nav hvr-glow" class:clicked={selected==="About"} on:click={navigate}>About</div>
             </div>
-
         </div>
 
         <div class="column main-panel box">
             <div class="container right">
 
                 <!-- Configuration -->
-                <div class="content animated fadeIn" class:active={selected==="Configuration"} id="Configuration">
+                <div class="content animated fadeIn" class:active={selected==="Configuration"}>
                     <h1 class="title">Configuration</h1>
-                    <hr>
                     <Textfield style="margin-bottom:1em;" bind:value={pythonpath} label="Python path" />
                     <Textfield style="margin-bottom:1em;" bind:value={pythonscript} label="Python script path" />
+                    
                     <button class="button is-link" on:click={resetlocation}>Reset</button>
                     <button class="button is-link" on:click={savelocation}>Save</button>
 
                 </div>
 
                 <!-- Update -->
-                <div class="animated fadeIn" class:active={selected==="Update"} id="Configuration">
+                <div class="content animated fadeIn" class:active={selected==="Update"}>
                     <h1 class="title">Update</h1>
-                    <hr>
-
+                    <div class="subtitle">Current Version {localStorage.version}</div>
                 </div>
 
                 <!-- About -->
-                <div class="animated fadeIn" class:active={selected==="About"} id="Configuration">
+                <div class="content animated fadeIn" class:active={selected==="About"}>
                     <h1 class="title">About</h1>
-                    <hr>
 
                 </div>
+                
             </div>
         </div>
+
     </div>
 </section>
