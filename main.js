@@ -8,7 +8,7 @@ function createWindow () {
     height: 600,
     frame: false,
     webPreferences: {
-      nodeIntegration: true, nativeWindowOpen: true
+      nodeIntegration: true, nativeWindowOpen: true, webviewTag: true
     },
 
     icon: 'icon.png',
