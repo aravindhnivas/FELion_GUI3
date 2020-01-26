@@ -2,7 +2,7 @@
     import Dialog, {Title, Content, Actions, InitialFocus} from '@smui/dialog';
     import Button, {Label} from '@smui/button';
     import { createEventDispatcher } from 'svelte';
-    export let dialog="", id="dialog", label1="Yes", label2="Cancel", title, content;
+    export let dialog="", id="dialog", label1="Yes", label2="Cancel", title="", content="";
     const dispatch = createEventDispatcher();
     function sendAction(e) { dispatch('response', { action: e.detail.action }); }
 

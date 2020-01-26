@@ -136,11 +136,10 @@
     }
 
     // Linearlog check
+
     const linearlogCheck = (event) => {
-        let layout = {
-            yaxis: { title: "Counts", type: logScale ? "log" : null }
-        }
-        Plotly.relayout("mplot", layout)
+        let layout = { yaxis: { title: "Counts", type: logScale ? "log" : null } }
+        if(graphPlotted) Plotly.relayout("mplot", layout)
     };
 
 </script>
