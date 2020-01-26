@@ -99,19 +99,24 @@
 
 
 <section class="section" id="Home">
-
   <AnimateBox>
+
     <h1 class="ml5">
+      
       <span class="text-wrapper">
+      
         <span class="line line1" />
+      
         <span class="letters letters-left">FELion</span>
         <span class="letters letters-right">Spectrum Analyser</span>
         <span class="line line2" />
+      
       </span>
       <br />
-      <span class="letters letters-subtitle">
-        To analyse FELIX data for FELion Instrument
-      </span>
+      
+      <span class="letters letters-subtitle"> To analyse FELIX data for FELion Instrument </span>
+
     </h1>
+  
   </AnimateBox>
 </section>

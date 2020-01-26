@@ -4,6 +4,8 @@
     import Textfield from '@smui/textfield';
     import {createToast} from "../components/Layout.svelte"
     import {onMount} from "svelte"
+    import CustomDialog from "../components/CustomDialog.svelte"
+
     ///////////////////////////////////////////////////////
 
     let selected = "Configuration"
@@ -42,12 +44,17 @@
 
     }
 
+    let pythonpathCheck;
     onMount(()=>{
         checkPython()
         .then(res=>{ console.log("Python path is valid")})
-        .catch(err=>window.alert("Set python path is not valid. Change it in Settings --> Configuration") )
-
+        .catch(err=>pythonpathCheck.open() )
     })
+
+    const handlepythonPathCheck = () => {
+
+        console.log("Python path checking")
+    }
     
 </script>
 
@@ -70,6 +77,9 @@
     .right .title {letter-spacing: 0.1em; text-transform: uppercase;}
 
 </style>
+
+<CustomDialog id="pythonpath_Check" bind:dialog={pythonpathCheck} on:response={handlepythonPathCheck}
+    title={"Python path is not valid"} content={"Change it in Settings --> Configuration"} label1="Okay", label2="Cancel"/>
 
 <section class="section animated fadeIn" id="Settings" style="display:none">
     <div class="columns">

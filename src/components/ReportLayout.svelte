@@ -119,11 +119,11 @@
         })
 
         console.log("Combining HTML to write")
-        reportTitleContents += `\n<h1 class="notification is-${reportMethod}">${reportTitle}</h1>\n` 
+        reportTitleContents += `\n<div class="content"><h1 class="notification is-${reportMethod}">${reportTitle}</h1>\n` 
             + marked(reportComments)
             + imgList_HTML.toString()
             + tableData
-            + "\n<hr>\n"
+            + "\n<hr></div>\n"
 
         loadContent = getHTMLContent(reportTitleContents)
         reportComments = reportTitle = ""
