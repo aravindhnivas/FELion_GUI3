@@ -299,21 +299,12 @@
                         let color;
                         output_name === "averaged" ? color = "#513a8a80" : color = "#fafafa"
                         let id = dataFromPython["freq"];
-                        let prevId = ""
-
-                        if (dataTable.length >=1) prevId = _.nth(dataTable, -1).id
-
-                        dataTable = [...dataTable, {name: output_name, id:id, freq:freq, amp:amp, fwhm:fwhm, sig:sig, color:color}]
-                        
-                        if ( prevId !== "" && prevId == id ) {
-                            console.log("Resolving same Id bug for FELIX frequency table", dataTable)
-                            dataTable = _.dropRight(dataTable, 1)
-                            console.log("Resolved")
-                        }
-                        
-
+                        let newTable = {name: output_name, id:id, freq:freq, amp:amp, fwhm:fwhm, sig:sig, color:color}
+                        dataTable = _.uniqBy([...dataTable, newTable], "freq")
                         console.log("Line fitted")
+
                         createToast("Line fitted with gaussian function", "success")
+                    
                     }
                 
                 } catch (err) { $modalContent = err; $activated = true }
@@ -478,7 +469,7 @@
                     </Head>
                     <Body>
                         {#if show_dataTable_only_averaged}
-                            {#each dataTable_avg as table, index (table.id)}
+                            {#each dataTable_avg as table, index (table.freq)}
                                 <Row>
                                     <Cell>Line #{index}</Cell>
                                     <Cell>{table.freq}</Cell>
@@ -488,7 +479,7 @@
                                 </Row>
                             {/each}
                         {:else}
-                            {#each dataTable as table (table.id)}
+                            {#each dataTable as table (table.freq)}
                                 <Row style="background-color: {table.color};">
                                     <Cell>{table.name}</Cell>
                                     <Cell>{table.freq}</Cell>

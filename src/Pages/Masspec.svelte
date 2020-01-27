@@ -153,7 +153,6 @@
     .active {display: flex!important;}
     .hide {display: none;}
     .align {display: flex; align-items: center;}
-
 </style>
 
 
