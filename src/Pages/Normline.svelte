@@ -78,7 +78,6 @@
             let {data, layout} = normMethod_datas[normMethod]
             Plotly.react("avgplot",data, layout, { editable: true })
         }
-
     }
     
     
@@ -104,13 +103,12 @@
             if (index.length < 2) {
                 return createToast("Range not found!!. Select a range using Box-select", "danger")
         }}
-
         else if (filetype == "opofile") {opoPlotted = true}
         
         else if (filetype == "get_err") {if (lineData_list.length<2) return createToast("Not sufficient lines collected!", "danger") }
+
         let target = event.target
         target.classList.toggle("is-loading")
-
         let pyfileInfo = {
         
             felix: {pyfile:"normline.py" , args:[...felixfiles, delta]},
