@@ -108,17 +108,22 @@
 
         let target = event.target
         target.classList.toggle("is-loading")
+
         let pyfileInfo = {
         
             felix: {pyfile:"normline.py" , args:[...felixfiles, delta]},
             exp_fit: {pyfile:"exp_gauss_fit.py" , args:[...felixfiles, overwrite_expfit, output_name, normMethod, currentLocation, ...index]},
-            
+        
             opofile: {pyfile:"oposcan.py" , args:[...felixfiles, "run"]},
             
             theory: {pyfile:"theory.py" , args:[...theoryfiles, normMethod, sigma, scale, theoryLocation, "run"]},
             get_err: {pyfile:"weighted_error.py" , args:lineData_list},
-        }
+            double_peak: {pyfile:"double_gaussian.py" , 
+                args:[amp1, amp2, cen1, cen2, sig1, sig2, ...felixfiles, overwrite_expfit, output_name, 
+                    normMethod, currentLocation, ...index, 
+                    ]},
 
+        }
         let {pyfile, args} = pyfileInfo[filetype]
         let py;
 
@@ -152,10 +157,9 @@
             if (!error_occured_py) {
 
                 try {
-                    
-                    
                     let dataFromPython = fs.readFileSync(path.join(localStorage["pythonscript"], "data.json"))
                     dataFromPython = JSON.parse(dataFromPython.toString("utf-8"))
+
                     console.log(dataFromPython)
 
                     if (filetype == "felix") {
@@ -347,6 +351,12 @@
                         dataTable = [...dataTable,  data1, data2]
                         dataTable_avg = [...dataTable_avg, data1, data2]
                         lineData_list = []
+                    } else if (filetype == "double_peak") {
+
+                        Plotly.addTraces("avgplot", dataFromPython["peak"])
+                        // Plotly.addTraces("avgplot", dataFromPython["peak2"])
+
+                        console.log("Double peak calculation")
                     }
                 
                 } catch (err) { $modalContent = err; $activated = true }
@@ -371,7 +381,6 @@
         line = []
         ready_to_fit = false
     }
-
 
     const clearLastPeak = (e) => {
 
@@ -398,9 +407,9 @@
         console.log("Normline mounted")
     })
 
-    let collectData = false;
+    let collectData = false, lineData_list = [], toggleDoubleGaussRow = false
 
-    let lineData_list = []
+    let amp1=0, amp2=0, cen1=0, cen2=0, sig1=5, sig2=5
 
 </script>
 
@@ -493,12 +502,22 @@
                 <CustomSwitch style="margin: 0 1em;" bind:selected={overwrite_expfit} label="Overwrite"/>
                 <CustomSwitch style="margin: 0 1em;" bind:selected={collectData} label="Collect"/>
                 <button class="button is-link" on:click="{(e)=>plotData(e, "exp_fit")}">Exp Fit.</button>
-                <!-- <CustomCheckbox bind:selected={double_peak} label="Double" /> -->
+                <button class="button is-link" on:click="{(e)=>toggleDoubleGaussRow = !toggleDoubleGaussRow}">Double Gauss.</button>
                 <button class="button is-warning" on:click={clearLastPeak}>Clear Last</button>
                 <button class="button is-danger" on:click={clearAllPeak}>Clear All</button>
                 <button class="button is-link" on:click="{(e)=>plotData(e, "get_err")}">Weighted Mean</button>
                 <button class="button is-warning" on:click="{(e)=>{lineData_list = []; createToast("Line collection restted", "warning")}}">Reset</button>
-                
+
+            </div>
+
+            <div class="align content animated fadeIn hide" class:active={toggleDoubleGaussRow}>
+                <Textfield style="width:7em; margin-right:0.5em;" bind:value={amp1} label="Amp1" />
+                <Textfield style="width:7em; margin-right:0.5em;" bind:value={amp2} label="Amp2" />
+                <Textfield style="width:7em; margin-right:0.5em;" bind:value={sig1} label="Sigma1" />
+                <Textfield style="width:7em; margin-right:0.5em;" bind:value={sig2} label="Sigma2" />
+                <Textfield style="width:7em; margin-right:0.5em;" bind:value={cen1} label="Cen1" />
+                <Textfield style="width:7em; margin-right:0.5em;" bind:value={cen2} label="Cen2" />
+                <button class="button is-link" on:click="{(e)=>plotData(e, "double_peak")}">Submit</button>
             </div>
 
             <!-- Frequency table list -->

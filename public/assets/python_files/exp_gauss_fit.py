@@ -4,19 +4,19 @@ import sys
 
 # Data analysis
 import numpy as np
-from scipy.optimize import curve_fit
+# from scipy.optimize import curve_fit
 
 # FELion module
 from FELion_definitions import gauss_fit, read_dat_file
 from FELion_constants import colors 
 from FELion_definitions import sendData
 
-def _2gaussian(x, amp1,cen1,sigma1, amp2,cen2,sigma2):
-    return amp1*(1/(sigma1*(np.sqrt(2*np.pi))))*(np.exp((-1.0/2.0)*(((x-cen1)/sigma1)**2))) + \
-            amp2*(1/(sigma2*(np.sqrt(2*np.pi))))*(np.exp((-1.0/2.0)*(((x-cen2)/sigma2)**2)))
+# def _2gaussian(x, amp1,cen1,sigma1, amp2,cen2,sigma2):
+#     return amp1*(1/(sigma1*(np.sqrt(2*np.pi))))*(np.exp((-1.0/2.0)*(((x-cen1)/sigma1)**2))) + \
+#             amp2*(1/(sigma2*(np.sqrt(2*np.pi))))*(np.exp((-1.0/2.0)*(((x-cen2)/sigma2)**2)))
 
-def _1gaussian(x, amp1,cen1,sigma1):
-    return amp1*(1/(sigma1*(np.sqrt(2*np.pi))))*(np.exp((-1.0/2.0)*(((x-cen1)/sigma1)**2)))
+# def _1gaussian(x, amp1,cen1,sigma1):
+#     return amp1*(1/(sigma1*(np.sqrt(2*np.pi))))*(np.exp((-1.0/2.0)*(((x-cen1)/sigma1)**2)))
 
 def exp_fit(location, norm_method, start_wn, end_wn, output_filename, 
     overwrite=False, fullfiles=None, tkplot=False, getvalue=False):
@@ -81,7 +81,6 @@ def exp_fit(location, norm_method, start_wn, end_wn, output_filename,
     else:
         with open(expfile, "a") as f:
             f.write(f"{line_freq_fit:.4f}\t{uline_freq.std_dev:.4f}\t{sigma:.4f}\t{usigma.std_dev:.4f}\t{fwhm:.4f}\t{ufwhm.std_dev:.4f}\t{amplitude:.4f}\t{uamplitude.std_dev:.4f}\n")
-
     sendData(data)
 
 if __name__ == "__main__":
