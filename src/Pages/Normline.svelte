@@ -25,8 +25,9 @@
     import Checkbox from '@smui/checkbox';
 
     import FormField from '@smui/form-field';
-    const {BrowserWindow} = remote
 
+    const {BrowserWindow} = remote
+    import {onMount} from "svelte"
    ///////////////////////////////////////////////////////////////////////
 
     let filetype="felix", id="Normline", fileChecked=[], delta=1, toggleRow=false;
@@ -59,7 +60,8 @@
 
     let dataTableHead = ["Filename", "Frequency (cm-1)", "Amplitude", "FWHM", "Sigma"]
     let dataTable = []
-    $: dataTable_avg = dataTable.filter(data=>data.name === "averaged")
+    let dataTable_avg = [], line_index_count = 0
+
     $: console.log("dataTable", dataTable)
     $: console.log("dataTable_avg", dataTable_avg)
 
@@ -69,15 +71,17 @@
     let opoPlotted = false;
 
     ///////////////////////////////////////////////////////////////////////////////////
-    const replot = () => {
-    
-        if (graphPlotted) {
-            let {data, layout} = normMethod_datas[normMethod]
 
+    const replot = () => {
+        if (graphPlotted) {
+         
+            let {data, layout} = normMethod_datas[normMethod]
             Plotly.react("avgplot",data, layout, { editable: true })
         }
-    }
 
+    }
+    
+    
     function plotData(event=null, filetype="felix", general=null){
 
         if (fileChecked.length === 0) {return createToast("No files selected", "danger")}
@@ -94,21 +98,28 @@
             createToast("General process sent. Expect an response soon...")
             return;
         }
+        if (filetype == "felix") {graphPlotted = false, output_name = "averaged"}
+        else if (filetype == "exp_fit") {
 
+            if (index.length < 2) {
+                return createToast("Range not found!!. Select a range using Box-select", "danger")
+        }}
+
+        else if (filetype == "opofile") {opoPlotted = true}
+        
+        else if (filetype == "get_err") {if (lineData_list.length<2) return createToast("Not sufficient lines collected!", "danger") }
         let target = event.target
         target.classList.toggle("is-loading")
 
-        if (filetype == "felix") {graphPlotted = false, output_name = "averaged"}
-        else if (filetype == "exp_fit") {if (index.length < 2) {
-            target.classList.toggle("is-loading")
-            return createToast("Range not found!!. Select a range using Box-select", "danger")
-        }} else if (filetype == "opofile") {opoPlotted = true}
-
         let pyfileInfo = {
+        
             felix: {pyfile:"normline.py" , args:[...felixfiles, delta]},
             exp_fit: {pyfile:"exp_gauss_fit.py" , args:[...felixfiles, overwrite_expfit, output_name, normMethod, currentLocation, ...index]},
+            
             opofile: {pyfile:"oposcan.py" , args:[...felixfiles, "run"]},
+            
             theory: {pyfile:"theory.py" , args:[...theoryfiles, normMethod, sigma, scale, theoryLocation, "run"]},
+            get_err: {pyfile:"weighted_error.py" , args:lineData_list},
         }
 
         let {pyfile, args} = pyfileInfo[filetype]
@@ -123,8 +134,12 @@
         }
         createToast("Process Started")
         py.stdout.on("data", data => {
+            
             console.log("Ouput from python")
+            
+            
             let dataReceived = data.toString("utf8")
+
             console.log(dataReceived)
         });
 
@@ -138,12 +153,12 @@
         py.on("close", () => {
 
             if (!error_occured_py) {
-
                 try {
                     let dataFromPython = fs.readFileSync(path.join(localStorage["pythonscript"], "data.json"))
                     dataFromPython = JSON.parse(dataFromPython.toString("utf-8"))
-
+                    
                     console.log(dataFromPython)
+
                     if (filetype == "felix") {
 
                         line = []
@@ -286,25 +301,53 @@
                             ylabel, [dataFromPython["averaged"], ...theoryData],
                             "exp-theory-plot"
                         )
+
                         show_theoryplot = true
                     } else if (filetype == "exp_fit") {
-
                         Plotly.addTraces("avgplot", dataFromPython["fit"])
+
+                        
+                        
                         line = [...line, ...dataFromPython["line"]]
                         Plotly.relayout("avgplot", { shapes: line })
 
                         annotations = [...annotations, dataFromPython["annotations"]]
                         Plotly.relayout("avgplot", { annotations: annotations })
+                        
                         let [freq, amp, fwhm, sig] = dataFromPython["table"].split(", ")
-                        let color;
-                        output_name === "averaged" ? color = "#513a8a80" : color = "#fafafa"
-                        let id = dataFromPython["freq"];
-                        let newTable = {name: output_name, id:id, freq:freq, amp:amp, fwhm:fwhm, sig:sig, color:color}
-                        dataTable = _.uniqBy([...dataTable, newTable], "freq")
-                        console.log("Line fitted")
 
+                        let color = "#fafafa";
+                        if (output_name === "averaged") {
+                            color = "#452f7da8"
+                            dataTable_avg = [...dataTable_avg, {name: `Line #${line_index_count}`, id:freq, freq:freq, amp:amp, fwhm:fwhm, sig:sig, color:color}]
+
+                            line_index_count++
+                        } else {
+                            if (collectData) {
+                                console.log("Collecting lines")
+
+                                lineData_list = [...lineData_list, dataFromPython["for_weighted_error"]]
+                             }
+                        }
+                        
+                        let id = dataFromPython["freq"];
+                        let newTable = {name: output_name, id:freq, freq:freq, amp:amp, fwhm:fwhm, sig:sig, color:color}
+                        dataTable = _.uniqBy([...dataTable, newTable], "freq")
+                        
+                        console.log("Line fitted")
                         createToast("Line fitted with gaussian function", "success")
-                    
+                    } else if (filetype == "get_err") {
+                        console.log(dataFromPython)
+
+                        let arithmetic_mean = dataFromPython["mean"]
+                        let weighted_mean = dataFromPython["wmean"]
+                        
+                        let data1 = {name: "arithmetic_mean", id:`${arithmetic_mean}_1`, freq:arithmetic_mean, amp:"-", fwhm:"-", sig:"-", color:"#452f7da8"}
+                        
+                        let data2 = {name: "weighted_mean", id:`${weighted_mean}_2`, freq:weighted_mean, amp:"-", fwhm:"-", sig:"-", color:"#452f7da8"}
+                        dataTable = [...dataTable,  data1, data2]
+                        dataTable_avg = [...dataTable_avg, data1, data2]
+
                     }
                 
                 } catch (err) { $modalContent = err; $activated = true }
@@ -331,10 +374,11 @@
     }
 
 
-    const clearLastPeak = () => {
+    const clearLastPeak = (e) => {
 
         if (line.length > 0) {
-            //   delete_file_line()
+            
+            plotData(e, filetype="general", {args:[output_name, currentLocation], pyfile:"delete_fileLines.py"})
             dataTable = _.dropRight(dataTable, 1)
 
             Plotly.deleteTraces("avgplot", [-1])
@@ -347,10 +391,17 @@
         
         line = _.dropRight(line, 2)
         annotations = _.dropRight(annotations, 1)
-        // index = []
         Plotly.relayout("avgplot", { annotations: annotations, shapes: line })
         if (line.length === 0) {ready_to_fit = false}
     }
+
+    onMount(()=>{
+        console.log("Normline mounted")
+    })
+
+    let collectData = false;
+
+    let lineData_list = []
 
 </script>
 
@@ -438,12 +489,15 @@
 
         <div class="animated fadeIn hide" class:active={graphPlotted}>
             <!-- Pos-processing felix data -->
-            <div class="content" transition:fade>
+            <div class="align content" transition:fade>
                 <CustomSelect bind:picked={output_name} label="Output filename" options={["averaged", ...plottedFiles]}/>
-                <CustomSwitch style="margin: 0 1em; padding-bottom: 1em;" bind:selected={overwrite_expfit} label="Overwrite"/>
+                <CustomSwitch style="margin: 0 1em;" bind:selected={overwrite_expfit} label="Overwrite"/>
+                <CustomSwitch style="margin: 0 1em;" bind:selected={collectData} label="Collect"/>
                 <button class="button is-link" on:click="{(e)=>plotData(e, "exp_fit")}">Exp Fit.</button>
                 <button class="button is-warning" on:click={clearLastPeak}>Clear Last</button>
                 <button class="button is-danger" on:click={clearAllPeak}>Clear All</button>
+                <button class="button is-link" on:click="{(e)=>plotData(e, "get_err")}">Weighted Mean</button>
+                <button class="button is-warning" on:click="{(e)=>{lineData_list = []; createToast("Line collection restted", "warning")}}">Reset</button>
                 
             </div>
 
@@ -452,8 +506,10 @@
                 <div class="title notification is-link">Frequency table</div>
                 <CustomCheckbox bind:selected={show_dataTable_only_averaged} label="Only Averaged" />
                 <CustomCheckbox bind:selected={keepTable} label="Keep table" />
-                <button class="button is-warning" on:click="{()=>dataTable = window._.dropRight(dataTable, 1)}">Clear Last</button>
-                <button class="button is-danger" on:click="{()=>dataTable = []}">Clear Table</button>
+                <button class="button is-warning" 
+                    on:click="{()=>{dataTable = window._.dropRight(dataTable, 1); 
+                    if(show_dataTable_only_averaged){dataTable_avg = window._.dropRight(dataTable_avg, 3)}}}">Clear Last</button>
+                <button class="button is-danger" on:click="{()=>{dataTable=dataTable_avg=[]; line_index_count=0}}">Clear Table</button>
             </div>
 
             <!-- Data Table -->
@@ -469,9 +525,9 @@
                     </Head>
                     <Body>
                         {#if show_dataTable_only_averaged}
-                            {#each dataTable_avg as table, index (table.freq)}
+                            {#each dataTable_avg as table (table.id)}
                                 <Row>
-                                    <Cell>Line #{index}</Cell>
+                                    <Cell>{table.name}</Cell>
                                     <Cell>{table.freq}</Cell>
                                     <Cell>{table.amp}</Cell>
                                     <Cell>{table.fwhm}</Cell>
@@ -479,7 +535,7 @@
                                 </Row>
                             {/each}
                         {:else}
-                            {#each dataTable as table (table.freq)}
+                            {#each dataTable as table (table.id)}
                                 <Row style="background-color: {table.color};">
                                     <Cell>{table.name}</Cell>
                                     <Cell>{table.freq}</Cell>

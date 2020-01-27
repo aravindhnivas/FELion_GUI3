@@ -1,4 +1,3 @@
-
 # Importing Modules
 import json
 from pathlib import Path as pt
@@ -10,14 +9,11 @@ import numpy as np
 # FELion module
 from FELion_definitions import gauss_fit, read_dat_file
 from FELion_constants import colors 
-
 from FELion_definitions import sendData
 
 def exp_fit(location, norm_method, start_wn, end_wn, output_filename, overwrite=False, fullfiles=None, tkplot=False, getvalue=False):
-
     if location.name is "DATA": datfile_location = location.parent/"EXPORT"
     else: datfile_location = location/"EXPORT"
-
 
     readfile = f"{datfile_location}/{output_filename}.dat"
     wn, inten = read_dat_file(readfile, norm_method)
@@ -52,8 +48,8 @@ def exp_fit(location, norm_method, start_wn, end_wn, output_filename, overwrite=
     sigma = model.get_value(usigma)
 
     data = {
-
-        "freq":f"{uline_freq.nominal_value:.2f}", "table": f"{uline_freq:.2uP}, {uamplitude:.2uP}, {ufwhm:.2uP}, {usigma:.2uP}",
+        "freq":f"{uline_freq.nominal_value:.2f}", "table": f"{uline_freq:.2uP}, {uamplitude:.2uP}, {ufwhm:.2uP}, {usigma:.2uP}", 
+        "for_weighted_error":f"{uline_freq.nominal_value}, {uline_freq.std_dev}",
         "fit": {"x":list(wn), "y":list(fit_data), "name":f"{uline_freq:.2uP}; A: {uamplitude:.2uP}, {_del}: {ufwhm:.2uP}", "mode": "lines", "line": {"color":line_color}},
         "line": [
             {"type":"line", "x0":line_freq_fit, "x1":line_freq_fit, "y0":0, "y1":amplitude, "line":{"color":line_color}},
@@ -64,9 +60,12 @@ def exp_fit(location, norm_method, start_wn, end_wn, output_filename, overwrite=
             "showarrow": True, "arrowhead": 2, "ax": -25, "ay": -40
         }
     }
+
     if getvalue: return data, uline_freq, usigma, uamplitude, ufwhm, line_color
+
     filename = f"{output_filename}.expfit"
     expfile = datfile_location/filename
+
     if overwrite:
         with open(expfile, "w") as f:
             f.write(f"#Frequency\t#Freq_err\t#Sigma\t#Sigma_err\t#FWHM\t#FWHM_err\t#Amplitude\t#Amplitude_err\n")
@@ -74,7 +73,6 @@ def exp_fit(location, norm_method, start_wn, end_wn, output_filename, overwrite=
     else:
         with open(expfile, "a") as f:
             f.write(f"{line_freq_fit:.4f}\t{uline_freq.std_dev:.4f}\t{sigma:.4f}\t{usigma.std_dev:.4f}\t{fwhm:.4f}\t{ufwhm.std_dev:.4f}\t{amplitude:.4f}\t{uamplitude.std_dev:.4f}\n")
-    
     sendData(data)
 
 if __name__ == "__main__":
@@ -94,5 +92,5 @@ if __name__ == "__main__":
 
     if overwrite == "true": overwrite = True
     else: overwrite = False
-    
+
     exp_fit(location, norm_method, start_wn, end_wn, output_filename, overwrite, fullfiles)
