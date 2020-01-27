@@ -1,29 +1,35 @@
 # Importing Modules
-import json
 from pathlib import Path as pt
 import sys
 
 # Data analysis
 import numpy as np
+from scipy.optimize import curve_fit
 
 # FELion module
 from FELion_definitions import gauss_fit, read_dat_file
 from FELion_constants import colors 
 from FELion_definitions import sendData
 
-def exp_fit(location, norm_method, start_wn, end_wn, output_filename, overwrite=False, fullfiles=None, tkplot=False, getvalue=False):
+def _2gaussian(x, amp1,cen1,sigma1, amp2,cen2,sigma2):
+    return amp1*(1/(sigma1*(np.sqrt(2*np.pi))))*(np.exp((-1.0/2.0)*(((x-cen1)/sigma1)**2))) + \
+            amp2*(1/(sigma2*(np.sqrt(2*np.pi))))*(np.exp((-1.0/2.0)*(((x-cen2)/sigma2)**2)))
+
+def _1gaussian(x, amp1,cen1,sigma1):
+    return amp1*(1/(sigma1*(np.sqrt(2*np.pi))))*(np.exp((-1.0/2.0)*(((x-cen1)/sigma1)**2)))
+
+def exp_fit(location, norm_method, start_wn, end_wn, output_filename, 
+    overwrite=False, fullfiles=None, tkplot=False, getvalue=False):
+
     if location.name is "DATA": datfile_location = location.parent/"EXPORT"
     else: datfile_location = location/"EXPORT"
-
     readfile = f"{datfile_location}/{output_filename}.dat"
     wn, inten = read_dat_file(readfile, norm_method)
 
     if output_filename == "averaged": line_color = "black"
     else:
         index = fullfiles.index(output_filename)
-
         index = 2*index
-
         if index > len(colors): 
             index = (index - len(colors)) - 1
             line_color = f"rgb{colors[index]}"
@@ -37,7 +43,9 @@ def exp_fit(location, norm_method, start_wn, end_wn, output_filename, overwrite=
     inten = inten[index]
 
     _sig = "\u03C3"
+
     _del = "\u0394"
+    
 
     model = gauss_fit(wn, inten)
     fit_data, uline_freq, usigma, uamplitude, ufwhm = model.get_data()
@@ -73,12 +81,13 @@ def exp_fit(location, norm_method, start_wn, end_wn, output_filename, overwrite=
     else:
         with open(expfile, "a") as f:
             f.write(f"{line_freq_fit:.4f}\t{uline_freq.std_dev:.4f}\t{sigma:.4f}\t{usigma.std_dev:.4f}\t{fwhm:.4f}\t{ufwhm.std_dev:.4f}\t{amplitude:.4f}\t{uamplitude.std_dev:.4f}\n")
+
     sendData(data)
 
 if __name__ == "__main__":
 
     args = sys.argv[1:][0].split(",")
-
+    print(f"Received args: {args}")
     fullfiles = [pt(i).stem for i in args[0:-6]]
 
     start_wn = float(args[-2])
@@ -86,7 +95,6 @@ if __name__ == "__main__":
 
     location = pt(args[-3])
     norm_method = args[-4]
-
     output_filename = args[-5]
     overwrite = args[-6]
 

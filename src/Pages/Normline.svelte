@@ -80,7 +80,6 @@
         }
     }
     
-    
     function plotData(event=null, filetype="felix", general=null){
 
         if (fileChecked.length === 0) {return createToast("No files selected", "danger")}
@@ -151,10 +150,12 @@
         py.on("close", () => {
 
             if (!error_occured_py) {
+
                 try {
+                    
+                    
                     let dataFromPython = fs.readFileSync(path.join(localStorage["pythonscript"], "data.json"))
                     dataFromPython = JSON.parse(dataFromPython.toString("utf-8"))
-                    
                     console.log(dataFromPython)
 
                     if (filetype == "felix") {
@@ -302,9 +303,8 @@
 
                         show_theoryplot = true
                     } else if (filetype == "exp_fit") {
-                        Plotly.addTraces("avgplot", dataFromPython["fit"])
 
-                        
+                        Plotly.addTraces("avgplot", dataFromPython["fit"])
                         
                         line = [...line, ...dataFromPython["line"]]
                         Plotly.relayout("avgplot", { shapes: line })
@@ -317,13 +317,12 @@
                         let color = "#fafafa";
                         if (output_name === "averaged") {
                             color = "#452f7da8"
-                            dataTable_avg = [...dataTable_avg, {name: `Line #${line_index_count}`, id:freq, freq:freq, amp:amp, fwhm:fwhm, sig:sig, color:color}]
 
+                            dataTable_avg = [...dataTable_avg, {name: `Line #${line_index_count}`, id:freq, freq:freq, amp:amp, fwhm:fwhm, sig:sig, color:color}]
                             line_index_count++
                         } else {
                             if (collectData) {
                                 console.log("Collecting lines")
-
                                 lineData_list = [...lineData_list, dataFromPython["for_weighted_error"]]
                              }
                         }
@@ -335,17 +334,19 @@
                         console.log("Line fitted")
                         createToast("Line fitted with gaussian function", "success")
                     } else if (filetype == "get_err") {
+                        
                         console.log(dataFromPython)
 
                         let arithmetic_mean = dataFromPython["mean"]
+                        
                         let weighted_mean = dataFromPython["wmean"]
                         
                         let data1 = {name: "arithmetic_mean", id:`${arithmetic_mean}_1`, freq:arithmetic_mean, amp:"-", fwhm:"-", sig:"-", color:"#452f7da8"}
-                        
                         let data2 = {name: "weighted_mean", id:`${weighted_mean}_2`, freq:weighted_mean, amp:"-", fwhm:"-", sig:"-", color:"#452f7da8"}
+
                         dataTable = [...dataTable,  data1, data2]
                         dataTable_avg = [...dataTable_avg, data1, data2]
-
+                        lineData_list = []
                     }
                 
                 } catch (err) { $modalContent = err; $activated = true }
@@ -492,6 +493,7 @@
                 <CustomSwitch style="margin: 0 1em;" bind:selected={overwrite_expfit} label="Overwrite"/>
                 <CustomSwitch style="margin: 0 1em;" bind:selected={collectData} label="Collect"/>
                 <button class="button is-link" on:click="{(e)=>plotData(e, "exp_fit")}">Exp Fit.</button>
+                <!-- <CustomCheckbox bind:selected={double_peak} label="Double" /> -->
                 <button class="button is-warning" on:click={clearLastPeak}>Clear Last</button>
                 <button class="button is-danger" on:click={clearAllPeak}>Clear All</button>
                 <button class="button is-link" on:click="{(e)=>plotData(e, "get_err")}">Weighted Mean</button>
