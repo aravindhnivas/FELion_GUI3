@@ -379,33 +379,27 @@
                         Plotly.relayout("avgplot", { annotations: annotations })
 
                         let [freq1, amp1, sig1, fwhm1, freq2, amp2, sig2, fwhm2] = dataFromPython["table"].split(", ")
+                        
+                        let id1 = freq1;
+                        let id2 = freq2;
 
                         let color = "#fafafa";
                         if (output_name === "averaged") {
                             color = "#452f7da8"
-                            let line_index_count = dataTable_avg.length
-                            let newTable1 = {name: `Line #${line_index_count}`, id:id1, freq:freq1, amp:amp1, fwhm:fwhm1, sig:sig1, color:color}
-                            let newTable2 = {name: `Line #${line_index_count+1}`, id:id2, freq:freq2, amp:amp2, fwhm:fwhm2, sig:sig2, color:color}
-                            dataTable_avg = [...dataTable_avg, newTable1, newTable2]
-                            dataTable_avg = _.uniqBy(dataTable_avg, "freq")
-
+                            
                         } else {
-
                             if (collectData) {
-                                
                                 console.log("Collecting lines")
                                 err_data1_plot = true    
                                 weighted_error[0] = [...weighted_error[0], dataFromPython["for_weighted_error1"]]
                                 weighted_error[1] = [...weighted_error[1], dataFromPython["for_weighted_error2"]]
                              }
-
-                            let id1 = freq1;
-                            let id2 = freq2;
-                            let newTable1 = {name: output_name, id:id1, freq:freq1, amp:amp1, fwhm:fwhm1, sig:sig1, color:color}
-                            let newTable2 = {name: output_name, id:id2, freq:freq2, amp:amp2, fwhm:fwhm2, sig:sig2, color:color}
-                            dataTable = _.uniqBy([...dataTable, newTable1, newTable2], "freq")
-
                         }
+
+                        let newTable1 = {name: output_name, id:id1, freq:freq1, amp:amp1, fwhm:fwhm1, sig:sig1, color:color}
+                        let newTable2 = {name: output_name, id:id2, freq:freq2, amp:amp2, fwhm:fwhm2, sig:sig2, color:color}
+
+                        dataTable = _.uniqBy([...dataTable, newTable1, newTable2], "freq")
                     }
                 
                 } catch (err) { $modalContent = err; $activated = true }
@@ -591,7 +585,7 @@
             <!-- Data Table -->
             <div class="dataTable" transition:fade>
 
-                <DataTable table$aria-label="{filetype}-tableAriaLabel" table$id="{filetype}Table" id="{filetype}TableContainer">
+                <DataTable table$aria-label="felix-tableAriaLabel" table$id="felixTable" id="felixTableContainer">
                     <Head >
                         <Row>
                             {#each dataTableHead as item}
@@ -626,7 +620,9 @@
             </div>
 
             <!-- Report -->
-            <ReportLayout bind:currentLocation={currentLocation} id="felixreport", plotID={["bplot", "saPlot", "avgplot", "exp-theory-plot"]} includeTable={true}/>
+
+            <ReportLayout bind:currentLocation={currentLocation} id="felixreport" tableID="felixTable"
+                plotID={["bplot", "saPlot", "avgplot", "exp-theory-plot"]} includeTable={true}/>
 
         </div>
     </div>
