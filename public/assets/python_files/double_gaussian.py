@@ -109,7 +109,6 @@ if __name__ == "__main__":
     output_filename = args[-5]
 
     overwrite = args[-6]
-
     amp1, amp2, cen1, cen2, sig1, sig2 = [float(i) for i in args[:6]]
 
     if overwrite == "true": overwrite = True

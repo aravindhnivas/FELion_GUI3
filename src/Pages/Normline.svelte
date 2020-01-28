@@ -620,7 +620,6 @@
             </div>
 
             <!-- Report -->
-
             <ReportLayout bind:currentLocation={currentLocation} id="felixreport" tableID="felixTable"
                 plotID={["bplot", "saPlot", "avgplot", "exp-theory-plot"]} includeTable={true}/>
 
