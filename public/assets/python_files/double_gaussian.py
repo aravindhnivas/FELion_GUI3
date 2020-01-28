@@ -76,6 +76,22 @@ def exp_fit(location, norm_method, start_wn, end_wn, output_filename, overwrite,
 
     }
 
+    filename = f"{output_filename}.expfit"
+    
+    expfile = datfile_location/filename
+
+    if overwrite:
+        with open(expfile, "w") as f:
+
+            f.write(f"#Frequency\t#Freq_err\t#Sigma\t#Sigma_err\t#FWHM\t#FWHM_err\t#Amplitude\t#Amplitude_err\n")
+            f.write(f"{cen1:.4f}\t{cen1_err:.4f}\t{sig1:.4f}\t{sig1_err:.4f}\t{uFWHM1.nominal_value:.4f}\t{uFWHM1.std_dev:.4f}\t{amp1:.4f}\t{amp1_err:.4f}\n")
+            f.write(f"{cen2:.4f}\t{cen2_err:.4f}\t{sig2:.4f}\t{sig2_err:.4f}\t{uFWHM2.nominal_value:.4f}\t{uFWHM2.std_dev:.4f}\t{amp2:.4f}\t{amp2_err:.4f}\n")
+    else:
+        with open(expfile, "a") as f:
+
+            f.write(f"{cen1:.4f}\t{cen1_err:.4f}\t{sig1:.4f}\t{sig1_err:.4f}\t{uFWHM1.nominal_value:.4f}\t{uFWHM1.std_dev:.4f}\t{amp1:.4f}\t{amp1_err:.4f}\n")
+            f.write(f"{cen2:.4f}\t{cen2_err:.4f}\t{sig2:.4f}\t{sig2_err:.4f}\t{uFWHM2.nominal_value:.4f}\t{uFWHM2.std_dev:.4f}\t{amp2:.4f}\t{amp2_err:.4f}\n")
+
     sendData(data)
 
 if __name__ == "__main__":

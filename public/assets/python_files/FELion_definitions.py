@@ -57,7 +57,6 @@ class gauss_fit:
         fwhm_err = ufwhm.std_dev
 
         self.fit_data, self.uline_freq, self.usigma, self.uamplitude, self.ufwhm = fit_data, uline_freq, usigma, uamplitude, ufwhm
-
     def get_data(self): return self.fit_data, self.uline_freq, self.usigma, self.uamplitude, self.ufwhm 
     def get_std(self, value): return value.std_dev
     def get_value(self, value): return value.nominal_value

@@ -64,12 +64,11 @@ def exp_fit(location, norm_method, start_wn, end_wn, output_filename,
             {"type":"line", "x0":line_freq_fit-fwhm/2, "x1":line_freq_fit+fwhm/2, "y0":amplitude/2, "y1":amplitude/2, "line":{"color":line_color, "dash":"dot"}}
         ],
         "annotations": {
-            
+
             "x": uline_freq.nominal_value, "y": uamplitude.nominal_value, "xref": 'x', "yref": 'y', "text": f'{uline_freq:.2uP}', "font":{"color":line_color}, "arrowcolor":line_color,
             "showarrow": True, "arrowhead": 2, "ax": -25, "ay": -40
         }
     }
-
     if getvalue: return data, uline_freq, usigma, uamplitude, ufwhm, line_color
 
     filename = f"{output_filename}.expfit"
@@ -78,10 +77,14 @@ def exp_fit(location, norm_method, start_wn, end_wn, output_filename,
     if overwrite:
         with open(expfile, "w") as f:
             f.write(f"#Frequency\t#Freq_err\t#Sigma\t#Sigma_err\t#FWHM\t#FWHM_err\t#Amplitude\t#Amplitude_err\n")
+            
             f.write(f"{line_freq_fit:.4f}\t{uline_freq.std_dev:.4f}\t{sigma:.4f}\t{usigma.std_dev:.4f}\t{fwhm:.4f}\t{ufwhm.std_dev:.4f}\t{amplitude:.4f}\t{uamplitude.std_dev:.4f}\n")
+
     else:
         with open(expfile, "a") as f:
+
             f.write(f"{line_freq_fit:.4f}\t{uline_freq.std_dev:.4f}\t{sigma:.4f}\t{usigma.std_dev:.4f}\t{fwhm:.4f}\t{ufwhm.std_dev:.4f}\t{amplitude:.4f}\t{uamplitude.std_dev:.4f}\n")
+
     sendData(data)
 
 if __name__ == "__main__":

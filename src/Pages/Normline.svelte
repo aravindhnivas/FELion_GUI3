@@ -48,14 +48,17 @@
     $: theoryfiles = theoryfilesChecked.map(file=>path.resolve(theoryLocation, file))
 
     ///////////////////////////////////////////////////////////////////////
-    
-
     let openShell = false;
     $: console.log("Open Shell: ", filetype, openShell)
-    let normMethod = "Relative", normMethod_datas = {}
-    let graphPlotted = false, overwrite_expfit = false
 
-    let line = [], index = [], annotations = []
+    let normMethod = "Relative", normMethod_datas = {}
+    
+    let graphPlotted = false, overwrite_expfit = false
+    let line = [], index = [], annotations = [], plot_trace_added = 0, double_peak_active = false
+
+    $: console.log("Trace length: ", plot_trace_added)
+    $: console.log("Double peak active: ", double_peak_active)
+
     let output_name = "averaged"
 
     let dataTableHead = ["Filename", "Frequency (cm-1)", "Amplitude", "FWHM", "Sigma"]
@@ -104,7 +107,13 @@
         }}
         else if (filetype == "opofile") {opoPlotted = true}
         
-        else if (filetype == "get_err") {if (lineData_list.length<2) return createToast("Not sufficient lines collected!", "danger") }
+        else if (filetype == "get_err") {
+            if (double_peak_active) {
+                if (err_data1_plot) lineData_list = weighted_error[0]
+                else lineData_list = weighted_error[1]
+            }
+            if (lineData_list.length<2) return createToast("Not sufficient lines collected!", "danger")
+        }
 
         let target = event.target
         target.classList.toggle("is-loading")
@@ -308,14 +317,17 @@
                         show_theoryplot = true
                     } else if (filetype == "exp_fit") {
 
+                        double_peak_active = false
                         Plotly.addTraces("avgplot", dataFromPython["fit"])
+                        
                         
                         line = [...line, ...dataFromPython["line"]]
                         Plotly.relayout("avgplot", { shapes: line })
 
                         annotations = [...annotations, dataFromPython["annotations"]]
-                        Plotly.relayout("avgplot", { annotations: annotations })
                         
+                        Plotly.relayout("avgplot", { annotations: annotations })
+                        plot_trace_added++
                         let [freq, amp, fwhm, sig] = dataFromPython["table"].split(", ")
 
                         let color = "#fafafa";
@@ -341,6 +353,7 @@
                         createToast("Line fitted with gaussian function", "success")
                     } else if (filetype == "get_err") {
                         
+                        
                         let arithmetic_mean = dataFromPython["mean"]
                         let weighted_mean = dataFromPython["wmean"]
                         
@@ -349,13 +362,17 @@
 
                         dataTable = [...dataTable,  data1, data2]
                         dataTable_avg = [...dataTable_avg, data1, data2]
-                        lineData_list = []
+                        if (double_peak_active) {
+                            err_data1_plot ? weighted_error[0] = [] : weighted_error[1] = []
+                            err_data1_plot = false
+                        } else {  lineData_list = [] }
 
                     } else if (filetype == "double_peak") {
-
+                        
+                        double_peak_active = true
                         console.log("Double peak calculation")
                         Plotly.addTraces("avgplot", dataFromPython["peak"])
-                        line++
+                        plot_trace_added++
 
                         annotations = [...annotations, ...dataFromPython["annotations"]]
 
@@ -373,17 +390,21 @@
                             dataTable_avg = _.uniqBy(dataTable_avg, "freq")
 
                         } else {
-                            // if (collectData) {
-                            //     console.log("Collecting lines")
-                            //     lineData_list = [...lineData_list, dataFromPython["for_weighted_error1"], dataFromPython["for_weighted_error2"]]
-                            //  }
+
+                            if (collectData) {
+                                
+                                console.log("Collecting lines")
+                                err_data1_plot = true    
+                                weighted_error[0] = [...weighted_error[0], dataFromPython["for_weighted_error1"]]
+                                weighted_error[1] = [...weighted_error[1], dataFromPython["for_weighted_error2"]]
+                             }
 
                             let id1 = freq1;
                             let id2 = freq2;
                             let newTable1 = {name: output_name, id:id1, freq:freq1, amp:amp1, fwhm:fwhm1, sig:sig1, color:color}
                             let newTable2 = {name: output_name, id:id2, freq:freq2, amp:amp2, fwhm:fwhm2, sig:sig2, color:color}
                             dataTable = _.uniqBy([...dataTable, newTable1, newTable2], "freq")
-                        
+
                         }
                     }
                 
@@ -398,44 +419,52 @@
 
         console.log("Removing all found peak values")
 
-        if (line.length === 0 & annotations.length === 0) {createToast("No fitted lines found", "danger")}
+        if (plot_trace_added === 0) {createToast("No fitted lines found", "danger")}
         annotations = []
         index = []
         Plotly.relayout("avgplot", { annotations: [], shapes: [] })
 
-        let plottedFiles_length = line.length / 2
-        console.log(`Total files plotted: ${plottedFiles_length}`)
-        for (let i=0; i<plottedFiles_length; i++) {Plotly.deleteTraces("avgplot", [-1])}
-        
-        line = []
-        ready_to_fit = false
+        // let plottedFiles_length = line.length / 2
+        console.log(`Total files plotted: ${plot_trace_added}`)
+
+        for (let i=0; i<plot_trace_added; i++) {Plotly.deleteTraces("avgplot", [-1])}
+        plot_trace_added = 0, line = []
     }
 
     const clearLastPeak = (e) => {
 
-        if (line.length > 0) {
+        if (plot_trace_added > 0) {
             
-            plotData(e, filetype="general", {args:[output_name, currentLocation], pyfile:"delete_fileLines.py"})
-            dataTable = _.dropRight(dataTable, 1)
+            if (double_peak_active) {
+                plotData(e, filetype="general", {args:[output_name, currentLocation], pyfile:"delete_fileLines.py"})
+                plotData(e, filetype="general", {args:[output_name, currentLocation], pyfile:"delete_fileLines.py"})
+                dataTable = _.dropRight(dataTable, 2)
+                annotations = _.dropRight(annotations, 2)
+            } else {
+
+                plotData(e, filetype="general", {args:[output_name, currentLocation], pyfile:"delete_fileLines.py"})
+                dataTable = _.dropRight(dataTable, 1)
+                line = _.dropRight(line, 2)
+                annotations = _.dropRight(annotations, 1)
+            }
 
             Plotly.deleteTraces("avgplot", [-1])
-            
             console.log("Last fitted peak removed")
+
             } else {
             if (annotations.length === 0) {createToast("No fitted lines found", "danger")}
             console.log("No line fit is found to remove")
         }
+
+        plot_trace_added--
         
-        line = _.dropRight(line, 2)
-        annotations = _.dropRight(annotations, 1)
         Plotly.relayout("avgplot", { annotations: annotations, shapes: line })
-        if (line.length === 0) {ready_to_fit = false}
     }
 
     onMount(()=>{
         console.log("Normline mounted")
     })
-    let collectData = true, lineData_list = [], toggleDoubleGaussRow = false
+    let collectData = true, lineData_list = [], toggleDoubleGaussRow = false, weighted_error = [[], []], err_data1_plot = false
 
     let amp1=0, amp2=0, cen1=0, cen2=0, sig1=5, sig2=5
 
@@ -594,12 +623,11 @@
                         {/if}
                     </Body>
                 </DataTable>
-
             </div>
 
             <!-- Report -->
-            <ReportLayout bind:currentLocation={currentLocation} 
-                id="felixreport", plotID={["bplot", "saPlot", "avgplot", "exp-theory-plot"]} includeTable={true}/>
+            <ReportLayout bind:currentLocation={currentLocation} id="felixreport", plotID={["bplot", "saPlot", "avgplot", "exp-theory-plot"]} includeTable={true}/>
+
         </div>
     </div>
 </Layout>
