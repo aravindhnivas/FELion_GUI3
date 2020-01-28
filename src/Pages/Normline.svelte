@@ -60,7 +60,7 @@
 
     let dataTableHead = ["Filename", "Frequency (cm-1)", "Amplitude", "FWHM", "Sigma"]
     let dataTable = []
-    let dataTable_avg = [], line_index_count = 0
+    let dataTable_avg = []
 
     $: console.log("dataTable", dataTable)
     $: console.log("dataTable_avg", dataTable_avg)
@@ -321,9 +321,11 @@
                         let color = "#fafafa";
                         if (output_name === "averaged") {
                             color = "#452f7da8"
-
+                            let line_index_count = dataTable_avg.length
                             dataTable_avg = [...dataTable_avg, {name: `Line #${line_index_count}`, id:freq, freq:freq, amp:amp, fwhm:fwhm, sig:sig, color:color}]
-                            line_index_count++
+                            dataTable_avg = _.uniqBy(dataTable_avg, "freq")
+                            // line_index_count++
+
                         } else {
                             if (collectData) {
                                 console.log("Collecting lines")
@@ -339,10 +341,7 @@
                         createToast("Line fitted with gaussian function", "success")
                     } else if (filetype == "get_err") {
                         
-                        console.log(dataFromPython)
-
                         let arithmetic_mean = dataFromPython["mean"]
-                        
                         let weighted_mean = dataFromPython["wmean"]
                         
                         let data1 = {name: "arithmetic_mean", id:`${arithmetic_mean}_1`, freq:arithmetic_mean, amp:"-", fwhm:"-", sig:"-", color:"#452f7da8"}
@@ -351,12 +350,41 @@
                         dataTable = [...dataTable,  data1, data2]
                         dataTable_avg = [...dataTable_avg, data1, data2]
                         lineData_list = []
+
                     } else if (filetype == "double_peak") {
 
-                        Plotly.addTraces("avgplot", dataFromPython["peak"])
-                        // Plotly.addTraces("avgplot", dataFromPython["peak2"])
-
                         console.log("Double peak calculation")
+                        Plotly.addTraces("avgplot", dataFromPython["peak"])
+                        line++
+
+                        annotations = [...annotations, ...dataFromPython["annotations"]]
+
+                        Plotly.relayout("avgplot", { annotations: annotations })
+
+                        let [freq1, amp1, sig1, fwhm1, freq2, amp2, sig2, fwhm2] = dataFromPython["table"].split(", ")
+
+                        let color = "#fafafa";
+                        if (output_name === "averaged") {
+                            color = "#452f7da8"
+                            let line_index_count = dataTable_avg.length
+                            let newTable1 = {name: `Line #${line_index_count}`, id:id1, freq:freq1, amp:amp1, fwhm:fwhm1, sig:sig1, color:color}
+                            let newTable2 = {name: `Line #${line_index_count+1}`, id:id2, freq:freq2, amp:amp2, fwhm:fwhm2, sig:sig2, color:color}
+                            dataTable_avg = [...dataTable_avg, newTable1, newTable2]
+                            dataTable_avg = _.uniqBy(dataTable_avg, "freq")
+
+                        } else {
+                            // if (collectData) {
+                            //     console.log("Collecting lines")
+                            //     lineData_list = [...lineData_list, dataFromPython["for_weighted_error1"], dataFromPython["for_weighted_error2"]]
+                            //  }
+
+                            let id1 = freq1;
+                            let id2 = freq2;
+                            let newTable1 = {name: output_name, id:id1, freq:freq1, amp:amp1, fwhm:fwhm1, sig:sig1, color:color}
+                            let newTable2 = {name: output_name, id:id2, freq:freq2, amp:amp2, fwhm:fwhm2, sig:sig2, color:color}
+                            dataTable = _.uniqBy([...dataTable, newTable1, newTable2], "freq")
+                        
+                        }
                     }
                 
                 } catch (err) { $modalContent = err; $activated = true }
@@ -367,6 +395,7 @@
     }
 
     const clearAllPeak = () => {
+
         console.log("Removing all found peak values")
 
         if (line.length === 0 & annotations.length === 0) {createToast("No fitted lines found", "danger")}
@@ -376,8 +405,8 @@
 
         let plottedFiles_length = line.length / 2
         console.log(`Total files plotted: ${plottedFiles_length}`)
-        
         for (let i=0; i<plottedFiles_length; i++) {Plotly.deleteTraces("avgplot", [-1])}
+        
         line = []
         ready_to_fit = false
     }
@@ -406,8 +435,7 @@
     onMount(()=>{
         console.log("Normline mounted")
     })
-
-    let collectData = false, lineData_list = [], toggleDoubleGaussRow = false
+    let collectData = true, lineData_list = [], toggleDoubleGaussRow = false
 
     let amp1=0, amp2=0, cen1=0, cen2=0, sig1=5, sig2=5
 
@@ -528,7 +556,7 @@
                 <button class="button is-warning" 
                     on:click="{()=>{dataTable = window._.dropRight(dataTable, 1); 
                     if(show_dataTable_only_averaged){dataTable_avg = window._.dropRight(dataTable_avg, 3)}}}">Clear Last</button>
-                <button class="button is-danger" on:click="{()=>{dataTable=dataTable_avg=[]; line_index_count=0}}">Clear Table</button>
+                <button class="button is-danger" on:click="{()=>{dataTable=dataTable_avg=[]}}">Clear Table</button>
             </div>
 
             <!-- Data Table -->

@@ -64,6 +64,7 @@ def exp_fit(location, norm_method, start_wn, end_wn, output_filename,
             {"type":"line", "x0":line_freq_fit-fwhm/2, "x1":line_freq_fit+fwhm/2, "y0":amplitude/2, "y1":amplitude/2, "line":{"color":line_color, "dash":"dot"}}
         ],
         "annotations": {
+            
             "x": uline_freq.nominal_value, "y": uamplitude.nominal_value, "xref": 'x', "yref": 'y', "text": f'{uline_freq:.2uP}', "font":{"color":line_color}, "arrowcolor":line_color,
             "showarrow": True, "arrowhead": 2, "ax": -25, "ay": -40
         }

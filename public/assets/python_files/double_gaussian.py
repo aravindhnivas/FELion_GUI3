@@ -6,6 +6,8 @@ import sys
 import numpy as np
 from scipy.optimize import curve_fit
 
+from uncertainties import ufloat as uf
+
 # FELion module
 from FELion_definitions import gauss_fit, read_dat_file
 from FELion_constants import colors 
@@ -37,18 +39,41 @@ def exp_fit(location, norm_method, start_wn, end_wn, output_filename, overwrite,
 
     _sig = "\u03C3"
     _del = "\u0394"
-    
     popt_2gauss, pcov_2gauss = curve_fit(_2gaussian, wn, inten, p0=[amp1, cen1, sig1, amp2, cen2, sig2])
-
     perr_2gauss = np.sqrt(np.diag(pcov_2gauss))
-    pars_1 = popt_2gauss[0:3]
-    pars_2 = popt_2gauss[3:6]
+    
+    amp1, cen1, sig1, amp2, cen2, sig2 = popt_2gauss
+
+    amp1_err, cen1_err, sig1_err = perr_2gauss[0:3]
+    
+    amp2_err, cen2_err, sig2_err = perr_2gauss[3:6]
+
+    uamp1 = uf(amp1, amp1_err)
+    uamp2 = uf(amp2, amp2_err)
+    
+    ucen1 = uf(cen1, cen1_err)
+    
+    ucen2 = uf(cen2, cen2_err)
+    usig1 = uf(sig1, sig1_err)
+    
+    usig2 = uf(sig2, sig2_err)
+    uFWHM1 = 2*np.sqrt(2*np.log(2))*usig1
+    uFWHM2 = 2*np.sqrt(2*np.log(2))*usig2
 
     gauss_peak = _2gaussian(wn, *popt_2gauss)
 
-
     data = {
-        "peak": {"x":list(wn), "y":list(gauss_peak), "name":f"{popt_2gauss}", "mode": "lines", "line": {"color":line_color}},
+        "table": f"{ucen1:.2uP}, {uamp1:.2uP}, {usig1:.2uP}, {uFWHM1:.2uP}, {ucen2:.2uP}, {uamp2:.2uP}, {usig2:.2uP}, {uFWHM2:.2uP}",
+
+        "peak": {"x":list(wn), "y":list(gauss_peak), "name":f"[{ucen1:.2uP}, {ucen2:.2uP}]", "mode": "lines", "line": {"color":line_color}},
+        "for_weighted_error1":f"{cen1}, {amp1_err}", "for_weighted_error2":f"{cen2}, {amp2_err}",
+        "annotations": [ {"x": cen1, "y": amp1, "xref": 'x', "yref": 'y', "text": f'{ucen1:.2uP}',
+                "font":{"color":line_color}, "arrowcolor":line_color, "showarrow": True, "arrowhead": 2, "ax": -25, "ay": -40
+            }, {"x": cen2, "y": amp2, "xref": 'x', "yref": 'y', "text": f'{ucen2:.2uP}',
+                "font":{"color":line_color}, "arrowcolor":line_color, "showarrow": True, "arrowhead": 2, "ax": -25, "ay": -40
+            }
+        ]
+
     }
 
     sendData(data)
