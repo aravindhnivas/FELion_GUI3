@@ -68,7 +68,7 @@
     $: console.log("dataTable", dataTable)
     $: console.log("dataTable_avg", dataTable_avg)
 
-    let show_dataTable_only_averaged = false, keepTable = true
+    let show_dataTable_only_averaged = false, keepTable = true, show_dataTable_only_weighted_averaged=false
 
     //////// OPO Plot ///////////
     let opoPlotted = false;
@@ -354,14 +354,11 @@
                         
                         
                         let {freq, amp, fwhm, sig } = dataFromPython
-                        // let unweighted_mean = dataFromPython["mean"]
-                        // let weighted_mean = dataFromPython["wmean"]
-                        
                         let data1 = {name: "unweighted_mean", id:`${freq.mean}_1`, freq:freq.mean, amp:amp.mean, fwhm:fwhm.mean, sig:sig.mean, color:"#452f7da8"}
                         let data2 = {name: "weighted_mean", id:`${freq.wmean}_2`, freq:freq.wmean, amp:amp.wmean, fwhm:fwhm.wmean, sig:sig.wmean, color:"#452f7da8"}
-
-                        dataTable = [...dataTable,  data1, data2]
+                        dataTable = [...dataTable, data1, data2]
                         dataTable_avg = [...dataTable_avg, data1, data2]
+
                         if (double_peak_active) {
                             err_data1_plot ? weighted_error[0] = [] : weighted_error[1] = []
                             err_data1_plot = false
@@ -580,6 +577,7 @@
             <div class="align">
                 <div class="title notification is-link">Frequency table</div>
                 <CustomCheckbox bind:selected={show_dataTable_only_averaged} label="Only Averaged" />
+                <CustomCheckbox bind:selected={show_dataTable_only_weighted_averaged} label="Only weighted Averaged" />
                 <CustomCheckbox bind:selected={keepTable} label="Keep table" />
                 <button class="button is-warning" 
                     on:click="{()=>{dataTable = window._.dropRight(dataTable, 1); 
@@ -599,7 +597,17 @@
                         </Row>
                     </Head>
                     <Body>
-                        {#if show_dataTable_only_averaged}
+                        {#if show_dataTable_only_weighted_averaged}
+                            {#each dataTable_avg.filter(file=> file.name == "weighted_mean") as table, index (table.id)}
+                                <Row>
+                                    <Cell>Line #{index}</Cell>
+                                    <Cell>{table.freq}</Cell>
+                                    <Cell>{table.amp}</Cell>
+                                    <Cell>{table.fwhm}</Cell>
+                                    <Cell>{table.sig}</Cell>
+                                </Row>
+                            {/each}
+                        {:else if show_dataTable_only_averaged && !show_dataTable_only_weighted_averaged}
                             {#each dataTable_avg as table (table.id)}
                                 <Row>
                                     <Cell>{table.name}</Cell>
