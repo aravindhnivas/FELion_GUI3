@@ -62,11 +62,12 @@
     let output_name = "averaged"
 
     let dataTableHead = ["Filename", "Frequency (cm-1)", "Amplitude", "FWHM", "Sigma"]
-    let dataTable = []
-    let dataTable_avg = []
+    let dataTable = [], dataTable_avg = []
+    $: dataTable_weighted_avg = dataTable_avg.filter(file=> file.name == "weighted_mean")
 
     $: console.log("dataTable", dataTable)
     $: console.log("dataTable_avg", dataTable_avg)
+    $: console.log("dataTable_weighted_avg", dataTable_weighted_avg)
 
     let show_dataTable_only_averaged = false, keepTable = true, show_dataTable_only_weighted_averaged=false
 
@@ -598,7 +599,7 @@
                     </Head>
                     <Body>
                         {#if show_dataTable_only_weighted_averaged}
-                            {#each dataTable_avg.filter(file=> file.name == "weighted_mean") as table, index (table.id)}
+                            {#each dataTable_weighted_avg as table, index (table.id)}
                                 <Row>
                                     <Cell>Line #{index}</Cell>
                                     <Cell>{table.freq}</Cell>
