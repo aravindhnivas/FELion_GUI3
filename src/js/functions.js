@@ -57,7 +57,7 @@ export function plot(mainTitle, xtitle, ytitle, data, plotArea, filetype = null)
         height: 450,
     }
     if (filetype == 'mass') { dataLayout.yaxis.type = "log" }
-    else if (filetype == 'scan') { dataLayout.width = localStorage["plotly_width"] / 2 }
+    // else if (filetype == 'scan') { dataLayout.width = localStorage["plotly_width"] / 2 }
 
     let dataPlot = [];
     for (let x in data) { dataPlot.push(data[x]) }

@@ -3,23 +3,31 @@
 from FELion_widgets import FELion_Tk
 from FELion_definitions import sendData
 from tkinter.messagebox import askokcancel, showerror
+
 # System modules
+
 import sys, json, os, traceback
 from os.path import isdir, isfile
 from pathlib import Path as pt
+import warnings
+
+warnings.simplefilter(action='ignore', category=FutureWarning)
 
 # Data analysis
+
 import numpy as np
 from uncertainties import unumpy as unp
 
 # from matplotlib import style
 import matplotlib.pyplot as plt
+
 class timescanplot:
 
     def __init__(self, scanfile, tkplot=False):
 
         self.scanfile = scanfile = pt(scanfile)
         self.location = location = scanfile.parent
+
         os.chdir(location)
 
         if tkplot:
@@ -31,28 +39,20 @@ class timescanplot:
             self.widget.save_btn = self.widget.Buttons("Save", 0.5, 0.05*9, self.savefig_timescan)
             savename=scanfile.stem
             ax = self.widget.make_figure_layout(title=f"Timescan: {scanfile.name}", xaxis="Time (ms)", yaxis="Counts", yscale="linear", savename=savename)
+            
             self.widget.lines = {}
 
-        if tkplot:
-
-            time, mean, error = self.read_timescan_file(ax=ax)
-            self.widget.lines["SUM"] = ax.errorbar(time, mean.sum(axis=0), yerr=error.sum(axis=0), label="SUM", fmt="k.-")
+            self.read_timescan_file(ax=ax)
+            self.widget.lines["SUM"] = ax.errorbar(self.time, self.mean.sum(axis=0), yerr=self.error.sum(axis=0), label="SUM", fmt="k.-")
             self.widget.plot_legend = ax.legend()
             self.widget.mainloop()
 
         else:
-
-            m = {}
-            time, mean, error = self.read_timescan_file(tkplot=False, m=m)
-            m["SUM"] = {"x":list(time), "y":list(mean.sum(axis=0)), 
-                            "name": f"SUM", "mode": 'lines+markers', "line":{"color":"black"},
-                            "error_y":{"type": "data","array": list(error.sum(axis=0)),"visible": True}}
-            
-            sendData(m)
-
-        self.time, self.mean, self.error = time, mean, error
+            self.read_timescan_file(tkplot=False)
+         
 
     def get_data(self): return self.time, self.mean, self.error, self.mass, self.t_res, self.t_b0
+    def get_plotly_data(self): return self.m
 
     def savefig_timescan(self):
 
@@ -103,8 +103,9 @@ class timescanplot:
                         os.system(f"{save_filename}")
                 except: showerror("Error", traceback.format_exc(5))
                 
-    def read_timescan_file(self, ax=None, tkplot=True, m=None):
+    def read_timescan_file(self, ax=None, tkplot=True):
 
+        m={}
         location = self.scanfile.parent
 
         skip = get_skip_line(self.scanfile.name, location)
@@ -128,7 +129,10 @@ class timescanplot:
         for iteration in iterations:
             
             k = iteration*cycle
-            mass_value = data[:, 0][j:k+j][0]
+            mass_value = float(data[:, 0][j:k+j][0])
+
+
+            print(mass_value, type(mass_value))
 
             if mass_value in mass:
                 mass_count += 1
@@ -137,7 +141,7 @@ class timescanplot:
             mass_sort = data[:, 2][j:k + j].reshape(iteration, cycle).mean(axis=0)
             error_sort = data[:, 2][j:k + j].reshape(iteration, cycle).std(axis=0)
 
-            mass = np.append(mass, mass_value)
+            mass.append(mass_value)
             mean = np.append(mean, mass_sort)
             error = np.append(error, error_sort)
 
@@ -151,13 +155,19 @@ class timescanplot:
                 m[f"{mass_value}u"] = {"x":list(time), "y":list(mass_sort), 
                         "name": label, "mode": 'lines+markers',
                         "error_y":{"type": "data","array": list(error_sort),"visible": True}}
-
             j = k + j
+
         self.mass = mass
         mean = mean.reshape(run, cycle)
         error = error.reshape(run, cycle)
 
-        return time, mean, error
+
+        self.time, self.mean, self.error = time, mean, error
+        m["SUM"] = {"x":list(time), "y":list(mean.sum(axis=0)), "name": f"SUM", "mode": 'lines+markers', "line":{"color":"black"},
+            "error_y":{"type": "data","array": list(error.sum(axis=0)),"visible": True}}
+
+        self.m = m
+
 
 def var_find(fname, location, time=False):
 
@@ -227,8 +237,18 @@ def get_iterations(scanfile, location):
 if __name__ == "__main__":
     
     args = sys.argv[1:][0].split(",")
-    filename = args[0]
+
+    filename = [pt(i) for i in args[:-1]]
 
     tkplot = args[-1]
-    if tkplot == "plot": timescanplot(filename, tkplot=True)
-    else: timescanplot(filename)
+    if tkplot == "plot": timescanplot(filename[0], tkplot=True)
+
+    else: 
+        dataToSend = {}
+
+        for i in filename:
+            data = timescanplot(i)
+            dataToSend[i.name] = data.get_plotly_data()
+            print(i.name)
+
+        sendData(dataToSend)
