@@ -423,8 +423,6 @@
         annotations = []
         index = []
         Plotly.relayout("avgplot", { annotations: [], shapes: [] })
-
-        // let plottedFiles_length = line.length / 2
         console.log(`Total files plotted: ${plot_trace_added}`)
 
         for (let i=0; i<plot_trace_added; i++) {Plotly.deleteTraces("avgplot", [-1])}
@@ -631,5 +629,5 @@
 
         </div>
     </div>
-    
+
 </Layout>
