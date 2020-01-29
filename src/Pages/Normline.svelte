@@ -54,7 +54,7 @@
     let normMethod = "Relative", normMethod_datas = {}
     
     let graphPlotted = false, overwrite_expfit = false
-    let line = [], index = [], annotations = [], plot_trace_added = 0, double_peak_active = false
+    let line = [], index = [], annotations = [], plot_trace_added = 0, double_peak_active = false, line_index_count = 0
 
     $: console.log("Trace length: ", plot_trace_added)
     $: console.log("Double peak active: ", double_peak_active)
@@ -333,10 +333,9 @@
                         let color = "#fafafa";
                         if (output_name === "averaged") {
                             color = "#452f7da8"
-                            let line_index_count = dataTable_avg.length
                             dataTable_avg = [...dataTable_avg, {name: `Line #${line_index_count}`, id:freq, freq:freq, amp:amp, fwhm:fwhm, sig:sig, color:color}]
                             dataTable_avg = _.uniqBy(dataTable_avg, "freq")
-                            // line_index_count++
+                            line_index_count++
 
                         } else {
                             if (collectData) {
@@ -354,10 +353,10 @@
                     } else if (filetype == "get_err") {
                         
                         
-                        let arithmetic_mean = dataFromPython["mean"]
+                        let unweighted_mean = dataFromPython["mean"]
                         let weighted_mean = dataFromPython["wmean"]
                         
-                        let data1 = {name: "arithmetic_mean", id:`${arithmetic_mean}_1`, freq:arithmetic_mean, amp:"-", fwhm:"-", sig:"-", color:"#452f7da8"}
+                        let data1 = {name: "unweighted_mean", id:`${unweighted_mean}_1`, freq:unweighted_mean, amp:"-", fwhm:"-", sig:"-", color:"#452f7da8"}
                         let data2 = {name: "weighted_mean", id:`${weighted_mean}_2`, freq:weighted_mean, amp:"-", fwhm:"-", sig:"-", color:"#452f7da8"}
 
                         dataTable = [...dataTable,  data1, data2]
@@ -386,6 +385,13 @@
                         let color = "#fafafa";
                         if (output_name === "averaged") {
                             color = "#452f7da8"
+                            
+                            let newTable1 = {name: `Line #${line_index_count}`, id:id1, freq:freq1, amp:amp1, fwhm:fwhm1, sig:sig1, color:color}
+                            let newTable2 = {name: `Line #${line_index_count+1}`, id:id2, freq:freq2, amp:amp2, fwhm:fwhm2, sig:sig2, color:color}
+                            
+                            dataTable_avg = [...dataTable_avg, newTable1, newTable2]
+                            dataTable_avg = _.uniqBy(dataTable_avg, "freq")
+                            line_index_count += 2
                             
                         } else {
                             if (collectData) {
@@ -578,8 +584,8 @@
                 <CustomCheckbox bind:selected={keepTable} label="Keep table" />
                 <button class="button is-warning" 
                     on:click="{()=>{dataTable = window._.dropRight(dataTable, 1); 
-                    if(show_dataTable_only_averaged){dataTable_avg = window._.dropRight(dataTable_avg, 3)}}}">Clear Last</button>
-                <button class="button is-danger" on:click="{()=>{dataTable=dataTable_avg=[]}}">Clear Table</button>
+                    if(show_dataTable_only_averaged){dataTable_avg = window._.dropRight(dataTable_avg, 3); line_index_count--}}}">Clear Last</button>
+                <button class="button is-danger" on:click="{()=>{dataTable=dataTable_avg=[]; line_index_count=0}}">Clear Table</button>
             </div>
 
             <!-- Data Table -->
