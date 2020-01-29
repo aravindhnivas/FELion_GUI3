@@ -353,11 +353,12 @@
                     } else if (filetype == "get_err") {
                         
                         
-                        let unweighted_mean = dataFromPython["mean"]
-                        let weighted_mean = dataFromPython["wmean"]
+                        let {freq, amp, fwhm, sig } = dataFromPython
+                        // let unweighted_mean = dataFromPython["mean"]
+                        // let weighted_mean = dataFromPython["wmean"]
                         
-                        let data1 = {name: "unweighted_mean", id:`${unweighted_mean}_1`, freq:unweighted_mean, amp:"-", fwhm:"-", sig:"-", color:"#452f7da8"}
-                        let data2 = {name: "weighted_mean", id:`${weighted_mean}_2`, freq:weighted_mean, amp:"-", fwhm:"-", sig:"-", color:"#452f7da8"}
+                        let data1 = {name: "unweighted_mean", id:`${freq.mean}_1`, freq:freq.mean, amp:amp.mean, fwhm:fwhm.mean, sig:sig.mean, color:"#452f7da8"}
+                        let data2 = {name: "weighted_mean", id:`${freq.wmean}_2`, freq:freq.wmean, amp:amp.wmean, fwhm:fwhm.wmean, sig:sig.wmean, color:"#452f7da8"}
 
                         dataTable = [...dataTable,  data1, data2]
                         dataTable_avg = [...dataTable_avg, data1, data2]

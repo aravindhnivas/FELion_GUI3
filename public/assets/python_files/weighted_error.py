@@ -8,7 +8,7 @@ from FELion_definitions import sendData
 
 def calc_error(data):
 
-    x, s = np.array(data, dtype=np.float)
+    x, s = data
     p =1/s**2
 
     sum_p = np.sum(p)
@@ -24,24 +24,35 @@ def calc_error(data):
     dataToSend = {"S_int":s_int, "S_ext":s_ext, "weighted_mean":weighted_mean, "weighted_s": max(s_int, s_ext), 
         "unweighted_mean":np.mean(x), "unweigted_s":np.std(x), "mean":f"{u_arithmetic_mean:.2uP}", "wmean":f"{u_weighted_mean:.2uP}"}
 
-    sendData(dataToSend)
+    return dataToSend
 
 if __name__ == "__main__":
 
     args = sys.argv[1:][0].split(",")
+
     print(f"Received args: {args}")
 
     if len(args[0]) > 0:
-
         data = [float(i) for i in args]
-        print(f"Converted data: {data}")
         
-        line = data[::2]
-        print(f"Error: {line}")
+        freq = data[0::8]
+        amp = data[2::8]
+        fwhm = data[4::8]
+        sigma = data[6::8]
 
-        err = data[1::2]
-        print(f"Error: {err}")
+        freq_err = data[1::8]
+        amp_err = data[3::8]
+        fwhm_err = data[5::8]
+        sigma_err = data[7::8]
 
-        calc_error(data=[line, err])
+        value = np.array([freq, amp, fwhm, sigma], dtype=np.float)
+        err = np.array([freq_err, amp_err, fwhm_err, sigma_err], dtype=np.float)
+        print(f"Converted data:\n {value} \n{err}")
+        receiveData = []
+        for x, y in zip(value, err):
+            receiveData.append(calc_error([x, y]))
+
+        dataToSend = {"freq":receiveData[0], "amp":receiveData[1], "fwhm":receiveData[2], "sig":receiveData[3]}
+        sendData(dataToSend)
 
     else: print("No lines available")

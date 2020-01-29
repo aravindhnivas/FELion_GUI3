@@ -66,7 +66,8 @@ def exp_fit(location, norm_method, start_wn, end_wn, output_filename, overwrite,
         "table": f"{ucen1:.2uP}, {uamp1:.2uP}, {usig1:.2uP}, {uFWHM1:.2uP}, {ucen2:.2uP}, {uamp2:.2uP}, {usig2:.2uP}, {uFWHM2:.2uP}",
 
         "peak": {"x":list(wn), "y":list(gauss_peak), "name":f"[{ucen1:.2uP}, {ucen2:.2uP}]", "mode": "lines", "line": {"color":line_color}},
-        "for_weighted_error1":f"{cen1}, {cen1_err}", "for_weighted_error2":f"{cen2}, {cen2_err}",
+        "for_weighted_error1":f"{cen1}, {cen1_err}, {amp1}, {amp1_err}, {uFWHM1.nominal_value}, {uFWHM1.std_dev}, {sig1}, {sig1_err}",
+        "for_weighted_error2":f"{cen2}, {cen2_err}, {amp2}, {amp2_err}, {uFWHM2.nominal_value}, {uFWHM2.std_dev}, {sig2}, {sig2_err}",
         "annotations": [ {"x": cen1, "y": amp1, "xref": 'x', "yref": 'y', "text": f'{ucen1:.2uP}',
                 "font":{"color":line_color}, "arrowcolor":line_color, "showarrow": True, "arrowhead": 2, "ax": -25, "ay": -40
             }, {"x": cen2, "y": amp2, "xref": 'x', "yref": 'y', "text": f'{ucen2:.2uP}',
