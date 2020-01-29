@@ -1,12 +1,170 @@
 <script>
 
+    //  Importing
     import Layout from "../components/Layout.svelte"
-    let filetype = "thz"
-    let id = "THz"
-    let thzfiles = [];
-    let thz_location = localStorage[`${filetype}_location`] || ""
+    import CustomIconSwitch from "../components/CustomIconSwitch.svelte"
+    import CustomSelect from "../components/CustomSelect.svelte"
+    import CustomSwitch from "../components/CustomSwitch.svelte"
 
-    $: console.log(`${filetype} updated: ${thz_location}\n${thzfiles}`)
+    import ReportLayout from "../components/ReportLayout.svelte"
+    import Textfield from '@smui/textfield'
+    import { fly, fade } from 'svelte/transition'
+    import {plot, subplot} from "../js/functions.js"
+
+    import {activated, modalContent} from "../components/Modal.svelte"
+    import {createToast} from "../components/Layout.svelte"
+    // import {afterUpdate} from "svelte"
+
+    import {Icon} from '@smui/icon-button'
+    /////////////////////////////////////////////////////////////////////////
+
+    // Initialisation
+    let filetype = "thz", id = "THz", fileChecked = [];
+    let currentLocation = localStorage[`${filetype}_location`] || ""
+    $: thzfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
+    let openShell = false, graphPlotted = false
+
+    let delta = 1, gamma = 0
+
+    let B0=0, D0=0, H0=0, temp=300, totalJ=20
+
+    // Depletion Row
+    let toggleRow = false
+    let style = "width:7em; height:3.5em; margin-right:0.5em"
+
+
+    function plotData(event=null, filetype="thz", tkplot="run"){
+
+        if (fileChecked.length === 0) {return createToast("No files selected", "danger")}
+
+        let pyfileInfo = {
+            thz: {pyfile:"thz_scan.py" , args:[...thzfiles, delta, tkplot, gamma]},
+            boltzman: {pyfile:"boltzman.py" , args:[currentLocation, B0, D0, H0, temp, totalJ, tkplot]},
+        }
+        let {pyfile, args} = pyfileInfo[filetype]
+        if (tkplot == "plot") {filetype = "general"}
+
+        if (filetype == "general") {
+            console.log("Sending general arguments: ", args)
+            let py = spawn(
+                localStorage["pythonpath"],
+                ["-i", path.join(localStorage["pythonscript"], pyfile), args],
+                { detached: true, stdio: 'ignore', shell: openShell }
+            )
+            py.unref()
+            createToast("General process sent. Expect an response soon...")
+            return;
+        }
+
+        let target = event.target
+        target.classList.toggle("is-loading")
+        if (filetype == "scan") {graphPlotted = false}
+        
+        let py;
+        try {py = spawn( localStorage["pythonpath"], [path.resolve(localStorage["pythonscript"], pyfile), args] )}
+
+        catch (err) {
+            $modalContent = "Error accessing python. Set python location properly in Settings"
+            $activated = true
+            target.classList.toggle("is-loading")
+            return
+        }
+        
+        createToast("Process Started")
+        py.stdout.on("data", data => {
+            console.log("Ouput from python")
+            let dataReceived = data.toString("utf8")
+            console.log(dataReceived)
+        });
+
+        let error_occured_py = false
+
+        py.stderr.on("data", err => {
+            $modalContent = err
+            $activated = true
+            error_occured_py = true;
+        });
+
+        py.on("close", () => {
+            if (!error_occured_py) {
+
+                try {
+                    let dataFromPython = fs.readFileSync(path.join(localStorage["pythonscript"], "data.json"))
+                    dataFromPython = JSON.parse(dataFromPython.toString("utf-8"))
+                    console.log(dataFromPython)
+
+                    if (filetype=="thz") {
+                       plot(`THz Scan`, "Frequency (GHz)", "Depletion (%)", dataFromPython, "thzPlot");
+    
+                        let lines = [];
+
+                        for (let x in dataFromPython["shapes"]) { lines.push(dataFromPython["shapes"][x]) }
+                        let layout_update = {
+                            shapes: lines
+                        }
+                        Plotly.relayout("thzPlot", layout_update)
+                    } else if (filetype == "boltzman") {
+                        plot(`Boltzman Distribution`, "Rotational levels (J)", "Probability (%)", dataFromPython, "boltzman_plot");
+                    }
+
+                    createToast("Graph plotted", "success")
+                    graphPlotted = true
+
+                } catch (err) { $modalContent = err; $activated = true }
+
+            }
+            console.log("Process closed")
+            target.classList.toggle("is-loading")
+        })
+    }
+
+
 </script>
 
-<Layout {filetype} {id} bind:currentLocation={thz_location} bind:fileChecked={thzfiles}></Layout> 
+<style>
+    .thz_buttonContainer {min-height: 5em;}
+    .button {margin-right: 0.5em;}
+    .buttonRow {margin-bottom: 1em!important; align-items: center;}
+
+    * :global(.mdc-select__native-control option) {color: black}
+    .active {display: flex!important;}
+    .hide {display: none;}
+    .align {display: flex; align-items: center;}
+</style>
+
+
+<Layout {filetype} {id} bind:currentLocation bind:fileChecked>
+    <div class="thz_buttonContainer" slot="buttonContainer">
+
+        <div class="content align buttonRow">
+            <button class="button is-link" on:click={plotData}>THz Plot</button>
+            <Textfield {style} on:change={plotData} bind:value={delta} label="Delta" />
+            <Textfield {style} on:change={plotData} bind:value={gamma} label="Gamma" />
+            <button class="button is-link" on:click="{(e)=>plotData(e, "thz", "plot")}">Open in Matplotlib</button>
+            <CustomIconSwitch style="padding:0;" bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
+            <button class="button is-link" on:click="{()=>{toggleRow = !toggleRow}}">Boltzman</button>
+        </div>
+
+        <div class="animated fadeIn hide buttonRow" class:active={toggleRow} >
+            <Textfield {style} on:change="{(e)=>plotData(e, "boltzman")}" bind:value={B0} label="B0 (MHz)" />
+            <Textfield {style} on:change="{(e)=>plotData(e, "boltzman")}" bind:value={D0} label="D0 (MHz)" />
+            <Textfield {style} on:change="{(e)=>plotData(e, "boltzman")}" bind:value={H0} label="H0 (MHz)" />
+            <Textfield {style} on:change="{(e)=>plotData(e, "boltzman")}" bind:value={temp} label="Temp." />
+            <Textfield {style} on:change="{(e)=>plotData(e, "boltzman")}" bind:value={totalJ} label="Total J" />
+            <button class="button is-link" on:click="{(e)=>plotData(e, "boltzman", "run")}">Submit</button>
+            <button class="button is-link" on:click="{(e)=>plotData(e, "boltzman", "plot")}">Open in Matplotlib</button>
+        </div>
+    </div>
+
+    <div style="margin-right: 1em;" slot="plotContainer">
+
+        <div id="thzPlot"></div>
+        <div id="boltzman_plot"></div>
+
+        <div class="animated fadeIn hide" class:active={graphPlotted} style="flex-direction:column ">
+            <ReportLayout bind:currentLocation id="thzreport", plotID={["thzPlot"]}/>
+        </div>
+
+    </div>
+
+</Layout>

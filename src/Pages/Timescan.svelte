@@ -44,6 +44,8 @@
         }
         let {pyfile, args} = pyfileInfo[filetype]
 
+        if (tkplot == "plot") {filetype = "general"}
+
         if (filetype == "general") {
             console.log("Sending general arguments: ", args)
             let py = spawn(
@@ -160,21 +162,15 @@
 
     <div style="margin-right: 1em;" slot="plotContainer">
         <div id="tplotContainer">
-        
-            <!-- <div class="columns is-multiline" {id} style="padding-bottom:1em"> -->
             {#each fileChecked as scanfile}
                 <div id="{scanfile}_tplot" style="padding-bottom:1em" />
             {/each}
-            <!-- </div> -->
+
         </div>
 
         <div class="animated fadeIn hide" class:active={graphPlotted} style="flex-direction:column ">
-
             <ReportLayout bind:currentLocation id="scanreport", plotID={[`${fileChecked[0]}_tplot`]}/>
-
         </div>
 
     </div>
-
-
 </Layout>
