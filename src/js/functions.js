@@ -45,7 +45,7 @@ export function resizableDiv({div, change={width:true, height:true} ,cursor={lef
 }
 
 resizableDiv({div:".adjust-right", cursor:{right:true}, change:{width:true, height:false}})
-// resizableDiv({div:".quickview", cursor:{left:true}, change:{width:true, height:false}})
+resizableDiv({div:".unit_converter_column", cursor:{right:true}, change:{width:true, height:false}})
 
 export function plot(mainTitle, xtitle, ytitle, data, plotArea, filetype = null) {
     let dataLayout = {

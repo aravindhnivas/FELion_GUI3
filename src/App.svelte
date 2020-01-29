@@ -6,7 +6,6 @@
 	import Layout from "./components/Layout.svelte"
 	import LineAnimate from "./testing/LineAnimate.svelte"
 
-	// Pages
 	import Home from "./Pages/Home.svelte"
 	import Powerfile from "./Pages/Powerfile.svelte"
 	import Normline from "./Pages/Normline.svelte"
@@ -14,6 +13,7 @@
 	import Timescan from "./Pages/Timescan.svelte"
 	import THz from "./Pages/THz.svelte"
 	import Settings from "./Pages/Settings.svelte"
+	import Misc from "./Pages/Misc.svelte"
 
 	import Modal from "./components/Modal.svelte"
 	import {onMount, afterUpdate} from "svelte"
@@ -23,7 +23,7 @@
 		allbuttons.forEach(button=>button.classList.add("hvr-glow"))
 	})
 
-	const navItems = ["Home", "Normline", "Masspec", "Timescan", "THz", "Powerfile", "Settings"]
+	const navItems = ["Home", "Normline", "Masspec", "Timescan", "THz", "Powerfile", "Misc", "Settings"]
 
 	window.electron = require("electron")
 	window.remote = electron.remote
@@ -64,9 +64,12 @@
 	<Masspec />
 	<Timescan />
 	<THz />
+
 	<Powerfile />
+	<Misc />
 	<Settings />
 
 </div>
+
 
 <Footer />
