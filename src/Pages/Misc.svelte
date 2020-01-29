@@ -10,21 +10,21 @@
 
     // eV/q = h.c/lam = h.f = KB.T = h.c.cm_1
 
-    $: hz = 1e12;
+    $: hz = 1e12.toExponential(4);
     $: eV = (plank_constant/electron_charge) * hz;
     $: kelvin = (plank_constant/boltzman_constant) * hz;
     $: cm_1 = hz/(c*1e2);
+
     $: um = (c/hz)*1e+6;
+
     $: ghz = hz*1e-9
     $: nm = (c/hz)*1e+9
     $: J = plank_constant * hz
     
     $: edit_constants = false
-
     $: edit_numberDensity_constants = false
 
     // Number density
-
 
     $: pq1_before = 1e-8
     $: pq1_after = 1e-5
