@@ -81,10 +81,9 @@
     const zipFile = path.resolve(updateFolder, updatefilename)
 
     const updateCheck = () => {
-
         if (!navigator.onLine) {return createToast("No Internet Connection!", "warning")}
         
-        createToast("Checking for update", "warning")
+        // createToast("Checking for update", "warning")
         console.log(`URL_Package: ${versionJson}`)
 
         let developer_version = false
@@ -169,29 +168,31 @@
 
     // Download the update file
 
-    const download = (downloadedFile) => {
-        return new Promise((resolve)=>{
-            let zip;
+    const download = () => {
 
-            let response = https.get(urlzip, async (res) => {
+        // const downloadedFile = fs.createWriteStream(zipFile)
+        return new Promise((resolve)=>{
+
+            let response = https.get(urlzip, (res) => {
                 console.log(`URL: ${urlzip}`)
                 console.log('statusCode:', res.statusCode);
+
                 console.log('headers:', res.headers);
 
-                await res.pipe(downloadedFile);
-
+                res.pipe(fs.createWriteStream(zipFile))
                 console.log("File downloaded")
-                zip = await new admZip(`${__dirname}/../update/update.zip`)
+
             })
 
-            response.on("close", async ()=>{
+            response.on("close", () => {
                 
                 console.log("Downloading Completed")
                 console.log("Extracting files")
 
-                await zip.extractAllTo(`${__dirname}/../update`, /*overwrite*/true)
-                
-                console.log("File Extracted")
+                let zip = new admZip(zipFile)
+
+                zip.extractAllTo(updateFolder, /*overwrite*/true)
+                // console.log("File Extracted")
                 resolve("File extracted")
                 createToast("Downloading Completed")
 
@@ -199,32 +200,37 @@
         })
     }
 
-    const update = () => {
+    const update = async () => {
+
         if (!fs.existsSync(updateFolder)) {fs.mkdirSync(updateFolder)}
-        const downloadedFile = fs.createWriteStream(zipFile)
-        download(downloadedFile).then(result=>{
-            
-                console.log(result)
-                console.log("Copying downloaded files")
-                let src = path.resolve(__dirname, "../update", `${github_repo}-${gihub_branchname}`)
-                let dest = path.resolve(__dirname, "..")
 
-                copy(src, dest, {overwrite: true}, function(error, results) {
-                    if (error) {
-                        console.error('Copy failed: ' + error);
-                        createToast("Update failed.\nMaybe the user doesn't have necessary persmission to write files in the disk", "danger")
-                    } else {
-                        console.info('Copied ' + results.length + ' files');
-                        createToast("Updated succesfull. Restart the program (Press Ctrl + R).", "success")
-                        let response = remote.dialog.showMessageBox(remote.getCurrentWindow(), 
-                            {title:"FELion_GUI3", type:"info", message:"Update succesfull", buttons:["Restart", "Restart later"]}
-                        )
-
-                        if (response===0) remote.getCurrentWindow().reload()
-                    }
-                })
-        }).catch(err=>console.log(err), "Update failed. Try again or Check your internet connection")
+        await download()
+        InstallUpdate()
     }
+
+
+    const InstallUpdate = () => {
+
+        console.log("Copying downloaded files")
+        
+        let src = path.resolve(updateFolder, `${github_repo}-${gihub_branchname}`)
+        let dest = path.resolve(__dirname, "..")
+
+        copy(src, dest, {overwrite: true}, function(error, results) {
+            if (error) {
+                console.error('Copy failed: ' + error);
+                createToast("Update failed.\nMaybe the user doesn't have necessary persmission to write files in the disk", "danger")
+            } else {
+                console.info('Copied ' + results.length + ' files');
+                createToast("Updated succesfull. Restart the program (Press Ctrl + R).", "success")
+                let response = remote.dialog.showMessageBox(remote.getCurrentWindow(), 
+                    {title:"FELion_GUI3", type:"info", message:"Update succesfull", buttons:["Restart", "Restart later"]}
+                )
+                if (response===0) {remote.getCurrentWindow().reload()}
+            }
+        })
+    }
+
     // Backup and restore
 
     let backupName = "FELion_GUI_backup"

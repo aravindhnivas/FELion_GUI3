@@ -44429,7 +44429,7 @@ function create_fragment$X(ctx) {
 	let dispose;
 
 	function customdialog_dialog_binding(value) {
-		/*customdialog_dialog_binding*/ ctx[38].call(null, value);
+		/*customdialog_dialog_binding*/ ctx[39].call(null, value);
 	}
 
 	let customdialog_props = {
@@ -44454,7 +44454,7 @@ function create_fragment$X(ctx) {
 	customdialog.$on("response", /*handlepythonPathCheck*/ ctx[11]);
 
 	function textfield0_value_binding(value_1) {
-		/*textfield0_value_binding*/ ctx[39].call(null, value_1);
+		/*textfield0_value_binding*/ ctx[40].call(null, value_1);
 	}
 
 	let textfield0_props = {
@@ -44470,7 +44470,7 @@ function create_fragment$X(ctx) {
 	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
 
 	function textfield1_value_binding(value_2) {
-		/*textfield1_value_binding*/ ctx[40].call(null, value_2);
+		/*textfield1_value_binding*/ ctx[41].call(null, value_2);
 	}
 
 	let textfield1_props = {
@@ -44486,7 +44486,7 @@ function create_fragment$X(ctx) {
 	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding));
 
 	function textfield2_value_binding(value_3) {
-		/*textfield2_value_binding*/ ctx[41].call(null, value_3);
+		/*textfield2_value_binding*/ ctx[42].call(null, value_3);
 	}
 
 	let textfield2_props = {
@@ -44502,7 +44502,7 @@ function create_fragment$X(ctx) {
 	binding_callbacks.push(() => bind(textfield2, "value", textfield2_value_binding));
 
 	function textfield3_value_binding(value_4) {
-		/*textfield3_value_binding*/ ctx[42].call(null, value_4);
+		/*textfield3_value_binding*/ ctx[43].call(null, value_4);
 	}
 
 	let textfield3_props = {
@@ -44518,7 +44518,7 @@ function create_fragment$X(ctx) {
 	binding_callbacks.push(() => bind(textfield3, "value", textfield3_value_binding));
 
 	function customselect_picked_binding(value_5) {
-		/*customselect_picked_binding*/ ctx[43].call(null, value_5);
+		/*customselect_picked_binding*/ ctx[44].call(null, value_5);
 	}
 
 	let customselect_props = {
@@ -44538,7 +44538,7 @@ function create_fragment$X(ctx) {
 	binding_callbacks.push(() => bind(customselect, "picked", customselect_picked_binding));
 
 	function textfield4_value_binding(value_6) {
-		/*textfield4_value_binding*/ ctx[44].call(null, value_6);
+		/*textfield4_value_binding*/ ctx[45].call(null, value_6);
 	}
 
 	let textfield4_props = {
@@ -44621,62 +44621,62 @@ function create_fragment$X(ctx) {
 			h12.textContent = "About";
 			attr_dev(div0, "class", "title nav hvr-glow svelte-1nh0g92");
 			toggle_class(div0, "clicked", /*selected*/ ctx[0] === "Configuration");
-			add_location(div0, file$S, 355, 16, 13337);
+			add_location(div0, file$S, 361, 16, 13026);
 			attr_dev(div1, "class", "title nav hvr-glow svelte-1nh0g92");
 			toggle_class(div1, "clicked", /*selected*/ ctx[0] === "Update");
-			add_location(div1, file$S, 356, 16, 13469);
+			add_location(div1, file$S, 362, 16, 13158);
 			attr_dev(div2, "class", "title nav hvr-glow svelte-1nh0g92");
 			toggle_class(div2, "clicked", /*selected*/ ctx[0] === "About");
-			add_location(div2, file$S, 357, 16, 13587);
+			add_location(div2, file$S, 363, 16, 13276);
 			attr_dev(div3, "class", "container left svelte-1nh0g92");
-			add_location(div3, file$S, 354, 12, 13291);
+			add_location(div3, file$S, 360, 12, 12980);
 			attr_dev(div4, "class", "column side-panel is-2-widescreen is-3-desktop is-4-tablet box adjust-right svelte-1nh0g92");
-			add_location(div4, file$S, 353, 8, 13188);
+			add_location(div4, file$S, 359, 8, 12877);
 			attr_dev(h10, "class", "title svelte-1nh0g92");
-			add_location(h10, file$S, 366, 20, 13972);
+			add_location(h10, file$S, 372, 20, 13661);
 			attr_dev(button0, "class", "button is-link svelte-1nh0g92");
-			add_location(button0, file$S, 370, 20, 14273);
+			add_location(button0, file$S, 376, 20, 13962);
 			attr_dev(button1, "class", "button is-link svelte-1nh0g92");
-			add_location(button1, file$S, 371, 20, 14365);
+			add_location(button1, file$S, 377, 20, 14054);
 			attr_dev(div5, "class", "content animated fadeIn svelte-1nh0g92");
 			toggle_class(div5, "active", /*selected*/ ctx[0] === "Configuration");
-			add_location(div5, file$S, 365, 16, 13871);
+			add_location(div5, file$S, 371, 16, 13560);
 			attr_dev(h11, "class", "title svelte-1nh0g92");
-			add_location(h11, file$S, 377, 20, 14606);
+			add_location(h11, file$S, 383, 20, 14295);
 			attr_dev(div6, "class", "subtitle svelte-1nh0g92");
-			add_location(div6, file$S, 378, 20, 14657);
+			add_location(div6, file$S, 384, 20, 14346);
 			attr_dev(div7, "class", "content svelte-1nh0g92");
-			add_location(div7, file$S, 380, 20, 14761);
+			add_location(div7, file$S, 386, 20, 14450);
 			attr_dev(button2, "class", "button is-link svelte-1nh0g92");
-			add_location(button2, file$S, 387, 24, 15259);
+			add_location(button2, file$S, 393, 24, 14948);
 			attr_dev(button3, "class", "button is-link svelte-1nh0g92");
-			add_location(button3, file$S, 388, 24, 15360);
+			add_location(button3, file$S, 394, 24, 15049);
 			attr_dev(div8, "class", "content svelte-1nh0g92");
-			add_location(div8, file$S, 386, 20, 15212);
+			add_location(div8, file$S, 392, 20, 14901);
 			attr_dev(button4, "class", "button is-link svelte-1nh0g92");
-			add_location(button4, file$S, 394, 24, 15649);
+			add_location(button4, file$S, 400, 24, 15338);
 			attr_dev(button5, "class", "button is-link svelte-1nh0g92");
-			add_location(button5, file$S, 395, 24, 15739);
+			add_location(button5, file$S, 401, 24, 15428);
 			attr_dev(div9, "class", "content svelte-1nh0g92");
-			add_location(div9, file$S, 392, 20, 15478);
+			add_location(div9, file$S, 398, 20, 15167);
 			attr_dev(div10, "class", "content animated fadeIn svelte-1nh0g92");
 			toggle_class(div10, "active", /*selected*/ ctx[0] === "Update");
-			add_location(div10, file$S, 376, 16, 14512);
+			add_location(div10, file$S, 382, 16, 14201);
 			attr_dev(h12, "class", "title svelte-1nh0g92");
-			add_location(h12, file$S, 403, 20, 16026);
+			add_location(h12, file$S, 409, 20, 15715);
 			attr_dev(div11, "class", "content animated fadeIn svelte-1nh0g92");
 			toggle_class(div11, "active", /*selected*/ ctx[0] === "About");
-			add_location(div11, file$S, 402, 16, 15933);
+			add_location(div11, file$S, 408, 16, 15622);
 			attr_dev(div12, "class", "container right svelte-1nh0g92");
-			add_location(div12, file$S, 362, 12, 13782);
+			add_location(div12, file$S, 368, 12, 13471);
 			attr_dev(div13, "class", "column main-panel box svelte-1nh0g92");
-			add_location(div13, file$S, 361, 8, 13733);
+			add_location(div13, file$S, 367, 8, 13422);
 			attr_dev(div14, "class", "columns svelte-1nh0g92");
-			add_location(div14, file$S, 351, 4, 13155);
+			add_location(div14, file$S, 357, 4, 12844);
 			attr_dev(section, "class", "section animated fadeIn svelte-1nh0g92");
 			attr_dev(section, "id", "Settings");
 			set_style(section, "display", "none");
-			add_location(section, file$S, 350, 0, 13073);
+			add_location(section, file$S, 356, 0, 12762);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -44967,8 +44967,9 @@ function instance$X($$self, $$props, $$invalidate) {
 			return createToast$1("No Internet Connection!", "warning");
 		}
 
-		createToast$1("Checking for update", "warning");
+		// createToast("Checking for update", "warning")
 		console.log(`URL_Package: ${versionJson}`);
+
 		let developer_version = false;
 		console.log(`URL_ZIP: ${urlzip}`);
 		let new_version = "";
@@ -45044,62 +45045,65 @@ function instance$X($$self, $$props, $$invalidate) {
 	};
 
 	// Download the update file
-	const download = downloadedFile => {
+	const download = () => {
+		// const downloadedFile = fs.createWriteStream(zipFile)
 		return new Promise(resolve => {
-				let zip;
-
-				let response = https.get(urlzip, async res => {
+				let response = https.get(urlzip, res => {
 					console.log(`URL: ${urlzip}`);
 					console.log("statusCode:", res.statusCode);
 					console.log("headers:", res.headers);
-					await res.pipe(downloadedFile);
+					res.pipe(fs.createWriteStream(zipFile));
 					console.log("File downloaded");
-					zip = await new admZip(`${__dirname}/../update/update.zip`);
 				});
 
-				response.on("close", async () => {
+				response.on("close", () => {
 					console.log("Downloading Completed");
 					console.log("Extracting files");
-					await zip.extractAllTo(`${__dirname}/../update`, true); /*overwrite*/
-					console.log("File Extracted");
+					let zip = new admZip(zipFile);
+					zip.extractAllTo(updateFolder, true); /*overwrite*/
+
+					// console.log("File Extracted")
 					resolve("File extracted");
+
 					createToast$1("Downloading Completed");
 				});
 			});
 	};
 
-	const update = () => {
+	const update = async () => {
 		if (!fs.existsSync(updateFolder)) {
 			fs.mkdirSync(updateFolder);
 		}
 
-		const downloadedFile = fs.createWriteStream(zipFile);
+		await download();
+		InstallUpdate();
+	};
 
-		download(downloadedFile).then(result => {
-			console.log(result);
-			console.log("Copying downloaded files");
-			let src = path.resolve(__dirname, "../update", `${github_repo}-${gihub_branchname}`);
-			let dest = path.resolve(__dirname, "..");
+	const InstallUpdate = () => {
+		console.log("Copying downloaded files");
+		let src = path.resolve(updateFolder, `${github_repo}-${gihub_branchname}`);
+		let dest = path.resolve(__dirname, "..");
 
-			copy(src, dest, { overwrite: true }, function (error, results) {
-				if (error) {
-					console.error("Copy failed: " + error);
-					createToast$1("Update failed.\nMaybe the user doesn't have necessary persmission to write files in the disk", "danger");
-				} else {
-					console.info("Copied " + results.length + " files");
-					createToast$1("Updated succesfull. Restart the program (Press Ctrl + R).", "success");
+		copy(src, dest, { overwrite: true }, function (error, results) {
+			if (error) {
+				console.error("Copy failed: " + error);
+				createToast$1("Update failed.\nMaybe the user doesn't have necessary persmission to write files in the disk", "danger");
+			} else {
+				console.info("Copied " + results.length + " files");
+				createToast$1("Updated succesfull. Restart the program (Press Ctrl + R).", "success");
 
-					let response = remote.dialog.showMessageBox(remote.getCurrentWindow(), {
-						title: "FELion_GUI3",
-						type: "info",
-						message: "Update succesfull",
-						buttons: ["Restart", "Restart later"]
-					});
+				let response = remote.dialog.showMessageBox(remote.getCurrentWindow(), {
+					title: "FELion_GUI3",
+					type: "info",
+					message: "Update succesfull",
+					buttons: ["Restart", "Restart later"]
+				});
 
-					if (response === 0) remote.getCurrentWindow().reload();
+				if (response === 0) {
+					remote.getCurrentWindow().reload();
 				}
-			});
-		}).catch(err => console.log(err), "Update failed. Try again or Check your internet connection");
+			}
+		});
 	};
 
 	// Backup and restore
@@ -45333,6 +45337,7 @@ function instance$X($$self, $$props, $$invalidate) {
 		updateFolder,
 		zipFile,
 		download,
+		InstallUpdate,
 		_src,
 		_static,
 		packageFile,
