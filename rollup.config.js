@@ -13,7 +13,7 @@ const production = !process.env.ROLLUP_WATCH;
 
 export default {
 	input: 'src/App.js',
-	output: { sourcemap: true, format: 'cjs', name: 'app', file: 'public/bundle.js' },
+	output: { sourcemap: true, format: 'cjs', name: 'app', file: 'static/bundle.js' },
 
 	plugins: [
 		svelte({
@@ -23,7 +23,7 @@ export default {
 			// we'll extract any component CSS out into
 			// a separate file — better for performance
 			css: css => {
-				css.write('public/bundle.css');
+				css.write('static/bundle.css');
 			},
 			preprocess: {
 				style: async ({ content, attributes }) => {
@@ -58,7 +58,7 @@ export default {
 			// dedupe: importee => importee === 'svelte' || importee.startsWith('svelte/')
 		}),
 		commonjs(),
-		!production && livereload('public'),
+		!production && livereload('static'),
 
 		production && terser(),
 

@@ -12,7 +12,7 @@ function createWindow () {
     backgroundColor: "#46307d"
 
   });
-  mainWindow.loadFile('public/index.html');
+  mainWindow.loadFile('static/index.html');
   mainWindow.on('closed', function () {mainWindow = null})
 
 }

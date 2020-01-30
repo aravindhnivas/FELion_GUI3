@@ -230,7 +230,8 @@
     // Backup and restore
     let backupName = "FELion_GUI_backup"
     let _src = {path:path.resolve(__dirname, "..", "src"), name:"src"}
-    let _static = {path:path.resolve(__dirname, "..", "public"), name:"public"}
+
+    let _static = {path:path.resolve(__dirname, "..", "static"), name:"static"}
     let packageFile = {path:path.resolve(__dirname, "..", "package.json"), name:"package.json"}
     let versionFileJson = {path:path.resolve(__dirname, "..", "version.json"), name:"version.json"}
     let mainJs = {path:path.resolve(__dirname, "..", "main.js"), name:"main.js"}
