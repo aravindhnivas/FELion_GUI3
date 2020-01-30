@@ -20719,7 +20719,7 @@ const get_plotContainer_slot_context = ctx => ({});
 const get_buttonContainer_slot_changes = dirty => ({});
 const get_buttonContainer_slot_context = ctx => ({});
 
-// (119:8) {#if toggleBrowser}
+// (132:8) {#if toggleBrowser}
 function create_if_block$9(ctx) {
 	let div;
 	let updating_currentLocation;
@@ -20754,7 +20754,7 @@ function create_if_block$9(ctx) {
 			div = element("div");
 			create_component(filebrowser.$$.fragment);
 			attr_dev(div, "class", "column is-one-fifth-widescreen is-one-quarter-desktop box filebrowser adjust-right svelte-1v7l62r");
-			add_location(div, file$r, 119, 12, 3205);
+			add_location(div, file$r, 132, 12, 3551);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -20807,14 +20807,14 @@ function create_if_block$9(ctx) {
 		block,
 		id: create_if_block$9.name,
 		type: "if",
-		source: "(119:8) {#if toggleBrowser}",
+		source: "(132:8) {#if toggleBrowser}",
 		ctx
 	});
 
 	return block;
 }
 
-// (130:24) <Icon class="material-icons" on>
+// (143:24) <Icon class="material-icons" on>
 function create_default_slot_2$3(ctx) {
 	let t;
 
@@ -20834,14 +20834,14 @@ function create_default_slot_2$3(ctx) {
 		block,
 		id: create_default_slot_2$3.name,
 		type: "slot",
-		source: "(130:24) <Icon class=\\\"material-icons\\\" on>",
+		source: "(143:24) <Icon class=\\\"material-icons\\\" on>",
 		ctx
 	});
 
 	return block;
 }
 
-// (131:24) <Icon class="material-icons" >
+// (144:24) <Icon class="material-icons" >
 function create_default_slot_1$4(ctx) {
 	let t;
 
@@ -20861,14 +20861,14 @@ function create_default_slot_1$4(ctx) {
 		block,
 		id: create_default_slot_1$4.name,
 		type: "slot",
-		source: "(131:24) <Icon class=\\\"material-icons\\\" >",
+		source: "(144:24) <Icon class=\\\"material-icons\\\" >",
 		ctx
 	});
 
 	return block;
 }
 
-// (129:20) <IconButton  toggle bind:pressed={toggleBrowser}>
+// (142:20) <IconButton  toggle bind:pressed={toggleBrowser}>
 function create_default_slot$6(ctx) {
 	let t;
 	let current;
@@ -20942,7 +20942,7 @@ function create_default_slot$6(ctx) {
 		block,
 		id: create_default_slot$6.name,
 		type: "slot",
-		source: "(129:20) <IconButton  toggle bind:pressed={toggleBrowser}>",
+		source: "(142:20) <IconButton  toggle bind:pressed={toggleBrowser}>",
 		ctx
 	});
 
@@ -21028,23 +21028,23 @@ function create_fragment$s(ctx) {
 			div2 = element("div");
 			if (plotContainer_slot) plotContainer_slot.c();
 			attr_dev(button, "class", "button is-link gap svelte-1v7l62r");
-			add_location(button, file$r, 132, 20, 3881);
+			add_location(button, file$r, 145, 20, 4227);
 			attr_dev(div0, "class", "align svelte-1v7l62r");
-			add_location(div0, file$r, 127, 16, 3593);
+			add_location(div0, file$r, 140, 16, 3939);
 			attr_dev(div1, "class", "align buttonContainer svelte-1v7l62r");
-			add_location(div1, file$r, 136, 16, 4116);
+			add_location(div1, file$r, 149, 16, 4462);
 			attr_dev(div2, "class", "plotContainer svelte-1v7l62r");
-			add_location(div2, file$r, 137, 16, 4207);
+			add_location(div2, file$r, 150, 16, 4553);
 			attr_dev(div3, "class", "container button-plot-container box svelte-1v7l62r");
-			add_location(div3, file$r, 125, 12, 3524);
+			add_location(div3, file$r, 138, 12, 3870);
 			attr_dev(div4, "class", "column fileContainer svelte-1v7l62r");
-			add_location(div4, file$r, 124, 8, 3476);
+			add_location(div4, file$r, 137, 8, 3822);
 			attr_dev(div5, "class", "columns svelte-1v7l62r");
-			add_location(div5, file$r, 116, 4, 3139);
+			add_location(div5, file$r, 129, 4, 3485);
 			attr_dev(section, "id", /*id*/ ctx[2]);
 			set_style(section, "display", "none");
 			attr_dev(section, "class", "animated fadeIn svelte-1v7l62r");
-			add_location(section, file$r, 114, 0, 3072);
+			add_location(section, file$r, 127, 0, 3418);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -21198,15 +21198,21 @@ function browse({ filetype = "", dir = true, defaultPath = "" } = {}) {
 				defaultPath
 			};
 
-			remote.dialog.showOpenDialog(mainWindow, options).then(result => {
+			let filePaths = remote.dialog.showOpenDialogSync(mainWindow, options);
+			let result = {};
+
+			// .then(result => {
+			if (filePaths !== undefined) {
+				result.filePaths = filePaths;
+				result.canceled = false;
 				console.log(result.canceled);
 				console.log(result.filePaths);
 				resolve(result);
-			}).catch(err => {
-				createToast$1("Couldn't open folder", "danger");
-				reject(err);
-			});
-		});
+			} else {
+				result.filePaths = [];
+				result.canceled = true;
+			} // createToast("Couldn't open folder", "danger") // reject(err)
+		}); // }).catch(err => { 
 }
 
 function instance$s($$self, $$props, $$invalidate) {

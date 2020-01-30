@@ -16,14 +16,27 @@
                 defaultPath: defaultPath
                 
             }
-            remote.dialog.showOpenDialog(mainWindow, options)
-            .then(result => {
+
+            let filePaths = remote.dialog.showOpenDialogSync(mainWindow, options)
+            let result = {}
+            // .then(result => {
+            if (filePaths !== undefined) {
+                result.filePaths = filePaths
+                result.canceled = false
                 console.log(result.canceled)
                 console.log(result.filePaths)
                 resolve(result)
-            }).catch(err => { 
-                createToast("Couldn't open folder", "danger")
-                reject(err) })
+
+            } else {
+                result.filePaths = []
+                result.canceled = true
+                // createToast("Couldn't open folder", "danger")
+                // reject(err)
+
+            }
+                
+            // }).catch(err => { 
+               
         })
     }
 
