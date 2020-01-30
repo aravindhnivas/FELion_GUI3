@@ -44621,62 +44621,62 @@ function create_fragment$X(ctx) {
 			h12.textContent = "About";
 			attr_dev(div0, "class", "title nav hvr-glow svelte-1nh0g92");
 			toggle_class(div0, "clicked", /*selected*/ ctx[0] === "Configuration");
-			add_location(div0, file$S, 356, 16, 13383);
+			add_location(div0, file$S, 356, 16, 13351);
 			attr_dev(div1, "class", "title nav hvr-glow svelte-1nh0g92");
 			toggle_class(div1, "clicked", /*selected*/ ctx[0] === "Update");
-			add_location(div1, file$S, 357, 16, 13515);
+			add_location(div1, file$S, 357, 16, 13483);
 			attr_dev(div2, "class", "title nav hvr-glow svelte-1nh0g92");
 			toggle_class(div2, "clicked", /*selected*/ ctx[0] === "About");
-			add_location(div2, file$S, 358, 16, 13633);
+			add_location(div2, file$S, 358, 16, 13601);
 			attr_dev(div3, "class", "container left svelte-1nh0g92");
-			add_location(div3, file$S, 355, 12, 13337);
+			add_location(div3, file$S, 355, 12, 13305);
 			attr_dev(div4, "class", "column side-panel is-2-widescreen is-3-desktop is-4-tablet box adjust-right svelte-1nh0g92");
-			add_location(div4, file$S, 354, 8, 13234);
+			add_location(div4, file$S, 354, 8, 13202);
 			attr_dev(h10, "class", "title svelte-1nh0g92");
-			add_location(h10, file$S, 367, 20, 14018);
+			add_location(h10, file$S, 367, 20, 13986);
 			attr_dev(button0, "class", "button is-link svelte-1nh0g92");
-			add_location(button0, file$S, 371, 20, 14319);
+			add_location(button0, file$S, 371, 20, 14287);
 			attr_dev(button1, "class", "button is-link svelte-1nh0g92");
-			add_location(button1, file$S, 372, 20, 14411);
+			add_location(button1, file$S, 372, 20, 14379);
 			attr_dev(div5, "class", "content animated fadeIn svelte-1nh0g92");
 			toggle_class(div5, "active", /*selected*/ ctx[0] === "Configuration");
-			add_location(div5, file$S, 366, 16, 13917);
+			add_location(div5, file$S, 366, 16, 13885);
 			attr_dev(h11, "class", "title svelte-1nh0g92");
-			add_location(h11, file$S, 378, 20, 14652);
+			add_location(h11, file$S, 378, 20, 14620);
 			attr_dev(div6, "class", "subtitle svelte-1nh0g92");
-			add_location(div6, file$S, 379, 20, 14703);
+			add_location(div6, file$S, 379, 20, 14671);
 			attr_dev(div7, "class", "content svelte-1nh0g92");
-			add_location(div7, file$S, 381, 20, 14807);
+			add_location(div7, file$S, 381, 20, 14775);
 			attr_dev(button2, "class", "button is-link svelte-1nh0g92");
-			add_location(button2, file$S, 388, 24, 15305);
+			add_location(button2, file$S, 388, 24, 15273);
 			attr_dev(button3, "class", "button is-link svelte-1nh0g92");
-			add_location(button3, file$S, 389, 24, 15406);
+			add_location(button3, file$S, 389, 24, 15374);
 			attr_dev(div8, "class", "content svelte-1nh0g92");
-			add_location(div8, file$S, 387, 20, 15258);
+			add_location(div8, file$S, 387, 20, 15226);
 			attr_dev(button4, "class", "button is-link svelte-1nh0g92");
-			add_location(button4, file$S, 395, 24, 15695);
+			add_location(button4, file$S, 395, 24, 15663);
 			attr_dev(button5, "class", "button is-link svelte-1nh0g92");
-			add_location(button5, file$S, 396, 24, 15785);
+			add_location(button5, file$S, 396, 24, 15753);
 			attr_dev(div9, "class", "content svelte-1nh0g92");
-			add_location(div9, file$S, 393, 20, 15524);
+			add_location(div9, file$S, 393, 20, 15492);
 			attr_dev(div10, "class", "content animated fadeIn svelte-1nh0g92");
 			toggle_class(div10, "active", /*selected*/ ctx[0] === "Update");
-			add_location(div10, file$S, 377, 16, 14558);
+			add_location(div10, file$S, 377, 16, 14526);
 			attr_dev(h12, "class", "title svelte-1nh0g92");
-			add_location(h12, file$S, 404, 20, 16072);
+			add_location(h12, file$S, 404, 20, 16040);
 			attr_dev(div11, "class", "content animated fadeIn svelte-1nh0g92");
 			toggle_class(div11, "active", /*selected*/ ctx[0] === "About");
-			add_location(div11, file$S, 403, 16, 15979);
+			add_location(div11, file$S, 403, 16, 15947);
 			attr_dev(div12, "class", "container right svelte-1nh0g92");
-			add_location(div12, file$S, 363, 12, 13828);
+			add_location(div12, file$S, 363, 12, 13796);
 			attr_dev(div13, "class", "column main-panel box svelte-1nh0g92");
-			add_location(div13, file$S, 362, 8, 13779);
+			add_location(div13, file$S, 362, 8, 13747);
 			attr_dev(div14, "class", "columns svelte-1nh0g92");
-			add_location(div14, file$S, 352, 4, 13201);
+			add_location(div14, file$S, 352, 4, 13169);
 			attr_dev(section, "class", "section animated fadeIn svelte-1nh0g92");
 			attr_dev(section, "id", "Settings");
 			set_style(section, "display", "none");
-			add_location(section, file$S, 351, 0, 13119);
+			add_location(section, file$S, 351, 0, 13087);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -45094,7 +45094,7 @@ function instance$X($$self, $$props, $$invalidate) {
 						buttons: ["Restart", "Restart later"]
 					});
 
-					if (response === 0) mainWindow.reload();
+					if (response === 0) remote.getCurrentWindow().reload();
 				}
 			});
 		}).catch(err => console.log(err), "Update failed. Try again or Check your internet connection");
@@ -45195,26 +45195,25 @@ function instance$X($$self, $$props, $$invalidate) {
 			folders.forEach(folder => {
 				const _dest = path.resolve(__dirname, "..", folder.name);
 
-				fs.copyFileSync(folder.path, _dest, function (error, results) {
+				copy(folder.path, _dest, { overwrite: true }, function (error, results) {
 					if (error) {
 						console.log("Copy failed: " + error);
 						createToast$1("Error Occured while copying", "danger");
 					} else {
 						console.info("Copied " + results.length + " files");
 						console.info("Copied " + results + " files");
-
-						let response = remote.dialog.showMessageBox(remote.getCurrentWindow(), {
-							title: "FELion_GUI2",
-							type: "info",
-							message: "Restored succesfull",
-							buttons: ["Restart", "Restart later"]
-						});
-
-						if (response === 0) mainWindow.reload(); else console.log("Restarting later");
 					}
 				});
 			});
 
+			let response = remote.dialog.showMessageBox(remote.getCurrentWindow(), {
+				title: "FELion_GUI3",
+				type: "info",
+				message: "Restored succesfull",
+				buttons: ["Restart", "Restart later"]
+			});
+
+			if (response === 0) remote.getCurrentWindow().reload(); else console.log("Restarting later");
 			console.log("Restoring completed");
 			createToast$1("Restoring completed", "success");
 		}).catch(err => {

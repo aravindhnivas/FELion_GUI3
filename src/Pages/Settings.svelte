@@ -219,7 +219,7 @@
                             {title:"FELion_GUI2", type:"info", message:"Update succesfull", buttons:["Restart", "Restart later"]}
                         )
 
-                        if (response===0) mainWindow.reload()
+                        if (response===0) remote.getCurrentWindow().reload()
                     }
                 })
                 
@@ -287,35 +287,35 @@
         .then(result=>{
 
             let folderName;
-            if (!result.canceled) {
-                folderName = result.filePaths[0]
-            } else {return console.log("Cancelled")}
+            if (!result.canceled) { folderName = result.filePaths[0] } 
+            else {return console.log("Cancelled")}
 
             console.log("Selected folder: ", folderName)
 
             folders.forEach(folder=>{
                 const _dest = path.resolve(__dirname, "..", folder.name)
-                fs.copyFileSync(folder.path, _dest, function(error, results) {
+                copy(folder.path, _dest, {overwrite: true}, function(error, results) {
                     if (error) { console.log('Copy failed: ' + error); createToast("Error Occured while copying", "danger")} 
                     else {
                         console.info('Copied ' + results.length + ' files')
                         console.info('Copied ' + results + ' files')
-                        let response = remote.dialog.showMessageBox(remote.getCurrentWindow(), 
-                            {title:"FELion_GUI2", type:"info", message:"Restored succesfull", buttons:["Restart", "Restart later"]})
-                        if (response===0) mainWindow.reload()
-                        else console.log("Restarting later")
                     }
                 })
             })
 
+            let response = remote.dialog.showMessageBox(remote.getCurrentWindow(),
+                {title:"FELion_GUI3", type:"info", message:"Restored succesfull", buttons:["Restart", "Restart later"]} )
+            if (response===0) remote.getCurrentWindow().reload()
+            else console.log("Restarting later")
+
             console.log("Restoring completed")
             createToast("Restoring completed", "success")
+
         })
 
         .catch(err=>{
 
             console.log(err)
-        
         
             $modalContent = err
             $activated = true
