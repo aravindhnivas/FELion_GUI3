@@ -1,5 +1,3 @@
-// import {writable, derived} from "svelte/store";
-
 window.showpage = (item) => {document.getElementById(item).style.display = "block"}
 window.hidepage = (item) => {document.getElementById(item).style.display = "none"}
 window.togglepage = (item) => {
@@ -11,12 +9,14 @@ window.togglepage = (item) => {
 export function resizableDiv({div, change={width:true, height:true} ,cursor={left:false, right:false, bottom:false, top:false}}={}) {
 
     interact(div).resizable({
-    
         edges: cursor,
+
         modifiers: [
             // keep the edges inside the parent
             interact.modifiers.restrictEdges({outer: 'parent'}),
+            
             interact.modifiers.restrictSize({min: { width: 50, height: 50 }, max: { width: 500 }})
+        
         ],
         inertia: true
     }).on('resizemove', function (event) {
@@ -47,7 +47,7 @@ export function resizableDiv({div, change={width:true, height:true} ,cursor={lef
 }
 
 resizableDiv({div:".adjust-right", cursor:{right:true}, change:{width:true, height:false}})
-// resizableDiv({div:".unit_converter_column", cursor:{right:true}, change:{width:true, height:false}})
+
 
 export function plot(mainTitle, xtitle, ytitle, data, plotArea, filetype = null) {
 
@@ -63,8 +63,8 @@ export function plot(mainTitle, xtitle, ytitle, data, plotArea, filetype = null)
     let dataPlot = [];
 
     for (let x in data) { dataPlot.push(data[x]) }
-
     try { Plotly.react(plotArea, dataPlot, dataLayout, { editable: true }) } catch (err) { console.log("Error occured while plotting\n", err) }
+
 }
 
 export function subplot(mainTitle, xtitle, ytitle, data, plotArea, x2, y2, data2) {
@@ -85,10 +85,4 @@ export function subplot(mainTitle, xtitle, ytitle, data, plotArea, x2, y2, data2
     let dataPlot2 = [];
     for (let x in data2) { dataPlot2.push(data2[x]) }
     Plotly.react(plotArea, dataPlot1.concat(dataPlot2), dataLayout, { editable: true })
-
 }
-
-
-// export const github_repo =  writable("FELion_GUI2.2"), github_username =  writable("aravindhnivas")
-// export const gihub_branchname =  writable("master")
-

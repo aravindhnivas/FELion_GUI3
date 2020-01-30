@@ -212,7 +212,7 @@
     const InstallUpdate = () => {
 
         console.log("Copying downloaded files")
-        
+
         let src = path.resolve(updateFolder, `${github_repo}-${gihub_branchname}`)
         let dest = path.resolve(__dirname, "..")
 
@@ -415,4 +415,5 @@
         </div>
 
     </div>
+    
 </section>

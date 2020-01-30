@@ -16,7 +16,7 @@
                 defaultPath: defaultPath
                 
             }
-            
+
             remote.dialog.showOpenDialog(mainWindow, options)
             .then(result => {
                 console.log(result.canceled)
@@ -25,6 +25,7 @@
             }).catch(err => { 
                 createToast("Couldn't open folder", "danger")
                 reject(err) })
+                
         })
     }
 
