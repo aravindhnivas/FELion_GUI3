@@ -2,18 +2,28 @@
 
     // Importing modules
     import Textfield from '@smui/textfield';
-    import {createToast} from "../components/Layout.svelte"
+    import {browse, createToast} from "../components/Layout.svelte"
     import {onMount} from "svelte"
     import CustomDialog from "../components/CustomDialog.svelte"
+
+    import CustomSelect from '../components/CustomSelect.svelte';
+
+    const {exec} = require("child_process")
+    const https = require('https');
+
+    const admZip = require('adm-zip');
+    import {activated, modalContent} from "../components/Modal.svelte"
+    const copy = require('recursive-copy')
 
     ///////////////////////////////////////////////////////
 
     let selected = "Configuration"
-    let pythonpath = localStorage["pythonpath"] || path.resolve(__dirname, "../python3.7/python")
-    let pythonscript = localStorage["pythonscript"] || path.resolve(__dirname, "assets/python_files")
-    const navigate = (e) => {selected = e.target.innerHTML}
 
-    const {exec} = require("child_process")
+    let pythonpath = localStorage["pythonpath"] || path.resolve(__dirname, "../python3.7/python")
+
+    let pythonscript = localStorage["pythonscript"] = path.resolve(__dirname, "assets/python_files")
+    
+    const navigate = (e) => {selected = e.target.innerHTML}
 
     function checkPython(){
 
@@ -52,10 +62,267 @@
     })
 
     const handlepythonPathCheck = () => {
+        console.log("Python path checking done")
 
-        console.log("Python path checking")
     }
-    
+
+    // UPDATE
+
+    let gihub_branchname =  "master", github_repo =  "FELion_GUI3", github_username =  "aravindhnivas"
+    let versionFile = fs.readFileSync(path.join(__dirname, "../version.json"))
+
+    let currentVersion = localStorage["version"] =  JSON.parse(versionFile.toString("utf-8")).version
+
+    $: versionJson = `https://raw.githubusercontent.com/${github_username}/${github_repo}/${gihub_branchname}/version.json`
+    $: urlzip = `https://codeload.github.com/${github_username}/${github_repo}/zip/${gihub_branchname}`
+
+    const updateFolder = path.resolve(__dirname, "..", "update")
+    const updatefilename = "update.zip"
+    const zipFile = path.resolve(updateFolder, updatefilename)
+
+    const updateCheck = () => {
+
+        if (!navigator.onLine) {return createToast("No Internet Connection!", "warning")}
+        
+        createToast("Checking for update", "warning")
+        console.log(`URL_Package: ${versionJson}`)
+
+        let developer_version = false
+
+        console.log(`URL_ZIP: ${urlzip}`)
+        let new_version = ""
+
+        let request = https.get(versionJson, (res) => {
+
+            console.log('statusCode:', res.statusCode);
+            if (res.statusCode === 404) {return createToast("URL is not valid", "danger")}
+
+            console.log('headers:', res.headers);
+
+            res.on('data', (data) => {
+                data = data.toString("utf8")
+
+                console.log(data)
+                data = JSON.parse(data)
+                console.log(data)
+                new_version = data.version
+                developer_version = data.developer
+
+                console.log(`Developer version: ${developer_version}`)
+                console.log(`Received package:`, data)
+                console.log(`Version available ${new_version}`)
+                console.log(`Current version ${currentVersion}`)
+
+            })
+            res.on("error", (err)=>{
+
+                console.log("Error while reading downloaded data: ")
+                new_version = ""
+
+            })
+
+            res.on("close", ()=>{console.log("Update request completed.")})
+
+        })
+
+        request.on('error', (err) => {
+            console.log("Error occured: (Try again or maybe check your internet connection)\n", err)
+        })
+
+        request.on("close", ()=>{
+
+            if (currentVersion === new_version) {
+                if (developer_version) {
+                    createToast(`CAUTION! You are checking with developer branch which has experimental features. Take backup before updating.`, "danger")
+                } else {createToast("No stable update available", "warning")}
+            }
+
+
+            else if (currentVersion < new_version) {
+
+                createToast("New update available", "success")
+
+                let options = {
+                    title: "FELion_GUI3",
+                    message: "Update available "+new_version,
+                    buttons: ["Update and restart", "Later"],
+                    type:"info"
+                }
+                
+                let response = remote.dialog.showMessageBox(remote.getCurrentWindow(), options)
+                console.log(response)
+                switch (response) {
+                    case 0:
+                        update()
+                    break;
+                    case 1:
+                        createToast("Not updating now")
+                    break;
+                }
+
+            }
+            console.log("Update check completed")
+            // createToast("Update check completed", "success")
+
+        })
+    }
+
+    // Download the update file
+
+    const download = (downloadedFile) => {
+        return new Promise((resolve)=>{
+
+            let response = https.get(urlzip, async (res) => {
+                console.log(`URL: ${urlzip}`)
+                console.log('statusCode:', res.statusCode);
+                console.log('headers:', res.headers);
+                await res.pipe(downloadedFile);
+
+                console.log("File downloaded")
+            })
+            response.on("close", async ()=>{
+                
+                console.log("Downloading Completed")
+                console.log("Extracting files")
+
+                let zip = new admZip(`${__dirname}/../update/update.zip`)
+                zip.extractAllTo(`${__dirname}/../update`, /*overwrite*/true)
+                
+                console.log("File Extracted")
+                resolve("File extracted")
+                createToast("Downloading Completed")
+
+            })
+        })
+    }
+
+    const update = () => {
+        
+        if (!fs.existsSync(updateFolder)) {fs.mkdirSync(updateFolder)}
+        const downloadedFile = fs.createWriteStream(zipFile)
+
+        download(downloadedFile)
+            .then(result=>{
+                console.log(result)
+                console.log("Copying downloaded files")
+                let src = path.resolve(__dirname, "../update", `${github_repo}-${gihub_branchname}`)
+                let dest = path.resolve(__dirname, "..")
+
+                copy(src, dest, {overwrite: true}, function(error, results) {
+                    if (error) {
+                        console.error('Copy failed: ' + error);
+                        createToast("Update failed.\nMaybe the user doesn't have necessary persmission to write files in the disk", "danger")
+                    } else {
+                        console.info('Copied ' + results.length + ' files');
+                        createToast("Updated succesfull. Restart the program (Press Ctrl + R).", "success")
+                        let response = remote.dialog.showMessageBox(remote.getCurrentWindow(), 
+                            {title:"FELion_GUI2", type:"info", message:"Update succesfull", buttons:["Restart", "Restart later"]}
+                        )
+
+                        if (response===0) mainWindow.reload()
+                    }
+                })
+                
+            })
+            .catch(err=>console.log(err), "Update failed. Try again or Check your internet connection")
+    }
+
+    // Backup and restore
+    let backupName = "FELion_GUI_backup"
+    let _src = {path:path.resolve(__dirname, "..", "src"), name:"src"}
+    let _static = {path:path.resolve(__dirname, "..", "public"), name:"public"}
+    let packageFile = {path:path.resolve(__dirname, "..", "package.json"), name:"package.json"}
+    let versionFileJson = {path:path.resolve(__dirname, "..", "version.json"), name:"version.json"}
+    let mainJs = {path:path.resolve(__dirname, "..", "main.js"), name:"main.js"}
+    let rollup = {path:path.resolve(__dirname, "..", "rollup.config.js"), name:"rollup.config.js"}
+    let svelteCongfig = {path:path.resolve(__dirname, "..", "svelte.config.js"), name:"svelte.config.js"}
+
+    let folders = [_src, _static, packageFile, versionFileJson, mainJs, rollup, svelteCongfig]
+
+    const backUp = (event) => {
+
+        backupClass = "is-loading is-link"
+
+        console.log(`Archiving existing software to ${backupName}.zip`)
+
+        browse({dir:true})
+        .then(result=>{
+
+            let folderName;
+            if (!result.canceled) {
+                folderName = result.filePaths[0]
+            } else {return console.log("Cancelled")}
+
+            console.log("Selected folder: ", folderName)
+            folders.forEach(folder=>{
+                const _dest = path.resolve(folderName, backupName , folder.name)
+                copy(folder.path, _dest, {overwrite: true}, function(error, results) {
+                    if (error) { console.log('Copy failed: ' + error); createToast("Error Occured while copying", "danger")}
+                    else {
+                        console.info('Copied ' + results.length + ' files')
+                        console.info('Copied ' + results + ' files')
+                    }
+                })
+                
+            })
+
+            console.log("BackUp completed")
+
+            createToast("BackUp completed", "success")
+            
+        })
+        .catch(err=>{
+            console.log(err)
+
+            $modalContent = err
+            $activated = true
+        })
+    }
+
+    const restore = () =>{
+
+        console.log(`Restoring existing software to ${__dirname}`)
+        browse({dir:true})
+        .then(result=>{
+
+            let folderName;
+            if (!result.canceled) {
+                folderName = result.filePaths[0]
+            } else {return console.log("Cancelled")}
+
+            console.log("Selected folder: ", folderName)
+
+            folders.forEach(folder=>{
+                const _dest = path.resolve(__dirname, "..", folder.name)
+                fs.copyFileSync(folder.path, _dest, function(error, results) {
+                    if (error) { console.log('Copy failed: ' + error); createToast("Error Occured while copying", "danger")} 
+                    else {
+                        console.info('Copied ' + results.length + ' files')
+                        console.info('Copied ' + results + ' files')
+                        let response = remote.dialog.showMessageBox(remote.getCurrentWindow(), 
+                            {title:"FELion_GUI2", type:"info", message:"Restored succesfull", buttons:["Restart", "Restart later"]})
+                        if (response===0) mainWindow.reload()
+                        else console.log("Restarting later")
+                    }
+                })
+            })
+
+            console.log("Restoring completed")
+            createToast("Restoring completed", "success")
+        })
+
+        .catch(err=>{
+
+            console.log(err)
+        
+        
+            $modalContent = err
+            $activated = true
+
+        })
+    }
+        
+
 </script>
 
 <style>
@@ -75,7 +342,7 @@
     .right > div {display: none;}
     .active {display: block!important; }
     .right .title {letter-spacing: 0.1em; text-transform: uppercase;}
-
+    * :global(option) { color: black; }
 </style>
 
 <CustomDialog id="pythonpath_Check" bind:dialog={pythonpathCheck} on:response={handlepythonPathCheck}
@@ -109,7 +376,27 @@
                 <!-- Update -->
                 <div class="content animated fadeIn" class:active={selected==="Update"}>
                     <h1 class="title">Update</h1>
-                    <div class="subtitle">Current Version {localStorage.version}</div>
+                    <div class="subtitle">Current Version {currentVersion}</div>
+                    
+                    <div class="content">
+                        <Textfield style="width:7em; margin-right:2em;" bind:value={github_username} label="Github username" />
+                        <Textfield style="width:7em; margin-right:2em;" bind:value={github_repo} label="Github Repo" />
+                        <CustomSelect bind:picked={gihub_branchname} label="Github branch" options={["master", "developer"]}/>
+                    </div>
+
+                    <div class="content">
+                        <button class="button is-link" on:click={updateCheck}>Check update</button>
+                        <button class="button is-link" on:click={update}>Update</button>
+                    </div>
+
+
+                    <div class="content">
+                        <Textfield style="width:30%; margin-right:2em;" bind:value={backupName} label="Github username" />
+                        <button class="button is-link" on:click={backUp}>Backup</button>
+                        <button class="button is-link" on:click={restore}>Restore</button>
+                    </div>
+                    
+
                 </div>
 
                 <!-- About -->

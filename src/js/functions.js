@@ -1,7 +1,8 @@
+// import {writable, derived} from "svelte/store";
+
 window.showpage = (item) => {document.getElementById(item).style.display = "block"}
 window.hidepage = (item) => {document.getElementById(item).style.display = "none"}
 window.togglepage = (item) => {
-
     let element = document.getElementById(item);
     let display = element.style.display;
     display == "none" ? element.style.display = "block" : element.style.display = "none"
@@ -40,14 +41,16 @@ export function resizableDiv({div, change={width:true, height:true} ,cursor={lef
         target.style.webkitTransform = target.style.transform = 'translate(' + x + 'px,' + y + 'px)'
         target.setAttribute('data-x', x)
         target.setAttribute('data-y', y)
+
     })    
 
 }
 
 resizableDiv({div:".adjust-right", cursor:{right:true}, change:{width:true, height:false}})
-resizableDiv({div:".unit_converter_column", cursor:{right:true}, change:{width:true, height:false}})
+// resizableDiv({div:".unit_converter_column", cursor:{right:true}, change:{width:true, height:false}})
 
 export function plot(mainTitle, xtitle, ytitle, data, plotArea, filetype = null) {
+
     let dataLayout = {
         title: mainTitle,
         xaxis: { title: xtitle},
@@ -57,10 +60,10 @@ export function plot(mainTitle, xtitle, ytitle, data, plotArea, filetype = null)
         height: 450,
     }
     if (filetype == 'mass') { dataLayout.yaxis.type = "log" }
-    // else if (filetype == 'scan') { dataLayout.width = localStorage["plotly_width"] / 2 }
-
     let dataPlot = [];
+
     for (let x in data) { dataPlot.push(data[x]) }
+
     try { Plotly.react(plotArea, dataPlot, dataLayout, { editable: true }) } catch (err) { console.log("Error occured while plotting\n", err) }
 }
 
@@ -84,3 +87,8 @@ export function subplot(mainTitle, xtitle, ytitle, data, plotArea, x2, y2, data2
     Plotly.react(plotArea, dataPlot1.concat(dataPlot2), dataLayout, { editable: true })
 
 }
+
+
+// export const github_repo =  writable("FELion_GUI2.2"), github_username =  writable("aravindhnivas")
+// export const gihub_branchname =  writable("master")
+

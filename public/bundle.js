@@ -35,8 +35,8 @@ function validate_store(store, name) {
         throw new Error(`'${name}' is not a store with a 'subscribe' method`);
     }
 }
-function subscribe(store, callback) {
-    const unsub = store.subscribe(callback);
+function subscribe(store, ...callbacks) {
+    const unsub = store.subscribe(...callbacks);
     return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub;
 }
 function component_subscribe(component, store, callback) {
@@ -758,7 +758,7 @@ class SvelteComponent {
 }
 
 function dispatch_dev(type, detail) {
-    document.dispatchEvent(custom_event(type, Object.assign({ version: '3.17.0' }, detail)));
+    document.dispatchEvent(custom_event(type, Object.assign({ version: '3.17.3' }, detail)));
 }
 function append_dev(target, node) {
     dispatch_dev("SvelteDOMInsert", { target, node });
@@ -25748,10 +25748,11 @@ class Powerfile extends SvelteComponentDev {
 	}
 }
 
+// import {writable, derived} from "svelte/store";
+
 window.showpage = (item) => {document.getElementById(item).style.display = "block";};
 window.hidepage = (item) => {document.getElementById(item).style.display = "none";};
 window.togglepage = (item) => {
-
     let element = document.getElementById(item);
     let display = element.style.display;
     display == "none" ? element.style.display = "block" : element.style.display = "none";
@@ -25790,14 +25791,16 @@ function resizableDiv({div, change={width:true, height:true} ,cursor={left:false
         target.style.webkitTransform = target.style.transform = 'translate(' + x + 'px,' + y + 'px)';
         target.setAttribute('data-x', x);
         target.setAttribute('data-y', y);
+
     });    
 
 }
 
 resizableDiv({div:".adjust-right", cursor:{right:true}, change:{width:true, height:false}});
-resizableDiv({div:".unit_converter_column", cursor:{right:true}, change:{width:true, height:false}});
+// resizableDiv({div:".unit_converter_column", cursor:{right:true}, change:{width:true, height:false}})
 
 function plot(mainTitle, xtitle, ytitle, data, plotArea, filetype = null) {
+
     let dataLayout = {
         title: mainTitle,
         xaxis: { title: xtitle},
@@ -25807,10 +25810,10 @@ function plot(mainTitle, xtitle, ytitle, data, plotArea, filetype = null) {
         height: 450,
     };
     if (filetype == 'mass') { dataLayout.yaxis.type = "log"; }
-    // else if (filetype == 'scan') { dataLayout.width = localStorage["plotly_width"] / 2 }
-
     let dataPlot = [];
+
     for (let x in data) { dataPlot.push(data[x]); }
+
     try { Plotly.react(plotArea, dataPlot, dataLayout, { editable: true }); } catch (err) { console.log("Error occured while plotting\n", err); }
 }
 
@@ -25834,6 +25837,10 @@ function subplot(mainTitle, xtitle, ytitle, data, plotArea, x2, y2, data2) {
     Plotly.react(plotArea, dataPlot1.concat(dataPlot2), dataLayout, { editable: true });
 
 }
+
+
+// export const github_repo =  writable("FELion_GUI2.2"), github_username =  writable("aravindhnivas")
+// export const gihub_branchname =  writable("master")
 
 /**
  * @license
@@ -44311,7 +44318,7 @@ function create_fragment$X(ctx) {
 	let updating_dialog;
 	let t0;
 	let section;
-	let div11;
+	let div14;
 	let div4;
 	let div3;
 	let div0;
@@ -44320,8 +44327,8 @@ function create_fragment$X(ctx) {
 	let t4;
 	let div2;
 	let t6;
-	let div10;
-	let div9;
+	let div13;
+	let div12;
 	let div5;
 	let h10;
 	let t8;
@@ -44333,18 +44340,37 @@ function create_fragment$X(ctx) {
 	let t12;
 	let button1;
 	let t14;
-	let div7;
+	let div10;
 	let h11;
 	let t16;
 	let div6;
 	let t19;
+	let div7;
+	let updating_value_2;
+	let t20;
+	let updating_value_3;
+	let t21;
+	let updating_picked;
+	let t22;
 	let div8;
+	let button2;
+	let t24;
+	let button3;
+	let t26;
+	let div9;
+	let updating_value_4;
+	let t27;
+	let button4;
+	let t29;
+	let button5;
+	let t31;
+	let div11;
 	let h12;
 	let current;
 	let dispose;
 
 	function customdialog_dialog_binding(value) {
-		/*customdialog_dialog_binding*/ ctx[10].call(null, value);
+		/*customdialog_dialog_binding*/ ctx[38].call(null, value);
 	}
 
 	let customdialog_props = {
@@ -44366,10 +44392,10 @@ function create_fragment$X(ctx) {
 		});
 
 	binding_callbacks.push(() => bind(customdialog, "dialog", customdialog_dialog_binding));
-	customdialog.$on("response", /*handlepythonPathCheck*/ ctx[7]);
+	customdialog.$on("response", /*handlepythonPathCheck*/ ctx[11]);
 
 	function textfield0_value_binding(value_1) {
-		/*textfield0_value_binding*/ ctx[11].call(null, value_1);
+		/*textfield0_value_binding*/ ctx[39].call(null, value_1);
 	}
 
 	let textfield0_props = {
@@ -44385,7 +44411,7 @@ function create_fragment$X(ctx) {
 	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
 
 	function textfield1_value_binding(value_2) {
-		/*textfield1_value_binding*/ ctx[12].call(null, value_2);
+		/*textfield1_value_binding*/ ctx[40].call(null, value_2);
 	}
 
 	let textfield1_props = {
@@ -44400,12 +44426,80 @@ function create_fragment$X(ctx) {
 	const textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding));
 
+	function textfield2_value_binding(value_3) {
+		/*textfield2_value_binding*/ ctx[41].call(null, value_3);
+	}
+
+	let textfield2_props = {
+		style: "width:7em; margin-right:2em;",
+		label: "Github username"
+	};
+
+	if (/*github_username*/ ctx[6] !== void 0) {
+		textfield2_props.value = /*github_username*/ ctx[6];
+	}
+
+	const textfield2 = new Textfield({ props: textfield2_props, $$inline: true });
+	binding_callbacks.push(() => bind(textfield2, "value", textfield2_value_binding));
+
+	function textfield3_value_binding(value_4) {
+		/*textfield3_value_binding*/ ctx[42].call(null, value_4);
+	}
+
+	let textfield3_props = {
+		style: "width:7em; margin-right:2em;",
+		label: "Github Repo"
+	};
+
+	if (/*github_repo*/ ctx[5] !== void 0) {
+		textfield3_props.value = /*github_repo*/ ctx[5];
+	}
+
+	const textfield3 = new Textfield({ props: textfield3_props, $$inline: true });
+	binding_callbacks.push(() => bind(textfield3, "value", textfield3_value_binding));
+
+	function customselect_picked_binding(value_5) {
+		/*customselect_picked_binding*/ ctx[43].call(null, value_5);
+	}
+
+	let customselect_props = {
+		label: "Github branch",
+		options: ["master", "developer"]
+	};
+
+	if (/*gihub_branchname*/ ctx[4] !== void 0) {
+		customselect_props.picked = /*gihub_branchname*/ ctx[4];
+	}
+
+	const customselect = new CustomSelect({
+			props: customselect_props,
+			$$inline: true
+		});
+
+	binding_callbacks.push(() => bind(customselect, "picked", customselect_picked_binding));
+
+	function textfield4_value_binding(value_6) {
+		/*textfield4_value_binding*/ ctx[44].call(null, value_6);
+	}
+
+	let textfield4_props = {
+		style: "width:30%; margin-right:2em;",
+		label: "Github username"
+	};
+
+	if (/*backupName*/ ctx[7] !== void 0) {
+		textfield4_props.value = /*backupName*/ ctx[7];
+	}
+
+	const textfield4 = new Textfield({ props: textfield4_props, $$inline: true });
+	binding_callbacks.push(() => bind(textfield4, "value", textfield4_value_binding));
+
 	const block = {
 		c: function create() {
 			create_component(customdialog.$$.fragment);
 			t0 = space();
 			section = element("section");
-			div11 = element("div");
+			div14 = element("div");
 			div4 = element("div");
 			div3 = element("div");
 			div0 = element("div");
@@ -44417,8 +44511,8 @@ function create_fragment$X(ctx) {
 			div2 = element("div");
 			div2.textContent = "About";
 			t6 = space();
-			div10 = element("div");
-			div9 = element("div");
+			div13 = element("div");
+			div12 = element("div");
 			div5 = element("div");
 			h10 = element("h1");
 			h10.textContent = "Configuration";
@@ -44433,60 +44527,97 @@ function create_fragment$X(ctx) {
 			button1 = element("button");
 			button1.textContent = "Save";
 			t14 = space();
-			div7 = element("div");
+			div10 = element("div");
 			h11 = element("h1");
 			h11.textContent = "Update";
 			t16 = space();
 			div6 = element("div");
-			div6.textContent = `Current Version ${localStorage.version}`;
+			div6.textContent = `Current Version ${/*currentVersion*/ ctx[12]}`;
 			t19 = space();
+			div7 = element("div");
+			create_component(textfield2.$$.fragment);
+			t20 = space();
+			create_component(textfield3.$$.fragment);
+			t21 = space();
+			create_component(customselect.$$.fragment);
+			t22 = space();
 			div8 = element("div");
+			button2 = element("button");
+			button2.textContent = "Check update";
+			t24 = space();
+			button3 = element("button");
+			button3.textContent = "Update";
+			t26 = space();
+			div9 = element("div");
+			create_component(textfield4.$$.fragment);
+			t27 = space();
+			button4 = element("button");
+			button4.textContent = "Backup";
+			t29 = space();
+			button5 = element("button");
+			button5.textContent = "Restore";
+			t31 = space();
+			div11 = element("div");
 			h12 = element("h1");
 			h12.textContent = "About";
-			attr_dev(div0, "class", "title nav hvr-glow svelte-sh7xo6");
+			attr_dev(div0, "class", "title nav hvr-glow svelte-1nh0g92");
 			toggle_class(div0, "clicked", /*selected*/ ctx[0] === "Configuration");
-			add_location(div0, file$S, 88, 16, 3178);
-			attr_dev(div1, "class", "title nav hvr-glow svelte-sh7xo6");
+			add_location(div0, file$S, 355, 16, 13381);
+			attr_dev(div1, "class", "title nav hvr-glow svelte-1nh0g92");
 			toggle_class(div1, "clicked", /*selected*/ ctx[0] === "Update");
-			add_location(div1, file$S, 89, 16, 3310);
-			attr_dev(div2, "class", "title nav hvr-glow svelte-sh7xo6");
+			add_location(div1, file$S, 356, 16, 13513);
+			attr_dev(div2, "class", "title nav hvr-glow svelte-1nh0g92");
 			toggle_class(div2, "clicked", /*selected*/ ctx[0] === "About");
-			add_location(div2, file$S, 90, 16, 3428);
-			attr_dev(div3, "class", "container left svelte-sh7xo6");
-			add_location(div3, file$S, 87, 12, 3132);
-			attr_dev(div4, "class", "column side-panel is-2-widescreen is-3-desktop is-4-tablet box adjust-right svelte-sh7xo6");
-			add_location(div4, file$S, 86, 8, 3029);
-			attr_dev(h10, "class", "title svelte-sh7xo6");
-			add_location(h10, file$S, 99, 20, 3813);
-			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$S, 103, 20, 4114);
-			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$S, 104, 20, 4206);
-			attr_dev(div5, "class", "content animated fadeIn svelte-sh7xo6");
+			add_location(div2, file$S, 357, 16, 13631);
+			attr_dev(div3, "class", "container left svelte-1nh0g92");
+			add_location(div3, file$S, 354, 12, 13335);
+			attr_dev(div4, "class", "column side-panel is-2-widescreen is-3-desktop is-4-tablet box adjust-right svelte-1nh0g92");
+			add_location(div4, file$S, 353, 8, 13232);
+			attr_dev(h10, "class", "title svelte-1nh0g92");
+			add_location(h10, file$S, 366, 20, 14016);
+			attr_dev(button0, "class", "button is-link svelte-1nh0g92");
+			add_location(button0, file$S, 370, 20, 14317);
+			attr_dev(button1, "class", "button is-link svelte-1nh0g92");
+			add_location(button1, file$S, 371, 20, 14409);
+			attr_dev(div5, "class", "content animated fadeIn svelte-1nh0g92");
 			toggle_class(div5, "active", /*selected*/ ctx[0] === "Configuration");
-			add_location(div5, file$S, 98, 16, 3712);
-			attr_dev(h11, "class", "title svelte-sh7xo6");
-			add_location(h11, file$S, 110, 20, 4447);
-			attr_dev(div6, "class", "subtitle");
-			add_location(div6, file$S, 111, 20, 4498);
-			attr_dev(div7, "class", "content animated fadeIn svelte-sh7xo6");
-			toggle_class(div7, "active", /*selected*/ ctx[0] === "Update");
-			add_location(div7, file$S, 109, 16, 4353);
-			attr_dev(h12, "class", "title svelte-sh7xo6");
-			add_location(h12, file$S, 116, 20, 4733);
-			attr_dev(div8, "class", "content animated fadeIn svelte-sh7xo6");
-			toggle_class(div8, "active", /*selected*/ ctx[0] === "About");
-			add_location(div8, file$S, 115, 16, 4640);
-			attr_dev(div9, "class", "container right svelte-sh7xo6");
-			add_location(div9, file$S, 95, 12, 3623);
-			attr_dev(div10, "class", "column main-panel box svelte-sh7xo6");
-			add_location(div10, file$S, 94, 8, 3574);
-			attr_dev(div11, "class", "columns");
-			add_location(div11, file$S, 84, 4, 2996);
-			attr_dev(section, "class", "section animated fadeIn svelte-sh7xo6");
+			add_location(div5, file$S, 365, 16, 13915);
+			attr_dev(h11, "class", "title svelte-1nh0g92");
+			add_location(h11, file$S, 377, 20, 14650);
+			attr_dev(div6, "class", "subtitle svelte-1nh0g92");
+			add_location(div6, file$S, 378, 20, 14701);
+			attr_dev(div7, "class", "content svelte-1nh0g92");
+			add_location(div7, file$S, 380, 20, 14805);
+			attr_dev(button2, "class", "button is-link svelte-1nh0g92");
+			add_location(button2, file$S, 387, 24, 15303);
+			attr_dev(button3, "class", "button is-link svelte-1nh0g92");
+			add_location(button3, file$S, 388, 24, 15404);
+			attr_dev(div8, "class", "content svelte-1nh0g92");
+			add_location(div8, file$S, 386, 20, 15256);
+			attr_dev(button4, "class", "button is-link svelte-1nh0g92");
+			add_location(button4, file$S, 394, 24, 15693);
+			attr_dev(button5, "class", "button is-link svelte-1nh0g92");
+			add_location(button5, file$S, 395, 24, 15783);
+			attr_dev(div9, "class", "content svelte-1nh0g92");
+			add_location(div9, file$S, 392, 20, 15522);
+			attr_dev(div10, "class", "content animated fadeIn svelte-1nh0g92");
+			toggle_class(div10, "active", /*selected*/ ctx[0] === "Update");
+			add_location(div10, file$S, 376, 16, 14556);
+			attr_dev(h12, "class", "title svelte-1nh0g92");
+			add_location(h12, file$S, 403, 20, 16070);
+			attr_dev(div11, "class", "content animated fadeIn svelte-1nh0g92");
+			toggle_class(div11, "active", /*selected*/ ctx[0] === "About");
+			add_location(div11, file$S, 402, 16, 15977);
+			attr_dev(div12, "class", "container right svelte-1nh0g92");
+			add_location(div12, file$S, 362, 12, 13826);
+			attr_dev(div13, "class", "column main-panel box svelte-1nh0g92");
+			add_location(div13, file$S, 361, 8, 13777);
+			attr_dev(div14, "class", "columns svelte-1nh0g92");
+			add_location(div14, file$S, 351, 4, 13199);
+			attr_dev(section, "class", "section animated fadeIn svelte-1nh0g92");
 			attr_dev(section, "id", "Settings");
 			set_style(section, "display", "none");
-			add_location(section, file$S, 83, 0, 2914);
+			add_location(section, file$S, 350, 0, 13117);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -44495,18 +44626,18 @@ function create_fragment$X(ctx) {
 			mount_component(customdialog, target, anchor);
 			insert_dev(target, t0, anchor);
 			insert_dev(target, section, anchor);
-			append_dev(section, div11);
-			append_dev(div11, div4);
+			append_dev(section, div14);
+			append_dev(div14, div4);
 			append_dev(div4, div3);
 			append_dev(div3, div0);
 			append_dev(div3, t2);
 			append_dev(div3, div1);
 			append_dev(div3, t4);
 			append_dev(div3, div2);
-			append_dev(div11, t6);
-			append_dev(div11, div10);
-			append_dev(div10, div9);
-			append_dev(div9, div5);
+			append_dev(div14, t6);
+			append_dev(div14, div13);
+			append_dev(div13, div12);
+			append_dev(div12, div5);
 			append_dev(div5, h10);
 			append_dev(div5, t8);
 			mount_component(textfield0, div5, null);
@@ -44516,28 +44647,51 @@ function create_fragment$X(ctx) {
 			append_dev(div5, button0);
 			append_dev(div5, t12);
 			append_dev(div5, button1);
-			append_dev(div9, t14);
-			append_dev(div9, div7);
-			append_dev(div7, h11);
-			append_dev(div7, t16);
-			append_dev(div7, div6);
-			append_dev(div9, t19);
-			append_dev(div9, div8);
-			append_dev(div8, h12);
+			append_dev(div12, t14);
+			append_dev(div12, div10);
+			append_dev(div10, h11);
+			append_dev(div10, t16);
+			append_dev(div10, div6);
+			append_dev(div10, t19);
+			append_dev(div10, div7);
+			mount_component(textfield2, div7, null);
+			append_dev(div7, t20);
+			mount_component(textfield3, div7, null);
+			append_dev(div7, t21);
+			mount_component(customselect, div7, null);
+			append_dev(div10, t22);
+			append_dev(div10, div8);
+			append_dev(div8, button2);
+			append_dev(div8, t24);
+			append_dev(div8, button3);
+			append_dev(div10, t26);
+			append_dev(div10, div9);
+			mount_component(textfield4, div9, null);
+			append_dev(div9, t27);
+			append_dev(div9, button4);
+			append_dev(div9, t29);
+			append_dev(div9, button5);
+			append_dev(div12, t31);
+			append_dev(div12, div11);
+			append_dev(div11, h12);
 			current = true;
 
 			dispose = [
-				listen_dev(div0, "click", /*navigate*/ ctx[4], false, false, false),
-				listen_dev(div1, "click", /*navigate*/ ctx[4], false, false, false),
-				listen_dev(div2, "click", /*navigate*/ ctx[4], false, false, false),
-				listen_dev(button0, "click", /*resetlocation*/ ctx[5], false, false, false),
-				listen_dev(button1, "click", /*savelocation*/ ctx[6], false, false, false)
+				listen_dev(div0, "click", /*navigate*/ ctx[8], false, false, false),
+				listen_dev(div1, "click", /*navigate*/ ctx[8], false, false, false),
+				listen_dev(div2, "click", /*navigate*/ ctx[8], false, false, false),
+				listen_dev(button0, "click", /*resetlocation*/ ctx[9], false, false, false),
+				listen_dev(button1, "click", /*savelocation*/ ctx[10], false, false, false),
+				listen_dev(button2, "click", /*updateCheck*/ ctx[13], false, false, false),
+				listen_dev(button3, "click", /*update*/ ctx[14], false, false, false),
+				listen_dev(button4, "click", /*backUp*/ ctx[15], false, false, false),
+				listen_dev(button5, "click", /*restore*/ ctx[16], false, false, false)
 			];
 		},
-		p: function update(ctx, [dirty]) {
+		p: function update(ctx, dirty) {
 			const customdialog_changes = {};
 
-			if (!updating_dialog && dirty & /*pythonpathCheck*/ 8) {
+			if (!updating_dialog && dirty[0] & /*pythonpathCheck*/ 8) {
 				updating_dialog = true;
 				customdialog_changes.dialog = /*pythonpathCheck*/ ctx[3];
 				add_flush_callback(() => updating_dialog = false);
@@ -44545,21 +44699,21 @@ function create_fragment$X(ctx) {
 
 			customdialog.$set(customdialog_changes);
 
-			if (dirty & /*selected*/ 1) {
+			if (dirty[0] & /*selected*/ 1) {
 				toggle_class(div0, "clicked", /*selected*/ ctx[0] === "Configuration");
 			}
 
-			if (dirty & /*selected*/ 1) {
+			if (dirty[0] & /*selected*/ 1) {
 				toggle_class(div1, "clicked", /*selected*/ ctx[0] === "Update");
 			}
 
-			if (dirty & /*selected*/ 1) {
+			if (dirty[0] & /*selected*/ 1) {
 				toggle_class(div2, "clicked", /*selected*/ ctx[0] === "About");
 			}
 
 			const textfield0_changes = {};
 
-			if (!updating_value && dirty & /*pythonpath*/ 2) {
+			if (!updating_value && dirty[0] & /*pythonpath*/ 2) {
 				updating_value = true;
 				textfield0_changes.value = /*pythonpath*/ ctx[1];
 				add_flush_callback(() => updating_value = false);
@@ -44568,7 +44722,7 @@ function create_fragment$X(ctx) {
 			textfield0.$set(textfield0_changes);
 			const textfield1_changes = {};
 
-			if (!updating_value_1 && dirty & /*pythonscript*/ 4) {
+			if (!updating_value_1 && dirty[0] & /*pythonscript*/ 4) {
 				updating_value_1 = true;
 				textfield1_changes.value = /*pythonscript*/ ctx[2];
 				add_flush_callback(() => updating_value_1 = false);
@@ -44576,16 +44730,53 @@ function create_fragment$X(ctx) {
 
 			textfield1.$set(textfield1_changes);
 
-			if (dirty & /*selected*/ 1) {
+			if (dirty[0] & /*selected*/ 1) {
 				toggle_class(div5, "active", /*selected*/ ctx[0] === "Configuration");
 			}
 
-			if (dirty & /*selected*/ 1) {
-				toggle_class(div7, "active", /*selected*/ ctx[0] === "Update");
+			const textfield2_changes = {};
+
+			if (!updating_value_2 && dirty[0] & /*github_username*/ 64) {
+				updating_value_2 = true;
+				textfield2_changes.value = /*github_username*/ ctx[6];
+				add_flush_callback(() => updating_value_2 = false);
 			}
 
-			if (dirty & /*selected*/ 1) {
-				toggle_class(div8, "active", /*selected*/ ctx[0] === "About");
+			textfield2.$set(textfield2_changes);
+			const textfield3_changes = {};
+
+			if (!updating_value_3 && dirty[0] & /*github_repo*/ 32) {
+				updating_value_3 = true;
+				textfield3_changes.value = /*github_repo*/ ctx[5];
+				add_flush_callback(() => updating_value_3 = false);
+			}
+
+			textfield3.$set(textfield3_changes);
+			const customselect_changes = {};
+
+			if (!updating_picked && dirty[0] & /*gihub_branchname*/ 16) {
+				updating_picked = true;
+				customselect_changes.picked = /*gihub_branchname*/ ctx[4];
+				add_flush_callback(() => updating_picked = false);
+			}
+
+			customselect.$set(customselect_changes);
+			const textfield4_changes = {};
+
+			if (!updating_value_4 && dirty[0] & /*backupName*/ 128) {
+				updating_value_4 = true;
+				textfield4_changes.value = /*backupName*/ ctx[7];
+				add_flush_callback(() => updating_value_4 = false);
+			}
+
+			textfield4.$set(textfield4_changes);
+
+			if (dirty[0] & /*selected*/ 1) {
+				toggle_class(div10, "active", /*selected*/ ctx[0] === "Update");
+			}
+
+			if (dirty[0] & /*selected*/ 1) {
+				toggle_class(div11, "active", /*selected*/ ctx[0] === "About");
 			}
 		},
 		i: function intro(local) {
@@ -44593,12 +44784,20 @@ function create_fragment$X(ctx) {
 			transition_in(customdialog.$$.fragment, local);
 			transition_in(textfield0.$$.fragment, local);
 			transition_in(textfield1.$$.fragment, local);
+			transition_in(textfield2.$$.fragment, local);
+			transition_in(textfield3.$$.fragment, local);
+			transition_in(customselect.$$.fragment, local);
+			transition_in(textfield4.$$.fragment, local);
 			current = true;
 		},
 		o: function outro(local) {
 			transition_out(customdialog.$$.fragment, local);
 			transition_out(textfield0.$$.fragment, local);
 			transition_out(textfield1.$$.fragment, local);
+			transition_out(textfield2.$$.fragment, local);
+			transition_out(textfield3.$$.fragment, local);
+			transition_out(customselect.$$.fragment, local);
+			transition_out(textfield4.$$.fragment, local);
 			current = false;
 		},
 		d: function destroy(detaching) {
@@ -44607,6 +44806,10 @@ function create_fragment$X(ctx) {
 			if (detaching) detach_dev(section);
 			destroy_component(textfield0);
 			destroy_component(textfield1);
+			destroy_component(textfield2);
+			destroy_component(textfield3);
+			destroy_component(customselect);
+			destroy_component(textfield4);
 			run_all(dispose);
 		}
 	};
@@ -44622,16 +44825,26 @@ function create_fragment$X(ctx) {
 	return block;
 }
 
+const updatefilename = "update.zip";
+
 function instance$X($$self, $$props, $$invalidate) {
+	let $modalContent;
+	let $activated;
+	validate_store(modalContent, "modalContent");
+	component_subscribe($$self, modalContent, $$value => $$invalidate(19, $modalContent = $$value));
+	validate_store(activated, "activated");
+	component_subscribe($$self, activated, $$value => $$invalidate(20, $activated = $$value));
+	const { exec } = require("child_process");
+	const https = require("https");
+	const admZip = require("adm-zip");
+	const copy = require("recursive-copy");
 	let selected = "Configuration";
 	let pythonpath = localStorage["pythonpath"] || path.resolve(__dirname, "../python3.7/python");
-	let pythonscript = localStorage["pythonscript"] || path.resolve(__dirname, "assets/python_files");
+	let pythonscript = localStorage["pythonscript"] = path.resolve(__dirname, "assets/python_files");
 
 	const navigate = e => {
 		$$invalidate(0, selected = e.target.innerHTML);
 	};
-
-	const { exec } = require("child_process");
 
 	function checkPython() {
 		console.log("Python path checking \n", pythonpath);
@@ -44674,7 +44887,276 @@ function instance$X($$self, $$props, $$invalidate) {
 	});
 
 	const handlepythonPathCheck = () => {
-		console.log("Python path checking");
+		console.log("Python path checking done");
+	};
+
+	let gihub_branchname = "master",
+		github_repo = "FELion_GUI3",
+		github_username = "aravindhnivas";
+
+	let versionFile = fs.readFileSync(path.join(__dirname, "../version.json"));
+	let currentVersion = localStorage["version"] = JSON.parse(versionFile.toString("utf-8")).version;
+	const updateFolder = path.resolve(__dirname, "..", "update");
+	const zipFile = path.resolve(updateFolder, updatefilename);
+
+	const updateCheck = () => {
+		if (!navigator.onLine) {
+			return createToast$1("No Internet Connection!", "warning");
+		}
+
+		createToast$1("Checking for update", "warning");
+		console.log(`URL_Package: ${versionJson}`);
+		let developer_version = false;
+		console.log(`URL_ZIP: ${urlzip}`);
+		let new_version = "";
+
+		let request = https.get(versionJson, res => {
+			console.log("statusCode:", res.statusCode);
+
+			if (res.statusCode === 404) {
+				return createToast$1("URL is not valid", "danger");
+			}
+
+			console.log("headers:", res.headers);
+
+			res.on("data", data => {
+				data = data.toString("utf8");
+				console.log(data);
+				data = JSON.parse(data);
+				console.log(data);
+				new_version = data.version;
+				developer_version = data.developer;
+				console.log(`Developer version: ${developer_version}`);
+				console.log(`Received package:`, data);
+				console.log(`Version available ${new_version}`);
+				console.log(`Current version ${currentVersion}`);
+			});
+
+			res.on("error", err => {
+				console.log("Error while reading downloaded data: ");
+				new_version = "";
+			});
+
+			res.on("close", () => {
+				console.log("Update request completed.");
+			});
+		});
+
+		request.on("error", err => {
+			console.log("Error occured: (Try again or maybe check your internet connection)\n", err);
+		});
+
+		request.on("close", () => {
+			if (currentVersion === new_version) {
+				if (developer_version) {
+					createToast$1(`CAUTION! You are checking with developer branch which has experimental features. Take backup before updating.`, "danger");
+				} else {
+					createToast$1("No stable update available", "warning");
+				}
+			} else if (currentVersion < new_version) {
+				createToast$1("New update available", "success");
+
+				let options = {
+					title: "FELion_GUI3",
+					message: "Update available " + new_version,
+					buttons: ["Update and restart", "Later"],
+					type: "info"
+				};
+
+				let response = remote.dialog.showMessageBox(remote.getCurrentWindow(), options);
+				console.log(response);
+
+				switch (response) {
+					case 0:
+						update();
+						break;
+					case 1:
+						createToast$1("Not updating now");
+						break;
+				}
+			}
+
+			console.log("Update check completed");
+		});
+	};
+
+	const download = downloadedFile => {
+		return new Promise(resolve => {
+				let response = https.get(urlzip, async res => {
+					console.log(`URL: ${urlzip}`);
+					console.log("statusCode:", res.statusCode);
+					console.log("headers:", res.headers);
+					await res.pipe(downloadedFile);
+					console.log("File downloaded");
+				});
+
+				response.on("close", async () => {
+					console.log("Downloading Completed");
+					console.log("Extracting files");
+					let zip = new admZip(`${__dirname}/../update/update.zip`);
+					zip.extractAllTo(`${__dirname}/../update`, true);
+					console.log("File Extracted");
+					resolve("File extracted");
+					createToast$1("Downloading Completed");
+				});
+			});
+	};
+
+	const update = () => {
+		if (!fs.existsSync(updateFolder)) {
+			fs.mkdirSync(updateFolder);
+		}
+
+		const downloadedFile = fs.createWriteStream(zipFile);
+
+		download(downloadedFile).then(result => {
+			console.log(result);
+			console.log("Copying downloaded files");
+			let src = path.resolve(__dirname, "../update", `${github_repo}-${gihub_branchname}`);
+			let dest = path.resolve(__dirname, "..");
+
+			copy(src, dest, { overwrite: true }, function (error, results) {
+				if (error) {
+					console.error("Copy failed: " + error);
+					createToast$1("Update failed.\nMaybe the user doesn't have necessary persmission to write files in the disk", "danger");
+				} else {
+					console.info("Copied " + results.length + " files");
+					createToast$1("Updated succesfull. Restart the program (Press Ctrl + R).", "success");
+
+					let response = remote.dialog.showMessageBox(remote.getCurrentWindow(), {
+						title: "FELion_GUI2",
+						type: "info",
+						message: "Update succesfull",
+						buttons: ["Restart", "Restart later"]
+					});
+
+					if (response === 0) mainWindow.reload();
+				}
+			});
+		}).catch(err => console.log(err), "Update failed. Try again or Check your internet connection");
+	};
+
+	let backupName = "FELion_GUI_backup";
+
+	let _src = {
+		path: path.resolve(__dirname, "..", "src"),
+		name: "src"
+	};
+
+	let _static = {
+		path: path.resolve(__dirname, "..", "public"),
+		name: "public"
+	};
+
+	let packageFile = {
+		path: path.resolve(__dirname, "..", "package.json"),
+		name: "package.json"
+	};
+
+	let versionFileJson = {
+		path: path.resolve(__dirname, "..", "version.json"),
+		name: "version.json"
+	};
+
+	let mainJs = {
+		path: path.resolve(__dirname, "..", "main.js"),
+		name: "main.js"
+	};
+
+	let rollup = {
+		path: path.resolve(__dirname, "..", "rollup.config.js"),
+		name: "rollup.config.js"
+	};
+
+	let svelteCongfig = {
+		path: path.resolve(__dirname, "..", "svelte.config.js"),
+		name: "svelte.config.js"
+	};
+
+	let folders = [_src, _static, packageFile, versionFileJson, mainJs, rollup, svelteCongfig];
+
+	const backUp = event => {
+		backupClass = "is-loading is-link";
+		console.log(`Archiving existing software to ${backupName}.zip`);
+
+		browse({ dir: true }).then(result => {
+			let folderName;
+
+			if (!result.canceled) {
+				folderName = result.filePaths[0];
+			} else {
+				return console.log("Cancelled");
+			}
+
+			console.log("Selected folder: ", folderName);
+
+			folders.forEach(folder => {
+				const _dest = path.resolve(folderName, backupName, folder.name);
+
+				copy(folder.path, _dest, { overwrite: true }, function (error, results) {
+					if (error) {
+						console.log("Copy failed: " + error);
+						createToast$1("Error Occured while copying", "danger");
+					} else {
+						console.info("Copied " + results.length + " files");
+						console.info("Copied " + results + " files");
+					}
+				});
+			});
+
+			console.log("BackUp completed");
+			createToast$1("BackUp completed", "success");
+		}).catch(err => {
+			console.log(err);
+			set_store_value(modalContent, $modalContent = err);
+			set_store_value(activated, $activated = true);
+		});
+	};
+
+	const restore = () => {
+		console.log(`Restoring existing software to ${__dirname}`);
+
+		browse({ dir: true }).then(result => {
+			let folderName;
+
+			if (!result.canceled) {
+				folderName = result.filePaths[0];
+			} else {
+				return console.log("Cancelled");
+			}
+
+			console.log("Selected folder: ", folderName);
+
+			folders.forEach(folder => {
+				const _dest = path.resolve(__dirname, "..", folder.name);
+
+				fs.copyFileSync(folder.path, _dest, function (error, results) {
+					if (error) {
+						console.log("Copy failed: " + error);
+						createToast$1("Error Occured while copying", "danger");
+					} else {
+						console.info("Copied " + results.length + " files");
+						console.info("Copied " + results + " files");
+
+						let response = remote.dialog.showMessageBox(remote.getCurrentWindow(), {
+							title: "FELion_GUI2",
+							type: "info",
+							message: "Restored succesfull",
+							buttons: ["Restart", "Restart later"]
+						});
+
+						if (response === 0) mainWindow.reload(); else console.log("Restarting later");
+					}
+				});
+			});
+
+			console.log("Restoring completed");
+			createToast$1("Restoring completed", "success");
+		}).catch(err => {
+			console.log(err);
+			set_store_value(modalContent, $modalContent = err);
+			set_store_value(activated, $activated = true);
+		});
 	};
 
 	function customdialog_dialog_binding(value) {
@@ -44692,6 +45174,26 @@ function instance$X($$self, $$props, $$invalidate) {
 		$$invalidate(2, pythonscript);
 	}
 
+	function textfield2_value_binding(value_3) {
+		github_username = value_3;
+		$$invalidate(6, github_username);
+	}
+
+	function textfield3_value_binding(value_4) {
+		github_repo = value_4;
+		$$invalidate(5, github_repo);
+	}
+
+	function customselect_picked_binding(value_5) {
+		gihub_branchname = value_5;
+		$$invalidate(4, gihub_branchname);
+	}
+
+	function textfield4_value_binding(value_6) {
+		backupName = value_6;
+		$$invalidate(7, backupName);
+	}
+
 	$$self.$capture_state = () => {
 		return {};
 	};
@@ -44701,6 +45203,37 @@ function instance$X($$self, $$props, $$invalidate) {
 		if ("pythonpath" in $$props) $$invalidate(1, pythonpath = $$props.pythonpath);
 		if ("pythonscript" in $$props) $$invalidate(2, pythonscript = $$props.pythonscript);
 		if ("pythonpathCheck" in $$props) $$invalidate(3, pythonpathCheck = $$props.pythonpathCheck);
+		if ("gihub_branchname" in $$props) $$invalidate(4, gihub_branchname = $$props.gihub_branchname);
+		if ("github_repo" in $$props) $$invalidate(5, github_repo = $$props.github_repo);
+		if ("github_username" in $$props) $$invalidate(6, github_username = $$props.github_username);
+		if ("versionFile" in $$props) versionFile = $$props.versionFile;
+		if ("currentVersion" in $$props) $$invalidate(12, currentVersion = $$props.currentVersion);
+		if ("backupName" in $$props) $$invalidate(7, backupName = $$props.backupName);
+		if ("_src" in $$props) _src = $$props._src;
+		if ("_static" in $$props) _static = $$props._static;
+		if ("packageFile" in $$props) packageFile = $$props.packageFile;
+		if ("versionFileJson" in $$props) versionFileJson = $$props.versionFileJson;
+		if ("mainJs" in $$props) mainJs = $$props.mainJs;
+		if ("rollup" in $$props) rollup = $$props.rollup;
+		if ("svelteCongfig" in $$props) svelteCongfig = $$props.svelteCongfig;
+		if ("folders" in $$props) folders = $$props.folders;
+		if ("versionJson" in $$props) versionJson = $$props.versionJson;
+		if ("urlzip" in $$props) urlzip = $$props.urlzip;
+		if ("$modalContent" in $$props) modalContent.set($modalContent = $$props.$modalContent);
+		if ("$activated" in $$props) activated.set($activated = $$props.$activated);
+	};
+
+	let versionJson;
+	let urlzip;
+
+	$$self.$$.update = () => {
+		if ($$self.$$.dirty[0] & /*github_username, github_repo, gihub_branchname*/ 112) {
+			 versionJson = `https://raw.githubusercontent.com/${github_username}/${github_repo}/${gihub_branchname}/version.json`;
+		}
+
+		if ($$self.$$.dirty[0] & /*github_username, github_repo, gihub_branchname*/ 112) {
+			 urlzip = `https://codeload.github.com/${github_username}/${github_repo}/zip/${gihub_branchname}`;
+		}
 	};
 
 	return [
@@ -44708,22 +45241,54 @@ function instance$X($$self, $$props, $$invalidate) {
 		pythonpath,
 		pythonscript,
 		pythonpathCheck,
+		gihub_branchname,
+		github_repo,
+		github_username,
+		backupName,
 		navigate,
 		resetlocation,
 		savelocation,
 		handlepythonPathCheck,
+		currentVersion,
+		updateCheck,
+		update,
+		backUp,
+		restore,
+		versionJson,
+		urlzip,
+		$modalContent,
+		$activated,
 		exec,
+		https,
+		admZip,
+		copy,
 		checkPython,
+		versionFile,
+		updateFolder,
+		zipFile,
+		download,
+		_src,
+		_static,
+		packageFile,
+		versionFileJson,
+		mainJs,
+		rollup,
+		svelteCongfig,
+		folders,
 		customdialog_dialog_binding,
 		textfield0_value_binding,
-		textfield1_value_binding
+		textfield1_value_binding,
+		textfield2_value_binding,
+		textfield3_value_binding,
+		customselect_picked_binding,
+		textfield4_value_binding
 	];
 }
 
 class Settings extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$X, create_fragment$X, safe_not_equal, {});
+		init(this, options, instance$X, create_fragment$X, safe_not_equal, {}, [-1, -1]);
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
@@ -51145,13 +51710,2119 @@ var compiler = createCommonjsModule(function (module, exports) {
 	  return Parser.parseExpressionAt(input, pos, options)
 	}
 
-	const Parser$1 = Parser;
-	const parse$1 = (source) => Parser$1.parse(source, {
+	function walk(ast, { enter, leave }) {
+		return visit(ast, null, enter, leave);
+	}
+
+	let should_skip = false;
+	let should_remove = false;
+	let replacement = null;
+	const context = {
+		skip: () => should_skip = true,
+		remove: () => should_remove = true,
+		replace: (node) => replacement = node
+	};
+
+	function replace(parent, prop, index, node) {
+		if (parent) {
+			if (index !== null) {
+				parent[prop][index] = node;
+			} else {
+				parent[prop] = node;
+			}
+		}
+	}
+
+	function remove(parent, prop, index) {
+		if (parent) {
+			if (index !== null) {
+				parent[prop].splice(index, 1);
+			} else {
+				delete parent[prop];
+			}
+		}
+	}
+
+	function visit(
+		node,
+		parent,
+		enter,
+		leave,
+		prop,
+		index
+	) {
+		if (node) {
+			if (enter) {
+				const _should_skip = should_skip;
+				const _should_remove = should_remove;
+				const _replacement = replacement;
+				should_skip = false;
+				should_remove = false;
+				replacement = null;
+
+				enter.call(context, node, parent, prop, index);
+
+				if (replacement) {
+					node = replacement;
+					replace(parent, prop, index, node);
+				}
+
+				if (should_remove) {
+					remove(parent, prop, index);
+				}
+
+				const skipped = should_skip;
+				const removed = should_remove;
+
+				should_skip = _should_skip;
+				should_remove = _should_remove;
+				replacement = _replacement;
+
+				if (skipped) return node;
+				if (removed) return null;
+			}
+
+			for (const key in node) {
+				const value = (node )[key];
+
+				if (typeof value !== 'object') {
+					continue;
+				}
+
+				else if (Array.isArray(value)) {
+					for (let j = 0, k = 0; j < value.length; j += 1, k += 1) {
+						if (value[j] !== null && typeof value[j].type === 'string') {
+							if (!visit(value[j], node, enter, leave, key, k)) {
+								// removed
+								j--;
+							}
+						}
+					}
+				}
+
+				else if (value !== null && typeof value.type === 'string') {
+					visit(value, node, enter, leave, key, null);
+				}
+			}
+
+			if (leave) {
+				const _replacement = replacement;
+				const _should_remove = should_remove;
+				replacement = null;
+				should_remove = false;
+
+				leave.call(context, node, parent, prop, index);
+
+				if (replacement) {
+					node = replacement;
+					replace(parent, prop, index, node);
+				}
+
+				if (should_remove) {
+					remove(parent, prop, index);
+				}
+
+				const removed = should_remove;
+
+				replacement = _replacement;
+				should_remove = _should_remove;
+
+				if (removed) return null;
+			}
+		}
+
+		return node;
+	}
+
+	function isReference(node, parent) {
+	    if (node.type === 'MemberExpression') {
+	        return !node.computed && isReference(node.object, node);
+	    }
+	    if (node.type === 'Identifier') {
+	        if (!parent)
+	            return true;
+	        switch (parent.type) {
+	            // disregard `bar` in `foo.bar`
+	            case 'MemberExpression': return parent.computed || node === parent.object;
+	            // disregard the `foo` in `class {foo(){}}` but keep it in `class {[foo](){}}`
+	            case 'MethodDefinition': return parent.computed;
+	            // disregard the `bar` in `{ bar: foo }`, but keep it in `{ [bar]: foo }`
+	            case 'Property': return parent.computed || node === parent.value;
+	            // disregard the `bar` in `export { foo as bar }` or
+	            // the foo in `import { foo as bar }`
+	            case 'ExportSpecifier':
+	            case 'ImportSpecifier': return node === parent.local;
+	            // disregard the `foo` in `foo: while (...) { ... break foo; ... continue foo;}`
+	            case 'LabeledStatement':
+	            case 'BreakStatement':
+	            case 'ContinueStatement': return false;
+	            default: return true;
+	        }
+	    }
+	    return false;
+	}
+
+	function analyze(expression) {
+		const map = new WeakMap();
+
+		let scope = new Scope$1(null, false);
+
+		walk(expression, {
+			enter(node, parent) {
+				if (node.type === 'ImportDeclaration') {
+					node.specifiers.forEach((specifier) => {
+						scope.declarations.set(specifier.local.name, specifier);
+					});
+				} else if (/(Function(Declaration|Expression)|ArrowFunctionExpression)/.test(node.type)) {
+					if (node.type === 'FunctionDeclaration') {
+						scope.declarations.set(node.id.name, node);
+						map.set(node, scope = new Scope$1(scope, false));
+					} else {
+						map.set(node, scope = new Scope$1(scope, false));
+						if (node.type === 'FunctionExpression' && node.id) scope.declarations.set(node.id.name, node);
+					}
+
+					node.params.forEach((param) => {
+						extract_names(param).forEach(name => {
+							scope.declarations.set(name, node);
+						});
+					});
+				} else if (/For(?:In|Of)?Statement/.test(node.type)) {
+					map.set(node, scope = new Scope$1(scope, true));
+				} else if (node.type === 'BlockStatement') {
+					map.set(node, scope = new Scope$1(scope, true));
+				} else if (/(Class|Variable)Declaration/.test(node.type)) {
+					scope.add_declaration(node);
+				} else if (node.type === 'CatchClause') {
+					map.set(node, scope = new Scope$1(scope, true));
+
+					if (node.param) {
+						extract_names(node.param).forEach(name => {
+							scope.declarations.set(name, node.param);
+						});
+					}
+				}
+			},
+
+			leave(node) {
+				if (map.has(node)) {
+					scope = scope.parent;
+				}
+			}
+		});
+
+		const globals = new Map();
+
+		walk(expression, {
+			enter(node, parent) {
+				if (map.has(node)) scope = map.get(node);
+
+				if (node.type === 'Identifier' && isReference(node, parent)) {
+					const owner = scope.find_owner(node.name);
+					if (!owner) globals.set(node.name, node);
+
+					add_reference(scope, node.name);
+				}
+			},
+			leave(node) {
+				if (map.has(node)) {
+					scope = scope.parent;
+				}
+			}
+		});
+
+		return { map, scope, globals };
+	}
+
+	function add_reference(scope, name) {
+		scope.references.add(name);
+		if (scope.parent) add_reference(scope.parent, name);
+	}
+
+	class Scope$1 {
+		
+		
+		__init() {this.declarations = new Map();}
+		__init2() {this.initialised_declarations = new Set();}
+		__init3() {this.references = new Set();}
+
+		constructor(parent, block) {Scope$1.prototype.__init.call(this);Scope$1.prototype.__init2.call(this);Scope$1.prototype.__init3.call(this);
+			this.parent = parent;
+			this.block = block;
+		}
+
+
+		add_declaration(node) {
+			if (node.type === 'VariableDeclaration') {
+				if (node.kind === 'var' && this.block && this.parent) {
+					this.parent.add_declaration(node);
+				} else if (node.type === 'VariableDeclaration') {
+					node.declarations.forEach((declarator) => {
+						extract_names(declarator.id).forEach(name => {
+							this.declarations.set(name, node);
+							if (declarator.init) this.initialised_declarations.add(name);
+						});
+					});
+				}
+			} else {
+				this.declarations.set(node.id.name, node);
+			}
+		}
+
+		find_owner(name) {
+			if (this.declarations.has(name)) return this;
+			return this.parent && this.parent.find_owner(name);
+		}
+
+		has(name) {
+			return (
+				this.declarations.has(name) || (this.parent && this.parent.has(name))
+			);
+		}
+	}
+
+	function extract_names(param) {
+		return extract_identifiers(param).map(node => node.name);
+	}
+
+	function extract_identifiers(param) {
+		const nodes = [];
+		extractors[param.type] && extractors[param.type](nodes, param);
+		return nodes;
+	}
+
+	const extractors = {
+		Identifier(nodes, param) {
+			nodes.push(param);
+		},
+
+		MemberExpression(nodes, param) {
+			let object = param;
+			while (object.type === 'MemberExpression') object = object.object;
+			nodes.push(object);
+		},
+
+		ObjectPattern(nodes, param) {
+			param.properties.forEach((prop) => {
+				if (prop.type === 'RestElement') {
+					nodes.push(prop.argument);
+				} else {
+					extractors[prop.value.type](nodes, prop.value);
+				}
+			});
+		},
+
+		ArrayPattern(nodes, param) {
+			param.elements.forEach((element) => {
+				if (element) extractors[element.type](nodes, element);
+			});
+		},
+
+		RestElement(nodes, param) {
+			extractors[param.argument.type](nodes, param.argument);
+		},
+
+		AssignmentPattern(nodes, param) {
+			extractors[param.left.type](nodes, param.left);
+		}
+	};
+
+	var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+	function encode(decoded) {
+	    var sourceFileIndex = 0; // second field
+	    var sourceCodeLine = 0; // third field
+	    var sourceCodeColumn = 0; // fourth field
+	    var nameIndex = 0; // fifth field
+	    var mappings = '';
+	    for (var i = 0; i < decoded.length; i++) {
+	        var line = decoded[i];
+	        if (i > 0)
+	            mappings += ';';
+	        if (line.length === 0)
+	            continue;
+	        var generatedCodeColumn = 0; // first field
+	        var lineMappings = [];
+	        for (var _i = 0, line_1 = line; _i < line_1.length; _i++) {
+	            var segment = line_1[_i];
+	            var segmentMappings = encodeInteger(segment[0] - generatedCodeColumn);
+	            generatedCodeColumn = segment[0];
+	            if (segment.length > 1) {
+	                segmentMappings +=
+	                    encodeInteger(segment[1] - sourceFileIndex) +
+	                        encodeInteger(segment[2] - sourceCodeLine) +
+	                        encodeInteger(segment[3] - sourceCodeColumn);
+	                sourceFileIndex = segment[1];
+	                sourceCodeLine = segment[2];
+	                sourceCodeColumn = segment[3];
+	            }
+	            if (segment.length === 5) {
+	                segmentMappings += encodeInteger(segment[4] - nameIndex);
+	                nameIndex = segment[4];
+	            }
+	            lineMappings.push(segmentMappings);
+	        }
+	        mappings += lineMappings.join(',');
+	    }
+	    return mappings;
+	}
+	function encodeInteger(num) {
+	    var result = '';
+	    num = num < 0 ? (-num << 1) | 1 : num << 1;
+	    do {
+	        var clamped = num & 31;
+	        num >>>= 5;
+	        if (num > 0) {
+	            clamped |= 32;
+	        }
+	        result += chars[clamped];
+	    } while (num > 0);
+	    return result;
+	}
+
+	// generate an ID that is, to all intents and purposes, unique
+	const id = (Math.round(Math.random() * 1e20)).toString(36);
+	const re = new RegExp(`_${id}_(?:(\\d+)|(AT)|(HASH))_(\\w+)?`, 'g');
+
+	const get_comment_handlers = (comments, raw) => ({
+
+		// pass to acorn options
+		onComment: (block, value, start, end) => {
+			if (block && /\n/.test(value)) {
+				let a = start;
+				while (a > 0 && raw[a - 1] !== '\n') a -= 1;
+
+				let b = a;
+				while (/[ \t]/.test(raw[b])) b += 1;
+
+				const indentation = raw.slice(a, b);
+				value = value.replace(new RegExp(`^${indentation}`, 'gm'), '');
+			}
+
+			comments.push({ type: block ? 'Block' : 'Line', value, start, end });
+		},
+
+		// pass to estree-walker options
+		enter(node) {
+			let comment;
+
+			while (comments[0] && comments[0].start < (node ).start) {
+				comment = comments.shift();
+
+				comment.value = comment.value.replace(re, (match, id, at, hash, value) => {
+					if (hash) return `#${value}`;
+					if (at) return `@${value}`;
+
+					return match;
+				});
+
+				const next = comments[0] || node;
+				(comment ).has_trailing_newline = (
+					comment.type === 'Line' ||
+					/\n/.test(raw.slice(comment.end, (next ).start))
+				);
+
+				(node.leadingComments || (node.leadingComments = [])).push(comment);
+			}
+		},
+		leave(node) {
+			if (comments[0]) {
+				const slice = raw.slice((node ).end, comments[0].start);
+
+				if (/^[,) \t]*$/.test(slice)) {
+					node.trailingComments = [comments.shift()];
+				}
+			}
+		}
+
+	});
+
+	function handle(node, state) {
+		const handler = handlers[node.type];
+
+		if (!handler) {
+			throw new Error(`Not implemented ${node.type}`);
+		}
+
+		const result = handler(node, state);
+
+		if (node.leadingComments) {
+			result.unshift(c(node.leadingComments.map(comment => comment.type === 'Block'
+				? `/*${comment.value}*/${(comment ).has_trailing_newline ? `\n${state.indent}` : ` `}`
+				: `//${comment.value}${(comment ).has_trailing_newline ? `\n${state.indent}` : ` `}`).join(``)));
+		}
+
+		if (node.trailingComments) {
+			state.comments.push(node.trailingComments[0]); // there is only ever one
+		}
+
+		return result;
+	}
+
+	function c(content, node) {
+		return {
+			content,
+			loc: node && node.loc,
+			has_newline: /\n/.test(content)
+		};
+	}
+
+	const OPERATOR_PRECEDENCE = {
+		'||': 3,
+		'&&': 4,
+		'|': 5,
+		'^': 6,
+		'&': 7,
+		'==': 8,
+		'!=': 8,
+		'===': 8,
+		'!==': 8,
+		'<': 9,
+		'>': 9,
+		'<=': 9,
+		'>=': 9,
+		in: 9,
+		instanceof: 9,
+		'<<': 10,
+		'>>': 10,
+		'>>>': 10,
+		'+': 11,
+		'-': 11,
+		'*': 12,
+		'%': 12,
+		'/': 12,
+		'**': 13,
+	};
+
+	const EXPRESSIONS_PRECEDENCE = {
+		ArrayExpression: 20,
+		TaggedTemplateExpression: 20,
+		ThisExpression: 20,
+		Identifier: 20,
+		Literal: 18,
+		TemplateLiteral: 20,
+		Super: 20,
+		SequenceExpression: 20,
+		MemberExpression: 19,
+		CallExpression: 19,
+		NewExpression: 19,
+		AwaitExpression: 17,
+		ArrowFunctionExpression: 17,
+		ClassExpression: 17,
+		FunctionExpression: 17,
+		ObjectExpression: 17,
+		UpdateExpression: 16,
+		UnaryExpression: 15,
+		BinaryExpression: 14,
+		LogicalExpression: 13,
+		ConditionalExpression: 4,
+		AssignmentExpression: 3,
+		YieldExpression: 2,
+		RestElement: 1
+	};
+
+	function needs_parens(node, parent, is_right) {
+		const precedence = EXPRESSIONS_PRECEDENCE[node.type];
+		const parent_precedence = EXPRESSIONS_PRECEDENCE[parent.type];
+
+		if (precedence !== parent_precedence) {
+			// Different node types
+			return (
+				(!is_right &&
+					precedence === 15 &&
+					parent_precedence === 14 &&
+					parent.operator === '**') ||
+				precedence < parent_precedence
+			);
+		}
+
+		if (precedence !== 13 && precedence !== 14) {
+			// Not a `LogicalExpression` or `BinaryExpression`
+			return false;
+		}
+
+		if ((node ).operator === '**' && parent.operator === '**') {
+			// Exponentiation operator has right-to-left associativity
+			return !is_right;
+		}
+
+		if (is_right) {
+			// Parenthesis are used if both operators have the same precedence
+			return (
+				OPERATOR_PRECEDENCE[(node ).operator] <=
+				OPERATOR_PRECEDENCE[parent.operator]
+			);
+		}
+
+		return (
+			OPERATOR_PRECEDENCE[(node ).operator] <
+			OPERATOR_PRECEDENCE[parent.operator]
+		);
+	}
+
+	function has_call_expression(node) {
+		while (node) {
+			if (node.type[0] === 'CallExpression') {
+				return true;
+			} else if (node.type === 'MemberExpression') {
+				node = node.object;
+			} else {
+				return false;
+			}
+		}
+	}
+
+	const has_newline = (chunks) => {
+		for (let i = 0; i < chunks.length; i += 1) {
+			if (chunks[i].has_newline) return true;
+		}
+		return false;
+	};
+
+	const get_length = (chunks) => {
+		let total = 0;
+		for (let i = 0; i < chunks.length; i += 1) {
+			total += chunks[i].content.length;
+		}
+		return total;
+	};
+
+	const sum = (a, b) => a + b;
+
+	const join = (nodes, separator) => {
+		if (nodes.length === 0) return [];
+		const joined = [...nodes[0]];
+		for (let i = 1; i < nodes.length; i += 1) {
+			joined.push(separator, ...nodes[i] );
+		}
+		return joined;
+	};
+
+	const scoped = (fn) => {
+		return (node, state) => {
+			return fn(node, {
+				...state,
+				scope: state.scope_map.get(node)
+			});
+		};
+	};
+
+	const deconflict = (name, names) => {
+		const original = name;
+		let i = 1;
+
+		while (names.has(name)) {
+			name = `${original}$${i++}`;
+		}
+
+		return name;
+	};
+
+	const handle_body = (nodes, state) => {
+		const chunks = [];
+
+		const body = nodes.map(statement => {
+			const chunks = handle(statement, {
+				...state,
+				indent: state.indent
+			});
+
+			while (state.comments.length) {
+				const comment = state.comments.shift();
+				chunks.push(c(comment.type === 'Block'
+				? ` /*${comment.value}*/`
+				: ` //${comment.value}`));
+			}
+
+			return chunks;
+		});
+
+		let needed_padding = false;
+
+		for (let i = 0; i < body.length; i += 1) {
+			const needs_padding = has_newline(body[i]);
+
+			if (i > 0) {
+				chunks.push(
+					c(needs_padding || needed_padding ? `\n\n${state.indent}` : `\n${state.indent}`)
+				);
+			}
+
+			chunks.push(
+				...body[i]
+			);
+
+			needed_padding = needs_padding;
+		}
+
+		return chunks;
+	};
+
+	const handle_var_declaration = (node, state) => {
+		const chunks = [c(`${node.kind} `)];
+
+		const declarators = node.declarations.map(d => handle(d, {
+			...state,
+			indent: state.indent + (node.declarations.length === 1 ? '' : '\t')
+		}));
+
+		const multiple_lines = (
+			declarators.some(has_newline) ||
+			(declarators.map(get_length).reduce(sum, 0) + (state.indent.length + declarators.length - 1) * 2) > 80
+		);
+
+		const separator = c(multiple_lines ? `,\n${state.indent}\t` : ', ');
+
+		if (multiple_lines) {
+			chunks.push(...join(declarators, separator));
+		} else {
+			chunks.push(
+				...join(declarators, separator)
+			);
+		}
+
+		return chunks;
+	};
+
+	const handlers = {
+		Program(node, state) {
+			return handle_body(node.body, state);
+		},
+
+		BlockStatement: scoped((node, state) => {
+			return [
+				c(`{\n${state.indent}\t`),
+				...handle_body(node.body, { ...state, indent: state.indent + '\t' }),
+				c(`\n${state.indent}}`)
+			];
+		}),
+
+		EmptyStatement(node, state) {
+			return [];
+		},
+
+		ParenthesizedExpression(node, state) {
+			return handle(node.expression, state);
+		},
+
+		ExpressionStatement(node, state) {
+			const precedence = EXPRESSIONS_PRECEDENCE[node.expression.type];
+			if (
+				precedence === 3 && (node.expression ).left.type === 'ObjectPattern'
+			) {
+				// is an AssignmentExpression to an ObjectPattern
+				return [
+					c('('),
+					...handle(node.expression, state),
+					c(');')
+				];
+			}
+
+			return [
+				...handle(node.expression, state),
+				c(';')
+			];
+		},
+
+		IfStatement(node, state) {
+			const chunks = [
+				c('if ('),
+				...handle(node.test, state),
+				c(') '),
+				...handle(node.consequent, state)
+			];
+
+			if (node.alternate) {
+				chunks.push(
+					c(' else '),
+					...handle(node.alternate, state)
+				);
+			}
+
+			return chunks;
+		},
+
+		LabeledStatement(node, state) {
+			return [
+				...handle(node.label, state),
+				c(': '),
+				...handle(node.body, state)
+			];
+		},
+
+		BreakStatement(node, state) {
+			return node.label
+				? [c('break '), ...handle(node.label, state), c(';')]
+				: [c('break;')];
+		},
+
+		ContinueStatement(node, state) {
+			return node.label
+				? [c('continue '), ...handle(node.label, state), c(';')]
+				: [c('continue;')];
+		},
+
+		WithStatement(node, state) {
+			return [
+				c('with ('),
+				...handle(node.object, state),
+				c(') '),
+				...handle(node.body, state)
+			];
+		},
+
+		SwitchStatement(node, state) {
+			const chunks = [
+				c('switch ('),
+				...handle(node.discriminant, state),
+				c(') {')
+			];
+
+			node.cases.forEach(block => {
+				if (block.test) {
+					chunks.push(
+						c(`\n${state.indent}\tcase `),
+						...handle(block.test, { ...state, indent: `${state.indent}\t` }),
+						c(':')
+					);
+				} else {
+					chunks.push(c(`\n${state.indent}\tdefault:`));
+				}
+
+				block.consequent.forEach(statement => {
+					chunks.push(
+						c(`\n${state.indent}\t\t`),
+						...handle(statement, { ...state, indent: `${state.indent}\t\t` })
+					);
+				});
+			});
+
+			chunks.push(c(`\n${state.indent}}`));
+
+			return chunks;
+		},
+
+		ReturnStatement(node, state) {
+			if (node.argument) {
+				return [
+					c('return '),
+					...handle(node.argument, state),
+					c(';')
+				];
+			} else {
+				return [c('return;')];
+			}
+		},
+
+		ThrowStatement(node, state) {
+			return [
+				c('throw '),
+				...handle(node.argument, state),
+				c(';')
+			];
+		},
+
+		TryStatement(node, state) {
+			const chunks = [
+				c('try '),
+				...handle(node.block, state)
+			];
+
+			if (node.handler) {
+				if (node.handler.param) {
+					chunks.push(
+						c(' catch('),
+						...handle(node.handler.param, state),
+						c(') ')
+					);
+				} else {
+					chunks.push(c(' catch '));
+				}
+
+				chunks.push(...handle(node.handler.body, state));
+			}
+
+			if (node.finalizer) {
+				chunks.push(c(' finally '), ...handle(node.finalizer, state));
+			}
+
+			return chunks;
+		},
+
+		WhileStatement(node, state) {
+			return [
+				c('while ('),
+				...handle(node.test, state),
+				c(') '),
+				...handle(node.body, state)
+			];
+		},
+
+		DoWhileStatement(node, state) {
+			return [
+				c('do '),
+				...handle(node.body, state),
+				c(' while ('),
+				...handle(node.test, state),
+				c(');')
+			];
+		},
+
+		ForStatement: scoped((node, state) => {
+			const chunks = [c('for (')];
+
+			if (node.init) {
+				if ((node.init ).type === 'VariableDeclaration') {
+					chunks.push(...handle_var_declaration(node.init , state));
+				} else {
+					chunks.push(...handle(node.init, state));
+				}
+			}
+
+			chunks.push(c('; '));
+			if (node.test) chunks.push(...handle(node.test, state));
+			chunks.push(c('; '));
+			if (node.update) chunks.push(...handle(node.update, state));
+
+			chunks.push(
+				c(') '),
+				...handle(node.body, state)
+			);
+
+			return chunks;
+		}),
+
+		ForInStatement: scoped((node, state) => {
+			const chunks = [
+				c(`for ${(node ).await ? 'await ' : ''}(`)
+			];
+
+			if ((node.left ).type === 'VariableDeclaration') {
+				chunks.push(...handle_var_declaration(node.left , state));
+			} else {
+				chunks.push(...handle(node.left, state));
+			}
+
+			chunks.push(
+				c(node.type === 'ForInStatement' ? ` in ` : ` of `),
+				...handle(node.right, state),
+				c(') '),
+				...handle(node.body, state)
+			);
+
+			return chunks;
+		}),
+
+		DebuggerStatement(node, state) {
+			return [c('debugger', node), c(';')];
+		},
+
+		FunctionDeclaration: scoped((node, state) => {
+			const chunks = [];
+
+			if (node.async) chunks.push(c('async '));
+			chunks.push(c(node.generator ? 'function* ' : 'function '));
+			if (node.id) chunks.push(...handle(node.id, state));
+			chunks.push(c('('));
+
+			const params = node.params.map(p => handle(p, {
+				...state,
+				indent: state.indent + '\t'
+			}));
+
+			const multiple_lines = (
+				params.some(has_newline) ||
+				(params.map(get_length).reduce(sum, 0) + (state.indent.length + params.length - 1) * 2) > 80
+			);
+
+			const separator = c(multiple_lines ? `,\n${state.indent}` : ', ');
+
+			if (multiple_lines) {
+				chunks.push(
+					c(`\n${state.indent}\t`),
+					...join(params, separator),
+					c(`\n${state.indent}`)
+				);
+			} else {
+				chunks.push(
+					...join(params, separator)
+				);
+			}
+
+			chunks.push(
+				c(') '),
+				...handle(node.body, state)
+			);
+
+			return chunks;
+		}),
+
+		VariableDeclaration(node, state) {
+			return handle_var_declaration(node, state).concat(c(';'));
+		},
+
+		VariableDeclarator(node, state) {
+			if (node.init) {
+				return [
+					...handle(node.id, state),
+					c(' = '),
+					...handle(node.init, state)
+				];
+			} else {
+				return handle(node.id, state);
+			}
+		},
+
+		ClassDeclaration(node, state) {
+			const chunks = [c('class ')];
+
+			if (node.id) chunks.push(...handle(node.id, state), c(' '));
+
+			if (node.superClass) {
+				chunks.push(
+					c('extends '),
+					...handle(node.superClass, state),
+					c(' ')
+				);
+			}
+
+			chunks.push(...handle(node.body, state));
+
+			return chunks;
+		},
+
+		ImportDeclaration(node, state) {
+			const chunks = [c('import ')];
+
+			const { length } = node.specifiers;
+			const source = handle(node.source, state);
+
+			if (length > 0) {
+				let i = 0;
+
+				while (i < length) {
+					if (i > 0) {
+						chunks.push(c(', '));
+					}
+
+					const specifier = node.specifiers[i];
+
+					if (specifier.type === 'ImportDefaultSpecifier') {
+						chunks.push(c(specifier.local.name, specifier));
+						i += 1;
+					} else if (specifier.type === 'ImportNamespaceSpecifier') {
+						chunks.push(c('* as ' + specifier.local.name, specifier));
+						i += 1;
+					} else {
+						break;
+					}
+				}
+
+				if (i < length) {
+					// we have named specifiers
+					const specifiers = node.specifiers.slice(i).map((specifier) => {
+						const name = handle(specifier.imported, state)[0];
+						const as = handle(specifier.local, state)[0];
+
+						if (name.content === as.content) {
+							return [as];
+						}
+
+						return [name, c(' as '), as];
+					});
+
+					const width = get_length(chunks) + specifiers.map(get_length).reduce(sum, 0) + (2 * specifiers.length) + 6 + get_length(source);
+
+					if (width > 80) {
+						chunks.push(
+							c(`{\n\t`),
+							...join(specifiers, c(',\n\t')),
+							c('\n}')
+						);
+					} else {
+						chunks.push(
+							c(`{ `),
+							...join(specifiers, c(', ')),
+							c(' }')
+						);
+					}
+				}
+
+				chunks.push(c(' from '));
+			}
+
+			chunks.push(
+				...source,
+				c(';')
+			);
+
+			return chunks;
+		},
+
+		ImportExpression(node, state) {
+			return [c('import('), ...handle(node.source, state), c(')')];
+		},
+
+		ExportDefaultDeclaration(node, state) {
+			const chunks = [
+				c(`export default `),
+				...handle(node.declaration, state)
+			];
+
+			if (node.declaration.type !== 'FunctionDeclaration') {
+				chunks.push(c(';'));
+			}
+
+			return chunks;
+		},
+
+		ExportNamedDeclaration(node, state) {
+			const chunks = [c('export ')];
+
+			if (node.declaration) {
+				chunks.push(...handle(node.declaration, state));
+			} else {
+				const specifiers = node.specifiers.map(specifier => {
+					const name = handle(specifier.local, state)[0];
+					const as = handle(specifier.exported, state)[0];
+
+					if (name.content === as.content) {
+						return [name];
+					}
+
+					return [name, c(' as '), as];
+				});
+
+				const width = 7 + specifiers.map(get_length).reduce(sum, 0) + 2 * specifiers.length;
+
+				if (width > 80) {
+					chunks.push(
+						c('{\n\t'),
+						...join(specifiers, c(',\n\t')),
+						c('\n}')
+					);
+				} else {
+					chunks.push(
+						c('{ '),
+						...join(specifiers, c(', ')),
+						c(' }')
+					);
+				}
+
+				if (node.source) {
+					chunks.push(
+						c(' from '),
+						...handle(node.source, state)
+					);
+				}
+			}
+
+			chunks.push(c(';'));
+
+			return chunks;
+		},
+
+		ExportAllDeclaration(node, state) {
+			return [
+				c(`export * from `),
+				...handle(node.source, state),
+				c(`;`)
+			];
+		},
+
+		MethodDefinition(node, state) {
+			const chunks = [];
+
+			if (node.static) {
+				chunks.push(c('static '));
+			}
+
+			if (node.kind === 'get' || node.kind === 'set') {
+				// Getter or setter
+				chunks.push(c(node.kind + ' '));
+			}
+
+			if (node.value.async) {
+				chunks.push(c('async '));
+			}
+
+			if (node.value.generator) {
+				chunks.push(c('*'));
+			}
+
+			if (node.computed) {
+				chunks.push(
+					c('['),
+					...handle(node.key, state),
+					c(']')
+				);
+			} else {
+				chunks.push(...handle(node.key, state));
+			}
+
+			chunks.push(c('('));
+
+			const { params } = node.value;
+			for (let i = 0; i < params.length; i += 1) {
+				chunks.push(...handle(params[i], state));
+				if (i < params.length - 1) chunks.push(c(', '));
+			}
+
+			chunks.push(
+				c(') '),
+				...handle(node.value.body, state)
+			);
+
+			return chunks;
+		},
+
+		ArrowFunctionExpression: scoped((node, state) => {
+			const chunks = [];
+
+			if (node.async) chunks.push(c('async '));
+
+			if (node.params.length === 1 && node.params[0].type === 'Identifier') {
+				chunks.push(...handle(node.params[0], state));
+			} else {
+				const params = node.params.map(param => handle(param, {
+					...state,
+					indent: state.indent + '\t'
+				}));
+
+				chunks.push(
+					c('('),
+					...join(params, c(', ')),
+					c(')')
+				);
+			}
+
+			chunks.push(c(' => '));
+
+			if (node.body.type === 'ObjectExpression') {
+				chunks.push(
+					c('('),
+					...handle(node.body, state),
+					c(')')
+				);
+			} else {
+				chunks.push(...handle(node.body, state));
+			}
+
+			return chunks;
+		}),
+
+		ThisExpression(node, state) {
+			return [c('this', node)];
+		},
+
+		Super(node, state) {
+			return [c('super', node)];
+		},
+
+		RestElement(node, state) {
+			return [c('...'), ...handle(node.argument, state)];
+		},
+
+		YieldExpression(node, state) {
+			if (node.argument) {
+				return [c(node.delegate ? `yield* ` : `yield `), ...handle(node.argument, state)];
+			}
+
+			return [c(node.delegate ? `yield*` : `yield`)];
+		},
+
+		AwaitExpression(node, state) {
+			if (node.argument) {
+				const precedence = EXPRESSIONS_PRECEDENCE[node.argument.type];
+
+				if (precedence && (precedence < EXPRESSIONS_PRECEDENCE.AwaitExpression)) {
+					return [c('await ('), ...handle(node.argument, state), c(')')];
+				} else {
+					return [c('await '), ...handle(node.argument, state)];
+				}
+			}
+
+			return [c('await')];
+		},
+
+		TemplateLiteral(node, state) {
+			const chunks = [c('`')];
+
+			const { quasis, expressions } = node;
+
+			for (let i = 0; i < expressions.length; i++) {
+				chunks.push(
+					c(quasis[i].value.raw),
+					c('${'),
+					...handle(expressions[i], state),
+					c('}')
+				);
+			}
+
+			chunks.push(
+				c(quasis[quasis.length - 1].value.raw),
+				c('`')
+			);
+
+			return chunks;
+		},
+
+		TaggedTemplateExpression(node, state) {
+			return handle(node.tag, state).concat(handle(node.quasi, state));
+		},
+
+		ArrayExpression(node, state) {
+			const chunks = [c('[')];
+
+			const elements = [];
+			let sparse_commas = [];
+
+			for (let i = 0; i < node.elements.length; i += 1) {
+				// can't use map/forEach because of sparse arrays
+				const element = node.elements[i];
+				if (element) {
+					elements.push([...sparse_commas, ...handle(element, {
+						...state,
+						indent: state.indent + '\t'
+					})]);
+					sparse_commas = [];
+				} else {
+					sparse_commas.push(c(','));
+				}
+			}
+
+			const multiple_lines = (
+				elements.some(has_newline) ||
+				(elements.map(get_length).reduce(sum, 0) + (state.indent.length + elements.length - 1) * 2) > 80
+			);
+
+			if (multiple_lines) {
+				chunks.push(
+					c(`\n${state.indent}\t`),
+					...join(elements, c(`,\n${state.indent}\t`)),
+					c(`\n${state.indent}`),
+					...sparse_commas
+				);
+			} else {
+				chunks.push(...join(elements, c(', ')), ...sparse_commas);
+			}
+
+			chunks.push(c(']'));
+
+			return chunks;
+		},
+
+		ObjectExpression(node, state) {
+			if (node.properties.length === 0) {
+				return [c('{}')];
+			}
+
+			let has_inline_comment = false;
+
+			const chunks = [];
+			const separator = c(', ');
+
+			node.properties.forEach((p, i) => {
+				chunks.push(...handle(p, {
+					...state,
+					indent: state.indent + '\t'
+				}));
+
+				if (state.comments.length) {
+					// TODO generalise this, so it works with ArrayExpressions and other things.
+					// At present, stuff will just get appended to the closest statement/declaration
+					chunks.push(c(', '));
+
+					while (state.comments.length) {
+						const comment = state.comments.shift();
+
+						chunks.push(c(comment.type === 'Block'
+							? `/*${comment.value}*/\n${state.indent}\t`
+							: `//${comment.value}\n${state.indent}\t`));
+
+						if (comment.type === 'Line') {
+							has_inline_comment = true;
+						}
+					}
+				} else {
+					if (i < node.properties.length - 1) {
+						chunks.push(separator);
+					}
+				}
+			});
+
+			const multiple_lines = (
+				has_inline_comment ||
+				has_newline(chunks) ||
+				get_length(chunks) > 40
+			);
+
+			if (multiple_lines) {
+				separator.content = `,\n${state.indent}\t`;
+			}
+
+			return [
+				c(multiple_lines ? `{\n${state.indent}\t` : `{ `),
+				...chunks,
+				c(multiple_lines ? `\n${state.indent}}` : ` }`)
+			];
+		},
+
+		Property(node, state) {
+			const value = handle(node.value, state);
+
+			if (node.key === node.value) {
+				return value;
+			}
+
+			// special case
+			if (
+				!node.computed &&
+				node.value.type === 'AssignmentPattern' &&
+				node.value.left.type === 'Identifier' &&
+				node.value.left.name === (node.key ).name
+			) {
+				return value;
+			}
+
+			if (node.value.type === 'Identifier' && (
+				(node.key.type === 'Identifier' && node.key.name === value[0].content) ||
+				(node.key.type === 'Literal' && node.key.value === value[0].content)
+			)) {
+				return value;
+			}
+
+			const key = handle(node.key, state);
+
+			if (node.value.type === 'FunctionExpression' && !node.value.id) {
+				state = {
+					...state,
+					scope: state.scope_map.get(node.value)
+				};
+
+				const chunks = node.kind !== 'init'
+					? [c(`${node.kind} `)]
+					: [];
+
+				if (node.value.async) {
+					chunks.push(c('async '));
+				}
+				if (node.value.generator) {
+					chunks.push(c('*'));
+				}
+
+				chunks.push(
+					...(node.computed ? [c('['), ...key, c(']')] : key),
+					c('('),
+					...join((node.value ).params.map(param => handle(param, state)), c(', ')),
+					c(') '),
+					...handle((node.value ).body, state)
+				);
+
+				return chunks;
+			}
+
+			if (node.computed) {
+				return [
+					c('['),
+					...key,
+					c(']: '),
+					...value
+				];
+			}
+
+			return [
+				...key,
+				c(': '),
+				...value
+			];
+		},
+
+		ObjectPattern(node, state) {
+			const chunks = [c('{ ')];
+
+			for (let i = 0; i < node.properties.length; i += 1) {
+				chunks.push(...handle(node.properties[i], state));
+				if (i < node.properties.length - 1) chunks.push(c(', '));
+			}
+
+			chunks.push(c(' }'));
+
+			return chunks;
+		},
+
+		SequenceExpression(node, state) {
+			const expressions = node.expressions.map(e => handle(e, state));
+
+			return [
+				c('('),
+				...join(expressions, c(', ')),
+				c(')')
+			];
+		},
+
+		UnaryExpression(node, state) {
+			const chunks = [c(node.operator)];
+
+			if (node.operator.length > 1) {
+				chunks.push(c(' '));
+			}
+
+			if (
+				EXPRESSIONS_PRECEDENCE[node.argument.type] <
+				EXPRESSIONS_PRECEDENCE.UnaryExpression
+			) {
+				chunks.push(
+					c('('),
+					...handle(node.argument, state),
+					c(')')
+				);
+			} else {
+				chunks.push(...handle(node.argument, state));
+			}
+
+			return chunks;
+		},
+
+		UpdateExpression(node, state) {
+			return node.prefix
+				? [c(node.operator), ...handle(node.argument, state)]
+				: [...handle(node.argument, state), c(node.operator)];
+		},
+
+		AssignmentExpression(node, state) {
+			return [
+				...handle(node.left, state),
+				c(` ${node.operator || '='} `),
+				...handle(node.right, state)
+			];
+		},
+
+		BinaryExpression(node, state) {
+			const chunks = [];
+
+			// TODO
+			// const is_in = node.operator === 'in';
+			// if (is_in) {
+			// 	// Avoids confusion in `for` loops initializers
+			// 	chunks.push(c('('));
+			// }
+
+			if (needs_parens(node.left, node, false)) {
+				chunks.push(
+					c('('),
+					...handle(node.left, state),
+					c(')')
+				);
+			} else {
+				chunks.push(...handle(node.left, state));
+			}
+
+			chunks.push(c(` ${node.operator} `));
+
+			if (needs_parens(node.right, node, true)) {
+				chunks.push(
+					c('('),
+					...handle(node.right, state),
+					c(')')
+				);
+			} else {
+				chunks.push(...handle(node.right, state));
+			}
+
+			return chunks;
+		},
+
+		ConditionalExpression(node, state) {
+			const chunks = [];
+
+			if (
+				EXPRESSIONS_PRECEDENCE[node.test.type] >
+				EXPRESSIONS_PRECEDENCE.ConditionalExpression
+			) {
+				chunks.push(...handle(node.test, state));
+			} else {
+				chunks.push(
+					c('('),
+					...handle(node.test, state),
+					c(')')
+				);
+			}
+
+			const child_state = { ...state, indent: state.indent + '\t' };
+
+			const consequent = handle(node.consequent, child_state);
+			const alternate = handle(node.alternate, child_state);
+
+			const multiple_lines = (
+				has_newline(consequent) || has_newline(alternate) ||
+				get_length(chunks) + get_length(consequent) + get_length(alternate) > 50
+			);
+
+			if (multiple_lines) {
+				chunks.push(
+					c(`\n${state.indent}? `),
+					...consequent,
+					c(`\n${state.indent}: `),
+					...alternate
+				);
+			} else {
+				chunks.push(
+					c(` ? `),
+					...consequent,
+					c(` : `),
+					...alternate
+				);
+			}
+
+			return chunks;
+		},
+
+		NewExpression(node, state) {
+			const chunks = [c('new ')];
+
+			if (
+				EXPRESSIONS_PRECEDENCE[node.callee.type] <
+				EXPRESSIONS_PRECEDENCE.CallExpression || has_call_expression(node.callee)
+			) {
+				chunks.push(
+					c('('),
+					...handle(node.callee, state),
+					c(')')
+				);
+			} else {
+				chunks.push(...handle(node.callee, state));
+			}
+
+			// TODO this is copied from CallExpression — DRY it out
+			const args = node.arguments.map(arg => handle(arg, {
+				...state,
+				indent: state.indent + '\t'
+			}));
+
+			const separator = args.some(has_newline) // TODO or length exceeds 80
+				? c(',\n' + state.indent)
+				: c(', ');
+
+			chunks.push(
+				c('('),
+				...join(args, separator) ,
+				c(')')
+			);
+
+			return chunks;
+		},
+
+		CallExpression(node, state) {
+			const chunks = [];
+
+			if (
+				EXPRESSIONS_PRECEDENCE[node.callee.type] <
+				EXPRESSIONS_PRECEDENCE.CallExpression
+			) {
+				chunks.push(
+					c('('),
+					...handle(node.callee, state),
+					c(')')
+				);
+			} else {
+				chunks.push(...handle(node.callee, state));
+			}
+
+			const args = node.arguments.map(arg => handle(arg, state));
+
+			const multiple_lines = args.slice(0, -1).some(has_newline); // TODO or length exceeds 80
+
+			if (multiple_lines) {
+				// need to handle args again. TODO find alternative approach?
+				const args = node.arguments.map(arg => handle(arg, {
+					...state,
+					indent: `${state.indent}\t`
+				}));
+
+				chunks.push(
+					c(`(\n${state.indent}\t`),
+					...join(args, c(`,\n${state.indent}\t`)),
+					c(`\n${state.indent})`)
+				);
+			} else {
+				chunks.push(
+					c('('),
+					...join(args, c(', ')),
+					c(')')
+				);
+			}
+
+			return chunks;
+		},
+
+		MemberExpression(node, state) {
+			const chunks = [];
+
+			if (EXPRESSIONS_PRECEDENCE[node.object.type] < EXPRESSIONS_PRECEDENCE.MemberExpression) {
+				chunks.push(
+					c('('),
+					...handle(node.object, state),
+					c(')')
+				);
+			} else {
+				chunks.push(...handle(node.object, state));
+			}
+
+			if (node.computed) {
+				chunks.push(
+					c('['),
+					...handle(node.property, state),
+					c(']')
+				);
+			} else {
+				chunks.push(
+					c('.'),
+					...handle(node.property, state)
+				);
+			}
+
+			return chunks;
+		},
+
+		MetaProperty(node, state) {
+			return [...handle(node.meta, state), c('.'), ...handle(node.property, state)];
+		},
+
+		Identifier(node, state) {
+			let name = node.name;
+
+			if (name[0] === '@') {
+				name = state.getName(name.slice(1));
+			} else if (node.name[0] === '#') {
+				const owner = state.scope.find_owner(node.name);
+
+				if (!owner) {
+					throw new Error(`Could not find owner for node`);
+				}
+
+				if (!state.deconflicted.has(owner)) {
+					state.deconflicted.set(owner, new Map());
+				}
+
+				const deconflict_map = state.deconflicted.get(owner);
+
+				if (!deconflict_map.has(node.name)) {
+					deconflict_map.set(node.name, deconflict(node.name.slice(1), owner.references));
+				}
+
+				name = deconflict_map.get(node.name);
+			}
+
+			return [c(name, node)];
+		},
+
+		Literal(node, state) {
+			if (typeof node.value === 'string') {
+				return [
+					// TODO do we need to handle weird unicode characters somehow?
+					// str.replace(/\\u(\d{4})/g, (m, n) => String.fromCharCode(+n))
+					c(JSON.stringify(node.value).replace(re, (_m, _i, at, hash, name) => {
+						if (at)	return '@' + name;
+						if (hash) return '#' + name;
+						throw new Error(`this shouldn't happen`);
+					}), node)
+				];
+			}
+
+			const { regex } = node ; // TODO is this right?
+			if (regex) {
+				return [c(`/${regex.pattern}/${regex.flags}`, node)];
+			}
+
+			return [c(String(node.value), node)];
+		}
+	};
+
+	handlers.ForOfStatement = handlers.ForInStatement;
+	handlers.FunctionExpression = handlers.FunctionDeclaration;
+	handlers.ClassExpression = handlers.ClassDeclaration;
+	handlers.ClassBody = handlers.BlockStatement;
+	handlers.SpreadElement = handlers.RestElement;
+	handlers.ArrayPattern = handlers.ArrayExpression;
+	handlers.LogicalExpression = handlers.BinaryExpression;
+	handlers.AssignmentPattern = handlers.AssignmentExpression;
+
+	let btoa = () => {
+		throw new Error('Unsupported environment: `window.btoa` or `Buffer` should be supported.');
+	};
+	if (typeof window !== 'undefined' && typeof window.btoa === 'function') {
+		btoa = (str) => window.btoa(unescape(encodeURIComponent(str)));
+	} else if (typeof Buffer === 'function') {
+		btoa = (str) => Buffer.from(str, 'utf-8').toString('base64');
+	}
+
+
+
+
+
+
+
+
+	function print(node, opts = {}) {
+		if (Array.isArray(node)) {
+			return print({
+				type: 'Program',
+				body: node
+			} , opts);
+		}
+
+		const {
+			getName = (x) => x
+		} = opts;
+
+		let { map: scope_map, scope } = analyze(node);
+		const deconflicted = new WeakMap();
+
+		const chunks = handle(node, {
+			indent: '',
+			getName,
+			scope,
+			scope_map,
+			deconflicted,
+			comments: []
+		});
+
+		
+
+		let code = '';
+		let mappings = [];
+		let current_line = [];
+		let current_column = 0;
+
+		for (let i = 0; i < chunks.length; i += 1) {
+			const chunk = chunks[i];
+
+			code += chunk.content;
+
+			if (chunk.loc) {
+				current_line.push([
+					current_column,
+					0, // source index is always zero
+					chunk.loc.start.line - 1,
+					chunk.loc.start.column,
+				]);
+			}
+
+			for (let i = 0; i < chunk.content.length; i += 1) {
+				if (chunk.content[i] === '\n') {
+					mappings.push(current_line);
+					current_line = [];
+					current_column = 0;
+				} else {
+					current_column += 1;
+				}
+			}
+
+			if (chunk.loc) {
+				current_line.push([
+					current_column,
+					0, // source index is always zero
+					chunk.loc.end.line - 1,
+					chunk.loc.end.column,
+				]);
+			}
+		}
+
+		mappings.push(current_line);
+
+		const map = {
+			version: 3,
+			names: [] ,
+			sources: [opts.sourceMapSource || null],
+			sourcesContent: [opts.sourceMapContent || null],
+			mappings: encode(mappings)
+		};
+
+		Object.defineProperties(map, {
+			toString: {
+				enumerable: false,
+				value: function toString() {
+					return JSON.stringify(this);
+				}
+			},
+			toUrl: {
+				enumerable: false,
+				value: function toUrl() {
+					return 'data:application/json;charset=utf-8;base64,' + btoa(this.toString());
+				}
+			}
+		});
+
+		return {
+			code,
+			map
+		};
+	}
+
+	const sigils = {
+		'@': 'AT',
+		'#': 'HASH'
+	};
+
+	const join$1 = (strings) => {
+		let str = strings[0];
+		for (let i = 1; i < strings.length; i += 1) {
+			str += `_${id}_${i - 1}_${strings[i]}`;
+		}
+		return str.replace(/([@#])(\w+)/g, (_m, sigil, name) => `_${id}_${sigils[sigil]}_${name}`);
+	};
+
+	const flatten_body = (array, target) => {
+		for (let i = 0; i < array.length; i += 1) {
+			const statement = array[i];
+			if (Array.isArray(statement)) {
+				flatten_body(statement, target);
+				continue;
+			}
+
+			if (statement.type === 'ExpressionStatement') {
+				if (statement.expression === EMPTY) continue;
+
+				if (Array.isArray(statement.expression)) {
+					// TODO this is hacktacular
+					let node = statement.expression[0];
+					while (Array.isArray(node)) node = node[0];
+					if (node) node.leadingComments = statement.leadingComments;
+
+					flatten_body(statement.expression, target);
+					continue;
+				}
+
+				if (/(Expression|Literal)$/.test(statement.expression.type)) {
+					target.push(statement);
+					continue;
+				}
+
+				if (statement.leadingComments) statement.expression.leadingComments = statement.leadingComments;
+				if (statement.trailingComments) statement.expression.trailingComments = statement.trailingComments;
+
+				target.push(statement.expression);
+				continue;
+			}
+
+			target.push(statement);
+		}
+
+		return target;
+	};
+
+	const flatten_properties = (array, target) => {
+		for (let i = 0; i < array.length; i += 1) {
+			const property = array[i];
+
+			if (property.value === EMPTY) continue;
+
+			if (property.key === property.value && Array.isArray(property.key)) {
+				flatten_properties(property.key, target);
+				continue;
+			}
+
+			target.push(property);
+		}
+
+		return target;
+	};
+
+	const flatten = (nodes, target) => {
+		for (let i = 0; i < nodes.length; i += 1) {
+			const node = nodes[i];
+
+			if (node === EMPTY) continue;
+
+			if (Array.isArray(node)) {
+				flatten(node, target);
+				continue;
+			}
+
+			target.push(node);
+		}
+
+		return target;
+	};
+
+	const EMPTY = { type: 'Empty' };
+
+	const acorn_opts = (comments, raw) => {
+		const { onComment } = get_comment_handlers(comments, raw);
+		return {
+			ecmaVersion: 11,
+			sourceType: 'module',
+			allowAwaitOutsideFunction: true,
+			allowImportExportEverywhere: true,
+			allowReturnOutsideFunction: true,
+			onComment
+		} ;
+	};
+
+	const inject = (raw, node, values, comments) => {
+		comments.forEach(comment => {
+			comment.value = comment.value.replace(re, (m, i) => +i in values ? values[+i] : m);
+		});
+
+		const { enter, leave } = get_comment_handlers(comments, raw);
+
+		walk(node, {
+			enter,
+
+			leave(node, parent, key, index) {
+				if (node.type === 'Identifier') {
+					re.lastIndex = 0;
+					const match = re.exec(node.name);
+
+					if (match) {
+						if (match[1]) {
+							if (+match[1] in values) {
+								let value = values[+match[1]];
+
+								if (typeof value === 'string') {
+									value = { type: 'Identifier', name: value, leadingComments: node.leadingComments, trailingComments: node.trailingComments };
+								} else if (typeof value === 'number') {
+									value = { type: 'Literal', value, leadingComments: node.leadingComments, trailingComments: node.trailingComments };
+								}
+
+								this.replace(value || EMPTY);
+							}
+						} else {
+							node.name = `${match[2] ? `@` : `#`}${match[4]}`;
+						}
+					}
+				}
+
+				if (node.type === 'Literal') {
+					if (typeof node.value === 'string') {
+						re.lastIndex = 0;
+						node.value = node.value.replace(re, (m, i) => +i in values ? values[+i] : m);
+					}
+				}
+
+				if (node.type === 'TemplateElement') {
+					re.lastIndex = 0;
+					node.value.raw = (node.value.raw ).replace(re, (m, i) => +i in values ? values[+i] : m);
+				}
+
+				if (node.type === 'Program' || node.type === 'BlockStatement') {
+					node.body = flatten_body(node.body, []);
+				}
+
+				if (node.type === 'ObjectExpression' || node.type === 'ObjectPattern') {
+					node.properties = flatten_properties(node.properties, []);
+				}
+
+				if (node.type === 'ArrayExpression' || node.type === 'ArrayPattern') {
+					node.elements = flatten(node.elements, []);
+				}
+
+				if (node.type === 'FunctionExpression' || node.type === 'FunctionDeclaration' || node.type === 'ArrowFunctionExpression') {
+					node.params = flatten(node.params, []);
+				}
+
+				if (node.type === 'CallExpression' || node.type === 'NewExpression') {
+					node.arguments = flatten(node.arguments, []);
+				}
+
+				if (node.type === 'ImportDeclaration' || node.type === 'ExportNamedDeclaration') {
+					node.specifiers = flatten(node.specifiers, []);
+				}
+
+				if (node.type === 'ForStatement') {
+					node.init = node.init === EMPTY ? null : node.init;
+					node.test = node.test === EMPTY ? null : node.test;
+					node.update = node.update === EMPTY ? null : node.update;
+				}
+
+				leave(node);
+			}
+		});
+	};
+
+	function b(strings, ...values) {
+		const str = join$1(strings);
+		const comments = [];
+
+		try {
+			const ast = parse(str,  acorn_opts(comments, str));
+
+			inject(str, ast, values, comments);
+
+			return ast.body;
+		} catch (err) {
+			handle_error(str, err);
+		}
+	}
+
+	function x(strings, ...values) {
+		const str = join$1(strings);
+		const comments = [];
+
+		try {
+			const expression = parseExpressionAt(str, 0, acorn_opts(comments, str)) ;
+
+			inject(str, expression, values, comments);
+
+			return expression;
+		} catch (err) {
+			handle_error(str, err);
+		}
+	}
+
+	function p(strings, ...values) {
+		const str = `{${join$1(strings)}}`;
+		const comments = [];
+
+		try {
+			const expression = parseExpressionAt(str, 0, acorn_opts(comments, str)) ;
+
+			inject(str, expression, values, comments);
+
+			return expression.properties[0];
+		} catch (err) {
+			handle_error(str, err);
+		}
+	}
+
+	function handle_error(str, err) {
+		// TODO location/code frame
+
+		re.lastIndex = 0;
+
+		str = str.replace(re, (m, i, at, hash, name) => {
+			if (at) return `@${name}`;
+			if (hash) return `#${name}`;
+
+			return '${...}';
+		});
+
+		console.log(`failed to parse:\n${str}`);
+		throw err;
+	}
+
+	const parse$1 = (source, opts) => {
+		const comments = [];
+		const { onComment, enter, leave } = get_comment_handlers(comments, source);
+		const ast = parse(source, { onComment, ...opts });
+		walk(ast , { enter, leave });
+		return ast;
+	};
+
+	const parseExpressionAt$1 = (source, index, opts) => {
+		const comments = [];
+		const { onComment, enter, leave } = get_comment_handlers(comments, source);
+		const ast = parseExpressionAt(source, index, { onComment, ...opts });
+		walk(ast , { enter, leave });
+		return ast;
+	};
+
+	const parse$2 = (source) => parse$1(source, {
 	    sourceType: 'module',
 	    ecmaVersion: 11,
 	    locations: true
 	});
-	const parse_expression_at = (source, index) => Parser$1.parseExpressionAt(source, index, {
+	const parse_expression_at = (source, index) => parseExpressionAt$1(source, index, {
 	    ecmaVersion: 11,
 	    locations: true
 	});
@@ -51243,7 +53914,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 	    parser.index = script_end + script_closing_tag.length;
 	    let ast;
 	    try {
-	        ast = parse$1(source);
+	        ast = parse$2(source);
 	    }
 	    catch (err) {
 	        parser.acorn_error(err);
@@ -55853,130 +58524,6 @@ var compiler = createCommonjsModule(function (module, exports) {
 
 	var parser$1 = create(parser);
 
-	function walk(ast, { enter, leave }) {
-		return visit(ast, null, enter, leave);
-	}
-
-	let should_skip = false;
-	let should_remove = false;
-	let replacement = null;
-	const context = {
-		skip: () => should_skip = true,
-		remove: () => should_remove = true,
-		replace: (node) => replacement = node
-	};
-
-	function replace(parent, prop, index, node) {
-		if (parent) {
-			if (index !== null) {
-				parent[prop][index] = node;
-			} else {
-				parent[prop] = node;
-			}
-		}
-	}
-
-	function remove(parent, prop, index) {
-		if (parent) {
-			if (index !== null) {
-				parent[prop].splice(index, 1);
-			} else {
-				delete parent[prop];
-			}
-		}
-	}
-
-	function visit(
-		node,
-		parent,
-		enter,
-		leave,
-		prop,
-		index
-	) {
-		if (node) {
-			if (enter) {
-				const _should_skip = should_skip;
-				const _should_remove = should_remove;
-				const _replacement = replacement;
-				should_skip = false;
-				should_remove = false;
-				replacement = null;
-
-				enter.call(context, node, parent, prop, index);
-
-				if (replacement) {
-					node = replacement;
-					replace(parent, prop, index, node);
-				}
-
-				if (should_remove) {
-					remove(parent, prop, index);
-				}
-
-				const skipped = should_skip;
-				const removed = should_remove;
-
-				should_skip = _should_skip;
-				should_remove = _should_remove;
-				replacement = _replacement;
-
-				if (skipped) return node;
-				if (removed) return null;
-			}
-
-			for (const key in node) {
-				const value = (node )[key];
-
-				if (typeof value !== 'object') {
-					continue;
-				}
-
-				else if (Array.isArray(value)) {
-					for (let j = 0, k = 0; j < value.length; j += 1, k += 1) {
-						if (value[j] !== null && typeof value[j].type === 'string') {
-							if (!visit(value[j], node, enter, leave, key, k)) {
-								// removed
-								j--;
-							}
-						}
-					}
-				}
-
-				else if (value !== null && typeof value.type === 'string') {
-					visit(value, node, enter, leave, key, null);
-				}
-			}
-
-			if (leave) {
-				const _replacement = replacement;
-				const _should_remove = should_remove;
-				replacement = null;
-				should_remove = false;
-
-				leave.call(context, node, parent, prop, index);
-
-				if (replacement) {
-					node = replacement;
-					replace(parent, prop, index, node);
-				}
-
-				if (should_remove) {
-					remove(parent, prop, index);
-				}
-
-				const removed = should_remove;
-
-				replacement = _replacement;
-				should_remove = _should_remove;
-
-				if (removed) return null;
-			}
-		}
-
-		return node;
-	}
-
 	function read_style(parser, start, attributes) {
 	    const content_start = parser.index;
 	    const styles = parser.read_until(/<\/style>/);
@@ -58228,6 +60775,8 @@ var compiler = createCommonjsModule(function (module, exports) {
 	    'alert',
 	    'Array',
 	    'Boolean',
+	    'clearInterval',
+	    'clearTimeout',
 	    'confirm',
 	    'console',
 	    'Date',
@@ -58239,6 +60788,9 @@ var compiler = createCommonjsModule(function (module, exports) {
 	    'Error',
 	    'EvalError',
 	    'Event',
+	    'fetch',
+	    'global',
+	    'globalThis',
 	    'history',
 	    'Infinity',
 	    'InternalError',
@@ -58264,11 +60816,14 @@ var compiler = createCommonjsModule(function (module, exports) {
 	    'RegExp',
 	    'sessionStorage',
 	    'Set',
+	    'setInterval',
+	    'setTimeout',
 	    'String',
 	    'SyntaxError',
 	    'TypeError',
 	    'undefined',
 	    'URIError',
+	    'URL',
 	    'window'
 	]);
 	const reserved = new Set([
@@ -59572,7 +62127,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 	    throw error;
 	}
 
-	class Parser$2 {
+	class Parser$1 {
 	    constructor(template, options) {
 	        this.index = 0;
 	        this.stack = [];
@@ -59724,8 +62279,8 @@ var compiler = createCommonjsModule(function (module, exports) {
 	        this.allow_whitespace();
 	    }
 	}
-	function parse$2(template, options = {}) {
-	    const parser = new Parser$2(template, options);
+	function parse$3(template, options = {}) {
+	    const parser = new Parser$1(template, options);
 	    // TODO we may want to allow multiple <style> tags —
 	    // one scoped, one global. for now, only allow one
 	    if (parser.css.length > 1) {
@@ -59754,1953 +62309,6 @@ var compiler = createCommonjsModule(function (module, exports) {
 	        instance: instance_scripts[0],
 	        module: module_scripts[0]
 	    };
-	}
-
-	function isReference(node, parent) {
-	    if (node.type === 'MemberExpression') {
-	        return !node.computed && isReference(node.object, node);
-	    }
-	    if (node.type === 'Identifier') {
-	        if (!parent)
-	            return true;
-	        switch (parent.type) {
-	            // disregard `bar` in `foo.bar`
-	            case 'MemberExpression': return parent.computed || node === parent.object;
-	            // disregard the `foo` in `class {foo(){}}` but keep it in `class {[foo](){}}`
-	            case 'MethodDefinition': return parent.computed;
-	            // disregard the `bar` in `{ bar: foo }`, but keep it in `{ [bar]: foo }`
-	            case 'Property': return parent.computed || node === parent.value;
-	            // disregard the `bar` in `export { foo as bar }` or
-	            // the foo in `import { foo as bar }`
-	            case 'ExportSpecifier':
-	            case 'ImportSpecifier': return node === parent.local;
-	            // disregard the `foo` in `foo: while (...) { ... break foo; ... continue foo;}`
-	            case 'LabeledStatement':
-	            case 'BreakStatement':
-	            case 'ContinueStatement': return false;
-	            default: return true;
-	        }
-	    }
-	    return false;
-	}
-
-	function analyze(expression) {
-		const map = new WeakMap();
-
-		let scope = new Scope$1(null, false);
-
-		walk(expression, {
-			enter(node, parent) {
-				if (node.type === 'ImportDeclaration') {
-					node.specifiers.forEach((specifier) => {
-						scope.declarations.set(specifier.local.name, specifier);
-					});
-				} else if (/(Function(Declaration|Expression)|ArrowFunctionExpression)/.test(node.type)) {
-					if (node.type === 'FunctionDeclaration') {
-						scope.declarations.set(node.id.name, node);
-						map.set(node, scope = new Scope$1(scope, false));
-					} else {
-						map.set(node, scope = new Scope$1(scope, false));
-						if (node.type === 'FunctionExpression' && node.id) scope.declarations.set(node.id.name, node);
-					}
-
-					node.params.forEach((param) => {
-						extract_names(param).forEach(name => {
-							scope.declarations.set(name, node);
-						});
-					});
-				} else if (/For(?:In|Of)?Statement/.test(node.type)) {
-					map.set(node, scope = new Scope$1(scope, true));
-				} else if (node.type === 'BlockStatement') {
-					map.set(node, scope = new Scope$1(scope, true));
-				} else if (/(Class|Variable)Declaration/.test(node.type)) {
-					scope.add_declaration(node);
-				} else if (node.type === 'CatchClause') {
-					map.set(node, scope = new Scope$1(scope, true));
-
-					if (node.param) {
-						extract_names(node.param).forEach(name => {
-							scope.declarations.set(name, node.param);
-						});
-					}
-				}
-			},
-
-			leave(node) {
-				if (map.has(node)) {
-					scope = scope.parent;
-				}
-			}
-		});
-
-		const globals = new Map();
-
-		walk(expression, {
-			enter(node, parent) {
-				if (map.has(node)) scope = map.get(node);
-
-				if (node.type === 'Identifier' && isReference(node, parent)) {
-					const owner = scope.find_owner(node.name);
-					if (!owner) globals.set(node.name, node);
-
-					add_reference(scope, node.name);
-				}
-			},
-			leave(node) {
-				if (map.has(node)) {
-					scope = scope.parent;
-				}
-			}
-		});
-
-		return { map, scope, globals };
-	}
-
-	function add_reference(scope, name) {
-		scope.references.add(name);
-		if (scope.parent) add_reference(scope.parent, name);
-	}
-
-	class Scope$1 {
-		
-		
-		__init() {this.declarations = new Map();}
-		__init2() {this.initialised_declarations = new Set();}
-		__init3() {this.references = new Set();}
-
-		constructor(parent, block) {Scope$1.prototype.__init.call(this);Scope$1.prototype.__init2.call(this);Scope$1.prototype.__init3.call(this);
-			this.parent = parent;
-			this.block = block;
-		}
-
-
-		add_declaration(node) {
-			if (node.type === 'VariableDeclaration') {
-				if (node.kind === 'var' && this.block && this.parent) {
-					this.parent.add_declaration(node);
-				} else if (node.type === 'VariableDeclaration') {
-					node.declarations.forEach((declarator) => {
-						extract_names(declarator.id).forEach(name => {
-							this.declarations.set(name, node);
-							if (declarator.init) this.initialised_declarations.add(name);
-						});
-					});
-				}
-			} else {
-				this.declarations.set(node.id.name, node);
-			}
-		}
-
-		find_owner(name) {
-			if (this.declarations.has(name)) return this;
-			return this.parent && this.parent.find_owner(name);
-		}
-
-		has(name) {
-			return (
-				this.declarations.has(name) || (this.parent && this.parent.has(name))
-			);
-		}
-	}
-
-	function extract_names(param) {
-		return extract_identifiers(param).map(node => node.name);
-	}
-
-	function extract_identifiers(param) {
-		const nodes = [];
-		extractors[param.type] && extractors[param.type](nodes, param);
-		return nodes;
-	}
-
-	const extractors = {
-		Identifier(nodes, param) {
-			nodes.push(param);
-		},
-
-		MemberExpression(nodes, param) {
-			let object = param;
-			while (object.type === 'MemberExpression') object = object.object;
-			nodes.push(object);
-		},
-
-		ObjectPattern(nodes, param) {
-			param.properties.forEach((prop) => {
-				if (prop.type === 'RestElement') {
-					nodes.push(prop.argument);
-				} else {
-					extractors[prop.value.type](nodes, prop.value);
-				}
-			});
-		},
-
-		ArrayPattern(nodes, param) {
-			param.elements.forEach((element) => {
-				if (element) extractors[element.type](nodes, element);
-			});
-		},
-
-		RestElement(nodes, param) {
-			extractors[param.argument.type](nodes, param.argument);
-		},
-
-		AssignmentPattern(nodes, param) {
-			extractors[param.left.type](nodes, param.left);
-		}
-	};
-
-	var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-	function encode(decoded) {
-	    var sourceFileIndex = 0; // second field
-	    var sourceCodeLine = 0; // third field
-	    var sourceCodeColumn = 0; // fourth field
-	    var nameIndex = 0; // fifth field
-	    var mappings = '';
-	    for (var i = 0; i < decoded.length; i++) {
-	        var line = decoded[i];
-	        if (i > 0)
-	            mappings += ';';
-	        if (line.length === 0)
-	            continue;
-	        var generatedCodeColumn = 0; // first field
-	        var lineMappings = [];
-	        for (var _i = 0, line_1 = line; _i < line_1.length; _i++) {
-	            var segment = line_1[_i];
-	            var segmentMappings = encodeInteger(segment[0] - generatedCodeColumn);
-	            generatedCodeColumn = segment[0];
-	            if (segment.length > 1) {
-	                segmentMappings +=
-	                    encodeInteger(segment[1] - sourceFileIndex) +
-	                        encodeInteger(segment[2] - sourceCodeLine) +
-	                        encodeInteger(segment[3] - sourceCodeColumn);
-	                sourceFileIndex = segment[1];
-	                sourceCodeLine = segment[2];
-	                sourceCodeColumn = segment[3];
-	            }
-	            if (segment.length === 5) {
-	                segmentMappings += encodeInteger(segment[4] - nameIndex);
-	                nameIndex = segment[4];
-	            }
-	            lineMappings.push(segmentMappings);
-	        }
-	        mappings += lineMappings.join(',');
-	    }
-	    return mappings;
-	}
-	function encodeInteger(num) {
-	    var result = '';
-	    num = num < 0 ? (-num << 1) | 1 : num << 1;
-	    do {
-	        var clamped = num & 31;
-	        num >>>= 5;
-	        if (num > 0) {
-	            clamped |= 32;
-	        }
-	        result += chars[clamped];
-	    } while (num > 0);
-	    return result;
-	}
-
-	// generate an ID that is, to all intents and purposes, unique
-	const id = (Math.round(Math.random() * 1e20)).toString(36);
-	const re = new RegExp(`_${id}_(?:(\\d+)|(AT)|(HASH))_(\\w+)?`, 'g');
-
-	function handle(node, state) {
-		const handler = handlers[node.type];
-
-		if (!handler) {
-			throw new Error(`Not implemented ${node.type}`);
-		}
-
-		const result = handler(node, state);
-
-		if (node.leadingComments) {
-			result.unshift(c(node.leadingComments.map(comment => comment.type === 'Block'
-				? `/*${comment.value}*/${(comment ).has_trailing_newline ? `\n${state.indent}` : ` `}`
-				: `//${comment.value}${(comment ).has_trailing_newline ? `\n${state.indent}` : ` `}`).join(``)));
-		}
-
-		if (node.trailingComments) {
-			state.comments.push(node.trailingComments[0]); // there is only ever one
-		}
-
-		return result;
-	}
-
-	function c(content, node) {
-		return {
-			content,
-			loc: node && node.loc,
-			has_newline: /\n/.test(content)
-		};
-	}
-
-	const OPERATOR_PRECEDENCE = {
-		'||': 3,
-		'&&': 4,
-		'|': 5,
-		'^': 6,
-		'&': 7,
-		'==': 8,
-		'!=': 8,
-		'===': 8,
-		'!==': 8,
-		'<': 9,
-		'>': 9,
-		'<=': 9,
-		'>=': 9,
-		in: 9,
-		instanceof: 9,
-		'<<': 10,
-		'>>': 10,
-		'>>>': 10,
-		'+': 11,
-		'-': 11,
-		'*': 12,
-		'%': 12,
-		'/': 12,
-		'**': 13,
-	};
-
-	// Enables parenthesis regardless of precedence
-	const NEEDS_PARENTHESES = 17;
-
-	const EXPRESSIONS_PRECEDENCE = {
-		ArrayExpression: 20,
-		TaggedTemplateExpression: 20,
-		ThisExpression: 20,
-		Identifier: 20,
-		Literal: 18,
-		TemplateLiteral: 20,
-		Super: 20,
-		SequenceExpression: 20,
-		MemberExpression: 19,
-		CallExpression: 19,
-		NewExpression: 19,
-		ArrowFunctionExpression: NEEDS_PARENTHESES,
-		ClassExpression: NEEDS_PARENTHESES,
-		FunctionExpression: NEEDS_PARENTHESES,
-		ObjectExpression: NEEDS_PARENTHESES, // TODO this results in e.g. `o = o || {}` => `o = o || ({})`
-		UpdateExpression: 16,
-		UnaryExpression: 15,
-		BinaryExpression: 14,
-		LogicalExpression: 13,
-		ConditionalExpression: 4,
-		AssignmentExpression: 3,
-		AwaitExpression: 2,
-		YieldExpression: 2,
-		RestElement: 1
-	};
-
-	function needs_parens(node, parent, is_right) {
-		const precedence = EXPRESSIONS_PRECEDENCE[node.type];
-
-		if (precedence === NEEDS_PARENTHESES) {
-			return true;
-		}
-
-		const parent_precedence = EXPRESSIONS_PRECEDENCE[parent.type];
-
-		if (precedence !== parent_precedence) {
-			// Different node types
-			return (
-				(!is_right &&
-					precedence === 15 &&
-					parent_precedence === 14 &&
-					parent.operator === '**') ||
-				precedence < parent_precedence
-			);
-		}
-
-		if (precedence !== 13 && precedence !== 14) {
-			// Not a `LogicalExpression` or `BinaryExpression`
-			return false;
-		}
-
-		if ((node ).operator === '**' && parent.operator === '**') {
-			// Exponentiation operator has right-to-left associativity
-			return !is_right;
-		}
-
-		if (is_right) {
-			// Parenthesis are used if both operators have the same precedence
-			return (
-				OPERATOR_PRECEDENCE[(node ).operator] <=
-				OPERATOR_PRECEDENCE[parent.operator]
-			);
-		}
-
-		return (
-			OPERATOR_PRECEDENCE[(node ).operator] <
-			OPERATOR_PRECEDENCE[parent.operator]
-		);
-	}
-
-	function has_call_expression(node) {
-		while (node) {
-			if (node.type[0] === 'CallExpression') {
-				return true;
-			} else if (node.type === 'MemberExpression') {
-				node = node.object;
-			} else {
-				return false;
-			}
-		}
-	}
-
-	const has_newline = (chunks) => {
-		for (let i = 0; i < chunks.length; i += 1) {
-			if (chunks[i].has_newline) return true;
-		}
-		return false;
-	};
-
-	const get_length = (chunks) => {
-		let total = 0;
-		for (let i = 0; i < chunks.length; i += 1) {
-			total += chunks[i].content.length;
-		}
-		return total;
-	};
-
-	const sum = (a, b) => a + b;
-
-	const join = (nodes, separator) => {
-		if (nodes.length === 0) return [];
-		const joined = [...nodes[0]];
-		for (let i = 1; i < nodes.length; i += 1) {
-			joined.push(separator, ...nodes[i] );
-		}
-		return joined;
-	};
-
-	const scoped = (fn) => {
-		return (node, state) => {
-			return fn(node, {
-				...state,
-				scope: state.scope_map.get(node)
-			});
-		};
-	};
-
-	const deconflict = (name, names) => {
-		const original = name;
-		let i = 1;
-
-		while (names.has(name)) {
-			name = `${original}$${i++}`;
-		}
-
-		return name;
-	};
-
-	const handle_body = (nodes, state) => {
-		const chunks = [];
-
-		const body = nodes.map(statement => {
-			const chunks = handle(statement, {
-				...state,
-				indent: state.indent
-			});
-
-			while (state.comments.length) {
-				const comment = state.comments.shift();
-				chunks.push(c(comment.type === 'Block'
-				? ` /*${comment.value}*/`
-				: ` //${comment.value}`));
-			}
-
-			return chunks;
-		});
-
-		let needed_padding = false;
-
-		for (let i = 0; i < body.length; i += 1) {
-			const needs_padding = has_newline(body[i]);
-
-			if (i > 0) {
-				chunks.push(
-					c(needs_padding || needed_padding ? `\n\n${state.indent}` : `\n${state.indent}`)
-				);
-			}
-
-			chunks.push(
-				...body[i]
-			);
-
-			needed_padding = needs_padding;
-		}
-
-		return chunks;
-	};
-
-	const handle_var_declaration = (node, state) => {
-		const chunks = [c(`${node.kind} `)];
-
-		const declarators = node.declarations.map(d => handle(d, {
-			...state,
-			indent: state.indent + (node.declarations.length === 1 ? '' : '\t')
-		}));
-
-		const multiple_lines = (
-			declarators.some(has_newline) ||
-			(declarators.map(get_length).reduce(sum, 0) + (state.indent.length + declarators.length - 1) * 2) > 80
-		);
-
-		const separator = c(multiple_lines ? `,\n${state.indent}\t` : ', ');
-
-		if (multiple_lines) {
-			chunks.push(...join(declarators, separator));
-		} else {
-			chunks.push(
-				...join(declarators, separator)
-			);
-		}
-
-		return chunks;
-	};
-
-	const handlers = {
-		Program(node, state) {
-			return handle_body(node.body, state);
-		},
-
-		BlockStatement: scoped((node, state) => {
-			return [
-				c(`{\n${state.indent}\t`),
-				...handle_body(node.body, { ...state, indent: state.indent + '\t' }),
-				c(`\n${state.indent}}`)
-			];
-		}),
-
-		EmptyStatement(node, state) {
-			return [];
-		},
-
-		ParenthesizedExpression(node, state) {
-			return handle(node.expression, state);
-		},
-
-		ExpressionStatement(node, state) {
-			const precedence = EXPRESSIONS_PRECEDENCE[node.expression.type];
-			if (
-				precedence === NEEDS_PARENTHESES ||
-				(precedence === 3 && (node.expression ).left.type === 'ObjectPattern')
-			) {
-				// Should always have parentheses or is an AssignmentExpression to an ObjectPattern
-				return [
-					c('('),
-					...handle(node.expression, state),
-					c(');')
-				];
-			}
-
-			return [
-				...handle(node.expression, state),
-				c(';')
-			];
-		},
-
-		IfStatement(node, state) {
-			const chunks = [
-				c('if ('),
-				...handle(node.test, state),
-				c(') '),
-				...handle(node.consequent, state)
-			];
-
-			if (node.alternate) {
-				chunks.push(
-					c(' else '),
-					...handle(node.alternate, state)
-				);
-			}
-
-			return chunks;
-		},
-
-		LabeledStatement(node, state) {
-			return [
-				...handle(node.label, state),
-				c(': '),
-				...handle(node.body, state)
-			];
-		},
-
-		BreakStatement(node, state) {
-			return node.label
-				? [c('break '), ...handle(node.label, state), c(';')]
-				: [c('break;')];
-		},
-
-		ContinueStatement(node, state) {
-			return node.label
-				? [c('continue '), ...handle(node.label, state), c(';')]
-				: [c('continue;')];
-		},
-
-		WithStatement(node, state) {
-			return [
-				c('with ('),
-				...handle(node.object, state),
-				c(') '),
-				...handle(node.body, state)
-			];
-		},
-
-		SwitchStatement(node, state) {
-			const chunks = [
-				c('switch ('),
-				...handle(node.discriminant, state),
-				c(') {')
-			];
-
-			node.cases.forEach(block => {
-				if (block.test) {
-					chunks.push(
-						c(`\n${state.indent}\tcase `),
-						...handle(block.test, { ...state, indent: `${state.indent}\t` }),
-						c(':')
-					);
-				} else {
-					chunks.push(c(`\n${state.indent}\tdefault:`));
-				}
-
-				block.consequent.forEach(statement => {
-					chunks.push(
-						c(`\n${state.indent}\t\t`),
-						...handle(statement, { ...state, indent: `${state.indent}\t\t` })
-					);
-				});
-			});
-
-			chunks.push(c(`\n${state.indent}}`));
-
-			return chunks;
-		},
-
-		ReturnStatement(node, state) {
-			if (node.argument) {
-				return [
-					c('return '),
-					...handle(node.argument, state),
-					c(';')
-				];
-			} else {
-				return [c('return;')];
-			}
-		},
-
-		ThrowStatement(node, state) {
-			return [
-				c('throw '),
-				...handle(node.argument, state),
-				c(';')
-			];
-		},
-
-		TryStatement(node, state) {
-			const chunks = [
-				c('try '),
-				...handle(node.block, state)
-			];
-
-			if (node.handler) {
-				if (node.handler.param) {
-					chunks.push(
-						c(' catch('),
-						...handle(node.handler.param, state),
-						c(') ')
-					);
-				} else {
-					chunks.push(c(' catch '));
-				}
-
-				chunks.push(...handle(node.handler.body, state));
-			}
-
-			if (node.finalizer) {
-				chunks.push(c(' finally '), ...handle(node.finalizer, state));
-			}
-
-			return chunks;
-		},
-
-		WhileStatement(node, state) {
-			return [
-				c('while ('),
-				...handle(node.test, state),
-				c(') '),
-				...handle(node.body, state)
-			];
-		},
-
-		DoWhileStatement(node, state) {
-			return [
-				c('do '),
-				...handle(node.body, state),
-				c(' while ('),
-				...handle(node.test, state),
-				c(');')
-			];
-		},
-
-		ForStatement: scoped((node, state) => {
-			const chunks = [c('for (')];
-
-			if (node.init) {
-				if ((node.init ).type === 'VariableDeclaration') {
-					chunks.push(...handle_var_declaration(node.init , state));
-				} else {
-					chunks.push(...handle(node.init, state));
-				}
-			}
-
-			chunks.push(c('; '));
-			if (node.test) chunks.push(...handle(node.test, state));
-			chunks.push(c('; '));
-			if (node.update) chunks.push(...handle(node.update, state));
-
-			chunks.push(
-				c(') '),
-				...handle(node.body, state)
-			);
-
-			return chunks;
-		}),
-
-		ForInStatement: scoped((node, state) => {
-			const chunks = [
-				c(`for ${(node ).await ? 'await ' : ''}(`)
-			];
-
-			if ((node.left ).type === 'VariableDeclaration') {
-				chunks.push(...handle_var_declaration(node.left , state));
-			} else {
-				chunks.push(...handle(node.left, state));
-			}
-
-			chunks.push(
-				c(node.type === 'ForInStatement' ? ` in ` : ` of `),
-				...handle(node.right, state),
-				c(') '),
-				...handle(node.body, state)
-			);
-
-			return chunks;
-		}),
-
-		DebuggerStatement(node, state) {
-			return [c('debugger', node), c(';')];
-		},
-
-		FunctionDeclaration: scoped((node, state) => {
-			const chunks = [];
-
-			if (node.async) chunks.push(c('async '));
-			chunks.push(c(node.generator ? 'function* ' : 'function '));
-			if (node.id) chunks.push(...handle(node.id, state));
-			chunks.push(c('('));
-
-			const params = node.params.map(p => handle(p, {
-				...state,
-				indent: state.indent + '\t'
-			}));
-
-			const multiple_lines = (
-				params.some(has_newline) ||
-				(params.map(get_length).reduce(sum, 0) + (state.indent.length + params.length - 1) * 2) > 80
-			);
-
-			const separator = c(multiple_lines ? `,\n${state.indent}` : ', ');
-
-			if (multiple_lines) {
-				chunks.push(
-					c(`\n${state.indent}\t`),
-					...join(params, separator),
-					c(`\n${state.indent}`)
-				);
-			} else {
-				chunks.push(
-					...join(params, separator)
-				);
-			}
-
-			chunks.push(
-				c(') '),
-				...handle(node.body, state)
-			);
-
-			return chunks;
-		}),
-
-		VariableDeclaration(node, state) {
-			return handle_var_declaration(node, state).concat(c(';'));
-		},
-
-		VariableDeclarator(node, state) {
-			if (node.init) {
-				return [
-					...handle(node.id, state),
-					c(' = '),
-					...handle(node.init, state)
-				];
-			} else {
-				return handle(node.id, state);
-			}
-		},
-
-		ClassDeclaration(node, state) {
-			const chunks = [c('class ')];
-
-			if (node.id) chunks.push(...handle(node.id, state), c(' '));
-
-			if (node.superClass) {
-				chunks.push(
-					c('extends '),
-					...handle(node.superClass, state),
-					c(' ')
-				);
-			}
-
-			chunks.push(...handle(node.body, state));
-
-			return chunks;
-		},
-
-		ImportDeclaration(node, state) {
-			const chunks = [c('import ')];
-
-			const { length } = node.specifiers;
-			const source = handle(node.source, state);
-
-			if (length > 0) {
-				let i = 0;
-
-				while (i < length) {
-					if (i > 0) {
-						chunks.push(c(', '));
-					}
-
-					const specifier = node.specifiers[i];
-
-					if (specifier.type === 'ImportDefaultSpecifier') {
-						chunks.push(c(specifier.local.name, specifier));
-						i += 1;
-					} else if (specifier.type === 'ImportNamespaceSpecifier') {
-						chunks.push(c('* as ' + specifier.local.name, specifier));
-						i += 1;
-					} else {
-						break;
-					}
-				}
-
-				if (i < length) {
-					// we have named specifiers
-					const specifiers = node.specifiers.slice(i).map((specifier) => {
-						const name = handle(specifier.imported, state)[0];
-						const as = handle(specifier.local, state)[0];
-
-						if (name.content === as.content) {
-							return [as];
-						}
-
-						return [name, c(' as '), as];
-					});
-
-					const width = get_length(chunks) + specifiers.map(get_length).reduce(sum, 0) + (2 * specifiers.length) + 6 + get_length(source);
-
-					if (width > 80) {
-						chunks.push(
-							c(`{\n\t`),
-							...join(specifiers, c(',\n\t')),
-							c('\n}')
-						);
-					} else {
-						chunks.push(
-							c(`{ `),
-							...join(specifiers, c(', ')),
-							c(' }')
-						);
-					}
-				}
-
-				chunks.push(c(' from '));
-			}
-
-			chunks.push(
-				...source,
-				c(';')
-			);
-
-			return chunks;
-		},
-
-		ImportExpression(node, state) {
-			return [c('import('), ...handle(node.source, state), c(')')];
-		},
-
-		ExportDefaultDeclaration(node, state) {
-			const chunks = [
-				c(`export default `),
-				...handle(node.declaration, state)
-			];
-
-			if (node.declaration.type !== 'FunctionDeclaration') {
-				chunks.push(c(';'));
-			}
-
-			return chunks;
-		},
-
-		ExportNamedDeclaration(node, state) {
-			const chunks = [c('export ')];
-
-			if (node.declaration) {
-				chunks.push(...handle(node.declaration, state));
-			} else {
-				const specifiers = node.specifiers.map(specifier => {
-					const name = handle(specifier.local, state)[0];
-					const as = handle(specifier.exported, state)[0];
-
-					if (name.content === as.content) {
-						return [name];
-					}
-
-					return [name, c(' as '), as];
-				});
-
-				const width = 7 + specifiers.map(get_length).reduce(sum, 0) + 2 * specifiers.length;
-
-				if (width > 80) {
-					chunks.push(
-						c('{\n\t'),
-						...join(specifiers, c(',\n\t')),
-						c('\n}')
-					);
-				} else {
-					chunks.push(
-						c('{ '),
-						...join(specifiers, c(', ')),
-						c(' }')
-					);
-				}
-
-				if (node.source) {
-					chunks.push(
-						c(' from '),
-						...handle(node.source, state)
-					);
-				}
-			}
-
-			chunks.push(c(';'));
-
-			return chunks;
-		},
-
-		ExportAllDeclaration(node, state) {
-			return [
-				c(`export * from `),
-				...handle(node.source, state),
-				c(`;`)
-			];
-		},
-
-		MethodDefinition(node, state) {
-			const chunks = [];
-
-			if (node.static) {
-				chunks.push(c('static '));
-			}
-
-			if (node.kind === 'get' || node.kind === 'set') {
-				// Getter or setter
-				chunks.push(c(node.kind + ' '));
-			}
-
-			if (node.value.async) {
-				chunks.push(c('async '));
-			}
-
-			if (node.value.generator) {
-				chunks.push(c('*'));
-			}
-
-			if (node.computed) {
-				chunks.push(
-					c('['),
-					...handle(node.key, state),
-					c(']')
-				);
-			} else {
-				chunks.push(...handle(node.key, state));
-			}
-
-			chunks.push(c('('));
-
-			const { params } = node.value;
-			for (let i = 0; i < params.length; i += 1) {
-				chunks.push(...handle(params[i], state));
-				if (i < params.length - 1) chunks.push(c(', '));
-			}
-
-			chunks.push(
-				c(') '),
-				...handle(node.value.body, state)
-			);
-
-			return chunks;
-		},
-
-		ArrowFunctionExpression: scoped((node, state) => {
-			const chunks = [];
-
-			if (node.async) chunks.push(c('async '));
-
-			if (node.params.length === 1 && node.params[0].type === 'Identifier') {
-				chunks.push(...handle(node.params[0], state));
-			} else {
-				const params = node.params.map(param => handle(param, {
-					...state,
-					indent: state.indent + '\t'
-				}));
-
-				chunks.push(
-					c('('),
-					...join(params, c(', ')),
-					c(')')
-				);
-			}
-
-			chunks.push(c(' => '));
-
-			if (node.body.type === 'ObjectExpression') {
-				chunks.push(
-					c('('),
-					...handle(node.body, state),
-					c(')')
-				);
-			} else {
-				chunks.push(...handle(node.body, state));
-			}
-
-			return chunks;
-		}),
-
-		ThisExpression(node, state) {
-			return [c('this', node)];
-		},
-
-		Super(node, state) {
-			return [c('super', node)];
-		},
-
-		RestElement(node, state) {
-			return [c('...'), ...handle(node.argument, state)];
-		},
-
-		YieldExpression(node, state) {
-			if (node.argument) {
-				return [c(node.delegate ? `yield* ` : `yield `), ...handle(node.argument, state)];
-			}
-
-			return [c(node.delegate ? `yield*` : `yield`)];
-		},
-
-		AwaitExpression(node, state) {
-			if (node.argument) {
-				return [c('await '), ...handle(node.argument, state)];
-			}
-
-			return [c('await')];
-		},
-
-		TemplateLiteral(node, state) {
-			const chunks = [c('`')];
-
-			const { quasis, expressions } = node;
-
-			for (let i = 0; i < expressions.length; i++) {
-				chunks.push(
-					c(quasis[i].value.raw),
-					c('${'),
-					...handle(expressions[i], state),
-					c('}')
-				);
-			}
-
-			chunks.push(
-				c(quasis[quasis.length - 1].value.raw),
-				c('`')
-			);
-
-			return chunks;
-		},
-
-		TaggedTemplateExpression(node, state) {
-			return handle(node.tag, state).concat(handle(node.quasi, state));
-		},
-
-		ArrayExpression(node, state) {
-			const chunks = [c('[')];
-
-			const elements = [];
-			let sparse_commas = [];
-
-			for (let i = 0; i < node.elements.length; i += 1) {
-				// can't use map/forEach because of sparse arrays
-				const element = node.elements[i];
-				if (element) {
-					elements.push([...sparse_commas, ...handle(element, {
-						...state,
-						indent: state.indent + '\t'
-					})]);
-					sparse_commas = [];
-				} else {
-					sparse_commas.push(c(','));
-				}
-			}
-
-			const multiple_lines = (
-				elements.some(has_newline) ||
-				(elements.map(get_length).reduce(sum, 0) + (state.indent.length + elements.length - 1) * 2) > 80
-			);
-
-			if (multiple_lines) {
-				chunks.push(
-					c(`\n${state.indent}\t`),
-					...join(elements, c(`,\n${state.indent}\t`)),
-					c(`\n${state.indent}`),
-					...sparse_commas
-				);
-			} else {
-				chunks.push(...join(elements, c(', ')), ...sparse_commas);
-			}
-
-			chunks.push(c(']'));
-
-			return chunks;
-		},
-
-		ObjectExpression(node, state) {
-			if (node.properties.length === 0) {
-				return [c('{}')];
-			}
-
-			let has_inline_comment = false;
-
-			const chunks = [];
-			const separator = c(', ');
-
-			node.properties.forEach((p, i) => {
-				chunks.push(...handle(p, {
-					...state,
-					indent: state.indent + '\t'
-				}));
-
-				if (state.comments.length) {
-					// TODO generalise this, so it works with ArrayExpressions and other things.
-					// At present, stuff will just get appended to the closest statement/declaration
-					chunks.push(c(', '));
-
-					while (state.comments.length) {
-						const comment = state.comments.shift();
-
-						chunks.push(c(comment.type === 'Block'
-							? `/*${comment.value}*/\n${state.indent}\t`
-							: `//${comment.value}\n${state.indent}\t`));
-
-						if (comment.type === 'Line') {
-							has_inline_comment = true;
-						}
-					}
-				} else {
-					if (i < node.properties.length - 1) {
-						chunks.push(separator);
-					}
-				}
-			});
-
-			const multiple_lines = (
-				has_inline_comment ||
-				has_newline(chunks) ||
-				get_length(chunks) > 40
-			);
-
-			if (multiple_lines) {
-				separator.content = `,\n${state.indent}\t`;
-			}
-
-			return [
-				c(multiple_lines ? `{\n${state.indent}\t` : `{ `),
-				...chunks,
-				c(multiple_lines ? `\n${state.indent}}` : ` }`)
-			];
-		},
-
-		Property(node, state) {
-			const value = handle(node.value, state);
-
-			if (node.key === node.value) {
-				return value;
-			}
-
-			// special case
-			if (
-				!node.computed &&
-				node.value.type === 'AssignmentPattern' &&
-				node.value.left.type === 'Identifier' &&
-				node.value.left.name === (node.key ).name
-			) {
-				return value;
-			}
-
-			if (node.value.type === 'Identifier' && (
-				(node.key.type === 'Identifier' && node.key.name === value[0].content) ||
-				(node.key.type === 'Literal' && node.key.value === value[0].content)
-			)) {
-				return value;
-			}
-
-			const key = handle(node.key, state);
-
-			if (node.value.type === 'FunctionExpression' && !node.value.id) {
-				state = {
-					...state,
-					scope: state.scope_map.get(node.value)
-				};
-
-				const chunks = node.kind !== 'init'
-					? [c(`${node.kind} `)]
-					: [];
-
-				if (node.value.async) {
-					chunks.push(c('async '));
-				}
-				if (node.value.generator) {
-					chunks.push(c('*'));
-				}
-
-				chunks.push(
-					...(node.computed ? [c('['), ...key, c(']')] : key),
-					c('('),
-					...join((node.value ).params.map(param => handle(param, state)), c(', ')),
-					c(') '),
-					...handle((node.value ).body, state)
-				);
-
-				return chunks;
-			}
-
-			if (node.computed) {
-				return [
-					c('['),
-					...key,
-					c(']: '),
-					...value
-				];
-			}
-
-			return [
-				...key,
-				c(': '),
-				...value
-			];
-		},
-
-		ObjectPattern(node, state) {
-			const chunks = [c('{ ')];
-
-			for (let i = 0; i < node.properties.length; i += 1) {
-				chunks.push(...handle(node.properties[i], state));
-				if (i < node.properties.length - 1) chunks.push(c(', '));
-			}
-
-			chunks.push(c(' }'));
-
-			return chunks;
-		},
-
-		SequenceExpression(node, state) {
-			const expressions = node.expressions.map(e => handle(e, state));
-
-			return [
-				c('('),
-				...join(expressions, c(', ')),
-				c(')')
-			];
-		},
-
-		UnaryExpression(node, state) {
-			const chunks = [c(node.operator)];
-
-			if (node.operator.length > 1) {
-				chunks.push(c(' '));
-			}
-
-			if (
-				EXPRESSIONS_PRECEDENCE[node.argument.type] <
-				EXPRESSIONS_PRECEDENCE.UnaryExpression
-			) {
-				chunks.push(
-					c('('),
-					...handle(node.argument, state),
-					c(')')
-				);
-			} else {
-				chunks.push(...handle(node.argument, state));
-			}
-
-			return chunks;
-		},
-
-		UpdateExpression(node, state) {
-			return node.prefix
-				? [c(node.operator), ...handle(node.argument, state)]
-				: [...handle(node.argument, state), c(node.operator)];
-		},
-
-		AssignmentExpression(node, state) {
-			return [
-				...handle(node.left, state),
-				c(` ${node.operator || '='} `),
-				...handle(node.right, state)
-			];
-		},
-
-		BinaryExpression(node, state) {
-			const chunks = [];
-
-			// TODO
-			// const is_in = node.operator === 'in';
-			// if (is_in) {
-			// 	// Avoids confusion in `for` loops initializers
-			// 	chunks.push(c('('));
-			// }
-
-			if (needs_parens(node.left, node, false)) {
-				chunks.push(
-					c('('),
-					...handle(node.left, state),
-					c(')')
-				);
-			} else {
-				chunks.push(...handle(node.left, state));
-			}
-
-			chunks.push(c(` ${node.operator} `));
-
-			if (needs_parens(node.right, node, true)) {
-				chunks.push(
-					c('('),
-					...handle(node.right, state),
-					c(')')
-				);
-			} else {
-				chunks.push(...handle(node.right, state));
-			}
-
-			return chunks;
-		},
-
-		ConditionalExpression(node, state) {
-			const chunks = [];
-
-			if (
-				EXPRESSIONS_PRECEDENCE[node.test.type] >
-				EXPRESSIONS_PRECEDENCE.ConditionalExpression
-			) {
-				chunks.push(...handle(node.test, state));
-			} else {
-				chunks.push(
-					c('('),
-					...handle(node.test, state),
-					c(')')
-				);
-			}
-
-			const child_state = { ...state, indent: state.indent + '\t' };
-
-			const consequent = handle(node.consequent, child_state);
-			const alternate = handle(node.alternate, child_state);
-
-			const multiple_lines = (
-				has_newline(consequent) || has_newline(alternate) ||
-				get_length(chunks) + get_length(consequent) + get_length(alternate) > 50
-			);
-
-			if (multiple_lines) {
-				chunks.push(
-					c(`\n${state.indent}? `),
-					...consequent,
-					c(`\n${state.indent}: `),
-					...alternate
-				);
-			} else {
-				chunks.push(
-					c(` ? `),
-					...consequent,
-					c(` : `),
-					...alternate
-				);
-			}
-
-			return chunks;
-		},
-
-		NewExpression(node, state) {
-			const chunks = [c('new ')];
-
-			if (
-				EXPRESSIONS_PRECEDENCE[node.callee.type] <
-				EXPRESSIONS_PRECEDENCE.CallExpression || has_call_expression(node.callee)
-			) {
-				chunks.push(
-					c('('),
-					...handle(node.callee, state),
-					c(')')
-				);
-			} else {
-				chunks.push(...handle(node.callee, state));
-			}
-
-			// TODO this is copied from CallExpression — DRY it out
-			const args = node.arguments.map(arg => handle(arg, {
-				...state,
-				indent: state.indent + '\t'
-			}));
-
-			const separator = args.some(has_newline) // TODO or length exceeds 80
-				? c(',\n' + state.indent)
-				: c(', ');
-
-			chunks.push(
-				c('('),
-				...join(args, separator) ,
-				c(')')
-			);
-
-			return chunks;
-		},
-
-		CallExpression(node, state) {
-			const chunks = [];
-
-			if (
-				EXPRESSIONS_PRECEDENCE[node.callee.type] <
-				EXPRESSIONS_PRECEDENCE.CallExpression
-			) {
-				chunks.push(
-					c('('),
-					...handle(node.callee, state),
-					c(')')
-				);
-			} else {
-				chunks.push(...handle(node.callee, state));
-			}
-
-			const args = node.arguments.map(arg => handle(arg, state));
-
-			const multiple_lines = args.slice(0, -1).some(has_newline); // TODO or length exceeds 80
-
-			if (multiple_lines) {
-				// need to handle args again. TODO find alternative approach?
-				const args = node.arguments.map(arg => handle(arg, {
-					...state,
-					indent: `${state.indent}\t`
-				}));
-
-				chunks.push(
-					c(`(\n${state.indent}\t`),
-					...join(args, c(`,\n${state.indent}\t`)),
-					c(`\n${state.indent})`)
-				);
-			} else {
-				chunks.push(
-					c('('),
-					...join(args, c(', ')),
-					c(')')
-				);
-			}
-
-			return chunks;
-		},
-
-		MemberExpression(node, state) {
-			const chunks = [];
-
-			if (EXPRESSIONS_PRECEDENCE[node.object.type] < EXPRESSIONS_PRECEDENCE.MemberExpression) {
-				chunks.push(
-					c('('),
-					...handle(node.object, state),
-					c(')')
-				);
-			} else {
-				chunks.push(...handle(node.object, state));
-			}
-
-			if (node.computed) {
-				chunks.push(
-					c('['),
-					...handle(node.property, state),
-					c(']')
-				);
-			} else {
-				chunks.push(
-					c('.'),
-					...handle(node.property, state)
-				);
-			}
-
-			return chunks;
-		},
-
-		MetaProperty(node, state) {
-			return [...handle(node.meta, state), c('.'), ...handle(node.property, state)];
-		},
-
-		Identifier(node, state) {
-			let name = node.name;
-
-			if (name[0] === '@') {
-				name = state.getName(name.slice(1));
-			} else if (node.name[0] === '#') {
-				const owner = state.scope.find_owner(node.name);
-
-				if (!owner) {
-					throw new Error(`Could not find owner for node`);
-				}
-
-				if (!state.deconflicted.has(owner)) {
-					state.deconflicted.set(owner, new Map());
-				}
-
-				const deconflict_map = state.deconflicted.get(owner);
-
-				if (!deconflict_map.has(node.name)) {
-					deconflict_map.set(node.name, deconflict(node.name.slice(1), owner.references));
-				}
-
-				name = deconflict_map.get(node.name);
-			}
-
-			return [c(name, node)];
-		},
-
-		Literal(node, state) {
-			if (typeof node.value === 'string') {
-				return [
-					// TODO do we need to handle weird unicode characters somehow?
-					// str.replace(/\\u(\d{4})/g, (m, n) => String.fromCharCode(+n))
-					c(JSON.stringify(node.value).replace(re, (_m, _i, at, hash, name) => {
-						if (at)	return '@' + name;
-						if (hash) return '#' + name;
-						throw new Error(`this shouldn't happen`);
-					}), node)
-				];
-			}
-
-			const { regex } = node ; // TODO is this right?
-			if (regex) {
-				return [c(`/${regex.pattern}/${regex.flags}`, node)];
-			}
-
-			return [c(String(node.value), node)];
-		}
-	};
-
-	handlers.ForOfStatement = handlers.ForInStatement;
-	handlers.FunctionExpression = handlers.FunctionDeclaration;
-	handlers.ClassExpression = handlers.ClassDeclaration;
-	handlers.ClassBody = handlers.BlockStatement;
-	handlers.SpreadElement = handlers.RestElement;
-	handlers.ArrayPattern = handlers.ArrayExpression;
-	handlers.LogicalExpression = handlers.BinaryExpression;
-	handlers.AssignmentPattern = handlers.AssignmentExpression;
-
-	let btoa = () => {
-		throw new Error('Unsupported environment: `window.btoa` or `Buffer` should be supported.');
-	};
-	if (typeof window !== 'undefined' && typeof window.btoa === 'function') {
-		btoa = (str) => window.btoa(unescape(encodeURIComponent(str)));
-	} else if (typeof Buffer === 'function') {
-		btoa = (str) => Buffer.from(str, 'utf-8').toString('base64');
-	}
-
-
-
-
-
-
-
-
-	function print(node, opts = {}) {
-		if (Array.isArray(node)) {
-			return print({
-				type: 'Program',
-				body: node
-			} , opts);
-		}
-
-		const {
-			getName = (x) => x
-		} = opts;
-
-		let { map: scope_map, scope } = analyze(node);
-		const deconflicted = new WeakMap();
-
-		const chunks = handle(node, {
-			indent: '',
-			getName,
-			scope,
-			scope_map,
-			deconflicted,
-			comments: []
-		});
-
-		
-
-		let code = '';
-		let mappings = [];
-		let current_line = [];
-		let current_column = 0;
-
-		for (let i = 0; i < chunks.length; i += 1) {
-			const chunk = chunks[i];
-
-			code += chunk.content;
-
-			if (chunk.loc) {
-				current_line.push([
-					current_column,
-					0, // source index is always zero
-					chunk.loc.start.line - 1,
-					chunk.loc.start.column,
-				]);
-			}
-
-			for (let i = 0; i < chunk.content.length; i += 1) {
-				if (chunk.content[i] === '\n') {
-					mappings.push(current_line);
-					current_line = [];
-					current_column = 0;
-				} else {
-					current_column += 1;
-				}
-			}
-
-			if (chunk.loc) {
-				current_line.push([
-					current_column,
-					0, // source index is always zero
-					chunk.loc.end.line - 1,
-					chunk.loc.end.column,
-				]);
-			}
-		}
-
-		mappings.push(current_line);
-
-		const map = {
-			version: 3,
-			names: [] ,
-			sources: [opts.sourceMapSource || null],
-			sourcesContent: [opts.sourceMapContent || null],
-			mappings: encode(mappings)
-		};
-
-		Object.defineProperties(map, {
-			toString: {
-				enumerable: false,
-				value: function toString() {
-					return JSON.stringify(this);
-				}
-			},
-			toUrl: {
-				enumerable: false,
-				value: function toUrl() {
-					return 'data:application/json;charset=utf-8;base64,' + btoa(this.toString());
-				}
-			}
-		});
-
-		return {
-			code,
-			map
-		};
-	}
-
-	const sigils = {
-		'@': 'AT',
-		'#': 'HASH'
-	};
-
-	const join$1 = (strings) => {
-		let str = strings[0];
-		for (let i = 1; i < strings.length; i += 1) {
-			str += `_${id}_${i - 1}_${strings[i]}`;
-		}
-		return str.replace(/([@#])(\w+)/g, (_m, sigil, name) => `_${id}_${sigils[sigil]}_${name}`);
-	};
-
-	const flatten_body = (array, target) => {
-		for (let i = 0; i < array.length; i += 1) {
-			const statement = array[i];
-			if (Array.isArray(statement)) {
-				flatten_body(statement, target);
-				continue;
-			}
-
-			if (statement.type === 'ExpressionStatement') {
-				if (statement.expression === EMPTY) continue;
-
-				if (Array.isArray(statement.expression)) {
-					// TODO this is hacktacular
-					let node = statement.expression[0];
-					while (Array.isArray(node)) node = node[0];
-					if (node) node.leadingComments = statement.leadingComments;
-
-					flatten_body(statement.expression, target);
-					continue;
-				}
-
-				if (/(Expression|Literal)$/.test(statement.expression.type)) {
-					target.push(statement);
-					continue;
-				}
-
-				if (statement.leadingComments) statement.expression.leadingComments = statement.leadingComments;
-				if (statement.trailingComments) statement.expression.trailingComments = statement.trailingComments;
-
-				target.push(statement.expression);
-				continue;
-			}
-
-			target.push(statement);
-		}
-
-		return target;
-	};
-
-	const flatten_properties = (array, target) => {
-		for (let i = 0; i < array.length; i += 1) {
-			const property = array[i];
-
-			if (property.value === EMPTY) continue;
-
-			if (property.key === property.value && Array.isArray(property.key)) {
-				flatten_properties(property.key, target);
-				continue;
-			}
-
-			target.push(property);
-		}
-
-		return target;
-	};
-
-	const flatten = (nodes, target) => {
-		for (let i = 0; i < nodes.length; i += 1) {
-			const node = nodes[i];
-
-			if (node === EMPTY) continue;
-
-			if (Array.isArray(node)) {
-				flatten(node, target);
-				continue;
-			}
-
-			target.push(node);
-		}
-
-		return target;
-	};
-
-	const EMPTY = { type: 'Empty' };
-
-	const acorn_opts = (comments, raw) => {
-		return {
-			ecmaVersion: 11,
-			sourceType: 'module',
-			allowAwaitOutsideFunction: true,
-			allowImportExportEverywhere: true,
-			allowReturnOutsideFunction: true,
-			onComment: (block, value, start, end) => {
-				if (block && /\n/.test(value)) {
-					let a = start;
-					while (a > 0 && raw[a - 1] !== '\n') a -= 1;
-
-					let b = a;
-					while (/[ \t]/.test(raw[b])) b += 1;
-
-					const indentation = raw.slice(a, b);
-					value = value.replace(new RegExp(`^${indentation}`, 'gm'), '');
-				}
-
-				comments.push({ type: block ? 'Block' : 'Line', value, start, end });
-			}
-		} ;
-	};
-
-	const inject = (raw, node, values, comments) => {
-		comments.forEach(comment => {
-			comment.value = comment.value.replace(re, (m, i) => +i in values ? values[+i] : m);
-		});
-
-		walk(node, {
-			enter(node) {
-				let comment;
-
-				while (comments[0] && comments[0].start < (node ).start) {
-					comment = comments.shift();
-
-					const next = comments[0] || node;
-					(comment ).has_trailing_newline = (
-						comment.type === 'Line' ||
-						/\n/.test(raw.slice(comment.end, (next ).start))
-					);
-
-					(node.leadingComments || (node.leadingComments = [])).push(comment);
-				}
-			},
-
-			leave(node, parent, key, index) {
-				if (node.type === 'Identifier') {
-					re.lastIndex = 0;
-					const match = re.exec(node.name);
-
-					if (match) {
-						if (match[1]) {
-							if (+match[1] in values) {
-								let value = values[+match[1]];
-
-								if (typeof value === 'string') {
-									value = { type: 'Identifier', name: value, leadingComments: node.leadingComments, trailingComments: node.trailingComments };
-								} else if (typeof value === 'number') {
-									value = { type: 'Literal', value, leadingComments: node.leadingComments, trailingComments: node.trailingComments };
-								}
-
-								this.replace(value || EMPTY);
-							}
-						} else {
-							node.name = `${match[2] ? `@` : `#`}${match[4]}`;
-						}
-					}
-				}
-
-				if (node.type === 'Literal') {
-					if (typeof node.value === 'string') {
-						re.lastIndex = 0;
-						node.value = node.value.replace(re, (m, i) => +i in values ? values[+i] : m);
-					}
-				}
-
-				if (node.type === 'TemplateElement') {
-					re.lastIndex = 0;
-					node.value.raw = (node.value.raw ).replace(re, (m, i) => +i in values ? values[+i] : m);
-				}
-
-				if (node.type === 'Program' || node.type === 'BlockStatement') {
-					node.body = flatten_body(node.body, []);
-				}
-
-				if (node.type === 'ObjectExpression' || node.type === 'ObjectPattern') {
-					node.properties = flatten_properties(node.properties, []);
-				}
-
-				if (node.type === 'ArrayExpression' || node.type === 'ArrayPattern') {
-					node.elements = flatten(node.elements, []);
-				}
-
-				if (node.type === 'FunctionExpression' || node.type === 'FunctionDeclaration' || node.type === 'ArrowFunctionExpression') {
-					node.params = flatten(node.params, []);
-				}
-
-				if (node.type === 'CallExpression' || node.type === 'NewExpression') {
-					node.arguments = flatten(node.arguments, []);
-				}
-
-				if (node.type === 'ImportDeclaration' || node.type === 'ExportNamedDeclaration') {
-					node.specifiers = flatten(node.specifiers, []);
-				}
-
-				if (node.type === 'ForStatement') {
-					node.init = node.init === EMPTY ? null : node.init;
-					node.test = node.test === EMPTY ? null : node.test;
-					node.update = node.update === EMPTY ? null : node.update;
-				}
-
-				if (comments[0]) {
-					const slice = raw.slice((node ).end, comments[0].start);
-
-					if (/^[,) \t]*$/.test(slice)) {
-						node.trailingComments = [comments.shift()];
-					}
-				}
-			}
-		});
-	};
-
-	function b(strings, ...values) {
-		const str = join$1(strings);
-		const comments = [];
-
-		try {
-			const ast = parse(str,  acorn_opts(comments, str));
-
-			inject(str, ast, values, comments);
-
-			return ast.body;
-		} catch (err) {
-			handle_error(str, err);
-		}
-	}
-
-	function x(strings, ...values) {
-		const str = join$1(strings);
-		const comments = [];
-
-		try {
-			const expression = parseExpressionAt(str, 0, acorn_opts(comments, str)) ;
-
-			inject(str, expression, values, comments);
-
-			return expression;
-		} catch (err) {
-			handle_error(str, err);
-		}
-	}
-
-	function p(strings, ...values) {
-		const str = `{${join$1(strings)}}`;
-		const comments = [];
-
-		try {
-			const expression = parseExpressionAt(str, 0, acorn_opts(comments, str)) ;
-
-			inject(str, expression, values, comments);
-
-			return expression.properties[0];
-		} catch (err) {
-			handle_error(str, err);
-		}
-	}
-
-	function handle_error(str, err) {
-		// TODO location/code frame
-
-		re.lastIndex = 0;
-
-		str = str.replace(re, (m, i, at, hash, name) => {
-			if (at) return `@${name}`;
-			if (hash) return `#${name}`;
-
-			return '${...}';
-		});
-
-		console.log(`failed to parse:\n${str}`);
-		throw err;
 	}
 
 	function is_head(node) {
@@ -61779,6 +62387,9 @@ var compiler = createCommonjsModule(function (module, exports) {
 	            this.dependencies.add(dependency);
 	        });
 	        this.has_update_method = true;
+	        if (this.parent) {
+	            this.parent.add_dependencies(dependencies);
+	        }
 	    }
 	    add_element(id, render_statement, claim_statement, parent_node, no_detach) {
 	        this.add_variable(id);
@@ -62325,19 +62936,20 @@ var compiler = createCommonjsModule(function (module, exports) {
 	    }
 	}
 
+	function add_event_handlers(block, target, handlers) {
+	    handlers.forEach(handler => add_event_handler(block, target, handler));
+	}
+	function add_event_handler(block, target, handler) {
+	    handler.render(block, target);
+	}
+
 	class BodyWrapper extends Wrapper {
+	    constructor(renderer, block, parent, node) {
+	        super(renderer, block, parent, node);
+	        this.handlers = this.node.handlers.map(handler => new EventHandlerWrapper(handler, this));
+	    }
 	    render(block, _parent_node, _parent_nodes) {
-	        this.node.handlers
-	            .map(handler => new EventHandlerWrapper(handler, this))
-	            .forEach(handler => {
-	            const snippet = handler.get_snippet(block);
-	            block.chunks.init.push(b `
-					@_document.body.addEventListener("${handler.node.name}", ${snippet});
-				`);
-	            block.chunks.destroy.push(b `
-					@_document.body.removeEventListener("${handler.node.name}", ${snippet});
-				`);
-	        });
+	        add_event_handlers(block, x `@_document.body`, this.handlers);
 	    }
 	}
 
@@ -62638,6 +63250,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 	        block.chunks.init.push(b `
 			const ${get_key} = #ctx => ${this.node.key.manipulate(block)};
 
+			${this.renderer.options.dev && b `@validate_each_keys(#ctx, ${this.vars.each_block_value}, ${this.vars.get_each_context}, ${get_key});`}
 			for (let #i = 0; #i < ${data_length}; #i += 1) {
 				let child_ctx = ${this.vars.get_each_context}(#ctx, ${this.vars.each_block_value}, #i);
 				let key = ${get_key}(child_ctx);
@@ -62674,6 +63287,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 
 			${this.block.has_outros && b `@group_outros();`}
 			${this.node.has_animation && b `for (let #i = 0; #i < ${view_length}; #i += 1) ${iterations}[#i].r();`}
+			${this.renderer.options.dev && b `@validate_each_keys(#ctx, ${this.vars.each_block_value}, ${this.vars.get_each_context}, ${get_key});`}
 			${iterations} = @update_keyed_each(${iterations}, #dirty, ${get_key}, ${dynamic ? 1 : 0}, #ctx, ${this.vars.each_block_value}, ${lookup}, ${update_mount_node}, ${destroy}, ${create_each_block}, ${update_anchor_node}, ${this.vars.get_each_context});
 			${this.node.has_animation && b `for (let #i = 0; #i < ${view_length}; #i += 1) ${iterations}[#i].a();`}
 			${this.block.has_outros && b `@check_outros();`}
@@ -63554,13 +64168,6 @@ var compiler = createCommonjsModule(function (module, exports) {
 	    }
 	    // everything else
 	    return x `this.${name}`;
-	}
-
-	function add_event_handlers(block, target, handlers) {
-	    handlers.forEach(handler => add_event_handler(block, target, handler));
-	}
-	function add_event_handler(block, target, handler) {
-	    handler.render(block, target);
 	}
 
 	function add_actions(block, target, actions) {
@@ -67226,7 +67833,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 	            renderer.add_expression(x `@add_attribute("${name}", ${snippet}, 1)`);
 	        }
 	    });
-	    if (options.head_id) {
+	    if (options.hydratable && options.head_id) {
 	        renderer.add_string(` data-svelte="${options.head_id}"`);
 	    }
 	    renderer.add_string('>');
@@ -67398,7 +68005,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 
 	function Title (node, renderer, options) {
 	    renderer.push();
-	    renderer.add_string(`<title data-svelte="${options.head_id}">`);
+	    renderer.add_string(`<title>`);
 	    renderer.render(node.children, options);
 	    renderer.add_string(`</title>`);
 	    const result = renderer.pop();
@@ -68997,7 +69604,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 	    }
 	    switch (operator) {
 	        case '=': return value === expected_value;
-	        case '~=': return ` ${value} `.includes(` ${expected_value} `);
+	        case '~=': return value.split(/\s/).includes(expected_value);
 	        case '|=': return `${value}-`.startsWith(`${expected_value}-`);
 	        case '^=': return value.startsWith(expected_value);
 	        case '$=': return value.endsWith(expected_value);
@@ -69842,6 +70449,12 @@ var compiler = createCommonjsModule(function (module, exports) {
 	            });
 	        }
 	        else if (this.is_contextual) {
+	            if (scope.is_await(name)) {
+	                component.error(this, {
+	                    code: 'invalid-binding',
+	                    message: 'Cannot bind to a variable declared with {#await ... then} or {:catch} blocks'
+	                });
+	            }
 	            scope.dependencies_for_name.get(name).forEach(name => {
 	                const variable = component.var_lookup.get(name);
 	                if (variable) {
@@ -70085,6 +70698,10 @@ var compiler = createCommonjsModule(function (module, exports) {
 	                });
 	            }
 	        }
+	        const has_let = info.attributes.some(node => node.type === 'Let');
+	        if (has_let) {
+	            scope = scope.child();
+	        }
 	        // Binding relies on Attribute, defer its evaluation
 	        const order = ['Binding']; // everything else is -1
 	        info.attributes.sort((a, b) => order.indexOf(a.type) - order.indexOf(b.type));
@@ -70109,9 +70726,15 @@ var compiler = createCommonjsModule(function (module, exports) {
 	                case 'EventHandler':
 	                    this.handlers.push(new EventHandler(component, this, scope, node));
 	                    break;
-	                case 'Let':
-	                    this.lets.push(new Let(component, this, scope, node));
+	                case 'Let': {
+	                    const l = new Let(component, this, scope, node);
+	                    this.lets.push(l);
+	                    const dependencies = new Set([l.name.name]);
+	                    l.names.forEach(name => {
+	                        scope.add(name, dependencies, this);
+	                    });
 	                    break;
+	                }
 	                case 'Transition':
 	                    {
 	                        const transition = new Transition(component, this, scope, node);
@@ -70128,18 +70751,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 	                    throw new Error(`Not implemented: ${node.type}`);
 	            }
 	        });
-	        if (this.lets.length > 0) {
-	            this.scope = scope.child();
-	            this.lets.forEach(l => {
-	                const dependencies = new Set([l.name.name]);
-	                l.names.forEach(name => {
-	                    this.scope.add(name, dependencies, this);
-	                });
-	            });
-	        }
-	        else {
-	            this.scope = scope;
-	        }
+	        this.scope = scope;
 	        this.children = map_children(component, this, this.scope, info.children);
 	        this.validate();
 	        component.stylesheet.apply(this);
@@ -70980,6 +71592,10 @@ var compiler = createCommonjsModule(function (module, exports) {
 	        const owner = this.get_owner(name);
 	        return owner && (owner.type === 'Element' || owner.type === 'InlineComponent');
 	    }
+	    is_await(name) {
+	        const owner = this.get_owner(name);
+	        return owner && (owner.type === 'ThenBlock' || owner.type === 'CatchBlock');
+	    }
 	}
 
 	class Fragment extends Node$1 {
@@ -70992,7 +71608,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 	}
 
 	// This file is automatically generated
-	var internal_exports = new Set(["HtmlTag", "SvelteComponent", "SvelteComponentDev", "SvelteElement", "action_destroyer", "add_attribute", "add_classes", "add_flush_callback", "add_location", "add_render_callback", "add_resize_listener", "add_transform", "afterUpdate", "append", "append_dev", "assign", "attr", "attr_dev", "beforeUpdate", "bind", "binding_callbacks", "blank_object", "bubble", "check_outros", "children", "claim_component", "claim_element", "claim_space", "claim_text", "clear_loops", "component_subscribe", "createEventDispatcher", "create_animation", "create_bidirectional_transition", "create_component", "create_in_transition", "create_out_transition", "create_slot", "create_ssr_component", "current_component", "custom_event", "dataset_dev", "debug", "destroy_block", "destroy_component", "destroy_each", "detach", "detach_after_dev", "detach_before_dev", "detach_between_dev", "detach_dev", "dirty_components", "dispatch_dev", "each", "element", "element_is", "empty", "escape", "escaped", "exclude_internal_props", "fix_and_destroy_block", "fix_and_outro_and_destroy_block", "fix_position", "flush", "getContext", "get_binding_group_value", "get_current_component", "get_slot_changes", "get_slot_context", "get_spread_object", "get_spread_update", "get_store_value", "globals", "group_outros", "handle_promise", "has_prop", "identity", "init", "insert", "insert_dev", "intros", "invalid_attribute_name_character", "is_client", "is_function", "is_promise", "listen", "listen_dev", "loop", "loop_guard", "measure", "missing_component", "mount_component", "noop", "not_equal", "now", "null_to_empty", "object_without_properties", "onDestroy", "onMount", "once", "outro_and_destroy_block", "prevent_default", "prop_dev", "query_selector_all", "raf", "run", "run_all", "safe_not_equal", "schedule_update", "select_multiple_value", "select_option", "select_options", "select_value", "self", "setContext", "set_attributes", "set_current_component", "set_custom_element_data", "set_data", "set_data_dev", "set_input_type", "set_input_value", "set_now", "set_raf", "set_store_value", "set_style", "set_svg_attributes", "space", "spread", "stop_propagation", "subscribe", "svg_element", "text", "tick", "time_ranges_to_array", "to_number", "toggle_class", "transition_in", "transition_out", "update_keyed_each", "validate_component", "validate_store", "xlink_attr"]);
+	var internal_exports = new Set(["HtmlTag", "SvelteComponent", "SvelteComponentDev", "SvelteElement", "action_destroyer", "add_attribute", "add_classes", "add_flush_callback", "add_location", "add_render_callback", "add_resize_listener", "add_transform", "afterUpdate", "append", "append_dev", "assign", "attr", "attr_dev", "beforeUpdate", "bind", "binding_callbacks", "blank_object", "bubble", "check_outros", "children", "claim_component", "claim_element", "claim_space", "claim_text", "clear_loops", "component_subscribe", "createEventDispatcher", "create_animation", "create_bidirectional_transition", "create_component", "create_in_transition", "create_out_transition", "create_slot", "create_ssr_component", "current_component", "custom_event", "dataset_dev", "debug", "destroy_block", "destroy_component", "destroy_each", "detach", "detach_after_dev", "detach_before_dev", "detach_between_dev", "detach_dev", "dirty_components", "dispatch_dev", "each", "element", "element_is", "empty", "escape", "escaped", "exclude_internal_props", "fix_and_destroy_block", "fix_and_outro_and_destroy_block", "fix_position", "flush", "getContext", "get_binding_group_value", "get_current_component", "get_slot_changes", "get_slot_context", "get_spread_object", "get_spread_update", "get_store_value", "globals", "group_outros", "handle_promise", "has_prop", "identity", "init", "insert", "insert_dev", "intros", "invalid_attribute_name_character", "is_client", "is_function", "is_promise", "listen", "listen_dev", "loop", "loop_guard", "missing_component", "mount_component", "noop", "not_equal", "now", "null_to_empty", "object_without_properties", "onDestroy", "onMount", "once", "outro_and_destroy_block", "prevent_default", "prop_dev", "query_selector_all", "raf", "run", "run_all", "safe_not_equal", "schedule_update", "select_multiple_value", "select_option", "select_options", "select_value", "self", "setContext", "set_attributes", "set_current_component", "set_custom_element_data", "set_data", "set_data_dev", "set_input_type", "set_input_value", "set_now", "set_raf", "set_store_value", "set_style", "set_svg_attributes", "space", "spread", "stop_propagation", "subscribe", "svg_element", "text", "tick", "time_ranges_to_array", "to_number", "toggle_class", "transition_in", "transition_out", "update_keyed_each", "validate_component", "validate_each_keys", "validate_store", "xlink_attr"]);
 
 	function is_used_as_reference(node, parent) {
 	    if (!isReference(node, parent)) {
@@ -71182,7 +71798,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 	        if (result) {
 	            const { compile_options, name } = this;
 	            const { format = 'esm' } = compile_options;
-	            const banner = `${this.file ? `${this.file} ` : ``}generated by Svelte v${'3.17.0'}`;
+	            const banner = `${this.file ? `${this.file} ` : ``}generated by Svelte v${'3.17.3'}`;
 	            const program = { type: 'Program', body: result.js };
 	            walk(program, {
 	                enter: (node, parent, key) => {
@@ -72278,7 +72894,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 	    const warnings = [];
 	    validate_options(options, warnings);
 	    stats.start('parse');
-	    const ast = parse$2(source, options);
+	    const ast = parse$3(source, options);
 	    stats.stop('parse');
 	    stats.start('create component');
 	    const component = new Component(ast, source, options.name || get_name_from_filename(options.filename) || 'Component', options, stats, warnings);
@@ -72386,11 +73002,11 @@ var compiler = createCommonjsModule(function (module, exports) {
 	    };
 	}
 
-	const VERSION = '3.17.0';
+	const VERSION = '3.17.3';
 
 	exports.VERSION = VERSION;
 	exports.compile = compile;
-	exports.parse = parse$2;
+	exports.parse = parse$3;
 	exports.preprocess = preprocess;
 	exports.walk = walk;
 
