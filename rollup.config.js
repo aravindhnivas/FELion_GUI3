@@ -6,16 +6,15 @@ import { terser } from 'rollup-plugin-terser';
 import sass from 'node-sass';
 import postcss from 'rollup-plugin-postcss';
 
+///////////////////////////////////////////////////////////////////////////
+
+
 const production = !process.env.ROLLUP_WATCH;
 
 export default {
 	input: 'src/App.js',
-	output: {
-		sourcemap: true,
-		format: 'cjs',
-		name: 'app',
-		file: 'public/bundle.js'
-	},
+	output: { sourcemap: true, format: 'cjs', name: 'app', file: 'public/bundle.js' },
+
 	plugins: [
 		svelte({
 			emitCss: true,
@@ -59,38 +58,24 @@ export default {
 			// dedupe: importee => importee === 'svelte' || importee.startsWith('svelte/')
 		}),
 		commonjs(),
-
-		// Watch the `public` directory and refresh the
-		// browser on changes when not in production
 		!production && livereload('public'),
 
-		// If we're building for production (npm run build
-		// instead of npm run dev), minify
 		production && terser(),
+
 		postcss({
 			extract: true,
+
 			minimize: true,
 			use: [
 				['sass', {
-				includePaths: [
-					'./src/theme',
-					'./node_modules'
-				]
+				includePaths: [ './src/theme', './node_modules' ]
 				}]
 			]
 		})
 	],
-	watch: {
-		clearScreen: false
-	},
-	external: [
-		'electron',
-		'child_process',
-		'fs',
-		'path',
-		'url',
-		'module',
-		'os'
-	]
 
+	watch: { clearScreen: false },
+	external: [
+		'electron', 'child_process', 'fs',
+		'path', 'url', 'module', 'os' ]
 };
