@@ -171,22 +171,25 @@
 
     const download = (downloadedFile) => {
         return new Promise((resolve)=>{
+            let zip;
 
             let response = https.get(urlzip, async (res) => {
                 console.log(`URL: ${urlzip}`)
                 console.log('statusCode:', res.statusCode);
                 console.log('headers:', res.headers);
+
                 await res.pipe(downloadedFile);
 
                 console.log("File downloaded")
+                zip = await new admZip(`${__dirname}/../update/update.zip`)
             })
+
             response.on("close", async ()=>{
                 
                 console.log("Downloading Completed")
                 console.log("Extracting files")
 
-                let zip = new admZip(`${__dirname}/../update/update.zip`)
-                zip.extractAllTo(`${__dirname}/../update`, /*overwrite*/true)
+                await zip.extractAllTo(`${__dirname}/../update`, /*overwrite*/true)
                 
                 console.log("File Extracted")
                 resolve("File extracted")
@@ -197,12 +200,10 @@
     }
 
     const update = () => {
-        
         if (!fs.existsSync(updateFolder)) {fs.mkdirSync(updateFolder)}
         const downloadedFile = fs.createWriteStream(zipFile)
-
-        download(downloadedFile)
-            .then(result=>{
+        download(downloadedFile).then(result=>{
+            
                 console.log(result)
                 console.log("Copying downloaded files")
                 let src = path.resolve(__dirname, "../update", `${github_repo}-${gihub_branchname}`)
@@ -216,18 +217,16 @@
                         console.info('Copied ' + results.length + ' files');
                         createToast("Updated succesfull. Restart the program (Press Ctrl + R).", "success")
                         let response = remote.dialog.showMessageBox(remote.getCurrentWindow(), 
-                            {title:"FELion_GUI2", type:"info", message:"Update succesfull", buttons:["Restart", "Restart later"]}
+                            {title:"FELion_GUI3", type:"info", message:"Update succesfull", buttons:["Restart", "Restart later"]}
                         )
 
                         if (response===0) remote.getCurrentWindow().reload()
                     }
                 })
-                
-            })
-            .catch(err=>console.log(err), "Update failed. Try again or Check your internet connection")
+        }).catch(err=>console.log(err), "Update failed. Try again or Check your internet connection")
     }
-
     // Backup and restore
+
     let backupName = "FELion_GUI_backup"
     let _src = {path:path.resolve(__dirname, "..", "src"), name:"src"}
 

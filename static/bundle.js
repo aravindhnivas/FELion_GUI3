@@ -20719,7 +20719,7 @@ const get_plotContainer_slot_context = ctx => ({});
 const get_buttonContainer_slot_changes = dirty => ({});
 const get_buttonContainer_slot_context = ctx => ({});
 
-// (132:8) {#if toggleBrowser}
+// (120:8) {#if toggleBrowser}
 function create_if_block$9(ctx) {
 	let div;
 	let updating_currentLocation;
@@ -20754,7 +20754,7 @@ function create_if_block$9(ctx) {
 			div = element("div");
 			create_component(filebrowser.$$.fragment);
 			attr_dev(div, "class", "column is-one-fifth-widescreen is-one-quarter-desktop box filebrowser adjust-right svelte-1v7l62r");
-			add_location(div, file$r, 132, 12, 3551);
+			add_location(div, file$r, 120, 12, 3219);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -20807,14 +20807,14 @@ function create_if_block$9(ctx) {
 		block,
 		id: create_if_block$9.name,
 		type: "if",
-		source: "(132:8) {#if toggleBrowser}",
+		source: "(120:8) {#if toggleBrowser}",
 		ctx
 	});
 
 	return block;
 }
 
-// (143:24) <Icon class="material-icons" on>
+// (131:24) <Icon class="material-icons" on>
 function create_default_slot_2$3(ctx) {
 	let t;
 
@@ -20834,14 +20834,14 @@ function create_default_slot_2$3(ctx) {
 		block,
 		id: create_default_slot_2$3.name,
 		type: "slot",
-		source: "(143:24) <Icon class=\\\"material-icons\\\" on>",
+		source: "(131:24) <Icon class=\\\"material-icons\\\" on>",
 		ctx
 	});
 
 	return block;
 }
 
-// (144:24) <Icon class="material-icons" >
+// (132:24) <Icon class="material-icons" >
 function create_default_slot_1$4(ctx) {
 	let t;
 
@@ -20861,14 +20861,14 @@ function create_default_slot_1$4(ctx) {
 		block,
 		id: create_default_slot_1$4.name,
 		type: "slot",
-		source: "(144:24) <Icon class=\\\"material-icons\\\" >",
+		source: "(132:24) <Icon class=\\\"material-icons\\\" >",
 		ctx
 	});
 
 	return block;
 }
 
-// (142:20) <IconButton  toggle bind:pressed={toggleBrowser}>
+// (130:20) <IconButton  toggle bind:pressed={toggleBrowser}>
 function create_default_slot$6(ctx) {
 	let t;
 	let current;
@@ -20942,7 +20942,7 @@ function create_default_slot$6(ctx) {
 		block,
 		id: create_default_slot$6.name,
 		type: "slot",
-		source: "(142:20) <IconButton  toggle bind:pressed={toggleBrowser}>",
+		source: "(130:20) <IconButton  toggle bind:pressed={toggleBrowser}>",
 		ctx
 	});
 
@@ -21028,23 +21028,23 @@ function create_fragment$s(ctx) {
 			div2 = element("div");
 			if (plotContainer_slot) plotContainer_slot.c();
 			attr_dev(button, "class", "button is-link gap svelte-1v7l62r");
-			add_location(button, file$r, 145, 20, 4227);
+			add_location(button, file$r, 133, 20, 3895);
 			attr_dev(div0, "class", "align svelte-1v7l62r");
-			add_location(div0, file$r, 140, 16, 3939);
+			add_location(div0, file$r, 128, 16, 3607);
 			attr_dev(div1, "class", "align buttonContainer svelte-1v7l62r");
-			add_location(div1, file$r, 149, 16, 4462);
+			add_location(div1, file$r, 137, 16, 4130);
 			attr_dev(div2, "class", "plotContainer svelte-1v7l62r");
-			add_location(div2, file$r, 150, 16, 4553);
+			add_location(div2, file$r, 138, 16, 4221);
 			attr_dev(div3, "class", "container button-plot-container box svelte-1v7l62r");
-			add_location(div3, file$r, 138, 12, 3870);
+			add_location(div3, file$r, 126, 12, 3538);
 			attr_dev(div4, "class", "column fileContainer svelte-1v7l62r");
-			add_location(div4, file$r, 137, 8, 3822);
+			add_location(div4, file$r, 125, 8, 3490);
 			attr_dev(div5, "class", "columns svelte-1v7l62r");
-			add_location(div5, file$r, 129, 4, 3485);
+			add_location(div5, file$r, 117, 4, 3153);
 			attr_dev(section, "id", /*id*/ ctx[2]);
 			set_style(section, "display", "none");
 			attr_dev(section, "class", "animated fadeIn svelte-1v7l62r");
-			add_location(section, file$r, 127, 0, 3418);
+			add_location(section, file$r, 115, 0, 3086);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -21198,21 +21198,15 @@ function browse({ filetype = "", dir = true, defaultPath = "" } = {}) {
 				defaultPath
 			};
 
-			let filePaths = remote.dialog.showOpenDialogSync(mainWindow, options);
-			let result = {};
-
-			// .then(result => {
-			if (filePaths !== undefined) {
-				result.filePaths = filePaths;
-				result.canceled = false;
+			remote.dialog.showOpenDialog(mainWindow, options).then(result => {
 				console.log(result.canceled);
 				console.log(result.filePaths);
 				resolve(result);
-			} else {
-				result.filePaths = [];
-				result.canceled = true;
-			} // createToast("Couldn't open folder", "danger") // reject(err)
-		}); // }).catch(err => { 
+			}).catch(err => {
+				createToast$1("Couldn't open folder", "danger");
+				reject(err);
+			});
+		});
 }
 
 function instance$s($$self, $$props, $$invalidate) {
@@ -44627,62 +44621,62 @@ function create_fragment$X(ctx) {
 			h12.textContent = "About";
 			attr_dev(div0, "class", "title nav hvr-glow svelte-1nh0g92");
 			toggle_class(div0, "clicked", /*selected*/ ctx[0] === "Configuration");
-			add_location(div0, file$S, 356, 16, 13351);
+			add_location(div0, file$S, 355, 16, 13337);
 			attr_dev(div1, "class", "title nav hvr-glow svelte-1nh0g92");
 			toggle_class(div1, "clicked", /*selected*/ ctx[0] === "Update");
-			add_location(div1, file$S, 357, 16, 13483);
+			add_location(div1, file$S, 356, 16, 13469);
 			attr_dev(div2, "class", "title nav hvr-glow svelte-1nh0g92");
 			toggle_class(div2, "clicked", /*selected*/ ctx[0] === "About");
-			add_location(div2, file$S, 358, 16, 13601);
+			add_location(div2, file$S, 357, 16, 13587);
 			attr_dev(div3, "class", "container left svelte-1nh0g92");
-			add_location(div3, file$S, 355, 12, 13305);
+			add_location(div3, file$S, 354, 12, 13291);
 			attr_dev(div4, "class", "column side-panel is-2-widescreen is-3-desktop is-4-tablet box adjust-right svelte-1nh0g92");
-			add_location(div4, file$S, 354, 8, 13202);
+			add_location(div4, file$S, 353, 8, 13188);
 			attr_dev(h10, "class", "title svelte-1nh0g92");
-			add_location(h10, file$S, 367, 20, 13986);
+			add_location(h10, file$S, 366, 20, 13972);
 			attr_dev(button0, "class", "button is-link svelte-1nh0g92");
-			add_location(button0, file$S, 371, 20, 14287);
+			add_location(button0, file$S, 370, 20, 14273);
 			attr_dev(button1, "class", "button is-link svelte-1nh0g92");
-			add_location(button1, file$S, 372, 20, 14379);
+			add_location(button1, file$S, 371, 20, 14365);
 			attr_dev(div5, "class", "content animated fadeIn svelte-1nh0g92");
 			toggle_class(div5, "active", /*selected*/ ctx[0] === "Configuration");
-			add_location(div5, file$S, 366, 16, 13885);
+			add_location(div5, file$S, 365, 16, 13871);
 			attr_dev(h11, "class", "title svelte-1nh0g92");
-			add_location(h11, file$S, 378, 20, 14620);
+			add_location(h11, file$S, 377, 20, 14606);
 			attr_dev(div6, "class", "subtitle svelte-1nh0g92");
-			add_location(div6, file$S, 379, 20, 14671);
+			add_location(div6, file$S, 378, 20, 14657);
 			attr_dev(div7, "class", "content svelte-1nh0g92");
-			add_location(div7, file$S, 381, 20, 14775);
+			add_location(div7, file$S, 380, 20, 14761);
 			attr_dev(button2, "class", "button is-link svelte-1nh0g92");
-			add_location(button2, file$S, 388, 24, 15273);
+			add_location(button2, file$S, 387, 24, 15259);
 			attr_dev(button3, "class", "button is-link svelte-1nh0g92");
-			add_location(button3, file$S, 389, 24, 15374);
+			add_location(button3, file$S, 388, 24, 15360);
 			attr_dev(div8, "class", "content svelte-1nh0g92");
-			add_location(div8, file$S, 387, 20, 15226);
+			add_location(div8, file$S, 386, 20, 15212);
 			attr_dev(button4, "class", "button is-link svelte-1nh0g92");
-			add_location(button4, file$S, 395, 24, 15663);
+			add_location(button4, file$S, 394, 24, 15649);
 			attr_dev(button5, "class", "button is-link svelte-1nh0g92");
-			add_location(button5, file$S, 396, 24, 15753);
+			add_location(button5, file$S, 395, 24, 15739);
 			attr_dev(div9, "class", "content svelte-1nh0g92");
-			add_location(div9, file$S, 393, 20, 15492);
+			add_location(div9, file$S, 392, 20, 15478);
 			attr_dev(div10, "class", "content animated fadeIn svelte-1nh0g92");
 			toggle_class(div10, "active", /*selected*/ ctx[0] === "Update");
-			add_location(div10, file$S, 377, 16, 14526);
+			add_location(div10, file$S, 376, 16, 14512);
 			attr_dev(h12, "class", "title svelte-1nh0g92");
-			add_location(h12, file$S, 404, 20, 16040);
+			add_location(h12, file$S, 403, 20, 16026);
 			attr_dev(div11, "class", "content animated fadeIn svelte-1nh0g92");
 			toggle_class(div11, "active", /*selected*/ ctx[0] === "About");
-			add_location(div11, file$S, 403, 16, 15947);
+			add_location(div11, file$S, 402, 16, 15933);
 			attr_dev(div12, "class", "container right svelte-1nh0g92");
-			add_location(div12, file$S, 363, 12, 13796);
+			add_location(div12, file$S, 362, 12, 13782);
 			attr_dev(div13, "class", "column main-panel box svelte-1nh0g92");
-			add_location(div13, file$S, 362, 8, 13747);
+			add_location(div13, file$S, 361, 8, 13733);
 			attr_dev(div14, "class", "columns svelte-1nh0g92");
-			add_location(div14, file$S, 352, 4, 13169);
+			add_location(div14, file$S, 351, 4, 13155);
 			attr_dev(section, "class", "section animated fadeIn svelte-1nh0g92");
 			attr_dev(section, "id", "Settings");
 			set_style(section, "display", "none");
-			add_location(section, file$S, 351, 0, 13087);
+			add_location(section, file$S, 350, 0, 13073);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -45052,19 +45046,21 @@ function instance$X($$self, $$props, $$invalidate) {
 	// Download the update file
 	const download = downloadedFile => {
 		return new Promise(resolve => {
+				let zip;
+
 				let response = https.get(urlzip, async res => {
 					console.log(`URL: ${urlzip}`);
 					console.log("statusCode:", res.statusCode);
 					console.log("headers:", res.headers);
 					await res.pipe(downloadedFile);
 					console.log("File downloaded");
+					zip = await new admZip(`${__dirname}/../update/update.zip`);
 				});
 
 				response.on("close", async () => {
 					console.log("Downloading Completed");
 					console.log("Extracting files");
-					let zip = new admZip(`${__dirname}/../update/update.zip`);
-					zip.extractAllTo(`${__dirname}/../update`, true); /*overwrite*/
+					await zip.extractAllTo(`${__dirname}/../update`, true); /*overwrite*/
 					console.log("File Extracted");
 					resolve("File extracted");
 					createToast$1("Downloading Completed");
@@ -45094,7 +45090,7 @@ function instance$X($$self, $$props, $$invalidate) {
 					createToast$1("Updated succesfull. Restart the program (Press Ctrl + R).", "success");
 
 					let response = remote.dialog.showMessageBox(remote.getCurrentWindow(), {
-						title: "FELion_GUI2",
+						title: "FELion_GUI3",
 						type: "info",
 						message: "Update succesfull",
 						buttons: ["Restart", "Restart later"]
