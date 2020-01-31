@@ -213,7 +213,7 @@
 
         extraModules.forEach(newModule => {
             if (!fs.existsSync(path.resolve(__dirname, "../node_modules", newModule))) {
-                copy(path.resolve(src, newModule), dest, (err, result)=> {err ? console.log(`Error occured: ${err}`) : console.log("Extra-modules copied.")})
+                copy(path.resolve(src, newModule), path.resolve(dest, newModule), (err, result)=> {err ? console.log(`Error occured: ${err}`) : console.log("Extra-modules copied.")})
             }
         })
 
@@ -221,7 +221,7 @@
     }
 
     const InstallUpdate = () => {
-        
+
         console.log("Copying downloaded files")
 
         let src = path.resolve(updateFolder, `${github_repo}-${gihub_branchname}`)
