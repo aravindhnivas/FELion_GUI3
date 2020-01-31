@@ -145,13 +145,25 @@
 
                 let landscape;
                 exportMethod == "landscape" ? landscape = true : landscape = false
-                reportWindow.webContents.printToPDF({printBackground: true, landscape:landscape, pageSize:pageSize})
-                .then(data => {
-                    fs.writeFile(reportFile.replace(".html", ".pdf"), data, (error) => {
-                        if (error) {$modalContent = error; $activated = true; return}
-                        createToast('Write PDF successfully.', "success")
+                
+                if (process.versions.electron >= "7") {
+                    reportWindow.webContents.printToPDF({printBackground: true, landscape:landscape, pageSize:pageSize})
+                    .then(data => {
+                        fs.writeFile(reportFile.replace(".html", ".pdf"), data, (error) => {
+                            if (error) {$modalContent = error; $activated = true; return}
+                            createToast('Write PDF successfully.', "success")
+                        })
+                    }).catch(error => { $modalContent = error; $activated = true })
+
+                } else {
+                    reportWindow.webContents.printToPDF({printBackground: true, landscape:landscape, pageSize:pageSize}, (error, data) => {
+                        if(error) { $modalContent = error; $activated = true; return}
+                        fs.writeFile(reportFile.replace(".html", ".pdf"), data, (error) => {
+                            if (error) {$modalContent = error; $activated = true; return}
+                            createToast('Write PDF successfully.', "success")
+                        })
                     })
-                }).catch(error => { $modalContent = error; $activated = true }) 
+                }
             }
         })
         
