@@ -209,13 +209,14 @@
         InstallUpdate()
         let src = path.resolve(updateFolder, `${github_repo}-${gihub_branchname}/src/extra-packages`)
         let dest = path.resolve(__dirname, "../node_modules")
-        let extraModules = fs.readdirSync(src)
+        copy(src, dest, (err, result)=> {err ? console.log(`Error occured: ${err}`) : console.log("Extra-modules copied.")})
+        // let extraModules = fs.readdirSync(src)
 
-        extraModules.forEach(newModule => {
-            if (!fs.existsSync(path.resolve(__dirname, "../node_modules", newModule))) {
-                copy(path.resolve(src, newModule), path.resolve(dest, newModule), (err, result)=> {err ? console.log(`Error occured: ${err}`) : console.log("Extra-modules copied.")})
-            }
-        })
+        // extraModules.forEach(newModule => {
+        //     if (!fs.existsSync(path.resolve(__dirname, "../node_modules", newModule))) {
+        //         copy(path.resolve(src, newModule), path.resolve(dest, newModule), (err, result)=> {err ? console.log(`Error occured: ${err}`) : console.log("Extra-modules copied.")})
+        //     }
+        // })
 
 
     }
