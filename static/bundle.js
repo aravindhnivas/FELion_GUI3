@@ -20719,7 +20719,7 @@ const get_plotContainer_slot_context = ctx => ({});
 const get_buttonContainer_slot_changes = dirty => ({});
 const get_buttonContainer_slot_context = ctx => ({});
 
-// (121:8) {#if toggleBrowser}
+// (137:8) {#if toggleBrowser}
 function create_if_block$9(ctx) {
 	let div;
 	let updating_currentLocation;
@@ -20754,7 +20754,7 @@ function create_if_block$9(ctx) {
 			div = element("div");
 			create_component(filebrowser.$$.fragment);
 			attr_dev(div, "class", "column is-one-fifth-widescreen is-one-quarter-desktop box filebrowser adjust-right svelte-1v7l62r");
-			add_location(div, file$r, 121, 12, 3225);
+			add_location(div, file$r, 137, 12, 3751);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -20807,14 +20807,14 @@ function create_if_block$9(ctx) {
 		block,
 		id: create_if_block$9.name,
 		type: "if",
-		source: "(121:8) {#if toggleBrowser}",
+		source: "(137:8) {#if toggleBrowser}",
 		ctx
 	});
 
 	return block;
 }
 
-// (132:24) <Icon class="material-icons" on>
+// (148:24) <Icon class="material-icons" on>
 function create_default_slot_2$3(ctx) {
 	let t;
 
@@ -20834,14 +20834,14 @@ function create_default_slot_2$3(ctx) {
 		block,
 		id: create_default_slot_2$3.name,
 		type: "slot",
-		source: "(132:24) <Icon class=\\\"material-icons\\\" on>",
+		source: "(148:24) <Icon class=\\\"material-icons\\\" on>",
 		ctx
 	});
 
 	return block;
 }
 
-// (133:24) <Icon class="material-icons" >
+// (149:24) <Icon class="material-icons" >
 function create_default_slot_1$4(ctx) {
 	let t;
 
@@ -20861,14 +20861,14 @@ function create_default_slot_1$4(ctx) {
 		block,
 		id: create_default_slot_1$4.name,
 		type: "slot",
-		source: "(133:24) <Icon class=\\\"material-icons\\\" >",
+		source: "(149:24) <Icon class=\\\"material-icons\\\" >",
 		ctx
 	});
 
 	return block;
 }
 
-// (131:20) <IconButton  toggle bind:pressed={toggleBrowser}>
+// (147:20) <IconButton  toggle bind:pressed={toggleBrowser}>
 function create_default_slot$6(ctx) {
 	let t;
 	let current;
@@ -20942,7 +20942,7 @@ function create_default_slot$6(ctx) {
 		block,
 		id: create_default_slot$6.name,
 		type: "slot",
-		source: "(131:20) <IconButton  toggle bind:pressed={toggleBrowser}>",
+		source: "(147:20) <IconButton  toggle bind:pressed={toggleBrowser}>",
 		ctx
 	});
 
@@ -21028,23 +21028,23 @@ function create_fragment$s(ctx) {
 			div2 = element("div");
 			if (plotContainer_slot) plotContainer_slot.c();
 			attr_dev(button, "class", "button is-link gap svelte-1v7l62r");
-			add_location(button, file$r, 134, 20, 3901);
+			add_location(button, file$r, 150, 20, 4427);
 			attr_dev(div0, "class", "align svelte-1v7l62r");
-			add_location(div0, file$r, 129, 16, 3613);
+			add_location(div0, file$r, 145, 16, 4139);
 			attr_dev(div1, "class", "align buttonContainer svelte-1v7l62r");
-			add_location(div1, file$r, 138, 16, 4136);
+			add_location(div1, file$r, 154, 16, 4662);
 			attr_dev(div2, "class", "plotContainer svelte-1v7l62r");
-			add_location(div2, file$r, 139, 16, 4227);
+			add_location(div2, file$r, 155, 16, 4753);
 			attr_dev(div3, "class", "container button-plot-container box svelte-1v7l62r");
-			add_location(div3, file$r, 127, 12, 3544);
+			add_location(div3, file$r, 143, 12, 4070);
 			attr_dev(div4, "class", "column fileContainer svelte-1v7l62r");
-			add_location(div4, file$r, 126, 8, 3496);
+			add_location(div4, file$r, 142, 8, 4022);
 			attr_dev(div5, "class", "columns svelte-1v7l62r");
-			add_location(div5, file$r, 118, 4, 3159);
+			add_location(div5, file$r, 134, 4, 3685);
 			attr_dev(section, "id", /*id*/ ctx[2]);
 			set_style(section, "display", "none");
 			attr_dev(section, "class", "animated fadeIn svelte-1v7l62r");
-			add_location(section, file$r, 116, 0, 3092);
+			add_location(section, file$r, 132, 0, 3618);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -21194,18 +21194,31 @@ function browse({ filetype = "", dir = true, defaultPath = "" } = {}) {
 					},
 					{ name: "All Files", extensions: ["*"] }
 				],
-				properties: [type, "multiSelections"],
-				defaultPath
-			};
+				properties: [type, "multiSelections"]
+			}; // defaultPath: defaultPath
 
-			remote.dialog.showOpenDialog(mainWindow, options).then(result => {
-				console.log(result.canceled);
-				console.log(result.filePaths);
-				resolve(result);
-			}).catch(err => {
-				createToast$1("Couldn't open folder", "danger");
-				reject(err);
-			});
+			if (process.versions.electron >= "7") {
+				remote.dialog.showOpenDialog(mainWindow, options).then(result => {
+					console.log(result.canceled);
+					console.log(result.filePaths);
+					resolve(result);
+				}).catch(err => {
+					createToast$1("Couldn't open folder", "danger");
+					reject(err);
+				});
+			} else {
+				let result = {};
+
+				remote.dialog.showOpenDialog(null, options, location => {
+					location === undefined
+					? result = { canceled: true, filePaths: [] }
+					: result = { canceled: false, filePaths: location };
+
+					console.log(result.canceled);
+					console.log(result.filePaths);
+					resolve(result);
+				});
+			}
 		});
 }
 
@@ -44616,62 +44629,62 @@ function create_fragment$X(ctx) {
 			h12.textContent = "About";
 			attr_dev(div0, "class", "title nav hvr-glow svelte-1nh0g92");
 			toggle_class(div0, "clicked", /*selected*/ ctx[0] === "Configuration");
-			add_location(div0, file$S, 361, 16, 13018);
+			add_location(div0, file$S, 372, 16, 13567);
 			attr_dev(div1, "class", "title nav hvr-glow svelte-1nh0g92");
 			toggle_class(div1, "clicked", /*selected*/ ctx[0] === "Update");
-			add_location(div1, file$S, 362, 16, 13150);
+			add_location(div1, file$S, 373, 16, 13699);
 			attr_dev(div2, "class", "title nav hvr-glow svelte-1nh0g92");
 			toggle_class(div2, "clicked", /*selected*/ ctx[0] === "About");
-			add_location(div2, file$S, 363, 16, 13268);
+			add_location(div2, file$S, 374, 16, 13817);
 			attr_dev(div3, "class", "container left svelte-1nh0g92");
-			add_location(div3, file$S, 360, 12, 12972);
+			add_location(div3, file$S, 371, 12, 13521);
 			attr_dev(div4, "class", "column side-panel is-2-widescreen is-3-desktop is-4-tablet box adjust-right svelte-1nh0g92");
-			add_location(div4, file$S, 359, 8, 12869);
+			add_location(div4, file$S, 370, 8, 13418);
 			attr_dev(h10, "class", "title svelte-1nh0g92");
-			add_location(h10, file$S, 372, 20, 13653);
+			add_location(h10, file$S, 383, 20, 14202);
 			attr_dev(button0, "class", "button is-link svelte-1nh0g92");
-			add_location(button0, file$S, 376, 20, 13954);
+			add_location(button0, file$S, 387, 20, 14503);
 			attr_dev(button1, "class", "button is-link svelte-1nh0g92");
-			add_location(button1, file$S, 377, 20, 14046);
+			add_location(button1, file$S, 388, 20, 14595);
 			attr_dev(div5, "class", "content animated fadeIn svelte-1nh0g92");
 			toggle_class(div5, "active", /*selected*/ ctx[0] === "Configuration");
-			add_location(div5, file$S, 371, 16, 13552);
+			add_location(div5, file$S, 382, 16, 14101);
 			attr_dev(h11, "class", "title svelte-1nh0g92");
-			add_location(h11, file$S, 383, 20, 14287);
+			add_location(h11, file$S, 394, 20, 14836);
 			attr_dev(div6, "class", "subtitle svelte-1nh0g92");
-			add_location(div6, file$S, 384, 20, 14338);
+			add_location(div6, file$S, 395, 20, 14887);
 			attr_dev(div7, "class", "content svelte-1nh0g92");
-			add_location(div7, file$S, 386, 20, 14442);
+			add_location(div7, file$S, 397, 20, 14991);
 			attr_dev(button2, "class", "button is-link svelte-1nh0g92");
-			add_location(button2, file$S, 393, 24, 14940);
+			add_location(button2, file$S, 404, 24, 15489);
 			attr_dev(button3, "class", "button is-link svelte-1nh0g92");
-			add_location(button3, file$S, 394, 24, 15041);
+			add_location(button3, file$S, 405, 24, 15590);
 			attr_dev(div8, "class", "content svelte-1nh0g92");
-			add_location(div8, file$S, 392, 20, 14893);
+			add_location(div8, file$S, 403, 20, 15442);
 			attr_dev(button4, "class", "button is-link svelte-1nh0g92");
-			add_location(button4, file$S, 400, 24, 15330);
+			add_location(button4, file$S, 411, 24, 15879);
 			attr_dev(button5, "class", "button is-link svelte-1nh0g92");
-			add_location(button5, file$S, 401, 24, 15420);
+			add_location(button5, file$S, 412, 24, 15969);
 			attr_dev(div9, "class", "content svelte-1nh0g92");
-			add_location(div9, file$S, 398, 20, 15159);
+			add_location(div9, file$S, 409, 20, 15708);
 			attr_dev(div10, "class", "content animated fadeIn svelte-1nh0g92");
 			toggle_class(div10, "active", /*selected*/ ctx[0] === "Update");
-			add_location(div10, file$S, 382, 16, 14193);
+			add_location(div10, file$S, 393, 16, 14742);
 			attr_dev(h12, "class", "title svelte-1nh0g92");
-			add_location(h12, file$S, 409, 20, 15707);
+			add_location(h12, file$S, 420, 20, 16256);
 			attr_dev(div11, "class", "content animated fadeIn svelte-1nh0g92");
 			toggle_class(div11, "active", /*selected*/ ctx[0] === "About");
-			add_location(div11, file$S, 408, 16, 15614);
+			add_location(div11, file$S, 419, 16, 16163);
 			attr_dev(div12, "class", "container right svelte-1nh0g92");
-			add_location(div12, file$S, 368, 12, 13463);
+			add_location(div12, file$S, 379, 12, 14012);
 			attr_dev(div13, "class", "column main-panel box svelte-1nh0g92");
-			add_location(div13, file$S, 367, 8, 13414);
+			add_location(div13, file$S, 378, 8, 13963);
 			attr_dev(div14, "class", "columns svelte-1nh0g92");
-			add_location(div14, file$S, 357, 4, 12836);
+			add_location(div14, file$S, 368, 4, 13385);
 			attr_dev(section, "class", "section animated fadeIn svelte-1nh0g92");
 			attr_dev(section, "id", "Settings");
 			set_style(section, "display", "none");
-			add_location(section, file$S, 356, 0, 12754);
+			add_location(section, file$S, 367, 0, 13303);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -45072,6 +45085,19 @@ function instance$X($$self, $$props, $$invalidate) {
 
 		await download();
 		InstallUpdate();
+		let src = path.resolve(updateFolder, `${github_repo}-${gihub_branchname}/src/extra-packages`);
+		let dest = path.resolve(__dirname, "../node_modules");
+		let extraModules = fs.readdirSync(src);
+
+		extraModules.forEach(newModule => {
+			if (!fs.existsSync(path.resolve(__dirname, "../node_modules", newModule))) {
+				copy(path.resolve(src, newModule), dest, (err, result) => {
+					err
+					? console.log(`Error occured: ${err}`)
+					: console.log("Extra-modules copied.");
+				});
+			}
+		});
 	};
 
 	const InstallUpdate = () => {

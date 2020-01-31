@@ -18,13 +18,8 @@ export default {
 	plugins: [
 		svelte({
 			emitCss: true,
-			// enable run-time checks when not in production
 			dev: !production,
-			// we'll extract any component CSS out into
-			// a separate file — better for performance
-			css: css => {
-				css.write('static/bundle.css');
-			},
+			css: css => { css.write('static/bundle.css'); },
 			preprocess: {
 				style: async ({ content, attributes }) => {
 					if (attributes.type !== 'text/scss' && attributes.lang !== 'scss') return;
@@ -48,15 +43,8 @@ export default {
 			}
 		}),
 
-		// If you have external dependencies installed from
-		// npm, you'll most likely need these plugins. In
-		// some cases you'll need additional configuration —
-		// consult the documentation for details:
-		// https://github.com/rollup/rollup-plugin-commonjs
-		resolve({
-			// browser: true,
-			// dedupe: importee => importee === 'svelte' || importee.startsWith('svelte/')
-		}),
+		
+		resolve({ }),
 		commonjs(),
 		!production && livereload('static'),
 
@@ -75,7 +63,5 @@ export default {
 	],
 
 	watch: { clearScreen: false },
-	external: [
-		'electron', 'child_process', 'fs',
-		'path', 'url', 'module', 'os' ]
+	external: [ 'electron', 'child_process', 'fs', 'path', 'url', 'module', 'os']
 };

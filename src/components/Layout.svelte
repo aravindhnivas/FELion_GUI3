@@ -13,18 +13,34 @@
 
                 ],
                 properties: [type, "multiSelections"],
-                defaultPath: defaultPath
+                // defaultPath: defaultPath
                 
             }
 
-            remote.dialog.showOpenDialog(mainWindow, options)
-            .then(result => {
+            if (process.versions.electron >= "7") {
+                remote.dialog.showOpenDialog(mainWindow, options)
+                .then(result => {
+                    console.log(result.canceled)
+                    console.log(result.filePaths)
+                    resolve(result)
+
+                }).catch(err => {
+
+                    createToast("Couldn't open folder", "danger")
+                    reject(err) })
+            } else {
+                let result = {}
+                remote.dialog.showOpenDialog(null, options, location => {
+                location === undefined ? result = {canceled:true, filePaths:[]}: result = {canceled:false, filePaths:location}
+
                 console.log(result.canceled)
                 console.log(result.filePaths)
                 resolve(result)
-            }).catch(err => { 
-                createToast("Couldn't open folder", "danger")
-                reject(err) })
+
+            })
+            }
+
+            
                 
         })
     }
