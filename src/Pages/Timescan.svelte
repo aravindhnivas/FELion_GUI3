@@ -172,5 +172,7 @@
             <ReportLayout bind:currentLocation id="scanreport", plotID={[`${fileChecked[0]}_tplot`]}/>
         </div>
 
+
     </div>
+    
 </Layout>

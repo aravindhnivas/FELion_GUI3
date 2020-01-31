@@ -65,7 +65,7 @@
     function getImage(imgID) {
         return new Promise(resolve => {
 
-            html2canvas(document.getElementById(imgID), {dpi:100}).then(canvasElm =>{resolve(canvasElm.toDataURL())})
+            Plotly.toImage(imgID, {format: 'png', width: 1000, height: 600}).then(dataURL =>{resolve(dataURL)})
         });
     }
     
