@@ -44629,62 +44629,62 @@ function create_fragment$X(ctx) {
 			h12.textContent = "About";
 			attr_dev(div0, "class", "title nav hvr-glow svelte-1nh0g92");
 			toggle_class(div0, "clicked", /*selected*/ ctx[0] === "Configuration");
-			add_location(div0, file$S, 373, 16, 13728);
+			add_location(div0, file$S, 361, 16, 13022);
 			attr_dev(div1, "class", "title nav hvr-glow svelte-1nh0g92");
 			toggle_class(div1, "clicked", /*selected*/ ctx[0] === "Update");
-			add_location(div1, file$S, 374, 16, 13860);
+			add_location(div1, file$S, 362, 16, 13154);
 			attr_dev(div2, "class", "title nav hvr-glow svelte-1nh0g92");
 			toggle_class(div2, "clicked", /*selected*/ ctx[0] === "About");
-			add_location(div2, file$S, 375, 16, 13978);
+			add_location(div2, file$S, 363, 16, 13272);
 			attr_dev(div3, "class", "container left svelte-1nh0g92");
-			add_location(div3, file$S, 372, 12, 13682);
+			add_location(div3, file$S, 360, 12, 12976);
 			attr_dev(div4, "class", "column side-panel is-2-widescreen is-3-desktop is-4-tablet box adjust-right svelte-1nh0g92");
-			add_location(div4, file$S, 371, 8, 13579);
+			add_location(div4, file$S, 359, 8, 12873);
 			attr_dev(h10, "class", "title svelte-1nh0g92");
-			add_location(h10, file$S, 384, 20, 14363);
+			add_location(h10, file$S, 372, 20, 13657);
 			attr_dev(button0, "class", "button is-link svelte-1nh0g92");
-			add_location(button0, file$S, 388, 20, 14664);
+			add_location(button0, file$S, 376, 20, 13958);
 			attr_dev(button1, "class", "button is-link svelte-1nh0g92");
-			add_location(button1, file$S, 389, 20, 14756);
+			add_location(button1, file$S, 377, 20, 14050);
 			attr_dev(div5, "class", "content animated fadeIn svelte-1nh0g92");
 			toggle_class(div5, "active", /*selected*/ ctx[0] === "Configuration");
-			add_location(div5, file$S, 383, 16, 14262);
+			add_location(div5, file$S, 371, 16, 13556);
 			attr_dev(h11, "class", "title svelte-1nh0g92");
-			add_location(h11, file$S, 395, 20, 14997);
+			add_location(h11, file$S, 383, 20, 14291);
 			attr_dev(div6, "class", "subtitle svelte-1nh0g92");
-			add_location(div6, file$S, 396, 20, 15048);
+			add_location(div6, file$S, 384, 20, 14342);
 			attr_dev(div7, "class", "content svelte-1nh0g92");
-			add_location(div7, file$S, 398, 20, 15152);
+			add_location(div7, file$S, 386, 20, 14446);
 			attr_dev(button2, "class", "button is-link svelte-1nh0g92");
-			add_location(button2, file$S, 405, 24, 15650);
+			add_location(button2, file$S, 393, 24, 14944);
 			attr_dev(button3, "class", "button is-link svelte-1nh0g92");
-			add_location(button3, file$S, 406, 24, 15751);
+			add_location(button3, file$S, 394, 24, 15045);
 			attr_dev(div8, "class", "content svelte-1nh0g92");
-			add_location(div8, file$S, 404, 20, 15603);
+			add_location(div8, file$S, 392, 20, 14897);
 			attr_dev(button4, "class", "button is-link svelte-1nh0g92");
-			add_location(button4, file$S, 412, 24, 16040);
+			add_location(button4, file$S, 400, 24, 15334);
 			attr_dev(button5, "class", "button is-link svelte-1nh0g92");
-			add_location(button5, file$S, 413, 24, 16130);
+			add_location(button5, file$S, 401, 24, 15424);
 			attr_dev(div9, "class", "content svelte-1nh0g92");
-			add_location(div9, file$S, 410, 20, 15869);
+			add_location(div9, file$S, 398, 20, 15163);
 			attr_dev(div10, "class", "content animated fadeIn svelte-1nh0g92");
 			toggle_class(div10, "active", /*selected*/ ctx[0] === "Update");
-			add_location(div10, file$S, 394, 16, 14903);
+			add_location(div10, file$S, 382, 16, 14197);
 			attr_dev(h12, "class", "title svelte-1nh0g92");
-			add_location(h12, file$S, 421, 20, 16417);
+			add_location(h12, file$S, 409, 20, 15711);
 			attr_dev(div11, "class", "content animated fadeIn svelte-1nh0g92");
 			toggle_class(div11, "active", /*selected*/ ctx[0] === "About");
-			add_location(div11, file$S, 420, 16, 16324);
+			add_location(div11, file$S, 408, 16, 15618);
 			attr_dev(div12, "class", "container right svelte-1nh0g92");
-			add_location(div12, file$S, 380, 12, 14173);
+			add_location(div12, file$S, 368, 12, 13467);
 			attr_dev(div13, "class", "column main-panel box svelte-1nh0g92");
-			add_location(div13, file$S, 379, 8, 14124);
+			add_location(div13, file$S, 367, 8, 13418);
 			attr_dev(div14, "class", "columns svelte-1nh0g92");
-			add_location(div14, file$S, 369, 4, 13546);
+			add_location(div14, file$S, 357, 4, 12840);
 			attr_dev(section, "class", "section animated fadeIn svelte-1nh0g92");
 			attr_dev(section, "id", "Settings");
 			set_style(section, "display", "none");
-			add_location(section, file$S, 368, 0, 13464);
+			add_location(section, file$S, 356, 0, 12758);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -45085,18 +45085,8 @@ function instance$X($$self, $$props, $$invalidate) {
 
 		await download();
 		InstallUpdate();
-		let src = path.resolve(updateFolder, `${github_repo}-${gihub_branchname}/src/extra-packages`);
-		let dest = path.resolve(__dirname, "../node_modules");
+	};
 
-		copy(src, dest, (err, result) => {
-			err
-			? console.log(`Error occured: ${err}`)
-			: console.log("Extra-modules copied.");
-		});
-	}; // let extraModules = fs.readdirSync(src) // extraModules.forEach(newModule => { //     if (!fs.existsSync(path.resolve(__dirname, "../node_modules", newModule))) { //         copy(path.resolve(src, newModule), path.resolve(dest, newModule), (err, result)=> {err ? console.log(`Error occured: ${err}`) : console.log("Extra-modules copied.")})
-
-	//     }
-	// })
 	const InstallUpdate = () => {
 		console.log("Copying downloaded files");
 		let src = path.resolve(updateFolder, `${github_repo}-${gihub_branchname}`);
