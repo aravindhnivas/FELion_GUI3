@@ -44464,7 +44464,7 @@ function create_fragment$X(ctx) {
 	let dispose;
 
 	function customdialog_dialog_binding(value) {
-		/*customdialog_dialog_binding*/ ctx[39].call(null, value);
+		/*customdialog_dialog_binding*/ ctx[31].call(null, value);
 	}
 
 	let customdialog_props = {
@@ -44489,7 +44489,7 @@ function create_fragment$X(ctx) {
 	customdialog.$on("response", /*handlepythonPathCheck*/ ctx[11]);
 
 	function textfield0_value_binding(value_1) {
-		/*textfield0_value_binding*/ ctx[40].call(null, value_1);
+		/*textfield0_value_binding*/ ctx[32].call(null, value_1);
 	}
 
 	let textfield0_props = {
@@ -44505,7 +44505,7 @@ function create_fragment$X(ctx) {
 	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
 
 	function textfield1_value_binding(value_2) {
-		/*textfield1_value_binding*/ ctx[41].call(null, value_2);
+		/*textfield1_value_binding*/ ctx[33].call(null, value_2);
 	}
 
 	let textfield1_props = {
@@ -44521,7 +44521,7 @@ function create_fragment$X(ctx) {
 	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding));
 
 	function textfield2_value_binding(value_3) {
-		/*textfield2_value_binding*/ ctx[42].call(null, value_3);
+		/*textfield2_value_binding*/ ctx[34].call(null, value_3);
 	}
 
 	let textfield2_props = {
@@ -44537,7 +44537,7 @@ function create_fragment$X(ctx) {
 	binding_callbacks.push(() => bind(textfield2, "value", textfield2_value_binding));
 
 	function textfield3_value_binding(value_4) {
-		/*textfield3_value_binding*/ ctx[43].call(null, value_4);
+		/*textfield3_value_binding*/ ctx[35].call(null, value_4);
 	}
 
 	let textfield3_props = {
@@ -44553,7 +44553,7 @@ function create_fragment$X(ctx) {
 	binding_callbacks.push(() => bind(textfield3, "value", textfield3_value_binding));
 
 	function customselect_picked_binding(value_5) {
-		/*customselect_picked_binding*/ ctx[44].call(null, value_5);
+		/*customselect_picked_binding*/ ctx[36].call(null, value_5);
 	}
 
 	let customselect_props = {
@@ -44573,7 +44573,7 @@ function create_fragment$X(ctx) {
 	binding_callbacks.push(() => bind(customselect, "picked", customselect_picked_binding));
 
 	function textfield4_value_binding(value_6) {
-		/*textfield4_value_binding*/ ctx[45].call(null, value_6);
+		/*textfield4_value_binding*/ ctx[37].call(null, value_6);
 	}
 
 	let textfield4_props = {
@@ -44656,62 +44656,62 @@ function create_fragment$X(ctx) {
 			h12.textContent = "About";
 			attr_dev(div0, "class", "title nav hvr-glow svelte-1nh0g92");
 			toggle_class(div0, "clicked", /*selected*/ ctx[0] === "Configuration");
-			add_location(div0, file$S, 361, 16, 13022);
+			add_location(div0, file$S, 363, 16, 12833);
 			attr_dev(div1, "class", "title nav hvr-glow svelte-1nh0g92");
 			toggle_class(div1, "clicked", /*selected*/ ctx[0] === "Update");
-			add_location(div1, file$S, 362, 16, 13154);
+			add_location(div1, file$S, 364, 16, 12965);
 			attr_dev(div2, "class", "title nav hvr-glow svelte-1nh0g92");
 			toggle_class(div2, "clicked", /*selected*/ ctx[0] === "About");
-			add_location(div2, file$S, 363, 16, 13272);
+			add_location(div2, file$S, 365, 16, 13083);
 			attr_dev(div3, "class", "container left svelte-1nh0g92");
-			add_location(div3, file$S, 360, 12, 12976);
+			add_location(div3, file$S, 362, 12, 12787);
 			attr_dev(div4, "class", "column side-panel is-2-widescreen is-3-desktop is-4-tablet box adjust-right svelte-1nh0g92");
-			add_location(div4, file$S, 359, 8, 12873);
+			add_location(div4, file$S, 361, 8, 12684);
 			attr_dev(h10, "class", "title svelte-1nh0g92");
-			add_location(h10, file$S, 372, 20, 13657);
+			add_location(h10, file$S, 374, 20, 13468);
 			attr_dev(button0, "class", "button is-link svelte-1nh0g92");
-			add_location(button0, file$S, 376, 20, 13958);
+			add_location(button0, file$S, 378, 20, 13769);
 			attr_dev(button1, "class", "button is-link svelte-1nh0g92");
-			add_location(button1, file$S, 377, 20, 14050);
+			add_location(button1, file$S, 379, 20, 13861);
 			attr_dev(div5, "class", "content animated fadeIn svelte-1nh0g92");
 			toggle_class(div5, "active", /*selected*/ ctx[0] === "Configuration");
-			add_location(div5, file$S, 371, 16, 13556);
+			add_location(div5, file$S, 373, 16, 13367);
 			attr_dev(h11, "class", "title svelte-1nh0g92");
-			add_location(h11, file$S, 383, 20, 14291);
+			add_location(h11, file$S, 385, 20, 14102);
 			attr_dev(div6, "class", "subtitle svelte-1nh0g92");
-			add_location(div6, file$S, 384, 20, 14342);
+			add_location(div6, file$S, 386, 20, 14153);
 			attr_dev(div7, "class", "content svelte-1nh0g92");
-			add_location(div7, file$S, 386, 20, 14446);
+			add_location(div7, file$S, 388, 20, 14257);
 			attr_dev(button2, "class", "button is-link svelte-1nh0g92");
-			add_location(button2, file$S, 393, 24, 14944);
+			add_location(button2, file$S, 395, 24, 14755);
 			attr_dev(button3, "class", "button is-link svelte-1nh0g92");
-			add_location(button3, file$S, 394, 24, 15045);
+			add_location(button3, file$S, 396, 24, 14856);
 			attr_dev(div8, "class", "content svelte-1nh0g92");
-			add_location(div8, file$S, 392, 20, 14897);
+			add_location(div8, file$S, 394, 20, 14708);
 			attr_dev(button4, "class", "button is-link svelte-1nh0g92");
-			add_location(button4, file$S, 400, 24, 15334);
+			add_location(button4, file$S, 402, 24, 15145);
 			attr_dev(button5, "class", "button is-link svelte-1nh0g92");
-			add_location(button5, file$S, 401, 24, 15424);
+			add_location(button5, file$S, 403, 24, 15235);
 			attr_dev(div9, "class", "content svelte-1nh0g92");
-			add_location(div9, file$S, 398, 20, 15163);
+			add_location(div9, file$S, 400, 20, 14974);
 			attr_dev(div10, "class", "content animated fadeIn svelte-1nh0g92");
 			toggle_class(div10, "active", /*selected*/ ctx[0] === "Update");
-			add_location(div10, file$S, 382, 16, 14197);
+			add_location(div10, file$S, 384, 16, 14008);
 			attr_dev(h12, "class", "title svelte-1nh0g92");
-			add_location(h12, file$S, 409, 20, 15711);
+			add_location(h12, file$S, 411, 20, 15522);
 			attr_dev(div11, "class", "content animated fadeIn svelte-1nh0g92");
 			toggle_class(div11, "active", /*selected*/ ctx[0] === "About");
-			add_location(div11, file$S, 408, 16, 15618);
+			add_location(div11, file$S, 410, 16, 15429);
 			attr_dev(div12, "class", "container right svelte-1nh0g92");
-			add_location(div12, file$S, 368, 12, 13467);
+			add_location(div12, file$S, 370, 12, 13278);
 			attr_dev(div13, "class", "column main-panel box svelte-1nh0g92");
-			add_location(div13, file$S, 367, 8, 13418);
+			add_location(div13, file$S, 369, 8, 13229);
 			attr_dev(div14, "class", "columns svelte-1nh0g92");
-			add_location(div14, file$S, 357, 4, 12840);
+			add_location(div14, file$S, 359, 4, 12651);
 			attr_dev(section, "class", "section animated fadeIn svelte-1nh0g92");
 			attr_dev(section, "id", "Settings");
 			set_style(section, "display", "none");
-			add_location(section, file$S, 356, 0, 12758);
+			add_location(section, file$S, 358, 0, 12569);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -45094,13 +45094,17 @@ function instance$X($$self, $$props, $$invalidate) {
 				response.on("close", () => {
 					console.log("Downloading Completed");
 					console.log("Extracting files");
-					let zip = new admZip(zipFile);
-					zip.extractAllTo(updateFolder, true); /*overwrite*/
 
-					// console.log("File Extracted")
-					resolve("File extracted");
-
-					createToast$1("Downloading Completed");
+					setTimeout(
+						() => {
+							let zip = new admZip(zipFile);
+							zip.extractAllTo(updateFolder, true); /*overwrite*/
+							console.log("File Extracted");
+							resolve("File extracted");
+							createToast$1("Downloading Completed");
+						},
+						1600
+					);
 				});
 			});
 	};
@@ -45144,46 +45148,20 @@ function instance$X($$self, $$props, $$invalidate) {
 	// Backup and restore
 	let backupName = "FELion_GUI_backup";
 
-	let _src = {
-		path: path.resolve(__dirname, "..", "src"),
-		name: "src"
-	};
-
-	let _static = {
-		path: path.resolve(__dirname, "..", "static"),
-		name: "static"
-	};
-
-	let packageFile = {
-		path: path.resolve(__dirname, "..", "package.json"),
-		name: "package.json"
-	};
-
-	let versionFileJson = {
-		path: path.resolve(__dirname, "..", "version.json"),
-		name: "version.json"
-	};
-
-	let mainJs = {
-		path: path.resolve(__dirname, "..", "main.js"),
-		name: "main.js"
-	};
-
-	let rollup = {
-		path: path.resolve(__dirname, "..", "rollup.config.js"),
-		name: "rollup.config.js"
-	};
-
-	let svelteCongfig = {
-		path: path.resolve(__dirname, "..", "svelte.config.js"),
-		name: "svelte.config.js"
-	};
-
-	let folders = [_src, _static, packageFile, versionFileJson, mainJs, rollup, svelteCongfig];
-
 	const backUp = event => {
-		backupClass = "is-loading is-link";
 		console.log(`Archiving existing software to ${backupName}.zip`);
+
+		const _static = {
+			path: path.resolve(__dirname, "..", "static"),
+			name: "static"
+		};
+
+		const versionFileJson = {
+			path: path.resolve(__dirname, "..", "version.json"),
+			name: "version.json"
+		};
+
+		const folders = [_static, versionFileJson];
 
 		browse({ dir: true }).then(result => {
 			let folderName;
@@ -45232,6 +45210,18 @@ function instance$X($$self, $$props, $$invalidate) {
 			}
 
 			console.log("Selected folder: ", folderName);
+
+			const _static = {
+				path: path.resolve(folderName, "static"),
+				name: "static"
+			};
+
+			const versionFileJson = {
+				path: path.resolve(folderName, "version.json"),
+				name: "version.json"
+			};
+
+			const folders = [_static, versionFileJson];
 
 			folders.forEach(folder => {
 				const _dest = path.resolve(__dirname, "..", folder.name);
@@ -45314,14 +45304,6 @@ function instance$X($$self, $$props, $$invalidate) {
 		if ("versionFile" in $$props) versionFile = $$props.versionFile;
 		if ("currentVersion" in $$props) $$invalidate(12, currentVersion = $$props.currentVersion);
 		if ("backupName" in $$props) $$invalidate(7, backupName = $$props.backupName);
-		if ("_src" in $$props) _src = $$props._src;
-		if ("_static" in $$props) _static = $$props._static;
-		if ("packageFile" in $$props) packageFile = $$props.packageFile;
-		if ("versionFileJson" in $$props) versionFileJson = $$props.versionFileJson;
-		if ("mainJs" in $$props) mainJs = $$props.mainJs;
-		if ("rollup" in $$props) rollup = $$props.rollup;
-		if ("svelteCongfig" in $$props) svelteCongfig = $$props.svelteCongfig;
-		if ("folders" in $$props) folders = $$props.folders;
 		if ("versionJson" in $$props) versionJson = $$props.versionJson;
 		if ("urlzip" in $$props) urlzip = $$props.urlzip;
 		if ("$modalContent" in $$props) modalContent.set($modalContent = $$props.$modalContent);
@@ -45373,14 +45355,6 @@ function instance$X($$self, $$props, $$invalidate) {
 		zipFile,
 		download,
 		InstallUpdate,
-		_src,
-		_static,
-		packageFile,
-		versionFileJson,
-		mainJs,
-		rollup,
-		svelteCongfig,
-		folders,
 		customdialog_dialog_binding,
 		textfield0_value_binding,
 		textfield1_value_binding,

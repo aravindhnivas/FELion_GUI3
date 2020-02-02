@@ -189,21 +189,24 @@
                 console.log("Downloading Completed")
                 console.log("Extracting files")
 
-                let zip = new admZip(zipFile)
+                setTimeout(()=>{
 
-                zip.extractAllTo(updateFolder, /*overwrite*/true)
-                // console.log("File Extracted")
-                resolve("File extracted")
-                createToast("Downloading Completed")
+                    let zip = new admZip(zipFile);
+                    zip.extractAllTo(updateFolder, /*overwrite*/true);
+                    console.log("File Extracted")
 
+                    resolve("File extracted")
+                    createToast("Downloading Completed")
+                }, 1600)
             })
         })
     }
 
     const update = async () => {
-        if (!fs.existsSync(updateFolder)) {fs.mkdirSync(updateFolder)}
-        await download()
 
+        if (!fs.existsSync(updateFolder)) {fs.mkdirSync(updateFolder)}
+        
+        await download()
         InstallUpdate()
 
     
@@ -234,22 +237,17 @@
     // Backup and restore
 
     let backupName = "FELion_GUI_backup"
-    let _src = {path:path.resolve(__dirname, "..", "src"), name:"src"}
 
-    let _static = {path:path.resolve(__dirname, "..", "static"), name:"static"}
-    let packageFile = {path:path.resolve(__dirname, "..", "package.json"), name:"package.json"}
-    let versionFileJson = {path:path.resolve(__dirname, "..", "version.json"), name:"version.json"}
-    let mainJs = {path:path.resolve(__dirname, "..", "main.js"), name:"main.js"}
-    let rollup = {path:path.resolve(__dirname, "..", "rollup.config.js"), name:"rollup.config.js"}
-    let svelteCongfig = {path:path.resolve(__dirname, "..", "svelte.config.js"), name:"svelte.config.js"}
-
-    let folders = [_src, _static, packageFile, versionFileJson, mainJs, rollup, svelteCongfig]
 
     const backUp = (event) => {
 
-        backupClass = "is-loading is-link"
 
         console.log(`Archiving existing software to ${backupName}.zip`)
+
+
+        const _static = {path:path.resolve(__dirname, "..", "static"), name:"static"}
+        const versionFileJson = {path:path.resolve(__dirname, "..", "version.json"), name:"version.json"}
+        const folders = [_static, versionFileJson]
 
         browse({dir:true})
         .then(result=>{
@@ -297,15 +295,21 @@
 
             console.log("Selected folder: ", folderName)
 
+            const _static = {path:path.resolve(folderName, "static"), name:"static"}
+            const versionFileJson = {path:path.resolve(folderName, "version.json"), name:"version.json"}
+            const folders = [_static, versionFileJson]
+
             folders.forEach(folder=>{
                 const _dest = path.resolve(__dirname, "..", folder.name)
                 copy(folder.path, _dest, {overwrite: true}, function(error, results) {
+
                     if (error) { console.log('Copy failed: ' + error); createToast("Error Occured while copying", "danger")} 
                     else {
                         console.info('Copied ' + results.length + ' files')
                         console.info('Copied ' + results + ' files')
                     }
                 })
+
             })
 
             let response = remote.dialog.showMessageBox(remote.getCurrentWindow(),
@@ -319,12 +323,10 @@
         })
 
         .catch(err=>{
-
             console.log(err)
-        
             $modalContent = err
+            
             $activated = true
-
         })
     }
         
