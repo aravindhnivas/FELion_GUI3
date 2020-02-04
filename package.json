@@ -1,6 +1,6 @@
 {
   "name": "FELion_GUI3",
-  "version": "1.0.0",
+  "version": "3.0.0",
   "license": "MIT",
   "author": "A.N.Marimuthu",
   "repository": {
@@ -13,7 +13,7 @@
     "bulma": "^0.8.0",
     "concurrently": "^4.1.0",
     "devtron": "^1.4.0",
-    "electron": "^7.1.9",
+    "electron": "^7.1.11",
     "electron-packager": "^14.2.0",
     "electron-winstaller": "^4.0.0",
     "node-sass": "^4.12.0",
@@ -36,12 +36,12 @@
     "dev": "concurrently \"run-p start:dev autobuild\" \"electron .\"",
     "start": "sirv public",
     "start:dev": "sirv public --dev",
-    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --out=D:\\github_project\\release-builds --darwinDarkModeSupport=true",
-    "package-win": "electron-packager . --overwrite --platform=win32 --arch=x64 --out=D:\\github_project\\release-builds"
+    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --out=../release-builds --darwinDarkModeSupport=true",
+    "package-win": "electron-packager . --overwrite --platform=win32 --arch=x64 --out=../release-builds"
   },
   "dependencies": {
     "adm-zip": "^0.4.13",
-    "custom-electron-titlebar": "^3.2.1",
+    "directory-tree": "^2.2.4",
     "recursive-copy": "^2.0.10"
   }
 }

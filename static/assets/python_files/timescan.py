@@ -69,8 +69,8 @@ class timescanplot:
 
                 fig, ax = plt.subplots()
 
-                time, mean, error = self.read_timescan_file(ax=ax)
-                ax.errorbar(time, mean.sum(axis=0), yerr=error.sum(axis=0), label="SUM", fmt="k.-")
+                self.read_timescan_file(ax=ax)
+                ax.errorbar(self.time, self.mean.sum(axis=0), yerr=self.error.sum(axis=0), label="SUM", fmt="k.-")
 
                 ax.grid(self.widget.plotGrid.get())
 

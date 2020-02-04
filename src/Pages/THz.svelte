@@ -19,7 +19,8 @@
     /////////////////////////////////////////////////////////////////////////
 
     // Initialisation
-    let filetype = "thz", id = "THz", fileChecked = [];
+    const filetype = "thz", id = "THz"
+    let fileChecked = [];
     let currentLocation = localStorage[`${filetype}_location`] || ""
     $: thzfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
     let openShell = false, graphPlotted = false
@@ -32,8 +33,7 @@
     let toggleRow = false
     let style = "width:7em; height:3.5em; margin-right:0.5em"
 
-
-    function plotData(event=null, filetype="thz", tkplot="run"){
+    function plotData({e=null, filetype="thz", tkplot="run"}={}){
 
         if (fileChecked.length === 0) {return createToast("No files selected", "danger")}
 
@@ -56,7 +56,7 @@
             return;
         }
 
-        let target = event.target
+        let target = e.target
         target.classList.toggle("is-loading")
         if (filetype == "scan") {graphPlotted = false}
         
@@ -137,22 +137,22 @@
     <div class="thz_buttonContainer" slot="buttonContainer">
 
         <div class="content align buttonRow">
-            <button class="button is-link" on:click={plotData}>THz Plot</button>
-            <Textfield {style} on:change={plotData} bind:value={delta} label="Delta" />
-            <Textfield {style} on:change={plotData} bind:value={gamma} label="Gamma" />
-            <button class="button is-link" on:click="{(e)=>plotData(e, "thz", "plot")}">Open in Matplotlib</button>
+            <button class="button is-link" on:click="{(e)=>plotData({e:e})}">THz Plot</button>
+            <Textfield {style} on:change="{(e)=>plotData({e:e})}" bind:value={delta} label="Delta" />
+            <Textfield {style} on:change="{(e)=>plotData({e:e})}" bind:value={gamma} label="Gamma" />
+            <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"thz", tkplot:"plot"})}">Open in Matplotlib</button>
             <CustomIconSwitch style="padding:0;" bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
             <button class="button is-link" on:click="{()=>{toggleRow = !toggleRow}}">Boltzman</button>
         </div>
 
         <div class="animated fadeIn hide buttonRow" class:active={toggleRow} >
-            <Textfield {style} on:change="{(e)=>plotData(e, "boltzman")}" bind:value={B0} label="B0 (MHz)" />
-            <Textfield {style} on:change="{(e)=>plotData(e, "boltzman")}" bind:value={D0} label="D0 (MHz)" />
-            <Textfield {style} on:change="{(e)=>plotData(e, "boltzman")}" bind:value={H0} label="H0 (MHz)" />
-            <Textfield {style} on:change="{(e)=>plotData(e, "boltzman")}" bind:value={temp} label="Temp." />
-            <Textfield {style} on:change="{(e)=>plotData(e, "boltzman")}" bind:value={totalJ} label="Total J" />
-            <button class="button is-link" on:click="{(e)=>plotData(e, "boltzman", "run")}">Submit</button>
-            <button class="button is-link" on:click="{(e)=>plotData(e, "boltzman", "plot")}">Open in Matplotlib</button>
+            <Textfield {style} on:change="{(e)=>plotData({e:e, filetype:"boltzman"})}" bind:value={B0} label="B0 (MHz)" />
+            <Textfield {style} on:change="{(e)=>plotData({e:e, filetype:"boltzman"})}" bind:value={D0} label="D0 (MHz)" />
+            <Textfield {style} on:change="{(e)=>plotData({e:e, filetype:"boltzman"})}" bind:value={H0} label="H0 (MHz)" />
+            <Textfield {style} on:change="{(e)=>plotData({e:e, filetype:"boltzman"})}" bind:value={temp} label="Temp." />
+            <Textfield {style} on:change="{(e)=>plotData({e:e, filetype:"boltzman"})}" bind:value={totalJ} label="Total J" />
+            <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"boltzman"})}">Submit</button>
+            <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"boltzman", tkplot:"plot"})}">Open in Matplotlib</button>
         </div>
     </div>
 

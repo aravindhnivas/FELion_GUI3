@@ -33,7 +33,7 @@
     let reportTitle = "", reportComments = "", reportMethod = "info", reportMolecule = "", reportCount = 0
     let include_table = includeTable, include_plot = true
     let reportTitleContents = "", loadContent = "";
-    let stylesheet = path.resolve(__dirname, 'assets/reports/template.css')
+    const stylesheet = path.resolve(__dirname, 'assets/reports/template.css')
 
     const getHTMLContent = (content) =>{
 
@@ -65,7 +65,7 @@
     function getImage(imgID) {
         return new Promise(resolve => {
 
-            Plotly.toImage(imgID, {format: 'png', width: 1000, height: 600}).then(dataURL =>{resolve(dataURL)})
+            Plotly.toImage(imgID, {format: 'png', width: 1000, height: 500}).then(dataURL =>{resolve(dataURL)})
         });
     }
     
@@ -173,7 +173,7 @@
 
 <style>
 
-    .notification {margin-right: 1em; margin-top: 1em; ; border: 1px solid; }
+    .notification { margin-top: 1em; border: 1px solid; }
     .button {margin-right: 1em;}
 
 </style>
@@ -183,6 +183,9 @@
 <div style="margin-bottom:1em;">
 
     <Textfield style="height:3em; width:20em;" variant="outlined" bind:value={reportMolecule} label="Molecule Name" />
+    <button class="button is-pulled-right is-warning" 
+        on:click="{()=>{reportTitleContents=""; reportCount=0; createToast("Resetted", "warning")}}">Reset Report</button>
+
 </div>
 <div class="align report" {id} >
 
@@ -204,7 +207,7 @@
     <Textfield textarea bind:value={reportComments} label="Comments"  
         input$aria-controls="{id}_comments" input$aria-describedby="{id}_comments"/>
     <HelperText id="{id}_comments">
-        NOTE: You can write in markdown format (eg: # Title, **bold**, __italics__, 1., 2. for list, etc.,)
+        NOTE: You can write in markdown format (eg: # Title, ## Subtilte, **bold**, _italics_, > BlockQuotes, >> Nested BlockQuotes,  1., 2. for list, etc.,)
     </HelperText>
 
     <div class="align" style="margin-top:1em;">

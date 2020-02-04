@@ -16,7 +16,8 @@
     import {activated, modalContent, modalTitle} from "./Modal.svelte"
     
     import {onMount, afterUpdate, beforeUpdate} from "svelte"
-
+    const tree = require("directory-tree")
+    // console.log(tree)
     ///////////////////////////////////////////////////////////////////////////
 
     export let fileChecked = [],  currentLocation = "", filetype = ""
@@ -24,32 +25,43 @@
     let original_location = currentLocation
     let files = [], otherfolders = [], selectAll=false, showfiles = true, original_files = [];
     let searchKey = "";
+
     $: parentFolder = path.basename(currentLocation)
 
     const searchfile = () => {
         console.log(searchKey)
         if (!searchKey) {files = original_files}
         else {files = original_files.filter(file=>file.includes(searchKey))}
+
     }
 
     function getfiles(toast=false) {
 
         original_files = otherfolders = files = fileChecked = [], selectAll = false
         try {
-            let folderfile = fs.readdirSync(currentLocation).map(file=>path.join(currentLocation, file))
-            let allfiles = folderfile.filter(file=>fs.lstatSync(file).isFile())
-            let typefiles = allfiles.filter(file=>file.endsWith(filetype))
-            original_files = files = typefiles.map(file=>path.basename(file))
-            otherfolders = folderfile.filter(file=>fs.lstatSync(file).isDirectory()).map(file=>path.basename(file))
+            console.log("Current location: ", currentLocation)
+            let folderfile = tree( currentLocation, { extensions: new RegExp(filetype) } )
+            
+            original_files = files = folderfile.children.filter(file => file.type === "file").map(file=>file.name)
+
+            otherfolders = folderfile.children.filter(file => file.type === "directory").map(file=>file.name)
+            console.log(folderfile)
+            
             original_location = currentLocation
+            
+            console.log("Folder updated");
             if (toast) {createToast("Files updated")}
-        } catch (err) { 
+
+        } catch (err) {
+            console.log(err)
             $modalContent = err;
             $activated = true;
-         }
+        }
+
     }
 
     const changeDirectory = (goto) => {
+
         currentLocation = path.resolve(currentLocation, goto)
         getfiles()
     }
@@ -75,7 +87,7 @@
     <Icon class="material-icons" on:click="{()=>changeDirectory(original_location)}">home</Icon>
     
     <Icon class="material-icons" on:click="{()=>{getfiles(true)}}">refresh</Icon>
-    <Icon class="material-icons" on:click="{()=>changeDirectory("../")}">arrow_back</Icon>
+    <Icon class="material-icons" on:click="{()=>changeDirectory("..")}">arrow_back</Icon>
 </div>
 
 <Textfield on:keyup={searchfile} style="margin-bottom:1em;" bind:value={searchKey} label="Seach" />
@@ -98,15 +110,19 @@
         <div class="mdc-typography--subtitle1">{parentFolder}</div>
     </div>
 
+
     {#if showfiles && files != "" }
         <div class="filelist" style="padding-left:1em;" transition:fly="{{ y: -20, duration: 500 }}">
+
             <List checklist>
+
                 {#each files as file (file)}
                     <Item>
                         <Label>{file}</Label>
                         <Meta> <Checkbox bind:group={fileChecked} value={file} on:click="{()=>selectAll=false}"/> </Meta>
                     </Item>
                 {/each}
+
             </List>
         </div>
     {:else if files == ""}

@@ -19,7 +19,8 @@
     /////////////////////////////////////////////////////////////////////////
 
     // Initialisation
-    let filetype = "scan", id = "Timescan", fileChecked = [];
+    const filetype = "scan", id = "Timescan"
+    let fileChecked = [];
     let currentLocation = localStorage[`${filetype}_location`] || ""
     $: scanfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
     let openShell = false, graphPlotted = false
@@ -31,9 +32,10 @@
     let style = "width:7em; height:3.5em; margin-right:0.5em"
 
     // Linear log
+
     let logScale = false;
 
-    function plotData(event=null, filetype="scan", tkplot="run"){
+    function plotData({e=null, filetype="scan", tkplot="run"}={}){
 
         if (fileChecked.length === 0) {return createToast("No files selected", "danger")}
 
@@ -58,13 +60,13 @@
             return;
         }
 
-        let target = event.target
+        let target = e.target
+
         target.classList.toggle("is-loading")
         if (filetype == "scan") {graphPlotted = false}
-        
+
         let py;
         try {py = spawn( localStorage["pythonpath"], [path.resolve(localStorage["pythonscript"], pyfile), args] )}
-
         catch (err) {
             $modalContent = "Error accessing python. Set python location properly in Settings"
             $activated = true
@@ -141,9 +143,9 @@
     <div class="timescan_buttonContainer" slot="buttonContainer">
 
         <div class="content align buttonRow">
-            <button class="button is-link" on:click={plotData}>Timescan Plot</button>
+            <button class="button is-link" on:click="{(e)=>plotData({e:e})}">Timescan Plot</button>
             <button class="button is-link" on:click="{()=>{toggleRow = !toggleRow}}">Depletion Plot</button>
-            <button class="button is-link" on:click="{(e)=>plotData(e, "scan", "plot")}">Open in Matplotlib</button>
+            <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"scan", tkplot:"plot"})}">Open in Matplotlib</button>
             <CustomIconSwitch style="padding:0;" bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
             <CustomSwitch style="margin: 0 1em;" on:change={linearlogCheck} bind:selected={logScale} label="Log"/>
         </div>
@@ -151,11 +153,11 @@
         <div class="animated fadeIn hide buttonRow" class:active={toggleRow} >
             <CustomSelect style="width:12em; height:3.5em; margin-right:0.5em" bind:picked={resON_Files} label="ResOn" options={fileChecked}/>
             <CustomSelect style="width:12em; height:3.5em; margin-right:0.5em" bind:picked={resOFF_Files} label="ResOFF" options={fileChecked}/>
-            <Textfield {style} on:change="{(e)=>plotData(e, "depletion")}" bind:value={power} label="Power (ON, OFF)" />
-            <Textfield {style} on:change="{(e)=>plotData(e, "depletion")}" bind:value={nshots} label="FELIX Hz" />
-            <Textfield {style} on:change="{(e)=>plotData(e, "depletion")}" bind:value={massIndex} label="Mass Index" />
-            <Textfield {style} on:change="{(e)=>plotData(e, "depletion")}" bind:value={timestartIndex} label="Time Index" />
-            <button class="button is-link" on:click="{(e)=>plotData(e, "general")}">Submit</button>
+            <Textfield {style} on:change="{(e)=>plotData({e:e, filetype:"depletion"})}" bind:value={power} label="Power (ON, OFF)" />
+            <Textfield {style} on:change="{(e)=>plotData({e:e, filetype:"depletion"})}" bind:value={nshots} label="FELIX Hz" />
+            <Textfield {style} on:change="{(e)=>plotData({e:e, filetype:"depletion"})}" bind:value={massIndex} label="Mass Index" />
+            <Textfield {style} on:change="{(e)=>plotData({e:e, filetype:"depletion"})}" bind:value={timestartIndex} label="Time Index" />
+            <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"general"})}">Submit</button>
         </div>
 
     </div>

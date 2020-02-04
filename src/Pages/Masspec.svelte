@@ -19,7 +19,8 @@
     /////////////////////////////////////////////////////////////////////////
 
     // Initialisation
-    let filetype = "mass", id = "Masspec", fileChecked = [];
+    const filetype = "mass", id = "Masspec"
+    let fileChecked = [];
     let currentLocation = localStorage[`${filetype}_location`] || ""
     $: massfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
     let openShell = false, graphPlotted = false
@@ -28,11 +29,11 @@
     let toggleRow1 = false
 
     let selected_file = "", peak_prominance = 3, peak_width = 2, peak_height = 40;
-    let style = "width:7em; height:3.5em; margin-right:0.5em"
+    const style = "width:7em; height:3.5em; margin-right:0.5em"
 
     // NIST 
     let toggleRow2 = false, nist_molecule = localStorage["nist_molecule"] || "", nist_formula = localStorage["nist_formula"] || ""
-    let style2 = "width:12em; height:3em; margin-right:0.5em"
+    const style2 = "width:12em; height:3em; margin-right:0.5em"
 
     $: nist_molecule_name = `Name=${nist_molecule}`
     $: nist_molecule_formula = `Formula=${nist_formula}`
@@ -51,7 +52,7 @@
     let logScale = true;
 
     // Functions
-    function plotData(event=null, filetype="mass"){
+    function plotData({e=null, filetype="mass"}={}){
 
         if (fileChecked.length === 0) {return createToast("No files selected", "danger")}
 
@@ -76,7 +77,7 @@
             return;
         }
 
-        let target = event.target
+        let target = e.target
         target.classList.toggle("is-loading")
 
         if (filetype == "mass") {graphPlotted = false}
@@ -160,26 +161,26 @@
     <div class="masspec_buttonContainer" slot="buttonContainer">
 
         <div class="content align buttonRow">
-            <button class="button is-link" on:click={plotData}>Masspec Plot</button>
+            <button class="button is-link" on:click="{(e)=>plotData({e:e})}">Masspec Plot</button>
             <button class="button is-link" on:click="{()=>{toggleRow1 = !toggleRow1}}">Find Peaks</button>
             <button class="button is-link" on:click="{()=>{toggleRow2 = !toggleRow2}}">NIST Webbook</button>
-            <button class="button is-link" on:click="{(e)=>plotData(e, "general")}">Open in Matplotlib</button>
+            <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"general"})}">Open in Matplotlib</button>
             <CustomIconSwitch style="padding:0;" bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
             <CustomSwitch style="margin: 0 1em;" on:change={linearlogCheck} bind:selected={logScale} label="Log"/>
         </div>
 
         <div class="animated fadeIn hide buttonRow" class:active={toggleRow1} >
             <CustomSelect style="width:12em; height:3.5em; margin-right:0.5em" bind:picked={selected_file} label="Filename" options={fileChecked}/>
-            <Textfield {style} on:change="{(e)=>plotData(e, "find_peaks")}" bind:value={peak_prominance} label="Prominance" />
-            <Textfield {style} on:change="{(e)=>plotData(e, "find_peaks")}" bind:value={peak_width} label="Width" />
-            <Textfield {style} on:change="{(e)=>plotData(e, "find_peaks")}" bind:value={peak_height} label="Height" />
-            <button class="button is-link" on:click="{(e)=>plotData(e, "find_peaks")}">Get Peaks</button>
+            <Textfield {style} on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_prominance} label="Prominance" />
+            <Textfield {style} on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_width} label="Width" />
+            <Textfield {style} on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_height} label="Height" />
+            <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"find_peaks"})}">Get Peaks</button>
             <button class="button is-danger" on:click="{(e)=>window.Plotly.relayout("mplot", { annotations: [] })}">Clear</button>
         </div>
 
         <div class="animated fadeIn hide buttonRow" class:active={toggleRow2}>
-            <Textfield {style} on:change="{()=>set_nist_url("by_name")}" bind:value={nist_molecule} label="Molecule Name" />
-            <Textfield {style} on:change={set_nist_url} bind:value={nist_formula} label="Molecule Formula" />
+            <Textfield {style2} on:change="{()=>set_nist_url("by_name")}" bind:value={nist_molecule} label="Molecule Name" />
+            <Textfield {style2} on:change={set_nist_url} bind:value={nist_formula} label="Molecule Formula" />
         </div>
 
     </div>

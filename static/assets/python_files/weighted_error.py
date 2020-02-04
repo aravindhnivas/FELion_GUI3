@@ -3,7 +3,7 @@ import sys
 
 # Data analysis
 import numpy as np
-from uncertainties import ufloat as uf
+from uncertainties import ufloat as uf, unumpy as unp
 from FELion_definitions import sendData
 
 def calc_error(data):
@@ -12,18 +12,22 @@ def calc_error(data):
     p =1/s**2
 
     sum_p = np.sum(p)
-    weighted_mean = np.sum(x*p)/sum_p
+    # weighted_mean = np.sum(x*p)/sum_p
+    weighted_mean = np.average(x, weights=p)
+
     s_int = 1 / np.sqrt(sum_p)
 
     N = len(x)
 
-    weighted_varience = np.sum(p*(x-weighted_mean)**2)/sum_p
+    # weighted_varience = np.sum(p*(x-weighted_mean)**2)/sum_p
+    weighted_varience =  np.average((x-weighted_mean)**2, weights=p)
     s_ext = np.sqrt(weighted_varience/(N-1))
-    u_arithmetic_mean = uf(np.mean(x), np.std(x))
+    
+    u_arithmetic_mean = unp.uarray(x, s).mean()
     u_weighted_mean = uf(weighted_mean, max(s_int, s_ext))
+
     dataToSend = {"S_int":s_int, "S_ext":s_ext, "weighted_mean":weighted_mean, "weighted_s": max(s_int, s_ext), 
         "unweighted_mean":np.mean(x), "unweigted_s":np.std(x), "mean":f"{u_arithmetic_mean:.2uP}", "wmean":f"{u_weighted_mean:.2uP}"}
-
     return dataToSend
 
 if __name__ == "__main__":
