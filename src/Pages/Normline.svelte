@@ -79,7 +79,7 @@
 
     ///////////////////////////////////////////////////////////////////////////////////
     const replot = () => {
-        
+
         if (graphPlotted) {
             let {data, layout} = normMethod_datas[normMethod]
 
@@ -416,42 +416,40 @@
     }
     const clearAllPeak = () => {
 
-        console.log("Removing all found peak values")
-        annotations, index, line = []
-        Plotly.relayout("avgplot", { annotations: [], shapes: [] })
-
         if (plot_trace_added === 0) {return createToast("No fitted lines found", "danger")}
-        console.log(`Total files plotted: ${plot_trace_added}`)
+
+        console.log("Removing all found peak values")
+        
+        annotations = index = line = []
+        Plotly.relayout("avgplot", { annotations: [], shapes: [] })
         for (let i=0; i<plot_trace_added; i++) {Plotly.deleteTraces("avgplot", [-1])}
         plot_trace_added = 0
+
     }
 
     const clearLastPeak = (e) => {
-
-        if (plot_trace_added > 0) {
+        
+        if (plot_trace_added === 0) {return createToast("No fitted lines found", "danger")}
             
-            if (double_peak_active) {
-                plotData({filetype:"general", general:{args:[output_name, currentLocation], pyfile:"delete_fileLines.py"}})
-                plotData({filetype:"general", general:{args:[output_name, currentLocation], pyfile:"delete_fileLines.py"}})
-                dataTable = _.dropRight(dataTable, 2)
-                annotations = _.dropRight(annotations, 2)
-            } else {
+        if (double_peak_active) {
+            plotData({filetype:"general", general:{args:[output_name, currentLocation], pyfile:"delete_fileLines.py"}})
+            plotData({filetype:"general", general:{args:[output_name, currentLocation], pyfile:"delete_fileLines.py"}})
+            dataTable = _.dropRight(dataTable, 2)
+            annotations = _.dropRight(annotations, 2)
 
-                plotData({filetype:"general", general:{args:[output_name, currentLocation], pyfile:"delete_fileLines.py"}})
-                dataTable = _.dropRight(dataTable, 1)
-                line = _.dropRight(line, 2)
-                annotations = _.dropRight(annotations, 1)
-            }
-
-            Plotly.deleteTraces("avgplot", [-1])
-            console.log("Last fitted peak removed")
-            plot_trace_added--
-            } else {
-            if (annotations.length === 0) {createToast("No fitted lines found", "danger")}
-            console.log("No line fit is found to remove")
+        } else {
+            plotData({filetype:"general", general:{args:[output_name, currentLocation], pyfile:"delete_fileLines.py"}})
+            dataTable = _.dropRight(dataTable, 1)
+            line = _.dropRight(line, 2)
+            annotations = _.dropRight(annotations, 1)
+            
         }
         Plotly.relayout("avgplot", { annotations: annotations, shapes: line })
 
+        Plotly.deleteTraces("avgplot", [-1])
+        console.log("Last fitted peak removed")
+
+        plot_trace_added--
     }
 
     onMount(()=>{
