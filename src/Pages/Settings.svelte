@@ -238,9 +238,12 @@
 
     const backUp = (event) => {
         console.log(`Archiving existing software to ${backupName}.zip`)
+
         const _static = {path:path.resolve(__dirname, "..", "static"), name:"static"}
         const versionFileJson = {path:path.resolve(__dirname, "..", "version.json"), name:"version.json"}
-        const folders = [_static, versionFileJson]
+        const packageJson = {path:path.resolve(__dirname, "..", "package.json"), name:"package.json"}
+        
+        const folders = [_static, versionFileJson, packageJson]
 
         browse({dir:true})
         .then(result=>{
@@ -253,11 +256,12 @@
             console.log("Selected folder: ", folderName)
             folders.forEach(folder=>{
                 const _dest = path.resolve(folderName, backupName , folder.name)
+                console.log(`Backing up ${folder.name} to ${_dest}\n`)
                 copy(folder.path, _dest, {overwrite: true}, function(error, results) {
                     if (error) { console.log('Copy failed: ' + error); createToast("Error Occured while copying", "danger")}
                     else {
                         console.info('Copied ' + results.length + ' files')
-                        console.info('Copied ' + results + ' files')
+                        // console.info('Copied ' + results + ' files')
                     }
                 })
                 
@@ -290,7 +294,8 @@
 
             const _static = {path:path.resolve(folderName, "static"), name:"static"}
             const versionFileJson = {path:path.resolve(folderName, "version.json"), name:"version.json"}
-            const folders = [_static, versionFileJson]
+            const packageJson = {path:path.resolve(folderName, "package.json"), name:"package.json"}
+            const folders = [_static, versionFileJson, packageJson]
 
             folders.forEach(folder=>{
                 const _dest = path.resolve(__dirname, "..", folder.name)
