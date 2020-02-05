@@ -44890,62 +44890,62 @@ function create_fragment$X(ctx) {
 			h12.textContent = "About";
 			attr_dev(div0, "class", "title nav hvr-glow svelte-4r2npq");
 			toggle_class(div0, "clicked", /*selected*/ ctx[0] === "Configuration");
-			add_location(div0, file$S, 359, 16, 13150);
+			add_location(div0, file$S, 339, 16, 12485);
 			attr_dev(div1, "class", "title nav hvr-glow svelte-4r2npq");
 			toggle_class(div1, "clicked", /*selected*/ ctx[0] === "Update");
-			add_location(div1, file$S, 360, 16, 13282);
+			add_location(div1, file$S, 340, 16, 12617);
 			attr_dev(div2, "class", "title nav hvr-glow svelte-4r2npq");
 			toggle_class(div2, "clicked", /*selected*/ ctx[0] === "About");
-			add_location(div2, file$S, 361, 16, 13400);
+			add_location(div2, file$S, 341, 16, 12735);
 			attr_dev(div3, "class", "container left svelte-4r2npq");
-			add_location(div3, file$S, 358, 12, 13104);
+			add_location(div3, file$S, 338, 12, 12439);
 			attr_dev(div4, "class", "column side-panel is-2-widescreen is-3-desktop is-4-tablet box adjust-right svelte-4r2npq");
-			add_location(div4, file$S, 357, 8, 13001);
+			add_location(div4, file$S, 337, 8, 12336);
 			attr_dev(h10, "class", "title svelte-4r2npq");
-			add_location(h10, file$S, 370, 20, 13785);
+			add_location(h10, file$S, 350, 20, 13120);
 			attr_dev(button0, "class", "button is-link svelte-4r2npq");
-			add_location(button0, file$S, 374, 20, 14086);
+			add_location(button0, file$S, 354, 20, 13421);
 			attr_dev(button1, "class", "button is-link svelte-4r2npq");
-			add_location(button1, file$S, 375, 20, 14178);
+			add_location(button1, file$S, 355, 20, 13513);
 			attr_dev(div5, "class", "content animated fadeIn svelte-4r2npq");
 			toggle_class(div5, "active", /*selected*/ ctx[0] === "Configuration");
-			add_location(div5, file$S, 369, 16, 13684);
+			add_location(div5, file$S, 349, 16, 13019);
 			attr_dev(h11, "class", "title svelte-4r2npq");
-			add_location(h11, file$S, 381, 20, 14419);
+			add_location(h11, file$S, 361, 20, 13754);
 			attr_dev(div6, "class", "subtitle svelte-4r2npq");
-			add_location(div6, file$S, 382, 20, 14470);
+			add_location(div6, file$S, 362, 20, 13805);
 			attr_dev(div7, "class", "content svelte-4r2npq");
-			add_location(div7, file$S, 384, 20, 14574);
+			add_location(div7, file$S, 364, 20, 13909);
 			attr_dev(button2, "class", "button is-link svelte-4r2npq");
-			add_location(button2, file$S, 391, 24, 15072);
+			add_location(button2, file$S, 371, 24, 14407);
 			attr_dev(button3, "class", "button is-link svelte-4r2npq");
-			add_location(button3, file$S, 392, 24, 15173);
+			add_location(button3, file$S, 372, 24, 14508);
 			attr_dev(div8, "class", "content svelte-4r2npq");
-			add_location(div8, file$S, 390, 20, 15025);
+			add_location(div8, file$S, 370, 20, 14360);
 			attr_dev(button4, "class", "button is-link svelte-4r2npq");
-			add_location(button4, file$S, 398, 24, 15462);
+			add_location(button4, file$S, 378, 24, 14797);
 			attr_dev(button5, "class", "button is-link svelte-4r2npq");
-			add_location(button5, file$S, 399, 24, 15552);
+			add_location(button5, file$S, 379, 24, 14887);
 			attr_dev(div9, "class", "content svelte-4r2npq");
-			add_location(div9, file$S, 396, 20, 15291);
+			add_location(div9, file$S, 376, 20, 14626);
 			attr_dev(div10, "class", "content animated fadeIn svelte-4r2npq");
 			toggle_class(div10, "active", /*selected*/ ctx[0] === "Update");
-			add_location(div10, file$S, 380, 16, 14325);
+			add_location(div10, file$S, 360, 16, 13660);
 			attr_dev(h12, "class", "title svelte-4r2npq");
-			add_location(h12, file$S, 407, 20, 15839);
+			add_location(h12, file$S, 387, 20, 15174);
 			attr_dev(div11, "class", "content animated fadeIn svelte-4r2npq");
 			toggle_class(div11, "active", /*selected*/ ctx[0] === "About");
-			add_location(div11, file$S, 406, 16, 15746);
+			add_location(div11, file$S, 386, 16, 15081);
 			attr_dev(div12, "class", "container right svelte-4r2npq");
-			add_location(div12, file$S, 366, 12, 13595);
+			add_location(div12, file$S, 346, 12, 12930);
 			attr_dev(div13, "class", "column main-panel box svelte-4r2npq");
-			add_location(div13, file$S, 365, 8, 13546);
+			add_location(div13, file$S, 345, 8, 12881);
 			attr_dev(div14, "class", "columns svelte-4r2npq");
-			add_location(div14, file$S, 355, 4, 12968);
+			add_location(div14, file$S, 335, 4, 12303);
 			attr_dev(section, "class", "section animated fadeIn svelte-4r2npq");
 			attr_dev(section, "id", "Settings");
 			set_style(section, "display", "none");
-			add_location(section, file$S, 354, 0, 12886);
+			add_location(section, file$S, 334, 0, 12221);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -45404,24 +45404,8 @@ function instance$X($$self, $$props, $$invalidate) {
 	let backupName = "FELion_GUI_backup";
 
 	const backUp = event => {
-		console.log(`Archiving existing software to ${backupName}.zip`);
-
-		const _static = {
-			path: path.resolve(__dirname, "..", "static"),
-			name: "static"
-		};
-
-		const versionFileJson = {
-			path: path.resolve(__dirname, "..", "version.json"),
-			name: "version.json"
-		};
-
-		const packageJson = {
-			path: path.resolve(__dirname, "..", "package.json"),
-			name: "package.json"
-		};
-
-		const folders = [_static, versionFileJson, packageJson];
+		let target = event.target;
+		target.classList.toggle("is-loading");
 
 		browse({ dir: true }).then(result => {
 			let folderName;
@@ -45433,23 +45417,29 @@ function instance$X($$self, $$props, $$invalidate) {
 			}
 
 			console.log("Selected folder: ", folderName);
+			const _dest = path.resolve(folderName, backupName);
+			const _src = path.resolve(__dirname, "..");
 
-			folders.forEach(folder => {
-				const _dest = path.resolve(folderName, backupName, folder.name);
-				console.log(`Backing up ${folder.name} to ${_dest}\n`);
-
-				copy(folder.path, _dest, { overwrite: true }, function (error, results) {
+			copy(
+				_src,
+				_dest,
+				{
+					overwrite: true,
+					filter: fs.readdirSync(_src).filter(file => file != "node_modules")
+				},
+				function (error, results) {
 					if (error) {
 						console.log("Copy failed: " + error);
 						createToast$1("Error Occured while copying", "danger");
+						target.classList.toggle("is-loading");
 					} else {
 						console.info("Copied " + results.length + " files");
-					} // console.info('Copied ' + results + ' files')
-				});
-			});
-
-			console.log("BackUp completed");
-			createToast$1("BackUp completed", "success");
+						console.log("BackUp completed");
+						createToast$1("BackUp completed", "success");
+						target.classList.toggle("is-loading");
+					}
+				}
+			);
 		}).catch(err => {
 			console.log(err);
 			set_store_value(modalContent, $modalContent = err);
@@ -45459,6 +45449,8 @@ function instance$X($$self, $$props, $$invalidate) {
 
 	const restore = () => {
 		console.log(`Restoring existing software to ${__dirname}`);
+		let target = event.target;
+		target.classList.toggle("is-loading");
 
 		browse({ dir: true }).then(result => {
 			let folderName;
@@ -45470,48 +45462,33 @@ function instance$X($$self, $$props, $$invalidate) {
 			}
 
 			console.log("Selected folder: ", folderName);
+			const _dest = path.resolve(__dirname, "..");
+			const _src = path.resolve(folderName, backupName);
 
-			const _static = {
-				path: path.resolve(folderName, "static"),
-				name: "static"
-			};
+			copy(_src, _dest, { overwrite: true }, function (error, results) {
+				if (error) {
+					console.log("Copy failed: " + error);
+					createToast$1("Error Occured while copying", "danger");
+					target.classList.toggle("is-loading");
+				} else {
+					console.info("Copied " + results.length + " files");
+					target.classList.toggle("is-loading");
 
-			const versionFileJson = {
-				path: path.resolve(folderName, "version.json"),
-				name: "version.json"
-			};
+					let response = remote.dialog.showMessageBox(remote.getCurrentWindow(), {
+						title: "FELion_GUI3",
+						type: "info",
+						message: "Restored succesfull",
+						buttons: ["Restart", "Restart later"]
+					});
 
-			const packageJson = {
-				path: path.resolve(folderName, "package.json"),
-				name: "package.json"
-			};
+					if (response === 0) {
+						remote.getCurrentWindow().reload();
+					} else console.log("Restarting later");
 
-			const folders = [_static, versionFileJson, packageJson];
-
-			folders.forEach(folder => {
-				const _dest = path.resolve(__dirname, "..", folder.name);
-
-				copy(folder.path, _dest, { overwrite: true }, function (error, results) {
-					if (error) {
-						console.log("Copy failed: " + error);
-						createToast$1("Error Occured while copying", "danger");
-					} else {
-						console.info("Copied " + results.length + " files");
-						console.info("Copied " + results + " files");
-					}
-				});
+					console.log("Restoring completed");
+					createToast$1("Restoring completed", "success");
+				}
 			});
-
-			let response = remote.dialog.showMessageBox(remote.getCurrentWindow(), {
-				title: "FELion_GUI3",
-				type: "info",
-				message: "Restored succesfull",
-				buttons: ["Restart", "Restart later"]
-			});
-
-			if (response === 0) remote.getCurrentWindow().reload(); else console.log("Restarting later");
-			console.log("Restoring completed");
-			createToast$1("Restoring completed", "success");
 		}).catch(err => {
 			console.log(err);
 			set_store_value(modalContent, $modalContent = err);

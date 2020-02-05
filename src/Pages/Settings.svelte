@@ -237,94 +237,74 @@
     let backupName = "FELion_GUI_backup"
 
     const backUp = (event) => {
-        console.log(`Archiving existing software to ${backupName}.zip`)
-
-        const _static = {path:path.resolve(__dirname, "..", "static"), name:"static"}
-        const versionFileJson = {path:path.resolve(__dirname, "..", "version.json"), name:"version.json"}
-        const packageJson = {path:path.resolve(__dirname, "..", "package.json"), name:"package.json"}
-        
-        const folders = [_static, versionFileJson, packageJson]
-
-        browse({dir:true})
-        .then(result=>{
+        let target = event.target
+        target.classList.toggle("is-loading")
+        browse({dir:true}).then(result=>{
 
             let folderName;
             if (!result.canceled) {
                 folderName = result.filePaths[0]
             } else {return console.log("Cancelled")}
-
             console.log("Selected folder: ", folderName)
-            folders.forEach(folder=>{
-                const _dest = path.resolve(folderName, backupName , folder.name)
-                console.log(`Backing up ${folder.name} to ${_dest}\n`)
-                copy(folder.path, _dest, {overwrite: true}, function(error, results) {
-                    if (error) { console.log('Copy failed: ' + error); createToast("Error Occured while copying", "danger")}
-                    else {
-                        console.info('Copied ' + results.length + ' files')
-                        // console.info('Copied ' + results + ' files')
-                    }
-                })
-                
+
+            const _dest = path.resolve(folderName, backupName)
+            const _src =path.resolve(__dirname, "..")
+            copy(_src, _dest, {overwrite: true, filter:fs.readdirSync(_src).filter(file => file != "node_modules")}, function(error, results) {
+                if (error) { console.log('Copy failed: ' + error); createToast("Error Occured while copying", "danger"); target.classList.toggle("is-loading")}
+                else {
+                    console.info('Copied ' + results.length + ' files')
+                    console.log("BackUp completed")
+                    createToast("BackUp completed", "success")
+                    target.classList.toggle("is-loading")
+                }
             })
-
-            console.log("BackUp completed")
-
-            createToast("BackUp completed", "success")
-            
         })
         .catch(err=>{
             console.log(err)
-
             $modalContent = err
             $activated = true
         })
     }
 
     const restore = () =>{
-
         console.log(`Restoring existing software to ${__dirname}`)
-        browse({dir:true})
-        .then(result=>{
+
+        let target = event.target
+        target.classList.toggle("is-loading")
+
+        browse({dir:true}).then(result=>{
 
             let folderName;
             if (!result.canceled) { folderName = result.filePaths[0] } 
             else {return console.log("Cancelled")}
 
             console.log("Selected folder: ", folderName)
+            const _dest = path.resolve(__dirname, "..")
+            const _src = path.resolve(folderName, backupName)
+            
+            copy(_src, _dest, {overwrite: true}, function(error, results) {
+                if (error) { console.log('Copy failed: ' + error); createToast("Error Occured while copying", "danger"); target.classList.toggle("is-loading")}
+                else {
+                    console.info('Copied ' + results.length + ' files')
+                    target.classList.toggle("is-loading")
+                    let response = remote.dialog.showMessageBox(remote.getCurrentWindow(),
+                        {title:"FELion_GUI3", type:"info", message:"Restored succesfull", buttons:["Restart", "Restart later"]} )
 
-            const _static = {path:path.resolve(folderName, "static"), name:"static"}
-            const versionFileJson = {path:path.resolve(folderName, "version.json"), name:"version.json"}
-            const packageJson = {path:path.resolve(folderName, "package.json"), name:"package.json"}
-            const folders = [_static, versionFileJson, packageJson]
+                    if (response===0){ remote.getCurrentWindow().reload()}
+                    else console.log("Restarting later")
 
-            folders.forEach(folder=>{
-                const _dest = path.resolve(__dirname, "..", folder.name)
-                copy(folder.path, _dest, {overwrite: true}, function(error, results) {
-
-                    if (error) { console.log('Copy failed: ' + error); createToast("Error Occured while copying", "danger")} 
-                    else {
-                        console.info('Copied ' + results.length + ' files')
-                        console.info('Copied ' + results + ' files')
-                    }
-                })
-
+                    console.log("Restoring completed")
+                    createToast("Restoring completed", "success")
+                }
             })
-
-            let response = remote.dialog.showMessageBox(remote.getCurrentWindow(),
-                {title:"FELion_GUI3", type:"info", message:"Restored succesfull", buttons:["Restart", "Restart later"]} )
-            if (response===0) remote.getCurrentWindow().reload()
-            else console.log("Restarting later")
-
-            console.log("Restoring completed")
-            createToast("Restoring completed", "success")
-
         })
         .catch(err=>{
             console.log(err)
-
             $modalContent = err
             $activated = true
+        
         })
+
     }
 
 </script>
