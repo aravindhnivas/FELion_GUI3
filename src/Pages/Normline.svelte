@@ -84,6 +84,7 @@
             let {data, layout} = normMethod_datas[normMethod]
 
             Plotly.react("avgplot",data, layout, { editable: true })
+            line = annotations = lineData_list = [], plot_trace_added = 0
         }
     }
     
@@ -121,8 +122,8 @@
 
         let target = e.target
         target.classList.toggle("is-loading")
+
         let pyfileInfo = {
-        
             felix: {pyfile:"normline.py" , args:[...felixfiles, delta]},
             exp_fit: {pyfile:"exp_gauss_fit.py" , args:[...felixfiles, overwrite_expfit, output_name, normMethod, currentLocation, ...index]},
         
@@ -171,13 +172,14 @@
 
                 try {
                     let dataFromPython = fs.readFileSync(path.join(localStorage["pythonscript"], "data.json"))
+
                     dataFromPython = JSON.parse(dataFromPython.toString("utf-8"))
 
                     console.log(dataFromPython)
 
                     if (filetype == "felix") {
 
-                        line = [], index = [], annotations = [], lineData_list = []
+                        line = [], index = [], annotations = [], lineData_list = [], plot_trace_added = 0
 
                         show_theoryplot = false
                         if (!keepTable) {dataTable = []}
@@ -326,9 +328,11 @@
                         Plotly.relayout("avgplot", { shapes: line })
 
                         annotations = [...annotations, dataFromPython["annotations"]]
-                        
                         Plotly.relayout("avgplot", { annotations: annotations })
+
+                        
                         plot_trace_added++
+                        
                         let [freq, amp, fwhm, sig] = dataFromPython["table"].split(", ")
 
                         let color = "#fafafa";
@@ -351,8 +355,6 @@
                         console.log("Line fitted")
                         createToast("Line fitted with gaussian function", "success")
                     } else if (filetype == "get_err") {
-                        
-                        
                         let {freq, amp, fwhm, sig } = dataFromPython
                         let data1 = {name: "unweighted_mean", id:getID(), freq:freq.mean, amp:amp.mean, fwhm:fwhm.mean, sig:sig.mean, color:"#452f7da8"}
                         let data2 = {name: "weighted_mean", id:getID(), freq:freq.wmean, amp:amp.wmean, fwhm:fwhm.wmean, sig:sig.wmean, color:"#452f7da8"}
@@ -412,19 +414,16 @@
             target.classList.toggle("is-loading")
         })
     }
-
     const clearAllPeak = () => {
 
         console.log("Removing all found peak values")
-
-        if (plot_trace_added === 0) {createToast("No fitted lines found", "danger")}
-        annotations = []
-        index = []
+        annotations, index, line = []
         Plotly.relayout("avgplot", { annotations: [], shapes: [] })
-        console.log(`Total files plotted: ${plot_trace_added}`)
 
+        if (plot_trace_added === 0) {return createToast("No fitted lines found", "danger")}
+        console.log(`Total files plotted: ${plot_trace_added}`)
         for (let i=0; i<plot_trace_added; i++) {Plotly.deleteTraces("avgplot", [-1])}
-        plot_trace_added = 0, line = []
+        plot_trace_added = 0
     }
 
     const clearLastPeak = (e) => {
@@ -451,17 +450,14 @@
             if (annotations.length === 0) {createToast("No fitted lines found", "danger")}
             console.log("No line fit is found to remove")
         }
-
-        
-        
         Plotly.relayout("avgplot", { annotations: annotations, shapes: line })
+
     }
 
     onMount(()=>{
         console.log("Normline mounted")
     })
     let collectData = true, lineData_list = [], toggleDoubleGaussRow = false, weighted_error = [[], []], err_data1_plot = false
-
     let amp1=0, amp2=0, cen1=0, cen2=0, sig1=5, sig2=5
     let toggleFindPeaksRow = false
     let peak_height = 0, peak_width = 5, peak_prominence = 3;

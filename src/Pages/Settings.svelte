@@ -55,15 +55,18 @@
     }
 
     let pythonpathCheck;
+
     onMount(()=>{
-        checkPython()
-        .then(res=>{ console.log("Python path is valid")})
+        checkPython().then(res=>{ console.log("Python path is valid")})
         .catch(err=>pythonpathCheck.open() )
+
+        updateCheck({info:false})
+
+        setTimeout(()=>{updateCheck({info:false})}, 1*1000*60*15)
     })
 
     const handlepythonPathCheck = () => {
         console.log("Python path checking done")
-
     }
 
     // UPDATE
@@ -72,35 +75,33 @@
     let versionFile = fs.readFileSync(path.join(__dirname, "../version.json"))
 
     let currentVersion = localStorage["version"] =  JSON.parse(versionFile.toString("utf-8")).version
-
     $: versionJson = `https://raw.githubusercontent.com/${github_username}/${github_repo}/${gihub_branchname}/version.json`
     $: urlzip = `https://codeload.github.com/${github_username}/${github_repo}/zip/${gihub_branchname}`
 
     const updateFolder = path.resolve(__dirname, "..", "update")
+
     const updatefilename = "update.zip"
     const zipFile = path.resolve(updateFolder, updatefilename)
 
-    const updateCheck = () => {
-        if (!navigator.onLine) {return createToast("No Internet Connection!", "warning")}
+    const updateCheck = ({info=true}={}) => {
+
+        if (!navigator.onLine) {if (info) {createToast("No Internet Connection!", "warning")}; return}
         
-        // createToast("Checking for update", "warning")
         console.log(`URL_Package: ${versionJson}`)
-
         let developer_version = false
-
         console.log(`URL_ZIP: ${urlzip}`)
         let new_version = ""
 
         let request = https.get(versionJson, (res) => {
 
             console.log('statusCode:', res.statusCode);
-            if (res.statusCode === 404) {return createToast("URL is not valid", "danger")}
+            if (res.statusCode === 404) { if (info) {createToast("URL is not valid", "danger")}; return}
 
             console.log('headers:', res.headers);
 
             res.on('data', (data) => {
-                data = data.toString("utf8")
 
+                data = data.toString("utf8")
                 console.log(data)
                 data = JSON.parse(data)
                 console.log(data)
@@ -109,15 +110,15 @@
 
                 console.log(`Developer version: ${developer_version}`)
                 console.log(`Received package:`, data)
+
                 console.log(`Version available ${new_version}`)
                 console.log(`Current version ${currentVersion}`)
 
             })
-            res.on("error", (err)=>{
 
+            res.on("error", (err)=>{
                 console.log("Error while reading downloaded data: ")
                 new_version = ""
-
             })
 
             res.on("close", ()=>{console.log("Update request completed.")})
@@ -132,8 +133,8 @@
 
             if (currentVersion === new_version) {
                 if (developer_version) {
-                    createToast(`CAUTION! You are checking with developer branch which has experimental features. Take backup before updating.`, "danger")
-                } else {createToast("No stable update available", "warning")}
+                    if (info) {createToast(`CAUTION! You are checking with developer branch which has experimental features. Take backup before updating.`, "danger")}
+                } else { if (info) {createToast("No stable update available", "warning")}}
             }
 
 
@@ -161,9 +162,8 @@
 
             }
             console.log("Update check completed")
-            // createToast("Update check completed", "success")
-
         })
+
     }
 
     // Download the update file
@@ -209,7 +209,6 @@
         await download()
         InstallUpdate()
 
-    
     }
 
     const InstallUpdate = () => {
@@ -235,16 +234,10 @@
     }
 
     // Backup and restore
-
     let backupName = "FELion_GUI_backup"
 
-
     const backUp = (event) => {
-
-
         console.log(`Archiving existing software to ${backupName}.zip`)
-
-
         const _static = {path:path.resolve(__dirname, "..", "static"), name:"static"}
         const versionFileJson = {path:path.resolve(__dirname, "..", "version.json"), name:"version.json"}
         const folders = [_static, versionFileJson]
@@ -321,15 +314,13 @@
             createToast("Restoring completed", "success")
 
         })
-
         .catch(err=>{
             console.log(err)
+
             $modalContent = err
-            
             $activated = true
         })
     }
-        
 
 </script>
 
@@ -339,17 +330,17 @@
     .side-panel, .main-panel {height: calc(100vh - 7em);}
     .box { background-color: #6a50ad8a}
     .main-panel {margin: 0 5em;}
+
     .left .title { letter-spacing: 0.1em; text-transform: uppercase; padding: 0.5em;
         font-size: larger; cursor: pointer; border-radius: 20px 0; margin-bottom: 1em;
-
     }
 
     .container {padding: 2em; display: grid;}
     .clicked {border-left: 2px solid #fafafa; background-color: #6a50ad;}
-
     .right > div {display: none;}
     .active {display: block!important; }
     .right .title {letter-spacing: 0.1em; text-transform: uppercase;}
+    
     * :global(option) { color: black; }
 </style>
 

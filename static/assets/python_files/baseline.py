@@ -69,14 +69,11 @@ class Create_Baseline():
         self.cfelix = f'{self.fname}.cfelix'
         folders = ["DATA", "EXPORT", "OUT"]
 
-        
-
         if checkdir:
             back_dir = dirname(location)
-            if set(folders).issubset(os.listdir(back_dir)): 
-                self.location = pt(back_dir)
-            else: 
-                self.location = pt(location)
+            if set(folders).issubset(os.listdir(back_dir)): self.location = pt(back_dir)
+            else:  self.location = pt(location)
+            
             os.chdir(self.location)
         
         else: 

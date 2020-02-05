@@ -1,28 +1,23 @@
+
 # Importing Modules
 from pathlib import Path as pt
 import sys
 
 # Data analysis
 import numpy as np
-# from scipy.optimize import curve_fit
 
 # FELion module
 from FELion_definitions import gauss_fit, read_dat_file
 from FELion_constants import colors 
 from FELion_definitions import sendData
 
-# def _2gaussian(x, amp1,cen1,sigma1, amp2,cen2,sigma2):
-#     return amp1*(1/(sigma1*(np.sqrt(2*np.pi))))*(np.exp((-1.0/2.0)*(((x-cen1)/sigma1)**2))) + \
-#             amp2*(1/(sigma2*(np.sqrt(2*np.pi))))*(np.exp((-1.0/2.0)*(((x-cen2)/sigma2)**2)))
-
-# def _1gaussian(x, amp1,cen1,sigma1):
-#     return amp1*(1/(sigma1*(np.sqrt(2*np.pi))))*(np.exp((-1.0/2.0)*(((x-cen1)/sigma1)**2)))
-
 def exp_fit(location, norm_method, start_wn, end_wn, output_filename, 
     overwrite=False, fullfiles=None, tkplot=False, getvalue=False):
+    
 
     if location.name is "DATA": datfile_location = location.parent/"EXPORT"
     else: datfile_location = location/"EXPORT"
+    
     readfile = f"{datfile_location}/{output_filename}.dat"
     wn, inten = read_dat_file(readfile, norm_method)
 
@@ -35,18 +30,13 @@ def exp_fit(location, norm_method, start_wn, end_wn, output_filename,
             line_color = f"rgb{colors[index]}"
         else: line_color = f"rgb{colors[index]}"
 
-    # line_color = "black"
-
-    # Getting data from the selected range
     index = np.logical_and(wn > start_wn, wn < end_wn)
     wn = wn[index]
     inten = inten[index]
 
     _sig = "\u03C3"
-
     _del = "\u0394"
     
-
     model = gauss_fit(wn, inten)
     fit_data, uline_freq, usigma, uamplitude, ufwhm = model.get_data()
 
@@ -69,6 +59,7 @@ def exp_fit(location, norm_method, start_wn, end_wn, output_filename,
             "showarrow": True, "arrowhead": 2, "ax": -25, "ay": -40
         }
     }
+    
     if getvalue: return data, uline_freq, usigma, uamplitude, ufwhm, line_color
 
     filename = f"{output_filename}.expfit"
