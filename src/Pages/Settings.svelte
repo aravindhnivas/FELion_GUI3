@@ -237,20 +237,23 @@
     let backupName = "FELion_GUI_backup"
 
     const backUp = (event) => {
+
         let target = event.target
-        target.classList.toggle("is-loading")
+        
         browse({dir:true}).then(result=>{
 
             let folderName;
-            if (!result.canceled) {
-                folderName = result.filePaths[0]
-            } else {return console.log("Cancelled")}
+            if (!result.canceled) { folderName = result.filePaths[0] } else {return console.log("Cancelled")}
+
+            target.classList.toggle("is-loading")
             console.log("Selected folder: ", folderName)
 
             const _dest = path.resolve(folderName, backupName)
             const _src =path.resolve(__dirname, "..")
+
             copy(_src, _dest, {overwrite: true, filter:fs.readdirSync(_src).filter(file => file != "node_modules")}, function(error, results) {
                 if (error) { console.log('Copy failed: ' + error); createToast("Error Occured while copying", "danger"); target.classList.toggle("is-loading")}
+            
                 else {
                     console.info('Copied ' + results.length + ' files')
                     console.log("BackUp completed")
@@ -270,15 +273,14 @@
         console.log(`Restoring existing software to ${__dirname}`)
 
         let target = event.target
-        target.classList.toggle("is-loading")
-
         browse({dir:true}).then(result=>{
 
             let folderName;
-            if (!result.canceled) { folderName = result.filePaths[0] } 
-            else {return console.log("Cancelled")}
+            if (!result.canceled) { folderName = result.filePaths[0] } else {return console.log("Cancelled")}
 
+            target.classList.toggle("is-loading")
             console.log("Selected folder: ", folderName)
+
             const _dest = path.resolve(__dirname, "..")
             const _src = path.resolve(folderName, backupName)
             
