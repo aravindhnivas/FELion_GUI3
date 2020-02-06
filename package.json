@@ -13,7 +13,7 @@
     "bulma": "^0.8.0",
     "concurrently": "^4.1.0",
     "devtron": "^1.4.0",
-    "electron": "^7.1.11",
+    "electron": "^8.0.0",
     "electron-packager": "^14.2.0",
     "electron-winstaller": "^4.0.0",
     "node-sass": "^4.12.0",
