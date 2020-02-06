@@ -42730,11 +42730,11 @@ const file$Q = "src\\Pages\\Timescan.svelte";
 
 function get_each_context$6(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[37] = list[i];
+	child_ctx[34] = list[i];
 	return child_ctx;
 }
 
-// (143:4) <div class="timescan_buttonContainer" slot="buttonContainer">
+// (156:4) <div class="timescan_buttonContainer" slot="buttonContainer">
 function create_buttonContainer_slot$2(ctx) {
 	let div0;
 	let div1;
@@ -42766,7 +42766,7 @@ function create_buttonContainer_slot$2(ctx) {
 	let dispose;
 
 	function customiconswitch_toggler_binding(value) {
-		/*customiconswitch_toggler_binding*/ ctx[21].call(null, value);
+		/*customiconswitch_toggler_binding*/ ctx[22].call(null, value);
 	}
 
 	let customiconswitch_props = {
@@ -42786,13 +42786,13 @@ function create_buttonContainer_slot$2(ctx) {
 	binding_callbacks.push(() => bind(customiconswitch, "toggler", customiconswitch_toggler_binding));
 
 	function customswitch_selected_binding(value_1) {
-		/*customswitch_selected_binding*/ ctx[22].call(null, value_1);
+		/*customswitch_selected_binding*/ ctx[23].call(null, value_1);
 	}
 
 	let customswitch_props = { style: "margin: 0 1em;", label: "Log" };
 
-	if (/*logScale*/ ctx[11] !== void 0) {
-		customswitch_props.selected = /*logScale*/ ctx[11];
+	if (/*logScale*/ ctx[12] !== void 0) {
+		customswitch_props.selected = /*logScale*/ ctx[12];
 	}
 
 	const customswitch = new CustomSwitch({
@@ -42801,16 +42801,16 @@ function create_buttonContainer_slot$2(ctx) {
 		});
 
 	binding_callbacks.push(() => bind(customswitch, "selected", customswitch_selected_binding));
-	customswitch.$on("change", /*linearlogCheck*/ ctx[14]);
+	customswitch.$on("change", /*linearlogCheck*/ ctx[15]);
 
 	function customselect0_picked_binding(value_2) {
-		/*customselect0_picked_binding*/ ctx[23].call(null, value_2);
+		/*customselect0_picked_binding*/ ctx[24].call(null, value_2);
 	}
 
 	let customselect0_props = {
 		style: "width:12em; height:3.5em; margin-right:0.5em",
 		label: "ResOn",
-		options: /*fileChecked*/ ctx[0]
+		options: /*fullfiles*/ ctx[10]
 	};
 
 	if (/*resON_Files*/ ctx[8] !== void 0) {
@@ -42825,13 +42825,13 @@ function create_buttonContainer_slot$2(ctx) {
 	binding_callbacks.push(() => bind(customselect0, "picked", customselect0_picked_binding));
 
 	function customselect1_picked_binding(value_3) {
-		/*customselect1_picked_binding*/ ctx[24].call(null, value_3);
+		/*customselect1_picked_binding*/ ctx[25].call(null, value_3);
 	}
 
 	let customselect1_props = {
 		style: "width:12em; height:3.5em; margin-right:0.5em",
 		label: "ResOFF",
-		options: /*fileChecked*/ ctx[0]
+		options: /*fullfiles*/ ctx[10]
 	};
 
 	if (/*resOFF_Files*/ ctx[9] !== void 0) {
@@ -42846,11 +42846,11 @@ function create_buttonContainer_slot$2(ctx) {
 	binding_callbacks.push(() => bind(customselect1, "picked", customselect1_picked_binding));
 
 	function textfield0_value_binding(value_4) {
-		/*textfield0_value_binding*/ ctx[25].call(null, value_4);
+		/*textfield0_value_binding*/ ctx[26].call(null, value_4);
 	}
 
 	let textfield0_props = {
-		style: /*style*/ ctx[12],
+		style: /*style*/ ctx[13],
 		label: "Power (ON, OFF)"
 	};
 
@@ -42860,14 +42860,13 @@ function create_buttonContainer_slot$2(ctx) {
 
 	const textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
-	textfield0.$on("change", /*change_handler*/ ctx[26]);
 
 	function textfield1_value_binding(value_5) {
 		/*textfield1_value_binding*/ ctx[27].call(null, value_5);
 	}
 
 	let textfield1_props = {
-		style: /*style*/ ctx[12],
+		style: /*style*/ ctx[13],
 		label: "FELIX Hz"
 	};
 
@@ -42877,14 +42876,13 @@ function create_buttonContainer_slot$2(ctx) {
 
 	const textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding));
-	textfield1.$on("change", /*change_handler_1*/ ctx[28]);
 
 	function textfield2_value_binding(value_6) {
-		/*textfield2_value_binding*/ ctx[29].call(null, value_6);
+		/*textfield2_value_binding*/ ctx[28].call(null, value_6);
 	}
 
 	let textfield2_props = {
-		style: /*style*/ ctx[12],
+		style: /*style*/ ctx[13],
 		label: "Mass Index"
 	};
 
@@ -42894,14 +42892,13 @@ function create_buttonContainer_slot$2(ctx) {
 
 	const textfield2 = new Textfield({ props: textfield2_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield2, "value", textfield2_value_binding));
-	textfield2.$on("change", /*change_handler_2*/ ctx[30]);
 
 	function textfield3_value_binding(value_7) {
-		/*textfield3_value_binding*/ ctx[31].call(null, value_7);
+		/*textfield3_value_binding*/ ctx[29].call(null, value_7);
 	}
 
 	let textfield3_props = {
-		style: /*style*/ ctx[12],
+		style: /*style*/ ctx[13],
 		label: "Time Index"
 	};
 
@@ -42911,7 +42908,6 @@ function create_buttonContainer_slot$2(ctx) {
 
 	const textfield3 = new Textfield({ props: textfield3_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield3, "value", textfield3_value_binding));
-	textfield3.$on("change", /*change_handler_3*/ ctx[32]);
 
 	const block = {
 		c: function create() {
@@ -42945,22 +42941,22 @@ function create_buttonContainer_slot$2(ctx) {
 			t13 = space();
 			button3 = element("button");
 			button3.textContent = "Submit";
-			attr_dev(button0, "class", "button is-link svelte-f2eel8");
-			add_location(button0, file$Q, 145, 12, 5238);
-			attr_dev(button1, "class", "button is-link svelte-f2eel8");
-			add_location(button1, file$Q, 146, 12, 5339);
-			attr_dev(button2, "class", "button is-link svelte-f2eel8");
-			add_location(button2, file$Q, 147, 12, 5449);
-			attr_dev(div1, "class", "content align buttonRow svelte-f2eel8");
-			add_location(div1, file$Q, 144, 8, 5187);
-			attr_dev(button3, "class", "button is-link svelte-f2eel8");
-			add_location(button3, file$Q, 159, 12, 6743);
-			attr_dev(div2, "class", "animated fadeIn hide buttonRow svelte-f2eel8");
-			toggle_class(div2, "active", /*toggleRow*/ ctx[10]);
-			add_location(div2, file$Q, 152, 8, 5832);
-			attr_dev(div0, "class", "timescan_buttonContainer svelte-f2eel8");
+			attr_dev(button0, "class", "button is-link svelte-1v2nl09");
+			add_location(button0, file$Q, 158, 12, 5702);
+			attr_dev(button1, "class", "button is-link svelte-1v2nl09");
+			add_location(button1, file$Q, 159, 12, 5803);
+			attr_dev(button2, "class", "button is-link svelte-1v2nl09");
+			add_location(button2, file$Q, 160, 12, 5913);
+			attr_dev(div1, "class", "content align buttonRow svelte-1v2nl09");
+			add_location(div1, file$Q, 157, 8, 5651);
+			attr_dev(button3, "class", "button is-link svelte-1v2nl09");
+			add_location(button3, file$Q, 172, 12, 6975);
+			attr_dev(div2, "class", "animated fadeIn hide buttonRow svelte-1v2nl09");
+			toggle_class(div2, "active", /*toggleRow*/ ctx[11]);
+			add_location(div2, file$Q, 165, 8, 6296);
+			attr_dev(div0, "class", "timescan_buttonContainer svelte-1v2nl09");
 			attr_dev(div0, "slot", "buttonContainer");
-			add_location(div0, file$Q, 142, 4, 5114);
+			add_location(div0, file$Q, 155, 4, 5578);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -42992,10 +42988,10 @@ function create_buttonContainer_slot$2(ctx) {
 			current = true;
 
 			dispose = [
-				listen_dev(button0, "click", /*click_handler*/ ctx[18], false, false, false),
-				listen_dev(button1, "click", /*click_handler_1*/ ctx[19], false, false, false),
-				listen_dev(button2, "click", /*click_handler_2*/ ctx[20], false, false, false),
-				listen_dev(button3, "click", /*click_handler_3*/ ctx[33], false, false, false)
+				listen_dev(button0, "click", /*click_handler*/ ctx[19], false, false, false),
+				listen_dev(button1, "click", /*click_handler_1*/ ctx[20], false, false, false),
+				listen_dev(button2, "click", /*click_handler_2*/ ctx[21], false, false, false),
+				listen_dev(button3, "click", /*click_handler_3*/ ctx[30], false, false, false)
 			];
 		},
 		p: function update(ctx, dirty) {
@@ -43010,15 +43006,15 @@ function create_buttonContainer_slot$2(ctx) {
 			customiconswitch.$set(customiconswitch_changes);
 			const customswitch_changes = {};
 
-			if (!updating_selected && dirty[0] & /*logScale*/ 2048) {
+			if (!updating_selected && dirty[0] & /*logScale*/ 4096) {
 				updating_selected = true;
-				customswitch_changes.selected = /*logScale*/ ctx[11];
+				customswitch_changes.selected = /*logScale*/ ctx[12];
 				add_flush_callback(() => updating_selected = false);
 			}
 
 			customswitch.$set(customswitch_changes);
 			const customselect0_changes = {};
-			if (dirty[0] & /*fileChecked*/ 1) customselect0_changes.options = /*fileChecked*/ ctx[0];
+			if (dirty[0] & /*fullfiles*/ 1024) customselect0_changes.options = /*fullfiles*/ ctx[10];
 
 			if (!updating_picked && dirty[0] & /*resON_Files*/ 256) {
 				updating_picked = true;
@@ -43028,7 +43024,7 @@ function create_buttonContainer_slot$2(ctx) {
 
 			customselect0.$set(customselect0_changes);
 			const customselect1_changes = {};
-			if (dirty[0] & /*fileChecked*/ 1) customselect1_changes.options = /*fileChecked*/ ctx[0];
+			if (dirty[0] & /*fullfiles*/ 1024) customselect1_changes.options = /*fullfiles*/ ctx[10];
 
 			if (!updating_picked_1 && dirty[0] & /*resOFF_Files*/ 512) {
 				updating_picked_1 = true;
@@ -43074,8 +43070,8 @@ function create_buttonContainer_slot$2(ctx) {
 
 			textfield3.$set(textfield3_changes);
 
-			if (dirty[0] & /*toggleRow*/ 1024) {
-				toggle_class(div2, "active", /*toggleRow*/ ctx[10]);
+			if (dirty[0] & /*toggleRow*/ 2048) {
+				toggle_class(div2, "active", /*toggleRow*/ ctx[11]);
 			}
 		},
 		i: function intro(local) {
@@ -43119,14 +43115,14 @@ function create_buttonContainer_slot$2(ctx) {
 		block,
 		id: create_buttonContainer_slot$2.name,
 		type: "slot",
-		source: "(143:4) <div class=\\\"timescan_buttonContainer\\\" slot=\\\"buttonContainer\\\">",
+		source: "(156:4) <div class=\\\"timescan_buttonContainer\\\" slot=\\\"buttonContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (167:12) {#each fileChecked as scanfile}
+// (180:12) {#each fileChecked as scanfile}
 function create_each_block$6(ctx) {
 	let div;
 	let div_id_value;
@@ -43134,16 +43130,16 @@ function create_each_block$6(ctx) {
 	const block = {
 		c: function create() {
 			div = element("div");
-			attr_dev(div, "id", div_id_value = "" + (/*scanfile*/ ctx[37] + "_tplot"));
+			attr_dev(div, "id", div_id_value = "" + (/*scanfile*/ ctx[34] + "_tplot"));
 			set_style(div, "padding-bottom", "1em");
-			attr_dev(div, "class", "svelte-f2eel8");
-			add_location(div, file$Q, 167, 16, 7032);
+			attr_dev(div, "class", "svelte-1v2nl09");
+			add_location(div, file$Q, 180, 16, 7264);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*fileChecked*/ 1 && div_id_value !== (div_id_value = "" + (/*scanfile*/ ctx[37] + "_tplot"))) {
+			if (dirty[0] & /*fileChecked*/ 1 && div_id_value !== (div_id_value = "" + (/*scanfile*/ ctx[34] + "_tplot"))) {
 				attr_dev(div, "id", div_id_value);
 			}
 		},
@@ -43156,14 +43152,14 @@ function create_each_block$6(ctx) {
 		block,
 		id: create_each_block$6.name,
 		type: "each",
-		source: "(167:12) {#each fileChecked as scanfile}",
+		source: "(180:12) {#each fileChecked as scanfile}",
 		ctx
 	});
 
 	return block;
 }
 
-// (165:4) <div style="margin-right: 1em;" slot="plotContainer">
+// (178:4) <div style="margin-right: 1em;" slot="plotContainer">
 function create_plotContainer_slot$2(ctx) {
 	let div0;
 	let div1;
@@ -43179,7 +43175,7 @@ function create_plotContainer_slot$2(ctx) {
 	}
 
 	function reportlayout_currentLocation_binding(value) {
-		/*reportlayout_currentLocation_binding*/ ctx[34].call(null, value);
+		/*reportlayout_currentLocation_binding*/ ctx[31].call(null, value);
 	}
 
 	let reportlayout_props = {
@@ -43212,16 +43208,16 @@ function create_plotContainer_slot$2(ctx) {
 			div2 = element("div");
 			create_component(reportlayout.$$.fragment);
 			attr_dev(div1, "id", "tplotContainer");
-			attr_dev(div1, "class", "svelte-f2eel8");
-			add_location(div1, file$Q, 165, 8, 6944);
-			attr_dev(div2, "class", "animated fadeIn hide svelte-f2eel8");
+			attr_dev(div1, "class", "svelte-1v2nl09");
+			add_location(div1, file$Q, 178, 8, 7176);
+			attr_dev(div2, "class", "animated fadeIn hide svelte-1v2nl09");
 			set_style(div2, "flex-direction", "column ");
 			toggle_class(div2, "active", /*graphPlotted*/ ctx[3]);
-			add_location(div2, file$Q, 172, 8, 7139);
+			add_location(div2, file$Q, 185, 8, 7371);
 			set_style(div0, "margin-right", "1em");
 			attr_dev(div0, "slot", "plotContainer");
-			attr_dev(div0, "class", "svelte-f2eel8");
-			add_location(div0, file$Q, 164, 4, 6881);
+			attr_dev(div0, "class", "svelte-1v2nl09");
+			add_location(div0, file$Q, 177, 4, 7113);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -43295,14 +43291,14 @@ function create_plotContainer_slot$2(ctx) {
 		block,
 		id: create_plotContainer_slot$2.name,
 		type: "slot",
-		source: "(165:4) <div style=\\\"margin-right: 1em;\\\" slot=\\\"plotContainer\\\">",
+		source: "(178:4) <div style=\\\"margin-right: 1em;\\\" slot=\\\"plotContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (142:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>
+// (154:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>
 function create_default_slot$l(ctx) {
 	let t;
 
@@ -43325,7 +43321,7 @@ function create_default_slot$l(ctx) {
 		block,
 		id: create_default_slot$l.name,
 		type: "slot",
-		source: "(142:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>",
+		source: "(154:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>",
 		ctx
 	});
 
@@ -43338,11 +43334,11 @@ function create_fragment$V(ctx) {
 	let current;
 
 	function layout_currentLocation_binding(value) {
-		/*layout_currentLocation_binding*/ ctx[35].call(null, value);
+		/*layout_currentLocation_binding*/ ctx[32].call(null, value);
 	}
 
 	function layout_fileChecked_binding(value_1) {
-		/*layout_fileChecked_binding*/ ctx[36].call(null, value_1);
+		/*layout_fileChecked_binding*/ ctx[33].call(null, value_1);
 	}
 
 	let layout_props = {
@@ -43382,7 +43378,7 @@ function create_fragment$V(ctx) {
 		p: function update(ctx, dirty) {
 			const layout_changes = {};
 
-			if (dirty[0] & /*graphPlotted, fileChecked, currentLocation, toggleRow, timestartIndex, massIndex, nshots, power, resOFF_Files, resON_Files, logScale, openShell*/ 4095 | dirty[1] & /*$$scope*/ 512) {
+			if (dirty[0] & /*graphPlotted, fileChecked, currentLocation, toggleRow, timestartIndex, massIndex, nshots, power, fullfiles, resOFF_Files, resON_Files, logScale, openShell*/ 8191 | dirty[1] & /*$$scope*/ 64) {
 				layout_changes.$$scope = { dirty, ctx };
 			}
 
@@ -43431,9 +43427,9 @@ function instance$V($$self, $$props, $$invalidate) {
 	let $modalContent;
 	let $activated;
 	validate_store(modalContent, "modalContent");
-	component_subscribe($$self, modalContent, $$value => $$invalidate(16, $modalContent = $$value));
+	component_subscribe($$self, modalContent, $$value => $$invalidate(17, $modalContent = $$value));
 	validate_store(activated, "activated");
-	component_subscribe($$self, activated, $$value => $$invalidate(17, $activated = $$value));
+	component_subscribe($$self, activated, $$value => $$invalidate(18, $activated = $$value));
 	let fileChecked = [];
 	let currentLocation = localStorage[`${filetype$2}_location`] || "";
 	let openShell = false, graphPlotted = false;
@@ -43442,8 +43438,10 @@ function instance$V($$self, $$props, $$invalidate) {
 		timestartIndex = 1,
 		nshots = 10,
 		power = "21, 21",
-		resON_Files = [],
-		resOFF_Files = [];
+		resON_Files = "",
+		resOFF_Files = "";
+
+	let fullfiles = [];
 
 	// Depletion Row
 	let toggleRow = false;
@@ -43454,8 +43452,14 @@ function instance$V($$self, $$props, $$invalidate) {
 	let logScale = false;
 
 	function plotData({ e = null, filetype = "scan", tkplot = "run" } = {}) {
-		if (fileChecked.length === 0) {
+		if (fileChecked.length === 0 && filetype === "scan") {
 			return createToast$1("No files selected", "danger");
+		}
+
+		if (filetype === "general") {
+			if (resOFF_Files === "" || resON_Files === "") {
+				return createToast$1("No files selected", "danger");
+			}
 		}
 
 		let pyfileInfo = {
@@ -43577,7 +43581,7 @@ function instance$V($$self, $$props, $$invalidate) {
 	const click_handler = e => plotData({ e });
 
 	const click_handler_1 = () => {
-		$$invalidate(10, toggleRow = !toggleRow);
+		$$invalidate(11, toggleRow = !toggleRow);
 	};
 
 	const click_handler_2 = e => plotData({ e, filetype: "scan", tkplot: "plot" });
@@ -43589,7 +43593,7 @@ function instance$V($$self, $$props, $$invalidate) {
 
 	function customswitch_selected_binding(value_1) {
 		logScale = value_1;
-		$$invalidate(11, logScale);
+		$$invalidate(12, logScale);
 	}
 
 	function customselect0_picked_binding(value_2) {
@@ -43607,28 +43611,21 @@ function instance$V($$self, $$props, $$invalidate) {
 		$$invalidate(7, power);
 	}
 
-	const change_handler = e => plotData({ e, filetype: "depletion" });
-
 	function textfield1_value_binding(value_5) {
 		nshots = value_5;
 		$$invalidate(6, nshots);
 	}
-
-	const change_handler_1 = e => plotData({ e, filetype: "depletion" });
 
 	function textfield2_value_binding(value_6) {
 		massIndex = value_6;
 		$$invalidate(4, massIndex);
 	}
 
-	const change_handler_2 = e => plotData({ e, filetype: "depletion" });
-
 	function textfield3_value_binding(value_7) {
 		timestartIndex = value_7;
 		$$invalidate(5, timestartIndex);
 	}
 
-	const change_handler_3 = e => plotData({ e, filetype: "depletion" });
 	const click_handler_3 = e => plotData({ e, filetype: "general" });
 
 	function reportlayout_currentLocation_binding(value) {
@@ -43661,9 +43658,10 @@ function instance$V($$self, $$props, $$invalidate) {
 		if ("power" in $$props) $$invalidate(7, power = $$props.power);
 		if ("resON_Files" in $$props) $$invalidate(8, resON_Files = $$props.resON_Files);
 		if ("resOFF_Files" in $$props) $$invalidate(9, resOFF_Files = $$props.resOFF_Files);
-		if ("toggleRow" in $$props) $$invalidate(10, toggleRow = $$props.toggleRow);
-		if ("style" in $$props) $$invalidate(12, style = $$props.style);
-		if ("logScale" in $$props) $$invalidate(11, logScale = $$props.logScale);
+		if ("fullfiles" in $$props) $$invalidate(10, fullfiles = $$props.fullfiles);
+		if ("toggleRow" in $$props) $$invalidate(11, toggleRow = $$props.toggleRow);
+		if ("style" in $$props) $$invalidate(13, style = $$props.style);
+		if ("logScale" in $$props) $$invalidate(12, logScale = $$props.logScale);
 		if ("scanfiles" in $$props) scanfiles = $$props.scanfiles;
 		if ("$modalContent" in $$props) modalContent.set($modalContent = $$props.$modalContent);
 		if ("$activated" in $$props) activated.set($activated = $$props.$activated);
@@ -43674,6 +43672,19 @@ function instance$V($$self, $$props, $$invalidate) {
 	$$self.$$.update = () => {
 		if ($$self.$$.dirty[0] & /*fileChecked, currentLocation*/ 3) {
 			 scanfiles = fileChecked.map(file => path.resolve(currentLocation, file));
+		}
+
+		if ($$self.$$.dirty[0] & /*currentLocation*/ 2) {
+			 if (currentLocation !== "") {
+				$$invalidate(10, fullfiles = [
+					"",
+					...fs.readdirSync(currentLocation).filter(file => file.endsWith("scan"))
+				]);
+			}
+		}
+
+		if ($$self.$$.dirty[0] & /*resON_Files, resOFF_Files*/ 768) {
+			 console.log(`ResOn: ${resON_Files}\nResOff: ${resOFF_Files}`);
 		}
 	};
 
@@ -43688,6 +43699,7 @@ function instance$V($$self, $$props, $$invalidate) {
 		power,
 		resON_Files,
 		resOFF_Files,
+		fullfiles,
 		toggleRow,
 		logScale,
 		style,
@@ -43704,13 +43716,9 @@ function instance$V($$self, $$props, $$invalidate) {
 		customselect0_picked_binding,
 		customselect1_picked_binding,
 		textfield0_value_binding,
-		change_handler,
 		textfield1_value_binding,
-		change_handler_1,
 		textfield2_value_binding,
-		change_handler_2,
 		textfield3_value_binding,
-		change_handler_3,
 		click_handler_3,
 		reportlayout_currentLocation_binding,
 		layout_currentLocation_binding,

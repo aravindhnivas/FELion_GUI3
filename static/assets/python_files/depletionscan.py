@@ -27,7 +27,7 @@ class depletionplot:
         self.resOffFile = resOffFile
 
         self.power = {"resOn": power[0]/1000, "resOff": power[1]/1000} # mJ to J
-
+        self.powerStr = f"{power[0]}, {power[1]}"
         self.nshots = nshots
         self.massIndex = massIndex
         self.timeStart = timeStart
@@ -77,6 +77,7 @@ class depletionplot:
         self.canvas.draw()
 
     def depletion_widgets(self, Koff, Kon, N, Na0, Nn0):
+
         # Position
 
         x0, x_diff = 0.1, 0.4
@@ -88,7 +89,6 @@ class depletionplot:
 
         # Row 2
         y += y_diff
-
         self.widget.koff_slider = self.widget.Sliders("Koff", Koff, x0, y, self.update, relwidth=0.5)
         self.widget.n_slider = self.widget.Sliders("N", N, x0, y+y_diff, self.update, relwidth=0.5)
         self.widget.kon_slider = self.widget.Sliders("Kon", Kon, x0, y+2*y_diff, self.update, relwidth=0.5)
@@ -97,7 +97,6 @@ class depletionplot:
 
         # Row 3
         y += 5*y_diff
-
         self.widget.Labels("ON", x0, y)
         self.widget.Labels("OFF", x0+x_diff, y)
 
@@ -113,8 +112,9 @@ class depletionplot:
 
         # Row 5
         y += y_diff
-        self.new_power = self.widget.Entries("Entry", "21, 21", x0, y)
-        self.new_nshots = self.widget.Entries("Entry", 10, x0+x_diff, y)
+        self.new_power = self.widget.Entries("Entry", self.powerStr, x0, y)
+        
+        self.new_nshots = self.widget.Entries("Entry", self.nshots, x0+x_diff, y)
 
         # Row 6
         y += y_diff

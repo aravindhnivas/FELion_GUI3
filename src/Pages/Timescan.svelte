@@ -24,35 +24,47 @@
     let currentLocation = localStorage[`${filetype}_location`] || ""
     $: scanfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
     let openShell = false, graphPlotted = false
+    let massIndex = 0, timestartIndex = 1, nshots = 10, power = "21, 21", resON_Files = "", resOFF_Files = ""
 
-    let massIndex = 0, timestartIndex = 1, nshots = 10, power = "21, 21", resON_Files = [], resOFF_Files = []
+    let fullfiles = []
+    $: if (currentLocation !== "") {
+        fullfiles = ["", ...fs.readdirSync(currentLocation).filter(file=>file.endsWith("scan"))]
+    }
+
+    $: console.log(`ResOn: ${resON_Files}\nResOff: ${resOFF_Files}`)
 
     // Depletion Row
     let toggleRow = false
     let style = "width:7em; height:3.5em; margin-right:0.5em"
 
     // Linear log
-
     let logScale = false;
 
     function plotData({e=null, filetype="scan", tkplot="run"}={}){
 
-        if (fileChecked.length === 0) {return createToast("No files selected", "danger")}
+        if (fileChecked.length === 0 && filetype === "scan") {return createToast("No files selected", "danger")}
 
+        if (filetype === "general") {
+            if (resOFF_Files === "" || resON_Files === "") {return createToast("No files selected", "danger")}
+        }
+        
         let pyfileInfo = {
             scan: {pyfile:"timescan.py" , args:[...scanfiles, tkplot]},
+        
             general: {pyfile:"depletionscan.py" , args:[currentLocation,
                 resON_Files, resOFF_Files, ...power.split(",").map(pow=>parseFloat(pow)), nshots, massIndex, timestartIndex]},
         }
         let {pyfile, args} = pyfileInfo[filetype]
 
         if (tkplot == "plot") {filetype = "general"}
-
         if (filetype == "general") {
             console.log("Sending general arguments: ", args)
+
             let py = spawn(
+
                 localStorage["pythonpath"],
                 ["-i", path.join(localStorage["pythonscript"], pyfile), args],
+                
                 { detached: true, stdio: 'ignore', shell: openShell }
             )
             py.unref()
@@ -136,10 +148,11 @@
     .active {display: flex!important;}
     .hide {display: none;}
     .align {display: flex; align-items: center;}
+
 </style>
 
-
 <Layout {filetype} {id} bind:currentLocation bind:fileChecked>
+
     <div class="timescan_buttonContainer" slot="buttonContainer">
 
         <div class="content align buttonRow">
@@ -151,12 +164,12 @@
         </div>
 
         <div class="animated fadeIn hide buttonRow" class:active={toggleRow} >
-            <CustomSelect style="width:12em; height:3.5em; margin-right:0.5em" bind:picked={resON_Files} label="ResOn" options={fileChecked}/>
-            <CustomSelect style="width:12em; height:3.5em; margin-right:0.5em" bind:picked={resOFF_Files} label="ResOFF" options={fileChecked}/>
-            <Textfield {style} on:change="{(e)=>plotData({e:e, filetype:"depletion"})}" bind:value={power} label="Power (ON, OFF)" />
-            <Textfield {style} on:change="{(e)=>plotData({e:e, filetype:"depletion"})}" bind:value={nshots} label="FELIX Hz" />
-            <Textfield {style} on:change="{(e)=>plotData({e:e, filetype:"depletion"})}" bind:value={massIndex} label="Mass Index" />
-            <Textfield {style} on:change="{(e)=>plotData({e:e, filetype:"depletion"})}" bind:value={timestartIndex} label="Time Index" />
+            <CustomSelect style="width:12em; height:3.5em; margin-right:0.5em" bind:picked={resON_Files} label="ResOn" options={fullfiles}/>
+            <CustomSelect style="width:12em; height:3.5em; margin-right:0.5em" bind:picked={resOFF_Files} label="ResOFF" options={fullfiles}/>
+            <Textfield {style} bind:value={power} label="Power (ON, OFF)" />
+            <Textfield {style} bind:value={nshots} label="FELIX Hz" />
+            <Textfield {style} bind:value={massIndex} label="Mass Index" />
+            <Textfield {style} bind:value={timestartIndex} label="Time Index" />
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"general"})}">Submit</button>
         </div>
 
