@@ -41562,7 +41562,7 @@ function create_buttonContainer_slot$1(ctx) {
 	let customselect_props = {
 		style: "width:12em; height:3.5em; margin-right:0.5em",
 		label: "Filename",
-		options: /*fileChecked*/ ctx[0]
+		options: ["", .../*fileChecked*/ ctx[0]]
 	};
 
 	if (/*selected_file*/ ctx[5] !== void 0) {
@@ -41696,15 +41696,15 @@ function create_buttonContainer_slot$1(ctx) {
 			attr_dev(div1, "class", "content align buttonRow svelte-1p4b8qa");
 			add_location(div1, file$P, 162, 8, 6178);
 			attr_dev(button4, "class", "button is-link svelte-1p4b8qa");
-			add_location(button4, file$P, 176, 12, 7557);
+			add_location(button4, file$P, 176, 12, 7566);
 			attr_dev(button5, "class", "button is-danger svelte-1p4b8qa");
-			add_location(button5, file$P, 177, 12, 7677);
+			add_location(button5, file$P, 177, 12, 7686);
 			attr_dev(div2, "class", "animated fadeIn hide buttonRow svelte-1p4b8qa");
 			toggle_class(div2, "active", /*toggleRow1*/ ctx[4]);
 			add_location(div2, file$P, 171, 8, 6918);
 			attr_dev(div3, "class", "animated fadeIn hide buttonRow svelte-1p4b8qa");
 			toggle_class(div3, "active", /*toggleRow2*/ ctx[9]);
-			add_location(div3, file$P, 180, 8, 7823);
+			add_location(div3, file$P, 180, 8, 7832);
 			attr_dev(div0, "class", "masspec_buttonContainer svelte-1p4b8qa");
 			attr_dev(div0, "slot", "buttonContainer");
 			add_location(div0, file$P, 160, 4, 6106);
@@ -41772,7 +41772,7 @@ function create_buttonContainer_slot$1(ctx) {
 
 			customswitch.$set(customswitch_changes);
 			const customselect_changes = {};
-			if (dirty[0] & /*fileChecked*/ 1) customselect_changes.options = /*fileChecked*/ ctx[0];
+			if (dirty[0] & /*fileChecked*/ 1) customselect_changes.options = ["", .../*fileChecked*/ ctx[0]];
 
 			if (!updating_picked && dirty[0] & /*selected_file*/ 32) {
 				updating_picked = true;
@@ -42098,32 +42098,32 @@ function create_plotContainer_slot$1(ctx) {
 			webview = element("webview");
 			attr_dev(div1, "id", "mplot");
 			attr_dev(div1, "class", "svelte-1p4b8qa");
-			add_location(div1, file$P, 189, 8, 8235);
+			add_location(div1, file$P, 189, 8, 8244);
 			attr_dev(div2, "class", "animated fadeIn hide svelte-1p4b8qa");
 			set_style(div2, "flex-direction", "column ");
 			toggle_class(div2, "active", /*graphPlotted*/ ctx[3]);
-			add_location(div2, file$P, 190, 8, 8267);
+			add_location(div2, file$P, 190, 8, 8276);
 			set_style(div3, "margin", "1em");
 			attr_dev(div3, "class", "svelte-1p4b8qa");
-			add_location(div3, file$P, 193, 12, 8589);
+			add_location(div3, file$P, 193, 12, 8598);
 			if (webview.src !== (webview_src_value = /*nist_url*/ ctx[12])) attr_dev(webview, "src", webview_src_value);
 			attr_dev(webview, "id", "nist_webview");
 			set_style(webview, "height", "50vh");
 			set_style(webview, "padding-bottom", "3em");
 			attr_dev(webview, "class", "svelte-1p4b8qa");
-			add_location(webview, file$P, 201, 16, 9240);
+			add_location(webview, file$P, 201, 16, 9249);
 			attr_dev(div4, "class", " svelte-1p4b8qa");
-			add_location(div4, file$P, 200, 12, 9208);
+			add_location(div4, file$P, 200, 12, 9217);
 			attr_dev(div5, "class", "hide animated fadeIn svelte-1p4b8qa");
 			set_style(div5, "margin-top", "1em");
 			set_style(div5, "display", "none");
 			set_style(div5, "flex-direction", "column");
 			toggle_class(div5, "active", /*toggleRow2*/ ctx[9]);
-			add_location(div5, file$P, 192, 8, 8453);
+			add_location(div5, file$P, 192, 8, 8462);
 			set_style(div0, "margin-right", "1em");
 			attr_dev(div0, "slot", "plotContainer");
 			attr_dev(div0, "class", "svelte-1p4b8qa");
-			add_location(div0, file$P, 187, 4, 8170);
+			add_location(div0, file$P, 187, 4, 8179);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
