@@ -138,8 +138,8 @@
 
         <div class="content align buttonRow">
             <button class="button is-link" on:click="{(e)=>plotData({e:e})}">THz Plot</button>
-            <Textfield {style} on:change="{(e)=>plotData({e:e})}" bind:value={delta} label="Delta" />
-            <Textfield {style} on:change="{(e)=>plotData({e:e})}" bind:value={gamma} label="Gamma" />
+            <Textfield type="number" {style} on:change="{(e)=>plotData({e:e})}" bind:value={delta} label="Delta" />
+            <Textfield type="number" {style} on:change="{(e)=>plotData({e:e})}" bind:value={gamma} label="Gamma" />
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"thz", tkplot:"plot"})}">Open in Matplotlib</button>
             <CustomIconSwitch style="padding:0;" bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
             <button class="button is-link" on:click="{()=>{toggleRow = !toggleRow}}">Boltzman</button>
@@ -149,8 +149,8 @@
             <Textfield {style} on:change="{(e)=>plotData({e:e, filetype:"boltzman"})}" bind:value={B0} label="B0 (MHz)" />
             <Textfield {style} on:change="{(e)=>plotData({e:e, filetype:"boltzman"})}" bind:value={D0} label="D0 (MHz)" />
             <Textfield {style} on:change="{(e)=>plotData({e:e, filetype:"boltzman"})}" bind:value={H0} label="H0 (MHz)" />
-            <Textfield {style} on:change="{(e)=>plotData({e:e, filetype:"boltzman"})}" bind:value={temp} label="Temp." />
-            <Textfield {style} on:change="{(e)=>plotData({e:e, filetype:"boltzman"})}" bind:value={totalJ} label="Total J" />
+            <Textfield type="number" {style} on:change="{(e)=>plotData({e:e, filetype:"boltzman"})}" bind:value={temp} label="Temp." />
+            <Textfield type="number" {style} on:change="{(e)=>plotData({e:e, filetype:"boltzman"})}" bind:value={totalJ} label="Total J" />
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"boltzman"})}">Submit</button>
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"boltzman", tkplot:"plot"})}">Open in Matplotlib</button>
         </div>

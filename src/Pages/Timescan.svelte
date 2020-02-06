@@ -167,9 +167,9 @@
             <CustomSelect style="width:12em; height:3.5em; margin-right:0.5em" bind:picked={resON_Files} label="ResOn" options={fullfiles}/>
             <CustomSelect style="width:12em; height:3.5em; margin-right:0.5em" bind:picked={resOFF_Files} label="ResOFF" options={fullfiles}/>
             <Textfield {style} bind:value={power} label="Power (ON, OFF)" />
-            <Textfield {style} bind:value={nshots} label="FELIX Hz" />
-            <Textfield {style} bind:value={massIndex} label="Mass Index" />
-            <Textfield {style} bind:value={timestartIndex} label="Time Index" />
+            <Textfield type="number" {style} bind:value={nshots} label="FELIX Hz" />
+            <Textfield type="number" {style} bind:value={massIndex} label="Mass Index" />
+            <Textfield type="number" {style} bind:value={timestartIndex} label="Time Index" />
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"general"})}">Submit</button>
         </div>
 

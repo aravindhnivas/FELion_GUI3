@@ -11,9 +11,9 @@ $light: #f5f5f5b8;
 .mdc-text-field  { width: 100%; margin-right: 0.5em;}
 .mdc-text-field--textarea {height: 300px;}
 
+.mdc-text-field__input {padding-right: 1em!important;}
 .mdc-text-field:not(.mdc-text-field--disabled) .mdc-text-field__input {color: $white;}
 .mdc-text-field:not(.mdc-text-field--disabled)+.mdc-text-field-helper-line .mdc-text-field-helper-text {color: $white;}
-
 
 // Checkbbox: Inactive: border color
 .mdc-checkbox__native-control:enabled:not(:checked):not(:indeterminate)~.mdc-checkbox__background {border-color: $light;}

@@ -511,7 +511,7 @@
                 on:click="{(e)=>plotData({e:e, filetype:"general", general:{args:felixfiles, pyfile:"baseline.py"}})}">Create Baseline</button>
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"felix"})}">FELIX Plot</button>
 
-            <Textfield style="width:7em" variant="outlined" bind:value={delta} label="Delta"/>
+            <Textfield type="number" style="width:7em" variant="outlined" bind:value={delta} label="Delta"/>
             <button class="button is-link" 
                 on:click="{(e)=>plotData({e:e, filetype:"general", general:{args:[...felixfiles, normMethod], pyfile:"norm_tkplot.py"}})}">Open in Matplotlib</button>
             <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
@@ -522,8 +522,8 @@
 
         <div class="align animated fadeIn hide" class:active={toggleRow}>
             <button class="button is-link" on:click="{()=>showTheoryFiles = !showTheoryFiles}">Browse File</button>
-            <Textfield style="width:7em; margin-right:0.5em;" variant="outlined" bind:value={sigma} label="Sigma" on:change="{(e)=>plotData({e:e, filetype:"theory"})}"/>
-            <Textfield style="width:7em" variant="outlined" bind:value={scale} label="Scale" on:change="{(e)=>plotData({e:e, filetype:"theory"})}"/>
+            <Textfield type="number" style="width:7em; margin-right:0.5em;" variant="outlined" bind:value={sigma} label="Sigma" on:change="{(e)=>plotData({e:e, filetype:"theory"})}"/>
+            <Textfield type="number" style="width:7em" variant="outlined" bind:value={scale} label="Scale" on:change="{(e)=>plotData({e:e, filetype:"theory"})}"/>
             <button class="button is-link" 
                 on:click="{(e)=>plotData({e:e, filetype:"general", general:{args:[...theoryfiles, normMethod, sigma, scale, theoryLocation, "plot"], pyfile:"theory.py"}})}">Open in Matplotlib</button>
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"theory"})}">Submit</button>
@@ -564,20 +564,20 @@
             </div>
 
             <div class="align content animated fadeIn hide" class:active={toggleFindPeaksRow}>
-                <Textfield {style} on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_prominence} label="Prominance" />
-                <Textfield {style} on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_width} label="Width" />
-                <Textfield {style} on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_height} label="Height" />
+                <Textfield type="number" {style} on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_prominence} label="Prominance" />
+                <Textfield type="number" {style} on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_width} label="Width" />
+                <Textfield type="number" {style} on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_height} label="Height" />
                 <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"find_peaks"})}">Get Peaks</button>
                 <button class="button is-danger" on:click="{(e)=>window.Plotly.relayout("avgplot", { annotations: [] })}">Clear</button>
             </div>
 
             <div class="align content animated fadeIn hide" class:active={toggleDoubleGaussRow}>
-                <Textfield style="width:7em; margin-right:0.5em;" bind:value={amp1} label="Amp1" />
-                <Textfield style="width:7em; margin-right:0.5em;" bind:value={amp2} label="Amp2" />
-                <Textfield style="width:7em; margin-right:0.5em;" bind:value={sig1} label="Sigma1" />
-                <Textfield style="width:7em; margin-right:0.5em;" bind:value={sig2} label="Sigma2" />
-                <Textfield style="width:7em; margin-right:0.5em;" bind:value={cen1} label="Cen1" />
-                <Textfield style="width:7em; margin-right:0.5em;" bind:value={cen2} label="Cen2" />
+                <Textfield type="number" style="width:7em; margin-right:0.5em;" bind:value={amp1} label="Amp1" />
+                <Textfield type="number" style="width:7em; margin-right:0.5em;" bind:value={amp2} label="Amp2" />
+                <Textfield type="number" style="width:7em; margin-right:0.5em;" bind:value={sig1} label="Sigma1" />
+                <Textfield type="number" style="width:7em; margin-right:0.5em;" bind:value={sig2} label="Sigma2" />
+                <Textfield type="number" style="width:7em; margin-right:0.5em;" bind:value={cen1} label="Cen1" />
+                <Textfield type="number" style="width:7em; margin-right:0.5em;" bind:value={cen2} label="Cen2" />
                 <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"double_peak"})}">Submit</button>
             </div>
 

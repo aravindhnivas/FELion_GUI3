@@ -37353,6 +37353,7 @@ function create_buttonContainer_slot(ctx) {
 	}
 
 	let textfield0_props = {
+		type: "number",
 		style: "width:7em",
 		variant: "outlined",
 		label: "Delta"
@@ -37406,6 +37407,7 @@ function create_buttonContainer_slot(ctx) {
 	}
 
 	let textfield1_props = {
+		type: "number",
 		style: "width:7em; margin-right:0.5em;",
 		variant: "outlined",
 		label: "Sigma"
@@ -37424,6 +37426,7 @@ function create_buttonContainer_slot(ctx) {
 	}
 
 	let textfield2_props = {
+		type: "number",
 		style: "width:7em",
 		variant: "outlined",
 		label: "Scale"
@@ -37498,25 +37501,25 @@ function create_buttonContainer_slot(ctx) {
 			attr_dev(button1, "class", "button is-link svelte-ex8alc");
 			add_location(button1, file$O, 511, 12, 23241);
 			attr_dev(button2, "class", "button is-link svelte-ex8alc");
-			add_location(button2, file$O, 514, 12, 23455);
+			add_location(button2, file$O, 514, 12, 23469);
 			attr_dev(button3, "class", "button is-link svelte-ex8alc");
 			attr_dev(button3, "tabindex", "0");
-			add_location(button3, file$O, 517, 12, 23764);
+			add_location(button3, file$O, 517, 12, 23778);
 			attr_dev(button4, "class", "button is-link svelte-ex8alc");
-			add_location(button4, file$O, 518, 12, 23921);
+			add_location(button4, file$O, 518, 12, 23935);
 			attr_dev(div1, "class", "align svelte-ex8alc");
 			add_location(div1, file$O, 507, 8, 23015);
 			attr_dev(button5, "class", "button is-link svelte-ex8alc");
-			add_location(button5, file$O, 523, 12, 24237);
+			add_location(button5, file$O, 523, 12, 24251);
 			attr_dev(button6, "class", "button is-link svelte-ex8alc");
-			add_location(button6, file$O, 526, 12, 24675);
+			add_location(button6, file$O, 526, 12, 24717);
 			attr_dev(button7, "class", "button is-link svelte-ex8alc");
-			add_location(button7, file$O, 528, 12, 24922);
+			add_location(button7, file$O, 528, 12, 24964);
 			attr_dev(div2, "class", "align animated fadeIn hide svelte-ex8alc");
 			toggle_class(div2, "active", /*toggleRow*/ ctx[2]);
-			add_location(div2, file$O, 522, 8, 24158);
+			add_location(div2, file$O, 522, 8, 24172);
 			attr_dev(div3, "class", "align svelte-ex8alc");
-			add_location(div3, file$O, 531, 8, 25049);
+			add_location(div3, file$O, 531, 8, 25091);
 			attr_dev(div0, "class", "buttonSlot svelte-ex8alc");
 			attr_dev(div0, "slot", "buttonContainer");
 			add_location(div0, file$O, 505, 4, 22956);
@@ -39551,6 +39554,7 @@ function create_plotContainer_slot(ctx) {
 	}
 
 	let textfield0_props = {
+		type: "number",
 		style: /*style*/ ctx[45],
 		label: "Prominance"
 	};
@@ -39567,7 +39571,11 @@ function create_plotContainer_slot(ctx) {
 		/*textfield1_value_binding_1*/ ctx[86].call(null, value_4);
 	}
 
-	let textfield1_props = { style: /*style*/ ctx[45], label: "Width" };
+	let textfield1_props = {
+		type: "number",
+		style: /*style*/ ctx[45],
+		label: "Width"
+	};
 
 	if (/*peak_width*/ ctx[34] !== void 0) {
 		textfield1_props.value = /*peak_width*/ ctx[34];
@@ -39582,6 +39590,7 @@ function create_plotContainer_slot(ctx) {
 	}
 
 	let textfield2_props = {
+		type: "number",
 		style: /*style*/ ctx[45],
 		label: "Height"
 	};
@@ -39599,6 +39608,7 @@ function create_plotContainer_slot(ctx) {
 	}
 
 	let textfield3_props = {
+		type: "number",
 		style: "width:7em; margin-right:0.5em;",
 		label: "Amp1"
 	};
@@ -39615,6 +39625,7 @@ function create_plotContainer_slot(ctx) {
 	}
 
 	let textfield4_props = {
+		type: "number",
 		style: "width:7em; margin-right:0.5em;",
 		label: "Amp2"
 	};
@@ -39631,6 +39642,7 @@ function create_plotContainer_slot(ctx) {
 	}
 
 	let textfield5_props = {
+		type: "number",
 		style: "width:7em; margin-right:0.5em;",
 		label: "Sigma1"
 	};
@@ -39647,6 +39659,7 @@ function create_plotContainer_slot(ctx) {
 	}
 
 	let textfield6_props = {
+		type: "number",
 		style: "width:7em; margin-right:0.5em;",
 		label: "Sigma2"
 	};
@@ -39663,6 +39676,7 @@ function create_plotContainer_slot(ctx) {
 	}
 
 	let textfield7_props = {
+		type: "number",
 		style: "width:7em; margin-right:0.5em;",
 		label: "Cen1"
 	};
@@ -39679,6 +39693,7 @@ function create_plotContainer_slot(ctx) {
 	}
 
 	let textfield8_props = {
+		type: "number",
 		style: "width:7em; margin-right:0.5em;",
 		label: "Cen2"
 	};
@@ -39872,72 +39887,72 @@ function create_plotContainer_slot(ctx) {
 			attr_dev(div1, "class", "animated fadeIn hide svelte-ex8alc");
 			attr_dev(div1, "id", "exp-theory-plot");
 			toggle_class(div1, "active", /*show_theoryplot*/ ctx[8]);
-			add_location(div1, file$O, 539, 12, 25322);
+			add_location(div1, file$O, 539, 12, 25364);
 			attr_dev(div2, "id", "bplot");
 			attr_dev(div2, "class", "svelte-ex8alc");
-			add_location(div2, file$O, 540, 12, 25428);
+			add_location(div2, file$O, 540, 12, 25470);
 			attr_dev(div3, "id", "saPlot");
 			attr_dev(div3, "class", "svelte-ex8alc");
-			add_location(div3, file$O, 541, 12, 25464);
+			add_location(div3, file$O, 541, 12, 25506);
 			attr_dev(div4, "id", "avgplot");
 			attr_dev(div4, "class", "svelte-ex8alc");
-			add_location(div4, file$O, 542, 12, 25501);
+			add_location(div4, file$O, 542, 12, 25543);
 			attr_dev(div5, "class", "animated fadeIn hide svelte-ex8alc");
 			attr_dev(div5, "id", "opoplot");
 			toggle_class(div5, "active", /*opoPlotted*/ ctx[22]);
-			add_location(div5, file$O, 543, 12, 25539);
+			add_location(div5, file$O, 543, 12, 25581);
 			attr_dev(div6, "class", "animated fadeIn hide svelte-ex8alc");
 			attr_dev(div6, "id", "opoRelPlot");
 			toggle_class(div6, "active", /*opoPlotted*/ ctx[22]);
-			add_location(div6, file$O, 544, 12, 25632);
+			add_location(div6, file$O, 544, 12, 25674);
 			attr_dev(div7, "class", "felixPlot svelte-ex8alc");
-			add_location(div7, file$O, 538, 8, 25285);
+			add_location(div7, file$O, 538, 8, 25327);
 			attr_dev(div8, "class", "align content svelte-ex8alc");
-			add_location(div8, file$O, 549, 12, 25866);
+			add_location(div8, file$O, 549, 12, 25908);
 			attr_dev(button0, "class", "button is-link svelte-ex8alc");
-			add_location(button0, file$O, 556, 16, 26320);
+			add_location(button0, file$O, 556, 16, 26362);
 			attr_dev(button1, "class", "button is-link svelte-ex8alc");
-			add_location(button1, file$O, 557, 16, 26440);
+			add_location(button1, file$O, 557, 16, 26482);
 			attr_dev(button2, "class", "button is-warning svelte-ex8alc");
-			add_location(button2, file$O, 558, 16, 26574);
+			add_location(button2, file$O, 558, 16, 26616);
 			attr_dev(button3, "class", "button is-danger svelte-ex8alc");
-			add_location(button3, file$O, 559, 16, 26670);
+			add_location(button3, file$O, 559, 16, 26712);
 			attr_dev(button4, "class", "button is-link svelte-ex8alc");
-			add_location(button4, file$O, 560, 16, 26763);
+			add_location(button4, file$O, 560, 16, 26805);
 			attr_dev(button5, "class", "button is-warning svelte-ex8alc");
-			add_location(button5, file$O, 561, 16, 26888);
+			add_location(button5, file$O, 561, 16, 26930);
 			attr_dev(button6, "class", "button is-link svelte-ex8alc");
-			add_location(button6, file$O, 562, 16, 27044);
+			add_location(button6, file$O, 562, 16, 27086);
 			attr_dev(div9, "class", "align content svelte-ex8alc");
-			add_location(div9, file$O, 555, 12, 26275);
+			add_location(div9, file$O, 555, 12, 26317);
 			attr_dev(button7, "class", "button is-link svelte-ex8alc");
-			add_location(button7, file$O, 569, 16, 27705);
+			add_location(button7, file$O, 569, 16, 27789);
 			attr_dev(button8, "class", "button is-danger svelte-ex8alc");
-			add_location(button8, file$O, 570, 16, 27829);
+			add_location(button8, file$O, 570, 16, 27913);
 			attr_dev(div10, "class", "align content animated fadeIn hide svelte-ex8alc");
 			toggle_class(div10, "active", /*toggleFindPeaksRow*/ ctx[32]);
-			add_location(div10, file$O, 565, 12, 27188);
+			add_location(div10, file$O, 565, 12, 27230);
 			attr_dev(button9, "class", "button is-link svelte-ex8alc");
-			add_location(button9, file$O, 580, 16, 28697);
+			add_location(button9, file$O, 580, 16, 28865);
 			attr_dev(div11, "class", "align content animated fadeIn hide svelte-ex8alc");
 			toggle_class(div11, "active", /*toggleDoubleGaussRow*/ ctx[25]);
-			add_location(div11, file$O, 573, 12, 27985);
+			add_location(div11, file$O, 573, 12, 28069);
 			attr_dev(div12, "class", "title notification is-link svelte-ex8alc");
-			add_location(div12, file$O, 585, 16, 28925);
+			add_location(div12, file$O, 585, 16, 29093);
 			attr_dev(button10, "class", "button is-warning svelte-ex8alc");
-			add_location(button10, file$O, 589, 16, 29309);
+			add_location(button10, file$O, 589, 16, 29477);
 			attr_dev(button11, "class", "button is-danger svelte-ex8alc");
-			add_location(button11, file$O, 592, 16, 29596);
+			add_location(button11, file$O, 592, 16, 29764);
 			attr_dev(div13, "class", "align content svelte-ex8alc");
-			add_location(div13, file$O, 584, 12, 28880);
+			add_location(div13, file$O, 584, 12, 29048);
 			attr_dev(div14, "class", "dataTable svelte-ex8alc");
-			add_location(div14, file$O, 597, 12, 29786);
+			add_location(div14, file$O, 597, 12, 29954);
 			attr_dev(div15, "class", "animated fadeIn hide svelte-ex8alc");
 			toggle_class(div15, "active", /*graphPlotted*/ ctx[13]);
-			add_location(div15, file$O, 547, 8, 25742);
+			add_location(div15, file$O, 547, 8, 25784);
 			attr_dev(div0, "class", "plotSlot svelte-ex8alc");
 			attr_dev(div0, "slot", "plotContainer");
-			add_location(div0, file$O, 536, 4, 25230);
+			add_location(div0, file$O, 536, 4, 25272);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -41580,7 +41595,11 @@ function create_buttonContainer_slot$1(ctx) {
 		/*textfield0_value_binding*/ ctx[29].call(null, value_3);
 	}
 
-	let textfield0_props = { style, label: "Prominance" };
+	let textfield0_props = {
+		type: "number",
+		style,
+		label: "Prominance"
+	};
 
 	if (/*peak_prominance*/ ctx[6] !== void 0) {
 		textfield0_props.value = /*peak_prominance*/ ctx[6];
@@ -41594,7 +41613,7 @@ function create_buttonContainer_slot$1(ctx) {
 		/*textfield1_value_binding*/ ctx[31].call(null, value_4);
 	}
 
-	let textfield1_props = { style, label: "Width" };
+	let textfield1_props = { type: "number", style, label: "Width" };
 
 	if (/*peak_width*/ ctx[7] !== void 0) {
 		textfield1_props.value = /*peak_width*/ ctx[7];
@@ -41608,7 +41627,7 @@ function create_buttonContainer_slot$1(ctx) {
 		/*textfield2_value_binding*/ ctx[33].call(null, value_5);
 	}
 
-	let textfield2_props = { style, label: "Height" };
+	let textfield2_props = { type: "number", style, label: "Height" };
 
 	if (/*peak_height*/ ctx[8] !== void 0) {
 		textfield2_props.value = /*peak_height*/ ctx[8];
@@ -41696,15 +41715,15 @@ function create_buttonContainer_slot$1(ctx) {
 			attr_dev(div1, "class", "content align buttonRow svelte-1p4b8qa");
 			add_location(div1, file$P, 162, 8, 6178);
 			attr_dev(button4, "class", "button is-link svelte-1p4b8qa");
-			add_location(button4, file$P, 176, 12, 7566);
+			add_location(button4, file$P, 176, 12, 7608);
 			attr_dev(button5, "class", "button is-danger svelte-1p4b8qa");
-			add_location(button5, file$P, 177, 12, 7686);
+			add_location(button5, file$P, 177, 12, 7728);
 			attr_dev(div2, "class", "animated fadeIn hide buttonRow svelte-1p4b8qa");
 			toggle_class(div2, "active", /*toggleRow1*/ ctx[4]);
 			add_location(div2, file$P, 171, 8, 6918);
 			attr_dev(div3, "class", "animated fadeIn hide buttonRow svelte-1p4b8qa");
 			toggle_class(div3, "active", /*toggleRow2*/ ctx[9]);
-			add_location(div3, file$P, 180, 8, 7832);
+			add_location(div3, file$P, 180, 8, 7874);
 			attr_dev(div0, "class", "masspec_buttonContainer svelte-1p4b8qa");
 			attr_dev(div0, "slot", "buttonContainer");
 			add_location(div0, file$P, 160, 4, 6106);
@@ -42098,32 +42117,32 @@ function create_plotContainer_slot$1(ctx) {
 			webview = element("webview");
 			attr_dev(div1, "id", "mplot");
 			attr_dev(div1, "class", "svelte-1p4b8qa");
-			add_location(div1, file$P, 189, 8, 8244);
+			add_location(div1, file$P, 189, 8, 8286);
 			attr_dev(div2, "class", "animated fadeIn hide svelte-1p4b8qa");
 			set_style(div2, "flex-direction", "column ");
 			toggle_class(div2, "active", /*graphPlotted*/ ctx[3]);
-			add_location(div2, file$P, 190, 8, 8276);
+			add_location(div2, file$P, 190, 8, 8318);
 			set_style(div3, "margin", "1em");
 			attr_dev(div3, "class", "svelte-1p4b8qa");
-			add_location(div3, file$P, 193, 12, 8598);
+			add_location(div3, file$P, 193, 12, 8640);
 			if (webview.src !== (webview_src_value = /*nist_url*/ ctx[12])) attr_dev(webview, "src", webview_src_value);
 			attr_dev(webview, "id", "nist_webview");
 			set_style(webview, "height", "50vh");
 			set_style(webview, "padding-bottom", "3em");
 			attr_dev(webview, "class", "svelte-1p4b8qa");
-			add_location(webview, file$P, 201, 16, 9249);
+			add_location(webview, file$P, 201, 16, 9291);
 			attr_dev(div4, "class", " svelte-1p4b8qa");
-			add_location(div4, file$P, 200, 12, 9217);
+			add_location(div4, file$P, 200, 12, 9259);
 			attr_dev(div5, "class", "hide animated fadeIn svelte-1p4b8qa");
 			set_style(div5, "margin-top", "1em");
 			set_style(div5, "display", "none");
 			set_style(div5, "flex-direction", "column");
 			toggle_class(div5, "active", /*toggleRow2*/ ctx[9]);
-			add_location(div5, file$P, 192, 8, 8462);
+			add_location(div5, file$P, 192, 8, 8504);
 			set_style(div0, "margin-right", "1em");
 			attr_dev(div0, "slot", "plotContainer");
 			attr_dev(div0, "class", "svelte-1p4b8qa");
-			add_location(div0, file$P, 187, 4, 8179);
+			add_location(div0, file$P, 187, 4, 8221);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -42866,6 +42885,7 @@ function create_buttonContainer_slot$2(ctx) {
 	}
 
 	let textfield1_props = {
+		type: "number",
 		style: /*style*/ ctx[13],
 		label: "FELIX Hz"
 	};
@@ -42882,6 +42902,7 @@ function create_buttonContainer_slot$2(ctx) {
 	}
 
 	let textfield2_props = {
+		type: "number",
 		style: /*style*/ ctx[13],
 		label: "Mass Index"
 	};
@@ -42898,6 +42919,7 @@ function create_buttonContainer_slot$2(ctx) {
 	}
 
 	let textfield3_props = {
+		type: "number",
 		style: /*style*/ ctx[13],
 		label: "Time Index"
 	};
@@ -42950,7 +42972,7 @@ function create_buttonContainer_slot$2(ctx) {
 			attr_dev(div1, "class", "content align buttonRow svelte-1v2nl09");
 			add_location(div1, file$Q, 157, 8, 5651);
 			attr_dev(button3, "class", "button is-link svelte-1v2nl09");
-			add_location(button3, file$Q, 172, 12, 6975);
+			add_location(button3, file$Q, 172, 12, 7017);
 			attr_dev(div2, "class", "animated fadeIn hide buttonRow svelte-1v2nl09");
 			toggle_class(div2, "active", /*toggleRow*/ ctx[11]);
 			add_location(div2, file$Q, 165, 8, 6296);
@@ -43133,7 +43155,7 @@ function create_each_block$6(ctx) {
 			attr_dev(div, "id", div_id_value = "" + (/*scanfile*/ ctx[34] + "_tplot"));
 			set_style(div, "padding-bottom", "1em");
 			attr_dev(div, "class", "svelte-1v2nl09");
-			add_location(div, file$Q, 180, 16, 7264);
+			add_location(div, file$Q, 180, 16, 7306);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -43209,15 +43231,15 @@ function create_plotContainer_slot$2(ctx) {
 			create_component(reportlayout.$$.fragment);
 			attr_dev(div1, "id", "tplotContainer");
 			attr_dev(div1, "class", "svelte-1v2nl09");
-			add_location(div1, file$Q, 178, 8, 7176);
+			add_location(div1, file$Q, 178, 8, 7218);
 			attr_dev(div2, "class", "animated fadeIn hide svelte-1v2nl09");
 			set_style(div2, "flex-direction", "column ");
 			toggle_class(div2, "active", /*graphPlotted*/ ctx[3]);
-			add_location(div2, file$Q, 185, 8, 7371);
+			add_location(div2, file$Q, 185, 8, 7413);
 			set_style(div0, "margin-right", "1em");
 			attr_dev(div0, "slot", "plotContainer");
 			attr_dev(div0, "class", "svelte-1v2nl09");
-			add_location(div0, file$Q, 177, 4, 7113);
+			add_location(div0, file$Q, 177, 4, 7155);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -43781,7 +43803,11 @@ function create_buttonContainer_slot$3(ctx) {
 		/*textfield0_value_binding*/ ctx[18].call(null, value);
 	}
 
-	let textfield0_props = { style: /*style*/ ctx[12], label: "Delta" };
+	let textfield0_props = {
+		type: "number",
+		style: /*style*/ ctx[12],
+		label: "Delta"
+	};
 
 	if (/*delta*/ ctx[4] !== void 0) {
 		textfield0_props.value = /*delta*/ ctx[4];
@@ -43795,7 +43821,11 @@ function create_buttonContainer_slot$3(ctx) {
 		/*textfield1_value_binding*/ ctx[20].call(null, value_1);
 	}
 
-	let textfield1_props = { style: /*style*/ ctx[12], label: "Gamma" };
+	let textfield1_props = {
+		type: "number",
+		style: /*style*/ ctx[12],
+		label: "Gamma"
+	};
 
 	if (/*gamma*/ ctx[5] !== void 0) {
 		textfield1_props.value = /*gamma*/ ctx[5];
@@ -43880,7 +43910,11 @@ function create_buttonContainer_slot$3(ctx) {
 		/*textfield5_value_binding*/ ctx[31].call(null, value_6);
 	}
 
-	let textfield5_props = { style: /*style*/ ctx[12], label: "Temp." };
+	let textfield5_props = {
+		type: "number",
+		style: /*style*/ ctx[12],
+		label: "Temp."
+	};
 
 	if (/*temp*/ ctx[9] !== void 0) {
 		textfield5_props.value = /*temp*/ ctx[9];
@@ -43895,6 +43929,7 @@ function create_buttonContainer_slot$3(ctx) {
 	}
 
 	let textfield6_props = {
+		type: "number",
 		style: /*style*/ ctx[12],
 		label: "Total J"
 	};
@@ -43945,18 +43980,18 @@ function create_buttonContainer_slot$3(ctx) {
 			attr_dev(button0, "class", "button is-link svelte-17f6clg");
 			add_location(button0, file$R, 139, 12, 5142);
 			attr_dev(button1, "class", "button is-link svelte-17f6clg");
-			add_location(button1, file$R, 142, 12, 5444);
+			add_location(button1, file$R, 142, 12, 5472);
 			attr_dev(button2, "class", "button is-link svelte-17f6clg");
-			add_location(button2, file$R, 144, 12, 5696);
+			add_location(button2, file$R, 144, 12, 5724);
 			attr_dev(div1, "class", "content align buttonRow svelte-17f6clg");
 			add_location(div1, file$R, 138, 8, 5091);
 			attr_dev(button3, "class", "button is-link svelte-17f6clg");
-			add_location(button3, file$R, 153, 12, 6520);
+			add_location(button3, file$R, 153, 12, 6576);
 			attr_dev(button4, "class", "button is-link svelte-17f6clg");
-			add_location(button4, file$R, 154, 12, 6635);
+			add_location(button4, file$R, 154, 12, 6691);
 			attr_dev(div2, "class", "animated fadeIn hide buttonRow svelte-17f6clg");
 			toggle_class(div2, "active", /*toggleRow*/ ctx[11]);
-			add_location(div2, file$R, 147, 8, 5814);
+			add_location(div2, file$R, 147, 8, 5842);
 			attr_dev(div0, "class", "thz_buttonContainer svelte-17f6clg");
 			attr_dev(div0, "slot", "buttonContainer");
 			add_location(div0, file$R, 136, 4, 5023);
@@ -44169,18 +44204,18 @@ function create_plotContainer_slot$3(ctx) {
 			create_component(reportlayout.$$.fragment);
 			attr_dev(div1, "id", "thzPlot");
 			attr_dev(div1, "class", "svelte-17f6clg");
-			add_location(div1, file$R, 160, 8, 6864);
+			add_location(div1, file$R, 160, 8, 6920);
 			attr_dev(div2, "id", "boltzman_plot");
 			attr_dev(div2, "class", "svelte-17f6clg");
-			add_location(div2, file$R, 161, 8, 6898);
+			add_location(div2, file$R, 161, 8, 6954);
 			attr_dev(div3, "class", "animated fadeIn hide svelte-17f6clg");
 			set_style(div3, "flex-direction", "column ");
 			toggle_class(div3, "active", /*graphPlotted*/ ctx[3]);
-			add_location(div3, file$R, 163, 8, 6940);
+			add_location(div3, file$R, 163, 8, 6996);
 			set_style(div0, "margin-right", "1em");
 			attr_dev(div0, "slot", "plotContainer");
 			attr_dev(div0, "class", "svelte-17f6clg");
-			add_location(div0, file$R, 158, 4, 6799);
+			add_location(div0, file$R, 158, 4, 6855);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
