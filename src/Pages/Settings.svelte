@@ -225,17 +225,24 @@
             } else {
                 console.info('Copied ' + results.length + ' files');
                 createToast("Updated succesfull. Restart the program (Press Ctrl + R).", "success")
-                let response = remote.dialog.showMessageBox(remote.getCurrentWindow(), 
-                    {title:"FELion_GUI3", type:"info", message:"Update succesfull", buttons:["Restart", "Restart later"]}
-                )
-                if (response===0) {remote.getCurrentWindow().reload()}
+                if (process.versions.electron >= "7") {
+
+                    let response = remote.dialog.showMessageBoxSync(remote.getCurrentWindow(), 
+                        {title:"FELion_GUI3", type:"info", message:"Update succesfull", buttons:["Restart", "Restart later"]}
+                    )
+                    if (response===0) {remote.getCurrentWindow().reload()}
+                } else {
+                    let response = remote.dialog.showMessageBox(remote.getCurrentWindow(), 
+                        {title:"FELion_GUI3", type:"info", message:"Update succesfull", buttons:["Restart", "Restart later"]}
+                    )
+                    if (response===0) {remote.getCurrentWindow().reload()}
+                }
             }
         })
     }
 
     // Backup and restore
     let backupName = "FELion_GUI_backup"
-
     const backUp = (event) => {
 
         let target = event.target
