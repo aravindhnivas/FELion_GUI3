@@ -85,6 +85,10 @@
 
     const updateCheck = ({info=true}={}) => {
 
+        let target = document.getElementById("updateCheckBtn")
+
+        target.classList.toggle("is-loading")
+
         if (!navigator.onLine) {if (info) {createToast("No Internet Connection!", "warning")}; return}
         
         console.log(`URL_Package: ${versionJson}`)
@@ -162,6 +166,7 @@
 
             }
             console.log("Update check completed")
+            target.classList.toggle("is-loading")
         })
 
     }
@@ -202,16 +207,20 @@
         })
     }
 
-    const update = async () => {
+    const update = async (event) => {
+
+        let target = document.getElementById("updateBtn")
+
+        target.classList.toggle("is-loading")
 
         if (!fs.existsSync(updateFolder)) {fs.mkdirSync(updateFolder)}
         
         await download()
-        InstallUpdate()
+        InstallUpdate(target)
 
     }
 
-    const InstallUpdate = () => {
+    const InstallUpdate = (target) => {
 
         console.log("Copying downloaded files")
 
@@ -222,19 +231,21 @@
             if (error) {
                 console.error('Copy failed: ' + error);
                 createToast("Update failed.\nMaybe the user doesn't have necessary persmission to write files in the disk", "danger")
+
+                return target.classList.toggle("is-loading")
             } else {
-                console.info('Copied ' + results.length + ' files');
+                console.info('Copied ' + results.length + ' files')
+
                 createToast("Updated succesfull. Restart the program (Press Ctrl + R).", "success")
+                target.classList.toggle("is-loading")
                 if (process.versions.electron >= "7") {
 
                     let response = remote.dialog.showMessageBoxSync(remote.getCurrentWindow(), 
-                        {title:"FELion_GUI3", type:"info", message:"Update succesfull", buttons:["Restart", "Restart later"]}
-                    )
+                        {title:"FELion_GUI3", type:"info", message:"Update succesfull", buttons:["Restart", "Restart later"]} )
                     if (response===0) {remote.getCurrentWindow().reload()}
                 } else {
                     let response = remote.dialog.showMessageBox(remote.getCurrentWindow(), 
-                        {title:"FELion_GUI3", type:"info", message:"Update succesfull", buttons:["Restart", "Restart later"]}
-                    )
+                        {title:"FELion_GUI3", type:"info", message:"Update succesfull", buttons:["Restart", "Restart later"]} )
                     if (response===0) {remote.getCurrentWindow().reload()}
                 }
             }
@@ -243,6 +254,7 @@
 
     // Backup and restore
     let backupName = "FELion_GUI_backup"
+
     const backUp = (event) => {
 
         let target = event.target
@@ -378,8 +390,8 @@
                     </div>
 
                     <div class="content">
-                        <button class="button is-link" on:click={updateCheck}>Check update</button>
-                        <button class="button is-link" on:click={update}>Update</button>
+                        <button class="button is-link" id="updateCheckBtn" on:click={updateCheck}>Check update</button>
+                        <button class="button is-link" id="updateBtn" on:click={update}>Update</button>
                     </div>
 
 
