@@ -37,6 +37,8 @@
 
     function getfiles(toast=false) {
 
+        if (!currentLocation) {return createToast("Location undefined", "danger")}
+
         original_files = otherfolders = files = fileChecked = [], selectAll = false
         try {
             console.log("Current location: ", currentLocation)
@@ -48,7 +50,6 @@
             console.log(folderfile)
             
             original_location = currentLocation
-            
             console.log("Folder updated");
             if (toast) {createToast("Files updated")}
 
