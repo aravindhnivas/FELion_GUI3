@@ -103,8 +103,8 @@
         
         let tableData, imgList_HTML = []
         include_table ? tableData = `<table class='table is-bordered is-hoverable'>${document.getElementById(tableID).innerHTML}</table>` : tableData = "\n"
-
-        index = 0
+        let index = 0
+        
         await asyncForEach(extra_plotInclude, async (value)=>{
             if (value) {
                 console.log("Request Image URL for ", plotID[index])

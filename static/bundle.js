@@ -35354,7 +35354,7 @@ function create_label_slot_1(ctx) {
 			t = text(t_value);
 			attr_dev(span, "slot", "label");
 			set_style(span, "color", /*method*/ ctx[39].color);
-			add_location(span, file$M, 194, 12, 7699);
+			add_location(span, file$M, 194, 12, 7711);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -35672,7 +35672,7 @@ function create_label_slot$5(ctx) {
 			t = text(/*method*/ ctx[39]);
 			attr_dev(span, "slot", "label");
 			set_style(span, "color", /*method*/ ctx[39]);
-			add_location(span, file$M, 220, 16, 9199);
+			add_location(span, file$M, 220, 16, 9211);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -36198,26 +36198,26 @@ function create_fragment$R(ctx) {
 			t17 = space();
 			create_component(select.$$.fragment);
 			attr_dev(div0, "class", "title notification is-link svelte-l7bd83");
-			add_location(div0, file$M, 180, 0, 6997);
+			add_location(div0, file$M, 180, 0, 7009);
 			attr_dev(button0, "class", "button is-pulled-right is-warning svelte-l7bd83");
-			add_location(button0, file$M, 185, 4, 7220);
+			add_location(button0, file$M, 185, 4, 7232);
 			set_style(div1, "margin-bottom", "1em");
-			add_location(div1, file$M, 182, 0, 7060);
+			add_location(div1, file$M, 182, 0, 7072);
 			attr_dev(button1, "class", "button is-link svelte-l7bd83");
 			attr_dev(button1, "tabindex", "0");
-			add_location(button1, file$M, 214, 8, 8607);
+			add_location(button1, file$M, 214, 8, 8619);
 			attr_dev(button2, "class", "button is-link svelte-l7bd83");
 			attr_dev(button2, "tabindex", "0");
-			add_location(button2, file$M, 215, 8, 8744);
+			add_location(button2, file$M, 215, 8, 8756);
 			attr_dev(button3, "class", "button is-link svelte-l7bd83");
 			attr_dev(button3, "tabindex", "0");
-			add_location(button3, file$M, 216, 8, 8880);
+			add_location(button3, file$M, 216, 8, 8892);
 			attr_dev(div2, "class", "align");
 			set_style(div2, "margin-top", "1em");
-			add_location(div2, file$M, 212, 4, 8548);
+			add_location(div2, file$M, 212, 4, 8560);
 			attr_dev(div3, "class", "align report");
 			attr_dev(div3, "id", /*id*/ ctx[0]);
-			add_location(div3, file$M, 189, 0, 7406);
+			add_location(div3, file$M, 189, 0, 7418);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -36626,7 +36626,7 @@ function instance$R($$self, $$props, $$invalidate) {
 		? tableData = `<table class='table is-bordered is-hoverable'>${document.getElementById(tableID).innerHTML}</table>`
 		: tableData = "\n";
 
-		index = 0;
+		let index = 0;
 
 		await asyncForEach(extra_plotInclude, async value => {
 			if (value) {
