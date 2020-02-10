@@ -19230,7 +19230,7 @@ function get_each_context_1(ctx, list, i) {
 	return child_ctx;
 }
 
-// (88:4) <Icon class="material-icons" on:click="{()=>changeDirectory(original_location)}">
+// (89:4) <Icon class="material-icons" on:click="{()=>changeDirectory(original_location)}">
 function create_default_slot_11(ctx) {
 	let t;
 
@@ -19250,14 +19250,14 @@ function create_default_slot_11(ctx) {
 		block,
 		id: create_default_slot_11.name,
 		type: "slot",
-		source: "(88:4) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>changeDirectory(original_location)}\\\">",
+		source: "(89:4) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>changeDirectory(original_location)}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (90:4) <Icon class="material-icons" on:click="{()=>{getfiles(true)}}">
+// (91:4) <Icon class="material-icons" on:click="{()=>{getfiles(true)}}">
 function create_default_slot_10(ctx) {
 	let t;
 
@@ -19277,14 +19277,14 @@ function create_default_slot_10(ctx) {
 		block,
 		id: create_default_slot_10.name,
 		type: "slot",
-		source: "(90:4) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>{getfiles(true)}}\\\">",
+		source: "(91:4) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>{getfiles(true)}}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (91:4) <Icon class="material-icons" on:click="{()=>changeDirectory("..")}">
+// (92:4) <Icon class="material-icons" on:click="{()=>changeDirectory("..")}">
 function create_default_slot_9(ctx) {
 	let t;
 
@@ -19304,14 +19304,14 @@ function create_default_slot_9(ctx) {
 		block,
 		id: create_default_slot_9.name,
 		type: "slot",
-		source: "(91:4) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>changeDirectory(\\\"..\\\")}\\\">",
+		source: "(92:4) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>changeDirectory(\\\"..\\\")}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (100:8) <span slot="label">
+// (101:8) <span slot="label">
 function create_label_slot(ctx) {
 	let span;
 
@@ -19320,7 +19320,7 @@ function create_label_slot(ctx) {
 			span = element("span");
 			span.textContent = "Select All";
 			attr_dev(span, "slot", "label");
-			add_location(span, file$q, 99, 8, 3638);
+			add_location(span, file$q, 100, 8, 3723);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -19334,14 +19334,14 @@ function create_label_slot(ctx) {
 		block,
 		id: create_label_slot.name,
 		type: "slot",
-		source: "(100:8) <span slot=\\\"label\\\">",
+		source: "(101:8) <span slot=\\\"label\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (97:4) <FormField>
+// (98:4) <FormField>
 function create_default_slot_8(ctx) {
 	let updating_checked;
 	let t;
@@ -19401,14 +19401,14 @@ function create_default_slot_8(ctx) {
 		block,
 		id: create_default_slot_8.name,
 		type: "slot",
-		source: "(97:4) <FormField>",
+		source: "(98:4) <FormField>",
 		ctx
 	});
 
 	return block;
 }
 
-// (108:12) <Icon class="material-icons" on>
+// (109:12) <Icon class="material-icons" on>
 function create_default_slot_7(ctx) {
 	let t;
 
@@ -19428,14 +19428,14 @@ function create_default_slot_7(ctx) {
 		block,
 		id: create_default_slot_7.name,
 		type: "slot",
-		source: "(108:12) <Icon class=\\\"material-icons\\\" on>",
+		source: "(109:12) <Icon class=\\\"material-icons\\\" on>",
 		ctx
 	});
 
 	return block;
 }
 
-// (109:12) <Icon class="material-icons" >
+// (110:12) <Icon class="material-icons" >
 function create_default_slot_6(ctx) {
 	let t;
 
@@ -19455,14 +19455,14 @@ function create_default_slot_6(ctx) {
 		block,
 		id: create_default_slot_6.name,
 		type: "slot",
-		source: "(109:12) <Icon class=\\\"material-icons\\\" >",
+		source: "(110:12) <Icon class=\\\"material-icons\\\" >",
 		ctx
 	});
 
 	return block;
 }
 
-// (107:8) <IconButton  toggle bind:pressed={showfiles}>
+// (108:8) <IconButton  toggle bind:pressed={showfiles}>
 function create_default_slot_5(ctx) {
 	let t;
 	let current;
@@ -19536,14 +19536,14 @@ function create_default_slot_5(ctx) {
 		block,
 		id: create_default_slot_5.name,
 		type: "slot",
-		source: "(107:8) <IconButton  toggle bind:pressed={showfiles}>",
+		source: "(108:8) <IconButton  toggle bind:pressed={showfiles}>",
 		ctx
 	});
 
 	return block;
 }
 
-// (129:26) 
+// (130:26) 
 function create_if_block_1$3(ctx) {
 	let div;
 	let t0;
@@ -19557,7 +19557,7 @@ function create_if_block_1$3(ctx) {
 			t1 = text(/*filetype*/ ctx[1]);
 			t2 = text(" here!");
 			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-jcinco");
-			add_location(div, file$q, 129, 8, 4627);
+			add_location(div, file$q, 130, 8, 4712);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -19579,14 +19579,14 @@ function create_if_block_1$3(ctx) {
 		block,
 		id: create_if_block_1$3.name,
 		type: "if",
-		source: "(129:26) ",
+		source: "(130:26) ",
 		ctx
 	});
 
 	return block;
 }
 
-// (115:4) {#if showfiles && files != "" }
+// (116:4) {#if showfiles && files != "" }
 function create_if_block$8(ctx) {
 	let div;
 	let div_transition;
@@ -19607,7 +19607,7 @@ function create_if_block$8(ctx) {
 			create_component(list.$$.fragment);
 			attr_dev(div, "class", "filelist svelte-jcinco");
 			set_style(div, "padding-left", "1em");
-			add_location(div, file$q, 115, 8, 4125);
+			add_location(div, file$q, 116, 8, 4210);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -19651,14 +19651,14 @@ function create_if_block$8(ctx) {
 		block,
 		id: create_if_block$8.name,
 		type: "if",
-		source: "(115:4) {#if showfiles && files != \\\"\\\" }",
+		source: "(116:4) {#if showfiles && files != \\\"\\\" }",
 		ctx
 	});
 
 	return block;
 }
 
-// (122:24) <Label>
+// (123:24) <Label>
 function create_default_slot_4(ctx) {
 	let t_value = /*file*/ ctx[30] + "";
 	let t;
@@ -19682,14 +19682,14 @@ function create_default_slot_4(ctx) {
 		block,
 		id: create_default_slot_4.name,
 		type: "slot",
-		source: "(122:24) <Label>",
+		source: "(123:24) <Label>",
 		ctx
 	});
 
 	return block;
 }
 
-// (123:24) <Meta>
+// (124:24) <Meta>
 function create_default_slot_3(ctx) {
 	let updating_group;
 	let current;
@@ -19746,14 +19746,14 @@ function create_default_slot_3(ctx) {
 		block,
 		id: create_default_slot_3.name,
 		type: "slot",
-		source: "(123:24) <Meta>",
+		source: "(124:24) <Meta>",
 		ctx
 	});
 
 	return block;
 }
 
-// (121:20) <Item>
+// (122:20) <Item>
 function create_default_slot_2$2(ctx) {
 	let t0;
 	let t1;
@@ -19828,14 +19828,14 @@ function create_default_slot_2$2(ctx) {
 		block,
 		id: create_default_slot_2$2.name,
 		type: "slot",
-		source: "(121:20) <Item>",
+		source: "(122:20) <Item>",
 		ctx
 	});
 
 	return block;
 }
 
-// (120:16) {#each files as file (file)}
+// (121:16) {#each files as file (file)}
 function create_each_block_1(key_1, ctx) {
 	let first;
 	let current;
@@ -19889,14 +19889,14 @@ function create_each_block_1(key_1, ctx) {
 		block,
 		id: create_each_block_1.name,
 		type: "each",
-		source: "(120:16) {#each files as file (file)}",
+		source: "(121:16) {#each files as file (file)}",
 		ctx
 	});
 
 	return block;
 }
 
-// (118:12) <List checklist>
+// (119:12) <List checklist>
 function create_default_slot_1$3(ctx) {
 	let each_blocks = [];
 	let each_1_lookup = new Map();
@@ -19964,14 +19964,14 @@ function create_default_slot_1$3(ctx) {
 		block,
 		id: create_default_slot_1$3.name,
 		type: "slot",
-		source: "(118:12) <List checklist>",
+		source: "(119:12) <List checklist>",
 		ctx
 	});
 
 	return block;
 }
 
-// (135:16) <Icon class="material-icons">
+// (136:16) <Icon class="material-icons">
 function create_default_slot$5(ctx) {
 	let t;
 
@@ -19991,14 +19991,14 @@ function create_default_slot$5(ctx) {
 		block,
 		id: create_default_slot$5.name,
 		type: "slot",
-		source: "(135:16) <Icon class=\\\"material-icons\\\">",
+		source: "(136:16) <Icon class=\\\"material-icons\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (133:8) {#each otherfolders as folder (folder)}
+// (134:8) {#each otherfolders as folder (folder)}
 function create_each_block$1(key_1, ctx) {
 	let div1;
 	let t0;
@@ -20034,9 +20034,9 @@ function create_each_block$1(key_1, ctx) {
 			t1 = text(t1_value);
 			t2 = space();
 			attr_dev(div0, "class", "mdc-typography--subtitle1");
-			add_location(div0, file$q, 135, 16, 5019);
+			add_location(div0, file$q, 136, 16, 5104);
 			attr_dev(div1, "class", "align svelte-jcinco");
-			add_location(div1, file$q, 133, 12, 4844);
+			add_location(div1, file$q, 134, 12, 4929);
 			this.first = div1;
 		},
 		m: function mount(target, anchor) {
@@ -20095,7 +20095,7 @@ function create_each_block$1(key_1, ctx) {
 		block,
 		id: create_each_block$1.name,
 		type: "each",
-		source: "(133:8) {#each otherfolders as folder (folder)}",
+		source: "(134:8) {#each otherfolders as folder (folder)}",
 		ctx
 	});
 
@@ -20256,18 +20256,18 @@ function create_fragment$r(ctx) {
 			}
 
 			attr_dev(div0, "class", "align center browseIcons svelte-jcinco");
-			add_location(div0, file$q, 86, 0, 3034);
+			add_location(div0, file$q, 87, 0, 3119);
 			attr_dev(div1, "class", "align center svelte-jcinco");
-			add_location(div1, file$q, 95, 0, 3465);
+			add_location(div1, file$q, 96, 0, 3550);
 			attr_dev(div2, "class", "mdc-typography--subtitle1");
-			add_location(div2, file$q, 110, 8, 4003);
+			add_location(div2, file$q, 111, 8, 4088);
 			attr_dev(div3, "class", "align folderlist svelte-jcinco");
-			add_location(div3, file$q, 105, 4, 3741);
+			add_location(div3, file$q, 106, 4, 3826);
 			attr_dev(div4, "class", "otherFolderlist");
 			set_style(div4, "cursor", "pointer");
-			add_location(div4, file$q, 131, 4, 4729);
+			add_location(div4, file$q, 132, 4, 4814);
 			attr_dev(div5, "class", "folderfile-list svelte-jcinco");
-			add_location(div5, file$q, 103, 0, 3704);
+			add_location(div5, file$q, 104, 0, 3789);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -20529,6 +20529,10 @@ function instance$r($$self, $$props, $$invalidate) {
 	}
 
 	const changeDirectory = goto => {
+		if (!currentLocation) {
+			return createToast("Location undefined", "danger");
+		}
+
 		$$invalidate(12, currentLocation = path.resolve(currentLocation, goto));
 		getfiles();
 	};
