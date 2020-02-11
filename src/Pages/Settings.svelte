@@ -18,9 +18,10 @@
     ///////////////////////////////////////////////////////
 
     let selected = "Configuration"
-
-    let pythonpath = localStorage["pythonpath"] || path.resolve(__dirname, "../python3.7/python")
-
+    let pythonpath;
+    if (process.platform !== 'darwin') {
+        pythonpath = localStorage["pythonpath"] || path.resolve(__dirname, "../python3.7/python")
+    } else { pythonpath = localStorage["pythonpath"] || path.resolve("/usr/local/bin/python") }
     let pythonscript = localStorage["pythonscript"] = path.resolve(__dirname, "assets/python_files")
     
     const navigate = (e) => {selected = e.target.innerHTML}

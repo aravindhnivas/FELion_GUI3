@@ -1,5 +1,6 @@
 <!doctype html>
 <html>
+
 <head>
 	<meta charset='utf8'>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,31 +13,31 @@
 	<link rel='stylesheet' href='./assets/css/global.css'>
 
 	<script src='./assets/js/plotly-latest.min.js'></script>
-	
+
 </head>
 
 <body class="mdc-typography">
 
 	<script>
 		window._ = require('./assets/js/lodash.js')
-		window.$ = window.jQuery = require('./assets/js/jquery-3.4.1.min')
+		// window.$ = window.jQuery = require('./assets/js/jquery-3.4.1.min')
 	</script>
 	<script src='./assets/js/anime.min.js'></script>
 	<script src='./assets/js/bulma-extensions.min.js'></script>
 	<script src='./assets/js/interact.min.js'></script>
 	<script src='./assets/js/marked.min.js'></script>
-	
+
 	<!-- <script src='./assets/js/html2canvas.min.js'></script> -->
 	<!-- <script src='./assets/js/sticky.min.js'></script> -->
 	<script src='./bundle.js'></script>
 	<script>
 
 		const customTitlebar = require('./custom-electron-titlebar/lib/index')
-		
+
 		let MyTitleBar = new customTitlebar.Titlebar({
-		
+
 			backgroundColor: customTitlebar.Color.fromHex('#38236b'),
-		
+
 			// icon: "./assets/images/icon.png"
 		});
 		MyTitleBar.updateTitle("FELion Spectrum Analyser")

@@ -33,12 +33,14 @@
     let toggleRow = false
     let style = "width:7em; height:3.5em; margin-right:0.5em"
 
-    function plotData({e=null, filetype="thz", tkplot="run"}={}){
+    // let justPlot = false
+
+    function plotData({e=null, filetype="thz", tkplot="run", justPlot=false }={}){
 
         if (fileChecked.length === 0) {return createToast("No files selected", "danger")}
 
         let pyfileInfo = {
-            thz: {pyfile:"thz_scan.py" , args:[...thzfiles, delta, tkplot, gamma]},
+            thz: {pyfile:"thz_scan.py" , args:[...thzfiles, delta, tkplot, gamma, justPlot]},
             boltzman: {pyfile:"boltzman.py" , args:[currentLocation, B0, D0, H0, temp, totalJ, tkplot]},
         }
         let {pyfile, args} = pyfileInfo[filetype]
@@ -137,12 +139,13 @@
     <div class="thz_buttonContainer" slot="buttonContainer">
 
         <div class="content align buttonRow">
-            <button class="button is-link" on:click="{(e)=>plotData({e:e})}">THz Plot</button>
-            <Textfield type="number" {style} on:change="{(e)=>plotData({e:e})}" bind:value={delta} label="Delta" />
-            <Textfield type="number" {style} on:change="{(e)=>plotData({e:e})}" bind:value={gamma} label="Gamma" />
+            <button class="button is-link" on:click="{(e)=>{plotData({e:e})}}">THz Plot</button>
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"thz", tkplot:"plot"})}">Open in Matplotlib</button>
             <CustomIconSwitch style="padding:0;" bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
             <button class="button is-link" on:click="{()=>{toggleRow = !toggleRow}}">Boltzman</button>
+            <button class="button is-link" on:click="{(e)=>{plotData({e:e, justPlot:true})}}">Just Plot</button>
+            <Textfield type="number" {style} on:change="{(e)=>plotData({e:e})}" bind:value={delta} label="Delta" />
+            <Textfield type="number" {style} on:change="{(e)=>plotData({e:e})}" bind:value={gamma} label="Gamma" />
         </div>
 
         <div class="animated fadeIn hide buttonRow" class:active={toggleRow} >

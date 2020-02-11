@@ -110,19 +110,28 @@ def binning(xs, ys, delta=1e-6):
     data_binned = np.array(data_binned, dtype=np.float)
     return binsx, data_binned
 
-def plot_thz(ax=None, data={}, tkplot=False, save_dat=True, latex=False):
 
+def plot_thz(ax=None, data={}, tkplot=False, save_dat=True, latex=False, justPlot=False):
     xs, ys = [], []
+
     for i, filename in enumerate(filenames):
 
         filename = pt(filename)
         freq, depletion_counts, iteraton = thz_plot(filename)
+        lg = f"{filename.name} [{iteraton}]"
+        if justPlot:
+            data[f"{filename.name}"] = {"x": list(freq), "y": list(depletion_counts), "name": lg, 
+                "mode":'markers', "line":{"color":f"rgb{colors[i*2]}"}
+            }
+            print("Just Plot")
+            continue
+
         model = gauss_fit(freq, depletion_counts)
         fit_data, uline_freq, usigma, uamplitude, ufwhm = model.get_data()
         freq_fit = uline_freq.nominal_value
         freq_fit_err = uline_freq.std_dev*1e7
         
-        lg = f"{filename.name} [{iteraton}]"
+        # lg = f"{filename.name} [{iteraton}]"
         lg_fit = f"Fit: {freq_fit:.7f}({freq_fit_err:.0f}) [{ufwhm.nominal_value*1e6:.1f} KHz]"
 
         if latex:
@@ -144,6 +153,7 @@ def plot_thz(ax=None, data={}, tkplot=False, save_dat=True, latex=False):
         xs = np.append(xs, freq)
         ys = np.append(ys, depletion_counts)
 
+    if justPlot: return data
     # Averaged
     binx, biny = binning(xs, ys, delta)
     model = gauss_fit(binx, biny)
@@ -259,7 +269,7 @@ def save_fig():
                     os.system(f"{save_filename}")
             except: showerror("Error", traceback.format_exc(5))
 
-def main(filenames, delta, tkplot, gamma=None):
+def main(filenames, delta, tkplot, gamma=None, justPlot=False):
     global widget
     os.chdir(filenames[0].parent)
 
@@ -276,32 +286,33 @@ def main(filenames, delta, tkplot, gamma=None):
         fit_data = plot_thz(ax=ax, tkplot=True)
         widget.plot_legend = ax.legend(title=f"Intensity: {fit_data.max():.2f} %")
         widget.mainloop()
-
     else: 
-        
-        data = plot_thz()
+        data = plot_thz(justPlot=justPlot)
         sendData(data)
 
 if __name__ == "__main__":
     global filenames
     args = sys.argv[1:][0].split(",")
 
-    filenames = [pt(i) for i in args[0:-3]]
-    gamma = float(args[-1])*1e-3
+    filenames = [pt(i) for i in args[0:-4]]
+    gamma = float(args[-2])*1e-3
 
-    tkplot = args[-2]
+    tkplot = args[-3]
     if tkplot == "plot": tkplot = True
     else: tkplot = False
 
-    delta = float(args[-3]) # in Hz
+    delta = float(args[-4]) # in Hz
     delta = delta*1e-9 # in GHz (to compare with our data)
+
+    if args[-1] == "true": justPlot = True
+    else: justPlot = False
 
     if tkplot:
 
         print(f"Received arguments: {args}")
         print(f"Received files: {filenames}")
-        print(f"Gamma: {gamma} {args[-1]}")
-        print(f"tkplot: {tkplot} {args[-2]}")
-        print(f"Delta: {delta} {args[-3]}")
+        print(f"Gamma: {gamma} {args[-3]}")
+        # print(f"tkplot: {tkplot} {args[-3]}")
+        # print(f"Delta: {delta} {args[-4]}")
 
-    main(filenames, delta, tkplot, gamma)
+    main(filenames, delta, tkplot, gamma, justPlot)

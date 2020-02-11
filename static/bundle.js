@@ -43774,77 +43774,43 @@ class Timescan extends SvelteComponentDev {
 
 const file$R = "src\\Pages\\THz.svelte";
 
-// (137:4) <div class="thz_buttonContainer" slot="buttonContainer">
+// (139:4) <div class="thz_buttonContainer" slot="buttonContainer">
 function create_buttonContainer_slot$3(ctx) {
 	let div0;
 	let div1;
 	let button0;
 	let t1;
-	let updating_value;
-	let t2;
-	let updating_value_1;
-	let t3;
 	let button1;
-	let t5;
+	let t3;
 	let updating_toggler;
-	let t6;
+	let t4;
 	let button2;
+	let t6;
+	let button3;
 	let t8;
+	let updating_value;
+	let t9;
+	let updating_value_1;
+	let t10;
 	let div2;
 	let updating_value_2;
-	let t9;
-	let updating_value_3;
-	let t10;
-	let updating_value_4;
 	let t11;
-	let updating_value_5;
+	let updating_value_3;
 	let t12;
-	let updating_value_6;
+	let updating_value_4;
 	let t13;
-	let button3;
+	let updating_value_5;
+	let t14;
+	let updating_value_6;
 	let t15;
 	let button4;
+	let t17;
+	let button5;
 	let current;
 	let dispose;
 
-	function textfield0_value_binding(value) {
-		/*textfield0_value_binding*/ ctx[18].call(null, value);
-	}
-
-	let textfield0_props = {
-		type: "number",
-		style: /*style*/ ctx[12],
-		label: "Delta"
-	};
-
-	if (/*delta*/ ctx[4] !== void 0) {
-		textfield0_props.value = /*delta*/ ctx[4];
-	}
-
-	const textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
-	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
-	textfield0.$on("change", /*change_handler*/ ctx[19]);
-
-	function textfield1_value_binding(value_1) {
-		/*textfield1_value_binding*/ ctx[20].call(null, value_1);
-	}
-
-	let textfield1_props = {
-		type: "number",
-		style: /*style*/ ctx[12],
-		label: "Gamma"
-	};
-
-	if (/*gamma*/ ctx[5] !== void 0) {
-		textfield1_props.value = /*gamma*/ ctx[5];
-	}
-
-	const textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
-	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding));
-	textfield1.$on("change", /*change_handler_1*/ ctx[21]);
-
-	function customiconswitch_toggler_binding(value_2) {
-		/*customiconswitch_toggler_binding*/ ctx[23].call(null, value_2);
+	function customiconswitch_toggler_binding(value) {
+		/*customiconswitch_toggler_binding*/ ctx[19].call(null, value);
 	}
 
 	let customiconswitch_props = {
@@ -43863,8 +43829,44 @@ function create_buttonContainer_slot$3(ctx) {
 
 	binding_callbacks.push(() => bind(customiconswitch, "toggler", customiconswitch_toggler_binding));
 
+	function textfield0_value_binding(value_1) {
+		/*textfield0_value_binding*/ ctx[22].call(null, value_1);
+	}
+
+	let textfield0_props = {
+		type: "number",
+		style: /*style*/ ctx[12],
+		label: "Delta"
+	};
+
+	if (/*delta*/ ctx[4] !== void 0) {
+		textfield0_props.value = /*delta*/ ctx[4];
+	}
+
+	const textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
+	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
+	textfield0.$on("change", /*change_handler*/ ctx[23]);
+
+	function textfield1_value_binding(value_2) {
+		/*textfield1_value_binding*/ ctx[24].call(null, value_2);
+	}
+
+	let textfield1_props = {
+		type: "number",
+		style: /*style*/ ctx[12],
+		label: "Gamma"
+	};
+
+	if (/*gamma*/ ctx[5] !== void 0) {
+		textfield1_props.value = /*gamma*/ ctx[5];
+	}
+
+	const textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
+	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding));
+	textfield1.$on("change", /*change_handler_1*/ ctx[25]);
+
 	function textfield2_value_binding(value_3) {
-		/*textfield2_value_binding*/ ctx[25].call(null, value_3);
+		/*textfield2_value_binding*/ ctx[26].call(null, value_3);
 	}
 
 	let textfield2_props = {
@@ -43878,10 +43880,10 @@ function create_buttonContainer_slot$3(ctx) {
 
 	const textfield2 = new Textfield({ props: textfield2_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield2, "value", textfield2_value_binding));
-	textfield2.$on("change", /*change_handler_2*/ ctx[26]);
+	textfield2.$on("change", /*change_handler_2*/ ctx[27]);
 
 	function textfield3_value_binding(value_4) {
-		/*textfield3_value_binding*/ ctx[27].call(null, value_4);
+		/*textfield3_value_binding*/ ctx[28].call(null, value_4);
 	}
 
 	let textfield3_props = {
@@ -43895,10 +43897,10 @@ function create_buttonContainer_slot$3(ctx) {
 
 	const textfield3 = new Textfield({ props: textfield3_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield3, "value", textfield3_value_binding));
-	textfield3.$on("change", /*change_handler_3*/ ctx[28]);
+	textfield3.$on("change", /*change_handler_3*/ ctx[29]);
 
 	function textfield4_value_binding(value_5) {
-		/*textfield4_value_binding*/ ctx[29].call(null, value_5);
+		/*textfield4_value_binding*/ ctx[30].call(null, value_5);
 	}
 
 	let textfield4_props = {
@@ -43912,10 +43914,10 @@ function create_buttonContainer_slot$3(ctx) {
 
 	const textfield4 = new Textfield({ props: textfield4_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield4, "value", textfield4_value_binding));
-	textfield4.$on("change", /*change_handler_4*/ ctx[30]);
+	textfield4.$on("change", /*change_handler_4*/ ctx[31]);
 
 	function textfield5_value_binding(value_6) {
-		/*textfield5_value_binding*/ ctx[31].call(null, value_6);
+		/*textfield5_value_binding*/ ctx[32].call(null, value_6);
 	}
 
 	let textfield5_props = {
@@ -43930,10 +43932,10 @@ function create_buttonContainer_slot$3(ctx) {
 
 	const textfield5 = new Textfield({ props: textfield5_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield5, "value", textfield5_value_binding));
-	textfield5.$on("change", /*change_handler_5*/ ctx[32]);
+	textfield5.$on("change", /*change_handler_5*/ ctx[33]);
 
 	function textfield6_value_binding(value_7) {
-		/*textfield6_value_binding*/ ctx[33].call(null, value_7);
+		/*textfield6_value_binding*/ ctx[34].call(null, value_7);
 	}
 
 	let textfield6_props = {
@@ -43948,7 +43950,7 @@ function create_buttonContainer_slot$3(ctx) {
 
 	const textfield6 = new Textfield({ props: textfield6_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield6, "value", textfield6_value_binding));
-	textfield6.$on("change", /*change_handler_6*/ ctx[34]);
+	textfield6.$on("change", /*change_handler_6*/ ctx[35]);
 
 	const block = {
 		c: function create() {
@@ -43957,93 +43959,110 @@ function create_buttonContainer_slot$3(ctx) {
 			button0 = element("button");
 			button0.textContent = "THz Plot";
 			t1 = space();
-			create_component(textfield0.$$.fragment);
-			t2 = space();
-			create_component(textfield1.$$.fragment);
-			t3 = space();
 			button1 = element("button");
 			button1.textContent = "Open in Matplotlib";
-			t5 = space();
+			t3 = space();
 			create_component(customiconswitch.$$.fragment);
-			t6 = space();
+			t4 = space();
 			button2 = element("button");
 			button2.textContent = "Boltzman";
+			t6 = space();
+			button3 = element("button");
+			button3.textContent = "Just Plot";
 			t8 = space();
+			create_component(textfield0.$$.fragment);
+			t9 = space();
+			create_component(textfield1.$$.fragment);
+			t10 = space();
 			div2 = element("div");
 			create_component(textfield2.$$.fragment);
-			t9 = space();
-			create_component(textfield3.$$.fragment);
-			t10 = space();
-			create_component(textfield4.$$.fragment);
 			t11 = space();
-			create_component(textfield5.$$.fragment);
+			create_component(textfield3.$$.fragment);
 			t12 = space();
-			create_component(textfield6.$$.fragment);
+			create_component(textfield4.$$.fragment);
 			t13 = space();
-			button3 = element("button");
-			button3.textContent = "Submit";
+			create_component(textfield5.$$.fragment);
+			t14 = space();
+			create_component(textfield6.$$.fragment);
 			t15 = space();
 			button4 = element("button");
-			button4.textContent = "Open in Matplotlib";
+			button4.textContent = "Submit";
+			t17 = space();
+			button5 = element("button");
+			button5.textContent = "Open in Matplotlib";
 			attr_dev(button0, "class", "button is-link svelte-17f6clg");
-			add_location(button0, file$R, 139, 12, 5142);
+			add_location(button0, file$R, 141, 12, 5200);
 			attr_dev(button1, "class", "button is-link svelte-17f6clg");
-			add_location(button1, file$R, 142, 12, 5472);
+			add_location(button1, file$R, 142, 12, 5298);
 			attr_dev(button2, "class", "button is-link svelte-17f6clg");
-			add_location(button2, file$R, 144, 12, 5724);
-			attr_dev(div1, "class", "content align buttonRow svelte-17f6clg");
-			add_location(div1, file$R, 138, 8, 5091);
+			add_location(button2, file$R, 144, 12, 5550);
 			attr_dev(button3, "class", "button is-link svelte-17f6clg");
-			add_location(button3, file$R, 153, 12, 6576);
+			add_location(button3, file$R, 145, 12, 5654);
+			attr_dev(div1, "class", "content align buttonRow svelte-17f6clg");
+			add_location(div1, file$R, 140, 8, 5149);
 			attr_dev(button4, "class", "button is-link svelte-17f6clg");
-			add_location(button4, file$R, 154, 12, 6691);
+			add_location(button4, file$R, 156, 12, 6750);
+			attr_dev(button5, "class", "button is-link svelte-17f6clg");
+			add_location(button5, file$R, 157, 12, 6865);
 			attr_dev(div2, "class", "animated fadeIn hide buttonRow svelte-17f6clg");
 			toggle_class(div2, "active", /*toggleRow*/ ctx[11]);
-			add_location(div2, file$R, 147, 8, 5842);
+			add_location(div2, file$R, 150, 8, 6016);
 			attr_dev(div0, "class", "thz_buttonContainer svelte-17f6clg");
 			attr_dev(div0, "slot", "buttonContainer");
-			add_location(div0, file$R, 136, 4, 5023);
+			add_location(div0, file$R, 138, 4, 5081);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
 			append_dev(div0, div1);
 			append_dev(div1, button0);
 			append_dev(div1, t1);
-			mount_component(textfield0, div1, null);
-			append_dev(div1, t2);
-			mount_component(textfield1, div1, null);
-			append_dev(div1, t3);
 			append_dev(div1, button1);
-			append_dev(div1, t5);
+			append_dev(div1, t3);
 			mount_component(customiconswitch, div1, null);
-			append_dev(div1, t6);
+			append_dev(div1, t4);
 			append_dev(div1, button2);
-			append_dev(div0, t8);
+			append_dev(div1, t6);
+			append_dev(div1, button3);
+			append_dev(div1, t8);
+			mount_component(textfield0, div1, null);
+			append_dev(div1, t9);
+			mount_component(textfield1, div1, null);
+			append_dev(div0, t10);
 			append_dev(div0, div2);
 			mount_component(textfield2, div2, null);
-			append_dev(div2, t9);
-			mount_component(textfield3, div2, null);
-			append_dev(div2, t10);
-			mount_component(textfield4, div2, null);
 			append_dev(div2, t11);
-			mount_component(textfield5, div2, null);
+			mount_component(textfield3, div2, null);
 			append_dev(div2, t12);
-			mount_component(textfield6, div2, null);
+			mount_component(textfield4, div2, null);
 			append_dev(div2, t13);
-			append_dev(div2, button3);
+			mount_component(textfield5, div2, null);
+			append_dev(div2, t14);
+			mount_component(textfield6, div2, null);
 			append_dev(div2, t15);
 			append_dev(div2, button4);
+			append_dev(div2, t17);
+			append_dev(div2, button5);
 			current = true;
 
 			dispose = [
 				listen_dev(button0, "click", /*click_handler*/ ctx[17], false, false, false),
-				listen_dev(button1, "click", /*click_handler_1*/ ctx[22], false, false, false),
-				listen_dev(button2, "click", /*click_handler_2*/ ctx[24], false, false, false),
-				listen_dev(button3, "click", /*click_handler_3*/ ctx[35], false, false, false),
-				listen_dev(button4, "click", /*click_handler_4*/ ctx[36], false, false, false)
+				listen_dev(button1, "click", /*click_handler_1*/ ctx[18], false, false, false),
+				listen_dev(button2, "click", /*click_handler_2*/ ctx[20], false, false, false),
+				listen_dev(button3, "click", /*click_handler_3*/ ctx[21], false, false, false),
+				listen_dev(button4, "click", /*click_handler_4*/ ctx[36], false, false, false),
+				listen_dev(button5, "click", /*click_handler_5*/ ctx[37], false, false, false)
 			];
 		},
 		p: function update(ctx, dirty) {
+			const customiconswitch_changes = {};
+
+			if (!updating_toggler && dirty[0] & /*openShell*/ 4) {
+				updating_toggler = true;
+				customiconswitch_changes.toggler = /*openShell*/ ctx[2];
+				add_flush_callback(() => updating_toggler = false);
+			}
+
+			customiconswitch.$set(customiconswitch_changes);
 			const textfield0_changes = {};
 
 			if (!updating_value && dirty[0] & /*delta*/ 16) {
@@ -44062,15 +44081,6 @@ function create_buttonContainer_slot$3(ctx) {
 			}
 
 			textfield1.$set(textfield1_changes);
-			const customiconswitch_changes = {};
-
-			if (!updating_toggler && dirty[0] & /*openShell*/ 4) {
-				updating_toggler = true;
-				customiconswitch_changes.toggler = /*openShell*/ ctx[2];
-				add_flush_callback(() => updating_toggler = false);
-			}
-
-			customiconswitch.$set(customiconswitch_changes);
 			const textfield2_changes = {};
 
 			if (!updating_value_2 && dirty[0] & /*B0*/ 64) {
@@ -44123,9 +44133,9 @@ function create_buttonContainer_slot$3(ctx) {
 		},
 		i: function intro(local) {
 			if (current) return;
+			transition_in(customiconswitch.$$.fragment, local);
 			transition_in(textfield0.$$.fragment, local);
 			transition_in(textfield1.$$.fragment, local);
-			transition_in(customiconswitch.$$.fragment, local);
 			transition_in(textfield2.$$.fragment, local);
 			transition_in(textfield3.$$.fragment, local);
 			transition_in(textfield4.$$.fragment, local);
@@ -44134,9 +44144,9 @@ function create_buttonContainer_slot$3(ctx) {
 			current = true;
 		},
 		o: function outro(local) {
+			transition_out(customiconswitch.$$.fragment, local);
 			transition_out(textfield0.$$.fragment, local);
 			transition_out(textfield1.$$.fragment, local);
-			transition_out(customiconswitch.$$.fragment, local);
 			transition_out(textfield2.$$.fragment, local);
 			transition_out(textfield3.$$.fragment, local);
 			transition_out(textfield4.$$.fragment, local);
@@ -44146,9 +44156,9 @@ function create_buttonContainer_slot$3(ctx) {
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(div0);
+			destroy_component(customiconswitch);
 			destroy_component(textfield0);
 			destroy_component(textfield1);
-			destroy_component(customiconswitch);
 			destroy_component(textfield2);
 			destroy_component(textfield3);
 			destroy_component(textfield4);
@@ -44162,14 +44172,14 @@ function create_buttonContainer_slot$3(ctx) {
 		block,
 		id: create_buttonContainer_slot$3.name,
 		type: "slot",
-		source: "(137:4) <div class=\\\"thz_buttonContainer\\\" slot=\\\"buttonContainer\\\">",
+		source: "(139:4) <div class=\\\"thz_buttonContainer\\\" slot=\\\"buttonContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (159:4) <div style="margin-right: 1em;" slot="plotContainer">
+// (162:4) <div style="margin-right: 1em;" slot="plotContainer">
 function create_plotContainer_slot$3(ctx) {
 	let div0;
 	let div1;
@@ -44181,7 +44191,7 @@ function create_plotContainer_slot$3(ctx) {
 	let current;
 
 	function reportlayout_currentLocation_binding(value) {
-		/*reportlayout_currentLocation_binding*/ ctx[37].call(null, value);
+		/*reportlayout_currentLocation_binding*/ ctx[38].call(null, value);
 	}
 
 	let reportlayout_props = {
@@ -44212,18 +44222,18 @@ function create_plotContainer_slot$3(ctx) {
 			create_component(reportlayout.$$.fragment);
 			attr_dev(div1, "id", "thzPlot");
 			attr_dev(div1, "class", "svelte-17f6clg");
-			add_location(div1, file$R, 160, 8, 6920);
+			add_location(div1, file$R, 163, 8, 7094);
 			attr_dev(div2, "id", "boltzman_plot");
 			attr_dev(div2, "class", "svelte-17f6clg");
-			add_location(div2, file$R, 161, 8, 6954);
+			add_location(div2, file$R, 164, 8, 7128);
 			attr_dev(div3, "class", "animated fadeIn hide svelte-17f6clg");
 			set_style(div3, "flex-direction", "column ");
 			toggle_class(div3, "active", /*graphPlotted*/ ctx[3]);
-			add_location(div3, file$R, 163, 8, 6996);
+			add_location(div3, file$R, 166, 8, 7170);
 			set_style(div0, "margin-right", "1em");
 			attr_dev(div0, "slot", "plotContainer");
 			attr_dev(div0, "class", "svelte-17f6clg");
-			add_location(div0, file$R, 158, 4, 6855);
+			add_location(div0, file$R, 161, 4, 7029);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -44269,14 +44279,14 @@ function create_plotContainer_slot$3(ctx) {
 		block,
 		id: create_plotContainer_slot$3.name,
 		type: "slot",
-		source: "(159:4) <div style=\\\"margin-right: 1em;\\\" slot=\\\"plotContainer\\\">",
+		source: "(162:4) <div style=\\\"margin-right: 1em;\\\" slot=\\\"plotContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (136:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>
+// (138:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>
 function create_default_slot$m(ctx) {
 	let t;
 
@@ -44299,7 +44309,7 @@ function create_default_slot$m(ctx) {
 		block,
 		id: create_default_slot$m.name,
 		type: "slot",
-		source: "(136:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>",
+		source: "(138:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>",
 		ctx
 	});
 
@@ -44312,11 +44322,11 @@ function create_fragment$W(ctx) {
 	let current;
 
 	function layout_currentLocation_binding(value) {
-		/*layout_currentLocation_binding*/ ctx[38].call(null, value);
+		/*layout_currentLocation_binding*/ ctx[39].call(null, value);
 	}
 
 	function layout_fileChecked_binding(value_1) {
-		/*layout_fileChecked_binding*/ ctx[39].call(null, value_1);
+		/*layout_fileChecked_binding*/ ctx[40].call(null, value_1);
 	}
 
 	let layout_props = {
@@ -44356,7 +44366,7 @@ function create_fragment$W(ctx) {
 		p: function update(ctx, dirty) {
 			const layout_changes = {};
 
-			if (dirty[0] & /*graphPlotted, currentLocation, toggleRow, totalJ, temp, H0, D0, B0, openShell, gamma, delta*/ 4094 | dirty[1] & /*$$scope*/ 512) {
+			if (dirty[0] & /*graphPlotted, currentLocation, toggleRow, totalJ, temp, H0, D0, B0, gamma, delta, openShell*/ 4094 | dirty[1] & /*$$scope*/ 1024) {
 				layout_changes.$$scope = { dirty, ctx };
 			}
 
@@ -44419,7 +44429,8 @@ function instance$W($$self, $$props, $$invalidate) {
 
 	let style = "width:7em; height:3.5em; margin-right:0.5em";
 
-	function plotData({ e = null, filetype = "thz", tkplot = "run" } = {}) {
+	// let justPlot = false
+	function plotData({ e = null, filetype = "thz", tkplot = "run", justPlot = false } = {}) {
 		if (fileChecked.length === 0) {
 			return createToast$1("No files selected", "danger");
 		}
@@ -44427,7 +44438,7 @@ function instance$W($$self, $$props, $$invalidate) {
 		let pyfileInfo = {
 			thz: {
 				pyfile: "thz_scan.py",
-				args: [...thzfiles, delta, tkplot, gamma]
+				args: [...thzfiles, delta, tkplot, gamma, justPlot]
 			},
 			boltzman: {
 				pyfile: "boltzman.py",
@@ -44523,31 +44534,38 @@ function instance$W($$self, $$props, $$invalidate) {
 		});
 	}
 
-	const click_handler = e => plotData({ e });
+	const click_handler = e => {
+		plotData({ e });
+	};
 
-	function textfield0_value_binding(value) {
-		delta = value;
-		$$invalidate(4, delta);
-	}
-
-	const change_handler = e => plotData({ e });
-
-	function textfield1_value_binding(value_1) {
-		gamma = value_1;
-		$$invalidate(5, gamma);
-	}
-
-	const change_handler_1 = e => plotData({ e });
 	const click_handler_1 = e => plotData({ e, filetype: "thz", tkplot: "plot" });
 
-	function customiconswitch_toggler_binding(value_2) {
-		openShell = value_2;
+	function customiconswitch_toggler_binding(value) {
+		openShell = value;
 		$$invalidate(2, openShell);
 	}
 
 	const click_handler_2 = () => {
 		$$invalidate(11, toggleRow = !toggleRow);
 	};
+
+	const click_handler_3 = e => {
+		plotData({ e, justPlot: true });
+	};
+
+	function textfield0_value_binding(value_1) {
+		delta = value_1;
+		$$invalidate(4, delta);
+	}
+
+	const change_handler = e => plotData({ e });
+
+	function textfield1_value_binding(value_2) {
+		gamma = value_2;
+		$$invalidate(5, gamma);
+	}
+
+	const change_handler_1 = e => plotData({ e });
 
 	function textfield2_value_binding(value_3) {
 		B0 = value_3;
@@ -44583,8 +44601,8 @@ function instance$W($$self, $$props, $$invalidate) {
 	}
 
 	const change_handler_6 = e => plotData({ e, filetype: "boltzman" });
-	const click_handler_3 = e => plotData({ e, filetype: "boltzman" });
-	const click_handler_4 = e => plotData({ e, filetype: "boltzman", tkplot: "plot" });
+	const click_handler_4 = e => plotData({ e, filetype: "boltzman" });
+	const click_handler_5 = e => plotData({ e, filetype: "boltzman", tkplot: "plot" });
 
 	function reportlayout_currentLocation_binding(value) {
 		currentLocation = value;
@@ -44651,13 +44669,14 @@ function instance$W($$self, $$props, $$invalidate) {
 		$modalContent,
 		$activated,
 		click_handler,
+		click_handler_1,
+		customiconswitch_toggler_binding,
+		click_handler_2,
+		click_handler_3,
 		textfield0_value_binding,
 		change_handler,
 		textfield1_value_binding,
 		change_handler_1,
-		click_handler_1,
-		customiconswitch_toggler_binding,
-		click_handler_2,
 		textfield2_value_binding,
 		change_handler_2,
 		textfield3_value_binding,
@@ -44668,8 +44687,8 @@ function instance$W($$self, $$props, $$invalidate) {
 		change_handler_5,
 		textfield6_value_binding,
 		change_handler_6,
-		click_handler_3,
 		click_handler_4,
+		click_handler_5,
 		reportlayout_currentLocation_binding,
 		layout_currentLocation_binding,
 		layout_fileChecked_binding
@@ -44941,64 +44960,64 @@ function create_fragment$X(ctx) {
 			h12.textContent = "About";
 			attr_dev(div0, "class", "title nav hvr-glow svelte-4r2npq");
 			toggle_class(div0, "clicked", /*selected*/ ctx[0] === "Configuration");
-			add_location(div0, file$S, 360, 16, 13293);
+			add_location(div0, file$S, 361, 16, 13449);
 			attr_dev(div1, "class", "title nav hvr-glow svelte-4r2npq");
 			toggle_class(div1, "clicked", /*selected*/ ctx[0] === "Update");
-			add_location(div1, file$S, 361, 16, 13425);
+			add_location(div1, file$S, 362, 16, 13581);
 			attr_dev(div2, "class", "title nav hvr-glow svelte-4r2npq");
 			toggle_class(div2, "clicked", /*selected*/ ctx[0] === "About");
-			add_location(div2, file$S, 362, 16, 13543);
+			add_location(div2, file$S, 363, 16, 13699);
 			attr_dev(div3, "class", "container left svelte-4r2npq");
-			add_location(div3, file$S, 359, 12, 13247);
+			add_location(div3, file$S, 360, 12, 13403);
 			attr_dev(div4, "class", "column side-panel is-2-widescreen is-3-desktop is-4-tablet box adjust-right svelte-4r2npq");
-			add_location(div4, file$S, 358, 8, 13144);
+			add_location(div4, file$S, 359, 8, 13300);
 			attr_dev(h10, "class", "title svelte-4r2npq");
-			add_location(h10, file$S, 371, 20, 13928);
+			add_location(h10, file$S, 372, 20, 14084);
 			attr_dev(button0, "class", "button is-link svelte-4r2npq");
-			add_location(button0, file$S, 375, 20, 14229);
+			add_location(button0, file$S, 376, 20, 14385);
 			attr_dev(button1, "class", "button is-link svelte-4r2npq");
-			add_location(button1, file$S, 376, 20, 14321);
+			add_location(button1, file$S, 377, 20, 14477);
 			attr_dev(div5, "class", "content animated fadeIn svelte-4r2npq");
 			toggle_class(div5, "active", /*selected*/ ctx[0] === "Configuration");
-			add_location(div5, file$S, 370, 16, 13827);
+			add_location(div5, file$S, 371, 16, 13983);
 			attr_dev(h11, "class", "title svelte-4r2npq");
-			add_location(h11, file$S, 382, 20, 14562);
+			add_location(h11, file$S, 383, 20, 14718);
 			attr_dev(div6, "class", "subtitle svelte-4r2npq");
-			add_location(div6, file$S, 383, 20, 14613);
+			add_location(div6, file$S, 384, 20, 14769);
 			attr_dev(div7, "class", "content svelte-4r2npq");
-			add_location(div7, file$S, 385, 20, 14717);
+			add_location(div7, file$S, 386, 20, 14873);
 			attr_dev(button2, "class", "button is-link svelte-4r2npq");
 			attr_dev(button2, "id", "updateCheckBtn");
-			add_location(button2, file$S, 392, 24, 15215);
+			add_location(button2, file$S, 393, 24, 15371);
 			attr_dev(button3, "class", "button is-link svelte-4r2npq");
 			attr_dev(button3, "id", "updateBtn");
-			add_location(button3, file$S, 393, 24, 15336);
+			add_location(button3, file$S, 394, 24, 15492);
 			attr_dev(div8, "class", "content svelte-4r2npq");
-			add_location(div8, file$S, 391, 20, 15168);
+			add_location(div8, file$S, 392, 20, 15324);
 			attr_dev(button4, "class", "button is-link svelte-4r2npq");
-			add_location(button4, file$S, 399, 24, 15640);
+			add_location(button4, file$S, 400, 24, 15796);
 			attr_dev(button5, "class", "button is-link svelte-4r2npq");
-			add_location(button5, file$S, 400, 24, 15730);
+			add_location(button5, file$S, 401, 24, 15886);
 			attr_dev(div9, "class", "content svelte-4r2npq");
-			add_location(div9, file$S, 397, 20, 15469);
+			add_location(div9, file$S, 398, 20, 15625);
 			attr_dev(div10, "class", "content animated fadeIn svelte-4r2npq");
 			toggle_class(div10, "active", /*selected*/ ctx[0] === "Update");
-			add_location(div10, file$S, 381, 16, 14468);
+			add_location(div10, file$S, 382, 16, 14624);
 			attr_dev(h12, "class", "title svelte-4r2npq");
-			add_location(h12, file$S, 408, 20, 16017);
+			add_location(h12, file$S, 409, 20, 16173);
 			attr_dev(div11, "class", "content animated fadeIn svelte-4r2npq");
 			toggle_class(div11, "active", /*selected*/ ctx[0] === "About");
-			add_location(div11, file$S, 407, 16, 15924);
+			add_location(div11, file$S, 408, 16, 16080);
 			attr_dev(div12, "class", "container right svelte-4r2npq");
-			add_location(div12, file$S, 367, 12, 13738);
+			add_location(div12, file$S, 368, 12, 13894);
 			attr_dev(div13, "class", "column main-panel box svelte-4r2npq");
-			add_location(div13, file$S, 366, 8, 13689);
+			add_location(div13, file$S, 367, 8, 13845);
 			attr_dev(div14, "class", "columns svelte-4r2npq");
-			add_location(div14, file$S, 356, 4, 13111);
+			add_location(div14, file$S, 357, 4, 13267);
 			attr_dev(section, "class", "section animated fadeIn svelte-4r2npq");
 			attr_dev(section, "id", "Settings");
 			set_style(section, "display", "none");
-			add_location(section, file$S, 355, 0, 13029);
+			add_location(section, file$S, 356, 0, 13185);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -45223,7 +45242,14 @@ function instance$X($$self, $$props, $$invalidate) {
 	///////////////////////////////////////////////////////
 	let selected = "Configuration";
 
-	let pythonpath = localStorage["pythonpath"] || path.resolve(__dirname, "../python3.7/python");
+	let pythonpath;
+
+	if (process.platform !== "darwin") {
+		pythonpath = localStorage["pythonpath"] || path.resolve(__dirname, "../python3.7/python");
+	} else {
+		pythonpath = localStorage["pythonpath"] || path.resolve("/usr/local/bin/python");
+	}
+
 	let pythonscript = localStorage["pythonscript"] = path.resolve(__dirname, "assets/python_files");
 
 	const navigate = e => {
