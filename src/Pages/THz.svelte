@@ -30,9 +30,8 @@
 
     // Depletion Row
     let toggleRow = false
-    let style = "width:7em; height:3.5em; margin-right:0.5em"
-
-    // let justPlot = false
+    const style = "width:7em; height:3.5em; margin-right:0.5em"
+    const btnClass = "button is-link animated"
 
     function plotData({e=null, filetype="thz", tkplot="run", justPlot=false }={}){
 
@@ -84,9 +83,12 @@
             $modalContent = err
             $activated = true
             error_occured_py = true;
+            target.style.backgroundColor="#ff3860"
+            target.classList.add("shake")
         });
 
         py.on("close", () => {
+
             if (!error_occured_py) {
 
                 try {
@@ -107,15 +109,29 @@
                     } else if (filetype == "boltzman") {
                         plot(`Boltzman Distribution`, "Rotational levels (J)", "Probability (%)", dataFromPython, "boltzman_plot");
                     }
-
                     createToast("Graph plotted", "success")
                     graphPlotted = true
 
-                } catch (err) { $modalContent = err; $activated = true }
+                    target.style.backgroundColor="#09814a"
+                    target.classList.add("bounce")
+
+                } catch (err) { 
+                    $modalContent = err
+                    $activated = true 
+
+                    target.style.backgroundColor="#ff3860"
+                    target.classList.add("shake")
+                 }
 
             }
+
             console.log("Process closed")
             target.classList.toggle("is-loading")
+            setTimeout(()=>{
+                target.style.backgroundColor=""
+                if (target.classList.contains("bounce")) target.classList.remove("bounce")
+                if (target.classList.contains("shake")) target.classList.remove("shake")
+            }, 2000)
         })
     }
 
@@ -123,14 +139,16 @@
 </script>
 
 <style>
+
     .thz_buttonContainer {min-height: 5em;}
     .button {margin-right: 0.5em;}
     .buttonRow {margin-bottom: 1em!important; align-items: center;}
 
-    * :global(.mdc-select__native-control option) {color: black}
     .active {display: flex!important;}
     .hide {display: none;}
     .align {display: flex; align-items: center;}
+    * :global(.mdc-select__native-control option) {color: black}
+    
 </style>
 
 
@@ -138,11 +156,11 @@
     <div class="thz_buttonContainer" slot="buttonContainer">
 
         <div class="content align buttonRow">
-            <button class="button is-link" on:click="{(e)=>{plotData({e:e, justPlot:true})}}">Plot</button>
-            <button class="button is-link" on:click="{(e)=>{plotData({e:e})}}">Fit</button>
-            <button class="button is-link" on:click="{(e)=>plotData({e:e, tkplot:"plot"})}">Open in Matplotlib</button>
+            <button class="{btnClass}" on:click="{(e)=>{plotData({e:e, justPlot:true})}}">Plot</button>
+            <button class="{btnClass}" on:click="{(e)=>{plotData({e:e})}}">Fit</button>
+            <button class="{btnClass}" on:click="{(e)=>plotData({e:e, tkplot:"plot"})}">Open in Matplotlib</button>
             <CustomIconSwitch style="padding:0;" bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
-            <button class="button is-link" on:click="{()=>{toggleRow = !toggleRow}}">Boltzman</button>
+            <button class="{btnClass}" on:click="{()=>{toggleRow = !toggleRow}}">Boltzman</button>
             <Textfield type="number" {style} on:change="{(e)=>plotData({e:e})}" bind:value={delta} label="Delta" />
             <Textfield type="number" {style} on:change="{(e)=>plotData({e:e})}" bind:value={gamma} label="Gamma" />
         </div>
@@ -153,8 +171,8 @@
             <Textfield {style} on:change="{(e)=>plotData({e:e, filetype:"boltzman"})}" bind:value={H0} label="H0 (MHz)" />
             <Textfield type="number" {style} on:change="{(e)=>plotData({e:e, filetype:"boltzman"})}" bind:value={temp} label="Temp." />
             <Textfield type="number" {style} on:change="{(e)=>plotData({e:e, filetype:"boltzman"})}" bind:value={totalJ} label="Total J" />
-            <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"boltzman"})}">Submit</button>
-            <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"boltzman", tkplot:"plot"})}">Open in Matplotlib</button>
+            <button class="{btnClass}" on:click="{(e)=>plotData({e:e, filetype:"boltzman"})}">Submit</button>
+            <button class="{btnClass}" on:click="{(e)=>plotData({e:e, filetype:"boltzman", tkplot:"plot"})}">Open in Matplotlib</button>
         </div>
     </div>
 
