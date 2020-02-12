@@ -43774,7 +43774,7 @@ class Timescan extends SvelteComponentDev {
 
 const file$R = "src\\Pages\\THz.svelte";
 
-// (139:4) <div class="thz_buttonContainer" slot="buttonContainer">
+// (138:4) <div class="thz_buttonContainer" slot="buttonContainer">
 function create_buttonContainer_slot$3(ctx) {
 	let div0;
 	let div1;
@@ -43782,9 +43782,9 @@ function create_buttonContainer_slot$3(ctx) {
 	let t1;
 	let button1;
 	let t3;
-	let updating_toggler;
-	let t4;
 	let button2;
+	let t5;
+	let updating_toggler;
 	let t6;
 	let button3;
 	let t8;
@@ -43810,7 +43810,7 @@ function create_buttonContainer_slot$3(ctx) {
 	let dispose;
 
 	function customiconswitch_toggler_binding(value) {
-		/*customiconswitch_toggler_binding*/ ctx[19].call(null, value);
+		/*customiconswitch_toggler_binding*/ ctx[20].call(null, value);
 	}
 
 	let customiconswitch_props = {
@@ -43957,18 +43957,18 @@ function create_buttonContainer_slot$3(ctx) {
 			div0 = element("div");
 			div1 = element("div");
 			button0 = element("button");
-			button0.textContent = "THz Plot";
+			button0.textContent = "Plot";
 			t1 = space();
 			button1 = element("button");
-			button1.textContent = "Open in Matplotlib";
+			button1.textContent = "Fit";
 			t3 = space();
-			create_component(customiconswitch.$$.fragment);
-			t4 = space();
 			button2 = element("button");
-			button2.textContent = "Boltzman";
+			button2.textContent = "Open in Matplotlib";
+			t5 = space();
+			create_component(customiconswitch.$$.fragment);
 			t6 = space();
 			button3 = element("button");
-			button3.textContent = "Just Plot";
+			button3.textContent = "Boltzman";
 			t8 = space();
 			create_component(textfield0.$$.fragment);
 			t9 = space();
@@ -43991,25 +43991,25 @@ function create_buttonContainer_slot$3(ctx) {
 			button5 = element("button");
 			button5.textContent = "Open in Matplotlib";
 			attr_dev(button0, "class", "button is-link svelte-17f6clg");
-			add_location(button0, file$R, 141, 12, 5200);
+			add_location(button0, file$R, 140, 12, 5198);
 			attr_dev(button1, "class", "button is-link svelte-17f6clg");
-			add_location(button1, file$R, 142, 12, 5298);
+			add_location(button1, file$R, 141, 12, 5307);
 			attr_dev(button2, "class", "button is-link svelte-17f6clg");
-			add_location(button2, file$R, 144, 12, 5550);
+			add_location(button2, file$R, 142, 12, 5400);
 			attr_dev(button3, "class", "button is-link svelte-17f6clg");
-			add_location(button3, file$R, 145, 12, 5654);
+			add_location(button3, file$R, 144, 12, 5636);
 			attr_dev(div1, "class", "content align buttonRow svelte-17f6clg");
-			add_location(div1, file$R, 140, 8, 5149);
+			add_location(div1, file$R, 139, 8, 5147);
 			attr_dev(button4, "class", "button is-link svelte-17f6clg");
-			add_location(button4, file$R, 156, 12, 6750);
+			add_location(button4, file$R, 155, 12, 6722);
 			attr_dev(button5, "class", "button is-link svelte-17f6clg");
-			add_location(button5, file$R, 157, 12, 6865);
+			add_location(button5, file$R, 156, 12, 6837);
 			attr_dev(div2, "class", "animated fadeIn hide buttonRow svelte-17f6clg");
 			toggle_class(div2, "active", /*toggleRow*/ ctx[11]);
-			add_location(div2, file$R, 150, 8, 6016);
+			add_location(div2, file$R, 149, 8, 5988);
 			attr_dev(div0, "class", "thz_buttonContainer svelte-17f6clg");
 			attr_dev(div0, "slot", "buttonContainer");
-			add_location(div0, file$R, 138, 4, 5081);
+			add_location(div0, file$R, 137, 4, 5079);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -44018,9 +44018,9 @@ function create_buttonContainer_slot$3(ctx) {
 			append_dev(div1, t1);
 			append_dev(div1, button1);
 			append_dev(div1, t3);
-			mount_component(customiconswitch, div1, null);
-			append_dev(div1, t4);
 			append_dev(div1, button2);
+			append_dev(div1, t5);
+			mount_component(customiconswitch, div1, null);
 			append_dev(div1, t6);
 			append_dev(div1, button3);
 			append_dev(div1, t8);
@@ -44047,7 +44047,7 @@ function create_buttonContainer_slot$3(ctx) {
 			dispose = [
 				listen_dev(button0, "click", /*click_handler*/ ctx[17], false, false, false),
 				listen_dev(button1, "click", /*click_handler_1*/ ctx[18], false, false, false),
-				listen_dev(button2, "click", /*click_handler_2*/ ctx[20], false, false, false),
+				listen_dev(button2, "click", /*click_handler_2*/ ctx[19], false, false, false),
 				listen_dev(button3, "click", /*click_handler_3*/ ctx[21], false, false, false),
 				listen_dev(button4, "click", /*click_handler_4*/ ctx[36], false, false, false),
 				listen_dev(button5, "click", /*click_handler_5*/ ctx[37], false, false, false)
@@ -44172,14 +44172,14 @@ function create_buttonContainer_slot$3(ctx) {
 		block,
 		id: create_buttonContainer_slot$3.name,
 		type: "slot",
-		source: "(139:4) <div class=\\\"thz_buttonContainer\\\" slot=\\\"buttonContainer\\\">",
+		source: "(138:4) <div class=\\\"thz_buttonContainer\\\" slot=\\\"buttonContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (162:4) <div style="margin-right: 1em;" slot="plotContainer">
+// (161:4) <div style="margin-right: 1em;" slot="plotContainer">
 function create_plotContainer_slot$3(ctx) {
 	let div0;
 	let div1;
@@ -44222,18 +44222,18 @@ function create_plotContainer_slot$3(ctx) {
 			create_component(reportlayout.$$.fragment);
 			attr_dev(div1, "id", "thzPlot");
 			attr_dev(div1, "class", "svelte-17f6clg");
-			add_location(div1, file$R, 163, 8, 7094);
+			add_location(div1, file$R, 162, 8, 7066);
 			attr_dev(div2, "id", "boltzman_plot");
 			attr_dev(div2, "class", "svelte-17f6clg");
-			add_location(div2, file$R, 164, 8, 7128);
+			add_location(div2, file$R, 163, 8, 7100);
 			attr_dev(div3, "class", "animated fadeIn hide svelte-17f6clg");
 			set_style(div3, "flex-direction", "column ");
 			toggle_class(div3, "active", /*graphPlotted*/ ctx[3]);
-			add_location(div3, file$R, 166, 8, 7170);
+			add_location(div3, file$R, 165, 8, 7142);
 			set_style(div0, "margin-right", "1em");
 			attr_dev(div0, "slot", "plotContainer");
 			attr_dev(div0, "class", "svelte-17f6clg");
-			add_location(div0, file$R, 161, 4, 7029);
+			add_location(div0, file$R, 160, 4, 7001);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -44279,14 +44279,14 @@ function create_plotContainer_slot$3(ctx) {
 		block,
 		id: create_plotContainer_slot$3.name,
 		type: "slot",
-		source: "(162:4) <div style=\\\"margin-right: 1em;\\\" slot=\\\"plotContainer\\\">",
+		source: "(161:4) <div style=\\\"margin-right: 1em;\\\" slot=\\\"plotContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (138:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>
+// (137:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>
 function create_default_slot$m(ctx) {
 	let t;
 
@@ -44309,7 +44309,7 @@ function create_default_slot$m(ctx) {
 		block,
 		id: create_default_slot$m.name,
 		type: "slot",
-		source: "(138:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>",
+		source: "(137:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked>",
 		ctx
 	});
 
@@ -44535,22 +44535,22 @@ function instance$W($$self, $$props, $$invalidate) {
 	}
 
 	const click_handler = e => {
+		plotData({ e, justPlot: true });
+	};
+
+	const click_handler_1 = e => {
 		plotData({ e });
 	};
 
-	const click_handler_1 = e => plotData({ e, filetype: "thz", tkplot: "plot" });
+	const click_handler_2 = e => plotData({ e, tkplot: "plot" });
 
 	function customiconswitch_toggler_binding(value) {
 		openShell = value;
 		$$invalidate(2, openShell);
 	}
 
-	const click_handler_2 = () => {
+	const click_handler_3 = () => {
 		$$invalidate(11, toggleRow = !toggleRow);
-	};
-
-	const click_handler_3 = e => {
-		plotData({ e, justPlot: true });
 	};
 
 	function textfield0_value_binding(value_1) {
@@ -44670,8 +44670,8 @@ function instance$W($$self, $$props, $$invalidate) {
 		$activated,
 		click_handler,
 		click_handler_1,
-		customiconswitch_toggler_binding,
 		click_handler_2,
+		customiconswitch_toggler_binding,
 		click_handler_3,
 		textfield0_value_binding,
 		change_handler,

@@ -24,7 +24,6 @@
     let currentLocation = localStorage[`${filetype}_location`] || ""
     $: thzfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
     let openShell = false, graphPlotted = false
-
     let delta = 1, gamma = 0
 
     let B0=0, D0=0, H0=0, temp=300, totalJ=20
@@ -139,11 +138,11 @@
     <div class="thz_buttonContainer" slot="buttonContainer">
 
         <div class="content align buttonRow">
-            <button class="button is-link" on:click="{(e)=>{plotData({e:e})}}">THz Plot</button>
-            <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"thz", tkplot:"plot"})}">Open in Matplotlib</button>
+            <button class="button is-link" on:click="{(e)=>{plotData({e:e, justPlot:true})}}">Plot</button>
+            <button class="button is-link" on:click="{(e)=>{plotData({e:e})}}">Fit</button>
+            <button class="button is-link" on:click="{(e)=>plotData({e:e, tkplot:"plot"})}">Open in Matplotlib</button>
             <CustomIconSwitch style="padding:0;" bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
             <button class="button is-link" on:click="{()=>{toggleRow = !toggleRow}}">Boltzman</button>
-            <button class="button is-link" on:click="{(e)=>{plotData({e:e, justPlot:true})}}">Just Plot</button>
             <Textfield type="number" {style} on:change="{(e)=>plotData({e:e})}" bind:value={delta} label="Delta" />
             <Textfield type="number" {style} on:change="{(e)=>plotData({e:e})}" bind:value={gamma} label="Gamma" />
         </div>
