@@ -43885,10 +43885,9 @@ function create_buttonContainer_slot$3(ctx) {
 
 	const textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
-	textfield0.$on("change", /*change_handler*/ ctx[28]);
 
 	function textfield1_value_binding(value_3) {
-		/*textfield1_value_binding*/ ctx[29].call(null, value_3);
+		/*textfield1_value_binding*/ ctx[28].call(null, value_3);
 	}
 
 	let textfield1_props = { type: "number", style: style$1, label: "Gamma" };
@@ -43899,10 +43898,9 @@ function create_buttonContainer_slot$3(ctx) {
 
 	const textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding));
-	textfield1.$on("change", /*change_handler_1*/ ctx[30]);
 
 	function customselect_picked_binding(value_4) {
-		/*customselect_picked_binding*/ ctx[31].call(null, value_4);
+		/*customselect_picked_binding*/ ctx[29].call(null, value_4);
 	}
 
 	let customselect_props = {
@@ -43922,7 +43920,7 @@ function create_buttonContainer_slot$3(ctx) {
 	binding_callbacks.push(() => bind(customselect, "picked", customselect_picked_binding));
 
 	function customswitch1_selected_binding(value_5) {
-		/*customswitch1_selected_binding*/ ctx[32].call(null, value_5);
+		/*customswitch1_selected_binding*/ ctx[30].call(null, value_5);
 	}
 
 	let customswitch1_props = { label: "Fill area" };
@@ -43939,7 +43937,7 @@ function create_buttonContainer_slot$3(ctx) {
 	binding_callbacks.push(() => bind(customswitch1, "selected", customswitch1_selected_binding));
 
 	function textfield2_value_binding(value_6) {
-		/*textfield2_value_binding*/ ctx[33].call(null, value_6);
+		/*textfield2_value_binding*/ ctx[31].call(null, value_6);
 	}
 
 	let textfield2_props = { style: style$1, label: "B0 (MHz)" };
@@ -43950,10 +43948,10 @@ function create_buttonContainer_slot$3(ctx) {
 
 	const textfield2 = new Textfield({ props: textfield2_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield2, "value", textfield2_value_binding));
-	textfield2.$on("change", /*change_handler_2*/ ctx[34]);
+	textfield2.$on("change", /*change_handler*/ ctx[32]);
 
 	function textfield3_value_binding(value_7) {
-		/*textfield3_value_binding*/ ctx[35].call(null, value_7);
+		/*textfield3_value_binding*/ ctx[33].call(null, value_7);
 	}
 
 	let textfield3_props = { style: style$1, label: "D0 (MHz)" };
@@ -43964,10 +43962,10 @@ function create_buttonContainer_slot$3(ctx) {
 
 	const textfield3 = new Textfield({ props: textfield3_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield3, "value", textfield3_value_binding));
-	textfield3.$on("change", /*change_handler_3*/ ctx[36]);
+	textfield3.$on("change", /*change_handler_1*/ ctx[34]);
 
 	function textfield4_value_binding(value_8) {
-		/*textfield4_value_binding*/ ctx[37].call(null, value_8);
+		/*textfield4_value_binding*/ ctx[35].call(null, value_8);
 	}
 
 	let textfield4_props = { style: style$1, label: "H0 (MHz)" };
@@ -43978,10 +43976,10 @@ function create_buttonContainer_slot$3(ctx) {
 
 	const textfield4 = new Textfield({ props: textfield4_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield4, "value", textfield4_value_binding));
-	textfield4.$on("change", /*change_handler_4*/ ctx[38]);
+	textfield4.$on("change", /*change_handler_2*/ ctx[36]);
 
 	function textfield5_value_binding(value_9) {
-		/*textfield5_value_binding*/ ctx[39].call(null, value_9);
+		/*textfield5_value_binding*/ ctx[37].call(null, value_9);
 	}
 
 	let textfield5_props = { type: "number", style: style$1, label: "Temp." };
@@ -43992,10 +43990,10 @@ function create_buttonContainer_slot$3(ctx) {
 
 	const textfield5 = new Textfield({ props: textfield5_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield5, "value", textfield5_value_binding));
-	textfield5.$on("change", /*change_handler_5*/ ctx[40]);
+	textfield5.$on("change", /*change_handler_3*/ ctx[38]);
 
 	function textfield6_value_binding(value_10) {
-		/*textfield6_value_binding*/ ctx[41].call(null, value_10);
+		/*textfield6_value_binding*/ ctx[39].call(null, value_10);
 	}
 
 	let textfield6_props = { type: "number", style: style$1, label: "Total J" };
@@ -44006,7 +44004,7 @@ function create_buttonContainer_slot$3(ctx) {
 
 	const textfield6 = new Textfield({ props: textfield6_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield6, "value", textfield6_value_binding));
-	textfield6.$on("change", /*change_handler_6*/ ctx[42]);
+	textfield6.$on("change", /*change_handler_4*/ ctx[40]);
 
 	const block = {
 		c: function create() {
@@ -44054,28 +44052,28 @@ function create_buttonContainer_slot$3(ctx) {
 			button5 = element("button");
 			t21 = text("Open in Matplotlib");
 			attr_dev(button0, "class", button0_class_value = "" + (null_to_empty(btnClass) + " svelte-gd061c"));
-			add_location(button0, file$R, 165, 12, 6178);
+			add_location(button0, file$R, 165, 12, 6179);
 			attr_dev(button1, "class", button1_class_value = "" + (null_to_empty(btnClass) + " svelte-gd061c"));
-			add_location(button1, file$R, 168, 12, 6372);
+			add_location(button1, file$R, 168, 12, 6373);
 			attr_dev(button2, "class", button2_class_value = "" + (null_to_empty(btnClass) + " svelte-gd061c"));
-			add_location(button2, file$R, 169, 12, 6461);
+			add_location(button2, file$R, 169, 12, 6462);
 			attr_dev(button3, "class", button3_class_value = "" + (null_to_empty(btnClass) + " svelte-gd061c"));
-			add_location(button3, file$R, 171, 12, 6693);
+			add_location(button3, file$R, 171, 12, 6694);
 			attr_dev(div1, "class", "animated fadeIn hide svelte-gd061c");
 			toggle_class(div1, "active", /*graphPlotted*/ ctx[3]);
-			add_location(div1, file$R, 174, 12, 7027);
+			add_location(div1, file$R, 175, 12, 6960);
 			attr_dev(div2, "class", "content align buttonRow svelte-gd061c");
-			add_location(div2, file$R, 164, 8, 6127);
+			add_location(div2, file$R, 164, 8, 6128);
 			attr_dev(button4, "class", button4_class_value = "" + (null_to_empty(btnClass) + " svelte-gd061c"));
-			add_location(button4, file$R, 188, 12, 8083);
+			add_location(button4, file$R, 189, 12, 8016);
 			attr_dev(button5, "class", button5_class_value = "" + (null_to_empty(btnClass) + " svelte-gd061c"));
-			add_location(button5, file$R, 189, 12, 8194);
+			add_location(button5, file$R, 190, 12, 8127);
 			attr_dev(div3, "class", "animated fadeIn hide buttonRow svelte-gd061c");
 			toggle_class(div3, "active", /*toggleRow*/ ctx[11]);
-			add_location(div3, file$R, 182, 8, 7349);
+			add_location(div3, file$R, 183, 8, 7282);
 			attr_dev(div0, "class", "thz_buttonContainer svelte-gd061c");
 			attr_dev(div0, "slot", "buttonContainer");
-			add_location(div0, file$R, 162, 4, 6059);
+			add_location(div0, file$R, 162, 4, 6060);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -44129,8 +44127,8 @@ function create_buttonContainer_slot$3(ctx) {
 				listen_dev(button2, "click", /*click_handler_2*/ ctx[24], false, false, false),
 				listen_dev(button3, "click", /*click_handler_3*/ ctx[26], false, false, false),
 				listen_dev(div1, "change", /*changePlotStyle*/ ctx[16], false, false, false),
-				listen_dev(button4, "click", /*click_handler_4*/ ctx[43], false, false, false),
-				listen_dev(button5, "click", /*click_handler_5*/ ctx[44], false, false, false)
+				listen_dev(button4, "click", /*click_handler_4*/ ctx[41], false, false, false),
+				listen_dev(button5, "click", /*click_handler_5*/ ctx[42], false, false, false)
 			];
 		},
 		p: function update(ctx, dirty) {
@@ -44300,7 +44298,7 @@ function create_buttonContainer_slot$3(ctx) {
 	return block;
 }
 
-// (196:4) <div style="margin-right: 1em;" slot="plotContainer">
+// (197:4) <div style="margin-right: 1em;" slot="plotContainer">
 function create_plotContainer_slot$3(ctx) {
 	let div0;
 	let div1;
@@ -44312,7 +44310,7 @@ function create_plotContainer_slot$3(ctx) {
 	let current;
 
 	function reportlayout_currentLocation_binding(value) {
-		/*reportlayout_currentLocation_binding*/ ctx[45].call(null, value);
+		/*reportlayout_currentLocation_binding*/ ctx[43].call(null, value);
 	}
 
 	let reportlayout_props = {
@@ -44343,18 +44341,18 @@ function create_plotContainer_slot$3(ctx) {
 			create_component(reportlayout.$$.fragment);
 			attr_dev(div1, "id", "thzPlot");
 			attr_dev(div1, "class", "svelte-gd061c");
-			add_location(div1, file$R, 197, 8, 8423);
+			add_location(div1, file$R, 198, 8, 8356);
 			attr_dev(div2, "id", "boltzman_plot");
 			attr_dev(div2, "class", "svelte-gd061c");
-			add_location(div2, file$R, 198, 8, 8457);
+			add_location(div2, file$R, 199, 8, 8390);
 			attr_dev(div3, "class", "animated fadeIn hide svelte-gd061c");
 			set_style(div3, "flex-direction", "column ");
 			toggle_class(div3, "active", /*graphPlotted*/ ctx[3]);
-			add_location(div3, file$R, 200, 8, 8499);
+			add_location(div3, file$R, 201, 8, 8432);
 			set_style(div0, "margin-right", "1em");
 			attr_dev(div0, "slot", "plotContainer");
 			attr_dev(div0, "class", "svelte-gd061c");
-			add_location(div0, file$R, 195, 4, 8358);
+			add_location(div0, file$R, 196, 4, 8291);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -44400,7 +44398,7 @@ function create_plotContainer_slot$3(ctx) {
 		block,
 		id: create_plotContainer_slot$3.name,
 		type: "slot",
-		source: "(196:4) <div style=\\\"margin-right: 1em;\\\" slot=\\\"plotContainer\\\">",
+		source: "(197:4) <div style=\\\"margin-right: 1em;\\\" slot=\\\"plotContainer\\\">",
 		ctx
 	});
 
@@ -44443,11 +44441,11 @@ function create_fragment$W(ctx) {
 	let current;
 
 	function layout_currentLocation_binding(value) {
-		/*layout_currentLocation_binding*/ ctx[46].call(null, value);
+		/*layout_currentLocation_binding*/ ctx[44].call(null, value);
 	}
 
 	function layout_fileChecked_binding(value_1) {
-		/*layout_fileChecked_binding*/ ctx[47].call(null, value_1);
+		/*layout_fileChecked_binding*/ ctx[45].call(null, value_1);
 	}
 
 	let layout_props = {
@@ -44487,7 +44485,7 @@ function create_fragment$W(ctx) {
 		p: function update(ctx, dirty) {
 			const layout_changes = {};
 
-			if (dirty[0] & /*graphPlotted, currentLocation, toggleRow, totalJ, temp, H0, D0, B0, plotFill, plotStyleSelected, gamma, delta, openShell, binData*/ 32766 | dirty[1] & /*$$scope*/ 131072) {
+			if (dirty[0] & /*graphPlotted, currentLocation, toggleRow, totalJ, temp, H0, D0, B0, plotFill, plotStyleSelected, gamma, delta, openShell, binData*/ 32766 | dirty[1] & /*$$scope*/ 32768) {
 				layout_changes.$$scope = { dirty, ctx };
 			}
 
@@ -44544,7 +44542,7 @@ function instance$W($$self, $$props, $$invalidate) {
 	let fileChecked = [];
 	let currentLocation = localStorage[`${filetype$3}_location`] || "";
 	let openShell = false, graphPlotted = false;
-	let delta = 1, gamma = 0;
+	let delta = 10, gamma = 0;
 	let B0 = 0, D0 = 0, H0 = 0, temp = 300, totalJ = 20;
 
 	// Depletion Row
@@ -44709,14 +44707,10 @@ function instance$W($$self, $$props, $$invalidate) {
 		$$invalidate(4, delta);
 	}
 
-	const change_handler = e => plotData({ e });
-
 	function textfield1_value_binding(value_3) {
 		gamma = value_3;
 		$$invalidate(5, gamma);
 	}
-
-	const change_handler_1 = e => plotData({ e });
 
 	function customselect_picked_binding(value_4) {
 		plotStyleSelected = value_4;
@@ -44733,35 +44727,35 @@ function instance$W($$self, $$props, $$invalidate) {
 		$$invalidate(6, B0);
 	}
 
-	const change_handler_2 = e => plotData({ e, filetype: "boltzman" });
+	const change_handler = e => plotData({ e, filetype: "boltzman" });
 
 	function textfield3_value_binding(value_7) {
 		D0 = value_7;
 		$$invalidate(7, D0);
 	}
 
-	const change_handler_3 = e => plotData({ e, filetype: "boltzman" });
+	const change_handler_1 = e => plotData({ e, filetype: "boltzman" });
 
 	function textfield4_value_binding(value_8) {
 		H0 = value_8;
 		$$invalidate(8, H0);
 	}
 
-	const change_handler_4 = e => plotData({ e, filetype: "boltzman" });
+	const change_handler_2 = e => plotData({ e, filetype: "boltzman" });
 
 	function textfield5_value_binding(value_9) {
 		temp = value_9;
 		$$invalidate(9, temp);
 	}
 
-	const change_handler_5 = e => plotData({ e, filetype: "boltzman" });
+	const change_handler_3 = e => plotData({ e, filetype: "boltzman" });
 
 	function textfield6_value_binding(value_10) {
 		totalJ = value_10;
 		$$invalidate(10, totalJ);
 	}
 
-	const change_handler_6 = e => plotData({ e, filetype: "boltzman" });
+	const change_handler_4 = e => plotData({ e, filetype: "boltzman" });
 	const click_handler_4 = e => plotData({ e, filetype: "boltzman" });
 	const click_handler_5 = e => plotData({ e, filetype: "boltzman", tkplot: "plot" });
 
@@ -44842,21 +44836,19 @@ function instance$W($$self, $$props, $$invalidate) {
 		customiconswitch_toggler_binding,
 		click_handler_3,
 		textfield0_value_binding,
-		change_handler,
 		textfield1_value_binding,
-		change_handler_1,
 		customselect_picked_binding,
 		customswitch1_selected_binding,
 		textfield2_value_binding,
-		change_handler_2,
+		change_handler,
 		textfield3_value_binding,
-		change_handler_3,
+		change_handler_1,
 		textfield4_value_binding,
-		change_handler_4,
+		change_handler_2,
 		textfield5_value_binding,
-		change_handler_5,
+		change_handler_3,
 		textfield6_value_binding,
-		change_handler_6,
+		change_handler_4,
 		click_handler_4,
 		click_handler_5,
 		reportlayout_currentLocation_binding,

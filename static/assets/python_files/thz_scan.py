@@ -64,7 +64,8 @@ def thz_plot(filename):
 
     return freq, depletion_counts, f"{steps} KHz : {iteraton} cycles"
 
-def binning(xs, ys, delta=1e-6):
+
+def binning(xs, ys, delta=1e-5):
 
     """
     Binns the data provided in xs and ys to bins of width delta
@@ -111,7 +112,8 @@ def binning(xs, ys, delta=1e-6):
     return binsx, data_binned
 
 
-def plot_thz(ax=None, data={}, tkplot=False, save_dat=True, latex=False, justPlot=False, binData=False):
+def plot_thz(ax=None, data={}, tkplot=False, save_dat=True, latex=False, justPlot=False, binData=False, delta=1e-5):
+
     xs, ys = [], []
 
     for i, filename in enumerate(filenames):
@@ -175,7 +177,7 @@ def plot_thz(ax=None, data={}, tkplot=False, save_dat=True, latex=False, justPlo
             f.write("#Frequency(in MHz)\t#Intensity\n")
             for freq, inten in zip(binx, fit_data): f.write(f"{freq*1e3}\t{inten}\n")
 
-    label = f"Binned (delta={delta*1e9:.2f} Hz)"
+    label = f"Binned (delta={delta*1e6:.2f} KHz)"
 
     if tkplot:
 
@@ -290,7 +292,7 @@ def main(filenames, delta, tkplot, gamma=None, justPlot=False, binData=False):
         widget.plot_legend = ax.legend(title=f"Intensity: {fit_data.max():.2f} %")
         widget.mainloop()
     else: 
-        data = plot_thz(justPlot=justPlot, binData=binData)
+        data = plot_thz(delta=delta, justPlot=justPlot, binData=binData)
         sendData(data)
 
 if __name__ == "__main__":
@@ -304,21 +306,13 @@ if __name__ == "__main__":
     if tkplot == "plot": tkplot = True
     else: tkplot = False
 
-    delta = float(args[-4]) # in Hz
-    delta = delta*1e-9 # in GHz (to compare with our data)
+    delta = float(args[-4]) # in KHz
+    delta = delta*1e-6 # in GHz (to compare with our data)
 
     if args[-5] == "true": binData = True
     else: binData = False
 
     if args[-1] == "true": justPlot = True
     else: justPlot = False
-
-    if tkplot:
-
-        print(f"Received arguments: {args}")
-        print(f"Received files: {filenames}")
-        print(f"Gamma: {gamma} {args[-3]}")
-        # print(f"tkplot: {tkplot} {args[-3]}")
-        # print(f"Delta: {delta} {args[-4]}")
 
     main(filenames, delta, tkplot, gamma, justPlot, binData)

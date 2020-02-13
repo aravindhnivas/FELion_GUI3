@@ -24,7 +24,7 @@
     let currentLocation = localStorage[`${filetype}_location`] || ""
     $: thzfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
     let openShell = false, graphPlotted = false
-    let delta = 1, gamma = 0
+    let delta = 10, gamma = 0
 
     let B0=0, D0=0, H0=0, temp=300, totalJ=20
 
@@ -170,12 +170,13 @@
             <button class="{btnClass}" on:click="{(e)=>plotData({e:e, tkplot:"plot"})}">Open in Matplotlib</button>
             <CustomIconSwitch style="padding:0;" bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
             <button class="{btnClass}" on:click="{()=>{toggleRow = !toggleRow}}">Boltzman</button>
-            <Textfield type="number" {style} on:change="{(e)=>plotData({e:e})}" bind:value={delta} label="Delta" />
-            <Textfield type="number" {style} on:change="{(e)=>plotData({e:e})}" bind:value={gamma} label="Gamma" />
-            <div class="animated fadeIn hide" class:active={graphPlotted} on:change={changePlotStyle}>
+            <Textfield type="number" {style} bind:value={delta} label="Delta" />
+            <Textfield type="number" {style} bind:value={gamma} label="Gamma" />
 
+            <div class="animated fadeIn hide" class:active={graphPlotted} on:change={changePlotStyle}>
                 <CustomSelect options={plotStyle} bind:picked={plotStyleSelected} label="Plot Style"/>
                 <CustomSwitch bind:selected={plotFill} label="Fill area"/>
+
             </div>
 
         </div>
