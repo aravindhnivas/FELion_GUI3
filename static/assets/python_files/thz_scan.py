@@ -124,7 +124,7 @@ def plot_thz(ax=None, data={}, tkplot=False, save_dat=True, latex=False, justPlo
         lg = f"{filename.name} [{iteraton}]"
         if justPlot:
             data[f"{filename.name}"] = {"x": list(freq), "y": list(depletion_counts), "name": lg, 
-                "mode":'line+markers', "fill":"tozeroy", "line":{"color":f"rgb{colors[i*2]}"}
+                "mode":'lines+markers', "fill":"tozeroy", "line":{"color":f"rgb{colors[i*2]}"}
             }
             continue
 
@@ -156,7 +156,7 @@ def plot_thz(ax=None, data={}, tkplot=False, save_dat=True, latex=False, justPlo
     if binData: binx, biny = binning(xs, ys, delta)
 
     if justPlot:
-        if binData: data["Averaged_exp"] = { "x": list(binx), "y": list(biny),  "name":"Binned", "mode":'line+markers', "fill":"tozeroy", "marker":{"color":"black"} }
+        if binData: data["Averaged_exp"] = { "x": list(binx), "y": list(biny),  "name":"Binned", "mode":'lines+markers', "fill":"tozeroy", "line":{"color":"black"} }
         return data
 
     model = gauss_fit(binx, biny)
