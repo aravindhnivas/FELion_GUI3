@@ -33,6 +33,12 @@
     const style = "width:7em; height:3.5em; margin-right:0.5em"
     const btnClass = "button is-link animated"
 
+    const plotStyle = ["", "lines", "markers", "lines+markers"]
+
+    let plotStyleSelected = plotStyle[3]
+    let plotFill = true;
+
+    const changePlotStyle = () => { Plotly.restyle("thzPlot", {mode:plotStyleSelected, fill: plotFill ? "tozeroy" : ""})}
     function plotData({e=null, filetype="thz", tkplot="run", justPlot=false }={}){
 
         if (fileChecked.length === 0) {return createToast("No files selected", "danger")}
@@ -148,6 +154,12 @@
     .hide {display: none;}
     .align {display: flex; align-items: center;}
     * :global(.mdc-select__native-control option) {color: black}
+
+    .plotStyleRow {
+        align-items: center; justify-items: center;
+        flex-direction: row-reverse; margin-bottom: 1em;
+    }
+    
     
 </style>
 
@@ -174,17 +186,25 @@
             <button class="{btnClass}" on:click="{(e)=>plotData({e:e, filetype:"boltzman"})}">Submit</button>
             <button class="{btnClass}" on:click="{(e)=>plotData({e:e, filetype:"boltzman", tkplot:"plot"})}">Open in Matplotlib</button>
         </div>
+
     </div>
+
 
     <div style="margin-right: 1em;" slot="plotContainer">
 
-        <div id="thzPlot"></div>
-        <div id="boltzman_plot"></div>
+        <div class="content">
 
+            <div class="plotStyleRow animated fadeIn hide" class:active={graphPlotted} on:change={changePlotStyle}>
+                <CustomSwitch bind:selected={plotFill} label="Fill area"/>
+                <CustomSelect options={plotStyle} bind:picked={plotStyleSelected} label="Plot Style"/>
+            </div>
+            <div id="thzPlot"></div>
+        </div>
+        
+        <div id="boltzman_plot"></div>
         <div class="animated fadeIn hide" class:active={graphPlotted} style="flex-direction:column ">
             <ReportLayout bind:currentLocation id="thzreport", plotID={["thzPlot"]}/>
         </div>
 
     </div>
-
 </Layout>

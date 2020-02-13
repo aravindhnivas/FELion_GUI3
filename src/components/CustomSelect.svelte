@@ -4,7 +4,7 @@
     export let options = [], style="", label="", picked=""
 </script>
 
-<Select bind:value={picked} {label} {style}>
+<Select bind:value={picked} {label} {style} on:change>
 
     {#each options as option}
         <Option value={option} selected={picked === option}>{option}</Option>

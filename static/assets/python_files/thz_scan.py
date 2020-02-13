@@ -121,9 +121,8 @@ def plot_thz(ax=None, data={}, tkplot=False, save_dat=True, latex=False, justPlo
         lg = f"{filename.name} [{iteraton}]"
         if justPlot:
             data[f"{filename.name}"] = {"x": list(freq), "y": list(depletion_counts), "name": lg, 
-                "mode":'markers', "line":{"color":f"rgb{colors[i*2]}"}
+                "mode":'lines+markers', "fill":"tozeroy", "line":{"color":f"rgb{colors[i*2]}"}
             }
-            print("Just Plot")
             continue
 
         model = gauss_fit(freq, depletion_counts)
