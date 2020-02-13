@@ -35,8 +35,9 @@
 
     const plotStyle = ["", "lines", "markers", "lines+markers"]
 
-    let plotStyleSelected = plotStyle[3]
-    let plotFill = true;
+    let plotStyleSelected = plotStyle[3], plotFill = true;
+
+    let binData = false;
 
     const changePlotStyle = () => { Plotly.restyle("thzPlot", {mode:plotStyleSelected, fill: plotFill ? "tozeroy" : ""})}
     function plotData({e=null, filetype="thz", tkplot="run", justPlot=false }={}){
@@ -44,7 +45,7 @@
         if (fileChecked.length === 0) {return createToast("No files selected", "danger")}
 
         let pyfileInfo = {
-            thz: {pyfile:"thz_scan.py" , args:[...thzfiles, delta, tkplot, gamma, justPlot]},
+            thz: {pyfile:"thz_scan.py" , args:[...thzfiles, binData, delta, tkplot, gamma, justPlot]},
             boltzman: {pyfile:"boltzman.py" , args:[currentLocation, B0, D0, H0, temp, totalJ, tkplot]},
         }
         let {pyfile, args} = pyfileInfo[filetype]
@@ -157,12 +158,14 @@
 
 </style>
 
-
 <Layout {filetype} {id} bind:currentLocation bind:fileChecked>
+
     <div class="thz_buttonContainer" slot="buttonContainer">
 
         <div class="content align buttonRow">
             <button class="{btnClass}" on:click="{(e)=>{plotData({e:e, justPlot:true})}}">Plot</button>
+
+            <CustomSwitch bind:selected={binData} label="Bin" style="margin:0 1em;"/>
             <button class="{btnClass}" on:click="{(e)=>{plotData({e:e})}}">Fit</button>
             <button class="{btnClass}" on:click="{(e)=>plotData({e:e, tkplot:"plot"})}">Open in Matplotlib</button>
             <CustomIconSwitch style="padding:0;" bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
@@ -170,10 +173,11 @@
             <Textfield type="number" {style} on:change="{(e)=>plotData({e:e})}" bind:value={delta} label="Delta" />
             <Textfield type="number" {style} on:change="{(e)=>plotData({e:e})}" bind:value={gamma} label="Gamma" />
             <div class="animated fadeIn hide" class:active={graphPlotted} on:change={changePlotStyle}>
+
                 <CustomSelect options={plotStyle} bind:picked={plotStyleSelected} label="Plot Style"/>
                 <CustomSwitch bind:selected={plotFill} label="Fill area"/>
-
             </div>
+
         </div>
 
         <div class="animated fadeIn hide buttonRow" class:active={toggleRow} >

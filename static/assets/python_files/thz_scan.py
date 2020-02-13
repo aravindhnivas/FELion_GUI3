@@ -111,17 +111,20 @@ def binning(xs, ys, delta=1e-6):
     return binsx, data_binned
 
 
-def plot_thz(ax=None, data={}, tkplot=False, save_dat=True, latex=False, justPlot=False):
+def plot_thz(ax=None, data={}, tkplot=False, save_dat=True, latex=False, justPlot=False, binData=False):
     xs, ys = [], []
 
     for i, filename in enumerate(filenames):
 
         filename = pt(filename)
         freq, depletion_counts, iteraton = thz_plot(filename)
+        xs = np.append(xs, freq)
+        ys = np.append(ys, depletion_counts)
+
         lg = f"{filename.name} [{iteraton}]"
         if justPlot:
             data[f"{filename.name}"] = {"x": list(freq), "y": list(depletion_counts), "name": lg, 
-                "mode":'lines+markers', "fill":"tozeroy", "line":{"color":f"rgb{colors[i*2]}"}
+                "mode":'line+markers', "fill":"tozeroy", "line":{"color":f"rgb{colors[i*2]}"}
             }
             continue
 
@@ -149,12 +152,13 @@ def plot_thz(ax=None, data={}, tkplot=False, save_dat=True, latex=False, justPlo
                 "mode": "lines", "line":{"color":f"rgb{colors[i*2]}"}
             }
 
-        xs = np.append(xs, freq)
-        ys = np.append(ys, depletion_counts)
-
-    if justPlot: return data
     # Averaged
-    binx, biny = binning(xs, ys, delta)
+    if binData: binx, biny = binning(xs, ys, delta)
+
+    if justPlot:
+        if binData: data["Averaged_exp"] = { "x": list(binx), "y": list(biny),  "name":"Binned", "mode":'line+markers', "fill":"tozeroy", "marker":{"color":"black"} }
+        return data
+
     model = gauss_fit(binx, biny)
 
     fit_data, uline_freq, usigma, uamplitude, ufwhm = model.get_data()
@@ -268,7 +272,7 @@ def save_fig():
                     os.system(f"{save_filename}")
             except: showerror("Error", traceback.format_exc(5))
 
-def main(filenames, delta, tkplot, gamma=None, justPlot=False):
+def main(filenames, delta, tkplot, gamma=None, justPlot=False, binData=False):
     global widget
     os.chdir(filenames[0].parent)
 
@@ -286,14 +290,14 @@ def main(filenames, delta, tkplot, gamma=None, justPlot=False):
         widget.plot_legend = ax.legend(title=f"Intensity: {fit_data.max():.2f} %")
         widget.mainloop()
     else: 
-        data = plot_thz(justPlot=justPlot)
+        data = plot_thz(justPlot=justPlot, binData=binData)
         sendData(data)
 
 if __name__ == "__main__":
     global filenames
     args = sys.argv[1:][0].split(",")
 
-    filenames = [pt(i) for i in args[0:-4]]
+    filenames = [pt(i) for i in args[0:-5]]
     gamma = float(args[-2])*1e-3
 
     tkplot = args[-3]
@@ -302,6 +306,9 @@ if __name__ == "__main__":
 
     delta = float(args[-4]) # in Hz
     delta = delta*1e-9 # in GHz (to compare with our data)
+
+    if args[-5] == "true": binData = True
+    else: binData = False
 
     if args[-1] == "true": justPlot = True
     else: justPlot = False
@@ -314,4 +321,4 @@ if __name__ == "__main__":
         # print(f"tkplot: {tkplot} {args[-3]}")
         # print(f"Delta: {delta} {args[-4]}")
 
-    main(filenames, delta, tkplot, gamma, justPlot)
+    main(filenames, delta, tkplot, gamma, justPlot, binData)
