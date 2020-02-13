@@ -155,12 +155,6 @@
     .align {display: flex; align-items: center;}
     * :global(.mdc-select__native-control option) {color: black}
 
-    .plotStyleRow {
-        align-items: center; justify-items: center;
-        flex-direction: row-reverse; margin-bottom: 1em;
-    }
-    
-    
 </style>
 
 
@@ -175,6 +169,11 @@
             <button class="{btnClass}" on:click="{()=>{toggleRow = !toggleRow}}">Boltzman</button>
             <Textfield type="number" {style} on:change="{(e)=>plotData({e:e})}" bind:value={delta} label="Delta" />
             <Textfield type="number" {style} on:change="{(e)=>plotData({e:e})}" bind:value={gamma} label="Gamma" />
+            <div class="animated fadeIn hide" class:active={graphPlotted} on:change={changePlotStyle}>
+                <CustomSelect options={plotStyle} bind:picked={plotStyleSelected} label="Plot Style"/>
+                <CustomSwitch bind:selected={plotFill} label="Fill area"/>
+
+            </div>
         </div>
 
         <div class="animated fadeIn hide buttonRow" class:active={toggleRow} >
@@ -192,16 +191,9 @@
 
     <div style="margin-right: 1em;" slot="plotContainer">
 
-        <div class="content">
-
-            <div class="plotStyleRow animated fadeIn hide" class:active={graphPlotted} on:change={changePlotStyle}>
-                <CustomSwitch bind:selected={plotFill} label="Fill area"/>
-                <CustomSelect options={plotStyle} bind:picked={plotStyleSelected} label="Plot Style"/>
-            </div>
-            <div id="thzPlot"></div>
-        </div>
-        
+        <div id="thzPlot"></div>
         <div id="boltzman_plot"></div>
+
         <div class="animated fadeIn hide" class:active={graphPlotted} style="flex-direction:column ">
             <ReportLayout bind:currentLocation id="thzreport", plotID={["thzPlot"]}/>
         </div>
