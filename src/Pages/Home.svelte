@@ -58,7 +58,6 @@
 <style>
   #Home {
     margin-top: 15% !important;
-    /* display: none; */
   }
 
   .ml5 {

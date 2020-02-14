@@ -53,6 +53,7 @@ def thz_plot(filename):
     #############################################
 
     freq = resOn.T[0]
+    freq_resOff = resOff.T[0][0]
     depletion = (resOff.T[1:] - resOn.T[1:])/resOff.T[1:]
     depletion_counts = depletion.T.mean(axis=1)
 
@@ -62,7 +63,8 @@ def thz_plot(filename):
     iteraton = int(resOn[0].shape[0]-1)
     steps = int(round((freq[1]-freq[0])*1e6, 0))
 
-    return freq, depletion_counts, f"{steps} KHz : {iteraton} cycles"
+    resOffCounts, resOnCounts = resOff.T[1:], resOn.T[1:]
+    return freq, depletion_counts, f"{steps} KHz : {iteraton} cycles", resOffCounts, resOnCounts, freq_resOff
 
 
 def binning(xs, ys, delta=1e-5):
@@ -111,23 +113,31 @@ def binning(xs, ys, delta=1e-5):
     data_binned = np.array(data_binned, dtype=np.float)
     return binsx, data_binned
 
-
-def plot_thz(ax=None, data={}, tkplot=False, save_dat=True, latex=False, justPlot=False, binData=False, delta=1e-5):
+def plot_thz(ax=None, tkplot=False, save_dat=True, latex=False, justPlot=False, binData=False, delta=1e-5):
 
     xs, ys = [], []
 
+    data = {"resOnOff_Counts":{}, "thz":{}}
     for i, filename in enumerate(filenames):
 
         filename = pt(filename)
-        freq, depletion_counts, iteraton = thz_plot(filename)
+        freq, depletion_counts, iteraton, resOffCounts, resOnCounts, freq_resOff = thz_plot(filename)
         xs = np.append(xs, freq)
         ys = np.append(ys, depletion_counts)
 
         lg = f"{filename.name} [{iteraton}]"
         if justPlot:
-            data[f"{filename.name}"] = {"x": list(freq), "y": list(depletion_counts), "name": lg, 
+            data["thz"][f"{filename.name}"] = {"x": list(freq), "y": list(depletion_counts), "name": lg, 
                 "mode":'lines+markers', "fill":"tozeroy", "line":{"color":f"rgb{colors[i*2]}"}
             }
+            data["resOnOff_Counts"][f"{filename.name}_On"] = {"x": list(freq), "y": resOnCounts.tolist()[0], "name": f"{filename.name}_On", 
+                "mode":'markers', "line":{"color":f"rgb{colors[i*2]}"}
+            }
+            data["resOnOff_Counts"][f"{filename.name}_Off"] = {"x": list(freq), "y": resOffCounts.tolist()[0], "name": f"Off: {freq_resOff}GHz", 
+                "mode":'markers', "line":{"color":f"rgb{colors[i*2+1]}"}
+            }
+            # print(data)
+
             continue
 
         model = gauss_fit(freq, depletion_counts)

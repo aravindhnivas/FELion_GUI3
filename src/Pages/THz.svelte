@@ -104,15 +104,19 @@
                     console.log(dataFromPython)
 
                     if (filetype=="thz") {
-                       plot(`THz Scan`, "Frequency (GHz)", "Depletion (%)", dataFromPython, "thzPlot");
-    
-                        let lines = [];
 
-                        for (let x in dataFromPython["shapes"]) { lines.push(dataFromPython["shapes"][x]) }
-                        let layout_update = {
-                            shapes: lines
+                       plot(`THz Scan: Depletion (%)`, "Frequency (GHz)", "Depletion (%)", dataFromPython["thz"], "thzPlot")
+                       plot(`THz Scan`, "Frequency (GHz)", "Counts", dataFromPython["resOnOff_Counts"], "resOnOffPlot")
+    
+                        if (!justPlot) {
+                            let lines = [];
+
+                            for (let x in dataFromPython["shapes"]) { lines.push(dataFromPython["shapes"][x]) }
+                            let layout_update = {
+                                shapes: lines
+                            }
+                            Plotly.relayout("thzPlot", layout_update)
                         }
-                        Plotly.relayout("thzPlot", layout_update)
                     } else if (filetype == "boltzman") {
                         plot(`Boltzman Distribution`, "Rotational levels (J)", "Probability (%)", dataFromPython, "boltzman_plot");
                     }
@@ -193,15 +197,20 @@
 
     </div>
 
-
     <div style="margin-right: 1em;" slot="plotContainer">
 
-        <div id="thzPlot"></div>
-        <div id="boltzman_plot"></div>
+        <!-- Plots -->
+        
+        <div id="resOnOffPlot" style="margin-bottom: 1em;"></div>
+        <div id="thzPlot" style="margin-bottom: 1em;"></div>
+        <div id="boltzman_plot" style="margin-bottom: 1em;"></div>
+
+        <!-- Reports -->
 
         <div class="animated fadeIn hide" class:active={graphPlotted} style="flex-direction:column ">
-            <ReportLayout bind:currentLocation id="thzreport", plotID={["thzPlot"]}/>
+            <ReportLayout bind:currentLocation id="thzreport", plotID={["thzPlot", "resOnOffPlot", "boltzman_plot"]}/>
         </div>
 
     </div>
+
 </Layout>
