@@ -133,7 +133,7 @@ def plot_thz(ax=None, tkplot=False, save_dat=True, latex=False, justPlot=False, 
             data["resOnOff_Counts"][f"{filename.name}_On"] = {"x": list(freq), "y": resOnCounts.tolist()[0], "name": f"{filename.name}_On", 
                 "mode":'markers', "line":{"color":f"rgb{colors[i*2]}"}
             }
-            data["resOnOff_Counts"][f"{filename.name}_Off"] = {"x": list(freq), "y": resOffCounts.tolist()[0], "name": f"Off: {freq_resOff}GHz", 
+            data["resOnOff_Counts"][f"{filename.name}_Off"] = {"x": list(freq), "y": resOffCounts.tolist()[0], "name": f"Off: {freq_resOff}GHz: {iteraton}", 
                 "mode":'markers', "line":{"color":f"rgb{colors[i*2+1]}"}
             }
             # print(data)
@@ -157,18 +157,24 @@ def plot_thz(ax=None, tkplot=False, save_dat=True, latex=False, justPlot=False, 
             ax.plot(freq, depletion_counts, f"C{i}.", label=lg, ms=ms)
             ax.plot(freq, fit_data, f"C{i}-", label=lg_fit, zorder=100)
         else:
-            data[f"{filename.name}"] = {"x": list(freq), "y": list(depletion_counts), "name": lg, 
+
+            data["thz"][f"{filename.name}"] = {"x": list(freq), "y": list(depletion_counts), "name": lg, 
+                "mode":'lines+markers', "fill":"tozeroy", "line":{"color":f"rgb{colors[i*2]}"}
+            }
+            data["thz"][f"{filename.name}_fit"] = {"x": list(freq), "y": list(fit_data), "name": lg_fit, 
+                "mode":'lines+markers', "fill":"tozeroy", "line":{"color":f"rgb{colors[i*2]}"}
+            }
+            data["resOnOff_Counts"][f"{filename.name}_On"] = {"x": list(freq), "y": resOnCounts.tolist()[0], "name": f"{filename.name}_On", 
                 "mode":'markers', "line":{"color":f"rgb{colors[i*2]}"}
             }
-            data[f"{filename.name}_fit"] = {"x": list(freq), "y": list(fit_data), "name": lg_fit, 
-                "mode": "lines", "line":{"color":f"rgb{colors[i*2]}"}
+            data["resOnOff_Counts"][f"{filename.name}_Off"] = {"x": list(freq), "y": resOffCounts.tolist()[0], "name": f"Off: {freq_resOff}GHz: {iteraton}", 
+                "mode":'markers', "line":{"color":f"rgb{colors[i*2+1]}"}
             }
-
     # Averaged
-    if binData: binx, biny = binning(xs, ys, delta)
+    binx, biny = binning(xs, ys, delta)
 
     if justPlot:
-        if binData: data["Averaged_exp"] = { "x": list(binx), "y": list(biny),  "name":"Binned", "mode":'lines+markers', "fill":"tozeroy", "line":{"color":"black"} }
+        if binData: data["thz"]["Averaged_exp"] = { "x": list(binx), "y": list(biny),  "name":"Binned", "mode":'lines+markers', "fill":"tozeroy", "line":{"color":"black"} }
         return data
 
     model = gauss_fit(binx, biny)
@@ -204,15 +210,13 @@ def plot_thz(ax=None, tkplot=False, save_dat=True, latex=False, justPlot=False, 
         return fit_data
 
     else:
-
-        data["Averaged_exp"] = {
+        data["thz"]["Averaged_exp"] = {
             "x": list(binx), "y": list(biny),  "name":label, "mode": "markers", "marker":{"color":"black"}
         }
-
-        data["Averaged_fit"] = {
-            "x": list(binx), "y": list(fit_data),  "name": f"Fitted: {line_freq_fit:.7f} ({freq_fit_err:.0f}) [{fwhm*1e6:.1f} KHz]", "mode": "lines", "line":{"color":"black"}
+        data["thz"]["Averaged_fit"] = {
+            "x": list(binx), "y": list(fit_data),  "name": f"Fitted: {line_freq_fit:.7f} ({freq_fit_err:.0f}) [{fwhm*1e6:.1f} KHz]", 
+            "mode":'lines+markers', "fill":"tozeroy", "line":{"color":"black"}
         }
-
         data["text"] = {
             "x":[line_freq_fit-9e-5, line_freq_fit],
             "y":[half_max*.7, -2],
