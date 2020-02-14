@@ -28,7 +28,8 @@
     "sirv-cli": "^0.4.0",
     "svelma": "^0.3.0",
     "svelte": "^3.17.3",
-    "svelte-material-ui": "^1.0.0-beta.19"
+    "svelte-material-ui": "^1.0.0-beta.19",
+    "svelte-preprocess": "^3.4.0"
   },
   "scripts": {
     "build": "rollup -c",
