@@ -126,18 +126,17 @@
         let pyfileInfo = {
             felix: {pyfile:"normline.py" , args:[...felixfiles, delta]},
             exp_fit: {pyfile:"exp_gauss_fit.py" , args:[...felixfiles, overwrite_expfit, output_name, normMethod, currentLocation, ...index]},
-        
             opofile: {pyfile:"oposcan.py" , args:[...felixfiles, "run"]},
             find_peaks: {pyfile:"fit_all.py" , args:[output_name, currentLocation, normMethod, peak_prominence,  peak_width, peak_height,  ...felixfiles]},
-            
             theory: {pyfile:"theory.py" , args:[...theoryfiles, normMethod, sigma, scale, theoryLocation, "run"]},
             get_err: {pyfile:"weighted_error.py" , args:lineData_list},
             double_peak: {pyfile:"double_gaussian.py" , 
                 args:[amp1, amp2, cen1, cen2, sig1, sig2, ...felixfiles, overwrite_expfit, output_name, 
                     normMethod, currentLocation, ...index, 
-                    ]},
-
+                ]},
+        
         }
+
         let {pyfile, args} = pyfileInfo[filetype]
         let py;
 
@@ -150,12 +149,8 @@
         }
         createToast("Process Started")
         py.stdout.on("data", data => {
-            
             console.log("Ouput from python")
-            
-            
             let dataReceived = data.toString("utf8")
-
             console.log(dataReceived)
         });
 
@@ -417,14 +412,12 @@
     const clearAllPeak = () => {
 
         if (plot_trace_added === 0) {return createToast("No fitted lines found", "danger")}
-
         console.log("Removing all found peak values")
-        
-        annotations = index = line = []
+        annotations = index = line = lineData_list = []
+
         Plotly.relayout("avgplot", { annotations: [], shapes: [] })
         for (let i=0; i<plot_trace_added; i++) {Plotly.deleteTraces("avgplot", [-1])}
         plot_trace_added = 0
-
     }
 
     const clearLastPeak = (e) => {
@@ -434,15 +427,19 @@
         if (double_peak_active) {
             plotData({filetype:"general", general:{args:[output_name, currentLocation], pyfile:"delete_fileLines.py"}})
             plotData({filetype:"general", general:{args:[output_name, currentLocation], pyfile:"delete_fileLines.py"}})
+            
             dataTable = _.dropRight(dataTable, 2)
             annotations = _.dropRight(annotations, 2)
 
+            weighted_error[0] = _.dropRight(weighted_error[0], 1)
+            weighted_error[1] = _.dropRight(weighted_error[1], 1)
+            
         } else {
             plotData({filetype:"general", general:{args:[output_name, currentLocation], pyfile:"delete_fileLines.py"}})
             dataTable = _.dropRight(dataTable, 1)
             line = _.dropRight(line, 2)
             annotations = _.dropRight(annotations, 1)
-            
+            lineData_list = _.dropRight(lineData_list, 1)
         }
         Plotly.relayout("avgplot", { annotations: annotations, shapes: line })
 
