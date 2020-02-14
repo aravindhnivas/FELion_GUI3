@@ -144,15 +144,12 @@ def plot_thz(ax=None, tkplot=False, save_dat=True, latex=False, justPlot=False, 
         fit_data, uline_freq, usigma, uamplitude, ufwhm = model.get_data()
         freq_fit = uline_freq.nominal_value
         freq_fit_err = uline_freq.std_dev*1e7
-        
-        # lg = f"{filename.name} [{iteraton}]"
         lg_fit = f"Fit: {freq_fit:.7f}({freq_fit_err:.0f}) [{ufwhm.nominal_value*1e6:.1f} KHz]"
 
         if latex:
             lg = lg.replace("_", "\_")
             ms = 2
         else: ms = 7
-
         if tkplot:
             ax.plot(freq, depletion_counts, f"C{i}.", label=lg, ms=ms)
             ax.plot(freq, fit_data, f"C{i}-", label=lg_fit, zorder=100)

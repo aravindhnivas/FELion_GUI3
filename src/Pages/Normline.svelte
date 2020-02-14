@@ -588,9 +588,9 @@
                 <CustomCheckbox bind:selected={show_dataTable_only_weighted_averaged} label="Only weighted Averaged" />
                 <CustomCheckbox bind:selected={keepTable} label="Keep table" />
                 <button class="button is-warning" 
-                    on:click="{()=>{dataTable = window._.dropRight(dataTable, 1); 
+                    on:click="{()=>{dataTable = window._.dropRight(dataTable, 1); lineData_list = window._.dropRight(lineData_list, 1);
                     if(show_dataTable_only_averaged){dataTable_avg = window._.dropRight(dataTable_avg, 3); line_index_count--}}}">Clear Last</button>
-                <button class="button is-danger" on:click="{()=>{dataTable=dataTable_avg=[]; line_index_count=0}}">Clear Table</button>
+                <button class="button is-danger" on:click="{()=>{dataTable=dataTable_avg=[]; line_index_count=0; lineData_list=[]}}">Clear Table</button>
 
             </div>
 

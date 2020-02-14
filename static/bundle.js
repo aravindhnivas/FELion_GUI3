@@ -39958,11 +39958,11 @@ function create_plotContainer_slot(ctx) {
 			attr_dev(button10, "class", "button is-warning svelte-ex8alc");
 			add_location(button10, file$O, 589, 16, 29477);
 			attr_dev(button11, "class", "button is-danger svelte-ex8alc");
-			add_location(button11, file$O, 592, 16, 29764);
+			add_location(button11, file$O, 592, 16, 29817);
 			attr_dev(div13, "class", "align content svelte-ex8alc");
 			add_location(div13, file$O, 584, 12, 29048);
 			attr_dev(div14, "class", "dataTable svelte-ex8alc");
-			add_location(div14, file$O, 597, 12, 29954);
+			add_location(div14, file$O, 597, 12, 30025);
 			attr_dev(div15, "class", "animated fadeIn hide svelte-ex8alc");
 			toggle_class(div15, "active", /*graphPlotted*/ ctx[13]);
 			add_location(div15, file$O, 547, 8, 25784);
@@ -40459,7 +40459,7 @@ function create_fragment$T(ctx) {
 			quickview.$set(quickview_changes);
 			const layout_changes = {};
 
-			if (dirty[0] & /*graphPlotted, currentLocation, show_dataTable_only_weighted_averaged, dataTable_avg, show_dataTable_only_averaged, dataTable, line_index_count, keepTable, toggleDoubleGaussRow, cen2, cen1, sig1, amp2, amp1, lineData_list, collectData, overwrite_expfit, plottedFiles, output_name, opoPlotted, show_theoryplot, normMethod, toggleRow, sigma, scale, theoryLocation, showTheoryFiles, openShell, delta*/ 2147483518 | dirty[1] & /*dataTable_weighted_avg, sig2, toggleFindPeaksRow, peak_height, peak_width, peak_prominence, theoryfiles, felixfiles*/ 255 | dirty[3] & /*$$scope*/ 8388608) {
+			if (dirty[0] & /*graphPlotted, currentLocation, show_dataTable_only_weighted_averaged, dataTable_avg, show_dataTable_only_averaged, dataTable, line_index_count, lineData_list, keepTable, toggleDoubleGaussRow, cen2, cen1, sig1, amp2, amp1, collectData, overwrite_expfit, plottedFiles, output_name, opoPlotted, show_theoryplot, normMethod, toggleRow, sigma, scale, theoryLocation, showTheoryFiles, openShell, delta*/ 2147483518 | dirty[1] & /*dataTable_weighted_avg, sig2, toggleFindPeaksRow, peak_height, peak_width, peak_prominence, theoryfiles, felixfiles*/ 255 | dirty[3] & /*$$scope*/ 8388608) {
 				layout_changes.$$scope = { dirty, ctx };
 			}
 
@@ -41245,6 +41245,7 @@ function instance$T($$self, $$props, $$invalidate) {
 
 	const click_handler_16 = () => {
 		$$invalidate(17, dataTable = window._.dropRight(dataTable, 1));
+		$$invalidate(24, lineData_list = window._.dropRight(lineData_list, 1));
 
 		if (show_dataTable_only_averaged) {
 			$$invalidate(18, dataTable_avg = window._.dropRight(dataTable_avg, 3));
@@ -41255,6 +41256,7 @@ function instance$T($$self, $$props, $$invalidate) {
 	const click_handler_17 = () => {
 		$$invalidate(17, dataTable = $$invalidate(18, dataTable_avg = []));
 		$$invalidate(15, line_index_count = 0);
+		$$invalidate(24, lineData_list = []);
 	};
 
 	function reportlayout_currentLocation_binding(value_15) {
