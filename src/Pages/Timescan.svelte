@@ -63,13 +63,17 @@
             let py = spawn(
 
                 localStorage["pythonpath"],
-                ["-i", path.join(localStorage["pythonscript"], pyfile), args],
+                [path.join(localStorage["pythonscript"], pyfile), args],
                 
                 { detached: true, stdio: 'ignore', shell: openShell }
             )
+            py.on("close", ()=>{ console.log("Closed") })
+
             py.unref()
+            py.ref()
             createToast("General process sent. Expect an response soon...")
             return;
+            
         }
 
         let target = e.target
