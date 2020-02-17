@@ -76,7 +76,7 @@
     let opoPlotted = false;
 
     const getID = () => Math.random().toString(32).substring(2)
-
+    let onlyFinalSpectrum = false
     ///////////////////////////////////////////////////////////////////////////////////
     const replot = () => {
 
@@ -510,7 +510,8 @@
 
             <Textfield type="number" style="width:7em" variant="outlined" bind:value={delta} label="Delta"/>
             <button class="button is-link" 
-                on:click="{(e)=>plotData({e:e, filetype:"general", general:{args:[...felixfiles, normMethod], pyfile:"norm_tkplot.py"}})}">Open in Matplotlib</button>
+                on:click="{(e)=>plotData({e:e, filetype:"general", general:{args:[...felixfiles, normMethod, onlyFinalSpectrum], pyfile:"norm_tkplot.py"}})}">Open in Matplotlib</button>
+            <CustomCheckbox bind:selected={onlyFinalSpectrum} label="Only Final spectrum" />
             <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
             <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click="{()=>toggleRow = !toggleRow}">Add Theory</button>
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"opofile"})}">OPO</button>
