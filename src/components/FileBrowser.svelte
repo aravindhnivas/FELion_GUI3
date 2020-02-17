@@ -62,12 +62,12 @@
     }
 
     const changeDirectory = (goto) => {
-         if (!currentLocation) {return createToast("Location undefined", "danger")}
+         if (!fs.existsSync(currentLocation)) {return createToast("Location undefined", "danger")}
         currentLocation = path.resolve(currentLocation, goto)
 
         getfiles()
     }
-    onMount(()=> {if(currentLocation !== "") {getfiles(); console.log("onMount Updating location for ", filetype)}} )
+    onMount(()=> {if(fs.existsSync(currentLocation)) {getfiles(); console.log("onMount Updating location for ", filetype)}} )
 
     afterUpdate(() => {
         if (original_location !== currentLocation) {getfiles(); console.log("Updating location for ", filetype)}

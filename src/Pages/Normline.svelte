@@ -97,10 +97,16 @@
             console.log("Sending general arguments: ", general.args)
             let py = spawn(
                 localStorage["pythonpath"],
-                ["-i", path.join(localStorage["pythonscript"], general.pyfile), general.args],
+                [path.join(localStorage["pythonscript"], general.pyfile), general.args],
                 { detached: true, stdio: 'ignore', shell: openShell }
             )
+
+            py.on("close", ()=>{
+                console.log("Closed")
+            })
+
             py.unref()
+            py.ref()
             createToast("General process sent. Expect an response soon...")
             return;
         }
