@@ -23,7 +23,7 @@ if __name__ == "__main__":
     filename = f"{args[0]}.expfit"
     
     location = pt(args[1])
-    if location.name is "DATA": datfile_location = location.parent/"EXPORT"
+    if location.name == "DATA": datfile_location = location.parent/"EXPORT"
     else: datfile_location = location/"EXPORT"
 
     filename = datfile_location / filename

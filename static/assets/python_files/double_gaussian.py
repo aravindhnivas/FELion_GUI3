@@ -19,7 +19,7 @@ def _2gaussian(x, amp1,cen1,sigma1, amp2,cen2,sigma2):
 
 def exp_fit(location, norm_method, start_wn, end_wn, output_filename, overwrite, fullfiles, amp1, amp2, cen1, cen2, sig1, sig2, tkplot=False):
     
-    if location.name is "DATA": datfile_location = location.parent/"EXPORT"
+    if location.name == "DATA": datfile_location = location.parent/"EXPORT"
     else: datfile_location = location/"EXPORT"
     readfile = f"{datfile_location}/{output_filename}.dat"
     wn, inten = read_dat_file(readfile, norm_method)

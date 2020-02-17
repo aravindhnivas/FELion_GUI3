@@ -15,7 +15,7 @@ def exp_fit(location, norm_method, start_wn, end_wn, output_filename,
     overwrite=False, fullfiles=None, tkplot=False, getvalue=False):
     
 
-    if location.name is "DATA": datfile_location = location.parent/"EXPORT"
+    if location.name == "DATA": datfile_location = location.parent/"EXPORT"
     else: datfile_location = location/"EXPORT"
     
     readfile = f"{datfile_location}/{output_filename}.dat"
@@ -25,6 +25,7 @@ def exp_fit(location, norm_method, start_wn, end_wn, output_filename,
     else:
         index = fullfiles.index(output_filename)
         index = 2*index
+        
         if index > len(colors): 
             index = (index - len(colors)) - 1
             line_color = f"rgb{colors[index]}"

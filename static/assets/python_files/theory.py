@@ -29,7 +29,7 @@ def exp_theory(theoryfiles, location, norm_method, sigma, scale, tkplot, output_
         else: ylabel =  "Norm. Intensity"
         ax = widget.make_figure_layout(title="Experimental vs Theory", xaxis="Wavenumber $(cm^{-1})$", yaxis=ylabel, yscale="linear", savename=savename)
 
-    if location.name is "DATA": datfile_location = location.parent/"EXPORT"
+    if location.name == "DATA": datfile_location = location.parent/"EXPORT"
     else: datfile_location = location/"EXPORT"
     avgfile = datfile_location/f"{output_filename}.dat"
     xs, ys = read_dat_file(avgfile, norm_method)
