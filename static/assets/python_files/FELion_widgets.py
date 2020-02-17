@@ -461,7 +461,9 @@ class FELion_Tk(Tk):
                 self.ax2.set(yscale=scale)
                 self.ax2.set(
                     ylabel=self.plotYlabel.get().replace("%", "\%"), 
-                    xlabel=self.plotXlabel.get()
+                    xlabel=self.plotXlabel.get(),
+                    xlim=self.ax.get_xlim(),
+                    ylim=self.ax.get_ylim()
                 )
 
                 # Xlabel and Ylabel fontsize
