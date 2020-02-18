@@ -1010,6 +1010,7 @@ var MDCFoundation = /** @class */ (function () {
     };
     return MDCFoundation;
 }());
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -1107,6 +1108,7 @@ var MDCComponent = /** @class */ (function () {
     };
     return MDCComponent;
 }());
+//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -1158,6 +1160,7 @@ function applyPassive(globalObj, forceRefresh) {
     }
     return supportsPassive_ ? { passive: true } : false;
 }
+//# sourceMappingURL=events.js.map
 
 /**
  * @license
@@ -1204,6 +1207,7 @@ function matches(element, selector) {
         || element.msMatchesSelector;
     return nativeMatches.call(element, selector);
 }
+//# sourceMappingURL=ponyfill.js.map
 
 /**
  * @license
@@ -1252,6 +1256,7 @@ var numbers = {
     PADDING: 10,
     TAP_DELAY_MS: 300,
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * Stores result from supportsCssVariables to avoid redundant processing to
@@ -1327,6 +1332,7 @@ function getNormalizedEventCoords(evt, pageOffset, clientRect) {
     }
     return { x: normalizedX, y: normalizedY };
 }
+//# sourceMappingURL=util.js.map
 
 /**
  * @license
@@ -1781,6 +1787,7 @@ var MDCRippleFoundation = /** @class */ (function (_super) {
     };
     return MDCRippleFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -1886,6 +1893,7 @@ var MDCRipple = /** @class */ (function (_super) {
     };
     return MDCRipple;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -1917,6 +1925,7 @@ var cssClasses$1 = {
 var strings$1 = {
     CONTENT_SELECTOR: '.mdc-tab-indicator__content',
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -1978,6 +1987,7 @@ var MDCTabIndicatorFoundation = /** @class */ (function (_super) {
     };
     return MDCTabIndicatorFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -2015,6 +2025,7 @@ var MDCFadingTabIndicatorFoundation = /** @class */ (function (_super) {
     };
     return MDCFadingTabIndicatorFoundation;
 }(MDCTabIndicatorFoundation));
+//# sourceMappingURL=fading-foundation.js.map
 
 /**
  * @license
@@ -2070,6 +2081,7 @@ var MDCSlidingTabIndicatorFoundation = /** @class */ (function (_super) {
     };
     return MDCSlidingTabIndicatorFoundation;
 }(MDCTabIndicatorFoundation));
+//# sourceMappingURL=sliding-foundation.js.map
 
 /**
  * @license
@@ -2133,6 +2145,7 @@ var MDCTabIndicator = /** @class */ (function (_super) {
     };
     return MDCTabIndicator;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -2167,6 +2180,7 @@ var strings$2 = {
     TABINDEX: 'tabIndex',
     TAB_INDICATOR_SELECTOR: '.mdc-tab-indicator',
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -2289,6 +2303,7 @@ var MDCTabFoundation = /** @class */ (function (_super) {
     };
     return MDCTabFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -2410,6 +2425,7 @@ var MDCTab = /** @class */ (function (_super) {
     };
     return MDCTab;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 function forwardEventsBuilder(component, additionalEvents = []) {
   const events = [
@@ -4188,6 +4204,7 @@ var strings$3 = {
     AREA_SELECTOR: '.mdc-tab-scroller__scroll-area',
     CONTENT_SELECTOR: '.mdc-tab-scroller__scroll-content',
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -4217,6 +4234,7 @@ var MDCTabScrollerRTL = /** @class */ (function () {
     }
     return MDCTabScrollerRTL;
 }());
+//# sourceMappingURL=rtl-scroller.js.map
 
 /**
  * @license
@@ -4285,6 +4303,7 @@ var MDCTabScrollerRTLDefault = /** @class */ (function (_super) {
     };
     return MDCTabScrollerRTLDefault;
 }(MDCTabScrollerRTL));
+//# sourceMappingURL=rtl-default-scroller.js.map
 
 /**
  * @license
@@ -4350,6 +4369,7 @@ var MDCTabScrollerRTLNegative = /** @class */ (function (_super) {
     };
     return MDCTabScrollerRTLNegative;
 }(MDCTabScrollerRTL));
+//# sourceMappingURL=rtl-negative-scroller.js.map
 
 /**
  * @license
@@ -4416,6 +4436,7 @@ var MDCTabScrollerRTLReverse = /** @class */ (function (_super) {
     };
     return MDCTabScrollerRTLReverse;
 }(MDCTabScrollerRTL));
+//# sourceMappingURL=rtl-reverse-scroller.js.map
 
 /**
  * @license
@@ -4742,6 +4763,7 @@ var MDCTabScrollerFoundation = /** @class */ (function (_super) {
     };
     return MDCTabScrollerFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -4788,6 +4810,7 @@ function computeHorizontalScrollbarHeight(documentObj, shouldCacheResult) {
     }
     return horizontalScrollbarHeight;
 }
+//# sourceMappingURL=util.js.map
 
 /**
  * @license
@@ -4895,6 +4918,7 @@ var MDCTabScroller = /** @class */ (function (_super) {
     };
     return MDCTabScroller;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -4938,6 +4962,7 @@ var numbers$1 = {
     HOME_KEYCODE: 36,
     SPACE_KEYCODE: 32,
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -5301,6 +5326,7 @@ var MDCTabBarFoundation = /** @class */ (function (_super) {
     };
     return MDCTabBarFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -5464,6 +5490,7 @@ var MDCTabBar = /** @class */ (function (_super) {
     };
     return MDCTabBar;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\tab-scroller\TabScroller.svelte generated by Svelte v3.17.3 */
 const file$4 = "node_modules\\@smui\\tab-scroller\\TabScroller.svelte";
@@ -7492,6 +7519,7 @@ var strings$6 = {
     ARIA_PRESSED: 'aria-pressed',
     CHANGE_EVENT: 'MDCIconButtonToggle:change',
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -7569,6 +7597,7 @@ var MDCIconButtonToggleFoundation = /** @class */ (function (_super) {
     };
     return MDCIconButtonToggleFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -7650,6 +7679,7 @@ var MDCIconButtonToggle = /** @class */ (function (_super) {
     };
     return MDCIconButtonToggle;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\icon-button\IconButton.svelte generated by Svelte v3.17.3 */
 const file$9 = "node_modules\\@smui\\icon-button\\IconButton.svelte";
@@ -8278,6 +8308,7 @@ var cssClasses$5 = {
     LABEL_SHAKE: 'mdc-floating-label--shake',
     ROOT: 'mdc-floating-label',
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -8378,6 +8409,7 @@ var MDCFloatingLabelFoundation = /** @class */ (function (_super) {
     };
     return MDCFloatingLabelFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -8443,6 +8475,7 @@ var MDCFloatingLabel = /** @class */ (function (_super) {
     };
     return MDCFloatingLabel;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -8470,6 +8503,7 @@ var cssClasses$6 = {
     LINE_RIPPLE_ACTIVE: 'mdc-line-ripple--active',
     LINE_RIPPLE_DEACTIVATING: 'mdc-line-ripple--deactivating',
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -8555,6 +8589,7 @@ var MDCLineRippleFoundation = /** @class */ (function (_super) {
     };
     return MDCLineRippleFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -8623,6 +8658,7 @@ var MDCLineRipple = /** @class */ (function (_super) {
     };
     return MDCLineRipple;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -8658,6 +8694,7 @@ var cssClasses$7 = {
     OUTLINE_NOTCHED: 'mdc-notched-outline--notched',
     OUTLINE_UPGRADED: 'mdc-notched-outline--upgraded',
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -8745,6 +8782,7 @@ var MDCNotchedOutlineFoundation = /** @class */ (function (_super) {
     };
     return MDCNotchedOutlineFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -8819,6 +8857,7 @@ var MDCNotchedOutline = /** @class */ (function (_super) {
     };
     return MDCNotchedOutline;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -8848,6 +8887,7 @@ var cssClasses$8 = {
 var strings$9 = {
     ROOT_SELECTOR: "." + cssClasses$8.ROOT,
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -8908,6 +8948,7 @@ var MDCTextFieldCharacterCounterFoundation = /** @class */ (function (_super) {
     };
     return MDCTextFieldCharacterCounterFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -8959,6 +9000,7 @@ var MDCTextFieldCharacterCounter = /** @class */ (function (_super) {
     };
     return MDCTextFieldCharacterCounter;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -9021,6 +9063,7 @@ var VALIDATION_ATTR_WHITELIST = [
 var ALWAYS_FLOAT_TYPES = [
     'color', 'date', 'datetime-local', 'month', 'range', 'time', 'week',
 ];
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -9475,6 +9518,7 @@ var MDCTextFieldFoundation = /** @class */ (function (_super) {
     };
     return MDCTextFieldFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -9508,6 +9552,7 @@ var strings$b = {
     ROLE: 'role',
     ROOT_SELECTOR: "." + cssClasses$a.ROOT,
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -9628,6 +9673,7 @@ var MDCTextFieldHelperTextFoundation = /** @class */ (function (_super) {
     };
     return MDCTextFieldHelperTextFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -9686,6 +9732,7 @@ var MDCTextFieldHelperText = /** @class */ (function (_super) {
     };
     return MDCTextFieldHelperText;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -9716,6 +9763,7 @@ var strings$c = {
 var cssClasses$b = {
     ROOT: 'mdc-text-field__icon',
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -9822,6 +9870,7 @@ var MDCTextFieldIconFoundation = /** @class */ (function (_super) {
     };
     return MDCTextFieldIconFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -9881,6 +9930,7 @@ var MDCTextFieldIcon = /** @class */ (function (_super) {
     };
     return MDCTextFieldIcon;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -10317,6 +10367,7 @@ var MDCTextField = /** @class */ (function (_super) {
     };
     return MDCTextField;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\floating-label\FloatingLabel.svelte generated by Svelte v3.17.3 */
 const file$a = "node_modules\\@smui\\floating-label\\FloatingLabel.svelte";
@@ -13562,7 +13613,7 @@ class Textfield extends SvelteComponentDev {
 	}
 }
 
-function e(){}const t=e=>e;function n(e,t){for(const n in t)e[n]=t[n];return e}function s(e){return e()}function i(){return Object.create(null)}function o(e){e.forEach(s);}function a(e){return "function"==typeof e}function c(e,t){return e!=e?t==t:e!==t||e&&"object"==typeof e||"function"==typeof e}function u(e,t,n){if(e){const s=d(e,t,n);return e[0](s)}}function d(e,t,s){return e[1]?n({},n(t.$$scope.ctx,e[1](s?s(t):{}))):t.$$scope.ctx}function p(e,t,s,i){return e[1]?n({},n(t.$$scope.changed||{},e[1](i?i(s):{}))):t.$$scope.changed||{}}function f(e){const t={};for(const n in e)"$"!==n[0]&&(t[n]=e[n]);return t}const m="undefined"!=typeof window;let h=m?()=>window.performance.now():()=>Date.now(),g=m?e=>requestAnimationFrame(e):e;const v=new Set;let $,b=!1;function y(){v.forEach(e=>{e[0](h())||(v.delete(e),e[1]());}),(b=v.size>0)&&g(y);}function x(e){let t;return b||(b=!0,g(y)),{promise:new Promise(n=>{v.add(t=[e,n]);}),abort(){v.delete(t);}}}function w(e,t){e.appendChild(t);}function k(e,t,n){e.insertBefore(t,n||null);}function z(e){e.parentNode.removeChild(e);}function T(e){return document.createElement(e)}function C(e){return document.createTextNode(e)}function P(){return C(" ")}function _$1(){return C("")}function E(e,t,n,s){return e.addEventListener(t,n,s),()=>e.removeEventListener(t,n,s)}function I(e,t,n){null==n?e.removeAttribute(t):e.setAttribute(t,n);}function L(e){return Array.from(e.childNodes)}function B(e,t,n,s){for(let s=0;s<e.length;s+=1){const i=e[s];if(i.nodeName===t){for(let e=0;e<i.attributes.length;e+=1){const t=i.attributes[e];n[t.name]||i.removeAttribute(t.name);}return e.splice(s,1)[0]}}return s?function(e){return document.createElementNS("http://www.w3.org/2000/svg",e)}(t):T(t)}function S(e,t){for(let n=0;n<e.length;n+=1){const s=e[n];if(3===s.nodeType)return s.data=t,e.splice(n,1)[0]}return C(t)}function R(e,t){t=""+t,e.data!==t&&(e.data=t);}function A(e,t,n){e.classList[n?"add":"remove"](t);}function V(e,t){const n=document.createEvent("CustomEvent");return n.initCustomEvent(e,!1,!1,t),n}let M,N=0,F={};function q(e,t,n,s,i,o,a,c=0){const l=16.666/s;let r="{\n";for(let e=0;e<=1;e+=l){const s=t+(n-t)*o(e);r+=100*e+`%{${a(s,1-s)}}\n`;}const u=r+`100% {${a(n,1-n)}}\n}`,d=`__svelte_${function(e){let t=5381,n=e.length;for(;n--;)t=(t<<5)-t^e.charCodeAt(n);return t>>>0}(u)}_${c}`;if(!F[d]){if(!$){const e=T("style");document.head.appendChild(e),$=e.sheet;}F[d]=!0,$.insertRule(`@keyframes ${d} ${u}`,$.cssRules.length);}const p=e.style.animation||"";return e.style.animation=`${p?`${p}, `:""}${d} ${s}ms linear ${i}ms 1 both`,N+=1,d}function U(e,t){e.style.animation=(e.style.animation||"").split(", ").filter(t?e=>e.indexOf(t)<0:e=>-1===e.indexOf("__svelte")).join(", "),t&&!--N&&g(()=>{if(N)return;let e=$.cssRules.length;for(;e--;)$.deleteRule(e);F={};});}function H(e){M=e;}function Y(){if(!M)throw new Error("Function called outside component initialization");return M}function K(e){Y().$$.on_mount.push(e);}function W(){const e=M;return (t,n)=>{const s=e.$$.callbacks[t];if(s){const i=V(t,n);s.slice().forEach(t=>{t.call(e,i);});}}}const Q=[],Z=[],ee=[],te=[],ne=Promise.resolve();let se,ie=!1;function oe(){ie||(ie=!0,ne.then(le));}function ae(){return oe(),ne}function ce(e){ee.push(e);}function le(){const e=new Set;do{for(;Q.length;){const e=Q.shift();H(e),re(e.$$);}for(;Z.length;)Z.pop()();for(let t=0;t<ee.length;t+=1){const n=ee[t];e.has(n)||(n(),e.add(n));}ee.length=0;}while(Q.length);for(;te.length;)te.pop()();ie=!1;}function re(e){e.fragment&&(e.update(e.dirty),o(e.before_update),e.fragment.p(e.dirty,e.ctx),e.dirty=null,e.after_update.forEach(ce));}function ue(){return se||(se=Promise.resolve()).then(()=>{se=null;}),se}function de(e,t,n){e.dispatchEvent(V(`${t?"intro":"outro"}${n}`));}const pe=new Set;let fe;function me(){fe={r:0,c:[],p:fe};}function he(){fe.r||o(fe.c),fe=fe.p;}function ge(e,t){e&&e.i&&(pe.delete(e),e.i(t));}function ve(e,t,n,s){if(e&&e.o){if(pe.has(e))return;pe.add(e),fe.c.push(()=>{pe.delete(e),s&&(n&&e.d(1),s());}),e.o(t);}}const $e={duration:0};const ye="undefined"!=typeof window?window:global;function xe(e,t){const n={},s={},i={$$scope:1};let o=e.length;for(;o--;){const a=e[o],c=t[o];if(c){for(const e in a)e in c||(s[e]=1);for(const e in c)i[e]||(n[e]=c[e],i[e]=1);e[o]=c;}else for(const e in a)i[e]=1;}for(const e in s)e in n||(n[e]=void 0);return n}function we(e,t,n){const{fragment:i,on_mount:c,on_destroy:l,after_update:r}=e.$$;i.m(t,n),ce(()=>{const t=c.map(s).filter(a);l?l.push(...t):o(t),e.$$.on_mount=[];}),r.forEach(ce);}function ke(e,t){e.$$.fragment&&(o(e.$$.on_destroy),e.$$.fragment.d(t),e.$$.on_destroy=e.$$.fragment=null,e.$$.ctx={});}function ze(t,n,s,a,c,l){const r=M;H(t);const u=n.props||{},d=t.$$={fragment:null,ctx:null,props:l,update:e,not_equal:c,bound:i(),on_mount:[],on_destroy:[],before_update:[],after_update:[],context:new Map(r?r.$$.context:[]),callbacks:i(),dirty:null};let p=!1;d.ctx=s?s(t,u,(e,n)=>{d.ctx&&c(d.ctx[e],d.ctx[e]=n)&&(d.bound[e]&&d.bound[e](n),p&&function(e,t){e.$$.dirty||(Q.push(e),oe(),e.$$.dirty=i()),e.$$.dirty[t]=!0;}(t,e));}):u,d.update(),p=!0,o(d.before_update),d.fragment=a(d.ctx),n.target&&(n.hydrate?d.fragment.l(L(n.target)):d.fragment.c(),n.intro&&ge(t.$$.fragment),we(t,n.target,n.anchor),le()),H(r);}class Te{$destroy(){ke(this,1),this.$destroy=e;}$on(e,t){const n=this.$$.callbacks[e]||(this.$$.callbacks[e]=[]);return n.push(t),()=>{const e=n.indexOf(t);-1!==e&&n.splice(e,1);}}$set(){}}function Ee(e){return e<.5?4*e*e*e:.5*Math.pow(2*e-2,3)+1}function Ie(e){const t=e-1;return t*t*t+1}function je(e,{delay:t=0,duration:n=400}){const s=+getComputedStyle(e).opacity;return {delay:t,duration:n,css:e=>`opacity: ${e*s}`}}function Le(e,{delay:t=0,duration:n=400,easing:s=Ie,x:i=0,y:o=0,opacity:a=0}){const c=getComputedStyle(e),l=+c.opacity,r="none"===c.transform?"":c.transform,u=l*(1-a);return {delay:t,duration:n,easing:s,css:(e,t)=>`\n\t\t\ttransform: ${r} translate(${(1-e)*i}px, ${(1-e)*o}px);\n\t\t\topacity: ${l-u*t}`}}var Be=Object.freeze({crossfade:function(e){var{fallback:t}=e,s=function(e,t){var n={};for(var s in e)Object.prototype.hasOwnProperty.call(e,s)&&t.indexOf(s)<0&&(n[s]=e[s]);if(null!=e&&"function"==typeof Object.getOwnPropertySymbols){var i=0;for(s=Object.getOwnPropertySymbols(e);i<s.length;i++)t.indexOf(s[i])<0&&Object.prototype.propertyIsEnumerable.call(e,s[i])&&(n[s[i]]=e[s[i]]);}return n}(e,["fallback"]);const i=new Map,o=new Map;function c(e,i,o){return (c,l)=>(e.set(l.key,{rect:c.getBoundingClientRect()}),()=>{if(i.has(l.key)){const{rect:e}=i.get(l.key);return i.delete(l.key),function(e,t,i){const{delay:o=0,duration:c=(e=>30*Math.sqrt(e)),easing:l=Ie}=n(n({},s),i),r=t.getBoundingClientRect(),u=e.left-r.left,d=e.top-r.top,p=e.width/r.width,f=e.height/r.height,m=Math.sqrt(u*u+d*d),h=getComputedStyle(t),g="none"===h.transform?"":h.transform,v=+h.opacity;return {delay:o,duration:a(c)?c(m):c,easing:l,css:(e,t)=>`\n\t\t\t\topacity: ${e*v};\n\t\t\t\ttransform-origin: top left;\n\t\t\t\ttransform: ${g} translate(${t*u}px,${t*d}px) scale(${e+(1-e)*p}, ${e+(1-e)*f});\n\t\t\t`}}(e,c,l)}return e.delete(l.key),t&&t(c,l,o)})}return [c(o,i,!1),c(i,o,!0)]},draw:function(e,{delay:t=0,speed:n,duration:s,easing:i=Ee}){const o=e.getTotalLength();return void 0===s?s=void 0===n?800:o/n:"function"==typeof s&&(s=s(o)),{delay:t,duration:s,easing:i,css:(e,t)=>`stroke-dasharray: ${e*o} ${t*o}`}},fade:je,fly:Le,scale:function(e,{delay:t=0,duration:n=400,easing:s=Ie,start:i=0,opacity:o=0}){const a=getComputedStyle(e),c=+a.opacity,l="none"===a.transform?"":a.transform,r=1-i,u=c*(1-o);return {delay:t,duration:n,easing:s,css:(e,t)=>`\n\t\t\ttransform: ${l} scale(${1-r*t});\n\t\t\topacity: ${c-u*t}\n\t\t`}},slide:function(e,{delay:t=0,duration:n=400,easing:s=Ie}){const i=getComputedStyle(e),o=+i.opacity,a=parseFloat(i.height),c=parseFloat(i.paddingTop),l=parseFloat(i.paddingBottom),r=parseFloat(i.marginTop),u=parseFloat(i.marginBottom),d=parseFloat(i.borderTopWidth),p=parseFloat(i.borderBottomWidth);return {delay:t,duration:n,easing:s,css:e=>"overflow: hidden;"+`opacity: ${Math.min(20*e,1)*o};`+`height: ${e*a}px;`+`padding-top: ${e*c}px;`+`padding-bottom: ${e*l}px;`+`margin-top: ${e*r}px;`+`margin-bottom: ${e*u}px;`+`border-top-width: ${e*d}px;`+`border-bottom-width: ${e*p}px;`}}});function Ot(t){var n,s;return {c(){n=T("div"),this.h();},l(e){L(n=B(e,"DIV",{class:!0},!1)).forEach(z),this.h();},h(){I(n,"class",s="notices "+t.positionClass+" svelte-750nm");},m(e,s){k(e,n,s),t.div_binding(n);},p(e,t){e.positionClass&&s!==(s="notices "+t.positionClass+" svelte-750nm")&&I(n,"class",s);},i:e,o:e,d(e){e&&z(n),t.div_binding(null);}}}const At={};function Vt(e,t,n){let s,i,{position:o="top"}=t;return e.$set=(e=>{"position"in e&&n("position",o=e.position);}),e.$$.update=((e={position:1})=>{e.position&&n("positionClass",i="top"===o?"is-top":"is-bottom");}),{position:o,container:s,positionClass:i,insert:function(e){s.insertAdjacentElement("afterbegin",e);},div_binding:function(e){Z[e?"unshift":"push"](()=>{n("container",s=e);});}}}class Dt extends Te{constructor(e){var t;super(),document.getElementById("svelte-750nm-style")||((t=T("style")).id="svelte-750nm-style",t.textContent=".notices.svelte-750nm{position:fixed;top:0;left:0;right:0;bottom:0;overflow:hidden;padding:3em;z-index:1000;pointer-events:none;display:-webkit-box;display:-ms-flexbox;display:flex}.notices.is-top.svelte-750nm{-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column}.notices.is-bottom.svelte-750nm{-webkit-box-orient:vertical;-webkit-box-direction:reverse;-ms-flex-direction:column-reverse;flex-direction:column-reverse}.notices.svelte-750nm [class*='has-background-'] .text{color:transparent !important;-webkit-filter:invert(1) brightness(2.5) grayscale(1) contrast(9);filter:invert(1) brightness(2.5) grayscale(1) contrast(9);background:inherit;background-clip:text !important;-webkit-background-clip:text !important}",w(document.head,t)),ze(this,e,Vt,Ot,c,["position","insert"]);}get insert(){return this.$$.ctx.insert}}const{document:Mt}=ye;function Nt(n){var s,i,c,l,r,f,m;const g=n.$$slots.default,v=u(g,n,null);return {c(){s=T("div"),v&&v.c(),this.h();},l(e){var t=L(s=B(e,"DIV",{class:!0,"aria-hidden":!0},!1));v&&v.l(t),t.forEach(z),this.h();},h(){I(s,"class",i="notice "+n.position+" svelte-102rt1s"),I(s,"aria-hidden",c=!n.active),m=E(s,"outroend",n.remove);},m(e,t){k(e,s,t),v&&v.m(s,null),n.div_binding(s),f=!0;},p(e,t){v&&v.p&&e.$$scope&&v.p(p(g,t,e,null),d(g,t,null)),f&&!e.position||i===(i="notice "+t.position+" svelte-102rt1s")||I(s,"class",i),f&&!e.active||c===(c=!t.active)||I(s,"aria-hidden",c);},i(i){f||(ge(v,i),ce(()=>{r&&r.end(1),l||(l=function(n,s,i){let o,c,l=s(n,i),r=!1,u=0;function d(){o&&U(n,o);}function p(){const{delay:s=0,duration:i=300,easing:a=t,tick:p=e,css:f}=l||$e;f&&(o=q(n,0,1,i,s,a,f,u++)),p(0,1);const m=h()+s,g=m+i;c&&c.abort(),r=!0,ce(()=>de(n,!0,"start")),c=x(e=>{if(r){if(e>=g)return p(1,0),de(n,!0,"end"),d(),r=!1;if(e>=m){const t=a((e-m)/i);p(t,1-t);}}return r});}let f=!1;return {start(){f||(U(n),a(l)?(l=l(),ue().then(p)):p());},invalidate(){f=!1;},end(){r&&(d(),r=!1);}}}(s,Le,{y:n.transitionY})),l.start();}),f=!0);},o(i){ve(v,i),l&&l.invalidate(),r=function(n,s,i){let c,l=s(n,i),r=!0;const u=fe;function d(){const{delay:s=0,duration:i=300,easing:a=t,tick:d=e,css:p}=l||$e;p&&(c=q(n,1,0,i,s,a,p));const f=h()+s,m=f+i;ce(()=>de(n,!1,"start")),x(e=>{if(r){if(e>=m)return d(0,1),de(n,!1,"end"),--u.r||o(u.c),!1;if(e>=f){const t=a((e-f)/i);d(1-t,t);}}return r});}return u.r+=1,a(l)?ue().then(()=>{l=l(),d();}):d(),{end(e){e&&l.tick&&l.tick(1,0),r&&(c&&U(n,c),r=!1);}}}(s,je,{duration:n.transitionOut?400:0}),f=!1;},d(e){e&&z(s),v&&v.d(e),n.div_binding(null),e&&r&&r.end(),m();}}}function Ft(e){var t,n,s=e.active&&Nt(e);return {c(){s&&s.c(),t=_$1();},l(e){s&&s.l(e),t=_$1();},m(e,i){s&&s.m(e,i),k(e,t,i),n=!0;},p(e,n){n.active?s?(s.p(e,n),ge(s,1)):((s=Nt(n)).c(),ge(s,1),s.m(t.parentNode,t)):s&&(me(),ve(s,1,1,()=>{s=null;}),he());},i(e){n||(ge(s),n=!0);},o(e){ve(s),n=!1;},d(e){s&&s.d(e),e&&z(t);}}}const qt=["active","type","position","duration"];function Ut(e){const t={};return Object.keys(e).forEach(n=>{qt.includes(n)&&(t[n]=e[n]);}),t}function Ht(e,t,n){const s=W();let i,o,a,{active:c=!0,type:l="is-dark",position:r="is-top",duration:u=2e3,transitionOut:d=!0}=t;function p(){n("active",c=!1);}K(async()=>{await async function(){await ae,At.top||(At.top=new Dt({target:document.body,props:{position:"top"}})),At.bottom||(At.bottom=new Dt({target:document.body,props:{position:"bottom"}}));}(),o=At.top,r&&0===r.indexOf("is-bottom")&&(o=At.bottom),o.insert(i),a=setTimeout(()=>{p();},u);});let f,{$$slots:m={},$$scope:h}=t;return e.$set=(e=>{"active"in e&&n("active",c=e.active),"type"in e&&n("type",l=e.type),"position"in e&&n("position",r=e.position),"duration"in e&&n("duration",u=e.duration),"transitionOut"in e&&n("transitionOut",d=e.transitionOut),"$$scope"in e&&n("$$scope",h=e.$$scope);}),e.$$.update=((e={position:1})=>{e.position&&n("transitionY",f=~r.indexOf("is-top")?-200:200);}),{active:c,type:l,position:r,duration:u,transitionOut:d,el:i,close:p,remove:function(){clearTimeout(a),n("active",c=!1),s("destroyed");},transitionY:f,div_binding:function(e){Z[e?"unshift":"push"](()=>{n("el",i=e);});},$$slots:m,$$scope:h}}class Yt extends Te{constructor(e){var t;super(),Mt.getElementById("svelte-102rt1s-style")||((t=T("style")).id="svelte-102rt1s-style",t.textContent=".notice.svelte-102rt1s{display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;pointer-events:auto}.notice.is-top.svelte-102rt1s,.notice.is-bottom.svelte-102rt1s{-ms-flex-item-align:center;align-self:center}.notice.is-top-left.svelte-102rt1s,.notice.is-bottom-left.svelte-102rt1s{-ms-flex-item-align:start;align-self:flex-start}.notice.is-top-right.svelte-102rt1s,.notice.is-bottom-right.svelte-102rt1s{-ms-flex-item-align:end;align-self:flex-end}",w(Mt.head,t)),ze(this,e,Ht,Ft,c,["active","type","position","duration","transitionOut","close"]);}get close(){return this.$$.ctx.close}}function pn(e){var t,n,s,i,o;return {c(){t=T("div"),n=T("button"),s=C(e.actionText),this.h();},l(i){var o=L(t=B(i,"DIV",{class:!0},!1)),a=L(n=B(o,"BUTTON",{class:!0},!1));s=S(a,e.actionText),a.forEach(z),o.forEach(z),this.h();},h(){I(n,"class",i="button "+e.newType+" svelte-1jmu8to"),I(t,"class","action svelte-1jmu8to"),o=E(t,"click",e.action);},m(e,i){k(e,t,i),w(t,n),w(n,s);},p(e,t){e.actionText&&R(s,t.actionText),e.newType&&i!==(i="button "+t.newType+" svelte-1jmu8to")&&I(n,"class",i);},d(e){e&&z(t),o();}}}function fn(e){var t,n,s,i,o=e.actionText&&pn(e);return {c(){t=T("div"),n=T("div"),s=P(),o&&o.c(),this.h();},l(e){var i=L(t=B(e,"DIV",{class:!0,role:!0},!1));L(n=B(i,"DIV",{class:!0},!1)).forEach(z),s=S(i,"\n\n    "),o&&o.l(i),i.forEach(z),this.h();},h(){I(n,"class","text svelte-1jmu8to"),I(t,"class",i="snackbar "+e.background+" svelte-1jmu8to"),I(t,"role","alert"),A(t,"has-background-dark",!e.background);},m(i,a){k(i,t,a),w(t,n),n.innerHTML=e.message,w(t,s),o&&o.m(t,null);},p(e,s){e.message&&(n.innerHTML=s.message),s.actionText?o?o.p(e,s):((o=pn(s)).c(),o.m(t,null)):o&&(o.d(1),o=null),e.background&&i!==(i="snackbar "+s.background+" svelte-1jmu8to")&&I(t,"class",i),(e.background||e.background)&&A(t,"has-background-dark",!s.background);},d(e){e&&z(t),o&&o.d();}}}function mn(e){var t,s=[e.props,{transitionOut:!0}];let i={$$slots:{default:[fn]},$$scope:{ctx:e}};for(var o=0;o<s.length;o+=1)i=n(i,s[o]);var a=new Yt({props:i});return e.notice_1_binding(a),{c(){a.$$.fragment.c();},l(e){a.$$.fragment.l(e);},m(e,n){we(a,e,n),t=!0;},p(e,t){var n=e.props?xe(s,[t.props,s[1]]):{};(e.$$scope||e.background||e.actionText||e.newType||e.message)&&(n.$$scope={changed:e,ctx:t}),a.$set(n);},i(e){t||(ge(a.$$.fragment,e),t=!0);},o(e){ve(a.$$.fragment,e),t=!1;},d(t){e.notice_1_binding(null),ke(a,t);}}}function hn(e,t,s){let i,o,a,{message:c,duration:l=3500,position:r="is-bottom-right",type:u="is-primary",background:d="",actionText:p="OK",onAction:m=(()=>{})}=t;return K(()=>{if("function"!=typeof m)throw new Error(`onAction ${m} is not a function`)}),e.$set=(e=>{s("$$props",t=n(n({},t),e)),"message"in e&&s("message",c=e.message),"duration"in e&&s("duration",l=e.duration),"position"in e&&s("position",r=e.position),"type"in e&&s("type",u=e.type),"background"in e&&s("background",d=e.background),"actionText"in e&&s("actionText",p=e.actionText),"onAction"in e&&s("onAction",m=e.onAction);}),e.$$.update=((e={type:1,$$props:1,position:1,duration:1})=>{e.type&&s("newType",o=u&&u.replace(/^is-(.*)/,"has-text-$1")),s("props",a={...Ut(t),position:r,duration:l});}),{message:c,duration:l,position:r,type:u,background:d,actionText:p,onAction:m,notice:i,action:function(){Promise.resolve(m()).then(()=>i.close());},newType:o,props:a,notice_1_binding:function(e){Z[e?"unshift":"push"](()=>{s("notice",i=e);});},$$props:t=f(t)}}class gn extends Te{constructor(e){var t;super(),document.getElementById("svelte-1jmu8to-style")||((t=T("style")).id="svelte-1jmu8to-style",t.textContent=".snackbar.svelte-1jmu8to{display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-ms-flex-pack:distribute;justify-content:space-around;border-radius:4px;margin:0.5em 0;-webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);box-shadow:0 1px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);pointer-events:auto;min-height:3em}.snackbar.svelte-1jmu8to .text.svelte-1jmu8to{margin:.5em 1em}.snackbar.svelte-1jmu8to .action.svelte-1jmu8to{margin-left:auto;padding:0.5em;padding-left:0}.snackbar.svelte-1jmu8to .action .button.svelte-1jmu8to{font-weight:600;text-transform:uppercase;background:transparent;border:transparent;position:relative}.snackbar.svelte-1jmu8to .action .button.svelte-1jmu8to:hover::after{content:'';position:absolute;top:0;bottom:0;left:0;right:0;background:rgba(0, 0, 0, 0.1)}",w(document.head,t)),ze(this,e,hn,mn,c,["message","duration","position","type","background","actionText","onAction"]);}}gn.create=function(e){"string"==typeof e&&(e={message:e});const t=new gn({target:document.body,props:e,intro:!0});return t.$on("destroyed",t.$destroy),t};function jn(e){var t,n,s;return {c(){t=T("div"),n=T("div"),this.h();},l(e){var s=L(t=B(e,"DIV",{class:!0,role:!0},!1));L(n=B(s,"DIV",{class:!0},!1)).forEach(z),s.forEach(z),this.h();},h(){I(n,"class","text"),I(t,"class",s="toast "+e.type+" "+e.newBackground+" svelte-1uzjgds"),I(t,"role","alert");},m(s,i){k(s,t,i),w(t,n),n.innerHTML=e.message;},p(e,i){e.message&&(n.innerHTML=i.message),(e.type||e.newBackground)&&s!==(s="toast "+i.type+" "+i.newBackground+" svelte-1uzjgds")&&I(t,"class",s);},d(e){e&&z(t);}}}function Ln(e){var t,s=[Ut(e.$$props)];let i={$$slots:{default:[jn]},$$scope:{ctx:e}};for(var o=0;o<s.length;o+=1)i=n(i,s[o]);var a=new Yt({props:i});return {c(){a.$$.fragment.c();},l(e){a.$$.fragment.l(e);},m(e,n){we(a,e,n),t=!0;},p(e,t){var n=e.filterProps||e.$$props?xe(s,[Ut(t.$$props)]):{};(e.$$scope||e.type||e.newBackground||e.message)&&(n.$$scope={changed:e,ctx:t}),a.$set(n);},i(e){t||(ge(a.$$.fragment,e),t=!0);},o(e){ve(a.$$.fragment,e),t=!1;},d(e){ke(a,e);}}}function Bn(e,t,s){let i,{message:o,type:a="is-dark",background:c=""}=t;return e.$set=(e=>{s("$$props",t=n(n({},t),e)),"message"in e&&s("message",o=e.message),"type"in e&&s("type",a=e.type),"background"in e&&s("background",c=e.background);}),e.$$.update=((e={background:1,type:1})=>{(e.background||e.type)&&s("newBackground",i=c||a.replace(/^is-(.*)/,"has-background-$1"));}),{message:o,type:a,background:c,newBackground:i,$$props:t,$$props:t=f(t)}}class Sn extends Te{constructor(e){var t;super(),document.getElementById("svelte-1uzjgds-style")||((t=T("style")).id="svelte-1uzjgds-style",t.textContent=".toast.svelte-1uzjgds{text-align:center;padding:0.75em 1.5em;border-radius:2em;margin:0.5em 0;-webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);box-shadow:0 1px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);pointer-events:auto}",w(document.head,t)),ze(this,e,Bn,Ln,c,["message","type","background"]);}}Sn.create=function(e){"string"==typeof e&&(e={message:e});const t=new Sn({target:document.body,props:e,intro:!0});return t.$on("destroyed",t.$destroy),t};
+function e(){}const t=e=>e;function n(e,t){for(const n in t)e[n]=t[n];return e}function s(e){return e()}function i(){return Object.create(null)}function o(e){e.forEach(s);}function a(e){return "function"==typeof e}function c(e,t){return e!=e?t==t:e!==t||e&&"object"==typeof e||"function"==typeof e}function u(e,t,n){if(e){const s=d(e,t,n);return e[0](s)}}function d(e,t,s){return e[1]?n({},n(t.$$scope.ctx,e[1](s?s(t):{}))):t.$$scope.ctx}function p(e,t,s,i){return e[1]?n({},n(t.$$scope.changed||{},e[1](i?i(s):{}))):t.$$scope.changed||{}}function f(e){const t={};for(const n in e)"$"!==n[0]&&(t[n]=e[n]);return t}const m="undefined"!=typeof window;let h=m?()=>window.performance.now():()=>Date.now(),g=m?e=>requestAnimationFrame(e):e;const v=new Set;let $,b=!1;function y(){v.forEach(e=>{e[0](h())||(v.delete(e),e[1]());}),(b=v.size>0)&&g(y);}function x(e){let t;return b||(b=!0,g(y)),{promise:new Promise(n=>{v.add(t=[e,n]);}),abort(){v.delete(t);}}}function w(e,t){e.appendChild(t);}function k(e,t,n){e.insertBefore(t,n||null);}function z(e){e.parentNode.removeChild(e);}function T(e){return document.createElement(e)}function C(e){return document.createTextNode(e)}function P(){return C(" ")}function _$1(){return C("")}function E(e,t,n,s){return e.addEventListener(t,n,s),()=>e.removeEventListener(t,n,s)}function I(e,t,n){null==n?e.removeAttribute(t):e.setAttribute(t,n);}function L(e){return Array.from(e.childNodes)}function B(e,t,n,s){for(let s=0;s<e.length;s+=1){const i=e[s];if(i.nodeName===t){for(let e=0;e<i.attributes.length;e+=1){const t=i.attributes[e];n[t.name]||i.removeAttribute(t.name);}return e.splice(s,1)[0]}}return s?function(e){return document.createElementNS("http://www.w3.org/2000/svg",e)}(t):T(t)}function S(e,t){for(let n=0;n<e.length;n+=1){const s=e[n];if(3===s.nodeType)return s.data=t,e.splice(n,1)[0]}return C(t)}function R(e,t){t=""+t,e.data!==t&&(e.data=t);}function A(e,t,n){e.classList[n?"add":"remove"](t);}function V(e,t){const n=document.createEvent("CustomEvent");return n.initCustomEvent(e,!1,!1,t),n}let M,N=0,F={};function q(e,t,n,s,i,o,a,c=0){const l=16.666/s;let r="{\n";for(let e=0;e<=1;e+=l){const s=t+(n-t)*o(e);r+=100*e+`%{${a(s,1-s)}}\n`;}const u=r+`100% {${a(n,1-n)}}\n}`,d=`__svelte_${function(e){let t=5381,n=e.length;for(;n--;)t=(t<<5)-t^e.charCodeAt(n);return t>>>0}(u)}_${c}`;if(!F[d]){if(!$){const e=T("style");document.head.appendChild(e),$=e.sheet;}F[d]=!0,$.insertRule(`@keyframes ${d} ${u}`,$.cssRules.length);}const p=e.style.animation||"";return e.style.animation=`${p?`${p}, `:""}${d} ${s}ms linear ${i}ms 1 both`,N+=1,d}function U(e,t){e.style.animation=(e.style.animation||"").split(", ").filter(t?e=>e.indexOf(t)<0:e=>-1===e.indexOf("__svelte")).join(", "),t&&!--N&&g(()=>{if(N)return;let e=$.cssRules.length;for(;e--;)$.deleteRule(e);F={};});}function H(e){M=e;}function Y(){if(!M)throw new Error("Function called outside component initialization");return M}function K(e){Y().$$.on_mount.push(e);}function W(){const e=M;return (t,n)=>{const s=e.$$.callbacks[t];if(s){const i=V(t,n);s.slice().forEach(t=>{t.call(e,i);});}}}const Q=[],Z=[],ee=[],te=[],ne=Promise.resolve();let se,ie=!1;function oe(){ie||(ie=!0,ne.then(le));}function ae(){return oe(),ne}function ce(e){ee.push(e);}function le(){const e=new Set;do{for(;Q.length;){const e=Q.shift();H(e),re(e.$$);}for(;Z.length;)Z.pop()();for(let t=0;t<ee.length;t+=1){const n=ee[t];e.has(n)||(n(),e.add(n));}ee.length=0;}while(Q.length);for(;te.length;)te.pop()();ie=!1;}function re(e){e.fragment&&(e.update(e.dirty),o(e.before_update),e.fragment.p(e.dirty,e.ctx),e.dirty=null,e.after_update.forEach(ce));}function ue(){return se||(se=Promise.resolve()).then(()=>{se=null;}),se}function de(e,t,n){e.dispatchEvent(V(`${t?"intro":"outro"}${n}`));}const pe=new Set;let fe;function me(){fe={r:0,c:[],p:fe};}function he(){fe.r||o(fe.c),fe=fe.p;}function ge(e,t){e&&e.i&&(pe.delete(e),e.i(t));}function ve(e,t,n,s){if(e&&e.o){if(pe.has(e))return;pe.add(e),fe.c.push(()=>{pe.delete(e),s&&(n&&e.d(1),s());}),e.o(t);}}const $e={duration:0};const ye="undefined"!=typeof window?window:global;function xe(e,t){const n={},s={},i={$$scope:1};let o=e.length;for(;o--;){const a=e[o],c=t[o];if(c){for(const e in a)e in c||(s[e]=1);for(const e in c)i[e]||(n[e]=c[e],i[e]=1);e[o]=c;}else for(const e in a)i[e]=1;}for(const e in s)e in n||(n[e]=void 0);return n}function we(e,t,n){const{fragment:i,on_mount:c,on_destroy:l,after_update:r}=e.$$;i.m(t,n),ce(()=>{const t=c.map(s).filter(a);l?l.push(...t):o(t),e.$$.on_mount=[];}),r.forEach(ce);}function ke(e,t){e.$$.fragment&&(o(e.$$.on_destroy),e.$$.fragment.d(t),e.$$.on_destroy=e.$$.fragment=null,e.$$.ctx={});}function ze(t,n,s,a,c,l){const r=M;H(t);const u=n.props||{},d=t.$$={fragment:null,ctx:null,props:l,update:e,not_equal:c,bound:i(),on_mount:[],on_destroy:[],before_update:[],after_update:[],context:new Map(r?r.$$.context:[]),callbacks:i(),dirty:null};let p=!1;d.ctx=s?s(t,u,(e,n)=>{d.ctx&&c(d.ctx[e],d.ctx[e]=n)&&(d.bound[e]&&d.bound[e](n),p&&function(e,t){e.$$.dirty||(Q.push(e),oe(),e.$$.dirty=i()),e.$$.dirty[t]=!0;}(t,e));}):u,d.update(),p=!0,o(d.before_update),d.fragment=a(d.ctx),n.target&&(n.hydrate?d.fragment.l(L(n.target)):d.fragment.c(),n.intro&&ge(t.$$.fragment),we(t,n.target,n.anchor),le()),H(r);}class Te{$destroy(){ke(this,1),this.$destroy=e;}$on(e,t){const n=this.$$.callbacks[e]||(this.$$.callbacks[e]=[]);return n.push(t),()=>{const e=n.indexOf(t);-1!==e&&n.splice(e,1);}}$set(){}}function Ee(e){return e<.5?4*e*e*e:.5*Math.pow(2*e-2,3)+1}function Ie(e){const t=e-1;return t*t*t+1}function je(e,{delay:t=0,duration:n=400}){const s=+getComputedStyle(e).opacity;return {delay:t,duration:n,css:e=>`opacity: ${e*s}`}}function Le(e,{delay:t=0,duration:n=400,easing:s=Ie,x:i=0,y:o=0,opacity:a=0}){const c=getComputedStyle(e),l=+c.opacity,r="none"===c.transform?"":c.transform,u=l*(1-a);return {delay:t,duration:n,easing:s,css:(e,t)=>`\n\t\t\ttransform: ${r} translate(${(1-e)*i}px, ${(1-e)*o}px);\n\t\t\topacity: ${l-u*t}`}}var Be=Object.freeze({crossfade:function(e){var{fallback:t}=e,s=function(e,t){var n={};for(var s in e)Object.prototype.hasOwnProperty.call(e,s)&&t.indexOf(s)<0&&(n[s]=e[s]);if(null!=e&&"function"==typeof Object.getOwnPropertySymbols){var i=0;for(s=Object.getOwnPropertySymbols(e);i<s.length;i++)t.indexOf(s[i])<0&&Object.prototype.propertyIsEnumerable.call(e,s[i])&&(n[s[i]]=e[s[i]]);}return n}(e,["fallback"]);const i=new Map,o=new Map;function c(e,i,o){return (c,l)=>(e.set(l.key,{rect:c.getBoundingClientRect()}),()=>{if(i.has(l.key)){const{rect:e}=i.get(l.key);return i.delete(l.key),function(e,t,i){const{delay:o=0,duration:c=(e=>30*Math.sqrt(e)),easing:l=Ie}=n(n({},s),i),r=t.getBoundingClientRect(),u=e.left-r.left,d=e.top-r.top,p=e.width/r.width,f=e.height/r.height,m=Math.sqrt(u*u+d*d),h=getComputedStyle(t),g="none"===h.transform?"":h.transform,v=+h.opacity;return {delay:o,duration:a(c)?c(m):c,easing:l,css:(e,t)=>`\n\t\t\t\topacity: ${e*v};\n\t\t\t\ttransform-origin: top left;\n\t\t\t\ttransform: ${g} translate(${t*u}px,${t*d}px) scale(${e+(1-e)*p}, ${e+(1-e)*f});\n\t\t\t`}}(e,c,l)}return e.delete(l.key),t&&t(c,l,o)})}return [c(o,i,!1),c(i,o,!0)]},draw:function(e,{delay:t=0,speed:n,duration:s,easing:i=Ee}){const o=e.getTotalLength();return void 0===s?s=void 0===n?800:o/n:"function"==typeof s&&(s=s(o)),{delay:t,duration:s,easing:i,css:(e,t)=>`stroke-dasharray: ${e*o} ${t*o}`}},fade:je,fly:Le,scale:function(e,{delay:t=0,duration:n=400,easing:s=Ie,start:i=0,opacity:o=0}){const a=getComputedStyle(e),c=+a.opacity,l="none"===a.transform?"":a.transform,r=1-i,u=c*(1-o);return {delay:t,duration:n,easing:s,css:(e,t)=>`\n\t\t\ttransform: ${l} scale(${1-r*t});\n\t\t\topacity: ${c-u*t}\n\t\t`}},slide:function(e,{delay:t=0,duration:n=400,easing:s=Ie}){const i=getComputedStyle(e),o=+i.opacity,a=parseFloat(i.height),c=parseFloat(i.paddingTop),l=parseFloat(i.paddingBottom),r=parseFloat(i.marginTop),u=parseFloat(i.marginBottom),d=parseFloat(i.borderTopWidth),p=parseFloat(i.borderBottomWidth);return {delay:t,duration:n,easing:s,css:e=>"overflow: hidden;"+`opacity: ${Math.min(20*e,1)*o};`+`height: ${e*a}px;`+`padding-top: ${e*c}px;`+`padding-bottom: ${e*l}px;`+`margin-top: ${e*r}px;`+`margin-bottom: ${e*u}px;`+`border-top-width: ${e*d}px;`+`border-bottom-width: ${e*p}px;`}}});function Ot(t){var n,s;return {c(){n=T("div"),this.h();},l(e){L(n=B(e,"DIV",{class:!0},!1)).forEach(z),this.h();},h(){I(n,"class",s="notices "+t.positionClass+" svelte-750nm");},m(e,s){k(e,n,s),t.div_binding(n);},p(e,t){e.positionClass&&s!==(s="notices "+t.positionClass+" svelte-750nm")&&I(n,"class",s);},i:e,o:e,d(e){e&&z(n),t.div_binding(null);}}}const At={};function Vt(e,t,n){let s,i,{position:o="top"}=t;return e.$set=(e=>{"position"in e&&n("position",o=e.position);}),e.$$.update=((e={position:1})=>{e.position&&n("positionClass",i="top"===o?"is-top":"is-bottom");}),{position:o,container:s,positionClass:i,insert:function(e){s.insertAdjacentElement("afterbegin",e);},div_binding:function(e){Z[e?"unshift":"push"](()=>{n("container",s=e);});}}}class Dt extends Te{constructor(e){var t;super(),document.getElementById("svelte-750nm-style")||((t=T("style")).id="svelte-750nm-style",t.textContent=".notices.svelte-750nm{position:fixed;top:0;left:0;right:0;bottom:0;overflow:hidden;padding:3em;z-index:1000;pointer-events:none;display:-webkit-box;display:-ms-flexbox;display:flex}.notices.is-top.svelte-750nm{-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column}.notices.is-bottom.svelte-750nm{-webkit-box-orient:vertical;-webkit-box-direction:reverse;-ms-flex-direction:column-reverse;flex-direction:column-reverse}.notices.svelte-750nm [class*='has-background-'] .text{color:transparent !important;-webkit-filter:invert(1) brightness(2.5) grayscale(1) contrast(9);filter:invert(1) brightness(2.5) grayscale(1) contrast(9);background:inherit;background-clip:text !important;-webkit-background-clip:text !important}",w(document.head,t)),ze(this,e,Vt,Ot,c,["position","insert"]);}get insert(){return this.$$.ctx.insert}}const{document:Mt}=ye;function Nt(n){var s,i,c,l,r,f,m;const g=n.$$slots.default,v=u(g,n,null);return {c(){s=T("div"),v&&v.c(),this.h();},l(e){var t=L(s=B(e,"DIV",{class:!0,"aria-hidden":!0},!1));v&&v.l(t),t.forEach(z),this.h();},h(){I(s,"class",i="notice "+n.position+" svelte-102rt1s"),I(s,"aria-hidden",c=!n.active),m=E(s,"outroend",n.remove);},m(e,t){k(e,s,t),v&&v.m(s,null),n.div_binding(s),f=!0;},p(e,t){v&&v.p&&e.$$scope&&v.p(p(g,t,e,null),d(g,t,null)),f&&!e.position||i===(i="notice "+t.position+" svelte-102rt1s")||I(s,"class",i),f&&!e.active||c===(c=!t.active)||I(s,"aria-hidden",c);},i(i){f||(ge(v,i),ce(()=>{r&&r.end(1),l||(l=function(n,s,i){let o,c,l=s(n,i),r=!1,u=0;function d(){o&&U(n,o);}function p(){const{delay:s=0,duration:i=300,easing:a=t,tick:p=e,css:f}=l||$e;f&&(o=q(n,0,1,i,s,a,f,u++)),p(0,1);const m=h()+s,g=m+i;c&&c.abort(),r=!0,ce(()=>de(n,!0,"start")),c=x(e=>{if(r){if(e>=g)return p(1,0),de(n,!0,"end"),d(),r=!1;if(e>=m){const t=a((e-m)/i);p(t,1-t);}}return r});}let f=!1;return {start(){f||(U(n),a(l)?(l=l(),ue().then(p)):p());},invalidate(){f=!1;},end(){r&&(d(),r=!1);}}}(s,Le,{y:n.transitionY})),l.start();}),f=!0);},o(i){ve(v,i),l&&l.invalidate(),r=function(n,s,i){let c,l=s(n,i),r=!0;const u=fe;function d(){const{delay:s=0,duration:i=300,easing:a=t,tick:d=e,css:p}=l||$e;p&&(c=q(n,1,0,i,s,a,p));const f=h()+s,m=f+i;ce(()=>de(n,!1,"start")),x(e=>{if(r){if(e>=m)return d(0,1),de(n,!1,"end"),--u.r||o(u.c),!1;if(e>=f){const t=a((e-f)/i);d(1-t,t);}}return r});}return u.r+=1,a(l)?ue().then(()=>{l=l(),d();}):d(),{end(e){e&&l.tick&&l.tick(1,0),r&&(c&&U(n,c),r=!1);}}}(s,je,{duration:n.transitionOut?400:0}),f=!1;},d(e){e&&z(s),v&&v.d(e),n.div_binding(null),e&&r&&r.end(),m();}}}function Ft(e){var t,n,s=e.active&&Nt(e);return {c(){s&&s.c(),t=_$1();},l(e){s&&s.l(e),t=_$1();},m(e,i){s&&s.m(e,i),k(e,t,i),n=!0;},p(e,n){n.active?s?(s.p(e,n),ge(s,1)):((s=Nt(n)).c(),ge(s,1),s.m(t.parentNode,t)):s&&(me(),ve(s,1,1,()=>{s=null;}),he());},i(e){n||(ge(s),n=!0);},o(e){ve(s),n=!1;},d(e){s&&s.d(e),e&&z(t);}}}const qt=["active","type","position","duration"];function Ut(e){const t={};return Object.keys(e).forEach(n=>{qt.includes(n)&&(t[n]=e[n]);}),t}function Ht(e,t,n){const s=W();let i,o,a,{active:c=!0,type:l="is-dark",position:r="is-top",duration:u=2e3,transitionOut:d=!0}=t;function p(){n("active",c=!1);}K(async()=>{await async function(){await ae,At.top||(At.top=new Dt({target:document.body,props:{position:"top"}})),At.bottom||(At.bottom=new Dt({target:document.body,props:{position:"bottom"}}));}(),o=At.top,r&&0===r.indexOf("is-bottom")&&(o=At.bottom),o.insert(i),a=setTimeout(()=>{p();},u);});let f,{$$slots:m={},$$scope:h}=t;return e.$set=(e=>{"active"in e&&n("active",c=e.active),"type"in e&&n("type",l=e.type),"position"in e&&n("position",r=e.position),"duration"in e&&n("duration",u=e.duration),"transitionOut"in e&&n("transitionOut",d=e.transitionOut),"$$scope"in e&&n("$$scope",h=e.$$scope);}),e.$$.update=((e={position:1})=>{e.position&&n("transitionY",f=~r.indexOf("is-top")?-200:200);}),{active:c,type:l,position:r,duration:u,transitionOut:d,el:i,close:p,remove:function(){clearTimeout(a),n("active",c=!1),s("destroyed");},transitionY:f,div_binding:function(e){Z[e?"unshift":"push"](()=>{n("el",i=e);});},$$slots:m,$$scope:h}}class Yt extends Te{constructor(e){var t;super(),Mt.getElementById("svelte-102rt1s-style")||((t=T("style")).id="svelte-102rt1s-style",t.textContent=".notice.svelte-102rt1s{display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;pointer-events:auto}.notice.is-top.svelte-102rt1s,.notice.is-bottom.svelte-102rt1s{-ms-flex-item-align:center;align-self:center}.notice.is-top-left.svelte-102rt1s,.notice.is-bottom-left.svelte-102rt1s{-ms-flex-item-align:start;align-self:flex-start}.notice.is-top-right.svelte-102rt1s,.notice.is-bottom-right.svelte-102rt1s{-ms-flex-item-align:end;align-self:flex-end}",w(Mt.head,t)),ze(this,e,Ht,Ft,c,["active","type","position","duration","transitionOut","close"]);}get close(){return this.$$.ctx.close}}function pn(e){var t,n,s,i,o;return {c(){t=T("div"),n=T("button"),s=C(e.actionText),this.h();},l(i){var o=L(t=B(i,"DIV",{class:!0},!1)),a=L(n=B(o,"BUTTON",{class:!0},!1));s=S(a,e.actionText),a.forEach(z),o.forEach(z),this.h();},h(){I(n,"class",i="button "+e.newType+" svelte-1jmu8to"),I(t,"class","action svelte-1jmu8to"),o=E(t,"click",e.action);},m(e,i){k(e,t,i),w(t,n),w(n,s);},p(e,t){e.actionText&&R(s,t.actionText),e.newType&&i!==(i="button "+t.newType+" svelte-1jmu8to")&&I(n,"class",i);},d(e){e&&z(t),o();}}}function fn(e){var t,n,s,i,o=e.actionText&&pn(e);return {c(){t=T("div"),n=T("div"),s=P(),o&&o.c(),this.h();},l(e){var i=L(t=B(e,"DIV",{class:!0,role:!0},!1));L(n=B(i,"DIV",{class:!0},!1)).forEach(z),s=S(i,"\n\n    "),o&&o.l(i),i.forEach(z),this.h();},h(){I(n,"class","text svelte-1jmu8to"),I(t,"class",i="snackbar "+e.background+" svelte-1jmu8to"),I(t,"role","alert"),A(t,"has-background-dark",!e.background);},m(i,a){k(i,t,a),w(t,n),n.innerHTML=e.message,w(t,s),o&&o.m(t,null);},p(e,s){e.message&&(n.innerHTML=s.message),s.actionText?o?o.p(e,s):((o=pn(s)).c(),o.m(t,null)):o&&(o.d(1),o=null),e.background&&i!==(i="snackbar "+s.background+" svelte-1jmu8to")&&I(t,"class",i),(e.background||e.background)&&A(t,"has-background-dark",!s.background);},d(e){e&&z(t),o&&o.d();}}}function mn(e){var t,s=[e.props,{transitionOut:!0}];let i={$$slots:{default:[fn]},$$scope:{ctx:e}};for(var o=0;o<s.length;o+=1)i=n(i,s[o]);var a=new Yt({props:i});return e.notice_1_binding(a),{c(){a.$$.fragment.c();},l(e){a.$$.fragment.l(e);},m(e,n){we(a,e,n),t=!0;},p(e,t){var n=e.props?xe(s,[t.props,s[1]]):{};(e.$$scope||e.background||e.actionText||e.newType||e.message)&&(n.$$scope={changed:e,ctx:t}),a.$set(n);},i(e){t||(ge(a.$$.fragment,e),t=!0);},o(e){ve(a.$$.fragment,e),t=!1;},d(t){e.notice_1_binding(null),ke(a,t);}}}function hn(e,t,s){let i,o,a,{message:c,duration:l=3500,position:r="is-bottom-right",type:u="is-primary",background:d="",actionText:p="OK",onAction:m=(()=>{})}=t;return K(()=>{if("function"!=typeof m)throw new Error(`onAction ${m} is not a function`)}),e.$set=(e=>{s("$$props",t=n(n({},t),e)),"message"in e&&s("message",c=e.message),"duration"in e&&s("duration",l=e.duration),"position"in e&&s("position",r=e.position),"type"in e&&s("type",u=e.type),"background"in e&&s("background",d=e.background),"actionText"in e&&s("actionText",p=e.actionText),"onAction"in e&&s("onAction",m=e.onAction);}),e.$$.update=((e={type:1,$$props:1,position:1,duration:1})=>{e.type&&s("newType",o=u&&u.replace(/^is-(.*)/,"has-text-$1")),s("props",a={...Ut(t),position:r,duration:l});}),{message:c,duration:l,position:r,type:u,background:d,actionText:p,onAction:m,notice:i,action:function(){Promise.resolve(m()).then(()=>i.close());},newType:o,props:a,notice_1_binding:function(e){Z[e?"unshift":"push"](()=>{s("notice",i=e);});},$$props:t=f(t)}}class gn extends Te{constructor(e){var t;super(),document.getElementById("svelte-1jmu8to-style")||((t=T("style")).id="svelte-1jmu8to-style",t.textContent=".snackbar.svelte-1jmu8to{display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-ms-flex-pack:distribute;justify-content:space-around;border-radius:4px;margin:0.5em 0;-webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);box-shadow:0 1px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);pointer-events:auto;min-height:3em}.snackbar.svelte-1jmu8to .text.svelte-1jmu8to{margin:.5em 1em}.snackbar.svelte-1jmu8to .action.svelte-1jmu8to{margin-left:auto;padding:0.5em;padding-left:0}.snackbar.svelte-1jmu8to .action .button.svelte-1jmu8to{font-weight:600;text-transform:uppercase;background:transparent;border:transparent;position:relative}.snackbar.svelte-1jmu8to .action .button.svelte-1jmu8to:hover::after{content:'';position:absolute;top:0;bottom:0;left:0;right:0;background:rgba(0, 0, 0, 0.1)}",w(document.head,t)),ze(this,e,hn,mn,c,["message","duration","position","type","background","actionText","onAction"]);}}gn.create=function(e){"string"==typeof e&&(e={message:e});const t=new gn({target:document.body,props:e,intro:!0});return t.$on("destroyed",t.$destroy),t};function jn(e){var t,n,s;return {c(){t=T("div"),n=T("div"),this.h();},l(e){var s=L(t=B(e,"DIV",{class:!0,role:!0},!1));L(n=B(s,"DIV",{class:!0},!1)).forEach(z),s.forEach(z),this.h();},h(){I(n,"class","text"),I(t,"class",s="toast "+e.type+" "+e.newBackground+" svelte-1uzjgds"),I(t,"role","alert");},m(s,i){k(s,t,i),w(t,n),n.innerHTML=e.message;},p(e,i){e.message&&(n.innerHTML=i.message),(e.type||e.newBackground)&&s!==(s="toast "+i.type+" "+i.newBackground+" svelte-1uzjgds")&&I(t,"class",s);},d(e){e&&z(t);}}}function Ln(e){var t,s=[Ut(e.$$props)];let i={$$slots:{default:[jn]},$$scope:{ctx:e}};for(var o=0;o<s.length;o+=1)i=n(i,s[o]);var a=new Yt({props:i});return {c(){a.$$.fragment.c();},l(e){a.$$.fragment.l(e);},m(e,n){we(a,e,n),t=!0;},p(e,t){var n=e.filterProps||e.$$props?xe(s,[Ut(t.$$props)]):{};(e.$$scope||e.type||e.newBackground||e.message)&&(n.$$scope={changed:e,ctx:t}),a.$set(n);},i(e){t||(ge(a.$$.fragment,e),t=!0);},o(e){ve(a.$$.fragment,e),t=!1;},d(e){ke(a,e);}}}function Bn(e,t,s){let i,{message:o,type:a="is-dark",background:c=""}=t;return e.$set=(e=>{s("$$props",t=n(n({},t),e)),"message"in e&&s("message",o=e.message),"type"in e&&s("type",a=e.type),"background"in e&&s("background",c=e.background);}),e.$$.update=((e={background:1,type:1})=>{(e.background||e.type)&&s("newBackground",i=c||a.replace(/^is-(.*)/,"has-background-$1"));}),{message:o,type:a,background:c,newBackground:i,$$props:t,$$props:t=f(t)}}class Sn extends Te{constructor(e){var t;super(),document.getElementById("svelte-1uzjgds-style")||((t=T("style")).id="svelte-1uzjgds-style",t.textContent=".toast.svelte-1uzjgds{text-align:center;padding:0.75em 1.5em;border-radius:2em;margin:0.5em 0;-webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);box-shadow:0 1px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);pointer-events:auto}",w(document.head,t)),ze(this,e,Bn,Ln,c,["message","type","background"]);}}Sn.create=function(e){"string"==typeof e&&(e={message:e});const t=new Sn({target:document.body,props:e,intro:!0});return t.$on("destroyed",t.$destroy),t};//# sourceMappingURL=module.js.map
 
 /**
  * @license
@@ -13613,6 +13664,7 @@ var strings$d = {
 var numbers$4 = {
     UNSET_INDEX: -1,
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -14070,6 +14122,7 @@ var MDCListFoundation = /** @class */ (function (_super) {
     };
     return MDCListFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -14318,6 +14371,7 @@ var MDCList = /** @class */ (function (_super) {
     };
     return MDCList;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\list\List.svelte generated by Svelte v3.17.3 */
 const file$g = "node_modules\\@smui\\list\\List.svelte";
@@ -16744,6 +16798,7 @@ function getCorrectEventName(windowObj, eventType) {
     }
     return eventType;
 }
+//# sourceMappingURL=util.js.map
 
 /**
  * @license
@@ -16798,6 +16853,7 @@ var strings$e = {
 var numbers$5 = {
     ANIM_END_LATCH_MS: 250,
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -16978,6 +17034,7 @@ var MDCCheckboxFoundation = /** @class */ (function (_super) {
     };
     return MDCCheckboxFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -17152,6 +17209,7 @@ var MDCCheckbox = /** @class */ (function (_super) {
 function validDescriptor(inputPropDesc) {
     return !!inputPropDesc && typeof inputPropDesc.set === 'function';
 }
+//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\checkbox\Checkbox.svelte generated by Svelte v3.17.3 */
 const file$m = "node_modules\\@smui\\checkbox\\Checkbox.svelte";
@@ -17755,6 +17813,7 @@ var cssClasses$e = {
 var strings$f = {
     LABEL_SELECTOR: '.mdc-form-field > label',
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -17824,6 +17883,7 @@ var MDCFormFieldFoundation = /** @class */ (function (_super) {
     };
     return MDCFormFieldFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -17903,6 +17963,7 @@ var MDCFormField = /** @class */ (function (_super) {
     };
     return MDCFormField;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\form-field\FormField.svelte generated by Svelte v3.17.3 */
 const file$n = "node_modules\\@smui\\form-field\\FormField.svelte";
@@ -18224,6 +18285,7 @@ var strings$g = {
     /** A CSS selector used to locate the ripple surface element for the switch. */
     RIPPLE_SURFACE_SELECTOR: '.mdc-switch__thumb-underlay',
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -18312,6 +18374,7 @@ var MDCSwitchFoundation = /** @class */ (function (_super) {
     };
     return MDCSwitchFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -18430,6 +18493,7 @@ var MDCSwitch = /** @class */ (function (_super) {
     });
     return MDCSwitch;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\switch\Switch.svelte generated by Svelte v3.17.3 */
 const file$o = "node_modules\\@smui\\switch\\Switch.svelte";
@@ -18985,22 +19049,23 @@ function create_fragment$q(ctx) {
 			button = element("button");
 			button.textContent = "Cancel";
 			attr_dev(div0, "class", "modal-background");
-			add_location(div0, file$p, 33, 2, 800);
+			add_location(div0, file$p, 34, 2, 828);
 			attr_dev(p, "class", "modal-card-title");
-			add_location(p, file$p, 36, 6, 910);
+			add_location(p, file$p, 37, 6, 938);
 			attr_dev(header, "class", "modal-card-head");
-			add_location(header, file$p, 35, 4, 870);
-			attr_dev(section, "class", "modal-card-body svelte-3urzn0");
-			add_location(section, file$p, 39, 4, 978);
+			add_location(header, file$p, 36, 4, 898);
+			attr_dev(section, "class", "modal-card-body svelte-1hsc17");
+			add_location(section, file$p, 40, 4, 1006);
 			attr_dev(button, "class", "button is-link");
-			add_location(button, file$p, 42, 6, 1086);
+			set_style(button, "margin-left", "auto");
+			add_location(button, file$p, 43, 6, 1114);
 			attr_dev(footer, "class", "modal-card-foot");
-			add_location(footer, file$p, 41, 4, 1046);
-			attr_dev(div1, "class", "modal-card");
-			add_location(div1, file$p, 34, 2, 840);
+			add_location(footer, file$p, 42, 4, 1074);
+			attr_dev(div1, "class", "modal-card svelte-1hsc17");
+			add_location(div1, file$p, 35, 2, 868);
 			attr_dev(div2, "class", "modal");
 			toggle_class(div2, "is-active", /*active*/ ctx[0]);
-			add_location(div2, file$p, 31, 0, 750);
+			add_location(div2, file$p, 32, 0, 778);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -21349,6 +21414,7 @@ var strings$h = {
     BUFFER_SELECTOR: '.mdc-linear-progress__buffer',
     PRIMARY_BAR_SELECTOR: '.mdc-linear-progress__primary-bar',
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -21457,6 +21523,7 @@ var MDCLinearProgressFoundation = /** @class */ (function (_super) {
     };
     return MDCLinearProgressFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -21538,6 +21605,7 @@ var MDCLinearProgress = /** @class */ (function (_super) {
     };
     return MDCLinearProgress;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 function is_date(obj) {
     return Object.prototype.toString.call(obj) === '[object Date]';
@@ -23123,6 +23191,7 @@ function areTopsMisaligned(els) {
     [].forEach.call(els, function (el) { return tops.add(el.offsetTop); });
     return tops.size > 1;
 }
+//# sourceMappingURL=util.js.map
 
 /**
  * @license
@@ -23178,6 +23247,7 @@ var numbers$6 = {
     DIALOG_ANIMATION_CLOSE_TIME_MS: 75,
     DIALOG_ANIMATION_OPEN_TIME_MS: 150,
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -23431,6 +23501,7 @@ var MDCDialogFoundation = /** @class */ (function (_super) {
     };
     return MDCDialogFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -23608,6 +23679,7 @@ var MDCDialog = /** @class */ (function (_super) {
     };
     return MDCDialog;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\dialog\Dialog.svelte generated by Svelte v3.17.3 */
 const file$w = "node_modules\\@smui\\dialog\\Dialog.svelte";
@@ -25864,6 +25936,7 @@ var events = {
     SELECTED_ALL: 'MDCDataTable:selectedAll',
     UNSELECTED_ALL: 'MDCDataTable:unselectedAll',
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -26049,6 +26122,7 @@ var MDCDataTableFoundation = /** @class */ (function (_super) {
     };
     return MDCDataTableFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -26196,6 +26270,7 @@ var MDCDataTable = /** @class */ (function (_super) {
     };
     return MDCDataTable;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\data-table\DataTable.svelte generated by Svelte v3.17.3 */
 
@@ -28041,6 +28116,7 @@ var Corner;
     Corner[Corner["BOTTOM_START"] = 9] = "BOTTOM_START";
     Corner[Corner["BOTTOM_END"] = 13] = "BOTTOM_END";
 })(Corner || (Corner = {}));
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -28484,6 +28560,7 @@ var MDCMenuSurfaceFoundation = /** @class */ (function (_super) {
     };
     return MDCMenuSurfaceFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -28519,6 +28596,7 @@ function getTransformPropertyName(globalObj, forceRefresh) {
     }
     return cachedCssTransformPropertyName_;
 }
+//# sourceMappingURL=util.js.map
 
 /**
  * @license
@@ -28685,6 +28763,7 @@ var MDCMenuSurface = /** @class */ (function (_super) {
     };
     return MDCMenuSurface;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -28730,6 +28809,7 @@ var DefaultFocusState;
     DefaultFocusState[DefaultFocusState["FIRST_ITEM"] = 2] = "FIRST_ITEM";
     DefaultFocusState[DefaultFocusState["LAST_ITEM"] = 3] = "LAST_ITEM";
 })(DefaultFocusState || (DefaultFocusState = {}));
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -28904,6 +28984,7 @@ var MDCMenuFoundation = /** @class */ (function (_super) {
     };
     return MDCMenuFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -29122,6 +29203,7 @@ var MDCMenu = /** @class */ (function (_super) {
     };
     return MDCMenu;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -29174,6 +29256,7 @@ var strings$n = {
 var numbers$9 = {
     LABEL_SCALE: 0.75,
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -29424,6 +29507,7 @@ var MDCSelectFoundation = /** @class */ (function (_super) {
     };
     return MDCSelectFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -29455,6 +29539,7 @@ var cssClasses$m = {
     HELPER_TEXT_PERSISTENT: 'mdc-select-helper-text--persistent',
     HELPER_TEXT_VALIDATION_MSG: 'mdc-select-helper-text--validation-msg',
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -29575,6 +29660,7 @@ var MDCSelectHelperTextFoundation = /** @class */ (function (_super) {
     };
     return MDCSelectHelperTextFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -29633,6 +29719,7 @@ var MDCSelectHelperText = /** @class */ (function (_super) {
     };
     return MDCSelectHelperText;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -29660,6 +29747,7 @@ var strings$p = {
     ICON_EVENT: 'MDCSelect:icon',
     ICON_ROLE: 'button',
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -29759,6 +29847,7 @@ var MDCSelectIconFoundation = /** @class */ (function (_super) {
     };
     return MDCSelectIconFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -29818,6 +29907,7 @@ var MDCSelectIcon = /** @class */ (function (_super) {
     };
     return MDCSelectIcon;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -30351,6 +30441,7 @@ var MDCSelect = /** @class */ (function (_super) {
     };
     return MDCSelect;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\menu-surface\MenuSurface.svelte generated by Svelte v3.17.3 */
 const file$H = "node_modules\\@smui\\menu-surface\\MenuSurface.svelte";
@@ -34297,6 +34388,7 @@ var cssClasses$n = {
     DISABLED: 'mdc-radio--disabled',
     ROOT: 'mdc-radio',
 };
+//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -34362,6 +34454,7 @@ var MDCRadioFoundation = /** @class */ (function (_super) {
     };
     return MDCRadioFoundation;
 }(MDCFoundation));
+//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -34473,6 +34566,7 @@ var MDCRadio = /** @class */ (function (_super) {
     });
     return MDCRadio;
 }(MDCComponent));
+//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\radio\Radio.svelte generated by Svelte v3.17.3 */
 const file$K = "node_modules\\@smui\\radio\\Radio.svelte";
@@ -37206,11 +37300,11 @@ function create_footer_slot_1(ctx) {
 			button = element("button");
 			button.textContent = "Submit";
 			attr_dev(button, "class", "button is-link svelte-ex8alc");
-			add_location(button, file$O, 541, 8, 24998);
+			add_location(button, file$O, 541, 8, 25225);
 			attr_dev(div, "slot", "footer");
 			set_style(div, "margin", "auto");
 			attr_dev(div, "class", "svelte-ex8alc");
-			add_location(div, file$O, 540, 4, 24949);
+			add_location(div, file$O, 540, 4, 25176);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -37252,12 +37346,12 @@ function create_default_slot_25(ctx) {
 
 	let filebrowser_props = { filetype: "" };
 
-	if (/*theoryLocation*/ ctx[10] !== void 0) {
-		filebrowser_props.currentLocation = /*theoryLocation*/ ctx[10];
+	if (/*theoryLocation*/ ctx[9] !== void 0) {
+		filebrowser_props.currentLocation = /*theoryLocation*/ ctx[9];
 	}
 
-	if (/*theoryfilesChecked*/ ctx[7] !== void 0) {
-		filebrowser_props.fileChecked = /*theoryfilesChecked*/ ctx[7];
+	if (/*theoryfilesChecked*/ ctx[6] !== void 0) {
+		filebrowser_props.fileChecked = /*theoryfilesChecked*/ ctx[6];
 	}
 
 	const filebrowser = new FileBrowser({ props: filebrowser_props, $$inline: true });
@@ -37277,15 +37371,15 @@ function create_default_slot_25(ctx) {
 		p: function update(ctx, dirty) {
 			const filebrowser_changes = {};
 
-			if (!updating_currentLocation && dirty[0] & /*theoryLocation*/ 1024) {
+			if (!updating_currentLocation && dirty[0] & /*theoryLocation*/ 512) {
 				updating_currentLocation = true;
-				filebrowser_changes.currentLocation = /*theoryLocation*/ ctx[10];
+				filebrowser_changes.currentLocation = /*theoryLocation*/ ctx[9];
 				add_flush_callback(() => updating_currentLocation = false);
 			}
 
-			if (!updating_fileChecked && dirty[0] & /*theoryfilesChecked*/ 128) {
+			if (!updating_fileChecked && dirty[0] & /*theoryfilesChecked*/ 64) {
 				updating_fileChecked = true;
-				filebrowser_changes.fileChecked = /*theoryfilesChecked*/ ctx[7];
+				filebrowser_changes.fileChecked = /*theoryfilesChecked*/ ctx[6];
 				add_flush_callback(() => updating_fileChecked = false);
 			}
 
@@ -37329,11 +37423,11 @@ function create_footer_slot(ctx) {
 			button = element("button");
 			button.textContent = "Submit";
 			attr_dev(button, "class", "button is-link svelte-ex8alc");
-			add_location(button, file$O, 551, 8, 25380);
+			add_location(button, file$O, 551, 8, 25607);
 			attr_dev(div, "slot", "footer");
 			set_style(div, "margin", "auto");
 			attr_dev(div, "class", "svelte-ex8alc");
-			add_location(div, file$O, 550, 4, 25331);
+			add_location(div, file$O, 550, 4, 25558);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -37375,12 +37469,12 @@ function create_default_slot_24(ctx) {
 
 	let filebrowser_props = { filetype: "ofelix" };
 
-	if (/*OPOLocation*/ ctx[38] !== void 0) {
-		filebrowser_props.currentLocation = /*OPOLocation*/ ctx[38];
+	if (/*OPOLocation*/ ctx[37] !== void 0) {
+		filebrowser_props.currentLocation = /*OPOLocation*/ ctx[37];
 	}
 
-	if (/*OPOfilesChecked*/ ctx[39] !== void 0) {
-		filebrowser_props.fileChecked = /*OPOfilesChecked*/ ctx[39];
+	if (/*OPOfilesChecked*/ ctx[38] !== void 0) {
+		filebrowser_props.fileChecked = /*OPOfilesChecked*/ ctx[38];
 	}
 
 	const filebrowser = new FileBrowser({ props: filebrowser_props, $$inline: true });
@@ -37400,15 +37494,15 @@ function create_default_slot_24(ctx) {
 		p: function update(ctx, dirty) {
 			const filebrowser_changes = {};
 
-			if (!updating_currentLocation && dirty[1] & /*OPOLocation*/ 128) {
+			if (!updating_currentLocation && dirty[1] & /*OPOLocation*/ 64) {
 				updating_currentLocation = true;
-				filebrowser_changes.currentLocation = /*OPOLocation*/ ctx[38];
+				filebrowser_changes.currentLocation = /*OPOLocation*/ ctx[37];
 				add_flush_callback(() => updating_currentLocation = false);
 			}
 
-			if (!updating_fileChecked && dirty[1] & /*OPOfilesChecked*/ 256) {
+			if (!updating_fileChecked && dirty[1] & /*OPOfilesChecked*/ 128) {
 				updating_fileChecked = true;
-				filebrowser_changes.fileChecked = /*OPOfilesChecked*/ ctx[39];
+				filebrowser_changes.fileChecked = /*OPOfilesChecked*/ ctx[38];
 				add_flush_callback(() => updating_fileChecked = false);
 			}
 
@@ -37501,8 +37595,8 @@ function create_buttonContainer_slot(ctx) {
 
 	let customcheckbox_props = { label: "Only Final spectrum" };
 
-	if (/*onlyFinalSpectrum*/ ctx[23] !== void 0) {
-		customcheckbox_props.selected = /*onlyFinalSpectrum*/ ctx[23];
+	if (/*onlyFinalSpectrum*/ ctx[22] !== void 0) {
+		customcheckbox_props.selected = /*onlyFinalSpectrum*/ ctx[22];
 	}
 
 	const customcheckbox = new CustomCheckbox({
@@ -37518,8 +37612,8 @@ function create_buttonContainer_slot(ctx) {
 
 	let customiconswitch0_props = { icons: ["settings_ethernet", "code"] };
 
-	if (/*openShell*/ ctx[11] !== void 0) {
-		customiconswitch0_props.toggler = /*openShell*/ ctx[11];
+	if (/*openShell*/ ctx[10] !== void 0) {
+		customiconswitch0_props.toggler = /*openShell*/ ctx[10];
 	}
 
 	const customiconswitch0 = new CustomIconSwitch({
@@ -37537,8 +37631,8 @@ function create_buttonContainer_slot(ctx) {
 		icons: ["keyboard_arrow_up", "keyboard_arrow_down"]
 	};
 
-	if (/*opoPlotted*/ ctx[22] !== void 0) {
-		customiconswitch1_props.toggler = /*opoPlotted*/ ctx[22];
+	if (/*opoPlotted*/ ctx[21] !== void 0) {
+		customiconswitch1_props.toggler = /*opoPlotted*/ ctx[21];
 	}
 
 	const customiconswitch1 = new CustomIconSwitch({
@@ -37559,8 +37653,8 @@ function create_buttonContainer_slot(ctx) {
 		label: "Sigma"
 	};
 
-	if (/*sigma*/ ctx[5] !== void 0) {
-		textfield1_props.value = /*sigma*/ ctx[5];
+	if (/*sigma*/ ctx[4] !== void 0) {
+		textfield1_props.value = /*sigma*/ ctx[4];
 	}
 
 	const textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
@@ -37578,8 +37672,8 @@ function create_buttonContainer_slot(ctx) {
 		label: "Scale"
 	};
 
-	if (/*scale*/ ctx[6] !== void 0) {
-		textfield2_props.value = /*scale*/ ctx[6];
+	if (/*scale*/ ctx[5] !== void 0) {
+		textfield2_props.value = /*scale*/ ctx[5];
 	}
 
 	const textfield2 = new Textfield({ props: textfield2_props, $$inline: true });
@@ -37594,8 +37688,8 @@ function create_buttonContainer_slot(ctx) {
 		options: ["Log", "Relative", "IntensityPerPhoton"]
 	};
 
-	if (/*normMethod*/ ctx[12] !== void 0) {
-		customradio_props.selected = /*normMethod*/ ctx[12];
+	if (/*normMethod*/ ctx[11] !== void 0) {
+		customradio_props.selected = /*normMethod*/ ctx[11];
 	}
 
 	const customradio = new CustomRadio({ props: customradio_props, $$inline: true });
@@ -37642,30 +37736,30 @@ function create_buttonContainer_slot(ctx) {
 			div3 = element("div");
 			create_component(customradio.$$.fragment);
 			attr_dev(button0, "class", "button is-link svelte-ex8alc");
-			add_location(button0, file$O, 563, 12, 25684);
+			add_location(button0, file$O, 563, 12, 25911);
 			attr_dev(button1, "class", "button is-link svelte-ex8alc");
-			add_location(button1, file$O, 565, 12, 25907);
+			add_location(button1, file$O, 565, 12, 26134);
 			attr_dev(button2, "class", "button is-link svelte-ex8alc");
-			add_location(button2, file$O, 568, 12, 26135);
+			add_location(button2, file$O, 568, 12, 26362);
 			attr_dev(button3, "class", "button is-link svelte-ex8alc");
 			attr_dev(button3, "tabindex", "0");
-			add_location(button3, file$O, 572, 12, 26557);
+			add_location(button3, file$O, 572, 12, 26784);
 			attr_dev(button4, "class", "button is-link svelte-ex8alc");
-			add_location(button4, file$O, 573, 12, 26714);
+			add_location(button4, file$O, 573, 12, 26941);
 			attr_dev(div1, "class", "align svelte-ex8alc");
-			add_location(div1, file$O, 561, 8, 25648);
+			add_location(div1, file$O, 561, 8, 25875);
 			attr_dev(button5, "class", "button is-link svelte-ex8alc");
-			add_location(button5, file$O, 578, 12, 27061);
+			add_location(button5, file$O, 578, 12, 27288);
 			attr_dev(button6, "class", "button is-link svelte-ex8alc");
-			add_location(button6, file$O, 581, 12, 27548);
+			add_location(button6, file$O, 581, 12, 27775);
 			attr_dev(div2, "class", "align animated fadeIn hide svelte-ex8alc");
 			toggle_class(div2, "active", /*toggleRow*/ ctx[2]);
-			add_location(div2, file$O, 577, 8, 26982);
+			add_location(div2, file$O, 577, 8, 27209);
 			attr_dev(div3, "class", "align svelte-ex8alc");
-			add_location(div3, file$O, 585, 8, 27809);
+			add_location(div3, file$O, 585, 8, 28036);
 			attr_dev(div0, "class", "buttonSlot svelte-ex8alc");
 			attr_dev(div0, "slot", "buttonContainer");
-			add_location(div0, file$O, 558, 4, 25583);
+			add_location(div0, file$O, 558, 4, 25810);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -37725,45 +37819,45 @@ function create_buttonContainer_slot(ctx) {
 			textfield0.$set(textfield0_changes);
 			const customcheckbox_changes = {};
 
-			if (!updating_selected && dirty[0] & /*onlyFinalSpectrum*/ 8388608) {
+			if (!updating_selected && dirty[0] & /*onlyFinalSpectrum*/ 4194304) {
 				updating_selected = true;
-				customcheckbox_changes.selected = /*onlyFinalSpectrum*/ ctx[23];
+				customcheckbox_changes.selected = /*onlyFinalSpectrum*/ ctx[22];
 				add_flush_callback(() => updating_selected = false);
 			}
 
 			customcheckbox.$set(customcheckbox_changes);
 			const customiconswitch0_changes = {};
 
-			if (!updating_toggler && dirty[0] & /*openShell*/ 2048) {
+			if (!updating_toggler && dirty[0] & /*openShell*/ 1024) {
 				updating_toggler = true;
-				customiconswitch0_changes.toggler = /*openShell*/ ctx[11];
+				customiconswitch0_changes.toggler = /*openShell*/ ctx[10];
 				add_flush_callback(() => updating_toggler = false);
 			}
 
 			customiconswitch0.$set(customiconswitch0_changes);
 			const customiconswitch1_changes = {};
 
-			if (!updating_toggler_1 && dirty[0] & /*opoPlotted*/ 4194304) {
+			if (!updating_toggler_1 && dirty[0] & /*opoPlotted*/ 2097152) {
 				updating_toggler_1 = true;
-				customiconswitch1_changes.toggler = /*opoPlotted*/ ctx[22];
+				customiconswitch1_changes.toggler = /*opoPlotted*/ ctx[21];
 				add_flush_callback(() => updating_toggler_1 = false);
 			}
 
 			customiconswitch1.$set(customiconswitch1_changes);
 			const textfield1_changes = {};
 
-			if (!updating_value_1 && dirty[0] & /*sigma*/ 32) {
+			if (!updating_value_1 && dirty[0] & /*sigma*/ 16) {
 				updating_value_1 = true;
-				textfield1_changes.value = /*sigma*/ ctx[5];
+				textfield1_changes.value = /*sigma*/ ctx[4];
 				add_flush_callback(() => updating_value_1 = false);
 			}
 
 			textfield1.$set(textfield1_changes);
 			const textfield2_changes = {};
 
-			if (!updating_value_2 && dirty[0] & /*scale*/ 64) {
+			if (!updating_value_2 && dirty[0] & /*scale*/ 32) {
 				updating_value_2 = true;
-				textfield2_changes.value = /*scale*/ ctx[6];
+				textfield2_changes.value = /*scale*/ ctx[5];
 				add_flush_callback(() => updating_value_2 = false);
 			}
 
@@ -37775,9 +37869,9 @@ function create_buttonContainer_slot(ctx) {
 
 			const customradio_changes = {};
 
-			if (!updating_selected_1 && dirty[0] & /*normMethod*/ 4096) {
+			if (!updating_selected_1 && dirty[0] & /*normMethod*/ 2048) {
 				updating_selected_1 = true;
-				customradio_changes.selected = /*normMethod*/ ctx[12];
+				customradio_changes.selected = /*normMethod*/ ctx[11];
 				add_flush_callback(() => updating_selected_1 = false);
 			}
 
@@ -38065,7 +38159,7 @@ function create_else_block$9(ctx) {
 	let each_1_lookup = new Map();
 	let each_1_anchor;
 	let current;
-	let each_value_2 = /*dataTable*/ ctx[17];
+	let each_value_2 = /*dataTable*/ ctx[16];
 	const get_key = ctx => /*table*/ ctx[119].id;
 	validate_each_keys(ctx, each_value_2, get_each_context_2$1, get_key);
 
@@ -38092,7 +38186,7 @@ function create_else_block$9(ctx) {
 			current = true;
 		},
 		p: function update(ctx, dirty) {
-			const each_value_2 = /*dataTable*/ ctx[17];
+			const each_value_2 = /*dataTable*/ ctx[16];
 			group_outros();
 			validate_each_keys(ctx, each_value_2, get_each_context_2$1, get_key);
 			each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value_2, each_1_lookup, each_1_anchor.parentNode, outro_and_destroy_block, create_each_block_2$1, each_1_anchor, get_each_context_2$1);
@@ -38140,7 +38234,7 @@ function create_if_block_1$5(ctx) {
 	let each_1_lookup = new Map();
 	let each_1_anchor;
 	let current;
-	let each_value_1 = /*dataTable_avg*/ ctx[18];
+	let each_value_1 = /*dataTable_avg*/ ctx[17];
 	const get_key = ctx => /*table*/ ctx[119].id;
 	validate_each_keys(ctx, each_value_1, get_each_context_1$2, get_key);
 
@@ -38167,7 +38261,7 @@ function create_if_block_1$5(ctx) {
 			current = true;
 		},
 		p: function update(ctx, dirty) {
-			const each_value_1 = /*dataTable_avg*/ ctx[18];
+			const each_value_1 = /*dataTable_avg*/ ctx[17];
 			group_outros();
 			validate_each_keys(ctx, each_value_1, get_each_context_1$2, get_key);
 			each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value_1, each_1_lookup, each_1_anchor.parentNode, outro_and_destroy_block, create_each_block_1$2, each_1_anchor, get_each_context_1$2);
@@ -38215,7 +38309,7 @@ function create_if_block$f(ctx) {
 	let each_1_lookup = new Map();
 	let each_1_anchor;
 	let current;
-	let each_value = /*dataTable_weighted_avg*/ ctx[42];
+	let each_value = /*dataTable_weighted_avg*/ ctx[41];
 	const get_key = ctx => /*table*/ ctx[119].id;
 	validate_each_keys(ctx, each_value, get_each_context$5, get_key);
 
@@ -38242,7 +38336,7 @@ function create_if_block$f(ctx) {
 			current = true;
 		},
 		p: function update(ctx, dirty) {
-			const each_value = /*dataTable_weighted_avg*/ ctx[42];
+			const each_value = /*dataTable_weighted_avg*/ ctx[41];
 			group_outros();
 			validate_each_keys(ctx, each_value, get_each_context$5, get_key);
 			each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value, each_1_lookup, each_1_anchor.parentNode, outro_and_destroy_block, create_each_block$5, each_1_anchor, get_each_context$5);
@@ -38297,7 +38391,7 @@ function create_default_slot_20(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*dataTable*/ 131072 && t_value !== (t_value = /*table*/ ctx[119].name + "")) set_data_dev(t, t_value);
+			if (dirty[0] & /*dataTable*/ 65536 && t_value !== (t_value = /*table*/ ctx[119].name + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -38328,7 +38422,7 @@ function create_default_slot_19(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*dataTable*/ 131072 && t_value !== (t_value = /*table*/ ctx[119].freq + "")) set_data_dev(t, t_value);
+			if (dirty[0] & /*dataTable*/ 65536 && t_value !== (t_value = /*table*/ ctx[119].freq + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -38359,7 +38453,7 @@ function create_default_slot_18(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*dataTable*/ 131072 && t_value !== (t_value = /*table*/ ctx[119].amp + "")) set_data_dev(t, t_value);
+			if (dirty[0] & /*dataTable*/ 65536 && t_value !== (t_value = /*table*/ ctx[119].amp + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -38390,7 +38484,7 @@ function create_default_slot_17(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*dataTable*/ 131072 && t_value !== (t_value = /*table*/ ctx[119].fwhm + "")) set_data_dev(t, t_value);
+			if (dirty[0] & /*dataTable*/ 65536 && t_value !== (t_value = /*table*/ ctx[119].fwhm + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -38421,7 +38515,7 @@ function create_default_slot_16(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*dataTable*/ 131072 && t_value !== (t_value = /*table*/ ctx[119].sig + "")) set_data_dev(t, t_value);
+			if (dirty[0] & /*dataTable*/ 65536 && t_value !== (t_value = /*table*/ ctx[119].sig + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -38517,35 +38611,35 @@ function create_default_slot_15(ctx) {
 		p: function update(ctx, dirty) {
 			const cell0_changes = {};
 
-			if (dirty[0] & /*dataTable*/ 131072 | dirty[4] & /*$$scope*/ 16) {
+			if (dirty[0] & /*dataTable*/ 65536 | dirty[4] & /*$$scope*/ 16) {
 				cell0_changes.$$scope = { dirty, ctx };
 			}
 
 			cell0.$set(cell0_changes);
 			const cell1_changes = {};
 
-			if (dirty[0] & /*dataTable*/ 131072 | dirty[4] & /*$$scope*/ 16) {
+			if (dirty[0] & /*dataTable*/ 65536 | dirty[4] & /*$$scope*/ 16) {
 				cell1_changes.$$scope = { dirty, ctx };
 			}
 
 			cell1.$set(cell1_changes);
 			const cell2_changes = {};
 
-			if (dirty[0] & /*dataTable*/ 131072 | dirty[4] & /*$$scope*/ 16) {
+			if (dirty[0] & /*dataTable*/ 65536 | dirty[4] & /*$$scope*/ 16) {
 				cell2_changes.$$scope = { dirty, ctx };
 			}
 
 			cell2.$set(cell2_changes);
 			const cell3_changes = {};
 
-			if (dirty[0] & /*dataTable*/ 131072 | dirty[4] & /*$$scope*/ 16) {
+			if (dirty[0] & /*dataTable*/ 65536 | dirty[4] & /*$$scope*/ 16) {
 				cell3_changes.$$scope = { dirty, ctx };
 			}
 
 			cell3.$set(cell3_changes);
 			const cell4_changes = {};
 
-			if (dirty[0] & /*dataTable*/ 131072 | dirty[4] & /*$$scope*/ 16) {
+			if (dirty[0] & /*dataTable*/ 65536 | dirty[4] & /*$$scope*/ 16) {
 				cell4_changes.$$scope = { dirty, ctx };
 			}
 
@@ -38622,9 +38716,9 @@ function create_each_block_2$1(key_1, ctx) {
 		},
 		p: function update(ctx, dirty) {
 			const row_changes = {};
-			if (dirty[0] & /*dataTable*/ 131072) row_changes.style = "background-color: " + /*table*/ ctx[119].color + ";";
+			if (dirty[0] & /*dataTable*/ 65536) row_changes.style = "background-color: " + /*table*/ ctx[119].color + ";";
 
-			if (dirty[0] & /*dataTable*/ 131072 | dirty[4] & /*$$scope*/ 16) {
+			if (dirty[0] & /*dataTable*/ 65536 | dirty[4] & /*$$scope*/ 16) {
 				row_changes.$$scope = { dirty, ctx };
 			}
 
@@ -38669,7 +38763,7 @@ function create_default_slot_14(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*dataTable_avg*/ 262144 && t_value !== (t_value = /*table*/ ctx[119].name + "")) set_data_dev(t, t_value);
+			if (dirty[0] & /*dataTable_avg*/ 131072 && t_value !== (t_value = /*table*/ ctx[119].name + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -38700,7 +38794,7 @@ function create_default_slot_13(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*dataTable_avg*/ 262144 && t_value !== (t_value = /*table*/ ctx[119].freq + "")) set_data_dev(t, t_value);
+			if (dirty[0] & /*dataTable_avg*/ 131072 && t_value !== (t_value = /*table*/ ctx[119].freq + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -38731,7 +38825,7 @@ function create_default_slot_12(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*dataTable_avg*/ 262144 && t_value !== (t_value = /*table*/ ctx[119].amp + "")) set_data_dev(t, t_value);
+			if (dirty[0] & /*dataTable_avg*/ 131072 && t_value !== (t_value = /*table*/ ctx[119].amp + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -38762,7 +38856,7 @@ function create_default_slot_11$1(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*dataTable_avg*/ 262144 && t_value !== (t_value = /*table*/ ctx[119].fwhm + "")) set_data_dev(t, t_value);
+			if (dirty[0] & /*dataTable_avg*/ 131072 && t_value !== (t_value = /*table*/ ctx[119].fwhm + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -38793,7 +38887,7 @@ function create_default_slot_10$1(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*dataTable_avg*/ 262144 && t_value !== (t_value = /*table*/ ctx[119].sig + "")) set_data_dev(t, t_value);
+			if (dirty[0] & /*dataTable_avg*/ 131072 && t_value !== (t_value = /*table*/ ctx[119].sig + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -38889,35 +38983,35 @@ function create_default_slot_9$1(ctx) {
 		p: function update(ctx, dirty) {
 			const cell0_changes = {};
 
-			if (dirty[0] & /*dataTable_avg*/ 262144 | dirty[4] & /*$$scope*/ 16) {
+			if (dirty[0] & /*dataTable_avg*/ 131072 | dirty[4] & /*$$scope*/ 16) {
 				cell0_changes.$$scope = { dirty, ctx };
 			}
 
 			cell0.$set(cell0_changes);
 			const cell1_changes = {};
 
-			if (dirty[0] & /*dataTable_avg*/ 262144 | dirty[4] & /*$$scope*/ 16) {
+			if (dirty[0] & /*dataTable_avg*/ 131072 | dirty[4] & /*$$scope*/ 16) {
 				cell1_changes.$$scope = { dirty, ctx };
 			}
 
 			cell1.$set(cell1_changes);
 			const cell2_changes = {};
 
-			if (dirty[0] & /*dataTable_avg*/ 262144 | dirty[4] & /*$$scope*/ 16) {
+			if (dirty[0] & /*dataTable_avg*/ 131072 | dirty[4] & /*$$scope*/ 16) {
 				cell2_changes.$$scope = { dirty, ctx };
 			}
 
 			cell2.$set(cell2_changes);
 			const cell3_changes = {};
 
-			if (dirty[0] & /*dataTable_avg*/ 262144 | dirty[4] & /*$$scope*/ 16) {
+			if (dirty[0] & /*dataTable_avg*/ 131072 | dirty[4] & /*$$scope*/ 16) {
 				cell3_changes.$$scope = { dirty, ctx };
 			}
 
 			cell3.$set(cell3_changes);
 			const cell4_changes = {};
 
-			if (dirty[0] & /*dataTable_avg*/ 262144 | dirty[4] & /*$$scope*/ 16) {
+			if (dirty[0] & /*dataTable_avg*/ 131072 | dirty[4] & /*$$scope*/ 16) {
 				cell4_changes.$$scope = { dirty, ctx };
 			}
 
@@ -38994,7 +39088,7 @@ function create_each_block_1$2(key_1, ctx) {
 		p: function update(ctx, dirty) {
 			const row_changes = {};
 
-			if (dirty[0] & /*dataTable_avg*/ 262144 | dirty[4] & /*$$scope*/ 16) {
+			if (dirty[0] & /*dataTable_avg*/ 131072 | dirty[4] & /*$$scope*/ 16) {
 				row_changes.$$scope = { dirty, ctx };
 			}
 
@@ -39042,7 +39136,7 @@ function create_default_slot_8$1(ctx) {
 			insert_dev(target, t1, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[1] & /*dataTable_weighted_avg*/ 2048 && t1_value !== (t1_value = /*index*/ ctx[44] + "")) set_data_dev(t1, t1_value);
+			if (dirty[1] & /*dataTable_weighted_avg*/ 1024 && t1_value !== (t1_value = /*index*/ ctx[44] + "")) set_data_dev(t1, t1_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t0);
@@ -39074,7 +39168,7 @@ function create_default_slot_7$2(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[1] & /*dataTable_weighted_avg*/ 2048 && t_value !== (t_value = /*table*/ ctx[119].freq + "")) set_data_dev(t, t_value);
+			if (dirty[1] & /*dataTable_weighted_avg*/ 1024 && t_value !== (t_value = /*table*/ ctx[119].freq + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -39105,7 +39199,7 @@ function create_default_slot_6$2(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[1] & /*dataTable_weighted_avg*/ 2048 && t_value !== (t_value = /*table*/ ctx[119].amp + "")) set_data_dev(t, t_value);
+			if (dirty[1] & /*dataTable_weighted_avg*/ 1024 && t_value !== (t_value = /*table*/ ctx[119].amp + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -39136,7 +39230,7 @@ function create_default_slot_5$3(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[1] & /*dataTable_weighted_avg*/ 2048 && t_value !== (t_value = /*table*/ ctx[119].fwhm + "")) set_data_dev(t, t_value);
+			if (dirty[1] & /*dataTable_weighted_avg*/ 1024 && t_value !== (t_value = /*table*/ ctx[119].fwhm + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -39167,7 +39261,7 @@ function create_default_slot_4$5(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[1] & /*dataTable_weighted_avg*/ 2048 && t_value !== (t_value = /*table*/ ctx[119].sig + "")) set_data_dev(t, t_value);
+			if (dirty[1] & /*dataTable_weighted_avg*/ 1024 && t_value !== (t_value = /*table*/ ctx[119].sig + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -39263,35 +39357,35 @@ function create_default_slot_3$5(ctx) {
 		p: function update(ctx, dirty) {
 			const cell0_changes = {};
 
-			if (dirty[1] & /*dataTable_weighted_avg*/ 2048 | dirty[4] & /*$$scope*/ 16) {
+			if (dirty[1] & /*dataTable_weighted_avg*/ 1024 | dirty[4] & /*$$scope*/ 16) {
 				cell0_changes.$$scope = { dirty, ctx };
 			}
 
 			cell0.$set(cell0_changes);
 			const cell1_changes = {};
 
-			if (dirty[1] & /*dataTable_weighted_avg*/ 2048 | dirty[4] & /*$$scope*/ 16) {
+			if (dirty[1] & /*dataTable_weighted_avg*/ 1024 | dirty[4] & /*$$scope*/ 16) {
 				cell1_changes.$$scope = { dirty, ctx };
 			}
 
 			cell1.$set(cell1_changes);
 			const cell2_changes = {};
 
-			if (dirty[1] & /*dataTable_weighted_avg*/ 2048 | dirty[4] & /*$$scope*/ 16) {
+			if (dirty[1] & /*dataTable_weighted_avg*/ 1024 | dirty[4] & /*$$scope*/ 16) {
 				cell2_changes.$$scope = { dirty, ctx };
 			}
 
 			cell2.$set(cell2_changes);
 			const cell3_changes = {};
 
-			if (dirty[1] & /*dataTable_weighted_avg*/ 2048 | dirty[4] & /*$$scope*/ 16) {
+			if (dirty[1] & /*dataTable_weighted_avg*/ 1024 | dirty[4] & /*$$scope*/ 16) {
 				cell3_changes.$$scope = { dirty, ctx };
 			}
 
 			cell3.$set(cell3_changes);
 			const cell4_changes = {};
 
-			if (dirty[1] & /*dataTable_weighted_avg*/ 2048 | dirty[4] & /*$$scope*/ 16) {
+			if (dirty[1] & /*dataTable_weighted_avg*/ 1024 | dirty[4] & /*$$scope*/ 16) {
 				cell4_changes.$$scope = { dirty, ctx };
 			}
 
@@ -39368,7 +39462,7 @@ function create_each_block$5(key_1, ctx) {
 		p: function update(ctx, dirty) {
 			const row_changes = {};
 
-			if (dirty[1] & /*dataTable_weighted_avg*/ 2048 | dirty[4] & /*$$scope*/ 16) {
+			if (dirty[1] & /*dataTable_weighted_avg*/ 1024 | dirty[4] & /*$$scope*/ 16) {
 				row_changes.$$scope = { dirty, ctx };
 			}
 
@@ -39410,8 +39504,8 @@ function create_default_slot_2$9(ctx) {
 	const if_blocks = [];
 
 	function select_block_type(ctx, dirty) {
-		if (/*show_dataTable_only_weighted_averaged*/ ctx[21]) return 0;
-		if (/*show_dataTable_only_averaged*/ ctx[19] && !/*show_dataTable_only_weighted_averaged*/ ctx[21]) return 1;
+		if (/*show_dataTable_only_weighted_averaged*/ ctx[20]) return 0;
+		if (/*show_dataTable_only_averaged*/ ctx[18] && !/*show_dataTable_only_weighted_averaged*/ ctx[20]) return 1;
 		return 2;
 	}
 
@@ -39522,7 +39616,7 @@ function create_default_slot_1$b(ctx) {
 			head.$set(head_changes);
 			const body_changes = {};
 
-			if (dirty[0] & /*show_dataTable_only_weighted_averaged, dataTable_avg, show_dataTable_only_averaged, dataTable*/ 3014656 | dirty[1] & /*dataTable_weighted_avg*/ 2048 | dirty[4] & /*$$scope*/ 16) {
+			if (dirty[0] & /*show_dataTable_only_weighted_averaged, dataTable_avg, show_dataTable_only_averaged, dataTable*/ 1507328 | dirty[1] & /*dataTable_weighted_avg*/ 1024 | dirty[4] & /*$$scope*/ 16) {
 				body_changes.$$scope = { dirty, ctx };
 			}
 
@@ -39651,11 +39745,11 @@ function create_plotContainer_slot(ctx) {
 
 	let customselect_props = {
 		label: "Output filename",
-		options: ["averaged", .../*plottedFiles*/ ctx[3]]
+		options: ["averaged", .../*plottedFiles*/ ctx[43]]
 	};
 
-	if (/*output_name*/ ctx[16] !== void 0) {
-		customselect_props.picked = /*output_name*/ ctx[16];
+	if (/*output_name*/ ctx[15] !== void 0) {
+		customselect_props.picked = /*output_name*/ ctx[15];
 	}
 
 	const customselect = new CustomSelect({
@@ -39674,8 +39768,8 @@ function create_plotContainer_slot(ctx) {
 		label: "Overwrite"
 	};
 
-	if (/*overwrite_expfit*/ ctx[14] !== void 0) {
-		customswitch0_props.selected = /*overwrite_expfit*/ ctx[14];
+	if (/*overwrite_expfit*/ ctx[13] !== void 0) {
+		customswitch0_props.selected = /*overwrite_expfit*/ ctx[13];
 	}
 
 	const customswitch0 = new CustomSwitch({
@@ -39694,8 +39788,8 @@ function create_plotContainer_slot(ctx) {
 		label: "Collect"
 	};
 
-	if (/*collectData*/ ctx[24] !== void 0) {
-		customswitch1_props.selected = /*collectData*/ ctx[24];
+	if (/*collectData*/ ctx[23] !== void 0) {
+		customswitch1_props.selected = /*collectData*/ ctx[23];
 	}
 
 	const customswitch1 = new CustomSwitch({
@@ -39715,8 +39809,8 @@ function create_plotContainer_slot(ctx) {
 		label: "Prominance"
 	};
 
-	if (/*peak_prominence*/ ctx[36] !== void 0) {
-		textfield0_props.value = /*peak_prominence*/ ctx[36];
+	if (/*peak_prominence*/ ctx[35] !== void 0) {
+		textfield0_props.value = /*peak_prominence*/ ctx[35];
 	}
 
 	const textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
@@ -39733,8 +39827,8 @@ function create_plotContainer_slot(ctx) {
 		label: "Width"
 	};
 
-	if (/*peak_width*/ ctx[35] !== void 0) {
-		textfield1_props.value = /*peak_width*/ ctx[35];
+	if (/*peak_width*/ ctx[34] !== void 0) {
+		textfield1_props.value = /*peak_width*/ ctx[34];
 	}
 
 	const textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
@@ -39751,8 +39845,8 @@ function create_plotContainer_slot(ctx) {
 		label: "Height"
 	};
 
-	if (/*peak_height*/ ctx[34] !== void 0) {
-		textfield2_props.value = /*peak_height*/ ctx[34];
+	if (/*peak_height*/ ctx[33] !== void 0) {
+		textfield2_props.value = /*peak_height*/ ctx[33];
 	}
 
 	const textfield2 = new Textfield({ props: textfield2_props, $$inline: true });
@@ -39769,8 +39863,8 @@ function create_plotContainer_slot(ctx) {
 		label: "Amp1"
 	};
 
-	if (/*amp1*/ ctx[27] !== void 0) {
-		textfield3_props.value = /*amp1*/ ctx[27];
+	if (/*amp1*/ ctx[26] !== void 0) {
+		textfield3_props.value = /*amp1*/ ctx[26];
 	}
 
 	const textfield3 = new Textfield({ props: textfield3_props, $$inline: true });
@@ -39786,8 +39880,8 @@ function create_plotContainer_slot(ctx) {
 		label: "Amp2"
 	};
 
-	if (/*amp2*/ ctx[28] !== void 0) {
-		textfield4_props.value = /*amp2*/ ctx[28];
+	if (/*amp2*/ ctx[27] !== void 0) {
+		textfield4_props.value = /*amp2*/ ctx[27];
 	}
 
 	const textfield4 = new Textfield({ props: textfield4_props, $$inline: true });
@@ -39803,8 +39897,8 @@ function create_plotContainer_slot(ctx) {
 		label: "Sigma1"
 	};
 
-	if (/*sig1*/ ctx[31] !== void 0) {
-		textfield5_props.value = /*sig1*/ ctx[31];
+	if (/*sig1*/ ctx[30] !== void 0) {
+		textfield5_props.value = /*sig1*/ ctx[30];
 	}
 
 	const textfield5 = new Textfield({ props: textfield5_props, $$inline: true });
@@ -39820,8 +39914,8 @@ function create_plotContainer_slot(ctx) {
 		label: "Sigma2"
 	};
 
-	if (/*sig2*/ ctx[32] !== void 0) {
-		textfield6_props.value = /*sig2*/ ctx[32];
+	if (/*sig2*/ ctx[31] !== void 0) {
+		textfield6_props.value = /*sig2*/ ctx[31];
 	}
 
 	const textfield6 = new Textfield({ props: textfield6_props, $$inline: true });
@@ -39837,8 +39931,8 @@ function create_plotContainer_slot(ctx) {
 		label: "Cen1"
 	};
 
-	if (/*cen1*/ ctx[29] !== void 0) {
-		textfield7_props.value = /*cen1*/ ctx[29];
+	if (/*cen1*/ ctx[28] !== void 0) {
+		textfield7_props.value = /*cen1*/ ctx[28];
 	}
 
 	const textfield7 = new Textfield({ props: textfield7_props, $$inline: true });
@@ -39854,8 +39948,8 @@ function create_plotContainer_slot(ctx) {
 		label: "Cen2"
 	};
 
-	if (/*cen2*/ ctx[30] !== void 0) {
-		textfield8_props.value = /*cen2*/ ctx[30];
+	if (/*cen2*/ ctx[29] !== void 0) {
+		textfield8_props.value = /*cen2*/ ctx[29];
 	}
 
 	const textfield8 = new Textfield({ props: textfield8_props, $$inline: true });
@@ -39867,8 +39961,8 @@ function create_plotContainer_slot(ctx) {
 
 	let customcheckbox0_props = { label: "Only Averaged" };
 
-	if (/*show_dataTable_only_averaged*/ ctx[19] !== void 0) {
-		customcheckbox0_props.selected = /*show_dataTable_only_averaged*/ ctx[19];
+	if (/*show_dataTable_only_averaged*/ ctx[18] !== void 0) {
+		customcheckbox0_props.selected = /*show_dataTable_only_averaged*/ ctx[18];
 	}
 
 	const customcheckbox0 = new CustomCheckbox({
@@ -39884,8 +39978,8 @@ function create_plotContainer_slot(ctx) {
 
 	let customcheckbox1_props = { label: "Only weighted Averaged" };
 
-	if (/*show_dataTable_only_weighted_averaged*/ ctx[21] !== void 0) {
-		customcheckbox1_props.selected = /*show_dataTable_only_weighted_averaged*/ ctx[21];
+	if (/*show_dataTable_only_weighted_averaged*/ ctx[20] !== void 0) {
+		customcheckbox1_props.selected = /*show_dataTable_only_weighted_averaged*/ ctx[20];
 	}
 
 	const customcheckbox1 = new CustomCheckbox({
@@ -39901,8 +39995,8 @@ function create_plotContainer_slot(ctx) {
 
 	let customcheckbox2_props = { label: "Keep table" };
 
-	if (/*keepTable*/ ctx[20] !== void 0) {
-		customcheckbox2_props.selected = /*keepTable*/ ctx[20];
+	if (/*keepTable*/ ctx[19] !== void 0) {
+		customcheckbox2_props.selected = /*keepTable*/ ctx[19];
 	}
 
 	const customcheckbox2 = new CustomCheckbox({
@@ -39934,8 +40028,8 @@ function create_plotContainer_slot(ctx) {
 		includeTable: true
 	};
 
-	if (/*currentLocation*/ ctx[4] !== void 0) {
-		reportlayout_props.currentLocation = /*currentLocation*/ ctx[4];
+	if (/*currentLocation*/ ctx[3] !== void 0) {
+		reportlayout_props.currentLocation = /*currentLocation*/ ctx[3];
 	}
 
 	const reportlayout = new ReportLayout({
@@ -40044,77 +40138,77 @@ function create_plotContainer_slot(ctx) {
 			create_component(reportlayout.$$.fragment);
 			attr_dev(div1, "class", "animated fadeIn hide svelte-ex8alc");
 			attr_dev(div1, "id", "exp-theory-plot");
-			toggle_class(div1, "active", /*show_theoryplot*/ ctx[8]);
-			add_location(div1, file$O, 593, 12, 28082);
+			toggle_class(div1, "active", /*show_theoryplot*/ ctx[7]);
+			add_location(div1, file$O, 593, 12, 28309);
 			attr_dev(div2, "id", "bplot");
 			attr_dev(div2, "class", "svelte-ex8alc");
-			add_location(div2, file$O, 594, 12, 28188);
+			add_location(div2, file$O, 594, 12, 28415);
 			attr_dev(div3, "id", "saPlot");
 			attr_dev(div3, "class", "svelte-ex8alc");
-			add_location(div3, file$O, 595, 12, 28224);
+			add_location(div3, file$O, 595, 12, 28451);
 			attr_dev(div4, "id", "avgplot");
 			attr_dev(div4, "class", "svelte-ex8alc");
-			add_location(div4, file$O, 596, 12, 28261);
+			add_location(div4, file$O, 596, 12, 28488);
 			attr_dev(div5, "class", "animated fadeIn hide svelte-ex8alc");
 			attr_dev(div5, "id", "opoplot");
-			toggle_class(div5, "active", /*opoPlotted*/ ctx[22]);
-			add_location(div5, file$O, 597, 12, 28299);
+			toggle_class(div5, "active", /*opoPlotted*/ ctx[21]);
+			add_location(div5, file$O, 597, 12, 28526);
 			attr_dev(div6, "class", "animated fadeIn hide svelte-ex8alc");
 			attr_dev(div6, "id", "opoSA");
-			toggle_class(div6, "active", /*opoPlotted*/ ctx[22]);
-			add_location(div6, file$O, 598, 12, 28392);
+			toggle_class(div6, "active", /*opoPlotted*/ ctx[21]);
+			add_location(div6, file$O, 598, 12, 28619);
 			attr_dev(div7, "class", "animated fadeIn hide svelte-ex8alc");
 			attr_dev(div7, "id", "opoRelPlot");
-			toggle_class(div7, "active", /*opoPlotted*/ ctx[22]);
-			add_location(div7, file$O, 599, 12, 28483);
+			toggle_class(div7, "active", /*opoPlotted*/ ctx[21]);
+			add_location(div7, file$O, 599, 12, 28710);
 			attr_dev(div8, "class", "felixPlot svelte-ex8alc");
-			add_location(div8, file$O, 592, 8, 28045);
+			add_location(div8, file$O, 592, 8, 28272);
 			attr_dev(div9, "class", "align content svelte-ex8alc");
-			add_location(div9, file$O, 604, 12, 28717);
+			add_location(div9, file$O, 604, 12, 28944);
 			attr_dev(button0, "class", "button is-link svelte-ex8alc");
-			add_location(button0, file$O, 611, 16, 29171);
+			add_location(button0, file$O, 611, 16, 29398);
 			attr_dev(button1, "class", "button is-link svelte-ex8alc");
-			add_location(button1, file$O, 612, 16, 29291);
+			add_location(button1, file$O, 612, 16, 29518);
 			attr_dev(button2, "class", "button is-warning svelte-ex8alc");
-			add_location(button2, file$O, 613, 16, 29425);
+			add_location(button2, file$O, 613, 16, 29652);
 			attr_dev(button3, "class", "button is-danger svelte-ex8alc");
-			add_location(button3, file$O, 614, 16, 29521);
+			add_location(button3, file$O, 614, 16, 29748);
 			attr_dev(button4, "class", "button is-link svelte-ex8alc");
-			add_location(button4, file$O, 615, 16, 29614);
+			add_location(button4, file$O, 615, 16, 29841);
 			attr_dev(button5, "class", "button is-warning svelte-ex8alc");
-			add_location(button5, file$O, 616, 16, 29739);
+			add_location(button5, file$O, 616, 16, 29966);
 			attr_dev(button6, "class", "button is-link svelte-ex8alc");
-			add_location(button6, file$O, 617, 16, 29895);
+			add_location(button6, file$O, 617, 16, 30122);
 			attr_dev(div10, "class", "align content svelte-ex8alc");
-			add_location(div10, file$O, 610, 12, 29126);
+			add_location(div10, file$O, 610, 12, 29353);
 			attr_dev(button7, "class", "button is-link svelte-ex8alc");
-			add_location(button7, file$O, 624, 16, 30598);
+			add_location(button7, file$O, 624, 16, 30825);
 			attr_dev(button8, "class", "button is-danger svelte-ex8alc");
-			add_location(button8, file$O, 625, 16, 30722);
+			add_location(button8, file$O, 625, 16, 30949);
 			attr_dev(div11, "class", "align content animated fadeIn hide svelte-ex8alc");
-			toggle_class(div11, "active", /*toggleFindPeaksRow*/ ctx[33]);
-			add_location(div11, file$O, 620, 12, 30039);
+			toggle_class(div11, "active", /*toggleFindPeaksRow*/ ctx[32]);
+			add_location(div11, file$O, 620, 12, 30266);
 			attr_dev(button9, "class", "button is-link svelte-ex8alc");
-			add_location(button9, file$O, 635, 16, 31674);
+			add_location(button9, file$O, 635, 16, 31901);
 			attr_dev(div12, "class", "align content animated fadeIn hide svelte-ex8alc");
-			toggle_class(div12, "active", /*toggleDoubleGaussRow*/ ctx[26]);
-			add_location(div12, file$O, 628, 12, 30878);
+			toggle_class(div12, "active", /*toggleDoubleGaussRow*/ ctx[25]);
+			add_location(div12, file$O, 628, 12, 31105);
 			attr_dev(div13, "class", "title notification is-link svelte-ex8alc");
-			add_location(div13, file$O, 640, 16, 31902);
+			add_location(div13, file$O, 640, 16, 32129);
 			attr_dev(button10, "class", "button is-warning svelte-ex8alc");
-			add_location(button10, file$O, 644, 16, 32286);
+			add_location(button10, file$O, 644, 16, 32513);
 			attr_dev(button11, "class", "button is-danger svelte-ex8alc");
-			add_location(button11, file$O, 647, 16, 32626);
+			add_location(button11, file$O, 647, 16, 32853);
 			attr_dev(div14, "class", "align content svelte-ex8alc");
-			add_location(div14, file$O, 639, 12, 31857);
+			add_location(div14, file$O, 639, 12, 32084);
 			attr_dev(div15, "class", "dataTable svelte-ex8alc");
-			add_location(div15, file$O, 652, 12, 32834);
+			add_location(div15, file$O, 652, 12, 33061);
 			attr_dev(div16, "class", "animated fadeIn hide svelte-ex8alc");
-			toggle_class(div16, "active", /*graphPlotted*/ ctx[13]);
-			add_location(div16, file$O, 602, 8, 28593);
+			toggle_class(div16, "active", /*graphPlotted*/ ctx[12]);
+			add_location(div16, file$O, 602, 8, 28820);
 			attr_dev(div0, "class", "plotSlot svelte-ex8alc");
 			attr_dev(div0, "slot", "plotContainer");
-			add_location(div0, file$O, 590, 4, 27990);
+			add_location(div0, file$O, 590, 4, 28217);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -40217,187 +40311,187 @@ function create_plotContainer_slot(ctx) {
 			];
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*show_theoryplot*/ 256) {
-				toggle_class(div1, "active", /*show_theoryplot*/ ctx[8]);
+			if (dirty[0] & /*show_theoryplot*/ 128) {
+				toggle_class(div1, "active", /*show_theoryplot*/ ctx[7]);
 			}
 
-			if (dirty[0] & /*opoPlotted*/ 4194304) {
-				toggle_class(div5, "active", /*opoPlotted*/ ctx[22]);
+			if (dirty[0] & /*opoPlotted*/ 2097152) {
+				toggle_class(div5, "active", /*opoPlotted*/ ctx[21]);
 			}
 
-			if (dirty[0] & /*opoPlotted*/ 4194304) {
-				toggle_class(div6, "active", /*opoPlotted*/ ctx[22]);
+			if (dirty[0] & /*opoPlotted*/ 2097152) {
+				toggle_class(div6, "active", /*opoPlotted*/ ctx[21]);
 			}
 
-			if (dirty[0] & /*opoPlotted*/ 4194304) {
-				toggle_class(div7, "active", /*opoPlotted*/ ctx[22]);
+			if (dirty[0] & /*opoPlotted*/ 2097152) {
+				toggle_class(div7, "active", /*opoPlotted*/ ctx[21]);
 			}
 
 			const customselect_changes = {};
-			if (dirty[0] & /*plottedFiles*/ 8) customselect_changes.options = ["averaged", .../*plottedFiles*/ ctx[3]];
+			if (dirty[1] & /*plottedFiles*/ 4096) customselect_changes.options = ["averaged", .../*plottedFiles*/ ctx[43]];
 
-			if (!updating_picked && dirty[0] & /*output_name*/ 65536) {
+			if (!updating_picked && dirty[0] & /*output_name*/ 32768) {
 				updating_picked = true;
-				customselect_changes.picked = /*output_name*/ ctx[16];
+				customselect_changes.picked = /*output_name*/ ctx[15];
 				add_flush_callback(() => updating_picked = false);
 			}
 
 			customselect.$set(customselect_changes);
 			const customswitch0_changes = {};
 
-			if (!updating_selected && dirty[0] & /*overwrite_expfit*/ 16384) {
+			if (!updating_selected && dirty[0] & /*overwrite_expfit*/ 8192) {
 				updating_selected = true;
-				customswitch0_changes.selected = /*overwrite_expfit*/ ctx[14];
+				customswitch0_changes.selected = /*overwrite_expfit*/ ctx[13];
 				add_flush_callback(() => updating_selected = false);
 			}
 
 			customswitch0.$set(customswitch0_changes);
 			const customswitch1_changes = {};
 
-			if (!updating_selected_1 && dirty[0] & /*collectData*/ 16777216) {
+			if (!updating_selected_1 && dirty[0] & /*collectData*/ 8388608) {
 				updating_selected_1 = true;
-				customswitch1_changes.selected = /*collectData*/ ctx[24];
+				customswitch1_changes.selected = /*collectData*/ ctx[23];
 				add_flush_callback(() => updating_selected_1 = false);
 			}
 
 			customswitch1.$set(customswitch1_changes);
 			const textfield0_changes = {};
 
-			if (!updating_value && dirty[1] & /*peak_prominence*/ 32) {
+			if (!updating_value && dirty[1] & /*peak_prominence*/ 16) {
 				updating_value = true;
-				textfield0_changes.value = /*peak_prominence*/ ctx[36];
+				textfield0_changes.value = /*peak_prominence*/ ctx[35];
 				add_flush_callback(() => updating_value = false);
 			}
 
 			textfield0.$set(textfield0_changes);
 			const textfield1_changes = {};
 
-			if (!updating_value_1 && dirty[1] & /*peak_width*/ 16) {
+			if (!updating_value_1 && dirty[1] & /*peak_width*/ 8) {
 				updating_value_1 = true;
-				textfield1_changes.value = /*peak_width*/ ctx[35];
+				textfield1_changes.value = /*peak_width*/ ctx[34];
 				add_flush_callback(() => updating_value_1 = false);
 			}
 
 			textfield1.$set(textfield1_changes);
 			const textfield2_changes = {};
 
-			if (!updating_value_2 && dirty[1] & /*peak_height*/ 8) {
+			if (!updating_value_2 && dirty[1] & /*peak_height*/ 4) {
 				updating_value_2 = true;
-				textfield2_changes.value = /*peak_height*/ ctx[34];
+				textfield2_changes.value = /*peak_height*/ ctx[33];
 				add_flush_callback(() => updating_value_2 = false);
 			}
 
 			textfield2.$set(textfield2_changes);
 
-			if (dirty[1] & /*toggleFindPeaksRow*/ 4) {
-				toggle_class(div11, "active", /*toggleFindPeaksRow*/ ctx[33]);
+			if (dirty[1] & /*toggleFindPeaksRow*/ 2) {
+				toggle_class(div11, "active", /*toggleFindPeaksRow*/ ctx[32]);
 			}
 
 			const textfield3_changes = {};
 
-			if (!updating_value_3 && dirty[0] & /*amp1*/ 134217728) {
+			if (!updating_value_3 && dirty[0] & /*amp1*/ 67108864) {
 				updating_value_3 = true;
-				textfield3_changes.value = /*amp1*/ ctx[27];
+				textfield3_changes.value = /*amp1*/ ctx[26];
 				add_flush_callback(() => updating_value_3 = false);
 			}
 
 			textfield3.$set(textfield3_changes);
 			const textfield4_changes = {};
 
-			if (!updating_value_4 && dirty[0] & /*amp2*/ 268435456) {
+			if (!updating_value_4 && dirty[0] & /*amp2*/ 134217728) {
 				updating_value_4 = true;
-				textfield4_changes.value = /*amp2*/ ctx[28];
+				textfield4_changes.value = /*amp2*/ ctx[27];
 				add_flush_callback(() => updating_value_4 = false);
 			}
 
 			textfield4.$set(textfield4_changes);
 			const textfield5_changes = {};
 
-			if (!updating_value_5 && dirty[1] & /*sig1*/ 1) {
+			if (!updating_value_5 && dirty[0] & /*sig1*/ 1073741824) {
 				updating_value_5 = true;
-				textfield5_changes.value = /*sig1*/ ctx[31];
+				textfield5_changes.value = /*sig1*/ ctx[30];
 				add_flush_callback(() => updating_value_5 = false);
 			}
 
 			textfield5.$set(textfield5_changes);
 			const textfield6_changes = {};
 
-			if (!updating_value_6 && dirty[1] & /*sig2*/ 2) {
+			if (!updating_value_6 && dirty[1] & /*sig2*/ 1) {
 				updating_value_6 = true;
-				textfield6_changes.value = /*sig2*/ ctx[32];
+				textfield6_changes.value = /*sig2*/ ctx[31];
 				add_flush_callback(() => updating_value_6 = false);
 			}
 
 			textfield6.$set(textfield6_changes);
 			const textfield7_changes = {};
 
-			if (!updating_value_7 && dirty[0] & /*cen1*/ 536870912) {
+			if (!updating_value_7 && dirty[0] & /*cen1*/ 268435456) {
 				updating_value_7 = true;
-				textfield7_changes.value = /*cen1*/ ctx[29];
+				textfield7_changes.value = /*cen1*/ ctx[28];
 				add_flush_callback(() => updating_value_7 = false);
 			}
 
 			textfield7.$set(textfield7_changes);
 			const textfield8_changes = {};
 
-			if (!updating_value_8 && dirty[0] & /*cen2*/ 1073741824) {
+			if (!updating_value_8 && dirty[0] & /*cen2*/ 536870912) {
 				updating_value_8 = true;
-				textfield8_changes.value = /*cen2*/ ctx[30];
+				textfield8_changes.value = /*cen2*/ ctx[29];
 				add_flush_callback(() => updating_value_8 = false);
 			}
 
 			textfield8.$set(textfield8_changes);
 
-			if (dirty[0] & /*toggleDoubleGaussRow*/ 67108864) {
-				toggle_class(div12, "active", /*toggleDoubleGaussRow*/ ctx[26]);
+			if (dirty[0] & /*toggleDoubleGaussRow*/ 33554432) {
+				toggle_class(div12, "active", /*toggleDoubleGaussRow*/ ctx[25]);
 			}
 
 			const customcheckbox0_changes = {};
 
-			if (!updating_selected_2 && dirty[0] & /*show_dataTable_only_averaged*/ 524288) {
+			if (!updating_selected_2 && dirty[0] & /*show_dataTable_only_averaged*/ 262144) {
 				updating_selected_2 = true;
-				customcheckbox0_changes.selected = /*show_dataTable_only_averaged*/ ctx[19];
+				customcheckbox0_changes.selected = /*show_dataTable_only_averaged*/ ctx[18];
 				add_flush_callback(() => updating_selected_2 = false);
 			}
 
 			customcheckbox0.$set(customcheckbox0_changes);
 			const customcheckbox1_changes = {};
 
-			if (!updating_selected_3 && dirty[0] & /*show_dataTable_only_weighted_averaged*/ 2097152) {
+			if (!updating_selected_3 && dirty[0] & /*show_dataTable_only_weighted_averaged*/ 1048576) {
 				updating_selected_3 = true;
-				customcheckbox1_changes.selected = /*show_dataTable_only_weighted_averaged*/ ctx[21];
+				customcheckbox1_changes.selected = /*show_dataTable_only_weighted_averaged*/ ctx[20];
 				add_flush_callback(() => updating_selected_3 = false);
 			}
 
 			customcheckbox1.$set(customcheckbox1_changes);
 			const customcheckbox2_changes = {};
 
-			if (!updating_selected_4 && dirty[0] & /*keepTable*/ 1048576) {
+			if (!updating_selected_4 && dirty[0] & /*keepTable*/ 524288) {
 				updating_selected_4 = true;
-				customcheckbox2_changes.selected = /*keepTable*/ ctx[20];
+				customcheckbox2_changes.selected = /*keepTable*/ ctx[19];
 				add_flush_callback(() => updating_selected_4 = false);
 			}
 
 			customcheckbox2.$set(customcheckbox2_changes);
 			const datatable_changes = {};
 
-			if (dirty[0] & /*show_dataTable_only_weighted_averaged, dataTable_avg, show_dataTable_only_averaged, dataTable*/ 3014656 | dirty[1] & /*dataTable_weighted_avg*/ 2048 | dirty[4] & /*$$scope*/ 16) {
+			if (dirty[0] & /*show_dataTable_only_weighted_averaged, dataTable_avg, show_dataTable_only_averaged, dataTable*/ 1507328 | dirty[1] & /*dataTable_weighted_avg*/ 1024 | dirty[4] & /*$$scope*/ 16) {
 				datatable_changes.$$scope = { dirty, ctx };
 			}
 
 			datatable.$set(datatable_changes);
 			const reportlayout_changes = {};
 
-			if (!updating_currentLocation && dirty[0] & /*currentLocation*/ 16) {
+			if (!updating_currentLocation && dirty[0] & /*currentLocation*/ 8) {
 				updating_currentLocation = true;
-				reportlayout_changes.currentLocation = /*currentLocation*/ ctx[4];
+				reportlayout_changes.currentLocation = /*currentLocation*/ ctx[3];
 				add_flush_callback(() => updating_currentLocation = false);
 			}
 
 			reportlayout.$set(reportlayout_changes);
 
-			if (dirty[0] & /*graphPlotted*/ 8192) {
-				toggle_class(div16, "active", /*graphPlotted*/ ctx[13]);
+			if (dirty[0] & /*graphPlotted*/ 4096) {
+				toggle_class(div16, "active", /*graphPlotted*/ ctx[12]);
 			}
 		},
 		i: function intro(local) {
@@ -40546,8 +40640,8 @@ function create_fragment$T(ctx) {
 		$$scope: { ctx }
 	};
 
-	if (/*showTheoryFiles*/ ctx[9] !== void 0) {
-		quickview0_props.active = /*showTheoryFiles*/ ctx[9];
+	if (/*showTheoryFiles*/ ctx[8] !== void 0) {
+		quickview0_props.active = /*showTheoryFiles*/ ctx[8];
 	}
 
 	const quickview0 = new QuickView({ props: quickview0_props, $$inline: true });
@@ -40567,8 +40661,8 @@ function create_fragment$T(ctx) {
 		$$scope: { ctx }
 	};
 
-	if (/*showOPOFiles*/ ctx[37] !== void 0) {
-		quickview1_props.active = /*showOPOFiles*/ ctx[37];
+	if (/*showOPOFiles*/ ctx[36] !== void 0) {
+		quickview1_props.active = /*showOPOFiles*/ ctx[36];
 	}
 
 	const quickview1 = new QuickView({ props: quickview1_props, $$inline: true });
@@ -40593,8 +40687,8 @@ function create_fragment$T(ctx) {
 		$$scope: { ctx }
 	};
 
-	if (/*currentLocation*/ ctx[4] !== void 0) {
-		layout_props.currentLocation = /*currentLocation*/ ctx[4];
+	if (/*currentLocation*/ ctx[3] !== void 0) {
+		layout_props.currentLocation = /*currentLocation*/ ctx[3];
 	}
 
 	if (/*fileChecked*/ ctx[0] !== void 0) {
@@ -40627,39 +40721,39 @@ function create_fragment$T(ctx) {
 		p: function update(ctx, dirty) {
 			const quickview0_changes = {};
 
-			if (dirty[0] & /*theoryLocation, theoryfilesChecked*/ 1152 | dirty[4] & /*$$scope*/ 16) {
+			if (dirty[0] & /*theoryLocation, theoryfilesChecked*/ 576 | dirty[4] & /*$$scope*/ 16) {
 				quickview0_changes.$$scope = { dirty, ctx };
 			}
 
-			if (!updating_active && dirty[0] & /*showTheoryFiles*/ 512) {
+			if (!updating_active && dirty[0] & /*showTheoryFiles*/ 256) {
 				updating_active = true;
-				quickview0_changes.active = /*showTheoryFiles*/ ctx[9];
+				quickview0_changes.active = /*showTheoryFiles*/ ctx[8];
 				add_flush_callback(() => updating_active = false);
 			}
 
 			quickview0.$set(quickview0_changes);
 			const quickview1_changes = {};
 
-			if (dirty[1] & /*OPOLocation, OPOfilesChecked*/ 384 | dirty[4] & /*$$scope*/ 16) {
+			if (dirty[1] & /*OPOLocation, OPOfilesChecked*/ 192 | dirty[4] & /*$$scope*/ 16) {
 				quickview1_changes.$$scope = { dirty, ctx };
 			}
 
-			if (!updating_active_1 && dirty[1] & /*showOPOFiles*/ 64) {
+			if (!updating_active_1 && dirty[1] & /*showOPOFiles*/ 32) {
 				updating_active_1 = true;
-				quickview1_changes.active = /*showOPOFiles*/ ctx[37];
+				quickview1_changes.active = /*showOPOFiles*/ ctx[36];
 				add_flush_callback(() => updating_active_1 = false);
 			}
 
 			quickview1.$set(quickview1_changes);
 			const layout_changes = {};
 
-			if (dirty[0] & /*graphPlotted, currentLocation, show_dataTable_only_weighted_averaged, dataTable_avg, show_dataTable_only_averaged, dataTable, line_index_count, lineData_list, keepTable, toggleDoubleGaussRow, cen2, cen1, amp2, amp1, collectData, overwrite_expfit, plottedFiles, output_name, opoPlotted, show_theoryplot, normMethod, toggleRow, sigma, scale, theoryLocation, showTheoryFiles, fileChecked, openShell, onlyFinalSpectrum, delta*/ 2147483519 | dirty[1] & /*dataTable_weighted_avg, sig2, sig1, toggleFindPeaksRow, peak_height, peak_width, peak_prominence, theoryfiles, showOPOFiles, felixfiles, opofiles*/ 7807 | dirty[4] & /*$$scope*/ 16) {
+			if (dirty[0] & /*graphPlotted, currentLocation, show_dataTable_only_weighted_averaged, dataTable_avg, show_dataTable_only_averaged, dataTable, line_index_count, lineData_list, keepTable, toggleDoubleGaussRow, cen2, cen1, sig1, amp2, amp1, collectData, overwrite_expfit, output_name, opoPlotted, show_theoryplot, normMethod, toggleRow, sigma, scale, theoryLocation, showTheoryFiles, fileChecked, openShell, onlyFinalSpectrum, delta*/ 2147483583 | dirty[1] & /*dataTable_weighted_avg, sig2, toggleFindPeaksRow, peak_height, peak_width, peak_prominence, plottedFiles, theoryfiles, showOPOFiles, felixfiles, opofiles*/ 7999 | dirty[4] & /*$$scope*/ 16) {
 				layout_changes.$$scope = { dirty, ctx };
 			}
 
-			if (!updating_currentLocation && dirty[0] & /*currentLocation*/ 16) {
+			if (!updating_currentLocation && dirty[0] & /*currentLocation*/ 8) {
 				updating_currentLocation = true;
-				layout_changes.currentLocation = /*currentLocation*/ ctx[4];
+				layout_changes.currentLocation = /*currentLocation*/ ctx[3];
 				add_flush_callback(() => updating_currentLocation = false);
 			}
 
@@ -40715,7 +40809,8 @@ function instance$T($$self, $$props, $$invalidate) {
 	component_subscribe($$self, activated, $$value => $$invalidate(60, $activated = $$value));
 	const { BrowserWindow } = remote;
 	let fileChecked = [], delta = 1, toggleRow = false;
-	let plottedFiles = [];
+
+	// let plottedFiles = []
 	let currentLocation = localStorage[`${filetype}_location`] || "";
 
 	///////////////////////////////////////////////////////////////////////
@@ -40759,11 +40854,11 @@ function instance$T($$self, $$props, $$invalidate) {
 		if (graphPlotted) {
 			let { data, layout } = normMethod_datas[normMethod];
 			Plotly.react("avgplot", data, layout, { editable: true });
-			(line = annotations = $$invalidate(25, lineData_list = []), $$invalidate(54, plot_trace_added = 0));
+			(line = annotations = $$invalidate(24, lineData_list = []), $$invalidate(54, plot_trace_added = 0));
 		}
 	};
 
-	function plotData({ e = null, filetype = "felix", general = null } = {}) {
+	async function plotData({ e = null, filetype = "felix", general = null } = {}) {
 		if (fileChecked.length === 0 && filetype === "felix") {
 			return createToast$1("No files selected", "danger");
 		}
@@ -40783,14 +40878,13 @@ function instance$T($$self, $$props, $$invalidate) {
 
 			py.unref();
 			py.ref();
-			createToast$1("General process sent. Expect an response soon...");
-			return;
+			return createToast$1("General process sent. Expect an response soon...");
 		}
 
 		let expfit_args = [];
 
 		if (filetype == "felix") {
-			($$invalidate(13, graphPlotted = false), $$invalidate(16, output_name = "averaged"));
+			($$invalidate(12, graphPlotted = false), $$invalidate(15, output_name = "averaged"));
 		} else if (filetype == "exp_fit") {
 			if (index.length < 2) {
 				return createToast$1("Range not found!!. Select a range using Box-select", "danger");
@@ -40809,10 +40903,10 @@ function instance$T($$self, $$props, $$invalidate) {
 				];
 			}
 		} else if (filetype == "opofile") {
-			$$invalidate(22, opoPlotted = true);
+			$$invalidate(21, opoPlotted = true);
 		} else if (filetype == "get_err") {
 			if (double_peak_active) {
-				if (err_data1_plot) $$invalidate(25, lineData_list = weighted_error[0]); else $$invalidate(25, lineData_list = weighted_error[1]);
+				if (err_data1_plot) $$invalidate(24, lineData_list = weighted_error[0]); else $$invalidate(24, lineData_list = weighted_error[1]);
 			}
 
 			if (lineData_list.length < 2) return createToast$1("Not sufficient lines collected!", "danger");
@@ -40856,24 +40950,40 @@ function instance$T($$self, $$props, $$invalidate) {
 			},
 			double_peak: {
 				pyfile: "double_gaussian.py",
-				args: [
-					amp1,
-					amp2,
-					cen1,
-					cen2,
-					sig1,
-					sig2,
-					...felixfiles,
-					overwrite_expfit,
-					output_name,
-					normMethod,
-					currentLocation,
-					...index
-				]
+				args: opoExpFit
+				? [
+						amp1,
+						amp2,
+						cen1,
+						cen2,
+						sig1,
+						sig2,
+						...opofiles,
+						overwrite_expfit,
+						output_name,
+						"Log",
+						OPOLocation,
+						...index
+					]
+				: [
+						amp1,
+						amp2,
+						cen1,
+						cen2,
+						sig1,
+						sig2,
+						...felixfiles,
+						overwrite_expfit,
+						output_name,
+						normMethod,
+						currentLocation,
+						...index
+					]
 			}
 		};
 
 		let { pyfile, args } = pyfileInfo[filetype];
+		console.log(pyfileInfo[filetype]);
 		let py;
 
 		try {
@@ -40910,11 +41020,11 @@ function instance$T($$self, $$props, $$invalidate) {
 
 					if (filetype == "felix") {
 						$$invalidate(58, opoExpFit = false);
-						(line = [], $$invalidate(44, index = []), annotations = [], $$invalidate(25, lineData_list = []), $$invalidate(54, plot_trace_added = 0));
-						$$invalidate(8, show_theoryplot = false);
+						(line = [], $$invalidate(44, index = []), annotations = [], $$invalidate(24, lineData_list = []), $$invalidate(54, plot_trace_added = 0));
+						$$invalidate(7, show_theoryplot = false);
 
 						if (!keepTable) {
-							$$invalidate(17, dataTable = []);
+							$$invalidate(16, dataTable = []);
 						}
 
 						let avgdataToPlot;
@@ -40995,8 +41105,7 @@ function instance$T($$self, $$props, $$invalidate) {
 								console.log(data);
 								$$invalidate(58, opoExpFit = false);
 								let { range } = data;
-								$$invalidate(3, plottedFiles = fileChecked.map(file => file.split(".")[0]));
-								$$invalidate(16, output_name = data.points[0].data.name.split(".")[0]);
+								setTimeout(() => $$invalidate(15, output_name = data.points[0].data.name.split(".")[0]), 500);
 								$$invalidate(44, index = range.x);
 								console.log(`Selected file: ${output_name}`);
 								console.log(`Index selected: ${index}`);
@@ -41005,8 +41114,9 @@ function instance$T($$self, $$props, $$invalidate) {
 
 						console.log("Graph Plotted");
 						createToast$1("Graph Plotted", "success");
-						$$invalidate(13, graphPlotted = true);
+						$$invalidate(12, graphPlotted = true);
 					} else if (filetype == "opofile") {
+						$$invalidate(58, opoExpFit = true);
 						plot("OPO spectrum", "Wavenumber (cm-1)", "Counts", dataFromPython["real"], "opoplot");
 						plot("OPO Calibration", "Set Wavenumber (cm-1)", "Measured Wavenumber (cm-1)", dataFromPython["SA"], "opoSA");
 						plot("OPO spectrum: Depletion (%)", "Wavenumber (cm-1)", "Depletion (%)", dataFromPython["relative"], "opoRelPlot");
@@ -41017,15 +41127,14 @@ function instance$T($$self, $$props, $$invalidate) {
 								console.log(data);
 								$$invalidate(58, opoExpFit = true);
 								let { range } = data;
-								$$invalidate(3, plottedFiles = OPOfilesChecked.map(file => file.split(".")[0]));
-								$$invalidate(16, output_name = data.points[0].data.name.split(".")[0]);
+								setTimeout(() => $$invalidate(15, output_name = data.points[0].data.name.split(".")[0]), 500);
 								$$invalidate(44, index = range.x);
 								console.log(`Selected file: ${output_name}`);
 								console.log(`Index selected: ${index}`);
 							}
 						});
 
-						($$invalidate(37, showOPOFiles = false), $$invalidate(13, graphPlotted = true));
+						($$invalidate(36, showOPOFiles = false), $$invalidate(12, graphPlotted = true));
 					} else if (filetype == "theory") {
 						let ylabel;
 
@@ -41044,7 +41153,7 @@ function instance$T($$self, $$props, $$invalidate) {
 						}
 
 						plot("Experimental vs Theory", "Calibrated Wavelength (cm-1)", ylabel, [dataFromPython["averaged"], ...theoryData], "exp-theory-plot");
-						($$invalidate(8, show_theoryplot = true), $$invalidate(9, showTheoryFiles = false));
+						($$invalidate(7, show_theoryplot = true), $$invalidate(8, showTheoryFiles = false));
 					} else if (filetype == "exp_fit") {
 						$$invalidate(55, double_peak_active = false);
 						Plotly.addTraces(graphDiv, dataFromPython["fit"]);
@@ -41059,7 +41168,7 @@ function instance$T($$self, $$props, $$invalidate) {
 						if (output_name === "averaged") {
 							color = "#452f7da8";
 
-							$$invalidate(18, dataTable_avg = [
+							$$invalidate(17, dataTable_avg = [
 								...dataTable_avg,
 								{
 									name: `Line #${line_index_count}`,
@@ -41072,12 +41181,12 @@ function instance$T($$self, $$props, $$invalidate) {
 								}
 							]);
 
-							$$invalidate(18, dataTable_avg = _.uniqBy(dataTable_avg, "freq"));
-							$$invalidate(15, line_index_count++, line_index_count);
+							$$invalidate(17, dataTable_avg = _.uniqBy(dataTable_avg, "freq"));
+							$$invalidate(14, line_index_count++, line_index_count);
 						} else {
 							if (collectData) {
 								console.log("Collecting lines");
-								$$invalidate(25, lineData_list = [...lineData_list, dataFromPython["for_weighted_error"]]);
+								$$invalidate(24, lineData_list = [...lineData_list, dataFromPython["for_weighted_error"]]);
 							}
 						}
 
@@ -41091,7 +41200,7 @@ function instance$T($$self, $$props, $$invalidate) {
 							color
 						};
 
-						$$invalidate(17, dataTable = _.uniqBy([...dataTable, newTable], "freq"));
+						$$invalidate(16, dataTable = _.uniqBy([...dataTable, newTable], "freq"));
 						console.log("Line fitted");
 						createToast$1("Line fitted with gaussian function", "success");
 					} else if (filetype == "get_err") {
@@ -41117,8 +41226,8 @@ function instance$T($$self, $$props, $$invalidate) {
 							color: "#452f7da8"
 						};
 
-						$$invalidate(17, dataTable = [...dataTable, data1, data2]);
-						$$invalidate(18, dataTable_avg = [...dataTable_avg, data1, data2]);
+						$$invalidate(16, dataTable = [...dataTable, data1, data2]);
+						$$invalidate(17, dataTable_avg = [...dataTable_avg, data1, data2]);
 
 						if (double_peak_active) {
 							err_data1_plot
@@ -41127,7 +41236,7 @@ function instance$T($$self, $$props, $$invalidate) {
 
 							err_data1_plot = false;
 						} else {
-							$$invalidate(25, lineData_list = []);
+							$$invalidate(24, lineData_list = []);
 						}
 					} else if (filetype == "double_peak") {
 						$$invalidate(55, double_peak_active = true);
@@ -41162,9 +41271,9 @@ function instance$T($$self, $$props, $$invalidate) {
 								color
 							};
 
-							$$invalidate(18, dataTable_avg = [...dataTable_avg, newTable1, newTable2]);
-							$$invalidate(18, dataTable_avg = _.uniqBy(dataTable_avg, "freq"));
-							$$invalidate(15, line_index_count += 2);
+							$$invalidate(17, dataTable_avg = [...dataTable_avg, newTable1, newTable2]);
+							$$invalidate(17, dataTable_avg = _.uniqBy(dataTable_avg, "freq"));
+							$$invalidate(14, line_index_count += 2);
 						} else {
 							if (collectData) {
 								console.log("Collecting lines");
@@ -41194,7 +41303,7 @@ function instance$T($$self, $$props, $$invalidate) {
 							color
 						};
 
-						$$invalidate(17, dataTable = _.uniqBy([...dataTable, newTable1, newTable2], "freq"));
+						$$invalidate(16, dataTable = _.uniqBy([...dataTable, newTable1, newTable2], "freq"));
 					} else if (filetype == "find_peaks") {
 						Plotly.relayout("avgplot", { annotations: [] });
 
@@ -41219,7 +41328,7 @@ function instance$T($$self, $$props, $$invalidate) {
 		}
 
 		console.log("Removing all found peak values");
-		annotations = $$invalidate(44, index = line = $$invalidate(25, lineData_list = []));
+		annotations = $$invalidate(44, index = line = $$invalidate(24, lineData_list = []));
 		Plotly.relayout(graphDiv, { annotations: [], shapes: [] });
 
 		for (let i = 0; i < plot_trace_added; i++) {
@@ -41251,7 +41360,7 @@ function instance$T($$self, $$props, $$invalidate) {
 				}
 			});
 
-			$$invalidate(17, dataTable = _.dropRight(dataTable, 2));
+			$$invalidate(16, dataTable = _.dropRight(dataTable, 2));
 			annotations = _.dropRight(annotations, 2);
 			weighted_error[0] = _.dropRight(weighted_error[0], 1);
 			weighted_error[1] = _.dropRight(weighted_error[1], 1);
@@ -41264,10 +41373,10 @@ function instance$T($$self, $$props, $$invalidate) {
 				}
 			});
 
-			$$invalidate(17, dataTable = _.dropRight(dataTable, 1));
+			$$invalidate(16, dataTable = _.dropRight(dataTable, 1));
 			line = _.dropRight(line, 2);
 			annotations = _.dropRight(annotations, 1);
-			$$invalidate(25, lineData_list = _.dropRight(lineData_list, 1));
+			$$invalidate(24, lineData_list = _.dropRight(lineData_list, 1));
 		}
 
 		Plotly.relayout(graphDiv, { annotations, shapes: line });
@@ -41299,36 +41408,36 @@ function instance$T($$self, $$props, $$invalidate) {
 
 	function filebrowser_currentLocation_binding(value) {
 		theoryLocation = value;
-		$$invalidate(10, theoryLocation);
+		$$invalidate(9, theoryLocation);
 	}
 
 	function filebrowser_fileChecked_binding(value_1) {
 		theoryfilesChecked = value_1;
-		$$invalidate(7, theoryfilesChecked);
+		$$invalidate(6, theoryfilesChecked);
 	}
 
 	const click_handler = e => plotData({ e, filetype: "theory" });
 
 	function quickview0_active_binding(value) {
 		showTheoryFiles = value;
-		$$invalidate(9, showTheoryFiles);
+		$$invalidate(8, showTheoryFiles);
 	}
 
 	function filebrowser_currentLocation_binding_1(value) {
 		OPOLocation = value;
-		$$invalidate(38, OPOLocation);
+		$$invalidate(37, OPOLocation);
 	}
 
 	function filebrowser_fileChecked_binding_1(value_1) {
 		OPOfilesChecked = value_1;
-		$$invalidate(39, OPOfilesChecked);
+		$$invalidate(38, OPOfilesChecked);
 	}
 
 	const click_handler_1 = e => plotData({ e, filetype: "opofile" });
 
 	function quickview1_active_binding(value_1) {
 		showOPOFiles = value_1;
-		$$invalidate(37, showOPOFiles);
+		$$invalidate(36, showOPOFiles);
 	}
 
 	const click_handler_2 = e => plotData({
@@ -41358,42 +41467,42 @@ function instance$T($$self, $$props, $$invalidate) {
 
 	function customcheckbox_selected_binding(value_1) {
 		onlyFinalSpectrum = value_1;
-		$$invalidate(23, onlyFinalSpectrum);
+		$$invalidate(22, onlyFinalSpectrum);
 	}
 
 	function customiconswitch0_toggler_binding(value_2) {
 		openShell = value_2;
-		$$invalidate(11, openShell);
+		$$invalidate(10, openShell);
 	}
 
 	const click_handler_5 = () => $$invalidate(2, toggleRow = !toggleRow);
 
 	const click_handler_6 = () => {
-		$$invalidate(9, showTheoryFiles = false);
+		$$invalidate(8, showTheoryFiles = false);
 		$$invalidate(0, fileChecked = []);
-		$$invalidate(37, showOPOFiles = !showOPOFiles);
+		$$invalidate(36, showOPOFiles = !showOPOFiles);
 	};
 
 	function customiconswitch1_toggler_binding(value_3) {
 		opoPlotted = value_3;
-		$$invalidate(22, opoPlotted);
+		$$invalidate(21, opoPlotted);
 	}
 
 	const click_handler_7 = () => {
-		$$invalidate(37, showOPOFiles = false);
-		$$invalidate(9, showTheoryFiles = !showTheoryFiles);
+		$$invalidate(36, showOPOFiles = false);
+		$$invalidate(8, showTheoryFiles = !showTheoryFiles);
 	};
 
 	function textfield1_value_binding(value_4) {
 		sigma = value_4;
-		$$invalidate(5, sigma);
+		$$invalidate(4, sigma);
 	}
 
 	const change_handler = e => plotData({ e, filetype: "theory" });
 
 	function textfield2_value_binding(value_5) {
 		scale = value_5;
-		$$invalidate(6, scale);
+		$$invalidate(5, scale);
 	}
 
 	const change_handler_1 = e => plotData({ e, filetype: "theory" });
@@ -41409,52 +41518,52 @@ function instance$T($$self, $$props, $$invalidate) {
 
 	function customradio_selected_binding(value_6) {
 		normMethod = value_6;
-		$$invalidate(12, normMethod);
+		$$invalidate(11, normMethod);
 	}
 
 	function customselect_picked_binding(value) {
 		output_name = value;
-		$$invalidate(16, output_name);
+		$$invalidate(15, output_name);
 	}
 
 	function customswitch0_selected_binding(value_1) {
 		overwrite_expfit = value_1;
-		$$invalidate(14, overwrite_expfit);
+		$$invalidate(13, overwrite_expfit);
 	}
 
 	function customswitch1_selected_binding(value_2) {
 		collectData = value_2;
-		$$invalidate(24, collectData);
+		$$invalidate(23, collectData);
 	}
 
 	const click_handler_9 = e => plotData({ e, filetype: "exp_fit" });
-	const click_handler_10 = e => $$invalidate(26, toggleDoubleGaussRow = !toggleDoubleGaussRow);
+	const click_handler_10 = e => $$invalidate(25, toggleDoubleGaussRow = !toggleDoubleGaussRow);
 	const click_handler_11 = e => plotData({ e, filetype: "get_err" });
 
 	const click_handler_12 = e => {
-		$$invalidate(25, lineData_list = []);
+		$$invalidate(24, lineData_list = []);
 		createToast$1("Line collection restted", "warning");
 	};
 
-	const click_handler_13 = () => $$invalidate(33, toggleFindPeaksRow = !toggleFindPeaksRow);
+	const click_handler_13 = () => $$invalidate(32, toggleFindPeaksRow = !toggleFindPeaksRow);
 
 	function textfield0_value_binding_1(value_3) {
 		peak_prominence = value_3;
-		$$invalidate(36, peak_prominence);
+		$$invalidate(35, peak_prominence);
 	}
 
 	const change_handler_2 = e => plotData({ e, filetype: "find_peaks" });
 
 	function textfield1_value_binding_1(value_4) {
 		peak_width = value_4;
-		$$invalidate(35, peak_width);
+		$$invalidate(34, peak_width);
 	}
 
 	const change_handler_3 = e => plotData({ e, filetype: "find_peaks" });
 
 	function textfield2_value_binding_1(value_5) {
 		peak_height = value_5;
-		$$invalidate(34, peak_height);
+		$$invalidate(33, peak_height);
 	}
 
 	const change_handler_4 = e => plotData({ e, filetype: "find_peaks" });
@@ -41463,75 +41572,75 @@ function instance$T($$self, $$props, $$invalidate) {
 
 	function textfield3_value_binding(value_6) {
 		amp1 = value_6;
-		$$invalidate(27, amp1);
+		$$invalidate(26, amp1);
 	}
 
 	function textfield4_value_binding(value_7) {
 		amp2 = value_7;
-		$$invalidate(28, amp2);
+		$$invalidate(27, amp2);
 	}
 
 	function textfield5_value_binding(value_8) {
 		sig1 = value_8;
-		$$invalidate(31, sig1);
+		$$invalidate(30, sig1);
 	}
 
 	function textfield6_value_binding(value_9) {
 		sig2 = value_9;
-		$$invalidate(32, sig2);
+		$$invalidate(31, sig2);
 	}
 
 	function textfield7_value_binding(value_10) {
 		cen1 = value_10;
-		$$invalidate(29, cen1);
+		$$invalidate(28, cen1);
 	}
 
 	function textfield8_value_binding(value_11) {
 		cen2 = value_11;
-		$$invalidate(30, cen2);
+		$$invalidate(29, cen2);
 	}
 
 	const click_handler_16 = e => plotData({ e, filetype: "double_peak" });
 
 	function customcheckbox0_selected_binding(value_12) {
 		show_dataTable_only_averaged = value_12;
-		$$invalidate(19, show_dataTable_only_averaged);
+		$$invalidate(18, show_dataTable_only_averaged);
 	}
 
 	function customcheckbox1_selected_binding(value_13) {
 		show_dataTable_only_weighted_averaged = value_13;
-		$$invalidate(21, show_dataTable_only_weighted_averaged);
+		$$invalidate(20, show_dataTable_only_weighted_averaged);
 	}
 
 	function customcheckbox2_selected_binding(value_14) {
 		keepTable = value_14;
-		$$invalidate(20, keepTable);
+		$$invalidate(19, keepTable);
 	}
 
 	const click_handler_17 = () => {
-		$$invalidate(17, dataTable = window._.dropRight(dataTable, 1));
-		$$invalidate(25, lineData_list = window._.dropRight(lineData_list, 1));
+		$$invalidate(16, dataTable = window._.dropRight(dataTable, 1));
+		$$invalidate(24, lineData_list = window._.dropRight(lineData_list, 1));
 
 		if (show_dataTable_only_averaged) {
-			$$invalidate(18, dataTable_avg = window._.dropRight(dataTable_avg, 3));
-			$$invalidate(15, line_index_count--, line_index_count);
+			$$invalidate(17, dataTable_avg = window._.dropRight(dataTable_avg, 3));
+			$$invalidate(14, line_index_count--, line_index_count);
 		}
 	};
 
 	const click_handler_18 = () => {
-		$$invalidate(17, dataTable = $$invalidate(18, dataTable_avg = []));
-		$$invalidate(15, line_index_count = 0);
-		$$invalidate(25, lineData_list = []);
+		$$invalidate(16, dataTable = $$invalidate(17, dataTable_avg = []));
+		$$invalidate(14, line_index_count = 0);
+		$$invalidate(24, lineData_list = []);
 	};
 
 	function reportlayout_currentLocation_binding(value_15) {
 		currentLocation = value_15;
-		$$invalidate(4, currentLocation);
+		$$invalidate(3, currentLocation);
 	}
 
 	function layout_currentLocation_binding(value_2) {
 		currentLocation = value_2;
-		$$invalidate(4, currentLocation);
+		$$invalidate(3, currentLocation);
 	}
 
 	function layout_fileChecked_binding(value_3) {
@@ -41547,61 +41656,61 @@ function instance$T($$self, $$props, $$invalidate) {
 		if ("fileChecked" in $$props) $$invalidate(0, fileChecked = $$props.fileChecked);
 		if ("delta" in $$props) $$invalidate(1, delta = $$props.delta);
 		if ("toggleRow" in $$props) $$invalidate(2, toggleRow = $$props.toggleRow);
-		if ("plottedFiles" in $$props) $$invalidate(3, plottedFiles = $$props.plottedFiles);
-		if ("currentLocation" in $$props) $$invalidate(4, currentLocation = $$props.currentLocation);
-		if ("sigma" in $$props) $$invalidate(5, sigma = $$props.sigma);
-		if ("scale" in $$props) $$invalidate(6, scale = $$props.scale);
-		if ("theoryfilesChecked" in $$props) $$invalidate(7, theoryfilesChecked = $$props.theoryfilesChecked);
-		if ("show_theoryplot" in $$props) $$invalidate(8, show_theoryplot = $$props.show_theoryplot);
-		if ("showTheoryFiles" in $$props) $$invalidate(9, showTheoryFiles = $$props.showTheoryFiles);
-		if ("theoryLocation" in $$props) $$invalidate(10, theoryLocation = $$props.theoryLocation);
-		if ("openShell" in $$props) $$invalidate(11, openShell = $$props.openShell);
-		if ("normMethod" in $$props) $$invalidate(12, normMethod = $$props.normMethod);
+		if ("currentLocation" in $$props) $$invalidate(3, currentLocation = $$props.currentLocation);
+		if ("sigma" in $$props) $$invalidate(4, sigma = $$props.sigma);
+		if ("scale" in $$props) $$invalidate(5, scale = $$props.scale);
+		if ("theoryfilesChecked" in $$props) $$invalidate(6, theoryfilesChecked = $$props.theoryfilesChecked);
+		if ("show_theoryplot" in $$props) $$invalidate(7, show_theoryplot = $$props.show_theoryplot);
+		if ("showTheoryFiles" in $$props) $$invalidate(8, showTheoryFiles = $$props.showTheoryFiles);
+		if ("theoryLocation" in $$props) $$invalidate(9, theoryLocation = $$props.theoryLocation);
+		if ("openShell" in $$props) $$invalidate(10, openShell = $$props.openShell);
+		if ("normMethod" in $$props) $$invalidate(11, normMethod = $$props.normMethod);
 		if ("normMethod_datas" in $$props) normMethod_datas = $$props.normMethod_datas;
-		if ("graphPlotted" in $$props) $$invalidate(13, graphPlotted = $$props.graphPlotted);
-		if ("overwrite_expfit" in $$props) $$invalidate(14, overwrite_expfit = $$props.overwrite_expfit);
+		if ("graphPlotted" in $$props) $$invalidate(12, graphPlotted = $$props.graphPlotted);
+		if ("overwrite_expfit" in $$props) $$invalidate(13, overwrite_expfit = $$props.overwrite_expfit);
 		if ("line" in $$props) line = $$props.line;
 		if ("index" in $$props) $$invalidate(44, index = $$props.index);
 		if ("annotations" in $$props) annotations = $$props.annotations;
 		if ("plot_trace_added" in $$props) $$invalidate(54, plot_trace_added = $$props.plot_trace_added);
 		if ("double_peak_active" in $$props) $$invalidate(55, double_peak_active = $$props.double_peak_active);
-		if ("line_index_count" in $$props) $$invalidate(15, line_index_count = $$props.line_index_count);
-		if ("output_name" in $$props) $$invalidate(16, output_name = $$props.output_name);
+		if ("line_index_count" in $$props) $$invalidate(14, line_index_count = $$props.line_index_count);
+		if ("output_name" in $$props) $$invalidate(15, output_name = $$props.output_name);
 		if ("dataTableHead" in $$props) $$invalidate(45, dataTableHead = $$props.dataTableHead);
-		if ("dataTable" in $$props) $$invalidate(17, dataTable = $$props.dataTable);
-		if ("dataTable_avg" in $$props) $$invalidate(18, dataTable_avg = $$props.dataTable_avg);
-		if ("show_dataTable_only_averaged" in $$props) $$invalidate(19, show_dataTable_only_averaged = $$props.show_dataTable_only_averaged);
-		if ("keepTable" in $$props) $$invalidate(20, keepTable = $$props.keepTable);
-		if ("show_dataTable_only_weighted_averaged" in $$props) $$invalidate(21, show_dataTable_only_weighted_averaged = $$props.show_dataTable_only_weighted_averaged);
-		if ("opoPlotted" in $$props) $$invalidate(22, opoPlotted = $$props.opoPlotted);
-		if ("onlyFinalSpectrum" in $$props) $$invalidate(23, onlyFinalSpectrum = $$props.onlyFinalSpectrum);
-		if ("collectData" in $$props) $$invalidate(24, collectData = $$props.collectData);
-		if ("lineData_list" in $$props) $$invalidate(25, lineData_list = $$props.lineData_list);
-		if ("toggleDoubleGaussRow" in $$props) $$invalidate(26, toggleDoubleGaussRow = $$props.toggleDoubleGaussRow);
+		if ("dataTable" in $$props) $$invalidate(16, dataTable = $$props.dataTable);
+		if ("dataTable_avg" in $$props) $$invalidate(17, dataTable_avg = $$props.dataTable_avg);
+		if ("show_dataTable_only_averaged" in $$props) $$invalidate(18, show_dataTable_only_averaged = $$props.show_dataTable_only_averaged);
+		if ("keepTable" in $$props) $$invalidate(19, keepTable = $$props.keepTable);
+		if ("show_dataTable_only_weighted_averaged" in $$props) $$invalidate(20, show_dataTable_only_weighted_averaged = $$props.show_dataTable_only_weighted_averaged);
+		if ("opoPlotted" in $$props) $$invalidate(21, opoPlotted = $$props.opoPlotted);
+		if ("onlyFinalSpectrum" in $$props) $$invalidate(22, onlyFinalSpectrum = $$props.onlyFinalSpectrum);
+		if ("collectData" in $$props) $$invalidate(23, collectData = $$props.collectData);
+		if ("lineData_list" in $$props) $$invalidate(24, lineData_list = $$props.lineData_list);
+		if ("toggleDoubleGaussRow" in $$props) $$invalidate(25, toggleDoubleGaussRow = $$props.toggleDoubleGaussRow);
 		if ("weighted_error" in $$props) weighted_error = $$props.weighted_error;
 		if ("err_data1_plot" in $$props) err_data1_plot = $$props.err_data1_plot;
-		if ("amp1" in $$props) $$invalidate(27, amp1 = $$props.amp1);
-		if ("amp2" in $$props) $$invalidate(28, amp2 = $$props.amp2);
-		if ("cen1" in $$props) $$invalidate(29, cen1 = $$props.cen1);
-		if ("cen2" in $$props) $$invalidate(30, cen2 = $$props.cen2);
-		if ("sig1" in $$props) $$invalidate(31, sig1 = $$props.sig1);
-		if ("sig2" in $$props) $$invalidate(32, sig2 = $$props.sig2);
-		if ("toggleFindPeaksRow" in $$props) $$invalidate(33, toggleFindPeaksRow = $$props.toggleFindPeaksRow);
-		if ("peak_height" in $$props) $$invalidate(34, peak_height = $$props.peak_height);
-		if ("peak_width" in $$props) $$invalidate(35, peak_width = $$props.peak_width);
-		if ("peak_prominence" in $$props) $$invalidate(36, peak_prominence = $$props.peak_prominence);
+		if ("amp1" in $$props) $$invalidate(26, amp1 = $$props.amp1);
+		if ("amp2" in $$props) $$invalidate(27, amp2 = $$props.amp2);
+		if ("cen1" in $$props) $$invalidate(28, cen1 = $$props.cen1);
+		if ("cen2" in $$props) $$invalidate(29, cen2 = $$props.cen2);
+		if ("sig1" in $$props) $$invalidate(30, sig1 = $$props.sig1);
+		if ("sig2" in $$props) $$invalidate(31, sig2 = $$props.sig2);
+		if ("toggleFindPeaksRow" in $$props) $$invalidate(32, toggleFindPeaksRow = $$props.toggleFindPeaksRow);
+		if ("peak_height" in $$props) $$invalidate(33, peak_height = $$props.peak_height);
+		if ("peak_width" in $$props) $$invalidate(34, peak_width = $$props.peak_width);
+		if ("peak_prominence" in $$props) $$invalidate(35, peak_prominence = $$props.peak_prominence);
 		if ("style" in $$props) $$invalidate(50, style = $$props.style);
-		if ("showOPOFiles" in $$props) $$invalidate(37, showOPOFiles = $$props.showOPOFiles);
-		if ("OPOLocation" in $$props) $$invalidate(38, OPOLocation = $$props.OPOLocation);
-		if ("OPOfilesChecked" in $$props) $$invalidate(39, OPOfilesChecked = $$props.OPOfilesChecked);
+		if ("showOPOFiles" in $$props) $$invalidate(36, showOPOFiles = $$props.showOPOFiles);
+		if ("OPOLocation" in $$props) $$invalidate(37, OPOLocation = $$props.OPOLocation);
+		if ("OPOfilesChecked" in $$props) $$invalidate(38, OPOfilesChecked = $$props.OPOfilesChecked);
 		if ("opoExpFit" in $$props) $$invalidate(58, opoExpFit = $$props.opoExpFit);
-		if ("felixfiles" in $$props) $$invalidate(40, felixfiles = $$props.felixfiles);
-		if ("theoryfiles" in $$props) $$invalidate(41, theoryfiles = $$props.theoryfiles);
-		if ("dataTable_weighted_avg" in $$props) $$invalidate(42, dataTable_weighted_avg = $$props.dataTable_weighted_avg);
-		if ("opofiles" in $$props) $$invalidate(43, opofiles = $$props.opofiles);
+		if ("felixfiles" in $$props) $$invalidate(39, felixfiles = $$props.felixfiles);
+		if ("theoryfiles" in $$props) $$invalidate(40, theoryfiles = $$props.theoryfiles);
+		if ("dataTable_weighted_avg" in $$props) $$invalidate(41, dataTable_weighted_avg = $$props.dataTable_weighted_avg);
+		if ("opofiles" in $$props) $$invalidate(42, opofiles = $$props.opofiles);
 		if ("$modalContent" in $$props) modalContent.set($modalContent = $$props.$modalContent);
 		if ("$activated" in $$props) activated.set($activated = $$props.$activated);
 		if ("graphDiv" in $$props) graphDiv = $$props.graphDiv;
+		if ("plottedFiles" in $$props) $$invalidate(43, plottedFiles = $$props.plottedFiles);
 	};
 
 	let felixfiles;
@@ -41609,29 +41718,30 @@ function instance$T($$self, $$props, $$invalidate) {
 	let dataTable_weighted_avg;
 	let opofiles;
 	let graphDiv;
+	let plottedFiles;
 
 	$$self.$$.update = () => {
-		if ($$self.$$.dirty[0] & /*fileChecked, currentLocation*/ 17) {
-			 $$invalidate(40, felixfiles = fileChecked.map(file => path.resolve(currentLocation, file)));
+		if ($$self.$$.dirty[0] & /*fileChecked, currentLocation*/ 9) {
+			 $$invalidate(39, felixfiles = fileChecked.map(file => path.resolve(currentLocation, file)));
 		}
 
-		if ($$self.$$.dirty[0] & /*currentLocation*/ 16) {
+		if ($$self.$$.dirty[0] & /*currentLocation*/ 8) {
 			 console.log(`${filetype} Update: \n${currentLocation}`);
 		}
 
-		if ($$self.$$.dirty[0] & /*theoryfilesChecked*/ 128) {
+		if ($$self.$$.dirty[0] & /*theoryfilesChecked*/ 64) {
 			 console.log("Theory files: ", theoryfilesChecked);
 		}
 
-		if ($$self.$$.dirty[0] & /*theoryLocation*/ 1024) {
+		if ($$self.$$.dirty[0] & /*theoryLocation*/ 512) {
 			 console.log("Theory Location", theoryLocation);
 		}
 
-		if ($$self.$$.dirty[0] & /*theoryfilesChecked, theoryLocation*/ 1152) {
-			 $$invalidate(41, theoryfiles = theoryfilesChecked.map(file => path.resolve(theoryLocation, file)));
+		if ($$self.$$.dirty[0] & /*theoryfilesChecked, theoryLocation*/ 576) {
+			 $$invalidate(40, theoryfiles = theoryfilesChecked.map(file => path.resolve(theoryLocation, file)));
 		}
 
-		if ($$self.$$.dirty[0] & /*openShell*/ 2048) {
+		if ($$self.$$.dirty[0] & /*openShell*/ 1024) {
 			 console.log("Open Shell: ", filetype, openShell);
 		}
 
@@ -41643,28 +41753,34 @@ function instance$T($$self, $$props, $$invalidate) {
 			 console.log("Double peak active: ", double_peak_active);
 		}
 
-		if ($$self.$$.dirty[0] & /*dataTable_avg*/ 262144) {
-			 $$invalidate(42, dataTable_weighted_avg = dataTable_avg.filter(file => file.name == "weighted_mean"));
+		if ($$self.$$.dirty[0] & /*dataTable_avg*/ 131072) {
+			 $$invalidate(41, dataTable_weighted_avg = dataTable_avg.filter(file => file.name == "weighted_mean"));
 		}
 
-		if ($$self.$$.dirty[0] & /*dataTable*/ 131072) {
+		if ($$self.$$.dirty[0] & /*dataTable*/ 65536) {
 			 console.log("dataTable", dataTable);
 		}
 
-		if ($$self.$$.dirty[0] & /*dataTable_avg*/ 262144) {
+		if ($$self.$$.dirty[0] & /*dataTable_avg*/ 131072) {
 			 console.log("dataTable_avg", dataTable_avg);
 		}
 
-		if ($$self.$$.dirty[1] & /*dataTable_weighted_avg*/ 2048) {
+		if ($$self.$$.dirty[1] & /*dataTable_weighted_avg*/ 1024) {
 			 console.log("dataTable_weighted_avg", dataTable_weighted_avg);
 		}
 
-		if ($$self.$$.dirty[1] & /*OPOfilesChecked, OPOLocation*/ 384) {
-			 $$invalidate(43, opofiles = OPOfilesChecked.map(file => path.resolve(OPOLocation, file)));
+		if ($$self.$$.dirty[1] & /*OPOfilesChecked, OPOLocation*/ 192) {
+			 $$invalidate(42, opofiles = OPOfilesChecked.map(file => path.resolve(OPOLocation, file)));
 		}
 
 		if ($$self.$$.dirty[1] & /*opoExpFit*/ 134217728) {
 			 graphDiv = opoExpFit ? "opoRelPlot" : "avgplot";
+		}
+
+		if ($$self.$$.dirty[0] & /*fileChecked*/ 1 | $$self.$$.dirty[1] & /*opoExpFit, OPOfilesChecked*/ 134217856) {
+			 $$invalidate(43, plottedFiles = opoExpFit
+			? OPOfilesChecked.map(file => file.split(".")[0]) || []
+			: fileChecked.map(file => file.split(".")[0]) || []);
 		}
 	};
 
@@ -41672,7 +41788,6 @@ function instance$T($$self, $$props, $$invalidate) {
 		fileChecked,
 		delta,
 		toggleRow,
-		plottedFiles,
 		currentLocation,
 		sigma,
 		scale,
@@ -41713,6 +41828,7 @@ function instance$T($$self, $$props, $$invalidate) {
 		theoryfiles,
 		dataTable_weighted_avg,
 		opofiles,
+		plottedFiles,
 		index,
 		dataTableHead,
 		replot,
@@ -73931,7 +74047,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
-
+//# sourceMappingURL=compiler.js.map
 });
 
 var svelte = unwrapExports(compiler);

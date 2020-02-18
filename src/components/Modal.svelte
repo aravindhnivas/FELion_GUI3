@@ -27,6 +27,7 @@
 <style>
 
 .modal-card-body {color: black;}
+.modal-card {width: 60vw;}
 </style>
 
 <div class="modal" class:is-active={active}>
@@ -40,7 +41,7 @@
     <section class="modal-card-body"> {$modalContent} </section>
 
     <footer class="modal-card-foot">
-      <button class="button is-link" on:click={()=>active = false}>Cancel</button>
+      <button class="button is-link" style="margin-left:auto;" on:click={()=>active = false}>Cancel</button>
     </footer>
 
   </div>

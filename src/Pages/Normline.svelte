@@ -34,7 +34,7 @@
     let fileChecked=[], delta=1, toggleRow=false;
 
     $: felixfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
-    let plottedFiles = []
+    // let plottedFiles = []
     let currentLocation = localStorage[`${filetype}_location`] || ""
     
     $: console.log(`${filetype} Update: \n${currentLocation}`)
@@ -90,43 +90,39 @@
         }
     }
     
-    function plotData({e=null, filetype="felix", general=null}={}){
+    async function plotData({e=null, filetype="felix", general=null}={}){
         
         if (fileChecked.length === 0 && filetype === "felix") {return createToast("No files selected", "danger")}
 
         if (filetype == "general") {
-
             console.log("Sending general arguments: ", general.args)
             let py = spawn(
                 localStorage["pythonpath"],
                 [path.join(localStorage["pythonscript"], general.pyfile), general.args],
                 { detached: true, stdio: 'ignore', shell: openShell }
+
             )
-
-            py.on("close", ()=>{
-                console.log("Closed")
-            })
-
+            py.on("close", ()=>{ console.log("Closed") })
             py.unref()
             py.ref()
-            createToast("General process sent. Expect an response soon...")
-            return;
+            return createToast("General process sent. Expect an response soon...")
         }
-
 
         let expfit_args = []
-
         if (filetype == "felix") {graphPlotted = false, output_name = "averaged"}
+
         else if (filetype == "exp_fit") {
+            if (index.length < 2) { return createToast("Range not found!!. Select a range using Box-select", "danger") }
 
-            if (index.length < 2) {
-                return createToast("Range not found!!. Select a range using Box-select", "danger")
-            }
+            if (opoExpFit) { 
 
-            if (opoExpFit) {
                 expfit_args = [...opofiles, overwrite_expfit, output_name, "Log", OPOLocation, ...index]
-            } else {expfit_args = [...felixfiles, overwrite_expfit, output_name, normMethod, currentLocation, ...index]}
+             } 
+            else {
+                expfit_args = [...felixfiles, overwrite_expfit, output_name, normMethod, currentLocation, ...index]
+            }
         }
+
         else if (filetype == "opofile") {opoPlotted = true}
         else if (filetype == "get_err") {
             if (double_peak_active) {
@@ -146,17 +142,19 @@
             find_peaks: {pyfile:"fit_all.py" , args:[output_name, currentLocation, normMethod, peak_prominence,  peak_width, peak_height,  ...felixfiles]},
             theory: {pyfile:"theory.py" , args:[...theoryfiles, normMethod, sigma, scale, theoryLocation, "run"]},
             get_err: {pyfile:"weighted_error.py" , args:lineData_list},
-            double_peak: {pyfile:"double_gaussian.py" , 
-                args:[amp1, amp2, cen1, cen2, sig1, sig2, ...felixfiles, overwrite_expfit, output_name, 
-                    normMethod, currentLocation, ...index, 
-                ]},
-        
+            double_peak: {pyfile:"double_gaussian.py" ,
+                args: opoExpFit
+                ? [amp1, amp2, cen1, cen2, sig1, sig2, ...opofiles, overwrite_expfit, output_name, "Log", OPOLocation, ...index ]
+                : [amp1, amp2, cen1, cen2, sig1, sig2, ...felixfiles, overwrite_expfit, output_name, normMethod, currentLocation, ...index ]}
         }
 
         let {pyfile, args} = pyfileInfo[filetype]
+        console.log(pyfileInfo[filetype])
+
         let py;
 
         try {py = spawn( localStorage["pythonpath"], [path.resolve(localStorage["pythonscript"], pyfile), args] )}
+
         catch (err) {
             $modalContent = "Error accessing python. Set python location properly in Settings"
             $activated = true
@@ -288,14 +286,14 @@
 
                         let avgplot = document.getElementById("avgplot")
                         avgplot.on("plotly_selected", (data) => {
+                            
                             if (!data) console.log("No data available to fit")
+
                             else {
                                 console.log(data)
                                 opoExpFit = false
                                 let { range } = data
-                                plottedFiles = fileChecked.map(file=>file.split(".")[0])
-
-                                output_name = data.points[0].data.name.split(".")[0]
+                                setTimeout(()=>output_name = data.points[0].data.name.split(".")[0], 500)
                                 index = range.x
                                 console.log(`Selected file: ${output_name}`)
                                 console.log(`Index selected: ${index}`)
@@ -308,11 +306,15 @@
                         
 
                     } else if (filetype == "opofile") {
+
+                        opoExpFit = true
                         plot("OPO spectrum", "Wavenumber (cm-1)", "Counts", dataFromPython["real"], "opoplot")
                         plot("OPO Calibration", "Set Wavenumber (cm-1)", "Measured Wavenumber (cm-1)", dataFromPython["SA"], "opoSA")
+
                         plot("OPO spectrum: Depletion (%)", "Wavenumber (cm-1)", "Depletion (%)", dataFromPython["relative"], "opoRelPlot")
                         
                         let opoRelPlot = document.getElementById("opoRelPlot")
+                        
                         opoRelPlot.on("plotly_selected", (data) => {
 
                             if (!data) console.log("No data available to fit")
@@ -320,16 +322,13 @@
                                 console.log(data)
                                 opoExpFit = true
                                 let { range } = data
-                                plottedFiles = OPOfilesChecked.map(file=>file.split(".")[0])
-
-                                output_name = data.points[0].data.name.split(".")[0]
+                                setTimeout(()=>output_name = data.points[0].data.name.split(".")[0], 500)
                                 index = range.x
-                                
                                 console.log(`Selected file: ${output_name}`)
+                                
                                 console.log(`Index selected: ${index}`)
                             }
                         })
-
                         showOPOFiles = false, graphPlotted = true
                         
                     } else if (filetype == "theory") {
@@ -497,6 +496,7 @@
     let showOPOFiles = false, OPOLocation = currentLocation, OPOfilesChecked = [], opoExpFit = false
     $: opofiles = OPOfilesChecked.map(file=>path.resolve(OPOLocation, file))
     $: graphDiv = opoExpFit ? "opoRelPlot" : "avgplot"
+    $: plottedFiles = opoExpFit ? OPOfilesChecked.map(file=>file.split(".")[0]) || [] : fileChecked.map(file=>file.split(".")[0]) || []
 
 </script>
 
