@@ -27,5 +27,4 @@ def felix_read_file(felixfile):
     file = np.genfromtxt(f'./DATA/{felixfile}')
     if felixfile.endswith('.felix'): data = file[:,0], file[:,2], file[:, 3]
     elif felixfile.endswith('.cfelix'): data = file[:,0], file[:,1], file[:, 2]
-    # else: return showerror('FELIX FILE', 'Please select a .felix or .cfelix file')
     return np.take(data, data[0].argsort(), 1)

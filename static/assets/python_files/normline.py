@@ -114,8 +114,7 @@ class normplot:
             ys_r = np.append(ys_r, relative_depletion)
 
             # Wavelength and intensity of individuals with binning
-            wavelength, intensity = self.felix_binning(
-                wavelength, intensity)
+            wavelength, intensity = self.felix_binning(wavelength, intensity)
 
             wavelength_rel, relative_depletion = self.felix_binning(
                 wavelength_rel, relative_depletion)
@@ -125,6 +124,7 @@ class normplot:
 
             ################### Spectrum Analyser #################################
 
+            # print(self.saCal.get_data().size)
             wn, sa = self.saCal.get_data()
             X = np.arange(wn.min(), wn.max(), 1)
             
@@ -272,12 +272,7 @@ class normplot:
 
         # Exporting averaged.dat file
         self.export_file(f"averaged", binns, intens, intens_r, energyJ_norm)
-        
-        # print(f"Before JSON DATA: {dataToSend}")
-        # dataJson = json.dumps(dataToSend)
-        # print(dataJson)
         sendData(dataToSend)
-        # print("DONE")
 
 
     def inten_per_photon(self, wn, inten): return (np.array(wn) * np.array(inten)) / 1e3
@@ -290,17 +285,14 @@ class normplot:
         powCal = PowerCalibrator(powerfile)
         baseCal = BaselineCalibrator(basefile)
         self.saCal = SpectrumAnalyserCalibrator(felixfile)
-
         wavelength = self.saCal.sa_cm(data[0])
 
-        # self.nshots = powCal.shots(1.0)
-        # self.total_power = powCal.power(data[0])*powCal.shots(data[0])
         self.power_measured = powCal.power(data[0])
         self.total_power = self.power_measured*self.nshots
+
         counts = data[1]
         baseCounts = baseCal.val(data[0])
         ratio = counts/baseCounts
-        
         # Normalise the intensity
         # multiply by 1000 because of mJ but ONLY FOR PD!!!
         if PD:
@@ -309,8 +301,6 @@ class normplot:
             intensity = (baseCounts-counts)/self.total_power
         
         relative_depletion =(1-ratio)*100
-        # relative_depletion = (baseCounts-counts)/total_power # For power normalising
-
         return wavelength, intensity, data[1], relative_depletion
 
     def export_file(self, fname, wn, inten, relative_depletion, energyPerPhoton, raw_intensity=None):

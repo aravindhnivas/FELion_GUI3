@@ -1,26 +1,24 @@
+
 import numpy as np
 from scipy.optimize import leastsq
 from FELion_baseline_old import felix_read_file
-
 ####################################### Modules Imported #######################################
-
 class SpectrumAnalyserCalibrator(object):
-    def __init__(self, felixfile, fit='linear', ms=None):
+    def __init__(self, felixfile=None, fit='linear', ms=None, data=None, manual=False):
         """
         Spectrum analyser calibration initialisation
         fit can be either linear, or cubic
         """
-
         self.ms = ms
 
-        data = felix_read_file(felixfile)
+        lowWn = 100 # discard wn below this value
 
-        # Spectrum analyser calibration
-        # Added 6.10.16:
-        # Spectrum analyser is calibrated only above 540 cm-1, because for lower values SA gives bulshit values!
-        # In case, someone does not follow the SA, value of SA < 100 will get also excluded from the fit!!!!
-        sa_x = np.copy(data[0][np.logical_and(data[0] > 100, data[2] > 100)])
-        sa_y = np.copy(data[2][np.logical_and(data[0] > 100, data[2] > 100)])
+        if manual: sa_x, sa_y = data
+
+        else:
+            data = felix_read_file(felixfile)
+            sa_x = np.copy(data[0][np.logical_and(data[0] > lowWn, data[2] > lowWn)])
+            sa_y = np.copy(data[2][np.logical_and(data[0] > lowWn, data[2] > lowWn)])
 
         if fit == 'linear':
             p0 = [1.0, 5.0]
@@ -42,8 +40,7 @@ class SpectrumAnalyserCalibrator(object):
             msg = "SA calibration optimal parameters not found: " + mesg
             raise RuntimeError(msg)
         if any(np.diag(cov_p) < 0):
-            raise RuntimeError(
-                "Optimal parameters not found: negative variance")
+            raise RuntimeError( "Optimal parameters not found: negative variance")
 
         chisq = np.dot(info["fvec"], info["fvec"])
         dof = len(info["fvec"]) - len(p)
@@ -54,10 +51,7 @@ class SpectrumAnalyserCalibrator(object):
         self.sigma = sigma
         self.f = fitfunc
         
-        self.data = (data[0][data[2] > 100], data[2][data[2] > 100])
+        if not manual: self.data = (data[0][data[2] > lowWn], data[2][data[2] > lowWn])
 
-    def sa_cm(self, x):
-        return self.f(self.p, x)
-
-    def get_data(self):
-        return self.data
+    def sa_cm(self, x): return self.f(self.p, x)
+    def get_data(self): return self.data

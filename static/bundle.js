@@ -1010,7 +1010,6 @@ var MDCFoundation = /** @class */ (function () {
     };
     return MDCFoundation;
 }());
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -1108,7 +1107,6 @@ var MDCComponent = /** @class */ (function () {
     };
     return MDCComponent;
 }());
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -1160,7 +1158,6 @@ function applyPassive(globalObj, forceRefresh) {
     }
     return supportsPassive_ ? { passive: true } : false;
 }
-//# sourceMappingURL=events.js.map
 
 /**
  * @license
@@ -1207,7 +1204,6 @@ function matches(element, selector) {
         || element.msMatchesSelector;
     return nativeMatches.call(element, selector);
 }
-//# sourceMappingURL=ponyfill.js.map
 
 /**
  * @license
@@ -1256,7 +1252,6 @@ var numbers = {
     PADDING: 10,
     TAP_DELAY_MS: 300,
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * Stores result from supportsCssVariables to avoid redundant processing to
@@ -1332,7 +1327,6 @@ function getNormalizedEventCoords(evt, pageOffset, clientRect) {
     }
     return { x: normalizedX, y: normalizedY };
 }
-//# sourceMappingURL=util.js.map
 
 /**
  * @license
@@ -1787,7 +1781,6 @@ var MDCRippleFoundation = /** @class */ (function (_super) {
     };
     return MDCRippleFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -1893,7 +1886,6 @@ var MDCRipple = /** @class */ (function (_super) {
     };
     return MDCRipple;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -1925,7 +1917,6 @@ var cssClasses$1 = {
 var strings$1 = {
     CONTENT_SELECTOR: '.mdc-tab-indicator__content',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -1987,7 +1978,6 @@ var MDCTabIndicatorFoundation = /** @class */ (function (_super) {
     };
     return MDCTabIndicatorFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -2025,7 +2015,6 @@ var MDCFadingTabIndicatorFoundation = /** @class */ (function (_super) {
     };
     return MDCFadingTabIndicatorFoundation;
 }(MDCTabIndicatorFoundation));
-//# sourceMappingURL=fading-foundation.js.map
 
 /**
  * @license
@@ -2081,7 +2070,6 @@ var MDCSlidingTabIndicatorFoundation = /** @class */ (function (_super) {
     };
     return MDCSlidingTabIndicatorFoundation;
 }(MDCTabIndicatorFoundation));
-//# sourceMappingURL=sliding-foundation.js.map
 
 /**
  * @license
@@ -2145,7 +2133,6 @@ var MDCTabIndicator = /** @class */ (function (_super) {
     };
     return MDCTabIndicator;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -2180,7 +2167,6 @@ var strings$2 = {
     TABINDEX: 'tabIndex',
     TAB_INDICATOR_SELECTOR: '.mdc-tab-indicator',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -2303,7 +2289,6 @@ var MDCTabFoundation = /** @class */ (function (_super) {
     };
     return MDCTabFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -2425,7 +2410,6 @@ var MDCTab = /** @class */ (function (_super) {
     };
     return MDCTab;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 function forwardEventsBuilder(component, additionalEvents = []) {
   const events = [
@@ -4204,7 +4188,6 @@ var strings$3 = {
     AREA_SELECTOR: '.mdc-tab-scroller__scroll-area',
     CONTENT_SELECTOR: '.mdc-tab-scroller__scroll-content',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -4234,7 +4217,6 @@ var MDCTabScrollerRTL = /** @class */ (function () {
     }
     return MDCTabScrollerRTL;
 }());
-//# sourceMappingURL=rtl-scroller.js.map
 
 /**
  * @license
@@ -4303,7 +4285,6 @@ var MDCTabScrollerRTLDefault = /** @class */ (function (_super) {
     };
     return MDCTabScrollerRTLDefault;
 }(MDCTabScrollerRTL));
-//# sourceMappingURL=rtl-default-scroller.js.map
 
 /**
  * @license
@@ -4369,7 +4350,6 @@ var MDCTabScrollerRTLNegative = /** @class */ (function (_super) {
     };
     return MDCTabScrollerRTLNegative;
 }(MDCTabScrollerRTL));
-//# sourceMappingURL=rtl-negative-scroller.js.map
 
 /**
  * @license
@@ -4436,7 +4416,6 @@ var MDCTabScrollerRTLReverse = /** @class */ (function (_super) {
     };
     return MDCTabScrollerRTLReverse;
 }(MDCTabScrollerRTL));
-//# sourceMappingURL=rtl-reverse-scroller.js.map
 
 /**
  * @license
@@ -4763,7 +4742,6 @@ var MDCTabScrollerFoundation = /** @class */ (function (_super) {
     };
     return MDCTabScrollerFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -4810,7 +4788,6 @@ function computeHorizontalScrollbarHeight(documentObj, shouldCacheResult) {
     }
     return horizontalScrollbarHeight;
 }
-//# sourceMappingURL=util.js.map
 
 /**
  * @license
@@ -4918,7 +4895,6 @@ var MDCTabScroller = /** @class */ (function (_super) {
     };
     return MDCTabScroller;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -4962,7 +4938,6 @@ var numbers$1 = {
     HOME_KEYCODE: 36,
     SPACE_KEYCODE: 32,
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -5326,7 +5301,6 @@ var MDCTabBarFoundation = /** @class */ (function (_super) {
     };
     return MDCTabBarFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -5490,7 +5464,6 @@ var MDCTabBar = /** @class */ (function (_super) {
     };
     return MDCTabBar;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\tab-scroller\TabScroller.svelte generated by Svelte v3.17.3 */
 const file$4 = "node_modules\\@smui\\tab-scroller\\TabScroller.svelte";
@@ -7519,7 +7492,6 @@ var strings$6 = {
     ARIA_PRESSED: 'aria-pressed',
     CHANGE_EVENT: 'MDCIconButtonToggle:change',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -7597,7 +7569,6 @@ var MDCIconButtonToggleFoundation = /** @class */ (function (_super) {
     };
     return MDCIconButtonToggleFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -7679,7 +7650,6 @@ var MDCIconButtonToggle = /** @class */ (function (_super) {
     };
     return MDCIconButtonToggle;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\icon-button\IconButton.svelte generated by Svelte v3.17.3 */
 const file$9 = "node_modules\\@smui\\icon-button\\IconButton.svelte";
@@ -8308,7 +8278,6 @@ var cssClasses$5 = {
     LABEL_SHAKE: 'mdc-floating-label--shake',
     ROOT: 'mdc-floating-label',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -8409,7 +8378,6 @@ var MDCFloatingLabelFoundation = /** @class */ (function (_super) {
     };
     return MDCFloatingLabelFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -8475,7 +8443,6 @@ var MDCFloatingLabel = /** @class */ (function (_super) {
     };
     return MDCFloatingLabel;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -8503,7 +8470,6 @@ var cssClasses$6 = {
     LINE_RIPPLE_ACTIVE: 'mdc-line-ripple--active',
     LINE_RIPPLE_DEACTIVATING: 'mdc-line-ripple--deactivating',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -8589,7 +8555,6 @@ var MDCLineRippleFoundation = /** @class */ (function (_super) {
     };
     return MDCLineRippleFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -8658,7 +8623,6 @@ var MDCLineRipple = /** @class */ (function (_super) {
     };
     return MDCLineRipple;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -8694,7 +8658,6 @@ var cssClasses$7 = {
     OUTLINE_NOTCHED: 'mdc-notched-outline--notched',
     OUTLINE_UPGRADED: 'mdc-notched-outline--upgraded',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -8782,7 +8745,6 @@ var MDCNotchedOutlineFoundation = /** @class */ (function (_super) {
     };
     return MDCNotchedOutlineFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -8857,7 +8819,6 @@ var MDCNotchedOutline = /** @class */ (function (_super) {
     };
     return MDCNotchedOutline;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -8887,7 +8848,6 @@ var cssClasses$8 = {
 var strings$9 = {
     ROOT_SELECTOR: "." + cssClasses$8.ROOT,
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -8948,7 +8908,6 @@ var MDCTextFieldCharacterCounterFoundation = /** @class */ (function (_super) {
     };
     return MDCTextFieldCharacterCounterFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -9000,7 +8959,6 @@ var MDCTextFieldCharacterCounter = /** @class */ (function (_super) {
     };
     return MDCTextFieldCharacterCounter;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -9063,7 +9021,6 @@ var VALIDATION_ATTR_WHITELIST = [
 var ALWAYS_FLOAT_TYPES = [
     'color', 'date', 'datetime-local', 'month', 'range', 'time', 'week',
 ];
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -9518,7 +9475,6 @@ var MDCTextFieldFoundation = /** @class */ (function (_super) {
     };
     return MDCTextFieldFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -9552,7 +9508,6 @@ var strings$b = {
     ROLE: 'role',
     ROOT_SELECTOR: "." + cssClasses$a.ROOT,
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -9673,7 +9628,6 @@ var MDCTextFieldHelperTextFoundation = /** @class */ (function (_super) {
     };
     return MDCTextFieldHelperTextFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -9732,7 +9686,6 @@ var MDCTextFieldHelperText = /** @class */ (function (_super) {
     };
     return MDCTextFieldHelperText;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -9763,7 +9716,6 @@ var strings$c = {
 var cssClasses$b = {
     ROOT: 'mdc-text-field__icon',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -9870,7 +9822,6 @@ var MDCTextFieldIconFoundation = /** @class */ (function (_super) {
     };
     return MDCTextFieldIconFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -9930,7 +9881,6 @@ var MDCTextFieldIcon = /** @class */ (function (_super) {
     };
     return MDCTextFieldIcon;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -10367,7 +10317,6 @@ var MDCTextField = /** @class */ (function (_super) {
     };
     return MDCTextField;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\floating-label\FloatingLabel.svelte generated by Svelte v3.17.3 */
 const file$a = "node_modules\\@smui\\floating-label\\FloatingLabel.svelte";
@@ -13613,7 +13562,7 @@ class Textfield extends SvelteComponentDev {
 	}
 }
 
-function e(){}const t=e=>e;function n(e,t){for(const n in t)e[n]=t[n];return e}function s(e){return e()}function i(){return Object.create(null)}function o(e){e.forEach(s);}function a(e){return "function"==typeof e}function c(e,t){return e!=e?t==t:e!==t||e&&"object"==typeof e||"function"==typeof e}function u(e,t,n){if(e){const s=d(e,t,n);return e[0](s)}}function d(e,t,s){return e[1]?n({},n(t.$$scope.ctx,e[1](s?s(t):{}))):t.$$scope.ctx}function p(e,t,s,i){return e[1]?n({},n(t.$$scope.changed||{},e[1](i?i(s):{}))):t.$$scope.changed||{}}function f(e){const t={};for(const n in e)"$"!==n[0]&&(t[n]=e[n]);return t}const m="undefined"!=typeof window;let h=m?()=>window.performance.now():()=>Date.now(),g=m?e=>requestAnimationFrame(e):e;const v=new Set;let $,b=!1;function y(){v.forEach(e=>{e[0](h())||(v.delete(e),e[1]());}),(b=v.size>0)&&g(y);}function x(e){let t;return b||(b=!0,g(y)),{promise:new Promise(n=>{v.add(t=[e,n]);}),abort(){v.delete(t);}}}function w(e,t){e.appendChild(t);}function k(e,t,n){e.insertBefore(t,n||null);}function z(e){e.parentNode.removeChild(e);}function T(e){return document.createElement(e)}function C(e){return document.createTextNode(e)}function P(){return C(" ")}function _$1(){return C("")}function E(e,t,n,s){return e.addEventListener(t,n,s),()=>e.removeEventListener(t,n,s)}function I(e,t,n){null==n?e.removeAttribute(t):e.setAttribute(t,n);}function L(e){return Array.from(e.childNodes)}function B(e,t,n,s){for(let s=0;s<e.length;s+=1){const i=e[s];if(i.nodeName===t){for(let e=0;e<i.attributes.length;e+=1){const t=i.attributes[e];n[t.name]||i.removeAttribute(t.name);}return e.splice(s,1)[0]}}return s?function(e){return document.createElementNS("http://www.w3.org/2000/svg",e)}(t):T(t)}function S(e,t){for(let n=0;n<e.length;n+=1){const s=e[n];if(3===s.nodeType)return s.data=t,e.splice(n,1)[0]}return C(t)}function R(e,t){t=""+t,e.data!==t&&(e.data=t);}function A(e,t,n){e.classList[n?"add":"remove"](t);}function V(e,t){const n=document.createEvent("CustomEvent");return n.initCustomEvent(e,!1,!1,t),n}let M,N=0,F={};function q(e,t,n,s,i,o,a,c=0){const l=16.666/s;let r="{\n";for(let e=0;e<=1;e+=l){const s=t+(n-t)*o(e);r+=100*e+`%{${a(s,1-s)}}\n`;}const u=r+`100% {${a(n,1-n)}}\n}`,d=`__svelte_${function(e){let t=5381,n=e.length;for(;n--;)t=(t<<5)-t^e.charCodeAt(n);return t>>>0}(u)}_${c}`;if(!F[d]){if(!$){const e=T("style");document.head.appendChild(e),$=e.sheet;}F[d]=!0,$.insertRule(`@keyframes ${d} ${u}`,$.cssRules.length);}const p=e.style.animation||"";return e.style.animation=`${p?`${p}, `:""}${d} ${s}ms linear ${i}ms 1 both`,N+=1,d}function U(e,t){e.style.animation=(e.style.animation||"").split(", ").filter(t?e=>e.indexOf(t)<0:e=>-1===e.indexOf("__svelte")).join(", "),t&&!--N&&g(()=>{if(N)return;let e=$.cssRules.length;for(;e--;)$.deleteRule(e);F={};});}function H(e){M=e;}function Y(){if(!M)throw new Error("Function called outside component initialization");return M}function K(e){Y().$$.on_mount.push(e);}function W(){const e=M;return (t,n)=>{const s=e.$$.callbacks[t];if(s){const i=V(t,n);s.slice().forEach(t=>{t.call(e,i);});}}}const Q=[],Z=[],ee=[],te=[],ne=Promise.resolve();let se,ie=!1;function oe(){ie||(ie=!0,ne.then(le));}function ae(){return oe(),ne}function ce(e){ee.push(e);}function le(){const e=new Set;do{for(;Q.length;){const e=Q.shift();H(e),re(e.$$);}for(;Z.length;)Z.pop()();for(let t=0;t<ee.length;t+=1){const n=ee[t];e.has(n)||(n(),e.add(n));}ee.length=0;}while(Q.length);for(;te.length;)te.pop()();ie=!1;}function re(e){e.fragment&&(e.update(e.dirty),o(e.before_update),e.fragment.p(e.dirty,e.ctx),e.dirty=null,e.after_update.forEach(ce));}function ue(){return se||(se=Promise.resolve()).then(()=>{se=null;}),se}function de(e,t,n){e.dispatchEvent(V(`${t?"intro":"outro"}${n}`));}const pe=new Set;let fe;function me(){fe={r:0,c:[],p:fe};}function he(){fe.r||o(fe.c),fe=fe.p;}function ge(e,t){e&&e.i&&(pe.delete(e),e.i(t));}function ve(e,t,n,s){if(e&&e.o){if(pe.has(e))return;pe.add(e),fe.c.push(()=>{pe.delete(e),s&&(n&&e.d(1),s());}),e.o(t);}}const $e={duration:0};const ye="undefined"!=typeof window?window:global;function xe(e,t){const n={},s={},i={$$scope:1};let o=e.length;for(;o--;){const a=e[o],c=t[o];if(c){for(const e in a)e in c||(s[e]=1);for(const e in c)i[e]||(n[e]=c[e],i[e]=1);e[o]=c;}else for(const e in a)i[e]=1;}for(const e in s)e in n||(n[e]=void 0);return n}function we(e,t,n){const{fragment:i,on_mount:c,on_destroy:l,after_update:r}=e.$$;i.m(t,n),ce(()=>{const t=c.map(s).filter(a);l?l.push(...t):o(t),e.$$.on_mount=[];}),r.forEach(ce);}function ke(e,t){e.$$.fragment&&(o(e.$$.on_destroy),e.$$.fragment.d(t),e.$$.on_destroy=e.$$.fragment=null,e.$$.ctx={});}function ze(t,n,s,a,c,l){const r=M;H(t);const u=n.props||{},d=t.$$={fragment:null,ctx:null,props:l,update:e,not_equal:c,bound:i(),on_mount:[],on_destroy:[],before_update:[],after_update:[],context:new Map(r?r.$$.context:[]),callbacks:i(),dirty:null};let p=!1;d.ctx=s?s(t,u,(e,n)=>{d.ctx&&c(d.ctx[e],d.ctx[e]=n)&&(d.bound[e]&&d.bound[e](n),p&&function(e,t){e.$$.dirty||(Q.push(e),oe(),e.$$.dirty=i()),e.$$.dirty[t]=!0;}(t,e));}):u,d.update(),p=!0,o(d.before_update),d.fragment=a(d.ctx),n.target&&(n.hydrate?d.fragment.l(L(n.target)):d.fragment.c(),n.intro&&ge(t.$$.fragment),we(t,n.target,n.anchor),le()),H(r);}class Te{$destroy(){ke(this,1),this.$destroy=e;}$on(e,t){const n=this.$$.callbacks[e]||(this.$$.callbacks[e]=[]);return n.push(t),()=>{const e=n.indexOf(t);-1!==e&&n.splice(e,1);}}$set(){}}function Ee(e){return e<.5?4*e*e*e:.5*Math.pow(2*e-2,3)+1}function Ie(e){const t=e-1;return t*t*t+1}function je(e,{delay:t=0,duration:n=400}){const s=+getComputedStyle(e).opacity;return {delay:t,duration:n,css:e=>`opacity: ${e*s}`}}function Le(e,{delay:t=0,duration:n=400,easing:s=Ie,x:i=0,y:o=0,opacity:a=0}){const c=getComputedStyle(e),l=+c.opacity,r="none"===c.transform?"":c.transform,u=l*(1-a);return {delay:t,duration:n,easing:s,css:(e,t)=>`\n\t\t\ttransform: ${r} translate(${(1-e)*i}px, ${(1-e)*o}px);\n\t\t\topacity: ${l-u*t}`}}var Be=Object.freeze({crossfade:function(e){var{fallback:t}=e,s=function(e,t){var n={};for(var s in e)Object.prototype.hasOwnProperty.call(e,s)&&t.indexOf(s)<0&&(n[s]=e[s]);if(null!=e&&"function"==typeof Object.getOwnPropertySymbols){var i=0;for(s=Object.getOwnPropertySymbols(e);i<s.length;i++)t.indexOf(s[i])<0&&Object.prototype.propertyIsEnumerable.call(e,s[i])&&(n[s[i]]=e[s[i]]);}return n}(e,["fallback"]);const i=new Map,o=new Map;function c(e,i,o){return (c,l)=>(e.set(l.key,{rect:c.getBoundingClientRect()}),()=>{if(i.has(l.key)){const{rect:e}=i.get(l.key);return i.delete(l.key),function(e,t,i){const{delay:o=0,duration:c=(e=>30*Math.sqrt(e)),easing:l=Ie}=n(n({},s),i),r=t.getBoundingClientRect(),u=e.left-r.left,d=e.top-r.top,p=e.width/r.width,f=e.height/r.height,m=Math.sqrt(u*u+d*d),h=getComputedStyle(t),g="none"===h.transform?"":h.transform,v=+h.opacity;return {delay:o,duration:a(c)?c(m):c,easing:l,css:(e,t)=>`\n\t\t\t\topacity: ${e*v};\n\t\t\t\ttransform-origin: top left;\n\t\t\t\ttransform: ${g} translate(${t*u}px,${t*d}px) scale(${e+(1-e)*p}, ${e+(1-e)*f});\n\t\t\t`}}(e,c,l)}return e.delete(l.key),t&&t(c,l,o)})}return [c(o,i,!1),c(i,o,!0)]},draw:function(e,{delay:t=0,speed:n,duration:s,easing:i=Ee}){const o=e.getTotalLength();return void 0===s?s=void 0===n?800:o/n:"function"==typeof s&&(s=s(o)),{delay:t,duration:s,easing:i,css:(e,t)=>`stroke-dasharray: ${e*o} ${t*o}`}},fade:je,fly:Le,scale:function(e,{delay:t=0,duration:n=400,easing:s=Ie,start:i=0,opacity:o=0}){const a=getComputedStyle(e),c=+a.opacity,l="none"===a.transform?"":a.transform,r=1-i,u=c*(1-o);return {delay:t,duration:n,easing:s,css:(e,t)=>`\n\t\t\ttransform: ${l} scale(${1-r*t});\n\t\t\topacity: ${c-u*t}\n\t\t`}},slide:function(e,{delay:t=0,duration:n=400,easing:s=Ie}){const i=getComputedStyle(e),o=+i.opacity,a=parseFloat(i.height),c=parseFloat(i.paddingTop),l=parseFloat(i.paddingBottom),r=parseFloat(i.marginTop),u=parseFloat(i.marginBottom),d=parseFloat(i.borderTopWidth),p=parseFloat(i.borderBottomWidth);return {delay:t,duration:n,easing:s,css:e=>"overflow: hidden;"+`opacity: ${Math.min(20*e,1)*o};`+`height: ${e*a}px;`+`padding-top: ${e*c}px;`+`padding-bottom: ${e*l}px;`+`margin-top: ${e*r}px;`+`margin-bottom: ${e*u}px;`+`border-top-width: ${e*d}px;`+`border-bottom-width: ${e*p}px;`}}});function Ot(t){var n,s;return {c(){n=T("div"),this.h();},l(e){L(n=B(e,"DIV",{class:!0},!1)).forEach(z),this.h();},h(){I(n,"class",s="notices "+t.positionClass+" svelte-750nm");},m(e,s){k(e,n,s),t.div_binding(n);},p(e,t){e.positionClass&&s!==(s="notices "+t.positionClass+" svelte-750nm")&&I(n,"class",s);},i:e,o:e,d(e){e&&z(n),t.div_binding(null);}}}const At={};function Vt(e,t,n){let s,i,{position:o="top"}=t;return e.$set=(e=>{"position"in e&&n("position",o=e.position);}),e.$$.update=((e={position:1})=>{e.position&&n("positionClass",i="top"===o?"is-top":"is-bottom");}),{position:o,container:s,positionClass:i,insert:function(e){s.insertAdjacentElement("afterbegin",e);},div_binding:function(e){Z[e?"unshift":"push"](()=>{n("container",s=e);});}}}class Dt extends Te{constructor(e){var t;super(),document.getElementById("svelte-750nm-style")||((t=T("style")).id="svelte-750nm-style",t.textContent=".notices.svelte-750nm{position:fixed;top:0;left:0;right:0;bottom:0;overflow:hidden;padding:3em;z-index:1000;pointer-events:none;display:-webkit-box;display:-ms-flexbox;display:flex}.notices.is-top.svelte-750nm{-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column}.notices.is-bottom.svelte-750nm{-webkit-box-orient:vertical;-webkit-box-direction:reverse;-ms-flex-direction:column-reverse;flex-direction:column-reverse}.notices.svelte-750nm [class*='has-background-'] .text{color:transparent !important;-webkit-filter:invert(1) brightness(2.5) grayscale(1) contrast(9);filter:invert(1) brightness(2.5) grayscale(1) contrast(9);background:inherit;background-clip:text !important;-webkit-background-clip:text !important}",w(document.head,t)),ze(this,e,Vt,Ot,c,["position","insert"]);}get insert(){return this.$$.ctx.insert}}const{document:Mt}=ye;function Nt(n){var s,i,c,l,r,f,m;const g=n.$$slots.default,v=u(g,n,null);return {c(){s=T("div"),v&&v.c(),this.h();},l(e){var t=L(s=B(e,"DIV",{class:!0,"aria-hidden":!0},!1));v&&v.l(t),t.forEach(z),this.h();},h(){I(s,"class",i="notice "+n.position+" svelte-102rt1s"),I(s,"aria-hidden",c=!n.active),m=E(s,"outroend",n.remove);},m(e,t){k(e,s,t),v&&v.m(s,null),n.div_binding(s),f=!0;},p(e,t){v&&v.p&&e.$$scope&&v.p(p(g,t,e,null),d(g,t,null)),f&&!e.position||i===(i="notice "+t.position+" svelte-102rt1s")||I(s,"class",i),f&&!e.active||c===(c=!t.active)||I(s,"aria-hidden",c);},i(i){f||(ge(v,i),ce(()=>{r&&r.end(1),l||(l=function(n,s,i){let o,c,l=s(n,i),r=!1,u=0;function d(){o&&U(n,o);}function p(){const{delay:s=0,duration:i=300,easing:a=t,tick:p=e,css:f}=l||$e;f&&(o=q(n,0,1,i,s,a,f,u++)),p(0,1);const m=h()+s,g=m+i;c&&c.abort(),r=!0,ce(()=>de(n,!0,"start")),c=x(e=>{if(r){if(e>=g)return p(1,0),de(n,!0,"end"),d(),r=!1;if(e>=m){const t=a((e-m)/i);p(t,1-t);}}return r});}let f=!1;return {start(){f||(U(n),a(l)?(l=l(),ue().then(p)):p());},invalidate(){f=!1;},end(){r&&(d(),r=!1);}}}(s,Le,{y:n.transitionY})),l.start();}),f=!0);},o(i){ve(v,i),l&&l.invalidate(),r=function(n,s,i){let c,l=s(n,i),r=!0;const u=fe;function d(){const{delay:s=0,duration:i=300,easing:a=t,tick:d=e,css:p}=l||$e;p&&(c=q(n,1,0,i,s,a,p));const f=h()+s,m=f+i;ce(()=>de(n,!1,"start")),x(e=>{if(r){if(e>=m)return d(0,1),de(n,!1,"end"),--u.r||o(u.c),!1;if(e>=f){const t=a((e-f)/i);d(1-t,t);}}return r});}return u.r+=1,a(l)?ue().then(()=>{l=l(),d();}):d(),{end(e){e&&l.tick&&l.tick(1,0),r&&(c&&U(n,c),r=!1);}}}(s,je,{duration:n.transitionOut?400:0}),f=!1;},d(e){e&&z(s),v&&v.d(e),n.div_binding(null),e&&r&&r.end(),m();}}}function Ft(e){var t,n,s=e.active&&Nt(e);return {c(){s&&s.c(),t=_$1();},l(e){s&&s.l(e),t=_$1();},m(e,i){s&&s.m(e,i),k(e,t,i),n=!0;},p(e,n){n.active?s?(s.p(e,n),ge(s,1)):((s=Nt(n)).c(),ge(s,1),s.m(t.parentNode,t)):s&&(me(),ve(s,1,1,()=>{s=null;}),he());},i(e){n||(ge(s),n=!0);},o(e){ve(s),n=!1;},d(e){s&&s.d(e),e&&z(t);}}}const qt=["active","type","position","duration"];function Ut(e){const t={};return Object.keys(e).forEach(n=>{qt.includes(n)&&(t[n]=e[n]);}),t}function Ht(e,t,n){const s=W();let i,o,a,{active:c=!0,type:l="is-dark",position:r="is-top",duration:u=2e3,transitionOut:d=!0}=t;function p(){n("active",c=!1);}K(async()=>{await async function(){await ae,At.top||(At.top=new Dt({target:document.body,props:{position:"top"}})),At.bottom||(At.bottom=new Dt({target:document.body,props:{position:"bottom"}}));}(),o=At.top,r&&0===r.indexOf("is-bottom")&&(o=At.bottom),o.insert(i),a=setTimeout(()=>{p();},u);});let f,{$$slots:m={},$$scope:h}=t;return e.$set=(e=>{"active"in e&&n("active",c=e.active),"type"in e&&n("type",l=e.type),"position"in e&&n("position",r=e.position),"duration"in e&&n("duration",u=e.duration),"transitionOut"in e&&n("transitionOut",d=e.transitionOut),"$$scope"in e&&n("$$scope",h=e.$$scope);}),e.$$.update=((e={position:1})=>{e.position&&n("transitionY",f=~r.indexOf("is-top")?-200:200);}),{active:c,type:l,position:r,duration:u,transitionOut:d,el:i,close:p,remove:function(){clearTimeout(a),n("active",c=!1),s("destroyed");},transitionY:f,div_binding:function(e){Z[e?"unshift":"push"](()=>{n("el",i=e);});},$$slots:m,$$scope:h}}class Yt extends Te{constructor(e){var t;super(),Mt.getElementById("svelte-102rt1s-style")||((t=T("style")).id="svelte-102rt1s-style",t.textContent=".notice.svelte-102rt1s{display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;pointer-events:auto}.notice.is-top.svelte-102rt1s,.notice.is-bottom.svelte-102rt1s{-ms-flex-item-align:center;align-self:center}.notice.is-top-left.svelte-102rt1s,.notice.is-bottom-left.svelte-102rt1s{-ms-flex-item-align:start;align-self:flex-start}.notice.is-top-right.svelte-102rt1s,.notice.is-bottom-right.svelte-102rt1s{-ms-flex-item-align:end;align-self:flex-end}",w(Mt.head,t)),ze(this,e,Ht,Ft,c,["active","type","position","duration","transitionOut","close"]);}get close(){return this.$$.ctx.close}}function pn(e){var t,n,s,i,o;return {c(){t=T("div"),n=T("button"),s=C(e.actionText),this.h();},l(i){var o=L(t=B(i,"DIV",{class:!0},!1)),a=L(n=B(o,"BUTTON",{class:!0},!1));s=S(a,e.actionText),a.forEach(z),o.forEach(z),this.h();},h(){I(n,"class",i="button "+e.newType+" svelte-1jmu8to"),I(t,"class","action svelte-1jmu8to"),o=E(t,"click",e.action);},m(e,i){k(e,t,i),w(t,n),w(n,s);},p(e,t){e.actionText&&R(s,t.actionText),e.newType&&i!==(i="button "+t.newType+" svelte-1jmu8to")&&I(n,"class",i);},d(e){e&&z(t),o();}}}function fn(e){var t,n,s,i,o=e.actionText&&pn(e);return {c(){t=T("div"),n=T("div"),s=P(),o&&o.c(),this.h();},l(e){var i=L(t=B(e,"DIV",{class:!0,role:!0},!1));L(n=B(i,"DIV",{class:!0},!1)).forEach(z),s=S(i,"\n\n    "),o&&o.l(i),i.forEach(z),this.h();},h(){I(n,"class","text svelte-1jmu8to"),I(t,"class",i="snackbar "+e.background+" svelte-1jmu8to"),I(t,"role","alert"),A(t,"has-background-dark",!e.background);},m(i,a){k(i,t,a),w(t,n),n.innerHTML=e.message,w(t,s),o&&o.m(t,null);},p(e,s){e.message&&(n.innerHTML=s.message),s.actionText?o?o.p(e,s):((o=pn(s)).c(),o.m(t,null)):o&&(o.d(1),o=null),e.background&&i!==(i="snackbar "+s.background+" svelte-1jmu8to")&&I(t,"class",i),(e.background||e.background)&&A(t,"has-background-dark",!s.background);},d(e){e&&z(t),o&&o.d();}}}function mn(e){var t,s=[e.props,{transitionOut:!0}];let i={$$slots:{default:[fn]},$$scope:{ctx:e}};for(var o=0;o<s.length;o+=1)i=n(i,s[o]);var a=new Yt({props:i});return e.notice_1_binding(a),{c(){a.$$.fragment.c();},l(e){a.$$.fragment.l(e);},m(e,n){we(a,e,n),t=!0;},p(e,t){var n=e.props?xe(s,[t.props,s[1]]):{};(e.$$scope||e.background||e.actionText||e.newType||e.message)&&(n.$$scope={changed:e,ctx:t}),a.$set(n);},i(e){t||(ge(a.$$.fragment,e),t=!0);},o(e){ve(a.$$.fragment,e),t=!1;},d(t){e.notice_1_binding(null),ke(a,t);}}}function hn(e,t,s){let i,o,a,{message:c,duration:l=3500,position:r="is-bottom-right",type:u="is-primary",background:d="",actionText:p="OK",onAction:m=(()=>{})}=t;return K(()=>{if("function"!=typeof m)throw new Error(`onAction ${m} is not a function`)}),e.$set=(e=>{s("$$props",t=n(n({},t),e)),"message"in e&&s("message",c=e.message),"duration"in e&&s("duration",l=e.duration),"position"in e&&s("position",r=e.position),"type"in e&&s("type",u=e.type),"background"in e&&s("background",d=e.background),"actionText"in e&&s("actionText",p=e.actionText),"onAction"in e&&s("onAction",m=e.onAction);}),e.$$.update=((e={type:1,$$props:1,position:1,duration:1})=>{e.type&&s("newType",o=u&&u.replace(/^is-(.*)/,"has-text-$1")),s("props",a={...Ut(t),position:r,duration:l});}),{message:c,duration:l,position:r,type:u,background:d,actionText:p,onAction:m,notice:i,action:function(){Promise.resolve(m()).then(()=>i.close());},newType:o,props:a,notice_1_binding:function(e){Z[e?"unshift":"push"](()=>{s("notice",i=e);});},$$props:t=f(t)}}class gn extends Te{constructor(e){var t;super(),document.getElementById("svelte-1jmu8to-style")||((t=T("style")).id="svelte-1jmu8to-style",t.textContent=".snackbar.svelte-1jmu8to{display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-ms-flex-pack:distribute;justify-content:space-around;border-radius:4px;margin:0.5em 0;-webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);box-shadow:0 1px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);pointer-events:auto;min-height:3em}.snackbar.svelte-1jmu8to .text.svelte-1jmu8to{margin:.5em 1em}.snackbar.svelte-1jmu8to .action.svelte-1jmu8to{margin-left:auto;padding:0.5em;padding-left:0}.snackbar.svelte-1jmu8to .action .button.svelte-1jmu8to{font-weight:600;text-transform:uppercase;background:transparent;border:transparent;position:relative}.snackbar.svelte-1jmu8to .action .button.svelte-1jmu8to:hover::after{content:'';position:absolute;top:0;bottom:0;left:0;right:0;background:rgba(0, 0, 0, 0.1)}",w(document.head,t)),ze(this,e,hn,mn,c,["message","duration","position","type","background","actionText","onAction"]);}}gn.create=function(e){"string"==typeof e&&(e={message:e});const t=new gn({target:document.body,props:e,intro:!0});return t.$on("destroyed",t.$destroy),t};function jn(e){var t,n,s;return {c(){t=T("div"),n=T("div"),this.h();},l(e){var s=L(t=B(e,"DIV",{class:!0,role:!0},!1));L(n=B(s,"DIV",{class:!0},!1)).forEach(z),s.forEach(z),this.h();},h(){I(n,"class","text"),I(t,"class",s="toast "+e.type+" "+e.newBackground+" svelte-1uzjgds"),I(t,"role","alert");},m(s,i){k(s,t,i),w(t,n),n.innerHTML=e.message;},p(e,i){e.message&&(n.innerHTML=i.message),(e.type||e.newBackground)&&s!==(s="toast "+i.type+" "+i.newBackground+" svelte-1uzjgds")&&I(t,"class",s);},d(e){e&&z(t);}}}function Ln(e){var t,s=[Ut(e.$$props)];let i={$$slots:{default:[jn]},$$scope:{ctx:e}};for(var o=0;o<s.length;o+=1)i=n(i,s[o]);var a=new Yt({props:i});return {c(){a.$$.fragment.c();},l(e){a.$$.fragment.l(e);},m(e,n){we(a,e,n),t=!0;},p(e,t){var n=e.filterProps||e.$$props?xe(s,[Ut(t.$$props)]):{};(e.$$scope||e.type||e.newBackground||e.message)&&(n.$$scope={changed:e,ctx:t}),a.$set(n);},i(e){t||(ge(a.$$.fragment,e),t=!0);},o(e){ve(a.$$.fragment,e),t=!1;},d(e){ke(a,e);}}}function Bn(e,t,s){let i,{message:o,type:a="is-dark",background:c=""}=t;return e.$set=(e=>{s("$$props",t=n(n({},t),e)),"message"in e&&s("message",o=e.message),"type"in e&&s("type",a=e.type),"background"in e&&s("background",c=e.background);}),e.$$.update=((e={background:1,type:1})=>{(e.background||e.type)&&s("newBackground",i=c||a.replace(/^is-(.*)/,"has-background-$1"));}),{message:o,type:a,background:c,newBackground:i,$$props:t,$$props:t=f(t)}}class Sn extends Te{constructor(e){var t;super(),document.getElementById("svelte-1uzjgds-style")||((t=T("style")).id="svelte-1uzjgds-style",t.textContent=".toast.svelte-1uzjgds{text-align:center;padding:0.75em 1.5em;border-radius:2em;margin:0.5em 0;-webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);box-shadow:0 1px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);pointer-events:auto}",w(document.head,t)),ze(this,e,Bn,Ln,c,["message","type","background"]);}}Sn.create=function(e){"string"==typeof e&&(e={message:e});const t=new Sn({target:document.body,props:e,intro:!0});return t.$on("destroyed",t.$destroy),t};//# sourceMappingURL=module.js.map
+function e(){}const t=e=>e;function n(e,t){for(const n in t)e[n]=t[n];return e}function s(e){return e()}function i(){return Object.create(null)}function o(e){e.forEach(s);}function a(e){return "function"==typeof e}function c(e,t){return e!=e?t==t:e!==t||e&&"object"==typeof e||"function"==typeof e}function u(e,t,n){if(e){const s=d(e,t,n);return e[0](s)}}function d(e,t,s){return e[1]?n({},n(t.$$scope.ctx,e[1](s?s(t):{}))):t.$$scope.ctx}function p(e,t,s,i){return e[1]?n({},n(t.$$scope.changed||{},e[1](i?i(s):{}))):t.$$scope.changed||{}}function f(e){const t={};for(const n in e)"$"!==n[0]&&(t[n]=e[n]);return t}const m="undefined"!=typeof window;let h=m?()=>window.performance.now():()=>Date.now(),g=m?e=>requestAnimationFrame(e):e;const v=new Set;let $,b=!1;function y(){v.forEach(e=>{e[0](h())||(v.delete(e),e[1]());}),(b=v.size>0)&&g(y);}function x(e){let t;return b||(b=!0,g(y)),{promise:new Promise(n=>{v.add(t=[e,n]);}),abort(){v.delete(t);}}}function w(e,t){e.appendChild(t);}function k(e,t,n){e.insertBefore(t,n||null);}function z(e){e.parentNode.removeChild(e);}function T(e){return document.createElement(e)}function C(e){return document.createTextNode(e)}function P(){return C(" ")}function _$1(){return C("")}function E(e,t,n,s){return e.addEventListener(t,n,s),()=>e.removeEventListener(t,n,s)}function I(e,t,n){null==n?e.removeAttribute(t):e.setAttribute(t,n);}function L(e){return Array.from(e.childNodes)}function B(e,t,n,s){for(let s=0;s<e.length;s+=1){const i=e[s];if(i.nodeName===t){for(let e=0;e<i.attributes.length;e+=1){const t=i.attributes[e];n[t.name]||i.removeAttribute(t.name);}return e.splice(s,1)[0]}}return s?function(e){return document.createElementNS("http://www.w3.org/2000/svg",e)}(t):T(t)}function S(e,t){for(let n=0;n<e.length;n+=1){const s=e[n];if(3===s.nodeType)return s.data=t,e.splice(n,1)[0]}return C(t)}function R(e,t){t=""+t,e.data!==t&&(e.data=t);}function A(e,t,n){e.classList[n?"add":"remove"](t);}function V(e,t){const n=document.createEvent("CustomEvent");return n.initCustomEvent(e,!1,!1,t),n}let M,N=0,F={};function q(e,t,n,s,i,o,a,c=0){const l=16.666/s;let r="{\n";for(let e=0;e<=1;e+=l){const s=t+(n-t)*o(e);r+=100*e+`%{${a(s,1-s)}}\n`;}const u=r+`100% {${a(n,1-n)}}\n}`,d=`__svelte_${function(e){let t=5381,n=e.length;for(;n--;)t=(t<<5)-t^e.charCodeAt(n);return t>>>0}(u)}_${c}`;if(!F[d]){if(!$){const e=T("style");document.head.appendChild(e),$=e.sheet;}F[d]=!0,$.insertRule(`@keyframes ${d} ${u}`,$.cssRules.length);}const p=e.style.animation||"";return e.style.animation=`${p?`${p}, `:""}${d} ${s}ms linear ${i}ms 1 both`,N+=1,d}function U(e,t){e.style.animation=(e.style.animation||"").split(", ").filter(t?e=>e.indexOf(t)<0:e=>-1===e.indexOf("__svelte")).join(", "),t&&!--N&&g(()=>{if(N)return;let e=$.cssRules.length;for(;e--;)$.deleteRule(e);F={};});}function H(e){M=e;}function Y(){if(!M)throw new Error("Function called outside component initialization");return M}function K(e){Y().$$.on_mount.push(e);}function W(){const e=M;return (t,n)=>{const s=e.$$.callbacks[t];if(s){const i=V(t,n);s.slice().forEach(t=>{t.call(e,i);});}}}const Q=[],Z=[],ee=[],te=[],ne=Promise.resolve();let se,ie=!1;function oe(){ie||(ie=!0,ne.then(le));}function ae(){return oe(),ne}function ce(e){ee.push(e);}function le(){const e=new Set;do{for(;Q.length;){const e=Q.shift();H(e),re(e.$$);}for(;Z.length;)Z.pop()();for(let t=0;t<ee.length;t+=1){const n=ee[t];e.has(n)||(n(),e.add(n));}ee.length=0;}while(Q.length);for(;te.length;)te.pop()();ie=!1;}function re(e){e.fragment&&(e.update(e.dirty),o(e.before_update),e.fragment.p(e.dirty,e.ctx),e.dirty=null,e.after_update.forEach(ce));}function ue(){return se||(se=Promise.resolve()).then(()=>{se=null;}),se}function de(e,t,n){e.dispatchEvent(V(`${t?"intro":"outro"}${n}`));}const pe=new Set;let fe;function me(){fe={r:0,c:[],p:fe};}function he(){fe.r||o(fe.c),fe=fe.p;}function ge(e,t){e&&e.i&&(pe.delete(e),e.i(t));}function ve(e,t,n,s){if(e&&e.o){if(pe.has(e))return;pe.add(e),fe.c.push(()=>{pe.delete(e),s&&(n&&e.d(1),s());}),e.o(t);}}const $e={duration:0};const ye="undefined"!=typeof window?window:global;function xe(e,t){const n={},s={},i={$$scope:1};let o=e.length;for(;o--;){const a=e[o],c=t[o];if(c){for(const e in a)e in c||(s[e]=1);for(const e in c)i[e]||(n[e]=c[e],i[e]=1);e[o]=c;}else for(const e in a)i[e]=1;}for(const e in s)e in n||(n[e]=void 0);return n}function we(e,t,n){const{fragment:i,on_mount:c,on_destroy:l,after_update:r}=e.$$;i.m(t,n),ce(()=>{const t=c.map(s).filter(a);l?l.push(...t):o(t),e.$$.on_mount=[];}),r.forEach(ce);}function ke(e,t){e.$$.fragment&&(o(e.$$.on_destroy),e.$$.fragment.d(t),e.$$.on_destroy=e.$$.fragment=null,e.$$.ctx={});}function ze(t,n,s,a,c,l){const r=M;H(t);const u=n.props||{},d=t.$$={fragment:null,ctx:null,props:l,update:e,not_equal:c,bound:i(),on_mount:[],on_destroy:[],before_update:[],after_update:[],context:new Map(r?r.$$.context:[]),callbacks:i(),dirty:null};let p=!1;d.ctx=s?s(t,u,(e,n)=>{d.ctx&&c(d.ctx[e],d.ctx[e]=n)&&(d.bound[e]&&d.bound[e](n),p&&function(e,t){e.$$.dirty||(Q.push(e),oe(),e.$$.dirty=i()),e.$$.dirty[t]=!0;}(t,e));}):u,d.update(),p=!0,o(d.before_update),d.fragment=a(d.ctx),n.target&&(n.hydrate?d.fragment.l(L(n.target)):d.fragment.c(),n.intro&&ge(t.$$.fragment),we(t,n.target,n.anchor),le()),H(r);}class Te{$destroy(){ke(this,1),this.$destroy=e;}$on(e,t){const n=this.$$.callbacks[e]||(this.$$.callbacks[e]=[]);return n.push(t),()=>{const e=n.indexOf(t);-1!==e&&n.splice(e,1);}}$set(){}}function Ee(e){return e<.5?4*e*e*e:.5*Math.pow(2*e-2,3)+1}function Ie(e){const t=e-1;return t*t*t+1}function je(e,{delay:t=0,duration:n=400}){const s=+getComputedStyle(e).opacity;return {delay:t,duration:n,css:e=>`opacity: ${e*s}`}}function Le(e,{delay:t=0,duration:n=400,easing:s=Ie,x:i=0,y:o=0,opacity:a=0}){const c=getComputedStyle(e),l=+c.opacity,r="none"===c.transform?"":c.transform,u=l*(1-a);return {delay:t,duration:n,easing:s,css:(e,t)=>`\n\t\t\ttransform: ${r} translate(${(1-e)*i}px, ${(1-e)*o}px);\n\t\t\topacity: ${l-u*t}`}}var Be=Object.freeze({crossfade:function(e){var{fallback:t}=e,s=function(e,t){var n={};for(var s in e)Object.prototype.hasOwnProperty.call(e,s)&&t.indexOf(s)<0&&(n[s]=e[s]);if(null!=e&&"function"==typeof Object.getOwnPropertySymbols){var i=0;for(s=Object.getOwnPropertySymbols(e);i<s.length;i++)t.indexOf(s[i])<0&&Object.prototype.propertyIsEnumerable.call(e,s[i])&&(n[s[i]]=e[s[i]]);}return n}(e,["fallback"]);const i=new Map,o=new Map;function c(e,i,o){return (c,l)=>(e.set(l.key,{rect:c.getBoundingClientRect()}),()=>{if(i.has(l.key)){const{rect:e}=i.get(l.key);return i.delete(l.key),function(e,t,i){const{delay:o=0,duration:c=(e=>30*Math.sqrt(e)),easing:l=Ie}=n(n({},s),i),r=t.getBoundingClientRect(),u=e.left-r.left,d=e.top-r.top,p=e.width/r.width,f=e.height/r.height,m=Math.sqrt(u*u+d*d),h=getComputedStyle(t),g="none"===h.transform?"":h.transform,v=+h.opacity;return {delay:o,duration:a(c)?c(m):c,easing:l,css:(e,t)=>`\n\t\t\t\topacity: ${e*v};\n\t\t\t\ttransform-origin: top left;\n\t\t\t\ttransform: ${g} translate(${t*u}px,${t*d}px) scale(${e+(1-e)*p}, ${e+(1-e)*f});\n\t\t\t`}}(e,c,l)}return e.delete(l.key),t&&t(c,l,o)})}return [c(o,i,!1),c(i,o,!0)]},draw:function(e,{delay:t=0,speed:n,duration:s,easing:i=Ee}){const o=e.getTotalLength();return void 0===s?s=void 0===n?800:o/n:"function"==typeof s&&(s=s(o)),{delay:t,duration:s,easing:i,css:(e,t)=>`stroke-dasharray: ${e*o} ${t*o}`}},fade:je,fly:Le,scale:function(e,{delay:t=0,duration:n=400,easing:s=Ie,start:i=0,opacity:o=0}){const a=getComputedStyle(e),c=+a.opacity,l="none"===a.transform?"":a.transform,r=1-i,u=c*(1-o);return {delay:t,duration:n,easing:s,css:(e,t)=>`\n\t\t\ttransform: ${l} scale(${1-r*t});\n\t\t\topacity: ${c-u*t}\n\t\t`}},slide:function(e,{delay:t=0,duration:n=400,easing:s=Ie}){const i=getComputedStyle(e),o=+i.opacity,a=parseFloat(i.height),c=parseFloat(i.paddingTop),l=parseFloat(i.paddingBottom),r=parseFloat(i.marginTop),u=parseFloat(i.marginBottom),d=parseFloat(i.borderTopWidth),p=parseFloat(i.borderBottomWidth);return {delay:t,duration:n,easing:s,css:e=>"overflow: hidden;"+`opacity: ${Math.min(20*e,1)*o};`+`height: ${e*a}px;`+`padding-top: ${e*c}px;`+`padding-bottom: ${e*l}px;`+`margin-top: ${e*r}px;`+`margin-bottom: ${e*u}px;`+`border-top-width: ${e*d}px;`+`border-bottom-width: ${e*p}px;`}}});function Ot(t){var n,s;return {c(){n=T("div"),this.h();},l(e){L(n=B(e,"DIV",{class:!0},!1)).forEach(z),this.h();},h(){I(n,"class",s="notices "+t.positionClass+" svelte-750nm");},m(e,s){k(e,n,s),t.div_binding(n);},p(e,t){e.positionClass&&s!==(s="notices "+t.positionClass+" svelte-750nm")&&I(n,"class",s);},i:e,o:e,d(e){e&&z(n),t.div_binding(null);}}}const At={};function Vt(e,t,n){let s,i,{position:o="top"}=t;return e.$set=(e=>{"position"in e&&n("position",o=e.position);}),e.$$.update=((e={position:1})=>{e.position&&n("positionClass",i="top"===o?"is-top":"is-bottom");}),{position:o,container:s,positionClass:i,insert:function(e){s.insertAdjacentElement("afterbegin",e);},div_binding:function(e){Z[e?"unshift":"push"](()=>{n("container",s=e);});}}}class Dt extends Te{constructor(e){var t;super(),document.getElementById("svelte-750nm-style")||((t=T("style")).id="svelte-750nm-style",t.textContent=".notices.svelte-750nm{position:fixed;top:0;left:0;right:0;bottom:0;overflow:hidden;padding:3em;z-index:1000;pointer-events:none;display:-webkit-box;display:-ms-flexbox;display:flex}.notices.is-top.svelte-750nm{-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column}.notices.is-bottom.svelte-750nm{-webkit-box-orient:vertical;-webkit-box-direction:reverse;-ms-flex-direction:column-reverse;flex-direction:column-reverse}.notices.svelte-750nm [class*='has-background-'] .text{color:transparent !important;-webkit-filter:invert(1) brightness(2.5) grayscale(1) contrast(9);filter:invert(1) brightness(2.5) grayscale(1) contrast(9);background:inherit;background-clip:text !important;-webkit-background-clip:text !important}",w(document.head,t)),ze(this,e,Vt,Ot,c,["position","insert"]);}get insert(){return this.$$.ctx.insert}}const{document:Mt}=ye;function Nt(n){var s,i,c,l,r,f,m;const g=n.$$slots.default,v=u(g,n,null);return {c(){s=T("div"),v&&v.c(),this.h();},l(e){var t=L(s=B(e,"DIV",{class:!0,"aria-hidden":!0},!1));v&&v.l(t),t.forEach(z),this.h();},h(){I(s,"class",i="notice "+n.position+" svelte-102rt1s"),I(s,"aria-hidden",c=!n.active),m=E(s,"outroend",n.remove);},m(e,t){k(e,s,t),v&&v.m(s,null),n.div_binding(s),f=!0;},p(e,t){v&&v.p&&e.$$scope&&v.p(p(g,t,e,null),d(g,t,null)),f&&!e.position||i===(i="notice "+t.position+" svelte-102rt1s")||I(s,"class",i),f&&!e.active||c===(c=!t.active)||I(s,"aria-hidden",c);},i(i){f||(ge(v,i),ce(()=>{r&&r.end(1),l||(l=function(n,s,i){let o,c,l=s(n,i),r=!1,u=0;function d(){o&&U(n,o);}function p(){const{delay:s=0,duration:i=300,easing:a=t,tick:p=e,css:f}=l||$e;f&&(o=q(n,0,1,i,s,a,f,u++)),p(0,1);const m=h()+s,g=m+i;c&&c.abort(),r=!0,ce(()=>de(n,!0,"start")),c=x(e=>{if(r){if(e>=g)return p(1,0),de(n,!0,"end"),d(),r=!1;if(e>=m){const t=a((e-m)/i);p(t,1-t);}}return r});}let f=!1;return {start(){f||(U(n),a(l)?(l=l(),ue().then(p)):p());},invalidate(){f=!1;},end(){r&&(d(),r=!1);}}}(s,Le,{y:n.transitionY})),l.start();}),f=!0);},o(i){ve(v,i),l&&l.invalidate(),r=function(n,s,i){let c,l=s(n,i),r=!0;const u=fe;function d(){const{delay:s=0,duration:i=300,easing:a=t,tick:d=e,css:p}=l||$e;p&&(c=q(n,1,0,i,s,a,p));const f=h()+s,m=f+i;ce(()=>de(n,!1,"start")),x(e=>{if(r){if(e>=m)return d(0,1),de(n,!1,"end"),--u.r||o(u.c),!1;if(e>=f){const t=a((e-f)/i);d(1-t,t);}}return r});}return u.r+=1,a(l)?ue().then(()=>{l=l(),d();}):d(),{end(e){e&&l.tick&&l.tick(1,0),r&&(c&&U(n,c),r=!1);}}}(s,je,{duration:n.transitionOut?400:0}),f=!1;},d(e){e&&z(s),v&&v.d(e),n.div_binding(null),e&&r&&r.end(),m();}}}function Ft(e){var t,n,s=e.active&&Nt(e);return {c(){s&&s.c(),t=_$1();},l(e){s&&s.l(e),t=_$1();},m(e,i){s&&s.m(e,i),k(e,t,i),n=!0;},p(e,n){n.active?s?(s.p(e,n),ge(s,1)):((s=Nt(n)).c(),ge(s,1),s.m(t.parentNode,t)):s&&(me(),ve(s,1,1,()=>{s=null;}),he());},i(e){n||(ge(s),n=!0);},o(e){ve(s),n=!1;},d(e){s&&s.d(e),e&&z(t);}}}const qt=["active","type","position","duration"];function Ut(e){const t={};return Object.keys(e).forEach(n=>{qt.includes(n)&&(t[n]=e[n]);}),t}function Ht(e,t,n){const s=W();let i,o,a,{active:c=!0,type:l="is-dark",position:r="is-top",duration:u=2e3,transitionOut:d=!0}=t;function p(){n("active",c=!1);}K(async()=>{await async function(){await ae,At.top||(At.top=new Dt({target:document.body,props:{position:"top"}})),At.bottom||(At.bottom=new Dt({target:document.body,props:{position:"bottom"}}));}(),o=At.top,r&&0===r.indexOf("is-bottom")&&(o=At.bottom),o.insert(i),a=setTimeout(()=>{p();},u);});let f,{$$slots:m={},$$scope:h}=t;return e.$set=(e=>{"active"in e&&n("active",c=e.active),"type"in e&&n("type",l=e.type),"position"in e&&n("position",r=e.position),"duration"in e&&n("duration",u=e.duration),"transitionOut"in e&&n("transitionOut",d=e.transitionOut),"$$scope"in e&&n("$$scope",h=e.$$scope);}),e.$$.update=((e={position:1})=>{e.position&&n("transitionY",f=~r.indexOf("is-top")?-200:200);}),{active:c,type:l,position:r,duration:u,transitionOut:d,el:i,close:p,remove:function(){clearTimeout(a),n("active",c=!1),s("destroyed");},transitionY:f,div_binding:function(e){Z[e?"unshift":"push"](()=>{n("el",i=e);});},$$slots:m,$$scope:h}}class Yt extends Te{constructor(e){var t;super(),Mt.getElementById("svelte-102rt1s-style")||((t=T("style")).id="svelte-102rt1s-style",t.textContent=".notice.svelte-102rt1s{display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;pointer-events:auto}.notice.is-top.svelte-102rt1s,.notice.is-bottom.svelte-102rt1s{-ms-flex-item-align:center;align-self:center}.notice.is-top-left.svelte-102rt1s,.notice.is-bottom-left.svelte-102rt1s{-ms-flex-item-align:start;align-self:flex-start}.notice.is-top-right.svelte-102rt1s,.notice.is-bottom-right.svelte-102rt1s{-ms-flex-item-align:end;align-self:flex-end}",w(Mt.head,t)),ze(this,e,Ht,Ft,c,["active","type","position","duration","transitionOut","close"]);}get close(){return this.$$.ctx.close}}function pn(e){var t,n,s,i,o;return {c(){t=T("div"),n=T("button"),s=C(e.actionText),this.h();},l(i){var o=L(t=B(i,"DIV",{class:!0},!1)),a=L(n=B(o,"BUTTON",{class:!0},!1));s=S(a,e.actionText),a.forEach(z),o.forEach(z),this.h();},h(){I(n,"class",i="button "+e.newType+" svelte-1jmu8to"),I(t,"class","action svelte-1jmu8to"),o=E(t,"click",e.action);},m(e,i){k(e,t,i),w(t,n),w(n,s);},p(e,t){e.actionText&&R(s,t.actionText),e.newType&&i!==(i="button "+t.newType+" svelte-1jmu8to")&&I(n,"class",i);},d(e){e&&z(t),o();}}}function fn(e){var t,n,s,i,o=e.actionText&&pn(e);return {c(){t=T("div"),n=T("div"),s=P(),o&&o.c(),this.h();},l(e){var i=L(t=B(e,"DIV",{class:!0,role:!0},!1));L(n=B(i,"DIV",{class:!0},!1)).forEach(z),s=S(i,"\n\n    "),o&&o.l(i),i.forEach(z),this.h();},h(){I(n,"class","text svelte-1jmu8to"),I(t,"class",i="snackbar "+e.background+" svelte-1jmu8to"),I(t,"role","alert"),A(t,"has-background-dark",!e.background);},m(i,a){k(i,t,a),w(t,n),n.innerHTML=e.message,w(t,s),o&&o.m(t,null);},p(e,s){e.message&&(n.innerHTML=s.message),s.actionText?o?o.p(e,s):((o=pn(s)).c(),o.m(t,null)):o&&(o.d(1),o=null),e.background&&i!==(i="snackbar "+s.background+" svelte-1jmu8to")&&I(t,"class",i),(e.background||e.background)&&A(t,"has-background-dark",!s.background);},d(e){e&&z(t),o&&o.d();}}}function mn(e){var t,s=[e.props,{transitionOut:!0}];let i={$$slots:{default:[fn]},$$scope:{ctx:e}};for(var o=0;o<s.length;o+=1)i=n(i,s[o]);var a=new Yt({props:i});return e.notice_1_binding(a),{c(){a.$$.fragment.c();},l(e){a.$$.fragment.l(e);},m(e,n){we(a,e,n),t=!0;},p(e,t){var n=e.props?xe(s,[t.props,s[1]]):{};(e.$$scope||e.background||e.actionText||e.newType||e.message)&&(n.$$scope={changed:e,ctx:t}),a.$set(n);},i(e){t||(ge(a.$$.fragment,e),t=!0);},o(e){ve(a.$$.fragment,e),t=!1;},d(t){e.notice_1_binding(null),ke(a,t);}}}function hn(e,t,s){let i,o,a,{message:c,duration:l=3500,position:r="is-bottom-right",type:u="is-primary",background:d="",actionText:p="OK",onAction:m=(()=>{})}=t;return K(()=>{if("function"!=typeof m)throw new Error(`onAction ${m} is not a function`)}),e.$set=(e=>{s("$$props",t=n(n({},t),e)),"message"in e&&s("message",c=e.message),"duration"in e&&s("duration",l=e.duration),"position"in e&&s("position",r=e.position),"type"in e&&s("type",u=e.type),"background"in e&&s("background",d=e.background),"actionText"in e&&s("actionText",p=e.actionText),"onAction"in e&&s("onAction",m=e.onAction);}),e.$$.update=((e={type:1,$$props:1,position:1,duration:1})=>{e.type&&s("newType",o=u&&u.replace(/^is-(.*)/,"has-text-$1")),s("props",a={...Ut(t),position:r,duration:l});}),{message:c,duration:l,position:r,type:u,background:d,actionText:p,onAction:m,notice:i,action:function(){Promise.resolve(m()).then(()=>i.close());},newType:o,props:a,notice_1_binding:function(e){Z[e?"unshift":"push"](()=>{s("notice",i=e);});},$$props:t=f(t)}}class gn extends Te{constructor(e){var t;super(),document.getElementById("svelte-1jmu8to-style")||((t=T("style")).id="svelte-1jmu8to-style",t.textContent=".snackbar.svelte-1jmu8to{display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-ms-flex-pack:distribute;justify-content:space-around;border-radius:4px;margin:0.5em 0;-webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);box-shadow:0 1px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);pointer-events:auto;min-height:3em}.snackbar.svelte-1jmu8to .text.svelte-1jmu8to{margin:.5em 1em}.snackbar.svelte-1jmu8to .action.svelte-1jmu8to{margin-left:auto;padding:0.5em;padding-left:0}.snackbar.svelte-1jmu8to .action .button.svelte-1jmu8to{font-weight:600;text-transform:uppercase;background:transparent;border:transparent;position:relative}.snackbar.svelte-1jmu8to .action .button.svelte-1jmu8to:hover::after{content:'';position:absolute;top:0;bottom:0;left:0;right:0;background:rgba(0, 0, 0, 0.1)}",w(document.head,t)),ze(this,e,hn,mn,c,["message","duration","position","type","background","actionText","onAction"]);}}gn.create=function(e){"string"==typeof e&&(e={message:e});const t=new gn({target:document.body,props:e,intro:!0});return t.$on("destroyed",t.$destroy),t};function jn(e){var t,n,s;return {c(){t=T("div"),n=T("div"),this.h();},l(e){var s=L(t=B(e,"DIV",{class:!0,role:!0},!1));L(n=B(s,"DIV",{class:!0},!1)).forEach(z),s.forEach(z),this.h();},h(){I(n,"class","text"),I(t,"class",s="toast "+e.type+" "+e.newBackground+" svelte-1uzjgds"),I(t,"role","alert");},m(s,i){k(s,t,i),w(t,n),n.innerHTML=e.message;},p(e,i){e.message&&(n.innerHTML=i.message),(e.type||e.newBackground)&&s!==(s="toast "+i.type+" "+i.newBackground+" svelte-1uzjgds")&&I(t,"class",s);},d(e){e&&z(t);}}}function Ln(e){var t,s=[Ut(e.$$props)];let i={$$slots:{default:[jn]},$$scope:{ctx:e}};for(var o=0;o<s.length;o+=1)i=n(i,s[o]);var a=new Yt({props:i});return {c(){a.$$.fragment.c();},l(e){a.$$.fragment.l(e);},m(e,n){we(a,e,n),t=!0;},p(e,t){var n=e.filterProps||e.$$props?xe(s,[Ut(t.$$props)]):{};(e.$$scope||e.type||e.newBackground||e.message)&&(n.$$scope={changed:e,ctx:t}),a.$set(n);},i(e){t||(ge(a.$$.fragment,e),t=!0);},o(e){ve(a.$$.fragment,e),t=!1;},d(e){ke(a,e);}}}function Bn(e,t,s){let i,{message:o,type:a="is-dark",background:c=""}=t;return e.$set=(e=>{s("$$props",t=n(n({},t),e)),"message"in e&&s("message",o=e.message),"type"in e&&s("type",a=e.type),"background"in e&&s("background",c=e.background);}),e.$$.update=((e={background:1,type:1})=>{(e.background||e.type)&&s("newBackground",i=c||a.replace(/^is-(.*)/,"has-background-$1"));}),{message:o,type:a,background:c,newBackground:i,$$props:t,$$props:t=f(t)}}class Sn extends Te{constructor(e){var t;super(),document.getElementById("svelte-1uzjgds-style")||((t=T("style")).id="svelte-1uzjgds-style",t.textContent=".toast.svelte-1uzjgds{text-align:center;padding:0.75em 1.5em;border-radius:2em;margin:0.5em 0;-webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);box-shadow:0 1px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);pointer-events:auto}",w(document.head,t)),ze(this,e,Bn,Ln,c,["message","type","background"]);}}Sn.create=function(e){"string"==typeof e&&(e={message:e});const t=new Sn({target:document.body,props:e,intro:!0});return t.$on("destroyed",t.$destroy),t};
 
 /**
  * @license
@@ -13664,7 +13613,6 @@ var strings$d = {
 var numbers$4 = {
     UNSET_INDEX: -1,
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -14122,7 +14070,6 @@ var MDCListFoundation = /** @class */ (function (_super) {
     };
     return MDCListFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -14371,7 +14318,6 @@ var MDCList = /** @class */ (function (_super) {
     };
     return MDCList;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\list\List.svelte generated by Svelte v3.17.3 */
 const file$g = "node_modules\\@smui\\list\\List.svelte";
@@ -16798,7 +16744,6 @@ function getCorrectEventName(windowObj, eventType) {
     }
     return eventType;
 }
-//# sourceMappingURL=util.js.map
 
 /**
  * @license
@@ -16853,7 +16798,6 @@ var strings$e = {
 var numbers$5 = {
     ANIM_END_LATCH_MS: 250,
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -17034,7 +16978,6 @@ var MDCCheckboxFoundation = /** @class */ (function (_super) {
     };
     return MDCCheckboxFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -17209,7 +17152,6 @@ var MDCCheckbox = /** @class */ (function (_super) {
 function validDescriptor(inputPropDesc) {
     return !!inputPropDesc && typeof inputPropDesc.set === 'function';
 }
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\checkbox\Checkbox.svelte generated by Svelte v3.17.3 */
 const file$m = "node_modules\\@smui\\checkbox\\Checkbox.svelte";
@@ -17813,7 +17755,6 @@ var cssClasses$e = {
 var strings$f = {
     LABEL_SELECTOR: '.mdc-form-field > label',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -17883,7 +17824,6 @@ var MDCFormFieldFoundation = /** @class */ (function (_super) {
     };
     return MDCFormFieldFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -17963,7 +17903,6 @@ var MDCFormField = /** @class */ (function (_super) {
     };
     return MDCFormField;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\form-field\FormField.svelte generated by Svelte v3.17.3 */
 const file$n = "node_modules\\@smui\\form-field\\FormField.svelte";
@@ -18285,7 +18224,6 @@ var strings$g = {
     /** A CSS selector used to locate the ripple surface element for the switch. */
     RIPPLE_SURFACE_SELECTOR: '.mdc-switch__thumb-underlay',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -18374,7 +18312,6 @@ var MDCSwitchFoundation = /** @class */ (function (_super) {
     };
     return MDCSwitchFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -18493,7 +18430,6 @@ var MDCSwitch = /** @class */ (function (_super) {
     });
     return MDCSwitch;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\switch\Switch.svelte generated by Svelte v3.17.3 */
 const file$o = "node_modules\\@smui\\switch\\Switch.svelte";
@@ -21413,7 +21349,6 @@ var strings$h = {
     BUFFER_SELECTOR: '.mdc-linear-progress__buffer',
     PRIMARY_BAR_SELECTOR: '.mdc-linear-progress__primary-bar',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -21522,7 +21457,6 @@ var MDCLinearProgressFoundation = /** @class */ (function (_super) {
     };
     return MDCLinearProgressFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -21604,7 +21538,6 @@ var MDCLinearProgress = /** @class */ (function (_super) {
     };
     return MDCLinearProgress;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 function is_date(obj) {
     return Object.prototype.toString.call(obj) === '[object Date]';
@@ -23190,7 +23123,6 @@ function areTopsMisaligned(els) {
     [].forEach.call(els, function (el) { return tops.add(el.offsetTop); });
     return tops.size > 1;
 }
-//# sourceMappingURL=util.js.map
 
 /**
  * @license
@@ -23246,7 +23178,6 @@ var numbers$6 = {
     DIALOG_ANIMATION_CLOSE_TIME_MS: 75,
     DIALOG_ANIMATION_OPEN_TIME_MS: 150,
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -23500,7 +23431,6 @@ var MDCDialogFoundation = /** @class */ (function (_super) {
     };
     return MDCDialogFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -23678,7 +23608,6 @@ var MDCDialog = /** @class */ (function (_super) {
     };
     return MDCDialog;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\dialog\Dialog.svelte generated by Svelte v3.17.3 */
 const file$w = "node_modules\\@smui\\dialog\\Dialog.svelte";
@@ -25935,7 +25864,6 @@ var events = {
     SELECTED_ALL: 'MDCDataTable:selectedAll',
     UNSELECTED_ALL: 'MDCDataTable:unselectedAll',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -26121,7 +26049,6 @@ var MDCDataTableFoundation = /** @class */ (function (_super) {
     };
     return MDCDataTableFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -26269,7 +26196,6 @@ var MDCDataTable = /** @class */ (function (_super) {
     };
     return MDCDataTable;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\data-table\DataTable.svelte generated by Svelte v3.17.3 */
 
@@ -28115,7 +28041,6 @@ var Corner;
     Corner[Corner["BOTTOM_START"] = 9] = "BOTTOM_START";
     Corner[Corner["BOTTOM_END"] = 13] = "BOTTOM_END";
 })(Corner || (Corner = {}));
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -28559,7 +28484,6 @@ var MDCMenuSurfaceFoundation = /** @class */ (function (_super) {
     };
     return MDCMenuSurfaceFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -28595,7 +28519,6 @@ function getTransformPropertyName(globalObj, forceRefresh) {
     }
     return cachedCssTransformPropertyName_;
 }
-//# sourceMappingURL=util.js.map
 
 /**
  * @license
@@ -28762,7 +28685,6 @@ var MDCMenuSurface = /** @class */ (function (_super) {
     };
     return MDCMenuSurface;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -28808,7 +28730,6 @@ var DefaultFocusState;
     DefaultFocusState[DefaultFocusState["FIRST_ITEM"] = 2] = "FIRST_ITEM";
     DefaultFocusState[DefaultFocusState["LAST_ITEM"] = 3] = "LAST_ITEM";
 })(DefaultFocusState || (DefaultFocusState = {}));
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -28983,7 +28904,6 @@ var MDCMenuFoundation = /** @class */ (function (_super) {
     };
     return MDCMenuFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -29202,7 +29122,6 @@ var MDCMenu = /** @class */ (function (_super) {
     };
     return MDCMenu;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -29255,7 +29174,6 @@ var strings$n = {
 var numbers$9 = {
     LABEL_SCALE: 0.75,
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -29506,7 +29424,6 @@ var MDCSelectFoundation = /** @class */ (function (_super) {
     };
     return MDCSelectFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -29538,7 +29455,6 @@ var cssClasses$m = {
     HELPER_TEXT_PERSISTENT: 'mdc-select-helper-text--persistent',
     HELPER_TEXT_VALIDATION_MSG: 'mdc-select-helper-text--validation-msg',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -29659,7 +29575,6 @@ var MDCSelectHelperTextFoundation = /** @class */ (function (_super) {
     };
     return MDCSelectHelperTextFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -29718,7 +29633,6 @@ var MDCSelectHelperText = /** @class */ (function (_super) {
     };
     return MDCSelectHelperText;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -29746,7 +29660,6 @@ var strings$p = {
     ICON_EVENT: 'MDCSelect:icon',
     ICON_ROLE: 'button',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -29846,7 +29759,6 @@ var MDCSelectIconFoundation = /** @class */ (function (_super) {
     };
     return MDCSelectIconFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -29906,7 +29818,6 @@ var MDCSelectIcon = /** @class */ (function (_super) {
     };
     return MDCSelectIcon;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -30440,7 +30351,6 @@ var MDCSelect = /** @class */ (function (_super) {
     };
     return MDCSelect;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\menu-surface\MenuSurface.svelte generated by Svelte v3.17.3 */
 const file$H = "node_modules\\@smui\\menu-surface\\MenuSurface.svelte";
@@ -34387,7 +34297,6 @@ var cssClasses$n = {
     DISABLED: 'mdc-radio--disabled',
     ROOT: 'mdc-radio',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -34453,7 +34362,6 @@ var MDCRadioFoundation = /** @class */ (function (_super) {
     };
     return MDCRadioFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -34565,7 +34473,6 @@ var MDCRadio = /** @class */ (function (_super) {
     });
     return MDCRadio;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\radio\Radio.svelte generated by Svelte v3.17.3 */
 const file$K = "node_modules\\@smui\\radio\\Radio.svelte";
@@ -36974,22 +36881,49 @@ class ReportLayout extends SvelteComponentDev {
 /* src\components\QuickView.svelte generated by Svelte v3.17.3 */
 
 const file$N = "src\\components\\QuickView.svelte";
+const get_footer_slot_changes = dirty => ({});
+const get_footer_slot_context = ctx => ({});
 
 // (29:2) {#if footer}
 function create_if_block$e(ctx) {
 	let footer_1;
+	let current;
+	const footer_slot_template = /*$$slots*/ ctx[5].footer;
+	const footer_slot = create_slot(footer_slot_template, ctx, /*$$scope*/ ctx[4], get_footer_slot_context);
 
 	const block = {
 		c: function create() {
 			footer_1 = element("footer");
+			if (footer_slot) footer_slot.c();
 			attr_dev(footer_1, "class", "quickview-footer svelte-102vyov");
 			add_location(footer_1, file$N, 29, 4, 756);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, footer_1, anchor);
+
+			if (footer_slot) {
+				footer_slot.m(footer_1, null);
+			}
+
+			current = true;
+		},
+		p: function update(ctx, dirty) {
+			if (footer_slot && footer_slot.p && dirty & /*$$scope*/ 16) {
+				footer_slot.p(get_slot_context(footer_slot_template, ctx, /*$$scope*/ ctx[4], get_footer_slot_context), get_slot_changes(footer_slot_template, /*$$scope*/ ctx[4], dirty, get_footer_slot_changes));
+			}
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(footer_slot, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(footer_slot, local);
+			current = false;
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(footer_1);
+			if (footer_slot) footer_slot.d(detaching);
 		}
 	};
 
@@ -37096,14 +37030,23 @@ function create_fragment$S(ctx) {
 			}
 
 			if (/*footer*/ ctx[3]) {
-				if (!if_block) {
+				if (if_block) {
+					if_block.p(ctx, dirty);
+					transition_in(if_block, 1);
+				} else {
 					if_block = create_if_block$e(ctx);
 					if_block.c();
+					transition_in(if_block, 1);
 					if_block.m(div2, null);
 				}
 			} else if (if_block) {
-				if_block.d(1);
-				if_block = null;
+				group_outros();
+
+				transition_out(if_block, 1, 1, () => {
+					if_block = null;
+				});
+
+				check_outros();
 			}
 
 			if (dirty & /*active*/ 1) {
@@ -37113,10 +37056,12 @@ function create_fragment$S(ctx) {
 		i: function intro(local) {
 			if (current) return;
 			transition_in(default_slot, local);
+			transition_in(if_block);
 			current = true;
 		},
 		o: function outro(local) {
 			transition_out(default_slot, local);
+			transition_out(if_block);
 			current = false;
 		},
 		d: function destroy(detaching) {
@@ -37226,44 +37171,86 @@ const file$O = "src\\Pages\\Normline.svelte";
 
 function get_each_context_2$1(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[109] = list[i];
+	child_ctx[119] = list[i];
 	return child_ctx;
 }
 
 function get_each_context_1$2(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[109] = list[i];
+	child_ctx[119] = list[i];
 	return child_ctx;
 }
 
 function get_each_context$5(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[109] = list[i];
-	child_ctx[40] = i;
+	child_ctx[119] = list[i];
+	child_ctx[44] = i;
 	return child_ctx;
 }
 
 function get_each_context_3$1(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[115] = list[i];
+	child_ctx[125] = list[i];
 	return child_ctx;
 }
 
-// (504:0) <QuickView style="padding:1em;" footer={false} bind:active={showTheoryFiles} title="Browse Theory files">
-function create_default_slot_24(ctx) {
+// (541:4) <div slot="footer" style="margin:auto">
+function create_footer_slot_1(ctx) {
+	let div;
+	let button;
+	let dispose;
+
+	const block = {
+		c: function create() {
+			div = element("div");
+			button = element("button");
+			button.textContent = "Submit";
+			attr_dev(button, "class", "button is-link svelte-ex8alc");
+			add_location(button, file$O, 541, 8, 24998);
+			attr_dev(div, "slot", "footer");
+			set_style(div, "margin", "auto");
+			attr_dev(div, "class", "svelte-ex8alc");
+			add_location(div, file$O, 540, 4, 24949);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, div, anchor);
+			append_dev(div, button);
+			dispose = listen_dev(button, "click", /*click_handler*/ ctx[66], false, false, false);
+		},
+		p: noop,
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(div);
+			dispose();
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_footer_slot_1.name,
+		type: "slot",
+		source: "(541:4) <div slot=\\\"footer\\\" style=\\\"margin:auto\\\">",
+		ctx
+	});
+
+	return block;
+}
+
+// (538:0) <QuickView style="padding:1em;" bind:active={showTheoryFiles} title="Browse Theory files">
+function create_default_slot_25(ctx) {
 	let updating_currentLocation;
 	let updating_fileChecked;
+	let t;
 	let current;
 
 	function filebrowser_currentLocation_binding(value) {
-		/*filebrowser_currentLocation_binding*/ ctx[58].call(null, value);
+		/*filebrowser_currentLocation_binding*/ ctx[64].call(null, value);
 	}
 
 	function filebrowser_fileChecked_binding(value_1) {
-		/*filebrowser_fileChecked_binding*/ ctx[59].call(null, value_1);
+		/*filebrowser_fileChecked_binding*/ ctx[65].call(null, value_1);
 	}
 
-	let filebrowser_props = {};
+	let filebrowser_props = { filetype: "" };
 
 	if (/*theoryLocation*/ ctx[10] !== void 0) {
 		filebrowser_props.currentLocation = /*theoryLocation*/ ctx[10];
@@ -37280,9 +37267,11 @@ function create_default_slot_24(ctx) {
 	const block = {
 		c: function create() {
 			create_component(filebrowser.$$.fragment);
+			t = space();
 		},
 		m: function mount(target, anchor) {
 			mount_component(filebrowser, target, anchor);
+			insert_dev(target, t, anchor);
 			current = true;
 		},
 		p: function update(ctx, dirty) {
@@ -37313,6 +37302,130 @@ function create_default_slot_24(ctx) {
 		},
 		d: function destroy(detaching) {
 			destroy_component(filebrowser, detaching);
+			if (detaching) detach_dev(t);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_default_slot_25.name,
+		type: "slot",
+		source: "(538:0) <QuickView style=\\\"padding:1em;\\\" bind:active={showTheoryFiles} title=\\\"Browse Theory files\\\">",
+		ctx
+	});
+
+	return block;
+}
+
+// (551:4) <div slot="footer" style="margin:auto">
+function create_footer_slot(ctx) {
+	let div;
+	let button;
+	let dispose;
+
+	const block = {
+		c: function create() {
+			div = element("div");
+			button = element("button");
+			button.textContent = "Submit";
+			attr_dev(button, "class", "button is-link svelte-ex8alc");
+			add_location(button, file$O, 551, 8, 25380);
+			attr_dev(div, "slot", "footer");
+			set_style(div, "margin", "auto");
+			attr_dev(div, "class", "svelte-ex8alc");
+			add_location(div, file$O, 550, 4, 25331);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, div, anchor);
+			append_dev(div, button);
+			dispose = listen_dev(button, "click", /*click_handler_1*/ ctx[70], false, false, false);
+		},
+		p: noop,
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(div);
+			dispose();
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_footer_slot.name,
+		type: "slot",
+		source: "(551:4) <div slot=\\\"footer\\\" style=\\\"margin:auto\\\">",
+		ctx
+	});
+
+	return block;
+}
+
+// (548:0) <QuickView style="padding:1em;" bind:active={showOPOFiles} title="Browse OPO files">
+function create_default_slot_24(ctx) {
+	let updating_currentLocation;
+	let updating_fileChecked;
+	let t;
+	let current;
+
+	function filebrowser_currentLocation_binding_1(value) {
+		/*filebrowser_currentLocation_binding_1*/ ctx[68].call(null, value);
+	}
+
+	function filebrowser_fileChecked_binding_1(value_1) {
+		/*filebrowser_fileChecked_binding_1*/ ctx[69].call(null, value_1);
+	}
+
+	let filebrowser_props = { filetype: "ofelix" };
+
+	if (/*OPOLocation*/ ctx[38] !== void 0) {
+		filebrowser_props.currentLocation = /*OPOLocation*/ ctx[38];
+	}
+
+	if (/*OPOfilesChecked*/ ctx[39] !== void 0) {
+		filebrowser_props.fileChecked = /*OPOfilesChecked*/ ctx[39];
+	}
+
+	const filebrowser = new FileBrowser({ props: filebrowser_props, $$inline: true });
+	binding_callbacks.push(() => bind(filebrowser, "currentLocation", filebrowser_currentLocation_binding_1));
+	binding_callbacks.push(() => bind(filebrowser, "fileChecked", filebrowser_fileChecked_binding_1));
+
+	const block = {
+		c: function create() {
+			create_component(filebrowser.$$.fragment);
+			t = space();
+		},
+		m: function mount(target, anchor) {
+			mount_component(filebrowser, target, anchor);
+			insert_dev(target, t, anchor);
+			current = true;
+		},
+		p: function update(ctx, dirty) {
+			const filebrowser_changes = {};
+
+			if (!updating_currentLocation && dirty[1] & /*OPOLocation*/ 128) {
+				updating_currentLocation = true;
+				filebrowser_changes.currentLocation = /*OPOLocation*/ ctx[38];
+				add_flush_callback(() => updating_currentLocation = false);
+			}
+
+			if (!updating_fileChecked && dirty[1] & /*OPOfilesChecked*/ 256) {
+				updating_fileChecked = true;
+				filebrowser_changes.fileChecked = /*OPOfilesChecked*/ ctx[39];
+				add_flush_callback(() => updating_fileChecked = false);
+			}
+
+			filebrowser.$set(filebrowser_changes);
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(filebrowser.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(filebrowser.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			destroy_component(filebrowser, detaching);
+			if (detaching) detach_dev(t);
 		}
 	};
 
@@ -37320,14 +37433,14 @@ function create_default_slot_24(ctx) {
 		block,
 		id: create_default_slot_24.name,
 		type: "slot",
-		source: "(504:0) <QuickView style=\\\"padding:1em;\\\" footer={false} bind:active={showTheoryFiles} title=\\\"Browse Theory files\\\">",
+		source: "(548:0) <QuickView style=\\\"padding:1em;\\\" bind:active={showOPOFiles} title=\\\"Browse OPO files\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (509:4) <div class="buttonSlot" slot="buttonContainer">
+// (559:4) <div class="buttonSlot" slot="buttonContainer">
 function create_buttonContainer_slot(ctx) {
 	let div0;
 	let div1;
@@ -37359,15 +37472,13 @@ function create_buttonContainer_slot(ctx) {
 	let t17;
 	let button6;
 	let t19;
-	let button7;
-	let t21;
 	let div3;
 	let updating_selected_1;
 	let current;
 	let dispose;
 
 	function textfield0_value_binding(value) {
-		/*textfield0_value_binding*/ ctx[63].call(null, value);
+		/*textfield0_value_binding*/ ctx[74].call(null, value);
 	}
 
 	let textfield0_props = {
@@ -37385,7 +37496,7 @@ function create_buttonContainer_slot(ctx) {
 	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
 
 	function customcheckbox_selected_binding(value_1) {
-		/*customcheckbox_selected_binding*/ ctx[65].call(null, value_1);
+		/*customcheckbox_selected_binding*/ ctx[76].call(null, value_1);
 	}
 
 	let customcheckbox_props = { label: "Only Final spectrum" };
@@ -37402,7 +37513,7 @@ function create_buttonContainer_slot(ctx) {
 	binding_callbacks.push(() => bind(customcheckbox, "selected", customcheckbox_selected_binding));
 
 	function customiconswitch0_toggler_binding(value_2) {
-		/*customiconswitch0_toggler_binding*/ ctx[66].call(null, value_2);
+		/*customiconswitch0_toggler_binding*/ ctx[77].call(null, value_2);
 	}
 
 	let customiconswitch0_props = { icons: ["settings_ethernet", "code"] };
@@ -37419,7 +37530,7 @@ function create_buttonContainer_slot(ctx) {
 	binding_callbacks.push(() => bind(customiconswitch0, "toggler", customiconswitch0_toggler_binding));
 
 	function customiconswitch1_toggler_binding(value_3) {
-		/*customiconswitch1_toggler_binding*/ ctx[69].call(null, value_3);
+		/*customiconswitch1_toggler_binding*/ ctx[80].call(null, value_3);
 	}
 
 	let customiconswitch1_props = {
@@ -37438,7 +37549,7 @@ function create_buttonContainer_slot(ctx) {
 	binding_callbacks.push(() => bind(customiconswitch1, "toggler", customiconswitch1_toggler_binding));
 
 	function textfield1_value_binding(value_4) {
-		/*textfield1_value_binding*/ ctx[71].call(null, value_4);
+		/*textfield1_value_binding*/ ctx[82].call(null, value_4);
 	}
 
 	let textfield1_props = {
@@ -37454,10 +37565,10 @@ function create_buttonContainer_slot(ctx) {
 
 	const textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding));
-	textfield1.$on("change", /*change_handler*/ ctx[72]);
+	textfield1.$on("change", /*change_handler*/ ctx[83]);
 
 	function textfield2_value_binding(value_5) {
-		/*textfield2_value_binding*/ ctx[73].call(null, value_5);
+		/*textfield2_value_binding*/ ctx[84].call(null, value_5);
 	}
 
 	let textfield2_props = {
@@ -37473,10 +37584,10 @@ function create_buttonContainer_slot(ctx) {
 
 	const textfield2 = new Textfield({ props: textfield2_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield2, "value", textfield2_value_binding));
-	textfield2.$on("change", /*change_handler_1*/ ctx[74]);
+	textfield2.$on("change", /*change_handler_1*/ ctx[85]);
 
 	function customradio_selected_binding(value_6) {
-		/*customradio_selected_binding*/ ctx[77].call(null, value_6);
+		/*customradio_selected_binding*/ ctx[87].call(null, value_6);
 	}
 
 	let customradio_props = {
@@ -37528,38 +37639,33 @@ function create_buttonContainer_slot(ctx) {
 			button6 = element("button");
 			button6.textContent = "Open in Matplotlib";
 			t19 = space();
-			button7 = element("button");
-			button7.textContent = "Submit";
-			t21 = space();
 			div3 = element("div");
 			create_component(customradio.$$.fragment);
 			attr_dev(button0, "class", "button is-link svelte-ex8alc");
-			add_location(button0, file$O, 512, 12, 23342);
+			add_location(button0, file$O, 563, 12, 25684);
 			attr_dev(button1, "class", "button is-link svelte-ex8alc");
-			add_location(button1, file$O, 514, 12, 23532);
+			add_location(button1, file$O, 565, 12, 25907);
 			attr_dev(button2, "class", "button is-link svelte-ex8alc");
-			add_location(button2, file$O, 517, 12, 23760);
+			add_location(button2, file$O, 568, 12, 26135);
 			attr_dev(button3, "class", "button is-link svelte-ex8alc");
 			attr_dev(button3, "tabindex", "0");
-			add_location(button3, file$O, 521, 12, 24182);
+			add_location(button3, file$O, 572, 12, 26557);
 			attr_dev(button4, "class", "button is-link svelte-ex8alc");
-			add_location(button4, file$O, 522, 12, 24339);
+			add_location(button4, file$O, 573, 12, 26714);
 			attr_dev(div1, "class", "align svelte-ex8alc");
-			add_location(div1, file$O, 510, 8, 23306);
+			add_location(div1, file$O, 561, 8, 25648);
 			attr_dev(button5, "class", "button is-link svelte-ex8alc");
-			add_location(button5, file$O, 527, 12, 24655);
+			add_location(button5, file$O, 578, 12, 27061);
 			attr_dev(button6, "class", "button is-link svelte-ex8alc");
-			add_location(button6, file$O, 530, 12, 25121);
-			attr_dev(button7, "class", "button is-link svelte-ex8alc");
-			add_location(button7, file$O, 532, 12, 25368);
+			add_location(button6, file$O, 581, 12, 27548);
 			attr_dev(div2, "class", "align animated fadeIn hide svelte-ex8alc");
 			toggle_class(div2, "active", /*toggleRow*/ ctx[2]);
-			add_location(div2, file$O, 526, 8, 24576);
+			add_location(div2, file$O, 577, 8, 26982);
 			attr_dev(div3, "class", "align svelte-ex8alc");
-			add_location(div3, file$O, 535, 8, 25495);
+			add_location(div3, file$O, 585, 8, 27809);
 			attr_dev(div0, "class", "buttonSlot svelte-ex8alc");
 			attr_dev(div0, "slot", "buttonContainer");
-			add_location(div0, file$O, 508, 4, 23247);
+			add_location(div0, file$O, 558, 4, 25583);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -37590,24 +37696,21 @@ function create_buttonContainer_slot(ctx) {
 			mount_component(textfield2, div2, null);
 			append_dev(div2, t17);
 			append_dev(div2, button6);
-			append_dev(div2, t19);
-			append_dev(div2, button7);
-			append_dev(div0, t21);
+			append_dev(div0, t19);
 			append_dev(div0, div3);
 			mount_component(customradio, div3, null);
 			current = true;
 
 			dispose = [
-				listen_dev(button0, "click", /*click_handler*/ ctx[61], false, false, false),
-				listen_dev(button1, "click", /*click_handler_1*/ ctx[62], false, false, false),
-				listen_dev(button2, "click", /*click_handler_2*/ ctx[64], false, false, false),
+				listen_dev(button0, "click", /*click_handler_2*/ ctx[72], false, false, false),
+				listen_dev(button1, "click", /*click_handler_3*/ ctx[73], false, false, false),
+				listen_dev(button2, "click", /*click_handler_4*/ ctx[75], false, false, false),
 				action_destroyer(Ripple_action = Ripple.call(null, button3, [true, { color: "primary" }])),
-				listen_dev(button3, "click", /*click_handler_3*/ ctx[67], false, false, false),
-				listen_dev(button4, "click", /*click_handler_4*/ ctx[68], false, false, false),
-				listen_dev(button5, "click", /*click_handler_5*/ ctx[70], false, false, false),
-				listen_dev(button6, "click", /*click_handler_6*/ ctx[75], false, false, false),
-				listen_dev(button7, "click", /*click_handler_7*/ ctx[76], false, false, false),
-				listen_dev(div3, "change", /*replot*/ ctx[42], false, false, false)
+				listen_dev(button3, "click", /*click_handler_5*/ ctx[78], false, false, false),
+				listen_dev(button4, "click", /*click_handler_6*/ ctx[79], false, false, false),
+				listen_dev(button5, "click", /*click_handler_7*/ ctx[81], false, false, false),
+				listen_dev(button6, "click", /*click_handler_8*/ ctx[86], false, false, false),
+				listen_dev(div3, "change", /*replot*/ ctx[46], false, false, false)
 			];
 		},
 		p: function update(ctx, dirty) {
@@ -37718,16 +37821,16 @@ function create_buttonContainer_slot(ctx) {
 		block,
 		id: create_buttonContainer_slot.name,
 		type: "slot",
-		source: "(509:4) <div class=\\\"buttonSlot\\\" slot=\\\"buttonContainer\\\">",
+		source: "(559:4) <div class=\\\"buttonSlot\\\" slot=\\\"buttonContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (608:32) <Cell>
+// (659:32) <Cell>
 function create_default_slot_23(ctx) {
-	let t_value = /*item*/ ctx[115] + "";
+	let t_value = /*item*/ ctx[125] + "";
 	let t;
 
 	const block = {
@@ -37747,14 +37850,14 @@ function create_default_slot_23(ctx) {
 		block,
 		id: create_default_slot_23.name,
 		type: "slot",
-		source: "(608:32) <Cell>",
+		source: "(659:32) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (607:28) {#each dataTableHead as item}
+// (658:28) {#each dataTableHead as item}
 function create_each_block_3$1(ctx) {
 	let current;
 
@@ -37777,7 +37880,7 @@ function create_each_block_3$1(ctx) {
 		p: function update(ctx, dirty) {
 			const cell_changes = {};
 
-			if (dirty[3] & /*$$scope*/ 33554432) {
+			if (dirty[4] & /*$$scope*/ 16) {
 				cell_changes.$$scope = { dirty, ctx };
 			}
 
@@ -37801,18 +37904,18 @@ function create_each_block_3$1(ctx) {
 		block,
 		id: create_each_block_3$1.name,
 		type: "each",
-		source: "(607:28) {#each dataTableHead as item}",
+		source: "(658:28) {#each dataTableHead as item}",
 		ctx
 	});
 
 	return block;
 }
 
-// (606:24) <Row>
+// (657:24) <Row>
 function create_default_slot_22(ctx) {
 	let each_1_anchor;
 	let current;
-	let each_value_3 = /*dataTableHead*/ ctx[41];
+	let each_value_3 = /*dataTableHead*/ ctx[45];
 	let each_blocks = [];
 
 	for (let i = 0; i < each_value_3.length; i += 1) {
@@ -37840,8 +37943,8 @@ function create_default_slot_22(ctx) {
 			current = true;
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[1] & /*dataTableHead*/ 1024) {
-				each_value_3 = /*dataTableHead*/ ctx[41];
+			if (dirty[1] & /*dataTableHead*/ 16384) {
+				each_value_3 = /*dataTableHead*/ ctx[45];
 				let i;
 
 				for (i = 0; i < each_value_3.length; i += 1) {
@@ -37895,14 +37998,14 @@ function create_default_slot_22(ctx) {
 		block,
 		id: create_default_slot_22.name,
 		type: "slot",
-		source: "(606:24) <Row>",
+		source: "(657:24) <Row>",
 		ctx
 	});
 
 	return block;
 }
 
-// (605:20) <Head >
+// (656:20) <Head >
 function create_default_slot_21(ctx) {
 	let current;
 
@@ -37925,7 +38028,7 @@ function create_default_slot_21(ctx) {
 		p: function update(ctx, dirty) {
 			const row_changes = {};
 
-			if (dirty[3] & /*$$scope*/ 33554432) {
+			if (dirty[4] & /*$$scope*/ 16) {
 				row_changes.$$scope = { dirty, ctx };
 			}
 
@@ -37949,21 +38052,21 @@ function create_default_slot_21(ctx) {
 		block,
 		id: create_default_slot_21.name,
 		type: "slot",
-		source: "(605:20) <Head >",
+		source: "(656:20) <Head >",
 		ctx
 	});
 
 	return block;
 }
 
-// (633:24) {:else}
+// (684:24) {:else}
 function create_else_block$9(ctx) {
 	let each_blocks = [];
 	let each_1_lookup = new Map();
 	let each_1_anchor;
 	let current;
 	let each_value_2 = /*dataTable*/ ctx[17];
-	const get_key = ctx => /*table*/ ctx[109].id;
+	const get_key = ctx => /*table*/ ctx[119].id;
 	validate_each_keys(ctx, each_value_2, get_each_context_2$1, get_key);
 
 	for (let i = 0; i < each_value_2.length; i += 1) {
@@ -38024,21 +38127,21 @@ function create_else_block$9(ctx) {
 		block,
 		id: create_else_block$9.name,
 		type: "else",
-		source: "(633:24) {:else}",
+		source: "(684:24) {:else}",
 		ctx
 	});
 
 	return block;
 }
 
-// (623:105) 
+// (674:105) 
 function create_if_block_1$5(ctx) {
 	let each_blocks = [];
 	let each_1_lookup = new Map();
 	let each_1_anchor;
 	let current;
 	let each_value_1 = /*dataTable_avg*/ ctx[18];
-	const get_key = ctx => /*table*/ ctx[109].id;
+	const get_key = ctx => /*table*/ ctx[119].id;
 	validate_each_keys(ctx, each_value_1, get_each_context_1$2, get_key);
 
 	for (let i = 0; i < each_value_1.length; i += 1) {
@@ -38099,21 +38202,21 @@ function create_if_block_1$5(ctx) {
 		block,
 		id: create_if_block_1$5.name,
 		type: "if",
-		source: "(623:105) ",
+		source: "(674:105) ",
 		ctx
 	});
 
 	return block;
 }
 
-// (613:24) {#if show_dataTable_only_weighted_averaged}
+// (664:24) {#if show_dataTable_only_weighted_averaged}
 function create_if_block$f(ctx) {
 	let each_blocks = [];
 	let each_1_lookup = new Map();
 	let each_1_anchor;
 	let current;
-	let each_value = /*dataTable_weighted_avg*/ ctx[39];
-	const get_key = ctx => /*table*/ ctx[109].id;
+	let each_value = /*dataTable_weighted_avg*/ ctx[42];
+	const get_key = ctx => /*table*/ ctx[119].id;
 	validate_each_keys(ctx, each_value, get_each_context$5, get_key);
 
 	for (let i = 0; i < each_value.length; i += 1) {
@@ -38139,7 +38242,7 @@ function create_if_block$f(ctx) {
 			current = true;
 		},
 		p: function update(ctx, dirty) {
-			const each_value = /*dataTable_weighted_avg*/ ctx[39];
+			const each_value = /*dataTable_weighted_avg*/ ctx[42];
 			group_outros();
 			validate_each_keys(ctx, each_value, get_each_context$5, get_key);
 			each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value, each_1_lookup, each_1_anchor.parentNode, outro_and_destroy_block, create_each_block$5, each_1_anchor, get_each_context$5);
@@ -38174,16 +38277,16 @@ function create_if_block$f(ctx) {
 		block,
 		id: create_if_block$f.name,
 		type: "if",
-		source: "(613:24) {#if show_dataTable_only_weighted_averaged}",
+		source: "(664:24) {#if show_dataTable_only_weighted_averaged}",
 		ctx
 	});
 
 	return block;
 }
 
-// (636:36) <Cell>
+// (687:36) <Cell>
 function create_default_slot_20(ctx) {
-	let t_value = /*table*/ ctx[109].name + "";
+	let t_value = /*table*/ ctx[119].name + "";
 	let t;
 
 	const block = {
@@ -38194,7 +38297,7 @@ function create_default_slot_20(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*dataTable*/ 131072 && t_value !== (t_value = /*table*/ ctx[109].name + "")) set_data_dev(t, t_value);
+			if (dirty[0] & /*dataTable*/ 131072 && t_value !== (t_value = /*table*/ ctx[119].name + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -38205,16 +38308,16 @@ function create_default_slot_20(ctx) {
 		block,
 		id: create_default_slot_20.name,
 		type: "slot",
-		source: "(636:36) <Cell>",
+		source: "(687:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (637:36) <Cell>
+// (688:36) <Cell>
 function create_default_slot_19(ctx) {
-	let t_value = /*table*/ ctx[109].freq + "";
+	let t_value = /*table*/ ctx[119].freq + "";
 	let t;
 
 	const block = {
@@ -38225,7 +38328,7 @@ function create_default_slot_19(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*dataTable*/ 131072 && t_value !== (t_value = /*table*/ ctx[109].freq + "")) set_data_dev(t, t_value);
+			if (dirty[0] & /*dataTable*/ 131072 && t_value !== (t_value = /*table*/ ctx[119].freq + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -38236,16 +38339,16 @@ function create_default_slot_19(ctx) {
 		block,
 		id: create_default_slot_19.name,
 		type: "slot",
-		source: "(637:36) <Cell>",
+		source: "(688:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (638:36) <Cell>
+// (689:36) <Cell>
 function create_default_slot_18(ctx) {
-	let t_value = /*table*/ ctx[109].amp + "";
+	let t_value = /*table*/ ctx[119].amp + "";
 	let t;
 
 	const block = {
@@ -38256,7 +38359,7 @@ function create_default_slot_18(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*dataTable*/ 131072 && t_value !== (t_value = /*table*/ ctx[109].amp + "")) set_data_dev(t, t_value);
+			if (dirty[0] & /*dataTable*/ 131072 && t_value !== (t_value = /*table*/ ctx[119].amp + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -38267,16 +38370,16 @@ function create_default_slot_18(ctx) {
 		block,
 		id: create_default_slot_18.name,
 		type: "slot",
-		source: "(638:36) <Cell>",
+		source: "(689:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (639:36) <Cell>
+// (690:36) <Cell>
 function create_default_slot_17(ctx) {
-	let t_value = /*table*/ ctx[109].fwhm + "";
+	let t_value = /*table*/ ctx[119].fwhm + "";
 	let t;
 
 	const block = {
@@ -38287,7 +38390,7 @@ function create_default_slot_17(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*dataTable*/ 131072 && t_value !== (t_value = /*table*/ ctx[109].fwhm + "")) set_data_dev(t, t_value);
+			if (dirty[0] & /*dataTable*/ 131072 && t_value !== (t_value = /*table*/ ctx[119].fwhm + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -38298,16 +38401,16 @@ function create_default_slot_17(ctx) {
 		block,
 		id: create_default_slot_17.name,
 		type: "slot",
-		source: "(639:36) <Cell>",
+		source: "(690:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (640:36) <Cell>
+// (691:36) <Cell>
 function create_default_slot_16(ctx) {
-	let t_value = /*table*/ ctx[109].sig + "";
+	let t_value = /*table*/ ctx[119].sig + "";
 	let t;
 
 	const block = {
@@ -38318,7 +38421,7 @@ function create_default_slot_16(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*dataTable*/ 131072 && t_value !== (t_value = /*table*/ ctx[109].sig + "")) set_data_dev(t, t_value);
+			if (dirty[0] & /*dataTable*/ 131072 && t_value !== (t_value = /*table*/ ctx[119].sig + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -38329,14 +38432,14 @@ function create_default_slot_16(ctx) {
 		block,
 		id: create_default_slot_16.name,
 		type: "slot",
-		source: "(640:36) <Cell>",
+		source: "(691:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (635:32) <Row style="background-color: {table.color};">
+// (686:32) <Row style="background-color: {table.color};">
 function create_default_slot_15(ctx) {
 	let t0;
 	let t1;
@@ -38414,35 +38517,35 @@ function create_default_slot_15(ctx) {
 		p: function update(ctx, dirty) {
 			const cell0_changes = {};
 
-			if (dirty[0] & /*dataTable*/ 131072 | dirty[3] & /*$$scope*/ 33554432) {
+			if (dirty[0] & /*dataTable*/ 131072 | dirty[4] & /*$$scope*/ 16) {
 				cell0_changes.$$scope = { dirty, ctx };
 			}
 
 			cell0.$set(cell0_changes);
 			const cell1_changes = {};
 
-			if (dirty[0] & /*dataTable*/ 131072 | dirty[3] & /*$$scope*/ 33554432) {
+			if (dirty[0] & /*dataTable*/ 131072 | dirty[4] & /*$$scope*/ 16) {
 				cell1_changes.$$scope = { dirty, ctx };
 			}
 
 			cell1.$set(cell1_changes);
 			const cell2_changes = {};
 
-			if (dirty[0] & /*dataTable*/ 131072 | dirty[3] & /*$$scope*/ 33554432) {
+			if (dirty[0] & /*dataTable*/ 131072 | dirty[4] & /*$$scope*/ 16) {
 				cell2_changes.$$scope = { dirty, ctx };
 			}
 
 			cell2.$set(cell2_changes);
 			const cell3_changes = {};
 
-			if (dirty[0] & /*dataTable*/ 131072 | dirty[3] & /*$$scope*/ 33554432) {
+			if (dirty[0] & /*dataTable*/ 131072 | dirty[4] & /*$$scope*/ 16) {
 				cell3_changes.$$scope = { dirty, ctx };
 			}
 
 			cell3.$set(cell3_changes);
 			const cell4_changes = {};
 
-			if (dirty[0] & /*dataTable*/ 131072 | dirty[3] & /*$$scope*/ 33554432) {
+			if (dirty[0] & /*dataTable*/ 131072 | dirty[4] & /*$$scope*/ 16) {
 				cell4_changes.$$scope = { dirty, ctx };
 			}
 
@@ -38483,21 +38586,21 @@ function create_default_slot_15(ctx) {
 		block,
 		id: create_default_slot_15.name,
 		type: "slot",
-		source: "(635:32) <Row style=\\\"background-color: {table.color};\\\">",
+		source: "(686:32) <Row style=\\\"background-color: {table.color};\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (634:28) {#each dataTable as table (table.id)}
+// (685:28) {#each dataTable as table (table.id)}
 function create_each_block_2$1(key_1, ctx) {
 	let first;
 	let current;
 
 	const row = new Row({
 			props: {
-				style: "background-color: " + /*table*/ ctx[109].color + ";",
+				style: "background-color: " + /*table*/ ctx[119].color + ";",
 				$$slots: { default: [create_default_slot_15] },
 				$$scope: { ctx }
 			},
@@ -38519,9 +38622,9 @@ function create_each_block_2$1(key_1, ctx) {
 		},
 		p: function update(ctx, dirty) {
 			const row_changes = {};
-			if (dirty[0] & /*dataTable*/ 131072) row_changes.style = "background-color: " + /*table*/ ctx[109].color + ";";
+			if (dirty[0] & /*dataTable*/ 131072) row_changes.style = "background-color: " + /*table*/ ctx[119].color + ";";
 
-			if (dirty[0] & /*dataTable*/ 131072 | dirty[3] & /*$$scope*/ 33554432) {
+			if (dirty[0] & /*dataTable*/ 131072 | dirty[4] & /*$$scope*/ 16) {
 				row_changes.$$scope = { dirty, ctx };
 			}
 
@@ -38546,16 +38649,16 @@ function create_each_block_2$1(key_1, ctx) {
 		block,
 		id: create_each_block_2$1.name,
 		type: "each",
-		source: "(634:28) {#each dataTable as table (table.id)}",
+		source: "(685:28) {#each dataTable as table (table.id)}",
 		ctx
 	});
 
 	return block;
 }
 
-// (626:36) <Cell>
+// (677:36) <Cell>
 function create_default_slot_14(ctx) {
-	let t_value = /*table*/ ctx[109].name + "";
+	let t_value = /*table*/ ctx[119].name + "";
 	let t;
 
 	const block = {
@@ -38566,7 +38669,7 @@ function create_default_slot_14(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*dataTable_avg*/ 262144 && t_value !== (t_value = /*table*/ ctx[109].name + "")) set_data_dev(t, t_value);
+			if (dirty[0] & /*dataTable_avg*/ 262144 && t_value !== (t_value = /*table*/ ctx[119].name + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -38577,16 +38680,16 @@ function create_default_slot_14(ctx) {
 		block,
 		id: create_default_slot_14.name,
 		type: "slot",
-		source: "(626:36) <Cell>",
+		source: "(677:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (627:36) <Cell>
+// (678:36) <Cell>
 function create_default_slot_13(ctx) {
-	let t_value = /*table*/ ctx[109].freq + "";
+	let t_value = /*table*/ ctx[119].freq + "";
 	let t;
 
 	const block = {
@@ -38597,7 +38700,7 @@ function create_default_slot_13(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*dataTable_avg*/ 262144 && t_value !== (t_value = /*table*/ ctx[109].freq + "")) set_data_dev(t, t_value);
+			if (dirty[0] & /*dataTable_avg*/ 262144 && t_value !== (t_value = /*table*/ ctx[119].freq + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -38608,16 +38711,16 @@ function create_default_slot_13(ctx) {
 		block,
 		id: create_default_slot_13.name,
 		type: "slot",
-		source: "(627:36) <Cell>",
+		source: "(678:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (628:36) <Cell>
+// (679:36) <Cell>
 function create_default_slot_12(ctx) {
-	let t_value = /*table*/ ctx[109].amp + "";
+	let t_value = /*table*/ ctx[119].amp + "";
 	let t;
 
 	const block = {
@@ -38628,7 +38731,7 @@ function create_default_slot_12(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*dataTable_avg*/ 262144 && t_value !== (t_value = /*table*/ ctx[109].amp + "")) set_data_dev(t, t_value);
+			if (dirty[0] & /*dataTable_avg*/ 262144 && t_value !== (t_value = /*table*/ ctx[119].amp + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -38639,16 +38742,16 @@ function create_default_slot_12(ctx) {
 		block,
 		id: create_default_slot_12.name,
 		type: "slot",
-		source: "(628:36) <Cell>",
+		source: "(679:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (629:36) <Cell>
+// (680:36) <Cell>
 function create_default_slot_11$1(ctx) {
-	let t_value = /*table*/ ctx[109].fwhm + "";
+	let t_value = /*table*/ ctx[119].fwhm + "";
 	let t;
 
 	const block = {
@@ -38659,7 +38762,7 @@ function create_default_slot_11$1(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*dataTable_avg*/ 262144 && t_value !== (t_value = /*table*/ ctx[109].fwhm + "")) set_data_dev(t, t_value);
+			if (dirty[0] & /*dataTable_avg*/ 262144 && t_value !== (t_value = /*table*/ ctx[119].fwhm + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -38670,16 +38773,16 @@ function create_default_slot_11$1(ctx) {
 		block,
 		id: create_default_slot_11$1.name,
 		type: "slot",
-		source: "(629:36) <Cell>",
+		source: "(680:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (630:36) <Cell>
+// (681:36) <Cell>
 function create_default_slot_10$1(ctx) {
-	let t_value = /*table*/ ctx[109].sig + "";
+	let t_value = /*table*/ ctx[119].sig + "";
 	let t;
 
 	const block = {
@@ -38690,7 +38793,7 @@ function create_default_slot_10$1(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*dataTable_avg*/ 262144 && t_value !== (t_value = /*table*/ ctx[109].sig + "")) set_data_dev(t, t_value);
+			if (dirty[0] & /*dataTable_avg*/ 262144 && t_value !== (t_value = /*table*/ ctx[119].sig + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -38701,14 +38804,14 @@ function create_default_slot_10$1(ctx) {
 		block,
 		id: create_default_slot_10$1.name,
 		type: "slot",
-		source: "(630:36) <Cell>",
+		source: "(681:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (625:32) <Row>
+// (676:32) <Row>
 function create_default_slot_9$1(ctx) {
 	let t0;
 	let t1;
@@ -38786,35 +38889,35 @@ function create_default_slot_9$1(ctx) {
 		p: function update(ctx, dirty) {
 			const cell0_changes = {};
 
-			if (dirty[0] & /*dataTable_avg*/ 262144 | dirty[3] & /*$$scope*/ 33554432) {
+			if (dirty[0] & /*dataTable_avg*/ 262144 | dirty[4] & /*$$scope*/ 16) {
 				cell0_changes.$$scope = { dirty, ctx };
 			}
 
 			cell0.$set(cell0_changes);
 			const cell1_changes = {};
 
-			if (dirty[0] & /*dataTable_avg*/ 262144 | dirty[3] & /*$$scope*/ 33554432) {
+			if (dirty[0] & /*dataTable_avg*/ 262144 | dirty[4] & /*$$scope*/ 16) {
 				cell1_changes.$$scope = { dirty, ctx };
 			}
 
 			cell1.$set(cell1_changes);
 			const cell2_changes = {};
 
-			if (dirty[0] & /*dataTable_avg*/ 262144 | dirty[3] & /*$$scope*/ 33554432) {
+			if (dirty[0] & /*dataTable_avg*/ 262144 | dirty[4] & /*$$scope*/ 16) {
 				cell2_changes.$$scope = { dirty, ctx };
 			}
 
 			cell2.$set(cell2_changes);
 			const cell3_changes = {};
 
-			if (dirty[0] & /*dataTable_avg*/ 262144 | dirty[3] & /*$$scope*/ 33554432) {
+			if (dirty[0] & /*dataTable_avg*/ 262144 | dirty[4] & /*$$scope*/ 16) {
 				cell3_changes.$$scope = { dirty, ctx };
 			}
 
 			cell3.$set(cell3_changes);
 			const cell4_changes = {};
 
-			if (dirty[0] & /*dataTable_avg*/ 262144 | dirty[3] & /*$$scope*/ 33554432) {
+			if (dirty[0] & /*dataTable_avg*/ 262144 | dirty[4] & /*$$scope*/ 16) {
 				cell4_changes.$$scope = { dirty, ctx };
 			}
 
@@ -38855,14 +38958,14 @@ function create_default_slot_9$1(ctx) {
 		block,
 		id: create_default_slot_9$1.name,
 		type: "slot",
-		source: "(625:32) <Row>",
+		source: "(676:32) <Row>",
 		ctx
 	});
 
 	return block;
 }
 
-// (624:28) {#each dataTable_avg as table (table.id)}
+// (675:28) {#each dataTable_avg as table (table.id)}
 function create_each_block_1$2(key_1, ctx) {
 	let first;
 	let current;
@@ -38891,7 +38994,7 @@ function create_each_block_1$2(key_1, ctx) {
 		p: function update(ctx, dirty) {
 			const row_changes = {};
 
-			if (dirty[0] & /*dataTable_avg*/ 262144 | dirty[3] & /*$$scope*/ 33554432) {
+			if (dirty[0] & /*dataTable_avg*/ 262144 | dirty[4] & /*$$scope*/ 16) {
 				row_changes.$$scope = { dirty, ctx };
 			}
 
@@ -38916,17 +39019,17 @@ function create_each_block_1$2(key_1, ctx) {
 		block,
 		id: create_each_block_1$2.name,
 		type: "each",
-		source: "(624:28) {#each dataTable_avg as table (table.id)}",
+		source: "(675:28) {#each dataTable_avg as table (table.id)}",
 		ctx
 	});
 
 	return block;
 }
 
-// (616:36) <Cell>
+// (667:36) <Cell>
 function create_default_slot_8$1(ctx) {
 	let t0;
-	let t1_value = /*index*/ ctx[40] + "";
+	let t1_value = /*index*/ ctx[44] + "";
 	let t1;
 
 	const block = {
@@ -38939,7 +39042,7 @@ function create_default_slot_8$1(ctx) {
 			insert_dev(target, t1, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[1] & /*dataTable_weighted_avg*/ 256 && t1_value !== (t1_value = /*index*/ ctx[40] + "")) set_data_dev(t1, t1_value);
+			if (dirty[1] & /*dataTable_weighted_avg*/ 2048 && t1_value !== (t1_value = /*index*/ ctx[44] + "")) set_data_dev(t1, t1_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t0);
@@ -38951,16 +39054,16 @@ function create_default_slot_8$1(ctx) {
 		block,
 		id: create_default_slot_8$1.name,
 		type: "slot",
-		source: "(616:36) <Cell>",
+		source: "(667:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (617:36) <Cell>
+// (668:36) <Cell>
 function create_default_slot_7$2(ctx) {
-	let t_value = /*table*/ ctx[109].freq + "";
+	let t_value = /*table*/ ctx[119].freq + "";
 	let t;
 
 	const block = {
@@ -38971,7 +39074,7 @@ function create_default_slot_7$2(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[1] & /*dataTable_weighted_avg*/ 256 && t_value !== (t_value = /*table*/ ctx[109].freq + "")) set_data_dev(t, t_value);
+			if (dirty[1] & /*dataTable_weighted_avg*/ 2048 && t_value !== (t_value = /*table*/ ctx[119].freq + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -38982,16 +39085,16 @@ function create_default_slot_7$2(ctx) {
 		block,
 		id: create_default_slot_7$2.name,
 		type: "slot",
-		source: "(617:36) <Cell>",
+		source: "(668:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (618:36) <Cell>
+// (669:36) <Cell>
 function create_default_slot_6$2(ctx) {
-	let t_value = /*table*/ ctx[109].amp + "";
+	let t_value = /*table*/ ctx[119].amp + "";
 	let t;
 
 	const block = {
@@ -39002,7 +39105,7 @@ function create_default_slot_6$2(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[1] & /*dataTable_weighted_avg*/ 256 && t_value !== (t_value = /*table*/ ctx[109].amp + "")) set_data_dev(t, t_value);
+			if (dirty[1] & /*dataTable_weighted_avg*/ 2048 && t_value !== (t_value = /*table*/ ctx[119].amp + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -39013,16 +39116,16 @@ function create_default_slot_6$2(ctx) {
 		block,
 		id: create_default_slot_6$2.name,
 		type: "slot",
-		source: "(618:36) <Cell>",
+		source: "(669:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (619:36) <Cell>
+// (670:36) <Cell>
 function create_default_slot_5$3(ctx) {
-	let t_value = /*table*/ ctx[109].fwhm + "";
+	let t_value = /*table*/ ctx[119].fwhm + "";
 	let t;
 
 	const block = {
@@ -39033,7 +39136,7 @@ function create_default_slot_5$3(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[1] & /*dataTable_weighted_avg*/ 256 && t_value !== (t_value = /*table*/ ctx[109].fwhm + "")) set_data_dev(t, t_value);
+			if (dirty[1] & /*dataTable_weighted_avg*/ 2048 && t_value !== (t_value = /*table*/ ctx[119].fwhm + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -39044,16 +39147,16 @@ function create_default_slot_5$3(ctx) {
 		block,
 		id: create_default_slot_5$3.name,
 		type: "slot",
-		source: "(619:36) <Cell>",
+		source: "(670:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (620:36) <Cell>
+// (671:36) <Cell>
 function create_default_slot_4$5(ctx) {
-	let t_value = /*table*/ ctx[109].sig + "";
+	let t_value = /*table*/ ctx[119].sig + "";
 	let t;
 
 	const block = {
@@ -39064,7 +39167,7 @@ function create_default_slot_4$5(ctx) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[1] & /*dataTable_weighted_avg*/ 256 && t_value !== (t_value = /*table*/ ctx[109].sig + "")) set_data_dev(t, t_value);
+			if (dirty[1] & /*dataTable_weighted_avg*/ 2048 && t_value !== (t_value = /*table*/ ctx[119].sig + "")) set_data_dev(t, t_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -39075,14 +39178,14 @@ function create_default_slot_4$5(ctx) {
 		block,
 		id: create_default_slot_4$5.name,
 		type: "slot",
-		source: "(620:36) <Cell>",
+		source: "(671:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (615:32) <Row>
+// (666:32) <Row>
 function create_default_slot_3$5(ctx) {
 	let t0;
 	let t1;
@@ -39160,35 +39263,35 @@ function create_default_slot_3$5(ctx) {
 		p: function update(ctx, dirty) {
 			const cell0_changes = {};
 
-			if (dirty[1] & /*dataTable_weighted_avg*/ 256 | dirty[3] & /*$$scope*/ 33554432) {
+			if (dirty[1] & /*dataTable_weighted_avg*/ 2048 | dirty[4] & /*$$scope*/ 16) {
 				cell0_changes.$$scope = { dirty, ctx };
 			}
 
 			cell0.$set(cell0_changes);
 			const cell1_changes = {};
 
-			if (dirty[1] & /*dataTable_weighted_avg*/ 256 | dirty[3] & /*$$scope*/ 33554432) {
+			if (dirty[1] & /*dataTable_weighted_avg*/ 2048 | dirty[4] & /*$$scope*/ 16) {
 				cell1_changes.$$scope = { dirty, ctx };
 			}
 
 			cell1.$set(cell1_changes);
 			const cell2_changes = {};
 
-			if (dirty[1] & /*dataTable_weighted_avg*/ 256 | dirty[3] & /*$$scope*/ 33554432) {
+			if (dirty[1] & /*dataTable_weighted_avg*/ 2048 | dirty[4] & /*$$scope*/ 16) {
 				cell2_changes.$$scope = { dirty, ctx };
 			}
 
 			cell2.$set(cell2_changes);
 			const cell3_changes = {};
 
-			if (dirty[1] & /*dataTable_weighted_avg*/ 256 | dirty[3] & /*$$scope*/ 33554432) {
+			if (dirty[1] & /*dataTable_weighted_avg*/ 2048 | dirty[4] & /*$$scope*/ 16) {
 				cell3_changes.$$scope = { dirty, ctx };
 			}
 
 			cell3.$set(cell3_changes);
 			const cell4_changes = {};
 
-			if (dirty[1] & /*dataTable_weighted_avg*/ 256 | dirty[3] & /*$$scope*/ 33554432) {
+			if (dirty[1] & /*dataTable_weighted_avg*/ 2048 | dirty[4] & /*$$scope*/ 16) {
 				cell4_changes.$$scope = { dirty, ctx };
 			}
 
@@ -39229,14 +39332,14 @@ function create_default_slot_3$5(ctx) {
 		block,
 		id: create_default_slot_3$5.name,
 		type: "slot",
-		source: "(615:32) <Row>",
+		source: "(666:32) <Row>",
 		ctx
 	});
 
 	return block;
 }
 
-// (614:28) {#each dataTable_weighted_avg as table, index (table.id)}
+// (665:28) {#each dataTable_weighted_avg as table, index (table.id)}
 function create_each_block$5(key_1, ctx) {
 	let first;
 	let current;
@@ -39265,7 +39368,7 @@ function create_each_block$5(key_1, ctx) {
 		p: function update(ctx, dirty) {
 			const row_changes = {};
 
-			if (dirty[1] & /*dataTable_weighted_avg*/ 256 | dirty[3] & /*$$scope*/ 33554432) {
+			if (dirty[1] & /*dataTable_weighted_avg*/ 2048 | dirty[4] & /*$$scope*/ 16) {
 				row_changes.$$scope = { dirty, ctx };
 			}
 
@@ -39290,14 +39393,14 @@ function create_each_block$5(key_1, ctx) {
 		block,
 		id: create_each_block$5.name,
 		type: "each",
-		source: "(614:28) {#each dataTable_weighted_avg as table, index (table.id)}",
+		source: "(665:28) {#each dataTable_weighted_avg as table, index (table.id)}",
 		ctx
 	});
 
 	return block;
 }
 
-// (612:20) <Body>
+// (663:20) <Body>
 function create_default_slot_2$9(ctx) {
 	let current_block_type_index;
 	let if_block;
@@ -39369,14 +39472,14 @@ function create_default_slot_2$9(ctx) {
 		block,
 		id: create_default_slot_2$9.name,
 		type: "slot",
-		source: "(612:20) <Body>",
+		source: "(663:20) <Body>",
 		ctx
 	});
 
 	return block;
 }
 
-// (604:16) <DataTable table$aria-label="felix-tableAriaLabel" table$id="felixTable" id="felixTableContainer">
+// (655:16) <DataTable table$aria-label="felix-tableAriaLabel" table$id="felixTable" id="felixTableContainer">
 function create_default_slot_1$b(ctx) {
 	let t;
 	let current;
@@ -39412,14 +39515,14 @@ function create_default_slot_1$b(ctx) {
 		p: function update(ctx, dirty) {
 			const head_changes = {};
 
-			if (dirty[3] & /*$$scope*/ 33554432) {
+			if (dirty[4] & /*$$scope*/ 16) {
 				head_changes.$$scope = { dirty, ctx };
 			}
 
 			head.$set(head_changes);
 			const body_changes = {};
 
-			if (dirty[0] & /*show_dataTable_only_weighted_averaged, dataTable_avg, show_dataTable_only_averaged, dataTable*/ 3014656 | dirty[1] & /*dataTable_weighted_avg*/ 256 | dirty[3] & /*$$scope*/ 33554432) {
+			if (dirty[0] & /*show_dataTable_only_weighted_averaged, dataTable_avg, show_dataTable_only_averaged, dataTable*/ 3014656 | dirty[1] & /*dataTable_weighted_avg*/ 2048 | dirty[4] & /*$$scope*/ 16) {
 				body_changes.$$scope = { dirty, ctx };
 			}
 
@@ -39447,17 +39550,17 @@ function create_default_slot_1$b(ctx) {
 		block,
 		id: create_default_slot_1$b.name,
 		type: "slot",
-		source: "(604:16) <DataTable table$aria-label=\\\"felix-tableAriaLabel\\\" table$id=\\\"felixTable\\\" id=\\\"felixTableContainer\\\">",
+		source: "(655:16) <DataTable table$aria-label=\\\"felix-tableAriaLabel\\\" table$id=\\\"felixTable\\\" id=\\\"felixTableContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (541:4) <div class="plotSlot" slot="plotContainer">
+// (591:4) <div class="plotSlot" slot="plotContainer">
 function create_plotContainer_slot(ctx) {
 	let div0;
-	let div7;
+	let div8;
 	let div1;
 	let t0;
 	let div2;
@@ -39470,78 +39573,80 @@ function create_plotContainer_slot(ctx) {
 	let t4;
 	let div6;
 	let t5;
-	let div15;
-	let div8;
-	let updating_picked;
+	let div7;
 	let t6;
-	let updating_selected;
-	let t7;
-	let updating_selected_1;
-	let div8_transition;
-	let t8;
+	let div16;
 	let div9;
-	let button0;
-	let t10;
-	let button1;
-	let t12;
-	let button2;
-	let t14;
-	let button3;
-	let t16;
-	let button4;
-	let t18;
-	let button5;
-	let t20;
-	let button6;
-	let t22;
+	let updating_picked;
+	let t7;
+	let updating_selected;
+	let t8;
+	let updating_selected_1;
+	let div9_transition;
+	let t9;
 	let div10;
-	let updating_value;
+	let button0;
+	let t11;
+	let button1;
+	let t13;
+	let button2;
+	let t15;
+	let button3;
+	let t17;
+	let button4;
+	let t19;
+	let button5;
+	let t21;
+	let button6;
 	let t23;
-	let updating_value_1;
-	let t24;
-	let updating_value_2;
-	let t25;
-	let button7;
-	let t27;
-	let button8;
-	let t29;
 	let div11;
-	let updating_value_3;
+	let updating_value;
+	let t24;
+	let updating_value_1;
+	let t25;
+	let updating_value_2;
+	let t26;
+	let button7;
+	let t28;
+	let button8;
 	let t30;
-	let updating_value_4;
-	let t31;
-	let updating_value_5;
-	let t32;
-	let updating_value_6;
-	let t33;
-	let updating_value_7;
-	let t34;
-	let updating_value_8;
-	let t35;
-	let button9;
-	let t37;
-	let div13;
 	let div12;
-	let t39;
-	let updating_selected_2;
-	let t40;
-	let updating_selected_3;
-	let t41;
-	let updating_selected_4;
-	let t42;
-	let button10;
-	let t44;
-	let button11;
-	let t46;
+	let updating_value_3;
+	let t31;
+	let updating_value_4;
+	let t32;
+	let updating_value_5;
+	let t33;
+	let updating_value_6;
+	let t34;
+	let updating_value_7;
+	let t35;
+	let updating_value_8;
+	let t36;
+	let button9;
+	let t38;
 	let div14;
-	let div14_transition;
+	let div13;
+	let t40;
+	let updating_selected_2;
+	let t41;
+	let updating_selected_3;
+	let t42;
+	let updating_selected_4;
+	let t43;
+	let button10;
+	let t45;
+	let button11;
 	let t47;
+	let div15;
+	let div15_transition;
+	let t48;
 	let updating_currentLocation;
 	let current;
 	let dispose;
 
 	function customselect_picked_binding(value) {
-		/*customselect_picked_binding*/ ctx[78].call(null, value);
+		/*customselect_picked_binding*/ ctx[88].call(null, value);
 	}
 
 	let customselect_props = {
@@ -39561,7 +39666,7 @@ function create_plotContainer_slot(ctx) {
 	binding_callbacks.push(() => bind(customselect, "picked", customselect_picked_binding));
 
 	function customswitch0_selected_binding(value_1) {
-		/*customswitch0_selected_binding*/ ctx[79].call(null, value_1);
+		/*customswitch0_selected_binding*/ ctx[89].call(null, value_1);
 	}
 
 	let customswitch0_props = {
@@ -39581,7 +39686,7 @@ function create_plotContainer_slot(ctx) {
 	binding_callbacks.push(() => bind(customswitch0, "selected", customswitch0_selected_binding));
 
 	function customswitch1_selected_binding(value_2) {
-		/*customswitch1_selected_binding*/ ctx[80].call(null, value_2);
+		/*customswitch1_selected_binding*/ ctx[90].call(null, value_2);
 	}
 
 	let customswitch1_props = {
@@ -39601,12 +39706,12 @@ function create_plotContainer_slot(ctx) {
 	binding_callbacks.push(() => bind(customswitch1, "selected", customswitch1_selected_binding));
 
 	function textfield0_value_binding_1(value_3) {
-		/*textfield0_value_binding_1*/ ctx[86].call(null, value_3);
+		/*textfield0_value_binding_1*/ ctx[96].call(null, value_3);
 	}
 
 	let textfield0_props = {
 		type: "number",
-		style: /*style*/ ctx[46],
+		style: /*style*/ ctx[50],
 		label: "Prominance"
 	};
 
@@ -39616,15 +39721,15 @@ function create_plotContainer_slot(ctx) {
 
 	const textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding_1));
-	textfield0.$on("change", /*change_handler_2*/ ctx[87]);
+	textfield0.$on("change", /*change_handler_2*/ ctx[97]);
 
 	function textfield1_value_binding_1(value_4) {
-		/*textfield1_value_binding_1*/ ctx[88].call(null, value_4);
+		/*textfield1_value_binding_1*/ ctx[98].call(null, value_4);
 	}
 
 	let textfield1_props = {
 		type: "number",
-		style: /*style*/ ctx[46],
+		style: /*style*/ ctx[50],
 		label: "Width"
 	};
 
@@ -39634,15 +39739,15 @@ function create_plotContainer_slot(ctx) {
 
 	const textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding_1));
-	textfield1.$on("change", /*change_handler_3*/ ctx[89]);
+	textfield1.$on("change", /*change_handler_3*/ ctx[99]);
 
 	function textfield2_value_binding_1(value_5) {
-		/*textfield2_value_binding_1*/ ctx[90].call(null, value_5);
+		/*textfield2_value_binding_1*/ ctx[100].call(null, value_5);
 	}
 
 	let textfield2_props = {
 		type: "number",
-		style: /*style*/ ctx[46],
+		style: /*style*/ ctx[50],
 		label: "Height"
 	};
 
@@ -39652,10 +39757,10 @@ function create_plotContainer_slot(ctx) {
 
 	const textfield2 = new Textfield({ props: textfield2_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield2, "value", textfield2_value_binding_1));
-	textfield2.$on("change", /*change_handler_4*/ ctx[91]);
+	textfield2.$on("change", /*change_handler_4*/ ctx[101]);
 
 	function textfield3_value_binding(value_6) {
-		/*textfield3_value_binding*/ ctx[94].call(null, value_6);
+		/*textfield3_value_binding*/ ctx[104].call(null, value_6);
 	}
 
 	let textfield3_props = {
@@ -39672,7 +39777,7 @@ function create_plotContainer_slot(ctx) {
 	binding_callbacks.push(() => bind(textfield3, "value", textfield3_value_binding));
 
 	function textfield4_value_binding(value_7) {
-		/*textfield4_value_binding*/ ctx[95].call(null, value_7);
+		/*textfield4_value_binding*/ ctx[105].call(null, value_7);
 	}
 
 	let textfield4_props = {
@@ -39689,7 +39794,7 @@ function create_plotContainer_slot(ctx) {
 	binding_callbacks.push(() => bind(textfield4, "value", textfield4_value_binding));
 
 	function textfield5_value_binding(value_8) {
-		/*textfield5_value_binding*/ ctx[96].call(null, value_8);
+		/*textfield5_value_binding*/ ctx[106].call(null, value_8);
 	}
 
 	let textfield5_props = {
@@ -39706,7 +39811,7 @@ function create_plotContainer_slot(ctx) {
 	binding_callbacks.push(() => bind(textfield5, "value", textfield5_value_binding));
 
 	function textfield6_value_binding(value_9) {
-		/*textfield6_value_binding*/ ctx[97].call(null, value_9);
+		/*textfield6_value_binding*/ ctx[107].call(null, value_9);
 	}
 
 	let textfield6_props = {
@@ -39723,7 +39828,7 @@ function create_plotContainer_slot(ctx) {
 	binding_callbacks.push(() => bind(textfield6, "value", textfield6_value_binding));
 
 	function textfield7_value_binding(value_10) {
-		/*textfield7_value_binding*/ ctx[98].call(null, value_10);
+		/*textfield7_value_binding*/ ctx[108].call(null, value_10);
 	}
 
 	let textfield7_props = {
@@ -39740,7 +39845,7 @@ function create_plotContainer_slot(ctx) {
 	binding_callbacks.push(() => bind(textfield7, "value", textfield7_value_binding));
 
 	function textfield8_value_binding(value_11) {
-		/*textfield8_value_binding*/ ctx[99].call(null, value_11);
+		/*textfield8_value_binding*/ ctx[109].call(null, value_11);
 	}
 
 	let textfield8_props = {
@@ -39757,7 +39862,7 @@ function create_plotContainer_slot(ctx) {
 	binding_callbacks.push(() => bind(textfield8, "value", textfield8_value_binding));
 
 	function customcheckbox0_selected_binding(value_12) {
-		/*customcheckbox0_selected_binding*/ ctx[101].call(null, value_12);
+		/*customcheckbox0_selected_binding*/ ctx[111].call(null, value_12);
 	}
 
 	let customcheckbox0_props = { label: "Only Averaged" };
@@ -39774,7 +39879,7 @@ function create_plotContainer_slot(ctx) {
 	binding_callbacks.push(() => bind(customcheckbox0, "selected", customcheckbox0_selected_binding));
 
 	function customcheckbox1_selected_binding(value_13) {
-		/*customcheckbox1_selected_binding*/ ctx[102].call(null, value_13);
+		/*customcheckbox1_selected_binding*/ ctx[112].call(null, value_13);
 	}
 
 	let customcheckbox1_props = { label: "Only weighted Averaged" };
@@ -39791,7 +39896,7 @@ function create_plotContainer_slot(ctx) {
 	binding_callbacks.push(() => bind(customcheckbox1, "selected", customcheckbox1_selected_binding));
 
 	function customcheckbox2_selected_binding(value_14) {
-		/*customcheckbox2_selected_binding*/ ctx[103].call(null, value_14);
+		/*customcheckbox2_selected_binding*/ ctx[113].call(null, value_14);
 	}
 
 	let customcheckbox2_props = { label: "Keep table" };
@@ -39819,13 +39924,13 @@ function create_plotContainer_slot(ctx) {
 		});
 
 	function reportlayout_currentLocation_binding(value_15) {
-		/*reportlayout_currentLocation_binding*/ ctx[106].call(null, value_15);
+		/*reportlayout_currentLocation_binding*/ ctx[116].call(null, value_15);
 	}
 
 	let reportlayout_props = {
 		id: "felixreport",
 		tableID: "felixTable",
-		plotID: ["bplot", "saPlot", "avgplot", "exp-theory-plot"],
+		plotID: ["bplot", "saPlot", "avgplot", "exp-theory-plot", "opoRelPlot"],
 		includeTable: true
 	};
 
@@ -39843,7 +39948,7 @@ function create_plotContainer_slot(ctx) {
 	const block = {
 		c: function create() {
 			div0 = element("div");
-			div7 = element("div");
+			div8 = element("div");
 			div1 = element("div");
 			t0 = space();
 			div2 = element("div");
@@ -39856,251 +39961,259 @@ function create_plotContainer_slot(ctx) {
 			t4 = space();
 			div6 = element("div");
 			t5 = space();
-			div15 = element("div");
-			div8 = element("div");
-			create_component(customselect.$$.fragment);
+			div7 = element("div");
 			t6 = space();
-			create_component(customswitch0.$$.fragment);
-			t7 = space();
-			create_component(customswitch1.$$.fragment);
-			t8 = space();
+			div16 = element("div");
 			div9 = element("div");
+			create_component(customselect.$$.fragment);
+			t7 = space();
+			create_component(customswitch0.$$.fragment);
+			t8 = space();
+			create_component(customswitch1.$$.fragment);
+			t9 = space();
+			div10 = element("div");
 			button0 = element("button");
 			button0.textContent = "Exp Fit.";
-			t10 = space();
+			t11 = space();
 			button1 = element("button");
 			button1.textContent = "Double Gauss.";
-			t12 = space();
+			t13 = space();
 			button2 = element("button");
 			button2.textContent = "Clear Last";
-			t14 = space();
+			t15 = space();
 			button3 = element("button");
 			button3.textContent = "Clear All";
-			t16 = space();
+			t17 = space();
 			button4 = element("button");
 			button4.textContent = "Weighted Mean";
-			t18 = space();
+			t19 = space();
 			button5 = element("button");
 			button5.textContent = "Reset";
-			t20 = space();
+			t21 = space();
 			button6 = element("button");
 			button6.textContent = "Find Peaks";
-			t22 = space();
-			div10 = element("div");
-			create_component(textfield0.$$.fragment);
 			t23 = space();
-			create_component(textfield1.$$.fragment);
+			div11 = element("div");
+			create_component(textfield0.$$.fragment);
 			t24 = space();
-			create_component(textfield2.$$.fragment);
+			create_component(textfield1.$$.fragment);
 			t25 = space();
+			create_component(textfield2.$$.fragment);
+			t26 = space();
 			button7 = element("button");
 			button7.textContent = "Get Peaks";
-			t27 = space();
+			t28 = space();
 			button8 = element("button");
 			button8.textContent = "Clear";
-			t29 = space();
-			div11 = element("div");
-			create_component(textfield3.$$.fragment);
 			t30 = space();
-			create_component(textfield4.$$.fragment);
+			div12 = element("div");
+			create_component(textfield3.$$.fragment);
 			t31 = space();
-			create_component(textfield5.$$.fragment);
+			create_component(textfield4.$$.fragment);
 			t32 = space();
-			create_component(textfield6.$$.fragment);
+			create_component(textfield5.$$.fragment);
 			t33 = space();
-			create_component(textfield7.$$.fragment);
+			create_component(textfield6.$$.fragment);
 			t34 = space();
-			create_component(textfield8.$$.fragment);
+			create_component(textfield7.$$.fragment);
 			t35 = space();
+			create_component(textfield8.$$.fragment);
+			t36 = space();
 			button9 = element("button");
 			button9.textContent = "Submit";
-			t37 = space();
+			t38 = space();
+			div14 = element("div");
 			div13 = element("div");
-			div12 = element("div");
-			div12.textContent = "Frequency table";
-			t39 = space();
-			create_component(customcheckbox0.$$.fragment);
+			div13.textContent = "Frequency table";
 			t40 = space();
-			create_component(customcheckbox1.$$.fragment);
+			create_component(customcheckbox0.$$.fragment);
 			t41 = space();
-			create_component(customcheckbox2.$$.fragment);
+			create_component(customcheckbox1.$$.fragment);
 			t42 = space();
+			create_component(customcheckbox2.$$.fragment);
+			t43 = space();
 			button10 = element("button");
 			button10.textContent = "Clear Last";
-			t44 = space();
+			t45 = space();
 			button11 = element("button");
 			button11.textContent = "Clear Table";
-			t46 = space();
-			div14 = element("div");
-			create_component(datatable.$$.fragment);
 			t47 = space();
+			div15 = element("div");
+			create_component(datatable.$$.fragment);
+			t48 = space();
 			create_component(reportlayout.$$.fragment);
 			attr_dev(div1, "class", "animated fadeIn hide svelte-ex8alc");
 			attr_dev(div1, "id", "exp-theory-plot");
 			toggle_class(div1, "active", /*show_theoryplot*/ ctx[8]);
-			add_location(div1, file$O, 543, 12, 25768);
+			add_location(div1, file$O, 593, 12, 28082);
 			attr_dev(div2, "id", "bplot");
 			attr_dev(div2, "class", "svelte-ex8alc");
-			add_location(div2, file$O, 544, 12, 25874);
+			add_location(div2, file$O, 594, 12, 28188);
 			attr_dev(div3, "id", "saPlot");
 			attr_dev(div3, "class", "svelte-ex8alc");
-			add_location(div3, file$O, 545, 12, 25910);
+			add_location(div3, file$O, 595, 12, 28224);
 			attr_dev(div4, "id", "avgplot");
 			attr_dev(div4, "class", "svelte-ex8alc");
-			add_location(div4, file$O, 546, 12, 25947);
+			add_location(div4, file$O, 596, 12, 28261);
 			attr_dev(div5, "class", "animated fadeIn hide svelte-ex8alc");
 			attr_dev(div5, "id", "opoplot");
 			toggle_class(div5, "active", /*opoPlotted*/ ctx[22]);
-			add_location(div5, file$O, 547, 12, 25985);
+			add_location(div5, file$O, 597, 12, 28299);
 			attr_dev(div6, "class", "animated fadeIn hide svelte-ex8alc");
-			attr_dev(div6, "id", "opoRelPlot");
+			attr_dev(div6, "id", "opoSA");
 			toggle_class(div6, "active", /*opoPlotted*/ ctx[22]);
-			add_location(div6, file$O, 548, 12, 26078);
-			attr_dev(div7, "class", "felixPlot svelte-ex8alc");
-			add_location(div7, file$O, 542, 8, 25731);
-			attr_dev(div8, "class", "align content svelte-ex8alc");
-			add_location(div8, file$O, 553, 12, 26312);
-			attr_dev(button0, "class", "button is-link svelte-ex8alc");
-			add_location(button0, file$O, 560, 16, 26766);
-			attr_dev(button1, "class", "button is-link svelte-ex8alc");
-			add_location(button1, file$O, 561, 16, 26886);
-			attr_dev(button2, "class", "button is-warning svelte-ex8alc");
-			add_location(button2, file$O, 562, 16, 27020);
-			attr_dev(button3, "class", "button is-danger svelte-ex8alc");
-			add_location(button3, file$O, 563, 16, 27116);
-			attr_dev(button4, "class", "button is-link svelte-ex8alc");
-			add_location(button4, file$O, 564, 16, 27209);
-			attr_dev(button5, "class", "button is-warning svelte-ex8alc");
-			add_location(button5, file$O, 565, 16, 27334);
-			attr_dev(button6, "class", "button is-link svelte-ex8alc");
-			add_location(button6, file$O, 566, 16, 27490);
+			add_location(div6, file$O, 598, 12, 28392);
+			attr_dev(div7, "class", "animated fadeIn hide svelte-ex8alc");
+			attr_dev(div7, "id", "opoRelPlot");
+			toggle_class(div7, "active", /*opoPlotted*/ ctx[22]);
+			add_location(div7, file$O, 599, 12, 28483);
+			attr_dev(div8, "class", "felixPlot svelte-ex8alc");
+			add_location(div8, file$O, 592, 8, 28045);
 			attr_dev(div9, "class", "align content svelte-ex8alc");
-			add_location(div9, file$O, 559, 12, 26721);
+			add_location(div9, file$O, 604, 12, 28717);
+			attr_dev(button0, "class", "button is-link svelte-ex8alc");
+			add_location(button0, file$O, 611, 16, 29171);
+			attr_dev(button1, "class", "button is-link svelte-ex8alc");
+			add_location(button1, file$O, 612, 16, 29291);
+			attr_dev(button2, "class", "button is-warning svelte-ex8alc");
+			add_location(button2, file$O, 613, 16, 29425);
+			attr_dev(button3, "class", "button is-danger svelte-ex8alc");
+			add_location(button3, file$O, 614, 16, 29521);
+			attr_dev(button4, "class", "button is-link svelte-ex8alc");
+			add_location(button4, file$O, 615, 16, 29614);
+			attr_dev(button5, "class", "button is-warning svelte-ex8alc");
+			add_location(button5, file$O, 616, 16, 29739);
+			attr_dev(button6, "class", "button is-link svelte-ex8alc");
+			add_location(button6, file$O, 617, 16, 29895);
+			attr_dev(div10, "class", "align content svelte-ex8alc");
+			add_location(div10, file$O, 610, 12, 29126);
 			attr_dev(button7, "class", "button is-link svelte-ex8alc");
-			add_location(button7, file$O, 573, 16, 28193);
+			add_location(button7, file$O, 624, 16, 30598);
 			attr_dev(button8, "class", "button is-danger svelte-ex8alc");
-			add_location(button8, file$O, 574, 16, 28317);
-			attr_dev(div10, "class", "align content animated fadeIn hide svelte-ex8alc");
-			toggle_class(div10, "active", /*toggleFindPeaksRow*/ ctx[33]);
-			add_location(div10, file$O, 569, 12, 27634);
-			attr_dev(button9, "class", "button is-link svelte-ex8alc");
-			add_location(button9, file$O, 584, 16, 29269);
+			add_location(button8, file$O, 625, 16, 30722);
 			attr_dev(div11, "class", "align content animated fadeIn hide svelte-ex8alc");
-			toggle_class(div11, "active", /*toggleDoubleGaussRow*/ ctx[26]);
-			add_location(div11, file$O, 577, 12, 28473);
-			attr_dev(div12, "class", "title notification is-link svelte-ex8alc");
-			add_location(div12, file$O, 589, 16, 29497);
+			toggle_class(div11, "active", /*toggleFindPeaksRow*/ ctx[33]);
+			add_location(div11, file$O, 620, 12, 30039);
+			attr_dev(button9, "class", "button is-link svelte-ex8alc");
+			add_location(button9, file$O, 635, 16, 31674);
+			attr_dev(div12, "class", "align content animated fadeIn hide svelte-ex8alc");
+			toggle_class(div12, "active", /*toggleDoubleGaussRow*/ ctx[26]);
+			add_location(div12, file$O, 628, 12, 30878);
+			attr_dev(div13, "class", "title notification is-link svelte-ex8alc");
+			add_location(div13, file$O, 640, 16, 31902);
 			attr_dev(button10, "class", "button is-warning svelte-ex8alc");
-			add_location(button10, file$O, 593, 16, 29881);
+			add_location(button10, file$O, 644, 16, 32286);
 			attr_dev(button11, "class", "button is-danger svelte-ex8alc");
-			add_location(button11, file$O, 596, 16, 30221);
-			attr_dev(div13, "class", "align content svelte-ex8alc");
-			add_location(div13, file$O, 588, 12, 29452);
-			attr_dev(div14, "class", "dataTable svelte-ex8alc");
-			add_location(div14, file$O, 601, 12, 30429);
-			attr_dev(div15, "class", "animated fadeIn hide svelte-ex8alc");
-			toggle_class(div15, "active", /*graphPlotted*/ ctx[13]);
-			add_location(div15, file$O, 551, 8, 26188);
+			add_location(button11, file$O, 647, 16, 32626);
+			attr_dev(div14, "class", "align content svelte-ex8alc");
+			add_location(div14, file$O, 639, 12, 31857);
+			attr_dev(div15, "class", "dataTable svelte-ex8alc");
+			add_location(div15, file$O, 652, 12, 32834);
+			attr_dev(div16, "class", "animated fadeIn hide svelte-ex8alc");
+			toggle_class(div16, "active", /*graphPlotted*/ ctx[13]);
+			add_location(div16, file$O, 602, 8, 28593);
 			attr_dev(div0, "class", "plotSlot svelte-ex8alc");
 			attr_dev(div0, "slot", "plotContainer");
-			add_location(div0, file$O, 540, 4, 25676);
+			add_location(div0, file$O, 590, 4, 27990);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
-			append_dev(div0, div7);
-			append_dev(div7, div1);
-			append_dev(div7, t0);
-			append_dev(div7, div2);
-			append_dev(div7, t1);
-			append_dev(div7, div3);
-			append_dev(div7, t2);
-			append_dev(div7, div4);
-			append_dev(div7, t3);
-			append_dev(div7, div5);
-			append_dev(div7, t4);
-			append_dev(div7, div6);
-			append_dev(div0, t5);
-			append_dev(div0, div15);
-			append_dev(div15, div8);
-			mount_component(customselect, div8, null);
-			append_dev(div8, t6);
-			mount_component(customswitch0, div8, null);
-			append_dev(div8, t7);
-			mount_component(customswitch1, div8, null);
-			append_dev(div15, t8);
-			append_dev(div15, div9);
-			append_dev(div9, button0);
-			append_dev(div9, t10);
-			append_dev(div9, button1);
-			append_dev(div9, t12);
-			append_dev(div9, button2);
-			append_dev(div9, t14);
-			append_dev(div9, button3);
-			append_dev(div9, t16);
-			append_dev(div9, button4);
-			append_dev(div9, t18);
-			append_dev(div9, button5);
-			append_dev(div9, t20);
-			append_dev(div9, button6);
-			append_dev(div15, t22);
-			append_dev(div15, div10);
-			mount_component(textfield0, div10, null);
-			append_dev(div10, t23);
-			mount_component(textfield1, div10, null);
-			append_dev(div10, t24);
-			mount_component(textfield2, div10, null);
-			append_dev(div10, t25);
-			append_dev(div10, button7);
-			append_dev(div10, t27);
-			append_dev(div10, button8);
-			append_dev(div15, t29);
-			append_dev(div15, div11);
-			mount_component(textfield3, div11, null);
-			append_dev(div11, t30);
-			mount_component(textfield4, div11, null);
-			append_dev(div11, t31);
-			mount_component(textfield5, div11, null);
-			append_dev(div11, t32);
-			mount_component(textfield6, div11, null);
-			append_dev(div11, t33);
-			mount_component(textfield7, div11, null);
-			append_dev(div11, t34);
-			mount_component(textfield8, div11, null);
-			append_dev(div11, t35);
-			append_dev(div11, button9);
-			append_dev(div15, t37);
-			append_dev(div15, div13);
-			append_dev(div13, div12);
-			append_dev(div13, t39);
-			mount_component(customcheckbox0, div13, null);
-			append_dev(div13, t40);
-			mount_component(customcheckbox1, div13, null);
-			append_dev(div13, t41);
-			mount_component(customcheckbox2, div13, null);
-			append_dev(div13, t42);
-			append_dev(div13, button10);
-			append_dev(div13, t44);
-			append_dev(div13, button11);
-			append_dev(div15, t46);
-			append_dev(div15, div14);
-			mount_component(datatable, div14, null);
-			append_dev(div15, t47);
-			mount_component(reportlayout, div15, null);
+			append_dev(div0, div8);
+			append_dev(div8, div1);
+			append_dev(div8, t0);
+			append_dev(div8, div2);
+			append_dev(div8, t1);
+			append_dev(div8, div3);
+			append_dev(div8, t2);
+			append_dev(div8, div4);
+			append_dev(div8, t3);
+			append_dev(div8, div5);
+			append_dev(div8, t4);
+			append_dev(div8, div6);
+			append_dev(div8, t5);
+			append_dev(div8, div7);
+			append_dev(div0, t6);
+			append_dev(div0, div16);
+			append_dev(div16, div9);
+			mount_component(customselect, div9, null);
+			append_dev(div9, t7);
+			mount_component(customswitch0, div9, null);
+			append_dev(div9, t8);
+			mount_component(customswitch1, div9, null);
+			append_dev(div16, t9);
+			append_dev(div16, div10);
+			append_dev(div10, button0);
+			append_dev(div10, t11);
+			append_dev(div10, button1);
+			append_dev(div10, t13);
+			append_dev(div10, button2);
+			append_dev(div10, t15);
+			append_dev(div10, button3);
+			append_dev(div10, t17);
+			append_dev(div10, button4);
+			append_dev(div10, t19);
+			append_dev(div10, button5);
+			append_dev(div10, t21);
+			append_dev(div10, button6);
+			append_dev(div16, t23);
+			append_dev(div16, div11);
+			mount_component(textfield0, div11, null);
+			append_dev(div11, t24);
+			mount_component(textfield1, div11, null);
+			append_dev(div11, t25);
+			mount_component(textfield2, div11, null);
+			append_dev(div11, t26);
+			append_dev(div11, button7);
+			append_dev(div11, t28);
+			append_dev(div11, button8);
+			append_dev(div16, t30);
+			append_dev(div16, div12);
+			mount_component(textfield3, div12, null);
+			append_dev(div12, t31);
+			mount_component(textfield4, div12, null);
+			append_dev(div12, t32);
+			mount_component(textfield5, div12, null);
+			append_dev(div12, t33);
+			mount_component(textfield6, div12, null);
+			append_dev(div12, t34);
+			mount_component(textfield7, div12, null);
+			append_dev(div12, t35);
+			mount_component(textfield8, div12, null);
+			append_dev(div12, t36);
+			append_dev(div12, button9);
+			append_dev(div16, t38);
+			append_dev(div16, div14);
+			append_dev(div14, div13);
+			append_dev(div14, t40);
+			mount_component(customcheckbox0, div14, null);
+			append_dev(div14, t41);
+			mount_component(customcheckbox1, div14, null);
+			append_dev(div14, t42);
+			mount_component(customcheckbox2, div14, null);
+			append_dev(div14, t43);
+			append_dev(div14, button10);
+			append_dev(div14, t45);
+			append_dev(div14, button11);
+			append_dev(div16, t47);
+			append_dev(div16, div15);
+			mount_component(datatable, div15, null);
+			append_dev(div16, t48);
+			mount_component(reportlayout, div16, null);
 			current = true;
 
 			dispose = [
-				listen_dev(button0, "click", /*click_handler_8*/ ctx[81], false, false, false),
-				listen_dev(button1, "click", /*click_handler_9*/ ctx[82], false, false, false),
-				listen_dev(button2, "click", /*clearLastPeak*/ ctx[45], false, false, false),
-				listen_dev(button3, "click", /*clearAllPeak*/ ctx[44], false, false, false),
-				listen_dev(button4, "click", /*click_handler_10*/ ctx[83], false, false, false),
-				listen_dev(button5, "click", /*click_handler_11*/ ctx[84], false, false, false),
-				listen_dev(button6, "click", /*click_handler_12*/ ctx[85], false, false, false),
-				listen_dev(button7, "click", /*click_handler_13*/ ctx[92], false, false, false),
-				listen_dev(button8, "click", /*click_handler_14*/ ctx[93], false, false, false),
-				listen_dev(button9, "click", /*click_handler_15*/ ctx[100], false, false, false),
-				listen_dev(button10, "click", /*click_handler_16*/ ctx[104], false, false, false),
-				listen_dev(button11, "click", /*click_handler_17*/ ctx[105], false, false, false)
+				listen_dev(button0, "click", /*click_handler_9*/ ctx[91], false, false, false),
+				listen_dev(button1, "click", /*click_handler_10*/ ctx[92], false, false, false),
+				listen_dev(button2, "click", /*clearLastPeak*/ ctx[49], false, false, false),
+				listen_dev(button3, "click", /*clearAllPeak*/ ctx[48], false, false, false),
+				listen_dev(button4, "click", /*click_handler_11*/ ctx[93], false, false, false),
+				listen_dev(button5, "click", /*click_handler_12*/ ctx[94], false, false, false),
+				listen_dev(button6, "click", /*click_handler_13*/ ctx[95], false, false, false),
+				listen_dev(button7, "click", /*click_handler_14*/ ctx[102], false, false, false),
+				listen_dev(button8, "click", /*click_handler_15*/ ctx[103], false, false, false),
+				listen_dev(button9, "click", /*click_handler_16*/ ctx[110], false, false, false),
+				listen_dev(button10, "click", /*click_handler_17*/ ctx[114], false, false, false),
+				listen_dev(button11, "click", /*click_handler_18*/ ctx[115], false, false, false)
 			];
 		},
 		p: function update(ctx, dirty) {
@@ -40114,6 +40227,10 @@ function create_plotContainer_slot(ctx) {
 
 			if (dirty[0] & /*opoPlotted*/ 4194304) {
 				toggle_class(div6, "active", /*opoPlotted*/ ctx[22]);
+			}
+
+			if (dirty[0] & /*opoPlotted*/ 4194304) {
+				toggle_class(div7, "active", /*opoPlotted*/ ctx[22]);
 			}
 
 			const customselect_changes = {};
@@ -40173,7 +40290,7 @@ function create_plotContainer_slot(ctx) {
 			textfield2.$set(textfield2_changes);
 
 			if (dirty[1] & /*toggleFindPeaksRow*/ 4) {
-				toggle_class(div10, "active", /*toggleFindPeaksRow*/ ctx[33]);
+				toggle_class(div11, "active", /*toggleFindPeaksRow*/ ctx[33]);
 			}
 
 			const textfield3_changes = {};
@@ -40232,7 +40349,7 @@ function create_plotContainer_slot(ctx) {
 			textfield8.$set(textfield8_changes);
 
 			if (dirty[0] & /*toggleDoubleGaussRow*/ 67108864) {
-				toggle_class(div11, "active", /*toggleDoubleGaussRow*/ ctx[26]);
+				toggle_class(div12, "active", /*toggleDoubleGaussRow*/ ctx[26]);
 			}
 
 			const customcheckbox0_changes = {};
@@ -40264,7 +40381,7 @@ function create_plotContainer_slot(ctx) {
 			customcheckbox2.$set(customcheckbox2_changes);
 			const datatable_changes = {};
 
-			if (dirty[0] & /*show_dataTable_only_weighted_averaged, dataTable_avg, show_dataTable_only_averaged, dataTable*/ 3014656 | dirty[1] & /*dataTable_weighted_avg*/ 256 | dirty[3] & /*$$scope*/ 33554432) {
+			if (dirty[0] & /*show_dataTable_only_weighted_averaged, dataTable_avg, show_dataTable_only_averaged, dataTable*/ 3014656 | dirty[1] & /*dataTable_weighted_avg*/ 2048 | dirty[4] & /*$$scope*/ 16) {
 				datatable_changes.$$scope = { dirty, ctx };
 			}
 
@@ -40280,7 +40397,7 @@ function create_plotContainer_slot(ctx) {
 			reportlayout.$set(reportlayout_changes);
 
 			if (dirty[0] & /*graphPlotted*/ 8192) {
-				toggle_class(div15, "active", /*graphPlotted*/ ctx[13]);
+				toggle_class(div16, "active", /*graphPlotted*/ ctx[13]);
 			}
 		},
 		i: function intro(local) {
@@ -40290,8 +40407,8 @@ function create_plotContainer_slot(ctx) {
 			transition_in(customswitch1.$$.fragment, local);
 
 			add_render_callback(() => {
-				if (!div8_transition) div8_transition = create_bidirectional_transition(div8, fade, {}, true);
-				div8_transition.run(1);
+				if (!div9_transition) div9_transition = create_bidirectional_transition(div9, fade, {}, true);
+				div9_transition.run(1);
 			});
 
 			transition_in(textfield0.$$.fragment, local);
@@ -40309,8 +40426,8 @@ function create_plotContainer_slot(ctx) {
 			transition_in(datatable.$$.fragment, local);
 
 			add_render_callback(() => {
-				if (!div14_transition) div14_transition = create_bidirectional_transition(div14, fade, {}, true);
-				div14_transition.run(1);
+				if (!div15_transition) div15_transition = create_bidirectional_transition(div15, fade, {}, true);
+				div15_transition.run(1);
 			});
 
 			transition_in(reportlayout.$$.fragment, local);
@@ -40320,8 +40437,8 @@ function create_plotContainer_slot(ctx) {
 			transition_out(customselect.$$.fragment, local);
 			transition_out(customswitch0.$$.fragment, local);
 			transition_out(customswitch1.$$.fragment, local);
-			if (!div8_transition) div8_transition = create_bidirectional_transition(div8, fade, {}, false);
-			div8_transition.run(0);
+			if (!div9_transition) div9_transition = create_bidirectional_transition(div9, fade, {}, false);
+			div9_transition.run(0);
 			transition_out(textfield0.$$.fragment, local);
 			transition_out(textfield1.$$.fragment, local);
 			transition_out(textfield2.$$.fragment, local);
@@ -40335,8 +40452,8 @@ function create_plotContainer_slot(ctx) {
 			transition_out(customcheckbox1.$$.fragment, local);
 			transition_out(customcheckbox2.$$.fragment, local);
 			transition_out(datatable.$$.fragment, local);
-			if (!div14_transition) div14_transition = create_bidirectional_transition(div14, fade, {}, false);
-			div14_transition.run(0);
+			if (!div15_transition) div15_transition = create_bidirectional_transition(div15, fade, {}, false);
+			div15_transition.run(0);
 			transition_out(reportlayout.$$.fragment, local);
 			current = false;
 		},
@@ -40345,7 +40462,7 @@ function create_plotContainer_slot(ctx) {
 			destroy_component(customselect);
 			destroy_component(customswitch0);
 			destroy_component(customswitch1);
-			if (detaching && div8_transition) div8_transition.end();
+			if (detaching && div9_transition) div9_transition.end();
 			destroy_component(textfield0);
 			destroy_component(textfield1);
 			destroy_component(textfield2);
@@ -40359,7 +40476,7 @@ function create_plotContainer_slot(ctx) {
 			destroy_component(customcheckbox1);
 			destroy_component(customcheckbox2);
 			destroy_component(datatable);
-			if (detaching && div14_transition) div14_transition.end();
+			if (detaching && div15_transition) div15_transition.end();
 			destroy_component(reportlayout);
 			run_all(dispose);
 		}
@@ -40369,14 +40486,14 @@ function create_plotContainer_slot(ctx) {
 		block,
 		id: create_plotContainer_slot.name,
 		type: "slot",
-		source: "(541:4) <div class=\\\"plotSlot\\\" slot=\\\"plotContainer\\\">",
+		source: "(591:4) <div class=\\\"plotSlot\\\" slot=\\\"plotContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (508:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked >
+// (557:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked >
 function create_default_slot$j(ctx) {
 	let t;
 
@@ -40399,7 +40516,7 @@ function create_default_slot$j(ctx) {
 		block,
 		id: create_default_slot$j.name,
 		type: "slot",
-		source: "(508:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked >",
+		source: "(557:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked >",
 		ctx
 	});
 
@@ -40408,36 +40525,61 @@ function create_default_slot$j(ctx) {
 
 function create_fragment$T(ctx) {
 	let updating_active;
-	let t;
+	let t0;
+	let updating_active_1;
+	let t1;
 	let updating_currentLocation;
 	let updating_fileChecked;
 	let current;
 
-	function quickview_active_binding(value) {
-		/*quickview_active_binding*/ ctx[60].call(null, value);
+	function quickview0_active_binding(value) {
+		/*quickview0_active_binding*/ ctx[67].call(null, value);
 	}
 
-	let quickview_props = {
+	let quickview0_props = {
 		style: "padding:1em;",
-		footer: false,
 		title: "Browse Theory files",
-		$$slots: { default: [create_default_slot_24] },
+		$$slots: {
+			default: [create_default_slot_25],
+			footer: [create_footer_slot_1]
+		},
 		$$scope: { ctx }
 	};
 
 	if (/*showTheoryFiles*/ ctx[9] !== void 0) {
-		quickview_props.active = /*showTheoryFiles*/ ctx[9];
+		quickview0_props.active = /*showTheoryFiles*/ ctx[9];
 	}
 
-	const quickview = new QuickView({ props: quickview_props, $$inline: true });
-	binding_callbacks.push(() => bind(quickview, "active", quickview_active_binding));
+	const quickview0 = new QuickView({ props: quickview0_props, $$inline: true });
+	binding_callbacks.push(() => bind(quickview0, "active", quickview0_active_binding));
 
-	function layout_currentLocation_binding(value_1) {
-		/*layout_currentLocation_binding*/ ctx[107].call(null, value_1);
+	function quickview1_active_binding(value_1) {
+		/*quickview1_active_binding*/ ctx[71].call(null, value_1);
 	}
 
-	function layout_fileChecked_binding(value_2) {
-		/*layout_fileChecked_binding*/ ctx[108].call(null, value_2);
+	let quickview1_props = {
+		style: "padding:1em;",
+		title: "Browse OPO files",
+		$$slots: {
+			default: [create_default_slot_24],
+			footer: [create_footer_slot]
+		},
+		$$scope: { ctx }
+	};
+
+	if (/*showOPOFiles*/ ctx[37] !== void 0) {
+		quickview1_props.active = /*showOPOFiles*/ ctx[37];
+	}
+
+	const quickview1 = new QuickView({ props: quickview1_props, $$inline: true });
+	binding_callbacks.push(() => bind(quickview1, "active", quickview1_active_binding));
+
+	function layout_currentLocation_binding(value_2) {
+		/*layout_currentLocation_binding*/ ctx[117].call(null, value_2);
+	}
+
+	function layout_fileChecked_binding(value_3) {
+		/*layout_fileChecked_binding*/ ctx[118].call(null, value_3);
 	}
 
 	let layout_props = {
@@ -40465,36 +40607,53 @@ function create_fragment$T(ctx) {
 
 	const block = {
 		c: function create() {
-			create_component(quickview.$$.fragment);
-			t = space();
+			create_component(quickview0.$$.fragment);
+			t0 = space();
+			create_component(quickview1.$$.fragment);
+			t1 = space();
 			create_component(layout.$$.fragment);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
 		},
 		m: function mount(target, anchor) {
-			mount_component(quickview, target, anchor);
-			insert_dev(target, t, anchor);
+			mount_component(quickview0, target, anchor);
+			insert_dev(target, t0, anchor);
+			mount_component(quickview1, target, anchor);
+			insert_dev(target, t1, anchor);
 			mount_component(layout, target, anchor);
 			current = true;
 		},
 		p: function update(ctx, dirty) {
-			const quickview_changes = {};
+			const quickview0_changes = {};
 
-			if (dirty[0] & /*theoryLocation, theoryfilesChecked*/ 1152 | dirty[3] & /*$$scope*/ 33554432) {
-				quickview_changes.$$scope = { dirty, ctx };
+			if (dirty[0] & /*theoryLocation, theoryfilesChecked*/ 1152 | dirty[4] & /*$$scope*/ 16) {
+				quickview0_changes.$$scope = { dirty, ctx };
 			}
 
 			if (!updating_active && dirty[0] & /*showTheoryFiles*/ 512) {
 				updating_active = true;
-				quickview_changes.active = /*showTheoryFiles*/ ctx[9];
+				quickview0_changes.active = /*showTheoryFiles*/ ctx[9];
 				add_flush_callback(() => updating_active = false);
 			}
 
-			quickview.$set(quickview_changes);
+			quickview0.$set(quickview0_changes);
+			const quickview1_changes = {};
+
+			if (dirty[1] & /*OPOLocation, OPOfilesChecked*/ 384 | dirty[4] & /*$$scope*/ 16) {
+				quickview1_changes.$$scope = { dirty, ctx };
+			}
+
+			if (!updating_active_1 && dirty[1] & /*showOPOFiles*/ 64) {
+				updating_active_1 = true;
+				quickview1_changes.active = /*showOPOFiles*/ ctx[37];
+				add_flush_callback(() => updating_active_1 = false);
+			}
+
+			quickview1.$set(quickview1_changes);
 			const layout_changes = {};
 
-			if (dirty[0] & /*graphPlotted, currentLocation, show_dataTable_only_weighted_averaged, dataTable_avg, show_dataTable_only_averaged, dataTable, line_index_count, lineData_list, keepTable, toggleDoubleGaussRow, cen2, cen1, amp2, amp1, collectData, overwrite_expfit, plottedFiles, output_name, opoPlotted, show_theoryplot, normMethod, toggleRow, sigma, scale, theoryLocation, showTheoryFiles, openShell, onlyFinalSpectrum, delta*/ 2147483518 | dirty[1] & /*dataTable_weighted_avg, sig2, sig1, toggleFindPeaksRow, peak_height, peak_width, peak_prominence, theoryfiles, felixfiles*/ 511 | dirty[3] & /*$$scope*/ 33554432) {
+			if (dirty[0] & /*graphPlotted, currentLocation, show_dataTable_only_weighted_averaged, dataTable_avg, show_dataTable_only_averaged, dataTable, line_index_count, lineData_list, keepTable, toggleDoubleGaussRow, cen2, cen1, amp2, amp1, collectData, overwrite_expfit, plottedFiles, output_name, opoPlotted, show_theoryplot, normMethod, toggleRow, sigma, scale, theoryLocation, showTheoryFiles, fileChecked, openShell, onlyFinalSpectrum, delta*/ 2147483519 | dirty[1] & /*dataTable_weighted_avg, sig2, sig1, toggleFindPeaksRow, peak_height, peak_width, peak_prominence, theoryfiles, showOPOFiles, felixfiles, opofiles*/ 7807 | dirty[4] & /*$$scope*/ 16) {
 				layout_changes.$$scope = { dirty, ctx };
 			}
 
@@ -40514,18 +40673,22 @@ function create_fragment$T(ctx) {
 		},
 		i: function intro(local) {
 			if (current) return;
-			transition_in(quickview.$$.fragment, local);
+			transition_in(quickview0.$$.fragment, local);
+			transition_in(quickview1.$$.fragment, local);
 			transition_in(layout.$$.fragment, local);
 			current = true;
 		},
 		o: function outro(local) {
-			transition_out(quickview.$$.fragment, local);
+			transition_out(quickview0.$$.fragment, local);
+			transition_out(quickview1.$$.fragment, local);
 			transition_out(layout.$$.fragment, local);
 			current = false;
 		},
 		d: function destroy(detaching) {
-			destroy_component(quickview, detaching);
-			if (detaching) detach_dev(t);
+			destroy_component(quickview0, detaching);
+			if (detaching) detach_dev(t0);
+			destroy_component(quickview1, detaching);
+			if (detaching) detach_dev(t1);
 			destroy_component(layout, detaching);
 		}
 	};
@@ -40547,9 +40710,9 @@ function instance$T($$self, $$props, $$invalidate) {
 	let $modalContent;
 	let $activated;
 	validate_store(modalContent, "modalContent");
-	component_subscribe($$self, modalContent, $$value => $$invalidate(54, $modalContent = $$value));
+	component_subscribe($$self, modalContent, $$value => $$invalidate(59, $modalContent = $$value));
 	validate_store(activated, "activated");
-	component_subscribe($$self, activated, $$value => $$invalidate(55, $activated = $$value));
+	component_subscribe($$self, activated, $$value => $$invalidate(60, $activated = $$value));
 	const { BrowserWindow } = remote;
 	let fileChecked = [], delta = 1, toggleRow = false;
 	let plottedFiles = [];
@@ -40596,12 +40759,12 @@ function instance$T($$self, $$props, $$invalidate) {
 		if (graphPlotted) {
 			let { data, layout } = normMethod_datas[normMethod];
 			Plotly.react("avgplot", data, layout, { editable: true });
-			(line = annotations = $$invalidate(25, lineData_list = []), $$invalidate(50, plot_trace_added = 0));
+			(line = annotations = $$invalidate(25, lineData_list = []), $$invalidate(54, plot_trace_added = 0));
 		}
 	};
 
 	function plotData({ e = null, filetype = "felix", general = null } = {}) {
-		if (fileChecked.length === 0) {
+		if (fileChecked.length === 0 && filetype === "felix") {
 			return createToast$1("No files selected", "danger");
 		}
 
@@ -40624,11 +40787,26 @@ function instance$T($$self, $$props, $$invalidate) {
 			return;
 		}
 
+		let expfit_args = [];
+
 		if (filetype == "felix") {
 			($$invalidate(13, graphPlotted = false), $$invalidate(16, output_name = "averaged"));
 		} else if (filetype == "exp_fit") {
 			if (index.length < 2) {
 				return createToast$1("Range not found!!. Select a range using Box-select", "danger");
+			}
+
+			if (opoExpFit) {
+				expfit_args = [...opofiles, overwrite_expfit, output_name, "Log", OPOLocation, ...index];
+			} else {
+				expfit_args = [
+					...felixfiles,
+					overwrite_expfit,
+					output_name,
+					normMethod,
+					currentLocation,
+					...index
+				];
 			}
 		} else if (filetype == "opofile") {
 			$$invalidate(22, opoPlotted = true);
@@ -40650,18 +40828,11 @@ function instance$T($$self, $$props, $$invalidate) {
 			},
 			exp_fit: {
 				pyfile: "exp_gauss_fit.py",
-				args: [
-					...felixfiles,
-					overwrite_expfit,
-					output_name,
-					normMethod,
-					currentLocation,
-					...index
-				]
+				args: expfit_args
 			},
 			opofile: {
 				pyfile: "oposcan.py",
-				args: [...felixfiles, "run"]
+				args: [...opofiles, "run", delta]
 			},
 			find_peaks: {
 				pyfile: "fit_all.py",
@@ -40738,7 +40909,8 @@ function instance$T($$self, $$props, $$invalidate) {
 					console.log(dataFromPython);
 
 					if (filetype == "felix") {
-						(line = [], $$invalidate(40, index = []), annotations = [], $$invalidate(25, lineData_list = []), $$invalidate(50, plot_trace_added = 0));
+						$$invalidate(58, opoExpFit = false);
+						(line = [], $$invalidate(44, index = []), annotations = [], $$invalidate(25, lineData_list = []), $$invalidate(54, plot_trace_added = 0));
 						$$invalidate(8, show_theoryplot = false);
 
 						if (!keepTable) {
@@ -40821,9 +40993,11 @@ function instance$T($$self, $$props, $$invalidate) {
 						avgplot.on("plotly_selected", data => {
 							if (!data) console.log("No data available to fit"); else {
 								console.log(data);
+								$$invalidate(58, opoExpFit = false);
 								let { range } = data;
+								$$invalidate(3, plottedFiles = fileChecked.map(file => file.split(".")[0]));
 								$$invalidate(16, output_name = data.points[0].data.name.split(".")[0]);
-								$$invalidate(40, index = range.x);
+								$$invalidate(44, index = range.x);
 								console.log(`Selected file: ${output_name}`);
 								console.log(`Index selected: ${index}`);
 							}
@@ -40832,10 +41006,26 @@ function instance$T($$self, $$props, $$invalidate) {
 						console.log("Graph Plotted");
 						createToast$1("Graph Plotted", "success");
 						$$invalidate(13, graphPlotted = true);
-						$$invalidate(3, plottedFiles = fileChecked.map(file => file.split(".")[0]));
 					} else if (filetype == "opofile") {
 						plot("OPO spectrum", "Wavenumber (cm-1)", "Counts", dataFromPython["real"], "opoplot");
+						plot("OPO Calibration", "Set Wavenumber (cm-1)", "Measured Wavenumber (cm-1)", dataFromPython["SA"], "opoSA");
 						plot("OPO spectrum: Depletion (%)", "Wavenumber (cm-1)", "Depletion (%)", dataFromPython["relative"], "opoRelPlot");
+						let opoRelPlot = document.getElementById("opoRelPlot");
+
+						opoRelPlot.on("plotly_selected", data => {
+							if (!data) console.log("No data available to fit"); else {
+								console.log(data);
+								$$invalidate(58, opoExpFit = true);
+								let { range } = data;
+								$$invalidate(3, plottedFiles = OPOfilesChecked.map(file => file.split(".")[0]));
+								$$invalidate(16, output_name = data.points[0].data.name.split(".")[0]);
+								$$invalidate(44, index = range.x);
+								console.log(`Selected file: ${output_name}`);
+								console.log(`Index selected: ${index}`);
+							}
+						});
+
+						($$invalidate(37, showOPOFiles = false), $$invalidate(13, graphPlotted = true));
 					} else if (filetype == "theory") {
 						let ylabel;
 
@@ -40854,15 +41044,15 @@ function instance$T($$self, $$props, $$invalidate) {
 						}
 
 						plot("Experimental vs Theory", "Calibrated Wavelength (cm-1)", ylabel, [dataFromPython["averaged"], ...theoryData], "exp-theory-plot");
-						$$invalidate(8, show_theoryplot = true);
+						($$invalidate(8, show_theoryplot = true), $$invalidate(9, showTheoryFiles = false));
 					} else if (filetype == "exp_fit") {
-						$$invalidate(51, double_peak_active = false);
-						Plotly.addTraces("avgplot", dataFromPython["fit"]);
+						$$invalidate(55, double_peak_active = false);
+						Plotly.addTraces(graphDiv, dataFromPython["fit"]);
 						line = [...line, ...dataFromPython["line"]];
-						Plotly.relayout("avgplot", { shapes: line });
+						Plotly.relayout(graphDiv, { shapes: line });
 						annotations = [...annotations, dataFromPython["annotations"]];
-						Plotly.relayout("avgplot", { annotations });
-						$$invalidate(50, plot_trace_added++, plot_trace_added);
+						Plotly.relayout(graphDiv, { annotations });
+						$$invalidate(54, plot_trace_added++, plot_trace_added);
 						let [freq, amp, fwhm, sig] = dataFromPython["table"].split(", ");
 						let color = "#fafafa";
 
@@ -40940,12 +41130,12 @@ function instance$T($$self, $$props, $$invalidate) {
 							$$invalidate(25, lineData_list = []);
 						}
 					} else if (filetype == "double_peak") {
-						$$invalidate(51, double_peak_active = true);
+						$$invalidate(55, double_peak_active = true);
 						console.log("Double peak calculation");
-						Plotly.addTraces("avgplot", dataFromPython["peak"]);
-						$$invalidate(50, plot_trace_added++, plot_trace_added);
+						Plotly.addTraces(graphDiv, dataFromPython["peak"]);
+						$$invalidate(54, plot_trace_added++, plot_trace_added);
 						annotations = [...annotations, ...dataFromPython["annotations"]];
-						Plotly.relayout("avgplot", { annotations });
+						Plotly.relayout(graphDiv, { annotations });
 						let [freq1, amp1, sig1, fwhm1, freq2, amp2, sig2, fwhm2] = dataFromPython["table"].split(", ");
 						let color = "#fafafa";
 
@@ -41029,14 +41219,14 @@ function instance$T($$self, $$props, $$invalidate) {
 		}
 
 		console.log("Removing all found peak values");
-		annotations = $$invalidate(40, index = line = $$invalidate(25, lineData_list = []));
-		Plotly.relayout("avgplot", { annotations: [], shapes: [] });
+		annotations = $$invalidate(44, index = line = $$invalidate(25, lineData_list = []));
+		Plotly.relayout(graphDiv, { annotations: [], shapes: [] });
 
 		for (let i = 0; i < plot_trace_added; i++) {
-			Plotly.deleteTraces("avgplot", [-1]);
+			Plotly.deleteTraces(graphDiv, [-1]);
 		}
 
-		$$invalidate(50, plot_trace_added = 0);
+		$$invalidate(54, plot_trace_added = 0);
 	};
 
 	const clearLastPeak = e => {
@@ -41080,10 +41270,10 @@ function instance$T($$self, $$props, $$invalidate) {
 			$$invalidate(25, lineData_list = _.dropRight(lineData_list, 1));
 		}
 
-		Plotly.relayout("avgplot", { annotations, shapes: line });
-		Plotly.deleteTraces("avgplot", [-1]);
+		Plotly.relayout(graphDiv, { annotations, shapes: line });
+		Plotly.deleteTraces(graphDiv, [-1]);
 		console.log("Last fitted peak removed");
-		$$invalidate(50, plot_trace_added--, plot_trace_added);
+		$$invalidate(54, plot_trace_added--, plot_trace_added);
 	};
 
 	onMount(() => {
@@ -41101,6 +41291,12 @@ function instance$T($$self, $$props, $$invalidate) {
 	let peak_height = 0, peak_width = 5, peak_prominence = 3;
 	let style = "width:7em; height:3.5em; margin-right:0.5em";
 
+	// OPO
+	let showOPOFiles = false,
+		OPOLocation = currentLocation,
+		OPOfilesChecked = [],
+		opoExpFit = false;
+
 	function filebrowser_currentLocation_binding(value) {
 		theoryLocation = value;
 		$$invalidate(10, theoryLocation);
@@ -41111,25 +41307,47 @@ function instance$T($$self, $$props, $$invalidate) {
 		$$invalidate(7, theoryfilesChecked);
 	}
 
-	function quickview_active_binding(value) {
+	const click_handler = e => plotData({ e, filetype: "theory" });
+
+	function quickview0_active_binding(value) {
 		showTheoryFiles = value;
 		$$invalidate(9, showTheoryFiles);
 	}
 
-	const click_handler = e => plotData({
+	function filebrowser_currentLocation_binding_1(value) {
+		OPOLocation = value;
+		$$invalidate(38, OPOLocation);
+	}
+
+	function filebrowser_fileChecked_binding_1(value_1) {
+		OPOfilesChecked = value_1;
+		$$invalidate(39, OPOfilesChecked);
+	}
+
+	const click_handler_1 = e => plotData({ e, filetype: "opofile" });
+
+	function quickview1_active_binding(value_1) {
+		showOPOFiles = value_1;
+		$$invalidate(37, showOPOFiles);
+	}
+
+	const click_handler_2 = e => plotData({
 		e,
 		filetype: "general",
-		general: { args: felixfiles, pyfile: "baseline.py" }
+		general: {
+			args: felixfiles.length > 0 ? felixfiles : opofiles,
+			pyfile: "baseline.py"
+		}
 	});
 
-	const click_handler_1 = e => plotData({ e, filetype: "felix" });
+	const click_handler_3 = e => plotData({ e, filetype: "felix" });
 
 	function textfield0_value_binding(value) {
 		delta = value;
 		$$invalidate(1, delta);
 	}
 
-	const click_handler_2 = e => plotData({
+	const click_handler_4 = e => plotData({
 		e,
 		filetype: "general",
 		general: {
@@ -41148,15 +41366,23 @@ function instance$T($$self, $$props, $$invalidate) {
 		$$invalidate(11, openShell);
 	}
 
-	const click_handler_3 = () => $$invalidate(2, toggleRow = !toggleRow);
-	const click_handler_4 = e => plotData({ e, filetype: "opofile" });
+	const click_handler_5 = () => $$invalidate(2, toggleRow = !toggleRow);
+
+	const click_handler_6 = () => {
+		$$invalidate(9, showTheoryFiles = false);
+		$$invalidate(0, fileChecked = []);
+		$$invalidate(37, showOPOFiles = !showOPOFiles);
+	};
 
 	function customiconswitch1_toggler_binding(value_3) {
 		opoPlotted = value_3;
 		$$invalidate(22, opoPlotted);
 	}
 
-	const click_handler_5 = () => $$invalidate(9, showTheoryFiles = !showTheoryFiles);
+	const click_handler_7 = () => {
+		$$invalidate(37, showOPOFiles = false);
+		$$invalidate(9, showTheoryFiles = !showTheoryFiles);
+	};
 
 	function textfield1_value_binding(value_4) {
 		sigma = value_4;
@@ -41172,7 +41398,7 @@ function instance$T($$self, $$props, $$invalidate) {
 
 	const change_handler_1 = e => plotData({ e, filetype: "theory" });
 
-	const click_handler_6 = e => plotData({
+	const click_handler_8 = e => plotData({
 		e,
 		filetype: "general",
 		general: {
@@ -41180,8 +41406,6 @@ function instance$T($$self, $$props, $$invalidate) {
 			pyfile: "theory.py"
 		}
 	});
-
-	const click_handler_7 = e => plotData({ e, filetype: "theory" });
 
 	function customradio_selected_binding(value_6) {
 		normMethod = value_6;
@@ -41203,16 +41427,16 @@ function instance$T($$self, $$props, $$invalidate) {
 		$$invalidate(24, collectData);
 	}
 
-	const click_handler_8 = e => plotData({ e, filetype: "exp_fit" });
-	const click_handler_9 = e => $$invalidate(26, toggleDoubleGaussRow = !toggleDoubleGaussRow);
-	const click_handler_10 = e => plotData({ e, filetype: "get_err" });
+	const click_handler_9 = e => plotData({ e, filetype: "exp_fit" });
+	const click_handler_10 = e => $$invalidate(26, toggleDoubleGaussRow = !toggleDoubleGaussRow);
+	const click_handler_11 = e => plotData({ e, filetype: "get_err" });
 
-	const click_handler_11 = e => {
+	const click_handler_12 = e => {
 		$$invalidate(25, lineData_list = []);
 		createToast$1("Line collection restted", "warning");
 	};
 
-	const click_handler_12 = () => $$invalidate(33, toggleFindPeaksRow = !toggleFindPeaksRow);
+	const click_handler_13 = () => $$invalidate(33, toggleFindPeaksRow = !toggleFindPeaksRow);
 
 	function textfield0_value_binding_1(value_3) {
 		peak_prominence = value_3;
@@ -41234,8 +41458,8 @@ function instance$T($$self, $$props, $$invalidate) {
 	}
 
 	const change_handler_4 = e => plotData({ e, filetype: "find_peaks" });
-	const click_handler_13 = e => plotData({ e, filetype: "find_peaks" });
-	const click_handler_14 = e => window.Plotly.relayout("avgplot", { annotations: [] });
+	const click_handler_14 = e => plotData({ e, filetype: "find_peaks" });
+	const click_handler_15 = e => window.Plotly.relayout("avgplot", { annotations: [] });
 
 	function textfield3_value_binding(value_6) {
 		amp1 = value_6;
@@ -41267,7 +41491,7 @@ function instance$T($$self, $$props, $$invalidate) {
 		$$invalidate(30, cen2);
 	}
 
-	const click_handler_15 = e => plotData({ e, filetype: "double_peak" });
+	const click_handler_16 = e => plotData({ e, filetype: "double_peak" });
 
 	function customcheckbox0_selected_binding(value_12) {
 		show_dataTable_only_averaged = value_12;
@@ -41284,7 +41508,7 @@ function instance$T($$self, $$props, $$invalidate) {
 		$$invalidate(20, keepTable);
 	}
 
-	const click_handler_16 = () => {
+	const click_handler_17 = () => {
 		$$invalidate(17, dataTable = window._.dropRight(dataTable, 1));
 		$$invalidate(25, lineData_list = window._.dropRight(lineData_list, 1));
 
@@ -41294,7 +41518,7 @@ function instance$T($$self, $$props, $$invalidate) {
 		}
 	};
 
-	const click_handler_17 = () => {
+	const click_handler_18 = () => {
 		$$invalidate(17, dataTable = $$invalidate(18, dataTable_avg = []));
 		$$invalidate(15, line_index_count = 0);
 		$$invalidate(25, lineData_list = []);
@@ -41305,13 +41529,13 @@ function instance$T($$self, $$props, $$invalidate) {
 		$$invalidate(4, currentLocation);
 	}
 
-	function layout_currentLocation_binding(value_1) {
-		currentLocation = value_1;
+	function layout_currentLocation_binding(value_2) {
+		currentLocation = value_2;
 		$$invalidate(4, currentLocation);
 	}
 
-	function layout_fileChecked_binding(value_2) {
-		fileChecked = value_2;
+	function layout_fileChecked_binding(value_3) {
+		fileChecked = value_3;
 		$$invalidate(0, fileChecked);
 	}
 
@@ -41337,13 +41561,13 @@ function instance$T($$self, $$props, $$invalidate) {
 		if ("graphPlotted" in $$props) $$invalidate(13, graphPlotted = $$props.graphPlotted);
 		if ("overwrite_expfit" in $$props) $$invalidate(14, overwrite_expfit = $$props.overwrite_expfit);
 		if ("line" in $$props) line = $$props.line;
-		if ("index" in $$props) $$invalidate(40, index = $$props.index);
+		if ("index" in $$props) $$invalidate(44, index = $$props.index);
 		if ("annotations" in $$props) annotations = $$props.annotations;
-		if ("plot_trace_added" in $$props) $$invalidate(50, plot_trace_added = $$props.plot_trace_added);
-		if ("double_peak_active" in $$props) $$invalidate(51, double_peak_active = $$props.double_peak_active);
+		if ("plot_trace_added" in $$props) $$invalidate(54, plot_trace_added = $$props.plot_trace_added);
+		if ("double_peak_active" in $$props) $$invalidate(55, double_peak_active = $$props.double_peak_active);
 		if ("line_index_count" in $$props) $$invalidate(15, line_index_count = $$props.line_index_count);
 		if ("output_name" in $$props) $$invalidate(16, output_name = $$props.output_name);
-		if ("dataTableHead" in $$props) $$invalidate(41, dataTableHead = $$props.dataTableHead);
+		if ("dataTableHead" in $$props) $$invalidate(45, dataTableHead = $$props.dataTableHead);
 		if ("dataTable" in $$props) $$invalidate(17, dataTable = $$props.dataTable);
 		if ("dataTable_avg" in $$props) $$invalidate(18, dataTable_avg = $$props.dataTable_avg);
 		if ("show_dataTable_only_averaged" in $$props) $$invalidate(19, show_dataTable_only_averaged = $$props.show_dataTable_only_averaged);
@@ -41366,21 +41590,29 @@ function instance$T($$self, $$props, $$invalidate) {
 		if ("peak_height" in $$props) $$invalidate(34, peak_height = $$props.peak_height);
 		if ("peak_width" in $$props) $$invalidate(35, peak_width = $$props.peak_width);
 		if ("peak_prominence" in $$props) $$invalidate(36, peak_prominence = $$props.peak_prominence);
-		if ("style" in $$props) $$invalidate(46, style = $$props.style);
-		if ("felixfiles" in $$props) $$invalidate(37, felixfiles = $$props.felixfiles);
-		if ("theoryfiles" in $$props) $$invalidate(38, theoryfiles = $$props.theoryfiles);
-		if ("dataTable_weighted_avg" in $$props) $$invalidate(39, dataTable_weighted_avg = $$props.dataTable_weighted_avg);
+		if ("style" in $$props) $$invalidate(50, style = $$props.style);
+		if ("showOPOFiles" in $$props) $$invalidate(37, showOPOFiles = $$props.showOPOFiles);
+		if ("OPOLocation" in $$props) $$invalidate(38, OPOLocation = $$props.OPOLocation);
+		if ("OPOfilesChecked" in $$props) $$invalidate(39, OPOfilesChecked = $$props.OPOfilesChecked);
+		if ("opoExpFit" in $$props) $$invalidate(58, opoExpFit = $$props.opoExpFit);
+		if ("felixfiles" in $$props) $$invalidate(40, felixfiles = $$props.felixfiles);
+		if ("theoryfiles" in $$props) $$invalidate(41, theoryfiles = $$props.theoryfiles);
+		if ("dataTable_weighted_avg" in $$props) $$invalidate(42, dataTable_weighted_avg = $$props.dataTable_weighted_avg);
+		if ("opofiles" in $$props) $$invalidate(43, opofiles = $$props.opofiles);
 		if ("$modalContent" in $$props) modalContent.set($modalContent = $$props.$modalContent);
 		if ("$activated" in $$props) activated.set($activated = $$props.$activated);
+		if ("graphDiv" in $$props) graphDiv = $$props.graphDiv;
 	};
 
 	let felixfiles;
 	let theoryfiles;
 	let dataTable_weighted_avg;
+	let opofiles;
+	let graphDiv;
 
 	$$self.$$.update = () => {
 		if ($$self.$$.dirty[0] & /*fileChecked, currentLocation*/ 17) {
-			 $$invalidate(37, felixfiles = fileChecked.map(file => path.resolve(currentLocation, file)));
+			 $$invalidate(40, felixfiles = fileChecked.map(file => path.resolve(currentLocation, file)));
 		}
 
 		if ($$self.$$.dirty[0] & /*currentLocation*/ 16) {
@@ -41396,23 +41628,23 @@ function instance$T($$self, $$props, $$invalidate) {
 		}
 
 		if ($$self.$$.dirty[0] & /*theoryfilesChecked, theoryLocation*/ 1152) {
-			 $$invalidate(38, theoryfiles = theoryfilesChecked.map(file => path.resolve(theoryLocation, file)));
+			 $$invalidate(41, theoryfiles = theoryfilesChecked.map(file => path.resolve(theoryLocation, file)));
 		}
 
 		if ($$self.$$.dirty[0] & /*openShell*/ 2048) {
 			 console.log("Open Shell: ", filetype, openShell);
 		}
 
-		if ($$self.$$.dirty[1] & /*plot_trace_added*/ 524288) {
+		if ($$self.$$.dirty[1] & /*plot_trace_added*/ 8388608) {
 			 console.log("Trace length: ", plot_trace_added);
 		}
 
-		if ($$self.$$.dirty[1] & /*double_peak_active*/ 1048576) {
+		if ($$self.$$.dirty[1] & /*double_peak_active*/ 16777216) {
 			 console.log("Double peak active: ", double_peak_active);
 		}
 
 		if ($$self.$$.dirty[0] & /*dataTable_avg*/ 262144) {
-			 $$invalidate(39, dataTable_weighted_avg = dataTable_avg.filter(file => file.name == "weighted_mean"));
+			 $$invalidate(42, dataTable_weighted_avg = dataTable_avg.filter(file => file.name == "weighted_mean"));
 		}
 
 		if ($$self.$$.dirty[0] & /*dataTable*/ 131072) {
@@ -41423,8 +41655,16 @@ function instance$T($$self, $$props, $$invalidate) {
 			 console.log("dataTable_avg", dataTable_avg);
 		}
 
-		if ($$self.$$.dirty[1] & /*dataTable_weighted_avg*/ 256) {
+		if ($$self.$$.dirty[1] & /*dataTable_weighted_avg*/ 2048) {
 			 console.log("dataTable_weighted_avg", dataTable_weighted_avg);
+		}
+
+		if ($$self.$$.dirty[1] & /*OPOfilesChecked, OPOLocation*/ 384) {
+			 $$invalidate(43, opofiles = OPOfilesChecked.map(file => path.resolve(OPOLocation, file)));
+		}
+
+		if ($$self.$$.dirty[1] & /*opoExpFit*/ 134217728) {
+			 graphDiv = opoExpFit ? "opoRelPlot" : "avgplot";
 		}
 	};
 
@@ -41466,9 +41706,13 @@ function instance$T($$self, $$props, $$invalidate) {
 		peak_height,
 		peak_width,
 		peak_prominence,
+		showOPOFiles,
+		OPOLocation,
+		OPOfilesChecked,
 		felixfiles,
 		theoryfiles,
 		dataTable_weighted_avg,
+		opofiles,
 		index,
 		dataTableHead,
 		replot,
@@ -41483,58 +41727,64 @@ function instance$T($$self, $$props, $$invalidate) {
 		double_peak_active,
 		weighted_error,
 		err_data1_plot,
+		opoExpFit,
 		$modalContent,
 		$activated,
+		graphDiv,
 		BrowserWindow,
 		getID,
 		filebrowser_currentLocation_binding,
 		filebrowser_fileChecked_binding,
-		quickview_active_binding,
 		click_handler,
+		quickview0_active_binding,
+		filebrowser_currentLocation_binding_1,
+		filebrowser_fileChecked_binding_1,
 		click_handler_1,
-		textfield0_value_binding,
+		quickview1_active_binding,
 		click_handler_2,
+		click_handler_3,
+		textfield0_value_binding,
+		click_handler_4,
 		customcheckbox_selected_binding,
 		customiconswitch0_toggler_binding,
-		click_handler_3,
-		click_handler_4,
-		customiconswitch1_toggler_binding,
 		click_handler_5,
+		click_handler_6,
+		customiconswitch1_toggler_binding,
+		click_handler_7,
 		textfield1_value_binding,
 		change_handler,
 		textfield2_value_binding,
 		change_handler_1,
-		click_handler_6,
-		click_handler_7,
+		click_handler_8,
 		customradio_selected_binding,
 		customselect_picked_binding,
 		customswitch0_selected_binding,
 		customswitch1_selected_binding,
-		click_handler_8,
 		click_handler_9,
 		click_handler_10,
 		click_handler_11,
 		click_handler_12,
+		click_handler_13,
 		textfield0_value_binding_1,
 		change_handler_2,
 		textfield1_value_binding_1,
 		change_handler_3,
 		textfield2_value_binding_1,
 		change_handler_4,
-		click_handler_13,
 		click_handler_14,
+		click_handler_15,
 		textfield3_value_binding,
 		textfield4_value_binding,
 		textfield5_value_binding,
 		textfield6_value_binding,
 		textfield7_value_binding,
 		textfield8_value_binding,
-		click_handler_15,
+		click_handler_16,
 		customcheckbox0_selected_binding,
 		customcheckbox1_selected_binding,
 		customcheckbox2_selected_binding,
-		click_handler_16,
 		click_handler_17,
+		click_handler_18,
 		reportlayout_currentLocation_binding,
 		layout_currentLocation_binding,
 		layout_fileChecked_binding
@@ -41544,7 +41794,7 @@ function instance$T($$self, $$props, $$invalidate) {
 class Normline extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$T, create_fragment$T, safe_not_equal, {}, [-1, -1, -1, -1]);
+		init(this, options, instance$T, create_fragment$T, safe_not_equal, {}, [-1, -1, -1, -1, -1]);
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
@@ -73681,7 +73931,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
-//# sourceMappingURL=compiler.js.map
+
 });
 
 var svelte = unwrapExports(compiler);

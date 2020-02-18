@@ -27,6 +27,9 @@
   </div>
 
   {#if footer}
-    <footer class="quickview-footer"> </footer>
+    <footer class="quickview-footer">
+      <slot name="footer" />
+    </footer>
   {/if}
+  
 </div>
