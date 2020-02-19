@@ -42,8 +42,9 @@
     ///////////////////////////////////////////////////////////////////////
 
     // Theory file
-    let sigma = 20, scale=1, theoryfilesChecked = [], show_theoryplot = false,  showTheoryFiles = false,
-     theoryLocation = currentLocation
+    let sigma = 20, scale=1, theoryfilesChecked = [], show_theoryplot = false,  showTheoryFiles = false
+
+    let theoryLocation = localStorage["theoryLocation"] || currentLocation
     $: console.log("Theory files: ", theoryfilesChecked)
     $: console.log("Theory Location", theoryLocation)
 
@@ -511,14 +512,15 @@
     let style = "width:7em; height:3.5em; margin-right:0.5em";
 
     // OPO
-    let showOPOFiles = false, OPOLocation = currentLocation, OPOfilesChecked = [], opoExpFit = false, OPORow = false
+    let showOPOFiles = false, OPOfilesChecked = [], opoExpFit = false, OPORow = false
+    let OPOLocation = localStorage["opoLocation"] || currentLocation
     $: opofiles = OPOfilesChecked.map(file=>path.resolve(OPOLocation, file))
     $: graphDiv = opoExpFit ? "opoRelPlot" : "avgplot"
     $: plottedFiles = opoExpFit ? OPOfilesChecked.map(file=>file.split(".")[0]) || [] : fileChecked.map(file=>file.split(".")[0]) || []
     let delta_OPO = 0.3, calibValue = 9396.929143696187, calibFile = ""
     let OPOcalibFiles = []
     $: if(OPOLocation !== "") {OPOcalibFiles = fs.readdirSync(OPOLocation).filter(file=> file.endsWith(".calibOPO"))}
-    
+
 </script>
 
 <style>
@@ -561,7 +563,7 @@
 
     <FileBrowser bind:currentLocation={theoryLocation} bind:fileChecked={theoryfilesChecked} filetype=""/>
     <div slot="footer" style="margin:auto">
-        <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"theory"})}">Submit</button>
+        <button class="button is-link" on:click="{(e)=>{plotData({e:e, filetype:"theory"}); localStorage["theoryLocation"] = theoryLocation}}">Submit</button>
     </div>
 
 </QuickView>
@@ -570,7 +572,7 @@
 
     <FileBrowser bind:currentLocation={OPOLocation} bind:fileChecked={OPOfilesChecked} filetype="ofelix"/>
     <div slot="footer" style="margin:auto">
-        <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"opofile"})}">Submit</button>
+        <button class="button is-link" on:click="{(e)=>{plotData({e:e, filetype:"opofile"}); localStorage["opoLocation"] = OPOLocation}}">Submit</button>
     </div>
 
 </QuickView>
@@ -601,14 +603,20 @@
                 <CustomSelect style="width:7em;" bind:picked={calibFile} label="Calib. file" options={["", ...OPOcalibFiles]}/>
                 <Textfield on:change="{(e)=>plotData({e:e, filetype:"opofile"})}" style="width:7em; margin:0 0.5em;" bind:value={delta_OPO} label="Delta OPO"/>
                 <Textfield on:change="{(e)=>plotData({e:e, filetype:"opofile"})}" style="width:9em" bind:value={calibValue} label="Wn-meter calib."/>
-                <button class="button is-link" on:click="{()=>{showTheoryFiles=false;fileChecked=[];showOPOFiles = !showOPOFiles}}">Select File</button>
+                <button class="button is-link" 
+                    on:click="{()=>{showTheoryFiles=false;fileChecked=[];showOPOFiles = !showOPOFiles; OPOLocation = localStorage["opoLocation"] || currentLocation}}">
+                    Select File</button>
                 <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"opofile", tkplot:"plot"})}">Open in Matplotlib</button>
                 <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"opofile"})}">Replot</button>
             </div>
         </div>
 
         <div class="animated fadeIn hide" class:active={toggleRow}>
-            <button class="button is-link" on:click="{()=>{showOPOFiles=false;showTheoryFiles = !showTheoryFiles}}">Browse File</button>
+
+
+            <button class="button is-link" 
+                on:click="{()=>{showOPOFiles=false;showTheoryFiles = !showTheoryFiles; theoryLocation = localStorage["theoryLocation"] || currentLocation}}">
+                Browse File</button>
             <Textfield type="number" style="width:7em; margin-right:0.5em;" variant="outlined" bind:value={sigma} label="Sigma" on:change="{(e)=>plotData({e:e, filetype:"theory"})}"/>
             <Textfield type="number" style="width:7em" variant="outlined" bind:value={scale} label="Scale" on:change="{(e)=>plotData({e:e, filetype:"theory"})}"/>
             <button class="button is-link" 
