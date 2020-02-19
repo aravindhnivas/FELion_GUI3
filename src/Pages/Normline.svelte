@@ -90,7 +90,7 @@
         }
     }
     
-    async function plotData({e=null, filetype="felix", general=null}={}){
+    async function plotData({e=null, filetype="felix", general=null, tkplot="run"}={}){
         
         if (fileChecked.length === 0 && filetype === "felix") {return createToast("No files selected", "danger")}
 
@@ -138,9 +138,9 @@
         let pyfileInfo = {
             felix: {pyfile:"normline.py" , args:[...felixfiles, delta]},
             exp_fit: {pyfile:"exp_gauss_fit.py" , args:expfit_args},
-            opofile: {pyfile:"oposcan.py" , args:[...opofiles, "run", delta]},
+            opofile: {pyfile:"oposcan.py" , args:[...opofiles, tkplot, delta_OPO, calibValue, calibFile]},
             find_peaks: {pyfile:"fit_all.py" , args:[output_name, currentLocation, normMethod, peak_prominence,  peak_width, peak_height,  ...felixfiles]},
-            theory: {pyfile:"theory.py" , args:[...theoryfiles, normMethod, sigma, scale, theoryLocation, "run"]},
+            theory: {pyfile:"theory.py" , args:[...theoryfiles, normMethod, sigma, scale, theoryLocation, tkplot]},
             get_err: {pyfile:"weighted_error.py" , args:lineData_list},
             double_peak: {pyfile:"double_gaussian.py" ,
                 args: opoExpFit
@@ -324,11 +324,15 @@
                                 let { range } = data
                                 setTimeout(()=>output_name = data.points[0].data.name.split(".")[0], 500)
                                 index = range.x
+
                                 console.log(`Selected file: ${output_name}`)
-                                
                                 console.log(`Index selected: ${index}`)
                             }
                         })
+
+
+                        console.log("Graph Plotted")
+                        createToast("Graph Plotted", "success")
                         showOPOFiles = false, graphPlotted = true
                         
                     } else if (filetype == "theory") {
@@ -348,7 +352,11 @@
                             "exp-theory-plot"
                         )
 
+
+                        console.log("Graph Plotted")
+                        createToast("Graph Plotted", "success")
                         show_theoryplot = true, showTheoryFiles = false
+
                     } else if (filetype == "exp_fit") {
 
                         double_peak_active = false
@@ -394,21 +402,20 @@
                             err_data1_plot = false
                         } else {  lineData_list = [] }
 
+                        console.log("Weighted fit.")
+                        createToast("Weighted fit. done", "success")
+
                     } else if (filetype == "double_peak") {
-                        
                         double_peak_active = true
                         console.log("Double peak calculation")
-
                         Plotly.addTraces(graphDiv, dataFromPython["peak"])
                         plot_trace_added++
 
                         annotations = [...annotations, ...dataFromPython["annotations"]]
-
                         Plotly.relayout(graphDiv, { annotations: annotations })
-
                         let [freq1, amp1, sig1, fwhm1, freq2, amp2, sig2, fwhm2] = dataFromPython["table"].split(", ")
-                        
                         let color = "#fafafa";
+
                         if (output_name === "averaged") {
                             color = "#452f7da8"
                             
@@ -426,15 +433,22 @@
                                 weighted_error[0] = [...weighted_error[0], dataFromPython["for_weighted_error1"]]
                                 weighted_error[1] = [...weighted_error[1], dataFromPython["for_weighted_error2"]]
                              }
+
                         }
 
                         let newTable1 = {name: output_name, id:getID(), freq:freq1, amp:amp1, fwhm:fwhm1, sig:sig1, color:color}
                         let newTable2 = {name: output_name, id:getID(), freq:freq2, amp:amp2, fwhm:fwhm2, sig:sig2, color:color}
-
                         dataTable = _.uniqBy([...dataTable, newTable1, newTable2], "freq")
+
+                        console.log("Line fitted Line fitted with double gaussian function")
+                        createToast("Line fitted with double gaussian function", "success")
+
                     } else if (filetype == "find_peaks") {
                         Plotly.relayout("avgplot", { annotations: [] })
                         Plotly.relayout("avgplot", { annotations: dataFromPython[2]["annotations"] })
+
+                        console.log("Peaks found")
+                        createToast("Peaks found", "success")
                     }
                 } catch (err) { $modalContent = err; $activated = true }
 
@@ -493,11 +507,12 @@
     let style = "width:7em; height:3.5em; margin-right:0.5em";
 
     // OPO
-    let showOPOFiles = false, OPOLocation = currentLocation, OPOfilesChecked = [], opoExpFit = false
+    let showOPOFiles = false, OPOLocation = currentLocation, OPOfilesChecked = [], opoExpFit = false, OPORow = false
     $: opofiles = OPOfilesChecked.map(file=>path.resolve(OPOLocation, file))
     $: graphDiv = opoExpFit ? "opoRelPlot" : "avgplot"
     $: plottedFiles = opoExpFit ? OPOfilesChecked.map(file=>file.split(".")[0]) || [] : fileChecked.map(file=>file.split(".")[0]) || []
-
+    let delta_OPO = 0.3, calibValue = 9396.929143696187, calibFile = ""
+    $: OPOcalibFiles = fs.readdirSync(OPOLocation).filter(file=> file.endsWith(".calibOPO"))
 </script>
 
 <style>
@@ -521,7 +536,6 @@
     }
     * :global(.report) {
         display: block;
-        /* width: 90%; */
         margin-bottom: 1em;
     }
     * :global(table th:not([align])) {text-align: center; padding: 1em;}
@@ -529,8 +543,10 @@
     * :global(#felixTableContainer) {border: 1px solid #5b3ea2;}
     * :global(#felixTableContainer thead) {background-color: #e1e1e1;}
 
-    .active {display: block!important;}
     .hide {display: none;}
+    .active {display: block; }
+    .align {display: flex; align-items: center;}
+
     .felixPlot > div {margin-bottom: 1em;}
     .notification {width: 100%; border: 1px solid;}
 </style>
@@ -540,7 +556,6 @@
     <FileBrowser bind:currentLocation={theoryLocation} bind:fileChecked={theoryfilesChecked} filetype=""/>
     <div slot="footer" style="margin:auto">
         <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"theory"})}">Submit</button>
-
     </div>
 
 </QuickView>
@@ -557,25 +572,36 @@
 <Layout {filetype} {id} bind:currentLocation bind:fileChecked >
 
     <div class="buttonSlot" slot="buttonContainer">
-    
 
-        <div class="align" >
-
+        <div >
             <button class="button is-link" 
-                on:click="{(e)=>plotData({e:e, filetype:"general", general:{args:felixfiles.length >0 ? felixfiles :opofiles, pyfile:"baseline.py"}})}">Create Baseline</button>
+                on:click="{(e)=>plotData({e:e, filetype:"general", general:{args:felixfiles.length >0 ? felixfiles :opofiles, pyfile:"baseline.py"}})}">
+                Create Baseline</button>
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"felix"})}">FELIX Plot</button>
-
-            <Textfield type="number" style="width:7em" variant="outlined" bind:value={delta} label="Delta"/>
+            <Textfield style="width:7em" variant="outlined" bind:value={delta} label="Delta"/>
             <button class="button is-link" 
-                on:click="{(e)=>plotData({e:e, filetype:"general", general:{args:[...felixfiles, normMethod, onlyFinalSpectrum], pyfile:"norm_tkplot.py"}})}">Open in Matplotlib</button>
+                on:click="{(e)=>plotData({e:e, filetype:"general", general:{args:[...felixfiles, normMethod, onlyFinalSpectrum], pyfile:"norm_tkplot.py"}})}">
+                Open in Matplotlib</button>
             <CustomCheckbox bind:selected={onlyFinalSpectrum} label="Only Final spectrum" />
             <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
             <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click="{()=>toggleRow = !toggleRow}">Add Theory</button>
-            <button class="button is-link" on:click="{()=>{showTheoryFiles=false;fileChecked=[];showOPOFiles = !showOPOFiles}}">OPO</button>
+            <button class="button is-link" on:click="{()=>{OPORow = !OPORow}}">OPO</button>
             <CustomIconSwitch bind:toggler={opoPlotted} icons={["keyboard_arrow_up", "keyboard_arrow_down"]}/>
         </div>
 
-        <div class="align animated fadeIn hide" class:active={toggleRow}>
+        <div class="animated fadeIn hide content" class:active={OPORow} >
+            <div class="align">
+            
+                <CustomSelect style="width:7em;" bind:picked={calibFile} label="Calib. file" options={["", ...OPOcalibFiles]}/>
+                <Textfield on:change="{(e)=>plotData({e:e, filetype:"opofile"})}" style="width:7em; margin:0 0.5em;" bind:value={delta_OPO} label="Delta OPO"/>
+                <Textfield on:change="{(e)=>plotData({e:e, filetype:"opofile"})}" style="width:9em" bind:value={calibValue} label="Wn-meter calib."/>
+                <button class="button is-link" on:click="{()=>{showTheoryFiles=false;fileChecked=[];showOPOFiles = !showOPOFiles}}">Select File</button>
+                <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"opofile", tkplot:"plot"})}">Open in Matplotlib</button>
+                <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"opofile"})}">Replot</button>
+            </div>
+        </div>
+
+        <div class="animated fadeIn hide" class:active={toggleRow}>
             <button class="button is-link" on:click="{()=>{showOPOFiles=false;showTheoryFiles = !showTheoryFiles}}">Browse File</button>
             <Textfield type="number" style="width:7em; margin-right:0.5em;" variant="outlined" bind:value={sigma} label="Sigma" on:change="{(e)=>plotData({e:e, filetype:"theory"})}"/>
             <Textfield type="number" style="width:7em" variant="outlined" bind:value={scale} label="Scale" on:change="{(e)=>plotData({e:e, filetype:"theory"})}"/>
@@ -583,7 +609,7 @@
                 on:click="{(e)=>plotData({e:e, filetype:"general", general:{args:[...theoryfiles, normMethod, sigma, scale, theoryLocation, "plot"], pyfile:"theory.py"}})}">Open in Matplotlib</button>
         </div>
 
-        <div class="align" on:change={replot}>
+        <div on:change={replot}>
             <CustomRadio bind:selected={normMethod} options={["Log", "Relative", "IntensityPerPhoton"]}/>
         </div>
     </div>
@@ -601,14 +627,16 @@
         </div>
 
         <div class="animated fadeIn hide" class:active={graphPlotted}>
+        
             <!-- Pos-processing felix data -->
-            <div class="align content" transition:fade>
+            <div class="content" transition:fade>
+
                 <CustomSelect bind:picked={output_name} label="Output filename" options={["averaged", ...plottedFiles]}/>
                 <CustomSwitch style="margin: 0 1em;" bind:selected={overwrite_expfit} label="Overwrite"/>
                 <CustomSwitch style="margin: 0 1em;" bind:selected={collectData} label="Collect"/>
             </div>
 
-            <div class="align content">
+            <div class="content">
                 <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"exp_fit"})}">Exp Fit.</button>
                 <button class="button is-link" on:click="{(e)=>toggleDoubleGaussRow = !toggleDoubleGaussRow}">Double Gauss.</button>
                 <button class="button is-warning" on:click={clearLastPeak}>Clear Last</button>
@@ -618,7 +646,7 @@
                 <button class="button is-link" on:click="{()=>toggleFindPeaksRow = !toggleFindPeaksRow}">Find Peaks</button>
             </div>
 
-            <div class="align content animated fadeIn hide" class:active={toggleFindPeaksRow}>
+            <div class="content animated fadeIn hide" class:active={toggleFindPeaksRow}>
                 <Textfield type="number" {style} on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_prominence} label="Prominance" />
                 <Textfield type="number" {style} on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_width} label="Width" />
                 <Textfield type="number" {style} on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_height} label="Height" />
@@ -626,7 +654,7 @@
                 <button class="button is-danger" on:click="{(e)=>window.Plotly.relayout("avgplot", { annotations: [] })}">Clear</button>
             </div>
 
-            <div class="align content animated fadeIn hide" class:active={toggleDoubleGaussRow}>
+            <div class="content animated fadeIn hide" class:active={toggleDoubleGaussRow}>
                 <Textfield type="number" style="width:7em; margin-right:0.5em;" bind:value={amp1} label="Amp1" />
                 <Textfield type="number" style="width:7em; margin-right:0.5em;" bind:value={amp2} label="Amp2" />
                 <Textfield type="number" style="width:7em; margin-right:0.5em;" bind:value={sig1} label="Sigma1" />
@@ -637,7 +665,7 @@
             </div>
 
             <!-- Frequency table list -->
-            <div class="align content">
+            <div class="content">
                 <div class="title notification is-link">Frequency table</div>
                 <CustomCheckbox bind:selected={show_dataTable_only_averaged} label="Only Averaged" />
                 <CustomCheckbox bind:selected={show_dataTable_only_weighted_averaged} label="Only weighted Averaged" />

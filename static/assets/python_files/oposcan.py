@@ -79,29 +79,27 @@ def binning(xs, ys, delta=0.2):
 
         return binsx, data_binned
 
-def opoplot(opofiles, tkplot, delta):
+def opoplot(opofiles, tkplot, delta, calibValue, calibFile):
     os.chdir(opofiles[0].parent)
 
     if tkplot:
         widget = FELion_Tk(title="Mass spectrum", location=opofiles[0].parent)
-
         fig, canvas = widget.Figure()
-        if len(opofiles) == 1: savename=opofiles[0].stem
-        else: savename = "combined_masspec"
-        ax = widget.make_figure_layout(title="Mass Spectrum", xaxis="Mass [u]", yaxis="Counts", yscale="log", savename=savename)
+        ax = widget.make_figure_layout(title="OPO Spectrum", xaxis="Mass [u]", yaxis="Counts", savename="OPO spectrum")
 
     else: data = {"real":{}, "relative":{}, "SA":{}}
     xs, ys = [], []
     c = 0
     group = 0
 
-    calibFile = pt("./calibData.opo")
+    if calibFile != "": calibFile = pt(f"./{calibFile}")
+    else: calibFile = pt("None")
     if calibFile.exists():
         calibdata = np.genfromtxt(calibFile).T
-        wavemeterCalib_air = 9396.929143696187
-        wavemeterCalib_vaccum = 9394.356278462961
+        # wavemeterCalib_air = 9396.929143696187
+        # wavemeterCalib_vaccum = 9394.356278462961
 
-        calibdata -= wavemeterCalib_air
+        calibdata -= calibValue
         saCal = SpectrumAnalyserCalibrator(data=calibdata, manual=True)
 
         setwn, getwn = calibdata
@@ -122,13 +120,13 @@ def opoplot(opofiles, tkplot, delta):
 
         relative_depletion =(1-ratio)*100
         label = f"{opofile.name}"
-        wn = saCal.sa_cm(wn)
+        if calibFile.exists(): wn = saCal.sa_cm(wn)
         xs = np.append(xs, wn)
         ys = np.append(ys, relative_depletion)
 
         export_file(wn, relative_depletion, opofile.stem)
 
-        if tkplot: ax.plot(wn, counts, label=label)
+        if tkplot: ax.plot(wn, relative_depletion, label=label)
 
         else: 
             data["real"][opofile.name] = {
@@ -155,25 +153,28 @@ def opoplot(opofiles, tkplot, delta):
     binx, biny = binning(xs, ys, delta)
     export_file(binx, biny, "averaged")
 
-    data["relative"]["averaged"] = {
-        "x": list(binx), "y": list(biny), "name": f"averaged: delta={delta}", "showlegend": True, 
-        "fill": 'tozeroy', "mode": "lines+markers","line": {"color": "black"}
 
-    }
-
-    if calibFile.exists():
-        X = np.arange(np.array(binx).min(), np.array(binx).max(), 1)
-
-        data["SA"][f"Calibration_fit"] = {
-            "x": list(X),
-            "y": list(saCal.sa_cm(X)),
-            "name": f"Calibration_fit",
-            "type": "scatter", "line": {"color": "black"},
-            "showlegend": False,
-            "legendgroup": f'group0',
+    if not tkplot: 
+        data["relative"]["averaged"] = {
+            "x": list(binx), "y": list(biny), "name": f"averaged: delta={delta}", "showlegend": True, 
+            "fill": 'tozeroy', "mode": "lines+markers","line": {"color": "black"}
         }
 
-    if not tkplot: sendData(data)
+        if calibFile.exists():
+
+            X = np.arange(np.array(binx).min(), np.array(binx).max(), 1)
+            data["SA"][f"Calibration_fit"] = {
+                "x": list(X),
+                "y": list(saCal.sa_cm(X)),
+                "name": f"Calibration_fit",
+                "type": "scatter", "line": {"color": "black"},
+                "showlegend": False,
+                "legendgroup": f'group0'
+
+            }
+
+        sendData(data)
+
     else:
         ax.plot(binx, biny, label=f"averaged: delta={delta}")
         widget.plot_legend = ax.legend()
@@ -182,8 +183,13 @@ def opoplot(opofiles, tkplot, delta):
 if __name__ == "__main__":
     
     args = sys.argv[1:][0].split(",")
-    opofiles = [pt(i) for i in args[:-2]]
-    if args[-2] == "plot": tkplot = True
+    print(args)
+    
+    opofiles = [pt(i) for i in args[:-4]]
+    if args[-4] == "plot": tkplot = True
     else: tkplot = False
-    delta = float(args[-1])
-    opoplot(opofiles, tkplot, delta)
+    delta = float(args[-3])
+    calibValue = float(args[-2])
+    calibFile = args[-1]
+
+    opoplot(opofiles, tkplot, delta, calibValue, calibFile)

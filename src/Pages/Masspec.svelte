@@ -152,13 +152,12 @@
     .masspec_buttonContainer {min-height: 5em;}
     .button {margin-right: 0.5em;}
     .buttonRow {margin-bottom: 1em!important; align-items: center;}
-
     * :global(.mdc-select__native-control option) {color: black}
     .active {display: flex!important;}
+
     .hide {display: none;}
     .align {display: flex; align-items: center;}
 </style>
-
 
 <Layout {filetype} {id} bind:currentLocation bind:fileChecked>
     <div class="masspec_buttonContainer" slot="buttonContainer">
@@ -173,6 +172,7 @@
         </div>
 
         <div class="animated fadeIn hide buttonRow" class:active={toggleRow1} >
+        
             <CustomSelect style="width:12em; height:3.5em; margin-right:0.5em" bind:picked={selected_file} label="Filename" options={["", ...fileChecked]}/>
             <Textfield type="number" {style} on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_prominance} label="Prominance" />
             <Textfield type="number" {style} on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_width} label="Width" />
