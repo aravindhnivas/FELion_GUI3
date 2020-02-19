@@ -27,17 +27,17 @@
     import FormField from '@smui/form-field';
 
     const {BrowserWindow} = remote
-    import {onMount} from "svelte"
+    import {onMount, afterUpdate} from "svelte"
    ///////////////////////////////////////////////////////////////////////
-
     const filetype="felix", id="Normline"
+    afterUpdate(()=> {console.log(`${filetype} loaded`)})
     let fileChecked=[], delta=1, toggleRow=false;
 
     $: felixfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
     // let plottedFiles = []
     let currentLocation = localStorage[`${filetype}_location`] || ""
     
-    $: console.log(`${filetype} Update: \n${currentLocation}`)
+    $: console.log(`${filetype} currentlocation: \n${currentLocation}`)
 
     ///////////////////////////////////////////////////////////////////////
 
@@ -176,7 +176,7 @@
             $modalContent = err
             $activated = true
             error_occured_py = true
-            
+
         });
 
         py.on("close", () => {
@@ -516,7 +516,9 @@
     $: graphDiv = opoExpFit ? "opoRelPlot" : "avgplot"
     $: plottedFiles = opoExpFit ? OPOfilesChecked.map(file=>file.split(".")[0]) || [] : fileChecked.map(file=>file.split(".")[0]) || []
     let delta_OPO = 0.3, calibValue = 9396.929143696187, calibFile = ""
-    $: OPOcalibFiles = fs.readdirSync(OPOLocation).filter(file=> file.endsWith(".calibOPO"))
+    let OPOcalibFiles = []
+    $: if(OPOLocation !== "") {OPOcalibFiles = fs.readdirSync(OPOLocation).filter(file=> file.endsWith(".calibOPO"))}
+    
 </script>
 
 <style>
