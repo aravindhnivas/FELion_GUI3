@@ -173,11 +173,11 @@ class Create_Baseline():
         self.fig, self.canvas = widget.Figure(dpi=120)
         self.ax = self.fig.add_subplot(111)
 
-        self.line = Line2D(self.xs, self.ys, marker='s', ls='', ms=6, c='b', markeredgecolor='b', animated=True)
+        self.line = Line2D(self.xs, self.ys, marker='s', ls='', ms=6, c=('b', "C1")[self.opo], markeredgecolor=('b', "C1")[self.opo], animated=True)
         self.ax.add_line(self.line)        
         
         self.inter_xs = np.arange(self.xs[0], self.xs[-1])
-        self.funcLine = Line2D([], [], marker='', ls='-', c='b', animated=True)
+        self.funcLine = Line2D([], [], marker='', ls='-', c=('b', "C1")[self.opo], animated=True)
         self.ax.add_line(self.funcLine)
 
         self.redraw_f_line()
