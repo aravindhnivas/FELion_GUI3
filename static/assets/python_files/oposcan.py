@@ -87,7 +87,7 @@ def opoplot(opofiles, tkplot, delta, calibValue, calibFile):
         fig, canvas = widget.Figure()
         ax = widget.make_figure_layout(title="OPO Spectrum", xaxis="Mass [u]", yaxis="Counts", savename="OPO spectrum")
 
-    else: data = {"real":{}, "relative":{}, "SA":{}}
+    data = {"real":{}, "relative":{}, "SA":{}}
     xs, ys = [], []
     c = 0
     group = 0
@@ -176,7 +176,7 @@ def opoplot(opofiles, tkplot, delta, calibValue, calibFile):
         sendData(data)
 
     else:
-        ax.plot(binx, biny, label=f"averaged: delta={delta}")
+        ax.plot(binx, biny, "k.-", label=f"averaged: delta={delta}")
         widget.plot_legend = ax.legend()
         widget.mainloop()
     
