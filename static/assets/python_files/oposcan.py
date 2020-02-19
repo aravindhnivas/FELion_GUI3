@@ -85,7 +85,7 @@ def opoplot(opofiles, tkplot, delta, calibValue, calibFile):
     if tkplot:
         widget = FELion_Tk(title="Mass spectrum", location=opofiles[0].parent)
         fig, canvas = widget.Figure()
-        ax = widget.make_figure_layout(title="OPO Spectrum", xaxis="Mass [u]", yaxis="Counts", savename="OPO spectrum")
+        ax = widget.make_figure_layout(title="OPO Spectrum", xaxis="Mass [u]", yaxis="Counts", savename="OPOspectrum")
 
     data = {"real":{}, "relative":{}, "SA":{}}
     xs, ys = [], []

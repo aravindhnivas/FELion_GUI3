@@ -94,20 +94,6 @@
         
         if (fileChecked.length === 0 && filetype === "felix") {return createToast("No files selected", "danger")}
 
-        if (filetype == "general") {
-            console.log("Sending general arguments: ", general.args)
-            let py = spawn(
-                localStorage["pythonpath"],
-                [path.join(localStorage["pythonscript"], general.pyfile), general.args],
-                { detached: true, stdio: 'ignore', shell: openShell }
-
-            )
-            py.on("close", ()=>{ console.log("Closed") })
-            py.unref()
-            py.ref()
-            return createToast("General process sent. Expect an response soon...")
-        }
-
         let expfit_args = []
         if (filetype == "felix") {graphPlotted = false, output_name = "averaged"}
 
@@ -132,10 +118,7 @@
             if (lineData_list.length<2) return createToast("Not sufficient lines collected!", "danger")
         }
 
-        let target = e.target
-        target.classList.toggle("is-loading")
-        
-        let pyfileInfo = {
+        let pyfileInfo = { general,
             felix: {pyfile:"normline.py" , args:[...felixfiles, delta]},
             exp_fit: {pyfile:"exp_gauss_fit.py" , args:expfit_args},
             opofile: {pyfile:"oposcan.py" , args:[...opofiles, tkplot, delta_OPO, calibValue, calibFile]},
@@ -151,28 +134,49 @@
         let {pyfile, args} = pyfileInfo[filetype]
         console.log(pyfileInfo[filetype])
 
+        if(tkplot === "plot") {filetype = "general"}
+        if (filetype == "general") {
+            console.log("Sending general arguments: ", args)
+            let py = spawn(
+                localStorage["pythonpath"],
+                [path.join(localStorage["pythonscript"], pyfile), args],
+                { detached: true, stdio: 'ignore', shell: openShell }
+
+            )
+            py.on("close", ()=>{ console.log("Closed") })
+            py.unref()
+            py.ref()
+            return createToast("General process sent. Expect an response soon...")
+        }
+
         let py;
-
         try {py = spawn( localStorage["pythonpath"], [path.resolve(localStorage["pythonscript"], pyfile), args] )}
-
         catch (err) {
             $modalContent = "Error accessing python. Set python location properly in Settings"
             $activated = true
-            target.classList.toggle("is-loading")
+
             return
         }
+
+        let target = e.target
+        target.classList.toggle("is-loading")
         createToast("Process Started")
+
         py.stdout.on("data", data => {
+
             console.log("Ouput from python")
             let dataReceived = data.toString("utf8")
             console.log(dataReceived)
-        });
+
+        })
 
         let error_occured_py = false;
         py.stderr.on("data", err => {
+
             $modalContent = err
             $activated = true
-            error_occured_py = true;
+            error_occured_py = true
+            
         });
 
         py.on("close", () => {
