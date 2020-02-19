@@ -27,10 +27,10 @@
     import FormField from '@smui/form-field';
 
     const {BrowserWindow} = remote
-    import {onMount, afterUpdate} from "svelte"
+    import {onMount} from "svelte"
    ///////////////////////////////////////////////////////////////////////
     const filetype="felix", id="Normline"
-    afterUpdate(()=> {console.log(`${filetype} loaded`)})
+    // afterUpdate(()=> {console.log(`${filetype} loaded`)})
     let fileChecked=[], delta=1, toggleRow=false;
 
     $: felixfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
@@ -62,6 +62,7 @@
     $: console.log("Trace length: ", plot_trace_added)
     $: console.log("Double peak active: ", double_peak_active)
 
+    $: output_namelists = ["averaged", ...plottedFiles]
     let output_name = "averaged"
 
     let dataTableHead = ["Filename", "Frequency (cm-1)", "Amplitude", "FWHM", "Sigma"]
@@ -88,7 +89,6 @@
             Plotly.react("avgplot",data, layout, { editable: true })
             line = annotations = lineData_list = [], plot_trace_added = 0
         }
-
     }
     
 
@@ -99,8 +99,13 @@
         switch (filetype) {
             case "felix":
                 graphPlotted = false, output_name = "averaged"
-                if(fileChecked.length<1) return createToast("No files selected", "danger")
+                if(felixfiles.length<1) return createToast("No files selected", "danger")
 
+                break;
+            
+            case "baseline":
+                if (OPORow) {if(opofiles.length<1) return createToast("No OPO files selected", "danger")}
+                else {if(felixfiles.length<1) return createToast("No FELIX files selected", "danger")}
                 break;
 
             case "exp_fit":
@@ -126,14 +131,17 @@
 
             default:
                 break;
-            }
+        }
 
-
-        const pyfileInfo = { general,
+        const pyfileInfo = { general, 
+            baseline: {pyfile:"baseline.py", args: OPORow ? opofiles: felixfiles},
             felix: {pyfile:"normline.py" , args:[...felixfiles, delta]},
             exp_fit: {pyfile:"exp_gauss_fit.py" , args:expfit_args},
             opofile: {pyfile:"oposcan.py" , args:[...opofiles, tkplot, delta_OPO, calibValue, calibFile]},
-            find_peaks: {pyfile:"fit_all.py" , args:[output_name, currentLocation, normMethod, peak_prominence,  peak_width, peak_height,  ...felixfiles]},
+            find_peaks: {pyfile:"fit_all.py" , 
+                args: opoExpFit ? [output_name, OPOLocation, "Log", peak_prominence,  peak_width, peak_height,  ...opofiles]
+                    : [output_name, currentLocation, normMethod, peak_prominence,  peak_width, peak_height,  ...felixfiles]
+            },
             theory: {pyfile:"theory.py" , args:[...theoryfiles, normMethod, sigma, scale, theoryLocation, tkplot]},
             get_err: {pyfile:"weighted_error.py" , args:lineData_list},
             double_peak: {pyfile:"double_gaussian.py" ,
@@ -145,7 +153,6 @@
         console.log(pyfileInfo[filetype])
 
         if(tkplot === "plot") {filetype = "general"}
-
         if (filetype == "general") {
 
             console.log("Sending general arguments: ", args)
@@ -199,7 +206,7 @@
                     console.log(dataFromPython)
 
                     if (filetype == "felix") {
-                        opoExpFit = false
+                        opoExpFit = false, output_name = "averaged"
                         line = [], index = [], annotations = [], lineData_list = [], plot_trace_added = 0
 
                         show_theoryplot = false
@@ -308,7 +315,7 @@
                                 console.log(data)
                                 opoExpFit = false
                                 let { range } = data
-                                setTimeout(()=>output_name = data.points[0].data.name.split(".")[0], 500)
+                                output_name = data.points[0].data.name.split(".")[0]
                                 index = range.x
                                 console.log(`Selected file: ${output_name}`)
                                 console.log(`Index selected: ${index}`)
@@ -322,7 +329,7 @@
 
                     } else if (filetype == "opofile") {
 
-                        opoExpFit = true
+                        opoExpFit = true, output_name = "averaged"
                         plot("OPO spectrum", "Wavenumber (cm-1)", "Counts", dataFromPython["real"], "opoplot")
                         plot("OPO Calibration", "Set Wavenumber (cm-1)", "Measured Wavenumber (cm-1)", dataFromPython["SA"], "opoSA")
 
@@ -337,7 +344,7 @@
                                 console.log(data)
                                 opoExpFit = true
                                 let { range } = data
-                                setTimeout(()=>output_name = data.points[0].data.name.split(".")[0], 500)
+                                output_name = data.points[0].data.name.split(".")[0]
                                 index = range.x
 
                                 console.log(`Selected file: ${output_name}`)
@@ -392,7 +399,6 @@
                             dataTable_avg = [...dataTable_avg, {name: `Line #${line_index_count}`, id:getID(), freq:freq, amp:amp, fwhm:fwhm, sig:sig, color:color}]
                             dataTable_avg = _.uniqBy(dataTable_avg, "freq")
                             line_index_count++
-
                         } else {
                             if (collectData) {
                                 console.log("Collecting lines")
@@ -402,9 +408,9 @@
                         
                         let newTable = {name: output_name, id:getID(), freq:freq, amp:amp, fwhm:fwhm, sig:sig, color:color}
                         dataTable = _.uniqBy([...dataTable, newTable], "freq")
-                        
                         console.log("Line fitted")
                         createToast("Line fitted with gaussian function", "success")
+
                     } else if (filetype == "get_err") {
                         let {freq, amp, fwhm, sig } = dataFromPython
                         let data1 = {name: "unweighted_mean", id:getID(), freq:freq.mean, amp:amp.mean, fwhm:fwhm.mean, sig:sig.mean, color:"#452f7da8"}
@@ -459,8 +465,8 @@
                         createToast("Line fitted with double gaussian function", "success")
 
                     } else if (filetype == "find_peaks") {
-                        Plotly.relayout("avgplot", { annotations: [] })
-                        Plotly.relayout("avgplot", { annotations: dataFromPython[2]["annotations"] })
+                        Plotly.relayout(graphDiv, { annotations: [] })
+                        Plotly.relayout(graphDiv, { annotations: dataFromPython[2]["annotations"] })
 
                         console.log("Peaks found")
                         createToast("Peaks found", "success")
@@ -525,11 +531,15 @@
     let showOPOFiles = false, OPOfilesChecked = [], opoExpFit = false, OPORow = false
     let OPOLocation = localStorage["opoLocation"] || currentLocation
     $: opofiles = OPOfilesChecked.map(file=>path.resolve(OPOLocation, file))
+
     $: graphDiv = opoExpFit ? "opoRelPlot" : "avgplot"
     $: plottedFiles = opoExpFit ? OPOfilesChecked.map(file=>file.split(".")[0]) || [] : fileChecked.map(file=>file.split(".")[0]) || []
     let delta_OPO = 0.3, calibValue = 9396.929143696187, calibFile = ""
     let OPOcalibFiles = []
     $: if(OPOLocation !== "") {OPOcalibFiles = fs.readdirSync(OPOLocation).filter(file=> file.endsWith(".calibOPO"))}
+    $: OPORow ? createToast("OPO MODE") : createToast("FELIX MODE")
+
+    $: opoPlotted ? opoExpFit = true : opoExpFit = false
 </script>
 
 <style>
@@ -592,28 +602,32 @@
 
         <div class="align">
             <button class="button is-link" 
-                on:click="{(e)=>plotData({e:e, filetype:"general", general:{args:felixfiles.length >0 ? felixfiles :opofiles, pyfile:"baseline.py"}})}">
+                on:click="{(e)=>plotData({e:e, filetype:"baseline", tkplot:"plot"})}">
                 Create Baseline</button>
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"felix"})}">FELIX Plot</button>
             <Textfield style="width:7em" variant="outlined" bind:value={delta} label="Delta"/>
+
             <button class="button is-link" 
                 on:click="{(e)=>plotData({e:e, filetype:"general", general:{args:[...felixfiles, normMethod, onlyFinalSpectrum], pyfile:"norm_tkplot.py"}})}">
                 Open in Matplotlib</button>
+            
             <CustomCheckbox bind:selected={onlyFinalSpectrum} label="Only Final spectrum" />
+
             <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
             <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click="{()=>toggleRow = !toggleRow}">Add Theory</button>
             <button class="button is-link" on:click="{()=>{OPORow = !OPORow}}">OPO</button>
             <CustomIconSwitch bind:toggler={opoPlotted} icons={["keyboard_arrow_up", "keyboard_arrow_down"]}/>
+
         </div>
 
         <div class="animated fadeIn hide content" class:active={OPORow} >
+
             <div class="align">
-            
                 <CustomSelect style="width:7em;" bind:picked={calibFile} label="Calib. file" options={["", ...OPOcalibFiles]}/>
                 <Textfield on:change="{(e)=>plotData({e:e, filetype:"opofile"})}" style="width:7em; margin:0 0.5em;" bind:value={delta_OPO} label="Delta OPO"/>
                 <Textfield on:change="{(e)=>plotData({e:e, filetype:"opofile"})}" style="width:9em" bind:value={calibValue} label="Wn-meter calib."/>
                 <button class="button is-link" 
-                    on:click="{()=>{showTheoryFiles=false;fileChecked=[];showOPOFiles = !showOPOFiles; OPOLocation = localStorage["opoLocation"] || currentLocation}}">
+                    on:click="{()=>{showTheoryFiles=false;showOPOFiles = !showOPOFiles; OPOLocation = localStorage["opoLocation"] || currentLocation}}">
                     Select File</button>
                 <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"opofile", tkplot:"plot"})}">Open in Matplotlib</button>
                 <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"opofile"})}">Replot</button>
@@ -621,7 +635,6 @@
         </div>
 
         <div class="animated fadeIn hide" class:active={toggleRow}>
-
 
             <button class="button is-link" 
                 on:click="{()=>{showOPOFiles=false;showTheoryFiles = !showTheoryFiles; theoryLocation = localStorage["theoryLocation"] || currentLocation}}">
@@ -654,7 +667,8 @@
             <!-- Pos-processing felix data -->
             <div class="content" transition:fade>
 
-                <CustomSelect bind:picked={output_name} label="Output filename" options={["averaged", ...plottedFiles]}/>
+                <CustomSwitch style="margin: 0 1em;" bind:selected={opoExpFit} label="OPO"/>
+                <CustomSelect bind:picked={output_name} label="Output filename" options={output_namelists}/>
                 <CustomSwitch style="margin: 0 1em;" bind:selected={overwrite_expfit} label="Overwrite"/>
                 <CustomSwitch style="margin: 0 1em;" bind:selected={collectData} label="Collect"/>
             </div>
@@ -670,11 +684,11 @@
             </div>
 
             <div class="content animated fadeIn hide" class:active={toggleFindPeaksRow}>
-                <Textfield type="number" {style} on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_prominence} label="Prominance" />
-                <Textfield type="number" {style} on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_width} label="Width" />
-                <Textfield type="number" {style} on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_height} label="Height" />
+                <Textfield type="number" {style} bind:value={peak_prominence} label="Prominance" />
+                <Textfield type="number" {style} bind:value={peak_width} label="Width" />
+                <Textfield type="number" {style} bind:value={peak_height} label="Height" />
                 <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"find_peaks"})}">Get Peaks</button>
-                <button class="button is-danger" on:click="{(e)=>window.Plotly.relayout("avgplot", { annotations: [] })}">Clear</button>
+                <button class="button is-danger" on:click="{(e)=>window.Plotly.relayout(graphDiv, { annotations: [] })}">Clear</button>
             </div>
 
             <div class="content animated fadeIn hide" class:active={toggleDoubleGaussRow}>
