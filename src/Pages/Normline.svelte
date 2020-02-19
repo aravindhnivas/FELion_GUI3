@@ -99,40 +99,37 @@
         switch (filetype) {
             case "felix":
                 graphPlotted = false, output_name = "averaged"
-                if(fileChecked.length < 1) return createToast("No files selected", "danger")
+                if(fileChecked.length<1) return createToast("No files selected", "danger")
 
                 break;
 
             case "exp_fit":
-                if (index.length < 2) { return createToast("Range not found!!. Select a range using Box-select", "danger") }
+                if (index.length<2) { return createToast("Range not found!!. Select a range using Box-select", "danger") }
                 expfit_args = opoExpFit ? [...opofiles, overwrite_expfit, output_name, "Log", OPOLocation, ...index]
                     : [...felixfiles, overwrite_expfit, output_name, normMethod, currentLocation, ...index]
                 break;
 
             case "opofile":
-                if(opofiles.length < 1) return createToast("No files selected", "danger")
+                if(opofiles.length<1) return createToast("No files selected", "danger")
                 opoPlotted = true
                 break;
 
             case "get_err":
-                if (double_peak_active) {
-                    if (err_data1_plot) lineData_list = weighted_error[0]
-                    else lineData_list = weighted_error[1]
-                }
+
                 if (lineData_list.length<2) return createToast("Not sufficient lines collected!", "danger")
+                if (double_peak_active) { lineData_list = err_data1_plot ? weighted_error[0] : weighted_error[1] }
                 break;
 
             case "theory":
-                if(theoryfiles.length < 1) return  createToast("No files selected", "danger")
+                if(theoryfiles.length < 1) return createToast("No files selected", "danger")
                 break;
 
             default:
                 break;
-
             }
 
 
-        let pyfileInfo = { general,
+        const pyfileInfo = { general,
             felix: {pyfile:"normline.py" , args:[...felixfiles, delta]},
             exp_fit: {pyfile:"exp_gauss_fit.py" , args:expfit_args},
             opofile: {pyfile:"oposcan.py" , args:[...opofiles, tkplot, delta_OPO, calibValue, calibFile]},
@@ -140,26 +137,28 @@
             theory: {pyfile:"theory.py" , args:[...theoryfiles, normMethod, sigma, scale, theoryLocation, tkplot]},
             get_err: {pyfile:"weighted_error.py" , args:lineData_list},
             double_peak: {pyfile:"double_gaussian.py" ,
-                args: opoExpFit
-                ? [amp1, amp2, cen1, cen2, sig1, sig2, ...opofiles, overwrite_expfit, output_name, "Log", OPOLocation, ...index ]
+                args: opoExpFit ? [amp1, amp2, cen1, cen2, sig1, sig2, ...opofiles, overwrite_expfit, output_name, "Log", OPOLocation, ...index ]
                 : [amp1, amp2, cen1, cen2, sig1, sig2, ...felixfiles, overwrite_expfit, output_name, normMethod, currentLocation, ...index ]}
         }
 
-        let {pyfile, args} = pyfileInfo[filetype]
+        const {pyfile, args} = pyfileInfo[filetype]
         console.log(pyfileInfo[filetype])
 
         if(tkplot === "plot") {filetype = "general"}
+
         if (filetype == "general") {
+
             console.log("Sending general arguments: ", args)
             let py = spawn(
                 localStorage["pythonpath"],
                 [path.join(localStorage["pythonscript"], pyfile), args],
                 { detached: true, stdio: 'ignore', shell: openShell }
-
             )
+
             py.on("close", ()=>{ console.log("Closed") })
             py.unref()
             py.ref()
+
             return createToast("General process sent. Expect an response soon...")
         }
 
@@ -198,6 +197,7 @@
 
                     dataFromPython = JSON.parse(dataFromPython.toString("utf-8"))
                     console.log(dataFromPython)
+
                     if (filetype == "felix") {
                         opoExpFit = false
                         line = [], index = [], annotations = [], lineData_list = [], plot_trace_added = 0

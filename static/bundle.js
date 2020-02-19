@@ -37300,11 +37300,11 @@ function create_footer_slot_1(ctx) {
 			button = element("button");
 			button.textContent = "Submit";
 			attr_dev(button, "class", "button is-link svelte-5u284y");
-			add_location(button, file$O, 574, 8, 26478);
+			add_location(button, file$O, 574, 8, 26385);
 			attr_dev(div, "slot", "footer");
 			set_style(div, "margin", "auto");
 			attr_dev(div, "class", "svelte-5u284y");
-			add_location(div, file$O, 573, 4, 26429);
+			add_location(div, file$O, 573, 4, 26336);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -37423,11 +37423,11 @@ function create_footer_slot(ctx) {
 			button = element("button");
 			button.textContent = "Submit";
 			attr_dev(button, "class", "button is-link svelte-5u284y");
-			add_location(button, file$O, 583, 8, 26909);
+			add_location(button, file$O, 583, 8, 26816);
 			attr_dev(div, "slot", "footer");
 			set_style(div, "margin", "auto");
 			attr_dev(div, "class", "svelte-5u284y");
-			add_location(div, file$O, 582, 4, 26860);
+			add_location(div, file$O, 582, 4, 26767);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -37821,41 +37821,41 @@ function create_buttonContainer_slot(ctx) {
 			div5 = element("div");
 			create_component(customradio.$$.fragment);
 			attr_dev(button0, "class", "button is-link svelte-5u284y");
-			add_location(button0, file$O, 593, 12, 27249);
+			add_location(button0, file$O, 593, 12, 27156);
 			attr_dev(button1, "class", "button is-link svelte-5u284y");
-			add_location(button1, file$O, 596, 12, 27490);
+			add_location(button1, file$O, 596, 12, 27397);
 			attr_dev(button2, "class", "button is-link svelte-5u284y");
-			add_location(button2, file$O, 598, 12, 27702);
+			add_location(button2, file$O, 598, 12, 27609);
 			attr_dev(button3, "class", "button is-link svelte-5u284y");
 			attr_dev(button3, "tabindex", "0");
-			add_location(button3, file$O, 603, 12, 28142);
+			add_location(button3, file$O, 603, 12, 28049);
 			attr_dev(button4, "class", "button is-link svelte-5u284y");
-			add_location(button4, file$O, 604, 12, 28299);
+			add_location(button4, file$O, 604, 12, 28206);
 			attr_dev(div1, "class", "align svelte-5u284y");
-			add_location(div1, file$O, 592, 8, 27216);
+			add_location(div1, file$O, 592, 8, 27123);
 			attr_dev(button5, "class", "button is-link svelte-5u284y");
-			add_location(button5, file$O, 614, 16, 29089);
+			add_location(button5, file$O, 614, 16, 28996);
 			attr_dev(button6, "class", "button is-link svelte-5u284y");
-			add_location(button6, file$O, 617, 16, 29349);
+			add_location(button6, file$O, 617, 16, 29256);
 			attr_dev(button7, "class", "button is-link svelte-5u284y");
-			add_location(button7, file$O, 618, 16, 29494);
+			add_location(button7, file$O, 618, 16, 29401);
 			attr_dev(div2, "class", "align svelte-5u284y");
-			add_location(div2, file$O, 609, 12, 28597);
+			add_location(div2, file$O, 609, 12, 28504);
 			attr_dev(div3, "class", "animated fadeIn hide content svelte-5u284y");
 			toggle_class(div3, "active", /*OPORow*/ ctx[38]);
-			add_location(div3, file$O, 608, 8, 28518);
+			add_location(div3, file$O, 608, 8, 28425);
 			attr_dev(button8, "class", "button is-link svelte-5u284y");
-			add_location(button8, file$O, 625, 12, 29719);
+			add_location(button8, file$O, 625, 12, 29626);
 			attr_dev(button9, "class", "button is-link svelte-5u284y");
-			add_location(button9, file$O, 630, 12, 30310);
+			add_location(button9, file$O, 630, 12, 30217);
 			attr_dev(div4, "class", "animated fadeIn hide svelte-5u284y");
 			toggle_class(div4, "active", /*toggleRow*/ ctx[2]);
-			add_location(div4, file$O, 622, 8, 29642);
+			add_location(div4, file$O, 622, 8, 29549);
 			attr_dev(div5, "class", "svelte-5u284y");
-			add_location(div5, file$O, 634, 8, 30571);
+			add_location(div5, file$O, 634, 8, 30478);
 			attr_dev(div0, "class", "buttonSlot svelte-5u284y");
 			attr_dev(div0, "slot", "buttonContainer");
-			add_location(div0, file$O, 590, 4, 27157);
+			add_location(div0, file$O, 590, 4, 27064);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -40294,76 +40294,76 @@ function create_plotContainer_slot(ctx) {
 			attr_dev(div1, "class", "animated fadeIn hide svelte-5u284y");
 			attr_dev(div1, "id", "exp-theory-plot");
 			toggle_class(div1, "active", /*show_theoryplot*/ ctx[7]);
-			add_location(div1, file$O, 642, 12, 30830);
+			add_location(div1, file$O, 642, 12, 30737);
 			attr_dev(div2, "id", "bplot");
 			attr_dev(div2, "class", "svelte-5u284y");
-			add_location(div2, file$O, 643, 12, 30936);
+			add_location(div2, file$O, 643, 12, 30843);
 			attr_dev(div3, "id", "saPlot");
 			attr_dev(div3, "class", "svelte-5u284y");
-			add_location(div3, file$O, 644, 12, 30972);
+			add_location(div3, file$O, 644, 12, 30879);
 			attr_dev(div4, "id", "avgplot");
 			attr_dev(div4, "class", "svelte-5u284y");
-			add_location(div4, file$O, 645, 12, 31009);
+			add_location(div4, file$O, 645, 12, 30916);
 			attr_dev(div5, "class", "animated fadeIn hide svelte-5u284y");
 			attr_dev(div5, "id", "opoplot");
 			toggle_class(div5, "active", /*opoPlotted*/ ctx[21]);
-			add_location(div5, file$O, 646, 12, 31047);
+			add_location(div5, file$O, 646, 12, 30954);
 			attr_dev(div6, "class", "animated fadeIn hide svelte-5u284y");
 			attr_dev(div6, "id", "opoSA");
 			toggle_class(div6, "active", /*opoPlotted*/ ctx[21]);
-			add_location(div6, file$O, 647, 12, 31140);
+			add_location(div6, file$O, 647, 12, 31047);
 			attr_dev(div7, "class", "animated fadeIn hide svelte-5u284y");
 			attr_dev(div7, "id", "opoRelPlot");
 			toggle_class(div7, "active", /*opoPlotted*/ ctx[21]);
-			add_location(div7, file$O, 648, 12, 31231);
+			add_location(div7, file$O, 648, 12, 31138);
 			attr_dev(div8, "class", "felixPlot svelte-5u284y");
-			add_location(div8, file$O, 641, 8, 30793);
+			add_location(div8, file$O, 641, 8, 30700);
 			attr_dev(div9, "class", "content svelte-5u284y");
-			add_location(div9, file$O, 654, 12, 31475);
+			add_location(div9, file$O, 654, 12, 31382);
 			attr_dev(button0, "class", "button is-link svelte-5u284y");
-			add_location(button0, file$O, 662, 16, 31919);
+			add_location(button0, file$O, 662, 16, 31826);
 			attr_dev(button1, "class", "button is-link svelte-5u284y");
-			add_location(button1, file$O, 663, 16, 32039);
+			add_location(button1, file$O, 663, 16, 31946);
 			attr_dev(button2, "class", "button is-warning svelte-5u284y");
-			add_location(button2, file$O, 664, 16, 32173);
+			add_location(button2, file$O, 664, 16, 32080);
 			attr_dev(button3, "class", "button is-danger svelte-5u284y");
-			add_location(button3, file$O, 665, 16, 32269);
+			add_location(button3, file$O, 665, 16, 32176);
 			attr_dev(button4, "class", "button is-link svelte-5u284y");
-			add_location(button4, file$O, 666, 16, 32362);
+			add_location(button4, file$O, 666, 16, 32269);
 			attr_dev(button5, "class", "button is-warning svelte-5u284y");
-			add_location(button5, file$O, 667, 16, 32487);
+			add_location(button5, file$O, 667, 16, 32394);
 			attr_dev(button6, "class", "button is-link svelte-5u284y");
-			add_location(button6, file$O, 668, 16, 32643);
+			add_location(button6, file$O, 668, 16, 32550);
 			attr_dev(div10, "class", "content svelte-5u284y");
-			add_location(div10, file$O, 661, 12, 31880);
+			add_location(div10, file$O, 661, 12, 31787);
 			attr_dev(button7, "class", "button is-link svelte-5u284y");
-			add_location(button7, file$O, 675, 16, 33340);
+			add_location(button7, file$O, 675, 16, 33247);
 			attr_dev(button8, "class", "button is-danger svelte-5u284y");
-			add_location(button8, file$O, 676, 16, 33464);
+			add_location(button8, file$O, 676, 16, 33371);
 			attr_dev(div11, "class", "content animated fadeIn hide svelte-5u284y");
 			toggle_class(div11, "active", /*toggleFindPeaksRow*/ ctx[32]);
-			add_location(div11, file$O, 671, 12, 32787);
+			add_location(div11, file$O, 671, 12, 32694);
 			attr_dev(button9, "class", "button is-link svelte-5u284y");
-			add_location(button9, file$O, 686, 16, 34410);
+			add_location(button9, file$O, 686, 16, 34317);
 			attr_dev(div12, "class", "content animated fadeIn hide svelte-5u284y");
 			toggle_class(div12, "active", /*toggleDoubleGaussRow*/ ctx[25]);
-			add_location(div12, file$O, 679, 12, 33620);
+			add_location(div12, file$O, 679, 12, 33527);
 			attr_dev(div13, "class", "title notification is-link svelte-5u284y");
-			add_location(div13, file$O, 691, 16, 34632);
+			add_location(div13, file$O, 691, 16, 34539);
 			attr_dev(button10, "class", "button is-warning svelte-5u284y");
-			add_location(button10, file$O, 695, 16, 35016);
+			add_location(button10, file$O, 695, 16, 34923);
 			attr_dev(button11, "class", "button is-danger svelte-5u284y");
-			add_location(button11, file$O, 698, 16, 35356);
+			add_location(button11, file$O, 698, 16, 35263);
 			attr_dev(div14, "class", "content svelte-5u284y");
-			add_location(div14, file$O, 690, 12, 34593);
+			add_location(div14, file$O, 690, 12, 34500);
 			attr_dev(div15, "class", "dataTable svelte-5u284y");
-			add_location(div15, file$O, 703, 12, 35564);
+			add_location(div15, file$O, 703, 12, 35471);
 			attr_dev(div16, "class", "animated fadeIn hide svelte-5u284y");
 			toggle_class(div16, "active", /*graphPlotted*/ ctx[12]);
-			add_location(div16, file$O, 651, 8, 31341);
+			add_location(div16, file$O, 651, 8, 31248);
 			attr_dev(div0, "class", "plotSlot svelte-5u284y");
 			attr_dev(div0, "slot", "plotContainer");
-			add_location(div0, file$O, 639, 4, 30738);
+			add_location(div0, file$O, 639, 4, 30645);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -41053,17 +41053,17 @@ function instance$T($$self, $$props, $$invalidate) {
 				$$invalidate(21, opoPlotted = true);
 				break;
 			case "get_err":
-				if (double_peak_active) {
-					if (err_data1_plot) $$invalidate(24, lineData_list = weighted_error[0]); else $$invalidate(24, lineData_list = weighted_error[1]);
-				}
 				if (lineData_list.length < 2) return createToast$1("Not sufficient lines collected!", "danger");
+				if (double_peak_active) {
+					$$invalidate(24, lineData_list = err_data1_plot ? weighted_error[0] : weighted_error[1]);
+				}
 				break;
 			case "theory":
 				if (theoryfiles.length < 1) return createToast$1("No files selected", "danger");
 				break;
 		}
 
-		let pyfileInfo = {
+		const pyfileInfo = {
 			general,
 			felix: {
 				pyfile: "normline.py",
@@ -41131,7 +41131,7 @@ function instance$T($$self, $$props, $$invalidate) {
 			}
 		};
 
-		let { pyfile, args } = pyfileInfo[filetype];
+		const { pyfile, args } = pyfileInfo[filetype];
 		console.log(pyfileInfo[filetype]);
 
 		if (tkplot === "plot") {
