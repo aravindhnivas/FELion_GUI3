@@ -81,7 +81,6 @@
     const getID = () => Math.random().toString(32).substring(2)
     let onlyFinalSpectrum = false
 
-    ///////////////////////////////////////////////////////////////////////////////////
     const replot = () => {
 
         if (graphPlotted) {
@@ -89,37 +88,49 @@
             Plotly.react("avgplot",data, layout, { editable: true })
             line = annotations = lineData_list = [], plot_trace_added = 0
         }
+
     }
     
+
     async function plotData({e=null, filetype="felix", general=null, tkplot="run"}={}){
         
-        if (fileChecked.length === 0 && filetype === "felix") {return createToast("No files selected", "danger")}
-
         let expfit_args = []
-        if (filetype == "felix") {graphPlotted = false, output_name = "averaged"}
-        else if (filetype == "exp_fit") {
-            if (index.length < 2) { return createToast("Range not found!!. Select a range using Box-select", "danger") }
 
-            if (opoExpFit) { 
+        switch (filetype) {
+            case "felix":
+                graphPlotted = false, output_name = "averaged"
+                if(fileChecked.length < 1) return createToast("No files selected", "danger")
 
-                expfit_args = [...opofiles, overwrite_expfit, output_name, "Log", OPOLocation, ...index]
-             } 
-            else {
-                expfit_args = [...felixfiles, overwrite_expfit, output_name, normMethod, currentLocation, ...index]
+                break;
+
+            case "exp_fit":
+                if (index.length < 2) { return createToast("Range not found!!. Select a range using Box-select", "danger") }
+                expfit_args = opoExpFit ? [...opofiles, overwrite_expfit, output_name, "Log", OPOLocation, ...index]
+                    : [...felixfiles, overwrite_expfit, output_name, normMethod, currentLocation, ...index]
+                break;
+
+            case "opofile":
+                if(opofiles.length < 1) return createToast("No files selected", "danger")
+                opoPlotted = true
+                break;
+
+            case "get_err":
+                if (double_peak_active) {
+                    if (err_data1_plot) lineData_list = weighted_error[0]
+                    else lineData_list = weighted_error[1]
+                }
+                if (lineData_list.length<2) return createToast("Not sufficient lines collected!", "danger")
+                break;
+
+            case "theory":
+                if(theoryfiles.length < 1) return  createToast("No files selected", "danger")
+                break;
+
+            default:
+                break;
+
             }
-        } else if (filetype == "opofile") {
-            if(opofiles.length < 1) return  createToast("No files selected", "danger")
-            opoPlotted = true
 
-        }
-        else if (filetype == "get_err") {
-
-            if (double_peak_active) {
-                if (err_data1_plot) lineData_list = weighted_error[0]
-                else lineData_list = weighted_error[1]
-            }
-            if (lineData_list.length<2) return createToast("Not sufficient lines collected!", "danger")
-        } else if (filetype == "theory") { if(theoryfiles.length < 1) return  createToast("No files selected", "danger")}
 
         let pyfileInfo = { general,
             felix: {pyfile:"normline.py" , args:[...felixfiles, delta]},
@@ -157,12 +168,11 @@
         catch (err) {
             $modalContent = "Error accessing python. Set python location properly in Settings"
             $activated = true
-
             return
         }
-
         let target = e.target
         target.classList.toggle("is-loading")
+
         createToast("Process Started")
 
         py.stdout.on("data", data => {
@@ -170,12 +180,10 @@
             console.log("Ouput from python")
             let dataReceived = data.toString("utf8")
             console.log(dataReceived)
-
         })
 
         let error_occured_py = false;
         py.stderr.on("data", err => {
-
             $modalContent = err
             $activated = true
             error_occured_py = true
@@ -522,7 +530,6 @@
     let delta_OPO = 0.3, calibValue = 9396.929143696187, calibFile = ""
     let OPOcalibFiles = []
     $: if(OPOLocation !== "") {OPOcalibFiles = fs.readdirSync(OPOLocation).filter(file=> file.endsWith(".calibOPO"))}
-
 </script>
 
 <style>
