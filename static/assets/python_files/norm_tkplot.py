@@ -46,8 +46,7 @@ if __name__ == "__main__":
     
     filenames = args[0:-2]
     norm_method = args[-2]
-    if args[-1] == "true": onlyFinalSpectrum = True
-    else: onlyFinalSpectrum = False
+    onlyFinalSpectrum = (False, True)[args[-1] == "true"]
     
     filenames = [pt(i) for i in filenames]
     location = filenames[0].parent

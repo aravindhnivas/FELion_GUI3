@@ -313,17 +313,12 @@ if __name__ == "__main__":
     filenames = [pt(i) for i in args[0:-5]]
     gamma = float(args[-2])*1e-3
 
-    tkplot = args[-3]
-    if tkplot == "plot": tkplot = True
-    else: tkplot = False
+    tkplot = (False, True)[args[-3] == "plot"]
 
     delta = float(args[-4]) # in KHz
     delta = delta*1e-6 # in GHz (to compare with our data)
 
-    if args[-5] == "true": binData = True
-    else: binData = False
-
-    if args[-1] == "true": justPlot = True
-    else: justPlot = False
+    binData = (False, True)[args[-5] == "true"]
+    justPlot = (False, True)[args[-1] == "true"]
 
     main(filenames, delta, tkplot, gamma, justPlot, binData)

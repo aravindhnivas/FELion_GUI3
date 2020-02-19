@@ -68,8 +68,5 @@ def massplot(massfiles, tkplot):
 if __name__ == "__main__":
     args = sys.argv[1:][0].split(",")
     massfiles = [pt(i) for i in args[:-1]]
-
-    tkplot = args[-1]
-    if tkplot == "plot": tkplot = True
-    else: tkplot = False
+    tkplot = (False, True)[args[-1] == "plot"]
     massplot(massfiles, tkplot)

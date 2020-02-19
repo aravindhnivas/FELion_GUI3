@@ -83,10 +83,7 @@ if __name__ == "__main__":
     print("Argument procesed:\n", args)
 
     theoryfiles = [pt(i) for i in args[0:-5]]
-    tkplot = args[-1]
-
-    if tkplot == "plot": tkplot=True
-    else: tkplot = False
+    tkplot = (False, True)[args[-1] == "plot"]
     location = args[-2]
     scale = float(args[-3])
     sigma = float(args[-4])

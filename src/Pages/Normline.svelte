@@ -193,7 +193,6 @@
             $modalContent = err
             $activated = true
             error_occured_py = true
-
         });
 
         py.on("close", () => {
@@ -521,6 +520,7 @@
     onMount(()=>{
         console.log("Normline mounted")
     })
+    
     let collectData = true, lineData_list = [], toggleDoubleGaussRow = false, weighted_error = [[], []], err_data1_plot = false
     let amp1=0, amp2=0, cen1=0, cen2=0, sig1=5, sig2=5
     let toggleFindPeaksRow = false

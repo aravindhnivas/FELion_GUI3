@@ -195,11 +195,12 @@ class Create_Baseline():
         else: label = f"{self.felixfile}"
 
 
-        if (self.opo): baselinePlot_title = "OPO Spectrum: Create Baseline"
-        else: baselinePlot_title = "FELIX Spectrum: Create Baseline"
+        baselinePlot_title = ("FELIX Spectrum: Create Baseline", "OPO Spectrum: Create Baseline")[self.opo]
 
         self.baseline_data = widget.make_figure_layout(ax=self.ax, xdata=self.data[0], ydata=self.data[1], label=label, savename=self.felixfile,
-            title=baselinePlot_title, xaxis="Wavenumber (cm-1)", yaxis="Counts", ls='', marker='o', ms=5, markeredgecolor='r', c='r')
+            title=baselinePlot_title, 
+            xaxis="Wavenumber (cm-1)", yaxis="Counts", ls='', marker='o', ms=5, 
+            markeredgecolor=('r', "C0")[self.opo], c=('r', "C0")[self.opo])
 
         def on_closing():
             def ask(check, change, txt=""):

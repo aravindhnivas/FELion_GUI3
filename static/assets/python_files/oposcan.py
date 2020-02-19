@@ -186,8 +186,7 @@ if __name__ == "__main__":
     print(args)
     
     opofiles = [pt(i) for i in args[:-4]]
-    if args[-4] == "plot": tkplot = True
-    else: tkplot = False
+    tkplot = (False, True)[args[-4] == "plot"]
     delta = float(args[-3])
     calibValue = float(args[-2])
     calibFile = args[-1]
