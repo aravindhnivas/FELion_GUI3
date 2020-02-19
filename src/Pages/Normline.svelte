@@ -97,7 +97,6 @@
 
         let expfit_args = []
         if (filetype == "felix") {graphPlotted = false, output_name = "averaged"}
-
         else if (filetype == "exp_fit") {
             if (index.length < 2) { return createToast("Range not found!!. Select a range using Box-select", "danger") }
 
@@ -108,16 +107,19 @@
             else {
                 expfit_args = [...felixfiles, overwrite_expfit, output_name, normMethod, currentLocation, ...index]
             }
-        }
+        } else if (filetype == "opofile") {
+            if(opofiles.length < 1) return  createToast("No files selected", "danger")
+            opoPlotted = true
 
-        else if (filetype == "opofile") {opoPlotted = true}
+        }
         else if (filetype == "get_err") {
+
             if (double_peak_active) {
                 if (err_data1_plot) lineData_list = weighted_error[0]
                 else lineData_list = weighted_error[1]
             }
             if (lineData_list.length<2) return createToast("Not sufficient lines collected!", "danger")
-        }
+        } else if (filetype == "theory") { if(theoryfiles.length < 1) return  createToast("No files selected", "danger")}
 
         let pyfileInfo = { general,
             felix: {pyfile:"normline.py" , args:[...felixfiles, delta]},
@@ -581,7 +583,7 @@
 
     <div class="buttonSlot" slot="buttonContainer">
 
-        <div >
+        <div class="align">
             <button class="button is-link" 
                 on:click="{(e)=>plotData({e:e, filetype:"general", general:{args:felixfiles.length >0 ? felixfiles :opofiles, pyfile:"baseline.py"}})}">
                 Create Baseline</button>

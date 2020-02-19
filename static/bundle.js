@@ -37288,7 +37288,7 @@ function get_each_context_3$1(ctx, list, i) {
 	return child_ctx;
 }
 
-// (565:4) <div slot="footer" style="margin:auto">
+// (567:4) <div slot="footer" style="margin:auto">
 function create_footer_slot_1(ctx) {
 	let div;
 	let button;
@@ -37300,11 +37300,11 @@ function create_footer_slot_1(ctx) {
 			button = element("button");
 			button.textContent = "Submit";
 			attr_dev(button, "class", "button is-link svelte-5u284y");
-			add_location(button, file$O, 565, 8, 26254);
+			add_location(button, file$O, 567, 8, 26469);
 			attr_dev(div, "slot", "footer");
 			set_style(div, "margin", "auto");
 			attr_dev(div, "class", "svelte-5u284y");
-			add_location(div, file$O, 564, 4, 26205);
+			add_location(div, file$O, 566, 4, 26420);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -37322,14 +37322,14 @@ function create_footer_slot_1(ctx) {
 		block,
 		id: create_footer_slot_1.name,
 		type: "slot",
-		source: "(565:4) <div slot=\\\"footer\\\" style=\\\"margin:auto\\\">",
+		source: "(567:4) <div slot=\\\"footer\\\" style=\\\"margin:auto\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (562:0) <QuickView style="padding:1em;" bind:active={showTheoryFiles} title="Browse Theory files">
+// (564:0) <QuickView style="padding:1em;" bind:active={showTheoryFiles} title="Browse Theory files">
 function create_default_slot_25(ctx) {
 	let updating_currentLocation;
 	let updating_fileChecked;
@@ -37404,14 +37404,14 @@ function create_default_slot_25(ctx) {
 		block,
 		id: create_default_slot_25.name,
 		type: "slot",
-		source: "(562:0) <QuickView style=\\\"padding:1em;\\\" bind:active={showTheoryFiles} title=\\\"Browse Theory files\\\">",
+		source: "(564:0) <QuickView style=\\\"padding:1em;\\\" bind:active={showTheoryFiles} title=\\\"Browse Theory files\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (574:4) <div slot="footer" style="margin:auto">
+// (576:4) <div slot="footer" style="margin:auto">
 function create_footer_slot(ctx) {
 	let div;
 	let button;
@@ -37423,11 +37423,11 @@ function create_footer_slot(ctx) {
 			button = element("button");
 			button.textContent = "Submit";
 			attr_dev(button, "class", "button is-link svelte-5u284y");
-			add_location(button, file$O, 574, 8, 26685);
+			add_location(button, file$O, 576, 8, 26900);
 			attr_dev(div, "slot", "footer");
 			set_style(div, "margin", "auto");
 			attr_dev(div, "class", "svelte-5u284y");
-			add_location(div, file$O, 573, 4, 26636);
+			add_location(div, file$O, 575, 4, 26851);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -37445,14 +37445,14 @@ function create_footer_slot(ctx) {
 		block,
 		id: create_footer_slot.name,
 		type: "slot",
-		source: "(574:4) <div slot=\\\"footer\\\" style=\\\"margin:auto\\\">",
+		source: "(576:4) <div slot=\\\"footer\\\" style=\\\"margin:auto\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (571:0) <QuickView style="padding:1em;" bind:active={showOPOFiles} title="Browse OPO files">
+// (573:0) <QuickView style="padding:1em;" bind:active={showOPOFiles} title="Browse OPO files">
 function create_default_slot_24(ctx) {
 	let updating_currentLocation;
 	let updating_fileChecked;
@@ -37527,14 +37527,14 @@ function create_default_slot_24(ctx) {
 		block,
 		id: create_default_slot_24.name,
 		type: "slot",
-		source: "(571:0) <QuickView style=\\\"padding:1em;\\\" bind:active={showOPOFiles} title=\\\"Browse OPO files\\\">",
+		source: "(573:0) <QuickView style=\\\"padding:1em;\\\" bind:active={showOPOFiles} title=\\\"Browse OPO files\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (582:4) <div class="buttonSlot" slot="buttonContainer">
+// (584:4) <div class="buttonSlot" slot="buttonContainer">
 function create_buttonContainer_slot(ctx) {
 	let div0;
 	let div1;
@@ -37821,41 +37821,41 @@ function create_buttonContainer_slot(ctx) {
 			div5 = element("div");
 			create_component(customradio.$$.fragment);
 			attr_dev(button0, "class", "button is-link svelte-5u284y");
-			add_location(button0, file$O, 584, 12, 27012);
+			add_location(button0, file$O, 586, 12, 27240);
 			attr_dev(button1, "class", "button is-link svelte-5u284y");
-			add_location(button1, file$O, 587, 12, 27253);
+			add_location(button1, file$O, 589, 12, 27481);
 			attr_dev(button2, "class", "button is-link svelte-5u284y");
-			add_location(button2, file$O, 589, 12, 27465);
+			add_location(button2, file$O, 591, 12, 27693);
 			attr_dev(button3, "class", "button is-link svelte-5u284y");
 			attr_dev(button3, "tabindex", "0");
-			add_location(button3, file$O, 594, 12, 27905);
+			add_location(button3, file$O, 596, 12, 28133);
 			attr_dev(button4, "class", "button is-link svelte-5u284y");
-			add_location(button4, file$O, 595, 12, 28062);
-			attr_dev(div1, "class", "svelte-5u284y");
-			add_location(div1, file$O, 583, 8, 26992);
+			add_location(button4, file$O, 597, 12, 28290);
+			attr_dev(div1, "class", "align svelte-5u284y");
+			add_location(div1, file$O, 585, 8, 27207);
 			attr_dev(button5, "class", "button is-link svelte-5u284y");
-			add_location(button5, file$O, 605, 16, 28852);
+			add_location(button5, file$O, 607, 16, 29080);
 			attr_dev(button6, "class", "button is-link svelte-5u284y");
-			add_location(button6, file$O, 608, 16, 29112);
+			add_location(button6, file$O, 610, 16, 29340);
 			attr_dev(button7, "class", "button is-link svelte-5u284y");
-			add_location(button7, file$O, 609, 16, 29257);
+			add_location(button7, file$O, 611, 16, 29485);
 			attr_dev(div2, "class", "align svelte-5u284y");
-			add_location(div2, file$O, 600, 12, 28360);
+			add_location(div2, file$O, 602, 12, 28588);
 			attr_dev(div3, "class", "animated fadeIn hide content svelte-5u284y");
 			toggle_class(div3, "active", /*OPORow*/ ctx[38]);
-			add_location(div3, file$O, 599, 8, 28281);
+			add_location(div3, file$O, 601, 8, 28509);
 			attr_dev(button8, "class", "button is-link svelte-5u284y");
-			add_location(button8, file$O, 616, 12, 29482);
+			add_location(button8, file$O, 618, 12, 29710);
 			attr_dev(button9, "class", "button is-link svelte-5u284y");
-			add_location(button9, file$O, 621, 12, 30073);
+			add_location(button9, file$O, 623, 12, 30301);
 			attr_dev(div4, "class", "animated fadeIn hide svelte-5u284y");
 			toggle_class(div4, "active", /*toggleRow*/ ctx[2]);
-			add_location(div4, file$O, 613, 8, 29405);
+			add_location(div4, file$O, 615, 8, 29633);
 			attr_dev(div5, "class", "svelte-5u284y");
-			add_location(div5, file$O, 625, 8, 30334);
+			add_location(div5, file$O, 627, 8, 30562);
 			attr_dev(div0, "class", "buttonSlot svelte-5u284y");
 			attr_dev(div0, "slot", "buttonContainer");
-			add_location(div0, file$O, 581, 4, 26933);
+			add_location(div0, file$O, 583, 4, 27148);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -38070,14 +38070,14 @@ function create_buttonContainer_slot(ctx) {
 		block,
 		id: create_buttonContainer_slot.name,
 		type: "slot",
-		source: "(582:4) <div class=\\\"buttonSlot\\\" slot=\\\"buttonContainer\\\">",
+		source: "(584:4) <div class=\\\"buttonSlot\\\" slot=\\\"buttonContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (701:32) <Cell>
+// (703:32) <Cell>
 function create_default_slot_23(ctx) {
 	let t_value = /*item*/ ctx[138] + "";
 	let t;
@@ -38099,14 +38099,14 @@ function create_default_slot_23(ctx) {
 		block,
 		id: create_default_slot_23.name,
 		type: "slot",
-		source: "(701:32) <Cell>",
+		source: "(703:32) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (700:28) {#each dataTableHead as item}
+// (702:28) {#each dataTableHead as item}
 function create_each_block_3$1(ctx) {
 	let current;
 
@@ -38153,14 +38153,14 @@ function create_each_block_3$1(ctx) {
 		block,
 		id: create_each_block_3$1.name,
 		type: "each",
-		source: "(700:28) {#each dataTableHead as item}",
+		source: "(702:28) {#each dataTableHead as item}",
 		ctx
 	});
 
 	return block;
 }
 
-// (699:24) <Row>
+// (701:24) <Row>
 function create_default_slot_22(ctx) {
 	let each_1_anchor;
 	let current;
@@ -38247,14 +38247,14 @@ function create_default_slot_22(ctx) {
 		block,
 		id: create_default_slot_22.name,
 		type: "slot",
-		source: "(699:24) <Row>",
+		source: "(701:24) <Row>",
 		ctx
 	});
 
 	return block;
 }
 
-// (698:20) <Head >
+// (700:20) <Head >
 function create_default_slot_21(ctx) {
 	let current;
 
@@ -38301,14 +38301,14 @@ function create_default_slot_21(ctx) {
 		block,
 		id: create_default_slot_21.name,
 		type: "slot",
-		source: "(698:20) <Head >",
+		source: "(700:20) <Head >",
 		ctx
 	});
 
 	return block;
 }
 
-// (726:24) {:else}
+// (728:24) {:else}
 function create_else_block$9(ctx) {
 	let each_blocks = [];
 	let each_1_lookup = new Map();
@@ -38376,14 +38376,14 @@ function create_else_block$9(ctx) {
 		block,
 		id: create_else_block$9.name,
 		type: "else",
-		source: "(726:24) {:else}",
+		source: "(728:24) {:else}",
 		ctx
 	});
 
 	return block;
 }
 
-// (716:105) 
+// (718:105) 
 function create_if_block_1$5(ctx) {
 	let each_blocks = [];
 	let each_1_lookup = new Map();
@@ -38451,14 +38451,14 @@ function create_if_block_1$5(ctx) {
 		block,
 		id: create_if_block_1$5.name,
 		type: "if",
-		source: "(716:105) ",
+		source: "(718:105) ",
 		ctx
 	});
 
 	return block;
 }
 
-// (706:24) {#if show_dataTable_only_weighted_averaged}
+// (708:24) {#if show_dataTable_only_weighted_averaged}
 function create_if_block$f(ctx) {
 	let each_blocks = [];
 	let each_1_lookup = new Map();
@@ -38526,14 +38526,14 @@ function create_if_block$f(ctx) {
 		block,
 		id: create_if_block$f.name,
 		type: "if",
-		source: "(706:24) {#if show_dataTable_only_weighted_averaged}",
+		source: "(708:24) {#if show_dataTable_only_weighted_averaged}",
 		ctx
 	});
 
 	return block;
 }
 
-// (729:36) <Cell>
+// (731:36) <Cell>
 function create_default_slot_20(ctx) {
 	let t_value = /*table*/ ctx[132].name + "";
 	let t;
@@ -38557,14 +38557,14 @@ function create_default_slot_20(ctx) {
 		block,
 		id: create_default_slot_20.name,
 		type: "slot",
-		source: "(729:36) <Cell>",
+		source: "(731:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (730:36) <Cell>
+// (732:36) <Cell>
 function create_default_slot_19(ctx) {
 	let t_value = /*table*/ ctx[132].freq + "";
 	let t;
@@ -38588,14 +38588,14 @@ function create_default_slot_19(ctx) {
 		block,
 		id: create_default_slot_19.name,
 		type: "slot",
-		source: "(730:36) <Cell>",
+		source: "(732:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (731:36) <Cell>
+// (733:36) <Cell>
 function create_default_slot_18(ctx) {
 	let t_value = /*table*/ ctx[132].amp + "";
 	let t;
@@ -38619,14 +38619,14 @@ function create_default_slot_18(ctx) {
 		block,
 		id: create_default_slot_18.name,
 		type: "slot",
-		source: "(731:36) <Cell>",
+		source: "(733:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (732:36) <Cell>
+// (734:36) <Cell>
 function create_default_slot_17(ctx) {
 	let t_value = /*table*/ ctx[132].fwhm + "";
 	let t;
@@ -38650,14 +38650,14 @@ function create_default_slot_17(ctx) {
 		block,
 		id: create_default_slot_17.name,
 		type: "slot",
-		source: "(732:36) <Cell>",
+		source: "(734:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (733:36) <Cell>
+// (735:36) <Cell>
 function create_default_slot_16(ctx) {
 	let t_value = /*table*/ ctx[132].sig + "";
 	let t;
@@ -38681,14 +38681,14 @@ function create_default_slot_16(ctx) {
 		block,
 		id: create_default_slot_16.name,
 		type: "slot",
-		source: "(733:36) <Cell>",
+		source: "(735:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (728:32) <Row style="background-color: {table.color};">
+// (730:32) <Row style="background-color: {table.color};">
 function create_default_slot_15(ctx) {
 	let t0;
 	let t1;
@@ -38835,14 +38835,14 @@ function create_default_slot_15(ctx) {
 		block,
 		id: create_default_slot_15.name,
 		type: "slot",
-		source: "(728:32) <Row style=\\\"background-color: {table.color};\\\">",
+		source: "(730:32) <Row style=\\\"background-color: {table.color};\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (727:28) {#each dataTable as table (table.id)}
+// (729:28) {#each dataTable as table (table.id)}
 function create_each_block_2$1(key_1, ctx) {
 	let first;
 	let current;
@@ -38898,14 +38898,14 @@ function create_each_block_2$1(key_1, ctx) {
 		block,
 		id: create_each_block_2$1.name,
 		type: "each",
-		source: "(727:28) {#each dataTable as table (table.id)}",
+		source: "(729:28) {#each dataTable as table (table.id)}",
 		ctx
 	});
 
 	return block;
 }
 
-// (719:36) <Cell>
+// (721:36) <Cell>
 function create_default_slot_14(ctx) {
 	let t_value = /*table*/ ctx[132].name + "";
 	let t;
@@ -38929,14 +38929,14 @@ function create_default_slot_14(ctx) {
 		block,
 		id: create_default_slot_14.name,
 		type: "slot",
-		source: "(719:36) <Cell>",
+		source: "(721:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (720:36) <Cell>
+// (722:36) <Cell>
 function create_default_slot_13(ctx) {
 	let t_value = /*table*/ ctx[132].freq + "";
 	let t;
@@ -38960,14 +38960,14 @@ function create_default_slot_13(ctx) {
 		block,
 		id: create_default_slot_13.name,
 		type: "slot",
-		source: "(720:36) <Cell>",
+		source: "(722:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (721:36) <Cell>
+// (723:36) <Cell>
 function create_default_slot_12(ctx) {
 	let t_value = /*table*/ ctx[132].amp + "";
 	let t;
@@ -38991,14 +38991,14 @@ function create_default_slot_12(ctx) {
 		block,
 		id: create_default_slot_12.name,
 		type: "slot",
-		source: "(721:36) <Cell>",
+		source: "(723:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (722:36) <Cell>
+// (724:36) <Cell>
 function create_default_slot_11$1(ctx) {
 	let t_value = /*table*/ ctx[132].fwhm + "";
 	let t;
@@ -39022,14 +39022,14 @@ function create_default_slot_11$1(ctx) {
 		block,
 		id: create_default_slot_11$1.name,
 		type: "slot",
-		source: "(722:36) <Cell>",
+		source: "(724:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (723:36) <Cell>
+// (725:36) <Cell>
 function create_default_slot_10$1(ctx) {
 	let t_value = /*table*/ ctx[132].sig + "";
 	let t;
@@ -39053,14 +39053,14 @@ function create_default_slot_10$1(ctx) {
 		block,
 		id: create_default_slot_10$1.name,
 		type: "slot",
-		source: "(723:36) <Cell>",
+		source: "(725:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (718:32) <Row>
+// (720:32) <Row>
 function create_default_slot_9$1(ctx) {
 	let t0;
 	let t1;
@@ -39207,14 +39207,14 @@ function create_default_slot_9$1(ctx) {
 		block,
 		id: create_default_slot_9$1.name,
 		type: "slot",
-		source: "(718:32) <Row>",
+		source: "(720:32) <Row>",
 		ctx
 	});
 
 	return block;
 }
 
-// (717:28) {#each dataTable_avg as table (table.id)}
+// (719:28) {#each dataTable_avg as table (table.id)}
 function create_each_block_1$2(key_1, ctx) {
 	let first;
 	let current;
@@ -39268,14 +39268,14 @@ function create_each_block_1$2(key_1, ctx) {
 		block,
 		id: create_each_block_1$2.name,
 		type: "each",
-		source: "(717:28) {#each dataTable_avg as table (table.id)}",
+		source: "(719:28) {#each dataTable_avg as table (table.id)}",
 		ctx
 	});
 
 	return block;
 }
 
-// (709:36) <Cell>
+// (711:36) <Cell>
 function create_default_slot_8$1(ctx) {
 	let t0;
 	let t1_value = /*index*/ ctx[49] + "";
@@ -39303,14 +39303,14 @@ function create_default_slot_8$1(ctx) {
 		block,
 		id: create_default_slot_8$1.name,
 		type: "slot",
-		source: "(709:36) <Cell>",
+		source: "(711:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (710:36) <Cell>
+// (712:36) <Cell>
 function create_default_slot_7$2(ctx) {
 	let t_value = /*table*/ ctx[132].freq + "";
 	let t;
@@ -39334,14 +39334,14 @@ function create_default_slot_7$2(ctx) {
 		block,
 		id: create_default_slot_7$2.name,
 		type: "slot",
-		source: "(710:36) <Cell>",
+		source: "(712:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (711:36) <Cell>
+// (713:36) <Cell>
 function create_default_slot_6$2(ctx) {
 	let t_value = /*table*/ ctx[132].amp + "";
 	let t;
@@ -39365,14 +39365,14 @@ function create_default_slot_6$2(ctx) {
 		block,
 		id: create_default_slot_6$2.name,
 		type: "slot",
-		source: "(711:36) <Cell>",
+		source: "(713:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (712:36) <Cell>
+// (714:36) <Cell>
 function create_default_slot_5$3(ctx) {
 	let t_value = /*table*/ ctx[132].fwhm + "";
 	let t;
@@ -39396,14 +39396,14 @@ function create_default_slot_5$3(ctx) {
 		block,
 		id: create_default_slot_5$3.name,
 		type: "slot",
-		source: "(712:36) <Cell>",
+		source: "(714:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (713:36) <Cell>
+// (715:36) <Cell>
 function create_default_slot_4$5(ctx) {
 	let t_value = /*table*/ ctx[132].sig + "";
 	let t;
@@ -39427,14 +39427,14 @@ function create_default_slot_4$5(ctx) {
 		block,
 		id: create_default_slot_4$5.name,
 		type: "slot",
-		source: "(713:36) <Cell>",
+		source: "(715:36) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (708:32) <Row>
+// (710:32) <Row>
 function create_default_slot_3$5(ctx) {
 	let t0;
 	let t1;
@@ -39581,14 +39581,14 @@ function create_default_slot_3$5(ctx) {
 		block,
 		id: create_default_slot_3$5.name,
 		type: "slot",
-		source: "(708:32) <Row>",
+		source: "(710:32) <Row>",
 		ctx
 	});
 
 	return block;
 }
 
-// (707:28) {#each dataTable_weighted_avg as table, index (table.id)}
+// (709:28) {#each dataTable_weighted_avg as table, index (table.id)}
 function create_each_block$5(key_1, ctx) {
 	let first;
 	let current;
@@ -39642,14 +39642,14 @@ function create_each_block$5(key_1, ctx) {
 		block,
 		id: create_each_block$5.name,
 		type: "each",
-		source: "(707:28) {#each dataTable_weighted_avg as table, index (table.id)}",
+		source: "(709:28) {#each dataTable_weighted_avg as table, index (table.id)}",
 		ctx
 	});
 
 	return block;
 }
 
-// (705:20) <Body>
+// (707:20) <Body>
 function create_default_slot_2$9(ctx) {
 	let current_block_type_index;
 	let if_block;
@@ -39721,14 +39721,14 @@ function create_default_slot_2$9(ctx) {
 		block,
 		id: create_default_slot_2$9.name,
 		type: "slot",
-		source: "(705:20) <Body>",
+		source: "(707:20) <Body>",
 		ctx
 	});
 
 	return block;
 }
 
-// (697:16) <DataTable table$aria-label="felix-tableAriaLabel" table$id="felixTable" id="felixTableContainer">
+// (699:16) <DataTable table$aria-label="felix-tableAriaLabel" table$id="felixTable" id="felixTableContainer">
 function create_default_slot_1$b(ctx) {
 	let t;
 	let current;
@@ -39799,14 +39799,14 @@ function create_default_slot_1$b(ctx) {
 		block,
 		id: create_default_slot_1$b.name,
 		type: "slot",
-		source: "(697:16) <DataTable table$aria-label=\\\"felix-tableAriaLabel\\\" table$id=\\\"felixTable\\\" id=\\\"felixTableContainer\\\">",
+		source: "(699:16) <DataTable table$aria-label=\\\"felix-tableAriaLabel\\\" table$id=\\\"felixTable\\\" id=\\\"felixTableContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (631:4) <div class="plotSlot" slot="plotContainer">
+// (633:4) <div class="plotSlot" slot="plotContainer">
 function create_plotContainer_slot(ctx) {
 	let div0;
 	let div8;
@@ -40294,76 +40294,76 @@ function create_plotContainer_slot(ctx) {
 			attr_dev(div1, "class", "animated fadeIn hide svelte-5u284y");
 			attr_dev(div1, "id", "exp-theory-plot");
 			toggle_class(div1, "active", /*show_theoryplot*/ ctx[7]);
-			add_location(div1, file$O, 633, 12, 30593);
+			add_location(div1, file$O, 635, 12, 30821);
 			attr_dev(div2, "id", "bplot");
 			attr_dev(div2, "class", "svelte-5u284y");
-			add_location(div2, file$O, 634, 12, 30699);
+			add_location(div2, file$O, 636, 12, 30927);
 			attr_dev(div3, "id", "saPlot");
 			attr_dev(div3, "class", "svelte-5u284y");
-			add_location(div3, file$O, 635, 12, 30735);
+			add_location(div3, file$O, 637, 12, 30963);
 			attr_dev(div4, "id", "avgplot");
 			attr_dev(div4, "class", "svelte-5u284y");
-			add_location(div4, file$O, 636, 12, 30772);
+			add_location(div4, file$O, 638, 12, 31000);
 			attr_dev(div5, "class", "animated fadeIn hide svelte-5u284y");
 			attr_dev(div5, "id", "opoplot");
 			toggle_class(div5, "active", /*opoPlotted*/ ctx[21]);
-			add_location(div5, file$O, 637, 12, 30810);
+			add_location(div5, file$O, 639, 12, 31038);
 			attr_dev(div6, "class", "animated fadeIn hide svelte-5u284y");
 			attr_dev(div6, "id", "opoSA");
 			toggle_class(div6, "active", /*opoPlotted*/ ctx[21]);
-			add_location(div6, file$O, 638, 12, 30903);
+			add_location(div6, file$O, 640, 12, 31131);
 			attr_dev(div7, "class", "animated fadeIn hide svelte-5u284y");
 			attr_dev(div7, "id", "opoRelPlot");
 			toggle_class(div7, "active", /*opoPlotted*/ ctx[21]);
-			add_location(div7, file$O, 639, 12, 30994);
+			add_location(div7, file$O, 641, 12, 31222);
 			attr_dev(div8, "class", "felixPlot svelte-5u284y");
-			add_location(div8, file$O, 632, 8, 30556);
+			add_location(div8, file$O, 634, 8, 30784);
 			attr_dev(div9, "class", "content svelte-5u284y");
-			add_location(div9, file$O, 645, 12, 31238);
+			add_location(div9, file$O, 647, 12, 31466);
 			attr_dev(button0, "class", "button is-link svelte-5u284y");
-			add_location(button0, file$O, 653, 16, 31682);
+			add_location(button0, file$O, 655, 16, 31910);
 			attr_dev(button1, "class", "button is-link svelte-5u284y");
-			add_location(button1, file$O, 654, 16, 31802);
+			add_location(button1, file$O, 656, 16, 32030);
 			attr_dev(button2, "class", "button is-warning svelte-5u284y");
-			add_location(button2, file$O, 655, 16, 31936);
+			add_location(button2, file$O, 657, 16, 32164);
 			attr_dev(button3, "class", "button is-danger svelte-5u284y");
-			add_location(button3, file$O, 656, 16, 32032);
+			add_location(button3, file$O, 658, 16, 32260);
 			attr_dev(button4, "class", "button is-link svelte-5u284y");
-			add_location(button4, file$O, 657, 16, 32125);
+			add_location(button4, file$O, 659, 16, 32353);
 			attr_dev(button5, "class", "button is-warning svelte-5u284y");
-			add_location(button5, file$O, 658, 16, 32250);
+			add_location(button5, file$O, 660, 16, 32478);
 			attr_dev(button6, "class", "button is-link svelte-5u284y");
-			add_location(button6, file$O, 659, 16, 32406);
+			add_location(button6, file$O, 661, 16, 32634);
 			attr_dev(div10, "class", "content svelte-5u284y");
-			add_location(div10, file$O, 652, 12, 31643);
+			add_location(div10, file$O, 654, 12, 31871);
 			attr_dev(button7, "class", "button is-link svelte-5u284y");
-			add_location(button7, file$O, 666, 16, 33103);
+			add_location(button7, file$O, 668, 16, 33331);
 			attr_dev(button8, "class", "button is-danger svelte-5u284y");
-			add_location(button8, file$O, 667, 16, 33227);
+			add_location(button8, file$O, 669, 16, 33455);
 			attr_dev(div11, "class", "content animated fadeIn hide svelte-5u284y");
 			toggle_class(div11, "active", /*toggleFindPeaksRow*/ ctx[32]);
-			add_location(div11, file$O, 662, 12, 32550);
+			add_location(div11, file$O, 664, 12, 32778);
 			attr_dev(button9, "class", "button is-link svelte-5u284y");
-			add_location(button9, file$O, 677, 16, 34173);
+			add_location(button9, file$O, 679, 16, 34401);
 			attr_dev(div12, "class", "content animated fadeIn hide svelte-5u284y");
 			toggle_class(div12, "active", /*toggleDoubleGaussRow*/ ctx[25]);
-			add_location(div12, file$O, 670, 12, 33383);
+			add_location(div12, file$O, 672, 12, 33611);
 			attr_dev(div13, "class", "title notification is-link svelte-5u284y");
-			add_location(div13, file$O, 682, 16, 34395);
+			add_location(div13, file$O, 684, 16, 34623);
 			attr_dev(button10, "class", "button is-warning svelte-5u284y");
-			add_location(button10, file$O, 686, 16, 34779);
+			add_location(button10, file$O, 688, 16, 35007);
 			attr_dev(button11, "class", "button is-danger svelte-5u284y");
-			add_location(button11, file$O, 689, 16, 35119);
+			add_location(button11, file$O, 691, 16, 35347);
 			attr_dev(div14, "class", "content svelte-5u284y");
-			add_location(div14, file$O, 681, 12, 34356);
+			add_location(div14, file$O, 683, 12, 34584);
 			attr_dev(div15, "class", "dataTable svelte-5u284y");
-			add_location(div15, file$O, 694, 12, 35327);
+			add_location(div15, file$O, 696, 12, 35555);
 			attr_dev(div16, "class", "animated fadeIn hide svelte-5u284y");
 			toggle_class(div16, "active", /*graphPlotted*/ ctx[12]);
-			add_location(div16, file$O, 642, 8, 31104);
+			add_location(div16, file$O, 644, 8, 31332);
 			attr_dev(div0, "class", "plotSlot svelte-5u284y");
 			attr_dev(div0, "slot", "plotContainer");
-			add_location(div0, file$O, 630, 4, 30501);
+			add_location(div0, file$O, 632, 4, 30729);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -40735,14 +40735,14 @@ function create_plotContainer_slot(ctx) {
 		block,
 		id: create_plotContainer_slot.name,
 		type: "slot",
-		source: "(631:4) <div class=\\\"plotSlot\\\" slot=\\\"plotContainer\\\">",
+		source: "(633:4) <div class=\\\"plotSlot\\\" slot=\\\"plotContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (580:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked >
+// (582:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked >
 function create_default_slot$j(ctx) {
 	let t;
 
@@ -40765,7 +40765,7 @@ function create_default_slot$j(ctx) {
 		block,
 		id: create_default_slot$j.name,
 		type: "slot",
-		source: "(580:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked >",
+		source: "(582:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked >",
 		ctx
 	});
 
@@ -41046,6 +41046,7 @@ function instance$T($$self, $$props, $$invalidate) {
 				];
 			}
 		} else if (filetype == "opofile") {
+			if (opofiles.length < 1) return createToast$1("No files selected", "danger");
 			$$invalidate(21, opoPlotted = true);
 		} else if (filetype == "get_err") {
 			if (double_peak_active) {
@@ -41053,6 +41054,8 @@ function instance$T($$self, $$props, $$invalidate) {
 			}
 
 			if (lineData_list.length < 2) return createToast$1("Not sufficient lines collected!", "danger");
+		} else if (filetype == "theory") {
+			if (theoryfiles.length < 1) return createToast$1("No files selected", "danger");
 		}
 
 		let pyfileInfo = {
