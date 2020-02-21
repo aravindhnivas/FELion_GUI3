@@ -287,6 +287,7 @@ def save_fig():
 
 def main(filenames, delta, tkplot, gamma=None, justPlot=False, binData=False):
     global widget
+    
     os.chdir(filenames[0].parent)
 
     if tkplot:

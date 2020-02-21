@@ -83,9 +83,9 @@ def opoplot(opofiles, tkplot, delta, calibValue, calibFile):
     os.chdir(opofiles[0].parent)
 
     if tkplot:
-        widget = FELion_Tk(title="Mass spectrum", location=opofiles[0].parent)
+        widget = FELion_Tk(title="OPO Spectrum", location=opofiles[0].parent)
         fig, canvas = widget.Figure()
-        ax = widget.make_figure_layout(title="OPO Spectrum", xaxis="Mass [u]", yaxis="Counts", savename="OPOspectrum")
+        ax = widget.make_figure_layout(title="OPO Spectrum", xaxis="Wavenumber (cm-1)", yaxis="Intensity", savename="OPOspectrum")
 
     data = {"real":{}, "relative":{}, "SA":{}}
     xs, ys = [], []
@@ -123,7 +123,6 @@ def opoplot(opofiles, tkplot, delta, calibValue, calibFile):
         if calibFile.exists(): wn = saCal.sa_cm(wn)
         xs = np.append(xs, wn)
         ys = np.append(ys, relative_depletion)
-
         export_file(wn, relative_depletion, opofile.stem)
 
         if tkplot: ax.plot(wn, relative_depletion, label=label)
@@ -176,7 +175,7 @@ def opoplot(opofiles, tkplot, delta, calibValue, calibFile):
         sendData(data)
 
     else:
-        ax.plot(binx, biny, "k.-", label=f"averaged: delta={delta}")
+        ax.plot(binx, biny, "k.-", label=f"Averaged: delta={delta}")
         widget.plot_legend = ax.legend()
         widget.mainloop()
     

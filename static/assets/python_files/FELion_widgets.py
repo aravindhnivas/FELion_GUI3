@@ -226,6 +226,7 @@ class FELion_Tk(Tk):
         y += y_diff
         self.name = self.Entries("Entry", "Plotname", x0, y, bind_return=True, bind_func=self.save_fig, relwidth=0.7)
 
+
         if self.default_widget:
 
             # Row 3
@@ -264,12 +265,16 @@ class FELion_Tk(Tk):
                 self.save_fmt = self.Entries("Entry", "png", x0, y+0.02)
                 self.save_btn = self.Buttons("Save", x0+x_diff, y, self.save_fig)
 
-            #  Row 10
+                # Row 10
+                y += y_diff
+                self.onlyAvg = self.Entries("Check", "only avg.", x0, y+0.02)
+
+            #  Row 11
             y = 0.7
             txt = "Write valid any python expression"
             self.code = self.TextBox(txt, 0.8, y, w=0.7, h=0.1, bind_func=self.python_exp) 
 
-            #  Row 11
+            #  Row 12
             y += y_diff
             self.runCode = self.Buttons("RunCode", x0, y, self.python_exp)
             self.codeResult = self.TextBox("Result", 0.8, y+y_diff+0.04, w=0.7, h=0.09) 
@@ -353,6 +358,11 @@ class FELion_Tk(Tk):
                 if self.plotYscale.get(): scale = "linear"
                 else: scale = "log"
                 self.ax.set(yscale=scale)
+            
+            # if widget_name == "checkbutton4":  # only averaged
+            #     if self.onlyAvg.get(): scale = "linear"
+            #     else: scale = "log"
+            #     self.ax.set(yscale=scale)
             
         # self.focus_set()
         self.canvas.draw()
@@ -444,8 +454,8 @@ class FELion_Tk(Tk):
                     elif lg.startswith("Binned"): ls="k."
                     else: ls = f"C{i}-"
 
-                    if lg == "Averaged" or lg.startswith("Fitted"): self.ax2.plot(x, y, "k-", label=lg, zorder=100)
-                    else: self.ax2.plot(x, y, ls, ms=2, label=lg)
+                    if lg.startswith("Averaged") or lg.startswith("Fitted"): self.ax2.plot(x, y, "k-", label=lg, zorder=100)
+                    elif not self.onlyAvg.get(): self.ax2.plot(x, y, ls, ms=2, label=lg)
                 
                 self.ax2.grid()
                 # self.ax2.set(xlim=[0, 40])
