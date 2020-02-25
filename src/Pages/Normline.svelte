@@ -92,7 +92,7 @@
     }
     
 
-    async function plotData({e=null, filetype="felix", general=null, tkplot="run"}={}){
+    function plotData({e=null, filetype="felix", general=null, tkplot="run"}={}){
         
         let expfit_args = []
 
@@ -176,6 +176,7 @@
             $activated = true
             return
         }
+        
         let target = e.target
         target.classList.toggle("is-loading")
 
