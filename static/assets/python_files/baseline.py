@@ -233,10 +233,9 @@ class Create_Baseline():
 
     def button_press_callback(self, event):
         'whenever a mouse button is pressed'
-        if event.inaxes is None:
-            return
-        if event.button != 1:
-            return
+        if event.inaxes is None: return
+        if event.button != 1: return
+        
         self._ind = self.get_ind_under_point(event)
 
     def key_press_callback(self, event):
