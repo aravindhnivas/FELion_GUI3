@@ -171,7 +171,7 @@ class timescanplot:
 
 def var_find(fname, location, time=False):
 
-    if not fname is '':
+    if fname != '':
         
         os.chdir(location)
         if not time:
