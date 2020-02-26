@@ -64,8 +64,8 @@ def thz_plot(filename):
     steps = int(round((freq[1]-freq[0])*1e6, 0))
 
     resOffCounts, resOnCounts = resOff.T[1:], resOn.T[1:]
-    return freq, depletion_counts, f"{steps} KHz : {iteraton} cycles", resOffCounts, resOnCounts, freq_resOff
 
+    return freq, depletion_counts, f"{steps} KHz : {iteraton} cycles", resOffCounts, resOnCounts, freq_resOff
 
 def binning(xs, ys, delta=1e-5):
 
@@ -110,6 +110,7 @@ def binning(xs, ys, delta=1e-5):
 
     # print("after binning", binsx, data_binned)
     binsx = np.array(binsx, dtype=np.float)
+
     data_binned = np.array(data_binned, dtype=np.float)
     return binsx, data_binned
 
@@ -125,6 +126,7 @@ def plot_thz(ax=None, tkplot=False, save_dat=True, latex=False, justPlot=False, 
         xs = np.append(xs, freq)
         ys = np.append(ys, depletion_counts)
 
+        export_file(filename.stem, freq, depletion_counts)
         lg = f"{filename.name} [{iteraton}]"
         if justPlot:
             data["thz"][f"{filename.name}"] = {"x": list(freq), "y": list(depletion_counts), "name": lg, 
@@ -135,6 +137,7 @@ def plot_thz(ax=None, tkplot=False, save_dat=True, latex=False, justPlot=False, 
             }
             data["resOnOff_Counts"][f"{filename.name}_Off"] = {"x": list(freq), "y": resOffCounts.tolist()[0], "name": f"Off: {freq_resOff}GHz: {iteraton}", 
                 "mode":'markers', "line":{"color":f"rgb{colors[i*2+1]}"}
+                
             }
             # print(data)
 
@@ -167,8 +170,11 @@ def plot_thz(ax=None, tkplot=False, save_dat=True, latex=False, justPlot=False, 
             data["resOnOff_Counts"][f"{filename.name}_Off"] = {"x": list(freq), "y": resOffCounts.tolist()[0], "name": f"Off: {freq_resOff}GHz: {iteraton}", 
                 "mode":'markers', "line":{"color":f"rgb{colors[i*2+1]}"}
             }
-    # Averaged
-    binx, biny = binning(xs, ys, delta)
+
+    if binData: 
+        
+        binx, biny = binning(xs, ys, delta)
+        export_file(f"binned_{binx.min():.3f}_{binx.max():.3f}GHz_{int(delta*1e6)}kHz", freq, depletion_counts)
 
     if justPlot:
         if binData: data["thz"]["Averaged_exp"] = { "x": list(binx), "y": list(biny),  "name":"Binned", "mode":'lines+markers', "fill":"tozeroy", "line":{"color":"black"} }
@@ -234,7 +240,6 @@ def plot_thz(ax=None, tkplot=False, save_dat=True, latex=False, justPlot=False, 
             }
 
         return data
-    
 def save_fig():
 
     save_fname = f"{widget.name.get()}.{widget.save_fmt.get()}"
@@ -285,7 +290,16 @@ def save_fig():
                     os.system(f"{save_filename}")
             except: showerror("Error", traceback.format_exc(5))
 
+def export_file(fname, freq, inten):
+        if not pt("./OUT").exists(): os.mkdir("./OUT")
+
+        with open(f"./OUT/{fname}.dat", 'w+') as f:
+    
+            f.write("#Frequency(GHz)\t#DepletionCounts(%)\n")
+            for i in range(len(freq)): f.write(f"{freq[i]}\t{inten[i]}\n")
+
 def main(filenames, delta, tkplot, gamma=None, justPlot=False, binData=False):
+
     global widget
     
     os.chdir(filenames[0].parent)
@@ -321,5 +335,4 @@ if __name__ == "__main__":
 
     binData = (False, True)[args[-5] == "true"]
     justPlot = (False, True)[args[-1] == "true"]
-
     main(filenames, delta, tkplot, gamma, justPlot, binData)
