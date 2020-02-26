@@ -23,6 +23,9 @@
     let fileChecked = [];
     let currentLocation = localStorage[`${filetype}_location`] || ""
     $: massfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
+    
+    // $: if(currentLocation !== "") {OPOcalibFiles = fs.readdirSync(OPOLocation).filter(file=> file.endsWith(".calibOPO"))}
+
     let openShell = false, graphPlotted = false
 
     // Find peaks
@@ -55,6 +58,7 @@
     function plotData({e=null, filetype="mass"}={}){
 
         if (fileChecked.length === 0) {return createToast("No files selected", "danger")}
+        if (filetype === "find_peaks") {if (selected_file === "") return createToast("No files selected", "danger")}
 
         let pyfileInfo = {
             mass: {pyfile:"mass.py" , args:[...massfiles, "run"]},

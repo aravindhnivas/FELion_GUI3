@@ -77,33 +77,30 @@
     let show_dataTable_only_averaged = false, keepTable = true, show_dataTable_only_weighted_averaged=false
 
     //////// OPO Plot ///////////
-    let opoPlotted = false;
-
     const getID = () => Math.random().toString(32).substring(2)
-    let onlyFinalSpectrum = false
+    let opoPlotted = false, onlyFinalSpectrum = false
 
     const replot = () => {
-
         if (graphPlotted) {
             let {data, layout} = normMethod_datas[normMethod]
             Plotly.react("avgplot",data, layout, { editable: true })
             line = annotations = lineData_list = [], plot_trace_added = 0
         }
     }
-    
-
     function plotData({e=null, filetype="felix", general=null, tkplot="run"}={}){
         
-        let expfit_args = []
+        let expfit_args = [], double_fit_args = [], find_peaks_args = []
+
 
         switch (filetype) {
+
             case "felix":
                 graphPlotted = false, output_name = "averaged"
                 if(felixfiles.length<1) return createToast("No files selected", "danger")
-
                 break;
             
             case "baseline":
+                
                 if (OPORow) {if(opofiles.length<1) return createToast("No OPO files selected", "danger")}
                 else {if(felixfiles.length<1) return createToast("No FELIX files selected", "danger")}
                 break;
@@ -114,15 +111,24 @@
                     : [...felixfiles, overwrite_expfit, output_name, normMethod, currentLocation, ...index]
                 break;
 
+            case "double_peak":
+                double_fit_args = opoExpFit ? [amp1, amp2, cen1, cen2, sig1, sig2, ...opofiles, overwrite_expfit, output_name, "Log", OPOLocation, ...index ]
+                    : [amp1, amp2, cen1, cen2, sig1, sig2, ...felixfiles, overwrite_expfit, output_name, normMethod, currentLocation, ...index ]
+                break;
+
+            case "find_peaks":
+                find_peaks_args = opoExpFit ? [output_name, OPOLocation, "Log", peak_prominence,  peak_width, peak_height,  ...opofiles]
+                    : [output_name, currentLocation, normMethod, peak_prominence,  peak_width, peak_height,  ...felixfiles]
+                break;
+
             case "opofile":
                 if(opofiles.length<1) return createToast("No files selected", "danger")
                 opoPlotted = true
                 break;
 
             case "get_err":
-
-                if (lineData_list.length<2) return createToast("Not sufficient lines collected!", "danger")
                 if (double_peak_active) { lineData_list = err_data1_plot ? weighted_error[0] : weighted_error[1] }
+                if (lineData_list.length<2) return createToast("Not sufficient lines collected!", "danger")
                 break;
 
             case "theory":
@@ -138,15 +144,10 @@
             felix: {pyfile:"normline.py" , args:[...felixfiles, delta]},
             exp_fit: {pyfile:"exp_gauss_fit.py" , args:expfit_args},
             opofile: {pyfile:"oposcan.py" , args:[...opofiles, tkplot, delta_OPO, calibValue, calibFile]},
-            find_peaks: {pyfile:"fit_all.py" , 
-                args: opoExpFit ? [output_name, OPOLocation, "Log", peak_prominence,  peak_width, peak_height,  ...opofiles]
-                    : [output_name, currentLocation, normMethod, peak_prominence,  peak_width, peak_height,  ...felixfiles]
-            },
+            find_peaks: {pyfile:"fit_all.py" ,  args: find_peaks_args},
             theory: {pyfile:"theory.py" , args:[...theoryfiles, normMethod, sigma, scale, theoryLocation, tkplot]},
             get_err: {pyfile:"weighted_error.py" , args:lineData_list},
-            double_peak: {pyfile:"double_gaussian.py" ,
-                args: opoExpFit ? [amp1, amp2, cen1, cen2, sig1, sig2, ...opofiles, overwrite_expfit, output_name, "Log", OPOLocation, ...index ]
-                : [amp1, amp2, cen1, cen2, sig1, sig2, ...felixfiles, overwrite_expfit, output_name, normMethod, currentLocation, ...index ]}
+            double_peak: {pyfile:"double_gaussian.py" , args:double_fit_args}
         }
 
         const {pyfile, args} = pyfileInfo[filetype]
@@ -172,6 +173,7 @@
         let py;
         try {py = spawn( localStorage["pythonpath"], [path.resolve(localStorage["pythonscript"], pyfile), args] )}
         catch (err) {
+
             $modalContent = "Error accessing python. Set python location properly in Settings"
             $activated = true
             return
