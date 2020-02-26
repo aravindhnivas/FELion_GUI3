@@ -171,7 +171,7 @@ def plot_thz(ax=None, tkplot=False, save_dat=True, latex=False, justPlot=False, 
                 "mode":'markers', "line":{"color":f"rgb{colors[i*2+1]}"}
             }
 
-    if binData: 
+    if binData or not justPlot: 
         
         binx, biny = binning(xs, ys, delta)
         export_file(f"binned_{binx.min():.3f}_{binx.max():.3f}GHz_{int(delta*1e6)}kHz", freq, depletion_counts)
