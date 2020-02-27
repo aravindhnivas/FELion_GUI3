@@ -174,7 +174,7 @@ def plot_thz(ax=None, tkplot=False, save_dat=True, latex=False, justPlot=False, 
     if binData or not justPlot: 
         
         binx, biny = binning(xs, ys, delta)
-        export_file(f"binned_{binx.min():.3f}_{binx.max():.3f}GHz_{int(delta*1e6)}kHz", freq, depletion_counts)
+        export_file(f"binned_{binx.min():.3f}_{binx.max():.3f}GHz_{int(delta*1e6)}kHz", binx, biny)
 
     if justPlot:
         if binData: data["thz"]["Averaged_exp"] = { "x": list(binx), "y": list(biny),  "name":"Binned", "mode":'lines+markers', "fill":"tozeroy", "line":{"color":"black"} }

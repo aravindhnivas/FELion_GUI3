@@ -77,7 +77,7 @@
     let show_dataTable_only_averaged = false, keepTable = true, show_dataTable_only_weighted_averaged=false
 
     //////// OPO Plot ///////////
-    const getID = () => Math.random().toString(32).substring(2)
+    window.getID = () => Math.random().toString(32).substring(2)
     let opoPlotted = false, onlyFinalSpectrum = false
 
     const replot = () => {
@@ -100,7 +100,7 @@
                 break;
             
             case "baseline":
-                
+
                 if (OPORow) {if(opofiles.length<1) return createToast("No OPO files selected", "danger")}
                 else {if(felixfiles.length<1) return createToast("No FELIX files selected", "danger")}
                 break;

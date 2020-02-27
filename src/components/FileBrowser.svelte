@@ -25,159 +25,141 @@
 
     let original_location = currentLocation
     let files = [], otherfolders = [], selectAll=false, showfiles = true, original_files = [];
+
     let searchKey = "";
 
     $: parentFolder = path.basename(currentLocation)
     const searchfile = () => {
         console.log(searchKey)
         if (!searchKey) {files = original_files}
-        else {files = original_files.filter(file=>file.includes(searchKey))}
+        else {files = original_files.filter(file=>file.name.includes(searchKey))}
 
     }
 
-    function fn2workerURL(fn) {
-        let blob = new Blob(['('+fn.toString()+')()'], {type: 'application/javascript'})
-        return URL.createObjectURL(blob)
-    }
+    // function fn2workerURL(fn) {
+    //     let blob = new Blob(['('+fn.toString()+')()'], {type: 'application/javascript'})
+    //     return URL.createObjectURL(blob)
+    // }
 
-    function workerRunner() {
+    // function workerRunner() {
 
-        self.onmessage = function(event) {
-            const tree = require("../node_modules/directory-tree")
-            const {currentLocation, filetype} = event.data
-            console.log(event)
+    //     self.onmessage = function(event) {
+    //         const tree = require("../node_modules/directory-tree")
+    //         const {currentLocation, filetype} = event.data
+    //         console.log(event)
 
-            console.log(`${filetype}:${currentLocation}`)
-            let folderfile = tree( currentLocation, { extensions: new RegExp(filetype) } )
-            self.postMessage(folderfile);
+    //         console.log(`${filetype}:${currentLocation}`)
+    //         let folderfile = tree( currentLocation, { extensions: new RegExp(filetype) } )
+    //         self.postMessage(folderfile);
 
-        }
-    };
+    //     }
+    // };
 
     let getfiles_load = false
 
     function getfiles(toast=false) {
-        
-        if (!currentLocation) {return createToast("Location undefined", "danger")}
 
-        original_files = otherfolders = files = fileChecked = [], selectAll = getfiles_load = false
+
+        if (!currentLocation) {return createToast("Location undefined", "danger")}
+        else {original_files = otherfolders = files = fileChecked = [], selectAll = getfiles_load = false}
+        
         try {
 
             console.log("Current location: ", currentLocation)
+            let folderfile = tree( currentLocation, { extensions: new RegExp(filetype) } )
+            original_files = files = folderfile.children.filter(file=>file.type === "file").map(file=>file={name:file.name, id:getID()})
+            otherfolders = folderfile.children.filter(folder=>folder.type === "directory").map(folder=>folder={name:folder.name, id:getID()})
+            
+            original_location = currentLocation
+            getfiles_load = true
 
-            let worker = new Worker(fn2workerURL(workerRunner));
-            let folderfile;
-            worker.postMessage({currentLocation, filetype});
-
-            worker.onmessage = function (event) {
-
-                console.log(event.data); 
-                folderfile = event.data
-                
-                original_files = files = folderfile.children.filter(file => file.type === "file").map(file=>file.name)
-                otherfolders = folderfile.children.filter(file => file.type === "directory").map(file=>file.name)
-                console.log(folderfile)
-                original_location = currentLocation
-                getfiles_load = true
-
-                console.log("Folder updated");
-                if (toast) {createToast("Files updated")}
-              };
+            
+            console.log("Folder updated");
+            if (toast) {createToast("Files updated")}
             
         } catch (err) {
             console.log(err)
             $modalContent = err;
             $activated = true;
+
             throw new Error(err)
-
         }
-
     }
-
     const changeDirectory = (goto) => {
-
-         if (!fs.existsSync(currentLocation)) {return createToast("Location undefined", "danger")}
+        if (!fs.existsSync(currentLocation)) {return createToast("Location undefined", "danger")}
         currentLocation = path.resolve(currentLocation, goto)
-
         getfiles()
-
     }
 
     onMount(()=> {if(fs.existsSync(currentLocation)) {getfiles(); console.log("onMount Updating location for ", filetype)}} )
     afterUpdate(() => {
         if (original_location !== currentLocation) {getfiles(); console.log("Updating location for ", filetype)}
-    });
 
+});
 </script>
 
 <style>
 
     .filelist { max-height: calc(100vh - 30em); overflow-y: auto; }
     .folderfile-list {max-height: calc(100vh - 20em); overflow-y: auto;}
-
     .align {display: flex; align-items: center;}
-    
     .center {justify-content: center;}
     .browseIcons {cursor: pointer;}
-
 </style>
 
 <div class="align center browseIcons">
-
     <Icon class="material-icons" on:click="{()=>changeDirectory(original_location)}">home</Icon>
     <Icon class="material-icons" on:click="{()=>{getfiles(true)}}">refresh</Icon>
     <Icon class="material-icons" on:click="{()=>changeDirectory("..")}">arrow_back</Icon>
 </div>
 
 <Textfield on:keyup={searchfile} style="margin-bottom:1em;" bind:value={searchKey} label="Seach" />
-
 <div class="align center">
     <FormField>
-        <Switch bind:checked={selectAll} on:change="{()=>selectAll ? fileChecked = [...files] : fileChecked = []}"/>
+        <Switch bind:checked={selectAll} on:change="{()=>selectAll ? fileChecked = files.map(file=>file=file.name) : fileChecked = []}"/>
         <span slot="label">Select All</span>
     </FormField>
+
 </div>
 
 <div class="folderfile-list">
     <div class="align folderlist" >
         <IconButton  toggle bind:pressed={showfiles}>
+
             <Icon class="material-icons" on>keyboard_arrow_down</Icon>
             <Icon class="material-icons" >keyboard_arrow_right</Icon>
         </IconButton>
+
         <div class="mdc-typography--subtitle1">{parentFolder}</div>
 
     </div>
-
     {#if getfiles_load}
+
         {#if showfiles && files != "" }
             <div class="filelist" style="padding-left:1em;" transition:fly="{{ y: -20, duration: 500 }}">
                 <List checklist>
-                    {#each files as file (file)}
+                    {#each files as file (file.id)}
                         <Item>
-                            <Label>{file}</Label>
-
-                            <Meta> <Checkbox bind:group={fileChecked} value={file} on:click="{()=>selectAll=false}"/> </Meta>
+                            <Label>{file.name}</Label>
+                            <Meta><Checkbox bind:group={fileChecked} value={file.name} on:click="{()=>selectAll=false}"/></Meta>
                         </Item>
                     {/each}
                 </List>
-
             </div>
         {:else if files == ""}
             <div class="mdc-typography--subtitle1 align center">No {filetype} here!</div>        
         {/if}
         
         <div class="otherFolderlist" style="cursor:pointer">
-            {#each otherfolders as folder (folder)}
-                <div class="align" on:click="{()=>changeDirectory(folder)}" transition:slide|local>
+            {#each otherfolders as folder (folder.id)}
+                <div class="align" on:click="{()=>changeDirectory(folder.name)}" transition:slide|local>
                     <Icon class="material-icons">keyboard_arrow_right</Icon>
-                    <div class="mdc-typography--subtitle1">{folder}</div>
+                    <div class="mdc-typography--subtitle1">{folder.name}</div>
                 </div>
             {/each}
         </div>    
     {:else}
         <div class="mdc-typography--subtitle1 align center">...loading</div>
-
     {/if}
         
-
 </div>
