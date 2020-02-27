@@ -17,8 +17,8 @@
     
     import {onMount, afterUpdate, beforeUpdate} from "svelte"
     
+    import CustomIconSwitch from './CustomIconSwitch.svelte';
     const tree = require("directory-tree")
-    // const { Worker, isMainThread, parentPort } = require('worker_threads');
     ///////////////////////////////////////////////////////////////////////////
 
     export let fileChecked = [],  currentLocation = "", filetype = ""
@@ -67,50 +67,58 @@
 
             console.log("Current location: ", currentLocation)
             let folderfile = tree( currentLocation, { extensions: new RegExp(filetype) } )
-            original_files = files = folderfile.children.filter(file=>file.type === "file").map(file=>file={name:file.name, id:getID()})
-            otherfolders = folderfile.children.filter(folder=>folder.type === "directory").map(folder=>folder={name:folder.name, id:getID()})
+            original_files = files = folderfile.children.filter(file=>file.type === "file").map(file=>file={name:file.name, id:getID()}).sort((a,b)=>a.name<b.name?1:-1)
+            otherfolders = folderfile.children.filter(folder=>folder.type === "directory").map(folder=>folder={name:folder.name, id:getID()}).sort((a,b)=>a.name>b.name?1:-1)
             
             original_location = currentLocation
             getfiles_load = true
-
-            
             console.log("Folder updated");
+
             if (toast) {createToast("Files updated")}
             
         } catch (err) {
             console.log(err)
             $modalContent = err;
             $activated = true;
-
             throw new Error(err)
         }
+
     }
+
+    let sortFile = false
+    $: sortFile ? files = files.sort((a,b)=>a.name>b.name?1:-1) : files = files.sort((a,b)=>a.name<b.name?1:-1)
+    
     const changeDirectory = (goto) => {
         if (!fs.existsSync(currentLocation)) {return createToast("Location undefined", "danger")}
         currentLocation = path.resolve(currentLocation, goto)
+
         getfiles()
     }
-
     onMount(()=> {if(fs.existsSync(currentLocation)) {getfiles(); console.log("onMount Updating location for ", filetype)}} )
+
     afterUpdate(() => {
         if (original_location !== currentLocation) {getfiles(); console.log("Updating location for ", filetype)}
+    });
 
-});
 </script>
 
 <style>
-
     .filelist { max-height: calc(100vh - 30em); overflow-y: auto; }
+
     .folderfile-list {max-height: calc(100vh - 20em); overflow-y: auto;}
     .align {display: flex; align-items: center;}
     .center {justify-content: center;}
+    
     .browseIcons {cursor: pointer;}
 </style>
 
 <div class="align center browseIcons">
-    <Icon class="material-icons" on:click="{()=>changeDirectory(original_location)}">home</Icon>
-    <Icon class="material-icons" on:click="{()=>{getfiles(true)}}">refresh</Icon>
+
     <Icon class="material-icons" on:click="{()=>changeDirectory("..")}">arrow_back</Icon>
+
+    <Icon class="material-icons" on:click="{()=>{getfiles(true)}}">refresh</Icon>
+    <CustomIconSwitch bind:toggler={sortFile} icons={["trending_up", "trending_down"]}/>
+
 </div>
 
 <Textfield on:keyup={searchfile} style="margin-bottom:1em;" bind:value={searchKey} label="Seach" />
