@@ -20,24 +20,17 @@
 
 	<script>
 		window._ = require('./assets/js/lodash.js')
-		// window.$ = window.jQuery = require('./assets/js/jquery-3.4.1.min')
 	</script>
 	<script src='./assets/js/anime.min.js'></script>
 	<script src='./assets/js/bulma-extensions.min.js'></script>
 	<script src='./assets/js/interact.min.js'></script>
 	<script src='./assets/js/marked.min.js'></script>
 
-	<!-- <script src='./assets/js/html2canvas.min.js'></script> -->
-	<!-- <script src='./assets/js/sticky.min.js'></script> -->
 	<script src='./bundle.js'></script>
 	<script>
-
 		const customTitlebar = require('./custom-electron-titlebar/lib/index')
-
 		let MyTitleBar = new customTitlebar.Titlebar({
-
 			backgroundColor: customTitlebar.Color.fromHex('#38236b'),
-
 			// icon: "./assets/images/icon.png"
 		});
 		MyTitleBar.updateTitle("FELion Spectrum Analyser")
@@ -45,5 +38,4 @@
 	</script>
 
 </body>
-
 </html>
