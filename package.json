@@ -10,6 +10,7 @@
   "developer": true,
   "main": "main.js",
   "devDependencies": {
+    "@sveltejs/svelte-virtual-list": "^3.0.1",
     "bulma": "^0.8.0",
     "concurrently": "^4.1.0",
     "devtron": "^1.4.0",

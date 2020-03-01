@@ -28,26 +28,18 @@
 
     const {BrowserWindow} = remote
     import {onMount} from "svelte"
+    import VirtualList from '@sveltejs/svelte-virtual-list';
    ///////////////////////////////////////////////////////////////////////
     const filetype="felix", id="Normline"
-    // afterUpdate(()=> {console.log(`${filetype} loaded`)})
     let fileChecked=[], delta=1, toggleRow=false;
-
     $: felixfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
-    // let plottedFiles = []
     let currentLocation = localStorage[`${filetype}_location`] || ""
-    
     $: console.log(`${filetype} currentlocation: \n${currentLocation}`)
-
     ///////////////////////////////////////////////////////////////////////
 
     // Theory file
     let sigma = 20, scale=1, theoryfilesChecked = [], show_theoryplot = false,  showTheoryFiles = false
-
     let theoryLocation = localStorage["theoryLocation"] || currentLocation
-    $: console.log("Theory files: ", theoryfilesChecked)
-    $: console.log("Theory Location", theoryLocation)
-
     $: theoryfiles = theoryfilesChecked.map(file=>path.resolve(theoryLocation, file))
 
     ///////////////////////////////////////////////////////////////////////
@@ -72,6 +64,7 @@
 
     $: console.log("dataTable", dataTable)
     $: console.log("dataTable_avg", dataTable_avg)
+
     $: console.log("dataTable_weighted_avg", dataTable_weighted_avg)
 
     let show_dataTable_only_averaged = false, keepTable = true, show_dataTable_only_weighted_averaged=false
@@ -88,9 +81,7 @@
         }
     }
     function plotData({e=null, filetype="felix", general=null, tkplot="run"}={}){
-        
         let expfit_args = [], double_fit_args = [], find_peaks_args = []
-
 
         switch (filetype) {
 
@@ -543,60 +534,48 @@
     $: OPORow ? createToast("OPO MODE") : createToast("FELIX MODE")
 
     $: opoPlotted ? opoExpFit = true : opoExpFit = false
+    
 </script>
 
 <style>
-
     * :global(.button) {margin: 0.4em;}
     * :global(.short-input) { max-width: 7em; margin: 0 1em; }
     * :global(.mdc-text-field--outlined) {height: 2.5em;}
+    
     * :global(.plotSlot) { width: 100%}
-
     * :global(option) { color: black; }
-    * :global(.mdc-data-table) {min-width: 30em}
-    .plotSlot > div { width: calc(100% - 1em); margin-top: 1em; }
-
-    .dataTable {
-        display: flex;
-        justify-content: center;
-    }
-    * :global(hr) {
-        width: 90%;
-        margin: 1em 0;
-    }
-    * :global(.report) {
-        display: block;
-        margin-bottom: 1em;
-    }
+    * :global(.mdc-data-table) {min-width: 30em; background-color: #5b3ea2; max-height: 25em; overflow-y: auto}
+    * :global(hr) { width: 90%; margin: 1em 0; }
+    * :global(.report) { display: block; margin-bottom: 1em; }
     * :global(table th:not([align])) {text-align: center; padding: 1em;}
     * :global(table td:not([align])) {text-align: center; padding: 1em;}
     * :global(#felixTableContainer) {border: 1px solid #5b3ea2;}
+    
     * :global(#felixTableContainer thead) {background-color: #e1e1e1;}
-
     .hide {display: none;}
     .active {display: block; }
-    .align {display: flex; align-items: center;}
 
+    .align {display: flex; align-items: center;}
     .felixPlot > div {margin-bottom: 1em;}
     .notification {width: 100%; border: 1px solid;}
+    .plotSlot > div { width: calc(100% - 1em); margin-top: 1em; }
+
+    .dataTable { display: flex; justify-content: center; }
+
 </style>
 
 <QuickView style="padding:1em;" bind:active={showTheoryFiles} title="Browse Theory files">
-
     <FileBrowser bind:currentLocation={theoryLocation} bind:fileChecked={theoryfilesChecked} filetype=""/>
     <div slot="footer" style="margin:auto">
         <button class="button is-link" on:click="{(e)=>{plotData({e:e, filetype:"theory"}); localStorage["theoryLocation"] = theoryLocation}}">Submit</button>
     </div>
-
 </QuickView>
 
 <QuickView style="padding:1em;" bind:active={showOPOFiles} title="Browse OPO files">
-
     <FileBrowser bind:currentLocation={OPOLocation} bind:fileChecked={OPOfilesChecked} filetype="ofelix"/>
     <div slot="footer" style="margin:auto">
         <button class="button is-link" on:click="{(e)=>{plotData({e:e, filetype:"opofile"}); localStorage["opoLocation"] = OPOLocation}}">Submit</button>
     </div>
-
 </QuickView>
 
 <Layout {filetype} {id} bind:currentLocation bind:fileChecked >
@@ -609,18 +588,14 @@
                 Create Baseline</button>
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"felix"})}">FELIX Plot</button>
             <Textfield style="width:7em" variant="outlined" bind:value={delta} label="Delta"/>
-
             <button class="button is-link" 
                 on:click="{(e)=>plotData({e:e, filetype:"general", general:{args:[...felixfiles, normMethod, onlyFinalSpectrum], pyfile:"norm_tkplot.py"}})}">
                 Open in Matplotlib</button>
-            
             <CustomCheckbox bind:selected={onlyFinalSpectrum} label="Only Final spectrum" />
-
             <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
             <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click="{()=>toggleRow = !toggleRow}">Add Theory</button>
             <button class="button is-link" on:click="{()=>{OPORow = !OPORow}}">OPO</button>
             <CustomIconSwitch bind:toggler={opoPlotted} icons={["keyboard_arrow_up", "keyboard_arrow_down"]}/>
-
         </div>
 
         <div class="animated fadeIn hide content" class:active={OPORow} >
@@ -666,8 +641,6 @@
         </div>
 
         <div class="animated fadeIn hide" class:active={graphPlotted}>
-        
-            <!-- Pos-processing felix data -->
             <div class="content" transition:fade>
 
                 <CustomSwitch style="margin: 0 1em;" bind:selected={opoExpFit} label="OPO"/>
@@ -769,5 +742,4 @@
 
         </div>
     </div>
-
 </Layout>

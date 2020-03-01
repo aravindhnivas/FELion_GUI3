@@ -13,8 +13,6 @@
 
                 ],
                 properties: [type, "multiSelections"],
-                // defaultPath: defaultPath
-                
             }
 
             if (process.versions.electron >= "7") {
@@ -39,9 +37,6 @@
 
             })
             }
-
-            
-                
         })
     }
 
@@ -62,13 +57,12 @@
 
     function browse_folder() {
         browse({dir:true}).then(result=>{
-
             if (!result.canceled) {
                 currentLocation= localStorage[`${filetype}_location`] = result.filePaths[0]
             }
         })
     }
-    let toggleBrowser = true;
+    let toggleBrowser = false, target;
 
 </script>
 
@@ -115,15 +109,16 @@
 
     <div class="columns">
 
+
         {#if toggleBrowser}
             <div class="column is-one-fifth-widescreen is-one-quarter-desktop box filebrowser adjust-right" transition:fly="{{ x: -100, duration: 500 }}">
+
                 <FileBrowser bind:currentLocation {filetype} bind:fileChecked />
             </div>
         {/if}
 
-        <div class="column fileContainer">
+        <div class="column fileContainer" >
             <div class="container button-plot-container box">
-
                 <div class="align">
                     <IconButton  toggle bind:pressed={toggleBrowser}>
                         <Icon class="material-icons" on>menu_open</Icon>
@@ -135,9 +130,7 @@
 
                 <div class="align buttonContainer"> <slot name="buttonContainer" /></div>
                 <div class="plotContainer"> <slot name="plotContainer" /> </div>
-                
             </div>
         </div>
-
     </div>
 </section>
