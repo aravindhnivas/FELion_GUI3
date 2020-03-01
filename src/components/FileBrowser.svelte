@@ -135,8 +135,10 @@
                 </div>
             {/each}
         </div>    
+    {:else if currentLocation === ""}
+
+        <div class="mdc-typography--subtitle1 align center">Browse files to load here</div>
     {:else}
-    
         <div class="mdc-typography--subtitle1 align center">...loading</div>
     {/if}
 </div>

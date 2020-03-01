@@ -20144,8 +20144,8 @@ function create_default_slot_9(ctx) {
 
 	let switch_1_props = {};
 
-	if (/*selectAll*/ ctx[4] !== void 0) {
-		switch_1_props.checked = /*selectAll*/ ctx[4];
+	if (/*selectAll*/ ctx[5] !== void 0) {
+		switch_1_props.checked = /*selectAll*/ ctx[5];
 	}
 
 	const switch_1 = new Switch({ props: switch_1_props, $$inline: true });
@@ -20165,9 +20165,9 @@ function create_default_slot_9(ctx) {
 		p: function update(ctx, dirty) {
 			const switch_1_changes = {};
 
-			if (!updating_checked && dirty[0] & /*selectAll*/ 16) {
+			if (!updating_checked && dirty[0] & /*selectAll*/ 32) {
 				updating_checked = true;
-				switch_1_changes.checked = /*selectAll*/ ctx[4];
+				switch_1_changes.checked = /*selectAll*/ ctx[5];
 				add_flush_callback(() => updating_checked = false);
 			}
 
@@ -20334,7 +20334,7 @@ function create_default_slot_6(ctx) {
 	return block;
 }
 
-// (138:4) {:else}
+// (141:4) {:else}
 function create_else_block$6(ctx) {
 	let div;
 
@@ -20343,7 +20343,7 @@ function create_else_block$6(ctx) {
 			div = element("div");
 			div.textContent = "...loading";
 			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-1dedfha");
-			add_location(div, file_1, 139, 8, 5747);
+			add_location(div, file_1, 141, 8, 5875);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -20360,7 +20360,40 @@ function create_else_block$6(ctx) {
 		block,
 		id: create_else_block$6.name,
 		type: "else",
-		source: "(138:4) {:else}",
+		source: "(141:4) {:else}",
+		ctx
+	});
+
+	return block;
+}
+
+// (138:37) 
+function create_if_block_3$1(ctx) {
+	let div;
+
+	const block = {
+		c: function create() {
+			div = element("div");
+			div.textContent = "Browse files to load here";
+			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-1dedfha");
+			add_location(div, file_1, 139, 8, 5769);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, div, anchor);
+		},
+		p: noop,
+		i: noop,
+		o: noop,
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(div);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_if_block_3$1.name,
+		type: "if",
+		source: "(138:37) ",
 		ctx
 	});
 
@@ -20380,8 +20413,8 @@ function create_if_block$8(ctx) {
 	const if_blocks = [];
 
 	function select_block_type_1(ctx, dirty) {
-		if (/*showfiles*/ ctx[5] && /*files*/ ctx[2] != "") return 0;
-		if (/*files*/ ctx[2] == "") return 1;
+		if (/*showfiles*/ ctx[6] && /*files*/ ctx[3] != "") return 0;
+		if (/*files*/ ctx[3] == "") return 1;
 		return -1;
 	}
 
@@ -20389,7 +20422,7 @@ function create_if_block$8(ctx) {
 		if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
 	}
 
-	let each_value = /*otherfolders*/ ctx[3];
+	let each_value = /*otherfolders*/ ctx[4];
 	const get_key = ctx => /*folder*/ ctx[29].id;
 	validate_each_keys(ctx, each_value, get_each_context$2, get_key);
 
@@ -20461,7 +20494,7 @@ function create_if_block$8(ctx) {
 				}
 			}
 
-			const each_value = /*otherfolders*/ ctx[3];
+			const each_value = /*otherfolders*/ ctx[4];
 			group_outros();
 			validate_each_keys(ctx, each_value, get_each_context$2, get_key);
 			each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value, each_1_lookup, div, outro_and_destroy_block, create_each_block$2, null, get_each_context$2);
@@ -20522,7 +20555,7 @@ function create_if_block_2$2(ctx) {
 		c: function create() {
 			div = element("div");
 			t0 = text("No ");
-			t1 = text(/*filetype*/ ctx[1]);
+			t1 = text(/*filetype*/ ctx[2]);
 			t2 = text(" here!");
 			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-1dedfha");
 			add_location(div, file_1, 126, 12, 5161);
@@ -20534,7 +20567,7 @@ function create_if_block_2$2(ctx) {
 			append_dev(div, t2);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*filetype*/ 2) set_data_dev(t1, /*filetype*/ ctx[1]);
+			if (dirty[0] & /*filetype*/ 4) set_data_dev(t1, /*filetype*/ ctx[2]);
 		},
 		i: noop,
 		o: noop,
@@ -20560,7 +20593,7 @@ function create_if_block_1$3(ctx) {
 
 	const virtuallist = new VirtualList({
 			props: {
-				items: /*files*/ ctx[2],
+				items: /*files*/ ctx[3],
 				height: "500px",
 				$$slots: {
 					default: [
@@ -20584,9 +20617,9 @@ function create_if_block_1$3(ctx) {
 		},
 		p: function update(ctx, dirty) {
 			const virtuallist_changes = {};
-			if (dirty[0] & /*files*/ 4) virtuallist_changes.items = /*files*/ ctx[2];
+			if (dirty[0] & /*files*/ 8) virtuallist_changes.items = /*files*/ ctx[3];
 
-			if (dirty[0] & /*fileChecked, selectAll*/ 17 | dirty[1] & /*$$scope, item*/ 6) {
+			if (dirty[0] & /*fileChecked, selectAll*/ 33 | dirty[1] & /*$$scope, item*/ 6) {
 				virtuallist_changes.$$scope = { dirty, ctx };
 			}
 
@@ -20755,7 +20788,7 @@ function create_default_slot_3(ctx) {
 			label.$set(label_changes);
 			const meta_changes = {};
 
-			if (dirty[0] & /*fileChecked, selectAll*/ 17 | dirty[1] & /*$$scope, item*/ 6) {
+			if (dirty[0] & /*fileChecked, selectAll*/ 33 | dirty[1] & /*$$scope, item*/ 6) {
 				meta_changes.$$scope = { dirty, ctx };
 			}
 
@@ -20813,7 +20846,7 @@ function create_default_slot_2$3(ctx) {
 		p: function update(ctx, dirty) {
 			const item_changes = {};
 
-			if (dirty[0] & /*fileChecked, selectAll*/ 17 | dirty[1] & /*$$scope, item*/ 6) {
+			if (dirty[0] & /*fileChecked, selectAll*/ 33 | dirty[1] & /*$$scope, item*/ 6) {
 				item_changes.$$scope = { dirty, ctx };
 			}
 
@@ -20868,7 +20901,7 @@ function create_default_slot_1$4(ctx) {
 		p: function update(ctx, dirty) {
 			const list_changes = {};
 
-			if (dirty[0] & /*fileChecked, selectAll*/ 17 | dirty[1] & /*$$scope, item*/ 6) {
+			if (dirty[0] & /*fileChecked, selectAll*/ 33 | dirty[1] & /*$$scope, item*/ 6) {
 				list_changes.$$scope = { dirty, ctx };
 			}
 
@@ -20986,7 +21019,7 @@ function create_each_block$2(key_1, ctx) {
 			}
 
 			icon.$set(icon_changes);
-			if ((!current || dirty[0] & /*otherfolders*/ 8) && t1_value !== (t1_value = /*folder*/ ctx[29].name + "")) set_data_dev(t1, t1_value);
+			if ((!current || dirty[0] & /*otherfolders*/ 16) && t1_value !== (t1_value = /*folder*/ ctx[29].name + "")) set_data_dev(t1, t1_value);
 		},
 		i: function intro(local) {
 			if (current) return;
@@ -21079,8 +21112,8 @@ function create_fragment$t(ctx) {
 
 	let customiconswitch_props = { icons: ["trending_up", "trending_down"] };
 
-	if (/*sortFile*/ ctx[8] !== void 0) {
-		customiconswitch_props.toggler = /*sortFile*/ ctx[8];
+	if (/*sortFile*/ ctx[9] !== void 0) {
+		customiconswitch_props.toggler = /*sortFile*/ ctx[9];
 	}
 
 	const customiconswitch = new CustomIconSwitch({
@@ -21099,13 +21132,13 @@ function create_fragment$t(ctx) {
 		label: "Seach"
 	};
 
-	if (/*searchKey*/ ctx[6] !== void 0) {
-		textfield_props.value = /*searchKey*/ ctx[6];
+	if (/*searchKey*/ ctx[7] !== void 0) {
+		textfield_props.value = /*searchKey*/ ctx[7];
 	}
 
 	const textfield = new Textfield({ props: textfield_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield, "value", textfield_value_binding));
-	textfield.$on("keyup", /*searchfile*/ ctx[10]);
+	textfield.$on("keyup", /*searchfile*/ ctx[11]);
 
 	const formfield = new FormField({
 			props: {
@@ -21128,18 +21161,19 @@ function create_fragment$t(ctx) {
 		$$scope: { ctx }
 	};
 
-	if (/*showfiles*/ ctx[5] !== void 0) {
-		iconbutton_props.pressed = /*showfiles*/ ctx[5];
+	if (/*showfiles*/ ctx[6] !== void 0) {
+		iconbutton_props.pressed = /*showfiles*/ ctx[6];
 	}
 
 	const iconbutton = new IconButton({ props: iconbutton_props, $$inline: true });
 	binding_callbacks.push(() => bind(iconbutton, "pressed", iconbutton_pressed_binding));
-	const if_block_creators = [create_if_block$8, create_else_block$6];
+	const if_block_creators = [create_if_block$8, create_if_block_3$1, create_else_block$6];
 	const if_blocks = [];
 
 	function select_block_type(ctx, dirty) {
-		if (/*getfiles_load*/ ctx[7]) return 0;
-		return 1;
+		if (/*getfiles_load*/ ctx[8]) return 0;
+		if (/*currentLocation*/ ctx[1] === "") return 1;
+		return 2;
 	}
 
 	current_block_type_index = select_block_type(ctx);
@@ -21164,7 +21198,7 @@ function create_fragment$t(ctx) {
 			create_component(iconbutton.$$.fragment);
 			t5 = space();
 			div2 = element("div");
-			t6 = text(/*parentFolder*/ ctx[9]);
+			t6 = text(/*parentFolder*/ ctx[10]);
 			t7 = space();
 			if_block.c();
 			attr_dev(div0, "class", "align center browseIcons svelte-1dedfha");
@@ -21221,25 +21255,25 @@ function create_fragment$t(ctx) {
 			icon1.$set(icon1_changes);
 			const customiconswitch_changes = {};
 
-			if (!updating_toggler && dirty[0] & /*sortFile*/ 256) {
+			if (!updating_toggler && dirty[0] & /*sortFile*/ 512) {
 				updating_toggler = true;
-				customiconswitch_changes.toggler = /*sortFile*/ ctx[8];
+				customiconswitch_changes.toggler = /*sortFile*/ ctx[9];
 				add_flush_callback(() => updating_toggler = false);
 			}
 
 			customiconswitch.$set(customiconswitch_changes);
 			const textfield_changes = {};
 
-			if (!updating_value && dirty[0] & /*searchKey*/ 64) {
+			if (!updating_value && dirty[0] & /*searchKey*/ 128) {
 				updating_value = true;
-				textfield_changes.value = /*searchKey*/ ctx[6];
+				textfield_changes.value = /*searchKey*/ ctx[7];
 				add_flush_callback(() => updating_value = false);
 			}
 
 			textfield.$set(textfield_changes);
 			const formfield_changes = {};
 
-			if (dirty[0] & /*selectAll, fileChecked, files*/ 21 | dirty[1] & /*$$scope*/ 4) {
+			if (dirty[0] & /*selectAll, fileChecked, files*/ 41 | dirty[1] & /*$$scope*/ 4) {
 				formfield_changes.$$scope = { dirty, ctx };
 			}
 
@@ -21250,14 +21284,14 @@ function create_fragment$t(ctx) {
 				iconbutton_changes.$$scope = { dirty, ctx };
 			}
 
-			if (!updating_pressed && dirty[0] & /*showfiles*/ 32) {
+			if (!updating_pressed && dirty[0] & /*showfiles*/ 64) {
 				updating_pressed = true;
-				iconbutton_changes.pressed = /*showfiles*/ ctx[5];
+				iconbutton_changes.pressed = /*showfiles*/ ctx[6];
 				add_flush_callback(() => updating_pressed = false);
 			}
 
 			iconbutton.$set(iconbutton_changes);
-			if (!current || dirty[0] & /*parentFolder*/ 512) set_data_dev(t6, /*parentFolder*/ ctx[9]);
+			if (!current || dirty[0] & /*parentFolder*/ 1024) set_data_dev(t6, /*parentFolder*/ ctx[10]);
 			let previous_block_index = current_block_type_index;
 			current_block_type_index = select_block_type(ctx);
 
@@ -21364,9 +21398,9 @@ function instance$t($$self, $$props, $$invalidate) {
 		console.log(searchKey);
 
 		if (!searchKey) {
-			$$invalidate(2, files = original_files);
+			$$invalidate(3, files = original_files);
 		} else {
-			$$invalidate(2, files = original_files.filter(file => file.name.includes(searchKey)));
+			$$invalidate(3, files = original_files.filter(file => file.name.includes(searchKey)));
 		}
 	};
 
@@ -21376,16 +21410,16 @@ function instance$t($$self, $$props, $$invalidate) {
 		if (!currentLocation) {
 			return createToast("Location undefined", "danger");
 		} else {
-			(original_files = $$invalidate(3, otherfolders = $$invalidate(2, files = $$invalidate(0, fileChecked = []))), $$invalidate(4, selectAll = $$invalidate(7, getfiles_load = false)));
+			(original_files = $$invalidate(4, otherfolders = $$invalidate(3, files = $$invalidate(0, fileChecked = []))), $$invalidate(5, selectAll = $$invalidate(8, getfiles_load = false)));
 		}
 
 		try {
 			console.log("Current location: ", currentLocation);
 			let folderfile = tree(currentLocation, { extensions: new RegExp(filetype) });
-			original_files = $$invalidate(2, files = folderfile.children.filter(file => file.type === "file").map(file => file = { name: file.name, id: getID() }).sort((a, b) => a.name < b.name ? 1 : -1));
-			$$invalidate(3, otherfolders = folderfile.children.filter(folder => folder.type === "directory").map(folder => folder = { name: folder.name, id: getID() }).sort((a, b) => a.name > b.name ? 1 : -1));
+			original_files = $$invalidate(3, files = folderfile.children.filter(file => file.type === "file").map(file => file = { name: file.name, id: getID() }).sort((a, b) => a.name < b.name ? 1 : -1));
+			$$invalidate(4, otherfolders = folderfile.children.filter(folder => folder.type === "directory").map(folder => folder = { name: folder.name, id: getID() }).sort((a, b) => a.name > b.name ? 1 : -1));
 			original_location = currentLocation;
-			$$invalidate(7, getfiles_load = true);
+			$$invalidate(8, getfiles_load = true);
 			console.log("Folder updated");
 
 			if (toast) {
@@ -21406,7 +21440,7 @@ function instance$t($$self, $$props, $$invalidate) {
 			return createToast("Location undefined", "danger");
 		}
 
-		$$invalidate(13, currentLocation = path.resolve(currentLocation, goto));
+		$$invalidate(1, currentLocation = path.resolve(currentLocation, goto));
 		getfiles();
 	};
 
@@ -21438,17 +21472,17 @@ function instance$t($$self, $$props, $$invalidate) {
 
 	function customiconswitch_toggler_binding(value) {
 		sortFile = value;
-		$$invalidate(8, sortFile);
+		$$invalidate(9, sortFile);
 	}
 
 	function textfield_value_binding(value_1) {
 		searchKey = value_1;
-		$$invalidate(6, searchKey);
+		$$invalidate(7, searchKey);
 	}
 
 	function switch_1_checked_binding(value) {
 		selectAll = value;
-		$$invalidate(4, selectAll);
+		$$invalidate(5, selectAll);
 	}
 
 	const change_handler = () => selectAll
@@ -21457,7 +21491,7 @@ function instance$t($$self, $$props, $$invalidate) {
 
 	function iconbutton_pressed_binding(value_2) {
 		showfiles = value_2;
-		$$invalidate(5, showfiles);
+		$$invalidate(6, showfiles);
 	}
 
 	function checkbox_group_binding(value) {
@@ -21465,13 +21499,13 @@ function instance$t($$self, $$props, $$invalidate) {
 		$$invalidate(0, fileChecked);
 	}
 
-	const click_handler_2 = () => $$invalidate(4, selectAll = false);
+	const click_handler_2 = () => $$invalidate(5, selectAll = false);
 	const click_handler_3 = folder => changeDirectory(folder.name);
 
 	$$self.$set = $$props => {
 		if ("fileChecked" in $$props) $$invalidate(0, fileChecked = $$props.fileChecked);
-		if ("currentLocation" in $$props) $$invalidate(13, currentLocation = $$props.currentLocation);
-		if ("filetype" in $$props) $$invalidate(1, filetype = $$props.filetype);
+		if ("currentLocation" in $$props) $$invalidate(1, currentLocation = $$props.currentLocation);
+		if ("filetype" in $$props) $$invalidate(2, filetype = $$props.filetype);
 	};
 
 	$$self.$capture_state = () => {
@@ -21496,18 +21530,18 @@ function instance$t($$self, $$props, $$invalidate) {
 
 	$$self.$inject_state = $$props => {
 		if ("fileChecked" in $$props) $$invalidate(0, fileChecked = $$props.fileChecked);
-		if ("currentLocation" in $$props) $$invalidate(13, currentLocation = $$props.currentLocation);
-		if ("filetype" in $$props) $$invalidate(1, filetype = $$props.filetype);
+		if ("currentLocation" in $$props) $$invalidate(1, currentLocation = $$props.currentLocation);
+		if ("filetype" in $$props) $$invalidate(2, filetype = $$props.filetype);
 		if ("original_location" in $$props) original_location = $$props.original_location;
-		if ("files" in $$props) $$invalidate(2, files = $$props.files);
-		if ("otherfolders" in $$props) $$invalidate(3, otherfolders = $$props.otherfolders);
-		if ("selectAll" in $$props) $$invalidate(4, selectAll = $$props.selectAll);
-		if ("showfiles" in $$props) $$invalidate(5, showfiles = $$props.showfiles);
+		if ("files" in $$props) $$invalidate(3, files = $$props.files);
+		if ("otherfolders" in $$props) $$invalidate(4, otherfolders = $$props.otherfolders);
+		if ("selectAll" in $$props) $$invalidate(5, selectAll = $$props.selectAll);
+		if ("showfiles" in $$props) $$invalidate(6, showfiles = $$props.showfiles);
 		if ("original_files" in $$props) original_files = $$props.original_files;
-		if ("searchKey" in $$props) $$invalidate(6, searchKey = $$props.searchKey);
-		if ("getfiles_load" in $$props) $$invalidate(7, getfiles_load = $$props.getfiles_load);
-		if ("sortFile" in $$props) $$invalidate(8, sortFile = $$props.sortFile);
-		if ("parentFolder" in $$props) $$invalidate(9, parentFolder = $$props.parentFolder);
+		if ("searchKey" in $$props) $$invalidate(7, searchKey = $$props.searchKey);
+		if ("getfiles_load" in $$props) $$invalidate(8, getfiles_load = $$props.getfiles_load);
+		if ("sortFile" in $$props) $$invalidate(9, sortFile = $$props.sortFile);
+		if ("parentFolder" in $$props) $$invalidate(10, parentFolder = $$props.parentFolder);
 		if ("$modalContent" in $$props) modalContent.set($modalContent = $$props.$modalContent);
 		if ("$activated" in $$props) activated.set($activated = $$props.$activated);
 	};
@@ -21515,19 +21549,20 @@ function instance$t($$self, $$props, $$invalidate) {
 	let parentFolder;
 
 	$$self.$$.update = () => {
-		if ($$self.$$.dirty[0] & /*currentLocation*/ 8192) {
-			 $$invalidate(9, parentFolder = path.basename(currentLocation));
+		if ($$self.$$.dirty[0] & /*currentLocation*/ 2) {
+			 $$invalidate(10, parentFolder = path.basename(currentLocation));
 		}
 
-		if ($$self.$$.dirty[0] & /*sortFile, files*/ 260) {
+		if ($$self.$$.dirty[0] & /*sortFile, files*/ 520) {
 			 sortFile
-			? $$invalidate(2, files = files.sort((a, b) => a.name > b.name ? 1 : -1))
-			: $$invalidate(2, files = files.sort((a, b) => a.name < b.name ? 1 : -1));
+			? $$invalidate(3, files = files.sort((a, b) => a.name > b.name ? 1 : -1))
+			: $$invalidate(3, files = files.sort((a, b) => a.name < b.name ? 1 : -1));
 		}
 	};
 
 	return [
 		fileChecked,
+		currentLocation,
 		filetype,
 		files,
 		otherfolders,
@@ -21540,7 +21575,6 @@ function instance$t($$self, $$props, $$invalidate) {
 		searchfile,
 		getfiles,
 		changeDirectory,
-		currentLocation,
 		original_location,
 		original_files,
 		$modalContent,
@@ -21571,8 +21605,8 @@ class FileBrowser extends SvelteComponentDev {
 			safe_not_equal,
 			{
 				fileChecked: 0,
-				currentLocation: 13,
-				filetype: 1
+				currentLocation: 1,
+				filetype: 2
 			},
 			[-1, -1]
 		);
@@ -32863,7 +32897,7 @@ function create_if_block_2$3(ctx) {
 	let if_block1_anchor;
 	let current;
 	let if_block0 = !/*noLabel*/ ctx[9] && /*label*/ ctx[10] != null && create_if_block_4$1(ctx);
-	let if_block1 = /*ripple*/ ctx[4] && create_if_block_3$1(ctx);
+	let if_block1 = /*ripple*/ ctx[4] && create_if_block_3$2(ctx);
 
 	const block = {
 		c: function create() {
@@ -32905,7 +32939,7 @@ function create_if_block_2$3(ctx) {
 					if_block1.p(ctx, dirty);
 					transition_in(if_block1, 1);
 				} else {
-					if_block1 = create_if_block_3$1(ctx);
+					if_block1 = create_if_block_3$2(ctx);
 					if_block1.c();
 					transition_in(if_block1, 1);
 					if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
@@ -33087,7 +33121,7 @@ function create_default_slot_2$7(ctx) {
 }
 
 // (71:4) {#if ripple}
-function create_if_block_3$1(ctx) {
+function create_if_block_3$2(ctx) {
 	let current;
 	const lineripple_spread_levels = [prefixFilter(/*$$props*/ ctx[22], "ripple$")];
 	let lineripple_props = {};
@@ -33129,7 +33163,7 @@ function create_if_block_3$1(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_if_block_3$1.name,
+		id: create_if_block_3$2.name,
 		type: "if",
 		source: "(71:4) {#if ripple}",
 		ctx
