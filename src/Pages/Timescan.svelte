@@ -184,14 +184,11 @@
             {#each fileChecked as scanfile}
                 <div id="{scanfile}_tplot" style="padding-bottom:1em" />
             {/each}
-
         </div>
 
         <div class="animated fadeIn hide" class:active={graphPlotted} style="flex-direction:column ">
             <ReportLayout bind:currentLocation id="scanreport", plotID={[`${fileChecked[0]}_tplot`]}/>
         </div>
-
-
     </div>
     
 </Layout>
