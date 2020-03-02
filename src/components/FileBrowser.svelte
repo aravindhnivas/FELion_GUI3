@@ -18,16 +18,14 @@
     import {onMount, afterUpdate, beforeUpdate} from "svelte"
     
     import CustomIconSwitch from './CustomIconSwitch.svelte';
-    const tree = require("directory-tree")
     import VirtualList from '@sveltejs/svelte-virtual-list';
-
     ///////////////////////////////////////////////////////////////////////////
 
     export let fileChecked = [],  currentLocation = "", filetype = ""
     let original_location = currentLocation
-    
     let files = [], otherfolders = [], selectAll=false, showfiles = true, original_files = [];
-    $: parentFolder = path.basename(currentLocation)
+    $: parentFolder = fs.existsSync(currentLocation) ? path.basename(currentLocation) : "Undefined"
+
     let searchKey = "";
     const searchfile = () => {
         console.log(searchKey)
@@ -37,40 +35,42 @@
 
     let getfiles_load = false
     function getfiles(toast=false) {
-        if (!currentLocation) {return createToast("Location undefined", "danger")}
-        else {original_files = otherfolders = files = fileChecked = [], selectAll = getfiles_load = false}
+        if (fs.existsSync(currentLocation)) {original_files = otherfolders = files = fileChecked = [], selectAll = getfiles_load = false}
+        else {return createToast("Location undefined", "danger")}
         try {
 
             console.log("Current location: ", currentLocation)
-            let folderfile = tree( currentLocation, { extensions: new RegExp(filetype) } )
-            original_files = files = folderfile.children.filter(file=>file.type === "file").map(file=>file={name:file.name, id:getID()}).sort((a,b)=>a.name<b.name?1:-1)
-            otherfolders = folderfile.children.filter(folder=>folder.type === "directory").map(folder=>folder={name:folder.name, id:getID()}).sort((a,b)=>a.name>b.name?1:-1)
             
+            let folderfile = fs.readdirSync(currentLocation)
+            original_files = files = folderfile.filter(file=>file.endsWith(filetype)&&fs.lstatSync(path.join(currentLocation, file)).isFile()).map(file=>file={name:file, id:getID()}).sort((a,b)=>a.name<b.name?1:-1)
+            otherfolders = folderfile.filter(file=>fs.lstatSync(path.join(currentLocation, file)).isDirectory()).map(file=>file={name:file, id:getID()}).sort((a,b)=>a.name>b.name?1:-1)
             original_location = currentLocation
             getfiles_load = true
             console.log("Folder updated");
             if (toast) {createToast("Files updated")}
-            
         } catch (err) {
             console.log(err)
             $modalContent = err;
             $activated = true;
-            throw new Error(err)
+            return original_files = otherfolders = files = fileChecked = []
         }
     }
+
     let sortFile = false
-
     $: sortFile ? files = files.sort((a,b)=>a.name>b.name?1:-1) : files = files.sort((a,b)=>a.name<b.name?1:-1)
-    
     const changeDirectory = (goto) => {
-        if (!fs.existsSync(currentLocation)) {return createToast("Location undefined", "danger")}
 
+        if (!fs.existsSync(currentLocation)) {return createToast("Location undefined", "danger")}
         currentLocation = path.resolve(currentLocation, goto)
         getfiles()
     }
+
     onMount(()=> {if(fs.existsSync(currentLocation)) {getfiles(); console.log("onMount Updating location for ", filetype)}} )
     afterUpdate(() => {
-        if (original_location !== currentLocation) {getfiles(); console.log("Updating location for ", filetype)}
+        if (original_location !== currentLocation) {
+            if(fs.existsSync(currentLocation)) {getfiles(); console.log("Updating location for ", filetype)}
+            else {return createToast("Location undefined", "danger")}
+        }
     });
 </script>
 
@@ -79,8 +79,8 @@
     .folderfile-list {max-height: calc(100vh - 20em); overflow-y: auto;}
     .align {display: flex; align-items: center;}
     .center {justify-content: center;}
-    .browseIcons {cursor: pointer;}
 
+    .browseIcons {cursor: pointer;}
 </style>
 
 <div class="align center browseIcons">
@@ -108,25 +108,21 @@
         <div class="mdc-typography--subtitle1">{parentFolder}</div>
 
     </div>
-
     {#if getfiles_load}
-
         {#if showfiles && files != "" }
+    
             <VirtualList items={files} let:item height="500px">
-
                 <List checklist>
-            
+
                     <Item>
                         <Label>{item.name}</Label>
                         <Meta><Checkbox bind:group={fileChecked} value={item.name} on:click="{()=>selectAll=false}"/></Meta>
                     </Item>
                 </List>
             </VirtualList>
-        
         {:else if files == ""}
             <div class="mdc-typography--subtitle1 align center">No {filetype} here!</div>        
         {/if}
-        
         <div class="otherFolderlist" style="cursor:pointer">
             {#each otherfolders as folder (folder.id)}
                 <div class="align" on:click="{()=>changeDirectory(folder.name)}" transition:slide|local>
@@ -134,11 +130,13 @@
                     <div class="mdc-typography--subtitle1">{folder.name}</div>
                 </div>
             {/each}
-        </div>    
-    {:else if currentLocation === ""}
+        </div>
 
+    {:else if currentLocation === ""}
         <div class="mdc-typography--subtitle1 align center">Browse files to load here</div>
     {:else}
         <div class="mdc-typography--subtitle1 align center">...loading</div>
+
     {/if}
+
 </div>
