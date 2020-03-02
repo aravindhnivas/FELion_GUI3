@@ -15108,24 +15108,24 @@ function create_else_block$5(ctx) {
 	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[24], null);
 
 	let li_levels = [
+		/*role*/ ctx[6] === "option"
+		? {
+				"aria-selected": /*selected*/ ctx[7] ? "true" : "false"
+			}
+		: {},
+		/*props*/ ctx[12],
 		{
 			class: "\n      mdc-list-item\n      " + /*className*/ ctx[2] + "\n      " + (/*activated*/ ctx[5] ? "mdc-list-item--activated" : "") + "\n      " + (/*selected*/ ctx[7] ? "mdc-list-item--selected" : "") + "\n      " + (/*disabled*/ ctx[8] ? "mdc-list-item--disabled" : "") + "\n      " + (/*role*/ ctx[6] === "menuitem" && /*selected*/ ctx[7]
 			? "mdc-menu-item--selected"
 			: "") + "\n    "
 		},
 		{ role: /*role*/ ctx[6] },
-		/*role*/ ctx[6] === "option"
-		? {
-				"aria-selected": /*selected*/ ctx[7] ? "true" : "false"
-			}
-		: {},
 		/*role*/ ctx[6] === "radio" || /*role*/ ctx[6] === "checkbox"
 		? {
 				"aria-checked": /*checked*/ ctx[10] ? "true" : "false"
 			}
 		: {},
-		{ tabindex: /*tabindex*/ ctx[0] },
-		/*props*/ ctx[12]
+		{ tabindex: /*tabindex*/ ctx[0] }
 	];
 
 	let li_data = {};
@@ -15171,24 +15171,24 @@ function create_else_block$5(ctx) {
 			}
 
 			set_attributes(li, get_spread_update(li_levels, [
+				dirty & /*role, selected*/ 192 && (/*role*/ ctx[6] === "option"
+				? {
+						"aria-selected": /*selected*/ ctx[7] ? "true" : "false"
+					}
+				: {}),
+				dirty & /*props*/ 4096 && /*props*/ ctx[12],
 				dirty & /*className, activated, selected, disabled, role*/ 484 && {
 					class: "\n      mdc-list-item\n      " + /*className*/ ctx[2] + "\n      " + (/*activated*/ ctx[5] ? "mdc-list-item--activated" : "") + "\n      " + (/*selected*/ ctx[7] ? "mdc-list-item--selected" : "") + "\n      " + (/*disabled*/ ctx[8] ? "mdc-list-item--disabled" : "") + "\n      " + (/*role*/ ctx[6] === "menuitem" && /*selected*/ ctx[7]
 					? "mdc-menu-item--selected"
 					: "") + "\n    "
 				},
 				dirty & /*role*/ 64 && { role: /*role*/ ctx[6] },
-				dirty & /*role, selected*/ 192 && (/*role*/ ctx[6] === "option"
-				? {
-						"aria-selected": /*selected*/ ctx[7] ? "true" : "false"
-					}
-				: {}),
 				dirty & /*role, checked*/ 1088 && (/*role*/ ctx[6] === "radio" || /*role*/ ctx[6] === "checkbox"
 				? {
 						"aria-checked": /*checked*/ ctx[10] ? "true" : "false"
 					}
 				: {}),
-				dirty & /*tabindex*/ 1 && { tabindex: /*tabindex*/ ctx[0] },
-				dirty & /*props*/ 4096 && /*props*/ ctx[12]
+				dirty & /*tabindex*/ 1 && { tabindex: /*tabindex*/ ctx[0] }
 			]));
 
 			if (useActions_action && is_function(useActions_action.update) && dirty & /*use*/ 2) useActions_action.update.call(null, /*use*/ ctx[1]);
@@ -15350,13 +15350,13 @@ function create_if_block$7(ctx) {
 	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[24], null);
 
 	let a_levels = [
+		{ href: /*href*/ ctx[9] },
+		/*props*/ ctx[12],
 		{
 			class: "\n      mdc-list-item\n      " + /*className*/ ctx[2] + "\n      " + (/*activated*/ ctx[5] ? "mdc-list-item--activated" : "") + "\n      " + (/*selected*/ ctx[7] ? "mdc-list-item--selected" : "") + "\n      " + (/*disabled*/ ctx[8] ? "mdc-list-item--disabled" : "") + "\n    "
 		},
-		{ href: /*href*/ ctx[9] },
 		/*activated*/ ctx[5] ? { "aria-current": "page" } : {},
-		{ tabindex: /*tabindex*/ ctx[0] },
-		/*props*/ ctx[12]
+		{ tabindex: /*tabindex*/ ctx[0] }
 	];
 
 	let a_data = {};
@@ -15402,13 +15402,13 @@ function create_if_block$7(ctx) {
 			}
 
 			set_attributes(a, get_spread_update(a_levels, [
+				dirty & /*href*/ 512 && { href: /*href*/ ctx[9] },
+				dirty & /*props*/ 4096 && /*props*/ ctx[12],
 				dirty & /*className, activated, selected, disabled*/ 420 && {
 					class: "\n      mdc-list-item\n      " + /*className*/ ctx[2] + "\n      " + (/*activated*/ ctx[5] ? "mdc-list-item--activated" : "") + "\n      " + (/*selected*/ ctx[7] ? "mdc-list-item--selected" : "") + "\n      " + (/*disabled*/ ctx[8] ? "mdc-list-item--disabled" : "") + "\n    "
 				},
-				dirty & /*href*/ 512 && { href: /*href*/ ctx[9] },
 				dirty & /*activated*/ 32 && (/*activated*/ ctx[5] ? { "aria-current": "page" } : {}),
-				dirty & /*tabindex*/ 1 && { tabindex: /*tabindex*/ ctx[0] },
-				dirty & /*props*/ 4096 && /*props*/ ctx[12]
+				dirty & /*tabindex*/ 1 && { tabindex: /*tabindex*/ ctx[0] }
 			]));
 
 			if (useActions_action && is_function(useActions_action.update) && dirty & /*use*/ 2) useActions_action.update.call(null, /*use*/ ctx[1]);
@@ -17271,15 +17271,15 @@ function create_fragment$n(ctx) {
 
 	let input_levels = [
 		{
-			class: "mdc-checkbox__native-control " + /*input$class*/ ctx[6]
+			value: /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
+			? /*value*/ ctx[3]
+			: /*valueKey*/ ctx[4]
 		},
 		{ type: "checkbox" },
 		/*inputProps*/ ctx[11],
 		{ disabled: /*disabled*/ ctx[2] },
 		{
-			value: /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
-			? /*value*/ ctx[3]
-			: /*valueKey*/ ctx[4]
+			class: "mdc-checkbox__native-control " + /*input$class*/ ctx[6]
 		},
 		exclude(prefixFilter(/*$$props*/ ctx[15], "input$"), ["use", "class"])
 	];
@@ -17363,24 +17363,24 @@ function create_fragment$n(ctx) {
 				listen_dev(input, "change", /*input_change_handler*/ ctx[30]),
 				listen_dev(input, "change", /*handleChange*/ ctx[14], false, false, false),
 				listen_dev(input, "input", /*handleChange*/ ctx[14], false, false, false),
-				listen_dev(input, "change", /*change_handler*/ ctx[28], false, false, false),
-				listen_dev(input, "input", /*input_handler*/ ctx[29], false, false, false),
+				listen_dev(input, "change", /*change_handler*/ ctx[29], false, false, false),
+				listen_dev(input, "input", /*input_handler*/ ctx[28], false, false, false),
 				action_destroyer(useActions_action_1 = useActions.call(null, div2, /*use*/ ctx[0])),
 				action_destroyer(forwardEvents_action = /*forwardEvents*/ ctx[9].call(null, div2))
 			];
 		},
 		p: function update(ctx, dirty) {
 			set_attributes(input, get_spread_update(input_levels, [
-				dirty[0] & /*input$class*/ 64 && {
-					class: "mdc-checkbox__native-control " + /*input$class*/ ctx[6]
-				},
-				{ type: "checkbox" },
-				dirty[0] & /*inputProps*/ 2048 && /*inputProps*/ ctx[11],
-				dirty[0] & /*disabled*/ 4 && { disabled: /*disabled*/ ctx[2] },
 				dirty[0] & /*valueKey, uninitializedValue, value*/ 1048 && {
 					value: /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
 					? /*value*/ ctx[3]
 					: /*valueKey*/ ctx[4]
+				},
+				{ type: "checkbox" },
+				dirty[0] & /*inputProps*/ 2048 && /*inputProps*/ ctx[11],
+				dirty[0] & /*disabled*/ 4 && { disabled: /*disabled*/ ctx[2] },
+				dirty[0] & /*input$class*/ 64 && {
+					class: "mdc-checkbox__native-control " + /*input$class*/ ctx[6]
 				},
 				dirty[0] & /*$$props*/ 32768 && exclude(prefixFilter(/*$$props*/ ctx[15], "input$"), ["use", "class"])
 			]));
@@ -17517,11 +17517,11 @@ function instance$n($$self, $$props, $$invalidate) {
 		return inputProps && inputProps.id;
 	}
 
-	function change_handler(event) {
+	function input_handler(event) {
 		bubble($$self, event);
 	}
 
-	function input_handler(event) {
+	function change_handler(event) {
 		bubble($$self, event);
 	}
 
@@ -17696,8 +17696,8 @@ function instance$n($$self, $$props, $$invalidate) {
 		getDataTableRowIndex,
 		instantiate,
 		getInstance,
-		change_handler,
 		input_handler,
+		change_handler,
 		input_change_handler,
 		div2_binding
 	];
@@ -18552,19 +18552,19 @@ function create_fragment$p(ctx) {
 	let dispose;
 
 	let input_levels = [
-		{
-			class: "mdc-switch__native-control " + /*input$class*/ ctx[6]
-		},
+		exclude(prefixFilter(/*$$props*/ ctx[13], "input$"), ["use", "class"]),
 		{ type: "checkbox" },
 		{ role: "switch" },
 		/*inputProps*/ ctx[11],
 		{ disabled: /*disabled*/ ctx[2] },
 		{
+			class: "mdc-switch__native-control " + /*input$class*/ ctx[6]
+		},
+		{
 			value: /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
 			? /*value*/ ctx[3]
 			: /*valueKey*/ ctx[4]
-		},
-		exclude(prefixFilter(/*$$props*/ ctx[13], "input$"), ["use", "class"])
+		}
 	];
 
 	let input_data = {};
@@ -18630,19 +18630,19 @@ function create_fragment$p(ctx) {
 		},
 		p: function update(ctx, [dirty]) {
 			set_attributes(input, get_spread_update(input_levels, [
-				dirty & /*input$class*/ 64 && {
-					class: "mdc-switch__native-control " + /*input$class*/ ctx[6]
-				},
+				dirty & /*exclude, prefixFilter, $$props*/ 8192 && exclude(prefixFilter(/*$$props*/ ctx[13], "input$"), ["use", "class"]),
 				{ type: "checkbox" },
 				{ role: "switch" },
 				dirty & /*inputProps*/ 2048 && /*inputProps*/ ctx[11],
 				dirty & /*disabled*/ 4 && { disabled: /*disabled*/ ctx[2] },
+				dirty & /*input$class*/ 64 && {
+					class: "mdc-switch__native-control " + /*input$class*/ ctx[6]
+				},
 				dirty & /*valueKey, uninitializedValue, value*/ 1048 && {
 					value: /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
 					? /*value*/ ctx[3]
 					: /*valueKey*/ ctx[4]
-				},
-				dirty & /*exclude, prefixFilter, $$props*/ 8192 && exclude(prefixFilter(/*$$props*/ ctx[13], "input$"), ["use", "class"])
+				}
 			]));
 
 			if (useActions_action && is_function(useActions_action.update) && dirty & /*input$use*/ 32) useActions_action.update.call(null, /*input$use*/ ctx[5]);
@@ -35213,15 +35213,15 @@ function create_fragment$Q(ctx) {
 
 	let input_levels = [
 		{
-			class: "mdc-radio__native-control " + /*input$class*/ ctx[6]
+			value: /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
+			? /*value*/ ctx[3]
+			: /*valueKey*/ ctx[4]
 		},
 		{ type: "radio" },
 		/*inputProps*/ ctx[11],
 		{ disabled: /*disabled*/ ctx[2] },
 		{
-			value: /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
-			? /*value*/ ctx[3]
-			: /*valueKey*/ ctx[4]
+			class: "mdc-radio__native-control " + /*input$class*/ ctx[6]
 		},
 		{ checked: /*checked*/ ctx[8] },
 		exclude(prefixFilter(/*$$props*/ ctx[13], "input$"), ["use", "class"])
@@ -35290,16 +35290,16 @@ function create_fragment$Q(ctx) {
 		},
 		p: function update(ctx, [dirty]) {
 			set_attributes(input, get_spread_update(input_levels, [
-				dirty & /*input$class*/ 64 && {
-					class: "mdc-radio__native-control " + /*input$class*/ ctx[6]
-				},
-				{ type: "radio" },
-				dirty & /*inputProps*/ 2048 && /*inputProps*/ ctx[11],
-				dirty & /*disabled*/ 4 && { disabled: /*disabled*/ ctx[2] },
 				dirty & /*valueKey, uninitializedValue, value*/ 1048 && {
 					value: /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
 					? /*value*/ ctx[3]
 					: /*valueKey*/ ctx[4]
+				},
+				{ type: "radio" },
+				dirty & /*inputProps*/ 2048 && /*inputProps*/ ctx[11],
+				dirty & /*disabled*/ 4 && { disabled: /*disabled*/ ctx[2] },
+				dirty & /*input$class*/ 64 && {
+					class: "mdc-radio__native-control " + /*input$class*/ ctx[6]
 				},
 				dirty & /*checked*/ 256 && { checked: /*checked*/ ctx[8] },
 				dirty & /*exclude, prefixFilter, $$props*/ 8192 && exclude(prefixFilter(/*$$props*/ ctx[13], "input$"), ["use", "class"])
@@ -45401,28 +45401,28 @@ function create_buttonContainer_slot$3(ctx) {
 			button5 = element("button");
 			t21 = text("Open in Matplotlib");
 			attr_dev(button0, "class", button0_class_value = "" + (null_to_empty(btnClass) + " svelte-gd061c"));
-			add_location(button0, file$R, 172, 12, 6493);
+			add_location(button0, file$R, 172, 12, 6515);
 			attr_dev(button1, "class", button1_class_value = "" + (null_to_empty(btnClass) + " svelte-gd061c"));
-			add_location(button1, file$R, 175, 12, 6687);
+			add_location(button1, file$R, 175, 12, 6709);
 			attr_dev(button2, "class", button2_class_value = "" + (null_to_empty(btnClass) + " svelte-gd061c"));
-			add_location(button2, file$R, 176, 12, 6776);
+			add_location(button2, file$R, 176, 12, 6798);
 			attr_dev(button3, "class", button3_class_value = "" + (null_to_empty(btnClass) + " svelte-gd061c"));
-			add_location(button3, file$R, 178, 12, 7008);
+			add_location(button3, file$R, 178, 12, 7030);
 			attr_dev(div1, "class", "animated fadeIn hide svelte-gd061c");
 			toggle_class(div1, "active", /*graphPlotted*/ ctx[3]);
-			add_location(div1, file$R, 182, 12, 7274);
+			add_location(div1, file$R, 182, 12, 7296);
 			attr_dev(div2, "class", "content align buttonRow svelte-gd061c");
-			add_location(div2, file$R, 171, 8, 6442);
+			add_location(div2, file$R, 171, 8, 6464);
 			attr_dev(button4, "class", button4_class_value = "" + (null_to_empty(btnClass) + " svelte-gd061c"));
-			add_location(button4, file$R, 196, 12, 8330);
+			add_location(button4, file$R, 196, 12, 8352);
 			attr_dev(button5, "class", button5_class_value = "" + (null_to_empty(btnClass) + " svelte-gd061c"));
-			add_location(button5, file$R, 197, 12, 8441);
+			add_location(button5, file$R, 197, 12, 8463);
 			attr_dev(div3, "class", "animated fadeIn hide buttonRow svelte-gd061c");
 			toggle_class(div3, "active", /*toggleRow*/ ctx[11]);
-			add_location(div3, file$R, 190, 8, 7596);
+			add_location(div3, file$R, 190, 8, 7618);
 			attr_dev(div0, "class", "thz_buttonContainer svelte-gd061c");
 			attr_dev(div0, "slot", "buttonContainer");
-			add_location(div0, file$R, 169, 4, 6374);
+			add_location(div0, file$R, 169, 4, 6396);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -45695,23 +45695,23 @@ function create_plotContainer_slot$3(ctx) {
 			attr_dev(div1, "id", "resOnOffPlot");
 			set_style(div1, "margin-bottom", "1em");
 			attr_dev(div1, "class", "svelte-gd061c");
-			add_location(div1, file$R, 206, 8, 8702);
+			add_location(div1, file$R, 206, 8, 8724);
 			attr_dev(div2, "id", "thzPlot");
 			set_style(div2, "margin-bottom", "1em");
 			attr_dev(div2, "class", "svelte-gd061c");
-			add_location(div2, file$R, 207, 8, 8769);
+			add_location(div2, file$R, 207, 8, 8791);
 			attr_dev(div3, "id", "boltzman_plot");
 			set_style(div3, "margin-bottom", "1em");
 			attr_dev(div3, "class", "svelte-gd061c");
-			add_location(div3, file$R, 208, 8, 8831);
+			add_location(div3, file$R, 208, 8, 8853);
 			attr_dev(div4, "class", "animated fadeIn hide svelte-gd061c");
 			set_style(div4, "flex-direction", "column ");
 			toggle_class(div4, "active", /*graphPlotted*/ ctx[3]);
-			add_location(div4, file$R, 212, 8, 8929);
+			add_location(div4, file$R, 212, 8, 8951);
 			set_style(div0, "margin-right", "1em");
 			attr_dev(div0, "slot", "plotContainer");
 			attr_dev(div0, "class", "svelte-gd061c");
-			add_location(div0, file$R, 202, 4, 8603);
+			add_location(div0, file$R, 202, 4, 8625);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -45921,7 +45921,7 @@ function instance$X($$self, $$props, $$invalidate) {
 	};
 
 	function plotData({ e = null, filetype = "thz", tkplot = "run", justPlot = false } = {}) {
-		if (fileChecked.length === 0) {
+		if (fileChecked.length === 0 && filetype === "thz") {
 			return createToast$1("No files selected", "danger");
 		}
 

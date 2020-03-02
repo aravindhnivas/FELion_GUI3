@@ -42,7 +42,7 @@
     const changePlotStyle = () => { Plotly.restyle("thzPlot", {mode:plotStyleSelected, fill: plotFill ? "tozeroy" : ""})}
     function plotData({e=null, filetype="thz", tkplot="run", justPlot=false }={}){
 
-        if (fileChecked.length === 0) {return createToast("No files selected", "danger")}
+        if (fileChecked.length === 0 && filetype === "thz") {return createToast("No files selected", "danger")}
 
         let pyfileInfo = {
             thz: {pyfile:"thz_scan.py" , args:[...thzfiles, binData, delta, tkplot, gamma, justPlot]},
