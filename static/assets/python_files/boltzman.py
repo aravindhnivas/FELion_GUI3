@@ -25,6 +25,7 @@ def calculate_population(B, D=0, H=0, temp=5, totalJ=20, tkplot=False, location=
     pJ = lambda j, Z: (intenJ(j)/Z)*100
 
     totalJ = np.arange(totalJ)
+
     Z = np.array([intenJ(j) for j in totalJ], dtype=np.float).sum()
     distribution = np.array([pJ(j, Z) for j in totalJ])
 
@@ -44,17 +45,15 @@ def calculate_population(B, D=0, H=0, temp=5, totalJ=20, tkplot=False, location=
         widget.mainloop()
     else: 
         
-        dataToSend = {"distribution": {"x": totalJ.tolist(), "y": distribution.tolist(), "name": f"{lg} at {temp:.1f}K; Z: {Z:.2f}", "mode": "lines+markers", "showlegend":True}}
+        dataToSend = {"distribution": {"x": totalJ.tolist(), "y": distribution.tolist(), "name": f"{lg} at {temp:.1f}K; Z: {Z:.2f}; Total: {distribution.sum():.2f}%", "mode": "lines+markers", "showlegend":True}}
         sendData(dataToSend)
 
     
 if __name__ == "__main__":
 
     args = sys.argv[1:][0].split(",")
-
     location = pt(args[0])
     os.chdir(location)
-
     B0 = float(args[1])
     D0 = float(args[2])
     H0 = float(args[3])
@@ -64,5 +63,4 @@ if __name__ == "__main__":
     tkplot = args[6]
     if tkplot == "plot": tkplot = True
     else: tkplot = False
-
     calculate_population(B0, D0, H0, temp, totalJ, tkplot, location)
