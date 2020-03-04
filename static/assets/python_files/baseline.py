@@ -86,21 +86,18 @@ class Create_Baseline():
             if isfile(self.felixfile): move(self.location, self.felixfile)
             if isfile(self.basefile): move(self.location, self.basefile)
             if isfile(self.powerfile): move(self.location, self.powerfile)
-        
         self.checkInf()
         self.felix_read_file()
 
         self.PPS = 5
         self.NUM_POINTS = 10
-        if isfile(f'./DATA/{self.basefile}'): 
 
+        if isfile(f'./DATA/{self.basefile}'): 
             if verbose: print(f"Basefile EXISTS: Opening existing basefile for baseline points")
             self.ReadBase() # Read baseline file if exist else guess it
         else: 
-
             if verbose: print(f"Basefile doesn't EXISTS: Guessing baseline points")
             self.GuessBaseLine()
-
         self.line = Line2D(self.xs, self.ys)
         if plotIt: self.InteractivePlots() # Plot
 
@@ -153,7 +150,10 @@ class Create_Baseline():
     def GuessBaseLine(self):
         PPS, NUM_POINTS = self.PPS, self.NUM_POINTS
         max_n = len(self.data[0]) - PPS
+        if int(max_n/NUM_POINTS)==0:
+            max_n = NUM_POINTS = 2
         Bx, By = [self.data[0][0]-0.1], [self.data[1][0]]
+        print(f"Guessing baseline points\n max_n: {max_n}, max_n/NUM_POINTS: {int(max_n/NUM_POINTS)}")
 
         for i in range(0, max_n, int(max_n/NUM_POINTS)):
             x = self.data[0][i:i+PPS].mean()
