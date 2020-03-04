@@ -530,7 +530,7 @@
     $: plottedFiles = opoExpFit ? OPOfilesChecked.map(file=>file.split(".")[0]) || [] : fileChecked.map(file=>file.split(".")[0]) || []
     let delta_OPO = 0.3, calibValue = 9396.929143696187, calibFile = ""
     let OPOcalibFiles = []
-    $: if(OPOLocation !== "") {OPOcalibFiles = fs.readdirSync(OPOLocation).filter(file=> file.endsWith(".calibOPO"))}
+    $: if(fs.existsSync(OPOLocation)) {OPOcalibFiles = fs.readdirSync(OPOLocation).filter(file=> file.endsWith(".calibOPO"))}
     $: OPORow ? createToast("OPO MODE") : createToast("FELIX MODE")
 
     $: opoPlotted ? opoExpFit = true : opoExpFit = false

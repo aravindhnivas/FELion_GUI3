@@ -19,9 +19,15 @@
 
     let selected = "Configuration"
     let pythonpath;
-    if (process.platform !== 'darwin') {
-        pythonpath = localStorage["pythonpath"] || path.resolve(__dirname, "../python3.7/python")
-    } else { pythonpath = localStorage["pythonpath"] || path.resolve("/usr/local/bin/python") }
+    if (process.platform === 'win32') {
+        if (!localStorage["pythonpath"]) {pythonpath = localStorage["pythonpath"] = path.resolve(__dirname, "../python3.7/python")}
+        else {pythonpath = localStorage["pythonpath"] }
+    } else { 
+        if (!localStorage["pythonpath"]) {pythonpath = localStorage["pythonpath"] = path.resolve("/usr/local/bin/python")}
+        else {pythonpath = localStorage["pythonpath"] }
+        
+     }
+
     let pythonscript = localStorage["pythonscript"] = path.resolve(__dirname, "assets/python_files")
     
     const navigate = (e) => {selected = e.target.innerHTML}
@@ -52,15 +58,12 @@
             createToast("Location updated", "success")
         }).catch(err=>{ createToast("python location is not valid", "danger") })
         localStorage["pythonscript"] = pythonscript
-
     }
-
     let pythonpathCheck;
 
     onMount(()=>{
         checkPython().then(res=>{ console.log("Python path is valid")})
         .catch(err=>pythonpathCheck.open() )
-
         updateCheck({info:false})
 
         setTimeout(()=>{updateCheck({info:false})}, 1*1000*60*15)
@@ -173,7 +176,6 @@
     }
 
     // Download the update file
-
     const download = () => {
 
         // const downloadedFile = fs.createWriteStream(zipFile)
@@ -255,7 +257,6 @@
 
     // Backup and restore
     let backupName = "FELion_GUI_backup"
-
     const backUp = (event) => {
 
         let target = event.target

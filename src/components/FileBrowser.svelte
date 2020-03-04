@@ -26,6 +26,8 @@
     let files = [], otherfolders = [], selectAll=false, showfiles = true, original_files = [];
     $: parentFolder = fs.existsSync(currentLocation) ? path.basename(currentLocation) : "Undefined"
 
+    $: locationStatus = fs.existsSync(currentLocation) ? true : false
+
     let searchKey = "";
     const searchfile = () => {
         console.log(searchKey)
@@ -62,6 +64,7 @@
 
         if (!fs.existsSync(currentLocation)) {return createToast("Location undefined", "danger")}
         currentLocation = path.resolve(currentLocation, goto)
+
         getfiles()
     }
 
@@ -70,6 +73,7 @@
         if (original_location !== currentLocation) {
             if(fs.existsSync(currentLocation)) {getfiles(); console.log("Updating location for ", filetype)}
             else {return createToast("Location undefined", "danger")}
+        
         }
     });
 </script>
@@ -131,12 +135,12 @@
                 </div>
             {/each}
         </div>
+    {:else if !locationStatus}
 
-    {:else if currentLocation === ""}
-        <div class="mdc-typography--subtitle1 align center">Browse files to load here</div>
+        <div class="mdc-typography--subtitle1 align center">Location doesn't exist: Browse files again</div>
     {:else}
         <div class="mdc-typography--subtitle1 align center">...loading</div>
-
+    
     {/if}
 
 </div>

@@ -27,7 +27,7 @@
     let massIndex = 0, timestartIndex = 1, nshots = 10, power = "21, 21", resON_Files = "", resOFF_Files = ""
 
     let fullfiles = []
-    $: if (currentLocation !== "") {
+    $: if (fs.existsSync(currentLocation)) {
         fullfiles = ["", ...fs.readdirSync(currentLocation).filter(file=>file.endsWith("scan"))]
     }
 
