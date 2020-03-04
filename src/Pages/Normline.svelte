@@ -73,6 +73,7 @@
     window.getID = () => Math.random().toString(32).substring(2)
     let opoPlotted = false, onlyFinalSpectrum = false
 
+
     const replot = () => {
         if (graphPlotted) {
             let {data, layout} = normMethod_datas[normMethod]
@@ -81,6 +82,7 @@
         }
     }
     function plotData({e=null, filetype="felix", general=null, tkplot="run"}={}){
+
         let expfit_args = [], double_fit_args = [], find_peaks_args = []
 
         switch (filetype) {
@@ -146,19 +148,20 @@
 
         if(tkplot === "plot") {filetype = "general"}
         if (filetype == "general") {
-
             console.log("Sending general arguments: ", args)
+
             let py = spawn(
-                localStorage["pythonpath"],
-                [path.join(localStorage["pythonscript"], pyfile), args],
-                { detached: true, stdio: 'ignore', shell: openShell }
+                localStorage["pythonpath"], [path.join(localStorage["pythonscript"], pyfile), args], 
+                { detached: true, stdio: 'pipe', shell: openShell }
             )
 
             py.on("close", ()=>{ console.log("Closed") })
+            py.stderr.on("data", (err)=>{ console.log(`Error Occured: ${err.toString()}`); $modalContent = err.toString(); $activated = true })
+            py.stdout.on("data", (data)=>{ console.log(`Output from python: ${data.toString()}`)  })
+
             py.unref()
             py.ref()
-
-            return createToast("General process sent. Expect an response soon...")
+            return createToast("Process Started")
         }
 
         let py;

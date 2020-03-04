@@ -25,7 +25,7 @@
     } else { 
         if (!localStorage["pythonpath"]) {pythonpath = localStorage["pythonpath"] = path.resolve("/usr/local/bin/python")}
         else {pythonpath = localStorage["pythonpath"] }
-        
+
      }
 
     let pythonscript = localStorage["pythonscript"] = path.resolve(__dirname, "assets/python_files")
@@ -72,7 +72,6 @@
     const handlepythonPathCheck = () => {
         console.log("Python path checking done")
     }
-
     // UPDATE
 
     let gihub_branchname =  "master", github_repo =  "FELion_GUI3", github_username =  "aravindhnivas"

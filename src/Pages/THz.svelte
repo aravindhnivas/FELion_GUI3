@@ -52,18 +52,20 @@
         if (tkplot == "plot") {filetype = "general"}
 
         if (filetype == "general") {
+
             console.log("Sending general arguments: ", args)
             let py = spawn(
-                localStorage["pythonpath"],
-                [path.join(localStorage["pythonscript"], pyfile), args],
-                { detached: true, stdio: 'ignore', shell: openShell }
+                localStorage["pythonpath"], [path.join(localStorage["pythonscript"], pyfile), args], 
+                { detached: true, stdio: 'pipe', shell: openShell }
             )
             py.on("close", ()=>{ console.log("Closed") })
 
+            py.stderr.on("data", (err)=>{ console.log(`Error Occured: ${err.toString()}`); $modalContent = err.toString(); $activated = true })
+            py.stdout.on("data", (data)=>{ console.log(`Output from python: ${data.toString()}`)  })
             py.unref()
             py.ref()
-            createToast("General process sent. Expect an response soon...")
-            return;
+
+            return createToast("Process Started")
         }
 
         let target = e.target
