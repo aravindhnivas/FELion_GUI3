@@ -117,17 +117,23 @@ def binning(xs, ys, delta=1e-5):
 def plot_thz(ax=None, tkplot=False, save_dat=True, latex=False, justPlot=False, binData=False, delta=1e-5):
 
     xs, ys = [], []
-
     data = {"resOnOff_Counts":{}, "thz":{}}
-    for i, filename in enumerate(filenames):
+    c =  0
 
+    for i, filename in enumerate(filenames):
         filename = pt(filename)
         freq, depletion_counts, iteraton, resOffCounts, resOnCounts, freq_resOff = thz_plot(filename)
         xs = np.append(xs, freq)
         ys = np.append(ys, depletion_counts)
-
         export_file(filename.stem, freq, depletion_counts)
+        if i >= int(len(colors)/2):
+            i = c
+            c += 1
+
+
+
         lg = f"{filename.name} [{iteraton}]"
+
         if justPlot:
             data["thz"][f"{filename.name}"] = {"x": list(freq), "y": list(depletion_counts), "name": lg, 
                 "mode":'lines+markers',"type":'scatter', "fill":"tozeroy", "line":{"color":f"rgb{colors[i*2]}", "shape":"hvh"}
