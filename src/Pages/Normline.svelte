@@ -490,8 +490,8 @@
         if (plot_trace_added === 0) {return createToast("No fitted lines found", "danger")}
             
         if (double_peak_active) {
-            plotData({filetype:"general", general:{args:[output_name, currentLocation], pyfile:"delete_fileLines.py"}})
-            plotData({filetype:"general", general:{args:[output_name, currentLocation], pyfile:"delete_fileLines.py"}})
+            plotData({filetype:"general", general:{args:[output_name, opoExpFit?OPOLocation:currentLocation], pyfile:"delete_fileLines.py"}})
+            plotData({filetype:"general", general:{args:[output_name, opoExpFit?OPOLocation:currentLocation], pyfile:"delete_fileLines.py"}})
             
             dataTable = _.dropRight(dataTable, 2)
             annotations = _.dropRight(annotations, 2)
@@ -500,7 +500,7 @@
             weighted_error[1] = _.dropRight(weighted_error[1], 1)
             
         } else {
-            plotData({filetype:"general", general:{args:[output_name, currentLocation], pyfile:"delete_fileLines.py"}})
+            plotData({filetype:"general", general:{args:[output_name, opoExpFit?OPOLocation:currentLocation], pyfile:"delete_fileLines.py"}})
             dataTable = _.dropRight(dataTable, 1)
             line = _.dropRight(line, 2)
             annotations = _.dropRight(annotations, 1)
@@ -741,8 +741,7 @@
             </div>
 
             <ReportLayout bind:currentLocation={currentLocation} id="felixreport" tableID="felixTable"
-                plotID={["bplot", "saPlot", "avgplot", "exp-theory-plot", "opoRelPlot"]} includeTable={true}/>
-
+                plotID={["bplot", "saPlot", "avgplot", "exp-theory-plot", "opoplot", "opoSA", "opoRelPlot"]} includeTable={true}/>
         </div>
     </div>
 </Layout>

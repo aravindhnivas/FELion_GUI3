@@ -64,6 +64,7 @@ def binning(xs, ys, delta=0.2):
         bin_occ = np.zeros(len(bins) + 1)
 
         for i in range(datay.size):
+
             bin_a[bin_i[i]] += datay[i]
             bin_occ[bin_i[i]] += 1
 
@@ -108,13 +109,13 @@ def opoplot(opofiles, tkplot, delta, calibValue, calibFile):
             "y": list(getwn),
             "name": f"Calibration", "mode": "markers", "line": {"color": f"rgb{colors[0]}"}, "legendgroup": f'group0'
         }
-
     for i, opofile in enumerate(opofiles):
 
         basefile = opofile.parent / f"{opofile.stem}.obase"
-        
         wn, counts = np.genfromtxt(opofile).T
+
         baseCal = BaselineCalibrator(basefile)
+        
         baseCounts = baseCal.val(wn)
         ratio = counts/baseCounts
 
@@ -131,12 +132,11 @@ def opoplot(opofiles, tkplot, delta, calibValue, calibFile):
             data["real"][opofile.name] = {
 
                 "x": list(wn), "y": list(counts), "name": label, "mode": "lines", "showlegend": True, "legendgroup": f'group{i}', "line": {"color": f"rgb{colors[c]}"},
-
             }
             
-            data["real"][f"{opofile.name}_line"] = {
-                "x": list(wn), "y": list(baseCounts), "mode": "lines", "name": f"{opofile.name}_line",
-                "marker": {"color": "black"}, "legendgroup": f'group{i}', "showlegend": False,
+            data["real"][f"{opofile.name}_line"] = {"x": list(wn), "y": list(baseCounts), "mode": "lines", "name": f"{opofile.name}_line",
+                "marker": {"color": "black"}, "legendgroup": f'group{i}', "showlegend": False
+                
             }
 
             data["relative"][opofile.name] = {
@@ -154,20 +154,22 @@ def opoplot(opofiles, tkplot, delta, calibValue, calibFile):
 
 
     if not tkplot: 
+
         data["relative"]["averaged"] = {
             "x": list(binx), "y": list(biny), "name": f"averaged: delta={delta}", "showlegend": True, 
             "fill": 'tozeroy', "mode": "lines+markers","line": {"color": "black"}
+            
         }
 
         if calibFile.exists():
+            X = np.arange(setwn.min(), setwn.max(), 1)
 
-            X = np.arange(np.array(binx).min(), np.array(binx).max(), 1)
             data["SA"][f"Calibration_fit"] = {
                 "x": list(X),
                 "y": list(saCal.sa_cm(X)),
                 "name": f"Calibration_fit",
                 "type": "scatter", "line": {"color": "black"},
-                "showlegend": False,
+                "showlegend": True,
                 "legendgroup": f'group0'
 
             }

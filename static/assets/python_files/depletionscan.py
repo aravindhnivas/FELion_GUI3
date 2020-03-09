@@ -168,7 +168,7 @@ class depletionplot:
     def startPlotting(self, make_slider_widget=True):
 
         try:
-            self.ax0.set(xlabel="n*t*E (mJ)", ylabel="Counts", title="Res ON-OFF scan")
+            self.ax0.set(xlabel="n*t*E (mJ)", ylabel="Counts", title=f"ON:{self.resOnFile.name}\nOFF:{self.resOffFile.name}")
             self.ax1.set(xlabel="n*t*E (mJ)", ylabel="Relative abundace of active isomer", title="$D(t)=A*(1-e^{-K_{ON}*(ntE)})$")
             for ax in (self.ax0, self.ax1): ax.grid()
             
@@ -241,11 +241,14 @@ class depletionplot:
     def latexPlot(self):
 
         style_path = pt(__file__).parent / "matplolib_styles/styles/science.mplstyle"
-        with plt.style.context([f"{style_path}"]):
 
+        with plt.style.context([f"{style_path}"]):
             fig, ax0 = plt.subplots()
+
             fig2, ax1 = plt.subplots()
-            ax0.set(xlabel="n*t*E (mJ)", ylabel="Counts", title="Res ON-OFF scan")
+            on = self.resOnFile.name.replace("_", "\_")
+            off = self.resOffFile.name.replace("_", "\_")
+            ax0.set(xlabel="n*t*E (mJ)", ylabel="Counts", title=f"ON:{on}\nOFF:{off}")
             ax1.set(xlabel="n*t*E (mJ)", ylabel="Relative abundace of active isomer", title="$D(t)=A*(1-e^{-K_{ON}*(ntE)})$")
 
             ax0.grid()
