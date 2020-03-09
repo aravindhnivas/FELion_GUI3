@@ -2,7 +2,7 @@
     // IMPORTING Modules
     import Textfield from '@smui/textfield'
     import HelperText from '@smui/textfield/helper-text/index'
-    import Layout, {browse, createToast} from "../components/Layout.svelte"
+    import Layout, {createToast} from "../components/Layout.svelte"
     import { fly, fade } from 'svelte/transition'
     import Ripple from '@smui/ripple'
 
@@ -513,10 +513,7 @@
 
         plot_trace_added--
     }
-
-    onMount(()=>{
-        console.log("Normline mounted")
-    })
+    onMount(()=>{ console.log("Normline mounted") })
     
     let collectData = true, lineData_list = [], toggleDoubleGaussRow = false, weighted_error = [[], []], err_data1_plot = false
     let amp1=0, amp2=0, cen1=0, cen2=0, sig1=5, sig2=5
@@ -526,9 +523,9 @@
 
     // OPO
     let showOPOFiles = false, OPOfilesChecked = [], opoExpFit = false, OPORow = false
+
     let OPOLocation = localStorage["opoLocation"] || currentLocation
     $: opofiles = OPOfilesChecked.map(file=>path.resolve(OPOLocation, file))
-
     $: graphDiv = opoExpFit ? "opoRelPlot" : "avgplot"
     $: plottedFiles = opoExpFit ? OPOfilesChecked.map(file=>file.split(".")[0]) || [] : fileChecked.map(file=>file.split(".")[0]) || []
     let delta_OPO = 0.3, calibValue = 9396.929143696187, calibFile = ""
@@ -537,6 +534,7 @@
     $: OPORow ? createToast("OPO MODE") : createToast("FELIX MODE")
 
     $: opoPlotted ? opoExpFit = true : opoExpFit = false
+    // $: if(!fs.existsSync(OPOLocation)) {OPOLocation = currentLocation}
     
 </script>
 
@@ -567,14 +565,14 @@
 
 </style>
 
-<QuickView style="padding:1em;" bind:active={showTheoryFiles} title="Browse Theory files">
+<QuickView style="padding:1em;" bind:active={showTheoryFiles} title="Browse Theory files" bind:location={theoryLocation}>
     <FileBrowser bind:currentLocation={theoryLocation} bind:fileChecked={theoryfilesChecked} filetype=""/>
     <div slot="footer" style="margin:auto">
         <button class="button is-link" on:click="{(e)=>{plotData({e:e, filetype:"theory"}); localStorage["theoryLocation"] = theoryLocation}}">Submit</button>
     </div>
 </QuickView>
 
-<QuickView style="padding:1em;" bind:active={showOPOFiles} title="Browse OPO files">
+<QuickView style="padding:1em;" bind:active={showOPOFiles} title="Browse OPO files" bind:location={OPOLocation}>
     <FileBrowser bind:currentLocation={OPOLocation} bind:fileChecked={OPOfilesChecked} filetype="ofelix"/>
     <div slot="footer" style="margin:auto">
         <button class="button is-link" on:click="{(e)=>{plotData({e:e, filetype:"opofile"}); localStorage["opoLocation"] = OPOLocation}}">Submit</button>
@@ -609,7 +607,8 @@
                 <Textfield on:change="{(e)=>plotData({e:e, filetype:"opofile"})}" style="width:9em" bind:value={calibValue} label="Wn-meter calib."/>
                 <button class="button is-link" 
                     on:click="{()=>{showTheoryFiles=false;showOPOFiles = !showOPOFiles; OPOLocation = localStorage["opoLocation"] || currentLocation}}">
-                    Select File</button>
+                    Browse File</button>
+
                 <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"opofile", tkplot:"plot"})}">Open in Matplotlib</button>
                 <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"opofile"})}">Replot</button>
             </div>
@@ -740,8 +739,12 @@
                 </DataTable>
             </div>
 
+
             <ReportLayout bind:currentLocation={currentLocation} id="felixreport" tableID="felixTable"
                 plotID={["bplot", "saPlot", "avgplot", "exp-theory-plot", "opoplot", "opoSA", "opoRelPlot"]} includeTable={true}/>
         </div>
+
     </div>
+
+    
 </Layout>
