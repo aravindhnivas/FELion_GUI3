@@ -138,7 +138,7 @@
             exp_fit: {pyfile:"exp_gauss_fit.py" , args:expfit_args},
             opofile: {pyfile:"oposcan.py" , args:[...opofiles, tkplot, delta_OPO, calibValue, calibFile]},
             find_peaks: {pyfile:"fit_all.py" ,  args: find_peaks_args},
-            theory: {pyfile:"theory.py" , args:[...theoryfiles, normMethod, sigma, scale, theoryLocation, tkplot]},
+            theory: {pyfile:"theory.py" , args:[...theoryfiles, normMethod, sigma, scale, currentLocation, tkplot]},
             get_err: {pyfile:"weighted_error.py" , args:lineData_list},
             double_peak: {pyfile:"double_gaussian.py" , args:double_fit_args}
         }

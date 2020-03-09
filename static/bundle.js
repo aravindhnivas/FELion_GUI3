@@ -37962,11 +37962,11 @@ function create_footer_slot_1(ctx) {
 			button = element("button");
 			button.textContent = "Submit";
 			attr_dev(button, "class", "button is-link svelte-cxk9ad");
-			add_location(button, file$O, 570, 8, 27462);
+			add_location(button, file$O, 570, 8, 27463);
 			attr_dev(div, "slot", "footer");
 			set_style(div, "margin", "auto");
 			attr_dev(div, "class", "svelte-cxk9ad");
-			add_location(div, file$O, 569, 4, 27413);
+			add_location(div, file$O, 569, 4, 27414);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -38085,11 +38085,11 @@ function create_footer_slot(ctx) {
 			button = element("button");
 			button.textContent = "Submit";
 			attr_dev(button, "class", "button is-link svelte-cxk9ad");
-			add_location(button, file$O, 577, 8, 27917);
+			add_location(button, file$O, 577, 8, 27918);
 			attr_dev(div, "slot", "footer");
 			set_style(div, "margin", "auto");
 			attr_dev(div, "class", "svelte-cxk9ad");
-			add_location(div, file$O, 576, 4, 27868);
+			add_location(div, file$O, 576, 4, 27869);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -38483,41 +38483,41 @@ function create_buttonContainer_slot(ctx) {
 			div5 = element("div");
 			create_component(customradio.$$.fragment);
 			attr_dev(button0, "class", "button is-link svelte-cxk9ad");
-			add_location(button0, file$O, 586, 12, 28255);
+			add_location(button0, file$O, 586, 12, 28256);
 			attr_dev(button1, "class", "button is-link svelte-cxk9ad");
-			add_location(button1, file$O, 589, 12, 28430);
+			add_location(button1, file$O, 589, 12, 28431);
 			attr_dev(button2, "class", "button is-link svelte-cxk9ad");
-			add_location(button2, file$O, 591, 12, 28642);
+			add_location(button2, file$O, 591, 12, 28643);
 			attr_dev(button3, "class", "button is-link svelte-cxk9ad");
 			attr_dev(button3, "tabindex", "0");
-			add_location(button3, file$O, 596, 12, 29082);
+			add_location(button3, file$O, 596, 12, 29083);
 			attr_dev(button4, "class", "button is-link svelte-cxk9ad");
-			add_location(button4, file$O, 597, 12, 29239);
+			add_location(button4, file$O, 597, 12, 29240);
 			attr_dev(div1, "class", "align svelte-cxk9ad");
-			add_location(div1, file$O, 585, 8, 28222);
+			add_location(div1, file$O, 585, 8, 28223);
 			attr_dev(button5, "class", "button is-link svelte-cxk9ad");
-			add_location(button5, file$O, 607, 16, 30017);
+			add_location(button5, file$O, 607, 16, 30018);
 			attr_dev(button6, "class", "button is-link svelte-cxk9ad");
-			add_location(button6, file$O, 611, 16, 30264);
+			add_location(button6, file$O, 611, 16, 30265);
 			attr_dev(button7, "class", "button is-link svelte-cxk9ad");
-			add_location(button7, file$O, 612, 16, 30409);
+			add_location(button7, file$O, 612, 16, 30410);
 			attr_dev(div2, "class", "align svelte-cxk9ad");
-			add_location(div2, file$O, 603, 12, 29539);
+			add_location(div2, file$O, 603, 12, 29540);
 			attr_dev(div3, "class", "animated fadeIn hide content svelte-cxk9ad");
 			toggle_class(div3, "active", /*OPORow*/ ctx[39]);
-			add_location(div3, file$O, 601, 8, 29458);
+			add_location(div3, file$O, 601, 8, 29459);
 			attr_dev(button8, "class", "button is-link svelte-cxk9ad");
-			add_location(button8, file$O, 618, 12, 30632);
+			add_location(button8, file$O, 618, 12, 30633);
 			attr_dev(button9, "class", "button is-link svelte-cxk9ad");
-			add_location(button9, file$O, 623, 12, 31223);
+			add_location(button9, file$O, 623, 12, 31224);
 			attr_dev(div4, "class", "animated fadeIn hide svelte-cxk9ad");
 			toggle_class(div4, "active", /*toggleRow*/ ctx[2]);
-			add_location(div4, file$O, 616, 8, 30557);
+			add_location(div4, file$O, 616, 8, 30558);
 			attr_dev(div5, "class", "svelte-cxk9ad");
-			add_location(div5, file$O, 627, 8, 31484);
+			add_location(div5, file$O, 627, 8, 31485);
 			attr_dev(div0, "class", "buttonSlot svelte-cxk9ad");
 			attr_dev(div0, "slot", "buttonContainer");
-			add_location(div0, file$O, 583, 4, 28163);
+			add_location(div0, file$O, 583, 4, 28164);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -40982,76 +40982,76 @@ function create_plotContainer_slot(ctx) {
 			attr_dev(div1, "class", "animated fadeIn hide svelte-cxk9ad");
 			attr_dev(div1, "id", "exp-theory-plot");
 			toggle_class(div1, "active", /*show_theoryplot*/ ctx[7]);
-			add_location(div1, file$O, 635, 12, 31743);
+			add_location(div1, file$O, 635, 12, 31744);
 			attr_dev(div2, "id", "bplot");
 			attr_dev(div2, "class", "svelte-cxk9ad");
-			add_location(div2, file$O, 636, 12, 31849);
+			add_location(div2, file$O, 636, 12, 31850);
 			attr_dev(div3, "id", "saPlot");
 			attr_dev(div3, "class", "svelte-cxk9ad");
-			add_location(div3, file$O, 637, 12, 31885);
+			add_location(div3, file$O, 637, 12, 31886);
 			attr_dev(div4, "id", "avgplot");
 			attr_dev(div4, "class", "svelte-cxk9ad");
-			add_location(div4, file$O, 638, 12, 31922);
+			add_location(div4, file$O, 638, 12, 31923);
 			attr_dev(div5, "class", "animated fadeIn hide svelte-cxk9ad");
 			attr_dev(div5, "id", "opoplot");
 			toggle_class(div5, "active", /*opoPlotted*/ ctx[21]);
-			add_location(div5, file$O, 639, 12, 31960);
+			add_location(div5, file$O, 639, 12, 31961);
 			attr_dev(div6, "class", "animated fadeIn hide svelte-cxk9ad");
 			attr_dev(div6, "id", "opoSA");
 			toggle_class(div6, "active", /*opoPlotted*/ ctx[21]);
-			add_location(div6, file$O, 640, 12, 32053);
+			add_location(div6, file$O, 640, 12, 32054);
 			attr_dev(div7, "class", "animated fadeIn hide svelte-cxk9ad");
 			attr_dev(div7, "id", "opoRelPlot");
 			toggle_class(div7, "active", /*opoPlotted*/ ctx[21]);
-			add_location(div7, file$O, 641, 12, 32144);
+			add_location(div7, file$O, 641, 12, 32145);
 			attr_dev(div8, "class", "felixPlot svelte-cxk9ad");
-			add_location(div8, file$O, 634, 8, 31706);
+			add_location(div8, file$O, 634, 8, 31707);
 			attr_dev(div9, "class", "content svelte-cxk9ad");
-			add_location(div9, file$O, 645, 12, 32330);
+			add_location(div9, file$O, 645, 12, 32331);
 			attr_dev(button0, "class", "button is-link svelte-cxk9ad");
-			add_location(button0, file$O, 654, 16, 32855);
+			add_location(button0, file$O, 654, 16, 32856);
 			attr_dev(button1, "class", "button is-link svelte-cxk9ad");
-			add_location(button1, file$O, 655, 16, 32975);
+			add_location(button1, file$O, 655, 16, 32976);
 			attr_dev(button2, "class", "button is-warning svelte-cxk9ad");
-			add_location(button2, file$O, 656, 16, 33109);
+			add_location(button2, file$O, 656, 16, 33110);
 			attr_dev(button3, "class", "button is-danger svelte-cxk9ad");
-			add_location(button3, file$O, 657, 16, 33205);
+			add_location(button3, file$O, 657, 16, 33206);
 			attr_dev(button4, "class", "button is-link svelte-cxk9ad");
-			add_location(button4, file$O, 658, 16, 33298);
+			add_location(button4, file$O, 658, 16, 33299);
 			attr_dev(button5, "class", "button is-warning svelte-cxk9ad");
-			add_location(button5, file$O, 659, 16, 33423);
+			add_location(button5, file$O, 659, 16, 33424);
 			attr_dev(button6, "class", "button is-link svelte-cxk9ad");
-			add_location(button6, file$O, 660, 16, 33579);
+			add_location(button6, file$O, 660, 16, 33580);
 			attr_dev(div10, "class", "content svelte-cxk9ad");
-			add_location(div10, file$O, 653, 12, 32816);
+			add_location(div10, file$O, 653, 12, 32817);
 			attr_dev(button7, "class", "button is-link svelte-cxk9ad");
-			add_location(button7, file$O, 667, 16, 34102);
+			add_location(button7, file$O, 667, 16, 34103);
 			attr_dev(button8, "class", "button is-danger svelte-cxk9ad");
-			add_location(button8, file$O, 668, 16, 34226);
+			add_location(button8, file$O, 668, 16, 34227);
 			attr_dev(div11, "class", "content animated fadeIn hide svelte-cxk9ad");
 			toggle_class(div11, "active", /*toggleFindPeaksRow*/ ctx[32]);
-			add_location(div11, file$O, 663, 12, 33723);
+			add_location(div11, file$O, 663, 12, 33724);
 			attr_dev(button9, "class", "button is-link svelte-cxk9ad");
-			add_location(button9, file$O, 678, 16, 35171);
+			add_location(button9, file$O, 678, 16, 35172);
 			attr_dev(div12, "class", "content animated fadeIn hide svelte-cxk9ad");
 			toggle_class(div12, "active", /*toggleDoubleGaussRow*/ ctx[25]);
-			add_location(div12, file$O, 671, 12, 34381);
+			add_location(div12, file$O, 671, 12, 34382);
 			attr_dev(div13, "class", "title notification is-link svelte-cxk9ad");
-			add_location(div13, file$O, 683, 16, 35393);
+			add_location(div13, file$O, 683, 16, 35394);
 			attr_dev(button10, "class", "button is-warning svelte-cxk9ad");
-			add_location(button10, file$O, 687, 16, 35777);
+			add_location(button10, file$O, 687, 16, 35778);
 			attr_dev(button11, "class", "button is-danger svelte-cxk9ad");
-			add_location(button11, file$O, 690, 16, 36117);
+			add_location(button11, file$O, 690, 16, 36118);
 			attr_dev(div14, "class", "content svelte-cxk9ad");
-			add_location(div14, file$O, 682, 12, 35354);
+			add_location(div14, file$O, 682, 12, 35355);
 			attr_dev(div15, "class", "dataTable svelte-cxk9ad");
-			add_location(div15, file$O, 695, 12, 36325);
+			add_location(div15, file$O, 695, 12, 36326);
 			attr_dev(div16, "class", "animated fadeIn hide svelte-cxk9ad");
 			toggle_class(div16, "active", /*graphPlotted*/ ctx[12]);
-			add_location(div16, file$O, 644, 8, 32254);
+			add_location(div16, file$O, 644, 8, 32255);
 			attr_dev(div0, "class", "plotSlot svelte-cxk9ad");
 			attr_dev(div0, "slot", "plotContainer");
-			add_location(div0, file$O, 632, 4, 31651);
+			add_location(div0, file$O, 632, 4, 31652);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -41872,7 +41872,7 @@ function instance$U($$self, $$props, $$invalidate) {
 			},
 			theory: {
 				pyfile: "theory.py",
-				args: [...theoryfiles, normMethod, sigma, scale, theoryLocation, tkplot]
+				args: [...theoryfiles, normMethod, sigma, scale, currentLocation, tkplot]
 			},
 			get_err: {
 				pyfile: "weighted_error.py",
