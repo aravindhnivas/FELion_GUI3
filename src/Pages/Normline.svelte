@@ -391,7 +391,7 @@
 
                         let color = "#fafafa";
                         if (output_name === "averaged") {
-                            color = "#452f7da8"
+                            color = "#ffdd57"
                             dataTable_avg = [...dataTable_avg, {name: `Line #${line_index_count}`, id:getID(), freq:freq, amp:amp, fwhm:fwhm, sig:sig, color:color}]
                             dataTable_avg = _.uniqBy(dataTable_avg, "freq")
                             line_index_count++
@@ -408,9 +408,11 @@
                         createToast("Line fitted with gaussian function", "success")
 
                     } else if (filetype == "get_err") {
+
                         let {freq, amp, fwhm, sig } = dataFromPython
-                        let data1 = {name: "unweighted_mean", id:getID(), freq:freq.mean, amp:amp.mean, fwhm:fwhm.mean, sig:sig.mean, color:"#452f7da8"}
-                        let data2 = {name: "weighted_mean", id:getID(), freq:freq.wmean, amp:amp.wmean, fwhm:fwhm.wmean, sig:sig.wmean, color:"#452f7da8"}
+                        
+                        let data1 = {name: "unweighted_mean", id:getID(), freq:freq.mean, amp:amp.mean, fwhm:fwhm.mean, sig:sig.mean, color:"#f14668"}
+                        let data2 = {name: "weighted_mean", id:getID(), freq:freq.wmean, amp:amp.wmean, fwhm:fwhm.wmean, sig:sig.wmean, color:"#2098d1"}
                         dataTable = [...dataTable, data1, data2]
                         dataTable_avg = [...dataTable_avg, data1, data2]
 
@@ -534,11 +536,12 @@
     $: OPORow ? createToast("OPO MODE") : createToast("FELIX MODE")
 
     $: opoPlotted ? opoExpFit = true : opoExpFit = false
-    // $: if(!fs.existsSync(OPOLocation)) {OPOLocation = currentLocation}
     
 </script>
 
 <style>
+
+
     * :global(.button) {margin: 0.4em;}
     * :global(.short-input) { max-width: 7em; margin: 0 1em; }
     * :global(.mdc-text-field--outlined) {height: 2.5em;}
@@ -546,23 +549,27 @@
     * :global(.plotSlot) { width: 100%}
     * :global(option) { color: black; }
     * :global(.mdc-data-table) {min-width: 30em; background-color: #5b3ea2; max-height: 25em; overflow-y: auto}
+    * :global(.mdc-data-table__content ) {background-color: #fafafa;}
+
     * :global(hr) { width: 90%; margin: 1em 0; }
+
     * :global(.report) { display: block; margin-bottom: 1em; }
+    
     * :global(table th:not([align])) {text-align: center; padding: 1em;}
     * :global(table td:not([align])) {text-align: center; padding: 1em;}
-    * :global(#felixTableContainer) {border: 1px solid #5b3ea2;}
+
+    * :global(.averagedTable td) { color: white; }
     
+    * :global(#felixTableContainer) {border: 1px solid #5b3ea2;}
     * :global(#felixTableContainer thead) {background-color: #e1e1e1;}
     .hide {display: none;}
     .active {display: block; }
-
     .align {display: flex; align-items: center;}
     .felixPlot > div {margin-bottom: 1em;}
     .notification {width: 100%; border: 1px solid;}
     .plotSlot > div { width: calc(100% - 1em); margin-top: 1em; }
-
+    
     .dataTable { display: flex; justify-content: center; }
-
 </style>
 
 <QuickView style="padding:1em;" bind:active={showTheoryFiles} title="Browse Theory files" bind:location={theoryLocation}>
@@ -726,7 +733,7 @@
                             {/each}
                         {:else}
                             {#each dataTable as table (table.id)}
-                                <Row style="background-color: {table.color};">
+                                <Row style="background-color: {table.color};" class={table.className}>
                                     <Cell>{table.name}</Cell>
                                     <Cell>{table.freq}</Cell>
                                     <Cell>{table.amp}</Cell>
