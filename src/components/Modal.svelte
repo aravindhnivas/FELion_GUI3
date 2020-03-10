@@ -26,7 +26,7 @@
 
 <style>
 
-.modal-card-body {color: black;}
+.modal-card-body {color: black; overflow-y: auto}
 .modal-card {width: 60vw;}
 </style>
 
