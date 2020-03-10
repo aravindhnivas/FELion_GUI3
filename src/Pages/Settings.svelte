@@ -73,8 +73,9 @@
     }
 
     let pythonpathCheck;
+
     onMount(()=>{
-        checkPython().then(res=>{ pyVersion = res; console.log("Python path is valid")}).catch(err=>pythonpathCheck.open() )
+        setTimeout(()=>{checkPython().then(res=>{ pyVersion = res; console.log("Python path is valid")}).catch(err=>pythonpathCheck.open() )}, 1000)
         updateCheck({info:false})
         setTimeout(()=>{updateCheck({info:false})}, 1*1000*60*15)
     })
