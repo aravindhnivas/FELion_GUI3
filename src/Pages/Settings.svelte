@@ -17,15 +17,27 @@
 
     ///////////////////////////////////////////////////////
 
-    let selected = "Configuration"
+    let selected = "Configuration", pyVersion = ""
     let pythonpath;
     if (process.platform === 'win32') {
-        if (!localStorage["pythonpath"]) {pythonpath = localStorage["pythonpath"] = path.resolve(__dirname, "../python3.7/python")}
+        const currPath = path.resolve(__dirname, "../python3.7")
+        if (fs.existsSync(currPath)) {
+            const newPath = path.resolve(__dirname, "../python3")
+            
+            fs.rename(currPath, newPath, function(err) {
+
+                if (err) { console.log(err) } else { 
+                    if (localStorage["pythonpath"] === path.join(currPath, "python")) {pythonpath = localStorage["pythonpath"] = path.join(newPath, "python")}
+                    console.log("Successfully renamed the directory.")
+                 }
+            })
+        }
+
+        if (!localStorage["pythonpath"]) {pythonpath = localStorage["pythonpath"] = path.resolve(__dirname, "../python3/python")}
         else {pythonpath = localStorage["pythonpath"] }
     } else { 
         if (!localStorage["pythonpath"]) {pythonpath = localStorage["pythonpath"] = path.resolve("/usr/local/bin/python")}
         else {pythonpath = localStorage["pythonpath"] }
-
      }
 
     let pythonscript = localStorage["pythonscript"] = path.resolve(__dirname, "assets/python_files")
@@ -33,56 +45,53 @@
     const navigate = (e) => {selected = e.target.innerHTML}
 
     function checkPython(){
-
         console.log("Python path checking \n", pythonpath)
         
         return new Promise((resolve, reject)=>{
-            exec(`${pythonpath} -V`, (err, stdout, stderr)=>{err ? reject("Invalid") : resolve("Done")})
+            exec(`${pythonpath} -V`, (err, stdout, stderr)=>{err ? reject("Invalid") : resolve(stdout.trim())})
         })
     }
 
     const resetlocation = () => {
-        
-        checkPython()
-        .then(res=>{
-            pythonpath = localStorage["pythonpath"] = path.resolve(__dirname, "../python3.7/python")
-            createToast("Location resetted", "warning")
-        }).catch(err=>{ createToast("Default python location is not valid", "danger") } )
+        let defaultPy = path.resolve(__dirname, "../python3/python")
+        exec(`${defaultPy} -V`, (err, stdout, stderr)=>{
+            if(err){createToast("Default python location is not valid", "danger") }
+            else {pyVersion = stdout.trim(); pythonpath = localStorage["pythonpath"] = defaultPy; createToast("Location resetted", "warning")}
+        })
         pythonscript = localStorage["pythonscript"] = path.resolve(__dirname, "assets/python_files")
+
     }
 
     const savelocation = async () => {
-        checkPython()
-        .then(res=>{
+        checkPython().then(res=>{
+
+            pyVersion = res
             localStorage["pythonpath"] = pythonpath
             createToast("Location updated", "success")
         }).catch(err=>{ createToast("python location is not valid", "danger") })
         localStorage["pythonscript"] = pythonscript
     }
+
     let pythonpathCheck;
-
     onMount(()=>{
-        checkPython().then(res=>{ console.log("Python path is valid")})
-        .catch(err=>pythonpathCheck.open() )
+        checkPython().then(res=>{ pyVersion = res; console.log("Python path is valid")}).catch(err=>pythonpathCheck.open() )
         updateCheck({info:false})
-
         setTimeout(()=>{updateCheck({info:false})}, 1*1000*60*15)
     })
 
-    const handlepythonPathCheck = () => {
-        console.log("Python path checking done")
-    }
-    // UPDATE
+    const handlepythonPathCheck = () => { console.log("Python path checking done") }
 
+    // UPDATE
     let gihub_branchname =  "master", github_repo =  "FELion_GUI3", github_username =  "aravindhnivas"
     let versionFile = fs.readFileSync(path.join(__dirname, "../version.json"))
 
     let currentVersion = localStorage["version"] =  JSON.parse(versionFile.toString("utf-8")).version
+
+
     $: versionJson = `https://raw.githubusercontent.com/${github_username}/${github_repo}/${gihub_branchname}/version.json`
     $: urlzip = `https://codeload.github.com/${github_username}/${github_repo}/zip/${gihub_branchname}`
 
     const updateFolder = path.resolve(__dirname, "..", "update")
-
     const updatefilename = "update.zip"
     const zipFile = path.resolve(updateFolder, updatefilename)
 
@@ -93,9 +102,9 @@
         target.classList.toggle("is-loading")
 
         if (!navigator.onLine) {if (info) {createToast("No Internet Connection!", "warning")}; return}
-        
         console.log(`URL_Package: ${versionJson}`)
         let developer_version = false
+
         console.log(`URL_ZIP: ${urlzip}`)
         let new_version = ""
 
@@ -103,11 +112,8 @@
 
             console.log('statusCode:', res.statusCode);
             if (res.statusCode === 404) { if (info) {createToast("URL is not valid", "danger")}; return}
-
             console.log('headers:', res.headers);
-
             res.on('data', (data) => {
-
                 data = data.toString("utf8")
                 console.log(data)
                 data = JSON.parse(data)
@@ -371,6 +377,7 @@
                 <!-- Configuration -->
                 <div class="content animated fadeIn" class:active={selected==="Configuration"}>
                     <h1 class="title">Configuration</h1>
+                    <div class="subtitle">{pyVersion}</div>
                     <Textfield style="margin-bottom:1em;" bind:value={pythonpath} label="Python path" />
                     <Textfield style="margin-bottom:1em;" bind:value={pythonscript} label="Python script path" />
                     
