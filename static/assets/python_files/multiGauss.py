@@ -91,5 +91,7 @@ def fitNGaussian(gauss_args):
 if __name__ == "__main__":
     args = sys.argv[1:][0].split(",")
     args = json.loads(", ".join(args))
+
     print(f"Received args: {args}, {type(args)}\n")
+    
     fitNGaussian(args)
