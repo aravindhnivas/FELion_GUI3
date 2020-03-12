@@ -9,11 +9,12 @@ from scipy.optimize import curve_fit
 from uncertainties import ufloat as uf
 
 # FELion module
-from FELion_definitions import gauss_fit, read_dat_file
-from FELion_constants import colors 
-from FELion_definitions import sendData
+from FELion_constants import colors
+
+from FELion_definitions import sendData, read_dat_file
 
 def _2gaussian(x, amp1,cen1,sigma1, amp2,cen2,sigma2):
+
     return amp1*(np.exp((-1.0/2.0)*(((x-cen1)/sigma1)**2))) + \
             amp2*(np.exp((-1.0/2.0)*(((x-cen2)/sigma2)**2)))
 
@@ -97,7 +98,6 @@ def exp_fit(location, norm_method, start_wn, end_wn, output_filename, overwrite,
     sendData(data)
 
 if __name__ == "__main__":
-
     args = sys.argv[1:][0].split(",")
     print(f"Received args: {args}")
 
