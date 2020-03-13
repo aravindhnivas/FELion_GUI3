@@ -34,7 +34,7 @@ def fitNGaussian(gauss_args):
     print(f"Read data:\nwn: {wn.min():.2f} - {wn.max():.2f}\n")
 
     output_filename = gauss_args["output_name"]
-    fullfiles = [pt(i).stem for i in gauss_args["felixfiles"]]
+    fullfiles = [pt(i).stem for i in gauss_args["fullfiles"]]
     if output_filename == "averaged": line_color = "black"
     else:
         index = fullfiles.index(output_filename)

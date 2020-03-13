@@ -29,7 +29,10 @@
     const {BrowserWindow} = remote
     import {onMount} from "svelte"
     import VirtualList from '@sveltejs/svelte-virtual-list';
+    import {Icon} from '@smui/icon-button'
    ///////////////////////////////////////////////////////////////////////
+    
+
     const filetype="felix", id="Normline"
     let fileChecked=[], delta=1, toggleRow=false;
     $: felixfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
@@ -108,11 +111,19 @@
                 double_fit_args = opoExpFit ? [amp1, amp2, cen1, cen2, sig1, sig2, ...opofiles, overwrite_expfit, output_name, "Log", OPOLocation, ...index ]
                     : [amp1, amp2, cen1, cen2, sig1, sig2, ...felixfiles, overwrite_expfit, output_name, normMethod, currentLocation, ...index ]
                 break;
+
+            // case "NGauss_fit":
+
+            //     NGauss_fit_args = {fitNGauss_arguments:{}, fullfiles: opoExpFit ? opofiles : felixfiles, normMethod: opoExpFit ? "Log" : normMethod, output_name}
+            //     break;
+            
             case "find_peaks":
+
                 if (index.length<2 && boxSelected_peakfinder) { return createToast("Range not found!!. Select a range using Box-select", "danger") }
+                NGauss_fit_args = {fitNGauss_arguments:{}, fullfiles: opoExpFit ? opofiles : felixfiles, normMethod: opoExpFit ? "Log" : normMethod, output_name}
                 
                 let selectedIndex = boxSelected_peakfinder ? index : [0, 0]
-                find_peaks_args = opoExpFit ? [output_name, OPOLocation, "Log", peak_prominence,  peak_width, peak_height,  ...opofiles]
+                find_peaks_args = opoExpFit ? [output_name, OPOLocation, "Log", peak_prominence,  peak_width, peak_height,  ...opofiles, ...selectedIndex]
                     : [output_name, currentLocation, normMethod, peak_prominence, 
                         peak_width, peak_height,  ...felixfiles, ...selectedIndex]
 
@@ -472,7 +483,7 @@
                         Plotly.relayout(graphDiv, { annotations: [] })
                         Plotly.relayout(graphDiv, { annotations: dataFromPython[2]["annotations"] })
 
-                        NGauss_fit_args = {fitNGauss_arguments:{}, felixfiles, normMethod, output_name}
+                        
                         if (boxSelected_peakfinder) {NGauss_fit_args.index = index}
                         setTimeout(()=> {
 
@@ -483,10 +494,10 @@
                             for (let index = 0; index < peakX.length; index++) {
                                 NGauss_fit_args.fitNGauss_arguments[`cen${index}`] = peakX[index]
                                 NGauss_fit_args.fitNGauss_arguments[`A${index}`] = peakY[index]
-                                NGauss_fit_args.fitNGauss_arguments[`sigma${index}`] = 5
+                                NGauss_fit_args.fitNGauss_arguments[`sigma${index}`] = Ngauss_sigma
                             }
                             console.log(`Found peaks:\nX: ${peakX}\nY: ${peakY}`)
-                            console.log(`NGauss_fit_args:\n${NGauss_fit_args}`)
+                            console.log(`NGauss_fit_args:`, NGauss_fit_args)
                         }, 500)
 
                         console.log("Peaks found")
@@ -511,9 +522,12 @@
 
                             let newTable = {name: output_name, id:getID(), freq:freq, amp:amp, fwhm:fwhm, sig:sig, color:color}
                             dataTable = _.uniqBy([...dataTable, newTable], "freq")
-                            console.log("Line fitted")
-                            createToast("Line fitted with gaussian function", "success")
                         })
+
+                        console.log("Line fitted")
+                        createToast(`Line fitted with ${dataFromPython["fitted_parameter"].length} gaussian function`, "success")
+
+                        plot_trace_added++
 
                     }
                 } catch (err) { $modalContent = err; $activated = true }
@@ -577,13 +591,13 @@
     $: opofiles = OPOfilesChecked.map(file=>path.resolve(OPOLocation, file))
     $: graphDiv = opoExpFit ? "opoRelPlot" : "avgplot"
     $: plottedFiles = opoExpFit ? OPOfilesChecked.map(file=>file.split(".")[0]) || [] : fileChecked.map(file=>file.split(".")[0]) || []
-    let delta_OPO = 0.3, calibValue = 9396.929143696187, calibFile = ""
+    let delta_OPO = 0.3, calibValue = 9394.356278462961.toFixed(4), calibFile = ""
     let OPOcalibFiles = []
     $: if(fs.existsSync(OPOLocation)) {OPOcalibFiles = fs.readdirSync(OPOLocation).filter(file=> file.endsWith(".calibOPO"))}
     $: OPORow ? createToast("OPO MODE") : createToast("FELIX MODE")
 
     $: opoPlotted ? opoExpFit = true : opoExpFit = false
-    
+    $: Ngauss_sigma = opoExpFit ? 2 : 5
 </script>
 
 <style>
@@ -607,17 +621,22 @@
 
     * :global(.averagedTable td) { color: white; }
     
-    * :global(#felixTableContainer) {border: 1px solid #5b3ea2;}
+    * :global(#felixTableContainer) {border: 1px solid #5b3ea2; width:100%; padding-right: 1em;}
+
     * :global(#felixTableContainer thead) {background-color: #e1e1e1;}
+    
     .hide {display: none;}
     .active {display: block; }
+    
     .align {display: flex; align-items: center;}
     .felixPlot > div {margin-bottom: 1em;}
     .notification {width: 100%; border: 1px solid;}
+    
     .plotSlot > div { width: calc(100% - 1em); margin-top: 1em; }
     
     .dataTable { display: flex; justify-content: center; }
 </style>
+
 
 <QuickView style="padding:1em;" bind:active={showTheoryFiles} bind:location={theoryLocation}>
     <FileBrowser bind:currentLocation={theoryLocation} bind:fileChecked={theoryfilesChecked} filetype=""/>
@@ -648,9 +667,11 @@
                 Open in Matplotlib</button>
             <CustomCheckbox bind:selected={onlyFinalSpectrum} label="Only Final spectrum" />
             <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
+
             <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click="{()=>toggleRow = !toggleRow}">Add Theory</button>
             <button class="button is-link" on:click="{()=>{OPORow = !OPORow}}">OPO</button>
             <CustomIconSwitch bind:toggler={opoPlotted} icons={["keyboard_arrow_up", "keyboard_arrow_down"]}/>
+
         </div>
 
         <div class="animated fadeIn hide content" class:active={OPORow} >
@@ -709,11 +730,11 @@
             <div class="content">
                 <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"exp_fit"})}">Exp Fit.</button>
                 <button class="button is-link" on:click="{(e)=>toggleDoubleGaussRow = !toggleDoubleGaussRow}">Double Gauss.</button>
+                <button class="button is-link" on:click="{()=>toggleFindPeaksRow = !toggleFindPeaksRow}">Fit NGauss.</button>
                 <button class="button is-warning" on:click={clearLastPeak}>Clear Last</button>
                 <button class="button is-danger" on:click={clearAllPeak}>Clear All</button>
                 <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"get_err"})}">Weighted Mean</button>
                 <button class="button is-warning" on:click="{(e)=>{lineData_list = []; createToast("Line collection restted", "warning")}}">Reset</button>
-                <button class="button is-link" on:click="{()=>toggleFindPeaksRow = !toggleFindPeaksRow}">Find Peaks</button>
             </div>
 
             <div class="content animated fadeIn hide" class:active={toggleFindPeaksRow}>
@@ -722,7 +743,11 @@
                 <Textfield type="number" {style} bind:value={peak_width} label="Width" />
                 <Textfield type="number" {style} bind:value={peak_height} label="Height" />
                 <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"find_peaks"})}">Get Peaks</button>
+
+                <Textfield style="width:9em" bind:value={Ngauss_sigma} label="Sigma"/>
+                <Icon class="material-icons">settings</Icon>
                 <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"NGauss_fit"})}">Fit</button>
+
                 <button class="button is-danger" on:click="{(e)=>window.Plotly.relayout(graphDiv, { annotations: [] })}">Clear</button>
             </div>
 

@@ -59,9 +59,11 @@ def exp_fit(location, norm_method, start_wn, end_wn, output_filename,
             "x": uline_freq.nominal_value, "y": uamplitude.nominal_value, "xref": 'x', "yref": 'y', "text": f'{uline_freq:.2uP}', "font":{"color":line_color}, "arrowcolor":line_color,
             "showarrow": True, "arrowhead": 2, "ax": -25, "ay": -40
         }
+
     }
     
-    if getvalue: return data, uline_freq, usigma, uamplitude, ufwhm, line_color
+    if getvalue: 
+        return data, uline_freq, usigma, uamplitude, ufwhm, line_color
 
     filename = f"{output_filename}.expfit"
     expfile = datfile_location/filename
@@ -89,6 +91,7 @@ if __name__ == "__main__":
     end_wn = float(args[-1])
 
     location = pt(args[-3])
+    
     norm_method = args[-4]
     output_filename = args[-5]
     overwrite = args[-6]

@@ -22,7 +22,7 @@ export default {
 			css: css => { css.write('static/bundle.css'); },
 			preprocess: autoPreprocess()
 		}),
-		resolve({}),
+		resolve({dedupe: ['svelte', 'svelte/transition', 'svelte/internal']}),
 		commonjs(),
 		!production && livereload('static'),
 

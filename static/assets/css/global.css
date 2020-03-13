@@ -27,7 +27,7 @@ hr {background-color: #dbdbdb;}
 /* Scrollbar */
 
 ::-webkit-scrollbar {
-	width: 0.5em;
+	width: 1em;
 }
 
 /* Track */

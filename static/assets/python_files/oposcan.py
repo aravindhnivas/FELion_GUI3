@@ -58,11 +58,11 @@ def binning(xs, ys, delta=0.2):
         bins = np.arange(BIN_START, BIN_STOP, BIN_STEP)
         # print("Binning starts: ", BIN_START,
         #    ' with step: ', BIN_STEP, ' ENDS: ', BIN_STOP)
-
         bin_i = np.digitize(datax, bins)
-        bin_a = np.zeros(len(bins) + 1)
-        bin_occ = np.zeros(len(bins) + 1)
 
+        bin_a = np.zeros(len(bins) + 1)
+        
+        bin_occ = np.zeros(len(bins) + 1)
         for i in range(datay.size):
 
             bin_a[bin_i[i]] += datay[i]
@@ -87,7 +87,6 @@ def opoplot(opofiles, tkplot, delta, calibValue, calibFile):
         widget = FELion_Tk(title="OPO Spectrum", location=opofiles[0].parent)
         fig, canvas = widget.Figure()
         ax = widget.make_figure_layout(title="OPO Spectrum", xaxis="Wavenumber (cm-1)", yaxis="Intensity", savename="OPOspectrum")
-
     data = {"real":{}, "relative":{}, "SA":{}}
     xs, ys = [], []
     c = 0
@@ -98,9 +97,9 @@ def opoplot(opofiles, tkplot, delta, calibValue, calibFile):
     if calibFile.exists():
         calibdata = np.genfromtxt(calibFile).T
         # wavemeterCalib_air = 9396.929143696187
-        # wavemeterCalib_vaccum = 9394.356278462961
+        wavemeterCalib_vaccum = 9394.356278462961
+        calibdata -= wavemeterCalib_vaccum
 
-        calibdata -= calibValue
         saCal = SpectrumAnalyserCalibrator(data=calibdata, manual=True)
 
         setwn, getwn = calibdata
@@ -190,6 +189,9 @@ if __name__ == "__main__":
     tkplot = (False, True)[args[-4] == "plot"]
     delta = float(args[-3])
     calibValue = float(args[-2])
+
     calibFile = args[-1]
+
+    print(calibValue)
 
     opoplot(opofiles, tkplot, delta, calibValue, calibFile)

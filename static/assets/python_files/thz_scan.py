@@ -65,7 +65,7 @@ def thz_plot(filename):
 
     resOffCounts, resOnCounts = resOff.T[1:], resOn.T[1:]
 
-    return freq, depletion_counts, f"{steps} KHz : {iteraton} cycles", resOffCounts, resOnCounts, freq_resOff
+    return freq, depletion_counts, steps, iteraton, resOffCounts, resOnCounts, freq_resOff
 
 def binning(xs, ys, delta=1e-5):
 
@@ -100,6 +100,7 @@ def binning(xs, ys, delta=1e-5):
 
     binsx, data_binned = [], []
     for i in range(bin_occ.size - 1):
+
         if bin_occ[i] > 0:
             binsx.append(bins[i] - BIN_STEP / 2)
             data_binned.append(bin_a[i] / bin_occ[i])
@@ -107,7 +108,6 @@ def binning(xs, ys, delta=1e-5):
     # non_zero_i = bin_occ > 0
     # binsx = bins[non_zero_i] - BIN_STEP/2
     # data_binned = bin_a[non_zero_i]/bin_occ[non_zero_i]
-
     # print("after binning", binsx, data_binned)
     binsx = np.array(binsx, dtype=np.float)
 
@@ -122,7 +122,7 @@ def plot_thz(ax=None, tkplot=False, save_dat=True, latex=False, justPlot=False, 
 
     for i, filename in enumerate(filenames):
         filename = pt(filename)
-        freq, depletion_counts, iteraton, resOffCounts, resOnCounts, freq_resOff = thz_plot(filename)
+        freq, depletion_counts, steps, iteraton, resOffCounts, resOnCounts, freq_resOff = thz_plot(filename)
         xs = np.append(xs, freq)
         ys = np.append(ys, depletion_counts)
         export_file(filename.stem, freq, depletion_counts)
@@ -132,7 +132,8 @@ def plot_thz(ax=None, tkplot=False, save_dat=True, latex=False, justPlot=False, 
 
 
 
-        lg = f"{filename.name} [{iteraton}]"
+        weight = 1/depletion_counts.std()**2
+        lg = f"{filename.name} [{steps} KHz : {iteraton} cycles]; {weight:.2f}"
 
         if justPlot:
             data["thz"][f"{filename.name}"] = {"x": list(freq), "y": list(depletion_counts), "name": lg, 
