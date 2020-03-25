@@ -14,12 +14,14 @@ import numpy as np
 from scipy.interpolate import interp1d
 
 # FELion modules
+
 from FELion_baseline_old import felix_read_file, BaselineCalibrator
 from FELion_power import PowerCalibrator
 from FELion_sa import SpectrumAnalyserCalibrator
 from baseline import Create_Baseline
 from FELion_definitions import sendData
 from FELion_constants import colors
+
 ######################################################################################
 
 def var_find(openfile):
@@ -87,7 +89,6 @@ class normplot:
                                 felix_hz = int(line.split(" ")[1])
                                 break
                 self.felix_hz = int(felix_hz)
-
             except: self.felix_hz = 10
             self.nshots = int((trap/1000) * self.felix_hz)
 
@@ -286,7 +287,6 @@ class normplot:
         baseCal = BaselineCalibrator(basefile)
         self.saCal = SpectrumAnalyserCalibrator(felixfile)
         wavelength = self.saCal.sa_cm(data[0])
-
         self.power_measured = powCal.power(data[0])
         self.total_power = self.power_measured*self.nshots
 
@@ -315,14 +315,7 @@ class normplot:
                 f.write("#NormalisedWavelength(cm-1)\t#NormalisedIntensity\t#RelativeDepletion(%)\t#IntensityPerPhoton\n")
                 for i in range(len(wn)):
                     f.write(f"{wn[i]}\t{inten[i]}\t{relative_depletion[i]}\t{energyPerPhoton[i]}\n")
-
-        expfitFile = pt(f"./EXPORT/{fname}.expfit")
-
-        if not expfitFile.exists():
-            
-            with open(expfitFile, 'w+') as f:
-                f.write(f"#Frequency\t#Freq_err\t#Sigma\t#Sigma_err\t#FWHM\t#FWHM_err\t#Amplitude\t#Amplitude_err\n")
-            
+        
     def felix_binning(self, xs, ys):
 
         delta = self.delta

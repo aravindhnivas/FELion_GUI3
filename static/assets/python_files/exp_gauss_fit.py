@@ -65,20 +65,17 @@ def exp_fit(location, norm_method, start_wn, end_wn, output_filename,
     if getvalue: 
         return data, uline_freq, usigma, uamplitude, ufwhm, line_color
 
-    filename = f"{output_filename}.expfit"
+    filename = f"{output_filename}_{norm_method}.expfit"
     expfile = datfile_location/filename
-
-    if overwrite:
-        with open(expfile, "w") as f:
+    
+    if not expfile.exists():
+        with open(expfile, 'w+') as f:
             f.write(f"#Frequency\t#Freq_err\t#Sigma\t#Sigma_err\t#FWHM\t#FWHM_err\t#Amplitude\t#Amplitude_err\n")
             
-            f.write(f"{line_freq_fit:.4f}\t{uline_freq.std_dev:.4f}\t{sigma:.4f}\t{usigma.std_dev:.4f}\t{fwhm:.4f}\t{ufwhm.std_dev:.4f}\t{amplitude:.4f}\t{uamplitude.std_dev:.4f}\n")
+    with open(expfile, ("a+", "w+")[overwrite]) as f:
 
-    else:
-        with open(expfile, "a") as f:
-
-            f.write(f"{line_freq_fit:.4f}\t{uline_freq.std_dev:.4f}\t{sigma:.4f}\t{usigma.std_dev:.4f}\t{fwhm:.4f}\t{ufwhm.std_dev:.4f}\t{amplitude:.4f}\t{uamplitude.std_dev:.4f}\n")
-
+        if overwrite: f.write(f"#Frequency\t#Freq_err\t#Sigma\t#Sigma_err\t#FWHM\t#FWHM_err\t#Amplitude\t#Amplitude_err\n")
+        f.write(f"{line_freq_fit:.4f}\t{uline_freq.std_dev:.4f}\t{sigma:.4f}\t{usigma.std_dev:.4f}\t{fwhm:.4f}\t{ufwhm.std_dev:.4f}\t{amplitude:.4f}\t{uamplitude.std_dev:.4f}\n")
     sendData(data)
 
 if __name__ == "__main__":

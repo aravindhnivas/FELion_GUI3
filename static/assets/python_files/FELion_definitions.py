@@ -9,7 +9,9 @@ from pathlib import Path as pt
 from uncertainties import ufloat as uf, unumpy as unp
 import numpy as np
 from scipy.optimize import curve_fit
+from scipy.interpolate import interp1d
 
+from uncertainties import ufloat as uf, unumpy as unp
 
 def gaussian(x, amp, sig, cen): return amp*np.exp(-0.5*((x-cen)/sig)**2)
 
@@ -70,3 +72,34 @@ def sendData(dataToSend):
     with open(pt(__file__).parent / "data.json", 'w+') as f:
         data = json.dumps(dataToSend, sort_keys=True, indent=4, separators=(',', ': '))
         f.write(data)
+
+def convert_intesities(felixlocation, output_filename, wn, inten, norm_method):
+    if pt(f"{felixlocation}/{output_filename}.felix").exists(): felixfile = felixlocation / f"{output_filename}.felix"
+    else: felixfile = felixlocation / f"{output_filename}.cfelix"
+    
+    powerfile = felixlocation / f"{output_filename}.pow"
+    with open(powerfile) as f:
+        for line in f:
+            if line[0] == "#":
+                if line.find("Hz") > -1:
+                    felix_hz = int(line.split(" ")[1])
+                    break
+    
+    pow_x, pow_y = np.genfromtxt(powerfile).T
+    intepd_power = interp1d(pow_x, pow_y, kind="linear",  fill_value='extrapolate')
+    power_measured = intepd_power(wn)
+    felix_hz = int(felix_hz)
+    res, b0, trap = var_find(felixfile)
+
+    nshots = int((trap/1000) * felix_hz)
+    total_power = power_measured*nshots
+    if norm_method == "Relative": ratio = -((inten/100)-1)
+    elif norm_method == "Log": ratio = np.e**(-(inten/1000)*total_power)
+    else:
+        logInten = (inten*1e3)/wn
+        ratio = np.e**(-(logInten/1000)*total_power)
+    log_intensity = (-unp.log(ratio)/total_power)*1000
+
+    log_hv_intensity = (wn * log_intensity) / 1e3
+    relative_depletion =(1-ratio)*100
+    return [relative_depletion.nominal_value, relative_depletion.std_dev],      [log_intensity.nominal_value, log_intensity.std_dev], [log_hv_intensity.nominal_value, log_hv_intensity.std_dev]

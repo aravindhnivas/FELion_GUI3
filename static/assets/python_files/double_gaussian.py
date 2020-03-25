@@ -81,20 +81,19 @@ def exp_fit(location, norm_method, start_wn, end_wn, output_filename, overwrite,
         ]
     }
 
-    filename = f"{output_filename}.expfit"
+    filename = f"{output_filename}_{norm_method}.expfit"
     expfile = datfile_location/filename
-
-    if overwrite:
-        with open(expfile, "w") as f:
-
+    
+    if not expfile.exists():
+        with open(expfile, 'w+') as f:
             f.write(f"#Frequency\t#Freq_err\t#Sigma\t#Sigma_err\t#FWHM\t#FWHM_err\t#Amplitude\t#Amplitude_err\n")
-            f.write(f"{cen1:.4f}\t{cen1_err:.4f}\t{sig1:.4f}\t{sig1_err:.4f}\t{uFWHM1.nominal_value:.4f}\t{uFWHM1.std_dev:.4f}\t{amp1:.4f}\t{amp1_err:.4f}\n")
-            f.write(f"{cen2:.4f}\t{cen2_err:.4f}\t{sig2:.4f}\t{sig2_err:.4f}\t{uFWHM2.nominal_value:.4f}\t{uFWHM2.std_dev:.4f}\t{amp2:.4f}\t{amp2_err:.4f}\n")
-    else:
-        with open(expfile, "a") as f:
 
-            f.write(f"{cen1:.4f}\t{cen1_err:.4f}\t{sig1:.4f}\t{sig1_err:.4f}\t{uFWHM1.nominal_value:.4f}\t{uFWHM1.std_dev:.4f}\t{amp1:.4f}\t{amp1_err:.4f}\n")
-            f.write(f"{cen2:.4f}\t{cen2_err:.4f}\t{sig2:.4f}\t{sig2_err:.4f}\t{uFWHM2.nominal_value:.4f}\t{uFWHM2.std_dev:.4f}\t{amp2:.4f}\t{amp2_err:.4f}\n")
+    with open(expfile, ("a+", "w+")[overwrite]) as f:
+        
+        if overwrite: f.write(f"#Frequency\t#Freq_err\t#Sigma\t#Sigma_err\t#FWHM\t#FWHM_err\t#Amplitude\t#Amplitude_err\n")
+
+        f.write(f"{cen1:.4f}\t{cen1_err:.4f}\t{sig1:.4f}\t{sig1_err:.4f}\t{uFWHM1.nominal_value:.4f}\t{uFWHM1.std_dev:.4f}\t{amp1:.4f}\t{amp1_err:.4f}\n")
+        f.write(f"{cen2:.4f}\t{cen2_err:.4f}\t{sig2:.4f}\t{sig2_err:.4f}\t{uFWHM2.nominal_value:.4f}\t{uFWHM2.std_dev:.4f}\t{amp2:.4f}\t{amp2_err:.4f}\n")
     sendData(data)
 
 if __name__ == "__main__":
@@ -113,5 +112,4 @@ if __name__ == "__main__":
 
     if overwrite == "true": overwrite = True
     else: overwrite = False
-
     exp_fit(location, norm_method, start_wn, end_wn, output_filename, overwrite, fullfiles, amp1, amp2, cen1, cen2, sig1, sig2)
