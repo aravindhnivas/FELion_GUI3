@@ -112,10 +112,11 @@
                     : [amp1, amp2, cen1, cen2, sig1, sig2, ...felixfiles, overwrite_expfit, output_name, normMethod, currentLocation, ...index ]
                 break;
 
-            // case "NGauss_fit":
+            case "NGauss_fit":
 
-            //     NGauss_fit_args = {fitNGauss_arguments:{}, fullfiles: opoExpFit ? opofiles : felixfiles, normMethod: opoExpFit ? "Log" : normMethod, output_name}
-            //     break;
+                NGauss_fit_args = {...NGauss_fit_args, overwrite_expfit}
+
+                break;
             
             case "find_peaks":
 
@@ -513,12 +514,6 @@
                                 dataTable_avg = _.uniqBy(dataTable_avg, "freq")
                                 line_index_count++
                             }
-                            // else {
-                            //     if (collectData) {
-                            //         console.log("Collecting lines")
-                            //         lineData_list = [...lineData_list, ...dataFromPython["for_weighted_error"]]
-                            //         }
-                            // }
 
                             let newTable = {name: output_name, id:getID(), freq:freq, amp:amp, fwhm:fwhm, sig:sig, color:color}
                             dataTable = _.uniqBy([...dataTable, newTable], "freq")
@@ -639,7 +634,8 @@
 
 
 <QuickView style="padding:1em;" bind:active={showTheoryFiles} bind:location={theoryLocation}>
-    <FileBrowser bind:currentLocation={theoryLocation} bind:fileChecked={theoryfilesChecked} filetype=""/>
+
+    <FileBrowser bind:currentLocation="{theoryLocation}" bind:fileChecked={theoryfilesChecked} filetype=""/>
     <div slot="footer" style="margin:auto">
         <button class="button is-link" on:click="{(e)=>{plotData({e:e, filetype:"theory"}); localStorage["theoryLocation"] = theoryLocation}}">Submit</button>
     </div>
