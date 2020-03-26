@@ -81,53 +81,43 @@ def fitNGaussian(gauss_args):
     line_color = getColorIndex(fullfiles, output_filename)
 
     fit_guesses = gauss_args["fitNGauss_arguments"]
-    
     wn_found_peaks = [fit_guesses[key] for key in fit_guesses.keys() if key.startswith("cen")]
+
     filtered_index = np.in1d(wn, wn_found_peaks)
-
-    init_guess = list(fit_guesses.values())
-    popt_Ngauss, popt_Ngauss_, perr_Ngauss_, gfn, N = fitNGauss(init_guess, wn, inten)
-
-    _sig = "\u03C3"
-    _del = "\u0394"
-
+    _sig, _del  = "\u03C3",  "\u0394"
     fwhm = lambda usigma: 2*usigma*np.sqrt(2*np.log(2))
     dataTosend = {}
-
-    dataTosend["fitted_data"] = { "x":list(wn), "y":list(gfn(wn, *popt_Ngauss)),  "mode": "lines", "name":f"{N} Gaussian", "line": {"color":line_color} }
-    dataTosend["fitted_parameter"] = [
-        { "freq": f"{uf(fit[0], err[0]):.2uP}", "amp":f"{uf(fit[1], err[1]):.2uP}", "sig":f"{uf(fit[2], err[2]):.2uP}", "fwhm":f"{fwhm(uf(fit[2], err[2])):.2uP}"}
-        for fit, err in zip(popt_Ngauss_, perr_Ngauss_)
-    ]
-
-    dataTosend["for_weighted_error"] = [
-        f"{fit[0]}, {err[0]}, {fit[1]}, {err[1]}, {fwhm(uf(fit[2], err[2])).nominal_value}, {fwhm(uf(fit[2], err[2])).std_dev}, {fit[2]}, {err[2]}"
-        for fit, err in zip(popt_Ngauss_, perr_Ngauss_)
-    ]
-
-    sendData(dataTosend)
     datfile = readfile.parent/f"{output_filename}.dat"
     overwrite = gauss_args["overwrite_expfit"]
     _data = np.genfromtxt(datfile)
     normMethods = ["Relative", "Log", "IntensityPerPhoton"]
 
     for method in normMethods:
+
         print(f"Fitting for method: {method}\n")
-       
         _wn, _inten = filterWn(datfile, method, index)
-       
         _guess_inten = _inten[filtered_index]
         print(f"Guessed Intesity: {_guess_inten}\n")
-
         for i, guess_amp in enumerate(_guess_inten): fit_guesses[f"A{i}"] = guess_amp
-        
         init_guess = list(fit_guesses.values())
-        try: _popt_Ngauss, _popt_Ngauss_, _perr_Ngauss_, _gfn, _N = fitNGauss(init_guess, _wn, _inten)
-        except Exception as error: 
-            raise Exception(f"Error while fitting {error}")        
-            return
 
-            
+        _popt_Ngauss, _popt_Ngauss_, _perr_Ngauss_, _gfn, _N = fitNGauss(init_guess, _wn, _inten)
+
+        if norm_method == method:
+
+            dataTosend["fitted_data"] = { "x":list(_wn), "y":list(_gfn(_wn, *_popt_Ngauss)),  "mode": "lines", "name":f"{_N} Gaussian", "line": {"color":line_color} }
+            dataTosend["fitted_parameter"] = [
+                { "freq": f"{uf(fit[0], err[0]):.2uP}", "amp":f"{uf(fit[1], err[1]):.2uP}", "sig":f"{uf(fit[2], err[2]):.2uP}", "fwhm":f"{fwhm(uf(fit[2], err[2])):.2uP}"}
+                for fit, err in zip(_popt_Ngauss_, _perr_Ngauss_)
+            ]
+
+            dataTosend["for_weighted_error"] = [
+                f"{fit[0]}, {err[0]}, {fit[1]}, {err[1]}, {fwhm(uf(fit[2], err[2])).nominal_value}, {fwhm(uf(fit[2], err[2])).std_dev}, {fit[2]}, {err[2]}"
+                for fit, err in zip(_popt_Ngauss_, _perr_Ngauss_)
+            ]
+
+            sendData(dataTosend)
+
         _fitted_freq = np.array([_popt_Ngauss_, _perr_Ngauss_]).T[0]
         _fitted_inten = np.array([_popt_Ngauss_, _perr_Ngauss_]).T[1]
         _fitted_sigma = np.array([_popt_Ngauss_, _perr_Ngauss_]).T[2]
@@ -138,7 +128,7 @@ def fitNGaussian(gauss_args):
         with open(fitfile, ("a+", "w+")[overwrite]) as f:
         
             if overwrite: f.write(f"#Wn(cm-1)\tIntensity\n")
-            for freq, inten in zip(_wn, gfn(_wn, *_popt_Ngauss)): f.write(f"{freq:.4f}\t{inten:.4f}\n")
+            for freq, inten in zip(_wn, _gfn(_wn, *_popt_Ngauss)): f.write(f"{freq:.4f}\t{inten:.4f}\n")
     
         with open(expfile, ("a+", "w+")[overwrite]) as f:
             if overwrite: 
