@@ -4,31 +4,61 @@ import numpy as np
 from scipy.signal import find_peaks as peak
 from pathlib import Path as pt
 import json, sys
+from FELion_definitions import read_dat_file, sendData
 
-
-from FELion_definitions import read_dat_file
 from FELion_widgets import FELion_Tk
 from FELion_constants import colors 
-from FELion_definitions import sendData
-
 from exp_gauss_fit import exp_fit
 
-def fit_all_peaks(filename, norm_method, prominence=None, width=None, height=None,  fullfiles=None, start_wn=None, end_wn=None):
 
-    wn, inten = read_dat_file(filename, norm_method)
+def fit_all_peaks(args):
 
-    print(f"Read data:\nwn: {wn.min():.2f} - {wn.max():.2f}")
+    norm_method = args["normMethod"]
+
+    prominence = args["peak_prominence"]
+    width = args["peak_width"]
+    height = args["peak_height"]
+    start_wn, end_wn = args["selectedIndex"]
+    
+    # Reading file
+    fullfiles = [pt(i) for i in args["fullfiles"]]
+    for i, f in enumerate(fullfiles):
+    
+        if f.stem == args["output_name"]:
+
+            filename = fullfiles[i]
+            if f.stem == "averaged": line_color = "black"
+            else: line_color = f"rgb{colors[2*i]}"
+            extname = filename.suffix.split(".")[1]
+            if "felix" in extname or filename.stem == "averaged":
+                print("Reading felix file\n")
+                location = pt(args["location"])
+
+                if location.name == "DATA": location = location.parent
+
+                filename = location / f"EXPORT/{filename.stem}.dat"
+
+                wn, inten = read_dat_file(filename, norm_method)
+            else:
+                print("Reading added file\n")
+                col = np.array(args["addedFileCol"].split(", "), dtype=int)
+                scale = float(args["addedFileScale"])
+                wn, inten = np.genfromtxt(f).T[col]
+                inten *= scale
+            
+            print(f"Read {filename.name} from \n{filename.parent}\nwn range: {wn.min():.2f} - {wn.max():.2f}\n")
+
+            break
 
     if start_wn > 0:
+
         print(f"Selecting data from {start_wn} - {end_wn}\n")
-    
         index = np.logical_and(wn > start_wn, wn < end_wn)
     
         wn = wn[index]
         inten = inten[index]
         print(f"Processed data:\nwn: {wn.min():.2f} - {wn.max():.2f}")
         
-
     indices, _ = peak(inten, prominence=prominence, width=width, height=height)
     _["wn_range"] = np.array([wn[_["left_bases"]], wn[_["right_bases"]]]).T
     for item in _: _[item] = _[item].tolist()
@@ -37,13 +67,8 @@ def fit_all_peaks(filename, norm_method, prominence=None, width=None, height=Non
     inten_ = list(inten[indices])
 
     data = {"data": {}, "extras": _, "annotations":{}}
-
-    if filename.stem == "averaged": line_color = "black"
-    else:
-        index = fullfiles.index(filename.stem)
-        line_color = f"rgb{colors[2*index]}"
-
     data["data"] = {
+
         "x":wn_, "y":inten_, "name":"peaks", "mode":"markers",
         "marker":{
             "color":"blue", "symbol": "star-triangle-up", "size": 12
@@ -52,6 +77,7 @@ def fit_all_peaks(filename, norm_method, prominence=None, width=None, height=Non
 
     data["annotations"] = [
             {
+
             "x": x,
             "y": y,
             "xref": 'x',
@@ -67,36 +93,13 @@ def fit_all_peaks(filename, norm_method, prominence=None, width=None, height=Non
         
     ]
     dataToSend = [{"data": data["data"]}, {"extras":data["extras"]}, {"annotations":data["annotations"]}, {"filename":str(filename)}]
-
     sendData(dataToSend)
+    print("Data sent")
 
 if __name__ == "__main__":
+
     args = sys.argv[1:][0].split(",")
-    filename = args[0]
-
-    location = pt(args[1])
-    if location.name == "DATA": location = location.parent
-    filename = location / f"EXPORT/{filename}.dat"
-
-    norm_method = args[2]
-
-    prominence = args[3]
-    if prominence == "": prominence = None
-    else: prominence = float(prominence)
-
-    width = args[4]
-    if width == "": width = None
-    else: width = float(width)
-
-    height = args[5]
-    if height == "": height = None
-    else: height = float(height)
-
-    fullfiles = [pt(i).stem for i in args[6:-2]]
-
-
-    start_wn = float(args[-2])
-    end_wn = float(args[-1])
+    args = json.loads(", ".join(args))
     
-    print(start_wn, end_wn)
-    fit_all_peaks(filename, norm_method, prominence, width, height, fullfiles, start_wn, end_wn)
+    print(f"Received args: {args}, {type(args)}\n")
+    fit_all_peaks(args)

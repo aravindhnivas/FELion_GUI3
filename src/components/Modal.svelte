@@ -41,7 +41,12 @@
     <section class="modal-card-body"> {$modalContent} </section>
 
     <footer class="modal-card-foot">
-      <button class="button is-link" style="margin-left:auto;" on:click={()=>active = false}>Cancel</button>
+
+      <div style="margin-left:auto;">
+
+        <button class="button is-link" on:click={()=>active = false}>Cancel</button>
+        <slot name="footerBtn" />
+      </div>
     </footer>
 
   </div>

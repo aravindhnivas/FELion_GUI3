@@ -1,36 +1,32 @@
-# Importing Modules
 
 # System modules
-import sys
-import json
-import os
-import shutil
+import sys, json, os, shutil
 from os.path import isdir, isfile, dirname
 from pathlib import Path as pt, PurePosixPath as pt2
 from itertools import cycle
 
 # Data analysis
+
 import numpy as np
 from scipy.interpolate import interp1d
 
-# FELion modules
 
+# FELion modules
 from FELion_baseline_old import felix_read_file, BaselineCalibrator
 from FELion_power import PowerCalibrator
+
 from FELion_sa import SpectrumAnalyserCalibrator
+
 from baseline import Create_Baseline
 from FELion_definitions import sendData
 from FELion_constants import colors
-
 ######################################################################################
 
 def var_find(openfile):
 
-    var = {'res': 'm03_ao13_reso', 'b0': 'm03_ao09_width',
-           'trap': 'm04_ao04_sa_delay'}
-    with open(openfile, 'r') as mfile:
-        mfile = np.array(mfile.readlines())
+    var = {'res': 'm03_ao13_reso', 'b0': 'm03_ao09_width', 'trap': 'm04_ao04_sa_delay'}
 
+    with open(openfile, 'r') as mfile: mfile = np.array(mfile.readlines())
     for line in mfile:
         if not len(line.strip()) == 0 and line.split()[0] == '#':
             for j in var:
@@ -39,49 +35,52 @@ def var_find(openfile):
 
     res, b0, trap = round(var['res'], 2), int(
         var['b0']/1000), int(var['trap']/1000)
-
     return res, b0, trap
 
 class normplot:
+
     def __init__(self, received_files, delta, output_filename="averaged"):
+
 
         self.delta = delta
         received_files = [pt(files) for files in received_files]
         location = received_files[0].parent
-
         back_dir = dirname(location)
         folders = ["DATA", "EXPORT", "OUT"]
         if set(folders).issubset(os.listdir(back_dir)): 
             self.location = pt(back_dir)
         else: 
             self.location = pt(location)
-
         os.chdir(self.location)
         dataToSend = {"felix": {}, "base": {}, "average": {}, "SA": {}, "pow": {}, "felix_rel": {}, "average_rel": {}, "felix_per_photon": {}, "average_per_photon": {}}
 
         # For Average binning (Norm. method: log)
         xs = np.array([], dtype=np.float)
         ys = np.array([], dtype=np.float)
-
-        # For Average binning (Norm. method: rel)
         xs_r = np.array([], dtype=np.float)
         ys_r = np.array([], dtype=np.float)
+
+        def makeDataToSend(x, y, name, update={}):
+
+            data = { **update, "x": list(x), "y": list(y), "name": name}
+            return data
 
         c = 0
         group = 1
         color_size = len(colors)
-
         for filename in received_files:
 
             res, b0, trap = var_find(filename)
+
             label = f"Res:{res}; B0: {b0}ms; trap: {trap}ms"
-            
             felixfile = filename.name
+            
             fname = filename.stem
             basefile = f"{fname}.base"
             powerfile = f"{fname}.pow"
-            
+
             try:
+
                 with open(f"./DATA/{powerfile}") as f:
                     for line in f:
                         if line[0] == "#":
@@ -90,8 +89,8 @@ class normplot:
                                 break
                 self.felix_hz = int(felix_hz)
             except: self.felix_hz = 10
-            self.nshots = int((trap/1000) * self.felix_hz)
 
+            self.nshots = int((trap/1000) * self.felix_hz)
             self.filetypes = [felixfile, basefile, powerfile]
 
             for folder, filetype in zip(folders, self.filetypes):
@@ -116,122 +115,58 @@ class normplot:
 
             # Wavelength and intensity of individuals with binning
             wavelength, intensity = self.felix_binning(wavelength, intensity)
-
-            wavelength_rel, relative_depletion = self.felix_binning(
-                wavelength_rel, relative_depletion)
-
+            wavelength_rel, relative_depletion = self.felix_binning( wavelength_rel, relative_depletion)
             energyJ = self.inten_per_photon(wavelength, intensity)
             self.export_file(fname, wavelength, intensity, relative_depletion, energyJ, raw_intensity)
 
             ################### Spectrum Analyser #################################
-
-            # print(self.saCal.get_data().size)
             wn, sa = self.saCal.get_data()
+            
             X = np.arange(wn.min(), wn.max(), 1)
             
-            dataToSend["SA"][felixfile] = {
-                "x": list(wn),
-                "y": list(sa),
-                "name": f"{filename.stem}_SA",
-                "mode": "markers",
-                "line": {"color": f"rgb{colors[c]}"},
-                "legendgroup": f'group{group}',
-            }
-
-            dataToSend["SA"][f"{felixfile}_fit"] = {
-                "x": list(X),
-                "y": list(self.saCal.sa_cm(X)),
-                "name": f"{filename.stem}_fit",
-                "type": "scatter",
-                "line": {"color": "black"},
-                "showlegend": False,
-                "legendgroup": f'group{group}',
-            }
+            lineColor = {"color": f"rgb{colors[c]}"}
+            blackColor = {"color": "black"}
             
+            groupItem = {"legendgroup": f'group{group}'}
+            nolegend = {"showlegend": False}
+
+            
+            dataToSend["SA"][felixfile] = makeDataToSend(wn, sa, f"{filename.stem}_SA", update={"line":lineColor, **groupItem, "mode": "markers"})
+
+            dataToSend["SA"][f"{felixfile}_fit"] = makeDataToSend(X, self.saCal.sa_cm(X), f"{filename.stem}_fit", update={"mode": "lines", "line":blackColor, **groupItem, **nolegend})
+
+
+            powlegend = f"{powerfile}: [{self.nshots} - ({self.felix_hz}Hz)]"
+            dataToSend["pow"][powerfile] = makeDataToSend(wavelength, self.total_power, powlegend, update={"mode": "markers", "xaxis": "x2", "yaxis": "y2",  "marker": lineColor, **groupItem})            
             ################### Spectrum Analyser END #################################
 
-
+            
             ################### Averaged and Normalised Spectrum #################################
 
             # Normalised Intensity
-
-            dataToSend["average"][felixfile] = {
-                "x": list(wavelength),
-                "y": list(intensity),
-                "name": felixfile,
-                "fill": 'tozeroy',
-                "mode": "lines+markers",
-                "line": {"color": f"rgb{colors[c]}"},
-                "marker": {"size":1}
-            }
-
-            # Relative Depletion Intensity
-            dataToSend["average_rel"][felixfile] = {
-                "x": list(wavelength_rel),
-                "y": list(relative_depletion),
-                "name": felixfile,
-                "fill": 'tozeroy',
-                "mode": "lines+markers",
-                "line": {"color": f"rgb{colors[c]}"},
-                "marker": {"size":1}
-            }
-
-            # Intensitz per photon
-            dataToSend["average_per_photon"][felixfile] = {
-                "x": list(wavelength),
-                "y": list(energyJ),
-                "name": felixfile,
-                "fill": 'tozeroy',
-                "mode": "lines+markers",
-                "line": {"color": f"rgb{colors[c]}"},
-                "marker": {"size":1}
-            }
+            
+            defaultStyle={"mode": "lines+markers", "fill": 'tozeroy', "marker": {"size":1}, "line":lineColor}
+            dataToSend["average"][felixfile] = makeDataToSend(wavelength, intensity, felixfile, update=defaultStyle)
+            dataToSend["average_rel"][felixfile] = makeDataToSend(wavelength_rel, relative_depletion, felixfile, update=defaultStyle)
+            dataToSend["average_per_photon"][felixfile] = makeDataToSend(wavelength, energyJ, felixfile, update=defaultStyle)
+            
             ################### Averaged Spectrum END #################################
 
             basefile_data = np.array(
                 Create_Baseline(felixfile, self.location,
-                                plotIt=False, checkdir=False, verbose=False).get_data()
+                    plotIt=False, checkdir=False, verbose=False).get_data()
             )
 
             # Ascending order sort by wn
             base_line = basefile_data[1][0]
-            base_line = np.take(
-                base_line, base_line[0].argsort(), 1).tolist()
+            base_line = np.take( base_line, base_line[0].argsort(), 1).tolist()
+
             base_felix = basefile_data[0]
-            base_felix = np.take(
-                base_felix, base_felix[0].argsort(), 1).tolist()
+            base_felix = np.take( base_felix, base_felix[0].argsort(), 1).tolist()
 
-            dataToSend["base"][f"{felixfile}_base"] = {
-                "x": list(base_felix[0]),
-                "y": list(base_felix[1]),
-                "name": f"{felixfile}: {label}",
-                "mode": "lines",
-                "line": {"color": f"rgb{colors[c]}"},
-                "legendgroup": f'group{group}'
-            }
-
-            dataToSend["base"][f"{felixfile}_line"] = {
-                "x": list(base_line[0]),
-                "y": list(base_line[1]),
-                "name": f"{filename.stem}_base",
-                "mode": "lines+markers",
-                "marker": {"color": "black"},
-                "legendgroup": f'group{group}',
-                "showlegend": False,
-            }
-
-            dataToSend["pow"][powerfile] = {
-                "x": list(wavelength),
-                "y": list(self.total_power),
-                "name": f"{powerfile}: [{self.nshots} - ({self.felix_hz}Hz)]",
-                "mode": "markers",
-                "xaxis": "x2",
-                "yaxis": "y2",
-                "marker": {"color": f"rgb{colors[c]}"},
-                "legendgroup": f'group{group}',
-                "showlegend": True,
-            }
-
+            dataToSend["base"][f"{felixfile}_base"] = makeDataToSend(base_felix[0], base_felix[1], f"{felixfile}: {label}", update={"mode": "lines", "line":lineColor, **groupItem })
+            dataToSend["base"][f"{felixfile}_line"] = makeDataToSend(base_line[0], base_line[1], f"{felixfile}: {label}", update={"mode": "lines+markers", "line":blackColor, **groupItem, **nolegend})
+            
             group += 1
             c += 2
 
@@ -239,67 +174,45 @@ class normplot:
 
         # For Normalised Intensity
         binns, intens = self.felix_binning(xs, ys)
-        dataToSend["average"]["average"] = {
-            "x": list(binns),
-            "y": list(intens),
-            "name": "averaged",
-            "mode": "lines+markers",
-            "line": {"color": "black"},
-            "marker": {"size":1}
-        }
-
-        # For intensityPerPhoton
         energyJ_norm = self.inten_per_photon(binns, intens)
-        dataToSend["average_per_photon"]["average"] = {
-            "x": list(binns),
-            "y": list(energyJ_norm),
-            "name": "averaged",
-            "mode": "lines+markers",
-            "line": {"color": "black"},
-            "marker": {"size":1}
-        }
-
-
-        # For relative
         binns_r, intens_r = self.felix_binning(xs_r, ys_r)
-        dataToSend["average_rel"]["average"] = {
-            "x": list(binns_r),
-            "y": list(intens_r),
-            "name": "averaged",
-            "mode": "lines+markers",
-            "line": {"color": "black"},
-            "marker": {"size":1}
-        }
-
+        
+        defaultStyle={"mode": "lines+markers", "marker": {"size":1}, "line":blackColor}
+        
+        dataToSend["average"]["average"] = makeDataToSend(binns, intens, "averaged", update=defaultStyle)
+        dataToSend["average_rel"]["average"] = makeDataToSend(binns_r, intens_r, "averaged", update=defaultStyle)
+        dataToSend["average_per_photon"]["average"] = makeDataToSend(binns, energyJ_norm, "averaged", update=defaultStyle)
+        
         # Exporting averaged.dat file
         self.export_file(f"averaged", binns, intens, intens_r, energyJ_norm)
         sendData(dataToSend)
-
 
     def inten_per_photon(self, wn, inten): return (np.array(wn) * np.array(inten)) / 1e3
 
     def norm_line_felix(self, PD=True):
 
         felixfile, basefile, powerfile = self.filetypes
-
+        
         data = felix_read_file(felixfile)
         powCal = PowerCalibrator(powerfile)
         baseCal = BaselineCalibrator(basefile)
+        
         self.saCal = SpectrumAnalyserCalibrator(felixfile)
         wavelength = self.saCal.sa_cm(data[0])
+        
         self.power_measured = powCal.power(data[0])
         self.total_power = self.power_measured*self.nshots
 
         counts = data[1]
         baseCounts = baseCal.val(data[0])
         ratio = counts/baseCounts
+        
         # Normalise the intensity
         # multiply by 1000 because of mJ but ONLY FOR PD!!!
         if PD:
             intensity = (-np.log(ratio)/self.total_power)*1000
         else:
             intensity = (baseCounts-counts)/self.total_power
-        
         relative_depletion =(1-ratio)*100
         return wavelength, intensity, data[1], relative_depletion
 

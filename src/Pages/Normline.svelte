@@ -2,7 +2,7 @@
     // IMPORTING Modules
     import Textfield from '@smui/textfield'
     import HelperText from '@smui/textfield/helper-text/index'
-    import Layout, {createToast} from "../components/Layout.svelte"
+    import Layout, {createToast, browse} from "../components/Layout.svelte"
     import { fly, fade } from 'svelte/transition'
     import Ripple from '@smui/ripple'
 
@@ -30,14 +30,18 @@
     import {onMount} from "svelte"
     import VirtualList from '@sveltejs/svelte-virtual-list';
     import {Icon} from '@smui/icon-button'
+    // import Table from '../components/Table.svelte'
+    import Modal1 from '../components/Modal1.svelte'
+
    ///////////////////////////////////////////////////////////////////////
     
-
     const filetype="felix", id="Normline"
+
     let fileChecked=[], delta=1, toggleRow=false;
-    $: felixfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
     let currentLocation = localStorage[`${filetype}_location`] || ""
+    $: felixfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
     $: console.log(`${filetype} currentlocation: \n${currentLocation}`)
+
     ///////////////////////////////////////////////////////////////////////
 
     // Theory file
@@ -51,18 +55,18 @@
 
     let normMethod = "Relative", normMethod_datas = {}, NGauss_fit_args = {}
     
-    let graphPlotted = false, overwrite_expfit = false
+    let graphPlotted = false, overwrite_expfit = false, writeFile = false
     let line = [], index = [], annotations = [], plot_trace_added = 0, double_peak_active = false, line_index_count = 0
 
     $: console.log("Trace length: ", plot_trace_added)
     $: console.log("Double peak active: ", double_peak_active)
+    $: output_namelists = ["averaged", ...plottedFiles, ...addedfiles.map(file=>path.basename(file)).map(file=>file.split(".")[0])]
 
-    $: output_namelists = ["averaged", ...plottedFiles]
-    let output_name = "averaged"
-
+    let output_name = "averaged", writeFileName = ""
     let dataTableHead = ["Filename", "Frequency (cm-1)", "Amplitude", "FWHM", "Sigma"]
 
     let dataTable = [], dataTable_avg = []
+
     $: dataTable_weighted_avg = dataTable_avg.filter(file=> file.name == "weighted_mean")
 
     $: console.log("dataTable", dataTable)
@@ -74,23 +78,24 @@
 
     //////// OPO Plot ///////////
     window.getID = () => Math.random().toString(32).substring(2)
-    let opoPlotted = false, onlyFinalSpectrum = false
-
+    let opoPlotted = false, onlyFinalSpectrum = false, peakTable = []
 
     const replot = () => {
         if (graphPlotted) {
+
             let {data, layout} = normMethod_datas[normMethod]
             Plotly.react("avgplot",data, layout, { editable: true })
             line = annotations = lineData_list = [], plot_trace_added = 0
         }
     }
-    function plotData({e=null, filetype="felix", general=null, tkplot="run"}={}){
 
-        let expfit_args = [], double_fit_args = [], find_peaks_args = []
+    function plotData({e=null, filetype="felix", general=null, tkplot="run"}={}){
+        let expfit_args = [], double_fit_args = [], find_peaks_args = {}
 
         switch (filetype) {
 
             case "felix":
+                removeExtraFile()
                 graphPlotted = false, output_name = "averaged"
                 if(felixfiles.length<1) return createToast("No files selected", "danger")
                 break;
@@ -103,8 +108,8 @@
 
             case "exp_fit":
                 if (index.length<2) { return createToast("Range not found!!. Select a range using Box-select", "danger") }
-                expfit_args = opoExpFit ? [...opofiles, overwrite_expfit, output_name, "Log", OPOLocation, ...index]
-                    : [...felixfiles, overwrite_expfit, output_name, normMethod, currentLocation, ...index]
+
+                expfit_args = { addedFileScale, addedFileCol, output_name, overwrite_expfit, writeFile, writeFileName, normMethod: opoExpFit ? "Log" : normMethod, index, fullfiles, location: opoExpFit ? OPOLocation : currentLocation }
                 break;
 
             case "double_peak":
@@ -113,24 +118,25 @@
                 break;
 
             case "NGauss_fit":
-
-                NGauss_fit_args = {...NGauss_fit_args, overwrite_expfit}
-
+                NGauss_fit_args = {...NGauss_fit_args, location: opoExpFit ? OPOLocation : currentLocation, addedFileScale, addedFileCol, overwrite_expfit, writeFile, writeFileName}
                 break;
             
             case "find_peaks":
+                
+                peakTable = removedTable = []
 
                 if (index.length<2 && boxSelected_peakfinder) { return createToast("Range not found!!. Select a range using Box-select", "danger") }
-                NGauss_fit_args = {fitNGauss_arguments:{}, fullfiles: opoExpFit ? opofiles : felixfiles, normMethod: opoExpFit ? "Log" : normMethod, output_name}
+                NGauss_fit_args = {fitNGauss_arguments:{}, fullfiles, normMethod: opoExpFit ? "Log" : normMethod, output_name}
                 
                 let selectedIndex = boxSelected_peakfinder ? index : [0, 0]
-                find_peaks_args = opoExpFit ? [output_name, OPOLocation, "Log", peak_prominence,  peak_width, peak_height,  ...opofiles, ...selectedIndex]
-                    : [output_name, currentLocation, normMethod, peak_prominence, 
-                        peak_width, peak_height,  ...felixfiles, ...selectedIndex]
+
+
+                find_peaks_args = { addedFileScale, addedFileCol, output_name, normMethod: opoExpFit ? "Log" : normMethod, peak_prominence, peak_width, peak_height, selectedIndex, fullfiles, location: opoExpFit ? OPOLocation : currentLocation }
 
                 break;
 
             case "opofile":
+                removeExtraFile()
                 if(opofiles.length<1) return createToast("No files selected", "danger")
                 opoPlotted = true
                 break;
@@ -144,6 +150,13 @@
                 if(theoryfiles.length < 1) return createToast("No files selected", "danger")
                 break;
 
+            case "addfile":
+                if(addedFile.files < 1) return createToast("No files selected", "danger")
+
+                addedFile["col"] = addedFileCol, addedFile["N"] = fileChecked.length + extrafileAdded
+                addedFile["scale"] = addedFileScale
+                break;
+
             default:
                 break;
         }
@@ -151,13 +164,15 @@
         const pyfileInfo = { general, 
             baseline: {pyfile:"baseline.py", args: OPORow ? opofiles: felixfiles},
             felix: {pyfile:"normline.py" , args:[...felixfiles, delta]},
-            exp_fit: {pyfile:"exp_gauss_fit.py" , args:expfit_args},
+            exp_fit: {pyfile:"exp_gauss_fit.py" , args:[JSON.stringify(expfit_args)]},
             opofile: {pyfile:"oposcan.py" , args:[...opofiles, tkplot, delta_OPO, calibValue, calibFile]},
-            find_peaks: {pyfile:"fit_all.py" ,  args: find_peaks_args},
+            find_peaks: {pyfile:"fit_all.py" ,  args: [JSON.stringify(find_peaks_args)]},
             theory: {pyfile:"theory.py" , args:[...theoryfiles, normMethod, sigma, scale, currentLocation, tkplot]},
             get_err: {pyfile:"weighted_error.py" , args:lineData_list},
             double_peak: {pyfile:"double_gaussian.py" , args:double_fit_args},
-            NGauss_fit: {pyfile:"multiGauss.py" , args:[JSON.stringify(NGauss_fit_args)]}
+            NGauss_fit: {pyfile:"multiGauss.py" , args:[JSON.stringify(NGauss_fit_args)]},
+            addfile: {pyfile:"addTrace.py" , args:[JSON.stringify(addedFile)]}
+
         }
 
         const {pyfile, args} = pyfileInfo[filetype]
@@ -184,7 +199,6 @@
         let py;
         try {py = spawn( localStorage["pythonpath"], [path.resolve(localStorage["pythonscript"], pyfile), args] )}
         catch (err) {
-
             $modalContent = "Error accessing python. Set python location properly in Settings"
             $activated = true
             return
@@ -194,30 +208,26 @@
         target.classList.toggle("is-loading")
 
         createToast("Process Started")
-
         py.stdout.on("data", data => {
 
             console.log("Ouput from python")
             let dataReceived = data.toString("utf8")
             console.log(dataReceived)
         })
-
         let error_occured_py = false;
         py.stderr.on("data", err => {
             $modalContent = err
             $activated = true
             error_occured_py = true
         });
-
         py.on("close", () => {
 
             if (!error_occured_py) {
                 try {
                     let dataFromPython = fs.readFileSync(path.join(localStorage["pythonscript"], "data.json"))
-
                     window.dataFromPython = dataFromPython = JSON.parse(dataFromPython.toString("utf-8"))
                     console.log(dataFromPython)
-
+                    
                     if (filetype == "felix") {
                         opoExpFit = false, output_name = "averaged"
                         line = [], index = [], annotations = [], lineData_list = [], plot_trace_added = 0
@@ -249,7 +259,6 @@
                             signal_formula = "Signal = -ln(C/B)/#Photons"
                             ylabel = "Normalised Intensity per photon"
                         }
-
 
                         const get_data = (data) => {
                             let dataPlot = [];
@@ -307,7 +316,6 @@
                             "avgplot"
                         );
 
-                        //Spectrum and Power Analyer
                         subplot(
                             "Spectrum and Power Analyser",
                             "Wavelength set (cm-1)",
@@ -408,8 +416,8 @@
 
                         let color = "#fafafa";
                         if (output_name === "averaged") {
-                            color = "#ffdd57"
-                            dataTable_avg = [...dataTable_avg, {name: `Line #${line_index_count}`, id:getID(), freq:freq, amp:amp, fwhm:fwhm, sig:sig, color:color}]
+                            color = "#836ac05c"
+                            dataTable_avg = [...dataTable_avg, {name: `Line #${line_index_count}`, id:getID(), freq, amp, fwhm, sig, color}]
                             dataTable_avg = _.uniqBy(dataTable_avg, "freq")
                             line_index_count++
                         } else {
@@ -419,7 +427,7 @@
                              }
                         }
                         
-                        let newTable = {name: output_name, id:getID(), freq:freq, amp:amp, fwhm:fwhm, sig:sig, color:color}
+                        let newTable = {name: output_name, id:getID(), freq, amp, fwhm, sig, color}
                         dataTable = _.uniqBy([...dataTable, newTable], "freq")
                         console.log("Line fitted")
                         createToast("Line fitted with gaussian function", "success")
@@ -482,6 +490,7 @@
                     } else if (filetype == "find_peaks") {
 
                         Plotly.relayout(graphDiv, { annotations: [] })
+                        window.annotation = dataFromPython[2]["annotations"]
                         Plotly.relayout(graphDiv, { annotations: dataFromPython[2]["annotations"] })
 
                         
@@ -492,24 +501,30 @@
                             setTimeout(()=>{[window.peakX, window.peakY] = [peakX, peakY]}, 500)
                             NGauss_fit_args.peakFilename = dataFromPython[3]["filename"]
 
+                            // let color = "#fafafa";
                             for (let index = 0; index < peakX.length; index++) {
+                                let [freq, amp, sig] = [peakX[index], peakY[index], Ngauss_sigma]
+                                peakTable = [...peakTable, {freq, amp, sig, id:getID()}]
                                 NGauss_fit_args.fitNGauss_arguments[`cen${index}`] = peakX[index]
                                 NGauss_fit_args.fitNGauss_arguments[`A${index}`] = peakY[index]
                                 NGauss_fit_args.fitNGauss_arguments[`sigma${index}`] = Ngauss_sigma
                             }
+                            originalTable = peakTable;
+
                             console.log(`Found peaks:\nX: ${peakX}\nY: ${peakY}`)
+
                             console.log(`NGauss_fit_args:`, NGauss_fit_args)
                         }, 500)
-
                         console.log("Peaks found")
                         createToast("Peaks found", "success")
                     } else if (filetype == "NGauss_fit") {
+
                         Plotly.addTraces(graphDiv, dataFromPython["fitted_data"])
                         let color = "#fafafa";
                         dataFromPython["fitted_parameter"].forEach(data=>{
                             let {freq, amp, fwhm, sig} = data
                             if (output_name === "averaged") {
-                                color = "#ffdd57"
+                                color = "#836ac05c"
                                 dataTable_avg = [...dataTable_avg, {name: `Line #${line_index_count}`, id:getID(), freq:freq, amp:amp, fwhm:fwhm, sig:sig, color:color}]
                                 dataTable_avg = _.uniqBy(dataTable_avg, "freq")
                                 line_index_count++
@@ -524,17 +539,24 @@
 
                         plot_trace_added++
 
+                    } else if (filetype == "addfile") {
+                        addFileModal = false
+                        Plotly.addTraces(graphDiv, dataFromPython)
+                        extrafileAdded += addedfiles.length
                     }
                 } catch (err) { $modalContent = err; $activated = true }
-
             }
+
             console.log("Process closed")
             target.classList.toggle("is-loading")
         })
+
     }
+
     const clearAllPeak = () => {
 
         if (plot_trace_added === 0) {return createToast("No fitted lines found", "danger")}
+
         console.log("Removing all found peak values")
         annotations = index = line = lineData_list = []
 
@@ -578,7 +600,6 @@
     let toggleFindPeaksRow = false
     let peak_height = 1, peak_width = 3, peak_prominence = 0;
     let style = "width:7em; height:3.5em; margin-right:0.5em";
-
     // OPO
     let showOPOFiles = false, OPOfilesChecked = [], opoExpFit = false, OPORow = false
 
@@ -590,48 +611,135 @@
     let OPOcalibFiles = []
     $: if(fs.existsSync(OPOLocation)) {OPOcalibFiles = fs.readdirSync(OPOLocation).filter(file=> file.endsWith(".calibOPO"))}
     $: OPORow ? createToast("OPO MODE") : createToast("FELIX MODE")
-
     $: opoPlotted ? opoExpFit = true : opoExpFit = false
     $: Ngauss_sigma = opoExpFit ? 2 : 5
+
+    let modalActivate = false, addFileModal=false, addedFileCol="0, 1", addedFile={}, addedFileScale=1, addedfiles = [], extrafileAdded=0
+    
+    $: console.log(`Extrafile added: ${extrafileAdded}`)
+    function addFileSelection() {
+        
+        browse({dir:false}).then(result=>{ 
+            if (!result.canceled) {addedfiles = addedFile["files"] = result.filePaths}  
+        })
+    }
+    function removeExtraFile() {
+
+        for(let i=0; i<extrafileAdded; i++) {
+            try {Plotly.deleteTraces(graphDiv, [-1])}
+
+            catch (err) {console.log("The plot is empty")}
+        }
+        extrafileAdded = 0, addedfiles = []
+    }
+
+    let fullfiles = [], removedTable = []
+    $: opoExpFit ? fullfiles = [...opofiles, ...addedfiles, path.resolve(currentLocation, "averaged.felix")] : fullfiles = [...felixfiles, ...addedfiles, path.resolve(currentLocation, "averaged.felix")]
+    function adjustPeak() {
+
+        NGauss_fit_args.fitNGauss_arguments = {}
+        peakTable.forEach((f, index)=>{
+            NGauss_fit_args.fitNGauss_arguments[`cen${index}`] = f.freq
+            NGauss_fit_args.fitNGauss_arguments[`A${index}`] = f.amp
+            NGauss_fit_args.fitNGauss_arguments[`sigma${index}`] = f.sig
+        })
+        console.log("Initial gusses changed", NGauss_fit_args.fitNGauss_arguments)
+        modalActivate = false, createToast("Initial guess adjusted for full spectrum fitting")
+
+        removedTable.forEach((f, index)=>{
+            window.annotation = _.filter(window.annotation, (freq)=>freq.x != f.freq)
+        })
+        Plotly.relayout(graphDiv, { annotations:window.annotation })
+    }
+    let originalTable;
+    function rearrangePeakTable(e) {
+        
+        peakTable = _.filter(peakTable, (tb)=>tb.id != e.target.id); 
+        removedTable = _.differenceBy(originalTable, peakTable)
+        console.log(originalTable, peakTable, removedTable)
+    }
 </script>
 
 <style>
 
-
     * :global(.button) {margin: 0.4em;}
     * :global(.short-input) { max-width: 7em; margin: 0 1em; }
     * :global(.mdc-text-field--outlined) {height: 2.5em;}
-    
     * :global(.plotSlot) { width: 100%}
+    
     * :global(option) { color: black; }
     * :global(.mdc-data-table) {min-width: 30em; background-color: #5b3ea2; max-height: 25em; overflow-y: auto}
     * :global(.mdc-data-table__content ) {background-color: #fafafa;}
-
     * :global(hr) { width: 90%; margin: 1em 0; }
-
     * :global(.report) { display: block; margin-bottom: 1em; }
-    
     * :global(table th:not([align])) {text-align: center; padding: 1em;}
     * :global(table td:not([align])) {text-align: center; padding: 1em;}
-
     * :global(.averagedTable td) { color: white; }
-    
-    * :global(#felixTableContainer) {border: 1px solid #5b3ea2; width:100%; padding-right: 1em;}
 
-    * :global(#felixTableContainer thead) {background-color: #e1e1e1;}
-    
+    * :global(.tableContainer) {border: 1px solid #5b3ea2; width:100%; padding-right: 1em;}
+    * :global(.tableContainer thead) {background-color: #e1e1e1;}
     .hide {display: none;}
     .active {display: block; }
     
     .align {display: flex; align-items: center;}
     .felixPlot > div {margin-bottom: 1em;}
     .notification {width: 100%; border: 1px solid;}
-    
+
     .plotSlot > div { width: calc(100% - 1em); margin-top: 1em; }
-    
     .dataTable { display: flex; justify-content: center; }
 </style>
 
+<Modal1 bind:active={modalActivate} title="Adjust initial guess" >
+    <div slot="content" >
+            <!-- Data Table -->
+            <div id="dataTable0" class="dataTable" transition:fade >
+                <DataTable table$aria-label="adjustPeaks-tableAriaLabel" table$id="adjustPeaks" id="adjustPeaksTableContainer" class="tableContainer" >
+                    <Head >
+                        <Row>
+                            <Cell style="width: 2em;"></Cell>
+                            {#each ["Frequency", "Amplitude", "Sigma"] as item}
+                                <Cell>{item}</Cell>
+                            {/each}
+                            <Cell style="width: 2em;"></Cell>
+                        </Row>
+                    </Head>
+
+                    <Body>
+                        {#each peakTable as table, index (table.id)}
+                    
+                            <Row style="background-color: #fafafa;" >
+                    
+                                <Cell style="width: 2em;">{index}</Cell>
+                                <Cell contenteditable="true" >{table.freq.toFixed(2)}</Cell>
+                                <Cell contenteditable="true">{table.amp.toFixed(2)}</Cell>
+
+                                <Cell contenteditable="true">{table.sig}</Cell>
+                                
+                                <Cell style="background: #f14668; cursor: pointer; width: 2em;">
+                                    <Icon id="{table.id}" class="material-icons" on:click="{(e)=> {rearrangePeakTable(e)}}">close</Icon>
+
+                                </Cell>
+                            </Row>
+                        {/each}
+                    </Body>
+                </DataTable>
+            </div>
+    </div>
+    <button slot="footerbtn" class="button is-link" on:click={adjustPeak} >Save</button>
+
+</Modal1>
+
+<Modal1 bind:active={addFileModal} title="Add file to plot">
+
+    <div slot="content" >
+        <Textfield style="width:7em; margin:0 0.5em;" bind:value={addedFileCol} label="Columns"/>
+        <Textfield style="width:7em; margin:0 0.5em;" bind:value={addedFileScale} label="ScaleY"/>
+        <button on:click={addFileSelection} class="button is-link">Browse</button>
+
+    </div>
+    <button slot="footerbtn" class="button is-link" on:click="{(e)=>{plotData({e:e, filetype:"addfile"})}}" >Add</button>
+
+</Modal1>
 
 <QuickView style="padding:1em;" bind:active={showTheoryFiles} bind:location={theoryLocation}>
 
@@ -641,29 +749,32 @@
     </div>
 </QuickView>
 
+
 <QuickView style="padding:1em;" bind:active={showOPOFiles} bind:location={OPOLocation}>
     <FileBrowser bind:currentLocation={OPOLocation} bind:fileChecked={OPOfilesChecked} filetype="ofelix"/>
     <div slot="footer" style="margin:auto">
+
         <button class="button is-link" on:click="{(e)=>{plotData({e:e, filetype:"opofile"}); localStorage["opoLocation"] = OPOLocation}}">Submit</button>
     </div>
 </QuickView>
 
-<Layout {filetype} {id} bind:currentLocation bind:fileChecked >
 
+<Layout {filetype} {id} bind:currentLocation bind:fileChecked >
     <div class="buttonSlot" slot="buttonContainer">
 
         <div class="align">
+
             <button class="button is-link" 
                 on:click="{(e)=>plotData({e:e, filetype:"baseline", tkplot:"plot"})}">
                 Create Baseline</button>
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"felix"})}">FELIX Plot</button>
+
             <Textfield style="width:7em" variant="outlined" bind:value={delta} label="Delta"/>
             <button class="button is-link" 
-                on:click="{(e)=>plotData({e:e, filetype:"general", general:{args:[...felixfiles, normMethod, onlyFinalSpectrum], pyfile:"norm_tkplot.py"}})}">
-                Open in Matplotlib</button>
+                on:click="{(e)=>plotData({e:e, filetype:"general", general:{args:[...felixfiles, normMethod, onlyFinalSpectrum], pyfile:"norm_tkplot.py"}})}"> Open in Matplotlib</button>
+
             <CustomCheckbox bind:selected={onlyFinalSpectrum} label="Only Final spectrum" />
             <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
-
             <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click="{()=>toggleRow = !toggleRow}">Add Theory</button>
             <button class="button is-link" on:click="{()=>{OPORow = !OPORow}}">OPO</button>
             <CustomIconSwitch bind:toggler={opoPlotted} icons={["keyboard_arrow_up", "keyboard_arrow_down"]}/>
@@ -671,7 +782,6 @@
         </div>
 
         <div class="animated fadeIn hide content" class:active={OPORow} >
-
             <div class="align">
                 <CustomSelect style="width:7em;" bind:picked={calibFile} label="Calib. file" options={["", ...OPOcalibFiles]}/>
                 <Textfield on:change="{(e)=>plotData({e:e, filetype:"opofile"})}" style="width:7em; margin:0 0.5em;" bind:value={delta_OPO} label="Delta OPO"/>
@@ -679,14 +789,12 @@
                 <button class="button is-link" 
                     on:click="{()=>{showTheoryFiles=false;showOPOFiles = !showOPOFiles; OPOLocation = localStorage["opoLocation"] || currentLocation}}">
                     Browse File</button>
-
                 <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"opofile", tkplot:"plot"})}">Open in Matplotlib</button>
                 <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"opofile"})}">Replot</button>
             </div>
         </div>
 
         <div class="animated fadeIn hide" class:active={toggleRow}>
-
             <button class="button is-link" 
                 on:click="{()=>{showOPOFiles=false;showTheoryFiles = !showTheoryFiles; theoryLocation = localStorage["theoryLocation"] || currentLocation}}">
                 Browse File</button>
@@ -700,50 +808,59 @@
             <CustomRadio bind:selected={normMethod} options={["Log", "Relative", "IntensityPerPhoton"]}/>
         </div>
     </div>
-
     <div class="plotSlot" slot="plotContainer">
-
         <div class="felixPlot">
             <div class="animated fadeIn hide" class:active={show_theoryplot} id="exp-theory-plot"></div>
+            
             <div id="bplot"></div>
+            
             <div id="saPlot"></div>
             <div id="avgplot"></div>
             <div class="animated fadeIn hide" class:active={opoPlotted} id="opoplot"></div>
             <div class="animated fadeIn hide" class:active={opoPlotted} id="opoSA"></div>
+            
             <div class="animated fadeIn hide" class:active={opoPlotted} id="opoRelPlot"></div>
         </div>
-
         <div class="animated fadeIn hide" class:active={graphPlotted}>
-
             <div class="content" transition:fade>
 
                 <CustomSwitch style="margin: 0 1em;" bind:selected={opoExpFit} label="OPO"/>
+
                 <CustomSelect bind:picked={output_name} label="Output filename" options={output_namelists}/>
+                <Textfield style="width:7em; margin:0 0.5em;" bind:value={writeFileName} label="writeFileName"/>
+
+                <CustomSwitch style="margin: 0 1em;" bind:selected={writeFile} label="Write"/>
                 <CustomSwitch style="margin: 0 1em;" bind:selected={overwrite_expfit} label="Overwrite"/>
                 <CustomSwitch style="margin: 0 1em;" bind:selected={collectData} label="Collect"/>
+                <button class="button is-link" on:click="{()=>{addFileModal=true}}">Add files</button>
+                <button class="button is-link" on:click={removeExtraFile}>Remove files</button>
+
             </div>
 
             <div class="content">
                 <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"exp_fit"})}">Exp Fit.</button>
-                <button class="button is-link" on:click="{(e)=>toggleDoubleGaussRow = !toggleDoubleGaussRow}">Double Gauss.</button>
+                <!-- <button class="button is-link" on:click="{(e)=>toggleDoubleGaussRow = !toggleDoubleGaussRow}">Double Gauss.</button> -->
                 <button class="button is-link" on:click="{()=>toggleFindPeaksRow = !toggleFindPeaksRow}">Fit NGauss.</button>
                 <button class="button is-warning" on:click={clearLastPeak}>Clear Last</button>
+                
                 <button class="button is-danger" on:click={clearAllPeak}>Clear All</button>
                 <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"get_err"})}">Weighted Mean</button>
                 <button class="button is-warning" on:click="{(e)=>{lineData_list = []; createToast("Line collection restted", "warning")}}">Reset</button>
+            
             </div>
 
             <div class="content animated fadeIn hide" class:active={toggleFindPeaksRow}>
                 <CustomSwitch style="margin: 0 1em;" bind:selected={boxSelected_peakfinder} label="BoxSelected"/>
+                
                 <Textfield type="number" {style} bind:value={peak_prominence} label="Prominance" />
                 <Textfield type="number" {style} bind:value={peak_width} label="Width" />
                 <Textfield type="number" {style} bind:value={peak_height} label="Height" />
+                
                 <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"find_peaks"})}">Get Peaks</button>
 
                 <Textfield style="width:9em" bind:value={Ngauss_sigma} label="Sigma"/>
-                <Icon class="material-icons">settings</Icon>
+                <Icon class="material-icons" on:click="{()=> modalActivate = true}">settings</Icon>
                 <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"NGauss_fit"})}">Fit</button>
-
                 <button class="button is-danger" on:click="{(e)=>window.Plotly.relayout(graphDiv, { annotations: [] })}">Clear</button>
             </div>
 
@@ -773,43 +890,61 @@
             <!-- Data Table -->
             <div class="dataTable" transition:fade>
 
-                <DataTable table$aria-label="felix-tableAriaLabel" table$id="felixTable" id="felixTableContainer">
+                <DataTable table$aria-label="felix-tableAriaLabel" table$id="felixTable" id="felixTableContainer" class="tableContainer">
                     <Head >
                         <Row>
+                            <Cell style="width: 2em;"></Cell>
                             {#each dataTableHead as item}
                                 <Cell>{item}</Cell>
                             {/each}
+                            <Cell style="width: 2em;"></Cell>
                         </Row>
                     </Head>
                     <Body>
                         {#if show_dataTable_only_weighted_averaged}
                             {#each dataTable_weighted_avg as table, index (table.id)}
                                 <Row>
+                                    <Cell style="width: 2em;">{index}</Cell>
                                     <Cell>Line #{index}</Cell>
                                     <Cell>{table.freq}</Cell>
                                     <Cell>{table.amp}</Cell>
                                     <Cell>{table.fwhm}</Cell>
                                     <Cell>{table.sig}</Cell>
+                                    <Cell style="background: #f14668; cursor: pointer;">
+                                        <Icon id="{table.id}" class="material-icons" 
+                                            on:click="{(e)=> {dataTable_weighted_avg = window._.filter(dataTable_weighted_avg, (tb)=>tb.id != e.target.id)}}">close</Icon>
+                                    </Cell>
                                 </Row>
                             {/each}
                         {:else if show_dataTable_only_averaged && !show_dataTable_only_weighted_averaged}
-                            {#each dataTable_avg as table (table.id)}
+                            {#each dataTable_avg as table, index (table.id)}
                                 <Row>
+                                    <Cell style="width: 2em;">{index}</Cell>
                                     <Cell>{table.name}</Cell>
                                     <Cell>{table.freq}</Cell>
                                     <Cell>{table.amp}</Cell>
                                     <Cell>{table.fwhm}</Cell>
                                     <Cell>{table.sig}</Cell>
+                                    <Cell style="background: #f14668; cursor: pointer; width: 2em;">
+                                        <Icon id="{table.id}" class="material-icons" 
+                                            on:click="{(e)=> {dataTable_avg = window._.filter(dataTable_avg, (tb)=>tb.id != e.target.id)}}">close</Icon>
+                                    </Cell>
                                 </Row>
                             {/each}
                         {:else}
-                            {#each dataTable as table (table.id)}
+
+                            {#each dataTable as table, index (table.id)}
                                 <Row style="background-color: {table.color};" class={table.className}>
+                                    <Cell style="width: 2em;">{index}</Cell>
                                     <Cell>{table.name}</Cell>
                                     <Cell>{table.freq}</Cell>
                                     <Cell>{table.amp}</Cell>
                                     <Cell>{table.fwhm}</Cell>
                                     <Cell>{table.sig}</Cell>
+                                    <Cell style="background: #f14668; cursor: pointer;">
+                                        <Icon id="{table.id}" class="material-icons" 
+                                            on:click="{(e)=> {dataTable = window._.filter(dataTable, (tb)=>tb.id != e.target.id)}}">close</Icon>
+                                    </Cell>
                                 </Row>
                             {/each}
                         {/if}
