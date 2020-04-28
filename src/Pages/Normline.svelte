@@ -808,6 +808,7 @@
             <CustomRadio bind:selected={normMethod} options={["Log", "Relative", "IntensityPerPhoton"]}/>
         </div>
     </div>
+    
     <div class="plotSlot" slot="plotContainer">
         <div class="felixPlot">
             <div class="animated fadeIn hide" class:active={show_theoryplot} id="exp-theory-plot"></div>
