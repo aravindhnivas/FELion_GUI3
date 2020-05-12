@@ -84,31 +84,50 @@ def exp_fit(tkplot=False, getvalue=False):
     }
     
     if getvalue: return data, uline_freq, usigma, uamplitude, ufwhm, line_color
-    filename = f"{filename.stem}_{norm_method}.expfit"
-    expfile = datfile_location/filename
+    expfile = datfile_location/f"{filename.stem}_{norm_method}.expfit"
+    fullfit_file = datfile_location/f"{filename.stem}_{norm_method}.fullfit"
     
     if args["writeFile"]:
         print("Writing file")
         if not expfile.exists():
             with open(expfile, 'w+') as f: f.write(f"#Frequency\t#Freq_err\t#Sigma\t#Sigma_err\t#FWHM\t#FWHM_err\t#Amplitude\t#Amplitude_err\n")
-                
+
         with open(expfile, ("a+", "w+")[overwrite]) as f:
 
-            if overwrite: f.write(f"#Frequency\t#Freq_err\t#Sigma\t#Sigma_err\t#FWHM\t#FWHM_err\t#Amplitude\t#Amplitude_err\n")
+            if overwrite: 
+                f.write(f"#Frequency\t#Freq_err\t#Sigma\t#Sigma_err\t#FWHM\t#FWHM_err\t#Amplitude\t#Amplitude_err\n")
+            
             f.write(f"{line_freq_fit:.4f}\t{uline_freq.std_dev:.4f}\t{sigma:.4f}\t{usigma.std_dev:.4f}\t{fwhm:.4f}\t{ufwhm.std_dev:.4f}\t{amplitude:.4f}\t{uamplitude.std_dev:.4f}\n")
 
+                
+        with open(fullfit_file, ("a+", "w+")[overwrite]) as f:
+            for _wn, _inten in zip(wn, fit_data): f.write(f"{_wn:.4f}\t{_inten:.4f}\n")
+        
         writeFileName = args["writeFileName"]
+        
         if writeFileName != "":
+
             print(f"Writing custom file {writeFileName}")
             
             writeFileName_expfile = datfile_location/f"{writeFileName}_{norm_method}.expfit"
+
             with open(expfile, "r") as f: fileread = f.readlines() 
             with open(writeFileName_expfile, "w+") as f: f.writelines(fileread)
 
+            writeFileName_fullfit = datfile_location/f"{writeFileName}_{norm_method}.fullfit"
+            
+            with open(fullfit_file, "r") as f: fileread = f.readlines() 
+            with open(writeFileName_fullfit, "w+") as f: f.writelines(fileread)
+
             if felix:
                 writeFileName_datfile = datfile_location/f"{writeFileName}.dat"
+                writeFileName_datfile = datfile_location/f"{writeFileName}.dat"
                 datfile = datfile_location/f"{filename.stem}.dat"
-                with open(datfile, "r") as f: writeFileName_datfile = f.readlines() 
+
+                with open(datfile, "r") as f: dat_read = f.readlines() 
+                with open(writeFileName_datfile, "w+") as f: f.writelines(dat_read)
+
+                
 
     sendData(data)
 
