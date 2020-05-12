@@ -73,6 +73,8 @@
     $: console.log("dataTable_avg", dataTable_avg)
 
     $: console.log("dataTable_weighted_avg", dataTable_weighted_avg)
+
+    let annotation_color = "black"
     let boxSelected_peakfinder = true
     let show_dataTable_only_averaged = false, keepTable = true, show_dataTable_only_weighted_averaged=false
 
@@ -491,6 +493,8 @@
 
                         Plotly.relayout(graphDiv, { annotations: [] })
                         window.annotation = dataFromPython[2]["annotations"]
+
+                        annotation_color = dataFromPython[2]["annotations"]["arrowcolor"]
                         Plotly.relayout(graphDiv, { annotations: dataFromPython[2]["annotations"] })
 
                         
@@ -622,6 +626,7 @@
         browse({dir:false}).then(result=>{ 
             if (!result.canceled) {addedfiles = addedFile["files"] = result.filePaths}  
         })
+
     }
     function removeExtraFile() {
 
@@ -635,28 +640,48 @@
 
     let fullfiles = [], removedTable = []
     $: opoExpFit ? fullfiles = [...opofiles, ...addedfiles, path.resolve(currentLocation, "averaged.felix")] : fullfiles = [...felixfiles, ...addedfiles, path.resolve(currentLocation, "averaged.felix")]
-    function adjustPeak() {
 
+    function adjustPeak({closeMainModal=true}={}) {
+
+        let temp_annotate = {xref:"x", y:"y", "showarrow":true,  "arrowhead":2, "ax":-25, "ay":-40, font:{color:annotation_color}, arrowcolor:annotation_color}
+        
+        let newAnnotations = []
         NGauss_fit_args.fitNGauss_arguments = {}
+        
         peakTable.forEach((f, index)=>{
+
             NGauss_fit_args.fitNGauss_arguments[`cen${index}`] = f.freq
             NGauss_fit_args.fitNGauss_arguments[`A${index}`] = f.amp
             NGauss_fit_args.fitNGauss_arguments[`sigma${index}`] = f.sig
+            let _annotate = {x:f.freq, y:f.amp, text:`(${f.freq.toFixed(2)}, ${f.amp.toFixed(2)})`}
+            newAnnotations = [...newAnnotations, {...temp_annotate, ..._annotate} ]
         })
         console.log("Initial gusses changed", NGauss_fit_args.fitNGauss_arguments)
-        modalActivate = false, createToast("Initial guess adjusted for full spectrum fitting")
-
-        removedTable.forEach((f, index)=>{
-            window.annotation = _.filter(window.annotation, (freq)=>freq.x != f.freq)
-        })
-        Plotly.relayout(graphDiv, { annotations:window.annotation })
+        if(closeMainModal) {
+            modalActivate = false, createToast("Initial guess adjusted for full spectrum fitting")
+            // removedTable.forEach((f, index)=>{ window.annotation = _.filter(window.annotation, (freq)=>freq.x != f.freq) })
+        }
+        Plotly.relayout(graphDiv, { annotations:newAnnotations })
+        console.log("Fitted arguments", NGauss_fit_args.fitNGauss_arguments)
     }
+
     let originalTable;
     function rearrangePeakTable(e) {
-        
-        peakTable = _.filter(peakTable, (tb)=>tb.id != e.target.id); 
+        peakTable = _.filter(peakTable, (tb)=>tb.id != e.target.id);
+
         removedTable = _.differenceBy(originalTable, peakTable)
         console.log(originalTable, peakTable, removedTable)
+    }
+
+
+    // Adding/appending new peak for fitting
+    let addNewPeakModal = false, newPeakValues = ""
+
+    const addNewPeakData  = () => {
+        newPeakValues = newPeakValues.split(",").map(i=>parseFloat(i))
+        let [freq, amp, sig] = newPeakValues
+        peakTable = [...peakTable, {freq, amp, sig, id:getID()}]
+        addNewPeakModal = false, createToast("New peak value added")
     }
 </script>
 
@@ -680,19 +705,34 @@
     * :global(.tableContainer thead) {background-color: #e1e1e1;}
     .hide {display: none;}
     .active {display: block; }
-    
     .align {display: flex; align-items: center;}
     .felixPlot > div {margin-bottom: 1em;}
     .notification {width: 100%; border: 1px solid;}
-
     .plotSlot > div { width: calc(100% - 1em); margin-top: 1em; }
     .dataTable { display: flex; justify-content: center; }
+
+    .icon-holder {
+
+        margin: 1em 0;
+        width: 2em;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor:pointer;
+    }
+
 </style>
 
 <Modal1 bind:active={modalActivate} title="Adjust initial guess" >
     <div slot="content" >
+
+            <div class="icon-holder" use:Ripple={[true, {color: 'primary'}]} ><Icon class="material-icons"  on:click="{(e)=> {addNewPeakModal = true}}">add</Icon></div>
+
+
             <!-- Data Table -->
             <div id="dataTable0" class="dataTable" transition:fade >
+
                 <DataTable table$aria-label="adjustPeaks-tableAriaLabel" table$id="adjustPeaks" id="adjustPeaksTableContainer" class="tableContainer" >
                     <Head >
                         <Row>
@@ -726,6 +766,13 @@
             </div>
     </div>
     <button slot="footerbtn" class="button is-link" on:click={adjustPeak} >Save</button>
+
+</Modal1>
+
+<Modal1 bind:active={addNewPeakModal} title="Add peak (Freq, ampl, sig)">
+
+    <div slot="content" > <Textfield style="width:50vw; margin:0 0.5em;" bind:value={newPeakValues} label="Freq, ampl, sig"/> </div>
+    <button slot="footerbtn" class="button is-link" on:click={addNewPeakData} >Save</button>
 
 </Modal1>
 
