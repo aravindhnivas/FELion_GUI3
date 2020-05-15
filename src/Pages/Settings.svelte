@@ -40,6 +40,7 @@
         else {pythonpath = localStorage["pythonpath"] }
      }
 
+    
     let pythonscript = localStorage["pythonscript"] = path.resolve(__dirname, "assets/python_files")
     
     const navigate = (e) => {selected = e.target.innerHTML}
@@ -71,7 +72,6 @@
         }).catch(err=>{ createToast("python location is not valid", "danger") })
         localStorage["pythonscript"] = pythonscript
     }
-
     let pythonpathCheck;
 
     onMount(()=>{
@@ -333,7 +333,6 @@
             $activated = true
         
         })
-
     }
 
 </script>
