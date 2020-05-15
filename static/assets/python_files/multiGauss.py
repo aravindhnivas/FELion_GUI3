@@ -66,9 +66,10 @@ def fitNGauss(init_guess, wn, inten):
 def fitNGaussian(gauss_args):
 
     # Collected parameters
-    readfile = pt(gauss_args["peakFilename"])
-    norm_method = gauss_args["normMethod"]
+    # readfile = pt(gauss_args["peakFilename"])
     output_filename = gauss_args["output_name"]
+    readfile = pt(gauss_args["location"]).parent / f"EXPORT/{output_filename}.dat"
+    norm_method = gauss_args["normMethod"]
 
     # Reading file
 

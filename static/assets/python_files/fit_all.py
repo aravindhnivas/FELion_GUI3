@@ -63,8 +63,9 @@ def fit_all_peaks(args):
     _["wn_range"] = np.array([wn[_["left_bases"]], wn[_["right_bases"]]]).T
     for item in _: _[item] = _[item].tolist()
 
-    wn_ = list(wn[indices])
-    inten_ = list(inten[indices])
+    wn_ = [round(i, 2) for i in wn[indices]]
+
+    inten_ = [round(i, 2) for i in inten[indices]]
 
     data = {"data": {}, "extras": _, "annotations":{}}
     data["data"] = {

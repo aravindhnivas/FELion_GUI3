@@ -81,6 +81,9 @@
     //////// OPO Plot ///////////
     window.getID = () => Math.random().toString(32).substring(2)
     let opoPlotted = false, onlyFinalSpectrum = false, peakTable = []
+    window.annotation = []
+
+    let plotly_event_created = plotly_event_created_opo = false
 
     const replot = () => {
         if (graphPlotted) {
@@ -98,7 +101,8 @@
 
             case "felix":
                 removeExtraFile()
-                graphPlotted = false, output_name = "averaged"
+                graphPlotted = false, output_name = "averaged", window.annotation = [], peakTable = removedTable = []
+                
                 if(felixfiles.length<1) return createToast("No files selected", "danger")
                 break;
             
@@ -120,7 +124,7 @@
                 break;
 
             case "NGauss_fit":
-                NGauss_fit_args = {...NGauss_fit_args, location: opoExpFit ? OPOLocation : currentLocation, addedFileScale, addedFileCol, overwrite_expfit, writeFile, writeFileName}
+                NGauss_fit_args = {...NGauss_fit_args, location: opoExpFit ? OPOLocation : currentLocation, addedFileScale, addedFileCol, overwrite_expfit, writeFile, writeFileName, output_name, fullfiles, normMethod: opoExpFit ? "Log" : normMethod, output_name}
                 break;
             
             case "find_peaks":
@@ -128,7 +132,7 @@
                 peakTable = removedTable = []
 
                 if (index.length<2 && boxSelected_peakfinder) { return createToast("Range not found!!. Select a range using Box-select", "danger") }
-                NGauss_fit_args = {fitNGauss_arguments:{}, fullfiles, normMethod: opoExpFit ? "Log" : normMethod, output_name}
+                NGauss_fit_args = {fitNGauss_arguments:{}}
                 
                 let selectedIndex = boxSelected_peakfinder ? index : [0, 0]
 
@@ -140,7 +144,7 @@
             case "opofile":
                 removeExtraFile()
                 if(opofiles.length<1) return createToast("No files selected", "danger")
-                opoPlotted = true
+                opoPlotted = true, window.annotation = []
                 break;
 
             case "get_err":
@@ -243,10 +247,8 @@
 
                         if (normMethod === "Log") {
                             avgdataToPlot = dataFromPython["average"]
-
                             signal_formula = "Signal = -ln(C/B)/Power(in J)"
                             ylabel = "Normalised Intensity per J"
-
                         } else if (normMethod == "Relative") {
 
                             avgdataToPlot = dataFromPython["average_rel"]
@@ -261,7 +263,6 @@
                             signal_formula = "Signal = -ln(C/B)/#Photons"
                             ylabel = "Normalised Intensity per photon"
                         }
-
                         const get_data = (data) => {
                             let dataPlot = [];
                             for (let x in data) { dataPlot.push(data[x]) }
@@ -330,53 +331,106 @@
                         );
 
                         let avgplot = document.getElementById("avgplot")
-                        avgplot.on("plotly_selected", (data) => {
-                            
-                            if (!data) console.log("No data available to fit")
+                        if (!plotly_event_created) {
 
-                            else {
-                                console.log(data)
-                                opoExpFit = false
-                                let { range } = data
-                                output_name = data.points[0].data.name.split(".")[0]
-                                index = range.x
-                                console.log(`Selected file: ${output_name}`)
-                                console.log(`Index selected: ${index}`)
-                            }
-                        })
+                            console.log("Creating plotly graph events")
+                            avgplot.on("plotly_selected", (data) => {
+                                if (!data) console.log("No data available to fit")
+                                else {
 
+                                    console.log(data)
+                                    opoExpFit = false
+                                    let { range } = data
+                                    output_name = data.points[0].data.name.split(".")[0]
+                                    index = range.x
+                                    console.log(`Selected file: ${output_name}`)
+                                    console.log(`Index selected: ${index}`)
+                                }
+
+                            })
+                        
+                            avgplot.on('plotly_click', (data)=>{
+                                console.log("Graph clicked: ", data)
+
+                                if (data.event.ctrlKey) {
+                                    console.log("Data point length: ", data.points.length)
+                                    for(let i=0; i<data.points.length; i++){
+
+                                        console.log("Running cycle: ", i)
+                                        let d = data.points[i]
+                                        let name = d.data.name
+
+                                        if (name.includes(output_name)){
+
+                                            console.log("Filename: ", output_name)
+
+                                            NGauss_fit_args = {fitNGauss_arguments:{}}
+
+                                            let line_color = d.data.line.color
+                                            console.log(name)
+                                            console.log(d, d.x, d.y)
+
+                                            let [freq, amp] = [parseFloat(d.x.toFixed(2)), parseFloat(d.y.toFixed(2))]
+                                            
+                                            console.log("Annotation before: ", window.annotation)
+                                            window.annotation = [...window.annotation, { text: `(${freq}, ${amp}})`, x: freq, y: amp, font:{color:line_color}, arrowcolor:line_color }]
+                                            console.log("Annotation after: ", window.annotation)
+
+                                            Plotly.relayout("avgplot",{annotations: _.uniqBy(window.annotation, 'text')})
+                                            
+                                            peakTable = [...peakTable, {freq, amp, sig:Ngauss_sigma, id:getID()}]
+                                            peakTable = _.uniqBy(peakTable, 'freq')
+
+                                            peakTable.forEach((f, index)=>{
+                                                NGauss_fit_args.fitNGauss_arguments[`cen${index}`] = f.freq
+
+                                                NGauss_fit_args.fitNGauss_arguments[`A${index}`] = f.amp
+                                                NGauss_fit_args.fitNGauss_arguments[`sigma${index}`] = f.sig
+                                            })
+
+                                        }
+                                    }
+                                    console.log("Running cycle ended")
+                                } 
+                            })
+
+                            plotly_event_created = true;
+
+                        }
                         console.log("Graph Plotted")
                         createToast("Graph Plotted", "success")
                         graphPlotted = true
-                        
-
                     } else if (filetype == "opofile") {
 
                         opoExpFit = true, output_name = "averaged"
+
                         plot("OPO spectrum", "Wavenumber (cm-1)", "Counts", dataFromPython["real"], "opoplot")
                         plot("OPO Calibration", "Set Wavenumber (cm-1)", "Measured Wavenumber (cm-1)", dataFromPython["SA"], "opoSA")
 
                         plot("OPO spectrum: Depletion (%)", "Wavenumber (cm-1)", "Depletion (%)", dataFromPython["relative"], "opoRelPlot")
-                        
                         let opoRelPlot = document.getElementById("opoRelPlot")
-                        
-                        opoRelPlot.on("plotly_selected", (data) => {
+                        if(!plotly_event_created_opo){
 
-                            if (!data) console.log("No data available to fit")
-                            else {
-                                console.log(data)
-                                opoExpFit = true
-                                let { range } = data
-                                output_name = data.points[0].data.name.split(".")[0]
-                                index = range.x
+                            console.log("Creating plotly graph events")
 
-                                console.log(`Selected file: ${output_name}`)
-                                console.log(`Index selected: ${index}`)
-                            }
-                        })
+                            opoRelPlot.on("plotly_selected", (data) => {
 
+                                if (!data) console.log("No data available to fit")
+                                else {
+                                    console.log(data)
+                                    opoExpFit = true
+                                    let { range } = data
+                                    output_name = data.points[0].data.name.split(".")[0]
+                                    index = range.x
+                                    console.log(`Selected file: ${output_name}`)
+                                    console.log(`Index selected: ${index}`)
+                                }
+                            })
 
+                            plotly_event_created_opo = true
+                        }
                         console.log("Graph Plotted")
+
                         createToast("Graph Plotted", "success")
                         showOPOFiles = false, graphPlotted = true
                         
@@ -408,14 +462,11 @@
                         Plotly.addTraces(graphDiv, dataFromPython["fit"])
                         line = [...line, ...dataFromPython["line"]]
                         Plotly.relayout(graphDiv, { shapes: line })
-
                         annotations = [...annotations, dataFromPython["annotations"]]
                         Plotly.relayout(graphDiv, { annotations: annotations })
                         
                         plot_trace_added++
-                        
                         let [freq, amp, fwhm, sig] = dataFromPython["table"].split(", ")
-
                         let color = "#fafafa";
                         if (output_name === "averaged") {
                             color = "#836ac05c"
@@ -548,17 +599,15 @@
                         Plotly.addTraces(graphDiv, dataFromPython)
                         extrafileAdded += addedfiles.length
                     }
+
                 } catch (err) { $modalContent = err; $activated = true }
             }
-
             console.log("Process closed")
             target.classList.toggle("is-loading")
+            
         })
-
     }
-
     const clearAllPeak = () => {
-
         if (plot_trace_added === 0) {return createToast("No fitted lines found", "danger")}
 
         console.log("Removing all found peak values")
@@ -600,24 +649,27 @@
     onMount(()=>{ console.log("Normline mounted") })
     
     let collectData = true, lineData_list = [], toggleDoubleGaussRow = false, weighted_error = [[], []], err_data1_plot = false
+
     let amp1=0, amp2=0, cen1=0, cen2=0, sig1=5, sig2=5
     let toggleFindPeaksRow = false
     let peak_height = 1, peak_width = 3, peak_prominence = 0;
+    
     let style = "width:7em; height:3.5em; margin-right:0.5em";
     // OPO
     let showOPOFiles = false, OPOfilesChecked = [], opoExpFit = false, OPORow = false
-
     let OPOLocation = localStorage["opoLocation"] || currentLocation
+
     $: opofiles = OPOfilesChecked.map(file=>path.resolve(OPOLocation, file))
     $: graphDiv = opoExpFit ? "opoRelPlot" : "avgplot"
     $: plottedFiles = opoExpFit ? OPOfilesChecked.map(file=>file.split(".")[0]) || [] : fileChecked.map(file=>file.split(".")[0]) || []
     let delta_OPO = 0.3, calibValue = 9394.356278462961.toFixed(4), calibFile = ""
+    
     let OPOcalibFiles = []
     $: if(fs.existsSync(OPOLocation)) {OPOcalibFiles = fs.readdirSync(OPOLocation).filter(file=> file.endsWith(".calibOPO"))}
     $: OPORow ? createToast("OPO MODE") : createToast("FELIX MODE")
+    
     $: opoPlotted ? opoExpFit = true : opoExpFit = false
     $: Ngauss_sigma = opoExpFit ? 2 : 5
-
     let modalActivate = false, addFileModal=false, addedFileCol="0, 1", addedFile={}, addedFileScale=1, addedfiles = [], extrafileAdded=0
     
     $: console.log(`Extrafile added: ${extrafileAdded}`)
@@ -643,6 +695,7 @@
 
     function adjustPeak({closeMainModal=true}={}) {
 
+        peakTable = _.filter(peakTable, (tb)=>tb.sig != 0);
         let temp_annotate = {xref:"x", y:"y", "showarrow":true,  "arrowhead":2, "ax":-25, "ay":-40, font:{color:annotation_color}, arrowcolor:annotation_color}
         
         let newAnnotations = []
@@ -667,21 +720,25 @@
 
     let originalTable;
     function rearrangePeakTable(e) {
-        peakTable = _.filter(peakTable, (tb)=>tb.id != e.target.id);
 
+        peakTable = _.filter(peakTable, (tb)=>tb.id != e.target.id);
         removedTable = _.differenceBy(originalTable, peakTable)
         console.log(originalTable, peakTable, removedTable)
     }
 
+    const editPeakTable = (index) => {
+        let freq = parseFloat(document.getElementById(`${index}_tb_freq`).innerHTML)
+        let amp = parseFloat(document.getElementById(`${index}_tb_amp`).innerHTML)
+        let sig = parseFloat(document.getElementById(`${index}_tb_sig`).innerHTML)
+        peakTable[index] = {freq, amp, sig}
+        console.log({freq, amp, sig})
+    }
+    $: console.log(peakTable)
+    const focusFreq = (e) => {e.focus()}
 
-    // Adding/appending new peak for fitting
-    let addNewPeakModal = false, newPeakValues = ""
-
-    const addNewPeakData  = () => {
-        newPeakValues = newPeakValues.split(",").map(i=>parseFloat(i))
-        let [freq, amp, sig] = newPeakValues
-        peakTable = [...peakTable, {freq, amp, sig, id:getID()}]
-        addNewPeakModal = false, createToast("New peak value added")
+    const sortTable = (type) => {
+        peakTable = _.sortBy(peakTable, [(o)=>o[type]])
+        peakTable = _.reverse(peakTable)
     }
 </script>
 
@@ -726,55 +783,49 @@
 
 <Modal1 bind:active={modalActivate} title="Adjust initial guess" >
     <div slot="content" >
-
-            <div class="icon-holder" use:Ripple={[true, {color: 'primary'}]} ><Icon class="material-icons"  on:click="{(e)=> {addNewPeakModal = true}}">add</Icon></div>
-
+            <div class="icon-holder" use:Ripple={[true, {color: 'primary'}]} ><Icon class="material-icons"  on:click="{(e)=> {peakTable = [...peakTable, {freq:0, amp:0, sig:0, id:window.getID()}]}}">add</Icon></div>
 
             <!-- Data Table -->
-            <div id="dataTable0" class="dataTable" transition:fade >
+            <div class="mdc-data-table tableContainer" transition:fade>
+                <table class="mdc-data-table__table" aria-label="adjustPeaks">
 
-                <DataTable table$aria-label="adjustPeaks-tableAriaLabel" table$id="adjustPeaks" id="adjustPeaksTableContainer" class="tableContainer" >
-                    <Head >
-                        <Row>
-                            <Cell style="width: 2em;"></Cell>
-                            {#each ["Frequency", "Amplitude", "Sigma"] as item}
-                                <Cell>{item}</Cell>
-                            {/each}
-                            <Cell style="width: 2em;"></Cell>
-                        </Row>
-                    </Head>
+                    <thead>
+                        <tr class="mdc-data-table__header-row">
+                            <th class="mdc-data-table__header-cell" style="width: 2em;" role="columnheader" scope="col"></th>
 
-                    <Body>
+                            <th style="cursor: pointer;" class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric" role="columnheader" scope="col" on:click="{()=>sortTable("freq")}">Frequency</th>
+                            <th style="cursor: pointer;" class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric" role="columnheader" scope="col" on:click="{()=>sortTable("amp")}">Amplitude</th>
+                            <th style="cursor: pointer;" class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric" role="columnheader" scope="col" on:click="{()=>sortTable("sig")}">Sigma</th>
+                            
+                            <th class="mdc-data-table__header-cell" style="width: 2em;" role="columnheader" scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="mdc-data-table__content">
                         {#each peakTable as table, index (table.id)}
-                    
-                            <Row style="background-color: #fafafa;" >
-                    
-                                <Cell style="width: 2em;">{index}</Cell>
-                                <Cell contenteditable="true" >{table.freq.toFixed(2)}</Cell>
-                                <Cell contenteditable="true">{table.amp.toFixed(2)}</Cell>
 
-                                <Cell contenteditable="true">{table.sig}</Cell>
+                            <tr class="mdc-data-table__row" style="background-color: #fafafa;"> 
+                                <td class="mdc-data-table__cell" style="width: 2em;" >{index}</td>
+
+                                <td class="mdc-data-table__cell mdc-data-table__cell--numeric"  ><input style="color:black" type="number" step="0.05" bind:value="{table.freq}" use:focusFreq></td>
+                                <td  class="mdc-data-table__cell mdc-data-table__cell--numeric" ><input style="color:black" type="number" step="0.05"  bind:value="{table.amp}"></td>
+                                <td class="mdc-data-table__cell mdc-data-table__cell--numeric" ><input style="color:black" type="number" step="0.5"  bind:value="{table.sig}"></td>
                                 
-                                <Cell style="background: #f14668; cursor: pointer; width: 2em;">
+                                <td class="mdc-data-table__cell" style="background: #f14668; cursor: pointer; width: 2em;" >
                                     <Icon id="{table.id}" class="material-icons" on:click="{(e)=> {rearrangePeakTable(e)}}">close</Icon>
-
-                                </Cell>
-                            </Row>
+                                </td>
+                            </tr>
                         {/each}
-                    </Body>
-                </DataTable>
+                        
+                    </tbody>
+                </table>
             </div>
+
     </div>
     <button slot="footerbtn" class="button is-link" on:click={adjustPeak} >Save</button>
 
 </Modal1>
 
-<Modal1 bind:active={addNewPeakModal} title="Add peak (Freq, ampl, sig)">
 
-    <div slot="content" > <Textfield style="width:50vw; margin:0 0.5em;" bind:value={newPeakValues} label="Freq, ampl, sig"/> </div>
-    <button slot="footerbtn" class="button is-link" on:click={addNewPeakData} >Save</button>
-
-</Modal1>
 
 <Modal1 bind:active={addFileModal} title="Add file to plot">
 
@@ -909,7 +960,7 @@
                 <Textfield style="width:9em" bind:value={Ngauss_sigma} label="Sigma"/>
                 <Icon class="material-icons" on:click="{()=> modalActivate = true}">settings</Icon>
                 <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"NGauss_fit"})}">Fit</button>
-                <button class="button is-danger" on:click="{(e)=>window.Plotly.relayout(graphDiv, { annotations: [] })}">Clear</button>
+                <button class="button is-danger" on:click="{(e)=>{window.annotation=[]; peakTable=[];NGauss_fit_args={}; window.Plotly.relayout(graphDiv, { annotations: [] })}}">Clear</button>
             </div>
 
             <div class="content animated fadeIn hide" class:active={toggleDoubleGaussRow}>

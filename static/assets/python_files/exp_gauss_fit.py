@@ -8,22 +8,20 @@ import numpy as np
 
 # FELion module
 from FELion_definitions import gauss_fit, read_dat_file, sendData
-from FELion_constants import colors 
+from FELion_constants import colors
 
+
+def gaussian(x, amp, sig, cen): return amp*np.exp(-0.5*((x-cen)/sig)**2)
 
 def exp_fit(tkplot=False, getvalue=False):
 
     norm_method = args["normMethod"]
 
     overwrite = args["overwrite_expfit"]
-
     start_wn, end_wn = args["index"]
     location = pt(args["location"])
-
     # Reading file
-    
     fullfiles = [pt(i) for i in args["fullfiles"]]
-
     felix = True
 
     for i, f in enumerate(fullfiles):
@@ -61,11 +59,15 @@ def exp_fit(tkplot=False, getvalue=False):
     model = gauss_fit(wn, inten)
 
     fit_data, uline_freq, usigma, uamplitude, ufwhm = model.get_data()
+
     line_freq_fit = model.get_value(uline_freq)
     fwhm = model.get_value(ufwhm)
     amplitude = model.get_value(uamplitude)
-
     sigma = model.get_value(usigma)
+
+    #wn_fit = np.linspace(line_freq_fit-5*sigma, line_freq_fit+5*sigma, 1000)
+    #inten_fit = gaussian(wn_fit, amplitude, sigma, line_freq_fit)
+
     data = {
         "freq":f"{uline_freq.nominal_value:.2f}", "table": f"{uline_freq:.2uP}, {uamplitude:.2uP}, {ufwhm:.2uP}, {usigma:.2uP}", 
         "for_weighted_error":f"{uline_freq.nominal_value}, {uline_freq.std_dev}, {uamplitude.nominal_value}, {uamplitude.std_dev}, {ufwhm.nominal_value}, {ufwhm.std_dev}, {usigma.nominal_value}, {usigma.std_dev}",
