@@ -17,6 +17,11 @@
 
     ///////////////////////////////////////////////////////
 
+    // Electron version checking
+    let electronVersion = process.versions.electron
+    let showinfo = electronVersion >= "7" ? remote.dialog.showMessageBoxSync : remote.dialog.showMessageBox
+    
+
     let selected = "Configuration", pyVersion = ""
     let pythonpath;
     if (process.platform === 'win32') {
@@ -162,20 +167,21 @@
                     buttons: ["Update and restart", "Later"],
                     type:"info"
                 }
-                let response;
-
-                if (process.versions.electron >= "7") {
-                    response = remote.dialog.showMessageBoxSync(remote.getCurrentWindow(), options)
-                } else {response = remote.dialog.showMessageBox(remote.getCurrentWindow(), options)}
-                console.log(response)
-                switch (response) {
-                    case 0:
-                        update()
-                    break;
-                    case 1:
-                        createToast("Not updating now")
-                    break;
-                }
+                let response = showinfo(remote.getCurrentWindow(), options)
+                response === 0 ? update() : createToast("Not updating now")
+                // if (process.versions.electron >= "7") {
+                //     response = remote.dialog.showMessageBoxSync(remote.getCurrentWindow(), options)
+                // } else {response = remote.dialog.showMessageBox(remote.getCurrentWindow(), options)}
+                // console.log(response)
+                // response === 0 ? update() : createToast("Not updating now")
+                // switch (response) {
+                //     case 0:
+                //         update()
+                //     break;
+                //     case 1:
+                //         createToast("Not updating now")
+                //     break;
+                // }
 
             }
             console.log("Update check completed")
@@ -250,16 +256,20 @@
 
                 createToast("Updated succesfull. Restart the program (Press Ctrl + R).", "success")
                 target.classList.toggle("is-loading")
-                if (process.versions.electron >= "7") {
 
-                    let response = remote.dialog.showMessageBoxSync(remote.getCurrentWindow(), 
-                        {title:"FELion_GUI3", type:"info", message:"Update succesfull", buttons:["Restart", "Restart later"]} )
-                    if (response===0) {remote.getCurrentWindow().reload()}
-                } else {
-                    let response = remote.dialog.showMessageBox(remote.getCurrentWindow(), 
-                        {title:"FELion_GUI3", type:"info", message:"Update succesfull", buttons:["Restart", "Restart later"]} )
-                    if (response===0) {remote.getCurrentWindow().reload()}
-                }
+                let response = showinfo(remote.getCurrentWindow(), {title:"FELion_GUI3", type:"info", message:"Update succesfull", buttons:["Restart", "Restart later"]} )
+                response===0 ? remote.getCurrentWindow().reload() : console.log("Restarting later")
+
+                // if (process.versions.electron >= "7") {
+
+                //     let response = remote.dialog.showMessageBoxSync(remote.getCurrentWindow(), 
+                //         {title:"FELion_GUI3", type:"info", message:"Update succesfull", buttons:["Restart", "Restart later"]} )
+                //     if (response===0) {remote.getCurrentWindow().reload()}
+                // } else {
+                //     let response = remote.dialog.showMessageBox(remote.getCurrentWindow(), 
+                //         {title:"FELion_GUI3", type:"info", message:"Update succesfull", buttons:["Restart", "Restart later"]} )
+                //     if (response===0) {remote.getCurrentWindow().reload()}
+                // }
             }
         })
     }
@@ -319,14 +329,21 @@
                 else {
                     console.info('Copied ' + results.length + ' files')
                     target.classList.toggle("is-loading")
-                    let response = remote.dialog.showMessageBox(remote.getCurrentWindow(),
-                        {title:"FELion_GUI3", type:"info", message:"Restored succesfull", buttons:["Restart", "Restart later"]} )
+                    let response = showinfo(remote.getCurrentWindow(), {title:"FELion_GUI3", type:"info", message:"Update succesfull", buttons:["Restart", "Restart later"]} )
+                    response===0 ? remote.getCurrentWindow().reload() : console.log("Restarting later")
+                    
+                    // if (process.versions.electron >= "7") {
+                    //     let response = remote.dialog.showMessageBoxSync(remote.getCurrentWindow(), 
+                    //         {title:"FELion_GUI3", type:"info", message:"Update succesfull", buttons:["Restart", "Restart later"]} )
+                    // } else {
+                    //     let response = remote.dialog.showMessageBox(remote.getCurrentWindow(),
+                    //     {title:"FELion_GUI3", type:"info", message:"Restored succesfull", buttons:["Restart", "Restart later"]} )
+                    // }
 
-                    if (response===0){ remote.getCurrentWindow().reload()}
-                    else console.log("Restarting later")
-
+                    // response===0 ? remote.getCurrentWindow().reload(): console.log("Restarting later")
                     console.log("Restoring completed")
                     createToast("Restoring completed", "success")
+
                 }
             })
         })

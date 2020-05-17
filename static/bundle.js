@@ -48711,7 +48711,7 @@ function create_fragment$Z(ctx) {
 	let dispose;
 
 	function customdialog_dialog_binding(value) {
-		/*customdialog_dialog_binding*/ ctx[32].call(null, value);
+		/*customdialog_dialog_binding*/ ctx[34].call(null, value);
 	}
 
 	let customdialog_props = {
@@ -48736,7 +48736,7 @@ function create_fragment$Z(ctx) {
 	customdialog.$on("response", /*handlepythonPathCheck*/ ctx[12]);
 
 	function textfield0_value_binding(value_1) {
-		/*textfield0_value_binding*/ ctx[33].call(null, value_1);
+		/*textfield0_value_binding*/ ctx[35].call(null, value_1);
 	}
 
 	let textfield0_props = {
@@ -48752,7 +48752,7 @@ function create_fragment$Z(ctx) {
 	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
 
 	function textfield1_value_binding(value_2) {
-		/*textfield1_value_binding*/ ctx[34].call(null, value_2);
+		/*textfield1_value_binding*/ ctx[36].call(null, value_2);
 	}
 
 	let textfield1_props = {
@@ -48768,7 +48768,7 @@ function create_fragment$Z(ctx) {
 	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding));
 
 	function textfield2_value_binding(value_3) {
-		/*textfield2_value_binding*/ ctx[35].call(null, value_3);
+		/*textfield2_value_binding*/ ctx[37].call(null, value_3);
 	}
 
 	let textfield2_props = {
@@ -48784,7 +48784,7 @@ function create_fragment$Z(ctx) {
 	binding_callbacks.push(() => bind(textfield2, "value", textfield2_value_binding));
 
 	function textfield3_value_binding(value_4) {
-		/*textfield3_value_binding*/ ctx[36].call(null, value_4);
+		/*textfield3_value_binding*/ ctx[38].call(null, value_4);
 	}
 
 	let textfield3_props = {
@@ -48800,7 +48800,7 @@ function create_fragment$Z(ctx) {
 	binding_callbacks.push(() => bind(textfield3, "value", textfield3_value_binding));
 
 	function customselect_picked_binding(value_5) {
-		/*customselect_picked_binding*/ ctx[37].call(null, value_5);
+		/*customselect_picked_binding*/ ctx[39].call(null, value_5);
 	}
 
 	let customselect_props = {
@@ -48820,7 +48820,7 @@ function create_fragment$Z(ctx) {
 	binding_callbacks.push(() => bind(customselect, "picked", customselect_picked_binding));
 
 	function textfield4_value_binding(value_6) {
-		/*textfield4_value_binding*/ ctx[38].call(null, value_6);
+		/*textfield4_value_binding*/ ctx[40].call(null, value_6);
 	}
 
 	let textfield4_props = {
@@ -48906,66 +48906,66 @@ function create_fragment$Z(ctx) {
 			h12.textContent = "About";
 			attr_dev(div0, "class", "title nav hvr-glow svelte-4r2npq");
 			toggle_class(div0, "clicked", /*selected*/ ctx[0] === "Configuration");
-			add_location(div0, file$T, 370, 16, 14510);
+			add_location(div0, file$T, 387, 16, 15904);
 			attr_dev(div1, "class", "title nav hvr-glow svelte-4r2npq");
 			toggle_class(div1, "clicked", /*selected*/ ctx[0] === "Update");
-			add_location(div1, file$T, 371, 16, 14642);
+			add_location(div1, file$T, 388, 16, 16036);
 			attr_dev(div2, "class", "title nav hvr-glow svelte-4r2npq");
 			toggle_class(div2, "clicked", /*selected*/ ctx[0] === "About");
-			add_location(div2, file$T, 372, 16, 14760);
+			add_location(div2, file$T, 389, 16, 16154);
 			attr_dev(div3, "class", "container left svelte-4r2npq");
-			add_location(div3, file$T, 369, 12, 14464);
+			add_location(div3, file$T, 386, 12, 15858);
 			attr_dev(div4, "class", "column side-panel is-2-widescreen is-3-desktop is-4-tablet box adjust-right svelte-4r2npq");
-			add_location(div4, file$T, 368, 8, 14361);
+			add_location(div4, file$T, 385, 8, 15755);
 			attr_dev(h10, "class", "title svelte-4r2npq");
-			add_location(h10, file$T, 381, 20, 15145);
+			add_location(h10, file$T, 398, 20, 16539);
 			attr_dev(div5, "class", "subtitle svelte-4r2npq");
-			add_location(div5, file$T, 382, 20, 15203);
+			add_location(div5, file$T, 399, 20, 16597);
 			attr_dev(button0, "class", "button is-link svelte-4r2npq");
-			add_location(button0, file$T, 386, 20, 15507);
+			add_location(button0, file$T, 403, 20, 16901);
 			attr_dev(button1, "class", "button is-link svelte-4r2npq");
-			add_location(button1, file$T, 387, 20, 15599);
+			add_location(button1, file$T, 404, 20, 16993);
 			attr_dev(div6, "class", "content animated fadeIn svelte-4r2npq");
 			toggle_class(div6, "active", /*selected*/ ctx[0] === "Configuration");
-			add_location(div6, file$T, 380, 16, 15044);
+			add_location(div6, file$T, 397, 16, 16438);
 			attr_dev(h11, "class", "title svelte-4r2npq");
-			add_location(h11, file$T, 393, 20, 15840);
+			add_location(h11, file$T, 410, 20, 17234);
 			attr_dev(div7, "class", "subtitle svelte-4r2npq");
-			add_location(div7, file$T, 394, 20, 15891);
+			add_location(div7, file$T, 411, 20, 17285);
 			attr_dev(div8, "class", "content svelte-4r2npq");
-			add_location(div8, file$T, 396, 20, 15995);
+			add_location(div8, file$T, 413, 20, 17389);
 			attr_dev(button2, "class", "button is-link svelte-4r2npq");
 			attr_dev(button2, "id", "updateCheckBtn");
-			add_location(button2, file$T, 403, 24, 16493);
+			add_location(button2, file$T, 420, 24, 17887);
 			attr_dev(button3, "class", "button is-link svelte-4r2npq");
 			attr_dev(button3, "id", "updateBtn");
-			add_location(button3, file$T, 404, 24, 16614);
+			add_location(button3, file$T, 421, 24, 18008);
 			attr_dev(div9, "class", "content svelte-4r2npq");
-			add_location(div9, file$T, 402, 20, 16446);
+			add_location(div9, file$T, 419, 20, 17840);
 			attr_dev(button4, "class", "button is-link svelte-4r2npq");
-			add_location(button4, file$T, 410, 24, 16918);
+			add_location(button4, file$T, 427, 24, 18312);
 			attr_dev(button5, "class", "button is-link svelte-4r2npq");
-			add_location(button5, file$T, 411, 24, 17008);
+			add_location(button5, file$T, 428, 24, 18402);
 			attr_dev(div10, "class", "content svelte-4r2npq");
-			add_location(div10, file$T, 408, 20, 16747);
+			add_location(div10, file$T, 425, 20, 18141);
 			attr_dev(div11, "class", "content animated fadeIn svelte-4r2npq");
 			toggle_class(div11, "active", /*selected*/ ctx[0] === "Update");
-			add_location(div11, file$T, 392, 16, 15746);
+			add_location(div11, file$T, 409, 16, 17140);
 			attr_dev(h12, "class", "title svelte-4r2npq");
-			add_location(h12, file$T, 419, 20, 17295);
+			add_location(h12, file$T, 436, 20, 18689);
 			attr_dev(div12, "class", "content animated fadeIn svelte-4r2npq");
 			toggle_class(div12, "active", /*selected*/ ctx[0] === "About");
-			add_location(div12, file$T, 418, 16, 17202);
+			add_location(div12, file$T, 435, 16, 18596);
 			attr_dev(div13, "class", "container right svelte-4r2npq");
-			add_location(div13, file$T, 377, 12, 14955);
+			add_location(div13, file$T, 394, 12, 16349);
 			attr_dev(div14, "class", "column main-panel box svelte-4r2npq");
-			add_location(div14, file$T, 376, 8, 14906);
+			add_location(div14, file$T, 393, 8, 16300);
 			attr_dev(div15, "class", "columns svelte-4r2npq");
-			add_location(div15, file$T, 366, 4, 14328);
+			add_location(div15, file$T, 383, 4, 15722);
 			attr_dev(section, "class", "section animated fadeIn svelte-4r2npq");
 			attr_dev(section, "id", "Settings");
 			set_style(section, "display", "none");
-			add_location(section, file$T, 365, 0, 14246);
+			add_location(section, file$T, 382, 0, 15640);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -49192,8 +49192,14 @@ function instance$Z($$self, $$props, $$invalidate) {
 	const copy = require("recursive-copy");
 
 	///////////////////////////////////////////////////////
-	let selected = "Configuration", pyVersion = "";
+	// Electron version checking
+	let electronVersion = process.versions.electron;
 
+	let showinfo = electronVersion >= "7"
+	? remote.dialog.showMessageBoxSync
+	: remote.dialog.showMessageBox;
+
+	let selected = "Configuration", pyVersion = "";
 	let pythonpath;
 
 	if (process.platform === "win32") {
@@ -49389,27 +49395,25 @@ function instance$Z($$self, $$props, $$invalidate) {
 					type: "info"
 				};
 
-				let response;
+				let response = showinfo(remote.getCurrentWindow(), options);
 
-				if (process.versions.electron >= "7") {
-					response = remote.dialog.showMessageBoxSync(remote.getCurrentWindow(), options);
-				} else {
-					response = remote.dialog.showMessageBox(remote.getCurrentWindow(), options);
-				}
+				response === 0
+				? update()
+				: createToast$1("Not updating now");
+			} // if (process.versions.electron >= "7") { //     response = remote.dialog.showMessageBoxSync(remote.getCurrentWindow(), options) // } else {response = remote.dialog.showMessageBox(remote.getCurrentWindow(), options)}
 
-				console.log(response);
-
-				switch (response) {
-					case 0:
-						update();
-						break;
-					case 1:
-						createToast$1("Not updating now");
-						break;
-				}
-			}
-
+			// console.log(response)
+			// response === 0 ? update() : createToast("Not updating now")
+			// switch (response) {
+			//     case 0:
+			//         update()
+			//     break;
+			//     case 1:
+			//         createToast("Not updating now")
+			//     break;
+			// }
 			console.log("Update check completed");
+
 			target.classList.toggle("is-loading");
 		});
 	};
@@ -49471,32 +49475,19 @@ function instance$Z($$self, $$props, $$invalidate) {
 				createToast$1("Updated succesfull. Restart the program (Press Ctrl + R).", "success");
 				target.classList.toggle("is-loading");
 
-				if (process.versions.electron >= "7") {
-					let response = remote.dialog.showMessageBoxSync(remote.getCurrentWindow(), {
-						title: "FELion_GUI3",
-						type: "info",
-						message: "Update succesfull",
-						buttons: ["Restart", "Restart later"]
-					});
+				let response = showinfo(remote.getCurrentWindow(), {
+					title: "FELion_GUI3",
+					type: "info",
+					message: "Update succesfull",
+					buttons: ["Restart", "Restart later"]
+				});
 
-					if (response === 0) {
-						remote.getCurrentWindow().reload();
-					}
-				} else {
-					let response = remote.dialog.showMessageBox(remote.getCurrentWindow(), {
-						title: "FELion_GUI3",
-						type: "info",
-						message: "Update succesfull",
-						buttons: ["Restart", "Restart later"]
-					});
-
-					if (response === 0) {
-						remote.getCurrentWindow().reload();
-					}
-				}
-			}
-		});
-	};
+				response === 0
+				? remote.getCurrentWindow().reload()
+				: console.log("Restarting later");
+			} // if (process.versions.electron >= "7") { //     let response = remote.dialog.showMessageBoxSync(remote.getCurrentWindow(), 
+		}); //         {title:"FELion_GUI3", type:"info", message:"Update succesfull", buttons:["Restart", "Restart later"]} ) //     if (response===0) {remote.getCurrentWindow().reload()} // } else { //     let response = remote.dialog.showMessageBox(remote.getCurrentWindow(), 
+	}; //         {title:"FELion_GUI3", type:"info", message:"Update succesfull", buttons:["Restart", "Restart later"]} ) //     if (response===0) {remote.getCurrentWindow().reload()} // }
 
 	// Backup and restore
 	let backupName = "FELion_GUI_backup";
@@ -49572,18 +49563,27 @@ function instance$Z($$self, $$props, $$invalidate) {
 					console.info("Copied " + results.length + " files");
 					target.classList.toggle("is-loading");
 
-					let response = remote.dialog.showMessageBox(remote.getCurrentWindow(), {
+					let response = showinfo(remote.getCurrentWindow(), {
 						title: "FELion_GUI3",
 						type: "info",
-						message: "Restored succesfull",
+						message: "Update succesfull",
 						buttons: ["Restart", "Restart later"]
 					});
 
-					if (response === 0) {
-						remote.getCurrentWindow().reload();
-					} else console.log("Restarting later");
+					response === 0
+					? remote.getCurrentWindow().reload()
+					: console.log("Restarting later");
 
+					// if (process.versions.electron >= "7") {
+					//     let response = remote.dialog.showMessageBoxSync(remote.getCurrentWindow(), 
+					//         {title:"FELion_GUI3", type:"info", message:"Update succesfull", buttons:["Restart", "Restart later"]} )
+					// } else {
+					//     let response = remote.dialog.showMessageBox(remote.getCurrentWindow(),
+					//     {title:"FELion_GUI3", type:"info", message:"Restored succesfull", buttons:["Restart", "Restart later"]} )
+					// }
+					// response===0 ? remote.getCurrentWindow().reload(): console.log("Restarting later")
 					console.log("Restoring completed");
+
 					createToast$1("Restoring completed", "success");
 				}
 			});
@@ -49634,6 +49634,8 @@ function instance$Z($$self, $$props, $$invalidate) {
 	};
 
 	$$self.$inject_state = $$props => {
+		if ("electronVersion" in $$props) electronVersion = $$props.electronVersion;
+		if ("showinfo" in $$props) showinfo = $$props.showinfo;
 		if ("selected" in $$props) $$invalidate(0, selected = $$props.selected);
 		if ("pyVersion" in $$props) $$invalidate(1, pyVersion = $$props.pyVersion);
 		if ("pythonpath" in $$props) $$invalidate(2, pythonpath = $$props.pythonpath);
@@ -49691,6 +49693,8 @@ function instance$Z($$self, $$props, $$invalidate) {
 		https,
 		admZip,
 		copy,
+		electronVersion,
+		showinfo,
 		checkPython,
 		versionFile,
 		updateFolder,
