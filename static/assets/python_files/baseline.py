@@ -197,10 +197,9 @@ class Create_Baseline():
 
         baselinePlot_title = ("FELIX Spectrum: Create Baseline", "OPO Spectrum: Create Baseline")[self.opo]
 
-        self.baseline_data = widget.make_figure_layout(ax=self.ax, xdata=self.data[0], ydata=self.data[1], label=label, savename=self.felixfile,
-            title=baselinePlot_title, 
-            xaxis="Wavenumber (cm-1)", yaxis="Counts", ls='', marker='o', ms=5, 
-            markeredgecolor=('r', "C0")[self.opo], c=('r', "C0")[self.opo])
+        self.ax = widget.make_figure_layout(ax=self.ax, label=label, savename=self.felixfile, title=baselinePlot_title, xaxis="Wavenumber (cm-1)", yaxis="Counts")
+        self.baseline_data, = self.ax.step(self.data[0], self.data[1], "r", where="pre", ms=7, markeredgecolor="black", label=label)
+        widget.plot_legend = self.ax.legend()
 
         def on_closing():
             def ask(check, change, txt=""):
@@ -209,6 +208,7 @@ class Create_Baseline():
                     if yes: return change()
                     else: return print(f"[{txt}] Changes haven't saved")
                 else: return print(f"[{txt}] No changes have made")
+
             
             ask(self.felix_corrected, self.save_cfelix, ".cfelix")
             ask(self.baseline_corrected, self.SaveBase, ".base")
@@ -294,7 +294,9 @@ class Create_Baseline():
             'To UNDO the deleted point'
             print(f'data dim: {self.data.ndim}\t shape: {self.data.shape}\nundo dim: {self.removed_datas.ndim}\tshape: {self.removed_datas.shape}')
             
-            if self.undo_counter == 0: return showinfo('NOTE', 'You have reached the end of UNDO')
+            if self.undo_counter == 0: 
+                self.felix_corrected = False
+                return showinfo('NOTE', 'You have reached the end of UNDO')
             else:
                 print('\n########## UNDO ##########\n')
                 print('Before UNDO')
@@ -324,6 +326,7 @@ class Create_Baseline():
             'To REDO'
 
             if self.redo_counter == 0: return showinfo('NOTE', 'You have reached the end of REDO')
+            
             else:
                 print('\n########## REDO ##########\n')
                 print('Before REDO')
@@ -340,8 +343,9 @@ class Create_Baseline():
 
                 self.undo_counter += 1
                 self.redo_counter -= 1
-
                 self.redraw_baseline()
+
+                self.felix_corrected = True
 
                 print('Before REDO')
                 print(f'\nRemoved Data: {self.removed_datas}\t{self.removed_datas.shape}\n')
@@ -349,10 +353,12 @@ class Create_Baseline():
                 print('\n########## END REDO ##########\n')
         
         elif event.key == 'c':
+
             'To save cfelix file'
 
             if not self.felix_corrected: return showwarning('No change', 'You have not made any corrected to .felix file.')
             else: self.save_cfelix()
+                
 
         elif event.key == 'b':
             'To save baseline file'
@@ -468,6 +474,7 @@ class Create_Baseline():
             if isfile(basefile):
                 print(f'{self.basefile} is SAVED')
                 self.fig.savefig(f'{self.location}/OUT/{self.fname}.png')
+                self.baseline_corrected = False
                 return showinfo('Info', f'{self.basefile} file is saved in /DATA directory')
         
         except Exception as error: return showerror("Error", f"Following error has occured while saving {self.basefile} file\n{error}")
