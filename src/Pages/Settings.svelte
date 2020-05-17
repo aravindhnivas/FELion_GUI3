@@ -162,8 +162,11 @@
                     buttons: ["Update and restart", "Later"],
                     type:"info"
                 }
-                
-                let response = remote.dialog.showMessageBox(remote.getCurrentWindow(), options)
+                let response;
+
+                if (process.versions.electron >= "7") {
+                    response = remote.dialog.showMessageBoxSync(remote.getCurrentWindow(), options)
+                } else {response = remote.dialog.showMessageBox(remote.getCurrentWindow(), options)}
                 console.log(response)
                 switch (response) {
                     case 0:
