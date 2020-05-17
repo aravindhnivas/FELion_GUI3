@@ -107,7 +107,6 @@
                 break;
             
             case "baseline":
-
                 if (OPORow) {if(opofiles.length<1) return createToast("No OPO files selected", "danger")}
                 else {if(felixfiles.length<1) return createToast("No FELIX files selected", "danger")}
                 break;
@@ -116,6 +115,7 @@
                 if (index.length<2) { return createToast("Range not found!!. Select a range using Box-select", "danger") }
 
                 expfit_args = { addedFileScale, addedFileCol, output_name, overwrite_expfit, writeFile, writeFileName, normMethod: opoExpFit ? "Log" : normMethod, index, fullfiles, location: opoExpFit ? OPOLocation : currentLocation }
+
                 break;
 
             case "double_peak":
@@ -124,6 +124,23 @@
                 break;
 
             case "NGauss_fit":
+
+                if (boxSelected_peakfinder) {
+                    if (index.length<2) { return createToast("Box selection is turned ON so please select a wn. range to fit", "danger") }
+                    NGauss_fit_args.index = index
+                } else {delete NGauss_fit_args.index}
+
+
+                
+                if (peakTable.length === 0) {return createToast("No arguments initialised yet.", "danger") }
+                NGauss_fit_args.fitNGauss_arguments = {}
+                peakTable.forEach((f, index)=>{
+                    NGauss_fit_args.fitNGauss_arguments[`cen${index}`] = f.freq
+                    NGauss_fit_args.fitNGauss_arguments[`A${index}`] = f.amp
+
+                    NGauss_fit_args.fitNGauss_arguments[`sigma${index}`] = f.sig
+                })
+
                 NGauss_fit_args = {...NGauss_fit_args, location: opoExpFit ? OPOLocation : currentLocation, addedFileScale, addedFileCol, overwrite_expfit, writeFile, writeFileName, output_name, fullfiles, normMethod: opoExpFit ? "Log" : normMethod, output_name}
                 break;
             
@@ -131,8 +148,7 @@
                 
                 peakTable = removedTable = []
 
-                if (index.length<2 && boxSelected_peakfinder) { return createToast("Range not found!!. Select a range using Box-select", "danger") }
-                NGauss_fit_args = {fitNGauss_arguments:{}}
+                if (index.length<2 && boxSelected_peakfinder) { return createToast("Box selection is turned ON so please select a wn. range to fit", "danger") }
                 
                 let selectedIndex = boxSelected_peakfinder ? index : [0, 0]
 
@@ -364,7 +380,6 @@
 
                                             console.log("Filename: ", output_name)
 
-                                            NGauss_fit_args = {fitNGauss_arguments:{}}
 
                                             let line_color = d.data.line.color
                                             console.log(name)
@@ -373,21 +388,13 @@
                                             let [freq, amp] = [parseFloat(d.x.toFixed(2)), parseFloat(d.y.toFixed(2))]
                                             
                                             console.log("Annotation before: ", window.annotation)
-                                            window.annotation = [...window.annotation, { text: `(${freq}, ${amp}})`, x: freq, y: amp, font:{color:line_color}, arrowcolor:line_color }]
+                                            window.annotation = [...window.annotation, { text: `(${freq}, ${amp})`, x: freq, y: amp, font:{color:line_color}, arrowcolor:line_color }]
                                             console.log("Annotation after: ", window.annotation)
 
                                             Plotly.relayout("avgplot",{annotations: _.uniqBy(window.annotation, 'text')})
                                             
                                             peakTable = [...peakTable, {freq, amp, sig:Ngauss_sigma, id:getID()}]
                                             peakTable = _.uniqBy(peakTable, 'freq')
-
-                                            peakTable.forEach((f, index)=>{
-                                                NGauss_fit_args.fitNGauss_arguments[`cen${index}`] = f.freq
-
-                                                NGauss_fit_args.fitNGauss_arguments[`A${index}`] = f.amp
-                                                NGauss_fit_args.fitNGauss_arguments[`sigma${index}`] = f.sig
-                                            })
-
                                         }
                                     }
                                     console.log("Running cycle ended")
@@ -549,26 +556,20 @@
                         Plotly.relayout(graphDiv, { annotations: dataFromPython[2]["annotations"] })
 
                         
-                        if (boxSelected_peakfinder) {NGauss_fit_args.index = index}
                         setTimeout(()=> {
 
                             const [peakX, peakY] = [dataFromPython[0]["data"].x, dataFromPython[0]["data"].y]
                             setTimeout(()=>{[window.peakX, window.peakY] = [peakX, peakY]}, 500)
-                            NGauss_fit_args.peakFilename = dataFromPython[3]["filename"]
 
                             // let color = "#fafafa";
                             for (let index = 0; index < peakX.length; index++) {
                                 let [freq, amp, sig] = [peakX[index], peakY[index], Ngauss_sigma]
                                 peakTable = [...peakTable, {freq, amp, sig, id:getID()}]
-                                NGauss_fit_args.fitNGauss_arguments[`cen${index}`] = peakX[index]
-                                NGauss_fit_args.fitNGauss_arguments[`A${index}`] = peakY[index]
-                                NGauss_fit_args.fitNGauss_arguments[`sigma${index}`] = Ngauss_sigma
                             }
                             originalTable = peakTable;
 
                             console.log(`Found peaks:\nX: ${peakX}\nY: ${peakY}`)
 
-                            console.log(`NGauss_fit_args:`, NGauss_fit_args)
                         }, 500)
                         console.log("Peaks found")
                         createToast("Peaks found", "success")
@@ -646,8 +647,8 @@
 
         plot_trace_added--
     }
+
     onMount(()=>{ console.log("Normline mounted") })
-    
     let collectData = true, lineData_list = [], toggleDoubleGaussRow = false, weighted_error = [[], []], err_data1_plot = false
 
     let amp1=0, amp2=0, cen1=0, cen2=0, sig1=5, sig2=5
@@ -694,31 +695,26 @@
     $: opoExpFit ? fullfiles = [...opofiles, ...addedfiles, path.resolve(currentLocation, "averaged.felix")] : fullfiles = [...felixfiles, ...addedfiles, path.resolve(currentLocation, "averaged.felix")]
 
     function adjustPeak({closeMainModal=true}={}) {
-
         peakTable = _.filter(peakTable, (tb)=>tb.sig != 0);
         let temp_annotate = {xref:"x", y:"y", "showarrow":true,  "arrowhead":2, "ax":-25, "ay":-40, font:{color:annotation_color}, arrowcolor:annotation_color}
         
-        let newAnnotations = []
-        NGauss_fit_args.fitNGauss_arguments = {}
+        window.annotation = []
+
         
         peakTable.forEach((f, index)=>{
-
-            NGauss_fit_args.fitNGauss_arguments[`cen${index}`] = f.freq
-            NGauss_fit_args.fitNGauss_arguments[`A${index}`] = f.amp
-            NGauss_fit_args.fitNGauss_arguments[`sigma${index}`] = f.sig
             let _annotate = {x:f.freq, y:f.amp, text:`(${f.freq.toFixed(2)}, ${f.amp.toFixed(2)})`}
-            newAnnotations = [...newAnnotations, {...temp_annotate, ..._annotate} ]
+            window.annotation = [...window.annotation, {...temp_annotate, ..._annotate} ]
         })
-        console.log("Initial gusses changed", NGauss_fit_args.fitNGauss_arguments)
+
+        
         if(closeMainModal) {
             modalActivate = false, createToast("Initial guess adjusted for full spectrum fitting")
-            // removedTable.forEach((f, index)=>{ window.annotation = _.filter(window.annotation, (freq)=>freq.x != f.freq) })
         }
-        Plotly.relayout(graphDiv, { annotations:newAnnotations })
-        console.log("Fitted arguments", NGauss_fit_args.fitNGauss_arguments)
-    }
 
+        Plotly.relayout(graphDiv, { annotations:window.annotation })
+    }
     let originalTable;
+
     function rearrangePeakTable(e) {
 
         peakTable = _.filter(peakTable, (tb)=>tb.id != e.target.id);
@@ -727,19 +723,25 @@
     }
 
     const editPeakTable = (index) => {
+
         let freq = parseFloat(document.getElementById(`${index}_tb_freq`).innerHTML)
         let amp = parseFloat(document.getElementById(`${index}_tb_amp`).innerHTML)
         let sig = parseFloat(document.getElementById(`${index}_tb_sig`).innerHTML)
+        
         peakTable[index] = {freq, amp, sig}
         console.log({freq, amp, sig})
     }
+    
+    
     $: console.log(peakTable)
     const focusFreq = (e) => {e.focus()}
 
+    
     const sortTable = (type) => {
         peakTable = _.sortBy(peakTable, [(o)=>o[type]])
         peakTable = _.reverse(peakTable)
     }
+
 </script>
 
 <style>
@@ -825,8 +827,6 @@
 
 </Modal1>
 
-
-
 <Modal1 bind:active={addFileModal} title="Add file to plot">
 
     <div slot="content" >
@@ -847,7 +847,6 @@
     </div>
 </QuickView>
 
-
 <QuickView style="padding:1em;" bind:active={showOPOFiles} bind:location={OPOLocation}>
     <FileBrowser bind:currentLocation={OPOLocation} bind:fileChecked={OPOfilesChecked} filetype="ofelix"/>
     <div slot="footer" style="margin:auto">
@@ -855,7 +854,6 @@
         <button class="button is-link" on:click="{(e)=>{plotData({e:e, filetype:"opofile"}); localStorage["opoLocation"] = OPOLocation}}">Submit</button>
     </div>
 </QuickView>
-
 
 <Layout {filetype} {id} bind:currentLocation bind:fileChecked >
     <div class="buttonSlot" slot="buttonContainer">
@@ -867,7 +865,7 @@
                 Create Baseline</button>
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"felix"})}">FELIX Plot</button>
 
-            <Textfield style="width:7em" variant="outlined" bind:value={delta} label="Delta"/>
+            <Textfield style="width:7em" variant="outlined" type="number" step="0.5" bind:value={delta} label="Delta"/>
             <button class="button is-link" 
                 on:click="{(e)=>plotData({e:e, filetype:"general", general:{args:[...felixfiles, normMethod, onlyFinalSpectrum], pyfile:"norm_tkplot.py"}})}"> Open in Matplotlib</button>
 
@@ -938,7 +936,6 @@
 
             <div class="content">
                 <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"exp_fit"})}">Exp Fit.</button>
-                <!-- <button class="button is-link" on:click="{(e)=>toggleDoubleGaussRow = !toggleDoubleGaussRow}">Double Gauss.</button> -->
                 <button class="button is-link" on:click="{()=>toggleFindPeaksRow = !toggleFindPeaksRow}">Fit NGauss.</button>
                 <button class="button is-warning" on:click={clearLastPeak}>Clear Last</button>
                 
@@ -951,9 +948,9 @@
             <div class="content animated fadeIn hide" class:active={toggleFindPeaksRow}>
                 <CustomSwitch style="margin: 0 1em;" bind:selected={boxSelected_peakfinder} label="BoxSelected"/>
                 
-                <Textfield type="number" {style} bind:value={peak_prominence} label="Prominance" />
-                <Textfield type="number" {style} bind:value={peak_width} label="Width" />
-                <Textfield type="number" {style} bind:value={peak_height} label="Height" />
+                <Textfield type="number" {style} step="0.5" bind:value={peak_prominence} label="Prominance" />
+                <Textfield type="number" {style} step="0.5" bind:value={peak_width} label="Width" />
+                <Textfield type="number" {style} step="0.1" bind:value={peak_height} label="Height" />
                 
                 <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"find_peaks"})}">Get Peaks</button>
 
