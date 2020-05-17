@@ -425,7 +425,7 @@ class FELion_Tk(Tk):
         # Setting legend (later for toggling its visibility)
         if ax is not None: self.plot_legend = self.ax.legend()
 
-        if ax is not None: 
+        if xdata is not None: 
             print("Returning created plot for ax")
             return plot
         else: 
