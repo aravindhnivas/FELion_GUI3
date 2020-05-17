@@ -104,51 +104,46 @@ class normplot:
 
             # Wavelength and intensity of individuals without binning
             wavelength, intensity, raw_intensity, relative_depletion = self.norm_line_felix()
+
             wavelength_rel = np.copy(wavelength)
 
             # collecting Wavelength and intensity to average spectrum with binning
+
             xs = np.append(xs, wavelength)
             ys = np.append(ys, intensity)
 
             xs_r = np.append(xs_r, wavelength_rel)
             ys_r = np.append(ys_r, relative_depletion)
 
-            # Wavelength and intensity of individuals with binning
-            wavelength, intensity = self.felix_binning(wavelength, intensity)
-            wavelength_rel, relative_depletion = self.felix_binning( wavelength_rel, relative_depletion)
+            
             energyJ = self.inten_per_photon(wavelength, intensity)
             self.export_file(fname, wavelength, intensity, relative_depletion, energyJ, raw_intensity)
 
             ################### Spectrum Analyser #################################
             wn, sa = self.saCal.get_data()
-            
             X = np.arange(wn.min(), wn.max(), 1)
-            
-            lineColor = {"color": f"rgb{colors[c]}"}
+
+            lineColor = {"color": f"rgb{colors[c]}", "shape":"hv"}
             blackColor = {"color": "black"}
-            
             groupItem = {"legendgroup": f'group{group}'}
             nolegend = {"showlegend": False}
-
             
-            dataToSend["SA"][felixfile] = makeDataToSend(wn, sa, f"{filename.stem}_SA", update={"line":lineColor, **groupItem, "mode": "markers"})
-
+            dataToSend["SA"][felixfile] = makeDataToSend(wn, sa, f"{filename.stem}_SA({round(self.sa_diff, 1)})", update={"line":lineColor, **groupItem, "mode": "markers"})
             dataToSend["SA"][f"{felixfile}_fit"] = makeDataToSend(X, self.saCal.sa_cm(X), f"{filename.stem}_fit", update={"mode": "lines", "line":blackColor, **groupItem, **nolegend})
 
 
             powlegend = f"{powerfile}: [{self.nshots} - ({self.felix_hz}Hz)]"
             dataToSend["pow"][powerfile] = makeDataToSend(wavelength, self.total_power, powlegend, update={"mode": "markers", "xaxis": "x2", "yaxis": "y2",  "marker": lineColor, **groupItem})            
             ################### Spectrum Analyser END #################################
-
-            
             ################### Averaged and Normalised Spectrum #################################
 
             # Normalised Intensity
-            
             defaultStyle={"mode": "lines+markers", "fill": 'tozeroy', "marker": {"size":1}, "line":lineColor}
-            dataToSend["average"][felixfile] = makeDataToSend(wavelength, intensity, felixfile, update=defaultStyle)
-            dataToSend["average_rel"][felixfile] = makeDataToSend(wavelength_rel, relative_depletion, felixfile, update=defaultStyle)
-            dataToSend["average_per_photon"][felixfile] = makeDataToSend(wavelength, energyJ, felixfile, update=defaultStyle)
+            _del = "\u0394"
+            felixfile_lg = f"{felixfile}({_del}:{round(np.diff(wavelength).mean(), 1)})"
+            dataToSend["average"][felixfile] = makeDataToSend(wavelength, intensity, felixfile_lg, update=defaultStyle)
+            dataToSend["average_rel"][felixfile] = makeDataToSend(wavelength_rel, relative_depletion, felixfile_lg, update=defaultStyle)
+            dataToSend["average_per_photon"][felixfile] = makeDataToSend(wavelength, energyJ, felixfile_lg, update=defaultStyle)
             
             ################### Averaged Spectrum END #################################
 
@@ -166,7 +161,6 @@ class normplot:
 
             dataToSend["base"][f"{felixfile}_base"] = makeDataToSend(base_felix[0], base_felix[1], f"{felixfile}: {label}", update={"mode": "lines", "line":lineColor, **groupItem })
             dataToSend["base"][f"{felixfile}_line"] = makeDataToSend(base_line[0], base_line[1], f"{felixfile}: {label}", update={"mode": "lines+markers", "line":blackColor, **groupItem, **nolegend})
-            
             group += 1
             c += 2
 
@@ -175,16 +169,19 @@ class normplot:
         # For Normalised Intensity
         binns, intens = self.felix_binning(xs, ys)
         energyJ_norm = self.inten_per_photon(binns, intens)
+
         binns_r, intens_r = self.felix_binning(xs_r, ys_r)
         
-        defaultStyle={"mode": "lines+markers", "marker": {"size":1}, "line":blackColor}
-        
-        dataToSend["average"]["average"] = makeDataToSend(binns, intens, "averaged", update=defaultStyle)
-        dataToSend["average_rel"]["average"] = makeDataToSend(binns_r, intens_r, "averaged", update=defaultStyle)
-        dataToSend["average_per_photon"]["average"] = makeDataToSend(binns, energyJ_norm, "averaged", update=defaultStyle)
+        defaultStyle={"mode": "lines+markers", "marker": {"size":1}, "line":{"color": "black", "shape":"hv"}}
+        felixfile_avg_lg = f"averaged({_del}:{round(np.diff(binns).mean(), 1)})"
+        dataToSend["average"]["average"] = makeDataToSend(binns, intens, felixfile_avg_lg, update=defaultStyle)
+
+        dataToSend["average_rel"]["average"] = makeDataToSend(binns_r, intens_r, felixfile_avg_lg, update=defaultStyle)
+        dataToSend["average_per_photon"]["average"] = makeDataToSend(binns, energyJ_norm, felixfile_avg_lg, update=defaultStyle)
         
         # Exporting averaged.dat file
         self.export_file(f"averaged", binns, intens, intens_r, energyJ_norm)
+
         sendData(dataToSend)
 
     def inten_per_photon(self, wn, inten): return (np.array(wn) * np.array(inten)) / 1e3
@@ -192,11 +189,10 @@ class normplot:
     def norm_line_felix(self, PD=True):
 
         felixfile, basefile, powerfile = self.filetypes
-        
         data = felix_read_file(felixfile)
         powCal = PowerCalibrator(powerfile)
         baseCal = BaselineCalibrator(basefile)
-        
+
         self.saCal = SpectrumAnalyserCalibrator(felixfile)
         wavelength = self.saCal.sa_cm(data[0])
         
@@ -206,7 +202,10 @@ class normplot:
         counts = data[1]
         baseCounts = baseCal.val(data[0])
         ratio = counts/baseCounts
-        
+
+        self.sa_diff = np.diff((data[2] - data[1])).mean()
+        print(f"Spectrum analyser is {self.sa_diff } more than set wn.")
+
         # Normalise the intensity
         # multiply by 1000 because of mJ but ONLY FOR PD!!!
         if PD:
@@ -281,6 +280,7 @@ class normplot:
                         return int(line.split(" ")[1])
 
 if __name__ == "__main__":
+
     print("Argument received for normline.py: \n", sys.argv[1:][0])
     args = sys.argv[1:][0].split(",")
     print("Argument procesed:\n", args)
