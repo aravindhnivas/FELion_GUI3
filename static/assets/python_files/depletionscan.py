@@ -60,9 +60,9 @@ class depletionplot:
 
     def change_legend(self, event=None):
 
-        self.ax0.legend().set_visible(not self.plotlegend.get())
+        self.ax0.legend([]).set_visible(not self.plotlegend.get())
 
-        self.ax1.legend().set_visible(not self.plotlegend.get())
+        self.ax1.legend([]).set_visible(not self.plotlegend.get())
         if not self.plotlegend.get():
 
             fontSz = self.legend_slider.get()
@@ -222,12 +222,15 @@ class depletionplot:
         uNa0 = uf(Na0, self.Na0_err)
         uNn0 = uf(Nn0, self.Nn0_err)
         uKon = uf(Kon, self.Kon_err)
-        self.lg1 = f"Kon: {uKon:.3uP}, Na: {uNa0:.2uP}, Nn: {uNn0:.2uP}"
-        self.writelg1 = f"Kon: {Kon:.2f}({self.Kon_err:.2f}), Na: {Na0:.2f}({self.Na0_err:.2f}), Nn: {Nn0:.2f}({self.Nn0_err:.2f})"
+        # self.lg1 = f"Kon: {uKon:.3uP}, Na: {uNa0:.2uP}, Nn: {uNn0:.2uP}"
 
-        self.lg2 = f"Koff: {uKoff:.2uP}, N: {uN:.2uP}"
-        self.writelg2 = f"Koff: {Koff:.2f}({self.Koff_err:.2f}), N: {N:.2f}({self.N_err:.2f})"
+        self.lg1 = self.writelg1 = f"Kon: {Kon:.2f}({self.Kon_err:.2f}), Na: {Na0:.2f}({self.Na0_err:.2f}), Nn: {Nn0:.2f}({self.Nn0_err:.2f})"
+
+        # self.lg2 = f"Koff: {uKoff:.2uP}, N: {uN:.2uP}"
+
+        self.lg2 = self.writelg2 = f"Koff: {Koff:.2f}({self.Koff_err:.2f}), N: {N:.2f}({self.N_err:.2f})"
         print("Legend: ", self.lg1, self.lg2)
+
         self.ax0.legend(labels=[self.lg1, self.lg2], title=f"Mass: {self.mass[0]}u, Res: {self.t_res}V, B0: {self.t_b0}ms", fontsize=5, title_fontsize=7)
         self.get_depletion_fit(Koff, N, uKoff, uN, Na0, Nn0, Kon, uNa0, uNn0, uKon, plot)
 
@@ -311,10 +314,9 @@ class depletionplot:
 
         for index, scanfile, i in zip(["resOn", "resOff"], [self.resOnFile, self.resOffFile], [0, 1]):
 
+            
             time, counts, error, self.mass, self.t_res, self.t_b0 = timescanplot(scanfile).get_data()
             time = time/1000 # ms to s
-            
-            
             ind = np.where(error==0)
             error[ind] = 1e-5
 
