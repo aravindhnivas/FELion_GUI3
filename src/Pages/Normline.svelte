@@ -83,7 +83,7 @@
     let opoPlotted = false, onlyFinalSpectrum = false, peakTable = []
     window.annotation = []
 
-    let plotly_event_created = plotly_event_created_opo = false
+    let plotly_event_created = false, plotly_event_created_opo = false
 
     const replot = () => {
         if (graphPlotted) {
