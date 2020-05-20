@@ -48711,7 +48711,7 @@ function create_fragment$Z(ctx) {
 	let dispose;
 
 	function customdialog_dialog_binding(value) {
-		/*customdialog_dialog_binding*/ ctx[35].call(null, value);
+		/*customdialog_dialog_binding*/ ctx[36].call(null, value);
 	}
 
 	let customdialog_props = {
@@ -48736,7 +48736,7 @@ function create_fragment$Z(ctx) {
 	customdialog.$on("response", /*handlepythonPathCheck*/ ctx[12]);
 
 	function textfield0_value_binding(value_1) {
-		/*textfield0_value_binding*/ ctx[36].call(null, value_1);
+		/*textfield0_value_binding*/ ctx[37].call(null, value_1);
 	}
 
 	let textfield0_props = {
@@ -48752,7 +48752,7 @@ function create_fragment$Z(ctx) {
 	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
 
 	function textfield1_value_binding(value_2) {
-		/*textfield1_value_binding*/ ctx[37].call(null, value_2);
+		/*textfield1_value_binding*/ ctx[38].call(null, value_2);
 	}
 
 	let textfield1_props = {
@@ -48768,7 +48768,7 @@ function create_fragment$Z(ctx) {
 	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding));
 
 	function textfield2_value_binding(value_3) {
-		/*textfield2_value_binding*/ ctx[38].call(null, value_3);
+		/*textfield2_value_binding*/ ctx[39].call(null, value_3);
 	}
 
 	let textfield2_props = {
@@ -48784,7 +48784,7 @@ function create_fragment$Z(ctx) {
 	binding_callbacks.push(() => bind(textfield2, "value", textfield2_value_binding));
 
 	function textfield3_value_binding(value_4) {
-		/*textfield3_value_binding*/ ctx[39].call(null, value_4);
+		/*textfield3_value_binding*/ ctx[40].call(null, value_4);
 	}
 
 	let textfield3_props = {
@@ -48800,7 +48800,7 @@ function create_fragment$Z(ctx) {
 	binding_callbacks.push(() => bind(textfield3, "value", textfield3_value_binding));
 
 	function customselect_picked_binding(value_5) {
-		/*customselect_picked_binding*/ ctx[40].call(null, value_5);
+		/*customselect_picked_binding*/ ctx[41].call(null, value_5);
 	}
 
 	let customselect_props = {
@@ -48820,7 +48820,7 @@ function create_fragment$Z(ctx) {
 	binding_callbacks.push(() => bind(customselect, "picked", customselect_picked_binding));
 
 	function textfield4_value_binding(value_6) {
-		/*textfield4_value_binding*/ ctx[41].call(null, value_6);
+		/*textfield4_value_binding*/ ctx[42].call(null, value_6);
 	}
 
 	let textfield4_props = {
@@ -48906,66 +48906,66 @@ function create_fragment$Z(ctx) {
 			h12.textContent = "About";
 			attr_dev(div0, "class", "title nav hvr-glow svelte-4r2npq");
 			toggle_class(div0, "clicked", /*selected*/ ctx[0] === "Configuration");
-			add_location(div0, file$T, 359, 16, 13613);
+			add_location(div0, file$T, 363, 16, 13652);
 			attr_dev(div1, "class", "title nav hvr-glow svelte-4r2npq");
 			toggle_class(div1, "clicked", /*selected*/ ctx[0] === "Update");
-			add_location(div1, file$T, 360, 16, 13745);
+			add_location(div1, file$T, 364, 16, 13784);
 			attr_dev(div2, "class", "title nav hvr-glow svelte-4r2npq");
 			toggle_class(div2, "clicked", /*selected*/ ctx[0] === "About");
-			add_location(div2, file$T, 361, 16, 13863);
+			add_location(div2, file$T, 365, 16, 13902);
 			attr_dev(div3, "class", "container left svelte-4r2npq");
-			add_location(div3, file$T, 358, 12, 13567);
+			add_location(div3, file$T, 362, 12, 13606);
 			attr_dev(div4, "class", "column side-panel is-2-widescreen is-3-desktop is-4-tablet box adjust-right svelte-4r2npq");
-			add_location(div4, file$T, 357, 8, 13464);
+			add_location(div4, file$T, 361, 8, 13503);
 			attr_dev(h10, "class", "title svelte-4r2npq");
-			add_location(h10, file$T, 370, 20, 14248);
+			add_location(h10, file$T, 374, 20, 14287);
 			attr_dev(div5, "class", "subtitle svelte-4r2npq");
-			add_location(div5, file$T, 371, 20, 14306);
+			add_location(div5, file$T, 375, 20, 14345);
 			attr_dev(button0, "class", "button is-link svelte-4r2npq");
-			add_location(button0, file$T, 375, 20, 14610);
+			add_location(button0, file$T, 379, 20, 14649);
 			attr_dev(button1, "class", "button is-link svelte-4r2npq");
-			add_location(button1, file$T, 376, 20, 14702);
+			add_location(button1, file$T, 380, 20, 14741);
 			attr_dev(div6, "class", "content animated fadeIn svelte-4r2npq");
 			toggle_class(div6, "active", /*selected*/ ctx[0] === "Configuration");
-			add_location(div6, file$T, 369, 16, 14147);
+			add_location(div6, file$T, 373, 16, 14186);
 			attr_dev(h11, "class", "title svelte-4r2npq");
-			add_location(h11, file$T, 382, 20, 14943);
+			add_location(h11, file$T, 386, 20, 14982);
 			attr_dev(div7, "class", "subtitle svelte-4r2npq");
-			add_location(div7, file$T, 383, 20, 14994);
+			add_location(div7, file$T, 387, 20, 15033);
 			attr_dev(div8, "class", "content svelte-4r2npq");
-			add_location(div8, file$T, 385, 20, 15098);
+			add_location(div8, file$T, 389, 20, 15137);
 			attr_dev(button2, "class", "button is-link svelte-4r2npq");
 			attr_dev(button2, "id", "updateCheckBtn");
-			add_location(button2, file$T, 392, 24, 15596);
+			add_location(button2, file$T, 396, 24, 15635);
 			attr_dev(button3, "class", "button is-link svelte-4r2npq");
 			attr_dev(button3, "id", "updateBtn");
-			add_location(button3, file$T, 393, 24, 15717);
+			add_location(button3, file$T, 397, 24, 15756);
 			attr_dev(div9, "class", "content svelte-4r2npq");
-			add_location(div9, file$T, 391, 20, 15549);
+			add_location(div9, file$T, 395, 20, 15588);
 			attr_dev(button4, "class", "button is-link svelte-4r2npq");
-			add_location(button4, file$T, 399, 24, 16021);
+			add_location(button4, file$T, 403, 24, 16060);
 			attr_dev(button5, "class", "button is-link svelte-4r2npq");
-			add_location(button5, file$T, 400, 24, 16111);
+			add_location(button5, file$T, 404, 24, 16150);
 			attr_dev(div10, "class", "content svelte-4r2npq");
-			add_location(div10, file$T, 397, 20, 15850);
+			add_location(div10, file$T, 401, 20, 15889);
 			attr_dev(div11, "class", "content animated fadeIn svelte-4r2npq");
 			toggle_class(div11, "active", /*selected*/ ctx[0] === "Update");
-			add_location(div11, file$T, 381, 16, 14849);
+			add_location(div11, file$T, 385, 16, 14888);
 			attr_dev(h12, "class", "title svelte-4r2npq");
-			add_location(h12, file$T, 408, 20, 16398);
+			add_location(h12, file$T, 412, 20, 16437);
 			attr_dev(div12, "class", "content animated fadeIn svelte-4r2npq");
 			toggle_class(div12, "active", /*selected*/ ctx[0] === "About");
-			add_location(div12, file$T, 407, 16, 16305);
+			add_location(div12, file$T, 411, 16, 16344);
 			attr_dev(div13, "class", "container right svelte-4r2npq");
-			add_location(div13, file$T, 366, 12, 14058);
+			add_location(div13, file$T, 370, 12, 14097);
 			attr_dev(div14, "class", "column main-panel box svelte-4r2npq");
-			add_location(div14, file$T, 365, 8, 14009);
+			add_location(div14, file$T, 369, 8, 14048);
 			attr_dev(div15, "class", "columns svelte-4r2npq");
-			add_location(div15, file$T, 355, 4, 13431);
+			add_location(div15, file$T, 359, 4, 13470);
 			attr_dev(section, "class", "section animated fadeIn svelte-4r2npq");
 			attr_dev(section, "id", "Settings");
 			set_style(section, "display", "none");
-			add_location(section, file$T, 354, 0, 13349);
+			add_location(section, file$T, 358, 0, 13388);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -49183,9 +49183,9 @@ function instance$Z($$self, $$props, $$invalidate) {
 	let $modalContent;
 	let $activated;
 	validate_store(modalContent, "modalContent");
-	component_subscribe($$self, modalContent, $$value => $$invalidate(20, $modalContent = $$value));
+	component_subscribe($$self, modalContent, $$value => $$invalidate(21, $modalContent = $$value));
 	validate_store(activated, "activated");
-	component_subscribe($$self, activated, $$value => $$invalidate(21, $activated = $$value));
+	component_subscribe($$self, activated, $$value => $$invalidate(22, $activated = $$value));
 	const { exec } = require("child_process");
 	const https = require("https");
 	const admZip = require("adm-zip");
@@ -49279,6 +49279,7 @@ function instance$Z($$self, $$props, $$invalidate) {
 	};
 
 	let pythonpathCheck;
+	let update_checking;
 
 	onMount(() => {
 		setTimeout(
@@ -49293,7 +49294,7 @@ function instance$Z($$self, $$props, $$invalidate) {
 
 		updateCheck({ info: false });
 
-		setTimeout(
+		update_checking = setInterval(
 			() => {
 				updateCheck({ info: false });
 			},
@@ -49613,6 +49614,7 @@ function instance$Z($$self, $$props, $$invalidate) {
 		if ("pythonpath" in $$props) $$invalidate(2, pythonpath = $$props.pythonpath);
 		if ("pythonscript" in $$props) $$invalidate(3, pythonscript = $$props.pythonscript);
 		if ("pythonpathCheck" in $$props) $$invalidate(4, pythonpathCheck = $$props.pythonpathCheck);
+		if ("update_checking" in $$props) update_checking = $$props.update_checking;
 		if ("gihub_branchname" in $$props) $$invalidate(5, gihub_branchname = $$props.gihub_branchname);
 		if ("github_repo" in $$props) $$invalidate(6, github_repo = $$props.github_repo);
 		if ("github_username" in $$props) $$invalidate(7, github_username = $$props.github_username);
@@ -49657,6 +49659,7 @@ function instance$Z($$self, $$props, $$invalidate) {
 		update,
 		backUp,
 		restore,
+		update_checking,
 		versionJson,
 		urlzip,
 		$modalContent,

@@ -46,6 +46,7 @@
      }
 
     
+    
     let pythonscript = localStorage["pythonscript"] = path.resolve(__dirname, "assets/python_files")
     
     const navigate = (e) => {selected = e.target.innerHTML}
@@ -79,10 +80,12 @@
     }
     let pythonpathCheck;
 
+    let update_checking;
     onMount(()=>{
         setTimeout(()=>{checkPython().then(res=>{ pyVersion = res; console.log("Python path is valid")}).catch(err=>pythonpathCheck.open() )}, 1000)
+
         updateCheck({info:false})
-        setTimeout(()=>{updateCheck({info:false})}, 1*1000*60*15)
+        update_checking = setInterval(()=>{updateCheck({info:false})}, 1*1000*60*15)
     })
 
     const handlepythonPathCheck = () => { console.log("Python path checking done") }
@@ -108,6 +111,7 @@
         target.classList.toggle("is-loading")
 
         if (!navigator.onLine) {if (info) {createToast("No Internet Connection!", "warning")}; return}
+
         console.log(`URL_Package: ${versionJson}`)
         let developer_version = false
 
@@ -316,7 +320,7 @@
                     console.log("Restoring completed")
                     createToast("Restoring completed", "success")
                 }
-                
+
             })
         })
         .catch(err=>{
