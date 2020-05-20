@@ -1,2 +1,7 @@
-# FELion_GUI3
-v1.0.0
+# FELion GUI3
+----------------------
+It is a versatile spectrum analyser for experimental data and can do following this:
+- Baseline correction
+- Peak finder
+- Fit whole experimental data
+- Compare with theory value plot
