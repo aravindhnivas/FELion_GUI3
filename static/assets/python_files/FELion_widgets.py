@@ -417,26 +417,24 @@ class FELion_Tk(Tk):
 
         # Grid
         self.ax.grid(self.plotGrid.get())
-        # if self.cursors.get(): mplcursors.cursor(hover=True)
 
         # Figure caption
         self.figtext = self.fig.text(0.5, 0.07, self.plotFigText.get(), ha="center", wrap=True, fontsize=self.figtextFont.get())
 
-        # Setting legend (later for toggling its visibility)
-        if ax is not None: self.plot_legend = self.ax.legend()
-
         if xdata is not None: 
             print("Returning created plot for ax")
+            self.plot_legend = self.ax.legend()
+
             return plot
-        else: 
+        else:
             print("Returning created ax")
+
             return self.ax 
         
     def save_fig(self, event=None):
-
         save_fname = f"{self.name.get()}.{self.save_fmt.get()}"
-        print(f"Saving filename: {save_fname}")
 
+        print(f"Saving filename: {save_fname}")
         save_filename = self.location / save_fname
         print(f"Saving file: {save_filename}")
 
