@@ -172,12 +172,16 @@
                 break;
 
             case "addfile":
-                if(addedFile.files < 1) return createToast("No files selected", "danger")
 
+                if(addedFile.files < 1) return createToast("No files selected", "danger")
                 addedFile["col"] = addedFileCol, addedFile["N"] = fileChecked.length + extrafileAdded
                 addedFile["scale"] = addedFileScale
+
                 break;
 
+            case "get_details":
+                if(felixfiles.length<1) return createToast("No files selected", "danger")
+                break;
             default:
                 break;
         }
@@ -190,12 +194,11 @@
             find_peaks: {pyfile:"fit_all.py" ,  args: [JSON.stringify(find_peaks_args)]},
             theory: {pyfile:"theory.py" , args:[...theoryfiles, normMethod, sigma, scale, currentLocation, tkplot]},
             get_err: {pyfile:"weighted_error.py" , args:lineData_list},
+
             double_peak: {pyfile:"double_gaussian.py" , args:double_fit_args},
             NGauss_fit: {pyfile:"multiGauss.py" , args:[JSON.stringify(NGauss_fit_args)]},
             addfile: {pyfile:"addTrace.py" , args:[JSON.stringify(addedFile)]},
-
             get_details: {pyfile:"getfile_details.py", args:[JSON.stringify({files:opoExpFit?opofiles : felixfiles, normMethod: opoExpFit ? "Log" : normMethod})]}
-
         }
 
         const {pyfile, args} = pyfileInfo[filetype]
@@ -764,15 +767,16 @@
         let location = localStorage.felix_location || currentLocation
         let file_ = path.join(location, "filedetails.json")
         fs.writeFile(file_, JSON.stringify({filedetails}), 'utf8', function (err) {
+
             if (err) {
                 console.log("An error occured while writing to File.");
+            
                 return createToast("An error occured while writing to File.", "danger")
             }
+
             filedetails_saved = filedetails
             createToast("filedetails.json has been saved.", "success");
-
         });
-    
     }
 
     const loadfile_details = () => {
@@ -783,7 +787,6 @@
         filedetails = _.uniqBy([..._filedetails, ...filedetails], "filename")
         createToast("filedetails.json has been loaded.", "success");
     }
-
 </script>
 
 <style>
