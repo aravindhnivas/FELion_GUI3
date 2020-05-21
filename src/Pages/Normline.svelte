@@ -26,11 +26,10 @@
 
     import FormField from '@smui/form-field';
 
-    const {BrowserWindow} = remote
     import {onMount} from "svelte"
     import VirtualList from '@sveltejs/svelte-virtual-list';
     import {Icon} from '@smui/icon-button'
-    // import Table from '../components/Table.svelte'
+    import Table from '../components/Table.svelte'
     import Modal1 from '../components/Modal1.svelte'
 
    ///////////////////////////////////////////////////////////////////////
@@ -193,7 +192,9 @@
             get_err: {pyfile:"weighted_error.py" , args:lineData_list},
             double_peak: {pyfile:"double_gaussian.py" , args:double_fit_args},
             NGauss_fit: {pyfile:"multiGauss.py" , args:[JSON.stringify(NGauss_fit_args)]},
-            addfile: {pyfile:"addTrace.py" , args:[JSON.stringify(addedFile)]}
+            addfile: {pyfile:"addTrace.py" , args:[JSON.stringify(addedFile)]},
+
+            get_details: {pyfile:"getfile_details.py", args:[JSON.stringify({files:opoExpFit?opofiles : felixfiles, normMethod: opoExpFit ? "Log" : normMethod})]}
 
         }
 
@@ -598,8 +599,22 @@
                     } else if (filetype == "addfile") {
                         addFileModal = false
                         Plotly.addTraces(graphDiv, dataFromPython)
+                        
                         extrafileAdded += addedfiles.length
+
+                    } else if (filetype == "get_details") {
+                        filedetails = [], showfile_details = true
+
+                        dataFromPython.files.forEach(data=>{
+                            let {filename, trap, res, b0, range} = data
+                            let [min, max] = range
+
+                            filedetails = [...filedetails, {filename, min, max, trap, b0, res, precursor:"", ie:"", id:getID()}]
+
+                        })
+
                     }
+
 
                 } catch (err) { $modalContent = err; $activated = true }
             }
@@ -736,10 +751,37 @@
     $: console.log(peakTable)
     const focusFreq = (e) => {e.focus()}
 
-    
     const sortTable = (type) => {
+
         peakTable = _.sortBy(peakTable, [(o)=>o[type]])
         peakTable = _.reverse(peakTable)
+    }
+    let showfile_details = false, filedetails = [];
+
+    // $: console.log(filedetails)
+    let filedetails_saved;
+    const savefile_details = () => {
+        let location = localStorage.felix_location || currentLocation
+        let file_ = path.join(location, "filedetails.json")
+        fs.writeFile(file_, JSON.stringify({filedetails}), 'utf8', function (err) {
+            if (err) {
+                console.log("An error occured while writing to File.");
+                return createToast("An error occured while writing to File.", "danger")
+            }
+            filedetails_saved = filedetails
+            createToast("filedetails.json has been saved.", "success");
+
+        });
+    
+    }
+
+    const loadfile_details = () => {
+        let location = localStorage.felix_location || currentLocation
+        let file_ = path.join(location, "filedetails.json")
+        if(!fs.existsSync(file_)) {return createToast("filedetails.json doesn't exist in DATA dir.", "danger")}
+        let _filedetails = JSON.parse(fs.readFileSync(file_)).filedetails
+        filedetails = _.uniqBy([..._filedetails, ...filedetails], "filename")
+        createToast("filedetails.json has been loaded.", "success");
     }
 
 </script>
@@ -900,12 +942,28 @@
                 on:click="{(e)=>plotData({e:e, filetype:"general", general:{args:[...theoryfiles, normMethod, sigma, scale, theoryLocation, "plot"], pyfile:"theory.py"}})}">Open in Matplotlib</button>
         </div>
 
-        <div on:change={replot}>
-            <CustomRadio bind:selected={normMethod} options={["Log", "Relative", "IntensityPerPhoton"]}/>
+        <div style="display:flex;">
+
+            <CustomRadio on:change={replot} bind:selected={normMethod} options={["Log", "Relative", "IntensityPerPhoton"]}/>
         </div>
     </div>
     
     <div class="plotSlot" slot="plotContainer">
+
+        <div class=""> 
+           <div style="display:flex;">
+           
+                <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"get_details"})}">Get details</button>
+                <CustomIconSwitch bind:toggler={showfile_details} icons={["arrow_drop_down", "arrow_drop_up"]}/>
+                <button class="button is-link" on:click={savefile_details}>Save</button>
+                <button class="button is-link" on:click={loadfile_details}>Load info</button>
+           </div>
+            
+            {#if showfile_details}
+                <Table head={["Filename", "min(cm-1)", "max(cm-1)", "Trap(s)", "B0(ms)", "Res.(V)", "IE(eV)", "Precursor", ]} bind:rows={filedetails} keys={["filename", "min", "max", "trap", "b0", "res", "ie", "precursor"]} />
+            {/if}
+        </div>
+
         <div class="felixPlot">
             <div class="animated fadeIn hide" class:active={show_theoryplot} id="exp-theory-plot"></div>
             
@@ -917,7 +975,9 @@
             <div class="animated fadeIn hide" class:active={opoPlotted} id="opoSA"></div>
             
             <div class="animated fadeIn hide" class:active={opoPlotted} id="opoRelPlot"></div>
+    
         </div>
+    
         <div class="animated fadeIn hide" class:active={graphPlotted}>
             <div class="content" transition:fade>
 

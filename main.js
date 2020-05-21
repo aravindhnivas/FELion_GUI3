@@ -1,20 +1,18 @@
 const { app, BrowserWindow } = require('electron');
+
 let mainWindow;
+
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 1200,
-    height: 700,
-    frame: false,
+    width: 1200, height: 700, frame: false,
     webPreferences: {
-      nodeIntegration: true, nativeWindowOpen: true, webviewTag: true, nodeIntegrationInWorker: true
+      nodeIntegration: true, nativeWindowOpen: true, webviewTag: true, nodeIntegrationInWorker: true, enableRemoteModule: true
     },
-    // icon: 'icon.png',
     backgroundColor: "#46307d"
-
   });
+  
   mainWindow.loadFile('static/index.html');
   mainWindow.on('closed', function () { mainWindow = null })
-
 }
 
 app.on('ready', createWindow);

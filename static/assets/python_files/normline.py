@@ -204,7 +204,7 @@ class normplot:
         ratio = counts/baseCounts
 
         self.sa_diff = np.diff((data[2] - data[1])).mean()
-        print(f"Spectrum analyser is {self.sa_diff } more than set wn.")
+        # print(f"Spectrum analyser is {self.sa_diff } more than set wn.")
 
         # Normalise the intensity
         # multiply by 1000 because of mJ but ONLY FOR PD!!!

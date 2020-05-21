@@ -57,8 +57,6 @@ def var_find(filename, var=None, get_defaults=True):
     else: return var
 
 def read_dat_file(filename, norm_method):
-
-
     read_data = np.genfromtxt(filename).T
     xs = read_data[0]
 

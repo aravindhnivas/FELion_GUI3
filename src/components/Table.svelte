@@ -1,31 +1,63 @@
 <script>
-    import DataTable, {Head, Body, Row, Cell} from '@smui/data-table';
-    import Checkbox from '@smui/checkbox';
-    export let head, rows, id;
-    let keys = Object.keys(rows)
 
+
+    import { fade } from 'svelte/transition'
+    import {Icon} from '@smui/icon-button'
+    export let head, rows, keys, label="table";
+
+
+    const sortTable = (type) => {
+        rows = _.orderBy(rows, [type], ["asc"])
+    }
 </script>
 
+<style>
 
- <div style="display: flex; justify-content: center;">
-    <DataTable table$aria-label="{id}-tableAriaLabel" table$id={id} id="{id}Container">
-    <Head >
+    * :global(th i) {color: black;}
 
-        <Row>
-            {#each head as item}
-                <Cell>{item}</Cell>
+    .tableIcon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: black;
+    }
+    
+</style>
 
-            {/each}
-        </Row>
-    </Head>
-    <Body>
-        {#each rows as row, index (row.id)}
-            <Row>
-                {#each rowItems as item, index (row.id2)}
-                    <Cell>{item[keys[index]]}</Cell>
+ <div class="mdc-data-table tableContainer" transition:fade>
+
+    <table class="mdc-data-table__table" aria-label={label}>
+
+        <thead>
+            <tr class="mdc-data-table__header-row">
+                <th class="mdc-data-table__header-cell" style="width: 2em;" role="columnheader" scope="col">#</th>
+
+                {#each head as item, index}
+                    <th style="cursor: pointer;" class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric" role="columnheader" scope="col" >
+                        <div class="tableIcon" on:click="{(e)=>sortTable(keys[index])}">
+                            <Icon class="material-icons" >arrow_downward</Icon>
+                            {item}
+                        </div>
+                    </th>
                 {/each}
-            </Row>
-        {/each}
-    </Body>
-    </DataTable>
- </div>
+                
+                
+            </tr>
+
+        </thead>
+        <tbody class="mdc-data-table__content">
+            
+            {#each rows as row, index (row.id)}
+                <tr class="mdc-data-table__row" style="background-color: #fafafa;"> 
+                    <td class="mdc-data-table__cell" style="width: 2em;" >{index}</td>
+
+                    {#each keys as key}
+                        <td class="mdc-data-table__cell mdc-data-table__cell--numeric" contenteditable="true" bind:innerHTML={row[key]}>{row[key]}</td>
+                    {/each}
+                </tr>
+            {/each}
+            
+        </tbody>
+    </table>
+
+</div>
