@@ -27,8 +27,7 @@ def get_details(args={}):
     for f in files:
 
         res, b0, trap = var_find(f)
-        datfile = location / f"EXPORT/{f.stem}.dat"
-        wn = np.genfromtxt(datfile).T[0]
+        wn = np.genfromtxt(f).T[0]
         _ = {"filename":f.stem, "res":round(res, 1), "b0":round(b0, 1), "trap":round(trap/1000, 1), "range": [int(wn.min()), int(wn.max())]}
         dataToSend["files"].append(_)
     sendData(dataToSend)

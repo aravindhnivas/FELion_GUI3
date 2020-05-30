@@ -219,11 +219,12 @@ class Create_Baseline():
 
     def redraw_f_line(self):
                 
-        Bx, By = np.array(self.line.get_data())
-        self.inter_xs = np.arange(Bx.min(), Bx.max())
-
-        f = interp1d(Bx, By, kind='cubic')
-        self.funcLine.set_data((self.inter_xs, f(self.inter_xs)))
+        try:
+            Bx, By = np.array(self.line.get_data())
+            self.inter_xs = np.arange(Bx.min(), Bx.max())
+            f = interp1d(Bx, By, kind='cubic')
+            self.funcLine.set_data((self.inter_xs, f(self.inter_xs)))
+        except Exception as err: return print(f"Error occured while redrawing baseline, {err}")
 
     def draw_callback(self, event):
         self.background = self.canvas.copy_from_bbox(self.ax.bbox)

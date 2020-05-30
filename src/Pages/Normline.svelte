@@ -127,12 +127,16 @@
                 if (boxSelected_peakfinder) {
                     if (index.length<2) { return createToast("Box selection is turned ON so please select a wn. range to fit", "danger") }
                     NGauss_fit_args.index = index
+
                 } else {delete NGauss_fit_args.index}
 
 
                 
                 if (peakTable.length === 0) {return createToast("No arguments initialised yet.", "danger") }
+                
                 NGauss_fit_args.fitNGauss_arguments = {}
+                peakTable = _.sortBy(peakTable, [(o)=>o["freq"]])
+
                 peakTable.forEach((f, index)=>{
                     NGauss_fit_args.fitNGauss_arguments[`cen${index}`] = f.freq
                     NGauss_fit_args.fitNGauss_arguments[`A${index}`] = f.amp
@@ -441,10 +445,8 @@
                             plotly_event_created_opo = true
                         }
                         console.log("Graph Plotted")
-
                         createToast("Graph Plotted", "success")
                         showOPOFiles = false, graphPlotted = true
-                        
                     } else if (filetype == "theory") {
 
                         let ylabel;
@@ -468,8 +470,8 @@
                         show_theoryplot = true, showTheoryFiles = false
 
                     } else if (filetype == "exp_fit") {
-
                         double_peak_active = false
+
                         Plotly.addTraces(graphDiv, dataFromPython["fit"])
                         line = [...line, ...dataFromPython["line"]]
                         Plotly.relayout(graphDiv, { shapes: line })
@@ -490,7 +492,6 @@
                                 lineData_list = [...lineData_list, dataFromPython["for_weighted_error"]]
                              }
                         }
-                        
                         let newTable = {name: output_name, id:getID(), freq, amp, fwhm, sig, color}
                         dataTable = _.uniqBy([...dataTable, newTable], "freq")
                         console.log("Line fitted")
@@ -612,12 +613,10 @@
                             let {filename, trap, res, b0, range} = data
                             let [min, max] = range
 
-                            filedetails = [...filedetails, {filename, min, max, trap, b0, res, precursor:"", ie:"", id:getID()}]
+                            filedetails = [...filedetails, {filename, min, max, trap, b0, res, precursor:"", ie:"", temp:"", id:getID()}]
 
                         })
-
                     }
-
 
                 } catch (err) { $modalContent = err; $activated = true }
             }
@@ -713,7 +712,11 @@
     $: opoExpFit ? fullfiles = [...opofiles, ...addedfiles, path.resolve(currentLocation, "averaged.felix")] : fullfiles = [...felixfiles, ...addedfiles, path.resolve(currentLocation, "averaged.felix")]
 
     function adjustPeak({closeMainModal=true}={}) {
+
         peakTable = _.filter(peakTable, (tb)=>tb.sig != 0);
+        
+        peakTable = _.sortBy(peakTable, [(o)=>o["freq"]])
+
         let temp_annotate = {xref:"x", y:"y", "showarrow":true,  "arrowhead":2, "ax":-25, "ay":-40, font:{color:annotation_color}, arrowcolor:annotation_color}
         
         window.annotation = []
@@ -756,37 +759,37 @@
 
     const sortTable = (type) => {
 
-        peakTable = _.sortBy(peakTable, [(o)=>o[type]])
-        peakTable = _.reverse(peakTable)
+        peakTable = _.orderBy(peakTable, [type], ["asc"])
+        // peakTable = _.reverse(peakTable)
     }
     let showfile_details = false, filedetails = [];
 
     // $: console.log(filedetails)
     let filedetails_saved;
-    const savefile_details = () => {
-        let location = localStorage.felix_location || currentLocation
-        let file_ = path.join(location, "filedetails.json")
-        fs.writeFile(file_, JSON.stringify({filedetails}), 'utf8', function (err) {
+    function savefile({file={}, name=""}={}) {
+        let location = opoExpFit? OPOLocation : currentLocation
+        let savefile = path.join(location, `${name}.json`)
+        fs.writeFile(savefile, JSON.stringify({file}), 'utf8', function (err) {
 
             if (err) {
                 console.log("An error occured while writing to File.");
-            
                 return createToast("An error occured while writing to File.", "danger")
             }
-
-            filedetails_saved = filedetails
-            createToast("filedetails.json has been saved.", "success");
+            return createToast(`${name}.json has been saved.`, "success");
         });
     }
 
-    const loadfile_details = () => {
-        let location = localStorage.felix_location || currentLocation
-        let file_ = path.join(location, "filedetails.json")
-        if(!fs.existsSync(file_)) {return createToast("filedetails.json doesn't exist in DATA dir.", "danger")}
-        let _filedetails = JSON.parse(fs.readFileSync(file_)).filedetails
-        filedetails = _.uniqBy([..._filedetails, ...filedetails], "filename")
-        createToast("filedetails.json has been loaded.", "success");
+    function loadfile({name=""}={}) {
+        let location = opoExpFit? OPOLocation : currentLocation
+        let loadfile = path.join(location, `${name}.json`)
+        if(!fs.existsSync(loadfile)) {return createToast(`${name}.json doesn't exist in DATA dir.`, "danger")}
+        let loadedfile = JSON.parse(fs.readFileSync(loadfile)).file
+        if (name === "filedetails") {filedetails = _.uniqBy([...loadedfile, ...filedetails], "filename")}
+        else if (name === "peakTable") {peakTable = _.uniqBy([...loadedfile, ...peakTable], "freq"); adjustPeak()}
+        return createToast(`${name}.json has been loaded.`, "success");
     }
+    
+    let savePeakfilename = "peakTable"
 </script>
 
 <style>
@@ -958,12 +961,12 @@
            
                 <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"get_details"})}">Get details</button>
                 <CustomIconSwitch bind:toggler={showfile_details} icons={["arrow_drop_down", "arrow_drop_up"]}/>
-                <button class="button is-link" on:click={savefile_details}>Save</button>
-                <button class="button is-link" on:click={loadfile_details}>Load info</button>
+                <button class="button is-link" on:click="{()=>savefile({file:filedetails, name:"filedetails"})}">Save</button>
+                <button class="button is-link" on:click="{()=>loadfile({name:"filedetails"})}">Load</button>
            </div>
             
             {#if showfile_details}
-                <Table head={["Filename", "min(cm-1)", "max(cm-1)", "Trap(s)", "B0(ms)", "Res.(V)", "IE(eV)", "Precursor", ]} bind:rows={filedetails} keys={["filename", "min", "max", "trap", "b0", "res", "ie", "precursor"]} />
+                <Table head={["Filename", "min(cm-1)", "max(cm-1)", "Trap(s)", "B0(ms)", "Res.(V)", "IE(eV)", "Temp(K)","Precursor", ]} bind:rows={filedetails} keys={["filename", "min", "max", "trap", "b0", "res", "ie","temp", "precursor"]} />
             {/if}
         </div>
 
@@ -1009,47 +1012,49 @@
             </div>
 
             <div class="content animated fadeIn hide" class:active={toggleFindPeaksRow}>
-                <CustomSwitch style="margin: 0 1em;" bind:selected={boxSelected_peakfinder} label="BoxSelected"/>
-                
-                <Textfield type="number" {style} step="0.5" bind:value={peak_prominence} label="Prominance" />
-                <Textfield type="number" {style} step="0.5" bind:value={peak_width} label="Width" />
-                <Textfield type="number" {style} step="0.1" bind:value={peak_height} label="Height" />
-                
-                <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"find_peaks"})}">Get Peaks</button>
 
-                <Textfield style="width:9em" bind:value={Ngauss_sigma} label="Sigma"/>
-                <Icon class="material-icons" on:click="{()=> modalActivate = true}">settings</Icon>
-                <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"NGauss_fit"})}">Fit</button>
-                <button class="button is-danger" on:click="{(e)=>{window.annotation=[]; peakTable=[];NGauss_fit_args={}; window.Plotly.relayout(graphDiv, { annotations: [] })}}">Clear</button>
-            </div>
+                <div style="margin:1em 0">
+                    <CustomSwitch style="margin: 0 1em;" bind:selected={boxSelected_peakfinder} label="BoxSelected"/>
+                    <Textfield type="number" {style} step="0.5" bind:value={peak_prominence} label="Prominance" />
+                    <Textfield type="number" {style} step="0.5" bind:value={peak_width} label="Width" />
+                    <Textfield type="number" {style} step="0.1" bind:value={peak_height} label="Height" />
 
-            <div class="content animated fadeIn hide" class:active={toggleDoubleGaussRow}>
-                <Textfield type="number" style="width:7em; margin-right:0.5em;" bind:value={amp1} label="Amp1" />
-                <Textfield type="number" style="width:7em; margin-right:0.5em;" bind:value={amp2} label="Amp2" />
-                <Textfield type="number" style="width:7em; margin-right:0.5em;" bind:value={sig1} label="Sigma1" />
-                <Textfield type="number" style="width:7em; margin-right:0.5em;" bind:value={sig2} label="Sigma2" />
-                <Textfield type="number" style="width:7em; margin-right:0.5em;" bind:value={cen1} label="Cen1" />
-                <Textfield type="number" style="width:7em; margin-right:0.5em;" bind:value={cen2} label="Cen2" />
-                <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"double_peak"})}">Submit</button>
+                    <Textfield style="width:9em" bind:value={Ngauss_sigma} label="Sigma"/>
+                    <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"find_peaks"})}">Get Peaks</button>
+                </div>
+                
+                <div style="display:flex; align-items:center">
+                    <Icon class="material-icons" on:click="{()=> modalActivate = true}">settings</Icon>
+                    <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"NGauss_fit"})}">Fit</button>
+
+                    <Textfield {style} bind:value={savePeakfilename} label="savefile"/>
+
+                    <button class="button is-link" on:click="{()=>savefile({file:peakTable, name:savePeakfilename})}">Save peaks</button>
+                    <button class="button is-link" on:click="{()=>loadfile({name:savePeakfilename})}">Load peaks</button>
+                    <button class="button is-danger" on:click="{(e)=>{window.annotation=[]; peakTable=[];NGauss_fit_args={}; window.Plotly.relayout(graphDiv, { annotations: [] }); createToast("Cleared", "warning")}}">Clear</button>
+                </div>
+
             </div>
 
             <!-- Frequency table list -->
             <div class="content">
                 <div class="title notification is-link">Frequency table</div>
                 <CustomCheckbox bind:selected={show_dataTable_only_averaged} label="Only Averaged" />
+
                 <CustomCheckbox bind:selected={show_dataTable_only_weighted_averaged} label="Only weighted Averaged" />
                 <CustomCheckbox bind:selected={keepTable} label="Keep table" />
-                <button class="button is-warning" 
-                    on:click="{()=>{dataTable = window._.dropRight(dataTable, 1); lineData_list = window._.dropRight(lineData_list, 1);
-                    if(show_dataTable_only_averaged){dataTable_avg = window._.dropRight(dataTable_avg, 3); line_index_count--}}}">Clear Last</button>
-                <button class="button is-danger" on:click="{()=>{dataTable=dataTable_avg=[]; line_index_count=0; lineData_list=[]}}">Clear Table</button>
+                <!-- <button class="button is-warning" on:click="{()=>{dataTable = window._.dropRight(dataTable, 1); lineData_list = window._.dropRight(lineData_list, 1); if(show_dataTable_only_averaged){dataTable_avg = window._.dropRight(dataTable_avg, 3); line_index_count--}; createToast("Last row removed", "warning")}}">Clear Last</button> -->
+                <button class="button is-danger" on:click="{()=>{dataTable=dataTable_avg=[]; line_index_count=0; lineData_list=[]; createToast("Table cleared", "warning")}}">Clear Table</button>
+
 
             </div>
 
             <!-- Data Table -->
+
             <div class="dataTable" transition:fade>
 
                 <DataTable table$aria-label="felix-tableAriaLabel" table$id="felixTable" id="felixTableContainer" class="tableContainer">
+
                     <Head >
                         <Row>
                             <Cell style="width: 2em;"></Cell>

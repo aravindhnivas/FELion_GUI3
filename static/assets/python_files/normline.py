@@ -72,7 +72,7 @@ class normplot:
 
             res, b0, trap = var_find(filename)
 
-            label = f"Res:{res}; B0: {b0}ms; trap: {trap}ms"
+            # label = f"Res:{res}; B0: {b0}ms; trap: {trap}ms"
             felixfile = filename.name
             
             fname = filename.stem
@@ -128,7 +128,7 @@ class normplot:
             groupItem = {"legendgroup": f'group{group}'}
             nolegend = {"showlegend": False}
             
-            dataToSend["SA"][felixfile] = makeDataToSend(wn, sa, f"{filename.stem}_SA({round(self.sa_diff, 1)})", update={"line":lineColor, **groupItem, "mode": "markers"})
+            dataToSend["SA"][felixfile] = makeDataToSend(wn, sa, f"{filename.stem}_SA", update={"line":lineColor, **groupItem, "mode": "markers"})
             dataToSend["SA"][f"{felixfile}_fit"] = makeDataToSend(X, self.saCal.sa_cm(X), f"{filename.stem}_fit", update={"mode": "lines", "line":blackColor, **groupItem, **nolegend})
 
 
@@ -159,8 +159,8 @@ class normplot:
             base_felix = basefile_data[0]
             base_felix = np.take( base_felix, base_felix[0].argsort(), 1).tolist()
 
-            dataToSend["base"][f"{felixfile}_base"] = makeDataToSend(base_felix[0], base_felix[1], f"{felixfile}: {label}", update={"mode": "lines", "line":lineColor, **groupItem })
-            dataToSend["base"][f"{felixfile}_line"] = makeDataToSend(base_line[0], base_line[1], f"{felixfile}: {label}", update={"mode": "lines+markers", "line":blackColor, **groupItem, **nolegend})
+            dataToSend["base"][f"{felixfile}_base"] = makeDataToSend(base_felix[0], base_felix[1], felixfile, update={"mode": "lines", "line":lineColor, **groupItem })
+            dataToSend["base"][f"{felixfile}_line"] = makeDataToSend(base_line[0], base_line[1], felixfile, update={"mode": "lines+markers", "line":blackColor, **groupItem, **nolegend})
             group += 1
             c += 2
 
