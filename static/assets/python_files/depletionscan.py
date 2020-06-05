@@ -171,9 +171,21 @@ class depletionplot:
         self.canvas.draw()
 
     def saveFile(self, event=None, show=True):
-        timescanfile_write = self.location / f"{self.resOnFile.stem}__{self.resOffFile.stem}.scanfitted"
+        timescanfile_reduced = self.location / f"{self.resOnFile.stem}__{self.resOffFile.stem}.rscan"
 
-        with open(timescanfile_write, "w") as f:
+        timescanfile_fitted = self.location / f"{self.resOnFile.stem}__{self.resOffFile.stem}.fscan"
+
+        with open(timescanfile_reduced, "w+") as f:
+
+            f.write("# time(s)\tpowerOn(J)\tcountsOn\terrOn\tpowerOff(J)\tcountsOff\terroff\tDep_exp\tDep_exp_err\t\n")
+
+            for time, powerOn, powerOff, countsOn, countsOff, errOn, errOff, dep_exp, dep_exp_err, in zip(self.time["resOn"], self.power["resOn"], self.power["resOff"], self.counts["resOn"], self.counts["resOff"], self.error["resOn"], self.error["resOff"], self.depletion_exp, self.depletion_exp_err):
+
+                f.write(f"{time:.4f}\t{powerOn:.4f}\t{countsOn:.4f}\t{errOn:.4f}\t{powerOff:.4f}\t{countsOff:.4f}\t{errOff:.4f}\t{dep_exp:.4f}\t{dep_exp_err:.4f}\n")
+            #if show: showinfo("File saved", f"File saved: {timescanfile_reduced.name} in {self.location}")
+            print(f"File saved: {f.name} in {self.location}")
+        with open(timescanfile_fitted, "w+") as f:
+            
             self.uA = self.uA*100
             f.write(f"####################################### \n# A={self.uA.nominal_value:.2f}({self.uA.std_dev:.2f}) %\n")
             
@@ -181,13 +193,12 @@ class depletionplot:
 
             f.write(f"# Mass: {self.mass[0]}u, Res: {self.t_res}V, B0: {self.t_b0}ms\n")
             f.write("####################################### \n")
-
-            f.write("# time(s)\tpowerOn(J)\tcountsOn\terrOn\tpowerOff(J)\tcountsOff\terrOn\tDep_exp\tDep_exp_err\tfitX(J)\tfitOn\tfitOff\tdep_fit\trel_abun\n")
-            for time, powerOn, powerOff, countsOn, countsOff, errOn, errOff, dep_exp, dep_exp_err, fitX, fitOn, fitOff, dep_fit, rel_abun in zip(self.time["resOn"], self.power["resOn"], self.power["resOff"], self.counts["resOn"], self.counts["resOff"], self.error["resOn"], self.error["resOff"], self.depletion_exp, self.depletion_exp_err, self.fitX, self.fitOn, self.fitOff, self.depletion_fitted, self.relative_abundance):
-
-                f.write(f"{time:.4f}\t{powerOn:.4f}\t{countsOn:.4f}\t{errOn:.4f}\t{powerOff:.4f}\t{countsOff:.4f}\t{errOff:.4f}\t{dep_exp:.4f}\t{dep_exp_err:.4f}\t{fitX:.4f}\t{fitOn:.4f}\t{fitOff:.4f}\t{dep_fit:.4f}\t{rel_abun:.4f}\n")
-            print()            
-            if show: showinfo("File saved", f"File saved: {timescanfile_write.name} in {self.location}")
+            f.write("# fitX(J)\tfitOn\tfitOff\t(1-fitOff/fitOn)\tDepl_fit\n")
+            
+            for fitX, fitOn, fitOff, dep_fit, rel_abun in zip(self.fitX, self.fitOn, self.fitOff, self.depletion_fitted, self.relative_abundance):
+                f.write(f"{fitX:.4f}\t{fitOn:.4f}\t{fitOff:.4f}\t{dep_fit:.4f}\t{rel_abun:.4f}\n")
+            if show: showinfo("File saved", f"File saved: {f.name} in {self.location}")
+            print(f"File saved: {f.name} in {self.location}")
             
     def startPlotting(self, make_slider_widget=True):
         try:
@@ -326,7 +337,7 @@ class depletionplot:
             self.power[index] = np.array((self.power[index] * self.nshots * self.time[index]))
             self.ax0.errorbar(self.power[index], self.counts[index], yerr=self.error[index], fmt=f"C{i}.")
 
-        self.size = len(self.time["resOn"])
+        self.size = len(self.time["resOn"])*3
         
     def N_OFF(self, x, K_OFF, N): return (N)*np.exp(-K_OFF*x)
 
@@ -390,6 +401,7 @@ class depletionplot:
 
         maxPower = np.append(self.power["resOn"], self.power["resOff"]).max()*2
         self.fitX = np.linspace(0, maxPower, self.size)
+        print(len(self.fitX))
         ufitX = unp.uarray(self.fitX, np.zeros(len(self.fitX)))
 
         self.fitOn = self.N_ON(self.fitX, Na0, Nn0, self.Kon)
@@ -397,6 +409,8 @@ class depletionplot:
 
         self.fitOn_with_err = self.uN_ON(ufitX, uNa0, uNn0, uKoff, uKon)
         self.fitOff_with_err = self.uN_OFF(ufitX, uKoff, uN)
+
+        print(len(self.fitX), len(self.fitOn))
         
         self.fitted_counts_error = {"resOn": unp.std_devs(self.fitOn_with_err), "resOff": unp.std_devs(self.fitOff_with_err)}
         print(f"Exp counts error: {self.error}\nFitted counts error: {self.fitted_counts_error}\n")
