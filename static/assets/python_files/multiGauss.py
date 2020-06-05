@@ -209,8 +209,8 @@ def fitNGaussian(gauss_args):
                     if _fwhm[0] > 500: continue
 
                     f.write(f"{freq[0]:.4f}\t{freq[1]:.4f}\t{amp[0]:.4f}\t{amp[1]:.4f}\t{sigma[0]:.4f}\t{sigma[1]:.4f}\t{_fwhm[0]:.4f}\t{_fwhm[1]:.4f}\n")
-
             writeFileName = gauss_args["writeFileName"]
+            
             if writeFileName != "":
 
                 print(f"Writing custom file {writeFileName}")
@@ -226,5 +226,6 @@ if __name__ == "__main__":
 
     args = sys.argv[1:][0].split(",")
     args = json.loads(", ".join(args))
+
     print(f"Received args: {args}, {type(args)}\n")
     fitNGaussian(args)

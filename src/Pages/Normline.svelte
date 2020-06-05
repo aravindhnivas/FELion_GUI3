@@ -210,13 +210,13 @@
 
         if(tkplot === "plot") {filetype = "general"}
         if (filetype == "general") {
+            
             console.log("Sending general arguments: ", args)
 
             let py = spawn(
                 localStorage["pythonpath"], [path.join(localStorage["pythonscript"], pyfile), args], 
                 { detached: true, stdio: 'pipe', shell: openShell }
             )
-
             py.on("close", ()=>{ console.log("Closed") })
             py.stderr.on("data", (err)=>{ console.log(`Error Occured: ${err.toString()}`); $modalContent = err.toString(); $activated = true })
             py.stdout.on("data", (data)=>{ console.log(`Output from python: ${data.toString()}`)  })
@@ -768,8 +768,8 @@
     let filedetails_saved;
     function savefile({file={}, name=""}={}) {
         let location = opoExpFit? OPOLocation : currentLocation
-        let savefile = path.join(location, `${name}.json`)
-        fs.writeFile(savefile, JSON.stringify({file}), 'utf8', function (err) {
+        let filename = path.join(location, `${name}.json`)
+        fs.writeFile(filename, JSON.stringify({file}), 'utf8', function (err) {
 
             if (err) {
                 console.log("An error occured while writing to File.");
@@ -781,15 +781,17 @@
 
     function loadfile({name=""}={}) {
         let location = opoExpFit? OPOLocation : currentLocation
-        let loadfile = path.join(location, `${name}.json`)
-        if(!fs.existsSync(loadfile)) {return createToast(`${name}.json doesn't exist in DATA dir.`, "danger")}
-        let loadedfile = JSON.parse(fs.readFileSync(loadfile)).file
+        let filename = path.join(location, `${name}.json`)
+        if(!fs.existsSync(filename)) {return createToast(`${name}.json doesn't exist in DATA dir.`, "danger")}
+        let loadedfile = JSON.parse(fs.readFileSync(filename)).file
         if (name === "filedetails") {filedetails = _.uniqBy([...loadedfile, ...filedetails], "filename")}
         else if (name === "peakTable") {peakTable = _.uniqBy([...loadedfile, ...peakTable], "freq"); adjustPeak()}
         return createToast(`${name}.json has been loaded.`, "success");
     }
     
     let savePeakfilename = "peakTable"
+
+    let figureModal = false
 </script>
 
 <style>
@@ -836,17 +838,18 @@
             <div class="icon-holder" use:Ripple={[true, {color: 'primary'}]} ><Icon class="material-icons"  on:click="{(e)=> {peakTable = [...peakTable, {freq:0, amp:0, sig:0, id:window.getID()}]}}">add</Icon></div>
 
             <!-- Data Table -->
+
             <div class="mdc-data-table tableContainer" transition:fade>
+
                 <table class="mdc-data-table__table" aria-label="adjustPeaks">
 
                     <thead>
+            
                         <tr class="mdc-data-table__header-row">
                             <th class="mdc-data-table__header-cell" style="width: 2em;" role="columnheader" scope="col"></th>
-
                             <th style="cursor: pointer;" class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric" role="columnheader" scope="col" on:click="{()=>sortTable("freq")}">Frequency</th>
                             <th style="cursor: pointer;" class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric" role="columnheader" scope="col" on:click="{()=>sortTable("amp")}">Amplitude</th>
                             <th style="cursor: pointer;" class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric" role="columnheader" scope="col" on:click="{()=>sortTable("sig")}">Sigma</th>
-                            
                             <th class="mdc-data-table__header-cell" style="width: 2em;" role="columnheader" scope="col"></th>
                         </tr>
                     </thead>
@@ -855,11 +858,9 @@
 
                             <tr class="mdc-data-table__row" style="background-color: #fafafa;"> 
                                 <td class="mdc-data-table__cell" style="width: 2em;" >{index}</td>
-
                                 <td class="mdc-data-table__cell mdc-data-table__cell--numeric"  ><input style="color:black" type="number" step="0.05" bind:value="{table.freq}" use:focusFreq></td>
                                 <td  class="mdc-data-table__cell mdc-data-table__cell--numeric" ><input style="color:black" type="number" step="0.05"  bind:value="{table.amp}"></td>
                                 <td class="mdc-data-table__cell mdc-data-table__cell--numeric" ><input style="color:black" type="number" step="0.5"  bind:value="{table.sig}"></td>
-                                
                                 <td class="mdc-data-table__cell" style="background: #f14668; cursor: pointer; width: 2em;" >
                                     <Icon id="{table.id}" class="material-icons" on:click="{(e)=> {rearrangePeakTable(e)}}">close</Icon>
                                 </td>
@@ -874,6 +875,12 @@
     <button slot="footerbtn" class="button is-link" on:click={adjustPeak} >Save</button>
 
 </Modal1>
+
+<!-- <Modal1 bind:active={figureModal} title="Produce figure">
+    <div slot="content">
+
+    </div>
+</Modal1> -->
 
 <Modal1 bind:active={addFileModal} title="Add file to plot">
 
@@ -915,9 +922,9 @@
 
             <Textfield style="width:7em" variant="outlined" type="number" step="0.5" bind:value={delta} label="Delta"/>
             <button class="button is-link" 
-                on:click="{(e)=>plotData({e:e, filetype:"general", general:{args:[...felixfiles, normMethod, onlyFinalSpectrum], pyfile:"norm_tkplot.py"}})}"> Open in Matplotlib</button>
+                on:click="{(e)=>plotData({e:e, filetype:"general", general:{args:[JSON.stringify({location: currentLocation, normMethod})], pyfile:"norm_tkplot.py"}})}"> Open in Matplotlib</button>
 
-            <CustomCheckbox bind:selected={onlyFinalSpectrum} label="Only Final spectrum" />
+            <!-- <CustomCheckbox bind:selected={onlyFinalSpectrum} label="Only Final spectrum" /> -->
             <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
             <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click="{()=>toggleRow = !toggleRow}">Add Theory</button>
             <button class="button is-link" on:click="{()=>{OPORow = !OPORow}}">OPO</button>
@@ -958,7 +965,6 @@
 
         <div class=""> 
            <div style="display:flex;">
-           
                 <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"get_details"})}">Get details</button>
                 <CustomIconSwitch bind:toggler={showfile_details} icons={["arrow_drop_down", "arrow_drop_up"]}/>
                 <button class="button is-link" on:click="{()=>savefile({file:filedetails, name:"filedetails"})}">Save</button>
@@ -1043,10 +1049,7 @@
 
                 <CustomCheckbox bind:selected={show_dataTable_only_weighted_averaged} label="Only weighted Averaged" />
                 <CustomCheckbox bind:selected={keepTable} label="Keep table" />
-                <!-- <button class="button is-warning" on:click="{()=>{dataTable = window._.dropRight(dataTable, 1); lineData_list = window._.dropRight(lineData_list, 1); if(show_dataTable_only_averaged){dataTable_avg = window._.dropRight(dataTable_avg, 3); line_index_count--}; createToast("Last row removed", "warning")}}">Clear Last</button> -->
                 <button class="button is-danger" on:click="{()=>{dataTable=dataTable_avg=[]; line_index_count=0; lineData_list=[]; createToast("Table cleared", "warning")}}">Clear Table</button>
-
-
             </div>
 
             <!-- Data Table -->
