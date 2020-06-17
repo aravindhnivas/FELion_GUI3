@@ -15,7 +15,7 @@
     import { Toast } from 'svelma'
     import {activated, modalContent, modalTitle} from "./Modal.svelte"
     
-    import {onMount, afterUpdate, beforeUpdate} from "svelte"
+    import {onMount, afterUpdate} from "svelte"
     
     import CustomIconSwitch from './CustomIconSwitch.svelte';
     import VirtualList from '@sveltejs/svelte-virtual-list';
@@ -35,9 +35,9 @@
         else {files = original_files.filter(file=>file.name.includes(searchKey))}
     }
 
-    let getfiles_load = false
+    let files_loaded = false
     function getfiles(toast=false) {
-        if (fs.existsSync(currentLocation)) {original_files = otherfolders = files = fileChecked = [], selectAll = getfiles_load = false}
+        if (fs.existsSync(currentLocation)) {original_files = otherfolders = files = fileChecked = [], selectAll = files_loaded = false}
         else {return createToast("Location undefined", "danger")}
         try {
 
@@ -47,7 +47,7 @@
             original_files = files = folderfile.filter(file=>file.endsWith(filetype)&&fs.lstatSync(path.join(currentLocation, file)).isFile()).map(file=>file={name:file, id:getID()}).sort((a,b)=>a.name<b.name?1:-1)
             otherfolders = folderfile.filter(file=>fs.lstatSync(path.join(currentLocation, file)).isDirectory()).map(file=>file={name:file, id:getID()}).sort((a,b)=>a.name>b.name?1:-1)
             original_location = currentLocation
-            getfiles_load = true
+            files_loaded = true
             console.log("Folder updated");
             if (toast) {createToast("Files updated")}
         } catch (err) {
@@ -101,7 +101,7 @@
     </FormField>
 </div>
 
-<div class="folderfile-list">
+<div class="folderfile-list" id="{filetype}_filebrowser">
     <div class="align folderlist" >
         <IconButton  toggle bind:pressed={showfiles}>
 
@@ -112,7 +112,7 @@
         <div class="mdc-typography--subtitle1">{parentFolder}</div>
 
     </div>
-    {#if getfiles_load}
+    {#if files_loaded}
         {#if showfiles && files != "" }
     
             <VirtualList items={files} let:item height="500px">

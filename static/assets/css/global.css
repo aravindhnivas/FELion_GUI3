@@ -48,3 +48,23 @@ hr {background-color: #dbdbdb;}
 }
 
 .adjust-right {touch-action: none;}
+
+/* IntroJs styles */
+
+.introjs-helperLayer {
+  background: rgba(0,0,0,0);
+  border: solid 2px white;
+}
+
+.introjs-bullets {
+  background: #5b3ea2;
+  border-radius: 20px;
+}
+
+.introjs-tooltiptext {
+  color: black;
+}
+
+.introjs-progressbar {
+  background-color: #6a50ad
+}

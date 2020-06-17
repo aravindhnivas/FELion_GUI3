@@ -50,19 +50,30 @@
     import {onMount} from "svelte";
     import { Toast } from 'svelma'
     import FileBrowser from "./FileBrowser.svelte"
+
+    import { createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher();
     
     ////////////////////////////////////////////////////////////////////////////
-    export let id, fileChecked=[], filetype = "felix"
+
+    export let id, fileChecked=[], filetype = "felix", toggleBrowser = false
     export let currentLocation = localStorage[`${filetype}_location`] || "";
 
     function browse_folder() {
+    
         browse({dir:true}).then(result=>{
-            if (!result.canceled) {
-                currentLocation= localStorage[`${filetype}_location`] = result.filePaths[0]
-            }
+            if (!result.canceled) { currentLocation= localStorage[`${filetype}_location`] = result.filePaths[0] }
+
         })
     }
-    let toggleBrowser = false, target;
+
+
+    function tour_event() { dispatch('tour', {filetype}) }
+
+    onMount(()=>{
+        toggleBrowser = true
+    })
 
 </script>
 
@@ -112,8 +123,8 @@
 
         {#if toggleBrowser}
             <div class="column is-one-fifth-widescreen is-one-quarter-desktop box filebrowser adjust-right" transition:fly="{{ x: -100, duration: 500 }}">
-
                 <FileBrowser bind:currentLocation {filetype} bind:fileChecked />
+                
             </div>
         {/if}
 
@@ -125,6 +136,7 @@
                         <Icon class="material-icons" >menu</Icon>
                     </IconButton>
                     <button class="button is-link gap" on:click={browse_folder}>Browse</button>
+                    <button class="button is-link" style="margin-left:auto;" on:click={tour_event}>Tour</button>
                     <Textfield style="margin-bottom:1em;" bind:value={currentLocation} label="Current location" />
                 </div>
 

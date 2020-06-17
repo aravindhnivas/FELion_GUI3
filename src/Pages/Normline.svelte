@@ -26,7 +26,7 @@
 
     import FormField from '@smui/form-field';
 
-    import {onMount} from "svelte"
+    import {onMount, tick} from "svelte"
     import VirtualList from '@sveltejs/svelte-virtual-list';
     import {Icon} from '@smui/icon-button'
     import Table from '../components/Table.svelte'
@@ -36,7 +36,7 @@
     
     const filetype="felix", id="Normline"
 
-    let fileChecked=[], delta=1, toggleRow=false;
+    let fileChecked=[], delta=1, toggleRow=false, toggleBrowser = false;
     let currentLocation = localStorage[`${filetype}_location`] || ""
     $: felixfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
     $: console.log(`${filetype} currentlocation: \n${currentLocation}`)
@@ -661,7 +661,6 @@
 
         Plotly.deleteTraces(graphDiv, [-1])
         console.log("Last fitted peak removed")
-
         plot_trace_added--
     }
 
@@ -696,7 +695,6 @@
         browse({dir:false}).then(result=>{ 
             if (!result.canceled) {addedfiles = addedFile["files"] = result.filePaths}  
         })
-
     }
     function removeExtraFile() {
 
@@ -792,6 +790,38 @@
     let savePeakfilename = "peakTable"
 
     let figureModal = false
+
+    async function init_tour_normline(event) {
+        
+        if (!toggleBrowser) {toggleBrowser = true; await sleep(600)} // Filebrowser toggling and its animation time to appear
+        await tick() // For all the reactive components to render
+
+        const intro = introJs()
+        intro.setOptions({
+            steps: [
+        
+                {
+                    element: document.getElementById(`${filetype}_filebrowser`),
+                    intro: "Choose file(s) here first"
+                },
+
+                {
+                    element: document.getElementById('create_baseline_btn'),
+                    intro: "Create/ajusting baseline"
+                },
+                {
+
+                    
+                    element: document.getElementById('felix_plotting_btn'),
+                    intro: "After creating baseline -> Plot the graph"
+                },
+
+            ], showProgress: true, showBullets:false
+          
+          })
+          intro.start()
+
+    }
 </script>
 
 <style>
@@ -908,17 +938,20 @@
 
         <button class="button is-link" on:click="{(e)=>{plotData({e:e, filetype:"opofile"}); localStorage["opoLocation"] = OPOLocation}}">Submit</button>
     </div>
+
 </QuickView>
 
-<Layout {filetype} {id} bind:currentLocation bind:fileChecked >
+<Layout {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour_normline}>
+
     <div class="buttonSlot" slot="buttonContainer">
 
         <div class="align">
 
-            <button class="button is-link" 
+
+            <button class="button is-link" id="create_baseline_btn"
                 on:click="{(e)=>plotData({e:e, filetype:"baseline", tkplot:"plot"})}">
                 Create Baseline</button>
-            <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"felix"})}">FELIX Plot</button>
+            <button class="button is-link" id="felix_plotting_btn" on:click="{(e)=>plotData({e:e, filetype:"felix"})}">FELIX Plot</button>
 
             <Textfield style="width:7em" variant="outlined" type="number" step="0.5" bind:value={delta} label="Delta"/>
             <button class="button is-link" 

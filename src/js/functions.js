@@ -1,22 +1,22 @@
-window.showpage = (item) => {document.getElementById(item).style.display = "block"}
-window.hidepage = (item) => {document.getElementById(item).style.display = "none"}
+window.showpage = (item) => { document.getElementById(item).style.display = "block" }
+window.hidepage = (item) => { document.getElementById(item).style.display = "none" }
 window.togglepage = (item) => {
     let element = document.getElementById(item);
     let display = element.style.display;
     display == "none" ? element.style.display = "block" : element.style.display = "none"
 }
 
-export function resizableDiv({div, change={width:true, height:true} ,cursor={left:false, right:false, bottom:false, top:false}}={}) {
+export function resizableDiv({ div, change = { width: true, height: true }, cursor = { left: false, right: false, bottom: false, top: false } } = {}) {
 
     interact(div).resizable({
         edges: cursor,
 
         modifiers: [
             // keep the edges inside the parent
-            interact.modifiers.restrictEdges({outer: 'parent'}),
-            
-            interact.modifiers.restrictSize({min: { width: 50, height: 50 }, max: { width: 500 }})
-        
+            interact.modifiers.restrictEdges({ outer: 'parent' }),
+
+            interact.modifiers.restrictSize({ min: { width: 50, height: 50 }, max: { width: 500 } })
+
         ],
         inertia: true
     }).on('resizemove', function (event) {
@@ -29,7 +29,7 @@ export function resizableDiv({div, change={width:true, height:true} ,cursor={lef
 
             if (event.rect.width <= 50) {
 
-                if(target.classList.contains("filebrowser")) {target.style.display = "none"}
+                if (target.classList.contains("filebrowser")) { target.style.display = "none" }
             }
         }
         if (change.height) target.style.height = event.rect.height + 'px'
@@ -42,19 +42,19 @@ export function resizableDiv({div, change={width:true, height:true} ,cursor={lef
         target.setAttribute('data-x', x)
         target.setAttribute('data-y', y)
 
-    })    
+    })
 
 }
 
-resizableDiv({div:".adjust-right", cursor:{right:true}, change:{width:true, height:false}})
+resizableDiv({ div: ".adjust-right", cursor: { right: true }, change: { width: true, height: false } })
 
 
 export function plot(mainTitle, xtitle, ytitle, data, plotArea, filetype = null) {
 
     let dataLayout = {
         title: mainTitle,
-        xaxis: { title: xtitle},
-        yaxis: {title: ytitle},
+        xaxis: { title: xtitle },
+        yaxis: { title: ytitle },
         hovermode: 'closest',
         autosize: true,
         height: 450,
@@ -86,3 +86,5 @@ export function subplot(mainTitle, xtitle, ytitle, data, plotArea, x2, y2, data2
     for (let x in data2) { dataPlot2.push(data2[x]) }
     Plotly.react(plotArea, dataPlot1.concat(dataPlot2), dataLayout, { editable: true })
 }
+
+window.sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
