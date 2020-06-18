@@ -1,3 +1,5 @@
+import { writable } from 'svelte/store';
+
 window.showpage = (item) => { document.getElementById(item).style.display = "block" }
 window.hidepage = (item) => { document.getElementById(item).style.display = "none" }
 window.togglepage = (item) => {
@@ -85,6 +87,26 @@ export function subplot(mainTitle, xtitle, ytitle, data, plotArea, x2, y2, data2
     let dataPlot2 = [];
     for (let x in data2) { dataPlot2.push(data2[x]) }
     Plotly.react(plotArea, dataPlot1.concat(dataPlot2), dataLayout, { editable: true })
+
+
 }
 
 window.sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+
+
+
+export const windowLoaded = writable(false);
+
+window.addEventListener('DOMContentLoaded', (event) => {
+    console.log('DOM fully loaded and parsed');
+
+    windowLoaded.set(true)
+});
+
+
+window.getPageStatus = (id) => {
+    let target = document.getElementById(id)
+    let visibility = target.style.display === "none" ? false : true
+    return visibility
+}

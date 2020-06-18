@@ -12,7 +12,7 @@
 }
 
 html, body { 
-    background-color: #513a8a;
+    background-color: #836ac05c;
     background-image: url(intro.svg);
 
     user-select: none;
@@ -67,4 +67,22 @@ hr {background-color: #dbdbdb;}
 
 .introjs-progressbar {
   background-color: #6a50ad
+}
+
+.introjs-overlay {opacity: 0.2!important;}
+
+/* Background animation */
+
+
+@keyframes gradient {
+  0% {
+      background-position: 0% 50%;
+  }
+  50% {
+      background-position: 100% 50%;
+  }
+  100% {
+      background-position: 0% 50%;
+  }
+  
 }

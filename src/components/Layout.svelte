@@ -1,4 +1,5 @@
 <script context="module">
+    import { Toast } from 'svelma'
     export const createToast = (msg, type="primary") => Toast.create({ message: msg, position:"is-top", type:`is-${type}`})
     export function browse({filetype="", dir=true, defaultPath=""}={}) {
         return new Promise((resolve, reject)=>{
@@ -48,16 +49,16 @@
     import { fly, slide } from 'svelte/transition';
     import Textfield from '@smui/textfield';
     import {onMount} from "svelte";
-    import { Toast } from 'svelma'
     import FileBrowser from "./FileBrowser.svelte"
 
-    import { createEventDispatcher } from 'svelte';
+    import Hamburger from "../components/icon_animations/Hamburger.svelte";
 
+    import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
-    
+
     ////////////////////////////////////////////////////////////////////////////
 
-    export let id, fileChecked=[], filetype = "felix", toggleBrowser = false
+    export let id, fileChecked=[], filetype = "felix", toggleBrowser = false;
     export let currentLocation = localStorage[`${filetype}_location`] || "";
 
     function browse_folder() {
@@ -67,15 +68,12 @@
 
         })
     }
-
-
     function tour_event() { dispatch('tour', {filetype}) }
 
-    onMount(()=>{
-        toggleBrowser = true
-    })
+    onMount(()=>{ toggleBrowser = true; })
 
 </script>
+
 
 <style lang="scss">
 
@@ -113,33 +111,38 @@
     }
     .box {border-radius: 0;}
     .container {min-height: calc(100vh - 10em);}
+
     .plotContainer > div {margin-top: 1em;}
+
+
 </style>
 
 <section {id} style="display:none" class="animated fadeIn">
 
     <div class="columns">
 
-
         {#if toggleBrowser}
             <div class="column is-one-fifth-widescreen is-one-quarter-desktop box filebrowser adjust-right" transition:fly="{{ x: -100, duration: 500 }}">
                 <FileBrowser bind:currentLocation {filetype} bind:fileChecked />
-                
             </div>
         {/if}
 
         <div class="column fileContainer" >
             <div class="container button-plot-container box">
                 <div class="align">
-                    <IconButton  toggle bind:pressed={toggleBrowser}>
+
+
+                    <Hamburger bind:active={toggleBrowser}/>
+                
+                    <!-- <IconButton  toggle bind:pressed={toggleBrowser}>
                         <Icon class="material-icons" on>menu_open</Icon>
                         <Icon class="material-icons" >menu</Icon>
-                    </IconButton>
-                    <button class="button is-link gap" on:click={browse_folder}>Browse</button>
-                    <button class="button is-link" style="margin-left:auto;" on:click={tour_event}>Tour</button>
+                    </IconButton> -->
+                    <button class="button is-link gap" id="{filetype}_filebrowser_btn" on:click={browse_folder}>Browse</button>
+                    <button class="button is-link" style="margin-left:auto;" on:click={tour_event}>Need help?</button>
                     <Textfield style="margin-bottom:1em;" bind:value={currentLocation} label="Current location" />
-                </div>
 
+                </div>
                 <div class="align buttonContainer"> <slot name="buttonContainer" /></div>
                 <div class="plotContainer"> <slot name="plotContainer" /> </div>
             </div>
