@@ -51,7 +51,7 @@
     import {onMount} from "svelte";
     import FileBrowser from "./FileBrowser.svelte"
 
-    import Hamburger from "../components/icon_animations/Hamburger.svelte";
+    import Hamburger1 from "../components/icon_animations/Hamburger1.svelte";
 
     import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
@@ -62,7 +62,6 @@
     export let currentLocation = localStorage[`${filetype}_location`] || "";
 
     function browse_folder() {
-    
         browse({dir:true}).then(result=>{
             if (!result.canceled) { currentLocation= localStorage[`${filetype}_location`] = result.filePaths[0] }
 
@@ -73,7 +72,6 @@
     onMount(()=>{ toggleBrowser = true; })
 
 </script>
-
 
 <style lang="scss">
 
@@ -132,7 +130,8 @@
                 <div class="align">
 
 
-                    <Hamburger bind:active={toggleBrowser}/>
+
+                    <Hamburger1 bind:active={toggleBrowser}/>
                 
                     <!-- <IconButton  toggle bind:pressed={toggleBrowser}>
                         <Icon class="material-icons" on>menu_open</Icon>
