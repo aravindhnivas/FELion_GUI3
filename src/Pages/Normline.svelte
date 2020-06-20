@@ -31,7 +31,6 @@
     import {Icon} from '@smui/icon-button'
     import Table from '../components/Table.svelte'
     import Modal1 from '../components/Modal1.svelte'
-
    ///////////////////////////////////////////////////////////////////////
     
     const filetype="felix", id="Normline"
@@ -41,6 +40,15 @@
     $: felixfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
     $: console.log(`${filetype} currentlocation: \n${currentLocation}`)
 
+
+
+    // Getting info from JSON config file
+
+    // window.configPath = path.join(__dirname, "../src/Pages")
+    // let normlineConfig = fs.readFileSync(path.join(window.configPath, "normline.config.json"))
+    // normlineConfig = JSON.parse(normlineConfig.toString("utf-8"))
+    
+    // console.log("Normline button config details: ", normlineConfig)
     ///////////////////////////////////////////////////////////////////////
 
     // Theory file
@@ -625,6 +633,7 @@
             
         })
     }
+
     const clearAllPeak = () => {
         if (plot_trace_added === 0) {return createToast("No fitted lines found", "danger")}
 
@@ -639,22 +648,22 @@
     const clearLastPeak = (e) => {
         
         if (plot_trace_added === 0) {return createToast("No fitted lines found", "danger")}
-            
         if (double_peak_active) {
+
             plotData({filetype:"general", general:{args:[output_name, opoExpFit?OPOLocation:currentLocation], pyfile:"delete_fileLines.py"}})
             plotData({filetype:"general", general:{args:[output_name, opoExpFit?OPOLocation:currentLocation], pyfile:"delete_fileLines.py"}})
             
             dataTable = _.dropRight(dataTable, 2)
             annotations = _.dropRight(annotations, 2)
-
             weighted_error[0] = _.dropRight(weighted_error[0], 1)
             weighted_error[1] = _.dropRight(weighted_error[1], 1)
-            
         } else {
+
             plotData({filetype:"general", general:{args:[output_name, opoExpFit?OPOLocation:currentLocation], pyfile:"delete_fileLines.py"}})
             dataTable = _.dropRight(dataTable, 1)
             line = _.dropRight(line, 2)
             annotations = _.dropRight(annotations, 1)
+
             lineData_list = _.dropRight(lineData_list, 1)
         }
         Plotly.relayout(graphDiv, { annotations: annotations, shapes: line })
