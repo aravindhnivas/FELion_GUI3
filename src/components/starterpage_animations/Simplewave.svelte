@@ -18,7 +18,7 @@
     .header {
         position:relative;
         text-align:center;
-        background: linear-gradient(-45deg,#ffdd57a6,#5b3ea2,#f1466838,#3298dc);
+        background: linear-gradient(-45deg,#f146689e,#5b3ea2,#fafafa1f,#b000204d);
         background-size: 400% 400%;
         color:white;
         animation: gradient 15s ease infinite;
