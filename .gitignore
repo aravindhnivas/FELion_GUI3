@@ -1,5 +1,6 @@
 node_modules
 src/materialize-src/
 *.zip
-py38
+py38/
+python3/
 out/
