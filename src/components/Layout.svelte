@@ -54,24 +54,25 @@
     import Hamburger1 from "../components/icon_animations/Hamburger1.svelte";
 
     import { createEventDispatcher } from 'svelte';
-	const dispatch = createEventDispatcher();
-
     ////////////////////////////////////////////////////////////////////////////
 
     export let id, fileChecked=[], filetype = "felix", toggleBrowser = false;
     export let currentLocation = localStorage[`${filetype}_location`] || "";
+    const dispatch = createEventDispatcher()
 
     function browse_folder() {
         browse({dir:true}).then(result=>{
             if (!result.canceled) { currentLocation= localStorage[`${filetype}_location`] = result.filePaths[0] }
-
         })
+
     }
+
     function tour_event() { dispatch('tour', {filetype}) }
 
     onMount(()=>{ toggleBrowser = true; })
 
 </script>
+
 
 <style lang="scss">
 
@@ -121,7 +122,7 @@
 
         {#if toggleBrowser}
             <div class="column is-one-fifth-widescreen is-one-quarter-desktop box filebrowser adjust-right" transition:fly="{{ x: -100, duration: 500 }}">
-                <FileBrowser bind:currentLocation {filetype} bind:fileChecked />
+                <FileBrowser bind:currentLocation {filetype} bind:fileChecked on:chdir/>
             </div>
         {/if}
 
@@ -132,11 +133,6 @@
 
 
                     <Hamburger1 bind:active={toggleBrowser}/>
-                
-                    <!-- <IconButton  toggle bind:pressed={toggleBrowser}>
-                        <Icon class="material-icons" on>menu_open</Icon>
-                        <Icon class="material-icons" >menu</Icon>
-                    </IconButton> -->
                     <button class="button is-link gap" id="{filetype}_filebrowser_btn" on:click={browse_folder}>Browse</button>
                     <button class="button is-link" style="margin-left:auto;" on:click={tour_event}>Need help?</button>
                     <Textfield style="margin-bottom:1em;" bind:value={currentLocation} label="Current location" />

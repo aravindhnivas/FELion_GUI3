@@ -13,22 +13,27 @@
 
     import {activated, modalContent} from "../components/Modal.svelte"
     import {createToast} from "../components/Layout.svelte"
-    // import {afterUpdate} from "svelte"
-
     import {Icon} from '@smui/icon-button'
+
     /////////////////////////////////////////////////////////////////////////
 
     // Initialisation
     const filetype = "scan", id = "Timescan"
     let fileChecked = [];
     let currentLocation = localStorage[`${filetype}_location`] || ""
-    $: scanfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
-    let openShell = false, graphPlotted = false
-    let massIndex = 0, timestartIndex = 1, nshots = 10, power = "21, 21", resON_Files = "", resOFF_Files = ""
 
+    $: scanfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
+    
+    let openShell = false, graphPlotted = false
+    
+    let massIndex = 0, timestartIndex = 1, nshots = 10, power = "21, 21", resON_Files = "", resOFF_Files = ""
     let fullfiles = []
-    $: if (fs.existsSync(currentLocation)) {
-        fullfiles = ["", ...fs.readdirSync(currentLocation).filter(file=>file.endsWith("scan"))]
+
+    function dir_changed(event) {
+        // console.log("Directory changed/refreshed", event)
+        if (fs.existsSync(currentLocation)) {
+            fullfiles = ["", ...fs.readdirSync(currentLocation).filter(file=>file.endsWith(".scan"))]
+        }
     }
 
     $: console.log(`ResOn: ${resON_Files}\nResOff: ${resOFF_Files}`)
@@ -137,7 +142,9 @@
                 Plotly.relayout(tplot, layout);
             })
         }
-    };
+    }
+
+    $: includePlotsInReport = fileChecked.map(file=>file={id:`${file}_tplot`, include:false, label:file})
 
 </script>
 
@@ -153,7 +160,7 @@
 
 </style>
 
-<Layout {filetype} {id} bind:currentLocation bind:fileChecked>
+<Layout {filetype} {id} bind:currentLocation bind:fileChecked on:chdir={dir_changed}>
 
     <div class="timescan_buttonContainer" slot="buttonContainer">
 
@@ -184,9 +191,16 @@
             {/each}
         </div>
 
-        <div class="animated fadeIn hide" class:active={graphPlotted} style="flex-direction:column ">
-            <ReportLayout bind:currentLocation id="scanreport", plotID={[`${fileChecked[0]}_tplot`]}/>
-        </div>
+        {#if graphPlotted}
+
+            <div class="animated fadeIn" style="flex-direction:column ">
+
+                <ReportLayout bind:currentLocation={currentLocation} id={`${filetype}_report`} {includePlotsInReport} />
+            </div>
+
+        {/if}
+        
+        
     </div>
     
 </Layout>

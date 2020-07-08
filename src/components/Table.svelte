@@ -3,8 +3,8 @@
 
     import { fade } from 'svelte/transition'
     import {Icon} from '@smui/icon-button'
-    export let head, rows, keys, label="table", id=window.getID();
-
+    export let head, rows, keys, tableid="", label="table";
+    let id = tableid || window.getID()
 
     const sortTable = (type) => {
         rows = _.orderBy(rows, [type], ["asc"])
@@ -24,9 +24,9 @@
     
 </style>
 
- <div class="mdc-data-table tableContainer" {id} transition:fade>
+ <div class="mdc-data-table tableContainer" transition:fade>
 
-    <table class="mdc-data-table__table" aria-label={label}>
+    <table class="mdc-data-table__table" aria-label={label} {id}>
 
         <thead>
             <tr class="mdc-data-table__header-row">

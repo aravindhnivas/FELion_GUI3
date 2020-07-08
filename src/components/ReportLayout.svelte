@@ -22,16 +22,12 @@
     import Select, {Option} from '@smui/select'
     //////////////////////////////////////////////////////////////////////////////////////////////////
 
-    export let currentLocation = "", id="report", plotID = [], tableID="felixTable", includeTable=false
+    export let currentLocation = "", id="report", includePlotsInReport=[], includeTablesInReports=[]
     
     $: reportFile = path.resolve(currentLocation, `reports/${reportMolecule}_report.html`)
     
-    let extra_plotInclude = _.fill(Array(plotID.length), false)
-
-    $: console.log(extra_plotInclude, plotID)
-    
+    // $: console.log(includePlotsInReport, includeTablesInReports)
     let reportTitle = "", reportComments = "", reportMethod = "info", reportMolecule = "", reportCount = 0
-    let include_table = includeTable, include_plot = true
     let reportTitleContents = "", loadContent = "";
     const stylesheet = path.resolve(__dirname, 'assets/reports/template.css')
 
@@ -101,28 +97,40 @@
         if (reportTitle.length == 0) reportTitle = `Title-${reportCount}`
         if (reportComments.length == 0) reportComments = "-"
         
-        let tableData, imgList_HTML = []
-        include_table ? tableData = `<table class='table is-bordered is-hoverable'>${document.getElementById(tableID).innerHTML}</table>` : tableData = "\n"
+        let tableData=[], imgList_HTML = []
+
+        includeTablesInReports.forEach(tb=>{
+
+            if(tb.include) {
+                let tableContent;
+                try {
+                    tableContent = document.getElementById(tb.id).innerHTML
+                } catch (error) {
+                    createToast(`${tb.label} is not visible`, "danger")
+                }
+            tableData = [...tableData, `<h1 class="title">${tb.label}</h1>\n<table class='table is-bordered is-hoverable'>${tableContent}</table>\n`]
+            }
+        })
+
         let index = 0
         
-        await asyncForEach(extra_plotInclude, async (value)=>{
-            if (value) {
-                console.log("Request Image URL for ", plotID[index])
-                let imgURL = await getImage(plotID[index])
+        await asyncForEach(includePlotsInReport, async (plot)=>{
+            if (plot.include) {
+                console.log("Request Image URL for ", plot.id)
+                let imgURL = await getImage(plot.id)
 
-                console.log(`Received Image URL for ${plotID[index]}\n`)
-                imgList_HTML = [...imgList_HTML, `<img id='img-${plotID[index]}' src='${imgURL}'>`]
+                console.log(`Received Image URL for ${plot.id}\n`)
+                imgList_HTML = [...imgList_HTML, `<img id='img-${plot.id}' src='${imgURL}'>`]
 
-                console.log(`${plotID[index]} Included in HTML`)
+                console.log(`${plot.id} Included in HTML`)
             }
             index++
         })
-
         console.log("Combining HTML to write")
         reportTitleContents += `\n<div class="content"><h1 class="notification is-${reportMethod}">${reportTitle}</h1>\n` 
             + marked(reportComments)
             + imgList_HTML.toString()
-            + tableData
+            + tableData.toString()
             + "\n<hr></div>\n"
 
         loadContent = getHTMLContent(reportTitleContents)
@@ -169,40 +177,66 @@
         
     }
 
+
+    const notificationMethod = [{name:"info", color:"white"}, {name:"success", color:"#00ff00"}, {name:"warning", color:"yellow"}, {name:"danger", color:"red"}]
+
 </script>
 
 <style>
 
     .notification { margin-top: 1em; border: 1px solid; }
+
     .button {margin-right: 1em;}
 
+
+    .report {display: flex; align-items: inherit; flex-direction: column;}
+    .addToReport > hr {margin: auto; width: 50%;}
+    .addToReport > h1 {margin: 5px 0; justify-content: center; display: flex;}
+    .addToReport > div {margin: 1em 0; justify-content: center; display: flex; flex-wrap: wrap;}
 </style>
 
 <div class="title notification is-link">Add to report</div>
-
 <div style="margin-bottom:1em;">
-
     <Textfield style="height:3em; width:20em;" variant="outlined" bind:value={reportMolecule} label="Molecule Name" />
-    <button class="button is-pulled-right is-warning" 
-        on:click="{()=>{reportTitleContents=""; reportCount=0; createToast("Resetted", "warning")}}">Reset Report</button>
-
+    <button class="button is-pulled-right is-warning" on:click="{()=>{reportTitleContents=""; reportCount=0; createToast("Resetted", "warning")}}">Reset Report</button>
 </div>
+
 <div class="align report" {id} >
+    <div class="">
+        {#each notificationMethod as method}
+            <FormField >
+                <Radio bind:group={reportMethod} value={method.name}  />
+                
+                <span slot="label" style="color:{method.color}">{method.name}</span>
+            </FormField>
+        {/each}
+    </div>
 
-    {#each [{name:"info", color:"white"}, {name:"success", color:"#00ff00"}, {name:"warning", color:"yellow"}, {name:"danger", color:"red"}] as method}
-        <FormField >
-            <Radio bind:group={reportMethod} value={method.name}  />
-            <span slot="label" style="color:{method.color}">{method.name}</span>
-        </FormField>
-    {/each}
-
-    {#if includeTable}
-        <CustomCheckbox bind:selected={include_table} label={"Include table"}/>
+    {#if includeTablesInReports.length>0}
+        <div class="addToReport ">
+            <hr>
+                <h1 class="subtitle">Include tables</h1>
+            <hr>
+            <div class="">
+                {#each includeTablesInReports as {id, include, label}(id)}
+                    <CustomCheckbox bind:selected={include} {label}/>
+                {/each}
+            </div>
+        </div>
     {/if}
     
-    {#each plotID as ID, index}
-        <CustomCheckbox bind:selected={extra_plotInclude[index]} label={ID}/>
-    {/each}
+    
+    <div class="addToReport ">
+        <hr>
+            <h1 class="subtitle">Include plots</h1>
+        <hr>
+        <div class="">
+            {#each includePlotsInReport as {id, include, label}(id)}
+                <CustomCheckbox bind:selected={include} {label}/>
+            {/each}
+        </div>
+    </div>
+
     <Textfield style="height:3em; margin-bottom:1em;" variant="outlined" bind:value={reportTitle} label="Title" />
     <Textfield textarea bind:value={reportComments} label="Comments"  
         input$aria-controls="{id}_comments" input$aria-describedby="{id}_comments"/>

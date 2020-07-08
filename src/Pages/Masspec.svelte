@@ -152,7 +152,7 @@
         let layout = { yaxis: { title: "Counts", type: logScale ? "log" : null } }
         if(graphPlotted) Plotly.relayout("mplot", layout)
     };
-
+    let includePlotsInReport = [{id:"mplot", include:true, label:"Mass Spectrum"}]
 </script>
 
 <style>
@@ -198,8 +198,13 @@
     <div style="margin-right: 1em;" slot="plotContainer">
 
         <div id="mplot"></div>
-        <div class="animated fadeIn hide" class:active={graphPlotted} style="flex-direction:column "><ReportLayout bind:currentLocation id="masspecreport", plotID={["mplot"]}/></div>
+        <!-- <div class="animated fadeIn hide" class:active={graphPlotted} style="flex-direction:column "><ReportLayout bind:currentLocation id="masspecreport", plotID={["mplot"]}/></div> -->
+        {#if graphPlotted}
+            <div class="animated fadeIn" style="flex-direction:column ">
+                <ReportLayout bind:currentLocation={currentLocation} id={`${filetype}_report`} {includePlotsInReport} />
+            </div>
 
+        {/if}
         <div class="hide animated fadeIn" class:active={toggleRow2} style="margin-top: 1em; display:none; flex-direction:column;">
             <div style="margin:1em;">
                 <Icon on:click="{()=>window.nist_webview.goToIndex(0)}" class="material-icons hvr-glow">home</Icon>

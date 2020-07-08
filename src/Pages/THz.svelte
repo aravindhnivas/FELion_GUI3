@@ -151,6 +151,7 @@
         })
     }
 
+    let includePlotsInReport = [{id:"resOnOffPlot", include:false, label:"THz Res-ON/OFF"}, {id:"thzPlot", include:true, label:"Normalised THz Spectrum"}, {id:"boltzman_plot", include:false, label:"Boltzman plot"}]
 
 </script>
 
@@ -212,10 +213,11 @@
 
         <!-- Reports -->
 
-        <div class="animated fadeIn hide" class:active={graphPlotted} style="flex-direction:column ">
-            <ReportLayout bind:currentLocation id="thzreport", plotID={["thzPlot", "resOnOffPlot", "boltzman_plot"]}/>
-        </div>
+        {#if graphPlotted}
+            <div class="animated fadeIn" style="flex-direction:column ">
+                <ReportLayout bind:currentLocation={currentLocation} id={`${filetype}_report`} {includePlotsInReport} />
+            </div>
+        {/if}
 
     </div>
-
 </Layout>

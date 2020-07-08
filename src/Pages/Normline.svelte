@@ -861,12 +861,20 @@
         intro.oncomplete(function() {
             console.log("introduction tour completed");
         });
-
-        
-
-
     }
 
+    let felixplot_modal = false
+
+    const includePlotsInReport = [
+        {id: "bplot", include:true, label:"Baseline"}, {id:"saPlot", include:false, label:"SA-Pow"}, 
+        {id:"avgplot", include:false, label:"Normalised Spectrum"}, {id:"exp-theory-plot", include:false, label:"Exp-Theory plot"}, 
+        {id:"opoplot", include:false, label:"OPO: Baseline"}, {id:"opoSA", include:false, label:"OPO: SA-pow"}, 
+        {id:"opoRelPlot", include:false, label:"OPO: Normalised Spectrum"}
+    ]
+
+    const includeTablesInReports = [
+        {id:"felixTable", include:true, label:"Freq. table"}, {id:"felix_filedetails_table", include:false, label:"File info table"}
+    ]
 </script>
 
 <style>
@@ -951,11 +959,11 @@
 
 </Modal1>
 
-<!-- <Modal1 bind:active={figureModal} title="Produce figure">
-    <div slot="content">
-
+<Modal1 bind:active={felixplot_modal} title="FELIX PLOTTING">
+    <div slot="content" style="height:40vh;" >
+        
     </div>
-</Modal1> -->
+</Modal1>
 
 <Modal1 bind:active={addFileModal} title="Add file to plot">
 
@@ -999,10 +1007,10 @@
             <button class="button is-link" id="felix_plotting_btn" on:click="{(e)=>plotData({e:e, filetype:"felix"})}">FELIX Plot</button>
 
             <Textfield style="width:7em" variant="outlined" type="number" step="0.5" bind:value={delta} label="Delta"/>
-            <button class="button is-link" 
-                on:click="{(e)=>plotData({e:e, filetype:"general", general:{args:[JSON.stringify({location: currentLocation, normMethod})], pyfile:"norm_tkplot.py"}})}"> Open in Matplotlib</button>
+            <!-- <button class="button is-link" 
+                on:click="{(e)=>plotData({e:e, filetype:"general", general:{args:[JSON.stringify({location: currentLocation, normMethod})], pyfile:"norm_tkplot.py"}})}"> Open in Matplotlib</button> -->
+            <button class="button is-link" on:click="{()=>felixplot_modal = true}"> Open in Matplotlib</button>
 
-            <!-- <CustomCheckbox bind:selected={onlyFinalSpectrum} label="Only Final spectrum" /> -->
             <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
             <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click="{()=>toggleRow = !toggleRow}">Add Theory</button>
             <button class="button is-link" on:click="{()=>{OPORow = !OPORow}}">OPO</button>
@@ -1041,6 +1049,7 @@
     
     <div class="plotSlot" slot="plotContainer">
 
+        <!-- Get file info functions -->
         <div class=""> 
            <div style="display:flex;">
                 <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"get_details"})}">Get details</button>
@@ -1050,156 +1059,164 @@
            </div>
             
             {#if showfile_details}
-                <Table head={["Filename", "min(cm-1)", "max(cm-1)", "Trap(s)", "B0(ms)", "Res.(V)", "IE(eV)", "Temp(K)","Precursor", ]} bind:rows={filedetails} keys={["filename", "min", "max", "trap", "b0", "res", "ie","temp", "precursor"]} />
+                <Table head={["Filename", "min(cm-1)", "max(cm-1)", "Trap(s)", "B0(ms)", "Res.(V)", "IE(eV)", "Temp(K)","Precursor", ]} bind:rows={filedetails} keys={["filename", "min", "max", "trap", "b0", "res", "ie","temp", "precursor"]} tableid="felix_filedetails_table"/>
             {/if}
         </div>
 
+        
+        <!-- Plots container -->
         <div class="felixPlot">
             <div class="animated fadeIn hide" class:active={show_theoryplot} id="exp-theory-plot"></div>
-            
             <div id="bplot"></div>
-            
             <div id="saPlot"></div>
             <div id="avgplot"></div>
             <div class="animated fadeIn hide" class:active={opoPlotted} id="opoplot"></div>
             <div class="animated fadeIn hide" class:active={opoPlotted} id="opoSA"></div>
             
             <div class="animated fadeIn hide" class:active={opoPlotted} id="opoRelPlot"></div>
-    
         </div>
     
-        <div class="animated fadeIn hide" class:active={graphPlotted}>
-            <div class="content" transition:fade>
+        {#if graphPlotted}
+            <div transition:fade>
 
-                <CustomSwitch style="margin: 0 1em;" bind:selected={opoExpFit} label="OPO"/>
 
-                <CustomSelect bind:picked={output_name} label="Output filename" options={output_namelists}/>
-                <Textfield style="width:7em; margin:0 0.5em;" bind:value={writeFileName} label="writeFileName"/>
+                <!-- Write function buttons -->
+                <div class="content" >
 
-                <CustomSwitch style="margin: 0 1em;" bind:selected={writeFile} label="Write"/>
-                <CustomSwitch style="margin: 0 1em;" bind:selected={overwrite_expfit} label="Overwrite"/>
-                <CustomSwitch style="margin: 0 1em;" bind:selected={collectData} label="Collect"/>
-                <button class="button is-link" on:click="{()=>{addFileModal=true}}">Add files</button>
-                <button class="button is-link" on:click={removeExtraFile}>Remove files</button>
+                    <CustomSwitch style="margin: 0 1em;" bind:selected={opoExpFit} label="OPO"/>
 
-            </div>
+                    <CustomSelect bind:picked={output_name} label="Output filename" options={output_namelists}/>
+                    <Textfield style="width:7em; margin:0 0.5em;" bind:value={writeFileName} label="writeFileName"/>
 
-            <div class="content">
-                <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"exp_fit"})}">Exp Fit.</button>
-                <button class="button is-link" on:click="{()=>toggleFindPeaksRow = !toggleFindPeaksRow}">Fit NGauss.</button>
-                <button class="button is-warning" on:click={clearLastPeak}>Clear Last</button>
+                    <CustomSwitch style="margin: 0 1em;" bind:selected={writeFile} label="Write"/>
+                    <CustomSwitch style="margin: 0 1em;" bind:selected={overwrite_expfit} label="Overwrite"/>
+                    <CustomSwitch style="margin: 0 1em;" bind:selected={collectData} label="Collect"/>
+                    <button class="button is-link" on:click="{()=>{addFileModal=true}}">Add files</button>
+                    <button class="button is-link" on:click={removeExtraFile}>Remove files</button>
+
+                </div>
+
+                <!-- Execute function buttons -->
+                <div class="content">
+                    <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"exp_fit"})}">Exp Fit.</button>
+                    <button class="button is-link" on:click="{()=>toggleFindPeaksRow = !toggleFindPeaksRow}">Fit NGauss.</button>
+                    <button class="button is-warning" on:click={clearLastPeak}>Clear Last</button>
+                    
+                    <button class="button is-danger" on:click={clearAllPeak}>Clear All</button>
+                    <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"get_err"})}">Weighted Mean</button>
+                    <button class="button is-warning" on:click="{(e)=>{lineData_list = []; createToast("Line collection restted", "warning")}}">Reset</button>
                 
-                <button class="button is-danger" on:click={clearAllPeak}>Clear All</button>
-                <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"get_err"})}">Weighted Mean</button>
-                <button class="button is-warning" on:click="{(e)=>{lineData_list = []; createToast("Line collection restted", "warning")}}">Reset</button>
+                </div>
+
+                <!-- Fit peaks functions -->
+                <div class="content animated fadeIn hide" class:active={toggleFindPeaksRow}>
+
+                    <div style="margin:1em 0">
+                        <CustomSwitch style="margin: 0 1em;" bind:selected={boxSelected_peakfinder} label="BoxSelected"/>
+                        <Textfield type="number" {style} step="0.5" bind:value={peak_prominence} label="Prominance" />
+                        <Textfield type="number" {style} step="0.5" bind:value={peak_width} label="Width" />
+                        <Textfield type="number" {style} step="0.1" bind:value={peak_height} label="Height" />
+
+                        <Textfield style="width:9em" bind:value={Ngauss_sigma} label="Sigma"/>
+                        <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"find_peaks"})}">Get Peaks</button>
+                    </div>
+                    
+                    <div style="display:flex; align-items:center">
+                        <Icon class="material-icons" on:click="{()=> modalActivate = true}">settings</Icon>
+                        <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"NGauss_fit"})}">Fit</button>
+
+                        <Textfield {style} bind:value={savePeakfilename} label="savefile"/>
+
+                        <button class="button is-link" on:click="{()=>savefile({file:peakTable, name:savePeakfilename})}">Save peaks</button>
+                        <button class="button is-link" on:click="{()=>loadfile({name:savePeakfilename})}">Load peaks</button>
+                        <button class="button is-danger" on:click="{(e)=>{window.annotation=[]; peakTable=[];NGauss_fit_args={}; window.Plotly.relayout(graphDiv, { annotations: [] }); createToast("Cleared", "warning")}}">Clear</button>
+                    </div>
+
+                </div>
+
+                <!-- Frequency table list -->
+                <div class="content">
+                    <div class="title notification is-link">Frequency table</div>
+                    <CustomCheckbox bind:selected={show_dataTable_only_averaged} label="Only Averaged" />
+
+                    <CustomCheckbox bind:selected={show_dataTable_only_weighted_averaged} label="Only weighted Averaged" />
+                    <CustomCheckbox bind:selected={keepTable} label="Keep table" />
+
+                    <button class="button is-danger" on:click="{()=>{dataTable=dataTable_avg=[]; line_index_count=0; lineData_list=[]; createToast("Table cleared", "warning")}}">Clear Table</button>
+                </div>
+
+                
+                <!-- Data Table -->
+                <div class="dataTable" >
+
+                    <DataTable table$aria-label="felix-tableAriaLabel" table$id="felixTable" id="felixTableContainer" class="tableContainer">
+
+                        <Head >
+                            <Row>
+                                <Cell style="width: 2em;"></Cell>
+                                {#each dataTableHead as item}
+                                    <Cell>{item}</Cell>
+                                {/each}
+                                <Cell style="width: 2em;"></Cell>
+                            </Row>
+                        </Head>
+                        <Body>
+                            {#if show_dataTable_only_weighted_averaged}
+                                {#each dataTable_weighted_avg as table, index (table.id)}
+                                    <Row>
+                                        <Cell style="width: 2em;">{index}</Cell>
+                                        <Cell>Line #{index}</Cell>
+                                        <Cell>{table.freq}</Cell>
+                                        <Cell>{table.amp}</Cell>
+                                        <Cell>{table.fwhm}</Cell>
+                                        <Cell>{table.sig}</Cell>
+                                        <Cell style="background: #f14668; cursor: pointer;">
+                                            <Icon id="{table.id}" class="material-icons" 
+                                                on:click="{(e)=> {dataTable_weighted_avg = window._.filter(dataTable_weighted_avg, (tb)=>tb.id != e.target.id)}}">close</Icon>
+                                        </Cell>
+                                    </Row>
+                                {/each}
+                            {:else if show_dataTable_only_averaged && !show_dataTable_only_weighted_averaged}
+                                {#each dataTable_avg as table, index (table.id)}
+                                    <Row>
+                                        <Cell style="width: 2em;">{index}</Cell>
+                                        <Cell>{table.name}</Cell>
+                                        <Cell>{table.freq}</Cell>
+                                        <Cell>{table.amp}</Cell>
+                                        <Cell>{table.fwhm}</Cell>
+                                        <Cell>{table.sig}</Cell>
+                                        <Cell style="background: #f14668; cursor: pointer; width: 2em;">
+                                            <Icon id="{table.id}" class="material-icons" 
+                                                on:click="{(e)=> {dataTable_avg = window._.filter(dataTable_avg, (tb)=>tb.id != e.target.id)}}">close</Icon>
+                                        </Cell>
+                                    </Row>
+                                {/each}
+                            {:else}
+
+                                {#each dataTable as table, index (table.id)}
+                                    <Row style="background-color: {table.color};" class={table.className}>
+                                        <Cell style="width: 2em;">{index}</Cell>
+                                        <Cell>{table.name}</Cell>
+                                        <Cell>{table.freq}</Cell>
+                                        <Cell>{table.amp}</Cell>
+                                        <Cell>{table.fwhm}</Cell>
+                                        <Cell>{table.sig}</Cell>
+                                        <Cell style="background: #f14668; cursor: pointer;">
+                                            <Icon id="{table.id}" class="material-icons" 
+                                                on:click="{(e)=> {dataTable = window._.filter(dataTable, (tb)=>tb.id != e.target.id)}}">close</Icon>
+                                        </Cell>
+                                    </Row>
+                                {/each}
+                            {/if}
+                        </Body>
+
+                    </DataTable>
+                </div>
+
+                <!-- Report -->
+                <ReportLayout bind:currentLocation={currentLocation} id={`${filetype}_report`} {includePlotsInReport} {includeTablesInReports} />
             
             </div>
-
-            <div class="content animated fadeIn hide" class:active={toggleFindPeaksRow}>
-
-                <div style="margin:1em 0">
-                    <CustomSwitch style="margin: 0 1em;" bind:selected={boxSelected_peakfinder} label="BoxSelected"/>
-                    <Textfield type="number" {style} step="0.5" bind:value={peak_prominence} label="Prominance" />
-                    <Textfield type="number" {style} step="0.5" bind:value={peak_width} label="Width" />
-                    <Textfield type="number" {style} step="0.1" bind:value={peak_height} label="Height" />
-
-                    <Textfield style="width:9em" bind:value={Ngauss_sigma} label="Sigma"/>
-                    <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"find_peaks"})}">Get Peaks</button>
-                </div>
-                
-                <div style="display:flex; align-items:center">
-                    <Icon class="material-icons" on:click="{()=> modalActivate = true}">settings</Icon>
-                    <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"NGauss_fit"})}">Fit</button>
-
-                    <Textfield {style} bind:value={savePeakfilename} label="savefile"/>
-
-                    <button class="button is-link" on:click="{()=>savefile({file:peakTable, name:savePeakfilename})}">Save peaks</button>
-                    <button class="button is-link" on:click="{()=>loadfile({name:savePeakfilename})}">Load peaks</button>
-                    <button class="button is-danger" on:click="{(e)=>{window.annotation=[]; peakTable=[];NGauss_fit_args={}; window.Plotly.relayout(graphDiv, { annotations: [] }); createToast("Cleared", "warning")}}">Clear</button>
-                </div>
-
-            </div>
-
-            <!-- Frequency table list -->
-            <div class="content">
-                <div class="title notification is-link">Frequency table</div>
-                <CustomCheckbox bind:selected={show_dataTable_only_averaged} label="Only Averaged" />
-
-                <CustomCheckbox bind:selected={show_dataTable_only_weighted_averaged} label="Only weighted Averaged" />
-                <CustomCheckbox bind:selected={keepTable} label="Keep table" />
-                <button class="button is-danger" on:click="{()=>{dataTable=dataTable_avg=[]; line_index_count=0; lineData_list=[]; createToast("Table cleared", "warning")}}">Clear Table</button>
-            </div>
-
-            <!-- Data Table -->
-
-            <div class="dataTable" transition:fade>
-
-                <DataTable table$aria-label="felix-tableAriaLabel" table$id="felixTable" id="felixTableContainer" class="tableContainer">
-
-                    <Head >
-                        <Row>
-                            <Cell style="width: 2em;"></Cell>
-                            {#each dataTableHead as item}
-                                <Cell>{item}</Cell>
-                            {/each}
-                            <Cell style="width: 2em;"></Cell>
-                        </Row>
-                    </Head>
-                    <Body>
-                        {#if show_dataTable_only_weighted_averaged}
-                            {#each dataTable_weighted_avg as table, index (table.id)}
-                                <Row>
-                                    <Cell style="width: 2em;">{index}</Cell>
-                                    <Cell>Line #{index}</Cell>
-                                    <Cell>{table.freq}</Cell>
-                                    <Cell>{table.amp}</Cell>
-                                    <Cell>{table.fwhm}</Cell>
-                                    <Cell>{table.sig}</Cell>
-                                    <Cell style="background: #f14668; cursor: pointer;">
-                                        <Icon id="{table.id}" class="material-icons" 
-                                            on:click="{(e)=> {dataTable_weighted_avg = window._.filter(dataTable_weighted_avg, (tb)=>tb.id != e.target.id)}}">close</Icon>
-                                    </Cell>
-                                </Row>
-                            {/each}
-                        {:else if show_dataTable_only_averaged && !show_dataTable_only_weighted_averaged}
-                            {#each dataTable_avg as table, index (table.id)}
-                                <Row>
-                                    <Cell style="width: 2em;">{index}</Cell>
-                                    <Cell>{table.name}</Cell>
-                                    <Cell>{table.freq}</Cell>
-                                    <Cell>{table.amp}</Cell>
-                                    <Cell>{table.fwhm}</Cell>
-                                    <Cell>{table.sig}</Cell>
-                                    <Cell style="background: #f14668; cursor: pointer; width: 2em;">
-                                        <Icon id="{table.id}" class="material-icons" 
-                                            on:click="{(e)=> {dataTable_avg = window._.filter(dataTable_avg, (tb)=>tb.id != e.target.id)}}">close</Icon>
-                                    </Cell>
-                                </Row>
-                            {/each}
-                        {:else}
-
-                            {#each dataTable as table, index (table.id)}
-                                <Row style="background-color: {table.color};" class={table.className}>
-                                    <Cell style="width: 2em;">{index}</Cell>
-                                    <Cell>{table.name}</Cell>
-                                    <Cell>{table.freq}</Cell>
-                                    <Cell>{table.amp}</Cell>
-                                    <Cell>{table.fwhm}</Cell>
-                                    <Cell>{table.sig}</Cell>
-                                    <Cell style="background: #f14668; cursor: pointer;">
-                                        <Icon id="{table.id}" class="material-icons" 
-                                            on:click="{(e)=> {dataTable = window._.filter(dataTable, (tb)=>tb.id != e.target.id)}}">close</Icon>
-                                    </Cell>
-                                </Row>
-                            {/each}
-                        {/if}
-                    </Body>
-
-                </DataTable>
-            </div>
-            <ReportLayout bind:currentLocation={currentLocation} id="felixreport" tableID="felixTable"
-                plotID={["bplot", "saPlot", "avgplot", "exp-theory-plot", "opoplot", "opoSA", "opoRelPlot"]} includeTable={true}/>
-
-        </div>
+        {/if}
     </div>
 </Layout>

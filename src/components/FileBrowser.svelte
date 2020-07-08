@@ -19,9 +19,15 @@
     
     import CustomIconSwitch from './CustomIconSwitch.svelte';
     import VirtualList from '@sveltejs/svelte-virtual-list';
+    import { createEventDispatcher } from 'svelte';
     ///////////////////////////////////////////////////////////////////////////
 
-    export let fileChecked = [],  currentLocation = "", filetype = ""
+    export let fileChecked = [],  currentLocation = "", filetype = "*.*"
+
+    const dispatch = createEventDispatcher();
+
+    function dispatch_chdir_event() { dispatch('chdir', { action: "chdir", filetype, currentLocation }) }
+
     let original_location = currentLocation
     let files = [], otherfolders = [], selectAll=false, showfiles = true, original_files = [];
     $: parentFolder = fs.existsSync(currentLocation) ? path.basename(currentLocation) : "Undefined"
@@ -45,10 +51,15 @@
             
             let folderfile = fs.readdirSync(currentLocation)
             original_files = files = folderfile.filter(file=>file.endsWith(filetype)&&fs.lstatSync(path.join(currentLocation, file)).isFile()).map(file=>file={name:file, id:getID()}).sort((a,b)=>a.name<b.name?1:-1)
+
             otherfolders = folderfile.filter(file=>fs.lstatSync(path.join(currentLocation, file)).isDirectory()).map(file=>file={name:file, id:getID()}).sort((a,b)=>a.name>b.name?1:-1)
+            
             original_location = currentLocation
+            
             files_loaded = true
             console.log("Folder updated");
+            dispatch_chdir_event()
+            
             if (toast) {createToast("Files updated")}
         } catch (err) {
             console.log(err)
