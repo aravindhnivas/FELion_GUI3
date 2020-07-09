@@ -40163,46 +40163,46 @@ const file$U = "src\\components\\ReportLayout.svelte";
 
 function get_each_context$5(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[33] = list[i];
+	child_ctx[35] = list[i];
 	return child_ctx;
 }
 
 function get_each_context_1(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[36] = list[i];
+	child_ctx[38] = list[i];
 	return child_ctx;
 }
 
 function get_each_context_2(ctx, list, i) {
 	const child_ctx = ctx.slice();
 	child_ctx[2] = list[i].id;
-	child_ctx[39] = list[i].include;
-	child_ctx[40] = list[i].label;
-	child_ctx[41] = list;
-	child_ctx[42] = i;
+	child_ctx[41] = list[i].include;
+	child_ctx[42] = list[i].label;
+	child_ctx[43] = list;
+	child_ctx[44] = i;
 	return child_ctx;
 }
 
 function get_each_context_3(ctx, list, i) {
 	const child_ctx = ctx.slice();
 	child_ctx[2] = list[i].id;
-	child_ctx[39] = list[i].include;
-	child_ctx[40] = list[i].label;
-	child_ctx[43] = list;
-	child_ctx[44] = i;
+	child_ctx[41] = list[i].include;
+	child_ctx[42] = list[i].label;
+	child_ctx[45] = list;
+	child_ctx[46] = i;
 	return child_ctx;
 }
 
 function get_each_context_4(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[36] = list[i];
+	child_ctx[38] = list[i];
 	return child_ctx;
 }
 
-// (210:16) <span slot="label" style="color:{method.color}">
+// (282:16) <span slot="label" style="color:{method.color}">
 function create_label_slot_1(ctx) {
 	let span;
-	let t_value = /*method*/ ctx[36].name + "";
+	let t_value = /*method*/ ctx[38].name + "";
 	let t;
 
 	const block = {
@@ -40210,8 +40210,8 @@ function create_label_slot_1(ctx) {
 			span = element("span");
 			t = text(t_value);
 			attr_dev(span, "slot", "label");
-			set_style(span, "color", /*method*/ ctx[36].color);
-			add_location(span, file$U, 209, 16, 8355);
+			set_style(span, "color", /*method*/ ctx[38].color);
+			add_location(span, file$U, 281, 16, 11069);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -40227,14 +40227,14 @@ function create_label_slot_1(ctx) {
 		block,
 		id: create_label_slot_1.name,
 		type: "slot",
-		source: "(210:16) <span slot=\\\"label\\\" style=\\\"color:{method.color}\\\">",
+		source: "(282:16) <span slot=\\\"label\\\" style=\\\"color:{method.color}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (207:12) <FormField >
+// (279:12) <FormField >
 function create_default_slot_4$4(ctx) {
 	let radio;
 	let updating_group;
@@ -40246,7 +40246,7 @@ function create_default_slot_4$4(ctx) {
 		/*radio_group_binding*/ ctx[17].call(null, value);
 	}
 
-	let radio_props = { value: /*method*/ ctx[36].name };
+	let radio_props = { value: /*method*/ ctx[38].name };
 
 	if (/*reportMethod*/ ctx[5] !== void 0) {
 		radio_props.group = /*reportMethod*/ ctx[5];
@@ -40298,14 +40298,14 @@ function create_default_slot_4$4(ctx) {
 		block,
 		id: create_default_slot_4$4.name,
 		type: "slot",
-		source: "(207:12) <FormField >",
+		source: "(279:12) <FormField >",
 		ctx
 	});
 
 	return block;
 }
 
-// (206:8) {#each notificationMethod as method}
+// (278:8) {#each notificationMethod as method}
 function create_each_block_4(ctx) {
 	let formfield;
 	let current;
@@ -40332,7 +40332,7 @@ function create_each_block_4(ctx) {
 		p: function update(ctx, dirty) {
 			const formfield_changes = {};
 
-			if (dirty[0] & /*reportMethod*/ 32 | dirty[1] & /*$$scope*/ 65536) {
+			if (dirty[0] & /*reportMethod*/ 32 | dirty[1] & /*$$scope*/ 262144) {
 				formfield_changes.$$scope = { dirty, ctx };
 			}
 
@@ -40356,14 +40356,14 @@ function create_each_block_4(ctx) {
 		block,
 		id: create_each_block_4.name,
 		type: "each",
-		source: "(206:8) {#each notificationMethod as method}",
+		source: "(278:8) {#each notificationMethod as method}",
 		ctx
 	});
 
 	return block;
 }
 
-// (215:4) {#if includeTablesInReports.length>0}
+// (287:4) {#if includeTablesInReports.length>0}
 function create_if_block$g(ctx) {
 	let div1;
 	let hr0;
@@ -40404,15 +40404,15 @@ function create_if_block$g(ctx) {
 			}
 
 			attr_dev(hr0, "class", "svelte-5940jk");
-			add_location(hr0, file$U, 216, 12, 8573);
+			add_location(hr0, file$U, 288, 12, 11287);
 			attr_dev(h1, "class", "subtitle svelte-5940jk");
-			add_location(h1, file$U, 217, 16, 8595);
+			add_location(h1, file$U, 289, 16, 11309);
 			attr_dev(hr1, "class", "svelte-5940jk");
-			add_location(hr1, file$U, 218, 12, 8649);
+			add_location(hr1, file$U, 290, 12, 11363);
 			attr_dev(div0, "class", " svelte-5940jk");
-			add_location(div0, file$U, 219, 12, 8667);
+			add_location(div0, file$U, 291, 12, 11381);
 			attr_dev(div1, "class", "addToReport  svelte-5940jk");
-			add_location(div1, file$U, 215, 8, 8533);
+			add_location(div1, file$U, 287, 8, 11247);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div1, anchor);
@@ -40469,14 +40469,14 @@ function create_if_block$g(ctx) {
 		block,
 		id: create_if_block$g.name,
 		type: "if",
-		source: "(215:4) {#if includeTablesInReports.length>0}",
+		source: "(287:4) {#if includeTablesInReports.length>0}",
 		ctx
 	});
 
 	return block;
 }
 
-// (221:16) {#each includeTablesInReports as {id, include, label}
+// (293:16) {#each includeTablesInReports as {id, include, label}
 function create_each_block_3(key_1, ctx) {
 	let first;
 	let customcheckbox;
@@ -40484,13 +40484,13 @@ function create_each_block_3(key_1, ctx) {
 	let current;
 
 	function customcheckbox_selected_binding(value) {
-		/*customcheckbox_selected_binding*/ ctx[18].call(null, value, /*include*/ ctx[39], /*each_value_3*/ ctx[43], /*each_index_1*/ ctx[44]);
+		/*customcheckbox_selected_binding*/ ctx[18].call(null, value, /*include*/ ctx[41], /*each_value_3*/ ctx[45], /*each_index_1*/ ctx[46]);
 	}
 
-	let customcheckbox_props = { label: /*label*/ ctx[40] };
+	let customcheckbox_props = { label: /*label*/ ctx[42] };
 
-	if (/*include*/ ctx[39] !== void 0) {
-		customcheckbox_props.selected = /*include*/ ctx[39];
+	if (/*include*/ ctx[41] !== void 0) {
+		customcheckbox_props.selected = /*include*/ ctx[41];
 	}
 
 	customcheckbox = new CustomCheckbox({
@@ -40516,11 +40516,11 @@ function create_each_block_3(key_1, ctx) {
 		p: function update(new_ctx, dirty) {
 			ctx = new_ctx;
 			const customcheckbox_changes = {};
-			if (dirty[0] & /*includeTablesInReports*/ 2) customcheckbox_changes.label = /*label*/ ctx[40];
+			if (dirty[0] & /*includeTablesInReports*/ 2) customcheckbox_changes.label = /*label*/ ctx[42];
 
 			if (!updating_selected && dirty[0] & /*includeTablesInReports*/ 2) {
 				updating_selected = true;
-				customcheckbox_changes.selected = /*include*/ ctx[39];
+				customcheckbox_changes.selected = /*include*/ ctx[41];
 				add_flush_callback(() => updating_selected = false);
 			}
 
@@ -40545,14 +40545,14 @@ function create_each_block_3(key_1, ctx) {
 		block,
 		id: create_each_block_3.name,
 		type: "each",
-		source: "(221:16) {#each includeTablesInReports as {id, include, label}",
+		source: "(293:16) {#each includeTablesInReports as {id, include, label}",
 		ctx
 	});
 
 	return block;
 }
 
-// (234:12) {#each includePlotsInReport as {id, include, label}
+// (306:12) {#each includePlotsInReport as {id, include, label}
 function create_each_block_2(key_1, ctx) {
 	let first;
 	let customcheckbox;
@@ -40560,13 +40560,13 @@ function create_each_block_2(key_1, ctx) {
 	let current;
 
 	function customcheckbox_selected_binding_1(value) {
-		/*customcheckbox_selected_binding_1*/ ctx[19].call(null, value, /*include*/ ctx[39], /*each_value_2*/ ctx[41], /*each_index*/ ctx[42]);
+		/*customcheckbox_selected_binding_1*/ ctx[19].call(null, value, /*include*/ ctx[41], /*each_value_2*/ ctx[43], /*each_index*/ ctx[44]);
 	}
 
-	let customcheckbox_props = { label: /*label*/ ctx[40] };
+	let customcheckbox_props = { label: /*label*/ ctx[42] };
 
-	if (/*include*/ ctx[39] !== void 0) {
-		customcheckbox_props.selected = /*include*/ ctx[39];
+	if (/*include*/ ctx[41] !== void 0) {
+		customcheckbox_props.selected = /*include*/ ctx[41];
 	}
 
 	customcheckbox = new CustomCheckbox({
@@ -40592,11 +40592,11 @@ function create_each_block_2(key_1, ctx) {
 		p: function update(new_ctx, dirty) {
 			ctx = new_ctx;
 			const customcheckbox_changes = {};
-			if (dirty[0] & /*includePlotsInReport*/ 1) customcheckbox_changes.label = /*label*/ ctx[40];
+			if (dirty[0] & /*includePlotsInReport*/ 1) customcheckbox_changes.label = /*label*/ ctx[42];
 
 			if (!updating_selected && dirty[0] & /*includePlotsInReport*/ 1) {
 				updating_selected = true;
-				customcheckbox_changes.selected = /*include*/ ctx[39];
+				customcheckbox_changes.selected = /*include*/ ctx[41];
 				add_flush_callback(() => updating_selected = false);
 			}
 
@@ -40621,14 +40621,14 @@ function create_each_block_2(key_1, ctx) {
 		block,
 		id: create_each_block_2.name,
 		type: "each",
-		source: "(234:12) {#each includePlotsInReport as {id, include, label}",
+		source: "(306:12) {#each includePlotsInReport as {id, include, label}",
 		ctx
 	});
 
 	return block;
 }
 
-// (243:4) <HelperText id="{id}_comments">
+// (315:4) <HelperText id="{id}_comments">
 function create_default_slot_3$4(ctx) {
 	let t;
 
@@ -40648,14 +40648,14 @@ function create_default_slot_3$4(ctx) {
 		block,
 		id: create_default_slot_3$4.name,
 		type: "slot",
-		source: "(243:4) <HelperText id=\\\"{id}_comments\\\">",
+		source: "(315:4) <HelperText id=\\\"{id}_comments\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (255:16) <span slot="label" style="color:{method}">
+// (327:16) <span slot="label" style="color:{method}">
 function create_label_slot$5(ctx) {
 	let span;
 	let t;
@@ -40663,10 +40663,10 @@ function create_label_slot$5(ctx) {
 	const block = {
 		c: function create() {
 			span = element("span");
-			t = text(/*method*/ ctx[36]);
+			t = text(/*method*/ ctx[38]);
 			attr_dev(span, "slot", "label");
-			set_style(span, "color", /*method*/ ctx[36]);
-			add_location(span, file$U, 254, 16, 10385);
+			set_style(span, "color", /*method*/ ctx[38]);
+			add_location(span, file$U, 326, 16, 13099);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -40682,14 +40682,14 @@ function create_label_slot$5(ctx) {
 		block,
 		id: create_label_slot$5.name,
 		type: "slot",
-		source: "(255:16) <span slot=\\\"label\\\" style=\\\"color:{method}\\\">",
+		source: "(327:16) <span slot=\\\"label\\\" style=\\\"color:{method}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (253:12) <FormField >
+// (325:12) <FormField >
 function create_default_slot_2$7(ctx) {
 	let radio;
 	let updating_group;
@@ -40700,10 +40700,10 @@ function create_default_slot_2$7(ctx) {
 		/*radio_group_binding_1*/ ctx[23].call(null, value);
 	}
 
-	let radio_props = { value: /*method*/ ctx[36] };
+	let radio_props = { value: /*method*/ ctx[38] };
 
-	if (/*exportMethod*/ ctx[9] !== void 0) {
-		radio_props.group = /*exportMethod*/ ctx[9];
+	if (/*exportMethod*/ ctx[7] !== void 0) {
+		radio_props.group = /*exportMethod*/ ctx[7];
 	}
 
 	radio = new Radio({ props: radio_props, $$inline: true });
@@ -40722,9 +40722,9 @@ function create_default_slot_2$7(ctx) {
 		p: function update(ctx, dirty) {
 			const radio_changes = {};
 
-			if (!updating_group && dirty[0] & /*exportMethod*/ 512) {
+			if (!updating_group && dirty[0] & /*exportMethod*/ 128) {
 				updating_group = true;
-				radio_changes.group = /*exportMethod*/ ctx[9];
+				radio_changes.group = /*exportMethod*/ ctx[7];
 				add_flush_callback(() => updating_group = false);
 			}
 
@@ -40749,14 +40749,14 @@ function create_default_slot_2$7(ctx) {
 		block,
 		id: create_default_slot_2$7.name,
 		type: "slot",
-		source: "(253:12) <FormField >",
+		source: "(325:12) <FormField >",
 		ctx
 	});
 
 	return block;
 }
 
-// (252:8) {#each ["landscape", "portrait"] as method}
+// (324:8) {#each ["landscape", "portrait"] as method}
 function create_each_block_1(ctx) {
 	let formfield;
 	let current;
@@ -40783,7 +40783,7 @@ function create_each_block_1(ctx) {
 		p: function update(ctx, dirty) {
 			const formfield_changes = {};
 
-			if (dirty[0] & /*exportMethod*/ 512 | dirty[1] & /*$$scope*/ 65536) {
+			if (dirty[0] & /*exportMethod*/ 128 | dirty[1] & /*$$scope*/ 262144) {
 				formfield_changes.$$scope = { dirty, ctx };
 			}
 
@@ -40807,20 +40807,20 @@ function create_each_block_1(ctx) {
 		block,
 		id: create_each_block_1.name,
 		type: "each",
-		source: "(252:8) {#each [\\\"landscape\\\", \\\"portrait\\\"] as method}",
+		source: "(324:8) {#each [\\\"landscape\\\", \\\"portrait\\\"] as method}",
 		ctx
 	});
 
 	return block;
 }
 
-// (261:16) <Option value={file} selected={pageSize  === file}>
+// (333:16) <Option value={file} selected={pageSize  === file}>
 function create_default_slot_1$9(ctx) {
 	let t;
 
 	const block = {
 		c: function create() {
-			t = text(/*file*/ ctx[33]);
+			t = text(/*file*/ ctx[35]);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, t, anchor);
@@ -40835,22 +40835,22 @@ function create_default_slot_1$9(ctx) {
 		block,
 		id: create_default_slot_1$9.name,
 		type: "slot",
-		source: "(261:16) <Option value={file} selected={pageSize  === file}>",
+		source: "(333:16) <Option value={file} selected={pageSize  === file}>",
 		ctx
 	});
 
 	return block;
 }
 
-// (260:12) {#each ["A3", "A4", "A5", "Legal", "Letter"] as file}
+// (332:12) {#each ["A3", "A4", "A5", "Legal", "Letter"] as file}
 function create_each_block$5(ctx) {
 	let option;
 	let current;
 
 	option = new Option({
 			props: {
-				value: /*file*/ ctx[33],
-				selected: /*pageSize*/ ctx[10] === /*file*/ ctx[33],
+				value: /*file*/ ctx[35],
+				selected: /*pageSize*/ ctx[8] === /*file*/ ctx[35],
 				$$slots: { default: [create_default_slot_1$9] },
 				$$scope: { ctx }
 			},
@@ -40867,9 +40867,9 @@ function create_each_block$5(ctx) {
 		},
 		p: function update(ctx, dirty) {
 			const option_changes = {};
-			if (dirty[0] & /*pageSize*/ 1024) option_changes.selected = /*pageSize*/ ctx[10] === /*file*/ ctx[33];
+			if (dirty[0] & /*pageSize*/ 256) option_changes.selected = /*pageSize*/ ctx[8] === /*file*/ ctx[35];
 
-			if (dirty[1] & /*$$scope*/ 65536) {
+			if (dirty[1] & /*$$scope*/ 262144) {
 				option_changes.$$scope = { dirty, ctx };
 			}
 
@@ -40893,14 +40893,14 @@ function create_each_block$5(ctx) {
 		block,
 		id: create_each_block$5.name,
 		type: "each",
-		source: "(260:12) {#each [\\\"A3\\\", \\\"A4\\\", \\\"A5\\\", \\\"Legal\\\", \\\"Letter\\\"] as file}",
+		source: "(332:12) {#each [\\\"A3\\\", \\\"A4\\\", \\\"A5\\\", \\\"Legal\\\", \\\"Letter\\\"] as file}",
 		ctx
 	});
 
 	return block;
 }
 
-// (259:8) <Select bind:value={pageSize} label="pageSize" style="margin-left:1em;">
+// (331:8) <Select bind:value={pageSize} label="pageSize" style="margin-left:1em;">
 function create_default_slot$j(ctx) {
 	let each_1_anchor;
 	let current;
@@ -40933,7 +40933,7 @@ function create_default_slot$j(ctx) {
 			current = true;
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*pageSize*/ 1024) {
+			if (dirty[0] & /*pageSize*/ 256) {
 				each_value = ["A3", "A4", "A5", "Legal", "Letter"];
 				validate_each_argument(each_value);
 				let i;
@@ -40989,7 +40989,7 @@ function create_default_slot$j(ctx) {
 		block,
 		id: create_default_slot$j.name,
 		type: "slot",
-		source: "(259:8) <Select bind:value={pageSize} label=\\\"pageSize\\\" style=\\\"margin-left:1em;\\\">",
+		source: "(331:8) <Select bind:value={pageSize} label=\\\"pageSize\\\" style=\\\"margin-left:1em;\\\">",
 		ctx
 	});
 
@@ -41152,8 +41152,8 @@ function create_fragment$$(ctx) {
 		$$scope: { ctx }
 	};
 
-	if (/*pageSize*/ ctx[10] !== void 0) {
-		select_props.value = /*pageSize*/ ctx[10];
+	if (/*pageSize*/ ctx[8] !== void 0) {
+		select_props.value = /*pageSize*/ ctx[8];
 	}
 
 	select = new Select({ props: select_props, $$inline: true });
@@ -41219,39 +41219,39 @@ function create_fragment$$(ctx) {
 			t21 = space();
 			create_component(select.$$.fragment);
 			attr_dev(div0, "class", "title notification is-link svelte-5940jk");
-			add_location(div0, file$U, 197, 0, 7726);
+			add_location(div0, file$U, 269, 0, 10418);
 			attr_dev(button0, "class", "button is-pulled-right is-warning svelte-5940jk");
-			add_location(button0, file$U, 200, 4, 7945);
+			add_location(button0, file$U, 272, 4, 10637);
 			set_style(div1, "margin-bottom", "1em");
 			attr_dev(div1, "class", "svelte-5940jk");
-			add_location(div1, file$U, 198, 0, 7787);
+			add_location(div1, file$U, 270, 0, 10479);
 			attr_dev(div2, "class", "");
-			add_location(div2, file$U, 204, 4, 8159);
+			add_location(div2, file$U, 276, 4, 10873);
 			attr_dev(hr0, "class", "svelte-5940jk");
-			add_location(hr0, file$U, 229, 8, 8954);
+			add_location(hr0, file$U, 301, 8, 11668);
 			attr_dev(h1, "class", "subtitle svelte-5940jk");
-			add_location(h1, file$U, 230, 12, 8972);
+			add_location(h1, file$U, 302, 12, 11686);
 			attr_dev(hr1, "class", "svelte-5940jk");
-			add_location(hr1, file$U, 231, 8, 9021);
+			add_location(hr1, file$U, 303, 8, 11735);
 			attr_dev(div3, "class", " svelte-5940jk");
-			add_location(div3, file$U, 232, 8, 9035);
+			add_location(div3, file$U, 304, 8, 11749);
 			attr_dev(div4, "class", "addToReport  svelte-5940jk");
-			add_location(div4, file$U, 228, 4, 8918);
+			add_location(div4, file$U, 300, 4, 11632);
 			attr_dev(button1, "class", "button is-link svelte-5940jk");
 			attr_dev(button1, "tabindex", "0");
-			add_location(button1, file$U, 248, 8, 9793);
+			add_location(button1, file$U, 320, 8, 12507);
 			attr_dev(button2, "class", "button is-link svelte-5940jk");
 			attr_dev(button2, "tabindex", "0");
-			add_location(button2, file$U, 249, 8, 9930);
+			add_location(button2, file$U, 321, 8, 12644);
 			attr_dev(button3, "class", "button is-link svelte-5940jk");
 			attr_dev(button3, "tabindex", "0");
-			add_location(button3, file$U, 250, 8, 10066);
+			add_location(button3, file$U, 322, 8, 12780);
 			attr_dev(div5, "class", "align");
 			set_style(div5, "margin-top", "1em");
-			add_location(div5, file$U, 246, 4, 9734);
+			add_location(div5, file$U, 318, 4, 12448);
 			attr_dev(div6, "class", "align report svelte-5940jk");
 			attr_dev(div6, "id", /*id*/ ctx[2]);
-			add_location(div6, file$U, 203, 0, 8121);
+			add_location(div6, file$U, 275, 0, 10835);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -41418,13 +41418,13 @@ function create_fragment$$(ctx) {
 			const helpertext_changes = {};
 			if (dirty[0] & /*id*/ 4) helpertext_changes.id = "" + (/*id*/ ctx[2] + "_comments");
 
-			if (dirty[1] & /*$$scope*/ 65536) {
+			if (dirty[1] & /*$$scope*/ 262144) {
 				helpertext_changes.$$scope = { dirty, ctx };
 			}
 
 			helpertext.$set(helpertext_changes);
 
-			if (dirty[0] & /*exportMethod*/ 512) {
+			if (dirty[0] & /*exportMethod*/ 128) {
 				each_value_1 = ["landscape", "portrait"];
 				validate_each_argument(each_value_1);
 				let i;
@@ -41454,13 +41454,13 @@ function create_fragment$$(ctx) {
 
 			const select_changes = {};
 
-			if (dirty[0] & /*pageSize*/ 1024 | dirty[1] & /*$$scope*/ 65536) {
+			if (dirty[0] & /*pageSize*/ 256 | dirty[1] & /*$$scope*/ 262144) {
 				select_changes.$$scope = { dirty, ctx };
 			}
 
-			if (!updating_value_3 && dirty[0] & /*pageSize*/ 1024) {
+			if (!updating_value_3 && dirty[0] & /*pageSize*/ 256) {
 				updating_value_3 = true;
-				select_changes.value = /*pageSize*/ ctx[10];
+				select_changes.value = /*pageSize*/ ctx[8];
 				add_flush_callback(() => updating_value_3 = false);
 			}
 
@@ -41584,15 +41584,41 @@ function instance$$($$self, $$props, $$invalidate) {
 		{ includePlotsInReport = [] } = $$props,
 		{ includeTablesInReports = [] } = $$props;
 
-	// $: console.log(includePlotsInReport, includeTablesInReports)
 	let reportTitle = "",
 		reportComments = "",
 		reportMethod = "info",
-		reportMolecule = "",
-		reportCount = 0;
+		reportMolecule = "";
 
 	let reportTitleContents = "", loadContent = "";
 	const stylesheet = path.resolve(__dirname, "assets/reports/template.css");
+	const reportHTML = document.createElement("html");
+
+	function init_report() {
+		const reportExist = fs.existsSync(reportFile);
+		console.log("Report status:\n", reportExist);
+
+		const reportHTMLTemplate = `<!DOCTYPE html>
+                                <html lang="en">
+                                    <head>
+                                        <meta charset='utf8'>
+                                        <meta name="viewport" content="width=device-width, initial-scale=1">
+                                        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                                        <title>${reportMolecule} Reports</title>
+                                        <link rel="stylesheet" type='text/css' href="report_stylesheet.css">
+                                    </head>
+
+                                    <body>
+                                        <section class="section" id="mainSection"></section>
+                                    </body>
+                                </html>`;
+
+		reportHTML.innerHTML = reportExist
+		? fs.readFileSync(reportFile)
+		: reportHTMLTemplate;
+
+		console.log("ReportHTML: ", reportHTML);
+		$$invalidate(9, reportMainContainer = reportHTML.querySelector("#mainSection"));
+	}
 
 	const getHTMLContent = content => {
 		return `<!DOCTYPE html>
@@ -41623,8 +41649,6 @@ function instance$$($$self, $$props, $$invalidate) {
 				return console.log(err);
 			}
 
-			console.log("The file was saved!");
-			createToast$1("Report added", "success");
 			let local_cssFile = path.resolve(currentLocation, "reports/report_stylesheet.css");
 
 			if (!fs.existsSync(local_cssFile)) {
@@ -41634,8 +41658,11 @@ function instance$$($$self, $$props, $$invalidate) {
 				});
 			}
 
+			createToast$1("Report added", "success");
 			console.log("Exported to HTML");
 		});
+
+		($$invalidate(3, reportTitle = ""), $$invalidate(4, reportComments = ""));
 	};
 
 	const addReport = async () => {
@@ -41646,43 +41673,63 @@ function instance$$($$self, $$props, $$invalidate) {
 			console.log("reports directory created");
 		}
 
-		$$invalidate(7, reportCount++, reportCount);
+		const reportCount = reportMainContainer.getElementsByClassName("reportCount").length;
 		if (reportTitle.length == 0) $$invalidate(3, reportTitle = `Title-${reportCount}`);
 		if (reportComments.length == 0) $$invalidate(4, reportComments = "-");
-		let tableData = [], imgList_HTML = [];
+		let tableDiv = document.createElement("div");
+		tableDiv.setAttribute("class", "content reportTable");
 
 		includeTablesInReports.forEach(tb => {
 			if (tb.include) {
-				let tableContent;
-
 				try {
-					tableContent = document.getElementById(tb.id).innerHTML;
+					let tableContent = document.getElementById(tb.id).innerHTML;
+					let tableElement = document.createElement("table");
+					tableElement.setAttribute("class", "table is-bordered is-hoverable");
+					tableElement.innerHTML = tableContent;
+					let tableHeading = document.createElement("h1");
+					tableHeading.setAttribute("class", "title");
+					tableHeading.textContent = tb.label;
+					tableDiv.appendChild(tableHeading);
+					tableDiv.appendChild(tableElement);
 				} catch(error) {
 					createToast$1(`${tb.label} is not visible`, "danger");
 				}
-
-				tableData = [
-					...tableData,
-					`<h1 class="title">${tb.label}</h1>\n<table class='table is-bordered is-hoverable'>${tableContent}</table>\n`
-				];
 			}
 		});
+
+		console.log("tableDiv created", tableDiv);
+		let plotDiv = document.createElement("div");
+		plotDiv.setAttribute("class", "content reportPlots");
 
 		await asyncForEach(includePlotsInReport, async plot => {
 			if (plot.include) {
 				console.log("Request Image URL for ", plot.id);
 				let imgURL = await getImage(plot.id);
 				console.log(`Received Image URL for ${plot.id}\n`);
-				imgList_HTML = [...imgList_HTML, `<img id='img-${plot.id}' src='${imgURL}'>`];
+				let imgElement = document.createElement("img");
+				imgElement.setAttribute("src", imgURL);
+				plotDiv.appendChild(imgElement);
 				console.log(`${plot.id} Included in HTML`);
 			}
 		});
 
-		console.log("Combining HTML to write");
-		$$invalidate(8, reportTitleContents += `\n<div class="content"><h1 class="notification is-${reportMethod}">${reportTitle}</h1>\n` + marked(reportComments) + imgList_HTML.toString() + tableData.toString() + "\n<hr></div>\n");
-		loadContent = getHTMLContent(reportTitleContents);
-		$$invalidate(4, reportComments = $$invalidate(3, reportTitle = ""));
-		exprtToHtml(loadContent);
+		console.log("plotDiv created", plotDiv);
+		let reportMainHeading = document.createElement("h1");
+		reportMainHeading.setAttribute("class", `notification is-${reportMethod} reportHeading`);
+		reportMainHeading.textContent = reportTitle;
+		let reportComment = document.createElement("div");
+		reportComment.setAttribute("class", "reportComments");
+		let reportDiv = document.createElement("div");
+		reportDiv.setAttribute("class", "content reportCount");
+		reportDiv.appendChild(reportMainHeading);
+		reportDiv.appendChild(reportComment);
+		reportDiv.appendChild(plotDiv);
+		reportDiv.appendChild(tableDiv);
+		console.log("reportDiv div created", reportDiv);
+		reportMainContainer.appendChild(reportDiv);
+		console.log("reportMainContainer div created", reportMainContainer);
+		console.log("Full report\n", reportHTML);
+		exprtToHtml(reportHTML.innerHTML);
 	};
 
 	let exportMethod = "landscape", pageSize = "A4";
@@ -41769,6 +41816,12 @@ function instance$$($$self, $$props, $$invalidate) {
 		{ name: "danger", color: "red" }
 	];
 
+	let reportMainContainer;
+
+	onMount(() => {
+		init_report();
+	});
+
 	const writable_props = ["currentLocation", "id", "includePlotsInReport", "includeTablesInReports"];
 
 	Object.keys($$props).forEach(key => {
@@ -41784,9 +41837,9 @@ function instance$$($$self, $$props, $$invalidate) {
 	}
 
 	const click_handler = () => {
-		$$invalidate(8, reportTitleContents = "");
-		$$invalidate(7, reportCount = 0);
-		createToast$1("Resetted", "warning");
+		$$invalidate(9, reportMainContainer.innerHTML = "", reportMainContainer);
+		exprtToHtml("");
+		createToast$1("Report resetted", "warning");
 	};
 
 	function radio_group_binding(value) {
@@ -41818,12 +41871,12 @@ function instance$$($$self, $$props, $$invalidate) {
 
 	function radio_group_binding_1(value) {
 		exportMethod = value;
-		$$invalidate(9, exportMethod);
+		$$invalidate(7, exportMethod);
 	}
 
 	function select_value_binding(value) {
 		pageSize = value;
-		$$invalidate(10, pageSize);
+		$$invalidate(8, pageSize);
 	}
 
 	$$self.$set = $$props => {
@@ -41847,6 +41900,7 @@ function instance$$($$self, $$props, $$invalidate) {
 		activated,
 		Select,
 		Option,
+		onMount,
 		currentLocation,
 		id,
 		includePlotsInReport,
@@ -41855,10 +41909,11 @@ function instance$$($$self, $$props, $$invalidate) {
 		reportComments,
 		reportMethod,
 		reportMolecule,
-		reportCount,
 		reportTitleContents,
 		loadContent,
 		stylesheet,
+		reportHTML,
+		init_report,
 		getHTMLContent,
 		getImage,
 		exprtToHtml,
@@ -41867,6 +41922,7 @@ function instance$$($$self, $$props, $$invalidate) {
 		pageSize,
 		showReport,
 		notificationMethod,
+		reportMainContainer,
 		reportFile,
 		$modalContent,
 		$activated
@@ -41881,11 +41937,11 @@ function instance$$($$self, $$props, $$invalidate) {
 		if ("reportComments" in $$props) $$invalidate(4, reportComments = $$props.reportComments);
 		if ("reportMethod" in $$props) $$invalidate(5, reportMethod = $$props.reportMethod);
 		if ("reportMolecule" in $$props) $$invalidate(6, reportMolecule = $$props.reportMolecule);
-		if ("reportCount" in $$props) $$invalidate(7, reportCount = $$props.reportCount);
-		if ("reportTitleContents" in $$props) $$invalidate(8, reportTitleContents = $$props.reportTitleContents);
+		if ("reportTitleContents" in $$props) reportTitleContents = $$props.reportTitleContents;
 		if ("loadContent" in $$props) loadContent = $$props.loadContent;
-		if ("exportMethod" in $$props) $$invalidate(9, exportMethod = $$props.exportMethod);
-		if ("pageSize" in $$props) $$invalidate(10, pageSize = $$props.pageSize);
+		if ("exportMethod" in $$props) $$invalidate(7, exportMethod = $$props.exportMethod);
+		if ("pageSize" in $$props) $$invalidate(8, pageSize = $$props.pageSize);
+		if ("reportMainContainer" in $$props) $$invalidate(9, reportMainContainer = $$props.reportMainContainer);
 		if ("reportFile" in $$props) reportFile = $$props.reportFile;
 	};
 
@@ -41909,10 +41965,10 @@ function instance$$($$self, $$props, $$invalidate) {
 		reportComments,
 		reportMethod,
 		reportMolecule,
-		reportCount,
-		reportTitleContents,
 		exportMethod,
 		pageSize,
+		reportMainContainer,
+		exprtToHtml,
 		addReport,
 		showReport,
 		notificationMethod,

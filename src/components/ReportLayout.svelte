@@ -20,16 +20,46 @@
     const {BrowserWindow} = remote
     import {modalContent, activated} from "./Modal.svelte"
     import Select, {Option} from '@smui/select'
+    import {onMount} from "svelte"
     //////////////////////////////////////////////////////////////////////////////////////////////////
 
     export let currentLocation = "", id="report", includePlotsInReport=[], includeTablesInReports=[]
     
+    
     $: reportFile = path.resolve(currentLocation, `reports/${reportMolecule}_report.html`)
     
-    // $: console.log(includePlotsInReport, includeTablesInReports)
-    let reportTitle = "", reportComments = "", reportMethod = "info", reportMolecule = "", reportCount = 0
+    let reportTitle = "", reportComments = "", reportMethod = "info", reportMolecule = ""
     let reportTitleContents = "", loadContent = "";
+    
     const stylesheet = path.resolve(__dirname, 'assets/reports/template.css')
+    const reportHTML = document.createElement( 'html' )
+
+    function init_report(){
+
+
+        const reportExist = fs.existsSync(reportFile)
+        console.log("Report status:\n", reportExist)
+
+        const reportHTMLTemplate = `<!DOCTYPE html>
+                                <html lang="en">
+                                    <head>
+                                        <meta charset='utf8'>
+                                        <meta name="viewport" content="width=device-width, initial-scale=1">
+                                        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                                        <title>${reportMolecule} Reports</title>
+                                        <link rel="stylesheet" type='text/css' href="report_stylesheet.css">
+                                    </head>
+
+                                    <body>
+                                        <section class="section" id="mainSection"></section>
+                                    </body>
+                                </html>`
+
+        reportHTML.innerHTML = reportExist ? fs.readFileSync(reportFile) : reportHTMLTemplate
+        console.log("ReportHTML: ", reportHTML)
+        reportMainContainer = reportHTML.querySelector("#mainSection")
+
+    }
 
     const getHTMLContent = (content) =>{
 
@@ -66,15 +96,14 @@
     }
     
     const exprtToHtml = async (content) => {
+
         fs.writeFile(reportFile, content, function(err) {
 
             if(err) {
                 createToast("Report couldn't be added.", "danger")
                 return console.log(err);
             }
-            console.log("The file was saved!");
-            createToast("Report added", "success")
-
+            
             let local_cssFile = path.resolve(currentLocation, 'reports/report_stylesheet.css')
         
             if (!fs.existsSync(local_cssFile)){
@@ -83,60 +112,101 @@
                     console.log('template.css file copied');
                 });
             }
+            createToast("Report added", "success")
+
             console.log("Exported to HTML")
         })
 
+        reportTitle = "", reportComments = ""
+        
     }
 
     const addReport = async() => {
 
         let reportDir = path.resolve(currentLocation, "reports")
         if (!fs.existsSync(reportDir)) {fs.mkdirSync(reportDir); console.log("reports directory created")}
-
-        reportCount++
+        
+        const reportCount = reportMainContainer.getElementsByClassName("reportCount").length
         if (reportTitle.length == 0) reportTitle = `Title-${reportCount}`
         if (reportComments.length == 0) reportComments = "-"
+
         
-        let tableData=[], imgList_HTML = []
+        let tableDiv = document.createElement("div")
+        tableDiv.setAttribute("class", "content reportTable")
 
         includeTablesInReports.forEach(tb=>{
 
             if(tb.include) {
-                let tableContent;
                 try {
-                    tableContent = document.getElementById(tb.id).innerHTML
+                    
+
+                    let tableContent = document.getElementById(tb.id).innerHTML
+
+                    let tableElement = document.createElement("table")
+                    tableElement.setAttribute("class", "table is-bordered is-hoverable")
+                    tableElement.innerHTML = tableContent
+
+                    let tableHeading = document.createElement("h1")
+                    tableHeading.setAttribute("class", "title")
+                    tableHeading.textContent = tb.label
+                    
+                    
+                    tableDiv.appendChild(tableHeading)
+                    tableDiv.appendChild(tableElement)
+                    
                 } catch (error) {
                     createToast(`${tb.label} is not visible`, "danger")
                 }
-            tableData = [...tableData, `<h1 class="title">${tb.label}</h1>\n<table class='table is-bordered is-hoverable'>${tableContent}</table>\n`]
             }
+        
         })
 
-        let index = 0
+        console.log("tableDiv created", tableDiv)
         
+
+        let plotDiv = document.createElement("div")
+        plotDiv.setAttribute("class", "content reportPlots")
+
         await asyncForEach(includePlotsInReport, async (plot)=>{
             if (plot.include) {
                 console.log("Request Image URL for ", plot.id)
                 let imgURL = await getImage(plot.id)
 
                 console.log(`Received Image URL for ${plot.id}\n`)
-                imgList_HTML = [...imgList_HTML, `<img id='img-${plot.id}' src='${imgURL}'>`]
+
+                let imgElement = document.createElement("img")
+                imgElement.setAttribute("src", imgURL)
+
+                plotDiv.appendChild(imgElement)
 
                 console.log(`${plot.id} Included in HTML`)
             }
-            index++
         })
-        console.log("Combining HTML to write")
-        reportTitleContents += `\n<div class="content"><h1 class="notification is-${reportMethod}">${reportTitle}</h1>\n` 
-            + marked(reportComments)
-            + imgList_HTML.toString()
-            + tableData.toString()
-            + "\n<hr></div>\n"
 
-        loadContent = getHTMLContent(reportTitleContents)
-        reportComments = reportTitle = ""
+        console.log("plotDiv created", plotDiv)
 
-        exprtToHtml(loadContent)
+        let reportMainHeading = document.createElement("h1")
+        reportMainHeading.setAttribute("class", `notification is-${reportMethod} reportHeading`)
+        reportMainHeading.textContent = reportTitle
+
+        let reportComment = document.createElement("div")
+        reportComment.setAttribute("class", "reportComments")
+
+        let reportDiv = document.createElement("div")
+        reportDiv.setAttribute("class", "content reportCount")
+
+        reportDiv.appendChild(reportMainHeading)
+        reportDiv.appendChild(reportComment)
+        reportDiv.appendChild(plotDiv)
+        reportDiv.appendChild(tableDiv)
+
+        console.log("reportDiv div created", reportDiv)
+
+        reportMainContainer.appendChild(reportDiv)
+        console.log("reportMainContainer div created", reportMainContainer)
+
+        console.log("Full report\n", reportHTML)
+        exprtToHtml(reportHTML.innerHTML)
     }
 
 
@@ -177,9 +247,11 @@
         
     }
 
-
     const notificationMethod = [{name:"info", color:"white"}, {name:"success", color:"#00ff00"}, {name:"warning", color:"yellow"}, {name:"danger", color:"red"}]
-
+    let reportMainContainer;
+    onMount(()=>{
+        init_report()
+    })
 </script>
 
 <style>
@@ -198,7 +270,7 @@
 <div class="title notification is-link">Add to report</div>
 <div style="margin-bottom:1em;">
     <Textfield style="height:3em; width:20em;" variant="outlined" bind:value={reportMolecule} label="Molecule Name" />
-    <button class="button is-pulled-right is-warning" on:click="{()=>{reportTitleContents=""; reportCount=0; createToast("Resetted", "warning")}}">Reset Report</button>
+    <button class="button is-pulled-right is-warning" on:click="{()=>{ reportMainContainer.innerHTML = ""; exprtToHtml(""); createToast("Report resetted", "warning")}}">Reset Report</button>
 </div>
 
 <div class="align report" {id} >
