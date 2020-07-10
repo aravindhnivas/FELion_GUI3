@@ -13,7 +13,7 @@
     "@sveltejs/svelte-virtual-list": "^3.0.1",
     "bulma": "^0.8.2",
     "concurrently": "^4.1.0",
-    "electron": "^8.3.3",
+    "electron": "^8.4.0",
     "electron-packager": "^14.2.1",
     "electron-winstaller": "^4.0.1",
     "node-sass": "^4.14.1",
@@ -35,7 +35,7 @@
     "build": "rollup -c",
     "autobuild": "rollup -c -w",
     "dev": "concurrently \"run-p start:dev autobuild\" \"electron .\"",
-    "start": "sirv public",
+    "start": "electron .",
     "start:dev": "sirv public --dev",
     "mc": "electron-packager . --overwrite --platform=darwin --arch=x64 --out=../release-builds --darwinDarkModeSupport=true",
     "w": "electron-packager . --overwrite --platform=win32 --arch=x64 --out=../release-builds"
