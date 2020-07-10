@@ -19,6 +19,7 @@
 
 <style>
     .dataTable { display: flex; justify-content: center; }
+    .notification {width: 100%; border: 1px solid;}
 
 </style>
 
