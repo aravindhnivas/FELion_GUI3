@@ -22,7 +22,7 @@
     import ReportLayout from '../components/ReportLayout.svelte';
     import QuickView from '../components/QuickView.svelte';
     import FileBrowser from "../components/FileBrowser.svelte"
-    import Checkbox from '@smui/checkbox';
+    // import Checkbox from '@smui/checkbox';
 
     import FormField from '@smui/form-field';
 
@@ -31,6 +31,14 @@
     import {Icon} from '@smui/icon-button'
     import Table from '../components/Table.svelte'
     import Modal1 from '../components/Modal1.svelte'
+    import CustomCheckList from '../components/CustomCheckList.svelte';
+
+    import FelixPlotting from './normline/FelixPlotting.svelte';
+
+    import AdjustInitialGuess from './normline/AdjustInitialGuess.svelte';
+
+    import AddFilesToPlot from './normline/AddFilesToPlot.svelte';
+    import FrequencyTable from './normline/FrequencyTable.svelte';
    ///////////////////////////////////////////////////////////////////////
     
     const filetype="felix", id="Normline"
@@ -39,16 +47,7 @@
     let currentLocation = localStorage[`${filetype}_location`] || ""
     $: felixfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
     $: console.log(`${filetype} currentlocation: \n${currentLocation}`)
-
-
-
-    // Getting info from JSON config file
-
-    // window.configPath = path.join(__dirname, "../src/Pages")
-    // let normlineConfig = fs.readFileSync(path.join(window.configPath, "normline.config.json"))
-    // normlineConfig = JSON.parse(normlineConfig.toString("utf-8"))
     
-    // console.log("Normline button config details: ", normlineConfig)
     ///////////////////////////////////////////////////////////////////////
 
     // Theory file
@@ -60,7 +59,7 @@
     let openShell = false;
     $: console.log("Open Shell: ", filetype, openShell)
 
-    let normMethod = "Relative", normMethod_datas = {}, NGauss_fit_args = {}
+    let felix_normMethod = "Relative", normMethod_datas = {}, NGauss_fit_args = {}
     
     let graphPlotted = false, overwrite_expfit = false, writeFile = false
     let line = [], index = [], annotations = [], plot_trace_added = 0, double_peak_active = false, line_index_count = 0
@@ -70,20 +69,12 @@
     $: output_namelists = ["averaged", ...plottedFiles, ...addedfiles.map(file=>path.basename(file)).map(file=>file.split(".")[0])]
 
     let output_name = "averaged", writeFileName = ""
-    let dataTableHead = ["Filename", "Frequency (cm-1)", "Amplitude", "FWHM", "Sigma"]
-
     let dataTable = [], dataTable_avg = []
-
-    $: dataTable_weighted_avg = dataTable_avg.filter(file=> file.name == "weighted_mean")
-
-    $: console.log("dataTable", dataTable)
-    $: console.log("dataTable_avg", dataTable_avg)
-
-    $: console.log("dataTable_weighted_avg", dataTable_weighted_avg)
-
+    
     let annotation_color = "black"
     let boxSelected_peakfinder = true
-    let show_dataTable_only_averaged = false, keepTable = true, show_dataTable_only_weighted_averaged=false
+
+    let keepTable = true;
 
     //////// OPO Plot ///////////
     window.getID = () => Math.random().toString(32).substring(2)
@@ -99,6 +90,7 @@
             Plotly.react("avgplot",data, layout, { editable: true })
             line = annotations = lineData_list = [], plot_trace_added = 0
         }
+
     }
 
     function plotData({e=null, filetype="felix", general=null, tkplot="run"}={}){
@@ -121,7 +113,7 @@
             case "exp_fit":
                 if (index.length<2) { return createToast("Range not found!!. Select a range using Box-select", "danger") }
 
-                expfit_args = { addedFileScale, addedFileCol, output_name, overwrite_expfit, writeFile, writeFileName, normMethod: opoExpFit ? "Log" : normMethod, index, fullfiles, location: opoExpFit ? OPOLocation : currentLocation }
+                expfit_args = { addedFileScale, addedFileCol, output_name, overwrite_expfit, writeFile, writeFileName, normMethod, index, fullfiles, location }
 
                 break;
 
@@ -152,7 +144,7 @@
                     NGauss_fit_args.fitNGauss_arguments[`sigma${index}`] = f.sig
                 })
 
-                NGauss_fit_args = {...NGauss_fit_args, location: opoExpFit ? OPOLocation : currentLocation, addedFileScale, addedFileCol, overwrite_expfit, writeFile, writeFileName, output_name, fullfiles, normMethod: opoExpFit ? "Log" : normMethod, output_name}
+                NGauss_fit_args = {...NGauss_fit_args, location, addedFileScale, addedFileCol, overwrite_expfit, writeFile, writeFileName, output_name, fullfiles, normMethod, output_name}
                 break;
             
             case "find_peaks":
@@ -164,7 +156,7 @@
                 let selectedIndex = boxSelected_peakfinder ? index : [0, 0]
 
 
-                find_peaks_args = { addedFileScale, addedFileCol, output_name, normMethod: opoExpFit ? "Log" : normMethod, peak_prominence, peak_width, peak_height, selectedIndex, fullfiles, location: opoExpFit ? OPOLocation : currentLocation }
+                find_peaks_args = { addedFileScale, addedFileCol, output_name, normMethod, peak_prominence, peak_width, peak_height, selectedIndex, fullfiles, location }
 
                 break;
 
@@ -206,11 +198,16 @@
             find_peaks: {pyfile:"fit_all.py" ,  args: [JSON.stringify(find_peaks_args)]},
             theory: {pyfile:"theory.py" , args:[...theoryfiles, normMethod, sigma, scale, currentLocation, tkplot]},
             get_err: {pyfile:"weighted_error.py" , args:lineData_list},
-
             double_peak: {pyfile:"double_gaussian.py" , args:double_fit_args},
             NGauss_fit: {pyfile:"multiGauss.py" , args:[JSON.stringify(NGauss_fit_args)]},
             addfile: {pyfile:"addTrace.py" , args:[JSON.stringify(addedFile)]},
-            get_details: {pyfile:"getfile_details.py", args:[JSON.stringify({files:opoExpFit?opofiles : felixfiles, normMethod: opoExpFit ? "Log" : normMethod})]}
+            get_details: {pyfile:"getfile_details.py", args:[JSON.stringify({files:opoExpFit?opofiles : felixfiles, normMethod})]},
+
+            felix_tkplot: {pyfile:"felix_tkplot.py", args:[JSON.stringify({
+                location,
+                normMethod,
+                theoryLocation, scale, sigma
+            })]}
         }
 
         const {pyfile, args} = pyfileInfo[filetype]
@@ -271,7 +268,7 @@
                         line = [], index = [], annotations = [], lineData_list = [], plot_trace_added = 0
 
                         show_theoryplot = false
-                        if (!keepTable) {dataTable = []}
+                        if (!keepTable) {dataTable = dataTable_avg = []}
 
                         let avgdataToPlot;
                         let signal_formula;
@@ -672,9 +669,7 @@
         console.log("Last fitted peak removed")
         plot_trace_added--
     }
-
     
-    onMount(()=>{ console.log("Normline mounted") })
     let collectData = true, lineData_list = [], toggleDoubleGaussRow = false, weighted_error = [[], []], err_data1_plot = false
 
     let amp1=0, amp2=0, cen1=0, cen2=0, sig1=5, sig2=5
@@ -686,8 +681,12 @@
     let showOPOFiles = false, OPOfilesChecked = [], opoExpFit = false, OPORow = false
     let OPOLocation = localStorage["opoLocation"] || currentLocation
 
+    $: normMethod = opoExpFit ? "Log" : felix_normMethod
+    $: location = opoExpFit ? OPOLocation : currentLocation
+
     $: opofiles = OPOfilesChecked.map(file=>path.resolve(OPOLocation, file))
     $: graphDiv = opoExpFit ? "opoRelPlot" : "avgplot"
+    
     $: plottedFiles = opoExpFit ? OPOfilesChecked.map(file=>file.split(".")[0]) || [] : fileChecked.map(file=>file.split(".")[0]) || []
     let delta_OPO = 0.3, calibValue = 9394.356278462961.toFixed(4), calibFile = ""
     
@@ -700,12 +699,7 @@
     let modalActivate = false, addFileModal=false, addedFileCol="0, 1", addedFile={}, addedFileScale=1, addedfiles = [], extrafileAdded=0
     
     $: console.log(`Extrafile added: ${extrafileAdded}`)
-    function addFileSelection() {
-        
-        browse({dir:false}).then(result=>{ 
-            if (!result.canceled) {addedfiles = addedFile["files"] = result.filePaths}  
-        })
-    }
+   
     function removeExtraFile() {
 
         for(let i=0; i<extrafileAdded; i++) {
@@ -718,6 +712,7 @@
 
     let fullfiles = [], removedTable = []
     $: opoExpFit ? fullfiles = [...opofiles, ...addedfiles, path.resolve(currentLocation, "averaged.felix")] : fullfiles = [...felixfiles, ...addedfiles, path.resolve(currentLocation, "averaged.felix")]
+
 
     function adjustPeak({closeMainModal=true}={}) {
 
@@ -742,40 +737,14 @@
 
         Plotly.relayout(graphDiv, { annotations:window.annotation })
     }
-    let originalTable;
-
-    function rearrangePeakTable(e) {
-
-        peakTable = _.filter(peakTable, (tb)=>tb.id != e.target.id);
-        removedTable = _.differenceBy(originalTable, peakTable)
-        console.log(originalTable, peakTable, removedTable)
-    }
-
-    const editPeakTable = (index) => {
-
-        let freq = parseFloat(document.getElementById(`${index}_tb_freq`).innerHTML)
-        let amp = parseFloat(document.getElementById(`${index}_tb_amp`).innerHTML)
-        let sig = parseFloat(document.getElementById(`${index}_tb_sig`).innerHTML)
-        
-        peakTable[index] = {freq, amp, sig}
-        console.log({freq, amp, sig})
-    }
     
-    
-    $: console.log(peakTable)
-    const focusFreq = (e) => {e.focus()}
-
-    const sortTable = (type) => {
-
-        peakTable = _.orderBy(peakTable, [type], ["asc"])
-        // peakTable = _.reverse(peakTable)
-    }
     let showfile_details = false, filedetails = [];
 
     // $: console.log(filedetails)
     let filedetails_saved;
+    
     function savefile({file={}, name=""}={}) {
-        let location = opoExpFit? OPOLocation : currentLocation
+        // let location = opoExpFit? OPOLocation : currentLocation
         let filename = path.join(location, `${name}.json`)
         fs.writeFile(filename, JSON.stringify({file}), 'utf8', function (err) {
 
@@ -788,7 +757,7 @@
     }
 
     function loadfile({name=""}={}) {
-        let location = opoExpFit? OPOLocation : currentLocation
+        // let location = opoExpFit? OPOLocation : currentLocation
         let filename = path.join(location, `${name}.json`)
         if(!fs.existsSync(filename)) {return createToast(`${name}.json doesn't exist in DATA dir.`, "danger")}
         let loadedfile = JSON.parse(fs.readFileSync(filename)).file
@@ -810,29 +779,21 @@
         intro.setOptions({
 
             steps: [
-                {
 
+                {
                     element: document.getElementById(`${filetype}_filebrowser_btn`),
-                    
                     intro: "Browse file location folder"
                 },
                 {
-
                     element: document.getElementById(`${filetype}_filebrowser`),
-                    
                     intro: "Select file(s) here", position:"right"
                 },
-
                 {
                     element: document.getElementById('create_baseline_btn'),
-                    
-                    
                     intro: "Create/ajusting baseline"
                 },
                 {
-
                     element: document.getElementById('felix_plotting_btn'),
-
                     intro: "After creating baseline -> Plot the graph (NOTE: .pow file should be already present in DATA folder)"
                 },
 
@@ -875,107 +836,71 @@
     const includeTablesInReports = [
         {id:"felixTable", include:true, label:"Freq. table"}, {id:"felix_filedetails_table", include:false, label:"File info table"}
     ]
+
+    $: datlocation = path.resolve(location, "../EXPORT")
+    $: datfiles = fs.existsSync(datlocation) ? fs.readdirSync(datlocation).filter(f=>f.endsWith(".dat")).map(f=>f={name:f, id:getID()}) : [{name:"", id:getID()}]
+    $: calcfiles = fs.existsSync(theoryLocation) ? fs.readdirSync(theoryLocation).map(f=>f={name:f, id:getID()}) : [{name:"", id:getID()}]
+
+    let felix_plotting_widgets = {
+        text:[
+            {label:"Fig. caption", value:"", id:getID()},
+            {label:"Fig. title", value:"", id:getID()},
+            {label:"Exp. title", value:"", id:getID()},
+            {label:"Exp. legend", value:"", id:getID()},
+            {label:"Cal. title", value:"", id:getID()},
+            {label:"markers", value:"", id:getID()},
+        ],
+        number:[
+            {label:"Fig. Width", value:7, step:1, id:getID()},
+            {label:"Fig. Height", value:7, step:1,  id:getID()},
+            {label:"Fig. DPI", value:120, step:5,  id:getID()},
+            {label:"freqScale", value:1, step:0.01,  id:getID()},
+            {label:"gridAlpha", value:0, step:0.1,  id:getID()},
+            {label:"theorySigma", value:5, step:1,  id:getID()},
+            {label:"Tick Interval", value:200, step:50,  id:getID()},
+        ],
+        boolean:[
+            {label:"sameColor", value:true, id:getID()},
+            {label:"Invert ax2", value:true, id:getID()},
+            {label:"Only exp.", value:false, id:getID()},
+            {label:"hide ax2 axis.", value:true, id:getID()},
+        ]
+    }
+
+
+    onMount(()=>{ 
+
+        console.log("Normline mounted")
+    
+        felix_plotting_widgets.checkBoxes = [
+            {label:"DAT file", options:datfiles, selected:[], style:"width:100%;", id:getID()},
+            {label:"Fundamentals", options:calcfiles, selected:[], style:"width:25%;", id:getID()},
+            {label:"Overtones", options:calcfiles, selected:[], style:"width:25%;", id:getID()},
+
+            {label:"Combinations", options:calcfiles, selected:[], style:"width:25%;", id:getID()},
+        ]
+     })
+
+    // $: console.log(felix_plotting_widgets)
+
 </script>
 
 <style>
 
-    * :global(.button) {margin: 0.4em;}
-    * :global(.short-input) { max-width: 7em; margin: 0 1em; }
-    * :global(.mdc-text-field--outlined) {height: 2.5em;}
-    * :global(.plotSlot) { width: 100%}
-    
-    * :global(option) { color: black; }
-    * :global(.mdc-data-table) {min-width: 30em; background-color: #5b3ea2; max-height: 25em; overflow-y: auto}
-    * :global(.mdc-data-table__content ) {background-color: #fafafa;}
-    * :global(hr) { width: 90%; margin: 1em 0; }
-    * :global(.report) { display: block; margin-bottom: 1em; }
-    * :global(table th:not([align])) {text-align: center; padding: 1em;}
-    * :global(table td:not([align])) {text-align: center; padding: 1em;}
-    * :global(.averagedTable td) { color: white; }
-
-    * :global(.tableContainer) {border: 1px solid #5b3ea2; width:100%; padding-right: 1em;}
-    * :global(.tableContainer thead) {background-color: #e1e1e1;}
     .hide {display: none;}
     .active {display: block; }
     .align {display: flex; align-items: center;}
     .felixPlot > div {margin-bottom: 1em;}
     .notification {width: 100%; border: 1px solid;}
     .plotSlot > div { width: calc(100% - 1em); margin-top: 1em; }
-    .dataTable { display: flex; justify-content: center; }
-
-    .icon-holder {
-
-        margin: 1em 0;
-        width: 2em;
-        border-radius: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor:pointer;
-    }
+    /* .dataTable { display: flex; justify-content: center; } */
 
 </style>
 
-<Modal1 bind:active={modalActivate} title="Adjust initial guess" >
-    <div slot="content" >
-            <div class="icon-holder" use:Ripple={[true, {color: 'primary'}]} ><Icon class="material-icons"  on:click="{(e)=> {peakTable = [...peakTable, {freq:0, amp:0, sig:0, id:window.getID()}]}}">add</Icon></div>
+<AdjustInitialGuess bind:peakTable bind:modalActivate on:save={adjustPeak}/>
+<FelixPlotting bind:felixplot_modal bind:felix_plotting_widgets on:submit="{()=>console.log("FELIX plotting submitted", felix_plotting_widgets) }"/>
 
-            <!-- Data Table -->
-
-            <div class="mdc-data-table tableContainer" transition:fade>
-
-                <table class="mdc-data-table__table" aria-label="adjustPeaks">
-
-                    <thead>
-            
-                        <tr class="mdc-data-table__header-row">
-                            <th class="mdc-data-table__header-cell" style="width: 2em;" role="columnheader" scope="col"></th>
-                            <th style="cursor: pointer;" class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric" role="columnheader" scope="col" on:click="{()=>sortTable("freq")}">Frequency</th>
-                            <th style="cursor: pointer;" class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric" role="columnheader" scope="col" on:click="{()=>sortTable("amp")}">Amplitude</th>
-                            <th style="cursor: pointer;" class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric" role="columnheader" scope="col" on:click="{()=>sortTable("sig")}">Sigma</th>
-                            <th class="mdc-data-table__header-cell" style="width: 2em;" role="columnheader" scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody class="mdc-data-table__content">
-                        {#each peakTable as table, index (table.id)}
-
-                            <tr class="mdc-data-table__row" style="background-color: #fafafa;"> 
-                                <td class="mdc-data-table__cell" style="width: 2em;" >{index}</td>
-                                <td class="mdc-data-table__cell mdc-data-table__cell--numeric"  ><input style="color:black" type="number" step="0.05" bind:value="{table.freq}" use:focusFreq></td>
-                                <td  class="mdc-data-table__cell mdc-data-table__cell--numeric" ><input style="color:black" type="number" step="0.05"  bind:value="{table.amp}"></td>
-                                <td class="mdc-data-table__cell mdc-data-table__cell--numeric" ><input style="color:black" type="number" step="0.5"  bind:value="{table.sig}"></td>
-                                <td class="mdc-data-table__cell" style="background: #f14668; cursor: pointer; width: 2em;" >
-                                    <Icon id="{table.id}" class="material-icons" on:click="{(e)=> {rearrangePeakTable(e)}}">close</Icon>
-                                </td>
-                            </tr>
-                        {/each}
-                        
-                    </tbody>
-                </table>
-            </div>
-
-    </div>
-    <button slot="footerbtn" class="button is-link" on:click={adjustPeak} >Save</button>
-
-</Modal1>
-
-<Modal1 bind:active={felixplot_modal} title="FELIX PLOTTING">
-    <div slot="content" style="height:40vh;" >
-        
-    </div>
-</Modal1>
-
-<Modal1 bind:active={addFileModal} title="Add file to plot">
-
-    <div slot="content" >
-        <Textfield style="width:7em; margin:0 0.5em;" bind:value={addedFileCol} label="Columns"/>
-        <Textfield style="width:7em; margin:0 0.5em;" bind:value={addedFileScale} label="ScaleY"/>
-        <button on:click={addFileSelection} class="button is-link">Browse</button>
-
-    </div>
-    <button slot="footerbtn" class="button is-link" on:click="{(e)=>{plotData({e:e, filetype:"addfile"})}}" >Add</button>
-
-</Modal1>
+<AddFilesToPlot bind:addFileModal bind:addedFileCol bind:addedFileScale bind:addedfiles bind:addedFile on:addfile="{(e)=>plotData({e:e.detail.event, filetype:"addfile"})}" />
 
 <QuickView style="padding:1em;" bind:active={showTheoryFiles} bind:location={theoryLocation}>
 
@@ -1007,8 +932,7 @@
             <button class="button is-link" id="felix_plotting_btn" on:click="{(e)=>plotData({e:e, filetype:"felix"})}">FELIX Plot</button>
 
             <Textfield style="width:7em" variant="outlined" type="number" step="0.5" bind:value={delta} label="Delta"/>
-            <!-- <button class="button is-link" 
-                on:click="{(e)=>plotData({e:e, filetype:"general", general:{args:[JSON.stringify({location: currentLocation, normMethod})], pyfile:"norm_tkplot.py"}})}"> Open in Matplotlib</button> -->
+            <!-- <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"felix_tkplot"})}"> Open in Matplotlib</button> -->
             <button class="button is-link" on:click="{()=>felixplot_modal = true}"> Open in Matplotlib</button>
 
             <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
@@ -1035,15 +959,15 @@
             <button class="button is-link" 
                 on:click="{()=>{showOPOFiles=false;showTheoryFiles = !showTheoryFiles; theoryLocation = localStorage["theoryLocation"] || currentLocation}}">
                 Browse File</button>
-            <Textfield type="number" style="width:7em; margin-right:0.5em;" variant="outlined" bind:value={sigma} label="Sigma" on:change="{(e)=>plotData({e:e, filetype:"theory"})}"/>
-            <Textfield type="number" style="width:7em" variant="outlined" bind:value={scale} label="Scale" on:change="{(e)=>plotData({e:e, filetype:"theory"})}"/>
+            <Textfield type="number" style="width:7em; margin-right:0.5em;" variant="outlined" bind:value={sigma} label="Sigma"/>
+            <Textfield type="number" style="width:7em" variant="outlined" bind:value={scale} label="Scale"/>
             <button class="button is-link" 
                 on:click="{(e)=>plotData({e:e, filetype:"general", general:{args:[...theoryfiles, normMethod, sigma, scale, theoryLocation, "plot"], pyfile:"theory.py"}})}">Open in Matplotlib</button>
         </div>
 
         <div style="display:flex;">
 
-            <CustomRadio on:change={replot} bind:selected={normMethod} options={["Log", "Relative", "IntensityPerPhoton"]}/>
+            <CustomRadio on:change={replot} bind:selected={felix_normMethod} options={["Log", "Relative", "IntensityPerPhoton"]}/>
         </div>
     </div>
     
@@ -1072,7 +996,7 @@
             <div id="avgplot"></div>
             <div class="animated fadeIn hide" class:active={opoPlotted} id="opoplot"></div>
             <div class="animated fadeIn hide" class:active={opoPlotted} id="opoSA"></div>
-            
+
             <div class="animated fadeIn hide" class:active={opoPlotted} id="opoRelPlot"></div>
         </div>
     
@@ -1101,7 +1025,6 @@
                     <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"exp_fit"})}">Exp Fit.</button>
                     <button class="button is-link" on:click="{()=>toggleFindPeaksRow = !toggleFindPeaksRow}">Fit NGauss.</button>
                     <button class="button is-warning" on:click={clearLastPeak}>Clear Last</button>
-                    
                     <button class="button is-danger" on:click={clearAllPeak}>Clear All</button>
                     <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"get_err"})}">Weighted Mean</button>
                     <button class="button is-warning" on:click="{(e)=>{lineData_list = []; createToast("Line collection restted", "warning")}}">Reset</button>
@@ -1135,83 +1058,7 @@
                 </div>
 
                 <!-- Frequency table list -->
-                <div class="content">
-                    <div class="title notification is-link">Frequency table</div>
-                    <CustomCheckbox bind:selected={show_dataTable_only_averaged} label="Only Averaged" />
-
-                    <CustomCheckbox bind:selected={show_dataTable_only_weighted_averaged} label="Only weighted Averaged" />
-                    <CustomCheckbox bind:selected={keepTable} label="Keep table" />
-
-                    <button class="button is-danger" on:click="{()=>{dataTable=dataTable_avg=[]; line_index_count=0; lineData_list=[]; createToast("Table cleared", "warning")}}">Clear Table</button>
-                </div>
-
-                
-                <!-- Data Table -->
-                <div class="dataTable" >
-
-                    <DataTable table$aria-label="felix-tableAriaLabel" table$id="felixTable" id="felixTableContainer" class="tableContainer">
-
-                        <Head >
-                            <Row>
-                                <Cell style="width: 2em;"></Cell>
-                                {#each dataTableHead as item}
-                                    <Cell>{item}</Cell>
-                                {/each}
-                                <Cell style="width: 2em;"></Cell>
-                            </Row>
-                        </Head>
-                        <Body>
-                            {#if show_dataTable_only_weighted_averaged}
-                                {#each dataTable_weighted_avg as table, index (table.id)}
-                                    <Row>
-                                        <Cell style="width: 2em;">{index}</Cell>
-                                        <Cell>Line #{index}</Cell>
-                                        <Cell>{table.freq}</Cell>
-                                        <Cell>{table.amp}</Cell>
-                                        <Cell>{table.fwhm}</Cell>
-                                        <Cell>{table.sig}</Cell>
-                                        <Cell style="background: #f14668; cursor: pointer;">
-                                            <Icon id="{table.id}" class="material-icons" 
-                                                on:click="{(e)=> {dataTable_weighted_avg = window._.filter(dataTable_weighted_avg, (tb)=>tb.id != e.target.id)}}">close</Icon>
-                                        </Cell>
-                                    </Row>
-                                {/each}
-                            {:else if show_dataTable_only_averaged && !show_dataTable_only_weighted_averaged}
-                                {#each dataTable_avg as table, index (table.id)}
-                                    <Row>
-                                        <Cell style="width: 2em;">{index}</Cell>
-                                        <Cell>{table.name}</Cell>
-                                        <Cell>{table.freq}</Cell>
-                                        <Cell>{table.amp}</Cell>
-                                        <Cell>{table.fwhm}</Cell>
-                                        <Cell>{table.sig}</Cell>
-                                        <Cell style="background: #f14668; cursor: pointer; width: 2em;">
-                                            <Icon id="{table.id}" class="material-icons" 
-                                                on:click="{(e)=> {dataTable_avg = window._.filter(dataTable_avg, (tb)=>tb.id != e.target.id)}}">close</Icon>
-                                        </Cell>
-                                    </Row>
-                                {/each}
-                            {:else}
-
-                                {#each dataTable as table, index (table.id)}
-                                    <Row style="background-color: {table.color};" class={table.className}>
-                                        <Cell style="width: 2em;">{index}</Cell>
-                                        <Cell>{table.name}</Cell>
-                                        <Cell>{table.freq}</Cell>
-                                        <Cell>{table.amp}</Cell>
-                                        <Cell>{table.fwhm}</Cell>
-                                        <Cell>{table.sig}</Cell>
-                                        <Cell style="background: #f14668; cursor: pointer;">
-                                            <Icon id="{table.id}" class="material-icons" 
-                                                on:click="{(e)=> {dataTable = window._.filter(dataTable, (tb)=>tb.id != e.target.id)}}">close</Icon>
-                                        </Cell>
-                                    </Row>
-                                {/each}
-                            {/if}
-                        </Body>
-
-                    </DataTable>
-                </div>
+                <FrequencyTable bind:dataTable_avg bind:dataTable bind:keepTable bind:line_index_count bind:lineData_list/>
 
                 <!-- Report -->
                 <ReportLayout bind:currentLocation={currentLocation} id={`${filetype}_report`} {includePlotsInReport} {includeTablesInReports} />
