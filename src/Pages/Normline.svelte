@@ -2,17 +2,14 @@
     // IMPORTING Modules
     import Textfield from '@smui/textfield'
     import HelperText from '@smui/textfield/helper-text/index'
-    import Layout, {createToast, browse} from "../components/Layout.svelte"
-    import { fly, fade } from 'svelte/transition'
+    import Layout, {createToast} from "../components/Layout.svelte"
+    import { fade } from 'svelte/transition'
     import Ripple from '@smui/ripple'
 
     import {activated, modalContent} from "../components/Modal.svelte"
     
     import {plot, subplot} from "../js/functions.js"
-    import { flip } from 'svelte/animate'
     
-    import DataTable, {Head, Body, Row, Cell} from '@smui/data-table'
-    import CustomCheckbox from '../components/CustomCheckbox.svelte';
     import CustomSwitch from '../components/CustomSwitch.svelte';
 
     import CustomSelect from '../components/CustomSelect.svelte';
@@ -22,21 +19,16 @@
     import ReportLayout from '../components/ReportLayout.svelte';
     import QuickView from '../components/QuickView.svelte';
     import FileBrowser from "../components/FileBrowser.svelte"
-    // import Checkbox from '@smui/checkbox';
 
     import FormField from '@smui/form-field';
 
     import {onMount, tick} from "svelte"
-    import VirtualList from '@sveltejs/svelte-virtual-list';
     import {Icon} from '@smui/icon-button'
     import Table from '../components/Table.svelte'
-    import Modal1 from '../components/Modal1.svelte'
     import CustomCheckList from '../components/CustomCheckList.svelte';
 
     import FelixPlotting from './normline/FelixPlotting.svelte';
-
     import AdjustInitialGuess from './normline/AdjustInitialGuess.svelte';
-
     import AddFilesToPlot from './normline/AddFilesToPlot.svelte';
     import FrequencyTable from './normline/FrequencyTable.svelte';
    ///////////////////////////////////////////////////////////////////////
