@@ -1073,7 +1073,7 @@ class SvelteComponent {
 }
 
 function dispatch_dev(type, detail) {
-    document.dispatchEvent(custom_event(type, Object.assign({ version: '3.23.2' }, detail)));
+    document.dispatchEvent(custom_event(type, Object.assign({ version: '3.24.0' }, detail)));
 }
 function append_dev(target, node) {
     dispatch_dev("SvelteDOMInsert", { target, node });
@@ -1109,7 +1109,7 @@ function attr_dev(node, attribute, value) {
 }
 function set_data_dev(text, data) {
     data = '' + data;
-    if (text.data === data)
+    if (text.wholeText === data)
         return;
     dispatch_dev("SvelteDOMSetData", { node: text, data });
     text.data = data;
@@ -13582,8 +13582,9 @@ function create_fragment$j(ctx) {
 			class: "mdc-text-field__input " + /*className*/ ctx[1]
 		},
 		{ type: /*type*/ ctx[2] },
-		/*valueProp*/ ctx[4],
-		exclude(/*$$props*/ ctx[8], [
+		{ step: /*step*/ ctx[3] },
+		/*valueProp*/ ctx[5],
+		exclude(/*$$props*/ ctx[9], [
 			"use",
 			"class",
 			"type",
@@ -13612,15 +13613,15 @@ function create_fragment$j(ctx) {
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, input, anchor);
-			/*input_binding*/ ctx[14](input);
+			/*input_binding*/ ctx[15](input);
 
 			if (!mounted) {
 				dispose = [
 					action_destroyer(useActions_action = useActions.call(null, input, /*use*/ ctx[0])),
-					action_destroyer(forwardEvents_action = /*forwardEvents*/ ctx[5].call(null, input)),
-					listen_dev(input, "change", /*change_handler*/ ctx[15], false, false, false),
-					listen_dev(input, "input", /*input_handler*/ ctx[16], false, false, false),
-					listen_dev(input, "change", /*changeHandler*/ ctx[7], false, false, false)
+					action_destroyer(forwardEvents_action = /*forwardEvents*/ ctx[6].call(null, input)),
+					listen_dev(input, "change", /*change_handler*/ ctx[16], false, false, false),
+					listen_dev(input, "input", /*input_handler*/ ctx[17], false, false, false),
+					listen_dev(input, "change", /*changeHandler*/ ctx[8], false, false, false)
 				];
 
 				mounted = true;
@@ -13632,8 +13633,9 @@ function create_fragment$j(ctx) {
 					class: "mdc-text-field__input " + /*className*/ ctx[1]
 				},
 				dirty & /*type*/ 4 && { type: /*type*/ ctx[2] },
-				dirty & /*valueProp*/ 16 && /*valueProp*/ ctx[4],
-				dirty & /*exclude, $$props*/ 256 && exclude(/*$$props*/ ctx[8], [
+				dirty & /*step*/ 8 && { step: /*step*/ ctx[3] },
+				dirty & /*valueProp*/ 32 && /*valueProp*/ ctx[5],
+				dirty & /*exclude, $$props*/ 512 && exclude(/*$$props*/ ctx[9], [
 					"use",
 					"class",
 					"type",
@@ -13651,7 +13653,7 @@ function create_fragment$j(ctx) {
 		o: noop,
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(input);
-			/*input_binding*/ ctx[14](null);
+			/*input_binding*/ ctx[15](null);
 			mounted = false;
 			run_all(dispose);
 		}
@@ -13688,12 +13690,13 @@ function instance$j($$self, $$props, $$invalidate) {
 	let { dirty = false } = $$props;
 	let { invalid = false } = $$props;
 	let { updateInvalid = true } = $$props;
+	let { step = "" } = $$props;
 	let element;
 	let valueProp = {};
 
 	onMount(() => {
 		if (updateInvalid) {
-			$$invalidate(12, invalid = element.matches(":invalid"));
+			$$invalidate(13, invalid = element.matches(":invalid"));
 		}
 	});
 
@@ -13701,21 +13704,21 @@ function instance$j($$self, $$props, $$invalidate) {
 		switch (type) {
 			case "number":
 			case "range":
-				$$invalidate(9, value = toNumber(e.target.value));
+				$$invalidate(10, value = toNumber(e.target.value));
 				break;
 			case "file":
-				$$invalidate(10, files = e.target.files);
+				$$invalidate(11, files = e.target.files);
 			default:
-				$$invalidate(9, value = e.target.value);
+				$$invalidate(10, value = e.target.value);
 				break;
 		}
 	}
 
 	function changeHandler(e) {
-		$$invalidate(11, dirty = true);
+		$$invalidate(12, dirty = true);
 
 		if (updateInvalid) {
-			$$invalidate(12, invalid = element.matches(":invalid"));
+			$$invalidate(13, invalid = element.matches(":invalid"));
 		}
 	}
 
@@ -13725,7 +13728,7 @@ function instance$j($$self, $$props, $$invalidate) {
 	function input_binding($$value) {
 		binding_callbacks[$$value ? "unshift" : "push"](() => {
 			element = $$value;
-			$$invalidate(3, element);
+			$$invalidate(4, element);
 		});
 	}
 
@@ -13733,15 +13736,16 @@ function instance$j($$self, $$props, $$invalidate) {
 	const input_handler = e => type !== "file" && valueUpdater(e);
 
 	$$self.$set = $$new_props => {
-		$$invalidate(8, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
+		$$invalidate(9, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
 		if ("use" in $$new_props) $$invalidate(0, use = $$new_props.use);
 		if ("class" in $$new_props) $$invalidate(1, className = $$new_props.class);
 		if ("type" in $$new_props) $$invalidate(2, type = $$new_props.type);
-		if ("value" in $$new_props) $$invalidate(9, value = $$new_props.value);
-		if ("files" in $$new_props) $$invalidate(10, files = $$new_props.files);
-		if ("dirty" in $$new_props) $$invalidate(11, dirty = $$new_props.dirty);
-		if ("invalid" in $$new_props) $$invalidate(12, invalid = $$new_props.invalid);
-		if ("updateInvalid" in $$new_props) $$invalidate(13, updateInvalid = $$new_props.updateInvalid);
+		if ("value" in $$new_props) $$invalidate(10, value = $$new_props.value);
+		if ("files" in $$new_props) $$invalidate(11, files = $$new_props.files);
+		if ("dirty" in $$new_props) $$invalidate(12, dirty = $$new_props.dirty);
+		if ("invalid" in $$new_props) $$invalidate(13, invalid = $$new_props.invalid);
+		if ("updateInvalid" in $$new_props) $$invalidate(14, updateInvalid = $$new_props.updateInvalid);
+		if ("step" in $$new_props) $$invalidate(3, step = $$new_props.step);
 	};
 
 	$$self.$capture_state = () => ({
@@ -13759,6 +13763,7 @@ function instance$j($$self, $$props, $$invalidate) {
 		dirty,
 		invalid,
 		updateInvalid,
+		step,
 		element,
 		valueProp,
 		toNumber,
@@ -13767,17 +13772,18 @@ function instance$j($$self, $$props, $$invalidate) {
 	});
 
 	$$self.$inject_state = $$new_props => {
-		$$invalidate(8, $$props = assign(assign({}, $$props), $$new_props));
+		$$invalidate(9, $$props = assign(assign({}, $$props), $$new_props));
 		if ("use" in $$props) $$invalidate(0, use = $$new_props.use);
 		if ("className" in $$props) $$invalidate(1, className = $$new_props.className);
 		if ("type" in $$props) $$invalidate(2, type = $$new_props.type);
-		if ("value" in $$props) $$invalidate(9, value = $$new_props.value);
-		if ("files" in $$props) $$invalidate(10, files = $$new_props.files);
-		if ("dirty" in $$props) $$invalidate(11, dirty = $$new_props.dirty);
-		if ("invalid" in $$props) $$invalidate(12, invalid = $$new_props.invalid);
-		if ("updateInvalid" in $$props) $$invalidate(13, updateInvalid = $$new_props.updateInvalid);
-		if ("element" in $$props) $$invalidate(3, element = $$new_props.element);
-		if ("valueProp" in $$props) $$invalidate(4, valueProp = $$new_props.valueProp);
+		if ("value" in $$props) $$invalidate(10, value = $$new_props.value);
+		if ("files" in $$props) $$invalidate(11, files = $$new_props.files);
+		if ("dirty" in $$props) $$invalidate(12, dirty = $$new_props.dirty);
+		if ("invalid" in $$props) $$invalidate(13, invalid = $$new_props.invalid);
+		if ("updateInvalid" in $$props) $$invalidate(14, updateInvalid = $$new_props.updateInvalid);
+		if ("step" in $$props) $$invalidate(3, step = $$new_props.step);
+		if ("element" in $$props) $$invalidate(4, element = $$new_props.element);
+		if ("valueProp" in $$props) $$invalidate(5, valueProp = $$new_props.valueProp);
 	};
 
 	if ($$props && "$$inject" in $$props) {
@@ -13785,11 +13791,11 @@ function instance$j($$self, $$props, $$invalidate) {
 	}
 
 	$$self.$$.update = () => {
-		if ($$self.$$.dirty & /*type, valueProp, value*/ 532) {
+		if ($$self.$$.dirty & /*type, valueProp, value*/ 1060) {
 			 if (type === "file") {
 				delete valueProp.value;
 			} else {
-				$$invalidate(4, valueProp.value = value === undefined ? "" : value, valueProp);
+				$$invalidate(5, valueProp.value = value === undefined ? "" : value, valueProp);
 			}
 		}
 	};
@@ -13800,6 +13806,7 @@ function instance$j($$self, $$props, $$invalidate) {
 		use,
 		className,
 		type,
+		step,
 		element,
 		valueProp,
 		forwardEvents,
@@ -13825,11 +13832,12 @@ class Input extends SvelteComponentDev {
 			use: 0,
 			class: 1,
 			type: 2,
-			value: 9,
-			files: 10,
-			dirty: 11,
-			invalid: 12,
-			updateInvalid: 13
+			value: 10,
+			files: 11,
+			dirty: 12,
+			invalid: 13,
+			updateInvalid: 14,
+			step: 3
 		});
 
 		dispatch_dev("SvelteRegisterComponent", {
@@ -13901,6 +13909,14 @@ class Input extends SvelteComponentDev {
 	}
 
 	set updateInvalid(value) {
+		throw new Error("<Input>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get step() {
+		throw new Error("<Input>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set step(value) {
 		throw new Error("<Input>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 }
@@ -14508,8 +14524,8 @@ function create_else_block$2(ctx) {
 	let current;
 
 	const input_spread_levels = [
-		{ step: /*step*/ ctx[17] },
 		{ type: /*type*/ ctx[16] },
+		{ step: /*step*/ ctx[17] },
 		{ disabled: /*disabled*/ ctx[7] },
 		{ updateInvalid: /*updateInvalid*/ ctx[18] },
 		/*fullwidth*/ ctx[8] && /*label*/ ctx[15]
@@ -14573,10 +14589,10 @@ function create_else_block$2(ctx) {
 			current = true;
 		},
 		p: function update(ctx, dirty) {
-			const input_changes = (dirty[0] & /*step, type, disabled, updateInvalid, fullwidth, label, $$props*/ 8880512)
+			const input_changes = (dirty[0] & /*type, step, disabled, updateInvalid, fullwidth, label, $$props*/ 8880512)
 			? get_spread_update(input_spread_levels, [
-					dirty[0] & /*step*/ 131072 && { step: /*step*/ ctx[17] },
 					dirty[0] & /*type*/ 65536 && { type: /*type*/ ctx[16] },
+					dirty[0] & /*step*/ 131072 && { step: /*step*/ ctx[17] },
 					dirty[0] & /*disabled*/ 128 && { disabled: /*disabled*/ ctx[7] },
 					dirty[0] & /*updateInvalid*/ 262144 && { updateInvalid: /*updateInvalid*/ ctx[18] },
 					dirty[0] & /*fullwidth, label*/ 33024 && get_spread_object(/*fullwidth*/ ctx[8] && /*label*/ ctx[15]
@@ -15388,7 +15404,8 @@ function instance$l($$self, $$props, $$invalidate) {
 	let { withTrailingIcon = false } = $$props;
 	let { noLabel = false } = $$props;
 	let { label = null } = $$props;
-	let { type = "text" } = $$props, { step = "" } = $$props;
+	let { type = "text" } = $$props;
+	let { step = "" } = $$props;
 	let { value = uninitializedValue } = $$props;
 	let { files = uninitializedValue } = $$props;
 	let { dirty = false } = $$props;
@@ -16685,19 +16702,19 @@ function create_fragment$n(ctx) {
 	let dispose;
 
 	let input_levels = [
-		exclude(prefixFilter(/*$$props*/ ctx[13], "input$"), ["use", "class"]),
+		{
+			class: "mdc-switch__native-control " + /*input$class*/ ctx[6]
+		},
 		{ type: "checkbox" },
 		{ role: "switch" },
 		/*inputProps*/ ctx[11],
 		{ disabled: /*disabled*/ ctx[2] },
 		{
-			class: "mdc-switch__native-control " + /*input$class*/ ctx[6]
-		},
-		{
 			__value: /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
 			? /*value*/ ctx[3]
 			: /*valueKey*/ ctx[4]
-		}
+		},
+		exclude(prefixFilter(/*$$props*/ ctx[13], "input$"), ["use", "class"])
 	];
 
 	let input_data = {};
@@ -16767,19 +16784,19 @@ function create_fragment$n(ctx) {
 		},
 		p: function update(ctx, [dirty]) {
 			set_attributes(input, input_data = get_spread_update(input_levels, [
-				dirty & /*exclude, prefixFilter, $$props*/ 8192 && exclude(prefixFilter(/*$$props*/ ctx[13], "input$"), ["use", "class"]),
+				dirty & /*input$class*/ 64 && {
+					class: "mdc-switch__native-control " + /*input$class*/ ctx[6]
+				},
 				{ type: "checkbox" },
 				{ role: "switch" },
 				dirty & /*inputProps*/ 2048 && /*inputProps*/ ctx[11],
 				dirty & /*disabled*/ 4 && { disabled: /*disabled*/ ctx[2] },
-				dirty & /*input$class*/ 64 && {
-					class: "mdc-switch__native-control " + /*input$class*/ ctx[6]
-				},
 				dirty & /*valueKey, uninitializedValue, value*/ 1048 && {
 					__value: /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
 					? /*value*/ ctx[3]
 					: /*valueKey*/ ctx[4]
-				}
+				},
+				dirty & /*exclude, prefixFilter, $$props*/ 8192 && exclude(prefixFilter(/*$$props*/ ctx[13], "input$"), ["use", "class"])
 			]));
 
 			if (useActions_action && is_function(useActions_action.update) && dirty & /*input$use*/ 32) useActions_action.update.call(null, /*input$use*/ ctx[5]);
@@ -19196,24 +19213,24 @@ function create_else_block$4(ctx) {
 	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[19], null);
 
 	let li_levels = [
-		/*role*/ ctx[6] === "option"
-		? {
-				"aria-selected": /*selected*/ ctx[7] ? "true" : "false"
-			}
-		: {},
-		/*props*/ ctx[12],
 		{
 			class: "\n      mdc-list-item\n      " + /*className*/ ctx[2] + "\n      " + (/*activated*/ ctx[5] ? "mdc-list-item--activated" : "") + "\n      " + (/*selected*/ ctx[7] ? "mdc-list-item--selected" : "") + "\n      " + (/*disabled*/ ctx[8] ? "mdc-list-item--disabled" : "") + "\n      " + (/*role*/ ctx[6] === "menuitem" && /*selected*/ ctx[7]
 			? "mdc-menu-item--selected"
 			: "") + "\n    "
 		},
 		{ role: /*role*/ ctx[6] },
+		/*role*/ ctx[6] === "option"
+		? {
+				"aria-selected": /*selected*/ ctx[7] ? "true" : "false"
+			}
+		: {},
 		/*role*/ ctx[6] === "radio" || /*role*/ ctx[6] === "checkbox"
 		? {
 				"aria-checked": /*checked*/ ctx[10] ? "true" : "false"
 			}
 		: {},
-		{ tabindex: /*tabindex*/ ctx[0] }
+		{ tabindex: /*tabindex*/ ctx[0] },
+		/*props*/ ctx[12]
 	];
 
 	let li_data = {};
@@ -19263,24 +19280,24 @@ function create_else_block$4(ctx) {
 			}
 
 			set_attributes(li, li_data = get_spread_update(li_levels, [
-				dirty & /*role, selected*/ 192 && (/*role*/ ctx[6] === "option"
-				? {
-						"aria-selected": /*selected*/ ctx[7] ? "true" : "false"
-					}
-				: {}),
-				dirty & /*props*/ 4096 && /*props*/ ctx[12],
 				dirty & /*className, activated, selected, disabled, role*/ 484 && {
 					class: "\n      mdc-list-item\n      " + /*className*/ ctx[2] + "\n      " + (/*activated*/ ctx[5] ? "mdc-list-item--activated" : "") + "\n      " + (/*selected*/ ctx[7] ? "mdc-list-item--selected" : "") + "\n      " + (/*disabled*/ ctx[8] ? "mdc-list-item--disabled" : "") + "\n      " + (/*role*/ ctx[6] === "menuitem" && /*selected*/ ctx[7]
 					? "mdc-menu-item--selected"
 					: "") + "\n    "
 				},
 				dirty & /*role*/ 64 && { role: /*role*/ ctx[6] },
+				dirty & /*role, selected*/ 192 && (/*role*/ ctx[6] === "option"
+				? {
+						"aria-selected": /*selected*/ ctx[7] ? "true" : "false"
+					}
+				: {}),
 				dirty & /*role, checked*/ 1088 && (/*role*/ ctx[6] === "radio" || /*role*/ ctx[6] === "checkbox"
 				? {
 						"aria-checked": /*checked*/ ctx[10] ? "true" : "false"
 					}
 				: {}),
-				dirty & /*tabindex*/ 1 && { tabindex: /*tabindex*/ ctx[0] }
+				dirty & /*tabindex*/ 1 && { tabindex: /*tabindex*/ ctx[0] },
+				dirty & /*props*/ 4096 && /*props*/ ctx[12]
 			]));
 
 			if (useActions_action && is_function(useActions_action.update) && dirty & /*use*/ 2) useActions_action.update.call(null, /*use*/ ctx[1]);
@@ -19446,13 +19463,13 @@ function create_if_block$8(ctx) {
 	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[19], null);
 
 	let a_levels = [
-		{ href: /*href*/ ctx[9] },
-		/*props*/ ctx[12],
 		{
 			class: "\n      mdc-list-item\n      " + /*className*/ ctx[2] + "\n      " + (/*activated*/ ctx[5] ? "mdc-list-item--activated" : "") + "\n      " + (/*selected*/ ctx[7] ? "mdc-list-item--selected" : "") + "\n      " + (/*disabled*/ ctx[8] ? "mdc-list-item--disabled" : "") + "\n    "
 		},
+		{ href: /*href*/ ctx[9] },
 		/*activated*/ ctx[5] ? { "aria-current": "page" } : {},
-		{ tabindex: /*tabindex*/ ctx[0] }
+		{ tabindex: /*tabindex*/ ctx[0] },
+		/*props*/ ctx[12]
 	];
 
 	let a_data = {};
@@ -19502,13 +19519,13 @@ function create_if_block$8(ctx) {
 			}
 
 			set_attributes(a, a_data = get_spread_update(a_levels, [
-				dirty & /*href*/ 512 && { href: /*href*/ ctx[9] },
-				dirty & /*props*/ 4096 && /*props*/ ctx[12],
 				dirty & /*className, activated, selected, disabled*/ 420 && {
 					class: "\n      mdc-list-item\n      " + /*className*/ ctx[2] + "\n      " + (/*activated*/ ctx[5] ? "mdc-list-item--activated" : "") + "\n      " + (/*selected*/ ctx[7] ? "mdc-list-item--selected" : "") + "\n      " + (/*disabled*/ ctx[8] ? "mdc-list-item--disabled" : "") + "\n    "
 				},
+				dirty & /*href*/ 512 && { href: /*href*/ ctx[9] },
 				dirty & /*activated*/ 32 && (/*activated*/ ctx[5] ? { "aria-current": "page" } : {}),
-				dirty & /*tabindex*/ 1 && { tabindex: /*tabindex*/ ctx[0] }
+				dirty & /*tabindex*/ 1 && { tabindex: /*tabindex*/ ctx[0] },
+				dirty & /*props*/ 4096 && /*props*/ ctx[12]
 			]));
 
 			if (useActions_action && is_function(useActions_action.update) && dirty & /*use*/ 2) useActions_action.update.call(null, /*use*/ ctx[1]);
@@ -21477,15 +21494,15 @@ function create_fragment$x(ctx) {
 
 	let input_levels = [
 		{
-			__value: /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
-			? /*value*/ ctx[3]
-			: /*valueKey*/ ctx[4]
+			class: "mdc-checkbox__native-control " + /*input$class*/ ctx[6]
 		},
 		{ type: "checkbox" },
 		/*inputProps*/ ctx[11],
 		{ disabled: /*disabled*/ ctx[2] },
 		{
-			class: "mdc-checkbox__native-control " + /*input$class*/ ctx[6]
+			__value: /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
+			? /*value*/ ctx[3]
+			: /*valueKey*/ ctx[4]
 		},
 		exclude(prefixFilter(/*$$props*/ ctx[15], "input$"), ["use", "class"])
 	];
@@ -21570,8 +21587,8 @@ function create_fragment$x(ctx) {
 					listen_dev(input, "change", /*input_change_handler*/ ctx[22]),
 					listen_dev(input, "change", /*handleChange*/ ctx[14], false, false, false),
 					listen_dev(input, "input", /*handleChange*/ ctx[14], false, false, false),
-					listen_dev(input, "change", /*change_handler*/ ctx[21], false, false, false),
-					listen_dev(input, "input", /*input_handler*/ ctx[20], false, false, false),
+					listen_dev(input, "change", /*change_handler*/ ctx[20], false, false, false),
+					listen_dev(input, "input", /*input_handler*/ ctx[21], false, false, false),
 					action_destroyer(useActions_action_1 = useActions.call(null, div2, /*use*/ ctx[0])),
 					action_destroyer(forwardEvents_action = /*forwardEvents*/ ctx[9].call(null, div2))
 				];
@@ -21581,16 +21598,16 @@ function create_fragment$x(ctx) {
 		},
 		p: function update(ctx, dirty) {
 			set_attributes(input, input_data = get_spread_update(input_levels, [
-				dirty[0] & /*valueKey, uninitializedValue, value*/ 1048 && {
-					__value: /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
-					? /*value*/ ctx[3]
-					: /*valueKey*/ ctx[4]
+				dirty[0] & /*input$class*/ 64 && {
+					class: "mdc-checkbox__native-control " + /*input$class*/ ctx[6]
 				},
 				{ type: "checkbox" },
 				dirty[0] & /*inputProps*/ 2048 && /*inputProps*/ ctx[11],
 				dirty[0] & /*disabled*/ 4 && { disabled: /*disabled*/ ctx[2] },
-				dirty[0] & /*input$class*/ 64 && {
-					class: "mdc-checkbox__native-control " + /*input$class*/ ctx[6]
+				dirty[0] & /*valueKey, uninitializedValue, value*/ 1048 && {
+					__value: /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
+					? /*value*/ ctx[3]
+					: /*valueKey*/ ctx[4]
 				},
 				dirty[0] & /*$$props*/ 32768 && exclude(prefixFilter(/*$$props*/ ctx[15], "input$"), ["use", "class"])
 			]));
@@ -21731,11 +21748,11 @@ function instance$x($$self, $$props, $$invalidate) {
 	let { $$slots = {}, $$scope } = $$props;
 	validate_slots("Checkbox", $$slots, []);
 
-	function input_handler(event) {
+	function change_handler(event) {
 		bubble($$self, event);
 	}
 
-	function change_handler(event) {
+	function input_handler(event) {
 		bubble($$self, event);
 	}
 
@@ -21917,8 +21934,8 @@ function instance$x($$self, $$props, $$invalidate) {
 		checked,
 		indeterminate,
 		getId,
-		input_handler,
 		change_handler,
+		input_handler,
 		input_change_handler,
 		div2_binding
 	];
@@ -37548,15 +37565,15 @@ function create_fragment$U(ctx) {
 
 	let input_levels = [
 		{
-			value: /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
-			? /*value*/ ctx[3]
-			: /*valueKey*/ ctx[4]
+			class: "mdc-radio__native-control " + /*input$class*/ ctx[6]
 		},
 		{ type: "radio" },
 		/*inputProps*/ ctx[11],
 		{ disabled: /*disabled*/ ctx[2] },
 		{
-			class: "mdc-radio__native-control " + /*input$class*/ ctx[6]
+			value: /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
+			? /*value*/ ctx[3]
+			: /*valueKey*/ ctx[4]
 		},
 		{ checked: /*checked*/ ctx[8] },
 		exclude(prefixFilter(/*$$props*/ ctx[13], "input$"), ["use", "class"])
@@ -37629,16 +37646,16 @@ function create_fragment$U(ctx) {
 		},
 		p: function update(ctx, [dirty]) {
 			set_attributes(input, input_data = get_spread_update(input_levels, [
-				dirty & /*valueKey, uninitializedValue, value*/ 1048 && {
-					value: /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
-					? /*value*/ ctx[3]
-					: /*valueKey*/ ctx[4]
+				dirty & /*input$class*/ 64 && {
+					class: "mdc-radio__native-control " + /*input$class*/ ctx[6]
 				},
 				{ type: "radio" },
 				dirty & /*inputProps*/ 2048 && /*inputProps*/ ctx[11],
 				dirty & /*disabled*/ 4 && { disabled: /*disabled*/ ctx[2] },
-				dirty & /*input$class*/ 64 && {
-					class: "mdc-radio__native-control " + /*input$class*/ ctx[6]
+				dirty & /*valueKey, uninitializedValue, value*/ 1048 && {
+					value: /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
+					? /*value*/ ctx[3]
+					: /*valueKey*/ ctx[4]
 				},
 				dirty & /*checked*/ 256 && { checked: /*checked*/ ctx[8] },
 				dirty & /*exclude, prefixFilter, $$props*/ 8192 && exclude(prefixFilter(/*$$props*/ ctx[13], "input$"), ["use", "class"])
@@ -41944,26 +41961,26 @@ function create_fragment$$(ctx) {
 			div1 = element("div");
 			if (footerbtn_slot) footerbtn_slot.c();
 			attr_dev(div0, "class", "modal-background");
-			add_location(div0, file$U, 17, 2, 404);
+			add_location(div0, file$U, 19, 2, 488);
 			attr_dev(p, "class", "modal-card-title");
-			add_location(p, file$U, 22, 6, 549);
+			add_location(p, file$U, 24, 6, 633);
 			attr_dev(span, "class", "delete is-pulled-right svelte-19hwtj0");
-			add_location(span, file$U, 23, 6, 596);
+			add_location(span, file$U, 25, 6, 680);
 			attr_dev(header, "class", "modal-card-head");
-			add_location(header, file$U, 21, 4, 509);
+			add_location(header, file$U, 23, 4, 593);
 			attr_dev(section, "class", "modal-card-body svelte-19hwtj0");
-			add_location(section, file$U, 26, 4, 693);
+			add_location(section, file$U, 28, 4, 777);
 			set_style(div1, "margin-left", "auto");
 			set_style(div1, "display", "flex");
-			add_location(div1, file$U, 29, 6, 816);
+			add_location(div1, file$U, 31, 6, 900);
 			attr_dev(footer, "class", "modal-card-foot");
-			add_location(footer, file$U, 28, 4, 776);
+			add_location(footer, file$U, 30, 4, 860);
 			attr_dev(div2, "class", "modal-card animated fadeIn faster");
 			attr_dev(div2, "style", /*style*/ ctx[2]);
-			add_location(div2, file$U, 19, 2, 446);
+			add_location(div2, file$U, 21, 2, 530);
 			attr_dev(div3, "class", "modal");
 			toggle_class(div3, "is-active", /*active*/ ctx[0]);
-			add_location(div3, file$U, 15, 0, 354);
+			add_location(div3, file$U, 17, 0, 438);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -41996,7 +42013,11 @@ function create_fragment$$(ctx) {
 			current = true;
 
 			if (!mounted) {
-				dispose = listen_dev(span, "click", /*click_handler*/ ctx[6], false, false, false);
+				dispose = [
+					listen_dev(window, "keydown", /*keydown_handler*/ ctx[6], false, false, false),
+					listen_dev(span, "click", /*click_handler*/ ctx[7], false, false, false)
+				];
+
 				mounted = true;
 			}
 		},
@@ -42039,7 +42060,7 @@ function create_fragment$$(ctx) {
 			if (content_slot) content_slot.d(detaching);
 			if (footerbtn_slot) footerbtn_slot.d(detaching);
 			mounted = false;
-			dispose();
+			run_all(dispose);
 		}
 	};
 
@@ -42068,6 +42089,11 @@ function instance$$($$self, $$props, $$invalidate) {
 
 	let { $$slots = {}, $$scope } = $$props;
 	validate_slots("Modal1", $$slots, ['content','footerbtn']);
+
+	const keydown_handler = e => e.keyCode === 27
+	? $$invalidate(0, active = false)
+	: $$invalidate(0, active = true);
+
 	const click_handler = () => $$invalidate(0, active = false);
 
 	$$self.$set = $$props => {
@@ -42090,7 +42116,16 @@ function instance$$($$self, $$props, $$invalidate) {
 		$$self.$inject_state($$props.$$inject);
 	}
 
-	return [active, title, style, content, $$scope, $$slots, click_handler];
+	return [
+		active,
+		title,
+		style,
+		content,
+		$$scope,
+		$$slots,
+		keydown_handler,
+		click_handler
+	];
 }
 
 class Modal1 extends SvelteComponentDev {
@@ -49042,7 +49077,7 @@ function init_tour_normline({filetype="felix"}={}) {
 const { console: console_1$7 } = globals;
 const file$12 = "src\\Pages\\Normline.svelte";
 
-// (855:4) <div class="buttonSlot" slot="buttonContainer">
+// (857:4) <div class="buttonSlot" slot="buttonContainer">
 function create_buttonContainer_slot(ctx) {
 	let div0;
 	let div1;
@@ -49289,40 +49324,40 @@ function create_buttonContainer_slot(ctx) {
 			create_component(customradio.$$.fragment);
 			attr_dev(button0, "class", "button is-link");
 			attr_dev(button0, "id", "create_baseline_btn");
-			add_location(button0, file$12, 856, 12, 41397);
+			add_location(button0, file$12, 858, 12, 41401);
 			attr_dev(button1, "class", "button is-link");
 			attr_dev(button1, "id", "felix_plotting_btn");
-			add_location(button1, file$12, 857, 12, 41562);
+			add_location(button1, file$12, 859, 12, 41566);
 			attr_dev(button2, "class", "button is-link");
-			add_location(button2, file$12, 859, 12, 41823);
+			add_location(button2, file$12, 861, 12, 41827);
 			attr_dev(button3, "class", "button is-link");
 			attr_dev(button3, "tabindex", "0");
-			add_location(button3, file$12, 861, 12, 42032);
+			add_location(button3, file$12, 863, 12, 42036);
 			attr_dev(button4, "class", "button is-link");
-			add_location(button4, file$12, 862, 12, 42189);
+			add_location(button4, file$12, 864, 12, 42193);
 			attr_dev(div1, "class", "align svelte-145klz8");
-			add_location(div1, file$12, 855, 8, 41364);
+			add_location(div1, file$12, 857, 8, 41368);
 			attr_dev(button5, "class", "button is-link");
-			add_location(button5, file$12, 872, 16, 42874);
+			add_location(button5, file$12, 874, 16, 42878);
 			attr_dev(button6, "class", "button is-link");
-			add_location(button6, file$12, 874, 16, 43230);
+			add_location(button6, file$12, 876, 16, 43234);
 			attr_dev(div2, "class", "align svelte-145klz8");
-			add_location(div2, file$12, 868, 12, 42506);
+			add_location(div2, file$12, 870, 12, 42510);
 			attr_dev(div3, "class", "animated fadeIn hide content svelte-145klz8");
 			toggle_class(div3, "active", /*opoExpFit*/ ctx[33]);
-			add_location(div3, file$12, 867, 8, 42424);
+			add_location(div3, file$12, 869, 8, 42428);
 			attr_dev(button7, "class", "button is-link");
-			add_location(button7, file$12, 879, 12, 43451);
+			add_location(button7, file$12, 881, 12, 43455);
 			attr_dev(button8, "class", "button is-link");
-			add_location(button8, file$12, 883, 12, 44137);
+			add_location(button8, file$12, 885, 12, 44141);
 			attr_dev(div4, "class", "animated fadeIn hide svelte-145klz8");
 			toggle_class(div4, "active", /*toggleRow*/ ctx[2]);
-			add_location(div4, file$12, 878, 8, 43378);
+			add_location(div4, file$12, 880, 8, 43382);
 			set_style(div5, "display", "flex");
-			add_location(div5, file$12, 887, 8, 44274);
+			add_location(div5, file$12, 889, 8, 44278);
 			attr_dev(div0, "class", "buttonSlot svelte-145klz8");
 			attr_dev(div0, "slot", "buttonContainer");
-			add_location(div0, file$12, 854, 4, 41307);
+			add_location(div0, file$12, 856, 4, 41311);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -49510,14 +49545,14 @@ function create_buttonContainer_slot(ctx) {
 		block,
 		id: create_buttonContainer_slot.name,
 		type: "slot",
-		source: "(855:4) <div class=\\\"buttonSlot\\\" slot=\\\"buttonContainer\\\">",
+		source: "(857:4) <div class=\\\"buttonSlot\\\" slot=\\\"buttonContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (905:12) {#if showfile_details}
+// (907:12) {#if showfile_details}
 function create_if_block_1$7(ctx) {
 	let table;
 	let updating_rows;
@@ -49587,14 +49622,14 @@ function create_if_block_1$7(ctx) {
 		block,
 		id: create_if_block_1$7.name,
 		type: "if",
-		source: "(905:12) {#if showfile_details}",
+		source: "(907:12) {#if showfile_details}",
 		ctx
 	});
 
 	return block;
 }
 
-// (924:8) {#if graphPlotted}
+// (925:8) {#if graphPlotted}
 function create_if_block$n(ctx) {
 	let div5;
 	let div0;
@@ -50033,45 +50068,45 @@ function create_if_block$n(ctx) {
 			t38 = space();
 			create_component(reportlayout.$$.fragment);
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$12, 937, 20, 46907);
+			add_location(button0, file$12, 938, 20, 46901);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$12, 938, 20, 47015);
+			add_location(button1, file$12, 939, 20, 47009);
 			attr_dev(div0, "class", "content");
-			add_location(div0, file$12, 927, 16, 46203);
+			add_location(div0, file$12, 928, 16, 46197);
 			attr_dev(button2, "class", "button is-link");
-			add_location(button2, file$12, 943, 20, 47232);
+			add_location(button2, file$12, 944, 20, 47226);
 			attr_dev(button3, "class", "button is-link");
-			add_location(button3, file$12, 944, 20, 47356);
+			add_location(button3, file$12, 945, 20, 47350);
 			attr_dev(button4, "class", "button is-warning");
-			add_location(button4, file$12, 945, 20, 47487);
+			add_location(button4, file$12, 946, 20, 47481);
 			attr_dev(button5, "class", "button is-danger");
-			add_location(button5, file$12, 946, 20, 47587);
+			add_location(button5, file$12, 947, 20, 47581);
 			attr_dev(button6, "class", "button is-link");
-			add_location(button6, file$12, 947, 20, 47684);
+			add_location(button6, file$12, 948, 20, 47678);
 			attr_dev(button7, "class", "button is-warning");
-			add_location(button7, file$12, 948, 20, 47813);
+			add_location(button7, file$12, 949, 20, 47807);
 			attr_dev(div1, "class", "content");
-			add_location(div1, file$12, 942, 16, 47189);
+			add_location(div1, file$12, 943, 16, 47183);
 			attr_dev(button8, "class", "button is-link");
-			add_location(button8, file$12, 962, 24, 48774);
+			add_location(button8, file$12, 963, 24, 48768);
 			set_style(div2, "margin", "1em 0");
-			add_location(div2, file$12, 955, 20, 48159);
+			add_location(div2, file$12, 956, 20, 48153);
 			attr_dev(button9, "class", "button is-link");
-			add_location(button9, file$12, 967, 24, 49133);
+			add_location(button9, file$12, 968, 24, 49127);
 			attr_dev(button10, "class", "button is-link");
-			add_location(button10, file$12, 971, 24, 49356);
+			add_location(button10, file$12, 972, 24, 49350);
 			attr_dev(button11, "class", "button is-link");
-			add_location(button11, file$12, 972, 24, 49499);
+			add_location(button11, file$12, 973, 24, 49493);
 			attr_dev(button12, "class", "button is-danger");
-			add_location(button12, file$12, 973, 24, 49626);
+			add_location(button12, file$12, 974, 24, 49620);
 			set_style(div3, "display", "flex");
 			set_style(div3, "align-items", "center");
-			add_location(div3, file$12, 965, 20, 48952);
+			add_location(div3, file$12, 966, 20, 48946);
 			attr_dev(div4, "class", "content animated fadeIn hide svelte-145klz8");
 			toggle_class(div4, "active", /*toggleFindPeaksRow*/ ctx[27]);
-			add_location(div4, file$12, 953, 16, 48059);
+			add_location(div4, file$12, 954, 16, 48053);
 			attr_dev(div5, "class", "svelte-145klz8");
-			add_location(div5, file$12, 924, 12, 46113);
+			add_location(div5, file$12, 925, 12, 46107);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div5, anchor);
@@ -50380,14 +50415,14 @@ function create_if_block$n(ctx) {
 		block,
 		id: create_if_block$n.name,
 		type: "if",
-		source: "(924:8) {#if graphPlotted}",
+		source: "(925:8) {#if graphPlotted}",
 		ctx
 	});
 
 	return block;
 }
 
-// (967:24) <Icon class="material-icons" on:click="{()=> modalActivate = true}">
+// (968:24) <Icon class="material-icons" on:click="{()=> modalActivate = true}">
 function create_default_slot_1$d(ctx) {
 	let t;
 
@@ -50407,14 +50442,14 @@ function create_default_slot_1$d(ctx) {
 		block,
 		id: create_default_slot_1$d.name,
 		type: "slot",
-		source: "(967:24) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=> modalActivate = true}\\\">",
+		source: "(968:24) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=> modalActivate = true}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (894:4) <div class="plotSlot" slot="plotContainer">
+// (896:4) <div class="plotSlot" slot="plotContainer">
 function create_plotContainer_slot(ctx) {
 	let div0;
 	let div2;
@@ -50504,45 +50539,45 @@ function create_plotContainer_slot(ctx) {
 			t14 = space();
 			if (if_block1) if_block1.c();
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$12, 898, 16, 44645);
+			add_location(button0, file$12, 900, 16, 44649);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$12, 900, 16, 44886);
+			add_location(button1, file$12, 902, 16, 44890);
 			attr_dev(button2, "class", "button is-link");
-			add_location(button2, file$12, 901, 16, 45014);
+			add_location(button2, file$12, 903, 16, 45018);
 			set_style(div1, "display", "flex");
-			add_location(div1, file$12, 897, 11, 44600);
+			add_location(div1, file$12, 899, 11, 44604);
 			attr_dev(div2, "class", " svelte-145klz8");
-			add_location(div2, file$12, 896, 8, 44572);
+			add_location(div2, file$12, 898, 8, 44576);
 			attr_dev(div3, "class", "animated fadeIn svelte-145klz8");
 			attr_dev(div3, "id", "exp-theory-plot");
 			toggle_class(div3, "hide", !/*show_theoryplot*/ ctx[8]);
-			add_location(div3, file$12, 912, 12, 45581);
+			add_location(div3, file$12, 915, 12, 45587);
 			attr_dev(div4, "id", "bplot");
 			attr_dev(div4, "class", "svelte-145klz8");
-			add_location(div4, file$12, 913, 12, 45681);
+			add_location(div4, file$12, 916, 12, 45687);
 			attr_dev(div5, "id", "saPlot");
 			attr_dev(div5, "class", "svelte-145klz8");
-			add_location(div5, file$12, 914, 12, 45717);
+			add_location(div5, file$12, 917, 12, 45723);
 			attr_dev(div6, "id", "avgplot");
 			attr_dev(div6, "class", "svelte-145klz8");
-			add_location(div6, file$12, 915, 12, 45754);
+			add_location(div6, file$12, 918, 12, 45760);
 			attr_dev(div7, "class", "animated fadeIn svelte-145klz8");
 			attr_dev(div7, "id", "opoplot");
 			toggle_class(div7, "hide", !/*opoExpFit*/ ctx[33]);
-			add_location(div7, file$12, 916, 12, 45792);
+			add_location(div7, file$12, 919, 12, 45798);
 			attr_dev(div8, "class", "animated fadeIn svelte-145klz8");
 			attr_dev(div8, "id", "opoSA");
 			toggle_class(div8, "hide", !/*opoExpFit*/ ctx[33]);
-			add_location(div8, file$12, 917, 12, 45878);
+			add_location(div8, file$12, 920, 12, 45884);
 			attr_dev(div9, "class", "animated fadeIn svelte-145klz8");
 			attr_dev(div9, "id", "opoRelPlot");
 			toggle_class(div9, "hide", !/*opoExpFit*/ ctx[33]);
-			add_location(div9, file$12, 919, 12, 45964);
+			add_location(div9, file$12, 921, 12, 45968);
 			attr_dev(div10, "class", "felixPlot svelte-145klz8");
-			add_location(div10, file$12, 911, 8, 45544);
+			add_location(div10, file$12, 913, 8, 45548);
 			attr_dev(div0, "class", "plotSlot svelte-145klz8");
 			attr_dev(div0, "slot", "plotContainer");
-			add_location(div0, file$12, 893, 4, 44475);
+			add_location(div0, file$12, 895, 4, 44479);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -50686,14 +50721,14 @@ function create_plotContainer_slot(ctx) {
 		block,
 		id: create_plotContainer_slot.name,
 		type: "slot",
-		source: "(894:4) <div class=\\\"plotSlot\\\" slot=\\\"plotContainer\\\">",
+		source: "(896:4) <div class=\\\"plotSlot\\\" slot=\\\"plotContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (853:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>
+// (855:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>
 function create_default_slot$r(ctx) {
 	let t;
 
@@ -50716,7 +50751,7 @@ function create_default_slot$r(ctx) {
 		block,
 		id: create_default_slot$r.name,
 		type: "slot",
-		source: "(853:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>",
+		source: "(855:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>",
 		ctx
 	});
 
@@ -59376,7 +59411,7 @@ function create_fragment$1f(ctx) {
 			create_component(footer.$$.fragment);
 			attr_dev(div, "class", "pageContainer");
 			set_style(div, "overflow", "hidden");
-			add_location(div, file$18, 60, 0, 1892);
+			add_location(div, file$18, 64, 0, 1973);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -59484,6 +59519,17 @@ function instance$1f($$self, $$props, $$invalidate) {
 		"Settings"
 	];
 
+	const components = {
+		Home,
+		Normline,
+		Masspec,
+		Timescan,
+		THz,
+		Powerfile,
+		Misc,
+		Settings
+	};
+
 	window.electron = require("electron");
 	window.remote = electron.remote;
 	window.path = require("path");
@@ -59534,6 +59580,7 @@ function instance$1f($$self, $$props, $$invalidate) {
 
 	$$self.$capture_state = () => ({
 		Navbar,
+		activePage,
 		Footer,
 		Layout,
 		LineAnimate,
@@ -59549,6 +59596,7 @@ function instance$1f($$self, $$props, $$invalidate) {
 		onMount,
 		afterUpdate,
 		navItems,
+		components,
 		version,
 		menu,
 		rightClickPosition
@@ -59698,8 +59746,8 @@ var compiler = createCommonjsModule(function (module, exports) {
 	// are only applied when a character is found to actually have a
 	// code point above 128.
 	// Generated by `bin/generate-identifier-regex.js`.
-	var nonASCIIidentifierStartChars = "\xaa\xb5\xba\xc0-\xd6\xd8-\xf6\xf8-\u02c1\u02c6-\u02d1\u02e0-\u02e4\u02ec\u02ee\u0370-\u0374\u0376\u0377\u037a-\u037d\u037f\u0386\u0388-\u038a\u038c\u038e-\u03a1\u03a3-\u03f5\u03f7-\u0481\u048a-\u052f\u0531-\u0556\u0559\u0560-\u0588\u05d0-\u05ea\u05ef-\u05f2\u0620-\u064a\u066e\u066f\u0671-\u06d3\u06d5\u06e5\u06e6\u06ee\u06ef\u06fa-\u06fc\u06ff\u0710\u0712-\u072f\u074d-\u07a5\u07b1\u07ca-\u07ea\u07f4\u07f5\u07fa\u0800-\u0815\u081a\u0824\u0828\u0840-\u0858\u0860-\u086a\u08a0-\u08b4\u08b6-\u08bd\u0904-\u0939\u093d\u0950\u0958-\u0961\u0971-\u0980\u0985-\u098c\u098f\u0990\u0993-\u09a8\u09aa-\u09b0\u09b2\u09b6-\u09b9\u09bd\u09ce\u09dc\u09dd\u09df-\u09e1\u09f0\u09f1\u09fc\u0a05-\u0a0a\u0a0f\u0a10\u0a13-\u0a28\u0a2a-\u0a30\u0a32\u0a33\u0a35\u0a36\u0a38\u0a39\u0a59-\u0a5c\u0a5e\u0a72-\u0a74\u0a85-\u0a8d\u0a8f-\u0a91\u0a93-\u0aa8\u0aaa-\u0ab0\u0ab2\u0ab3\u0ab5-\u0ab9\u0abd\u0ad0\u0ae0\u0ae1\u0af9\u0b05-\u0b0c\u0b0f\u0b10\u0b13-\u0b28\u0b2a-\u0b30\u0b32\u0b33\u0b35-\u0b39\u0b3d\u0b5c\u0b5d\u0b5f-\u0b61\u0b71\u0b83\u0b85-\u0b8a\u0b8e-\u0b90\u0b92-\u0b95\u0b99\u0b9a\u0b9c\u0b9e\u0b9f\u0ba3\u0ba4\u0ba8-\u0baa\u0bae-\u0bb9\u0bd0\u0c05-\u0c0c\u0c0e-\u0c10\u0c12-\u0c28\u0c2a-\u0c39\u0c3d\u0c58-\u0c5a\u0c60\u0c61\u0c80\u0c85-\u0c8c\u0c8e-\u0c90\u0c92-\u0ca8\u0caa-\u0cb3\u0cb5-\u0cb9\u0cbd\u0cde\u0ce0\u0ce1\u0cf1\u0cf2\u0d05-\u0d0c\u0d0e-\u0d10\u0d12-\u0d3a\u0d3d\u0d4e\u0d54-\u0d56\u0d5f-\u0d61\u0d7a-\u0d7f\u0d85-\u0d96\u0d9a-\u0db1\u0db3-\u0dbb\u0dbd\u0dc0-\u0dc6\u0e01-\u0e30\u0e32\u0e33\u0e40-\u0e46\u0e81\u0e82\u0e84\u0e86-\u0e8a\u0e8c-\u0ea3\u0ea5\u0ea7-\u0eb0\u0eb2\u0eb3\u0ebd\u0ec0-\u0ec4\u0ec6\u0edc-\u0edf\u0f00\u0f40-\u0f47\u0f49-\u0f6c\u0f88-\u0f8c\u1000-\u102a\u103f\u1050-\u1055\u105a-\u105d\u1061\u1065\u1066\u106e-\u1070\u1075-\u1081\u108e\u10a0-\u10c5\u10c7\u10cd\u10d0-\u10fa\u10fc-\u1248\u124a-\u124d\u1250-\u1256\u1258\u125a-\u125d\u1260-\u1288\u128a-\u128d\u1290-\u12b0\u12b2-\u12b5\u12b8-\u12be\u12c0\u12c2-\u12c5\u12c8-\u12d6\u12d8-\u1310\u1312-\u1315\u1318-\u135a\u1380-\u138f\u13a0-\u13f5\u13f8-\u13fd\u1401-\u166c\u166f-\u167f\u1681-\u169a\u16a0-\u16ea\u16ee-\u16f8\u1700-\u170c\u170e-\u1711\u1720-\u1731\u1740-\u1751\u1760-\u176c\u176e-\u1770\u1780-\u17b3\u17d7\u17dc\u1820-\u1878\u1880-\u18a8\u18aa\u18b0-\u18f5\u1900-\u191e\u1950-\u196d\u1970-\u1974\u1980-\u19ab\u19b0-\u19c9\u1a00-\u1a16\u1a20-\u1a54\u1aa7\u1b05-\u1b33\u1b45-\u1b4b\u1b83-\u1ba0\u1bae\u1baf\u1bba-\u1be5\u1c00-\u1c23\u1c4d-\u1c4f\u1c5a-\u1c7d\u1c80-\u1c88\u1c90-\u1cba\u1cbd-\u1cbf\u1ce9-\u1cec\u1cee-\u1cf3\u1cf5\u1cf6\u1cfa\u1d00-\u1dbf\u1e00-\u1f15\u1f18-\u1f1d\u1f20-\u1f45\u1f48-\u1f4d\u1f50-\u1f57\u1f59\u1f5b\u1f5d\u1f5f-\u1f7d\u1f80-\u1fb4\u1fb6-\u1fbc\u1fbe\u1fc2-\u1fc4\u1fc6-\u1fcc\u1fd0-\u1fd3\u1fd6-\u1fdb\u1fe0-\u1fec\u1ff2-\u1ff4\u1ff6-\u1ffc\u2071\u207f\u2090-\u209c\u2102\u2107\u210a-\u2113\u2115\u2118-\u211d\u2124\u2126\u2128\u212a-\u2139\u213c-\u213f\u2145-\u2149\u214e\u2160-\u2188\u2c00-\u2c2e\u2c30-\u2c5e\u2c60-\u2ce4\u2ceb-\u2cee\u2cf2\u2cf3\u2d00-\u2d25\u2d27\u2d2d\u2d30-\u2d67\u2d6f\u2d80-\u2d96\u2da0-\u2da6\u2da8-\u2dae\u2db0-\u2db6\u2db8-\u2dbe\u2dc0-\u2dc6\u2dc8-\u2dce\u2dd0-\u2dd6\u2dd8-\u2dde\u3005-\u3007\u3021-\u3029\u3031-\u3035\u3038-\u303c\u3041-\u3096\u309b-\u309f\u30a1-\u30fa\u30fc-\u30ff\u3105-\u312f\u3131-\u318e\u31a0-\u31ba\u31f0-\u31ff\u3400-\u4db5\u4e00-\u9fef\ua000-\ua48c\ua4d0-\ua4fd\ua500-\ua60c\ua610-\ua61f\ua62a\ua62b\ua640-\ua66e\ua67f-\ua69d\ua6a0-\ua6ef\ua717-\ua71f\ua722-\ua788\ua78b-\ua7bf\ua7c2-\ua7c6\ua7f7-\ua801\ua803-\ua805\ua807-\ua80a\ua80c-\ua822\ua840-\ua873\ua882-\ua8b3\ua8f2-\ua8f7\ua8fb\ua8fd\ua8fe\ua90a-\ua925\ua930-\ua946\ua960-\ua97c\ua984-\ua9b2\ua9cf\ua9e0-\ua9e4\ua9e6-\ua9ef\ua9fa-\ua9fe\uaa00-\uaa28\uaa40-\uaa42\uaa44-\uaa4b\uaa60-\uaa76\uaa7a\uaa7e-\uaaaf\uaab1\uaab5\uaab6\uaab9-\uaabd\uaac0\uaac2\uaadb-\uaadd\uaae0-\uaaea\uaaf2-\uaaf4\uab01-\uab06\uab09-\uab0e\uab11-\uab16\uab20-\uab26\uab28-\uab2e\uab30-\uab5a\uab5c-\uab67\uab70-\uabe2\uac00-\ud7a3\ud7b0-\ud7c6\ud7cb-\ud7fb\uf900-\ufa6d\ufa70-\ufad9\ufb00-\ufb06\ufb13-\ufb17\ufb1d\ufb1f-\ufb28\ufb2a-\ufb36\ufb38-\ufb3c\ufb3e\ufb40\ufb41\ufb43\ufb44\ufb46-\ufbb1\ufbd3-\ufd3d\ufd50-\ufd8f\ufd92-\ufdc7\ufdf0-\ufdfb\ufe70-\ufe74\ufe76-\ufefc\uff21-\uff3a\uff41-\uff5a\uff66-\uffbe\uffc2-\uffc7\uffca-\uffcf\uffd2-\uffd7\uffda-\uffdc";
-	var nonASCIIidentifierChars = "\u200c\u200d\xb7\u0300-\u036f\u0387\u0483-\u0487\u0591-\u05bd\u05bf\u05c1\u05c2\u05c4\u05c5\u05c7\u0610-\u061a\u064b-\u0669\u0670\u06d6-\u06dc\u06df-\u06e4\u06e7\u06e8\u06ea-\u06ed\u06f0-\u06f9\u0711\u0730-\u074a\u07a6-\u07b0\u07c0-\u07c9\u07eb-\u07f3\u07fd\u0816-\u0819\u081b-\u0823\u0825-\u0827\u0829-\u082d\u0859-\u085b\u08d3-\u08e1\u08e3-\u0903\u093a-\u093c\u093e-\u094f\u0951-\u0957\u0962\u0963\u0966-\u096f\u0981-\u0983\u09bc\u09be-\u09c4\u09c7\u09c8\u09cb-\u09cd\u09d7\u09e2\u09e3\u09e6-\u09ef\u09fe\u0a01-\u0a03\u0a3c\u0a3e-\u0a42\u0a47\u0a48\u0a4b-\u0a4d\u0a51\u0a66-\u0a71\u0a75\u0a81-\u0a83\u0abc\u0abe-\u0ac5\u0ac7-\u0ac9\u0acb-\u0acd\u0ae2\u0ae3\u0ae6-\u0aef\u0afa-\u0aff\u0b01-\u0b03\u0b3c\u0b3e-\u0b44\u0b47\u0b48\u0b4b-\u0b4d\u0b56\u0b57\u0b62\u0b63\u0b66-\u0b6f\u0b82\u0bbe-\u0bc2\u0bc6-\u0bc8\u0bca-\u0bcd\u0bd7\u0be6-\u0bef\u0c00-\u0c04\u0c3e-\u0c44\u0c46-\u0c48\u0c4a-\u0c4d\u0c55\u0c56\u0c62\u0c63\u0c66-\u0c6f\u0c81-\u0c83\u0cbc\u0cbe-\u0cc4\u0cc6-\u0cc8\u0cca-\u0ccd\u0cd5\u0cd6\u0ce2\u0ce3\u0ce6-\u0cef\u0d00-\u0d03\u0d3b\u0d3c\u0d3e-\u0d44\u0d46-\u0d48\u0d4a-\u0d4d\u0d57\u0d62\u0d63\u0d66-\u0d6f\u0d82\u0d83\u0dca\u0dcf-\u0dd4\u0dd6\u0dd8-\u0ddf\u0de6-\u0def\u0df2\u0df3\u0e31\u0e34-\u0e3a\u0e47-\u0e4e\u0e50-\u0e59\u0eb1\u0eb4-\u0ebc\u0ec8-\u0ecd\u0ed0-\u0ed9\u0f18\u0f19\u0f20-\u0f29\u0f35\u0f37\u0f39\u0f3e\u0f3f\u0f71-\u0f84\u0f86\u0f87\u0f8d-\u0f97\u0f99-\u0fbc\u0fc6\u102b-\u103e\u1040-\u1049\u1056-\u1059\u105e-\u1060\u1062-\u1064\u1067-\u106d\u1071-\u1074\u1082-\u108d\u108f-\u109d\u135d-\u135f\u1369-\u1371\u1712-\u1714\u1732-\u1734\u1752\u1753\u1772\u1773\u17b4-\u17d3\u17dd\u17e0-\u17e9\u180b-\u180d\u1810-\u1819\u18a9\u1920-\u192b\u1930-\u193b\u1946-\u194f\u19d0-\u19da\u1a17-\u1a1b\u1a55-\u1a5e\u1a60-\u1a7c\u1a7f-\u1a89\u1a90-\u1a99\u1ab0-\u1abd\u1b00-\u1b04\u1b34-\u1b44\u1b50-\u1b59\u1b6b-\u1b73\u1b80-\u1b82\u1ba1-\u1bad\u1bb0-\u1bb9\u1be6-\u1bf3\u1c24-\u1c37\u1c40-\u1c49\u1c50-\u1c59\u1cd0-\u1cd2\u1cd4-\u1ce8\u1ced\u1cf4\u1cf7-\u1cf9\u1dc0-\u1df9\u1dfb-\u1dff\u203f\u2040\u2054\u20d0-\u20dc\u20e1\u20e5-\u20f0\u2cef-\u2cf1\u2d7f\u2de0-\u2dff\u302a-\u302f\u3099\u309a\ua620-\ua629\ua66f\ua674-\ua67d\ua69e\ua69f\ua6f0\ua6f1\ua802\ua806\ua80b\ua823-\ua827\ua880\ua881\ua8b4-\ua8c5\ua8d0-\ua8d9\ua8e0-\ua8f1\ua8ff-\ua909\ua926-\ua92d\ua947-\ua953\ua980-\ua983\ua9b3-\ua9c0\ua9d0-\ua9d9\ua9e5\ua9f0-\ua9f9\uaa29-\uaa36\uaa43\uaa4c\uaa4d\uaa50-\uaa59\uaa7b-\uaa7d\uaab0\uaab2-\uaab4\uaab7\uaab8\uaabe\uaabf\uaac1\uaaeb-\uaaef\uaaf5\uaaf6\uabe3-\uabea\uabec\uabed\uabf0-\uabf9\ufb1e\ufe00-\ufe0f\ufe20-\ufe2f\ufe33\ufe34\ufe4d-\ufe4f\uff10-\uff19\uff3f";
+	var nonASCIIidentifierStartChars = "\xaa\xb5\xba\xc0-\xd6\xd8-\xf6\xf8-\u02c1\u02c6-\u02d1\u02e0-\u02e4\u02ec\u02ee\u0370-\u0374\u0376\u0377\u037a-\u037d\u037f\u0386\u0388-\u038a\u038c\u038e-\u03a1\u03a3-\u03f5\u03f7-\u0481\u048a-\u052f\u0531-\u0556\u0559\u0560-\u0588\u05d0-\u05ea\u05ef-\u05f2\u0620-\u064a\u066e\u066f\u0671-\u06d3\u06d5\u06e5\u06e6\u06ee\u06ef\u06fa-\u06fc\u06ff\u0710\u0712-\u072f\u074d-\u07a5\u07b1\u07ca-\u07ea\u07f4\u07f5\u07fa\u0800-\u0815\u081a\u0824\u0828\u0840-\u0858\u0860-\u086a\u08a0-\u08b4\u08b6-\u08c7\u0904-\u0939\u093d\u0950\u0958-\u0961\u0971-\u0980\u0985-\u098c\u098f\u0990\u0993-\u09a8\u09aa-\u09b0\u09b2\u09b6-\u09b9\u09bd\u09ce\u09dc\u09dd\u09df-\u09e1\u09f0\u09f1\u09fc\u0a05-\u0a0a\u0a0f\u0a10\u0a13-\u0a28\u0a2a-\u0a30\u0a32\u0a33\u0a35\u0a36\u0a38\u0a39\u0a59-\u0a5c\u0a5e\u0a72-\u0a74\u0a85-\u0a8d\u0a8f-\u0a91\u0a93-\u0aa8\u0aaa-\u0ab0\u0ab2\u0ab3\u0ab5-\u0ab9\u0abd\u0ad0\u0ae0\u0ae1\u0af9\u0b05-\u0b0c\u0b0f\u0b10\u0b13-\u0b28\u0b2a-\u0b30\u0b32\u0b33\u0b35-\u0b39\u0b3d\u0b5c\u0b5d\u0b5f-\u0b61\u0b71\u0b83\u0b85-\u0b8a\u0b8e-\u0b90\u0b92-\u0b95\u0b99\u0b9a\u0b9c\u0b9e\u0b9f\u0ba3\u0ba4\u0ba8-\u0baa\u0bae-\u0bb9\u0bd0\u0c05-\u0c0c\u0c0e-\u0c10\u0c12-\u0c28\u0c2a-\u0c39\u0c3d\u0c58-\u0c5a\u0c60\u0c61\u0c80\u0c85-\u0c8c\u0c8e-\u0c90\u0c92-\u0ca8\u0caa-\u0cb3\u0cb5-\u0cb9\u0cbd\u0cde\u0ce0\u0ce1\u0cf1\u0cf2\u0d04-\u0d0c\u0d0e-\u0d10\u0d12-\u0d3a\u0d3d\u0d4e\u0d54-\u0d56\u0d5f-\u0d61\u0d7a-\u0d7f\u0d85-\u0d96\u0d9a-\u0db1\u0db3-\u0dbb\u0dbd\u0dc0-\u0dc6\u0e01-\u0e30\u0e32\u0e33\u0e40-\u0e46\u0e81\u0e82\u0e84\u0e86-\u0e8a\u0e8c-\u0ea3\u0ea5\u0ea7-\u0eb0\u0eb2\u0eb3\u0ebd\u0ec0-\u0ec4\u0ec6\u0edc-\u0edf\u0f00\u0f40-\u0f47\u0f49-\u0f6c\u0f88-\u0f8c\u1000-\u102a\u103f\u1050-\u1055\u105a-\u105d\u1061\u1065\u1066\u106e-\u1070\u1075-\u1081\u108e\u10a0-\u10c5\u10c7\u10cd\u10d0-\u10fa\u10fc-\u1248\u124a-\u124d\u1250-\u1256\u1258\u125a-\u125d\u1260-\u1288\u128a-\u128d\u1290-\u12b0\u12b2-\u12b5\u12b8-\u12be\u12c0\u12c2-\u12c5\u12c8-\u12d6\u12d8-\u1310\u1312-\u1315\u1318-\u135a\u1380-\u138f\u13a0-\u13f5\u13f8-\u13fd\u1401-\u166c\u166f-\u167f\u1681-\u169a\u16a0-\u16ea\u16ee-\u16f8\u1700-\u170c\u170e-\u1711\u1720-\u1731\u1740-\u1751\u1760-\u176c\u176e-\u1770\u1780-\u17b3\u17d7\u17dc\u1820-\u1878\u1880-\u18a8\u18aa\u18b0-\u18f5\u1900-\u191e\u1950-\u196d\u1970-\u1974\u1980-\u19ab\u19b0-\u19c9\u1a00-\u1a16\u1a20-\u1a54\u1aa7\u1b05-\u1b33\u1b45-\u1b4b\u1b83-\u1ba0\u1bae\u1baf\u1bba-\u1be5\u1c00-\u1c23\u1c4d-\u1c4f\u1c5a-\u1c7d\u1c80-\u1c88\u1c90-\u1cba\u1cbd-\u1cbf\u1ce9-\u1cec\u1cee-\u1cf3\u1cf5\u1cf6\u1cfa\u1d00-\u1dbf\u1e00-\u1f15\u1f18-\u1f1d\u1f20-\u1f45\u1f48-\u1f4d\u1f50-\u1f57\u1f59\u1f5b\u1f5d\u1f5f-\u1f7d\u1f80-\u1fb4\u1fb6-\u1fbc\u1fbe\u1fc2-\u1fc4\u1fc6-\u1fcc\u1fd0-\u1fd3\u1fd6-\u1fdb\u1fe0-\u1fec\u1ff2-\u1ff4\u1ff6-\u1ffc\u2071\u207f\u2090-\u209c\u2102\u2107\u210a-\u2113\u2115\u2118-\u211d\u2124\u2126\u2128\u212a-\u2139\u213c-\u213f\u2145-\u2149\u214e\u2160-\u2188\u2c00-\u2c2e\u2c30-\u2c5e\u2c60-\u2ce4\u2ceb-\u2cee\u2cf2\u2cf3\u2d00-\u2d25\u2d27\u2d2d\u2d30-\u2d67\u2d6f\u2d80-\u2d96\u2da0-\u2da6\u2da8-\u2dae\u2db0-\u2db6\u2db8-\u2dbe\u2dc0-\u2dc6\u2dc8-\u2dce\u2dd0-\u2dd6\u2dd8-\u2dde\u3005-\u3007\u3021-\u3029\u3031-\u3035\u3038-\u303c\u3041-\u3096\u309b-\u309f\u30a1-\u30fa\u30fc-\u30ff\u3105-\u312f\u3131-\u318e\u31a0-\u31bf\u31f0-\u31ff\u3400-\u4dbf\u4e00-\u9ffc\ua000-\ua48c\ua4d0-\ua4fd\ua500-\ua60c\ua610-\ua61f\ua62a\ua62b\ua640-\ua66e\ua67f-\ua69d\ua6a0-\ua6ef\ua717-\ua71f\ua722-\ua788\ua78b-\ua7bf\ua7c2-\ua7ca\ua7f5-\ua801\ua803-\ua805\ua807-\ua80a\ua80c-\ua822\ua840-\ua873\ua882-\ua8b3\ua8f2-\ua8f7\ua8fb\ua8fd\ua8fe\ua90a-\ua925\ua930-\ua946\ua960-\ua97c\ua984-\ua9b2\ua9cf\ua9e0-\ua9e4\ua9e6-\ua9ef\ua9fa-\ua9fe\uaa00-\uaa28\uaa40-\uaa42\uaa44-\uaa4b\uaa60-\uaa76\uaa7a\uaa7e-\uaaaf\uaab1\uaab5\uaab6\uaab9-\uaabd\uaac0\uaac2\uaadb-\uaadd\uaae0-\uaaea\uaaf2-\uaaf4\uab01-\uab06\uab09-\uab0e\uab11-\uab16\uab20-\uab26\uab28-\uab2e\uab30-\uab5a\uab5c-\uab69\uab70-\uabe2\uac00-\ud7a3\ud7b0-\ud7c6\ud7cb-\ud7fb\uf900-\ufa6d\ufa70-\ufad9\ufb00-\ufb06\ufb13-\ufb17\ufb1d\ufb1f-\ufb28\ufb2a-\ufb36\ufb38-\ufb3c\ufb3e\ufb40\ufb41\ufb43\ufb44\ufb46-\ufbb1\ufbd3-\ufd3d\ufd50-\ufd8f\ufd92-\ufdc7\ufdf0-\ufdfb\ufe70-\ufe74\ufe76-\ufefc\uff21-\uff3a\uff41-\uff5a\uff66-\uffbe\uffc2-\uffc7\uffca-\uffcf\uffd2-\uffd7\uffda-\uffdc";
+	var nonASCIIidentifierChars = "\u200c\u200d\xb7\u0300-\u036f\u0387\u0483-\u0487\u0591-\u05bd\u05bf\u05c1\u05c2\u05c4\u05c5\u05c7\u0610-\u061a\u064b-\u0669\u0670\u06d6-\u06dc\u06df-\u06e4\u06e7\u06e8\u06ea-\u06ed\u06f0-\u06f9\u0711\u0730-\u074a\u07a6-\u07b0\u07c0-\u07c9\u07eb-\u07f3\u07fd\u0816-\u0819\u081b-\u0823\u0825-\u0827\u0829-\u082d\u0859-\u085b\u08d3-\u08e1\u08e3-\u0903\u093a-\u093c\u093e-\u094f\u0951-\u0957\u0962\u0963\u0966-\u096f\u0981-\u0983\u09bc\u09be-\u09c4\u09c7\u09c8\u09cb-\u09cd\u09d7\u09e2\u09e3\u09e6-\u09ef\u09fe\u0a01-\u0a03\u0a3c\u0a3e-\u0a42\u0a47\u0a48\u0a4b-\u0a4d\u0a51\u0a66-\u0a71\u0a75\u0a81-\u0a83\u0abc\u0abe-\u0ac5\u0ac7-\u0ac9\u0acb-\u0acd\u0ae2\u0ae3\u0ae6-\u0aef\u0afa-\u0aff\u0b01-\u0b03\u0b3c\u0b3e-\u0b44\u0b47\u0b48\u0b4b-\u0b4d\u0b55-\u0b57\u0b62\u0b63\u0b66-\u0b6f\u0b82\u0bbe-\u0bc2\u0bc6-\u0bc8\u0bca-\u0bcd\u0bd7\u0be6-\u0bef\u0c00-\u0c04\u0c3e-\u0c44\u0c46-\u0c48\u0c4a-\u0c4d\u0c55\u0c56\u0c62\u0c63\u0c66-\u0c6f\u0c81-\u0c83\u0cbc\u0cbe-\u0cc4\u0cc6-\u0cc8\u0cca-\u0ccd\u0cd5\u0cd6\u0ce2\u0ce3\u0ce6-\u0cef\u0d00-\u0d03\u0d3b\u0d3c\u0d3e-\u0d44\u0d46-\u0d48\u0d4a-\u0d4d\u0d57\u0d62\u0d63\u0d66-\u0d6f\u0d81-\u0d83\u0dca\u0dcf-\u0dd4\u0dd6\u0dd8-\u0ddf\u0de6-\u0def\u0df2\u0df3\u0e31\u0e34-\u0e3a\u0e47-\u0e4e\u0e50-\u0e59\u0eb1\u0eb4-\u0ebc\u0ec8-\u0ecd\u0ed0-\u0ed9\u0f18\u0f19\u0f20-\u0f29\u0f35\u0f37\u0f39\u0f3e\u0f3f\u0f71-\u0f84\u0f86\u0f87\u0f8d-\u0f97\u0f99-\u0fbc\u0fc6\u102b-\u103e\u1040-\u1049\u1056-\u1059\u105e-\u1060\u1062-\u1064\u1067-\u106d\u1071-\u1074\u1082-\u108d\u108f-\u109d\u135d-\u135f\u1369-\u1371\u1712-\u1714\u1732-\u1734\u1752\u1753\u1772\u1773\u17b4-\u17d3\u17dd\u17e0-\u17e9\u180b-\u180d\u1810-\u1819\u18a9\u1920-\u192b\u1930-\u193b\u1946-\u194f\u19d0-\u19da\u1a17-\u1a1b\u1a55-\u1a5e\u1a60-\u1a7c\u1a7f-\u1a89\u1a90-\u1a99\u1ab0-\u1abd\u1abf\u1ac0\u1b00-\u1b04\u1b34-\u1b44\u1b50-\u1b59\u1b6b-\u1b73\u1b80-\u1b82\u1ba1-\u1bad\u1bb0-\u1bb9\u1be6-\u1bf3\u1c24-\u1c37\u1c40-\u1c49\u1c50-\u1c59\u1cd0-\u1cd2\u1cd4-\u1ce8\u1ced\u1cf4\u1cf7-\u1cf9\u1dc0-\u1df9\u1dfb-\u1dff\u203f\u2040\u2054\u20d0-\u20dc\u20e1\u20e5-\u20f0\u2cef-\u2cf1\u2d7f\u2de0-\u2dff\u302a-\u302f\u3099\u309a\ua620-\ua629\ua66f\ua674-\ua67d\ua69e\ua69f\ua6f0\ua6f1\ua802\ua806\ua80b\ua823-\ua827\ua82c\ua880\ua881\ua8b4-\ua8c5\ua8d0-\ua8d9\ua8e0-\ua8f1\ua8ff-\ua909\ua926-\ua92d\ua947-\ua953\ua980-\ua983\ua9b3-\ua9c0\ua9d0-\ua9d9\ua9e5\ua9f0-\ua9f9\uaa29-\uaa36\uaa43\uaa4c\uaa4d\uaa50-\uaa59\uaa7b-\uaa7d\uaab0\uaab2-\uaab4\uaab7\uaab8\uaabe\uaabf\uaac1\uaaeb-\uaaef\uaaf5\uaaf6\uabe3-\uabea\uabec\uabed\uabf0-\uabf9\ufb1e\ufe00-\ufe0f\ufe20-\ufe2f\ufe33\ufe34\ufe4d-\ufe4f\uff10-\uff19\uff3f";
 
 	var nonASCIIidentifierStart = new RegExp("[" + nonASCIIidentifierStartChars + "]");
 	var nonASCIIidentifier = new RegExp("[" + nonASCIIidentifierStartChars + nonASCIIidentifierChars + "]");
@@ -59713,10 +59761,10 @@ var compiler = createCommonjsModule(function (module, exports) {
 	// generated by bin/generate-identifier-regex.js
 
 	// eslint-disable-next-line comma-spacing
-	var astralIdentifierStartCodes = [0,11,2,25,2,18,2,1,2,14,3,13,35,122,70,52,268,28,4,48,48,31,14,29,6,37,11,29,3,35,5,7,2,4,43,157,19,35,5,35,5,39,9,51,157,310,10,21,11,7,153,5,3,0,2,43,2,1,4,0,3,22,11,22,10,30,66,18,2,1,11,21,11,25,71,55,7,1,65,0,16,3,2,2,2,28,43,28,4,28,36,7,2,27,28,53,11,21,11,18,14,17,111,72,56,50,14,50,14,35,477,28,11,0,9,21,155,22,13,52,76,44,33,24,27,35,30,0,12,34,4,0,13,47,15,3,22,0,2,0,36,17,2,24,85,6,2,0,2,3,2,14,2,9,8,46,39,7,3,1,3,21,2,6,2,1,2,4,4,0,19,0,13,4,159,52,19,3,21,0,33,47,21,1,2,0,185,46,42,3,37,47,21,0,60,42,14,0,72,26,230,43,117,63,32,0,161,7,3,38,17,0,2,0,29,0,11,39,8,0,22,0,12,45,20,0,35,56,264,8,2,36,18,0,50,29,113,6,2,1,2,37,22,0,26,5,2,1,2,31,15,0,328,18,270,921,103,110,18,195,2749,1070,4050,582,8634,568,8,30,114,29,19,47,17,3,32,20,6,18,689,63,129,74,6,0,67,12,65,1,2,0,29,6135,9,754,9486,286,50,2,18,3,9,395,2309,106,6,12,4,8,8,9,5991,84,2,70,2,1,3,0,3,1,3,3,2,11,2,0,2,6,2,64,2,3,3,7,2,6,2,27,2,3,2,4,2,0,4,6,2,339,3,24,2,24,2,30,2,24,2,30,2,24,2,30,2,24,2,30,2,24,2,7,2357,44,11,6,17,0,370,43,1301,196,60,67,8,0,1205,3,2,26,2,1,2,0,3,0,2,9,2,3,2,0,2,0,7,0,5,0,2,0,2,0,2,2,2,1,2,0,3,0,2,0,2,0,2,0,2,0,2,1,2,0,3,3,2,6,2,3,2,3,2,0,2,9,2,16,6,2,2,4,2,16,4421,42710,42,4148,12,221,3,5761,15,7472,3104,541];
+	var astralIdentifierStartCodes = [0,11,2,25,2,18,2,1,2,14,3,13,35,122,70,52,268,28,4,48,48,31,14,29,6,37,11,29,3,35,5,7,2,4,43,157,19,35,5,35,5,39,9,51,157,310,10,21,11,7,153,5,3,0,2,43,2,1,4,0,3,22,11,22,10,30,66,18,2,1,11,21,11,25,71,55,7,1,65,0,16,3,2,2,2,28,43,28,4,28,36,7,2,27,28,53,11,21,11,18,14,17,111,72,56,50,14,50,14,35,349,41,7,1,79,28,11,0,9,21,107,20,28,22,13,52,76,44,33,24,27,35,30,0,3,0,9,34,4,0,13,47,15,3,22,0,2,0,36,17,2,24,85,6,2,0,2,3,2,14,2,9,8,46,39,7,3,1,3,21,2,6,2,1,2,4,4,0,19,0,13,4,159,52,19,3,21,2,31,47,21,1,2,0,185,46,42,3,37,47,21,0,60,42,14,0,72,26,230,43,117,63,32,7,3,0,3,7,2,1,2,23,16,0,2,0,95,7,3,38,17,0,2,0,29,0,11,39,8,0,22,0,12,45,20,0,35,56,264,8,2,36,18,0,50,29,113,6,2,1,2,37,22,0,26,5,2,1,2,31,15,0,328,18,190,0,80,921,103,110,18,195,2749,1070,4050,582,8634,568,8,30,114,29,19,47,17,3,32,20,6,18,689,63,129,74,6,0,67,12,65,1,2,0,29,6135,9,1237,43,8,8952,286,50,2,18,3,9,395,2309,106,6,12,4,8,8,9,5991,84,2,70,2,1,3,0,3,1,3,3,2,11,2,0,2,6,2,64,2,3,3,7,2,6,2,27,2,3,2,4,2,0,4,6,2,339,3,24,2,24,2,30,2,24,2,30,2,24,2,30,2,24,2,30,2,24,2,7,2357,44,11,6,17,0,370,43,1301,196,60,67,8,0,1205,3,2,26,2,1,2,0,3,0,2,9,2,3,2,0,2,0,7,0,5,0,2,0,2,0,2,2,2,1,2,0,3,0,2,0,2,0,2,0,2,0,2,1,2,0,3,3,2,6,2,3,2,3,2,0,2,9,2,16,6,2,2,4,2,16,4421,42717,35,4148,12,221,3,5761,15,7472,3104,541,1507,4938];
 
 	// eslint-disable-next-line comma-spacing
-	var astralIdentifierCodes = [509,0,227,0,150,4,294,9,1368,2,2,1,6,3,41,2,5,0,166,1,574,3,9,9,525,10,176,2,54,14,32,9,16,3,46,10,54,9,7,2,37,13,2,9,6,1,45,0,13,2,49,13,9,3,4,9,83,11,7,0,161,11,6,9,7,3,56,1,2,6,3,1,3,2,10,0,11,1,3,6,4,4,193,17,10,9,5,0,82,19,13,9,214,6,3,8,28,1,83,16,16,9,82,12,9,9,84,14,5,9,243,14,166,9,232,6,3,6,4,0,29,9,41,6,2,3,9,0,10,10,47,15,406,7,2,7,17,9,57,21,2,13,123,5,4,0,2,1,2,6,2,0,9,9,49,4,2,1,2,4,9,9,330,3,19306,9,135,4,60,6,26,9,1014,0,2,54,8,3,19723,1,5319,4,4,5,9,7,3,6,31,3,149,2,1418,49,513,54,5,49,9,0,15,0,23,4,2,14,1361,6,2,16,3,6,2,1,2,4,262,6,10,9,419,13,1495,6,110,6,6,9,792487,239];
+	var astralIdentifierCodes = [509,0,227,0,150,4,294,9,1368,2,2,1,6,3,41,2,5,0,166,1,574,3,9,9,370,1,154,10,176,2,54,14,32,9,16,3,46,10,54,9,7,2,37,13,2,9,6,1,45,0,13,2,49,13,9,3,2,11,83,11,7,0,161,11,6,9,7,3,56,1,2,6,3,1,3,2,10,0,11,1,3,6,4,4,193,17,10,9,5,0,82,19,13,9,214,6,3,8,28,1,83,16,16,9,82,12,9,9,84,14,5,9,243,14,166,9,71,5,2,1,3,3,2,0,2,1,13,9,120,6,3,6,4,0,29,9,41,6,2,3,9,0,10,10,47,15,406,7,2,7,17,9,57,21,2,13,123,5,4,0,2,1,2,6,2,0,9,9,49,4,2,1,2,4,9,9,330,3,19306,9,135,4,60,6,26,9,1014,0,2,54,8,3,82,0,12,1,19628,1,5319,4,4,5,9,7,3,6,31,3,149,2,1418,49,513,54,5,49,9,0,15,0,23,4,2,14,1361,6,2,16,3,6,2,1,2,4,262,6,10,9,419,13,1495,6,110,6,6,9,4759,9,787719,239];
 
 	// This has a complexity linear to the value of the code. The
 	// assumption is that looking up astral identifier characters is
@@ -59831,6 +59879,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 	  colon: new TokenType(":", beforeExpr),
 	  dot: new TokenType("."),
 	  question: new TokenType("?", beforeExpr),
+	  questionDot: new TokenType("?."),
 	  arrow: new TokenType("=>", beforeExpr),
 	  template: new TokenType("template"),
 	  invalidTemplate: new TokenType("invalidTemplate"),
@@ -59869,6 +59918,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 	  star: binop("*", 10),
 	  slash: binop("/", 10),
 	  starstar: new TokenType("**", {beforeExpr: true}),
+	  coalesce: binop("??", 1),
 
 	  // Keyword token types.
 	  _break: kw("break"),
@@ -60265,7 +60315,14 @@ var compiler = createCommonjsModule(function (module, exports) {
 	    start += skipWhiteSpace.exec(this.input)[0].length;
 	    var match = literal.exec(this.input.slice(start));
 	    if (!match) { return false }
-	    if ((match[1] || match[2]) === "use strict") { return true }
+	    if ((match[1] || match[2]) === "use strict") {
+	      skipWhiteSpace.lastIndex = start + match[0].length;
+	      var spaceAfter = skipWhiteSpace.exec(this.input), end = spaceAfter.index + spaceAfter[0].length;
+	      var next = this.input.charAt(end);
+	      return next === ";" || next === "}" ||
+	        (lineBreak.test(spaceAfter[0]) &&
+	         !(/[(`.[+\-/*%<>=,?^&]/.test(next) || next === "!" && this.input.charAt(end + 1) === "="))
+	    }
 	    start += match[0].length;
 
 	    // Skip semicolon, if any.
@@ -60515,7 +60572,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 	      skipWhiteSpace.lastIndex = this.pos;
 	      var skip = skipWhiteSpace.exec(this.input);
 	      var next = this.pos + skip[0].length, nextCh = this.input.charCodeAt(next);
-	      if (nextCh === 40) // '('
+	      if (nextCh === 40 || nextCh === 46) // '(' or '.'
 	        { return this.parseExpressionStatement(node, this.parseExpression()) }
 	    }
 
@@ -60815,17 +60872,19 @@ var compiler = createCommonjsModule(function (module, exports) {
 	// strict"` declarations when `allowStrict` is true (used for
 	// function bodies).
 
-	pp$1.parseBlock = function(createNewLexicalScope, node) {
+	pp$1.parseBlock = function(createNewLexicalScope, node, exitStrict) {
 	  if ( createNewLexicalScope === void 0 ) createNewLexicalScope = true;
 	  if ( node === void 0 ) node = this.startNode();
 
 	  node.body = [];
 	  this.expect(types.braceL);
 	  if (createNewLexicalScope) { this.enterScope(0); }
-	  while (!this.eat(types.braceR)) {
+	  while (this.type !== types.braceR) {
 	    var stmt = this.parseStatement(null);
 	    node.body.push(stmt);
 	  }
+	  if (exitStrict) { this.strict = false; }
+	  this.next();
 	  if (createNewLexicalScope) { this.exitScope(); }
 	  return this.finishNode(node, "BlockStatement")
 	};
@@ -60976,7 +61035,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 	  var hadConstructor = false;
 	  classBody.body = [];
 	  this.expect(types.braceL);
-	  while (!this.eat(types.braceR)) {
+	  while (this.type !== types.braceR) {
 	    var element = this.parseClassElement(node.superClass !== null);
 	    if (element) {
 	      classBody.body.push(element);
@@ -60986,8 +61045,9 @@ var compiler = createCommonjsModule(function (module, exports) {
 	      }
 	    }
 	  }
-	  node.body = this.finishNode(classBody, "ClassBody");
 	  this.strict = oldStrict;
+	  this.next();
+	  node.body = this.finishNode(classBody, "ClassBody");
 	  return this.finishNode(node, isStatement ? "ClassDeclaration" : "ClassExpression")
 	};
 
@@ -61075,6 +61135,14 @@ var compiler = createCommonjsModule(function (module, exports) {
 	  this.next();
 	  // export * from '...'
 	  if (this.eat(types.star)) {
+	    if (this.options.ecmaVersion >= 11) {
+	      if (this.eatContextual("as")) {
+	        node.exported = this.parseIdent(true);
+	        this.checkExport(exports, node.exported.name, this.lastTokStart);
+	      } else {
+	        node.exported = null;
+	      }
+	    }
 	    this.expectContextual("from");
 	    if (this.type !== types.string) { this.unexpected(); }
 	    node.source = this.parseExprAtom();
@@ -61351,6 +61419,10 @@ var compiler = createCommonjsModule(function (module, exports) {
 	      this.toAssignable(node.expression, isBinding, refDestructuringErrors);
 	      break
 
+	    case "ChainExpression":
+	      this.raiseRecoverable(node.start, "Optional chaining cannot appear in left-hand side");
+	      break
+
 	    case "MemberExpression":
 	      if (!isBinding) { break }
 
@@ -61479,6 +61551,10 @@ var compiler = createCommonjsModule(function (module, exports) {
 	      checkClashes[expr.name] = true;
 	    }
 	    if (bindingType !== BIND_NONE && bindingType !== BIND_OUTSIDE) { this.declareName(expr.name, bindingType, expr.start); }
+	    break
+
+	  case "ChainExpression":
+	    this.raiseRecoverable(expr.start, "Optional chaining cannot appear in left-hand side");
 	    break
 
 	  case "MemberExpression":
@@ -61691,11 +61767,20 @@ var compiler = createCommonjsModule(function (module, exports) {
 	  if (prec != null && (!noIn || this.type !== types._in)) {
 	    if (prec > minPrec) {
 	      var logical = this.type === types.logicalOR || this.type === types.logicalAND;
+	      var coalesce = this.type === types.coalesce;
+	      if (coalesce) {
+	        // Handle the precedence of `tt.coalesce` as equal to the range of logical expressions.
+	        // In other words, `node.right` shouldn't contain logical expressions in order to check the mixed error.
+	        prec = types.logicalAND.binop;
+	      }
 	      var op = this.value;
 	      this.next();
 	      var startPos = this.start, startLoc = this.startLoc;
 	      var right = this.parseExprOp(this.parseMaybeUnary(null, false), startPos, startLoc, prec, noIn);
-	      var node = this.buildBinary(leftStartPos, leftStartLoc, left, right, op, logical);
+	      var node = this.buildBinary(leftStartPos, leftStartLoc, left, right, op, logical || coalesce);
+	      if ((logical && this.type === types.coalesce) || (coalesce && (this.type === types.logicalOR || this.type === types.logicalAND))) {
+	        this.raiseRecoverable(this.start, "Logical expressions and coalesce expressions cannot be mixed. Wrap either by parentheses");
+	      }
 	      return this.parseExprOp(node, leftStartPos, leftStartLoc, minPrec, noIn)
 	    }
 	  }
@@ -61767,22 +61852,42 @@ var compiler = createCommonjsModule(function (module, exports) {
 
 	pp$3.parseSubscripts = function(base, startPos, startLoc, noCalls) {
 	  var maybeAsyncArrow = this.options.ecmaVersion >= 8 && base.type === "Identifier" && base.name === "async" &&
-	      this.lastTokEnd === base.end && !this.canInsertSemicolon() && this.input.slice(base.start, base.end) === "async";
+	      this.lastTokEnd === base.end && !this.canInsertSemicolon() && base.end - base.start === 5 &&
+	      this.potentialArrowAt === base.start;
+	  var optionalChained = false;
+
 	  while (true) {
-	    var element = this.parseSubscript(base, startPos, startLoc, noCalls, maybeAsyncArrow);
-	    if (element === base || element.type === "ArrowFunctionExpression") { return element }
+	    var element = this.parseSubscript(base, startPos, startLoc, noCalls, maybeAsyncArrow, optionalChained);
+
+	    if (element.optional) { optionalChained = true; }
+	    if (element === base || element.type === "ArrowFunctionExpression") {
+	      if (optionalChained) {
+	        var chainNode = this.startNodeAt(startPos, startLoc);
+	        chainNode.expression = element;
+	        element = this.finishNode(chainNode, "ChainExpression");
+	      }
+	      return element
+	    }
+
 	    base = element;
 	  }
 	};
 
-	pp$3.parseSubscript = function(base, startPos, startLoc, noCalls, maybeAsyncArrow) {
+	pp$3.parseSubscript = function(base, startPos, startLoc, noCalls, maybeAsyncArrow, optionalChained) {
+	  var optionalSupported = this.options.ecmaVersion >= 11;
+	  var optional = optionalSupported && this.eat(types.questionDot);
+	  if (noCalls && optional) { this.raise(this.lastTokStart, "Optional chaining cannot appear in the callee of new expressions"); }
+
 	  var computed = this.eat(types.bracketL);
-	  if (computed || this.eat(types.dot)) {
+	  if (computed || (optional && this.type !== types.parenL && this.type !== types.backQuote) || this.eat(types.dot)) {
 	    var node = this.startNodeAt(startPos, startLoc);
 	    node.object = base;
 	    node.property = computed ? this.parseExpression() : this.parseIdent(this.options.allowReserved !== "never");
 	    node.computed = !!computed;
 	    if (computed) { this.expect(types.bracketR); }
+	    if (optionalSupported) {
+	      node.optional = optional;
+	    }
 	    base = this.finishNode(node, "MemberExpression");
 	  } else if (!noCalls && this.eat(types.parenL)) {
 	    var refDestructuringErrors = new DestructuringErrors, oldYieldPos = this.yieldPos, oldAwaitPos = this.awaitPos, oldAwaitIdentPos = this.awaitIdentPos;
@@ -61790,7 +61895,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 	    this.awaitPos = 0;
 	    this.awaitIdentPos = 0;
 	    var exprList = this.parseExprList(types.parenR, this.options.ecmaVersion >= 8, false, refDestructuringErrors);
-	    if (maybeAsyncArrow && !this.canInsertSemicolon() && this.eat(types.arrow)) {
+	    if (maybeAsyncArrow && !optional && !this.canInsertSemicolon() && this.eat(types.arrow)) {
 	      this.checkPatternErrors(refDestructuringErrors, false);
 	      this.checkYieldAwaitInDefaultParams();
 	      if (this.awaitIdentPos > 0)
@@ -61807,8 +61912,14 @@ var compiler = createCommonjsModule(function (module, exports) {
 	    var node$1 = this.startNodeAt(startPos, startLoc);
 	    node$1.callee = base;
 	    node$1.arguments = exprList;
+	    if (optionalSupported) {
+	      node$1.optional = optional;
+	    }
 	    base = this.finishNode(node$1, "CallExpression");
 	  } else if (this.type === types.backQuote) {
+	    if (optional || optionalChained) {
+	      this.raise(this.start, "Optional chaining cannot appear in the tag of tagged template expressions");
+	    }
 	    var node$2 = this.startNodeAt(startPos, startLoc);
 	    node$2.tag = base;
 	    node$2.quasi = this.parseTemplate({isTagged: true});
@@ -61931,10 +62042,18 @@ var compiler = createCommonjsModule(function (module, exports) {
 
 	pp$3.parseExprImport = function() {
 	  var node = this.startNode();
-	  this.next(); // skip `import`
+
+	  // Consume `import` as an identifier for `import.meta`.
+	  // Because `this.parseIdent(true)` doesn't check escape sequences, it needs the check of `this.containsEsc`.
+	  if (this.containsEsc) { this.raiseRecoverable(this.start, "Escape sequence in keyword import"); }
+	  var meta = this.parseIdent(true);
+
 	  switch (this.type) {
 	  case types.parenL:
 	    return this.parseDynamicImport(node)
+	  case types.dot:
+	    node.meta = meta;
+	    return this.parseImportMeta(node)
 	  default:
 	    this.unexpected();
 	  }
@@ -61957,6 +62076,22 @@ var compiler = createCommonjsModule(function (module, exports) {
 	  }
 
 	  return this.finishNode(node, "ImportExpression")
+	};
+
+	pp$3.parseImportMeta = function(node) {
+	  this.next(); // skip `.`
+
+	  var containsEsc = this.containsEsc;
+	  node.property = this.parseIdent(true);
+
+	  if (node.property.name !== "meta")
+	    { this.raiseRecoverable(node.property.start, "The only valid meta property for import is 'import.meta'"); }
+	  if (containsEsc)
+	    { this.raiseRecoverable(node.start, "'import.meta' must not contain escaped characters"); }
+	  if (this.options.sourceType !== "module")
+	    { this.raiseRecoverable(node.start, "Cannot use 'import.meta' outside a module"); }
+
+	  return this.finishNode(node, "MetaProperty")
 	};
 
 	pp$3.parseLiteral = function(value) {
@@ -62061,10 +62196,12 @@ var compiler = createCommonjsModule(function (module, exports) {
 	    node.meta = meta;
 	    var containsEsc = this.containsEsc;
 	    node.property = this.parseIdent(true);
-	    if (node.property.name !== "target" || containsEsc)
-	      { this.raiseRecoverable(node.property.start, "The only valid meta property for new is new.target"); }
+	    if (node.property.name !== "target")
+	      { this.raiseRecoverable(node.property.start, "The only valid meta property for new is 'new.target'"); }
+	    if (containsEsc)
+	      { this.raiseRecoverable(node.start, "'new.target' must not contain escaped characters"); }
 	    if (!this.inNonArrowFunction())
-	      { this.raiseRecoverable(node.start, "new.target can only be used in functions"); }
+	      { this.raiseRecoverable(node.start, "'new.target' can only be used in functions"); }
 	    return this.finishNode(node, "MetaProperty")
 	  }
 	  var startPos = this.start, startLoc = this.startLoc, isImport = this.type === types._import;
@@ -62213,7 +62350,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 	  } else if (!isPattern && !containsEsc &&
 	             this.options.ecmaVersion >= 5 && !prop.computed && prop.key.type === "Identifier" &&
 	             (prop.key.name === "get" || prop.key.name === "set") &&
-	             (this.type !== types.comma && this.type !== types.braceR)) {
+	             (this.type !== types.comma && this.type !== types.braceR && this.type !== types.eq)) {
 	    if (isGenerator || isAsync) { this.unexpected(); }
 	    prop.kind = prop.key.name;
 	    this.parsePropertyName(prop);
@@ -62348,16 +62485,14 @@ var compiler = createCommonjsModule(function (module, exports) {
 	    // Add the params to varDeclaredNames to ensure that an error is thrown
 	    // if a let/const declaration in the function clashes with one of the params.
 	    this.checkParams(node, !oldStrict && !useStrict && !isArrowFunction && !isMethod && this.isSimpleParamList(node.params));
-	    node.body = this.parseBlock(false);
+	    // Ensure the function name isn't a forbidden identifier in strict mode, e.g. 'eval'
+	    if (this.strict && node.id) { this.checkLVal(node.id, BIND_OUTSIDE); }
+	    node.body = this.parseBlock(false, undefined, useStrict && !oldStrict);
 	    node.expression = false;
 	    this.adaptDirectivePrologue(node.body.body);
 	    this.labels = oldLabels;
 	  }
 	  this.exitScope();
-
-	  // Ensure the function name isn't a forbidden identifier in strict mode, e.g. 'eval'
-	  if (this.strict && node.id) { this.checkLVal(node.id, BIND_OUTSIDE); }
-	  this.strict = oldStrict;
 	};
 
 	pp$3.isSimpleParamList = function(params) {
@@ -62876,49 +63011,61 @@ var compiler = createCommonjsModule(function (module, exports) {
 
 	// If u flag is given, this returns the code point at the index (it combines a surrogate pair).
 	// Otherwise, this returns the code unit of the index (can be a part of a surrogate pair).
-	RegExpValidationState.prototype.at = function at (i) {
+	RegExpValidationState.prototype.at = function at (i, forceU) {
+	    if ( forceU === void 0 ) forceU = false;
+
 	  var s = this.source;
 	  var l = s.length;
 	  if (i >= l) {
 	    return -1
 	  }
 	  var c = s.charCodeAt(i);
-	  if (!this.switchU || c <= 0xD7FF || c >= 0xE000 || i + 1 >= l) {
+	  if (!(forceU || this.switchU) || c <= 0xD7FF || c >= 0xE000 || i + 1 >= l) {
 	    return c
 	  }
 	  var next = s.charCodeAt(i + 1);
 	  return next >= 0xDC00 && next <= 0xDFFF ? (c << 10) + next - 0x35FDC00 : c
 	};
 
-	RegExpValidationState.prototype.nextIndex = function nextIndex (i) {
+	RegExpValidationState.prototype.nextIndex = function nextIndex (i, forceU) {
+	    if ( forceU === void 0 ) forceU = false;
+
 	  var s = this.source;
 	  var l = s.length;
 	  if (i >= l) {
 	    return l
 	  }
 	  var c = s.charCodeAt(i), next;
-	  if (!this.switchU || c <= 0xD7FF || c >= 0xE000 || i + 1 >= l ||
+	  if (!(forceU || this.switchU) || c <= 0xD7FF || c >= 0xE000 || i + 1 >= l ||
 	      (next = s.charCodeAt(i + 1)) < 0xDC00 || next > 0xDFFF) {
 	    return i + 1
 	  }
 	  return i + 2
 	};
 
-	RegExpValidationState.prototype.current = function current () {
-	  return this.at(this.pos)
+	RegExpValidationState.prototype.current = function current (forceU) {
+	    if ( forceU === void 0 ) forceU = false;
+
+	  return this.at(this.pos, forceU)
 	};
 
-	RegExpValidationState.prototype.lookahead = function lookahead () {
-	  return this.at(this.nextIndex(this.pos))
+	RegExpValidationState.prototype.lookahead = function lookahead (forceU) {
+	    if ( forceU === void 0 ) forceU = false;
+
+	  return this.at(this.nextIndex(this.pos, forceU), forceU)
 	};
 
-	RegExpValidationState.prototype.advance = function advance () {
-	  this.pos = this.nextIndex(this.pos);
+	RegExpValidationState.prototype.advance = function advance (forceU) {
+	    if ( forceU === void 0 ) forceU = false;
+
+	  this.pos = this.nextIndex(this.pos, forceU);
 	};
 
-	RegExpValidationState.prototype.eat = function eat (ch) {
-	  if (this.current() === ch) {
-	    this.advance();
+	RegExpValidationState.prototype.eat = function eat (ch, forceU) {
+	    if ( forceU === void 0 ) forceU = false;
+
+	  if (this.current(forceU) === ch) {
+	    this.advance(forceU);
 	    return true
 	  }
 	  return false
@@ -63257,9 +63404,9 @@ var compiler = createCommonjsModule(function (module, exports) {
 	  return false
 	};
 
-	// GroupSpecifier[U] ::
+	// GroupSpecifier ::
 	//   [empty]
-	//   `?` GroupName[?U]
+	//   `?` GroupName
 	pp$8.regexp_groupSpecifier = function(state) {
 	  if (state.eat(0x3F /* ? */)) {
 	    if (this.regexp_eatGroupName(state)) {
@@ -63273,8 +63420,8 @@ var compiler = createCommonjsModule(function (module, exports) {
 	  }
 	};
 
-	// GroupName[U] ::
-	//   `<` RegExpIdentifierName[?U] `>`
+	// GroupName ::
+	//   `<` RegExpIdentifierName `>`
 	// Note: this updates `state.lastStringValue` property with the eaten name.
 	pp$8.regexp_eatGroupName = function(state) {
 	  state.lastStringValue = "";
@@ -63287,9 +63434,9 @@ var compiler = createCommonjsModule(function (module, exports) {
 	  return false
 	};
 
-	// RegExpIdentifierName[U] ::
-	//   RegExpIdentifierStart[?U]
-	//   RegExpIdentifierName[?U] RegExpIdentifierPart[?U]
+	// RegExpIdentifierName ::
+	//   RegExpIdentifierStart
+	//   RegExpIdentifierName RegExpIdentifierPart
 	// Note: this updates `state.lastStringValue` property with the eaten name.
 	pp$8.regexp_eatRegExpIdentifierName = function(state) {
 	  state.lastStringValue = "";
@@ -63303,17 +63450,18 @@ var compiler = createCommonjsModule(function (module, exports) {
 	  return false
 	};
 
-	// RegExpIdentifierStart[U] ::
+	// RegExpIdentifierStart ::
 	//   UnicodeIDStart
 	//   `$`
 	//   `_`
-	//   `\` RegExpUnicodeEscapeSequence[?U]
+	//   `\` RegExpUnicodeEscapeSequence[+U]
 	pp$8.regexp_eatRegExpIdentifierStart = function(state) {
 	  var start = state.pos;
-	  var ch = state.current();
-	  state.advance();
+	  var forceU = this.options.ecmaVersion >= 11;
+	  var ch = state.current(forceU);
+	  state.advance(forceU);
 
-	  if (ch === 0x5C /* \ */ && this.regexp_eatRegExpUnicodeEscapeSequence(state)) {
+	  if (ch === 0x5C /* \ */ && this.regexp_eatRegExpUnicodeEscapeSequence(state, forceU)) {
 	    ch = state.lastIntValue;
 	  }
 	  if (isRegExpIdentifierStart(ch)) {
@@ -63328,19 +63476,20 @@ var compiler = createCommonjsModule(function (module, exports) {
 	  return isIdentifierStart(ch, true) || ch === 0x24 /* $ */ || ch === 0x5F /* _ */
 	}
 
-	// RegExpIdentifierPart[U] ::
+	// RegExpIdentifierPart ::
 	//   UnicodeIDContinue
 	//   `$`
 	//   `_`
-	//   `\` RegExpUnicodeEscapeSequence[?U]
+	//   `\` RegExpUnicodeEscapeSequence[+U]
 	//   <ZWNJ>
 	//   <ZWJ>
 	pp$8.regexp_eatRegExpIdentifierPart = function(state) {
 	  var start = state.pos;
-	  var ch = state.current();
-	  state.advance();
+	  var forceU = this.options.ecmaVersion >= 11;
+	  var ch = state.current(forceU);
+	  state.advance(forceU);
 
-	  if (ch === 0x5C /* \ */ && this.regexp_eatRegExpUnicodeEscapeSequence(state)) {
+	  if (ch === 0x5C /* \ */ && this.regexp_eatRegExpUnicodeEscapeSequence(state, forceU)) {
 	    ch = state.lastIntValue;
 	  }
 	  if (isRegExpIdentifierPart(ch)) {
@@ -63410,7 +63559,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 	    this.regexp_eatCControlLetter(state) ||
 	    this.regexp_eatZero(state) ||
 	    this.regexp_eatHexEscapeSequence(state) ||
-	    this.regexp_eatRegExpUnicodeEscapeSequence(state) ||
+	    this.regexp_eatRegExpUnicodeEscapeSequence(state, false) ||
 	    (!state.switchU && this.regexp_eatLegacyOctalEscapeSequence(state)) ||
 	    this.regexp_eatIdentityEscape(state)
 	  )
@@ -63483,13 +63632,16 @@ var compiler = createCommonjsModule(function (module, exports) {
 	}
 
 	// https://www.ecma-international.org/ecma-262/8.0/#prod-RegExpUnicodeEscapeSequence
-	pp$8.regexp_eatRegExpUnicodeEscapeSequence = function(state) {
+	pp$8.regexp_eatRegExpUnicodeEscapeSequence = function(state, forceU) {
+	  if ( forceU === void 0 ) forceU = false;
+
 	  var start = state.pos;
+	  var switchU = forceU || state.switchU;
 
 	  if (state.eat(0x75 /* u */)) {
 	    if (this.regexp_eatFixedHexDigits(state, 4)) {
 	      var lead = state.lastIntValue;
-	      if (state.switchU && lead >= 0xD800 && lead <= 0xDBFF) {
+	      if (switchU && lead >= 0xD800 && lead <= 0xDBFF) {
 	        var leadSurrogateEnd = state.pos;
 	        if (state.eat(0x5C /* \ */) && state.eat(0x75 /* u */) && this.regexp_eatFixedHexDigits(state, 4)) {
 	          var trail = state.lastIntValue;
@@ -63504,7 +63656,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 	      return true
 	    }
 	    if (
-	      state.switchU &&
+	      switchU &&
 	      state.eat(0x7B /* { */) &&
 	      this.regexp_eatHexDigits(state) &&
 	      state.eat(0x7D /* } */) &&
@@ -63512,7 +63664,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 	    ) {
 	      return true
 	    }
-	    if (state.switchU) {
+	    if (switchU) {
 	      state.raise("Invalid unicode escape");
 	    }
 	    state.pos = start;
@@ -64168,6 +64320,18 @@ var compiler = createCommonjsModule(function (module, exports) {
 	  return this.finishOp(code === 61 ? types.eq : types.prefix, 1)
 	};
 
+	pp$9.readToken_question = function() { // '?'
+	  if (this.options.ecmaVersion >= 11) {
+	    var next = this.input.charCodeAt(this.pos + 1);
+	    if (next === 46) {
+	      var next2 = this.input.charCodeAt(this.pos + 2);
+	      if (next2 < 48 || next2 > 57) { return this.finishOp(types.questionDot, 2) }
+	    }
+	    if (next === 63) { return this.finishOp(types.coalesce, 2) }
+	  }
+	  return this.finishOp(types.question, 1)
+	};
+
 	pp$9.getTokenFromCode = function(code) {
 	  switch (code) {
 	  // The interpretation of a dot depends on whether it is followed
@@ -64185,7 +64349,6 @@ var compiler = createCommonjsModule(function (module, exports) {
 	  case 123: ++this.pos; return this.finishToken(types.braceL)
 	  case 125: ++this.pos; return this.finishToken(types.braceR)
 	  case 58: ++this.pos; return this.finishToken(types.colon)
-	  case 63: ++this.pos; return this.finishToken(types.question)
 
 	  case 96: // '`'
 	    if (this.options.ecmaVersion < 6) { break }
@@ -64234,6 +64397,9 @@ var compiler = createCommonjsModule(function (module, exports) {
 
 	  case 61: case 33: // '=!'
 	    return this.readToken_eq_excl(code)
+
+	  case 63: // '?'
+	    return this.readToken_question()
 
 	  case 126: // '~'
 	    return this.finishOp(types.prefix, 1)
@@ -64607,7 +64773,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 
 	// Acorn is a tiny, fast JavaScript parser written in JavaScript.
 
-	var version = "7.1.0";
+	var version = "7.3.1";
 
 	Parser.acorn = {
 	  Parser: Parser,
@@ -64786,6 +64952,8 @@ var compiler = createCommonjsModule(function (module, exports) {
 	            case 'MemberExpression': return parent.computed || node === parent.object;
 	            // disregard the `foo` in `class {foo(){}}` but keep it in `class {[foo](){}}`
 	            case 'MethodDefinition': return parent.computed;
+	            // disregard the `foo` in `class {foo=bar}` but keep it in `class {[foo]=bar}` and `class {bar=foo}`
+	            case 'FieldDefinition': return parent.computed || node === parent.value;
 	            // disregard the `bar` in `{ bar: foo }`, but keep it in `{ [bar]: foo }`
 	            case 'Property': return parent.computed || node === parent.value;
 	            // disregard the `bar` in `export { foo as bar }` or
@@ -65107,8 +65275,9 @@ var compiler = createCommonjsModule(function (module, exports) {
 	}
 
 	const OPERATOR_PRECEDENCE = {
-		'||': 3,
-		'&&': 4,
+		'||': 2,
+		'&&': 3,
+		'??': 4,
 		'|': 5,
 		'^': 6,
 		'&': 7,
@@ -66258,6 +66427,10 @@ var compiler = createCommonjsModule(function (module, exports) {
 			return chunks;
 		},
 
+		ChainExpression(node, state) {
+			return handle(node.expression, state);
+		},
+
 		CallExpression(node, state) {
 			const chunks = [];
 
@@ -66272,6 +66445,10 @@ var compiler = createCommonjsModule(function (module, exports) {
 				);
 			} else {
 				chunks.push(...handle(node.callee, state));
+			}
+
+			if ((node ).optional) {
+				chunks.push(c('?.'));
 			}
 
 			const args = node.arguments.map(arg => handle(arg, state));
@@ -66315,6 +66492,9 @@ var compiler = createCommonjsModule(function (module, exports) {
 			}
 
 			if (node.computed) {
+				if (node.optional) {
+					chunks.push(c('?.'));
+				}
 				chunks.push(
 					c('['),
 					...handle(node.property, state),
@@ -66322,7 +66502,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 				);
 			} else {
 				chunks.push(
-					c('.'),
+					c(node.optional ? '?.' : '.'),
 					...handle(node.property, state)
 				);
 			}
@@ -66598,7 +66778,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 	const acorn_opts = (comments, raw) => {
 		const { onComment } = get_comment_handlers(comments, raw);
 		return {
-			ecmaVersion: 11,
+			ecmaVersion: 2020,
 			sourceType: 'module',
 			allowAwaitOutsideFunction: true,
 			allowImportExportEverywhere: true,
@@ -76454,6 +76634,35 @@ var compiler = createCommonjsModule(function (module, exports) {
 	    return str.replace(/(\${|`|\\)/g, '\\$1');
 	}
 
+	class TextWrapper extends Wrapper {
+	    constructor(renderer, block, parent, node, data) {
+	        super(renderer, block, parent, node);
+	        this.skip = this.node.should_skip();
+	        this.data = data;
+	        this.var = (this.skip ? null : x `t`);
+	    }
+	    use_space() {
+	        if (this.renderer.component.component_options.preserveWhitespace)
+	            return false;
+	        if (/[\S\u00A0]/.test(this.data))
+	            return false;
+	        let node = this.parent && this.parent.node;
+	        while (node) {
+	            if (node.type === 'Element' && node.name === 'pre') {
+	                return false;
+	            }
+	            node = node.parent;
+	        }
+	        return true;
+	    }
+	    render(block, parent_node, parent_nodes) {
+	        if (this.skip)
+	            return;
+	        const use_space = this.use_space();
+	        block.add_element(this.var, use_space ? x `@space()` : x `@text("${this.data}")`, parent_nodes && (use_space ? x `@claim_space(${parent_nodes})` : x `@claim_text(${parent_nodes}, "${this.data}")`), parent_node);
+	    }
+	}
+
 	const svg_attributes = 'accent-height accumulate additive alignment-baseline allowReorder alphabetic amplitude arabic-form ascent attributeName attributeType autoReverse azimuth baseFrequency baseline-shift baseProfile bbox begin bias by calcMode cap-height class clip clipPathUnits clip-path clip-rule color color-interpolation color-interpolation-filters color-profile color-rendering contentScriptType contentStyleType cursor cx cy d decelerate descent diffuseConstant direction display divisor dominant-baseline dur dx dy edgeMode elevation enable-background end exponent externalResourcesRequired fill fill-opacity fill-rule filter filterRes filterUnits flood-color flood-opacity font-family font-size font-size-adjust font-stretch font-style font-variant font-weight format from fr fx fy g1 g2 glyph-name glyph-orientation-horizontal glyph-orientation-vertical glyphRef gradientTransform gradientUnits hanging height href horiz-adv-x horiz-origin-x id ideographic image-rendering in in2 intercept k k1 k2 k3 k4 kernelMatrix kernelUnitLength kerning keyPoints keySplines keyTimes lang lengthAdjust letter-spacing lighting-color limitingConeAngle local marker-end marker-mid marker-start markerHeight markerUnits markerWidth mask maskContentUnits maskUnits mathematical max media method min mode name numOctaves offset onabort onactivate onbegin onclick onend onerror onfocusin onfocusout onload onmousedown onmousemove onmouseout onmouseover onmouseup onrepeat onresize onscroll onunload opacity operator order orient orientation origin overflow overline-position overline-thickness panose-1 paint-order pathLength patternContentUnits patternTransform patternUnits pointer-events points pointsAtX pointsAtY pointsAtZ preserveAlpha preserveAspectRatio primitiveUnits r radius refX refY rendering-intent repeatCount repeatDur requiredExtensions requiredFeatures restart result rotate rx ry scale seed shape-rendering slope spacing specularConstant specularExponent speed spreadMethod startOffset stdDeviation stemh stemv stitchTiles stop-color stop-opacity strikethrough-position strikethrough-thickness string stroke stroke-dasharray stroke-dashoffset stroke-linecap stroke-linejoin stroke-miterlimit stroke-opacity stroke-width style surfaceScale systemLanguage tabindex tableValues target targetX targetY text-anchor text-decoration text-rendering textLength to transform type u1 u2 underline-position underline-thickness unicode unicode-bidi unicode-range units-per-em v-alphabetic v-hanging v-ideographic v-mathematical values version vert-adv-y vert-origin-x vert-origin-y viewBox viewTarget visibility width widths word-spacing writing-mode x x-height x1 x2 xChannelSelector xlink:actuate xlink:arcrole xlink:href xlink:role xlink:show xlink:title xlink:type xml:base xml:lang xml:space y y1 y2 yChannelSelector z zoomAndPan'.split(' ');
 	const svg_attribute_lookup = new Map();
 	svg_attributes.forEach(name => {
@@ -76486,7 +76695,17 @@ var compiler = createCommonjsModule(function (module, exports) {
 	];
 	const namespaces = { html, mathml, svg, xlink, xml, xmlns };
 
-	class AttributeWrapper {
+	function handle_select_value_binding(attr, dependencies) {
+	    const { parent } = attr;
+	    if (parent.node.name === "select") {
+	        parent.select_binding_dependencies = dependencies;
+	        dependencies.forEach((prop) => {
+	            parent.renderer.component.indirect_dependencies.set(prop, new Set());
+	        });
+	    }
+	}
+
+	class BaseAttributeWrapper {
 	    constructor(parent, block, node) {
 	        this.node = node;
 	        this.parent = parent;
@@ -76494,6 +76713,14 @@ var compiler = createCommonjsModule(function (module, exports) {
 	            parent.cannot_use_innerhtml();
 	            parent.not_static_content();
 	            block.add_dependencies(node.dependencies);
+	        }
+	    }
+	    render(_block) { }
+	}
+	class AttributeWrapper extends BaseAttributeWrapper {
+	    constructor(parent, block, node) {
+	        super(parent, block, node);
+	        if (node.dependencies.size > 0) {
 	            // special case — <option value={foo}> — see below
 	            if (this.parent.node.name === 'option' && node.name === 'value') {
 	                let select = this.parent;
@@ -76508,24 +76735,24 @@ var compiler = createCommonjsModule(function (module, exports) {
 	                    });
 	                }
 	            }
+	            if (node.name === 'value') {
+	                handle_select_value_binding(this, node.dependencies);
+	            }
 	        }
-	    }
-	    is_indirectly_bound_value() {
-	        const element = this.parent;
-	        const name = fix_attribute_casing(this.node.name);
-	        return name === 'value' &&
-	            (element.node.name === 'option' || // TODO check it's actually bound
-	                (element.node.name === 'input' &&
-	                    element.node.bindings.some((binding) => /checked|group/.test(binding.name))));
+	        this.name = fix_attribute_casing(this.node.name);
+	        this.metadata = this.get_metadata();
+	        this.is_indirectly_bound_value = is_indirectly_bound_value(this);
+	        this.property_name = this.is_indirectly_bound_value
+	            ? '__value'
+	            : this.metadata && this.metadata.property_name;
+	        this.is_src = this.name === 'src'; // TODO retire this exception in favour of https://github.com/sveltejs/svelte/issues/3750
+	        this.is_select_value_attribute = this.name === 'value' && this.parent.node.name === 'select';
+	        this.is_input_value = this.name === 'value' && this.parent.node.name === 'input';
+	        this.should_cache = should_cache(this);
 	    }
 	    render(block) {
 	        const element = this.parent;
-	        const name = fix_attribute_casing(this.node.name);
-	        const metadata = this.get_metadata();
-	        const is_indirectly_bound_value = this.is_indirectly_bound_value();
-	        const property_name = is_indirectly_bound_value
-	            ? '__value'
-	            : metadata && metadata.property_name;
+	        const { name, property_name, should_cache, is_indirectly_bound_value } = this;
 	        // xlink is a special case... we could maybe extend this to generic
 	        // namespaced attributes but I'm not sure that's applicable in
 	        // HTML5?
@@ -76535,65 +76762,51 @@ var compiler = createCommonjsModule(function (module, exports) {
 	                ? '@xlink_attr'
 	                : '@attr';
 	        const is_legacy_input_type = element.renderer.component.compile_options.legacy && name === 'type' && this.parent.node.name === 'input';
-	        const dependencies = this.node.get_dependencies();
+	        const dependencies = this.get_dependencies();
 	        const value = this.get_value(block);
-	        const is_src = this.node.name === 'src'; // TODO retire this exception in favour of https://github.com/sveltejs/svelte/issues/3750
-	        const is_select_value_attribute = name === 'value' && element.node.name === 'select';
-	        const is_input_value = name === 'value' && element.node.name === 'input';
-	        const should_cache = is_src || this.node.should_cache() || is_select_value_attribute; // TODO is this necessary?
-	        const last = should_cache && block.get_unique_name(`${element.var.name}_${name.replace(/[^a-zA-Z_$]/g, '_')}_value`);
-	        if (should_cache)
-	            block.add_variable(last);
 	        let updater;
-	        const init = should_cache ? x `${last} = ${value}` : value;
+	        const init = this.get_init(block, value);
 	        if (is_legacy_input_type) {
 	            block.chunks.hydrate.push(b `@set_input_type(${element.var}, ${init});`);
-	            updater = b `@set_input_type(${element.var}, ${should_cache ? last : value});`;
+	            updater = b `@set_input_type(${element.var}, ${should_cache ? this.last : value});`;
 	        }
-	        else if (is_select_value_attribute) {
+	        else if (this.is_select_value_attribute) {
 	            // annoying special case
 	            const is_multiple_select = element.node.get_static_attribute_value('multiple');
 	            if (is_multiple_select) {
-	                updater = b `@select_options(${element.var}, ${last});`;
+	                updater = b `@select_options(${element.var}, ${value});`;
 	            }
 	            else {
-	                updater = b `@select_option(${element.var}, ${last});`;
+	                updater = b `@select_option(${element.var}, ${value});`;
 	            }
 	            block.chunks.mount.push(b `
-				${last} = ${value};
 				${updater}
 			`);
 	        }
-	        else if (is_src) {
-	            block.chunks.hydrate.push(b `if (${element.var}.src !== ${init}) ${method}(${element.var}, "${name}", ${last});`);
-	            updater = b `${method}(${element.var}, "${name}", ${should_cache ? last : value});`;
+	        else if (this.is_src) {
+	            block.chunks.hydrate.push(b `if (${element.var}.src !== ${init}) ${method}(${element.var}, "${name}", ${this.last});`);
+	            updater = b `${method}(${element.var}, "${name}", ${should_cache ? this.last : value});`;
 	        }
 	        else if (property_name) {
 	            block.chunks.hydrate.push(b `${element.var}.${property_name} = ${init};`);
 	            updater = block.renderer.options.dev
-	                ? b `@prop_dev(${element.var}, "${property_name}", ${should_cache ? last : value});`
-	                : b `${element.var}.${property_name} = ${should_cache ? last : value};`;
+	                ? b `@prop_dev(${element.var}, "${property_name}", ${should_cache ? this.last : value});`
+	                : b `${element.var}.${property_name} = ${should_cache ? this.last : value};`;
 	        }
 	        else {
 	            block.chunks.hydrate.push(b `${method}(${element.var}, "${name}", ${init});`);
-	            updater = b `${method}(${element.var}, "${name}", ${should_cache ? last : value});`;
+	            updater = b `${method}(${element.var}, "${name}", ${should_cache ? this.last : value});`;
+	        }
+	        if (is_indirectly_bound_value) {
+	            const update_value = b `${element.var}.value = ${element.var}.__value;`;
+	            block.chunks.hydrate.push(update_value);
+	            updater = b `
+				${updater}
+				${update_value};
+			`;
 	        }
 	        if (dependencies.length > 0) {
-	            let condition = block.renderer.dirty(dependencies);
-	            if (should_cache) {
-	                condition = is_src
-	                    ? x `${condition} && (${element.var}.src !== (${last} = ${value}))`
-	                    : x `${condition} && (${last} !== (${last} = ${value}))`;
-	            }
-	            if (is_input_value) {
-	                const type = element.node.get_static_attribute_value('type');
-	                if (type === null || type === "" || type === "text" || type === "email" || type === "password") {
-	                    condition = x `${condition} && ${element.var}.${property_name} !== ${should_cache ? last : value}`;
-	                }
-	            }
-	            if (block.has_outros) {
-	                condition = x `!#current || ${condition}`;
-	            }
+	            const condition = this.get_dom_update_conditions(block, block.renderer.dirty(dependencies));
 	            block.chunks.update.push(b `
 				if (${condition}) {
 					${updater}
@@ -76603,25 +76816,58 @@ var compiler = createCommonjsModule(function (module, exports) {
 	        if (this.node.is_true && name === 'autofocus') {
 	            block.autofocus = element.var;
 	        }
-	        if (is_indirectly_bound_value) {
-	            const update_value = b `${element.var}.value = ${element.var}.__value;`;
-	            block.chunks.hydrate.push(update_value);
-	            if (this.node.get_dependencies().length > 0)
-	                block.chunks.update.push(update_value);
+	    }
+	    get_init(block, value) {
+	        this.last = this.should_cache && block.get_unique_name(`${this.parent.var.name}_${this.name.replace(/[^a-zA-Z_$]/g, '_')}_value`);
+	        if (this.should_cache)
+	            block.add_variable(this.last);
+	        return this.should_cache ? x `${this.last} = ${value}` : value;
+	    }
+	    get_dom_update_conditions(block, dependency_condition) {
+	        const { property_name, should_cache, last } = this;
+	        const element = this.parent;
+	        const value = this.get_value(block);
+	        let condition = dependency_condition;
+	        if (should_cache) {
+	            condition = this.is_src
+	                ? x `${condition} && (${element.var}.src !== (${last} = ${value}))`
+	                : x `${condition} && (${last} !== (${last} = ${value}))`;
 	        }
+	        if (this.is_input_value) {
+	            const type = element.node.get_static_attribute_value('type');
+	            if (type === null || type === "" || type === "text" || type === "email" || type === "password") {
+	                condition = x `${condition} && ${element.var}.${property_name} !== ${should_cache ? last : value}`;
+	            }
+	        }
+	        if (block.has_outros) {
+	            condition = x `!#current || ${condition}`;
+	        }
+	        return condition;
+	    }
+	    get_dependencies() {
+	        const node_dependencies = this.node.get_dependencies();
+	        const dependencies = new Set(node_dependencies);
+	        node_dependencies.forEach((prop) => {
+	            const indirect_dependencies = this.parent.renderer.component.indirect_dependencies.get(prop);
+	            if (indirect_dependencies) {
+	                indirect_dependencies.forEach(indirect_dependency => {
+	                    dependencies.add(indirect_dependency);
+	                });
+	            }
+	        });
+	        return Array.from(dependencies);
 	    }
 	    get_metadata() {
 	        if (this.parent.node.namespace)
 	            return null;
-	        const metadata = attribute_lookup[fix_attribute_casing(this.node.name)];
+	        const metadata = attribute_lookup[this.name];
 	        if (metadata && metadata.applies_to && !metadata.applies_to.includes(this.parent.node.name))
 	            return null;
 	        return metadata;
 	    }
 	    get_value(block) {
 	        if (this.node.is_true) {
-	            const metadata = this.get_metadata();
-	            if (metadata && boolean_attribute.has(metadata.property_name.toLowerCase())) {
+	            if (this.metadata && boolean_attribute.has(this.metadata.property_name.toLowerCase())) {
 	                return x `true`;
 	            }
 	            return x `""`;
@@ -76759,6 +77005,16 @@ var compiler = createCommonjsModule(function (module, exports) {
 	    'reversed',
 	    'selected'
 	]);
+	function should_cache(attribute) {
+	    return attribute.is_src || attribute.node.should_cache();
+	}
+	function is_indirectly_bound_value(attribute) {
+	    const element = attribute.parent;
+	    return attribute.name === 'value' &&
+	        (element.node.name === 'option' || // TODO check it's actually bound
+	            (element.node.name === 'input' &&
+	                element.node.bindings.some((binding) => /checked|group/.test(binding.name))));
+	}
 
 	class StyleAttributeWrapper extends AttributeWrapper {
 	    render(block) {
@@ -76912,6 +77168,9 @@ var compiler = createCommonjsModule(function (module, exports) {
 	    return value.length > 1 || value[0].type !== 'Text';
 	}
 
+	class SpreadAttributeWrapper extends BaseAttributeWrapper {
+	}
+
 	function get_object(node) {
 	    while (node.type === 'MemberExpression')
 	        node = node.object;
@@ -76985,12 +77244,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 	        const { dependencies } = this.node.expression;
 	        block.add_dependencies(dependencies);
 	        // TODO does this also apply to e.g. `<input type='checkbox' bind:group='foo'>`?
-	        if (parent.node.name === 'select') {
-	            parent.select_binding_dependencies = dependencies;
-	            dependencies.forEach((prop) => {
-	                parent.renderer.component.indirect_dependencies.set(prop, new Set());
-	            });
-	        }
+	        handle_select_value_binding(this, dependencies);
 	        if (node.is_contextual) {
 	            mark_each_block_bindings(this.parent, this.node);
 	        }
@@ -77407,7 +77661,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 	    const fn = component.get_unique_name(`${variable.name}_binding`);
 	    block.renderer.add_to_context(fn.name);
 	    const callee = block.renderer.reference(fn.name);
-	    const { contextual_dependencies, mutation, lhs } = binding.handler;
+	    const { contextual_dependencies, mutation } = binding.handler;
 	    const dependencies = binding.get_dependencies();
 	    const body = b `
 		${mutation}
@@ -77423,7 +77677,6 @@ var compiler = createCommonjsModule(function (module, exports) {
 	        }));
 	        component.partly_hoisted.push(b `
 			function ${fn}($$value, ${params}) {
-				if (${lhs} === $$value) return;
 				@binding_callbacks[$$value ? 'unshift' : 'push'](() => {
 					${body}
 				});
@@ -77673,11 +77926,14 @@ var compiler = createCommonjsModule(function (module, exports) {
 	                    const { name, nodes } = flatten_reference(node);
 	                    if (scope.has(name))
 	                        return;
-	                    if (name[0] === '$' && template_scope.names.has(name.slice(1))) {
-	                        component.error(node, {
-	                            code: `contextual-store`,
-	                            message: `Stores must be declared at the top level of the component (this may change in a future version of Svelte)`
-	                        });
+	                    if (name[0] === '$') {
+	                        const store_name = name.slice(1);
+	                        if (template_scope.names.has(store_name) || scope.has(store_name)) {
+	                            component.error(node, {
+	                                code: `contextual-store`,
+	                                message: `Stores must be declared at the top level of the component (this may change in a future version of Svelte)`
+	                            });
+	                        }
 	                    }
 	                    if (template_scope.is_let(name)) {
 	                        if (!function_expression) { // TODO should this be `!lazy` ?
@@ -77709,13 +77965,10 @@ var compiler = createCommonjsModule(function (module, exports) {
 	                if (function_expression) {
 	                    if (node.type === 'AssignmentExpression') {
 	                        deep = node.left.type === 'MemberExpression';
-	                        names = deep
-	                            ? [get_object(node.left).name]
-	                            : extract_names(node.left);
+	                        names = extract_names(deep ? get_object(node.left) : node.left);
 	                    }
 	                    else if (node.type === 'UpdateExpression') {
-	                        const { name } = get_object(node.argument);
-	                        names = [name];
+	                        names = extract_names(get_object(node.argument));
 	                    }
 	                }
 	                if (names) {
@@ -77778,7 +78031,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 	                if (map.has(node)) {
 	                    scope = map.get(node);
 	                }
-	                if (isReference(node, parent)) {
+	                if (node.type === 'Identifier' && isReference(node, parent)) {
 	                    const { name } = flatten_reference(node);
 	                    if (scope.has(name))
 	                        return;
@@ -77951,6 +78204,86 @@ var compiler = createCommonjsModule(function (module, exports) {
 	    }
 	}
 
+	class Tag extends Wrapper {
+	    constructor(renderer, block, parent, node) {
+	        super(renderer, block, parent, node);
+	        this.cannot_use_innerhtml();
+	        if (!this.is_dependencies_static()) {
+	            this.not_static_content();
+	        }
+	        block.add_dependencies(node.expression.dependencies);
+	    }
+	    is_dependencies_static() {
+	        return this.node.expression.contextual_dependencies.size === 0 && this.node.expression.dynamic_dependencies().length === 0;
+	    }
+	    rename_this_method(block, update) {
+	        const dependencies = this.node.expression.dynamic_dependencies();
+	        let snippet = this.node.expression.manipulate(block);
+	        const value = this.node.should_cache && block.get_unique_name(`${this.var.name}_value`);
+	        const content = this.node.should_cache ? value : snippet;
+	        snippet = x `${snippet} + ""`;
+	        if (this.node.should_cache)
+	            block.add_variable(value, snippet); // TODO may need to coerce snippet to string
+	        if (dependencies.length > 0) {
+	            let condition = block.renderer.dirty(dependencies);
+	            if (block.has_outros) {
+	                condition = x `!#current || ${condition}`;
+	            }
+	            const update_cached_value = x `${value} !== (${value} = ${snippet})`;
+	            if (this.node.should_cache) {
+	                condition = x `${condition} && ${update_cached_value}`;
+	            }
+	            block.chunks.update.push(b `if (${condition}) ${update(content)}`);
+	        }
+	        return { init: content };
+	    }
+	}
+
+	class MustacheTagWrapper extends Tag {
+	    constructor(renderer, block, parent, node) {
+	        super(renderer, block, parent, node);
+	        this.var = { type: 'Identifier', name: 't' };
+	    }
+	    render(block, parent_node, parent_nodes) {
+	        const { init } = this.rename_this_method(block, value => x `@set_data(${this.var}, ${value})`);
+	        block.add_element(this.var, x `@text(${init})`, parent_nodes && x `@claim_text(${parent_nodes}, ${init})`, parent_node);
+	    }
+	}
+
+	class RawMustacheTagWrapper extends Tag {
+	    constructor(renderer, block, parent, node) {
+	        super(renderer, block, parent, node);
+	        this.var = { type: 'Identifier', name: 'raw' };
+	        this.cannot_use_innerhtml();
+	        this.not_static_content();
+	    }
+	    render(block, parent_node, _parent_nodes) {
+	        const in_head = is_head(parent_node);
+	        const can_use_innerhtml = !in_head && parent_node && !this.prev && !this.next;
+	        if (can_use_innerhtml) {
+	            const insert = content => b `${parent_node}.innerHTML = ${content};`[0];
+	            const { init } = this.rename_this_method(block, content => insert(content));
+	            block.chunks.mount.push(insert(init));
+	        }
+	        else {
+	            const needs_anchor = in_head || (this.next ? !this.next.is_dom_node() : (!this.parent || !this.parent.is_dom_node()));
+	            const html_tag = block.get_unique_name('html_tag');
+	            const html_anchor = needs_anchor && block.get_unique_name('html_anchor');
+	            block.add_variable(html_tag);
+	            const { init } = this.rename_this_method(block, content => x `${html_tag}.p(${content})`);
+	            const update_anchor = needs_anchor ? html_anchor : this.next ? this.next.var : 'null';
+	            block.chunks.hydrate.push(b `${html_tag} = new @HtmlTag(${update_anchor});`);
+	            block.chunks.mount.push(b `${html_tag}.m(${init}, ${parent_node || '#target'}, ${parent_node ? null : '#anchor'});`);
+	            if (needs_anchor) {
+	                block.add_element(html_anchor, x `@empty()`, x `@empty()`, parent_node);
+	            }
+	            if (!parent_node || in_head) {
+	                block.chunks.destroy.push(b `if (detaching) ${html_tag}.d();`);
+	            }
+	        }
+	    }
+	}
+
 	const events = [
 	    {
 	        event_names: ['input'],
@@ -78085,6 +78418,9 @@ var compiler = createCommonjsModule(function (module, exports) {
 	            if (attribute.name === 'style') {
 	                return new StyleAttributeWrapper(this, block, attribute);
 	            }
+	            if (attribute.type === 'Spread') {
+	                return new SpreadAttributeWrapper(this, block, attribute);
+	            }
 	            return new AttributeWrapper(this, block, attribute);
 	        });
 	        // ordinarily, there'll only be one... but we need to handle
@@ -78178,9 +78514,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 	        const can_use_textcontent = this.can_use_textcontent();
 	        if (!this.node.namespace && (this.can_use_innerhtml || can_use_textcontent) && this.fragment.nodes.length > 0) {
 	            if (this.fragment.nodes.length === 1 && this.fragment.nodes[0].node.type === 'Text') {
-	                block.chunks.create.push(
-	                // @ts-ignore todo: should it be this.fragment.nodes[0].node.data instead?
-	                b `${node}.textContent = ${string_literal(this.fragment.nodes[0].data)};`);
+	                block.chunks.create.push(b `${node}.textContent = ${string_literal(this.fragment.nodes[0].data)};`);
 	            }
 	            else {
 	                const state = {
@@ -78432,22 +78766,20 @@ var compiler = createCommonjsModule(function (module, exports) {
 	        const updates = [];
 	        this.attributes
 	            .forEach(attr => {
-	            const condition = attr.node.dependencies.size > 0
-	                ? block.renderer.dirty(Array.from(attr.node.dependencies))
+	            const dependencies = attr.node.get_dependencies();
+	            const condition = dependencies.length > 0
+	                ? block.renderer.dirty(dependencies)
 	                : null;
-	            if (attr.node.is_spread) {
+	            if (attr instanceof SpreadAttributeWrapper) {
 	                const snippet = attr.node.expression.manipulate(block);
 	                initial_props.push(snippet);
 	                updates.push(condition ? x `${condition} && ${snippet}` : snippet);
 	            }
 	            else {
-	                const metadata = attr.get_metadata();
-	                const name = attr.is_indirectly_bound_value()
-	                    ? '__value'
-	                    : (metadata && metadata.property_name) || fix_attribute_casing(attr.node.name);
-	                const snippet = x `{ ${name}: ${attr.get_value(block)} }`;
-	                initial_props.push(snippet);
-	                updates.push(condition ? x `${condition} && ${snippet}` : snippet);
+	                const name = attr.property_name || attr.name;
+	                initial_props.push(x `{ ${name}: ${attr.get_init(block, attr.get_value(block))} }`);
+	                const snippet = x `{ ${name}: ${attr.should_cache ? attr.last : attr.get_value(block)} }`;
+	                updates.push(condition ? x `${attr.get_dom_update_conditions(block, condition)} && ${snippet}` : snippet);
 	            }
 	        });
 	        block.chunks.init.push(b `
@@ -78650,19 +78982,19 @@ var compiler = createCommonjsModule(function (module, exports) {
 	}
 	function to_html(wrappers, block, literal, state, can_use_raw_text) {
 	    wrappers.forEach(wrapper => {
-	        if (wrapper.node.type === 'Text') {
+	        if (wrapper instanceof TextWrapper) {
 	            if (wrapper.use_space())
 	                state.quasi.value.raw += ' ';
 	            const parent = wrapper.node.parent;
 	            const raw = parent && (parent.name === 'script' ||
 	                parent.name === 'style' ||
 	                can_use_raw_text);
-	            state.quasi.value.raw += (raw ? wrapper.node.data : escape_html(wrapper.node.data))
+	            state.quasi.value.raw += (raw ? wrapper.data : escape_html(wrapper.data))
 	                .replace(/\\/g, '\\\\')
 	                .replace(/`/g, '\\`')
 	                .replace(/\$/g, '\\$');
 	        }
-	        else if (wrapper.node.type === 'MustacheTag' || wrapper.node.type === 'RawMustacheTag') {
+	        else if (wrapper instanceof MustacheTagWrapper || wrapper instanceof RawMustacheTagWrapper) {
 	            literal.quasis.push(state.quasi);
 	            literal.expressions.push(wrapper.node.expression.manipulate(block));
 	            state.quasi = {
@@ -79568,86 +79900,6 @@ var compiler = createCommonjsModule(function (module, exports) {
 	    }
 	}
 
-	class Tag extends Wrapper {
-	    constructor(renderer, block, parent, node) {
-	        super(renderer, block, parent, node);
-	        this.cannot_use_innerhtml();
-	        if (!this.is_dependencies_static()) {
-	            this.not_static_content();
-	        }
-	        block.add_dependencies(node.expression.dependencies);
-	    }
-	    is_dependencies_static() {
-	        return this.node.expression.contextual_dependencies.size === 0 && this.node.expression.dynamic_dependencies().length === 0;
-	    }
-	    rename_this_method(block, update) {
-	        const dependencies = this.node.expression.dynamic_dependencies();
-	        let snippet = this.node.expression.manipulate(block);
-	        const value = this.node.should_cache && block.get_unique_name(`${this.var.name}_value`);
-	        const content = this.node.should_cache ? value : snippet;
-	        snippet = x `${snippet} + ""`;
-	        if (this.node.should_cache)
-	            block.add_variable(value, snippet); // TODO may need to coerce snippet to string
-	        if (dependencies.length > 0) {
-	            let condition = block.renderer.dirty(dependencies);
-	            if (block.has_outros) {
-	                condition = x `!#current || ${condition}`;
-	            }
-	            const update_cached_value = x `${value} !== (${value} = ${snippet})`;
-	            if (this.node.should_cache) {
-	                condition = x `${condition} && ${update_cached_value}`;
-	            }
-	            block.chunks.update.push(b `if (${condition}) ${update(content)}`);
-	        }
-	        return { init: content };
-	    }
-	}
-
-	class MustacheTagWrapper extends Tag {
-	    constructor(renderer, block, parent, node) {
-	        super(renderer, block, parent, node);
-	        this.var = { type: 'Identifier', name: 't' };
-	    }
-	    render(block, parent_node, parent_nodes) {
-	        const { init } = this.rename_this_method(block, value => x `@set_data(${this.var}, ${value})`);
-	        block.add_element(this.var, x `@text(${init})`, parent_nodes && x `@claim_text(${parent_nodes}, ${init})`, parent_node);
-	    }
-	}
-
-	class RawMustacheTagWrapper extends Tag {
-	    constructor(renderer, block, parent, node) {
-	        super(renderer, block, parent, node);
-	        this.var = { type: 'Identifier', name: 'raw' };
-	        this.cannot_use_innerhtml();
-	        this.not_static_content();
-	    }
-	    render(block, parent_node, _parent_nodes) {
-	        const in_head = is_head(parent_node);
-	        const can_use_innerhtml = !in_head && parent_node && !this.prev && !this.next;
-	        if (can_use_innerhtml) {
-	            const insert = content => b `${parent_node}.innerHTML = ${content};`[0];
-	            const { init } = this.rename_this_method(block, content => insert(content));
-	            block.chunks.mount.push(insert(init));
-	        }
-	        else {
-	            const needs_anchor = in_head || (this.next && !this.next.is_dom_node());
-	            const html_tag = block.get_unique_name('html_tag');
-	            const html_anchor = needs_anchor && block.get_unique_name('html_anchor');
-	            block.add_variable(html_tag);
-	            const { init } = this.rename_this_method(block, content => x `${html_tag}.p(${content})`);
-	            const update_anchor = in_head ? 'null' : needs_anchor ? html_anchor : this.next ? this.next.var : 'null';
-	            block.chunks.hydrate.push(b `${html_tag} = new @HtmlTag(${update_anchor});`);
-	            block.chunks.mount.push(b `${html_tag}.m(${init}, ${parent_node || '#target'}, ${parent_node ? null : '#anchor'});`);
-	            if (needs_anchor) {
-	                block.add_element(html_anchor, x `@empty()`, x `@empty()`, parent_node);
-	            }
-	            if (!parent_node || in_head) {
-	                block.chunks.destroy.push(b `if (detaching) ${html_tag}.d();`);
-	            }
-	        }
-	    }
-	}
-
 	function get_slot_data(values, block = null) {
 	    return {
 	        type: 'ObjectExpression',
@@ -79805,35 +80057,6 @@ var compiler = createCommonjsModule(function (module, exports) {
 			`);
 	        }
 	        block.chunks.destroy.push(b `if (${slot_or_fallback}) ${slot_or_fallback}.d(detaching);`);
-	    }
-	}
-
-	class TextWrapper extends Wrapper {
-	    constructor(renderer, block, parent, node, data) {
-	        super(renderer, block, parent, node);
-	        this.skip = this.node.should_skip();
-	        this.data = data;
-	        this.var = (this.skip ? null : x `t`);
-	    }
-	    use_space() {
-	        if (this.renderer.component.component_options.preserveWhitespace)
-	            return false;
-	        if (/[\S\u00A0]/.test(this.data))
-	            return false;
-	        let node = this.parent && this.parent.node;
-	        while (node) {
-	            if (node.type === 'Element' && node.name === 'pre') {
-	                return false;
-	            }
-	            node = node.parent;
-	        }
-	        return true;
-	    }
-	    render(block, parent_node, parent_nodes) {
-	        if (this.skip)
-	            return;
-	        const use_space = this.use_space();
-	        block.add_element(this.var, use_space ? x `@space()` : x `@text("${this.data}")`, parent_nodes && (use_space ? x `@claim_space(${parent_nodes})` : x `@claim_text(${parent_nodes}, "${this.data}")`), parent_node);
 	    }
 	}
 
@@ -83494,9 +83717,8 @@ var compiler = createCommonjsModule(function (module, exports) {
 	    else if (node.type === 'ObjectPattern') {
 	        const used_properties = [];
 	        node.properties.forEach((property) => {
-	            const props = property;
-	            if (props.type === 'RestElement') {
-	                unpack_destructuring(contexts, props.argument, node => x `@object_without_properties(${modifier(node)}, [${used_properties}])`);
+	            if (property.type === 'RestElement') {
+	                unpack_destructuring(contexts, property.argument, node => x `@object_without_properties(${modifier(node)}, [${used_properties}])`);
 	            }
 	            else {
 	                const key = property.key;
@@ -84524,6 +84746,9 @@ var compiler = createCommonjsModule(function (module, exports) {
 	    validate_content() {
 	        if (!a11y_required_content.has(this.name))
 	            return;
+	        if (this.bindings
+	            .some((binding) => ['textContent', 'innerHTML'].includes(binding.name)))
+	            return;
 	        if (this.children.length === 0) {
 	            this.component.warn(this, {
 	                code: `a11y-missing-content`,
@@ -85184,7 +85409,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 	        if (result) {
 	            const { compile_options, name } = this;
 	            const { format = 'esm' } = compile_options;
-	            const banner = `${this.file ? `${this.file} ` : ``}generated by Svelte v${'3.23.2'}`;
+	            const banner = `${this.file ? `${this.file} ` : ``}generated by Svelte v${'3.24.0'}`;
 	            const program = { type: 'Program', body: result.js };
 	            walk(program, {
 	                enter: (node, parent, key) => {
@@ -85696,8 +85921,16 @@ var compiler = createCommonjsModule(function (module, exports) {
 	        if (isReference(node, parent)) {
 	            const object = get_object(node);
 	            const { name } = object;
-	            if (name[0] === '$' && !scope.has(name)) {
-	                this.warn_if_undefined(name, object, null);
+	            if (name[0] === '$') {
+	                if (!scope.has(name)) {
+	                    this.warn_if_undefined(name, object, null);
+	                }
+	                if (name[1] !== '$' && scope.has(name.slice(1)) && scope.find_owner(name.slice(1)) !== this.instance_scope) {
+	                    this.error(node, {
+	                        code: `contextual-store`,
+	                        message: `Stores must be declared at the top level of the component (this may change in a future version of Svelte)`
+	                    });
+	                }
 	            }
 	        }
 	    }
@@ -85939,8 +86172,9 @@ var compiler = createCommonjsModule(function (module, exports) {
 	        for (const { specifiers } of imports) {
 	            for (const specifier of specifiers) {
 	                const variable = var_lookup.get(specifier.local.name);
-	                if (!variable.mutated)
+	                if (!variable.mutated || variable.subscribable) {
 	                    variable.hoistable = true;
+	                }
 	            }
 	        }
 	    }
@@ -86353,7 +86587,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 	        source = processed ? processed.code : source;
 	    }
 	    for (const fn of script) {
-	        source = await replace_async(source, /<!--[^]*?-->|<script(\s[^]*?)?>([^]*?)<\/script>/gi, async (match, attributes = '', content) => {
+	        source = await replace_async(source, /<!--[^]*?-->|<script(\s[^]*?)?(?:>([^]*?)<\/script>|\/>)/gi, async (match, attributes = '', content = '') => {
 	            if (!attributes && !content) {
 	                return match;
 	            }
@@ -86369,7 +86603,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 	        });
 	    }
 	    for (const fn of style) {
-	        source = await replace_async(source, /<!--[^]*?-->|<style(\s[^]*?)?>([^]*?)<\/style>/gi, async (match, attributes = '', content) => {
+	        source = await replace_async(source, /<!--[^]*?-->|<style(\s[^]*?)?(?:>([^]*?)<\/style>|\/>)/gi, async (match, attributes = '', content = '') => {
 	            if (!attributes && !content) {
 	                return match;
 	            }
@@ -86396,7 +86630,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 	    };
 	}
 
-	const VERSION = '3.23.2';
+	const VERSION = '3.24.0';
 
 	exports.VERSION = VERSION;
 	exports.compile = compile;
