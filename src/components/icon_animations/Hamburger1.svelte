@@ -555,7 +555,7 @@
 </style>
 
 
-<div style="height:3em;" >
+<div >
 
     {#if style===1}
         <div class="icon nav-icon-1" class:open={active} on:click="{()=>active = !active}">
