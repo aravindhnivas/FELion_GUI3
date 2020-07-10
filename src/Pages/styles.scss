@@ -1,0 +1,16 @@
+.button {margin: 0.4em;}
+.short-input { max-width: 7em; margin: 0 1em; }
+.mdc-text-field--outlined {height: 2.5em;}
+.plotSlot { width: 100%}
+
+option { color: black; }
+.mdc-data-table {min-width: 30em; background-color: #5b3ea2; max-height: 25em; overflow-y: auto}
+.mdc-data-table__content  {background-color: #fafafa;}
+hr { width: 90%; margin: 1em 0; }
+.report { display: block; margin-bottom: 1em; }
+table th:not([align]) {text-align: center; padding: 1em;}
+table td:not([align]) {text-align: center; padding: 1em;}
+.averagedTable td { color: white; }
+
+.tableContainer {border: 1px solid #5b3ea2; width:100%; padding-right: 1em;}
+.tableContainer thead {background-color: #e1e1e1;}
