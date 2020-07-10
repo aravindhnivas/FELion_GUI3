@@ -58,41 +58,13 @@
         reportHTML.innerHTML = reportExist ? fs.readFileSync(reportFile) : reportHTMLTemplate
         console.log("ReportHTML: ", reportHTML)
         reportMainContainer = reportHTML.querySelector("#mainSection")
-
     }
-
-    const getHTMLContent = (content) =>{
-
-        return (
-            `<!DOCTYPE html>
-            <html lang="en">
-                <head>
-                    <meta charset='utf8'>
-                    <meta name="viewport" content="width=device-width, initial-scale=1">
-                    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-                    <title>${reportMolecule} Reports</title>
-                    <link rel="stylesheet" type='text/css' href="report_stylesheet.css">
-                </head>
-
-                <body>
-                    <section class="section" id="mainSection">
-                        <div class="content">
-                            <h1 id="mainTitle">${reportMolecule}</h1>
-                            ${content}
-                        </div>
-                    </section>
-                </body>
-            </html>`
-
-        )
-
-    }
-
+    
     function getImage(imgID) {
         return new Promise(resolve => {
-
             Plotly.toImage(imgID, {format: 'png', width: 1000, height: 500}).then(dataURL =>{resolve(dataURL)})
-        });
+        })
+        
     }
     
     const exprtToHtml = async (content) => {
