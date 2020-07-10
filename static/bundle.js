@@ -48583,7 +48583,7 @@ function init_tour_normline({filetype="felix"}={}) {
 const { console: console_1$7 } = globals;
 const file$11 = "src\\Pages\\Normline.svelte";
 
-// (851:4) <div slot="footer" style="margin:auto">
+// (854:4) <div slot="footer" style="margin:auto">
 function create_footer_slot_1(ctx) {
 	let div;
 	let button;
@@ -48596,11 +48596,11 @@ function create_footer_slot_1(ctx) {
 			button = element("button");
 			button.textContent = "Submit";
 			attr_dev(button, "class", "button is-link");
-			add_location(button, file$11, 851, 8, 41181);
+			add_location(button, file$11, 854, 8, 41221);
 			attr_dev(div, "slot", "footer");
 			set_style(div, "margin", "auto");
-			attr_dev(div, "class", "svelte-feynnz");
-			add_location(div, file$11, 850, 4, 41132);
+			attr_dev(div, "class", "svelte-1koog5z");
+			add_location(div, file$11, 853, 4, 41172);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -48623,14 +48623,14 @@ function create_footer_slot_1(ctx) {
 		block,
 		id: create_footer_slot_1.name,
 		type: "slot",
-		source: "(851:4) <div slot=\\\"footer\\\" style=\\\"margin:auto\\\">",
+		source: "(854:4) <div slot=\\\"footer\\\" style=\\\"margin:auto\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (848:0) <QuickView style="padding:1em;" bind:active={showTheoryFiles} bind:location={theoryLocation}>
+// (852:0) <QuickView style="padding:1em;" bind:active={showTheoryFiles} bind:location={theoryLocation}>
 function create_default_slot_3$7(ctx) {
 	let filebrowser;
 	let updating_currentLocation;
@@ -48706,14 +48706,14 @@ function create_default_slot_3$7(ctx) {
 		block,
 		id: create_default_slot_3$7.name,
 		type: "slot",
-		source: "(848:0) <QuickView style=\\\"padding:1em;\\\" bind:active={showTheoryFiles} bind:location={theoryLocation}>",
+		source: "(852:0) <QuickView style=\\\"padding:1em;\\\" bind:active={showTheoryFiles} bind:location={theoryLocation}>",
 		ctx
 	});
 
 	return block;
 }
 
-// (858:4) <div slot="footer" style="margin:auto">
+// (861:4) <div slot="footer" style="margin:auto">
 function create_footer_slot(ctx) {
 	let div;
 	let button;
@@ -48726,11 +48726,11 @@ function create_footer_slot(ctx) {
 			button = element("button");
 			button.textContent = "Submit";
 			attr_dev(button, "class", "button is-link");
-			add_location(button, file$11, 859, 8, 41613);
+			add_location(button, file$11, 861, 8, 41651);
 			attr_dev(div, "slot", "footer");
 			set_style(div, "margin", "auto");
-			attr_dev(div, "class", "svelte-feynnz");
-			add_location(div, file$11, 857, 4, 41562);
+			attr_dev(div, "class", "svelte-1koog5z");
+			add_location(div, file$11, 860, 4, 41602);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -48753,14 +48753,14 @@ function create_footer_slot(ctx) {
 		block,
 		id: create_footer_slot.name,
 		type: "slot",
-		source: "(858:4) <div slot=\\\"footer\\\" style=\\\"margin:auto\\\">",
+		source: "(861:4) <div slot=\\\"footer\\\" style=\\\"margin:auto\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (856:0) <QuickView style="padding:1em;" bind:active={showOPOFiles} bind:location={OPOLocation}>
+// (859:0) <QuickView style="padding:1em;" bind:active={showOPOFiles} bind:location={OPOLocation}>
 function create_default_slot_2$b(ctx) {
 	let filebrowser;
 	let updating_currentLocation;
@@ -48836,14 +48836,14 @@ function create_default_slot_2$b(ctx) {
 		block,
 		id: create_default_slot_2$b.name,
 		type: "slot",
-		source: "(856:0) <QuickView style=\\\"padding:1em;\\\" bind:active={showOPOFiles} bind:location={OPOLocation}>",
+		source: "(859:0) <QuickView style=\\\"padding:1em;\\\" bind:active={showOPOFiles} bind:location={OPOLocation}>",
 		ctx
 	});
 
 	return block;
 }
 
-// (867:4) <div class="buttonSlot" slot="buttonContainer">
+// (869:4) <div class="buttonSlot" slot="buttonContainer">
 function create_buttonContainer_slot(ctx) {
 	let div0;
 	let div1;
@@ -49121,42 +49121,42 @@ function create_buttonContainer_slot(ctx) {
 			create_component(customradio.$$.fragment);
 			attr_dev(button0, "class", "button is-link");
 			attr_dev(button0, "id", "create_baseline_btn");
-			add_location(button0, file$11, 870, 12, 41993);
+			add_location(button0, file$11, 870, 12, 42042);
 			attr_dev(button1, "class", "button is-link");
 			attr_dev(button1, "id", "felix_plotting_btn");
-			add_location(button1, file$11, 872, 12, 42160);
+			add_location(button1, file$11, 871, 12, 42207);
 			attr_dev(button2, "class", "button is-link");
-			add_location(button2, file$11, 875, 12, 42423);
+			add_location(button2, file$11, 873, 12, 42468);
 			attr_dev(button3, "class", "button is-link");
 			attr_dev(button3, "tabindex", "0");
-			add_location(button3, file$11, 878, 12, 42634);
+			add_location(button3, file$11, 875, 12, 42677);
 			attr_dev(button4, "class", "button is-link");
-			add_location(button4, file$11, 879, 12, 42791);
-			attr_dev(div1, "class", "align svelte-feynnz");
-			add_location(div1, file$11, 868, 8, 41958);
+			add_location(button4, file$11, 876, 12, 42834);
+			attr_dev(div1, "class", "align svelte-1koog5z");
+			add_location(div1, file$11, 869, 8, 42009);
 			attr_dev(button5, "class", "button is-link");
-			add_location(button5, file$11, 889, 16, 43569);
+			add_location(button5, file$11, 886, 16, 43612);
 			attr_dev(button6, "class", "button is-link");
-			add_location(button6, file$11, 890, 16, 43771);
+			add_location(button6, file$11, 887, 16, 43814);
 			attr_dev(button7, "class", "button is-link");
-			add_location(button7, file$11, 891, 16, 43916);
-			attr_dev(div2, "class", "align svelte-feynnz");
-			add_location(div2, file$11, 885, 12, 43091);
-			attr_dev(div3, "class", "animated fadeIn hide content svelte-feynnz");
+			add_location(button7, file$11, 888, 16, 43959);
+			attr_dev(div2, "class", "align svelte-1koog5z");
+			add_location(div2, file$11, 882, 12, 43134);
+			attr_dev(div3, "class", "animated fadeIn hide content svelte-1koog5z");
 			toggle_class(div3, "active", /*OPORow*/ ctx[35]);
-			add_location(div3, file$11, 884, 8, 43012);
+			add_location(div3, file$11, 881, 8, 43055);
 			attr_dev(button8, "class", "button is-link");
-			add_location(button8, file$11, 899, 12, 44159);
+			add_location(button8, file$11, 893, 12, 44180);
 			attr_dev(button9, "class", "button is-link");
-			add_location(button9, file$11, 902, 12, 44607);
-			attr_dev(div4, "class", "animated fadeIn hide svelte-feynnz");
+			add_location(button9, file$11, 896, 12, 44628);
+			attr_dev(div4, "class", "animated fadeIn hide svelte-1koog5z");
 			toggle_class(div4, "active", /*toggleRow*/ ctx[2]);
-			add_location(div4, file$11, 895, 8, 44064);
+			add_location(div4, file$11, 892, 8, 44107);
 			set_style(div5, "display", "flex");
-			add_location(div5, file$11, 906, 8, 44860);
-			attr_dev(div0, "class", "buttonSlot svelte-feynnz");
+			add_location(div5, file$11, 900, 8, 44881);
+			attr_dev(div0, "class", "buttonSlot svelte-1koog5z");
 			attr_dev(div0, "slot", "buttonContainer");
-			add_location(div0, file$11, 866, 4, 41899);
+			add_location(div0, file$11, 868, 4, 41952);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -49361,14 +49361,14 @@ function create_buttonContainer_slot(ctx) {
 		block,
 		id: create_buttonContainer_slot.name,
 		type: "slot",
-		source: "(867:4) <div class=\\\"buttonSlot\\\" slot=\\\"buttonContainer\\\">",
+		source: "(869:4) <div class=\\\"buttonSlot\\\" slot=\\\"buttonContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (924:12) {#if showfile_details}
+// (918:12) {#if showfile_details}
 function create_if_block_1$7(ctx) {
 	let table;
 	let updating_rows;
@@ -49438,14 +49438,14 @@ function create_if_block_1$7(ctx) {
 		block,
 		id: create_if_block_1$7.name,
 		type: "if",
-		source: "(924:12) {#if showfile_details}",
+		source: "(918:12) {#if showfile_details}",
 		ctx
 	});
 
 	return block;
 }
 
-// (942:8) {#if graphPlotted}
+// (936:8) {#if graphPlotted}
 function create_if_block$m(ctx) {
 	let div5;
 	let div0;
@@ -49906,45 +49906,45 @@ function create_if_block$m(ctx) {
 			t39 = space();
 			create_component(reportlayout.$$.fragment);
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$11, 955, 20, 47501);
+			add_location(button0, file$11, 949, 20, 47522);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$11, 956, 20, 47609);
+			add_location(button1, file$11, 950, 20, 47630);
 			attr_dev(div0, "class", "content");
-			add_location(div0, file$11, 945, 16, 46806);
+			add_location(div0, file$11, 939, 16, 46827);
 			attr_dev(button2, "class", "button is-link");
-			add_location(button2, file$11, 962, 20, 47828);
+			add_location(button2, file$11, 955, 20, 47847);
 			attr_dev(button3, "class", "button is-link");
-			add_location(button3, file$11, 963, 20, 47952);
+			add_location(button3, file$11, 956, 20, 47971);
 			attr_dev(button4, "class", "button is-warning");
-			add_location(button4, file$11, 964, 20, 48083);
+			add_location(button4, file$11, 957, 20, 48102);
 			attr_dev(button5, "class", "button is-danger");
-			add_location(button5, file$11, 965, 20, 48183);
+			add_location(button5, file$11, 958, 20, 48202);
 			attr_dev(button6, "class", "button is-link");
-			add_location(button6, file$11, 966, 20, 48280);
+			add_location(button6, file$11, 959, 20, 48299);
 			attr_dev(button7, "class", "button is-warning");
-			add_location(button7, file$11, 967, 20, 48409);
+			add_location(button7, file$11, 960, 20, 48428);
 			attr_dev(div1, "class", "content");
-			add_location(div1, file$11, 961, 16, 47785);
+			add_location(div1, file$11, 954, 16, 47804);
 			attr_dev(button8, "class", "button is-link");
-			add_location(button8, file$11, 981, 24, 49370);
+			add_location(button8, file$11, 974, 24, 49389);
 			set_style(div2, "margin", "1em 0");
-			add_location(div2, file$11, 974, 20, 48755);
+			add_location(div2, file$11, 967, 20, 48774);
 			attr_dev(button9, "class", "button is-link");
-			add_location(button9, file$11, 986, 24, 49729);
+			add_location(button9, file$11, 979, 24, 49748);
 			attr_dev(button10, "class", "button is-link");
-			add_location(button10, file$11, 990, 24, 49952);
+			add_location(button10, file$11, 983, 24, 49971);
 			attr_dev(button11, "class", "button is-link");
-			add_location(button11, file$11, 991, 24, 50095);
+			add_location(button11, file$11, 984, 24, 50114);
 			attr_dev(button12, "class", "button is-danger");
-			add_location(button12, file$11, 992, 24, 50222);
+			add_location(button12, file$11, 985, 24, 50241);
 			set_style(div3, "display", "flex");
 			set_style(div3, "align-items", "center");
-			add_location(div3, file$11, 984, 20, 49548);
-			attr_dev(div4, "class", "content animated fadeIn hide svelte-feynnz");
+			add_location(div3, file$11, 977, 20, 49567);
+			attr_dev(div4, "class", "content animated fadeIn hide svelte-1koog5z");
 			toggle_class(div4, "active", /*toggleFindPeaksRow*/ ctx[28]);
-			add_location(div4, file$11, 972, 16, 48655);
-			attr_dev(div5, "class", "svelte-feynnz");
-			add_location(div5, file$11, 942, 12, 46716);
+			add_location(div4, file$11, 965, 16, 48674);
+			attr_dev(div5, "class", "svelte-1koog5z");
+			add_location(div5, file$11, 936, 12, 46737);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div5, anchor);
@@ -50267,14 +50267,14 @@ function create_if_block$m(ctx) {
 		block,
 		id: create_if_block$m.name,
 		type: "if",
-		source: "(942:8) {#if graphPlotted}",
+		source: "(936:8) {#if graphPlotted}",
 		ctx
 	});
 
 	return block;
 }
 
-// (986:24) <Icon class="material-icons" on:click="{()=> modalActivate = true}">
+// (979:24) <Icon class="material-icons" on:click="{()=> modalActivate = true}">
 function create_default_slot_1$d(ctx) {
 	let t;
 
@@ -50294,14 +50294,14 @@ function create_default_slot_1$d(ctx) {
 		block,
 		id: create_default_slot_1$d.name,
 		type: "slot",
-		source: "(986:24) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=> modalActivate = true}\\\">",
+		source: "(979:24) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=> modalActivate = true}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (913:4) <div class="plotSlot" slot="plotContainer">
+// (907:4) <div class="plotSlot" slot="plotContainer">
 function create_plotContainer_slot(ctx) {
 	let div0;
 	let div2;
@@ -50391,45 +50391,45 @@ function create_plotContainer_slot(ctx) {
 			t14 = space();
 			if (if_block1) if_block1.c();
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$11, 917, 16, 45231);
+			add_location(button0, file$11, 911, 16, 45252);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$11, 919, 16, 45472);
+			add_location(button1, file$11, 913, 16, 45493);
 			attr_dev(button2, "class", "button is-link");
-			add_location(button2, file$11, 920, 16, 45600);
+			add_location(button2, file$11, 914, 16, 45621);
 			set_style(div1, "display", "flex");
-			add_location(div1, file$11, 916, 11, 45186);
-			attr_dev(div2, "class", " svelte-feynnz");
-			add_location(div2, file$11, 915, 8, 45158);
-			attr_dev(div3, "class", "animated fadeIn hide svelte-feynnz");
+			add_location(div1, file$11, 910, 11, 45207);
+			attr_dev(div2, "class", " svelte-1koog5z");
+			add_location(div2, file$11, 909, 8, 45179);
+			attr_dev(div3, "class", "animated fadeIn hide svelte-1koog5z");
 			attr_dev(div3, "id", "exp-theory-plot");
 			toggle_class(div3, "active", /*show_theoryplot*/ ctx[8]);
-			add_location(div3, file$11, 931, 12, 46167);
+			add_location(div3, file$11, 925, 12, 46188);
 			attr_dev(div4, "id", "bplot");
-			attr_dev(div4, "class", "svelte-feynnz");
-			add_location(div4, file$11, 932, 12, 46273);
+			attr_dev(div4, "class", "svelte-1koog5z");
+			add_location(div4, file$11, 926, 12, 46294);
 			attr_dev(div5, "id", "saPlot");
-			attr_dev(div5, "class", "svelte-feynnz");
-			add_location(div5, file$11, 933, 12, 46309);
+			attr_dev(div5, "class", "svelte-1koog5z");
+			add_location(div5, file$11, 927, 12, 46330);
 			attr_dev(div6, "id", "avgplot");
-			attr_dev(div6, "class", "svelte-feynnz");
-			add_location(div6, file$11, 934, 12, 46346);
-			attr_dev(div7, "class", "animated fadeIn hide svelte-feynnz");
+			attr_dev(div6, "class", "svelte-1koog5z");
+			add_location(div6, file$11, 928, 12, 46367);
+			attr_dev(div7, "class", "animated fadeIn hide svelte-1koog5z");
 			attr_dev(div7, "id", "opoplot");
 			toggle_class(div7, "active", /*opoPlotted*/ ctx[24]);
-			add_location(div7, file$11, 935, 12, 46384);
-			attr_dev(div8, "class", "animated fadeIn hide svelte-feynnz");
+			add_location(div7, file$11, 929, 12, 46405);
+			attr_dev(div8, "class", "animated fadeIn hide svelte-1koog5z");
 			attr_dev(div8, "id", "opoSA");
 			toggle_class(div8, "active", /*opoPlotted*/ ctx[24]);
-			add_location(div8, file$11, 936, 12, 46477);
-			attr_dev(div9, "class", "animated fadeIn hide svelte-feynnz");
+			add_location(div8, file$11, 930, 12, 46498);
+			attr_dev(div9, "class", "animated fadeIn hide svelte-1koog5z");
 			attr_dev(div9, "id", "opoRelPlot");
 			toggle_class(div9, "active", /*opoPlotted*/ ctx[24]);
-			add_location(div9, file$11, 938, 12, 46570);
-			attr_dev(div10, "class", "felixPlot svelte-feynnz");
-			add_location(div10, file$11, 930, 8, 46130);
-			attr_dev(div0, "class", "plotSlot svelte-feynnz");
+			add_location(div9, file$11, 932, 12, 46591);
+			attr_dev(div10, "class", "felixPlot svelte-1koog5z");
+			add_location(div10, file$11, 924, 8, 46151);
+			attr_dev(div0, "class", "plotSlot svelte-1koog5z");
 			attr_dev(div0, "slot", "plotContainer");
-			add_location(div0, file$11, 912, 4, 45061);
+			add_location(div0, file$11, 906, 4, 45082);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -50573,14 +50573,14 @@ function create_plotContainer_slot(ctx) {
 		block,
 		id: create_plotContainer_slot.name,
 		type: "slot",
-		source: "(913:4) <div class=\\\"plotSlot\\\" slot=\\\"plotContainer\\\">",
+		source: "(907:4) <div class=\\\"plotSlot\\\" slot=\\\"plotContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (865:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>
+// (867:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>
 function create_default_slot$q(ctx) {
 	let t;
 
@@ -50603,7 +50603,7 @@ function create_default_slot$q(ctx) {
 		block,
 		id: create_default_slot$q.name,
 		type: "slot",
-		source: "(865:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>",
+		source: "(867:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>",
 		ctx
 	});
 

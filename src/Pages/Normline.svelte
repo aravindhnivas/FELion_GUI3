@@ -810,6 +810,7 @@
             {label:"sameColor", value:true, id:getID()},
             {label:"Invert ax2", value:true, id:getID()},
             {label:"Only exp.", value:false, id:getID()},
+
             {label:"hide ax2 axis.", value:true, id:getID()},
         ]
     }
@@ -831,22 +832,24 @@
 </script>
 
 <style>
-
     .hide {display: none;}
     .active {display: block; }
     .align {display: flex; align-items: center;}
     .felixPlot > div {margin-bottom: 1em;}
     .notification {width: 100%; border: 1px solid;}
     .plotSlot > div { width: calc(100% - 1em); margin-top: 1em; }
-
 </style>
 
+
+<!-- Modals -->
 <AdjustInitialGuess bind:peakTable bind:modalActivate on:save={adjustPeak}/>
 <FelixPlotting bind:felixplot_modal bind:felix_plotting_widgets on:submit="{()=>console.log("FELIX plotting submitted", felix_plotting_widgets) }"/>
 <AddFilesToPlot bind:addFileModal bind:addedFileCol bind:addedFileScale bind:addedfiles bind:addedFile on:addfile="{(e)=>plotData({e:e.detail.event, filetype:"addfile"})}" />
 
-<QuickView style="padding:1em;" bind:active={showTheoryFiles} bind:location={theoryLocation}>
 
+
+<!-- QuickViews -->
+<QuickView style="padding:1em;" bind:active={showTheoryFiles} bind:location={theoryLocation}>
     <FileBrowser bind:currentLocation="{theoryLocation}" bind:fileChecked={theoryfilesChecked} filetype=""/>
     <div slot="footer" style="margin:auto">
         <button class="button is-link" on:click="{(e)=>{plotData({e:e, filetype:"theory"}); localStorage["theoryLocation"] = theoryLocation}}">Submit</button>
@@ -856,25 +859,19 @@
 <QuickView style="padding:1em;" bind:active={showOPOFiles} bind:location={OPOLocation}>
     <FileBrowser bind:currentLocation={OPOLocation} bind:fileChecked={OPOfilesChecked} filetype="ofelix"/>
     <div slot="footer" style="margin:auto">
-
         <button class="button is-link" on:click="{(e)=>{plotData({e:e, filetype:"opofile"}); localStorage["opoLocation"] = OPOLocation}}">Submit</button>
     </div>
-
 </QuickView>
 
+<!-- Layout -->
 <Layout {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>
 
     <div class="buttonSlot" slot="buttonContainer">
-
         <div class="align">
-
             <button class="button is-link" id="create_baseline_btn" on:click="{(e)=>plotData({e:e, filetype:"baseline", tkplot:"plot"})}"> Create Baseline</button>
-
             <button class="button is-link" id="felix_plotting_btn" on:click="{(e)=>plotData({e:e, filetype:"felix"})}">FELIX Plot</button>
-
             <Textfield style="width:7em" variant="outlined" type="number" step="0.5" bind:value={delta} label="Delta"/>
             <button class="button is-link" on:click="{()=>felixplot_modal = true}"> Open in Matplotlib</button>
-
             <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
             <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click="{()=>toggleRow = !toggleRow}">Add Theory</button>
             <button class="button is-link" on:click="{()=>{OPORow = !OPORow}}">OPO</button>
@@ -894,9 +891,6 @@
         </div>
 
         <div class="animated fadeIn hide" class:active={toggleRow}>
-
-        
-        
             <button class="button is-link" on:click="{()=>{showOPOFiles=false;showTheoryFiles = !showTheoryFiles; theoryLocation = localStorage["theoryLocation"] || currentLocation}}"> Browse File</button>
             <Textfield type="number" style="width:7em; margin-right:0.5em;" variant="outlined" bind:value={sigma} label="Sigma"/>
             <Textfield type="number" style="width:7em" variant="outlined" bind:value={scale} label="Scale"/>
@@ -955,7 +949,6 @@
                     <CustomSwitch style="margin: 0 1em;" bind:selected={collectData} label="Collect"/>
                     <button class="button is-link" on:click="{()=>{addFileModal=true}}">Add files</button>
                     <button class="button is-link" on:click={removeExtraFile}>Remove files</button>
-
                 </div>
 
                 <!-- Execute function buttons -->
@@ -1004,5 +997,5 @@
             </div>
         {/if}
     </div>
-
+    
 </Layout>
