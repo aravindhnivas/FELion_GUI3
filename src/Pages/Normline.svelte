@@ -717,13 +717,11 @@
         
         window.annotation = []
 
-        
         peakTable.forEach((f, index)=>{
             let _annotate = {x:f.freq, y:f.amp, text:`(${f.freq.toFixed(2)}, ${f.amp.toFixed(2)})`}
             window.annotation = [...window.annotation, {...temp_annotate, ..._annotate} ]
         })
 
-        
         if(closeMainModal) {
             modalActivate = false, createToast("Initial guess adjusted for full spectrum fitting")
         }
@@ -733,11 +731,9 @@
     
     let showfile_details = false, filedetails = [];
 
-    // $: console.log(filedetails)
     let filedetails_saved;
     
     function savefile({file={}, name=""}={}) {
-        // let location = opoExpFit? OPOLocation : currentLocation
         let filename = path.join(location, `${name}.json`)
         fs.writeFile(filename, JSON.stringify({file}), 'utf8', function (err) {
 
@@ -750,7 +746,6 @@
     }
 
     function loadfile({name=""}={}) {
-        // let location = opoExpFit? OPOLocation : currentLocation
         let filename = path.join(location, `${name}.json`)
         if(!fs.existsSync(filename)) {return createToast(`${name}.json doesn't exist in DATA dir.`, "danger")}
         let loadedfile = JSON.parse(fs.readFileSync(filename)).file
@@ -997,5 +992,5 @@
             </div>
         {/if}
     </div>
-    
+
 </Layout>
