@@ -7,7 +7,7 @@ from io import StringIO
 import contextlib
 
 # Tkinter
-from tkinter import Frame, IntVar, StringVar, BooleanVar, DoubleVar, Tk, filedialog, END, Text
+from tkinter import IntVar, StringVar, BooleanVar, DoubleVar, Tk, filedialog, END, Text, MULTIPLE, Listbox, Canvas, Frame
 from tkinter.ttk import Button, Checkbutton, Label, Entry, Scale, Scrollbar, OptionMenu
 from tkinter.messagebox import showerror, showinfo, showwarning, askokcancel
 
@@ -57,10 +57,45 @@ class FELion_Tk(Tk):
         self.canvas_frame = Frame(self, bg='white')
         self.canvas_frame.place(relx=0, rely=0, relwidth=0.8, relheight=1)
 
-        self.widget_frame = Frame(self, bg=background)
-        self.widget_frame.bind("<Button-1>", lambda event: self.focus())
+        widget_frame_container = Frame(self)
+        widget_frame_canvasContainer = Canvas(widget_frame_container)
+        scrollbar = Scrollbar(widget_frame_container, orient="vertical", command=widget_frame_canvasContainer.yview)
 
-        self.widget_frame.place(relx=0.8, rely=0, relwidth=0.2, relheight=1)
+        self.widget_frame = Frame(widget_frame_canvasContainer)
+        self.widget_frame.bind( "<Configure>", lambda e: widget_frame_canvasContainer.configure(
+                scrollregion=widget_frame_canvasContainer.bbox("all") ))
+
+        widget_frame_canvasContainer.create_window((0, 0), window=self.widget_frame)
+        widget_frame_canvasContainer.configure(yscrollcommand=scrollbar.set)
+
+        widget_frame_container.place(relx=0.8, rely=0, relwidth=0.2, relheight=1)
+        widget_frame_canvasContainer.place(relx=0, rely=0, relwidth=0.9, relheight=1)
+        scrollbar.place(relx=0.9, rely=0, relwidth=0.1, relheight=1)
+
+        self.widget_frame.place(relx=0, rely=0, relwidth=1, relheight=1)
+
+        # container = Frame(self)
+        # canvas = Canvas(container)
+        # scrollbar = Scrollbar(container, orient="vertical", command=canvas.yview)
+
+        # self.widget_frame = scrollable_frame = Frame(canvas)
+
+        # scrollable_frame.bind(
+        #     "<Configure>",
+        #     lambda e: canvas.configure(
+        #         scrollregion=canvas.bbox("all")
+        #     )
+        # )
+
+        # canvas.create_window((0, 0), window=scrollable_frame)
+        # canvas.configure(yscrollcommand=scrollbar.set)
+
+        # for i in range(50):
+        #     Label(scrollable_frame, text="Sample scrolling label").pack()
+
+        # container.place(relx=0.8, rely=0, relwidth=0.2, relheight=1)
+        # canvas.place(relx=0, rely=0, relwidth=0.9, relheight=1)
+        # scrollbar.place(relx=0, rely=0, relwidth=1, relheight=1)
 
     def Labels(self, txt, x, y, **kw):
         kw = var_check(kw)
@@ -187,6 +222,27 @@ class FELion_Tk(Tk):
 
         return self.widget_frame.value1
 
+    def Listbox(self, lists, x, y, **kw):
+
+        kw = var_check(kw)
+
+        self.widget_frame.listbox = Listbox(self.widget_frame, listvariable=lists, selectmode=MULTIPLE)
+        self.widget_frame.listbox.place(relx=x, rely=y, anchor=kw['anchor'], relwidth=kw['relwidth'], relheight=kw['relheight'])
+
+        # listNodes = Listbox(frame, width=20, height=20, font=("Helvetica", 12))
+        # listNodes.pack(side="left", fill="y")
+
+        scrollbar = Scrollbar(self.widget_frame, orient="vertical")
+        scrollbar.config(command=self.widget_frame.listbox.yview)
+        scrollbar.place(relx=0.9-x, rely=y-0.05, relheight=kw['relheight'])
+
+        self.widget_frame.listbox.config(yscrollcommand=scrollbar.set)
+
+        for item in lists: self.widget_frame.listbox.insert(END, item)
+
+
+        return self.widget_frame.listbox
+
     def Figure(self, connect=True, dpi=None, default_widget=True, default_save_widget=True , **kw):
 
         self.default_widget = default_widget
@@ -224,7 +280,7 @@ class FELion_Tk(Tk):
 
         # Row 2
         y += y_diff
-        self.name = self.Entries("Entry", "Plotname", x0, y, bind_return=True, bind_func=self.save_fig, relwidth=0.7)
+        self.name = self.Entries("Entry", "savefile_name", x0, y, bind_return=True, bind_func=self.save_fig, relwidth=0.7)
 
 
         if self.default_widget:
