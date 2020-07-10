@@ -4,22 +4,23 @@
 
 <script>
 
-    import List, {Item, Meta, Label} from '@smui/list';
-    import Checkbox from '@smui/checkbox';
     import IconButton, {Icon} from '@smui/icon-button';
+
     import { fly, slide } from 'svelte/transition';
     import FormField from '@smui/form-field';
     import Switch from '@smui/switch';
-
     import Textfield from '@smui/textfield';
+    
     import { Toast } from 'svelma'
+    
     import {activated, modalContent, modalTitle} from "./Modal.svelte"
     
     import {onMount, afterUpdate} from "svelte"
     
     import CustomIconSwitch from './CustomIconSwitch.svelte';
-    import VirtualList from '@sveltejs/svelte-virtual-list';
+    import CustomCheckList from './CustomCheckList.svelte';
     import { createEventDispatcher } from 'svelte';
+    
     ///////////////////////////////////////////////////////////////////////////
 
     export let fileChecked = [],  currentLocation = "", filetype = "*.*"
@@ -90,11 +91,11 @@
 </script>
 
 <style>
+
     .filelist { max-height: calc(100vh - 30em); overflow-y: auto; }
     .folderfile-list {max-height: calc(100vh - 20em); overflow-y: auto;}
     .align {display: flex; align-items: center;}
     .center {justify-content: center;}
-
     .browseIcons {cursor: pointer;}
 </style>
 
@@ -125,16 +126,7 @@
     </div>
     {#if files_loaded}
         {#if showfiles && files != "" }
-    
-            <VirtualList items={files} let:item height="500px">
-                <List checklist>
-
-                    <Item>
-                        <Label>{item.name}</Label>
-                        <Meta><Checkbox bind:group={fileChecked} value={item.name} on:click="{()=>selectAll=false}"/></Meta>
-                    </Item>
-                </List>
-            </VirtualList>
+            <CustomCheckList bind:fileChecked bind:items={files} on:click="{()=>selectAll=false}"/>
         {:else if files == ""}
             <div class="mdc-typography--subtitle1 align center">No {filetype} here!</div>        
         {/if}
