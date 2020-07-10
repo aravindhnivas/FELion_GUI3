@@ -873,8 +873,6 @@
         ]
      })
 
-    // $: console.log(felix_plotting_widgets)
-
 </script>
 
 <style>
@@ -885,13 +883,11 @@
     .felixPlot > div {margin-bottom: 1em;}
     .notification {width: 100%; border: 1px solid;}
     .plotSlot > div { width: calc(100% - 1em); margin-top: 1em; }
-    /* .dataTable { display: flex; justify-content: center; } */
 
 </style>
 
 <AdjustInitialGuess bind:peakTable bind:modalActivate on:save={adjustPeak}/>
 <FelixPlotting bind:felixplot_modal bind:felix_plotting_widgets on:submit="{()=>console.log("FELIX plotting submitted", felix_plotting_widgets) }"/>
-
 <AddFilesToPlot bind:addFileModal bind:addedFileCol bind:addedFileScale bind:addedfiles bind:addedFile on:addfile="{(e)=>plotData({e:e.detail.event, filetype:"addfile"})}" />
 
 <QuickView style="padding:1em;" bind:active={showTheoryFiles} bind:location={theoryLocation}>
@@ -917,14 +913,11 @@
 
         <div class="align">
 
+            <button class="button is-link" id="create_baseline_btn" on:click="{(e)=>plotData({e:e, filetype:"baseline", tkplot:"plot"})}"> Create Baseline</button>
 
-            <button class="button is-link" id="create_baseline_btn"
-                on:click="{(e)=>plotData({e:e, filetype:"baseline", tkplot:"plot"})}">
-                Create Baseline</button>
             <button class="button is-link" id="felix_plotting_btn" on:click="{(e)=>plotData({e:e, filetype:"felix"})}">FELIX Plot</button>
 
             <Textfield style="width:7em" variant="outlined" type="number" step="0.5" bind:value={delta} label="Delta"/>
-            <!-- <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"felix_tkplot"})}"> Open in Matplotlib</button> -->
             <button class="button is-link" on:click="{()=>felixplot_modal = true}"> Open in Matplotlib</button>
 
             <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
@@ -939,22 +932,21 @@
                 <CustomSelect style="width:7em;" bind:picked={calibFile} label="Calib. file" options={["", ...OPOcalibFiles]}/>
                 <Textfield on:change="{(e)=>plotData({e:e, filetype:"opofile"})}" style="width:7em; margin:0 0.5em;" bind:value={delta_OPO} label="Delta OPO"/>
                 <Textfield on:change="{(e)=>plotData({e:e, filetype:"opofile"})}" style="width:9em" bind:value={calibValue} label="Wn-meter calib."/>
-                <button class="button is-link" 
-                    on:click="{()=>{showTheoryFiles=false;showOPOFiles = !showOPOFiles; OPOLocation = localStorage["opoLocation"] || currentLocation}}">
-                    Browse File</button>
+                <button class="button is-link" on:click="{()=>{showTheoryFiles=false;showOPOFiles = !showOPOFiles; OPOLocation = localStorage["opoLocation"] || currentLocation}}"> Browse File</button>
                 <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"opofile", tkplot:"plot"})}">Open in Matplotlib</button>
                 <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"opofile"})}">Replot</button>
             </div>
         </div>
 
         <div class="animated fadeIn hide" class:active={toggleRow}>
-            <button class="button is-link" 
-                on:click="{()=>{showOPOFiles=false;showTheoryFiles = !showTheoryFiles; theoryLocation = localStorage["theoryLocation"] || currentLocation}}">
-                Browse File</button>
+
+        
+        
+            <button class="button is-link" on:click="{()=>{showOPOFiles=false;showTheoryFiles = !showTheoryFiles; theoryLocation = localStorage["theoryLocation"] || currentLocation}}"> Browse File</button>
             <Textfield type="number" style="width:7em; margin-right:0.5em;" variant="outlined" bind:value={sigma} label="Sigma"/>
             <Textfield type="number" style="width:7em" variant="outlined" bind:value={scale} label="Scale"/>
-            <button class="button is-link" 
-                on:click="{(e)=>plotData({e:e, filetype:"general", general:{args:[...theoryfiles, normMethod, sigma, scale, theoryLocation, "plot"], pyfile:"theory.py"}})}">Open in Matplotlib</button>
+            <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"general", general:{args:[...theoryfiles, normMethod, sigma, scale, theoryLocation, "plot"], pyfile:"theory.py"}})}">Open in Matplotlib</button>
+        
         </div>
 
         <div style="display:flex;">
@@ -994,7 +986,6 @@
     
         {#if graphPlotted}
             <div transition:fade>
-
 
                 <!-- Write function buttons -->
                 <div class="content" >
@@ -1058,4 +1049,5 @@
             </div>
         {/if}
     </div>
+    
 </Layout>
