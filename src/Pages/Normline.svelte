@@ -17,7 +17,8 @@
     import CustomIconSwitch from '../components/CustomIconSwitch.svelte';
     import CustomRadio from '../components/CustomRadio.svelte';
     import ReportLayout from '../components/ReportLayout.svelte';
-    import QuickView from '../components/QuickView.svelte';
+    // import QuickView from '../components/QuickView.svelte';
+    import QuickBrowser from '../components/QuickBrowser.svelte';
     import FileBrowser from "../components/FileBrowser.svelte"
 
     import FormField from '@smui/form-field';
@@ -71,7 +72,8 @@
 
     //////// OPO Plot ///////////
     window.getID = () => Math.random().toString(32).substring(2)
-    let opoPlotted = false, onlyFinalSpectrum = false, peakTable = []
+    let onlyFinalSpectrum = false, peakTable = []
+
     window.annotation = []
 
     let plotly_event_created = false, plotly_event_created_opo = false
@@ -99,7 +101,7 @@
                 break;
             
             case "baseline":
-                if (OPORow) {if(opofiles.length<1) return createToast("No OPO files selected", "danger")}
+                if (opoExpFit) {if(opofiles.length<1) return createToast("No OPO files selected", "danger")}
                 else {if(felixfiles.length<1) return createToast("No FELIX files selected", "danger")}
                 break;
 
@@ -156,7 +158,8 @@
             case "opofile":
                 removeExtraFile()
                 if(opofiles.length<1) return createToast("No files selected", "danger")
-                opoPlotted = true, window.annotation = []
+
+                opoExpFit = true, window.annotation = []
                 break;
 
             case "get_err":
@@ -184,7 +187,7 @@
         }
 
         const pyfileInfo = { general, 
-            baseline: {pyfile:"baseline.py", args: OPORow ? opofiles: felixfiles},
+            baseline: {pyfile:"baseline.py", args: opoExpFit ? opofiles: felixfiles},
             felix: {pyfile:"normline.py" , args:[...felixfiles, delta]},
             exp_fit: {pyfile:"exp_gauss_fit.py" , args:[JSON.stringify(expfit_args)]},
             opofile: {pyfile:"oposcan.py" , args:[...opofiles, tkplot, delta_OPO, calibValue, calibFile]},
@@ -415,7 +418,8 @@
                         graphPlotted = true
                     } else if (filetype == "opofile") {
 
-                        opoExpFit = true, output_name = "averaged"
+                        output_name = "averaged"
+                        // opoExpFit = true
 
                         plot("OPO spectrum", "Wavenumber (cm-1)", "Counts", dataFromPython["real"], "opoplot")
                         plot("OPO Calibration", "Set Wavenumber (cm-1)", "Measured Wavenumber (cm-1)", dataFromPython["SA"], "opoSA")
@@ -444,7 +448,7 @@
                         }
                         console.log("Graph Plotted")
                         createToast("Graph Plotted", "success")
-                        showOPOFiles = false, graphPlotted = true
+                        showOPOFiles = false, graphPlotted = true, opoExpFit = true
                     } else if (filetype == "theory") {
 
                         let ylabel;
@@ -640,8 +644,8 @@
         if (plot_trace_added === 0) {return createToast("No fitted lines found", "danger")}
         if (double_peak_active) {
 
-            plotData({filetype:"general", general:{args:[output_name, opoExpFit?OPOLocation:currentLocation], pyfile:"delete_fileLines.py"}})
-            plotData({filetype:"general", general:{args:[output_name, opoExpFit?OPOLocation:currentLocation], pyfile:"delete_fileLines.py"}})
+            plotData({filetype:"general", general:{args:[output_name, location], pyfile:"delete_fileLines.py"}})
+            plotData({filetype:"general", general:{args:[output_name, location], pyfile:"delete_fileLines.py"}})
             
             dataTable = _.dropRight(dataTable, 2)
             annotations = _.dropRight(annotations, 2)
@@ -649,7 +653,7 @@
             weighted_error[1] = _.dropRight(weighted_error[1], 1)
         } else {
 
-            plotData({filetype:"general", general:{args:[output_name, opoExpFit?OPOLocation:currentLocation], pyfile:"delete_fileLines.py"}})
+            plotData({filetype:"general", general:{args:[output_name, location], pyfile:"delete_fileLines.py"}})
             dataTable = _.dropRight(dataTable, 1)
             line = _.dropRight(line, 2)
             annotations = _.dropRight(annotations, 1)
@@ -671,9 +675,10 @@
     
     let style = "width:7em; height:3.5em; margin-right:0.5em";
     // OPO
-    let showOPOFiles = false, OPOfilesChecked = [], opoExpFit = false, OPORow = false
+    let showOPOFiles = false, OPOfilesChecked = [], opoExpFit = false
     let OPOLocation = localStorage["opoLocation"] || currentLocation
 
+    
     $: normMethod = opoExpFit ? "Log" : felix_normMethod
     $: location = opoExpFit ? OPOLocation : currentLocation
 
@@ -685,9 +690,9 @@
     
     let OPOcalibFiles = []
     $: if(fs.existsSync(OPOLocation)) {OPOcalibFiles = fs.readdirSync(OPOLocation).filter(file=> file.endsWith(".calibOPO"))}
-    $: OPORow ? createToast("OPO MODE") : createToast("FELIX MODE")
+    $: opoExpFit ? createToast("OPO MODE") : createToast("FELIX MODE")
     
-    $: opoPlotted ? opoExpFit = true : opoExpFit = false
+    
     $: Ngauss_sigma = opoExpFit ? 2 : 5
     let modalActivate = false, addFileModal=false, addedFileCol="0, 1", addedFile={}, addedFileScale=1, addedfiles = [], extrafileAdded=0
     
@@ -705,7 +710,6 @@
 
     let fullfiles = [], removedTable = []
     $: opoExpFit ? fullfiles = [...opofiles, ...addedfiles, path.resolve(currentLocation, "averaged.felix")] : fullfiles = [...felixfiles, ...addedfiles, path.resolve(currentLocation, "averaged.felix")]
-
 
     function adjustPeak({closeMainModal=true}={}) {
 
@@ -811,10 +815,11 @@
     }
 
 
+    $: console.log(`opoExpFit: ${opoExpFit}`)
     onMount(()=>{ 
 
+
         console.log("Normline mounted")
-    
         felix_plotting_widgets.checkBoxes = [
             {label:"DAT file", options:datfiles, selected:[], style:"width:100%;", id:getID()},
             {label:"Fundamentals", options:calcfiles, selected:[], style:"width:25%;", id:getID()},
@@ -822,7 +827,8 @@
 
             {label:"Combinations", options:calcfiles, selected:[], style:"width:25%;", id:getID()},
         ]
-     })
+
+    })
 
 </script>
 
@@ -831,10 +837,8 @@
     .active {display: block; }
     .align {display: flex; align-items: center;}
     .felixPlot > div {margin-bottom: 1em;}
-    .notification {width: 100%; border: 1px solid;}
     .plotSlot > div { width: calc(100% - 1em); margin-top: 1em; }
 </style>
-
 
 <!-- Modals -->
 <AdjustInitialGuess bind:peakTable bind:modalActivate on:save={adjustPeak}/>
@@ -842,21 +846,8 @@
 <AddFilesToPlot bind:addFileModal bind:addedFileCol bind:addedFileScale bind:addedfiles bind:addedFile on:addfile="{(e)=>plotData({e:e.detail.event, filetype:"addfile"})}" />
 
 
-
-<!-- QuickViews -->
-<QuickView style="padding:1em;" bind:active={showTheoryFiles} bind:location={theoryLocation}>
-    <FileBrowser bind:currentLocation="{theoryLocation}" bind:fileChecked={theoryfilesChecked} filetype=""/>
-    <div slot="footer" style="margin:auto">
-        <button class="button is-link" on:click="{(e)=>{plotData({e:e, filetype:"theory"}); localStorage["theoryLocation"] = theoryLocation}}">Submit</button>
-    </div>
-</QuickView>
-
-<QuickView style="padding:1em;" bind:active={showOPOFiles} bind:location={OPOLocation}>
-    <FileBrowser bind:currentLocation={OPOLocation} bind:fileChecked={OPOfilesChecked} filetype="ofelix"/>
-    <div slot="footer" style="margin:auto">
-        <button class="button is-link" on:click="{(e)=>{plotData({e:e, filetype:"opofile"}); localStorage["opoLocation"] = OPOLocation}}">Submit</button>
-    </div>
-</QuickView>
+<QuickBrowser bind:active={showTheoryFiles} bind:currentLocation={theoryLocation} bind:fileChecked={theoryfilesChecked} on:submit="{(e)=>{plotData({e:e.detail.event, filetype:"theory"}); localStorage["theoryLocation"] = theoryLocation}}"/>
+<QuickBrowser bind:active={showOPOFiles} bind:currentLocation={OPOLocation} bind:fileChecked={OPOfilesChecked} filetype="ofelix" on:submit="{(e)=>{plotData({e:e.detail.event, filetype:"opofile"}); localStorage["opoLocation"] = OPOLocation}}"/>
 
 <!-- Layout -->
 <Layout {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>
@@ -869,18 +860,18 @@
             <button class="button is-link" on:click="{()=>felixplot_modal = true}"> Open in Matplotlib</button>
             <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
             <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click="{()=>toggleRow = !toggleRow}">Add Theory</button>
-            <button class="button is-link" on:click="{()=>{OPORow = !OPORow}}">OPO</button>
-            <CustomIconSwitch bind:toggler={opoPlotted} icons={["keyboard_arrow_up", "keyboard_arrow_down"]}/>
+            <button class="button is-link" on:click="{()=>{opoExpFit = !opoExpFit}}">OPO</button>
+            <!-- <CustomIconSwitch bind:toggler={opoExpFit} icons={["keyboard_arrow_up", "keyboard_arrow_down"]}/> -->
 
         </div>
 
-        <div class="animated fadeIn hide content" class:active={OPORow} >
+        <div class="animated fadeIn hide content" class:active={opoExpFit} >
             <div class="align">
                 <CustomSelect style="width:7em;" bind:picked={calibFile} label="Calib. file" options={["", ...OPOcalibFiles]}/>
-                <Textfield on:change="{(e)=>plotData({e:e, filetype:"opofile"})}" style="width:7em; margin:0 0.5em;" bind:value={delta_OPO} label="Delta OPO"/>
-                <Textfield on:change="{(e)=>plotData({e:e, filetype:"opofile"})}" style="width:9em" bind:value={calibValue} label="Wn-meter calib."/>
+                <Textfield style="width:7em; margin:0 0.5em;" bind:value={delta_OPO} label="Delta OPO"/>
+                <Textfield style="width:9em" bind:value={calibValue} label="Wn-meter calib."/>
                 <button class="button is-link" on:click="{()=>{showTheoryFiles=false;showOPOFiles = !showOPOFiles; OPOLocation = localStorage["opoLocation"] || currentLocation}}"> Browse File</button>
-                <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"opofile", tkplot:"plot"})}">Open in Matplotlib</button>
+                <!-- <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"opofile", tkplot:"plot"})}">Open in Matplotlib</button> -->
                 <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"opofile"})}">Replot</button>
             </div>
         </div>
@@ -889,7 +880,8 @@
             <button class="button is-link" on:click="{()=>{showOPOFiles=false;showTheoryFiles = !showTheoryFiles; theoryLocation = localStorage["theoryLocation"] || currentLocation}}"> Browse File</button>
             <Textfield type="number" style="width:7em; margin-right:0.5em;" variant="outlined" bind:value={sigma} label="Sigma"/>
             <Textfield type="number" style="width:7em" variant="outlined" bind:value={scale} label="Scale"/>
-            <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"general", general:{args:[...theoryfiles, normMethod, sigma, scale, theoryLocation, "plot"], pyfile:"theory.py"}})}">Open in Matplotlib</button>
+            <!-- <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"general", general:{args:[...theoryfiles, normMethod, sigma, scale, theoryLocation, "plot"], pyfile:"theory.py"}})}">Open in Matplotlib</button> -->
+            <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"theory"})}">Replot</button>
         
         </div>
 
@@ -918,14 +910,15 @@
         
         <!-- Plots container -->
         <div class="felixPlot">
-            <div class="animated fadeIn hide" class:active={show_theoryplot} id="exp-theory-plot"></div>
+            <div class="animated fadeIn" class:hide={!show_theoryplot} id="exp-theory-plot"></div>
             <div id="bplot"></div>
             <div id="saPlot"></div>
             <div id="avgplot"></div>
-            <div class="animated fadeIn hide" class:active={opoPlotted} id="opoplot"></div>
-            <div class="animated fadeIn hide" class:active={opoPlotted} id="opoSA"></div>
+            <div class="animated fadeIn" class:hide={!opoExpFit} id="opoplot"></div>
+            <div class="animated fadeIn" class:hide={!opoExpFit} id="opoSA"></div>
 
-            <div class="animated fadeIn hide" class:active={opoPlotted} id="opoRelPlot"></div>
+            <div class="animated fadeIn" class:hide={!opoExpFit} id="opoRelPlot"></div>
+        
         </div>
     
         {#if graphPlotted}
@@ -934,7 +927,7 @@
                 <!-- Write function buttons -->
                 <div class="content" >
 
-                    <CustomSwitch style="margin: 0 1em;" bind:selected={opoExpFit} label="OPO"/>
+                    <!-- <CustomSwitch style="margin: 0 1em;" bind:selected={opoExpFit} label="OPO"/> -->
 
                     <CustomSelect bind:picked={output_name} label="Output filename" options={output_namelists}/>
                     <Textfield style="width:7em; margin:0 0.5em;" bind:value={writeFileName} label="writeFileName"/>
