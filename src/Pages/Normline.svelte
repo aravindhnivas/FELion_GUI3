@@ -1,38 +1,42 @@
 <script>
     // IMPORTING Modules
     import Textfield from '@smui/textfield'
-    // import HelperText from '@smui/textfield/helper-text/index'
     import Layout, {createToast} from "../components/Layout.svelte"
     import { fade } from 'svelte/transition'
-    // import Ripple from '@smui/ripple'
-
     import {activated, modalContent} from "../components/Modal.svelte"
-    
     import {plot, subplot} from "../js/functions.js"
     
     import CustomSwitch from '../components/CustomSwitch.svelte';
-
     import CustomSelect from '../components/CustomSelect.svelte';
-
     import CustomIconSwitch from '../components/CustomIconSwitch.svelte';
     import CustomRadio from '../components/CustomRadio.svelte';
+
     import ReportLayout from '../components/ReportLayout.svelte';
-    // import QuickView from '../components/QuickView.svelte';
     import QuickBrowser from '../components/QuickBrowser.svelte';
-    // import FileBrowser from "../components/FileBrowser.svelte"
-
-    // import FormField from '@smui/form-field';
-
     import {onMount, tick} from "svelte"
+
     import {Icon} from '@smui/icon-button'
+    
     import Table from '../components/Table.svelte'
-    // import CustomCheckList from '../components/CustomCheckList.svelte';
 
     import FelixPlotting from './normline/modals/FelixPlotting.svelte';
     import AdjustInitialGuess from './normline/modals/AdjustInitialGuess.svelte';
     import AddFilesToPlot from './normline/modals/AddFilesToPlot.svelte';
     import FrequencyTable from './normline/components/FrequencyTable.svelte';
+    
     import {init_tour_normline} from './normline/initTour';
+
+    import {NGauss_fit_func} from './normline/functions/NGauss_fit';
+    import {find_peaks_func} from './normline/functions/find_peaks';
+    import {felix_func} from './normline/functions/felix';
+    import {opofile_func} from './normline/functions/opofile';
+    import {theory_func} from './normline/functions/theory';
+    import {exp_fit_func} from './normline/functions/exp_fit';
+
+    import {get_err_func} from './normline/functions/get_err';
+
+    import {felixIndex, felixPeakTable, felixOutputName, opoMode, dataTable, dataTable_avg} from './normline/functions/svelteWritables';
+
    ///////////////////////////////////////////////////////////////////////
     
     const filetype="felix", id="Normline"
@@ -56,14 +60,13 @@
     let felix_normMethod = "Relative", normMethod_datas = {}, NGauss_fit_args = {}
     
     let graphPlotted = false, overwrite_expfit = false, writeFile = false
-    let line = [], index = [], annotations = [], plot_trace_added = 0, double_peak_active = false, line_index_count = 0
+    let line = [], annotations = [], plot_trace_added = 0, line_index_count = 0
 
     $: console.log("Trace length: ", plot_trace_added)
-    $: console.log("Double peak active: ", double_peak_active)
     $: output_namelists = ["averaged", ...plottedFiles, ...addedfiles.map(file=>path.basename(file)).map(file=>file.split(".")[0])]
 
-    let output_name = "averaged", writeFileName = ""
-    let dataTable = [], dataTable_avg = []
+    // let output_name = "averaged"
+    let writeFileName = ""
     
     let annotation_color = "black"
     let boxSelected_peakfinder = true
@@ -72,7 +75,7 @@
 
     //////// OPO Plot ///////////
     window.getID = () => Math.random().toString(32).substring(2)
-    let peakTable = []
+    // let peakTable = []
 
     window.annotation = []
 
@@ -94,63 +97,58 @@
 
             case "felix":
                 removeExtraFile()
-                graphPlotted = false, output_name = "averaged", window.annotation = [], peakTable = []
+                graphPlotted = false, $felixOutputName = "averaged", window.annotation = [], $felixPeakTable = []
                 
                 if(felixfiles.length<1) return createToast("No files selected", "danger")
                 break;
             
             case "baseline":
-                if (opoExpFit) {if(opofiles.length<1) return createToast("No OPO files selected", "danger")}
+                if ($opoMode) {if(opofiles.length<1) return createToast("No OPO files selected", "danger")}
                 else {if(felixfiles.length<1) return createToast("No FELIX files selected", "danger")}
                 break;
 
             case "exp_fit":
-                if (index.length<2) { return createToast("Range not found!!. Select a range using Box-select", "danger") }
+                if ($felixIndex.length<2) { return createToast("Range not found!!. Select a range using Box-select", "danger") }
 
-                expfit_args = { addedFileScale, addedFileCol, output_name, overwrite_expfit, writeFile, writeFileName, normMethod, index, fullfiles, location }
+                expfit_args = { addedFileScale, addedFileCol, output_name:$felixOutputName, overwrite_expfit, writeFile, writeFileName, normMethod, index:$felixIndex, fullfiles, location }
 
-                break;
-
-            case "double_peak":
-                double_fit_args = opoExpFit ? [amp1, amp2, cen1, cen2, sig1, sig2, ...opofiles, overwrite_expfit, output_name, "Log", OPOLocation, ...index ]
-                    : [amp1, amp2, cen1, cen2, sig1, sig2, ...felixfiles, overwrite_expfit, output_name, normMethod, currentLocation, ...index ]
                 break;
 
             case "NGauss_fit":
 
                 if (boxSelected_peakfinder) {
-                    if (index.length<2) { return createToast("Box selection is turned ON so please select a wn. range to fit", "danger") }
-                    NGauss_fit_args.index = index
+                    if ($felixIndex.length<2) { return createToast("Box selection is turned ON so please select a wn. range to fit", "danger") }
+                    NGauss_fit_args.index = $felixIndex
 
                 } else {delete NGauss_fit_args.index}
 
 
                 
-                if (peakTable.length === 0) {return createToast("No arguments initialised yet.", "danger") }
+                if ($felixPeakTable.length === 0) {return createToast("No arguments initialised yet.", "danger") }
                 
                 NGauss_fit_args.fitNGauss_arguments = {}
-                peakTable = _.sortBy(peakTable, [(o)=>o["freq"]])
+                $felixPeakTable = _.sortBy($felixPeakTable, [(o)=>o["freq"]])
 
-                peakTable.forEach((f, index)=>{
+                $felixPeakTable.forEach((f, index)=>{
                     NGauss_fit_args.fitNGauss_arguments[`cen${index}`] = f.freq
                     NGauss_fit_args.fitNGauss_arguments[`A${index}`] = f.amp
 
                     NGauss_fit_args.fitNGauss_arguments[`sigma${index}`] = f.sig
                 })
 
-                NGauss_fit_args = {...NGauss_fit_args, location, addedFileScale, addedFileCol, overwrite_expfit, writeFile, writeFileName, output_name, fullfiles, normMethod, output_name}
+                NGauss_fit_args = {...NGauss_fit_args, location, addedFileScale, addedFileCol, overwrite_expfit, writeFile, writeFileName, output_name:$felixOutputName, fullfiles, normMethod}
                 break;
             
             case "find_peaks":
                 
-                peakTable = []
+                $felixPeakTable = []
 
-                if (index.length<2 && boxSelected_peakfinder) { return createToast("Box selection is turned ON so please select a wn. range to fit", "danger") }
+                if ($felixIndex.length<2 && boxSelected_peakfinder) { return createToast("Box selection is turned ON so please select a wn. range to fit", "danger") }
                 
-                let selectedIndex = boxSelected_peakfinder ? index : [0, 0]
+                let selectedIndex = boxSelected_peakfinder ? $felixIndex : [0, 0]
 
 
-                find_peaks_args = { addedFileScale, addedFileCol, output_name, normMethod, peak_prominence, peak_width, peak_height, selectedIndex, fullfiles, location }
+                find_peaks_args = { addedFileScale, addedFileCol, output_name:$felixOutputName, normMethod, peak_prominence, peak_width, peak_height, selectedIndex, fullfiles, location }
 
                 break;
 
@@ -158,11 +156,10 @@
                 removeExtraFile()
                 if(opofiles.length<1) return createToast("No files selected", "danger")
 
-                opoExpFit = true, window.annotation = []
+                $opoMode = true, window.annotation = []
                 break;
 
             case "get_err":
-                if (double_peak_active) { lineData_list = err_data1_plot ? weighted_error[0] : weighted_error[1] }
                 if (lineData_list.length<2) return createToast("Not sufficient lines collected!", "danger")
                 break;
 
@@ -186,7 +183,7 @@
         }
 
         const pyfileInfo = { general, 
-            baseline: {pyfile:"baseline.py", args: opoExpFit ? opofiles: felixfiles},
+            baseline: {pyfile:"baseline.py", args: $opoMode ? opofiles: felixfiles},
             felix: {pyfile:"normline.py" , args:[...felixfiles, delta]},
             exp_fit: {pyfile:"exp_gauss_fit.py" , args:[JSON.stringify(expfit_args)]},
             opofile: {pyfile:"oposcan.py" , args:[...opofiles, tkplot, delta_OPO, calibValue, calibFile]},
@@ -196,7 +193,7 @@
             double_peak: {pyfile:"double_gaussian.py" , args:double_fit_args},
             NGauss_fit: {pyfile:"multiGauss.py" , args:[JSON.stringify(NGauss_fit_args)]},
             addfile: {pyfile:"addTrace.py" , args:[JSON.stringify(addedFile)]},
-            get_details: {pyfile:"getfile_details.py", args:[JSON.stringify({files:opoExpFit?opofiles : felixfiles, normMethod})]},
+            get_details: {pyfile:"getfile_details.py", args:[JSON.stringify({files:$opoMode?opofiles : felixfiles, normMethod})]},
 
             felix_tkplot: {pyfile:"felix_tkplot.py", args:[JSON.stringify({
                 location,
@@ -250,355 +247,60 @@
             $activated = true
             error_occured_py = true
         });
-        py.on("close", () => {
 
+        py.on("close", () => {
             if (!error_occured_py) {
+
                 try {
                     let dataFromPython = fs.readFileSync(path.join(localStorage["pythonscript"], "data.json"))
                     window.dataFromPython = dataFromPython = JSON.parse(dataFromPython.toString("utf-8"))
                     console.log(dataFromPython)
                     
                     if (filetype == "felix") {
-                        opoExpFit = false, output_name = "averaged"
-                        line = [], index = [], annotations = [], lineData_list = [], plot_trace_added = 0
-
-                        show_theoryplot = false
-                        if (!keepTable) {dataTable = dataTable_avg = []}
-
-                        let avgdataToPlot;
-                        let signal_formula;
-                        let ylabel;
-
-                        if (normMethod === "Log") {
-                            avgdataToPlot = dataFromPython["average"]
-                            signal_formula = "Signal = -ln(C/B)/Power(in J)"
-                            ylabel = "Normalised Intensity per J"
-                        } else if (normMethod == "Relative") {
-
-                            avgdataToPlot = dataFromPython["average_rel"]
-
-                            signal_formula = "Signal = (1-C/B)*100"
-                            ylabel = "Relative Depletion (%)"
-
-                        } else if (normMethod == "IntensityPerPhoton") {
-
-                            avgdataToPlot = dataFromPython["average_per_photon"]
-
-                            signal_formula = "Signal = -ln(C/B)/#Photons"
-                            ylabel = "Normalised Intensity per photon"
-                        }
-                        const get_data = (data) => {
-                            let dataPlot = [];
-                            for (let x in data) { dataPlot.push(data[x]) }
-                            return dataPlot
-                        }
-                        let signal = {
-                            "rel": "Signal = (1-C/B)*100",
-                            "log": "Signal = -ln(C/B)/Power(in J)",
-                            "hv": "Signal = -ln(C/B)/#Photons"
-                        }
-                        const set_title = (method) => `Normalised and Averaged Spectrum (delta=${delta})<br>${signal[method]}; {C=Measured Count, B=Baseline Count}`
-
-                        normMethod_datas = {
-                            "Relative": {
-                                "data": get_data(dataFromPython["average_rel"]),
-                                "layout": {
-                                    "title": set_title("rel"),
-                                    "yaxis": { "title": "Relative Depletion (%)" },
-                                    "xaxis": { "title": "Calibrated Wavelength (cm-1)" }
-                                }
-                            },
-                            "Log": {
-                                "data": get_data(dataFromPython["average"]),
-                                "layout": {
-                                    "title": set_title("log"),
-                                    "yaxis": { "title": "Normalised Intensity per J" },
-                                    "xaxis": { "title": "Calibrated Wavelength (cm-1)" }
-                                }
-                            },
-                            "IntensityPerPhoton": {
-                                "data": get_data(dataFromPython["average_per_photon"]),
-                                "layout": {
-                                    "title": set_title("hv"),
-                                    "yaxis": { "title": "Normalised Intensity per photon" },
-                                    "xaxis": { "title": "Calibrated Wavelength (cm-1)" }
-                                }
-                            },
-
-                        }
-
-                        plot(
-                            "Baseline Corrected",
-                            "Wavelength (cm-1)",
-                            "Counts",
-                            dataFromPython["base"],
-                            "bplot"
-                        );
-
-                        plot(
-                            `Normalised and Averaged Spectrum (delta=${delta})<br>${signal_formula}; {C=Measured Count, B=Baseline Count}`,
-                            "Calibrated Wavelength (cm-1)",
-                            ylabel,
-                            avgdataToPlot,
-                            "avgplot"
-                        );
-
-                        subplot(
-                            "Spectrum and Power Analyser",
-                            "Wavelength set (cm-1)",
-                            "SA (cm-1)",
-                            dataFromPython["SA"],
-                            "saPlot",
-                            "Wavelength (cm-1)",
-                            `Total Power (mJ)`,
-                            dataFromPython["pow"]
-                        );
-
-                        let avgplot = document.getElementById("avgplot")
-                        if (!plotly_event_created) {
-
-                            console.log("Creating plotly graph events")
-                            avgplot.on("plotly_selected", (data) => {
-                                if (!data) console.log("No data available to fit")
-                                else {
-
-                                    console.log(data)
-                                    opoExpFit = false
-                                    let { range } = data
-                                    output_name = data.points[0].data.name.split(".")[0]
-                                    index = range.x
-                                    console.log(`Selected file: ${output_name}`)
-                                    console.log(`Index selected: ${index}`)
-                                }
-
-                            })
                         
-                            avgplot.on('plotly_click', (data)=>{
-                                console.log("Graph clicked: ", data)
+                        line = [], annotations = [], lineData_list = [], plot_trace_added = 0
+                        show_theoryplot = false
 
-                                if (data.event.ctrlKey) {
-                                    console.log("Data point length: ", data.points.length)
-                                    for(let i=0; i<data.points.length; i++){
-
-                                        console.log("Running cycle: ", i)
-                                        let d = data.points[i]
-                                        let name = d.data.name
-
-                                        if (name.includes(output_name)){
-
-                                            console.log("Filename: ", output_name)
-
-
-                                            let line_color = d.data.line.color
-                                            console.log(name)
-                                            console.log(d, d.x, d.y)
-
-                                            let [freq, amp] = [parseFloat(d.x.toFixed(2)), parseFloat(d.y.toFixed(2))]
-                                            
-                                            console.log("Annotation before: ", window.annotation)
-                                            window.annotation = [...window.annotation, { text: `(${freq}, ${amp})`, x: freq, y: amp, font:{color:line_color}, arrowcolor:line_color }]
-                                            console.log("Annotation after: ", window.annotation)
-
-                                            Plotly.relayout("avgplot",{annotations: _.uniqBy(window.annotation, 'text')})
-                                            
-                                            peakTable = [...peakTable, {freq, amp, sig:Ngauss_sigma, id:getID()}]
-                                            peakTable = _.uniqBy(peakTable, 'freq')
-                                        }
-                                    }
-                                    console.log("Running cycle ended")
-                                } 
-                            })
-
-                            plotly_event_created = true;
-
-                        }
-                        console.log("Graph Plotted")
+                        if (!keepTable) {$dataTable = $dataTable_avg = []}
+                        
+                        plotly_event_created = felix_func({normMethod, dataFromPython, delta, plotly_event_created})
+                        
                         createToast("Graph Plotted", "success")
                         graphPlotted = true
                     } else if (filetype == "opofile") {
 
-                        output_name = "averaged"
-                        // opoExpFit = true
-
-                        plot("OPO spectrum", "Wavenumber (cm-1)", "Counts", dataFromPython["real"], "opoplot")
-                        plot("OPO Calibration", "Set Wavenumber (cm-1)", "Measured Wavenumber (cm-1)", dataFromPython["SA"], "opoSA")
-
-                        plot("OPO spectrum: Depletion (%)", "Wavenumber (cm-1)", "Depletion (%)", dataFromPython["relative"], "opoRelPlot")
-                        let opoRelPlot = document.getElementById("opoRelPlot")
-                        if(!plotly_event_created_opo){
-
-                            console.log("Creating plotly graph events")
-
-                            opoRelPlot.on("plotly_selected", (data) => {
-
-                                if (!data) console.log("No data available to fit")
-                                else {
-                                    console.log(data)
-                                    opoExpFit = true
-                                    let { range } = data
-                                    output_name = data.points[0].data.name.split(".")[0]
-                                    index = range.x
-                                    console.log(`Selected file: ${output_name}`)
-                                    console.log(`Index selected: ${index}`)
-                                }
-                            })
-
-                            plotly_event_created_opo = true
-                        }
-                        console.log("Graph Plotted")
+                        plotly_event_created_opo = opofile_func({dataFromPython, plotly_event_created_opo})
                         createToast("Graph Plotted", "success")
-                        showOPOFiles = false, graphPlotted = true, opoExpFit = true
+
+                        showOPOFiles = false, graphPlotted = true, $opoMode = true
+
                     } else if (filetype == "theory") {
 
-                        let ylabel;
-                        if (normMethod === "Log") { ylabel = "Normalised Intensity per J" }
-                        else if (normMethod === "Relative") { ylabel = "Relative Depletion (%)" }
-                        else { ylabel = "Normalised Intensity per Photon" }
-
-                        let theoryData = [];
-                        for (let x in dataFromPython["line_simulation"]) { theoryData.push(dataFromPython["line_simulation"][x]) }
-
-                        plot(
-                            "Experimental vs Theory",
-                            "Calibrated Wavelength (cm-1)",
-                            ylabel, [dataFromPython["averaged"], ...theoryData],
-                            "exp-theory-plot"
-                        )
-
-
-                        console.log("Graph Plotted")
+                        theory_func({dataFromPython, normMethod})
                         createToast("Graph Plotted", "success")
                         show_theoryplot = true, showTheoryFiles = false
 
                     } else if (filetype == "exp_fit") {
-                        double_peak_active = false
 
-                        Plotly.addTraces(graphDiv, dataFromPython["fit"])
-                        line = [...line, ...dataFromPython["line"]]
-                        Plotly.relayout(graphDiv, { shapes: line })
-                        annotations = [...annotations, dataFromPython["annotations"]]
-                        Plotly.relayout(graphDiv, { annotations: annotations })
-                        
-                        plot_trace_added++
-                        let [freq, amp, fwhm, sig] = dataFromPython["table"].split(", ")
-                        let color = "#fafafa";
-                        if (output_name === "averaged") {
-                            color = "#836ac05c"
-                            dataTable_avg = [...dataTable_avg, {name: `Line #${line_index_count}`, id:getID(), freq, amp, fwhm, sig, color}]
-                            dataTable_avg = _.uniqBy(dataTable_avg, "freq")
-                            line_index_count++
-                        } else {
-                            if (collectData) {
-                                console.log("Collecting lines")
-                                lineData_list = [...lineData_list, dataFromPython["for_weighted_error"]]
-                             }
-                        }
-                        let newTable = {name: output_name, id:getID(), freq, amp, fwhm, sig, color}
-                        dataTable = _.uniqBy([...dataTable, newTable], "freq")
-                        console.log("Line fitted")
+                        [line, annotations, plot_trace_added, line_index_count, collectData, lineData_list] = exp_fit_func({dataFromPython, graphDiv, output_name:$felixOutputName, line, annotations, plot_trace_added, line_index_count, collectData, lineData_list})
+
                         createToast("Line fitted with gaussian function", "success")
 
                     } else if (filetype == "get_err") {
 
-                        let {freq, amp, fwhm, sig } = dataFromPython
-                        
-                        let data1 = {name: "unweighted_mean", id:getID(), freq:freq.mean, amp:amp.mean, fwhm:fwhm.mean, sig:sig.mean, color:"#f14668"}
-                        let data2 = {name: "weighted_mean", id:getID(), freq:freq.wmean, amp:amp.wmean, fwhm:fwhm.wmean, sig:sig.wmean, color:"#2098d1"}
-                        dataTable = [...dataTable, data1, data2]
-                        dataTable_avg = [...dataTable_avg, data1, data2]
-
-                        if (double_peak_active) {
-                            err_data1_plot ? weighted_error[0] = [] : weighted_error[1] = []
-                            err_data1_plot = false
-                        } else {  lineData_list = [] }
-
-                        console.log("Weighted fit.")
+                        get_err_func({dataFromPython})
                         createToast("Weighted fit. done", "success")
-
-                    } else if (filetype == "double_peak") {
-                        double_peak_active = true
-                        console.log("Double peak calculation")
-                        Plotly.addTraces(graphDiv, dataFromPython["peak"])
-                        plot_trace_added++
-
-                        annotations = [...annotations, ...dataFromPython["annotations"]]
-                        Plotly.relayout(graphDiv, { annotations: annotations })
-                        let [freq1, amp1, sig1, fwhm1, freq2, amp2, sig2, fwhm2] = dataFromPython["table"].split(", ")
-                        let color = "#fafafa";
-
-                        if (output_name === "averaged") {
-                            color = "#452f7da8"
-                            
-                            let newTable1 = {name: `Line #${line_index_count}`, id:getID(), freq:freq1, amp:amp1, fwhm:fwhm1, sig:sig1, color:color}
-                            let newTable2 = {name: `Line #${line_index_count+1}`, id:getID(), freq:freq2, amp:amp2, fwhm:fwhm2, sig:sig2, color:color}
-                            
-                            dataTable_avg = [...dataTable_avg, newTable1, newTable2]
-                            dataTable_avg = _.uniqBy(dataTable_avg, "freq")
-                            line_index_count += 2
-                            
-                        } else {
-                            if (collectData) {
-                                console.log("Collecting lines")
-                                err_data1_plot = true    
-                                weighted_error[0] = [...weighted_error[0], dataFromPython["for_weighted_error1"]]
-                                weighted_error[1] = [...weighted_error[1], dataFromPython["for_weighted_error2"]]
-                             }
-
-                        }
-
-                        let newTable1 = {name: output_name, id:getID(), freq:freq1, amp:amp1, fwhm:fwhm1, sig:sig1, color:color}
-                        let newTable2 = {name: output_name, id:getID(), freq:freq2, amp:amp2, fwhm:fwhm2, sig:sig2, color:color}
-                        dataTable = _.uniqBy([...dataTable, newTable1, newTable2], "freq")
-
-                        console.log("Line fitted Line fitted with double gaussian function")
-                        createToast("Line fitted with double gaussian function", "success")
 
                     } else if (filetype == "find_peaks") {
 
-                        Plotly.relayout(graphDiv, { annotations: [] })
-                        window.annotation = dataFromPython[2]["annotations"]
-
-                        annotation_color = dataFromPython[2]["annotations"]["arrowcolor"]
-                        Plotly.relayout(graphDiv, { annotations: dataFromPython[2]["annotations"] })
-
-                        
-                        setTimeout(()=> {
-
-                            const [peakX, peakY] = [dataFromPython[0]["data"].x, dataFromPython[0]["data"].y]
-                            setTimeout(()=>{[window.peakX, window.peakY] = [peakX, peakY]}, 500)
-
-                            // let color = "#fafafa";
-                            for (let index = 0; index < peakX.length; index++) {
-                                let [freq, amp, sig] = [peakX[index], peakY[index], Ngauss_sigma]
-                                peakTable = [...peakTable, {freq, amp, sig, id:getID()}]
-                            }
-                            originalTable = peakTable;
-
-                            console.log(`Found peaks:\nX: ${peakX}\nY: ${peakY}`)
-
-                        }, 500)
-                        console.log("Peaks found")
+                        annotation_color = find_peaks_func({graphDiv, dataFromPython, annotation_color, Ngauss_sigma})
+                        console.log(`felixPeakTable: ${$felixPeakTable}`)
                         createToast("Peaks found", "success")
                     } else if (filetype == "NGauss_fit") {
 
-                        Plotly.addTraces(graphDiv, dataFromPython["fitted_data"])
-                        let color = "#fafafa";
-                        dataFromPython["fitted_parameter"].forEach(data=>{
-                            let {freq, amp, fwhm, sig} = data
-                            if (output_name === "averaged") {
-                                color = "#836ac05c"
-                                dataTable_avg = [...dataTable_avg, {name: `Line #${line_index_count}`, id:getID(), freq:freq, amp:amp, fwhm:fwhm, sig:sig, color:color}]
-                                dataTable_avg = _.uniqBy(dataTable_avg, "freq")
-                                line_index_count++
-                            }
-
-                            let newTable = {name: output_name, id:getID(), freq:freq, amp:amp, fwhm:fwhm, sig:sig, color:color}
-                            dataTable = _.uniqBy([...dataTable, newTable], "freq")
-                        })
-
+                        line_index_count = NGauss_fit_func({graphDiv, dataFromPython, output_name:$felixOutputName, line_index_count})
                         console.log("Line fitted")
                         createToast(`Line fitted with ${dataFromPython["fitted_parameter"].length} gaussian function`, "success")
-
                         plot_trace_added++
 
                     } else if (filetype == "addfile") {
@@ -608,18 +310,17 @@
                         extrafileAdded += addedfiles.length
 
                     } else if (filetype == "get_details") {
-                        filedetails = [], showfile_details = true
+                        showfile_details = true
 
-                        dataFromPython.files.forEach(data=>{
+                        filedetails = dataFromPython.files.map(data => {
                             let {filename, trap, res, b0, range} = data
                             let [min, max] = range
-
-                            filedetails = [...filedetails, {filename, min, max, trap, b0, res, precursor:"", ie:"", temp:"", id:getID()}]
-
+                            return {filename, min, max, trap, b0, res, precursor:"", ie:"", temp:"", id:getID()}
                         })
+                       
                     }
 
-                } catch (err) { $modalContent = err; $activated = true }
+                } catch (err) { $modalContent = err.stack; $activated = true }
             }
             console.log("Process closed")
             target.classList.toggle("is-loading")
@@ -628,37 +329,30 @@
     }
 
     const clearAllPeak = () => {
+
+
         if (plot_trace_added === 0) {return createToast("No fitted lines found", "danger")}
 
         console.log("Removing all found peak values")
-        annotations = index = line = lineData_list = []
+        
+        annotations = $felixIndex = line = lineData_list = []
 
         Plotly.relayout(graphDiv, { annotations: [], shapes: [] })
+        
         for (let i=0; i<plot_trace_added; i++) {Plotly.deleteTraces(graphDiv, [-1])}
+        
         plot_trace_added = 0
     }
 
     const clearLastPeak = () => {
         
         if (plot_trace_added === 0) {return createToast("No fitted lines found", "danger")}
-        if (double_peak_active) {
 
-            plotData({filetype:"general", general:{args:[output_name, location], pyfile:"delete_fileLines.py"}})
-            plotData({filetype:"general", general:{args:[output_name, location], pyfile:"delete_fileLines.py"}})
-            
-            dataTable = _.dropRight(dataTable, 2)
-            annotations = _.dropRight(annotations, 2)
-            weighted_error[0] = _.dropRight(weighted_error[0], 1)
-            weighted_error[1] = _.dropRight(weighted_error[1], 1)
-        } else {
-
-            plotData({filetype:"general", general:{args:[output_name, location], pyfile:"delete_fileLines.py"}})
-            dataTable = _.dropRight(dataTable, 1)
-            line = _.dropRight(line, 2)
-            annotations = _.dropRight(annotations, 1)
-
-            lineData_list = _.dropRight(lineData_list, 1)
-        }
+        plotData({filetype:"general", general:{args:[$felixOutputName, location], pyfile:"delete_fileLines.py"}})
+        $dataTable = _.dropRight($dataTable, 1)
+        line = _.dropRight(line, 2)
+        annotations = _.dropRight(annotations, 1)
+        lineData_list = _.dropRight(lineData_list, 1)
         Plotly.relayout(graphDiv, { annotations: annotations, shapes: line })
 
         Plotly.deleteTraces(graphDiv, [-1])
@@ -674,25 +368,26 @@
     
     let style = "width:7em; height:3.5em; margin-right:0.5em";
     // OPO
-    let showOPOFiles = false, OPOfilesChecked = [], opoExpFit = false
+    let showOPOFiles = false, OPOfilesChecked = []
+    // let opoExpFit = false
     let OPOLocation = localStorage["opoLocation"] || currentLocation
 
     
-    $: normMethod = opoExpFit ? "Log" : felix_normMethod
-    $: location = opoExpFit ? OPOLocation : currentLocation
+    $: normMethod = $opoMode ? "Log" : felix_normMethod
+    $: location = $opoMode ? OPOLocation : currentLocation
 
     $: opofiles = OPOfilesChecked.map(file=>path.resolve(OPOLocation, file))
-    $: graphDiv = opoExpFit ? "opoRelPlot" : "avgplot"
+    $: graphDiv = $opoMode ? "opoRelPlot" : "avgplot"
     
-    $: plottedFiles = opoExpFit ? OPOfilesChecked.map(file=>file.split(".")[0]) || [] : fileChecked.map(file=>file.split(".")[0]) || []
+    $: plottedFiles = $opoMode ? OPOfilesChecked.map(file=>file.split(".")[0]) || [] : fileChecked.map(file=>file.split(".")[0]) || []
     let delta_OPO = 0.3, calibValue = 9394.356278462961.toFixed(4), calibFile = ""
     
     let OPOcalibFiles = []
     $: if(fs.existsSync(OPOLocation)) {OPOcalibFiles = fs.readdirSync(OPOLocation).filter(file=> file.endsWith(".calibOPO"))}
-    $: opoExpFit ? createToast("OPO MODE") : createToast("FELIX MODE")
+    $: $opoMode ? createToast("OPO MODE") : createToast("FELIX MODE")
     
     
-    $: Ngauss_sigma = opoExpFit ? 2 : 5
+    $: Ngauss_sigma = $opoMode ? 2 : 5
     let modalActivate = false, addFileModal=false, addedFileCol="0, 1", addedFile={}, addedFileScale=1, addedfiles = [], extrafileAdded=0
     
     $: console.log(`Extrafile added: ${extrafileAdded}`)
@@ -708,19 +403,19 @@
     }
 
     let fullfiles = []
-    $: opoExpFit ? fullfiles = [...opofiles, ...addedfiles, path.resolve(currentLocation, "averaged.felix")] : fullfiles = [...felixfiles, ...addedfiles, path.resolve(currentLocation, "averaged.felix")]
+    $: $opoMode ? fullfiles = [...opofiles, ...addedfiles, path.resolve(currentLocation, "averaged.felix")] : fullfiles = [...felixfiles, ...addedfiles, path.resolve(currentLocation, "averaged.felix")]
 
     function adjustPeak({closeMainModal=true}={}) {
 
-        peakTable = _.filter(peakTable, (tb)=>tb.sig != 0);
+        $felixPeakTable = _.filter($felixPeakTable, (tb)=>tb.sig != 0);
         
-        peakTable = _.sortBy(peakTable, [(o)=>o["freq"]])
+        $felixPeakTable = _.sortBy($felixPeakTable, [(o)=>o["freq"]])
 
         let temp_annotate = {xref:"x", y:"y", "showarrow":true,  "arrowhead":2, "ax":-25, "ay":-40, font:{color:annotation_color}, arrowcolor:annotation_color}
         
         window.annotation = []
 
-        peakTable.forEach((f)=>{
+        $felixPeakTable.forEach((f)=>{
             let _annotate = {x:f.freq, y:f.amp, text:`(${f.freq.toFixed(2)}, ${f.amp.toFixed(2)})`}
             window.annotation = [...window.annotation, {...temp_annotate, ..._annotate} ]
         })
@@ -752,16 +447,13 @@
         if(!fs.existsSync(filename)) {return createToast(`${name}.json doesn't exist in DATA dir.`, "danger")}
         let loadedfile = JSON.parse(fs.readFileSync(filename)).file
         if (name === "filedetails") {filedetails = _.uniqBy([...loadedfile, ...filedetails], "filename")}
-        else if (name === "peakTable") {peakTable = _.uniqBy([...loadedfile, ...peakTable], "freq"); adjustPeak()}
+        else if (name === "peakTable") {$felixPeakTable = _.uniqBy([...loadedfile, ...$felixPeakTable], "freq"); adjustPeak()}
         return createToast(`${name}.json has been loaded.`, "success");
     }
     
     let savePeakfilename = "peakTable"
 
-    // let figureModal = false
-
     const init_tour = async () => {
-
         if (!toggleBrowser) {toggleBrowser = true; await sleep(600)} // Filebrowser toggling and its animation time to appear
         await tick() // For all the reactive components to render
         init_tour_normline({filetype})
@@ -813,7 +505,7 @@
     }
 
 
-    $: console.log(`opoExpFit: ${opoExpFit}`)
+    $: console.log(`$opoMode: ${$opoMode}`)
     onMount(()=>{ 
 
 
@@ -839,7 +531,7 @@
 </style>
 
 <!-- Modals -->
-<AdjustInitialGuess bind:peakTable bind:modalActivate on:save={adjustPeak}/>
+<AdjustInitialGuess bind:peakTable={$felixPeakTable} bind:modalActivate on:save={adjustPeak}/>
 <FelixPlotting bind:felixplot_modal bind:felix_plotting_widgets on:submit="{()=>console.log("FELIX plotting submitted", felix_plotting_widgets) }"/>
 <AddFilesToPlot bind:addFileModal bind:addedFileCol bind:addedFileScale bind:addedfiles bind:addedFile on:addfile="{(e)=>plotData({e:e.detail.event, filetype:"addfile"})}" />
 
@@ -858,18 +550,16 @@
             <button class="button is-link" on:click="{()=>felixplot_modal = true}"> Open in Matplotlib</button>
             <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
             <button class="button is-link" on:click="{()=>toggleRow = !toggleRow}">Add Theory</button>
-            <button class="button is-link" on:click="{()=>{opoExpFit = !opoExpFit}}">OPO</button>
-            <!-- <CustomIconSwitch bind:toggler={opoExpFit} icons={["keyboard_arrow_up", "keyboard_arrow_down"]}/> -->
+            <button class="button is-link" on:click="{()=>{$opoMode = !$opoMode}}">OPO</button>
 
         </div>
 
-        <div class="animated fadeIn hide content" class:active={opoExpFit} >
+        <div class="animated fadeIn hide content" class:active={$opoMode} >
             <div class="align">
                 <CustomSelect style="width:7em;" bind:picked={calibFile} label="Calib. file" options={["", ...OPOcalibFiles]}/>
                 <Textfield style="width:7em; margin:0 0.5em;" bind:value={delta_OPO} label="Delta OPO"/>
                 <Textfield style="width:9em" bind:value={calibValue} label="Wn-meter calib."/>
                 <button class="button is-link" on:click="{()=>{showTheoryFiles=false;showOPOFiles = !showOPOFiles; OPOLocation = localStorage["opoLocation"] || currentLocation}}"> Browse File</button>
-                <!-- <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"opofile", tkplot:"plot"})}">Open in Matplotlib</button> -->
                 <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"opofile"})}">Replot</button>
             </div>
         </div>
@@ -878,7 +568,6 @@
             <button class="button is-link" on:click="{()=>{showOPOFiles=false;showTheoryFiles = !showTheoryFiles; theoryLocation = localStorage["theoryLocation"] || currentLocation}}"> Browse File</button>
             <Textfield type="number" style="width:7em; margin-right:0.5em;" variant="outlined" bind:value={sigma} label="Sigma"/>
             <Textfield type="number" style="width:7em" variant="outlined" bind:value={scale} label="Scale"/>
-            <!-- <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"general", general:{args:[...theoryfiles, normMethod, sigma, scale, theoryLocation, "plot"], pyfile:"theory.py"}})}">Open in Matplotlib</button> -->
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"theory"})}">Replot</button>
         
         </div>
@@ -912,12 +601,13 @@
             <div id="bplot"></div>
             <div id="saPlot"></div>
             <div id="avgplot"></div>
-            <div class="animated fadeIn" class:hide={!opoExpFit} id="opoplot"></div>
-            <div class="animated fadeIn" class:hide={!opoExpFit} id="opoSA"></div>
+            <div class="animated fadeIn" class:hide={!$opoMode} id="opoplot"></div>
+            <div class="animated fadeIn" class:hide={!$opoMode} id="opoSA"></div>
 
-            <div class="animated fadeIn" class:hide={!opoExpFit} id="opoRelPlot"></div>
+            <div class="animated fadeIn" class:hide={!$opoMode} id="opoRelPlot"></div>
         
         </div>
+
     
         {#if graphPlotted}
             <div transition:fade>
@@ -925,9 +615,8 @@
                 <!-- Write function buttons -->
                 <div class="content" >
 
-                    <!-- <CustomSwitch style="margin: 0 1em;" bind:selected={opoExpFit} label="OPO"/> -->
 
-                    <CustomSelect bind:picked={output_name} label="Output filename" options={output_namelists}/>
+                    <CustomSelect bind:picked={$felixOutputName} label="Output filename" options={output_namelists}/>
                     <Textfield style="width:7em; margin:0 0.5em;" bind:value={writeFileName} label="writeFileName"/>
 
                     <CustomSwitch style="margin: 0 1em;" bind:selected={writeFile} label="Write"/>
@@ -967,15 +656,15 @@
 
                         <Textfield {style} bind:value={savePeakfilename} label="savefile"/>
 
-                        <button class="button is-link" on:click="{()=>savefile({file:peakTable, name:savePeakfilename})}">Save peaks</button>
+                        <button class="button is-link" on:click="{()=>savefile({file:$felixPeakTable, name:savePeakfilename})}">Save peaks</button>
                         <button class="button is-link" on:click="{()=>loadfile({name:savePeakfilename})}">Load peaks</button>
-                        <button class="button is-danger" on:click="{()=>{window.annotation=[]; peakTable=[];NGauss_fit_args={}; window.Plotly.relayout(graphDiv, { annotations: [] }); createToast("Cleared", "warning")}}">Clear</button>
+                        <button class="button is-danger" on:click="{()=>{window.annotation=[]; $felixPeakTable=[];NGauss_fit_args={}; window.Plotly.relayout(graphDiv, { annotations: [] }); createToast("Cleared", "warning")}}">Clear</button>
                     </div>
 
                 </div>
 
                 <!-- Frequency table list -->
-                <FrequencyTable bind:dataTable_avg bind:dataTable bind:keepTable bind:line_index_count bind:lineData_list/>
+                <FrequencyTable bind:dataTable_avg={$dataTable_avg} bind:dataTable={$dataTable} bind:keepTable bind:line_index_count bind:lineData_list/>
 
                 <!-- Report -->
                 <ReportLayout bind:currentLocation={currentLocation} id={`${filetype}_report`} {includePlotsInReport} {includeTablesInReports} />
@@ -983,5 +672,4 @@
             </div>
         {/if}
     </div>
-
 </Layout>
