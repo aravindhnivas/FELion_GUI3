@@ -6,20 +6,15 @@ import { terser } from 'rollup-plugin-terser';
 import autoPreprocess from 'svelte-preprocess';
 import postcss from 'rollup-plugin-postcss';
 
-// import uglify from 'rollup-plugin-uglify';
-
-///////////////////////////////////////////////////////////////////////////
-
-
 const production = !process.env.ROLLUP_WATCH;
 
 export default {
-
 	input: 'src/App.js',
 	
 	output: [
 		{ sourcemap: true, format: 'cjs', name: 'app', file: 'static/bundle.js' },
-		{ sourcemap: true, format: 'cjs', name: 'app', file: 'static/bundle.min.js', plugins: [terser()] },
+		// { sourcemap: true, format: 'cjs', name: 'app', file: 'static/bundle.min.js', plugins: [terser()] },
+
 	],
 
 	plugins: [
@@ -31,7 +26,6 @@ export default {
 		
 		}),
 		
-		// uglify(),
 		resolve({dedupe: ['svelte', 'svelte/transition', 'svelte/internal']}),
 		commonjs(),
 		!production && livereload('static'),
@@ -49,4 +43,5 @@ export default {
 	],
 	watch: { clearScreen: false },
 	external: ['electron', 'child_process', 'fs', 'path', 'url', 'module', 'os']
+	
 };
