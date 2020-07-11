@@ -76,6 +76,49 @@
 
 <style lang="scss">
 
+    // Small tablets (portrait view)
+    $screen-tablet: 770px;
+    @mixin tablet {
+
+        @media (min-width: #{$screen-tablet}) {
+            @content;
+        
+        }
+    }
+
+    // Small desktops
+    $screen-sm: 1024px;
+
+    @mixin sm {
+        @media (min-width: #{$screen-sm}) {
+        
+            @content;
+        }
+    }
+
+    // Medium desktops
+    $screen-md: 1440px;
+
+    @mixin md {
+        
+        @media (min-width: #{$screen-md}) {
+        
+            @content;
+        
+        }
+    }
+
+    // Large desktops
+    $screen-lg: 1920px;
+
+    @mixin lg {
+        @media (min-width: #{$screen-lg}) {
+        
+            @content;
+        
+        }
+    }
+
     $box1: #6a50ad59;
     .filebrowser, .fileContainer {
         background-image: url(./assets/css/intro.svg);
@@ -83,9 +126,12 @@
     }
 
     .plotContainer {
-        max-height: calc(100vh - 25em);
-        overflow-y: auto;
-        padding-bottom: 5em;
+        overflow-y: auto; padding-bottom: 12em; max-height: calc(100vh - 27em);
+
+        div {margin-top: 1em;}
+
+        
+    
     }
      
     .filebrowser {
@@ -93,27 +139,19 @@
         padding-top: 1em;
         background-color: $box1;
         border-radius: 0;
-        
     }
-    .fileContainer {margin: 0 2em; padding-bottom: 5rem; width: calc(70vw - 2em)}
     
-    * :global(.box){background-color: #654ca25c;}
-    * :global(.mdc-list-item){height: 2em;}
-    * :global(.mdc-switch.mdc-switch--checked .mdc-switch__thumb, .mdc-switch.mdc-switch--checked .mdc-switch__track){background-color: #ffffff}
-    * :global(.material-icons) {margin-right:0.2em; cursor:pointer;}
-    * :global(.align) { display: flex; align-items: center; flex-wrap: wrap; }
-    * :global(.center) {justify-content: center;}
-    * :global(.gap) {margin-right: 2em;}
-    .buttonContainer {
-        max-height: 20em;
-        overflow-y: auto;
+    
+    .fileContainer {
+
+        margin: 0 2em; padding-bottom: 5rem; width: auto;
+        @include tablet { width: 60%; }
+
     }
+    .buttonContainer { max-height: 20em; overflow-y: auto; }
+    
     .box {border-radius: 0;}
-    .container {min-height: calc(100vh - 10em);}
-
-    .plotContainer > div {margin-top: 1em;}
-
-
+    .container {height: calc(100vh - 7em);}
 </style>
 
 <section {id} style="display:none" class="animated fadeIn">
@@ -127,15 +165,16 @@
         {/if}
 
         <div class="column fileContainer" >
+
             <div class="container button-plot-container box">
                 <div class="align">
 
 
-
                     <Hamburger1 bind:active={toggleBrowser}/>
                     <button class="button is-link gap" id="{filetype}_filebrowser_btn" on:click={browse_folder}>Browse</button>
-                    <button class="button is-link" style="margin-left:auto;" on:click={tour_event}>Need help?</button>
-                    <Textfield style="margin-bottom:1em;" bind:value={currentLocation} label="Current location" />
+
+                    <Textfield style="margin-bottom:1em; width:70%;" bind:value={currentLocation} label="Current location" />
+                    <button class="button is-link is-pulled-right" on:click={tour_event}>Need help?</button>
 
                 </div>
                 <div class="align buttonContainer"> <slot name="buttonContainer" /></div>
