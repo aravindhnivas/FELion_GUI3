@@ -160,8 +160,6 @@ export function felix_func({normMethod, dataFromPython, delta, plotly_event_crea
 
     console.log("Graph Plotted")
 
-    // normMethod, dataFromPython, delta, plotly_event_created
-
     return plotly_event_created
 
 }
