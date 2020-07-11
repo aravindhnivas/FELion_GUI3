@@ -28,15 +28,16 @@
     "sirv-cli": "^0.4.6",
     "svelma": "^0.3.2",
     "svelte": "^3.24.0",
+    "svelte-check": "^0.1.50",
     "svelte-material-ui": "^1.0.0-beta.21",
     "svelte-preprocess": "^3.7.4"
   },
   "scripts": {
     "build": "rollup -c",
     "autobuild": "rollup -c -w",
-    "dev": "concurrently \"run-p start:dev autobuild\" \"electron .\"",
+    "dev": "concurrently \"npm run autobuild\" \"electron .\"",
     "start": "electron .",
-    "start:dev": "sirv public --dev",
+    "svelte-check": "svelte-check",
     "mc": "electron-packager . --overwrite --platform=darwin --arch=x64 --out=../release-builds --darwinDarkModeSupport=true",
     "w": "electron-packager . --overwrite --platform=win32 --arch=x64 --out=../release-builds"
   },
