@@ -8,7 +8,7 @@
 
     const dispatch = createEventDispatcher();
 </script>
-
+<svelte:window on:keydown="{(e)=>e.keyCode===27 ? active=false : active=true}"/>
 {#if active}
 
     <QuickView style="padding:1em;" bind:active bind:currentLocation>

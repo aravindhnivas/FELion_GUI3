@@ -33,7 +33,6 @@
 
 </style>
 
-
 {#if modalActivate}
 
     <Modal1 bind:active={modalActivate} title="Adjust initial guess" >
