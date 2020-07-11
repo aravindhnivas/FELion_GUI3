@@ -6,7 +6,7 @@
 <script>
 	import Tab, {Label} from '@smui/tab';
 	import TabBar from '@smui/tab-bar';
-	import Button from '@smui/button';
+	// import Button from '@smui/button';
 	import {onMount} from "svelte";
 	export let navItems;
 	

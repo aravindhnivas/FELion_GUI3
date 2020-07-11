@@ -30,7 +30,7 @@
     $: reportFile = path.resolve(currentLocation, `reports/${reportMolecule}_report.html`)
     
     let reportTitle = "", reportComments = "", reportMethod = "info", reportMolecule = ""
-    let reportTitleContents = "", loadContent = "";
+    // let reportTitleContents = "", loadContent = "";
     
     const stylesheet = path.resolve(__dirname, 'assets/reports/template.css')
     const reportHTML = document.createElement( 'html' )
@@ -303,7 +303,7 @@
         <Textfield textarea bind:value={reportComments} label="Comments"  
             input$aria-controls="{id}_comments" input$aria-describedby="{id}_comments"/>
         <HelperText id="{id}_comments">
-            NOTE: You can write in markdown format (eg: # Title, ## Subtilte, **bold**, _italics_, > BlockQuotes, >> Nested BlockQuotes,  1., 2. for list, etc.,)
+            {"NOTE: You can write in markdown format (eg: # Title, ## Subtilte, **bold**, _italics_, > BlockQuotes, >> Nested BlockQuotes,  1., 2. for list, etc.,)"}
         </HelperText>
 
         <div class="align" style="margin-top:1em;">

@@ -1,7 +1,7 @@
 <script context="module">
     import { Toast } from 'svelma'
     export const createToast = (msg, type="primary") => Toast.create({ message: msg, position:"is-top", type:`is-${type}`})
-    export function browse({filetype="", dir=true, defaultPath=""}={}) {
+    export function browse({filetype="", dir=true}={}) {
         return new Promise((resolve, reject)=>{
             const mainWindow = remote.getCurrentWindow()
             let type;
@@ -45,8 +45,8 @@
 
 <script>
     
-    import IconButton, {Icon} from '@smui/icon-button';
-    import { fly, slide } from 'svelte/transition';
+    // import IconButton, {Icon} from '@smui/icon-button';
+    import { fly } from 'svelte/transition';
     import Textfield from '@smui/textfield';
     import {onMount} from "svelte";
     import FileBrowser from "./FileBrowser.svelte"

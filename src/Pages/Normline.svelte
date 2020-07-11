@@ -1,10 +1,10 @@
 <script>
     // IMPORTING Modules
     import Textfield from '@smui/textfield'
-    import HelperText from '@smui/textfield/helper-text/index'
+    // import HelperText from '@smui/textfield/helper-text/index'
     import Layout, {createToast} from "../components/Layout.svelte"
     import { fade } from 'svelte/transition'
-    import Ripple from '@smui/ripple'
+    // import Ripple from '@smui/ripple'
 
     import {activated, modalContent} from "../components/Modal.svelte"
     
@@ -19,14 +19,14 @@
     import ReportLayout from '../components/ReportLayout.svelte';
     // import QuickView from '../components/QuickView.svelte';
     import QuickBrowser from '../components/QuickBrowser.svelte';
-    import FileBrowser from "../components/FileBrowser.svelte"
+    // import FileBrowser from "../components/FileBrowser.svelte"
 
-    import FormField from '@smui/form-field';
+    // import FormField from '@smui/form-field';
 
     import {onMount, tick} from "svelte"
     import {Icon} from '@smui/icon-button'
     import Table from '../components/Table.svelte'
-    import CustomCheckList from '../components/CustomCheckList.svelte';
+    // import CustomCheckList from '../components/CustomCheckList.svelte';
 
     import FelixPlotting from './normline/modals/FelixPlotting.svelte';
     import AdjustInitialGuess from './normline/modals/AdjustInitialGuess.svelte';
@@ -72,7 +72,7 @@
 
     //////// OPO Plot ///////////
     window.getID = () => Math.random().toString(32).substring(2)
-    let onlyFinalSpectrum = false, peakTable = []
+    let peakTable = []
 
     window.annotation = []
 
@@ -94,7 +94,7 @@
 
             case "felix":
                 removeExtraFile()
-                graphPlotted = false, output_name = "averaged", window.annotation = [], peakTable = removedTable = []
+                graphPlotted = false, output_name = "averaged", window.annotation = [], peakTable = []
                 
                 if(felixfiles.length<1) return createToast("No files selected", "danger")
                 break;
@@ -143,7 +143,7 @@
             
             case "find_peaks":
                 
-                peakTable = removedTable = []
+                peakTable = []
 
                 if (index.length<2 && boxSelected_peakfinder) { return createToast("Box selection is turned ON so please select a wn. range to fit", "danger") }
                 
@@ -638,7 +638,7 @@
         plot_trace_added = 0
     }
 
-    const clearLastPeak = (e) => {
+    const clearLastPeak = () => {
         
         if (plot_trace_added === 0) {return createToast("No fitted lines found", "danger")}
         if (double_peak_active) {
@@ -666,7 +666,7 @@
         plot_trace_added--
     }
     
-    let collectData = true, lineData_list = [], toggleDoubleGaussRow = false, weighted_error = [[], []], err_data1_plot = false
+    let collectData = true, lineData_list = [], weighted_error = [[], []], err_data1_plot = false
 
     let amp1=0, amp2=0, cen1=0, cen2=0, sig1=5, sig2=5
     let toggleFindPeaksRow = false
@@ -707,7 +707,7 @@
         extrafileAdded = 0, addedfiles = []
     }
 
-    let fullfiles = [], removedTable = []
+    let fullfiles = []
     $: opoExpFit ? fullfiles = [...opofiles, ...addedfiles, path.resolve(currentLocation, "averaged.felix")] : fullfiles = [...felixfiles, ...addedfiles, path.resolve(currentLocation, "averaged.felix")]
 
     function adjustPeak({closeMainModal=true}={}) {
@@ -720,7 +720,7 @@
         
         window.annotation = []
 
-        peakTable.forEach((f, index)=>{
+        peakTable.forEach((f)=>{
             let _annotate = {x:f.freq, y:f.amp, text:`(${f.freq.toFixed(2)}, ${f.amp.toFixed(2)})`}
             window.annotation = [...window.annotation, {...temp_annotate, ..._annotate} ]
         })
@@ -734,7 +734,6 @@
     
     let showfile_details = false, filedetails = [];
 
-    let filedetails_saved;
     
     function savefile({file={}, name=""}={}) {
         let filename = path.join(location, `${name}.json`)
@@ -759,7 +758,7 @@
     
     let savePeakfilename = "peakTable"
 
-    let figureModal = false
+    // let figureModal = false
 
     const init_tour = async () => {
 
@@ -858,7 +857,7 @@
             <Textfield style="width:7em" variant="outlined" type="number" step="0.5" bind:value={delta} label="Delta"/>
             <button class="button is-link" on:click="{()=>felixplot_modal = true}"> Open in Matplotlib</button>
             <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
-            <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click="{()=>toggleRow = !toggleRow}">Add Theory</button>
+            <button class="button is-link" on:click="{()=>toggleRow = !toggleRow}">Add Theory</button>
             <button class="button is-link" on:click="{()=>{opoExpFit = !opoExpFit}}">OPO</button>
             <!-- <CustomIconSwitch bind:toggler={opoExpFit} icons={["keyboard_arrow_up", "keyboard_arrow_down"]}/> -->
 
@@ -945,7 +944,7 @@
                     <button class="button is-warning" on:click={clearLastPeak}>Clear Last</button>
                     <button class="button is-danger" on:click={clearAllPeak}>Clear All</button>
                     <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"get_err"})}">Weighted Mean</button>
-                    <button class="button is-warning" on:click="{(e)=>{lineData_list = []; createToast("Line collection restted", "warning")}}">Reset</button>
+                    <button class="button is-warning" on:click="{()=>{lineData_list = []; createToast("Line collection restted", "warning")}}">Reset</button>
                 
                 </div>
 
@@ -970,7 +969,7 @@
 
                         <button class="button is-link" on:click="{()=>savefile({file:peakTable, name:savePeakfilename})}">Save peaks</button>
                         <button class="button is-link" on:click="{()=>loadfile({name:savePeakfilename})}">Load peaks</button>
-                        <button class="button is-danger" on:click="{(e)=>{window.annotation=[]; peakTable=[];NGauss_fit_args={}; window.Plotly.relayout(graphDiv, { annotations: [] }); createToast("Cleared", "warning")}}">Clear</button>
+                        <button class="button is-danger" on:click="{()=>{window.annotation=[]; peakTable=[];NGauss_fit_args={}; window.Plotly.relayout(graphDiv, { annotations: [] }); createToast("Cleared", "warning")}}">Clear</button>
                     </div>
 
                 </div>

@@ -28,8 +28,8 @@
 
     $: pq1_before = 1e-8
     $: pq1_after = 1e-5
-    $: ptrap_before = 1e-10
-    $: ptrap_after = 1e-5
+    // $: ptrap_before = 1e-10
+    // $: ptrap_after = 1e-5
     $: temperature = 5
     $: calibration_factor = 205.54
 

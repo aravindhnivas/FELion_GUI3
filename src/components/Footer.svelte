@@ -1,6 +1,6 @@
 <script>
-  import {onMount, afterUpdate} from "svelte";
-  import {windowLoaded} from "../js/functions";
+  import {afterUpdate} from "svelte";
+  // import {windowLoaded} from "../js/functions";
   import {activePage} from "./Navbar.svelte";
   
   afterUpdate(()=>{

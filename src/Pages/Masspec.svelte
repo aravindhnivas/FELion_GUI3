@@ -8,12 +8,12 @@
 
     import ReportLayout from "../components/ReportLayout.svelte"
     import Textfield from '@smui/textfield'
-    import { fly, fade } from 'svelte/transition'
-    import {plot, subplot} from "../js/functions.js"
+    // import { fly, fade } from 'svelte/transition'
+    import {plot} from "../js/functions.js"
 
     import {activated, modalContent} from "../components/Modal.svelte"
     import {createToast} from "../components/Layout.svelte"
-    import {afterUpdate} from "svelte"
+    // import {afterUpdate} from "svelte"
 
     import {Icon} from '@smui/icon-button'
     /////////////////////////////////////////////////////////////////////////
@@ -148,7 +148,7 @@
 
     // Linearlog check
 
-    const linearlogCheck = (event) => {
+    const linearlogCheck = () => {
         let layout = { yaxis: { title: "Counts", type: logScale ? "log" : null } }
         if(graphPlotted) Plotly.relayout("mplot", layout)
     };
@@ -185,7 +185,7 @@
             <Textfield type="number" {style} on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_width} label="Width" />
             <Textfield type="number" {style} on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_height} label="Height" />
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"find_peaks"})}">Get Peaks</button>
-            <button class="button is-danger" on:click="{(e)=>window.Plotly.relayout("mplot", { annotations: [] })}">Clear</button>
+            <button class="button is-danger" on:click="{()=>window.Plotly.relayout("mplot", { annotations: [] })}">Clear</button>
         </div>
 
         <div class="animated fadeIn hide buttonRow" class:active={toggleRow2}>

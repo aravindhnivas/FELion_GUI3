@@ -8,12 +8,12 @@
 
     import ReportLayout from "../components/ReportLayout.svelte"
     import Textfield from '@smui/textfield'
-    import { fly, fade } from 'svelte/transition'
-    import {plot, subplot} from "../js/functions.js"
+    // import { fly, fade } from 'svelte/transition'
+    import {plot} from "../js/functions.js"
 
     import {activated, modalContent} from "../components/Modal.svelte"
     import {createToast} from "../components/Layout.svelte"
-    import {Icon} from '@smui/icon-button'
+    // import {Icon} from '@smui/icon-button'
 
     /////////////////////////////////////////////////////////////////////////
 
@@ -29,7 +29,7 @@
     let massIndex = 0, timestartIndex = 1, nshots = 10, power = "21, 21", resON_Files = "", resOFF_Files = ""
     let fullfiles = []
 
-    function dir_changed(event) {
+    function dir_changed() {
         // console.log("Directory changed/refreshed", event)
         if (fs.existsSync(currentLocation)) {
             fullfiles = ["", ...fs.readdirSync(currentLocation).filter(file=>file.endsWith(".scan"))]
@@ -133,7 +133,7 @@
     }
 
     // Linearlog check
-    const linearlogCheck = (event) => {
+    const linearlogCheck = () => {
         let layout = { yaxis: { title: "Counts", type: logScale ? "log" : null } }
         if(graphPlotted) {
 

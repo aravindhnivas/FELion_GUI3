@@ -39,7 +39,7 @@
     <Modal1 bind:active={modalActivate} title="Adjust initial guess" >
         <div slot="content" >
                 <div class="icon-holder" use:Ripple={[true, {color: 'primary'}]} >
-                    <Icon class="material-icons"  on:click="{(e)=> {peakTable = [...peakTable, {freq:0, amp:0, sig:0, id:window.getID()}]}}">add</Icon>
+                    <Icon class="material-icons"  on:click="{()=> {peakTable = [...peakTable, {freq:0, amp:0, sig:0, id:window.getID()}]}}">add</Icon>
                 </div>
 
                 <!-- Data Table -->

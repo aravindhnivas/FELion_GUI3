@@ -34,7 +34,7 @@
 
                 {#each head as item, index}
                     <th style="cursor: pointer;" class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric" role="columnheader" scope="col" >
-                        <div class="tableIcon" on:click="{(e)=>sortTable(keys[index])}">
+                        <div class="tableIcon" on:click="{()=>sortTable(keys[index])}">
                             <Icon class="material-icons" >arrow_downward</Icon>
                             {item}
                         </div>

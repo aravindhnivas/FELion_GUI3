@@ -11,7 +11,7 @@
   let actionText="Show details";
   let active=false;
 
-  function openModal(err) {
+  function openModal() {
 
     Snackbar.create({ 
 

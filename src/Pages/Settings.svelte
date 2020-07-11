@@ -55,13 +55,13 @@
         console.log("Python path checking \n", pythonpath)
         
         return new Promise((resolve, reject)=>{
-            exec(`${pythonpath} -V`, (err, stdout, stderr)=>{err ? reject("Invalid") : resolve(stdout.trim())})
+            exec(`${pythonpath} -V`, (err, stdout)=>{err ? reject("Invalid") : resolve(stdout.trim())})
         })
     }
 
     const resetlocation = () => {
         let defaultPy = path.resolve(__dirname, "../python3/python")
-        exec(`${defaultPy} -V`, (err, stdout, stderr)=>{
+        exec(`${defaultPy} -V`, (err, stdout)=>{
             if(err){createToast("Default python location is not valid", "danger") }
             else {pyVersion = stdout.trim(); pythonpath = localStorage["pythonpath"] = defaultPy; createToast("Location resetted", "warning")}
         })
@@ -75,17 +75,18 @@
             pyVersion = res
             localStorage["pythonpath"] = pythonpath
             createToast("Location updated", "success")
-        }).catch(err=>{ createToast("python location is not valid", "danger") })
+        }).catch(()=>{ createToast("python location is not valid", "danger") })
         localStorage["pythonscript"] = pythonscript
     }
     let pythonpathCheck;
 
-    let update_checking;
+    // let update_checking;
     onMount(()=>{
-        setTimeout(()=>{checkPython().then(res=>{ pyVersion = res; console.log("Python path is valid")}).catch(err=>pythonpathCheck.open() )}, 1000)
+        setTimeout(()=>{checkPython().then(res=>{ pyVersion = res; console.log("Python path is valid")}).catch(()=>pythonpathCheck.open() )}, 1000)
 
         updateCheck({info:false})
-        update_checking = setInterval(()=>{updateCheck({info:false})}, 1*1000*60*15)
+        // update_checking = setInterval(()=>{updateCheck({info:false})}, 1*1000*60*15)
+        setInterval(()=>{updateCheck({info:false})}, 1*1000*60*15)
     })
 
     const handlepythonPathCheck = () => { console.log("Python path checking done") }
@@ -139,7 +140,7 @@
 
             })
 
-            res.on("error", (err)=>{
+            res.on("error", ()=>{
                 console.log("Error while reading downloaded data: ")
                 new_version = ""
             })
@@ -216,7 +217,7 @@
         })
     }
 
-    const update = async (event) => {
+    const update = async () => {
 
         let target = document.getElementById("updateBtn")
 
@@ -354,7 +355,7 @@
 </style>
 
 <CustomDialog id="pythonpath_Check" bind:dialog={pythonpathCheck} on:response={handlepythonPathCheck}
-    title={"Python path is not valid"} content={"Change it in Settings --> Configuration"} label1="Okay", label2="Cancel"/>
+    title={"Python path is not valid"} content={"Change it in Settings --> Configuration"} label1="Okay" label2="Cancel" />
 
 <section class="section animated fadeIn" id="Settings" style="display:none">
     <div class="columns">

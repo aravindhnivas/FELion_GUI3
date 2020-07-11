@@ -8,14 +8,14 @@
 
     import ReportLayout from "../components/ReportLayout.svelte"
     import Textfield from '@smui/textfield'
-    import { fly, fade } from 'svelte/transition'
-    import {plot, subplot} from "../js/functions.js"
+    // import { fly, fade } from 'svelte/transition'
+    import {plot} from "../js/functions.js"
 
     import {activated, modalContent} from "../components/Modal.svelte"
     import {createToast} from "../components/Layout.svelte"
     // import {afterUpdate} from "svelte"
 
-    import {Icon} from '@smui/icon-button'
+    // import {Icon} from '@smui/icon-button'
     /////////////////////////////////////////////////////////////////////////
 
     // Initialisation

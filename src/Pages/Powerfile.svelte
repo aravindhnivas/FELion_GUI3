@@ -3,7 +3,7 @@
     // Importing modules
     import Textfield from '@smui/textfield'
     import HelperText from '@smui/textfield/helper-text/index';
-    import Fab, {Icon, Label} from '@smui/fab';
+    import Fab, {Label} from '@smui/fab';
     import Checkbox from '@smui/checkbox';
     import FormField from '@smui/form-field';
     import {createToast, browse} from "../components/Layout.svelte"

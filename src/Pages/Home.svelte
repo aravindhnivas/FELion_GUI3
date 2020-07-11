@@ -14,6 +14,7 @@
 
 <section class="section animated fadeIn" id="Home">
     {#if $windowLoaded}
+    
       {#await window.sleep(500) then value}
         <Simplewave />
       {/await}

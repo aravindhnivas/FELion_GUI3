@@ -6,14 +6,14 @@
 
     import IconButton, {Icon} from '@smui/icon-button';
 
-    import { fly, slide } from 'svelte/transition';
+    import { slide } from 'svelte/transition';
     import FormField from '@smui/form-field';
     import Switch from '@smui/switch';
     import Textfield from '@smui/textfield';
     
     import { Toast } from 'svelma'
     
-    import {activated, modalContent, modalTitle} from "./Modal.svelte"
+    import {activated, modalContent} from "./Modal.svelte"
     
     import {onMount, afterUpdate} from "svelte"
     
@@ -92,7 +92,7 @@
 
 <style>
 
-    .filelist { max-height: calc(100vh - 30em); overflow-y: auto; }
+    /* .filelist { max-height: calc(100vh - 30em); overflow-y: auto; } */
     .folderfile-list {max-height: calc(100vh - 20em); overflow-y: auto;}
     .align {display: flex; align-items: center;}
     .center {justify-content: center;}

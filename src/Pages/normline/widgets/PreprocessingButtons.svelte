@@ -1,9 +1,9 @@
 <script>
     import Textfield from '@smui/textfield';
-    import CustomIconSwitch from '../../../components/CustomIconSwitch.svelte';
+    // import CustomIconSwitch from '../../../components/CustomIconSwitch.svelte';
     import CustomSelect from '../../../components/CustomSelect.svelte';
     import CustomRadio from '../../../components/CustomRadio.svelte';
-    import Ripple from '@smui/ripple';
+    // import Ripple from '@smui/ripple';
     import { fade } from 'svelte/transition';
 
     import { createEventDispatcher } from 'svelte';

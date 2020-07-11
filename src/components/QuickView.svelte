@@ -17,7 +17,7 @@
     .quickview {margin: 5em 0;}
 
     footer, .quickview {background-color: #594098fa;}
-    p {color: #fafafa;}
+    /* p {color: #fafafa;} */
     .delete {background-color: #fafafa;}
     .delete:hover {background-color: #f14668;}
 </style>

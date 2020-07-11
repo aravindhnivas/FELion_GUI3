@@ -3,8 +3,8 @@
 	// Components
 	import Navbar from "./components/Navbar.svelte"
 	import Footer from "./components/Footer.svelte"
-	import Layout from "./components/Layout.svelte"
-	import LineAnimate from "./testing/LineAnimate.svelte"
+	// import Layout from "./components/Layout.svelte"
+	// import LineAnimate from "./testing/LineAnimate.svelte"
 
 	import Home from "./Pages/Home.svelte"
 	import Powerfile from "./Pages/Powerfile.svelte"
@@ -16,14 +16,17 @@
 	import Misc from "./Pages/Misc.svelte"
 
 	import Modal from "./components/Modal.svelte"
-	import {onMount, afterUpdate} from "svelte"
+	import {onMount} from "svelte"
 
 	onMount(()=>{
 		let allbuttons = Array.from(document.querySelectorAll(".button"))
 		allbuttons.forEach(button=>button.classList.add("hvr-glow"))
 	})
 
+
 	const navItems = ["Home", "Normline", "Masspec", "Timescan", "THz", "Powerfile", "Misc", "Settings"]
+
+	// const components = {Home, Normline, Masspec, Timescan, THz, Powerfile, Misc, Settings}
 
 	window.electron = require("electron")
 	window.remote = electron.remote
@@ -52,24 +55,30 @@
 
 </script>
 
+
 <Navbar {navItems}/>
 
 <Modal/>
-<!-- <DialogChecklist /> -->
+
 <Home />
 
 <div class="pageContainer" style="overflow: hidden;">
+
 	
+	<!-- <svelte:component this={components[$activePage]}/> -->
+
 	<Normline />
+
 	<Masspec />
+
 	<Timescan />
 	<THz />
 
 	<Powerfile />
+
 	<Misc />
+
 	<Settings />
 
 </div>
-
-
 <Footer />
