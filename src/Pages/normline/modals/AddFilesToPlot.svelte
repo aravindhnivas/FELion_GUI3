@@ -1,9 +1,9 @@
 
 <script>
-    import Modal1 from '../../components/Modal1.svelte';
+    import Modal1 from '../../../components/Modal1.svelte';
     import Textfield from '@smui/textfield';
     import { createEventDispatcher } from 'svelte';
-    import {browse} from "../../components/Layout.svelte"
+    import {browse} from "../../../components/Layout.svelte"
     export let addFileModal=false, addedFileCol=1, addedFileScale=1000, addedfiles=[], addedFile={};
 
     const dispatch = createEventDispatcher();

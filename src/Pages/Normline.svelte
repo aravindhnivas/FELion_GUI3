@@ -28,10 +28,10 @@
     import Table from '../components/Table.svelte'
     import CustomCheckList from '../components/CustomCheckList.svelte';
 
-    import FelixPlotting from './normline/FelixPlotting.svelte';
-    import AdjustInitialGuess from './normline/AdjustInitialGuess.svelte';
-    import AddFilesToPlot from './normline/AddFilesToPlot.svelte';
-    import FrequencyTable from './normline/FrequencyTable.svelte';
+    import FelixPlotting from './normline/modals/FelixPlotting.svelte';
+    import AdjustInitialGuess from './normline/modals/AdjustInitialGuess.svelte';
+    import AddFilesToPlot from './normline/modals/AddFilesToPlot.svelte';
+    import FrequencyTable from './normline/components/FrequencyTable.svelte';
     import {init_tour_normline} from './normline/initTour';
    ///////////////////////////////////////////////////////////////////////
     
@@ -85,7 +85,6 @@
             Plotly.react("avgplot",data, layout, { editable: true })
             line = annotations = lineData_list = [], plot_trace_added = 0
         }
-
     }
 
     function plotData({e=null, filetype="felix", general=null, tkplot="run"}={}){

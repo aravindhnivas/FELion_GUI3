@@ -2,8 +2,8 @@
 <script>
     import DataTable, {Head, Body, Row, Cell} from '@smui/data-table';
     import {Icon} from '@smui/icon-button';
-    import {createToast} from "../../components/Layout.svelte"
-    import CustomCheckbox from '../../components/CustomCheckbox.svelte';
+    import {createToast} from "../../../components/Layout.svelte"
+    import CustomCheckbox from '../../../components/CustomCheckbox.svelte';
     export let dataTable_avg, dataTable, keepTable=true, line_index_count=0, lineData_list = []
 
     const dataTableHead = ["Filename", "Frequency (cm-1)", "Amplitude", "FWHM", "Sigma"]

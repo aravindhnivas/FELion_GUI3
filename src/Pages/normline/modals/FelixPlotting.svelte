@@ -1,14 +1,14 @@
 
 <script>
-    import Modal1 from '../../components/Modal1.svelte';
-    import CustomCheckList from '../../components/CustomCheckList.svelte';
+    import Modal1 from '../../../components/Modal1.svelte';
+    import CustomCheckList from '../../../components/CustomCheckList.svelte';
     import Textfield from '@smui/textfield';
-    import CustomCheckbox from '../../components/CustomCheckbox.svelte';
+    import CustomCheckbox from '../../../components/CustomCheckbox.svelte';
     
 
     import { createEventDispatcher } from 'svelte';
     
-    export let felixplot_modal=false, felix_plotting_widgets = {};
+    export let active=false, felixFigureWidgets = {};
     const dispatch = createEventDispatcher();
 
 </script>
@@ -42,13 +42,13 @@
 </style>
 
 
-{#if felixplot_modal}
+{#if active}
 
-    <Modal1 bind:active={felixplot_modal} title="FELIX PLOTTING" style="width:70vw;">
+    <Modal1 bind:active title="FELIX PLOTTING" style="width:70vw;">
 
         <div slot="content" style="height:40vh;" >
             <div style="display:flex; flex-wrap:wrap;">
-                {#each felix_plotting_widgets.checkBoxes as {label, options, selected, style, id}(id)}
+                {#each felixFigureWidgets.checkBoxes as {label, options, selected, style, id}(id)}
                     <div style="flex-grow:1; {style}" class="felix_tkplot_filelist_div">
                         <div class="subtitle felix_tkplot_filelist_header">{label}</div>
                         <CustomCheckList style="background: #836ac05c; border-radius: 20px; margin:1em 0;" bind:fileChecked={selected} bind:items={options} height="160px"/>
@@ -57,19 +57,19 @@
             </div>
         
             <div class="felix_plotting_div">
-                {#each felix_plotting_widgets.text as {label, value, id}(id)}
+                {#each felixFigureWidgets.text as {label, value, id}(id)}
                     <Textfield style="width:12em; margin-bottom:1em;" variant="outlined" type="text" bind:value {label}/>
                 {/each}
             </div>
 
             <div class="felix_plotting_div">
-                {#each felix_plotting_widgets.number as {label, value, step, id}(id)}
+                {#each felixFigureWidgets.number as {label, value, step, id}(id)}
                     <Textfield style="width:12em; margin-bottom:1em;" type="number" {step} bind:value {label}/>
                 {/each}
             </div>
 
             <div class="felix_plotting_div">
-                {#each felix_plotting_widgets.boolean as {label, value, id}(id)}
+                {#each felixFigureWidgets.boolean as {label, value, id}(id)}
                     <CustomCheckbox style="width:12em; margin-bottom:1em;" bind:selected={value} {label} />
                 {/each}
             </div>

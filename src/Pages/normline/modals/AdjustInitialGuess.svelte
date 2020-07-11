@@ -3,7 +3,7 @@
     import Ripple from '@smui/ripple';
     import { fade } from 'svelte/transition'
     import { createEventDispatcher } from 'svelte';
-    import Modal1 from '../../components/Modal1.svelte';
+    import Modal1 from '../../../components/Modal1.svelte';
     import {Icon} from '@smui/icon-button'
     
     export let modalActivate=false, peakTable = [];
