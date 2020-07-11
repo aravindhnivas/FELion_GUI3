@@ -13,7 +13,7 @@
 
 </style>
 
-<svelte:window on:keydown="{(e)=>e.keyCode===27 ? active=false : active=true}"/>
+<svelte:window on:keydown="{(e)=> {if(e.keyCode===27) active=false}}"/>
 
 <div class="modal" class:is-active={active}>
 

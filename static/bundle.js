@@ -1382,7 +1382,6 @@ var MDCFoundation = /** @class */ (function () {
     };
     return MDCFoundation;
 }());
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -1480,7 +1479,6 @@ var MDCComponent = /** @class */ (function () {
     };
     return MDCComponent;
 }());
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -1532,7 +1530,6 @@ function applyPassive(globalObj, forceRefresh) {
     }
     return supportsPassive_ ? { passive: true } : false;
 }
-//# sourceMappingURL=events.js.map
 
 /**
  * @license
@@ -1579,7 +1576,6 @@ function matches(element, selector) {
         || element.msMatchesSelector;
     return nativeMatches.call(element, selector);
 }
-//# sourceMappingURL=ponyfill.js.map
 
 /**
  * @license
@@ -1628,7 +1624,6 @@ var numbers = {
     PADDING: 10,
     TAP_DELAY_MS: 300,
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * Stores result from supportsCssVariables to avoid redundant processing to
@@ -1704,7 +1699,6 @@ function getNormalizedEventCoords(evt, pageOffset, clientRect) {
     }
     return { x: normalizedX, y: normalizedY };
 }
-//# sourceMappingURL=util.js.map
 
 /**
  * @license
@@ -2159,7 +2153,6 @@ var MDCRippleFoundation = /** @class */ (function (_super) {
     };
     return MDCRippleFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -2265,7 +2258,6 @@ var MDCRipple = /** @class */ (function (_super) {
     };
     return MDCRipple;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -2297,7 +2289,6 @@ var cssClasses$1 = {
 var strings$1 = {
     CONTENT_SELECTOR: '.mdc-tab-indicator__content',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -2359,7 +2350,6 @@ var MDCTabIndicatorFoundation = /** @class */ (function (_super) {
     };
     return MDCTabIndicatorFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -2397,7 +2387,6 @@ var MDCFadingTabIndicatorFoundation = /** @class */ (function (_super) {
     };
     return MDCFadingTabIndicatorFoundation;
 }(MDCTabIndicatorFoundation));
-//# sourceMappingURL=fading-foundation.js.map
 
 /**
  * @license
@@ -2453,7 +2442,6 @@ var MDCSlidingTabIndicatorFoundation = /** @class */ (function (_super) {
     };
     return MDCSlidingTabIndicatorFoundation;
 }(MDCTabIndicatorFoundation));
-//# sourceMappingURL=sliding-foundation.js.map
 
 /**
  * @license
@@ -2517,7 +2505,6 @@ var MDCTabIndicator = /** @class */ (function (_super) {
     };
     return MDCTabIndicator;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -2552,7 +2539,6 @@ var strings$2 = {
     TABINDEX: 'tabIndex',
     TAB_INDICATOR_SELECTOR: '.mdc-tab-indicator',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -2675,7 +2661,6 @@ var MDCTabFoundation = /** @class */ (function (_super) {
     };
     return MDCTabFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -2797,7 +2782,6 @@ var MDCTab = /** @class */ (function (_super) {
     };
     return MDCTab;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 function forwardEventsBuilder(component, additionalEvents = []) {
   const events = [
@@ -4669,7 +4653,6 @@ var strings$3 = {
     AREA_SELECTOR: '.mdc-tab-scroller__scroll-area',
     CONTENT_SELECTOR: '.mdc-tab-scroller__scroll-content',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -4699,7 +4682,6 @@ var MDCTabScrollerRTL = /** @class */ (function () {
     }
     return MDCTabScrollerRTL;
 }());
-//# sourceMappingURL=rtl-scroller.js.map
 
 /**
  * @license
@@ -4768,7 +4750,6 @@ var MDCTabScrollerRTLDefault = /** @class */ (function (_super) {
     };
     return MDCTabScrollerRTLDefault;
 }(MDCTabScrollerRTL));
-//# sourceMappingURL=rtl-default-scroller.js.map
 
 /**
  * @license
@@ -4834,7 +4815,6 @@ var MDCTabScrollerRTLNegative = /** @class */ (function (_super) {
     };
     return MDCTabScrollerRTLNegative;
 }(MDCTabScrollerRTL));
-//# sourceMappingURL=rtl-negative-scroller.js.map
 
 /**
  * @license
@@ -4901,7 +4881,6 @@ var MDCTabScrollerRTLReverse = /** @class */ (function (_super) {
     };
     return MDCTabScrollerRTLReverse;
 }(MDCTabScrollerRTL));
-//# sourceMappingURL=rtl-reverse-scroller.js.map
 
 /**
  * @license
@@ -5228,7 +5207,6 @@ var MDCTabScrollerFoundation = /** @class */ (function (_super) {
     };
     return MDCTabScrollerFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -5275,7 +5253,6 @@ function computeHorizontalScrollbarHeight(documentObj, shouldCacheResult) {
     }
     return horizontalScrollbarHeight;
 }
-//# sourceMappingURL=util.js.map
 
 /**
  * @license
@@ -5383,7 +5360,6 @@ var MDCTabScroller = /** @class */ (function (_super) {
     };
     return MDCTabScroller;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -5427,7 +5403,6 @@ var numbers$1 = {
     HOME_KEYCODE: 36,
     SPACE_KEYCODE: 32,
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -5791,7 +5766,6 @@ var MDCTabBarFoundation = /** @class */ (function (_super) {
     };
     return MDCTabBarFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -5955,7 +5929,6 @@ var MDCTabBar = /** @class */ (function (_super) {
     };
     return MDCTabBar;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\tab-scroller\TabScroller.svelte generated by Svelte v3.24.0 */
 const file$4 = "node_modules\\@smui\\tab-scroller\\TabScroller.svelte";
@@ -8127,7 +8100,6 @@ var cssClasses$4 = {
     LABEL_SHAKE: 'mdc-floating-label--shake',
     ROOT: 'mdc-floating-label',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -8228,7 +8200,6 @@ var MDCFloatingLabelFoundation = /** @class */ (function (_super) {
     };
     return MDCFloatingLabelFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -8294,7 +8265,6 @@ var MDCFloatingLabel = /** @class */ (function (_super) {
     };
     return MDCFloatingLabel;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -8322,7 +8292,6 @@ var cssClasses$5 = {
     LINE_RIPPLE_ACTIVE: 'mdc-line-ripple--active',
     LINE_RIPPLE_DEACTIVATING: 'mdc-line-ripple--deactivating',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -8408,7 +8377,6 @@ var MDCLineRippleFoundation = /** @class */ (function (_super) {
     };
     return MDCLineRippleFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -8477,7 +8445,6 @@ var MDCLineRipple = /** @class */ (function (_super) {
     };
     return MDCLineRipple;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -8513,7 +8480,6 @@ var cssClasses$6 = {
     OUTLINE_NOTCHED: 'mdc-notched-outline--notched',
     OUTLINE_UPGRADED: 'mdc-notched-outline--upgraded',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -8601,7 +8567,6 @@ var MDCNotchedOutlineFoundation = /** @class */ (function (_super) {
     };
     return MDCNotchedOutlineFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -8676,7 +8641,6 @@ var MDCNotchedOutline = /** @class */ (function (_super) {
     };
     return MDCNotchedOutline;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -8706,7 +8670,6 @@ var cssClasses$7 = {
 var strings$7 = {
     ROOT_SELECTOR: "." + cssClasses$7.ROOT,
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -8767,7 +8730,6 @@ var MDCTextFieldCharacterCounterFoundation = /** @class */ (function (_super) {
     };
     return MDCTextFieldCharacterCounterFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -8819,7 +8781,6 @@ var MDCTextFieldCharacterCounter = /** @class */ (function (_super) {
     };
     return MDCTextFieldCharacterCounter;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -8882,7 +8843,6 @@ var VALIDATION_ATTR_WHITELIST = [
 var ALWAYS_FLOAT_TYPES = [
     'color', 'date', 'datetime-local', 'month', 'range', 'time', 'week',
 ];
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -9337,7 +9297,6 @@ var MDCTextFieldFoundation = /** @class */ (function (_super) {
     };
     return MDCTextFieldFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -9371,7 +9330,6 @@ var strings$9 = {
     ROLE: 'role',
     ROOT_SELECTOR: "." + cssClasses$9.ROOT,
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -9492,7 +9450,6 @@ var MDCTextFieldHelperTextFoundation = /** @class */ (function (_super) {
     };
     return MDCTextFieldHelperTextFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -9551,7 +9508,6 @@ var MDCTextFieldHelperText = /** @class */ (function (_super) {
     };
     return MDCTextFieldHelperText;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -9582,7 +9538,6 @@ var strings$a = {
 var cssClasses$a = {
     ROOT: 'mdc-text-field__icon',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -9689,7 +9644,6 @@ var MDCTextFieldIconFoundation = /** @class */ (function (_super) {
     };
     return MDCTextFieldIconFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -9749,7 +9703,6 @@ var MDCTextFieldIcon = /** @class */ (function (_super) {
     };
     return MDCTextFieldIcon;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -10186,7 +10139,6 @@ var MDCTextField = /** @class */ (function (_super) {
     };
     return MDCTextField;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\floating-label\FloatingLabel.svelte generated by Svelte v3.24.0 */
 const file$a = "node_modules\\@smui\\floating-label\\FloatingLabel.svelte";
@@ -14386,7 +14338,6 @@ function getCorrectEventName(windowObj, eventType) {
     }
     return eventType;
 }
-//# sourceMappingURL=util.js.map
 
 /**
  * @license
@@ -14441,7 +14392,6 @@ var strings$b = {
 var numbers$4 = {
     ANIM_END_LATCH_MS: 250,
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -14622,7 +14572,6 @@ var MDCCheckboxFoundation = /** @class */ (function (_super) {
     };
     return MDCCheckboxFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -14797,7 +14746,6 @@ var MDCCheckbox = /** @class */ (function (_super) {
 function validDescriptor(inputPropDesc) {
     return !!inputPropDesc && typeof inputPropDesc.set === 'function';
 }
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\checkbox\Checkbox.svelte generated by Svelte v3.24.0 */
 const file$i = "node_modules\\@smui\\checkbox\\Checkbox.svelte";
@@ -15414,7 +15362,6 @@ var cssClasses$c = {
 var strings$c = {
     LABEL_SELECTOR: '.mdc-form-field > label',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -15484,7 +15431,6 @@ var MDCFormFieldFoundation = /** @class */ (function (_super) {
     };
     return MDCFormFieldFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -15564,7 +15510,6 @@ var MDCFormField = /** @class */ (function (_super) {
     };
     return MDCFormField;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\form-field\FormField.svelte generated by Svelte v3.24.0 */
 const file$j = "node_modules\\@smui\\form-field\\FormField.svelte";
@@ -17108,7 +17053,6 @@ var strings$d = {
     ARIA_PRESSED: 'aria-pressed',
     CHANGE_EVENT: 'MDCIconButtonToggle:change',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -17186,7 +17130,6 @@ var MDCIconButtonToggleFoundation = /** @class */ (function (_super) {
     };
     return MDCIconButtonToggleFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -17268,7 +17211,6 @@ var MDCIconButtonToggle = /** @class */ (function (_super) {
     };
     return MDCIconButtonToggle;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\icon-button\IconButton.svelte generated by Svelte v3.24.0 */
 const file$o = "node_modules\\@smui\\icon-button\\IconButton.svelte";
@@ -17883,7 +17825,6 @@ var strings$f = {
     /** A CSS selector used to locate the ripple surface element for the switch. */
     RIPPLE_SURFACE_SELECTOR: '.mdc-switch__thumb-underlay',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -17972,7 +17913,6 @@ var MDCSwitchFoundation = /** @class */ (function (_super) {
     };
     return MDCSwitchFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -18091,7 +18031,6 @@ var MDCSwitch = /** @class */ (function (_super) {
     });
     return MDCSwitch;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\switch\Switch.svelte generated by Svelte v3.24.0 */
 const file$p = "node_modules\\@smui\\switch\\Switch.svelte";
@@ -19185,7 +19124,6 @@ var strings$g = {
 var numbers$5 = {
     UNSET_INDEX: -1,
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -19643,7 +19581,6 @@ var MDCListFoundation = /** @class */ (function (_super) {
     };
     return MDCListFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -19892,7 +19829,6 @@ var MDCList = /** @class */ (function (_super) {
     };
     return MDCList;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\list\List.svelte generated by Svelte v3.24.0 */
 const file$r = "node_modules\\@smui\\list\\List.svelte";
@@ -26651,7 +26587,6 @@ function areTopsMisaligned(els) {
     [].forEach.call(els, function (el) { return tops.add(el.offsetTop); });
     return tops.size > 1;
 }
-//# sourceMappingURL=util.js.map
 
 /**
  * @license
@@ -26707,7 +26642,6 @@ var numbers$6 = {
     DIALOG_ANIMATION_CLOSE_TIME_MS: 75,
     DIALOG_ANIMATION_OPEN_TIME_MS: 150,
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -26961,7 +26895,6 @@ var MDCDialogFoundation = /** @class */ (function (_super) {
     };
     return MDCDialogFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -27139,7 +27072,6 @@ var MDCDialog = /** @class */ (function (_super) {
     };
     return MDCDialog;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\dialog\Dialog.svelte generated by Svelte v3.24.0 */
 const file$B = "node_modules\\@smui\\dialog\\Dialog.svelte";
@@ -30500,7 +30432,6 @@ var Corner;
     Corner[Corner["BOTTOM_START"] = 9] = "BOTTOM_START";
     Corner[Corner["BOTTOM_END"] = 13] = "BOTTOM_END";
 })(Corner || (Corner = {}));
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -30944,7 +30875,6 @@ var MDCMenuSurfaceFoundation = /** @class */ (function (_super) {
     };
     return MDCMenuSurfaceFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -30980,7 +30910,6 @@ function getTransformPropertyName(globalObj, forceRefresh) {
     }
     return cachedCssTransformPropertyName_;
 }
-//# sourceMappingURL=util.js.map
 
 /**
  * @license
@@ -31147,7 +31076,6 @@ var MDCMenuSurface = /** @class */ (function (_super) {
     };
     return MDCMenuSurface;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -31193,7 +31121,6 @@ var DefaultFocusState;
     DefaultFocusState[DefaultFocusState["FIRST_ITEM"] = 2] = "FIRST_ITEM";
     DefaultFocusState[DefaultFocusState["LAST_ITEM"] = 3] = "LAST_ITEM";
 })(DefaultFocusState || (DefaultFocusState = {}));
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -31368,7 +31295,6 @@ var MDCMenuFoundation = /** @class */ (function (_super) {
     };
     return MDCMenuFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -31587,7 +31513,6 @@ var MDCMenu = /** @class */ (function (_super) {
     };
     return MDCMenu;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -31640,7 +31565,6 @@ var strings$l = {
 var numbers$9 = {
     LABEL_SCALE: 0.75,
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -31891,7 +31815,6 @@ var MDCSelectFoundation = /** @class */ (function (_super) {
     };
     return MDCSelectFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -31923,7 +31846,6 @@ var cssClasses$k = {
     HELPER_TEXT_PERSISTENT: 'mdc-select-helper-text--persistent',
     HELPER_TEXT_VALIDATION_MSG: 'mdc-select-helper-text--validation-msg',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -32044,7 +31966,6 @@ var MDCSelectHelperTextFoundation = /** @class */ (function (_super) {
     };
     return MDCSelectHelperTextFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -32103,7 +32024,6 @@ var MDCSelectHelperText = /** @class */ (function (_super) {
     };
     return MDCSelectHelperText;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -32131,7 +32051,6 @@ var strings$n = {
     ICON_EVENT: 'MDCSelect:icon',
     ICON_ROLE: 'button',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -32231,7 +32150,6 @@ var MDCSelectIconFoundation = /** @class */ (function (_super) {
     };
     return MDCSelectIconFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -32291,7 +32209,6 @@ var MDCSelectIcon = /** @class */ (function (_super) {
     };
     return MDCSelectIcon;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -32825,7 +32742,6 @@ var MDCSelect = /** @class */ (function (_super) {
     };
     return MDCSelect;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\menu-surface\MenuSurface.svelte generated by Svelte v3.24.0 */
 const file$I = "node_modules\\@smui\\menu-surface\\MenuSurface.svelte";
@@ -36637,7 +36553,6 @@ var cssClasses$l = {
     DISABLED: 'mdc-radio--disabled',
     ROOT: 'mdc-radio',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -36703,7 +36618,6 @@ var MDCRadioFoundation = /** @class */ (function (_super) {
     };
     return MDCRadioFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -36815,7 +36729,6 @@ var MDCRadio = /** @class */ (function (_super) {
     });
     return MDCRadio;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\radio\Radio.svelte generated by Svelte v3.24.0 */
 const file$L = "node_modules\\@smui\\radio\\Radio.svelte";
@@ -40320,10 +40233,10 @@ function create_footer_slot(ctx) {
 			button = element("button");
 			button.textContent = "Submit";
 			attr_dev(button, "class", "button is-link");
-			add_location(button, file$Q, 17, 12, 599);
+			add_location(button, file$Q, 17, 12, 590);
 			attr_dev(div, "slot", "footer");
 			set_style(div, "margin", "auto");
-			add_location(div, file$Q, 16, 8, 546);
+			add_location(div, file$Q, 16, 8, 537);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -40530,9 +40443,9 @@ function instance$X($$self, $$props, $$invalidate) {
 	let { $$slots = {}, $$scope } = $$props;
 	validate_slots("QuickBrowser", $$slots, []);
 
-	const keydown_handler = e => e.keyCode === 27
-	? $$invalidate(0, active = false)
-	: $$invalidate(0, active = true);
+	const keydown_handler = e => {
+		if (e.keyCode === 27) $$invalidate(0, active = false);
+	};
 
 	function filebrowser_currentLocation_binding(value) {
 		currentLocation = value;
@@ -41357,26 +41270,26 @@ function create_fragment$Z(ctx) {
 			div1 = element("div");
 			if (footerbtn_slot) footerbtn_slot.c();
 			attr_dev(div0, "class", "modal-background");
-			add_location(div0, file$S, 19, 2, 488);
+			add_location(div0, file$S, 19, 2, 479);
 			attr_dev(p, "class", "modal-card-title");
-			add_location(p, file$S, 24, 6, 633);
+			add_location(p, file$S, 24, 6, 624);
 			attr_dev(span, "class", "delete is-pulled-right svelte-19hwtj0");
-			add_location(span, file$S, 25, 6, 680);
+			add_location(span, file$S, 25, 6, 671);
 			attr_dev(header, "class", "modal-card-head");
-			add_location(header, file$S, 23, 4, 593);
+			add_location(header, file$S, 23, 4, 584);
 			attr_dev(section, "class", "modal-card-body svelte-19hwtj0");
-			add_location(section, file$S, 28, 4, 777);
+			add_location(section, file$S, 28, 4, 768);
 			set_style(div1, "margin-left", "auto");
 			set_style(div1, "display", "flex");
-			add_location(div1, file$S, 31, 6, 900);
+			add_location(div1, file$S, 31, 6, 891);
 			attr_dev(footer, "class", "modal-card-foot");
-			add_location(footer, file$S, 30, 4, 860);
+			add_location(footer, file$S, 30, 4, 851);
 			attr_dev(div2, "class", "modal-card animated fadeIn faster");
 			attr_dev(div2, "style", /*style*/ ctx[2]);
-			add_location(div2, file$S, 21, 2, 530);
+			add_location(div2, file$S, 21, 2, 521);
 			attr_dev(div3, "class", "modal");
 			toggle_class(div3, "is-active", /*active*/ ctx[0]);
-			add_location(div3, file$S, 17, 0, 438);
+			add_location(div3, file$S, 17, 0, 429);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -41486,9 +41399,9 @@ function instance$Z($$self, $$props, $$invalidate) {
 	let { $$slots = {}, $$scope } = $$props;
 	validate_slots("Modal1", $$slots, ['content','footerbtn']);
 
-	const keydown_handler = e => e.keyCode === 27
-	? $$invalidate(0, active = false)
-	: $$invalidate(0, active = true);
+	const keydown_handler = e => {
+		if (e.keyCode === 27) $$invalidate(0, active = false);
+	};
 
 	const click_handler = () => $$invalidate(0, active = false);
 
@@ -41608,7 +41521,7 @@ function get_each_context_3$1(ctx, list, i) {
 	return child_ctx;
 }
 
-// (45:0) {#if active}
+// (45:0) {#if felixplot_modal}
 function create_if_block$i(ctx) {
 	let modal1;
 	let updating_active;
@@ -41629,8 +41542,8 @@ function create_if_block$i(ctx) {
 		$$scope: { ctx }
 	};
 
-	if (/*active*/ ctx[0] !== void 0) {
-		modal1_props.active = /*active*/ ctx[0];
+	if (/*felixplot_modal*/ ctx[0] !== void 0) {
+		modal1_props.active = /*felixplot_modal*/ ctx[0];
 	}
 
 	modal1 = new Modal1({ props: modal1_props, $$inline: true });
@@ -41647,13 +41560,13 @@ function create_if_block$i(ctx) {
 		p: function update(ctx, dirty) {
 			const modal1_changes = {};
 
-			if (dirty & /*$$scope, felixFigureWidgets*/ 33554434) {
+			if (dirty & /*$$scope, felix_plotting_widgets*/ 33554434) {
 				modal1_changes.$$scope = { dirty, ctx };
 			}
 
-			if (!updating_active && dirty & /*active*/ 1) {
+			if (!updating_active && dirty & /*felixplot_modal*/ 1) {
 				updating_active = true;
-				modal1_changes.active = /*active*/ ctx[0];
+				modal1_changes.active = /*felixplot_modal*/ ctx[0];
 				add_flush_callback(() => updating_active = false);
 			}
 
@@ -41677,14 +41590,14 @@ function create_if_block$i(ctx) {
 		block,
 		id: create_if_block$i.name,
 		type: "if",
-		source: "(45:0) {#if active}",
+		source: "(45:0) {#if felixplot_modal}",
 		ctx
 	});
 
 	return block;
 }
 
-// (51:16) {#each felixFigureWidgets.checkBoxes as {label, options, selected, style, id}
+// (51:16) {#each felix_plotting_widgets.checkBoxes as {label, options, selected, style, id}
 function create_each_block_3$1(key_1, ctx) {
 	let div1;
 	let div0;
@@ -41738,10 +41651,10 @@ function create_each_block_3$1(key_1, ctx) {
 			create_component(customchecklist.$$.fragment);
 			t2 = space();
 			attr_dev(div0, "class", "subtitle felix_tkplot_filelist_header svelte-167q3z7");
-			add_location(div0, file$T, 52, 24, 1434);
+			add_location(div0, file$T, 52, 24, 1478);
 			attr_dev(div1, "style", div1_style_value = "flex-grow:1; " + /*style*/ ctx[22]);
 			attr_dev(div1, "class", "felix_tkplot_filelist_div svelte-167q3z7");
-			add_location(div1, file$T, 51, 20, 1340);
+			add_location(div1, file$T, 51, 20, 1384);
 			this.first = div1;
 		},
 		m: function mount(target, anchor) {
@@ -41755,16 +41668,16 @@ function create_each_block_3$1(key_1, ctx) {
 		},
 		p: function update(new_ctx, dirty) {
 			ctx = new_ctx;
-			if ((!current || dirty & /*felixFigureWidgets*/ 2) && t0_value !== (t0_value = /*label*/ ctx[10] + "")) set_data_dev(t0, t0_value);
+			if ((!current || dirty & /*felix_plotting_widgets*/ 2) && t0_value !== (t0_value = /*label*/ ctx[10] + "")) set_data_dev(t0, t0_value);
 			const customchecklist_changes = {};
 
-			if (!updating_fileChecked && dirty & /*felixFigureWidgets*/ 2) {
+			if (!updating_fileChecked && dirty & /*felix_plotting_widgets*/ 2) {
 				updating_fileChecked = true;
 				customchecklist_changes.fileChecked = /*selected*/ ctx[21];
 				add_flush_callback(() => updating_fileChecked = false);
 			}
 
-			if (!updating_items && dirty & /*felixFigureWidgets*/ 2) {
+			if (!updating_items && dirty & /*felix_plotting_widgets*/ 2) {
 				updating_items = true;
 				customchecklist_changes.items = /*options*/ ctx[20];
 				add_flush_callback(() => updating_items = false);
@@ -41772,7 +41685,7 @@ function create_each_block_3$1(key_1, ctx) {
 
 			customchecklist.$set(customchecklist_changes);
 
-			if (!current || dirty & /*felixFigureWidgets*/ 2 && div1_style_value !== (div1_style_value = "flex-grow:1; " + /*style*/ ctx[22])) {
+			if (!current || dirty & /*felix_plotting_widgets*/ 2 && div1_style_value !== (div1_style_value = "flex-grow:1; " + /*style*/ ctx[22])) {
 				attr_dev(div1, "style", div1_style_value);
 			}
 		},
@@ -41795,14 +41708,14 @@ function create_each_block_3$1(key_1, ctx) {
 		block,
 		id: create_each_block_3$1.name,
 		type: "each",
-		source: "(51:16) {#each felixFigureWidgets.checkBoxes as {label, options, selected, style, id}",
+		source: "(51:16) {#each felix_plotting_widgets.checkBoxes as {label, options, selected, style, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (60:16) {#each felixFigureWidgets.text as {label, value, id}
+// (60:16) {#each felix_plotting_widgets.text as {label, value, id}
 function create_each_block_2$2(key_1, ctx) {
 	let first;
 	let textfield;
@@ -41843,9 +41756,9 @@ function create_each_block_2$2(key_1, ctx) {
 		p: function update(new_ctx, dirty) {
 			ctx = new_ctx;
 			const textfield_changes = {};
-			if (dirty & /*felixFigureWidgets*/ 2) textfield_changes.label = /*label*/ ctx[10];
+			if (dirty & /*felix_plotting_widgets*/ 2) textfield_changes.label = /*label*/ ctx[10];
 
-			if (!updating_value && dirty & /*felixFigureWidgets*/ 2) {
+			if (!updating_value && dirty & /*felix_plotting_widgets*/ 2) {
 				updating_value = true;
 				textfield_changes.value = /*value*/ ctx[11];
 				add_flush_callback(() => updating_value = false);
@@ -41872,14 +41785,14 @@ function create_each_block_2$2(key_1, ctx) {
 		block,
 		id: create_each_block_2$2.name,
 		type: "each",
-		source: "(60:16) {#each felixFigureWidgets.text as {label, value, id}",
+		source: "(60:16) {#each felix_plotting_widgets.text as {label, value, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (66:16) {#each felixFigureWidgets.number as {label, value, step, id}
+// (66:16) {#each felix_plotting_widgets.number as {label, value, step, id}
 function create_each_block_1$2(key_1, ctx) {
 	let first;
 	let textfield;
@@ -41920,10 +41833,10 @@ function create_each_block_1$2(key_1, ctx) {
 		p: function update(new_ctx, dirty) {
 			ctx = new_ctx;
 			const textfield_changes = {};
-			if (dirty & /*felixFigureWidgets*/ 2) textfield_changes.step = /*step*/ ctx[15];
-			if (dirty & /*felixFigureWidgets*/ 2) textfield_changes.label = /*label*/ ctx[10];
+			if (dirty & /*felix_plotting_widgets*/ 2) textfield_changes.step = /*step*/ ctx[15];
+			if (dirty & /*felix_plotting_widgets*/ 2) textfield_changes.label = /*label*/ ctx[10];
 
-			if (!updating_value && dirty & /*felixFigureWidgets*/ 2) {
+			if (!updating_value && dirty & /*felix_plotting_widgets*/ 2) {
 				updating_value = true;
 				textfield_changes.value = /*value*/ ctx[11];
 				add_flush_callback(() => updating_value = false);
@@ -41950,14 +41863,14 @@ function create_each_block_1$2(key_1, ctx) {
 		block,
 		id: create_each_block_1$2.name,
 		type: "each",
-		source: "(66:16) {#each felixFigureWidgets.number as {label, value, step, id}",
+		source: "(66:16) {#each felix_plotting_widgets.number as {label, value, step, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (72:16) {#each felixFigureWidgets.boolean as {label, value, id}
+// (72:16) {#each felix_plotting_widgets.boolean as {label, value, id}
 function create_each_block$7(key_1, ctx) {
 	let first;
 	let customcheckbox;
@@ -42000,9 +41913,9 @@ function create_each_block$7(key_1, ctx) {
 		p: function update(new_ctx, dirty) {
 			ctx = new_ctx;
 			const customcheckbox_changes = {};
-			if (dirty & /*felixFigureWidgets*/ 2) customcheckbox_changes.label = /*label*/ ctx[10];
+			if (dirty & /*felix_plotting_widgets*/ 2) customcheckbox_changes.label = /*label*/ ctx[10];
 
-			if (!updating_selected && dirty & /*felixFigureWidgets*/ 2) {
+			if (!updating_selected && dirty & /*felix_plotting_widgets*/ 2) {
 				updating_selected = true;
 				customcheckbox_changes.selected = /*value*/ ctx[11];
 				add_flush_callback(() => updating_selected = false);
@@ -42029,7 +41942,7 @@ function create_each_block$7(key_1, ctx) {
 		block,
 		id: create_each_block$7.name,
 		type: "each",
-		source: "(72:16) {#each felixFigureWidgets.boolean as {label, value, id}",
+		source: "(72:16) {#each felix_plotting_widgets.boolean as {label, value, id}",
 		ctx
 	});
 
@@ -42055,7 +41968,7 @@ function create_content_slot(ctx) {
 	let each_blocks = [];
 	let each3_lookup = new Map();
 	let current;
-	let each_value_3 = /*felixFigureWidgets*/ ctx[1].checkBoxes;
+	let each_value_3 = /*felix_plotting_widgets*/ ctx[1].checkBoxes;
 	validate_each_argument(each_value_3);
 	const get_key = ctx => /*id*/ ctx[12];
 	validate_each_keys(ctx, each_value_3, get_each_context_3$1, get_key);
@@ -42066,7 +41979,7 @@ function create_content_slot(ctx) {
 		each0_lookup.set(key, each_blocks_3[i] = create_each_block_3$1(key, child_ctx));
 	}
 
-	let each_value_2 = /*felixFigureWidgets*/ ctx[1].text;
+	let each_value_2 = /*felix_plotting_widgets*/ ctx[1].text;
 	validate_each_argument(each_value_2);
 	const get_key_1 = ctx => /*id*/ ctx[12];
 	validate_each_keys(ctx, each_value_2, get_each_context_2$2, get_key_1);
@@ -42077,7 +41990,7 @@ function create_content_slot(ctx) {
 		each1_lookup.set(key, each_blocks_2[i] = create_each_block_2$2(key, child_ctx));
 	}
 
-	let each_value_1 = /*felixFigureWidgets*/ ctx[1].number;
+	let each_value_1 = /*felix_plotting_widgets*/ ctx[1].number;
 	validate_each_argument(each_value_1);
 	const get_key_2 = ctx => /*id*/ ctx[12];
 	validate_each_keys(ctx, each_value_1, get_each_context_1$2, get_key_2);
@@ -42088,7 +42001,7 @@ function create_content_slot(ctx) {
 		each2_lookup.set(key, each_blocks_1[i] = create_each_block_1$2(key, child_ctx));
 	}
 
-	let each_value = /*felixFigureWidgets*/ ctx[1].boolean;
+	let each_value = /*felix_plotting_widgets*/ ctx[1].boolean;
 	validate_each_argument(each_value);
 	const get_key_3 = ctx => /*id*/ ctx[12];
 	validate_each_keys(ctx, each_value, get_each_context$7, get_key_3);
@@ -42131,16 +42044,16 @@ function create_content_slot(ctx) {
 
 			set_style(div1, "display", "flex");
 			set_style(div1, "flex-wrap", "wrap");
-			add_location(div1, file$T, 49, 12, 1175);
+			add_location(div1, file$T, 49, 12, 1215);
 			attr_dev(div2, "class", "felix_plotting_div svelte-167q3z7");
-			add_location(div2, file$T, 58, 12, 1769);
+			add_location(div2, file$T, 58, 12, 1813);
 			attr_dev(div3, "class", "felix_plotting_div svelte-167q3z7");
-			add_location(div3, file$T, 64, 12, 2060);
+			add_location(div3, file$T, 64, 12, 2108);
 			attr_dev(div4, "class", "felix_plotting_div svelte-167q3z7");
-			add_location(div4, file$T, 70, 12, 2349);
+			add_location(div4, file$T, 70, 12, 2401);
 			attr_dev(div0, "slot", "content");
 			set_style(div0, "height", "40vh");
-			add_location(div0, file$T, 48, 8, 1119);
+			add_location(div0, file$T, 48, 8, 1159);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -42174,8 +42087,8 @@ function create_content_slot(ctx) {
 			current = true;
 		},
 		p: function update(ctx, dirty) {
-			if (dirty & /*felixFigureWidgets*/ 2) {
-				const each_value_3 = /*felixFigureWidgets*/ ctx[1].checkBoxes;
+			if (dirty & /*felix_plotting_widgets*/ 2) {
+				const each_value_3 = /*felix_plotting_widgets*/ ctx[1].checkBoxes;
 				validate_each_argument(each_value_3);
 				group_outros();
 				validate_each_keys(ctx, each_value_3, get_each_context_3$1, get_key);
@@ -42183,8 +42096,8 @@ function create_content_slot(ctx) {
 				check_outros();
 			}
 
-			if (dirty & /*felixFigureWidgets*/ 2) {
-				const each_value_2 = /*felixFigureWidgets*/ ctx[1].text;
+			if (dirty & /*felix_plotting_widgets*/ 2) {
+				const each_value_2 = /*felix_plotting_widgets*/ ctx[1].text;
 				validate_each_argument(each_value_2);
 				group_outros();
 				validate_each_keys(ctx, each_value_2, get_each_context_2$2, get_key_1);
@@ -42192,8 +42105,8 @@ function create_content_slot(ctx) {
 				check_outros();
 			}
 
-			if (dirty & /*felixFigureWidgets*/ 2) {
-				const each_value_1 = /*felixFigureWidgets*/ ctx[1].number;
+			if (dirty & /*felix_plotting_widgets*/ 2) {
+				const each_value_1 = /*felix_plotting_widgets*/ ctx[1].number;
 				validate_each_argument(each_value_1);
 				group_outros();
 				validate_each_keys(ctx, each_value_1, get_each_context_1$2, get_key_2);
@@ -42201,8 +42114,8 @@ function create_content_slot(ctx) {
 				check_outros();
 			}
 
-			if (dirty & /*felixFigureWidgets*/ 2) {
-				const each_value = /*felixFigureWidgets*/ ctx[1].boolean;
+			if (dirty & /*felix_plotting_widgets*/ 2) {
+				const each_value = /*felix_plotting_widgets*/ ctx[1].boolean;
 				validate_each_argument(each_value);
 				group_outros();
 				validate_each_keys(ctx, each_value, get_each_context$7, get_key_3);
@@ -42294,7 +42207,7 @@ function create_footerbtn_slot(ctx) {
 			button.textContent = "Submit";
 			attr_dev(button, "slot", "footerbtn");
 			attr_dev(button, "class", "button is-link");
-			add_location(button, file$T, 77, 8, 2641);
+			add_location(button, file$T, 77, 8, 2697);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, button, anchor);
@@ -42323,7 +42236,7 @@ function create_footerbtn_slot(ctx) {
 	return block;
 }
 
-// (47:4) <Modal1 bind:active title="FELIX PLOTTING" style="width:70vw;">
+// (47:4) <Modal1 bind:active={felixplot_modal} title="FELIX PLOTTING" style="width:70vw;">
 function create_default_slot$n(ctx) {
 	let t;
 
@@ -42346,7 +42259,7 @@ function create_default_slot$n(ctx) {
 		block,
 		id: create_default_slot$n.name,
 		type: "slot",
-		source: "(47:4) <Modal1 bind:active title=\\\"FELIX PLOTTING\\\" style=\\\"width:70vw;\\\">",
+		source: "(47:4) <Modal1 bind:active={felixplot_modal} title=\\\"FELIX PLOTTING\\\" style=\\\"width:70vw;\\\">",
 		ctx
 	});
 
@@ -42356,7 +42269,7 @@ function create_default_slot$n(ctx) {
 function create_fragment$_(ctx) {
 	let if_block_anchor;
 	let current;
-	let if_block = /*active*/ ctx[0] && create_if_block$i(ctx);
+	let if_block = /*felixplot_modal*/ ctx[0] && create_if_block$i(ctx);
 
 	const block = {
 		c: function create() {
@@ -42372,11 +42285,11 @@ function create_fragment$_(ctx) {
 			current = true;
 		},
 		p: function update(ctx, [dirty]) {
-			if (/*active*/ ctx[0]) {
+			if (/*felixplot_modal*/ ctx[0]) {
 				if (if_block) {
 					if_block.p(ctx, dirty);
 
-					if (dirty & /*active*/ 1) {
+					if (dirty & /*felixplot_modal*/ 1) {
 						transition_in(if_block, 1);
 					}
 				} else {
@@ -42422,9 +42335,11 @@ function create_fragment$_(ctx) {
 }
 
 function instance$_($$self, $$props, $$invalidate) {
-	let { active = false } = $$props, { felixFigureWidgets = {} } = $$props;
+	let { felixplot_modal = false } = $$props,
+		{ felix_plotting_widgets = {} } = $$props;
+
 	const dispatch = createEventDispatcher();
-	const writable_props = ["active", "felixFigureWidgets"];
+	const writable_props = ["felixplot_modal", "felix_plotting_widgets"];
 
 	Object.keys($$props).forEach(key => {
 		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<FelixPlotting> was created with unknown prop '${key}'`);
@@ -42435,27 +42350,27 @@ function instance$_($$self, $$props, $$invalidate) {
 
 	function customchecklist_fileChecked_binding(value, selected, each_value_3, each_index_3) {
 		each_value_3[each_index_3].selected = value;
-		$$invalidate(1, felixFigureWidgets);
+		$$invalidate(1, felix_plotting_widgets);
 	}
 
 	function customchecklist_items_binding(value, options, each_value_3, each_index_3) {
 		each_value_3[each_index_3].options = value;
-		$$invalidate(1, felixFigureWidgets);
+		$$invalidate(1, felix_plotting_widgets);
 	}
 
 	function textfield_value_binding(value$1, value, each_value_2, each_index_2) {
 		each_value_2[each_index_2].value = value$1;
-		$$invalidate(1, felixFigureWidgets);
+		$$invalidate(1, felix_plotting_widgets);
 	}
 
 	function textfield_value_binding_1(value$1, value, each_value_1, each_index_1) {
 		each_value_1[each_index_1].value = value$1;
-		$$invalidate(1, felixFigureWidgets);
+		$$invalidate(1, felix_plotting_widgets);
 	}
 
 	function customcheckbox_selected_binding(value$1, value, each_value, each_index) {
 		each_value[each_index].value = value$1;
-		$$invalidate(1, felixFigureWidgets);
+		$$invalidate(1, felix_plotting_widgets);
 	}
 
 	const click_handler = () => {
@@ -42463,13 +42378,13 @@ function instance$_($$self, $$props, $$invalidate) {
 	};
 
 	function modal1_active_binding(value) {
-		active = value;
-		$$invalidate(0, active);
+		felixplot_modal = value;
+		$$invalidate(0, felixplot_modal);
 	}
 
 	$$self.$set = $$props => {
-		if ("active" in $$props) $$invalidate(0, active = $$props.active);
-		if ("felixFigureWidgets" in $$props) $$invalidate(1, felixFigureWidgets = $$props.felixFigureWidgets);
+		if ("felixplot_modal" in $$props) $$invalidate(0, felixplot_modal = $$props.felixplot_modal);
+		if ("felix_plotting_widgets" in $$props) $$invalidate(1, felix_plotting_widgets = $$props.felix_plotting_widgets);
 	};
 
 	$$self.$capture_state = () => ({
@@ -42478,14 +42393,14 @@ function instance$_($$self, $$props, $$invalidate) {
 		Textfield,
 		CustomCheckbox,
 		createEventDispatcher,
-		active,
-		felixFigureWidgets,
+		felixplot_modal,
+		felix_plotting_widgets,
 		dispatch
 	});
 
 	$$self.$inject_state = $$props => {
-		if ("active" in $$props) $$invalidate(0, active = $$props.active);
-		if ("felixFigureWidgets" in $$props) $$invalidate(1, felixFigureWidgets = $$props.felixFigureWidgets);
+		if ("felixplot_modal" in $$props) $$invalidate(0, felixplot_modal = $$props.felixplot_modal);
+		if ("felix_plotting_widgets" in $$props) $$invalidate(1, felix_plotting_widgets = $$props.felix_plotting_widgets);
 	};
 
 	if ($$props && "$$inject" in $$props) {
@@ -42493,8 +42408,8 @@ function instance$_($$self, $$props, $$invalidate) {
 	}
 
 	return [
-		active,
-		felixFigureWidgets,
+		felixplot_modal,
+		felix_plotting_widgets,
 		dispatch,
 		customchecklist_fileChecked_binding,
 		customchecklist_items_binding,
@@ -42509,7 +42424,11 @@ function instance$_($$self, $$props, $$invalidate) {
 class FelixPlotting extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$_, create_fragment$_, safe_not_equal, { active: 0, felixFigureWidgets: 1 });
+
+		init(this, options, instance$_, create_fragment$_, safe_not_equal, {
+			felixplot_modal: 0,
+			felix_plotting_widgets: 1
+		});
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
@@ -42519,19 +42438,19 @@ class FelixPlotting extends SvelteComponentDev {
 		});
 	}
 
-	get active() {
+	get felixplot_modal() {
 		throw new Error("<FelixPlotting>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 
-	set active(value) {
+	set felixplot_modal(value) {
 		throw new Error("<FelixPlotting>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 
-	get felixFigureWidgets() {
+	get felix_plotting_widgets() {
 		throw new Error("<FelixPlotting>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 
-	set felixFigureWidgets(value) {
+	set felix_plotting_widgets(value) {
 		throw new Error("<FelixPlotting>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 }
@@ -42549,7 +42468,7 @@ function get_each_context$8(ctx, list, i) {
 	return child_ctx;
 }
 
-// (37:0) {#if modalActivate}
+// (36:0) {#if modalActivate}
 function create_if_block$j(ctx) {
 	let modal1;
 	let updating_active;
@@ -42617,14 +42536,14 @@ function create_if_block$j(ctx) {
 		block,
 		id: create_if_block$j.name,
 		type: "if",
-		source: "(37:0) {#if modalActivate}",
+		source: "(36:0) {#if modalActivate}",
 		ctx
 	});
 
 	return block;
 }
 
-// (42:20) <Icon class="material-icons"  on:click="{()=> {peakTable = [...peakTable, {freq:0, amp:0, sig:0, id:window.getID()}]}}">
+// (41:20) <Icon class="material-icons"  on:click="{()=> {peakTable = [...peakTable, {freq:0, amp:0, sig:0, id:window.getID()}]}}">
 function create_default_slot_2$9(ctx) {
 	let t;
 
@@ -42644,14 +42563,14 @@ function create_default_slot_2$9(ctx) {
 		block,
 		id: create_default_slot_2$9.name,
 		type: "slot",
-		source: "(42:20) <Icon class=\\\"material-icons\\\"  on:click=\\\"{()=> {peakTable = [...peakTable, {freq:0, amp:0, sig:0, id:window.getID()}]}}\\\">",
+		source: "(41:20) <Icon class=\\\"material-icons\\\"  on:click=\\\"{()=> {peakTable = [...peakTable, {freq:0, amp:0, sig:0, id:window.getID()}]}}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (70:40) <Icon id="{table.id}" class="material-icons" on:click="{(e)=> {rearrangePeakTable(e)}}">
+// (69:40) <Icon id="{table.id}" class="material-icons" on:click="{(e)=> {rearrangePeakTable(e)}}">
 function create_default_slot_1$b(ctx) {
 	let t;
 
@@ -42671,14 +42590,14 @@ function create_default_slot_1$b(ctx) {
 		block,
 		id: create_default_slot_1$b.name,
 		type: "slot",
-		source: "(70:40) <Icon id=\\\"{table.id}\\\" class=\\\"material-icons\\\" on:click=\\\"{(e)=> {rearrangePeakTable(e)}}\\\">",
+		source: "(69:40) <Icon id=\\\"{table.id}\\\" class=\\\"material-icons\\\" on:click=\\\"{(e)=> {rearrangePeakTable(e)}}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (62:28) {#each peakTable as table, index (table.id)}
+// (61:28) {#each peakTable as table, index (table.id)}
 function create_each_block$8(key_1, ctx) {
 	let tr;
 	let td0;
@@ -42748,33 +42667,33 @@ function create_each_block$8(key_1, ctx) {
 			t5 = space();
 			attr_dev(td0, "class", "mdc-data-table__cell");
 			set_style(td0, "width", "2em");
-			add_location(td0, file$U, 64, 36, 2869);
+			add_location(td0, file$U, 63, 36, 2867);
 			set_style(input0, "color", "black");
 			attr_dev(input0, "type", "number");
 			attr_dev(input0, "step", "0.05");
-			add_location(input0, file$U, 65, 101, 3038);
+			add_location(input0, file$U, 64, 101, 3036);
 			attr_dev(td1, "class", "mdc-data-table__cell mdc-data-table__cell--numeric");
-			add_location(td1, file$U, 65, 36, 2973);
+			add_location(td1, file$U, 64, 36, 2971);
 			set_style(input1, "color", "black");
 			attr_dev(input1, "type", "number");
 			attr_dev(input1, "step", "0.05");
-			add_location(input1, file$U, 66, 101, 3239);
+			add_location(input1, file$U, 65, 101, 3237);
 			attr_dev(td2, "class", "mdc-data-table__cell mdc-data-table__cell--numeric");
-			add_location(td2, file$U, 66, 36, 3174);
+			add_location(td2, file$U, 65, 36, 3172);
 			set_style(input2, "color", "black");
 			attr_dev(input2, "type", "number");
 			attr_dev(input2, "step", "0.5");
-			add_location(input2, file$U, 67, 100, 3425);
+			add_location(input2, file$U, 66, 100, 3423);
 			attr_dev(td3, "class", "mdc-data-table__cell mdc-data-table__cell--numeric");
-			add_location(td3, file$U, 67, 36, 3361);
+			add_location(td3, file$U, 66, 36, 3359);
 			attr_dev(td4, "class", "mdc-data-table__cell");
 			set_style(td4, "background", "#f14668");
 			set_style(td4, "cursor", "pointer");
 			set_style(td4, "width", "2em");
-			add_location(td4, file$U, 68, 36, 3546);
+			add_location(td4, file$U, 67, 36, 3544);
 			attr_dev(tr, "class", "mdc-data-table__row");
 			set_style(tr, "background-color", "#fafafa");
-			add_location(tr, file$U, 63, 32, 2763);
+			add_location(tr, file$U, 62, 32, 2761);
 			this.first = tr;
 		},
 		m: function mount(target, anchor) {
@@ -42856,14 +42775,14 @@ function create_each_block$8(key_1, ctx) {
 		block,
 		id: create_each_block$8.name,
 		type: "each",
-		source: "(62:28) {#each peakTable as table, index (table.id)}",
+		source: "(61:28) {#each peakTable as table, index (table.id)}",
 		ctx
 	});
 
 	return block;
 }
 
-// (40:8) <div slot="content" >
+// (39:8) <div slot="content" >
 function create_content_slot$1(ctx) {
 	let div0;
 	let div1;
@@ -42943,44 +42862,44 @@ function create_content_slot$1(ctx) {
 			}
 
 			attr_dev(div1, "class", "icon-holder");
-			add_location(div1, file$U, 40, 16, 1044);
+			add_location(div1, file$U, 39, 16, 1042);
 			attr_dev(th0, "class", "mdc-data-table__header-cell");
 			set_style(th0, "width", "2em");
 			attr_dev(th0, "role", "columnheader");
 			attr_dev(th0, "scope", "col");
-			add_location(th0, file$U, 53, 32, 1646);
+			add_location(th0, file$U, 52, 32, 1644);
 			set_style(th1, "cursor", "pointer");
 			attr_dev(th1, "class", "mdc-data-table__header-cell mdc-data-table__header-cell--numeric");
 			attr_dev(th1, "role", "columnheader");
 			attr_dev(th1, "scope", "col");
-			add_location(th1, file$U, 54, 32, 1777);
+			add_location(th1, file$U, 53, 32, 1775);
 			set_style(th2, "cursor", "pointer");
 			attr_dev(th2, "class", "mdc-data-table__header-cell mdc-data-table__header-cell--numeric");
 			attr_dev(th2, "role", "columnheader");
 			attr_dev(th2, "scope", "col");
-			add_location(th2, file$U, 55, 32, 1994);
+			add_location(th2, file$U, 54, 32, 1992);
 			set_style(th3, "cursor", "pointer");
 			attr_dev(th3, "class", "mdc-data-table__header-cell mdc-data-table__header-cell--numeric");
 			attr_dev(th3, "role", "columnheader");
 			attr_dev(th3, "scope", "col");
-			add_location(th3, file$U, 56, 32, 2210);
+			add_location(th3, file$U, 55, 32, 2208);
 			attr_dev(th4, "class", "mdc-data-table__header-cell");
 			set_style(th4, "width", "2em");
 			attr_dev(th4, "role", "columnheader");
 			attr_dev(th4, "scope", "col");
-			add_location(th4, file$U, 57, 32, 2422);
+			add_location(th4, file$U, 56, 32, 2420);
 			attr_dev(tr, "class", "mdc-data-table__header-row");
-			add_location(tr, file$U, 52, 28, 1573);
-			add_location(thead, file$U, 50, 24, 1518);
+			add_location(tr, file$U, 51, 28, 1571);
+			add_location(thead, file$U, 49, 24, 1516);
 			attr_dev(tbody, "class", "mdc-data-table__content");
-			add_location(tbody, file$U, 60, 24, 2614);
+			add_location(tbody, file$U, 59, 24, 2612);
 			attr_dev(table, "class", "mdc-data-table__table");
 			attr_dev(table, "aria-label", "adjustPeaks");
-			add_location(table, file$U, 48, 20, 1428);
+			add_location(table, file$U, 47, 20, 1426);
 			attr_dev(div2, "class", "mdc-data-table tableContainer");
-			add_location(div2, file$U, 46, 16, 1345);
+			add_location(div2, file$U, 45, 16, 1343);
 			attr_dev(div0, "slot", "content");
-			add_location(div0, file$U, 39, 8, 1005);
+			add_location(div0, file$U, 38, 8, 1003);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -43082,14 +43001,14 @@ function create_content_slot$1(ctx) {
 		block,
 		id: create_content_slot$1.name,
 		type: "slot",
-		source: "(40:8) <div slot=\\\"content\\\" >",
+		source: "(39:8) <div slot=\\\"content\\\" >",
 		ctx
 	});
 
 	return block;
 }
 
-// (80:8) <button slot="footerbtn" class="button is-link" on:click="{()=>dispatch('save')}" >
+// (79:8) <button slot="footerbtn" class="button is-link" on:click="{()=>dispatch('save')}" >
 function create_footerbtn_slot$1(ctx) {
 	let button;
 	let mounted;
@@ -43101,7 +43020,7 @@ function create_footerbtn_slot$1(ctx) {
 			button.textContent = "Save";
 			attr_dev(button, "slot", "footerbtn");
 			attr_dev(button, "class", "button is-link");
-			add_location(button, file$U, 79, 8, 4045);
+			add_location(button, file$U, 78, 8, 4043);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, button, anchor);
@@ -43123,14 +43042,14 @@ function create_footerbtn_slot$1(ctx) {
 		block,
 		id: create_footerbtn_slot$1.name,
 		type: "slot",
-		source: "(80:8) <button slot=\\\"footerbtn\\\" class=\\\"button is-link\\\" on:click=\\\"{()=>dispatch('save')}\\\" >",
+		source: "(79:8) <button slot=\\\"footerbtn\\\" class=\\\"button is-link\\\" on:click=\\\"{()=>dispatch('save')}\\\" >",
 		ctx
 	});
 
 	return block;
 }
 
-// (39:4) <Modal1 bind:active={modalActivate} title="Adjust initial guess" >
+// (38:4) <Modal1 bind:active={modalActivate} title="Adjust initial guess" >
 function create_default_slot$o(ctx) {
 	let t;
 
@@ -43153,7 +43072,7 @@ function create_default_slot$o(ctx) {
 		block,
 		id: create_default_slot$o.name,
 		type: "slot",
-		source: "(39:4) <Modal1 bind:active={modalActivate} title=\\\"Adjust initial guess\\\" >",
+		source: "(38:4) <Modal1 bind:active={modalActivate} title=\\\"Adjust initial guess\\\" >",
 		ctx
 	});
 
@@ -43925,7 +43844,6 @@ var events = {
     SELECTED_ALL: 'MDCDataTable:selectedAll',
     UNSELECTED_ALL: 'MDCDataTable:unselectedAll',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -44111,7 +44029,6 @@ var MDCDataTableFoundation = /** @class */ (function (_super) {
     };
     return MDCDataTableFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -44259,7 +44176,6 @@ var MDCDataTable = /** @class */ (function (_super) {
     };
     return MDCDataTable;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\data-table\DataTable.svelte generated by Svelte v3.24.0 */
 
@@ -85903,7 +85819,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
-//# sourceMappingURL=compiler.js.map
+
 });
 
 var svelte = unwrapExports(compiler);
