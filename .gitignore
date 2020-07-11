@@ -1,6 +1,7 @@
 node_modules
+dist
 src/materialize-src/
-*.zip
-py38/
+src/Pages/normline/functions/dist/
+static/dist/
 python3/
 out/
