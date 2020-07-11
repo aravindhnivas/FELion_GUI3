@@ -10,7 +10,18 @@ hr { width: 90%; margin: 1em 0; }
 .report { display: block; margin-bottom: 1em; }
 table th:not([align]) {text-align: center; padding: 1em;}
 table td:not([align]) {text-align: center; padding: 1em;}
+
 .averagedTable td { color: white; }
 
 .tableContainer {border: 1px solid #5b3ea2; width:100%; padding-right: 1em;}
+
 .tableContainer thead {background-color: #e1e1e1;}
+
+.align {display: flex; align-items: center; flex-wrap: wrap; margin-bottom: 0.5em;}
+.box{background-color: #654ca25c;}
+.mdc-list-item{height: 2em;}
+.mdc-switch.mdc-switch--checked .mdc-switch__thumb, .mdc-switch.mdc-switch--checked .mdc-switch__track{background-color: #ffffff}
+.material-icons {margin-right:0.2em; cursor:pointer;}
+.center {justify-content: center;}
+
+.gap {margin-right: 2em;}

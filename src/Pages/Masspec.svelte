@@ -161,9 +161,7 @@
     .buttonRow {margin-bottom: 1em!important; align-items: center;}
     * :global(.mdc-select__native-control option) {color: black}
     .active {display: flex!important;}
-
     .hide {display: none;}
-    .align {display: flex; align-items: center;}
 </style>
 
 <Layout {filetype} {id} bind:currentLocation bind:fileChecked>
