@@ -4,7 +4,7 @@
     import Textfield from '@smui/textfield';
     import { createEventDispatcher } from 'svelte';
     import {browse} from "../../../components/Layout.svelte"
-    export let addFileModal=false, addedFileCol=1, addedFileScale=1000, addedfiles=[], addedFile={};
+    export let active=false, addedFileCol=1, addedFileScale=1000, addedfiles=[], addedFile={};
 
     const dispatch = createEventDispatcher();
 
@@ -18,9 +18,9 @@
 </script>
 
 
-{#if addFileModal}
+{#if active}
 
-    <Modal1 bind:active={addFileModal} title="Add file to plot">
+    <Modal1 bind:active title="Add file to plot">
 
         <div slot="content" >
             <Textfield style="width:7em; margin:0 0.5em;" bind:value={addedFileCol} label="Columns"/>

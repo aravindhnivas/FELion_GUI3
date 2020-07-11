@@ -4,28 +4,20 @@
     import { fade } from 'svelte/transition'
     import { createEventDispatcher } from 'svelte';
     import Modal1 from '../../../components/Modal1.svelte';
-    import {Icon} from '@smui/icon-button'
+    import {Icon} from '@smui/icon-button';
+
+    import {felixPeakTable} from '../functions/svelteWritables';
     
-    export let modalActivate=false, peakTable = [];
+    export let active=false;
     const dispatch = createEventDispatcher();
-    let originalTable;
-    function rearrangePeakTable(e) {
 
-        peakTable = _.filter(peakTable, (tb)=>tb.id != e.target.id);
-        removedTable = _.differenceBy(originalTable, peakTable)
-        console.log(originalTable, peakTable, removedTable)
+    function rearrangePeakTable() { $felixPeakTable = _.filter($felixPeakTable, (tb)=>tb.id != e.target.id); }
 
-    }
-
-    $: console.log(peakTable)
+    $: console.log(`peakTable: ${$felixPeakTable}`)
     
     const focusFreq = (e) => {e.focus()}
 
-    const sortTable = (type) => {
-        peakTable = _.orderBy(peakTable, [type], ["asc"])
-
-        // peakTable = _.reverse(peakTable)
-    }
+    const sortTable = (type) => { $felixPeakTable = _.orderBy($felixPeakTable, [type], ["asc"]) }
 
 </script>
 
@@ -33,12 +25,12 @@
 
 </style>
 
-{#if modalActivate}
+{#if active}
 
-    <Modal1 bind:active={modalActivate} title="Adjust initial guess" >
+    <Modal1 bind:active title="Adjust initial guess" >
         <div slot="content" >
                 <div class="icon-holder" use:Ripple={[true, {color: 'primary'}]} >
-                    <Icon class="material-icons"  on:click="{()=> {peakTable = [...peakTable, {freq:0, amp:0, sig:0, id:window.getID()}]}}">add</Icon>
+                    <Icon class="material-icons"  on:click="{()=> {$felixPeakTable = [...$felixPeakTable, {freq:0, amp:0, sig:0, id:window.getID()}]}}">add</Icon>
                 </div>
 
                 <!-- Data Table -->
@@ -58,7 +50,7 @@
                             </tr>
                         </thead>
                         <tbody class="mdc-data-table__content">
-                            {#each peakTable as table, index (table.id)}
+                            {#each $felixPeakTable as table, index (table.id)}
 
                                 <tr class="mdc-data-table__row" style="background-color: #fafafa;"> 
                                     <td class="mdc-data-table__cell" style="width: 2em;" >{index}</td>
