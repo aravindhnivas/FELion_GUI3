@@ -48352,12 +48352,345 @@ function init_tour_normline({filetype="felix"}={}) {
     });
 }
 
+const felixIndex = writable([]);
+const felixPeakTable = writable([]);
+const felixOutputName = writable("");
+const opoMode = writable(false);
+
+
+const dataTable = writable([]);
+const dataTable_avg = writable([]);
+
+function NGauss_fit_func({graphDiv, dataFromPython, output_name, line_index_count}={}){
+
+    Plotly.addTraces(graphDiv, dataFromPython["fitted_data"]);
+    let color = "#fafafa";
+    
+    dataFromPython["fitted_parameter"].forEach(data=>{
+        let {freq, amp, fwhm, sig} = data;
+    
+        if (output_name === "averaged") {
+            
+            color = "#836ac05c";
+            
+            dataTable_avg.update(table =>  [...table, {name: `Line #${line_index_count}`, id:getID(), freq:freq, amp:amp, fwhm:fwhm, sig:sig, color:color}]);
+
+            dataTable_avg.update(table => _.uniqBy(table, "freq"));
+    
+            line_index_count++;
+        }
+        let newTable = {name: output_name, id:getID(), freq:freq, amp:amp, fwhm:fwhm, sig:sig, color:color};
+        
+        dataTable.update(table =>  _.uniqBy([...table, newTable], "freq"));
+    });
+
+    return line_index_count
+    
+}
+
+function find_peaks_func({graphDiv, dataFromPython, annotation_color, Ngauss_sigma}={}){
+
+    Plotly.relayout(graphDiv, { annotations: [] });
+        
+    
+        window.annotation = dataFromPython[2]["annotations"];
+
+        annotation_color = dataFromPython[2]["annotations"]["arrowcolor"];
+        Plotly.relayout(graphDiv, { annotations: dataFromPython[2]["annotations"] });
+
+        const [peakX, peakY] = [dataFromPython[0]["data"].x, dataFromPython[0]["data"].y];
+        for (let index = 0; index < peakX.length; index++) {
+            let [freq, amp, sig] = [peakX[index], peakY[index], Ngauss_sigma];
+
+            felixPeakTable.update(table => [...table, {freq, amp, sig, id:getID()}]);
+        }
+
+        console.log(`Found peaks:\nX: ${peakX}\nY: ${peakY}`);
+        console.log("Peaks found");
+        return annotation_color
+}
+
+function felix_func({normMethod, dataFromPython, delta, plotly_event_created}={}){
+
+    opoMode.set(false), felixOutputName.set("averaged"), felixIndex.set([]);
+    
+    let avgdataToPlot, signal_formula, ylabel;
+    
+    if (normMethod === "Log") {
+        avgdataToPlot = dataFromPython["average"];
+        signal_formula = "Signal = -ln(C/B)/Power(in J)";
+        ylabel = "Normalised Intensity per J";
+    } else if (normMethod == "Relative") {
+        avgdataToPlot = dataFromPython["average_rel"];
+        signal_formula = "Signal = (1-C/B)*100";
+        ylabel = "Relative Depletion (%)";
+
+    } else if (normMethod == "IntensityPerPhoton") {
+
+        avgdataToPlot = dataFromPython["average_per_photon"];
+
+        signal_formula = "Signal = -ln(C/B)/#Photons";
+        ylabel = "Normalised Intensity per photon";
+    }
+    const get_data = (data) => {
+        let dataPlot = [];
+        for (let x in data) { dataPlot.push(data[x]); }
+        return dataPlot
+    };
+    let signal = {
+        "rel": "Signal = (1-C/B)*100",
+        "log": "Signal = -ln(C/B)/Power(in J)",
+        "hv": "Signal = -ln(C/B)/#Photons"
+    };
+    const set_title = (method) => `Normalised and Averaged Spectrum (delta=${delta})<br>${signal[method]}; {C=Measured Count, B=Baseline Count}`;
+
+    normMethod_datas = {
+        "Relative": {
+            "data": get_data(dataFromPython["average_rel"]),
+            "layout": {
+                "title": set_title("rel"),
+                "yaxis": { "title": "Relative Depletion (%)" },
+                "xaxis": { "title": "Calibrated Wavelength (cm-1)" }
+            }
+        },
+        "Log": {
+            "data": get_data(dataFromPython["average"]),
+            "layout": {
+                "title": set_title("log"),
+                "yaxis": { "title": "Normalised Intensity per J" },
+                "xaxis": { "title": "Calibrated Wavelength (cm-1)" }
+            }
+        },
+        "IntensityPerPhoton": {
+            "data": get_data(dataFromPython["average_per_photon"]),
+            "layout": {
+                "title": set_title("hv"),
+                "yaxis": { "title": "Normalised Intensity per photon" },
+                "xaxis": { "title": "Calibrated Wavelength (cm-1)" }
+            }
+        },
+
+    };
+
+    plot(
+        "Baseline Corrected",
+        "Wavelength (cm-1)",
+        "Counts",
+        dataFromPython["base"],
+        "bplot"
+    );
+
+    plot(
+        `Normalised and Averaged Spectrum (delta=${delta})<br>${signal_formula}; {C=Measured Count, B=Baseline Count}`,
+        "Calibrated Wavelength (cm-1)",
+        ylabel,
+        avgdataToPlot,
+        "avgplot"
+    );
+
+
+    subplot(
+        "Spectrum and Power Analyser",
+        "Wavelength set (cm-1)",
+        "SA (cm-1)",
+        dataFromPython["SA"],
+        "saPlot",
+        "Wavelength (cm-1)",
+        `Total Power (mJ)`,
+        dataFromPython["pow"]
+    );
+
+    let avgplot = document.getElementById("avgplot");
+    if (!plotly_event_created) {
+
+        console.log("Creating plotly graph events");
+        avgplot.on("plotly_selected", (data) => {
+            if (!data) console.log("No data available to fit");
+            else {
+                console.log(data);
+
+                opoMode.set(false);
+                let { range } = data;
+                let output_name = data.points[0].data.name.split(".")[0];
+                felixOutputName.set(output_name);
+
+                felixIndex.set(range.x);
+                console.log(`Selected file: ${output_name}`);
+            }
+
+        });
+
+    
+        avgplot.on('plotly_click', (data)=>{
+        
+            console.log("Graph clicked: ", data);
+
+            if (data.event.ctrlKey) {
+                console.log("Data point length: ", data.points.length);
+                for(let i=0; i<data.points.length; i++){
+
+                    console.log("Running cycle: ", i);
+                    let d = data.points[i];
+                    let name = d.data.name;
+                    let output_name;
+
+                    window.unsubscribefelixOutputName = felixOutputName.subscribe(value => { output_name = value; });
+
+                    
+
+                    if (name.includes(output_name)){
+
+                        console.log("Filename: ", output_name);
+
+
+                        let line_color = d.data.line.color;
+                        console.log(name);
+                        console.log(d, d.x, d.y);
+
+                        let [freq, amp] = [parseFloat(d.x.toFixed(2)), parseFloat(d.y.toFixed(2))];
+                        
+                        console.log("Annotation before: ", window.annotation);
+                        window.annotation = [...window.annotation, { text: `(${freq}, ${amp})`, x: freq, y: amp, font:{color:line_color}, arrowcolor:line_color }];
+                        console.log("Annotation after: ", window.annotation);
+
+                        Plotly.relayout("avgplot",{annotations: _.uniqBy(window.annotation, 'text')});
+                        
+                        felixPeakTable.update(table => [...table, {freq, amp, sig:Ngauss_sigma, id:getID()}]);
+                        felixPeakTable.update(table => _.uniqBy(table, 'freq'));
+                    }
+                }
+                console.log("Running cycle ended");
+            } 
+        });
+
+        plotly_event_created = true;
+    }
+
+    console.log("Graph Plotted");
+
+    // normMethod, dataFromPython, delta, plotly_event_created
+
+    return plotly_event_created
+
+}
+
+function opofile_func({dataFromPython, plotly_event_created_opo}={}) {
+
+    felixOutputName.set("averaged");
+    
+    
+    plot("OPO spectrum", "Wavenumber (cm-1)", "Counts", dataFromPython["real"], "opoplot");
+    plot("OPO Calibration", "Set Wavenumber (cm-1)", "Measured Wavenumber (cm-1)", dataFromPython["SA"], "opoSA");
+    plot("OPO spectrum: Depletion (%)", "Wavenumber (cm-1)", "Depletion (%)", dataFromPython["relative"], "opoRelPlot");
+    let opoRelPlot = document.getElementById("opoRelPlot");
+
+    if(!plotly_event_created_opo){
+
+        console.log("Creating plotly graph events");
+
+        opoRelPlot.on("plotly_selected", (data) => {
+
+            if (!data) console.log("No data available to fit");
+            else {
+                console.log(data);
+                opoMode.set(true);
+                let { range } = data;
+                let output_name = data.points[0].data.name.split(".")[0];
+                index = range.x;
+                
+                felixOutputName.set(output_name);
+                felixIndex.set(index);
+                console.log(`Selected file: ${output_name}`);
+                console.log(`Index selected: ${index}`);
+            }
+        });
+        plotly_event_created_opo = true;
+    }
+
+    console.log("Graph Plotted");
+
+    
+    return plotly_event_created_opo
+}
+
+function theory_func({dataFromPython, normMethod}={}){
+    let ylabel;
+    if (normMethod === "Log") { ylabel = "Normalised Intensity per J"; }
+    else if (normMethod === "Relative") { ylabel = "Relative Depletion (%)"; }
+    else { ylabel = "Normalised Intensity per Photon"; }
+
+    let theoryData = [];
+    for (let x in dataFromPython["line_simulation"]) { theoryData.push(dataFromPython["line_simulation"][x]); }
+
+    plot(
+        "Experimental vs Theory",
+        "Calibrated Wavelength (cm-1)",
+        ylabel, [dataFromPython["averaged"], ...theoryData],
+        "exp-theory-plot"
+
+    );
+
+    console.log("Graph Plotted");
+}
+
+function exp_fit_func({dataFromPython, graphDiv, output_name, line, annotations, plot_trace_added, line_index_count, collectData, lineData_list}={}){
+
+    Plotly.addTraces(graphDiv, dataFromPython["fit"]);
+    line = [...line, ...dataFromPython["line"]];
+    Plotly.relayout(graphDiv, { shapes: line });
+
+    annotations = [...annotations, dataFromPython["annotations"]];
+    Plotly.relayout(graphDiv, { annotations: annotations });
+    
+    plot_trace_added++;
+
+    let [freq, amp, fwhm, sig] = dataFromPython["table"].split(", ");
+    
+    let color = "#fafafa";
+    
+    if (output_name === "averaged") {
+
+        color = "#836ac05c";
+        dataTable_avg.update(table=>[...table, {name: `Line #${line_index_count}`, id:getID(), freq, amp, fwhm, sig, color}]);
+        dataTable_avg.update(table=>_.uniqBy(table, "freq"));
+        
+        line_index_count++;
+    } else {
+        
+        if (collectData) {
+            console.log("Collecting lines");
+            lineData_list = [...lineData_list, dataFromPython["for_weighted_error"]];
+            }
+    }
+    let newTable = {name: output_name, id:getID(), freq, amp, fwhm, sig, color};
+    dataTable.update(table=>_.uniqBy([...table, newTable], "freq"));
+    console.log("Line fitted");
+
+    return [line, annotations, plot_trace_added, line_index_count, collectData, lineData_list]
+
+}
+
+function get_err_func({dataFromPython}={}) {
+
+    let {freq, amp, fwhm, sig } = dataFromPython;
+    let data1 = {name: "unweighted_mean", id:getID(), freq:freq.mean, amp:amp.mean, fwhm:fwhm.mean, sig:sig.mean, color:"#f14668"};
+
+    let data2 = {name: "weighted_mean", id:getID(), freq:freq.wmean, amp:amp.wmean, fwhm:fwhm.wmean, sig:sig.wmean, color:"#2098d1"};
+
+    dataTable.update(table => [...table, data1, data2]);
+    dataTable_avg.update(table => [...table, data1, data2]);
+
+    console.log("Weighted fit.");
+
+}
+
 /* src\Pages\Normline.svelte generated by Svelte v3.24.0 */
 
 const { console: console_1$7 } = globals;
+
 const file$10 = "src\\Pages\\Normline.svelte";
 
-// (853:4) <div class="buttonSlot" slot="buttonContainer">
+// (545:4) <div class="buttonSlot" slot="buttonContainer">
 function create_buttonContainer_slot(ctx) {
 	let div0;
 	let div1;
@@ -48453,11 +48786,11 @@ function create_buttonContainer_slot(ctx) {
 	let customselect_props = {
 		style: "width:7em;",
 		label: "Calib. file",
-		options: ["", .../*OPOcalibFiles*/ ctx[38]]
+		options: ["", .../*OPOcalibFiles*/ ctx[33]]
 	};
 
-	if (/*calibFile*/ ctx[37] !== void 0) {
-		customselect_props.picked = /*calibFile*/ ctx[37];
+	if (/*calibFile*/ ctx[32] !== void 0) {
+		customselect_props.picked = /*calibFile*/ ctx[32];
 	}
 
 	customselect = new CustomSelect({
@@ -48476,8 +48809,8 @@ function create_buttonContainer_slot(ctx) {
 		label: "Delta OPO"
 	};
 
-	if (/*delta_OPO*/ ctx[35] !== void 0) {
-		textfield1_props.value = /*delta_OPO*/ ctx[35];
+	if (/*delta_OPO*/ ctx[30] !== void 0) {
+		textfield1_props.value = /*delta_OPO*/ ctx[30];
 	}
 
 	textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
@@ -48492,8 +48825,8 @@ function create_buttonContainer_slot(ctx) {
 		label: "Wn-meter calib."
 	};
 
-	if (/*calibValue*/ ctx[36] !== void 0) {
-		textfield2_props.value = /*calibValue*/ ctx[36];
+	if (/*calibValue*/ ctx[31] !== void 0) {
+		textfield2_props.value = /*calibValue*/ ctx[31];
 	}
 
 	textfield2 = new Textfield({ props: textfield2_props, $$inline: true });
@@ -48603,39 +48936,39 @@ function create_buttonContainer_slot(ctx) {
 			create_component(customradio.$$.fragment);
 			attr_dev(button0, "class", "button is-link");
 			attr_dev(button0, "id", "create_baseline_btn");
-			add_location(button0, file$10, 854, 12, 41303);
+			add_location(button0, file$10, 546, 12, 24524);
 			attr_dev(button1, "class", "button is-link");
 			attr_dev(button1, "id", "felix_plotting_btn");
-			add_location(button1, file$10, 855, 12, 41468);
+			add_location(button1, file$10, 547, 12, 24689);
 			attr_dev(button2, "class", "button is-link");
-			add_location(button2, file$10, 857, 12, 41729);
+			add_location(button2, file$10, 549, 12, 24950);
 			attr_dev(button3, "class", "button is-link");
-			add_location(button3, file$10, 859, 12, 41938);
+			add_location(button3, file$10, 551, 12, 25159);
 			attr_dev(button4, "class", "button is-link");
-			add_location(button4, file$10, 860, 12, 42042);
+			add_location(button4, file$10, 552, 12, 25263);
 			attr_dev(div1, "class", "align svelte-145klz8");
-			add_location(div1, file$10, 853, 8, 41270);
+			add_location(div1, file$10, 545, 8, 24491);
 			attr_dev(button5, "class", "button is-link");
-			add_location(button5, file$10, 870, 16, 42727);
+			add_location(button5, file$10, 561, 16, 25825);
 			attr_dev(button6, "class", "button is-link");
-			add_location(button6, file$10, 872, 16, 43083);
+			add_location(button6, file$10, 562, 16, 26027);
 			attr_dev(div2, "class", "align svelte-145klz8");
-			add_location(div2, file$10, 866, 12, 42359);
+			add_location(div2, file$10, 557, 12, 25457);
 			attr_dev(div3, "class", "animated fadeIn hide content svelte-145klz8");
-			toggle_class(div3, "active", /*opoExpFit*/ ctx[33]);
-			add_location(div3, file$10, 865, 8, 42277);
+			toggle_class(div3, "active", /*$opoMode*/ ctx[48]);
+			add_location(div3, file$10, 556, 8, 25376);
 			attr_dev(button7, "class", "button is-link");
-			add_location(button7, file$10, 877, 12, 43304);
+			add_location(button7, file$10, 567, 12, 26248);
 			attr_dev(button8, "class", "button is-link");
-			add_location(button8, file$10, 881, 12, 43990);
+			add_location(button8, file$10, 570, 12, 26696);
 			attr_dev(div4, "class", "animated fadeIn hide svelte-145klz8");
 			toggle_class(div4, "active", /*toggleRow*/ ctx[2]);
-			add_location(div4, file$10, 876, 8, 43231);
+			add_location(div4, file$10, 566, 8, 26175);
 			set_style(div5, "display", "flex");
-			add_location(div5, file$10, 885, 8, 44127);
+			add_location(div5, file$10, 574, 8, 26833);
 			attr_dev(div0, "class", "buttonSlot svelte-145klz8");
 			attr_dev(div0, "slot", "buttonContainer");
-			add_location(div0, file$10, 852, 4, 41213);
+			add_location(div0, file$10, 544, 4, 24434);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -48715,36 +49048,36 @@ function create_buttonContainer_slot(ctx) {
 
 			customiconswitch.$set(customiconswitch_changes);
 			const customselect_changes = {};
-			if (dirty[1] & /*OPOcalibFiles*/ 128) customselect_changes.options = ["", .../*OPOcalibFiles*/ ctx[38]];
+			if (dirty[1] & /*OPOcalibFiles*/ 4) customselect_changes.options = ["", .../*OPOcalibFiles*/ ctx[33]];
 
-			if (!updating_picked && dirty[1] & /*calibFile*/ 64) {
+			if (!updating_picked && dirty[1] & /*calibFile*/ 2) {
 				updating_picked = true;
-				customselect_changes.picked = /*calibFile*/ ctx[37];
+				customselect_changes.picked = /*calibFile*/ ctx[32];
 				add_flush_callback(() => updating_picked = false);
 			}
 
 			customselect.$set(customselect_changes);
 			const textfield1_changes = {};
 
-			if (!updating_value_1 && dirty[1] & /*delta_OPO*/ 16) {
+			if (!updating_value_1 && dirty[0] & /*delta_OPO*/ 1073741824) {
 				updating_value_1 = true;
-				textfield1_changes.value = /*delta_OPO*/ ctx[35];
+				textfield1_changes.value = /*delta_OPO*/ ctx[30];
 				add_flush_callback(() => updating_value_1 = false);
 			}
 
 			textfield1.$set(textfield1_changes);
 			const textfield2_changes = {};
 
-			if (!updating_value_2 && dirty[1] & /*calibValue*/ 32) {
+			if (!updating_value_2 && dirty[1] & /*calibValue*/ 1) {
 				updating_value_2 = true;
-				textfield2_changes.value = /*calibValue*/ ctx[36];
+				textfield2_changes.value = /*calibValue*/ ctx[31];
 				add_flush_callback(() => updating_value_2 = false);
 			}
 
 			textfield2.$set(textfield2_changes);
 
-			if (dirty[1] & /*opoExpFit*/ 4) {
-				toggle_class(div3, "active", /*opoExpFit*/ ctx[33]);
+			if (dirty[1] & /*$opoMode*/ 131072) {
+				toggle_class(div3, "active", /*$opoMode*/ ctx[48]);
 			}
 
 			const textfield3_changes = {};
@@ -48822,14 +49155,14 @@ function create_buttonContainer_slot(ctx) {
 		block,
 		id: create_buttonContainer_slot.name,
 		type: "slot",
-		source: "(853:4) <div class=\\\"buttonSlot\\\" slot=\\\"buttonContainer\\\">",
+		source: "(545:4) <div class=\\\"buttonSlot\\\" slot=\\\"buttonContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (903:12) {#if showfile_details}
+// (592:12) {#if showfile_details}
 function create_if_block_1$8(ctx) {
 	let table;
 	let updating_rows;
@@ -48855,8 +49188,8 @@ function create_if_block_1$8(ctx) {
 		tableid: "felix_filedetails_table"
 	};
 
-	if (/*filedetails*/ ctx[46] !== void 0) {
-		table_props.rows = /*filedetails*/ ctx[46];
+	if (/*filedetails*/ ctx[41] !== void 0) {
+		table_props.rows = /*filedetails*/ ctx[41];
 	}
 
 	table = new Table({ props: table_props, $$inline: true });
@@ -48873,9 +49206,9 @@ function create_if_block_1$8(ctx) {
 		p: function update(ctx, dirty) {
 			const table_changes = {};
 
-			if (!updating_rows && dirty[1] & /*filedetails*/ 32768) {
+			if (!updating_rows && dirty[1] & /*filedetails*/ 1024) {
 				updating_rows = true;
-				table_changes.rows = /*filedetails*/ ctx[46];
+				table_changes.rows = /*filedetails*/ ctx[41];
 				add_flush_callback(() => updating_rows = false);
 			}
 
@@ -48899,14 +49232,14 @@ function create_if_block_1$8(ctx) {
 		block,
 		id: create_if_block_1$8.name,
 		type: "if",
-		source: "(903:12) {#if showfile_details}",
+		source: "(592:12) {#if showfile_details}",
 		ctx
 	});
 
 	return block;
 }
 
-// (922:8) {#if graphPlotted}
+// (612:8) {#if graphPlotted}
 function create_if_block$n(ctx) {
 	let div5;
 	let div0;
@@ -48995,11 +49328,11 @@ function create_if_block$n(ctx) {
 
 	let customselect_props = {
 		label: "Output filename",
-		options: /*output_namelists*/ ctx[50]
+		options: /*output_namelists*/ ctx[45]
 	};
 
-	if (/*output_name*/ ctx[18] !== void 0) {
-		customselect_props.picked = /*output_name*/ ctx[18];
+	if (/*$felixOutputName*/ ctx[46] !== void 0) {
+		customselect_props.picked = /*$felixOutputName*/ ctx[46];
 	}
 
 	customselect = new CustomSelect({
@@ -49018,8 +49351,8 @@ function create_if_block$n(ctx) {
 		label: "writeFileName"
 	};
 
-	if (/*writeFileName*/ ctx[19] !== void 0) {
-		textfield0_props.value = /*writeFileName*/ ctx[19];
+	if (/*writeFileName*/ ctx[18] !== void 0) {
+		textfield0_props.value = /*writeFileName*/ ctx[18];
 	}
 
 	textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
@@ -49071,8 +49404,8 @@ function create_if_block$n(ctx) {
 		label: "Collect"
 	};
 
-	if (/*collectData*/ ctx[25] !== void 0) {
-		customswitch2_props.selected = /*collectData*/ ctx[25];
+	if (/*collectData*/ ctx[21] !== void 0) {
+		customswitch2_props.selected = /*collectData*/ ctx[21];
 	}
 
 	customswitch2 = new CustomSwitch({
@@ -49091,8 +49424,8 @@ function create_if_block$n(ctx) {
 		label: "BoxSelected"
 	};
 
-	if (/*boxSelected_peakfinder*/ ctx[22] !== void 0) {
-		customswitch3_props.selected = /*boxSelected_peakfinder*/ ctx[22];
+	if (/*boxSelected_peakfinder*/ ctx[19] !== void 0) {
+		customswitch3_props.selected = /*boxSelected_peakfinder*/ ctx[19];
 	}
 
 	customswitch3 = new CustomSwitch({
@@ -49113,8 +49446,8 @@ function create_if_block$n(ctx) {
 		label: "Prominance"
 	};
 
-	if (/*peak_prominence*/ ctx[30] !== void 0) {
-		textfield1_props.value = /*peak_prominence*/ ctx[30];
+	if (/*peak_prominence*/ ctx[26] !== void 0) {
+		textfield1_props.value = /*peak_prominence*/ ctx[26];
 	}
 
 	textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
@@ -49131,8 +49464,8 @@ function create_if_block$n(ctx) {
 		label: "Width"
 	};
 
-	if (/*peak_width*/ ctx[29] !== void 0) {
-		textfield2_props.value = /*peak_width*/ ctx[29];
+	if (/*peak_width*/ ctx[25] !== void 0) {
+		textfield2_props.value = /*peak_width*/ ctx[25];
 	}
 
 	textfield2 = new Textfield({ props: textfield2_props, $$inline: true });
@@ -49149,8 +49482,8 @@ function create_if_block$n(ctx) {
 		label: "Height"
 	};
 
-	if (/*peak_height*/ ctx[28] !== void 0) {
-		textfield3_props.value = /*peak_height*/ ctx[28];
+	if (/*peak_height*/ ctx[24] !== void 0) {
+		textfield3_props.value = /*peak_height*/ ctx[24];
 	}
 
 	textfield3 = new Textfield({ props: textfield3_props, $$inline: true });
@@ -49162,8 +49495,8 @@ function create_if_block$n(ctx) {
 
 	let textfield4_props = { style: "width:9em", label: "Sigma" };
 
-	if (/*Ngauss_sigma*/ ctx[51] !== void 0) {
-		textfield4_props.value = /*Ngauss_sigma*/ ctx[51];
+	if (/*Ngauss_sigma*/ ctx[52] !== void 0) {
+		textfield4_props.value = /*Ngauss_sigma*/ ctx[52];
 	}
 
 	textfield4 = new Textfield({ props: textfield4_props, $$inline: true });
@@ -49189,8 +49522,8 @@ function create_if_block$n(ctx) {
 		label: "savefile"
 	};
 
-	if (/*savePeakfilename*/ ctx[47] !== void 0) {
-		textfield5_props.value = /*savePeakfilename*/ ctx[47];
+	if (/*savePeakfilename*/ ctx[42] !== void 0) {
+		textfield5_props.value = /*savePeakfilename*/ ctx[42];
 	}
 
 	textfield5 = new Textfield({ props: textfield5_props, $$inline: true });
@@ -49218,24 +49551,24 @@ function create_if_block$n(ctx) {
 
 	let frequencytable_props = {};
 
-	if (/*dataTable_avg*/ ctx[21] !== void 0) {
-		frequencytable_props.dataTable_avg = /*dataTable_avg*/ ctx[21];
+	if (/*$dataTable_avg*/ ctx[50] !== void 0) {
+		frequencytable_props.dataTable_avg = /*$dataTable_avg*/ ctx[50];
 	}
 
-	if (/*dataTable*/ ctx[20] !== void 0) {
-		frequencytable_props.dataTable = /*dataTable*/ ctx[20];
+	if (/*$dataTable*/ ctx[49] !== void 0) {
+		frequencytable_props.dataTable = /*$dataTable*/ ctx[49];
 	}
 
-	if (/*keepTable*/ ctx[23] !== void 0) {
-		frequencytable_props.keepTable = /*keepTable*/ ctx[23];
+	if (/*keepTable*/ ctx[20] !== void 0) {
+		frequencytable_props.keepTable = /*keepTable*/ ctx[20];
 	}
 
 	if (/*line_index_count*/ ctx[17] !== void 0) {
 		frequencytable_props.line_index_count = /*line_index_count*/ ctx[17];
 	}
 
-	if (/*lineData_list*/ ctx[26] !== void 0) {
-		frequencytable_props.lineData_list = /*lineData_list*/ ctx[26];
+	if (/*lineData_list*/ ctx[22] !== void 0) {
+		frequencytable_props.lineData_list = /*lineData_list*/ ctx[22];
 	}
 
 	frequencytable = new FrequencyTable({
@@ -49345,45 +49678,45 @@ function create_if_block$n(ctx) {
 			t38 = space();
 			create_component(reportlayout.$$.fragment);
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$10, 935, 20, 46760);
+			add_location(button0, file$10, 624, 20, 29363);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$10, 936, 20, 46868);
+			add_location(button1, file$10, 625, 20, 29471);
 			attr_dev(div0, "class", "content");
-			add_location(div0, file$10, 925, 16, 46056);
+			add_location(div0, file$10, 615, 16, 28761);
 			attr_dev(button2, "class", "button is-link");
-			add_location(button2, file$10, 941, 20, 47085);
+			add_location(button2, file$10, 630, 20, 29688);
 			attr_dev(button3, "class", "button is-link");
-			add_location(button3, file$10, 942, 20, 47209);
+			add_location(button3, file$10, 631, 20, 29812);
 			attr_dev(button4, "class", "button is-warning");
-			add_location(button4, file$10, 943, 20, 47340);
+			add_location(button4, file$10, 632, 20, 29943);
 			attr_dev(button5, "class", "button is-danger");
-			add_location(button5, file$10, 944, 20, 47440);
+			add_location(button5, file$10, 633, 20, 30043);
 			attr_dev(button6, "class", "button is-link");
-			add_location(button6, file$10, 945, 20, 47537);
+			add_location(button6, file$10, 634, 20, 30140);
 			attr_dev(button7, "class", "button is-warning");
-			add_location(button7, file$10, 946, 20, 47666);
+			add_location(button7, file$10, 635, 20, 30269);
 			attr_dev(div1, "class", "content");
-			add_location(div1, file$10, 940, 16, 47042);
+			add_location(div1, file$10, 629, 16, 29645);
 			attr_dev(button8, "class", "button is-link");
-			add_location(button8, file$10, 960, 24, 48626);
+			add_location(button8, file$10, 649, 24, 31229);
 			set_style(div2, "margin", "1em 0");
-			add_location(div2, file$10, 953, 20, 48011);
+			add_location(div2, file$10, 642, 20, 30614);
 			attr_dev(button9, "class", "button is-link");
-			add_location(button9, file$10, 965, 24, 48985);
+			add_location(button9, file$10, 654, 24, 31588);
 			attr_dev(button10, "class", "button is-link");
-			add_location(button10, file$10, 969, 24, 49208);
+			add_location(button10, file$10, 658, 24, 31811);
 			attr_dev(button11, "class", "button is-link");
-			add_location(button11, file$10, 970, 24, 49351);
+			add_location(button11, file$10, 659, 24, 31960);
 			attr_dev(button12, "class", "button is-danger");
-			add_location(button12, file$10, 971, 24, 49478);
+			add_location(button12, file$10, 660, 24, 32087);
 			set_style(div3, "display", "flex");
 			set_style(div3, "align-items", "center");
-			add_location(div3, file$10, 963, 20, 48804);
+			add_location(div3, file$10, 652, 20, 31407);
 			attr_dev(div4, "class", "content animated fadeIn hide svelte-145klz8");
-			toggle_class(div4, "active", /*toggleFindPeaksRow*/ ctx[27]);
-			add_location(div4, file$10, 951, 16, 47911);
+			toggle_class(div4, "active", /*toggleFindPeaksRow*/ ctx[23]);
+			add_location(div4, file$10, 640, 16, 30514);
 			attr_dev(div5, "class", "svelte-145klz8");
-			add_location(div5, file$10, 922, 12, 45966);
+			add_location(div5, file$10, 612, 12, 28671);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div5, anchor);
@@ -49469,20 +49802,20 @@ function create_if_block$n(ctx) {
 		},
 		p: function update(ctx, dirty) {
 			const customselect_changes = {};
-			if (dirty[1] & /*output_namelists*/ 524288) customselect_changes.options = /*output_namelists*/ ctx[50];
+			if (dirty[1] & /*output_namelists*/ 16384) customselect_changes.options = /*output_namelists*/ ctx[45];
 
-			if (!updating_picked && dirty[0] & /*output_name*/ 262144) {
+			if (!updating_picked && dirty[1] & /*$felixOutputName*/ 32768) {
 				updating_picked = true;
-				customselect_changes.picked = /*output_name*/ ctx[18];
+				customselect_changes.picked = /*$felixOutputName*/ ctx[46];
 				add_flush_callback(() => updating_picked = false);
 			}
 
 			customselect.$set(customselect_changes);
 			const textfield0_changes = {};
 
-			if (!updating_value && dirty[0] & /*writeFileName*/ 524288) {
+			if (!updating_value && dirty[0] & /*writeFileName*/ 262144) {
 				updating_value = true;
-				textfield0_changes.value = /*writeFileName*/ ctx[19];
+				textfield0_changes.value = /*writeFileName*/ ctx[18];
 				add_flush_callback(() => updating_value = false);
 			}
 
@@ -49507,96 +49840,96 @@ function create_if_block$n(ctx) {
 			customswitch1.$set(customswitch1_changes);
 			const customswitch2_changes = {};
 
-			if (!updating_selected_2 && dirty[0] & /*collectData*/ 33554432) {
+			if (!updating_selected_2 && dirty[0] & /*collectData*/ 2097152) {
 				updating_selected_2 = true;
-				customswitch2_changes.selected = /*collectData*/ ctx[25];
+				customswitch2_changes.selected = /*collectData*/ ctx[21];
 				add_flush_callback(() => updating_selected_2 = false);
 			}
 
 			customswitch2.$set(customswitch2_changes);
 			const customswitch3_changes = {};
 
-			if (!updating_selected_3 && dirty[0] & /*boxSelected_peakfinder*/ 4194304) {
+			if (!updating_selected_3 && dirty[0] & /*boxSelected_peakfinder*/ 524288) {
 				updating_selected_3 = true;
-				customswitch3_changes.selected = /*boxSelected_peakfinder*/ ctx[22];
+				customswitch3_changes.selected = /*boxSelected_peakfinder*/ ctx[19];
 				add_flush_callback(() => updating_selected_3 = false);
 			}
 
 			customswitch3.$set(customswitch3_changes);
 			const textfield1_changes = {};
 
-			if (!updating_value_1 && dirty[0] & /*peak_prominence*/ 1073741824) {
+			if (!updating_value_1 && dirty[0] & /*peak_prominence*/ 67108864) {
 				updating_value_1 = true;
-				textfield1_changes.value = /*peak_prominence*/ ctx[30];
+				textfield1_changes.value = /*peak_prominence*/ ctx[26];
 				add_flush_callback(() => updating_value_1 = false);
 			}
 
 			textfield1.$set(textfield1_changes);
 			const textfield2_changes = {};
 
-			if (!updating_value_2 && dirty[0] & /*peak_width*/ 536870912) {
+			if (!updating_value_2 && dirty[0] & /*peak_width*/ 33554432) {
 				updating_value_2 = true;
-				textfield2_changes.value = /*peak_width*/ ctx[29];
+				textfield2_changes.value = /*peak_width*/ ctx[25];
 				add_flush_callback(() => updating_value_2 = false);
 			}
 
 			textfield2.$set(textfield2_changes);
 			const textfield3_changes = {};
 
-			if (!updating_value_3 && dirty[0] & /*peak_height*/ 268435456) {
+			if (!updating_value_3 && dirty[0] & /*peak_height*/ 16777216) {
 				updating_value_3 = true;
-				textfield3_changes.value = /*peak_height*/ ctx[28];
+				textfield3_changes.value = /*peak_height*/ ctx[24];
 				add_flush_callback(() => updating_value_3 = false);
 			}
 
 			textfield3.$set(textfield3_changes);
 			const textfield4_changes = {};
 
-			if (!updating_value_4 && dirty[1] & /*Ngauss_sigma*/ 1048576) {
+			if (!updating_value_4 && dirty[1] & /*Ngauss_sigma*/ 2097152) {
 				updating_value_4 = true;
-				textfield4_changes.value = /*Ngauss_sigma*/ ctx[51];
+				textfield4_changes.value = /*Ngauss_sigma*/ ctx[52];
 				add_flush_callback(() => updating_value_4 = false);
 			}
 
 			textfield4.$set(textfield4_changes);
 			const icon_changes = {};
 
-			if (dirty[5] & /*$$scope*/ 4096) {
+			if (dirty[5] & /*$$scope*/ 2048) {
 				icon_changes.$$scope = { dirty, ctx };
 			}
 
 			icon.$set(icon_changes);
 			const textfield5_changes = {};
 
-			if (!updating_value_5 && dirty[1] & /*savePeakfilename*/ 65536) {
+			if (!updating_value_5 && dirty[1] & /*savePeakfilename*/ 2048) {
 				updating_value_5 = true;
-				textfield5_changes.value = /*savePeakfilename*/ ctx[47];
+				textfield5_changes.value = /*savePeakfilename*/ ctx[42];
 				add_flush_callback(() => updating_value_5 = false);
 			}
 
 			textfield5.$set(textfield5_changes);
 
-			if (dirty[0] & /*toggleFindPeaksRow*/ 134217728) {
-				toggle_class(div4, "active", /*toggleFindPeaksRow*/ ctx[27]);
+			if (dirty[0] & /*toggleFindPeaksRow*/ 8388608) {
+				toggle_class(div4, "active", /*toggleFindPeaksRow*/ ctx[23]);
 			}
 
 			const frequencytable_changes = {};
 
-			if (!updating_dataTable_avg && dirty[0] & /*dataTable_avg*/ 2097152) {
+			if (!updating_dataTable_avg && dirty[1] & /*$dataTable_avg*/ 524288) {
 				updating_dataTable_avg = true;
-				frequencytable_changes.dataTable_avg = /*dataTable_avg*/ ctx[21];
+				frequencytable_changes.dataTable_avg = /*$dataTable_avg*/ ctx[50];
 				add_flush_callback(() => updating_dataTable_avg = false);
 			}
 
-			if (!updating_dataTable && dirty[0] & /*dataTable*/ 1048576) {
+			if (!updating_dataTable && dirty[1] & /*$dataTable*/ 262144) {
 				updating_dataTable = true;
-				frequencytable_changes.dataTable = /*dataTable*/ ctx[20];
+				frequencytable_changes.dataTable = /*$dataTable*/ ctx[49];
 				add_flush_callback(() => updating_dataTable = false);
 			}
 
-			if (!updating_keepTable && dirty[0] & /*keepTable*/ 8388608) {
+			if (!updating_keepTable && dirty[0] & /*keepTable*/ 1048576) {
 				updating_keepTable = true;
-				frequencytable_changes.keepTable = /*keepTable*/ ctx[23];
+				frequencytable_changes.keepTable = /*keepTable*/ ctx[20];
 				add_flush_callback(() => updating_keepTable = false);
 			}
 
@@ -49606,9 +49939,9 @@ function create_if_block$n(ctx) {
 				add_flush_callback(() => updating_line_index_count = false);
 			}
 
-			if (!updating_lineData_list && dirty[0] & /*lineData_list*/ 67108864) {
+			if (!updating_lineData_list && dirty[0] & /*lineData_list*/ 4194304) {
 				updating_lineData_list = true;
-				frequencytable_changes.lineData_list = /*lineData_list*/ ctx[26];
+				frequencytable_changes.lineData_list = /*lineData_list*/ ctx[22];
 				add_flush_callback(() => updating_lineData_list = false);
 			}
 
@@ -49692,14 +50025,14 @@ function create_if_block$n(ctx) {
 		block,
 		id: create_if_block$n.name,
 		type: "if",
-		source: "(922:8) {#if graphPlotted}",
+		source: "(612:8) {#if graphPlotted}",
 		ctx
 	});
 
 	return block;
 }
 
-// (965:24) <Icon class="material-icons" on:click="{()=> modalActivate = true}">
+// (654:24) <Icon class="material-icons" on:click="{()=> modalActivate = true}">
 function create_default_slot_1$d(ctx) {
 	let t;
 
@@ -49719,14 +50052,14 @@ function create_default_slot_1$d(ctx) {
 		block,
 		id: create_default_slot_1$d.name,
 		type: "slot",
-		source: "(965:24) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=> modalActivate = true}\\\">",
+		source: "(654:24) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=> modalActivate = true}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (892:4) <div class="plotSlot" slot="plotContainer">
+// (581:4) <div class="plotSlot" slot="plotContainer">
 function create_plotContainer_slot(ctx) {
 	let div0;
 	let div2;
@@ -49768,8 +50101,8 @@ function create_plotContainer_slot(ctx) {
 		icons: ["arrow_drop_down", "arrow_drop_up"]
 	};
 
-	if (/*showfile_details*/ ctx[45] !== void 0) {
-		customiconswitch_props.toggler = /*showfile_details*/ ctx[45];
+	if (/*showfile_details*/ ctx[40] !== void 0) {
+		customiconswitch_props.toggler = /*showfile_details*/ ctx[40];
 	}
 
 	customiconswitch = new CustomIconSwitch({
@@ -49778,7 +50111,7 @@ function create_plotContainer_slot(ctx) {
 		});
 
 	binding_callbacks.push(() => bind(customiconswitch, "toggler", customiconswitch_toggler_binding_1));
-	let if_block0 = /*showfile_details*/ ctx[45] && create_if_block_1$8(ctx);
+	let if_block0 = /*showfile_details*/ ctx[40] && create_if_block_1$8(ctx);
 	let if_block1 = /*graphPlotted*/ ctx[14] && create_if_block$n(ctx);
 
 	const block = {
@@ -49816,45 +50149,45 @@ function create_plotContainer_slot(ctx) {
 			t14 = space();
 			if (if_block1) if_block1.c();
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$10, 896, 16, 44498);
+			add_location(button0, file$10, 585, 16, 27204);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$10, 898, 16, 44739);
+			add_location(button1, file$10, 587, 16, 27445);
 			attr_dev(button2, "class", "button is-link");
-			add_location(button2, file$10, 899, 16, 44867);
+			add_location(button2, file$10, 588, 16, 27573);
 			set_style(div1, "display", "flex");
-			add_location(div1, file$10, 895, 11, 44453);
+			add_location(div1, file$10, 584, 11, 27159);
 			attr_dev(div2, "class", " svelte-145klz8");
-			add_location(div2, file$10, 894, 8, 44425);
+			add_location(div2, file$10, 583, 8, 27131);
 			attr_dev(div3, "class", "animated fadeIn svelte-145klz8");
 			attr_dev(div3, "id", "exp-theory-plot");
 			toggle_class(div3, "hide", !/*show_theoryplot*/ ctx[8]);
-			add_location(div3, file$10, 910, 12, 45434);
+			add_location(div3, file$10, 599, 12, 28140);
 			attr_dev(div4, "id", "bplot");
 			attr_dev(div4, "class", "svelte-145klz8");
-			add_location(div4, file$10, 911, 12, 45534);
+			add_location(div4, file$10, 600, 12, 28240);
 			attr_dev(div5, "id", "saPlot");
 			attr_dev(div5, "class", "svelte-145klz8");
-			add_location(div5, file$10, 912, 12, 45570);
+			add_location(div5, file$10, 601, 12, 28276);
 			attr_dev(div6, "id", "avgplot");
 			attr_dev(div6, "class", "svelte-145klz8");
-			add_location(div6, file$10, 913, 12, 45607);
+			add_location(div6, file$10, 602, 12, 28313);
 			attr_dev(div7, "class", "animated fadeIn svelte-145klz8");
 			attr_dev(div7, "id", "opoplot");
-			toggle_class(div7, "hide", !/*opoExpFit*/ ctx[33]);
-			add_location(div7, file$10, 914, 12, 45645);
+			toggle_class(div7, "hide", !/*$opoMode*/ ctx[48]);
+			add_location(div7, file$10, 603, 12, 28351);
 			attr_dev(div8, "class", "animated fadeIn svelte-145klz8");
 			attr_dev(div8, "id", "opoSA");
-			toggle_class(div8, "hide", !/*opoExpFit*/ ctx[33]);
-			add_location(div8, file$10, 915, 12, 45731);
+			toggle_class(div8, "hide", !/*$opoMode*/ ctx[48]);
+			add_location(div8, file$10, 604, 12, 28436);
 			attr_dev(div9, "class", "animated fadeIn svelte-145klz8");
 			attr_dev(div9, "id", "opoRelPlot");
-			toggle_class(div9, "hide", !/*opoExpFit*/ ctx[33]);
-			add_location(div9, file$10, 917, 12, 45817);
+			toggle_class(div9, "hide", !/*$opoMode*/ ctx[48]);
+			add_location(div9, file$10, 606, 12, 28521);
 			attr_dev(div10, "class", "felixPlot svelte-145klz8");
-			add_location(div10, file$10, 909, 8, 45397);
+			add_location(div10, file$10, 598, 8, 28103);
 			attr_dev(div0, "class", "plotSlot svelte-145klz8");
 			attr_dev(div0, "slot", "plotContainer");
-			add_location(div0, file$10, 891, 4, 44328);
+			add_location(div0, file$10, 580, 4, 27034);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -49901,19 +50234,19 @@ function create_plotContainer_slot(ctx) {
 		p: function update(ctx, dirty) {
 			const customiconswitch_changes = {};
 
-			if (!updating_toggler && dirty[1] & /*showfile_details*/ 16384) {
+			if (!updating_toggler && dirty[1] & /*showfile_details*/ 512) {
 				updating_toggler = true;
-				customiconswitch_changes.toggler = /*showfile_details*/ ctx[45];
+				customiconswitch_changes.toggler = /*showfile_details*/ ctx[40];
 				add_flush_callback(() => updating_toggler = false);
 			}
 
 			customiconswitch.$set(customiconswitch_changes);
 
-			if (/*showfile_details*/ ctx[45]) {
+			if (/*showfile_details*/ ctx[40]) {
 				if (if_block0) {
 					if_block0.p(ctx, dirty);
 
-					if (dirty[1] & /*showfile_details*/ 16384) {
+					if (dirty[1] & /*showfile_details*/ 512) {
 						transition_in(if_block0, 1);
 					}
 				} else {
@@ -49936,16 +50269,16 @@ function create_plotContainer_slot(ctx) {
 				toggle_class(div3, "hide", !/*show_theoryplot*/ ctx[8]);
 			}
 
-			if (dirty[1] & /*opoExpFit*/ 4) {
-				toggle_class(div7, "hide", !/*opoExpFit*/ ctx[33]);
+			if (dirty[1] & /*$opoMode*/ 131072) {
+				toggle_class(div7, "hide", !/*$opoMode*/ ctx[48]);
 			}
 
-			if (dirty[1] & /*opoExpFit*/ 4) {
-				toggle_class(div8, "hide", !/*opoExpFit*/ ctx[33]);
+			if (dirty[1] & /*$opoMode*/ 131072) {
+				toggle_class(div8, "hide", !/*$opoMode*/ ctx[48]);
 			}
 
-			if (dirty[1] & /*opoExpFit*/ 4) {
-				toggle_class(div9, "hide", !/*opoExpFit*/ ctx[33]);
+			if (dirty[1] & /*$opoMode*/ 131072) {
+				toggle_class(div9, "hide", !/*$opoMode*/ ctx[48]);
 			}
 
 			if (/*graphPlotted*/ ctx[14]) {
@@ -49998,14 +50331,14 @@ function create_plotContainer_slot(ctx) {
 		block,
 		id: create_plotContainer_slot.name,
 		type: "slot",
-		source: "(892:4) <div class=\\\"plotSlot\\\" slot=\\\"plotContainer\\\">",
+		source: "(581:4) <div class=\\\"plotSlot\\\" slot=\\\"plotContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (851:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>
+// (543:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>
 function create_default_slot$r(ctx) {
 	let t;
 
@@ -50028,7 +50361,7 @@ function create_default_slot$r(ctx) {
 		block,
 		id: create_default_slot$r.name,
 		type: "slot",
-		source: "(851:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>",
+		source: "(543:0) <Layout {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>",
 		ctx
 	});
 
@@ -50077,12 +50410,12 @@ function create_fragment$17(ctx) {
 
 	let adjustinitialguess_props = {};
 
-	if (/*peakTable*/ ctx[24] !== void 0) {
-		adjustinitialguess_props.peakTable = /*peakTable*/ ctx[24];
+	if (/*$felixPeakTable*/ ctx[47] !== void 0) {
+		adjustinitialguess_props.peakTable = /*$felixPeakTable*/ ctx[47];
 	}
 
-	if (/*modalActivate*/ ctx[39] !== void 0) {
-		adjustinitialguess_props.modalActivate = /*modalActivate*/ ctx[39];
+	if (/*modalActivate*/ ctx[34] !== void 0) {
+		adjustinitialguess_props.modalActivate = /*modalActivate*/ ctx[34];
 	}
 
 	adjustinitialguess = new AdjustInitialGuess({
@@ -50104,12 +50437,12 @@ function create_fragment$17(ctx) {
 
 	let felixplotting_props = {};
 
-	if (/*felixplot_modal*/ ctx[48] !== void 0) {
-		felixplotting_props.felixplot_modal = /*felixplot_modal*/ ctx[48];
+	if (/*felixplot_modal*/ ctx[43] !== void 0) {
+		felixplotting_props.felixplot_modal = /*felixplot_modal*/ ctx[43];
 	}
 
-	if (/*felix_plotting_widgets*/ ctx[49] !== void 0) {
-		felixplotting_props.felix_plotting_widgets = /*felix_plotting_widgets*/ ctx[49];
+	if (/*felix_plotting_widgets*/ ctx[44] !== void 0) {
+		felixplotting_props.felix_plotting_widgets = /*felix_plotting_widgets*/ ctx[44];
 	}
 
 	felixplotting = new FelixPlotting({
@@ -50143,24 +50476,24 @@ function create_fragment$17(ctx) {
 
 	let addfilestoplot_props = {};
 
-	if (/*addFileModal*/ ctx[40] !== void 0) {
-		addfilestoplot_props.addFileModal = /*addFileModal*/ ctx[40];
+	if (/*addFileModal*/ ctx[35] !== void 0) {
+		addfilestoplot_props.addFileModal = /*addFileModal*/ ctx[35];
 	}
 
-	if (/*addedFileCol*/ ctx[41] !== void 0) {
-		addfilestoplot_props.addedFileCol = /*addedFileCol*/ ctx[41];
+	if (/*addedFileCol*/ ctx[36] !== void 0) {
+		addfilestoplot_props.addedFileCol = /*addedFileCol*/ ctx[36];
 	}
 
-	if (/*addedFileScale*/ ctx[43] !== void 0) {
-		addfilestoplot_props.addedFileScale = /*addedFileScale*/ ctx[43];
+	if (/*addedFileScale*/ ctx[38] !== void 0) {
+		addfilestoplot_props.addedFileScale = /*addedFileScale*/ ctx[38];
 	}
 
-	if (/*addedfiles*/ ctx[44] !== void 0) {
-		addfilestoplot_props.addedfiles = /*addedfiles*/ ctx[44];
+	if (/*addedfiles*/ ctx[39] !== void 0) {
+		addfilestoplot_props.addedfiles = /*addedfiles*/ ctx[39];
 	}
 
-	if (/*addedFile*/ ctx[42] !== void 0) {
-		addfilestoplot_props.addedFile = /*addedFile*/ ctx[42];
+	if (/*addedFile*/ ctx[37] !== void 0) {
+		addfilestoplot_props.addedFile = /*addedFile*/ ctx[37];
 	}
 
 	addfilestoplot = new AddFilesToPlot({
@@ -50225,16 +50558,16 @@ function create_fragment$17(ctx) {
 
 	let quickbrowser1_props = { filetype: "ofelix" };
 
-	if (/*showOPOFiles*/ ctx[31] !== void 0) {
-		quickbrowser1_props.active = /*showOPOFiles*/ ctx[31];
+	if (/*showOPOFiles*/ ctx[27] !== void 0) {
+		quickbrowser1_props.active = /*showOPOFiles*/ ctx[27];
 	}
 
-	if (/*OPOLocation*/ ctx[34] !== void 0) {
-		quickbrowser1_props.currentLocation = /*OPOLocation*/ ctx[34];
+	if (/*OPOLocation*/ ctx[29] !== void 0) {
+		quickbrowser1_props.currentLocation = /*OPOLocation*/ ctx[29];
 	}
 
-	if (/*OPOfilesChecked*/ ctx[32] !== void 0) {
-		quickbrowser1_props.fileChecked = /*OPOfilesChecked*/ ctx[32];
+	if (/*OPOfilesChecked*/ ctx[28] !== void 0) {
+		quickbrowser1_props.fileChecked = /*OPOfilesChecked*/ ctx[28];
 	}
 
 	quickbrowser1 = new QuickBrowser({
@@ -50322,63 +50655,63 @@ function create_fragment$17(ctx) {
 		p: function update(ctx, dirty) {
 			const adjustinitialguess_changes = {};
 
-			if (!updating_peakTable && dirty[0] & /*peakTable*/ 16777216) {
+			if (!updating_peakTable && dirty[1] & /*$felixPeakTable*/ 65536) {
 				updating_peakTable = true;
-				adjustinitialguess_changes.peakTable = /*peakTable*/ ctx[24];
+				adjustinitialguess_changes.peakTable = /*$felixPeakTable*/ ctx[47];
 				add_flush_callback(() => updating_peakTable = false);
 			}
 
-			if (!updating_modalActivate && dirty[1] & /*modalActivate*/ 256) {
+			if (!updating_modalActivate && dirty[1] & /*modalActivate*/ 8) {
 				updating_modalActivate = true;
-				adjustinitialguess_changes.modalActivate = /*modalActivate*/ ctx[39];
+				adjustinitialguess_changes.modalActivate = /*modalActivate*/ ctx[34];
 				add_flush_callback(() => updating_modalActivate = false);
 			}
 
 			adjustinitialguess.$set(adjustinitialguess_changes);
 			const felixplotting_changes = {};
 
-			if (!updating_felixplot_modal && dirty[1] & /*felixplot_modal*/ 131072) {
+			if (!updating_felixplot_modal && dirty[1] & /*felixplot_modal*/ 4096) {
 				updating_felixplot_modal = true;
-				felixplotting_changes.felixplot_modal = /*felixplot_modal*/ ctx[48];
+				felixplotting_changes.felixplot_modal = /*felixplot_modal*/ ctx[43];
 				add_flush_callback(() => updating_felixplot_modal = false);
 			}
 
-			if (!updating_felix_plotting_widgets && dirty[1] & /*felix_plotting_widgets*/ 262144) {
+			if (!updating_felix_plotting_widgets && dirty[1] & /*felix_plotting_widgets*/ 8192) {
 				updating_felix_plotting_widgets = true;
-				felixplotting_changes.felix_plotting_widgets = /*felix_plotting_widgets*/ ctx[49];
+				felixplotting_changes.felix_plotting_widgets = /*felix_plotting_widgets*/ ctx[44];
 				add_flush_callback(() => updating_felix_plotting_widgets = false);
 			}
 
 			felixplotting.$set(felixplotting_changes);
 			const addfilestoplot_changes = {};
 
-			if (!updating_addFileModal && dirty[1] & /*addFileModal*/ 512) {
+			if (!updating_addFileModal && dirty[1] & /*addFileModal*/ 16) {
 				updating_addFileModal = true;
-				addfilestoplot_changes.addFileModal = /*addFileModal*/ ctx[40];
+				addfilestoplot_changes.addFileModal = /*addFileModal*/ ctx[35];
 				add_flush_callback(() => updating_addFileModal = false);
 			}
 
-			if (!updating_addedFileCol && dirty[1] & /*addedFileCol*/ 1024) {
+			if (!updating_addedFileCol && dirty[1] & /*addedFileCol*/ 32) {
 				updating_addedFileCol = true;
-				addfilestoplot_changes.addedFileCol = /*addedFileCol*/ ctx[41];
+				addfilestoplot_changes.addedFileCol = /*addedFileCol*/ ctx[36];
 				add_flush_callback(() => updating_addedFileCol = false);
 			}
 
-			if (!updating_addedFileScale && dirty[1] & /*addedFileScale*/ 4096) {
+			if (!updating_addedFileScale && dirty[1] & /*addedFileScale*/ 128) {
 				updating_addedFileScale = true;
-				addfilestoplot_changes.addedFileScale = /*addedFileScale*/ ctx[43];
+				addfilestoplot_changes.addedFileScale = /*addedFileScale*/ ctx[38];
 				add_flush_callback(() => updating_addedFileScale = false);
 			}
 
-			if (!updating_addedfiles && dirty[1] & /*addedfiles*/ 8192) {
+			if (!updating_addedfiles && dirty[1] & /*addedfiles*/ 256) {
 				updating_addedfiles = true;
-				addfilestoplot_changes.addedfiles = /*addedfiles*/ ctx[44];
+				addfilestoplot_changes.addedfiles = /*addedfiles*/ ctx[39];
 				add_flush_callback(() => updating_addedfiles = false);
 			}
 
-			if (!updating_addedFile && dirty[1] & /*addedFile*/ 2048) {
+			if (!updating_addedFile && dirty[1] & /*addedFile*/ 64) {
 				updating_addedFile = true;
-				addfilestoplot_changes.addedFile = /*addedFile*/ ctx[42];
+				addfilestoplot_changes.addedFile = /*addedFile*/ ctx[37];
 				add_flush_callback(() => updating_addedFile = false);
 			}
 
@@ -50406,28 +50739,28 @@ function create_fragment$17(ctx) {
 			quickbrowser0.$set(quickbrowser0_changes);
 			const quickbrowser1_changes = {};
 
-			if (!updating_active_1 && dirty[1] & /*showOPOFiles*/ 1) {
+			if (!updating_active_1 && dirty[0] & /*showOPOFiles*/ 134217728) {
 				updating_active_1 = true;
-				quickbrowser1_changes.active = /*showOPOFiles*/ ctx[31];
+				quickbrowser1_changes.active = /*showOPOFiles*/ ctx[27];
 				add_flush_callback(() => updating_active_1 = false);
 			}
 
-			if (!updating_currentLocation_1 && dirty[1] & /*OPOLocation*/ 8) {
+			if (!updating_currentLocation_1 && dirty[0] & /*OPOLocation*/ 536870912) {
 				updating_currentLocation_1 = true;
-				quickbrowser1_changes.currentLocation = /*OPOLocation*/ ctx[34];
+				quickbrowser1_changes.currentLocation = /*OPOLocation*/ ctx[29];
 				add_flush_callback(() => updating_currentLocation_1 = false);
 			}
 
-			if (!updating_fileChecked_1 && dirty[1] & /*OPOfilesChecked*/ 2) {
+			if (!updating_fileChecked_1 && dirty[0] & /*OPOfilesChecked*/ 268435456) {
 				updating_fileChecked_1 = true;
-				quickbrowser1_changes.fileChecked = /*OPOfilesChecked*/ ctx[32];
+				quickbrowser1_changes.fileChecked = /*OPOfilesChecked*/ ctx[28];
 				add_flush_callback(() => updating_fileChecked_1 = false);
 			}
 
 			quickbrowser1.$set(quickbrowser1_changes);
 			const layout_changes = {};
 
-			if (dirty[0] & /*currentLocation, dataTable_avg, dataTable, keepTable, line_index_count, lineData_list, toggleFindPeaksRow, peakTable, NGauss_fit_args, peak_height, peak_width, peak_prominence, boxSelected_peakfinder, collectData, overwrite_expfit, writeFile, writeFileName, output_name, graphPlotted, show_theoryplot, felix_normMethod, toggleRow, scale, sigma, showTheoryFiles, theoryLocation, openShell, delta*/ 2147483510 | dirty[1] & /*graphDiv, savePeakfilename, modalActivate, Ngauss_sigma, addFileModal, output_namelists, opoExpFit, filedetails, showfile_details, showOPOFiles, OPOLocation, calibValue, delta_OPO, OPOcalibFiles, calibFile, felixplot_modal*/ 3916797 | dirty[5] & /*$$scope*/ 4096) {
+			if (dirty[0] & /*currentLocation, keepTable, line_index_count, lineData_list, toggleFindPeaksRow, NGauss_fit_args, peak_height, peak_width, peak_prominence, boxSelected_peakfinder, collectData, overwrite_expfit, writeFile, writeFileName, graphPlotted, show_theoryplot, felix_normMethod, toggleRow, scale, sigma, showOPOFiles, showTheoryFiles, theoryLocation, OPOLocation, delta_OPO, openShell, delta*/ 1879048054 | dirty[1] & /*$dataTable_avg, $dataTable, $felixPeakTable, graphDiv, savePeakfilename, modalActivate, Ngauss_sigma, addFileModal, output_namelists, $felixOutputName, $opoMode, filedetails, showfile_details, calibValue, OPOcalibFiles, calibFile, felixplot_modal*/ 4185631 | dirty[5] & /*$$scope*/ 2048) {
 				layout_changes.$$scope = { dirty, ctx };
 			}
 
@@ -50499,12 +50832,30 @@ function create_fragment$17(ctx) {
 const filetype = "felix", id = "Normline";
 
 function instance$17($$self, $$props, $$invalidate) {
+	let $felixOutputName;
+	let $felixPeakTable;
+	let $opoMode;
+	let $felixIndex;
 	let $modalContent;
 	let $activated;
+	let $dataTable;
+	let $dataTable_avg;
+	validate_store(felixOutputName, "felixOutputName");
+	component_subscribe($$self, felixOutputName, $$value => $$invalidate(46, $felixOutputName = $$value));
+	validate_store(felixPeakTable, "felixPeakTable");
+	component_subscribe($$self, felixPeakTable, $$value => $$invalidate(47, $felixPeakTable = $$value));
+	validate_store(opoMode, "opoMode");
+	component_subscribe($$self, opoMode, $$value => $$invalidate(48, $opoMode = $$value));
+	validate_store(felixIndex, "felixIndex");
+	component_subscribe($$self, felixIndex, $$value => $$invalidate(150, $felixIndex = $$value));
 	validate_store(modalContent, "modalContent");
-	component_subscribe($$self, modalContent, $$value => $$invalidate(156, $modalContent = $$value));
+	component_subscribe($$self, modalContent, $$value => $$invalidate(152, $modalContent = $$value));
 	validate_store(activated, "activated");
-	component_subscribe($$self, activated, $$value => $$invalidate(157, $activated = $$value));
+	component_subscribe($$self, activated, $$value => $$invalidate(153, $activated = $$value));
+	validate_store(dataTable, "dataTable");
+	component_subscribe($$self, dataTable, $$value => $$invalidate(49, $dataTable = $$value));
+	validate_store(dataTable_avg, "dataTable_avg");
+	component_subscribe($$self, dataTable_avg, $$value => $$invalidate(50, $dataTable_avg = $$value));
 	let fileChecked = [], delta = 1, toggleRow = false, toggleBrowser = false;
 	let currentLocation = localStorage[`${filetype}_location`] || "";
 
@@ -50523,16 +50874,11 @@ function instance$17($$self, $$props, $$invalidate) {
 
 	let felix_normMethod = "Relative", normMethod_datas = {}, NGauss_fit_args = {};
 	let graphPlotted = false, overwrite_expfit = false, writeFile = false;
+	let line = [], annotations = [], plot_trace_added = 0, line_index_count = 0;
 
-	let line = [],
-		index = [],
-		annotations = [],
-		plot_trace_added = 0,
-		double_peak_active = false,
-		line_index_count = 0;
+	// let output_name = "averaged"
+	let writeFileName = "";
 
-	let output_name = "averaged", writeFileName = "";
-	let dataTable = [], dataTable_avg = [];
 	let annotation_color = "black";
 	let boxSelected_peakfinder = true;
 	let keepTable = true;
@@ -50540,15 +50886,16 @@ function instance$17($$self, $$props, $$invalidate) {
 	//////// OPO Plot ///////////
 	window.getID = () => Math.random().toString(32).substring(2);
 
-	let peakTable = [];
+	// let peakTable = []
 	window.annotation = [];
+
 	let plotly_event_created = false, plotly_event_created_opo = false;
 
 	const replot = () => {
 		if (graphPlotted) {
 			let { data, layout } = normMethod_datas[normMethod];
 			Plotly.react("avgplot", data, layout, { editable: true });
-			(line = annotations = $$invalidate(26, lineData_list = []), $$invalidate(141, plot_trace_added = 0));
+			(line = annotations = $$invalidate(22, lineData_list = []), $$invalidate(139, plot_trace_added = 0));
 		}
 	};
 
@@ -50558,80 +50905,49 @@ function instance$17($$self, $$props, $$invalidate) {
 		switch (filetype) {
 			case "felix":
 				removeExtraFile();
-				($$invalidate(14, graphPlotted = false), $$invalidate(18, output_name = "averaged"), window.annotation = [], $$invalidate(24, peakTable = []));
+				($$invalidate(14, graphPlotted = false), set_store_value(felixOutputName, $felixOutputName = "averaged"), window.annotation = [], set_store_value(felixPeakTable, $felixPeakTable = []));
 				if (felixfiles.length < 1) return createToast$1("No files selected", "danger");
 				break;
 			case "baseline":
-				if (opoExpFit) {
+				if ($opoMode) {
 					if (opofiles.length < 1) return createToast$1("No OPO files selected", "danger");
 				} else {
 					if (felixfiles.length < 1) return createToast$1("No FELIX files selected", "danger");
 				}
 				break;
 			case "exp_fit":
-				if (index.length < 2) {
+				if ($felixIndex.length < 2) {
 					return createToast$1("Range not found!!. Select a range using Box-select", "danger");
 				}
 				expfit_args = {
 					addedFileScale,
 					addedFileCol,
-					output_name,
+					output_name: $felixOutputName,
 					overwrite_expfit,
 					writeFile,
 					writeFileName,
 					normMethod,
-					index,
+					index: $felixIndex,
 					fullfiles,
 					location
 				};
 				break;
-			case "double_peak":
-				double_fit_args = opoExpFit
-				? [
-						amp1,
-						amp2,
-						cen1,
-						cen2,
-						sig1,
-						sig2,
-						...opofiles,
-						overwrite_expfit,
-						output_name,
-						"Log",
-						OPOLocation,
-						...index
-					]
-				: [
-						amp1,
-						amp2,
-						cen1,
-						cen2,
-						sig1,
-						sig2,
-						...felixfiles,
-						overwrite_expfit,
-						output_name,
-						normMethod,
-						currentLocation,
-						...index
-					];
-				break;
 			case "NGauss_fit":
 				if (boxSelected_peakfinder) {
-					if (index.length < 2) {
+					if ($felixIndex.length < 2) {
 						return createToast$1("Box selection is turned ON so please select a wn. range to fit", "danger");
 					}
 
-					$$invalidate(13, NGauss_fit_args.index = index, NGauss_fit_args);
+					$$invalidate(13, NGauss_fit_args.index = $felixIndex, NGauss_fit_args);
 				} else {
 					delete NGauss_fit_args.index;
 				}
-				if (peakTable.length === 0) {
+				if ($felixPeakTable.length === 0) {
 					return createToast$1("No arguments initialised yet.", "danger");
 				}
 				$$invalidate(13, NGauss_fit_args.fitNGauss_arguments = {}, NGauss_fit_args);
-				$$invalidate(24, peakTable = _.sortBy(peakTable, [o => o["freq"]]));
-				peakTable.forEach((f, index) => {
+				set_store_value(felixPeakTable, $felixPeakTable = _.sortBy($felixPeakTable, [o => o["freq"]]));
+				$felixPeakTable.forEach((f, index) => {
 					$$invalidate(13, NGauss_fit_args.fitNGauss_arguments[`cen${index}`] = f.freq, NGauss_fit_args);
 					$$invalidate(13, NGauss_fit_args.fitNGauss_arguments[`A${index}`] = f.amp, NGauss_fit_args);
 					$$invalidate(13, NGauss_fit_args.fitNGauss_arguments[`sigma${index}`] = f.sig, NGauss_fit_args);
@@ -50644,22 +50960,21 @@ function instance$17($$self, $$props, $$invalidate) {
 					overwrite_expfit,
 					writeFile,
 					writeFileName,
-					output_name,
+					output_name: $felixOutputName,
 					fullfiles,
-					normMethod,
-					output_name
+					normMethod
 				});
 				break;
 			case "find_peaks":
-				$$invalidate(24, peakTable = []);
-				if (index.length < 2 && boxSelected_peakfinder) {
+				set_store_value(felixPeakTable, $felixPeakTable = []);
+				if ($felixIndex.length < 2 && boxSelected_peakfinder) {
 					return createToast$1("Box selection is turned ON so please select a wn. range to fit", "danger");
 				}
-				let selectedIndex = boxSelected_peakfinder ? index : [0, 0];
+				let selectedIndex = boxSelected_peakfinder ? $felixIndex : [0, 0];
 				find_peaks_args = {
 					addedFileScale,
 					addedFileCol,
-					output_name,
+					output_name: $felixOutputName,
 					normMethod,
 					peak_prominence,
 					peak_width,
@@ -50672,12 +50987,9 @@ function instance$17($$self, $$props, $$invalidate) {
 			case "opofile":
 				removeExtraFile();
 				if (opofiles.length < 1) return createToast$1("No files selected", "danger");
-				($$invalidate(33, opoExpFit = true), window.annotation = []);
+				(set_store_value(opoMode, $opoMode = true), window.annotation = []);
 				break;
 			case "get_err":
-				if (double_peak_active) {
-					$$invalidate(26, lineData_list = err_data1_plot ? weighted_error[0] : weighted_error[1]);
-				}
 				if (lineData_list.length < 2) return createToast$1("Not sufficient lines collected!", "danger");
 				break;
 			case "theory":
@@ -50685,8 +50997,8 @@ function instance$17($$self, $$props, $$invalidate) {
 				break;
 			case "addfile":
 				if (addedFile.files < 1) return createToast$1("No files selected", "danger");
-				($$invalidate(42, addedFile["col"] = addedFileCol, addedFile), $$invalidate(42, addedFile["N"] = fileChecked.length + extrafileAdded, addedFile));
-				$$invalidate(42, addedFile["scale"] = addedFileScale, addedFile);
+				($$invalidate(37, addedFile["col"] = addedFileCol, addedFile), $$invalidate(37, addedFile["N"] = fileChecked.length + extrafileAdded, addedFile));
+				$$invalidate(37, addedFile["scale"] = addedFileScale, addedFile);
 				break;
 			case "get_details":
 				if (felixfiles.length < 1) return createToast$1("No files selected", "danger");
@@ -50697,7 +51009,7 @@ function instance$17($$self, $$props, $$invalidate) {
 			general,
 			baseline: {
 				pyfile: "baseline.py",
-				args: opoExpFit ? opofiles : felixfiles
+				args: $opoMode ? opofiles : felixfiles
 			},
 			felix: {
 				pyfile: "normline.py",
@@ -50739,7 +51051,7 @@ function instance$17($$self, $$props, $$invalidate) {
 				pyfile: "getfile_details.py",
 				args: [
 					JSON.stringify({
-						files: opoExpFit ? opofiles : felixfiles,
+						files: $opoMode ? opofiles : felixfiles,
 						normMethod
 					})
 				]
@@ -50829,473 +51141,109 @@ function instance$17($$self, $$props, $$invalidate) {
 					console.log(dataFromPython);
 
 					if (filetype == "felix") {
-						($$invalidate(33, opoExpFit = false), $$invalidate(18, output_name = "averaged"));
-						(line = [], index = [], annotations = [], $$invalidate(26, lineData_list = []), $$invalidate(141, plot_trace_added = 0));
+						(line = [], annotations = [], $$invalidate(22, lineData_list = []), $$invalidate(139, plot_trace_added = 0));
 						$$invalidate(8, show_theoryplot = false);
 
 						if (!keepTable) {
-							$$invalidate(20, dataTable = $$invalidate(21, dataTable_avg = []));
+							set_store_value(dataTable, $dataTable = set_store_value(dataTable_avg, $dataTable_avg = []));
 						}
 
-						let avgdataToPlot;
-						let signal_formula;
-						let ylabel;
+						plotly_event_created = felix_func({
+							normMethod,
+							dataFromPython,
+							delta,
+							plotly_event_created
+						});
 
-						if (normMethod === "Log") {
-							avgdataToPlot = dataFromPython["average"];
-							signal_formula = "Signal = -ln(C/B)/Power(in J)";
-							ylabel = "Normalised Intensity per J";
-						} else if (normMethod == "Relative") {
-							avgdataToPlot = dataFromPython["average_rel"];
-							signal_formula = "Signal = (1-C/B)*100";
-							ylabel = "Relative Depletion (%)";
-						} else if (normMethod == "IntensityPerPhoton") {
-							avgdataToPlot = dataFromPython["average_per_photon"];
-							signal_formula = "Signal = -ln(C/B)/#Photons";
-							ylabel = "Normalised Intensity per photon";
-						}
-
-						const get_data = data => {
-							let dataPlot = [];
-
-							for (let x in data) {
-								dataPlot.push(data[x]);
-							}
-
-							return dataPlot;
-						};
-
-						let signal = {
-							"rel": "Signal = (1-C/B)*100",
-							"log": "Signal = -ln(C/B)/Power(in J)",
-							"hv": "Signal = -ln(C/B)/#Photons"
-						};
-
-						const set_title = method => `Normalised and Averaged Spectrum (delta=${delta})<br>${signal[method]}; {C=Measured Count, B=Baseline Count}`;
-
-						normMethod_datas = {
-							"Relative": {
-								"data": get_data(dataFromPython["average_rel"]),
-								"layout": {
-									"title": set_title("rel"),
-									"yaxis": { "title": "Relative Depletion (%)" },
-									"xaxis": { "title": "Calibrated Wavelength (cm-1)" }
-								}
-							},
-							"Log": {
-								"data": get_data(dataFromPython["average"]),
-								"layout": {
-									"title": set_title("log"),
-									"yaxis": { "title": "Normalised Intensity per J" },
-									"xaxis": { "title": "Calibrated Wavelength (cm-1)" }
-								}
-							},
-							"IntensityPerPhoton": {
-								"data": get_data(dataFromPython["average_per_photon"]),
-								"layout": {
-									"title": set_title("hv"),
-									"yaxis": {
-										"title": "Normalised Intensity per photon"
-									},
-									"xaxis": { "title": "Calibrated Wavelength (cm-1)" }
-								}
-							}
-						};
-
-						plot("Baseline Corrected", "Wavelength (cm-1)", "Counts", dataFromPython["base"], "bplot");
-						plot(`Normalised and Averaged Spectrum (delta=${delta})<br>${signal_formula}; {C=Measured Count, B=Baseline Count}`, "Calibrated Wavelength (cm-1)", ylabel, avgdataToPlot, "avgplot");
-						subplot("Spectrum and Power Analyser", "Wavelength set (cm-1)", "SA (cm-1)", dataFromPython["SA"], "saPlot", "Wavelength (cm-1)", `Total Power (mJ)`, dataFromPython["pow"]);
-						let avgplot = document.getElementById("avgplot");
-
-						if (!plotly_event_created) {
-							console.log("Creating plotly graph events");
-
-							avgplot.on("plotly_selected", data => {
-								if (!data) console.log("No data available to fit"); else {
-									console.log(data);
-									$$invalidate(33, opoExpFit = false);
-									let { range } = data;
-									$$invalidate(18, output_name = data.points[0].data.name.split(".")[0]);
-									index = range.x;
-									console.log(`Selected file: ${output_name}`);
-									console.log(`Index selected: ${index}`);
-								}
-							});
-
-							avgplot.on("plotly_click", data => {
-								console.log("Graph clicked: ", data);
-
-								if (data.event.ctrlKey) {
-									console.log("Data point length: ", data.points.length);
-
-									for (let i = 0; i < data.points.length; i++) {
-										console.log("Running cycle: ", i);
-										let d = data.points[i];
-										let name = d.data.name;
-
-										if (name.includes(output_name)) {
-											console.log("Filename: ", output_name);
-											let line_color = d.data.line.color;
-											console.log(name);
-											console.log(d, d.x, d.y);
-											let [freq, amp] = [parseFloat(d.x.toFixed(2)), parseFloat(d.y.toFixed(2))];
-											console.log("Annotation before: ", window.annotation);
-
-											window.annotation = [
-												...window.annotation,
-												{
-													text: `(${freq}, ${amp})`,
-													x: freq,
-													y: amp,
-													font: { color: line_color },
-													arrowcolor: line_color
-												}
-											];
-
-											console.log("Annotation after: ", window.annotation);
-
-											Plotly.relayout("avgplot", {
-												annotations: _.uniqBy(window.annotation, "text")
-											});
-
-											$$invalidate(24, peakTable = [
-												...peakTable,
-												{
-													freq,
-													amp,
-													sig: Ngauss_sigma,
-													id: getID()
-												}
-											]);
-
-											$$invalidate(24, peakTable = _.uniqBy(peakTable, "freq"));
-										}
-									}
-
-									console.log("Running cycle ended");
-								}
-							});
-
-							plotly_event_created = true;
-						}
-
-						console.log("Graph Plotted");
 						createToast$1("Graph Plotted", "success");
 						$$invalidate(14, graphPlotted = true);
 					} else if (filetype == "opofile") {
-						$$invalidate(18, output_name = "averaged");
-
-						// opoExpFit = true
-						plot("OPO spectrum", "Wavenumber (cm-1)", "Counts", dataFromPython["real"], "opoplot");
-
-						plot("OPO Calibration", "Set Wavenumber (cm-1)", "Measured Wavenumber (cm-1)", dataFromPython["SA"], "opoSA");
-						plot("OPO spectrum: Depletion (%)", "Wavenumber (cm-1)", "Depletion (%)", dataFromPython["relative"], "opoRelPlot");
-						let opoRelPlot = document.getElementById("opoRelPlot");
-
-						if (!plotly_event_created_opo) {
-							console.log("Creating plotly graph events");
-
-							opoRelPlot.on("plotly_selected", data => {
-								if (!data) console.log("No data available to fit"); else {
-									console.log(data);
-									$$invalidate(33, opoExpFit = true);
-									let { range } = data;
-									$$invalidate(18, output_name = data.points[0].data.name.split(".")[0]);
-									index = range.x;
-									console.log(`Selected file: ${output_name}`);
-									console.log(`Index selected: ${index}`);
-								}
-							});
-
-							plotly_event_created_opo = true;
-						}
-
-						console.log("Graph Plotted");
+						plotly_event_created_opo = opofile_func({ dataFromPython, plotly_event_created_opo });
 						createToast$1("Graph Plotted", "success");
-						($$invalidate(31, showOPOFiles = false), $$invalidate(14, graphPlotted = true), $$invalidate(33, opoExpFit = true));
+						($$invalidate(27, showOPOFiles = false), $$invalidate(14, graphPlotted = true), set_store_value(opoMode, $opoMode = true));
 					} else if (filetype == "theory") {
-						let ylabel;
-
-						if (normMethod === "Log") {
-							ylabel = "Normalised Intensity per J";
-						} else if (normMethod === "Relative") {
-							ylabel = "Relative Depletion (%)";
-						} else {
-							ylabel = "Normalised Intensity per Photon";
-						}
-
-						let theoryData = [];
-
-						for (let x in dataFromPython["line_simulation"]) {
-							theoryData.push(dataFromPython["line_simulation"][x]);
-						}
-
-						plot("Experimental vs Theory", "Calibrated Wavelength (cm-1)", ylabel, [dataFromPython["averaged"], ...theoryData], "exp-theory-plot");
-						console.log("Graph Plotted");
+						theory_func({ dataFromPython, normMethod });
 						createToast$1("Graph Plotted", "success");
 						($$invalidate(8, show_theoryplot = true), $$invalidate(9, showTheoryFiles = false));
 					} else if (filetype == "exp_fit") {
-						$$invalidate(142, double_peak_active = false);
-						Plotly.addTraces(graphDiv, dataFromPython["fit"]);
-						line = [...line, ...dataFromPython["line"]];
-						Plotly.relayout(graphDiv, { shapes: line });
-						annotations = [...annotations, dataFromPython["annotations"]];
-						Plotly.relayout(graphDiv, { annotations });
-						$$invalidate(141, plot_trace_added++, plot_trace_added);
-						let [freq, amp, fwhm, sig] = dataFromPython["table"].split(", ");
-						let color = "#fafafa";
-
-						if (output_name === "averaged") {
-							color = "#836ac05c";
-
-							$$invalidate(21, dataTable_avg = [
-								...dataTable_avg,
-								{
-									name: `Line #${line_index_count}`,
-									id: getID(),
-									freq,
-									amp,
-									fwhm,
-									sig,
-									color
-								}
-							]);
-
-							$$invalidate(21, dataTable_avg = _.uniqBy(dataTable_avg, "freq"));
-							$$invalidate(17, line_index_count++, line_index_count);
-						} else {
-							if (collectData) {
-								console.log("Collecting lines");
-								$$invalidate(26, lineData_list = [...lineData_list, dataFromPython["for_weighted_error"]]);
-							}
-						}
-
-						let newTable = {
-							name: output_name,
-							id: getID(),
-							freq,
-							amp,
-							fwhm,
-							sig,
-							color
-						};
-
-						$$invalidate(20, dataTable = _.uniqBy([...dataTable, newTable], "freq"));
-						console.log("Line fitted");
-						createToast$1("Line fitted with gaussian function", "success");
-					} else if (filetype == "get_err") {
-						let { freq, amp, fwhm, sig } = dataFromPython;
-
-						let data1 = {
-							name: "unweighted_mean",
-							id: getID(),
-							freq: freq.mean,
-							amp: amp.mean,
-							fwhm: fwhm.mean,
-							sig: sig.mean,
-							color: "#f14668"
-						};
-
-						let data2 = {
-							name: "weighted_mean",
-							id: getID(),
-							freq: freq.wmean,
-							amp: amp.wmean,
-							fwhm: fwhm.wmean,
-							sig: sig.wmean,
-							color: "#2098d1"
-						};
-
-						$$invalidate(20, dataTable = [...dataTable, data1, data2]);
-						$$invalidate(21, dataTable_avg = [...dataTable_avg, data1, data2]);
-
-						if (double_peak_active) {
-							err_data1_plot
-							? weighted_error[0] = []
-							: weighted_error[1] = [];
-
-							err_data1_plot = false;
-						} else {
-							$$invalidate(26, lineData_list = []);
-						}
-
-						console.log("Weighted fit.");
-						createToast$1("Weighted fit. done", "success");
-					} else if (filetype == "double_peak") {
-						$$invalidate(142, double_peak_active = true);
-						console.log("Double peak calculation");
-						Plotly.addTraces(graphDiv, dataFromPython["peak"]);
-						$$invalidate(141, plot_trace_added++, plot_trace_added);
-						annotations = [...annotations, ...dataFromPython["annotations"]];
-						Plotly.relayout(graphDiv, { annotations });
-						let [freq1, amp1, sig1, fwhm1, freq2, amp2, sig2, fwhm2] = dataFromPython["table"].split(", ");
-						let color = "#fafafa";
-
-						if (output_name === "averaged") {
-							color = "#452f7da8";
-
-							let newTable1 = {
-								name: `Line #${line_index_count}`,
-								id: getID(),
-								freq: freq1,
-								amp: amp1,
-								fwhm: fwhm1,
-								sig: sig1,
-								color
-							};
-
-							let newTable2 = {
-								name: `Line #${line_index_count + 1}`,
-								id: getID(),
-								freq: freq2,
-								amp: amp2,
-								fwhm: fwhm2,
-								sig: sig2,
-								color
-							};
-
-							$$invalidate(21, dataTable_avg = [...dataTable_avg, newTable1, newTable2]);
-							$$invalidate(21, dataTable_avg = _.uniqBy(dataTable_avg, "freq"));
-							$$invalidate(17, line_index_count += 2);
-						} else {
-							if (collectData) {
-								console.log("Collecting lines");
-								err_data1_plot = true;
-								weighted_error[0] = [...weighted_error[0], dataFromPython["for_weighted_error1"]];
-								weighted_error[1] = [...weighted_error[1], dataFromPython["for_weighted_error2"]];
-							}
-						}
-
-						let newTable1 = {
-							name: output_name,
-							id: getID(),
-							freq: freq1,
-							amp: amp1,
-							fwhm: fwhm1,
-							sig: sig1,
-							color
-						};
-
-						let newTable2 = {
-							name: output_name,
-							id: getID(),
-							freq: freq2,
-							amp: amp2,
-							fwhm: fwhm2,
-							sig: sig2,
-							color
-						};
-
-						$$invalidate(20, dataTable = _.uniqBy([...dataTable, newTable1, newTable2], "freq"));
-						console.log("Line fitted Line fitted with double gaussian function");
-						createToast$1("Line fitted with double gaussian function", "success");
-					} else if (filetype == "find_peaks") {
-						Plotly.relayout(graphDiv, { annotations: [] });
-						window.annotation = dataFromPython[2]["annotations"];
-						annotation_color = dataFromPython[2]["annotations"]["arrowcolor"];
-
-						Plotly.relayout(graphDiv, {
-							annotations: dataFromPython[2]["annotations"]
-						});
-
-						setTimeout(
-							() => {
-								const [peakX, peakY] = [dataFromPython[0]["data"].x, dataFromPython[0]["data"].y];
-
-								setTimeout(
-									() => {
-										[window.peakX, window.peakY] = [peakX, peakY];
-									},
-									500
-								);
-
-								// let color = "#fafafa";
-								for (let index = 0; index < peakX.length; index++) {
-									let [freq, amp, sig] = [peakX[index], peakY[index], Ngauss_sigma];
-									$$invalidate(24, peakTable = [...peakTable, { freq, amp, sig, id: getID() }]);
-								}
-
-								originalTable = peakTable;
-								console.log(`Found peaks:\nX: ${peakX}\nY: ${peakY}`);
-							},
-							500
+						$$invalidate(
+							139,
+							[
+								line,
+								annotations,
+								plot_trace_added,
+								line_index_count,
+								collectData,
+								lineData_list
+							] = exp_fit_func({
+								dataFromPython,
+								graphDiv,
+								output_name: $felixOutputName,
+								line,
+								annotations,
+								plot_trace_added,
+								line_index_count,
+								collectData,
+								lineData_list
+							}),
+							plot_trace_added,
+							$$invalidate(17, line_index_count),
+							$$invalidate(21, collectData),
+							$$invalidate(22, lineData_list)
 						);
 
-						console.log("Peaks found");
+						createToast$1("Line fitted with gaussian function", "success");
+					} else if (filetype == "get_err") {
+						get_err_func({ dataFromPython });
+						createToast$1("Weighted fit. done", "success");
+					} else if (filetype == "find_peaks") {
+						annotation_color = find_peaks_func({
+							graphDiv,
+							dataFromPython,
+							annotation_color,
+							Ngauss_sigma
+						});
+
+						console.log(`felixPeakTable: ${$felixPeakTable}`);
 						createToast$1("Peaks found", "success");
 					} else if (filetype == "NGauss_fit") {
-						Plotly.addTraces(graphDiv, dataFromPython["fitted_data"]);
-						let color = "#fafafa";
-
-						dataFromPython["fitted_parameter"].forEach(data => {
-							let { freq, amp, fwhm, sig } = data;
-
-							if (output_name === "averaged") {
-								color = "#836ac05c";
-
-								$$invalidate(21, dataTable_avg = [
-									...dataTable_avg,
-									{
-										name: `Line #${line_index_count}`,
-										id: getID(),
-										freq,
-										amp,
-										fwhm,
-										sig,
-										color
-									}
-								]);
-
-								$$invalidate(21, dataTable_avg = _.uniqBy(dataTable_avg, "freq"));
-								$$invalidate(17, line_index_count++, line_index_count);
-							}
-
-							let newTable = {
-								name: output_name,
-								id: getID(),
-								freq,
-								amp,
-								fwhm,
-								sig,
-								color
-							};
-
-							$$invalidate(20, dataTable = _.uniqBy([...dataTable, newTable], "freq"));
-						});
+						$$invalidate(17, line_index_count = NGauss_fit_func({
+							graphDiv,
+							dataFromPython,
+							output_name: $felixOutputName,
+							line_index_count
+						}));
 
 						console.log("Line fitted");
 						createToast$1(`Line fitted with ${dataFromPython["fitted_parameter"].length} gaussian function`, "success");
-						$$invalidate(141, plot_trace_added++, plot_trace_added);
+						$$invalidate(139, plot_trace_added++, plot_trace_added);
 					} else if (filetype == "addfile") {
-						$$invalidate(40, addFileModal = false);
+						$$invalidate(35, addFileModal = false);
 						Plotly.addTraces(graphDiv, dataFromPython);
-						$$invalidate(148, extrafileAdded += addedfiles.length);
+						$$invalidate(143, extrafileAdded += addedfiles.length);
 					} else if (filetype == "get_details") {
-						($$invalidate(46, filedetails = []), $$invalidate(45, showfile_details = true));
+						$$invalidate(40, showfile_details = true);
 
-						dataFromPython.files.forEach(data => {
+						$$invalidate(41, filedetails = dataFromPython.files.map(data => {
 							let { filename, trap, res, b0, range } = data;
 							let [min, max] = range;
 
-							$$invalidate(46, filedetails = [
-								...filedetails,
-								{
-									filename,
-									min,
-									max,
-									trap,
-									b0,
-									res,
-									precursor: "",
-									ie: "",
-									temp: "",
-									id: getID()
-								}
-							]);
-						});
+							return {
+								filename,
+								min,
+								max,
+								trap,
+								b0,
+								res,
+								precursor: "",
+								ie: "",
+								temp: "",
+								id: getID()
+							};
+						}));
 					}
 				} catch(err) {
-					set_store_value(modalContent, $modalContent = err);
+					set_store_value(modalContent, $modalContent = err.stack);
 					set_store_value(activated, $activated = true);
 				}
 			}
@@ -51311,14 +51259,14 @@ function instance$17($$self, $$props, $$invalidate) {
 		}
 
 		console.log("Removing all found peak values");
-		annotations = index = line = $$invalidate(26, lineData_list = []);
+		annotations = set_store_value(felixIndex, $felixIndex = line = $$invalidate(22, lineData_list = []));
 		Plotly.relayout(graphDiv, { annotations: [], shapes: [] });
 
 		for (let i = 0; i < plot_trace_added; i++) {
 			Plotly.deleteTraces(graphDiv, [-1]);
 		}
 
-		$$invalidate(141, plot_trace_added = 0);
+		$$invalidate(139, plot_trace_added = 0);
 	};
 
 	const clearLastPeak = () => {
@@ -51326,46 +51274,22 @@ function instance$17($$self, $$props, $$invalidate) {
 			return createToast$1("No fitted lines found", "danger");
 		}
 
-		if (double_peak_active) {
-			plotData({
-				filetype: "general",
-				general: {
-					args: [output_name, location],
-					pyfile: "delete_fileLines.py"
-				}
-			});
+		plotData({
+			filetype: "general",
+			general: {
+				args: [$felixOutputName, location],
+				pyfile: "delete_fileLines.py"
+			}
+		});
 
-			plotData({
-				filetype: "general",
-				general: {
-					args: [output_name, location],
-					pyfile: "delete_fileLines.py"
-				}
-			});
-
-			$$invalidate(20, dataTable = _.dropRight(dataTable, 2));
-			annotations = _.dropRight(annotations, 2);
-			weighted_error[0] = _.dropRight(weighted_error[0], 1);
-			weighted_error[1] = _.dropRight(weighted_error[1], 1);
-		} else {
-			plotData({
-				filetype: "general",
-				general: {
-					args: [output_name, location],
-					pyfile: "delete_fileLines.py"
-				}
-			});
-
-			$$invalidate(20, dataTable = _.dropRight(dataTable, 1));
-			line = _.dropRight(line, 2);
-			annotations = _.dropRight(annotations, 1);
-			$$invalidate(26, lineData_list = _.dropRight(lineData_list, 1));
-		}
-
+		set_store_value(dataTable, $dataTable = _.dropRight($dataTable, 1));
+		line = _.dropRight(line, 2);
+		annotations = _.dropRight(annotations, 1);
+		$$invalidate(22, lineData_list = _.dropRight(lineData_list, 1));
 		Plotly.relayout(graphDiv, { annotations, shapes: line });
 		Plotly.deleteTraces(graphDiv, [-1]);
 		console.log("Last fitted peak removed");
-		$$invalidate(141, plot_trace_added--, plot_trace_added);
+		$$invalidate(139, plot_trace_added--, plot_trace_added);
 	};
 
 	let collectData = true,
@@ -51379,9 +51303,11 @@ function instance$17($$self, $$props, $$invalidate) {
 	let style = "width:7em; height:3.5em; margin-right:0.5em";
 
 	// OPO
-	let showOPOFiles = false, OPOfilesChecked = [], opoExpFit = false;
+	let showOPOFiles = false, OPOfilesChecked = [];
 
+	// let opoExpFit = false
 	let OPOLocation = localStorage["opoLocation"] || currentLocation;
+
 	let delta_OPO = 0.3, calibValue = (9394.356278462961).toFixed(4), calibFile = "";
 	let OPOcalibFiles = [];
 
@@ -51402,14 +51328,14 @@ function instance$17($$self, $$props, $$invalidate) {
 			}
 		}
 
-		($$invalidate(148, extrafileAdded = 0), $$invalidate(44, addedfiles = []));
+		($$invalidate(143, extrafileAdded = 0), $$invalidate(39, addedfiles = []));
 	}
 
 	let fullfiles = [];
 
 	function adjustPeak({ closeMainModal = true } = {}) {
-		$$invalidate(24, peakTable = _.filter(peakTable, tb => tb.sig != 0));
-		$$invalidate(24, peakTable = _.sortBy(peakTable, [o => o["freq"]]));
+		set_store_value(felixPeakTable, $felixPeakTable = _.filter($felixPeakTable, tb => tb.sig != 0));
+		set_store_value(felixPeakTable, $felixPeakTable = _.sortBy($felixPeakTable, [o => o["freq"]]));
 
 		let temp_annotate = {
 			xref: "x",
@@ -51424,7 +51350,7 @@ function instance$17($$self, $$props, $$invalidate) {
 
 		window.annotation = [];
 
-		peakTable.forEach(f => {
+		$felixPeakTable.forEach(f => {
 			let _annotate = {
 				x: f.freq,
 				y: f.amp,
@@ -51435,7 +51361,7 @@ function instance$17($$self, $$props, $$invalidate) {
 		});
 
 		if (closeMainModal) {
-			($$invalidate(39, modalActivate = false), createToast$1("Initial guess adjusted for full spectrum fitting"));
+			($$invalidate(34, modalActivate = false), createToast$1("Initial guess adjusted for full spectrum fitting"));
 		}
 
 		Plotly.relayout(graphDiv, { annotations: window.annotation });
@@ -51466,9 +51392,9 @@ function instance$17($$self, $$props, $$invalidate) {
 		let loadedfile = JSON.parse(fs.readFileSync(filename)).file;
 
 		if (name === "filedetails") {
-			$$invalidate(46, filedetails = _.uniqBy([...loadedfile, ...filedetails], "filename"));
+			$$invalidate(41, filedetails = _.uniqBy([...loadedfile, ...filedetails], "filename"));
 		} else if (name === "peakTable") {
-			$$invalidate(24, peakTable = _.uniqBy([...loadedfile, ...peakTable], "freq"));
+			set_store_value(felixPeakTable, $felixPeakTable = _.uniqBy([...loadedfile, ...$felixPeakTable], "freq"));
 			adjustPeak();
 		}
 
@@ -51477,7 +51403,6 @@ function instance$17($$self, $$props, $$invalidate) {
 
 	let savePeakfilename = "peakTable";
 
-	// let figureModal = false
 	const init_tour = async () => {
 		if (!toggleBrowser) {
 			$$invalidate(3, toggleBrowser = true);
@@ -51642,7 +51567,7 @@ function instance$17($$self, $$props, $$invalidate) {
 		console.log("Normline mounted");
 
 		$$invalidate(
-			49,
+			44,
 			felix_plotting_widgets.checkBoxes = [
 				{
 					label: "DAT file",
@@ -51687,50 +51612,50 @@ function instance$17($$self, $$props, $$invalidate) {
 	validate_slots("Normline", $$slots, []);
 
 	function adjustinitialguess_peakTable_binding(value) {
-		peakTable = value;
-		$$invalidate(24, peakTable);
+		$felixPeakTable = value;
+		felixPeakTable.set($felixPeakTable);
 	}
 
 	function adjustinitialguess_modalActivate_binding(value) {
 		modalActivate = value;
-		$$invalidate(39, modalActivate);
+		$$invalidate(34, modalActivate);
 	}
 
 	function felixplotting_felixplot_modal_binding(value) {
 		felixplot_modal = value;
-		$$invalidate(48, felixplot_modal);
+		$$invalidate(43, felixplot_modal);
 	}
 
 	function felixplotting_felix_plotting_widgets_binding(value) {
 		felix_plotting_widgets = value;
-		$$invalidate(49, felix_plotting_widgets);
+		$$invalidate(44, felix_plotting_widgets);
 	}
 
 	const submit_handler = () => console.log("FELIX plotting submitted", felix_plotting_widgets);
 
 	function addfilestoplot_addFileModal_binding(value) {
 		addFileModal = value;
-		$$invalidate(40, addFileModal);
+		$$invalidate(35, addFileModal);
 	}
 
 	function addfilestoplot_addedFileCol_binding(value) {
 		addedFileCol = value;
-		$$invalidate(41, addedFileCol);
+		$$invalidate(36, addedFileCol);
 	}
 
 	function addfilestoplot_addedFileScale_binding(value) {
 		addedFileScale = value;
-		$$invalidate(43, addedFileScale);
+		$$invalidate(38, addedFileScale);
 	}
 
 	function addfilestoplot_addedfiles_binding(value) {
 		addedfiles = value;
-		$$invalidate(44, addedfiles);
+		$$invalidate(39, addedfiles);
 	}
 
 	function addfilestoplot_addedFile_binding(value) {
 		addedFile = value;
-		$$invalidate(42, addedFile);
+		$$invalidate(37, addedFile);
 	}
 
 	const addfile_handler = e => plotData({ e: e.detail.event, filetype: "addfile" });
@@ -51757,17 +51682,17 @@ function instance$17($$self, $$props, $$invalidate) {
 
 	function quickbrowser1_active_binding(value) {
 		showOPOFiles = value;
-		$$invalidate(31, showOPOFiles);
+		$$invalidate(27, showOPOFiles);
 	}
 
 	function quickbrowser1_currentLocation_binding(value) {
 		OPOLocation = value;
-		$$invalidate(34, OPOLocation);
+		$$invalidate(29, OPOLocation);
 	}
 
 	function quickbrowser1_fileChecked_binding(value) {
 		OPOfilesChecked = value;
-		$$invalidate(32, OPOfilesChecked);
+		$$invalidate(28, OPOfilesChecked);
 	}
 
 	const submit_handler_2 = e => {
@@ -51783,7 +51708,7 @@ function instance$17($$self, $$props, $$invalidate) {
 		$$invalidate(1, delta);
 	}
 
-	const click_handler_2 = () => $$invalidate(48, felixplot_modal = true);
+	const click_handler_2 = () => $$invalidate(43, felixplot_modal = true);
 
 	function customiconswitch_toggler_binding(value) {
 		openShell = value;
@@ -51793,34 +51718,34 @@ function instance$17($$self, $$props, $$invalidate) {
 	const click_handler_3 = () => $$invalidate(2, toggleRow = !toggleRow);
 
 	const click_handler_4 = () => {
-		$$invalidate(33, opoExpFit = !opoExpFit);
+		set_store_value(opoMode, $opoMode = !$opoMode);
 	};
 
 	function customselect_picked_binding(value) {
 		calibFile = value;
-		$$invalidate(37, calibFile);
+		$$invalidate(32, calibFile);
 	}
 
 	function textfield1_value_binding(value) {
 		delta_OPO = value;
-		$$invalidate(35, delta_OPO);
+		$$invalidate(30, delta_OPO);
 	}
 
 	function textfield2_value_binding(value) {
 		calibValue = value;
-		$$invalidate(36, calibValue);
+		$$invalidate(31, calibValue);
 	}
 
 	const click_handler_5 = () => {
 		$$invalidate(9, showTheoryFiles = false);
-		$$invalidate(31, showOPOFiles = !showOPOFiles);
-		$$invalidate(34, OPOLocation = localStorage["opoLocation"] || currentLocation);
+		$$invalidate(27, showOPOFiles = !showOPOFiles);
+		$$invalidate(29, OPOLocation = localStorage["opoLocation"] || currentLocation);
 	};
 
 	const click_handler_6 = e => plotData({ e, filetype: "opofile" });
 
 	const click_handler_7 = () => {
-		$$invalidate(31, showOPOFiles = false);
+		$$invalidate(27, showOPOFiles = false);
 		$$invalidate(9, showTheoryFiles = !showTheoryFiles);
 		$$invalidate(10, theoryLocation = localStorage["theoryLocation"] || currentLocation);
 	};
@@ -51846,7 +51771,7 @@ function instance$17($$self, $$props, $$invalidate) {
 
 	function customiconswitch_toggler_binding_1(value) {
 		showfile_details = value;
-		$$invalidate(45, showfile_details);
+		$$invalidate(40, showfile_details);
 	}
 
 	const click_handler_10 = () => savefile({ file: filedetails, name: "filedetails" });
@@ -51854,17 +51779,17 @@ function instance$17($$self, $$props, $$invalidate) {
 
 	function table_rows_binding(value) {
 		filedetails = value;
-		$$invalidate(46, filedetails);
+		$$invalidate(41, filedetails);
 	}
 
 	function customselect_picked_binding_1(value) {
-		output_name = value;
-		$$invalidate(18, output_name);
+		$felixOutputName = value;
+		felixOutputName.set($felixOutputName);
 	}
 
 	function textfield0_value_binding_1(value) {
 		writeFileName = value;
-		$$invalidate(19, writeFileName);
+		$$invalidate(18, writeFileName);
 	}
 
 	function customswitch0_selected_binding(value) {
@@ -51879,80 +51804,84 @@ function instance$17($$self, $$props, $$invalidate) {
 
 	function customswitch2_selected_binding(value) {
 		collectData = value;
-		$$invalidate(25, collectData);
+		$$invalidate(21, collectData);
 	}
 
 	const click_handler_12 = () => {
-		$$invalidate(40, addFileModal = true);
+		$$invalidate(35, addFileModal = true);
 	};
 
 	const click_handler_13 = e => plotData({ e, filetype: "exp_fit" });
-	const click_handler_14 = () => $$invalidate(27, toggleFindPeaksRow = !toggleFindPeaksRow);
+	const click_handler_14 = () => $$invalidate(23, toggleFindPeaksRow = !toggleFindPeaksRow);
 	const click_handler_15 = e => plotData({ e, filetype: "get_err" });
 
 	const click_handler_16 = () => {
-		$$invalidate(26, lineData_list = []);
+		$$invalidate(22, lineData_list = []);
 		createToast$1("Line collection restted", "warning");
 	};
 
 	function customswitch3_selected_binding(value) {
 		boxSelected_peakfinder = value;
-		$$invalidate(22, boxSelected_peakfinder);
+		$$invalidate(19, boxSelected_peakfinder);
 	}
 
 	function textfield1_value_binding_1(value) {
 		peak_prominence = value;
-		$$invalidate(30, peak_prominence);
+		$$invalidate(26, peak_prominence);
 	}
 
 	function textfield2_value_binding_1(value) {
 		peak_width = value;
-		$$invalidate(29, peak_width);
+		$$invalidate(25, peak_width);
 	}
 
 	function textfield3_value_binding_1(value) {
 		peak_height = value;
-		$$invalidate(28, peak_height);
+		$$invalidate(24, peak_height);
 	}
 
 	function textfield4_value_binding_1(value) {
 		Ngauss_sigma = value;
-		($$invalidate(51, Ngauss_sigma), $$invalidate(33, opoExpFit));
+		($$invalidate(52, Ngauss_sigma), $$invalidate(48, $opoMode));
 	}
 
 	const click_handler_17 = e => plotData({ e, filetype: "find_peaks" });
-	const click_handler_18 = () => $$invalidate(39, modalActivate = true);
+	const click_handler_18 = () => $$invalidate(34, modalActivate = true);
 	const click_handler_19 = e => plotData({ e, filetype: "NGauss_fit" });
 
 	function textfield5_value_binding(value) {
 		savePeakfilename = value;
-		$$invalidate(47, savePeakfilename);
+		$$invalidate(42, savePeakfilename);
 	}
 
-	const click_handler_20 = () => savefile({ file: peakTable, name: savePeakfilename });
+	const click_handler_20 = () => savefile({
+		file: $felixPeakTable,
+		name: savePeakfilename
+	});
+
 	const click_handler_21 = () => loadfile({ name: savePeakfilename });
 
 	const click_handler_22 = () => {
 		window.annotation = [];
-		$$invalidate(24, peakTable = []);
+		set_store_value(felixPeakTable, $felixPeakTable = []);
 		$$invalidate(13, NGauss_fit_args = {});
 		window.Plotly.relayout(graphDiv, { annotations: [] });
 		createToast$1("Cleared", "warning");
 	};
 
 	function frequencytable_dataTable_avg_binding(value) {
-		dataTable_avg = value;
-		$$invalidate(21, dataTable_avg);
+		$dataTable_avg = value;
+		dataTable_avg.set($dataTable_avg);
 	}
 
 	function frequencytable_dataTable_binding(value) {
-		dataTable = value;
-		$$invalidate(20, dataTable);
+		$dataTable = value;
+		dataTable.set($dataTable);
 	}
 
 	function frequencytable_keepTable_binding(value) {
 		keepTable = value;
-		$$invalidate(23, keepTable);
+		$$invalidate(20, keepTable);
 	}
 
 	function frequencytable_line_index_count_binding(value) {
@@ -51962,7 +51891,7 @@ function instance$17($$self, $$props, $$invalidate) {
 
 	function frequencytable_lineData_list_binding(value) {
 		lineData_list = value;
-		$$invalidate(26, lineData_list);
+		$$invalidate(22, lineData_list);
 	}
 
 	function reportlayout_currentLocation_binding(value) {
@@ -52009,6 +51938,19 @@ function instance$17($$self, $$props, $$invalidate) {
 		AddFilesToPlot,
 		FrequencyTable,
 		init_tour_normline,
+		NGauss_fit_func,
+		find_peaks_func,
+		felix_func,
+		opofile_func,
+		theory_func,
+		exp_fit_func,
+		get_err_func,
+		felixIndex,
+		felixPeakTable,
+		felixOutputName,
+		opoMode,
+		dataTable,
+		dataTable_avg,
 		filetype,
 		id,
 		fileChecked,
@@ -52030,19 +51972,13 @@ function instance$17($$self, $$props, $$invalidate) {
 		overwrite_expfit,
 		writeFile,
 		line,
-		index,
 		annotations,
 		plot_trace_added,
-		double_peak_active,
 		line_index_count,
-		output_name,
 		writeFileName,
-		dataTable,
-		dataTable_avg,
 		annotation_color,
 		boxSelected_peakfinder,
 		keepTable,
-		peakTable,
 		plotly_event_created,
 		plotly_event_created_opo,
 		replot,
@@ -52066,7 +52002,6 @@ function instance$17($$self, $$props, $$invalidate) {
 		style,
 		showOPOFiles,
 		OPOfilesChecked,
-		opoExpFit,
 		OPOLocation,
 		delta_OPO,
 		calibValue,
@@ -52097,12 +52032,18 @@ function instance$17($$self, $$props, $$invalidate) {
 		output_namelists,
 		plottedFiles,
 		normMethod,
+		$felixOutputName,
+		$felixPeakTable,
+		$opoMode,
 		opofiles,
+		$felixIndex,
 		location,
 		$modalContent,
 		$activated,
-		Ngauss_sigma,
+		$dataTable,
+		$dataTable_avg,
 		graphDiv,
+		Ngauss_sigma,
 		datlocation,
 		datfiles,
 		calcfiles
@@ -52128,23 +52069,17 @@ function instance$17($$self, $$props, $$invalidate) {
 		if ("overwrite_expfit" in $$props) $$invalidate(15, overwrite_expfit = $$props.overwrite_expfit);
 		if ("writeFile" in $$props) $$invalidate(16, writeFile = $$props.writeFile);
 		if ("line" in $$props) line = $$props.line;
-		if ("index" in $$props) index = $$props.index;
 		if ("annotations" in $$props) annotations = $$props.annotations;
-		if ("plot_trace_added" in $$props) $$invalidate(141, plot_trace_added = $$props.plot_trace_added);
-		if ("double_peak_active" in $$props) $$invalidate(142, double_peak_active = $$props.double_peak_active);
+		if ("plot_trace_added" in $$props) $$invalidate(139, plot_trace_added = $$props.plot_trace_added);
 		if ("line_index_count" in $$props) $$invalidate(17, line_index_count = $$props.line_index_count);
-		if ("output_name" in $$props) $$invalidate(18, output_name = $$props.output_name);
-		if ("writeFileName" in $$props) $$invalidate(19, writeFileName = $$props.writeFileName);
-		if ("dataTable" in $$props) $$invalidate(20, dataTable = $$props.dataTable);
-		if ("dataTable_avg" in $$props) $$invalidate(21, dataTable_avg = $$props.dataTable_avg);
+		if ("writeFileName" in $$props) $$invalidate(18, writeFileName = $$props.writeFileName);
 		if ("annotation_color" in $$props) annotation_color = $$props.annotation_color;
-		if ("boxSelected_peakfinder" in $$props) $$invalidate(22, boxSelected_peakfinder = $$props.boxSelected_peakfinder);
-		if ("keepTable" in $$props) $$invalidate(23, keepTable = $$props.keepTable);
-		if ("peakTable" in $$props) $$invalidate(24, peakTable = $$props.peakTable);
+		if ("boxSelected_peakfinder" in $$props) $$invalidate(19, boxSelected_peakfinder = $$props.boxSelected_peakfinder);
+		if ("keepTable" in $$props) $$invalidate(20, keepTable = $$props.keepTable);
 		if ("plotly_event_created" in $$props) plotly_event_created = $$props.plotly_event_created;
 		if ("plotly_event_created_opo" in $$props) plotly_event_created_opo = $$props.plotly_event_created_opo;
-		if ("collectData" in $$props) $$invalidate(25, collectData = $$props.collectData);
-		if ("lineData_list" in $$props) $$invalidate(26, lineData_list = $$props.lineData_list);
+		if ("collectData" in $$props) $$invalidate(21, collectData = $$props.collectData);
+		if ("lineData_list" in $$props) $$invalidate(22, lineData_list = $$props.lineData_list);
 		if ("weighted_error" in $$props) weighted_error = $$props.weighted_error;
 		if ("err_data1_plot" in $$props) err_data1_plot = $$props.err_data1_plot;
 		if ("amp1" in $$props) amp1 = $$props.amp1;
@@ -52153,42 +52088,41 @@ function instance$17($$self, $$props, $$invalidate) {
 		if ("cen2" in $$props) cen2 = $$props.cen2;
 		if ("sig1" in $$props) sig1 = $$props.sig1;
 		if ("sig2" in $$props) sig2 = $$props.sig2;
-		if ("toggleFindPeaksRow" in $$props) $$invalidate(27, toggleFindPeaksRow = $$props.toggleFindPeaksRow);
-		if ("peak_height" in $$props) $$invalidate(28, peak_height = $$props.peak_height);
-		if ("peak_width" in $$props) $$invalidate(29, peak_width = $$props.peak_width);
-		if ("peak_prominence" in $$props) $$invalidate(30, peak_prominence = $$props.peak_prominence);
+		if ("toggleFindPeaksRow" in $$props) $$invalidate(23, toggleFindPeaksRow = $$props.toggleFindPeaksRow);
+		if ("peak_height" in $$props) $$invalidate(24, peak_height = $$props.peak_height);
+		if ("peak_width" in $$props) $$invalidate(25, peak_width = $$props.peak_width);
+		if ("peak_prominence" in $$props) $$invalidate(26, peak_prominence = $$props.peak_prominence);
 		if ("style" in $$props) $$invalidate(57, style = $$props.style);
-		if ("showOPOFiles" in $$props) $$invalidate(31, showOPOFiles = $$props.showOPOFiles);
-		if ("OPOfilesChecked" in $$props) $$invalidate(32, OPOfilesChecked = $$props.OPOfilesChecked);
-		if ("opoExpFit" in $$props) $$invalidate(33, opoExpFit = $$props.opoExpFit);
-		if ("OPOLocation" in $$props) $$invalidate(34, OPOLocation = $$props.OPOLocation);
-		if ("delta_OPO" in $$props) $$invalidate(35, delta_OPO = $$props.delta_OPO);
-		if ("calibValue" in $$props) $$invalidate(36, calibValue = $$props.calibValue);
-		if ("calibFile" in $$props) $$invalidate(37, calibFile = $$props.calibFile);
-		if ("OPOcalibFiles" in $$props) $$invalidate(38, OPOcalibFiles = $$props.OPOcalibFiles);
-		if ("modalActivate" in $$props) $$invalidate(39, modalActivate = $$props.modalActivate);
-		if ("addFileModal" in $$props) $$invalidate(40, addFileModal = $$props.addFileModal);
-		if ("addedFileCol" in $$props) $$invalidate(41, addedFileCol = $$props.addedFileCol);
-		if ("addedFile" in $$props) $$invalidate(42, addedFile = $$props.addedFile);
-		if ("addedFileScale" in $$props) $$invalidate(43, addedFileScale = $$props.addedFileScale);
-		if ("addedfiles" in $$props) $$invalidate(44, addedfiles = $$props.addedfiles);
-		if ("extrafileAdded" in $$props) $$invalidate(148, extrafileAdded = $$props.extrafileAdded);
+		if ("showOPOFiles" in $$props) $$invalidate(27, showOPOFiles = $$props.showOPOFiles);
+		if ("OPOfilesChecked" in $$props) $$invalidate(28, OPOfilesChecked = $$props.OPOfilesChecked);
+		if ("OPOLocation" in $$props) $$invalidate(29, OPOLocation = $$props.OPOLocation);
+		if ("delta_OPO" in $$props) $$invalidate(30, delta_OPO = $$props.delta_OPO);
+		if ("calibValue" in $$props) $$invalidate(31, calibValue = $$props.calibValue);
+		if ("calibFile" in $$props) $$invalidate(32, calibFile = $$props.calibFile);
+		if ("OPOcalibFiles" in $$props) $$invalidate(33, OPOcalibFiles = $$props.OPOcalibFiles);
+		if ("modalActivate" in $$props) $$invalidate(34, modalActivate = $$props.modalActivate);
+		if ("addFileModal" in $$props) $$invalidate(35, addFileModal = $$props.addFileModal);
+		if ("addedFileCol" in $$props) $$invalidate(36, addedFileCol = $$props.addedFileCol);
+		if ("addedFile" in $$props) $$invalidate(37, addedFile = $$props.addedFile);
+		if ("addedFileScale" in $$props) $$invalidate(38, addedFileScale = $$props.addedFileScale);
+		if ("addedfiles" in $$props) $$invalidate(39, addedfiles = $$props.addedfiles);
+		if ("extrafileAdded" in $$props) $$invalidate(143, extrafileAdded = $$props.extrafileAdded);
 		if ("fullfiles" in $$props) fullfiles = $$props.fullfiles;
-		if ("showfile_details" in $$props) $$invalidate(45, showfile_details = $$props.showfile_details);
-		if ("filedetails" in $$props) $$invalidate(46, filedetails = $$props.filedetails);
-		if ("savePeakfilename" in $$props) $$invalidate(47, savePeakfilename = $$props.savePeakfilename);
-		if ("felixplot_modal" in $$props) $$invalidate(48, felixplot_modal = $$props.felixplot_modal);
-		if ("felix_plotting_widgets" in $$props) $$invalidate(49, felix_plotting_widgets = $$props.felix_plotting_widgets);
-		if ("felixfiles" in $$props) $$invalidate(150, felixfiles = $$props.felixfiles);
+		if ("showfile_details" in $$props) $$invalidate(40, showfile_details = $$props.showfile_details);
+		if ("filedetails" in $$props) $$invalidate(41, filedetails = $$props.filedetails);
+		if ("savePeakfilename" in $$props) $$invalidate(42, savePeakfilename = $$props.savePeakfilename);
+		if ("felixplot_modal" in $$props) $$invalidate(43, felixplot_modal = $$props.felixplot_modal);
+		if ("felix_plotting_widgets" in $$props) $$invalidate(44, felix_plotting_widgets = $$props.felix_plotting_widgets);
+		if ("felixfiles" in $$props) $$invalidate(145, felixfiles = $$props.felixfiles);
 		if ("theoryfiles" in $$props) theoryfiles = $$props.theoryfiles;
-		if ("output_namelists" in $$props) $$invalidate(50, output_namelists = $$props.output_namelists);
-		if ("plottedFiles" in $$props) $$invalidate(152, plottedFiles = $$props.plottedFiles);
+		if ("output_namelists" in $$props) $$invalidate(45, output_namelists = $$props.output_namelists);
+		if ("plottedFiles" in $$props) $$invalidate(147, plottedFiles = $$props.plottedFiles);
 		if ("normMethod" in $$props) normMethod = $$props.normMethod;
-		if ("opofiles" in $$props) $$invalidate(154, opofiles = $$props.opofiles);
-		if ("location" in $$props) $$invalidate(155, location = $$props.location);
-		if ("Ngauss_sigma" in $$props) $$invalidate(51, Ngauss_sigma = $$props.Ngauss_sigma);
-		if ("graphDiv" in $$props) $$invalidate(52, graphDiv = $$props.graphDiv);
-		if ("datlocation" in $$props) $$invalidate(158, datlocation = $$props.datlocation);
+		if ("opofiles" in $$props) $$invalidate(149, opofiles = $$props.opofiles);
+		if ("location" in $$props) $$invalidate(151, location = $$props.location);
+		if ("graphDiv" in $$props) $$invalidate(51, graphDiv = $$props.graphDiv);
+		if ("Ngauss_sigma" in $$props) $$invalidate(52, Ngauss_sigma = $$props.Ngauss_sigma);
+		if ("datlocation" in $$props) $$invalidate(154, datlocation = $$props.datlocation);
 		if ("datfiles" in $$props) datfiles = $$props.datfiles;
 		if ("calcfiles" in $$props) calcfiles = $$props.calcfiles;
 	};
@@ -52212,7 +52146,7 @@ function instance$17($$self, $$props, $$invalidate) {
 
 	$$self.$$.update = () => {
 		if ($$self.$$.dirty[0] & /*fileChecked, currentLocation*/ 17) {
-			 $$invalidate(150, felixfiles = fileChecked.map(file => path.resolve(currentLocation, file)));
+			 $$invalidate(145, felixfiles = fileChecked.map(file => path.resolve(currentLocation, file)));
 		}
 
 		if ($$self.$$.dirty[0] & /*currentLocation*/ 16) {
@@ -52227,66 +52161,62 @@ function instance$17($$self, $$props, $$invalidate) {
 			 console.log("Open Shell: ", filetype, openShell);
 		}
 
-		if ($$self.$$.dirty[4] & /*plot_trace_added*/ 131072) {
+		if ($$self.$$.dirty[4] & /*plot_trace_added*/ 32768) {
 			 console.log("Trace length: ", plot_trace_added);
 		}
 
-		if ($$self.$$.dirty[4] & /*double_peak_active*/ 262144) {
-			 console.log("Double peak active: ", double_peak_active);
-		}
-
-		if ($$self.$$.dirty[0] & /*fileChecked*/ 1 | $$self.$$.dirty[1] & /*opoExpFit, OPOfilesChecked*/ 6) {
-			 $$invalidate(152, plottedFiles = opoExpFit
+		if ($$self.$$.dirty[0] & /*OPOfilesChecked, fileChecked*/ 268435457 | $$self.$$.dirty[1] & /*$opoMode*/ 131072) {
+			 $$invalidate(147, plottedFiles = $opoMode
 			? OPOfilesChecked.map(file => file.split(".")[0]) || []
 			: fileChecked.map(file => file.split(".")[0]) || []);
 		}
 
-		if ($$self.$$.dirty[1] & /*addedfiles*/ 8192 | $$self.$$.dirty[4] & /*plottedFiles*/ 268435456) {
-			 $$invalidate(50, output_namelists = [
+		if ($$self.$$.dirty[1] & /*addedfiles*/ 256 | $$self.$$.dirty[4] & /*plottedFiles*/ 8388608) {
+			 $$invalidate(45, output_namelists = [
 				"averaged",
 				...plottedFiles,
 				...addedfiles.map(file => path.basename(file)).map(file => file.split(".")[0])
 			]);
 		}
 
-		if ($$self.$$.dirty[0] & /*felix_normMethod*/ 4096 | $$self.$$.dirty[1] & /*opoExpFit*/ 4) {
-			 normMethod = opoExpFit ? "Log" : felix_normMethod;
+		if ($$self.$$.dirty[0] & /*felix_normMethod*/ 4096 | $$self.$$.dirty[1] & /*$opoMode*/ 131072) {
+			 normMethod = $opoMode ? "Log" : felix_normMethod;
 		}
 
-		if ($$self.$$.dirty[0] & /*currentLocation*/ 16 | $$self.$$.dirty[1] & /*opoExpFit, OPOLocation*/ 12) {
-			 $$invalidate(155, location = opoExpFit ? OPOLocation : currentLocation);
+		if ($$self.$$.dirty[0] & /*OPOLocation, currentLocation*/ 536870928 | $$self.$$.dirty[1] & /*$opoMode*/ 131072) {
+			 $$invalidate(151, location = $opoMode ? OPOLocation : currentLocation);
 		}
 
-		if ($$self.$$.dirty[1] & /*OPOfilesChecked, OPOLocation*/ 10) {
-			 $$invalidate(154, opofiles = OPOfilesChecked.map(file => path.resolve(OPOLocation, file)));
+		if ($$self.$$.dirty[0] & /*OPOfilesChecked, OPOLocation*/ 805306368) {
+			 $$invalidate(149, opofiles = OPOfilesChecked.map(file => path.resolve(OPOLocation, file)));
 		}
 
-		if ($$self.$$.dirty[1] & /*opoExpFit*/ 4) {
-			 $$invalidate(52, graphDiv = opoExpFit ? "opoRelPlot" : "avgplot");
+		if ($$self.$$.dirty[1] & /*$opoMode*/ 131072) {
+			 $$invalidate(51, graphDiv = $opoMode ? "opoRelPlot" : "avgplot");
 		}
 
-		if ($$self.$$.dirty[1] & /*OPOLocation*/ 8) {
+		if ($$self.$$.dirty[0] & /*OPOLocation*/ 536870912) {
 			 if (fs.existsSync(OPOLocation)) {
-				$$invalidate(38, OPOcalibFiles = fs.readdirSync(OPOLocation).filter(file => file.endsWith(".calibOPO")));
+				$$invalidate(33, OPOcalibFiles = fs.readdirSync(OPOLocation).filter(file => file.endsWith(".calibOPO")));
 			}
 		}
 
-		if ($$self.$$.dirty[1] & /*opoExpFit*/ 4) {
-			 opoExpFit
+		if ($$self.$$.dirty[1] & /*$opoMode*/ 131072) {
+			 $opoMode
 			? createToast$1("OPO MODE")
 			: createToast$1("FELIX MODE");
 		}
 
-		if ($$self.$$.dirty[1] & /*opoExpFit*/ 4) {
-			 $$invalidate(51, Ngauss_sigma = opoExpFit ? 2 : 5);
+		if ($$self.$$.dirty[1] & /*$opoMode*/ 131072) {
+			 $$invalidate(52, Ngauss_sigma = $opoMode ? 2 : 5);
 		}
 
-		if ($$self.$$.dirty[4] & /*extrafileAdded*/ 16777216) {
+		if ($$self.$$.dirty[4] & /*extrafileAdded*/ 524288) {
 			 console.log(`Extrafile added: ${extrafileAdded}`);
 		}
 
-		if ($$self.$$.dirty[0] & /*currentLocation*/ 16 | $$self.$$.dirty[1] & /*opoExpFit, addedfiles*/ 8196 | $$self.$$.dirty[4] & /*opofiles, felixfiles*/ 1140850688) {
-			 opoExpFit
+		if ($$self.$$.dirty[0] & /*currentLocation*/ 16 | $$self.$$.dirty[1] & /*$opoMode, addedfiles*/ 131328 | $$self.$$.dirty[4] & /*opofiles, felixfiles*/ 35651584) {
+			 $opoMode
 			? fullfiles = [
 					...opofiles,
 					...addedfiles,
@@ -52299,11 +52229,11 @@ function instance$17($$self, $$props, $$invalidate) {
 				];
 		}
 
-		if ($$self.$$.dirty[5] & /*location*/ 1) {
-			 $$invalidate(158, datlocation = path.resolve(location, "../EXPORT"));
+		if ($$self.$$.dirty[4] & /*location*/ 134217728) {
+			 $$invalidate(154, datlocation = path.resolve(location, "../EXPORT"));
 		}
 
-		if ($$self.$$.dirty[5] & /*datlocation*/ 8) {
+		if ($$self.$$.dirty[4] & /*datlocation*/ 1073741824) {
 			 datfiles = fs.existsSync(datlocation)
 			? fs.readdirSync(datlocation).filter(f => f.endsWith(".dat")).map(f => f = { name: f, id: getID() })
 			: [{ name: "", id: getID() }];
@@ -52315,8 +52245,8 @@ function instance$17($$self, $$props, $$invalidate) {
 			: [{ name: "", id: getID() }];
 		}
 
-		if ($$self.$$.dirty[1] & /*opoExpFit*/ 4) {
-			 console.log(`opoExpFit: ${opoExpFit}`);
+		if ($$self.$$.dirty[1] & /*$opoMode*/ 131072) {
+			 console.log(`$opoMode: ${$opoMode}`);
 		}
 	};
 
@@ -52339,13 +52269,9 @@ function instance$17($$self, $$props, $$invalidate) {
 		overwrite_expfit,
 		writeFile,
 		line_index_count,
-		output_name,
 		writeFileName,
-		dataTable,
-		dataTable_avg,
 		boxSelected_peakfinder,
 		keepTable,
-		peakTable,
 		collectData,
 		lineData_list,
 		toggleFindPeaksRow,
@@ -52354,7 +52280,6 @@ function instance$17($$self, $$props, $$invalidate) {
 		peak_prominence,
 		showOPOFiles,
 		OPOfilesChecked,
-		opoExpFit,
 		OPOLocation,
 		delta_OPO,
 		calibValue,
@@ -52372,8 +52297,13 @@ function instance$17($$self, $$props, $$invalidate) {
 		felixplot_modal,
 		felix_plotting_widgets,
 		output_namelists,
-		Ngauss_sigma,
+		$felixOutputName,
+		$felixPeakTable,
+		$opoMode,
+		$dataTable,
+		$dataTable_avg,
 		graphDiv,
+		Ngauss_sigma,
 		replot,
 		plotData,
 		clearAllPeak,
@@ -85869,7 +85799,7 @@ var compiler = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
-//# sourceMappingURL=compiler.js.map
+
 });
 
 var svelte = unwrapExports(compiler);
