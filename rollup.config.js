@@ -6,14 +6,21 @@ import { terser } from 'rollup-plugin-terser';
 import autoPreprocess from 'svelte-preprocess';
 import postcss from 'rollup-plugin-postcss';
 
+// import uglify from 'rollup-plugin-uglify';
+
 ///////////////////////////////////////////////////////////////////////////
 
 
 const production = !process.env.ROLLUP_WATCH;
 
 export default {
+
 	input: 'src/App.js',
-	output: { sourcemap: true, format: 'cjs', name: 'app', file: 'static/bundle.js' },
+	
+	output: [
+		{ sourcemap: true, format: 'cjs', name: 'app', file: 'static/bundle.js' },
+		{ sourcemap: true, format: 'cjs', name: 'app', file: 'static/bundle.min.js', plugins: [terser()] },
+	],
 
 	plugins: [
 		svelte({
@@ -21,7 +28,10 @@ export default {
 			dev: !production,
 			css: css => { css.write('static/bundle.css'); },
 			preprocess: autoPreprocess()
+		
 		}),
+		
+		// uglify(),
 		resolve({dedupe: ['svelte', 'svelte/transition', 'svelte/internal']}),
 		commonjs(),
 		!production && livereload('static'),
