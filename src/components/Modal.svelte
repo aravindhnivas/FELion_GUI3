@@ -1,53 +1,34 @@
-<script context="module">
-  import {writable} from "svelte/store";
-  export const activated =  writable(false), modalContent =  writable("")
-  export const modalTitle =  writable("Error detail"), modalType =  writable("danger"), modalPreMsg = writable("Error Occured")
-
-</script>
-
 <script>
-  
-  import { Snackbar } from 'svelma'
-  let actionText="Show details";
-  let active=false;
-
-  function openModal() {
-
-    Snackbar.create({ 
-
-      message: $modalPreMsg, position:"is-top", type:`is-${$modalType}`, duration: 5000,
-      actionText: actionText, onAction: ()=>{ active = true; }
-    })
-    $activated = false;
-  }
-
-  $: if($activated) openModal()
+    export let active =  false, title =  "Title", style="width:60vw";
 </script>
 
 <style>
-
-.modal-card-body {color: black; overflow-y: auto}
-.modal-card {width: 60vw;}
+  .modal-card-body {color: black; overflow-y: auto; max-height: 30em; background: #634e96;}
+  .delete {background-color: #fafafa;}
+  
+  .delete:hover {background-color: #f14668;}
 </style>
+
+<svelte:window on:keydown="{(e)=> {if(e.keyCode===27) active=false}}"/>
 
 <div class="modal" class:is-active={active}>
 
   <div class="modal-background"></div>
-  <div class="modal-card">
+
+  <div class="modal-card animated fadeIn faster" {style}>
+
     <header class="modal-card-head">
-      <p class="modal-card-title">{$modalTitle}</p>
+      <p class="modal-card-title">{title}</p>
+      <span class="delete is-pulled-right" on:click="{()=>active=false}"></span>
     </header>
 
-    <section class="modal-card-body"> {$modalContent} </section>
+    <section class="modal-card-body"><slot name="content" /></section>
 
     <footer class="modal-card-foot">
-
-      <div style="margin-left:auto;">
-
-        <button class="button is-link" on:click={()=>active = false}>Cancel</button>
-        <slot name="footerBtn" />
+      <div style="margin-left:auto; display:flex;">
+        <slot name="footerbtn" /> 
       </div>
     </footer>
-
   </div>
+
 </div>

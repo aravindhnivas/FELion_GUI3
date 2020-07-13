@@ -1,5 +1,3 @@
-
-// 
 import App from './App.svelte';
 import svelte from 'svelte/compiler';
 

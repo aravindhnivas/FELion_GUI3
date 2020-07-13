@@ -13,19 +13,20 @@
     
     import { Toast } from 'svelma'
     
-    import {activated, modalContent} from "./Modal.svelte"
-    
     import {onMount, afterUpdate} from "svelte"
     
     import CustomIconSwitch from './CustomIconSwitch.svelte';
     import CustomCheckList from './CustomCheckList.svelte';
     import { createEventDispatcher } from 'svelte';
+    import {PreModal} from "./PreModal.svelte";
     
     ///////////////////////////////////////////////////////////////////////////
 
     export let fileChecked = [],  currentLocation = "", filetype = "*.*"
 
     const dispatch = createEventDispatcher();
+
+    let preModal = {};
 
     function dispatch_chdir_event() { dispatch('chdir', { action: "chdir", filetype, currentLocation }) }
 
@@ -64,8 +65,8 @@
             if (toast) {createToast("Files updated")}
         } catch (err) {
             console.log(err)
-            $modalContent = err;
-            $activated = true;
+            preModal.modalContent = err;
+            preModal.open = true;
             return original_files = otherfolders = files = fileChecked = []
         }
     }
@@ -98,7 +99,7 @@
     .center {justify-content: center;}
     .browseIcons {cursor: pointer;}
 </style>
-
+<PreModal bind:preModal/>
 <div class="align center browseIcons">
     <Icon class="material-icons" on:click="{()=>changeDirectory("..")}">arrow_back</Icon>
     <Icon class="material-icons" on:click="{()=>{getfiles(true)}}">refresh</Icon>

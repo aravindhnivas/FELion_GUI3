@@ -6,9 +6,9 @@
     import Fab, {Label} from '@smui/fab';
     import Checkbox from '@smui/checkbox';
     import FormField from '@smui/form-field';
-    import {createToast, browse} from "../components/Layout.svelte"
-    import {modalContent, activated} from "../components/Modal.svelte"
-    import CustomDialog from "../components/CustomDialog.svelte"
+    import {createToast, browse} from "../components/Layout.svelte";
+    import CustomDialog from "../components/CustomDialog.svelte";
+    import {PreModal} from "../components/PreModal.svelte";
     //////////////////////////////////////////////////////////////////////////////////
 
     const writePowfile = () => {
@@ -39,7 +39,7 @@
 
                 if (save) savefile()
             }
-        }).catch(err=>{$modalContent = err; $activated=true})
+        }).catch(err=>{preModal.modalContent = err; preModal.open=true})
     }
 
     let powerfileContent = '', felixHz = 10, felixShots = 16, convert = null;
@@ -71,6 +71,7 @@
         if (action === "Yes") writePowfile()
     }
 
+    let preModal = {};
 </script>
 
 
@@ -83,6 +84,7 @@
 </style>
 
 
+<PreModal bind:preModal />
 <CustomDialog id="powerfile-overwrite" bind:dialog={overwrite_dialog} on:response={handleOverwrite}
     title={"Overwrite?"} content={`${filename} already exists. Do you want to overwrite it?`}/>
 

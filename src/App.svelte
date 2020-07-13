@@ -3,9 +3,6 @@
 	// Components
 	import Navbar from "./components/Navbar.svelte"
 	import Footer from "./components/Footer.svelte"
-	// import Layout from "./components/Layout.svelte"
-	// import LineAnimate from "./testing/LineAnimate.svelte"
-
 	import Home from "./Pages/Home.svelte"
 	import Powerfile from "./Pages/Powerfile.svelte"
 	import Normline from "./Pages/Normline.svelte"
@@ -13,9 +10,8 @@
 	import Timescan from "./Pages/Timescan.svelte"
 	import THz from "./Pages/THz.svelte"
 	import Settings from "./Pages/Settings.svelte"
-	import Misc from "./Pages/Misc.svelte"
 
-	import Modal from "./components/Modal.svelte"
+	import Misc from "./Pages/Misc.svelte"
 	import {onMount} from "svelte"
 
 	onMount(()=>{
@@ -25,7 +21,6 @@
 
 
 	const navItems = ["Home", "Normline", "Masspec", "Timescan", "THz", "Powerfile", "Misc", "Settings"]
-
 	// const components = {Home, Normline, Masspec, Timescan, THz, Powerfile, Misc, Settings}
 
 	window.electron = require("electron")
@@ -35,7 +30,6 @@
 	window.spawn = require("child_process").spawn
 	
 	export let version;
-
 	console.log("Svelte: ", version)
 
 	window.Menu = remote.Menu
@@ -55,10 +49,7 @@
 
 </script>
 
-
 <Navbar {navItems}/>
-
-<Modal/>
 
 <Home />
 
@@ -79,6 +70,6 @@
 	<Misc />
 
 	<Settings />
-
 </div>
+
 <Footer />

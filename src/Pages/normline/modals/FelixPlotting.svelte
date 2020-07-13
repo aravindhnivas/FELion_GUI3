@@ -1,6 +1,6 @@
 
 <script>
-    import Modal1 from '../../../components/Modal1.svelte';
+    import Modal from '../../../components/Modal.svelte';
     import CustomCheckList from '../../../components/CustomCheckList.svelte';
     import Textfield from '@smui/textfield';
     import CustomCheckbox from '../../../components/CustomCheckbox.svelte';
@@ -44,7 +44,7 @@
 
 {#if active}
 
-    <Modal1 bind:active title="FELIX PLOTTING" style="width:70vw;">
+    <Modal bind:active title="FELIX PLOTTING" style="width:70vw;">
 
         <div slot="content" style="height:40vh;" >
             <div style="display:flex; flex-wrap:wrap;">
@@ -76,6 +76,6 @@
         </div>
 
         <button slot="footerbtn" class="button is-link" on:click={()=>{dispatch('submit')}} >Submit</button>
-    </Modal1>
+    </Modal>
     
 {/if}

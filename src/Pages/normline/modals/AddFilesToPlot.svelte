@@ -1,6 +1,6 @@
 
 <script>
-    import Modal1 from '../../../components/Modal1.svelte';
+    import Modal from '../../../components/Modal.svelte';
     import Textfield from '@smui/textfield';
     import { createEventDispatcher } from 'svelte';
     import {browse} from "../../../components/Layout.svelte"
@@ -20,7 +20,7 @@
 
 {#if active}
 
-    <Modal1 bind:active title="Add file to plot">
+    <Modal bind:active title="Add file to plot">
 
         <div slot="content" >
             <Textfield style="width:7em; margin:0 0.5em;" bind:value={addedFileCol} label="Columns"/>
@@ -29,6 +29,6 @@
 
         </div>
         <button slot="footerbtn" class="button is-link" on:click="{(e)=>dispatch('addfile', { event:e })}" >Add</button>
-    </Modal1>
+    </Modal>
     
 {/if}

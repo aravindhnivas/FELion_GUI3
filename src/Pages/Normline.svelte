@@ -1,25 +1,23 @@
 <script>
     // IMPORTING Modules
+    import {felixIndex, felixPeakTable, felixOutputName, opoMode, dataTable, dataTable_avg} from './normline/functions/svelteWritables';
     import Textfield from '@smui/textfield'
     import Layout, {createToast} from "../components/Layout.svelte"
     import { fade } from 'svelte/transition'
-    import {activated, modalContent} from "../components/Modal.svelte"
-    import {plot, subplot} from "../js/functions.js"
     
     import CustomSwitch from '../components/CustomSwitch.svelte';
     import CustomSelect from '../components/CustomSelect.svelte';
     import CustomIconSwitch from '../components/CustomIconSwitch.svelte';
     import CustomRadio from '../components/CustomRadio.svelte';
-
     import ReportLayout from '../components/ReportLayout.svelte';
-    import QuickBrowser from '../components/QuickBrowser.svelte';
+
     import {onMount, tick} from "svelte"
 
     import {Icon} from '@smui/icon-button'
     
     import Table from '../components/Table.svelte'
 
-    import FelixPlotting from './normline/modals/FelixPlotting.svelte';
+    // import FelixPlotting from './normline/modals/FelixPlotting.svelte';
     import AdjustInitialGuess from './normline/modals/AdjustInitialGuess.svelte';
     import AddFilesToPlot from './normline/modals/AddFilesToPlot.svelte';
     import FrequencyTable from './normline/components/FrequencyTable.svelte';
@@ -38,22 +36,21 @@
     import {exp_fit_func} from './normline/functions/exp_fit';
 
     import {get_err_func} from './normline/functions/get_err';
-
-    import {felixIndex, felixPeakTable, felixOutputName, opoMode, dataTable, dataTable_avg} from './normline/functions/svelteWritables';
-
    ///////////////////////////////////////////////////////////////////////
+
+
     
     const filetype="felix", id="Normline"
 
     let fileChecked=[], delta=1, toggleRow=false, toggleBrowser = false;
     let currentLocation = localStorage[`${filetype}_location`] || ""
+   
     $: felixfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
     $: console.log(`${filetype} currentlocation: \n${currentLocation}`)
-    
     ///////////////////////////////////////////////////////////////////////
 
     // Theory file
-    let sigma = 20, scale=1, show_theoryplot = false,  showTheoryFiles = false
+    let sigma = 20, scale=1, show_theoryplot = false
     let theoryLocation = localStorage["theoryLocation"] || currentLocation
 
     let theoryfiles;
@@ -220,7 +217,7 @@
                 { detached: true, stdio: 'pipe', shell: openShell }
             )
             py.on("close", ()=>{ console.log("Closed") })
-            py.stderr.on("data", (err)=>{ console.log(`Error Occured: ${err.toString()}`); $modalContent = err.toString(); $activated = true })
+            py.stderr.on("data", (err)=>{ console.log(`Error Occured: ${err.toString()}`); preModal.modalContent = err.toString(); preModal.open = true })
             py.stdout.on("data", (data)=>{ console.log(`Output from python: ${data.toString()}`)  })
 
             py.unref()
@@ -231,8 +228,8 @@
         let py;
         try {py = spawn( localStorage["pythonpath"], [path.resolve(localStorage["pythonscript"], pyfile), args] )}
         catch (err) {
-            $modalContent = "Error accessing python. Set python location properly in Settings"
-            $activated = true
+            preModal.modalContent = "Error accessing python. Set python location properly in Settings"
+            preModal.open = true
             return
         }
         
@@ -248,8 +245,8 @@
         })
         let error_occured_py = false;
         py.stderr.on("data", err => {
-            $modalContent = err
-            $activated = true
+            preModal.modalContent = err
+            preModal.open = true
             error_occured_py = true
         });
 
@@ -283,7 +280,7 @@
 
                         theory_func({dataFromPython, normMethod})
                         createToast("Graph Plotted", "success")
-                        show_theoryplot = true, showTheoryFiles = false
+                        show_theoryplot = true
 
                     } else if (filetype == "exp_fit") {
 
@@ -325,7 +322,7 @@
                        
                     }
 
-                } catch (err) { $modalContent = err.stack; $activated = true }
+                } catch (err) { preModal.modalContent = err.stack; preModal.open = true }
             }
             console.log("Process closed")
             target.classList.toggle("is-loading")
@@ -365,9 +362,8 @@
         plot_trace_added--
     }
     
-    let collectData = true, lineData_list = [], weighted_error = [[], []], err_data1_plot = false
+    let collectData = true, lineData_list = []
 
-    let amp1=0, amp2=0, cen1=0, cen2=0, sig1=5, sig2=5
     let toggleFindPeaksRow = false
     let peak_height = 1, peak_width = 3, peak_prominence = 0;
     
@@ -485,7 +481,7 @@
 
             {label:"Combinations", options:calcfiles, selected:[], style:"width:25%;", id:getID()},
         ]
-
+    let preModal = {};
     $: console.log(`$opoMode: ${$opoMode}`)
     onMount(()=>{  console.log("Normline mounted") })
 
@@ -503,10 +499,8 @@
 <AddFilesToPlot bind:active={addFileModal} bind:addedFileCol bind:addedFileScale bind:addedfiles bind:addedFile on:addfile="{(e)=>plotData({e:e.detail.event, filetype:"addfile"})}" />
 
 
-
-
 <!-- Layout -->
-<Layout {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>
+<Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>
 
     <div class="buttonSlot" slot="buttonContainer">
 

@@ -8,11 +8,13 @@
 
     import CustomSelect from '../components/CustomSelect.svelte';
 
+    import {PreModal} from "../components/PreModal.svelte";
+
+
     const {exec} = require("child_process")
     const https = require('https');
-
     const admZip = require('adm-zip');
-    import {activated, modalContent} from "../components/Modal.svelte"
+
     const copy = require('recursive-copy')
 
     ///////////////////////////////////////////////////////
@@ -290,8 +292,8 @@
         })
         .catch(err=>{
             console.log(err)
-            $modalContent = err
-            $activated = true
+            preModal.modalContent = err
+            preModal.open = true
         })
     }
 
@@ -326,12 +328,13 @@
         })
         .catch(err=>{
             console.log(err)
-            $modalContent = err
-            $activated = true
-        
+            preModal.modalContent = err
+            preModal.open = true
         })
-    }
 
+
+    }
+    let preModal = {};
 </script>
 
 <style>
@@ -352,8 +355,9 @@
     .right .title {letter-spacing: 0.1em; text-transform: uppercase;}
     
     * :global(option) { color: black; }
-</style>
 
+</style>
+<PreModal bind:preModal />
 <CustomDialog id="pythonpath_Check" bind:dialog={pythonpathCheck} on:response={handlepythonPathCheck}
     title={"Python path is not valid"} content={"Change it in Settings --> Configuration"} label1="Okay" label2="Cancel" />
 

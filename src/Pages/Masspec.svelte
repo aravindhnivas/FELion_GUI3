@@ -8,14 +8,11 @@
 
     import ReportLayout from "../components/ReportLayout.svelte"
     import Textfield from '@smui/textfield'
-    // import { fly, fade } from 'svelte/transition'
     import {plot} from "../js/functions.js"
-
-    import {activated, modalContent} from "../components/Modal.svelte"
     import {createToast} from "../components/Layout.svelte"
-    // import {afterUpdate} from "svelte"
 
     import {Icon} from '@smui/icon-button'
+
     /////////////////////////////////////////////////////////////////////////
 
     // Initialisation
@@ -79,7 +76,7 @@
             )
 
             py.on("close", ()=>{ console.log("Closed") })
-            py.stderr.on("data", (err)=>{ console.log(`Error Occured: ${err.toString()}`); $modalContent = err.toString(); $activated = true })
+            py.stderr.on("data", (err)=>{ console.log(`Error Occured: ${err.toString()}`); preModal.modalContent = err.toString(); preModal.open = true })
             py.stdout.on("data", (data)=>{ console.log(`Output from python: ${data.toString()}`)  })
             py.unref()
             
@@ -96,8 +93,8 @@
 
         try {py = spawn( localStorage["pythonpath"], [path.resolve(localStorage["pythonscript"], pyfile), args] )}
         catch (err) {
-            $modalContent = "Error accessing python. Set python location properly in Settings"
-            $activated = true
+            preModal.modalContent = "Error accessing python. Set python location properly in Settings"
+            preModal.open = true
             target.classList.toggle("is-loading")
             return
         }
@@ -112,8 +109,8 @@
         let error_occured_py = false
 
         py.stderr.on("data", err => {
-            $modalContent = err
-            $activated = true
+            preModal.modalContent = err
+            preModal.open = true
             error_occured_py = true;
         });
 
@@ -138,7 +135,7 @@
                     createToast("Graph plotted", "success")
                     graphPlotted = true
 
-                } catch (err) { $modalContent = err; $activated = true }
+                } catch (err) { preModal.modalContent = err; preModal.open = true }
 
             }
             console.log("Process closed")
@@ -152,7 +149,10 @@
         let layout = { yaxis: { title: "Counts", type: logScale ? "log" : null } }
         if(graphPlotted) Plotly.relayout("mplot", layout)
     };
+    
     let includePlotsInReport = [{id:"mplot", include:true, label:"Mass Spectrum"}]
+
+    let preModal = {};
 </script>
 
 <style>
@@ -164,7 +164,7 @@
     .hide {display: none;}
 </style>
 
-<Layout {filetype} {id} bind:currentLocation bind:fileChecked>
+<Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked >
     <div class="masspec_buttonContainer" slot="buttonContainer">
 
         <div class="content align buttonRow">

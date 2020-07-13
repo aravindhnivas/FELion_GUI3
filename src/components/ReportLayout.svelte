@@ -17,23 +17,20 @@
 
     import {createToast} from "./Layout.svelte"
     
-    const {BrowserWindow} = remote
-    import {modalContent, activated} from "./Modal.svelte"
     import Select, {Option} from '@smui/select'
     import {onMount} from "svelte";
-    import Hamburger1 from "../components/icon_animations/Hamburger1.svelte";
+    import Hamburger1 from "./icon_animations/Hamburger1.svelte";
+    import {PreModal} from "./PreModal.svelte";
+    const {BrowserWindow} = remote
     //////////////////////////////////////////////////////////////////////////////////////////////////
 
     export let currentLocation = "", id="report", includePlotsInReport=[], includeTablesInReports=[]
-    
-    
     $: reportFile = path.resolve(currentLocation, `reports/${reportMolecule}_report.html`)
-    
     let reportTitle = "", reportComments = "", reportMethod = "info", reportMolecule = ""
-    // let reportTitleContents = "", loadContent = "";
-    
     const stylesheet = path.resolve(__dirname, 'assets/reports/template.css')
     const reportHTML = document.createElement( 'html' )
+
+    let preModal = {};
 
     function init_report(){
 
@@ -201,16 +198,16 @@
                     reportWindow.webContents.printToPDF({printBackground: true, landscape:landscape, pageSize:pageSize})
                     .then(data => {
                         fs.writeFile(reportFile.replace(".html", ".pdf"), data, (error) => {
-                            if (error) {$modalContent = error; $activated = true; return}
+                            if (error) {preModal.modalContent = error; preModal.open = true; return}
                             createToast('Write PDF successfully.', "success")
                         })
-                    }).catch(error => { $modalContent = error; $activated = true })
+                    }).catch(error => { preModal.modalContent = error; preModal.open = true })
 
                 } else {
                     reportWindow.webContents.printToPDF({printBackground: true, landscape:landscape, pageSize:pageSize}, (error, data) => {
-                        if(error) { $modalContent = error; $activated = true; return}
+                        if(error) { preModal.modalContent = error; preModal.open = true; return}
                         fs.writeFile(reportFile.replace(".html", ".pdf"), data, (error) => {
-                            if (error) {$modalContent = error; $activated = true; return}
+                            if (error) {preModal.modalContent = error; preModal.open = true; return}
                             createToast('Write PDF successfully.', "success")
                         })
                     })
@@ -248,7 +245,7 @@
     .title {margin: 0; flex-grow: 2;}
 
 </style>
-
+<PreModal bind:preModal/>
 <div class="content align heading">
 
     <div class="title notification is-link">Add to report</div>

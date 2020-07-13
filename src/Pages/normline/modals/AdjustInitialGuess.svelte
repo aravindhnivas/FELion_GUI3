@@ -3,7 +3,7 @@
     import Ripple from '@smui/ripple';
     import { fade } from 'svelte/transition'
     import { createEventDispatcher } from 'svelte';
-    import Modal1 from '../../../components/Modal1.svelte';
+    import Modal from '../../../components/Modal.svelte';
     import {Icon} from '@smui/icon-button';
 
     import {felixPeakTable} from '../functions/svelteWritables';
@@ -27,7 +27,7 @@
 
 {#if active}
 
-    <Modal1 bind:active title="Adjust initial guess" >
+    <Modal bind:active title="Adjust initial guess" >
         <div slot="content" >
                 <div class="icon-holder" use:Ripple={[true, {color: 'primary'}]} >
                     <Icon class="material-icons"  on:click="{()=> {$felixPeakTable = [...$felixPeakTable, {freq:0, amp:0, sig:0, id:window.getID()}]}}">add</Icon>
@@ -69,6 +69,6 @@
 
         </div>
         <button slot="footerbtn" class="button is-link" on:click="{()=>dispatch('save')}" >Save</button>
-    </Modal1>
+    </Modal>
     
 {/if}

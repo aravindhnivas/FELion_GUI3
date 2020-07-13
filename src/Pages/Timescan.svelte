@@ -8,16 +8,13 @@
 
     import ReportLayout from "../components/ReportLayout.svelte"
     import Textfield from '@smui/textfield'
-    // import { fly, fade } from 'svelte/transition'
     import {plot} from "../js/functions.js"
-
-    import {activated, modalContent} from "../components/Modal.svelte"
     import {createToast} from "../components/Layout.svelte"
-    // import {Icon} from '@smui/icon-button'
 
     /////////////////////////////////////////////////////////////////////////
 
     // Initialisation
+
     const filetype = "scan", id = "Timescan"
     let fileChecked = [];
     let currentLocation = localStorage[`${filetype}_location`] || ""
@@ -71,7 +68,7 @@
             )
 
             py.on("close", ()=>{ console.log("Closed") })
-            py.stderr.on("data", (err)=>{ console.log(`Error Occured: ${err.toString()}`); $modalContent = err.toString(); $activated = true })
+            py.stderr.on("data", (err)=>{ console.log(`Error Occured: ${err.toString()}`); preModal.modalContent = err.toString(); preModal.open = true })
             py.stdout.on("data", (data)=>{ console.log(`Output from python: ${data.toString()}`)  })
 
             py.unref()
@@ -87,8 +84,8 @@
         let py;
         try {py = spawn( localStorage["pythonpath"], [path.resolve(localStorage["pythonscript"], pyfile), args] )}
         catch (err) {
-            $modalContent = "Error accessing python. Set python location properly in Settings"
-            $activated = true
+            preModal.modalContent = "Error accessing python. Set python location properly in Settings"
+            preModal.open = true
             target.classList.toggle("is-loading")
             return
         }
@@ -103,8 +100,8 @@
         let error_occured_py = false
 
         py.stderr.on("data", err => {
-            $modalContent = err
-            $activated = true
+            preModal.modalContent = err
+            preModal.open = true
             error_occured_py = true;
         });
 
@@ -124,7 +121,7 @@
                     createToast("Graph plotted", "success")
                     graphPlotted = true
 
-                } catch (err) { $modalContent = err; $activated = true }
+                } catch (err) { preModal.modalContent = err; preModal.open = true }
 
             }
             console.log("Process closed")
@@ -146,20 +143,19 @@
 
     $: includePlotsInReport = fileChecked.map(file=>file={id:`${file}_tplot`, include:false, label:file})
 
+    let preModal = {};
 </script>
 
 <style>
     .timescan_buttonContainer {min-height: 5em;}
     .button {margin-right: 0.5em;}
     .buttonRow {margin-bottom: 1em!important; align-items: center;}
-
     * :global(.mdc-select__native-control option) {color: black}
     .active {display: flex!important;}
     .hide {display: none;}
-
 </style>
 
-<Layout {filetype} {id} bind:currentLocation bind:fileChecked on:chdir={dir_changed}>
+<Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked on:chdir={dir_changed}>
 
     <div class="timescan_buttonContainer" slot="buttonContainer">
 

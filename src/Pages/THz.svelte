@@ -8,17 +8,13 @@
 
     import ReportLayout from "../components/ReportLayout.svelte"
     import Textfield from '@smui/textfield'
-    // import { fly, fade } from 'svelte/transition'
     import {plot} from "../js/functions.js"
-
-    import {activated, modalContent} from "../components/Modal.svelte"
     import {createToast} from "../components/Layout.svelte"
-    // import {afterUpdate} from "svelte"
 
-    // import {Icon} from '@smui/icon-button'
     /////////////////////////////////////////////////////////////////////////
 
     // Initialisation
+
     const filetype = "thz", id = "THz"
     let fileChecked = [];
     let currentLocation = localStorage[`${filetype}_location`] || ""
@@ -60,7 +56,7 @@
             )
             py.on("close", ()=>{ console.log("Closed") })
 
-            py.stderr.on("data", (err)=>{ console.log(`Error Occured: ${err.toString()}`); $modalContent = err.toString(); $activated = true })
+            py.stderr.on("data", (err)=>{ console.log(`Error Occured: ${err.toString()}`); preModal.modalContent = err.toString(); preModal.open = true })
             py.stdout.on("data", (data)=>{ console.log(`Output from python: ${data.toString()}`)  })
             py.unref()
             py.ref()
@@ -76,8 +72,8 @@
         try {py = spawn( localStorage["pythonpath"], [path.resolve(localStorage["pythonscript"], pyfile), args] )}
 
         catch (err) {
-            $modalContent = "Error accessing python. Set python location properly in Settings"
-            $activated = true
+            preModal.modalContent = "Error accessing python. Set python location properly in Settings"
+            preModal.open = true
             target.classList.toggle("is-loading")
             return
         }
@@ -92,8 +88,8 @@
         let error_occured_py = false
 
         py.stderr.on("data", err => {
-            $modalContent = err
-            $activated = true
+            preModal.modalContent = err
+            preModal.open = true
             error_occured_py = true;
             target.style.backgroundColor="#ff3860"
             target.classList.add("shake")
@@ -132,8 +128,8 @@
                     target.classList.add("bounce")
 
                 } catch (err) { 
-                    $modalContent = err
-                    $activated = true 
+                    preModal.modalContent = err
+                    preModal.open = true 
 
                     target.style.backgroundColor="#ff3860"
                     target.classList.add("shake")
@@ -152,22 +148,23 @@
     }
 
     let includePlotsInReport = [{id:"resOnOffPlot", include:false, label:"THz Res-ON/OFF"}, {id:"thzPlot", include:true, label:"Normalised THz Spectrum"}, {id:"boltzman_plot", include:false, label:"Boltzman plot"}]
+    let preModal = {};
 
 </script>
 
 <style>
-
     .thz_buttonContainer {min-height: 5em;}
+
     .button {margin-right: 0.5em;}
     .buttonRow {margin-bottom: 1em!important; align-items: center;}
-
     .active {display: flex!important;}
     .hide {display: none;}
+
     * :global(.mdc-select__native-control option) {color: black}
 
 </style>
 
-<Layout {filetype} {id} bind:currentLocation bind:fileChecked>
+<Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked>
 
     <div class="thz_buttonContainer" slot="buttonContainer">
 

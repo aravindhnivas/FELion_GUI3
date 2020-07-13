@@ -1,7 +1,5 @@
-import {tick} from "svelte"
 export function init_tour_normline({filetype="felix"}={}) {
         
-    
     const intro = introJs()
     intro.setOptions({
 

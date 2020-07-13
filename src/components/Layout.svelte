@@ -45,18 +45,18 @@
 
 <script>
     
-    // import IconButton, {Icon} from '@smui/icon-button';
     import { fly } from 'svelte/transition';
     import Textfield from '@smui/textfield';
     import {onMount} from "svelte";
     import FileBrowser from "./FileBrowser.svelte"
-
     import Hamburger1 from "../components/icon_animations/Hamburger1.svelte";
 
     import { createEventDispatcher } from 'svelte';
+    import {PreModal} from "./PreModal.svelte";
+
     ////////////////////////////////////////////////////////////////////////////
 
-    export let id, fileChecked=[], filetype = "felix", toggleBrowser = false;
+    export let id, fileChecked=[], filetype = "felix", toggleBrowser = false, preModal = {};
     export let currentLocation = localStorage[`${filetype}_location`] || "";
     const dispatch = createEventDispatcher()
 
@@ -141,18 +141,19 @@
         border-radius: 0;
     }
     
-    
     .fileContainer {
-
         margin: 0 2em; padding-bottom: 5rem; width: auto;
         @include tablet { width: 60%; }
-
     }
+
     .buttonContainer { max-height: 20em; overflow-y: auto; }
-    
     .box {border-radius: 0;}
     .container {height: calc(100vh - 7em);}
+
 </style>
+
+<PreModal bind:preModal />
+
 
 <section {id} style="display:none" class="animated fadeIn">
 
