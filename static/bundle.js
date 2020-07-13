@@ -45,6 +45,11 @@ function subscribe(store, ...callbacks) {
     const unsub = store.subscribe(...callbacks);
     return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub;
 }
+function get_store_value(store) {
+    let value;
+    subscribe(store, _ => value = _)();
+    return value;
+}
 function component_subscribe(component, store, callback) {
     component.$$.on_destroy.push(subscribe(store, callback));
 }
@@ -30498,6 +30503,7 @@ const felixIndex = writable([]);
 const felixPeakTable = writable([]);
 const felixOutputName = writable("");
 const opoMode = writable(false);
+const Ngauss_sigma = writable(5);
 
 
 const dataTable = writable([]);
@@ -50296,11 +50302,9 @@ function felix_func({normMethod, dataFromPython, delta, plotly_event_created}={}
                     console.log("Running cycle: ", i);
                     let d = data.points[i];
                     let name = d.data.name;
-                    let output_name;
+                    let output_name = get_store_value(felixOutputName);
 
-                    window.unsubscribefelixOutputName = felixOutputName.subscribe(value => { output_name = value; });
 
-                    
 
                     if (name.includes(output_name)){
 
@@ -50319,7 +50323,7 @@ function felix_func({normMethod, dataFromPython, delta, plotly_event_created}={}
 
                         Plotly.relayout("avgplot",{annotations: _.uniqBy(window.annotation, 'text')});
                         
-                        felixPeakTable.update(table => [...table, {freq, amp, sig:Ngauss_sigma, id:getID()}]);
+                        felixPeakTable.update(table => [...table, {freq, amp, sig:get_store_value(Ngauss_sigma), id:getID()}]);
                         felixPeakTable.update(table => _.uniqBy(table, 'freq'));
                     }
                 }
@@ -50452,7 +50456,7 @@ function get_err_func({dataFromPython}={}) {
 const { console: console_1$8 } = globals;
 const file$13 = "src\\Pages\\Normline.svelte";
 
-// (507:4) <div class="buttonSlot" slot="buttonContainer">
+// (501:4) <div class="buttonSlot" slot="buttonContainer">
 function create_buttonContainer_slot(ctx) {
 	let div0;
 	let initfunctionrow;
@@ -50653,10 +50657,10 @@ function create_buttonContainer_slot(ctx) {
 			div1 = element("div");
 			create_component(customradio.$$.fragment);
 			set_style(div1, "display", "flex");
-			add_location(div1, file$13, 513, 8, 22320);
+			add_location(div1, file$13, 507, 8, 22283);
 			attr_dev(div0, "class", "buttonSlot svelte-1961p3t");
 			attr_dev(div0, "slot", "buttonContainer");
-			add_location(div0, file$13, 506, 4, 21920);
+			add_location(div0, file$13, 500, 4, 21883);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -50803,14 +50807,14 @@ function create_buttonContainer_slot(ctx) {
 		block,
 		id: create_buttonContainer_slot.name,
 		type: "slot",
-		source: "(507:4) <div class=\\\"buttonSlot\\\" slot=\\\"buttonContainer\\\">",
+		source: "(501:4) <div class=\\\"buttonSlot\\\" slot=\\\"buttonContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (532:12) {#if showfile_details}
+// (526:12) {#if showfile_details}
 function create_if_block_1$8(ctx) {
 	let table;
 	let updating_rows;
@@ -50880,14 +50884,14 @@ function create_if_block_1$8(ctx) {
 		block,
 		id: create_if_block_1$8.name,
 		type: "if",
-		source: "(532:12) {#if showfile_details}",
+		source: "(526:12) {#if showfile_details}",
 		ctx
 	});
 
 	return block;
 }
 
-// (552:8) {#if graphPlotted}
+// (546:8) {#if graphPlotted}
 function create_if_block$o(ctx) {
 	let div5;
 	let div0;
@@ -51143,8 +51147,8 @@ function create_if_block$o(ctx) {
 
 	let textfield4_props = { style: "width:9em", label: "Sigma" };
 
-	if (/*Ngauss_sigma*/ ctx[49] !== void 0) {
-		textfield4_props.value = /*Ngauss_sigma*/ ctx[49];
+	if (/*$Ngauss_sigma*/ ctx[49] !== void 0) {
+		textfield4_props.value = /*$Ngauss_sigma*/ ctx[49];
 	}
 
 	textfield4 = new Textfield({ props: textfield4_props, $$inline: true });
@@ -51326,45 +51330,45 @@ function create_if_block$o(ctx) {
 			t38 = space();
 			create_component(reportlayout.$$.fragment);
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$13, 564, 20, 24860);
+			add_location(button0, file$13, 558, 20, 24823);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$13, 565, 20, 24968);
+			add_location(button1, file$13, 559, 20, 24931);
 			attr_dev(div0, "class", "content");
-			add_location(div0, file$13, 555, 16, 24258);
+			add_location(div0, file$13, 549, 16, 24221);
 			attr_dev(button2, "class", "button is-link");
-			add_location(button2, file$13, 570, 20, 25185);
+			add_location(button2, file$13, 564, 20, 25148);
 			attr_dev(button3, "class", "button is-link");
-			add_location(button3, file$13, 571, 20, 25309);
+			add_location(button3, file$13, 565, 20, 25272);
 			attr_dev(button4, "class", "button is-warning");
-			add_location(button4, file$13, 572, 20, 25440);
+			add_location(button4, file$13, 566, 20, 25403);
 			attr_dev(button5, "class", "button is-danger");
-			add_location(button5, file$13, 573, 20, 25540);
+			add_location(button5, file$13, 567, 20, 25503);
 			attr_dev(button6, "class", "button is-link");
-			add_location(button6, file$13, 574, 20, 25637);
+			add_location(button6, file$13, 568, 20, 25600);
 			attr_dev(button7, "class", "button is-warning");
-			add_location(button7, file$13, 575, 20, 25766);
+			add_location(button7, file$13, 569, 20, 25729);
 			attr_dev(div1, "class", "content");
-			add_location(div1, file$13, 569, 16, 25142);
+			add_location(div1, file$13, 563, 16, 25105);
 			attr_dev(button8, "class", "button is-link");
-			add_location(button8, file$13, 589, 24, 26726);
+			add_location(button8, file$13, 583, 24, 26690);
 			set_style(div2, "margin", "1em 0");
-			add_location(div2, file$13, 582, 20, 26111);
+			add_location(div2, file$13, 576, 20, 26074);
 			attr_dev(button9, "class", "button is-link");
-			add_location(button9, file$13, 594, 24, 27085);
+			add_location(button9, file$13, 588, 24, 27049);
 			attr_dev(button10, "class", "button is-link");
-			add_location(button10, file$13, 598, 24, 27308);
+			add_location(button10, file$13, 592, 24, 27272);
 			attr_dev(button11, "class", "button is-link");
-			add_location(button11, file$13, 599, 24, 27457);
+			add_location(button11, file$13, 593, 24, 27421);
 			attr_dev(button12, "class", "button is-danger");
-			add_location(button12, file$13, 600, 24, 27584);
+			add_location(button12, file$13, 594, 24, 27548);
 			set_style(div3, "display", "flex");
 			set_style(div3, "align-items", "center");
-			add_location(div3, file$13, 592, 20, 26904);
+			add_location(div3, file$13, 586, 20, 26868);
 			attr_dev(div4, "class", "content animated fadeIn hide svelte-1961p3t");
 			toggle_class(div4, "active", /*toggleFindPeaksRow*/ ctx[23]);
-			add_location(div4, file$13, 580, 16, 26011);
+			add_location(div4, file$13, 574, 16, 25974);
 			attr_dev(div5, "class", "svelte-1961p3t");
-			add_location(div5, file$13, 552, 12, 24168);
+			add_location(div5, file$13, 546, 12, 24131);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div5, anchor);
@@ -51533,9 +51537,9 @@ function create_if_block$o(ctx) {
 			textfield3.$set(textfield3_changes);
 			const textfield4_changes = {};
 
-			if (!updating_value_4 && dirty[1] & /*Ngauss_sigma*/ 262144) {
+			if (!updating_value_4 && dirty[1] & /*$Ngauss_sigma*/ 262144) {
 				updating_value_4 = true;
-				textfield4_changes.value = /*Ngauss_sigma*/ ctx[49];
+				textfield4_changes.value = /*$Ngauss_sigma*/ ctx[49];
 				add_flush_callback(() => updating_value_4 = false);
 			}
 
@@ -51673,14 +51677,14 @@ function create_if_block$o(ctx) {
 		block,
 		id: create_if_block$o.name,
 		type: "if",
-		source: "(552:8) {#if graphPlotted}",
+		source: "(546:8) {#if graphPlotted}",
 		ctx
 	});
 
 	return block;
 }
 
-// (594:24) <Icon class="material-icons" on:click="{()=> modalActivate = true}">
+// (588:24) <Icon class="material-icons" on:click="{()=> modalActivate = true}">
 function create_default_slot_1$d(ctx) {
 	let t;
 
@@ -51700,14 +51704,14 @@ function create_default_slot_1$d(ctx) {
 		block,
 		id: create_default_slot_1$d.name,
 		type: "slot",
-		source: "(594:24) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=> modalActivate = true}\\\">",
+		source: "(588:24) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=> modalActivate = true}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (521:4) <div class="plotSlot" slot="plotContainer">
+// (515:4) <div class="plotSlot" slot="plotContainer">
 function create_plotContainer_slot(ctx) {
 	let div0;
 	let div2;
@@ -51797,45 +51801,45 @@ function create_plotContainer_slot(ctx) {
 			t14 = space();
 			if (if_block1) if_block1.c();
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$13, 525, 16, 22701);
+			add_location(button0, file$13, 519, 16, 22664);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$13, 527, 16, 22942);
+			add_location(button1, file$13, 521, 16, 22905);
 			attr_dev(button2, "class", "button is-link");
-			add_location(button2, file$13, 528, 16, 23070);
+			add_location(button2, file$13, 522, 16, 23033);
 			set_style(div1, "display", "flex");
-			add_location(div1, file$13, 524, 11, 22656);
+			add_location(div1, file$13, 518, 11, 22619);
 			attr_dev(div2, "class", " svelte-1961p3t");
-			add_location(div2, file$13, 523, 8, 22628);
+			add_location(div2, file$13, 517, 8, 22591);
 			attr_dev(div3, "class", "animated fadeIn svelte-1961p3t");
 			attr_dev(div3, "id", "exp-theory-plot");
 			toggle_class(div3, "hide", !/*show_theoryplot*/ ctx[7]);
-			add_location(div3, file$13, 539, 12, 23637);
+			add_location(div3, file$13, 533, 12, 23600);
 			attr_dev(div4, "id", "bplot");
 			attr_dev(div4, "class", "svelte-1961p3t");
-			add_location(div4, file$13, 540, 12, 23737);
+			add_location(div4, file$13, 534, 12, 23700);
 			attr_dev(div5, "id", "saPlot");
 			attr_dev(div5, "class", "svelte-1961p3t");
-			add_location(div5, file$13, 541, 12, 23773);
+			add_location(div5, file$13, 535, 12, 23736);
 			attr_dev(div6, "id", "avgplot");
 			attr_dev(div6, "class", "svelte-1961p3t");
-			add_location(div6, file$13, 542, 12, 23810);
+			add_location(div6, file$13, 536, 12, 23773);
 			attr_dev(div7, "class", "animated fadeIn svelte-1961p3t");
 			attr_dev(div7, "id", "opoplot");
 			toggle_class(div7, "hide", !/*$opoMode*/ ctx[42]);
-			add_location(div7, file$13, 543, 12, 23848);
+			add_location(div7, file$13, 537, 12, 23811);
 			attr_dev(div8, "class", "animated fadeIn svelte-1961p3t");
 			attr_dev(div8, "id", "opoSA");
 			toggle_class(div8, "hide", !/*$opoMode*/ ctx[42]);
-			add_location(div8, file$13, 544, 12, 23933);
+			add_location(div8, file$13, 538, 12, 23896);
 			attr_dev(div9, "class", "animated fadeIn svelte-1961p3t");
 			attr_dev(div9, "id", "opoRelPlot");
 			toggle_class(div9, "hide", !/*$opoMode*/ ctx[42]);
-			add_location(div9, file$13, 546, 12, 24018);
+			add_location(div9, file$13, 540, 12, 23981);
 			attr_dev(div10, "class", "felixPlot svelte-1961p3t");
-			add_location(div10, file$13, 538, 8, 23600);
+			add_location(div10, file$13, 532, 8, 23563);
 			attr_dev(div0, "class", "plotSlot svelte-1961p3t");
 			attr_dev(div0, "slot", "plotContainer");
-			add_location(div0, file$13, 520, 4, 22531);
+			add_location(div0, file$13, 514, 4, 22494);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -51979,14 +51983,14 @@ function create_plotContainer_slot(ctx) {
 		block,
 		id: create_plotContainer_slot.name,
 		type: "slot",
-		source: "(521:4) <div class=\\\"plotSlot\\\" slot=\\\"plotContainer\\\">",
+		source: "(515:4) <div class=\\\"plotSlot\\\" slot=\\\"plotContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (505:0) <Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>
+// (499:0) <Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>
 function create_default_slot$r(ctx) {
 	let t;
 
@@ -52009,7 +52013,7 @@ function create_default_slot$r(ctx) {
 		block,
 		id: create_default_slot$r.name,
 		type: "slot",
-		source: "(505:0) <Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>",
+		source: "(499:0) <Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>",
 		ctx
 	});
 
@@ -52220,7 +52224,7 @@ function create_fragment$1a(ctx) {
 			addfilestoplot.$set(addfilestoplot_changes);
 			const layout_changes = {};
 
-			if (dirty[0] & /*currentLocation, keepTable, line_index_count, lineData_list, toggleFindPeaksRow, NGauss_fit_args, peak_height, peak_width, peak_prominence, boxSelected_peakfinder, collectData, overwrite_expfit, writeFile, writeFileName, graphPlotted, show_theoryplot, felix_normMethod, toggleRow, theoryLocation, sigma, scale, theoryfiles, deltaOPO, calibValue, OPOLocation, OPOfilesChecked, opofiles, delta, openShell*/ 2147483638 | dirty[1] & /*$dataTable_avg, $dataTable, $felixPeakTable, graphDiv, savePeakfilename, modalActivate, Ngauss_sigma, addFileModal, output_namelists, $felixOutputName, $opoMode, filedetails, showfile_details, calibFile, felixPlotCheckboxes*/ 1047431 | dirty[4] & /*$$scope*/ 32768) {
+			if (dirty[0] & /*currentLocation, keepTable, line_index_count, lineData_list, toggleFindPeaksRow, NGauss_fit_args, peak_height, peak_width, peak_prominence, boxSelected_peakfinder, collectData, overwrite_expfit, writeFile, writeFileName, graphPlotted, show_theoryplot, felix_normMethod, toggleRow, theoryLocation, sigma, scale, theoryfiles, deltaOPO, calibValue, OPOLocation, OPOfilesChecked, opofiles, delta, openShell*/ 2147483638 | dirty[1] & /*$dataTable_avg, $dataTable, $felixPeakTable, graphDiv, savePeakfilename, modalActivate, $Ngauss_sigma, addFileModal, output_namelists, $felixOutputName, $opoMode, filedetails, showfile_details, calibFile, felixPlotCheckboxes*/ 1047431 | dirty[4] & /*$$scope*/ 32768) {
 				layout_changes.$$scope = { dirty, ctx };
 			}
 
@@ -52293,6 +52297,7 @@ function instance$1a($$self, $$props, $$invalidate) {
 	let $felixIndex;
 	let $dataTable;
 	let $dataTable_avg;
+	let $Ngauss_sigma;
 	validate_store(opoMode, "opoMode");
 	component_subscribe($$self, opoMode, $$value => $$invalidate(42, $opoMode = $$value));
 	validate_store(normMethodDatas, "normMethodDatas");
@@ -52307,6 +52312,8 @@ function instance$1a($$self, $$props, $$invalidate) {
 	component_subscribe($$self, dataTable, $$value => $$invalidate(46, $dataTable = $$value));
 	validate_store(dataTable_avg, "dataTable_avg");
 	component_subscribe($$self, dataTable_avg, $$value => $$invalidate(47, $dataTable_avg = $$value));
+	validate_store(Ngauss_sigma, "Ngauss_sigma");
+	component_subscribe($$self, Ngauss_sigma, $$value => $$invalidate(49, $Ngauss_sigma = $$value));
 	let fileChecked = [], delta = 1, toggleRow = false, toggleBrowser = false;
 	let currentLocation = localStorage[`${filetype}_location`] || "";
 
@@ -52324,10 +52331,7 @@ function instance$1a($$self, $$props, $$invalidate) {
 	let graphPlotted = false, overwrite_expfit = false, writeFile = false;
 	let line = [], annotations = [], plot_trace_added = 0, line_index_count = 0;
 	let OPOfilesChecked = [];
-
-	// let output_name = "averaged"
 	let writeFileName = "";
-
 	let annotation_color = "black";
 	let boxSelected_peakfinder = true;
 	let keepTable = true;
@@ -52636,10 +52640,10 @@ function instance$1a($$self, $$props, $$invalidate) {
 							graphDiv,
 							dataFromPython,
 							annotation_color,
-							Ngauss_sigma
+							$Ngauss_sigma
 						});
 
-						console.log(`felixPeakTable: ${$felixPeakTable}`);
+						console.log(`felixPeakTable:`, $felixPeakTable);
 						createToast$1("Peaks found", "success");
 					} else if (filetype == "NGauss_fit") {
 						$$invalidate(16, line_index_count = NGauss_fit_func({
@@ -53088,8 +53092,8 @@ function instance$1a($$self, $$props, $$invalidate) {
 	}
 
 	function textfield4_value_binding(value) {
-		Ngauss_sigma = value;
-		($$invalidate(49, Ngauss_sigma), $$invalidate(42, $opoMode));
+		$Ngauss_sigma = value;
+		Ngauss_sigma.set($Ngauss_sigma);
 	}
 
 	const click_handler_8 = e => plotData({ e, filetype: "find_peaks" });
@@ -53174,6 +53178,7 @@ function instance$1a($$self, $$props, $$invalidate) {
 		dataTable,
 		dataTable_avg,
 		normMethodDatas,
+		Ngauss_sigma,
 		Textfield,
 		Layout,
 		createToast: createToast$1,
@@ -53278,7 +53283,7 @@ function instance$1a($$self, $$props, $$invalidate) {
 		$dataTable,
 		$dataTable_avg,
 		graphDiv,
-		Ngauss_sigma,
+		$Ngauss_sigma,
 		datlocation,
 		datfiles,
 		calcfiles,
@@ -53343,7 +53348,6 @@ function instance$1a($$self, $$props, $$invalidate) {
 		if ("normMethod" in $$props) normMethod = $$props.normMethod;
 		if ("location" in $$props) $$invalidate(135, location = $$props.location);
 		if ("graphDiv" in $$props) $$invalidate(48, graphDiv = $$props.graphDiv);
-		if ("Ngauss_sigma" in $$props) $$invalidate(49, Ngauss_sigma = $$props.Ngauss_sigma);
 		if ("datlocation" in $$props) $$invalidate(136, datlocation = $$props.datlocation);
 		if ("datfiles" in $$props) $$invalidate(137, datfiles = $$props.datfiles);
 		if ("calcfiles" in $$props) $$invalidate(138, calcfiles = $$props.calcfiles);
@@ -53356,7 +53360,6 @@ function instance$1a($$self, $$props, $$invalidate) {
 	let normMethod;
 	let location;
 	let graphDiv;
-	let Ngauss_sigma;
 	let datlocation;
 	let datfiles;
 	let calcfiles;
@@ -53416,7 +53419,7 @@ function instance$1a($$self, $$props, $$invalidate) {
 		}
 
 		if ($$self.$$.dirty[1] & /*$opoMode*/ 2048) {
-			 $$invalidate(49, Ngauss_sigma = $opoMode ? 2 : 5);
+			 set_store_value(Ngauss_sigma, $Ngauss_sigma = $opoMode ? 2 : 5);
 		}
 
 		if ($$self.$$.dirty[4] & /*extrafileAdded*/ 16) {
@@ -53541,7 +53544,7 @@ function instance$1a($$self, $$props, $$invalidate) {
 		$dataTable,
 		$dataTable_avg,
 		graphDiv,
-		Ngauss_sigma,
+		$Ngauss_sigma,
 		felixPlotCheckboxes,
 		replot,
 		plotData,

@@ -1,6 +1,6 @@
 <script>
     // IMPORTING Modules
-    import {felixIndex, felixPeakTable, felixOutputName, opoMode, dataTable, dataTable_avg, normMethodDatas} from './normline/functions/svelteWritables';
+    import {felixIndex, felixPeakTable, felixOutputName, opoMode, dataTable, dataTable_avg, normMethodDatas, Ngauss_sigma} from './normline/functions/svelteWritables';
     import Textfield from '@smui/textfield'
     import Layout, {createToast} from "../components/Layout.svelte"
     import { fade } from 'svelte/transition'
@@ -63,30 +63,24 @@
     $: console.log("Open Shell: ", filetype, openShell)
 
     let felix_normMethod = "Relative", NGauss_fit_args = {}
-    
     let graphPlotted = false, overwrite_expfit = false, writeFile = false
 
     let line = [], annotations = [], plot_trace_added = 0, line_index_count = 0
-
     $: console.log("Trace length: ", plot_trace_added)
-
     let OPOfilesChecked = []
     $: plottedFiles = $opoMode ? OPOfilesChecked.map(file=>file.split(".")[0]) || [] : fileChecked.map(file=>file.split(".")[0]) || []
 
-    $: output_namelists = ["averaged", ...plottedFiles, ...addedfiles.map(file=>path.basename(file)).map(file=>file.split(".")[0])]
 
-    // let output_name = "averaged"
+    $: output_namelists = ["averaged", ...plottedFiles, ...addedfiles.map(file=>path.basename(file)).map(file=>file.split(".")[0])]
     let writeFileName = ""
     
     let annotation_color = "black"
     let boxSelected_peakfinder = true
-
     let keepTable = true;
 
-
     //////// OPO Plot ///////////
-    window.getID = () => Math.random().toString(32).substring(2)
 
+    window.getID = () => Math.random().toString(32).substring(2)
     window.annotation = []
 
     let plotly_event_created = false, plotly_event_created_opo = false
@@ -297,8 +291,8 @@
 
                     } else if (filetype == "find_peaks") {
 
-                        annotation_color = find_peaks_func({graphDiv, dataFromPython, annotation_color, Ngauss_sigma})
-                        console.log(`felixPeakTable: ${$felixPeakTable}`)
+                        annotation_color = find_peaks_func({graphDiv, dataFromPython, annotation_color, $Ngauss_sigma})
+                        console.log(`felixPeakTable:`, $felixPeakTable)
                         createToast("Peaks found", "success")
                     } else if (filetype == "NGauss_fit") {
 
@@ -386,7 +380,7 @@
     $: $opoMode ? createToast("OPO MODE") : createToast("FELIX MODE")
     
     
-    $: Ngauss_sigma = $opoMode ? 2 : 5
+    $: $Ngauss_sigma = $opoMode ? 2 : 5
     let modalActivate = false, addFileModal=false, addedFileCol="0, 1", addedFile={}, addedFileScale=1, addedfiles = [], extrafileAdded=0
     
     $: console.log(`Extrafile added: ${extrafileAdded}`)
@@ -586,7 +580,7 @@
                         <Textfield type="number" {style} step="0.5" bind:value={peak_width} label="Width" />
                         <Textfield type="number" {style} step="0.1" bind:value={peak_height} label="Height" />
 
-                        <Textfield style="width:9em" bind:value={Ngauss_sigma} label="Sigma"/>
+                        <Textfield style="width:9em" bind:value={$Ngauss_sigma} label="Sigma"/>
                         <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"find_peaks"})}">Get Peaks</button>
                     </div>
                     

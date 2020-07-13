@@ -1,5 +1,6 @@
 
-import {felixIndex, felixPeakTable, felixOutputName, opoMode, normMethodDatas} from './svelteWritables';
+import {felixIndex, felixPeakTable, felixOutputName, opoMode, normMethodDatas, Ngauss_sigma} from './svelteWritables';
+import {get} from 'svelte/store';
 import {plot, subplot} from "../../../js/functions.js";
 
 export function felix_func({normMethod, dataFromPython, delta, plotly_event_created}={}){
@@ -127,11 +128,9 @@ export function felix_func({normMethod, dataFromPython, delta, plotly_event_crea
                     console.log("Running cycle: ", i)
                     let d = data.points[i]
                     let name = d.data.name
-                    let output_name;
+                    let output_name = get(felixOutputName);
 
-                    window.unsubscribefelixOutputName = felixOutputName.subscribe(value => { output_name = value; });
 
-                    
 
                     if (name.includes(output_name)){
 
@@ -150,7 +149,7 @@ export function felix_func({normMethod, dataFromPython, delta, plotly_event_crea
 
                         Plotly.relayout("avgplot",{annotations: _.uniqBy(window.annotation, 'text')})
                         
-                        felixPeakTable.update(table => [...table, {freq, amp, sig:Ngauss_sigma, id:getID()}])
+                        felixPeakTable.update(table => [...table, {freq, amp, sig:get(Ngauss_sigma), id:getID()}])
                         felixPeakTable.update(table => _.uniqBy(table, 'freq'))
                     }
                 }
