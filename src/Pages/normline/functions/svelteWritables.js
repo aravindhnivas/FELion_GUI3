@@ -8,3 +8,4 @@ export const opoMode = writable(false)
 
 export const dataTable = writable([])
 export const dataTable_avg = writable([])
+export const normMethodDatas = writable({})

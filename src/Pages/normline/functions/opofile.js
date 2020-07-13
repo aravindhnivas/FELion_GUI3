@@ -1,5 +1,5 @@
-import {plot} from "../../../js/functions.js";
 import {felixIndex, felixOutputName, opoMode} from './svelteWritables';
+import {plot} from "../../../js/functions.js";
 
 export function opofile_func({dataFromPython, plotly_event_created_opo}={}) {
 

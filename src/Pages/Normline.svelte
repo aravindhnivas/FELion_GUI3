@@ -1,6 +1,6 @@
 <script>
     // IMPORTING Modules
-    import {felixIndex, felixPeakTable, felixOutputName, opoMode, dataTable, dataTable_avg} from './normline/functions/svelteWritables';
+    import {felixIndex, felixPeakTable, felixOutputName, opoMode, dataTable, dataTable_avg, normMethodDatas} from './normline/functions/svelteWritables';
     import Textfield from '@smui/textfield'
     import Layout, {createToast} from "../components/Layout.svelte"
     import { fade } from 'svelte/transition'
@@ -36,17 +36,19 @@
     import {exp_fit_func} from './normline/functions/exp_fit';
 
     import {get_err_func} from './normline/functions/get_err';
-   ///////////////////////////////////////////////////////////////////////
 
+    ///////////////////////////////////////////////////////////////////////
 
-    
     const filetype="felix", id="Normline"
 
+
     let fileChecked=[], delta=1, toggleRow=false, toggleBrowser = false;
+    
     let currentLocation = localStorage[`${filetype}_location`] || ""
-   
     $: felixfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
+
     $: console.log(`${filetype} currentlocation: \n${currentLocation}`)
+    
     ///////////////////////////////////////////////////////////////////////
 
     // Theory file
@@ -60,7 +62,7 @@
     let openShell = false;
     $: console.log("Open Shell: ", filetype, openShell)
 
-    let felix_normMethod = "Relative", normMethod_datas = {}, NGauss_fit_args = {}
+    let felix_normMethod = "Relative", NGauss_fit_args = {}
     
     let graphPlotted = false, overwrite_expfit = false, writeFile = false
 
@@ -92,7 +94,7 @@
     const replot = () => {
         if (graphPlotted) {
 
-            let {data, layout} = normMethod_datas[normMethod]
+            let {data, layout} = $normMethodDatas[normMethod]
             Plotly.react("avgplot",data, layout, { editable: true })
             line = annotations = lineData_list = [], plot_trace_added = 0
         }

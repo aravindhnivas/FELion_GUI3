@@ -1,6 +1,6 @@
 
+import {felixIndex, felixPeakTable, felixOutputName, opoMode, normMethodDatas} from './svelteWritables';
 import {plot, subplot} from "../../../js/functions.js";
-import {felixIndex, felixPeakTable, felixOutputName, opoMode} from './svelteWritables';
 
 export function felix_func({normMethod, dataFromPython, delta, plotly_event_created}={}){
 
@@ -30,13 +30,14 @@ export function felix_func({normMethod, dataFromPython, delta, plotly_event_crea
         return dataPlot
     }
     let signal = {
-        "rel": "Signal = (1-C/B)*100",
-        "log": "Signal = -ln(C/B)/Power(in J)",
+        "rel": "Signal = (1-C/B)*100", "log": "Signal = -ln(C/B)/Power(in J)",
         "hv": "Signal = -ln(C/B)/#Photons"
     }
+
+
     const set_title = (method) => `Normalised and Averaged Spectrum (delta=${delta})<br>${signal[method]}; {C=Measured Count, B=Baseline Count}`
 
-    normMethod_datas = {
+    const normMethod_datas = {
         "Relative": {
             "data": get_data(dataFromPython["average_rel"]),
             "layout": {
@@ -63,6 +64,8 @@ export function felix_func({normMethod, dataFromPython, delta, plotly_event_crea
         },
 
     }
+
+    normMethodDatas.set(normMethod_datas)
 
     plot(
         "Baseline Corrected",
