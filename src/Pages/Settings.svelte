@@ -8,7 +8,7 @@
 
     import CustomSelect from '../components/CustomSelect.svelte';
 
-    import {PreModal} from "../components/PreModal.svelte";
+    import PreModal from "../components/PreModal.svelte";
 
 
     const {exec} = require("child_process")

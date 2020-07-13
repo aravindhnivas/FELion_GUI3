@@ -52,7 +52,7 @@
     import Hamburger1 from "../components/icon_animations/Hamburger1.svelte";
 
     import { createEventDispatcher } from 'svelte';
-    import {PreModal} from "./PreModal.svelte";
+    import PreModal from "./PreModal.svelte";
 
     ////////////////////////////////////////////////////////////////////////////
 

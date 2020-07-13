@@ -8,7 +8,7 @@
     import FormField from '@smui/form-field';
     import {createToast, browse} from "../components/Layout.svelte";
     import CustomDialog from "../components/CustomDialog.svelte";
-    import {PreModal} from "../components/PreModal.svelte";
+    import PreModal from "../components/PreModal.svelte";
     //////////////////////////////////////////////////////////////////////////////////
 
     const writePowfile = () => {

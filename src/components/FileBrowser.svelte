@@ -18,7 +18,7 @@
     import CustomIconSwitch from './CustomIconSwitch.svelte';
     import CustomCheckList from './CustomCheckList.svelte';
     import { createEventDispatcher } from 'svelte';
-    import {PreModal} from "./PreModal.svelte";
+    import PreModal from "./PreModal.svelte";
     
     ///////////////////////////////////////////////////////////////////////////
 

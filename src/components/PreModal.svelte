@@ -2,7 +2,7 @@
 <script>
   
   import { Snackbar } from 'svelma';
-  import { Modal } from './Modal.svelte';
+  import Modal from './Modal.svelte';
   
   export let preModal = {}
 

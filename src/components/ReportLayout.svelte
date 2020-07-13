@@ -20,7 +20,7 @@
     import Select, {Option} from '@smui/select'
     import {onMount} from "svelte";
     import Hamburger1 from "./icon_animations/Hamburger1.svelte";
-    import {PreModal} from "./PreModal.svelte";
+    import PreModal from "./PreModal.svelte";
     const {BrowserWindow} = remote
     //////////////////////////////////////////////////////////////////////////////////////////////////
 
