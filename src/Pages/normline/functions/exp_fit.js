@@ -1,11 +1,11 @@
 
 import {dataTable, dataTable_avg} from './svelteWritables';
 
-
 export function exp_fit_func({dataFromPython, graphDiv, output_name, line, annotations, plot_trace_added, line_index_count, collectData, lineData_list}={}){
 
     Plotly.addTraces(graphDiv, dataFromPython["fit"])
     line = [...line, ...dataFromPython["line"]]
+
     Plotly.relayout(graphDiv, { shapes: line })
 
     annotations = [...annotations, dataFromPython["annotations"]]

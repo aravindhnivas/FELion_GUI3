@@ -13,7 +13,7 @@
 
     function rearrangePeakTable(e) { $felixPeakTable = _.filter($felixPeakTable, (tb)=>tb.id != e.target.id); }
 
-    $: console.log(`peakTable: ${$felixPeakTable}`)
+    $: console.log(`peakTable:`, $felixPeakTable)
     
     const focusFreq = (e) => {e.focus()}
 

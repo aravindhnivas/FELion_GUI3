@@ -1,6 +1,6 @@
 <script>
     // IMPORTING Modules
-    import {felixIndex, felixPeakTable, felixOutputName, opoMode, dataTable, dataTable_avg, normMethodDatas, Ngauss_sigma} from './normline/functions/svelteWritables';
+    import {felixIndex, felixPeakTable, felixOutputName, opoMode, dataTable, dataTable_avg, normMethodDatas, Ngauss_sigma, felixopoLocation} from './normline/functions/svelteWritables';
     import Textfield from '@smui/textfield'
     import Layout, {createToast} from "../components/Layout.svelte"
     import { fade } from 'svelte/transition'
@@ -25,6 +25,8 @@
     import InitFunctionRow from './normline/widgets/preprocessing/InitFunctionRow.svelte';
     import OPORow from './normline/widgets/preprocessing/OPORow.svelte';
     import TheoryRow from './normline/widgets/preprocessing/TheoryRow.svelte';
+
+    import GetFileInfoTable from './normline/widgets/preprocessing/GetFileInfoTable.svelte';
     
     import {init_tour_normline} from './normline/initTour';
 
@@ -36,6 +38,8 @@
     import {exp_fit_func} from './normline/functions/exp_fit';
 
     import {get_err_func} from './normline/functions/get_err';
+    import {get_details_func} from './normline/functions/get_details';
+    import {savefile, loadfile} from './normline/functions/misc';
 
     ///////////////////////////////////////////////////////////////////////
 
@@ -114,7 +118,7 @@
             case "exp_fit":
                 if ($felixIndex.length<2) { return createToast("Range not found!!. Select a range using Box-select", "danger") }
 
-                expfit_args = { addedFileScale, addedFileCol, output_name:$felixOutputName, overwrite_expfit, writeFile, writeFileName, normMethod, index:$felixIndex, fullfiles, location }
+                expfit_args = { addedFileScale, addedFileCol, output_name:$felixOutputName, overwrite_expfit, writeFile, writeFileName, normMethod, index:$felixIndex, fullfiles, location:$felixopoLocation }
 
                 break;
 
@@ -140,7 +144,7 @@
                     NGauss_fit_args.fitNGauss_arguments[`sigma${index}`] = f.sig
                 })
 
-                NGauss_fit_args = {...NGauss_fit_args, location, addedFileScale, addedFileCol, overwrite_expfit, writeFile, writeFileName, output_name:$felixOutputName, fullfiles, normMethod}
+                NGauss_fit_args = {...NGauss_fit_args, location:$felixopoLocation, addedFileScale, addedFileCol, overwrite_expfit, writeFile, writeFileName, output_name:$felixOutputName, fullfiles, normMethod}
                 break;
             
             case "find_peaks":
@@ -152,7 +156,7 @@
                 let selectedIndex = boxSelected_peakfinder ? $felixIndex : [0, 0]
 
 
-                find_peaks_args = { addedFileScale, addedFileCol, output_name:$felixOutputName, normMethod, peak_prominence, peak_width, peak_height, selectedIndex, fullfiles, location }
+                find_peaks_args = { addedFileScale, addedFileCol, output_name:$felixOutputName, normMethod, peak_prominence, peak_width, peak_height, selectedIndex, fullfiles, location:$felixopoLocation }
 
                 break;
 
@@ -291,7 +295,7 @@
 
                     } else if (filetype == "find_peaks") {
 
-                        annotation_color = find_peaks_func({graphDiv, dataFromPython, annotation_color, $Ngauss_sigma})
+                        annotation_color = find_peaks_func({graphDiv, dataFromPython, annotation_color})
                         console.log(`felixPeakTable:`, $felixPeakTable)
                         createToast("Peaks found", "success")
                     } else if (filetype == "NGauss_fit") {
@@ -304,19 +308,8 @@
                     } else if (filetype == "addfile") {
                         addFileModal = false
                         Plotly.addTraces(graphDiv, dataFromPython)
-                        
                         extrafileAdded += addedfiles.length
-
-                    } else if (filetype == "get_details") {
-                        showfile_details = true
-
-                        filedetails = dataFromPython.files.map(data => {
-                            let {filename, trap, res, b0, range} = data
-                            let [min, max] = range
-                            return {filename, min, max, trap, b0, res, precursor:"", ie:"", temp:"", id:getID()}
-                        })
-                       
-                    }
+                    } else if (filetype == "get_details") { get_details_func({dataFromPython}) }
 
                 } catch (err) { preModal.modalContent = err.stack; preModal.open = true }
             }
@@ -346,7 +339,7 @@
         
         if (plot_trace_added === 0) {return createToast("No fitted lines found", "danger")}
 
-        plotData({filetype:"general", general:{args:[$felixOutputName, location], pyfile:"delete_fileLines.py"}})
+        plotData({filetype:"general", general:{args:[$felixOutputName, $felixopoLocation], pyfile:"delete_fileLines.py"}})
         $dataTable = _.dropRight($dataTable, 1)
         line = _.dropRight(line, 2)
         annotations = _.dropRight(annotations, 1)
@@ -369,7 +362,7 @@
     let opofiles = []
     
     $: normMethod = $opoMode ? "Log" : felix_normMethod
-    $: location = $opoMode ? OPOLocation : currentLocation
+    $: $felixopoLocation = $opoMode ? OPOLocation : currentLocation
 
     $: graphDiv = $opoMode ? "opoRelPlot" : "avgplot"
     
@@ -420,30 +413,6 @@
         Plotly.relayout(graphDiv, { annotations:window.annotation })
     }
     
-    let showfile_details = false, filedetails = [];
-
-    
-    function savefile({file={}, name=""}={}) {
-        let filename = path.join(location, `${name}.json`)
-        fs.writeFile(filename, JSON.stringify({file}), 'utf8', function (err) {
-
-            if (err) {
-                console.log("An error occured while writing to File.");
-                return createToast("An error occured while writing to File.", "danger")
-            }
-            return createToast(`${name}.json has been saved.`, "success");
-        });
-    }
-
-    function loadfile({name=""}={}) {
-        let filename = path.join(location, `${name}.json`)
-        if(!fs.existsSync(filename)) {return createToast(`${name}.json doesn't exist in DATA dir.`, "danger")}
-        let loadedfile = JSON.parse(fs.readFileSync(filename)).file
-        if (name === "filedetails") {filedetails = _.uniqBy([...loadedfile, ...filedetails], "filename")}
-        else if (name === "peakTable") {$felixPeakTable = _.uniqBy([...loadedfile, ...$felixPeakTable], "freq"); adjustPeak()}
-        return createToast(`${name}.json has been loaded.`, "success");
-    }
-    
     let savePeakfilename = "peakTable"
 
     const init_tour = async () => {
@@ -453,7 +422,6 @@
 
     }
 
-    // let felixplot_modal = false
 
     const includePlotsInReport = [
         {id: "bplot", include:true, label:"Baseline"}, {id:"saPlot", include:false, label:"SA-Pow"}, 
@@ -466,7 +434,7 @@
         {id:"felixTable", include:true, label:"Freq. table"}, {id:"felix_filedetails_table", include:false, label:"File info table"}
     ]
 
-    $: datlocation = path.resolve(location, "../EXPORT")
+    $: datlocation = path.resolve($felixopoLocation, "../EXPORT")
     $: datfiles = fs.existsSync(datlocation) ? fs.readdirSync(datlocation).filter(f=>f.endsWith(".dat")).map(f=>f={name:f, id:getID()}) : [{name:"", id:getID()}]
     $: calcfiles = fs.existsSync(theoryLocation) ? fs.readdirSync(theoryLocation).map(f=>f={name:f, id:getID()}) : [{name:"", id:getID()}]
 
@@ -478,8 +446,17 @@
             {label:"Combinations", options:calcfiles, selected:[], style:"width:25%;", id:getID()},
         ]
     let preModal = {};
+
     $: console.log(`$opoMode: ${$opoMode}`)
+
     onMount(()=>{  console.log("Normline mounted") })
+
+
+    function loadpeakTable(){
+        const loadedfile = loadfile({name:savePeakfilename})
+        $felixPeakTable = _.uniqBy([...loadedfile, ...$felixPeakTable], "freq")
+        adjustPeak()
+    }
 
 </script>
 
@@ -508,26 +485,14 @@
         <div style="display:flex;">
             <CustomRadio on:change={replot} bind:selected={felix_normMethod} options={["Log", "Relative", "IntensityPerPhoton"]}/>
         </div>
-
         
     </div>
     
+
     <div class="plotSlot" slot="plotContainer">
 
         <!-- Get file info functions -->
-        <div class=""> 
-           <div style="display:flex;">
-                <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"get_details"})}">Get details</button>
-                <CustomIconSwitch bind:toggler={showfile_details} icons={["arrow_drop_down", "arrow_drop_up"]}/>
-                <button class="button is-link" on:click="{()=>savefile({file:filedetails, name:"filedetails"})}">Save</button>
-                <button class="button is-link" on:click="{()=>loadfile({name:"filedetails"})}">Load</button>
-           </div>
-            
-            {#if showfile_details}
-                <Table head={["Filename", "min(cm-1)", "max(cm-1)", "Trap(s)", "B0(ms)", "Res.(V)", "IE(eV)", "Temp(K)","Precursor", ]} bind:rows={filedetails} keys={["filename", "min", "max", "trap", "b0", "res", "ie","temp", "precursor"]} tableid="felix_filedetails_table"/>
-            {/if}
-        </div>
-
+        <GetFileInfoTable {plotData} />
         
         <!-- Plots container -->
         <div class="felixPlot">
@@ -537,22 +502,16 @@
             <div id="avgplot"></div>
             <div class="animated fadeIn" class:hide={!$opoMode} id="opoplot"></div>
             <div class="animated fadeIn" class:hide={!$opoMode} id="opoSA"></div>
-
             <div class="animated fadeIn" class:hide={!$opoMode} id="opoRelPlot"></div>
-        
         </div>
-
     
         {#if graphPlotted}
             <div transition:fade>
-
                 <!-- Write function buttons -->
                 <div class="content" >
 
-
                     <CustomSelect bind:picked={$felixOutputName} label="Output filename" options={output_namelists}/>
                     <Textfield style="width:7em; margin:0 0.5em;" bind:value={writeFileName} label="writeFileName"/>
-
                     <CustomSwitch style="margin: 0 1em;" bind:selected={writeFile} label="Write"/>
                     <CustomSwitch style="margin: 0 1em;" bind:selected={overwrite_expfit} label="Overwrite"/>
                     <CustomSwitch style="margin: 0 1em;" bind:selected={collectData} label="Collect"/>
@@ -587,11 +546,12 @@
                     <div style="display:flex; align-items:center">
                         <Icon class="material-icons" on:click="{()=> modalActivate = true}">settings</Icon>
                         <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"NGauss_fit"})}">Fit</button>
-
                         <Textfield {style} bind:value={savePeakfilename} label="savefile"/>
 
                         <button class="button is-link" on:click="{()=>savefile({file:$felixPeakTable, name:savePeakfilename})}">Save peaks</button>
-                        <button class="button is-link" on:click="{()=>loadfile({name:savePeakfilename})}">Load peaks</button>
+
+                        
+                        <button class="button is-link" on:click="{loadpeakTable}">Load peaks</button>
                         <button class="button is-danger" on:click="{()=>{window.annotation=[]; $felixPeakTable=[];NGauss_fit_args={}; window.Plotly.relayout(graphDiv, { annotations: [] }); createToast("Cleared", "warning")}}">Clear</button>
                     </div>
 
@@ -601,9 +561,12 @@
                 <FrequencyTable bind:dataTable_avg={$dataTable_avg} bind:dataTable={$dataTable} bind:keepTable bind:line_index_count bind:lineData_list/>
 
                 <!-- Report -->
+
                 <ReportLayout bind:currentLocation={currentLocation} id={`${filetype}_report`} {includePlotsInReport} {includeTablesInReports} />
-            
+
             </div>
+
         {/if}
     </div>
+
 </Layout>

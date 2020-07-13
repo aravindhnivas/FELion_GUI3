@@ -10,3 +10,7 @@ export const Ngauss_sigma = writable(5)
 export const dataTable = writable([])
 export const dataTable_avg = writable([])
 export const normMethodDatas = writable({})
+
+export const felixopoLocation = writable("")
+
+export const filedetails = writable([])
