@@ -1,6 +1,6 @@
+
 <script>
     import Textfield from '@smui/textfield';
-    
     import CustomIconSwitch from '../../../../components/CustomIconSwitch.svelte';
     import {opoMode} from "../../functions/svelteWritables";
     import FelixPlotting from '../../modals/FelixPlotting.svelte';

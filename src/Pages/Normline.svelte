@@ -17,42 +17,38 @@
     
     import Table from '../components/Table.svelte'
 
-    // import FelixPlotting from './normline/modals/FelixPlotting.svelte';
     import AdjustInitialGuess from './normline/modals/AdjustInitialGuess.svelte';
     import AddFilesToPlot from './normline/modals/AddFilesToPlot.svelte';
     import FrequencyTable from './normline/components/FrequencyTable.svelte';
-
     import InitFunctionRow from './normline/widgets/preprocessing/InitFunctionRow.svelte';
     import OPORow from './normline/widgets/preprocessing/OPORow.svelte';
     import TheoryRow from './normline/widgets/preprocessing/TheoryRow.svelte';
 
     import GetFileInfoTable from './normline/widgets/preprocessing/GetFileInfoTable.svelte';
-    
+    import WriteFunctionContents from './normline/widgets/postprocessing/WriteFunctionContents.svelte';
     import {init_tour_normline} from './normline/initTour';
-
     import {NGauss_fit_func} from './normline/functions/NGauss_fit';
     import {find_peaks_func} from './normline/functions/find_peaks';
     import {felix_func} from './normline/functions/felix';
     import {opofile_func} from './normline/functions/opofile';
     import {theory_func} from './normline/functions/theory';
-    import {exp_fit_func} from './normline/functions/exp_fit';
 
+    import {exp_fit_func} from './normline/functions/exp_fit';
     import {get_err_func} from './normline/functions/get_err';
     import {get_details_func} from './normline/functions/get_details';
+    
     import {savefile, loadfile} from './normline/functions/misc';
 
     ///////////////////////////////////////////////////////////////////////
 
+    
     const filetype="felix", id="Normline"
 
-
     let fileChecked=[], delta=1, toggleRow=false, toggleBrowser = false;
-    
     let currentLocation = localStorage[`${filetype}_location`] || ""
-    $: felixfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
 
+    $: felixfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
     $: console.log(`${filetype} currentlocation: \n${currentLocation}`)
-    
     ///////////////////////////////////////////////////////////////////////
 
     // Theory file
@@ -508,16 +504,11 @@
         {#if graphPlotted}
             <div transition:fade>
                 <!-- Write function buttons -->
-                <div class="content" >
 
-                    <CustomSelect bind:picked={$felixOutputName} label="Output filename" options={output_namelists}/>
-                    <Textfield style="width:7em; margin:0 0.5em;" bind:value={writeFileName} label="writeFileName"/>
-                    <CustomSwitch style="margin: 0 1em;" bind:selected={writeFile} label="Write"/>
-                    <CustomSwitch style="margin: 0 1em;" bind:selected={overwrite_expfit} label="Overwrite"/>
-                    <CustomSwitch style="margin: 0 1em;" bind:selected={collectData} label="Collect"/>
-                    <button class="button is-link" on:click="{()=>{addFileModal=true}}">Add files</button>
-                    <button class="button is-link" on:click={removeExtraFile}>Remove files</button>
-                </div>
+
+                
+                <WriteFunctionContents on:addfile="{()=>{addFileModal=true}}" on:removefile={removeExtraFile} {output_namelists} bind:writeFileName bind:writeFile bind:overwrite_expfit bind:collectData />
+                
 
                 <!-- Execute function buttons -->
                 <div class="content">
