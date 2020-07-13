@@ -41063,33 +41063,33 @@ function create_each_block$7(key_1, ctx) {
 			t5 = space();
 			attr_dev(td0, "class", "mdc-data-table__cell");
 			set_style(td0, "width", "2em");
-			add_location(td0, file$R, 55, 36, 2723);
+			add_location(td0, file$R, 55, 36, 2724);
 			set_style(input0, "color", "black");
 			attr_dev(input0, "type", "number");
 			attr_dev(input0, "step", "0.05");
-			add_location(input0, file$R, 56, 101, 2892);
+			add_location(input0, file$R, 56, 101, 2893);
 			attr_dev(td1, "class", "mdc-data-table__cell mdc-data-table__cell--numeric");
-			add_location(td1, file$R, 56, 36, 2827);
+			add_location(td1, file$R, 56, 36, 2828);
 			set_style(input1, "color", "black");
 			attr_dev(input1, "type", "number");
 			attr_dev(input1, "step", "0.05");
-			add_location(input1, file$R, 57, 101, 3093);
+			add_location(input1, file$R, 57, 101, 3094);
 			attr_dev(td2, "class", "mdc-data-table__cell mdc-data-table__cell--numeric");
-			add_location(td2, file$R, 57, 36, 3028);
+			add_location(td2, file$R, 57, 36, 3029);
 			set_style(input2, "color", "black");
 			attr_dev(input2, "type", "number");
 			attr_dev(input2, "step", "0.5");
-			add_location(input2, file$R, 58, 100, 3279);
+			add_location(input2, file$R, 58, 100, 3280);
 			attr_dev(td3, "class", "mdc-data-table__cell mdc-data-table__cell--numeric");
-			add_location(td3, file$R, 58, 36, 3215);
+			add_location(td3, file$R, 58, 36, 3216);
 			attr_dev(td4, "class", "mdc-data-table__cell");
 			set_style(td4, "background", "#f14668");
 			set_style(td4, "cursor", "pointer");
 			set_style(td4, "width", "2em");
-			add_location(td4, file$R, 59, 36, 3400);
+			add_location(td4, file$R, 59, 36, 3401);
 			attr_dev(tr, "class", "mdc-data-table__row");
 			set_style(tr, "background-color", "#fafafa");
-			add_location(tr, file$R, 54, 32, 2617);
+			add_location(tr, file$R, 54, 32, 2618);
 			this.first = tr;
 		},
 		m: function mount(target, anchor) {
@@ -41258,44 +41258,44 @@ function create_content_slot$1(ctx) {
 			}
 
 			attr_dev(div1, "class", "icon-holder");
-			add_location(div1, file$R, 31, 16, 880);
+			add_location(div1, file$R, 31, 16, 881);
 			attr_dev(th0, "class", "mdc-data-table__header-cell");
 			set_style(th0, "width", "2em");
 			attr_dev(th0, "role", "columnheader");
 			attr_dev(th0, "scope", "col");
-			add_location(th0, file$R, 44, 32, 1494);
+			add_location(th0, file$R, 44, 32, 1495);
 			set_style(th1, "cursor", "pointer");
 			attr_dev(th1, "class", "mdc-data-table__header-cell mdc-data-table__header-cell--numeric");
 			attr_dev(th1, "role", "columnheader");
 			attr_dev(th1, "scope", "col");
-			add_location(th1, file$R, 45, 32, 1625);
+			add_location(th1, file$R, 45, 32, 1626);
 			set_style(th2, "cursor", "pointer");
 			attr_dev(th2, "class", "mdc-data-table__header-cell mdc-data-table__header-cell--numeric");
 			attr_dev(th2, "role", "columnheader");
 			attr_dev(th2, "scope", "col");
-			add_location(th2, file$R, 46, 32, 1842);
+			add_location(th2, file$R, 46, 32, 1843);
 			set_style(th3, "cursor", "pointer");
 			attr_dev(th3, "class", "mdc-data-table__header-cell mdc-data-table__header-cell--numeric");
 			attr_dev(th3, "role", "columnheader");
 			attr_dev(th3, "scope", "col");
-			add_location(th3, file$R, 47, 32, 2058);
+			add_location(th3, file$R, 47, 32, 2059);
 			attr_dev(th4, "class", "mdc-data-table__header-cell");
 			set_style(th4, "width", "2em");
 			attr_dev(th4, "role", "columnheader");
 			attr_dev(th4, "scope", "col");
-			add_location(th4, file$R, 48, 32, 2270);
+			add_location(th4, file$R, 48, 32, 2271);
 			attr_dev(tr, "class", "mdc-data-table__header-row");
-			add_location(tr, file$R, 43, 28, 1421);
-			add_location(thead, file$R, 41, 24, 1366);
+			add_location(tr, file$R, 43, 28, 1422);
+			add_location(thead, file$R, 41, 24, 1367);
 			attr_dev(tbody, "class", "mdc-data-table__content");
-			add_location(tbody, file$R, 51, 24, 2462);
+			add_location(tbody, file$R, 51, 24, 2463);
 			attr_dev(table, "class", "mdc-data-table__table");
 			attr_dev(table, "aria-label", "adjustPeaks");
-			add_location(table, file$R, 39, 20, 1276);
+			add_location(table, file$R, 39, 20, 1277);
 			attr_dev(div2, "class", "mdc-data-table tableContainer");
-			add_location(div2, file$R, 37, 16, 1193);
+			add_location(div2, file$R, 37, 16, 1194);
 			attr_dev(div0, "slot", "content");
-			add_location(div0, file$R, 30, 8, 841);
+			add_location(div0, file$R, 30, 8, 842);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -41416,7 +41416,7 @@ function create_footerbtn_slot(ctx) {
 			button.textContent = "Save";
 			attr_dev(button, "slot", "footerbtn");
 			attr_dev(button, "class", "button is-link");
-			add_location(button, file$R, 70, 8, 3899);
+			add_location(button, file$R, 70, 8, 3900);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, button, anchor);
@@ -41550,7 +41550,7 @@ function instance$Y($$self, $$props, $$invalidate) {
 	let { active = false } = $$props;
 	const dispatch = createEventDispatcher();
 
-	function rearrangePeakTable() {
+	function rearrangePeakTable(e) {
 		set_store_value(felixPeakTable, $felixPeakTable = _.filter($felixPeakTable, tb => tb.id != e.target.id));
 	}
 
@@ -41603,7 +41603,7 @@ function instance$Y($$self, $$props, $$invalidate) {
 	}
 
 	const click_handler_4 = e => {
-		rearrangePeakTable();
+		rearrangePeakTable(e);
 	};
 
 	const click_handler_5 = () => dispatch("save");
@@ -50399,6 +50399,7 @@ function exp_fit_func({dataFromPython, graphDiv, output_name, line, annotations,
 
     Plotly.addTraces(graphDiv, dataFromPython["fit"]);
     line = [...line, ...dataFromPython["line"]];
+
     Plotly.relayout(graphDiv, { shapes: line });
 
     annotations = [...annotations, dataFromPython["annotations"]];

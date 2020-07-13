@@ -11,7 +11,7 @@
     export let active=false;
     const dispatch = createEventDispatcher();
 
-    function rearrangePeakTable() { $felixPeakTable = _.filter($felixPeakTable, (tb)=>tb.id != e.target.id); }
+    function rearrangePeakTable(e) { $felixPeakTable = _.filter($felixPeakTable, (tb)=>tb.id != e.target.id); }
 
     $: console.log(`peakTable: ${$felixPeakTable}`)
     
