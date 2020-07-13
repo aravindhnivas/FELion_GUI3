@@ -1,15 +1,17 @@
 
-import {dataTable, dataTable_avg} from './svelteWritables';
-
-export function exp_fit_func({dataFromPython, graphDiv, output_name, line, annotations, plot_trace_added, line_index_count, collectData, lineData_list}={}){
+import {dataTable, dataTable_avg, felixPlotAnnotations} from './svelteWritables';
+import { get} from 'svelte/store';
+export function exp_fit_func({dataFromPython, graphDiv, output_name, line, plot_trace_added, line_index_count, collectData, lineData_list}={}){
 
     Plotly.addTraces(graphDiv, dataFromPython["fit"])
     line = [...line, ...dataFromPython["line"]]
 
     Plotly.relayout(graphDiv, { shapes: line })
 
-    annotations = [...annotations, dataFromPython["annotations"]]
-    Plotly.relayout(graphDiv, { annotations: annotations })
+    let annotations = dataFromPython["annotations"]
+    felixPlotAnnotations.update(annotate => [...annotate, annotations])
+
+    Plotly.relayout(graphDiv, { annotations: get(felixPlotAnnotations) })
     
     plot_trace_added++
 
@@ -35,6 +37,6 @@ export function exp_fit_func({dataFromPython, graphDiv, output_name, line, annot
     dataTable.update(table=>_.uniqBy([...table, newTable], "freq"))
     console.log("Line fitted")
 
-    return [line, annotations, plot_trace_added, line_index_count, collectData, lineData_list]
+    return [line, plot_trace_added, line_index_count, collectData, lineData_list]
 
 }

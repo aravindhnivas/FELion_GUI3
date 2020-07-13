@@ -14,3 +14,7 @@ export const normMethodDatas = writable({})
 export const felixopoLocation = writable("")
 
 export const filedetails = writable([])
+
+export const felixPlotAnnotations = writable([])
+
+export const plotlyEventCreatedFELIX = writable(false)

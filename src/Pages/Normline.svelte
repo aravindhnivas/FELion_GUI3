@@ -1,6 +1,6 @@
 <script>
     // IMPORTING Modules
-    import {felixIndex, felixPeakTable, felixOutputName, opoMode, dataTable, dataTable_avg, normMethodDatas, Ngauss_sigma, felixopoLocation} from './normline/functions/svelteWritables';
+    import {felixIndex, felixPeakTable, felixOutputName, opoMode, dataTable, dataTable_avg, normMethodDatas, Ngauss_sigma, felixopoLocation, felixPlotAnnotations} from './normline/functions/svelteWritables';
     import Textfield from '@smui/textfield'
     import Layout, {createToast} from "../components/Layout.svelte"
     import { fade } from 'svelte/transition'
@@ -58,14 +58,14 @@
     let theoryfiles;
 
     ///////////////////////////////////////////////////////////////////////
-    
     let openShell = false;
+
     $: console.log("Open Shell: ", filetype, openShell)
 
     let felix_normMethod = "Relative", NGauss_fit_args = {}
     let graphPlotted = false, overwrite_expfit = false, writeFile = false
 
-    let line = [], annotations = [], plot_trace_added = 0, line_index_count = 0
+    let line = [], plot_trace_added = 0, line_index_count = 0
     $: console.log("Trace length: ", plot_trace_added)
     let OPOfilesChecked = []
     $: plottedFiles = $opoMode ? OPOfilesChecked.map(file=>file.split(".")[0]) || [] : fileChecked.map(file=>file.split(".")[0]) || []
@@ -81,16 +81,15 @@
     //////// OPO Plot ///////////
 
     window.getID = () => Math.random().toString(32).substring(2)
-    window.annotation = []
 
-    let plotly_event_created = false, plotly_event_created_opo = false
+    let plotly_event_created_opo = false
 
     const replot = () => {
         if (graphPlotted) {
 
             let {data, layout} = $normMethodDatas[normMethod]
             Plotly.react("avgplot",data, layout, { editable: true })
-            line = annotations = lineData_list = [], plot_trace_added = 0
+            line = $felixPlotAnnotations = lineData_list = [], plot_trace_added = 0
         }
     }
 
@@ -101,7 +100,7 @@
 
             case "felix":
                 removeExtraFile()
-                graphPlotted = false, $felixOutputName = "averaged", window.annotation = [], $felixPeakTable = []
+                graphPlotted = false, $felixOutputName = "averaged", $felixPlotAnnotations = [], $felixPeakTable = []
                 
                 if(felixfiles.length<1) return createToast("No files selected", "danger")
                 break;
@@ -160,7 +159,7 @@
                 removeExtraFile()
                 if(opofiles.length<1) return createToast("No files selected", "danger")
 
-                $opoMode = true, window.annotation = []
+                $opoMode = true, $felixPlotAnnotations = []
                 break;
 
             case "get_err":
@@ -256,12 +255,12 @@
                     
                     if (filetype == "felix") {
                         
-                        line = [], annotations = [], lineData_list = [], plot_trace_added = 0
+                        line = [], $felixPlotAnnotations = [], lineData_list = [], plot_trace_added = 0
                         show_theoryplot = false
 
                         if (!keepTable) {$dataTable = $dataTable_avg = []}
                         
-                        plotly_event_created = felix_func({normMethod, dataFromPython, delta, plotly_event_created})
+                        felix_func({normMethod, dataFromPython, delta})
                         
                         createToast("Graph Plotted", "success")
                         graphPlotted = true
@@ -280,7 +279,7 @@
 
                     } else if (filetype == "exp_fit") {
 
-                        [line, annotations, plot_trace_added, line_index_count, collectData, lineData_list] = exp_fit_func({dataFromPython, graphDiv, output_name:$felixOutputName, line, annotations, plot_trace_added, line_index_count, collectData, lineData_list})
+                        [line, plot_trace_added, line_index_count, collectData, lineData_list] = exp_fit_func({dataFromPython, graphDiv, output_name:$felixOutputName, line, plot_trace_added, line_index_count, collectData, lineData_list})
 
                         createToast("Line fitted with gaussian function", "success")
 
@@ -322,7 +321,7 @@
 
         console.log("Removing all found peak values")
         
-        annotations = $felixIndex = line = lineData_list = []
+        $felixPlotAnnotations = $felixIndex = line = lineData_list = []
 
         Plotly.relayout(graphDiv, { annotations: [], shapes: [] })
         
@@ -338,9 +337,9 @@
         plotData({filetype:"general", general:{args:[$felixOutputName, $felixopoLocation], pyfile:"delete_fileLines.py"}})
         $dataTable = _.dropRight($dataTable, 1)
         line = _.dropRight(line, 2)
-        annotations = _.dropRight(annotations, 1)
+        $felixPlotAnnotations = _.dropRight($felixPlotAnnotations, 1)
         lineData_list = _.dropRight(lineData_list, 1)
-        Plotly.relayout(graphDiv, { annotations: annotations, shapes: line })
+        Plotly.relayout(graphDiv, { annotations: $felixPlotAnnotations, shapes: line })
 
         Plotly.deleteTraces(graphDiv, [-1])
         console.log("Last fitted peak removed")
@@ -395,18 +394,16 @@
 
         let temp_annotate = {xref:"x", y:"y", "showarrow":true,  "arrowhead":2, "ax":-25, "ay":-40, font:{color:annotation_color}, arrowcolor:annotation_color}
         
-        window.annotation = []
-
-        $felixPeakTable.forEach((f)=>{
+        $felixPlotAnnotations = $felixPeakTable.map((f)=>{
             let _annotate = {x:f.freq, y:f.amp, text:`(${f.freq.toFixed(2)}, ${f.amp.toFixed(2)})`}
-            window.annotation = [...window.annotation, {...temp_annotate, ..._annotate} ]
+            return {...temp_annotate, ..._annotate}
         })
 
         if(closeMainModal) {
             modalActivate = false, createToast("Initial guess adjusted for full spectrum fitting")
         }
 
-        Plotly.relayout(graphDiv, { annotations:window.annotation })
+        Plotly.relayout(graphDiv, { annotations:$felixPlotAnnotations })
     }
     
     let savePeakfilename = "peakTable"
@@ -543,7 +540,7 @@
 
                         
                         <button class="button is-link" on:click="{loadpeakTable}">Load peaks</button>
-                        <button class="button is-danger" on:click="{()=>{window.annotation=[]; $felixPeakTable=[];NGauss_fit_args={}; window.Plotly.relayout(graphDiv, { annotations: [] }); createToast("Cleared", "warning")}}">Clear</button>
+                        <button class="button is-danger" on:click="{()=>{$felixPlotAnnotations=[]; $felixPeakTable=[];NGauss_fit_args={}; window.Plotly.relayout(graphDiv, { annotations: [] }); createToast("Cleared", "warning")}}">Clear</button>
                     </div>
 
                 </div>
