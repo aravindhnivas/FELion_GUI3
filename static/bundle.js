@@ -23129,10 +23129,10 @@ function create_fragment$A(ctx) {
 	let current;
 	let mounted;
 	let dispose;
-	const content_slot_template = /*$$slots*/ ctx[4].content;
-	const content_slot = create_slot(content_slot_template, ctx, /*$$scope*/ ctx[3], get_content_slot_context);
-	const footerbtn_slot_template = /*$$slots*/ ctx[4].footerbtn;
-	const footerbtn_slot = create_slot(footerbtn_slot_template, ctx, /*$$scope*/ ctx[3], get_footerbtn_slot_context);
+	const content_slot_template = /*$$slots*/ ctx[5].content;
+	const content_slot = create_slot(content_slot_template, ctx, /*$$scope*/ ctx[4], get_content_slot_context);
+	const footerbtn_slot_template = /*$$slots*/ ctx[5].footerbtn;
+	const footerbtn_slot = create_slot(footerbtn_slot_template, ctx, /*$$scope*/ ctx[4], get_footerbtn_slot_context);
 
 	const block = {
 		c: function create() {
@@ -23153,26 +23153,27 @@ function create_fragment$A(ctx) {
 			div1 = element("div");
 			if (footerbtn_slot) footerbtn_slot.c();
 			attr_dev(div0, "class", "modal-background");
-			add_location(div0, file$y, 15, 2, 423);
+			add_location(div0, file$y, 15, 2, 430);
 			attr_dev(p, "class", "modal-card-title");
-			add_location(p, file$y, 20, 6, 568);
-			attr_dev(span, "class", "delete is-pulled-right svelte-ijmpyo");
-			add_location(span, file$y, 21, 6, 615);
+			add_location(p, file$y, 20, 6, 575);
+			attr_dev(span, "class", "delete is-pulled-right svelte-hkpwan");
+			add_location(span, file$y, 21, 6, 622);
 			attr_dev(header, "class", "modal-card-head");
-			add_location(header, file$y, 19, 4, 528);
-			attr_dev(section, "class", "modal-card-body svelte-ijmpyo");
-			add_location(section, file$y, 24, 4, 712);
+			add_location(header, file$y, 19, 4, 535);
+			attr_dev(section, "class", "modal-card-body svelte-hkpwan");
+			set_style(section, "background", /*bodyBackground*/ ctx[3]);
+			add_location(section, file$y, 24, 4, 719);
 			set_style(div1, "margin-left", "auto");
 			set_style(div1, "display", "flex");
-			add_location(div1, file$y, 27, 6, 826);
+			add_location(div1, file$y, 27, 6, 871);
 			attr_dev(footer, "class", "modal-card-foot");
-			add_location(footer, file$y, 26, 4, 786);
+			add_location(footer, file$y, 26, 4, 831);
 			attr_dev(div2, "class", "modal-card animated fadeIn faster");
 			attr_dev(div2, "style", /*style*/ ctx[2]);
-			add_location(div2, file$y, 17, 2, 465);
+			add_location(div2, file$y, 17, 2, 472);
 			attr_dev(div3, "class", "modal");
 			toggle_class(div3, "is-active", /*active*/ ctx[0]);
-			add_location(div3, file$y, 13, 0, 373);
+			add_location(div3, file$y, 13, 0, 380);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -23206,8 +23207,8 @@ function create_fragment$A(ctx) {
 
 			if (!mounted) {
 				dispose = [
-					listen_dev(window, "keydown", /*keydown_handler*/ ctx[5], false, false, false),
-					listen_dev(span, "click", /*click_handler*/ ctx[6], false, false, false)
+					listen_dev(window, "keydown", /*keydown_handler*/ ctx[6], false, false, false),
+					listen_dev(span, "click", /*click_handler*/ ctx[7], false, false, false)
 				];
 
 				mounted = true;
@@ -23217,14 +23218,18 @@ function create_fragment$A(ctx) {
 			if (!current || dirty & /*title*/ 2) set_data_dev(t1, /*title*/ ctx[1]);
 
 			if (content_slot) {
-				if (content_slot.p && dirty & /*$$scope*/ 8) {
-					update_slot(content_slot, content_slot_template, ctx, /*$$scope*/ ctx[3], dirty, get_content_slot_changes, get_content_slot_context);
+				if (content_slot.p && dirty & /*$$scope*/ 16) {
+					update_slot(content_slot, content_slot_template, ctx, /*$$scope*/ ctx[4], dirty, get_content_slot_changes, get_content_slot_context);
 				}
 			}
 
+			if (!current || dirty & /*bodyBackground*/ 8) {
+				set_style(section, "background", /*bodyBackground*/ ctx[3]);
+			}
+
 			if (footerbtn_slot) {
-				if (footerbtn_slot.p && dirty & /*$$scope*/ 8) {
-					update_slot(footerbtn_slot, footerbtn_slot_template, ctx, /*$$scope*/ ctx[3], dirty, get_footerbtn_slot_changes, get_footerbtn_slot_context);
+				if (footerbtn_slot.p && dirty & /*$$scope*/ 16) {
+					update_slot(footerbtn_slot, footerbtn_slot_template, ctx, /*$$scope*/ ctx[4], dirty, get_footerbtn_slot_changes, get_footerbtn_slot_context);
 				}
 			}
 
@@ -23270,9 +23275,10 @@ function create_fragment$A(ctx) {
 function instance$A($$self, $$props, $$invalidate) {
 	let { active = false } = $$props,
 		{ title = "Title" } = $$props,
-		{ style = "width:60vw" } = $$props;
+		{ style = "width:60vw" } = $$props,
+		{ bodyBackground = "#634e96" } = $$props;
 
-	const writable_props = ["active", "title", "style"];
+	const writable_props = ["active", "title", "style", "bodyBackground"];
 
 	Object.keys($$props).forEach(key => {
 		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Modal> was created with unknown prop '${key}'`);
@@ -23291,28 +23297,45 @@ function instance$A($$self, $$props, $$invalidate) {
 		if ("active" in $$props) $$invalidate(0, active = $$props.active);
 		if ("title" in $$props) $$invalidate(1, title = $$props.title);
 		if ("style" in $$props) $$invalidate(2, style = $$props.style);
-		if ("$$scope" in $$props) $$invalidate(3, $$scope = $$props.$$scope);
+		if ("bodyBackground" in $$props) $$invalidate(3, bodyBackground = $$props.bodyBackground);
+		if ("$$scope" in $$props) $$invalidate(4, $$scope = $$props.$$scope);
 	};
 
-	$$self.$capture_state = () => ({ active, title, style });
+	$$self.$capture_state = () => ({ active, title, style, bodyBackground });
 
 	$$self.$inject_state = $$props => {
 		if ("active" in $$props) $$invalidate(0, active = $$props.active);
 		if ("title" in $$props) $$invalidate(1, title = $$props.title);
 		if ("style" in $$props) $$invalidate(2, style = $$props.style);
+		if ("bodyBackground" in $$props) $$invalidate(3, bodyBackground = $$props.bodyBackground);
 	};
 
 	if ($$props && "$$inject" in $$props) {
 		$$self.$inject_state($$props.$$inject);
 	}
 
-	return [active, title, style, $$scope, $$slots, keydown_handler, click_handler];
+	return [
+		active,
+		title,
+		style,
+		bodyBackground,
+		$$scope,
+		$$slots,
+		keydown_handler,
+		click_handler
+	];
 }
 
 class Modal extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$A, create_fragment$A, safe_not_equal, { active: 0, title: 1, style: 2 });
+
+		init(this, options, instance$A, create_fragment$A, safe_not_equal, {
+			active: 0,
+			title: 1,
+			style: 2,
+			bodyBackground: 3
+		});
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
@@ -23345,12 +23368,20 @@ class Modal extends SvelteComponentDev {
 	set style(value) {
 		throw new Error("<Modal>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
+
+	get bodyBackground() {
+		throw new Error("<Modal>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set bodyBackground(value) {
+		throw new Error("<Modal>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
 }
 
 /* src\components\PreModal.svelte generated by Svelte v3.24.0 */
 const file$z = "src\\components\\PreModal.svelte";
 
-// (29:2) <div slot="content">
+// (29:2) <div slot="content" style="color:black;">
 function create_content_slot(ctx) {
 	let div;
 	let t_value = /*preModal*/ ctx[0].modalContent + "";
@@ -23361,7 +23392,8 @@ function create_content_slot(ctx) {
 			div = element("div");
 			t = text(t_value);
 			attr_dev(div, "slot", "content");
-			add_location(div, file$z, 28, 2, 533);
+			set_style(div, "color", "black");
+			add_location(div, file$z, 28, 2, 626);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -23379,7 +23411,7 @@ function create_content_slot(ctx) {
 		block,
 		id: create_content_slot.name,
 		type: "slot",
-		source: "(29:2) <div slot=\\\"content\\\">",
+		source: "(29:2) <div slot=\\\"content\\\" style=\\\"color:black;\\\">",
 		ctx
 	});
 
@@ -23396,7 +23428,8 @@ function create_fragment$B(ctx) {
 	}
 
 	let modal_props = {
-		title: /*preModal*/ ctx[0].modalTitle,
+		title: /*preModal*/ ctx[0].modalTitle || "Error details",
+		bodyBackground: "#fafafa",
 		$$slots: { content: [create_content_slot] },
 		$$scope: { ctx }
 	};
@@ -23421,7 +23454,7 @@ function create_fragment$B(ctx) {
 		},
 		p: function update(ctx, [dirty]) {
 			const modal_changes = {};
-			if (dirty & /*preModal*/ 1) modal_changes.title = /*preModal*/ ctx[0].modalTitle;
+			if (dirty & /*preModal*/ 1) modal_changes.title = /*preModal*/ ctx[0].modalTitle || "Error details";
 
 			if (dirty & /*$$scope, preModal*/ 17) {
 				modal_changes.$$scope = { dirty, ctx };
@@ -23466,11 +23499,11 @@ function instance$B($$self, $$props, $$invalidate) {
 
 	function openModal() {
 		Snackbar.create({
-			message: preModal.message,
+			message: preModal.message || "Error Occured",
 			position: "is-top",
-			type: `is-${preModal.type}`,
+			type: `is-${preModal.type || "danger"}`,
 			duration: 5000,
-			actionText: preModal.actionText,
+			actionText: preModal.actionText || "Show Details",
 			onAction: () => {
 				$$invalidate(1, active = true);
 			}

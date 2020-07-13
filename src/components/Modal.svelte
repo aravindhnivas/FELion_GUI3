@@ -1,9 +1,9 @@
 <script>
-    export let active =  false, title =  "Title", style="width:60vw";
+    export let active =  false, title =  "Title", style="width:60vw", bodyBackground = "#634e96";
 </script>
 
 <style>
-  .modal-card-body {color: black; overflow-y: auto; max-height: 30em; background: #634e96;}
+  .modal-card-body {color: black; overflow-y: auto; max-height: 30em;}
   .delete {background-color: #fafafa;}
   
   .delete:hover {background-color: #f14668;}
@@ -22,7 +22,7 @@
       <span class="delete is-pulled-right" on:click="{()=>active=false}"></span>
     </header>
 
-    <section class="modal-card-body"><slot name="content" /></section>
+    <section class="modal-card-body" style="background: {bodyBackground};"><slot name="content" /></section>
 
     <footer class="modal-card-foot">
       <div style="margin-left:auto; display:flex;">

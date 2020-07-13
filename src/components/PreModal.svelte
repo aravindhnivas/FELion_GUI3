@@ -11,9 +11,9 @@
   function openModal() {
     Snackbar.create({ 
 
-      message: preModal.message, position:"is-top", type:`is-${preModal.type}`, duration: 5000,
+      message: preModal.message || "Error Occured", position:"is-top", type:`is-${preModal.type || "danger"}`, duration: 5000,
 
-      actionText: preModal.actionText, onAction: ()=>{ active = true; }
+      actionText: preModal.actionText || "Show Details", onAction: ()=>{ active = true; }
     
     })
     
@@ -24,7 +24,7 @@
 
 </script>
 
-<Modal bind:active title={preModal.modalTitle}>
+<Modal bind:active title={preModal.modalTitle || "Error details"} bodyBackground="#fafafa">
 
-  <div slot="content">{preModal.modalContent}</div>
+  <div slot="content" style="color:black;">{preModal.modalContent}</div>
 </Modal>
