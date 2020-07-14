@@ -8,7 +8,9 @@
 
     import AdjustInitialGuess from "../../modals/AdjustInitialGuess.svelte";
     import {savefile, loadfile} from "../../functions/misc";
-    import {createToast} from "../../../../components/Layout.svelte"
+    import {createToast} from "../../../../components/Layout.svelte";
+    import { fade } from 'svelte/transition';
+    
     export let plotData, boxSelected_peakfinder=false, peak_height, peak_width, peak_prominence, NGauss_fit_args;
 
     let toggleFindPeaksRow = false, savePeakfilename = "peakTable", modalActivate=false;
@@ -90,7 +92,7 @@
 
 {#if toggleFindPeaksRow}
 
-    <div class="content" >
+    <div class="content" transition:fade>
 
         <div style="margin:1em 0">
             <CustomSwitch style="margin: 0 1em;" bind:selected={boxSelected_peakfinder} label="BoxSelected"/>

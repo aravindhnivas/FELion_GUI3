@@ -1,90 +1,81 @@
+
 <script>
+
     // IMPORTING Modules
     import {felixIndex, felixPeakTable, felixOutputName, opoMode, dataTable, dataTable_avg, normMethodDatas, Ngauss_sigma, felixopoLocation, felixPlotAnnotations, expfittedLines, expfittedLinesCollectedData, fittedTraceCount, graphDiv} from './normline/functions/svelteWritables';
-    import Textfield from '@smui/textfield'
-    import Layout, {createToast} from "../components/Layout.svelte"
-    import { fade } from 'svelte/transition'
     
-    import CustomSwitch from '../components/CustomSwitch.svelte';
-    import CustomSelect from '../components/CustomSelect.svelte';
-    import CustomIconSwitch from '../components/CustomIconSwitch.svelte';
+    import Layout, {createToast} from "../components/Layout.svelte"
+    
+    import { fade } from 'svelte/transition'
     import CustomRadio from '../components/CustomRadio.svelte';
     import ReportLayout from '../components/ReportLayout.svelte';
-
     import {onMount, tick} from "svelte"
-
-    import {Icon} from '@smui/icon-button'
-    
-    import Table from '../components/Table.svelte'
 
     import AdjustInitialGuess from './normline/modals/AdjustInitialGuess.svelte';
     import AddFilesToPlot from './normline/modals/AddFilesToPlot.svelte';
     import FrequencyTable from './normline/components/FrequencyTable.svelte';
+
     import InitFunctionRow from './normline/widgets/preprocessing/InitFunctionRow.svelte';
+    
     import OPORow from './normline/widgets/preprocessing/OPORow.svelte';
     import TheoryRow from './normline/widgets/preprocessing/TheoryRow.svelte';
-
     import GetFileInfoTable from './normline/widgets/preprocessing/GetFileInfoTable.svelte';
-    
     import WriteFunctionContents from './normline/widgets/postprocessing/WriteFunctionContents.svelte';
     import ExecuteFunctionContents from './normline/widgets/postprocessing/ExecuteFunctionContents.svelte';
     import {init_tour_normline} from './normline/initTour';
+
     import {NGauss_fit_func} from './normline/functions/NGauss_fit';
+    
     import {find_peaks_func} from './normline/functions/find_peaks';
     import {felix_func} from './normline/functions/felix';
     import {opofile_func} from './normline/functions/opofile';
     import {theory_func} from './normline/functions/theory';
-
     import {exp_fit_func} from './normline/functions/exp_fit';
     import {get_err_func} from './normline/functions/get_err';
+
     import {get_details_func} from './normline/functions/get_details';
     
     import {savefile, loadfile} from './normline/functions/misc';
 
     ///////////////////////////////////////////////////////////////////////
 
-    
     const filetype="felix", id="Normline"
 
-    let fileChecked=[], delta=1, toggleRow=false, toggleBrowser = false;
-    let currentLocation = localStorage[`${filetype}_location`] || ""
 
+    let fileChecked=[], delta=1, toggleRow=false, toggleBrowser = false;
+    
+    let currentLocation = localStorage[`${filetype}_location`] || ""
     $: felixfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
+
     $: console.log(`${filetype} currentlocation: \n${currentLocation}`)
+    
     ///////////////////////////////////////////////////////////////////////
 
     // Theory file
     let sigma = 20, scale=1, show_theoryplot = false
     let theoryLocation = localStorage["theoryLocation"] || currentLocation
-
     let theoryfiles;
 
     ///////////////////////////////////////////////////////////////////////
     let openShell = false;
-
     $: console.log("Open Shell: ", filetype, openShell)
+
     let felix_normMethod = "Relative", NGauss_fit_args = {};
 
     let graphPlotted = false, overwrite_expfit = false, writeFile = false
-
-    // let plot_trace_added = 0
     $: console.log("Trace length: ", $fittedTraceCount)
+
     let OPOfilesChecked = []
     $: plottedFiles = $opoMode ? OPOfilesChecked.map(file=>file.split(".")[0]) || [] : fileChecked.map(file=>file.split(".")[0]) || []
-
 
     $: output_namelists = ["averaged", ...plottedFiles, ...addedfiles.map(file=>path.basename(file)).map(file=>file.split(".")[0])]
     let writeFileName = ""
     
-    // let annotation_color = "black";
-
     let boxSelected_peakfinder = false;
     let keepTable = true;
 
     //////// OPO Plot ///////////
-
     window.getID = () => Math.random().toString(32).substring(2)
-
 
     const replot = () => {
         if (graphPlotted) {
@@ -93,11 +84,12 @@
             Plotly.react("avgplot",data, layout, { editable: true })
             $expfittedLines = $felixPlotAnnotations = $expfittedLinesCollectedData = [], $fittedTraceCount = 0
         }
+
     }
 
     function plotData({e=null, filetype="felix", general=null, tkplot="run"}={}){
+        
         let expfit_args = [], find_peaks_args = {}
-
         switch (filetype) {
 
             case "felix":
@@ -333,14 +325,18 @@
     function removeExtraFile() {
 
         for(let i=0; i<extrafileAdded; i++) {
-            try {Plotly.deleteTraces($graphDiv, [-1])}
 
+            try {Plotly.deleteTraces($graphDiv, [-1])}
             catch (err) {console.log("The plot is empty")}
         }
+
+        
         extrafileAdded = 0, addedfiles = []
     }
 
+
     let fullfiles = []
+    
     $: $opoMode ? fullfiles = [...opofiles, ...addedfiles, path.resolve(currentLocation, "averaged.felix")] : fullfiles = [...felixfiles, ...addedfiles, path.resolve(currentLocation, "averaged.felix")]
 
     const init_tour = async () => {
@@ -394,15 +390,13 @@
 <!-- Modals -->
 <AddFilesToPlot bind:active={addFileModal} bind:addedFileCol bind:addedFileScale bind:addedfiles bind:addedFile on:addfile="{(e)=>plotData({e:e.detail.event, filetype:"addfile"})}" />
 
-
 <!-- Layout -->
+
 <Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>
     <div class="buttonSlot" slot="buttonContainer">
-
         <InitFunctionRow {plotData} bind:delta bind:openShell {felixPlotCheckboxes} bind:toggleRow/>
         <OPORow {plotData} bind:deltaOPO bind:calibValue bind:calibFile bind:OPOLocation bind:OPOfilesChecked bind:opofiles />
         <TheoryRow {plotData} bind:toggleRow bind:theoryLocation bind:sigma bind:scale bind:theoryfiles/>
-
         <div style="display:flex;">
             <CustomRadio on:change={replot} bind:selected={felix_normMethod} options={["Log", "Relative", "IntensityPerPhoton"]}/>
         </div>
@@ -438,11 +432,10 @@
 
                 <!-- Report -->
                 <ReportLayout bind:currentLocation={currentLocation} id={`${filetype}_report`} {includePlotsInReport} {includeTablesInReports} />
-
             </div>
 
         {/if}
-        
-    </div>
 
+    </div>
+    
 </Layout>
