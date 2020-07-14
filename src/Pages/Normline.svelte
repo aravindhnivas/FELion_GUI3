@@ -1,6 +1,6 @@
 <script>
     // IMPORTING Modules
-    import {felixIndex, felixPeakTable, felixOutputName, opoMode, dataTable, dataTable_avg, normMethodDatas, Ngauss_sigma, felixopoLocation, felixPlotAnnotations} from './normline/functions/svelteWritables';
+    import {felixIndex, felixPeakTable, felixOutputName, opoMode, dataTable, dataTable_avg, normMethodDatas, Ngauss_sigma, felixopoLocation, felixPlotAnnotations, expfittedLines, expfittedLinesCollectedData, fittedTraceCount, graphDiv} from './normline/functions/svelteWritables';
     import Textfield from '@smui/textfield'
     import Layout, {createToast} from "../components/Layout.svelte"
     import { fade } from 'svelte/transition'
@@ -25,7 +25,9 @@
     import TheoryRow from './normline/widgets/preprocessing/TheoryRow.svelte';
 
     import GetFileInfoTable from './normline/widgets/preprocessing/GetFileInfoTable.svelte';
+    
     import WriteFunctionContents from './normline/widgets/postprocessing/WriteFunctionContents.svelte';
+    import ExecuteFunctionContents from './normline/widgets/postprocessing/ExecuteFunctionContents.svelte';
     import {init_tour_normline} from './normline/initTour';
     import {NGauss_fit_func} from './normline/functions/NGauss_fit';
     import {find_peaks_func} from './normline/functions/find_peaks';
@@ -61,12 +63,12 @@
     let openShell = false;
 
     $: console.log("Open Shell: ", filetype, openShell)
+    let felix_normMethod = "Relative", NGauss_fit_args = {};
 
-    let felix_normMethod = "Relative", NGauss_fit_args = {}
     let graphPlotted = false, overwrite_expfit = false, writeFile = false
 
-    let line = [], plot_trace_added = 0, line_index_count = 0
-    $: console.log("Trace length: ", plot_trace_added)
+    // let plot_trace_added = 0
+    $: console.log("Trace length: ", $fittedTraceCount)
     let OPOfilesChecked = []
     $: plottedFiles = $opoMode ? OPOfilesChecked.map(file=>file.split(".")[0]) || [] : fileChecked.map(file=>file.split(".")[0]) || []
 
@@ -74,27 +76,27 @@
     $: output_namelists = ["averaged", ...plottedFiles, ...addedfiles.map(file=>path.basename(file)).map(file=>file.split(".")[0])]
     let writeFileName = ""
     
-    let annotation_color = "black"
-    let boxSelected_peakfinder = true
+    // let annotation_color = "black";
+
+    let boxSelected_peakfinder = false;
     let keepTable = true;
 
     //////// OPO Plot ///////////
 
     window.getID = () => Math.random().toString(32).substring(2)
 
-    let plotly_event_created_opo = false
 
     const replot = () => {
         if (graphPlotted) {
 
             let {data, layout} = $normMethodDatas[normMethod]
             Plotly.react("avgplot",data, layout, { editable: true })
-            line = $felixPlotAnnotations = lineData_list = [], plot_trace_added = 0
+            $expfittedLines = $felixPlotAnnotations = $expfittedLinesCollectedData = [], $fittedTraceCount = 0
         }
     }
 
     function plotData({e=null, filetype="felix", general=null, tkplot="run"}={}){
-        let expfit_args = [], double_fit_args = [], find_peaks_args = {}
+        let expfit_args = [], find_peaks_args = {}
 
         switch (filetype) {
 
@@ -163,7 +165,7 @@
                 break;
 
             case "get_err":
-                if (lineData_list.length<2) return createToast("Not sufficient lines collected!", "danger")
+                if ($expfittedLinesCollectedData.length<2) return createToast("Not sufficient lines collected!", "danger")
                 break;
 
             case "theory":
@@ -192,8 +194,8 @@
             opofile: {pyfile:"oposcan.py" , args:[...opofiles, tkplot, deltaOPO, calibValue, calibFile]},
             find_peaks: {pyfile:"fit_all.py" ,  args: [JSON.stringify(find_peaks_args)]},
             theory: {pyfile:"theory.py" , args:[...theoryfiles, normMethod, sigma, scale, currentLocation, tkplot]},
-            get_err: {pyfile:"weighted_error.py" , args:lineData_list},
-            double_peak: {pyfile:"double_gaussian.py" , args:double_fit_args},
+
+            get_err: {pyfile:"weighted_error.py" , args:$expfittedLinesCollectedData},
             NGauss_fit: {pyfile:"multiGauss.py" , args:[JSON.stringify(NGauss_fit_args)]},
             addfile: {pyfile:"addTrace.py" , args:[JSON.stringify(addedFile)]},
             get_details: {pyfile:"getfile_details.py", args:[JSON.stringify({files:$opoMode?opofiles : felixfiles, normMethod})]}
@@ -254,8 +256,7 @@
                     console.log(dataFromPython)
                     
                     if (filetype == "felix") {
-                        
-                        line = [], $felixPlotAnnotations = [], lineData_list = [], plot_trace_added = 0
+                        $expfittedLines = [], $felixPlotAnnotations = [], $expfittedLinesCollectedData = [], $fittedTraceCount = 0
                         show_theoryplot = false
 
                         if (!keepTable) {$dataTable = $dataTable_avg = []}
@@ -266,7 +267,7 @@
                         graphPlotted = true
                     } else if (filetype == "opofile") {
 
-                        plotly_event_created_opo = opofile_func({dataFromPython, plotly_event_created_opo})
+                        opofile_func({dataFromPython})
                         createToast("Graph Plotted", "success")
 
                         graphPlotted = true, $opoMode = true
@@ -279,7 +280,7 @@
 
                     } else if (filetype == "exp_fit") {
 
-                        [line, plot_trace_added, line_index_count, collectData, lineData_list] = exp_fit_func({dataFromPython, graphDiv, output_name:$felixOutputName, line, plot_trace_added, line_index_count, collectData, lineData_list})
+                        exp_fit_func({dataFromPython})
 
                         createToast("Line fitted with gaussian function", "success")
 
@@ -290,19 +291,18 @@
 
                     } else if (filetype == "find_peaks") {
 
-                        annotation_color = find_peaks_func({graphDiv, dataFromPython, annotation_color})
+                        find_peaks_func({dataFromPython})
                         console.log(`felixPeakTable:`, $felixPeakTable)
                         createToast("Peaks found", "success")
                     } else if (filetype == "NGauss_fit") {
 
-                        line_index_count = NGauss_fit_func({graphDiv, dataFromPython, output_name:$felixOutputName, line_index_count})
+                        NGauss_fit_func({dataFromPython})
                         console.log("Line fitted")
                         createToast(`Line fitted with ${dataFromPython["fitted_parameter"].length} gaussian function`, "success")
-                        plot_trace_added++
 
                     } else if (filetype == "addfile") {
                         addFileModal = false
-                        Plotly.addTraces(graphDiv, dataFromPython)
+                        Plotly.addTraces($graphDiv, dataFromPython)
                         extrafileAdded += addedfiles.length
                     } else if (filetype == "get_details") { get_details_func({dataFromPython}) }
 
@@ -313,70 +313,27 @@
             
         })
     }
-
-    const clearAllPeak = () => {
-
-
-        if (plot_trace_added === 0) {return createToast("No fitted lines found", "danger")}
-
-        console.log("Removing all found peak values")
-        
-        $felixPlotAnnotations = $felixIndex = line = lineData_list = []
-
-        Plotly.relayout(graphDiv, { annotations: [], shapes: [] })
-        
-        for (let i=0; i<plot_trace_added; i++) {Plotly.deleteTraces(graphDiv, [-1])}
-        
-        plot_trace_added = 0
-    }
-
-    const clearLastPeak = () => {
-        
-        if (plot_trace_added === 0) {return createToast("No fitted lines found", "danger")}
-
-        plotData({filetype:"general", general:{args:[$felixOutputName, $felixopoLocation], pyfile:"delete_fileLines.py"}})
-        $dataTable = _.dropRight($dataTable, 1)
-        line = _.dropRight(line, 2)
-        $felixPlotAnnotations = _.dropRight($felixPlotAnnotations, 1)
-        lineData_list = _.dropRight(lineData_list, 1)
-        Plotly.relayout(graphDiv, { annotations: $felixPlotAnnotations, shapes: line })
-
-        Plotly.deleteTraces(graphDiv, [-1])
-        console.log("Last fitted peak removed")
-        plot_trace_added--
-    }
     
-    let collectData = true, lineData_list = []
-
-    let toggleFindPeaksRow = false
     let peak_height = 1, peak_width = 3, peak_prominence = 0;
     
-    let style = "width:7em; height:3.5em; margin-right:0.5em";
     // OPO
+    
     let OPOLocation = localStorage["opoLocation"] || currentLocation
     let opofiles = []
-    
     $: normMethod = $opoMode ? "Log" : felix_normMethod
     $: $felixopoLocation = $opoMode ? OPOLocation : currentLocation
 
-    $: graphDiv = $opoMode ? "opoRelPlot" : "avgplot"
-    
-    
     let deltaOPO = 0.3, calibValue = 9394.356278462961.toFixed(4), calibFile = ""
-    
-    
     $: $opoMode ? createToast("OPO MODE") : createToast("FELIX MODE")
-    
-    
     $: $Ngauss_sigma = $opoMode ? 2 : 5
-    let modalActivate = false, addFileModal=false, addedFileCol="0, 1", addedFile={}, addedFileScale=1, addedfiles = [], extrafileAdded=0
+    let addFileModal=false, addedFileCol="0, 1", addedFile={}, addedFileScale=1, addedfiles = [], extrafileAdded=0
     
     $: console.log(`Extrafile added: ${extrafileAdded}`)
    
     function removeExtraFile() {
 
         for(let i=0; i<extrafileAdded; i++) {
-            try {Plotly.deleteTraces(graphDiv, [-1])}
+            try {Plotly.deleteTraces($graphDiv, [-1])}
 
             catch (err) {console.log("The plot is empty")}
         }
@@ -386,28 +343,6 @@
     let fullfiles = []
     $: $opoMode ? fullfiles = [...opofiles, ...addedfiles, path.resolve(currentLocation, "averaged.felix")] : fullfiles = [...felixfiles, ...addedfiles, path.resolve(currentLocation, "averaged.felix")]
 
-    function adjustPeak({closeMainModal=true}={}) {
-
-        $felixPeakTable = _.filter($felixPeakTable, (tb)=>tb.sig != 0);
-        
-        $felixPeakTable = _.sortBy($felixPeakTable, [(o)=>o["freq"]])
-
-        let temp_annotate = {xref:"x", y:"y", "showarrow":true,  "arrowhead":2, "ax":-25, "ay":-40, font:{color:annotation_color}, arrowcolor:annotation_color}
-        
-        $felixPlotAnnotations = $felixPeakTable.map((f)=>{
-            let _annotate = {x:f.freq, y:f.amp, text:`(${f.freq.toFixed(2)}, ${f.amp.toFixed(2)})`}
-            return {...temp_annotate, ..._annotate}
-        })
-
-        if(closeMainModal) {
-            modalActivate = false, createToast("Initial guess adjusted for full spectrum fitting")
-        }
-
-        Plotly.relayout(graphDiv, { annotations:$felixPlotAnnotations })
-    }
-    
-    let savePeakfilename = "peakTable"
-
     const init_tour = async () => {
         if (!toggleBrowser) {toggleBrowser = true; await sleep(600)} // Filebrowser toggling and its animation time to appear
         await tick() // For all the reactive components to render
@@ -415,8 +350,8 @@
 
     }
 
-
     const includePlotsInReport = [
+
         {id: "bplot", include:true, label:"Baseline"}, {id:"saPlot", include:false, label:"SA-Pow"}, 
         {id:"avgplot", include:false, label:"Normalised Spectrum"}, {id:"exp-theory-plot", include:false, label:"Exp-Theory plot"}, 
         {id:"opoplot", include:false, label:"OPO: Baseline"}, {id:"opoSA", include:false, label:"OPO: SA-pow"}, 
@@ -444,16 +379,12 @@
 
     onMount(()=>{  console.log("Normline mounted") })
 
-
-    function loadpeakTable(){
-        const loadedfile = loadfile({name:savePeakfilename})
-        $felixPeakTable = _.uniqBy([...loadedfile, ...$felixPeakTable], "freq")
-        adjustPeak()
-    }
+    $: console.log(`graphDiv: ${$graphDiv}`)
 
 </script>
 
 <style>
+
     .hide {display: none;}
     .active {display: block; }
     .felixPlot > div {margin-bottom: 1em;}
@@ -461,27 +392,22 @@
 </style>
 
 <!-- Modals -->
-<AdjustInitialGuess bind:active={modalActivate} on:save={adjustPeak}/>
 <AddFilesToPlot bind:active={addFileModal} bind:addedFileCol bind:addedFileScale bind:addedfiles bind:addedFile on:addfile="{(e)=>plotData({e:e.detail.event, filetype:"addfile"})}" />
 
 
 <!-- Layout -->
 <Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>
-
     <div class="buttonSlot" slot="buttonContainer">
 
         <InitFunctionRow {plotData} bind:delta bind:openShell {felixPlotCheckboxes} bind:toggleRow/>
         <OPORow {plotData} bind:deltaOPO bind:calibValue bind:calibFile bind:OPOLocation bind:OPOfilesChecked bind:opofiles />
         <TheoryRow {plotData} bind:toggleRow bind:theoryLocation bind:sigma bind:scale bind:theoryfiles/>
 
-
         <div style="display:flex;">
             <CustomRadio on:change={replot} bind:selected={felix_normMethod} options={["Log", "Relative", "IntensityPerPhoton"]}/>
         </div>
-        
     </div>
     
-
     <div class="plotSlot" slot="plotContainer">
 
         <!-- Get file info functions -->
@@ -500,61 +426,23 @@
     
         {#if graphPlotted}
             <div transition:fade>
+
                 <!-- Write function buttons -->
-
-
-                
-                <WriteFunctionContents on:addfile="{()=>{addFileModal=true}}" on:removefile={removeExtraFile} {output_namelists} bind:writeFileName bind:writeFile bind:overwrite_expfit bind:collectData />
-                
+                <WriteFunctionContents on:addfile="{()=>{addFileModal=true}}" on:removefile={removeExtraFile} {output_namelists} bind:writeFileName bind:writeFile bind:overwrite_expfit />
 
                 <!-- Execute function buttons -->
-                <div class="content">
-                    <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"exp_fit"})}">Exp Fit.</button>
-                    <button class="button is-link" on:click="{()=>toggleFindPeaksRow = !toggleFindPeaksRow}">Fit NGauss.</button>
-                    <button class="button is-warning" on:click={clearLastPeak}>Clear Last</button>
-                    <button class="button is-danger" on:click={clearAllPeak}>Clear All</button>
-                    <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"get_err"})}">Weighted Mean</button>
-                    <button class="button is-warning" on:click="{()=>{lineData_list = []; createToast("Line collection restted", "warning")}}">Reset</button>
-                
-                </div>
-
-                <!-- Fit peaks functions -->
-                <div class="content animated fadeIn hide" class:active={toggleFindPeaksRow}>
-
-                    <div style="margin:1em 0">
-                        <CustomSwitch style="margin: 0 1em;" bind:selected={boxSelected_peakfinder} label="BoxSelected"/>
-                        <Textfield type="number" {style} step="0.5" bind:value={peak_prominence} label="Prominance" />
-                        <Textfield type="number" {style} step="0.5" bind:value={peak_width} label="Width" />
-                        <Textfield type="number" {style} step="0.1" bind:value={peak_height} label="Height" />
-
-                        <Textfield style="width:9em" bind:value={$Ngauss_sigma} label="Sigma"/>
-                        <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"find_peaks"})}">Get Peaks</button>
-                    </div>
-                    
-                    <div style="display:flex; align-items:center">
-                        <Icon class="material-icons" on:click="{()=> modalActivate = true}">settings</Icon>
-                        <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"NGauss_fit"})}">Fit</button>
-                        <Textfield {style} bind:value={savePeakfilename} label="savefile"/>
-
-                        <button class="button is-link" on:click="{()=>savefile({file:$felixPeakTable, name:savePeakfilename})}">Save peaks</button>
-
-                        
-                        <button class="button is-link" on:click="{loadpeakTable}">Load peaks</button>
-                        <button class="button is-danger" on:click="{()=>{$felixPlotAnnotations=[]; $felixPeakTable=[];NGauss_fit_args={}; window.Plotly.relayout(graphDiv, { annotations: [] }); createToast("Cleared", "warning")}}">Clear</button>
-                    </div>
-
-                </div>
+                <ExecuteFunctionContents {plotData} bind:boxSelected_peakfinder bind:peak_height bind:peak_width bind:peak_prominence bind:NGauss_fit_args/>
 
                 <!-- Frequency table list -->
-                <FrequencyTable bind:dataTable_avg={$dataTable_avg} bind:dataTable={$dataTable} bind:keepTable bind:line_index_count bind:lineData_list/>
+                <FrequencyTable bind:keepTable/>
 
                 <!-- Report -->
-
                 <ReportLayout bind:currentLocation={currentLocation} id={`${filetype}_report`} {includePlotsInReport} {includeTablesInReports} />
 
             </div>
 
         {/if}
+        
     </div>
 
 </Layout>

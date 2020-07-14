@@ -1,12 +1,9 @@
 
 <script>
+    import {opoMode} from "../../functions/svelteWritables";
     import Textfield from '@smui/textfield';
     import CustomIconSwitch from '../../../../components/CustomIconSwitch.svelte';
-    import {opoMode} from "../../functions/svelteWritables";
     import FelixPlotting from '../../modals/FelixPlotting.svelte';
-    // import { createEventDispatcher } from 'svelte';
-
-    // const dispatch = createEventDispatcher();
     export let delta, openShell, felixPlotCheckboxes, toggleRow, plotData;
     let active=false;
 

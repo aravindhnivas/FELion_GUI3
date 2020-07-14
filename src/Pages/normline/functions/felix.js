@@ -1,17 +1,9 @@
 
-import {felixIndex, felixPeakTable, felixOutputName, opoMode, normMethodDatas, Ngauss_sigma, felixPlotAnnotations, plotlyEventCreatedFELIX} from './svelteWritables';
-import {get} from 'svelte/store';
+import {felixIndex, felixOutputName, opoMode, normMethodDatas, plotlyEventCreatedFELIX, get} from './svelteWritables';
 import {plot, subplot} from "../../../js/functions.js";
+import {plotlySelection, plotlyClick} from "./misc";
 
-let avgplot;
-window.addEventListener('DOMContentLoaded', (event) => {
-
-    avgplot = document.getElementById("avgplot");
-});
-
-
-export function felix_func({normMethod, dataFromPython, delta, plotly_event_created}={}){
-
+export function felix_func({normMethod, dataFromPython, delta}={}){
     opoMode.set(false), felixOutputName.set("averaged"), felixIndex.set([])
     
     let avgdataToPlot, signal_formula, ylabel;
@@ -104,8 +96,10 @@ export function felix_func({normMethod, dataFromPython, delta, plotly_event_crea
     );
 
     
-    if (!get(plotlyEventCreatedFELIX)) {
-        plotlySelection(), plotlyClick();
+    if(!get(plotlyEventCreatedFELIX)){
+        const plot = {graphDiv:"avgplot", mode:"felix"}
+        plotlySelection(plot), plotlyClick(plot);
+
         plotlyEventCreatedFELIX.set(true)
 
     }
@@ -113,67 +107,4 @@ export function felix_func({normMethod, dataFromPython, delta, plotly_event_crea
 
 }
 
-function plotlySelection() {
 
-    console.log("Creating plotly graph events")
-
-    avgplot.on("plotly_selected", (data) => {
-        if (!data) console.log("No data available to fit")
-
-        else {
-        
-            console.log(data)
-            opoMode.set(false)
-
-            const { range } = data
-            felixIndex.set(range.x)
-
-            const output_name = data.points[0].data.name.split(".")[0]
-            felixOutputName.set(output_name)
-
-            console.log(`Selected file: ${get(felixOutputName)}`)
-        }
-
-    })
-}
-
-
-function plotlyClick(){
-
-    avgplot.on('plotly_click', (data)=>{
-        console.log("Graph clicked: ", data)
-
-        if (data.event.ctrlKey) {
-
-            console.log("Data point length: ", data.points.length)
-            
-            for(let i=0; i<data.points.length; i++){
-
-                console.log("Running cycle: ", i)
-                let d = data.points[i]
-                let name = d.data.name
-                let output_name = get(felixOutputName);
-
-                if (name.includes(output_name)){
-
-                    console.log("Filename: ", output_name)
-
-                    let line_color = d.data.line.color
-                    console.log(name)
-                    console.log(d, d.x, d.y)
-
-                    let [freq, amp] = [parseFloat(d.x.toFixed(2)), parseFloat(d.y.toFixed(2))]
-                    const annotation = { text: `(${freq}, ${amp})`, x: freq, y: amp, font:{color:line_color}, arrowcolor:line_color }
-                    felixPlotAnnotations.update(annotate => _.uniqBy([...annotate, annotation], 'text'))
-                    Plotly.relayout("avgplot",{annotations: get(felixPlotAnnotations)})
-
-                    felixPeakTable.update(table => [...table, {freq, amp, sig:get(Ngauss_sigma), id:getID()}])
-                    felixPeakTable.update(table => _.uniqBy(table, 'freq'))
-                }
-            }
-
-            console.log("Running cycle ended")
-        } 
-    })
-
-}

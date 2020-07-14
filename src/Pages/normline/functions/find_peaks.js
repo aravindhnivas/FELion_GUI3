@@ -1,13 +1,15 @@
 
-import {felixPeakTable, Ngauss_sigma, felixPlotAnnotations} from "./svelteWritables";
-import { get} from 'svelte/store';
-export function find_peaks_func({graphDiv, dataFromPython, annotation_color}={}){
+import {felixPeakTable, Ngauss_sigma, felixPlotAnnotations, graphDiv, felixAnnotationColor, get} from "./svelteWritables";
 
-    const annotations = dataFromPython[2]["annotations"]    
+export function find_peaks_func({dataFromPython}={}){
+
+    const annotations = dataFromPython[2]["annotations"]
+
     felixPlotAnnotations.set(annotations)
 
-    annotation_color = annotations["arrowcolor"]
-    Plotly.relayout(graphDiv, { annotations  })
+    const color = annotations["arrowcolor"]
+    felixAnnotationColor.set(color)
+    Plotly.relayout(get(graphDiv), { annotations  })
 
     const [peakX, peakY] = [dataFromPython[0]["data"].x, dataFromPython[0]["data"].y]
     for (let index = 0; index < peakX.length; index++) {
@@ -18,5 +20,4 @@ export function find_peaks_func({graphDiv, dataFromPython, annotation_color}={})
     }
     console.log(`Found peaks:\nX: ${peakX}\nY: ${peakY}`)
     console.log("Peaks found")
-    return annotation_color
 }

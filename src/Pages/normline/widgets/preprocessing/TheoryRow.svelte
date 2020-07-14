@@ -2,6 +2,7 @@
     import Textfield from '@smui/textfield';
     import QuickBrowser from '../../../../components/QuickBrowser.svelte';
     import { fade } from 'svelte/transition';
+    
     export let theoryLocation, sigma, scale, theoryfiles,toggleRow, plotData;
     let showTheoryFiles = false, theoryfilesChecked = []
 

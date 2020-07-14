@@ -4,10 +4,10 @@
 </script>
 
 <script>
+    import { filedetails } from "../../functions/svelteWritables";
     import CustomIconSwitch from '../../../../components/CustomIconSwitch.svelte';
 
     import Table from '../../../../components/Table.svelte';
-    import { filedetails } from "../../functions/svelteWritables";
     import { createEventDispatcher } from 'svelte';
     import { writable } from 'svelte/store';
 

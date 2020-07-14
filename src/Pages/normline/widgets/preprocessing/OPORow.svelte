@@ -1,8 +1,8 @@
 <script>
+    import {opoMode} from "../../functions/svelteWritables";
     import Textfield from '@smui/textfield';
     import CustomSelect from '../../../../components/CustomSelect.svelte';
     import QuickBrowser from '../../../../components/QuickBrowser.svelte';
-    import {opoMode} from "../../functions/svelteWritables";
     import { fade } from 'svelte/transition';
     export let deltaOPO, calibValue, calibFile, OPOLocation, opofiles, OPOfilesChecked, plotData;
 
@@ -15,9 +15,17 @@
         opofiles = OPOfilesChecked.map(file=>path.resolve(OPOLocation, file))
     }
 
+    function plotOPO(e) {
+
+        plotData({e:e.detail.event, filetype:"opofile"});
+        localStorage["opoLocation"] = OPOLocation; 
+        showOPOFiles=false
+
+    }
+
 </script>
 
-<QuickBrowser bind:active={showOPOFiles} bind:currentLocation={OPOLocation} bind:fileChecked={OPOfilesChecked} filetype="ofelix" on:submit="{(e)=>{plotData({e:e.detail.event, filetype:"opofile"}); localStorage["opoLocation"] = OPOLocation}}"/>
+<QuickBrowser bind:active={showOPOFiles} bind:currentLocation={OPOLocation} bind:fileChecked={OPOfilesChecked} filetype="ofelix" on:submit="{(e)=>{plotOPO(e)}}"/>
 
 {#if $opoMode}
 

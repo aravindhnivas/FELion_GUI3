@@ -4,16 +4,25 @@
     import {Icon} from '@smui/icon-button';
     import {createToast} from "../../../components/Layout.svelte"
     import CustomCheckbox from '../../../components/CustomCheckbox.svelte';
-    export let dataTable_avg, dataTable, keepTable=true, line_index_count=0, lineData_list = []
+    import {dataTable_avg, dataTable, expfittedLinesCollectedData, avgfittedLineCount} from '../functions/svelteWritables';
+
+    export let keepTable=true;
 
     const dataTableHead = ["Filename", "Frequency (cm-1)", "Amplitude", "FWHM", "Sigma"]
 
     let show_dataTable_only_weighted_averaged = false, show_dataTable_only_averaged = false
-    $: dataTable_weighted_avg = dataTable_avg.filter(file=> file.name == "weighted_mean")
-    $: console.log("dataTable", dataTable)
-    $: console.log("dataTable_avg", dataTable_avg)
+    $: dataTable_weighted_avg = $dataTable_avg.filter(file=> file.name == "weighted_mean")
+    $: console.log("dataTable", $dataTable)
+    $: console.log("dataTable_avg", $dataTable_avg)
 
     $: console.log("dataTable_weighted_avg", dataTable_weighted_avg)
+
+    function clearTable() {
+        $dataTable=$dataTable_avg=[]; 
+        $avgfittedLineCount=0; 
+        $expfittedLinesCollectedData=[];
+        createToast("Table cleared", "warning")
+    }
 </script>
 
 
@@ -30,7 +39,7 @@
     <CustomCheckbox bind:selected={show_dataTable_only_weighted_averaged} label="Only weighted Averaged" />
     <CustomCheckbox bind:selected={keepTable} label="Keep table" />
 
-    <button class="button is-danger is-pulled-right" on:click="{()=>{dataTable=dataTable_avg=[]; line_index_count=0; lineData_list=[]; createToast("Table cleared", "warning")}}">Clear Table</button>
+    <button class="button is-danger is-pulled-right" on:click="{clearTable}">Clear Table</button>
 </div>
 
  <div class="dataTable" >
@@ -62,7 +71,7 @@
                     </Row>
                 {/each}
             {:else if show_dataTable_only_averaged && !show_dataTable_only_weighted_averaged}
-                {#each dataTable_avg as table, index (table.id)}
+                {#each $dataTable_avg as table, index (table.id)}
                     <Row>
                         <Cell style="width: 2em;">{index}</Cell>
                         <Cell>{table.name}</Cell>
@@ -72,13 +81,13 @@
                         <Cell>{table.sig}</Cell>
                         <Cell style="background: #f14668; cursor: pointer; width: 2em;">
                             <Icon id="{table.id}" class="material-icons" 
-                                on:click="{(e)=> {dataTable_avg = window._.filter(dataTable_avg, (tb)=>tb.id != e.target.id)}}">close</Icon>
+                                on:click="{(e)=> {$dataTable_avg = window._.filter($dataTable_avg, (tb)=>tb.id != e.target.id)}}">close</Icon>
                         </Cell>
                     </Row>
                 {/each}
             {:else}
 
-                {#each dataTable as table, index (table.id)}
+                {#each $dataTable as table, index (table.id)}
                     <Row style="background-color: {table.color};" class={table.className}>
                         <Cell style="width: 2em;">{index}</Cell>
                         <Cell>{table.name}</Cell>
@@ -88,7 +97,7 @@
                         <Cell>{table.sig}</Cell>
                         <Cell style="background: #f14668; cursor: pointer;">
                             <Icon id="{table.id}" class="material-icons" 
-                                on:click="{(e)=> {dataTable = window._.filter(dataTable, (tb)=>tb.id != e.target.id)}}">close</Icon>
+                                on:click="{(e)=> {$dataTable = window._.filter($dataTable, (tb)=>tb.id != e.target.id)}}">close</Icon>
                         </Cell>
                     </Row>
                 {/each}

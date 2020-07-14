@@ -1,42 +1,40 @@
 
-import {dataTable, dataTable_avg, felixPlotAnnotations} from './svelteWritables';
-import { get} from 'svelte/store';
-export function exp_fit_func({dataFromPython, graphDiv, output_name, line, plot_trace_added, line_index_count, collectData, lineData_list}={}){
+import {dataTable, dataTable_avg, felixPlotAnnotations, felixOutputName, graphDiv, expfittedLines, expfittedLinesCollectedData, collectData, avgfittedLineCount, fittedTraceCount, get} from './svelteWritables';
 
-    Plotly.addTraces(graphDiv, dataFromPython["fit"])
-    line = [...line, ...dataFromPython["line"]]
+export function exp_fit_func({dataFromPython}={}) {
 
-    Plotly.relayout(graphDiv, { shapes: line })
+    Plotly.addTraces(get(graphDiv), dataFromPython["fit"])
+    fittedTraceCount.update(n=>n+1)
 
+    expfittedLines.update(lines=>[...lines, ...dataFromPython["line"]])
+    Plotly.relayout(get(graphDiv), { shapes: get(expfittedLines) })
+    
     let annotations = dataFromPython["annotations"]
+    
     felixPlotAnnotations.update(annotate => [...annotate, annotations])
 
-    Plotly.relayout(graphDiv, { annotations: get(felixPlotAnnotations) })
+    Plotly.relayout(get(graphDiv), { annotations: get(felixPlotAnnotations) })
     
-    plot_trace_added++
-
     let [freq, amp, fwhm, sig] = dataFromPython["table"].split(", ")
     
     let color = "#fafafa";
-    
-    if (output_name === "averaged") {
 
+    const output_name = get(felixOutputName)
+    if (output_name === "averaged") {
         color = "#836ac05c"
-        dataTable_avg.update(table=>[...table, {name: `Line #${line_index_count}`, id:getID(), freq, amp, fwhm, sig, color}])
+        dataTable_avg.update(table=>[...table, {name: `Line #${get(avgfittedLineCount)}`, id:getID(), freq, amp, fwhm, sig, color}])
         dataTable_avg.update(table=>_.uniqBy(table, "freq"))
-        
-        line_index_count++
+        avgfittedLineCount.update(n=>n+1)
+
     } else {
-        
-        if (collectData) {
+        if (get(collectData)) {
             console.log("Collecting lines")
-            lineData_list = [...lineData_list, dataFromPython["for_weighted_error"]]
-            }
+            expfittedLinesCollectedData.update(data=>[...data, dataFromPython["for_weighted_error"]])
+        }
     }
     let newTable = {name: output_name, id:getID(), freq, amp, fwhm, sig, color}
     dataTable.update(table=>_.uniqBy([...table, newTable], "freq"))
-    console.log("Line fitted")
 
-    return [line, plot_trace_added, line_index_count, collectData, lineData_list]
+    console.log("Line fitted")
 
 }

@@ -1,12 +1,12 @@
 
 <script>
+    import {felixPeakTable} from '../functions/svelteWritables';
     import Ripple from '@smui/ripple';
     import { fade } from 'svelte/transition'
     import { createEventDispatcher } from 'svelte';
     import Modal from '../../../components/Modal.svelte';
     import {Icon} from '@smui/icon-button';
 
-    import {felixPeakTable} from '../functions/svelteWritables';
     
     export let active=false;
     const dispatch = createEventDispatcher();
