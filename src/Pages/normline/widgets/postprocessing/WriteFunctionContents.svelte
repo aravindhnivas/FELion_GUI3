@@ -11,7 +11,7 @@
     
 </script>
 
-<div class="content" >
+<div class="align" >
     <CustomSelect bind:picked={$felixOutputName} label="Output filename" options={output_namelists}/>
 
     <Textfield style="width:7em; margin:0 0.5em;" bind:value={writeFileName} label="writeFileName"/>

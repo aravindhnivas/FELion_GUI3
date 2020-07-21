@@ -1,10 +1,11 @@
 
 <script>
-    import {opoMode} from "../../functions/svelteWritables";
+    import {opoMode, toggleRow} from "../../functions/svelteWritables";
     import Textfield from '@smui/textfield';
     import CustomIconSwitch from '../../../../components/CustomIconSwitch.svelte';
     import FelixPlotting from '../../modals/FelixPlotting.svelte';
-    export let delta, openShell, felixPlotCheckboxes, toggleRow, plotData;
+    export let delta, openShell, felixPlotCheckboxes, plotData;
+
     let active=false;
 
 
@@ -36,13 +37,15 @@
         
             
             {label:"Only exp.", value:false, id:getID()},
-
             {label:"hide ax2 axis.", value:true, id:getID()},
         ],
-
         checkBoxes: felixPlotCheckboxes
+
+
     }
+
 </script>
+
 
 <FelixPlotting bind:active bind:felixPlotWidgets on:submit="{()=>console.log("FELIX plotting submitted", felixPlotWidgets) }"/>
 
@@ -53,6 +56,6 @@
     <Textfield style="width:7em" variant="outlined" type="number" step="0.5" bind:value={delta} label="Delta"/>
     <button class="button is-link" on:click="{()=>active = true}"> Open in Matplotlib</button>
     <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
-    <button class="button is-link" on:click="{()=>toggleRow = !toggleRow}">Add Theory</button>
+    <button class="button is-link" on:click="{()=>$toggleRow = !$toggleRow}">Add Theory</button>
     <button class="button is-link" on:click="{()=>{$opoMode = !$opoMode}}">OPO</button>
 </div>

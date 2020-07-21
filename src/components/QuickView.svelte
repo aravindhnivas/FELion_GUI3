@@ -2,7 +2,7 @@
   import {browse, createToast} from "./Layout.svelte";
   import { fade } from 'svelte/transition';
 
-  export let active = false, style = "", footer = true, currentLocation;
+  export let active = false, style = "", footer = true, currentLocation="", title="";
   
   function browse_folder() {
   
@@ -23,8 +23,11 @@
 </style>
 
 <div class="quickview" class:is-active={active} transition:fade>
+
   <header class="quickview-header">
+
     <button class="button is-link" on:click={browse_folder}>Browse</button>
+    <div class="subtitle" style="margin:0;">{title}</div>
     <span class="delete is-pulled-right" data-dismiss="quickview" on:click="{()=>active=false}"></span>
 
   </header>

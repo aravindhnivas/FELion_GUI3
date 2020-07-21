@@ -42,7 +42,7 @@
     const filetype="felix", id="Normline"
 
 
-    let fileChecked=[], delta=1, toggleRow=false, toggleBrowser = false;
+    let fileChecked=[], delta=1, toggleBrowser = false;
     
     let currentLocation = localStorage[`${filetype}_location`] || ""
     $: felixfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
@@ -309,13 +309,14 @@
     let peak_height = 1, peak_width = 3, peak_prominence = 0;
     
     // OPO
-    
     let OPOLocation = localStorage["opoLocation"] || currentLocation
+
+    
     let opofiles = []
     $: normMethod = $opoMode ? "Log" : felix_normMethod
     $: $felixopoLocation = $opoMode ? OPOLocation : currentLocation
-
     let deltaOPO = 0.3, calibValue = 9394.356278462961.toFixed(4), calibFile = ""
+
     $: $opoMode ? createToast("OPO MODE") : createToast("FELIX MODE")
     $: $Ngauss_sigma = $opoMode ? 2 : 5
     let addFileModal=false, addedFileCol="0, 1", addedFile={}, addedFileScale=1, addedfiles = [], extrafileAdded=0
@@ -379,10 +380,9 @@
 
 </script>
 
-<style>
 
+<style>
     .hide {display: none;}
-    .active {display: block; }
     .felixPlot > div {margin-bottom: 1em;}
     .plotSlot > div { width: calc(100% - 1em); margin-top: 1em; }
 </style>
@@ -394,9 +394,9 @@
 
 <Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>
     <div class="buttonSlot" slot="buttonContainer">
-        <InitFunctionRow {plotData} bind:delta bind:openShell {felixPlotCheckboxes} bind:toggleRow/>
+        <InitFunctionRow {plotData} bind:delta bind:openShell {felixPlotCheckboxes}/>
         <OPORow {plotData} bind:deltaOPO bind:calibValue bind:calibFile bind:OPOLocation bind:OPOfilesChecked bind:opofiles />
-        <TheoryRow {plotData} bind:toggleRow bind:theoryLocation bind:sigma bind:scale bind:theoryfiles/>
+        <TheoryRow {plotData} bind:theoryLocation bind:sigma bind:scale bind:theoryfiles/>
         <div style="display:flex;">
             <CustomRadio on:change={replot} bind:selected={felix_normMethod} options={["Log", "Relative", "IntensityPerPhoton"]}/>
         </div>

@@ -24,7 +24,7 @@
 
 </script>
 
-<div class=""> 
+<div class="align"> 
 
     <div style="display:flex;">
         <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"get_details"})}">Get details</button>

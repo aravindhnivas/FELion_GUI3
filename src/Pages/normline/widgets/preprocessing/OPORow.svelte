@@ -25,7 +25,7 @@
 
 </script>
 
-<QuickBrowser bind:active={showOPOFiles} bind:currentLocation={OPOLocation} bind:fileChecked={OPOfilesChecked} filetype="ofelix" on:submit="{(e)=>{plotOPO(e)}}"/>
+<QuickBrowser title="OPO files" bind:active={showOPOFiles} bind:currentLocation={OPOLocation} bind:fileChecked={OPOfilesChecked} filetype="ofelix" on:submit="{(e)=>{plotOPO(e)}}"/>
 
 {#if $opoMode}
 

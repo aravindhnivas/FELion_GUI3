@@ -78,7 +78,7 @@
 <AdjustInitialGuess bind:active={modalActivate} on:save={adjustPeak}/>
 
 
-<div class="content">
+<div class="align">
     <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"exp_fit"})}">Exp Fit.</button>
     <button class="button is-link" on:click="{()=>toggleFindPeaksRow = !toggleFindPeaksRow}">Fit NGauss.</button>
     <button class="button is-warning" on:click={clearLastPeak}>Clear Last</button>
@@ -92,9 +92,9 @@
 
 {#if toggleFindPeaksRow}
 
-    <div class="content" transition:fade>
+    <div class="align" transition:fade>
 
-        <div style="margin:1em 0">
+        <div class="align" style="margin:1em 0">
             <CustomSwitch style="margin: 0 1em;" bind:selected={boxSelected_peakfinder} label="BoxSelected"/>
             <Textfield type="number" {style} step="0.5" bind:value={peak_prominence} label="Prominance" />
             <Textfield type="number" {style} step="0.5" bind:value={peak_width} label="Width" />
@@ -104,7 +104,7 @@
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"find_peaks"})}">Get Peaks</button>
         </div>
         
-        <div style="display:flex; align-items:center">
+        <div class="align" >
             <Icon class="material-icons" on:click="{()=> modalActivate = true}">settings</Icon>
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"NGauss_fit"})}">Fit</button>
             <Textfield {style} bind:value={savePeakfilename} label="savefile"/>
