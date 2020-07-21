@@ -54,7 +54,7 @@
     // Theory file
     let sigma = 20, scale=1, show_theoryplot = false
     let theoryLocation = localStorage["theoryLocation"] || currentLocation
-    let theoryfiles;
+    let theoryfiles = [];
 
     ///////////////////////////////////////////////////////////////////////
     let openShell = false;
