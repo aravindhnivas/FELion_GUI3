@@ -4,7 +4,7 @@
 import {felixopoLocation, felixPeakTable, felixIndex, felixOutputName, felixPlotAnnotations, opoMode, Ngauss_sigma, get} from "./svelteWritables";
 import { Toast } from 'svelma'
 
-const createToast = (msg, type="primary") => Toast.create({ message: msg, position:"is-top", type:`is-${type}`})
+export const createToast = (msg, type="primary") => Toast.create({ message: msg, position:"is-top", type:`is-${type}`})
 
 export function savefile({file={}, name=""}={}) {
 

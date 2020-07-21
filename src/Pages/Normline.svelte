@@ -37,6 +37,8 @@
     
     import {savefile, loadfile} from './normline/functions/misc';
 
+    import {computePy_func} from './normline/functions/computePy';
+
     ///////////////////////////////////////////////////////////////////////
 
     const filetype="felix", id="Normline"
@@ -88,26 +90,57 @@
     }
 
     function plotData({e=null, filetype="felix", general=null, tkplot="run"}={}){
+        let pyfile="", args;
         
         let expfit_args = [], find_peaks_args = {}
+        if (filetype == "general") {
+            const {pyfile, args} = general
+            computePy_func({pyfile, args, general:true, openShell})
+            .catch(err=>{preModal.modalContent = err;  preModal.open = true})
+            return;
+        }
+
+        
         switch (filetype) {
 
             case "felix":
                 removeExtraFile()
                 graphPlotted = false, $felixOutputName = "averaged", $felixPlotAnnotations = [], $felixPeakTable = []
-                
                 if(felixfiles.length<1) return createToast("No files selected", "danger")
+                
+                pyfile="normline.py" , args=[...felixfiles, delta]
+
+                computePy_func({e, pyfile, args})
+                .then((dataFromPython)=>{
+                    $expfittedLines = [], $felixPlotAnnotations = [], $expfittedLinesCollectedData = [], $fittedTraceCount = 0
+                    show_theoryplot = false
+                    if (!keepTable) {$dataTable = $dataTable_avg = []}
+                    felix_func({normMethod, dataFromPython, delta})
+                    createToast("Graph Plotted", "success")
+                    graphPlotted = true
+                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
+
                 break;
             
             case "baseline":
                 if ($opoMode) {if(opofiles.length<1) return createToast("No OPO files selected", "danger")}
                 else {if(felixfiles.length<1) return createToast("No FELIX files selected", "danger")}
+                pyfile="baseline.py", args= $opoMode ? opofiles: felixfiles
+                computePy_func({pyfile, args, general:true, openShell})
+                .catch(err=>{preModal.modalContent = err;  preModal.open = true})
                 break;
 
             case "exp_fit":
                 if ($felixIndex.length<2) { return createToast("Range not found!!. Select a range using Box-select", "danger") }
 
                 expfit_args = { addedFileScale, addedFileCol, output_name:$felixOutputName, overwrite_expfit, writeFile, writeFileName, normMethod, index:$felixIndex, fullfiles, location:$felixopoLocation }
+
+                pyfile="exp_gauss_fit.py" , args=[JSON.stringify(expfit_args)]
+                computePy_func({e, pyfile, args})
+                .then((dataFromPython)=>{
+                    exp_fit_func({dataFromPython})
+                    createToast("Line fitted with gaussian function", "success")
+                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
 
                 break;
 
@@ -134,6 +167,14 @@
                 })
 
                 NGauss_fit_args = {...NGauss_fit_args, location:$felixopoLocation, addedFileScale, addedFileCol, overwrite_expfit, writeFile, writeFileName, output_name:$felixOutputName, fullfiles, normMethod}
+                pyfile="multiGauss.py" , args=[JSON.stringify(NGauss_fit_args)]
+
+                computePy_func({e, pyfile, args})
+                .then((dataFromPython)=>{
+                    NGauss_fit_func({dataFromPython})
+                    console.log("Line fitted")
+                    createToast(`Line fitted with ${dataFromPython["fitted_parameter"].length} gaussian function`, "success")
+                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
                 break;
             
             case "find_peaks":
@@ -147,172 +188,97 @@
 
                 find_peaks_args = { addedFileScale, addedFileCol, output_name:$felixOutputName, normMethod, peak_prominence, peak_width, peak_height, selectedIndex, fullfiles, location:$felixopoLocation }
 
+                pyfile="fit_all.py" ,  args=[JSON.stringify(find_peaks_args)]
+
+
+                computePy_func({e, pyfile, args})
+                .then((dataFromPython)=>{
+                    find_peaks_func({dataFromPython})
+                    console.log(`felixPeakTable:`, $felixPeakTable)
+                    createToast("Peaks found", "success")
+                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
+
                 break;
 
             case "opofile":
                 removeExtraFile()
-                if(opofiles.length<1) return createToast("No files selected", "danger")
 
+                if(opofiles.length<1) return createToast("No files selected", "danger")
                 $opoMode = true, $felixPlotAnnotations = []
+                
+                pyfile="oposcan.py" , args=[...opofiles, tkplot, deltaOPO, calibValue, calibFile]
+
+                computePy_func({e, pyfile, args})
+                .then((dataFromPython)=>{
+                    opofile_func({dataFromPython})
+                    createToast("Graph Plotted", "success")
+                    graphPlotted = true, $opoMode = true
+                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
                 break;
 
             case "get_err":
                 if ($expfittedLinesCollectedData.length<2) return createToast("Not sufficient lines collected!", "danger")
+                pyfile="weighted_error.py" , args=$expfittedLinesCollectedData
+                computePy_func({e, pyfile, args})
+                .then((dataFromPython)=>{
+                    get_err_func({dataFromPython})
+                    createToast("Weighted fit. done", "success")
+                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
                 break;
 
             case "theory":
                 if(theoryfiles.length < 1) return createToast("No files selected", "danger")
+
+                pyfile="theory.py" , args=[...theoryfiles, normMethod, sigma, scale, currentLocation, tkplot]
+                computePy_func({e, pyfile, args})
+                .then((dataFromPython)=>{
+                    theory_func({dataFromPython, normMethod})
+                    createToast("Graph Plotted", "success")
+                    show_theoryplot = true
+                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
                 break;
 
             case "addfile":
 
                 if(addedFile.files < 1) return createToast("No files selected", "danger")
                 addedFile["col"] = addedFileCol, addedFile["N"] = fileChecked.length + extrafileAdded
-                addedFile["scale"] = addedFileScale
 
+                addedFile["scale"] = addedFileScale
+                pyfile="addTrace.py" , args=[JSON.stringify(addedFile)]
+
+                computePy_func({e, pyfile, args})
+                .then((dataFromPython)=>{
+                    addFileModal = false
+                    Plotly.addTraces($graphDiv, dataFromPython)
+                    extrafileAdded += addedfiles.length
+                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
                 break;
 
             case "get_details":
                 if(felixfiles.length<1) return createToast("No files selected", "danger")
+                pyfile="getfile_details.py", args=[JSON.stringify({files:$opoMode?opofiles : felixfiles, normMethod})]
+
+                computePy_func({e, pyfile, args})
+                .then((dataFromPython)=>{ get_details_func({dataFromPython}) })
+
+                .catch(err=>{preModal.modalContent = err;  preModal.open = true})
+                
                 break;
+
             default:
                 break;
         }
 
-        const pyfileInfo = { general, 
-            baseline: {pyfile:"baseline.py", args: $opoMode ? opofiles: felixfiles},
-            felix: {pyfile:"normline.py" , args:[...felixfiles, delta]},
-            exp_fit: {pyfile:"exp_gauss_fit.py" , args:[JSON.stringify(expfit_args)]},
-            opofile: {pyfile:"oposcan.py" , args:[...opofiles, tkplot, deltaOPO, calibValue, calibFile]},
-            find_peaks: {pyfile:"fit_all.py" ,  args: [JSON.stringify(find_peaks_args)]},
-            theory: {pyfile:"theory.py" , args:[...theoryfiles, normMethod, sigma, scale, currentLocation, tkplot]},
-
-            get_err: {pyfile:"weighted_error.py" , args:$expfittedLinesCollectedData},
-            NGauss_fit: {pyfile:"multiGauss.py" , args:[JSON.stringify(NGauss_fit_args)]},
-            addfile: {pyfile:"addTrace.py" , args:[JSON.stringify(addedFile)]},
-            get_details: {pyfile:"getfile_details.py", args:[JSON.stringify({files:$opoMode?opofiles : felixfiles, normMethod})]}
-        }
-
-        const {pyfile, args} = pyfileInfo[filetype]
-        console.log(pyfileInfo[filetype])
-
-        if(tkplot === "plot") {filetype = "general"}
-        if (filetype == "general") {
-            
-            console.log("Sending general arguments: ", args)
-
-            let py = spawn(
-                localStorage["pythonpath"], [path.join(localStorage["pythonscript"], pyfile), args], 
-                { detached: true, stdio: 'pipe', shell: openShell }
-            )
-            py.on("close", ()=>{ console.log("Closed") })
-            py.stderr.on("data", (err)=>{ console.log(`Error Occured: ${err.toString()}`); preModal.modalContent = err.toString(); preModal.open = true })
-            py.stdout.on("data", (data)=>{ console.log(`Output from python: ${data.toString()}`)  })
-
-            py.unref()
-            py.ref()
-            return createToast("Process Started")
-        }
-
-        let py;
-        try {py = spawn( localStorage["pythonpath"], [path.resolve(localStorage["pythonscript"], pyfile), args] )}
-        catch (err) {
-            preModal.modalContent = "Error accessing python. Set python location properly in Settings"
-            preModal.open = true
-            return
-        }
-        
-        let target = e.target
-        target.classList.toggle("is-loading")
-
-        createToast("Process Started")
-        py.stdout.on("data", data => {
-
-            console.log("Ouput from python")
-            let dataReceived = data.toString("utf8")
-            console.log(dataReceived)
-        })
-        let error_occured_py = false;
-        py.stderr.on("data", err => {
-            preModal.modalContent = err
-            preModal.open = true
-            error_occured_py = true
-        });
-
-        py.on("close", () => {
-            if (!error_occured_py) {
-
-                try {
-                    let dataFromPython = fs.readFileSync(path.join(localStorage["pythonscript"], "data.json"))
-                    window.dataFromPython = dataFromPython = JSON.parse(dataFromPython.toString("utf-8"))
-                    console.log(dataFromPython)
-                    
-                    if (filetype == "felix") {
-                        $expfittedLines = [], $felixPlotAnnotations = [], $expfittedLinesCollectedData = [], $fittedTraceCount = 0
-                        show_theoryplot = false
-
-                        if (!keepTable) {$dataTable = $dataTable_avg = []}
-                        
-                        felix_func({normMethod, dataFromPython, delta})
-                        
-                        createToast("Graph Plotted", "success")
-                        graphPlotted = true
-                    } else if (filetype == "opofile") {
-
-                        opofile_func({dataFromPython})
-                        createToast("Graph Plotted", "success")
-
-                        graphPlotted = true, $opoMode = true
-
-                    } else if (filetype == "theory") {
-
-                        theory_func({dataFromPython, normMethod})
-                        createToast("Graph Plotted", "success")
-                        show_theoryplot = true
-
-                    } else if (filetype == "exp_fit") {
-
-                        exp_fit_func({dataFromPython})
-
-                        createToast("Line fitted with gaussian function", "success")
-
-                    } else if (filetype == "get_err") {
-
-                        get_err_func({dataFromPython})
-                        createToast("Weighted fit. done", "success")
-
-                    } else if (filetype == "find_peaks") {
-
-                        find_peaks_func({dataFromPython})
-                        console.log(`felixPeakTable:`, $felixPeakTable)
-                        createToast("Peaks found", "success")
-                    } else if (filetype == "NGauss_fit") {
-
-                        NGauss_fit_func({dataFromPython})
-                        console.log("Line fitted")
-                        createToast(`Line fitted with ${dataFromPython["fitted_parameter"].length} gaussian function`, "success")
-
-                    } else if (filetype == "addfile") {
-                        addFileModal = false
-                        Plotly.addTraces($graphDiv, dataFromPython)
-                        extrafileAdded += addedfiles.length
-                    } else if (filetype == "get_details") { get_details_func({dataFromPython}) }
-
-                } catch (err) { preModal.modalContent = err.stack; preModal.open = true }
-            }
-            console.log("Process closed")
-            target.classList.toggle("is-loading")
-            
-        })
     }
+
     
     let peak_height = 1, peak_width = 3, peak_prominence = 0;
     
     // OPO
     let OPOLocation = localStorage["opoLocation"] || currentLocation
-
-    
     let opofiles = []
+
+
     $: normMethod = $opoMode ? "Log" : felix_normMethod
     $: $felixopoLocation = $opoMode ? OPOLocation : currentLocation
     let deltaOPO = 0.3, calibValue = 9394.356278462961.toFixed(4), calibFile = ""
@@ -330,7 +296,6 @@
             try {Plotly.deleteTraces($graphDiv, [-1])}
             catch (err) {console.log("The plot is empty")}
         }
-
         
         extrafileAdded = 0, addedfiles = []
     }
@@ -435,7 +400,6 @@
             </div>
 
         {/if}
-
     </div>
     
 </Layout>
