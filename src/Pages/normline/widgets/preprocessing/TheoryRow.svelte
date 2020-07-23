@@ -17,7 +17,7 @@
 
     $: if(fs.existsSync(theoryLocation)) { theoryfiles =theoryfilesChecked.map(file=>path.resolve(theoryLocation, file)) }
 
-    function plotData({e=null, filetype="opofile", tkplot="run"}={}){
+    function plotData({e=null, tkplot="run"}={}){
         let pyfile="theory.py", args;
         
         if(theoryfiles.length < 1) return createToast("No files selected", "danger")

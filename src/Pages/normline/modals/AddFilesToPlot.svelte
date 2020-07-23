@@ -1,18 +1,40 @@
 
 <script>
+    import {graphDiv} from '../functions/svelteWritables';
     import Modal from '../../../components/Modal.svelte';
     import Textfield from '@smui/textfield';
-    import { createEventDispatcher } from 'svelte';
-    import {browse} from "../../../components/Layout.svelte"
-    export let active=false, addedFileCol=1, addedFileScale=1000, addedfiles=[], addedFile={};
+    import {browse} from "../../../components/Layout.svelte";
+    import {computePy_func} from '../functions/computePy';
 
-    const dispatch = createEventDispatcher();
+    import {createToast} from '../functions/misc';
+    
+    export let active=false, fileChecked=[], addedFileCol=1, addedFileScale=1000, addedfiles=[], addedFile={}, extrafileAdded=0, preModal;
+
 
     function addFileSelection() {
-        browse({dir:false}).then(result=>{ 
 
-            if (!result.canceled) {addedfiles = addedFile["files"] = result.filePaths}  
-        })
+        browse({dir:false}).then(result=>{  if (!result.canceled) {addedfiles = addedFile["files"] = result.filePaths} })
+        
+    }
+
+    function plotData({e=null}={}){
+
+        let pyfile="addTrace.py" , args;
+        
+        if(addedFile.files < 1) return createToast("No files selected", "danger")
+        addedFile["col"] = addedFileCol, addedFile["N"] = fileChecked.length + extrafileAdded
+
+        addedFile["scale"] = addedFileScale
+        args=[JSON.stringify(addedFile)]
+
+        computePy_func({e, pyfile, args})
+        .then((dataFromPython)=>{
+            addFileModal = false
+            Plotly.addTraces($graphDiv, dataFromPython)
+            extrafileAdded += addedfiles.length
+            createToast("Graph Plotted", "success")
+        }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
+
     }
 
 </script>
@@ -28,7 +50,7 @@
             <button on:click={addFileSelection} class="button is-link">Browse</button>
 
         </div>
-        <button slot="footerbtn" class="button is-link" on:click="{(e)=>dispatch('addfile', { event:e })}" >Add</button>
+        <button slot="footerbtn" class="button is-link" on:click="{(e)=>plotData({e:e})}" >Add</button>
     </Modal>
     
 {/if}

@@ -89,6 +89,15 @@
 
     function plotData({e=null, filetype="exp_fit"}={}){
 
+        if (filetype == "general") {
+            const {pyfile, args} = general
+
+            computePy_func({pyfile, args, general:true, openShell})
+            .catch(err=>{preModal.modalContent = err;  preModal.open = true})
+            return;
+        
+        }
+
         let pyfile="", args;
         let expfit_args = [], find_peaks_args = {}
         
@@ -215,15 +224,13 @@
             <Icon class="material-icons" on:click="{()=> modalActivate = true}">settings</Icon>
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"NGauss_fit"})}">Fit</button>
             <Textfield {style} bind:value={savePeakfilename} label="savefile"/>
-
             <button class="button is-link" on:click="{()=>savefile({file:$felixPeakTable, name:savePeakfilename})}">Save peaks</button>
-
             <button class="button is-link" on:click="{loadpeakTable}">Load peaks</button>
 
             <button class="button is-danger" on:click="{()=>{$felixPlotAnnotations=[]; $felixPeakTable=[];NGauss_fit_args={}; window.Plotly.relayout($graphDiv, { annotations: [] }); createToast("Cleared", "warning")}}">Clear</button>
+
         </div>
 
-
     </div>
-
+    
 {/if}

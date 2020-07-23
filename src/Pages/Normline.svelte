@@ -2,7 +2,7 @@
 <script>
 
     // IMPORTING Modules
-    import {felixIndex, felixPeakTable, felixOutputName, opoMode, dataTable, dataTable_avg, normMethodDatas, Ngauss_sigma, felixopoLocation, felixPlotAnnotations, expfittedLines, expfittedLinesCollectedData, fittedTraceCount, graphDiv} from './normline/functions/svelteWritables';
+    import {opoMode, normMethodDatas, Ngauss_sigma, felixopoLocation, felixPlotAnnotations, expfittedLines, expfittedLinesCollectedData, fittedTraceCount, graphDiv} from './normline/functions/svelteWritables';
     
     import Layout, {createToast} from "../components/Layout.svelte"
     
@@ -11,7 +11,6 @@
     import ReportLayout from '../components/ReportLayout.svelte';
     import {onMount, tick} from "svelte"
 
-    import AdjustInitialGuess from './normline/modals/AdjustInitialGuess.svelte';
     import AddFilesToPlot from './normline/modals/AddFilesToPlot.svelte';
     import FrequencyTable from './normline/components/FrequencyTable.svelte';
 
@@ -24,16 +23,12 @@
     import ExecuteFunctionContents from './normline/widgets/postprocessing/ExecuteFunctionContents.svelte';
     import {init_tour_normline} from './normline/initTour';
 
-    import {get_details_func} from './normline/functions/get_details';
     
-    import {savefile, loadfile} from './normline/functions/misc';
-    import {computePy_func} from './normline/functions/computePy';
-
     ///////////////////////////////////////////////////////////////////////
 
     const filetype="felix", id="Normline"
 
-    let fileChecked=[], delta=1, toggleBrowser = false;
+    let fileChecked=[], toggleBrowser = false;
     
     let currentLocation = localStorage[`${filetype}_location`] || ""
     $: felixfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
@@ -43,15 +38,14 @@
     ///////////////////////////////////////////////////////////////////////
 
     // Theory file
-    let sigma = 20, scale=1, show_theoryplot = false
+    let show_theoryplot = false
     let theoryLocation = localStorage["theoryLocation"] || currentLocation
-    let theoryfiles = [];
 
     ///////////////////////////////////////////////////////////////////////
     let openShell = false;
     $: console.log("Open Shell: ", filetype, openShell)
 
-    let felix_normMethod = "Relative", NGauss_fit_args = {};
+    let felix_normMethod = "Relative";
 
     let graphPlotted = false, overwrite_expfit = false, writeFile = false
     $: console.log("Trace length: ", $fittedTraceCount)
@@ -61,68 +55,20 @@
 
     $: output_namelists = ["averaged", ...plottedFiles, ...addedfiles.map(file=>path.basename(file)).map(file=>file.split(".")[0])]
     let writeFileName = ""
-    
-    let boxSelected_peakfinder = false;
     let keepTable = true;
 
     //////// OPO Plot ///////////
     window.getID = () => Math.random().toString(32).substring(2)
 
     const replot = () => {
+
         if (graphPlotted) {
 
             let {data, layout} = $normMethodDatas[normMethod]
             Plotly.react("avgplot",data, layout, { editable: true })
             $expfittedLines = $felixPlotAnnotations = $expfittedLinesCollectedData = [], $fittedTraceCount = 0
-        }
-
-    }
-
-    function plotData({e=null, filetype="felix", general=null, tkplot="run"}={}){
-        let pyfile="", args;
         
-        let expfit_args = [], find_peaks_args = {}
-        if (filetype == "general") {
-            const {pyfile, args} = general
-            computePy_func({pyfile, args, general:true, openShell})
-            .catch(err=>{preModal.modalContent = err;  preModal.open = true})
-            return;
         }
-
-        
-        switch (filetype) {
-
-            case "addfile":
-
-                if(addedFile.files < 1) return createToast("No files selected", "danger")
-                addedFile["col"] = addedFileCol, addedFile["N"] = fileChecked.length + extrafileAdded
-
-                addedFile["scale"] = addedFileScale
-                pyfile="addTrace.py" , args=[JSON.stringify(addedFile)]
-
-                computePy_func({e, pyfile, args})
-                .then((dataFromPython)=>{
-                    addFileModal = false
-                    Plotly.addTraces($graphDiv, dataFromPython)
-                    extrafileAdded += addedfiles.length
-                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
-                break;
-
-            case "get_details":
-                if(felixfiles.length<1) return createToast("No files selected", "danger")
-                pyfile="getfile_details.py", args=[JSON.stringify({files:$opoMode?opofiles : felixfiles, normMethod})]
-
-                computePy_func({e, pyfile, args})
-                .then((dataFromPython)=>{ get_details_func({dataFromPython}) })
-
-                .catch(err=>{preModal.modalContent = err;  preModal.open = true})
-                
-                break;
-
-            default:
-                break;
-        }
-
     }
 
     
@@ -144,11 +90,15 @@
     function removeExtraFile() {
         for(let i=0; i<extrafileAdded; i++) {
 
-            try {Plotly.deleteTraces($graphDiv, [-1])}
+            try {
+
+                Plotly.deleteTraces($graphDiv, [-1])
+                extrafileAdded = 0, addedfiles = []
+
+            }
             catch (err) {console.log("The plot is empty")}
         }
-        
-        extrafileAdded = 0, addedfiles = []
+        // createToast("Files removed", "warning")
     }
 
 
@@ -204,7 +154,7 @@
 </style>
 
 <!-- Modals -->
-<AddFilesToPlot bind:active={addFileModal} bind:addedFileCol bind:addedFileScale bind:addedfiles bind:addedFile on:addfile="{(e)=>plotData({e:e.detail.event, filetype:"addfile"})}" />
+<AddFilesToPlot {fileChecked} bind:extrafileAdded bind:active={addFileModal} bind:addedFileCol bind:addedFileScale bind:addedfiles bind:addedFile bind:preModal />
 
 <!-- Layout -->
 
@@ -221,7 +171,7 @@
     <div class="plotSlot" slot="plotContainer">
 
         <!-- Get file info functions -->
-        <GetFileInfoTable {plotData} />
+        <GetFileInfoTable {felixfiles} {normMethod} />
         
         <!-- Plots container -->
         <div class="felixPlot">

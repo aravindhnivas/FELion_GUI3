@@ -1,6 +1,5 @@
 
 import {filedetails} from "./svelteWritables";
-import {toggleFileDetailsTable} from "../widgets/preprocessing/GetFileInfoTable.svelte";
 
 export function get_details_func({dataFromPython}={}) {
     
@@ -10,6 +9,6 @@ export function get_details_func({dataFromPython}={}) {
         return {filename, min, max, trap, b0, res, precursor:"", ie:"", temp:"", id:getID()}
 
     })
+    filedetails.set(info)
     
-    filedetails.set(info), toggleFileDetailsTable.set(true)
 }

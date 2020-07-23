@@ -1,6 +1,6 @@
 
 <script>
-    import {opoMode, toggleRow, felixOutputName, felixPlotAnnotations, felixPeakTable, expfittedLines, expfittedLinesCollectedData, fittedTraceCount, dataTable, dataTable_avg} from "../../functions/svelteWritables";
+    import {opoMode, toggleRow, felixOutputName, felixPlotAnnotations, felixPeakTable, expfittedLines, expfittedLinesCollectedData, fittedTraceCount} from "../../functions/svelteWritables";
     import Textfield from '@smui/textfield';
     import CustomIconSwitch from '../../../../components/CustomIconSwitch.svelte';
     import FelixPlotting from '../../modals/FelixPlotting.svelte';
@@ -65,7 +65,6 @@
                 .then((dataFromPython)=>{
                     $expfittedLines = [], $felixPlotAnnotations = [], $expfittedLinesCollectedData = [], $fittedTraceCount = 0
                     show_theoryplot = false
-                    // if (!keepTable) {$dataTable = $dataTable_avg = []}
                     felix_func({normMethod, dataFromPython, delta})
                     createToast("Graph Plotted", "success")
                     graphPlotted = true
