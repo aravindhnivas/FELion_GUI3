@@ -51850,22 +51850,22 @@ function create_if_block$p(ctx) {
 			button4 = element("button");
 			button4.textContent = "Clear";
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$15, 219, 12, 9843);
+			add_location(button0, file$15, 219, 12, 9856);
 			attr_dev(div0, "class", "align");
 			set_style(div0, "margin", "1em 0");
-			add_location(div0, file$15, 212, 8, 9285);
+			add_location(div0, file$15, 212, 8, 9298);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$15, 224, 12, 10116);
+			add_location(button1, file$15, 224, 12, 10129);
 			attr_dev(button2, "class", "button is-link");
-			add_location(button2, file$15, 226, 12, 10311);
+			add_location(button2, file$15, 226, 12, 10324);
 			attr_dev(button3, "class", "button is-link");
-			add_location(button3, file$15, 227, 12, 10448);
+			add_location(button3, file$15, 227, 12, 10461);
 			attr_dev(button4, "class", "button is-danger");
-			add_location(button4, file$15, 229, 12, 10541);
+			add_location(button4, file$15, 229, 12, 10554);
 			attr_dev(div1, "class", "align");
-			add_location(div1, file$15, 222, 8, 9985);
+			add_location(div1, file$15, 222, 8, 9998);
 			attr_dev(div2, "class", "align");
-			add_location(div2, file$15, 210, 4, 9238);
+			add_location(div2, file$15, 210, 4, 9251);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div2, anchor);
@@ -52120,19 +52120,19 @@ function create_fragment$1c(ctx) {
 			if (if_block) if_block.c();
 			if_block_anchor = empty();
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$15, 197, 4, 8507);
+			add_location(button0, file$15, 197, 4, 8520);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$15, 198, 4, 8615);
+			add_location(button1, file$15, 198, 4, 8628);
 			attr_dev(button2, "class", "button is-warning");
-			add_location(button2, file$15, 199, 4, 8730);
+			add_location(button2, file$15, 199, 4, 8743);
 			attr_dev(button3, "class", "button is-danger");
-			add_location(button3, file$15, 200, 4, 8814);
+			add_location(button3, file$15, 200, 4, 8827);
 			attr_dev(button4, "class", "button is-link");
-			add_location(button4, file$15, 201, 4, 8895);
+			add_location(button4, file$15, 201, 4, 8908);
 			attr_dev(button5, "class", "button is-warning");
-			add_location(button5, file$15, 202, 4, 9008);
+			add_location(button5, file$15, 202, 4, 9021);
 			attr_dev(div, "class", "align");
-			add_location(div, file$15, 196, 0, 8482);
+			add_location(div, file$15, 196, 0, 8495);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -52318,7 +52318,7 @@ function instance$1c($$self, $$props, $$invalidate) {
 		plotData({
 			filetype: "general",
 			general: {
-				args: [$felixOutputName, $felixopoLocation],
+				args: [$felixOutputName, $felixopoLocation, normMethod],
 				pyfile: "delete_fileLines.py"
 			}
 		});
@@ -52378,11 +52378,11 @@ function instance$1c($$self, $$props, $$invalidate) {
 
 	
 
-	function plotData({ e = null, filetype = "exp_fit" } = {}) {
+	function plotData({ e = null, filetype = "exp_fit", general = {} } = {}) {
 		if (filetype == "general") {
 			const { pyfile, args } = general;
 
-			computePy_func({ pyfile, args, general: true, openShell }).catch(err => {
+			computePy_func({ pyfile, args, general: true }).catch(err => {
 				$$invalidate(18, preModal.modalContent = err, preModal);
 				$$invalidate(18, preModal.open = true, preModal);
 			});

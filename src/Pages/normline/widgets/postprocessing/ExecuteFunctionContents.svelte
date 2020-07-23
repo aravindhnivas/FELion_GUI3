@@ -49,7 +49,7 @@
         
         if ($fittedTraceCount === 0) {return createToast("No fitted lines found", "danger")}
 
-        plotData({filetype:"general", general:{args:[$felixOutputName, $felixopoLocation], pyfile:"delete_fileLines.py"}})
+        plotData({filetype:"general", general:{args:[$felixOutputName, $felixopoLocation, normMethod], pyfile:"delete_fileLines.py"}})
         $dataTable = _.dropRight($dataTable, 1)
         $expfittedLines = _.dropRight($expfittedLines, 2)
         $felixPlotAnnotations = _.dropRight($felixPlotAnnotations, 1)
@@ -87,12 +87,12 @@
         Plotly.relayout($graphDiv, { annotations:$felixPlotAnnotations })
     };
 
-    function plotData({e=null, filetype="exp_fit"}={}){
+    function plotData({e=null, filetype="exp_fit", general={}}={}){
 
         if (filetype == "general") {
             const {pyfile, args} = general
 
-            computePy_func({pyfile, args, general:true, openShell})
+            computePy_func({pyfile, args, general:true})
             .catch(err=>{preModal.modalContent = err;  preModal.open = true})
             return;
         

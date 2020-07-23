@@ -20,7 +20,8 @@ def delete_last_line(filename):
 if __name__ == "__main__":
     args = sys.argv[1:][0].split(",")
 
-    filename = f"{args[0]}.expfit"
+    normMethod = args[-1]
+    filename = f"{args[0]}_{normMethod}.expfit"
     
     location = pt(args[1])
     if location.name == "DATA": datfile_location = location.parent/"EXPORT"
