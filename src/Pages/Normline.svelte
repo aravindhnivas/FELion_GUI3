@@ -24,25 +24,14 @@
     import ExecuteFunctionContents from './normline/widgets/postprocessing/ExecuteFunctionContents.svelte';
     import {init_tour_normline} from './normline/initTour';
 
-    import {NGauss_fit_func} from './normline/functions/NGauss_fit';
-    
-    import {find_peaks_func} from './normline/functions/find_peaks';
-    import {felix_func} from './normline/functions/felix';
-    import {opofile_func} from './normline/functions/opofile';
-    import {theory_func} from './normline/functions/theory';
-    import {exp_fit_func} from './normline/functions/exp_fit';
-    import {get_err_func} from './normline/functions/get_err';
-
     import {get_details_func} from './normline/functions/get_details';
     
     import {savefile, loadfile} from './normline/functions/misc';
-
     import {computePy_func} from './normline/functions/computePy';
 
     ///////////////////////////////////////////////////////////////////////
 
     const filetype="felix", id="Normline"
-
 
     let fileChecked=[], delta=1, toggleBrowser = false;
     
@@ -103,141 +92,6 @@
         
         switch (filetype) {
 
-            case "felix":
-                removeExtraFile()
-                graphPlotted = false, $felixOutputName = "averaged", $felixPlotAnnotations = [], $felixPeakTable = []
-                if(felixfiles.length<1) return createToast("No files selected", "danger")
-                
-                pyfile="normline.py" , args=[...felixfiles, delta]
-
-                computePy_func({e, pyfile, args})
-                .then((dataFromPython)=>{
-                    $expfittedLines = [], $felixPlotAnnotations = [], $expfittedLinesCollectedData = [], $fittedTraceCount = 0
-                    show_theoryplot = false
-                    if (!keepTable) {$dataTable = $dataTable_avg = []}
-                    felix_func({normMethod, dataFromPython, delta})
-                    createToast("Graph Plotted", "success")
-                    graphPlotted = true
-                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
-
-                break;
-            
-            case "baseline":
-                if ($opoMode) {if(opofiles.length<1) return createToast("No OPO files selected", "danger")}
-                else {if(felixfiles.length<1) return createToast("No FELIX files selected", "danger")}
-                pyfile="baseline.py", args= $opoMode ? opofiles: felixfiles
-                computePy_func({pyfile, args, general:true, openShell})
-                .catch(err=>{preModal.modalContent = err;  preModal.open = true})
-                break;
-
-            case "exp_fit":
-                if ($felixIndex.length<2) { return createToast("Range not found!!. Select a range using Box-select", "danger") }
-
-                expfit_args = { addedFileScale, addedFileCol, output_name:$felixOutputName, overwrite_expfit, writeFile, writeFileName, normMethod, index:$felixIndex, fullfiles, location:$felixopoLocation }
-
-                pyfile="exp_gauss_fit.py" , args=[JSON.stringify(expfit_args)]
-                computePy_func({e, pyfile, args})
-                .then((dataFromPython)=>{
-                    exp_fit_func({dataFromPython})
-                    createToast("Line fitted with gaussian function", "success")
-                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
-
-                break;
-
-            case "NGauss_fit":
-
-                if (boxSelected_peakfinder) {
-                    if ($felixIndex.length<2) { return createToast("Box selection is turned ON so please select a wn. range to fit", "danger") }
-                    NGauss_fit_args.index = $felixIndex
-
-                } else {delete NGauss_fit_args.index}
-
-
-                
-                if ($felixPeakTable.length === 0) {return createToast("No arguments initialised yet.", "danger") }
-                
-                NGauss_fit_args.fitNGauss_arguments = {}
-                $felixPeakTable = _.sortBy($felixPeakTable, [(o)=>o["freq"]])
-
-                $felixPeakTable.forEach((f, index)=>{
-                    NGauss_fit_args.fitNGauss_arguments[`cen${index}`] = f.freq
-                    NGauss_fit_args.fitNGauss_arguments[`A${index}`] = f.amp
-
-                    NGauss_fit_args.fitNGauss_arguments[`sigma${index}`] = f.sig
-                })
-
-                NGauss_fit_args = {...NGauss_fit_args, location:$felixopoLocation, addedFileScale, addedFileCol, overwrite_expfit, writeFile, writeFileName, output_name:$felixOutputName, fullfiles, normMethod}
-                pyfile="multiGauss.py" , args=[JSON.stringify(NGauss_fit_args)]
-
-                computePy_func({e, pyfile, args})
-                .then((dataFromPython)=>{
-                    NGauss_fit_func({dataFromPython})
-                    console.log("Line fitted")
-                    createToast(`Line fitted with ${dataFromPython["fitted_parameter"].length} gaussian function`, "success")
-                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
-                break;
-            
-            case "find_peaks":
-                
-                $felixPeakTable = []
-
-                if ($felixIndex.length<2 && boxSelected_peakfinder) { return createToast("Box selection is turned ON so please select a wn. range to fit", "danger") }
-                
-                let selectedIndex = boxSelected_peakfinder ? $felixIndex : [0, 0]
-
-
-                find_peaks_args = { addedFileScale, addedFileCol, output_name:$felixOutputName, normMethod, peak_prominence, peak_width, peak_height, selectedIndex, fullfiles, location:$felixopoLocation }
-
-                pyfile="fit_all.py" ,  args=[JSON.stringify(find_peaks_args)]
-
-
-                computePy_func({e, pyfile, args})
-                .then((dataFromPython)=>{
-                    find_peaks_func({dataFromPython})
-                    console.log(`felixPeakTable:`, $felixPeakTable)
-                    createToast("Peaks found", "success")
-                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
-
-                break;
-
-            case "opofile":
-                removeExtraFile()
-
-                if(opofiles.length<1) return createToast("No files selected", "danger")
-                $opoMode = true, $felixPlotAnnotations = []
-                
-                pyfile="oposcan.py" , args=[...opofiles, tkplot, deltaOPO, calibValue, calibFile]
-
-                computePy_func({e, pyfile, args})
-                .then((dataFromPython)=>{
-                    opofile_func({dataFromPython})
-                    createToast("Graph Plotted", "success")
-                    graphPlotted = true, $opoMode = true
-                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
-                break;
-
-            case "get_err":
-                if ($expfittedLinesCollectedData.length<2) return createToast("Not sufficient lines collected!", "danger")
-                pyfile="weighted_error.py" , args=$expfittedLinesCollectedData
-                computePy_func({e, pyfile, args})
-                .then((dataFromPython)=>{
-                    get_err_func({dataFromPython})
-                    createToast("Weighted fit. done", "success")
-                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
-                break;
-
-            case "theory":
-                if(theoryfiles.length < 1) return createToast("No files selected", "danger")
-
-                pyfile="theory.py" , args=[...theoryfiles, normMethod, sigma, scale, currentLocation, tkplot]
-                computePy_func({e, pyfile, args})
-                .then((dataFromPython)=>{
-                    theory_func({dataFromPython, normMethod})
-                    createToast("Graph Plotted", "success")
-                    show_theoryplot = true
-                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
-                break;
-
             case "addfile":
 
                 if(addedFile.files < 1) return createToast("No files selected", "danger")
@@ -272,16 +126,14 @@
     }
 
     
-    let peak_height = 1, peak_width = 3, peak_prominence = 0;
-    
     // OPO
     let OPOLocation = localStorage["opoLocation"] || currentLocation
     let opofiles = []
 
-
+    
     $: normMethod = $opoMode ? "Log" : felix_normMethod
     $: $felixopoLocation = $opoMode ? OPOLocation : currentLocation
-    let deltaOPO = 0.3, calibValue = 9394.356278462961.toFixed(4), calibFile = ""
+    
 
     $: $opoMode ? createToast("OPO MODE") : createToast("FELIX MODE")
     $: $Ngauss_sigma = $opoMode ? 2 : 5
@@ -290,7 +142,6 @@
     $: console.log(`Extrafile added: ${extrafileAdded}`)
    
     function removeExtraFile() {
-
         for(let i=0; i<extrafileAdded; i++) {
 
             try {Plotly.deleteTraces($graphDiv, [-1])}
@@ -359,9 +210,9 @@
 
 <Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>
     <div class="buttonSlot" slot="buttonContainer">
-        <InitFunctionRow {plotData} bind:delta bind:openShell {felixPlotCheckboxes}/>
-        <OPORow {plotData} bind:deltaOPO bind:calibValue bind:calibFile bind:OPOLocation bind:OPOfilesChecked bind:opofiles />
-        <TheoryRow {plotData} bind:theoryLocation bind:sigma bind:scale bind:theoryfiles/>
+        <InitFunctionRow {removeExtraFile} {felixPlotCheckboxes} {opofiles} {felixfiles} {normMethod} bind:preModal bind:graphPlotted bind:show_theoryplot/>
+        <OPORow {removeExtraFile} bind:OPOLocation bind:OPOfilesChecked bind:opofiles bind:preModal bind:graphPlotted />
+        <TheoryRow bind:theoryLocation bind:show_theoryplot bind:preModal {normMethod} {currentLocation}/>
         <div style="display:flex;">
             <CustomRadio on:change={replot} bind:selected={felix_normMethod} options={["Log", "Relative", "IntensityPerPhoton"]}/>
         </div>
@@ -385,12 +236,11 @@
     
         {#if graphPlotted}
             <div transition:fade>
-
                 <!-- Write function buttons -->
                 <WriteFunctionContents on:addfile="{()=>{addFileModal=true}}" on:removefile={removeExtraFile} {output_namelists} bind:writeFileName bind:writeFile bind:overwrite_expfit />
 
                 <!-- Execute function buttons -->
-                <ExecuteFunctionContents {plotData} bind:boxSelected_peakfinder bind:peak_height bind:peak_width bind:peak_prominence bind:NGauss_fit_args/>
+                <ExecuteFunctionContents {addedFileScale} {addedFileCol} {normMethod} {writeFileName} {writeFile} {overwrite_expfit} {fullfiles} bind:preModal />
 
                 <!-- Frequency table list -->
                 <FrequencyTable bind:keepTable/>
@@ -398,8 +248,8 @@
                 <!-- Report -->
                 <ReportLayout bind:currentLocation={currentLocation} id={`${filetype}_report`} {includePlotsInReport} {includeTablesInReports} />
             </div>
-
+        
         {/if}
     </div>
-    
+
 </Layout>

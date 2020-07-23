@@ -1,18 +1,32 @@
 
-
 <script>
+
     import { fittedTraceCount, felixPlotAnnotations, felixIndex, expfittedLines, expfittedLinesCollectedData , graphDiv, dataTable, Ngauss_sigma, felixOutputName, felixPeakTable, felixopoLocation, felixAnnotationColor} from "../../functions/svelteWritables";
+
     import Textfield from '@smui/textfield';
     import CustomSwitch from '../../../../components/CustomSwitch.svelte';
+
     import {Icon} from '@smui/icon-button';
 
     import AdjustInitialGuess from "../../modals/AdjustInitialGuess.svelte";
     import {savefile, loadfile} from "../../functions/misc";
-    import {createToast} from "../../../../components/Layout.svelte";
+    
     import { fade } from 'svelte/transition';
     
-    export let plotData, boxSelected_peakfinder=false, peak_height, peak_width, peak_prominence, NGauss_fit_args;
+    import {computePy_func} from '../../functions/computePy';
 
+    import {NGauss_fit_func} from '../../functions/NGauss_fit';
+    
+    import {find_peaks_func} from '../../functions/find_peaks';
+    import {exp_fit_func} from '../../functions/exp_fit';
+    import {get_err_func} from '../../functions/get_err';
+    import {createToast} from '../../functions/misc';
+    
+    export let addedFileScale, addedFileCol, normMethod, writeFileName, writeFile, overwrite_expfit, fullfiles, preModal;
+    
+    let boxSelected_peakfinder=false, NGauss_fit_args={}
+
+    let peak_height = 1, peak_width = 3, peak_prominence = 0;
     let toggleFindPeaksRow = false, savePeakfilename = "peakTable", modalActivate=false;
 
     const style = "width:7em; height:3.5em; margin-right:0.5em";
@@ -72,6 +86,99 @@
         }
         Plotly.relayout($graphDiv, { annotations:$felixPlotAnnotations })
     };
+
+    function plotData({e=null, filetype="exp_fit"}={}){
+
+        let pyfile="", args;
+        let expfit_args = [], find_peaks_args = {}
+        
+        switch (filetype) {
+
+            case "exp_fit":
+                if ($felixIndex.length<2) { return createToast("Range not found!!. Select a range using Box-select", "danger") }
+
+                expfit_args = { addedFileScale, addedFileCol, output_name:$felixOutputName, overwrite_expfit, writeFile, writeFileName, normMethod, index:$felixIndex, fullfiles, location:$felixopoLocation }
+
+                pyfile="exp_gauss_fit.py" , args=[JSON.stringify(expfit_args)]
+                computePy_func({e, pyfile, args})
+                .then((dataFromPython)=>{
+                    exp_fit_func({dataFromPython})
+                    createToast("Line fitted with gaussian function", "success")
+                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
+
+                break;
+
+            case "NGauss_fit":
+
+                if (boxSelected_peakfinder) {
+                    if ($felixIndex.length<2) { return createToast("Box selection is turned ON so please select a wn. range to fit", "danger") }
+                    NGauss_fit_args.index = $felixIndex
+
+                } else {delete NGauss_fit_args.index}
+
+
+                
+                if ($felixPeakTable.length === 0) {return createToast("No arguments initialised yet.", "danger") }
+                
+                NGauss_fit_args.fitNGauss_arguments = {}
+                $felixPeakTable = _.sortBy($felixPeakTable, [(o)=>o["freq"]])
+
+                $felixPeakTable.forEach((f, index)=>{
+                    NGauss_fit_args.fitNGauss_arguments[`cen${index}`] = f.freq
+                    NGauss_fit_args.fitNGauss_arguments[`A${index}`] = f.amp
+
+                    NGauss_fit_args.fitNGauss_arguments[`sigma${index}`] = f.sig
+                })
+
+                NGauss_fit_args = {...NGauss_fit_args, location:$felixopoLocation, addedFileScale, addedFileCol, overwrite_expfit, writeFile, writeFileName, output_name:$felixOutputName, fullfiles, normMethod}
+                pyfile="multiGauss.py" , args=[JSON.stringify(NGauss_fit_args)]
+
+                computePy_func({e, pyfile, args})
+                .then((dataFromPython)=>{
+                    NGauss_fit_func({dataFromPython})
+                    console.log("Line fitted")
+                    createToast(`Line fitted with ${dataFromPython["fitted_parameter"].length} gaussian function`, "success")
+                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
+                break;
+            
+            case "find_peaks":
+                
+                $felixPeakTable = []
+
+                if ($felixIndex.length<2 && boxSelected_peakfinder) { return createToast("Box selection is turned ON so please select a wn. range to fit", "danger") }
+                
+                let selectedIndex = boxSelected_peakfinder ? $felixIndex : [0, 0]
+                find_peaks_args = { addedFileScale, addedFileCol, output_name:$felixOutputName, normMethod, peak_prominence, peak_width, peak_height, selectedIndex, fullfiles, location:$felixopoLocation }
+
+
+
+                pyfile="fit_all.py" ,  args=[JSON.stringify(find_peaks_args)]
+
+                computePy_func({e, pyfile, args})
+                .then((dataFromPython)=>{
+                    find_peaks_func({dataFromPython})
+                    console.log(`felixPeakTable:`, $felixPeakTable)
+                    createToast("Peaks found", "success")
+                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
+
+                break;
+
+            case "get_err":
+                if ($expfittedLinesCollectedData.length<2) return createToast("Not sufficient lines collected!", "danger")
+                pyfile="weighted_error.py" , args=$expfittedLinesCollectedData
+                computePy_func({e, pyfile, args})
+                .then((dataFromPython)=>{
+                    get_err_func({dataFromPython})
+                    createToast("Weighted fit. done", "success")
+                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
+                break;
+
+         
+            default:
+                break;
+        }
+
+    }
 
 </script>
 
