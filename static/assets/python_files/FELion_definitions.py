@@ -59,25 +59,32 @@ def var_find(filename, var=None, get_defaults=True):
     else: return var
 
 def read_dat_file(filename, norm_method):
+
     read_data = np.genfromtxt(filename).T
+    
     xs = read_data[0]
 
+    
     if norm_method == "Log": ys = read_data[1]
     elif norm_method == "Relative": ys = read_data[2]
     else: ys = read_data[3]
+    
     return xs, ys
 
 def sendData(dataToSend):
-
     with open(pt(__file__).parent / "data.json", 'w+') as f:
+
         data = json.dumps(dataToSend, sort_keys=True, indent=4, separators=(',', ': '))
         f.write(data)
 
+
 def convert_intesities(felixlocation, output_filename, wn, inten, norm_method):
+
     if pt(f"{felixlocation}/{output_filename}.felix").exists(): felixfile = felixlocation / f"{output_filename}.felix"
     else: felixfile = felixlocation / f"{output_filename}.cfelix"
     
     powerfile = felixlocation / f"{output_filename}.pow"
+
     with open(powerfile) as f:
         for line in f:
             if line[0] == "#":
@@ -93,6 +100,7 @@ def convert_intesities(felixlocation, output_filename, wn, inten, norm_method):
 
     nshots = int((trap/1000) * felix_hz)
     total_power = power_measured*nshots
+
     if norm_method == "Relative": ratio = -((inten/100)-1)
     elif norm_method == "Log": ratio = np.e**(-(inten/1000)*total_power)
     else:
@@ -103,25 +111,26 @@ def convert_intesities(felixlocation, output_filename, wn, inten, norm_method):
     log_hv_intensity = (wn * log_intensity) / 1e3
     relative_depletion =(1-ratio)*100
 
-    return [relative_depletion.nominal_value, relative_depletion.std_dev],      [log_intensity.nominal_value, log_intensity.std_dev], [log_hv_intensity.nominal_value, log_hv_intensity.std_dev]
+    return [relative_depletion.nominal_value, relative_depletion.std_dev], [log_intensity.nominal_value, log_intensity.std_dev], [log_hv_intensity.nominal_value, log_hv_intensity.std_dev]
 
 
 def profile_func(func):
-    def profiled_func(*args, **kwargs):
 
+    def profiled_func(*args, **kwargs):
         profiler = cProfile.Profile()
-        
         try:
             profiler.enable()
         
             result = func(*args, **kwargs)
         
             profiler.disable()
+
             return result
         finally:
             profiler.print_stats()
             s = io.StringIO()
             sortby = SortKey.CUMULATIVE
+
 
             ps = pstats.Stats(profiler, stream=s).sort_stats(sortby)
             ps.print_stats()
@@ -130,10 +139,10 @@ def profile_func(func):
             
             frm = inspect.stack()[1]
             mod = inspect.getmodule(frm[0])
-
-
             filename = pt(mod.__file__)
+
             filelocation = filename.parent
+
             with open(filelocation/f"{filename.stem}.prof", "w+") as f: f.write(s.getvalue())
     return profiled_func
 
@@ -152,30 +161,28 @@ try:
                 return func(*args, **kwargs)
 
             finally:
-
                 with stdoutIO() as result:
-
                     profiler.print_stats()
-                    output = result.getvalue()
 
+                    output = result.getvalue()
 
                     # Save profile 
                     frm = inspect.stack()[1]
                     mod = inspect.getmodule(frm[0])
                     filename = pt(mod.__file__)
-
                     filelocation = filename.parent
                     with open(filelocation/f"{filename.stem}_{func.__name__}.lprof", "w+") as f: f.write(output)
+
         return profiled_line
 
 except ImportError:
+
     def profile_line(func):
         "Helpful if you accidentally leave in production!"
         def nothing(*args, **kwargs):
-
             return func(*args, **kwargs)
-        return nothing
 
+        return nothing
 
 @contextlib.contextmanager
 def stdoutIO(stdout=None):
@@ -183,5 +190,7 @@ def stdoutIO(stdout=None):
     if stdout is None:
         stdout = io.StringIO()
     sys.stdout = stdout
+
     yield stdout
+
     sys.stdout = old
