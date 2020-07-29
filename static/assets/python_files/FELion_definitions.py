@@ -118,9 +118,7 @@ def profile_func(func):
         
             profiler.disable()
             return result
-
         finally:
-
             profiler.print_stats()
             s = io.StringIO()
             sortby = SortKey.CUMULATIVE
@@ -130,32 +128,33 @@ def profile_func(func):
 
             # Save profile 
             
-
-
             frm = inspect.stack()[1]
             mod = inspect.getmodule(frm[0])
+
+
             filename = pt(mod.__file__)
             filelocation = filename.parent
-
             with open(filelocation/f"{filename.stem}.prof", "w+") as f: f.write(s.getvalue())
-
     return profiled_func
 
 try:
     from line_profiler import LineProfiler
     print("LineProfiler imported")
-    def profile_line(func):
-        def profiled_line(*args, **kwargs):
 
+    def profile_line(func):
+    
+        def profiled_line(*args, **kwargs):
             try:
+
                 profiler = LineProfiler()
                 profiler.add_function(func)
                 profiler.enable_by_count()
                 return func(*args, **kwargs)
+
             finally:
 
-
                 with stdoutIO() as result:
+
                     profiler.print_stats()
                     output = result.getvalue()
 
@@ -163,19 +162,18 @@ try:
                     # Save profile 
                     frm = inspect.stack()[1]
                     mod = inspect.getmodule(frm[0])
-
                     filename = pt(mod.__file__)
+
                     filelocation = filename.parent
                     with open(filelocation/f"{filename.stem}_{func.__name__}.lprof", "w+") as f: f.write(output)
-
         return profiled_line
 
 except ImportError:
-    def profile_line():
+    def profile_line(func):
         "Helpful if you accidentally leave in production!"
         def nothing(*args, **kwargs):
-            return func(*args, **kwargs)
 
+            return func(*args, **kwargs)
         return nothing
 
 
