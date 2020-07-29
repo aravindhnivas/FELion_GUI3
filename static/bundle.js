@@ -37708,35 +37708,29 @@ function create_if_block$f(ctx) {
 	let t3;
 	let t4;
 	let div3;
-	let hr0;
-	let t5;
-	let h1;
-	let t7;
-	let hr1;
-	let t8;
 	let div2;
 	let each_blocks_1 = [];
 	let each1_lookup = new Map();
-	let t9;
+	let t5;
 	let textfield1;
 	let updating_value_1;
-	let t10;
+	let t6;
 	let textfield2;
 	let updating_value_2;
-	let t11;
+	let t7;
 	let helpertext;
-	let t12;
+	let t8;
 	let div4;
 	let button1;
 	let Ripple_action;
-	let t14;
+	let t10;
 	let button2;
 	let Ripple_action_1;
-	let t16;
+	let t12;
 	let button3;
 	let Ripple_action_2;
-	let t18;
-	let t19;
+	let t14;
+	let t15;
 	let select;
 	let updating_value_3;
 	let current;
@@ -37876,75 +37870,62 @@ function create_if_block$f(ctx) {
 			if (if_block) if_block.c();
 			t4 = space();
 			div3 = element("div");
-			hr0 = element("hr");
-			t5 = space();
-			h1 = element("h1");
-			h1.textContent = "Include plots";
-			t7 = space();
-			hr1 = element("hr");
-			t8 = space();
 			div2 = element("div");
 
 			for (let i = 0; i < each_blocks_1.length; i += 1) {
 				each_blocks_1[i].c();
 			}
 
-			t9 = space();
+			t5 = space();
 			create_component(textfield1.$$.fragment);
-			t10 = space();
+			t6 = space();
 			create_component(textfield2.$$.fragment);
-			t11 = space();
+			t7 = space();
 			create_component(helpertext.$$.fragment);
-			t12 = space();
+			t8 = space();
 			div4 = element("div");
 			button1 = element("button");
 			button1.textContent = "Add to Report";
-			t14 = space();
+			t10 = space();
 			button2 = element("button");
 			button2.textContent = "Show Report";
-			t16 = space();
+			t12 = space();
 			button3 = element("button");
 			button3.textContent = "EXPORT to PDF";
-			t18 = space();
+			t14 = space();
 
 			for (let i = 0; i < 2; i += 1) {
 				each_blocks[i].c();
 			}
 
-			t19 = space();
+			t15 = space();
 			create_component(select.$$.fragment);
-			attr_dev(button0, "class", "button is-pulled-right is-warning svelte-1y7nluz");
-			add_location(button0, file$O, 259, 8, 10192);
+			attr_dev(button0, "class", "button is-pulled-right is-warning svelte-1u7h8ij");
+			add_location(button0, file$O, 259, 8, 10183);
 			set_style(div0, "margin-bottom", "1em");
-			attr_dev(div0, "class", "svelte-1y7nluz");
-			add_location(div0, file$O, 257, 4, 10026);
+			attr_dev(div0, "class", "svelte-1u7h8ij");
+			add_location(div0, file$O, 257, 4, 10017);
 			attr_dev(div1, "class", "");
-			add_location(div1, file$O, 263, 8, 10440);
-			attr_dev(hr0, "class", "svelte-1y7nluz");
-			add_location(hr0, file$O, 288, 12, 11331);
-			attr_dev(h1, "class", "subtitle svelte-1y7nluz");
-			add_location(h1, file$O, 289, 16, 11353);
-			attr_dev(hr1, "class", "svelte-1y7nluz");
-			add_location(hr1, file$O, 290, 12, 11406);
-			attr_dev(div2, "class", " svelte-1y7nluz");
-			add_location(div2, file$O, 291, 12, 11424);
-			attr_dev(div3, "class", "addToReport  svelte-1y7nluz");
+			add_location(div1, file$O, 263, 8, 10431);
+			attr_dev(div2, "class", " svelte-1u7h8ij");
+			add_location(div2, file$O, 292, 12, 11435);
+			attr_dev(div3, "class", "addToReport  svelte-1u7h8ij");
 			add_location(div3, file$O, 287, 8, 11291);
-			attr_dev(button1, "class", "button is-link svelte-1y7nluz");
+			attr_dev(button1, "class", "button is-link svelte-1u7h8ij");
 			attr_dev(button1, "tabindex", "0");
-			add_location(button1, file$O, 307, 12, 12242);
-			attr_dev(button2, "class", "button is-link svelte-1y7nluz");
+			add_location(button1, file$O, 308, 12, 12253);
+			attr_dev(button2, "class", "button is-link svelte-1u7h8ij");
 			attr_dev(button2, "tabindex", "0");
-			add_location(button2, file$O, 308, 12, 12383);
-			attr_dev(button3, "class", "button is-link svelte-1y7nluz");
+			add_location(button2, file$O, 309, 12, 12394);
+			attr_dev(button3, "class", "button is-link svelte-1u7h8ij");
 			attr_dev(button3, "tabindex", "0");
-			add_location(button3, file$O, 309, 12, 12523);
-			attr_dev(div4, "class", "align svelte-1y7nluz");
+			add_location(button3, file$O, 310, 12, 12534);
+			attr_dev(div4, "class", "align svelte-1u7h8ij");
 			set_style(div4, "margin-top", "1em");
-			add_location(div4, file$O, 305, 8, 12175);
-			attr_dev(div5, "class", "align report svelte-1y7nluz");
+			add_location(div4, file$O, 306, 8, 12186);
+			attr_dev(div5, "class", "align report svelte-1u7h8ij");
 			attr_dev(div5, "id", /*id*/ ctx[2]);
-			add_location(div5, file$O, 262, 4, 10398);
+			add_location(div5, file$O, 262, 4, 10389);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -37963,38 +37944,32 @@ function create_if_block$f(ctx) {
 			if (if_block) if_block.m(div5, null);
 			append_dev(div5, t4);
 			append_dev(div5, div3);
-			append_dev(div3, hr0);
-			append_dev(div3, t5);
-			append_dev(div3, h1);
-			append_dev(div3, t7);
-			append_dev(div3, hr1);
-			append_dev(div3, t8);
 			append_dev(div3, div2);
 
 			for (let i = 0; i < each_blocks_1.length; i += 1) {
 				each_blocks_1[i].m(div2, null);
 			}
 
-			append_dev(div5, t9);
+			append_dev(div5, t5);
 			mount_component(textfield1, div5, null);
-			append_dev(div5, t10);
+			append_dev(div5, t6);
 			mount_component(textfield2, div5, null);
-			append_dev(div5, t11);
+			append_dev(div5, t7);
 			mount_component(helpertext, div5, null);
-			append_dev(div5, t12);
+			append_dev(div5, t8);
 			append_dev(div5, div4);
 			append_dev(div4, button1);
-			append_dev(div4, t14);
+			append_dev(div4, t10);
 			append_dev(div4, button2);
-			append_dev(div4, t16);
+			append_dev(div4, t12);
 			append_dev(div4, button3);
-			append_dev(div4, t18);
+			append_dev(div4, t14);
 
 			for (let i = 0; i < 2; i += 1) {
 				each_blocks[i].m(div4, null);
 			}
 
-			append_dev(div4, t19);
+			append_dev(div4, t15);
 			mount_component(select, div4, null);
 			current = true;
 
@@ -38127,7 +38102,7 @@ function create_if_block$f(ctx) {
 						each_blocks[i] = create_each_block_1(child_ctx);
 						each_blocks[i].c();
 						transition_in(each_blocks[i], 1);
-						each_blocks[i].m(div4, t19);
+						each_blocks[i].m(div4, t15);
 					}
 				}
 
@@ -38254,7 +38229,7 @@ function create_label_slot_1(ctx) {
 			t = text(t_value);
 			attr_dev(span, "slot", "label");
 			set_style(span, "color", /*method*/ ctx[37].color);
-			add_location(span, file$O, 268, 20, 10656);
+			add_location(span, file$O, 268, 20, 10647);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -38409,12 +38384,6 @@ function create_each_block_4(ctx) {
 // (274:8) {#if includeTablesInReports.length>0}
 function create_if_block_1$6(ctx) {
 	let div1;
-	let hr0;
-	let t0;
-	let h1;
-	let t2;
-	let hr1;
-	let t3;
 	let div0;
 	let each_blocks = [];
 	let each_1_lookup = new Map();
@@ -38433,38 +38402,19 @@ function create_if_block_1$6(ctx) {
 	const block = {
 		c: function create() {
 			div1 = element("div");
-			hr0 = element("hr");
-			t0 = space();
-			h1 = element("h1");
-			h1.textContent = "Include tables";
-			t2 = space();
-			hr1 = element("hr");
-			t3 = space();
 			div0 = element("div");
 
 			for (let i = 0; i < each_blocks.length; i += 1) {
 				each_blocks[i].c();
 			}
 
-			attr_dev(hr0, "class", "svelte-1y7nluz");
-			add_location(hr0, file$O, 275, 16, 10898);
-			attr_dev(h1, "class", "subtitle svelte-1y7nluz");
-			add_location(h1, file$O, 276, 20, 10924);
-			attr_dev(hr1, "class", "svelte-1y7nluz");
-			add_location(hr1, file$O, 277, 16, 10982);
-			attr_dev(div0, "class", " svelte-1y7nluz");
+			attr_dev(div0, "class", " svelte-1u7h8ij");
 			add_location(div0, file$O, 278, 16, 11004);
-			attr_dev(div1, "class", "addToReport  svelte-1y7nluz");
-			add_location(div1, file$O, 274, 12, 10854);
+			attr_dev(div1, "class", "addToReport  svelte-1u7h8ij");
+			add_location(div1, file$O, 274, 12, 10845);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div1, anchor);
-			append_dev(div1, hr0);
-			append_dev(div1, t0);
-			append_dev(div1, h1);
-			append_dev(div1, t2);
-			append_dev(div1, hr1);
-			append_dev(div1, t3);
 			append_dev(div1, div0);
 
 			for (let i = 0; i < each_blocks.length; i += 1) {
@@ -38595,7 +38545,7 @@ function create_each_block_3(key_1, ctx) {
 	return block;
 }
 
-// (293:16) {#each includePlotsInReport as {id, include, label}
+// (294:16) {#each includePlotsInReport as {id, include, label}
 function create_each_block_2(key_1, ctx) {
 	let first;
 	let customcheckbox;
@@ -38664,14 +38614,14 @@ function create_each_block_2(key_1, ctx) {
 		block,
 		id: create_each_block_2.name,
 		type: "each",
-		source: "(293:16) {#each includePlotsInReport as {id, include, label}",
+		source: "(294:16) {#each includePlotsInReport as {id, include, label}",
 		ctx
 	});
 
 	return block;
 }
 
-// (302:8) <HelperText id="{id}_comments">
+// (303:8) <HelperText id="{id}_comments">
 function create_default_slot_3$5(ctx) {
 	let t_value = "NOTE: You can write in markdown format (eg: # Title, ## Subtilte, **bold**, _italics_, > BlockQuotes, >> Nested BlockQuotes,  1., 2. for list, etc.,)" + "";
 	let t;
@@ -38693,14 +38643,14 @@ function create_default_slot_3$5(ctx) {
 		block,
 		id: create_default_slot_3$5.name,
 		type: "slot",
-		source: "(302:8) <HelperText id=\\\"{id}_comments\\\">",
+		source: "(303:8) <HelperText id=\\\"{id}_comments\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (314:20) <span slot="label" style="color:{method}">
+// (315:20) <span slot="label" style="color:{method}">
 function create_label_slot$4(ctx) {
 	let span;
 	let t;
@@ -38711,7 +38661,7 @@ function create_label_slot$4(ctx) {
 			t = text(/*method*/ ctx[37]);
 			attr_dev(span, "slot", "label");
 			set_style(span, "color", /*method*/ ctx[37]);
-			add_location(span, file$O, 313, 20, 12858);
+			add_location(span, file$O, 314, 20, 12869);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -38727,14 +38677,14 @@ function create_label_slot$4(ctx) {
 		block,
 		id: create_label_slot$4.name,
 		type: "slot",
-		source: "(314:20) <span slot=\\\"label\\\" style=\\\"color:{method}\\\">",
+		source: "(315:20) <span slot=\\\"label\\\" style=\\\"color:{method}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (312:16) <FormField >
+// (313:16) <FormField >
 function create_default_slot_2$8(ctx) {
 	let radio;
 	let updating_group;
@@ -38794,14 +38744,14 @@ function create_default_slot_2$8(ctx) {
 		block,
 		id: create_default_slot_2$8.name,
 		type: "slot",
-		source: "(312:16) <FormField >",
+		source: "(313:16) <FormField >",
 		ctx
 	});
 
 	return block;
 }
 
-// (311:12) {#each ["landscape", "portrait"] as method}
+// (312:12) {#each ["landscape", "portrait"] as method}
 function create_each_block_1(ctx) {
 	let formfield;
 	let current;
@@ -38852,14 +38802,14 @@ function create_each_block_1(ctx) {
 		block,
 		id: create_each_block_1.name,
 		type: "each",
-		source: "(311:12) {#each [\\\"landscape\\\", \\\"portrait\\\"] as method}",
+		source: "(312:12) {#each [\\\"landscape\\\", \\\"portrait\\\"] as method}",
 		ctx
 	});
 
 	return block;
 }
 
-// (320:20) <Option value={file} selected={pageSize  === file}>
+// (321:20) <Option value={file} selected={pageSize  === file}>
 function create_default_slot_1$9(ctx) {
 	let t;
 
@@ -38880,14 +38830,14 @@ function create_default_slot_1$9(ctx) {
 		block,
 		id: create_default_slot_1$9.name,
 		type: "slot",
-		source: "(320:20) <Option value={file} selected={pageSize  === file}>",
+		source: "(321:20) <Option value={file} selected={pageSize  === file}>",
 		ctx
 	});
 
 	return block;
 }
 
-// (319:16) {#each ["A3", "A4", "A5", "Legal", "Letter"] as file}
+// (320:16) {#each ["A3", "A4", "A5", "Legal", "Letter"] as file}
 function create_each_block$4(ctx) {
 	let option;
 	let current;
@@ -38938,14 +38888,14 @@ function create_each_block$4(ctx) {
 		block,
 		id: create_each_block$4.name,
 		type: "each",
-		source: "(319:16) {#each [\\\"A3\\\", \\\"A4\\\", \\\"A5\\\", \\\"Legal\\\", \\\"Letter\\\"] as file}",
+		source: "(320:16) {#each [\\\"A3\\\", \\\"A4\\\", \\\"A5\\\", \\\"Legal\\\", \\\"Letter\\\"] as file}",
 		ctx
 	});
 
 	return block;
 }
 
-// (318:12) <Select bind:value={pageSize} label="pageSize" style="margin-left:1em;">
+// (319:12) <Select bind:value={pageSize} label="pageSize" style="margin-left:1em;">
 function create_default_slot$i(ctx) {
 	let each_1_anchor;
 	let current;
@@ -39034,7 +38984,7 @@ function create_default_slot$i(ctx) {
 		block,
 		id: create_default_slot$i.name,
 		type: "slot",
-		source: "(318:12) <Select bind:value={pageSize} label=\\\"pageSize\\\" style=\\\"margin-left:1em;\\\">",
+		source: "(319:12) <Select bind:value={pageSize} label=\\\"pageSize\\\" style=\\\"margin-left:1em;\\\">",
 		ctx
 	});
 
@@ -39093,10 +39043,10 @@ function create_fragment$U(ctx) {
 			t3 = space();
 			if (if_block) if_block.c();
 			if_block_anchor = empty();
-			attr_dev(div0, "class", "title notification is-link svelte-1y7nluz");
-			add_location(div0, file$O, 250, 4, 9889);
-			attr_dev(div1, "class", "content align heading svelte-1y7nluz");
-			add_location(div1, file$O, 248, 0, 9846);
+			attr_dev(div0, "class", "title notification is-link svelte-1u7h8ij");
+			add_location(div0, file$O, 250, 4, 9880);
+			attr_dev(div1, "class", "content align heading svelte-1u7h8ij");
+			add_location(div1, file$O, 248, 0, 9837);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");

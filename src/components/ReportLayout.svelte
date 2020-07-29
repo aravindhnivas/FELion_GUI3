@@ -230,10 +230,10 @@
     /* .notification { margin-top: 1em; border: 1px solid; } */
     .button {margin-right: 1em;}
     .report {display: flex; align-items: inherit; flex-direction: column;}
-    .addToReport > hr {margin: auto; width: 50%;}
-    .addToReport > h1 {margin: 5px 0; justify-content: center; display: flex;}
+    /* .addToReport > hr {margin: auto; width: 50%;}
+    .addToReport > h1 {margin: 5px 0; justify-content: center; display: flex;} */
 
-    .addToReport > div {margin: 1em 0; justify-content: center; display: flex; flex-wrap: wrap;}
+    .addToReport > div {justify-content: center; display: flex; flex-wrap: wrap;}
     .align {display: flex; align-items: center;}
     .heading {
         border: 1px solid;
@@ -273,9 +273,9 @@
 
         {#if includeTablesInReports.length>0}
             <div class="addToReport ">
-                <hr>
+                <!-- <hr>
                     <h1 class="subtitle">Include tables</h1>
-                <hr>
+                <hr> -->
                 <div class="">
                     {#each includeTablesInReports as {id, include, label}(id)}
                         <CustomCheckbox bind:selected={include} {label}/>
@@ -286,9 +286,10 @@
         
         
         <div class="addToReport ">
-            <hr>
+            <!-- <hr>
                 <h1 class="subtitle">Include plots</h1>
-            <hr>
+            <hr> -->
+
             <div class="">
                 {#each includePlotsInReport as {id, include, label}(id)}
                     <CustomCheckbox bind:selected={include} {label}/>
