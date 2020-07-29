@@ -2,13 +2,15 @@
 import shutil, os, json
 from os.path import join 
 from pathlib import Path as pt
-
+import cProfile, pstats, io
+from pstats import SortKey
+import inspect, contextlib, sys
 
 # DATA Analysis
-
 from uncertainties import ufloat as uf, unumpy as unp
 import numpy as np
 from scipy.optimize import curve_fit
+
 from scipy.interpolate import interp1d
 
 from uncertainties import ufloat as uf, unumpy as unp
@@ -100,4 +102,88 @@ def convert_intesities(felixlocation, output_filename, wn, inten, norm_method):
 
     log_hv_intensity = (wn * log_intensity) / 1e3
     relative_depletion =(1-ratio)*100
+
     return [relative_depletion.nominal_value, relative_depletion.std_dev],      [log_intensity.nominal_value, log_intensity.std_dev], [log_hv_intensity.nominal_value, log_hv_intensity.std_dev]
+
+
+def profile_func(func):
+    def profiled_func(*args, **kwargs):
+
+        profiler = cProfile.Profile()
+        
+        try:
+            profiler.enable()
+        
+            result = func(*args, **kwargs)
+        
+            profiler.disable()
+            return result
+
+        finally:
+
+            profiler.print_stats()
+            s = io.StringIO()
+            sortby = SortKey.CUMULATIVE
+
+            ps = pstats.Stats(profiler, stream=s).sort_stats(sortby)
+            ps.print_stats()
+
+            # Save profile 
+            
+
+
+            frm = inspect.stack()[1]
+            mod = inspect.getmodule(frm[0])
+            filename = pt(mod.__file__)
+            filelocation = filename.parent
+
+            with open(filelocation/f"{filename.stem}.prof", "w+") as f: f.write(s.getvalue())
+
+    return profiled_func
+
+try:
+    from line_profiler import LineProfiler
+    print("LineProfiler imported")
+    def profile_line(func):
+        def profiled_line(*args, **kwargs):
+
+            try:
+                profiler = LineProfiler()
+                profiler.add_function(func)
+                profiler.enable_by_count()
+                return func(*args, **kwargs)
+            finally:
+
+
+                with stdoutIO() as result:
+                    profiler.print_stats()
+                    output = result.getvalue()
+
+
+                    # Save profile 
+                    frm = inspect.stack()[1]
+                    mod = inspect.getmodule(frm[0])
+
+                    filename = pt(mod.__file__)
+                    filelocation = filename.parent
+                    with open(filelocation/f"{filename.stem}_{func.__name__}.lprof", "w+") as f: f.write(output)
+
+        return profiled_line
+
+except ImportError:
+    def profile_line():
+        "Helpful if you accidentally leave in production!"
+        def nothing(*args, **kwargs):
+            return func(*args, **kwargs)
+
+        return nothing
+
+
+@contextlib.contextmanager
+def stdoutIO(stdout=None):
+    old = sys.stdout
+    if stdout is None:
+        stdout = io.StringIO()
+    sys.stdout = stdout
+    yield stdout
+    sys.stdout = old
