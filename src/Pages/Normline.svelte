@@ -81,7 +81,7 @@
     $: $felixopoLocation = $opoMode ? OPOLocation : currentLocation
     
 
-    $: $opoMode ? createToast("OPO MODE") : createToast("FELIX MODE")
+    $: $opoMode ? createToast("OPO MODE", "warning") : createToast("FELIX MODE")
     $: $Ngauss_sigma = $opoMode ? 2 : 5
     let addFileModal=false, addedFileCol="0, 1", addedFile={}, addedFileScale=1, addedfiles = [], extrafileAdded=0
     

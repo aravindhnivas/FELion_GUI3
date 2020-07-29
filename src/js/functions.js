@@ -1,11 +1,23 @@
+
 import { writable } from 'svelte/store';
 
+export const windowLoaded = writable(false);
+
+window.addEventListener('DOMContentLoaded', (event) => {
+    console.log('DOM fully loaded and parsed');
+
+    windowLoaded.set(true)
+});
+
 window.showpage = (item) => { document.getElementById(item).style.display = "block" }
+
 window.hidepage = (item) => { document.getElementById(item).style.display = "none" }
 window.togglepage = (item) => {
     let element = document.getElementById(item);
+
     let display = element.style.display;
-    display == "none" ? element.style.display = "block" : element.style.display = "none"
+
+    display === "none" ? element.style.display = "block" : element.style.display = "none"
 }
 
 export function resizableDiv({ div, change = { width: true, height: true }, cursor = { left: false, right: false, bottom: false, top: false } } = {}) {
@@ -61,12 +73,14 @@ export function plot(mainTitle, xtitle, ytitle, data, plotArea, filetype = null)
         autosize: true,
         height: 450,
     }
+
     if (filetype == 'mass') { dataLayout.yaxis.type = "log" }
+    
     let dataPlot = [];
 
     for (let x in data) { dataPlot.push(data[x]) }
+    
     try { Plotly.react(plotArea, dataPlot, dataLayout, { editable: true }) } catch (err) { console.log("Error occured while plotting\n", err) }
-
 }
 
 export function subplot(mainTitle, xtitle, ytitle, data, plotArea, x2, y2, data2) {
@@ -77,9 +91,11 @@ export function subplot(mainTitle, xtitle, ytitle, data, plotArea, x2, y2, data2
         yaxis: { title: ytitle },
         xaxis2: { domain: [0.5, 1], title: x2 },
         yaxis2: { anchor: "x2", title: y2, overlaying: 'y', },
+
         yaxis3: { anchor: 'free', overlaying: 'y', side: 'right', title: "Measured (mJ)", position: 0.97 },
         autosize: true,
         height: 450,
+    
     }
 
     let dataPlot1 = [];
@@ -87,26 +103,13 @@ export function subplot(mainTitle, xtitle, ytitle, data, plotArea, x2, y2, data2
     let dataPlot2 = [];
     for (let x in data2) { dataPlot2.push(data2[x]) }
     Plotly.react(plotArea, dataPlot1.concat(dataPlot2), dataLayout, { editable: true })
-
-
 }
 
 window.sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-
-
-
-export const windowLoaded = writable(false);
-
-window.addEventListener('DOMContentLoaded', (event) => {
-    console.log('DOM fully loaded and parsed');
-
-    windowLoaded.set(true)
-});
-
-
 window.getPageStatus = (id) => {
     let target = document.getElementById(id)
-    let visibility = target.style.display === "none" ? false : true
+    let visibility = target.style.display !== "none"
+    
     return visibility
 }

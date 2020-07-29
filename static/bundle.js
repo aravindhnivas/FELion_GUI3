@@ -7794,12 +7794,23 @@ class Simplewave extends SvelteComponentDev {
 	}
 }
 
+const windowLoaded = writable(false);
+
+window.addEventListener('DOMContentLoaded', (event) => {
+    console.log('DOM fully loaded and parsed');
+
+    windowLoaded.set(true);
+});
+
 window.showpage = (item) => { document.getElementById(item).style.display = "block"; };
+
 window.hidepage = (item) => { document.getElementById(item).style.display = "none"; };
 window.togglepage = (item) => {
     let element = document.getElementById(item);
+
     let display = element.style.display;
-    display == "none" ? element.style.display = "block" : element.style.display = "none";
+
+    display === "none" ? element.style.display = "block" : element.style.display = "none";
 };
 
 function resizableDiv({ div, change = { width: true, height: true }, cursor = { left: false, right: false, bottom: false, top: false } } = {}) {
@@ -7855,12 +7866,14 @@ function plot(mainTitle, xtitle, ytitle, data, plotArea, filetype = null) {
         autosize: true,
         height: 450,
     };
+
     if (filetype == 'mass') { dataLayout.yaxis.type = "log"; }
+    
     let dataPlot = [];
 
     for (let x in data) { dataPlot.push(data[x]); }
+    
     try { Plotly.react(plotArea, dataPlot, dataLayout, { editable: true }); } catch (err) { console.log("Error occured while plotting\n", err); }
-
 }
 
 function subplot(mainTitle, xtitle, ytitle, data, plotArea, x2, y2, data2) {
@@ -7871,9 +7884,11 @@ function subplot(mainTitle, xtitle, ytitle, data, plotArea, x2, y2, data2) {
         yaxis: { title: ytitle },
         xaxis2: { domain: [0.5, 1], title: x2 },
         yaxis2: { anchor: "x2", title: y2, overlaying: 'y', },
+
         yaxis3: { anchor: 'free', overlaying: 'y', side: 'right', title: "Measured (mJ)", position: 0.97 },
         autosize: true,
         height: 450,
+    
     };
 
     let dataPlot1 = [];
@@ -7881,27 +7896,14 @@ function subplot(mainTitle, xtitle, ytitle, data, plotArea, x2, y2, data2) {
     let dataPlot2 = [];
     for (let x in data2) { dataPlot2.push(data2[x]); }
     Plotly.react(plotArea, dataPlot1.concat(dataPlot2), dataLayout, { editable: true });
-
-
 }
 
 window.sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-
-
-
-const windowLoaded = writable(false);
-
-window.addEventListener('DOMContentLoaded', (event) => {
-    console.log('DOM fully loaded and parsed');
-
-    windowLoaded.set(true);
-});
-
-
 window.getPageStatus = (id) => {
     let target = document.getElementById(id);
-    let visibility = target.style.display === "none" ? false : true;
+    let visibility = target.style.display !== "none";
+    
     return visibility
 };
 
@@ -39696,24 +39698,21 @@ function plotlySelection({graphDiv="avgplot", mode="felix"}={}) {
 
     avgplot.on("plotly_selected", (data) => {
 
-        if (!data) console.log("No data available to fit");
-
-        else {
-        
-        
+       try {
             console.log(data);
-
             mode === "felix" ? opoMode.set(false) : opoMode.set(true);
-            
+
 
             const { range } = data;
+
             felixIndex.set(range.x);
+
 
             const output_name = data.points[0].data.name.split(".")[0];
             felixOutputName.set(output_name);
-
             console.log(`Selected file: ${get_store_value(felixOutputName)}`);
-        }
+
+        } catch (error) { console.log("No data available to fit"); }
 
     });
 }
@@ -46086,18 +46085,18 @@ function create_fragment$11(ctx) {
 			button4.textContent = "OPO";
 			attr_dev(button0, "class", "button is-link");
 			attr_dev(button0, "id", "create_baseline_btn");
-			add_location(button0, file$X, 95, 4, 3842);
+			add_location(button0, file$X, 96, 4, 3864);
 			attr_dev(button1, "class", "button is-link");
 			attr_dev(button1, "id", "felix_plotting_btn");
-			add_location(button1, file$X, 96, 4, 3984);
+			add_location(button1, file$X, 97, 4, 4006);
 			attr_dev(button2, "class", "button is-link");
-			add_location(button2, file$X, 98, 4, 4229);
+			add_location(button2, file$X, 99, 4, 4251);
 			attr_dev(button3, "class", "button is-link");
-			add_location(button3, file$X, 100, 4, 4413);
+			add_location(button3, file$X, 101, 4, 4435);
 			attr_dev(button4, "class", "button is-link");
-			add_location(button4, file$X, 101, 4, 4511);
+			add_location(button4, file$X, 102, 4, 4533);
 			attr_dev(div, "class", "align");
-			add_location(div, file$X, 93, 0, 3815);
+			add_location(div, file$X, 94, 0, 3837);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -51807,7 +51806,10 @@ function create_if_block$p(ctx) {
 		/*textfield4_value_binding*/ ctx[39].call(null, value);
 	}
 
-	let textfield4_props = { style, label: "savefile" };
+	let textfield4_props = {
+		style: "" + (style + "; margin-bottom: 0.5em; margin-left: 1em; margin-right: 1em;"),
+		label: "savefile"
+	};
 
 	if (/*savePeakfilename*/ ctx[6] !== void 0) {
 		textfield4_props.value = /*savePeakfilename*/ ctx[6];
@@ -51857,11 +51859,11 @@ function create_if_block$p(ctx) {
 			attr_dev(button1, "class", "button is-link");
 			add_location(button1, file$15, 224, 12, 10129);
 			attr_dev(button2, "class", "button is-link");
-			add_location(button2, file$15, 226, 12, 10324);
+			add_location(button2, file$15, 226, 12, 10392);
 			attr_dev(button3, "class", "button is-link");
-			add_location(button3, file$15, 227, 12, 10461);
+			add_location(button3, file$15, 227, 12, 10529);
 			attr_dev(button4, "class", "button is-danger");
-			add_location(button4, file$15, 229, 12, 10554);
+			add_location(button4, file$15, 229, 12, 10622);
 			attr_dev(div1, "class", "align");
 			add_location(div1, file$15, 222, 8, 9998);
 			attr_dev(div2, "class", "align");
@@ -53090,10 +53092,10 @@ function create_buttonContainer_slot(ctx) {
 			div1 = element("div");
 			create_component(customradio.$$.fragment);
 			set_style(div1, "display", "flex");
-			add_location(div1, file$16, 165, 8, 7114);
+			add_location(div1, file$16, 165, 8, 7125);
 			attr_dev(div0, "class", "buttonSlot svelte-oa7kgp");
 			attr_dev(div0, "slot", "buttonContainer");
-			add_location(div0, file$16, 161, 4, 6669);
+			add_location(div0, file$16, 161, 4, 6680);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -53366,7 +53368,7 @@ function create_if_block$q(ctx) {
 			t2 = space();
 			create_component(reportlayout.$$.fragment);
 			attr_dev(div, "class", "svelte-oa7kgp");
-			add_location(div, file$16, 187, 12, 8064);
+			add_location(div, file$16, 187, 12, 8075);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -53537,33 +53539,33 @@ function create_plotContainer_slot(ctx) {
 			attr_dev(div1, "class", "animated fadeIn svelte-oa7kgp");
 			attr_dev(div1, "id", "exp-theory-plot");
 			toggle_class(div1, "hide", !/*show_theoryplot*/ ctx[3]);
-			add_location(div1, file$16, 177, 12, 7547);
+			add_location(div1, file$16, 177, 12, 7558);
 			attr_dev(div2, "id", "bplot");
 			attr_dev(div2, "class", "svelte-oa7kgp");
-			add_location(div2, file$16, 178, 12, 7647);
+			add_location(div2, file$16, 178, 12, 7658);
 			attr_dev(div3, "id", "saPlot");
 			attr_dev(div3, "class", "svelte-oa7kgp");
-			add_location(div3, file$16, 179, 12, 7683);
+			add_location(div3, file$16, 179, 12, 7694);
 			attr_dev(div4, "id", "avgplot");
 			attr_dev(div4, "class", "svelte-oa7kgp");
-			add_location(div4, file$16, 180, 12, 7720);
+			add_location(div4, file$16, 180, 12, 7731);
 			attr_dev(div5, "class", "animated fadeIn svelte-oa7kgp");
 			attr_dev(div5, "id", "opoplot");
 			toggle_class(div5, "hide", !/*$opoMode*/ ctx[23]);
-			add_location(div5, file$16, 181, 12, 7758);
+			add_location(div5, file$16, 181, 12, 7769);
 			attr_dev(div6, "class", "animated fadeIn svelte-oa7kgp");
 			attr_dev(div6, "id", "opoSA");
 			toggle_class(div6, "hide", !/*$opoMode*/ ctx[23]);
-			add_location(div6, file$16, 182, 12, 7843);
+			add_location(div6, file$16, 182, 12, 7854);
 			attr_dev(div7, "class", "animated fadeIn svelte-oa7kgp");
 			attr_dev(div7, "id", "opoRelPlot");
 			toggle_class(div7, "hide", !/*$opoMode*/ ctx[23]);
-			add_location(div7, file$16, 183, 12, 7926);
+			add_location(div7, file$16, 183, 12, 7937);
 			attr_dev(div8, "class", "felixPlot svelte-oa7kgp");
-			add_location(div8, file$16, 176, 8, 7510);
+			add_location(div8, file$16, 176, 8, 7521);
 			attr_dev(div0, "class", "plotSlot svelte-oa7kgp");
 			attr_dev(div0, "slot", "plotContainer");
-			add_location(div0, file$16, 170, 4, 7313);
+			add_location(div0, file$16, 170, 4, 7324);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -54420,7 +54422,7 @@ function instance$1d($$self, $$props, $$invalidate) {
 
 		if ($$self.$$.dirty[0] & /*$opoMode*/ 8388608) {
 			 $opoMode
-			? createToast$2("OPO MODE")
+			? createToast$2("OPO MODE", "warning")
 			: createToast$2("FELIX MODE");
 		}
 

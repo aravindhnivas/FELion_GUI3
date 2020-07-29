@@ -64,6 +64,7 @@
                 computePy_func({e, pyfile, args})
                 .then((dataFromPython)=>{
                     $expfittedLines = [], $felixPlotAnnotations = [], $expfittedLinesCollectedData = [], $fittedTraceCount = 0
+                    
                     show_theoryplot = false
                     felix_func({normMethod, dataFromPython, delta})
                     createToast("Graph Plotted", "success")
