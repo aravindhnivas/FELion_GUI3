@@ -223,7 +223,7 @@
         <div class="align" >
             <Icon class="material-icons" on:click="{()=> modalActivate = true}">settings</Icon>
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"NGauss_fit"})}">Fit</button>
-            <Textfield {style} bind:value={savePeakfilename} label="savefile"/>
+            <Textfield style="{style}; margin-bottom: 0.5em; margin-left: 1em; margin-right: 1em;" bind:value={savePeakfilename} label="savefile"/>
             <button class="button is-link" on:click="{()=>savefile({file:$felixPeakTable, name:savePeakfilename})}">Save peaks</button>
             <button class="button is-link" on:click="{loadpeakTable}">Load peaks</button>
 

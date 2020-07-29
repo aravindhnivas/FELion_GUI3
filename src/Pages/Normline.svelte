@@ -81,7 +81,7 @@
     $: $felixopoLocation = $opoMode ? OPOLocation : currentLocation
     
 
-    $: $opoMode ? createToast("OPO MODE") : createToast("FELIX MODE")
+    $: $opoMode ? createToast("OPO MODE", "warning") : createToast("FELIX MODE")
     $: $Ngauss_sigma = $opoMode ? 2 : 5
     let addFileModal=false, addedFileCol="0, 1", addedFile={}, addedFileScale=1, addedfiles = [], extrafileAdded=0
     
@@ -163,9 +163,11 @@
         <InitFunctionRow {removeExtraFile} {felixPlotCheckboxes} {opofiles} {felixfiles} {normMethod} bind:preModal bind:graphPlotted bind:show_theoryplot/>
         <OPORow {removeExtraFile} bind:OPOLocation bind:OPOfilesChecked bind:opofiles bind:preModal bind:graphPlotted />
         <TheoryRow bind:theoryLocation bind:show_theoryplot bind:preModal {normMethod} {currentLocation}/>
+
         <div style="display:flex;">
             <CustomRadio on:change={replot} bind:selected={felix_normMethod} options={["Log", "Relative", "IntensityPerPhoton"]}/>
         </div>
+    
     </div>
     
     <div class="plotSlot" slot="plotContainer">

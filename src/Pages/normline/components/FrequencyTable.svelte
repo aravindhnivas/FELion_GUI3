@@ -1,10 +1,10 @@
 
 <script>
+    import {dataTable_avg, dataTable, expfittedLinesCollectedData, avgfittedLineCount} from '../functions/svelteWritables';
     import DataTable, {Head, Body, Row, Cell} from '@smui/data-table';
     import {Icon} from '@smui/icon-button';
     import {createToast} from "../../../components/Layout.svelte"
     import CustomCheckbox from '../../../components/CustomCheckbox.svelte';
-    import {dataTable_avg, dataTable, expfittedLinesCollectedData, avgfittedLineCount} from '../functions/svelteWritables';
 
     export let keepTable=true;
 

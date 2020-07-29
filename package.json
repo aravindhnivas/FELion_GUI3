@@ -43,7 +43,6 @@
   },
   "dependencies": {
     "adm-zip": "^0.4.14",
-    "directory-tree": "^2.2.4",
     "recursive-copy": "^2.0.10"
   }
 }

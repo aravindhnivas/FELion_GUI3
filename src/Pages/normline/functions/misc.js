@@ -37,24 +37,21 @@ export function plotlySelection({graphDiv="avgplot", mode="felix"}={}) {
 
     avgplot.on("plotly_selected", (data) => {
 
-        if (!data) console.log("No data available to fit")
-
-        else {
-        
-        
+       try {
             console.log(data)
-
             mode === "felix" ? opoMode.set(false) : opoMode.set(true)
-            
+
 
             const { range } = data
+
             felixIndex.set(range.x)
+
 
             const output_name = data.points[0].data.name.split(".")[0]
             felixOutputName.set(output_name)
-
             console.log(`Selected file: ${get(felixOutputName)}`)
-        }
+
+        } catch (error) { console.log("No data available to fit") }
 
     })
 }

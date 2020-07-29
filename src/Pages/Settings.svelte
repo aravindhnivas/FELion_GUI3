@@ -316,22 +316,20 @@
                 if (error) { console.log('Copy failed: ' + error); createToast("Error Occured while copying", "danger"); target.classList.toggle("is-loading")}
                 else {
                     console.info('Copied ' + results.length + ' files')
+
                     target.classList.toggle("is-loading")
-
-
                     restart_program()
                     console.log("Restoring completed")
                     createToast("Restoring completed", "success")
                 }
-
             })
         })
         .catch(err=>{
+
             console.log(err)
             preModal.modalContent = err
             preModal.open = true
         })
-
 
     }
     let preModal = {};
@@ -353,17 +351,19 @@
     .right > div {display: none;}
     .active {display: block!important; }
     .right .title {letter-spacing: 0.1em; text-transform: uppercase;}
-    
     * :global(option) { color: black; }
 
 </style>
+
+
 <PreModal bind:preModal />
-<CustomDialog id="pythonpath_Check" bind:dialog={pythonpathCheck} on:response={handlepythonPathCheck}
-    title={"Python path is not valid"} content={"Change it in Settings --> Configuration"} label1="Okay" label2="Cancel" />
+
+
+<CustomDialog id="pythonpath_Check" bind:dialog={pythonpathCheck} on:response={handlepythonPathCheck} title={"Python path is not valid"} content={"Change it in Settings --> Configuration"} label1="Okay" label2="Cancel" />
 
 <section class="section animated fadeIn" id="Settings" style="display:none">
-    <div class="columns">
 
+    <div class="columns">
         <div class="column side-panel is-2-widescreen is-3-desktop is-4-tablet box adjust-right">
             <div class="container left">
                 <div class="title nav hvr-glow" class:clicked={selected==="Configuration"} on:click={navigate}>Configuration</div>
@@ -381,17 +381,15 @@
                     <div class="subtitle">{pyVersion}</div>
                     <Textfield style="margin-bottom:1em;" bind:value={pythonpath} label="Python path" />
                     <Textfield style="margin-bottom:1em;" bind:value={pythonscript} label="Python script path" />
-                    
                     <button class="button is-link" on:click={resetlocation}>Reset</button>
                     <button class="button is-link" on:click={savelocation}>Save</button>
-
                 </div>
 
                 <!-- Update -->
                 <div class="content animated fadeIn" class:active={selected==="Update"}>
                     <h1 class="title">Update</h1>
+
                     <div class="subtitle">Current Version {currentVersion}</div>
-                    
                     <div class="content">
                         <Textfield style="width:7em; margin-right:2em;" bind:value={github_username} label="Github username" />
                         <Textfield style="width:7em; margin-right:2em;" bind:value={github_repo} label="Github Repo" />
@@ -410,18 +408,16 @@
                         <button class="button is-link" on:click={restore}>Restore</button>
                     </div>
                     
-
                 </div>
+
 
                 <!-- About -->
                 <div class="content animated fadeIn" class:active={selected==="About"}>
                     <h1 class="title">About</h1>
-
                 </div>
                 
             </div>
         </div>
-
     </div>
     
 </section>
