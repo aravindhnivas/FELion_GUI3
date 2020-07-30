@@ -78,7 +78,6 @@
 
     #Misc {padding: 0 2em; height: 75vh;}
 
-
     @media(max-width: 768px) {
         #unit_conversion_table {
             max-height: 65vh;

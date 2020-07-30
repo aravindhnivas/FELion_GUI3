@@ -9,61 +9,80 @@
 
     import CustomSwitch from '../components/CustomSwitch.svelte';
 
+    export let commandToRun = localStorage["pythonpath"], commandArgsToRun = "-m, pip", commandResults = [], teminalFontSize=20;
+
     let colorSets = {warning: "#ffdd57", danger:"#f14668", info:"#2098d1", normal:"#fafafa", success:"#20f996"}
 
-    let commandToRun = "", commandArgsToRun = "", commandResults = [], teminalFontSize=20;
-
-    $: console.log(commandResults)
+    // $: console.log(commandResults)
     
     let preModal = {}
 
     let openShellTerminal = false;
 
     async function terminalShell(){
-    
         await tick()
+        const terminalDiv = document.getElementById("terminal")
+        
 
         if (!commandToRun) {return createToast("No command entered", "warning")}
-        commandResults = [...commandResults , {color:colorSets.normal, results:`>> ${commandToRun} ${commandArgsToRun.replace(",", " ")}`}]
+
+        commandResults = [...commandResults , {color:colorSets.normal, results:`>> ${commandToRun} ${commandArgsToRun.split(",").join(" ")}`}]
         
         let ls;
 
         try {
-
             ls = spawn(commandToRun, commandArgsToRun.split(",").map(arg=>arg.trim()), { detached: true, stdio: 'pipe', shell: openShellTerminal });
+
         } catch (error) {preModal.modalContent = error;  preModal.open = true}
 
-        ls.stdout.on("data", data => { 
-
+        ls.stdout.on("data", async (data) => {
+            
             commandResults = [...commandResults, {color:colorSets.info, results:`>> ${data || ""}`}]
+            await tick()
+            const scrollTo = terminalDiv.scrollHeight - terminalDiv.clientHeight
+
+
+            terminalDiv.scrollTo({top:scrollTo, behavior: 'smooth'})
+        
         })
 
         
-        ls.stderr.on("data", data => { 
+        ls.stderr.on("data", async (data) => { 
             commandResults = [...commandResults, {color:colorSets.danger, results:`>> ${data || ""}`}]
+
+            await tick()
+            const scrollTo = terminalDiv.scrollHeight - terminalDiv.clientHeight
+            terminalDiv.scrollTo({top:scrollTo, behavior: 'smooth'})
+        
         })
         
-        ls.on("close", code => {  
+        ls.on("close", async (code) => {  
             commandResults = [...commandResults, {color: code === 1 ? colorSets.danger :  colorSets.success, results:`>> child process exited with code ${code}`}]
+            
+            await tick()
+            const scrollTo = terminalDiv.scrollHeight - terminalDiv.clientHeight
+            terminalDiv.scrollTo({top:scrollTo, behavior: 'smooth'})
+
             const outputLog = `${new Date().toLocaleString()}\n\n-----------------------------------------\nRunning terminal commands\n${commandResults.map(cmd=>cmd.results).join("")}\n-----------------------------------------\n`
 
             try {
                 fs.writeFileSync(path.resolve(__dirname, "output.log"), outputLog)
+
             } catch (error) { createToast("Could not save the outputs to file: output.log", "warning")}
 
         })
 
     }
+    
 </script>
 
 
 <style>
-
     .box { background-color: #6a50ad8a; overflow-y: auto; height: calc(100vh - 12em);}
-
 
     #terminal {
         height: 75%;
+
         margin-bottom: 1em;
         background-color: #4a4a4ae6;
         user-select: text;
@@ -76,6 +95,7 @@
         padding-bottom: 1em;
         padding: 1em;
         height: calc(100vh - 12em);
+
     }
 
 </style>
