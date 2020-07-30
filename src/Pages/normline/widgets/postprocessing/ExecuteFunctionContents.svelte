@@ -209,8 +209,8 @@
 {#if toggleFindPeaksRow}
 
     <div class="align" transition:fade>
-
         <div class="align" style="margin:1em 0">
+        
             <CustomSwitch style="margin: 0 1em;" bind:selected={boxSelected_peakfinder} label="BoxSelected"/>
             <Textfield type="number" {style} step="0.5" bind:value={peak_prominence} label="Prominance" />
             <Textfield type="number" {style} step="0.5" bind:value={peak_width} label="Width" />

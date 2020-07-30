@@ -154,6 +154,7 @@
 </style>
 
 <!-- Modals -->
+
 <AddFilesToPlot {fileChecked} bind:extrafileAdded bind:active={addFileModal} bind:addedFileCol bind:addedFileScale bind:addedfiles bind:addedFile bind:preModal />
 
 <!-- Layout -->

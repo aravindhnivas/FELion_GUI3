@@ -7011,7 +7011,7 @@ const { console: console_1 } = globals;
 
 const file$6 = "src\\components\\Navbar.svelte";
 
-// (31:14) <Label>
+// (32:14) <Label>
 function create_default_slot_2(ctx) {
 	let t_value = /*tab*/ ctx[5] + "";
 	let t;
@@ -7035,14 +7035,14 @@ function create_default_slot_2(ctx) {
 		block,
 		id: create_default_slot_2.name,
 		type: "slot",
-		source: "(31:14) <Label>",
+		source: "(32:14) <Label>",
 		ctx
 	});
 
 	return block;
 }
 
-// (31:2) <Tab {tab}>
+// (32:2) <Tab {tab}>
 function create_default_slot_1$1(ctx) {
 	let label;
 	let current;
@@ -7090,14 +7090,14 @@ function create_default_slot_1$1(ctx) {
 		block,
 		id: create_default_slot_1$1.name,
 		type: "slot",
-		source: "(31:2) <Tab {tab}>",
+		source: "(32:2) <Tab {tab}>",
 		ctx
 	});
 
 	return block;
 }
 
-// (30:1) <TabBar tabs={navItems} let:tab bind:active>
+// (31:1) <TabBar tabs={navItems} let:tab bind:active>
 function create_default_slot$2(ctx) {
 	let tab;
 	let current;
@@ -7147,7 +7147,7 @@ function create_default_slot$2(ctx) {
 		block,
 		id: create_default_slot$2.name,
 		type: "slot",
-		source: "(30:1) <TabBar tabs={navItems} let:tab bind:active>",
+		source: "(31:1) <TabBar tabs={navItems} let:tab bind:active>",
 		ctx
 	});
 
@@ -7188,7 +7188,7 @@ function create_fragment$6(ctx) {
 			attr_dev(div, "class", "box animated fadeInDown svelte-1g4jhku");
 			attr_dev(div, "id", "navbar");
 			set_style(div, "display", "none");
-			add_location(div, file$6, 28, 0, 704);
+			add_location(div, file$6, 29, 0, 706);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -11326,8 +11326,9 @@ function create_fragment$d(ctx) {
 			class: input_class_value = "mdc-text-field__input " + /*className*/ ctx[1]
 		},
 		{ type: /*type*/ ctx[2] },
-		/*valueProp*/ ctx[4],
-		exclude(/*$$props*/ ctx[8], [
+		{ step: /*step*/ ctx[3] },
+		/*valueProp*/ ctx[5],
+		exclude(/*$$props*/ ctx[9], [
 			"use",
 			"class",
 			"type",
@@ -11356,15 +11357,15 @@ function create_fragment$d(ctx) {
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, input, anchor);
-			/*input_binding*/ ctx[14](input);
+			/*input_binding*/ ctx[15](input);
 
 			if (!mounted) {
 				dispose = [
 					action_destroyer(useActions_action = useActions.call(null, input, /*use*/ ctx[0])),
-					action_destroyer(forwardEvents_action = /*forwardEvents*/ ctx[5].call(null, input)),
-					listen_dev(input, "change", /*change_handler*/ ctx[15], false, false, false),
-					listen_dev(input, "input", /*input_handler*/ ctx[16], false, false, false),
-					listen_dev(input, "change", /*changeHandler*/ ctx[7], false, false, false)
+					action_destroyer(forwardEvents_action = /*forwardEvents*/ ctx[6].call(null, input)),
+					listen_dev(input, "change", /*change_handler*/ ctx[16], false, false, false),
+					listen_dev(input, "input", /*input_handler*/ ctx[17], false, false, false),
+					listen_dev(input, "change", /*changeHandler*/ ctx[8], false, false, false)
 				];
 
 				mounted = true;
@@ -11374,8 +11375,9 @@ function create_fragment$d(ctx) {
 			set_attributes(input, input_data = get_spread_update(input_levels, [
 				dirty & /*className*/ 2 && input_class_value !== (input_class_value = "mdc-text-field__input " + /*className*/ ctx[1]) && { class: input_class_value },
 				dirty & /*type*/ 4 && { type: /*type*/ ctx[2] },
-				dirty & /*valueProp*/ 16 && /*valueProp*/ ctx[4],
-				dirty & /*$$props*/ 256 && exclude(/*$$props*/ ctx[8], [
+				dirty & /*step*/ 8 && { step: /*step*/ ctx[3] },
+				dirty & /*valueProp*/ 32 && /*valueProp*/ ctx[5],
+				dirty & /*$$props*/ 512 && exclude(/*$$props*/ ctx[9], [
 					"use",
 					"class",
 					"type",
@@ -11393,7 +11395,7 @@ function create_fragment$d(ctx) {
 		o: noop,
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(input);
-			/*input_binding*/ ctx[14](null);
+			/*input_binding*/ ctx[15](null);
 			mounted = false;
 			run_all(dispose);
 		}
@@ -11430,12 +11432,13 @@ function instance$d($$self, $$props, $$invalidate) {
 	let { dirty = false } = $$props;
 	let { invalid = false } = $$props;
 	let { updateInvalid = true } = $$props;
+	let { step = "" } = $$props;
 	let element;
 	let valueProp = {};
 
 	onMount(() => {
 		if (updateInvalid) {
-			$$invalidate(12, invalid = element.matches(":invalid"));
+			$$invalidate(13, invalid = element.matches(":invalid"));
 		}
 	});
 
@@ -11443,21 +11446,21 @@ function instance$d($$self, $$props, $$invalidate) {
 		switch (type) {
 			case "number":
 			case "range":
-				$$invalidate(9, value = toNumber(e.target.value));
+				$$invalidate(10, value = toNumber(e.target.value));
 				break;
 			case "file":
-				$$invalidate(10, files = e.target.files);
+				$$invalidate(11, files = e.target.files);
 			default:
-				$$invalidate(9, value = e.target.value);
+				$$invalidate(10, value = e.target.value);
 				break;
 		}
 	}
 
 	function changeHandler(e) {
-		$$invalidate(11, dirty = true);
+		$$invalidate(12, dirty = true);
 
 		if (updateInvalid) {
-			$$invalidate(12, invalid = element.matches(":invalid"));
+			$$invalidate(13, invalid = element.matches(":invalid"));
 		}
 	}
 
@@ -11467,7 +11470,7 @@ function instance$d($$self, $$props, $$invalidate) {
 	function input_binding($$value) {
 		binding_callbacks[$$value ? "unshift" : "push"](() => {
 			element = $$value;
-			$$invalidate(3, element);
+			$$invalidate(4, element);
 		});
 	}
 
@@ -11475,15 +11478,16 @@ function instance$d($$self, $$props, $$invalidate) {
 	const input_handler = e => type !== "file" && valueUpdater(e);
 
 	$$self.$set = $$new_props => {
-		$$invalidate(8, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
+		$$invalidate(9, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
 		if ("use" in $$new_props) $$invalidate(0, use = $$new_props.use);
 		if ("class" in $$new_props) $$invalidate(1, className = $$new_props.class);
 		if ("type" in $$new_props) $$invalidate(2, type = $$new_props.type);
-		if ("value" in $$new_props) $$invalidate(9, value = $$new_props.value);
-		if ("files" in $$new_props) $$invalidate(10, files = $$new_props.files);
-		if ("dirty" in $$new_props) $$invalidate(11, dirty = $$new_props.dirty);
-		if ("invalid" in $$new_props) $$invalidate(12, invalid = $$new_props.invalid);
-		if ("updateInvalid" in $$new_props) $$invalidate(13, updateInvalid = $$new_props.updateInvalid);
+		if ("value" in $$new_props) $$invalidate(10, value = $$new_props.value);
+		if ("files" in $$new_props) $$invalidate(11, files = $$new_props.files);
+		if ("dirty" in $$new_props) $$invalidate(12, dirty = $$new_props.dirty);
+		if ("invalid" in $$new_props) $$invalidate(13, invalid = $$new_props.invalid);
+		if ("updateInvalid" in $$new_props) $$invalidate(14, updateInvalid = $$new_props.updateInvalid);
+		if ("step" in $$new_props) $$invalidate(3, step = $$new_props.step);
 	};
 
 	$$self.$capture_state = () => ({
@@ -11501,6 +11505,7 @@ function instance$d($$self, $$props, $$invalidate) {
 		dirty,
 		invalid,
 		updateInvalid,
+		step,
 		element,
 		valueProp,
 		toNumber,
@@ -11509,17 +11514,18 @@ function instance$d($$self, $$props, $$invalidate) {
 	});
 
 	$$self.$inject_state = $$new_props => {
-		$$invalidate(8, $$props = assign(assign({}, $$props), $$new_props));
+		$$invalidate(9, $$props = assign(assign({}, $$props), $$new_props));
 		if ("use" in $$props) $$invalidate(0, use = $$new_props.use);
 		if ("className" in $$props) $$invalidate(1, className = $$new_props.className);
 		if ("type" in $$props) $$invalidate(2, type = $$new_props.type);
-		if ("value" in $$props) $$invalidate(9, value = $$new_props.value);
-		if ("files" in $$props) $$invalidate(10, files = $$new_props.files);
-		if ("dirty" in $$props) $$invalidate(11, dirty = $$new_props.dirty);
-		if ("invalid" in $$props) $$invalidate(12, invalid = $$new_props.invalid);
-		if ("updateInvalid" in $$props) $$invalidate(13, updateInvalid = $$new_props.updateInvalid);
-		if ("element" in $$props) $$invalidate(3, element = $$new_props.element);
-		if ("valueProp" in $$props) $$invalidate(4, valueProp = $$new_props.valueProp);
+		if ("value" in $$props) $$invalidate(10, value = $$new_props.value);
+		if ("files" in $$props) $$invalidate(11, files = $$new_props.files);
+		if ("dirty" in $$props) $$invalidate(12, dirty = $$new_props.dirty);
+		if ("invalid" in $$props) $$invalidate(13, invalid = $$new_props.invalid);
+		if ("updateInvalid" in $$props) $$invalidate(14, updateInvalid = $$new_props.updateInvalid);
+		if ("step" in $$props) $$invalidate(3, step = $$new_props.step);
+		if ("element" in $$props) $$invalidate(4, element = $$new_props.element);
+		if ("valueProp" in $$props) $$invalidate(5, valueProp = $$new_props.valueProp);
 	};
 
 	if ($$props && "$$inject" in $$props) {
@@ -11527,11 +11533,11 @@ function instance$d($$self, $$props, $$invalidate) {
 	}
 
 	$$self.$$.update = () => {
-		if ($$self.$$.dirty & /*type, valueProp, value*/ 532) {
+		if ($$self.$$.dirty & /*type, valueProp, value*/ 1060) {
 			 if (type === "file") {
 				delete valueProp.value;
 			} else {
-				$$invalidate(4, valueProp.value = value === undefined ? "" : value, valueProp);
+				$$invalidate(5, valueProp.value = value === undefined ? "" : value, valueProp);
 			}
 		}
 	};
@@ -11542,6 +11548,7 @@ function instance$d($$self, $$props, $$invalidate) {
 		use,
 		className,
 		type,
+		step,
 		element,
 		valueProp,
 		forwardEvents,
@@ -11567,11 +11574,12 @@ class Input extends SvelteComponentDev {
 			use: 0,
 			class: 1,
 			type: 2,
-			value: 9,
-			files: 10,
-			dirty: 11,
-			invalid: 12,
-			updateInvalid: 13
+			value: 10,
+			files: 11,
+			dirty: 12,
+			invalid: 13,
+			updateInvalid: 14,
+			step: 3
 		});
 
 		dispatch_dev("SvelteRegisterComponent", {
@@ -11643,6 +11651,14 @@ class Input extends SvelteComponentDev {
 	}
 
 	set updateInvalid(value) {
+		throw new Error("<Input>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get step() {
+		throw new Error("<Input>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set step(value) {
 		throw new Error("<Input>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 }
@@ -12247,8 +12263,8 @@ function create_else_block$1(ctx) {
 	let current;
 
 	const input_spread_levels = [
-		{ step: /*step*/ ctx[17] },
 		{ type: /*type*/ ctx[16] },
+		{ step: /*step*/ ctx[17] },
 		{ disabled: /*disabled*/ ctx[7] },
 		{ updateInvalid: /*updateInvalid*/ ctx[18] },
 		/*fullwidth*/ ctx[8] && /*label*/ ctx[15]
@@ -12312,10 +12328,10 @@ function create_else_block$1(ctx) {
 			current = true;
 		},
 		p: function update(ctx, dirty) {
-			const input_changes = (dirty[0] & /*step, type, disabled, updateInvalid, fullwidth, label, $$props*/ 8880512)
+			const input_changes = (dirty[0] & /*type, step, disabled, updateInvalid, fullwidth, label, $$props*/ 8880512)
 			? get_spread_update(input_spread_levels, [
-					dirty[0] & /*step*/ 131072 && { step: /*step*/ ctx[17] },
 					dirty[0] & /*type*/ 65536 && { type: /*type*/ ctx[16] },
+					dirty[0] & /*step*/ 131072 && { step: /*step*/ ctx[17] },
 					dirty[0] & /*disabled*/ 128 && { disabled: /*disabled*/ ctx[7] },
 					dirty[0] & /*updateInvalid*/ 262144 && { updateInvalid: /*updateInvalid*/ ctx[18] },
 					dirty[0] & /*fullwidth, label*/ 33024 && get_spread_object(/*fullwidth*/ ctx[8] && /*label*/ ctx[15]
@@ -13127,7 +13143,8 @@ function instance$f($$self, $$props, $$invalidate) {
 	let { withTrailingIcon = false } = $$props;
 	let { noLabel = false } = $$props;
 	let { label = null } = $$props;
-	let { type = "text" } = $$props, { step = "" } = $$props;
+	let { type = "text" } = $$props;
+	let { step = "" } = $$props;
 	let { value = uninitializedValue } = $$props;
 	let { files = uninitializedValue } = $$props;
 	let { dirty = false } = $$props;
@@ -14846,8 +14863,8 @@ const file$i = "node_modules\\@smui\\checkbox\\Checkbox.svelte";
 function create_fragment$i(ctx) {
 	let div2;
 	let input;
-	let input_value_value;
 	let input_class_value;
+	let input_value_value;
 	let useActions_action;
 	let t0;
 	let div1;
@@ -14863,15 +14880,15 @@ function create_fragment$i(ctx) {
 
 	let input_levels = [
 		{
-			__value: input_value_value = /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
-			? /*value*/ ctx[3]
-			: /*valueKey*/ ctx[4]
+			class: input_class_value = "mdc-checkbox__native-control " + /*input$class*/ ctx[6]
 		},
 		{ type: "checkbox" },
 		/*inputProps*/ ctx[11],
 		{ disabled: /*disabled*/ ctx[2] },
 		{
-			class: input_class_value = "mdc-checkbox__native-control " + /*input$class*/ ctx[6]
+			__value: input_value_value = /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
+			? /*value*/ ctx[3]
+			: /*valueKey*/ ctx[4]
 		},
 		exclude(prefixFilter(/*$$props*/ ctx[15], "input$"), ["use", "class"])
 	];
@@ -14956,8 +14973,8 @@ function create_fragment$i(ctx) {
 					listen_dev(input, "change", /*input_change_handler*/ ctx[22]),
 					listen_dev(input, "change", /*handleChange*/ ctx[14], false, false, false),
 					listen_dev(input, "input", /*handleChange*/ ctx[14], false, false, false),
-					listen_dev(input, "change", /*change_handler*/ ctx[21], false, false, false),
-					listen_dev(input, "input", /*input_handler*/ ctx[20], false, false, false),
+					listen_dev(input, "change", /*change_handler*/ ctx[20], false, false, false),
+					listen_dev(input, "input", /*input_handler*/ ctx[21], false, false, false),
 					action_destroyer(useActions_action_1 = useActions.call(null, div2, /*use*/ ctx[0])),
 					action_destroyer(forwardEvents_action = /*forwardEvents*/ ctx[9].call(null, div2))
 				];
@@ -14967,13 +14984,13 @@ function create_fragment$i(ctx) {
 		},
 		p: function update(ctx, dirty) {
 			set_attributes(input, input_data = get_spread_update(input_levels, [
-				dirty[0] & /*valueKey, value*/ 24 && input_value_value !== (input_value_value = /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
-				? /*value*/ ctx[3]
-				: /*valueKey*/ ctx[4]) && { __value: input_value_value },
+				dirty[0] & /*input$class*/ 64 && input_class_value !== (input_class_value = "mdc-checkbox__native-control " + /*input$class*/ ctx[6]) && { class: input_class_value },
 				{ type: "checkbox" },
 				/*inputProps*/ ctx[11],
 				dirty[0] & /*disabled*/ 4 && { disabled: /*disabled*/ ctx[2] },
-				dirty[0] & /*input$class*/ 64 && input_class_value !== (input_class_value = "mdc-checkbox__native-control " + /*input$class*/ ctx[6]) && { class: input_class_value },
+				dirty[0] & /*valueKey, value*/ 24 && input_value_value !== (input_value_value = /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
+				? /*value*/ ctx[3]
+				: /*valueKey*/ ctx[4]) && { __value: input_value_value },
 				dirty[0] & /*$$props*/ 32768 && exclude(prefixFilter(/*$$props*/ ctx[15], "input$"), ["use", "class"])
 			]));
 
@@ -15111,11 +15128,11 @@ function instance$i($$self, $$props, $$invalidate) {
 	let { $$slots = {}, $$scope } = $$props;
 	validate_slots("Checkbox", $$slots, []);
 
-	function input_handler(event) {
+	function change_handler(event) {
 		bubble($$self, event);
 	}
 
-	function change_handler(event) {
+	function input_handler(event) {
 		bubble($$self, event);
 	}
 
@@ -15297,8 +15314,8 @@ function instance$i($$self, $$props, $$invalidate) {
 		checked,
 		indeterminate,
 		getId,
-		input_handler,
 		change_handler,
+		input_handler,
 		input_change_handler,
 		div2_binding
 	];
@@ -18154,19 +18171,19 @@ function create_fragment$p(ctx) {
 	let dispose;
 
 	let input_levels = [
-		exclude(prefixFilter(/*$$props*/ ctx[13], "input$"), ["use", "class"]),
+		{
+			class: input_class_value = "mdc-switch__native-control " + /*input$class*/ ctx[6]
+		},
 		{ type: "checkbox" },
 		{ role: "switch" },
 		/*inputProps*/ ctx[11],
 		{ disabled: /*disabled*/ ctx[2] },
 		{
-			class: input_class_value = "mdc-switch__native-control " + /*input$class*/ ctx[6]
-		},
-		{
 			__value: input_value_value = /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
 			? /*value*/ ctx[3]
 			: /*valueKey*/ ctx[4]
-		}
+		},
+		exclude(prefixFilter(/*$$props*/ ctx[13], "input$"), ["use", "class"])
 	];
 
 	let input_data = {};
@@ -18236,15 +18253,15 @@ function create_fragment$p(ctx) {
 		},
 		p: function update(ctx, [dirty]) {
 			set_attributes(input, input_data = get_spread_update(input_levels, [
-				dirty & /*$$props*/ 8192 && exclude(prefixFilter(/*$$props*/ ctx[13], "input$"), ["use", "class"]),
+				dirty & /*input$class*/ 64 && input_class_value !== (input_class_value = "mdc-switch__native-control " + /*input$class*/ ctx[6]) && { class: input_class_value },
 				{ type: "checkbox" },
 				{ role: "switch" },
 				/*inputProps*/ ctx[11],
 				dirty & /*disabled*/ 4 && { disabled: /*disabled*/ ctx[2] },
-				dirty & /*input$class*/ 64 && input_class_value !== (input_class_value = "mdc-switch__native-control " + /*input$class*/ ctx[6]) && { class: input_class_value },
 				dirty & /*valueKey, value*/ 24 && input_value_value !== (input_value_value = /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
 				? /*value*/ ctx[3]
-				: /*valueKey*/ ctx[4]) && { __value: input_value_value }
+				: /*valueKey*/ ctx[4]) && { __value: input_value_value },
+				dirty & /*$$props*/ 8192 && exclude(prefixFilter(/*$$props*/ ctx[13], "input$"), ["use", "class"])
 			]));
 
 			if (useActions_action && is_function(useActions_action.update) && dirty & /*input$use*/ 32) useActions_action.update.call(null, /*input$use*/ ctx[5]);
@@ -20400,24 +20417,24 @@ function create_else_block$4(ctx) {
 	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[19], null);
 
 	let li_levels = [
-		/*role*/ ctx[6] === "option"
-		? {
-				"aria-selected": /*selected*/ ctx[7] ? "true" : "false"
-			}
-		: {},
-		/*props*/ ctx[12],
 		{
 			class: li_class_value = "\n      mdc-list-item\n      " + /*className*/ ctx[2] + "\n      " + (/*activated*/ ctx[5] ? "mdc-list-item--activated" : "") + "\n      " + (/*selected*/ ctx[7] ? "mdc-list-item--selected" : "") + "\n      " + (/*disabled*/ ctx[8] ? "mdc-list-item--disabled" : "") + "\n      " + (/*role*/ ctx[6] === "menuitem" && /*selected*/ ctx[7]
 			? "mdc-menu-item--selected"
 			: "") + "\n    "
 		},
 		{ role: /*role*/ ctx[6] },
+		/*role*/ ctx[6] === "option"
+		? {
+				"aria-selected": /*selected*/ ctx[7] ? "true" : "false"
+			}
+		: {},
 		/*role*/ ctx[6] === "radio" || /*role*/ ctx[6] === "checkbox"
 		? {
 				"aria-checked": /*checked*/ ctx[10] ? "true" : "false"
 			}
 		: {},
-		{ tabindex: /*tabindex*/ ctx[0] }
+		{ tabindex: /*tabindex*/ ctx[0] },
+		/*props*/ ctx[12]
 	];
 
 	let li_data = {};
@@ -20467,22 +20484,22 @@ function create_else_block$4(ctx) {
 			}
 
 			set_attributes(li, li_data = get_spread_update(li_levels, [
+				(!current || dirty & /*className, activated, selected, disabled, role*/ 484 && li_class_value !== (li_class_value = "\n      mdc-list-item\n      " + /*className*/ ctx[2] + "\n      " + (/*activated*/ ctx[5] ? "mdc-list-item--activated" : "") + "\n      " + (/*selected*/ ctx[7] ? "mdc-list-item--selected" : "") + "\n      " + (/*disabled*/ ctx[8] ? "mdc-list-item--disabled" : "") + "\n      " + (/*role*/ ctx[6] === "menuitem" && /*selected*/ ctx[7]
+				? "mdc-menu-item--selected"
+				: "") + "\n    ")) && { class: li_class_value },
+				(!current || dirty & /*role*/ 64) && { role: /*role*/ ctx[6] },
 				dirty & /*role, selected*/ 192 && (/*role*/ ctx[6] === "option"
 				? {
 						"aria-selected": /*selected*/ ctx[7] ? "true" : "false"
 					}
 				: {}),
-				dirty & /*props*/ 4096 && /*props*/ ctx[12],
-				(!current || dirty & /*className, activated, selected, disabled, role*/ 484 && li_class_value !== (li_class_value = "\n      mdc-list-item\n      " + /*className*/ ctx[2] + "\n      " + (/*activated*/ ctx[5] ? "mdc-list-item--activated" : "") + "\n      " + (/*selected*/ ctx[7] ? "mdc-list-item--selected" : "") + "\n      " + (/*disabled*/ ctx[8] ? "mdc-list-item--disabled" : "") + "\n      " + (/*role*/ ctx[6] === "menuitem" && /*selected*/ ctx[7]
-				? "mdc-menu-item--selected"
-				: "") + "\n    ")) && { class: li_class_value },
-				(!current || dirty & /*role*/ 64) && { role: /*role*/ ctx[6] },
 				dirty & /*role, checked*/ 1088 && (/*role*/ ctx[6] === "radio" || /*role*/ ctx[6] === "checkbox"
 				? {
 						"aria-checked": /*checked*/ ctx[10] ? "true" : "false"
 					}
 				: {}),
-				(!current || dirty & /*tabindex*/ 1) && { tabindex: /*tabindex*/ ctx[0] }
+				(!current || dirty & /*tabindex*/ 1) && { tabindex: /*tabindex*/ ctx[0] },
+				dirty & /*props*/ 4096 && /*props*/ ctx[12]
 			]));
 
 			if (useActions_action && is_function(useActions_action.update) && dirty & /*use*/ 2) useActions_action.update.call(null, /*use*/ ctx[1]);
@@ -20648,13 +20665,13 @@ function create_if_block$9(ctx) {
 	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[19], null);
 
 	let a_levels = [
-		{ href: /*href*/ ctx[9] },
-		/*props*/ ctx[12],
 		{
 			class: a_class_value = "\n      mdc-list-item\n      " + /*className*/ ctx[2] + "\n      " + (/*activated*/ ctx[5] ? "mdc-list-item--activated" : "") + "\n      " + (/*selected*/ ctx[7] ? "mdc-list-item--selected" : "") + "\n      " + (/*disabled*/ ctx[8] ? "mdc-list-item--disabled" : "") + "\n    "
 		},
+		{ href: /*href*/ ctx[9] },
 		/*activated*/ ctx[5] ? { "aria-current": "page" } : {},
-		{ tabindex: /*tabindex*/ ctx[0] }
+		{ tabindex: /*tabindex*/ ctx[0] },
+		/*props*/ ctx[12]
 	];
 
 	let a_data = {};
@@ -20704,11 +20721,11 @@ function create_if_block$9(ctx) {
 			}
 
 			set_attributes(a, a_data = get_spread_update(a_levels, [
-				(!current || dirty & /*href*/ 512) && { href: /*href*/ ctx[9] },
-				dirty & /*props*/ 4096 && /*props*/ ctx[12],
 				(!current || dirty & /*className, activated, selected, disabled*/ 420 && a_class_value !== (a_class_value = "\n      mdc-list-item\n      " + /*className*/ ctx[2] + "\n      " + (/*activated*/ ctx[5] ? "mdc-list-item--activated" : "") + "\n      " + (/*selected*/ ctx[7] ? "mdc-list-item--selected" : "") + "\n      " + (/*disabled*/ ctx[8] ? "mdc-list-item--disabled" : "") + "\n    ")) && { class: a_class_value },
+				(!current || dirty & /*href*/ 512) && { href: /*href*/ ctx[9] },
 				dirty & /*activated*/ 32 && (/*activated*/ ctx[5] ? { "aria-current": "page" } : {}),
-				(!current || dirty & /*tabindex*/ 1) && { tabindex: /*tabindex*/ ctx[0] }
+				(!current || dirty & /*tabindex*/ 1) && { tabindex: /*tabindex*/ ctx[0] },
+				dirty & /*props*/ 4096 && /*props*/ ctx[12]
 			]));
 
 			if (useActions_action && is_function(useActions_action.update) && dirty & /*use*/ 2) useActions_action.update.call(null, /*use*/ ctx[1]);
@@ -23701,7 +23718,7 @@ function create_default_slot_5(ctx) {
 	return block;
 }
 
-// (113:8) <span slot="label">
+// (115:8) <span slot="label">
 function create_label_slot(ctx) {
 	let span;
 
@@ -23710,7 +23727,7 @@ function create_label_slot(ctx) {
 			span = element("span");
 			span.textContent = "Select All";
 			attr_dev(span, "slot", "label");
-			add_location(span, file_1, 112, 8, 4699);
+			add_location(span, file_1, 114, 8, 4707);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -23724,14 +23741,14 @@ function create_label_slot(ctx) {
 		block,
 		id: create_label_slot.name,
 		type: "slot",
-		source: "(113:8) <span slot=\\\"label\\\">",
+		source: "(115:8) <span slot=\\\"label\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (111:4) <FormField>
+// (112:4) <FormField>
 function create_default_slot_4$1(ctx) {
 	let switch_1;
 	let updating_checked;
@@ -23792,14 +23809,14 @@ function create_default_slot_4$1(ctx) {
 		block,
 		id: create_default_slot_4$1.name,
 		type: "slot",
-		source: "(111:4) <FormField>",
+		source: "(112:4) <FormField>",
 		ctx
 	});
 
 	return block;
 }
 
-// (121:12) <Icon class="material-icons" on>
+// (123:12) <Icon class="material-icons" on>
 function create_default_slot_3$1(ctx) {
 	let t;
 
@@ -23819,14 +23836,14 @@ function create_default_slot_3$1(ctx) {
 		block,
 		id: create_default_slot_3$1.name,
 		type: "slot",
-		source: "(121:12) <Icon class=\\\"material-icons\\\" on>",
+		source: "(123:12) <Icon class=\\\"material-icons\\\" on>",
 		ctx
 	});
 
 	return block;
 }
 
-// (122:12) <Icon class="material-icons" >
+// (124:12) <Icon class="material-icons" >
 function create_default_slot_2$4(ctx) {
 	let t;
 
@@ -23846,14 +23863,14 @@ function create_default_slot_2$4(ctx) {
 		block,
 		id: create_default_slot_2$4.name,
 		type: "slot",
-		source: "(122:12) <Icon class=\\\"material-icons\\\" >",
+		source: "(124:12) <Icon class=\\\"material-icons\\\" >",
 		ctx
 	});
 
 	return block;
 }
 
-// (119:8) <IconButton  toggle bind:pressed={showfiles}>
+// (121:8) <IconButton  toggle bind:pressed={showfiles}>
 function create_default_slot_1$5(ctx) {
 	let icon0;
 	let t;
@@ -23929,14 +23946,14 @@ function create_default_slot_1$5(ctx) {
 		block,
 		id: create_default_slot_1$5.name,
 		type: "slot",
-		source: "(119:8) <IconButton  toggle bind:pressed={showfiles}>",
+		source: "(121:8) <IconButton  toggle bind:pressed={showfiles}>",
 		ctx
 	});
 
 	return block;
 }
 
-// (145:4) {:else}
+// (147:4) {:else}
 function create_else_block$5(ctx) {
 	let div;
 
@@ -23945,7 +23962,7 @@ function create_else_block$5(ctx) {
 			div = element("div");
 			div.textContent = "...loading";
 			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-1g49ttf");
-			add_location(div, file_1, 145, 8, 6089);
+			add_location(div, file_1, 147, 8, 6097);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -23962,14 +23979,14 @@ function create_else_block$5(ctx) {
 		block,
 		id: create_else_block$5.name,
 		type: "else",
-		source: "(145:4) {:else}",
+		source: "(147:4) {:else}",
 		ctx
 	});
 
 	return block;
 }
 
-// (142:30) 
+// (144:30) 
 function create_if_block_3$1(ctx) {
 	let div;
 
@@ -23978,7 +23995,7 @@ function create_if_block_3$1(ctx) {
 			div = element("div");
 			div.textContent = "Location doesn't exist: Browse files again";
 			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-1g49ttf");
-			add_location(div, file_1, 143, 8, 5966);
+			add_location(div, file_1, 145, 8, 5974);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -23995,14 +24012,14 @@ function create_if_block_3$1(ctx) {
 		block,
 		id: create_if_block_3$1.name,
 		type: "if",
-		source: "(142:30) ",
+		source: "(144:30) ",
 		ctx
 	});
 
 	return block;
 }
 
-// (128:4) {#if files_loaded}
+// (130:4) {#if files_loaded}
 function create_if_block$a(ctx) {
 	let current_block_type_index;
 	let if_block;
@@ -24047,7 +24064,7 @@ function create_if_block$a(ctx) {
 
 			attr_dev(div, "class", "otherFolderlist");
 			set_style(div, "cursor", "pointer");
-			add_location(div, file_1, 133, 8, 5489);
+			add_location(div, file_1, 135, 8, 5497);
 		},
 		m: function mount(target, anchor) {
 			if (~current_block_type_index) {
@@ -24143,14 +24160,14 @@ function create_if_block$a(ctx) {
 		block,
 		id: create_if_block$a.name,
 		type: "if",
-		source: "(128:4) {#if files_loaded}",
+		source: "(130:4) {#if files_loaded}",
 		ctx
 	});
 
 	return block;
 }
 
-// (131:30) 
+// (133:30) 
 function create_if_block_2$2(ctx) {
 	let div;
 	let t0;
@@ -24164,7 +24181,7 @@ function create_if_block_2$2(ctx) {
 			t1 = text(/*filetype*/ ctx[1]);
 			t2 = text(" here!");
 			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-1g49ttf");
-			add_location(div, file_1, 131, 12, 5379);
+			add_location(div, file_1, 133, 12, 5387);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -24186,14 +24203,14 @@ function create_if_block_2$2(ctx) {
 		block,
 		id: create_if_block_2$2.name,
 		type: "if",
-		source: "(131:30) ",
+		source: "(133:30) ",
 		ctx
 	});
 
 	return block;
 }
 
-// (129:8) {#if showfiles && files != "" }
+// (131:8) {#if showfiles && files != "" }
 function create_if_block_1$3(ctx) {
 	let customchecklist;
 	let updating_fileChecked;
@@ -24270,14 +24287,14 @@ function create_if_block_1$3(ctx) {
 		block,
 		id: create_if_block_1$3.name,
 		type: "if",
-		source: "(129:8) {#if showfiles && files != \\\"\\\" }",
+		source: "(131:8) {#if showfiles && files != \\\"\\\" }",
 		ctx
 	});
 
 	return block;
 }
 
-// (137:20) <Icon class="material-icons">
+// (139:20) <Icon class="material-icons">
 function create_default_slot$9(ctx) {
 	let t;
 
@@ -24297,14 +24314,14 @@ function create_default_slot$9(ctx) {
 		block,
 		id: create_default_slot$9.name,
 		type: "slot",
-		source: "(137:20) <Icon class=\\\"material-icons\\\">",
+		source: "(139:20) <Icon class=\\\"material-icons\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (135:12) {#each otherfolders as folder (folder.id)}
+// (137:12) {#each otherfolders as folder (folder.id)}
 function create_each_block$2(key_1, ctx) {
 	let div1;
 	let icon;
@@ -24342,9 +24359,9 @@ function create_each_block$2(key_1, ctx) {
 			t1 = text(t1_value);
 			t2 = space();
 			attr_dev(div0, "class", "mdc-typography--subtitle1");
-			add_location(div0, file_1, 137, 20, 5803);
+			add_location(div0, file_1, 139, 20, 5811);
 			attr_dev(div1, "class", "align svelte-1g49ttf");
-			add_location(div1, file_1, 135, 16, 5615);
+			add_location(div1, file_1, 137, 16, 5623);
 			this.first = div1;
 		},
 		m: function mount(target, anchor) {
@@ -24408,7 +24425,7 @@ function create_each_block$2(key_1, ctx) {
 		block,
 		id: create_each_block$2.name,
 		type: "each",
-		source: "(135:12) {#each otherfolders as folder (folder.id)}",
+		source: "(137:12) {#each otherfolders as folder (folder.id)}",
 		ctx
 	});
 
@@ -24581,14 +24598,14 @@ function create_fragment$C(ctx) {
 			attr_dev(div0, "class", "align center browseIcons svelte-1g49ttf");
 			add_location(div0, file_1, 102, 0, 4092);
 			attr_dev(div1, "class", "align center svelte-1g49ttf");
-			add_location(div1, file_1, 109, 0, 4507);
+			add_location(div1, file_1, 110, 0, 4509);
 			attr_dev(div2, "class", "mdc-typography--subtitle1");
-			add_location(div2, file_1, 124, 8, 5094);
+			add_location(div2, file_1, 126, 8, 5102);
 			attr_dev(div3, "class", "align folderlist svelte-1g49ttf");
-			add_location(div3, file_1, 117, 4, 4828);
+			add_location(div3, file_1, 119, 4, 4836);
 			attr_dev(div4, "class", "folderfile-list svelte-1g49ttf");
 			attr_dev(div4, "id", div4_id_value = "" + (/*filetype*/ ctx[1] + "_filebrowser"));
-			add_location(div4, file_1, 116, 0, 4765);
+			add_location(div4, file_1, 118, 0, 4773);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -30804,8 +30821,8 @@ const file$I = "node_modules\\@smui\\radio\\Radio.svelte";
 function create_fragment$N(ctx) {
 	let div3;
 	let input;
-	let input_value_value;
 	let input_class_value;
+	let input_value_value;
 	let useActions_action;
 	let t0;
 	let div2;
@@ -30820,15 +30837,15 @@ function create_fragment$N(ctx) {
 
 	let input_levels = [
 		{
-			value: input_value_value = /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
-			? /*value*/ ctx[3]
-			: /*valueKey*/ ctx[4]
+			class: input_class_value = "mdc-radio__native-control " + /*input$class*/ ctx[6]
 		},
 		{ type: "radio" },
 		/*inputProps*/ ctx[11],
 		{ disabled: /*disabled*/ ctx[2] },
 		{
-			class: input_class_value = "mdc-radio__native-control " + /*input$class*/ ctx[6]
+			value: input_value_value = /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
+			? /*value*/ ctx[3]
+			: /*valueKey*/ ctx[4]
 		},
 		{ checked: /*checked*/ ctx[8] },
 		exclude(prefixFilter(/*$$props*/ ctx[13], "input$"), ["use", "class"])
@@ -30901,13 +30918,13 @@ function create_fragment$N(ctx) {
 		},
 		p: function update(ctx, [dirty]) {
 			set_attributes(input, input_data = get_spread_update(input_levels, [
-				dirty & /*valueKey, value*/ 24 && input_value_value !== (input_value_value = /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
-				? /*value*/ ctx[3]
-				: /*valueKey*/ ctx[4]) && { value: input_value_value },
+				dirty & /*input$class*/ 64 && input_class_value !== (input_class_value = "mdc-radio__native-control " + /*input$class*/ ctx[6]) && { class: input_class_value },
 				{ type: "radio" },
 				/*inputProps*/ ctx[11],
 				dirty & /*disabled*/ 4 && { disabled: /*disabled*/ ctx[2] },
-				dirty & /*input$class*/ 64 && input_class_value !== (input_class_value = "mdc-radio__native-control " + /*input$class*/ ctx[6]) && { class: input_class_value },
+				dirty & /*valueKey, value*/ 24 && input_value_value !== (input_value_value = /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
+				? /*value*/ ctx[3]
+				: /*valueKey*/ ctx[4]) && { value: input_value_value },
 				dirty & /*checked*/ 256 && { checked: /*checked*/ ctx[8] },
 				dirty & /*$$props*/ 8192 && exclude(prefixFilter(/*$$props*/ ctx[13], "input$"), ["use", "class"])
 			]));
@@ -51801,20 +51818,20 @@ function create_if_block$p(ctx) {
 			button4 = element("button");
 			button4.textContent = "Clear";
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$15, 219, 12, 9856);
+			add_location(button0, file$15, 219, 12, 9864);
 			attr_dev(div0, "class", "align");
 			set_style(div0, "margin", "1em 0");
-			add_location(div0, file$15, 212, 8, 9298);
+			add_location(div0, file$15, 211, 8, 9296);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$15, 224, 12, 10129);
+			add_location(button1, file$15, 224, 12, 10137);
 			attr_dev(button2, "class", "button is-link");
-			add_location(button2, file$15, 226, 12, 10392);
+			add_location(button2, file$15, 226, 12, 10400);
 			attr_dev(button3, "class", "button is-link");
-			add_location(button3, file$15, 227, 12, 10529);
+			add_location(button3, file$15, 227, 12, 10537);
 			attr_dev(button4, "class", "button is-danger");
-			add_location(button4, file$15, 229, 12, 10622);
+			add_location(button4, file$15, 229, 12, 10630);
 			attr_dev(div1, "class", "align");
-			add_location(div1, file$15, 222, 8, 9998);
+			add_location(div1, file$15, 222, 8, 10006);
 			attr_dev(div2, "class", "align");
 			add_location(div2, file$15, 210, 4, 9251);
 		},
@@ -52862,7 +52879,7 @@ function init_tour_normline({filetype="felix"}={}) {
 const { console: console_1$9 } = globals;
 const file$16 = "src\\Pages\\Normline.svelte";
 
-// (162:4) <div class="buttonSlot" slot="buttonContainer">
+// (163:4) <div class="buttonSlot" slot="buttonContainer">
 function create_buttonContainer_slot(ctx) {
 	let div0;
 	let initfunctionrow;
@@ -53041,10 +53058,10 @@ function create_buttonContainer_slot(ctx) {
 			div1 = element("div");
 			create_component(customradio.$$.fragment);
 			set_style(div1, "display", "flex");
-			add_location(div1, file$16, 166, 8, 7127);
+			add_location(div1, file$16, 167, 8, 7129);
 			attr_dev(div0, "class", "buttonSlot svelte-oa7kgp");
 			attr_dev(div0, "slot", "buttonContainer");
-			add_location(div0, file$16, 161, 4, 6680);
+			add_location(div0, file$16, 162, 4, 6682);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -53178,14 +53195,14 @@ function create_buttonContainer_slot(ctx) {
 		block,
 		id: create_buttonContainer_slot.name,
 		type: "slot",
-		source: "(162:4) <div class=\\\"buttonSlot\\\" slot=\\\"buttonContainer\\\">",
+		source: "(163:4) <div class=\\\"buttonSlot\\\" slot=\\\"buttonContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (189:8) {#if graphPlotted}
+// (190:8) {#if graphPlotted}
 function create_if_block$q(ctx) {
 	let div;
 	let writefunctioncontents;
@@ -53317,7 +53334,7 @@ function create_if_block$q(ctx) {
 			t2 = space();
 			create_component(reportlayout.$$.fragment);
 			attr_dev(div, "class", "svelte-oa7kgp");
-			add_location(div, file$16, 189, 12, 8083);
+			add_location(div, file$16, 190, 12, 8085);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -53425,14 +53442,14 @@ function create_if_block$q(ctx) {
 		block,
 		id: create_if_block$q.name,
 		type: "if",
-		source: "(189:8) {#if graphPlotted}",
+		source: "(190:8) {#if graphPlotted}",
 		ctx
 	});
 
 	return block;
 }
 
-// (173:4) <div class="plotSlot" slot="plotContainer">
+// (174:4) <div class="plotSlot" slot="plotContainer">
 function create_plotContainer_slot(ctx) {
 	let div0;
 	let getfileinfotable;
@@ -53488,33 +53505,33 @@ function create_plotContainer_slot(ctx) {
 			attr_dev(div1, "class", "animated fadeIn svelte-oa7kgp");
 			attr_dev(div1, "id", "exp-theory-plot");
 			toggle_class(div1, "hide", !/*show_theoryplot*/ ctx[3]);
-			add_location(div1, file$16, 179, 12, 7566);
+			add_location(div1, file$16, 180, 12, 7568);
 			attr_dev(div2, "id", "bplot");
 			attr_dev(div2, "class", "svelte-oa7kgp");
-			add_location(div2, file$16, 180, 12, 7666);
+			add_location(div2, file$16, 181, 12, 7668);
 			attr_dev(div3, "id", "saPlot");
 			attr_dev(div3, "class", "svelte-oa7kgp");
-			add_location(div3, file$16, 181, 12, 7702);
+			add_location(div3, file$16, 182, 12, 7704);
 			attr_dev(div4, "id", "avgplot");
 			attr_dev(div4, "class", "svelte-oa7kgp");
-			add_location(div4, file$16, 182, 12, 7739);
+			add_location(div4, file$16, 183, 12, 7741);
 			attr_dev(div5, "class", "animated fadeIn svelte-oa7kgp");
 			attr_dev(div5, "id", "opoplot");
 			toggle_class(div5, "hide", !/*$opoMode*/ ctx[23]);
-			add_location(div5, file$16, 183, 12, 7777);
+			add_location(div5, file$16, 184, 12, 7779);
 			attr_dev(div6, "class", "animated fadeIn svelte-oa7kgp");
 			attr_dev(div6, "id", "opoSA");
 			toggle_class(div6, "hide", !/*$opoMode*/ ctx[23]);
-			add_location(div6, file$16, 184, 12, 7862);
+			add_location(div6, file$16, 185, 12, 7864);
 			attr_dev(div7, "class", "animated fadeIn svelte-oa7kgp");
 			attr_dev(div7, "id", "opoRelPlot");
 			toggle_class(div7, "hide", !/*$opoMode*/ ctx[23]);
-			add_location(div7, file$16, 185, 12, 7945);
+			add_location(div7, file$16, 186, 12, 7947);
 			attr_dev(div8, "class", "felixPlot svelte-oa7kgp");
-			add_location(div8, file$16, 178, 8, 7529);
+			add_location(div8, file$16, 179, 8, 7531);
 			attr_dev(div0, "class", "plotSlot svelte-oa7kgp");
 			attr_dev(div0, "slot", "plotContainer");
-			add_location(div0, file$16, 172, 4, 7332);
+			add_location(div0, file$16, 173, 4, 7334);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -53605,14 +53622,14 @@ function create_plotContainer_slot(ctx) {
 		block,
 		id: create_plotContainer_slot.name,
 		type: "slot",
-		source: "(173:4) <div class=\\\"plotSlot\\\" slot=\\\"plotContainer\\\">",
+		source: "(174:4) <div class=\\\"plotSlot\\\" slot=\\\"plotContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (161:0) <Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>
+// (162:0) <Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>
 function create_default_slot$s(ctx) {
 	let t;
 
@@ -53635,7 +53652,7 @@ function create_default_slot$s(ctx) {
 		block,
 		id: create_default_slot$s.name,
 		type: "slot",
-		source: "(161:0) <Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>",
+		source: "(162:0) <Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>",
 		ctx
 	});
 
@@ -59548,17 +59565,855 @@ class Settings extends SvelteComponentDev {
 	}
 }
 
-/* src\Pages\Misc.svelte generated by Svelte v3.24.0 */
-const file$1b = "src\\Pages\\Misc.svelte";
+/* src\components\Terminal.svelte generated by Svelte v3.24.0 */
+
+const { console: console_1$e } = globals;
+const file$1b = "src\\components\\Terminal.svelte";
+
+function get_each_context$b(ctx, list, i) {
+	const child_ctx = ctx.slice();
+	child_ctx[14] = list[i].color;
+	child_ctx[15] = list[i].results;
+	return child_ctx;
+}
+
+// (96:12) <IconButton class="material-icons" on:click={terminalShell}>
+function create_default_slot_1$e(ctx) {
+	let t;
+
+	const block = {
+		c: function create() {
+			t = text("play_arrow");
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, t, anchor);
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(t);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_default_slot_1$e.name,
+		type: "slot",
+		source: "(96:12) <IconButton class=\\\"material-icons\\\" on:click={terminalShell}>",
+		ctx
+	});
+
+	return block;
+}
+
+// (101:12) <IconButton class="material-icons is-pulled-right" style="background: #f14668; border-radius: 2em;" on:click="{()=>commandResults=[{color:colorSets.normal, results:`>> cleared`}] }">
+function create_default_slot$w(ctx) {
+	let t;
+
+	const block = {
+		c: function create() {
+			t = text("clear");
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, t, anchor);
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(t);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_default_slot$w.name,
+		type: "slot",
+		source: "(101:12) <IconButton class=\\\"material-icons is-pulled-right\\\" style=\\\"background: #f14668; border-radius: 2em;\\\" on:click=\\\"{()=>commandResults=[{color:colorSets.normal, results:`>> cleared`}] }\\\">",
+		ctx
+	});
+
+	return block;
+}
+
+// (113:16) {#each commandResults as {color, results}}
+function create_each_block$b(ctx) {
+	let h1;
+	let t_value = /*results*/ ctx[15] + "";
+	let t;
+
+	const block = {
+		c: function create() {
+			h1 = element("h1");
+			t = text(t_value);
+			attr_dev(h1, "class", "subtitle");
+			set_style(h1, "color", /*color*/ ctx[14]);
+			set_style(h1, "font-size", /*teminalFontSize*/ ctx[3] + "px");
+			set_style(h1, "white-space", "pre-wrap");
+			add_location(h1, file$1b, 114, 24, 3894);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, h1, anchor);
+			append_dev(h1, t);
+		},
+		p: function update(ctx, dirty) {
+			if (dirty & /*commandResults*/ 4 && t_value !== (t_value = /*results*/ ctx[15] + "")) set_data_dev(t, t_value);
+
+			if (dirty & /*commandResults*/ 4) {
+				set_style(h1, "color", /*color*/ ctx[14]);
+			}
+
+			if (dirty & /*teminalFontSize*/ 8) {
+				set_style(h1, "font-size", /*teminalFontSize*/ ctx[3] + "px");
+			}
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(h1);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_each_block$b.name,
+		type: "each",
+		source: "(113:16) {#each commandResults as {color, results}}",
+		ctx
+	});
+
+	return block;
+}
 
 function create_fragment$1i(ctx) {
-	let section;
+	let premodal;
+	let updating_preModal;
+	let t0;
 	let div6;
 	let div2;
+	let div0;
+	let textfield0;
+	let updating_value;
+	let t1;
+	let textfield1;
+	let updating_value_1;
+	let t2;
+	let div1;
+	let iconbutton0;
+	let t3;
+	let customswitch;
+	let updating_selected;
+	let t4;
+	let textfield2;
+	let updating_value_2;
+	let t5;
+	let iconbutton1;
+	let t6;
+	let div5;
+	let div4;
+	let div3;
+	let current;
+
+	function premodal_preModal_binding(value) {
+		/*premodal_preModal_binding*/ ctx[8].call(null, value);
+	}
+
+	let premodal_props = {};
+
+	if (/*preModal*/ ctx[4] !== void 0) {
+		premodal_props.preModal = /*preModal*/ ctx[4];
+	}
+
+	premodal = new PreModal({ props: premodal_props, $$inline: true });
+	binding_callbacks.push(() => bind(premodal, "preModal", premodal_preModal_binding));
+
+	function textfield0_value_binding(value) {
+		/*textfield0_value_binding*/ ctx[9].call(null, value);
+	}
+
+	let textfield0_props = { label: "Enter command to run" };
+
+	if (/*commandToRun*/ ctx[0] !== void 0) {
+		textfield0_props.value = /*commandToRun*/ ctx[0];
+	}
+
+	textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
+	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
+
+	function textfield1_value_binding(value) {
+		/*textfield1_value_binding*/ ctx[10].call(null, value);
+	}
+
+	let textfield1_props = { label: "Enter command-arg" };
+
+	if (/*commandArgsToRun*/ ctx[1] !== void 0) {
+		textfield1_props.value = /*commandArgsToRun*/ ctx[1];
+	}
+
+	textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
+	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding));
+
+	iconbutton0 = new IconButton({
+			props: {
+				class: "material-icons",
+				$$slots: { default: [create_default_slot_1$e] },
+				$$scope: { ctx }
+			},
+			$$inline: true
+		});
+
+	iconbutton0.$on("click", /*terminalShell*/ ctx[7]);
+
+	function customswitch_selected_binding(value) {
+		/*customswitch_selected_binding*/ ctx[11].call(null, value);
+	}
+
+	let customswitch_props = { style: "margin: 0 1em;", label: "Shell" };
+
+	if (/*openShellTerminal*/ ctx[5] !== void 0) {
+		customswitch_props.selected = /*openShellTerminal*/ ctx[5];
+	}
+
+	customswitch = new CustomSwitch({
+			props: customswitch_props,
+			$$inline: true
+		});
+
+	binding_callbacks.push(() => bind(customswitch, "selected", customswitch_selected_binding));
+
+	function textfield2_value_binding(value) {
+		/*textfield2_value_binding*/ ctx[12].call(null, value);
+	}
+
+	let textfield2_props = {
+		type: "number",
+		step: "1",
+		min: "0",
+		variant: "outlined",
+		style: "width:7em",
+		label: "Font Size"
+	};
+
+	if (/*teminalFontSize*/ ctx[3] !== void 0) {
+		textfield2_props.value = /*teminalFontSize*/ ctx[3];
+	}
+
+	textfield2 = new Textfield({ props: textfield2_props, $$inline: true });
+	binding_callbacks.push(() => bind(textfield2, "value", textfield2_value_binding));
+
+	iconbutton1 = new IconButton({
+			props: {
+				class: "material-icons is-pulled-right",
+				style: "background: #f14668; border-radius: 2em;",
+				$$slots: { default: [create_default_slot$w] },
+				$$scope: { ctx }
+			},
+			$$inline: true
+		});
+
+	iconbutton1.$on("click", /*click_handler*/ ctx[13]);
+	let each_value = /*commandResults*/ ctx[2];
+	validate_each_argument(each_value);
+	let each_blocks = [];
+
+	for (let i = 0; i < each_value.length; i += 1) {
+		each_blocks[i] = create_each_block$b(get_each_context$b(ctx, each_value, i));
+	}
+
+	const block = {
+		c: function create() {
+			create_component(premodal.$$.fragment);
+			t0 = space();
+			div6 = element("div");
+			div2 = element("div");
+			div0 = element("div");
+			create_component(textfield0.$$.fragment);
+			t1 = space();
+			create_component(textfield1.$$.fragment);
+			t2 = space();
+			div1 = element("div");
+			create_component(iconbutton0.$$.fragment);
+			t3 = space();
+			create_component(customswitch.$$.fragment);
+			t4 = space();
+			create_component(textfield2.$$.fragment);
+			t5 = space();
+			create_component(iconbutton1.$$.fragment);
+			t6 = space();
+			div5 = element("div");
+			div4 = element("div");
+			div3 = element("div");
+
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+
+			attr_dev(div0, "class", "run");
+			set_style(div0, "display", "flex");
+			set_style(div0, "align-items", "center");
+			set_style(div0, "margin-bottom", "1em");
+			add_location(div0, file$1b, 89, 8, 2772);
+			attr_dev(div1, "class", "run");
+			set_style(div1, "display", "flex");
+			set_style(div1, "align-items", "center");
+			set_style(div1, "margin-bottom", "1em");
+			add_location(div1, file$1b, 94, 8, 3043);
+			attr_dev(div2, "class", "commandInput");
+			add_location(div2, file$1b, 87, 4, 2730);
+			add_location(div3, file$1b, 111, 12, 3799);
+			add_location(div4, file$1b, 109, 8, 3778);
+			attr_dev(div5, "class", "box svelte-yx3teq");
+			attr_dev(div5, "id", "terminal");
+			add_location(div5, file$1b, 107, 4, 3735);
+			attr_dev(div6, "class", "content contentBox terminalBox svelte-yx3teq");
+			add_location(div6, file$1b, 85, 0, 2677);
+		},
+		l: function claim(nodes) {
+			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		},
+		m: function mount(target, anchor) {
+			mount_component(premodal, target, anchor);
+			insert_dev(target, t0, anchor);
+			insert_dev(target, div6, anchor);
+			append_dev(div6, div2);
+			append_dev(div2, div0);
+			mount_component(textfield0, div0, null);
+			append_dev(div0, t1);
+			mount_component(textfield1, div0, null);
+			append_dev(div2, t2);
+			append_dev(div2, div1);
+			mount_component(iconbutton0, div1, null);
+			append_dev(div1, t3);
+			mount_component(customswitch, div1, null);
+			append_dev(div1, t4);
+			mount_component(textfield2, div1, null);
+			append_dev(div1, t5);
+			mount_component(iconbutton1, div1, null);
+			append_dev(div6, t6);
+			append_dev(div6, div5);
+			append_dev(div5, div4);
+			append_dev(div4, div3);
+
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(div3, null);
+			}
+
+			current = true;
+		},
+		p: function update(ctx, [dirty]) {
+			const premodal_changes = {};
+
+			if (!updating_preModal && dirty & /*preModal*/ 16) {
+				updating_preModal = true;
+				premodal_changes.preModal = /*preModal*/ ctx[4];
+				add_flush_callback(() => updating_preModal = false);
+			}
+
+			premodal.$set(premodal_changes);
+			const textfield0_changes = {};
+
+			if (!updating_value && dirty & /*commandToRun*/ 1) {
+				updating_value = true;
+				textfield0_changes.value = /*commandToRun*/ ctx[0];
+				add_flush_callback(() => updating_value = false);
+			}
+
+			textfield0.$set(textfield0_changes);
+			const textfield1_changes = {};
+
+			if (!updating_value_1 && dirty & /*commandArgsToRun*/ 2) {
+				updating_value_1 = true;
+				textfield1_changes.value = /*commandArgsToRun*/ ctx[1];
+				add_flush_callback(() => updating_value_1 = false);
+			}
+
+			textfield1.$set(textfield1_changes);
+			const iconbutton0_changes = {};
+
+			if (dirty & /*$$scope*/ 262144) {
+				iconbutton0_changes.$$scope = { dirty, ctx };
+			}
+
+			iconbutton0.$set(iconbutton0_changes);
+			const customswitch_changes = {};
+
+			if (!updating_selected && dirty & /*openShellTerminal*/ 32) {
+				updating_selected = true;
+				customswitch_changes.selected = /*openShellTerminal*/ ctx[5];
+				add_flush_callback(() => updating_selected = false);
+			}
+
+			customswitch.$set(customswitch_changes);
+			const textfield2_changes = {};
+
+			if (!updating_value_2 && dirty & /*teminalFontSize*/ 8) {
+				updating_value_2 = true;
+				textfield2_changes.value = /*teminalFontSize*/ ctx[3];
+				add_flush_callback(() => updating_value_2 = false);
+			}
+
+			textfield2.$set(textfield2_changes);
+			const iconbutton1_changes = {};
+
+			if (dirty & /*$$scope*/ 262144) {
+				iconbutton1_changes.$$scope = { dirty, ctx };
+			}
+
+			iconbutton1.$set(iconbutton1_changes);
+
+			if (dirty & /*commandResults, teminalFontSize*/ 12) {
+				each_value = /*commandResults*/ ctx[2];
+				validate_each_argument(each_value);
+				let i;
+
+				for (i = 0; i < each_value.length; i += 1) {
+					const child_ctx = get_each_context$b(ctx, each_value, i);
+
+					if (each_blocks[i]) {
+						each_blocks[i].p(child_ctx, dirty);
+					} else {
+						each_blocks[i] = create_each_block$b(child_ctx);
+						each_blocks[i].c();
+						each_blocks[i].m(div3, null);
+					}
+				}
+
+				for (; i < each_blocks.length; i += 1) {
+					each_blocks[i].d(1);
+				}
+
+				each_blocks.length = each_value.length;
+			}
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(premodal.$$.fragment, local);
+			transition_in(textfield0.$$.fragment, local);
+			transition_in(textfield1.$$.fragment, local);
+			transition_in(iconbutton0.$$.fragment, local);
+			transition_in(customswitch.$$.fragment, local);
+			transition_in(textfield2.$$.fragment, local);
+			transition_in(iconbutton1.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(premodal.$$.fragment, local);
+			transition_out(textfield0.$$.fragment, local);
+			transition_out(textfield1.$$.fragment, local);
+			transition_out(iconbutton0.$$.fragment, local);
+			transition_out(customswitch.$$.fragment, local);
+			transition_out(textfield2.$$.fragment, local);
+			transition_out(iconbutton1.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			destroy_component(premodal, detaching);
+			if (detaching) detach_dev(t0);
+			if (detaching) detach_dev(div6);
+			destroy_component(textfield0);
+			destroy_component(textfield1);
+			destroy_component(iconbutton0);
+			destroy_component(customswitch);
+			destroy_component(textfield2);
+			destroy_component(iconbutton1);
+			destroy_each(each_blocks, detaching);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_fragment$1i.name,
+		type: "component",
+		source: "",
+		ctx
+	});
+
+	return block;
+}
+
+function instance$1i($$self, $$props, $$invalidate) {
+	let colorSets = {
+		warning: "#ffdd57",
+		danger: "#f14668",
+		info: "#2098d1",
+		normal: "#fafafa",
+		success: "#20f996"
+	};
+
+	let commandToRun = "",
+		commandArgsToRun = "",
+		commandResults = [],
+		teminalFontSize = 20;
+
+	let preModal = {};
+	let openShellTerminal = false;
+
+	async function terminalShell() {
+		await tick();
+
+		if (!commandToRun) {
+			return createToast$2("No command entered", "warning");
+		}
+
+		$$invalidate(2, commandResults = [
+			...commandResults,
+			{
+				color: colorSets.normal,
+				results: `>> ${commandToRun} ${commandArgsToRun.replace(",", " ")}`
+			}
+		]);
+
+		let ls;
+
+		try {
+			ls = spawn(commandToRun, commandArgsToRun.split(",").map(arg => arg.trim()), {
+				detached: true,
+				stdio: "pipe",
+				shell: openShellTerminal
+			});
+		} catch(error) {
+			$$invalidate(4, preModal.modalContent = error, preModal);
+			$$invalidate(4, preModal.open = true, preModal);
+		}
+
+		ls.stdout.on("data", data => {
+			$$invalidate(2, commandResults = [
+				...commandResults,
+				{
+					color: colorSets.info,
+					results: `>> ${data || ""}`
+				}
+			]);
+		});
+
+		ls.stderr.on("data", data => {
+			$$invalidate(2, commandResults = [
+				...commandResults,
+				{
+					color: colorSets.danger,
+					results: `>> ${data || ""}`
+				}
+			]);
+		});
+
+		ls.on("close", code => {
+			$$invalidate(2, commandResults = [
+				...commandResults,
+				{
+					color: code === 1 ? colorSets.danger : colorSets.success,
+					results: `>> child process exited with code ${code}`
+				}
+			]);
+
+			const outputLog = `${new Date().toLocaleString()}\n\n-----------------------------------------\nRunning terminal commands\n${commandResults.map(cmd => cmd.results).join("")}\n-----------------------------------------\n`;
+
+			try {
+				fs.writeFileSync(path.resolve(__dirname, "output.log"), outputLog);
+			} catch(error) {
+				createToast$2("Could not save the outputs to file: output.log", "warning");
+			}
+		});
+	}
+
+	const writable_props = [];
+
+	Object.keys($$props).forEach(key => {
+		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1$e.warn(`<Terminal> was created with unknown prop '${key}'`);
+	});
+
+	let { $$slots = {}, $$scope } = $$props;
+	validate_slots("Terminal", $$slots, []);
+
+	function premodal_preModal_binding(value) {
+		preModal = value;
+		$$invalidate(4, preModal);
+	}
+
+	function textfield0_value_binding(value) {
+		commandToRun = value;
+		$$invalidate(0, commandToRun);
+	}
+
+	function textfield1_value_binding(value) {
+		commandArgsToRun = value;
+		$$invalidate(1, commandArgsToRun);
+	}
+
+	function customswitch_selected_binding(value) {
+		openShellTerminal = value;
+		$$invalidate(5, openShellTerminal);
+	}
+
+	function textfield2_value_binding(value) {
+		teminalFontSize = value;
+		$$invalidate(3, teminalFontSize);
+	}
+
+	const click_handler = () => $$invalidate(2, commandResults = [
+		{
+			color: colorSets.normal,
+			results: `>> cleared`
+		}
+	]);
+
+	$$self.$capture_state = () => ({
+		IconButton,
+		Icon,
+		createToast: createToast$2,
+		PreModal,
+		tick,
+		Textfield,
+		CustomSwitch,
+		colorSets,
+		commandToRun,
+		commandArgsToRun,
+		commandResults,
+		teminalFontSize,
+		preModal,
+		openShellTerminal,
+		terminalShell
+	});
+
+	$$self.$inject_state = $$props => {
+		if ("colorSets" in $$props) $$invalidate(6, colorSets = $$props.colorSets);
+		if ("commandToRun" in $$props) $$invalidate(0, commandToRun = $$props.commandToRun);
+		if ("commandArgsToRun" in $$props) $$invalidate(1, commandArgsToRun = $$props.commandArgsToRun);
+		if ("commandResults" in $$props) $$invalidate(2, commandResults = $$props.commandResults);
+		if ("teminalFontSize" in $$props) $$invalidate(3, teminalFontSize = $$props.teminalFontSize);
+		if ("preModal" in $$props) $$invalidate(4, preModal = $$props.preModal);
+		if ("openShellTerminal" in $$props) $$invalidate(5, openShellTerminal = $$props.openShellTerminal);
+	};
+
+	if ($$props && "$$inject" in $$props) {
+		$$self.$inject_state($$props.$$inject);
+	}
+
+	$$self.$$.update = () => {
+		if ($$self.$$.dirty & /*commandResults*/ 4) {
+			 console.log(commandResults);
+		}
+	};
+
+	return [
+		commandToRun,
+		commandArgsToRun,
+		commandResults,
+		teminalFontSize,
+		preModal,
+		openShellTerminal,
+		colorSets,
+		terminalShell,
+		premodal_preModal_binding,
+		textfield0_value_binding,
+		textfield1_value_binding,
+		customswitch_selected_binding,
+		textfield2_value_binding,
+		click_handler
+	];
+}
+
+class Terminal extends SvelteComponentDev {
+	constructor(options) {
+		super(options);
+		init(this, options, instance$1i, create_fragment$1i, safe_not_equal, {});
+
+		dispatch_dev("SvelteRegisterComponent", {
+			component: this,
+			tagName: "Terminal",
+			options,
+			id: create_fragment$1i.name
+		});
+	}
+}
+
+/* src\Pages\Misc.svelte generated by Svelte v3.24.0 */
+const file$1c = "src\\Pages\\Misc.svelte";
+
+// (96:24) <Label>
+function create_default_slot_2$c(ctx) {
+	let t_value = /*tab*/ ctx[51] + "";
+	let t;
+
+	const block = {
+		c: function create() {
+			t = text(t_value);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, t, anchor);
+		},
+		p: function update(ctx, dirty) {
+			if (dirty[1] & /*tab*/ 1048576 && t_value !== (t_value = /*tab*/ ctx[51] + "")) set_data_dev(t, t_value);
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(t);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_default_slot_2$c.name,
+		type: "slot",
+		source: "(96:24) <Label>",
+		ctx
+	});
+
+	return block;
+}
+
+// (96:12) <Tab {tab}>
+function create_default_slot_1$f(ctx) {
+	let label;
+	let current;
+
+	label = new Label({
+			props: {
+				$$slots: { default: [create_default_slot_2$c] },
+				$$scope: { ctx }
+			},
+			$$inline: true
+		});
+
+	const block = {
+		c: function create() {
+			create_component(label.$$.fragment);
+		},
+		m: function mount(target, anchor) {
+			mount_component(label, target, anchor);
+			current = true;
+		},
+		p: function update(ctx, dirty) {
+			const label_changes = {};
+
+			if (dirty[1] & /*$$scope, tab*/ 3145728) {
+				label_changes.$$scope = { dirty, ctx };
+			}
+
+			label.$set(label_changes);
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(label.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(label.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			destroy_component(label, detaching);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_default_slot_1$f.name,
+		type: "slot",
+		source: "(96:12) <Tab {tab}>",
+		ctx
+	});
+
+	return block;
+}
+
+// (95:8) <TabBar tabs={navItems} let:tab bind:active>
+function create_default_slot$x(ctx) {
+	let tab;
+	let current;
+
+	tab = new Tab({
+			props: {
+				tab: /*tab*/ ctx[51],
+				$$slots: { default: [create_default_slot_1$f] },
+				$$scope: { ctx }
+			},
+			$$inline: true
+		});
+
+	const block = {
+		c: function create() {
+			create_component(tab.$$.fragment);
+		},
+		m: function mount(target, anchor) {
+			mount_component(tab, target, anchor);
+			current = true;
+		},
+		p: function update(ctx, dirty) {
+			const tab_changes = {};
+			if (dirty[1] & /*tab*/ 1048576) tab_changes.tab = /*tab*/ ctx[51];
+
+			if (dirty[1] & /*$$scope, tab*/ 3145728) {
+				tab_changes.$$scope = { dirty, ctx };
+			}
+
+			tab.$set(tab_changes);
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(tab.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(tab.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			destroy_component(tab, detaching);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_default_slot$x.name,
+		type: "slot",
+		source: "(95:8) <TabBar tabs={navItems} let:tab bind:active>",
+		ctx
+	});
+
+	return block;
+}
+
+// (160:4) {:else}
+function create_else_block$b(ctx) {
+	let terminal;
+	let current;
+	terminal = new Terminal({ $$inline: true });
+
+	const block = {
+		c: function create() {
+			create_component(terminal.$$.fragment);
+		},
+		m: function mount(target, anchor) {
+			mount_component(terminal, target, anchor);
+			current = true;
+		},
+		p: noop,
+		i: function intro(local) {
+			if (current) return;
+			transition_in(terminal.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(terminal.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			destroy_component(terminal, detaching);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_else_block$b.name,
+		type: "else",
+		source: "(160:4) {:else}",
+		ctx
+	});
+
+	return block;
+}
+
+// (100:4) {#if active=="Unit Conversion"}
+function create_if_block$u(ctx) {
+	let div8;
+	let div3;
 	let div0;
 	let t1;
 	let hr0;
 	let t2;
+	let div2;
 	let textfield0;
 	let updating_value;
 	let t3;
@@ -59602,12 +60457,13 @@ function create_fragment$1i(ctx) {
 	let textfield11;
 	let updating_value_11;
 	let t18;
-	let div5;
-	let div3;
+	let div7;
+	let div4;
 	let t20;
 	let hr2;
 	let t21;
-	let div4;
+	let div6;
+	let div5;
 	let t23;
 	let textfield12;
 	let updating_value_12;
@@ -59634,7 +60490,7 @@ function create_fragment$1i(ctx) {
 	let current;
 
 	function textfield0_value_binding(value) {
-		/*textfield0_value_binding*/ ctx[20].call(null, value);
+		/*textfield0_value_binding*/ ctx[23].call(null, value);
 	}
 
 	let textfield0_props = {
@@ -59642,15 +60498,15 @@ function create_fragment$1i(ctx) {
 		label: "Hz"
 	};
 
-	if (/*hz*/ ctx[4] !== void 0) {
-		textfield0_props.value = /*hz*/ ctx[4];
+	if (/*hz*/ ctx[5] !== void 0) {
+		textfield0_props.value = /*hz*/ ctx[5];
 	}
 
 	textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
 
 	function textfield1_value_binding(value) {
-		/*textfield1_value_binding*/ ctx[21].call(null, value);
+		/*textfield1_value_binding*/ ctx[24].call(null, value);
 	}
 
 	let textfield1_props = {
@@ -59658,16 +60514,16 @@ function create_fragment$1i(ctx) {
 		label: "GHz"
 	};
 
-	if (/*ghz*/ ctx[9] !== void 0) {
-		textfield1_props.value = /*ghz*/ ctx[9];
+	if (/*ghz*/ ctx[10] !== void 0) {
+		textfield1_props.value = /*ghz*/ ctx[10];
 	}
 
 	textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding));
-	textfield1.$on("change", /*change_handler*/ ctx[22]);
+	textfield1.$on("change", /*change_handler*/ ctx[25]);
 
 	function textfield2_value_binding(value) {
-		/*textfield2_value_binding*/ ctx[23].call(null, value);
+		/*textfield2_value_binding*/ ctx[26].call(null, value);
 	}
 
 	let textfield2_props = {
@@ -59675,16 +60531,16 @@ function create_fragment$1i(ctx) {
 		label: "Micron"
 	};
 
-	if (/*um*/ ctx[8] !== void 0) {
-		textfield2_props.value = /*um*/ ctx[8];
+	if (/*um*/ ctx[9] !== void 0) {
+		textfield2_props.value = /*um*/ ctx[9];
 	}
 
 	textfield2 = new Textfield({ props: textfield2_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield2, "value", textfield2_value_binding));
-	textfield2.$on("change", /*change_handler_1*/ ctx[24]);
+	textfield2.$on("change", /*change_handler_1*/ ctx[27]);
 
 	function textfield3_value_binding(value) {
-		/*textfield3_value_binding*/ ctx[25].call(null, value);
+		/*textfield3_value_binding*/ ctx[28].call(null, value);
 	}
 
 	let textfield3_props = {
@@ -59692,16 +60548,16 @@ function create_fragment$1i(ctx) {
 		label: "cm-1"
 	};
 
-	if (/*cm_1*/ ctx[7] !== void 0) {
-		textfield3_props.value = /*cm_1*/ ctx[7];
+	if (/*cm_1*/ ctx[8] !== void 0) {
+		textfield3_props.value = /*cm_1*/ ctx[8];
 	}
 
 	textfield3 = new Textfield({ props: textfield3_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield3, "value", textfield3_value_binding));
-	textfield3.$on("change", /*change_handler_2*/ ctx[26]);
+	textfield3.$on("change", /*change_handler_2*/ ctx[29]);
 
 	function textfield4_value_binding(value) {
-		/*textfield4_value_binding*/ ctx[27].call(null, value);
+		/*textfield4_value_binding*/ ctx[30].call(null, value);
 	}
 
 	let textfield4_props = {
@@ -59709,16 +60565,16 @@ function create_fragment$1i(ctx) {
 		label: "Kelvin"
 	};
 
-	if (/*kelvin*/ ctx[6] !== void 0) {
-		textfield4_props.value = /*kelvin*/ ctx[6];
+	if (/*kelvin*/ ctx[7] !== void 0) {
+		textfield4_props.value = /*kelvin*/ ctx[7];
 	}
 
 	textfield4 = new Textfield({ props: textfield4_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield4, "value", textfield4_value_binding));
-	textfield4.$on("change", /*change_handler_3*/ ctx[28]);
+	textfield4.$on("change", /*change_handler_3*/ ctx[31]);
 
 	function textfield5_value_binding(value) {
-		/*textfield5_value_binding*/ ctx[29].call(null, value);
+		/*textfield5_value_binding*/ ctx[32].call(null, value);
 	}
 
 	let textfield5_props = {
@@ -59726,16 +60582,16 @@ function create_fragment$1i(ctx) {
 		label: "eV"
 	};
 
-	if (/*eV*/ ctx[5] !== void 0) {
-		textfield5_props.value = /*eV*/ ctx[5];
+	if (/*eV*/ ctx[6] !== void 0) {
+		textfield5_props.value = /*eV*/ ctx[6];
 	}
 
 	textfield5 = new Textfield({ props: textfield5_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield5, "value", textfield5_value_binding));
-	textfield5.$on("change", /*change_handler_4*/ ctx[30]);
+	textfield5.$on("change", /*change_handler_4*/ ctx[33]);
 
 	function textfield6_value_binding(value) {
-		/*textfield6_value_binding*/ ctx[31].call(null, value);
+		/*textfield6_value_binding*/ ctx[34].call(null, value);
 	}
 
 	let textfield6_props = {
@@ -59743,16 +60599,16 @@ function create_fragment$1i(ctx) {
 		label: "Joule"
 	};
 
-	if (/*J*/ ctx[11] !== void 0) {
-		textfield6_props.value = /*J*/ ctx[11];
+	if (/*J*/ ctx[12] !== void 0) {
+		textfield6_props.value = /*J*/ ctx[12];
 	}
 
 	textfield6 = new Textfield({ props: textfield6_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield6, "value", textfield6_value_binding));
-	textfield6.$on("change", /*change_handler_5*/ ctx[32]);
+	textfield6.$on("change", /*change_handler_5*/ ctx[35]);
 
 	function textfield7_value_binding(value) {
-		/*textfield7_value_binding*/ ctx[33].call(null, value);
+		/*textfield7_value_binding*/ ctx[36].call(null, value);
 	}
 
 	let textfield7_props = {
@@ -59760,22 +60616,22 @@ function create_fragment$1i(ctx) {
 		label: "nm"
 	};
 
-	if (/*nm*/ ctx[10] !== void 0) {
-		textfield7_props.value = /*nm*/ ctx[10];
+	if (/*nm*/ ctx[11] !== void 0) {
+		textfield7_props.value = /*nm*/ ctx[11];
 	}
 
 	textfield7 = new Textfield({ props: textfield7_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield7, "value", textfield7_value_binding));
-	textfield7.$on("change", /*change_handler_6*/ ctx[34]);
+	textfield7.$on("change", /*change_handler_6*/ ctx[37]);
 
 	function customswitch0_selected_binding(value) {
-		/*customswitch0_selected_binding*/ ctx[35].call(null, value);
+		/*customswitch0_selected_binding*/ ctx[38].call(null, value);
 	}
 
 	let customswitch0_props = { style: "margin: 0 1em;", label: "Edit" };
 
-	if (/*edit_constants*/ ctx[12] !== void 0) {
-		customswitch0_props.selected = /*edit_constants*/ ctx[12];
+	if (/*edit_constants*/ ctx[13] !== void 0) {
+		customswitch0_props.selected = /*edit_constants*/ ctx[13];
 	}
 
 	customswitch0 = new CustomSwitch({
@@ -59786,75 +60642,75 @@ function create_fragment$1i(ctx) {
 	binding_callbacks.push(() => bind(customswitch0, "selected", customswitch0_selected_binding));
 
 	function textfield8_value_binding(value) {
-		/*textfield8_value_binding*/ ctx[36].call(null, value);
+		/*textfield8_value_binding*/ ctx[39].call(null, value);
 	}
 
 	let textfield8_props = {
 		style: "width:90%; margin-right:0.5em;",
-		disabled: !/*edit_constants*/ ctx[12],
+		disabled: !/*edit_constants*/ ctx[13],
 		label: "Speed of light in vaccum"
 	};
 
-	if (/*c*/ ctx[0] !== void 0) {
-		textfield8_props.value = /*c*/ ctx[0];
+	if (/*c*/ ctx[1] !== void 0) {
+		textfield8_props.value = /*c*/ ctx[1];
 	}
 
 	textfield8 = new Textfield({ props: textfield8_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield8, "value", textfield8_value_binding));
 
 	function textfield9_value_binding(value) {
-		/*textfield9_value_binding*/ ctx[37].call(null, value);
+		/*textfield9_value_binding*/ ctx[40].call(null, value);
 	}
 
 	let textfield9_props = {
 		style: "width:90%; margin-right:0.5em;",
-		disabled: !/*edit_constants*/ ctx[12],
+		disabled: !/*edit_constants*/ ctx[13],
 		label: "Boltzman constant"
 	};
 
-	if (/*boltzman_constant*/ ctx[2] !== void 0) {
-		textfield9_props.value = /*boltzman_constant*/ ctx[2];
+	if (/*boltzman_constant*/ ctx[3] !== void 0) {
+		textfield9_props.value = /*boltzman_constant*/ ctx[3];
 	}
 
 	textfield9 = new Textfield({ props: textfield9_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield9, "value", textfield9_value_binding));
 
 	function textfield10_value_binding(value) {
-		/*textfield10_value_binding*/ ctx[38].call(null, value);
+		/*textfield10_value_binding*/ ctx[41].call(null, value);
 	}
 
 	let textfield10_props = {
 		style: "width:90%; margin-right:0.5em;",
-		disabled: !/*edit_constants*/ ctx[12],
+		disabled: !/*edit_constants*/ ctx[13],
 		label: "Plank's constant"
 	};
 
-	if (/*plank_constant*/ ctx[1] !== void 0) {
-		textfield10_props.value = /*plank_constant*/ ctx[1];
+	if (/*plank_constant*/ ctx[2] !== void 0) {
+		textfield10_props.value = /*plank_constant*/ ctx[2];
 	}
 
 	textfield10 = new Textfield({ props: textfield10_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield10, "value", textfield10_value_binding));
 
 	function textfield11_value_binding(value) {
-		/*textfield11_value_binding*/ ctx[39].call(null, value);
+		/*textfield11_value_binding*/ ctx[42].call(null, value);
 	}
 
 	let textfield11_props = {
 		style: "width:90%; margin-right:0.5em;",
-		disabled: !/*edit_constants*/ ctx[12],
+		disabled: !/*edit_constants*/ ctx[13],
 		label: "Electric charge"
 	};
 
-	if (/*electron_charge*/ ctx[3] !== void 0) {
-		textfield11_props.value = /*electron_charge*/ ctx[3];
+	if (/*electron_charge*/ ctx[4] !== void 0) {
+		textfield11_props.value = /*electron_charge*/ ctx[4];
 	}
 
 	textfield11 = new Textfield({ props: textfield11_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield11, "value", textfield11_value_binding));
 
 	function textfield12_value_binding(value) {
-		/*textfield12_value_binding*/ ctx[40].call(null, value);
+		/*textfield12_value_binding*/ ctx[43].call(null, value);
 	}
 
 	let textfield12_props = {
@@ -59862,15 +60718,15 @@ function create_fragment$1i(ctx) {
 		label: "Before letting in gas"
 	};
 
-	if (/*pq1_before*/ ctx[14] !== void 0) {
-		textfield12_props.value = /*pq1_before*/ ctx[14];
+	if (/*pq1_before*/ ctx[15] !== void 0) {
+		textfield12_props.value = /*pq1_before*/ ctx[15];
 	}
 
 	textfield12 = new Textfield({ props: textfield12_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield12, "value", textfield12_value_binding));
 
 	function textfield13_value_binding(value) {
-		/*textfield13_value_binding*/ ctx[41].call(null, value);
+		/*textfield13_value_binding*/ ctx[44].call(null, value);
 	}
 
 	let textfield13_props = {
@@ -59878,15 +60734,15 @@ function create_fragment$1i(ctx) {
 		label: "After letting in gas"
 	};
 
-	if (/*pq1_after*/ ctx[15] !== void 0) {
-		textfield13_props.value = /*pq1_after*/ ctx[15];
+	if (/*pq1_after*/ ctx[16] !== void 0) {
+		textfield13_props.value = /*pq1_after*/ ctx[16];
 	}
 
 	textfield13 = new Textfield({ props: textfield13_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield13, "value", textfield13_value_binding));
 
 	function textfield14_value_binding(value) {
-		/*textfield14_value_binding*/ ctx[42].call(null, value);
+		/*textfield14_value_binding*/ ctx[45].call(null, value);
 	}
 
 	let textfield14_props = {
@@ -59894,15 +60750,15 @@ function create_fragment$1i(ctx) {
 		label: "Temperature"
 	};
 
-	if (/*temperature*/ ctx[16] !== void 0) {
-		textfield14_props.value = /*temperature*/ ctx[16];
+	if (/*temperature*/ ctx[17] !== void 0) {
+		textfield14_props.value = /*temperature*/ ctx[17];
 	}
 
 	textfield14 = new Textfield({ props: textfield14_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield14, "value", textfield14_value_binding));
 
 	function textfield15_value_binding(value) {
-		/*textfield15_value_binding*/ ctx[43].call(null, value);
+		/*textfield15_value_binding*/ ctx[46].call(null, value);
 	}
 
 	let textfield15_props = {
@@ -59911,21 +60767,21 @@ function create_fragment$1i(ctx) {
 		label: "Number density"
 	};
 
-	if (/*ndensity*/ ctx[19] !== void 0) {
-		textfield15_props.value = /*ndensity*/ ctx[19];
+	if (/*ndensity*/ ctx[20] !== void 0) {
+		textfield15_props.value = /*ndensity*/ ctx[20];
 	}
 
 	textfield15 = new Textfield({ props: textfield15_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield15, "value", textfield15_value_binding));
 
 	function customswitch1_selected_binding(value) {
-		/*customswitch1_selected_binding*/ ctx[44].call(null, value);
+		/*customswitch1_selected_binding*/ ctx[47].call(null, value);
 	}
 
 	let customswitch1_props = { style: "margin: 0 1em;", label: "Edit" };
 
-	if (/*edit_numberDensity_constants*/ ctx[13] !== void 0) {
-		customswitch1_props.selected = /*edit_numberDensity_constants*/ ctx[13];
+	if (/*edit_numberDensity_constants*/ ctx[14] !== void 0) {
+		customswitch1_props.selected = /*edit_numberDensity_constants*/ ctx[14];
 	}
 
 	customswitch1 = new CustomSwitch({
@@ -59936,34 +60792,34 @@ function create_fragment$1i(ctx) {
 	binding_callbacks.push(() => bind(customswitch1, "selected", customswitch1_selected_binding));
 
 	function textfield16_value_binding(value) {
-		/*textfield16_value_binding*/ ctx[45].call(null, value);
+		/*textfield16_value_binding*/ ctx[48].call(null, value);
 	}
 
 	let textfield16_props = {
 		style: "width:90%; margin-right:0.5em;",
-		disabled: !/*edit_numberDensity_constants*/ ctx[13],
+		disabled: !/*edit_numberDensity_constants*/ ctx[14],
 		label: "Calibration Factor"
 	};
 
-	if (/*calibration_factor*/ ctx[17] !== void 0) {
-		textfield16_props.value = /*calibration_factor*/ ctx[17];
+	if (/*calibration_factor*/ ctx[18] !== void 0) {
+		textfield16_props.value = /*calibration_factor*/ ctx[18];
 	}
 
 	textfield16 = new Textfield({ props: textfield16_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield16, "value", textfield16_value_binding));
 
 	function textfield17_value_binding(value) {
-		/*textfield17_value_binding*/ ctx[46].call(null, value);
+		/*textfield17_value_binding*/ ctx[49].call(null, value);
 	}
 
 	let textfield17_props = {
 		style: "width:90%; margin-right:0.5em;",
-		disabled: !/*edit_numberDensity_constants*/ ctx[13],
+		disabled: !/*edit_numberDensity_constants*/ ctx[14],
 		label: "Chamber Temperature (RT)"
 	};
 
-	if (/*rt*/ ctx[18] !== void 0) {
-		textfield17_props.value = /*rt*/ ctx[18];
+	if (/*rt*/ ctx[19] !== void 0) {
+		textfield17_props.value = /*rt*/ ctx[19];
 	}
 
 	textfield17 = new Textfield({ props: textfield17_props, $$inline: true });
@@ -59971,14 +60827,14 @@ function create_fragment$1i(ctx) {
 
 	const block = {
 		c: function create() {
-			section = element("section");
-			div6 = element("div");
-			div2 = element("div");
+			div8 = element("div");
+			div3 = element("div");
 			div0 = element("div");
 			div0.textContent = "Energy Conversion";
 			t1 = space();
 			hr0 = element("hr");
 			t2 = space();
+			div2 = element("div");
 			create_component(textfield0.$$.fragment);
 			t3 = space();
 			create_component(textfield1.$$.fragment);
@@ -60010,14 +60866,15 @@ function create_fragment$1i(ctx) {
 			t17 = space();
 			create_component(textfield11.$$.fragment);
 			t18 = space();
-			div5 = element("div");
-			div3 = element("div");
-			div3.textContent = "Number Density Calculation";
+			div7 = element("div");
+			div4 = element("div");
+			div4.textContent = "Number Density";
 			t20 = space();
 			hr2 = element("hr");
 			t21 = space();
-			div4 = element("div");
-			div4.textContent = "Main Chamber Press.";
+			div6 = element("div");
+			div5 = element("div");
+			div5.textContent = "Main Chamber Press.";
 			t23 = space();
 			create_component(textfield12.$$.fragment);
 			t24 = space();
@@ -60034,45 +60891,42 @@ function create_fragment$1i(ctx) {
 			create_component(textfield16.$$.fragment);
 			t30 = space();
 			create_component(textfield17.$$.fragment);
-			attr_dev(div0, "class", "title svelte-gzyyin");
-			add_location(div0, file$1b, 59, 10, 1704);
-			attr_dev(hr0, "class", "svelte-gzyyin");
-			add_location(hr0, file$1b, 61, 10, 1760);
-			attr_dev(hr1, "class", "svelte-gzyyin");
-			add_location(hr1, file$1b, 72, 10, 2817);
-			attr_dev(div1, "class", "subtitle is-pulled-left svelte-gzyyin");
-			add_location(div1, file$1b, 74, 10, 2835);
-			attr_dev(div2, "class", "column box is-4 unit_converter_column svelte-gzyyin");
-			add_location(div2, file$1b, 57, 8, 1639);
-			attr_dev(div3, "class", "title svelte-gzyyin");
-			add_location(div3, file$1b, 84, 12, 3673);
-			attr_dev(hr2, "class", "svelte-gzyyin");
-			add_location(hr2, file$1b, 85, 12, 3738);
-			attr_dev(div4, "class", "subtitle svelte-gzyyin");
-			add_location(div4, file$1b, 87, 12, 3758);
-			attr_dev(hr3, "class", "svelte-gzyyin");
-			add_location(hr3, file$1b, 92, 12, 4295);
-			attr_dev(div5, "class", "column box is-4 unit_converter_column svelte-gzyyin");
-			add_location(div5, file$1b, 82, 8, 3596);
-			attr_dev(div6, "class", "columns is-multiline svelte-gzyyin");
-			attr_dev(div6, "id", "unit_conversion_table");
-			add_location(div6, file$1b, 55, 4, 1566);
-			attr_dev(section, "class", "animated fadeIn section svelte-gzyyin");
-			attr_dev(section, "id", "Misc");
-			set_style(section, "display", "none");
-			add_location(section, file$1b, 53, 0, 1486);
-		},
-		l: function claim(nodes) {
-			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			attr_dev(div0, "class", "title svelte-mdtii4");
+			add_location(div0, file$1c, 104, 16, 2714);
+			attr_dev(hr0, "class", "svelte-mdtii4");
+			add_location(hr0, file$1c, 106, 16, 2776);
+			attr_dev(hr1, "class", "svelte-mdtii4");
+			add_location(hr1, file$1c, 122, 20, 4035);
+			attr_dev(div1, "class", "subtitle is-pulled-left svelte-mdtii4");
+			add_location(div1, file$1c, 124, 20, 4063);
+			attr_dev(div2, "class", "unit_conversion_contents svelte-mdtii4");
+			add_location(div2, file$1c, 108, 16, 2800);
+			attr_dev(div3, "class", "column box is-4 unit_converter_column svelte-mdtii4");
+			add_location(div3, file$1c, 102, 12, 2643);
+			attr_dev(div4, "class", "title svelte-mdtii4");
+			add_location(div4, file$1c, 137, 16, 4993);
+			attr_dev(hr2, "class", "svelte-mdtii4");
+			add_location(hr2, file$1c, 138, 16, 5050);
+			attr_dev(div5, "class", "subtitle svelte-mdtii4");
+			add_location(div5, file$1c, 142, 20, 5136);
+			attr_dev(hr3, "class", "svelte-mdtii4");
+			add_location(hr3, file$1c, 147, 20, 5713);
+			attr_dev(div6, "class", "unit_conversion_contents svelte-mdtii4");
+			add_location(div6, file$1c, 140, 16, 5074);
+			attr_dev(div7, "class", "column box is-4 unit_converter_column svelte-mdtii4");
+			add_location(div7, file$1c, 135, 12, 4910);
+			attr_dev(div8, "class", "columns is-multiline contentBox svelte-mdtii4");
+			attr_dev(div8, "id", "unit_conversion_table");
+			add_location(div8, file$1c, 100, 8, 2555);
 		},
 		m: function mount(target, anchor) {
-			insert_dev(target, section, anchor);
-			append_dev(section, div6);
-			append_dev(div6, div2);
-			append_dev(div2, div0);
-			append_dev(div2, t1);
-			append_dev(div2, hr0);
-			append_dev(div2, t2);
+			insert_dev(target, div8, anchor);
+			append_dev(div8, div3);
+			append_dev(div3, div0);
+			append_dev(div3, t1);
+			append_dev(div3, hr0);
+			append_dev(div3, t2);
+			append_dev(div3, div2);
 			mount_component(textfield0, div2, null);
 			append_dev(div2, t3);
 			mount_component(textfield1, div2, null);
@@ -60102,214 +60956,215 @@ function create_fragment$1i(ctx) {
 			mount_component(textfield10, div2, null);
 			append_dev(div2, t17);
 			mount_component(textfield11, div2, null);
-			append_dev(div6, t18);
+			append_dev(div8, t18);
+			append_dev(div8, div7);
+			append_dev(div7, div4);
+			append_dev(div7, t20);
+			append_dev(div7, hr2);
+			append_dev(div7, t21);
+			append_dev(div7, div6);
 			append_dev(div6, div5);
-			append_dev(div5, div3);
-			append_dev(div5, t20);
-			append_dev(div5, hr2);
-			append_dev(div5, t21);
-			append_dev(div5, div4);
-			append_dev(div5, t23);
-			mount_component(textfield12, div5, null);
-			append_dev(div5, t24);
-			mount_component(textfield13, div5, null);
-			append_dev(div5, t25);
-			mount_component(textfield14, div5, null);
-			append_dev(div5, t26);
-			mount_component(textfield15, div5, null);
-			append_dev(div5, t27);
-			append_dev(div5, hr3);
-			append_dev(div5, t28);
-			mount_component(customswitch1, div5, null);
-			append_dev(div5, t29);
-			mount_component(textfield16, div5, null);
-			append_dev(div5, t30);
-			mount_component(textfield17, div5, null);
+			append_dev(div6, t23);
+			mount_component(textfield12, div6, null);
+			append_dev(div6, t24);
+			mount_component(textfield13, div6, null);
+			append_dev(div6, t25);
+			mount_component(textfield14, div6, null);
+			append_dev(div6, t26);
+			mount_component(textfield15, div6, null);
+			append_dev(div6, t27);
+			append_dev(div6, hr3);
+			append_dev(div6, t28);
+			mount_component(customswitch1, div6, null);
+			append_dev(div6, t29);
+			mount_component(textfield16, div6, null);
+			append_dev(div6, t30);
+			mount_component(textfield17, div6, null);
 			current = true;
 		},
 		p: function update(ctx, dirty) {
 			const textfield0_changes = {};
 
-			if (!updating_value && dirty[0] & /*hz*/ 16) {
+			if (!updating_value && dirty[0] & /*hz*/ 32) {
 				updating_value = true;
-				textfield0_changes.value = /*hz*/ ctx[4];
+				textfield0_changes.value = /*hz*/ ctx[5];
 				add_flush_callback(() => updating_value = false);
 			}
 
 			textfield0.$set(textfield0_changes);
 			const textfield1_changes = {};
 
-			if (!updating_value_1 && dirty[0] & /*ghz*/ 512) {
+			if (!updating_value_1 && dirty[0] & /*ghz*/ 1024) {
 				updating_value_1 = true;
-				textfield1_changes.value = /*ghz*/ ctx[9];
+				textfield1_changes.value = /*ghz*/ ctx[10];
 				add_flush_callback(() => updating_value_1 = false);
 			}
 
 			textfield1.$set(textfield1_changes);
 			const textfield2_changes = {};
 
-			if (!updating_value_2 && dirty[0] & /*um*/ 256) {
+			if (!updating_value_2 && dirty[0] & /*um*/ 512) {
 				updating_value_2 = true;
-				textfield2_changes.value = /*um*/ ctx[8];
+				textfield2_changes.value = /*um*/ ctx[9];
 				add_flush_callback(() => updating_value_2 = false);
 			}
 
 			textfield2.$set(textfield2_changes);
 			const textfield3_changes = {};
 
-			if (!updating_value_3 && dirty[0] & /*cm_1*/ 128) {
+			if (!updating_value_3 && dirty[0] & /*cm_1*/ 256) {
 				updating_value_3 = true;
-				textfield3_changes.value = /*cm_1*/ ctx[7];
+				textfield3_changes.value = /*cm_1*/ ctx[8];
 				add_flush_callback(() => updating_value_3 = false);
 			}
 
 			textfield3.$set(textfield3_changes);
 			const textfield4_changes = {};
 
-			if (!updating_value_4 && dirty[0] & /*kelvin*/ 64) {
+			if (!updating_value_4 && dirty[0] & /*kelvin*/ 128) {
 				updating_value_4 = true;
-				textfield4_changes.value = /*kelvin*/ ctx[6];
+				textfield4_changes.value = /*kelvin*/ ctx[7];
 				add_flush_callback(() => updating_value_4 = false);
 			}
 
 			textfield4.$set(textfield4_changes);
 			const textfield5_changes = {};
 
-			if (!updating_value_5 && dirty[0] & /*eV*/ 32) {
+			if (!updating_value_5 && dirty[0] & /*eV*/ 64) {
 				updating_value_5 = true;
-				textfield5_changes.value = /*eV*/ ctx[5];
+				textfield5_changes.value = /*eV*/ ctx[6];
 				add_flush_callback(() => updating_value_5 = false);
 			}
 
 			textfield5.$set(textfield5_changes);
 			const textfield6_changes = {};
 
-			if (!updating_value_6 && dirty[0] & /*J*/ 2048) {
+			if (!updating_value_6 && dirty[0] & /*J*/ 4096) {
 				updating_value_6 = true;
-				textfield6_changes.value = /*J*/ ctx[11];
+				textfield6_changes.value = /*J*/ ctx[12];
 				add_flush_callback(() => updating_value_6 = false);
 			}
 
 			textfield6.$set(textfield6_changes);
 			const textfield7_changes = {};
 
-			if (!updating_value_7 && dirty[0] & /*nm*/ 1024) {
+			if (!updating_value_7 && dirty[0] & /*nm*/ 2048) {
 				updating_value_7 = true;
-				textfield7_changes.value = /*nm*/ ctx[10];
+				textfield7_changes.value = /*nm*/ ctx[11];
 				add_flush_callback(() => updating_value_7 = false);
 			}
 
 			textfield7.$set(textfield7_changes);
 			const customswitch0_changes = {};
 
-			if (!updating_selected && dirty[0] & /*edit_constants*/ 4096) {
+			if (!updating_selected && dirty[0] & /*edit_constants*/ 8192) {
 				updating_selected = true;
-				customswitch0_changes.selected = /*edit_constants*/ ctx[12];
+				customswitch0_changes.selected = /*edit_constants*/ ctx[13];
 				add_flush_callback(() => updating_selected = false);
 			}
 
 			customswitch0.$set(customswitch0_changes);
 			const textfield8_changes = {};
-			if (dirty[0] & /*edit_constants*/ 4096) textfield8_changes.disabled = !/*edit_constants*/ ctx[12];
+			if (dirty[0] & /*edit_constants*/ 8192) textfield8_changes.disabled = !/*edit_constants*/ ctx[13];
 
-			if (!updating_value_8 && dirty[0] & /*c*/ 1) {
+			if (!updating_value_8 && dirty[0] & /*c*/ 2) {
 				updating_value_8 = true;
-				textfield8_changes.value = /*c*/ ctx[0];
+				textfield8_changes.value = /*c*/ ctx[1];
 				add_flush_callback(() => updating_value_8 = false);
 			}
 
 			textfield8.$set(textfield8_changes);
 			const textfield9_changes = {};
-			if (dirty[0] & /*edit_constants*/ 4096) textfield9_changes.disabled = !/*edit_constants*/ ctx[12];
+			if (dirty[0] & /*edit_constants*/ 8192) textfield9_changes.disabled = !/*edit_constants*/ ctx[13];
 
-			if (!updating_value_9 && dirty[0] & /*boltzman_constant*/ 4) {
+			if (!updating_value_9 && dirty[0] & /*boltzman_constant*/ 8) {
 				updating_value_9 = true;
-				textfield9_changes.value = /*boltzman_constant*/ ctx[2];
+				textfield9_changes.value = /*boltzman_constant*/ ctx[3];
 				add_flush_callback(() => updating_value_9 = false);
 			}
 
 			textfield9.$set(textfield9_changes);
 			const textfield10_changes = {};
-			if (dirty[0] & /*edit_constants*/ 4096) textfield10_changes.disabled = !/*edit_constants*/ ctx[12];
+			if (dirty[0] & /*edit_constants*/ 8192) textfield10_changes.disabled = !/*edit_constants*/ ctx[13];
 
-			if (!updating_value_10 && dirty[0] & /*plank_constant*/ 2) {
+			if (!updating_value_10 && dirty[0] & /*plank_constant*/ 4) {
 				updating_value_10 = true;
-				textfield10_changes.value = /*plank_constant*/ ctx[1];
+				textfield10_changes.value = /*plank_constant*/ ctx[2];
 				add_flush_callback(() => updating_value_10 = false);
 			}
 
 			textfield10.$set(textfield10_changes);
 			const textfield11_changes = {};
-			if (dirty[0] & /*edit_constants*/ 4096) textfield11_changes.disabled = !/*edit_constants*/ ctx[12];
+			if (dirty[0] & /*edit_constants*/ 8192) textfield11_changes.disabled = !/*edit_constants*/ ctx[13];
 
-			if (!updating_value_11 && dirty[0] & /*electron_charge*/ 8) {
+			if (!updating_value_11 && dirty[0] & /*electron_charge*/ 16) {
 				updating_value_11 = true;
-				textfield11_changes.value = /*electron_charge*/ ctx[3];
+				textfield11_changes.value = /*electron_charge*/ ctx[4];
 				add_flush_callback(() => updating_value_11 = false);
 			}
 
 			textfield11.$set(textfield11_changes);
 			const textfield12_changes = {};
 
-			if (!updating_value_12 && dirty[0] & /*pq1_before*/ 16384) {
+			if (!updating_value_12 && dirty[0] & /*pq1_before*/ 32768) {
 				updating_value_12 = true;
-				textfield12_changes.value = /*pq1_before*/ ctx[14];
+				textfield12_changes.value = /*pq1_before*/ ctx[15];
 				add_flush_callback(() => updating_value_12 = false);
 			}
 
 			textfield12.$set(textfield12_changes);
 			const textfield13_changes = {};
 
-			if (!updating_value_13 && dirty[0] & /*pq1_after*/ 32768) {
+			if (!updating_value_13 && dirty[0] & /*pq1_after*/ 65536) {
 				updating_value_13 = true;
-				textfield13_changes.value = /*pq1_after*/ ctx[15];
+				textfield13_changes.value = /*pq1_after*/ ctx[16];
 				add_flush_callback(() => updating_value_13 = false);
 			}
 
 			textfield13.$set(textfield13_changes);
 			const textfield14_changes = {};
 
-			if (!updating_value_14 && dirty[0] & /*temperature*/ 65536) {
+			if (!updating_value_14 && dirty[0] & /*temperature*/ 131072) {
 				updating_value_14 = true;
-				textfield14_changes.value = /*temperature*/ ctx[16];
+				textfield14_changes.value = /*temperature*/ ctx[17];
 				add_flush_callback(() => updating_value_14 = false);
 			}
 
 			textfield14.$set(textfield14_changes);
 			const textfield15_changes = {};
 
-			if (!updating_value_15 && dirty[0] & /*ndensity*/ 524288) {
+			if (!updating_value_15 && dirty[0] & /*ndensity*/ 1048576) {
 				updating_value_15 = true;
-				textfield15_changes.value = /*ndensity*/ ctx[19];
+				textfield15_changes.value = /*ndensity*/ ctx[20];
 				add_flush_callback(() => updating_value_15 = false);
 			}
 
 			textfield15.$set(textfield15_changes);
 			const customswitch1_changes = {};
 
-			if (!updating_selected_1 && dirty[0] & /*edit_numberDensity_constants*/ 8192) {
+			if (!updating_selected_1 && dirty[0] & /*edit_numberDensity_constants*/ 16384) {
 				updating_selected_1 = true;
-				customswitch1_changes.selected = /*edit_numberDensity_constants*/ ctx[13];
+				customswitch1_changes.selected = /*edit_numberDensity_constants*/ ctx[14];
 				add_flush_callback(() => updating_selected_1 = false);
 			}
 
 			customswitch1.$set(customswitch1_changes);
 			const textfield16_changes = {};
-			if (dirty[0] & /*edit_numberDensity_constants*/ 8192) textfield16_changes.disabled = !/*edit_numberDensity_constants*/ ctx[13];
+			if (dirty[0] & /*edit_numberDensity_constants*/ 16384) textfield16_changes.disabled = !/*edit_numberDensity_constants*/ ctx[14];
 
-			if (!updating_value_16 && dirty[0] & /*calibration_factor*/ 131072) {
+			if (!updating_value_16 && dirty[0] & /*calibration_factor*/ 262144) {
 				updating_value_16 = true;
-				textfield16_changes.value = /*calibration_factor*/ ctx[17];
+				textfield16_changes.value = /*calibration_factor*/ ctx[18];
 				add_flush_callback(() => updating_value_16 = false);
 			}
 
 			textfield16.$set(textfield16_changes);
 			const textfield17_changes = {};
-			if (dirty[0] & /*edit_numberDensity_constants*/ 8192) textfield17_changes.disabled = !/*edit_numberDensity_constants*/ ctx[13];
+			if (dirty[0] & /*edit_numberDensity_constants*/ 16384) textfield17_changes.disabled = !/*edit_numberDensity_constants*/ ctx[14];
 
-			if (!updating_value_17 && dirty[0] & /*rt*/ 262144) {
+			if (!updating_value_17 && dirty[0] & /*rt*/ 524288) {
 				updating_value_17 = true;
-				textfield17_changes.value = /*rt*/ ctx[18];
+				textfield17_changes.value = /*rt*/ ctx[19];
 				add_flush_callback(() => updating_value_17 = false);
 			}
 
@@ -60363,7 +61218,7 @@ function create_fragment$1i(ctx) {
 			current = false;
 		},
 		d: function destroy(detaching) {
-			if (detaching) detach_dev(section);
+			if (detaching) detach_dev(div8);
 			destroy_component(textfield0);
 			destroy_component(textfield1);
 			destroy_component(textfield2);
@@ -60389,7 +61244,143 @@ function create_fragment$1i(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_fragment$1i.name,
+		id: create_if_block$u.name,
+		type: "if",
+		source: "(100:4) {#if active==\\\"Unit Conversion\\\"}",
+		ctx
+	});
+
+	return block;
+}
+
+function create_fragment$1j(ctx) {
+	let section;
+	let div;
+	let tabbar;
+	let updating_active;
+	let t;
+	let current_block_type_index;
+	let if_block;
+	let current;
+
+	function tabbar_active_binding(value) {
+		/*tabbar_active_binding*/ ctx[22].call(null, value);
+	}
+
+	let tabbar_props = {
+		tabs: /*navItems*/ ctx[21],
+		$$slots: {
+			default: [
+				create_default_slot$x,
+				({ tab }) => ({ 51: tab }),
+				({ tab }) => [0, tab ? 1048576 : 0]
+			]
+		},
+		$$scope: { ctx }
+	};
+
+	if (/*active*/ ctx[0] !== void 0) {
+		tabbar_props.active = /*active*/ ctx[0];
+	}
+
+	tabbar = new TabBar({ props: tabbar_props, $$inline: true });
+	binding_callbacks.push(() => bind(tabbar, "active", tabbar_active_binding));
+	const if_block_creators = [create_if_block$u, create_else_block$b];
+	const if_blocks = [];
+
+	function select_block_type(ctx, dirty) {
+		if (/*active*/ ctx[0] == "Unit Conversion") return 0;
+		return 1;
+	}
+
+	current_block_type_index = select_block_type(ctx);
+	if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+
+	const block = {
+		c: function create() {
+			section = element("section");
+			div = element("div");
+			create_component(tabbar.$$.fragment);
+			t = space();
+			if_block.c();
+			attr_dev(div, "class", "misc-nav box animated fadeInDown svelte-mdtii4");
+			attr_dev(div, "id", "navbar");
+			add_location(div, file$1c, 93, 4, 2309);
+			attr_dev(section, "class", "animated fadeIn section svelte-mdtii4");
+			attr_dev(section, "id", "Misc");
+			set_style(section, "display", "none");
+			add_location(section, file$1c, 91, 0, 2229);
+		},
+		l: function claim(nodes) {
+			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, section, anchor);
+			append_dev(section, div);
+			mount_component(tabbar, div, null);
+			append_dev(section, t);
+			if_blocks[current_block_type_index].m(section, null);
+			current = true;
+		},
+		p: function update(ctx, dirty) {
+			const tabbar_changes = {};
+
+			if (dirty[1] & /*$$scope, tab*/ 3145728) {
+				tabbar_changes.$$scope = { dirty, ctx };
+			}
+
+			if (!updating_active && dirty[0] & /*active*/ 1) {
+				updating_active = true;
+				tabbar_changes.active = /*active*/ ctx[0];
+				add_flush_callback(() => updating_active = false);
+			}
+
+			tabbar.$set(tabbar_changes);
+			let previous_block_index = current_block_type_index;
+			current_block_type_index = select_block_type(ctx);
+
+			if (current_block_type_index === previous_block_index) {
+				if_blocks[current_block_type_index].p(ctx, dirty);
+			} else {
+				group_outros();
+
+				transition_out(if_blocks[previous_block_index], 1, 1, () => {
+					if_blocks[previous_block_index] = null;
+				});
+
+				check_outros();
+				if_block = if_blocks[current_block_type_index];
+
+				if (!if_block) {
+					if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+					if_block.c();
+				}
+
+				transition_in(if_block, 1);
+				if_block.m(section, null);
+			}
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(tabbar.$$.fragment, local);
+			transition_in(if_block);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(tabbar.$$.fragment, local);
+			transition_out(if_block);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(section);
+			destroy_component(tabbar);
+			if_blocks[current_block_type_index].d();
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_fragment$1j.name,
 		type: "component",
 		source: "",
 		ctx
@@ -60398,7 +61389,9 @@ function create_fragment$1i(ctx) {
 	return block;
 }
 
-function instance$1i($$self, $$props, $$invalidate) {
+function instance$1j($$self, $$props, $$invalidate) {
+	let active = "Unit Conversion";
+	const navItems = ["Unit Conversion", "Terminal"];
 	const writable_props = [];
 
 	Object.keys($$props).forEach(key => {
@@ -60408,123 +61401,134 @@ function instance$1i($$self, $$props, $$invalidate) {
 	let { $$slots = {}, $$scope } = $$props;
 	validate_slots("Misc", $$slots, []);
 
+	function tabbar_active_binding(value) {
+		active = value;
+		$$invalidate(0, active);
+	}
+
 	function textfield0_value_binding(value) {
 		hz = value;
-		$$invalidate(4, hz);
+		$$invalidate(5, hz);
 	}
 
 	function textfield1_value_binding(value) {
 		ghz = value;
-		($$invalidate(9, ghz), $$invalidate(4, hz));
+		($$invalidate(10, ghz), $$invalidate(5, hz));
 	}
 
-	const change_handler = () => $$invalidate(4, hz = ghz * 1000000000);
+	const change_handler = () => $$invalidate(5, hz = ghz * 1000000000);
 
 	function textfield2_value_binding(value) {
 		um = value;
-		(($$invalidate(8, um), $$invalidate(0, c)), $$invalidate(4, hz));
+		(($$invalidate(9, um), $$invalidate(1, c)), $$invalidate(5, hz));
 	}
 
-	const change_handler_1 = () => $$invalidate(4, hz = c / um * 1000000);
+	const change_handler_1 = () => $$invalidate(5, hz = c / um * 1000000);
 
 	function textfield3_value_binding(value) {
 		cm_1 = value;
-		(($$invalidate(7, cm_1), $$invalidate(4, hz)), $$invalidate(0, c));
+		(($$invalidate(8, cm_1), $$invalidate(5, hz)), $$invalidate(1, c));
 	}
 
-	const change_handler_2 = () => $$invalidate(4, hz = cm_1 * c * 100);
+	const change_handler_2 = () => $$invalidate(5, hz = cm_1 * c * 100);
 
 	function textfield4_value_binding(value) {
 		kelvin = value;
-		((($$invalidate(6, kelvin), $$invalidate(1, plank_constant)), $$invalidate(2, boltzman_constant)), $$invalidate(4, hz));
+		((($$invalidate(7, kelvin), $$invalidate(2, plank_constant)), $$invalidate(3, boltzman_constant)), $$invalidate(5, hz));
 	}
 
-	const change_handler_3 = () => $$invalidate(4, hz = boltzman_constant / plank_constant * kelvin);
+	const change_handler_3 = () => $$invalidate(5, hz = boltzman_constant / plank_constant * kelvin);
 
 	function textfield5_value_binding(value) {
 		eV = value;
-		((($$invalidate(5, eV), $$invalidate(1, plank_constant)), $$invalidate(3, electron_charge)), $$invalidate(4, hz));
+		((($$invalidate(6, eV), $$invalidate(2, plank_constant)), $$invalidate(4, electron_charge)), $$invalidate(5, hz));
 	}
 
-	const change_handler_4 = () => $$invalidate(4, hz = electron_charge / plank_constant * eV);
+	const change_handler_4 = () => $$invalidate(5, hz = electron_charge / plank_constant * eV);
 
 	function textfield6_value_binding(value) {
 		J = value;
-		(($$invalidate(11, J), $$invalidate(1, plank_constant)), $$invalidate(4, hz));
+		(($$invalidate(12, J), $$invalidate(2, plank_constant)), $$invalidate(5, hz));
 	}
 
-	const change_handler_5 = () => $$invalidate(4, hz = J / plank_constant);
+	const change_handler_5 = () => $$invalidate(5, hz = J / plank_constant);
 
 	function textfield7_value_binding(value) {
 		nm = value;
-		(($$invalidate(10, nm), $$invalidate(0, c)), $$invalidate(4, hz));
+		(($$invalidate(11, nm), $$invalidate(1, c)), $$invalidate(5, hz));
 	}
 
-	const change_handler_6 = () => $$invalidate(4, hz = c / nm * 1000000000);
+	const change_handler_6 = () => $$invalidate(5, hz = c / nm * 1000000000);
 
 	function customswitch0_selected_binding(value) {
 		edit_constants = value;
-		$$invalidate(12, edit_constants);
+		$$invalidate(13, edit_constants);
 	}
 
 	function textfield8_value_binding(value) {
 		c = value;
-		$$invalidate(0, c);
+		$$invalidate(1, c);
 	}
 
 	function textfield9_value_binding(value) {
 		boltzman_constant = value;
-		$$invalidate(2, boltzman_constant);
+		$$invalidate(3, boltzman_constant);
 	}
 
 	function textfield10_value_binding(value) {
 		plank_constant = value;
-		$$invalidate(1, plank_constant);
+		$$invalidate(2, plank_constant);
 	}
 
 	function textfield11_value_binding(value) {
 		electron_charge = value;
-		$$invalidate(3, electron_charge);
+		$$invalidate(4, electron_charge);
 	}
 
 	function textfield12_value_binding(value) {
 		pq1_before = value;
-		$$invalidate(14, pq1_before);
+		$$invalidate(15, pq1_before);
 	}
 
 	function textfield13_value_binding(value) {
 		pq1_after = value;
-		$$invalidate(15, pq1_after);
+		$$invalidate(16, pq1_after);
 	}
 
 	function textfield14_value_binding(value) {
 		temperature = value;
-		$$invalidate(16, temperature);
+		$$invalidate(17, temperature);
 	}
 
 	function textfield15_value_binding(value) {
 		ndensity = value;
-		((((((($$invalidate(19, ndensity), $$invalidate(47, ndensity_temp)), $$invalidate(17, calibration_factor)), $$invalidate(2, boltzman_constant)), $$invalidate(18, rt)), $$invalidate(15, pq1_after)), $$invalidate(14, pq1_before)), $$invalidate(16, temperature));
+		((((((($$invalidate(20, ndensity), $$invalidate(50, ndensity_temp)), $$invalidate(18, calibration_factor)), $$invalidate(3, boltzman_constant)), $$invalidate(19, rt)), $$invalidate(16, pq1_after)), $$invalidate(15, pq1_before)), $$invalidate(17, temperature));
 	}
 
 	function customswitch1_selected_binding(value) {
 		edit_numberDensity_constants = value;
-		$$invalidate(13, edit_numberDensity_constants);
+		$$invalidate(14, edit_numberDensity_constants);
 	}
 
 	function textfield16_value_binding(value) {
 		calibration_factor = value;
-		$$invalidate(17, calibration_factor);
+		$$invalidate(18, calibration_factor);
 	}
 
 	function textfield17_value_binding(value) {
 		rt = value;
-		$$invalidate(18, rt);
+		$$invalidate(19, rt);
 	}
 
 	$$self.$capture_state = () => ({
 		Textfield,
 		CustomSwitch,
+		Terminal,
+		Tab,
+		Label,
+		TabBar,
+		active,
+		navItems,
 		c,
 		plank_constant,
 		boltzman_constant,
@@ -60549,27 +61553,28 @@ function instance$1i($$self, $$props, $$invalidate) {
 	});
 
 	$$self.$inject_state = $$props => {
-		if ("c" in $$props) $$invalidate(0, c = $$props.c);
-		if ("plank_constant" in $$props) $$invalidate(1, plank_constant = $$props.plank_constant);
-		if ("boltzman_constant" in $$props) $$invalidate(2, boltzman_constant = $$props.boltzman_constant);
-		if ("electron_charge" in $$props) $$invalidate(3, electron_charge = $$props.electron_charge);
-		if ("hz" in $$props) $$invalidate(4, hz = $$props.hz);
-		if ("eV" in $$props) $$invalidate(5, eV = $$props.eV);
-		if ("kelvin" in $$props) $$invalidate(6, kelvin = $$props.kelvin);
-		if ("cm_1" in $$props) $$invalidate(7, cm_1 = $$props.cm_1);
-		if ("um" in $$props) $$invalidate(8, um = $$props.um);
-		if ("ghz" in $$props) $$invalidate(9, ghz = $$props.ghz);
-		if ("nm" in $$props) $$invalidate(10, nm = $$props.nm);
-		if ("J" in $$props) $$invalidate(11, J = $$props.J);
-		if ("edit_constants" in $$props) $$invalidate(12, edit_constants = $$props.edit_constants);
-		if ("edit_numberDensity_constants" in $$props) $$invalidate(13, edit_numberDensity_constants = $$props.edit_numberDensity_constants);
-		if ("pq1_before" in $$props) $$invalidate(14, pq1_before = $$props.pq1_before);
-		if ("pq1_after" in $$props) $$invalidate(15, pq1_after = $$props.pq1_after);
-		if ("temperature" in $$props) $$invalidate(16, temperature = $$props.temperature);
-		if ("calibration_factor" in $$props) $$invalidate(17, calibration_factor = $$props.calibration_factor);
-		if ("rt" in $$props) $$invalidate(18, rt = $$props.rt);
-		if ("ndensity_temp" in $$props) $$invalidate(47, ndensity_temp = $$props.ndensity_temp);
-		if ("ndensity" in $$props) $$invalidate(19, ndensity = $$props.ndensity);
+		if ("active" in $$props) $$invalidate(0, active = $$props.active);
+		if ("c" in $$props) $$invalidate(1, c = $$props.c);
+		if ("plank_constant" in $$props) $$invalidate(2, plank_constant = $$props.plank_constant);
+		if ("boltzman_constant" in $$props) $$invalidate(3, boltzman_constant = $$props.boltzman_constant);
+		if ("electron_charge" in $$props) $$invalidate(4, electron_charge = $$props.electron_charge);
+		if ("hz" in $$props) $$invalidate(5, hz = $$props.hz);
+		if ("eV" in $$props) $$invalidate(6, eV = $$props.eV);
+		if ("kelvin" in $$props) $$invalidate(7, kelvin = $$props.kelvin);
+		if ("cm_1" in $$props) $$invalidate(8, cm_1 = $$props.cm_1);
+		if ("um" in $$props) $$invalidate(9, um = $$props.um);
+		if ("ghz" in $$props) $$invalidate(10, ghz = $$props.ghz);
+		if ("nm" in $$props) $$invalidate(11, nm = $$props.nm);
+		if ("J" in $$props) $$invalidate(12, J = $$props.J);
+		if ("edit_constants" in $$props) $$invalidate(13, edit_constants = $$props.edit_constants);
+		if ("edit_numberDensity_constants" in $$props) $$invalidate(14, edit_numberDensity_constants = $$props.edit_numberDensity_constants);
+		if ("pq1_before" in $$props) $$invalidate(15, pq1_before = $$props.pq1_before);
+		if ("pq1_after" in $$props) $$invalidate(16, pq1_after = $$props.pq1_after);
+		if ("temperature" in $$props) $$invalidate(17, temperature = $$props.temperature);
+		if ("calibration_factor" in $$props) $$invalidate(18, calibration_factor = $$props.calibration_factor);
+		if ("rt" in $$props) $$invalidate(19, rt = $$props.rt);
+		if ("ndensity_temp" in $$props) $$invalidate(50, ndensity_temp = $$props.ndensity_temp);
+		if ("ndensity" in $$props) $$invalidate(20, ndensity = $$props.ndensity);
 	};
 
 	let c;
@@ -60599,67 +61604,61 @@ function instance$1i($$self, $$props, $$invalidate) {
 	}
 
 	$$self.$$.update = () => {
-		if ($$self.$$.dirty[0] & /*plank_constant, electron_charge, hz*/ 26) {
-			 $$invalidate(5, eV = plank_constant / electron_charge * hz);
+		if ($$self.$$.dirty[0] & /*plank_constant, electron_charge, hz*/ 52) {
+			 $$invalidate(6, eV = plank_constant / electron_charge * hz);
 		}
 
-		if ($$self.$$.dirty[0] & /*plank_constant, boltzman_constant, hz*/ 22) {
-			 $$invalidate(6, kelvin = plank_constant / boltzman_constant * hz);
+		if ($$self.$$.dirty[0] & /*plank_constant, boltzman_constant, hz*/ 44) {
+			 $$invalidate(7, kelvin = plank_constant / boltzman_constant * hz);
 		}
 
-		if ($$self.$$.dirty[0] & /*hz, c*/ 17) {
-			 $$invalidate(7, cm_1 = hz / (c * 100));
+		if ($$self.$$.dirty[0] & /*hz, c*/ 34) {
+			 $$invalidate(8, cm_1 = hz / (c * 100));
 		}
 
-		if ($$self.$$.dirty[0] & /*c, hz*/ 17) {
-			 $$invalidate(8, um = c / hz * 1000000);
+		if ($$self.$$.dirty[0] & /*c, hz*/ 34) {
+			 $$invalidate(9, um = c / hz * 1000000);
 		}
 
-		if ($$self.$$.dirty[0] & /*hz*/ 16) {
-			 $$invalidate(9, ghz = hz * 1e-9);
+		if ($$self.$$.dirty[0] & /*hz*/ 32) {
+			 $$invalidate(10, ghz = hz * 1e-9);
 		}
 
-		if ($$self.$$.dirty[0] & /*c, hz*/ 17) {
-			 $$invalidate(10, nm = c / hz * 1000000000);
+		if ($$self.$$.dirty[0] & /*c, hz*/ 34) {
+			 $$invalidate(11, nm = c / hz * 1000000000);
 		}
 
-		if ($$self.$$.dirty[0] & /*plank_constant, hz*/ 18) {
-			 $$invalidate(11, J = plank_constant * hz);
+		if ($$self.$$.dirty[0] & /*plank_constant, hz*/ 36) {
+			 $$invalidate(12, J = plank_constant * hz);
 		}
 
-		if ($$self.$$.dirty[0] & /*calibration_factor, boltzman_constant, rt, pq1_after, pq1_before, temperature*/ 507908) {
-			 $$invalidate(47, ndensity_temp = calibration_factor / (boltzman_constant * 10000 * rt ** 0.5) * ((pq1_after - pq1_before) / temperature ** 0.5));
+		if ($$self.$$.dirty[0] & /*calibration_factor, boltzman_constant, rt, pq1_after, pq1_before, temperature*/ 1015816) {
+			 $$invalidate(50, ndensity_temp = calibration_factor / (boltzman_constant * 10000 * rt ** 0.5) * ((pq1_after - pq1_before) / temperature ** 0.5));
 		}
 
-		if ($$self.$$.dirty[1] & /*ndensity_temp*/ 65536) {
-			 $$invalidate(19, ndensity = ndensity_temp.toExponential(4));
+		if ($$self.$$.dirty[1] & /*ndensity_temp*/ 524288) {
+			 $$invalidate(20, ndensity = ndensity_temp.toExponential(4));
 		}
 	};
 
-	 $$invalidate(0, c = 299792458); // m/s
-	 $$invalidate(1, plank_constant = 6.62607004e-34); // Js
-	 $$invalidate(2, boltzman_constant = 1.380649e-23); // J/K
-	 $$invalidate(3, electron_charge = 1.602176565e-19); // C or eV = J
-
-	// eV/q = h.c/lam = h.f = KB.T = h.c.cm_1
-	 $$invalidate(4, hz = (1000000000000).toExponential(4));
-
-	 $$invalidate(12, edit_constants = false);
-	 $$invalidate(13, edit_numberDensity_constants = false);
+	 $$invalidate(1, c = 299792458); // m/s
+	 $$invalidate(2, plank_constant = 6.62607004e-34); // Js
+	 $$invalidate(3, boltzman_constant = 1.380649e-23); // J/K
+	 $$invalidate(4, electron_charge = 1.602176565e-19); // C or eV = J
+	 $$invalidate(5, hz = (1000000000000).toExponential(4));
+	 $$invalidate(13, edit_constants = false);
+	 $$invalidate(14, edit_numberDensity_constants = false);
 
 	// Number density
-	 $$invalidate(14, pq1_before = 1e-8);
+	 $$invalidate(15, pq1_before = 1e-8);
 
-	 $$invalidate(15, pq1_after = 0.00001);
-
-	// $: ptrap_before = 1e-10
-	// $: ptrap_after = 1e-5
-	 $$invalidate(16, temperature = 5);
-
-	 $$invalidate(17, calibration_factor = 205.54);
-	 $$invalidate(18, rt = 300);
+	 $$invalidate(16, pq1_after = 0.00001);
+	 $$invalidate(17, temperature = 5);
+	 $$invalidate(18, calibration_factor = 205.54);
+	 $$invalidate(19, rt = 300);
 
 	return [
+		active,
 		c,
 		plank_constant,
 		boltzman_constant,
@@ -60680,6 +61679,8 @@ function instance$1i($$self, $$props, $$invalidate) {
 		calibration_factor,
 		rt,
 		ndensity,
+		navItems,
+		tabbar_active_binding,
 		textfield0_value_binding,
 		textfield1_value_binding,
 		change_handler,
@@ -60713,23 +61714,23 @@ function instance$1i($$self, $$props, $$invalidate) {
 class Misc extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$1i, create_fragment$1i, safe_not_equal, {}, [-1, -1]);
+		init(this, options, instance$1j, create_fragment$1j, safe_not_equal, {}, [-1, -1]);
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
 			tagName: "Misc",
 			options,
-			id: create_fragment$1i.name
+			id: create_fragment$1j.name
 		});
 	}
 }
 
 /* src\App.svelte generated by Svelte v3.24.0 */
 
-const { console: console_1$e } = globals;
-const file$1c = "src\\App.svelte";
+const { console: console_1$f } = globals;
+const file$1d = "src\\App.svelte";
 
-function create_fragment$1j(ctx) {
+function create_fragment$1k(ctx) {
 	let navbar;
 	let t0;
 	let home;
@@ -60791,7 +61792,7 @@ function create_fragment$1j(ctx) {
 			create_component(footer.$$.fragment);
 			attr_dev(div, "class", "pageContainer");
 			set_style(div, "overflow", "hidden");
-			add_location(div, file$1c, 55, 0, 1774);
+			add_location(div, file$1d, 55, 0, 1774);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -60867,7 +61868,7 @@ function create_fragment$1j(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_fragment$1j.name,
+		id: create_fragment$1k.name,
 		type: "component",
 		source: "",
 		ctx
@@ -60876,7 +61877,7 @@ function create_fragment$1j(ctx) {
 	return block;
 }
 
-function instance$1j($$self, $$props, $$invalidate) {
+function instance$1k($$self, $$props, $$invalidate) {
 	onMount(() => {
 		let allbuttons = Array.from(document.querySelectorAll(".button"));
 		allbuttons.forEach(button => button.classList.add("hvr-glow"));
@@ -60933,7 +61934,7 @@ function instance$1j($$self, $$props, $$invalidate) {
 	const writable_props = ["version"];
 
 	Object.keys($$props).forEach(key => {
-		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1$e.warn(`<App> was created with unknown prop '${key}'`);
+		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1$f.warn(`<App> was created with unknown prop '${key}'`);
 	});
 
 	let { $$slots = {}, $$scope } = $$props;
@@ -60977,20 +61978,20 @@ function instance$1j($$self, $$props, $$invalidate) {
 class App extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$1j, create_fragment$1j, safe_not_equal, { version: 1 });
+		init(this, options, instance$1k, create_fragment$1k, safe_not_equal, { version: 1 });
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
 			tagName: "App",
 			options,
-			id: create_fragment$1j.name
+			id: create_fragment$1k.name
 		});
 
 		const { ctx } = this.$$;
 		const props = options.props || {};
 
 		if (/*version*/ ctx[1] === undefined && !("version" in props)) {
-			console_1$e.warn("<App> was created without expected prop 'version'");
+			console_1$f.warn("<App> was created without expected prop 'version'");
 		}
 	}
 

@@ -1,9 +1,9 @@
+
 <script context="module">
     export const createToast = (msg, type="primary") => Toast.create({ message: msg, position:"is-top", type:`is-${type}`})
 </script>
 
 <script>
-
     import IconButton, {Icon} from '@smui/icon-button';
 
     import { slide } from 'svelte/transition';
@@ -104,11 +104,13 @@
     <Icon class="material-icons" on:click="{()=>changeDirectory("..")}">arrow_back</Icon>
     <Icon class="material-icons" on:click="{()=>{getfiles(true)}}">refresh</Icon>
     <CustomIconSwitch bind:toggler={sortFile} icons={["trending_up", "trending_down"]}/>
+
 </div>
 
 <Textfield on:keyup={searchfile} style="margin-bottom:1em;" bind:value={searchKey} label="Seach" />
 <div class="align center">
     <FormField>
+    
         <Switch bind:checked={selectAll} on:change="{()=>selectAll ? fileChecked = files.map(file=>file=file.name) : fileChecked = []}"/>
         <span slot="label">Select All</span>
     </FormField>

@@ -163,6 +163,7 @@
     }
 
     @media(min-width: 62rem) {
+        
     #container {
         transform: scale(0.85);
     }
