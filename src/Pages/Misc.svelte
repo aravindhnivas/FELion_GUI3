@@ -160,4 +160,5 @@
     {:else}
         <Terminal />
     {/if}
+    
 </section>
