@@ -40,7 +40,10 @@ export default {
 				}]
 			]
 		})
+	
+	
 	],
+	
 	watch: { clearScreen: false },
 	external: ['electron', 'child_process', 'fs', 'path', 'url', 'module', 'os']
 	
