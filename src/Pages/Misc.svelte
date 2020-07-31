@@ -5,6 +5,7 @@
     import CustomSwitch from '../components/CustomSwitch.svelte';
     import Terminal from '../components/Terminal.svelte';
     import Tab, {Label} from '@smui/tab';
+
     import TabBar from '@smui/tab-bar';
 
 
