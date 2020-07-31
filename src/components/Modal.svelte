@@ -1,3 +1,4 @@
+
 <script>
     export let active =  false, title =  "Title", style="width:60vw", bodyBackground = "#634e96";
 </script>
