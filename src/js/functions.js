@@ -1,36 +1,26 @@
 
 import { writable } from 'svelte/store';
+import { Toast } from 'svelma';
 
 export const windowLoaded = writable(false);
 
 window.addEventListener('DOMContentLoaded', (event) => {
-    console.log('DOM fully loaded and parsed');
 
+    console.log('DOM fully loaded and parsed');
     windowLoaded.set(true)
 });
 
-window.showpage = (item) => { document.getElementById(item).style.display = "block" }
-
-window.hidepage = (item) => { document.getElementById(item).style.display = "none" }
-window.togglepage = (item) => {
-    let element = document.getElementById(item);
-
-    let display = element.style.display;
-
-    display === "none" ? element.style.display = "block" : element.style.display = "none"
-}
 
 export function resizableDiv({ div, change = { width: true, height: true }, cursor = { left: false, right: false, bottom: false, top: false } } = {}) {
 
     interact(div).resizable({
+
         edges: cursor,
 
         modifiers: [
             // keep the edges inside the parent
             interact.modifiers.restrictEdges({ outer: 'parent' }),
-
             interact.modifiers.restrictSize({ min: { width: 50, height: 50 }, max: { width: 500 } })
-
         ],
         inertia: true
     }).on('resizemove', function (event) {
@@ -40,17 +30,22 @@ export function resizableDiv({ div, change = { width: true, height: true }, curs
 
         if (change.width) {
             target.style.width = event.rect.width + 'px'
-
             if (event.rect.width <= 50) {
-
                 if (target.classList.contains("filebrowser")) { target.style.display = "none" }
+
             }
+        
         }
+
         if (change.height) target.style.height = event.rect.height + 'px'
 
         // translate when resizing from top or left edges
+        
+        
         x += event.deltaRect.left
+        
         y += event.deltaRect.top
+
 
         target.style.webkitTransform = target.style.transform = 'translate(' + x + 'px,' + y + 'px)'
         target.setAttribute('data-x', x)
@@ -59,9 +54,7 @@ export function resizableDiv({ div, change = { width: true, height: true }, curs
     })
 
 }
-
 resizableDiv({ div: ".adjust-right", cursor: { right: true }, change: { width: true, height: false } })
-
 
 export function plot(mainTitle, xtitle, ytitle, data, plotArea, filetype = null) {
 
@@ -105,11 +98,43 @@ export function subplot(mainTitle, xtitle, ytitle, data, plotArea, x2, y2, data2
     Plotly.react(plotArea, dataPlot1.concat(dataPlot2), dataLayout, { editable: true })
 }
 
-window.sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-window.getPageStatus = (id) => {
-    let target = document.getElementById(id)
-    let visibility = target.style.display !== "none"
-    
-    return visibility
+// Global variables
+
+window.electron = require("electron")
+window.remote = electron.remote
+window.path = require("path")
+window.fs = require("fs")
+window.spawn = require("child_process").spawn
+
+window.createToast = (msg, type="primary") => Toast.create({ message: msg, position:"is-top", type:`is-${type}`})
+window.sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+window.targetElement = (id) => document.getElementById(id)
+
+window.getPageStatus = (id) => targetElement(id).style.display !== "none"
+window.showpage = (id) => { targetElement(id).style.display = "block" }
+
+window.hidepage = (id) => { targetElement(id).style.display = "none" }
+
+window.togglepage = (id) => {
+    window.getPageStatus(id) ? targetElement(id).style.display = "none" : targetElement(id).style.display = "block"
+}
+
+const electronVersion = process.versions.electron
+window.showinfo = electronVersion >= "7" ? remote.dialog.showMessageBoxSync : remote.dialog.showMessageBox
+
+// Checking curernt version
+
+const versionFile = fs.readFileSync(path.join(__dirname, "../version.json"))
+window.currentVersion = localStorage["version"] =  JSON.parse(versionFile.toString("utf-8")).version
+
+
+
+
+
+window.asyncForEach = async (array, callback) => {
+    for (let index = 0; index < array.length; index++) {
+        await callback(array[index], index, array);
+    }
+
 }
