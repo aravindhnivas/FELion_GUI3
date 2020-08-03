@@ -99,7 +99,6 @@
 
     }
 
-
 </style>
 
 
@@ -127,8 +126,9 @@
                 <IconButton class="material-icons is-pulled-right" style="background: #f14668; border-radius: 2em;" on:click="{()=>commandResults=[{color:colorSets.normal, results:`>> cleared`}] }">clear</IconButton>
             </div>
         </div>
-
     {/if}
+
+    
 
 
 
