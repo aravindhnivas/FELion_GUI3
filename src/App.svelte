@@ -22,12 +22,7 @@
 
 	const navItems = ["Home", "Normline", "Masspec", "Timescan", "THz", "Powerfile", "Misc", "Settings"]
 	// const components = {Home, Normline, Masspec, Timescan, THz, Powerfile, Misc, Settings}
-
-	window.electron = require("electron")
-	window.remote = electron.remote
-	window.path = require("path")
-	window.fs = require("fs")
-	window.spawn = require("child_process").spawn
+	
 	
 	export let version;
 	console.log("Svelte: ", version)
