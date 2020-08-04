@@ -7,8 +7,8 @@ const restart_program = () => {
     response===0 ? remote.getCurrentWindow().reload() : console.log("Restarting later")
 }
 
-export function InstallUpdate(target) {
-    let src = path.resolve(updateFolder, `${get(github).repo}-${get(github).branchname}`)
+export function InstallUpdate(target, updateFolder) {
+    let src = path.resolve(updateFolder, `${get(github).repo}-${get(github).branch}`)
     let dest = path.resolve(__dirname, "..")
 
     transferFiles({dest, src})

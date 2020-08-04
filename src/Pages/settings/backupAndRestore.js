@@ -33,34 +33,52 @@ export function transferFiles({dest, src, includeNode=true}={}) {
     return new Promise((resolve, reject)=>{
 
 
-        const options = {overwrite: true, filter: includeNode ?  [] : fs.readdirSync(src).filter(file => file != "node_modules")}
+        // const options = {overwrite: true, filter: includeNode ?  [] : fs.readdirSync(src).filter(file => file != "node_modules")}
         
-        copy(src, dest, options)
-        
-            .on(copy.events.COPY_FILE_START, function(copyOperation) {
-                console.info('Copying file ' + copyOperation.src + '...');
-            })
-            
-            
-            .on(copy.events.COPY_FILE_COMPLETE, function(copyOperation) {
-            
-                console.info('Copied to ' + copyOperation.dest);
-            })
-            
-            .on(copy.events.ERROR, function(error, copyOperation) {
-                console.error('Unable to copy ' + copyOperation.dest);
-            })
-            
-            .then(function(results) {
-                resolve(results)
-                console.info(results.length + ' file(s) copied');
-            })
-            
-            .catch(function(error) {
+        copy(src, dest, {overwrite: true}, function(error, results) {
+            if (error) {
+                console.error('Copy failed: ' + error);
+                createToast("Update failed.\nMaybe the user doesn't have necessary persmission to write files in the disk", "danger")
+
                 reject(error)
+            } else {
+                console.info('Copied ' + results.length + ' files')
+
+                createToast("Updated succesfull. Restart the program (Press Ctrl + R).", "success")
+                resolve(results)
+
+                // restart_program()
+
+            }
+        
+        })
+
+        // copy(src, dest, options)
+        
+        //     .on(copy.events.COPY_FILE_START, function(copyOperation) {
+        //         console.info('Copying file ' + copyOperation.src + '...');
+        //     })
             
-                return console.error('Copy failed: ' + error);
-        });
+            
+        //     .on(copy.events.COPY_FILE_COMPLETE, function(copyOperation) {
+            
+        //         console.info('Copied to ' + copyOperation.dest);
+        //     })
+            
+        //     .on(copy.events.ERROR, function(error, copyOperation) {
+        //         console.error('Unable to copy ' + copyOperation.dest);
+        //     })
+            
+        //     .then(function(results) {
+        //         resolve(results)
+        //         console.info(results.length + ' file(s) copied');
+        //     })
+            
+        //     .catch(function(error) {
+        //         reject(error)
+            
+        //         return console.error('Copy failed: ' + error);
+        // });
 
     })
 }

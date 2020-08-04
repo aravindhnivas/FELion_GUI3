@@ -56,18 +56,24 @@
         setInterval(()=>{updateCheck({info:false})}, 1*1000*60*15)
     })
 
-    
     const handlepythonPathCheck = () => { console.log("Python path checking done") }
     
     const update = async () => {
-    
-        let target = document.getElementById("updateBtn")
+
+        try {
+
+            const updateFolder = path.resolve(__dirname, "..", "update")
+            let target = document.getElementById("updateBtn")
+            
+            target.classList.toggle("is-loading")
+
+            if (!fs.existsSync(updateFolder)) {fs.mkdirSync(updateFolder)}
+            
+            await download(updateFolder)
+            
+            InstallUpdate(target, updateFolder)
+        } catch (error) {preModal.modalContent = err; preModal.open = true}
         
-        target.classList.toggle("is-loading")
-        if (!fs.existsSync(updateFolder)) {fs.mkdirSync(updateFolder)}
-        
-        await download()
-        InstallUpdate(target)
     }
 
     let preModal = {};
