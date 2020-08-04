@@ -26,7 +26,7 @@
 
     .editor-container * { color: black; }
 
-    .text-container {height: 30rem;}
+    .text-container {height: 30rem; width: 100%;}
     .ql-tooltip.ql-editing.ql-flip {
         left: -7.5px;
         top: 20.5px;
@@ -40,12 +40,15 @@
     }
     
     .hljs-symbol, .hljs-attribute {color: #fafafa;}
+
+
+    .toolbar-container {width: 100%;}
 </style>
 
 
 
-<div id="{type}-standalone-container" class="editor-container">
-  <div id="{type}-toolbar-container">
+<div id="{type}-standalone-container" class="align editor-container" style="background-color: #fafafa; width: 75%;">
+  <div id="{type}-toolbar-container" class="toolbar-container">
     <span class="ql-formats">
       <select class="ql-font"></select>
       <select class="ql-size"></select>
@@ -90,7 +93,6 @@
       <button class="ql-clean"></button>
     </span>
   </div>
-
   <div id="{type}-editor-container" class="text-container"></div>
 
 </div>

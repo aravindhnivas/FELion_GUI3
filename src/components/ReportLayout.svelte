@@ -33,13 +33,7 @@
 
     let preModal = {};
 
-    function init_report(){
-
-
-        const reportExist = fs.existsSync(reportFile)
-        console.log("Report status:\n", reportExist)
-
-        const reportHTMLTemplate = `<!DOCTYPE html>
+    $: reportHTMLTemplate = `<!DOCTYPE html>
                                 <html lang="en">
                                     <head>
                                         <meta charset='utf8'>
@@ -53,6 +47,12 @@
                                         <section class="section" id="mainSection"></section>
                                     </body>
                                 </html>`
+
+    function init_report(){
+
+
+        const reportExist = fs.existsSync(reportFile)
+        console.log("Report status:\n", reportExist)
 
         reportHTML.innerHTML = reportExist ? fs.readFileSync(reportFile) : reportHTMLTemplate
         console.log("ReportHTML: ", reportHTML)
@@ -68,7 +68,7 @@
     
     const exprtToHtml = async (content) => {
 
-        fs.writeFile(reportFile, content, function(err) {
+        fs.writeFile(reportFile, content || reportHTMLTemplate, function(err) {
 
             if(err) {
                 createToast("Report couldn't be added.", "danger")
@@ -295,9 +295,7 @@
         </div>
 
         <Textfield style="height:3em; margin-bottom:1em;" variant="outlined" bind:value={reportTitle} label="Title" />
-        <div class="align" style="background-color: #fafafa;">
-            <Editor />
-        </div>
+        <Editor />
         <!-- <Textfield textarea bind:value={reportComments} label="Comments"  
             input$aria-controls="{id}_comments" input$aria-describedby="{id}_comments"/>
         <HelperText id="{id}_comments">
