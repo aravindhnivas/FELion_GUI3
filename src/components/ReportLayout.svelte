@@ -21,12 +21,13 @@
     import {onMount} from "svelte";
     import Hamburger1 from "./icon_animations/Hamburger1.svelte";
     import PreModal from "./PreModal.svelte";
+    import Editor from "./Editor.svelte";
     const {BrowserWindow} = remote
     //////////////////////////////////////////////////////////////////////////////////////////////////
 
     export let currentLocation = "", id="report", includePlotsInReport=[], includeTablesInReports=[]
     $: reportFile = path.resolve(currentLocation, `reports/${reportMolecule}_report.html`)
-    let reportTitle = "", reportComments = "", reportMethod = "info", reportMolecule = ""
+    let reportTitle = "", reportMethod = "info", reportMolecule = ""
     const stylesheet = path.resolve(__dirname, 'assets/reports/template.css')
     const reportHTML = document.createElement( 'html' )
 
@@ -87,21 +88,20 @@
             console.log("Exported to HTML")
         })
 
-        reportTitle = "", reportComments = ""
+        reportTitle = ""
         
     }
 
     const addReport = async() => {
 
-        let reportDir = path.resolve(currentLocation, "reports")
+        const reportDir = path.resolve(currentLocation, "reports")
         if (!fs.existsSync(reportDir)) {fs.mkdirSync(reportDir); console.log("reports directory created")}
         
         const reportCount = reportMainContainer.getElementsByClassName("reportCount").length
         if (reportTitle.length == 0) reportTitle = `Title-${reportCount}`
-        if (reportComments.length == 0) reportComments = "-"
 
         
-        let tableDiv = document.createElement("div")
+        const tableDiv = document.createElement("div")
         tableDiv.setAttribute("class", "content reportTable")
 
         includeTablesInReports.forEach(tb=>{
@@ -134,7 +134,7 @@
         console.log("tableDiv created", tableDiv)
         
 
-        let plotDiv = document.createElement("div")
+        const plotDiv = document.createElement("div")
         plotDiv.setAttribute("class", "content reportPlots")
 
         await asyncForEach(includePlotsInReport, async (plot)=>{
@@ -155,14 +155,15 @@
 
         console.log("plotDiv created", plotDiv)
 
-        let reportMainHeading = document.createElement("h1")
+        const reportMainHeading = document.createElement("h1")
         reportMainHeading.setAttribute("class", `notification is-${reportMethod} reportHeading`)
         reportMainHeading.textContent = reportTitle
 
-        let reportComment = document.createElement("div")
+        const reportComment = document.createElement("div")
         reportComment.setAttribute("class", "reportComments")
+        reportComment.innerHTML = window.reportEditor.root.innerHTML
 
-        let reportDiv = document.createElement("div")
+        const reportDiv = document.createElement("div")
         reportDiv.setAttribute("class", "content reportCount")
 
         reportDiv.appendChild(reportMainHeading)
@@ -222,23 +223,25 @@
     onMount(()=>{
         init_report()
     })
+
     let toggle = false;
 </script>
 
 <style>
-
-    /* .notification { margin-top: 1em; border: 1px solid; } */
     .button {margin-right: 1em;}
     .report {display: flex; align-items: inherit; flex-direction: column;}
-    /* .addToReport > hr {margin: auto; width: 50%;}
-    .addToReport > h1 {margin: 5px 0; justify-content: center; display: flex;} */
-
+   
     .addToReport > div {justify-content: center; display: flex; flex-wrap: wrap;}
+    
     .align {display: flex; align-items: center;}
     .heading {
+    
         border: 1px solid;
         margin: 1em 0;
         background-color: #634e96;
+
+
+
         border-radius: 5px;
     }
 
@@ -273,9 +276,6 @@
 
         {#if includeTablesInReports.length>0}
             <div class="addToReport ">
-                <!-- <hr>
-                    <h1 class="subtitle">Include tables</h1>
-                <hr> -->
                 <div class="">
                     {#each includeTablesInReports as {id, include, label}(id)}
                         <CustomCheckbox bind:selected={include} {label}/>
@@ -286,9 +286,6 @@
         
         
         <div class="addToReport ">
-            <!-- <hr>
-                <h1 class="subtitle">Include plots</h1>
-            <hr> -->
 
             <div class="">
                 {#each includePlotsInReport as {id, include, label}(id)}
@@ -298,11 +295,14 @@
         </div>
 
         <Textfield style="height:3em; margin-bottom:1em;" variant="outlined" bind:value={reportTitle} label="Title" />
-        <Textfield textarea bind:value={reportComments} label="Comments"  
+        <div class="align" style="background-color: #fafafa;">
+            <Editor />
+        </div>
+        <!-- <Textfield textarea bind:value={reportComments} label="Comments"  
             input$aria-controls="{id}_comments" input$aria-describedby="{id}_comments"/>
         <HelperText id="{id}_comments">
             {"NOTE: You can write in markdown format (eg: # Title, ## Subtilte, **bold**, _italics_, > BlockQuotes, >> Nested BlockQuotes,  1., 2. for list, etc.,)"}
-        </HelperText>
+        </HelperText> -->
 
         <div class="align" style="margin-top:1em;">
         
