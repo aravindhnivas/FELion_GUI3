@@ -7,9 +7,7 @@
     import QuickBrowser from '../../../../components/QuickBrowser.svelte';
 
     import { fade } from 'svelte/transition';
-    // import {computePy_func} from '../../functions/computePy';
     import {opofile_func} from '../../functions/opofile';
-    import {createToast} from '../../functions/misc';
 
     export let OPOLocation, opofiles, OPOfilesChecked, preModal, graphPlotted, removeExtraFile;
 
@@ -28,14 +26,14 @@
         let pyfile="oposcan.py", args;
         
         removeExtraFile()
-        if(opofiles.length<1) return createToast("No files selected", "danger")
+        if(opofiles.length<1) return window.createToast("No files selected", "danger")
         $opoMode = true, $felixPlotAnnotations = []
         
         args=[...opofiles, tkplot, deltaOPO, calibValue, calibFile]
         computePy_func({e, pyfile, args})
         .then((dataFromPython)=>{
             opofile_func({dataFromPython})
-            createToast("Graph Plotted", "success")
+            window.createToast("Graph Plotted", "success")
             graphPlotted = true, $opoMode = true
             localStorage["opoLocation"] = OPOLocation; 
             showOPOFiles=false

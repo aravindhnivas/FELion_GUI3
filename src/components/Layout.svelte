@@ -1,6 +1,4 @@
 <script context="module">
-    import { Toast } from 'svelma'
-    export const createToast = (msg, type="primary") => Toast.create({ message: msg, position:"is-top", type:`is-${type}`})
     export function browse({filetype="", dir=true}={}) {
         return new Promise((resolve, reject)=>{
             const mainWindow = remote.getCurrentWindow()
@@ -25,7 +23,7 @@
 
                 }).catch(err => {
 
-                    createToast("Couldn't open folder", "danger")
+                    window.createToast("Couldn't open folder", "danger")
                     reject(err) })
             } else {
                 let result = {}

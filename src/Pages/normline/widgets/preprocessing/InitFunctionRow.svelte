@@ -4,10 +4,8 @@
     import Textfield from '@smui/textfield';
     import CustomIconSwitch from '../../../../components/CustomIconSwitch.svelte';
     import FelixPlotting from '../../modals/FelixPlotting.svelte';
-    // import {computePy_func} from '../../functions/computePy';
 
     import {felix_func} from '../../functions/felix';
-    import {createToast} from '../../functions/misc';
 
     export let felixPlotCheckboxes, preModal, felixfiles, graphPlotted, opofiles, normMethod, show_theoryplot, removeExtraFile;
 
@@ -57,7 +55,7 @@
             case "felix":
                 removeExtraFile()
                 graphPlotted = false, $felixOutputName = "averaged", $felixPlotAnnotations = [], $felixPeakTable = []
-                if(felixfiles.length<1) return createToast("No files selected", "danger")
+                if(felixfiles.length<1) return window.createToast("No files selected", "danger")
                 
                 pyfile="normline.py" , args=[...felixfiles, delta]
 
@@ -67,15 +65,15 @@
                     
                     show_theoryplot = false
                     felix_func({normMethod, dataFromPython, delta})
-                    createToast("Graph Plotted", "success")
+                    window.createToast("Graph Plotted", "success")
                     graphPlotted = true
                 }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
 
                 break;
             
             case "baseline":
-                if ($opoMode) {if(opofiles.length<1) return createToast("No OPO files selected", "danger")}
-                else {if(felixfiles.length<1) return createToast("No FELIX files selected", "danger")}
+                if ($opoMode) {if(opofiles.length<1) return window.createToast("No OPO files selected", "danger")}
+                else {if(felixfiles.length<1) return window.createToast("No FELIX files selected", "danger")}
                 pyfile="baseline.py", args= $opoMode ? opofiles: felixfiles
                 computePy_func({pyfile, args, general:true, openShell})
                 .catch(err=>{preModal.modalContent = err;  preModal.open = true})

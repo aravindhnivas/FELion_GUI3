@@ -6,7 +6,7 @@
     import Fab, {Label} from '@smui/fab';
     import Checkbox from '@smui/checkbox';
     import FormField from '@smui/form-field';
-    import {createToast, browse} from "../components/Layout.svelte";
+    import {browse} from "../components/Layout.svelte";
     import CustomDialog from "../components/CustomDialog.svelte";
     import PreModal from "../components/PreModal.svelte";
     //////////////////////////////////////////////////////////////////////////////////
@@ -17,8 +17,8 @@
 
         fs.writeFile(powfile, contents , function(err) {
 
-            if(err) { return createToast("Power file couldn't be saved.", "danger") }
-            createToast("Power file saved", "success")
+            if(err) { return window.createToast("Power file couldn't be saved.", "danger") }
+            window.createToast("Power file saved", "success")
         })
     }
     
@@ -35,7 +35,7 @@
 
             if (!result.canceled) {
                 location = localStorage["powerfile_location"] = result.filePaths[0]
-                createToast("Location updated", "success")
+                window.createToast("Location updated", "success")
 
                 if (save) savefile()
             }
@@ -67,7 +67,7 @@
     
     const handleOverwrite = (e) => {
         let action = e.detail.action
-        if (action === "Cancel" || action === "close") createToast("Powerfile saving cancelled", "warning")
+        if (action === "Cancel" || action === "close") window.createToast("Powerfile saving cancelled", "warning")
         if (action === "Yes") writePowfile()
     }
 

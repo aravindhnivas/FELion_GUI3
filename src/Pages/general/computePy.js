@@ -8,7 +8,7 @@ window.checkPython = function checkPython({defaultPy}={}){
     console.log("Python path checking \n", defaultPy)
     return new Promise((resolve, reject)=>{
         exec(`${defaultPy} -V`, (err, stdout)=>{
-            if(err) {reject("Invalid python location"); createToast("Python location is not valid", "danger")}
+            if(err) {reject("Invalid python location"); window.createToast("Python location is not valid", "danger")}
             else {resolve(stdout.trim())}
         })
     })
@@ -25,7 +25,7 @@ window.computePy_func = function computePy_func({e=null, pyfile="", args="", gen
             if(general){
                 console.log("Sending general arguments: ", args)
                 
-                createToast("Process Started")
+                window.createToast("Process Started")
 
                 let py = spawn(
 
@@ -50,7 +50,7 @@ window.computePy_func = function computePy_func({e=null, pyfile="", args="", gen
                 let target = e.target
                 target.classList.toggle("is-loading")
 
-                createToast("Process Started")
+                window.createToast("Process Started")
             
                 py.stdout.on("data", data => {
             

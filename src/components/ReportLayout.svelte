@@ -15,8 +15,6 @@
     import HelperText from '@smui/textfield/helper-text/index'
     import Ripple from '@smui/ripple'
 
-    import {createToast} from "./Layout.svelte"
-    
     import Select, {Option} from '@smui/select'
     import {onMount} from "svelte";
     import Hamburger1 from "./icon_animations/Hamburger1.svelte";
@@ -71,7 +69,7 @@
         fs.writeFile(reportFile, content || reportHTMLTemplate, function(err) {
 
             if(err) {
-                createToast("Report couldn't be added.", "danger")
+                window.createToast("Report couldn't be added.", "danger")
                 return console.log(err);
             }
             
@@ -83,7 +81,7 @@
                     console.log('template.css file copied');
                 });
             }
-            createToast("Report added", "success")
+            window.createToast("Report added", "success")
 
             console.log("Exported to HTML")
         })
@@ -125,7 +123,7 @@
                     tableDiv.appendChild(tableElement)
                     
                 } catch (error) {
-                    createToast(`${tb.label} is not visible`, "danger")
+                    window.createToast(`${tb.label} is not visible`, "danger")
                 }
             }
         
@@ -200,7 +198,7 @@
                     .then(data => {
                         fs.writeFile(reportFile.replace(".html", ".pdf"), data, (error) => {
                             if (error) {preModal.modalContent = error; preModal.open = true; return}
-                            createToast('Write PDF successfully.', "success")
+                            window.createToast('Write PDF successfully.', "success")
                         })
                     }).catch(error => { preModal.modalContent = error; preModal.open = true })
 
@@ -209,7 +207,7 @@
                         if(error) { preModal.modalContent = error; preModal.open = true; return}
                         fs.writeFile(reportFile.replace(".html", ".pdf"), data, (error) => {
                             if (error) {preModal.modalContent = error; preModal.open = true; return}
-                            createToast('Write PDF successfully.', "success")
+                            window.createToast('Write PDF successfully.', "success")
                         })
                     })
                 }
@@ -260,7 +258,7 @@
 
     <div style="margin-bottom:1em;">
         <Textfield style="height:3em; width:20em;" variant="outlined" bind:value={reportMolecule} label="Molecule Name" />
-        <button class="button is-pulled-right is-warning" on:click="{()=>{ reportMainContainer.innerHTML = ""; exprtToHtml(""); createToast("Report resetted", "warning")}}">Reset Report</button>
+        <button class="button is-pulled-right is-warning" on:click="{()=>{ reportMainContainer.innerHTML = ""; exprtToHtml(""); window.createToast("Report resetted", "warning")}}">Reset Report</button>
     </div>
 
     <div class="align report" {id} >

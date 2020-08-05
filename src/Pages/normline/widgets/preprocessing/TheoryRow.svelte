@@ -4,10 +4,7 @@
     import Textfield from '@smui/textfield';
     import QuickBrowser from '../../../../components/QuickBrowser.svelte';
     import { fade } from 'svelte/transition';
-    // import {computePy_func} from '../../functions/computePy';
-    
     import {theory_func} from '../../functions/theory';
-    import {createToast} from '../../functions/misc';
 
     export let theoryLocation, currentLocation, show_theoryplot, normMethod, preModal;
 
@@ -20,13 +17,13 @@
     function plotData({e=null, tkplot="run"}={}){
         let pyfile="theory.py", args;
         
-        if(theoryfiles.length < 1) return createToast("No files selected", "danger")
+        if(theoryfiles.length < 1) return window.createToast("No files selected", "danger")
         
         args=[...theoryfiles, normMethod, sigma, scale, currentLocation, tkplot]
         computePy_func({e, pyfile, args})
         .then((dataFromPython)=>{
             theory_func({dataFromPython, normMethod})
-            createToast("Graph Plotted", "success")
+            window.createToast("Graph Plotted", "success")
             show_theoryplot = true, showTheoryFiles = false
         }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
     }

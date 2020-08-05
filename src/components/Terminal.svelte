@@ -2,7 +2,6 @@
 <script>
 
     import IconButton, {Icon} from '@smui/icon-button';
-    import {createToast} from "./Layout.svelte";
     import PreModal from "./PreModal.svelte";
     import {tick} from "svelte";
 
@@ -34,7 +33,7 @@
         
         srollTerminalDiv()
         
-        if (!commandToRun) {return createToast("No command entered", "warning")}
+        if (!commandToRun) {return window.createToast("No command entered", "warning")}
         commandResults = [...commandResults , {color:colorSets.normal, results:`>> ${commandToRun} ${commandArgsToRun.split(",").join(" ")}`}]
         let ls;
 
@@ -66,7 +65,7 @@
             
             try { fs.writeFileSync(path.resolve(__dirname, "output.log"), outputLog)} 
             
-            catch (error) { createToast("Could not save the outputs to file: output.log", "warning")}
+            catch (error) { window.createToast("Could not save the outputs to file: output.log", "warning")}
 
         })
     }

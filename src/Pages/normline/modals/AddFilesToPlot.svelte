@@ -4,9 +4,7 @@
     import Modal from '../../../components/Modal.svelte';
     import Textfield from '@smui/textfield';
     import {browse} from "../../../components/Layout.svelte";
-    // import {computePy_func} from '../functions/computePy';
-
-    import {createToast} from '../functions/misc';
+   
     
     export let active=false, fileChecked=[], addedFileCol=1, addedFileScale=1000, addedfiles=[], addedFile={}, extrafileAdded=0, preModal;
 
@@ -21,7 +19,7 @@
 
         let pyfile="addTrace.py" , args;
         
-        if(addedFile.files < 1) return createToast("No files selected", "danger")
+        if(addedFile.files < 1) return window.createToast("No files selected", "danger")
         addedFile["col"] = addedFileCol, addedFile["N"] = fileChecked.length + extrafileAdded
 
         addedFile["scale"] = addedFileScale
@@ -32,7 +30,7 @@
             addFileModal = false
             Plotly.addTraces($graphDiv, dataFromPython)
             extrafileAdded += addedfiles.length
-            createToast("Graph Plotted", "success")
+            window.createToast("Graph Plotted", "success")
         }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
 
     }

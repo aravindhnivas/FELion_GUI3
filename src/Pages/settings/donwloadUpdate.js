@@ -30,7 +30,7 @@ export function download(updateFolder) {
                 zip.extractAllTo(updateFolder, /*overwrite*/true);
                 console.log("File Extracted")
                 resolve("File extracted")
-                createToast("Downloading Completed")
+                window.createToast("Downloading Completed")
             }, 1600)
         
         })

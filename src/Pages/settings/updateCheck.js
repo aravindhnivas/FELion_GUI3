@@ -4,12 +4,12 @@ function checkWithCurrentVersion({new_version, developer_version, info}={}) {
     if (window.currentVersion === new_version) {
         if (developer_version) {
 
-                if (info) {createToast(`CAUTION! You are checking with developer branch which has experimental features. Take backup before updating.`, "danger")}
-            } else { if (info) {createToast("No stable update available", "warning")}}
+                if (info) {window.createToast(`CAUTION! You are checking with developer branch which has experimental features. Take backup before updating.`, "danger")}
+            } else { if (info) {window.createToast("No stable update available", "warning")}}
     
     } else if (window.currentVersion < new_version) {
 
-        createToast("New update available", "success")
+        window.createToast("New update available", "success")
 
         let options = {
             title: "FELion_GUI3",
@@ -18,7 +18,7 @@ function checkWithCurrentVersion({new_version, developer_version, info}={}) {
             type:"info"
         }
         let response = window.showinfo(window.remote.getCurrentWindow(), options)
-        response === 0 ? update() : createToast("Not updating now")
+        response === 0 ? update() : window.createToast("Not updating now")
     }
 }
 
@@ -28,7 +28,7 @@ export function updateCheck({info=true}={}){
 
     target.classList.toggle("is-loading")
 
-    if (!navigator.onLine) {if (info) {createToast("No Internet Connection!", "warning")}; return}
+    if (!navigator.onLine) {if (info) {window.createToast("No Internet Connection!", "warning")}; return}
 
     console.log(`URL_Package: ${get(versionJson)}`)
     let developer_version = false
@@ -56,7 +56,7 @@ export function updateCheck({info=true}={}){
             checkWithCurrentVersion({new_version, developer_version, info})
         })
 
-        .catch(error=> createToast(error, "danger"))
+        .catch(error=> window.createToast(error, "danger"))
         .finally(()=>{
             console.log("Update check completed")
 

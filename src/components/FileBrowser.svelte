@@ -1,8 +1,4 @@
 
-<script context="module">
-    export const createToast = (msg, type="primary") => Toast.create({ message: msg, position:"is-top", type:`is-${type}`})
-</script>
-
 <script>
     import IconButton, {Icon} from '@smui/icon-button';
 
@@ -46,7 +42,7 @@
     let files_loaded = false
     function getfiles(toast=false) {
         if (fs.existsSync(currentLocation)) {original_files = otherfolders = files = fileChecked = [], selectAll = files_loaded = false}
-        else {return createToast("Location undefined", "danger")}
+        else {return window.createToast("Location undefined", "danger")}
         try {
 
             console.log("Current location: ", currentLocation)
@@ -62,7 +58,7 @@
             console.log("Folder updated");
             dispatch_chdir_event()
             
-            if (toast) {createToast("Files updated")}
+            if (toast) {window.createToast("Files updated")}
         } catch (err) {
             console.log(err)
             preModal.modalContent = err;
@@ -75,7 +71,7 @@
     $: sortFile ? files = files.sort((a,b)=>a.name>b.name?1:-1) : files = files.sort((a,b)=>a.name<b.name?1:-1)
     const changeDirectory = (goto) => {
 
-        if (!fs.existsSync(currentLocation)) {return createToast("Location undefined", "danger")}
+        if (!fs.existsSync(currentLocation)) {return window.createToast("Location undefined", "danger")}
         currentLocation = path.resolve(currentLocation, goto)
 
         getfiles()
@@ -85,7 +81,7 @@
     afterUpdate(() => {
         if (original_location !== currentLocation) {
             if(fs.existsSync(currentLocation)) {getfiles(); console.log("Updating location for ", filetype)}
-            else {return createToast("Location undefined", "danger")}
+            else {return window.createToast("Location undefined", "danger")}
         
         }
     });

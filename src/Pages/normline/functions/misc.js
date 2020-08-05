@@ -2,9 +2,6 @@
 // Importing modules
 
 import {felixopoLocation, felixPeakTable, felixIndex, felixOutputName, felixPlotAnnotations, opoMode, Ngauss_sigma, get} from "./svelteWritables";
-import { Toast } from 'svelma'
-
-export const createToast = (msg, type="primary") => Toast.create({ message: msg, position:"is-top", type:`is-${type}`})
 
 export function savefile({file={}, name=""}={}) {
 
@@ -13,19 +10,19 @@ export function savefile({file={}, name=""}={}) {
 
         if (err) {
             console.log("An error occured while writing to File.");
-            return createToast("An error occured while writing to File.", "danger")
+            return window.createToast("An error occured while writing to File.", "danger")
         }
-        return createToast(`${name}.json has been saved.`, "success");
+        return window.createToast(`${name}.json has been saved.`, "success");
     });
 }
 
 export function loadfile({name=""}={}) {
     let filename = path.join(get(felixopoLocation), `${name}.json`)
-    if(!fs.existsSync(filename)) {return createToast(`${name}.json doesn't exist in DATA dir.`, "danger")}
+    if(!fs.existsSync(filename)) {return window.createToast(`${name}.json doesn't exist in DATA dir.`, "danger")}
 
     let loadedfile = JSON.parse(fs.readFileSync(filename)).file
 
-    createToast(`${name}.json has been loaded.`, "success")
+    window.createToast(`${name}.json has been loaded.`, "success")
     return loadedfile
 }
 

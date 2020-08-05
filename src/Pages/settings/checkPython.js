@@ -35,7 +35,7 @@ export function resetPyConfig() {
     
             pyVersion.set(version);
             pythonpath.set(localStorage["pythonpath"]); 
-            createToast("Location resetted", "warning")
+            window.createToast("Location resetted", "warning")
     
         })
     
@@ -47,7 +47,7 @@ export function updatePyConfig(){
         .then(version=>{
             pyVersion.set(version);
             localStorage["pythonpath"] = get(pythonpath)
-            createToast("Location updated", "success")
+            window.createToast("Location updated", "success")
         })
         localStorage["pythonscript"] = get(pythonscript)
         

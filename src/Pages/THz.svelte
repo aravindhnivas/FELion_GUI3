@@ -9,7 +9,6 @@
     import ReportLayout from "../components/ReportLayout.svelte"
     import Textfield from '@smui/textfield'
     import {plot} from "../js/functions.js"
-    import {createToast} from "../components/Layout.svelte"
 
     /////////////////////////////////////////////////////////////////////////
 
@@ -38,7 +37,7 @@
     const changePlotStyle = () => { Plotly.restyle("thzPlot", {mode:plotStyleSelected, fill: plotFill ? "tozeroy" : ""})}
     function plotData({e=null, filetype="thz", tkplot="run", justPlot=false }={}){
 
-        if (fileChecked.length === 0 && filetype === "thz") {return createToast("No files selected", "danger")}
+        if (fileChecked.length === 0 && filetype === "thz") {return window.createToast("No files selected", "danger")}
 
         let pyfileInfo = {
             thz: {pyfile:"thz_scan.py" , args:[...thzfiles, binData, delta, tkplot, gamma, justPlot]},
@@ -61,7 +60,7 @@
             py.unref()
             py.ref()
 
-            return createToast("Process Started")
+            return window.createToast("Process Started")
         }
 
         let target = e.target
@@ -78,7 +77,7 @@
             return
         }
         
-        createToast("Process Started")
+        window.createToast("Process Started")
         py.stdout.on("data", data => {
             console.log("Ouput from python")
             let dataReceived = data.toString("utf8")
@@ -121,7 +120,7 @@
                     } else if (filetype == "boltzman") {
                         plot(`Boltzman Distribution`, "Rotational levels (J)", "Probability (%)", dataFromPython, "boltzman_plot");
                     }
-                    createToast("Graph plotted", "success")
+                    window.createToast("Graph plotted", "success")
                     graphPlotted = true
 
                     target.style.backgroundColor="#09814a"

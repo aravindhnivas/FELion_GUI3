@@ -3,7 +3,6 @@
     // Importing modules
     import {pythonpath, pythonscript, pyVersion, github, backupName} from "./settings/svelteWritables";
     import Textfield from '@smui/textfield';
-    import {createToast} from "../components/Layout.svelte"
     import {onMount} from "svelte";
 
     import CustomDialog from "../components/CustomDialog.svelte"

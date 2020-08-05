@@ -17,7 +17,7 @@
         
         let pyfile="getfile_details.py", args;
         
-        if(felixfiles.length<1) return createToast("No files selected", "danger")
+        if(felixfiles.length<1) return window.createToast("No files selected", "danger")
         
         args=[JSON.stringify({files:$opoMode?opofiles : felixfiles, normMethod})]
         computePy_func({e, pyfile, args})

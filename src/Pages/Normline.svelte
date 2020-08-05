@@ -4,7 +4,7 @@
     // IMPORTING Modules
     import {opoMode, normMethodDatas, Ngauss_sigma, felixopoLocation, felixPlotAnnotations, expfittedLines, expfittedLinesCollectedData, fittedTraceCount, graphDiv} from './normline/functions/svelteWritables';
     
-    import Layout, {createToast} from "../components/Layout.svelte"
+    import Layout from "../components/Layout.svelte"
     
     import { fade } from 'svelte/transition'
     import CustomRadio from '../components/CustomRadio.svelte';
@@ -81,7 +81,7 @@
     $: $felixopoLocation = $opoMode ? OPOLocation : currentLocation
     
 
-    $: $opoMode ? createToast("OPO MODE", "warning") : createToast("FELIX MODE")
+    $: $opoMode ? window.createToast("OPO MODE", "warning") : window.createToast("FELIX MODE")
     $: $Ngauss_sigma = $opoMode ? 2 : 5
     let addFileModal=false, addedFileCol="0, 1", addedFile={}, addedFileScale=1, addedfiles = [], extrafileAdded=0
     
@@ -98,7 +98,7 @@
             }
             catch (err) {console.log("The plot is empty")}
         }
-        // createToast("Files removed", "warning")
+        // window.createToast("Files removed", "warning")
     }
 
 

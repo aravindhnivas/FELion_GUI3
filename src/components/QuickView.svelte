@@ -1,5 +1,5 @@
 <script>
-  import {browse, createToast} from "./Layout.svelte";
+  import {browse} from "./Layout.svelte";
   import { fade } from 'svelte/transition';
 
   export let active = false, style = "", footer = true, currentLocation="", title="";
@@ -7,7 +7,7 @@
   function browse_folder() {
   
     browse({dir:true}).then(result=>{
-        if (!result.canceled) { currentLocation = result.filePaths[0]; createToast("Location updated") }
+        if (!result.canceled) { currentLocation = result.filePaths[0]; window.createToast("Location updated") }
     })
   }
 
