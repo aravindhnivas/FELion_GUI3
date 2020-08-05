@@ -11,34 +11,27 @@ marker_theory = None
 
 def plotGraph(plotArgs):
 
+    global marker_theory
+
     figwidth, figheight, dpi, freqScale, gridalpha, theorysigma, majorTick = [i["value"] for i in plotArgs["number"]]
     
     NPlots = 1
 
     ratio = "1"
     
-
-    
     figcaption, figtitle, exptitle, legend_labels, calcTitle, marker =  [i["value"] for i in plotArgs["text"]]
-    normMethod = "Log"
+    normMethod = plotArgs["normMethod"]
     
-    sameColor, invert_ax2, onlyExp, hide_all_axis, hide_axis, legend_visible = [i["value"] for i in plotArgs["boolean"]]
-   
+    sameColor, invert_ax2, onlyExp, hide_axis, hide_all_axis, legend_visible = [i["value"] for i in plotArgs["boolean"]]
     hspace = 0.05
     wspace = 0.05
 
-
     datlocation = plotArgs["datlocation"]
-    datfiles, fundamentalsfiles, overtonefiles, combinationfiles = [i["selected"] for i in plotArgs["checkBoxes"]]
+    datfiles, fundamentalsfiles, overtonefiles, combinationfiles = [i["selected"] for i in plotArgs["felixPlotCheckboxes"]]
     datfiles = [pt(datlocation)/i for i in datfiles]
-    print(datfiles)
-
-    global marker_theory
-    
-    # plt.close()
     
     grid_ratio = np.array(ratio.split(","), dtype=np.float)
-    grid = {"hspace": hspace, "wspace": wspace, "width_ratios": grid_ratio, "bottom":0.2}
+    grid = {"hspace": hspace, "wspace": wspace, "width_ratios": grid_ratio}
     
     rows = (2, 1)[onlyExp]
     figheight = (figheight, figheight/2)[onlyExp]
@@ -52,13 +45,13 @@ def plotGraph(plotArgs):
         plt.show()
 
         return 
-    theorylocation = pt(plotArgs["theorylocation"])
-    fundamentalsfiles = [pt(theorylocation)/i for i in plotArgs["fundamentalsfiles"]]
-    overtonefiles = [pt(theorylocation)/i for i in plotArgs["overtonefiles"]]
-    combinationfiles = [pt(theorylocation)/i for i in plotArgs["combinationfiles"]]
-    # theoryfiles = [pt(theory_loc)/i for i in plotArgs["theoryfiles"]]
-    # theoryfiles1_overt_comb = [pt(theory_loc)/i for i in felix_w2.files.value]
-    # theoryfiles2_overt_comb = [pt(theory_loc)/i for i in felix_w3.files.value]
+    theoryLocation = pt(plotArgs["theoryLocation"])
+
+    theoryfiles = [pt(theoryLocation)/i for i in plotArgs["felixPlotCheckboxes"][1]["selected"]]
+    overtonefiles = [pt(theoryLocation)/i for i in plotArgs["felixPlotCheckboxes"][2]["selected"]]
+    combinationfiles = [pt(theoryLocation)/i for i in plotArgs["felixPlotCheckboxes"][3]["selected"]]
+    theoryfiles1_overt_comb = np.append(overtonefiles[0], combinationfiles[0])
+    theoryfiles2_overt_comb = np.append(overtonefiles[1], combinationfiles[1])
    
     theory_color = (len(datfiles), 1)[sameColor]
     

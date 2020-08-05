@@ -7,7 +7,7 @@
 
     import {felix_func} from '../../functions/felix';
 
-    export let felixPlotCheckboxes, preModal, felixfiles, graphPlotted, opofiles, normMethod, show_theoryplot, removeExtraFile;
+    export let felixPlotCheckboxes, preModal, felixfiles, graphPlotted, opofiles, normMethod, show_theoryplot, removeExtraFile, theoryLocation;
 
     let active=false, openShell=false, delta=1;
 
@@ -39,14 +39,15 @@
 
             {label:"sameColor", value:true, id:getID()},
             {label:"Invert ax2", value:true, id:getID()},
-            {label:"Only exp.", value:false, id:getID()},
+            {label:"Only exp.", value:true, id:getID()},
 
             
             {label:"hide ax2 axis.", value:true, id:getID()},
 
-            {label:"hide_axis", value:false, id:getID()},
-            {label:"legend_visible", value:false, id:getID()},
-        ], checkBoxes: felixPlotCheckboxes
+            {label:"hide_all_axis", value:false, id:getID()},
+            {label:"legend_visible", value:true, id:getID()}
+
+        ]
     }
 
     function plotData({e=null, filetype="felix"}={}){
@@ -85,7 +86,7 @@
 
             case "matplotlib":
 
-                pyfile="felix_tkplot.py", args=[JSON.stringify({...felixPlotWidgets, datlocation:path.resolve(localStorage["felix_location"], "../EXPORT"), normMethod})]
+                pyfile="felix_tkplot.py", args=[JSON.stringify({...felixPlotWidgets, datlocation:path.resolve(localStorage["felix_location"], "../EXPORT"), normMethod, theoryLocation, felixPlotCheckboxes})]
                 computePy_func({pyfile, args, general:true, openShell})
                 .catch(err=>{preModal.modalContent = err;  preModal.open = true})
 
@@ -99,7 +100,7 @@
 </script>
 
 
-<FelixPlotting bind:active bind:felixPlotWidgets on:submit="{(e)=>plotData({e:e, filetype:"matplotlib"})}"/>
+<FelixPlotting bind:active bind:felixPlotWidgets {felixPlotCheckboxes} on:submit="{(e)=>plotData({e:e, filetype:"matplotlib"})}"/>
 
 <div class="align">
 

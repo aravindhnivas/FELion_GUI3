@@ -8,7 +8,7 @@
 
     import { createEventDispatcher } from 'svelte';
     
-    export let active=false, felixPlotWidgets = {};
+    export let active=false, felixPlotWidgets = {}, felixPlotCheckboxes;
     const dispatch = createEventDispatcher();
 
 </script>
@@ -48,7 +48,7 @@
 
         <div slot="content" style="height:40vh;" >
             <div style="display:flex; flex-wrap:wrap;">
-                {#each felixPlotWidgets.checkBoxes as {label, options, selected, style, id}(id)}
+                {#each felixPlotCheckboxes as {label, options, selected, style, id}(id)}
                     <div style="flex-grow:1; {style}" class="felix_tkplot_filelist_div">
                         <div class="subtitle felix_tkplot_filelist_header">{label}</div>
                         <CustomCheckList style="background: #836ac05c; border-radius: 20px; margin:1em 0;" bind:fileChecked={selected} bind:items={options} height="160px"/>

@@ -9,7 +9,6 @@
     export let theoryLocation, currentLocation, show_theoryplot, normMethod, preModal;
 
     let sigma=20, scale=1, theoryfiles=[]
-    
     let showTheoryFiles = false, theoryfilesChecked = []
 
     $: if(fs.existsSync(theoryLocation)) { theoryfiles =theoryfilesChecked.map(file=>path.resolve(theoryLocation, file)) }
