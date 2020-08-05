@@ -7,7 +7,7 @@
     import QuickBrowser from '../../../../components/QuickBrowser.svelte';
 
     import { fade } from 'svelte/transition';
-    import {computePy_func} from '../../functions/computePy';
+    // import {computePy_func} from '../../functions/computePy';
     import {opofile_func} from '../../functions/opofile';
     import {createToast} from '../../functions/misc';
 

@@ -1,15 +1,57 @@
 
+
 import { writable } from 'svelte/store';
 import { Toast } from 'svelma';
+import "../Pages/general/computePy";
 
 export const windowLoaded = writable(false);
 
-window.addEventListener('DOMContentLoaded', (event) => {
+// Global variables
 
+window.electron = require("electron")
+window.remote = electron.remote
+
+window.path = require("path")
+
+window.fs = require("fs")
+
+window.spawn = require("child_process").spawn
+
+window.createToast = (msg, type="primary") => Toast.create({ message: msg, position:"is-top", type:`is-${type}`})
+window.sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+window.targetElement = (id) => document.getElementById(id)
+window.getPageStatus = (id) => targetElement(id).style.display !== "none"
+window.showpage = (id) => { targetElement(id).style.display = "block" }
+window.hidepage = (id) => { targetElement(id).style.display = "none" }
+
+window.togglepage = (id) => {
+
+    window.getPageStatus(id) ? targetElement(id).style.display = "none" : targetElement(id).style.display = "block"
+}
+
+const electronVersion = process.versions.electron
+window.showinfo = electronVersion >= "7" ? remote.dialog.showMessageBoxSync : remote.dialog.showMessageBox
+
+
+// Checking curernt version
+
+const versionFile = fs.readFileSync(path.join(__dirname, "../version.json"))
+
+window.currentVersion = localStorage["version"] =  JSON.parse(versionFile.toString("utf-8")).version
+window.asyncForEach = async (array, callback) => {
+    for (let index = 0; index < array.length; index++) {
+    
+
+        await callback(array[index], index, array);
+
+    }
+}
+
+window.addEventListener('DOMContentLoaded', (event) => {
     console.log('DOM fully loaded and parsed');
     windowLoaded.set(true)
-});
 
+});
 
 export function resizableDiv({ div, change = { width: true, height: true }, cursor = { left: false, right: false, bottom: false, top: false } } = {}) {
 
@@ -98,43 +140,3 @@ export function subplot(mainTitle, xtitle, ytitle, data, plotArea, x2, y2, data2
     Plotly.react(plotArea, dataPlot1.concat(dataPlot2), dataLayout, { editable: true })
 }
 
-
-// Global variables
-
-window.electron = require("electron")
-window.remote = electron.remote
-window.path = require("path")
-window.fs = require("fs")
-window.spawn = require("child_process").spawn
-
-window.createToast = (msg, type="primary") => Toast.create({ message: msg, position:"is-top", type:`is-${type}`})
-window.sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-window.targetElement = (id) => document.getElementById(id)
-
-window.getPageStatus = (id) => targetElement(id).style.display !== "none"
-window.showpage = (id) => { targetElement(id).style.display = "block" }
-
-window.hidepage = (id) => { targetElement(id).style.display = "none" }
-
-window.togglepage = (id) => {
-    window.getPageStatus(id) ? targetElement(id).style.display = "none" : targetElement(id).style.display = "block"
-}
-
-const electronVersion = process.versions.electron
-window.showinfo = electronVersion >= "7" ? remote.dialog.showMessageBoxSync : remote.dialog.showMessageBox
-
-// Checking curernt version
-
-const versionFile = fs.readFileSync(path.join(__dirname, "../version.json"))
-window.currentVersion = localStorage["version"] =  JSON.parse(versionFile.toString("utf-8")).version
-
-
-
-
-
-window.asyncForEach = async (array, callback) => {
-    for (let index = 0; index < array.length; index++) {
-        await callback(array[index], index, array);
-    }
-
-}

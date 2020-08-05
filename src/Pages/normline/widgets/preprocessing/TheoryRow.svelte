@@ -4,7 +4,7 @@
     import Textfield from '@smui/textfield';
     import QuickBrowser from '../../../../components/QuickBrowser.svelte';
     import { fade } from 'svelte/transition';
-    import {computePy_func} from '../../functions/computePy';
+    // import {computePy_func} from '../../functions/computePy';
     
     import {theory_func} from '../../functions/theory';
     import {createToast} from '../../functions/misc';

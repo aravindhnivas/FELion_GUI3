@@ -1,6 +1,5 @@
 
 import {pythonpath, pythonscript, pyVersion, get} from "./svelteWritables";
-const {exec} = require("child_process")
 
 // Renaming old python path (if exists)
 function renamePy() {
@@ -21,19 +20,6 @@ function renamePy() {
     }
 }
 renamePy()
-
-export function checkPython({defaultPy}={}){
-
-    if(!defaultPy) {defaultPy = get(pythonpath)}
-
-    console.log("Python path checking \n", defaultPy)
-    return new Promise((resolve, reject)=>{
-        exec(`${defaultPy} -V`, (err, stdout)=>{
-            if(err) {reject("Invalid"); createToast("Python location is not valid", "danger")}
-            else {resolve(stdout.trim())}
-        })
-    })
-}
 
 export function resetPyConfig() {
 

@@ -4,7 +4,7 @@
     import Textfield from '@smui/textfield';
     import CustomIconSwitch from '../../../../components/CustomIconSwitch.svelte';
     import FelixPlotting from '../../modals/FelixPlotting.svelte';
-    import {computePy_func} from '../../functions/computePy';
+    // import {computePy_func} from '../../functions/computePy';
 
     import {felix_func} from '../../functions/felix';
     import {createToast} from '../../functions/misc';

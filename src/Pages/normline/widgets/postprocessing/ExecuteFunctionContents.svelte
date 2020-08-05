@@ -13,7 +13,7 @@
     
     import { fade } from 'svelte/transition';
     
-    import {computePy_func} from '../../functions/computePy';
+    // import {computePy_func} from '../../functions/computePy';
 
     import {NGauss_fit_func} from '../../functions/NGauss_fit';
     

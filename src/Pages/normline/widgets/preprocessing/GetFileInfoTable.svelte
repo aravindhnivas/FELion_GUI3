@@ -6,7 +6,7 @@
     import Table from '../../../../components/Table.svelte';
     import { savefile,  loadfile } from '../../functions/misc';
 
-    import {computePy_func} from '../../functions/computePy';
+    // import {computePy_func} from '../../functions/computePy';
     
     import {get_details_func} from '../../functions/get_details';
     export let felixfiles, normMethod;

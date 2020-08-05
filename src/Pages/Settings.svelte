@@ -15,7 +15,7 @@
     
     import {updateCheck} from "./settings/updateCheck";
 
-    import {resetPyConfig, updatePyConfig, checkPython} from "./settings/checkPython";
+    import {resetPyConfig, updatePyConfig} from "./settings/checkPython";
 
     import {backupRestore} from "./settings/backupAndRestore";
     import {tick} from "svelte";
@@ -72,7 +72,7 @@
             await download(updateFolder)
             
             InstallUpdate(target, updateFolder)
-        } catch (error) {preModal.modalContent = err; preModal.open = true}
+        } catch (err) {preModal.modalContent = err.stack; preModal.open = true}
         
     }
 

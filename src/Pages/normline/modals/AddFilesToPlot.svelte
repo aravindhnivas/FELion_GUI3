@@ -4,7 +4,7 @@
     import Modal from '../../../components/Modal.svelte';
     import Textfield from '@smui/textfield';
     import {browse} from "../../../components/Layout.svelte";
-    import {computePy_func} from '../functions/computePy';
+    // import {computePy_func} from '../functions/computePy';
 
     import {createToast} from '../functions/misc';
     
