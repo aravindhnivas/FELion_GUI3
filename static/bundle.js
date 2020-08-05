@@ -58701,7 +58701,7 @@ function transferFiles({dest, src, includeNode=true}={}) {
 
         // const options = {overwrite: true, filter: includeNode ?  fs.readdirSync(src) : filter}
         
-        console.log(options);
+        // console.log(options)
 
         copy(src, dest, {overwrite: true}, function(error, results) {
         
@@ -58780,7 +58780,7 @@ function InstallUpdate(target, updateFolder) {
 
         .then(()=>console.log("Copying downloaded files"))
     
-        .catch((err)=>console.log("Error occured while copying downloaded files"))
+        .catch((err)=>{window.createToast("Error occured while copying downloaded files"); throw err;   })
     
         .finally(()=>{target.classList.toggle("is-loading"); restart_program();});
 }

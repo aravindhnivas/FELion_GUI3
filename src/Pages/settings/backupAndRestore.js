@@ -11,7 +11,7 @@ export function transferFiles({dest, src, includeNode=true}={}) {
 
         // const options = {overwrite: true, filter: includeNode ?  fs.readdirSync(src) : filter}
         
-        console.log(options)
+        // console.log(options)
 
         copy(src, dest, {overwrite: true}, function(error, results) {
         

@@ -15,7 +15,7 @@ export function InstallUpdate(target, updateFolder) {
 
         .then(()=>console.log("Copying downloaded files"))
     
-        .catch((err)=>console.log("Error occured while copying downloaded files"))
+        .catch((err)=>{window.createToast("Error occured while copying downloaded files"); throw err;   })
     
         .finally(()=>{target.classList.toggle("is-loading"); restart_program()})
 }
