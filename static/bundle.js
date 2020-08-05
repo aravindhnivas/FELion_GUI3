@@ -45636,7 +45636,7 @@ function create_each_block_3$2(key_1, ctx) {
 	}
 
 	let customchecklist_props = {
-		style: "background: #836ac05c; border-radius: 20px; margin:1em 0;",
+		style: "background: #836ac05c; border-radius: 20px; margin:1em 0;  height:20em; overflow:auto;",
 		height: "160px"
 	};
 
@@ -46062,11 +46062,11 @@ function create_content_slot$2(ctx) {
 			set_style(div1, "flex-wrap", "wrap");
 			add_location(div1, file$Y, 49, 12, 1191);
 			attr_dev(div2, "class", "felix_plotting_div svelte-167q3z7");
-			add_location(div2, file$Y, 58, 12, 1775);
+			add_location(div2, file$Y, 58, 12, 1804);
 			attr_dev(div3, "class", "felix_plotting_div svelte-167q3z7");
-			add_location(div3, file$Y, 64, 12, 2064);
+			add_location(div3, file$Y, 64, 12, 2093);
 			attr_dev(div4, "class", "felix_plotting_div svelte-167q3z7");
-			add_location(div4, file$Y, 70, 12, 2351);
+			add_location(div4, file$Y, 70, 12, 2380);
 			attr_dev(div0, "slot", "content");
 			set_style(div0, "height", "40vh");
 			add_location(div0, file$Y, 48, 8, 1135);
@@ -46223,7 +46223,7 @@ function create_footerbtn_slot$1(ctx) {
 			button.textContent = "Submit";
 			attr_dev(button, "slot", "footerbtn");
 			attr_dev(button, "class", "button is-link");
-			add_location(button, file$Y, 77, 8, 2641);
+			add_location(button, file$Y, 77, 8, 2670);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, button, anchor);
@@ -53864,10 +53864,10 @@ function create_buttonContainer_slot(ctx) {
 			div1 = element("div");
 			create_component(customradio.$$.fragment);
 			set_style(div1, "display", "flex");
-			add_location(div1, file$18, 175, 8, 7254);
+			add_location(div1, file$18, 175, 8, 7305);
 			attr_dev(div0, "class", "buttonSlot svelte-oa7kgp");
 			attr_dev(div0, "slot", "buttonContainer");
-			add_location(div0, file$18, 170, 4, 6790);
+			add_location(div0, file$18, 170, 4, 6841);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -54141,7 +54141,7 @@ function create_if_block$q(ctx) {
 			t2 = space();
 			create_component(reportlayout.$$.fragment);
 			attr_dev(div, "class", "svelte-oa7kgp");
-			add_location(div, file$18, 198, 12, 8210);
+			add_location(div, file$18, 198, 12, 8261);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -54312,33 +54312,33 @@ function create_plotContainer_slot(ctx) {
 			attr_dev(div1, "class", "animated fadeIn svelte-oa7kgp");
 			attr_dev(div1, "id", "exp-theory-plot");
 			toggle_class(div1, "hide", !/*show_theoryplot*/ ctx[3]);
-			add_location(div1, file$18, 188, 12, 7693);
+			add_location(div1, file$18, 188, 12, 7744);
 			attr_dev(div2, "id", "bplot");
 			attr_dev(div2, "class", "svelte-oa7kgp");
-			add_location(div2, file$18, 189, 12, 7793);
+			add_location(div2, file$18, 189, 12, 7844);
 			attr_dev(div3, "id", "saPlot");
 			attr_dev(div3, "class", "svelte-oa7kgp");
-			add_location(div3, file$18, 190, 12, 7829);
+			add_location(div3, file$18, 190, 12, 7880);
 			attr_dev(div4, "id", "avgplot");
 			attr_dev(div4, "class", "svelte-oa7kgp");
-			add_location(div4, file$18, 191, 12, 7866);
+			add_location(div4, file$18, 191, 12, 7917);
 			attr_dev(div5, "class", "animated fadeIn svelte-oa7kgp");
 			attr_dev(div5, "id", "opoplot");
 			toggle_class(div5, "hide", !/*$opoMode*/ ctx[23]);
-			add_location(div5, file$18, 192, 12, 7904);
+			add_location(div5, file$18, 192, 12, 7955);
 			attr_dev(div6, "class", "animated fadeIn svelte-oa7kgp");
 			attr_dev(div6, "id", "opoSA");
 			toggle_class(div6, "hide", !/*$opoMode*/ ctx[23]);
-			add_location(div6, file$18, 193, 12, 7989);
+			add_location(div6, file$18, 193, 12, 8040);
 			attr_dev(div7, "class", "animated fadeIn svelte-oa7kgp");
 			attr_dev(div7, "id", "opoRelPlot");
 			toggle_class(div7, "hide", !/*$opoMode*/ ctx[23]);
-			add_location(div7, file$18, 194, 12, 8072);
+			add_location(div7, file$18, 194, 12, 8123);
 			attr_dev(div8, "class", "felixPlot svelte-oa7kgp");
-			add_location(div8, file$18, 187, 8, 7656);
+			add_location(div8, file$18, 187, 8, 7707);
 			attr_dev(div0, "class", "plotSlot svelte-oa7kgp");
 			attr_dev(div0, "slot", "plotContainer");
-			add_location(div0, file$18, 181, 4, 7459);
+			add_location(div0, file$18, 181, 4, 7510);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -55249,21 +55249,21 @@ function instance$1f($$self, $$props, $$invalidate) {
 					label: "Fundamentals",
 					options: calcfiles,
 					selected: [],
-					style: "width:25%;",
+					style: "width:25%; margin-left:1em;",
 					id: getID()
 				},
 				{
 					label: "Overtones",
 					options: calcfiles,
 					selected: [],
-					style: "width:25%;",
+					style: "width:25%; margin-left:1em;",
 					id: getID()
 				},
 				{
 					label: "Combinations",
 					options: calcfiles,
 					selected: [],
-					style: "width:25%;",
+					style: "width:25%; margin-left:1em;",
 					id: getID()
 				}
 			]);
