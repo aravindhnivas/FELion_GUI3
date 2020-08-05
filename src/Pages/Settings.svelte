@@ -80,23 +80,28 @@
 </script>
 
 
-<style>
+<style lang="scss">
 
     section { margin: 0; padding: 0; }
     .side-panel, .main-panel {height: calc(100vh - 7em);}
     .box { background-color: #6a50ad8a}
     .main-panel {margin: 0 5em;}
 
-    .left .title { letter-spacing: 0.1em; text-transform: uppercase; padding: 0.5em;
-        font-size: larger; cursor: pointer; border-radius: 20px 0; margin-bottom: 1em;
+    .left .title { 
+        letter-spacing: 0.1em; text-transform: uppercase; padding: 0.5em;
+        font-size: larger; cursor: pointer; margin-bottom: 1em; border-radius: 20px;
     }
-
-    .container {padding: 2em; display: grid;}
+    
     .clicked {border-left: 2px solid #fafafa; border: solid 1px;}
+    
     .right > div {display: none;}
+    
     .active {display: block!important; }
     .right .title {letter-spacing: 0.1em; text-transform: uppercase;}
+    
     * :global(option) { color: black; }
+    .container {padding: 2em; display: grid;}
+    .container .left {place-content: center;}
 
 </style>
 
