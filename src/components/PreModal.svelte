@@ -26,5 +26,5 @@
 
 <Modal bind:active title={preModal.modalTitle || "Error details"} bodyBackground="#fafafa">
 
-  <div slot="content" style="color:black;">{preModal.modalContent}</div>
+  <div slot="content" style="color:black; white-space: pre; user-select:text;">{preModal.modalContent}</div>
 </Modal>
