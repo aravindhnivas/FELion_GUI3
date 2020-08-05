@@ -51,7 +51,7 @@
                 {#each felixPlotCheckboxes as {label, options, selected, style, id}(id)}
                     <div style="flex-grow:1; {style}" class="felix_tkplot_filelist_div">
                         <div class="subtitle felix_tkplot_filelist_header">{label}</div>
-                        <CustomCheckList style="background: #836ac05c; border-radius: 20px; margin:1em 0;" bind:fileChecked={selected} bind:items={options} height="160px"/>
+                        <CustomCheckList style="background: #836ac05c; border-radius: 20px; margin:1em 0;  height:20em; overflow:auto;" bind:fileChecked={selected} bind:items={options} height="160px"/>
                     </div>
                 {/each}
             </div>

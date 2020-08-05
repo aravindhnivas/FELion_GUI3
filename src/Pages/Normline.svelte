@@ -137,9 +137,9 @@
     $: felixPlotCheckboxes = [
             {label:"DAT file", options:datfiles, selected:[], style:"width:100%;", id:getID()},
 
-            {label:"Fundamentals", options:calcfiles, selected:[], style:"width:25%;", id:getID()},
-            {label:"Overtones", options:calcfiles, selected:[], style:"width:25%;", id:getID()},
-            {label:"Combinations", options:calcfiles, selected:[], style:"width:25%;", id:getID()},
+            {label:"Fundamentals", options:calcfiles, selected:[], style:"width:25%; margin-left:1em;", id:getID()},
+            {label:"Overtones", options:calcfiles, selected:[], style:"width:25%; margin-left:1em;", id:getID()},
+            {label:"Combinations", options:calcfiles, selected:[], style:"width:25%; margin-left:1em;", id:getID()},
 
 
         ]
