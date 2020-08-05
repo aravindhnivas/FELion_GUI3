@@ -50,8 +50,14 @@ def plotGraph(plotArgs):
     theoryfiles = [pt(theoryLocation)/i for i in plotArgs["felixPlotCheckboxes"][1]["selected"]]
     overtonefiles = [pt(theoryLocation)/i for i in plotArgs["felixPlotCheckboxes"][2]["selected"]]
     combinationfiles = [pt(theoryLocation)/i for i in plotArgs["felixPlotCheckboxes"][3]["selected"]]
-    theoryfiles1_overt_comb = np.append(overtonefiles[0], combinationfiles[0])
-    theoryfiles2_overt_comb = np.append(overtonefiles[1], combinationfiles[1])
+
+    theoryfiles1_overt_comb = []
+
+    theoryfiles2_overt_comb = []
+    
+    if len(combinationfiles) + len(overtonefiles) > 0: theoryfiles1_overt_comb = np.append(overtonefiles[0], combinationfiles[0])
+
+    if len(combinationfiles) + len(overtonefiles) > 1: theoryfiles2_overt_comb = np.append(overtonefiles[1], combinationfiles[1])
    
     theory_color = (len(datfiles), 1)[sameColor]
     
@@ -69,12 +75,12 @@ def plotGraph(plotArgs):
         
         linestyle = ["--", ":"]
         
-        ax_theory = theoryplot(theoryfiles[0], ax_theory, freqScale, theory_color, theorysigma)
+        for tColorIndex, theoryfile in enumerate(theoryfiles):
+            ax_theory = theoryplot(theoryfiles[0], ax_theory, freqScale, theory_color+tColorIndex, theorysigma)
         for tfile1, ls in zip(theoryfiles1_overt_comb, linestyle ):
             ax_theory = theoryplot(tfile1, ax_theory, freqScale, f"{theory_color}{ls}", theorysigma)
         
-        #theory_color += 1
-        ax_theory = theoryplot(theoryfiles[1], ax_theory, freqScale, theory_color+1, theorysigma)
+        # ax_theory = theoryplot(theoryfiles[1], ax_theory, freqScale, theory_color+1, theorysigma)
         for tfile2, ls in zip(theoryfiles2_overt_comb, linestyle):
             ax_theory = theoryplot(tfile2, ax_theory, freqScale, f"{theory_color+1}{ls}", theorysigma)
         
