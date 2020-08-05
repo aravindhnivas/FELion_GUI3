@@ -5,13 +5,12 @@
     import { slide } from 'svelte/transition';
     import FormField from '@smui/form-field';
     import Switch from '@smui/switch';
+
     import Textfield from '@smui/textfield';
     
-    import { Toast } from 'svelma'
-    
     import {onMount, afterUpdate} from "svelte"
-    
     import CustomIconSwitch from './CustomIconSwitch.svelte';
+
     import CustomCheckList from './CustomCheckList.svelte';
     import { createEventDispatcher } from 'svelte';
     import PreModal from "./PreModal.svelte";

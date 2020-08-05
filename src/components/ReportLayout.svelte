@@ -12,11 +12,11 @@
     import FormField from '@smui/form-field'
     import CustomCheckbox from './CustomCheckbox.svelte'
     import Textfield from '@smui/textfield'
-    import HelperText from '@smui/textfield/helper-text/index'
     import Ripple from '@smui/ripple'
-
     import Select, {Option} from '@smui/select'
+
     import {onMount} from "svelte";
+    
     import Hamburger1 from "./icon_animations/Hamburger1.svelte";
     import PreModal from "./PreModal.svelte";
     import Editor from "./Editor.svelte";

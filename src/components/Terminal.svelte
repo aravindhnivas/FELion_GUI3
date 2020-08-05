@@ -1,7 +1,7 @@
 
 <script>
 
-    import IconButton, {Icon} from '@smui/icon-button';
+    import IconButton from '@smui/icon-button';
     import PreModal from "./PreModal.svelte";
     import {tick} from "svelte";
 
