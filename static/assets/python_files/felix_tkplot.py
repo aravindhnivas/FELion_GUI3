@@ -1,148 +1,193 @@
-# Built-in
-import os, json, sys
-from pathlib import Path as pt
 
-# DATA Analysis
+import json, sys
+from pathlib import Path as pt
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.ticker import AutoMinorLocator, MultipleLocator
+from felix_tkplot_definitions import felix_plot, theoryplot, Marker
 
-# FELion modules
-from FELion_widgets import FELion_Tk
-# from FELion_definitions import sendData
+marker_theory = None
 
 
-class felix_plot:
+def plotGraph(plotArgs):
+
+    figwidth, figheight, dpi, freqScale, gridalpha, theorysigma, majorTick = [i["value"] for i in plotArgs["number"]]
     
-    def __init__(self, args):
+    NPlots = 1
 
-        self.args = args
-
-        self.felixlocation = pt(self.args["location"])
-        self.datlocation = self.felixlocation / "../EXPORT"
-        self.outlocation = self.felixlocation / "../OUT"
-        self.theorylocation = pt(self.args["theoryLocation"])
-        self.freqScale = self.args["scale"]
-        self.theorySigma = self.args["sigma"]
-
-        self.widget = FELion_Tk(title="FELIX Plot", location=self.outlocation)
-
-        self.fig, self.canvas = self.widget.Figure(default_widget=False, dpi=120)
-        self.fig.suptitle("FELIX Plot")
-        self.fig.subplots_adjust(top=0.86, bottom=0.20, right=0.97, wspace=0.34)
-        self.ax0 = self.fig.add_subplot(211)
-        self.ax1 = self.fig.add_subplot(212)
-
-
-        self.felix_widgets()
+    ratio = "1"
     
-        self.widget.mainloop()
 
     
-    def change_title(self, event=None): 
-        self.fig.suptitle(self.widget.plotTitle.get())
-        self.canvas.draw()
-
-    def change_grid(self, event=None):
-        self.ax0.grid(not self.grid.get())
-        self.ax1.grid(not self.grid.get())
-        self.canvas.draw()
-
-    def change_legend(self, event=None):
-
-        self.ax0.legend([]).set_visible(not self.plotlegend.get())
-        self.ax1.legend([]).set_visible(not self.plotlegend.get())
-        # if not self.plotlegend.get():
-
-        #     fontSz = self.legend_slider.get()
-        #     self.ax0.legend(labels=[self.lg1, self.lg2], title=f"Mass: {self.mass[0]}u, Res: {self.t_res}V, B0: {self.t_b0}ms", fontsize=fontSz, title_fontsize=fontSz+2)
-        #     self.ax1.legend(["Fitted", f"A: {self.uA:.3uP}", "Experiment"], fontsize=fontSz+5)
-
-        self.canvas.draw()
-
-    def felix_widgets(self):
-
-        # # Position
-        x0, x_diff = 0.1, 0.4
-        y, y_diff, y_diff2 = 0.14, 0.05, 0.09
-
-        # Row 1
-
-        self.widget.plotTitle = self.widget.Entries("Entry", "FELIX Plot", x0, y, bind_key=True, bind_func=self.change_title, relwidth=0.7)
-
-        # Row 2
-        y += y_diff
-        datfiles = [datfile.name for datfile in self.datlocation.glob("*.dat")]
-        self.widget.datfile = self.widget.Dropdown(datfiles, x0, y, relwidth=0.7)
-
-        self.widget.datfile.set("averaged.dat")
-
-        # Row 3
-        y += y_diff2
-        theoryfiles = [theoryfile.name for theoryfile in self.theorylocation.glob("*.*")]
-
-        self.widget.theoryfiles = self.widget.Listbox(theoryfiles, x0, y, relwidth=0.7, relheight=0.1)
-        # self.theoryfiles = self.theoryfiles.curselection()
-
-        # Row 4
-        y += y_diff2
-        self.widget.Labels("Overtones & Combinations", x0, y, relwidth=0.75)
-        self.widget.overtonefiles = self.widget.Listbox(theoryfiles, x0, y+y_diff2, relwidth=0.7, relheight=0.1)
-        self.widget.combinationfiles = self.widget.Listbox(theoryfiles, x0, y+2.2*y_diff2, relwidth=0.7, relheight=1.2)
-        # self.overtonefiles = self.overtonefiles.curselection()
-        # self.combinationfiles = self.combinationfiles.curselection()
+    figcaption, figtitle, exptitle, legend_labels, calcTitle, marker =  [i["value"] for i in plotArgs["text"]]
+    normMethod = "Log"
+    
+    sameColor, invert_ax2, onlyExp, hide_all_axis, hide_axis, legend_visible = [i["value"] for i in plotArgs["boolean"]]
+   
+    hspace = 0.05
+    wspace = 0.05
 
 
-        # Row5
-        y += 5.6*y_diff
-        self.widget.Labels("Sigma & scale", x0, y, relwidth=0.7)
+    datlocation = plotArgs["datlocation"]
+    datfiles, fundamentalsfiles, overtonefiles, combinationfiles = [i["selected"] for i in plotArgs["checkBoxes"]]
+    datfiles = [pt(datlocation)/i for i in datfiles]
+    print(datfiles)
+
+    global marker_theory
+    
+    # plt.close()
+    
+    grid_ratio = np.array(ratio.split(","), dtype=np.float)
+    grid = {"hspace": hspace, "wspace": wspace, "width_ratios": grid_ratio, "bottom":0.2}
+    
+    rows = (2, 1)[onlyExp]
+    figheight = (figheight, figheight/2)[onlyExp]
+    
+    fig, axs = plt.subplots(rows, NPlots, figsize=(figwidth, figheight), dpi=dpi, gridspec_kw=grid)
+    lg = [i.strip() for i in legend_labels.split(",")]
+    
+    
+    if onlyExp: 
+        ax = only_exp_plot(axs, datfiles, NPlots, exptitle, lg, normMethod, majorTick, legend_visible, hide_all_axis, legend_labels)
+        plt.show()
+
+        return 
+    theorylocation = pt(plotArgs["theorylocation"])
+    fundamentalsfiles = [pt(theorylocation)/i for i in plotArgs["fundamentalsfiles"]]
+    overtonefiles = [pt(theorylocation)/i for i in plotArgs["overtonefiles"]]
+    combinationfiles = [pt(theorylocation)/i for i in plotArgs["combinationfiles"]]
+    # theoryfiles = [pt(theory_loc)/i for i in plotArgs["theoryfiles"]]
+    # theoryfiles1_overt_comb = [pt(theory_loc)/i for i in felix_w2.files.value]
+    # theoryfiles2_overt_comb = [pt(theory_loc)/i for i in felix_w3.files.value]
+   
+    theory_color = (len(datfiles), 1)[sameColor]
+    
+    for i in range(NPlots):
         
-
-        # # Row6
-        y += y_diff
-        self.widget.theorySigma = self.widget.Entries("Entry", self.theorySigma, x0, y)
-        self.widget.freqScale = self.widget.Entries("Entry", self.freqScale, x0+x_diff, y)
-
-        # Row7
-        y += y_diff
-        self.grid = self.widget.Entries("Check", "Grid", x0, y, default=True, bind_btn=True, bind_func = self.change_grid)
-        self.plotlegend = self.widget.Entries("Check", "Legend", x0+x_diff, y, default=True, bind_btn=True, bind_func = self.change_legend)
-
-        # Row8
-        y += y_diff
-        self.invert_ax2 = self.widget.Entries("Check", "invert_ax2", x0, y, default=True)
-
-        self.hide_axis = self.widget.Entries("Check", "hide_axis", x0+x_diff, y, default=False)
-
-
-        # Row9
-
-        y += y_diff
-        self.onlyExp = self.widget.Entries("Check", "onlyExp", x0, y, default=True, bind_btn=False)
-        self.hide_axeses = self.widget.Entries("Check", "hide_axeses", x0+x_diff, y, default=False)
+        if NPlots > 1: 
+            ax_exp = axs[0, i]
+            ax_theory = axs[1, i]
+        else:
+            ax_exp = axs[i]
+            ax_theory = axs[i+1]
+            
         
+        ax_exp = felix_plot(datfiles, ax_exp, lg, normMethod)
         
-        # # Row 9
-        # y += y_diff
-
-        # self.plotlegend = self.widget.Entries("Check", "Legend", x0, y, relwidth=0.2, default=True, bind_btn=True, bind_func = self.change_legend)
-        # self.legend_slider = self.widget.Sliders("", 5, x0+x_diff/2, y+0.02, self.change_legend_size, relwidth=0.3)
-
-        # # Row 10
-        # y += y_diff
-        # self.grid = self.widget.Entries("Check", "Grid", x0, y, default=True, bind_btn=True, bind_func = self.change_grid)
+        linestyle = ["--", ":"]
         
-        # # Row 11
+        ax_theory = theoryplot(theoryfiles[0], ax_theory, freqScale, theory_color, theorysigma)
+        for tfile1, ls in zip(theoryfiles1_overt_comb, linestyle ):
+            ax_theory = theoryplot(tfile1, ax_theory, freqScale, f"{theory_color}{ls}", theorysigma)
         
-        # y += y_diff
-        # self.latex = self.widget.Entries("Check", "Latex", x0, y)
-        # self.save_fig = self.widget.Buttons("Save", x0+x_diff, y, self.savefig)
-
+        #theory_color += 1
+        ax_theory = theoryplot(theoryfiles[1], ax_theory, freqScale, theory_color+1, theorysigma)
+        for tfile2, ls in zip(theoryfiles2_overt_comb, linestyle):
+            ax_theory = theoryplot(tfile2, ax_theory, freqScale, f"{theory_color+1}{ls}", theorysigma)
+        
+        # ax_theory
+        if invert_ax2: ax_theory.invert_yaxis()
+        
+        #ax_theory.minorticks_on()
+        
+        # ax_exp
+        if hide_axis:
+            ax_theory.spines["top"].set_visible(False)
+            ax_exp.spines["bottom"].set_visible(False)
+            
+        ax_exp.tick_params(labelbottom=False, bottom=False, labeltop=True, top=True) # removing x-ticks label
+        
+        #ax_exp.minorticks_on()
+        ax_exp.xaxis.set_tick_params(which='minor', bottom=False, top=True)
+        
+        ax_exp.xaxis.set_minor_locator(AutoMinorLocator(5))
+        ax_exp.yaxis.set_minor_locator(AutoMinorLocator(5))
+        ax_exp.xaxis.set_major_locator(MultipleLocator(majorTick))
+        
+        ax_theory.xaxis.set_minor_locator(AutoMinorLocator(5))
+        ax_theory.yaxis.set_minor_locator(AutoMinorLocator(5))
+        ax_theory.xaxis.set_major_locator(MultipleLocator(majorTick))
+        
+        ax_theory.get_shared_x_axes().join(ax_theory, ax_exp)
         
         
+        # Labels
+        if i<1:
+            
+            ylabel="Norm. Intensity ~($m^2/photon$)"
+            ax_exp.set_ylabel((ylabel, "Relative Depletion (%)")[normMethod=="Relative"], fontsize=12)
+            
+            if legend_visible:
+                if legend_labels == "": ax_exp.legend([], title=exptitle.strip()).set_draggable(True)
+                else: ax_exp.legend(title=exptitle.strip()).set_draggable(True)
+
+                ax_theory.set_ylabel("Intensity (Km/mol)", fontsize=12)
+                ax_theory.legend(title=calcTitle.strip()).set_draggable(True)
+                
+            #marker_exp = Marker(fig, ax_exp)
+            marker_theory = Marker(fig, ax_theory, ax_exp, txt_value=marker.split(","))
+            
+        elif i==NPlots-1:
+            ax_exp.yaxis.tick_right()
+            ax_theory.yaxis.tick_right()
+        else:
+            ax_exp.tick_params(labelbottom=False, bottom=False, labelleft=False, left=False, labeltop=True, top=True)
+            ax_exp.yaxis.set_tick_params(which='minor', left=False, right=False, top=True)
+            
+            ax_theory.tick_params(labelleft=False, left=False)
+            ax_theory.yaxis.set_tick_params(which='minor', left=False)
+        
+        
+        
+    # Figure caption
+    plt.figtext(0.5, 0.04, "Wavenumber ($cm^{-1}$)", wrap=True, horizontalalignment='center', fontsize=12)
+    plt.figtext(0.5, 0.01, figcaption, wrap=True, horizontalalignment='center', fontsize=12)
+    plt.show()
+
+
+def only_exp_plot(axs, datfiles, NPlots, exptitle, lg, normMethod, majorTick, legend_visible, hide_all_axis, legend_labels):
+    for i in range(NPlots):
+        if NPlots>1:
+            ax = axs[i]
+        else:
+            ax = axs
+
+        ax = felix_plot(datfiles, ax, lg, normMethod)
+        ax.xaxis.set_tick_params(which='minor', bottom=True)
+
+        ax.xaxis.set_minor_locator(AutoMinorLocator(5))
+        ax.yaxis.set_minor_locator(AutoMinorLocator(5))
+        ax.xaxis.set_major_locator(MultipleLocator(majorTick))
+
+        ylabel="Norm. Intensity ~($m^2/photon$)"
+        ax.set_ylabel((ylabel, "Relative Depletion (%)")[normMethod=="Relative"], fontsize=12)
+        ax.set_xlabel("Wavenumber ($cm^{-1}$)", fontsize=12)
+
+        if legend_visible and i<2:
+            if legend_labels == "": ax.legend([], title=exptitle.strip).set_draggable(True)
+            else: ax.legend(title=exptitle.strip()).set_draggable(True)
+
+        if hide_all_axis:
+            ax.spines["top"].set_visible(False)
+            ax.spines["bottom"].set_visible(False)
+            ax.spines["left"].set_visible(False)
+            ax.spines["right"].set_visible(False)
+
+            ax.xaxis.set_tick_params(which='minor', bottom=False)
+            ax.yaxis.set_tick_params(which='minor', left=False)
+
+            ax.tick_params(labelbottom=False, bottom=False, labelleft=False, left=False)
+
+            ax.set(xlabel="", ylabel="")
+
+    
+    return ax
+
 
 if __name__ == "__main__":
 
     args = sys.argv[1:][0].split(",")
+
     args = json.loads(", ".join(args))
     print(f"Received args: {args}, {type(args)}\n")
-    felix = felix_plot(args)
+    felix = plotGraph(args)
