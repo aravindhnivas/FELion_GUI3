@@ -11,7 +11,7 @@
     import {onMount, afterUpdate} from "svelte"
     import CustomIconSwitch from './CustomIconSwitch.svelte';
 
-    import CustomCheckList from './CustomCheckList.svelte';
+    import VirtualCheckList from './VirtualCheckList.svelte';
     import { createEventDispatcher } from 'svelte';
     import PreModal from "./PreModal.svelte";
     
@@ -124,7 +124,7 @@
     </div>
     {#if files_loaded}
         {#if showfiles && files != "" }
-            <CustomCheckList bind:fileChecked bind:items={files} on:click="{()=>selectAll=false}"/>
+            <VirtualCheckList bind:fileChecked bind:items={files} on:click="{()=>selectAll=false}"/>
         {:else if files == ""}
             <div class="mdc-typography--subtitle1 align center">No {filetype} here!</div>        
         {/if}
