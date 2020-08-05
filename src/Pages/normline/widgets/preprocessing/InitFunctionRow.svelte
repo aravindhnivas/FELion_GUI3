@@ -14,7 +14,9 @@
     let felixPlotWidgets = {
 
         text:[
+
             {label:"Fig. caption", value:"", id:getID()},
+            
             {label:"Fig. title", value:"", id:getID()},
             {label:"Exp. title", value:"", id:getID()},
             {label:"Exp. legend", value:"", id:getID()},
@@ -38,10 +40,12 @@
             {label:"sameColor", value:true, id:getID()},
             {label:"Invert ax2", value:true, id:getID()},
             {label:"Only exp.", value:false, id:getID()},
-        
+
             
             {label:"hide ax2 axis.", value:true, id:getID()},
-        
+
+            {label:"hide_axis", value:false, id:getID()},
+            {label:"legend_visible", value:false, id:getID()},
         ], checkBoxes: felixPlotCheckboxes
     }
 
@@ -79,6 +83,13 @@
                 .catch(err=>{preModal.modalContent = err;  preModal.open = true})
                 break;
 
+            case "matplotlib":
+
+                pyfile="felix_tkplot.py", args=[JSON.stringify({...felixPlotWidgets, datlocation:path.resolve(localStorage["felix_location"], "../EXPORT"), normMethod})]
+                computePy_func({pyfile, args, general:true, openShell})
+                .catch(err=>{preModal.modalContent = err;  preModal.open = true})
+
+
             default:
                 break;
         }
@@ -88,7 +99,7 @@
 </script>
 
 
-<FelixPlotting bind:active bind:felixPlotWidgets on:submit="{()=>console.log("FELIX plotting submitted", felixPlotWidgets) }"/>
+<FelixPlotting bind:active bind:felixPlotWidgets on:submit="{(e)=>plotData({e:e, filetype:"matplotlib"})}"/>
 
 <div class="align">
 
