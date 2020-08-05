@@ -8973,14 +8973,156 @@ function create$1(props) {
   return toast;
 }
 
+const github =  writable({branch:"master", repo:"FELion_GUI3", username:"aravindhnivas"});
+const versionJson = derived(github, ($github)=>`https://raw.githubusercontent.com/${$github.username}/${$github.repo}/${$github.branch}/version.json`);
+const urlzip = derived(github, ($github)=>`https://codeload.github.com/${$github.username}/${$github.repo}/zip/${$github.branch}`);
+
+const pythonpath = writable(localStorage["pythonpath"] || path.resolve(__dirname, "../python3/python"));
+
+const pythonscript = writable(localStorage["pythonscript"] || path.resolve(__dirname, "assets/python_files"));
+const pyVersion = writable("");
+
+if(!localStorage["pythonpath"]) localStorage["pythonpath"] = get_store_value(pythonpath);
+
+if(!localStorage["pythonscript"]) localStorage["pythonscript"] = get_store_value(pythonpath);
+
+const backupName = writable("FELion_GUI_backup");
+
+const {exec} = require("child_process");
+window.checkPython = function checkPython({defaultPy}={}){
+
+    if(!defaultPy) {defaultPy = get_store_value(pythonpath);}
+
+    console.log("Python path checking \n", defaultPy);
+    return new Promise((resolve, reject)=>{
+        exec(`${defaultPy} -V`, (err, stdout)=>{
+            if(err) {reject("Invalid python location"); window.createToast("Python location is not valid", "danger");}
+            else {resolve(stdout.trim());}
+        });
+    })
+};
+
+window.computePy_func = function computePy_func({e=null, pyfile="", args="", general=false, openShell=false}={}){
+
+
+    return new Promise((resolve, reject)=>{
+
+
+        checkPython().then(res=>{
+            console.log(res);
+            if(general){
+                console.log("Sending general arguments: ", args);
+                
+                window.createToast("Process Started");
+
+                let py = spawn(
+
+                    localStorage["pythonpath"], [path.join(localStorage["pythonscript"], pyfile), args], { detached: true, stdio: 'pipe', shell: openShell }
+        
+                );
+        
+                py.on("close", ()=>{ console.log("Closed"); });
+                
+                py.stderr.on("data", (err)=>{ console.log(`Error Occured: ${err.toString()}`); reject(err.toString()); });
+                
+                py.stdout.on("data", (data)=>{ console.log(`Output from python: ${data.toString()}`);  });
+                py.unref();
+                py.ref();
+            } else {
+
+                let py=null;
+            
+                try {py = spawn( localStorage["pythonpath"], [path.resolve(localStorage["pythonscript"], pyfile), args] );}
+                catch (err) { reject("Error accessing python. Set python location properly in Settings\n"+err); }
+
+                let target = e.target;
+                target.classList.toggle("is-loading");
+
+                window.createToast("Process Started");
+            
+                py.stdout.on("data", data => {
+            
+                    console.log("Ouput from python");
+            
+                    let dataReceived = data.toString("utf8");
+                    console.log(dataReceived);
+                });
+            
+                let error_occured_py = false;
+                py.stderr.on("data", err => {
+                    reject(err);
+                    error_occured_py = true;
+                });
+            
+                py.on("close", ()=>{
+                    if(!error_occured_py) {
+                        let dataFromPython = fs.readFileSync(path.join(localStorage["pythonscript"], "data.json"));
+
+                        window.dataFromPython = dataFromPython = JSON.parse(dataFromPython.toString("utf-8"));
+                        console.log(dataFromPython);
+
+                        resolve(dataFromPython);
+                    }
+                    console.log("Process closed");
+                    
+                    target.classList.toggle("is-loading");
+            
+                });
+            }
+        }).catch(err=>{console.log(err);});
+
+    })
+    
+};
+
 const windowLoaded = writable(false);
 
-window.addEventListener('DOMContentLoaded', (event) => {
+// Global variables
 
+window.electron = require("electron");
+window.remote = electron.remote;
+
+window.path = require("path");
+
+window.fs = require("fs");
+
+window.spawn = require("child_process").spawn;
+
+window.createToast = (msg, type="primary") => Toast.create({ message: msg, position:"is-top", type:`is-${type}`});
+window.sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+window.targetElement = (id) => document.getElementById(id);
+window.getPageStatus = (id) => targetElement(id).style.display !== "none";
+window.showpage = (id) => { targetElement(id).style.display = "block"; };
+window.hidepage = (id) => { targetElement(id).style.display = "none"; };
+
+window.togglepage = (id) => {
+
+    window.getPageStatus(id) ? targetElement(id).style.display = "none" : targetElement(id).style.display = "block";
+};
+
+const electronVersion = process.versions.electron;
+window.showinfo = electronVersion >= "7" ? remote.dialog.showMessageBoxSync : remote.dialog.showMessageBox;
+
+
+// Checking curernt version
+
+const versionFile = fs.readFileSync(path.join(__dirname, "../version.json"));
+
+window.currentVersion = localStorage["version"] =  JSON.parse(versionFile.toString("utf-8")).version;
+window.asyncForEach = async (array, callback) => {
+    for (let index = 0; index < array.length; index++) {
+    
+
+        await callback(array[index], index, array);
+
+    }
+};
+
+window.addEventListener('DOMContentLoaded', (event) => {
     console.log('DOM fully loaded and parsed');
     windowLoaded.set(true);
-});
 
+});
 
 function resizableDiv({ div, change = { width: true, height: true }, cursor = { left: false, right: false, bottom: false, top: false } } = {}) {
 
@@ -9068,47 +9210,6 @@ function subplot(mainTitle, xtitle, ytitle, data, plotArea, x2, y2, data2) {
     for (let x in data2) { dataPlot2.push(data2[x]); }
     Plotly.react(plotArea, dataPlot1.concat(dataPlot2), dataLayout, { editable: true });
 }
-
-
-// Global variables
-
-window.electron = require("electron");
-window.remote = electron.remote;
-window.path = require("path");
-window.fs = require("fs");
-window.spawn = require("child_process").spawn;
-
-window.createToast = (msg, type="primary") => Toast.create({ message: msg, position:"is-top", type:`is-${type}`});
-window.sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-window.targetElement = (id) => document.getElementById(id);
-
-window.getPageStatus = (id) => targetElement(id).style.display !== "none";
-window.showpage = (id) => { targetElement(id).style.display = "block"; };
-
-window.hidepage = (id) => { targetElement(id).style.display = "none"; };
-
-window.togglepage = (id) => {
-    window.getPageStatus(id) ? targetElement(id).style.display = "none" : targetElement(id).style.display = "block";
-};
-
-const electronVersion = process.versions.electron;
-window.showinfo = electronVersion >= "7" ? remote.dialog.showMessageBoxSync : remote.dialog.showMessageBox;
-
-// Checking curernt version
-
-const versionFile = fs.readFileSync(path.join(__dirname, "../version.json"));
-window.currentVersion = localStorage["version"] =  JSON.parse(versionFile.toString("utf-8")).version;
-
-
-
-
-
-window.asyncForEach = async (array, callback) => {
-    for (let index = 0; index < array.length; index++) {
-        await callback(array[index], index, array);
-    }
-
-};
 
 /* src\Pages\Home.svelte generated by Svelte v3.24.0 */
 const file$d = "src\\Pages\\Home.svelte";
@@ -23624,7 +23725,7 @@ function get_each_context$2(ctx, list, i) {
 	return child_ctx;
 }
 
-// (104:4) <Icon class="material-icons" on:click="{()=>changeDirectory("..")}">
+// (100:4) <Icon class="material-icons" on:click="{()=>changeDirectory("..")}">
 function create_default_slot_6(ctx) {
 	let t;
 
@@ -23644,14 +23745,14 @@ function create_default_slot_6(ctx) {
 		block,
 		id: create_default_slot_6.name,
 		type: "slot",
-		source: "(104:4) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>changeDirectory(\\\"..\\\")}\\\">",
+		source: "(100:4) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>changeDirectory(\\\"..\\\")}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (105:4) <Icon class="material-icons" on:click="{()=>{getfiles(true)}}">
+// (101:4) <Icon class="material-icons" on:click="{()=>{getfiles(true)}}">
 function create_default_slot_5(ctx) {
 	let t;
 
@@ -23671,14 +23772,14 @@ function create_default_slot_5(ctx) {
 		block,
 		id: create_default_slot_5.name,
 		type: "slot",
-		source: "(105:4) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>{getfiles(true)}}\\\">",
+		source: "(101:4) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>{getfiles(true)}}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (115:8) <span slot="label">
+// (111:8) <span slot="label">
 function create_label_slot(ctx) {
 	let span;
 
@@ -23687,7 +23788,7 @@ function create_label_slot(ctx) {
 			span = element("span");
 			span.textContent = "Select All";
 			attr_dev(span, "slot", "label");
-			add_location(span, file_1, 114, 8, 4707);
+			add_location(span, file_1, 110, 8, 4570);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -23701,14 +23802,14 @@ function create_label_slot(ctx) {
 		block,
 		id: create_label_slot.name,
 		type: "slot",
-		source: "(115:8) <span slot=\\\"label\\\">",
+		source: "(111:8) <span slot=\\\"label\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (112:4) <FormField>
+// (108:4) <FormField>
 function create_default_slot_4$1(ctx) {
 	let switch_1;
 	let updating_checked;
@@ -23769,14 +23870,14 @@ function create_default_slot_4$1(ctx) {
 		block,
 		id: create_default_slot_4$1.name,
 		type: "slot",
-		source: "(112:4) <FormField>",
+		source: "(108:4) <FormField>",
 		ctx
 	});
 
 	return block;
 }
 
-// (123:12) <Icon class="material-icons" on>
+// (119:12) <Icon class="material-icons" on>
 function create_default_slot_3$1(ctx) {
 	let t;
 
@@ -23796,14 +23897,14 @@ function create_default_slot_3$1(ctx) {
 		block,
 		id: create_default_slot_3$1.name,
 		type: "slot",
-		source: "(123:12) <Icon class=\\\"material-icons\\\" on>",
+		source: "(119:12) <Icon class=\\\"material-icons\\\" on>",
 		ctx
 	});
 
 	return block;
 }
 
-// (124:12) <Icon class="material-icons" >
+// (120:12) <Icon class="material-icons" >
 function create_default_slot_2$4(ctx) {
 	let t;
 
@@ -23823,14 +23924,14 @@ function create_default_slot_2$4(ctx) {
 		block,
 		id: create_default_slot_2$4.name,
 		type: "slot",
-		source: "(124:12) <Icon class=\\\"material-icons\\\" >",
+		source: "(120:12) <Icon class=\\\"material-icons\\\" >",
 		ctx
 	});
 
 	return block;
 }
 
-// (121:8) <IconButton  toggle bind:pressed={showfiles}>
+// (117:8) <IconButton  toggle bind:pressed={showfiles}>
 function create_default_slot_1$5(ctx) {
 	let icon0;
 	let t;
@@ -23906,14 +24007,14 @@ function create_default_slot_1$5(ctx) {
 		block,
 		id: create_default_slot_1$5.name,
 		type: "slot",
-		source: "(121:8) <IconButton  toggle bind:pressed={showfiles}>",
+		source: "(117:8) <IconButton  toggle bind:pressed={showfiles}>",
 		ctx
 	});
 
 	return block;
 }
 
-// (147:4) {:else}
+// (143:4) {:else}
 function create_else_block$5(ctx) {
 	let div;
 
@@ -23922,7 +24023,7 @@ function create_else_block$5(ctx) {
 			div = element("div");
 			div.textContent = "...loading";
 			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-1g49ttf");
-			add_location(div, file_1, 147, 8, 6097);
+			add_location(div, file_1, 143, 8, 5960);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -23939,14 +24040,14 @@ function create_else_block$5(ctx) {
 		block,
 		id: create_else_block$5.name,
 		type: "else",
-		source: "(147:4) {:else}",
+		source: "(143:4) {:else}",
 		ctx
 	});
 
 	return block;
 }
 
-// (144:30) 
+// (140:30) 
 function create_if_block_3$1(ctx) {
 	let div;
 
@@ -23955,7 +24056,7 @@ function create_if_block_3$1(ctx) {
 			div = element("div");
 			div.textContent = "Location doesn't exist: Browse files again";
 			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-1g49ttf");
-			add_location(div, file_1, 145, 8, 5974);
+			add_location(div, file_1, 141, 8, 5837);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -23972,14 +24073,14 @@ function create_if_block_3$1(ctx) {
 		block,
 		id: create_if_block_3$1.name,
 		type: "if",
-		source: "(144:30) ",
+		source: "(140:30) ",
 		ctx
 	});
 
 	return block;
 }
 
-// (130:4) {#if files_loaded}
+// (126:4) {#if files_loaded}
 function create_if_block$a(ctx) {
 	let current_block_type_index;
 	let if_block;
@@ -24024,7 +24125,7 @@ function create_if_block$a(ctx) {
 
 			attr_dev(div, "class", "otherFolderlist");
 			set_style(div, "cursor", "pointer");
-			add_location(div, file_1, 135, 8, 5497);
+			add_location(div, file_1, 131, 8, 5360);
 		},
 		m: function mount(target, anchor) {
 			if (~current_block_type_index) {
@@ -24120,14 +24221,14 @@ function create_if_block$a(ctx) {
 		block,
 		id: create_if_block$a.name,
 		type: "if",
-		source: "(130:4) {#if files_loaded}",
+		source: "(126:4) {#if files_loaded}",
 		ctx
 	});
 
 	return block;
 }
 
-// (133:30) 
+// (129:30) 
 function create_if_block_2$2(ctx) {
 	let div;
 	let t0;
@@ -24141,7 +24242,7 @@ function create_if_block_2$2(ctx) {
 			t1 = text(/*filetype*/ ctx[1]);
 			t2 = text(" here!");
 			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-1g49ttf");
-			add_location(div, file_1, 133, 12, 5387);
+			add_location(div, file_1, 129, 12, 5250);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -24163,14 +24264,14 @@ function create_if_block_2$2(ctx) {
 		block,
 		id: create_if_block_2$2.name,
 		type: "if",
-		source: "(133:30) ",
+		source: "(129:30) ",
 		ctx
 	});
 
 	return block;
 }
 
-// (131:8) {#if showfiles && files != "" }
+// (127:8) {#if showfiles && files != "" }
 function create_if_block_1$3(ctx) {
 	let customchecklist;
 	let updating_fileChecked;
@@ -24247,14 +24348,14 @@ function create_if_block_1$3(ctx) {
 		block,
 		id: create_if_block_1$3.name,
 		type: "if",
-		source: "(131:8) {#if showfiles && files != \\\"\\\" }",
+		source: "(127:8) {#if showfiles && files != \\\"\\\" }",
 		ctx
 	});
 
 	return block;
 }
 
-// (139:20) <Icon class="material-icons">
+// (135:20) <Icon class="material-icons">
 function create_default_slot$9(ctx) {
 	let t;
 
@@ -24274,14 +24375,14 @@ function create_default_slot$9(ctx) {
 		block,
 		id: create_default_slot$9.name,
 		type: "slot",
-		source: "(139:20) <Icon class=\\\"material-icons\\\">",
+		source: "(135:20) <Icon class=\\\"material-icons\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (137:12) {#each otherfolders as folder (folder.id)}
+// (133:12) {#each otherfolders as folder (folder.id)}
 function create_each_block$2(key_1, ctx) {
 	let div1;
 	let icon;
@@ -24319,9 +24420,9 @@ function create_each_block$2(key_1, ctx) {
 			t1 = text(t1_value);
 			t2 = space();
 			attr_dev(div0, "class", "mdc-typography--subtitle1");
-			add_location(div0, file_1, 139, 20, 5811);
+			add_location(div0, file_1, 135, 20, 5674);
 			attr_dev(div1, "class", "align svelte-1g49ttf");
-			add_location(div1, file_1, 137, 16, 5623);
+			add_location(div1, file_1, 133, 16, 5486);
 			this.first = div1;
 		},
 		m: function mount(target, anchor) {
@@ -24385,7 +24486,7 @@ function create_each_block$2(key_1, ctx) {
 		block,
 		id: create_each_block$2.name,
 		type: "each",
-		source: "(137:12) {#each otherfolders as folder (folder.id)}",
+		source: "(133:12) {#each otherfolders as folder (folder.id)}",
 		ctx
 	});
 
@@ -24556,16 +24657,16 @@ function create_fragment$C(ctx) {
 			t8 = space();
 			if_block.c();
 			attr_dev(div0, "class", "align center browseIcons svelte-1g49ttf");
-			add_location(div0, file_1, 102, 0, 4092);
+			add_location(div0, file_1, 98, 0, 3955);
 			attr_dev(div1, "class", "align center svelte-1g49ttf");
-			add_location(div1, file_1, 110, 0, 4509);
+			add_location(div1, file_1, 106, 0, 4372);
 			attr_dev(div2, "class", "mdc-typography--subtitle1");
-			add_location(div2, file_1, 126, 8, 5102);
+			add_location(div2, file_1, 122, 8, 4965);
 			attr_dev(div3, "class", "align folderlist svelte-1g49ttf");
-			add_location(div3, file_1, 119, 4, 4836);
+			add_location(div3, file_1, 115, 4, 4699);
 			attr_dev(div4, "class", "folderfile-list svelte-1g49ttf");
 			attr_dev(div4, "id", div4_id_value = "" + (/*filetype*/ ctx[1] + "_filebrowser"));
-			add_location(div4, file_1, 118, 0, 4773);
+			add_location(div4, file_1, 114, 0, 4636);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -24739,12 +24840,6 @@ function create_fragment$C(ctx) {
 	return block;
 }
 
-const createToast$1 = (msg, type = "primary") => Toast.create({
-	message: msg,
-	position: "is-top",
-	type: `is-${type}`
-});
-
 function instance$C($$self, $$props, $$invalidate) {
 	let { fileChecked = [] } = $$props,
 		{ currentLocation = "" } = $$props,
@@ -24787,7 +24882,7 @@ function instance$C($$self, $$props, $$invalidate) {
 		if (fs.existsSync(currentLocation)) {
 			(original_files = $$invalidate(4, otherfolders = $$invalidate(3, files = $$invalidate(0, fileChecked = []))), $$invalidate(5, selectAll = $$invalidate(8, files_loaded = false)));
 		} else {
-			return createToast$1("Location undefined", "danger");
+			return window.createToast("Location undefined", "danger");
 		}
 
 		try {
@@ -24801,7 +24896,7 @@ function instance$C($$self, $$props, $$invalidate) {
 			dispatch_chdir_event();
 
 			if (toast) {
-				createToast$1("Files updated");
+				window.createToast("Files updated");
 			}
 		} catch(err) {
 			console.log(err);
@@ -24815,7 +24910,7 @@ function instance$C($$self, $$props, $$invalidate) {
 
 	const changeDirectory = goto => {
 		if (!fs.existsSync(currentLocation)) {
-			return createToast$1("Location undefined", "danger");
+			return window.createToast("Location undefined", "danger");
 		}
 
 		$$invalidate(15, currentLocation = path.resolve(currentLocation, goto));
@@ -24835,7 +24930,7 @@ function instance$C($$self, $$props, $$invalidate) {
 				getfiles();
 				console.log("Updating location for ", filetype);
 			} else {
-				return createToast$1("Location undefined", "danger");
+				return window.createToast("Location undefined", "danger");
 			}
 		}
 	});
@@ -24904,7 +24999,6 @@ function instance$C($$self, $$props, $$invalidate) {
 	};
 
 	$$self.$capture_state = () => ({
-		createToast: createToast$1,
 		IconButton,
 		Icon,
 		slide,
@@ -25788,7 +25882,7 @@ const get_plotContainer_slot_context = ctx => ({});
 const get_buttonContainer_slot_changes = dirty => ({});
 const get_buttonContainer_slot_context = ctx => ({});
 
-// (121:8) {#if toggleBrowser}
+// (119:8) {#if toggleBrowser}
 function create_if_block$c(ctx) {
 	let div;
 	let filebrowser;
@@ -25825,7 +25919,7 @@ function create_if_block$c(ctx) {
 			div = element("div");
 			create_component(filebrowser.$$.fragment);
 			attr_dev(div, "class", "column is-one-fifth-widescreen is-one-quarter-desktop box filebrowser adjust-right svelte-1nvtlko");
-			add_location(div, file$B, 121, 12, 3528);
+			add_location(div, file$B, 119, 12, 3374);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -25878,7 +25972,7 @@ function create_if_block$c(ctx) {
 		block,
 		id: create_if_block$c.name,
 		type: "if",
-		source: "(121:8) {#if toggleBrowser}",
+		source: "(119:8) {#if toggleBrowser}",
 		ctx
 	});
 
@@ -25989,25 +26083,25 @@ function create_fragment$E(ctx) {
 			if (plotContainer_slot) plotContainer_slot.c();
 			attr_dev(button0, "class", "button is-link gap");
 			attr_dev(button0, "id", button0_id_value = "" + (/*filetype*/ ctx[5] + "_filebrowser_btn"));
-			add_location(button0, file$B, 133, 20, 4033);
+			add_location(button0, file$B, 131, 20, 3879);
 			attr_dev(button1, "class", "button is-link is-pulled-right");
-			add_location(button1, file$B, 136, 20, 4291);
+			add_location(button1, file$B, 134, 20, 4137);
 			attr_dev(div0, "class", "align");
-			add_location(div0, file$B, 129, 16, 3925);
+			add_location(div0, file$B, 127, 16, 3771);
 			attr_dev(div1, "class", "align buttonContainer svelte-1nvtlko");
-			add_location(div1, file$B, 139, 16, 4423);
+			add_location(div1, file$B, 137, 16, 4269);
 			attr_dev(div2, "class", "plotContainer svelte-1nvtlko");
-			add_location(div2, file$B, 140, 16, 4514);
+			add_location(div2, file$B, 138, 16, 4360);
 			attr_dev(div3, "class", "container button-plot-container box svelte-1nvtlko");
-			add_location(div3, file$B, 128, 12, 3858);
+			add_location(div3, file$B, 126, 12, 3704);
 			attr_dev(div4, "class", "column fileContainer svelte-1nvtlko");
-			add_location(div4, file$B, 126, 8, 3807);
+			add_location(div4, file$B, 124, 8, 3653);
 			attr_dev(div5, "class", "columns");
-			add_location(div5, file$B, 118, 4, 3462);
+			add_location(div5, file$B, 116, 4, 3308);
 			attr_dev(section, "id", /*id*/ ctx[4]);
 			set_style(section, "display", "none");
 			attr_dev(section, "class", "animated fadeIn");
-			add_location(section, file$B, 116, 0, 3395);
+			add_location(section, file$B, 114, 0, 3241);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -26173,12 +26267,6 @@ function create_fragment$E(ctx) {
 	return block;
 }
 
-const createToast$2 = (msg, type = "primary") => Toast.create({
-	message: msg,
-	position: "is-top",
-	type: `is-${type}`
-});
-
 function browse({ filetype = "", dir = true } = {}) {
 	return new Promise((resolve, reject) => {
 			const mainWindow = remote.getCurrentWindow();
@@ -26202,7 +26290,7 @@ function browse({ filetype = "", dir = true } = {}) {
 					console.log(result.filePaths);
 					resolve(result);
 				}).catch(err => {
-					createToast$2("Couldn't open folder", "danger");
+					window.createToast("Couldn't open folder", "danger");
 					reject(err);
 				});
 			} else {
@@ -26303,8 +26391,6 @@ function instance$E($$self, $$props, $$invalidate) {
 	};
 
 	$$self.$capture_state = () => ({
-		Toast,
-		createToast: createToast$2,
 		browse,
 		fly,
 		Textfield,
@@ -29689,7 +29775,7 @@ function create_label_slot$1(ctx) {
 			span = element("span");
 			span.textContent = "Convert to µm";
 			attr_dev(span, "slot", "label");
-			add_location(span, file$H, 104, 16, 3949);
+			add_location(span, file$H, 104, 16, 3964);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -30116,16 +30202,16 @@ function create_fragment$M(ctx) {
 			t9 = space();
 			create_component(fab1.$$.fragment);
 			set_style(div0, "margin-bottom", "2em");
-			add_location(div0, file$H, 93, 8, 3237);
+			add_location(div0, file$H, 93, 8, 3252);
 			set_style(div1, "margin-bottom", "2em");
-			add_location(div1, file$H, 98, 8, 3491);
+			add_location(div1, file$H, 98, 8, 3506);
 			attr_dev(div2, "class", "container svelte-1eg3ii1");
 			attr_dev(div2, "id", "powfileContainer");
-			add_location(div2, file$H, 91, 4, 3180);
+			add_location(div2, file$H, 91, 4, 3195);
 			attr_dev(section, "class", "section svelte-1eg3ii1");
 			attr_dev(section, "id", "Powerfile");
 			set_style(section, "display", "none");
-			add_location(section, file$H, 90, 0, 3113);
+			add_location(section, file$H, 90, 0, 3128);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -30316,10 +30402,10 @@ function instance$M($$self, $$props, $$invalidate) {
 
 		fs.writeFile(powfile, contents, function (err) {
 			if (err) {
-				return createToast$2("Power file couldn't be saved.", "danger");
+				return window.createToast("Power file couldn't be saved.", "danger");
 			}
 
-			createToast$2("Power file saved", "success");
+			window.createToast("Power file saved", "success");
 		});
 	};
 
@@ -30336,7 +30422,7 @@ function instance$M($$self, $$props, $$invalidate) {
 		browse({ dir: true }).then(result => {
 			if (!result.canceled) {
 				$$invalidate(4, location = localStorage["powerfile_location"] = result.filePaths[0]);
-				createToast$2("Location updated", "success");
+				window.createToast("Location updated", "success");
 				if (save) savefile();
 			}
 		}).catch(err => {
@@ -30356,7 +30442,7 @@ function instance$M($$self, $$props, $$invalidate) {
 
 	const handleOverwrite = e => {
 		let action = e.detail.action;
-		if (action === "Cancel" || action === "close") createToast$2("Powerfile saving cancelled", "warning");
+		if (action === "Cancel" || action === "close") window.createToast("Powerfile saving cancelled", "warning");
 		if (action === "Yes") writePowfile();
 	};
 
@@ -30421,7 +30507,6 @@ function instance$M($$self, $$props, $$invalidate) {
 		Label,
 		Checkbox,
 		FormField,
-		createToast: createToast$2,
 		browse,
 		CustomDialog,
 		PreModal,
@@ -38034,7 +38119,7 @@ function get_each_context_4(ctx, list, i) {
 	return child_ctx;
 }
 
-// (259:0) {#if toggle}
+// (257:0) {#if toggle}
 function create_if_block$f(ctx) {
 	let div0;
 	let textfield0;
@@ -38208,31 +38293,31 @@ function create_if_block$f(ctx) {
 			t14 = space();
 			create_component(select.$$.fragment);
 			attr_dev(button0, "class", "button is-pulled-right is-warning svelte-l2repp");
-			add_location(button0, file$P, 262, 8, 10038);
+			add_location(button0, file$P, 260, 8, 10018);
 			set_style(div0, "margin-bottom", "1em");
 			attr_dev(div0, "class", "svelte-l2repp");
-			add_location(div0, file$P, 260, 4, 9872);
+			add_location(div0, file$P, 258, 4, 9852);
 			attr_dev(div1, "class", "");
-			add_location(div1, file$P, 266, 8, 10286);
+			add_location(div1, file$P, 264, 8, 10273);
 			attr_dev(div2, "class", " svelte-l2repp");
-			add_location(div2, file$P, 289, 12, 11073);
+			add_location(div2, file$P, 287, 12, 11060);
 			attr_dev(div3, "class", "addToReport  svelte-l2repp");
-			add_location(div3, file$P, 287, 8, 11031);
+			add_location(div3, file$P, 285, 8, 11018);
 			attr_dev(button1, "class", "button is-link svelte-l2repp");
 			attr_dev(button1, "tabindex", "0");
-			add_location(button1, file$P, 306, 12, 11920);
+			add_location(button1, file$P, 304, 12, 11907);
 			attr_dev(button2, "class", "button is-link svelte-l2repp");
 			attr_dev(button2, "tabindex", "0");
-			add_location(button2, file$P, 307, 12, 12061);
+			add_location(button2, file$P, 305, 12, 12048);
 			attr_dev(button3, "class", "button is-link svelte-l2repp");
 			attr_dev(button3, "tabindex", "0");
-			add_location(button3, file$P, 308, 12, 12201);
+			add_location(button3, file$P, 306, 12, 12188);
 			attr_dev(div4, "class", "align svelte-l2repp");
 			set_style(div4, "margin-top", "1em");
-			add_location(div4, file$P, 304, 8, 11853);
+			add_location(div4, file$P, 302, 8, 11840);
 			attr_dev(div5, "class", "align report svelte-l2repp");
 			attr_dev(div5, "id", /*id*/ ctx[2]);
-			add_location(div5, file$P, 265, 4, 10244);
+			add_location(div5, file$P, 263, 4, 10231);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -38493,14 +38578,14 @@ function create_if_block$f(ctx) {
 		block,
 		id: create_if_block$f.name,
 		type: "if",
-		source: "(259:0) {#if toggle}",
+		source: "(257:0) {#if toggle}",
 		ctx
 	});
 
 	return block;
 }
 
-// (272:20) <span slot="label" style="color:{method.color}">
+// (270:20) <span slot="label" style="color:{method.color}">
 function create_label_slot_1(ctx) {
 	let span;
 	let t_value = /*method*/ ctx[36].name + "";
@@ -38512,7 +38597,7 @@ function create_label_slot_1(ctx) {
 			t = text(t_value);
 			attr_dev(span, "slot", "label");
 			set_style(span, "color", /*method*/ ctx[36].color);
-			add_location(span, file$P, 271, 20, 10502);
+			add_location(span, file$P, 269, 20, 10489);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -38528,14 +38613,14 @@ function create_label_slot_1(ctx) {
 		block,
 		id: create_label_slot_1.name,
 		type: "slot",
-		source: "(272:20) <span slot=\\\"label\\\" style=\\\"color:{method.color}\\\">",
+		source: "(270:20) <span slot=\\\"label\\\" style=\\\"color:{method.color}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (269:16) <FormField >
+// (267:16) <FormField >
 function create_default_slot_3$5(ctx) {
 	let radio;
 	let updating_group;
@@ -38599,14 +38684,14 @@ function create_default_slot_3$5(ctx) {
 		block,
 		id: create_default_slot_3$5.name,
 		type: "slot",
-		source: "(269:16) <FormField >",
+		source: "(267:16) <FormField >",
 		ctx
 	});
 
 	return block;
 }
 
-// (268:12) {#each notificationMethod as method}
+// (266:12) {#each notificationMethod as method}
 function create_each_block_4(ctx) {
 	let formfield;
 	let current;
@@ -38657,14 +38742,14 @@ function create_each_block_4(ctx) {
 		block,
 		id: create_each_block_4.name,
 		type: "each",
-		source: "(268:12) {#each notificationMethod as method}",
+		source: "(266:12) {#each notificationMethod as method}",
 		ctx
 	});
 
 	return block;
 }
 
-// (277:8) {#if includeTablesInReports.length>0}
+// (275:8) {#if includeTablesInReports.length>0}
 function create_if_block_1$6(ctx) {
 	let div1;
 	let div0;
@@ -38692,9 +38777,9 @@ function create_if_block_1$6(ctx) {
 			}
 
 			attr_dev(div0, "class", " svelte-l2repp");
-			add_location(div0, file$P, 278, 16, 10744);
+			add_location(div0, file$P, 276, 16, 10731);
 			attr_dev(div1, "class", "addToReport  svelte-l2repp");
-			add_location(div1, file$P, 277, 12, 10700);
+			add_location(div1, file$P, 275, 12, 10687);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div1, anchor);
@@ -38745,14 +38830,14 @@ function create_if_block_1$6(ctx) {
 		block,
 		id: create_if_block_1$6.name,
 		type: "if",
-		source: "(277:8) {#if includeTablesInReports.length>0}",
+		source: "(275:8) {#if includeTablesInReports.length>0}",
 		ctx
 	});
 
 	return block;
 }
 
-// (280:20) {#each includeTablesInReports as {id, include, label}
+// (278:20) {#each includeTablesInReports as {id, include, label}
 function create_each_block_3(key_1, ctx) {
 	let first;
 	let customcheckbox;
@@ -38821,14 +38906,14 @@ function create_each_block_3(key_1, ctx) {
 		block,
 		id: create_each_block_3.name,
 		type: "each",
-		source: "(280:20) {#each includeTablesInReports as {id, include, label}",
+		source: "(278:20) {#each includeTablesInReports as {id, include, label}",
 		ctx
 	});
 
 	return block;
 }
 
-// (291:16) {#each includePlotsInReport as {id, include, label}
+// (289:16) {#each includePlotsInReport as {id, include, label}
 function create_each_block_2(key_1, ctx) {
 	let first;
 	let customcheckbox;
@@ -38897,14 +38982,14 @@ function create_each_block_2(key_1, ctx) {
 		block,
 		id: create_each_block_2.name,
 		type: "each",
-		source: "(291:16) {#each includePlotsInReport as {id, include, label}",
+		source: "(289:16) {#each includePlotsInReport as {id, include, label}",
 		ctx
 	});
 
 	return block;
 }
 
-// (313:20) <span slot="label" style="color:{method}">
+// (311:20) <span slot="label" style="color:{method}">
 function create_label_slot$4(ctx) {
 	let span;
 	let t;
@@ -38915,7 +39000,7 @@ function create_label_slot$4(ctx) {
 			t = text(/*method*/ ctx[36]);
 			attr_dev(span, "slot", "label");
 			set_style(span, "color", /*method*/ ctx[36]);
-			add_location(span, file$P, 312, 20, 12536);
+			add_location(span, file$P, 310, 20, 12523);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -38931,14 +39016,14 @@ function create_label_slot$4(ctx) {
 		block,
 		id: create_label_slot$4.name,
 		type: "slot",
-		source: "(313:20) <span slot=\\\"label\\\" style=\\\"color:{method}\\\">",
+		source: "(311:20) <span slot=\\\"label\\\" style=\\\"color:{method}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (311:16) <FormField >
+// (309:16) <FormField >
 function create_default_slot_2$8(ctx) {
 	let radio;
 	let updating_group;
@@ -38998,14 +39083,14 @@ function create_default_slot_2$8(ctx) {
 		block,
 		id: create_default_slot_2$8.name,
 		type: "slot",
-		source: "(311:16) <FormField >",
+		source: "(309:16) <FormField >",
 		ctx
 	});
 
 	return block;
 }
 
-// (310:12) {#each ["landscape", "portrait"] as method}
+// (308:12) {#each ["landscape", "portrait"] as method}
 function create_each_block_1(ctx) {
 	let formfield;
 	let current;
@@ -39056,14 +39141,14 @@ function create_each_block_1(ctx) {
 		block,
 		id: create_each_block_1.name,
 		type: "each",
-		source: "(310:12) {#each [\\\"landscape\\\", \\\"portrait\\\"] as method}",
+		source: "(308:12) {#each [\\\"landscape\\\", \\\"portrait\\\"] as method}",
 		ctx
 	});
 
 	return block;
 }
 
-// (319:20) <Option value={file} selected={pageSize  === file}>
+// (317:20) <Option value={file} selected={pageSize  === file}>
 function create_default_slot_1$9(ctx) {
 	let t;
 
@@ -39084,14 +39169,14 @@ function create_default_slot_1$9(ctx) {
 		block,
 		id: create_default_slot_1$9.name,
 		type: "slot",
-		source: "(319:20) <Option value={file} selected={pageSize  === file}>",
+		source: "(317:20) <Option value={file} selected={pageSize  === file}>",
 		ctx
 	});
 
 	return block;
 }
 
-// (318:16) {#each ["A3", "A4", "A5", "Legal", "Letter"] as file}
+// (316:16) {#each ["A3", "A4", "A5", "Legal", "Letter"] as file}
 function create_each_block$4(ctx) {
 	let option;
 	let current;
@@ -39142,14 +39227,14 @@ function create_each_block$4(ctx) {
 		block,
 		id: create_each_block$4.name,
 		type: "each",
-		source: "(318:16) {#each [\\\"A3\\\", \\\"A4\\\", \\\"A5\\\", \\\"Legal\\\", \\\"Letter\\\"] as file}",
+		source: "(316:16) {#each [\\\"A3\\\", \\\"A4\\\", \\\"A5\\\", \\\"Legal\\\", \\\"Letter\\\"] as file}",
 		ctx
 	});
 
 	return block;
 }
 
-// (317:12) <Select bind:value={pageSize} label="pageSize" style="margin-left:1em;">
+// (315:12) <Select bind:value={pageSize} label="pageSize" style="margin-left:1em;">
 function create_default_slot$i(ctx) {
 	let each_1_anchor;
 	let current;
@@ -39238,7 +39323,7 @@ function create_default_slot$i(ctx) {
 		block,
 		id: create_default_slot$i.name,
 		type: "slot",
-		source: "(317:12) <Select bind:value={pageSize} label=\\\"pageSize\\\" style=\\\"margin-left:1em;\\\">",
+		source: "(315:12) <Select bind:value={pageSize} label=\\\"pageSize\\\" style=\\\"margin-left:1em;\\\">",
 		ctx
 	});
 
@@ -39298,9 +39383,9 @@ function create_fragment$V(ctx) {
 			if (if_block) if_block.c();
 			if_block_anchor = empty();
 			attr_dev(div0, "class", "title notification is-link svelte-l2repp");
-			add_location(div0, file$P, 253, 4, 9735);
+			add_location(div0, file$P, 251, 4, 9715);
 			attr_dev(div1, "class", "content align heading svelte-l2repp");
-			add_location(div1, file$P, 251, 0, 9692);
+			add_location(div1, file$P, 249, 0, 9672);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -39437,7 +39522,7 @@ function instance$V($$self, $$props, $$invalidate) {
 	const exprtToHtml = async content => {
 		fs.writeFile(reportFile, content || reportHTMLTemplate, function (err) {
 			if (err) {
-				createToast$2("Report couldn't be added.", "danger");
+				window.createToast("Report couldn't be added.", "danger");
 				return console.log(err);
 			}
 
@@ -39450,7 +39535,7 @@ function instance$V($$self, $$props, $$invalidate) {
 				});
 			}
 
-			createToast$2("Report added", "success");
+			window.createToast("Report added", "success");
 			console.log("Exported to HTML");
 		});
 
@@ -39483,7 +39568,7 @@ function instance$V($$self, $$props, $$invalidate) {
 					tableDiv.appendChild(tableHeading);
 					tableDiv.appendChild(tableElement);
 				} catch(error) {
-					createToast$2(`${tb.label} is not visible`, "danger");
+					window.createToast(`${tb.label} is not visible`, "danger");
 				}
 			}
 		});
@@ -39565,7 +39650,7 @@ function instance$V($$self, $$props, $$invalidate) {
 								return;
 							}
 
-							createToast$2("Write PDF successfully.", "success");
+							window.createToast("Write PDF successfully.", "success");
 						});
 					}).catch(error => {
 						$$invalidate(6, preModal.modalContent = error, preModal);
@@ -39592,7 +39677,7 @@ function instance$V($$self, $$props, $$invalidate) {
 									return;
 								}
 
-								createToast$2("Write PDF successfully.", "success");
+								window.createToast("Write PDF successfully.", "success");
 							});
 						}
 					);
@@ -39642,7 +39727,7 @@ function instance$V($$self, $$props, $$invalidate) {
 	const click_handler = () => {
 		$$invalidate(9, reportMainContainer.innerHTML = "", reportMainContainer);
 		exprtToHtml("");
-		createToast$2("Report resetted", "warning");
+		window.createToast("Report resetted", "warning");
 	};
 
 	function radio_group_binding(value) {
@@ -39692,7 +39777,6 @@ function instance$V($$self, $$props, $$invalidate) {
 		Textfield,
 		HelperText,
 		Ripple,
-		createToast: createToast$2,
 		Select,
 		Option,
 		onMount,
@@ -39862,180 +39946,10 @@ class ReportLayout extends SvelteComponentDev {
 	}
 }
 
-const createToast$3 = (msg, type="primary") => Toast.create({ message: msg, position:"is-top", type:`is-${type}`});
-
-function savefile({file={}, name=""}={}) {
-
-    let filename = path.join(get_store_value(felixopoLocation), `${name}.json`);
-    fs.writeFile(filename, JSON.stringify({file}), 'utf8', function (err) {
-
-        if (err) {
-            console.log("An error occured while writing to File.");
-            return createToast$3("An error occured while writing to File.", "danger")
-        }
-        return createToast$3(`${name}.json has been saved.`, "success");
-    });
-}
-
-function loadfile({name=""}={}) {
-    let filename = path.join(get_store_value(felixopoLocation), `${name}.json`);
-    if(!fs.existsSync(filename)) {return createToast$3(`${name}.json doesn't exist in DATA dir.`, "danger")}
-
-    let loadedfile = JSON.parse(fs.readFileSync(filename)).file;
-
-    createToast$3(`${name}.json has been loaded.`, "success");
-    return loadedfile
-}
-
-function plotlySelection({graphDiv="avgplot", mode="felix"}={}) {
-
-    const avgplot = document.getElementById(graphDiv);
-
-    console.log("Creating plotly selection events for, ", avgplot);
-
-    avgplot.on("plotly_selected", (data) => {
-
-       try {
-            console.log(data);
-            mode === "felix" ? opoMode.set(false) : opoMode.set(true);
-
-
-            const { range } = data;
-
-            felixIndex.set(range.x);
-
-
-            const output_name = data.points[0].data.name.split(".")[0];
-            felixOutputName.set(output_name);
-            console.log(`Selected file: ${get_store_value(felixOutputName)}`);
-
-        } catch (error) { console.log("No data available to fit"); }
-
-    });
-}
-
-
-function plotlyClick({graphDiv="avgplot", mode="felix"}={}){
-
-    const avgplot = document.getElementById(graphDiv);
-    console.log("Creating plotly click events for, ", avgplot);
-
-    avgplot.on('plotly_click', (data)=>{
-    
-        console.log("Graph clicked: ", data);
-
-        if (data.event.ctrlKey) {
-
-            console.log("Data point length: ", data.points.length);
-
-
-            for(let i=0; i<data.points.length; i++){
-
-                console.log("Running cycle: ", i);
-
-                let d = data.points[i];
-
-                let name = d.data.name;
-                mode === "felix" ? opoMode.set(false) : opoMode.set(true);
-
-                let output_name = get_store_value(felixOutputName);
-
-                if (name.includes(output_name)){
-
-                    console.log("Filename: ", output_name);
-
-                    let line_color = d.data.line.color;
-                    console.log(name);
-                    console.log(d, d.x, d.y);
-
-                    let [freq, amp] = [parseFloat(d.x.toFixed(2)), parseFloat(d.y.toFixed(2))];
-                    const annotation = { text: `(${freq}, ${amp})`, x: freq, y: amp, font:{color:line_color}, arrowcolor:line_color };
-                    felixPlotAnnotations.update(annotate => _.uniqBy([...annotate, annotation], 'text'));
-                    Plotly.relayout(graphDiv,{annotations: get_store_value(felixPlotAnnotations)});
-
-                    felixPeakTable.update(table => [...table, {freq, amp, sig:get_store_value(Ngauss_sigma), id:getID()}]);
-                    felixPeakTable.update(table => _.uniqBy(table, 'freq'));
-                }
-            }
-
-            console.log("Running cycle ended");
-        } 
-    });
-
-}
-
-function computePy_func({e=null, pyfile="", args="", general=false, openShell=false}={}){
-
-
-    return new Promise((resolve, reject)=>{
-
-        if(general){
-
-            console.log("Sending general arguments: ", args);
-            createToast$3("Process Started");
-
-            let py = spawn(
-
-                localStorage["pythonpath"], [path.join(localStorage["pythonscript"], pyfile), args], { detached: true, stdio: 'pipe', shell: openShell }
-    
-            );
-    
-            py.on("close", ()=>{ console.log("Closed"); });
-            
-            py.stderr.on("data", (err)=>{ console.log(`Error Occured: ${err.toString()}`); reject(err.toString()); });
-            
-            py.stdout.on("data", (data)=>{ console.log(`Output from python: ${data.toString()}`);  });
-            py.unref();
-            py.ref();
-        } else {
-
-            let py=null;
-        
-            try {py = spawn( localStorage["pythonpath"], [path.resolve(localStorage["pythonscript"], pyfile), args] );}
-            catch (err) { reject("Error accessing python. Set python location properly in Settings\n"+err); }
-
-            let target = e.target;
-            target.classList.toggle("is-loading");
-            createToast$3("Process Started");
-        
-            py.stdout.on("data", data => {
-        
-                console.log("Ouput from python");
-        
-                let dataReceived = data.toString("utf8");
-                console.log(dataReceived);
-            });
-        
-            let error_occured_py = false;
-            py.stderr.on("data", err => {
-                reject(err);
-                error_occured_py = true;
-            });
-        
-            py.on("close", ()=>{
-                if(!error_occured_py) {
-                    let dataFromPython = fs.readFileSync(path.join(localStorage["pythonscript"], "data.json"));
-
-                    window.dataFromPython = dataFromPython = JSON.parse(dataFromPython.toString("utf-8"));
-                    console.log(dataFromPython);
-
-                    resolve(dataFromPython);
-                }
-                console.log("Process closed");
-                
-                target.classList.toggle("is-loading");
-        
-            });
-        }
-
-    })
-    
-}
-
 /* src\Pages\normline\modals\AddFilesToPlot.svelte generated by Svelte v3.24.0 */
 const file$Q = "src\\Pages\\normline\\modals\\AddFilesToPlot.svelte";
 
-// (43:0) {#if active}
+// (41:0) {#if active}
 function create_if_block$g(ctx) {
 	let modal;
 	let updating_active;
@@ -40103,14 +40017,14 @@ function create_if_block$g(ctx) {
 		block,
 		id: create_if_block$g.name,
 		type: "if",
-		source: "(43:0) {#if active}",
+		source: "(41:0) {#if active}",
 		ctx
 	});
 
 	return block;
 }
 
-// (47:8) <div slot="content" >
+// (45:8) <div slot="content" >
 function create_content_slot$1(ctx) {
 	let div;
 	let textfield0;
@@ -40166,9 +40080,9 @@ function create_content_slot$1(ctx) {
 			button = element("button");
 			button.textContent = "Browse";
 			attr_dev(button, "class", "button is-link");
-			add_location(button, file$Q, 49, 12, 1735);
+			add_location(button, file$Q, 47, 12, 1640);
 			attr_dev(div, "slot", "content");
-			add_location(div, file$Q, 46, 8, 1493);
+			add_location(div, file$Q, 44, 8, 1398);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -40228,14 +40142,14 @@ function create_content_slot$1(ctx) {
 		block,
 		id: create_content_slot$1.name,
 		type: "slot",
-		source: "(47:8) <div slot=\\\"content\\\" >",
+		source: "(45:8) <div slot=\\\"content\\\" >",
 		ctx
 	});
 
 	return block;
 }
 
-// (53:8) <button slot="footerbtn" class="button is-link" on:click="{(e)=>plotData({e:e})}" >
+// (51:8) <button slot="footerbtn" class="button is-link" on:click="{(e)=>plotData({e:e})}" >
 function create_footerbtn_slot(ctx) {
 	let button;
 	let mounted;
@@ -40247,7 +40161,7 @@ function create_footerbtn_slot(ctx) {
 			button.textContent = "Add";
 			attr_dev(button, "slot", "footerbtn");
 			attr_dev(button, "class", "button is-link");
-			add_location(button, file$Q, 52, 8, 1837);
+			add_location(button, file$Q, 50, 8, 1742);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, button, anchor);
@@ -40269,14 +40183,14 @@ function create_footerbtn_slot(ctx) {
 		block,
 		id: create_footerbtn_slot.name,
 		type: "slot",
-		source: "(53:8) <button slot=\\\"footerbtn\\\" class=\\\"button is-link\\\" on:click=\\\"{(e)=>plotData({e:e})}\\\" >",
+		source: "(51:8) <button slot=\\\"footerbtn\\\" class=\\\"button is-link\\\" on:click=\\\"{(e)=>plotData({e:e})}\\\" >",
 		ctx
 	});
 
 	return block;
 }
 
-// (45:4) <Modal bind:active title="Add file to plot">
+// (43:4) <Modal bind:active title="Add file to plot">
 function create_default_slot$j(ctx) {
 	let t;
 
@@ -40299,7 +40213,7 @@ function create_default_slot$j(ctx) {
 		block,
 		id: create_default_slot$j.name,
 		type: "slot",
-		source: "(45:4) <Modal bind:active title=\\\"Add file to plot\\\">",
+		source: "(43:4) <Modal bind:active title=\\\"Add file to plot\\\">",
 		ctx
 	});
 
@@ -40398,7 +40312,7 @@ function instance$W($$self, $$props, $$invalidate) {
 
 	function plotData({ e = null } = {}) {
 		let pyfile = "addTrace.py", args;
-		if (addedFile.files < 1) return createToast$3("No files selected", "danger");
+		if (addedFile.files < 1) return window.createToast("No files selected", "danger");
 		($$invalidate(6, addedFile["col"] = addedFileCol, addedFile), $$invalidate(6, addedFile["N"] = fileChecked.length + extrafileAdded, addedFile));
 		$$invalidate(6, addedFile["scale"] = addedFileScale, addedFile);
 		args = [JSON.stringify(addedFile)];
@@ -40407,7 +40321,7 @@ function instance$W($$self, $$props, $$invalidate) {
 			addFileModal = false;
 			Plotly.addTraces($graphDiv, dataFromPython);
 			$$invalidate(7, extrafileAdded += addedfiles.length);
-			createToast$3("Graph Plotted", "success");
+			window.createToast("Graph Plotted", "success");
 		}).catch(err => {
 			$$invalidate(8, preModal.modalContent = err, preModal);
 			$$invalidate(8, preModal.open = true, preModal);
@@ -40465,8 +40379,6 @@ function instance$W($$self, $$props, $$invalidate) {
 		Modal,
 		Textfield,
 		browse,
-		computePy_func,
-		createToast: createToast$3,
 		active,
 		fileChecked,
 		addedFileCol,
@@ -42405,7 +42317,7 @@ function get_each_context_3$1(ctx, list, i) {
 	return child_ctx;
 }
 
-// (52:20) <Cell>
+// (50:20) <Cell>
 function create_default_slot_31(ctx) {
 	let t_value = /*item*/ ctx[21] + "";
 	let t;
@@ -42427,14 +42339,14 @@ function create_default_slot_31(ctx) {
 		block,
 		id: create_default_slot_31.name,
 		type: "slot",
-		source: "(52:20) <Cell>",
+		source: "(50:20) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (51:16) {#each dataTableHead as item}
+// (49:16) {#each dataTableHead as item}
 function create_each_block_3$1(ctx) {
 	let cell;
 	let current;
@@ -42482,14 +42394,14 @@ function create_each_block_3$1(ctx) {
 		block,
 		id: create_each_block_3$1.name,
 		type: "each",
-		source: "(51:16) {#each dataTableHead as item}",
+		source: "(49:16) {#each dataTableHead as item}",
 		ctx
 	});
 
 	return block;
 }
 
-// (49:12) <Row>
+// (47:12) <Row>
 function create_default_slot_30(ctx) {
 	let cell0;
 	let t0;
@@ -42607,14 +42519,14 @@ function create_default_slot_30(ctx) {
 		block,
 		id: create_default_slot_30.name,
 		type: "slot",
-		source: "(49:12) <Row>",
+		source: "(47:12) <Row>",
 		ctx
 	});
 
 	return block;
 }
 
-// (48:8) <Head >
+// (46:8) <Head >
 function create_default_slot_29(ctx) {
 	let row;
 	let current;
@@ -42662,14 +42574,14 @@ function create_default_slot_29(ctx) {
 		block,
 		id: create_default_slot_29.name,
 		type: "slot",
-		source: "(48:8) <Head >",
+		source: "(46:8) <Head >",
 		ctx
 	});
 
 	return block;
 }
 
-// (88:12) {:else}
+// (86:12) {:else}
 function create_else_block$a(ctx) {
 	let each_blocks = [];
 	let each_1_lookup = new Map();
@@ -42741,14 +42653,14 @@ function create_else_block$a(ctx) {
 		block,
 		id: create_else_block$a.name,
 		type: "else",
-		source: "(88:12) {:else}",
+		source: "(86:12) {:else}",
 		ctx
 	});
 
 	return block;
 }
 
-// (73:93) 
+// (71:93) 
 function create_if_block_1$7(ctx) {
 	let each_blocks = [];
 	let each_1_lookup = new Map();
@@ -42820,14 +42732,14 @@ function create_if_block_1$7(ctx) {
 		block,
 		id: create_if_block_1$7.name,
 		type: "if",
-		source: "(73:93) ",
+		source: "(71:93) ",
 		ctx
 	});
 
 	return block;
 }
 
-// (58:12) {#if show_dataTable_only_weighted_averaged}
+// (56:12) {#if show_dataTable_only_weighted_averaged}
 function create_if_block$i(ctx) {
 	let each_blocks = [];
 	let each_1_lookup = new Map();
@@ -42899,14 +42811,14 @@ function create_if_block$i(ctx) {
 		block,
 		id: create_if_block$i.name,
 		type: "if",
-		source: "(58:12) {#if show_dataTable_only_weighted_averaged}",
+		source: "(56:12) {#if show_dataTable_only_weighted_averaged}",
 		ctx
 	});
 
 	return block;
 }
 
-// (92:24) <Cell style="width: 2em;">
+// (90:24) <Cell style="width: 2em;">
 function create_default_slot_28(ctx) {
 	let t_value = /*index*/ ctx[18] + "";
 	let t;
@@ -42930,14 +42842,14 @@ function create_default_slot_28(ctx) {
 		block,
 		id: create_default_slot_28.name,
 		type: "slot",
-		source: "(92:24) <Cell style=\\\"width: 2em;\\\">",
+		source: "(90:24) <Cell style=\\\"width: 2em;\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (93:24) <Cell>
+// (91:24) <Cell>
 function create_default_slot_27(ctx) {
 	let t_value = /*table*/ ctx[16].name + "";
 	let t;
@@ -42961,14 +42873,14 @@ function create_default_slot_27(ctx) {
 		block,
 		id: create_default_slot_27.name,
 		type: "slot",
-		source: "(93:24) <Cell>",
+		source: "(91:24) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (94:24) <Cell>
+// (92:24) <Cell>
 function create_default_slot_26(ctx) {
 	let t_value = /*table*/ ctx[16].freq + "";
 	let t;
@@ -42992,14 +42904,14 @@ function create_default_slot_26(ctx) {
 		block,
 		id: create_default_slot_26.name,
 		type: "slot",
-		source: "(94:24) <Cell>",
+		source: "(92:24) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (95:24) <Cell>
+// (93:24) <Cell>
 function create_default_slot_25(ctx) {
 	let t_value = /*table*/ ctx[16].amp + "";
 	let t;
@@ -43023,14 +42935,14 @@ function create_default_slot_25(ctx) {
 		block,
 		id: create_default_slot_25.name,
 		type: "slot",
-		source: "(95:24) <Cell>",
+		source: "(93:24) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (96:24) <Cell>
+// (94:24) <Cell>
 function create_default_slot_24(ctx) {
 	let t_value = /*table*/ ctx[16].fwhm + "";
 	let t;
@@ -43054,14 +42966,14 @@ function create_default_slot_24(ctx) {
 		block,
 		id: create_default_slot_24.name,
 		type: "slot",
-		source: "(96:24) <Cell>",
+		source: "(94:24) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (97:24) <Cell>
+// (95:24) <Cell>
 function create_default_slot_23(ctx) {
 	let t_value = /*table*/ ctx[16].sig + "";
 	let t;
@@ -43085,14 +42997,14 @@ function create_default_slot_23(ctx) {
 		block,
 		id: create_default_slot_23.name,
 		type: "slot",
-		source: "(97:24) <Cell>",
+		source: "(95:24) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (99:28) <Icon id="{table.id}" class="material-icons"                                   on:click="{(e)=> {$dataTable = window._.filter($dataTable, (tb)=>tb.id != e.target.id)}}">
+// (97:28) <Icon id="{table.id}" class="material-icons"                                   on:click="{(e)=> {$dataTable = window._.filter($dataTable, (tb)=>tb.id != e.target.id)}}">
 function create_default_slot_22(ctx) {
 	let t;
 
@@ -43112,14 +43024,14 @@ function create_default_slot_22(ctx) {
 		block,
 		id: create_default_slot_22.name,
 		type: "slot",
-		source: "(99:28) <Icon id=\\\"{table.id}\\\" class=\\\"material-icons\\\"                                   on:click=\\\"{(e)=> {$dataTable = window._.filter($dataTable, (tb)=>tb.id != e.target.id)}}\\\">",
+		source: "(97:28) <Icon id=\\\"{table.id}\\\" class=\\\"material-icons\\\"                                   on:click=\\\"{(e)=> {$dataTable = window._.filter($dataTable, (tb)=>tb.id != e.target.id)}}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (98:24) <Cell style="background: #f14668; cursor: pointer;">
+// (96:24) <Cell style="background: #f14668; cursor: pointer;">
 function create_default_slot_21(ctx) {
 	let icon;
 	let current;
@@ -43172,14 +43084,14 @@ function create_default_slot_21(ctx) {
 		block,
 		id: create_default_slot_21.name,
 		type: "slot",
-		source: "(98:24) <Cell style=\\\"background: #f14668; cursor: pointer;\\\">",
+		source: "(96:24) <Cell style=\\\"background: #f14668; cursor: pointer;\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (91:20) <Row style="background-color: {table.color};" class={table.className}>
+// (89:20) <Row style="background-color: {table.color};" class={table.className}>
 function create_default_slot_20(ctx) {
 	let cell0;
 	let t0;
@@ -43383,14 +43295,14 @@ function create_default_slot_20(ctx) {
 		block,
 		id: create_default_slot_20.name,
 		type: "slot",
-		source: "(91:20) <Row style=\\\"background-color: {table.color};\\\" class={table.className}>",
+		source: "(89:20) <Row style=\\\"background-color: {table.color};\\\" class={table.className}>",
 		ctx
 	});
 
 	return block;
 }
 
-// (90:16) {#each $dataTable as table, index (table.id)}
+// (88:16) {#each $dataTable as table, index (table.id)}
 function create_each_block_2$1(key_1, ctx) {
 	let first;
 	let row;
@@ -43449,14 +43361,14 @@ function create_each_block_2$1(key_1, ctx) {
 		block,
 		id: create_each_block_2$1.name,
 		type: "each",
-		source: "(90:16) {#each $dataTable as table, index (table.id)}",
+		source: "(88:16) {#each $dataTable as table, index (table.id)}",
 		ctx
 	});
 
 	return block;
 }
 
-// (76:24) <Cell style="width: 2em;">
+// (74:24) <Cell style="width: 2em;">
 function create_default_slot_19(ctx) {
 	let t_value = /*index*/ ctx[18] + "";
 	let t;
@@ -43480,14 +43392,14 @@ function create_default_slot_19(ctx) {
 		block,
 		id: create_default_slot_19.name,
 		type: "slot",
-		source: "(76:24) <Cell style=\\\"width: 2em;\\\">",
+		source: "(74:24) <Cell style=\\\"width: 2em;\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (77:24) <Cell>
+// (75:24) <Cell>
 function create_default_slot_18(ctx) {
 	let t_value = /*table*/ ctx[16].name + "";
 	let t;
@@ -43511,14 +43423,14 @@ function create_default_slot_18(ctx) {
 		block,
 		id: create_default_slot_18.name,
 		type: "slot",
-		source: "(77:24) <Cell>",
+		source: "(75:24) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (78:24) <Cell>
+// (76:24) <Cell>
 function create_default_slot_17(ctx) {
 	let t_value = /*table*/ ctx[16].freq + "";
 	let t;
@@ -43542,14 +43454,14 @@ function create_default_slot_17(ctx) {
 		block,
 		id: create_default_slot_17.name,
 		type: "slot",
-		source: "(78:24) <Cell>",
+		source: "(76:24) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (79:24) <Cell>
+// (77:24) <Cell>
 function create_default_slot_16(ctx) {
 	let t_value = /*table*/ ctx[16].amp + "";
 	let t;
@@ -43573,14 +43485,14 @@ function create_default_slot_16(ctx) {
 		block,
 		id: create_default_slot_16.name,
 		type: "slot",
-		source: "(79:24) <Cell>",
+		source: "(77:24) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (80:24) <Cell>
+// (78:24) <Cell>
 function create_default_slot_15(ctx) {
 	let t_value = /*table*/ ctx[16].fwhm + "";
 	let t;
@@ -43604,14 +43516,14 @@ function create_default_slot_15(ctx) {
 		block,
 		id: create_default_slot_15.name,
 		type: "slot",
-		source: "(80:24) <Cell>",
+		source: "(78:24) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (81:24) <Cell>
+// (79:24) <Cell>
 function create_default_slot_14(ctx) {
 	let t_value = /*table*/ ctx[16].sig + "";
 	let t;
@@ -43635,14 +43547,14 @@ function create_default_slot_14(ctx) {
 		block,
 		id: create_default_slot_14.name,
 		type: "slot",
-		source: "(81:24) <Cell>",
+		source: "(79:24) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (83:28) <Icon id="{table.id}" class="material-icons"                                   on:click="{(e)=> {$dataTable_avg = window._.filter($dataTable_avg, (tb)=>tb.id != e.target.id)}}">
+// (81:28) <Icon id="{table.id}" class="material-icons"                                   on:click="{(e)=> {$dataTable_avg = window._.filter($dataTable_avg, (tb)=>tb.id != e.target.id)}}">
 function create_default_slot_13(ctx) {
 	let t;
 
@@ -43662,14 +43574,14 @@ function create_default_slot_13(ctx) {
 		block,
 		id: create_default_slot_13.name,
 		type: "slot",
-		source: "(83:28) <Icon id=\\\"{table.id}\\\" class=\\\"material-icons\\\"                                   on:click=\\\"{(e)=> {$dataTable_avg = window._.filter($dataTable_avg, (tb)=>tb.id != e.target.id)}}\\\">",
+		source: "(81:28) <Icon id=\\\"{table.id}\\\" class=\\\"material-icons\\\"                                   on:click=\\\"{(e)=> {$dataTable_avg = window._.filter($dataTable_avg, (tb)=>tb.id != e.target.id)}}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (82:24) <Cell style="background: #f14668; cursor: pointer; width: 2em;">
+// (80:24) <Cell style="background: #f14668; cursor: pointer; width: 2em;">
 function create_default_slot_12(ctx) {
 	let icon;
 	let current;
@@ -43722,14 +43634,14 @@ function create_default_slot_12(ctx) {
 		block,
 		id: create_default_slot_12.name,
 		type: "slot",
-		source: "(82:24) <Cell style=\\\"background: #f14668; cursor: pointer; width: 2em;\\\">",
+		source: "(80:24) <Cell style=\\\"background: #f14668; cursor: pointer; width: 2em;\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (75:20) <Row>
+// (73:20) <Row>
 function create_default_slot_11(ctx) {
 	let cell0;
 	let t0;
@@ -43933,14 +43845,14 @@ function create_default_slot_11(ctx) {
 		block,
 		id: create_default_slot_11.name,
 		type: "slot",
-		source: "(75:20) <Row>",
+		source: "(73:20) <Row>",
 		ctx
 	});
 
 	return block;
 }
 
-// (74:16) {#each $dataTable_avg as table, index (table.id)}
+// (72:16) {#each $dataTable_avg as table, index (table.id)}
 function create_each_block_1$1(key_1, ctx) {
 	let first;
 	let row;
@@ -43995,14 +43907,14 @@ function create_each_block_1$1(key_1, ctx) {
 		block,
 		id: create_each_block_1$1.name,
 		type: "each",
-		source: "(74:16) {#each $dataTable_avg as table, index (table.id)}",
+		source: "(72:16) {#each $dataTable_avg as table, index (table.id)}",
 		ctx
 	});
 
 	return block;
 }
 
-// (61:24) <Cell style="width: 2em;">
+// (59:24) <Cell style="width: 2em;">
 function create_default_slot_10(ctx) {
 	let t_value = /*index*/ ctx[18] + "";
 	let t;
@@ -44026,14 +43938,14 @@ function create_default_slot_10(ctx) {
 		block,
 		id: create_default_slot_10.name,
 		type: "slot",
-		source: "(61:24) <Cell style=\\\"width: 2em;\\\">",
+		source: "(59:24) <Cell style=\\\"width: 2em;\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (62:24) <Cell>
+// (60:24) <Cell>
 function create_default_slot_9(ctx) {
 	let t0;
 	let t1_value = /*index*/ ctx[18] + "";
@@ -44061,14 +43973,14 @@ function create_default_slot_9(ctx) {
 		block,
 		id: create_default_slot_9.name,
 		type: "slot",
-		source: "(62:24) <Cell>",
+		source: "(60:24) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (63:24) <Cell>
+// (61:24) <Cell>
 function create_default_slot_8(ctx) {
 	let t_value = /*table*/ ctx[16].freq + "";
 	let t;
@@ -44092,14 +44004,14 @@ function create_default_slot_8(ctx) {
 		block,
 		id: create_default_slot_8.name,
 		type: "slot",
-		source: "(63:24) <Cell>",
+		source: "(61:24) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (64:24) <Cell>
+// (62:24) <Cell>
 function create_default_slot_7$1(ctx) {
 	let t_value = /*table*/ ctx[16].amp + "";
 	let t;
@@ -44123,14 +44035,14 @@ function create_default_slot_7$1(ctx) {
 		block,
 		id: create_default_slot_7$1.name,
 		type: "slot",
-		source: "(64:24) <Cell>",
+		source: "(62:24) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (65:24) <Cell>
+// (63:24) <Cell>
 function create_default_slot_6$2(ctx) {
 	let t_value = /*table*/ ctx[16].fwhm + "";
 	let t;
@@ -44154,14 +44066,14 @@ function create_default_slot_6$2(ctx) {
 		block,
 		id: create_default_slot_6$2.name,
 		type: "slot",
-		source: "(65:24) <Cell>",
+		source: "(63:24) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (66:24) <Cell>
+// (64:24) <Cell>
 function create_default_slot_5$3(ctx) {
 	let t_value = /*table*/ ctx[16].sig + "";
 	let t;
@@ -44185,14 +44097,14 @@ function create_default_slot_5$3(ctx) {
 		block,
 		id: create_default_slot_5$3.name,
 		type: "slot",
-		source: "(66:24) <Cell>",
+		source: "(64:24) <Cell>",
 		ctx
 	});
 
 	return block;
 }
 
-// (68:28) <Icon id="{table.id}" class="material-icons"                                   on:click="{(e)=> {dataTable_weighted_avg = window._.filter(dataTable_weighted_avg, (tb)=>tb.id != e.target.id)}}">
+// (66:28) <Icon id="{table.id}" class="material-icons"                                   on:click="{(e)=> {dataTable_weighted_avg = window._.filter(dataTable_weighted_avg, (tb)=>tb.id != e.target.id)}}">
 function create_default_slot_4$5(ctx) {
 	let t;
 
@@ -44212,14 +44124,14 @@ function create_default_slot_4$5(ctx) {
 		block,
 		id: create_default_slot_4$5.name,
 		type: "slot",
-		source: "(68:28) <Icon id=\\\"{table.id}\\\" class=\\\"material-icons\\\"                                   on:click=\\\"{(e)=> {dataTable_weighted_avg = window._.filter(dataTable_weighted_avg, (tb)=>tb.id != e.target.id)}}\\\">",
+		source: "(66:28) <Icon id=\\\"{table.id}\\\" class=\\\"material-icons\\\"                                   on:click=\\\"{(e)=> {dataTable_weighted_avg = window._.filter(dataTable_weighted_avg, (tb)=>tb.id != e.target.id)}}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (67:24) <Cell style="background: #f14668; cursor: pointer;">
+// (65:24) <Cell style="background: #f14668; cursor: pointer;">
 function create_default_slot_3$6(ctx) {
 	let icon;
 	let current;
@@ -44272,14 +44184,14 @@ function create_default_slot_3$6(ctx) {
 		block,
 		id: create_default_slot_3$6.name,
 		type: "slot",
-		source: "(67:24) <Cell style=\\\"background: #f14668; cursor: pointer;\\\">",
+		source: "(65:24) <Cell style=\\\"background: #f14668; cursor: pointer;\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (60:20) <Row>
+// (58:20) <Row>
 function create_default_slot_2$9(ctx) {
 	let cell0;
 	let t0;
@@ -44483,14 +44395,14 @@ function create_default_slot_2$9(ctx) {
 		block,
 		id: create_default_slot_2$9.name,
 		type: "slot",
-		source: "(60:20) <Row>",
+		source: "(58:20) <Row>",
 		ctx
 	});
 
 	return block;
 }
 
-// (59:16) {#each dataTable_weighted_avg as table, index (table.id)}
+// (57:16) {#each dataTable_weighted_avg as table, index (table.id)}
 function create_each_block$5(key_1, ctx) {
 	let first;
 	let row;
@@ -44545,14 +44457,14 @@ function create_each_block$5(key_1, ctx) {
 		block,
 		id: create_each_block$5.name,
 		type: "each",
-		source: "(59:16) {#each dataTable_weighted_avg as table, index (table.id)}",
+		source: "(57:16) {#each dataTable_weighted_avg as table, index (table.id)}",
 		ctx
 	});
 
 	return block;
 }
 
-// (57:8) <Body>
+// (55:8) <Body>
 function create_default_slot_1$a(ctx) {
 	let current_block_type_index;
 	let if_block;
@@ -44624,14 +44536,14 @@ function create_default_slot_1$a(ctx) {
 		block,
 		id: create_default_slot_1$a.name,
 		type: "slot",
-		source: "(57:8) <Body>",
+		source: "(55:8) <Body>",
 		ctx
 	});
 
 	return block;
 }
 
-// (46:4) <DataTable table$aria-label="felix-tableAriaLabel" table$id="felixTable" id="felixTableContainer" class="tableContainer">
+// (44:4) <DataTable table$aria-label="felix-tableAriaLabel" table$id="felixTable" id="felixTableContainer" class="tableContainer">
 function create_default_slot$k(ctx) {
 	let head;
 	let t;
@@ -44704,7 +44616,7 @@ function create_default_slot$k(ctx) {
 		block,
 		id: create_default_slot$k.name,
 		type: "slot",
-		source: "(46:4) <DataTable table$aria-label=\\\"felix-tableAriaLabel\\\" table$id=\\\"felixTable\\\" id=\\\"felixTableContainer\\\" class=\\\"tableContainer\\\">",
+		source: "(44:4) <DataTable table$aria-label=\\\"felix-tableAriaLabel\\\" table$id=\\\"felixTable\\\" id=\\\"felixTableContainer\\\" class=\\\"tableContainer\\\">",
 		ctx
 	});
 
@@ -44813,13 +44725,13 @@ function create_fragment$10(ctx) {
 			div2 = element("div");
 			create_component(datatable.$$.fragment);
 			attr_dev(div0, "class", "title notification is-link svelte-1ts3clg");
-			add_location(div0, file$W, 35, 4, 1261);
+			add_location(div0, file$W, 33, 4, 1199);
 			attr_dev(button, "class", "button is-danger is-pulled-right");
-			add_location(button, file$W, 41, 4, 1601);
+			add_location(button, file$W, 39, 4, 1539);
 			attr_dev(div1, "class", "content");
-			add_location(div1, file$W, 34, 0, 1234);
+			add_location(div1, file$W, 32, 0, 1172);
 			attr_dev(div2, "class", "dataTable svelte-1ts3clg");
-			add_location(div2, file$W, 44, 1, 1707);
+			add_location(div2, file$W, 42, 1, 1645);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -44943,7 +44855,7 @@ function instance$10($$self, $$props, $$invalidate) {
 		set_store_value(dataTable, $dataTable = set_store_value(dataTable_avg, $dataTable_avg = []));
 		set_store_value(avgfittedLineCount, $avgfittedLineCount = 0);
 		set_store_value(expfittedLinesCollectedData, $expfittedLinesCollectedData = []);
-		createToast$2("Table cleared", "warning");
+		window.createToast("Table cleared", "warning");
 	}
 
 	const writable_props = ["keepTable"];
@@ -44997,7 +44909,6 @@ function instance$10($$self, $$props, $$invalidate) {
 		Row,
 		Cell,
 		Icon,
-		createToast: createToast$2,
 		CustomCheckbox,
 		keepTable,
 		dataTableHead,
@@ -46056,6 +45967,106 @@ class FelixPlotting extends SvelteComponentDev {
 	}
 }
 
+function savefile({file={}, name=""}={}) {
+
+    let filename = path.join(get_store_value(felixopoLocation), `${name}.json`);
+    fs.writeFile(filename, JSON.stringify({file}), 'utf8', function (err) {
+
+        if (err) {
+            console.log("An error occured while writing to File.");
+            return window.createToast("An error occured while writing to File.", "danger")
+        }
+        return window.createToast(`${name}.json has been saved.`, "success");
+    });
+}
+
+function loadfile({name=""}={}) {
+    let filename = path.join(get_store_value(felixopoLocation), `${name}.json`);
+    if(!fs.existsSync(filename)) {return window.createToast(`${name}.json doesn't exist in DATA dir.`, "danger")}
+
+    let loadedfile = JSON.parse(fs.readFileSync(filename)).file;
+
+    window.createToast(`${name}.json has been loaded.`, "success");
+    return loadedfile
+}
+
+function plotlySelection({graphDiv="avgplot", mode="felix"}={}) {
+
+    const avgplot = document.getElementById(graphDiv);
+
+    console.log("Creating plotly selection events for, ", avgplot);
+
+    avgplot.on("plotly_selected", (data) => {
+
+       try {
+            console.log(data);
+            mode === "felix" ? opoMode.set(false) : opoMode.set(true);
+
+
+            const { range } = data;
+
+            felixIndex.set(range.x);
+
+
+            const output_name = data.points[0].data.name.split(".")[0];
+            felixOutputName.set(output_name);
+            console.log(`Selected file: ${get_store_value(felixOutputName)}`);
+
+        } catch (error) { console.log("No data available to fit"); }
+
+    });
+}
+
+
+function plotlyClick({graphDiv="avgplot", mode="felix"}={}){
+
+    const avgplot = document.getElementById(graphDiv);
+    console.log("Creating plotly click events for, ", avgplot);
+
+    avgplot.on('plotly_click', (data)=>{
+    
+        console.log("Graph clicked: ", data);
+
+        if (data.event.ctrlKey) {
+
+            console.log("Data point length: ", data.points.length);
+
+
+            for(let i=0; i<data.points.length; i++){
+
+                console.log("Running cycle: ", i);
+
+                let d = data.points[i];
+
+                let name = d.data.name;
+                mode === "felix" ? opoMode.set(false) : opoMode.set(true);
+
+                let output_name = get_store_value(felixOutputName);
+
+                if (name.includes(output_name)){
+
+                    console.log("Filename: ", output_name);
+
+                    let line_color = d.data.line.color;
+                    console.log(name);
+                    console.log(d, d.x, d.y);
+
+                    let [freq, amp] = [parseFloat(d.x.toFixed(2)), parseFloat(d.y.toFixed(2))];
+                    const annotation = { text: `(${freq}, ${amp})`, x: freq, y: amp, font:{color:line_color}, arrowcolor:line_color };
+                    felixPlotAnnotations.update(annotate => _.uniqBy([...annotate, annotation], 'text'));
+                    Plotly.relayout(graphDiv,{annotations: get_store_value(felixPlotAnnotations)});
+
+                    felixPeakTable.update(table => [...table, {freq, amp, sig:get_store_value(Ngauss_sigma), id:getID()}]);
+                    felixPeakTable.update(table => _.uniqBy(table, 'freq'));
+                }
+            }
+
+            console.log("Running cycle ended");
+        } 
+    });
+
+}
+
 function felix_func({normMethod, dataFromPython, delta}={}){
     opoMode.set(false), felixOutputName.set("averaged"), felixIndex.set([]);
     
@@ -46278,18 +46289,18 @@ function create_fragment$12(ctx) {
 			button4.textContent = "OPO";
 			attr_dev(button0, "class", "button is-link");
 			attr_dev(button0, "id", "create_baseline_btn");
-			add_location(button0, file$Y, 96, 4, 3864);
+			add_location(button0, file$Y, 94, 4, 3774);
 			attr_dev(button1, "class", "button is-link");
 			attr_dev(button1, "id", "felix_plotting_btn");
-			add_location(button1, file$Y, 97, 4, 4006);
+			add_location(button1, file$Y, 95, 4, 3916);
 			attr_dev(button2, "class", "button is-link");
-			add_location(button2, file$Y, 99, 4, 4251);
+			add_location(button2, file$Y, 97, 4, 4161);
 			attr_dev(button3, "class", "button is-link");
-			add_location(button3, file$Y, 101, 4, 4435);
+			add_location(button3, file$Y, 99, 4, 4345);
 			attr_dev(button4, "class", "button is-link");
-			add_location(button4, file$Y, 102, 4, 4533);
+			add_location(button4, file$Y, 100, 4, 4443);
 			attr_dev(div, "class", "align");
-			add_location(div, file$Y, 94, 0, 3837);
+			add_location(div, file$Y, 92, 0, 3747);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -46537,13 +46548,13 @@ function instance$12($$self, $$props, $$invalidate) {
 			case "felix":
 				removeExtraFile();
 				($$invalidate(8, graphPlotted = false), set_store_value(felixOutputName, $felixOutputName = "averaged"), set_store_value(felixPlotAnnotations, $felixPlotAnnotations = []), set_store_value(felixPeakTable, $felixPeakTable = []));
-				if (felixfiles.length < 1) return createToast$3("No files selected", "danger");
+				if (felixfiles.length < 1) return window.createToast("No files selected", "danger");
 				(pyfile = "normline.py", args = [...felixfiles, delta]);
 				computePy_func({ e, pyfile, args }).then(dataFromPython => {
 					(set_store_value(expfittedLines, $expfittedLines = []), set_store_value(felixPlotAnnotations, $felixPlotAnnotations = []), set_store_value(expfittedLinesCollectedData, $expfittedLinesCollectedData = []), set_store_value(fittedTraceCount, $fittedTraceCount = 0));
 					$$invalidate(9, show_theoryplot = false);
 					felix_func({ normMethod, dataFromPython, delta });
-					createToast$3("Graph Plotted", "success");
+					window.createToast("Graph Plotted", "success");
 					$$invalidate(8, graphPlotted = true);
 				}).catch(err => {
 					$$invalidate(7, preModal.modalContent = err, preModal);
@@ -46552,9 +46563,9 @@ function instance$12($$self, $$props, $$invalidate) {
 				break;
 			case "baseline":
 				if ($opoMode) {
-					if (opofiles.length < 1) return createToast$3("No OPO files selected", "danger");
+					if (opofiles.length < 1) return window.createToast("No OPO files selected", "danger");
 				} else {
-					if (felixfiles.length < 1) return createToast$3("No FELIX files selected", "danger");
+					if (felixfiles.length < 1) return window.createToast("No FELIX files selected", "danger");
 				}
 				(pyfile = "baseline.py", args = $opoMode ? opofiles : felixfiles);
 				computePy_func({ pyfile, args, general: true, openShell }).catch(err => {
@@ -46638,9 +46649,7 @@ function instance$12($$self, $$props, $$invalidate) {
 		Textfield,
 		CustomIconSwitch,
 		FelixPlotting,
-		computePy_func,
 		felix_func,
-		createToast: createToast$3,
 		felixPlotCheckboxes,
 		preModal,
 		felixfiles,
@@ -47256,7 +47265,7 @@ function create_if_block$k(ctx) {
 			footer_1 = element("footer");
 			if (footer_slot) footer_slot.c();
 			attr_dev(footer_1, "class", "quickview-footer svelte-1g2nmfc");
-			add_location(footer_1, file$Z, 41, 4, 1157);
+			add_location(footer_1, file$Z, 41, 4, 1151);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, footer_1, anchor);
@@ -47340,23 +47349,23 @@ function create_fragment$14(ctx) {
 			t5 = space();
 			if (if_block) if_block.c();
 			attr_dev(button, "class", "button is-link");
-			add_location(button, file$Z, 28, 4, 754);
+			add_location(button, file$Z, 28, 4, 748);
 			attr_dev(div0, "class", "subtitle");
 			set_style(div0, "margin", "0");
-			add_location(div0, file$Z, 29, 4, 831);
+			add_location(div0, file$Z, 29, 4, 825);
 			attr_dev(span, "class", "delete is-pulled-right svelte-1g2nmfc");
 			attr_dev(span, "data-dismiss", "quickview");
-			add_location(span, file$Z, 30, 4, 890);
+			add_location(span, file$Z, 30, 4, 884);
 			attr_dev(header, "class", "quickview-header");
-			add_location(header, file$Z, 26, 2, 713);
+			add_location(header, file$Z, 26, 2, 707);
 			attr_dev(div1, "class", "quickview-block");
-			add_location(div1, file$Z, 35, 4, 1052);
+			add_location(div1, file$Z, 35, 4, 1046);
 			attr_dev(div2, "class", "quickview-body");
 			attr_dev(div2, "style", /*style*/ ctx[1]);
-			add_location(div2, file$Z, 34, 2, 1010);
+			add_location(div2, file$Z, 34, 2, 1004);
 			attr_dev(div3, "class", "quickview svelte-1g2nmfc");
 			toggle_class(div3, "is-active", /*active*/ ctx[0]);
-			add_location(div3, file$Z, 24, 0, 643);
+			add_location(div3, file$Z, 24, 0, 637);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -47482,7 +47491,7 @@ function instance$14($$self, $$props, $$invalidate) {
 		browse({ dir: true }).then(result => {
 			if (!result.canceled) {
 				$$invalidate(5, currentLocation = result.filePaths[0]);
-				createToast$2("Location updated");
+				window.createToast("Location updated");
 			}
 		});
 	}
@@ -47508,7 +47517,6 @@ function instance$14($$self, $$props, $$invalidate) {
 
 	$$self.$capture_state = () => ({
 		browse,
-		createToast: createToast$2,
 		fade,
 		active,
 		style,
@@ -48026,7 +48034,7 @@ function opofile_func({dataFromPython}={}) {
 /* src\Pages\normline\widgets\preprocessing\OPORow.svelte generated by Svelte v3.24.0 */
 const file$$ = "src\\Pages\\normline\\widgets\\preprocessing\\OPORow.svelte";
 
-// (50:0) {#if $opoMode}
+// (48:0) {#if $opoMode}
 function create_if_block$l(ctx) {
 	let div;
 	let customselect;
@@ -48116,11 +48124,11 @@ function create_if_block$l(ctx) {
 			button1 = element("button");
 			button1.textContent = "Replot";
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$$, 58, 8, 2384);
+			add_location(button0, file$$, 56, 8, 2280);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$$, 60, 8, 2505);
+			add_location(button1, file$$, 58, 8, 2401);
 			attr_dev(div, "class", "align");
-			add_location(div, file$$, 51, 4, 1980);
+			add_location(div, file$$, 49, 4, 1876);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -48210,7 +48218,7 @@ function create_if_block$l(ctx) {
 		block,
 		id: create_if_block$l.name,
 		type: "if",
-		source: "(50:0) {#if $opoMode}",
+		source: "(48:0) {#if $opoMode}",
 		ctx
 	});
 
@@ -48377,13 +48385,13 @@ function instance$16($$self, $$props, $$invalidate) {
 	function plotData({ e = null, tkplot = "run" } = {}) {
 		let pyfile = "oposcan.py", args;
 		removeExtraFile();
-		if (opofiles.length < 1) return createToast$3("No files selected", "danger");
+		if (opofiles.length < 1) return window.createToast("No files selected", "danger");
 		(set_store_value(opoMode, $opoMode = true), set_store_value(felixPlotAnnotations, $felixPlotAnnotations = []));
 		args = [...opofiles, tkplot, deltaOPO, calibValue, calibFile];
 
 		computePy_func({ e, pyfile, args }).then(dataFromPython => {
 			opofile_func({ dataFromPython });
-			createToast$3("Graph Plotted", "success");
+			window.createToast("Graph Plotted", "success");
 			($$invalidate(11, graphPlotted = true), set_store_value(opoMode, $opoMode = true));
 			localStorage["opoLocation"] = OPOLocation;
 			$$invalidate(2, showOPOFiles = false);
@@ -48465,9 +48473,7 @@ function instance$16($$self, $$props, $$invalidate) {
 		CustomSelect,
 		QuickBrowser,
 		fade,
-		computePy_func,
 		opofile_func,
-		createToast: createToast$3,
 		OPOLocation,
 		opofiles,
 		OPOfilesChecked,
@@ -48657,7 +48663,7 @@ function theory_func({dataFromPython, normMethod}={}){
 /* src\Pages\normline\widgets\preprocessing\TheoryRow.svelte generated by Svelte v3.24.0 */
 const file$10 = "src\\Pages\\normline\\widgets\\preprocessing\\TheoryRow.svelte";
 
-// (38:0) {#if $toggleRow}
+// (35:0) {#if $toggleRow}
 function create_if_block$m(ctx) {
 	let div;
 	let button0;
@@ -48723,11 +48729,11 @@ function create_if_block$m(ctx) {
 			button1 = element("button");
 			button1.textContent = "Replot";
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$10, 41, 8, 1693);
+			add_location(button0, file$10, 38, 8, 1583);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$10, 44, 8, 2043);
+			add_location(button1, file$10, 41, 8, 1933);
 			attr_dev(div, "class", "align");
-			add_location(div, file$10, 39, 4, 1646);
+			add_location(div, file$10, 36, 4, 1536);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -48802,7 +48808,7 @@ function create_if_block$m(ctx) {
 		block,
 		id: create_if_block$m.name,
 		type: "if",
-		source: "(38:0) {#if $toggleRow}",
+		source: "(35:0) {#if $toggleRow}",
 		ctx
 	});
 
@@ -48964,12 +48970,12 @@ function instance$17($$self, $$props, $$invalidate) {
 
 	function plotData({ e = null, tkplot = "run" } = {}) {
 		let pyfile = "theory.py", args;
-		if (theoryfiles.length < 1) return createToast$3("No files selected", "danger");
+		if (theoryfiles.length < 1) return window.createToast("No files selected", "danger");
 		args = [...theoryfiles, normMethod, sigma, scale, currentLocation, tkplot];
 
 		computePy_func({ e, pyfile, args }).then(dataFromPython => {
 			theory_func({ dataFromPython, normMethod });
-			createToast$3("Graph Plotted", "success");
+			window.createToast("Graph Plotted", "success");
 			($$invalidate(7, show_theoryplot = true), $$invalidate(3, showTheoryFiles = false));
 		}).catch(err => {
 			$$invalidate(8, preModal.modalContent = err, preModal);
@@ -49041,9 +49047,7 @@ function instance$17($$self, $$props, $$invalidate) {
 		Textfield,
 		QuickBrowser,
 		fade,
-		computePy_func,
 		theory_func,
-		createToast: createToast$3,
 		theoryLocation,
 		currentLocation,
 		show_theoryplot,
@@ -49841,6 +49845,7 @@ function get_details_func({dataFromPython}={}) {
 }
 
 /* src\Pages\normline\widgets\preprocessing\GetFileInfoTable.svelte generated by Svelte v3.24.0 */
+
 const file$12 = "src\\Pages\\normline\\widgets\\preprocessing\\GetFileInfoTable.svelte";
 
 // (47:4) {#if toggleFileDetailsTable}
@@ -49973,15 +49978,15 @@ function create_fragment$19(ctx) {
 			t6 = space();
 			if (if_block) if_block.c();
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$12, 37, 8, 1306);
+			add_location(button0, file$12, 37, 8, 1316);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$12, 40, 8, 1519);
+			add_location(button1, file$12, 40, 8, 1529);
 			attr_dev(button2, "class", "button is-link");
-			add_location(button2, file$12, 41, 8, 1640);
+			add_location(button2, file$12, 41, 8, 1650);
 			set_style(div0, "display", "flex");
-			add_location(div0, file$12, 35, 4, 1267);
+			add_location(div0, file$12, 35, 4, 1277);
 			attr_dev(div1, "class", "align");
-			add_location(div1, file$12, 34, 0, 1241);
+			add_location(div1, file$12, 34, 0, 1251);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -50087,7 +50092,7 @@ function instance$19($$self, $$props, $$invalidate) {
 
 	function plotData({ e = null } = {}) {
 		let pyfile = "getfile_details.py", args;
-		if (felixfiles.length < 1) return createToast("No files selected", "danger");
+		if (felixfiles.length < 1) return window.createToast("No files selected", "danger");
 
 		args = [
 			JSON.stringify({
@@ -50144,7 +50149,6 @@ function instance$19($$self, $$props, $$invalidate) {
 		Table,
 		savefile,
 		loadfile,
-		computePy_func,
 		get_details_func,
 		felixfiles,
 		normMethod,
@@ -51858,7 +51862,7 @@ function get_err_func({dataFromPython}={}) {
 const { console: console_1$8 } = globals;
 const file$16 = "src\\Pages\\normline\\widgets\\postprocessing\\ExecuteFunctionContents.svelte";
 
-// (209:0) {#if toggleFindPeaksRow}
+// (206:0) {#if toggleFindPeaksRow}
 function create_if_block$p(ctx) {
 	let div2;
 	let div0;
@@ -52045,22 +52049,22 @@ function create_if_block$p(ctx) {
 			button4 = element("button");
 			button4.textContent = "Clear";
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$16, 219, 12, 9864);
+			add_location(button0, file$16, 216, 12, 9835);
 			attr_dev(div0, "class", "align");
 			set_style(div0, "margin", "1em 0");
-			add_location(div0, file$16, 211, 8, 9296);
+			add_location(div0, file$16, 208, 8, 9267);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$16, 224, 12, 10137);
+			add_location(button1, file$16, 221, 12, 10108);
 			attr_dev(button2, "class", "button is-link");
-			add_location(button2, file$16, 226, 12, 10400);
+			add_location(button2, file$16, 223, 12, 10371);
 			attr_dev(button3, "class", "button is-link");
-			add_location(button3, file$16, 227, 12, 10537);
+			add_location(button3, file$16, 224, 12, 10508);
 			attr_dev(button4, "class", "button is-danger");
-			add_location(button4, file$16, 229, 12, 10630);
+			add_location(button4, file$16, 226, 12, 10601);
 			attr_dev(div1, "class", "align");
-			add_location(div1, file$16, 222, 8, 10006);
+			add_location(div1, file$16, 219, 8, 9977);
 			attr_dev(div2, "class", "align");
-			add_location(div2, file$16, 210, 4, 9251);
+			add_location(div2, file$16, 207, 4, 9222);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div2, anchor);
@@ -52214,14 +52218,14 @@ function create_if_block$p(ctx) {
 		block,
 		id: create_if_block$p.name,
 		type: "if",
-		source: "(209:0) {#if toggleFindPeaksRow}",
+		source: "(206:0) {#if toggleFindPeaksRow}",
 		ctx
 	});
 
 	return block;
 }
 
-// (224:12) <Icon class="material-icons" on:click="{()=> modalActivate = true}">
+// (221:12) <Icon class="material-icons" on:click="{()=> modalActivate = true}">
 function create_default_slot$r(ctx) {
 	let t;
 
@@ -52241,7 +52245,7 @@ function create_default_slot$r(ctx) {
 		block,
 		id: create_default_slot$r.name,
 		type: "slot",
-		source: "(224:12) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=> modalActivate = true}\\\">",
+		source: "(221:12) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=> modalActivate = true}\\\">",
 		ctx
 	});
 
@@ -52315,19 +52319,19 @@ function create_fragment$1d(ctx) {
 			if (if_block) if_block.c();
 			if_block_anchor = empty();
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$16, 197, 4, 8520);
+			add_location(button0, file$16, 194, 4, 8484);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$16, 198, 4, 8628);
+			add_location(button1, file$16, 195, 4, 8592);
 			attr_dev(button2, "class", "button is-warning");
-			add_location(button2, file$16, 199, 4, 8743);
+			add_location(button2, file$16, 196, 4, 8707);
 			attr_dev(button3, "class", "button is-danger");
-			add_location(button3, file$16, 200, 4, 8827);
+			add_location(button3, file$16, 197, 4, 8791);
 			attr_dev(button4, "class", "button is-link");
-			add_location(button4, file$16, 201, 4, 8908);
+			add_location(button4, file$16, 198, 4, 8872);
 			attr_dev(button5, "class", "button is-warning");
-			add_location(button5, file$16, 202, 4, 9021);
+			add_location(button5, file$16, 199, 4, 8985);
 			attr_dev(div, "class", "align");
-			add_location(div, file$16, 196, 0, 8495);
+			add_location(div, file$16, 193, 0, 8459);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -52491,7 +52495,7 @@ function instance$1d($$self, $$props, $$invalidate) {
 
 	const clearAllPeak = () => {
 		if ($fittedTraceCount === 0) {
-			return createToast$3("No fitted lines found", "danger");
+			return window.createToast("No fitted lines found", "danger");
 		}
 
 		console.log("Removing all found peak values");
@@ -52507,7 +52511,7 @@ function instance$1d($$self, $$props, $$invalidate) {
 
 	const clearLastPeak = () => {
 		if ($fittedTraceCount === 0) {
-			return createToast$3("No fitted lines found", "danger");
+			return window.createToast("No fitted lines found", "danger");
 		}
 
 		plotData({
@@ -52565,7 +52569,7 @@ function instance$1d($$self, $$props, $$invalidate) {
 		}));
 
 		if (closeMainModal) {
-			($$invalidate(7, modalActivate = false), createToast$3("Initial guess adjusted for full spectrum fitting"));
+			($$invalidate(7, modalActivate = false), window.createToast("Initial guess adjusted for full spectrum fitting"));
 		}
 
 		Plotly.relayout($graphDiv, { annotations: $felixPlotAnnotations });
@@ -52591,7 +52595,7 @@ function instance$1d($$self, $$props, $$invalidate) {
 		switch (filetype) {
 			case "exp_fit":
 				if ($felixIndex.length < 2) {
-					return createToast$3("Range not found!!. Select a range using Box-select", "danger");
+					return window.createToast("Range not found!!. Select a range using Box-select", "danger");
 				}
 				expfit_args = {
 					addedFileScale,
@@ -52608,7 +52612,7 @@ function instance$1d($$self, $$props, $$invalidate) {
 				(pyfile = "exp_gauss_fit.py", args = [JSON.stringify(expfit_args)]);
 				computePy_func({ e, pyfile, args }).then(dataFromPython => {
 					exp_fit_func({ dataFromPython });
-					createToast$3("Line fitted with gaussian function", "success");
+					window.createToast("Line fitted with gaussian function", "success");
 				}).catch(err => {
 					$$invalidate(18, preModal.modalContent = err, preModal);
 					$$invalidate(18, preModal.open = true, preModal);
@@ -52617,7 +52621,7 @@ function instance$1d($$self, $$props, $$invalidate) {
 			case "NGauss_fit":
 				if (boxSelected_peakfinder) {
 					if ($felixIndex.length < 2) {
-						return createToast$3("Box selection is turned ON so please select a wn. range to fit", "danger");
+						return window.createToast("Box selection is turned ON so please select a wn. range to fit", "danger");
 					}
 
 					$$invalidate(1, NGauss_fit_args.index = $felixIndex, NGauss_fit_args);
@@ -52625,7 +52629,7 @@ function instance$1d($$self, $$props, $$invalidate) {
 					delete NGauss_fit_args.index;
 				}
 				if ($felixPeakTable.length === 0) {
-					return createToast$3("No arguments initialised yet.", "danger");
+					return window.createToast("No arguments initialised yet.", "danger");
 				}
 				$$invalidate(1, NGauss_fit_args.fitNGauss_arguments = {}, NGauss_fit_args);
 				set_store_value(felixPeakTable, $felixPeakTable = _.sortBy($felixPeakTable, [o => o["freq"]]));
@@ -52650,7 +52654,7 @@ function instance$1d($$self, $$props, $$invalidate) {
 				computePy_func({ e, pyfile, args }).then(dataFromPython => {
 					NGauss_fit_func({ dataFromPython });
 					console.log("Line fitted");
-					createToast$3(`Line fitted with ${dataFromPython["fitted_parameter"].length} gaussian function`, "success");
+					window.createToast(`Line fitted with ${dataFromPython["fitted_parameter"].length} gaussian function`, "success");
 				}).catch(err => {
 					$$invalidate(18, preModal.modalContent = err, preModal);
 					$$invalidate(18, preModal.open = true, preModal);
@@ -52659,7 +52663,7 @@ function instance$1d($$self, $$props, $$invalidate) {
 			case "find_peaks":
 				set_store_value(felixPeakTable, $felixPeakTable = []);
 				if ($felixIndex.length < 2 && boxSelected_peakfinder) {
-					return createToast$3("Box selection is turned ON so please select a wn. range to fit", "danger");
+					return window.createToast("Box selection is turned ON so please select a wn. range to fit", "danger");
 				}
 				let selectedIndex = boxSelected_peakfinder ? $felixIndex : [0, 0];
 				find_peaks_args = {
@@ -52678,18 +52682,18 @@ function instance$1d($$self, $$props, $$invalidate) {
 				computePy_func({ e, pyfile, args }).then(dataFromPython => {
 					find_peaks_func({ dataFromPython });
 					console.log(`felixPeakTable:`, $felixPeakTable);
-					createToast$3("Peaks found", "success");
+					window.createToast("Peaks found", "success");
 				}).catch(err => {
 					$$invalidate(18, preModal.modalContent = err, preModal);
 					$$invalidate(18, preModal.open = true, preModal);
 				});
 				break;
 			case "get_err":
-				if ($expfittedLinesCollectedData.length < 2) return createToast$3("Not sufficient lines collected!", "danger");
+				if ($expfittedLinesCollectedData.length < 2) return window.createToast("Not sufficient lines collected!", "danger");
 				(pyfile = "weighted_error.py", args = $expfittedLinesCollectedData);
 				computePy_func({ e, pyfile, args }).then(dataFromPython => {
 					get_err_func({ dataFromPython });
-					createToast$3("Weighted fit. done", "success");
+					window.createToast("Weighted fit. done", "success");
 				}).catch(err => {
 					$$invalidate(18, preModal.modalContent = err, preModal);
 					$$invalidate(18, preModal.open = true, preModal);
@@ -52727,7 +52731,7 @@ function instance$1d($$self, $$props, $$invalidate) {
 
 	const click_handler_3 = () => {
 		set_store_value(expfittedLinesCollectedData, $expfittedLinesCollectedData = []);
-		createToast$3("Line collection restted", "warning");
+		window.createToast("Line collection restted", "warning");
 	};
 
 	function customswitch_selected_binding(value) {
@@ -52774,7 +52778,7 @@ function instance$1d($$self, $$props, $$invalidate) {
 		set_store_value(felixPeakTable, $felixPeakTable = []);
 		$$invalidate(1, NGauss_fit_args = {});
 		window.Plotly.relayout($graphDiv, { annotations: [] });
-		createToast$3("Cleared", "warning");
+		window.createToast("Cleared", "warning");
 	};
 
 	$$self.$set = $$props => {
@@ -52808,12 +52812,10 @@ function instance$1d($$self, $$props, $$invalidate) {
 		savefile,
 		loadfile,
 		fade,
-		computePy_func,
 		NGauss_fit_func,
 		find_peaks_func,
 		exp_fit_func,
 		get_err_func,
-		createToast: createToast$3,
 		addedFileScale,
 		addedFileCol,
 		normMethod,
@@ -53285,10 +53287,10 @@ function create_buttonContainer_slot(ctx) {
 			div1 = element("div");
 			create_component(customradio.$$.fragment);
 			set_style(div1, "display", "flex");
-			add_location(div1, file$17, 167, 8, 7129);
+			add_location(div1, file$17, 167, 8, 7135);
 			attr_dev(div0, "class", "buttonSlot svelte-oa7kgp");
 			attr_dev(div0, "slot", "buttonContainer");
-			add_location(div0, file$17, 162, 4, 6682);
+			add_location(div0, file$17, 162, 4, 6688);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -53561,7 +53563,7 @@ function create_if_block$q(ctx) {
 			t2 = space();
 			create_component(reportlayout.$$.fragment);
 			attr_dev(div, "class", "svelte-oa7kgp");
-			add_location(div, file$17, 190, 12, 8085);
+			add_location(div, file$17, 190, 12, 8091);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -53732,33 +53734,33 @@ function create_plotContainer_slot(ctx) {
 			attr_dev(div1, "class", "animated fadeIn svelte-oa7kgp");
 			attr_dev(div1, "id", "exp-theory-plot");
 			toggle_class(div1, "hide", !/*show_theoryplot*/ ctx[3]);
-			add_location(div1, file$17, 180, 12, 7568);
+			add_location(div1, file$17, 180, 12, 7574);
 			attr_dev(div2, "id", "bplot");
 			attr_dev(div2, "class", "svelte-oa7kgp");
-			add_location(div2, file$17, 181, 12, 7668);
+			add_location(div2, file$17, 181, 12, 7674);
 			attr_dev(div3, "id", "saPlot");
 			attr_dev(div3, "class", "svelte-oa7kgp");
-			add_location(div3, file$17, 182, 12, 7704);
+			add_location(div3, file$17, 182, 12, 7710);
 			attr_dev(div4, "id", "avgplot");
 			attr_dev(div4, "class", "svelte-oa7kgp");
-			add_location(div4, file$17, 183, 12, 7741);
+			add_location(div4, file$17, 183, 12, 7747);
 			attr_dev(div5, "class", "animated fadeIn svelte-oa7kgp");
 			attr_dev(div5, "id", "opoplot");
 			toggle_class(div5, "hide", !/*$opoMode*/ ctx[23]);
-			add_location(div5, file$17, 184, 12, 7779);
+			add_location(div5, file$17, 184, 12, 7785);
 			attr_dev(div6, "class", "animated fadeIn svelte-oa7kgp");
 			attr_dev(div6, "id", "opoSA");
 			toggle_class(div6, "hide", !/*$opoMode*/ ctx[23]);
-			add_location(div6, file$17, 185, 12, 7864);
+			add_location(div6, file$17, 185, 12, 7870);
 			attr_dev(div7, "class", "animated fadeIn svelte-oa7kgp");
 			attr_dev(div7, "id", "opoRelPlot");
 			toggle_class(div7, "hide", !/*$opoMode*/ ctx[23]);
-			add_location(div7, file$17, 186, 12, 7947);
+			add_location(div7, file$17, 186, 12, 7953);
 			attr_dev(div8, "class", "felixPlot svelte-oa7kgp");
-			add_location(div8, file$17, 179, 8, 7531);
+			add_location(div8, file$17, 179, 8, 7537);
 			attr_dev(div0, "class", "plotSlot svelte-oa7kgp");
 			attr_dev(div0, "slot", "plotContainer");
-			add_location(div0, file$17, 173, 4, 7334);
+			add_location(div0, file$17, 173, 4, 7340);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -54227,7 +54229,7 @@ function instance$1e($$self, $$props, $$invalidate) {
 				console.log("The plot is empty");
 			}
 		}
-	} // createToast("Files removed", "warning")
+	} // window.createToast("Files removed", "warning")
 
 	let fullfiles = [];
 
@@ -54467,7 +54469,6 @@ function instance$1e($$self, $$props, $$invalidate) {
 		fittedTraceCount,
 		graphDiv,
 		Layout,
-		createToast: createToast$2,
 		fade,
 		CustomRadio,
 		ReportLayout,
@@ -54615,8 +54616,8 @@ function instance$1e($$self, $$props, $$invalidate) {
 
 		if ($$self.$$.dirty[0] & /*$opoMode*/ 8388608) {
 			 $opoMode
-			? createToast$2("OPO MODE", "warning")
-			: createToast$2("FELIX MODE");
+			? window.createToast("OPO MODE", "warning")
+			: window.createToast("FELIX MODE");
 		}
 
 		if ($$self.$$.dirty[0] & /*$opoMode*/ 8388608) {
@@ -54786,7 +54787,7 @@ class Normline extends SvelteComponentDev {
 const { console: console_1$a } = globals;
 const file$18 = "src\\Pages\\Masspec.svelte";
 
-// (168:4) <div class="masspec_buttonContainer" slot="buttonContainer">
+// (166:4) <div class="masspec_buttonContainer" slot="buttonContainer">
 function create_buttonContainer_slot$1(ctx) {
 	let div0;
 	let div1;
@@ -55004,28 +55005,28 @@ function create_buttonContainer_slot$1(ctx) {
 			t18 = space();
 			create_component(textfield4.$$.fragment);
 			attr_dev(button0, "class", "button is-link svelte-xra88o");
-			add_location(button0, file$18, 170, 12, 6700);
+			add_location(button0, file$18, 168, 12, 6672);
 			attr_dev(button1, "class", "button is-link svelte-xra88o");
-			add_location(button1, file$18, 171, 12, 6800);
+			add_location(button1, file$18, 169, 12, 6772);
 			attr_dev(button2, "class", "button is-link svelte-xra88o");
-			add_location(button2, file$18, 172, 12, 6908);
+			add_location(button2, file$18, 170, 12, 6880);
 			attr_dev(button3, "class", "button is-link svelte-xra88o");
-			add_location(button3, file$18, 173, 12, 7018);
+			add_location(button3, file$18, 171, 12, 6990);
 			attr_dev(div1, "class", "content align buttonRow svelte-xra88o");
-			add_location(div1, file$18, 169, 8, 6649);
+			add_location(div1, file$18, 167, 8, 6621);
 			attr_dev(button4, "class", "button is-link svelte-xra88o");
-			add_location(button4, file$18, 184, 12, 8089);
+			add_location(button4, file$18, 182, 12, 8061);
 			attr_dev(button5, "class", "button is-danger svelte-xra88o");
-			add_location(button5, file$18, 185, 12, 8209);
+			add_location(button5, file$18, 183, 12, 8181);
 			attr_dev(div2, "class", "animated fadeIn hide buttonRow svelte-xra88o");
 			toggle_class(div2, "active", /*toggleRow1*/ ctx[4]);
-			add_location(div2, file$18, 178, 8, 7389);
+			add_location(div2, file$18, 176, 8, 7361);
 			attr_dev(div3, "class", "animated fadeIn hide buttonRow svelte-xra88o");
 			toggle_class(div3, "active", /*toggleRow2*/ ctx[9]);
-			add_location(div3, file$18, 188, 8, 8354);
+			add_location(div3, file$18, 186, 8, 8326);
 			attr_dev(div0, "class", "masspec_buttonContainer svelte-xra88o");
 			attr_dev(div0, "slot", "buttonContainer");
-			add_location(div0, file$18, 167, 4, 6577);
+			add_location(div0, file$18, 165, 4, 6549);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -55200,14 +55201,14 @@ function create_buttonContainer_slot$1(ctx) {
 		block,
 		id: create_buttonContainer_slot$1.name,
 		type: "slot",
-		source: "(168:4) <div class=\\\"masspec_buttonContainer\\\" slot=\\\"buttonContainer\\\">",
+		source: "(166:4) <div class=\\\"masspec_buttonContainer\\\" slot=\\\"buttonContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (200:8) {#if graphPlotted}
+// (198:8) {#if graphPlotted}
 function create_if_block$r(ctx) {
 	let div;
 	let reportlayout;
@@ -55240,7 +55241,7 @@ function create_if_block$r(ctx) {
 			create_component(reportlayout.$$.fragment);
 			attr_dev(div, "class", "animated fadeIn svelte-xra88o");
 			set_style(div, "flex-direction", "column ");
-			add_location(div, file$18, 200, 12, 9023);
+			add_location(div, file$18, 198, 12, 8995);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -55277,14 +55278,14 @@ function create_if_block$r(ctx) {
 		block,
 		id: create_if_block$r.name,
 		type: "if",
-		source: "(200:8) {#if graphPlotted}",
+		source: "(198:8) {#if graphPlotted}",
 		ctx
 	});
 
 	return block;
 }
 
-// (208:16) <Icon on:click="{()=>window.nist_webview.goToIndex(0)}" class="material-icons hvr-glow">
+// (206:16) <Icon on:click="{()=>window.nist_webview.goToIndex(0)}" class="material-icons hvr-glow">
 function create_default_slot_4$6(ctx) {
 	let t;
 
@@ -55304,14 +55305,14 @@ function create_default_slot_4$6(ctx) {
 		block,
 		id: create_default_slot_4$6.name,
 		type: "slot",
-		source: "(208:16) <Icon on:click=\\\"{()=>window.nist_webview.goToIndex(0)}\\\" class=\\\"material-icons hvr-glow\\\">",
+		source: "(206:16) <Icon on:click=\\\"{()=>window.nist_webview.goToIndex(0)}\\\" class=\\\"material-icons hvr-glow\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (210:16) <Icon on:click="{()=>window.nist_webview.reload()}" class="material-icons hvr-glow">
+// (208:16) <Icon on:click="{()=>window.nist_webview.reload()}" class="material-icons hvr-glow">
 function create_default_slot_3$7(ctx) {
 	let t;
 
@@ -55331,14 +55332,14 @@ function create_default_slot_3$7(ctx) {
 		block,
 		id: create_default_slot_3$7.name,
 		type: "slot",
-		source: "(210:16) <Icon on:click=\\\"{()=>window.nist_webview.reload()}\\\" class=\\\"material-icons hvr-glow\\\">",
+		source: "(208:16) <Icon on:click=\\\"{()=>window.nist_webview.reload()}\\\" class=\\\"material-icons hvr-glow\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (211:16) <Icon on:click="{()=>{if(window.nist_webview.canGoBack()) {window.nist_webview.goBack()}}}" class="material-icons hvr-glow">
+// (209:16) <Icon on:click="{()=>{if(window.nist_webview.canGoBack()) {window.nist_webview.goBack()}}}" class="material-icons hvr-glow">
 function create_default_slot_2$b(ctx) {
 	let t;
 
@@ -55358,14 +55359,14 @@ function create_default_slot_2$b(ctx) {
 		block,
 		id: create_default_slot_2$b.name,
 		type: "slot",
-		source: "(211:16) <Icon on:click=\\\"{()=>{if(window.nist_webview.canGoBack()) {window.nist_webview.goBack()}}}\\\" class=\\\"material-icons hvr-glow\\\">",
+		source: "(209:16) <Icon on:click=\\\"{()=>{if(window.nist_webview.canGoBack()) {window.nist_webview.goBack()}}}\\\" class=\\\"material-icons hvr-glow\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (212:16) <Icon on:click="{()=>{if(window.nist_webview.canGoForward()) {window.nist_webview.goForward()}}}" class="material-icons hvr-glow">
+// (210:16) <Icon on:click="{()=>{if(window.nist_webview.canGoForward()) {window.nist_webview.goForward()}}}" class="material-icons hvr-glow">
 function create_default_slot_1$d(ctx) {
 	let t;
 
@@ -55385,14 +55386,14 @@ function create_default_slot_1$d(ctx) {
 		block,
 		id: create_default_slot_1$d.name,
 		type: "slot",
-		source: "(212:16) <Icon on:click=\\\"{()=>{if(window.nist_webview.canGoForward()) {window.nist_webview.goForward()}}}\\\" class=\\\"material-icons hvr-glow\\\">",
+		source: "(210:16) <Icon on:click=\\\"{()=>{if(window.nist_webview.canGoForward()) {window.nist_webview.goForward()}}}\\\" class=\\\"material-icons hvr-glow\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (196:4) <div style="margin-right: 1em;" slot="plotContainer">
+// (194:4) <div style="margin-right: 1em;" slot="plotContainer">
 function create_plotContainer_slot$1(ctx) {
 	let div0;
 	let div1;
@@ -55479,28 +55480,28 @@ function create_plotContainer_slot$1(ctx) {
 			webview = element("webview");
 			attr_dev(div1, "id", "mplot");
 			attr_dev(div1, "class", "svelte-xra88o");
-			add_location(div1, file$18, 197, 8, 8766);
+			add_location(div1, file$18, 195, 8, 8738);
 			set_style(div2, "margin", "1em");
 			attr_dev(div2, "class", "svelte-xra88o");
-			add_location(div2, file$18, 206, 12, 9388);
+			add_location(div2, file$18, 204, 12, 9360);
 			if (webview.src !== (webview_src_value = /*nist_url*/ ctx[12])) attr_dev(webview, "src", webview_src_value);
 			attr_dev(webview, "id", "nist_webview");
 			set_style(webview, "height", "50vh");
 			set_style(webview, "padding-bottom", "3em");
 			attr_dev(webview, "class", "svelte-xra88o");
-			add_location(webview, file$18, 214, 16, 10039);
+			add_location(webview, file$18, 212, 16, 10011);
 			attr_dev(div3, "class", " svelte-xra88o");
-			add_location(div3, file$18, 213, 12, 10007);
+			add_location(div3, file$18, 211, 12, 9979);
 			attr_dev(div4, "class", "hide animated fadeIn svelte-xra88o");
 			set_style(div4, "margin-top", "1em");
 			set_style(div4, "display", "none");
 			set_style(div4, "flex-direction", "column");
 			toggle_class(div4, "active", /*toggleRow2*/ ctx[9]);
-			add_location(div4, file$18, 205, 8, 9252);
+			add_location(div4, file$18, 203, 8, 9224);
 			set_style(div0, "margin-right", "1em");
 			attr_dev(div0, "slot", "plotContainer");
 			attr_dev(div0, "class", "svelte-xra88o");
-			add_location(div0, file$18, 195, 4, 8701);
+			add_location(div0, file$18, 193, 4, 8673);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -55614,14 +55615,14 @@ function create_plotContainer_slot$1(ctx) {
 		block,
 		id: create_plotContainer_slot$1.name,
 		type: "slot",
-		source: "(196:4) <div style=\\\"margin-right: 1em;\\\" slot=\\\"plotContainer\\\">",
+		source: "(194:4) <div style=\\\"margin-right: 1em;\\\" slot=\\\"plotContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (167:0) <Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked >
+// (165:0) <Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked >
 function create_default_slot$t(ctx) {
 	let t;
 
@@ -55644,7 +55645,7 @@ function create_default_slot$t(ctx) {
 		block,
 		id: create_default_slot$t.name,
 		type: "slot",
-		source: "(167:0) <Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked >",
+		source: "(165:0) <Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked >",
 		ctx
 	});
 
@@ -55803,11 +55804,11 @@ function instance$1f($$self, $$props, $$invalidate) {
 	// Functions
 	function plotData({ e = null, filetype = "mass" } = {}) {
 		if (fileChecked.length === 0) {
-			return createToast$2("No files selected", "danger");
+			return window.createToast("No files selected", "danger");
 		}
 
 		if (filetype === "find_peaks") {
-			if (selected_file === "") return createToast$2("No files selected", "danger");
+			if (selected_file === "") return window.createToast("No files selected", "danger");
 		}
 
 		let pyfileInfo = {
@@ -55857,7 +55858,7 @@ function instance$1f($$self, $$props, $$invalidate) {
 
 			py.unref();
 			py.ref();
-			return createToast$2("Process Started");
+			return window.createToast("Process Started");
 		}
 
 		let target = e.target;
@@ -55878,7 +55879,7 @@ function instance$1f($$self, $$props, $$invalidate) {
 			return;
 		}
 
-		createToast$2("Process Started");
+		window.createToast("Process Started");
 
 		py.stdout.on("data", data => {
 			console.log("Ouput from python");
@@ -55914,7 +55915,7 @@ function instance$1f($$self, $$props, $$invalidate) {
 						Plotly.relayout("mplot", { yaxis: { title: "Counts", type: "log" } });
 					}
 
-					createToast$2("Graph plotted", "success");
+					window.createToast("Graph plotted", "success");
 					$$invalidate(3, graphPlotted = true);
 				} catch(err) {
 					$$invalidate(14, preModal.modalContent = err, preModal);
@@ -56061,7 +56062,6 @@ function instance$1f($$self, $$props, $$invalidate) {
 		ReportLayout,
 		Textfield,
 		plot,
-		createToast: createToast$2,
 		Icon,
 		filetype: filetype$1,
 		id: id$1,
@@ -56209,7 +56209,7 @@ function get_each_context$a(ctx, list, i) {
 	return child_ctx;
 }
 
-// (160:4) <div class="timescan_buttonContainer" slot="buttonContainer">
+// (158:4) <div class="timescan_buttonContainer" slot="buttonContainer">
 function create_buttonContainer_slot$2(ctx) {
 	let div0;
 	let div1;
@@ -56429,21 +56429,21 @@ function create_buttonContainer_slot$2(ctx) {
 			button3 = element("button");
 			button3.textContent = "Submit";
 			attr_dev(button0, "class", "button is-link svelte-pl7usg");
-			add_location(button0, file$19, 162, 12, 6009);
+			add_location(button0, file$19, 160, 12, 5981);
 			attr_dev(button1, "class", "button is-link svelte-pl7usg");
-			add_location(button1, file$19, 163, 12, 6110);
+			add_location(button1, file$19, 161, 12, 6082);
 			attr_dev(button2, "class", "button is-link svelte-pl7usg");
-			add_location(button2, file$19, 164, 12, 6220);
+			add_location(button2, file$19, 162, 12, 6192);
 			attr_dev(div1, "class", "content align buttonRow svelte-pl7usg");
-			add_location(div1, file$19, 161, 8, 5958);
+			add_location(div1, file$19, 159, 8, 5930);
 			attr_dev(button3, "class", "button is-link svelte-pl7usg");
-			add_location(button3, file$19, 176, 12, 7374);
+			add_location(button3, file$19, 174, 12, 7346);
 			attr_dev(div2, "class", "animated fadeIn hide buttonRow svelte-pl7usg");
 			toggle_class(div2, "active", /*toggleRow*/ ctx[11]);
-			add_location(div2, file$19, 169, 8, 6603);
+			add_location(div2, file$19, 167, 8, 6575);
 			attr_dev(div0, "class", "timescan_buttonContainer svelte-pl7usg");
 			attr_dev(div0, "slot", "buttonContainer");
-			add_location(div0, file$19, 159, 4, 5885);
+			add_location(div0, file$19, 157, 4, 5857);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -56607,14 +56607,14 @@ function create_buttonContainer_slot$2(ctx) {
 		block,
 		id: create_buttonContainer_slot$2.name,
 		type: "slot",
-		source: "(160:4) <div class=\\\"timescan_buttonContainer\\\" slot=\\\"buttonContainer\\\">",
+		source: "(158:4) <div class=\\\"timescan_buttonContainer\\\" slot=\\\"buttonContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (184:12) {#each fileChecked as scanfile}
+// (182:12) {#each fileChecked as scanfile}
 function create_each_block$a(ctx) {
 	let div;
 	let div_id_value;
@@ -56625,7 +56625,7 @@ function create_each_block$a(ctx) {
 			attr_dev(div, "id", div_id_value = "" + (/*scanfile*/ ctx[36] + "_tplot"));
 			set_style(div, "padding-bottom", "1em");
 			attr_dev(div, "class", "svelte-pl7usg");
-			add_location(div, file$19, 184, 16, 7663);
+			add_location(div, file$19, 182, 16, 7635);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -56644,14 +56644,14 @@ function create_each_block$a(ctx) {
 		block,
 		id: create_each_block$a.name,
 		type: "each",
-		source: "(184:12) {#each fileChecked as scanfile}",
+		source: "(182:12) {#each fileChecked as scanfile}",
 		ctx
 	});
 
 	return block;
 }
 
-// (189:8) {#if graphPlotted}
+// (187:8) {#if graphPlotted}
 function create_if_block$s(ctx) {
 	let div;
 	let reportlayout;
@@ -56684,7 +56684,7 @@ function create_if_block$s(ctx) {
 			create_component(reportlayout.$$.fragment);
 			attr_dev(div, "class", "animated fadeIn svelte-pl7usg");
 			set_style(div, "flex-direction", "column ");
-			add_location(div, file$19, 190, 12, 7802);
+			add_location(div, file$19, 188, 12, 7774);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -56722,14 +56722,14 @@ function create_if_block$s(ctx) {
 		block,
 		id: create_if_block$s.name,
 		type: "if",
-		source: "(189:8) {#if graphPlotted}",
+		source: "(187:8) {#if graphPlotted}",
 		ctx
 	});
 
 	return block;
 }
 
-// (182:4) <div style="margin-right: 1em;" slot="plotContainer">
+// (180:4) <div style="margin-right: 1em;" slot="plotContainer">
 function create_plotContainer_slot$2(ctx) {
 	let div0;
 	let div1;
@@ -56758,11 +56758,11 @@ function create_plotContainer_slot$2(ctx) {
 			if (if_block) if_block.c();
 			attr_dev(div1, "id", "tplotContainer");
 			attr_dev(div1, "class", "svelte-pl7usg");
-			add_location(div1, file$19, 182, 8, 7575);
+			add_location(div1, file$19, 180, 8, 7547);
 			set_style(div0, "margin-right", "1em");
 			attr_dev(div0, "slot", "plotContainer");
 			attr_dev(div0, "class", "svelte-pl7usg");
-			add_location(div0, file$19, 181, 4, 7512);
+			add_location(div0, file$19, 179, 4, 7484);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -56844,14 +56844,14 @@ function create_plotContainer_slot$2(ctx) {
 		block,
 		id: create_plotContainer_slot$2.name,
 		type: "slot",
-		source: "(182:4) <div style=\\\"margin-right: 1em;\\\" slot=\\\"plotContainer\\\">",
+		source: "(180:4) <div style=\\\"margin-right: 1em;\\\" slot=\\\"plotContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (158:0) <Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked on:chdir={dir_changed}>
+// (156:0) <Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked on:chdir={dir_changed}>
 function create_default_slot$u(ctx) {
 	let t;
 
@@ -56874,7 +56874,7 @@ function create_default_slot$u(ctx) {
 		block,
 		id: create_default_slot$u.name,
 		type: "slot",
-		source: "(158:0) <Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked on:chdir={dir_changed}>",
+		source: "(156:0) <Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked on:chdir={dir_changed}>",
 		ctx
 	});
 
@@ -57028,12 +57028,12 @@ function instance$1g($$self, $$props, $$invalidate) {
 
 	function plotData({ e = null, filetype = "scan", tkplot = "run" } = {}) {
 		if (fileChecked.length === 0 && filetype === "scan") {
-			return createToast$2("No files selected", "danger");
+			return window.createToast("No files selected", "danger");
 		}
 
 		if (filetype === "general") {
 			if (resOFF_Files === "" || resON_Files === "") {
-				return createToast$2("No files selected", "danger");
+				return window.createToast("No files selected", "danger");
 			}
 		}
 
@@ -57087,7 +57087,7 @@ function instance$1g($$self, $$props, $$invalidate) {
 
 			py.unref();
 			py.ref();
-			return createToast$2("Process Started");
+			return window.createToast("Process Started");
 		}
 
 		let target = e.target;
@@ -57108,7 +57108,7 @@ function instance$1g($$self, $$props, $$invalidate) {
 			return;
 		}
 
-		createToast$2("Process Started");
+		window.createToast("Process Started");
 
 		py.stdout.on("data", data => {
 			console.log("Ouput from python");
@@ -57137,7 +57137,7 @@ function instance$1g($$self, $$props, $$invalidate) {
 						});
 					}
 
-					createToast$2("Graph plotted", "success");
+					window.createToast("Graph plotted", "success");
 					$$invalidate(3, graphPlotted = true);
 				} catch(err) {
 					$$invalidate(13, preModal.modalContent = err, preModal);
@@ -57254,7 +57254,6 @@ function instance$1g($$self, $$props, $$invalidate) {
 		ReportLayout,
 		Textfield,
 		plot,
-		createToast: createToast$2,
 		filetype: filetype$2,
 		id: id$2,
 		fileChecked,
@@ -57382,7 +57381,7 @@ class Timescan extends SvelteComponentDev {
 const { console: console_1$c } = globals;
 const file$1a = "src\\Pages\\THz.svelte";
 
-// (169:4) <div class="thz_buttonContainer" slot="buttonContainer">
+// (168:4) <div class="thz_buttonContainer" slot="buttonContainer">
 function create_buttonContainer_slot$3(ctx) {
 	let div0;
 	let div2;
@@ -57664,28 +57663,28 @@ function create_buttonContainer_slot$3(ctx) {
 			button5 = element("button");
 			t21 = text("Open in Matplotlib");
 			attr_dev(button0, "class", button0_class_value = "" + (null_to_empty(btnClass) + " svelte-13xdga2"));
-			add_location(button0, file$1a, 171, 12, 6730);
+			add_location(button0, file$1a, 170, 12, 6697);
 			attr_dev(button1, "class", button1_class_value = "" + (null_to_empty(btnClass) + " svelte-13xdga2"));
-			add_location(button1, file$1a, 174, 12, 6924);
+			add_location(button1, file$1a, 173, 12, 6891);
 			attr_dev(button2, "class", button2_class_value = "" + (null_to_empty(btnClass) + " svelte-13xdga2"));
-			add_location(button2, file$1a, 175, 12, 7013);
+			add_location(button2, file$1a, 174, 12, 6980);
 			attr_dev(button3, "class", button3_class_value = "" + (null_to_empty(btnClass) + " svelte-13xdga2"));
-			add_location(button3, file$1a, 177, 12, 7245);
+			add_location(button3, file$1a, 176, 12, 7212);
 			attr_dev(div1, "class", "animated fadeIn hide svelte-13xdga2");
 			toggle_class(div1, "active", /*graphPlotted*/ ctx[3]);
-			add_location(div1, file$1a, 181, 12, 7511);
+			add_location(div1, file$1a, 180, 12, 7478);
 			attr_dev(div2, "class", "content align buttonRow svelte-13xdga2");
-			add_location(div2, file$1a, 170, 8, 6679);
+			add_location(div2, file$1a, 169, 8, 6646);
 			attr_dev(button4, "class", button4_class_value = "" + (null_to_empty(btnClass) + " svelte-13xdga2"));
-			add_location(button4, file$1a, 195, 12, 8567);
+			add_location(button4, file$1a, 194, 12, 8534);
 			attr_dev(button5, "class", button5_class_value = "" + (null_to_empty(btnClass) + " svelte-13xdga2"));
-			add_location(button5, file$1a, 196, 12, 8678);
+			add_location(button5, file$1a, 195, 12, 8645);
 			attr_dev(div3, "class", "animated fadeIn hide buttonRow svelte-13xdga2");
 			toggle_class(div3, "active", /*toggleRow*/ ctx[11]);
-			add_location(div3, file$1a, 189, 8, 7833);
+			add_location(div3, file$1a, 188, 8, 7800);
 			attr_dev(div0, "class", "thz_buttonContainer svelte-13xdga2");
 			attr_dev(div0, "slot", "buttonContainer");
-			add_location(div0, file$1a, 168, 4, 6611);
+			add_location(div0, file$1a, 167, 4, 6578);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -57908,14 +57907,14 @@ function create_buttonContainer_slot$3(ctx) {
 		block,
 		id: create_buttonContainer_slot$3.name,
 		type: "slot",
-		source: "(169:4) <div class=\\\"thz_buttonContainer\\\" slot=\\\"buttonContainer\\\">",
+		source: "(168:4) <div class=\\\"thz_buttonContainer\\\" slot=\\\"buttonContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (212:8) {#if graphPlotted}
+// (211:8) {#if graphPlotted}
 function create_if_block$t(ctx) {
 	let div;
 	let reportlayout;
@@ -57948,7 +57947,7 @@ function create_if_block$t(ctx) {
 			create_component(reportlayout.$$.fragment);
 			attr_dev(div, "class", "animated fadeIn svelte-13xdga2");
 			set_style(div, "flex-direction", "column ");
-			add_location(div, file$1a, 212, 12, 9198);
+			add_location(div, file$1a, 211, 12, 9165);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -57985,14 +57984,14 @@ function create_if_block$t(ctx) {
 		block,
 		id: create_if_block$t.name,
 		type: "if",
-		source: "(212:8) {#if graphPlotted}",
+		source: "(211:8) {#if graphPlotted}",
 		ctx
 	});
 
 	return block;
 }
 
-// (202:4) <div style="margin-right: 1em;" slot="plotContainer">
+// (201:4) <div style="margin-right: 1em;" slot="plotContainer">
 function create_plotContainer_slot$3(ctx) {
 	let div0;
 	let div1;
@@ -58017,19 +58016,19 @@ function create_plotContainer_slot$3(ctx) {
 			attr_dev(div1, "id", "resOnOffPlot");
 			set_style(div1, "margin-bottom", "1em");
 			attr_dev(div1, "class", "svelte-13xdga2");
-			add_location(div1, file$1a, 205, 8, 8939);
+			add_location(div1, file$1a, 204, 8, 8906);
 			attr_dev(div2, "id", "thzPlot");
 			set_style(div2, "margin-bottom", "1em");
 			attr_dev(div2, "class", "svelte-13xdga2");
-			add_location(div2, file$1a, 206, 8, 9006);
+			add_location(div2, file$1a, 205, 8, 8973);
 			attr_dev(div3, "id", "boltzman_plot");
 			set_style(div3, "margin-bottom", "1em");
 			attr_dev(div3, "class", "svelte-13xdga2");
-			add_location(div3, file$1a, 207, 8, 9068);
+			add_location(div3, file$1a, 206, 8, 9035);
 			set_style(div0, "margin-right", "1em");
 			attr_dev(div0, "slot", "plotContainer");
 			attr_dev(div0, "class", "svelte-13xdga2");
-			add_location(div0, file$1a, 201, 4, 8840);
+			add_location(div0, file$1a, 200, 4, 8807);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -58085,14 +58084,14 @@ function create_plotContainer_slot$3(ctx) {
 		block,
 		id: create_plotContainer_slot$3.name,
 		type: "slot",
-		source: "(202:4) <div style=\\\"margin-right: 1em;\\\" slot=\\\"plotContainer\\\">",
+		source: "(201:4) <div style=\\\"margin-right: 1em;\\\" slot=\\\"plotContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (167:0) <Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked>
+// (166:0) <Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked>
 function create_default_slot$v(ctx) {
 	let t;
 
@@ -58115,7 +58114,7 @@ function create_default_slot$v(ctx) {
 		block,
 		id: create_default_slot$v.name,
 		type: "slot",
-		source: "(167:0) <Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked>",
+		source: "(166:0) <Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked>",
 		ctx
 	});
 
@@ -58259,7 +58258,7 @@ function instance$1h($$self, $$props, $$invalidate) {
 
 	function plotData({ e = null, filetype = "thz", tkplot = "run", justPlot = false } = {}) {
 		if (fileChecked.length === 0 && filetype === "thz") {
-			return createToast$2("No files selected", "danger");
+			return window.createToast("No files selected", "danger");
 		}
 
 		let pyfileInfo = {
@@ -58304,7 +58303,7 @@ function instance$1h($$self, $$props, $$invalidate) {
 
 			py.unref();
 			py.ref();
-			return createToast$2("Process Started");
+			return window.createToast("Process Started");
 		}
 
 		let target = e.target;
@@ -58325,7 +58324,7 @@ function instance$1h($$self, $$props, $$invalidate) {
 			return;
 		}
 
-		createToast$2("Process Started");
+		window.createToast("Process Started");
 
 		py.stdout.on("data", data => {
 			console.log("Ouput from python");
@@ -58368,7 +58367,7 @@ function instance$1h($$self, $$props, $$invalidate) {
 						plot(`Boltzman Distribution`, "Rotational levels (J)", "Probability (%)", dataFromPython, "boltzman_plot");
 					}
 
-					createToast$2("Graph plotted", "success");
+					window.createToast("Graph plotted", "success");
 					$$invalidate(3, graphPlotted = true);
 					target.style.backgroundColor = "#09814a";
 					target.classList.add("bounce");
@@ -58531,7 +58530,6 @@ function instance$1h($$self, $$props, $$invalidate) {
 		ReportLayout,
 		Textfield,
 		plot,
-		createToast: createToast$2,
 		filetype: filetype$3,
 		id: id$3,
 		fileChecked,
@@ -58656,21 +58654,6 @@ class THz extends SvelteComponentDev {
 	}
 }
 
-const github =  writable({branch:"master", repo:"FELion_GUI3", username:"aravindhnivas"});
-const versionJson = derived(github, ($github)=>`https://raw.githubusercontent.com/${$github.username}/${$github.repo}/${$github.branch}/version.json`);
-const urlzip = derived(github, ($github)=>`https://codeload.github.com/${$github.username}/${$github.repo}/zip/${$github.branch}`);
-
-const pythonpath = writable(localStorage["pythonpath"] || path.resolve(__dirname, "../python3/python"));
-
-const pythonscript = writable(localStorage["pythonscript"] || path.resolve(__dirname, "assets/python_files"));
-const pyVersion = writable("");
-
-if(!localStorage["pythonpath"]) localStorage["pythonpath"] = get_store_value(pythonpath);
-
-if(!localStorage["pythonscript"]) localStorage["pythonscript"] = get_store_value(pythonpath);
-
-const backupName = writable("FELion_GUI_backup");
-
 const https = require('https');
 const admZip = require('adm-zip');
 
@@ -58701,7 +58684,7 @@ function download(updateFolder) {
                 zip.extractAllTo(updateFolder, /*overwrite*/true);
                 console.log("File Extracted");
                 resolve("File extracted");
-                createToast("Downloading Completed");
+                window.createToast("Downloading Completed");
             }, 1600);
         
         });
@@ -58710,87 +58693,36 @@ function download(updateFolder) {
 
 const copy = require('recursive-copy');
 
-// const copyfile = async ({dest, src}={}) => {
-
-
-//     try {
-//         const folderfiles = fs.readdirSync(src)
-//         console.log({dest, src})
-//         if(!fs.existsSync(dest)) fs.mkdirSync(dest)
-
-//         const files = folderfiles.filter(f=>fs.statSync(f).isFile() && !f.startsWith("."))
-
-//         const folders = folderfiles.filter(f=>fs.statSync(f).isDirectory() && !f.startsWith(".") && f !== "node_modules" && f !== "dist" && f !== "python3")
-
-//         console.log("Files: ", files, "Folders: ", folders)
-
-//         await asyncForEach(files, (file)=>{
-//             console.log("Copying file: ", file, " in folder ", dest)
-//             fs.copyFileSync(path.join(src, file), path.join(dest, file) )
-//         })
-//         await asyncForEach(folders, (folder)=>copyfile({src:path.join(src, folder), dest:path.join(dest, folder) }))
-
-//         return Promise.resolve("Folder transfer completed")
-//     } catch (error) {
-//         return Promise.reject(error)        
-//     }
-// }
-
 function transferFiles({dest, src, includeNode=true}={}) {
     return new Promise((resolve, reject)=>{
 
 
-        // const options = {overwrite: true, filter: includeNode ?  [] : fs.readdirSync(src).filter(file => file != "node_modules")}
+        // const filter = fs.readdirSync(src).filter((file) => {return file !== "node_modules" && file !== "python3"})
+
+        // const options = {overwrite: true, filter: includeNode ?  fs.readdirSync(src) : filter}
         
+        console.log(options);
+
         copy(src, dest, {overwrite: true}, function(error, results) {
+        
             if (error) {
+        
                 console.error('Copy failed: ' + error);
-                createToast("Update failed.\nMaybe the user doesn't have necessary persmission to write files in the disk", "danger");
+                window.createToast("Update failed.\nMaybe the user doesn't have necessary persmission to write files in the disk", "danger");
 
                 reject(error);
             } else {
                 console.info('Copied ' + results.length + ' files');
 
-                createToast("Updated succesfull. Restart the program (Press Ctrl + R).", "success");
+                window.createToast("Transfer completed.", "success");
                 resolve(results);
-
-                // restart_program()
-
             }
-        
         });
-
-        // copy(src, dest, options)
-        
-        //     .on(copy.events.COPY_FILE_START, function(copyOperation) {
-        //         console.info('Copying file ' + copyOperation.src + '...');
-        //     })
-            
-            
-        //     .on(copy.events.COPY_FILE_COMPLETE, function(copyOperation) {
-            
-        //         console.info('Copied to ' + copyOperation.dest);
-        //     })
-            
-        //     .on(copy.events.ERROR, function(error, copyOperation) {
-        //         console.error('Unable to copy ' + copyOperation.dest);
-        //     })
-            
-        //     .then(function(results) {
-        //         resolve(results)
-        //         console.info(results.length + ' file(s) copied');
-        //     })
-            
-        //     .catch(function(error) {
-        //         reject(error)
-            
-        //         return console.error('Copy failed: ' + error);
-        // });
-
     })
 }
 
 function backupRestore({event, method="backup"}={}) {
+
     return new Promise((resolve, reject)=> {
         
         let target = event.target;
@@ -58816,6 +58748,7 @@ function backupRestore({event, method="backup"}={}) {
                     dest = path.resolve(__dirname, "..");
                     src = path.resolve(folderName);
                 }
+                console.info(`Destination: ${dest}\nSource: ${src}\n`);
 
                 await transferFiles({dest, src, includeNode:false});
                 resolve();
@@ -58824,7 +58757,7 @@ function backupRestore({event, method="backup"}={}) {
             .catch(err=>{
 
                 console.log(err);
-                reject(err);
+                reject(err.stack);
 
             })
 
@@ -58856,12 +58789,12 @@ function checkWithCurrentVersion({new_version, developer_version, info}={}) {
     if (window.currentVersion === new_version) {
         if (developer_version) {
 
-                if (info) {createToast(`CAUTION! You are checking with developer branch which has experimental features. Take backup before updating.`, "danger");}
-            } else { if (info) {createToast("No stable update available", "warning");}}
+                if (info) {window.createToast(`CAUTION! You are checking with developer branch which has experimental features. Take backup before updating.`, "danger");}
+            } else { if (info) {window.createToast("No stable update available", "warning");}}
     
     } else if (window.currentVersion < new_version) {
 
-        createToast("New update available", "success");
+        window.createToast("New update available", "success");
 
         let options = {
             title: "FELion_GUI3",
@@ -58870,7 +58803,7 @@ function checkWithCurrentVersion({new_version, developer_version, info}={}) {
             type:"info"
         };
         let response = window.showinfo(window.remote.getCurrentWindow(), options);
-        response === 0 ? update() : createToast("Not updating now");
+        response === 0 ? update() : window.createToast("Not updating now");
     }
 }
 
@@ -58880,7 +58813,7 @@ function updateCheck({info=true}={}){
 
     target.classList.toggle("is-loading");
 
-    if (!navigator.onLine) {if (info) {createToast("No Internet Connection!", "warning");} return}
+    if (!navigator.onLine) {if (info) {window.createToast("No Internet Connection!", "warning");} return}
 
     console.log(`URL_Package: ${get_store_value(versionJson)}`);
     let developer_version = false;
@@ -58908,15 +58841,13 @@ function updateCheck({info=true}={}){
             checkWithCurrentVersion({new_version, developer_version, info});
         })
 
-        .catch(error=> createToast(error, "danger"))
+        .catch(error=> window.createToast(error, "danger"))
         .finally(()=>{
             console.log("Update check completed");
 
             target.classList.toggle("is-loading");
         });
 }
-
-const {exec} = require("child_process");
 
 // Renaming old python path (if exists)
 function renamePy() {
@@ -58938,19 +58869,6 @@ function renamePy() {
 }
 renamePy();
 
-function checkPython({defaultPy}={}){
-
-    if(!defaultPy) {defaultPy = get_store_value(pythonpath);}
-
-    console.log("Python path checking \n", defaultPy);
-    return new Promise((resolve, reject)=>{
-        exec(`${defaultPy} -V`, (err, stdout)=>{
-            if(err) {reject("Invalid"); createToast("Python location is not valid", "danger");}
-            else {resolve(stdout.trim());}
-        });
-    })
-}
-
 function resetPyConfig() {
 
     localStorage["pythonscript"] = path.resolve(__dirname, "assets/python_files");
@@ -58965,7 +58883,7 @@ function resetPyConfig() {
     
             pyVersion.set(version);
             pythonpath.set(localStorage["pythonpath"]); 
-            createToast("Location resetted", "warning");
+            window.createToast("Location resetted", "warning");
     
         });
     
@@ -58977,7 +58895,7 @@ function updatePyConfig(){
         .then(version=>{
             pyVersion.set(version);
             localStorage["pythonpath"] = get_store_value(pythonpath);
-            createToast("Location updated", "success");
+            window.createToast("Location updated", "success");
         });
         localStorage["pythonscript"] = get_store_value(pythonscript);
         
@@ -59265,68 +59183,68 @@ function create_fragment$1i(ctx) {
 			div12 = element("div");
 			h12 = element("h1");
 			h12.textContent = "About";
-			attr_dev(div0, "class", "title nav hvr-glow svelte-6e3ex0");
+			attr_dev(div0, "class", "title nav hvr-glow svelte-kvtvxd");
 			toggle_class(div0, "clicked", /*selected*/ ctx[0] === "Configuration");
-			add_location(div0, file$1b, 112, 16, 3760);
-			attr_dev(div1, "class", "title nav hvr-glow svelte-6e3ex0");
+			add_location(div0, file$1b, 139, 16, 3784);
+			attr_dev(div1, "class", "title nav hvr-glow svelte-kvtvxd");
 			toggle_class(div1, "clicked", /*selected*/ ctx[0] === "Update");
-			add_location(div1, file$1b, 113, 16, 3892);
-			attr_dev(div2, "class", "title nav hvr-glow svelte-6e3ex0");
+			add_location(div1, file$1b, 140, 16, 3916);
+			attr_dev(div2, "class", "title nav hvr-glow svelte-kvtvxd");
 			toggle_class(div2, "clicked", /*selected*/ ctx[0] === "About");
-			add_location(div2, file$1b, 114, 16, 4010);
-			attr_dev(div3, "class", "container left svelte-6e3ex0");
-			add_location(div3, file$1b, 111, 12, 3714);
-			attr_dev(div4, "class", "column side-panel is-2-widescreen is-3-desktop is-4-tablet box adjust-right svelte-6e3ex0");
-			add_location(div4, file$1b, 110, 8, 3611);
-			attr_dev(h10, "class", "title svelte-6e3ex0");
-			add_location(h10, file$1b, 123, 20, 4395);
-			attr_dev(div5, "class", "subtitle svelte-6e3ex0");
-			add_location(div5, file$1b, 124, 20, 4453);
-			attr_dev(button0, "class", "button is-link svelte-6e3ex0");
-			add_location(button0, file$1b, 127, 20, 4738);
-			attr_dev(button1, "class", "button is-link svelte-6e3ex0");
-			add_location(button1, file$1b, 128, 20, 4830);
-			attr_dev(div6, "class", "content animated fadeIn svelte-6e3ex0");
+			add_location(div2, file$1b, 141, 16, 4034);
+			attr_dev(div3, "class", "container left svelte-kvtvxd");
+			add_location(div3, file$1b, 138, 12, 3738);
+			attr_dev(div4, "class", "column side-panel is-2-widescreen is-3-desktop is-4-tablet box adjust-right svelte-kvtvxd");
+			add_location(div4, file$1b, 137, 8, 3635);
+			attr_dev(h10, "class", "title svelte-kvtvxd");
+			add_location(h10, file$1b, 150, 20, 4419);
+			attr_dev(div5, "class", "subtitle svelte-kvtvxd");
+			add_location(div5, file$1b, 151, 20, 4477);
+			attr_dev(button0, "class", "button is-link svelte-kvtvxd");
+			add_location(button0, file$1b, 154, 20, 4762);
+			attr_dev(button1, "class", "button is-link svelte-kvtvxd");
+			add_location(button1, file$1b, 155, 20, 4854);
+			attr_dev(div6, "class", "content animated fadeIn svelte-kvtvxd");
 			toggle_class(div6, "active", /*selected*/ ctx[0] === "Configuration");
-			add_location(div6, file$1b, 122, 16, 4294);
-			attr_dev(h11, "class", "title svelte-6e3ex0");
-			add_location(h11, file$1b, 133, 20, 5071);
-			attr_dev(div7, "class", "subtitle svelte-6e3ex0");
-			add_location(div7, file$1b, 135, 20, 5124);
-			attr_dev(div8, "class", "content svelte-6e3ex0");
-			add_location(div8, file$1b, 136, 20, 5213);
-			attr_dev(button2, "class", "button is-link svelte-6e3ex0");
+			add_location(div6, file$1b, 149, 16, 4318);
+			attr_dev(h11, "class", "title svelte-kvtvxd");
+			add_location(h11, file$1b, 160, 20, 5095);
+			attr_dev(div7, "class", "subtitle svelte-kvtvxd");
+			add_location(div7, file$1b, 162, 20, 5148);
+			attr_dev(div8, "class", "content svelte-kvtvxd");
+			add_location(div8, file$1b, 163, 20, 5237);
+			attr_dev(button2, "class", "button is-link svelte-kvtvxd");
 			attr_dev(button2, "id", "updateCheckBtn");
-			add_location(button2, file$1b, 143, 24, 5711);
-			attr_dev(button3, "class", "button is-link svelte-6e3ex0");
+			add_location(button2, file$1b, 170, 24, 5735);
+			attr_dev(button3, "class", "button is-link svelte-kvtvxd");
 			attr_dev(button3, "id", "updateBtn");
-			add_location(button3, file$1b, 144, 24, 5834);
-			attr_dev(div9, "class", "content svelte-6e3ex0");
-			add_location(div9, file$1b, 142, 20, 5664);
-			attr_dev(button4, "class", "button is-link svelte-6e3ex0");
-			add_location(button4, file$1b, 150, 24, 6139);
-			attr_dev(button5, "class", "button is-link svelte-6e3ex0");
-			add_location(button5, file$1b, 151, 24, 6229);
-			attr_dev(div10, "class", "content svelte-6e3ex0");
-			add_location(div10, file$1b, 148, 20, 5967);
-			attr_dev(div11, "class", "content animated fadeIn svelte-6e3ex0");
+			add_location(button3, file$1b, 171, 24, 5858);
+			attr_dev(div9, "class", "content svelte-kvtvxd");
+			add_location(div9, file$1b, 169, 20, 5688);
+			attr_dev(button4, "class", "button is-link svelte-kvtvxd");
+			add_location(button4, file$1b, 177, 24, 6163);
+			attr_dev(button5, "class", "button is-link svelte-kvtvxd");
+			add_location(button5, file$1b, 178, 24, 6253);
+			attr_dev(div10, "class", "content svelte-kvtvxd");
+			add_location(div10, file$1b, 175, 20, 5991);
+			attr_dev(div11, "class", "content animated fadeIn svelte-kvtvxd");
 			toggle_class(div11, "active", /*selected*/ ctx[0] === "Update");
-			add_location(div11, file$1b, 132, 16, 4977);
-			attr_dev(h12, "class", "title svelte-6e3ex0");
-			add_location(h12, file$1b, 159, 20, 6516);
-			attr_dev(div12, "class", "content animated fadeIn svelte-6e3ex0");
+			add_location(div11, file$1b, 159, 16, 5001);
+			attr_dev(h12, "class", "title svelte-kvtvxd");
+			add_location(h12, file$1b, 186, 20, 6540);
+			attr_dev(div12, "class", "content animated fadeIn svelte-kvtvxd");
 			toggle_class(div12, "active", /*selected*/ ctx[0] === "About");
-			add_location(div12, file$1b, 158, 16, 6423);
-			attr_dev(div13, "class", "container right svelte-6e3ex0");
-			add_location(div13, file$1b, 119, 12, 4205);
-			attr_dev(div14, "class", "column main-panel box svelte-6e3ex0");
-			add_location(div14, file$1b, 118, 8, 4156);
-			attr_dev(div15, "class", "columns svelte-6e3ex0");
-			add_location(div15, file$1b, 109, 4, 3580);
-			attr_dev(section, "class", "section animated fadeIn svelte-6e3ex0");
+			add_location(div12, file$1b, 185, 16, 6447);
+			attr_dev(div13, "class", "container right svelte-kvtvxd");
+			add_location(div13, file$1b, 146, 12, 4229);
+			attr_dev(div14, "class", "column main-panel box svelte-kvtvxd");
+			add_location(div14, file$1b, 145, 8, 4180);
+			attr_dev(div15, "class", "columns svelte-kvtvxd");
+			add_location(div15, file$1b, 136, 4, 3604);
+			attr_dev(section, "class", "section animated fadeIn svelte-kvtvxd");
 			attr_dev(section, "id", "Settings");
 			set_style(section, "display", "none");
-			add_location(section, file$1b, 107, 0, 3496);
+			add_location(section, file$1b, 134, 0, 3520);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -59636,8 +59554,8 @@ function instance$1i($$self, $$props, $$invalidate) {
 
 			await download(updateFolder);
 			InstallUpdate(target, updateFolder);
-		} catch(error) {
-			$$invalidate(2, preModal.modalContent = err, preModal);
+		} catch(err) {
+			$$invalidate(2, preModal.modalContent = err.stack, preModal);
 			$$invalidate(2, preModal.open = true, preModal);
 		}
 	};
@@ -59699,7 +59617,6 @@ function instance$1i($$self, $$props, $$invalidate) {
 		github,
 		backupName,
 		Textfield,
-		createToast: createToast$2,
 		onMount,
 		CustomDialog,
 		CustomSelect,
@@ -59709,7 +59626,6 @@ function instance$1i($$self, $$props, $$invalidate) {
 		updateCheck,
 		resetPyConfig,
 		updatePyConfig,
-		checkPython,
 		backupRestore,
 		tick,
 		backup,
@@ -59786,7 +59702,7 @@ function get_each_context$b(ctx, list, i) {
 	return child_ctx;
 }
 
-// (110:4) {#if commandInputDiv}
+// (109:4) {#if commandInputDiv}
 function create_if_block$u(ctx) {
 	let div2;
 	let div0;
@@ -59914,14 +59830,14 @@ function create_if_block$u(ctx) {
 			set_style(div0, "display", "flex");
 			set_style(div0, "align-items", "center");
 			set_style(div0, "margin-bottom", "1em");
-			add_location(div0, file$1c, 112, 12, 3481);
+			add_location(div0, file$1c, 111, 12, 3445);
 			attr_dev(div1, "class", "run");
 			set_style(div1, "display", "flex");
 			set_style(div1, "align-items", "center");
 			set_style(div1, "margin-bottom", "1em");
-			add_location(div1, file$1c, 119, 12, 3772);
+			add_location(div1, file$1c, 118, 12, 3736);
 			attr_dev(div2, "class", "commandInput");
-			add_location(div2, file$1c, 111, 8, 3441);
+			add_location(div2, file$1c, 110, 8, 3405);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div2, anchor);
@@ -60026,14 +59942,14 @@ function create_if_block$u(ctx) {
 		block,
 		id: create_if_block$u.name,
 		type: "if",
-		source: "(110:4) {#if commandInputDiv}",
+		source: "(109:4) {#if commandInputDiv}",
 		ctx
 	});
 
 	return block;
 }
 
-// (122:16) <IconButton class="material-icons" on:click={terminalShell}>
+// (121:16) <IconButton class="material-icons" on:click={terminalShell}>
 function create_default_slot_1$e(ctx) {
 	let t;
 
@@ -60053,14 +59969,14 @@ function create_default_slot_1$e(ctx) {
 		block,
 		id: create_default_slot_1$e.name,
 		type: "slot",
-		source: "(122:16) <IconButton class=\\\"material-icons\\\" on:click={terminalShell}>",
+		source: "(121:16) <IconButton class=\\\"material-icons\\\" on:click={terminalShell}>",
 		ctx
 	});
 
 	return block;
 }
 
-// (126:16) <IconButton class="material-icons is-pulled-right" style="background: #f14668; border-radius: 2em;" on:click="{()=>commandResults=[{color:colorSets.normal, results:`>> cleared`}] }">
+// (125:16) <IconButton class="material-icons is-pulled-right" style="background: #f14668; border-radius: 2em;" on:click="{()=>commandResults=[{color:colorSets.normal, results:`>> cleared`}] }">
 function create_default_slot$w(ctx) {
 	let t;
 
@@ -60080,14 +59996,14 @@ function create_default_slot$w(ctx) {
 		block,
 		id: create_default_slot$w.name,
 		type: "slot",
-		source: "(126:16) <IconButton class=\\\"material-icons is-pulled-right\\\" style=\\\"background: #f14668; border-radius: 2em;\\\" on:click=\\\"{()=>commandResults=[{color:colorSets.normal, results:`>> cleared`}] }\\\">",
+		source: "(125:16) <IconButton class=\\\"material-icons is-pulled-right\\\" style=\\\"background: #f14668; border-radius: 2em;\\\" on:click=\\\"{()=>commandResults=[{color:colorSets.normal, results:`>> cleared`}] }\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (137:8) {#each commandResults as {color, results}}
+// (136:8) {#each commandResults as {color, results}}
 function create_each_block$b(ctx) {
 	let h1;
 	let t_value = /*results*/ ctx[18] + "";
@@ -60101,7 +60017,7 @@ function create_each_block$b(ctx) {
 			set_style(h1, "color", /*color*/ ctx[17]);
 			set_style(h1, "font-size", /*teminalFontSize*/ ctx[3] + "px");
 			set_style(h1, "white-space", "pre-wrap");
-			add_location(h1, file$1c, 137, 12, 4650);
+			add_location(h1, file$1c, 136, 12, 4614);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, h1, anchor);
@@ -60127,7 +60043,7 @@ function create_each_block$b(ctx) {
 		block,
 		id: create_each_block$b.name,
 		type: "each",
-		source: "(137:8) {#each commandResults as {color, results}}",
+		source: "(136:8) {#each commandResults as {color, results}}",
 		ctx
 	});
 
@@ -60180,9 +60096,9 @@ function create_fragment$1j(ctx) {
 			attr_dev(div0, "class", "box svelte-uhf9nj");
 			attr_dev(div0, "id", "terminal");
 			set_style(div0, "height", (/*commandInputDiv*/ ctx[4] ? 75 : 90) + "%");
-			add_location(div0, file$1c, 134, 4, 4505);
+			add_location(div0, file$1c, 133, 4, 4469);
 			attr_dev(div1, "class", "content contentBox terminalBox svelte-uhf9nj");
-			add_location(div1, file$1c, 107, 0, 3355);
+			add_location(div1, file$1c, 106, 0, 3319);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -60325,7 +60241,7 @@ function instance$1j($$self, $$props, $$invalidate) {
 		srollTerminalDiv();
 
 		if (!commandToRun) {
-			return createToast$2("No command entered", "warning");
+			return window.createToast("No command entered", "warning");
 		}
 
 		$$invalidate(2, commandResults = [
@@ -60388,7 +60304,7 @@ function instance$1j($$self, $$props, $$invalidate) {
 			try {
 				fs.writeFileSync(path.resolve(__dirname, "output.log"), outputLog);
 			} catch(error) {
-				createToast$2("Could not save the outputs to file: output.log", "warning");
+				window.createToast("Could not save the outputs to file: output.log", "warning");
 			}
 		});
 	}
@@ -60453,7 +60369,6 @@ function instance$1j($$self, $$props, $$invalidate) {
 	$$self.$capture_state = () => ({
 		IconButton,
 		Icon,
-		createToast: createToast$2,
 		PreModal,
 		tick,
 		Textfield,
