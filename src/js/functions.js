@@ -8,20 +8,13 @@ export const windowLoaded = writable(false);
 
 // Global variables
 
-window.electron = require("electron")
-window.remote = electron.remote
-
-window.path = require("path")
-
-window.fs = require("fs")
-
-window.spawn = require("child_process").spawn
-
-window.createToast = (msg, type="primary") => Toast.create({ message: msg, position:"is-top", type:`is-${type}`})
+window.createToast = (msg, type = "primary") => Toast.create({ message: msg, position: "is-top", type: `is-${type}` })
 window.sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
 window.targetElement = (id) => document.getElementById(id)
 window.getPageStatus = (id) => targetElement(id).style.display !== "none"
 window.showpage = (id) => { targetElement(id).style.display = "block" }
+
 window.hidepage = (id) => { targetElement(id).style.display = "none" }
 
 window.togglepage = (id) => {
@@ -37,10 +30,10 @@ window.showinfo = electronVersion >= "7" ? remote.dialog.showMessageBoxSync : re
 
 const versionFile = fs.readFileSync(path.join(__dirname, "../version.json"))
 
-window.currentVersion = localStorage["version"] =  JSON.parse(versionFile.toString("utf-8")).version
+window.currentVersion = localStorage["version"] = JSON.parse(versionFile.toString("utf-8")).version
 window.asyncForEach = async (array, callback) => {
     for (let index = 0; index < array.length; index++) {
-    
+
 
         await callback(array[index], index, array);
 
@@ -76,16 +69,16 @@ export function resizableDiv({ div, change = { width: true, height: true }, curs
                 if (target.classList.contains("filebrowser")) { target.style.display = "none" }
 
             }
-        
+
         }
 
         if (change.height) target.style.height = event.rect.height + 'px'
 
         // translate when resizing from top or left edges
-        
-        
+
+
         x += event.deltaRect.left
-        
+
         y += event.deltaRect.top
 
 
@@ -110,11 +103,11 @@ export function plot(mainTitle, xtitle, ytitle, data, plotArea, filetype = null)
     }
 
     if (filetype == 'mass') { dataLayout.yaxis.type = "log" }
-    
+
     let dataPlot = [];
 
     for (let x in data) { dataPlot.push(data[x]) }
-    
+
     try { Plotly.react(plotArea, dataPlot, dataLayout, { editable: true }) } catch (err) { console.log("Error occured while plotting\n", err) }
 }
 
@@ -130,7 +123,7 @@ export function subplot(mainTitle, xtitle, ytitle, data, plotArea, x2, y2, data2
         yaxis3: { anchor: 'free', overlaying: 'y', side: 'right', title: "Measured (mJ)", position: 0.97 },
         autosize: true,
         height: 450,
-    
+
     }
 
     let dataPlot1 = [];

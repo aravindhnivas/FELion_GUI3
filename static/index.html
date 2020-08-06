@@ -25,20 +25,34 @@
 
 <body class="mdc-typography">
 	<script>
+
 		window._ = require('./assets/js/lodash.js')
+		window.electron = require("electron")
+		window.remote = electron.remote
+		window.path = require("path")
+		window.fs = require("fs")
+		window.spawn = require("child_process").spawn
+
 	</script>
+
 	<script src='./assets/js/bulma-extensions.min.js'></script>
+
 	<script src='./assets/js/interact.min.js'></script>
 	<script src='./assets/js/marked.min.js'></script>
 	<script src='./assets/js/intro.js'></script>
+
+
 	<script src="./assets/js/katex/katex.min.js"></script>
+
 	<script src="./assets/js/highlight/highlight.min.js"></script>
 	<script src='./assets/js/editor/quill/quill.min.js'></script>
+
 	<script src='./bundle.js'></script>
-	<!-- <script src='./bundle.min.js'></script> -->
 
 	<script>
+
 		const customTitlebar = require('./custom-electron-titlebar/lib/index')
+
 		const MyTitleBar = new customTitlebar.Titlebar({ backgroundColor: customTitlebar.Color.fromHex('#38236b') });
 		MyTitleBar.updateTitle("FELion Spectrum Analyser")
 
