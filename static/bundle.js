@@ -9079,20 +9079,13 @@ const windowLoaded = writable(false);
 
 // Global variables
 
-window.electron = require("electron");
-window.remote = electron.remote;
-
-window.path = require("path");
-
-window.fs = require("fs");
-
-window.spawn = require("child_process").spawn;
-
-window.createToast = (msg, type="primary") => Toast.create({ message: msg, position:"is-top", type:`is-${type}`});
+window.createToast = (msg, type = "primary") => Toast.create({ message: msg, position: "is-top", type: `is-${type}` });
 window.sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
 window.targetElement = (id) => document.getElementById(id);
 window.getPageStatus = (id) => targetElement(id).style.display !== "none";
 window.showpage = (id) => { targetElement(id).style.display = "block"; };
+
 window.hidepage = (id) => { targetElement(id).style.display = "none"; };
 
 window.togglepage = (id) => {
@@ -9108,10 +9101,10 @@ window.showinfo = electronVersion >= "7" ? remote.dialog.showMessageBoxSync : re
 
 const versionFile = fs.readFileSync(path.join(__dirname, "../version.json"));
 
-window.currentVersion = localStorage["version"] =  JSON.parse(versionFile.toString("utf-8")).version;
+window.currentVersion = localStorage["version"] = JSON.parse(versionFile.toString("utf-8")).version;
 window.asyncForEach = async (array, callback) => {
     for (let index = 0; index < array.length; index++) {
-    
+
 
         await callback(array[index], index, array);
 
@@ -9147,16 +9140,16 @@ function resizableDiv({ div, change = { width: true, height: true }, cursor = { 
                 if (target.classList.contains("filebrowser")) { target.style.display = "none"; }
 
             }
-        
+
         }
 
         if (change.height) target.style.height = event.rect.height + 'px';
 
         // translate when resizing from top or left edges
-        
-        
+
+
         x += event.deltaRect.left;
-        
+
         y += event.deltaRect.top;
 
 
@@ -9181,11 +9174,11 @@ function plot(mainTitle, xtitle, ytitle, data, plotArea, filetype = null) {
     };
 
     if (filetype == 'mass') { dataLayout.yaxis.type = "log"; }
-    
+
     let dataPlot = [];
 
     for (let x in data) { dataPlot.push(data[x]); }
-    
+
     try { Plotly.react(plotArea, dataPlot, dataLayout, { editable: true }); } catch (err) { console.log("Error occured while plotting\n", err); }
 }
 
@@ -9201,7 +9194,7 @@ function subplot(mainTitle, xtitle, ytitle, data, plotArea, x2, y2, data2) {
         yaxis3: { anchor: 'free', overlaying: 'y', side: 'right', title: "Measured (mJ)", position: 0.97 },
         autosize: true,
         height: 450,
-    
+
     };
 
     let dataPlot1 = [];
@@ -12609,9 +12602,8 @@ function create_fragment$h(ctx) {
 			class: input_class_value = "mdc-text-field__input " + /*className*/ ctx[1]
 		},
 		{ type: /*type*/ ctx[2] },
-		{ step: /*step*/ ctx[3] },
-		/*valueProp*/ ctx[5],
-		exclude(/*$$props*/ ctx[9], [
+		/*valueProp*/ ctx[4],
+		exclude(/*$$props*/ ctx[8], [
 			"use",
 			"class",
 			"type",
@@ -12640,15 +12632,15 @@ function create_fragment$h(ctx) {
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, input, anchor);
-			/*input_binding*/ ctx[15](input);
+			/*input_binding*/ ctx[14](input);
 
 			if (!mounted) {
 				dispose = [
 					action_destroyer(useActions_action = useActions.call(null, input, /*use*/ ctx[0])),
-					action_destroyer(forwardEvents_action = /*forwardEvents*/ ctx[6].call(null, input)),
-					listen_dev(input, "change", /*change_handler*/ ctx[16], false, false, false),
-					listen_dev(input, "input", /*input_handler*/ ctx[17], false, false, false),
-					listen_dev(input, "change", /*changeHandler*/ ctx[8], false, false, false)
+					action_destroyer(forwardEvents_action = /*forwardEvents*/ ctx[5].call(null, input)),
+					listen_dev(input, "change", /*change_handler*/ ctx[15], false, false, false),
+					listen_dev(input, "input", /*input_handler*/ ctx[16], false, false, false),
+					listen_dev(input, "change", /*changeHandler*/ ctx[7], false, false, false)
 				];
 
 				mounted = true;
@@ -12658,9 +12650,8 @@ function create_fragment$h(ctx) {
 			set_attributes(input, input_data = get_spread_update(input_levels, [
 				dirty & /*className*/ 2 && input_class_value !== (input_class_value = "mdc-text-field__input " + /*className*/ ctx[1]) && { class: input_class_value },
 				dirty & /*type*/ 4 && { type: /*type*/ ctx[2] },
-				dirty & /*step*/ 8 && { step: /*step*/ ctx[3] },
-				dirty & /*valueProp*/ 32 && /*valueProp*/ ctx[5],
-				dirty & /*$$props*/ 512 && exclude(/*$$props*/ ctx[9], [
+				dirty & /*valueProp*/ 16 && /*valueProp*/ ctx[4],
+				dirty & /*$$props*/ 256 && exclude(/*$$props*/ ctx[8], [
 					"use",
 					"class",
 					"type",
@@ -12678,7 +12669,7 @@ function create_fragment$h(ctx) {
 		o: noop,
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(input);
-			/*input_binding*/ ctx[15](null);
+			/*input_binding*/ ctx[14](null);
 			mounted = false;
 			run_all(dispose);
 		}
@@ -12715,13 +12706,12 @@ function instance$h($$self, $$props, $$invalidate) {
 	let { dirty = false } = $$props;
 	let { invalid = false } = $$props;
 	let { updateInvalid = true } = $$props;
-	let { step = "" } = $$props;
 	let element;
 	let valueProp = {};
 
 	onMount(() => {
 		if (updateInvalid) {
-			$$invalidate(13, invalid = element.matches(":invalid"));
+			$$invalidate(12, invalid = element.matches(":invalid"));
 		}
 	});
 
@@ -12729,21 +12719,21 @@ function instance$h($$self, $$props, $$invalidate) {
 		switch (type) {
 			case "number":
 			case "range":
-				$$invalidate(10, value = toNumber(e.target.value));
+				$$invalidate(9, value = toNumber(e.target.value));
 				break;
 			case "file":
-				$$invalidate(11, files = e.target.files);
+				$$invalidate(10, files = e.target.files);
 			default:
-				$$invalidate(10, value = e.target.value);
+				$$invalidate(9, value = e.target.value);
 				break;
 		}
 	}
 
 	function changeHandler(e) {
-		$$invalidate(12, dirty = true);
+		$$invalidate(11, dirty = true);
 
 		if (updateInvalid) {
-			$$invalidate(13, invalid = element.matches(":invalid"));
+			$$invalidate(12, invalid = element.matches(":invalid"));
 		}
 	}
 
@@ -12753,7 +12743,7 @@ function instance$h($$self, $$props, $$invalidate) {
 	function input_binding($$value) {
 		binding_callbacks[$$value ? "unshift" : "push"](() => {
 			element = $$value;
-			$$invalidate(4, element);
+			$$invalidate(3, element);
 		});
 	}
 
@@ -12761,16 +12751,15 @@ function instance$h($$self, $$props, $$invalidate) {
 	const input_handler = e => type !== "file" && valueUpdater(e);
 
 	$$self.$set = $$new_props => {
-		$$invalidate(9, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
+		$$invalidate(8, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
 		if ("use" in $$new_props) $$invalidate(0, use = $$new_props.use);
 		if ("class" in $$new_props) $$invalidate(1, className = $$new_props.class);
 		if ("type" in $$new_props) $$invalidate(2, type = $$new_props.type);
-		if ("value" in $$new_props) $$invalidate(10, value = $$new_props.value);
-		if ("files" in $$new_props) $$invalidate(11, files = $$new_props.files);
-		if ("dirty" in $$new_props) $$invalidate(12, dirty = $$new_props.dirty);
-		if ("invalid" in $$new_props) $$invalidate(13, invalid = $$new_props.invalid);
-		if ("updateInvalid" in $$new_props) $$invalidate(14, updateInvalid = $$new_props.updateInvalid);
-		if ("step" in $$new_props) $$invalidate(3, step = $$new_props.step);
+		if ("value" in $$new_props) $$invalidate(9, value = $$new_props.value);
+		if ("files" in $$new_props) $$invalidate(10, files = $$new_props.files);
+		if ("dirty" in $$new_props) $$invalidate(11, dirty = $$new_props.dirty);
+		if ("invalid" in $$new_props) $$invalidate(12, invalid = $$new_props.invalid);
+		if ("updateInvalid" in $$new_props) $$invalidate(13, updateInvalid = $$new_props.updateInvalid);
 	};
 
 	$$self.$capture_state = () => ({
@@ -12788,7 +12777,6 @@ function instance$h($$self, $$props, $$invalidate) {
 		dirty,
 		invalid,
 		updateInvalid,
-		step,
 		element,
 		valueProp,
 		toNumber,
@@ -12797,18 +12785,17 @@ function instance$h($$self, $$props, $$invalidate) {
 	});
 
 	$$self.$inject_state = $$new_props => {
-		$$invalidate(9, $$props = assign(assign({}, $$props), $$new_props));
+		$$invalidate(8, $$props = assign(assign({}, $$props), $$new_props));
 		if ("use" in $$props) $$invalidate(0, use = $$new_props.use);
 		if ("className" in $$props) $$invalidate(1, className = $$new_props.className);
 		if ("type" in $$props) $$invalidate(2, type = $$new_props.type);
-		if ("value" in $$props) $$invalidate(10, value = $$new_props.value);
-		if ("files" in $$props) $$invalidate(11, files = $$new_props.files);
-		if ("dirty" in $$props) $$invalidate(12, dirty = $$new_props.dirty);
-		if ("invalid" in $$props) $$invalidate(13, invalid = $$new_props.invalid);
-		if ("updateInvalid" in $$props) $$invalidate(14, updateInvalid = $$new_props.updateInvalid);
-		if ("step" in $$props) $$invalidate(3, step = $$new_props.step);
-		if ("element" in $$props) $$invalidate(4, element = $$new_props.element);
-		if ("valueProp" in $$props) $$invalidate(5, valueProp = $$new_props.valueProp);
+		if ("value" in $$props) $$invalidate(9, value = $$new_props.value);
+		if ("files" in $$props) $$invalidate(10, files = $$new_props.files);
+		if ("dirty" in $$props) $$invalidate(11, dirty = $$new_props.dirty);
+		if ("invalid" in $$props) $$invalidate(12, invalid = $$new_props.invalid);
+		if ("updateInvalid" in $$props) $$invalidate(13, updateInvalid = $$new_props.updateInvalid);
+		if ("element" in $$props) $$invalidate(3, element = $$new_props.element);
+		if ("valueProp" in $$props) $$invalidate(4, valueProp = $$new_props.valueProp);
 	};
 
 	if ($$props && "$$inject" in $$props) {
@@ -12816,11 +12803,11 @@ function instance$h($$self, $$props, $$invalidate) {
 	}
 
 	$$self.$$.update = () => {
-		if ($$self.$$.dirty & /*type, valueProp, value*/ 1060) {
+		if ($$self.$$.dirty & /*type, valueProp, value*/ 532) {
 			 if (type === "file") {
 				delete valueProp.value;
 			} else {
-				$$invalidate(5, valueProp.value = value === undefined ? "" : value, valueProp);
+				$$invalidate(4, valueProp.value = value === undefined ? "" : value, valueProp);
 			}
 		}
 	};
@@ -12831,7 +12818,6 @@ function instance$h($$self, $$props, $$invalidate) {
 		use,
 		className,
 		type,
-		step,
 		element,
 		valueProp,
 		forwardEvents,
@@ -12857,12 +12843,11 @@ class Input extends SvelteComponentDev {
 			use: 0,
 			class: 1,
 			type: 2,
-			value: 10,
-			files: 11,
-			dirty: 12,
-			invalid: 13,
-			updateInvalid: 14,
-			step: 3
+			value: 9,
+			files: 10,
+			dirty: 11,
+			invalid: 12,
+			updateInvalid: 13
 		});
 
 		dispatch_dev("SvelteRegisterComponent", {
@@ -12934,14 +12919,6 @@ class Input extends SvelteComponentDev {
 	}
 
 	set updateInvalid(value) {
-		throw new Error("<Input>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	get step() {
-		throw new Error("<Input>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	set step(value) {
 		throw new Error("<Input>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 }
@@ -13213,8 +13190,8 @@ function create_else_block_1(ctx) {
 	let current;
 	let mounted;
 	let dispose;
-	const default_slot_template = /*$$slots*/ ctx[27].default;
-	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[41], null);
+	const default_slot_template = /*$$slots*/ ctx[26].default;
+	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[40], null);
 
 	let div_levels = [
 		{
@@ -13228,7 +13205,7 @@ function create_else_block_1(ctx) {
 			? "mdc-text-field--with-trailing-icon"
 			: "") + "\n      " + (/*invalid*/ ctx[3] ? "mdc-text-field--invalid" : "") + "\n    "
 		},
-		/*props*/ ctx[20]
+		/*props*/ ctx[19]
 	];
 
 	let div_data = {};
@@ -13242,7 +13219,7 @@ function create_else_block_1(ctx) {
 			div = element("div");
 			if (default_slot) default_slot.c();
 			set_attributes(div, div_data);
-			add_location(div, file$j, 65, 2, 2089);
+			add_location(div, file$j, 65, 2, 2082);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -13251,13 +13228,13 @@ function create_else_block_1(ctx) {
 				default_slot.m(div, null);
 			}
 
-			/*div_binding*/ ctx[40](div);
+			/*div_binding*/ ctx[39](div);
 			current = true;
 
 			if (!mounted) {
 				dispose = [
 					action_destroyer(useActions_action = useActions.call(null, div, /*use*/ ctx[4])),
-					action_destroyer(forwardEvents_action = /*forwardEvents*/ ctx[22].call(null, div))
+					action_destroyer(forwardEvents_action = /*forwardEvents*/ ctx[21].call(null, div))
 				];
 
 				mounted = true;
@@ -13265,8 +13242,8 @@ function create_else_block_1(ctx) {
 		},
 		p: function update(ctx, dirty) {
 			if (default_slot) {
-				if (default_slot.p && dirty[1] & /*$$scope*/ 1024) {
-					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[41], dirty, null, null);
+				if (default_slot.p && dirty[1] & /*$$scope*/ 512) {
+					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[40], dirty, null, null);
 				}
 			}
 
@@ -13280,7 +13257,7 @@ function create_else_block_1(ctx) {
 				: "") + "\n      " + (/*withTrailingIcon*/ ctx[13]
 				? "mdc-text-field--with-trailing-icon"
 				: "") + "\n      " + (/*invalid*/ ctx[3] ? "mdc-text-field--invalid" : "") + "\n    ")) && { class: div_class_value },
-				dirty[0] & /*props*/ 1048576 && /*props*/ ctx[20]
+				dirty[0] & /*props*/ 524288 && /*props*/ ctx[19]
 			]));
 
 			if (useActions_action && is_function(useActions_action.update) && dirty[0] & /*use*/ 16) useActions_action.update.call(null, /*use*/ ctx[4]);
@@ -13297,7 +13274,7 @@ function create_else_block_1(ctx) {
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(div);
 			if (default_slot) default_slot.d(detaching);
-			/*div_binding*/ ctx[40](null);
+			/*div_binding*/ ctx[39](null);
 			mounted = false;
 			run_all(dispose);
 		}
@@ -13328,8 +13305,8 @@ function create_if_block$6(ctx) {
 	let current;
 	let mounted;
 	let dispose;
-	const default_slot_template = /*$$slots*/ ctx[27].default;
-	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[41], null);
+	const default_slot_template = /*$$slots*/ ctx[26].default;
+	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[40], null);
 	const if_block_creators = [create_if_block_6, create_else_block$1];
 	const if_blocks = [];
 
@@ -13357,7 +13334,7 @@ function create_if_block$6(ctx) {
 			? "mdc-text-field--with-trailing-icon"
 			: "") + "\n      " + (/*invalid*/ ctx[3] ? "mdc-text-field--invalid" : "") + "\n    "
 		},
-		/*props*/ ctx[20]
+		/*props*/ ctx[19]
 	];
 
 	let label_1_data = {};
@@ -13392,13 +13369,13 @@ function create_if_block$6(ctx) {
 			if (if_block1) if_block1.m(label_1, null);
 			append_dev(label_1, t2);
 			if (if_block2) if_block2.m(label_1, null);
-			/*label_1_binding*/ ctx[39](label_1);
+			/*label_1_binding*/ ctx[38](label_1);
 			current = true;
 
 			if (!mounted) {
 				dispose = [
 					action_destroyer(useActions_action = useActions.call(null, label_1, /*use*/ ctx[4])),
-					action_destroyer(forwardEvents_action = /*forwardEvents*/ ctx[22].call(null, label_1))
+					action_destroyer(forwardEvents_action = /*forwardEvents*/ ctx[21].call(null, label_1))
 				];
 
 				mounted = true;
@@ -13406,8 +13383,8 @@ function create_if_block$6(ctx) {
 		},
 		p: function update(ctx, dirty) {
 			if (default_slot) {
-				if (default_slot.p && dirty[1] & /*$$scope*/ 1024) {
-					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[41], dirty, null, null);
+				if (default_slot.p && dirty[1] & /*$$scope*/ 512) {
+					update_slot(default_slot, default_slot_template, ctx, /*$$scope*/ ctx[40], dirty, null, null);
 				}
 			}
 
@@ -13493,7 +13470,7 @@ function create_if_block$6(ctx) {
 				: "") + "\n      " + (/*withTrailingIcon*/ ctx[13]
 				? "mdc-text-field--with-trailing-icon"
 				: "") + "\n      " + (/*invalid*/ ctx[3] ? "mdc-text-field--invalid" : "") + "\n    ")) && { class: label_1_class_value },
-				dirty[0] & /*props*/ 1048576 && /*props*/ ctx[20]
+				dirty[0] & /*props*/ 524288 && /*props*/ ctx[19]
 			]));
 
 			if (useActions_action && is_function(useActions_action.update) && dirty[0] & /*use*/ 16) useActions_action.update.call(null, /*use*/ ctx[4]);
@@ -13519,7 +13496,7 @@ function create_if_block$6(ctx) {
 			if_blocks[current_block_type_index].d();
 			if (if_block1) if_block1.d();
 			if (if_block2) if_block2.d();
-			/*label_1_binding*/ ctx[39](null);
+			/*label_1_binding*/ ctx[38](null);
 			mounted = false;
 			run_all(dispose);
 		}
@@ -13547,29 +13524,28 @@ function create_else_block$1(ctx) {
 
 	const input_spread_levels = [
 		{ type: /*type*/ ctx[16] },
-		{ step: /*step*/ ctx[17] },
 		{ disabled: /*disabled*/ ctx[7] },
-		{ updateInvalid: /*updateInvalid*/ ctx[18] },
+		{ updateInvalid: /*updateInvalid*/ ctx[17] },
 		/*fullwidth*/ ctx[8] && /*label*/ ctx[15]
 		? { placeholder: /*label*/ ctx[15] }
 		: {},
-		prefixFilter(/*$$props*/ ctx[23], "input$")
+		prefixFilter(/*$$props*/ ctx[22], "input$")
 	];
 
 	function input_value_binding(value) {
-		/*input_value_binding*/ ctx[33].call(null, value);
+		/*input_value_binding*/ ctx[32].call(null, value);
 	}
 
 	function input_files_binding(value) {
-		/*input_files_binding*/ ctx[34].call(null, value);
+		/*input_files_binding*/ ctx[33].call(null, value);
 	}
 
 	function input_dirty_binding(value) {
-		/*input_dirty_binding*/ ctx[35].call(null, value);
+		/*input_dirty_binding*/ ctx[34].call(null, value);
 	}
 
 	function input_invalid_binding(value) {
-		/*input_invalid_binding*/ ctx[36].call(null, value);
+		/*input_invalid_binding*/ ctx[35].call(null, value);
 	}
 
 	let input_props = {};
@@ -13599,8 +13575,8 @@ function create_else_block$1(ctx) {
 	binding_callbacks.push(() => bind(input, "files", input_files_binding));
 	binding_callbacks.push(() => bind(input, "dirty", input_dirty_binding));
 	binding_callbacks.push(() => bind(input, "invalid", input_invalid_binding));
-	input.$on("change", /*change_handler_1*/ ctx[37]);
-	input.$on("input", /*input_handler_1*/ ctx[38]);
+	input.$on("change", /*change_handler_1*/ ctx[36]);
+	input.$on("input", /*input_handler_1*/ ctx[37]);
 
 	const block = {
 		c: function create() {
@@ -13611,16 +13587,15 @@ function create_else_block$1(ctx) {
 			current = true;
 		},
 		p: function update(ctx, dirty) {
-			const input_changes = (dirty[0] & /*type, step, disabled, updateInvalid, fullwidth, label, $$props*/ 8880512)
+			const input_changes = (dirty[0] & /*type, disabled, updateInvalid, fullwidth, label, $$props*/ 4424064)
 			? get_spread_update(input_spread_levels, [
 					dirty[0] & /*type*/ 65536 && { type: /*type*/ ctx[16] },
-					dirty[0] & /*step*/ 131072 && { step: /*step*/ ctx[17] },
 					dirty[0] & /*disabled*/ 128 && { disabled: /*disabled*/ ctx[7] },
-					dirty[0] & /*updateInvalid*/ 262144 && { updateInvalid: /*updateInvalid*/ ctx[18] },
+					dirty[0] & /*updateInvalid*/ 131072 && { updateInvalid: /*updateInvalid*/ ctx[17] },
 					dirty[0] & /*fullwidth, label*/ 33024 && get_spread_object(/*fullwidth*/ ctx[8] && /*label*/ ctx[15]
 					? { placeholder: /*label*/ ctx[15] }
 					: {}),
-					dirty[0] & /*$$props*/ 8388608 && get_spread_object(prefixFilter(/*$$props*/ ctx[23], "input$"))
+					dirty[0] & /*$$props*/ 4194304 && get_spread_object(prefixFilter(/*$$props*/ ctx[22], "input$"))
 				])
 			: {};
 
@@ -13685,20 +13660,20 @@ function create_if_block_6(ctx) {
 
 	const textarea_1_spread_levels = [
 		{ disabled: /*disabled*/ ctx[7] },
-		{ updateInvalid: /*updateInvalid*/ ctx[18] },
-		prefixFilter(/*$$props*/ ctx[23], "input$")
+		{ updateInvalid: /*updateInvalid*/ ctx[17] },
+		prefixFilter(/*$$props*/ ctx[22], "input$")
 	];
 
 	function textarea_1_value_binding(value) {
-		/*textarea_1_value_binding*/ ctx[28].call(null, value);
+		/*textarea_1_value_binding*/ ctx[27].call(null, value);
 	}
 
 	function textarea_1_dirty_binding(value) {
-		/*textarea_1_dirty_binding*/ ctx[29].call(null, value);
+		/*textarea_1_dirty_binding*/ ctx[28].call(null, value);
 	}
 
 	function textarea_1_invalid_binding(value) {
-		/*textarea_1_invalid_binding*/ ctx[30].call(null, value);
+		/*textarea_1_invalid_binding*/ ctx[29].call(null, value);
 	}
 
 	let textarea_1_props = {};
@@ -13723,8 +13698,8 @@ function create_if_block_6(ctx) {
 	binding_callbacks.push(() => bind(textarea_1, "value", textarea_1_value_binding));
 	binding_callbacks.push(() => bind(textarea_1, "dirty", textarea_1_dirty_binding));
 	binding_callbacks.push(() => bind(textarea_1, "invalid", textarea_1_invalid_binding));
-	textarea_1.$on("change", /*change_handler*/ ctx[31]);
-	textarea_1.$on("input", /*input_handler*/ ctx[32]);
+	textarea_1.$on("change", /*change_handler*/ ctx[30]);
+	textarea_1.$on("input", /*input_handler*/ ctx[31]);
 
 	const block = {
 		c: function create() {
@@ -13735,11 +13710,11 @@ function create_if_block_6(ctx) {
 			current = true;
 		},
 		p: function update(ctx, dirty) {
-			const textarea_1_changes = (dirty[0] & /*disabled, updateInvalid, $$props*/ 8650880)
+			const textarea_1_changes = (dirty[0] & /*disabled, updateInvalid, $$props*/ 4325504)
 			? get_spread_update(textarea_1_spread_levels, [
 					dirty[0] & /*disabled*/ 128 && { disabled: /*disabled*/ ctx[7] },
-					dirty[0] & /*updateInvalid*/ 262144 && { updateInvalid: /*updateInvalid*/ ctx[18] },
-					dirty[0] & /*$$props*/ 8388608 && get_spread_object(prefixFilter(/*$$props*/ ctx[23], "input$"))
+					dirty[0] & /*updateInvalid*/ 131072 && { updateInvalid: /*updateInvalid*/ ctx[17] },
+					dirty[0] & /*$$props*/ 4194304 && get_spread_object(prefixFilter(/*$$props*/ ctx[22], "input$"))
 				])
 			: {};
 
@@ -13891,7 +13866,7 @@ function create_if_block_3(ctx) {
 function create_if_block_5(ctx) {
 	let floatinglabel;
 	let current;
-	const floatinglabel_spread_levels = [{ wrapped: true }, prefixFilter(/*$$props*/ ctx[23], "label$")];
+	const floatinglabel_spread_levels = [{ wrapped: true }, prefixFilter(/*$$props*/ ctx[22], "label$")];
 
 	let floatinglabel_props = {
 		$$slots: { default: [create_default_slot_2$1] },
@@ -13916,14 +13891,14 @@ function create_if_block_5(ctx) {
 			current = true;
 		},
 		p: function update(ctx, dirty) {
-			const floatinglabel_changes = (dirty[0] & /*$$props*/ 8388608)
+			const floatinglabel_changes = (dirty[0] & /*$$props*/ 4194304)
 			? get_spread_update(floatinglabel_spread_levels, [
 					floatinglabel_spread_levels[0],
-					get_spread_object(prefixFilter(/*$$props*/ ctx[23], "label$"))
+					get_spread_object(prefixFilter(/*$$props*/ ctx[22], "label$"))
 				])
 			: {};
 
-			if (dirty[0] & /*label*/ 32768 | dirty[1] & /*$$scope*/ 1024) {
+			if (dirty[0] & /*label*/ 32768 | dirty[1] & /*$$scope*/ 512) {
 				floatinglabel_changes.$$scope = { dirty, ctx };
 			}
 
@@ -13958,8 +13933,8 @@ function create_if_block_5(ctx) {
 function create_default_slot_2$1(ctx) {
 	let t;
 	let current;
-	const label_slot_template = /*$$slots*/ ctx[27].label;
-	const label_slot = create_slot(label_slot_template, ctx, /*$$scope*/ ctx[41], get_label_slot_context);
+	const label_slot_template = /*$$slots*/ ctx[26].label;
+	const label_slot = create_slot(label_slot_template, ctx, /*$$scope*/ ctx[40], get_label_slot_context);
 
 	const block = {
 		c: function create() {
@@ -13979,8 +13954,8 @@ function create_default_slot_2$1(ctx) {
 			if (!current || dirty[0] & /*label*/ 32768) set_data_dev(t, /*label*/ ctx[15]);
 
 			if (label_slot) {
-				if (label_slot.p && dirty[1] & /*$$scope*/ 1024) {
-					update_slot(label_slot, label_slot_template, ctx, /*$$scope*/ ctx[41], dirty, get_label_slot_changes, get_label_slot_context);
+				if (label_slot.p && dirty[1] & /*$$scope*/ 512) {
+					update_slot(label_slot, label_slot_template, ctx, /*$$scope*/ ctx[40], dirty, get_label_slot_changes, get_label_slot_context);
 				}
 			}
 		},
@@ -14014,7 +13989,7 @@ function create_default_slot_2$1(ctx) {
 function create_if_block_4(ctx) {
 	let lineripple;
 	let current;
-	const lineripple_spread_levels = [prefixFilter(/*$$props*/ ctx[23], "ripple$")];
+	const lineripple_spread_levels = [prefixFilter(/*$$props*/ ctx[22], "ripple$")];
 	let lineripple_props = {};
 
 	for (let i = 0; i < lineripple_spread_levels.length; i += 1) {
@@ -14032,8 +14007,8 @@ function create_if_block_4(ctx) {
 			current = true;
 		},
 		p: function update(ctx, dirty) {
-			const lineripple_changes = (dirty[0] & /*$$props*/ 8388608)
-			? get_spread_update(lineripple_spread_levels, [get_spread_object(prefixFilter(/*$$props*/ ctx[23], "ripple$"))])
+			const lineripple_changes = (dirty[0] & /*$$props*/ 4194304)
+			? get_spread_update(lineripple_spread_levels, [get_spread_object(prefixFilter(/*$$props*/ ctx[22], "ripple$"))])
 			: {};
 
 			lineripple.$set(lineripple_changes);
@@ -14072,7 +14047,7 @@ function create_if_block_1$1(ctx) {
 		{
 			noLabel: /*noLabel*/ ctx[14] || /*label*/ ctx[15] == null
 		},
-		prefixFilter(/*$$props*/ ctx[23], "outline$")
+		prefixFilter(/*$$props*/ ctx[22], "outline$")
 	];
 
 	let notchedoutline_props = {
@@ -14098,16 +14073,16 @@ function create_if_block_1$1(ctx) {
 			current = true;
 		},
 		p: function update(ctx, dirty) {
-			const notchedoutline_changes = (dirty[0] & /*noLabel, label, $$props*/ 8437760)
+			const notchedoutline_changes = (dirty[0] & /*noLabel, label, $$props*/ 4243456)
 			? get_spread_update(notchedoutline_spread_levels, [
 					dirty[0] & /*noLabel, label*/ 49152 && {
 						noLabel: /*noLabel*/ ctx[14] || /*label*/ ctx[15] == null
 					},
-					dirty[0] & /*$$props*/ 8388608 && get_spread_object(prefixFilter(/*$$props*/ ctx[23], "outline$"))
+					dirty[0] & /*$$props*/ 4194304 && get_spread_object(prefixFilter(/*$$props*/ ctx[22], "outline$"))
 				])
 			: {};
 
-			if (dirty[0] & /*label, noLabel*/ 49152 | dirty[1] & /*$$scope*/ 1024) {
+			if (dirty[0] & /*label, noLabel*/ 49152 | dirty[1] & /*$$scope*/ 512) {
 				notchedoutline_changes.$$scope = { dirty, ctx };
 			}
 
@@ -14142,7 +14117,7 @@ function create_if_block_1$1(ctx) {
 function create_if_block_2$1(ctx) {
 	let floatinglabel;
 	let current;
-	const floatinglabel_spread_levels = [{ wrapped: true }, prefixFilter(/*$$props*/ ctx[23], "label$")];
+	const floatinglabel_spread_levels = [{ wrapped: true }, prefixFilter(/*$$props*/ ctx[22], "label$")];
 
 	let floatinglabel_props = {
 		$$slots: { default: [create_default_slot_1$2] },
@@ -14167,14 +14142,14 @@ function create_if_block_2$1(ctx) {
 			current = true;
 		},
 		p: function update(ctx, dirty) {
-			const floatinglabel_changes = (dirty[0] & /*$$props*/ 8388608)
+			const floatinglabel_changes = (dirty[0] & /*$$props*/ 4194304)
 			? get_spread_update(floatinglabel_spread_levels, [
 					floatinglabel_spread_levels[0],
-					get_spread_object(prefixFilter(/*$$props*/ ctx[23], "label$"))
+					get_spread_object(prefixFilter(/*$$props*/ ctx[22], "label$"))
 				])
 			: {};
 
-			if (dirty[0] & /*label*/ 32768 | dirty[1] & /*$$scope*/ 1024) {
+			if (dirty[0] & /*label*/ 32768 | dirty[1] & /*$$scope*/ 512) {
 				floatinglabel_changes.$$scope = { dirty, ctx };
 			}
 
@@ -14209,8 +14184,8 @@ function create_if_block_2$1(ctx) {
 function create_default_slot_1$2(ctx) {
 	let t;
 	let current;
-	const label_slot_template = /*$$slots*/ ctx[27].label;
-	const label_slot = create_slot(label_slot_template, ctx, /*$$scope*/ ctx[41], get_label_slot_context_1);
+	const label_slot_template = /*$$slots*/ ctx[26].label;
+	const label_slot = create_slot(label_slot_template, ctx, /*$$scope*/ ctx[40], get_label_slot_context_1);
 
 	const block = {
 		c: function create() {
@@ -14230,8 +14205,8 @@ function create_default_slot_1$2(ctx) {
 			if (!current || dirty[0] & /*label*/ 32768) set_data_dev(t, /*label*/ ctx[15]);
 
 			if (label_slot) {
-				if (label_slot.p && dirty[1] & /*$$scope*/ 1024) {
-					update_slot(label_slot, label_slot_template, ctx, /*$$scope*/ ctx[41], dirty, get_label_slot_changes_1, get_label_slot_context_1);
+				if (label_slot.p && dirty[1] & /*$$scope*/ 512) {
+					update_slot(label_slot, label_slot_template, ctx, /*$$scope*/ ctx[40], dirty, get_label_slot_changes_1, get_label_slot_context_1);
 				}
 			}
 		},
@@ -14336,7 +14311,7 @@ function create_fragment$j(ctx) {
 	const if_blocks = [];
 
 	function select_block_type(ctx, dirty) {
-		if (/*valued*/ ctx[21]) return 0;
+		if (/*valued*/ ctx[20]) return 0;
 		return 1;
 	}
 
@@ -14427,7 +14402,6 @@ function instance$j($$self, $$props, $$invalidate) {
 	let { noLabel = false } = $$props;
 	let { label = null } = $$props;
 	let { type = "text" } = $$props;
-	let { step = "" } = $$props;
 	let { value = uninitializedValue } = $$props;
 	let { files = uninitializedValue } = $$props;
 	let { dirty = false } = $$props;
@@ -14444,7 +14418,7 @@ function instance$j($$self, $$props, $$invalidate) {
 	}
 
 	onMount(() => {
-		$$invalidate(42, textField = new MDCTextField(element));
+		$$invalidate(41, textField = new MDCTextField(element));
 
 		if (!ripple) {
 			textField.ripple && textField.ripple.destroy();
@@ -14482,7 +14456,7 @@ function instance$j($$self, $$props, $$invalidate) {
 
 	function textarea_1_invalid_binding(value$1) {
 		invalid = value$1;
-		(((((($$invalidate(3, invalid), $$invalidate(42, textField)), $$invalidate(18, updateInvalid)), $$invalidate(0, value)), $$invalidate(44, uninitializedValue)), $$invalidate(7, disabled)), $$invalidate(24, useNativeValidation));
+		(((((($$invalidate(3, invalid), $$invalidate(41, textField)), $$invalidate(17, updateInvalid)), $$invalidate(0, value)), $$invalidate(43, uninitializedValue)), $$invalidate(7, disabled)), $$invalidate(23, useNativeValidation));
 	}
 
 	function change_handler(event) {
@@ -14510,7 +14484,7 @@ function instance$j($$self, $$props, $$invalidate) {
 
 	function input_invalid_binding(value$1) {
 		invalid = value$1;
-		(((((($$invalidate(3, invalid), $$invalidate(42, textField)), $$invalidate(18, updateInvalid)), $$invalidate(0, value)), $$invalidate(44, uninitializedValue)), $$invalidate(7, disabled)), $$invalidate(24, useNativeValidation));
+		(((((($$invalidate(3, invalid), $$invalidate(41, textField)), $$invalidate(17, updateInvalid)), $$invalidate(0, value)), $$invalidate(43, uninitializedValue)), $$invalidate(7, disabled)), $$invalidate(23, useNativeValidation));
 	}
 
 	function change_handler_1(event) {
@@ -14524,19 +14498,19 @@ function instance$j($$self, $$props, $$invalidate) {
 	function label_1_binding($$value) {
 		binding_callbacks[$$value ? "unshift" : "push"](() => {
 			element = $$value;
-			$$invalidate(19, element);
+			$$invalidate(18, element);
 		});
 	}
 
 	function div_binding($$value) {
 		binding_callbacks[$$value ? "unshift" : "push"](() => {
 			element = $$value;
-			$$invalidate(19, element);
+			$$invalidate(18, element);
 		});
 	}
 
 	$$self.$set = $$new_props => {
-		$$invalidate(23, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
+		$$invalidate(22, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
 		if ("use" in $$new_props) $$invalidate(4, use = $$new_props.use);
 		if ("class" in $$new_props) $$invalidate(5, className = $$new_props.class);
 		if ("ripple" in $$new_props) $$invalidate(6, ripple = $$new_props.ripple);
@@ -14550,14 +14524,13 @@ function instance$j($$self, $$props, $$invalidate) {
 		if ("noLabel" in $$new_props) $$invalidate(14, noLabel = $$new_props.noLabel);
 		if ("label" in $$new_props) $$invalidate(15, label = $$new_props.label);
 		if ("type" in $$new_props) $$invalidate(16, type = $$new_props.type);
-		if ("step" in $$new_props) $$invalidate(17, step = $$new_props.step);
 		if ("value" in $$new_props) $$invalidate(0, value = $$new_props.value);
 		if ("files" in $$new_props) $$invalidate(1, files = $$new_props.files);
 		if ("dirty" in $$new_props) $$invalidate(2, dirty = $$new_props.dirty);
 		if ("invalid" in $$new_props) $$invalidate(3, invalid = $$new_props.invalid);
-		if ("updateInvalid" in $$new_props) $$invalidate(18, updateInvalid = $$new_props.updateInvalid);
-		if ("useNativeValidation" in $$new_props) $$invalidate(24, useNativeValidation = $$new_props.useNativeValidation);
-		if ("$$scope" in $$new_props) $$invalidate(41, $$scope = $$new_props.$$scope);
+		if ("updateInvalid" in $$new_props) $$invalidate(17, updateInvalid = $$new_props.updateInvalid);
+		if ("useNativeValidation" in $$new_props) $$invalidate(23, useNativeValidation = $$new_props.useNativeValidation);
+		if ("$$scope" in $$new_props) $$invalidate(40, $$scope = $$new_props.$$scope);
 	};
 
 	$$self.$capture_state = () => ({
@@ -14590,7 +14563,6 @@ function instance$j($$self, $$props, $$invalidate) {
 		noLabel,
 		label,
 		type,
-		step,
 		value,
 		files,
 		dirty,
@@ -14608,8 +14580,8 @@ function instance$j($$self, $$props, $$invalidate) {
 	});
 
 	$$self.$inject_state = $$new_props => {
-		$$invalidate(23, $$props = assign(assign({}, $$props), $$new_props));
-		if ("uninitializedValue" in $$props) $$invalidate(44, uninitializedValue = $$new_props.uninitializedValue);
+		$$invalidate(22, $$props = assign(assign({}, $$props), $$new_props));
+		if ("uninitializedValue" in $$props) $$invalidate(43, uninitializedValue = $$new_props.uninitializedValue);
 		if ("use" in $$props) $$invalidate(4, use = $$new_props.use);
 		if ("className" in $$props) $$invalidate(5, className = $$new_props.className);
 		if ("ripple" in $$props) $$invalidate(6, ripple = $$new_props.ripple);
@@ -14623,19 +14595,18 @@ function instance$j($$self, $$props, $$invalidate) {
 		if ("noLabel" in $$props) $$invalidate(14, noLabel = $$new_props.noLabel);
 		if ("label" in $$props) $$invalidate(15, label = $$new_props.label);
 		if ("type" in $$props) $$invalidate(16, type = $$new_props.type);
-		if ("step" in $$props) $$invalidate(17, step = $$new_props.step);
 		if ("value" in $$props) $$invalidate(0, value = $$new_props.value);
 		if ("files" in $$props) $$invalidate(1, files = $$new_props.files);
 		if ("dirty" in $$props) $$invalidate(2, dirty = $$new_props.dirty);
 		if ("invalid" in $$props) $$invalidate(3, invalid = $$new_props.invalid);
-		if ("updateInvalid" in $$props) $$invalidate(18, updateInvalid = $$new_props.updateInvalid);
-		if ("useNativeValidation" in $$props) $$invalidate(24, useNativeValidation = $$new_props.useNativeValidation);
-		if ("element" in $$props) $$invalidate(19, element = $$new_props.element);
-		if ("textField" in $$props) $$invalidate(42, textField = $$new_props.textField);
+		if ("updateInvalid" in $$props) $$invalidate(17, updateInvalid = $$new_props.updateInvalid);
+		if ("useNativeValidation" in $$props) $$invalidate(23, useNativeValidation = $$new_props.useNativeValidation);
+		if ("element" in $$props) $$invalidate(18, element = $$new_props.element);
+		if ("textField" in $$props) $$invalidate(41, textField = $$new_props.textField);
 		if ("addLayoutListener" in $$props) addLayoutListener = $$new_props.addLayoutListener;
 		if ("removeLayoutListener" in $$props) removeLayoutListener = $$new_props.removeLayoutListener;
-		if ("props" in $$props) $$invalidate(20, props = $$new_props.props);
-		if ("valued" in $$props) $$invalidate(21, valued = $$new_props.valued);
+		if ("props" in $$props) $$invalidate(19, props = $$new_props.props);
+		if ("valued" in $$props) $$invalidate(20, valued = $$new_props.valued);
 	};
 
 	let props;
@@ -14646,7 +14617,7 @@ function instance$j($$self, $$props, $$invalidate) {
 	}
 
 	$$self.$$.update = () => {
-		 $$invalidate(20, props = exclude($$props, [
+		 $$invalidate(19, props = exclude($$props, [
 			"use",
 			"class",
 			"ripple",
@@ -14672,34 +14643,34 @@ function instance$j($$self, $$props, $$invalidate) {
 		]));
 
 		if ($$self.$$.dirty[0] & /*value, files*/ 3) {
-			 $$invalidate(21, valued = value !== uninitializedValue || files !== uninitializedValue);
+			 $$invalidate(20, valued = value !== uninitializedValue || files !== uninitializedValue);
 		}
 
-		if ($$self.$$.dirty[0] & /*value*/ 1 | $$self.$$.dirty[1] & /*textField*/ 2048) {
+		if ($$self.$$.dirty[0] & /*value*/ 1 | $$self.$$.dirty[1] & /*textField*/ 1024) {
 			 if (textField && value !== uninitializedValue && textField.value !== value) {
-				$$invalidate(42, textField.value = value, textField);
+				$$invalidate(41, textField.value = value, textField);
 			}
 		}
 
-		if ($$self.$$.dirty[0] & /*disabled*/ 128 | $$self.$$.dirty[1] & /*textField*/ 2048) {
+		if ($$self.$$.dirty[0] & /*disabled*/ 128 | $$self.$$.dirty[1] & /*textField*/ 1024) {
 			 if (textField && textField.disabled !== disabled) {
-				$$invalidate(42, textField.disabled = disabled, textField);
+				$$invalidate(41, textField.disabled = disabled, textField);
 			}
 		}
 
-		if ($$self.$$.dirty[0] & /*invalid, updateInvalid*/ 262152 | $$self.$$.dirty[1] & /*textField*/ 2048) {
+		if ($$self.$$.dirty[0] & /*invalid, updateInvalid*/ 131080 | $$self.$$.dirty[1] & /*textField*/ 1024) {
 			 if (textField && textField.valid !== !invalid) {
 				if (updateInvalid) {
 					$$invalidate(3, invalid = !textField.valid);
 				} else {
-					$$invalidate(42, textField.valid = !invalid, textField);
+					$$invalidate(41, textField.valid = !invalid, textField);
 				}
 			}
 		}
 
-		if ($$self.$$.dirty[0] & /*useNativeValidation*/ 16777216 | $$self.$$.dirty[1] & /*textField*/ 2048) {
+		if ($$self.$$.dirty[0] & /*useNativeValidation*/ 8388608 | $$self.$$.dirty[1] & /*textField*/ 1024) {
 			 if (textField && textField.useNativeValidation !== useNativeValidation) {
-				$$invalidate(42, textField.useNativeValidation = useNativeValidation, textField);
+				$$invalidate(41, textField.useNativeValidation = useNativeValidation, textField);
 			}
 		}
 	};
@@ -14724,7 +14695,6 @@ function instance$j($$self, $$props, $$invalidate) {
 		noLabel,
 		label,
 		type,
-		step,
 		updateInvalid,
 		element,
 		props,
@@ -14776,15 +14746,14 @@ class Textfield extends SvelteComponentDev {
 				noLabel: 14,
 				label: 15,
 				type: 16,
-				step: 17,
 				value: 0,
 				files: 1,
 				dirty: 2,
 				invalid: 3,
-				updateInvalid: 18,
-				useNativeValidation: 24,
-				focus: 25,
-				layout: 26
+				updateInvalid: 17,
+				useNativeValidation: 23,
+				focus: 24,
+				layout: 25
 			},
 			[-1, -1]
 		);
@@ -14901,14 +14870,6 @@ class Textfield extends SvelteComponentDev {
 		throw new Error("<Textfield>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 
-	get step() {
-		throw new Error("<Textfield>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	set step(value) {
-		throw new Error("<Textfield>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
 	get value() {
 		throw new Error("<Textfield>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
@@ -14958,7 +14919,7 @@ class Textfield extends SvelteComponentDev {
 	}
 
 	get focus() {
-		return this.$$.ctx[25];
+		return this.$$.ctx[24];
 	}
 
 	set focus(value) {
@@ -14966,7 +14927,7 @@ class Textfield extends SvelteComponentDev {
 	}
 
 	get layout() {
-		return this.$$.ctx[26];
+		return this.$$.ctx[25];
 	}
 
 	set layout(value) {
@@ -23517,7 +23478,7 @@ class Modal extends SvelteComponentDev {
 /* src\components\PreModal.svelte generated by Svelte v3.24.0 */
 const file$z = "src\\components\\PreModal.svelte";
 
-// (29:2) <div slot="content" style="color:black; white-space: pre; user-select:text;">
+// (29:2) <div slot="content" style="color:black; white-space: pre-wrap; user-select:text;">
 function create_content_slot(ctx) {
 	let div;
 	let t_value = /*preModal*/ ctx[0].modalContent + "";
@@ -23529,7 +23490,7 @@ function create_content_slot(ctx) {
 			t = text(t_value);
 			attr_dev(div, "slot", "content");
 			set_style(div, "color", "black");
-			set_style(div, "white-space", "pre");
+			set_style(div, "white-space", "pre-wrap");
 			set_style(div, "user-select", "text");
 			add_location(div, file$z, 28, 2, 626);
 		},
@@ -23549,7 +23510,7 @@ function create_content_slot(ctx) {
 		block,
 		id: create_content_slot.name,
 		type: "slot",
-		source: "(29:2) <div slot=\\\"content\\\" style=\\\"color:black; white-space: pre; user-select:text;\\\">",
+		source: "(29:2) <div slot=\\\"content\\\" style=\\\"color:black; white-space: pre-wrap; user-select:text;\\\">",
 		ctx
 	});
 
