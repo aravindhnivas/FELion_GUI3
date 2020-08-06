@@ -74,7 +74,7 @@ def theoryplot(theoryfile, ax, freqScale=1, colorIndex=1, theorysigma=5):
     return ax
 
 
-def felix_plot(filename, ax, lg, normMethod="IntensityPerPhoton", color=0, sameColor=True):
+def felix_plot(filename, ax, lg, normMethod="IntensityPerPhoton", sameColor=True, color=0,):
     
     for i, f in enumerate(filename):
         

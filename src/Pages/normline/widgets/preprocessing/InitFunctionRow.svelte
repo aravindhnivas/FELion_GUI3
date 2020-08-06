@@ -1,6 +1,6 @@
 
 <script>
-    import {opoMode, toggleRow, felixOutputName, felixPlotAnnotations, felixPeakTable, expfittedLines, expfittedLinesCollectedData, fittedTraceCount} from "../../functions/svelteWritables";
+    import {opoMode, toggleRow, felixOutputName, felixPlotAnnotations, felixPeakTable, expfittedLines, expfittedLinesCollectedData, fittedTraceCount, felixopoLocation} from "../../functions/svelteWritables";
     import Textfield from '@smui/textfield';
     import CustomIconSwitch from '../../../../components/CustomIconSwitch.svelte';
     import FelixPlotting from '../../modals/FelixPlotting.svelte';
@@ -15,13 +15,13 @@
 
         text:[
 
-            {label:"Fig. caption", value:"", id:getID()},
+            {label:"Fig. caption", value:" ", id:getID()},
             
-            {label:"Fig. title", value:"", id:getID()},
-            {label:"Exp. title", value:"", id:getID()},
-            {label:"Exp. legend", value:"", id:getID()},
-            {label:"Cal. title", value:"", id:getID()},
-            {label:"markers", value:"", id:getID()},
+            {label:"Fig. title", value:" ", id:getID()},
+            {label:"Exp. title", value:" ", id:getID()},
+            {label:"Exp. legend", value:" ", id:getID()},
+            {label:"Cal. title", value:" ", id:getID()},
+            {label:"markers", value:" ", id:getID()},
         ],
     
         number:[
@@ -85,8 +85,14 @@
                 break;
 
             case "matplotlib":
+                const numberWidgets = felixPlotWidgets.number.map(n=>n.value)
 
-                pyfile="felix_tkplot.py", args=[JSON.stringify({...felixPlotWidgets, datlocation:path.resolve(localStorage["felix_location"], "../EXPORT"), normMethod, theoryLocation, felixPlotCheckboxes})]
+                const textWidgets = felixPlotWidgets.text.map(n=>n.value)
+                
+                const booleanWidgets = felixPlotWidgets.boolean.map(n=>n.value)
+                const selectedWidgets = felixPlotCheckboxes.map(n=>n.selected)
+
+                pyfile="felix_tkplot.py", args=[JSON.stringify({numberWidgets, textWidgets, booleanWidgets, selectedWidgets, location: $felixopoLocation, normMethod, theoryLocation})]
                 computePy_func({pyfile, args, general:true, openShell})
                 .catch(err=>{preModal.modalContent = err;  preModal.open = true})
 

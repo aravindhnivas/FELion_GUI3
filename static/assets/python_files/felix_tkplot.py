@@ -13,22 +13,24 @@ def plotGraph(plotArgs):
 
     global marker_theory
 
-    figwidth, figheight, dpi, freqScale, gridalpha, theorysigma, majorTick = [i["value"] for i in plotArgs["number"]]
-    
+    figwidth, figheight, dpi, freqScale, gridalpha, theorysigma, majorTick = plotArgs["numberWidgets"]
+
     NPlots = 1
 
     ratio = "1"
     
-    figcaption, figtitle, exptitle, legend_labels, calcTitle, marker =  [i["value"] for i in plotArgs["text"]]
+    figcaption, figtitle, exptitle, legend_labels, calcTitle, marker =  plotArgs["textWidgets"]
+    print(plotArgs["textWidgets"], type(plotArgs["textWidgets"]), figcaption, figtitle, exptitle, legend_labels, calcTitle, marker)
+
     normMethod = plotArgs["normMethod"]
     
-    sameColor, invert_ax2, onlyExp, hide_axis, hide_all_axis, legend_visible = [i["value"] for i in plotArgs["boolean"]]
+    sameColor, invert_ax2, onlyExp, hide_axis, hide_all_axis, legend_visible = plotArgs["booleanWidgets"]
     hspace = 0.05
     wspace = 0.05
 
-    datlocation = plotArgs["datlocation"]
-    datfiles, fundamentalsfiles, overtonefiles, combinationfiles = [i["selected"] for i in plotArgs["felixPlotCheckboxes"]]
-    datfiles = [pt(datlocation)/i for i in datfiles]
+    datlocation = pt(plotArgs["location"]) / "../EXPORT"
+    datfiles, fundamentalsfiles, overtonefiles, combinationfiles = plotArgs["selectedWidgets"]
+    datfiles = [datlocation/i for i in datfiles]
     
     grid_ratio = np.array(ratio.split(","), dtype=np.float)
     grid = {"hspace": hspace, "wspace": wspace, "width_ratios": grid_ratio}
@@ -39,20 +41,21 @@ def plotGraph(plotArgs):
     fig, axs = plt.subplots(rows, NPlots, figsize=(figwidth, figheight), dpi=dpi, gridspec_kw=grid)
     lg = [i.strip() for i in legend_labels.split(",")]
     
-    
-    if onlyExp: 
-        ax = only_exp_plot(axs, datfiles, NPlots, exptitle, lg, normMethod, majorTick, legend_visible, hide_all_axis, legend_labels)
+    if onlyExp:
+
+
+        ax = only_exp_plot(axs, datfiles, NPlots, exptitle, lg, normMethod, majorTick, legend_visible, hide_all_axis, legend_labels, sameColor)
+        
         plt.show()
-
         return 
-    theoryLocation = pt(plotArgs["theoryLocation"])
 
-    theoryfiles = [pt(theoryLocation)/i for i in plotArgs["felixPlotCheckboxes"][1]["selected"]]
-    overtonefiles = [pt(theoryLocation)/i for i in plotArgs["felixPlotCheckboxes"][2]["selected"]]
-    combinationfiles = [pt(theoryLocation)/i for i in plotArgs["felixPlotCheckboxes"][3]["selected"]]
+    theoryLocation = pt(plotArgs["theoryLocation"])
+    theoryfiles = [pt(theoryLocation)/i for i in fundamentalsfiles]
+    overtonefiles = [pt(theoryLocation)/i for i in overtonefiles]
+
+    combinationfiles = [pt(theoryLocation)/i for i in combinationfiles]
 
     theoryfiles1_overt_comb = []
-
     theoryfiles2_overt_comb = []
     
     if len(combinationfiles) + len(overtonefiles) > 0: theoryfiles1_overt_comb = np.append(overtonefiles[0], combinationfiles[0])
@@ -71,7 +74,7 @@ def plotGraph(plotArgs):
             ax_theory = axs[i+1]
             
         
-        ax_exp = felix_plot(datfiles, ax_exp, lg, normMethod)
+        ax_exp = felix_plot(datfiles, ax_exp, lg, normMethod, sameColor)
         
         linestyle = ["--", ":"]
         
@@ -114,13 +117,16 @@ def plotGraph(plotArgs):
         if i<1:
             
             ylabel="Norm. Intensity ~($m^2/photon$)"
-            ax_exp.set_ylabel((ylabel, "Relative Depletion (%)")[normMethod=="Relative"], fontsize=12)
             
+            ax_exp.set_ylabel((ylabel, "Relative Depletion (%)")[normMethod=="Relative"], fontsize=12)
+            ax_theory.set_ylabel("Intensity (Km/mol)", fontsize=12)
+
             if legend_visible:
+            
                 if legend_labels == "": ax_exp.legend([], title=exptitle.strip()).set_draggable(True)
+            
                 else: ax_exp.legend(title=exptitle.strip()).set_draggable(True)
 
-                ax_theory.set_ylabel("Intensity (Km/mol)", fontsize=12)
                 ax_theory.legend(title=calcTitle.strip()).set_draggable(True)
                 
             #marker_exp = Marker(fig, ax_exp)
@@ -144,14 +150,14 @@ def plotGraph(plotArgs):
     plt.show()
 
 
-def only_exp_plot(axs, datfiles, NPlots, exptitle, lg, normMethod, majorTick, legend_visible, hide_all_axis, legend_labels):
+def only_exp_plot(axs, datfiles, NPlots, exptitle, lg, normMethod, majorTick, legend_visible, hide_all_axis, legend_labels, sameColor):
     for i in range(NPlots):
         if NPlots>1:
             ax = axs[i]
         else:
             ax = axs
 
-        ax = felix_plot(datfiles, ax, lg, normMethod)
+        ax = felix_plot(datfiles, ax, lg, normMethod, sameColor)
         ax.xaxis.set_tick_params(which='minor', bottom=True)
 
         ax.xaxis.set_minor_locator(AutoMinorLocator(5))
@@ -189,4 +195,4 @@ if __name__ == "__main__":
 
     args = json.loads(", ".join(args))
     print(f"Received args: {args}, {type(args)}\n")
-    felix = plotGraph(args)
+    plotGraph(args)
