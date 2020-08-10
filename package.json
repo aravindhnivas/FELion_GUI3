@@ -35,7 +35,7 @@
     "rollup-plugin-terser": "^6.1.0",
     "sirv-cli": "^0.4.6",
     "svelma": "^0.3.2",
-    "svelte": "^3.24.0",
+    "svelte": "^3.24.1",
     "svelte-check": "^0.1.50",
     "svelte-material-ui": "^1.0.0-beta.21",
     "svelte-preprocess": "^3.7.4"
