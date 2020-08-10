@@ -3,9 +3,9 @@
 
 import {felixopoLocation, felixPeakTable, felixIndex, felixOutputName, felixPlotAnnotations, opoMode, Ngauss_sigma, get} from "./svelteWritables";
 
-export function savefile({file={}, name=""}={}) {
+export function savefile({file={}, name="", location=""}={}) {
 
-    let filename = path.join(get(felixopoLocation), `${name}.json`)
+    let filename = path.join(location || get(felixopoLocation), `${name}.json`)
     fs.writeFile(filename, JSON.stringify({file}), 'utf8', function (err) {
 
         if (err) {
@@ -16,9 +16,9 @@ export function savefile({file={}, name=""}={}) {
     });
 }
 
-export function loadfile({name=""}={}) {
-    let filename = path.join(get(felixopoLocation), `${name}.json`)
-    if(!fs.existsSync(filename)) {return window.createToast(`${name}.json doesn't exist in DATA dir.`, "danger")}
+export function loadfile({name="", location=""}={}) {
+    let filename = path.join( location || get(felixopoLocation), `${name}.json`)
+    if(!fs.existsSync(filename)) {window.createToast(`${name}.json doesn't exist in DATA dir.`, "danger"); return {}}
 
     let loadedfile = JSON.parse(fs.readFileSync(filename)).file
 

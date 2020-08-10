@@ -61,5 +61,6 @@ export function updateCheck({info=true}={}){
             console.log("Update check completed")
 
             target.classList.toggle("is-loading")
+            
         })
 }

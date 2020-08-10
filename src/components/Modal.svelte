@@ -22,8 +22,7 @@
       <p class="modal-card-title">{title}</p>
       <span class="delete is-pulled-right" on:click="{()=>active=false}"></span>
     </header>
-
-    <section class="modal-card-body" style="background: {bodyBackground};"><slot name="content" style="white-space: pre;"/></section>
+    <section class="modal-card-body" style="background: {bodyBackground};"><slot name="content" style="white-space: pre-wrap;"/></section>
 
     <footer class="modal-card-foot">
       <div style="margin-left:auto; display:flex;">

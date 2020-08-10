@@ -1,83 +1,79 @@
 
 <script>
     import Modal from '../../../components/Modal.svelte';
+    import FelixPlotWidgets from './FelixPlotWidgets.svelte';
     import CustomCheckList from '../../../components/CustomCheckList.svelte';
     import Textfield from '@smui/textfield';
     import CustomCheckbox from '../../../components/CustomCheckbox.svelte';
-    import { createEventDispatcher } from 'svelte';
     
+    import {loadfile, savefile} from "../functions/misc"
+    import { createEventDispatcher } from 'svelte';
+    import FelixPlotExtraWidgets from './FelixPlotExtraWidgets.svelte';
     export let active=false, felixPlotWidgets = {}, felixPlotCheckboxes;
+
     const dispatch = createEventDispatcher();
 
+    let extraWidgetCollection = {text:[], number:[], boolean:[]}
+
+    let extraWidget={ label:"", value:"", step:"" }
+    
+    let extraWidgetModal = false, widgetType = ""
+
+    const widgetLocation = path.resolve(__dirname, "config")
+    const widgetFile = "felixplotWidgets"
+
+    function saveWidget(){ savefile({file:extraWidgetCollection, name:widgetFile, location:widgetLocation}) }
+    
+    function loadExtraWidgets() { 
+
+        const loadedContent = loadfile({name:widgetFile, location:widgetLocation})
+
+        if(!loadedContent) {
+            extraWidgetCollection = loadedContent
+            felixPlotWidgets.text = [...felixPlotWidgets.text, extraWidgetCollection.text]
+            felixPlotWidgets.number = [...felixPlotWidgets.number, extraWidgetCollection.number]
+
+            felixPlotWidgets.boolean = [...felixPlotWidgets.boolean, extraWidgetCollection.boolean]
+        
+        }
+    
+    }
+
+    const addExtraWidget = (event) => {  widgetType = event.detail.type; extraWidgetModal = true; }
+
+    
+    const widgetAdded =  () => {
+
+        extraWidget.id = window.getID()
+        felixPlotWidgets[widgetType] = [...felixPlotWidgets[widgetType], extraWidget]
+    
+        console.log(felixPlotWidgets[widgetType])
+        extraWidgetCollection[widgetType] = [...extraWidgetCollection[widgetType], extraWidget]
+        extraWidget={label:"", value:"", step:""}
+    
+        extraWidgetModal = false
+    
+    }
 </script>
-
-<style>
-
-    .felix_tkplot_filelist_header {
-        border: solid 1px white;
-        width: 10em;
-        padding: 0.2em;
-        display: flex;
-        justify-content: center;
-        border-radius: 20px;
-        margin: auto;
-    }
-
-    .felix_tkplot_filelist_div {
-        margin-bottom:1em;
-    }
-
-    .felix_plotting_div {
-        border: solid 1px white;
-        border-radius: 20px;
-        padding: 1em;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        margin: 1em 0;
-    }
-
-</style>
 
 {#if active}
 
-
     <Modal bind:active title="FELIX PLOTTING" style="width:70vw;">
 
-        <div slot="content" style="height:40vh;" >
-            <div style="display:flex; flex-wrap:wrap;">
+        <div slot="content" style="height:40vh;" use:loadExtraWidgets>
 
-                {#each felixPlotCheckboxes as {label, options, selected, style, id}(id)}
-                    <div style="flex-grow:1; {style}" class="felix_tkplot_filelist_div">
-                        <div class="subtitle felix_tkplot_filelist_header">{label}</div>
-
-                        <CustomCheckList style="background: #836ac05c; border-radius: 20px; margin:1em 0;  height:20em; overflow:auto;" bind:fileChecked={selected} bind:items={options} />
-
-                    </div>
-                {/each}
-
-            </div>
-        
-            <div class="felix_plotting_div">
-                {#each felixPlotWidgets.text as {label, value, id}(id)}
-                    <Textfield style="width:12em; margin-bottom:1em;" variant="outlined" type="text" bind:value {label}/>
-                {/each}
-            </div>
-
-            <div class="felix_plotting_div">
-                {#each felixPlotWidgets.number as {label, value, step, id}(id)}
-                    <Textfield style="width:12em; margin-bottom:1em;" type="number" {step} bind:value {label}/>
-                {/each}
-            </div>
-
-            <div class="felix_plotting_div">
-                {#each felixPlotWidgets.boolean as {label, value, id}(id)}
-                    <CustomCheckbox style="width:12em; margin-bottom:1em;" bind:selected={value} {label} />
-                {/each}
-            </div>
+            <FelixPlotWidgets bind:felixPlotWidgets bind:felixPlotCheckboxes on:addWidget={addExtraWidget}/>
         </div>
 
-        <button slot="footerbtn" class="button is-link" on:click={()=>{dispatch('submit')}} >Submit</button>
-    </Modal>
+        <div class="" slot="footerbtn">
+
+            <button class="button is-link" on:click={saveWidget}>Save Widgets</button>
     
+            <button class="button is-link" on:click={()=>{dispatch('submit')}} >Submit</button>
+        
+        </div>
+    </Modal>
+
 {/if}
+
+<FelixPlotExtraWidgets bind:active={extraWidgetModal} bind:extraWidget {widgetType} on:widgetadded={widgetAdded}/>

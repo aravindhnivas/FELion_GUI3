@@ -113,35 +113,37 @@
 
     }
 
+
     const includePlotsInReport = [
 
         {id: "bplot", include:true, label:"Baseline"}, {id:"saPlot", include:false, label:"SA-Pow"}, 
         {id:"avgplot", include:false, label:"Normalised Spectrum"}, {id:"exp-theory-plot", include:false, label:"Exp-Theory plot"}, 
         {id:"opoplot", include:false, label:"OPO: Baseline"}, {id:"opoSA", include:false, label:"OPO: SA-pow"}, 
         {id:"opoRelPlot", include:false, label:"OPO: Normalised Spectrum"}
+
     ]
 
     const includeTablesInReports = [
         {id:"felixTable", include:true, label:"Freq. table"}, {id:"felix_filedetails_table", include:false, label:"File info table"}
     ]
-
     $: console.log(theoryLocation, calcfiles, felixPlotCheckboxes)
+
     $: datlocation = path.resolve($felixopoLocation, "../EXPORT")
     
+
+
     $: datfiles = fs.existsSync(datlocation) ? fs.readdirSync(datlocation).filter(f=>f.endsWith(".dat")).map(f=>f={name:f, id:getID()}) : [{name:"", id:getID()}]
-    
     
     
     $: calcfiles = fs.existsSync(theoryLocation) ? fs.readdirSync(theoryLocation).map(f=>f={name:f, id:getID()}) : [{name:"", id:getID()}]
 
     $: felixPlotCheckboxes = [
             {label:"DAT file", options:datfiles, selected:[], style:"width:100%;", id:getID()},
-
             {label:"Fundamentals", options:calcfiles, selected:[], style:"width:25%; margin-left:1em;", id:getID()},
+
+
             {label:"Overtones", options:calcfiles, selected:[], style:"width:25%; margin-left:1em;", id:getID()},
             {label:"Combinations", options:calcfiles, selected:[], style:"width:25%; margin-left:1em;", id:getID()},
-
-
         ]
     
     let preModal = {};
@@ -159,6 +161,7 @@
     .hide {display: none;}
     .felixPlot > div {margin-bottom: 1em;}
     .plotSlot > div { width: calc(100% - 1em); margin-top: 1em; }
+
 </style>
 
 <!-- Modals -->
@@ -169,11 +172,13 @@
 
 <Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>
     <div class="buttonSlot" slot="buttonContainer">
+
         <InitFunctionRow {removeExtraFile} {felixPlotCheckboxes} {opofiles} {felixfiles} {normMethod} {theoryLocation} bind:preModal bind:graphPlotted bind:show_theoryplot/>
         <OPORow {removeExtraFile} bind:OPOLocation bind:OPOfilesChecked bind:opofiles bind:preModal bind:graphPlotted />
         <TheoryRow bind:theoryLocation bind:show_theoryplot bind:preModal {normMethod} {currentLocation}/>
 
         <div style="display:flex;">
+        
             <CustomRadio on:change={replot} bind:selected={felix_normMethod} options={["Log", "Relative", "IntensityPerPhoton"]}/>
         </div>
     

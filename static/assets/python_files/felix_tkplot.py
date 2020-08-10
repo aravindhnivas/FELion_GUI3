@@ -1,5 +1,6 @@
 
-import json, sys
+import json
+import sys
 from pathlib import Path as pt
 import numpy as np
 import matplotlib.pyplot as plt
@@ -7,7 +8,6 @@ from matplotlib.ticker import AutoMinorLocator, MultipleLocator
 from felix_tkplot_definitions import felix_plot, theoryplot, Marker
 
 marker_theory = None
-
 
 def plotGraph(plotArgs):
 
@@ -19,7 +19,7 @@ def plotGraph(plotArgs):
 
     ratio = "1"
     
-    figcaption, figtitle, exptitle, legend_labels, calcTitle, marker =  plotArgs["textWidgets"]
+    figcaption, figtitle, exptitle, legend_labels, calcTitle, marker = plotArgs["textWidgets"]
     print(plotArgs["textWidgets"], type(plotArgs["textWidgets"]), figcaption, figtitle, exptitle, legend_labels, calcTitle, marker)
 
     normMethod = plotArgs["normMethod"]
@@ -40,13 +40,13 @@ def plotGraph(plotArgs):
     
     fig, axs = plt.subplots(rows, NPlots, figsize=(figwidth, figheight), dpi=dpi, gridspec_kw=grid)
     lg = [i.strip() for i in legend_labels.split(",")]
+
     
     if onlyExp:
 
-
-        ax = only_exp_plot(axs, datfiles, NPlots, exptitle, lg, normMethod, majorTick, legend_visible, hide_all_axis, legend_labels, sameColor)
-        
+        only_exp_plot(axs, datfiles, NPlots, exptitle, lg, normMethod, majorTick, legend_visible, hide_all_axis, legend_labels, sameColor)
         plt.show()
+
         return 
 
     theoryLocation = pt(plotArgs["theoryLocation"])
@@ -58,12 +58,14 @@ def plotGraph(plotArgs):
     theoryfiles1_overt_comb = []
     theoryfiles2_overt_comb = []
     
-    if len(combinationfiles) + len(overtonefiles) > 0: theoryfiles1_overt_comb = np.append(overtonefiles[0], combinationfiles[0])
+    if len(combinationfiles) + len(overtonefiles) > 0: 
 
-    if len(combinationfiles) + len(overtonefiles) > 1: theoryfiles2_overt_comb = np.append(overtonefiles[1], combinationfiles[1])
+        theoryfiles1_overt_comb = np.append(overtonefiles[0], combinationfiles[0])
+
+    if len(combinationfiles) + len(overtonefiles) > 1: 
+        theoryfiles2_overt_comb = np.append(overtonefiles[1], combinationfiles[1])
    
     theory_color = (len(datfiles), 1)[sameColor]
-    
     for i in range(NPlots):
         
         if NPlots > 1: 
@@ -72,7 +74,6 @@ def plotGraph(plotArgs):
         else:
             ax_exp = axs[i]
             ax_theory = axs[i+1]
-            
         
         ax_exp = felix_plot(datfiles, ax_exp, lg, normMethod, sameColor)
         
@@ -80,15 +81,16 @@ def plotGraph(plotArgs):
         
         for tColorIndex, theoryfile in enumerate(theoryfiles):
             ax_theory = theoryplot(theoryfiles[0], ax_theory, freqScale, theory_color+tColorIndex, theorysigma)
-        for tfile1, ls in zip(theoryfiles1_overt_comb, linestyle ):
+        for tfile1, ls in zip(theoryfiles1_overt_comb, linestyle):
             ax_theory = theoryplot(tfile1, ax_theory, freqScale, f"{theory_color}{ls}", theorysigma)
         
         # ax_theory = theoryplot(theoryfiles[1], ax_theory, freqScale, theory_color+1, theorysigma)
         for tfile2, ls in zip(theoryfiles2_overt_comb, linestyle):
             ax_theory = theoryplot(tfile2, ax_theory, freqScale, f"{theory_color+1}{ls}", theorysigma)
         
-        # ax_theory
-        if invert_ax2: ax_theory.invert_yaxis()
+
+        if invert_ax2: 
+            ax_theory.invert_yaxis()
         
         #ax_theory.minorticks_on()
         
@@ -151,13 +153,17 @@ def plotGraph(plotArgs):
 
 
 def only_exp_plot(axs, datfiles, NPlots, exptitle, lg, normMethod, majorTick, legend_visible, hide_all_axis, legend_labels, sameColor):
+
+
     for i in range(NPlots):
+    
         if NPlots>1:
             ax = axs[i]
         else:
             ax = axs
 
         ax = felix_plot(datfiles, ax, lg, normMethod, sameColor)
+    
         ax.xaxis.set_tick_params(which='minor', bottom=True)
 
         ax.xaxis.set_minor_locator(AutoMinorLocator(5))
@@ -166,11 +172,15 @@ def only_exp_plot(axs, datfiles, NPlots, exptitle, lg, normMethod, majorTick, le
 
         ylabel="Norm. Intensity ~($m^2/photon$)"
         ax.set_ylabel((ylabel, "Relative Depletion (%)")[normMethod=="Relative"], fontsize=12)
+
         ax.set_xlabel("Wavenumber ($cm^{-1}$)", fontsize=12)
 
         if legend_visible and i<2:
+
             if legend_labels == "": ax.legend([], title=exptitle.strip).set_draggable(True)
+
             else: ax.legend(title=exptitle.strip()).set_draggable(True)
+
 
         if hide_all_axis:
             ax.spines["top"].set_visible(False)
@@ -185,14 +195,11 @@ def only_exp_plot(axs, datfiles, NPlots, exptitle, lg, normMethod, majorTick, le
 
             ax.set(xlabel="", ylabel="")
 
-    
     return ax
-
 
 if __name__ == "__main__":
 
     args = sys.argv[1:][0].split(",")
-
     args = json.loads(", ".join(args))
     print(f"Received args: {args}, {type(args)}\n")
     plotGraph(args)

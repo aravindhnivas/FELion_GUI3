@@ -72,10 +72,19 @@
         $felixPeakTable = _.sortBy($felixPeakTable, [(o)=>o["freq"]])
 
         let temp_annotate = {xref:"x", y:"y", "showarrow":true,  "arrowhead":2, "ax":-25, "ay":-40, font:{color:$felixAnnotationColor}, arrowcolor:$felixAnnotationColor}
+
         
         $felixPlotAnnotations = $felixPeakTable.map((f)=>{
-            let _annotate = {x:f.freq, y:f.amp, text:`(${f.freq.toFixed(2)}, ${f.amp.toFixed(2)})`}
+        
+            const {freq, amp} = f
+
+            const x = parseFloat(freq)
+
+            const y = parseFloat(amp)
+            let _annotate = {x, y, text:`(${x.toFixed(2)}, ${y.toFixed(2)})`}
+            
             return {...temp_annotate, ..._annotate}
+        
         })
 
         if(closeMainModal) {
@@ -185,6 +194,15 @@
         }
 
     }
+
+    $: $felixPeakTable = $felixPeakTable.map((f)=>{
+        
+            let {freq, amp, sig, id} = f
+            freq = parseFloat(freq)
+            amp = parseFloat(amp)
+            sig = parseFloat(sig)
+            return {freq, amp, sig, id}
+    })
 
 </script>
 

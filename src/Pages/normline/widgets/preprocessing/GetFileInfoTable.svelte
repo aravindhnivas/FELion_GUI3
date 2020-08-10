@@ -45,7 +45,7 @@
     </div>
     
     {#if toggleFileDetailsTable}
-        <Table head={["Filename", "min(cm-1)", "max(cm-1)", "Trap(s)", "B0(ms)", "Res.(V)", "IE(eV)", "Temp(K)","Precursor", ]} bind:rows={$filedetails} keys={["filename", "min", "max", "trap", "b0", "res", "ie","temp", "precursor"]} tableid="felix_filedetails_table"/>
+        <Table head={["Filename", "min(cm-1)", "max(cm-1)", "Trap(s)", "B0(ms)", "Res.(V)", "IE(eV)", "Temp(K)","Precursor", ]} bind:rows={$filedetails} keys={["filename", "min", "max", "trap", "b0", "res", "ie","temp", "precursor"]} id="felix_filedetails_table" closeOption={false} sortOption={true}/>
     
     {/if}
 </div>
