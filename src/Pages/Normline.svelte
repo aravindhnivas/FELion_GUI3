@@ -153,7 +153,6 @@
     onMount(()=>{  console.log("Normline mounted") })
 
     $: console.log(`graphDiv: ${$graphDiv}`)
-
 </script>
 
 
