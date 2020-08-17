@@ -80,7 +80,7 @@ def plotGraph(plotArgs):
         linestyle = ["--", ":"]
         
         for tColorIndex, theoryfile in enumerate(theoryfiles):
-            ax_theory = theoryplot(theoryfiles[0], ax_theory, freqScale, theory_color+tColorIndex, theorysigma)
+            ax_theory = theoryplot(theoryfile, ax_theory, freqScale, theory_color+tColorIndex, theorysigma)
         for tfile1, ls in zip(theoryfiles1_overt_comb, linestyle):
             ax_theory = theoryplot(tfile1, ax_theory, freqScale, f"{theory_color}{ls}", theorysigma)
         
