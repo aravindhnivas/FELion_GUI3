@@ -13,8 +13,6 @@ $dark: #4a4a4ae6;
 
 option { color: black; }
 
-
-
 hr { width: 90%; margin: 1em 0; }
 
 .report { display: block; margin-bottom: 1em; }
@@ -55,8 +53,8 @@ table td:not([align]) {text-align: center; padding: 1em;}
             svg { stroke: $white; fill: $white; }
             &:hover {background-color: $primaryColor-hover!important;}
             .active {background-color: $dark!important;}
-
         }
     }
+    
     textarea {color: black!important;}
 }
