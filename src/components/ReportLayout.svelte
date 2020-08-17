@@ -1,10 +1,3 @@
-<script context="module">
-    export async function asyncForEach(array, callback) {
-        for (let index = 0; index < array.length; index++) {
-            await callback(array[index], index, array);
-        }
-    }
-</script>
 
 <script>
 
@@ -21,12 +14,14 @@
     import PreModal from "./PreModal.svelte";
     import Editor from "./Editor.svelte";
     const {BrowserWindow} = remote
+
     //////////////////////////////////////////////////////////////////////////////////////////////////
 
     export let currentLocation = "", id="report", includePlotsInReport=[], includeTablesInReports=[]
-    $: reportFile = path.resolve(currentLocation, `reports/${reportMolecule}_report.html`)
     let reportTitle = "", reportMethod = "info", reportMolecule = ""
-    const stylesheet = path.resolve(__dirname, 'assets/reports/template.css')
+    $: reportFile = path.resolve(currentLocation, `reports/${reportMolecule}_report.html`)
+    const reportCSS = "report.css"
+    const stylesheet = path.resolve(__dirname, `assets/reports/${reportCSS}`)
     const reportHTML = document.createElement( 'html' )
 
     let preModal = {};
@@ -38,7 +33,7 @@
                                         <meta name="viewport" content="width=device-width, initial-scale=1">
                                         <meta http-equiv="X-UA-Compatible" content="ie=edge">
                                         <title>${reportMolecule} Reports</title>
-                                        <link rel="stylesheet" type='text/css' href="report_stylesheet.css">
+                                        <link rel="stylesheet" type='text/css' href="${reportCSS}">
                                     </head>
 
                                     <body>
@@ -46,8 +41,8 @@
                                     </body>
                                 </html>`
 
-    function init_report(){
 
+    function init_report(){
 
         const reportExist = fs.existsSync(reportFile)
         console.log("Report status:\n", reportExist)
@@ -55,17 +50,28 @@
         reportHTML.innerHTML = reportExist ? fs.readFileSync(reportFile) : reportHTMLTemplate
         console.log("ReportHTML: ", reportHTML)
         reportMainContainer = reportHTML.querySelector("#mainSection")
+        
+        const reportDir = path.resolve(currentLocation, "reports")
+
+        if (!fs.existsSync(reportDir)) {
+            fs.mkdir(reportDir, { recursive: true }, (err) => {
+
+                if (err) throw err;
+                console.log("reports directory created")
+            });
+        }
     }
     
     function getImage(imgID) {
         return new Promise(resolve => {
+
             Plotly.toImage(imgID, {format: 'png', width: 1000, height: 500}).then(dataURL =>{resolve(dataURL)})
-        })
         
+        })
+    
     }
     
     const exprtToHtml = async (content) => {
-
         fs.writeFile(reportFile, content || reportHTMLTemplate, function(err) {
 
             if(err) {
@@ -73,7 +79,7 @@
                 return console.log(err);
             }
             
-            let local_cssFile = path.resolve(currentLocation, 'reports/report_stylesheet.css')
+            let local_cssFile = path.resolve(currentLocation, `reports/${reportCSS}`)
         
             if (!fs.existsSync(local_cssFile)){
                 fs.copyFile(stylesheet, local_cssFile, (err) => {
@@ -90,34 +96,29 @@
         
     }
 
-    const addReport = async() => {
+    const addTablesToReport = () => {
 
-        const reportDir = path.resolve(currentLocation, "reports")
-        if (!fs.existsSync(reportDir)) {fs.mkdirSync(reportDir); console.log("reports directory created")}
-        
-        const reportCount = reportMainContainer.getElementsByClassName("reportCount").length
-        if (reportTitle.length == 0) reportTitle = `Title-${reportCount}`
-
-        
         const tableDiv = document.createElement("div")
         tableDiv.setAttribute("class", "content reportTable")
-
+        
         includeTablesInReports.forEach(tb=>{
 
             if(tb.include) {
+
                 try {
-                    
 
                     let tableContent = document.getElementById(tb.id).innerHTML
-
+                
                     let tableElement = document.createElement("table")
+                    
                     tableElement.setAttribute("class", "table is-bordered is-hoverable")
                     tableElement.innerHTML = tableContent
 
+                    
                     let tableHeading = document.createElement("h1")
                     tableHeading.setAttribute("class", "title")
-                    tableHeading.textContent = tb.label
                     
+                    tableHeading.textContent = tb.label
                     
                     tableDiv.appendChild(tableHeading)
                     tableDiv.appendChild(tableElement)
@@ -125,12 +126,17 @@
                 } catch (error) {
                     window.createToast(`${tb.label} is not visible`, "danger")
                 }
+
             }
         
         })
-
         console.log("tableDiv created", tableDiv)
-        
+
+        return tableDiv
+    }
+
+
+    const addPlotImagesToReport = async () => {
 
         const plotDiv = document.createElement("div")
         plotDiv.setAttribute("class", "content reportPlots")
@@ -138,22 +144,32 @@
         await asyncForEach(includePlotsInReport, async (plot)=>{
             if (plot.include) {
                 console.log("Request Image URL for ", plot.id)
+
+
                 let imgURL = await getImage(plot.id)
-
                 console.log(`Received Image URL for ${plot.id}\n`)
-
                 let imgElement = document.createElement("img")
+
                 imgElement.setAttribute("src", imgURL)
-
                 plotDiv.appendChild(imgElement)
-
                 console.log(`${plot.id} Included in HTML`)
-            }
-        })
 
+            }
+        
+        })
         console.log("plotDiv created", plotDiv)
+        
+        return Promise.resolve(plotDiv)
+
+    }
+
+    const addReport = async () => {
+
+        const tableDiv = addTablesToReport()
+        const plotDiv = await addPlotImagesToReport()
 
         const reportMainHeading = document.createElement("h1")
+
         reportMainHeading.setAttribute("class", `notification is-${reportMethod} reportHeading`)
         reportMainHeading.textContent = reportTitle
 
@@ -218,6 +234,8 @@
 
     const notificationMethod = [{name:"info", color:"white"}, {name:"success", color:"#00ff00"}, {name:"warning", color:"yellow"}, {name:"danger", color:"red"}]
     let reportMainContainer;
+
+
     onMount(()=>{
         init_report()
     })
@@ -226,11 +244,14 @@
 </script>
 
 <style>
+
+
     .button {margin-right: 1em;}
     .report {display: flex; align-items: inherit; flex-direction: column;}
    
-    .addToReport > div {justify-content: center; display: flex; flex-wrap: wrap;}
     
+    
+    .addToReport > div {justify-content: center; display: flex; flex-wrap: wrap;}
     .align {display: flex; align-items: center;}
     .heading {
     
@@ -294,12 +315,7 @@
 
         <Textfield style="height:3em; margin-bottom:1em;" variant="outlined" bind:value={reportTitle} label="Title" />
         <Editor />
-        <!-- <Textfield textarea bind:value={reportComments} label="Comments"  
-            input$aria-controls="{id}_comments" input$aria-describedby="{id}_comments"/>
-        <HelperText id="{id}_comments">
-            {"NOTE: You can write in markdown format (eg: # Title, ## Subtilte, **bold**, _italics_, > BlockQuotes, >> Nested BlockQuotes,  1., 2. for list, etc.,)"}
-        </HelperText> -->
-
+        
         <div class="align" style="margin-top:1em;">
         
             <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click={addReport}>Add to Report</button>
