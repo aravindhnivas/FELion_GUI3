@@ -97,12 +97,9 @@
         height: calc(100vh - 12em);
 
     }
-
 </style>
 
-
 <PreModal bind:preModal/>
-
 
 <div class="content contentBox terminalBox" >
 
@@ -112,32 +109,23 @@
             <div class="run" style="display:flex; align-items:center; margin-bottom:1em;">
 
                 <Textfield  bind:value={commandToRun} label="Enter command to run"/>
-
                 <Textfield  bind:value={commandArgsToRun} label="Enter command-arg"/>
+
             </div>
 
             <div class="run" style="display:flex; align-items:center; margin-bottom:1em;">
-                
                 <IconButton class="material-icons" on:click={terminalShell}>play_arrow</IconButton>
                 <CustomSwitch style="margin: 0 1em;" bind:selected={openShellTerminal} label="Shell"/>
                 <Textfield type="number" step="1" min="0" bind:value={teminalFontSize} variant="outlined" style="width:7em" label="Font Size"/>
-
                 <IconButton class="material-icons is-pulled-right" style="background: #f14668; border-radius: 2em;" on:click="{()=>commandResults=[{color:colorSets.normal, results:`>> cleared`}] }">clear</IconButton>
             </div>
         </div>
     {/if}
-
-    
-
-
-
     <div class="box" id="terminal" style="height: {commandInputDiv ? 75 : 90}%;">
 
         {#each commandResults as {color, results}}
             <h1 class="subtitle" style="color:{color}; font-size:{teminalFontSize}px; white-space: pre-wrap; ">{results}</h1>
-
         {/each}
-
     </div>
-
+    
 </div>
