@@ -230,21 +230,25 @@ class Create_Baseline():
         self.background = self.canvas.copy_from_bbox(self.ax.bbox)
         self.ax.draw_artist(self.line)
         self.ax.draw_artist(self.funcLine)
+
         self.canvas.blit(self.ax.bbox)
 
     def button_press_callback(self, event):
         'whenever a mouse button is pressed'
+        
         if event.inaxes is None: return
         if event.button != 1: return
-        
         self._ind = self.get_ind_under_point(event)
+
+
+
         self.canvas._tkcanvas.focus_set()
+
 
     def key_press_callback(self, event):
         'whenever a key is pressed'
-        #key_press_handler(event, self.canvas, self.toolbar)
-        if not event.inaxes:
-            return
+
+        if not event.inaxes: return
 
         elif event.key == 'w':
             ind = self.get_ind_under_point(event)

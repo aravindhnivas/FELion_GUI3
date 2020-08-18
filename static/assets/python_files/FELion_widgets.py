@@ -81,7 +81,7 @@ class FELion_Tk(Tk):
         def focusCanvas(event):
         
             if event.keycode == 27: 
-                widget_frame_canvasContainer.focus_set()
+                self.canvas._tkcanvas.focus_set()
 
         self.bind('<KeyRelease>', focusCanvas)
 
