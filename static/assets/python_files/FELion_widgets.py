@@ -243,11 +243,13 @@ class FELion_Tk(Tk):
 
         return self.widget_frame.listbox
 
-    def Figure(self, connect=True, dpi=None, default_widget=True, default_save_widget=True , **kw):
+    def Figure(self, connect=True, dpi=None, default_widget=True, default_save_widget=True, executeCodeWidget = True, **kw):
 
         self.default_widget = default_widget
 
         self.default_save_widget = default_save_widget
+
+        self.executeCodeWidget = executeCodeWidget
 
         self.make_figure_widgets()
         if dpi is not None: self.dpi_value.set(dpi)
@@ -313,18 +315,20 @@ class FELion_Tk(Tk):
             # Row 8
             y += y_diff
             self.plotYscale = self.Entries("Check", "Ylog", x0+x_diff, y, default=False, bind_btn=True, bind_func=self.set_figureLabel)
-            self.latex = self.Entries("Check", "LaTex", x0, y, default=False)
+            # self.latex = self.Entries("Check", "LaTex", x0, y, default=False)
 
-            if self.default_save_widget:
-                # Row 9
-                y += y_diff
-                self.save_fmt = self.Entries("Entry", "png", x0, y+0.02)
-                self.save_btn = self.Buttons("Save", x0+x_diff, y, self.save_fig)
+        if self.default_save_widget:
+            # Row 9
+            y += y_diff
+            self.save_fmt = self.Entries("Entry", "png", x0, y+0.02)
+            self.save_btn = self.Buttons("Save", x0+x_diff, y, self.save_fig)
 
-                # Row 10
-                y += y_diff
-                self.onlyAvg = self.Entries("Check", "only avg.", x0, y+0.02)
+            # Row 10
+            # y += y_diff
+            # self.onlyAvg = self.Entries("Check", "only avg.", x0, y+0.02)
 
+        
+        if self.executeCodeWidget:
             #  Row 11
             y = 0.7
             txt = "Write valid any python expression"
@@ -421,7 +425,9 @@ class FELion_Tk(Tk):
             #     self.ax.set(yscale=scale)
             
         # self.focus_set()
+
         self.canvas.draw()
+
 
     def make_figure_layout(self, ax=None, savename=None,
         title="Title", xaxis="X-axis", yaxis="Y-axis", fig_caption="Figure 1", 
@@ -539,12 +545,14 @@ class FELion_Tk(Tk):
                 self.fig2.savefig(save_filename, dpi=self.dpi_value.get()*2)
 
         def saved():
-            if self.latex.get(): savefig_latex()
-            else: self.fig.savefig(save_filename)
+            # if self.latex.get(): savefig_latex()
+            # else: self.fig.savefig(save_filename)
+
+            self.fig.savefig(save_filename)
             time.sleep(0.01)
             if askokcancel('Open savedfile?', f'File: {save_fname}\nsaved in directory: {self.location}'):
                 print("Opening file: ", save_filename)
-                os.system(f"{save_filename}")
+                # os.system(f"{save_filename}")
         
         try:
             print(f"Figure saving in {self.location}")

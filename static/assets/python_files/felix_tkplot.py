@@ -6,7 +6,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import AutoMinorLocator, MultipleLocator
 from felix_tkplot_definitions import felix_plot, theoryplot, Marker
+from FELion_widgets import FELion_Tk
 
+import matplotlib.gridspec as gridspec
 marker_theory = None
 
 def plotGraph(plotArgs):
@@ -35,24 +37,37 @@ def plotGraph(plotArgs):
     grid_ratio = np.array(ratio.split(","), dtype=np.float)
     grid = {"hspace": hspace, "wspace": wspace, "width_ratios": grid_ratio}
     
-    rows = (2, 1)[onlyExp]
+    nrows = (2, 1)[onlyExp]
     figheight = (figheight, figheight/2)[onlyExp]
     
-    fig, axs = plt.subplots(rows, NPlots, figsize=(figwidth, figheight), dpi=dpi, gridspec_kw=grid)
+
+
+    widget = FELion_Tk(title="Felix Averaged plot", location=datlocation/"../OUT")
+    
+    fig, canvas = widget.Figure(dpi=dpi, default_widget=False, default_save_widget=True, connect=False)
+    
+
+    axs = []
+    gs = gridspec.GridSpec(nrows, NPlots, figure=fig)
+
+    for _i in gs:
+        temp = fig.add_subplot(_i)
+        axs.append(temp)
+
+    # print(axs)
+
     lg = [i.strip() for i in legend_labels.split(",")]
 
     
     if onlyExp:
-
         only_exp_plot(axs, datfiles, NPlots, exptitle, lg, normMethod, majorTick, legend_visible, hide_all_axis, legend_labels, sameColor)
-        plt.show()
 
-        return 
+        widget.mainloop()
+        return
 
     theoryLocation = pt(plotArgs["theoryLocation"])
     theoryfiles = [pt(theoryLocation)/i for i in fundamentalsfiles]
     overtonefiles = [pt(theoryLocation)/i for i in overtonefiles]
-
     combinationfiles = [pt(theoryLocation)/i for i in combinationfiles]
 
     theoryfiles1_overt_comb = []
@@ -64,7 +79,7 @@ def plotGraph(plotArgs):
 
     if len(combinationfiles) + len(overtonefiles) > 1: 
         theoryfiles2_overt_comb = np.append(overtonefiles[1], combinationfiles[1])
-   
+
     theory_color = (len(datfiles), 1)[sameColor]
     for i in range(NPlots):
         
@@ -83,14 +98,10 @@ def plotGraph(plotArgs):
             ax_theory = theoryplot(theoryfile, ax_theory, freqScale, theory_color+tColorIndex, theorysigma)
         for tfile1, ls in zip(theoryfiles1_overt_comb, linestyle):
             ax_theory = theoryplot(tfile1, ax_theory, freqScale, f"{theory_color}{ls}", theorysigma)
-        
-        # ax_theory = theoryplot(theoryfiles[1], ax_theory, freqScale, theory_color+1, theorysigma)
         for tfile2, ls in zip(theoryfiles2_overt_comb, linestyle):
             ax_theory = theoryplot(tfile2, ax_theory, freqScale, f"{theory_color+1}{ls}", theorysigma)
         
-
-        if invert_ax2: 
-            ax_theory.invert_yaxis()
+        if invert_ax2: ax_theory.invert_yaxis()
         
         #ax_theory.minorticks_on()
         
@@ -102,6 +113,7 @@ def plotGraph(plotArgs):
         ax_exp.tick_params(labelbottom=False, bottom=False, labeltop=True, top=True) # removing x-ticks label
         
         #ax_exp.minorticks_on()
+
         ax_exp.xaxis.set_tick_params(which='minor', bottom=False, top=True)
         
         ax_exp.xaxis.set_minor_locator(AutoMinorLocator(5))
@@ -114,7 +126,6 @@ def plotGraph(plotArgs):
         
         ax_theory.get_shared_x_axes().join(ax_theory, ax_exp)
         
-        
         # Labels
         if i<1:
             
@@ -124,15 +135,11 @@ def plotGraph(plotArgs):
             ax_theory.set_ylabel("Intensity (Km/mol)", fontsize=12)
 
             if legend_visible:
-            
                 if legend_labels == "": ax_exp.legend([], title=exptitle.strip()).set_draggable(True)
             
                 else: ax_exp.legend(title=exptitle.strip()).set_draggable(True)
-
                 ax_theory.legend(title=calcTitle.strip()).set_draggable(True)
-                
-            #marker_exp = Marker(fig, ax_exp)
-            marker_theory = Marker(fig, ax_theory, ax_exp, txt_value=marker.split(","))
+            marker_theory = Marker(fig, canvas, ax_theory, ax_exp, txt_value=marker.split(","))
             
         elif i==NPlots-1:
             ax_exp.yaxis.tick_right()
@@ -147,10 +154,12 @@ def plotGraph(plotArgs):
         
         
     # Figure caption
-    plt.figtext(0.5, 0.04, "Wavenumber ($cm^{-1}$)", wrap=True, horizontalalignment='center', fontsize=12)
-    plt.figtext(0.5, 0.01, figcaption, wrap=True, horizontalalignment='center', fontsize=12)
-    plt.show()
 
+    fig.text(0.5, 0.09, "Wavenumber ($cm^{-1}$)", wrap=True, horizontalalignment='center', fontsize=12)
+    fig.text(0.5, 0.01, figcaption, wrap=True, horizontalalignment='center', fontsize=12)
+    canvas.draw()
+    
+    widget.mainloop()
 
 def only_exp_plot(axs, datfiles, NPlots, exptitle, lg, normMethod, majorTick, legend_visible, hide_all_axis, legend_labels, sameColor):
 
@@ -160,7 +169,8 @@ def only_exp_plot(axs, datfiles, NPlots, exptitle, lg, normMethod, majorTick, le
         if NPlots>1:
             ax = axs[i]
         else:
-            ax = axs
+
+            ax = axs[0]
 
         ax = felix_plot(datfiles, ax, lg, normMethod, sameColor)
     

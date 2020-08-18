@@ -129,14 +129,17 @@ def find_closest_ind(arr, val):
     return min_val_ind
 
 class Marker:
+
+
     
-    def __init__(self, fig, ax_theory, ax_exp, txt_array=[], txt_value = ["1", "2", "3"]):
+    def __init__(self, fig, canvas, ax_theory, ax_exp, txt_array=[], txt_value = ["1", "2", "3"]):
 
         self.txt_counter = 0
         
         self.txt_value = txt_value
         self.txt_value_original = txt_value
         self.txt_array = txt_array
+
         
         self.fig = fig
         self.ax_theory =  ax_theory
@@ -146,10 +149,10 @@ class Marker:
         
         self.theory = True
         self.ax = ax_theory
+        self.canvas = canvas
         
-        
-        self.fig.canvas.mpl_connect('button_release_event', self.onclick)
-        self.fig.canvas.mpl_connect('key_press_event', self.keypress)
+        self.canvas.mpl_connect('button_release_event', self.onclick)
+        self.canvas.mpl_connect('key_press_event', self.keypress)
         self.color_ = True
         self.color="C1"
         
@@ -167,7 +170,6 @@ class Marker:
             
             if self.theory: self.figtext("Theory marker") 
             else: self.figtext("Experiment marker")
-                
             self.ax = (self.ax_exp, self.ax_theory)[self.theory]
             
         if event.key == "c":
@@ -184,7 +186,7 @@ class Marker:
             if len(self.txt_array) == 0: return
             else: self.remove_annotation(-1)
 
-        self.fig.canvas.draw()
+        self.canvas.draw()
         
     def remove_annotation(self, ind):
         txt_widget = self.txt_array[ind]
@@ -194,8 +196,9 @@ class Marker:
         self.txt_value = np.insert(self.txt_value, 0, deleted_value)
         
     def figtext(self, title):
-        #self.figtext = self.fig.text(0.5, 0.01, figcaption, wrap=True, horizontalalignment='center', fontsize=12)
-        return self.ax_exp.set_title(title)
+        # self.fig.text(0.5, 0.01, title, wrap=True, horizontalalignment='center', fontsize=12)
+        self.ax_exp.set_title(title)
+        self.canvas.draw()
     
     def onclick(self, event):
         
@@ -203,7 +206,6 @@ class Marker:
             
             xdata = event.xdata
             
-                
             if event.button==1:
                 if len(self.txt_value) > 0:
                     value = self.txt_value[0]
@@ -227,4 +229,4 @@ class Marker:
                     self.txt_value = self.txt_value_original
                     return
 
-            self.fig.canvas.draw()
+            self.canvas.draw()

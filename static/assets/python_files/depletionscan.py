@@ -43,7 +43,7 @@ class depletionplot:
         
     def create_figure(self):
         
-        self.fig, self.canvas = self.widget.Figure(default_widget=False, dpi=200)
+        self.fig, self.canvas = self.widget.Figure(default_widget=False, default_save_widget=False, executeCodeWidget=False, dpi=200)
         self.fig.suptitle("Depletion Scan")
         self.fig.subplots_adjust(top=0.86, bottom=0.20, right=0.97, wspace=0.34)
         self.ax0 = self.fig.add_subplot(121)
