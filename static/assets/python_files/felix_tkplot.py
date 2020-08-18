@@ -166,11 +166,7 @@ def only_exp_plot(axs, datfiles, NPlots, exptitle, lg, normMethod, majorTick, le
 
     for i in range(NPlots):
     
-        if NPlots>1:
-            ax = axs[i]
-        else:
-
-            ax = axs[0]
+        ax = axs[i]
 
         ax = felix_plot(datfiles, ax, lg, normMethod, sameColor)
     
