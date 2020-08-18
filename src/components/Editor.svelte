@@ -1,10 +1,10 @@
 
 <script>
     import {onMount} from "svelte";
-    export let type="report";
+    export let type="report", reportEditor;
     
     onMount(()=>{
-        window.reportEditor = new Quill(`#${type}-editor-container`, {
+        reportEditor = new Quill(`#${type}-editor-container`, {
         
             modules: {
                 formula: true,

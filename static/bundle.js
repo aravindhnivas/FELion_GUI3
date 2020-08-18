@@ -37809,93 +37809,93 @@ function create_fragment$U(ctx) {
 			t24 = space();
 			div1 = element("div");
 			attr_dev(select0, "class", "ql-font");
-			add_location(select0, file$O, 53, 6, 2199);
+			add_location(select0, file$O, 53, 6, 2206);
 			attr_dev(select1, "class", "ql-size");
-			add_location(select1, file$O, 54, 6, 2240);
+			add_location(select1, file$O, 54, 6, 2247);
 			attr_dev(span0, "class", "ql-formats");
-			add_location(span0, file$O, 52, 4, 2166);
+			add_location(span0, file$O, 52, 4, 2173);
 			attr_dev(button0, "class", "ql-bold");
-			add_location(button0, file$O, 57, 6, 2325);
+			add_location(button0, file$O, 57, 6, 2332);
 			attr_dev(button1, "class", "ql-italic");
-			add_location(button1, file$O, 58, 6, 2366);
+			add_location(button1, file$O, 58, 6, 2373);
 			attr_dev(button2, "class", "ql-underline");
-			add_location(button2, file$O, 59, 6, 2409);
+			add_location(button2, file$O, 59, 6, 2416);
 			attr_dev(button3, "class", "ql-strike");
-			add_location(button3, file$O, 60, 6, 2455);
+			add_location(button3, file$O, 60, 6, 2462);
 			attr_dev(span1, "class", "ql-formats");
-			add_location(span1, file$O, 56, 4, 2292);
+			add_location(span1, file$O, 56, 4, 2299);
 			attr_dev(select2, "class", "ql-color");
-			add_location(select2, file$O, 63, 6, 2542);
+			add_location(select2, file$O, 63, 6, 2549);
 			attr_dev(select3, "class", "ql-background");
-			add_location(select3, file$O, 64, 6, 2584);
+			add_location(select3, file$O, 64, 6, 2591);
 			attr_dev(span2, "class", "ql-formats");
-			add_location(span2, file$O, 62, 4, 2509);
+			add_location(span2, file$O, 62, 4, 2516);
 			attr_dev(button4, "class", "ql-script");
 			button4.value = "sub";
-			add_location(button4, file$O, 67, 6, 2675);
+			add_location(button4, file$O, 67, 6, 2682);
 			attr_dev(button5, "class", "ql-script");
 			button5.value = "super";
-			add_location(button5, file$O, 68, 6, 2730);
+			add_location(button5, file$O, 68, 6, 2737);
 			attr_dev(span3, "class", "ql-formats");
-			add_location(span3, file$O, 66, 4, 2642);
+			add_location(span3, file$O, 66, 4, 2649);
 			attr_dev(button6, "class", "ql-header");
 			button6.value = "1";
-			add_location(button6, file$O, 71, 6, 2831);
+			add_location(button6, file$O, 71, 6, 2838);
 			attr_dev(button7, "class", "ql-header");
 			button7.value = "2";
-			add_location(button7, file$O, 72, 6, 2884);
+			add_location(button7, file$O, 72, 6, 2891);
 			attr_dev(button8, "class", "ql-blockquote");
-			add_location(button8, file$O, 73, 6, 2937);
+			add_location(button8, file$O, 73, 6, 2944);
 			attr_dev(button9, "class", "ql-code-block");
-			add_location(button9, file$O, 74, 6, 2984);
+			add_location(button9, file$O, 74, 6, 2991);
 			attr_dev(span4, "class", "ql-formats");
-			add_location(span4, file$O, 70, 4, 2798);
+			add_location(span4, file$O, 70, 4, 2805);
 			attr_dev(button10, "class", "ql-list");
 			button10.value = "ordered";
-			add_location(button10, file$O, 77, 6, 3075);
+			add_location(button10, file$O, 77, 6, 3082);
 			attr_dev(button11, "class", "ql-list");
 			button11.value = "bullet";
-			add_location(button11, file$O, 78, 6, 3132);
+			add_location(button11, file$O, 78, 6, 3139);
 			attr_dev(button12, "class", "ql-indent");
 			button12.value = "-1";
-			add_location(button12, file$O, 79, 6, 3188);
+			add_location(button12, file$O, 79, 6, 3195);
 			attr_dev(button13, "class", "ql-indent");
 			button13.value = "+1";
-			add_location(button13, file$O, 80, 6, 3242);
+			add_location(button13, file$O, 80, 6, 3249);
 			attr_dev(span5, "class", "ql-formats");
-			add_location(span5, file$O, 76, 4, 3042);
+			add_location(span5, file$O, 76, 4, 3049);
 			attr_dev(button14, "class", "ql-direction");
 			button14.value = "rtl";
-			add_location(button14, file$O, 83, 6, 3340);
+			add_location(button14, file$O, 83, 6, 3347);
 			attr_dev(select4, "class", "ql-align");
-			add_location(select4, file$O, 84, 6, 3398);
+			add_location(select4, file$O, 84, 6, 3405);
 			attr_dev(span6, "class", "ql-formats");
-			add_location(span6, file$O, 82, 4, 3307);
+			add_location(span6, file$O, 82, 4, 3314);
 			attr_dev(button15, "class", "ql-link");
-			add_location(button15, file$O, 87, 6, 3484);
+			add_location(button15, file$O, 87, 6, 3491);
 			attr_dev(button16, "class", "ql-image");
-			add_location(button16, file$O, 88, 6, 3525);
+			add_location(button16, file$O, 88, 6, 3532);
 			attr_dev(button17, "class", "ql-video");
-			add_location(button17, file$O, 89, 6, 3567);
+			add_location(button17, file$O, 89, 6, 3574);
 			attr_dev(button18, "class", "ql-formula");
-			add_location(button18, file$O, 90, 6, 3609);
+			add_location(button18, file$O, 90, 6, 3616);
 			attr_dev(span7, "class", "ql-formats");
-			add_location(span7, file$O, 86, 4, 3451);
+			add_location(span7, file$O, 86, 4, 3458);
 			attr_dev(button19, "class", "ql-clean");
-			add_location(button19, file$O, 93, 6, 3697);
+			add_location(button19, file$O, 93, 6, 3704);
 			attr_dev(span8, "class", "ql-formats");
-			add_location(span8, file$O, 92, 4, 3664);
+			add_location(span8, file$O, 92, 4, 3671);
 			attr_dev(div0, "id", div0_id_value = "" + (/*type*/ ctx[0] + "-toolbar-container"));
 			attr_dev(div0, "class", "toolbar-container");
-			add_location(div0, file$O, 51, 2, 2099);
+			add_location(div0, file$O, 51, 2, 2106);
 			attr_dev(div1, "id", div1_id_value = "" + (/*type*/ ctx[0] + "-editor-container"));
 			attr_dev(div1, "class", "text-container");
-			add_location(div1, file$O, 96, 2, 3758);
+			add_location(div1, file$O, 96, 2, 3765);
 			attr_dev(div2, "id", div2_id_value = "" + (/*type*/ ctx[0] + "-standalone-container"));
 			attr_dev(div2, "class", "align editor-container");
 			set_style(div2, "background-color", "#fafafa");
 			set_style(div2, "width", "75%");
-			add_location(div2, file$O, 50, 0, 1979);
+			add_location(div2, file$O, 50, 0, 1986);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -37996,10 +37996,10 @@ function create_fragment$U(ctx) {
 }
 
 function instance$U($$self, $$props, $$invalidate) {
-	let { type = "report" } = $$props;
+	let { type = "report" } = $$props, { reportEditor } = $$props;
 
 	onMount(() => {
-		window.reportEditor = new Quill(`#${type}-editor-container`,
+		$$invalidate(1, reportEditor = new Quill(`#${type}-editor-container`,
 		{
 				modules: {
 					formula: true,
@@ -38008,10 +38008,10 @@ function instance$U($$self, $$props, $$invalidate) {
 				},
 				// placeholder: 'Compose an epic...',
 				theme: "snow"
-			});
+			}));
 	});
 
-	const writable_props = ["type"];
+	const writable_props = ["type", "reportEditor"];
 
 	Object.keys($$props).forEach(key => {
 		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Editor> was created with unknown prop '${key}'`);
@@ -38022,25 +38022,27 @@ function instance$U($$self, $$props, $$invalidate) {
 
 	$$self.$$set = $$props => {
 		if ("type" in $$props) $$invalidate(0, type = $$props.type);
+		if ("reportEditor" in $$props) $$invalidate(1, reportEditor = $$props.reportEditor);
 	};
 
-	$$self.$capture_state = () => ({ onMount, type });
+	$$self.$capture_state = () => ({ onMount, type, reportEditor });
 
 	$$self.$inject_state = $$props => {
 		if ("type" in $$props) $$invalidate(0, type = $$props.type);
+		if ("reportEditor" in $$props) $$invalidate(1, reportEditor = $$props.reportEditor);
 	};
 
 	if ($$props && "$$inject" in $$props) {
 		$$self.$inject_state($$props.$$inject);
 	}
 
-	return [type];
+	return [type, reportEditor];
 }
 
 class Editor extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$U, create_fragment$U, safe_not_equal, { type: 0 });
+		init(this, options, instance$U, create_fragment$U, safe_not_equal, { type: 0, reportEditor: 1 });
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
@@ -38048,6 +38050,13 @@ class Editor extends SvelteComponentDev {
 			options,
 			id: create_fragment$U.name
 		});
+
+		const { ctx } = this.$$;
+		const props = options.props || {};
+
+		if (/*reportEditor*/ ctx[1] === undefined && !("reportEditor" in props)) {
+			console.warn("<Editor> was created without expected prop 'reportEditor'");
+		}
 	}
 
 	get type() {
@@ -38055,6 +38064,14 @@ class Editor extends SvelteComponentDev {
 	}
 
 	set type(value) {
+		throw new Error("<Editor>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get reportEditor() {
+		throw new Error("<Editor>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set reportEditor(value) {
 		throw new Error("<Editor>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 }
@@ -38066,43 +38083,43 @@ const file$P = "src\\components\\ReportLayout.svelte";
 
 function get_each_context$4(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[35] = list[i];
+	child_ctx[43] = list[i];
 	return child_ctx;
 }
 
 function get_each_context_1(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[38] = list[i];
+	child_ctx[46] = list[i];
 	return child_ctx;
 }
 
 function get_each_context_2(ctx, list, i) {
 	const child_ctx = ctx.slice();
 	child_ctx[2] = list[i].id;
-	child_ctx[41] = list[i].include;
-	child_ctx[42] = list[i].label;
-	child_ctx[43] = list;
-	child_ctx[44] = i;
+	child_ctx[49] = list[i].include;
+	child_ctx[50] = list[i].label;
+	child_ctx[51] = list;
+	child_ctx[52] = i;
 	return child_ctx;
 }
 
 function get_each_context_3(ctx, list, i) {
 	const child_ctx = ctx.slice();
 	child_ctx[2] = list[i].id;
-	child_ctx[41] = list[i].include;
-	child_ctx[42] = list[i].label;
-	child_ctx[45] = list;
-	child_ctx[46] = i;
+	child_ctx[49] = list[i].include;
+	child_ctx[50] = list[i].label;
+	child_ctx[53] = list;
+	child_ctx[54] = i;
 	return child_ctx;
 }
 
 function get_each_context_4(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[38] = list[i];
+	child_ctx[46] = list[i];
 	return child_ctx;
 }
 
-// (278:0) {#if toggle}
+// (274:0) {#if toggle}
 function create_if_block$f(ctx) {
 	let div0;
 	let textfield0;
@@ -38110,7 +38127,7 @@ function create_if_block$f(ctx) {
 	let t0;
 	let button0;
 	let t2;
-	let div5;
+	let div6;
 	let div1;
 	let t3;
 	let t4;
@@ -38123,26 +38140,31 @@ function create_if_block$f(ctx) {
 	let updating_value_1;
 	let t6;
 	let editor;
+	let updating_reportEditor;
 	let t7;
 	let div4;
 	let button1;
-	let Ripple_action;
 	let t9;
 	let button2;
-	let Ripple_action_1;
 	let t11;
-	let button3;
-	let Ripple_action_2;
-	let t13;
-	let t14;
-	let select;
+	let div5;
+	let textfield2;
 	let updating_value_2;
+	let t12;
+	let textfield3;
+	let updating_value_3;
+	let t13;
+	let button3;
+	let t15;
+	let t16;
+	let select;
+	let updating_value_4;
 	let current;
 	let mounted;
 	let dispose;
 
 	function textfield0_value_binding(value) {
-		/*textfield0_value_binding*/ ctx[18].call(null, value);
+		/*textfield0_value_binding*/ ctx[21].call(null, value);
 	}
 
 	let textfield0_props = {
@@ -38157,7 +38179,7 @@ function create_if_block$f(ctx) {
 
 	textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
-	let each_value_4 = /*notificationMethod*/ ctx[14];
+	let each_value_4 = /*notificationMethod*/ ctx[17];
 	validate_each_argument(each_value_4);
 	let each_blocks_2 = [];
 
@@ -38182,7 +38204,7 @@ function create_if_block$f(ctx) {
 	}
 
 	function textfield1_value_binding(value) {
-		/*textfield1_value_binding*/ ctx[23].call(null, value);
+		/*textfield1_value_binding*/ ctx[26].call(null, value);
 	}
 
 	let textfield1_props = {
@@ -38197,7 +38219,53 @@ function create_if_block$f(ctx) {
 
 	textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding));
-	editor = new Editor({ $$inline: true });
+
+	function editor_reportEditor_binding(value) {
+		/*editor_reportEditor_binding*/ ctx[27].call(null, value);
+	}
+
+	let editor_props = {};
+
+	if (/*reportEditor*/ ctx[9] !== void 0) {
+		editor_props.reportEditor = /*reportEditor*/ ctx[9];
+	}
+
+	editor = new Editor({ props: editor_props, $$inline: true });
+	binding_callbacks.push(() => bind(editor, "reportEditor", editor_reportEditor_binding));
+
+	function textfield2_value_binding(value) {
+		/*textfield2_value_binding*/ ctx[28].call(null, value);
+	}
+
+	let textfield2_props = {
+		style: "width:7em;",
+		variant: "outlined",
+		label: "plotWidth"
+	};
+
+	if (/*plotWidth*/ ctx[7] !== void 0) {
+		textfield2_props.value = /*plotWidth*/ ctx[7];
+	}
+
+	textfield2 = new Textfield({ props: textfield2_props, $$inline: true });
+	binding_callbacks.push(() => bind(textfield2, "value", textfield2_value_binding));
+
+	function textfield3_value_binding(value) {
+		/*textfield3_value_binding*/ ctx[29].call(null, value);
+	}
+
+	let textfield3_props = {
+		style: "width:7em;",
+		variant: "outlined",
+		label: "plotHeight"
+	};
+
+	if (/*plotHeight*/ ctx[8] !== void 0) {
+		textfield3_props.value = /*plotHeight*/ ctx[8];
+	}
+
+	textfield3 = new Textfield({ props: textfield3_props, $$inline: true });
+	binding_callbacks.push(() => bind(textfield3, "value", textfield3_value_binding));
 	let each_value_1 = ["landscape", "portrait"];
 	validate_each_argument(each_value_1);
 	let each_blocks = [];
@@ -38211,7 +38279,7 @@ function create_if_block$f(ctx) {
 	});
 
 	function select_value_binding(value) {
-		/*select_value_binding*/ ctx[26].call(null, value);
+		/*select_value_binding*/ ctx[32].call(null, value);
 	}
 
 	let select_props = {
@@ -38221,8 +38289,8 @@ function create_if_block$f(ctx) {
 		$$scope: { ctx }
 	};
 
-	if (/*pageSize*/ ctx[8] !== void 0) {
-		select_props.value = /*pageSize*/ ctx[8];
+	if (/*pageSize*/ ctx[11] !== void 0) {
+		select_props.value = /*pageSize*/ ctx[11];
 	}
 
 	select = new Select({ props: select_props, $$inline: true });
@@ -38236,7 +38304,7 @@ function create_if_block$f(ctx) {
 			button0 = element("button");
 			button0.textContent = "Reset Report";
 			t2 = space();
-			div5 = element("div");
+			div6 = element("div");
 			div1 = element("div");
 
 			for (let i = 0; i < each_blocks_2.length; i += 1) {
@@ -38265,42 +38333,46 @@ function create_if_block$f(ctx) {
 			button2 = element("button");
 			button2.textContent = "Show Report";
 			t11 = space();
+			div5 = element("div");
+			create_component(textfield2.$$.fragment);
+			t12 = space();
+			create_component(textfield3.$$.fragment);
+			t13 = space();
 			button3 = element("button");
 			button3.textContent = "EXPORT to PDF";
-			t13 = space();
+			t15 = space();
 
 			for (let i = 0; i < 2; i += 1) {
 				each_blocks[i].c();
 			}
 
-			t14 = space();
+			t16 = space();
 			create_component(select.$$.fragment);
 			attr_dev(button0, "class", "button is-pulled-right is-warning svelte-ivzb9v");
-			add_location(button0, file$P, 281, 8, 10051);
+			add_location(button0, file$P, 277, 8, 9895);
 			set_style(div0, "margin-bottom", "1em");
 			attr_dev(div0, "class", "svelte-ivzb9v");
-			add_location(div0, file$P, 279, 4, 9885);
+			add_location(div0, file$P, 275, 4, 9729);
 			attr_dev(div1, "class", "");
-			add_location(div1, file$P, 285, 8, 10306);
+			add_location(div1, file$P, 281, 8, 10150);
 			attr_dev(div2, "class", " svelte-ivzb9v");
-			add_location(div2, file$P, 308, 12, 11093);
+			add_location(div2, file$P, 304, 12, 10937);
 			attr_dev(div3, "class", "addToReport  svelte-ivzb9v");
-			add_location(div3, file$P, 306, 8, 11051);
+			add_location(div3, file$P, 302, 8, 10895);
 			attr_dev(button1, "class", "button is-link svelte-ivzb9v");
-			attr_dev(button1, "tabindex", "0");
-			add_location(button1, file$P, 320, 12, 11542);
+			add_location(button1, file$P, 318, 12, 11423);
 			attr_dev(button2, "class", "button is-link svelte-ivzb9v");
-			attr_dev(button2, "tabindex", "0");
-			add_location(button2, file$P, 321, 12, 11683);
-			attr_dev(button3, "class", "button is-link svelte-ivzb9v");
-			attr_dev(button3, "tabindex", "0");
-			add_location(button3, file$P, 322, 12, 11823);
+			add_location(button2, file$P, 319, 12, 11511);
 			attr_dev(div4, "class", "align svelte-ivzb9v");
 			set_style(div4, "margin-top", "1em");
-			add_location(div4, file$P, 318, 8, 11475);
-			attr_dev(div5, "class", "align report svelte-ivzb9v");
-			attr_dev(div5, "id", /*id*/ ctx[2]);
-			add_location(div5, file$P, 284, 4, 10264);
+			add_location(div4, file$P, 317, 8, 11366);
+			attr_dev(button3, "class", "button is-link svelte-ivzb9v");
+			add_location(button3, file$P, 328, 12, 11897);
+			attr_dev(div5, "class", "align svelte-ivzb9v");
+			add_location(div5, file$P, 323, 8, 11622);
+			attr_dev(div6, "class", "align report svelte-ivzb9v");
+			attr_dev(div6, "id", /*id*/ ctx[2]);
+			add_location(div6, file$P, 280, 4, 10108);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -38308,53 +38380,55 @@ function create_if_block$f(ctx) {
 			append_dev(div0, t0);
 			append_dev(div0, button0);
 			insert_dev(target, t2, anchor);
-			insert_dev(target, div5, anchor);
-			append_dev(div5, div1);
+			insert_dev(target, div6, anchor);
+			append_dev(div6, div1);
 
 			for (let i = 0; i < each_blocks_2.length; i += 1) {
 				each_blocks_2[i].m(div1, null);
 			}
 
-			append_dev(div5, t3);
-			if (if_block) if_block.m(div5, null);
-			append_dev(div5, t4);
-			append_dev(div5, div3);
+			append_dev(div6, t3);
+			if (if_block) if_block.m(div6, null);
+			append_dev(div6, t4);
+			append_dev(div6, div3);
 			append_dev(div3, div2);
 
 			for (let i = 0; i < each_blocks_1.length; i += 1) {
 				each_blocks_1[i].m(div2, null);
 			}
 
-			append_dev(div5, t5);
-			mount_component(textfield1, div5, null);
-			append_dev(div5, t6);
-			mount_component(editor, div5, null);
-			append_dev(div5, t7);
-			append_dev(div5, div4);
+			append_dev(div6, t5);
+			mount_component(textfield1, div6, null);
+			append_dev(div6, t6);
+			mount_component(editor, div6, null);
+			append_dev(div6, t7);
+			append_dev(div6, div4);
 			append_dev(div4, button1);
 			append_dev(div4, t9);
 			append_dev(div4, button2);
-			append_dev(div4, t11);
-			append_dev(div4, button3);
-			append_dev(div4, t13);
+			append_dev(div6, t11);
+			append_dev(div6, div5);
+			mount_component(textfield2, div5, null);
+			append_dev(div5, t12);
+			mount_component(textfield3, div5, null);
+			append_dev(div5, t13);
+			append_dev(div5, button3);
+			append_dev(div5, t15);
 
 			for (let i = 0; i < 2; i += 1) {
-				each_blocks[i].m(div4, null);
+				each_blocks[i].m(div5, null);
 			}
 
-			append_dev(div4, t14);
-			mount_component(select, div4, null);
+			append_dev(div5, t16);
+			mount_component(select, div5, null);
 			current = true;
 
 			if (!mounted) {
 				dispose = [
-					listen_dev(button0, "click", /*click_handler*/ ctx[19], false, false, false),
-					action_destroyer(Ripple_action = Ripple.call(null, button1, [true, { color: "primary" }])),
-					listen_dev(button1, "click", /*addReport*/ ctx[12], false, false, false),
-					action_destroyer(Ripple_action_1 = Ripple.call(null, button2, [true, { color: "primary" }])),
-					listen_dev(button2, "click", /*showReport*/ ctx[13], false, false, false),
-					action_destroyer(Ripple_action_2 = Ripple.call(null, button3, [true, { color: "primary" }])),
-					listen_dev(button3, "click", /*click_handler_1*/ ctx[24], false, false, false)
+					listen_dev(button0, "click", /*click_handler*/ ctx[22], false, false, false),
+					listen_dev(button1, "click", /*addReport*/ ctx[15], false, false, false),
+					listen_dev(button2, "click", /*showReport*/ ctx[16], false, false, false),
+					listen_dev(button3, "click", /*click_handler_1*/ ctx[30], false, false, false)
 				];
 
 				mounted = true;
@@ -38371,8 +38445,8 @@ function create_if_block$f(ctx) {
 
 			textfield0.$set(textfield0_changes);
 
-			if (dirty[0] & /*notificationMethod, reportMethod*/ 16400) {
-				each_value_4 = /*notificationMethod*/ ctx[14];
+			if (dirty[0] & /*notificationMethod, reportMethod*/ 131088) {
+				each_value_4 = /*notificationMethod*/ ctx[17];
 				validate_each_argument(each_value_4);
 				let i;
 
@@ -38410,7 +38484,7 @@ function create_if_block$f(ctx) {
 					if_block = create_if_block_1$6(ctx);
 					if_block.c();
 					transition_in(if_block, 1);
-					if_block.m(div5, t4);
+					if_block.m(div6, t4);
 				}
 			} else if (if_block) {
 				group_outros();
@@ -38440,8 +38514,35 @@ function create_if_block$f(ctx) {
 			}
 
 			textfield1.$set(textfield1_changes);
+			const editor_changes = {};
 
-			if (dirty[0] & /*exportMethod*/ 128) {
+			if (!updating_reportEditor && dirty[0] & /*reportEditor*/ 512) {
+				updating_reportEditor = true;
+				editor_changes.reportEditor = /*reportEditor*/ ctx[9];
+				add_flush_callback(() => updating_reportEditor = false);
+			}
+
+			editor.$set(editor_changes);
+			const textfield2_changes = {};
+
+			if (!updating_value_2 && dirty[0] & /*plotWidth*/ 128) {
+				updating_value_2 = true;
+				textfield2_changes.value = /*plotWidth*/ ctx[7];
+				add_flush_callback(() => updating_value_2 = false);
+			}
+
+			textfield2.$set(textfield2_changes);
+			const textfield3_changes = {};
+
+			if (!updating_value_3 && dirty[0] & /*plotHeight*/ 256) {
+				updating_value_3 = true;
+				textfield3_changes.value = /*plotHeight*/ ctx[8];
+				add_flush_callback(() => updating_value_3 = false);
+			}
+
+			textfield3.$set(textfield3_changes);
+
+			if (dirty[0] & /*exportMethod*/ 1024) {
 				each_value_1 = ["landscape", "portrait"];
 				validate_each_argument(each_value_1);
 				let i;
@@ -38456,7 +38557,7 @@ function create_if_block$f(ctx) {
 						each_blocks[i] = create_each_block_1(child_ctx);
 						each_blocks[i].c();
 						transition_in(each_blocks[i], 1);
-						each_blocks[i].m(div4, t14);
+						each_blocks[i].m(div5, t16);
 					}
 				}
 
@@ -38471,20 +38572,20 @@ function create_if_block$f(ctx) {
 
 			const select_changes = {};
 
-			if (dirty[0] & /*pageSize*/ 256 | dirty[1] & /*$$scope*/ 262144) {
+			if (dirty[0] & /*pageSize*/ 2048 | dirty[1] & /*$$scope*/ 67108864) {
 				select_changes.$$scope = { dirty, ctx };
 			}
 
-			if (!updating_value_2 && dirty[0] & /*pageSize*/ 256) {
-				updating_value_2 = true;
-				select_changes.value = /*pageSize*/ ctx[8];
-				add_flush_callback(() => updating_value_2 = false);
+			if (!updating_value_4 && dirty[0] & /*pageSize*/ 2048) {
+				updating_value_4 = true;
+				select_changes.value = /*pageSize*/ ctx[11];
+				add_flush_callback(() => updating_value_4 = false);
 			}
 
 			select.$set(select_changes);
 
 			if (!current || dirty[0] & /*id*/ 4) {
-				attr_dev(div5, "id", /*id*/ ctx[2]);
+				attr_dev(div6, "id", /*id*/ ctx[2]);
 			}
 		},
 		i: function intro(local) {
@@ -38503,6 +38604,8 @@ function create_if_block$f(ctx) {
 
 			transition_in(textfield1.$$.fragment, local);
 			transition_in(editor.$$.fragment, local);
+			transition_in(textfield2.$$.fragment, local);
+			transition_in(textfield3.$$.fragment, local);
 
 			for (let i = 0; i < 2; i += 1) {
 				transition_in(each_blocks[i]);
@@ -38527,6 +38630,8 @@ function create_if_block$f(ctx) {
 
 			transition_out(textfield1.$$.fragment, local);
 			transition_out(editor.$$.fragment, local);
+			transition_out(textfield2.$$.fragment, local);
+			transition_out(textfield3.$$.fragment, local);
 			each_blocks = each_blocks.filter(Boolean);
 
 			for (let i = 0; i < 2; i += 1) {
@@ -38540,7 +38645,7 @@ function create_if_block$f(ctx) {
 			if (detaching) detach_dev(div0);
 			destroy_component(textfield0);
 			if (detaching) detach_dev(t2);
-			if (detaching) detach_dev(div5);
+			if (detaching) detach_dev(div6);
 			destroy_each(each_blocks_2, detaching);
 			if (if_block) if_block.d();
 
@@ -38550,6 +38655,8 @@ function create_if_block$f(ctx) {
 
 			destroy_component(textfield1);
 			destroy_component(editor);
+			destroy_component(textfield2);
+			destroy_component(textfield3);
 			destroy_each(each_blocks, detaching);
 			destroy_component(select);
 			mounted = false;
@@ -38561,17 +38668,17 @@ function create_if_block$f(ctx) {
 		block,
 		id: create_if_block$f.name,
 		type: "if",
-		source: "(278:0) {#if toggle}",
+		source: "(274:0) {#if toggle}",
 		ctx
 	});
 
 	return block;
 }
 
-// (291:20) <span slot="label" style="color:{method.color}">
+// (287:20) <span slot="label" style="color:{method.color}">
 function create_label_slot_1(ctx) {
 	let span;
-	let t_value = /*method*/ ctx[38].name + "";
+	let t_value = /*method*/ ctx[46].name + "";
 	let t;
 
 	const block = {
@@ -38579,8 +38686,8 @@ function create_label_slot_1(ctx) {
 			span = element("span");
 			t = text(t_value);
 			attr_dev(span, "slot", "label");
-			set_style(span, "color", /*method*/ ctx[38].color);
-			add_location(span, file$P, 290, 20, 10522);
+			set_style(span, "color", /*method*/ ctx[46].color);
+			add_location(span, file$P, 286, 20, 10366);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -38596,14 +38703,14 @@ function create_label_slot_1(ctx) {
 		block,
 		id: create_label_slot_1.name,
 		type: "slot",
-		source: "(291:20) <span slot=\\\"label\\\" style=\\\"color:{method.color}\\\">",
+		source: "(287:20) <span slot=\\\"label\\\" style=\\\"color:{method.color}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (288:16) <FormField >
+// (284:16) <FormField >
 function create_default_slot_3$5(ctx) {
 	let radio;
 	let updating_group;
@@ -38612,10 +38719,10 @@ function create_default_slot_3$5(ctx) {
 	let current;
 
 	function radio_group_binding(value) {
-		/*radio_group_binding*/ ctx[20].call(null, value);
+		/*radio_group_binding*/ ctx[23].call(null, value);
 	}
 
-	let radio_props = { value: /*method*/ ctx[38].name };
+	let radio_props = { value: /*method*/ ctx[46].name };
 
 	if (/*reportMethod*/ ctx[4] !== void 0) {
 		radio_props.group = /*reportMethod*/ ctx[4];
@@ -38667,14 +38774,14 @@ function create_default_slot_3$5(ctx) {
 		block,
 		id: create_default_slot_3$5.name,
 		type: "slot",
-		source: "(288:16) <FormField >",
+		source: "(284:16) <FormField >",
 		ctx
 	});
 
 	return block;
 }
 
-// (287:12) {#each notificationMethod as method}
+// (283:12) {#each notificationMethod as method}
 function create_each_block_4(ctx) {
 	let formfield;
 	let current;
@@ -38701,7 +38808,7 @@ function create_each_block_4(ctx) {
 		p: function update(ctx, dirty) {
 			const formfield_changes = {};
 
-			if (dirty[0] & /*reportMethod*/ 16 | dirty[1] & /*$$scope*/ 262144) {
+			if (dirty[0] & /*reportMethod*/ 16 | dirty[1] & /*$$scope*/ 67108864) {
 				formfield_changes.$$scope = { dirty, ctx };
 			}
 
@@ -38725,14 +38832,14 @@ function create_each_block_4(ctx) {
 		block,
 		id: create_each_block_4.name,
 		type: "each",
-		source: "(287:12) {#each notificationMethod as method}",
+		source: "(283:12) {#each notificationMethod as method}",
 		ctx
 	});
 
 	return block;
 }
 
-// (296:8) {#if includeTablesInReports.length>0}
+// (292:8) {#if includeTablesInReports.length>0}
 function create_if_block_1$6(ctx) {
 	let div1;
 	let div0;
@@ -38760,9 +38867,9 @@ function create_if_block_1$6(ctx) {
 			}
 
 			attr_dev(div0, "class", " svelte-ivzb9v");
-			add_location(div0, file$P, 297, 16, 10764);
+			add_location(div0, file$P, 293, 16, 10608);
 			attr_dev(div1, "class", "addToReport  svelte-ivzb9v");
-			add_location(div1, file$P, 296, 12, 10720);
+			add_location(div1, file$P, 292, 12, 10564);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div1, anchor);
@@ -38813,14 +38920,14 @@ function create_if_block_1$6(ctx) {
 		block,
 		id: create_if_block_1$6.name,
 		type: "if",
-		source: "(296:8) {#if includeTablesInReports.length>0}",
+		source: "(292:8) {#if includeTablesInReports.length>0}",
 		ctx
 	});
 
 	return block;
 }
 
-// (299:20) {#each includeTablesInReports as {id, include, label}
+// (295:20) {#each includeTablesInReports as {id, include, label}
 function create_each_block_3(key_1, ctx) {
 	let first;
 	let customcheckbox;
@@ -38828,13 +38935,13 @@ function create_each_block_3(key_1, ctx) {
 	let current;
 
 	function customcheckbox_selected_binding(value) {
-		/*customcheckbox_selected_binding*/ ctx[21].call(null, value, /*include*/ ctx[41], /*each_value_3*/ ctx[45], /*each_index_1*/ ctx[46]);
+		/*customcheckbox_selected_binding*/ ctx[24].call(null, value, /*include*/ ctx[49], /*each_value_3*/ ctx[53], /*each_index_1*/ ctx[54]);
 	}
 
-	let customcheckbox_props = { label: /*label*/ ctx[42] };
+	let customcheckbox_props = { label: /*label*/ ctx[50] };
 
-	if (/*include*/ ctx[41] !== void 0) {
-		customcheckbox_props.selected = /*include*/ ctx[41];
+	if (/*include*/ ctx[49] !== void 0) {
+		customcheckbox_props.selected = /*include*/ ctx[49];
 	}
 
 	customcheckbox = new CustomCheckbox({
@@ -38860,11 +38967,11 @@ function create_each_block_3(key_1, ctx) {
 		p: function update(new_ctx, dirty) {
 			ctx = new_ctx;
 			const customcheckbox_changes = {};
-			if (dirty[0] & /*includeTablesInReports*/ 2) customcheckbox_changes.label = /*label*/ ctx[42];
+			if (dirty[0] & /*includeTablesInReports*/ 2) customcheckbox_changes.label = /*label*/ ctx[50];
 
 			if (!updating_selected && dirty[0] & /*includeTablesInReports*/ 2) {
 				updating_selected = true;
-				customcheckbox_changes.selected = /*include*/ ctx[41];
+				customcheckbox_changes.selected = /*include*/ ctx[49];
 				add_flush_callback(() => updating_selected = false);
 			}
 
@@ -38889,14 +38996,14 @@ function create_each_block_3(key_1, ctx) {
 		block,
 		id: create_each_block_3.name,
 		type: "each",
-		source: "(299:20) {#each includeTablesInReports as {id, include, label}",
+		source: "(295:20) {#each includeTablesInReports as {id, include, label}",
 		ctx
 	});
 
 	return block;
 }
 
-// (310:16) {#each includePlotsInReport as {id, include, label}
+// (306:16) {#each includePlotsInReport as {id, include, label}
 function create_each_block_2(key_1, ctx) {
 	let first;
 	let customcheckbox;
@@ -38904,13 +39011,13 @@ function create_each_block_2(key_1, ctx) {
 	let current;
 
 	function customcheckbox_selected_binding_1(value) {
-		/*customcheckbox_selected_binding_1*/ ctx[22].call(null, value, /*include*/ ctx[41], /*each_value_2*/ ctx[43], /*each_index*/ ctx[44]);
+		/*customcheckbox_selected_binding_1*/ ctx[25].call(null, value, /*include*/ ctx[49], /*each_value_2*/ ctx[51], /*each_index*/ ctx[52]);
 	}
 
-	let customcheckbox_props = { label: /*label*/ ctx[42] };
+	let customcheckbox_props = { label: /*label*/ ctx[50] };
 
-	if (/*include*/ ctx[41] !== void 0) {
-		customcheckbox_props.selected = /*include*/ ctx[41];
+	if (/*include*/ ctx[49] !== void 0) {
+		customcheckbox_props.selected = /*include*/ ctx[49];
 	}
 
 	customcheckbox = new CustomCheckbox({
@@ -38936,11 +39043,11 @@ function create_each_block_2(key_1, ctx) {
 		p: function update(new_ctx, dirty) {
 			ctx = new_ctx;
 			const customcheckbox_changes = {};
-			if (dirty[0] & /*includePlotsInReport*/ 1) customcheckbox_changes.label = /*label*/ ctx[42];
+			if (dirty[0] & /*includePlotsInReport*/ 1) customcheckbox_changes.label = /*label*/ ctx[50];
 
 			if (!updating_selected && dirty[0] & /*includePlotsInReport*/ 1) {
 				updating_selected = true;
-				customcheckbox_changes.selected = /*include*/ ctx[41];
+				customcheckbox_changes.selected = /*include*/ ctx[49];
 				add_flush_callback(() => updating_selected = false);
 			}
 
@@ -38965,14 +39072,14 @@ function create_each_block_2(key_1, ctx) {
 		block,
 		id: create_each_block_2.name,
 		type: "each",
-		source: "(310:16) {#each includePlotsInReport as {id, include, label}",
+		source: "(306:16) {#each includePlotsInReport as {id, include, label}",
 		ctx
 	});
 
 	return block;
 }
 
-// (327:20) <span slot="label" style="color:{method}">
+// (337:20) <span slot="label" style="color:{method}">
 function create_label_slot$4(ctx) {
 	let span;
 	let t;
@@ -38980,10 +39087,10 @@ function create_label_slot$4(ctx) {
 	const block = {
 		c: function create() {
 			span = element("span");
-			t = text(/*method*/ ctx[38]);
+			t = text(/*method*/ ctx[46]);
 			attr_dev(span, "slot", "label");
-			set_style(span, "color", /*method*/ ctx[38]);
-			add_location(span, file$P, 326, 20, 12158);
+			set_style(span, "color", /*method*/ ctx[46]);
+			add_location(span, file$P, 336, 20, 12211);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -38999,14 +39106,14 @@ function create_label_slot$4(ctx) {
 		block,
 		id: create_label_slot$4.name,
 		type: "slot",
-		source: "(327:20) <span slot=\\\"label\\\" style=\\\"color:{method}\\\">",
+		source: "(337:20) <span slot=\\\"label\\\" style=\\\"color:{method}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (325:16) <FormField >
+// (333:16) <FormField >
 function create_default_slot_2$8(ctx) {
 	let radio;
 	let updating_group;
@@ -39014,13 +39121,13 @@ function create_default_slot_2$8(ctx) {
 	let current;
 
 	function radio_group_binding_1(value) {
-		/*radio_group_binding_1*/ ctx[25].call(null, value);
+		/*radio_group_binding_1*/ ctx[31].call(null, value);
 	}
 
-	let radio_props = { value: /*method*/ ctx[38] };
+	let radio_props = { value: /*method*/ ctx[46] };
 
-	if (/*exportMethod*/ ctx[7] !== void 0) {
-		radio_props.group = /*exportMethod*/ ctx[7];
+	if (/*exportMethod*/ ctx[10] !== void 0) {
+		radio_props.group = /*exportMethod*/ ctx[10];
 	}
 
 	radio = new Radio({ props: radio_props, $$inline: true });
@@ -39039,9 +39146,9 @@ function create_default_slot_2$8(ctx) {
 		p: function update(ctx, dirty) {
 			const radio_changes = {};
 
-			if (!updating_group && dirty[0] & /*exportMethod*/ 128) {
+			if (!updating_group && dirty[0] & /*exportMethod*/ 1024) {
 				updating_group = true;
-				radio_changes.group = /*exportMethod*/ ctx[7];
+				radio_changes.group = /*exportMethod*/ ctx[10];
 				add_flush_callback(() => updating_group = false);
 			}
 
@@ -39066,14 +39173,14 @@ function create_default_slot_2$8(ctx) {
 		block,
 		id: create_default_slot_2$8.name,
 		type: "slot",
-		source: "(325:16) <FormField >",
+		source: "(333:16) <FormField >",
 		ctx
 	});
 
 	return block;
 }
 
-// (324:12) {#each ["landscape", "portrait"] as method}
+// (331:12) {#each ["landscape", "portrait"] as method}
 function create_each_block_1(ctx) {
 	let formfield;
 	let current;
@@ -39100,7 +39207,7 @@ function create_each_block_1(ctx) {
 		p: function update(ctx, dirty) {
 			const formfield_changes = {};
 
-			if (dirty[0] & /*exportMethod*/ 128 | dirty[1] & /*$$scope*/ 262144) {
+			if (dirty[0] & /*exportMethod*/ 1024 | dirty[1] & /*$$scope*/ 67108864) {
 				formfield_changes.$$scope = { dirty, ctx };
 			}
 
@@ -39124,20 +39231,20 @@ function create_each_block_1(ctx) {
 		block,
 		id: create_each_block_1.name,
 		type: "each",
-		source: "(324:12) {#each [\\\"landscape\\\", \\\"portrait\\\"] as method}",
+		source: "(331:12) {#each [\\\"landscape\\\", \\\"portrait\\\"] as method}",
 		ctx
 	});
 
 	return block;
 }
 
-// (333:20) <Option value={file} selected={pageSize  === file}>
+// (344:20) <Option value={file} selected={pageSize  === file}>
 function create_default_slot_1$9(ctx) {
 	let t;
 
 	const block = {
 		c: function create() {
-			t = text(/*file*/ ctx[35]);
+			t = text(/*file*/ ctx[43]);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, t, anchor);
@@ -39152,22 +39259,22 @@ function create_default_slot_1$9(ctx) {
 		block,
 		id: create_default_slot_1$9.name,
 		type: "slot",
-		source: "(333:20) <Option value={file} selected={pageSize  === file}>",
+		source: "(344:20) <Option value={file} selected={pageSize  === file}>",
 		ctx
 	});
 
 	return block;
 }
 
-// (332:16) {#each ["A3", "A4", "A5", "Legal", "Letter"] as file}
+// (343:16) {#each ["A3", "A4", "A5", "Legal", "Letter"] as file}
 function create_each_block$4(ctx) {
 	let option;
 	let current;
 
 	option = new Option({
 			props: {
-				value: /*file*/ ctx[35],
-				selected: /*pageSize*/ ctx[8] === /*file*/ ctx[35],
+				value: /*file*/ ctx[43],
+				selected: /*pageSize*/ ctx[11] === /*file*/ ctx[43],
 				$$slots: { default: [create_default_slot_1$9] },
 				$$scope: { ctx }
 			},
@@ -39184,9 +39291,9 @@ function create_each_block$4(ctx) {
 		},
 		p: function update(ctx, dirty) {
 			const option_changes = {};
-			if (dirty[0] & /*pageSize*/ 256) option_changes.selected = /*pageSize*/ ctx[8] === /*file*/ ctx[35];
+			if (dirty[0] & /*pageSize*/ 2048) option_changes.selected = /*pageSize*/ ctx[11] === /*file*/ ctx[43];
 
-			if (dirty[1] & /*$$scope*/ 262144) {
+			if (dirty[1] & /*$$scope*/ 67108864) {
 				option_changes.$$scope = { dirty, ctx };
 			}
 
@@ -39210,14 +39317,14 @@ function create_each_block$4(ctx) {
 		block,
 		id: create_each_block$4.name,
 		type: "each",
-		source: "(332:16) {#each [\\\"A3\\\", \\\"A4\\\", \\\"A5\\\", \\\"Legal\\\", \\\"Letter\\\"] as file}",
+		source: "(343:16) {#each [\\\"A3\\\", \\\"A4\\\", \\\"A5\\\", \\\"Legal\\\", \\\"Letter\\\"] as file}",
 		ctx
 	});
 
 	return block;
 }
 
-// (331:12) <Select bind:value={pageSize} label="pageSize" style="margin-left:1em;">
+// (342:12) <Select bind:value={pageSize} label="pageSize" style="margin-left:1em;">
 function create_default_slot$i(ctx) {
 	let each_1_anchor;
 	let current;
@@ -39250,7 +39357,7 @@ function create_default_slot$i(ctx) {
 			current = true;
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*pageSize*/ 256) {
+			if (dirty[0] & /*pageSize*/ 2048) {
 				each_value = ["A3", "A4", "A5", "Legal", "Letter"];
 				validate_each_argument(each_value);
 				let i;
@@ -39306,7 +39413,7 @@ function create_default_slot$i(ctx) {
 		block,
 		id: create_default_slot$i.name,
 		type: "slot",
-		source: "(331:12) <Select bind:value={pageSize} label=\\\"pageSize\\\" style=\\\"margin-left:1em;\\\">",
+		source: "(342:12) <Select bind:value={pageSize} label=\\\"pageSize\\\" style=\\\"margin-left:1em;\\\">",
 		ctx
 	});
 
@@ -39327,7 +39434,7 @@ function create_fragment$V(ctx) {
 	let current;
 
 	function premodal_preModal_binding(value) {
-		/*premodal_preModal_binding*/ ctx[16].call(null, value);
+		/*premodal_preModal_binding*/ ctx[19].call(null, value);
 	}
 
 	let premodal_props = {};
@@ -39340,18 +39447,18 @@ function create_fragment$V(ctx) {
 	binding_callbacks.push(() => bind(premodal, "preModal", premodal_preModal_binding));
 
 	function hamburger1_active_binding(value) {
-		/*hamburger1_active_binding*/ ctx[17].call(null, value);
+		/*hamburger1_active_binding*/ ctx[20].call(null, value);
 	}
 
 	let hamburger1_props = {};
 
-	if (/*toggle*/ ctx[10] !== void 0) {
-		hamburger1_props.active = /*toggle*/ ctx[10];
+	if (/*toggle*/ ctx[13] !== void 0) {
+		hamburger1_props.active = /*toggle*/ ctx[13];
 	}
 
 	hamburger1 = new Hamburger1({ props: hamburger1_props, $$inline: true });
 	binding_callbacks.push(() => bind(hamburger1, "active", hamburger1_active_binding));
-	let if_block = /*toggle*/ ctx[10] && create_if_block$f(ctx);
+	let if_block = /*toggle*/ ctx[13] && create_if_block$f(ctx);
 
 	const block = {
 		c: function create() {
@@ -39366,9 +39473,9 @@ function create_fragment$V(ctx) {
 			if (if_block) if_block.c();
 			if_block_anchor = empty();
 			attr_dev(div0, "class", "title notification is-link svelte-ivzb9v");
-			add_location(div0, file$P, 272, 4, 9748);
+			add_location(div0, file$P, 268, 4, 9592);
 			attr_dev(div1, "class", "content align heading svelte-ivzb9v");
-			add_location(div1, file$P, 270, 0, 9705);
+			add_location(div1, file$P, 266, 0, 9549);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -39397,19 +39504,19 @@ function create_fragment$V(ctx) {
 			premodal.$set(premodal_changes);
 			const hamburger1_changes = {};
 
-			if (!updating_active && dirty[0] & /*toggle*/ 1024) {
+			if (!updating_active && dirty[0] & /*toggle*/ 8192) {
 				updating_active = true;
-				hamburger1_changes.active = /*toggle*/ ctx[10];
+				hamburger1_changes.active = /*toggle*/ ctx[13];
 				add_flush_callback(() => updating_active = false);
 			}
 
 			hamburger1.$set(hamburger1_changes);
 
-			if (/*toggle*/ ctx[10]) {
+			if (/*toggle*/ ctx[13]) {
 				if (if_block) {
 					if_block.p(ctx, dirty);
 
-					if (dirty[0] & /*toggle*/ 1024) {
+					if (dirty[0] & /*toggle*/ 8192) {
 						transition_in(if_block, 1);
 					}
 				} else {
@@ -39463,16 +39570,6 @@ function create_fragment$V(ctx) {
 	return block;
 }
 
-const reportCSS = "report.css";
-
-function getImage(imgID) {
-	return new Promise(resolve => {
-			Plotly.toImage(imgID, { format: "png", width: 1000, height: 500 }).then(dataURL => {
-				resolve(dataURL);
-			});
-		});
-}
-
 function instance$V($$self, $$props, $$invalidate) {
 	const { BrowserWindow } = remote;
 
@@ -39482,20 +39579,21 @@ function instance$V($$self, $$props, $$invalidate) {
 		{ includeTablesInReports = [] } = $$props;
 
 	let reportTitle = "", reportMethod = "info", reportMolecule = "";
-	const stylesheet = path.resolve(__dirname, `assets/reports/${reportCSS}`);
+
+	// const reportExist = fs.existsSync(reportFile)
+	const stylesheet1 = path.resolve(__dirname, `assets/reports/report.css`);
+
+	const stylesheet2 = path.resolve(__dirname, `assets/reports/template.css`);
 	const reportHTML = document.createElement("html");
 	let preModal = {};
 
 	function init_report() {
-		const reportExist = fs.existsSync(reportFile);
-		console.log("Report status:\n", reportExist);
-
-		reportHTML.innerHTML = reportExist
+		reportHTML.innerHTML = fs.existsSync(reportFile)
 		? fs.readFileSync(reportFile)
 		: reportHTMLTemplate;
 
 		console.log("ReportHTML: ", reportHTML);
-		$$invalidate(9, reportMainContainer = reportHTML.querySelector("#mainSection"));
+		$$invalidate(12, reportMainContainer = reportHTML.querySelector("#mainSection"));
 		const reportDir = path.resolve(currentLocation, "reports");
 
 		if (!fs.existsSync(reportDir)) {
@@ -39506,20 +39604,25 @@ function instance$V($$self, $$props, $$invalidate) {
 		}
 	}
 
+	let plotWidth = 750, plotHeight = 500;
+
+	function getImage(imgID) {
+		return new Promise(resolve => {
+				Plotly.toImage(imgID, {
+					format: "png",
+					width: plotWidth,
+					height: plotHeight
+				}).then(dataURL => {
+					resolve(dataURL);
+				});
+			});
+	}
+
 	const exprtToHtml = async content => {
 		fs.writeFile(reportFile, content || reportHTMLTemplate, function (err) {
 			if (err) {
 				window.createToast("Report couldn't be added.", "danger");
 				return console.log(err);
-			}
-
-			let local_cssFile = path.resolve(currentLocation, `reports/${reportCSS}`);
-
-			if (!fs.existsSync(local_cssFile)) {
-				fs.copyFile(stylesheet, local_cssFile, err => {
-					if (err) throw err;
-					console.log("template.css file copied");
-				});
 			}
 
 			window.createToast("Report added", "success");
@@ -39575,7 +39678,13 @@ function instance$V($$self, $$props, $$invalidate) {
 		return Promise.resolve(plotDiv);
 	};
 
+	let reportEditor;
+
 	const addReport = async () => {
+		if (!fs.existsSync(reportFile)) {
+			init_report();
+		}
+
 		const tableDiv = addTablesToReport();
 		const plotDiv = await addPlotImagesToReport();
 		const reportMainHeading = document.createElement("h1");
@@ -39583,7 +39692,7 @@ function instance$V($$self, $$props, $$invalidate) {
 		reportMainHeading.textContent = reportTitle;
 		const reportComment = document.createElement("div");
 		reportComment.setAttribute("class", "reportComments");
-		reportComment.innerHTML = window.reportEditor.root.innerHTML;
+		reportComment.innerHTML = reportEditor.root.outerHTML;
 		const reportDiv = document.createElement("div");
 		reportDiv.setAttribute("class", "content reportCount");
 		reportDiv.appendChild(reportMainHeading);
@@ -39704,7 +39813,7 @@ function instance$V($$self, $$props, $$invalidate) {
 
 	function hamburger1_active_binding(value) {
 		toggle = value;
-		$$invalidate(10, toggle);
+		$$invalidate(13, toggle);
 	}
 
 	function textfield0_value_binding(value) {
@@ -39713,7 +39822,7 @@ function instance$V($$self, $$props, $$invalidate) {
 	}
 
 	const click_handler = () => {
-		$$invalidate(9, reportMainContainer.innerHTML = "", reportMainContainer);
+		$$invalidate(12, reportMainContainer.innerHTML = "", reportMainContainer);
 		exprtToHtml("");
 		window.createToast("Report resetted", "warning");
 	};
@@ -39738,20 +39847,35 @@ function instance$V($$self, $$props, $$invalidate) {
 		$$invalidate(3, reportTitle);
 	}
 
+	function editor_reportEditor_binding(value) {
+		reportEditor = value;
+		$$invalidate(9, reportEditor);
+	}
+
+	function textfield2_value_binding(value) {
+		plotWidth = value;
+		$$invalidate(7, plotWidth);
+	}
+
+	function textfield3_value_binding(value) {
+		plotHeight = value;
+		$$invalidate(8, plotHeight);
+	}
+
 	const click_handler_1 = () => showReport({ export_pdf: true });
 
 	function radio_group_binding_1(value) {
 		exportMethod = value;
-		$$invalidate(7, exportMethod);
+		$$invalidate(10, exportMethod);
 	}
 
 	function select_value_binding(value) {
 		pageSize = value;
-		$$invalidate(8, pageSize);
+		$$invalidate(11, pageSize);
 	}
 
 	$$self.$$set = $$props => {
-		if ("currentLocation" in $$props) $$invalidate(15, currentLocation = $$props.currentLocation);
+		if ("currentLocation" in $$props) $$invalidate(18, currentLocation = $$props.currentLocation);
 		if ("id" in $$props) $$invalidate(2, id = $$props.id);
 		if ("includePlotsInReport" in $$props) $$invalidate(0, includePlotsInReport = $$props.includePlotsInReport);
 		if ("includeTablesInReports" in $$props) $$invalidate(1, includeTablesInReports = $$props.includeTablesInReports);
@@ -39762,7 +39886,6 @@ function instance$V($$self, $$props, $$invalidate) {
 		FormField,
 		CustomCheckbox,
 		Textfield,
-		Ripple,
 		Select,
 		Option,
 		onMount,
@@ -39777,15 +39900,18 @@ function instance$V($$self, $$props, $$invalidate) {
 		reportTitle,
 		reportMethod,
 		reportMolecule,
-		reportCSS,
-		stylesheet,
+		stylesheet1,
+		stylesheet2,
 		reportHTML,
 		preModal,
 		init_report,
+		plotWidth,
+		plotHeight,
 		getImage,
 		exprtToHtml,
 		addTablesToReport,
 		addPlotImagesToReport,
+		reportEditor,
 		addReport,
 		exportMethod,
 		pageSize,
@@ -39798,7 +39924,7 @@ function instance$V($$self, $$props, $$invalidate) {
 	});
 
 	$$self.$inject_state = $$props => {
-		if ("currentLocation" in $$props) $$invalidate(15, currentLocation = $$props.currentLocation);
+		if ("currentLocation" in $$props) $$invalidate(18, currentLocation = $$props.currentLocation);
 		if ("id" in $$props) $$invalidate(2, id = $$props.id);
 		if ("includePlotsInReport" in $$props) $$invalidate(0, includePlotsInReport = $$props.includePlotsInReport);
 		if ("includeTablesInReports" in $$props) $$invalidate(1, includeTablesInReports = $$props.includeTablesInReports);
@@ -39806,10 +39932,13 @@ function instance$V($$self, $$props, $$invalidate) {
 		if ("reportMethod" in $$props) $$invalidate(4, reportMethod = $$props.reportMethod);
 		if ("reportMolecule" in $$props) $$invalidate(5, reportMolecule = $$props.reportMolecule);
 		if ("preModal" in $$props) $$invalidate(6, preModal = $$props.preModal);
-		if ("exportMethod" in $$props) $$invalidate(7, exportMethod = $$props.exportMethod);
-		if ("pageSize" in $$props) $$invalidate(8, pageSize = $$props.pageSize);
-		if ("reportMainContainer" in $$props) $$invalidate(9, reportMainContainer = $$props.reportMainContainer);
-		if ("toggle" in $$props) $$invalidate(10, toggle = $$props.toggle);
+		if ("plotWidth" in $$props) $$invalidate(7, plotWidth = $$props.plotWidth);
+		if ("plotHeight" in $$props) $$invalidate(8, plotHeight = $$props.plotHeight);
+		if ("reportEditor" in $$props) $$invalidate(9, reportEditor = $$props.reportEditor);
+		if ("exportMethod" in $$props) $$invalidate(10, exportMethod = $$props.exportMethod);
+		if ("pageSize" in $$props) $$invalidate(11, pageSize = $$props.pageSize);
+		if ("reportMainContainer" in $$props) $$invalidate(12, reportMainContainer = $$props.reportMainContainer);
+		if ("toggle" in $$props) $$invalidate(13, toggle = $$props.toggle);
 		if ("reportFile" in $$props) reportFile = $$props.reportFile;
 		if ("reportHTMLTemplate" in $$props) reportHTMLTemplate = $$props.reportHTMLTemplate;
 	};
@@ -39822,7 +39951,7 @@ function instance$V($$self, $$props, $$invalidate) {
 	}
 
 	$$self.$$.update = () => {
-		if ($$self.$$.dirty[0] & /*currentLocation, reportMolecule*/ 32800) {
+		if ($$self.$$.dirty[0] & /*currentLocation, reportMolecule*/ 262176) {
 			 reportFile = path.resolve(currentLocation, `reports/${reportMolecule}_report.html`);
 		}
 
@@ -39834,7 +39963,8 @@ function instance$V($$self, $$props, $$invalidate) {
                                         <meta name="viewport" content="width=device-width, initial-scale=1">
                                         <meta http-equiv="X-UA-Compatible" content="ie=edge">
                                         <title>${reportMolecule} Reports</title>
-                                        <link rel="stylesheet" type='text/css' href="${reportCSS}">
+                                        <link rel="stylesheet" type='text/css' href="${stylesheet1}">
+                                        <link rel="stylesheet" type='text/css' href="${stylesheet2}">
                                     </head>
 
                                     <body>
@@ -39852,6 +39982,9 @@ function instance$V($$self, $$props, $$invalidate) {
 		reportMethod,
 		reportMolecule,
 		preModal,
+		plotWidth,
+		plotHeight,
+		reportEditor,
 		exportMethod,
 		pageSize,
 		reportMainContainer,
@@ -39869,6 +40002,9 @@ function instance$V($$self, $$props, $$invalidate) {
 		customcheckbox_selected_binding,
 		customcheckbox_selected_binding_1,
 		textfield1_value_binding,
+		editor_reportEditor_binding,
+		textfield2_value_binding,
+		textfield3_value_binding,
 		click_handler_1,
 		radio_group_binding_1,
 		select_value_binding
@@ -39886,7 +40022,7 @@ class ReportLayout extends SvelteComponentDev {
 			create_fragment$V,
 			safe_not_equal,
 			{
-				currentLocation: 15,
+				currentLocation: 18,
 				id: 2,
 				includePlotsInReport: 0,
 				includeTablesInReports: 1

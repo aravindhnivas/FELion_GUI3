@@ -1,18 +1,16 @@
 
 <script>
-
     import Radio from '@smui/radio'
     import FormField from '@smui/form-field'
     import CustomCheckbox from './CustomCheckbox.svelte'
     import Textfield from '@smui/textfield'
-    import Ripple from '@smui/ripple'
     import Select, {Option} from '@smui/select'
 
     import {onMount} from "svelte";
-    
     import Hamburger1 from "./icon_animations/Hamburger1.svelte";
     import PreModal from "./PreModal.svelte";
     import Editor from "./Editor.svelte";
+
     const {BrowserWindow} = remote
 
     //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -20,8 +18,9 @@
     export let currentLocation = "", id="report", includePlotsInReport=[], includeTablesInReports=[]
     let reportTitle = "", reportMethod = "info", reportMolecule = ""
     $: reportFile = path.resolve(currentLocation, `reports/${reportMolecule}_report.html`)
-    const reportCSS = "report.css"
-    const stylesheet = path.resolve(__dirname, `assets/reports/${reportCSS}`)
+    // const reportExist = fs.existsSync(reportFile)
+    const stylesheet1 = path.resolve(__dirname, `assets/reports/report.css`)
+    const stylesheet2 = path.resolve(__dirname, `assets/reports/template.css`)
     const reportHTML = document.createElement( 'html' )
 
     let preModal = {};
@@ -33,7 +32,8 @@
                                         <meta name="viewport" content="width=device-width, initial-scale=1">
                                         <meta http-equiv="X-UA-Compatible" content="ie=edge">
                                         <title>${reportMolecule} Reports</title>
-                                        <link rel="stylesheet" type='text/css' href="${reportCSS}">
+                                        <link rel="stylesheet" type='text/css' href="${stylesheet1}">
+                                        <link rel="stylesheet" type='text/css' href="${stylesheet2}">
                                     </head>
 
                                     <body>
@@ -44,10 +44,7 @@
 
     function init_report(){
 
-        const reportExist = fs.existsSync(reportFile)
-        console.log("Report status:\n", reportExist)
-
-        reportHTML.innerHTML = reportExist ? fs.readFileSync(reportFile) : reportHTMLTemplate
+        reportHTML.innerHTML = fs.existsSync(reportFile) ? fs.readFileSync(reportFile) : reportHTMLTemplate
         console.log("ReportHTML: ", reportHTML)
         reportMainContainer = reportHTML.querySelector("#mainSection")
         
@@ -62,30 +59,24 @@
         }
     }
     
+    let plotWidth = 750, plotHeight = 500;
     function getImage(imgID) {
+
         return new Promise(resolve => {
 
-            Plotly.toImage(imgID, {format: 'png', width: 1000, height: 500}).then(dataURL =>{resolve(dataURL)})
+            Plotly.toImage(imgID, {format: 'png', width: plotWidth, height: plotHeight}).then(dataURL =>{resolve(dataURL)})
         
         })
     
     }
-    
+
+
     const exprtToHtml = async (content) => {
         fs.writeFile(reportFile, content || reportHTMLTemplate, function(err) {
 
             if(err) {
                 window.createToast("Report couldn't be added.", "danger")
                 return console.log(err);
-            }
-            
-            let local_cssFile = path.resolve(currentLocation, `reports/${reportCSS}`)
-        
-            if (!fs.existsSync(local_cssFile)){
-                fs.copyFile(stylesheet, local_cssFile, (err) => {
-                    if (err) throw err;
-                    console.log('template.css file copied');
-                });
             }
             window.createToast("Report added", "success")
 
@@ -163,19 +154,24 @@
 
     }
 
+    let reportEditor;
     const addReport = async () => {
 
+        if(!fs.existsSync(reportFile)) {init_report()}
         const tableDiv = addTablesToReport()
         const plotDiv = await addPlotImagesToReport()
 
         const reportMainHeading = document.createElement("h1")
 
         reportMainHeading.setAttribute("class", `notification is-${reportMethod} reportHeading`)
+
         reportMainHeading.textContent = reportTitle
 
         const reportComment = document.createElement("div")
+        
         reportComment.setAttribute("class", "reportComments")
-        reportComment.innerHTML = window.reportEditor.root.innerHTML
+        
+        reportComment.innerHTML = reportEditor.root.outerHTML
 
         const reportDiv = document.createElement("div")
         reportDiv.setAttribute("class", "content reportCount")
@@ -310,21 +306,36 @@
                 {#each includePlotsInReport as {id, include, label}(id)}
                     <CustomCheckbox bind:selected={include} {label}/>
                 {/each}
+        
+        
             </div>
         </div>
 
         <Textfield style="height:3em; margin-bottom:1em;" variant="outlined" bind:value={reportTitle} label="Title" />
-        <Editor />
+        
+        <Editor bind:reportEditor/>
         
         <div class="align" style="margin-top:1em;">
+            <button class="button is-link" on:click={addReport}>Add to Report</button>
+            <button class="button is-link" on:click={showReport}>Show Report</button>
         
-            <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click={addReport}>Add to Report</button>
-            <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click={showReport}>Show Report</button>
-            <button class="button is-link" use:Ripple={[true, {color: 'primary'}]} tabindex="0" on:click="{()=>showReport({export_pdf:true})}">EXPORT to PDF</button>
+        </div>
+
+        <div class="align">
+            <Textfield style="width:7em;" variant="outlined" bind:value={plotWidth} label="plotWidth" />
+            <Textfield style="width:7em;" variant="outlined" bind:value={plotHeight} label="plotHeight" />
+            
+            
+            <button class="button is-link" on:click="{()=>showReport({export_pdf:true})}">EXPORT to PDF</button>
+
             {#each ["landscape", "portrait"] as method}
+            
                 <FormField >
+            
                     <Radio bind:group={exportMethod} value={method}  />
+
                     <span slot="label" style="color:{method}">{method}</span>
+            
                 </FormField>
             {/each}
 
@@ -333,9 +344,8 @@
                     <Option value={file} selected={pageSize  === file}>{file}</Option>
                 {/each}
             </Select>
-
         </div>
-
+    
     </div>
 
 {/if}
