@@ -231,23 +231,20 @@
     const notificationMethod = [{name:"info", color:"white"}, {name:"success", color:"#00ff00"}, {name:"warning", color:"yellow"}, {name:"danger", color:"red"}]
     let reportMainContainer;
 
-
-    onMount(()=>{
-        init_report()
-    })
+    onMount(()=>{ init_report() })
 
     let toggle = false;
 </script>
 
 <style>
 
-
     .button {margin-right: 1em;}
+
+
+
     .report {display: flex; align-items: inherit; flex-direction: column;}
-   
-    
-    
     .addToReport > div {justify-content: center; display: flex; flex-wrap: wrap;}
+
     .align {display: flex; align-items: center;}
     .heading {
     
@@ -312,7 +309,6 @@
         </div>
 
         <Textfield style="height:3em; margin-bottom:1em;" variant="outlined" bind:value={reportTitle} label="Title" />
-        
         <Editor bind:reportEditor {id}/>
         
         <div class="align" style="margin-top:1em;">

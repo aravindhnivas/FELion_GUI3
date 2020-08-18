@@ -5,6 +5,7 @@
 
 <style>
   .modal-card-body {color: black; overflow-y: auto; max-height: 30em;}
+  
   .delete {background-color: #fafafa;}
   
   .delete:hover {background-color: #f14668;}

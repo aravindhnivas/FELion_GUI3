@@ -58,7 +58,7 @@
 
 {#if active}
 
-    <Modal bind:active title="FELIX PLOTTING" style="width:70vw;">
+    <Modal bind:active title="FELIX PLOTTING">
 
         <div slot="content" style="height:40vh;" use:loadExtraWidgets>
 
