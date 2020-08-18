@@ -9009,74 +9009,75 @@ if(!localStorage["pythonscript"]) localStorage["pythonscript"] = get_store_value
 
 const backupName = writable("FELion_GUI_backup");
 
-const {exec} = require("child_process");
-window.checkPython = function checkPython({defaultPy}={}){
+const { exec } = require("child_process");
+window.checkPython = function checkPython({ defaultPy } = {}) {
 
-    if(!defaultPy) {defaultPy = get_store_value(pythonpath);}
+    if (!defaultPy) { defaultPy = get_store_value(pythonpath); }
 
     console.log("Python path checking \n", defaultPy);
-    return new Promise((resolve, reject)=>{
-        exec(`${defaultPy} -V`, (err, stdout)=>{
-            if(err) {reject("Invalid python location"); window.createToast("Python location is not valid", "danger");}
-            else {resolve(stdout.trim());}
+    return new Promise((resolve, reject) => {
+        exec(`${defaultPy} -V`, (err, stdout) => {
+            if (err) { reject("Invalid python location"); window.createToast("Python location is not valid", "danger"); }
+            else { resolve(stdout.trim()); }
+
         });
     })
 };
 
-window.computePy_func = function computePy_func({e=null, pyfile="", args="", general=false, openShell=false}={}){
+window.computePy_func = function computePy_func({ e = null, pyfile = "", args = "", general = false, openShell = false } = {}) {
 
 
-    return new Promise((resolve, reject)=>{
+    return new Promise((resolve, reject) => {
 
 
-        checkPython().then(res=>{
+        checkPython().then(res => {
             console.log(res);
-            if(general){
+            if (general) {
                 console.log("Sending general arguments: ", args);
-                
+
                 window.createToast("Process Started");
 
                 let py = spawn(
 
                     localStorage["pythonpath"], [path.join(localStorage["pythonscript"], pyfile), args], { detached: true, stdio: 'pipe', shell: openShell }
-        
+
                 );
-        
-                py.on("close", ()=>{ console.log("Closed"); });
-                
-                py.stderr.on("data", (err)=>{ console.log(`Error Occured: ${err.toString()}`); reject(err.toString()); });
-                
-                py.stdout.on("data", (data)=>{ console.log(`Output from python: ${data.toString()}`);  });
+
+                py.on("close", () => { console.log("Closed"); });
+
+                py.stderr.on("data", (err) => { console.log(`Error Occured: ${err.toString()}`); reject(err.toString()); });
+
+                py.stdout.on("data", (data) => { console.log(`Output from python: ${data.toString()}`); });
                 py.unref();
                 py.ref();
             } else {
 
-                let py=null;
-            
-                try {py = spawn( localStorage["pythonpath"], [path.resolve(localStorage["pythonscript"], pyfile), args] );}
-                catch (err) { reject("Error accessing python. Set python location properly in Settings\n"+err); }
+                let py = null;
+
+                try { py = spawn(localStorage["pythonpath"], [path.resolve(localStorage["pythonscript"], pyfile), args]); }
+                catch (err) { reject("Error accessing python. Set python location properly in Settings\n" + err); }
 
                 let target = e.target;
                 target.classList.toggle("is-loading");
 
                 window.createToast("Process Started");
-            
+
                 py.stdout.on("data", data => {
-            
+
                     console.log("Ouput from python");
-            
+
                     let dataReceived = data.toString("utf8");
                     console.log(dataReceived);
                 });
-            
+
                 let error_occured_py = false;
                 py.stderr.on("data", err => {
                     reject(err);
                     error_occured_py = true;
                 });
-            
-                py.on("close", ()=>{
-                    if(!error_occured_py) {
+
+                py.on("close", () => {
+                    if (!error_occured_py) {
                         let dataFromPython = fs.readFileSync(path.join(localStorage["pythonscript"], "data.json"));
 
                         window.dataFromPython = dataFromPython = JSON.parse(dataFromPython.toString("utf-8"));
@@ -9085,15 +9086,15 @@ window.computePy_func = function computePy_func({e=null, pyfile="", args="", gen
                         resolve(dataFromPython);
                     }
                     console.log("Process closed");
-                    
+
                     target.classList.toggle("is-loading");
-            
+
                 });
             }
-        }).catch(err=>{console.log(err);});
+        }).catch(err => { console.log(err); });
 
     })
-    
+
 };
 
 const windowLoaded = writable(false);
@@ -61422,7 +61423,7 @@ function get_each_context$b(ctx, list, i) {
 	return child_ctx;
 }
 
-// (109:4) {#if commandInputDiv}
+// (106:4) {#if commandInputDiv}
 function create_if_block$w(ctx) {
 	let div2;
 	let div0;
@@ -61550,14 +61551,14 @@ function create_if_block$w(ctx) {
 			set_style(div0, "display", "flex");
 			set_style(div0, "align-items", "center");
 			set_style(div0, "margin-bottom", "1em");
-			add_location(div0, file$1f, 111, 12, 3437);
+			add_location(div0, file$1f, 108, 12, 3431);
 			attr_dev(div1, "class", "run");
 			set_style(div1, "display", "flex");
 			set_style(div1, "align-items", "center");
 			set_style(div1, "margin-bottom", "1em");
-			add_location(div1, file$1f, 118, 12, 3728);
+			add_location(div1, file$1f, 115, 12, 3722);
 			attr_dev(div2, "class", "commandInput");
-			add_location(div2, file$1f, 110, 8, 3397);
+			add_location(div2, file$1f, 107, 8, 3391);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div2, anchor);
@@ -61662,14 +61663,14 @@ function create_if_block$w(ctx) {
 		block,
 		id: create_if_block$w.name,
 		type: "if",
-		source: "(109:4) {#if commandInputDiv}",
+		source: "(106:4) {#if commandInputDiv}",
 		ctx
 	});
 
 	return block;
 }
 
-// (121:16) <IconButton class="material-icons" on:click={terminalShell}>
+// (117:16) <IconButton class="material-icons" on:click={terminalShell}>
 function create_default_slot_1$f(ctx) {
 	let t;
 
@@ -61689,14 +61690,14 @@ function create_default_slot_1$f(ctx) {
 		block,
 		id: create_default_slot_1$f.name,
 		type: "slot",
-		source: "(121:16) <IconButton class=\\\"material-icons\\\" on:click={terminalShell}>",
+		source: "(117:16) <IconButton class=\\\"material-icons\\\" on:click={terminalShell}>",
 		ctx
 	});
 
 	return block;
 }
 
-// (125:16) <IconButton class="material-icons is-pulled-right" style="background: #f14668; border-radius: 2em;" on:click="{()=>commandResults=[{color:colorSets.normal, results:`>> cleared`}] }">
+// (120:16) <IconButton class="material-icons is-pulled-right" style="background: #f14668; border-radius: 2em;" on:click="{()=>commandResults=[{color:colorSets.normal, results:`>> cleared`}] }">
 function create_default_slot$y(ctx) {
 	let t;
 
@@ -61716,14 +61717,14 @@ function create_default_slot$y(ctx) {
 		block,
 		id: create_default_slot$y.name,
 		type: "slot",
-		source: "(125:16) <IconButton class=\\\"material-icons is-pulled-right\\\" style=\\\"background: #f14668; border-radius: 2em;\\\" on:click=\\\"{()=>commandResults=[{color:colorSets.normal, results:`>> cleared`}] }\\\">",
+		source: "(120:16) <IconButton class=\\\"material-icons is-pulled-right\\\" style=\\\"background: #f14668; border-radius: 2em;\\\" on:click=\\\"{()=>commandResults=[{color:colorSets.normal, results:`>> cleared`}] }\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (136:8) {#each commandResults as {color, results}}
+// (126:8) {#each commandResults as {color, results}}
 function create_each_block$b(ctx) {
 	let h1;
 	let t_value = /*results*/ ctx[18] + "";
@@ -61737,7 +61738,7 @@ function create_each_block$b(ctx) {
 			set_style(h1, "color", /*color*/ ctx[17]);
 			set_style(h1, "font-size", /*teminalFontSize*/ ctx[3] + "px");
 			set_style(h1, "white-space", "pre-wrap");
-			add_location(h1, file$1f, 136, 12, 4606);
+			add_location(h1, file$1f, 126, 12, 4566);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, h1, anchor);
@@ -61763,7 +61764,7 @@ function create_each_block$b(ctx) {
 		block,
 		id: create_each_block$b.name,
 		type: "each",
-		source: "(136:8) {#each commandResults as {color, results}}",
+		source: "(126:8) {#each commandResults as {color, results}}",
 		ctx
 	});
 
@@ -61813,12 +61814,12 @@ function create_fragment$1m(ctx) {
 				each_blocks[i].c();
 			}
 
-			attr_dev(div0, "class", "box svelte-uhf9nj");
+			attr_dev(div0, "class", "box svelte-bagnqz");
 			attr_dev(div0, "id", "terminal");
 			set_style(div0, "height", (/*commandInputDiv*/ ctx[4] ? 75 : 90) + "%");
-			add_location(div0, file$1f, 133, 4, 4461);
-			attr_dev(div1, "class", "content contentBox terminalBox svelte-uhf9nj");
-			add_location(div1, file$1f, 106, 0, 3311);
+			add_location(div0, file$1f, 123, 4, 4421);
+			attr_dev(div1, "class", "content contentBox terminalBox svelte-bagnqz");
+			add_location(div1, file$1f, 103, 0, 3305);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
