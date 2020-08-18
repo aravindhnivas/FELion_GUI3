@@ -238,6 +238,7 @@ class Create_Baseline():
         if event.button != 1: return
         
         self._ind = self.get_ind_under_point(event)
+        self.canvas._tkcanvas.focus_set()
 
     def key_press_callback(self, event):
         'whenever a key is pressed'

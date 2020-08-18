@@ -149,10 +149,12 @@ class Marker:
         
         self.theory = True
         self.ax = ax_theory
+
         self.canvas = canvas
         
         self.canvas.mpl_connect('button_release_event', self.onclick)
         self.canvas.mpl_connect('key_press_event', self.keypress)
+        
         self.color_ = True
         self.color="C1"
         
@@ -201,6 +203,8 @@ class Marker:
         self.canvas.draw()
     
     def onclick(self, event):
+
+        self.canvas._tkcanvas.focus_set()
         
         if self.start:
             

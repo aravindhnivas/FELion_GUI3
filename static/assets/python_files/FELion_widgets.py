@@ -59,9 +59,12 @@ class FELion_Tk(Tk):
 
         widget_frame_container = Frame(self)
         widget_frame_canvasContainer = Canvas(widget_frame_container)
+
+        widget_frame_canvasContainer.config(takefocus=True)
         scrollbar = Scrollbar(widget_frame_container, orient="vertical", command=widget_frame_canvasContainer.yview)
 
         self.widget_frame = Frame(widget_frame_canvasContainer)
+        self.widget_frame.config(takefocus=False)
         self.widget_frame.bind( "<Configure>", lambda e: widget_frame_canvasContainer.configure(
                 scrollregion=widget_frame_canvasContainer.bbox("all") ))
 
@@ -70,32 +73,17 @@ class FELion_Tk(Tk):
 
         widget_frame_container.place(relx=0.8, rely=0, relwidth=0.2, relheight=1)
         widget_frame_canvasContainer.place(relx=0, rely=0, relwidth=0.9, relheight=1)
-        scrollbar.place(relx=0.9, rely=0, relwidth=0.1, relheight=1)
 
+        scrollbar.place(relx=0.9, rely=0, relwidth=0.1, relheight=1)
+        
         self.widget_frame.place(relx=0, rely=0, relwidth=1, relheight=1)
 
-        # container = Frame(self)
-        # canvas = Canvas(container)
-        # scrollbar = Scrollbar(container, orient="vertical", command=canvas.yview)
+        def focusCanvas(event):
+        
+            if event.keycode == 27: 
+                widget_frame_canvasContainer.focus_set()
 
-        # self.widget_frame = scrollable_frame = Frame(canvas)
-
-        # scrollable_frame.bind(
-        #     "<Configure>",
-        #     lambda e: canvas.configure(
-        #         scrollregion=canvas.bbox("all")
-        #     )
-        # )
-
-        # canvas.create_window((0, 0), window=scrollable_frame)
-        # canvas.configure(yscrollcommand=scrollbar.set)
-
-        # for i in range(50):
-        #     Label(scrollable_frame, text="Sample scrolling label").pack()
-
-        # container.place(relx=0.8, rely=0, relwidth=0.2, relheight=1)
-        # canvas.place(relx=0, rely=0, relwidth=0.9, relheight=1)
-        # scrollbar.place(relx=0, rely=0, relwidth=1, relheight=1)
+        self.bind('<KeyRelease>', focusCanvas)
 
     def Labels(self, txt, x, y, **kw):
         kw = var_check(kw)
@@ -263,9 +251,15 @@ class FELion_Tk(Tk):
         self.toolbar = NavigationToolbar2Tk(self.canvas, self)
         self.toolbar.update()
 
-        def on_key_press(event): key_press_handler(
-            event, self.canvas, self.toolbar)
-        if connect: self.canvas.mpl_connect("key_press_event", on_key_press)
+        def on_key_press(event): 
+            key_press_handler(event, self.canvas, self.toolbar)
+
+            self.canvas._tkcanvas.focus_set()
+
+        if connect: 
+            
+            self.canvas.mpl_connect("key_press_event", on_key_press)
+            self.canvas.mpl_connect("button_release_event", lambda event: self.canvas._tkcanvas.focus_set())
 
         return self.fig, self.canvas
     

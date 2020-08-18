@@ -44,7 +44,7 @@ def plotGraph(plotArgs):
 
     widget = FELion_Tk(title="Felix Averaged plot", location=datlocation/"../OUT")
     
-    fig, canvas = widget.Figure(dpi=dpi, default_widget=False, default_save_widget=True, connect=False)
+    fig, canvas = widget.Figure(dpi=dpi, default_widget=False, default_save_widget=True, connect=False, executeCodeWidget=False)
     
 
     axs = []
