@@ -1,15 +1,15 @@
 
 <script>
     import {onMount} from "svelte";
-    export let type="report", reportEditor;
+    export let id="report", reportEditor;
     
     onMount(()=>{
-        reportEditor = new Quill(`#${type}-editor-container`, {
+        reportEditor = new Quill(`#${id}-editor-container`, {
         
             modules: {
                 formula: true,
                 syntax: true,
-                toolbar: `#${type}-toolbar-container`
+                toolbar: `#${id}-toolbar-container`
             
             },
 
@@ -47,8 +47,8 @@
 
 
 
-<div id="{type}-standalone-container" class="align editor-container" style="background-color: #fafafa; width: 75%;">
-  <div id="{type}-toolbar-container" class="toolbar-container">
+<div id="{id}-standalone-container" class="align editor-container" style="background-color: #fafafa; width: 75%;">
+  <div id="{id}-toolbar-container" class="toolbar-container">
     <span class="ql-formats">
       <select class="ql-font"></select>
       <select class="ql-size"></select>
@@ -91,8 +91,9 @@
     </span>
     <span class="ql-formats">
       <button class="ql-clean"></button>
+      
     </span>
   </div>
-  <div id="{type}-editor-container" class="text-container"></div>
+  <div id="{id}-editor-container" class="text-container"></div>
 
 </div>

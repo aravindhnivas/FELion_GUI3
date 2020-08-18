@@ -37809,93 +37809,93 @@ function create_fragment$U(ctx) {
 			t24 = space();
 			div1 = element("div");
 			attr_dev(select0, "class", "ql-font");
-			add_location(select0, file$O, 53, 6, 2206);
+			add_location(select0, file$O, 53, 6, 2196);
 			attr_dev(select1, "class", "ql-size");
-			add_location(select1, file$O, 54, 6, 2247);
+			add_location(select1, file$O, 54, 6, 2237);
 			attr_dev(span0, "class", "ql-formats");
-			add_location(span0, file$O, 52, 4, 2173);
+			add_location(span0, file$O, 52, 4, 2163);
 			attr_dev(button0, "class", "ql-bold");
-			add_location(button0, file$O, 57, 6, 2332);
+			add_location(button0, file$O, 57, 6, 2322);
 			attr_dev(button1, "class", "ql-italic");
-			add_location(button1, file$O, 58, 6, 2373);
+			add_location(button1, file$O, 58, 6, 2363);
 			attr_dev(button2, "class", "ql-underline");
-			add_location(button2, file$O, 59, 6, 2416);
+			add_location(button2, file$O, 59, 6, 2406);
 			attr_dev(button3, "class", "ql-strike");
-			add_location(button3, file$O, 60, 6, 2462);
+			add_location(button3, file$O, 60, 6, 2452);
 			attr_dev(span1, "class", "ql-formats");
-			add_location(span1, file$O, 56, 4, 2299);
+			add_location(span1, file$O, 56, 4, 2289);
 			attr_dev(select2, "class", "ql-color");
-			add_location(select2, file$O, 63, 6, 2549);
+			add_location(select2, file$O, 63, 6, 2539);
 			attr_dev(select3, "class", "ql-background");
-			add_location(select3, file$O, 64, 6, 2591);
+			add_location(select3, file$O, 64, 6, 2581);
 			attr_dev(span2, "class", "ql-formats");
-			add_location(span2, file$O, 62, 4, 2516);
+			add_location(span2, file$O, 62, 4, 2506);
 			attr_dev(button4, "class", "ql-script");
 			button4.value = "sub";
-			add_location(button4, file$O, 67, 6, 2682);
+			add_location(button4, file$O, 67, 6, 2672);
 			attr_dev(button5, "class", "ql-script");
 			button5.value = "super";
-			add_location(button5, file$O, 68, 6, 2737);
+			add_location(button5, file$O, 68, 6, 2727);
 			attr_dev(span3, "class", "ql-formats");
-			add_location(span3, file$O, 66, 4, 2649);
+			add_location(span3, file$O, 66, 4, 2639);
 			attr_dev(button6, "class", "ql-header");
 			button6.value = "1";
-			add_location(button6, file$O, 71, 6, 2838);
+			add_location(button6, file$O, 71, 6, 2828);
 			attr_dev(button7, "class", "ql-header");
 			button7.value = "2";
-			add_location(button7, file$O, 72, 6, 2891);
+			add_location(button7, file$O, 72, 6, 2881);
 			attr_dev(button8, "class", "ql-blockquote");
-			add_location(button8, file$O, 73, 6, 2944);
+			add_location(button8, file$O, 73, 6, 2934);
 			attr_dev(button9, "class", "ql-code-block");
-			add_location(button9, file$O, 74, 6, 2991);
+			add_location(button9, file$O, 74, 6, 2981);
 			attr_dev(span4, "class", "ql-formats");
-			add_location(span4, file$O, 70, 4, 2805);
+			add_location(span4, file$O, 70, 4, 2795);
 			attr_dev(button10, "class", "ql-list");
 			button10.value = "ordered";
-			add_location(button10, file$O, 77, 6, 3082);
+			add_location(button10, file$O, 77, 6, 3072);
 			attr_dev(button11, "class", "ql-list");
 			button11.value = "bullet";
-			add_location(button11, file$O, 78, 6, 3139);
+			add_location(button11, file$O, 78, 6, 3129);
 			attr_dev(button12, "class", "ql-indent");
 			button12.value = "-1";
-			add_location(button12, file$O, 79, 6, 3195);
+			add_location(button12, file$O, 79, 6, 3185);
 			attr_dev(button13, "class", "ql-indent");
 			button13.value = "+1";
-			add_location(button13, file$O, 80, 6, 3249);
+			add_location(button13, file$O, 80, 6, 3239);
 			attr_dev(span5, "class", "ql-formats");
-			add_location(span5, file$O, 76, 4, 3049);
+			add_location(span5, file$O, 76, 4, 3039);
 			attr_dev(button14, "class", "ql-direction");
 			button14.value = "rtl";
-			add_location(button14, file$O, 83, 6, 3347);
+			add_location(button14, file$O, 83, 6, 3337);
 			attr_dev(select4, "class", "ql-align");
-			add_location(select4, file$O, 84, 6, 3405);
+			add_location(select4, file$O, 84, 6, 3395);
 			attr_dev(span6, "class", "ql-formats");
-			add_location(span6, file$O, 82, 4, 3314);
+			add_location(span6, file$O, 82, 4, 3304);
 			attr_dev(button15, "class", "ql-link");
-			add_location(button15, file$O, 87, 6, 3491);
+			add_location(button15, file$O, 87, 6, 3481);
 			attr_dev(button16, "class", "ql-image");
-			add_location(button16, file$O, 88, 6, 3532);
+			add_location(button16, file$O, 88, 6, 3522);
 			attr_dev(button17, "class", "ql-video");
-			add_location(button17, file$O, 89, 6, 3574);
+			add_location(button17, file$O, 89, 6, 3564);
 			attr_dev(button18, "class", "ql-formula");
-			add_location(button18, file$O, 90, 6, 3616);
+			add_location(button18, file$O, 90, 6, 3606);
 			attr_dev(span7, "class", "ql-formats");
-			add_location(span7, file$O, 86, 4, 3458);
+			add_location(span7, file$O, 86, 4, 3448);
 			attr_dev(button19, "class", "ql-clean");
-			add_location(button19, file$O, 93, 6, 3704);
+			add_location(button19, file$O, 93, 6, 3694);
 			attr_dev(span8, "class", "ql-formats");
-			add_location(span8, file$O, 92, 4, 3671);
-			attr_dev(div0, "id", div0_id_value = "" + (/*type*/ ctx[0] + "-toolbar-container"));
+			add_location(span8, file$O, 92, 4, 3661);
+			attr_dev(div0, "id", div0_id_value = "" + (/*id*/ ctx[0] + "-toolbar-container"));
 			attr_dev(div0, "class", "toolbar-container");
-			add_location(div0, file$O, 51, 2, 2106);
-			attr_dev(div1, "id", div1_id_value = "" + (/*type*/ ctx[0] + "-editor-container"));
+			add_location(div0, file$O, 51, 2, 2098);
+			attr_dev(div1, "id", div1_id_value = "" + (/*id*/ ctx[0] + "-editor-container"));
 			attr_dev(div1, "class", "text-container");
-			add_location(div1, file$O, 96, 2, 3765);
-			attr_dev(div2, "id", div2_id_value = "" + (/*type*/ ctx[0] + "-standalone-container"));
+			add_location(div1, file$O, 97, 2, 3763);
+			attr_dev(div2, "id", div2_id_value = "" + (/*id*/ ctx[0] + "-standalone-container"));
 			attr_dev(div2, "class", "align editor-container");
 			set_style(div2, "background-color", "#fafafa");
 			set_style(div2, "width", "75%");
-			add_location(div2, file$O, 50, 0, 1986);
+			add_location(div2, file$O, 50, 0, 1980);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -37965,15 +37965,15 @@ function create_fragment$U(ctx) {
 			append_dev(div2, div1);
 		},
 		p: function update(ctx, [dirty]) {
-			if (dirty & /*type*/ 1 && div0_id_value !== (div0_id_value = "" + (/*type*/ ctx[0] + "-toolbar-container"))) {
+			if (dirty & /*id*/ 1 && div0_id_value !== (div0_id_value = "" + (/*id*/ ctx[0] + "-toolbar-container"))) {
 				attr_dev(div0, "id", div0_id_value);
 			}
 
-			if (dirty & /*type*/ 1 && div1_id_value !== (div1_id_value = "" + (/*type*/ ctx[0] + "-editor-container"))) {
+			if (dirty & /*id*/ 1 && div1_id_value !== (div1_id_value = "" + (/*id*/ ctx[0] + "-editor-container"))) {
 				attr_dev(div1, "id", div1_id_value);
 			}
 
-			if (dirty & /*type*/ 1 && div2_id_value !== (div2_id_value = "" + (/*type*/ ctx[0] + "-standalone-container"))) {
+			if (dirty & /*id*/ 1 && div2_id_value !== (div2_id_value = "" + (/*id*/ ctx[0] + "-standalone-container"))) {
 				attr_dev(div2, "id", div2_id_value);
 			}
 		},
@@ -37996,22 +37996,22 @@ function create_fragment$U(ctx) {
 }
 
 function instance$U($$self, $$props, $$invalidate) {
-	let { type = "report" } = $$props, { reportEditor } = $$props;
+	let { id = "report" } = $$props, { reportEditor } = $$props;
 
 	onMount(() => {
-		$$invalidate(1, reportEditor = new Quill(`#${type}-editor-container`,
+		$$invalidate(1, reportEditor = new Quill(`#${id}-editor-container`,
 		{
 				modules: {
 					formula: true,
 					syntax: true,
-					toolbar: `#${type}-toolbar-container`
+					toolbar: `#${id}-toolbar-container`
 				},
 				// placeholder: 'Compose an epic...',
 				theme: "snow"
 			}));
 	});
 
-	const writable_props = ["type", "reportEditor"];
+	const writable_props = ["id", "reportEditor"];
 
 	Object.keys($$props).forEach(key => {
 		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Editor> was created with unknown prop '${key}'`);
@@ -38021,14 +38021,14 @@ function instance$U($$self, $$props, $$invalidate) {
 	validate_slots("Editor", $$slots, []);
 
 	$$self.$$set = $$props => {
-		if ("type" in $$props) $$invalidate(0, type = $$props.type);
+		if ("id" in $$props) $$invalidate(0, id = $$props.id);
 		if ("reportEditor" in $$props) $$invalidate(1, reportEditor = $$props.reportEditor);
 	};
 
-	$$self.$capture_state = () => ({ onMount, type, reportEditor });
+	$$self.$capture_state = () => ({ onMount, id, reportEditor });
 
 	$$self.$inject_state = $$props => {
-		if ("type" in $$props) $$invalidate(0, type = $$props.type);
+		if ("id" in $$props) $$invalidate(0, id = $$props.id);
 		if ("reportEditor" in $$props) $$invalidate(1, reportEditor = $$props.reportEditor);
 	};
 
@@ -38036,13 +38036,13 @@ function instance$U($$self, $$props, $$invalidate) {
 		$$self.$inject_state($$props.$$inject);
 	}
 
-	return [type, reportEditor];
+	return [id, reportEditor];
 }
 
 class Editor extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$U, create_fragment$U, safe_not_equal, { type: 0, reportEditor: 1 });
+		init(this, options, instance$U, create_fragment$U, safe_not_equal, { id: 0, reportEditor: 1 });
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
@@ -38059,11 +38059,11 @@ class Editor extends SvelteComponentDev {
 		}
 	}
 
-	get type() {
+	get id() {
 		throw new Error("<Editor>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 
-	set type(value) {
+	set id(value) {
 		throw new Error("<Editor>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 
@@ -38224,7 +38224,7 @@ function create_if_block$f(ctx) {
 		/*editor_reportEditor_binding*/ ctx[27].call(null, value);
 	}
 
-	let editor_props = {};
+	let editor_props = { id: /*id*/ ctx[2] };
 
 	if (/*reportEditor*/ ctx[9] !== void 0) {
 		editor_props.reportEditor = /*reportEditor*/ ctx[9];
@@ -38360,16 +38360,16 @@ function create_if_block$f(ctx) {
 			attr_dev(div3, "class", "addToReport  svelte-ivzb9v");
 			add_location(div3, file$P, 302, 8, 10895);
 			attr_dev(button1, "class", "button is-link svelte-ivzb9v");
-			add_location(button1, file$P, 318, 12, 11423);
+			add_location(button1, file$P, 318, 12, 11428);
 			attr_dev(button2, "class", "button is-link svelte-ivzb9v");
-			add_location(button2, file$P, 319, 12, 11511);
+			add_location(button2, file$P, 319, 12, 11516);
 			attr_dev(div4, "class", "align svelte-ivzb9v");
 			set_style(div4, "margin-top", "1em");
-			add_location(div4, file$P, 317, 8, 11366);
+			add_location(div4, file$P, 317, 8, 11371);
 			attr_dev(button3, "class", "button is-link svelte-ivzb9v");
-			add_location(button3, file$P, 328, 12, 11897);
+			add_location(button3, file$P, 328, 12, 11902);
 			attr_dev(div5, "class", "align svelte-ivzb9v");
-			add_location(div5, file$P, 323, 8, 11622);
+			add_location(div5, file$P, 323, 8, 11627);
 			attr_dev(div6, "class", "align report svelte-ivzb9v");
 			attr_dev(div6, "id", /*id*/ ctx[2]);
 			add_location(div6, file$P, 280, 4, 10108);
@@ -38515,6 +38515,7 @@ function create_if_block$f(ctx) {
 
 			textfield1.$set(textfield1_changes);
 			const editor_changes = {};
+			if (dirty[0] & /*id*/ 4) editor_changes.id = /*id*/ ctx[2];
 
 			if (!updating_reportEditor && dirty[0] & /*reportEditor*/ 512) {
 				updating_reportEditor = true;
@@ -39090,7 +39091,7 @@ function create_label_slot$4(ctx) {
 			t = text(/*method*/ ctx[46]);
 			attr_dev(span, "slot", "label");
 			set_style(span, "color", /*method*/ ctx[46]);
-			add_location(span, file$P, 336, 20, 12211);
+			add_location(span, file$P, 336, 20, 12216);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
