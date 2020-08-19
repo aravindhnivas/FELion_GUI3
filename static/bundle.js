@@ -294,6 +294,37 @@ function custom_event(type, detail) {
     e.initCustomEvent(type, false, false, detail);
     return e;
 }
+class HtmlTag {
+    constructor(anchor = null) {
+        this.a = anchor;
+        this.e = this.n = null;
+    }
+    m(html, target, anchor = null) {
+        if (!this.e) {
+            this.e = element(target.nodeName);
+            this.t = target;
+            this.h(html);
+        }
+        this.i(anchor);
+    }
+    h(html) {
+        this.e.innerHTML = html;
+        this.n = Array.from(this.e.childNodes);
+    }
+    i(anchor) {
+        for (let i = 0; i < this.n.length; i += 1) {
+            insert(this.t, this.n[i], anchor);
+        }
+    }
+    p(html) {
+        this.d();
+        this.h(html);
+        this.i(this.a);
+    }
+    d() {
+        this.n.forEach(detach);
+    }
+}
 
 const active_docs = new Set();
 let active = 0;
@@ -364,6 +395,9 @@ function get_current_component() {
     if (!current_component)
         throw new Error(`Function called outside component initialization`);
     return current_component;
+}
+function beforeUpdate(fn) {
+    get_current_component().$$.before_update.push(fn);
 }
 function onMount(fn) {
     get_current_component().$$.on_mount.push(fn);
@@ -8994,20 +9028,22 @@ function create$1(props) {
   return toast;
 }
 
-const github =  writable({branch:"master", repo:"FELion_GUI3", username:"aravindhnivas"});
-const versionJson = derived(github, ($github)=>`https://raw.githubusercontent.com/${$github.username}/${$github.repo}/${$github.branch}/version.json`);
-const urlzip = derived(github, ($github)=>`https://codeload.github.com/${$github.username}/${$github.repo}/zip/${$github.branch}`);
+const github = writable({ branch: "master", repo: "FELion_GUI3", username: "aravindhnivas" });
+const versionJson = derived(github, ($github) => `https://raw.githubusercontent.com/${$github.username}/${$github.repo}/${$github.branch}/version.json`);
+const urlzip = derived(github, ($github) => `https://codeload.github.com/${$github.username}/${$github.repo}/zip/${$github.branch}`);
 
 const pythonpath = writable(localStorage["pythonpath"] || path.resolve(__dirname, "../python3/python"));
 
 const pythonscript = writable(localStorage["pythonscript"] || path.resolve(__dirname, "assets/python_files"));
 const pyVersion = writable("");
 
-if(!localStorage["pythonpath"]) localStorage["pythonpath"] = get_store_value(pythonpath);
+if (!localStorage["pythonpath"]) localStorage["pythonpath"] = get_store_value(pythonpath);
 
-if(!localStorage["pythonscript"]) localStorage["pythonscript"] = get_store_value(pythonpath);
+if (!localStorage["pythonscript"]) localStorage["pythonscript"] = get_store_value(pythonpath);
 
 const backupName = writable("FELion_GUI_backup");
+
+const activateChangelog = writable(false);
 
 const { exec } = require("child_process");
 window.checkPython = function checkPython({ defaultPy } = {}) {
@@ -38361,16 +38397,16 @@ function create_if_block$f(ctx) {
 			attr_dev(div3, "class", "addToReport  svelte-17ig8bl");
 			add_location(div3, file$P, 299, 8, 10868);
 			attr_dev(button1, "class", "button is-link svelte-17ig8bl");
-			add_location(button1, file$P, 314, 12, 11391);
+			add_location(button1, file$P, 315, 12, 11401);
 			attr_dev(button2, "class", "button is-link svelte-17ig8bl");
-			add_location(button2, file$P, 315, 12, 11479);
+			add_location(button2, file$P, 316, 12, 11489);
 			attr_dev(div4, "class", "align svelte-17ig8bl");
 			set_style(div4, "margin-top", "1em");
-			add_location(div4, file$P, 313, 8, 11334);
+			add_location(div4, file$P, 314, 8, 11344);
 			attr_dev(button3, "class", "button is-link svelte-17ig8bl");
-			add_location(button3, file$P, 324, 12, 11865);
+			add_location(button3, file$P, 325, 12, 11875);
 			attr_dev(div5, "class", "align svelte-17ig8bl");
-			add_location(div5, file$P, 319, 8, 11590);
+			add_location(div5, file$P, 320, 8, 11600);
 			attr_dev(div6, "class", "align report svelte-17ig8bl");
 			attr_dev(div6, "id", /*id*/ ctx[2]);
 			add_location(div6, file$P, 277, 4, 10081);
@@ -39081,7 +39117,7 @@ function create_each_block_2(key_1, ctx) {
 	return block;
 }
 
-// (333:20) <span slot="label" style="color:{method}">
+// (334:20) <span slot="label" style="color:{method}">
 function create_label_slot$4(ctx) {
 	let span;
 	let t;
@@ -39092,7 +39128,7 @@ function create_label_slot$4(ctx) {
 			t = text(/*method*/ ctx[46]);
 			attr_dev(span, "slot", "label");
 			set_style(span, "color", /*method*/ ctx[46]);
-			add_location(span, file$P, 332, 20, 12179);
+			add_location(span, file$P, 333, 20, 12189);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -39108,14 +39144,14 @@ function create_label_slot$4(ctx) {
 		block,
 		id: create_label_slot$4.name,
 		type: "slot",
-		source: "(333:20) <span slot=\\\"label\\\" style=\\\"color:{method}\\\">",
+		source: "(334:20) <span slot=\\\"label\\\" style=\\\"color:{method}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (329:16) <FormField >
+// (330:16) <FormField >
 function create_default_slot_2$8(ctx) {
 	let radio;
 	let updating_group;
@@ -39175,14 +39211,14 @@ function create_default_slot_2$8(ctx) {
 		block,
 		id: create_default_slot_2$8.name,
 		type: "slot",
-		source: "(329:16) <FormField >",
+		source: "(330:16) <FormField >",
 		ctx
 	});
 
 	return block;
 }
 
-// (327:12) {#each ["landscape", "portrait"] as method}
+// (328:12) {#each ["landscape", "portrait"] as method}
 function create_each_block_1(ctx) {
 	let formfield;
 	let current;
@@ -39233,14 +39269,14 @@ function create_each_block_1(ctx) {
 		block,
 		id: create_each_block_1.name,
 		type: "each",
-		source: "(327:12) {#each [\\\"landscape\\\", \\\"portrait\\\"] as method}",
+		source: "(328:12) {#each [\\\"landscape\\\", \\\"portrait\\\"] as method}",
 		ctx
 	});
 
 	return block;
 }
 
-// (340:20) <Option value={file} selected={pageSize  === file}>
+// (341:20) <Option value={file} selected={pageSize  === file}>
 function create_default_slot_1$9(ctx) {
 	let t;
 
@@ -39261,14 +39297,14 @@ function create_default_slot_1$9(ctx) {
 		block,
 		id: create_default_slot_1$9.name,
 		type: "slot",
-		source: "(340:20) <Option value={file} selected={pageSize  === file}>",
+		source: "(341:20) <Option value={file} selected={pageSize  === file}>",
 		ctx
 	});
 
 	return block;
 }
 
-// (339:16) {#each ["A3", "A4", "A5", "Legal", "Letter"] as file}
+// (340:16) {#each ["A3", "A4", "A5", "Legal", "Letter"] as file}
 function create_each_block$4(ctx) {
 	let option;
 	let current;
@@ -39319,14 +39355,14 @@ function create_each_block$4(ctx) {
 		block,
 		id: create_each_block$4.name,
 		type: "each",
-		source: "(339:16) {#each [\\\"A3\\\", \\\"A4\\\", \\\"A5\\\", \\\"Legal\\\", \\\"Letter\\\"] as file}",
+		source: "(340:16) {#each [\\\"A3\\\", \\\"A4\\\", \\\"A5\\\", \\\"Legal\\\", \\\"Letter\\\"] as file}",
 		ctx
 	});
 
 	return block;
 }
 
-// (338:12) <Select bind:value={pageSize} label="pageSize" style="margin-left:1em;">
+// (339:12) <Select bind:value={pageSize} label="pageSize" style="margin-left:1em;">
 function create_default_slot$i(ctx) {
 	let each_1_anchor;
 	let current;
@@ -39415,7 +39451,7 @@ function create_default_slot$i(ctx) {
 		block,
 		id: create_default_slot$i.name,
 		type: "slot",
-		source: "(338:12) <Select bind:value={pageSize} label=\\\"pageSize\\\" style=\\\"margin-left:1em;\\\">",
+		source: "(339:12) <Select bind:value={pageSize} label=\\\"pageSize\\\" style=\\\"margin-left:1em;\\\">",
 		ctx
 	});
 
@@ -60374,6 +60410,290 @@ class THz extends SvelteComponentDev {
 	}
 }
 
+/* src\components\Changelog.svelte generated by Svelte v3.24.1 */
+const file$1e = "src\\components\\Changelog.svelte";
+
+// (47:0) {#if active}
+function create_if_block$w(ctx) {
+	let modal;
+	let updating_active;
+	let current;
+
+	function modal_active_binding(value) {
+		/*modal_active_binding*/ ctx[2].call(null, value);
+	}
+
+	let modal_props = {
+		title: "FELion GUI Changelog",
+		$$slots: { content: [create_content_slot$5] },
+		$$scope: { ctx }
+	};
+
+	if (/*active*/ ctx[0] !== void 0) {
+		modal_props.active = /*active*/ ctx[0];
+	}
+
+	modal = new Modal({ props: modal_props, $$inline: true });
+	binding_callbacks.push(() => bind(modal, "active", modal_active_binding));
+
+	const block = {
+		c: function create() {
+			create_component(modal.$$.fragment);
+		},
+		m: function mount(target, anchor) {
+			mount_component(modal, target, anchor);
+			current = true;
+		},
+		p: function update(ctx, dirty) {
+			const modal_changes = {};
+
+			if (dirty & /*$$scope, changelogContent*/ 10) {
+				modal_changes.$$scope = { dirty, ctx };
+			}
+
+			if (!updating_active && dirty & /*active*/ 1) {
+				updating_active = true;
+				modal_changes.active = /*active*/ ctx[0];
+				add_flush_callback(() => updating_active = false);
+			}
+
+			modal.$set(modal_changes);
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(modal.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(modal.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			destroy_component(modal, detaching);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_if_block$w.name,
+		type: "if",
+		source: "(47:0) {#if active}",
+		ctx
+	});
+
+	return block;
+}
+
+// (50:8) <div slot="content">
+function create_content_slot$5(ctx) {
+	let div;
+	let raw_value = window.marked(/*changelogContent*/ ctx[1]) + "";
+
+	const block = {
+		c: function create() {
+			div = element("div");
+			attr_dev(div, "slot", "content");
+			add_location(div, file$1e, 49, 8, 889);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, div, anchor);
+			div.innerHTML = raw_value;
+		},
+		p: function update(ctx, dirty) {
+			if (dirty & /*changelogContent*/ 2 && raw_value !== (raw_value = window.marked(/*changelogContent*/ ctx[1]) + "")) div.innerHTML = raw_value;		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(div);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_content_slot$5.name,
+		type: "slot",
+		source: "(50:8) <div slot=\\\"content\\\">",
+		ctx
+	});
+
+	return block;
+}
+
+function create_fragment$1l(ctx) {
+	let html_tag;
+
+	let raw_value = `<style>
+
+    ul {padding-left: 1em;}
+
+    li {list-style: disc;}
+
+    h1 {
+        color: #fafafa;
+        font-size: 2rem;
+        font-weight: 600;
+        line-height: 1.125;
+    }
+
+    h2 {
+
+        color: #fafafa;
+        font-size: 1.25rem;
+        font-weight: 400;
+        line-height: 1.25;
+    }
+
+
+    h1, h2 {
+
+        word-break: break-word;
+
+        margin-bottom: 0.5em;
+    }
+
+
+
+</style>` + "";
+
+	let t;
+	let if_block_anchor;
+	let current;
+	let if_block = /*active*/ ctx[0] && create_if_block$w(ctx);
+
+	const block = {
+		c: function create() {
+			t = space();
+			if (if_block) if_block.c();
+			if_block_anchor = empty();
+			html_tag = new HtmlTag(t);
+		},
+		l: function claim(nodes) {
+			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		},
+		m: function mount(target, anchor) {
+			html_tag.m(raw_value, target, anchor);
+			insert_dev(target, t, anchor);
+			if (if_block) if_block.m(target, anchor);
+			insert_dev(target, if_block_anchor, anchor);
+			current = true;
+		},
+		p: function update(ctx, [dirty]) {
+			if (/*active*/ ctx[0]) {
+				if (if_block) {
+					if_block.p(ctx, dirty);
+
+					if (dirty & /*active*/ 1) {
+						transition_in(if_block, 1);
+					}
+				} else {
+					if_block = create_if_block$w(ctx);
+					if_block.c();
+					transition_in(if_block, 1);
+					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+				}
+			} else if (if_block) {
+				group_outros();
+
+				transition_out(if_block, 1, 1, () => {
+					if_block = null;
+				});
+
+				check_outros();
+			}
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(if_block);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(if_block);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			if (detaching) html_tag.d();
+			if (detaching) detach_dev(t);
+			if (if_block) if_block.d(detaching);
+			if (detaching) detach_dev(if_block_anchor);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_fragment$1l.name,
+		type: "component",
+		source: "",
+		ctx
+	});
+
+	return block;
+}
+
+function instance$1l($$self, $$props, $$invalidate) {
+	let { active = false } = $$props;
+	let changelogContent = fs.readFileSync(path.resolve(__dirname, "../CHANGELOG.md")).toString();
+
+	beforeUpdate(() => {
+		$$invalidate(1, changelogContent = fs.readFileSync(path.resolve(__dirname, "../CHANGELOG.md")).toString());
+	});
+
+	const writable_props = ["active"];
+
+	Object.keys($$props).forEach(key => {
+		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Changelog> was created with unknown prop '${key}'`);
+	});
+
+	let { $$slots = {}, $$scope } = $$props;
+	validate_slots("Changelog", $$slots, []);
+
+	function modal_active_binding(value) {
+		active = value;
+		$$invalidate(0, active);
+	}
+
+	$$self.$$set = $$props => {
+		if ("active" in $$props) $$invalidate(0, active = $$props.active);
+	};
+
+	$$self.$capture_state = () => ({
+		Modal,
+		beforeUpdate,
+		active,
+		changelogContent
+	});
+
+	$$self.$inject_state = $$props => {
+		if ("active" in $$props) $$invalidate(0, active = $$props.active);
+		if ("changelogContent" in $$props) $$invalidate(1, changelogContent = $$props.changelogContent);
+	};
+
+	if ($$props && "$$inject" in $$props) {
+		$$self.$inject_state($$props.$$inject);
+	}
+
+	return [active, changelogContent, modal_active_binding];
+}
+
+class Changelog extends SvelteComponentDev {
+	constructor(options) {
+		super(options);
+		init(this, options, instance$1l, create_fragment$1l, safe_not_equal, { active: 0 });
+
+		dispatch_dev("SvelteRegisterComponent", {
+			component: this,
+			tagName: "Changelog",
+			options,
+			id: create_fragment$1l.name
+		});
+	}
+
+	get active() {
+		throw new Error("<Changelog>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set active(value) {
+		throw new Error("<Changelog>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+}
+
 const https = require('https');
 const admZip = require('adm-zip');
 
@@ -60625,71 +60945,76 @@ function updatePyConfig(){
 /* src\Pages\Settings.svelte generated by Svelte v3.24.1 */
 
 const { console: console_1$e } = globals;
-const file$1e = "src\\Pages\\Settings.svelte";
+const file$1f = "src\\Pages\\Settings.svelte";
 
-function create_fragment$1l(ctx) {
+function create_fragment$1m(ctx) {
 	let premodal;
 	let updating_preModal;
 	let t0;
 	let customdialog;
 	let updating_dialog;
 	let t1;
+	let changelog;
+	let updating_active;
+	let t2;
 	let section;
 	let div15;
 	let div4;
 	let div3;
 	let div0;
-	let t3;
+	let t4;
 	let div1;
-	let t5;
+	let t6;
 	let div2;
-	let t7;
+	let t8;
 	let div14;
 	let div13;
 	let div6;
 	let h10;
-	let t9;
-	let div5;
 	let t10;
+	let div5;
 	let t11;
+	let t12;
 	let textfield0;
 	let updating_value;
-	let t12;
+	let t13;
 	let textfield1;
 	let updating_value_1;
-	let t13;
+	let t14;
 	let button0;
-	let t15;
+	let t16;
 	let button1;
-	let t17;
+	let t18;
 	let div11;
 	let h11;
-	let t19;
+	let t20;
 	let div7;
-	let t22;
+	let t23;
 	let div8;
 	let textfield2;
 	let updating_value_2;
-	let t23;
+	let t24;
 	let textfield3;
 	let updating_value_3;
-	let t24;
+	let t25;
 	let customselect;
 	let updating_picked;
-	let t25;
+	let t26;
 	let div9;
 	let button2;
-	let t27;
+	let t28;
 	let button3;
-	let t29;
-	let div10;
-	let textfield4;
-	let updating_value_4;
 	let t30;
 	let button4;
 	let t32;
+	let div10;
+	let textfield4;
+	let updating_value_4;
+	let t33;
 	let button5;
-	let t34;
+	let t35;
+	let button6;
+	let t37;
 	let div12;
 	let h12;
 	let current;
@@ -60697,7 +61022,7 @@ function create_fragment$1l(ctx) {
 	let dispose;
 
 	function premodal_preModal_binding(value) {
-		/*premodal_preModal_binding*/ ctx[13].call(null, value);
+		/*premodal_preModal_binding*/ ctx[14].call(null, value);
 	}
 
 	let premodal_props = {};
@@ -60710,7 +61035,7 @@ function create_fragment$1l(ctx) {
 	binding_callbacks.push(() => bind(premodal, "preModal", premodal_preModal_binding));
 
 	function customdialog_dialog_binding(value) {
-		/*customdialog_dialog_binding*/ ctx[14].call(null, value);
+		/*customdialog_dialog_binding*/ ctx[15].call(null, value);
 	}
 
 	let customdialog_props = {
@@ -60731,10 +61056,23 @@ function create_fragment$1l(ctx) {
 		});
 
 	binding_callbacks.push(() => bind(customdialog, "dialog", customdialog_dialog_binding));
-	customdialog.$on("response", /*handlepythonPathCheck*/ ctx[11]);
+	customdialog.$on("response", /*handlepythonPathCheck*/ ctx[12]);
+
+	function changelog_active_binding(value) {
+		/*changelog_active_binding*/ ctx[16].call(null, value);
+	}
+
+	let changelog_props = {};
+
+	if (/*$activateChangelog*/ ctx[4] !== void 0) {
+		changelog_props.active = /*$activateChangelog*/ ctx[4];
+	}
+
+	changelog = new Changelog({ props: changelog_props, $$inline: true });
+	binding_callbacks.push(() => bind(changelog, "active", changelog_active_binding));
 
 	function textfield0_value_binding(value) {
-		/*textfield0_value_binding*/ ctx[15].call(null, value);
+		/*textfield0_value_binding*/ ctx[17].call(null, value);
 	}
 
 	let textfield0_props = {
@@ -60742,15 +61080,15 @@ function create_fragment$1l(ctx) {
 		label: "Python path"
 	};
 
-	if (/*$pythonpath*/ ctx[4] !== void 0) {
-		textfield0_props.value = /*$pythonpath*/ ctx[4];
+	if (/*$pythonpath*/ ctx[5] !== void 0) {
+		textfield0_props.value = /*$pythonpath*/ ctx[5];
 	}
 
 	textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
 
 	function textfield1_value_binding(value) {
-		/*textfield1_value_binding*/ ctx[16].call(null, value);
+		/*textfield1_value_binding*/ ctx[18].call(null, value);
 	}
 
 	let textfield1_props = {
@@ -60758,15 +61096,15 @@ function create_fragment$1l(ctx) {
 		label: "Python script path"
 	};
 
-	if (/*$pythonscript*/ ctx[5] !== void 0) {
-		textfield1_props.value = /*$pythonscript*/ ctx[5];
+	if (/*$pythonscript*/ ctx[6] !== void 0) {
+		textfield1_props.value = /*$pythonscript*/ ctx[6];
 	}
 
 	textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding));
 
 	function textfield2_value_binding(value) {
-		/*textfield2_value_binding*/ ctx[17].call(null, value);
+		/*textfield2_value_binding*/ ctx[19].call(null, value);
 	}
 
 	let textfield2_props = {
@@ -60774,15 +61112,15 @@ function create_fragment$1l(ctx) {
 		label: "Github username"
 	};
 
-	if (/*$github*/ ctx[6].username !== void 0) {
-		textfield2_props.value = /*$github*/ ctx[6].username;
+	if (/*$github*/ ctx[7].username !== void 0) {
+		textfield2_props.value = /*$github*/ ctx[7].username;
 	}
 
 	textfield2 = new Textfield({ props: textfield2_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield2, "value", textfield2_value_binding));
 
 	function textfield3_value_binding(value) {
-		/*textfield3_value_binding*/ ctx[18].call(null, value);
+		/*textfield3_value_binding*/ ctx[20].call(null, value);
 	}
 
 	let textfield3_props = {
@@ -60790,15 +61128,15 @@ function create_fragment$1l(ctx) {
 		label: "Github Repo"
 	};
 
-	if (/*$github*/ ctx[6].repo !== void 0) {
-		textfield3_props.value = /*$github*/ ctx[6].repo;
+	if (/*$github*/ ctx[7].repo !== void 0) {
+		textfield3_props.value = /*$github*/ ctx[7].repo;
 	}
 
 	textfield3 = new Textfield({ props: textfield3_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield3, "value", textfield3_value_binding));
 
 	function customselect_picked_binding(value) {
-		/*customselect_picked_binding*/ ctx[19].call(null, value);
+		/*customselect_picked_binding*/ ctx[21].call(null, value);
 	}
 
 	let customselect_props = {
@@ -60806,8 +61144,8 @@ function create_fragment$1l(ctx) {
 		options: ["master", "developer"]
 	};
 
-	if (/*$github*/ ctx[6].branch !== void 0) {
-		customselect_props.picked = /*$github*/ ctx[6].branch;
+	if (/*$github*/ ctx[7].branch !== void 0) {
+		customselect_props.picked = /*$github*/ ctx[7].branch;
 	}
 
 	customselect = new CustomSelect({
@@ -60818,7 +61156,7 @@ function create_fragment$1l(ctx) {
 	binding_callbacks.push(() => bind(customselect, "picked", customselect_picked_binding));
 
 	function textfield4_value_binding(value) {
-		/*textfield4_value_binding*/ ctx[20].call(null, value);
+		/*textfield4_value_binding*/ ctx[23].call(null, value);
 	}
 
 	let textfield4_props = {
@@ -60826,8 +61164,8 @@ function create_fragment$1l(ctx) {
 		label: "Github username"
 	};
 
-	if (/*$backupName*/ ctx[7] !== void 0) {
-		textfield4_props.value = /*$backupName*/ ctx[7];
+	if (/*$backupName*/ ctx[8] !== void 0) {
+		textfield4_props.value = /*$backupName*/ ctx[8];
 	}
 
 	textfield4 = new Textfield({ props: textfield4_props, $$inline: true });
@@ -60839,133 +61177,140 @@ function create_fragment$1l(ctx) {
 			t0 = space();
 			create_component(customdialog.$$.fragment);
 			t1 = space();
+			create_component(changelog.$$.fragment);
+			t2 = space();
 			section = element("section");
 			div15 = element("div");
 			div4 = element("div");
 			div3 = element("div");
 			div0 = element("div");
 			div0.textContent = "Configuration";
-			t3 = space();
+			t4 = space();
 			div1 = element("div");
 			div1.textContent = "Update";
-			t5 = space();
+			t6 = space();
 			div2 = element("div");
 			div2.textContent = "About";
-			t7 = space();
+			t8 = space();
 			div14 = element("div");
 			div13 = element("div");
 			div6 = element("div");
 			h10 = element("h1");
 			h10.textContent = "Configuration";
-			t9 = space();
+			t10 = space();
 			div5 = element("div");
-			t10 = text(/*$pyVersion*/ ctx[3]);
-			t11 = space();
-			create_component(textfield0.$$.fragment);
+			t11 = text(/*$pyVersion*/ ctx[3]);
 			t12 = space();
-			create_component(textfield1.$$.fragment);
+			create_component(textfield0.$$.fragment);
 			t13 = space();
+			create_component(textfield1.$$.fragment);
+			t14 = space();
 			button0 = element("button");
 			button0.textContent = "Reset";
-			t15 = space();
+			t16 = space();
 			button1 = element("button");
 			button1.textContent = "Save";
-			t17 = space();
+			t18 = space();
 			div11 = element("div");
 			h11 = element("h1");
 			h11.textContent = "Update";
-			t19 = space();
+			t20 = space();
 			div7 = element("div");
 			div7.textContent = `Current Version ${window.currentVersion}`;
-			t22 = space();
+			t23 = space();
 			div8 = element("div");
 			create_component(textfield2.$$.fragment);
-			t23 = space();
-			create_component(textfield3.$$.fragment);
 			t24 = space();
-			create_component(customselect.$$.fragment);
+			create_component(textfield3.$$.fragment);
 			t25 = space();
+			create_component(customselect.$$.fragment);
+			t26 = space();
 			div9 = element("div");
 			button2 = element("button");
 			button2.textContent = "Check update";
-			t27 = space();
+			t28 = space();
 			button3 = element("button");
 			button3.textContent = "Update";
-			t29 = space();
-			div10 = element("div");
-			create_component(textfield4.$$.fragment);
 			t30 = space();
 			button4 = element("button");
-			button4.textContent = "Backup";
+			button4.textContent = "What's New";
 			t32 = space();
+			div10 = element("div");
+			create_component(textfield4.$$.fragment);
+			t33 = space();
 			button5 = element("button");
-			button5.textContent = "Restore";
-			t34 = space();
+			button5.textContent = "Backup";
+			t35 = space();
+			button6 = element("button");
+			button6.textContent = "Restore";
+			t37 = space();
 			div12 = element("div");
 			h12 = element("h1");
 			h12.textContent = "About";
 			attr_dev(div0, "class", "title nav hvr-glow svelte-kvtvxd");
 			toggle_class(div0, "clicked", /*selected*/ ctx[0] === "Configuration");
-			add_location(div0, file$1e, 139, 16, 3784);
+			add_location(div0, file$1f, 141, 16, 3916);
 			attr_dev(div1, "class", "title nav hvr-glow svelte-kvtvxd");
 			toggle_class(div1, "clicked", /*selected*/ ctx[0] === "Update");
-			add_location(div1, file$1e, 140, 16, 3916);
+			add_location(div1, file$1f, 142, 16, 4048);
 			attr_dev(div2, "class", "title nav hvr-glow svelte-kvtvxd");
 			toggle_class(div2, "clicked", /*selected*/ ctx[0] === "About");
-			add_location(div2, file$1e, 141, 16, 4034);
+			add_location(div2, file$1f, 143, 16, 4166);
 			attr_dev(div3, "class", "container left svelte-kvtvxd");
-			add_location(div3, file$1e, 138, 12, 3738);
+			add_location(div3, file$1f, 140, 12, 3870);
 			attr_dev(div4, "class", "column side-panel is-2-widescreen is-3-desktop is-4-tablet box adjust-right svelte-kvtvxd");
-			add_location(div4, file$1e, 137, 8, 3635);
+			add_location(div4, file$1f, 139, 8, 3767);
 			attr_dev(h10, "class", "title svelte-kvtvxd");
-			add_location(h10, file$1e, 150, 20, 4419);
+			add_location(h10, file$1f, 152, 20, 4551);
 			attr_dev(div5, "class", "subtitle svelte-kvtvxd");
-			add_location(div5, file$1e, 151, 20, 4477);
+			add_location(div5, file$1f, 153, 20, 4609);
 			attr_dev(button0, "class", "button is-link svelte-kvtvxd");
-			add_location(button0, file$1e, 154, 20, 4762);
+			add_location(button0, file$1f, 156, 20, 4894);
 			attr_dev(button1, "class", "button is-link svelte-kvtvxd");
-			add_location(button1, file$1e, 155, 20, 4854);
+			add_location(button1, file$1f, 157, 20, 4986);
 			attr_dev(div6, "class", "content animated fadeIn svelte-kvtvxd");
 			toggle_class(div6, "active", /*selected*/ ctx[0] === "Configuration");
-			add_location(div6, file$1e, 149, 16, 4318);
+			add_location(div6, file$1f, 151, 16, 4450);
 			attr_dev(h11, "class", "title svelte-kvtvxd");
-			add_location(h11, file$1e, 160, 20, 5095);
+			add_location(h11, file$1f, 162, 20, 5227);
 			attr_dev(div7, "class", "subtitle svelte-kvtvxd");
-			add_location(div7, file$1e, 162, 20, 5148);
+			add_location(div7, file$1f, 164, 20, 5280);
 			attr_dev(div8, "class", "content svelte-kvtvxd");
-			add_location(div8, file$1e, 163, 20, 5237);
+			add_location(div8, file$1f, 165, 20, 5369);
 			attr_dev(button2, "class", "button is-link svelte-kvtvxd");
 			attr_dev(button2, "id", "updateCheckBtn");
-			add_location(button2, file$1e, 170, 24, 5735);
+			add_location(button2, file$1f, 172, 24, 5867);
 			attr_dev(button3, "class", "button is-link svelte-kvtvxd");
 			attr_dev(button3, "id", "updateBtn");
-			add_location(button3, file$1e, 171, 24, 5858);
+			add_location(button3, file$1f, 173, 24, 5990);
+			attr_dev(button4, "class", "button is-warning svelte-kvtvxd");
+			add_location(button4, file$1f, 175, 24, 6121);
 			attr_dev(div9, "class", "content svelte-kvtvxd");
-			add_location(div9, file$1e, 169, 20, 5688);
-			attr_dev(button4, "class", "button is-link svelte-kvtvxd");
-			add_location(button4, file$1e, 177, 24, 6163);
+			add_location(div9, file$1f, 171, 20, 5820);
 			attr_dev(button5, "class", "button is-link svelte-kvtvxd");
-			add_location(button5, file$1e, 178, 24, 6253);
+			add_location(button5, file$1f, 181, 24, 6443);
+			attr_dev(button6, "class", "button is-link svelte-kvtvxd");
+			add_location(button6, file$1f, 182, 24, 6533);
 			attr_dev(div10, "class", "content svelte-kvtvxd");
-			add_location(div10, file$1e, 175, 20, 5991);
+			add_location(div10, file$1f, 179, 20, 6271);
 			attr_dev(div11, "class", "content animated fadeIn svelte-kvtvxd");
 			toggle_class(div11, "active", /*selected*/ ctx[0] === "Update");
-			add_location(div11, file$1e, 159, 16, 5001);
+			add_location(div11, file$1f, 161, 16, 5133);
 			attr_dev(h12, "class", "title svelte-kvtvxd");
-			add_location(h12, file$1e, 186, 20, 6540);
+			add_location(h12, file$1f, 190, 20, 6820);
 			attr_dev(div12, "class", "content animated fadeIn svelte-kvtvxd");
 			toggle_class(div12, "active", /*selected*/ ctx[0] === "About");
-			add_location(div12, file$1e, 185, 16, 6447);
+			add_location(div12, file$1f, 189, 16, 6727);
 			attr_dev(div13, "class", "container right svelte-kvtvxd");
-			add_location(div13, file$1e, 146, 12, 4229);
+			add_location(div13, file$1f, 148, 12, 4361);
 			attr_dev(div14, "class", "column main-panel box svelte-kvtvxd");
-			add_location(div14, file$1e, 145, 8, 4180);
+			add_location(div14, file$1f, 147, 8, 4312);
 			attr_dev(div15, "class", "columns svelte-kvtvxd");
-			add_location(div15, file$1e, 136, 4, 3604);
+			add_location(div15, file$1f, 138, 4, 3736);
 			attr_dev(section, "class", "section animated fadeIn svelte-kvtvxd");
 			attr_dev(section, "id", "Settings");
 			set_style(section, "display", "none");
-			add_location(section, file$1e, 134, 0, 3520);
+			add_location(section, file$1f, 136, 0, 3652);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -60975,71 +61320,76 @@ function create_fragment$1l(ctx) {
 			insert_dev(target, t0, anchor);
 			mount_component(customdialog, target, anchor);
 			insert_dev(target, t1, anchor);
+			mount_component(changelog, target, anchor);
+			insert_dev(target, t2, anchor);
 			insert_dev(target, section, anchor);
 			append_dev(section, div15);
 			append_dev(div15, div4);
 			append_dev(div4, div3);
 			append_dev(div3, div0);
-			append_dev(div3, t3);
+			append_dev(div3, t4);
 			append_dev(div3, div1);
-			append_dev(div3, t5);
+			append_dev(div3, t6);
 			append_dev(div3, div2);
-			append_dev(div15, t7);
+			append_dev(div15, t8);
 			append_dev(div15, div14);
 			append_dev(div14, div13);
 			append_dev(div13, div6);
 			append_dev(div6, h10);
-			append_dev(div6, t9);
+			append_dev(div6, t10);
 			append_dev(div6, div5);
-			append_dev(div5, t10);
-			append_dev(div6, t11);
-			mount_component(textfield0, div6, null);
+			append_dev(div5, t11);
 			append_dev(div6, t12);
-			mount_component(textfield1, div6, null);
+			mount_component(textfield0, div6, null);
 			append_dev(div6, t13);
+			mount_component(textfield1, div6, null);
+			append_dev(div6, t14);
 			append_dev(div6, button0);
-			append_dev(div6, t15);
+			append_dev(div6, t16);
 			append_dev(div6, button1);
-			append_dev(div13, t17);
+			append_dev(div13, t18);
 			append_dev(div13, div11);
 			append_dev(div11, h11);
-			append_dev(div11, t19);
+			append_dev(div11, t20);
 			append_dev(div11, div7);
-			append_dev(div11, t22);
+			append_dev(div11, t23);
 			append_dev(div11, div8);
 			mount_component(textfield2, div8, null);
-			append_dev(div8, t23);
-			mount_component(textfield3, div8, null);
 			append_dev(div8, t24);
+			mount_component(textfield3, div8, null);
+			append_dev(div8, t25);
 			mount_component(customselect, div8, null);
-			append_dev(div11, t25);
+			append_dev(div11, t26);
 			append_dev(div11, div9);
 			append_dev(div9, button2);
-			append_dev(div9, t27);
+			append_dev(div9, t28);
 			append_dev(div9, button3);
-			append_dev(div11, t29);
+			append_dev(div9, t30);
+			append_dev(div9, button4);
+			append_dev(div11, t32);
 			append_dev(div11, div10);
 			mount_component(textfield4, div10, null);
-			append_dev(div10, t30);
-			append_dev(div10, button4);
-			append_dev(div10, t32);
+			append_dev(div10, t33);
 			append_dev(div10, button5);
-			append_dev(div13, t34);
+			append_dev(div10, t35);
+			append_dev(div10, button6);
+			append_dev(div13, t37);
 			append_dev(div13, div12);
 			append_dev(div12, h12);
 			current = true;
 
 			if (!mounted) {
 				dispose = [
-					listen_dev(div0, "click", /*navigate*/ ctx[10], false, false, false),
-					listen_dev(div1, "click", /*navigate*/ ctx[10], false, false, false),
-					listen_dev(div2, "click", /*navigate*/ ctx[10], false, false, false),
+					listen_dev(div0, "click", /*navigate*/ ctx[11], false, false, false),
+					listen_dev(div1, "click", /*navigate*/ ctx[11], false, false, false),
+					listen_dev(div2, "click", /*navigate*/ ctx[11], false, false, false),
 					listen_dev(button0, "click", resetPyConfig, false, false, false),
 					listen_dev(button1, "click", updatePyConfig, false, false, false),
 					listen_dev(button2, "click", updateCheck, false, false, false),
-					listen_dev(button3, "click", /*update*/ ctx[12], false, false, false),
-					listen_dev(button4, "click", /*backup*/ ctx[8], false, false, false),
-					listen_dev(button5, "click", /*restore*/ ctx[9], false, false, false)
+					listen_dev(button3, "click", /*update*/ ctx[13], false, false, false),
+					listen_dev(button4, "click", /*click_handler*/ ctx[22], false, false, false),
+					listen_dev(button5, "click", /*backup*/ ctx[9], false, false, false),
+					listen_dev(button6, "click", /*restore*/ ctx[10], false, false, false)
 				];
 
 				mounted = true;
@@ -61064,6 +61414,15 @@ function create_fragment$1l(ctx) {
 			}
 
 			customdialog.$set(customdialog_changes);
+			const changelog_changes = {};
+
+			if (!updating_active && dirty & /*$activateChangelog*/ 16) {
+				updating_active = true;
+				changelog_changes.active = /*$activateChangelog*/ ctx[4];
+				add_flush_callback(() => updating_active = false);
+			}
+
+			changelog.$set(changelog_changes);
 
 			if (dirty & /*selected*/ 1) {
 				toggle_class(div0, "clicked", /*selected*/ ctx[0] === "Configuration");
@@ -61077,21 +61436,21 @@ function create_fragment$1l(ctx) {
 				toggle_class(div2, "clicked", /*selected*/ ctx[0] === "About");
 			}
 
-			if (!current || dirty & /*$pyVersion*/ 8) set_data_dev(t10, /*$pyVersion*/ ctx[3]);
+			if (!current || dirty & /*$pyVersion*/ 8) set_data_dev(t11, /*$pyVersion*/ ctx[3]);
 			const textfield0_changes = {};
 
-			if (!updating_value && dirty & /*$pythonpath*/ 16) {
+			if (!updating_value && dirty & /*$pythonpath*/ 32) {
 				updating_value = true;
-				textfield0_changes.value = /*$pythonpath*/ ctx[4];
+				textfield0_changes.value = /*$pythonpath*/ ctx[5];
 				add_flush_callback(() => updating_value = false);
 			}
 
 			textfield0.$set(textfield0_changes);
 			const textfield1_changes = {};
 
-			if (!updating_value_1 && dirty & /*$pythonscript*/ 32) {
+			if (!updating_value_1 && dirty & /*$pythonscript*/ 64) {
 				updating_value_1 = true;
-				textfield1_changes.value = /*$pythonscript*/ ctx[5];
+				textfield1_changes.value = /*$pythonscript*/ ctx[6];
 				add_flush_callback(() => updating_value_1 = false);
 			}
 
@@ -61103,36 +61462,36 @@ function create_fragment$1l(ctx) {
 
 			const textfield2_changes = {};
 
-			if (!updating_value_2 && dirty & /*$github*/ 64) {
+			if (!updating_value_2 && dirty & /*$github*/ 128) {
 				updating_value_2 = true;
-				textfield2_changes.value = /*$github*/ ctx[6].username;
+				textfield2_changes.value = /*$github*/ ctx[7].username;
 				add_flush_callback(() => updating_value_2 = false);
 			}
 
 			textfield2.$set(textfield2_changes);
 			const textfield3_changes = {};
 
-			if (!updating_value_3 && dirty & /*$github*/ 64) {
+			if (!updating_value_3 && dirty & /*$github*/ 128) {
 				updating_value_3 = true;
-				textfield3_changes.value = /*$github*/ ctx[6].repo;
+				textfield3_changes.value = /*$github*/ ctx[7].repo;
 				add_flush_callback(() => updating_value_3 = false);
 			}
 
 			textfield3.$set(textfield3_changes);
 			const customselect_changes = {};
 
-			if (!updating_picked && dirty & /*$github*/ 64) {
+			if (!updating_picked && dirty & /*$github*/ 128) {
 				updating_picked = true;
-				customselect_changes.picked = /*$github*/ ctx[6].branch;
+				customselect_changes.picked = /*$github*/ ctx[7].branch;
 				add_flush_callback(() => updating_picked = false);
 			}
 
 			customselect.$set(customselect_changes);
 			const textfield4_changes = {};
 
-			if (!updating_value_4 && dirty & /*$backupName*/ 128) {
+			if (!updating_value_4 && dirty & /*$backupName*/ 256) {
 				updating_value_4 = true;
-				textfield4_changes.value = /*$backupName*/ ctx[7];
+				textfield4_changes.value = /*$backupName*/ ctx[8];
 				add_flush_callback(() => updating_value_4 = false);
 			}
 
@@ -61150,6 +61509,7 @@ function create_fragment$1l(ctx) {
 			if (current) return;
 			transition_in(premodal.$$.fragment, local);
 			transition_in(customdialog.$$.fragment, local);
+			transition_in(changelog.$$.fragment, local);
 			transition_in(textfield0.$$.fragment, local);
 			transition_in(textfield1.$$.fragment, local);
 			transition_in(textfield2.$$.fragment, local);
@@ -61161,6 +61521,7 @@ function create_fragment$1l(ctx) {
 		o: function outro(local) {
 			transition_out(premodal.$$.fragment, local);
 			transition_out(customdialog.$$.fragment, local);
+			transition_out(changelog.$$.fragment, local);
 			transition_out(textfield0.$$.fragment, local);
 			transition_out(textfield1.$$.fragment, local);
 			transition_out(textfield2.$$.fragment, local);
@@ -61174,6 +61535,8 @@ function create_fragment$1l(ctx) {
 			if (detaching) detach_dev(t0);
 			destroy_component(customdialog, detaching);
 			if (detaching) detach_dev(t1);
+			destroy_component(changelog, detaching);
+			if (detaching) detach_dev(t2);
 			if (detaching) detach_dev(section);
 			destroy_component(textfield0);
 			destroy_component(textfield1);
@@ -61188,7 +61551,7 @@ function create_fragment$1l(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_fragment$1l.name,
+		id: create_fragment$1m.name,
 		type: "component",
 		source: "",
 		ctx
@@ -61197,22 +61560,25 @@ function create_fragment$1l(ctx) {
 	return block;
 }
 
-function instance$1l($$self, $$props, $$invalidate) {
+function instance$1m($$self, $$props, $$invalidate) {
 	let $pyVersion;
+	let $activateChangelog;
 	let $pythonpath;
 	let $pythonscript;
 	let $github;
 	let $backupName;
 	validate_store(pyVersion, "pyVersion");
 	component_subscribe($$self, pyVersion, $$value => $$invalidate(3, $pyVersion = $$value));
+	validate_store(activateChangelog, "activateChangelog");
+	component_subscribe($$self, activateChangelog, $$value => $$invalidate(4, $activateChangelog = $$value));
 	validate_store(pythonpath, "pythonpath");
-	component_subscribe($$self, pythonpath, $$value => $$invalidate(4, $pythonpath = $$value));
+	component_subscribe($$self, pythonpath, $$value => $$invalidate(5, $pythonpath = $$value));
 	validate_store(pythonscript, "pythonscript");
-	component_subscribe($$self, pythonscript, $$value => $$invalidate(5, $pythonscript = $$value));
+	component_subscribe($$self, pythonscript, $$value => $$invalidate(6, $pythonscript = $$value));
 	validate_store(github, "github");
-	component_subscribe($$self, github, $$value => $$invalidate(6, $github = $$value));
+	component_subscribe($$self, github, $$value => $$invalidate(7, $github = $$value));
 	validate_store(backupName, "backupName");
-	component_subscribe($$self, backupName, $$value => $$invalidate(7, $backupName = $$value));
+	component_subscribe($$self, backupName, $$value => $$invalidate(8, $backupName = $$value));
 
 	const backup = event => {
 		backupRestore({ event, method: "backup" }).then(() => console.log("Backup Completed")).catch(err => {
@@ -61301,6 +61667,11 @@ function instance$1l($$self, $$props, $$invalidate) {
 		$$invalidate(1, pythonpathCheck);
 	}
 
+	function changelog_active_binding(value) {
+		$activateChangelog = value;
+		activateChangelog.set($activateChangelog);
+	}
+
 	function textfield0_value_binding(value) {
 		$pythonpath = value;
 		pythonpath.set($pythonpath);
@@ -61326,6 +61697,8 @@ function instance$1l($$self, $$props, $$invalidate) {
 		github.set($github);
 	}
 
+	const click_handler = () => set_store_value(activateChangelog, $activateChangelog = true);
+
 	function textfield4_value_binding(value) {
 		$backupName = value;
 		backupName.set($backupName);
@@ -61337,11 +61710,13 @@ function instance$1l($$self, $$props, $$invalidate) {
 		pyVersion,
 		github,
 		backupName,
+		activateChangelog,
 		Textfield,
 		onMount,
 		CustomDialog,
 		CustomSelect,
 		PreModal,
+		Changelog,
 		download,
 		InstallUpdate,
 		updateCheck,
@@ -61358,6 +61733,7 @@ function instance$1l($$self, $$props, $$invalidate) {
 		update,
 		preModal,
 		$pyVersion,
+		$activateChangelog,
 		$pythonpath,
 		$pythonscript,
 		$github,
@@ -61379,6 +61755,7 @@ function instance$1l($$self, $$props, $$invalidate) {
 		pythonpathCheck,
 		preModal,
 		$pyVersion,
+		$activateChangelog,
 		$pythonpath,
 		$pythonscript,
 		$github,
@@ -61390,11 +61767,13 @@ function instance$1l($$self, $$props, $$invalidate) {
 		update,
 		premodal_preModal_binding,
 		customdialog_dialog_binding,
+		changelog_active_binding,
 		textfield0_value_binding,
 		textfield1_value_binding,
 		textfield2_value_binding,
 		textfield3_value_binding,
 		customselect_picked_binding,
+		click_handler,
 		textfield4_value_binding
 	];
 }
@@ -61402,19 +61781,19 @@ function instance$1l($$self, $$props, $$invalidate) {
 class Settings extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$1l, create_fragment$1l, safe_not_equal, {});
+		init(this, options, instance$1m, create_fragment$1m, safe_not_equal, {});
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
 			tagName: "Settings",
 			options,
-			id: create_fragment$1l.name
+			id: create_fragment$1m.name
 		});
 	}
 }
 
 /* src\components\Terminal.svelte generated by Svelte v3.24.1 */
-const file$1f = "src\\components\\Terminal.svelte";
+const file$1g = "src\\components\\Terminal.svelte";
 
 function get_each_context$b(ctx, list, i) {
 	const child_ctx = ctx.slice();
@@ -61424,7 +61803,7 @@ function get_each_context$b(ctx, list, i) {
 }
 
 // (106:4) {#if commandInputDiv}
-function create_if_block$w(ctx) {
+function create_if_block$x(ctx) {
 	let div2;
 	let div0;
 	let textfield0;
@@ -61551,14 +61930,14 @@ function create_if_block$w(ctx) {
 			set_style(div0, "display", "flex");
 			set_style(div0, "align-items", "center");
 			set_style(div0, "margin-bottom", "1em");
-			add_location(div0, file$1f, 108, 12, 3431);
+			add_location(div0, file$1g, 108, 12, 3431);
 			attr_dev(div1, "class", "run");
 			set_style(div1, "display", "flex");
 			set_style(div1, "align-items", "center");
 			set_style(div1, "margin-bottom", "1em");
-			add_location(div1, file$1f, 115, 12, 3722);
+			add_location(div1, file$1g, 115, 12, 3722);
 			attr_dev(div2, "class", "commandInput");
-			add_location(div2, file$1f, 107, 8, 3391);
+			add_location(div2, file$1g, 107, 8, 3391);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div2, anchor);
@@ -61661,7 +62040,7 @@ function create_if_block$w(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_if_block$w.name,
+		id: create_if_block$x.name,
 		type: "if",
 		source: "(106:4) {#if commandInputDiv}",
 		ctx
@@ -61738,7 +62117,7 @@ function create_each_block$b(ctx) {
 			set_style(h1, "color", /*color*/ ctx[17]);
 			set_style(h1, "font-size", /*teminalFontSize*/ ctx[3] + "px");
 			set_style(h1, "white-space", "pre-wrap");
-			add_location(h1, file$1f, 126, 12, 4566);
+			add_location(h1, file$1g, 126, 12, 4566);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, h1, anchor);
@@ -61771,7 +62150,7 @@ function create_each_block$b(ctx) {
 	return block;
 }
 
-function create_fragment$1m(ctx) {
+function create_fragment$1n(ctx) {
 	let premodal;
 	let updating_preModal;
 	let t0;
@@ -61792,7 +62171,7 @@ function create_fragment$1m(ctx) {
 
 	premodal = new PreModal({ props: premodal_props, $$inline: true });
 	binding_callbacks.push(() => bind(premodal, "preModal", premodal_preModal_binding));
-	let if_block = /*commandInputDiv*/ ctx[4] && create_if_block$w(ctx);
+	let if_block = /*commandInputDiv*/ ctx[4] && create_if_block$x(ctx);
 	let each_value = /*commandResults*/ ctx[2];
 	validate_each_argument(each_value);
 	let each_blocks = [];
@@ -61817,9 +62196,9 @@ function create_fragment$1m(ctx) {
 			attr_dev(div0, "class", "box svelte-bagnqz");
 			attr_dev(div0, "id", "terminal");
 			set_style(div0, "height", (/*commandInputDiv*/ ctx[4] ? 75 : 90) + "%");
-			add_location(div0, file$1f, 123, 4, 4421);
+			add_location(div0, file$1g, 123, 4, 4421);
 			attr_dev(div1, "class", "content contentBox terminalBox svelte-bagnqz");
-			add_location(div1, file$1f, 103, 0, 3305);
+			add_location(div1, file$1g, 103, 0, 3305);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -61857,7 +62236,7 @@ function create_fragment$1m(ctx) {
 						transition_in(if_block, 1);
 					}
 				} else {
-					if_block = create_if_block$w(ctx);
+					if_block = create_if_block$x(ctx);
 					if_block.c();
 					transition_in(if_block, 1);
 					if_block.m(div1, t1);
@@ -61922,7 +62301,7 @@ function create_fragment$1m(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_fragment$1m.name,
+		id: create_fragment$1n.name,
 		type: "component",
 		source: "",
 		ctx
@@ -61931,7 +62310,7 @@ function create_fragment$1m(ctx) {
 	return block;
 }
 
-function instance$1m($$self, $$props, $$invalidate) {
+function instance$1n($$self, $$props, $$invalidate) {
 	const colorSets = {
 		warning: "#ffdd57",
 		danger: "#f14668",
@@ -62151,7 +62530,7 @@ class Terminal extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
 
-		init(this, options, instance$1m, create_fragment$1m, safe_not_equal, {
+		init(this, options, instance$1n, create_fragment$1n, safe_not_equal, {
 			commandToRun: 0,
 			commandArgsToRun: 1,
 			commandResults: 2,
@@ -62164,7 +62543,7 @@ class Terminal extends SvelteComponentDev {
 			component: this,
 			tagName: "Terminal",
 			options,
-			id: create_fragment$1m.name
+			id: create_fragment$1n.name
 		});
 	}
 
@@ -62218,7 +62597,7 @@ class Terminal extends SvelteComponentDev {
 }
 
 /* src\Pages\Misc.svelte generated by Svelte v3.24.1 */
-const file$1g = "src\\Pages\\Misc.svelte";
+const file$1h = "src\\Pages\\Misc.svelte";
 
 // (96:24) <Label>
 function create_default_slot_2$d(ctx) {
@@ -62404,7 +62783,7 @@ function create_else_block$b(ctx) {
 }
 
 // (100:4) {#if active=="Unit Conversion"}
-function create_if_block$x(ctx) {
+function create_if_block$y(ctx) {
 	let div8;
 	let div3;
 	let div0;
@@ -62890,32 +63269,32 @@ function create_if_block$x(ctx) {
 			t30 = space();
 			create_component(textfield17.$$.fragment);
 			attr_dev(div0, "class", "title svelte-7c8hl4");
-			add_location(div0, file$1g, 104, 16, 2714);
+			add_location(div0, file$1h, 104, 16, 2714);
 			attr_dev(hr0, "class", "svelte-7c8hl4");
-			add_location(hr0, file$1g, 106, 16, 2776);
+			add_location(hr0, file$1h, 106, 16, 2776);
 			attr_dev(hr1, "class", "svelte-7c8hl4");
-			add_location(hr1, file$1g, 122, 20, 4035);
+			add_location(hr1, file$1h, 122, 20, 4035);
 			attr_dev(div1, "class", "subtitle is-pulled-left svelte-7c8hl4");
-			add_location(div1, file$1g, 124, 20, 4063);
+			add_location(div1, file$1h, 124, 20, 4063);
 			attr_dev(div2, "class", "unit_conversion_contents svelte-7c8hl4");
-			add_location(div2, file$1g, 108, 16, 2800);
+			add_location(div2, file$1h, 108, 16, 2800);
 			attr_dev(div3, "class", "column box is-4 unit_converter_column svelte-7c8hl4");
-			add_location(div3, file$1g, 102, 12, 2643);
+			add_location(div3, file$1h, 102, 12, 2643);
 			attr_dev(div4, "class", "title svelte-7c8hl4");
-			add_location(div4, file$1g, 137, 16, 4993);
+			add_location(div4, file$1h, 137, 16, 4993);
 			attr_dev(hr2, "class", "svelte-7c8hl4");
-			add_location(hr2, file$1g, 138, 16, 5050);
+			add_location(hr2, file$1h, 138, 16, 5050);
 			attr_dev(div5, "class", "subtitle svelte-7c8hl4");
-			add_location(div5, file$1g, 142, 20, 5136);
+			add_location(div5, file$1h, 142, 20, 5136);
 			attr_dev(hr3, "class", "svelte-7c8hl4");
-			add_location(hr3, file$1g, 147, 20, 5713);
+			add_location(hr3, file$1h, 147, 20, 5713);
 			attr_dev(div6, "class", "unit_conversion_contents svelte-7c8hl4");
-			add_location(div6, file$1g, 140, 16, 5074);
+			add_location(div6, file$1h, 140, 16, 5074);
 			attr_dev(div7, "class", "column box is-4 unit_converter_column svelte-7c8hl4");
-			add_location(div7, file$1g, 135, 12, 4910);
+			add_location(div7, file$1h, 135, 12, 4910);
 			attr_dev(div8, "class", "columns is-multiline contentBox svelte-7c8hl4");
 			attr_dev(div8, "id", "unit_conversion_table");
-			add_location(div8, file$1g, 100, 8, 2555);
+			add_location(div8, file$1h, 100, 8, 2555);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div8, anchor);
@@ -63242,7 +63621,7 @@ function create_if_block$x(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_if_block$x.name,
+		id: create_if_block$y.name,
 		type: "if",
 		source: "(100:4) {#if active==\\\"Unit Conversion\\\"}",
 		ctx
@@ -63251,7 +63630,7 @@ function create_if_block$x(ctx) {
 	return block;
 }
 
-function create_fragment$1n(ctx) {
+function create_fragment$1o(ctx) {
 	let section;
 	let div;
 	let tabbar;
@@ -63283,7 +63662,7 @@ function create_fragment$1n(ctx) {
 
 	tabbar = new TabBar({ props: tabbar_props, $$inline: true });
 	binding_callbacks.push(() => bind(tabbar, "active", tabbar_active_binding));
-	const if_block_creators = [create_if_block$x, create_else_block$b];
+	const if_block_creators = [create_if_block$y, create_else_block$b];
 	const if_blocks = [];
 
 	function select_block_type(ctx, dirty) {
@@ -63303,11 +63682,11 @@ function create_fragment$1n(ctx) {
 			if_block.c();
 			attr_dev(div, "class", "misc-nav box animated fadeInDown svelte-7c8hl4");
 			attr_dev(div, "id", "navbar");
-			add_location(div, file$1g, 93, 4, 2309);
+			add_location(div, file$1h, 93, 4, 2309);
 			attr_dev(section, "class", "animated fadeIn section svelte-7c8hl4");
 			attr_dev(section, "id", "Misc");
 			set_style(section, "display", "none");
-			add_location(section, file$1g, 91, 0, 2229);
+			add_location(section, file$1h, 91, 0, 2229);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -63378,7 +63757,7 @@ function create_fragment$1n(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_fragment$1n.name,
+		id: create_fragment$1o.name,
 		type: "component",
 		source: "",
 		ctx
@@ -63387,7 +63766,7 @@ function create_fragment$1n(ctx) {
 	return block;
 }
 
-function instance$1n($$self, $$props, $$invalidate) {
+function instance$1o($$self, $$props, $$invalidate) {
 	let active = "Unit Conversion";
 	const navItems = ["Unit Conversion", "Terminal"];
 	const writable_props = [];
@@ -63712,13 +64091,13 @@ function instance$1n($$self, $$props, $$invalidate) {
 class Misc extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$1n, create_fragment$1n, safe_not_equal, {}, [-1, -1]);
+		init(this, options, instance$1o, create_fragment$1o, safe_not_equal, {}, [-1, -1]);
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
 			tagName: "Misc",
 			options,
-			id: create_fragment$1n.name
+			id: create_fragment$1o.name
 		});
 	}
 }
@@ -63726,9 +64105,9 @@ class Misc extends SvelteComponentDev {
 /* src\App.svelte generated by Svelte v3.24.1 */
 
 const { console: console_1$f } = globals;
-const file$1h = "src\\App.svelte";
+const file$1i = "src\\App.svelte";
 
-function create_fragment$1o(ctx) {
+function create_fragment$1p(ctx) {
 	let navbar;
 	let t0;
 	let home;
@@ -63790,7 +64169,7 @@ function create_fragment$1o(ctx) {
 			create_component(footer.$$.fragment);
 			attr_dev(div, "class", "pageContainer");
 			set_style(div, "overflow", "hidden");
-			add_location(div, file$1h, 50, 0, 1593);
+			add_location(div, file$1i, 50, 0, 1593);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -63866,7 +64245,7 @@ function create_fragment$1o(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_fragment$1o.name,
+		id: create_fragment$1p.name,
 		type: "component",
 		source: "",
 		ctx
@@ -63875,7 +64254,7 @@ function create_fragment$1o(ctx) {
 	return block;
 }
 
-function instance$1o($$self, $$props, $$invalidate) {
+function instance$1p($$self, $$props, $$invalidate) {
 	onMount(() => {
 		let allbuttons = Array.from(document.querySelectorAll(".button"));
 		allbuttons.forEach(button => button.classList.add("hvr-glow"));
@@ -63969,13 +64348,13 @@ function instance$1o($$self, $$props, $$invalidate) {
 class App extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$1o, create_fragment$1o, safe_not_equal, { version: 1 });
+		init(this, options, instance$1p, create_fragment$1p, safe_not_equal, { version: 1 });
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
 			tagName: "App",
 			options,
-			id: create_fragment$1o.name
+			id: create_fragment$1p.name
 		});
 
 		const { ctx } = this.$$;

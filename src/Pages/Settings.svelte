@@ -1,15 +1,16 @@
 <script>
 
     // Importing modules
-    import {pythonpath, pythonscript, pyVersion, github, backupName} from "./settings/svelteWritables";
+    import {pythonpath, pythonscript, pyVersion, github, backupName, activateChangelog} from "./settings/svelteWritables";
     import Textfield from '@smui/textfield';
     import {onMount} from "svelte";
 
     import CustomDialog from "../components/CustomDialog.svelte"
     import CustomSelect from '../components/CustomSelect.svelte';
     import PreModal from "../components/PreModal.svelte";
+    import Changelog from "../components/Changelog.svelte";
     import {download} from "./settings/donwloadUpdate";
-
+    
     import {InstallUpdate} from "./settings/installUpdate";
     
     import {updateCheck} from "./settings/updateCheck";
@@ -108,6 +109,7 @@
 <PreModal bind:preModal />
 
 <CustomDialog id="pythonpath_Check" bind:dialog={pythonpathCheck} on:response={handlepythonPathCheck} title={"Python path is not valid"} content={"Change it in Settings --> Configuration"} label1="Okay" label2="Cancel" />
+<Changelog bind:active={$activateChangelog} />
 
 <section class="section animated fadeIn" id="Settings" style="display:none">
 
@@ -147,6 +149,8 @@
                     <div class="content">
                         <button class="button is-link" id="updateCheckBtn" on:click="{updateCheck}">Check update</button>
                         <button class="button is-link" id="updateBtn" on:click={update}>Update</button>
+                        
+                        <button class="button is-warning" on:click="{()=>$activateChangelog = true}">What's New</button>
                     </div>
 
 

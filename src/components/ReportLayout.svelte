@@ -311,6 +311,7 @@
         <Textfield style="height:3em; margin-bottom:1em;" variant="outlined" bind:value={reportTitle} label="Title" />
         <Editor bind:reportEditor {id}/>
         
+        
         <div class="align" style="margin-top:1em;">
             <button class="button is-link" on:click={addReport}>Add to Report</button>
             <button class="button is-link" on:click={showReport}>Show Report</button>
