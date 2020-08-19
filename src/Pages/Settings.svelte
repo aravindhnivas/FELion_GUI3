@@ -80,10 +80,8 @@
 
     let preModal = {};
 
-    const colorSets = {warning: "#ffdd57", danger:"#f14668", info:"#2098d1", normal:"#fafafa", success:"#20f996"}
-    let commandToRun = "", commandArgsToRun = "", commandResults = [{color:colorSets.normal, results:">> "}], teminalFontSize=20;
-
-    $: console.log(commandResults)
+    let commandToRun = "", commandArgsToRun = "";
+    // $: console.log(commandResults)
 
 </script>
 
@@ -181,7 +179,7 @@
 
                 <div class="content animated fadeIn" class:hide={selected!=="Terminal"}>
                     <h1 class="title">Terminal</h1>
-                    <Terminal bind:commandToRun bind:commandArgsToRun bind:commandResults bind:teminalFontSize/>
+                    <Terminal bind:commandToRun bind:commandArgsToRun id="Terminal-settings"/>
                 </div>
                 
                 <div class="content animated fadeIn" class:hide={selected!=="About"}>
@@ -192,5 +190,5 @@
         </div>
 
     </div>
-    
+
 </section>

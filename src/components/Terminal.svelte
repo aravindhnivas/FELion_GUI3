@@ -13,13 +13,13 @@
 
     export let commandToRun = localStorage["pythonpath"] || "", commandArgsToRun = "-m, pip", commandResults = [{color:colorSets.normal, results:">> "}], teminalFontSize=20;
 
-    export let commandInputDiv = true, runShell = false;
+    export let commandInputDiv = true, runShell = false, id="terminal";
     
     let preModal = {}
     let openShellTerminal = false;
 
     const srollTerminalDiv = async () => {
-        const terminalDiv = document.getElementById("terminal")
+        const terminalDiv = document.getElementById(id)
         await tick()
         const scrollTo = terminalDiv.scrollHeight - terminalDiv.clientHeight
         terminalDiv.scrollTo({top:scrollTo, behavior: 'smooth'})
@@ -73,11 +73,12 @@
 
 </script>
 
+
 <style>
 
     .box { background-color: #6a50ad8a; overflow-y: auto; height: calc(100vh - 12em);}
 
-    #terminal {
+    .terminal {
 
         margin-bottom: 1em;
         background-color: #4a4a4ae6;
@@ -120,7 +121,7 @@
             </div>
         </div>
     {/if}
-    <div class="box" id="terminal" style="height: {commandInputDiv ? 75 : 90}%;">
+    <div class="box terminal" {id} style="height: {commandInputDiv ? 75 : 90}%;">
 
         {#each commandResults as {color, results}}
             <h1 class="subtitle" style="color:{color}; font-size:{teminalFontSize}px; white-space: pre-wrap; ">{results}</h1>

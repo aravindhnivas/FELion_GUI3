@@ -60950,12 +60950,12 @@ const file$1f = "src\\components\\Terminal.svelte";
 
 function get_each_context$b(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[17] = list[i].color;
-	child_ctx[18] = list[i].results;
+	child_ctx[18] = list[i].color;
+	child_ctx[19] = list[i].results;
 	return child_ctx;
 }
 
-// (105:4) {#if commandInputDiv}
+// (106:4) {#if commandInputDiv}
 function create_if_block$x(ctx) {
 	let div2;
 	let div0;
@@ -60978,7 +60978,7 @@ function create_if_block$x(ctx) {
 	let current;
 
 	function textfield0_value_binding(value) {
-		/*textfield0_value_binding*/ ctx[11].call(null, value);
+		/*textfield0_value_binding*/ ctx[12].call(null, value);
 	}
 
 	let textfield0_props = { label: "Enter command to run" };
@@ -60991,7 +60991,7 @@ function create_if_block$x(ctx) {
 	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
 
 	function textfield1_value_binding(value) {
-		/*textfield1_value_binding*/ ctx[12].call(null, value);
+		/*textfield1_value_binding*/ ctx[13].call(null, value);
 	}
 
 	let textfield1_props = { label: "Enter command-arg" };
@@ -61012,16 +61012,16 @@ function create_if_block$x(ctx) {
 			$$inline: true
 		});
 
-	iconbutton0.$on("click", /*terminalShell*/ ctx[8]);
+	iconbutton0.$on("click", /*terminalShell*/ ctx[9]);
 
 	function customswitch_selected_binding(value) {
-		/*customswitch_selected_binding*/ ctx[13].call(null, value);
+		/*customswitch_selected_binding*/ ctx[14].call(null, value);
 	}
 
 	let customswitch_props = { style: "margin: 0 1em;", label: "Shell" };
 
-	if (/*openShellTerminal*/ ctx[6] !== void 0) {
-		customswitch_props.selected = /*openShellTerminal*/ ctx[6];
+	if (/*openShellTerminal*/ ctx[7] !== void 0) {
+		customswitch_props.selected = /*openShellTerminal*/ ctx[7];
 	}
 
 	customswitch = new CustomSwitch({
@@ -61032,7 +61032,7 @@ function create_if_block$x(ctx) {
 	binding_callbacks.push(() => bind(customswitch, "selected", customswitch_selected_binding));
 
 	function textfield2_value_binding(value) {
-		/*textfield2_value_binding*/ ctx[14].call(null, value);
+		/*textfield2_value_binding*/ ctx[15].call(null, value);
 	}
 
 	let textfield2_props = {
@@ -61061,7 +61061,7 @@ function create_if_block$x(ctx) {
 			$$inline: true
 		});
 
-	iconbutton1.$on("click", /*click_handler*/ ctx[15]);
+	iconbutton1.$on("click", /*click_handler*/ ctx[16]);
 
 	const block = {
 		c: function create() {
@@ -61083,14 +61083,14 @@ function create_if_block$x(ctx) {
 			set_style(div0, "display", "flex");
 			set_style(div0, "align-items", "center");
 			set_style(div0, "margin-bottom", "1em");
-			add_location(div0, file$1f, 107, 12, 3429);
+			add_location(div0, file$1f, 108, 12, 3438);
 			attr_dev(div1, "class", "run");
 			set_style(div1, "display", "flex");
 			set_style(div1, "align-items", "center");
 			set_style(div1, "margin-bottom", "1em");
-			add_location(div1, file$1f, 114, 12, 3720);
+			add_location(div1, file$1f, 115, 12, 3729);
 			attr_dev(div2, "class", "commandInput");
-			add_location(div2, file$1f, 106, 8, 3389);
+			add_location(div2, file$1f, 107, 8, 3398);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div2, anchor);
@@ -61130,16 +61130,16 @@ function create_if_block$x(ctx) {
 			textfield1.$set(textfield1_changes);
 			const iconbutton0_changes = {};
 
-			if (dirty & /*$$scope*/ 2097152) {
+			if (dirty & /*$$scope*/ 4194304) {
 				iconbutton0_changes.$$scope = { dirty, ctx };
 			}
 
 			iconbutton0.$set(iconbutton0_changes);
 			const customswitch_changes = {};
 
-			if (!updating_selected && dirty & /*openShellTerminal*/ 64) {
+			if (!updating_selected && dirty & /*openShellTerminal*/ 128) {
 				updating_selected = true;
-				customswitch_changes.selected = /*openShellTerminal*/ ctx[6];
+				customswitch_changes.selected = /*openShellTerminal*/ ctx[7];
 				add_flush_callback(() => updating_selected = false);
 			}
 
@@ -61155,7 +61155,7 @@ function create_if_block$x(ctx) {
 			textfield2.$set(textfield2_changes);
 			const iconbutton1_changes = {};
 
-			if (dirty & /*$$scope*/ 2097152) {
+			if (dirty & /*$$scope*/ 4194304) {
 				iconbutton1_changes.$$scope = { dirty, ctx };
 			}
 
@@ -61195,14 +61195,14 @@ function create_if_block$x(ctx) {
 		block,
 		id: create_if_block$x.name,
 		type: "if",
-		source: "(105:4) {#if commandInputDiv}",
+		source: "(106:4) {#if commandInputDiv}",
 		ctx
 	});
 
 	return block;
 }
 
-// (116:16) <IconButton class="material-icons" on:click={terminalShell}>
+// (117:16) <IconButton class="material-icons" on:click={terminalShell}>
 function create_default_slot_1$f(ctx) {
 	let t;
 
@@ -61222,14 +61222,14 @@ function create_default_slot_1$f(ctx) {
 		block,
 		id: create_default_slot_1$f.name,
 		type: "slot",
-		source: "(116:16) <IconButton class=\\\"material-icons\\\" on:click={terminalShell}>",
+		source: "(117:16) <IconButton class=\\\"material-icons\\\" on:click={terminalShell}>",
 		ctx
 	});
 
 	return block;
 }
 
-// (119:16) <IconButton class="material-icons is-pulled-right" style="background: #f14668; border-radius: 2em;" on:click="{()=>commandResults=[{color:colorSets.normal, results:`>> cleared`}] }">
+// (120:16) <IconButton class="material-icons is-pulled-right" style="background: #f14668; border-radius: 2em;" on:click="{()=>commandResults=[{color:colorSets.normal, results:`>> cleared`}] }">
 function create_default_slot$y(ctx) {
 	let t;
 
@@ -61249,17 +61249,17 @@ function create_default_slot$y(ctx) {
 		block,
 		id: create_default_slot$y.name,
 		type: "slot",
-		source: "(119:16) <IconButton class=\\\"material-icons is-pulled-right\\\" style=\\\"background: #f14668; border-radius: 2em;\\\" on:click=\\\"{()=>commandResults=[{color:colorSets.normal, results:`>> cleared`}] }\\\">",
+		source: "(120:16) <IconButton class=\\\"material-icons is-pulled-right\\\" style=\\\"background: #f14668; border-radius: 2em;\\\" on:click=\\\"{()=>commandResults=[{color:colorSets.normal, results:`>> cleared`}] }\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (125:8) {#each commandResults as {color, results}}
+// (126:8) {#each commandResults as {color, results}}
 function create_each_block$b(ctx) {
 	let h1;
-	let t_value = /*results*/ ctx[18] + "";
+	let t_value = /*results*/ ctx[19] + "";
 	let t;
 
 	const block = {
@@ -61267,20 +61267,20 @@ function create_each_block$b(ctx) {
 			h1 = element("h1");
 			t = text(t_value);
 			attr_dev(h1, "class", "subtitle");
-			set_style(h1, "color", /*color*/ ctx[17]);
+			set_style(h1, "color", /*color*/ ctx[18]);
 			set_style(h1, "font-size", /*teminalFontSize*/ ctx[3] + "px");
 			set_style(h1, "white-space", "pre-wrap");
-			add_location(h1, file$1f, 125, 12, 4564);
+			add_location(h1, file$1f, 126, 12, 4573);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, h1, anchor);
 			append_dev(h1, t);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty & /*commandResults*/ 4 && t_value !== (t_value = /*results*/ ctx[18] + "")) set_data_dev(t, t_value);
+			if (dirty & /*commandResults*/ 4 && t_value !== (t_value = /*results*/ ctx[19] + "")) set_data_dev(t, t_value);
 
 			if (dirty & /*commandResults*/ 4) {
-				set_style(h1, "color", /*color*/ ctx[17]);
+				set_style(h1, "color", /*color*/ ctx[18]);
 			}
 
 			if (dirty & /*teminalFontSize*/ 8) {
@@ -61296,7 +61296,7 @@ function create_each_block$b(ctx) {
 		block,
 		id: create_each_block$b.name,
 		type: "each",
-		source: "(125:8) {#each commandResults as {color, results}}",
+		source: "(126:8) {#each commandResults as {color, results}}",
 		ctx
 	});
 
@@ -61313,13 +61313,13 @@ function create_fragment$1m(ctx) {
 	let current;
 
 	function premodal_preModal_binding(value) {
-		/*premodal_preModal_binding*/ ctx[10].call(null, value);
+		/*premodal_preModal_binding*/ ctx[11].call(null, value);
 	}
 
 	let premodal_props = {};
 
-	if (/*preModal*/ ctx[5] !== void 0) {
-		premodal_props.preModal = /*preModal*/ ctx[5];
+	if (/*preModal*/ ctx[6] !== void 0) {
+		premodal_props.preModal = /*preModal*/ ctx[6];
 	}
 
 	premodal = new PreModal({ props: premodal_props, $$inline: true });
@@ -61346,12 +61346,12 @@ function create_fragment$1m(ctx) {
 				each_blocks[i].c();
 			}
 
-			attr_dev(div0, "class", "box svelte-bagnqz");
-			attr_dev(div0, "id", "terminal");
+			attr_dev(div0, "class", "box terminal svelte-1c1mx3e");
+			attr_dev(div0, "id", /*id*/ ctx[5]);
 			set_style(div0, "height", (/*commandInputDiv*/ ctx[4] ? 75 : 90) + "%");
-			add_location(div0, file$1f, 122, 4, 4419);
-			attr_dev(div1, "class", "content contentBox terminalBox svelte-bagnqz");
-			add_location(div1, file$1f, 102, 0, 3303);
+			add_location(div0, file$1f, 123, 4, 4428);
+			attr_dev(div1, "class", "content contentBox terminalBox svelte-1c1mx3e");
+			add_location(div1, file$1f, 103, 0, 3312);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -61373,9 +61373,9 @@ function create_fragment$1m(ctx) {
 		p: function update(ctx, [dirty]) {
 			const premodal_changes = {};
 
-			if (!updating_preModal && dirty & /*preModal*/ 32) {
+			if (!updating_preModal && dirty & /*preModal*/ 64) {
 				updating_preModal = true;
-				premodal_changes.preModal = /*preModal*/ ctx[5];
+				premodal_changes.preModal = /*preModal*/ ctx[6];
 				add_flush_callback(() => updating_preModal = false);
 			}
 
@@ -61428,6 +61428,10 @@ function create_fragment$1m(ctx) {
 				each_blocks.length = each_value.length;
 			}
 
+			if (!current || dirty & /*id*/ 32) {
+				attr_dev(div0, "id", /*id*/ ctx[5]);
+			}
+
 			if (!current || dirty & /*commandInputDiv*/ 16) {
 				set_style(div0, "height", (/*commandInputDiv*/ ctx[4] ? 75 : 90) + "%");
 			}
@@ -61477,19 +61481,22 @@ function instance$1m($$self, $$props, $$invalidate) {
 		{ commandResults = [{ color: colorSets.normal, results: ">> " }] } = $$props,
 		{ teminalFontSize = 20 } = $$props;
 
-	let { commandInputDiv = true } = $$props, { runShell = false } = $$props;
+	let { commandInputDiv = true } = $$props,
+		{ runShell = false } = $$props,
+		{ id = "terminal" } = $$props;
+
 	let preModal = {};
 	let openShellTerminal = false;
 
 	const srollTerminalDiv = async () => {
-		const terminalDiv = document.getElementById("terminal");
+		const terminalDiv = document.getElementById(id);
 		await tick();
 		const scrollTo = terminalDiv.scrollHeight - terminalDiv.clientHeight;
 		terminalDiv.scrollTo({ top: scrollTo, behavior: "smooth" });
 	};
 
 	async function terminalShell() {
-		$$invalidate(9, runShell = false);
+		$$invalidate(10, runShell = false);
 		await tick();
 		srollTerminalDiv();
 
@@ -61514,8 +61521,8 @@ function instance$1m($$self, $$props, $$invalidate) {
 				shell: openShellTerminal
 			});
 		} catch(error) {
-			$$invalidate(5, preModal.modalContent = error, preModal);
-			$$invalidate(5, preModal.open = true, preModal);
+			$$invalidate(6, preModal.modalContent = error, preModal);
+			$$invalidate(6, preModal.open = true, preModal);
 		}
 
 		ls.stdout.on("data", data => {
@@ -61568,7 +61575,8 @@ function instance$1m($$self, $$props, $$invalidate) {
 		"commandResults",
 		"teminalFontSize",
 		"commandInputDiv",
-		"runShell"
+		"runShell",
+		"id"
 	];
 
 	Object.keys($$props).forEach(key => {
@@ -61580,7 +61588,7 @@ function instance$1m($$self, $$props, $$invalidate) {
 
 	function premodal_preModal_binding(value) {
 		preModal = value;
-		$$invalidate(5, preModal);
+		$$invalidate(6, preModal);
 	}
 
 	function textfield0_value_binding(value) {
@@ -61595,7 +61603,7 @@ function instance$1m($$self, $$props, $$invalidate) {
 
 	function customswitch_selected_binding(value) {
 		openShellTerminal = value;
-		$$invalidate(6, openShellTerminal);
+		$$invalidate(7, openShellTerminal);
 	}
 
 	function textfield2_value_binding(value) {
@@ -61616,7 +61624,8 @@ function instance$1m($$self, $$props, $$invalidate) {
 		if ("commandResults" in $$props) $$invalidate(2, commandResults = $$props.commandResults);
 		if ("teminalFontSize" in $$props) $$invalidate(3, teminalFontSize = $$props.teminalFontSize);
 		if ("commandInputDiv" in $$props) $$invalidate(4, commandInputDiv = $$props.commandInputDiv);
-		if ("runShell" in $$props) $$invalidate(9, runShell = $$props.runShell);
+		if ("runShell" in $$props) $$invalidate(10, runShell = $$props.runShell);
+		if ("id" in $$props) $$invalidate(5, id = $$props.id);
 	};
 
 	$$self.$capture_state = () => ({
@@ -61632,6 +61641,7 @@ function instance$1m($$self, $$props, $$invalidate) {
 		teminalFontSize,
 		commandInputDiv,
 		runShell,
+		id,
 		preModal,
 		openShellTerminal,
 		srollTerminalDiv,
@@ -61644,9 +61654,10 @@ function instance$1m($$self, $$props, $$invalidate) {
 		if ("commandResults" in $$props) $$invalidate(2, commandResults = $$props.commandResults);
 		if ("teminalFontSize" in $$props) $$invalidate(3, teminalFontSize = $$props.teminalFontSize);
 		if ("commandInputDiv" in $$props) $$invalidate(4, commandInputDiv = $$props.commandInputDiv);
-		if ("runShell" in $$props) $$invalidate(9, runShell = $$props.runShell);
-		if ("preModal" in $$props) $$invalidate(5, preModal = $$props.preModal);
-		if ("openShellTerminal" in $$props) $$invalidate(6, openShellTerminal = $$props.openShellTerminal);
+		if ("runShell" in $$props) $$invalidate(10, runShell = $$props.runShell);
+		if ("id" in $$props) $$invalidate(5, id = $$props.id);
+		if ("preModal" in $$props) $$invalidate(6, preModal = $$props.preModal);
+		if ("openShellTerminal" in $$props) $$invalidate(7, openShellTerminal = $$props.openShellTerminal);
 	};
 
 	if ($$props && "$$inject" in $$props) {
@@ -61654,7 +61665,7 @@ function instance$1m($$self, $$props, $$invalidate) {
 	}
 
 	$$self.$$.update = () => {
-		if ($$self.$$.dirty & /*runShell*/ 512) {
+		if ($$self.$$.dirty & /*runShell*/ 1024) {
 			 if (runShell) terminalShell();
 		}
 	};
@@ -61665,6 +61676,7 @@ function instance$1m($$self, $$props, $$invalidate) {
 		commandResults,
 		teminalFontSize,
 		commandInputDiv,
+		id,
 		preModal,
 		openShellTerminal,
 		colorSets,
@@ -61689,7 +61701,8 @@ class Terminal extends SvelteComponentDev {
 			commandResults: 2,
 			teminalFontSize: 3,
 			commandInputDiv: 4,
-			runShell: 9
+			runShell: 10,
+			id: 5
 		});
 
 		dispatch_dev("SvelteRegisterComponent", {
@@ -61745,6 +61758,14 @@ class Terminal extends SvelteComponentDev {
 	}
 
 	set runShell(value) {
+		throw new Error("<Terminal>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get id() {
+		throw new Error("<Terminal>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set id(value) {
 		throw new Error("<Terminal>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 }
@@ -61830,8 +61851,6 @@ function create_fragment$1n(ctx) {
 	let terminal;
 	let updating_commandToRun;
 	let updating_commandArgsToRun;
-	let updating_commandResults;
-	let updating_teminalFontSize;
 	let t42;
 	let div14;
 	let h13;
@@ -61840,7 +61859,7 @@ function create_fragment$1n(ctx) {
 	let dispose;
 
 	function premodal_preModal_binding(value) {
-		/*premodal_preModal_binding*/ ctx[18].call(null, value);
+		/*premodal_preModal_binding*/ ctx[16].call(null, value);
 	}
 
 	let premodal_props = {};
@@ -61853,7 +61872,7 @@ function create_fragment$1n(ctx) {
 	binding_callbacks.push(() => bind(premodal, "preModal", premodal_preModal_binding));
 
 	function customdialog_dialog_binding(value) {
-		/*customdialog_dialog_binding*/ ctx[19].call(null, value);
+		/*customdialog_dialog_binding*/ ctx[17].call(null, value);
 	}
 
 	let customdialog_props = {
@@ -61874,23 +61893,23 @@ function create_fragment$1n(ctx) {
 		});
 
 	binding_callbacks.push(() => bind(customdialog, "dialog", customdialog_dialog_binding));
-	customdialog.$on("response", /*handlepythonPathCheck*/ ctx[16]);
+	customdialog.$on("response", /*handlepythonPathCheck*/ ctx[14]);
 
 	function changelog_active_binding(value) {
-		/*changelog_active_binding*/ ctx[20].call(null, value);
+		/*changelog_active_binding*/ ctx[18].call(null, value);
 	}
 
 	let changelog_props = {};
 
-	if (/*$activateChangelog*/ ctx[8] !== void 0) {
-		changelog_props.active = /*$activateChangelog*/ ctx[8];
+	if (/*$activateChangelog*/ ctx[6] !== void 0) {
+		changelog_props.active = /*$activateChangelog*/ ctx[6];
 	}
 
 	changelog = new Changelog({ props: changelog_props, $$inline: true });
 	binding_callbacks.push(() => bind(changelog, "active", changelog_active_binding));
 
 	function textfield0_value_binding(value) {
-		/*textfield0_value_binding*/ ctx[21].call(null, value);
+		/*textfield0_value_binding*/ ctx[19].call(null, value);
 	}
 
 	let textfield0_props = {
@@ -61898,15 +61917,15 @@ function create_fragment$1n(ctx) {
 		label: "Python path"
 	};
 
-	if (/*$pythonpath*/ ctx[9] !== void 0) {
-		textfield0_props.value = /*$pythonpath*/ ctx[9];
+	if (/*$pythonpath*/ ctx[7] !== void 0) {
+		textfield0_props.value = /*$pythonpath*/ ctx[7];
 	}
 
 	textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
 
 	function textfield1_value_binding(value) {
-		/*textfield1_value_binding*/ ctx[22].call(null, value);
+		/*textfield1_value_binding*/ ctx[20].call(null, value);
 	}
 
 	let textfield1_props = {
@@ -61914,15 +61933,15 @@ function create_fragment$1n(ctx) {
 		label: "Python script path"
 	};
 
-	if (/*$pythonscript*/ ctx[10] !== void 0) {
-		textfield1_props.value = /*$pythonscript*/ ctx[10];
+	if (/*$pythonscript*/ ctx[8] !== void 0) {
+		textfield1_props.value = /*$pythonscript*/ ctx[8];
 	}
 
 	textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding));
 
 	function textfield2_value_binding(value) {
-		/*textfield2_value_binding*/ ctx[23].call(null, value);
+		/*textfield2_value_binding*/ ctx[21].call(null, value);
 	}
 
 	let textfield2_props = {
@@ -61930,15 +61949,15 @@ function create_fragment$1n(ctx) {
 		label: "Github username"
 	};
 
-	if (/*$github*/ ctx[11].username !== void 0) {
-		textfield2_props.value = /*$github*/ ctx[11].username;
+	if (/*$github*/ ctx[9].username !== void 0) {
+		textfield2_props.value = /*$github*/ ctx[9].username;
 	}
 
 	textfield2 = new Textfield({ props: textfield2_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield2, "value", textfield2_value_binding));
 
 	function textfield3_value_binding(value) {
-		/*textfield3_value_binding*/ ctx[24].call(null, value);
+		/*textfield3_value_binding*/ ctx[22].call(null, value);
 	}
 
 	let textfield3_props = {
@@ -61946,15 +61965,15 @@ function create_fragment$1n(ctx) {
 		label: "Github Repo"
 	};
 
-	if (/*$github*/ ctx[11].repo !== void 0) {
-		textfield3_props.value = /*$github*/ ctx[11].repo;
+	if (/*$github*/ ctx[9].repo !== void 0) {
+		textfield3_props.value = /*$github*/ ctx[9].repo;
 	}
 
 	textfield3 = new Textfield({ props: textfield3_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield3, "value", textfield3_value_binding));
 
 	function customselect_picked_binding(value) {
-		/*customselect_picked_binding*/ ctx[25].call(null, value);
+		/*customselect_picked_binding*/ ctx[23].call(null, value);
 	}
 
 	let customselect_props = {
@@ -61962,8 +61981,8 @@ function create_fragment$1n(ctx) {
 		options: ["master", "developer"]
 	};
 
-	if (/*$github*/ ctx[11].branch !== void 0) {
-		customselect_props.picked = /*$github*/ ctx[11].branch;
+	if (/*$github*/ ctx[9].branch !== void 0) {
+		customselect_props.picked = /*$github*/ ctx[9].branch;
 	}
 
 	customselect = new CustomSelect({
@@ -61974,7 +61993,7 @@ function create_fragment$1n(ctx) {
 	binding_callbacks.push(() => bind(customselect, "picked", customselect_picked_binding));
 
 	function textfield4_value_binding(value) {
-		/*textfield4_value_binding*/ ctx[27].call(null, value);
+		/*textfield4_value_binding*/ ctx[25].call(null, value);
 	}
 
 	let textfield4_props = {
@@ -61982,30 +62001,22 @@ function create_fragment$1n(ctx) {
 		label: "Github username"
 	};
 
-	if (/*$backupName*/ ctx[12] !== void 0) {
-		textfield4_props.value = /*$backupName*/ ctx[12];
+	if (/*$backupName*/ ctx[10] !== void 0) {
+		textfield4_props.value = /*$backupName*/ ctx[10];
 	}
 
 	textfield4 = new Textfield({ props: textfield4_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield4, "value", textfield4_value_binding));
 
 	function terminal_commandToRun_binding(value) {
-		/*terminal_commandToRun_binding*/ ctx[28].call(null, value);
+		/*terminal_commandToRun_binding*/ ctx[26].call(null, value);
 	}
 
 	function terminal_commandArgsToRun_binding(value) {
-		/*terminal_commandArgsToRun_binding*/ ctx[29].call(null, value);
+		/*terminal_commandArgsToRun_binding*/ ctx[27].call(null, value);
 	}
 
-	function terminal_commandResults_binding(value) {
-		/*terminal_commandResults_binding*/ ctx[30].call(null, value);
-	}
-
-	function terminal_teminalFontSize_binding(value) {
-		/*terminal_teminalFontSize_binding*/ ctx[31].call(null, value);
-	}
-
-	let terminal_props = {};
+	let terminal_props = { id: "Terminal-settings" };
 
 	if (/*commandToRun*/ ctx[3] !== void 0) {
 		terminal_props.commandToRun = /*commandToRun*/ ctx[3];
@@ -62015,19 +62026,9 @@ function create_fragment$1n(ctx) {
 		terminal_props.commandArgsToRun = /*commandArgsToRun*/ ctx[4];
 	}
 
-	if (/*commandResults*/ ctx[5] !== void 0) {
-		terminal_props.commandResults = /*commandResults*/ ctx[5];
-	}
-
-	if (/*teminalFontSize*/ ctx[6] !== void 0) {
-		terminal_props.teminalFontSize = /*teminalFontSize*/ ctx[6];
-	}
-
 	terminal = new Terminal({ props: terminal_props, $$inline: true });
 	binding_callbacks.push(() => bind(terminal, "commandToRun", terminal_commandToRun_binding));
 	binding_callbacks.push(() => bind(terminal, "commandArgsToRun", terminal_commandArgsToRun_binding));
-	binding_callbacks.push(() => bind(terminal, "commandResults", terminal_commandResults_binding));
-	binding_callbacks.push(() => bind(terminal, "teminalFontSize", terminal_teminalFontSize_binding));
 
 	const block = {
 		c: function create() {
@@ -62060,7 +62061,7 @@ function create_fragment$1n(ctx) {
 			h10.textContent = "Configuration";
 			t12 = space();
 			div6 = element("div");
-			t13 = text(/*$pyVersion*/ ctx[7]);
+			t13 = text(/*$pyVersion*/ ctx[5]);
 			t14 = space();
 			create_component(textfield0.$$.fragment);
 			t15 = space();
@@ -62116,76 +62117,76 @@ function create_fragment$1n(ctx) {
 			h13.textContent = "About";
 			attr_dev(div0, "class", "title nav hvr-glow svelte-12wp2wy");
 			toggle_class(div0, "clicked", /*selected*/ ctx[0] === "Configuration");
-			add_location(div0, file$1g, 150, 16, 4386);
+			add_location(div0, file$1g, 148, 16, 4192);
 			attr_dev(div1, "class", "title nav hvr-glow svelte-12wp2wy");
 			toggle_class(div1, "clicked", /*selected*/ ctx[0] === "Update");
-			add_location(div1, file$1g, 151, 16, 4518);
+			add_location(div1, file$1g, 149, 16, 4324);
 			attr_dev(div2, "class", "title nav hvr-glow svelte-12wp2wy");
 			toggle_class(div2, "clicked", /*selected*/ ctx[0] === "Terminal");
-			add_location(div2, file$1g, 152, 16, 4636);
+			add_location(div2, file$1g, 150, 16, 4442);
 			attr_dev(div3, "class", "title nav hvr-glow svelte-12wp2wy");
 			toggle_class(div3, "clicked", /*selected*/ ctx[0] === "About");
-			add_location(div3, file$1g, 153, 16, 4758);
+			add_location(div3, file$1g, 151, 16, 4564);
 			attr_dev(div4, "class", "container left svelte-12wp2wy");
-			add_location(div4, file$1g, 149, 12, 4340);
+			add_location(div4, file$1g, 147, 12, 4146);
 			attr_dev(div5, "class", "column side-panel is-2-widescreen is-3-desktop is-4-tablet box adjust-right svelte-12wp2wy");
-			add_location(div5, file$1g, 148, 8, 4237);
+			add_location(div5, file$1g, 146, 8, 4043);
 			attr_dev(h10, "class", "title svelte-12wp2wy");
-			add_location(h10, file$1g, 161, 20, 5102);
+			add_location(h10, file$1g, 159, 20, 4908);
 			attr_dev(div6, "class", "subtitle svelte-12wp2wy");
-			add_location(div6, file$1g, 162, 20, 5160);
+			add_location(div6, file$1g, 160, 20, 4966);
 			attr_dev(button0, "class", "button is-link svelte-12wp2wy");
-			add_location(button0, file$1g, 165, 20, 5445);
+			add_location(button0, file$1g, 163, 20, 5251);
 			attr_dev(button1, "class", "button is-link svelte-12wp2wy");
-			add_location(button1, file$1g, 166, 20, 5537);
+			add_location(button1, file$1g, 164, 20, 5343);
 			attr_dev(div7, "class", "content animated fadeIn svelte-12wp2wy");
 			toggle_class(div7, "hide", /*selected*/ ctx[0] !== "Configuration");
-			add_location(div7, file$1g, 160, 16, 5003);
+			add_location(div7, file$1g, 158, 16, 4809);
 			attr_dev(h11, "class", "title svelte-12wp2wy");
-			add_location(h11, file$1g, 170, 20, 5743);
+			add_location(h11, file$1g, 168, 20, 5549);
 			attr_dev(div8, "class", "subtitle svelte-12wp2wy");
-			add_location(div8, file$1g, 172, 20, 5796);
+			add_location(div8, file$1g, 170, 20, 5602);
 			attr_dev(div9, "class", "content svelte-12wp2wy");
-			add_location(div9, file$1g, 173, 20, 5885);
+			add_location(div9, file$1g, 171, 20, 5691);
 			attr_dev(button2, "class", "button is-link svelte-12wp2wy");
 			attr_dev(button2, "id", "updateCheckBtn");
-			add_location(button2, file$1g, 180, 24, 6383);
+			add_location(button2, file$1g, 178, 24, 6189);
 			attr_dev(button3, "class", "button is-link svelte-12wp2wy");
 			attr_dev(button3, "id", "updateBtn");
-			add_location(button3, file$1g, 181, 24, 6506);
+			add_location(button3, file$1g, 179, 24, 6312);
 			attr_dev(button4, "class", "button is-warning svelte-12wp2wy");
-			add_location(button4, file$1g, 183, 24, 6637);
+			add_location(button4, file$1g, 181, 24, 6443);
 			attr_dev(div10, "class", "content svelte-12wp2wy");
-			add_location(div10, file$1g, 179, 20, 6336);
+			add_location(div10, file$1g, 177, 20, 6142);
 			attr_dev(button5, "class", "button is-link svelte-12wp2wy");
-			add_location(button5, file$1g, 189, 24, 6959);
+			add_location(button5, file$1g, 187, 24, 6765);
 			attr_dev(button6, "class", "button is-link svelte-12wp2wy");
-			add_location(button6, file$1g, 190, 24, 7049);
+			add_location(button6, file$1g, 188, 24, 6855);
 			attr_dev(div11, "class", "content svelte-12wp2wy");
-			add_location(div11, file$1g, 187, 20, 6787);
+			add_location(div11, file$1g, 185, 20, 6593);
 			attr_dev(div12, "class", "content animated fadeIn svelte-12wp2wy");
 			toggle_class(div12, "hide", /*selected*/ ctx[0] !== "Update");
-			add_location(div12, file$1g, 169, 16, 5651);
+			add_location(div12, file$1g, 167, 16, 5457);
 			attr_dev(h12, "class", "title svelte-12wp2wy");
-			add_location(h12, file$1g, 196, 20, 7303);
+			add_location(h12, file$1g, 194, 20, 7109);
 			attr_dev(div13, "class", "content animated fadeIn svelte-12wp2wy");
 			toggle_class(div13, "hide", /*selected*/ ctx[0] !== "Terminal");
-			add_location(div13, file$1g, 195, 16, 7209);
+			add_location(div13, file$1g, 193, 16, 7015);
 			attr_dev(h13, "class", "title svelte-12wp2wy");
-			add_location(h13, file$1g, 201, 20, 7599);
+			add_location(h13, file$1g, 199, 20, 7387);
 			attr_dev(div14, "class", "content animated fadeIn svelte-12wp2wy");
 			toggle_class(div14, "hide", /*selected*/ ctx[0] !== "About");
-			add_location(div14, file$1g, 200, 16, 7508);
+			add_location(div14, file$1g, 198, 16, 7296);
 			attr_dev(div15, "class", "container right svelte-12wp2wy");
-			add_location(div15, file$1g, 158, 12, 4953);
+			add_location(div15, file$1g, 156, 12, 4759);
 			attr_dev(div16, "class", "column main-panel box svelte-12wp2wy");
-			add_location(div16, file$1g, 157, 8, 4904);
+			add_location(div16, file$1g, 155, 8, 4710);
 			attr_dev(div17, "class", "columns svelte-12wp2wy");
-			add_location(div17, file$1g, 147, 4, 4206);
+			add_location(div17, file$1g, 145, 4, 4012);
 			attr_dev(section, "class", "section animated fadeIn svelte-12wp2wy");
 			attr_dev(section, "id", "Settings");
 			set_style(section, "display", "none");
-			add_location(section, file$1g, 145, 0, 4122);
+			add_location(section, file$1g, 143, 0, 3928);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -62262,26 +62263,26 @@ function create_fragment$1n(ctx) {
 
 			if (!mounted) {
 				dispose = [
-					listen_dev(div0, "click", /*navigate*/ ctx[15], false, false, false),
-					listen_dev(div1, "click", /*navigate*/ ctx[15], false, false, false),
-					listen_dev(div2, "click", /*navigate*/ ctx[15], false, false, false),
-					listen_dev(div3, "click", /*navigate*/ ctx[15], false, false, false),
+					listen_dev(div0, "click", /*navigate*/ ctx[13], false, false, false),
+					listen_dev(div1, "click", /*navigate*/ ctx[13], false, false, false),
+					listen_dev(div2, "click", /*navigate*/ ctx[13], false, false, false),
+					listen_dev(div3, "click", /*navigate*/ ctx[13], false, false, false),
 					listen_dev(button0, "click", resetPyConfig, false, false, false),
 					listen_dev(button1, "click", updatePyConfig, false, false, false),
 					listen_dev(button2, "click", updateCheck, false, false, false),
-					listen_dev(button3, "click", /*update*/ ctx[17], false, false, false),
-					listen_dev(button4, "click", /*click_handler*/ ctx[26], false, false, false),
-					listen_dev(button5, "click", /*backup*/ ctx[13], false, false, false),
-					listen_dev(button6, "click", /*restore*/ ctx[14], false, false, false)
+					listen_dev(button3, "click", /*update*/ ctx[15], false, false, false),
+					listen_dev(button4, "click", /*click_handler*/ ctx[24], false, false, false),
+					listen_dev(button5, "click", /*backup*/ ctx[11], false, false, false),
+					listen_dev(button6, "click", /*restore*/ ctx[12], false, false, false)
 				];
 
 				mounted = true;
 			}
 		},
-		p: function update(ctx, dirty) {
+		p: function update(ctx, [dirty]) {
 			const premodal_changes = {};
 
-			if (!updating_preModal && dirty[0] & /*preModal*/ 4) {
+			if (!updating_preModal && dirty & /*preModal*/ 4) {
 				updating_preModal = true;
 				premodal_changes.preModal = /*preModal*/ ctx[2];
 				add_flush_callback(() => updating_preModal = false);
@@ -62290,7 +62291,7 @@ function create_fragment$1n(ctx) {
 			premodal.$set(premodal_changes);
 			const customdialog_changes = {};
 
-			if (!updating_dialog && dirty[0] & /*pythonpathCheck*/ 2) {
+			if (!updating_dialog && dirty & /*pythonpathCheck*/ 2) {
 				updating_dialog = true;
 				customdialog_changes.dialog = /*pythonpathCheck*/ ctx[1];
 				add_flush_callback(() => updating_dialog = false);
@@ -62299,128 +62300,116 @@ function create_fragment$1n(ctx) {
 			customdialog.$set(customdialog_changes);
 			const changelog_changes = {};
 
-			if (!updating_active && dirty[0] & /*$activateChangelog*/ 256) {
+			if (!updating_active && dirty & /*$activateChangelog*/ 64) {
 				updating_active = true;
-				changelog_changes.active = /*$activateChangelog*/ ctx[8];
+				changelog_changes.active = /*$activateChangelog*/ ctx[6];
 				add_flush_callback(() => updating_active = false);
 			}
 
 			changelog.$set(changelog_changes);
 
-			if (dirty[0] & /*selected*/ 1) {
+			if (dirty & /*selected*/ 1) {
 				toggle_class(div0, "clicked", /*selected*/ ctx[0] === "Configuration");
 			}
 
-			if (dirty[0] & /*selected*/ 1) {
+			if (dirty & /*selected*/ 1) {
 				toggle_class(div1, "clicked", /*selected*/ ctx[0] === "Update");
 			}
 
-			if (dirty[0] & /*selected*/ 1) {
+			if (dirty & /*selected*/ 1) {
 				toggle_class(div2, "clicked", /*selected*/ ctx[0] === "Terminal");
 			}
 
-			if (dirty[0] & /*selected*/ 1) {
+			if (dirty & /*selected*/ 1) {
 				toggle_class(div3, "clicked", /*selected*/ ctx[0] === "About");
 			}
 
-			if (!current || dirty[0] & /*$pyVersion*/ 128) set_data_dev(t13, /*$pyVersion*/ ctx[7]);
+			if (!current || dirty & /*$pyVersion*/ 32) set_data_dev(t13, /*$pyVersion*/ ctx[5]);
 			const textfield0_changes = {};
 
-			if (!updating_value && dirty[0] & /*$pythonpath*/ 512) {
+			if (!updating_value && dirty & /*$pythonpath*/ 128) {
 				updating_value = true;
-				textfield0_changes.value = /*$pythonpath*/ ctx[9];
+				textfield0_changes.value = /*$pythonpath*/ ctx[7];
 				add_flush_callback(() => updating_value = false);
 			}
 
 			textfield0.$set(textfield0_changes);
 			const textfield1_changes = {};
 
-			if (!updating_value_1 && dirty[0] & /*$pythonscript*/ 1024) {
+			if (!updating_value_1 && dirty & /*$pythonscript*/ 256) {
 				updating_value_1 = true;
-				textfield1_changes.value = /*$pythonscript*/ ctx[10];
+				textfield1_changes.value = /*$pythonscript*/ ctx[8];
 				add_flush_callback(() => updating_value_1 = false);
 			}
 
 			textfield1.$set(textfield1_changes);
 
-			if (dirty[0] & /*selected*/ 1) {
+			if (dirty & /*selected*/ 1) {
 				toggle_class(div7, "hide", /*selected*/ ctx[0] !== "Configuration");
 			}
 
 			const textfield2_changes = {};
 
-			if (!updating_value_2 && dirty[0] & /*$github*/ 2048) {
+			if (!updating_value_2 && dirty & /*$github*/ 512) {
 				updating_value_2 = true;
-				textfield2_changes.value = /*$github*/ ctx[11].username;
+				textfield2_changes.value = /*$github*/ ctx[9].username;
 				add_flush_callback(() => updating_value_2 = false);
 			}
 
 			textfield2.$set(textfield2_changes);
 			const textfield3_changes = {};
 
-			if (!updating_value_3 && dirty[0] & /*$github*/ 2048) {
+			if (!updating_value_3 && dirty & /*$github*/ 512) {
 				updating_value_3 = true;
-				textfield3_changes.value = /*$github*/ ctx[11].repo;
+				textfield3_changes.value = /*$github*/ ctx[9].repo;
 				add_flush_callback(() => updating_value_3 = false);
 			}
 
 			textfield3.$set(textfield3_changes);
 			const customselect_changes = {};
 
-			if (!updating_picked && dirty[0] & /*$github*/ 2048) {
+			if (!updating_picked && dirty & /*$github*/ 512) {
 				updating_picked = true;
-				customselect_changes.picked = /*$github*/ ctx[11].branch;
+				customselect_changes.picked = /*$github*/ ctx[9].branch;
 				add_flush_callback(() => updating_picked = false);
 			}
 
 			customselect.$set(customselect_changes);
 			const textfield4_changes = {};
 
-			if (!updating_value_4 && dirty[0] & /*$backupName*/ 4096) {
+			if (!updating_value_4 && dirty & /*$backupName*/ 1024) {
 				updating_value_4 = true;
-				textfield4_changes.value = /*$backupName*/ ctx[12];
+				textfield4_changes.value = /*$backupName*/ ctx[10];
 				add_flush_callback(() => updating_value_4 = false);
 			}
 
 			textfield4.$set(textfield4_changes);
 
-			if (dirty[0] & /*selected*/ 1) {
+			if (dirty & /*selected*/ 1) {
 				toggle_class(div12, "hide", /*selected*/ ctx[0] !== "Update");
 			}
 
 			const terminal_changes = {};
 
-			if (!updating_commandToRun && dirty[0] & /*commandToRun*/ 8) {
+			if (!updating_commandToRun && dirty & /*commandToRun*/ 8) {
 				updating_commandToRun = true;
 				terminal_changes.commandToRun = /*commandToRun*/ ctx[3];
 				add_flush_callback(() => updating_commandToRun = false);
 			}
 
-			if (!updating_commandArgsToRun && dirty[0] & /*commandArgsToRun*/ 16) {
+			if (!updating_commandArgsToRun && dirty & /*commandArgsToRun*/ 16) {
 				updating_commandArgsToRun = true;
 				terminal_changes.commandArgsToRun = /*commandArgsToRun*/ ctx[4];
 				add_flush_callback(() => updating_commandArgsToRun = false);
 			}
 
-			if (!updating_commandResults && dirty[0] & /*commandResults*/ 32) {
-				updating_commandResults = true;
-				terminal_changes.commandResults = /*commandResults*/ ctx[5];
-				add_flush_callback(() => updating_commandResults = false);
-			}
-
-			if (!updating_teminalFontSize && dirty[0] & /*teminalFontSize*/ 64) {
-				updating_teminalFontSize = true;
-				terminal_changes.teminalFontSize = /*teminalFontSize*/ ctx[6];
-				add_flush_callback(() => updating_teminalFontSize = false);
-			}
-
 			terminal.$set(terminal_changes);
 
-			if (dirty[0] & /*selected*/ 1) {
+			if (dirty & /*selected*/ 1) {
 				toggle_class(div13, "hide", /*selected*/ ctx[0] !== "Terminal");
 			}
 
-			if (dirty[0] & /*selected*/ 1) {
+			if (dirty & /*selected*/ 1) {
 				toggle_class(div14, "hide", /*selected*/ ctx[0] !== "About");
 			}
 		},
@@ -62490,17 +62479,17 @@ function instance$1n($$self, $$props, $$invalidate) {
 	let $github;
 	let $backupName;
 	validate_store(pyVersion, "pyVersion");
-	component_subscribe($$self, pyVersion, $$value => $$invalidate(7, $pyVersion = $$value));
+	component_subscribe($$self, pyVersion, $$value => $$invalidate(5, $pyVersion = $$value));
 	validate_store(activateChangelog, "activateChangelog");
-	component_subscribe($$self, activateChangelog, $$value => $$invalidate(8, $activateChangelog = $$value));
+	component_subscribe($$self, activateChangelog, $$value => $$invalidate(6, $activateChangelog = $$value));
 	validate_store(pythonpath, "pythonpath");
-	component_subscribe($$self, pythonpath, $$value => $$invalidate(9, $pythonpath = $$value));
+	component_subscribe($$self, pythonpath, $$value => $$invalidate(7, $pythonpath = $$value));
 	validate_store(pythonscript, "pythonscript");
-	component_subscribe($$self, pythonscript, $$value => $$invalidate(10, $pythonscript = $$value));
+	component_subscribe($$self, pythonscript, $$value => $$invalidate(8, $pythonscript = $$value));
 	validate_store(github, "github");
-	component_subscribe($$self, github, $$value => $$invalidate(11, $github = $$value));
+	component_subscribe($$self, github, $$value => $$invalidate(9, $github = $$value));
 	validate_store(backupName, "backupName");
-	component_subscribe($$self, backupName, $$value => $$invalidate(12, $backupName = $$value));
+	component_subscribe($$self, backupName, $$value => $$invalidate(10, $backupName = $$value));
 
 	const backup = event => {
 		backupRestore({ event, method: "backup" }).then(() => console.log("Backup Completed")).catch(err => {
@@ -62570,20 +62559,7 @@ function instance$1n($$self, $$props, $$invalidate) {
 	};
 
 	let preModal = {};
-
-	const colorSets = {
-		warning: "#ffdd57",
-		danger: "#f14668",
-		info: "#2098d1",
-		normal: "#fafafa",
-		success: "#20f996"
-	};
-
-	let commandToRun = "",
-		commandArgsToRun = "",
-		commandResults = [{ color: colorSets.normal, results: ">> " }],
-		teminalFontSize = 20;
-
+	let commandToRun = "", commandArgsToRun = "";
 	const writable_props = [];
 
 	Object.keys($$props).forEach(key => {
@@ -62650,16 +62626,6 @@ function instance$1n($$self, $$props, $$invalidate) {
 		$$invalidate(4, commandArgsToRun);
 	}
 
-	function terminal_commandResults_binding(value) {
-		commandResults = value;
-		$$invalidate(5, commandResults);
-	}
-
-	function terminal_teminalFontSize_binding(value) {
-		teminalFontSize = value;
-		$$invalidate(6, teminalFontSize);
-	}
-
 	$$self.$capture_state = () => ({
 		pythonpath,
 		pythonscript,
@@ -62690,11 +62656,8 @@ function instance$1n($$self, $$props, $$invalidate) {
 		handlepythonPathCheck,
 		update,
 		preModal,
-		colorSets,
 		commandToRun,
 		commandArgsToRun,
-		commandResults,
-		teminalFontSize,
 		$pyVersion,
 		$activateChangelog,
 		$pythonpath,
@@ -62709,19 +62672,11 @@ function instance$1n($$self, $$props, $$invalidate) {
 		if ("preModal" in $$props) $$invalidate(2, preModal = $$props.preModal);
 		if ("commandToRun" in $$props) $$invalidate(3, commandToRun = $$props.commandToRun);
 		if ("commandArgsToRun" in $$props) $$invalidate(4, commandArgsToRun = $$props.commandArgsToRun);
-		if ("commandResults" in $$props) $$invalidate(5, commandResults = $$props.commandResults);
-		if ("teminalFontSize" in $$props) $$invalidate(6, teminalFontSize = $$props.teminalFontSize);
 	};
 
 	if ($$props && "$$inject" in $$props) {
 		$$self.$inject_state($$props.$$inject);
 	}
-
-	$$self.$$.update = () => {
-		if ($$self.$$.dirty[0] & /*commandResults*/ 32) {
-			 console.log(commandResults);
-		}
-	};
 
 	return [
 		selected,
@@ -62729,8 +62684,6 @@ function instance$1n($$self, $$props, $$invalidate) {
 		preModal,
 		commandToRun,
 		commandArgsToRun,
-		commandResults,
-		teminalFontSize,
 		$pyVersion,
 		$activateChangelog,
 		$pythonpath,
@@ -62753,16 +62706,14 @@ function instance$1n($$self, $$props, $$invalidate) {
 		click_handler,
 		textfield4_value_binding,
 		terminal_commandToRun_binding,
-		terminal_commandArgsToRun_binding,
-		terminal_commandResults_binding,
-		terminal_teminalFontSize_binding
+		terminal_commandArgsToRun_binding
 	];
 }
 
 class Settings extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$1n, create_fragment$1n, safe_not_equal, {}, [-1, -1]);
+		init(this, options, instance$1n, create_fragment$1n, safe_not_equal, {});
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
