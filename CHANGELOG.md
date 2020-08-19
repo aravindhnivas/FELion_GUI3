@@ -4,7 +4,7 @@
 
 ## Unreleased
 - Individual page components are subdivided into smaller components for easier mangement and debugging.
-- Included Terminal component in Misc for installing python dependencies and debugging.
+- Included Terminal component in Setings for installing python dependencies and debugging.
 
 - Included FELIX plotting in matplotlib to produce quality plots for exporting.
 

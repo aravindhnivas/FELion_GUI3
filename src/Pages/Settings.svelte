@@ -4,7 +4,7 @@
     import {pythonpath, pythonscript, pyVersion, github, backupName, activateChangelog} from "./settings/svelteWritables";
     import Textfield from '@smui/textfield';
     import {onMount} from "svelte";
-
+    import { fade } from 'svelte/transition';
     import CustomDialog from "../components/CustomDialog.svelte"
     import CustomSelect from '../components/CustomSelect.svelte';
     import PreModal from "../components/PreModal.svelte";
@@ -19,7 +19,7 @@
 
     import {backupRestore} from "./settings/backupAndRestore";
     import {tick} from "svelte";
-
+    import Terminal from '../components/Terminal.svelte';
 ///////////////////////////////////////////////////////
 
     const backup = (event) => {
@@ -32,28 +32,30 @@
         backupRestore({event, method:"restore"})
         .then(()=>console.log("Restore Completed"))
         .catch((err)=>{preModal.modalContent = err; preModal.open = true})
+
     }
 
-    let selected = "Configuration"
+    let selected = "Update"
     
     const navigate = (e) => {selected = e.target.innerHTML}
 
     let pythonpathCheck;
 
+    
     onMount(()=>{
     
-    setTimeout(async ()=>{
+        setTimeout(async ()=>{
+            await tick()
 
-        await tick()
-        checkPython()
+            checkPython()
+                .then(res=>{ $pyVersion = res; console.log("Python path is valid")})
+                .catch(()=>pythonpathCheck.open() )
 
-            .then(res=>{ $pyVersion = res; console.log("Python path is valid")})
-            .catch(()=>pythonpathCheck.open() )}
-        , 1000)
+            } , 1000)
 
         updateCheck({info:false})
-        
         setInterval(()=>{updateCheck({info:false})}, 1*1000*60*15)
+
     })
 
     const handlepythonPathCheck = () => { console.log("Python path checking done") }
@@ -61,8 +63,8 @@
     const update = async () => {
 
         try {
-
             const updateFolder = path.resolve(__dirname, "..", "update")
+
             let target = document.getElementById("updateBtn")
             
             target.classList.toggle("is-loading")
@@ -70,13 +72,18 @@
             if (!fs.existsSync(updateFolder)) {fs.mkdirSync(updateFolder)}
             
             await download(updateFolder)
-            
             InstallUpdate(target, updateFolder)
+
         } catch (err) {preModal.modalContent = err.stack; preModal.open = true}
         
     }
 
     let preModal = {};
+
+    const colorSets = {warning: "#ffdd57", danger:"#f14668", info:"#2098d1", normal:"#fafafa", success:"#20f996"}
+    let commandToRun = "", commandArgsToRun = "", commandResults = [{color:colorSets.normal, results:">> "}], teminalFontSize=20;
+
+    $: console.log(commandResults)
 
 </script>
 
@@ -89,20 +96,31 @@
     .main-panel {margin: 0 5em;}
 
     .left .title { 
-        letter-spacing: 0.1em; text-transform: uppercase; padding: 0.5em;
-        font-size: larger; cursor: pointer; margin-bottom: 1em; border-radius: 20px;
+        letter-spacing: 0.1em; text-transform: uppercase; padding: 0.5em; text-align: center;
+        font-size: larger; cursor: pointer; margin-bottom: 1em; border-radius: 20px; 
     }
     
     .clicked {border-left: 2px solid #fafafa; border: solid 1px;}
     
-    .right > div {display: none;}
-    
-    .active {display: block!important; }
-    .right .title {letter-spacing: 0.1em; text-transform: uppercase;}
-    
     * :global(option) { color: black; }
     .container {padding: 2em; display: grid;}
     .container .left {place-content: center;}
+    // .active {display: ""!important; }
+
+    .hide {display: none!important;}
+
+    .right.title {
+
+        letter-spacing: 0.1em; 
+        
+        text-transform: uppercase;
+        
+        border-bottom: solid;
+        margin-bottom: 2em;
+        padding-bottom: 0.2em;
+        
+        width: fit-content;
+    }
 
 </style>
 
@@ -118,15 +136,15 @@
             <div class="container left">
                 <div class="title nav hvr-glow" class:clicked={selected==="Configuration"} on:click={navigate}>Configuration</div>
                 <div class="title nav hvr-glow" class:clicked={selected==="Update"} on:click={navigate}>Update</div>
+                <div class="title nav hvr-glow" class:clicked={selected==="Terminal"} on:click={navigate}>Terminal</div>
                 <div class="title nav hvr-glow" class:clicked={selected==="About"} on:click={navigate}>About</div>
             </div>
         </div>
 
         <div class="column main-panel box">
-            <div class="container right">
+            <div class="container right" >
 
-                <!-- Configuration -->
-                <div class="content animated fadeIn" class:active={selected==="Configuration"}>
+                <div class="content animated fadeIn" class:hide={selected!=="Configuration"}>
                     <h1 class="title">Configuration</h1>
                     <div class="subtitle">{$pyVersion}</div>
                     <Textfield style="margin-bottom:1em;" bind:value={$pythonpath} label="Python path" />
@@ -135,8 +153,7 @@
                     <button class="button is-link" on:click={updatePyConfig}>Save</button>
                 </div>
 
-                <!-- Update -->
-                <div class="content animated fadeIn" class:active={selected==="Update"}>
+                <div class="content animated fadeIn" class:hide={selected!=="Update"}>
                     <h1 class="title">Update</h1>
 
                     <div class="subtitle">Current Version {window.currentVersion}</div>
@@ -162,13 +179,18 @@
                     
                 </div>
 
-                <!-- About -->
+                <div class="content animated fadeIn" class:hide={selected!=="Terminal"}>
+                    <h1 class="title">Terminal</h1>
+                    <Terminal bind:commandToRun bind:commandArgsToRun bind:commandResults bind:teminalFontSize/>
+                </div>
                 
-                <div class="content animated fadeIn" class:active={selected==="About"}>
+                <div class="content animated fadeIn" class:hide={selected!=="About"}>
                     <h1 class="title">About</h1>
                 </div>
                 
             </div>
         </div>
+
     </div>
+    
 </section>

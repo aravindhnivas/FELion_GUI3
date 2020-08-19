@@ -4,7 +4,6 @@
     import IconButton from '@smui/icon-button';
     import PreModal from "./PreModal.svelte";
     import {tick} from "svelte";
-
     import Textfield from '@smui/textfield';
 
     import CustomSwitch from './CustomSwitch.svelte';

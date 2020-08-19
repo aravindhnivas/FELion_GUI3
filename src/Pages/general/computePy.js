@@ -20,70 +20,73 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
 
     return new Promise((resolve, reject) => {
 
+        let target = e.target
+        target.classList.toggle("is-loading")
 
-        checkPython().then(res => {
-            console.log(res)
-            if (general) {
-                console.log("Sending general arguments: ", args)
 
-                window.createToast("Process Started")
+        checkPython()
+            .then(res => {
+                console.log(res)
 
-                let py = spawn(
+                if (general) {
+                    console.log("Sending general arguments: ", args)
 
-                    localStorage["pythonpath"], [path.join(localStorage["pythonscript"], pyfile), args], { detached: true, stdio: 'pipe', shell: openShell }
+                    window.createToast("Process Started")
 
-                )
+                    let py = spawn(
 
-                py.on("close", () => { console.log("Closed") })
+                        localStorage["pythonpath"], [path.join(localStorage["pythonscript"], pyfile), args], { detached: true, stdio: 'pipe', shell: openShell }
 
-                py.stderr.on("data", (err) => { console.log(`Error Occured: ${err.toString()}`); reject(err.toString()) })
+                    )
 
-                py.stdout.on("data", (data) => { console.log(`Output from python: ${data.toString()}`) })
-                py.unref()
-                py.ref()
-            } else {
+                    py.on("close", () => { console.log("Closed") })
 
-                let py = null;
+                    py.stderr.on("data", (err) => { console.log(`Error Occured: ${err.toString()}`); reject(err.toString()) })
 
-                try { py = spawn(localStorage["pythonpath"], [path.resolve(localStorage["pythonscript"], pyfile), args]) }
-                catch (err) { reject("Error accessing python. Set python location properly in Settings\n" + err) }
+                    py.stdout.on("data", (data) => { console.log(`Output from python: ${data.toString()}`) })
+                    py.unref()
+                    py.ref()
+                } else {
 
-                let target = e.target
-                target.classList.toggle("is-loading")
+                    let py = null;
 
-                window.createToast("Process Started")
+                    try { py = spawn(localStorage["pythonpath"], [path.resolve(localStorage["pythonscript"], pyfile), args]) }
+                    catch (err) { reject("Error accessing python. Set python location properly in Settings\n" + err) }
 
-                py.stdout.on("data", data => {
+                    window.createToast("Process Started")
+                    py.stdout.on("data", data => {
 
-                    console.log("Ouput from python")
+                        console.log("Ouput from python")
+                        let dataReceived = data.toString("utf8")
+                        console.log(dataReceived)
 
-                    let dataReceived = data.toString("utf8")
-                    console.log(dataReceived)
-                })
+                    })
 
-                let error_occured_py = false;
-                py.stderr.on("data", err => {
-                    reject(err)
-                    error_occured_py = true
-                });
+                    let error_occured_py = false;
+                    py.stderr.on("data", err => {
 
-                py.on("close", () => {
-                    if (!error_occured_py) {
-                        let dataFromPython = fs.readFileSync(path.join(localStorage["pythonscript"], "data.json"))
+                        reject(err)
+                        error_occured_py = true
+                    });
 
-                        window.dataFromPython = dataFromPython = JSON.parse(dataFromPython.toString("utf-8"))
-                        console.log(dataFromPython)
+                    py.on("close", () => {
+                        if (!error_occured_py) {
+                            let dataFromPython = fs.readFileSync(path.join(localStorage["pythonscript"], "data.json"))
+                            window.dataFromPython = dataFromPython = JSON.parse(dataFromPython.toString("utf-8"))
 
-                        resolve(dataFromPython)
-                    }
-                    console.log("Process closed")
+                            console.log(dataFromPython)
 
-                    target.classList.toggle("is-loading")
+                            resolve(dataFromPython)
 
-                })
-            }
-        }).catch(err => { console.log(err) })
+                        }
 
+                        console.log("Process closed")
+                    })
+
+                }
+
+            }).catch(err => { console.log(err.stack) })
+            .finally(() => { target.classList.toggle("is-loading") })
     })
 
 }
