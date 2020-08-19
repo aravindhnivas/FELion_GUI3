@@ -162,8 +162,8 @@
                     
                 </div>
 
-
                 <!-- About -->
+                
                 <div class="content animated fadeIn" class:active={selected==="About"}>
                     <h1 class="title">About</h1>
                 </div>
@@ -171,5 +171,4 @@
             </div>
         </div>
     </div>
-    
 </section>

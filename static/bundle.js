@@ -61297,10 +61297,10 @@ function create_fragment$1m(ctx) {
 			toggle_class(div11, "active", /*selected*/ ctx[0] === "Update");
 			add_location(div11, file$1f, 161, 16, 5133);
 			attr_dev(h12, "class", "title svelte-kvtvxd");
-			add_location(h12, file$1f, 190, 20, 6820);
+			add_location(h12, file$1f, 190, 20, 6836);
 			attr_dev(div12, "class", "content animated fadeIn svelte-kvtvxd");
 			toggle_class(div12, "active", /*selected*/ ctx[0] === "About");
-			add_location(div12, file$1f, 189, 16, 6727);
+			add_location(div12, file$1f, 189, 16, 6743);
 			attr_dev(div13, "class", "container right svelte-kvtvxd");
 			add_location(div13, file$1f, 148, 12, 4361);
 			attr_dev(div14, "class", "column main-panel box svelte-kvtvxd");
