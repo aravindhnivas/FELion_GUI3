@@ -1,5 +1,5 @@
 
-import { pythonpath, get } from "../settings/svelteWritables";
+import { pythonpath, pythonscript, get } from "../settings/svelteWritables";
 const { exec } = require("child_process")
 window.checkPython = function checkPython({ defaultPy } = {}) {
 
@@ -17,40 +17,38 @@ window.checkPython = function checkPython({ defaultPy } = {}) {
 
 window.computePy_func = function computePy_func({ e = null, pyfile = "", args = "", general = false, openShell = false } = {}) {
 
-
     return new Promise((resolve, reject) => {
 
         let target = e.target
         target.classList.toggle("is-loading")
 
-
         checkPython()
-            .then(res => {
-                console.log(res)
 
+            .then(res => {
+
+                console.log(res)
                 if (general) {
                     console.log("Sending general arguments: ", args)
-
                     window.createToast("Process Started")
-
                     let py = spawn(
-
-                        localStorage["pythonpath"], [path.join(localStorage["pythonscript"], pyfile), args], { detached: true, stdio: 'pipe', shell: openShell }
+                        get(pythonpath), [path.join(get(pythonscript), pyfile), args], { detached: true, stdio: 'pipe', shell: openShell }
 
                     )
 
+                    target.classList.toggle("is-loading")
+
                     py.on("close", () => { console.log("Closed") })
-
                     py.stderr.on("data", (err) => { console.log(`Error Occured: ${err.toString()}`); reject(err.toString()) })
-
                     py.stdout.on("data", (data) => { console.log(`Output from python: ${data.toString()}`) })
+
+
                     py.unref()
+
                     py.ref()
                 } else {
 
                     let py = null;
-
-                    try { py = spawn(localStorage["pythonpath"], [path.resolve(localStorage["pythonscript"], pyfile), args]) }
+                    try { py = spawn(get(pythonpath), [path.resolve(get(pythonscript), pyfile), args]) }
                     catch (err) { reject("Error accessing python. Set python location properly in Settings\n" + err) }
 
                     window.createToast("Process Started")
@@ -59,34 +57,30 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                         console.log("Ouput from python")
                         let dataReceived = data.toString("utf8")
                         console.log(dataReceived)
-
                     })
 
                     let error_occured_py = false;
                     py.stderr.on("data", err => {
-
                         reject(err)
                         error_occured_py = true
                     });
 
                     py.on("close", () => {
                         if (!error_occured_py) {
-                            let dataFromPython = fs.readFileSync(path.join(localStorage["pythonscript"], "data.json"))
+                            let dataFromPython = fs.readFileSync(path.join(get(pythonscript), "data.json"))
                             window.dataFromPython = dataFromPython = JSON.parse(dataFromPython.toString("utf-8"))
-
                             console.log(dataFromPython)
-
                             resolve(dataFromPython)
-
+                            target.classList.toggle("is-loading")
                         }
 
                         console.log("Process closed")
+
                     })
 
                 }
 
-            }).catch(err => { console.log(err.stack) })
-            .finally(() => { target.classList.toggle("is-loading") })
+            }).catch(err => { console.error(err.stack); target.classList.toggle("is-loading") })
     })
 
 }

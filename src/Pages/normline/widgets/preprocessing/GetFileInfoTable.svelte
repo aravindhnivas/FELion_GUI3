@@ -11,7 +11,7 @@
     import {get_details_func} from '../../functions/get_details';
     export let felixfiles, normMethod;
 
-    let toggleFileDetailsTable = false
+    let toggleFileDetailsTable = false, preModal = {}
     
     function plotData({e=null}={}){
         

@@ -80,7 +80,7 @@
                 if ($opoMode) {if(opofiles.length<1) return window.createToast("No OPO files selected", "danger")}
                 else {if(felixfiles.length<1) return window.createToast("No FELIX files selected", "danger")}
                 pyfile="baseline.py", args= $opoMode ? opofiles: felixfiles
-                computePy_func({pyfile, args, general:true, openShell})
+                computePy_func({e, pyfile, args, general:true, openShell})
                 .catch(err=>{preModal.modalContent = err;  preModal.open = true})
                 break;
 
@@ -93,7 +93,7 @@
                 const selectedWidgets = felixPlotCheckboxes.map(n=>n.selected)
 
                 pyfile="felix_tkplot.py", args=[JSON.stringify({numberWidgets, textWidgets, booleanWidgets, selectedWidgets, location: $felixopoLocation, normMethod, theoryLocation})]
-                computePy_func({pyfile, args, general:true, openShell})
+                computePy_func({e, pyfile, args, general:true, openShell})
                 .catch(err=>{preModal.modalContent = err;  preModal.open = true})
 
 
