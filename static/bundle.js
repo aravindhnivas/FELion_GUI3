@@ -7490,77 +7490,39 @@ const get_header_slot_context = ctx => ({});
 
 // (136:36)                       
 function fallback_block_1(ctx) {
-	let svg;
-	let path0;
-	let g;
-	let path1;
-	let t0;
 	let h1;
-	let t2;
+	let t1;
 	let br;
-	let t3;
+	let t2;
 	let h2;
 
 	const block = {
 		c: function create() {
-			svg = svg_element("svg");
-			path0 = svg_element("path");
-			g = svg_element("g");
-			path1 = svg_element("path");
-			t0 = space();
 			h1 = element("h1");
 			h1.textContent = "FELion Spectrum Analyser";
-			t2 = space();
+			t1 = space();
 			br = element("br");
-			t3 = space();
+			t2 = space();
 			h2 = element("h2");
 			h2.textContent = "To analyse FELIX data for FELion Instrument";
-			attr_dev(path0, "fill", "#FFFFFF");
-			attr_dev(path0, "stroke", "#000000");
-			attr_dev(path0, "stroke-width", "10");
-			attr_dev(path0, "stroke-miterlimit", "10");
-			attr_dev(path0, "d", "M57,283");
-			add_location(path0, file$8, 137, 24, 3126);
-			attr_dev(path1, "fill", "#fff");
-			attr_dev(path1, "d", "M250.4,0.8C112.7,0.8,1,112.4,1,250.2c0,137.7,111.7,249.4,249.4,249.4c137.7,0,249.4-111.7,249.4-249.4 C499.8,112.4,388.1,0.8,250.4,0.8z M383.8,326.3c-62,0-101.4-14.1-117.6-46.3c-17.1-34.1-2.3-75.4,13.2-104.1 c-22.4,3-38.4,9.2-47.8,18.3c-11.2,10.9-13.6,26.7-16.3,45c-3.1,20.8-6.6,44.4-25.3,62.4c-19.8,19.1-51.6,26.9-100.2,24.6l1.8-39.7\t\tc35.9,1.6,59.7-2.9,70.8-13.6c8.9-8.6,11.1-22.9,13.5-39.6c6.3-42,14.8-99.4,141.4-99.4h41L333,166c-12.6,16-45.4,68.2-31.2,96.2\tc9.2,18.3,41.5,25.6,91.2,24.2l1.1,39.8C390.5,326.2,387.1,326.3,383.8,326.3z");
-			add_location(path1, file$8, 140, 28, 3292);
-			add_location(g, file$8, 139, 24, 3259);
-			attr_dev(svg, "version", "1.1");
-			attr_dev(svg, "class", "logo svelte-4gj90x");
-			attr_dev(svg, "baseProfile", "tiny");
-			attr_dev(svg, "id", "Layer_1");
-			attr_dev(svg, "xmlns", "http://www.w3.org/2000/svg");
-			attr_dev(svg, "xmlns:xlink", "http://www.w3.org/1999/xlink");
-			attr_dev(svg, "x", "0px");
-			attr_dev(svg, "y", "0px");
-			attr_dev(svg, "viewBox", "0 0 500 500");
-			attr_dev(svg, "xml:space", "preserve");
-			add_location(svg, file$8, 136, 20, 2899);
 			attr_dev(h1, "class", "svelte-4gj90x");
-			add_location(h1, file$8, 144, 20, 3934);
-			add_location(br, file$8, 145, 20, 3990);
+			add_location(h1, file$8, 144, 20, 3943);
+			add_location(br, file$8, 145, 20, 3999);
 			attr_dev(h2, "class", "svelte-4gj90x");
-			add_location(h2, file$8, 146, 20, 4016);
+			add_location(h2, file$8, 146, 20, 4025);
 		},
 		m: function mount(target, anchor) {
-			insert_dev(target, svg, anchor);
-			append_dev(svg, path0);
-			append_dev(svg, g);
-			append_dev(g, path1);
-			insert_dev(target, t0, anchor);
 			insert_dev(target, h1, anchor);
-			insert_dev(target, t2, anchor);
+			insert_dev(target, t1, anchor);
 			insert_dev(target, br, anchor);
-			insert_dev(target, t3, anchor);
+			insert_dev(target, t2, anchor);
 			insert_dev(target, h2, anchor);
 		},
 		d: function destroy(detaching) {
-			if (detaching) detach_dev(svg);
-			if (detaching) detach_dev(t0);
 			if (detaching) detach_dev(h1);
-			if (detaching) detach_dev(t2);
+			if (detaching) detach_dev(t1);
 			if (detaching) detach_dev(br);
-			if (detaching) detach_dev(t3);
+			if (detaching) detach_dev(t2);
 			if (detaching) detach_dev(h2);
 		}
 	};
@@ -7585,7 +7547,7 @@ function fallback_block(ctx) {
 			p = element("p");
 			p.textContent = "Developed at Dr.Brünken's group FELion@FELIX | 2020 © AN Marimuthu | MIT License";
 			attr_dev(p, "class", "svelte-4gj90x");
-			add_location(p, file$8, 176, 28, 5191);
+			add_location(p, file$8, 176, 28, 5200);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, p, anchor);
@@ -7657,47 +7619,47 @@ function create_fragment$8(ctx) {
 			add_location(div1, file$8, 130, 8, 2741);
 			attr_dev(path, "id", "gentle-wave");
 			attr_dev(path, "d", "M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z");
-			add_location(path, file$8, 157, 20, 4435);
-			add_location(defs, file$8, 155, 16, 4405);
+			add_location(path, file$8, 157, 20, 4444);
+			add_location(defs, file$8, 155, 16, 4414);
 			xlink_attr(use0, "xlink:href", "#gentle-wave");
 			attr_dev(use0, "x", "48");
 			attr_dev(use0, "y", "0");
 			attr_dev(use0, "fill", "rgba(255,255,255,0.7");
 			attr_dev(use0, "class", "svelte-4gj90x");
-			add_location(use0, file$8, 160, 20, 4622);
+			add_location(use0, file$8, 160, 20, 4631);
 			xlink_attr(use1, "xlink:href", "#gentle-wave");
 			attr_dev(use1, "x", "48");
 			attr_dev(use1, "y", "3");
 			attr_dev(use1, "fill", "rgba(255,255,255,0.5)");
 			attr_dev(use1, "class", "svelte-4gj90x");
-			add_location(use1, file$8, 161, 20, 4718);
+			add_location(use1, file$8, 161, 20, 4727);
 			xlink_attr(use2, "xlink:href", "#gentle-wave");
 			attr_dev(use2, "x", "48");
 			attr_dev(use2, "y", "5");
 			attr_dev(use2, "fill", "rgba(255,255,255,0.3)");
 			attr_dev(use2, "class", "svelte-4gj90x");
-			add_location(use2, file$8, 162, 20, 4815);
+			add_location(use2, file$8, 162, 20, 4824);
 			xlink_attr(use3, "xlink:href", "#gentle-wave");
 			attr_dev(use3, "x", "48");
 			attr_dev(use3, "y", "7");
 			attr_dev(use3, "fill", "#fff");
 			attr_dev(use3, "class", "svelte-4gj90x");
-			add_location(use3, file$8, 163, 20, 4912);
+			add_location(use3, file$8, 163, 20, 4921);
 			attr_dev(g, "class", "parallax svelte-4gj90x");
-			add_location(g, file$8, 159, 16, 4580);
+			add_location(g, file$8, 159, 16, 4589);
 			attr_dev(svg, "class", "waves svelte-4gj90x");
 			attr_dev(svg, "xmlns", "http://www.w3.org/2000/svg");
 			attr_dev(svg, "xmlns:xlink", "http://www.w3.org/1999/xlink");
 			attr_dev(svg, "viewBox", "0 24 150 28");
 			attr_dev(svg, "preserveAspectRatio", "none");
 			attr_dev(svg, "shape-rendering", "auto");
-			add_location(svg, file$8, 154, 12, 4218);
+			add_location(svg, file$8, 154, 12, 4227);
 			attr_dev(div2, "class", "wave_container svelte-4gj90x");
-			add_location(div2, file$8, 153, 8, 4176);
+			add_location(div2, file$8, 153, 8, 4185);
 			attr_dev(div3, "class", "header svelte-4gj90x");
 			add_location(div3, file$8, 126, 4, 2670);
 			attr_dev(div4, "class", "content flex svelte-4gj90x");
-			add_location(div4, file$8, 175, 4, 5135);
+			add_location(div4, file$8, 175, 4, 5144);
 			attr_dev(div5, "class", "animated fadeIn slower");
 			add_location(div5, file$8, 125, 0, 2628);
 		},
@@ -9164,15 +9126,18 @@ const versionFile = fs.readFileSync(path.join(__dirname, "../version.json"));
 
 window.currentVersion = localStorage["version"] = JSON.parse(versionFile.toString("utf-8")).version;
 window.asyncForEach = async (array, callback) => {
-    for (let index = 0; index < array.length; index++) {
 
+    for (let index = 0; index < array.length; index++) {
 
         await callback(array[index], index, array);
 
     }
 };
 
+
+
 window.addEventListener('DOMContentLoaded', (event) => {
+
     console.log('DOM fully loaded and parsed');
     windowLoaded.set(true);
 
@@ -60416,7 +60381,7 @@ class THz extends SvelteComponentDev {
 /* src\components\Changelog.svelte generated by Svelte v3.24.1 */
 const file$1e = "src\\components\\Changelog.svelte";
 
-// (47:0) {#if active}
+// (47:0) {#if active && windowLoaded}
 function create_if_block$w(ctx) {
 	let modal;
 	let updating_active;
@@ -60480,32 +60445,52 @@ function create_if_block$w(ctx) {
 		block,
 		id: create_if_block$w.name,
 		type: "if",
-		source: "(47:0) {#if active}",
+		source: "(47:0) {#if active && windowLoaded}",
 		ctx
 	});
 
 	return block;
 }
 
-// (50:8) <div slot="content">
+// (50:8) <div slot="content" transition:fade style="user-select:text;">
 function create_content_slot$5(ctx) {
 	let div;
 	let raw_value = window.marked(/*changelogContent*/ ctx[1]) + "";
+	let div_transition;
+	let current;
 
 	const block = {
 		c: function create() {
 			div = element("div");
 			attr_dev(div, "slot", "content");
-			add_location(div, file$1e, 49, 8, 889);
+			set_style(div, "user-select", "text");
+			add_location(div, file$1e, 49, 8, 1101);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
 			div.innerHTML = raw_value;
+			current = true;
 		},
 		p: function update(ctx, dirty) {
-			if (dirty & /*changelogContent*/ 2 && raw_value !== (raw_value = window.marked(/*changelogContent*/ ctx[1]) + "")) div.innerHTML = raw_value;		},
+			if ((!current || dirty & /*changelogContent*/ 2) && raw_value !== (raw_value = window.marked(/*changelogContent*/ ctx[1]) + "")) div.innerHTML = raw_value;		},
+		i: function intro(local) {
+			if (current) return;
+
+			add_render_callback(() => {
+				if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, true);
+				div_transition.run(1);
+			});
+
+			current = true;
+		},
+		o: function outro(local) {
+			if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, false);
+			div_transition.run(0);
+			current = false;
+		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(div);
+			if (detaching && div_transition) div_transition.end();
 		}
 	};
 
@@ -60513,7 +60498,7 @@ function create_content_slot$5(ctx) {
 		block,
 		id: create_content_slot$5.name,
 		type: "slot",
-		source: "(50:8) <div slot=\\\"content\\\">",
+		source: "(50:8) <div slot=\\\"content\\\" transition:fade style=\\\"user-select:text;\\\">",
 		ctx
 	});
 
@@ -60548,10 +60533,8 @@ function create_fragment$1l(ctx) {
     h1, h2 {
 
         word-break: break-word;
-
         margin-bottom: 0.5em;
     }
-
 
 
 </style>` + "";
@@ -60559,7 +60542,7 @@ function create_fragment$1l(ctx) {
 	let t;
 	let if_block_anchor;
 	let current;
-	let if_block = /*active*/ ctx[0] && create_if_block$w(ctx);
+	let if_block = /*active*/ ctx[0] && windowLoaded && create_if_block$w(ctx);
 
 	const block = {
 		c: function create() {
@@ -60579,7 +60562,7 @@ function create_fragment$1l(ctx) {
 			current = true;
 		},
 		p: function update(ctx, [dirty]) {
-			if (/*active*/ ctx[0]) {
+			if (/*active*/ ctx[0] && windowLoaded) {
 				if (if_block) {
 					if_block.p(ctx, dirty);
 
@@ -60638,6 +60621,13 @@ function instance$1l($$self, $$props, $$invalidate) {
 		$$invalidate(1, changelogContent = fs.readFileSync(path.resolve(__dirname, "../CHANGELOG.md")).toString());
 	});
 
+	onMount(() => {
+		if (localStorage.showUpdate) {
+			$$invalidate(0, active = true);
+			localStorage.showUpdate = "";
+		}
+	});
+
 	const writable_props = ["active"];
 
 	Object.keys($$props).forEach(key => {
@@ -60658,7 +60648,10 @@ function instance$1l($$self, $$props, $$invalidate) {
 
 	$$self.$capture_state = () => ({
 		Modal,
+		onMount,
 		beforeUpdate,
+		fade,
+		windowLoaded,
 		active,
 		changelogContent
 	});
@@ -60811,21 +60804,22 @@ function backupRestore({event, method="backup"}={}) {
 }
 
 const restart_program = () => {
-    let response = window.showinfo(remote.getCurrentWindow(), {title:"FELion_GUI3", type:"info", message:"Update succesfull", buttons:["Restart", "Restart later"]} );
-    response===0 ? remote.getCurrentWindow().reload() : console.log("Restarting later");
+    let response = window.showinfo(remote.getCurrentWindow(), { title: "FELion_GUI3", type: "info", message: "Update succesfull", buttons: ["Restart", "Restart later"] });
+    response === 0 ? remote.getCurrentWindow().reload() : console.log("Restarting later");
+
 };
 
 function InstallUpdate(target, updateFolder) {
     let src = path.resolve(updateFolder, `${get_store_value(github).repo}-${get_store_value(github).branch}`);
+
     let dest = path.resolve(__dirname, "..");
 
-    transferFiles({dest, src})
+    transferFiles({ dest, src })
 
-        .then(()=>console.log("Copying downloaded files"))
-    
-        .catch((err)=>{window.createToast("Error occured while copying downloaded files"); throw err;   })
-    
-        .finally(()=>{target.classList.toggle("is-loading"); restart_program();});
+        .then(() => console.log("Copying downloaded files"))
+
+        .catch((err) => { window.createToast("Error occured while copying downloaded files"); throw err; })
+        .finally(() => { target.classList.toggle("is-loading"); localStorage.showUpdate = "true"; restart_program(); });
 }
 
 function checkWithCurrentVersion({new_version, developer_version, info}={}) {
@@ -62117,76 +62111,76 @@ function create_fragment$1n(ctx) {
 			h13.textContent = "About";
 			attr_dev(div0, "class", "title nav hvr-glow svelte-12wp2wy");
 			toggle_class(div0, "clicked", /*selected*/ ctx[0] === "Configuration");
-			add_location(div0, file$1g, 148, 16, 4192);
+			add_location(div0, file$1g, 147, 16, 4190);
 			attr_dev(div1, "class", "title nav hvr-glow svelte-12wp2wy");
 			toggle_class(div1, "clicked", /*selected*/ ctx[0] === "Update");
-			add_location(div1, file$1g, 149, 16, 4324);
+			add_location(div1, file$1g, 148, 16, 4322);
 			attr_dev(div2, "class", "title nav hvr-glow svelte-12wp2wy");
 			toggle_class(div2, "clicked", /*selected*/ ctx[0] === "Terminal");
-			add_location(div2, file$1g, 150, 16, 4442);
+			add_location(div2, file$1g, 149, 16, 4440);
 			attr_dev(div3, "class", "title nav hvr-glow svelte-12wp2wy");
 			toggle_class(div3, "clicked", /*selected*/ ctx[0] === "About");
-			add_location(div3, file$1g, 151, 16, 4564);
+			add_location(div3, file$1g, 150, 16, 4562);
 			attr_dev(div4, "class", "container left svelte-12wp2wy");
-			add_location(div4, file$1g, 147, 12, 4146);
+			add_location(div4, file$1g, 146, 12, 4144);
 			attr_dev(div5, "class", "column side-panel is-2-widescreen is-3-desktop is-4-tablet box adjust-right svelte-12wp2wy");
-			add_location(div5, file$1g, 146, 8, 4043);
+			add_location(div5, file$1g, 145, 8, 4041);
 			attr_dev(h10, "class", "title svelte-12wp2wy");
-			add_location(h10, file$1g, 159, 20, 4908);
+			add_location(h10, file$1g, 158, 20, 4906);
 			attr_dev(div6, "class", "subtitle svelte-12wp2wy");
-			add_location(div6, file$1g, 160, 20, 4966);
+			add_location(div6, file$1g, 159, 20, 4964);
 			attr_dev(button0, "class", "button is-link svelte-12wp2wy");
-			add_location(button0, file$1g, 163, 20, 5251);
+			add_location(button0, file$1g, 162, 20, 5249);
 			attr_dev(button1, "class", "button is-link svelte-12wp2wy");
-			add_location(button1, file$1g, 164, 20, 5343);
+			add_location(button1, file$1g, 163, 20, 5341);
 			attr_dev(div7, "class", "content animated fadeIn svelte-12wp2wy");
 			toggle_class(div7, "hide", /*selected*/ ctx[0] !== "Configuration");
-			add_location(div7, file$1g, 158, 16, 4809);
+			add_location(div7, file$1g, 157, 16, 4807);
 			attr_dev(h11, "class", "title svelte-12wp2wy");
-			add_location(h11, file$1g, 168, 20, 5549);
+			add_location(h11, file$1g, 167, 20, 5547);
 			attr_dev(div8, "class", "subtitle svelte-12wp2wy");
-			add_location(div8, file$1g, 170, 20, 5602);
+			add_location(div8, file$1g, 169, 20, 5600);
 			attr_dev(div9, "class", "content svelte-12wp2wy");
-			add_location(div9, file$1g, 171, 20, 5691);
+			add_location(div9, file$1g, 170, 20, 5689);
 			attr_dev(button2, "class", "button is-link svelte-12wp2wy");
 			attr_dev(button2, "id", "updateCheckBtn");
-			add_location(button2, file$1g, 178, 24, 6189);
+			add_location(button2, file$1g, 177, 24, 6187);
 			attr_dev(button3, "class", "button is-link svelte-12wp2wy");
 			attr_dev(button3, "id", "updateBtn");
-			add_location(button3, file$1g, 179, 24, 6312);
+			add_location(button3, file$1g, 178, 24, 6310);
 			attr_dev(button4, "class", "button is-warning svelte-12wp2wy");
-			add_location(button4, file$1g, 181, 24, 6443);
+			add_location(button4, file$1g, 180, 24, 6441);
 			attr_dev(div10, "class", "content svelte-12wp2wy");
-			add_location(div10, file$1g, 177, 20, 6142);
+			add_location(div10, file$1g, 176, 20, 6140);
 			attr_dev(button5, "class", "button is-link svelte-12wp2wy");
-			add_location(button5, file$1g, 187, 24, 6765);
+			add_location(button5, file$1g, 186, 24, 6763);
 			attr_dev(button6, "class", "button is-link svelte-12wp2wy");
-			add_location(button6, file$1g, 188, 24, 6855);
+			add_location(button6, file$1g, 187, 24, 6853);
 			attr_dev(div11, "class", "content svelte-12wp2wy");
-			add_location(div11, file$1g, 185, 20, 6593);
+			add_location(div11, file$1g, 184, 20, 6591);
 			attr_dev(div12, "class", "content animated fadeIn svelte-12wp2wy");
 			toggle_class(div12, "hide", /*selected*/ ctx[0] !== "Update");
-			add_location(div12, file$1g, 167, 16, 5457);
+			add_location(div12, file$1g, 166, 16, 5455);
 			attr_dev(h12, "class", "title svelte-12wp2wy");
-			add_location(h12, file$1g, 194, 20, 7109);
+			add_location(h12, file$1g, 193, 20, 7107);
 			attr_dev(div13, "class", "content animated fadeIn svelte-12wp2wy");
 			toggle_class(div13, "hide", /*selected*/ ctx[0] !== "Terminal");
-			add_location(div13, file$1g, 193, 16, 7015);
+			add_location(div13, file$1g, 192, 16, 7013);
 			attr_dev(h13, "class", "title svelte-12wp2wy");
-			add_location(h13, file$1g, 199, 20, 7387);
+			add_location(h13, file$1g, 198, 20, 7385);
 			attr_dev(div14, "class", "content animated fadeIn svelte-12wp2wy");
 			toggle_class(div14, "hide", /*selected*/ ctx[0] !== "About");
-			add_location(div14, file$1g, 198, 16, 7296);
+			add_location(div14, file$1g, 197, 16, 7294);
 			attr_dev(div15, "class", "container right svelte-12wp2wy");
-			add_location(div15, file$1g, 156, 12, 4759);
+			add_location(div15, file$1g, 155, 12, 4757);
 			attr_dev(div16, "class", "column main-panel box svelte-12wp2wy");
-			add_location(div16, file$1g, 155, 8, 4710);
+			add_location(div16, file$1g, 154, 8, 4708);
 			attr_dev(div17, "class", "columns svelte-12wp2wy");
-			add_location(div17, file$1g, 145, 4, 4012);
+			add_location(div17, file$1g, 144, 4, 4010);
 			attr_dev(section, "class", "section animated fadeIn svelte-12wp2wy");
 			attr_dev(section, "id", "Settings");
 			set_style(section, "display", "none");
-			add_location(section, file$1g, 143, 0, 3928);
+			add_location(section, file$1g, 142, 0, 3926);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
