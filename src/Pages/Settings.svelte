@@ -121,7 +121,6 @@
     }
 
 </style>
-
 <PreModal bind:preModal />
 
 <CustomDialog id="pythonpath_Check" bind:dialog={pythonpathCheck} on:response={handlepythonPathCheck} title={"Python path is not valid"} content={"Change it in Settings --> Configuration"} label1="Okay" label2="Cancel" />
@@ -190,5 +189,4 @@
         </div>
 
     </div>
-
 </section>

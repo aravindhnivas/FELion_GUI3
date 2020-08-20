@@ -1,5 +1,5 @@
 
-# FELion GUI3
+# What's new
 ---
 
 ## Unreleased
@@ -10,5 +10,5 @@
 
 - Using Quill editor for report editor.
 - Bug fix: Depletion scan dropdown menu auto updated
- 
+
 ---

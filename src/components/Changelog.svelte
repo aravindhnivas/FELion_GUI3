@@ -1,15 +1,17 @@
 
 <script>
     import Modal from "./Modal.svelte";
-    import {beforeUpdate} from "svelte";
+    import {onMount, beforeUpdate} from "svelte";
+    import { fade } from 'svelte/transition';
+    import {windowLoaded} from "../js/functions";
     export let active=false;
 
     let changelogContent = fs.readFileSync(path.resolve(__dirname, "../CHANGELOG.md")).toString()
     
     beforeUpdate(()=>{changelogContent = fs.readFileSync(path.resolve(__dirname, "../CHANGELOG.md")).toString()})
+    onMount(()=> {if(localStorage.showUpdate) {active = true; localStorage.showUpdate = ""}})
 
 </script>
-
 
 {@html `<style>
 
@@ -36,17 +38,15 @@
     h1, h2 {
 
         word-break: break-word;
-
         margin-bottom: 0.5em;
     }
 
 
-
 </style>`}
 
-{#if active}
+{#if active && windowLoaded}
     <Modal title="FELion GUI Changelog" bind:active>
 
-        <div slot="content">{@html window.marked(changelogContent)}</div>
+        <div slot="content" transition:fade style="user-select:text;">{@html window.marked(changelogContent)}</div>
     </Modal>
 {/if}

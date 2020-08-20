@@ -32,15 +32,18 @@ const versionFile = fs.readFileSync(path.join(__dirname, "../version.json"))
 
 window.currentVersion = localStorage["version"] = JSON.parse(versionFile.toString("utf-8")).version
 window.asyncForEach = async (array, callback) => {
-    for (let index = 0; index < array.length; index++) {
 
+    for (let index = 0; index < array.length; index++) {
 
         await callback(array[index], index, array);
 
     }
 }
 
+
+
 window.addEventListener('DOMContentLoaded', (event) => {
+
     console.log('DOM fully loaded and parsed');
     windowLoaded.set(true)
 
