@@ -71,8 +71,8 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                             window.dataFromPython = dataFromPython = JSON.parse(dataFromPython.toString("utf-8"))
                             console.log(dataFromPython)
                             resolve(dataFromPython)
-                            target.classList.toggle("is-loading")
                         }
+                        target.classList.toggle("is-loading")
 
                         console.log("Process closed")
 
