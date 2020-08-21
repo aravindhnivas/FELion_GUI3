@@ -1,5 +1,6 @@
 
 # System modules
+
 import sys, json, os, shutil
 from os.path import isdir, isfile, dirname
 from pathlib import Path as pt, PurePosixPath as pt2
@@ -10,14 +11,13 @@ from itertools import cycle
 import numpy as np
 from scipy.interpolate import interp1d
 
-
 # FELion modules
+
 from FELion_baseline_old import felix_read_file, BaselineCalibrator
+
 from FELion_power import PowerCalibrator
 
 from FELion_sa import SpectrumAnalyserCalibrator
-
-from baseline import Create_Baseline
 from FELion_definitions import sendData
 from FELion_constants import colors
 ######################################################################################
@@ -68,11 +68,11 @@ class normplot:
         c = 0
         group = 1
         color_size = len(colors)
+
         for filename in received_files:
 
             res, b0, trap = var_find(filename)
-
-            # label = f"Res:{res}; B0: {b0}ms; trap: {trap}ms"
+            label = f"Res:{res}; B0: {b0}ms; trap: {trap}ms"
             felixfile = filename.name
             
             fname = filename.stem
@@ -144,22 +144,11 @@ class normplot:
             dataToSend["average"][felixfile] = makeDataToSend(wavelength, intensity, felixfile_lg, update=defaultStyle)
             dataToSend["average_rel"][felixfile] = makeDataToSend(wavelength_rel, relative_depletion, felixfile_lg, update=defaultStyle)
             dataToSend["average_per_photon"][felixfile] = makeDataToSend(wavelength, energyJ, felixfile_lg, update=defaultStyle)
-            
             ################### Averaged Spectrum END #################################
 
-            basefile_data = np.array(
-                Create_Baseline(felixfile, self.location,
-                    plotIt=False, checkdir=False, verbose=False).get_data()
-            )
+            base_line = np.genfromtxt(self.location / f"DATA/{basefile}").T
 
-            # Ascending order sort by wn
-            base_line = basefile_data[1][0]
-            base_line = np.take( base_line, base_line[0].argsort(), 1).tolist()
-
-            base_felix = basefile_data[0]
-            base_felix = np.take( base_felix, base_felix[0].argsort(), 1).tolist()
-
-            dataToSend["base"][f"{felixfile}_base"] = makeDataToSend(base_felix[0], base_felix[1], felixfile, update={"mode": "lines", "line":lineColor, **groupItem })
+            dataToSend["base"][f"{felixfile}_base"] = makeDataToSend(self.data[0], self.data[1], label, update={"mode": "lines", "line":lineColor, **groupItem })
             dataToSend["base"][f"{felixfile}_line"] = makeDataToSend(base_line[0], base_line[1], felixfile, update={"mode": "lines+markers", "line":blackColor, **groupItem, **nolegend})
             group += 1
             c += 2
@@ -189,21 +178,24 @@ class normplot:
     def norm_line_felix(self, PD=True):
 
         felixfile, basefile, powerfile = self.filetypes
-        data = felix_read_file(felixfile)
+        
+        self.data = felix_read_file(felixfile)
         powCal = PowerCalibrator(powerfile)
+
         baseCal = BaselineCalibrator(basefile)
 
         self.saCal = SpectrumAnalyserCalibrator(felixfile)
-        wavelength = self.saCal.sa_cm(data[0])
         
-        self.power_measured = powCal.power(data[0])
+        wavelength = self.saCal.sa_cm(self.data[0])
+
+        self.power_measured = powCal.power(self.data[0])
         self.total_power = self.power_measured*self.nshots
 
-        counts = data[1]
-        baseCounts = baseCal.val(data[0])
+        counts = self.data[1]
+        baseCounts = baseCal.val(self.data[0])
         ratio = counts/baseCounts
 
-        self.sa_diff = np.diff((data[2] - data[1])).mean()
+        self.sa_diff = np.diff((self.data[2] - self.data[1])).mean()
         # print(f"Spectrum analyser is {self.sa_diff } more than set wn.")
 
         # Normalise the intensity
@@ -213,7 +205,7 @@ class normplot:
         else:
             intensity = (baseCounts-counts)/self.total_power
         relative_depletion =(1-ratio)*100
-        return wavelength, intensity, data[1], relative_depletion
+        return wavelength, intensity, self.data[1], relative_depletion
 
     def export_file(self, fname, wn, inten, relative_depletion, energyPerPhoton, raw_intensity=None):
 
