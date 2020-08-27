@@ -147,7 +147,7 @@ class normplot:
             ################### Averaged Spectrum END #################################
 
             base_line = np.genfromtxt(self.location / f"DATA/{basefile}").T
-
+            base_line = np.take(base_line, base_line[0].argsort(), 1)
             dataToSend["base"][f"{felixfile}_base"] = makeDataToSend(self.data[0], self.data[1], label, update={"mode": "lines", "line":lineColor, **groupItem })
             dataToSend["base"][f"{felixfile}_line"] = makeDataToSend(base_line[0], base_line[1], felixfile, update={"mode": "lines+markers", "line":blackColor, **groupItem, **nolegend})
             group += 1
