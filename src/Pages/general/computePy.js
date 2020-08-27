@@ -19,8 +19,12 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
 
     return new Promise((resolve, reject) => {
 
-        let target = e.target
-        target.classList.toggle("is-loading")
+        let target;
+        if (!general) {
+            target = e.target
+            target.classList.toggle("is-loading")
+
+        }
 
         checkPython()
 
@@ -35,7 +39,7 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
 
                     )
 
-                    target.classList.toggle("is-loading")
+                    // target.classList.toggle("is-loading")
 
                     py.on("close", () => { console.log("Closed") })
                     py.stderr.on("data", (err) => { console.log(`Error Occured: ${err.toString()}`); reject(err.toString()) })
@@ -80,7 +84,7 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
 
                 }
 
-            }).catch(err => { console.error(err.stack); target.classList.toggle("is-loading") })
+            }).catch(err => { console.error(err.stack); if (!general) { target.classList.toggle("is-loading") } })
     })
 
 }

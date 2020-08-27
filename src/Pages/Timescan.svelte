@@ -56,75 +56,28 @@
         }
         let {pyfile, args} = pyfileInfo[filetype]
 
-        if (tkplot == "plot") {filetype = "general"}
-        if (filetype == "general") {
-            console.log("Sending general arguments: ", args)
-
-            let py = spawn(
-                localStorage["pythonpath"], [path.join(localStorage["pythonscript"], pyfile), args], 
-                { detached: true, stdio: 'pipe', shell: openShell }
-            )
-
-            py.on("close", ()=>{ console.log("Closed") })
-            py.stderr.on("data", (err)=>{ console.log(`Error Occured: ${err.toString()}`); preModal.modalContent = err.toString(); preModal.open = true })
-            py.stdout.on("data", (data)=>{ console.log(`Output from python: ${data.toString()}`)  })
-
-            py.unref()
-            py.ref()
-            return window.createToast("Process Started")
-        }
-
-        let target = e.target
-
-        target.classList.toggle("is-loading")
+        // if (tkplot == "plot") {filetype = "general"}
         if (filetype == "scan") {graphPlotted = false}
+        if (filetype == "general") {
 
-        let py;
-        try {py = spawn( localStorage["pythonpath"], [path.resolve(localStorage["pythonscript"], pyfile), args] )}
-        catch (err) {
-            preModal.modalContent = "Error accessing python. Set python location properly in Settings"
-            preModal.open = true
-            target.classList.toggle("is-loading")
-            return
+            return computePy_func({e, pyfile, args, general:true, openShell}).catch(err=>{preModal.modalContent = err;  preModal.open = true})
         }
-        
-        window.createToast("Process Started")
-        py.stdout.on("data", data => {
-            console.log("Ouput from python")
-            let dataReceived = data.toString("utf8")
-            console.log(dataReceived)
-        });
 
-        let error_occured_py = false
 
-        py.stderr.on("data", err => {
-            preModal.modalContent = err
-            preModal.open = true
-            error_occured_py = true;
-        });
 
-        py.on("close", () => {
-            if (!error_occured_py) {
-
-                try {
-                    let dataFromPython = fs.readFileSync(path.join(localStorage["pythonscript"], "data.json"))
-                    dataFromPython = JSON.parse(dataFromPython.toString("utf-8"))
-                    console.log(dataFromPython)
+        return computePy_func({e, pyfile, args})
+                .then((dataFromPython)=>{
                     if (filetype=="scan") {
-                       fileChecked.forEach(file=>{
-                            plot(`Timescan Plot: ${file}`, "Time (in ms)", "Counts", dataFromPython[file], `${file}_tplot`)
-                       })
+                        fileChecked.forEach(file=>{
+                                plot(`Timescan Plot: ${file}`, "Time (in ms)", "Counts", dataFromPython[file], `${file}_tplot`)
+                            })
                     } 
-
                     window.createToast("Graph plotted", "success")
+
                     graphPlotted = true
 
-                } catch (err) { preModal.modalContent = err; preModal.open = true }
+                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
 
-            }
-            console.log("Process closed")
-            target.classList.toggle("is-loading")
-        })
     }
 
     // Linearlog check

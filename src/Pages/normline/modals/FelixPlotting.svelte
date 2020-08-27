@@ -69,7 +69,7 @@
 
             <button class="button is-link" on:click={saveWidget}>Save Widgets</button>
     
-            <button class="button is-link" on:click={()=>{dispatch('submit')}} >Submit</button>
+            <button class="button is-link" on:click={(e)=>{dispatch('submit', {event:e})}} >Submit</button>
         
         </div>
     </Modal>

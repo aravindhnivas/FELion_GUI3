@@ -106,7 +106,7 @@
 </script>
 
 
-<FelixPlotting bind:active bind:felixPlotWidgets {felixPlotCheckboxes} on:submit="{(e)=>plotData({e:e, filetype:"matplotlib"})}"/>
+<FelixPlotting bind:active bind:felixPlotWidgets {felixPlotCheckboxes} on:submit="{(e)=>plotData({e:e.detail.event, filetype:"matplotlib"})}"/>
 
 <div class="align">
 
