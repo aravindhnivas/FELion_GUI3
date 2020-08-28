@@ -60,7 +60,7 @@
         if (filetype == "scan") {graphPlotted = false}
         if (filetype == "general") {
 
-            return computePy_func({e, pyfile, args, general:true, openShell}).catch(err=>{preModal.modalContent = err.stack;  preModal.open = true})
+            return computePy_func({e, pyfile, args, general:true, openShell}).catch(err=>{preModal.modalContent = err;  preModal.open = true})
         }
 
 
@@ -76,7 +76,7 @@
 
                     graphPlotted = true
 
-                }).catch(err=>{preModal.modalContent = err.stack;  preModal.open = true})
+                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
 
     }
 

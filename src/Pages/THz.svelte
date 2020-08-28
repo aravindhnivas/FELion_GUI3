@@ -87,7 +87,7 @@
         let error_occured_py = false
 
         py.stderr.on("data", err => {
-            preModal.modalContent = err.stack
+            preModal.modalContent = err
             preModal.open = true
             error_occured_py = true;
             target.style.backgroundColor="#ff3860"

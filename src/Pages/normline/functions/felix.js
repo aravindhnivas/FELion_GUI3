@@ -6,7 +6,7 @@ import beforePlot from "./beforePlot";
 
 export async function felix_func({ normMethod, dataFromPython, delta } = {}) {
 
-    await beforePlot({ normMethod, delta, dataFromPython })
+    await beforePlot({ delta, dataFromPython, graphDiv: "avgplot", baseGraphDiv:"bplot" })
 
     subplot(
         "Spectrum and Power Analyser",

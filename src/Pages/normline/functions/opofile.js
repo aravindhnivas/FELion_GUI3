@@ -6,7 +6,7 @@ import beforePlot from "./beforePlot";
 
 export async function opofile_func({ dataFromPython, delta } = {}) {
 
-    await beforePlot({ delta, dataFromPython })
+    await beforePlot({ delta, dataFromPython, graphDiv: "opoRelPlot", baseGraphDiv:"opoplot" })
 
     plot("OPO Calibration", "Set Wavenumber (cm-1)", "Measured Wavenumber (cm-1)", dataFromPython["SA"], "opoSA")
 

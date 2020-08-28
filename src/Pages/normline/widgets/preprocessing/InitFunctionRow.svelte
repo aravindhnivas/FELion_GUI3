@@ -74,7 +74,7 @@
                     window.createToast("Graph Plotted", "success")
                     graphPlotted = true
 
-                }).catch(err=>{preModal.modalContent = err.stack;  preModal.open = true})
+                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
 
                 break;
             
@@ -83,7 +83,7 @@
                 else {if(felixfiles.length<1) return window.createToast("No FELIX files selected", "danger")}
                 pyfile="baseline.py", args= $opoMode ? opofiles: felixfiles
                 computePy_func({e, pyfile, args, general:true, openShell})
-                .catch(err=>{preModal.modalContent = err.stack;  preModal.open = true})
+                .catch(err=>{preModal.modalContent = err;  preModal.open = true})
                 break;
 
             case "matplotlib":
@@ -96,7 +96,7 @@
 
                 pyfile="felix_tkplot.py", args=[JSON.stringify({numberWidgets, textWidgets, booleanWidgets, selectedWidgets, location: $felixopoLocation, normMethod, theoryLocation})]
                 computePy_func({e, pyfile, args, general:true, openShell})
-                .catch(err=>{preModal.modalContent = err.stack;  preModal.open = true})
+                .catch(err=>{preModal.modalContent = err;  preModal.open = true})
 
 
             default:

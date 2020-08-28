@@ -24,7 +24,7 @@
             theory_func({dataFromPython, normMethod})
             window.createToast("Graph Plotted", "success")
             show_theoryplot = true, showTheoryFiles = false
-        }).catch(err=>{preModal.modalContent = err.stack;  preModal.open = true})
+        }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
     }
 
 </script>

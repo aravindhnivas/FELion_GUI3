@@ -1,7 +1,8 @@
 
-import { felixIndex, felixOutputName, graphDiv, baseGraphDiv, normMethod, opoMode, felixData, opoData, get } from './svelteWritables';
+import { felixIndex, felixOutputName, normMethod, opoMode, felixData, opoData, get } from './svelteWritables';
 import { plot } from "../../../js/functions.js";
-export default function beforePlot({ delta, dataFromPython } = {}) {
+
+export default function beforePlot({ delta, dataFromPython, graphDiv, baseGraphDiv } = {}) {
 
     felixOutputName.set("averaged"), felixIndex.set([])
 
@@ -72,16 +73,15 @@ export default function beforePlot({ delta, dataFromPython } = {}) {
         "Wavelength (cm-1)",
 
         "Counts",
-        dataFromPython["base"],
-        get(baseGraphDiv)
+        dataFromPython["base"], baseGraphDiv
+        
     );
 
     plot(
         `Normalised and Averaged Spectrum (delta=${delta})<br>${signal_formula}; {C=Measured Count, B=Baseline Count}`,
         "Calibrated Wavelength (cm-1)",
         ylabel,
-        avgdataToPlot,
-        get(graphDiv)
+        avgdataToPlot, graphDiv
     );
 
 

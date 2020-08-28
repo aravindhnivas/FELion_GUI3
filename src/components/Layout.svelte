@@ -36,10 +36,11 @@
 
             })
             }
+
         })
     }
-
 </script>
+
 
 <script>
     
@@ -48,8 +49,8 @@
     import {onMount} from "svelte";
     import FileBrowser from "./FileBrowser.svelte"
     import Hamburger1 from "../components/icon_animations/Hamburger1.svelte";
-
     import { createEventDispatcher } from 'svelte';
+
     import PreModal from "./PreModal.svelte";
 
     ////////////////////////////////////////////////////////////////////////////

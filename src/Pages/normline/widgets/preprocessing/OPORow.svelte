@@ -39,7 +39,7 @@
             graphPlotted = true, $opoMode = true
             localStorage["opoLocation"] = OPOLocation; 
             showOPOFiles=false
-        }).catch(err=>{preModal.modalContent = err.stack;  preModal.open = true})
+        }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
 
     }
 

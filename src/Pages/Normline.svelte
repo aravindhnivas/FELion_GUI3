@@ -65,8 +65,15 @@
         if (graphPlotted) {
             let {data, layout} = $normMethodDatas[$normMethod]
 
-            Plotly.react($graphDiv, data, layout, { editable: true })
-            $expfittedLines = $felixPlotAnnotations = $expfittedLinesCollectedData = [], $fittedTraceCount = 0
+            try {
+                Plotly.react($graphDiv, data, layout, { editable: true })
+                $expfittedLines = $felixPlotAnnotations = $expfittedLinesCollectedData = [], $fittedTraceCount = 0
+
+            } catch (err) {
+                
+                
+            }
+
         }
     
     }
