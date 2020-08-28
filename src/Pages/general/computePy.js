@@ -63,18 +63,23 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                         console.log(dataReceived)
                     })
 
-                    let error_occured_py = false;
+                    let error_occured_py = false, errContent="";
+
                     py.stderr.on("data", err => {
-                        reject(err)
+                        
+                        errContent = err.toString()
+                        console.error(errContent)
+                        reject(errContent)
                         error_occured_py = true
                     });
 
-                    py.on("close", () => {
+                    py.on("close", (errContent) => {
                         if (!error_occured_py) {
                             let dataFromPython = fs.readFileSync(path.join(get(pythonscript), "data.json"))
                             window.dataFromPython = dataFromPython = JSON.parse(dataFromPython.toString("utf-8"))
                             console.log(dataFromPython)
                             resolve(dataFromPython)
+
                         }
                         target.classList.toggle("is-loading")
 
@@ -84,7 +89,7 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
 
                 }
 
-            }).catch(err => { console.error(err.stack); if (!general) { target.classList.toggle("is-loading") } })
+            }).catch(err => { reject(err.stack); if (!general) { target.classList.toggle("is-loading") } })
     })
 
 }
