@@ -49805,6 +49805,9 @@ function create_if_block$m(ctx) {
 
 	let textfield0_props = {
 		style: "width:7em; margin:0 0.5em;",
+		type: "number",
+		step: "0.02",
+		min: "0",
 		variant: "outlined",
 		label: "Delta OPO"
 	};
@@ -49851,9 +49854,9 @@ function create_if_block$m(ctx) {
 			button1 = element("button");
 			button1.textContent = "Replot";
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$12, 58, 8, 2339);
+			add_location(button0, file$12, 58, 8, 2373);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$12, 59, 8, 2450);
+			add_location(button1, file$12, 59, 8, 2484);
 			attr_dev(div, "class", "align");
 			add_location(div, file$12, 51, 4, 1910);
 		},
