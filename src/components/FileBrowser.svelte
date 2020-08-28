@@ -72,8 +72,8 @@
 
         if (!fs.existsSync(currentLocation)) {return window.createToast("Location undefined", "danger")}
         currentLocation = path.resolve(currentLocation, goto)
-
         getfiles()
+        
     }
 
     onMount(()=> {if(fs.existsSync(currentLocation)) {getfiles(); console.log("onMount Updating location for ", filetype)}} )
