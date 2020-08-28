@@ -52,7 +52,7 @@ class normplot:
         else: 
             self.location = pt(location)
         os.chdir(self.location)
-        dataToSend = {"felix": {}, "base": {}, "average": {}, "SA": {}, "pow": {}, "felix_rel": {}, "average_rel": {}, "felix_per_photon": {}, "average_per_photon": {}}
+        dataToSend = {"base": {}, "SA": {}, "pow": {}, "average": {}, "average_rel": {}, "average_per_photon": {}}
 
         # For Average binning (Norm. method: log)
         xs = np.array([], dtype=np.float)

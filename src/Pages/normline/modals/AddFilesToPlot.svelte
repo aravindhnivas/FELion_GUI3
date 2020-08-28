@@ -31,7 +31,7 @@
             Plotly.addTraces($graphDiv, dataFromPython)
             extrafileAdded += addedfiles.length
             window.createToast("Graph Plotted", "success")
-        }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
+        }).catch(err=>{preModal.modalContent = err.stack;  preModal.open = true})
 
     }
 

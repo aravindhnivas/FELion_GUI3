@@ -22,7 +22,7 @@
         args=[JSON.stringify({files:$opoMode?opofiles : felixfiles, normMethod})]
         computePy_func({e, pyfile, args})
         .then((dataFromPython)=>{ get_details_func({dataFromPython}); toggleFileDetailsTable = true })
-        .catch(err=>{preModal.modalContent = err;  preModal.open = true})
+        .catch(err=>{preModal.modalContent = err.stack;  preModal.open = true})
         
     }
 

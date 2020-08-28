@@ -60,7 +60,7 @@
             if (toast) {window.createToast("Files updated")}
         } catch (err) {
             console.log(err)
-            preModal.modalContent = err;
+            preModal.modalContent = err.stack;
             preModal.open = true;
             return original_files = otherfolders = files = fileChecked = []
         }

@@ -39,7 +39,7 @@
 
                 if (save) savefile()
             }
-        }).catch(err=>{preModal.modalContent = err; preModal.open=true})
+        }).catch(err=>{preModal.modalContent = err.stack; preModal.open=true})
     }
 
     let powerfileContent = '', felixHz = 10, felixShots = 16, convert = null;

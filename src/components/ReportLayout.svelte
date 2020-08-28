@@ -114,7 +114,7 @@
                     tableDiv.appendChild(tableHeading)
                     tableDiv.appendChild(tableElement)
                     
-                } catch (error) {
+                } catch (err) {
                     window.createToast(`${tb.label} is not visible`, "danger")
                 }
 
@@ -208,17 +208,17 @@
                 if (process.versions.electron >= "7") {
                     reportWindow.webContents.printToPDF({printBackground: true, landscape:landscape, pageSize:pageSize})
                     .then(data => {
-                        fs.writeFile(reportFile.replace(".html", ".pdf"), data, (error) => {
-                            if (error) {preModal.modalContent = error; preModal.open = true; return}
+                        fs.writeFile(reportFile.replace(".html", ".pdf"), data, (err) => {
+                            if (err) {preModal.modalContent = err.stack; preModal.open = true; return}
                             window.createToast('Write PDF successfully.', "success")
                         })
-                    }).catch(error => { preModal.modalContent = error; preModal.open = true })
+                    }).catch(err => { preModal.modalContent = err.stack; preModal.open = true })
 
                 } else {
-                    reportWindow.webContents.printToPDF({printBackground: true, landscape:landscape, pageSize:pageSize}, (error, data) => {
-                        if(error) { preModal.modalContent = error; preModal.open = true; return}
-                        fs.writeFile(reportFile.replace(".html", ".pdf"), data, (error) => {
-                            if (error) {preModal.modalContent = error; preModal.open = true; return}
+                    reportWindow.webContents.printToPDF({printBackground: true, landscape:landscape, pageSize:pageSize}, (err, data) => {
+                        if(err) { preModal.modalContent = err.stack; preModal.open = true; return}
+                        fs.writeFile(reportFile.replace(".html", ".pdf"), data, (err) => {
+                            if (err) {preModal.modalContent = err.stack; preModal.open = true; return}
                             window.createToast('Write PDF successfully.', "success")
                         })
                     })
@@ -258,17 +258,19 @@
     }
 
     .title {margin: 0; flex-grow: 2;}
+    .hide {display: none;}
 
 </style>
 <PreModal bind:preModal/>
-<div class="content align heading">
 
+<div class="content align heading">
     <div class="title notification is-link">Add to report</div>
     <Hamburger1 bind:active={toggle}/>
-    
+
 </div>
 
-{#if toggle}
+<div class:hide={!toggle} class="animated fadeIn">
+
 
     <div style="margin-bottom:1em;">
         <Textfield style="height:3em; width:20em;" variant="outlined" bind:value={reportMolecule} label="Molecule Name" />
@@ -345,4 +347,4 @@
     
     </div>
 
-{/if}
+</div>

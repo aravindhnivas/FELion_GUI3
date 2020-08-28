@@ -65,7 +65,7 @@
         let {pyfile, args} = pyfileInfo[filetype]
         if (filetype == "general") {
 
-            return computePy_func({e, pyfile, args, general:true, openShell}).catch(err=>{preModal.modalContent = err;  preModal.open = true})
+            return computePy_func({e, pyfile, args, general:true, openShell}).catch(err=>{preModal.modalContent = err.stack;  preModal.open = true})
             
         }
 
@@ -92,7 +92,7 @@
                     window.createToast("Graph plotted", "success")
                     graphPlotted = true
 
-                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
+                }).catch(err=>{preModal.modalContent = err.stack;  preModal.open = true})
         
     }
 

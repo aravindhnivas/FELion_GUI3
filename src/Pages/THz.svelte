@@ -55,7 +55,7 @@
             )
             py.on("close", ()=>{ console.log("Closed") })
 
-            py.stderr.on("data", (err)=>{ console.log(`Error Occured: ${err.toString()}`); preModal.modalContent = err.toString(); preModal.open = true })
+            py.stderr.on("data", (err)=>{ console.log(`Error Occured: ${err.toString()}`); preModal.modalContent = err.stacktoString(); preModal.open = true })
             py.stdout.on("data", (data)=>{ console.log(`Output from python: ${data.toString()}`)  })
             py.unref()
             py.ref()
@@ -87,7 +87,7 @@
         let error_occured_py = false
 
         py.stderr.on("data", err => {
-            preModal.modalContent = err
+            preModal.modalContent = err.stack
             preModal.open = true
             error_occured_py = true;
             target.style.backgroundColor="#ff3860"
@@ -127,7 +127,7 @@
                     target.classList.add("bounce")
 
                 } catch (err) { 
-                    preModal.modalContent = err
+                    preModal.modalContent = err.stack
                     preModal.open = true 
 
                     target.style.backgroundColor="#ff3860"

@@ -13,7 +13,7 @@
 
     let showOPOFiles =false, OPOcalibFiles = [];
 
-    let deltaOPO = 0.3, calibValue = 9394.356278462961.toFixed(4), calibFile = ""
+    let deltaOPO = 0.3, calibFile = "", opoPower=1;
     
     
     $: if(fs.existsSync(OPOLocation)) {
@@ -29,15 +29,17 @@
         if(opofiles.length<1) return window.createToast("No files selected", "danger")
         $opoMode = true, $felixPlotAnnotations = []
         
-        args=[...opofiles, tkplot, deltaOPO, calibValue, calibFile]
+        let opo_args = {opofiles, tkplot, deltaOPO, calibFile, opoPower}
+
+        args=[JSON.stringify(opo_args)]
         computePy_func({e, pyfile, args})
         .then((dataFromPython)=>{
-            opofile_func({dataFromPython})
+            opofile_func({dataFromPython, delta:deltaOPO})
             window.createToast("Graph Plotted", "success")
             graphPlotted = true, $opoMode = true
             localStorage["opoLocation"] = OPOLocation; 
             showOPOFiles=false
-        }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
+        }).catch(err=>{preModal.modalContent = err.stack;  preModal.open = true})
 
     }
 
@@ -52,7 +54,7 @@
         <CustomSelect style="width:7em;" bind:picked={calibFile} label="Calib. file" options={["", ...OPOcalibFiles]}/>
         
         <Textfield style="width:7em; margin:0 0.5em;" variant="outlined" bind:value={deltaOPO} label="Delta OPO"/>
-        <Textfield style="width:9em"  variant="outlined" bind:value={calibValue} label="Wn-meter calib."/>
+        <Textfield style="width:9em"  variant="outlined" bind:value={opoPower} label="Power (mJ)"/>
 
         <button class="button is-link" on:click="{()=>{showOPOFiles = !showOPOFiles;}}"> Browse File</button>
         

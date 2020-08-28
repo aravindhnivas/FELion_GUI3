@@ -2,7 +2,7 @@
 <script>
 
     // IMPORTING Modules
-    import {opoMode, normMethodDatas, Ngauss_sigma, felixopoLocation, felixPlotAnnotations, expfittedLines, expfittedLinesCollectedData, fittedTraceCount, graphDiv} from './normline/functions/svelteWritables';
+    import {opoMode, normMethodDatas, Ngauss_sigma, felixopoLocation, felixPlotAnnotations, expfittedLines, expfittedLinesCollectedData, fittedTraceCount, graphDiv, normMethod} from './normline/functions/svelteWritables';
     
     import Layout from "../components/Layout.svelte"
     
@@ -45,7 +45,7 @@
     let openShell = false;
     $: console.log("Open Shell: ", filetype, openShell)
 
-    let felix_normMethod = "Relative";
+    // let felix_normMethod = "Relative";
 
     let graphPlotted = false, overwrite_expfit = false, writeFile = false
     $: console.log("Trace length: ", $fittedTraceCount)
@@ -63,21 +63,20 @@
     const replot = () => {
 
         if (graphPlotted) {
+            let {data, layout} = $normMethodDatas[$normMethod]
 
-            let {data, layout} = $normMethodDatas[normMethod]
-            Plotly.react("avgplot",data, layout, { editable: true })
+            Plotly.react($graphDiv, data, layout, { editable: true })
             $expfittedLines = $felixPlotAnnotations = $expfittedLinesCollectedData = [], $fittedTraceCount = 0
-        
         }
+    
     }
 
-    
     // OPO
     let OPOLocation = localStorage["opoLocation"] || currentLocation
+
     let opofiles = []
 
-    
-    $: normMethod = $opoMode ? "Log" : felix_normMethod
+    // $: $normMethod = $opoMode ? "Log" : felix_normMethod
     $: $felixopoLocation = $opoMode ? OPOLocation : currentLocation
     
 
@@ -172,13 +171,13 @@
 <Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>
     <div class="buttonSlot" slot="buttonContainer">
 
-        <InitFunctionRow {removeExtraFile} {felixPlotCheckboxes} {opofiles} {felixfiles} {normMethod} {theoryLocation} bind:preModal bind:graphPlotted bind:show_theoryplot/>
+        <InitFunctionRow {removeExtraFile} {felixPlotCheckboxes} {opofiles} {felixfiles} normMethod={$normMethod} {theoryLocation} bind:preModal bind:graphPlotted bind:show_theoryplot/>
         <OPORow {removeExtraFile} bind:OPOLocation bind:OPOfilesChecked bind:opofiles bind:preModal bind:graphPlotted />
-        <TheoryRow bind:theoryLocation bind:show_theoryplot bind:preModal {normMethod} {currentLocation}/>
+        <TheoryRow bind:theoryLocation bind:show_theoryplot bind:preModal normMethod={$normMethod} {currentLocation}/>
 
         <div style="display:flex;">
         
-            <CustomRadio on:change={replot} bind:selected={felix_normMethod} options={["Log", "Relative", "IntensityPerPhoton"]}/>
+            <CustomRadio on:change={replot} bind:selected={$normMethod} options={["Log", "Relative", "IntensityPerPhoton"]}/>
         </div>
     
     </div>
@@ -186,7 +185,7 @@
     <div class="plotSlot" slot="plotContainer">
 
         <!-- Get file info functions -->
-        <GetFileInfoTable {felixfiles} {normMethod} />
+        <GetFileInfoTable {felixfiles} normMethod={$normMethod} />
         
         <!-- Plots container -->
         <div class="felixPlot">
@@ -205,7 +204,7 @@
                 <WriteFunctionContents on:addfile="{()=>{addFileModal=true}}" on:removefile={removeExtraFile} {output_namelists} bind:writeFileName bind:writeFile bind:overwrite_expfit />
 
                 <!-- Execute function buttons -->
-                <ExecuteFunctionContents {addedFileScale} {addedFileCol} {normMethod} {writeFileName} {writeFile} {overwrite_expfit} {fullfiles} bind:preModal />
+                <ExecuteFunctionContents {addedFileScale} {addedFileCol} normMethod={$normMethod} {writeFileName} {writeFile} {overwrite_expfit} {fullfiles} bind:preModal />
 
                 <!-- Frequency table list -->
                 <FrequencyTable bind:keepTable/>

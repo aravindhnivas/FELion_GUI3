@@ -38,9 +38,8 @@
 
         
         try {
-
             ls = spawn(commandToRun, commandArgsToRun.split(",").map(arg=>arg.trim()), { detached: true, stdio: 'pipe', shell: openShellTerminal });
-        } catch (error) {preModal.modalContent = error;  preModal.open = true}
+        } catch (err) {preModal.modalContent = err.stack;  preModal.open = true}
 
         ls.stdout.on("data", data => {
             commandResults = [...commandResults, {color:colorSets.info, results:`>> ${data || ""}`}]
