@@ -224,9 +224,4 @@ if __name__ == "__main__":
     args = json.loads(", ".join(args))
     print(f"Received args: {args}, {type(args)}\n")
     
-    try:
-        opoplot(args)
-    except Exception as error:
-        
-        print(traceback.format_exc(5))
-        raise Exception(traceback.format_exc(5))
+    opoplot(args)

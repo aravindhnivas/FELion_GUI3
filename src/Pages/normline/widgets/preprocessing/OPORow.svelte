@@ -54,10 +54,12 @@
         <CustomSelect style="width:7em;" bind:picked={calibFile} label="Calib. file" options={["", ...OPOcalibFiles]}/>
         
         <Textfield style="width:7em; margin:0 0.5em;" variant="outlined" bind:value={deltaOPO} label="Delta OPO"/>
-        <Textfield style="width:9em"  variant="outlined" bind:value={opoPower} label="Power (mJ)"/>
+        <Textfield style="width:9em" type="number" step="0.1" min="0" variant="outlined" bind:value={opoPower} label="Power (mJ)"/>
 
         <button class="button is-link" on:click="{()=>{showOPOFiles = !showOPOFiles;}}"> Browse File</button>
-        
         <button class="button is-link" on:click="{(e)=>plotData({e:e})}">Replot</button>
+        <!-- <button class="button is-warning" >OPO MODE</button> -->
+
     </div>
+    
 {/if}
