@@ -46,7 +46,7 @@
     
     import { fly } from 'svelte/transition';
     import Textfield from '@smui/textfield';
-    import {onMount} from "svelte";
+    import {onMount, afterUpdate} from "svelte";
     import FileBrowser from "./FileBrowser.svelte"
     import Hamburger1 from "../components/icon_animations/Hamburger1.svelte";
     import { createEventDispatcher } from 'svelte';
@@ -63,17 +63,24 @@
         browse({dir:true}).then(result=>{
             if (!result.canceled) { currentLocation= localStorage[`${filetype}_location`] = result.filePaths[0] }
         })
-
     }
 
     function tour_event() { dispatch('tour', {filetype}) }
 
-    onMount(()=>{ toggleBrowser = true; })
+    let ContainerHeight, buttonContainerHeight;
 
+    onMount(()=>{ toggleBrowser = true; mounted=true;})
+
+    afterUpdate(() => {
+        const plotContainer = document.getElementById(`${filetype}-plotContainer`)
+        
+        plotContainer.style.height = `calc(${ContainerHeight}px - ${buttonContainerHeight}px - 11em)`
+    
+    });
 </script>
 
-
 <style lang="scss">
+
 
     // Small tablets (portrait view)
     $screen-tablet: 770px;
@@ -166,7 +173,7 @@
 
         <div class="column fileContainer" >
 
-            <div class="container button-plot-container box">
+            <div class="container button-plot-container box" id="{filetype}-button-plot-container" bind:clientHeight={ContainerHeight}>
                 <div class="align">
 
 
@@ -177,8 +184,8 @@
                     <button class="button is-link is-pulled-right" on:click={tour_event}>Need help?</button>
 
                 </div>
-                <div class="align buttonContainer"> <slot name="buttonContainer" /></div>
-                <div class="plotContainer"> <slot name="plotContainer" /> </div>
+                <div class="align buttonContainer" id="{filetype}-buttonContainer" bind:clientHeight={buttonContainerHeight}> <slot name="buttonContainer" /></div>
+                <div class="plotContainer" id="{filetype}-plotContainer"> <slot name="plotContainer" /> </div>
             </div>
         </div>
     </div>

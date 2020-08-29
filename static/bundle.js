@@ -25905,7 +25905,7 @@ const get_plotContainer_slot_context = ctx => ({});
 const get_buttonContainer_slot_changes = dirty => ({});
 const get_buttonContainer_slot_context = ctx => ({});
 
-// (120:8) {#if toggleBrowser}
+// (126:8) {#if toggleBrowser}
 function create_if_block$c(ctx) {
 	let div;
 	let filebrowser;
@@ -25915,11 +25915,11 @@ function create_if_block$c(ctx) {
 	let current;
 
 	function filebrowser_currentLocation_binding(value) {
-		/*filebrowser_currentLocation_binding*/ ctx[11].call(null, value);
+		/*filebrowser_currentLocation_binding*/ ctx[13].call(null, value);
 	}
 
 	function filebrowser_fileChecked_binding(value) {
-		/*filebrowser_fileChecked_binding*/ ctx[12].call(null, value);
+		/*filebrowser_fileChecked_binding*/ ctx[14].call(null, value);
 	}
 
 	let filebrowser_props = { filetype: /*filetype*/ ctx[5] };
@@ -25935,14 +25935,14 @@ function create_if_block$c(ctx) {
 	filebrowser = new FileBrowser({ props: filebrowser_props, $$inline: true });
 	binding_callbacks.push(() => bind(filebrowser, "currentLocation", filebrowser_currentLocation_binding));
 	binding_callbacks.push(() => bind(filebrowser, "fileChecked", filebrowser_fileChecked_binding));
-	filebrowser.$on("chdir", /*chdir_handler*/ ctx[13]);
+	filebrowser.$on("chdir", /*chdir_handler*/ ctx[15]);
 
 	const block = {
 		c: function create() {
 			div = element("div");
 			create_component(filebrowser.$$.fragment);
 			attr_dev(div, "class", "column is-one-fifth-widescreen is-one-quarter-desktop box filebrowser adjust-right svelte-1nvtlko");
-			add_location(div, file$B, 120, 12, 3376);
+			add_location(div, file$B, 126, 12, 3686);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -25995,7 +25995,7 @@ function create_if_block$c(ctx) {
 		block,
 		id: create_if_block$c.name,
 		type: "if",
-		source: "(120:8) {#if toggleBrowser}",
+		source: "(126:8) {#if toggleBrowser}",
 		ctx
 	});
 
@@ -26025,14 +26025,19 @@ function create_fragment$E(ctx) {
 	let button1;
 	let t7;
 	let div1;
+	let div1_id_value;
+	let div1_resize_listener;
 	let t8;
 	let div2;
+	let div2_id_value;
+	let div3_id_value;
+	let div3_resize_listener;
 	let current;
 	let mounted;
 	let dispose;
 
 	function premodal_preModal_binding(value) {
-		/*premodal_preModal_binding*/ ctx[10].call(null, value);
+		/*premodal_preModal_binding*/ ctx[12].call(null, value);
 	}
 
 	let premodal_props = {};
@@ -26046,7 +26051,7 @@ function create_fragment$E(ctx) {
 	let if_block = /*toggleBrowser*/ ctx[1] && create_if_block$c(ctx);
 
 	function hamburger1_active_binding(value) {
-		/*hamburger1_active_binding*/ ctx[14].call(null, value);
+		/*hamburger1_active_binding*/ ctx[16].call(null, value);
 	}
 
 	let hamburger1_props = {};
@@ -26059,7 +26064,7 @@ function create_fragment$E(ctx) {
 	binding_callbacks.push(() => bind(hamburger1, "active", hamburger1_active_binding));
 
 	function textfield_value_binding(value) {
-		/*textfield_value_binding*/ ctx[15].call(null, value);
+		/*textfield_value_binding*/ ctx[17].call(null, value);
 	}
 
 	let textfield_props = {
@@ -26073,10 +26078,10 @@ function create_fragment$E(ctx) {
 
 	textfield = new Textfield({ props: textfield_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield, "value", textfield_value_binding));
-	const buttonContainer_slot_template = /*$$slots*/ ctx[9].buttonContainer;
-	const buttonContainer_slot = create_slot(buttonContainer_slot_template, ctx, /*$$scope*/ ctx[8], get_buttonContainer_slot_context);
-	const plotContainer_slot_template = /*$$slots*/ ctx[9].plotContainer;
-	const plotContainer_slot = create_slot(plotContainer_slot_template, ctx, /*$$scope*/ ctx[8], get_plotContainer_slot_context);
+	const buttonContainer_slot_template = /*$$slots*/ ctx[11].buttonContainer;
+	const buttonContainer_slot = create_slot(buttonContainer_slot_template, ctx, /*$$scope*/ ctx[10], get_buttonContainer_slot_context);
+	const plotContainer_slot_template = /*$$slots*/ ctx[11].plotContainer;
+	const plotContainer_slot = create_slot(plotContainer_slot_template, ctx, /*$$scope*/ ctx[10], get_plotContainer_slot_context);
 
 	const block = {
 		c: function create() {
@@ -26106,25 +26111,30 @@ function create_fragment$E(ctx) {
 			if (plotContainer_slot) plotContainer_slot.c();
 			attr_dev(button0, "class", "button is-link gap");
 			attr_dev(button0, "id", button0_id_value = "" + (/*filetype*/ ctx[5] + "_filebrowser_btn"));
-			add_location(button0, file$B, 132, 20, 3881);
+			add_location(button0, file$B, 138, 20, 4265);
 			attr_dev(button1, "class", "button is-link is-pulled-right");
-			add_location(button1, file$B, 135, 20, 4139);
+			add_location(button1, file$B, 141, 20, 4523);
 			attr_dev(div0, "class", "align");
-			add_location(div0, file$B, 128, 16, 3773);
+			add_location(div0, file$B, 134, 16, 4157);
 			attr_dev(div1, "class", "align buttonContainer svelte-1nvtlko");
-			add_location(div1, file$B, 138, 16, 4271);
+			attr_dev(div1, "id", div1_id_value = "" + (/*filetype*/ ctx[5] + "-buttonContainer"));
+			add_render_callback(() => /*div1_elementresize_handler*/ ctx[18].call(div1));
+			add_location(div1, file$B, 144, 16, 4655);
 			attr_dev(div2, "class", "plotContainer svelte-1nvtlko");
-			add_location(div2, file$B, 139, 16, 4362);
+			attr_dev(div2, "id", div2_id_value = "" + (/*filetype*/ ctx[5] + "-plotContainer"));
+			add_location(div2, file$B, 145, 16, 4820);
 			attr_dev(div3, "class", "container button-plot-container box svelte-1nvtlko");
-			add_location(div3, file$B, 127, 12, 3706);
+			attr_dev(div3, "id", div3_id_value = "" + (/*filetype*/ ctx[5] + "-button-plot-container"));
+			add_render_callback(() => /*div3_elementresize_handler*/ ctx[19].call(div3));
+			add_location(div3, file$B, 133, 12, 4016);
 			attr_dev(div4, "class", "column fileContainer svelte-1nvtlko");
-			add_location(div4, file$B, 125, 8, 3655);
+			add_location(div4, file$B, 131, 8, 3965);
 			attr_dev(div5, "class", "columns");
-			add_location(div5, file$B, 117, 4, 3310);
+			add_location(div5, file$B, 123, 4, 3620);
 			attr_dev(section, "id", /*id*/ ctx[4]);
 			set_style(section, "display", "none");
 			attr_dev(section, "class", "animated fadeIn");
-			add_location(section, file$B, 115, 0, 3243);
+			add_location(section, file$B, 121, 0, 3553);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -26154,6 +26164,7 @@ function create_fragment$E(ctx) {
 				buttonContainer_slot.m(div1, null);
 			}
 
+			div1_resize_listener = add_resize_listener(div1, /*div1_elementresize_handler*/ ctx[18].bind(div1));
 			append_dev(div3, t8);
 			append_dev(div3, div2);
 
@@ -26161,12 +26172,13 @@ function create_fragment$E(ctx) {
 				plotContainer_slot.m(div2, null);
 			}
 
+			div3_resize_listener = add_resize_listener(div3, /*div3_elementresize_handler*/ ctx[19].bind(div3));
 			current = true;
 
 			if (!mounted) {
 				dispose = [
-					listen_dev(button0, "click", /*browse_folder*/ ctx[6], false, false, false),
-					listen_dev(button1, "click", /*tour_event*/ ctx[7], false, false, false)
+					listen_dev(button0, "click", /*browse_folder*/ ctx[8], false, false, false),
+					listen_dev(button1, "click", /*tour_event*/ ctx[9], false, false, false)
 				];
 
 				mounted = true;
@@ -26231,15 +26243,27 @@ function create_fragment$E(ctx) {
 			textfield.$set(textfield_changes);
 
 			if (buttonContainer_slot) {
-				if (buttonContainer_slot.p && dirty & /*$$scope*/ 256) {
-					update_slot(buttonContainer_slot, buttonContainer_slot_template, ctx, /*$$scope*/ ctx[8], dirty, get_buttonContainer_slot_changes, get_buttonContainer_slot_context);
+				if (buttonContainer_slot.p && dirty & /*$$scope*/ 1024) {
+					update_slot(buttonContainer_slot, buttonContainer_slot_template, ctx, /*$$scope*/ ctx[10], dirty, get_buttonContainer_slot_changes, get_buttonContainer_slot_context);
 				}
 			}
 
+			if (!current || dirty & /*filetype*/ 32 && div1_id_value !== (div1_id_value = "" + (/*filetype*/ ctx[5] + "-buttonContainer"))) {
+				attr_dev(div1, "id", div1_id_value);
+			}
+
 			if (plotContainer_slot) {
-				if (plotContainer_slot.p && dirty & /*$$scope*/ 256) {
-					update_slot(plotContainer_slot, plotContainer_slot_template, ctx, /*$$scope*/ ctx[8], dirty, get_plotContainer_slot_changes, get_plotContainer_slot_context);
+				if (plotContainer_slot.p && dirty & /*$$scope*/ 1024) {
+					update_slot(plotContainer_slot, plotContainer_slot_template, ctx, /*$$scope*/ ctx[10], dirty, get_plotContainer_slot_changes, get_plotContainer_slot_context);
 				}
+			}
+
+			if (!current || dirty & /*filetype*/ 32 && div2_id_value !== (div2_id_value = "" + (/*filetype*/ ctx[5] + "-plotContainer"))) {
+				attr_dev(div2, "id", div2_id_value);
+			}
+
+			if (!current || dirty & /*filetype*/ 32 && div3_id_value !== (div3_id_value = "" + (/*filetype*/ ctx[5] + "-button-plot-container"))) {
+				attr_dev(div3, "id", div3_id_value);
 			}
 
 			if (!current || dirty & /*id*/ 16) {
@@ -26273,7 +26297,9 @@ function create_fragment$E(ctx) {
 			destroy_component(hamburger1);
 			destroy_component(textfield);
 			if (buttonContainer_slot) buttonContainer_slot.d(detaching);
+			div1_resize_listener();
 			if (plotContainer_slot) plotContainer_slot.d(detaching);
+			div3_resize_listener();
 			mounted = false;
 			run_all(dispose);
 		}
@@ -26354,8 +26380,16 @@ function instance$E($$self, $$props, $$invalidate) {
 		dispatch("tour", { filetype });
 	}
 
+	let ContainerHeight, buttonContainerHeight;
+
 	onMount(() => {
 		$$invalidate(1, toggleBrowser = true);
+		mounted = true;
+	});
+
+	afterUpdate(() => {
+		const plotContainer = document.getElementById(`${filetype}-plotContainer`);
+		plotContainer.style.height = `calc(${ContainerHeight}px - ${buttonContainerHeight}px - 11em)`;
 	});
 
 	const writable_props = [
@@ -26403,6 +26437,16 @@ function instance$E($$self, $$props, $$invalidate) {
 		$$invalidate(3, currentLocation);
 	}
 
+	function div1_elementresize_handler() {
+		buttonContainerHeight = this.clientHeight;
+		$$invalidate(7, buttonContainerHeight);
+	}
+
+	function div3_elementresize_handler() {
+		ContainerHeight = this.clientHeight;
+		$$invalidate(6, ContainerHeight);
+	}
+
 	$$self.$$set = $$props => {
 		if ("id" in $$props) $$invalidate(4, id = $$props.id);
 		if ("fileChecked" in $$props) $$invalidate(0, fileChecked = $$props.fileChecked);
@@ -26410,7 +26454,7 @@ function instance$E($$self, $$props, $$invalidate) {
 		if ("toggleBrowser" in $$props) $$invalidate(1, toggleBrowser = $$props.toggleBrowser);
 		if ("preModal" in $$props) $$invalidate(2, preModal = $$props.preModal);
 		if ("currentLocation" in $$props) $$invalidate(3, currentLocation = $$props.currentLocation);
-		if ("$$scope" in $$props) $$invalidate(8, $$scope = $$props.$$scope);
+		if ("$$scope" in $$props) $$invalidate(10, $$scope = $$props.$$scope);
 	};
 
 	$$self.$capture_state = () => ({
@@ -26418,6 +26462,7 @@ function instance$E($$self, $$props, $$invalidate) {
 		fly,
 		Textfield,
 		onMount,
+		afterUpdate,
 		FileBrowser,
 		Hamburger1,
 		createEventDispatcher,
@@ -26430,7 +26475,9 @@ function instance$E($$self, $$props, $$invalidate) {
 		currentLocation,
 		dispatch,
 		browse_folder,
-		tour_event
+		tour_event,
+		ContainerHeight,
+		buttonContainerHeight
 	});
 
 	$$self.$inject_state = $$props => {
@@ -26440,6 +26487,8 @@ function instance$E($$self, $$props, $$invalidate) {
 		if ("toggleBrowser" in $$props) $$invalidate(1, toggleBrowser = $$props.toggleBrowser);
 		if ("preModal" in $$props) $$invalidate(2, preModal = $$props.preModal);
 		if ("currentLocation" in $$props) $$invalidate(3, currentLocation = $$props.currentLocation);
+		if ("ContainerHeight" in $$props) $$invalidate(6, ContainerHeight = $$props.ContainerHeight);
+		if ("buttonContainerHeight" in $$props) $$invalidate(7, buttonContainerHeight = $$props.buttonContainerHeight);
 	};
 
 	if ($$props && "$$inject" in $$props) {
@@ -26453,6 +26502,8 @@ function instance$E($$self, $$props, $$invalidate) {
 		currentLocation,
 		id,
 		filetype,
+		ContainerHeight,
+		buttonContainerHeight,
 		browse_folder,
 		tour_event,
 		$$scope,
@@ -26462,7 +26513,9 @@ function instance$E($$self, $$props, $$invalidate) {
 		filebrowser_fileChecked_binding,
 		chdir_handler,
 		hamburger1_active_binding,
-		textfield_value_binding
+		textfield_value_binding,
+		div1_elementresize_handler,
+		div3_elementresize_handler
 	];
 }
 
@@ -54842,7 +54895,7 @@ function init_tour_normline({filetype="felix"}={}) {
 const { console: console_1$a } = globals;
 const file$1a = "src\\Pages\\Normline.svelte";
 
-// (179:4) <div class="buttonSlot" slot="buttonContainer">
+// (180:4) <div class="buttonSlot" slot="buttonContainer">
 function create_buttonContainer_slot(ctx) {
 	let div0;
 	let initfunctionrow;
@@ -55022,10 +55075,10 @@ function create_buttonContainer_slot(ctx) {
 			div1 = element("div");
 			create_component(customradio.$$.fragment);
 			set_style(div1, "display", "flex");
-			add_location(div1, file$1a, 184, 8, 7449);
+			add_location(div1, file$1a, 185, 8, 7451);
 			attr_dev(div0, "class", "buttonSlot svelte-1y6jhf9");
 			attr_dev(div0, "slot", "buttonContainer");
-			add_location(div0, file$1a, 178, 4, 6959);
+			add_location(div0, file$1a, 179, 4, 6961);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -55160,14 +55213,14 @@ function create_buttonContainer_slot(ctx) {
 		block,
 		id: create_buttonContainer_slot.name,
 		type: "slot",
-		source: "(179:4) <div class=\\\"buttonSlot\\\" slot=\\\"buttonContainer\\\">",
+		source: "(180:4) <div class=\\\"buttonSlot\\\" slot=\\\"buttonContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (208:8) {#if graphPlotted}
+// (209:8) {#if graphPlotted}
 function create_if_block$s(ctx) {
 	let div;
 	let writefunctioncontents;
@@ -55299,7 +55352,7 @@ function create_if_block$s(ctx) {
 			t2 = space();
 			create_component(reportlayout.$$.fragment);
 			attr_dev(div, "class", "svelte-1y6jhf9");
-			add_location(div, file$1a, 208, 12, 8422);
+			add_location(div, file$1a, 209, 12, 8424);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -55407,14 +55460,14 @@ function create_if_block$s(ctx) {
 		block,
 		id: create_if_block$s.name,
 		type: "if",
-		source: "(208:8) {#if graphPlotted}",
+		source: "(209:8) {#if graphPlotted}",
 		ctx
 	});
 
 	return block;
 }
 
-// (192:4) <div class="plotSlot" slot="plotContainer">
+// (193:4) <div class="plotSlot" slot="plotContainer">
 function create_plotContainer_slot(ctx) {
 	let div0;
 	let getfileinfotable;
@@ -55470,33 +55523,33 @@ function create_plotContainer_slot(ctx) {
 			attr_dev(div1, "class", "animated fadeIn svelte-1y6jhf9");
 			attr_dev(div1, "id", "exp-theory-plot");
 			toggle_class(div1, "hide", !/*show_theoryplot*/ ctx[3]);
-			add_location(div1, file$1a, 198, 12, 7905);
+			add_location(div1, file$1a, 199, 12, 7907);
 			attr_dev(div2, "id", "bplot");
 			attr_dev(div2, "class", "svelte-1y6jhf9");
-			add_location(div2, file$1a, 199, 12, 8005);
+			add_location(div2, file$1a, 200, 12, 8007);
 			attr_dev(div3, "id", "saPlot");
 			attr_dev(div3, "class", "svelte-1y6jhf9");
-			add_location(div3, file$1a, 200, 12, 8041);
+			add_location(div3, file$1a, 201, 12, 8043);
 			attr_dev(div4, "id", "avgplot");
 			attr_dev(div4, "class", "svelte-1y6jhf9");
-			add_location(div4, file$1a, 201, 12, 8078);
+			add_location(div4, file$1a, 202, 12, 8080);
 			attr_dev(div5, "class", "animated fadeIn svelte-1y6jhf9");
 			attr_dev(div5, "id", "opoplot");
 			toggle_class(div5, "hide", !/*$opoMode*/ ctx[22]);
-			add_location(div5, file$1a, 202, 12, 8116);
+			add_location(div5, file$1a, 203, 12, 8118);
 			attr_dev(div6, "class", "animated fadeIn svelte-1y6jhf9");
 			attr_dev(div6, "id", "opoSA");
 			toggle_class(div6, "hide", !/*$opoMode*/ ctx[22]);
-			add_location(div6, file$1a, 203, 12, 8201);
+			add_location(div6, file$1a, 204, 12, 8203);
 			attr_dev(div7, "class", "animated fadeIn svelte-1y6jhf9");
 			attr_dev(div7, "id", "opoRelPlot");
 			toggle_class(div7, "hide", !/*$opoMode*/ ctx[22]);
-			add_location(div7, file$1a, 204, 12, 8284);
+			add_location(div7, file$1a, 205, 12, 8286);
 			attr_dev(div8, "class", "felixPlot svelte-1y6jhf9");
-			add_location(div8, file$1a, 197, 8, 7868);
+			add_location(div8, file$1a, 198, 8, 7870);
 			attr_dev(div0, "class", "plotSlot svelte-1y6jhf9");
 			attr_dev(div0, "slot", "plotContainer");
-			add_location(div0, file$1a, 191, 4, 7659);
+			add_location(div0, file$1a, 192, 4, 7661);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -55587,7 +55640,7 @@ function create_plotContainer_slot(ctx) {
 		block,
 		id: create_plotContainer_slot.name,
 		type: "slot",
-		source: "(192:4) <div class=\\\"plotSlot\\\" slot=\\\"plotContainer\\\">",
+		source: "(193:4) <div class=\\\"plotSlot\\\" slot=\\\"plotContainer\\\">",
 		ctx
 	});
 

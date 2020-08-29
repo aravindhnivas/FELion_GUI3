@@ -176,6 +176,7 @@
 <!-- Layout -->
 
 <Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>
+
     <div class="buttonSlot" slot="buttonContainer">
 
         <InitFunctionRow {removeExtraFile} {felixPlotCheckboxes} {opofiles} {felixfiles} normMethod={$normMethod} {theoryLocation} bind:preModal bind:graphPlotted bind:show_theoryplot/>
