@@ -11,4 +11,6 @@
 - Using Quill editor for report editor.
 - Bug fix: Depletion scan dropdown menu auto updated
 
+- Get labview settings from Masspec files
+
 ---
