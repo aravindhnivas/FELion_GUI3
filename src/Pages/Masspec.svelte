@@ -1,6 +1,5 @@
 <script>
 
-    //  Importing
     import Layout from "../components/Layout.svelte"
     import CustomIconSwitch from "../components/CustomIconSwitch.svelte"
     import CustomSelect from "../components/CustomSelect.svelte"
@@ -10,6 +9,7 @@
     import Textfield from '@smui/textfield'
     import {plot} from "../js/functions.js"
     import {Icon} from '@smui/icon-button'
+    import GetLabviewSettings from "../components/GetLabviewSettings.svelte"
 
     /////////////////////////////////////////////////////////////////////////
 
@@ -105,7 +105,7 @@
     
     let includePlotsInReport = [{id:"mplot", include:true, label:"Mass Spectrum"}]
 
-    let preModal = {};
+    let preModal = {}, openSettings = false;
 </script>
 
 <style>
@@ -117,6 +117,7 @@
     .hide {display: none;}
 </style>
 
+<GetLabviewSettings location={currentLocation} filename={fileChecked[0]} bind:active={openSettings}/>
 <Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked >
     <div class="masspec_buttonContainer" slot="buttonContainer">
 
@@ -124,6 +125,7 @@
             <button class="button is-link" on:click="{(e)=>plotData({e:e})}">Masspec Plot</button>
             <button class="button is-link" on:click="{()=>{toggleRow1 = !toggleRow1}}">Find Peaks</button>
             <button class="button is-link" on:click="{()=>{toggleRow2 = !toggleRow2}}">NIST Webbook</button>
+            <button class="button is-link" on:click="{()=>{openSettings = true}}">GetLabviewSettings</button>
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"general"})}">Open in Matplotlib</button>
             <CustomIconSwitch style="padding:0;" bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
             <CustomSwitch style="margin: 0 1em;" on:change={linearlogCheck} bind:selected={logScale} label="Log"/>
@@ -149,7 +151,7 @@
     <div style="margin-right: 1em;" slot="plotContainer">
 
         <div id="mplot"></div>
-        <!-- <div class="animated fadeIn hide" class:active={graphPlotted} style="flex-direction:column "><ReportLayout bind:currentLocation id="masspecreport", plotID={["mplot"]}/></div> -->
+       
         {#if graphPlotted}
             <div class="animated fadeIn" style="flex-direction:column ">
                 <ReportLayout bind:currentLocation={currentLocation} id={`${filetype}_report`} {includePlotsInReport} />
