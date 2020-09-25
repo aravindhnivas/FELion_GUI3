@@ -3,7 +3,7 @@ from ipywidgets import widgets, interact_manual, Layout
 from IPython.display import display
 import matplotlib.pyplot as plt
 import numpy as np
-
+from matplotlib.widgets import Slider
 class createWidgets:
     
     def __init__(self, filetype, locationValue="", multiselect=True, fig=None, save_options=True, update_label="update location"):
@@ -64,5 +64,37 @@ class createWidgets:
 
             return "File is already opened so cannot save now"
 
+        
     def clearLog(self, e):
         return self.output.clear_output()
+    
+
+class Sliderlog(Slider):
+
+    """
+    Logarithmic slider.
+
+    Takes in every method and function of the matplotlib's slider.
+    Set slider to *val* visually so the slider still is lineat but display 10**val next to the slider.
+    
+    Return 10**val to the update function (func)
+    """
+
+    def set_val(self, val):
+
+        xy = self.poly.xy
+        if self.orientation == 'vertical':
+            xy[1] = 0, val
+            xy[2] = 1, val
+        else:
+            xy[2] = val, 1
+            xy[3] = val, 0
+        self.poly.xy = xy
+        self.valtext.set_text(self.valfmt % 10**val)   # Modified to display 10**val instead of val
+        if self.drawon:
+            self.ax.figure.canvas.draw_idle()
+        self.val = val
+        if not self.eventson:
+            return
+        for cid, func in self.observers.items():
+                func(10**val)
