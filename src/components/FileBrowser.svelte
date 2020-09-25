@@ -27,9 +27,9 @@
 
     let original_location = currentLocation
     let files = [], otherfolders = [], selectAll=false, showfiles = true, original_files = [];
-    $: parentFolder = fs.existsSync(currentLocation) ? path.basename(currentLocation) : "Undefined"
+    $: locationStatus = fs.existsSync(currentLocation)
 
-    $: locationStatus = fs.existsSync(currentLocation) ? true : false
+    $: parentFolder = locationStatus ? path.basename(currentLocation) : "Undefined"
 
     let searchKey = "";
     const searchfile = () => {
@@ -37,10 +37,10 @@
         if (!searchKey) {files = original_files}
         else {files = original_files.filter(file=>file.name.includes(searchKey))}
     }
-
+    // $: console.log(files)
     let files_loaded = false
     function getfiles(toast=false) {
-        if (fs.existsSync(currentLocation)) {original_files = otherfolders = files = fileChecked = [], selectAll = files_loaded = false}
+        if (locationStatus) {original_files = otherfolders = files = fileChecked = [], selectAll = files_loaded = false}
         else {return window.createToast("Location undefined", "danger")}
         try {
 
@@ -56,6 +56,7 @@
             files_loaded = true
             console.log("Folder updated");
             dispatch_chdir_event()
+            if (filetype.length > 2) {localStorage[`${filetype}_location`] = currentLocation}
             
             if (toast) {window.createToast("Files updated")}
         } catch (err) {
@@ -70,17 +71,17 @@
     $: sortFile ? files = files.sort((a,b)=>a.name>b.name?1:-1) : files = files.sort((a,b)=>a.name<b.name?1:-1)
     const changeDirectory = (goto) => {
 
-        if (!fs.existsSync(currentLocation)) {return window.createToast("Location undefined", "danger")}
+        if (!locationStatus) {return window.createToast("Location undefined", "danger")}
         currentLocation = path.resolve(currentLocation, goto)
         getfiles()
         
     }
 
-    onMount(()=> {if(fs.existsSync(currentLocation)) {getfiles(); console.log("onMount Updating location for ", filetype)}} )
+    onMount(()=> {if(locationStatus) {getfiles(); console.log("onMount Updating location for ", filetype)}} )
     afterUpdate(() => {
         if (original_location !== currentLocation) {
-            if(fs.existsSync(currentLocation)) {getfiles(); console.log("Updating location for ", filetype)}
-            else {return window.createToast("Location undefined", "danger")}
+            if(locationStatus) {getfiles(); console.log("Updating location for ", filetype)}
+            else {return window.createToast("Location undefined", "danger") }
         
         }
     });
@@ -113,35 +114,40 @@
 
 <div class="folderfile-list" id="{filetype}_filebrowser">
     <div class="align folderlist" >
+
         <IconButton  toggle bind:pressed={showfiles}>
 
             <Icon class="material-icons" on>keyboard_arrow_down</Icon>
             <Icon class="material-icons" >keyboard_arrow_right</Icon>
         </IconButton>
-
         <div class="mdc-typography--subtitle1">{parentFolder}</div>
-
     </div>
+
     {#if files_loaded}
-        {#if showfiles && files != "" }
+
+        {#if showfiles && files.length>0 }
             <VirtualCheckList bind:fileChecked bind:items={files} on:click="{()=>selectAll=false}"/>
-        {:else if files == ""}
+        {:else if files.length <= 0}
             <div class="mdc-typography--subtitle1 align center">No {filetype} here!</div>        
         {/if}
+        
+
         <div class="otherFolderlist" style="cursor:pointer">
             {#each otherfolders as folder (folder.id)}
                 <div class="align" on:click="{()=>changeDirectory(folder.name)}" transition:slide|local>
                     <Icon class="material-icons">keyboard_arrow_right</Icon>
+
                     <div class="mdc-typography--subtitle1">{folder.name}</div>
                 </div>
             {/each}
-        </div>
-    {:else if !locationStatus}
 
+        </div>
+
+    {:else if !locationStatus}
         <div class="mdc-typography--subtitle1 align center">Location doesn't exist: Browse files again</div>
+
     {:else}
         <div class="mdc-typography--subtitle1 align center">...loading</div>
     
     {/if}
-
 </div>

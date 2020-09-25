@@ -174,7 +174,7 @@
         <div class="column fileContainer" >
 
             <div class="container button-plot-container box" id="{filetype}-button-plot-container" bind:clientHeight={ContainerHeight}>
-                <div class="align">
+                <div class="align" style="flex-wrap: nowrap;">
 
 
                     <Hamburger1 bind:active={toggleBrowser}/>
