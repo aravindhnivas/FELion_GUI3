@@ -16,5 +16,3 @@ if (!localStorage["pythonpath"]) localStorage["pythonpath"] = get(pythonpath)
 if (!localStorage["pythonscript"]) localStorage["pythonscript"] = get(pythonpath)
 
 export const backupName = writable("FELion_GUI_backup")
-
-export const activateChangelog = writable(false)

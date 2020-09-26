@@ -15,8 +15,8 @@ export function InstallUpdate(target, updateFolder) {
 
     transferFiles({ dest, src })
 
-        .then(() => console.log("Copying downloaded files"))
+        .then(() => {console.log("Copying downloaded files"); localStorage.showUpdate = "true"})
 
         .catch((err) => { window.createToast("Error occured while copying downloaded files"); throw err; })
-        .finally(() => { target.classList.toggle("is-loading"); localStorage.showUpdate = "true"; restart_program() })
+        .finally(() => { target.classList.toggle("is-loading"); restart_program() })
 }

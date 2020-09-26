@@ -1,7 +1,8 @@
 <script>
 
     // Importing modules
-    import {pythonpath, pythonscript, pyVersion, github, backupName, activateChangelog} from "./settings/svelteWritables";
+    import {pythonpath, pythonscript, pyVersion, github, backupName} from "./settings/svelteWritables";
+    import {activateChangelog} from "../js/functions"
     import Textfield from '@smui/textfield';
     import {onMount} from "svelte";
     import { fade } from 'svelte/transition';
@@ -124,7 +125,8 @@
 <PreModal bind:preModal />
 
 <CustomDialog id="pythonpath_Check" bind:dialog={pythonpathCheck} on:response={handlepythonPathCheck} title={"Python path is not valid"} content={"Change it in Settings --> Configuration"} label1="Okay" label2="Cancel" />
-<Changelog bind:active={$activateChangelog} />
+
+<Changelog  />
 
 <section class="section animated fadeIn" id="Settings" style="display:none">
 
