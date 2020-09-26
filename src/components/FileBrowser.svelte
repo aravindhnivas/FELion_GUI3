@@ -58,7 +58,8 @@
             dispatch_chdir_event()
             if (filetype.length > 2) {localStorage[`${filetype}_location`] = currentLocation}
             
-            if (toast) {window.createToast("Files updated")}
+            if (toast) { window.createToast("Files updated"); Array.from(document.getElementsByClassName("notice")).forEach(f=>f.remove()) }
+
         } catch (err) {
             console.log(err)
             preModal.modalContent = err.stack;
@@ -70,8 +71,6 @@
     let sortFile = false
     $: sortFile ? files = files.sort((a,b)=>a.name>b.name?1:-1) : files = files.sort((a,b)=>a.name<b.name?1:-1)
     const changeDirectory = (goto) => {
-
-        if (!locationStatus) {return window.createToast("Location undefined", "danger")}
         currentLocation = path.resolve(currentLocation, goto)
         getfiles()
         
@@ -79,26 +78,31 @@
 
     onMount(()=> {if(locationStatus) {getfiles(); console.log("onMount Updating location for ", filetype)}} )
     afterUpdate(() => {
-        if (original_location !== currentLocation) {
-            if(locationStatus) {getfiles(); console.log("Updating location for ", filetype)}
-            else {return window.createToast("Location undefined", "danger") }
-        
+        if (original_location !== currentLocation && locationStatus) {
+
+            getfiles(true); console.log("Updating location for ", filetype)
         }
+
     });
+
 </script>
 
 <style>
 
-    /* .filelist { max-height: calc(100vh - 30em); overflow-y: auto; } */
     .folderfile-list {max-height: calc(100vh - 20em); overflow-y: auto;}
     .align {display: flex; align-items: center;}
+
     .center {justify-content: center;}
     .browseIcons {cursor: pointer;}
 </style>
+
 <PreModal bind:preModal/>
+
 <div class="align center browseIcons">
     <Icon class="material-icons" on:click="{()=>changeDirectory("..")}">arrow_back</Icon>
+
     <Icon class="material-icons" on:click="{()=>{getfiles(true)}}">refresh</Icon>
+
     <CustomIconSwitch bind:toggler={sortFile} icons={["trending_up", "trending_down"]}/>
 
 </div>
@@ -113,6 +117,7 @@
 </div>
 
 <div class="folderfile-list" id="{filetype}_filebrowser">
+
     <div class="align folderlist" >
 
         <IconButton  toggle bind:pressed={showfiles}>
@@ -121,9 +126,10 @@
             <Icon class="material-icons" >keyboard_arrow_right</Icon>
         </IconButton>
         <div class="mdc-typography--subtitle1">{parentFolder}</div>
+
     </div>
 
-    {#if files_loaded}
+    {#if files_loaded && locationStatus}
 
         {#if showfiles && files.length>0 }
             <VirtualCheckList bind:fileChecked bind:items={files} on:click="{()=>selectAll=false}"/>
