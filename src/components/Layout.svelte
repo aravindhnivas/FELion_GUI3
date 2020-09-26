@@ -132,7 +132,7 @@
     }
 
     .plotContainer {
-        overflow-y: auto; padding-bottom: 12em; max-height: calc(100vh - 27em);
+        overflow-y: auto; padding-bottom: 12em; max-height: calc(100vh - 20em);
 
         div {margin-top: 1em;}
 
@@ -184,7 +184,11 @@
                     <button class="button is-link is-pulled-right" on:click={tour_event}>Need help?</button>
 
                 </div>
-                <div class="align buttonContainer" id="{filetype}-buttonContainer" bind:clientHeight={buttonContainerHeight}> <slot name="buttonContainer" /></div>
+                <div class="align buttonContainer" id="{filetype}-buttonContainer" bind:clientHeight={buttonContainerHeight}>
+                    {#if toggleBrowser}
+                        <slot name="buttonContainer" />
+                    {/if}
+                 </div>
                 <div class="plotContainer" id="{filetype}-plotContainer"> <slot name="plotContainer" /> </div>
             </div>
         </div>
