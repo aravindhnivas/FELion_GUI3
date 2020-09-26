@@ -58,12 +58,12 @@
         switch (filetype) {
 
             case "felix":
+                if(felixfiles.length<1) return window.createToast("No files selected", "danger")
+
                 removeExtraFile()
                 graphPlotted = false, $felixOutputName = "averaged", $felixPlotAnnotations = [], $felixPeakTable = []
-                if(felixfiles.length<1) return window.createToast("No files selected", "danger")
                 
                 pyfile="normline.py" , args=[...felixfiles, delta]
-
 
                 computePy_func({e, pyfile, args})
                 .then((dataFromPython)=>{
@@ -79,8 +79,10 @@
                 break;
             
             case "baseline":
-                if ($opoMode) {if(opofiles.length<1) return window.createToast("No OPO files selected", "danger")}
-                else {if(felixfiles.length<1) return window.createToast("No FELIX files selected", "danger")}
+                
+                if($opoMode && opofiles.length<1) { return window.createToast("No OPO files selected", "danger") }
+                else if(felixfiles.length<1) { return window.createToast("No FELIX files selected", "danger") }
+
                 pyfile="baseline.py", args= $opoMode ? opofiles: felixfiles
                 computePy_func({e, pyfile, args, general:true, openShell})
                 .catch(err=>{preModal.modalContent = err;  preModal.open = true})
@@ -88,7 +90,6 @@
 
             case "matplotlib":
                 const numberWidgets = felixPlotWidgets.number.map(n=>n.value)
-
                 const textWidgets = felixPlotWidgets.text.map(n=>n.value)
                 
                 const booleanWidgets = felixPlotWidgets.boolean.map(n=>n.value)
@@ -97,10 +98,9 @@
                 pyfile="felix_tkplot.py", args=[JSON.stringify({numberWidgets, textWidgets, booleanWidgets, selectedWidgets, location: $felixopoLocation, normMethod, theoryLocation})]
                 computePy_func({e, pyfile, args, general:true, openShell})
                 .catch(err=>{preModal.modalContent = err;  preModal.open = true})
-
-
             default:
                 break;
+                
         }
 
     }

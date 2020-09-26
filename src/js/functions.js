@@ -19,7 +19,7 @@ window.onerror = function(message, source, lineno, colno, error) {
     // colno: Column number for the line where the error occurred (number)
     // error: Error Object (object)
     console.error(error)
-    Snackbar.create({ message:"Unknown error occured: Check console", position: "is-top", type: `is-danger` })
+    Snackbar.create({ message:error.name, position: "is-top", type: `is-danger` })
  };
 
 window.process.on('unhandledRejection', (reason, promise) => {

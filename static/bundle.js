@@ -9112,7 +9112,7 @@ window.onerror = function(message, source, lineno, colno, error) {
     // colno: Column number for the line where the error occurred (number)
     // error: Error Object (object)
     console.error(error);
-    Snackbar.create({ message:"Unknown error occured: Check console", position: "is-top", type: `is-danger` });
+    Snackbar.create({ message:error.name, position: "is-top", type: `is-danger` });
  };
 
 window.process.on('unhandledRejection', (reason, promise) => {
@@ -47995,18 +47995,18 @@ function create_fragment$15(ctx) {
 			button4.textContent = "OPO";
 			attr_dev(button0, "class", "button is-link");
 			attr_dev(button0, "id", "create_baseline_btn");
-			add_location(button0, file$$, 114, 4, 4647);
+			add_location(button0, file$$, 114, 4, 4681);
 			attr_dev(button1, "class", "button is-link");
 			attr_dev(button1, "id", "felix_plotting_btn");
-			add_location(button1, file$$, 115, 4, 4789);
+			add_location(button1, file$$, 115, 4, 4823);
 			attr_dev(button2, "class", "button is-link");
-			add_location(button2, file$$, 117, 4, 5034);
+			add_location(button2, file$$, 117, 4, 5068);
 			attr_dev(button3, "class", "button is-link");
-			add_location(button3, file$$, 119, 4, 5218);
+			add_location(button3, file$$, 119, 4, 5252);
 			attr_dev(button4, "class", "button is-link");
-			add_location(button4, file$$, 120, 4, 5316);
+			add_location(button4, file$$, 120, 4, 5350);
 			attr_dev(div, "class", "align");
-			add_location(div, file$$, 112, 0, 4620);
+			add_location(div, file$$, 112, 0, 4654);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -48272,9 +48272,9 @@ function instance$15($$self, $$props, $$invalidate) {
 
 		switch (filetype) {
 			case "felix":
+				if (felixfiles.length < 1) return window.createToast("No files selected", "danger");
 				removeExtraFile();
 				($$invalidate(9, graphPlotted = false), set_store_value(felixOutputName, $felixOutputName = "averaged", $felixOutputName), set_store_value(felixPlotAnnotations, $felixPlotAnnotations = [], $felixPlotAnnotations), set_store_value(felixPeakTable, $felixPeakTable = [], $felixPeakTable));
-				if (felixfiles.length < 1) return window.createToast("No files selected", "danger");
 				(pyfile = "normline.py", args = [...felixfiles, delta]);
 				computePy_func({ e, pyfile, args }).then(dataFromPython => {
 					(set_store_value(expfittedLines, $expfittedLines = [], $expfittedLines), set_store_value(felixPlotAnnotations, $felixPlotAnnotations = [], $felixPlotAnnotations), set_store_value(expfittedLinesCollectedData, $expfittedLinesCollectedData = [], $expfittedLinesCollectedData), set_store_value(fittedTraceCount, $fittedTraceCount = 0, $fittedTraceCount));
@@ -48288,10 +48288,10 @@ function instance$15($$self, $$props, $$invalidate) {
 				});
 				break;
 			case "baseline":
-				if ($opoMode) {
-					if (opofiles.length < 1) return window.createToast("No OPO files selected", "danger");
-				} else {
-					if (felixfiles.length < 1) return window.createToast("No FELIX files selected", "danger");
+				if ($opoMode && opofiles.length < 1) {
+					return window.createToast("No OPO files selected", "danger");
+				} else if (felixfiles.length < 1) {
+					return window.createToast("No FELIX files selected", "danger");
 				}
 				(pyfile = "baseline.py", args = $opoMode ? opofiles : felixfiles);
 				computePy_func({
