@@ -1,15 +1,30 @@
 
 
 import { writable } from 'svelte/store';
-import { Toast } from 'svelma';
+import { Toast, Snackbar } from 'svelma';
 import "../Pages/general/computePy";
-
+export const activateChangelog = writable(false)
 export const windowLoaded = writable(false);
 
 // Global variables
 
 window.createToast = (msg, type = "primary") => Toast.create({ message: msg, position: "is-top", type: `is-${type}` })
 window.sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+window.onerror = function(message, source, lineno, colno, error) { 
+
+    // message: error message (string). Available as event (sic!) in HTML onerror="" handler.
+    // source: URL of the script where the error was raised (string)
+    // lineno: Line number where error was raised (number)
+    // colno: Column number for the line where the error occurred (number)
+    // error: Error Object (object)
+    console.error(error)
+    Snackbar.create({ message:"Unknown error occured: Check console", position: "is-top", type: `is-danger` })
+ };
+
+window.process.on('unhandledRejection', (reason, promise) => {
+    console.error(`Uncaught error in`, promise);
+});
 
 window.targetElement = (id) => document.getElementById(id)
 window.getPageStatus = (id) => targetElement(id).style.display !== "none"
@@ -41,16 +56,13 @@ window.asyncForEach = async (array, callback) => {
 }
 
 
-
 window.addEventListener('DOMContentLoaded', (event) => {
-
     console.log('DOM fully loaded and parsed');
     windowLoaded.set(true)
 
 });
 
 export function resizableDiv({ div, change = { width: true, height: true }, cursor = { left: false, right: false, bottom: false, top: false } } = {}) {
-
     interact(div).resizable({
 
         edges: cursor,
