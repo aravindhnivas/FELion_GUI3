@@ -36,14 +36,19 @@
         console.log(searchKey)
         if (!searchKey) {files = original_files}
         else {files = original_files.filter(file=>file.name.includes(searchKey))}
-    }
-    // $: console.log(files)
-    let files_loaded = false
-    function getfiles(toast=false) {
-        if (locationStatus) {original_files = otherfolders = files = fileChecked = [], selectAll = files_loaded = false}
-        else {return window.createToast("Location undefined", "danger")}
-        try {
 
+    }
+
+    let files_loaded = false
+    
+    
+    function getfiles(toast=false) {
+    
+        if (!locationStatus) {return window.createToast("Location undefined", "danger")}
+        original_files = otherfolders = files = fileChecked = []
+        selectAll = files_loaded = false
+        
+        try {
             console.log("Current location: ", currentLocation)
             
             let folderfile = fs.readdirSync(currentLocation)
@@ -54,27 +59,25 @@
             original_location = currentLocation
             
             files_loaded = true
-            console.log("Folder updated");
+            console.log("Folder updated", otherfolders);
             dispatch_chdir_event()
             if (filetype.length > 2) {localStorage[`${filetype}_location`] = currentLocation}
             
-            if (toast) { window.createToast("Files updated"); Array.from(document.getElementsByClassName("notice")).forEach(f=>f.remove()) }
+            if (toast) { window.createToast("Files updated"); }
 
         } catch (err) {
+            
             console.log(err)
             preModal.modalContent = err.stack;
             preModal.open = true;
-            return original_files = otherfolders = files = fileChecked = []
+            return 
         }
     }
 
     let sortFile = false
     $: sortFile ? files = files.sort((a,b)=>a.name>b.name?1:-1) : files = files.sort((a,b)=>a.name<b.name?1:-1)
-    const changeDirectory = (goto) => {
-        currentLocation = path.resolve(currentLocation, goto)
-        getfiles()
-        
-    }
+
+    const changeDirectory = (goto) => { currentLocation = path.resolve(currentLocation, goto); getfiles() }
 
     onMount(()=> {if(locationStatus) {getfiles(); console.log("onMount Updating location for ", filetype)}} )
     afterUpdate(() => {

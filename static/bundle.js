@@ -23709,7 +23709,7 @@ function get_each_context$2(ctx, list, i) {
 	return child_ctx;
 }
 
-// (102:4) <Icon class="material-icons" on:click="{()=>changeDirectory("..")}">
+// (105:4) <Icon class="material-icons" on:click="{()=>changeDirectory("..")}">
 function create_default_slot_6(ctx) {
 	let t;
 
@@ -23729,14 +23729,14 @@ function create_default_slot_6(ctx) {
 		block,
 		id: create_default_slot_6.name,
 		type: "slot",
-		source: "(102:4) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>changeDirectory(\\\"..\\\")}\\\">",
+		source: "(105:4) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>changeDirectory(\\\"..\\\")}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (104:4) <Icon class="material-icons" on:click="{()=>{getfiles(true)}}">
+// (107:4) <Icon class="material-icons" on:click="{()=>{getfiles(true)}}">
 function create_default_slot_5(ctx) {
 	let t;
 
@@ -23756,14 +23756,14 @@ function create_default_slot_5(ctx) {
 		block,
 		id: create_default_slot_5.name,
 		type: "slot",
-		source: "(104:4) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>{getfiles(true)}}\\\">",
+		source: "(107:4) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>{getfiles(true)}}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (115:8) <span slot="label">
+// (118:8) <span slot="label">
 function create_label_slot(ctx) {
 	let span;
 
@@ -23772,7 +23772,7 @@ function create_label_slot(ctx) {
 			span = element("span");
 			span.textContent = "Select All";
 			attr_dev(span, "slot", "label");
-			add_location(span, file_1, 114, 8, 4398);
+			add_location(span, file_1, 117, 8, 4265);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -23786,14 +23786,14 @@ function create_label_slot(ctx) {
 		block,
 		id: create_label_slot.name,
 		type: "slot",
-		source: "(115:8) <span slot=\\\"label\\\">",
+		source: "(118:8) <span slot=\\\"label\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (112:4) <FormField>
+// (115:4) <FormField>
 function create_default_slot_4$1(ctx) {
 	let switch_1;
 	let updating_checked;
@@ -23854,14 +23854,14 @@ function create_default_slot_4$1(ctx) {
 		block,
 		id: create_default_slot_4$1.name,
 		type: "slot",
-		source: "(112:4) <FormField>",
+		source: "(115:4) <FormField>",
 		ctx
 	});
 
 	return block;
 }
 
-// (125:12) <Icon class="material-icons" on>
+// (128:12) <Icon class="material-icons" on>
 function create_default_slot_3$1(ctx) {
 	let t;
 
@@ -23881,14 +23881,14 @@ function create_default_slot_3$1(ctx) {
 		block,
 		id: create_default_slot_3$1.name,
 		type: "slot",
-		source: "(125:12) <Icon class=\\\"material-icons\\\" on>",
+		source: "(128:12) <Icon class=\\\"material-icons\\\" on>",
 		ctx
 	});
 
 	return block;
 }
 
-// (126:12) <Icon class="material-icons" >
+// (129:12) <Icon class="material-icons" >
 function create_default_slot_2$4(ctx) {
 	let t;
 
@@ -23908,14 +23908,14 @@ function create_default_slot_2$4(ctx) {
 		block,
 		id: create_default_slot_2$4.name,
 		type: "slot",
-		source: "(126:12) <Icon class=\\\"material-icons\\\" >",
+		source: "(129:12) <Icon class=\\\"material-icons\\\" >",
 		ctx
 	});
 
 	return block;
 }
 
-// (123:8) <IconButton  toggle bind:pressed={showfiles}>
+// (126:8) <IconButton  toggle bind:pressed={showfiles}>
 function create_default_slot_1$5(ctx) {
 	let icon0;
 	let t;
@@ -23991,14 +23991,14 @@ function create_default_slot_1$5(ctx) {
 		block,
 		id: create_default_slot_1$5.name,
 		type: "slot",
-		source: "(123:8) <IconButton  toggle bind:pressed={showfiles}>",
+		source: "(126:8) <IconButton  toggle bind:pressed={showfiles}>",
 		ctx
 	});
 
 	return block;
 }
 
-// (155:4) {:else}
+// (158:4) {:else}
 function create_else_block$5(ctx) {
 	let div;
 
@@ -24007,7 +24007,7 @@ function create_else_block$5(ctx) {
 			div = element("div");
 			div.textContent = "...loading";
 			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-cksuwj");
-			add_location(div, file_1, 155, 8, 5840);
+			add_location(div, file_1, 158, 8, 5707);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -24024,14 +24024,14 @@ function create_else_block$5(ctx) {
 		block,
 		id: create_else_block$5.name,
 		type: "else",
-		source: "(155:4) {:else}",
+		source: "(158:4) {:else}",
 		ctx
 	});
 
 	return block;
 }
 
-// (152:30) 
+// (155:30) 
 function create_if_block_3$1(ctx) {
 	let div;
 
@@ -24040,7 +24040,7 @@ function create_if_block_3$1(ctx) {
 			div = element("div");
 			div.textContent = "Location doesn't exist: Browse files again";
 			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-cksuwj");
-			add_location(div, file_1, 152, 8, 5715);
+			add_location(div, file_1, 155, 8, 5582);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -24057,14 +24057,14 @@ function create_if_block_3$1(ctx) {
 		block,
 		id: create_if_block_3$1.name,
 		type: "if",
-		source: "(152:30) ",
+		source: "(155:30) ",
 		ctx
 	});
 
 	return block;
 }
 
-// (132:4) {#if files_loaded && locationStatus}
+// (135:4) {#if files_loaded && locationStatus}
 function create_if_block$a(ctx) {
 	let current_block_type_index;
 	let if_block;
@@ -24109,7 +24109,7 @@ function create_if_block$a(ctx) {
 
 			attr_dev(div, "class", "otherFolderlist");
 			set_style(div, "cursor", "pointer");
-			add_location(div, file_1, 140, 8, 5234);
+			add_location(div, file_1, 143, 8, 5101);
 		},
 		m: function mount(target, anchor) {
 			if (~current_block_type_index) {
@@ -24205,14 +24205,14 @@ function create_if_block$a(ctx) {
 		block,
 		id: create_if_block$a.name,
 		type: "if",
-		source: "(132:4) {#if files_loaded && locationStatus}",
+		source: "(135:4) {#if files_loaded && locationStatus}",
 		ctx
 	});
 
 	return block;
 }
 
-// (136:36) 
+// (139:36) 
 function create_if_block_2$2(ctx) {
 	let div;
 	let t0;
@@ -24226,7 +24226,7 @@ function create_if_block_2$2(ctx) {
 			t1 = text(/*filetype*/ ctx[1]);
 			t2 = text(" here!");
 			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-cksuwj");
-			add_location(div, file_1, 136, 12, 5112);
+			add_location(div, file_1, 139, 12, 4979);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -24248,14 +24248,14 @@ function create_if_block_2$2(ctx) {
 		block,
 		id: create_if_block_2$2.name,
 		type: "if",
-		source: "(136:36) ",
+		source: "(139:36) ",
 		ctx
 	});
 
 	return block;
 }
 
-// (134:8) {#if showfiles && files.length>0 }
+// (137:8) {#if showfiles && files.length>0 }
 function create_if_block_1$3(ctx) {
 	let virtualchecklist;
 	let updating_fileChecked;
@@ -24332,14 +24332,14 @@ function create_if_block_1$3(ctx) {
 		block,
 		id: create_if_block_1$3.name,
 		type: "if",
-		source: "(134:8) {#if showfiles && files.length>0 }",
+		source: "(137:8) {#if showfiles && files.length>0 }",
 		ctx
 	});
 
 	return block;
 }
 
-// (144:20) <Icon class="material-icons">
+// (147:20) <Icon class="material-icons">
 function create_default_slot$9(ctx) {
 	let t;
 
@@ -24359,14 +24359,14 @@ function create_default_slot$9(ctx) {
 		block,
 		id: create_default_slot$9.name,
 		type: "slot",
-		source: "(144:20) <Icon class=\\\"material-icons\\\">",
+		source: "(147:20) <Icon class=\\\"material-icons\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (142:12) {#each otherfolders as folder (folder.id)}
+// (145:12) {#each otherfolders as folder (folder.id)}
 function create_each_block$2(key_1, ctx) {
 	let div1;
 	let icon;
@@ -24404,9 +24404,9 @@ function create_each_block$2(key_1, ctx) {
 			t1 = text(t1_value);
 			t2 = space();
 			attr_dev(div0, "class", "mdc-typography--subtitle1");
-			add_location(div0, file_1, 145, 20, 5550);
+			add_location(div0, file_1, 148, 20, 5417);
 			attr_dev(div1, "class", "align svelte-cksuwj");
-			add_location(div1, file_1, 142, 16, 5360);
+			add_location(div1, file_1, 145, 16, 5227);
 			this.first = div1;
 		},
 		m: function mount(target, anchor) {
@@ -24470,7 +24470,7 @@ function create_each_block$2(key_1, ctx) {
 		block,
 		id: create_each_block$2.name,
 		type: "each",
-		source: "(142:12) {#each otherfolders as folder (folder.id)}",
+		source: "(145:12) {#each otherfolders as folder (folder.id)}",
 		ctx
 	});
 
@@ -24641,16 +24641,16 @@ function create_fragment$C(ctx) {
 			t8 = space();
 			if_block.c();
 			attr_dev(div0, "class", "align center browseIcons svelte-cksuwj");
-			add_location(div0, file_1, 100, 0, 3779);
+			add_location(div0, file_1, 103, 0, 3646);
 			attr_dev(div1, "class", "align center svelte-cksuwj");
-			add_location(div1, file_1, 110, 0, 4200);
+			add_location(div1, file_1, 113, 0, 4067);
 			attr_dev(div2, "class", "mdc-typography--subtitle1");
-			add_location(div2, file_1, 127, 8, 4795);
+			add_location(div2, file_1, 130, 8, 4662);
 			attr_dev(div3, "class", "align folderlist svelte-cksuwj");
-			add_location(div3, file_1, 120, 4, 4529);
+			add_location(div3, file_1, 123, 4, 4396);
 			attr_dev(div4, "class", "folderfile-list svelte-cksuwj");
 			attr_dev(div4, "id", div4_id_value = "" + (/*filetype*/ ctx[1] + "_filebrowser"));
-			add_location(div4, file_1, 118, 0, 4464);
+			add_location(div4, file_1, 121, 0, 4331);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -24863,15 +24863,15 @@ function instance$C($$self, $$props, $$invalidate) {
 		}
 	};
 
-	// $: console.log(files)
 	let files_loaded = false;
 
 	function getfiles(toast = false) {
-		if (locationStatus) {
-			(original_files = $$invalidate(4, otherfolders = $$invalidate(3, files = $$invalidate(0, fileChecked = []))), $$invalidate(5, selectAll = $$invalidate(8, files_loaded = false)));
-		} else {
+		if (!locationStatus) {
 			return window.createToast("Location undefined", "danger");
 		}
+
+		original_files = $$invalidate(4, otherfolders = $$invalidate(3, files = $$invalidate(0, fileChecked = [])));
+		$$invalidate(5, selectAll = $$invalidate(8, files_loaded = false));
 
 		try {
 			console.log("Current location: ", currentLocation);
@@ -24880,7 +24880,7 @@ function instance$C($$self, $$props, $$invalidate) {
 			$$invalidate(4, otherfolders = folderfile.filter(file => fs.lstatSync(path.join(currentLocation, file)).isDirectory()).map(file => file = { name: file, id: getID() }).sort((a, b) => a.name > b.name ? 1 : -1));
 			original_location = currentLocation;
 			$$invalidate(8, files_loaded = true);
-			console.log("Folder updated");
+			console.log("Folder updated", otherfolders);
 			dispatch_chdir_event();
 
 			if (filetype.length > 2) {
@@ -24889,13 +24889,12 @@ function instance$C($$self, $$props, $$invalidate) {
 
 			if (toast) {
 				window.createToast("Files updated");
-				Array.from(document.getElementsByClassName("notice")).forEach(f => f.remove());
 			}
 		} catch(err) {
 			console.log(err);
 			$$invalidate(2, preModal.modalContent = err.stack, preModal);
 			$$invalidate(2, preModal.open = true, preModal);
-			return original_files = $$invalidate(4, otherfolders = $$invalidate(3, files = $$invalidate(0, fileChecked = [])));
+			return;
 		}
 	}
 
