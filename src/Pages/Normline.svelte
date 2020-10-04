@@ -189,10 +189,12 @@
         </div>
     
     </div>
-    
+
+
     <div class="plotSlot" slot="plotContainer">
 
         <!-- Get file info functions -->
+    
         <GetFileInfoTable {felixfiles} normMethod={$normMethod} />
         
         <!-- Plots container -->
@@ -201,27 +203,38 @@
             <div id="bplot"></div>
             <div id="saPlot"></div>
             <div id="avgplot"></div>
+    
             <div class="animated fadeIn" class:hide={!$opoMode} id="opoplot"></div>
+    
             <div class="animated fadeIn" class:hide={!$opoMode} id="opoSA"></div>
             <div class="animated fadeIn" class:hide={!$opoMode} id="opoRelPlot"></div>
         </div>
     
+    
         {#if graphPlotted}
+    
             <div transition:fade>
+    
                 <!-- Write function buttons -->
                 <WriteFunctionContents on:addfile="{()=>{addFileModal=true}}" on:removefile={removeExtraFile} {output_namelists} bind:writeFileName bind:writeFile bind:overwrite_expfit />
 
                 <!-- Execute function buttons -->
                 <ExecuteFunctionContents {addedFileScale} {addedFileCol} normMethod={$normMethod} {writeFileName} {writeFile} {overwrite_expfit} {fullfiles} bind:preModal />
 
+    
                 <!-- Frequency table list -->
+    
                 <FrequencyTable bind:keepTable/>
 
+    
                 <!-- Report -->
+    
                 <ReportLayout bind:currentLocation={currentLocation} id={`${filetype}_report`} {includePlotsInReport} {includeTablesInReports} />
+    
             </div>
         
         {/if}
     </div>
+
 
 </Layout>
