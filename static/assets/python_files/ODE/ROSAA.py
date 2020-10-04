@@ -263,24 +263,24 @@ def main():
 
     conditions_CD = {
         "power(W)": 2e-5,
-        "branching-ratio":0.5,
-        "trapTime(ms)":600,
-        "trapTemp(K)":5,
-        "He density(cm3)":5e14,
-        "a":0.5,
-        "IonTemperature(K)":12.3,
-        "IonMass(amu)":14,
-        "cp":4.9e7,
-        "dipoleMoment(D)":None,
-        "numberOfLevel":3,
-        "totalIonCounts":1000,
-        "trap_area":5e-5,
-        "freq":453_521_850_000,
-        "k3":[9.6e-31, 2.9e-30],
-        "kCID":[6.7e-16, 1.9e-15],
-        "Collisional_q":[4.3242e-11, 3.4640e-11, 1.3013e-10],
-        "SpontaneousEmission":6.24e-4,
-        "Energy":[0, 15.127861, 45.373851, 90.718526, 151.132755, 226.577764]
+        "branching-ratio": 0.5,
+        "trapTime(ms)": 600,
+        "trapTemp(K)": 5,
+        "He density(cm3)": 5e14,
+        "a": 0.5,
+        "IonTemperature(K)": 12.3,
+        "IonMass(amu)": 14,
+        "cp": 4.9e7,
+        "dipoleMoment(D)": None,
+        "numberOfLevel": 3,
+        "totalIonCounts": 1000,
+        "trap_area": 5e-5,
+        "freq": 453_521_850_000,
+        "k3": [9.6e-31, 2.9e-30],
+        "kCID": [6.7e-16, 1.9e-15],
+        "Collisional_q": [4.3242e-11, 3.4640e-11, 1.3013e-10],
+        "SpontaneousEmission": 6.24e-4,
+        "Energy": [0, 15.127861, 45.373851, 90.718526, 151.132755, 226.577764]
     }
 
     Noff, Non = ROSAA_modal(conditions_CD)
