@@ -9,6 +9,7 @@
     import ReportLayout from "../components/ReportLayout.svelte"
     import Textfield from '@smui/textfield'
     import {plot} from "../js/functions.js"
+    import ROSAA from "./thz/ROSAA.svelte"
 
     /////////////////////////////////////////////////////////////////////////
 
@@ -26,7 +27,7 @@
     // Depletion Row
     let toggleRow = false
     const style = "width:7em; height:3.5em; margin-right:0.5em"
-    const btnClass = "button is-link animated"
+    const btnClass = "button is-link"
 
     const plotStyle = ["", "lines", "markers", "lines+markers"]
 
@@ -35,11 +36,13 @@
     let binData = false;
 
     const changePlotStyle = () => { Plotly.restyle("thzPlot", {mode:plotStyleSelected, fill: plotFill ? "tozeroy" : ""})}
-    function plotData({e=null, filetype="thz", tkplot="run", justPlot=false }={}){
+
+    function plotData({e=null, filetype="thz", tkplot="run", justPlot=false, general={} }={}){
 
         if (fileChecked.length === 0 && filetype === "thz") {return window.createToast("No files selected", "danger")}
 
-        let pyfileInfo = {
+    
+        let pyfileInfo = {general,
             thz: {pyfile:"thz_scan.py" , args:[...thzfiles, binData, delta, tkplot, gamma, justPlot]},
             boltzman: {pyfile:"boltzman.py" , args:[currentLocation, B0, D0, H0, temp, totalJ, tkplot]},
         }
@@ -47,127 +50,62 @@
         if (tkplot == "plot") {filetype = "general"}
 
         if (filetype == "general") {
-
-            console.log("Sending general arguments: ", args)
-            let py = spawn(
-                localStorage["pythonpath"], [path.join(localStorage["pythonscript"], pyfile), args], 
-                { detached: true, stdio: 'pipe', shell: openShell }
-            )
-            py.on("close", ()=>{ console.log("Closed") })
-
-            py.stderr.on("data", (err)=>{ console.log(`Error Occured: ${err.toString()}`); preModal.modalContent = err.stacktoString(); preModal.open = true })
-            py.stdout.on("data", (data)=>{ console.log(`Output from python: ${data.toString()}`)  })
-            py.unref()
-            py.ref()
-
-            return window.createToast("Process Started")
+            return computePy_func({e, pyfile, args, general:true, openShell}).catch(err=>{preModal.modalContent = err;  preModal.open = true})
         }
 
-        let target = e.target
-        target.classList.toggle("is-loading")
-        if (filetype == "scan") {graphPlotted = false}
-        
-        let py;
-        try {py = spawn( localStorage["pythonpath"], [path.resolve(localStorage["pythonscript"], pyfile), args] )}
+        computePy_func({e, pyfile, args})
+            .then((dataFromPython)=>{
+                if (filetype=="thz") {
 
-        catch (err) {
-            preModal.modalContent = "Error accessing python. Set python location properly in Settings"
-            preModal.open = true
-            target.classList.toggle("is-loading")
-            return
-        }
-        
-        window.createToast("Process Started")
-        py.stdout.on("data", data => {
-            console.log("Ouput from python")
-            let dataReceived = data.toString("utf8")
-            console.log(dataReceived)
-        });
+                    plot(`THz Scan: Depletion (%)`, "Frequency (GHz)", "Depletion (%)", dataFromPython["thz"], "thzPlot")
+                    plot(`THz Scan`, "Frequency (GHz)", "Counts", dataFromPython["resOnOff_Counts"], "resOnOffPlot")
 
-        let error_occured_py = false
+                    if (!justPlot) {
+                        let lines = [];
 
-        py.stderr.on("data", err => {
-            preModal.modalContent = err
-            preModal.open = true
-            error_occured_py = true;
-            target.style.backgroundColor="#ff3860"
-            target.classList.add("shake")
-        });
-
-        py.on("close", () => {
-
-            if (!error_occured_py) {
-
-                try {
-                    let dataFromPython = fs.readFileSync(path.join(localStorage["pythonscript"], "data.json"))
-                    dataFromPython = JSON.parse(dataFromPython.toString("utf-8"))
-                    console.log(dataFromPython)
-
-                    if (filetype=="thz") {
-
-                       plot(`THz Scan: Depletion (%)`, "Frequency (GHz)", "Depletion (%)", dataFromPython["thz"], "thzPlot")
-                       plot(`THz Scan`, "Frequency (GHz)", "Counts", dataFromPython["resOnOff_Counts"], "resOnOffPlot")
-    
-                        if (!justPlot) {
-                            let lines = [];
-
-                            for (let x in dataFromPython["shapes"]) { lines.push(dataFromPython["shapes"][x]) }
-                            let layout_update = {
-                                shapes: lines
-                            }
-                            Plotly.relayout("thzPlot", layout_update)
+                        for (let x in dataFromPython["shapes"]) { lines.push(dataFromPython["shapes"][x]) }
+                        let layout_update = {
+                            shapes: lines
                         }
-                    } else if (filetype == "boltzman") {
-                        plot(`Boltzman Distribution`, "Rotational levels (J)", "Probability (%)", dataFromPython, "boltzman_plot");
+                        Plotly.relayout("thzPlot", layout_update)
                     }
-                    window.createToast("Graph plotted", "success")
-                    graphPlotted = true
+                } else if (filetype == "boltzman") {
+                    plot(`Boltzman Distribution`, "Rotational levels (J)", "Probability (%)", dataFromPython, "boltzman_plot");
+                }
+                window.createToast("Graph plotted", "success")
+                
+                graphPlotted = true
+            }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
 
-                    target.style.backgroundColor="#09814a"
-                    target.classList.add("bounce")
-
-                } catch (err) { 
-                    preModal.modalContent = err.stack
-                    preModal.open = true 
-
-                    target.style.backgroundColor="#ff3860"
-                    target.classList.add("shake")
-                 }
-
-            }
-
-            console.log("Process closed")
-            target.classList.toggle("is-loading")
-            setTimeout(()=>{
-                target.style.backgroundColor=""
-                if (target.classList.contains("bounce")) target.classList.remove("bounce")
-                if (target.classList.contains("shake")) target.classList.remove("shake")
-            }, 2000)
-        })
+        
     }
 
     let includePlotsInReport = [{id:"resOnOffPlot", include:false, label:"THz Res-ON/OFF"}, {id:"thzPlot", include:true, label:"Normalised THz Spectrum"}, {id:"boltzman_plot", include:false, label:"Boltzman plot"}]
     let preModal = {};
 
-</script>
+    let ROSAA_modal_active = false;
 
+</script>
 <style>
     .thz_buttonContainer {min-height: 5em;}
 
     .button {margin-right: 0.5em;}
     .buttonRow {margin-bottom: 1em!important; align-items: center;}
-    .active {display: flex!important;}
     .hide {display: none;}
 
     * :global(.mdc-select__native-control option) {color: black}
 
 </style>
 
+<ROSAA bind:active={ROSAA_modal_active} on:submit="{(e)=>{plotData({e:e.detail.e, filetype:"general", general:{pyfile:"ROSAA.py", args:[JSON.stringify(e.detail.conditions)]}})}}" />
+
 <Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked>
 
     <div class="thz_buttonContainer" slot="buttonContainer">
 
         <div class="content align buttonRow">
+            <button class="{btnClass}" on:click="{()=>{ROSAA_modal_active=true}}">ROSAA</button>
+
             <button class="{btnClass}" on:click="{(e)=>{plotData({e:e, justPlot:true})}}">Plot</button>
 
             <CustomSwitch bind:selected={binData} label="Bin" style="margin:0 1em;"/>
@@ -175,10 +113,10 @@
             <button class="{btnClass}" on:click="{(e)=>plotData({e:e, tkplot:"plot"})}">Open in Matplotlib</button>
             <CustomIconSwitch style="padding:0;" bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
             <button class="{btnClass}" on:click="{()=>{toggleRow = !toggleRow}}">Boltzman</button>
-            <Textfield type="number" {style} bind:value={delta} label="Delta" />
-            <Textfield type="number" {style} bind:value={gamma} label="Gamma" />
+            <Textfield type="number" style="width:4em; height:3.5em; margin-right:0.5em" bind:value={delta} label="Delta" />
+            <Textfield type="number" style="width:4em; height:3.5em; margin-right:0.5em" bind:value={gamma} label="Gamma" />
 
-            <div class="animated fadeIn hide" class:active={graphPlotted} on:change={changePlotStyle}>
+            <div class="animated fadeIn" class:hide={!graphPlotted} on:change={changePlotStyle}>
                 <CustomSelect options={plotStyle} bind:picked={plotStyleSelected} label="Plot Style"/>
                 <CustomSwitch bind:selected={plotFill} label="Fill area"/>
 
@@ -186,12 +124,12 @@
 
         </div>
 
-        <div class="animated fadeIn hide buttonRow" class:active={toggleRow} >
-            <Textfield {style} on:change="{(e)=>plotData({e:e, filetype:"boltzman"})}" bind:value={B0} label="B0 (MHz)" />
-            <Textfield {style} on:change="{(e)=>plotData({e:e, filetype:"boltzman"})}" bind:value={D0} label="D0 (MHz)" />
-            <Textfield {style} on:change="{(e)=>plotData({e:e, filetype:"boltzman"})}" bind:value={H0} label="H0 (MHz)" />
-            <Textfield type="number" {style} on:change="{(e)=>plotData({e:e, filetype:"boltzman"})}" bind:value={temp} label="Temp." />
-            <Textfield type="number" {style} on:change="{(e)=>plotData({e:e, filetype:"boltzman"})}" bind:value={totalJ} label="Total J" />
+        <div class="animated fadeIn buttonRow" class:hide={!toggleRow} >
+            <Textfield type="number" {style} bind:value={B0} label="B0 (MHz)" />
+            <Textfield type="number" {style} bind:value={D0} label="D0 (MHz)" />
+            <Textfield type="number" {style} bind:value={H0} label="H0 (MHz)" />
+            <Textfield type="number" {style}  bind:value={temp} label="Temp." />
+            <Textfield type="number" {style}  bind:value={totalJ} label="Total J" />
             <button class="{btnClass}" on:click="{(e)=>plotData({e:e, filetype:"boltzman"})}">Submit</button>
             <button class="{btnClass}" on:click="{(e)=>plotData({e:e, filetype:"boltzman", tkplot:"plot"})}">Open in Matplotlib</button>
         </div>
