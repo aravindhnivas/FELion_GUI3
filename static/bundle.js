@@ -62896,58 +62896,43 @@ const file$1h = "src\\components\\Terminal.svelte";
 
 function get_each_context$d(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[18] = list[i].color;
-	child_ctx[19] = list[i].results;
+	child_ctx[22] = list[i].color;
+	child_ctx[23] = list[i].results;
 	return child_ctx;
 }
 
-// (105:4) {#if commandInputDiv}
+// (118:4) {#if commandInputDiv}
 function create_if_block$z(ctx) {
 	let div2;
-	let div0;
-	let textfield0;
-	let updating_value;
-	let t0;
-	let textfield1;
-	let updating_value_1;
+	let button;
 	let t1;
+	let div0;
+	let current_block_type_index;
+	let if_block;
+	let t2;
 	let div1;
 	let iconbutton0;
-	let t2;
+	let t3;
 	let customswitch;
 	let updating_selected;
-	let t3;
-	let textfield2;
-	let updating_value_2;
 	let t4;
+	let textfield;
+	let updating_value;
+	let t5;
 	let iconbutton1;
 	let current;
+	let mounted;
+	let dispose;
+	const if_block_creators = [create_if_block_1$a, create_else_block$c];
+	const if_blocks = [];
 
-	function textfield0_value_binding(value) {
-		/*textfield0_value_binding*/ ctx[12].call(null, value);
+	function select_block_type(ctx, dirty) {
+		if (/*installPythonPackagesMode*/ ctx[8]) return 0;
+		return 1;
 	}
 
-	let textfield0_props = { label: "Enter command to run" };
-
-	if (/*commandToRun*/ ctx[0] !== void 0) {
-		textfield0_props.value = /*commandToRun*/ ctx[0];
-	}
-
-	textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
-	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
-
-	function textfield1_value_binding(value) {
-		/*textfield1_value_binding*/ ctx[13].call(null, value);
-	}
-
-	let textfield1_props = { label: "Enter command-arg" };
-
-	if (/*commandArgsToRun*/ ctx[1] !== void 0) {
-		textfield1_props.value = /*commandArgsToRun*/ ctx[1];
-	}
-
-	textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
-	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding));
+	current_block_type_index = select_block_type(ctx);
+	if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
 
 	iconbutton0 = new IconButton({
 			props: {
@@ -62958,10 +62943,10 @@ function create_if_block$z(ctx) {
 			$$inline: true
 		});
 
-	iconbutton0.$on("click", /*terminalShell*/ ctx[9]);
+	iconbutton0.$on("click", /*terminalShell*/ ctx[11]);
 
 	function customswitch_selected_binding(value) {
-		/*customswitch_selected_binding*/ ctx[14].call(null, value);
+		/*customswitch_selected_binding*/ ctx[18].call(null, value);
 	}
 
 	let customswitch_props = { style: "margin: 0 1em;", label: "Shell" };
@@ -62977,11 +62962,11 @@ function create_if_block$z(ctx) {
 
 	binding_callbacks.push(() => bind(customswitch, "selected", customswitch_selected_binding));
 
-	function textfield2_value_binding(value) {
-		/*textfield2_value_binding*/ ctx[15].call(null, value);
+	function textfield_value_binding_1(value) {
+		/*textfield_value_binding_1*/ ctx[19].call(null, value);
 	}
 
-	let textfield2_props = {
+	let textfield_props = {
 		type: "number",
 		step: "1",
 		min: "0",
@@ -62991,11 +62976,11 @@ function create_if_block$z(ctx) {
 	};
 
 	if (/*teminalFontSize*/ ctx[3] !== void 0) {
-		textfield2_props.value = /*teminalFontSize*/ ctx[3];
+		textfield_props.value = /*teminalFontSize*/ ctx[3];
 	}
 
-	textfield2 = new Textfield({ props: textfield2_props, $$inline: true });
-	binding_callbacks.push(() => bind(textfield2, "value", textfield2_value_binding));
+	textfield = new Textfield({ props: textfield_props, $$inline: true });
+	binding_callbacks.push(() => bind(textfield, "value", textfield_value_binding_1));
 
 	iconbutton1 = new IconButton({
 			props: {
@@ -63007,52 +62992,205 @@ function create_if_block$z(ctx) {
 			$$inline: true
 		});
 
-	iconbutton1.$on("click", /*click_handler*/ ctx[16]);
+	iconbutton1.$on("click", /*click_handler*/ ctx[20]);
 
 	const block = {
 		c: function create() {
 			div2 = element("div");
-			div0 = element("div");
-			create_component(textfield0.$$.fragment);
-			t0 = space();
-			create_component(textfield1.$$.fragment);
+			button = element("button");
+			button.textContent = "Python package installation";
 			t1 = space();
+			div0 = element("div");
+			if_block.c();
+			t2 = space();
 			div1 = element("div");
 			create_component(iconbutton0.$$.fragment);
-			t2 = space();
-			create_component(customswitch.$$.fragment);
 			t3 = space();
-			create_component(textfield2.$$.fragment);
+			create_component(customswitch.$$.fragment);
 			t4 = space();
+			create_component(textfield.$$.fragment);
+			t5 = space();
 			create_component(iconbutton1.$$.fragment);
+			attr_dev(button, "class", "button is-link");
+			add_location(button, file$1h, 121, 12, 3731);
 			attr_dev(div0, "class", "run");
 			set_style(div0, "display", "flex");
 			set_style(div0, "align-items", "center");
 			set_style(div0, "margin-bottom", "1em");
-			add_location(div0, file$1h, 107, 12, 3378);
+			add_location(div0, file$1h, 123, 12, 3847);
 			attr_dev(div1, "class", "run");
 			set_style(div1, "display", "flex");
 			set_style(div1, "align-items", "center");
 			set_style(div1, "margin-bottom", "1em");
-			add_location(div1, file$1h, 114, 12, 3669);
+			add_location(div1, file$1h, 139, 12, 4345);
 			attr_dev(div2, "class", "commandInput");
-			add_location(div2, file$1h, 106, 8, 3338);
+			add_location(div2, file$1h, 119, 8, 3681);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div2, anchor);
-			append_dev(div2, div0);
-			mount_component(textfield0, div0, null);
-			append_dev(div0, t0);
-			mount_component(textfield1, div0, null);
+			append_dev(div2, button);
 			append_dev(div2, t1);
+			append_dev(div2, div0);
+			if_blocks[current_block_type_index].m(div0, null);
+			append_dev(div2, t2);
 			append_dev(div2, div1);
 			mount_component(iconbutton0, div1, null);
-			append_dev(div1, t2);
-			mount_component(customswitch, div1, null);
 			append_dev(div1, t3);
-			mount_component(textfield2, div1, null);
+			mount_component(customswitch, div1, null);
 			append_dev(div1, t4);
+			mount_component(textfield, div1, null);
+			append_dev(div1, t5);
 			mount_component(iconbutton1, div1, null);
+			current = true;
+
+			if (!mounted) {
+				dispose = listen_dev(button, "click", /*installPythonPackages*/ ctx[12], false, false, false);
+				mounted = true;
+			}
+		},
+		p: function update(ctx, dirty) {
+			let previous_block_index = current_block_type_index;
+			current_block_type_index = select_block_type(ctx);
+
+			if (current_block_type_index === previous_block_index) {
+				if_blocks[current_block_type_index].p(ctx, dirty);
+			} else {
+				group_outros();
+
+				transition_out(if_blocks[previous_block_index], 1, 1, () => {
+					if_blocks[previous_block_index] = null;
+				});
+
+				check_outros();
+				if_block = if_blocks[current_block_type_index];
+
+				if (!if_block) {
+					if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+					if_block.c();
+				}
+
+				transition_in(if_block, 1);
+				if_block.m(div0, null);
+			}
+
+			const iconbutton0_changes = {};
+
+			if (dirty & /*$$scope*/ 67108864) {
+				iconbutton0_changes.$$scope = { dirty, ctx };
+			}
+
+			iconbutton0.$set(iconbutton0_changes);
+			const customswitch_changes = {};
+
+			if (!updating_selected && dirty & /*openShellTerminal*/ 128) {
+				updating_selected = true;
+				customswitch_changes.selected = /*openShellTerminal*/ ctx[7];
+				add_flush_callback(() => updating_selected = false);
+			}
+
+			customswitch.$set(customswitch_changes);
+			const textfield_changes = {};
+
+			if (!updating_value && dirty & /*teminalFontSize*/ 8) {
+				updating_value = true;
+				textfield_changes.value = /*teminalFontSize*/ ctx[3];
+				add_flush_callback(() => updating_value = false);
+			}
+
+			textfield.$set(textfield_changes);
+			const iconbutton1_changes = {};
+
+			if (dirty & /*$$scope*/ 67108864) {
+				iconbutton1_changes.$$scope = { dirty, ctx };
+			}
+
+			iconbutton1.$set(iconbutton1_changes);
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(if_block);
+			transition_in(iconbutton0.$$.fragment, local);
+			transition_in(customswitch.$$.fragment, local);
+			transition_in(textfield.$$.fragment, local);
+			transition_in(iconbutton1.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(if_block);
+			transition_out(iconbutton0.$$.fragment, local);
+			transition_out(customswitch.$$.fragment, local);
+			transition_out(textfield.$$.fragment, local);
+			transition_out(iconbutton1.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(div2);
+			if_blocks[current_block_type_index].d();
+			destroy_component(iconbutton0);
+			destroy_component(customswitch);
+			destroy_component(textfield);
+			destroy_component(iconbutton1);
+			mounted = false;
+			dispose();
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_if_block$z.name,
+		type: "if",
+		source: "(118:4) {#if commandInputDiv}",
+		ctx
+	});
+
+	return block;
+}
+
+// (129:16) {:else}
+function create_else_block$c(ctx) {
+	let textfield0;
+	let updating_value;
+	let t;
+	let textfield1;
+	let updating_value_1;
+	let current;
+
+	function textfield0_value_binding(value) {
+		/*textfield0_value_binding*/ ctx[16].call(null, value);
+	}
+
+	let textfield0_props = { label: "Enter command to run" };
+
+	if (/*commandToRun*/ ctx[0] !== void 0) {
+		textfield0_props.value = /*commandToRun*/ ctx[0];
+	}
+
+	textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
+	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
+
+	function textfield1_value_binding(value) {
+		/*textfield1_value_binding*/ ctx[17].call(null, value);
+	}
+
+	let textfield1_props = { label: "Enter command-arg" };
+
+	if (/*commandArgsToRun*/ ctx[1] !== void 0) {
+		textfield1_props.value = /*commandArgsToRun*/ ctx[1];
+	}
+
+	textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
+	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding));
+
+	const block = {
+		c: function create() {
+			create_component(textfield0.$$.fragment);
+			t = space();
+			create_component(textfield1.$$.fragment);
+		},
+		m: function mount(target, anchor) {
+			mount_component(textfield0, target, anchor);
+			insert_dev(target, t, anchor);
+			mount_component(textfield1, target, anchor);
 			current = true;
 		},
 		p: function update(ctx, dirty) {
@@ -63074,81 +63212,100 @@ function create_if_block$z(ctx) {
 			}
 
 			textfield1.$set(textfield1_changes);
-			const iconbutton0_changes = {};
-
-			if (dirty & /*$$scope*/ 4194304) {
-				iconbutton0_changes.$$scope = { dirty, ctx };
-			}
-
-			iconbutton0.$set(iconbutton0_changes);
-			const customswitch_changes = {};
-
-			if (!updating_selected && dirty & /*openShellTerminal*/ 128) {
-				updating_selected = true;
-				customswitch_changes.selected = /*openShellTerminal*/ ctx[7];
-				add_flush_callback(() => updating_selected = false);
-			}
-
-			customswitch.$set(customswitch_changes);
-			const textfield2_changes = {};
-
-			if (!updating_value_2 && dirty & /*teminalFontSize*/ 8) {
-				updating_value_2 = true;
-				textfield2_changes.value = /*teminalFontSize*/ ctx[3];
-				add_flush_callback(() => updating_value_2 = false);
-			}
-
-			textfield2.$set(textfield2_changes);
-			const iconbutton1_changes = {};
-
-			if (dirty & /*$$scope*/ 4194304) {
-				iconbutton1_changes.$$scope = { dirty, ctx };
-			}
-
-			iconbutton1.$set(iconbutton1_changes);
 		},
 		i: function intro(local) {
 			if (current) return;
 			transition_in(textfield0.$$.fragment, local);
 			transition_in(textfield1.$$.fragment, local);
-			transition_in(iconbutton0.$$.fragment, local);
-			transition_in(customswitch.$$.fragment, local);
-			transition_in(textfield2.$$.fragment, local);
-			transition_in(iconbutton1.$$.fragment, local);
 			current = true;
 		},
 		o: function outro(local) {
 			transition_out(textfield0.$$.fragment, local);
 			transition_out(textfield1.$$.fragment, local);
-			transition_out(iconbutton0.$$.fragment, local);
-			transition_out(customswitch.$$.fragment, local);
-			transition_out(textfield2.$$.fragment, local);
-			transition_out(iconbutton1.$$.fragment, local);
 			current = false;
 		},
 		d: function destroy(detaching) {
-			if (detaching) detach_dev(div2);
-			destroy_component(textfield0);
-			destroy_component(textfield1);
-			destroy_component(iconbutton0);
-			destroy_component(customswitch);
-			destroy_component(textfield2);
-			destroy_component(iconbutton1);
+			destroy_component(textfield0, detaching);
+			if (detaching) detach_dev(t);
+			destroy_component(textfield1, detaching);
 		}
 	};
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_if_block$z.name,
-		type: "if",
-		source: "(105:4) {#if commandInputDiv}",
+		id: create_else_block$c.name,
+		type: "else",
+		source: "(129:16) {:else}",
 		ctx
 	});
 
 	return block;
 }
 
-// (116:16) <IconButton class="material-icons" on:click={terminalShell}>
+// (126:16) {#if installPythonPackagesMode}
+function create_if_block_1$a(ctx) {
+	let textfield;
+	let updating_value;
+	let current;
+
+	function textfield_value_binding(value) {
+		/*textfield_value_binding*/ ctx[15].call(null, value);
+	}
+
+	let textfield_props = { label: "Enter packages name(s)" };
+
+	if (/*packagesName*/ ctx[9] !== void 0) {
+		textfield_props.value = /*packagesName*/ ctx[9];
+	}
+
+	textfield = new Textfield({ props: textfield_props, $$inline: true });
+	binding_callbacks.push(() => bind(textfield, "value", textfield_value_binding));
+
+	const block = {
+		c: function create() {
+			create_component(textfield.$$.fragment);
+		},
+		m: function mount(target, anchor) {
+			mount_component(textfield, target, anchor);
+			current = true;
+		},
+		p: function update(ctx, dirty) {
+			const textfield_changes = {};
+
+			if (!updating_value && dirty & /*packagesName*/ 512) {
+				updating_value = true;
+				textfield_changes.value = /*packagesName*/ ctx[9];
+				add_flush_callback(() => updating_value = false);
+			}
+
+			textfield.$set(textfield_changes);
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(textfield.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(textfield.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			destroy_component(textfield, detaching);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_if_block_1$a.name,
+		type: "if",
+		source: "(126:16) {#if installPythonPackagesMode}",
+		ctx
+	});
+
+	return block;
+}
+
+// (141:16) <IconButton class="material-icons" on:click={terminalShell}>
 function create_default_slot_1$f(ctx) {
 	let t;
 
@@ -63168,14 +63325,14 @@ function create_default_slot_1$f(ctx) {
 		block,
 		id: create_default_slot_1$f.name,
 		type: "slot",
-		source: "(116:16) <IconButton class=\\\"material-icons\\\" on:click={terminalShell}>",
+		source: "(141:16) <IconButton class=\\\"material-icons\\\" on:click={terminalShell}>",
 		ctx
 	});
 
 	return block;
 }
 
-// (119:16) <IconButton class="material-icons is-pulled-right" style="background: #f14668; border-radius: 2em;" on:click="{()=>commandResults=[{color:colorSets.normal, results:`>> cleared`}] }">
+// (146:16) <IconButton class="material-icons is-pulled-right" style="background: #f14668; border-radius: 2em;" on:click="{()=>commandResults=[{color:colorSets.normal, results:`>> cleared`}] }">
 function create_default_slot$z(ctx) {
 	let t;
 
@@ -63195,17 +63352,17 @@ function create_default_slot$z(ctx) {
 		block,
 		id: create_default_slot$z.name,
 		type: "slot",
-		source: "(119:16) <IconButton class=\\\"material-icons is-pulled-right\\\" style=\\\"background: #f14668; border-radius: 2em;\\\" on:click=\\\"{()=>commandResults=[{color:colorSets.normal, results:`>> cleared`}] }\\\">",
+		source: "(146:16) <IconButton class=\\\"material-icons is-pulled-right\\\" style=\\\"background: #f14668; border-radius: 2em;\\\" on:click=\\\"{()=>commandResults=[{color:colorSets.normal, results:`>> cleared`}] }\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (125:8) {#each commandResults as {color, results}}
+// (155:8) {#each commandResults as {color, results}}
 function create_each_block$d(ctx) {
 	let h1;
-	let t_value = /*results*/ ctx[19] + "";
+	let t_value = /*results*/ ctx[23] + "";
 	let t;
 
 	const block = {
@@ -63213,20 +63370,20 @@ function create_each_block$d(ctx) {
 			h1 = element("h1");
 			t = text(t_value);
 			attr_dev(h1, "class", "subtitle");
-			set_style(h1, "color", /*color*/ ctx[18]);
+			set_style(h1, "color", /*color*/ ctx[22]);
 			set_style(h1, "font-size", /*teminalFontSize*/ ctx[3] + "px");
 			set_style(h1, "white-space", "pre-wrap");
-			add_location(h1, file$1h, 125, 12, 4513);
+			add_location(h1, file$1h, 155, 12, 5199);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, h1, anchor);
 			append_dev(h1, t);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty & /*commandResults*/ 4 && t_value !== (t_value = /*results*/ ctx[19] + "")) set_data_dev(t, t_value);
+			if (dirty & /*commandResults*/ 4 && t_value !== (t_value = /*results*/ ctx[23] + "")) set_data_dev(t, t_value);
 
 			if (dirty & /*commandResults*/ 4) {
-				set_style(h1, "color", /*color*/ ctx[18]);
+				set_style(h1, "color", /*color*/ ctx[22]);
 			}
 
 			if (dirty & /*teminalFontSize*/ 8) {
@@ -63242,7 +63399,7 @@ function create_each_block$d(ctx) {
 		block,
 		id: create_each_block$d.name,
 		type: "each",
-		source: "(125:8) {#each commandResults as {color, results}}",
+		source: "(155:8) {#each commandResults as {color, results}}",
 		ctx
 	});
 
@@ -63259,7 +63416,7 @@ function create_fragment$1o(ctx) {
 	let current;
 
 	function premodal_preModal_binding(value) {
-		/*premodal_preModal_binding*/ ctx[11].call(null, value);
+		/*premodal_preModal_binding*/ ctx[14].call(null, value);
 	}
 
 	let premodal_props = {};
@@ -63295,9 +63452,9 @@ function create_fragment$1o(ctx) {
 			attr_dev(div0, "class", "box terminal svelte-18aq4ui");
 			attr_dev(div0, "id", /*id*/ ctx[5]);
 			set_style(div0, "height", (/*commandInputDiv*/ ctx[4] ? 75 : 90) + "%");
-			add_location(div0, file$1h, 122, 4, 4368);
+			add_location(div0, file$1h, 152, 4, 5054);
 			attr_dev(div1, "class", "content contentBox terminalBox svelte-18aq4ui");
-			add_location(div1, file$1h, 102, 0, 3252);
+			add_location(div1, file$1h, 115, 0, 3595);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -63426,7 +63583,7 @@ function instance$1o($$self, $$props, $$invalidate) {
 	};
 
 	let { commandToRun = localStorage["pythonpath"] || "" } = $$props,
-		{ commandArgsToRun = "-m, pip" } = $$props,
+		{ commandArgsToRun = "-m pip" } = $$props,
 		{ commandResults = [{ color: colorSets.normal, results: ">> " }] } = $$props,
 		{ teminalFontSize = 20 } = $$props;
 
@@ -63445,7 +63602,7 @@ function instance$1o($$self, $$props, $$invalidate) {
 	};
 
 	async function terminalShell() {
-		$$invalidate(10, runShell = false);
+		$$invalidate(13, runShell = false);
 		await tick();
 		srollTerminalDiv();
 
@@ -63464,7 +63621,9 @@ function instance$1o($$self, $$props, $$invalidate) {
 		let ls;
 
 		try {
-			ls = spawn(commandToRun, commandArgsToRun.split(",").map(arg => arg.trim()), {
+			$$invalidate(1, commandArgsToRun += ` ${packagesName}`);
+
+			ls = spawn(commandToRun, commandArgsToRun.split(" ").map(arg => arg.trim()), {
 				detached: true,
 				stdio: "pipe",
 				shell: openShellTerminal
@@ -63518,6 +63677,14 @@ function instance$1o($$self, $$props, $$invalidate) {
 		});
 	}
 
+	let installPythonPackagesMode = false, packagesName = "";
+
+	const installPythonPackages = () => {
+		$$invalidate(0, commandToRun = localStorage["pythonpath"]);
+		$$invalidate(1, commandArgsToRun = "-m pip install");
+		$$invalidate(8, installPythonPackagesMode = !installPythonPackagesMode);
+	};
+
 	const writable_props = [
 		"commandToRun",
 		"commandArgsToRun",
@@ -63537,6 +63704,11 @@ function instance$1o($$self, $$props, $$invalidate) {
 		$$invalidate(6, preModal);
 	}
 
+	function textfield_value_binding(value) {
+		packagesName = value;
+		$$invalidate(9, packagesName);
+	}
+
 	function textfield0_value_binding(value) {
 		commandToRun = value;
 		$$invalidate(0, commandToRun);
@@ -63552,7 +63724,7 @@ function instance$1o($$self, $$props, $$invalidate) {
 		$$invalidate(7, openShellTerminal);
 	}
 
-	function textfield2_value_binding(value) {
+	function textfield_value_binding_1(value) {
 		teminalFontSize = value;
 		$$invalidate(3, teminalFontSize);
 	}
@@ -63570,7 +63742,7 @@ function instance$1o($$self, $$props, $$invalidate) {
 		if ("commandResults" in $$props) $$invalidate(2, commandResults = $$props.commandResults);
 		if ("teminalFontSize" in $$props) $$invalidate(3, teminalFontSize = $$props.teminalFontSize);
 		if ("commandInputDiv" in $$props) $$invalidate(4, commandInputDiv = $$props.commandInputDiv);
-		if ("runShell" in $$props) $$invalidate(10, runShell = $$props.runShell);
+		if ("runShell" in $$props) $$invalidate(13, runShell = $$props.runShell);
 		if ("id" in $$props) $$invalidate(5, id = $$props.id);
 	};
 
@@ -63591,7 +63763,10 @@ function instance$1o($$self, $$props, $$invalidate) {
 		preModal,
 		openShellTerminal,
 		srollTerminalDiv,
-		terminalShell
+		terminalShell,
+		installPythonPackagesMode,
+		packagesName,
+		installPythonPackages
 	});
 
 	$$self.$inject_state = $$props => {
@@ -63600,10 +63775,12 @@ function instance$1o($$self, $$props, $$invalidate) {
 		if ("commandResults" in $$props) $$invalidate(2, commandResults = $$props.commandResults);
 		if ("teminalFontSize" in $$props) $$invalidate(3, teminalFontSize = $$props.teminalFontSize);
 		if ("commandInputDiv" in $$props) $$invalidate(4, commandInputDiv = $$props.commandInputDiv);
-		if ("runShell" in $$props) $$invalidate(10, runShell = $$props.runShell);
+		if ("runShell" in $$props) $$invalidate(13, runShell = $$props.runShell);
 		if ("id" in $$props) $$invalidate(5, id = $$props.id);
 		if ("preModal" in $$props) $$invalidate(6, preModal = $$props.preModal);
 		if ("openShellTerminal" in $$props) $$invalidate(7, openShellTerminal = $$props.openShellTerminal);
+		if ("installPythonPackagesMode" in $$props) $$invalidate(8, installPythonPackagesMode = $$props.installPythonPackagesMode);
+		if ("packagesName" in $$props) $$invalidate(9, packagesName = $$props.packagesName);
 	};
 
 	if ($$props && "$$inject" in $$props) {
@@ -63611,7 +63788,7 @@ function instance$1o($$self, $$props, $$invalidate) {
 	}
 
 	$$self.$$.update = () => {
-		if ($$self.$$.dirty & /*runShell*/ 1024) {
+		if ($$self.$$.dirty & /*runShell*/ 8192) {
 			 if (runShell) terminalShell();
 		}
 	};
@@ -63625,14 +63802,18 @@ function instance$1o($$self, $$props, $$invalidate) {
 		id,
 		preModal,
 		openShellTerminal,
+		installPythonPackagesMode,
+		packagesName,
 		colorSets,
 		terminalShell,
+		installPythonPackages,
 		runShell,
 		premodal_preModal_binding,
+		textfield_value_binding,
 		textfield0_value_binding,
 		textfield1_value_binding,
 		customswitch_selected_binding,
-		textfield2_value_binding,
+		textfield_value_binding_1,
 		click_handler
 	];
 }
@@ -63647,7 +63828,7 @@ class Terminal extends SvelteComponentDev {
 			commandResults: 2,
 			teminalFontSize: 3,
 			commandInputDiv: 4,
-			runShell: 10,
+			runShell: 13,
 			id: 5
 		});
 
@@ -64788,7 +64969,7 @@ function create_default_slot$A(ctx) {
 }
 
 // (160:4) {:else}
-function create_else_block$c(ctx) {
+function create_else_block$d(ctx) {
 	let terminal;
 	let current;
 	terminal = new Terminal({ $$inline: true });
@@ -64818,7 +64999,7 @@ function create_else_block$c(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_else_block$c.name,
+		id: create_else_block$d.name,
 		type: "else",
 		source: "(160:4) {:else}",
 		ctx
@@ -65707,7 +65888,7 @@ function create_fragment$1q(ctx) {
 
 	tabbar = new TabBar({ props: tabbar_props, $$inline: true });
 	binding_callbacks.push(() => bind(tabbar, "active", tabbar_active_binding));
-	const if_block_creators = [create_if_block$A, create_else_block$c];
+	const if_block_creators = [create_if_block$A, create_else_block$d];
 	const if_blocks = [];
 
 	function select_block_type(ctx, dirty) {
