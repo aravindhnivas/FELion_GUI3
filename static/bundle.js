@@ -60660,10 +60660,10 @@ function create_footerbtn_slot$4(ctx) {
 			attr_dev(button0, "class", "button is-danger is-pulled-left");
 			add_location(button0, file$1e, 87, 8, 2814);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$1e, 89, 8, 2966);
+			add_location(button1, file$1e, 89, 8, 2973);
 			attr_dev(button2, "class", "button is-link");
 			toggle_class(button2, "is-loading", /*running*/ ctx[3]);
-			add_location(button2, file$1e, 90, 8, 3079);
+			add_location(button2, file$1e, 90, 8, 3086);
 			attr_dev(div, "class", "align");
 			attr_dev(div, "slot", "footerbtn");
 			add_location(div, file$1e, 85, 4, 2766);
@@ -60959,9 +60959,9 @@ function instance$1l($$self, $$props, $$invalidate) {
 	}
 
 	const click_handler = () => {
-		py
+		py && running
 		? py.kill()
-		: console.log("pyEvent does not available");
+		: console.log("pyEvent is not available");
 	};
 
 	const click_handler_1 = e => {
