@@ -1,15 +1,17 @@
 
 import {urlzip, get} from "./svelteWritables";
+import { updating } from "../../js/functions";
 const https = require('https');
 const admZip = require('adm-zip');
 
 export function download(updateFolder) {
+
     return new Promise((resolve, reject)=>{
 
-        
+        updating.set(true)
         const updatefilename = "update.zip"
-        const zipFile = path.resolve(updateFolder, updatefilename)
 
+        const zipFile = path.resolve(updateFolder, updatefilename)
 
         const response = https.get(get(urlzip), (res) => {
 

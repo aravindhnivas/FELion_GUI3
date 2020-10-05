@@ -11,8 +11,6 @@ const restart_program = () => {
 
 export function InstallUpdate(target, updateFolder) {
 
-    updating.set(true)
-
     let src = path.resolve(updateFolder, `${get(github).repo}-${get(github).branch}`)
 
     let dest = path.resolve(__dirname, "..")

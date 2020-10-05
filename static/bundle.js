@@ -62907,12 +62907,13 @@ const https = require('https');
 const admZip = require('adm-zip');
 
 function download(updateFolder) {
+
     return new Promise((resolve, reject)=>{
 
-        
+        updating.set(true);
         const updatefilename = "update.zip";
-        const zipFile = path.resolve(updateFolder, updatefilename);
 
+        const zipFile = path.resolve(updateFolder, updatefilename);
 
         const response = https.get(get_store_value(urlzip), (res) => {
 
@@ -63023,8 +63024,6 @@ const restart_program = () => {
 };
 
 function InstallUpdate(target, updateFolder) {
-
-    updating.set(true);
 
     let src = path.resolve(updateFolder, `${get_store_value(github).repo}-${get_store_value(github).branch}`);
 
