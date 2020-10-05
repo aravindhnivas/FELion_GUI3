@@ -1,6 +1,6 @@
 
 <script>
-    import {windowLoaded, activateChangelog} from "../js/functions";
+    import {windowLoaded, activateChangelog, updateAvailable, newVersion} from "../js/functions";
     import Modal from "./Modal.svelte";
     import {onMount, beforeUpdate} from "svelte";
     import { fade } from 'svelte/transition';
@@ -8,6 +8,23 @@
     
     beforeUpdate(()=>{changelogContent = fs.readFileSync(path.resolve(__dirname, "../CHANGELOG.md")).toString()})
     onMount(()=> {if(localStorage.showUpdate) {$activateChangelog = true; localStorage.showUpdate = ""}})
+    
+    const updateEvent = new CustomEvent('update', { bubbles: false });
+
+    const updateNow = (e) => {
+        
+        let target = document.getElementById("updateCheckBtn")
+
+        target.dispatchEvent(updateEvent)
+    
+    }
+
+    let changelogTitle = "FELion GUI Changelog"
+    $: if($updateAvailable) {
+        $activateChangelog = true;
+        changelogTitle = "New update available: "+ $newVersion
+    
+    } else {changelogTitle = "FELion GUI Changelog"}
 
 </script>
 
@@ -44,8 +61,23 @@
 
 {#if $activateChangelog && $windowLoaded}
 
-    <Modal title="FELion GUI Changelog" bind:active={$activateChangelog}>
-        <div slot="content" transition:fade style="user-select:text;">{@html window.marked(changelogContent)}</div>
+    <Modal title={changelogTitle} bind:active={$activateChangelog}>
+        <div slot="content" transition:fade style="user-select:text;">
+            {#if $updateAvailable && window.changelogNewContent}
+
+                {@html window.marked(window.changelogNewContent)}
+            {:else}
+                {@html window.marked(changelogContent)}
+            {/if}
+        
+        </div>
+
+        <div slot="footerbtn">
+            {#if $updateAvailable}
+                <button class="button is-warning" on:click={updateNow}>Update Now</button>
+
+            {/if}
+        </div>
 
     </Modal>
 

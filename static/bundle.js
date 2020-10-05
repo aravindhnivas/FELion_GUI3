@@ -472,7 +472,7 @@ function flush() {
         for (let i = 0; i < dirty_components.length; i += 1) {
             const component = dirty_components[i];
             set_current_component(component);
-            update$1(component.$$);
+            update(component.$$);
         }
         set_current_component(null);
         dirty_components.length = 0;
@@ -498,7 +498,7 @@ function flush() {
     flushing = false;
     seen_callbacks.clear();
 }
-function update$1($$) {
+function update($$) {
     if ($$.fragment !== null) {
         $$.update();
         run_all($$.before_update);
@@ -8988,7 +8988,8 @@ function create$1(props) {
 }
 
 const github = writable({ branch: "master", repo: "FELion_GUI3", username: "aravindhnivas" });
-const versionJson = derived(github, ($github) => `https://raw.githubusercontent.com/${$github.username}/${$github.repo}/${$github.branch}/version.json`);
+const githubRepo = derived(github, ($github) => `https://raw.githubusercontent.com/${$github.username}/${$github.repo}/${$github.branch}`);
+const versionJson = derived(githubRepo, ($githubRepo) => `${$githubRepo}/version.json`);
 const urlzip = derived(github, ($github) => `https://codeload.github.com/${$github.username}/${$github.repo}/zip/${$github.branch}`);
 
 const pythonpath = writable(localStorage["pythonpath"] || path.resolve(__dirname, "../python3/python"));
@@ -9044,7 +9045,7 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                     if(e) {
                     
                     
-                        const pyEvent = new CustomEvent('pyEvent', { bubbles: true, detail: { py, pyfile } });
+                        const pyEvent = new CustomEvent('pyEvent', { bubbles: false, detail: { py, pyfile } });
                         e.target.dispatchEvent(pyEvent);
                         console.log("pyEvent dispatched");
                     }
@@ -9056,7 +9057,7 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                         console.log("Closed");
 
                         if(e) {
-                            const pyEventClosed = new CustomEvent('pyEventClosed', { bubbles: true, detail: { py, pyfile } });
+                            const pyEventClosed = new CustomEvent('pyEventClosed', { bubbles: false, detail: { py, pyfile } });
                             e.target.dispatchEvent(pyEventClosed);
                             console.log("pyEventClosed dispatched");
                         }
@@ -9068,7 +9069,7 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                         console.log(`Output from python: ${dataReceived}`);
                         if(e) {
                     
-                            const pyEventData = new CustomEvent('pyEventData', { bubbles: true, detail: { py, pyfile, dataReceived } });
+                            const pyEventData = new CustomEvent('pyEventData', { bubbles: false, detail: { py, pyfile, dataReceived } });
                             e.target.dispatchEvent(pyEventData);
                          
                             console.log("pyEventData dispatched");
@@ -9088,7 +9089,7 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
 
                     if(e) {
                     
-                        const pyEvent = new CustomEvent('pyEvent', { bubbles: true, detail: { py, pyfile } });
+                        const pyEvent = new CustomEvent('pyEvent', { bubbles: false, detail: { py, pyfile } });
                         e.target.dispatchEvent(pyEvent);
                         console.log("pyEvent dispatched");
 
@@ -9103,7 +9104,7 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
 
                         if(e) {
                     
-                            const pyEventData = new CustomEvent('pyEventData', { bubbles: true, detail: { py, pyfile, dataReceived } });
+                            const pyEventData = new CustomEvent('pyEventData', { bubbles: false, detail: { py, pyfile, dataReceived } });
                             e.target.dispatchEvent(pyEventData);
                          
                             console.log("pyEventData dispatched");
@@ -9131,7 +9132,7 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                         }
 
                         if(e) {
-                            const pyEventClosed = new CustomEvent('pyEventClosed', { bubbles: true, detail: { py, pyfile } });
+                            const pyEventClosed = new CustomEvent('pyEventClosed', { bubbles: false, detail: { py, pyfile } });
                             e.target.dispatchEvent(pyEventClosed);
                         
                             console.log("pyEventClosed dispatched");
@@ -9150,6 +9151,9 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
 
 const activateChangelog = writable(false);
 const windowLoaded = writable(false);
+
+const updateAvailable = writable(false);
+const newVersion = writable("");
 
 // Global variables
 
@@ -62340,24 +62344,28 @@ class THz extends SvelteComponentDev {
 /* src\components\Changelog.svelte generated by Svelte v3.29.0 */
 const file$1g = "src\\components\\Changelog.svelte";
 
-// (45:0) {#if $activateChangelog && $windowLoaded}
+// (62:0) {#if $activateChangelog && $windowLoaded}
 function create_if_block$y(ctx) {
 	let modal;
 	let updating_active;
 	let current;
 
 	function modal_active_binding(value) {
-		/*modal_active_binding*/ ctx[3].call(null, value);
+		/*modal_active_binding*/ ctx[6].call(null, value);
 	}
 
 	let modal_props = {
-		title: "FELion GUI Changelog",
-		$$slots: { content: [create_content_slot$7] },
+		title: /*changelogTitle*/ ctx[1],
+		$$slots: {
+			default: [create_default_slot$z],
+			footerbtn: [create_footerbtn_slot$5],
+			content: [create_content_slot$7]
+		},
 		$$scope: { ctx }
 	};
 
-	if (/*$activateChangelog*/ ctx[1] !== void 0) {
-		modal_props.active = /*$activateChangelog*/ ctx[1];
+	if (/*$activateChangelog*/ ctx[2] !== void 0) {
+		modal_props.active = /*$activateChangelog*/ ctx[2];
 	}
 
 	modal = new Modal({ props: modal_props, $$inline: true });
@@ -62373,14 +62381,15 @@ function create_if_block$y(ctx) {
 		},
 		p: function update(ctx, dirty) {
 			const modal_changes = {};
+			if (dirty & /*changelogTitle*/ 2) modal_changes.title = /*changelogTitle*/ ctx[1];
 
-			if (dirty & /*$$scope, changelogContent*/ 17) {
+			if (dirty & /*$$scope, $updateAvailable, changelogContent*/ 521) {
 				modal_changes.$$scope = { dirty, ctx };
 			}
 
-			if (!updating_active && dirty & /*$activateChangelog*/ 2) {
+			if (!updating_active && dirty & /*$activateChangelog*/ 4) {
 				updating_active = true;
-				modal_changes.active = /*$activateChangelog*/ ctx[1];
+				modal_changes.active = /*$activateChangelog*/ ctx[2];
 				add_flush_callback(() => updating_active = false);
 			}
 
@@ -62404,34 +62413,121 @@ function create_if_block$y(ctx) {
 		block,
 		id: create_if_block$y.name,
 		type: "if",
-		source: "(45:0) {#if $activateChangelog && $windowLoaded}",
+		source: "(62:0) {#if $activateChangelog && $windowLoaded}",
 		ctx
 	});
 
 	return block;
 }
 
-// (48:8) <div slot="content" transition:fade style="user-select:text;">
+// (69:12) {:else}
+function create_else_block$c(ctx) {
+	let html_tag;
+	let raw_value = window.marked(/*changelogContent*/ ctx[0]) + "";
+	let html_anchor;
+
+	const block = {
+		c: function create() {
+			html_anchor = empty();
+			html_tag = new HtmlTag(html_anchor);
+		},
+		m: function mount(target, anchor) {
+			html_tag.m(raw_value, target, anchor);
+			insert_dev(target, html_anchor, anchor);
+		},
+		p: function update(ctx, dirty) {
+			if (dirty & /*changelogContent*/ 1 && raw_value !== (raw_value = window.marked(/*changelogContent*/ ctx[0]) + "")) html_tag.p(raw_value);
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(html_anchor);
+			if (detaching) html_tag.d();
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_else_block$c.name,
+		type: "else",
+		source: "(69:12) {:else}",
+		ctx
+	});
+
+	return block;
+}
+
+// (66:12) {#if $updateAvailable && window.changelogNewContent}
+function create_if_block_2$6(ctx) {
+	let html_tag;
+	let raw_value = window.marked(window.changelogNewContent) + "";
+	let html_anchor;
+
+	const block = {
+		c: function create() {
+			html_anchor = empty();
+			html_tag = new HtmlTag(html_anchor);
+		},
+		m: function mount(target, anchor) {
+			html_tag.m(raw_value, target, anchor);
+			insert_dev(target, html_anchor, anchor);
+		},
+		p: noop,
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(html_anchor);
+			if (detaching) html_tag.d();
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_if_block_2$6.name,
+		type: "if",
+		source: "(66:12) {#if $updateAvailable && window.changelogNewContent}",
+		ctx
+	});
+
+	return block;
+}
+
+// (65:8) <div slot="content" transition:fade style="user-select:text;">
 function create_content_slot$7(ctx) {
 	let div;
-	let raw_value = window.marked(/*changelogContent*/ ctx[0]) + "";
 	let div_transition;
 	let current;
+
+	function select_block_type(ctx, dirty) {
+		if (/*$updateAvailable*/ ctx[3] && window.changelogNewContent) return create_if_block_2$6;
+		return create_else_block$c;
+	}
+
+	let current_block_type = select_block_type(ctx);
+	let if_block = current_block_type(ctx);
 
 	const block = {
 		c: function create() {
 			div = element("div");
+			if_block.c();
 			attr_dev(div, "slot", "content");
 			set_style(div, "user-select", "text");
-			add_location(div, file$1g, 47, 8, 1062);
+			add_location(div, file$1g, 64, 8, 1571);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
-			div.innerHTML = raw_value;
+			if_block.m(div, null);
 			current = true;
 		},
 		p: function update(ctx, dirty) {
-			if ((!current || dirty & /*changelogContent*/ 1) && raw_value !== (raw_value = window.marked(/*changelogContent*/ ctx[0]) + "")) div.innerHTML = raw_value;		},
+			if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block) {
+				if_block.p(ctx, dirty);
+			} else {
+				if_block.d(1);
+				if_block = current_block_type(ctx);
+
+				if (if_block) {
+					if_block.c();
+					if_block.m(div, null);
+				}
+			}
+		},
 		i: function intro(local) {
 			if (current) return;
 
@@ -62449,6 +62545,7 @@ function create_content_slot$7(ctx) {
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(div);
+			if_block.d();
 			if (detaching && div_transition) div_transition.end();
 		}
 	};
@@ -62457,7 +62554,124 @@ function create_content_slot$7(ctx) {
 		block,
 		id: create_content_slot$7.name,
 		type: "slot",
-		source: "(48:8) <div slot=\\\"content\\\" transition:fade style=\\\"user-select:text;\\\">",
+		source: "(65:8) <div slot=\\\"content\\\" transition:fade style=\\\"user-select:text;\\\">",
+		ctx
+	});
+
+	return block;
+}
+
+// (76:12) {#if $updateAvailable}
+function create_if_block_1$a(ctx) {
+	let button;
+	let mounted;
+	let dispose;
+
+	const block = {
+		c: function create() {
+			button = element("button");
+			button.textContent = "Update Now";
+			attr_dev(button, "class", "button is-warning");
+			add_location(button, file$1g, 76, 16, 1979);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, button, anchor);
+
+			if (!mounted) {
+				dispose = listen_dev(button, "click", /*updateNow*/ ctx[5], false, false, false);
+				mounted = true;
+			}
+		},
+		p: noop,
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(button);
+			mounted = false;
+			dispose();
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_if_block_1$a.name,
+		type: "if",
+		source: "(76:12) {#if $updateAvailable}",
+		ctx
+	});
+
+	return block;
+}
+
+// (75:8) <div slot="footerbtn">
+function create_footerbtn_slot$5(ctx) {
+	let div;
+	let if_block = /*$updateAvailable*/ ctx[3] && create_if_block_1$a(ctx);
+
+	const block = {
+		c: function create() {
+			div = element("div");
+			if (if_block) if_block.c();
+			attr_dev(div, "slot", "footerbtn");
+			add_location(div, file$1g, 74, 8, 1903);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, div, anchor);
+			if (if_block) if_block.m(div, null);
+		},
+		p: function update(ctx, dirty) {
+			if (/*$updateAvailable*/ ctx[3]) {
+				if (if_block) {
+					if_block.p(ctx, dirty);
+				} else {
+					if_block = create_if_block_1$a(ctx);
+					if_block.c();
+					if_block.m(div, null);
+				}
+			} else if (if_block) {
+				if_block.d(1);
+				if_block = null;
+			}
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(div);
+			if (if_block) if_block.d();
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_footerbtn_slot$5.name,
+		type: "slot",
+		source: "(75:8) <div slot=\\\"footerbtn\\\">",
+		ctx
+	});
+
+	return block;
+}
+
+// (64:4) <Modal title={changelogTitle} bind:active={$activateChangelog}>
+function create_default_slot$z(ctx) {
+	let t;
+
+	const block = {
+		c: function create() {
+			t = space();
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, t, anchor);
+		},
+		p: noop,
+		i: noop,
+		o: noop,
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(t);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_default_slot$z.name,
+		type: "slot",
+		source: "(64:4) <Modal title={changelogTitle} bind:active={$activateChangelog}>",
 		ctx
 	});
 
@@ -62501,7 +62715,7 @@ h1, h2 {
 	let t;
 	let if_block_anchor;
 	let current;
-	let if_block = /*$activateChangelog*/ ctx[1] && /*$windowLoaded*/ ctx[2] && create_if_block$y(ctx);
+	let if_block = /*$activateChangelog*/ ctx[2] && /*$windowLoaded*/ ctx[4] && create_if_block$y(ctx);
 
 	const block = {
 		c: function create() {
@@ -62521,11 +62735,11 @@ h1, h2 {
 			current = true;
 		},
 		p: function update(ctx, [dirty]) {
-			if (/*$activateChangelog*/ ctx[1] && /*$windowLoaded*/ ctx[2]) {
+			if (/*$activateChangelog*/ ctx[2] && /*$windowLoaded*/ ctx[4]) {
 				if (if_block) {
 					if_block.p(ctx, dirty);
 
-					if (dirty & /*$activateChangelog, $windowLoaded*/ 6) {
+					if (dirty & /*$activateChangelog, $windowLoaded*/ 20) {
 						transition_in(if_block, 1);
 					}
 				} else {
@@ -62574,11 +62788,17 @@ h1, h2 {
 
 function instance$1n($$self, $$props, $$invalidate) {
 	let $activateChangelog;
+	let $updateAvailable;
+	let $newVersion;
 	let $windowLoaded;
 	validate_store(activateChangelog, "activateChangelog");
-	component_subscribe($$self, activateChangelog, $$value => $$invalidate(1, $activateChangelog = $$value));
+	component_subscribe($$self, activateChangelog, $$value => $$invalidate(2, $activateChangelog = $$value));
+	validate_store(updateAvailable, "updateAvailable");
+	component_subscribe($$self, updateAvailable, $$value => $$invalidate(3, $updateAvailable = $$value));
+	validate_store(newVersion, "newVersion");
+	component_subscribe($$self, newVersion, $$value => $$invalidate(7, $newVersion = $$value));
 	validate_store(windowLoaded, "windowLoaded");
-	component_subscribe($$self, windowLoaded, $$value => $$invalidate(2, $windowLoaded = $$value));
+	component_subscribe($$self, windowLoaded, $$value => $$invalidate(4, $windowLoaded = $$value));
 	let { $$slots: slots = {}, $$scope } = $$props;
 	validate_slots("Changelog", slots, []);
 	let changelogContent = fs.readFileSync(path.resolve(__dirname, "../CHANGELOG.md")).toString();
@@ -62594,6 +62814,14 @@ function instance$1n($$self, $$props, $$invalidate) {
 		}
 	});
 
+	const updateEvent = new CustomEvent("update", { bubbles: false });
+
+	const updateNow = e => {
+		let target = document.getElementById("updateCheckBtn");
+		target.dispatchEvent(updateEvent);
+	};
+
+	let changelogTitle = "FELion GUI Changelog";
 	const writable_props = [];
 
 	Object.keys($$props).forEach(key => {
@@ -62608,24 +62836,51 @@ function instance$1n($$self, $$props, $$invalidate) {
 	$$self.$capture_state = () => ({
 		windowLoaded,
 		activateChangelog,
+		updateAvailable,
+		newVersion,
 		Modal,
 		onMount,
 		beforeUpdate,
 		fade,
 		changelogContent,
+		updateEvent,
+		updateNow,
+		changelogTitle,
 		$activateChangelog,
+		$updateAvailable,
+		$newVersion,
 		$windowLoaded
 	});
 
 	$$self.$inject_state = $$props => {
 		if ("changelogContent" in $$props) $$invalidate(0, changelogContent = $$props.changelogContent);
+		if ("changelogTitle" in $$props) $$invalidate(1, changelogTitle = $$props.changelogTitle);
 	};
 
 	if ($$props && "$$inject" in $$props) {
 		$$self.$inject_state($$props.$$inject);
 	}
 
-	return [changelogContent, $activateChangelog, $windowLoaded, modal_active_binding];
+	$$self.$$.update = () => {
+		if ($$self.$$.dirty & /*$updateAvailable, $newVersion*/ 136) {
+			 if ($updateAvailable) {
+				set_store_value(activateChangelog, $activateChangelog = true, $activateChangelog);
+				$$invalidate(1, changelogTitle = "New update available: " + $newVersion);
+			} else {
+				$$invalidate(1, changelogTitle = "FELion GUI Changelog");
+			}
+		}
+	};
+
+	return [
+		changelogContent,
+		changelogTitle,
+		$activateChangelog,
+		$updateAvailable,
+		$windowLoaded,
+		updateNow,
+		modal_active_binding
+	];
 }
 
 class Changelog extends SvelteComponentDev {
@@ -62774,26 +63029,39 @@ function InstallUpdate(target, updateFolder) {
         .finally(() => { target.classList.toggle("is-loading"); restart_program(); });
 }
 
+const updateEvent = new CustomEvent('update', { bubbles: false });
+
 function checkWithCurrentVersion({new_version, developer_version, info}={}) {
+
     if (window.currentVersion === new_version) {
         if (developer_version) {
-
                 if (info) {window.createToast(`CAUTION! You are checking with developer branch which has experimental features. Take backup before updating.`, "danger");}
-            } else { if (info) {window.createToast("No stable update available", "warning");}}
+            } else { if (info) {
+
+                window.createToast("No stable update available", "warning");
+                updateAvailable.set(false);
+                window.changelogNewContent = "";
+
+            }}
     
     } else if (window.currentVersion < new_version) {
+        
+        const changelogContentFile = get_store_value(githubRepo)+"/CHANGELOG.md";
 
-        window.createToast("New update available", "success");
-
-        let options = {
-            title: "FELion_GUI3",
-            message: "Update available "+new_version,
-            buttons: ["Update and restart", "Later"],
-            type:"info"
-        };
-        let response = window.showinfo(window.remote.getCurrentWindow(), options);
-        response === 0 ? update() : window.createToast("Not updating now");
+        window.changelogNewContent = "";
+        fetch(changelogContentFile)
+            .then(response => response.text())
+            .then(result => {
+                window.changelogNewContent=result;
+                updateAvailable.set(true);
+                activateChangelog.set(true);
+                newVersion.set(new_version);
+                console.log(window.changelogNewContent);
+            })
+            .catch(error=> window.createToast(error, "danger"));
+            
     }
+
 }
 
 function updateCheck({info=true}={}){
@@ -62801,7 +63069,6 @@ function updateCheck({info=true}={}){
     let target = document.getElementById("updateCheckBtn");
 
     target.classList.toggle("is-loading");
-
     if (!navigator.onLine) {if (info) {window.createToast("No Internet Connection!", "warning");} return}
 
     console.log(`URL_Package: ${get_store_value(versionJson)}`);
@@ -62923,7 +63190,7 @@ function create_if_block$z(ctx) {
 	let current;
 	let mounted;
 	let dispose;
-	const if_block_creators = [create_if_block_1$a, create_else_block$c];
+	const if_block_creators = [create_if_block_1$b, create_else_block$d];
 	const if_blocks = [];
 
 	function select_block_type(ctx, dirty) {
@@ -62986,7 +63253,7 @@ function create_if_block$z(ctx) {
 			props: {
 				class: "material-icons is-pulled-right",
 				style: "background: #f14668; border-radius: 2em;",
-				$$slots: { default: [create_default_slot$z] },
+				$$slots: { default: [create_default_slot$A] },
 				$$scope: { ctx }
 			},
 			$$inline: true
@@ -63147,7 +63414,7 @@ function create_if_block$z(ctx) {
 }
 
 // (129:16) {:else}
-function create_else_block$c(ctx) {
+function create_else_block$d(ctx) {
 	let textfield0;
 	let updating_value;
 	let t;
@@ -63233,7 +63500,7 @@ function create_else_block$c(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_else_block$c.name,
+		id: create_else_block$d.name,
 		type: "else",
 		source: "(129:16) {:else}",
 		ctx
@@ -63243,7 +63510,7 @@ function create_else_block$c(ctx) {
 }
 
 // (126:16) {#if installPythonPackagesMode}
-function create_if_block_1$a(ctx) {
+function create_if_block_1$b(ctx) {
 	let textfield;
 	let updating_value;
 	let current;
@@ -63296,7 +63563,7 @@ function create_if_block_1$a(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_if_block_1$a.name,
+		id: create_if_block_1$b.name,
 		type: "if",
 		source: "(126:16) {#if installPythonPackagesMode}",
 		ctx
@@ -63333,7 +63600,7 @@ function create_default_slot_1$f(ctx) {
 }
 
 // (146:16) <IconButton class="material-icons is-pulled-right" style="background: #f14668; border-radius: 2em;" on:click="{()=>commandResults=[{color:colorSets.normal, results:`>> cleared`}] }">
-function create_default_slot$z(ctx) {
+function create_default_slot$A(ctx) {
 	let t;
 
 	const block = {
@@ -63350,7 +63617,7 @@ function create_default_slot$z(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot$z.name,
+		id: create_default_slot$A.name,
 		type: "slot",
 		source: "(146:16) <IconButton class=\\\"material-icons is-pulled-right\\\" style=\\\"background: #f14668; border-radius: 2em;\\\" on:click=\\\"{()=>commandResults=[{color:colorSets.normal, results:`>> cleared`}] }\\\">",
 		ctx
@@ -64231,76 +64498,76 @@ function create_fragment$1p(ctx) {
 			h13.textContent = "About";
 			attr_dev(div0, "class", "title nav hvr-glow svelte-3kstg5");
 			toggle_class(div0, "clicked", /*selected*/ ctx[0] === "Configuration");
-			add_location(div0, file$1i, 147, 16, 4147);
+			add_location(div0, file$1i, 146, 16, 4090);
 			attr_dev(div1, "class", "title nav hvr-glow svelte-3kstg5");
 			toggle_class(div1, "clicked", /*selected*/ ctx[0] === "Update");
-			add_location(div1, file$1i, 148, 16, 4279);
+			add_location(div1, file$1i, 147, 16, 4222);
 			attr_dev(div2, "class", "title nav hvr-glow svelte-3kstg5");
 			toggle_class(div2, "clicked", /*selected*/ ctx[0] === "Terminal");
-			add_location(div2, file$1i, 149, 16, 4397);
+			add_location(div2, file$1i, 148, 16, 4340);
 			attr_dev(div3, "class", "title nav hvr-glow svelte-3kstg5");
 			toggle_class(div3, "clicked", /*selected*/ ctx[0] === "About");
-			add_location(div3, file$1i, 150, 16, 4519);
+			add_location(div3, file$1i, 149, 16, 4462);
 			attr_dev(div4, "class", "container left svelte-3kstg5");
-			add_location(div4, file$1i, 146, 12, 4101);
+			add_location(div4, file$1i, 145, 12, 4044);
 			attr_dev(div5, "class", "column side-panel is-2-widescreen is-3-desktop is-4-tablet box adjust-right svelte-3kstg5");
-			add_location(div5, file$1i, 145, 8, 3998);
+			add_location(div5, file$1i, 144, 8, 3941);
 			attr_dev(h10, "class", "title svelte-3kstg5");
-			add_location(h10, file$1i, 158, 20, 4863);
+			add_location(h10, file$1i, 157, 20, 4806);
 			attr_dev(div6, "class", "subtitle svelte-3kstg5");
-			add_location(div6, file$1i, 159, 20, 4921);
+			add_location(div6, file$1i, 158, 20, 4864);
 			attr_dev(button0, "class", "button is-link svelte-3kstg5");
-			add_location(button0, file$1i, 162, 20, 5206);
+			add_location(button0, file$1i, 161, 20, 5149);
 			attr_dev(button1, "class", "button is-link svelte-3kstg5");
-			add_location(button1, file$1i, 163, 20, 5298);
+			add_location(button1, file$1i, 162, 20, 5241);
 			attr_dev(div7, "class", "content animated fadeIn svelte-3kstg5");
 			toggle_class(div7, "hide", /*selected*/ ctx[0] !== "Configuration");
-			add_location(div7, file$1i, 157, 16, 4764);
+			add_location(div7, file$1i, 156, 16, 4707);
 			attr_dev(h11, "class", "title svelte-3kstg5");
-			add_location(h11, file$1i, 167, 20, 5504);
+			add_location(h11, file$1i, 166, 20, 5447);
 			attr_dev(div8, "class", "subtitle svelte-3kstg5");
-			add_location(div8, file$1i, 169, 20, 5557);
+			add_location(div8, file$1i, 168, 20, 5500);
 			attr_dev(div9, "class", "content svelte-3kstg5");
-			add_location(div9, file$1i, 170, 20, 5646);
+			add_location(div9, file$1i, 169, 20, 5589);
 			attr_dev(button2, "class", "button is-link svelte-3kstg5");
 			attr_dev(button2, "id", "updateCheckBtn");
-			add_location(button2, file$1i, 177, 24, 6144);
+			add_location(button2, file$1i, 176, 24, 6087);
 			attr_dev(button3, "class", "button is-link svelte-3kstg5");
 			attr_dev(button3, "id", "updateBtn");
-			add_location(button3, file$1i, 178, 24, 6267);
+			add_location(button3, file$1i, 177, 24, 6229);
 			attr_dev(button4, "class", "button is-warning svelte-3kstg5");
-			add_location(button4, file$1i, 180, 24, 6398);
+			add_location(button4, file$1i, 179, 24, 6360);
 			attr_dev(div10, "class", "content svelte-3kstg5");
-			add_location(div10, file$1i, 176, 20, 6097);
+			add_location(div10, file$1i, 175, 20, 6040);
 			attr_dev(button5, "class", "button is-link svelte-3kstg5");
-			add_location(button5, file$1i, 186, 24, 6720);
+			add_location(button5, file$1i, 185, 24, 6684);
 			attr_dev(button6, "class", "button is-link svelte-3kstg5");
-			add_location(button6, file$1i, 187, 24, 6810);
+			add_location(button6, file$1i, 186, 24, 6774);
 			attr_dev(div11, "class", "content svelte-3kstg5");
-			add_location(div11, file$1i, 184, 20, 6548);
+			add_location(div11, file$1i, 183, 20, 6512);
 			attr_dev(div12, "class", "content animated fadeIn svelte-3kstg5");
 			toggle_class(div12, "hide", /*selected*/ ctx[0] !== "Update");
-			add_location(div12, file$1i, 166, 16, 5412);
+			add_location(div12, file$1i, 165, 16, 5355);
 			attr_dev(h12, "class", "title svelte-3kstg5");
-			add_location(h12, file$1i, 193, 20, 7064);
+			add_location(h12, file$1i, 192, 20, 7028);
 			attr_dev(div13, "class", "content animated fadeIn svelte-3kstg5");
 			toggle_class(div13, "hide", /*selected*/ ctx[0] !== "Terminal");
-			add_location(div13, file$1i, 192, 16, 6970);
+			add_location(div13, file$1i, 191, 16, 6934);
 			attr_dev(h13, "class", "title svelte-3kstg5");
-			add_location(h13, file$1i, 198, 20, 7342);
+			add_location(h13, file$1i, 197, 20, 7306);
 			attr_dev(div14, "class", "content animated fadeIn svelte-3kstg5");
 			toggle_class(div14, "hide", /*selected*/ ctx[0] !== "About");
-			add_location(div14, file$1i, 197, 16, 7251);
+			add_location(div14, file$1i, 196, 16, 7215);
 			attr_dev(div15, "class", "container right svelte-3kstg5");
-			add_location(div15, file$1i, 155, 12, 4714);
+			add_location(div15, file$1i, 154, 12, 4657);
 			attr_dev(div16, "class", "column main-panel box svelte-3kstg5");
-			add_location(div16, file$1i, 154, 8, 4665);
+			add_location(div16, file$1i, 153, 8, 4608);
 			attr_dev(div17, "class", "columns svelte-3kstg5");
-			add_location(div17, file$1i, 144, 4, 3967);
+			add_location(div17, file$1i, 143, 4, 3910);
 			attr_dev(section, "class", "section animated fadeIn svelte-3kstg5");
 			attr_dev(section, "id", "Settings");
 			set_style(section, "display", "none");
-			add_location(section, file$1i, 142, 0, 3883);
+			add_location(section, file$1i, 141, 0, 3826);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -64384,6 +64651,7 @@ function create_fragment$1p(ctx) {
 					listen_dev(button0, "click", resetPyConfig, false, false, false),
 					listen_dev(button1, "click", updatePyConfig, false, false, false),
 					listen_dev(button2, "click", updateCheck, false, false, false),
+					listen_dev(button2, "update", /*update*/ ctx[15], false, false, false),
 					listen_dev(button3, "click", /*update*/ ctx[15], false, false, false),
 					listen_dev(button4, "click", /*click_handler*/ ctx[23], false, false, false),
 					listen_dev(button5, "click", /*backup*/ ctx[11], false, false, false),
@@ -64708,7 +64976,9 @@ function instance$1p($$self, $$props, $$invalidate) {
 		github.set($github);
 	}
 
-	const click_handler = () => set_store_value(activateChangelog, $activateChangelog = true, $activateChangelog);
+	const click_handler = () => {
+		set_store_value(activateChangelog, $activateChangelog = true, $activateChangelog);
+	};
 
 	function textfield4_value_binding(value) {
 		$backupName = value;
@@ -64912,7 +65182,7 @@ function create_default_slot_1$g(ctx) {
 }
 
 // (95:8) <TabBar tabs={navItems} let:tab bind:active>
-function create_default_slot$A(ctx) {
+function create_default_slot$B(ctx) {
 	let tab;
 	let current;
 
@@ -64959,7 +65229,7 @@ function create_default_slot$A(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot$A.name,
+		id: create_default_slot$B.name,
 		type: "slot",
 		source: "(95:8) <TabBar tabs={navItems} let:tab bind:active>",
 		ctx
@@ -64969,7 +65239,7 @@ function create_default_slot$A(ctx) {
 }
 
 // (160:4) {:else}
-function create_else_block$d(ctx) {
+function create_else_block$e(ctx) {
 	let terminal;
 	let current;
 	terminal = new Terminal({ $$inline: true });
@@ -64999,7 +65269,7 @@ function create_else_block$d(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_else_block$d.name,
+		id: create_else_block$e.name,
 		type: "else",
 		source: "(160:4) {:else}",
 		ctx
@@ -65874,7 +66144,7 @@ function create_fragment$1q(ctx) {
 		tabs: /*navItems*/ ctx[21],
 		$$slots: {
 			default: [
-				create_default_slot$A,
+				create_default_slot$B,
 				({ tab }) => ({ 51: tab }),
 				({ tab }) => [0, tab ? 1048576 : 0]
 			]
@@ -65888,7 +66158,7 @@ function create_fragment$1q(ctx) {
 
 	tabbar = new TabBar({ props: tabbar_props, $$inline: true });
 	binding_callbacks.push(() => bind(tabbar, "active", tabbar_active_binding));
-	const if_block_creators = [create_if_block$A, create_else_block$d];
+	const if_block_creators = [create_if_block$A, create_else_block$e];
 	const if_blocks = [];
 
 	function select_block_type(ctx, dirty) {

@@ -6,6 +6,9 @@ import "../Pages/general/computePy";
 export const activateChangelog = writable(false)
 export const windowLoaded = writable(false);
 
+export const updateAvailable = writable(false);
+export const newVersion = writable("");
+
 // Global variables
 
 window.createToast = (msg, type = "primary") => Toast.create({ message: msg, position: "is-top", type: `is-${type}` })

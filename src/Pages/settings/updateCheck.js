@@ -1,25 +1,40 @@
 
-import {versionJson, get} from "./svelteWritables";
+import {versionJson, githubRepo, get} from "./svelteWritables";
+import {activateChangelog, updateAvailable, newVersion} from "../../js/functions";
+
+const updateEvent = new CustomEvent('update', { bubbles: false });
+
 function checkWithCurrentVersion({new_version, developer_version, info}={}) {
+
     if (window.currentVersion === new_version) {
         if (developer_version) {
-
                 if (info) {window.createToast(`CAUTION! You are checking with developer branch which has experimental features. Take backup before updating.`, "danger")}
-            } else { if (info) {window.createToast("No stable update available", "warning")}}
+            } else { if (info) {
+
+                window.createToast("No stable update available", "warning");
+                updateAvailable.set(false)
+                window.changelogNewContent = ""
+
+            }}
     
     } else if (window.currentVersion < new_version) {
+        
+        const changelogContentFile = get(githubRepo)+"/CHANGELOG.md"
 
-        window.createToast("New update available", "success")
-
-        let options = {
-            title: "FELion_GUI3",
-            message: "Update available "+new_version,
-            buttons: ["Update and restart", "Later"],
-            type:"info"
-        }
-        let response = window.showinfo(window.remote.getCurrentWindow(), options)
-        response === 0 ? update() : window.createToast("Not updating now")
+        window.changelogNewContent = ""
+        fetch(changelogContentFile)
+            .then(response => response.text())
+            .then(result => {
+                window.changelogNewContent=result
+                updateAvailable.set(true)
+                activateChangelog.set(true)
+                newVersion.set(new_version)
+                console.log(window.changelogNewContent)
+            })
+            .catch(error=> window.createToast(error, "danger"))
+            
     }
+
 }
 
 export function updateCheck({info=true}={}){
@@ -27,7 +42,6 @@ export function updateCheck({info=true}={}){
     let target = document.getElementById("updateCheckBtn")
 
     target.classList.toggle("is-loading")
-
     if (!navigator.onLine) {if (info) {window.createToast("No Internet Connection!", "warning")}; return}
 
     console.log(`URL_Package: ${get(versionJson)}`)

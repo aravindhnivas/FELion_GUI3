@@ -10,7 +10,9 @@
 - Included FELIX plotting in matplotlib to produce quality plots for exporting.
 - Event dispatcher added for python process.
 - Using Quill editor for report editor.
+
 - Bug fix: Depletion scan dropdown menu auto updated
+
 - Get labview settings from Masspec files
 
 ---

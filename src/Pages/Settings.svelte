@@ -21,7 +21,6 @@
     import {backupRestore} from "./settings/backupAndRestore";
     import {tick} from "svelte";
     import Terminal from '../components/Terminal.svelte';
-///////////////////////////////////////////////////////
 
     const backup = (event) => {
         backupRestore({event, method:"backup"})
@@ -163,10 +162,10 @@
                     </div>
 
                     <div class="content">
-                        <button class="button is-link" id="updateCheckBtn" on:click="{updateCheck}">Check update</button>
+                        <button class="button is-link" id="updateCheckBtn" on:click="{updateCheck}" on:update={update}>Check update</button>
                         <button class="button is-link" id="updateBtn" on:click={update}>Update</button>
                         
-                        <button class="button is-warning" on:click="{()=>$activateChangelog = true}">What's New</button>
+                        <button class="button is-warning" on:click="{()=>{$activateChangelog = true}}">What's New</button>
                     </div>
 
 

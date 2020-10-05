@@ -42,7 +42,7 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                     if(e) {
                     
                     
-                        const pyEvent = new CustomEvent('pyEvent', { bubbles: true, detail: { py, pyfile } });
+                        const pyEvent = new CustomEvent('pyEvent', { bubbles: false, detail: { py, pyfile } });
                         e.target.dispatchEvent(pyEvent)
                         console.log("pyEvent dispatched")
                     }
@@ -54,7 +54,7 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                         console.log("Closed")
 
                         if(e) {
-                            const pyEventClosed = new CustomEvent('pyEventClosed', { bubbles: true, detail: { py, pyfile } });
+                            const pyEventClosed = new CustomEvent('pyEventClosed', { bubbles: false, detail: { py, pyfile } });
                             e.target.dispatchEvent(pyEventClosed)
                             console.log("pyEventClosed dispatched")
                         }
@@ -66,7 +66,7 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                         console.log(`Output from python: ${dataReceived}`)
                         if(e) {
                     
-                            const pyEventData = new CustomEvent('pyEventData', { bubbles: true, detail: { py, pyfile, dataReceived } });
+                            const pyEventData = new CustomEvent('pyEventData', { bubbles: false, detail: { py, pyfile, dataReceived } });
                             e.target.dispatchEvent(pyEventData)
                          
                             console.log("pyEventData dispatched")
@@ -86,7 +86,7 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
 
                     if(e) {
                     
-                        const pyEvent = new CustomEvent('pyEvent', { bubbles: true, detail: { py, pyfile } });
+                        const pyEvent = new CustomEvent('pyEvent', { bubbles: false, detail: { py, pyfile } });
                         e.target.dispatchEvent(pyEvent)
                         console.log("pyEvent dispatched")
 
@@ -101,7 +101,7 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
 
                         if(e) {
                     
-                            const pyEventData = new CustomEvent('pyEventData', { bubbles: true, detail: { py, pyfile, dataReceived } });
+                            const pyEventData = new CustomEvent('pyEventData', { bubbles: false, detail: { py, pyfile, dataReceived } });
                             e.target.dispatchEvent(pyEventData)
                          
                             console.log("pyEventData dispatched")
@@ -129,7 +129,7 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                         }
 
                         if(e) {
-                            const pyEventClosed = new CustomEvent('pyEventClosed', { bubbles: true, detail: { py, pyfile } });
+                            const pyEventClosed = new CustomEvent('pyEventClosed', { bubbles: false, detail: { py, pyfile } });
                             e.target.dispatchEvent(pyEventClosed)
                         
                             console.log("pyEventClosed dispatched")
