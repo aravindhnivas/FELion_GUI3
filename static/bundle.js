@@ -63024,7 +63024,7 @@ const restart_program = () => {
 
 function InstallUpdate(target, updateFolder) {
 
-    $updating = true;
+    updating.set(true);
 
     let src = path.resolve(updateFolder, `${get_store_value(github).repo}-${get_store_value(github).branch}`);
 
@@ -63033,7 +63033,7 @@ function InstallUpdate(target, updateFolder) {
     transferFiles({ dest, src })
         .then(() => {console.log("Copying downloaded files");})
         .catch((err) => { window.createToast("Error occured while copying downloaded files"); throw err; })
-        .finally(() => { target.classList.toggle("is-loading"); $updating = false; restart_program(); });
+        .finally(() => { target.classList.toggle("is-loading"); updating.set(false); restart_program(); });
 }
 
 const updateEvent = new CustomEvent('update', { bubbles: false });
