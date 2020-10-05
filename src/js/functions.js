@@ -8,6 +8,8 @@ export const windowLoaded = writable(false);
 
 export const updateAvailable = writable(false);
 export const newVersion = writable("");
+export const updating = writable(false);
+
 
 // Global variables
 

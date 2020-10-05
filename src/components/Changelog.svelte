@@ -1,22 +1,22 @@
 
 <script>
-    import {windowLoaded, activateChangelog, updateAvailable, newVersion} from "../js/functions";
+    import {windowLoaded, activateChangelog, updateAvailable, newVersion, updating} from "../js/functions";
     import Modal from "./Modal.svelte";
     import {onMount, beforeUpdate} from "svelte";
     import { fade } from 'svelte/transition';
     let changelogContent = fs.readFileSync(path.resolve(__dirname, "../CHANGELOG.md")).toString()
     
     beforeUpdate(()=>{changelogContent = fs.readFileSync(path.resolve(__dirname, "../CHANGELOG.md")).toString()})
-    onMount(()=> {if(localStorage.showUpdate) {$activateChangelog = true; localStorage.showUpdate = ""}})
     
     const updateEvent = new CustomEvent('update', { bubbles: false });
+
 
     const updateNow = (e) => {
         
         let target = document.getElementById("updateCheckBtn")
 
         target.dispatchEvent(updateEvent)
-    
+        $updating = true
     }
 
     let changelogTitle = "FELion GUI Changelog"
@@ -74,7 +74,7 @@
 
         <div slot="footerbtn">
             {#if $updateAvailable}
-                <button class="button is-warning" on:click={updateNow}>Update Now</button>
+                <button class="button is-warning" class:is-loading={$updating} on:click={updateNow}>Update Now</button>
 
             {/if}
         </div>

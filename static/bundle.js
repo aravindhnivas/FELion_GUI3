@@ -9154,6 +9154,8 @@ const windowLoaded = writable(false);
 
 const updateAvailable = writable(false);
 const newVersion = writable("");
+const updating = writable(false);
+
 
 // Global variables
 
@@ -62351,7 +62353,7 @@ function create_if_block$y(ctx) {
 	let current;
 
 	function modal_active_binding(value) {
-		/*modal_active_binding*/ ctx[6].call(null, value);
+		/*modal_active_binding*/ ctx[7].call(null, value);
 	}
 
 	let modal_props = {
@@ -62364,8 +62366,8 @@ function create_if_block$y(ctx) {
 		$$scope: { ctx }
 	};
 
-	if (/*$activateChangelog*/ ctx[2] !== void 0) {
-		modal_props.active = /*$activateChangelog*/ ctx[2];
+	if (/*$activateChangelog*/ ctx[4] !== void 0) {
+		modal_props.active = /*$activateChangelog*/ ctx[4];
 	}
 
 	modal = new Modal({ props: modal_props, $$inline: true });
@@ -62383,13 +62385,13 @@ function create_if_block$y(ctx) {
 			const modal_changes = {};
 			if (dirty & /*changelogTitle*/ 2) modal_changes.title = /*changelogTitle*/ ctx[1];
 
-			if (dirty & /*$$scope, $updateAvailable, changelogContent*/ 521) {
+			if (dirty & /*$$scope, $updating, $updateAvailable, changelogContent*/ 1037) {
 				modal_changes.$$scope = { dirty, ctx };
 			}
 
-			if (!updating_active && dirty & /*$activateChangelog*/ 4) {
+			if (!updating_active && dirty & /*$activateChangelog*/ 16) {
 				updating_active = true;
-				modal_changes.active = /*$activateChangelog*/ ctx[2];
+				modal_changes.active = /*$activateChangelog*/ ctx[4];
 				add_flush_callback(() => updating_active = false);
 			}
 
@@ -62508,7 +62510,7 @@ function create_content_slot$7(ctx) {
 			if_block.c();
 			attr_dev(div, "slot", "content");
 			set_style(div, "user-select", "text");
-			add_location(div, file$1g, 64, 8, 1571);
+			add_location(div, file$1g, 64, 8, 1496);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -62572,17 +62574,22 @@ function create_if_block_1$a(ctx) {
 			button = element("button");
 			button.textContent = "Update Now";
 			attr_dev(button, "class", "button is-warning");
-			add_location(button, file$1g, 76, 16, 1979);
+			toggle_class(button, "is-loading", /*$updating*/ ctx[2]);
+			add_location(button, file$1g, 76, 16, 1904);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, button, anchor);
 
 			if (!mounted) {
-				dispose = listen_dev(button, "click", /*updateNow*/ ctx[5], false, false, false);
+				dispose = listen_dev(button, "click", /*updateNow*/ ctx[6], false, false, false);
 				mounted = true;
 			}
 		},
-		p: noop,
+		p: function update(ctx, dirty) {
+			if (dirty & /*$updating*/ 4) {
+				toggle_class(button, "is-loading", /*$updating*/ ctx[2]);
+			}
+		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(button);
 			mounted = false;
@@ -62611,7 +62618,7 @@ function create_footerbtn_slot$5(ctx) {
 			div = element("div");
 			if (if_block) if_block.c();
 			attr_dev(div, "slot", "footerbtn");
-			add_location(div, file$1g, 74, 8, 1903);
+			add_location(div, file$1g, 74, 8, 1828);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -62715,7 +62722,7 @@ h1, h2 {
 	let t;
 	let if_block_anchor;
 	let current;
-	let if_block = /*$activateChangelog*/ ctx[2] && /*$windowLoaded*/ ctx[4] && create_if_block$y(ctx);
+	let if_block = /*$activateChangelog*/ ctx[4] && /*$windowLoaded*/ ctx[5] && create_if_block$y(ctx);
 
 	const block = {
 		c: function create() {
@@ -62735,11 +62742,11 @@ h1, h2 {
 			current = true;
 		},
 		p: function update(ctx, [dirty]) {
-			if (/*$activateChangelog*/ ctx[2] && /*$windowLoaded*/ ctx[4]) {
+			if (/*$activateChangelog*/ ctx[4] && /*$windowLoaded*/ ctx[5]) {
 				if (if_block) {
 					if_block.p(ctx, dirty);
 
-					if (dirty & /*$activateChangelog, $windowLoaded*/ 20) {
+					if (dirty & /*$activateChangelog, $windowLoaded*/ 48) {
 						transition_in(if_block, 1);
 					}
 				} else {
@@ -62787,18 +62794,21 @@ h1, h2 {
 }
 
 function instance$1n($$self, $$props, $$invalidate) {
-	let $activateChangelog;
+	let $updating;
 	let $updateAvailable;
+	let $activateChangelog;
 	let $newVersion;
 	let $windowLoaded;
-	validate_store(activateChangelog, "activateChangelog");
-	component_subscribe($$self, activateChangelog, $$value => $$invalidate(2, $activateChangelog = $$value));
+	validate_store(updating, "updating");
+	component_subscribe($$self, updating, $$value => $$invalidate(2, $updating = $$value));
 	validate_store(updateAvailable, "updateAvailable");
 	component_subscribe($$self, updateAvailable, $$value => $$invalidate(3, $updateAvailable = $$value));
+	validate_store(activateChangelog, "activateChangelog");
+	component_subscribe($$self, activateChangelog, $$value => $$invalidate(4, $activateChangelog = $$value));
 	validate_store(newVersion, "newVersion");
-	component_subscribe($$self, newVersion, $$value => $$invalidate(7, $newVersion = $$value));
+	component_subscribe($$self, newVersion, $$value => $$invalidate(8, $newVersion = $$value));
 	validate_store(windowLoaded, "windowLoaded");
-	component_subscribe($$self, windowLoaded, $$value => $$invalidate(4, $windowLoaded = $$value));
+	component_subscribe($$self, windowLoaded, $$value => $$invalidate(5, $windowLoaded = $$value));
 	let { $$slots: slots = {}, $$scope } = $$props;
 	validate_slots("Changelog", slots, []);
 	let changelogContent = fs.readFileSync(path.resolve(__dirname, "../CHANGELOG.md")).toString();
@@ -62807,18 +62817,12 @@ function instance$1n($$self, $$props, $$invalidate) {
 		$$invalidate(0, changelogContent = fs.readFileSync(path.resolve(__dirname, "../CHANGELOG.md")).toString());
 	});
 
-	onMount(() => {
-		if (localStorage.showUpdate) {
-			set_store_value(activateChangelog, $activateChangelog = true, $activateChangelog);
-			localStorage.showUpdate = "";
-		}
-	});
-
 	const updateEvent = new CustomEvent("update", { bubbles: false });
 
 	const updateNow = e => {
 		let target = document.getElementById("updateCheckBtn");
 		target.dispatchEvent(updateEvent);
+		set_store_value(updating, $updating = true, $updating);
 	};
 
 	let changelogTitle = "FELion GUI Changelog";
@@ -62838,6 +62842,7 @@ function instance$1n($$self, $$props, $$invalidate) {
 		activateChangelog,
 		updateAvailable,
 		newVersion,
+		updating,
 		Modal,
 		onMount,
 		beforeUpdate,
@@ -62846,8 +62851,9 @@ function instance$1n($$self, $$props, $$invalidate) {
 		updateEvent,
 		updateNow,
 		changelogTitle,
-		$activateChangelog,
+		$updating,
 		$updateAvailable,
+		$activateChangelog,
 		$newVersion,
 		$windowLoaded
 	});
@@ -62862,7 +62868,7 @@ function instance$1n($$self, $$props, $$invalidate) {
 	}
 
 	$$self.$$.update = () => {
-		if ($$self.$$.dirty & /*$updateAvailable, $newVersion*/ 136) {
+		if ($$self.$$.dirty & /*$updateAvailable, $newVersion*/ 264) {
 			 if ($updateAvailable) {
 				set_store_value(activateChangelog, $activateChangelog = true, $activateChangelog);
 				$$invalidate(1, changelogTitle = "New update available: " + $newVersion);
@@ -62875,8 +62881,9 @@ function instance$1n($$self, $$props, $$invalidate) {
 	return [
 		changelogContent,
 		changelogTitle,
-		$activateChangelog,
+		$updating,
 		$updateAvailable,
+		$activateChangelog,
 		$windowLoaded,
 		updateNow,
 		modal_active_binding
@@ -63017,16 +63024,17 @@ const restart_program = () => {
 };
 
 function InstallUpdate(target, updateFolder) {
+
+    $updating = true;
+
     let src = path.resolve(updateFolder, `${get_store_value(github).repo}-${get_store_value(github).branch}`);
 
     let dest = path.resolve(__dirname, "..");
 
     transferFiles({ dest, src })
-
-        .then(() => {console.log("Copying downloaded files"); localStorage.showUpdate = "true";})
-
+        .then(() => {console.log("Copying downloaded files");})
         .catch((err) => { window.createToast("Error occured while copying downloaded files"); throw err; })
-        .finally(() => { target.classList.toggle("is-loading"); restart_program(); });
+        .finally(() => { target.classList.toggle("is-loading"); $updating = false; restart_program(); });
 }
 
 const updateEvent = new CustomEvent('update', { bubbles: false });

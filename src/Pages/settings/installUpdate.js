@@ -1,5 +1,6 @@
 
 import { github, get } from "./svelteWritables";
+import { updating } from "../../js/functions";
 import { transferFiles } from "./backupAndRestore";
 
 const restart_program = () => {
@@ -9,14 +10,15 @@ const restart_program = () => {
 }
 
 export function InstallUpdate(target, updateFolder) {
+
+    $updating = true
+
     let src = path.resolve(updateFolder, `${get(github).repo}-${get(github).branch}`)
 
     let dest = path.resolve(__dirname, "..")
 
     transferFiles({ dest, src })
-
-        .then(() => {console.log("Copying downloaded files"); localStorage.showUpdate = "true"})
-
+        .then(() => {console.log("Copying downloaded files");})
         .catch((err) => { window.createToast("Error occured while copying downloaded files"); throw err; })
-        .finally(() => { target.classList.toggle("is-loading"); restart_program() })
+        .finally(() => { target.classList.toggle("is-loading"); $updating = false; restart_program() })
 }
