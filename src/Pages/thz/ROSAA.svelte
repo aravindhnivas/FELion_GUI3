@@ -85,7 +85,7 @@
 
     <div class="align" slot="footerbtn">
 
-        <button  class="button is-danger is-pulled-left" on:click="{()=>{py? py.kill() : console.log('pyEvent does not available')}}" >Stop</button>
+        <button  class="button is-danger is-pulled-left" on:click="{()=>{py&&running? py.kill() : console.log('pyEvent is not available')}}" >Stop</button>
 
         <button  class="button is-link" on:click="{(e)=>{reportToggle = !reportToggle}}" >{buttonName}</button>
         <button  class="button is-link" class:is-loading={running} on:click="{(e)=> {dispatch('submit', { e, conditions }); running=true}}" on:pyEvent={pyEventHandle} on:pyEventClosed="{pyEventClosedHandle}" on:pyEventData={pyEventDataReceivedHandle}>Submit</button>
