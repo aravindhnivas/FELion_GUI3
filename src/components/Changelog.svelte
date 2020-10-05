@@ -16,7 +16,6 @@
         let target = document.getElementById("updateCheckBtn")
 
         target.dispatchEvent(updateEvent)
-        $updating = true
     }
 
     let changelogTitle = "FELion GUI Changelog"
