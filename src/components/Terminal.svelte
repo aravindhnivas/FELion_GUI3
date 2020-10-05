@@ -11,7 +11,7 @@
 
     const colorSets = {warning: "#ffdd57", danger:"#f14668", info:"#2098d1", normal:"#fafafa", success:"#20f996"}
 
-    export let commandToRun = localStorage["pythonpath"] || "", commandArgsToRun = "-m, pip", commandResults = [{color:colorSets.normal, results:">> "}], teminalFontSize=20;
+    export let commandToRun = localStorage["pythonpath"] || "", commandArgsToRun = "-m pip", commandResults = [{color:colorSets.normal, results:">> "}], teminalFontSize=20;
 
     export let commandInputDiv = true, runShell = false, id="terminal";
     
@@ -38,7 +38,8 @@
 
         
         try {
-            ls = spawn(commandToRun, commandArgsToRun.split(",").map(arg=>arg.trim()), { detached: true, stdio: 'pipe', shell: openShellTerminal });
+            commandArgsToRun += ` ${packagesName}`
+            ls = spawn(commandToRun, commandArgsToRun.split(" ").map(arg=>arg.trim()), { detached: true, stdio: 'pipe', shell: openShellTerminal });
         } catch (err) {preModal.modalContent = err.stack;  preModal.open = true}
 
         ls.stdout.on("data", data => {
@@ -67,8 +68,20 @@
 
         })
     }
-
     $: if(runShell) terminalShell()
+
+    let installPythonPackagesMode = false, packagesName = ""
+
+    const installPythonPackages = () => {
+
+
+        commandToRun = localStorage["pythonpath"]
+        
+        commandArgsToRun = "-m pip install"
+
+        installPythonPackagesMode = !installPythonPackagesMode
+
+    }
 
 </script>
 
@@ -105,26 +118,45 @@
     {#if commandInputDiv}
 
         <div class="commandInput">
+        
+            <button class="button is-link" on:click={installPythonPackages}>Python package installation</button>
+
             <div class="run" style="display:flex; align-items:center; margin-bottom:1em;">
 
-                <Textfield  bind:value={commandToRun} label="Enter command to run"/>
-                <Textfield  bind:value={commandArgsToRun} label="Enter command-arg"/>
+                {#if installPythonPackagesMode}
+
+                    <Textfield  bind:value={packagesName} label="Enter packages name(s)"/>
+                {:else}
+
+                    <Textfield  bind:value={commandToRun} label="Enter command to run"/>
+                    <Textfield  bind:value={commandArgsToRun} label="Enter command-arg"/>
+
+
+                {/if}
 
             </div>
+
 
             <div class="run" style="display:flex; align-items:center; margin-bottom:1em;">
                 <IconButton class="material-icons" on:click={terminalShell}>play_arrow</IconButton>
                 <CustomSwitch style="margin: 0 1em;" bind:selected={openShellTerminal} label="Shell"/>
+
                 <Textfield type="number" step="1" min="0" bind:value={teminalFontSize} variant="outlined" style="width:7em" label="Font Size"/>
+
                 <IconButton class="material-icons is-pulled-right" style="background: #f14668; border-radius: 2em;" on:click="{()=>commandResults=[{color:colorSets.normal, results:`>> cleared`}] }">clear</IconButton>
             </div>
+
         </div>
+
     {/if}
+
     <div class="box terminal" {id} style="height: {commandInputDiv ? 75 : 90}%;">
 
         {#each commandResults as {color, results}}
             <h1 class="subtitle" style="color:{color}; font-size:{teminalFontSize}px; white-space: pre-wrap; ">{results}</h1>
+
         {/each}
+
     </div>
     
 </div>
