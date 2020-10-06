@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 # from pathlib import Path as pt
 from scipy.integrate import solve_ivp
-from numba import jit
+# from numba import jit
 
 from ROSAA_func import distribution, boltzman_distribution, \
     stimulated_absorption, stimulated_emission,\
@@ -26,7 +26,7 @@ A_10 = None
 
 branching_ratio = None
 
-@jit(nopython=True, fastmath=True)
+# @jit(nopython=True, fastmath=True)
 def kinetic_simulation_off(t, N):
 
     CD0, CD1, CD2, CDHe, CDHe2 = N
@@ -59,7 +59,7 @@ def kinetic_simulation_off(t, N):
     return [dCD0_dt, dCD1_dt, dCD2_dt, dCDHe_dt, dCDHe2_dt]
 
 
-@jit(nopython=True, fastmath=True)
+# @jit(nopython=True, fastmath=True)
 def kinetic_simulation_on(t, N):
 
     CD0, CD1, CD2, CDHe, CDHe2 = N
@@ -185,15 +185,17 @@ def ROSAA_modal(conditions):
     
     q_10, q_20, q_21 = [float(i.strip()) for i in conditions["Collisional_q"].split(",")]
     
-    q_01 = q_10*distribution(1, 0, Energy[1], Energy[0], trapTemp)  # calculating q_up from q_down detailed balancing
+    KT = 0.695035*trapTemp
+    g = [1, 3, 5, 7, 9, 11]
+    q_01 = q_10 * (g[1]*np.exp(-Energy[1]/KT)) / (g[0]*np.exp(-Energy[0]/KT))   # calculating q_up from q_down detailed balancing
     Rate_q_01 = q_01*nHe
     Rate_q_10 = q_10*nHe
     
-    q_02 = q_20*distribution(2, 0, Energy[2], Energy[0], trapTemp)
+    q_02 = q_20*(g[2]*np.exp(-Energy[2]/KT)) / (g[0]*np.exp(-Energy[0]/KT))
     Rate_q_02 = q_02*nHe
     Rate_q_20 = q_20*nHe
     
-    q_12 = q_21*distribution(2, 1, Energy[1], Energy[2], trapTemp)
+    q_12 = q_21*(g[2]*np.exp(-Energy[2]/KT)) / (g[1]*np.exp(-Energy[1]/KT))
     Rate_q_12 = q_12*nHe
     Rate_q_21 = q_21*nHe
     
@@ -229,7 +231,6 @@ def ROSAA_modal(conditions):
     print(f"\nSolving for {initialPopulation=}", flush=True)
     
     t0 = perf_counter()
-
     print("Kinetic simulation laser-OFF: Running", flush=True)
     
     Noff = solve_ivp(kinetic_simulation_off, tspan, [*initialPopulation, 0, 0], t_eval=simulationTime)
@@ -246,6 +247,10 @@ def ROSAA_modal(conditions):
 
     ##############################################
     
+    _on = np.array(Non.y[3], dtype=np.float)
+    _off = np.array(Noff.y[3], dtype=np.float)
+    signal = 1 - (_on[-1] / _off[-1])
+    print(f"Signal(%) = {signal*100:.2f}")
     return Noff, Non
 
 def main(conditions):
@@ -258,13 +263,12 @@ def main(conditions):
     mol = "CD"
     tag = "He"
 
-    yoff = Noff.y.T
-    yon = Non.y.T
-
+    
     fig, ax = plt.subplots()
-
     lg = [f"{mol}(0)", f"{mol}(1)", f"{mol}(2)", f"{mol}{tag}", f"{mol}{tag}2"]
+
     c = 0
+    x = Noff.t
     for off, on in zip(Noff.y, Non.y):
         ax.plot(x, off, f"C{c}-", label=f"{lg[c]}")
         ax.plot(x, on, f"C{c}--")
