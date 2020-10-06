@@ -15,7 +15,7 @@ def gauss_fwhm(freq, mass, temp):
 
 
 def lorrentz_fwhm(dipole, power, cp=None):
-    if cp is not None:
+    if cp > 0:
         return cp*np.sqrt(power)
     return (dipole*3.33564e-30)/(reduced_plank*np.pi*np.sqrt(C*epsilon*trap_area)) * np.sqrt(power)
 
