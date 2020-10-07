@@ -13,6 +13,8 @@ from time import perf_counter
 
 from scipy.constants import speed_of_light as C
 
+from concurrent.futures import ProcessPoolExecutor
+
 # Global variable
 
 Rate_k31_0, Rate_k31_1, Rate_k32 = None, None, None
@@ -93,7 +95,8 @@ def kinetic_simulation_on(t, N):
     return [dCD0_dt, dCD1_dt, dCD2_dt, dCDHe_dt, dCDHe2_dt]
 
 
-def ROSAA_modal(conditions, nHe):
+def ROSAA_modal(args):
+    conditions, nHe = args
     
     global Rate_k31_0, Rate_k31_1, Rate_k32, \
             Rate_kCID1, Rate_kCID2,\
@@ -290,20 +293,23 @@ def main(conditions):
     
         print("Simulation wrt He/Ne number density")
 
-        for nHe in _range:
-            Noff, Non = ROSAA_modal(conditions, nHe)
+        parameters = [(conditions, nHe) for nHe in _range]
+        with ProcessPoolExecutor() as executor:
+            results = executor.map(ROSAA_modal, parameters)
+        
+        for N in results:
+            Noff, Non = N
             Noff_nHe.append(Noff.y)
             Non_nHe.append(Non.y)
             _signal = 1 - (Non.y[numberOfLevel][-1] / Noff.y[numberOfLevel][-1])
             signal_nHe.append(_signal)
-        
         signal_nHe = np.array(signal_nHe, dtype=np.float)*100
         Noff_nHe = np.array(Noff_nHe, dtype=np.float)
         Non_nHe = np.array(Non_nHe, dtype=np.float)
         
         print(signal_nHe)
     else:
-        Noff, Non = ROSAA_modal(conditions, nHe)
+        Noff, Non = ROSAA_modal((conditions, nHe))
         write = bool(conditions["writefile"])
         if write:
 
@@ -318,6 +324,7 @@ def main(conditions):
     
     fig, (ax, ax1) = plt.subplots(nrows=1, ncols=2, figsize=(10, 4))
     lg = [f"{mol}(0)", f"{mol}(1)", f"{mol}(2)", f"{mol}{tag}", f"{mol}{tag}2"]
+
 
     c = 0
     time = Noff.t
