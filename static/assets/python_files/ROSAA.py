@@ -2,7 +2,7 @@
 import sys, json
 import numpy as np
 import matplotlib.pyplot as plt
-# from pathlib import Path as pt
+from pathlib import Path as pt
 from scipy.integrate import solve_ivp
 # from numba import jit
 
@@ -209,8 +209,8 @@ def ROSAA_modal(conditions):
     ##############################################
     # Boltzman distribution
     ##############################################
-    
-    numberOfLevel = int(conditions["numberOfLevel"])
+    numberOfLevel = int(conditions["numberOfLevel (J levels)"])
+
     totalIonCounts = float(conditions["totalIonCounts"])
     
     boltzman_ratio = boltzman_distribution(Energy[:numberOfLevel], trapTemp)
@@ -223,9 +223,11 @@ def ROSAA_modal(conditions):
     # Signal(%) simulation
     ##############################################
     
-    trapTime = float(conditions["trapTime(ms)"])/1000
+    trapTime = float(conditions["Simulation time(ms)"])/1000
     tspan = [0, trapTime]
-    simulationTime = np.linspace(0, trapTime, 1000)
+    Nsteps = int(conditions["Total steps"])
+
+    simulationTime = np.linspace(0, trapTime, Nsteps)
     
     print(f"{tspan=}")
     print(f"\nSolving for {initialPopulation=}", flush=True)
@@ -236,59 +238,108 @@ def ROSAA_modal(conditions):
     Noff = solve_ivp(kinetic_simulation_off, tspan, [*initialPopulation, 0, 0], t_eval=simulationTime)
     t1 = perf_counter()
 
-
     print(f"Time taken for OFF simulation: {(t1-t0)/60:.2f} minutes")
+
+    
+    
     print("Kinetic simulation laser-ON: Running", flush=True)
     
-    
-    
-    Non = solve_ivp(kinetic_simulation_on, tspan, [*initialPopulation, 0, 0], t_eval=simulationTime)
-    print("Simulation Done", flush=True)
 
+    Non = solve_ivp(kinetic_simulation_on, tspan, [*initialPopulation, 0, 0], t_eval=simulationTime)
+    
     ##############################################
     
-    _on = np.array(Non.y[3], dtype=np.float)
-    _off = np.array(Noff.y[3], dtype=np.float)
+    _on = np.array(Non.y[numberOfLevel], dtype=np.float)
+    _off = np.array(Noff.y[numberOfLevel], dtype=np.float)
+
     signal = 1 - (_on[-1] / _off[-1])
+    
     print(f"Signal(%) = {signal*100:.2f}")
+    
     return Noff, Non
+
+def writeFile(counts, label="off"):
+
+    with open(location/f"{filename}_{label}.txt", "w+") as f:
+        f.write("###################### Simulation begins ######################\n")
+        
+        f.write(f"{mol}(0)\t{mol}(1)\t{mol}(2)\t{mol}{tag}\t{mol}{tag}2\n")
+
+        for _count in counts:
+            for _ in _count: 
+                f.write(f"{_:.2f}\t")
+            f.write("\n")
+        
+        f.write("###################### Simulation Done ######################")
 
 def main(conditions):
 
     t0 = perf_counter()
     Noff, Non = ROSAA_modal(conditions)
     t1 = perf_counter()
+    write = bool(conditions["writefile"])
+    if write:
+        print(f"Writing into file\n")
+        writeFile(Noff.y.T, "off")
+        writeFile(Non.y.T, "on")
+
+    print("Simulation Done", flush=True)
 
     print(f"Time taken: {(t1-t0)/60:.2f} minutes", flush=True)
-    mol = "CD"
-    tag = "He"
-
     
-    fig, ax = plt.subplots()
+    fig, (ax, ax1) = plt.subplots(nrows=1, ncols=2, figsize=(10, 4))
     lg = [f"{mol}(0)", f"{mol}(1)", f"{mol}(2)", f"{mol}{tag}", f"{mol}{tag}2"]
 
     c = 0
-    x = Noff.t
+    time = Noff.t
     for off, on in zip(Noff.y, Non.y):
-        ax.plot(x, off, f"C{c}-", label=f"{lg[c]}")
-        ax.plot(x, on, f"C{c}--")
+        ax.plot(time, off, f"C{c}-", label=f"{lg[c]}")
+        ax.plot(time, on, f"C{c}--")
         c += 1
-        
-    ax.set_yscale("log")
-    ax.legend(title="- Off, -- On")
-    plt.show()
 
+    ax.plot(time, Noff.y.sum(axis=0), f"k-", label="SUM")
+    ax.plot(time, Non.y.sum(axis=0), f"k--")
+
+    _off = Noff.y[numberOfLevel][1:]
+    _on = Non.y[numberOfLevel][1:]
+    ratio = _on/_off
+    signal = - (ratio - 1)*100
+    ax1.plot(time[1:], signal)
+
+
+    ax.set_yscale("log")
+
+    ax.set(xlabel="Time (s)", ylabel="Counts", title="Simulation")
+    ax1.set(xlabel="Time (s)", ylabel=f"Signal (%) ({mol}{tag})", title="Signal(time)")
+
+    ax.legend(title="-- On, - Off")
+    ax1.legend([f"Max. Signal = {signal.max():.2f} at {(time[1:][signal.argmax()]*1e3):.2f}ms"])
+    fig.savefig(location/f"{filename}.pdf", dpi=200)
+    fig.savefig(location/f"{filename}.png", dpi=200)
+
+    plt.tight_layout()
+
+    plt.show()
 
 if __name__ == "__main__":
 
     args = sys.argv[1:][0].split(",")
+
     args = json.loads(", ".join(args))
-    print(f"Received args: {args}, {type(args)}\n", flush=True)
+
     conditions = {}
 
     for i in args:
         i = list(i.items())
         conditions[f"{i[0][1]}"] = i[1][1]
 
-    print(conditions, flush=True)
+    location = pt(conditions["currentLocation"])
+
+    filename = conditions["filename"]
+    mol = conditions["molecule"]
+    tag = conditions["tagging partner"]
+
+    
+    numberOfLevel = int(conditions["numberOfLevel (J levels)"])
+    print(f"{location=}, {filename=}")
     main(conditions)

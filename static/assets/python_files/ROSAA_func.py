@@ -1,12 +1,16 @@
 
+# Importing modules
 import numpy as np
 from scipy.constants import Boltzmann as k_boltzmann, speed_of_light as C,\
     Planck, m_p
 from scipy.special import wofz
 
+
+# Constants
 epsilon = 8.854e-12
 reduced_plank = Planck / (2*np.pi)
 k_boltzmann_wavenumber = k_boltzmann/1.98630e-23
+
 trap_area = 5e-5
 
 
