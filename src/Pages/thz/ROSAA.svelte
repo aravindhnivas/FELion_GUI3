@@ -1,10 +1,12 @@
 
 <script>
-    import { createEventDispatcher, onMount } from 'svelte';
-    import Modal from '../../components/Modal.svelte';
-    import Textfield from '@smui/textfield';
+    import { createEventDispatcher } from 'svelte';
     import {browse} from "../../components/Layout.svelte";
+    import Textfield from '@smui/textfield';
+    import Modal from '../../components/Modal.svelte';
     import CustomCheckbox from "../../components/CustomCheckbox.svelte";
+
+    import CustomSelect from "../../components/CustomSelect.svelte";
 
     export let active=false;
     const dispatch = createEventDispatcher();
@@ -92,7 +94,9 @@
             ...einsteinCoefficient, ...collisionalCoefficient, ...rateCoefficients,
             {label:"currentLocation", value:currentLocation, id:window.getID()},
             {label:"filename", value:filename, id:window.getID()},
-            {label:"writefile", value:writefile, id:window.getID()}
+            {label:"writefile", value:writefile, id:window.getID()},
+            {label:"variable", value:variable, id:window.getID()},
+            {label:"range", value:range, id:window.getID()}
         ]
 
         dispatch('submit', { e, conditions })
@@ -108,13 +112,16 @@
     function browse_folder() {
         browse({dir:true}).then(result=>{
             if (!result.canceled) { currentLocation= localStorage["thz_modal_location"] = result.filePaths[0] }
+
         })
     }
 
     let writefile = true
 
-</script>
+    let variable = "time", range = "1e12, 1e16, 10";
+    const variablesList = ["time", "He density(cm3)", "a"]
 
+</script>
 
 <style lang="scss">
     .locationColumn {
@@ -142,30 +149,47 @@
         border-radius: 20px;
         float: right;
     }
+
+    .variableColumn {
+
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+
+        grid-gap: 1em;
+        margin: 2em 0;
+    }
+
 </style>
-
-
 
 <Modal bind:active title="ROSAA modal" >
 
+
     <div slot="content">
         {#if reportToggle}
-
             <div class="content" style="white-space: pre-wrap;">{statusReport}</div>
+    
         {:else}
-            <div class="locationColumn">
 
+            <div class="locationColumn">
                 <button class="button is-link" id="thz_modal_filebrowser_btn" on:click={browse_folder}>Browse</button>
 
                 <Textfield bind:value={currentLocation} label="Current location" />
                 <Textfield bind:value={filename} label="filename" />
-
             </div>
 
             <div class="writefileCheck">
 
                 <CustomCheckbox bind:selected={writefile} label="writefile" />
             </div>
+
+
+            <div class="subtitle">Simulate signal(%) as a function of "{variable}"</div>
+            <div class="variableColumn">
+
+                <CustomSelect options={variablesList} bind:picked={variable} />
+                <Textfield bind:value={range} label="Range (min, max, totalsteps)" />
+            </div>
+
 
             <div class="subtitle">Main Parameters</div>
 

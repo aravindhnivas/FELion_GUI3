@@ -93,7 +93,7 @@ def kinetic_simulation_on(t, N):
     return [dCD0_dt, dCD1_dt, dCD2_dt, dCDHe_dt, dCDHe2_dt]
 
 
-def ROSAA_modal(conditions):
+def ROSAA_modal(conditions, nHe):
     
     global Rate_k31_0, Rate_k31_1, Rate_k32, \
             Rate_kCID1, Rate_kCID2,\
@@ -163,7 +163,6 @@ def ROSAA_modal(conditions):
     
     kCID1, kCID2 = [float(i.strip()) for i in conditions["kCID"].split(",")]
     
-    nHe = float(conditions["He density(cm3)"])
     
     Rate_k31_0 = k31_0*nHe**2
     Rate_k31_1 = k31_1*nHe**2
@@ -272,20 +271,50 @@ def writeFile(counts, label="off"):
         
         f.write("###################### Simulation Done ######################")
 
+
 def main(conditions):
 
+    nHe = float(conditions["He density(cm3)"])
+
     t0 = perf_counter()
-    Noff, Non = ROSAA_modal(conditions)
+    variable = conditions["variable"]
+
+    Noff_nHe = []
+    Non_nHe = []
+    signal_nHe = []
+    
+    if variable == "He density(cm3)":
+    
+        _min, _max, _step = [float(i) for i in conditions["range"].split(",")]
+        _range = np.linspace(int(_min), int(_max), int(_step))
+    
+        print("Simulation wrt He/Ne number density")
+
+        for nHe in _range:
+            Noff, Non = ROSAA_modal(conditions, nHe)
+            Noff_nHe.append(Noff.y)
+            Non_nHe.append(Non.y)
+            _signal = 1 - (Non.y[numberOfLevel][-1] / Noff.y[numberOfLevel][-1])
+            signal_nHe.append(_signal)
+        
+        signal_nHe = np.array(signal_nHe, dtype=np.float)*100
+        Noff_nHe = np.array(Noff_nHe, dtype=np.float)
+        Non_nHe = np.array(Non_nHe, dtype=np.float)
+        
+        print(signal_nHe)
+    else:
+        Noff, Non = ROSAA_modal(conditions, nHe)
+        write = bool(conditions["writefile"])
+        if write:
+
+            print(f"Writing into file\n")
+            writeFile(Noff.y.T, "off")
+            writeFile(Non.y.T, "on")
+
     t1 = perf_counter()
-    write = bool(conditions["writefile"])
-    if write:
-        print(f"Writing into file\n")
-        writeFile(Noff.y.T, "off")
-        writeFile(Non.y.T, "on")
-
     print("Simulation Done", flush=True)
-
     print(f"Time taken: {(t1-t0)/60:.2f} minutes", flush=True)
+
     
     fig, (ax, ax1) = plt.subplots(nrows=1, ncols=2, figsize=(10, 4))
     lg = [f"{mol}(0)", f"{mol}(1)", f"{mol}(2)", f"{mol}{tag}", f"{mol}{tag}2"]
@@ -300,20 +329,32 @@ def main(conditions):
     ax.plot(time, Noff.y.sum(axis=0), f"k-", label="SUM")
     ax.plot(time, Non.y.sum(axis=0), f"k--")
 
-    _off = Noff.y[numberOfLevel][1:]
-    _on = Non.y[numberOfLevel][1:]
-    ratio = _on/_off
-    signal = - (ratio - 1)*100
-    ax1.plot(time[1:], signal)
 
+    if variable == "He density(cm3)":
+        lg = f"Max. Signal = {signal_nHe.max():.2f} at {(_range[signal_nHe.argmax()]):.2e}cm3"
+        ax1.plot(_range, signal_nHe, label=lg)
+
+
+        ax1.set(xlabel="He density(cm3)", ylabel=f"Signal (%) ({mol}{tag})", title="Signal(time)")
+    else:
+
+
+        _off = Noff.y[numberOfLevel][1:]
+        _on = Non.y[numberOfLevel][1:]
+        ratio = _on/_off
+        
+        signal = (1 - ratio)*100
+
+        ax1.plot(time[1:], signal)
+        ax1.set(xlabel="Time (s)", ylabel=f"Signal (%) ({mol}{tag})", title="Signal(time)")
+
+        ax1.legend([f"Max. Signal = {signal.max():.2f} at {(time[1:][signal.argmax()]*1e3):.2f}ms"])
 
     ax.set_yscale("log")
-
     ax.set(xlabel="Time (s)", ylabel="Counts", title="Simulation")
-    ax1.set(xlabel="Time (s)", ylabel=f"Signal (%) ({mol}{tag})", title="Signal(time)")
-
+    
     ax.legend(title="-- On, - Off")
-    ax1.legend([f"Max. Signal = {signal.max():.2f} at {(time[1:][signal.argmax()]*1e3):.2f}ms"])
+    
     fig.savefig(location/f"{filename}.pdf", dpi=200)
     fig.savefig(location/f"{filename}.png", dpi=200)
 
@@ -339,7 +380,8 @@ if __name__ == "__main__":
     mol = conditions["molecule"]
     tag = conditions["tagging partner"]
 
-    
     numberOfLevel = int(conditions["numberOfLevel (J levels)"])
     print(f"{location=}, {filename=}")
+
+    # print(conditions["variable"], conditions["range"])
     main(conditions)
