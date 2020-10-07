@@ -7848,7 +7848,7 @@ function create_fragment$9(ctx) {
 		c: function create() {
 			div = element("div");
 			attr_dev(div, "class", div_class_value = "notices " + /*positionClass*/ ctx[1] + " svelte-1l3nrzu");
-			add_location(div, file$9, 38, 0, 883);
+			add_location(div, file$9, 37, 0, 878);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
