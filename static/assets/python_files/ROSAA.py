@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path as pt
 from scipy.integrate import solve_ivp
-# from numba import jit
+from numba import jit
 
 from ROSAA_func import distribution, boltzman_distribution, \
     stimulated_absorption, stimulated_emission,\
@@ -28,7 +28,7 @@ A_10 = None
 
 branching_ratio = None
 
-# @jit(nopython=True, fastmath=True)
+@jit(nopython=True, fastmath=True, nogil=True)
 def kinetic_simulation_off(t, N):
 
     CD0, CD1, CD2, CDHe, CDHe2 = N
@@ -61,7 +61,7 @@ def kinetic_simulation_off(t, N):
     return [dCD0_dt, dCD1_dt, dCD2_dt, dCDHe_dt, dCDHe2_dt]
 
 
-# @jit(nopython=True, fastmath=True)
+@jit(nopython=True, fastmath=True, nogil=True)
 def kinetic_simulation_on(t, N):
 
     CD0, CD1, CD2, CDHe, CDHe2 = N
@@ -176,10 +176,12 @@ def ROSAA_modal(args):
     
     print(f"{Rate_k31_0=:.2e}, {Rate_k31_1=:.2e}, {Rate_k32=:.2e}")
     print(f"{Rate_kCID1=:.2e}, {Rate_kCID2=:.2e}")
+    
     ##############################################
     
     ##############################################
     # Collisional rate
+    
     ##############################################
     print("\n##############################################\nCollisional rate", flush=True)
     trapTemp = float(conditions["trapTemp(K)"])
@@ -260,12 +262,14 @@ def ROSAA_modal(args):
     
     return Noff, Non
 
-def writeFile(counts, label="off"):
 
+def writeFile(counts, filename=None, label="off"):
+
+    # if filename == None: filename = conditions["filename"]
     with open(location/f"{filename}_{label}.txt", "w+") as f:
         f.write("###################### Simulation begins ######################\n")
         
-        f.write(f"{mol}(0)\t{mol}(1)\t{mol}(2)\t{mol}{tag}\t{mol}{tag}2\n")
+        f.write(f"# {mol}(0)\t{mol}(1)\t{mol}(2)\t{mol}{tag}\t{mol}{tag}2\n")
 
         for _count in counts:
             for _ in _count: 
@@ -278,6 +282,8 @@ def writeFile(counts, label="off"):
 def main(conditions):
 
     nHe = float(conditions["He density(cm3)"])
+
+    write = bool(conditions["writefile"])
 
     t0 = perf_counter()
     variable = conditions["variable"]
@@ -297,25 +303,41 @@ def main(conditions):
         with ProcessPoolExecutor() as executor:
             results = executor.map(ROSAA_modal, parameters)
         
-        for N in results:
+        for i, N in enumerate(results):
             Noff, Non = N
             Noff_nHe.append(Noff.y)
             Non_nHe.append(Non.y)
             _signal = 1 - (Non.y[numberOfLevel][-1] / Noff.y[numberOfLevel][-1])
             signal_nHe.append(_signal)
+
+
+
+            if write:
+                writeFile(Noff.y.T, label=f"{_range[i]:.2e}_off")
+                writeFile(Non.y.T, label=f"{_range[i]:.2e}_on")
+
+        
         signal_nHe = np.array(signal_nHe, dtype=np.float)*100
         Noff_nHe = np.array(Noff_nHe, dtype=np.float)
         Non_nHe = np.array(Non_nHe, dtype=np.float)
         
+        if write:
+
+            with open(location/f"{filename}_{int(_min):.2e}_{int(_max):.2e}_nHe.txt", "w+") as f:
+                f.write("# Number density(cm3)\tSignal(%)\n")
+            
+                for _nd, _signal_nHe in zip(_range, signal_nHe):
+                    f.write(f"{_nd:.2e}\t{_signal_nHe}\n")
         print(signal_nHe)
+
     else:
         Noff, Non = ROSAA_modal((conditions, nHe))
-        write = bool(conditions["writefile"])
+        
         if write:
 
             print(f"Writing into file\n")
-            writeFile(Noff.y.T, "off")
-            writeFile(Non.y.T, "on")
+            writeFile(Noff.y.T, label="off")
+            writeFile(Non.y.T, label="on")
 
     t1 = perf_counter()
     print("Simulation Done", flush=True)
@@ -388,7 +410,7 @@ if __name__ == "__main__":
     tag = conditions["tagging partner"]
 
     numberOfLevel = int(conditions["numberOfLevel (J levels)"])
-    print(f"{location=}, {filename=}")
 
-    # print(conditions["variable"], conditions["range"])
+    print(f"{location=}, {filename=}", flush=True)
+
     main(conditions)
