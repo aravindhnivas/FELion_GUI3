@@ -95,6 +95,7 @@
             {label:"currentLocation", value:currentLocation, id:window.getID()},
             {label:"filename", value:filename, id:window.getID()},
             {label:"writefile", value:writefile, id:window.getID()},
+            {label:"includeCollision", value:includeCollision, id:window.getID()},
             {label:"variable", value:variable, id:window.getID()},
             {label:"range", value:range, id:window.getID()}
         ]
@@ -116,7 +117,7 @@
         })
     }
 
-    let writefile = true
+    let writefile = true, includeCollision = true;
 
     let variable = "time", range = "1e12, 1e16, 10";
     const variablesList = ["time", "He density(cm3)", "a"]
@@ -134,29 +135,35 @@
         grid-template-columns: 1fr 4fr 2fr;
 
         .button {
-
             margin:0;
+
             justify-self: center;
             align-self: center;
         }
+
     }
 
     .writefileCheck {
         border: solid 1px white;
+        
         padding: 0.3em;
-        width: 9em;
+        width: 11em;
         margin: 1em;
         border-radius: 20px;
         float: right;
+    
     }
+
 
     .variableColumn {
 
         display: grid;
+
         grid-template-columns: 1fr 2fr;
 
         grid-gap: 1em;
         margin: 2em 0;
+
     }
 
 </style>
@@ -165,9 +172,9 @@
 
 
     <div slot="content">
+
         {#if reportToggle}
             <div class="content" style="white-space: pre-wrap;">{statusReport}</div>
-    
         {:else}
 
             <div class="locationColumn">
@@ -178,8 +185,11 @@
             </div>
 
             <div class="writefileCheck">
-
                 <CustomCheckbox bind:selected={writefile} label="writefile" />
+            </div>
+
+            <div class="writefileCheck">
+                <CustomCheckbox bind:selected={includeCollision} label="includeCollision" />
             </div>
 
 
