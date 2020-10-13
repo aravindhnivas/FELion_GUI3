@@ -191,15 +191,15 @@ def ROSAA_modal(args):
     
     KT = 0.695035*trapTemp
     g = [1, 3, 5, 7, 9, 11]
-    q_01 = q_10 * (g[1]*np.exp(-Energy[1]/KT)) / (g[0]*np.exp(-Energy[0]/KT))   # calculating q_up from q_down detailed balancing
+    q_01 = q_10 * distribution(0, 1, Energy, trapTemp)   # calculating q_up from q_down detailed balancing
     Rate_q_01 = q_01*nHe
     Rate_q_10 = q_10*nHe
     
-    q_02 = q_20*(g[2]*np.exp(-Energy[2]/KT)) / (g[0]*np.exp(-Energy[0]/KT))
+    q_02 = q_20*distribution(0, 2, Energy, trapTemp)
     Rate_q_02 = q_02*nHe
     Rate_q_20 = q_20*nHe
     
-    q_12 = q_21*(g[2]*np.exp(-Energy[2]/KT)) / (g[1]*np.exp(-Energy[1]/KT))
+    q_12 = q_21*distribution(1, 2, Energy, trapTemp)
     Rate_q_12 = q_12*nHe
     Rate_q_21 = q_21*nHe
     
