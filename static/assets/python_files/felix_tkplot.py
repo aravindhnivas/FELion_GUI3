@@ -129,10 +129,10 @@ def plotGraph(plotArgs):
         # Labels
         if i<1:
             
-            ylabel="Norm. Intensity ~($m^2/photon$)"
+            ylabel="Norm. Intensity ~(m$^2$/photon)"
             
             ax_exp.set_ylabel((ylabel, "Relative Depletion (%)")[normMethod=="Relative"], fontsize=12)
-            ax_theory.set_ylabel("Intensity (Km/mol)", fontsize=12)
+            ax_theory.set_ylabel("Intensity (km/mol)", fontsize=12)
 
             if legend_visible:
                 if legend_labels == "": ax_exp.legend([], title=exptitle.strip()).set_draggable(True)
@@ -155,7 +155,7 @@ def plotGraph(plotArgs):
         
     # Figure caption
 
-    fig.text(0.5, 0.09, "Wavenumber ($cm^{-1}$)", wrap=True, horizontalalignment='center', fontsize=12)
+    fig.text(0.5, 0.09, "Wavenumber (cm$^{-1}$)", wrap=True, horizontalalignment='center', fontsize=12)
     fig.text(0.5, 0.01, figcaption, wrap=True, horizontalalignment='center', fontsize=12)
     canvas.draw()
     
