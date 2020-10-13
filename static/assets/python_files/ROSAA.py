@@ -28,7 +28,7 @@ A_10 = None
 
 branching_ratio = None
 
-@jit(nopython=True, fastmath=True, nogil=True)
+# @jit(nopython=True, fastmath=True, nogil=True)
 def kinetic_simulation_off(t, N):
 
     CD0, CD1, CD2, CDHe, CDHe2 = N
@@ -36,19 +36,19 @@ def kinetic_simulation_off(t, N):
     
     # CD: j=0
     attachmentRate0 = -Rate_k31_0*CD0 + Rate_kCID1*CDHe*p
-    collisionalRate0 = -Rate_q_01*CD0 + Rate_q_10*CD1 + Rate_q_20*CD2 - Rate_q_02*CD0
+    collisionalRate0 = (-Rate_q_01*CD0 + Rate_q_10*CD1 + Rate_q_20*CD2 - Rate_q_02*CD0) if includeCollision else 0
     spontaneousEmissionRate = A_10*CD1
 
     dCD0_dt = attachmentRate0 + collisionalRate0 + spontaneousEmissionRate
 
     # CD: j=1
     attachmentRate1 = -Rate_k31_1*CD1 + Rate_kCID1*CDHe*(1-p)
-    collisionalRate1 = Rate_q_01*CD0 - Rate_q_10*CD1 - Rate_q_12*CD1 + Rate_q_21*CD2
+    collisionalRate1 = (Rate_q_01*CD0 - Rate_q_10*CD1 - Rate_q_12*CD1 + Rate_q_21*CD2) if includeCollision else 0
 
     dCD1_dt = attachmentRate1 + collisionalRate1 - spontaneousEmissionRate
 
     # CD: j=2
-    collisionalRate2 = Rate_q_02*CD0 - Rate_q_20*CD2 + Rate_q_12*CD1 - Rate_q_21*CD2
+    collisionalRate2 = (Rate_q_02*CD0 - Rate_q_20*CD2 + Rate_q_12*CD1 - Rate_q_21*CD2) if includeCollision else CD2
     dCD2_dt = collisionalRate2
 
     # CDHe:
@@ -61,28 +61,27 @@ def kinetic_simulation_off(t, N):
     return [dCD0_dt, dCD1_dt, dCD2_dt, dCDHe_dt, dCDHe2_dt]
 
 
-@jit(nopython=True, fastmath=True, nogil=True)
+# @jit(nopython=True, fastmath=True, nogil=True)
 def kinetic_simulation_on(t, N):
 
     CD0, CD1, CD2, CDHe, CDHe2 = N
     p = branching_ratio
     # CD: j=0
     attachmentRate0 = -Rate_k31_0*CD0 + Rate_kCID1*CDHe*p
-    collisionalRate0 = -Rate_q_01*CD0 + Rate_q_10*CD1 + Rate_q_20*CD2 - Rate_q_02*CD0
-    spontaneousEmissionRate0 = A_10*CD1
+    collisionalRate0 = (-Rate_q_01*CD0 + Rate_q_10*CD1 + Rate_q_20*CD2 - Rate_q_02*CD0) if includeCollision else 0
+    spontaneousEmissionRate = A_10*CD1
     stimulatedRate = -Rate_B_01*CD0 + Rate_B_10*CD1
 
-    dCD0_dt = attachmentRate0 + collisionalRate0 + spontaneousEmissionRate0 + stimulatedRate
+    dCD0_dt = attachmentRate0 + collisionalRate0 + spontaneousEmissionRate + stimulatedRate
 
     # CD: j=1
     attachmentRate1 = -Rate_k31_1*CD1 + Rate_kCID1*CDHe*(1-p)
-    collisionalRate1 = Rate_q_01*CD0 - Rate_q_10*CD1 - Rate_q_12*CD1 + Rate_q_21*CD2
-    spontaneousEmissionRate1 = -A_10*CD1
+    collisionalRate1 = (Rate_q_01*CD0 - Rate_q_10*CD1 - Rate_q_12*CD1 + Rate_q_21*CD2) if includeCollision else 0
 
-    dCD1_dt = attachmentRate1 + collisionalRate1 + spontaneousEmissionRate1 - stimulatedRate
+    dCD1_dt = attachmentRate1 + collisionalRate1 - spontaneousEmissionRate - stimulatedRate
 
     # CD: j=2
-    collisionalRate2 = Rate_q_02*CD0 - Rate_q_20*CD2 + Rate_q_12*CD1 - Rate_q_21*CD2
+    collisionalRate2 = (Rate_q_02*CD0 - Rate_q_20*CD2 + Rate_q_12*CD1 - Rate_q_21*CD2) if includeCollision else CD2
     dCD2_dt = collisionalRate2
 
     # CDHe:
@@ -388,11 +387,12 @@ def main(conditions):
     fig.savefig(location/f"{filename}.png", dpi=200)
 
     plt.tight_layout()
-
     plt.show()
 
-if __name__ == "__main__":
+includeCollision = None
 
+if __name__ == "__main__":
+    # global includeCollision
     args = sys.argv[1:][0].split(",")
 
     args = json.loads(", ".join(args))
@@ -410,7 +410,8 @@ if __name__ == "__main__":
     tag = conditions["tagging partner"]
 
     numberOfLevel = int(conditions["numberOfLevel (J levels)"])
-
     print(f"{location=}, {filename=}", flush=True)
+
+    includeCollision = bool(conditions["includeCollision"])
 
     main(conditions)
