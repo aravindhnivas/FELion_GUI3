@@ -60358,75 +60358,75 @@ const file$1e = "src\\Pages\\thz\\ROSAA.svelte";
 
 function get_each_context$c(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[40] = list[i].label;
-	child_ctx[41] = list[i].value;
-	child_ctx[42] = list[i].id;
-	child_ctx[43] = list;
-	child_ctx[44] = i;
-	return child_ctx;
-}
-
-function get_each_context_1$5(ctx, list, i) {
-	const child_ctx = ctx.slice();
-	child_ctx[40] = list[i].label;
-	child_ctx[41] = list[i].value;
-	child_ctx[42] = list[i].id;
+	child_ctx[42] = list[i].label;
+	child_ctx[43] = list[i].value;
+	child_ctx[44] = list[i].id;
 	child_ctx[45] = list;
 	child_ctx[46] = i;
 	return child_ctx;
 }
 
-function get_each_context_2$5(ctx, list, i) {
+function get_each_context_1$5(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[40] = list[i].label;
-	child_ctx[41] = list[i].value;
-	child_ctx[42] = list[i].id;
+	child_ctx[42] = list[i].label;
+	child_ctx[43] = list[i].value;
+	child_ctx[44] = list[i].id;
 	child_ctx[47] = list;
 	child_ctx[48] = i;
 	return child_ctx;
 }
 
-function get_each_context_3$4(ctx, list, i) {
+function get_each_context_2$5(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[40] = list[i].label;
-	child_ctx[41] = list[i].value;
-	child_ctx[42] = list[i].id;
+	child_ctx[42] = list[i].label;
+	child_ctx[43] = list[i].value;
+	child_ctx[44] = list[i].id;
 	child_ctx[49] = list;
 	child_ctx[50] = i;
 	return child_ctx;
 }
 
-function get_each_context_4$2(ctx, list, i) {
+function get_each_context_3$4(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[40] = list[i].label;
-	child_ctx[41] = list[i].value;
-	child_ctx[42] = list[i].id;
+	child_ctx[42] = list[i].label;
+	child_ctx[43] = list[i].value;
+	child_ctx[44] = list[i].id;
 	child_ctx[51] = list;
 	child_ctx[52] = i;
 	return child_ctx;
 }
 
-function get_each_context_5(ctx, list, i) {
+function get_each_context_4$2(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[40] = list[i].label;
-	child_ctx[41] = list[i].value;
-	child_ctx[42] = list[i].id;
+	child_ctx[42] = list[i].label;
+	child_ctx[43] = list[i].value;
+	child_ctx[44] = list[i].id;
 	child_ctx[53] = list;
 	child_ctx[54] = i;
 	return child_ctx;
 }
 
-function get_each_context_6(ctx, list, i) {
+function get_each_context_5(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[40] = list[i].label;
-	child_ctx[41] = list[i].value;
-	child_ctx[42] = list[i].id;
+	child_ctx[42] = list[i].label;
+	child_ctx[43] = list[i].value;
+	child_ctx[44] = list[i].id;
 	child_ctx[55] = list;
 	child_ctx[56] = i;
 	return child_ctx;
 }
 
-// (158:8) {:else}
+function get_each_context_6(ctx, list, i) {
+	const child_ctx = ctx.slice();
+	child_ctx[42] = list[i].label;
+	child_ctx[43] = list[i].value;
+	child_ctx[44] = list[i].id;
+	child_ctx[57] = list;
+	child_ctx[58] = i;
+	return child_ctx;
+}
+
+// (159:8) {:else}
 function create_else_block$b(ctx) {
 	let div0;
 	let button;
@@ -60438,53 +60438,57 @@ function create_else_block$b(ctx) {
 	let updating_value_1;
 	let t3;
 	let div1;
-	let customcheckbox;
+	let customcheckbox0;
 	let updating_selected;
 	let t4;
 	let div2;
+	let customcheckbox1;
+	let updating_selected_1;
 	let t5;
+	let div3;
 	let t6;
 	let t7;
 	let t8;
-	let div3;
+	let t9;
+	let div4;
 	let customselect;
 	let updating_picked;
-	let t9;
+	let t10;
 	let textfield2;
 	let updating_value_2;
-	let t10;
-	let div4;
-	let t12;
+	let t11;
+	let div5;
+	let t13;
 	let each_blocks_6 = [];
 	let each0_lookup = new Map();
-	let t13;
-	let div5;
-	let t15;
+	let t14;
+	let div6;
+	let t16;
 	let each_blocks_5 = [];
 	let each1_lookup = new Map();
-	let t16;
-	let div6;
-	let t18;
+	let t17;
+	let div7;
+	let t19;
 	let each_blocks_4 = [];
 	let each2_lookup = new Map();
-	let t19;
-	let div7;
-	let t21;
+	let t20;
+	let div8;
+	let t22;
 	let each_blocks_3 = [];
 	let each3_lookup = new Map();
-	let t22;
-	let div8;
-	let t24;
+	let t23;
+	let div9;
+	let t25;
 	let each_blocks_2 = [];
 	let each4_lookup = new Map();
-	let t25;
-	let div9;
-	let t27;
+	let t26;
+	let div10;
+	let t28;
 	let each_blocks_1 = [];
 	let each5_lookup = new Map();
-	let t28;
-	let div10;
-	let t30;
+	let t29;
+	let div11;
+	let t31;
 	let each_blocks = [];
 	let each6_lookup = new Map();
 	let each6_anchor;
@@ -60493,7 +60497,7 @@ function create_else_block$b(ctx) {
 	let dispose;
 
 	function textfield0_value_binding(value) {
-		/*textfield0_value_binding*/ ctx[24].call(null, value);
+		/*textfield0_value_binding*/ ctx[25].call(null, value);
 	}
 
 	let textfield0_props = { label: "Current location" };
@@ -60506,7 +60510,7 @@ function create_else_block$b(ctx) {
 	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
 
 	function textfield1_value_binding(value) {
-		/*textfield1_value_binding*/ ctx[25].call(null, value);
+		/*textfield1_value_binding*/ ctx[26].call(null, value);
 	}
 
 	let textfield1_props = { label: "filename" };
@@ -60518,31 +60522,48 @@ function create_else_block$b(ctx) {
 	textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding));
 
-	function customcheckbox_selected_binding(value) {
-		/*customcheckbox_selected_binding*/ ctx[26].call(null, value);
+	function customcheckbox0_selected_binding(value) {
+		/*customcheckbox0_selected_binding*/ ctx[27].call(null, value);
 	}
 
-	let customcheckbox_props = { label: "writefile" };
+	let customcheckbox0_props = { label: "writefile" };
 
 	if (/*writefile*/ ctx[13] !== void 0) {
-		customcheckbox_props.selected = /*writefile*/ ctx[13];
+		customcheckbox0_props.selected = /*writefile*/ ctx[13];
 	}
 
-	customcheckbox = new CustomCheckbox({
-			props: customcheckbox_props,
+	customcheckbox0 = new CustomCheckbox({
+			props: customcheckbox0_props,
 			$$inline: true
 		});
 
-	binding_callbacks.push(() => bind(customcheckbox, "selected", customcheckbox_selected_binding));
+	binding_callbacks.push(() => bind(customcheckbox0, "selected", customcheckbox0_selected_binding));
 
-	function customselect_picked_binding(value) {
-		/*customselect_picked_binding*/ ctx[27].call(null, value);
+	function customcheckbox1_selected_binding(value) {
+		/*customcheckbox1_selected_binding*/ ctx[28].call(null, value);
 	}
 
-	let customselect_props = { options: /*variablesList*/ ctx[23] };
+	let customcheckbox1_props = { label: "includeCollision" };
 
-	if (/*variable*/ ctx[14] !== void 0) {
-		customselect_props.picked = /*variable*/ ctx[14];
+	if (/*includeCollision*/ ctx[14] !== void 0) {
+		customcheckbox1_props.selected = /*includeCollision*/ ctx[14];
+	}
+
+	customcheckbox1 = new CustomCheckbox({
+			props: customcheckbox1_props,
+			$$inline: true
+		});
+
+	binding_callbacks.push(() => bind(customcheckbox1, "selected", customcheckbox1_selected_binding));
+
+	function customselect_picked_binding(value) {
+		/*customselect_picked_binding*/ ctx[29].call(null, value);
+	}
+
+	let customselect_props = { options: /*variablesList*/ ctx[24] };
+
+	if (/*variable*/ ctx[15] !== void 0) {
+		customselect_props.picked = /*variable*/ ctx[15];
 	}
 
 	customselect = new CustomSelect({
@@ -60553,20 +60574,20 @@ function create_else_block$b(ctx) {
 	binding_callbacks.push(() => bind(customselect, "picked", customselect_picked_binding));
 
 	function textfield2_value_binding(value) {
-		/*textfield2_value_binding*/ ctx[28].call(null, value);
+		/*textfield2_value_binding*/ ctx[30].call(null, value);
 	}
 
 	let textfield2_props = { label: "Range (min, max, totalsteps)" };
 
-	if (/*range*/ ctx[15] !== void 0) {
-		textfield2_props.value = /*range*/ ctx[15];
+	if (/*range*/ ctx[16] !== void 0) {
+		textfield2_props.value = /*range*/ ctx[16];
 	}
 
 	textfield2 = new Textfield({ props: textfield2_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield2, "value", textfield2_value_binding));
 	let each_value_6 = /*mainParameters*/ ctx[1];
 	validate_each_argument(each_value_6);
-	const get_key = ctx => /*id*/ ctx[42];
+	const get_key = ctx => /*id*/ ctx[44];
 	validate_each_keys(ctx, each_value_6, get_each_context_6, get_key);
 
 	for (let i = 0; i < each_value_6.length; i += 1) {
@@ -60577,7 +60598,7 @@ function create_else_block$b(ctx) {
 
 	let each_value_5 = /*simulationParameters*/ ctx[2];
 	validate_each_argument(each_value_5);
-	const get_key_1 = ctx => /*id*/ ctx[42];
+	const get_key_1 = ctx => /*id*/ ctx[44];
 	validate_each_keys(ctx, each_value_5, get_each_context_5, get_key_1);
 
 	for (let i = 0; i < each_value_5.length; i += 1) {
@@ -60588,7 +60609,7 @@ function create_else_block$b(ctx) {
 
 	let each_value_4 = /*dopplerLineshape*/ ctx[3];
 	validate_each_argument(each_value_4);
-	const get_key_2 = ctx => /*id*/ ctx[42];
+	const get_key_2 = ctx => /*id*/ ctx[44];
 	validate_each_keys(ctx, each_value_4, get_each_context_4$2, get_key_2);
 
 	for (let i = 0; i < each_value_4.length; i += 1) {
@@ -60599,7 +60620,7 @@ function create_else_block$b(ctx) {
 
 	let each_value_3 = /*powerBroadening*/ ctx[4];
 	validate_each_argument(each_value_3);
-	const get_key_3 = ctx => /*id*/ ctx[42];
+	const get_key_3 = ctx => /*id*/ ctx[44];
 	validate_each_keys(ctx, each_value_3, get_each_context_3$4, get_key_3);
 
 	for (let i = 0; i < each_value_3.length; i += 1) {
@@ -60610,7 +60631,7 @@ function create_else_block$b(ctx) {
 
 	let each_value_2 = /*einsteinCoefficient*/ ctx[5];
 	validate_each_argument(each_value_2);
-	const get_key_4 = ctx => /*id*/ ctx[42];
+	const get_key_4 = ctx => /*id*/ ctx[44];
 	validate_each_keys(ctx, each_value_2, get_each_context_2$5, get_key_4);
 
 	for (let i = 0; i < each_value_2.length; i += 1) {
@@ -60621,7 +60642,7 @@ function create_else_block$b(ctx) {
 
 	let each_value_1 = /*collisionalCoefficient*/ ctx[6];
 	validate_each_argument(each_value_1);
-	const get_key_5 = ctx => /*id*/ ctx[42];
+	const get_key_5 = ctx => /*id*/ ctx[44];
 	validate_each_keys(ctx, each_value_1, get_each_context_1$5, get_key_5);
 
 	for (let i = 0; i < each_value_1.length; i += 1) {
@@ -60632,7 +60653,7 @@ function create_else_block$b(ctx) {
 
 	let each_value = /*rateCoefficients*/ ctx[7];
 	validate_each_argument(each_value);
-	const get_key_6 = ctx => /*id*/ ctx[42];
+	const get_key_6 = ctx => /*id*/ ctx[44];
 	validate_each_keys(ctx, each_value, get_each_context$c, get_key_6);
 
 	for (let i = 0; i < each_value.length; i += 1) {
@@ -60652,106 +60673,111 @@ function create_else_block$b(ctx) {
 			create_component(textfield1.$$.fragment);
 			t3 = space();
 			div1 = element("div");
-			create_component(customcheckbox.$$.fragment);
+			create_component(customcheckbox0.$$.fragment);
 			t4 = space();
 			div2 = element("div");
-			t5 = text("Simulate signal(%) as a function of \"");
-			t6 = text(/*variable*/ ctx[14]);
-			t7 = text("\"");
-			t8 = space();
+			create_component(customcheckbox1.$$.fragment);
+			t5 = space();
 			div3 = element("div");
-			create_component(customselect.$$.fragment);
+			t6 = text("Simulate signal(%) as a function of \"");
+			t7 = text(/*variable*/ ctx[15]);
+			t8 = text("\"");
 			t9 = space();
-			create_component(textfield2.$$.fragment);
-			t10 = space();
 			div4 = element("div");
-			div4.textContent = "Main Parameters";
-			t12 = space();
+			create_component(customselect.$$.fragment);
+			t10 = space();
+			create_component(textfield2.$$.fragment);
+			t11 = space();
+			div5 = element("div");
+			div5.textContent = "Main Parameters";
+			t13 = space();
 
 			for (let i = 0; i < each_blocks_6.length; i += 1) {
 				each_blocks_6[i].c();
 			}
 
-			t13 = space();
-			div5 = element("div");
-			div5.textContent = "Simulation parameters";
-			t15 = space();
+			t14 = space();
+			div6 = element("div");
+			div6.textContent = "Simulation parameters";
+			t16 = space();
 
 			for (let i = 0; i < each_blocks_5.length; i += 1) {
 				each_blocks_5[i].c();
 			}
 
-			t16 = space();
-			div6 = element("div");
-			div6.textContent = "Doppler lineshape";
-			t18 = space();
+			t17 = space();
+			div7 = element("div");
+			div7.textContent = "Doppler lineshape";
+			t19 = space();
 
 			for (let i = 0; i < each_blocks_4.length; i += 1) {
 				each_blocks_4[i].c();
 			}
 
-			t19 = space();
-			div7 = element("div");
-			div7.textContent = "Lorrentz lineshape";
-			t21 = space();
+			t20 = space();
+			div8 = element("div");
+			div8.textContent = "Lorrentz lineshape";
+			t22 = space();
 
 			for (let i = 0; i < each_blocks_3.length; i += 1) {
 				each_blocks_3[i].c();
 			}
 
-			t22 = space();
-			div8 = element("div");
-			div8.textContent = "Einstein Co-efficients";
-			t24 = space();
+			t23 = space();
+			div9 = element("div");
+			div9.textContent = "Einstein Co-efficients";
+			t25 = space();
 
 			for (let i = 0; i < each_blocks_2.length; i += 1) {
 				each_blocks_2[i].c();
 			}
 
-			t25 = space();
-			div9 = element("div");
-			div9.textContent = "Collisional rate constants";
-			t27 = space();
+			t26 = space();
+			div10 = element("div");
+			div10.textContent = "Collisional rate constants";
+			t28 = space();
 
 			for (let i = 0; i < each_blocks_1.length; i += 1) {
 				each_blocks_1[i].c();
 			}
 
-			t28 = space();
-			div10 = element("div");
-			div10.textContent = "He attachment (K3) and diisociation (kCID) constants";
-			t30 = space();
+			t29 = space();
+			div11 = element("div");
+			div11.textContent = "He attachment (K3) and diisociation (kCID) constants";
+			t31 = space();
 
 			for (let i = 0; i < each_blocks.length; i += 1) {
 				each_blocks[i].c();
 			}
 
 			each6_anchor = empty();
-			attr_dev(button, "class", "button is-link svelte-1tk6snu");
+			attr_dev(button, "class", "button is-link svelte-3dq9p5");
 			attr_dev(button, "id", "thz_modal_filebrowser_btn");
-			add_location(button, file$1e, 160, 16, 4977);
-			attr_dev(div0, "class", "locationColumn svelte-1tk6snu");
-			add_location(div0, file$1e, 159, 12, 4931);
-			attr_dev(div1, "class", "writefileCheck svelte-1tk6snu");
-			add_location(div1, file$1e, 166, 12, 5272);
-			attr_dev(div2, "class", "subtitle");
-			add_location(div2, file$1e, 172, 12, 5420);
-			attr_dev(div3, "class", "variableColumn svelte-1tk6snu");
-			add_location(div3, file$1e, 173, 12, 5510);
-			attr_dev(div4, "class", "subtitle");
-			add_location(div4, file$1e, 180, 12, 5746);
+			add_location(button, file$1e, 161, 16, 5084);
+			attr_dev(div0, "class", "locationColumn svelte-3dq9p5");
+			add_location(div0, file$1e, 160, 12, 5038);
+			attr_dev(div1, "class", "writefileCheck svelte-3dq9p5");
+			add_location(div1, file$1e, 167, 12, 5379);
+			attr_dev(div2, "class", "writefileCheck svelte-3dq9p5");
+			add_location(div2, file$1e, 171, 12, 5523);
+			attr_dev(div3, "class", "subtitle");
+			add_location(div3, file$1e, 176, 12, 5683);
+			attr_dev(div4, "class", "variableColumn svelte-3dq9p5");
+			add_location(div4, file$1e, 177, 12, 5773);
 			attr_dev(div5, "class", "subtitle");
-			add_location(div5, file$1e, 187, 12, 5949);
+			add_location(div5, file$1e, 184, 12, 6009);
 			attr_dev(div6, "class", "subtitle");
-			add_location(div6, file$1e, 192, 12, 6160);
+			add_location(div6, file$1e, 191, 12, 6212);
 			attr_dev(div7, "class", "subtitle");
-			add_location(div7, file$1e, 197, 12, 6363);
+			add_location(div7, file$1e, 196, 12, 6423);
 			attr_dev(div8, "class", "subtitle");
-			add_location(div8, file$1e, 202, 12, 6566);
+			add_location(div8, file$1e, 201, 12, 6626);
 			attr_dev(div9, "class", "subtitle");
-			add_location(div9, file$1e, 207, 12, 6777);
+			add_location(div9, file$1e, 206, 12, 6829);
 			attr_dev(div10, "class", "subtitle");
-			add_location(div10, file$1e, 212, 12, 6995);
+			add_location(div10, file$1e, 211, 12, 7040);
+			attr_dev(div11, "class", "subtitle");
+			add_location(div11, file$1e, 216, 12, 7258);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -60762,68 +60788,71 @@ function create_else_block$b(ctx) {
 			mount_component(textfield1, div0, null);
 			insert_dev(target, t3, anchor);
 			insert_dev(target, div1, anchor);
-			mount_component(customcheckbox, div1, null);
+			mount_component(customcheckbox0, div1, null);
 			insert_dev(target, t4, anchor);
 			insert_dev(target, div2, anchor);
-			append_dev(div2, t5);
-			append_dev(div2, t6);
-			append_dev(div2, t7);
-			insert_dev(target, t8, anchor);
+			mount_component(customcheckbox1, div2, null);
+			insert_dev(target, t5, anchor);
 			insert_dev(target, div3, anchor);
-			mount_component(customselect, div3, null);
-			append_dev(div3, t9);
-			mount_component(textfield2, div3, null);
-			insert_dev(target, t10, anchor);
+			append_dev(div3, t6);
+			append_dev(div3, t7);
+			append_dev(div3, t8);
+			insert_dev(target, t9, anchor);
 			insert_dev(target, div4, anchor);
-			insert_dev(target, t12, anchor);
+			mount_component(customselect, div4, null);
+			append_dev(div4, t10);
+			mount_component(textfield2, div4, null);
+			insert_dev(target, t11, anchor);
+			insert_dev(target, div5, anchor);
+			insert_dev(target, t13, anchor);
 
 			for (let i = 0; i < each_blocks_6.length; i += 1) {
 				each_blocks_6[i].m(target, anchor);
 			}
 
-			insert_dev(target, t13, anchor);
-			insert_dev(target, div5, anchor);
-			insert_dev(target, t15, anchor);
+			insert_dev(target, t14, anchor);
+			insert_dev(target, div6, anchor);
+			insert_dev(target, t16, anchor);
 
 			for (let i = 0; i < each_blocks_5.length; i += 1) {
 				each_blocks_5[i].m(target, anchor);
 			}
 
-			insert_dev(target, t16, anchor);
-			insert_dev(target, div6, anchor);
-			insert_dev(target, t18, anchor);
+			insert_dev(target, t17, anchor);
+			insert_dev(target, div7, anchor);
+			insert_dev(target, t19, anchor);
 
 			for (let i = 0; i < each_blocks_4.length; i += 1) {
 				each_blocks_4[i].m(target, anchor);
 			}
 
-			insert_dev(target, t19, anchor);
-			insert_dev(target, div7, anchor);
-			insert_dev(target, t21, anchor);
+			insert_dev(target, t20, anchor);
+			insert_dev(target, div8, anchor);
+			insert_dev(target, t22, anchor);
 
 			for (let i = 0; i < each_blocks_3.length; i += 1) {
 				each_blocks_3[i].m(target, anchor);
 			}
 
-			insert_dev(target, t22, anchor);
-			insert_dev(target, div8, anchor);
-			insert_dev(target, t24, anchor);
+			insert_dev(target, t23, anchor);
+			insert_dev(target, div9, anchor);
+			insert_dev(target, t25, anchor);
 
 			for (let i = 0; i < each_blocks_2.length; i += 1) {
 				each_blocks_2[i].m(target, anchor);
 			}
 
-			insert_dev(target, t25, anchor);
-			insert_dev(target, div9, anchor);
-			insert_dev(target, t27, anchor);
+			insert_dev(target, t26, anchor);
+			insert_dev(target, div10, anchor);
+			insert_dev(target, t28, anchor);
 
 			for (let i = 0; i < each_blocks_1.length; i += 1) {
 				each_blocks_1[i].m(target, anchor);
 			}
 
-			insert_dev(target, t28, anchor);
-			insert_dev(target, div10, anchor);
-			insert_dev(target, t30, anchor);
+			insert_dev(target, t29, anchor);
+			insert_dev(target, div11, anchor);
+			insert_dev(target, t31, anchor);
 
 			for (let i = 0; i < each_blocks.length; i += 1) {
 				each_blocks[i].m(target, anchor);
@@ -60833,7 +60862,7 @@ function create_else_block$b(ctx) {
 			current = true;
 
 			if (!mounted) {
-				dispose = listen_dev(button, "click", /*browse_folder*/ ctx[22], false, false, false);
+				dispose = listen_dev(button, "click", /*browse_folder*/ ctx[23], false, false, false);
 				mounted = true;
 			}
 		},
@@ -60856,30 +60885,39 @@ function create_else_block$b(ctx) {
 			}
 
 			textfield1.$set(textfield1_changes);
-			const customcheckbox_changes = {};
+			const customcheckbox0_changes = {};
 
 			if (!updating_selected && dirty[0] & /*writefile*/ 8192) {
 				updating_selected = true;
-				customcheckbox_changes.selected = /*writefile*/ ctx[13];
+				customcheckbox0_changes.selected = /*writefile*/ ctx[13];
 				add_flush_callback(() => updating_selected = false);
 			}
 
-			customcheckbox.$set(customcheckbox_changes);
-			if (!current || dirty[0] & /*variable*/ 16384) set_data_dev(t6, /*variable*/ ctx[14]);
+			customcheckbox0.$set(customcheckbox0_changes);
+			const customcheckbox1_changes = {};
+
+			if (!updating_selected_1 && dirty[0] & /*includeCollision*/ 16384) {
+				updating_selected_1 = true;
+				customcheckbox1_changes.selected = /*includeCollision*/ ctx[14];
+				add_flush_callback(() => updating_selected_1 = false);
+			}
+
+			customcheckbox1.$set(customcheckbox1_changes);
+			if (!current || dirty[0] & /*variable*/ 32768) set_data_dev(t7, /*variable*/ ctx[15]);
 			const customselect_changes = {};
 
-			if (!updating_picked && dirty[0] & /*variable*/ 16384) {
+			if (!updating_picked && dirty[0] & /*variable*/ 32768) {
 				updating_picked = true;
-				customselect_changes.picked = /*variable*/ ctx[14];
+				customselect_changes.picked = /*variable*/ ctx[15];
 				add_flush_callback(() => updating_picked = false);
 			}
 
 			customselect.$set(customselect_changes);
 			const textfield2_changes = {};
 
-			if (!updating_value_2 && dirty[0] & /*range*/ 32768) {
+			if (!updating_value_2 && dirty[0] & /*range*/ 65536) {
 				updating_value_2 = true;
-				textfield2_changes.value = /*range*/ ctx[15];
+				textfield2_changes.value = /*range*/ ctx[16];
 				add_flush_callback(() => updating_value_2 = false);
 			}
 
@@ -60890,7 +60928,7 @@ function create_else_block$b(ctx) {
 				validate_each_argument(each_value_6);
 				group_outros();
 				validate_each_keys(ctx, each_value_6, get_each_context_6, get_key);
-				each_blocks_6 = update_keyed_each(each_blocks_6, dirty, get_key, 1, ctx, each_value_6, each0_lookup, t13.parentNode, outro_and_destroy_block, create_each_block_6, t13, get_each_context_6);
+				each_blocks_6 = update_keyed_each(each_blocks_6, dirty, get_key, 1, ctx, each_value_6, each0_lookup, t14.parentNode, outro_and_destroy_block, create_each_block_6, t14, get_each_context_6);
 				check_outros();
 			}
 
@@ -60899,7 +60937,7 @@ function create_else_block$b(ctx) {
 				validate_each_argument(each_value_5);
 				group_outros();
 				validate_each_keys(ctx, each_value_5, get_each_context_5, get_key_1);
-				each_blocks_5 = update_keyed_each(each_blocks_5, dirty, get_key_1, 1, ctx, each_value_5, each1_lookup, t16.parentNode, outro_and_destroy_block, create_each_block_5, t16, get_each_context_5);
+				each_blocks_5 = update_keyed_each(each_blocks_5, dirty, get_key_1, 1, ctx, each_value_5, each1_lookup, t17.parentNode, outro_and_destroy_block, create_each_block_5, t17, get_each_context_5);
 				check_outros();
 			}
 
@@ -60908,7 +60946,7 @@ function create_else_block$b(ctx) {
 				validate_each_argument(each_value_4);
 				group_outros();
 				validate_each_keys(ctx, each_value_4, get_each_context_4$2, get_key_2);
-				each_blocks_4 = update_keyed_each(each_blocks_4, dirty, get_key_2, 1, ctx, each_value_4, each2_lookup, t19.parentNode, outro_and_destroy_block, create_each_block_4$2, t19, get_each_context_4$2);
+				each_blocks_4 = update_keyed_each(each_blocks_4, dirty, get_key_2, 1, ctx, each_value_4, each2_lookup, t20.parentNode, outro_and_destroy_block, create_each_block_4$2, t20, get_each_context_4$2);
 				check_outros();
 			}
 
@@ -60917,7 +60955,7 @@ function create_else_block$b(ctx) {
 				validate_each_argument(each_value_3);
 				group_outros();
 				validate_each_keys(ctx, each_value_3, get_each_context_3$4, get_key_3);
-				each_blocks_3 = update_keyed_each(each_blocks_3, dirty, get_key_3, 1, ctx, each_value_3, each3_lookup, t22.parentNode, outro_and_destroy_block, create_each_block_3$4, t22, get_each_context_3$4);
+				each_blocks_3 = update_keyed_each(each_blocks_3, dirty, get_key_3, 1, ctx, each_value_3, each3_lookup, t23.parentNode, outro_and_destroy_block, create_each_block_3$4, t23, get_each_context_3$4);
 				check_outros();
 			}
 
@@ -60926,7 +60964,7 @@ function create_else_block$b(ctx) {
 				validate_each_argument(each_value_2);
 				group_outros();
 				validate_each_keys(ctx, each_value_2, get_each_context_2$5, get_key_4);
-				each_blocks_2 = update_keyed_each(each_blocks_2, dirty, get_key_4, 1, ctx, each_value_2, each4_lookup, t25.parentNode, outro_and_destroy_block, create_each_block_2$5, t25, get_each_context_2$5);
+				each_blocks_2 = update_keyed_each(each_blocks_2, dirty, get_key_4, 1, ctx, each_value_2, each4_lookup, t26.parentNode, outro_and_destroy_block, create_each_block_2$5, t26, get_each_context_2$5);
 				check_outros();
 			}
 
@@ -60935,7 +60973,7 @@ function create_else_block$b(ctx) {
 				validate_each_argument(each_value_1);
 				group_outros();
 				validate_each_keys(ctx, each_value_1, get_each_context_1$5, get_key_5);
-				each_blocks_1 = update_keyed_each(each_blocks_1, dirty, get_key_5, 1, ctx, each_value_1, each5_lookup, t28.parentNode, outro_and_destroy_block, create_each_block_1$5, t28, get_each_context_1$5);
+				each_blocks_1 = update_keyed_each(each_blocks_1, dirty, get_key_5, 1, ctx, each_value_1, each5_lookup, t29.parentNode, outro_and_destroy_block, create_each_block_1$5, t29, get_each_context_1$5);
 				check_outros();
 			}
 
@@ -60952,7 +60990,8 @@ function create_else_block$b(ctx) {
 			if (current) return;
 			transition_in(textfield0.$$.fragment, local);
 			transition_in(textfield1.$$.fragment, local);
-			transition_in(customcheckbox.$$.fragment, local);
+			transition_in(customcheckbox0.$$.fragment, local);
+			transition_in(customcheckbox1.$$.fragment, local);
 			transition_in(customselect.$$.fragment, local);
 			transition_in(textfield2.$$.fragment, local);
 
@@ -60989,7 +61028,8 @@ function create_else_block$b(ctx) {
 		o: function outro(local) {
 			transition_out(textfield0.$$.fragment, local);
 			transition_out(textfield1.$$.fragment, local);
-			transition_out(customcheckbox.$$.fragment, local);
+			transition_out(customcheckbox0.$$.fragment, local);
+			transition_out(customcheckbox1.$$.fragment, local);
 			transition_out(customselect.$$.fragment, local);
 			transition_out(textfield2.$$.fragment, local);
 
@@ -61029,64 +61069,67 @@ function create_else_block$b(ctx) {
 			destroy_component(textfield1);
 			if (detaching) detach_dev(t3);
 			if (detaching) detach_dev(div1);
-			destroy_component(customcheckbox);
+			destroy_component(customcheckbox0);
 			if (detaching) detach_dev(t4);
 			if (detaching) detach_dev(div2);
-			if (detaching) detach_dev(t8);
+			destroy_component(customcheckbox1);
+			if (detaching) detach_dev(t5);
 			if (detaching) detach_dev(div3);
+			if (detaching) detach_dev(t9);
+			if (detaching) detach_dev(div4);
 			destroy_component(customselect);
 			destroy_component(textfield2);
-			if (detaching) detach_dev(t10);
-			if (detaching) detach_dev(div4);
-			if (detaching) detach_dev(t12);
+			if (detaching) detach_dev(t11);
+			if (detaching) detach_dev(div5);
+			if (detaching) detach_dev(t13);
 
 			for (let i = 0; i < each_blocks_6.length; i += 1) {
 				each_blocks_6[i].d(detaching);
 			}
 
-			if (detaching) detach_dev(t13);
-			if (detaching) detach_dev(div5);
-			if (detaching) detach_dev(t15);
+			if (detaching) detach_dev(t14);
+			if (detaching) detach_dev(div6);
+			if (detaching) detach_dev(t16);
 
 			for (let i = 0; i < each_blocks_5.length; i += 1) {
 				each_blocks_5[i].d(detaching);
 			}
 
-			if (detaching) detach_dev(t16);
-			if (detaching) detach_dev(div6);
-			if (detaching) detach_dev(t18);
+			if (detaching) detach_dev(t17);
+			if (detaching) detach_dev(div7);
+			if (detaching) detach_dev(t19);
 
 			for (let i = 0; i < each_blocks_4.length; i += 1) {
 				each_blocks_4[i].d(detaching);
 			}
 
-			if (detaching) detach_dev(t19);
-			if (detaching) detach_dev(div7);
-			if (detaching) detach_dev(t21);
+			if (detaching) detach_dev(t20);
+			if (detaching) detach_dev(div8);
+			if (detaching) detach_dev(t22);
 
 			for (let i = 0; i < each_blocks_3.length; i += 1) {
 				each_blocks_3[i].d(detaching);
 			}
 
-			if (detaching) detach_dev(t22);
-			if (detaching) detach_dev(div8);
-			if (detaching) detach_dev(t24);
+			if (detaching) detach_dev(t23);
+			if (detaching) detach_dev(div9);
+			if (detaching) detach_dev(t25);
 
 			for (let i = 0; i < each_blocks_2.length; i += 1) {
 				each_blocks_2[i].d(detaching);
 			}
 
-			if (detaching) detach_dev(t25);
-			if (detaching) detach_dev(div9);
-			if (detaching) detach_dev(t27);
+			if (detaching) detach_dev(t26);
+			if (detaching) detach_dev(div10);
+			if (detaching) detach_dev(t28);
 
 			for (let i = 0; i < each_blocks_1.length; i += 1) {
 				each_blocks_1[i].d(detaching);
 			}
 
-			if (detaching) detach_dev(t28);
-			if (detaching) detach_dev(div10);
-			if (detaching) detach_dev(t30);
+			if (detaching) detach_dev(t29);
+			if (detaching) detach_dev(div11);
+			if (detaching) detach_dev(t31);
 
 			for (let i = 0; i < each_blocks.length; i += 1) {
 				each_blocks[i].d(detaching);
@@ -61102,14 +61145,14 @@ function create_else_block$b(ctx) {
 		block,
 		id: create_else_block$b.name,
 		type: "else",
-		source: "(158:8) {:else}",
+		source: "(159:8) {:else}",
 		ctx
 	});
 
 	return block;
 }
 
-// (155:8) {#if reportToggle}
+// (157:8) {#if reportToggle}
 function create_if_block$w(ctx) {
 	let div;
 	let t;
@@ -61120,7 +61163,7 @@ function create_if_block$w(ctx) {
 			t = text(/*statusReport*/ ctx[10]);
 			attr_dev(div, "class", "content");
 			set_style(div, "white-space", "pre-wrap");
-			add_location(div, file$1e, 155, 12, 4820);
+			add_location(div, file$1e, 157, 12, 4933);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -61140,14 +61183,14 @@ function create_if_block$w(ctx) {
 		block,
 		id: create_if_block$w.name,
 		type: "if",
-		source: "(155:8) {#if reportToggle}",
+		source: "(157:8) {#if reportToggle}",
 		ctx
 	});
 
 	return block;
 }
 
-// (183:12) {#each mainParameters as {label, value, id}
+// (187:12) {#each mainParameters as {label, value, id}
 function create_each_block_6(key_1, ctx) {
 	let first;
 	let textfield;
@@ -61155,13 +61198,13 @@ function create_each_block_6(key_1, ctx) {
 	let current;
 
 	function textfield_value_binding(value) {
-		/*textfield_value_binding*/ ctx[29].call(null, value, /*value*/ ctx[41], /*each_value_6*/ ctx[55], /*each_index_6*/ ctx[56]);
+		/*textfield_value_binding*/ ctx[31].call(null, value, /*value*/ ctx[43], /*each_value_6*/ ctx[57], /*each_index_6*/ ctx[58]);
 	}
 
-	let textfield_props = { style: style$3, label: /*label*/ ctx[40] };
+	let textfield_props = { style: style$3, label: /*label*/ ctx[42] };
 
-	if (/*value*/ ctx[41] !== void 0) {
-		textfield_props.value = /*value*/ ctx[41];
+	if (/*value*/ ctx[43] !== void 0) {
+		textfield_props.value = /*value*/ ctx[43];
 	}
 
 	textfield = new Textfield({ props: textfield_props, $$inline: true });
@@ -61183,11 +61226,11 @@ function create_each_block_6(key_1, ctx) {
 		p: function update(new_ctx, dirty) {
 			ctx = new_ctx;
 			const textfield_changes = {};
-			if (dirty[0] & /*mainParameters*/ 2) textfield_changes.label = /*label*/ ctx[40];
+			if (dirty[0] & /*mainParameters*/ 2) textfield_changes.label = /*label*/ ctx[42];
 
 			if (!updating_value && dirty[0] & /*mainParameters*/ 2) {
 				updating_value = true;
-				textfield_changes.value = /*value*/ ctx[41];
+				textfield_changes.value = /*value*/ ctx[43];
 				add_flush_callback(() => updating_value = false);
 			}
 
@@ -61212,14 +61255,14 @@ function create_each_block_6(key_1, ctx) {
 		block,
 		id: create_each_block_6.name,
 		type: "each",
-		source: "(183:12) {#each mainParameters as {label, value, id}",
+		source: "(187:12) {#each mainParameters as {label, value, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (189:12) {#each simulationParameters as {label, value, id}
+// (193:12) {#each simulationParameters as {label, value, id}
 function create_each_block_5(key_1, ctx) {
 	let first;
 	let textfield;
@@ -61227,13 +61270,13 @@ function create_each_block_5(key_1, ctx) {
 	let current;
 
 	function textfield_value_binding_1(value) {
-		/*textfield_value_binding_1*/ ctx[30].call(null, value, /*value*/ ctx[41], /*each_value_5*/ ctx[53], /*each_index_5*/ ctx[54]);
+		/*textfield_value_binding_1*/ ctx[32].call(null, value, /*value*/ ctx[43], /*each_value_5*/ ctx[55], /*each_index_5*/ ctx[56]);
 	}
 
-	let textfield_props = { style: style$3, label: /*label*/ ctx[40] };
+	let textfield_props = { style: style$3, label: /*label*/ ctx[42] };
 
-	if (/*value*/ ctx[41] !== void 0) {
-		textfield_props.value = /*value*/ ctx[41];
+	if (/*value*/ ctx[43] !== void 0) {
+		textfield_props.value = /*value*/ ctx[43];
 	}
 
 	textfield = new Textfield({ props: textfield_props, $$inline: true });
@@ -61255,11 +61298,11 @@ function create_each_block_5(key_1, ctx) {
 		p: function update(new_ctx, dirty) {
 			ctx = new_ctx;
 			const textfield_changes = {};
-			if (dirty[0] & /*simulationParameters*/ 4) textfield_changes.label = /*label*/ ctx[40];
+			if (dirty[0] & /*simulationParameters*/ 4) textfield_changes.label = /*label*/ ctx[42];
 
 			if (!updating_value && dirty[0] & /*simulationParameters*/ 4) {
 				updating_value = true;
-				textfield_changes.value = /*value*/ ctx[41];
+				textfield_changes.value = /*value*/ ctx[43];
 				add_flush_callback(() => updating_value = false);
 			}
 
@@ -61284,14 +61327,14 @@ function create_each_block_5(key_1, ctx) {
 		block,
 		id: create_each_block_5.name,
 		type: "each",
-		source: "(189:12) {#each simulationParameters as {label, value, id}",
+		source: "(193:12) {#each simulationParameters as {label, value, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (194:12) {#each dopplerLineshape as {label, value, id}
+// (198:12) {#each dopplerLineshape as {label, value, id}
 function create_each_block_4$2(key_1, ctx) {
 	let first;
 	let textfield;
@@ -61299,13 +61342,13 @@ function create_each_block_4$2(key_1, ctx) {
 	let current;
 
 	function textfield_value_binding_2(value) {
-		/*textfield_value_binding_2*/ ctx[31].call(null, value, /*value*/ ctx[41], /*each_value_4*/ ctx[51], /*each_index_4*/ ctx[52]);
+		/*textfield_value_binding_2*/ ctx[33].call(null, value, /*value*/ ctx[43], /*each_value_4*/ ctx[53], /*each_index_4*/ ctx[54]);
 	}
 
-	let textfield_props = { style: style$3, label: /*label*/ ctx[40] };
+	let textfield_props = { style: style$3, label: /*label*/ ctx[42] };
 
-	if (/*value*/ ctx[41] !== void 0) {
-		textfield_props.value = /*value*/ ctx[41];
+	if (/*value*/ ctx[43] !== void 0) {
+		textfield_props.value = /*value*/ ctx[43];
 	}
 
 	textfield = new Textfield({ props: textfield_props, $$inline: true });
@@ -61327,11 +61370,11 @@ function create_each_block_4$2(key_1, ctx) {
 		p: function update(new_ctx, dirty) {
 			ctx = new_ctx;
 			const textfield_changes = {};
-			if (dirty[0] & /*dopplerLineshape*/ 8) textfield_changes.label = /*label*/ ctx[40];
+			if (dirty[0] & /*dopplerLineshape*/ 8) textfield_changes.label = /*label*/ ctx[42];
 
 			if (!updating_value && dirty[0] & /*dopplerLineshape*/ 8) {
 				updating_value = true;
-				textfield_changes.value = /*value*/ ctx[41];
+				textfield_changes.value = /*value*/ ctx[43];
 				add_flush_callback(() => updating_value = false);
 			}
 
@@ -61356,14 +61399,14 @@ function create_each_block_4$2(key_1, ctx) {
 		block,
 		id: create_each_block_4$2.name,
 		type: "each",
-		source: "(194:12) {#each dopplerLineshape as {label, value, id}",
+		source: "(198:12) {#each dopplerLineshape as {label, value, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (199:12) {#each powerBroadening as {label, value, id}
+// (203:12) {#each powerBroadening as {label, value, id}
 function create_each_block_3$4(key_1, ctx) {
 	let first;
 	let textfield;
@@ -61371,13 +61414,13 @@ function create_each_block_3$4(key_1, ctx) {
 	let current;
 
 	function textfield_value_binding_3(value) {
-		/*textfield_value_binding_3*/ ctx[32].call(null, value, /*value*/ ctx[41], /*each_value_3*/ ctx[49], /*each_index_3*/ ctx[50]);
+		/*textfield_value_binding_3*/ ctx[34].call(null, value, /*value*/ ctx[43], /*each_value_3*/ ctx[51], /*each_index_3*/ ctx[52]);
 	}
 
-	let textfield_props = { style: style$3, label: /*label*/ ctx[40] };
+	let textfield_props = { style: style$3, label: /*label*/ ctx[42] };
 
-	if (/*value*/ ctx[41] !== void 0) {
-		textfield_props.value = /*value*/ ctx[41];
+	if (/*value*/ ctx[43] !== void 0) {
+		textfield_props.value = /*value*/ ctx[43];
 	}
 
 	textfield = new Textfield({ props: textfield_props, $$inline: true });
@@ -61399,11 +61442,11 @@ function create_each_block_3$4(key_1, ctx) {
 		p: function update(new_ctx, dirty) {
 			ctx = new_ctx;
 			const textfield_changes = {};
-			if (dirty[0] & /*powerBroadening*/ 16) textfield_changes.label = /*label*/ ctx[40];
+			if (dirty[0] & /*powerBroadening*/ 16) textfield_changes.label = /*label*/ ctx[42];
 
 			if (!updating_value && dirty[0] & /*powerBroadening*/ 16) {
 				updating_value = true;
-				textfield_changes.value = /*value*/ ctx[41];
+				textfield_changes.value = /*value*/ ctx[43];
 				add_flush_callback(() => updating_value = false);
 			}
 
@@ -61428,14 +61471,14 @@ function create_each_block_3$4(key_1, ctx) {
 		block,
 		id: create_each_block_3$4.name,
 		type: "each",
-		source: "(199:12) {#each powerBroadening as {label, value, id}",
+		source: "(203:12) {#each powerBroadening as {label, value, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (204:12) {#each einsteinCoefficient as {label, value, id}
+// (208:12) {#each einsteinCoefficient as {label, value, id}
 function create_each_block_2$5(key_1, ctx) {
 	let first;
 	let textfield;
@@ -61443,13 +61486,13 @@ function create_each_block_2$5(key_1, ctx) {
 	let current;
 
 	function textfield_value_binding_4(value) {
-		/*textfield_value_binding_4*/ ctx[33].call(null, value, /*value*/ ctx[41], /*each_value_2*/ ctx[47], /*each_index_2*/ ctx[48]);
+		/*textfield_value_binding_4*/ ctx[35].call(null, value, /*value*/ ctx[43], /*each_value_2*/ ctx[49], /*each_index_2*/ ctx[50]);
 	}
 
-	let textfield_props = { style: style$3, label: /*label*/ ctx[40] };
+	let textfield_props = { style: style$3, label: /*label*/ ctx[42] };
 
-	if (/*value*/ ctx[41] !== void 0) {
-		textfield_props.value = /*value*/ ctx[41];
+	if (/*value*/ ctx[43] !== void 0) {
+		textfield_props.value = /*value*/ ctx[43];
 	}
 
 	textfield = new Textfield({ props: textfield_props, $$inline: true });
@@ -61471,11 +61514,11 @@ function create_each_block_2$5(key_1, ctx) {
 		p: function update(new_ctx, dirty) {
 			ctx = new_ctx;
 			const textfield_changes = {};
-			if (dirty[0] & /*einsteinCoefficient*/ 32) textfield_changes.label = /*label*/ ctx[40];
+			if (dirty[0] & /*einsteinCoefficient*/ 32) textfield_changes.label = /*label*/ ctx[42];
 
 			if (!updating_value && dirty[0] & /*einsteinCoefficient*/ 32) {
 				updating_value = true;
-				textfield_changes.value = /*value*/ ctx[41];
+				textfield_changes.value = /*value*/ ctx[43];
 				add_flush_callback(() => updating_value = false);
 			}
 
@@ -61500,14 +61543,14 @@ function create_each_block_2$5(key_1, ctx) {
 		block,
 		id: create_each_block_2$5.name,
 		type: "each",
-		source: "(204:12) {#each einsteinCoefficient as {label, value, id}",
+		source: "(208:12) {#each einsteinCoefficient as {label, value, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (209:12) {#each collisionalCoefficient as {label, value, id}
+// (213:12) {#each collisionalCoefficient as {label, value, id}
 function create_each_block_1$5(key_1, ctx) {
 	let first;
 	let textfield;
@@ -61515,13 +61558,13 @@ function create_each_block_1$5(key_1, ctx) {
 	let current;
 
 	function textfield_value_binding_5(value) {
-		/*textfield_value_binding_5*/ ctx[34].call(null, value, /*value*/ ctx[41], /*each_value_1*/ ctx[45], /*each_index_1*/ ctx[46]);
+		/*textfield_value_binding_5*/ ctx[36].call(null, value, /*value*/ ctx[43], /*each_value_1*/ ctx[47], /*each_index_1*/ ctx[48]);
 	}
 
-	let textfield_props = { style: style$3, label: /*label*/ ctx[40] };
+	let textfield_props = { style: style$3, label: /*label*/ ctx[42] };
 
-	if (/*value*/ ctx[41] !== void 0) {
-		textfield_props.value = /*value*/ ctx[41];
+	if (/*value*/ ctx[43] !== void 0) {
+		textfield_props.value = /*value*/ ctx[43];
 	}
 
 	textfield = new Textfield({ props: textfield_props, $$inline: true });
@@ -61543,11 +61586,11 @@ function create_each_block_1$5(key_1, ctx) {
 		p: function update(new_ctx, dirty) {
 			ctx = new_ctx;
 			const textfield_changes = {};
-			if (dirty[0] & /*collisionalCoefficient*/ 64) textfield_changes.label = /*label*/ ctx[40];
+			if (dirty[0] & /*collisionalCoefficient*/ 64) textfield_changes.label = /*label*/ ctx[42];
 
 			if (!updating_value && dirty[0] & /*collisionalCoefficient*/ 64) {
 				updating_value = true;
-				textfield_changes.value = /*value*/ ctx[41];
+				textfield_changes.value = /*value*/ ctx[43];
 				add_flush_callback(() => updating_value = false);
 			}
 
@@ -61572,14 +61615,14 @@ function create_each_block_1$5(key_1, ctx) {
 		block,
 		id: create_each_block_1$5.name,
 		type: "each",
-		source: "(209:12) {#each collisionalCoefficient as {label, value, id}",
+		source: "(213:12) {#each collisionalCoefficient as {label, value, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (214:12) {#each rateCoefficients as {label, value, id}
+// (218:12) {#each rateCoefficients as {label, value, id}
 function create_each_block$c(key_1, ctx) {
 	let first;
 	let textfield;
@@ -61587,13 +61630,13 @@ function create_each_block$c(key_1, ctx) {
 	let current;
 
 	function textfield_value_binding_6(value) {
-		/*textfield_value_binding_6*/ ctx[35].call(null, value, /*value*/ ctx[41], /*each_value*/ ctx[43], /*each_index*/ ctx[44]);
+		/*textfield_value_binding_6*/ ctx[37].call(null, value, /*value*/ ctx[43], /*each_value*/ ctx[45], /*each_index*/ ctx[46]);
 	}
 
-	let textfield_props = { style: style$3, label: /*label*/ ctx[40] };
+	let textfield_props = { style: style$3, label: /*label*/ ctx[42] };
 
-	if (/*value*/ ctx[41] !== void 0) {
-		textfield_props.value = /*value*/ ctx[41];
+	if (/*value*/ ctx[43] !== void 0) {
+		textfield_props.value = /*value*/ ctx[43];
 	}
 
 	textfield = new Textfield({ props: textfield_props, $$inline: true });
@@ -61615,11 +61658,11 @@ function create_each_block$c(key_1, ctx) {
 		p: function update(new_ctx, dirty) {
 			ctx = new_ctx;
 			const textfield_changes = {};
-			if (dirty[0] & /*rateCoefficients*/ 128) textfield_changes.label = /*label*/ ctx[40];
+			if (dirty[0] & /*rateCoefficients*/ 128) textfield_changes.label = /*label*/ ctx[42];
 
 			if (!updating_value && dirty[0] & /*rateCoefficients*/ 128) {
 				updating_value = true;
-				textfield_changes.value = /*value*/ ctx[41];
+				textfield_changes.value = /*value*/ ctx[43];
 				add_flush_callback(() => updating_value = false);
 			}
 
@@ -61644,14 +61687,14 @@ function create_each_block$c(key_1, ctx) {
 		block,
 		id: create_each_block$c.name,
 		type: "each",
-		source: "(214:12) {#each rateCoefficients as {label, value, id}",
+		source: "(218:12) {#each rateCoefficients as {label, value, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (154:4) <div slot="content">
+// (155:4) <div slot="content">
 function create_content_slot$6(ctx) {
 	let div;
 	let current_block_type_index;
@@ -61661,7 +61704,7 @@ function create_content_slot$6(ctx) {
 	const if_blocks = [];
 
 	function select_block_type(ctx, dirty) {
-		if (/*reportToggle*/ ctx[16]) return 0;
+		if (/*reportToggle*/ ctx[17]) return 0;
 		return 1;
 	}
 
@@ -61673,7 +61716,7 @@ function create_content_slot$6(ctx) {
 			div = element("div");
 			if_block.c();
 			attr_dev(div, "slot", "content");
-			add_location(div, file$1e, 153, 4, 4758);
+			add_location(div, file$1e, 154, 4, 4869);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -61724,14 +61767,14 @@ function create_content_slot$6(ctx) {
 		block,
 		id: create_content_slot$6.name,
 		type: "slot",
-		source: "(154:4) <div slot=\\\"content\\\">",
+		source: "(155:4) <div slot=\\\"content\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (221:4) <div class="align" slot="footerbtn">
+// (225:4) <div class="align" slot="footerbtn">
 function create_footerbtn_slot$4(ctx) {
 	let div;
 	let button0;
@@ -61750,20 +61793,20 @@ function create_footerbtn_slot$4(ctx) {
 			button0.textContent = "Stop";
 			t1 = space();
 			button1 = element("button");
-			t2 = text(/*buttonName*/ ctx[17]);
+			t2 = text(/*buttonName*/ ctx[18]);
 			t3 = space();
 			button2 = element("button");
 			button2.textContent = "Submit";
 			attr_dev(button0, "class", "button is-danger");
-			add_location(button0, file$1e, 222, 8, 7302);
+			add_location(button0, file$1e, 226, 8, 7565);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$1e, 224, 8, 7446);
+			add_location(button1, file$1e, 228, 8, 7709);
 			attr_dev(button2, "class", "button is-link");
 			toggle_class(button2, "is-loading", /*running*/ ctx[9]);
-			add_location(button2, file$1e, 225, 8, 7559);
+			add_location(button2, file$1e, 229, 8, 7822);
 			attr_dev(div, "class", "align");
 			attr_dev(div, "slot", "footerbtn");
-			add_location(div, file$1e, 220, 4, 7254);
+			add_location(div, file$1e, 224, 4, 7517);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -61776,19 +61819,19 @@ function create_footerbtn_slot$4(ctx) {
 
 			if (!mounted) {
 				dispose = [
-					listen_dev(button0, "click", /*click_handler*/ ctx[36], false, false, false),
-					listen_dev(button1, "click", /*click_handler_1*/ ctx[37], false, false, false),
-					listen_dev(button2, "click", /*simulation*/ ctx[21], false, false, false),
-					listen_dev(button2, "pyEvent", /*pyEventHandle*/ ctx[18], false, false, false),
-					listen_dev(button2, "pyEventClosed", /*pyEventClosedHandle*/ ctx[20], false, false, false),
-					listen_dev(button2, "pyEventData", /*pyEventDataReceivedHandle*/ ctx[19], false, false, false)
+					listen_dev(button0, "click", /*click_handler*/ ctx[38], false, false, false),
+					listen_dev(button1, "click", /*click_handler_1*/ ctx[39], false, false, false),
+					listen_dev(button2, "click", /*simulation*/ ctx[22], false, false, false),
+					listen_dev(button2, "pyEvent", /*pyEventHandle*/ ctx[19], false, false, false),
+					listen_dev(button2, "pyEventClosed", /*pyEventClosedHandle*/ ctx[21], false, false, false),
+					listen_dev(button2, "pyEventData", /*pyEventDataReceivedHandle*/ ctx[20], false, false, false)
 				];
 
 				mounted = true;
 			}
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*buttonName*/ 131072) set_data_dev(t2, /*buttonName*/ ctx[17]);
+			if (dirty[0] & /*buttonName*/ 262144) set_data_dev(t2, /*buttonName*/ ctx[18]);
 
 			if (dirty[0] & /*running*/ 512) {
 				toggle_class(button2, "is-loading", /*running*/ ctx[9]);
@@ -61805,14 +61848,14 @@ function create_footerbtn_slot$4(ctx) {
 		block,
 		id: create_footerbtn_slot$4.name,
 		type: "slot",
-		source: "(221:4) <div class=\\\"align\\\" slot=\\\"footerbtn\\\">",
+		source: "(225:4) <div class=\\\"align\\\" slot=\\\"footerbtn\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (151:0) <Modal bind:active title="ROSAA modal" >
+// (152:0) <Modal bind:active title="ROSAA modal" >
 function create_default_slot$x(ctx) {
 	let t;
 
@@ -61835,7 +61878,7 @@ function create_default_slot$x(ctx) {
 		block,
 		id: create_default_slot$x.name,
 		type: "slot",
-		source: "(151:0) <Modal bind:active title=\\\"ROSAA modal\\\" >",
+		source: "(152:0) <Modal bind:active title=\\\"ROSAA modal\\\" >",
 		ctx
 	});
 
@@ -61848,7 +61891,7 @@ function create_fragment$1l(ctx) {
 	let current;
 
 	function modal_active_binding(value) {
-		/*modal_active_binding*/ ctx[38].call(null, value);
+		/*modal_active_binding*/ ctx[40].call(null, value);
 	}
 
 	let modal_props = {
@@ -61882,7 +61925,7 @@ function create_fragment$1l(ctx) {
 		p: function update(ctx, dirty) {
 			const modal_changes = {};
 
-			if (dirty[0] & /*running, reportToggle, buttonName, py, statusReport, rateCoefficients, collisionalCoefficient, einsteinCoefficient, powerBroadening, dopplerLineshape, simulationParameters, mainParameters, range, variable, writefile, filename, currentLocation*/ 262142 | dirty[1] & /*$$scope*/ 67108864) {
+			if (dirty[0] & /*running, reportToggle, buttonName, py, statusReport, rateCoefficients, collisionalCoefficient, einsteinCoefficient, powerBroadening, dopplerLineshape, simulationParameters, mainParameters, range, variable, includeCollision, writefile, filename, currentLocation*/ 524286 | dirty[1] & /*$$scope*/ 268435456) {
 				modal_changes.$$scope = { dirty, ctx };
 			}
 
@@ -62104,6 +62147,11 @@ function instance$1l($$self, $$props, $$invalidate) {
 				id: window.getID()
 			},
 			{
+				label: "includeCollision",
+				value: includeCollision,
+				id: window.getID()
+			},
+			{
 				label: "variable",
 				value: variable,
 				id: window.getID()
@@ -62130,7 +62178,7 @@ function instance$1l($$self, $$props, $$invalidate) {
 		});
 	}
 
-	let writefile = true;
+	let writefile = true, includeCollision = true;
 	let variable = "time", range = "1e12, 1e16, 10";
 	const variablesList = ["time", "He density(cm3)", "a"];
 	const writable_props = ["active"];
@@ -62149,19 +62197,24 @@ function instance$1l($$self, $$props, $$invalidate) {
 		$$invalidate(12, filename);
 	}
 
-	function customcheckbox_selected_binding(value) {
+	function customcheckbox0_selected_binding(value) {
 		writefile = value;
 		$$invalidate(13, writefile);
 	}
 
+	function customcheckbox1_selected_binding(value) {
+		includeCollision = value;
+		$$invalidate(14, includeCollision);
+	}
+
 	function customselect_picked_binding(value) {
 		variable = value;
-		$$invalidate(14, variable);
+		$$invalidate(15, variable);
 	}
 
 	function textfield2_value_binding(value) {
 		range = value;
-		$$invalidate(15, range);
+		$$invalidate(16, range);
 	}
 
 	function textfield_value_binding(value$1, value, each_value_6, each_index_6) {
@@ -62206,7 +62259,7 @@ function instance$1l($$self, $$props, $$invalidate) {
 	};
 
 	const click_handler_1 = e => {
-		$$invalidate(16, reportToggle = !reportToggle);
+		$$invalidate(17, reportToggle = !reportToggle);
 	};
 
 	function modal_active_binding(value) {
@@ -62246,6 +62299,7 @@ function instance$1l($$self, $$props, $$invalidate) {
 		filename,
 		browse_folder,
 		writefile,
+		includeCollision,
 		variable,
 		range,
 		variablesList,
@@ -62268,10 +62322,11 @@ function instance$1l($$self, $$props, $$invalidate) {
 		if ("currentLocation" in $$props) $$invalidate(11, currentLocation = $$props.currentLocation);
 		if ("filename" in $$props) $$invalidate(12, filename = $$props.filename);
 		if ("writefile" in $$props) $$invalidate(13, writefile = $$props.writefile);
-		if ("variable" in $$props) $$invalidate(14, variable = $$props.variable);
-		if ("range" in $$props) $$invalidate(15, range = $$props.range);
-		if ("reportToggle" in $$props) $$invalidate(16, reportToggle = $$props.reportToggle);
-		if ("buttonName" in $$props) $$invalidate(17, buttonName = $$props.buttonName);
+		if ("includeCollision" in $$props) $$invalidate(14, includeCollision = $$props.includeCollision);
+		if ("variable" in $$props) $$invalidate(15, variable = $$props.variable);
+		if ("range" in $$props) $$invalidate(16, range = $$props.range);
+		if ("reportToggle" in $$props) $$invalidate(17, reportToggle = $$props.reportToggle);
+		if ("buttonName" in $$props) $$invalidate(18, buttonName = $$props.buttonName);
 	};
 
 	let reportToggle;
@@ -62282,8 +62337,8 @@ function instance$1l($$self, $$props, $$invalidate) {
 	}
 
 	$$self.$$.update = () => {
-		if ($$self.$$.dirty[0] & /*reportToggle*/ 65536) {
-			 $$invalidate(17, buttonName = reportToggle ? "Go Back" : "Status report");
+		if ($$self.$$.dirty[0] & /*reportToggle*/ 131072) {
+			 $$invalidate(18, buttonName = reportToggle ? "Go Back" : "Status report");
 		}
 
 		if ($$self.$$.dirty[0] & /*statusReport*/ 1024) {
@@ -62291,7 +62346,7 @@ function instance$1l($$self, $$props, $$invalidate) {
 		}
 	};
 
-	 $$invalidate(16, reportToggle = false);
+	 $$invalidate(17, reportToggle = false);
 
 	return [
 		active,
@@ -62308,6 +62363,7 @@ function instance$1l($$self, $$props, $$invalidate) {
 		currentLocation,
 		filename,
 		writefile,
+		includeCollision,
 		variable,
 		range,
 		reportToggle,
@@ -62320,7 +62376,8 @@ function instance$1l($$self, $$props, $$invalidate) {
 		variablesList,
 		textfield0_value_binding,
 		textfield1_value_binding,
-		customcheckbox_selected_binding,
+		customcheckbox0_selected_binding,
+		customcheckbox1_selected_binding,
 		customselect_picked_binding,
 		textfield2_value_binding,
 		textfield_value_binding,
