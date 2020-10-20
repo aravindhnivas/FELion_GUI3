@@ -29,7 +29,7 @@ def thz_plot(filename):
     for line in file:
         if line.startswith("#"): break
         line = line.split("\n")[0].split("\t")[:-1]
-        resOn.append(line)
+        if not "0" in line: resOn.append(line)
     resOn = resOn[1:]
 
     resOff = []
@@ -42,11 +42,12 @@ def thz_plot(filename):
         if start: 
             if line.startswith("#"): break
             line = line.split("\n")[0].split("\t")[:-1]
-            resOff.append(line)
+            if not "0" in line: resOff.append(line)
             
     resOff = resOff[1:]
     #############################################
 
+    # print(f"{resOn}\n{resOff}")
     resOn = np.array(resOn, dtype=np.float)
     resOff = np.array(resOff, dtype=np.float)
 
