@@ -61,7 +61,8 @@ def thz_plot(filename):
     # depletion_error = depletion.T.std(axis=1)*100
 
     depletion_counts = depletion_counts*100
-    iteraton = int(resOn[0].shape[0]-1)
+
+    iteraton = int(len(resOn[0, 1:]))
     steps = int(round((freq[1]-freq[0])*1e6, 0))
 
     resOffCounts, resOnCounts = resOff.T[1:], resOn.T[1:]
