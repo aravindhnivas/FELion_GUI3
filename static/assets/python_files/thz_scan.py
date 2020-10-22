@@ -134,7 +134,7 @@ def plot_thz(ax=None, tkplot=False, save_dat=True, latex=False, justPlot=False, 
 
 
 
-        lg = f"{filename.name} [{steps} KHz : {iteraton} cycles];"
+        lg = f"{filename.name} [{steps} KHz : {iteraton} cycles]"
         if justPlot:
 
             data["thz"][f"{filename.name}"] = {"x": list(freq), "y": list(depletion_counts), "name": lg, 
