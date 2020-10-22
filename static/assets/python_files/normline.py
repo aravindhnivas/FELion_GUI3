@@ -71,9 +71,10 @@ class normplot:
 
         for filename in received_files:
 
-            res, b0, trap = var_find(filename)
-            label = f"Res:{res}; B0: {b0}ms; trap: {trap}ms"
             felixfile = filename.name
+            res, b0, trap = var_find(filename)
+
+            label = f"{felixfile}; Res:{res}; B0: {b0}ms; trap: {trap}ms"
             
             fname = filename.stem
             basefile = f"{fname}.base"
