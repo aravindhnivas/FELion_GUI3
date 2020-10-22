@@ -18,47 +18,61 @@
         {label:"tagging partner", value:"He", id:window.getID()},
         
         {label:"freq", value:"453_521_850_000", id:window.getID()},
-
         {label:"trap_area", value:"5e-5", id:window.getID()},
         {label:"Energy", value:"0, 15.127861, 45.373851", id:window.getID()},
     ]
 
     let simulationParameters = [
+
         {label:"totalIonCounts", value:1000, id:window.getID()},
+        
         {label:"Simulation time(ms)", value:600, id:window.getID()},
         {label:"Total steps", value:1000, id:window.getID()},
         {label:"numberOfLevel (J levels)", value:3, id:window.getID()},
     ]
 
     let dopplerLineshape = [
+        
         {label:"IonMass(amu)", value:14, id:window.getID()},
+        
         {label:"IonTemperature(K)", value:12, id:window.getID()},
+    
     ]
 
     let powerBroadening = [
 
+    
         {label:"cp", value:"4.9e7", id:window.getID()},
         {label:"dipoleMoment(D)", value:0, id:window.getID()},
         {label:"power(W)", value:"2e-5", id:window.getID()},
-
     ]
 
     let einsteinCoefficient = [ {label:"SpontaneousEmission", value:"6.24e-4", id:window.getID()}]
 
-    let collisionalCoefficient = [
-        {label:"Collisional_q", value:"4.3242e-11, 3.4640e-11, 1.3013e-10", id:window.getID()},
-        {label:"trapTemp(K)", value:5.7, id:window.getID()}
-    ]
-
+    let trapTemp = 5.7
+    
     let rateCoefficients = [
         {label:"branching-ratio", value:0.5, id:window.getID()},
         {label:"a", value:0.5, id:window.getID()},
         {label:"He density(cm3)", value:"2e14", id:window.getID()},
+
         {label:"k3", value:"9.6e-31, 2.9e-30", id:window.getID()},
         {label:"kCID", value:"6.7e-16, 1.9e-15", id:window.getID()},
     ]
 
+    let collisionalRateType = "deexcitation"
+
+    $: deexcitation = collisionalRateType==="deexcitation";
+    let totalJLevel = 3
+
+    $: collisionalCoefficient = _.range(1, _.nth(simulationParameters, -1).value)
+                                    .map(j=> _.range(j)
+                                        .map(jj=> deexcitation ? {label:`q_${j}${jj}`, value:0, id:window.getID()} : {label:`q_${jj}${j}`, value:0, id:window.getID()})
+                                    )
+    $: console.log(collisionalCoefficient)
+
     let py, running = false;
+
 
     const pyEventHandle = (e) => {
 
@@ -66,16 +80,13 @@
         const events = e.detail
         py = events.py
 
-
     }
 
     let statusReport = "";
     $: reportToggle = false
-
     $: buttonName = reportToggle ? "Go Back" : "Status report"
     const pyEventDataReceivedHandle = (e) => {
         let dataReceived = e.detail.dataReceived
-
         statusReport += `${dataReceived}\n`
     }
 
@@ -87,40 +98,61 @@
         statusReport += "\n######## TERMINATED ########"
     }
 
-
     const simulation = (e) => {
-        const conditions = [
-            ...mainParameters, ...simulationParameters, ...dopplerLineshape, ...powerBroadening,
-            ...einsteinCoefficient, ...collisionalCoefficient, ...rateCoefficients,
-            {label:"currentLocation", value:currentLocation, id:window.getID()},
-            {label:"filename", value:filename, id:window.getID()},
-            {label:"writefile", value:writefile, id:window.getID()},
-            {label:"includeCollision", value:includeCollision, id:window.getID()},
-            {label:"variable", value:variable, id:window.getID()},
-            {label:"range", value:range, id:window.getID()}
-        ]
+        const collisionalRates = window._.flatten(collisionalCoefficient)
 
+        const collisional_rates = {}
+        collisionalRates.forEach(f=>collisional_rates[f.label] = parseFloat(document.querySelector(`#${f.label} input`).value) )
+
+        const main_parameters = {}
+        mainParameters.forEach(f=>main_parameters[f.label]=f.value)
+        
+        const simulation_parameters = {}
+        simulationParameters.forEach(f=>simulation_parameters[f.label]=f.value)
+
+        const doppler_lineshape = {}
+        dopplerLineshape.forEach(f=>doppler_lineshape[f.label]=f.value)
+
+        const power_broadening = {}
+        powerBroadening.forEach(f=>power_broadening[f.label]=f.value)
+
+        const einstein_coefficient = {}
+        einsteinCoefficient.forEach(f=>einstein_coefficient[f.label]=f.value)
+
+        const rate_coefficients = {}
+        rateCoefficients.forEach(f=>rate_coefficients[f.label]=f.value)
+        
+        const conditions = { trapTemp, variable, variableRange, includeCollision, writefile, filename, currentLocation, deexcitation, 
+            collisional_rates, main_parameters, simulation_parameters, einstein_coefficient, power_broadening, doppler_lineshape, rate_coefficients
+        }
         dispatch('submit', { e, conditions })
+
         running=true
+    
+
+
     }
 
     const style="width:12em; margin-bottom:1em;"
-
     let currentLocation = localStorage["thz_modal_location"] || localStorage["thz_location"] || ""
     
     let filename = `ROSAA_modal_${mainParameters[0].value}_${mainParameters[1].value}`
 
     function browse_folder() {
+
         browse({dir:true}).then(result=>{
             if (!result.canceled) { currentLocation= localStorage["thz_modal_location"] = result.filePaths[0] }
 
         })
+    
+    
+    
     }
 
     let writefile = true, includeCollision = true;
+    let variable = "time", variableRange = "1e12, 1e16, 10";
 
-    let variable = "time", range = "1e12, 1e16, 10";
-    const variablesList = ["time", "He density(cm3)", "a"]
+    const variablesList = ["time", "He density(cm3)", "Power(W)"]
 
 </script>
 
@@ -136,9 +168,8 @@
 
         .button {
             margin:0;
-
-            justify-self: center;
             align-self: center;
+
         }
 
     }
@@ -166,12 +197,38 @@
 
     }
 
+    .rates__div {
+        display: grid;
+        grid-gap: 1em;
+        margin-bottom: 1em;
+
+        .rates__mainContainer {
+            max-height: 20rem;
+            overflow: auto;
+        }
+
+    }
+
+    .ROSAA__modal {
+        .subtitle {margin-bottom: 0}
+    }
+    
+    .attachmentDissociationRate__div {
+        .rates__mainContainer {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(12em,1fr));
+            grid-gap: 1em;
+        
+        }
+    
+    }
+
 </style>
+
 
 <Modal bind:active title="ROSAA modal" >
 
-
-    <div slot="content">
+    <div class="ROSAA__modal" slot="content">
 
         {#if reportToggle}
             <div class="content" style="white-space: pre-wrap;">{statusReport}</div>
@@ -197,7 +254,7 @@
             <div class="variableColumn">
 
                 <CustomSelect options={variablesList} bind:picked={variable} />
-                <Textfield bind:value={range} label="Range (min, max, totalsteps)" />
+                <Textfield bind:value={variableRange} label="Range (min, max, totalsteps)" />
             </div>
 
 
@@ -223,20 +280,46 @@
                 <Textfield {style} bind:value {label}/>
             {/each}
 
-            <div class="subtitle">Einstein Co-efficients</div>
-            {#each einsteinCoefficient as {label, value, id}(id)}
-                <Textfield {style} bind:value {label}/>
-            {/each}
+            <div class="rates__div einsteinRate__div">
+                <div class="subtitle">Einstein Co-efficients</div>
+                <div class="rates__mainContainer">
+                    {#each einsteinCoefficient as {label, value, id}(id)}
+                        <Textfield style="width:12em;" bind:value {label}/>
+                    {/each}
+                </div>
+            </div>
 
-            <div class="subtitle">Collisional rate constants</div>
-            {#each collisionalCoefficient as {label, value, id}(id)}
-                <Textfield {style} bind:value {label}/>
-            {/each}
 
-            <div class="subtitle">He attachment (K3) and diisociation (kCID) constants</div>
-            {#each rateCoefficients as {label, value, id}(id)}
-                <Textfield {style} bind:value {label}/>
-            {/each}
+            {#if includeCollision}
+
+                <div class="rates__div collisionalRate__div">
+
+                    <div class="subtitle">Collisional rate constants</div>
+                    <CustomSelect style="width: 12em;" options={["deexcitation", "excitation"]} bind:picked={collisionalRateType} />
+                    <div class="rates__mainContainer">
+                        <Textfield style="width:12em;" bind:value={trapTemp} label="trapTemp(K)"/>
+                        {#each collisionalCoefficient as rateConstant}
+                            <div class="">
+                                {#each rateConstant as {label, value, id}(id)}
+                                    <Textfield style="width:12em;" {value} {label} id={label} />
+                                {/each}
+                            </div>
+                        {/each}
+                    </div>
+
+                </div>
+
+            {/if}
+            
+
+            <div class="rates__div attachmentDissociationRate__div">
+                <div class="subtitle">He attachment (K3) and diisociation (kCID) constants</div>
+                <div class="rates__mainContainer">
+                    {#each rateCoefficients as {label, value, id}(id)}
+                        <Textfield bind:value {label}/>
+                    {/each}
+                </div>
+            </div>
         {/if}
 
     </div>
@@ -247,7 +330,6 @@
 
         <button  class="button is-link" on:click="{(e)=>{reportToggle = !reportToggle}}" >{buttonName}</button>
         <button  class="button is-link" class:is-loading={running} on:click="{simulation}" on:pyEvent={pyEventHandle} on:pyEventClosed="{pyEventClosedHandle}" on:pyEventData={pyEventDataReceivedHandle}>Submit</button>
-
     </div>
     
 </Modal>
