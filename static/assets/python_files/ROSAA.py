@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path as pt
 from scipy.integrate import solve_ivp
-from numba import jit
+# from numba import jit
 
 from ROSAA_func import distribution, boltzman_distribution, \
     stimulated_absorption, stimulated_emission,\
@@ -61,16 +61,18 @@ def kinetic_simulation_off(t, N):
     return [dCD0_dt, dCD1_dt, dCD2_dt, dCDHe_dt, dCDHe2_dt]
 
 
-# @jit(nopython=True, fastmath=True, nogil=True)
 def kinetic_simulation_on(t, N):
 
     CD0, CD1, CD2, CDHe, CDHe2 = N
+
     p = branching_ratio
+
     # CD: j=0
     attachmentRate0 = -Rate_k31_0*CD0 + Rate_kCID1*CDHe*p
     collisionalRate0 = (-Rate_q_01*CD0 + Rate_q_10*CD1 + Rate_q_20*CD2 - Rate_q_02*CD0) if includeCollision else 0
     spontaneousEmissionRate = A_10*CD1
     stimulatedRate = -Rate_B_01*CD0 + Rate_B_10*CD1
+
 
     dCD0_dt = attachmentRate0 + collisionalRate0 + spontaneousEmissionRate + stimulatedRate
 
@@ -87,7 +89,6 @@ def kinetic_simulation_on(t, N):
     # CDHe:
     attachmentRate2 = -Rate_k32*CDHe + Rate_kCID2*CDHe2
     dCDHe_dt = -attachmentRate0 - attachmentRate1 + attachmentRate2
-
     # CDHe2
     dCDHe2_dt = -attachmentRate2
 
@@ -169,7 +170,6 @@ def ROSAA_modal(args):
     Rate_k31_0 = k31_0*nHe**2
     Rate_k31_1 = k31_1*nHe**2
     Rate_k32 = k32*nHe**2
-    
     Rate_kCID1 = kCID1*nHe
     Rate_kCID2 = kCID2*nHe
     
@@ -188,8 +188,9 @@ def ROSAA_modal(args):
     
     q_10, q_20, q_21 = [float(i.strip()) for i in conditions["Collisional_q"].split(",")]
     
-    KT = 0.695035*trapTemp
-    g = [1, 3, 5, 7, 9, 11]
+    # KT = 0.695035*trapTemp
+    # g = [1, 3, 5, 7, 9, 11]
+
     q_01 = q_10 * distribution(0, 1, Energy, trapTemp)   # calculating q_up from q_down detailed balancing
     Rate_q_01 = q_01*nHe
     Rate_q_10 = q_10*nHe
@@ -396,22 +397,22 @@ if __name__ == "__main__":
     args = sys.argv[1:][0].split(",")
 
     args = json.loads(", ".join(args))
+    print(f"{args=}")
+    # conditions = {}
 
-    conditions = {}
+    # for i in args:
+    #     i = list(i.items())
+    #     conditions[f"{i[0][1]}"] = i[1][1]
 
-    for i in args:
-        i = list(i.items())
-        conditions[f"{i[0][1]}"] = i[1][1]
+    # location = pt(conditions["currentLocation"])
 
-    location = pt(conditions["currentLocation"])
+    # filename = conditions["filename"]
+    # mol = conditions["molecule"]
+    # tag = conditions["tagging partner"]
 
-    filename = conditions["filename"]
-    mol = conditions["molecule"]
-    tag = conditions["tagging partner"]
+    # numberOfLevel = int(conditions["numberOfLevel (J levels)"])
+    # print(f"{location=}, {filename=}", flush=True)
 
-    numberOfLevel = int(conditions["numberOfLevel (J levels)"])
-    print(f"{location=}, {filename=}", flush=True)
+    # includeCollision = bool(conditions["includeCollision"])
 
-    includeCollision = bool(conditions["includeCollision"])
-
-    main(conditions)
+    # main(conditions)
