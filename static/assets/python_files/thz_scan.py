@@ -134,22 +134,20 @@ def plot_thz(ax=None, tkplot=False, save_dat=True, latex=False, justPlot=False, 
 
 
 
-        weight = 1/depletion_counts.std()**2
-        lg = f"{filename.name} [{steps} KHz : {iteraton} cycles]; {weight:.2f}"
-
+        lg = f"{filename.name} [{steps} KHz : {iteraton} cycles];"
         if justPlot:
+
             data["thz"][f"{filename.name}"] = {"x": list(freq), "y": list(depletion_counts), "name": lg, 
                 "mode":'lines+markers',"type":'scatter', "fill":"tozeroy", "line":{"color":f"rgb{colors[i*2]}", "shape":"hvh"}
             }
+
             data["resOnOff_Counts"][f"{filename.name}_On"] = {"x": list(freq), "y": resOnCounts.tolist()[0], "name": f"{filename.name}_On", 
                 "mode":'markers',"type":'scatter', "line":{"color":f"rgb{colors[i*2]}", "shape":"hvh"}
             }
             data["resOnOff_Counts"][f"{filename.name}_Off"] = {"x": list(freq), "y": resOffCounts.tolist()[0], "name": f"Off: {freq_resOff}GHz: {iteraton}", 
-                "mode":'markers',"type":'scatter', "line":{"color":f"rgb{colors[i*2+1]}", "shape":"hvh"}
-                
-            }
-            # print(data)
 
+                "mode":'markers',"type":'scatter', "line":{"color":f"rgb{colors[i*2+1]}", "shape":"hvh"}
+            }
             continue
 
         model = gauss_fit(freq, depletion_counts)
@@ -186,10 +184,11 @@ def plot_thz(ax=None, tkplot=False, save_dat=True, latex=False, justPlot=False, 
 
         export_file(f"binned_{binx.min():.3f}_{binx.max():.3f}GHz_{int(delta*1e6)}kHz", binx, biny)
 
+    label = f"Binned (delta={delta*1e6:.2f} KHz)"
     if justPlot:
         
         if binData: data["thz"]["Averaged_exp"] = { "x": list(binx), "y": list(biny),  
-            "name":"Binned", "mode":'lines+markers', "type":'scatter',"fill":"tozeroy", "line":{"color":"black", "shape":"hvh"} }
+            "name":label, "mode":'lines+markers', "type":'scatter',"fill":"tozeroy", "line":{"color":"black", "shape":"hvh"} }
         return data
 
     model = gauss_fit(binx, biny)
@@ -208,7 +207,7 @@ def plot_thz(ax=None, tkplot=False, save_dat=True, latex=False, justPlot=False, 
             f.write("#Frequency(in MHz)\t#Intensity\n")
             for freq, inten in zip(binx, fit_data): f.write(f"{freq*1e3}\t{inten}\n")
 
-    label = f"Binned (delta={delta*1e6:.2f} KHz)"
+    
 
     if tkplot:
 
