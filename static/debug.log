@@ -1,0 +1,158 @@
+Checking for python old path
+Svelte: 
+Current page: Home
+Open Shell: 
+felix currentlocation: 
+Z:\Students\Dian\internshipFELion\spectra\benzonitrile\IRMPD\DATA
+Trace length: 
+Extrafile added: 0
+Z:\Guests\Geppert\H3CN+_Geppert\Calculations
+$opoMode: false
+graphDiv: avgplot
+undefined
+ResOn: 
+ResOff: 
+[
+  [ { label: 'q_10', value: 0, id: 'pu7ro213j7' } ],
+  [
+    { label: 'q_20', value: 0, id: '87geq80t9b' },
+    { label: 'q_21', value: 0, id: 'c7e63nr6tug' }
+  ]
+]
+
+Normline mounted
+URL_Package: https://raw.githubusercontent.com/aravindhnivas/FELion_GUI3/master/version.json
+[
+  [ { label: 'q_10', value: 0, id: '61h3o85t86o' } ],
+  [
+    { label: 'q_20', value: 0, id: 'oo2t2g7c63g' },
+    { label: 'q_21', value: 0, id: 'a8omcmmu228' }
+  ]
+]
+Current location: 
+Folder updated
+onMount Updating location for 
+Current location: 
+Folder updated
+onMount Updating location for 
+Current location: 
+Folder updated
+onMount Updating location for 
+Current location: 
+Folder updated
+onMount Updating location for 
+Current location: 
+Folder updated
+onMount Updating location for 
+Current location: 
+Folder updated
+onMount Updating location for 
+DOM fully loaded and parsed
+Received package:
+Version available 3.0.2
+Current version 3.0.2
+Update check completed
+Python path checking 
+
+Python path is valid
+Current page: THz
+Python path checking 
+
+Python 3.8.1
+Sending general arguments: 
+pyEvent dispatched
+Output from python: args={'trapTemp': 5.7, 'variable': 'time', 'variableRange': '1e12,  1e16,  10', 'includeCollision': True, 'writefile': True, 'filename': 'ROSAA_modal_CD_He', 'currentLocation': 'Z:\\Students\\Aravindh\\Measurements\\CO+', 'deexcitation': True, 'collisional_rates': {'q_10': 0, 'q_20': 0, 'q_21': 0}, 'main_parameters': {'molecule': 'CD', 'tagging partner': 'He', 'freq': '453_521_850_000', 'trap_area': '5e-5', 'Energy': '0,  15.127861,  45.373851'}, 'simulation_parameters': {'totalIonCounts': 1000, 'Simulation time(ms)': 600, 'Total steps': 1000, 'numberOfLevel (J levels)': 3}, 'einstein_coefficient': {'SpontaneousEmission': '6.24e-4'}, 'power_broadening': {'cp': '4.9e7', 'dipoleMoment(D)': 0, 'power(W)': '2e-5'}, 'doppler_lineshape': {'IonMass(amu)': 14, 'IonTemperature(K)': 12}, 'rate_coefficients': {'branching-ratio': 0.5, 'a': 0.5, 'He density(cm3)': '2e14', 'k3': '9.6e-31,  2.9e-30', 'kCID': '6.7e-16,  1.9e-15'}}
+
+pyEventData dispatched
+args={'trapTemp': 5.7, 'variable': 'time', 'variableRange': '1e12,  1e16,  10', 'includeCollision': True, 'writefile': True, 'filename': 'ROSAA_modal_CD_He', 'currentLocation': 'Z:\\Students\\Aravindh\\Measurements\\CO+', 'deexcitation': True, 'collisional_rates': {'q_10': 0, 'q_20': 0, 'q_21': 0}, 'main_parameters': {'molecule': 'CD', 'tagging partner': 'He', 'freq': '453_521_850_000', 'trap_area': '5e-5', 'Energy': '0,  15.127861,  45.373851'}, 'simulation_parameters': {'totalIonCounts': 1000, 'Simulation time(ms)': 600, 'Total steps': 1000, 'numberOfLevel (J levels)': 3}, 'einstein_coefficient': {'SpontaneousEmission': '6.24e-4'}, 'power_broadening': {'cp': '4.9e7', 'dipoleMoment(D)': 0, 'power(W)': '2e-5'}, 'doppler_lineshape': {'IonMass(amu)': 14, 'IonTemperature(K)': 12}, 'rate_coefficients': {'branching-ratio': 0.5, 'a': 0.5, 'He density(cm3)': '2e14', 'k3': '9.6e-31,  2.9e-30', 'kCID': '6.7e-16,  1.9e-15'}}
+
+
+Closed
+pyEventClosed dispatched
+args={'trapTemp': 5.7, 'variable': 'time', 'variableRange': '1e12,  1e16,  10', 'includeCollision': True, 'writefile': True, 'filename': 'ROSAA_modal_CD_He', 'currentLocation': 'Z:\\Students\\Aravindh\\Measurements\\CO+', 'deexcitation': True, 'collisional_rates': {'q_10': 0, 'q_20': 0, 'q_21': 0}, 'main_parameters': {'molecule': 'CD', 'tagging partner': 'He', 'freq': '453_521_850_000', 'trap_area': '5e-5', 'Energy': '0,  15.127861,  45.373851'}, 'simulation_parameters': {'totalIonCounts': 1000, 'Simulation time(ms)': 600, 'Total steps': 1000, 'numberOfLevel (J levels)': 3}, 'einstein_coefficient': {'SpontaneousEmission': '6.24e-4'}, 'power_broadening': {'cp': '4.9e7', 'dipoleMoment(D)': 0, 'power(W)': '2e-5'}, 'doppler_lineshape': {'IonMass(amu)': 14, 'IonTemperature(K)': 12}, 'rate_coefficients': {'branching-ratio': 0.5, 'a': 0.5, 'He density(cm3)': '2e14', 'k3': '9.6e-31,  2.9e-30', 'kCID': '6.7e-16,  1.9e-15'}}
+
+
+######## TERMINATED ########
+Python path checking 
+
+Python 3.8.1
+Sending general arguments: 
+pyEvent dispatched
+
+Output from python: args={'trapTemp': 5.7, 'variable': 'time', 'variableRange': '1e12,  1e16,  10', 'includeCollision': True, 'writefile': True, 'filename': 'ROSAA_modal_CD_He', 'currentLocation': 'Z:\\Students\\Aravindh\\Measurements\\CO+', 'deexcitation': True, 'collisional_rates': {'q_10': 0, 'q_20': 0, 'q_21': 0}, 'main_parameters': {'molecule': 'CD', 'tagging partner': 'He', 'freq': '453_521_850_000', 'trap_area': '5e-5', 'Energy': '0,  15.127861,  45.373851'}, 'simulation_parameters': {'totalIonCounts': 1000, 'Simulation time(ms)': 600, 'Total steps': 1000, 'numberOfLevel (J levels)': 3}, 'einstein_coefficient': {'SpontaneousEmission': '6.24e-4'}, 'power_broadening': {'cp': '4.9e7', 'dipoleMoment(D)': 0, 'power(W)': '2e-5'}, 'doppler_lineshape': {'IonMass(amu)': 14, 'IonTemperature(K)': 12}, 'rate_coefficients': {'branching-ratio': 0.5, 'a': 0.5, 'He density(cm3)': '2e14', 'k3': '9.6e-31,  2.9e-30', 'kCID': '6.7e-16,  1.9e-15'}}
+
+pyEventData dispatched
+args={'trapTemp': 5.7, 'variable': 'time', 'variableRange': '1e12,  1e16,  10', 'includeCollision': True, 'writefile': True, 'filename': 'ROSAA_modal_CD_He', 'currentLocation': 'Z:\\Students\\Aravindh\\Measurements\\CO+', 'deexcitation': True, 'collisional_rates': {'q_10': 0, 'q_20': 0, 'q_21': 0}, 'main_parameters': {'molecule': 'CD', 'tagging partner': 'He', 'freq': '453_521_850_000', 'trap_area': '5e-5', 'Energy': '0,  15.127861,  45.373851'}, 'simulation_parameters': {'totalIonCounts': 1000, 'Simulation time(ms)': 600, 'Total steps': 1000, 'numberOfLevel (J levels)': 3}, 'einstein_coefficient': {'SpontaneousEmission': '6.24e-4'}, 'power_broadening': {'cp': '4.9e7', 'dipoleMoment(D)': 0, 'power(W)': '2e-5'}, 'doppler_lineshape': {'IonMass(amu)': 14, 'IonTemperature(K)': 12}, 'rate_coefficients': {'branching-ratio': 0.5, 'a': 0.5, 'He density(cm3)': '2e14', 'k3': '9.6e-31,  2.9e-30', 'kCID': '6.7e-16,  1.9e-15'}}
+
+
+Closed
+pyEventClosed dispatched
+args={'trapTemp': 5.7, 'variable': 'time', 'variableRange': '1e12,  1e16,  10', 'includeCollision': True, 'writefile': True, 'filename': 'ROSAA_modal_CD_He', 'currentLocation': 'Z:\\Students\\Aravindh\\Measurements\\CO+', 'deexcitation': True, 'collisional_rates': {'q_10': 0, 'q_20': 0, 'q_21': 0}, 'main_parameters': {'molecule': 'CD', 'tagging partner': 'He', 'freq': '453_521_850_000', 'trap_area': '5e-5', 'Energy': '0,  15.127861,  45.373851'}, 'simulation_parameters': {'totalIonCounts': 1000, 'Simulation time(ms)': 600, 'Total steps': 1000, 'numberOfLevel (J levels)': 3}, 'einstein_coefficient': {'SpontaneousEmission': '6.24e-4'}, 'power_broadening': {'cp': '4.9e7', 'dipoleMoment(D)': 0, 'power(W)': '2e-5'}, 'doppler_lineshape': {'IonMass(amu)': 14, 'IonTemperature(K)': 12}, 'rate_coefficients': {'branching-ratio': 0.5, 'a': 0.5, 'He density(cm3)': '2e14', 'k3': '9.6e-31,  2.9e-30', 'kCID': '6.7e-16,  1.9e-15'}}
+
+
+######## TERMINATED ########
+Python path checking 
+
+Python 3.8.1
+Sending general arguments: 
+pyEvent dispatched
+
+Output from python: args={'trapTemp': 5.7, 'variable': 'time', 'variableRange': '1e12,  1e16,  10', 'includeCollision': True, 'writefile': True, 'filename': 'ROSAA_modal_CD_He', 'currentLocation': 'Z:\\Students\\Aravindh\\Measurements\\CO+', 'deexcitation': True, 'collisional_rates': {'q_10': 0, 'q_20': 0, 'q_21': 0}, 'main_parameters': {'molecule': 'CD', 'tagging partner': 'He', 'freq': '453_521_850_000', 'trap_area': '5e-5', 'Energy': '0,  15.127861,  45.373851'}, 'simulation_parameters': {'totalIonCounts': 1000, 'Simulation time(ms)': 600, 'Total steps': 1000, 'numberOfLevel (J levels)': 3}, 'einstein_coefficient': {'SpontaneousEmission': '6.24e-4'}, 'power_broadening': {'cp': '4.9e7', 'dipoleMoment(D)': 0, 'power(W)': '2e-5'}, 'doppler_lineshape': {'IonMass(amu)': 14, 'IonTemperature(K)': 12}, 'rate_coefficients': {'branching-ratio': 0.5, 'a': 0.5, 'He density(cm3)': '2e14', 'k3': '9.6e-31,  2.9e-30', 'kCID': '6.7e-16,  1.9e-15'}}
+
+pyEventData dispatched
+args={'trapTemp': 5.7, 'variable': 'time', 'variableRange': '1e12,  1e16,  10', 'includeCollision': True, 'writefile': True, 'filename': 'ROSAA_modal_CD_He', 'currentLocation': 'Z:\\Students\\Aravindh\\Measurements\\CO+', 'deexcitation': True, 'collisional_rates': {'q_10': 0, 'q_20': 0, 'q_21': 0}, 'main_parameters': {'molecule': 'CD', 'tagging partner': 'He', 'freq': '453_521_850_000', 'trap_area': '5e-5', 'Energy': '0,  15.127861,  45.373851'}, 'simulation_parameters': {'totalIonCounts': 1000, 'Simulation time(ms)': 600, 'Total steps': 1000, 'numberOfLevel (J levels)': 3}, 'einstein_coefficient': {'SpontaneousEmission': '6.24e-4'}, 'power_broadening': {'cp': '4.9e7', 'dipoleMoment(D)': 0, 'power(W)': '2e-5'}, 'doppler_lineshape': {'IonMass(amu)': 14, 'IonTemperature(K)': 12}, 'rate_coefficients': {'branching-ratio': 0.5, 'a': 0.5, 'He density(cm3)': '2e14', 'k3': '9.6e-31,  2.9e-30', 'kCID': '6.7e-16,  1.9e-15'}}
+
+
+Closed
+pyEventClosed dispatched
+args={'trapTemp': 5.7, 'variable': 'time', 'variableRange': '1e12,  1e16,  10', 'includeCollision': True, 'writefile': True, 'filename': 'ROSAA_modal_CD_He', 'currentLocation': 'Z:\\Students\\Aravindh\\Measurements\\CO+', 'deexcitation': True, 'collisional_rates': {'q_10': 0, 'q_20': 0, 'q_21': 0}, 'main_parameters': {'molecule': 'CD', 'tagging partner': 'He', 'freq': '453_521_850_000', 'trap_area': '5e-5', 'Energy': '0,  15.127861,  45.373851'}, 'simulation_parameters': {'totalIonCounts': 1000, 'Simulation time(ms)': 600, 'Total steps': 1000, 'numberOfLevel (J levels)': 3}, 'einstein_coefficient': {'SpontaneousEmission': '6.24e-4'}, 'power_broadening': {'cp': '4.9e7', 'dipoleMoment(D)': 0, 'power(W)': '2e-5'}, 'doppler_lineshape': {'IonMass(amu)': 14, 'IonTemperature(K)': 12}, 'rate_coefficients': {'branching-ratio': 0.5, 'a': 0.5, 'He density(cm3)': '2e14', 'k3': '9.6e-31,  2.9e-30', 'kCID': '6.7e-16,  1.9e-15'}}
+
+
+######## TERMINATED ########
+Python path checking 
+
+Python 3.8.1
+Sending general arguments: 
+pyEvent dispatched
+
+Output from python: args={'trapTemp': 5.7, 'variable': 'time', 'variableRange': '1e12,  1e16,  10', 'includeCollision': True, 'writefile': True, 'filename': 'ROSAA_modal_CD_He', 'currentLocation': 'Z:\\Students\\Aravindh\\Measurements\\CO+', 'deexcitation': True, 'collisional_rates': {'q_10': 0, 'q_20': 0, 'q_21': 0}, 'main_parameters': {'molecule': 'CD', 'tagging partner': 'He', 'freq': '453_521_850_000', 'trap_area': '5e-5', 'Energy': '0,  15.127861,  45.373851'}, 'simulation_parameters': {'totalIonCounts': 1000, 'Simulation time(ms)': 600, 'Total steps': 1000, 'numberOfLevel (J levels)': 3}, 'einstein_coefficient': {'SpontaneousEmission': '6.24e-4'}, 'power_broadening': {'cp': '4.9e7', 'dipoleMoment(D)': 0, 'power(W)': '2e-5'}, 'doppler_lineshape': {'IonMass(amu)': 14, 'IonTemperature(K)': 12}, 'rate_coefficients': {'branching-ratio': 0.5, 'a': 0.5, 'He density(cm3)': '2e14', 'k3': '9.6e-31,  2.9e-30', 'kCID': '6.7e-16,  1.9e-15'}}
+
+pyEventData dispatched
+args={'trapTemp': 5.7, 'variable': 'time', 'variableRange': '1e12,  1e16,  10', 'includeCollision': True, 'writefile': True, 'filename': 'ROSAA_modal_CD_He', 'currentLocation': 'Z:\\Students\\Aravindh\\Measurements\\CO+', 'deexcitation': True, 'collisional_rates': {'q_10': 0, 'q_20': 0, 'q_21': 0}, 'main_parameters': {'molecule': 'CD', 'tagging partner': 'He', 'freq': '453_521_850_000', 'trap_area': '5e-5', 'Energy': '0,  15.127861,  45.373851'}, 'simulation_parameters': {'totalIonCounts': 1000, 'Simulation time(ms)': 600, 'Total steps': 1000, 'numberOfLevel (J levels)': 3}, 'einstein_coefficient': {'SpontaneousEmission': '6.24e-4'}, 'power_broadening': {'cp': '4.9e7', 'dipoleMoment(D)': 0, 'power(W)': '2e-5'}, 'doppler_lineshape': {'IonMass(amu)': 14, 'IonTemperature(K)': 12}, 'rate_coefficients': {'branching-ratio': 0.5, 'a': 0.5, 'He density(cm3)': '2e14', 'k3': '9.6e-31,  2.9e-30', 'kCID': '6.7e-16,  1.9e-15'}}
+
+
+Closed
+pyEventClosed dispatched
+args={'trapTemp': 5.7, 'variable': 'time', 'variableRange': '1e12,  1e16,  10', 'includeCollision': True, 'writefile': True, 'filename': 'ROSAA_modal_CD_He', 'currentLocation': 'Z:\\Students\\Aravindh\\Measurements\\CO+', 'deexcitation': True, 'collisional_rates': {'q_10': 0, 'q_20': 0, 'q_21': 0}, 'main_parameters': {'molecule': 'CD', 'tagging partner': 'He', 'freq': '453_521_850_000', 'trap_area': '5e-5', 'Energy': '0,  15.127861,  45.373851'}, 'simulation_parameters': {'totalIonCounts': 1000, 'Simulation time(ms)': 600, 'Total steps': 1000, 'numberOfLevel (J levels)': 3}, 'einstein_coefficient': {'SpontaneousEmission': '6.24e-4'}, 'power_broadening': {'cp': '4.9e7', 'dipoleMoment(D)': 0, 'power(W)': '2e-5'}, 'doppler_lineshape': {'IonMass(amu)': 14, 'IonTemperature(K)': 12}, 'rate_coefficients': {'branching-ratio': 0.5, 'a': 0.5, 'He density(cm3)': '2e14', 'k3': '9.6e-31,  2.9e-30', 'kCID': '6.7e-16,  1.9e-15'}}
+
+
+######## TERMINATED ########
+pyEvent is not available
+pyEvent is not available
+Python path checking 
+
+Python 3.8.1
+Sending general arguments: 
+pyEvent dispatched
+
+Output from python: args={'trapTemp': 5.7, 'variable': 'time', 'variableRange': '1e12,  1e16,  10', 'includeCollision': True, 'writefile': True, 'filename': 'ROSAA_modal_CD_He', 'currentLocation': 'Z:\\Students\\Aravindh\\Measurements\\CO+', 'deexcitation': True, 'collisional_rates': {'q_10': 0, 'q_20': 0, 'q_21': 0}, 'main_parameters': {'molecule': 'CD', 'tagging partner': 'He', 'freq': '453_521_850_000', 'trap_area': '5e-5', 'Energy': '0,  15.127861,  45.373851'}, 'simulation_parameters': {'totalIonCounts': 1000, 'Simulation time(ms)': 600, 'Total steps': 1000, 'numberOfLevel (J levels)': 3}, 'einstein_coefficient': {'SpontaneousEmission': '6.24e-4'}, 'power_broadening': {'cp': '4.9e7', 'dipoleMoment(D)': 0, 'power(W)': '2e-5'}, 'doppler_lineshape': {'IonMass(amu)': 14, 'IonTemperature(K)': 12}, 'rate_coefficients': {'branching-ratio': 0.5, 'a': 0.5, 'He density(cm3)': '2e14', 'k3': '9.6e-31,  2.9e-30', 'kCID': '6.7e-16,  1.9e-15'}}
+
+pyEventData dispatched
+args={'trapTemp': 5.7, 'variable': 'time', 'variableRange': '1e12,  1e16,  10', 'includeCollision': True, 'writefile': True, 'filename': 'ROSAA_modal_CD_He', 'currentLocation': 'Z:\\Students\\Aravindh\\Measurements\\CO+', 'deexcitation': True, 'collisional_rates': {'q_10': 0, 'q_20': 0, 'q_21': 0}, 'main_parameters': {'molecule': 'CD', 'tagging partner': 'He', 'freq': '453_521_850_000', 'trap_area': '5e-5', 'Energy': '0,  15.127861,  45.373851'}, 'simulation_parameters': {'totalIonCounts': 1000, 'Simulation time(ms)': 600, 'Total steps': 1000, 'numberOfLevel (J levels)': 3}, 'einstein_coefficient': {'SpontaneousEmission': '6.24e-4'}, 'power_broadening': {'cp': '4.9e7', 'dipoleMoment(D)': 0, 'power(W)': '2e-5'}, 'doppler_lineshape': {'IonMass(amu)': 14, 'IonTemperature(K)': 12}, 'rate_coefficients': {'branching-ratio': 0.5, 'a': 0.5, 'He density(cm3)': '2e14', 'k3': '9.6e-31,  2.9e-30', 'kCID': '6.7e-16,  1.9e-15'}}
+
+
+Closed
+pyEventClosed dispatched
+args={'trapTemp': 5.7, 'variable': 'time', 'variableRange': '1e12,  1e16,  10', 'includeCollision': True, 'writefile': True, 'filename': 'ROSAA_modal_CD_He', 'currentLocation': 'Z:\\Students\\Aravindh\\Measurements\\CO+', 'deexcitation': True, 'collisional_rates': {'q_10': 0, 'q_20': 0, 'q_21': 0}, 'main_parameters': {'molecule': 'CD', 'tagging partner': 'He', 'freq': '453_521_850_000', 'trap_area': '5e-5', 'Energy': '0,  15.127861,  45.373851'}, 'simulation_parameters': {'totalIonCounts': 1000, 'Simulation time(ms)': 600, 'Total steps': 1000, 'numberOfLevel (J levels)': 3}, 'einstein_coefficient': {'SpontaneousEmission': '6.24e-4'}, 'power_broadening': {'cp': '4.9e7', 'dipoleMoment(D)': 0, 'power(W)': '2e-5'}, 'doppler_lineshape': {'IonMass(amu)': 14, 'IonTemperature(K)': 12}, 'rate_coefficients': {'branching-ratio': 0.5, 'a': 0.5, 'He density(cm3)': '2e14', 'k3': '9.6e-31,  2.9e-30', 'kCID': '6.7e-16,  1.9e-15'}}
+
+
+######## TERMINATED ########
+pyEvent is not available
+pyEvent is not available
+[
+  [ { label: 'q_10', value: 0, id: 'cgi9kv42f9g' } ],
+  [
+    { label: 'q_20', value: 0, id: 'j6rle3l0l0g' },
+    { label: 'q_21', value: 0, id: 'cea1ef0f95' }
+  ]
+]

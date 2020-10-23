@@ -60742,37 +60742,37 @@ function create_else_block$b(ctx) {
 
 			attr_dev(button, "class", "button is-link svelte-176j530");
 			attr_dev(button, "id", "thz_modal_filebrowser_btn");
-			add_location(button, file$1e, 208, 16, 6468);
+			add_location(button, file$1e, 208, 16, 6527);
 			attr_dev(div0, "class", "locationColumn svelte-176j530");
-			add_location(div0, file$1e, 207, 12, 6422);
+			add_location(div0, file$1e, 207, 12, 6481);
 			attr_dev(div1, "class", "writefileCheck svelte-176j530");
-			add_location(div1, file$1e, 214, 12, 6763);
+			add_location(div1, file$1e, 214, 12, 6822);
 			attr_dev(div2, "class", "writefileCheck svelte-176j530");
-			add_location(div2, file$1e, 218, 12, 6907);
+			add_location(div2, file$1e, 218, 12, 6966);
 			attr_dev(div3, "class", "subtitle svelte-176j530");
-			add_location(div3, file$1e, 223, 12, 7067);
+			add_location(div3, file$1e, 223, 12, 7126);
 			attr_dev(div4, "class", "variableColumn svelte-176j530");
-			add_location(div4, file$1e, 224, 12, 7157);
+			add_location(div4, file$1e, 224, 12, 7216);
 			attr_dev(div5, "class", "subtitle svelte-176j530");
-			add_location(div5, file$1e, 231, 12, 7401);
+			add_location(div5, file$1e, 231, 12, 7460);
 			attr_dev(div6, "class", "subtitle svelte-176j530");
-			add_location(div6, file$1e, 238, 12, 7604);
+			add_location(div6, file$1e, 238, 12, 7663);
 			attr_dev(div7, "class", "subtitle svelte-176j530");
-			add_location(div7, file$1e, 243, 12, 7815);
+			add_location(div7, file$1e, 243, 12, 7874);
 			attr_dev(div8, "class", "subtitle svelte-176j530");
-			add_location(div8, file$1e, 248, 12, 8018);
+			add_location(div8, file$1e, 248, 12, 8077);
 			attr_dev(div9, "class", "subtitle svelte-176j530");
-			add_location(div9, file$1e, 254, 16, 8281);
+			add_location(div9, file$1e, 254, 16, 8340);
 			attr_dev(div10, "class", "rates__mainContainer svelte-176j530");
-			add_location(div10, file$1e, 255, 16, 8349);
+			add_location(div10, file$1e, 255, 16, 8408);
 			attr_dev(div11, "class", "rates__div einsteinRate__div svelte-176j530");
-			add_location(div11, file$1e, 253, 12, 8221);
+			add_location(div11, file$1e, 253, 12, 8280);
 			attr_dev(div12, "class", "subtitle svelte-176j530");
-			add_location(div12, file$1e, 286, 16, 9664);
+			add_location(div12, file$1e, 286, 16, 9723);
 			attr_dev(div13, "class", "rates__mainContainer svelte-176j530");
-			add_location(div13, file$1e, 287, 16, 9762);
+			add_location(div13, file$1e, 287, 16, 9821);
 			attr_dev(div14, "class", "rates__div attachmentDissociationRate__div svelte-176j530");
-			add_location(div14, file$1e, 285, 12, 9590);
+			add_location(div14, file$1e, 285, 12, 9649);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -61156,7 +61156,7 @@ function create_if_block$w(ctx) {
 			t = text(/*statusReport*/ ctx[11]);
 			attr_dev(div, "class", "content");
 			set_style(div, "white-space", "pre-wrap");
-			add_location(div, file$1e, 204, 12, 6317);
+			add_location(div, file$1e, 204, 12, 6376);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -61624,11 +61624,11 @@ function create_if_block_1$a(ctx) {
 			}
 
 			attr_dev(div0, "class", "subtitle svelte-176j530");
-			add_location(div0, file$1e, 267, 20, 8737);
+			add_location(div0, file$1e, 267, 20, 8796);
 			attr_dev(div1, "class", "rates__mainContainer svelte-176j530");
-			add_location(div1, file$1e, 269, 20, 8947);
+			add_location(div1, file$1e, 269, 20, 9006);
 			attr_dev(div2, "class", "rates__div collisionalRate__div svelte-176j530");
-			add_location(div2, file$1e, 265, 16, 8668);
+			add_location(div2, file$1e, 265, 16, 8727);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div2, anchor);
@@ -61825,7 +61825,7 @@ function create_each_block_1$5(ctx) {
 
 			t = space();
 			attr_dev(div, "class", "");
-			add_location(div, file$1e, 272, 28, 9183);
+			add_location(div, file$1e, 272, 28, 9242);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -61978,7 +61978,7 @@ function create_content_slot$6(ctx) {
 			if_block.c();
 			attr_dev(div, "class", "ROSAA__modal svelte-176j530");
 			attr_dev(div, "slot", "content");
-			add_location(div, file$1e, 201, 4, 6232);
+			add_location(div, file$1e, 201, 4, 6291);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -62060,15 +62060,15 @@ function create_footerbtn_slot$4(ctx) {
 			button2 = element("button");
 			button2.textContent = "Submit";
 			attr_dev(button0, "class", "button is-danger");
-			add_location(button0, file$1e, 299, 8, 10083);
+			add_location(button0, file$1e, 299, 8, 10142);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$1e, 301, 8, 10227);
+			add_location(button1, file$1e, 301, 8, 10286);
 			attr_dev(button2, "class", "button is-link");
 			toggle_class(button2, "is-loading", /*running*/ ctx[10]);
-			add_location(button2, file$1e, 302, 8, 10340);
+			add_location(button2, file$1e, 302, 8, 10399);
 			attr_dev(div, "class", "align");
 			attr_dev(div, "slot", "footerbtn");
-			add_location(div, file$1e, 297, 4, 10035);
+			add_location(div, file$1e, 297, 4, 10094);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -62279,6 +62279,11 @@ function instance$1l($$self, $$props, $$invalidate) {
 		{
 			label: "numberOfLevel (J levels)",
 			value: 3,
+			id: window.getID()
+		},
+		{
+			label: "excitedLevel",
+			value: 1,
 			id: window.getID()
 		}
 	];
