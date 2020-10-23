@@ -29,8 +29,8 @@
         {label:"Simulation time(ms)", value:600, id:window.getID()},
         {label:"Total steps", value:1000, id:window.getID()},
         {label:"numberOfLevel (J levels)", value:3, id:window.getID()},
+        {label:"excitedLevel", value:1, id:window.getID()},
     ]
-
     let dopplerLineshape = [
         
         {label:"IonMass(amu)", value:14, id:window.getID()},
