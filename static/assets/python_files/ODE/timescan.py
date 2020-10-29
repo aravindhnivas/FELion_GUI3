@@ -74,10 +74,9 @@ class timescanplot:
     def get_data(self): return self.time, self.mean, self.error, self.mass, self.t_res, self.t_b0
     def get_fullmass(self): return self.m
 
-
 def var_find(fname, location, time=False):
 
-    if not fname is '':
+    if fname != '':
         
         os.chdir(location)
         if not time:
