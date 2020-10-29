@@ -302,9 +302,9 @@ def save_fig():
             except: showerror("Error", traceback.format_exc(5))
 
 def export_file(fname, freq, inten):
-        if not pt("./OUT").exists(): os.mkdir("./OUT")
+        if not pt("./EXPORT").exists(): os.mkdir("./EXPORT")
 
-        with open(f"./OUT/{fname}.dat", 'w+') as f:
+        with open(f"./EXPORT/{fname}.dat", 'w+') as f:
     
             f.write("#Frequency(GHz)\t#DepletionCounts(%)\n")
             for i in range(len(freq)): f.write(f"{freq[i]}\t{inten[i]}\n")
