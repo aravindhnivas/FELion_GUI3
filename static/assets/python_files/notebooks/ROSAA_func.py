@@ -30,7 +30,7 @@ def voigt(lorrentz, gaussian):
 
 
 def stimulated_emission(spontaneous_emission, freq):
-    return (C**3 / (8*np.pi*Planck*freq**3)) * spontaneous_emission
+    return (C**3 * spontaneous_emission) / (8*np.pi*Planck*freq**3) 
 
 
 def stimulated_absorption(j0, j1, emission): 
