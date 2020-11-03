@@ -45,12 +45,13 @@ def boltzman_distribution(energyLevels, temp=5):
     return Nj
 
 
-def distribution(j0, j1, energy, temp):
+def distribution(j0, j1, energy, temp, q=None):
     KT = k_boltzmann_wavenumber*temp
     N0 = (2*j0+1)
     N1 = (2*j1+1)
     Gj = N1/N0
 
     delE = abs(energy[j0]-energy[j1])
-
+    
+    if q: return q*Gj*np.exp(-delE/KT)
     return Gj*np.exp(-delE/KT)
