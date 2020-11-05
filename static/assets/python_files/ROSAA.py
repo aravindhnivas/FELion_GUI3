@@ -269,6 +269,8 @@ if __name__ == "__main__":
     simulateTime = np.linspace(0, simulation_time, 1000)
     resOffCounts = Noff.sol(simulateTime)
     resOnCounts = Non.sol(simulateTime)
+
+    fig, (ax, ax1) = plt.subplots(ncols=2, figsize=(12, 4), dpi=100)
     
     legends = [f"N{i}" for i in range(totallevel)]
     if includeAttachmentRate:
