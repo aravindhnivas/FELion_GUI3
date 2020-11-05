@@ -211,7 +211,7 @@ if __name__ == "__main__":
     print(f"{kCID1=:.2e}\t{Rate_kCID1=:.2f}", flush=True)
     print(f"{kCID2=:.2e}\t{Rate_kCID2=:.2f}\n", flush=True)
 
-    p = float(rate_coefficients["branching-ratio"], flush=True)
+    p = float(rate_coefficients["branching-ratio"])
     print(f"Branching Ratio: {p}\n")
 
     includeSpontaneousEmission = conditions["includeSpontaneousEmission"]
@@ -219,7 +219,7 @@ if __name__ == "__main__":
     includeAttachmentRate = conditions["includeAttachmentRate"]
     print(f"{includeAttachmentRate=}\n{includeCollision=}\n{includeSpontaneousEmission=}\n", flush=True)
 
-    totallevel = simulation_parameters["numberOfLevel (J levels)"]
+    totallevel = int(conditions["numberOfLevels"])
     print(f"{totallevel=}\n", flush=True)
 
     Energy = [float(_) for _ in main_parameters["Energy"].split(", ")]
@@ -242,59 +242,82 @@ if __name__ == "__main__":
     print(f"{B_10=:.2e}\t{B_01=:.2e}\n", flush=True)
 
     collisional_rates = {q:float(value) for q, value in conditions["collisional_rates"].items()}
-    q_deexcitation_mode = conditions["q_deexcitation_mode"]
+    q_deexcitation_mode = conditions["deexcitation"]
     collisional_rates = getCollisionalRate(collisional_rates)
 
     print(f"Collisional Rates", flush=True)
     for key, value in collisional_rates.items():
         print(f"{key}: {value:.2e}\t{key}*nHe: {value*nHe:.2e}\n", flush=True)
     
-    simulation_time = conditions["Simulation time(ms)"]*1e-3
+    simulation_time = int(simulation_parameters["Simulation time(ms)"])*1e-3
     tspan = [0, simulation_time]
-    N = boltzman_distribution(Energy, trapTemp)[:totallevel]
+    N = boltzman_distribution(Energy, 300)[:totallevel]
     N_He = [0, 0]
+
     boltzman_distribution_source = (N, [*N, 0, 0])[includeAttachmentRate]
-
     print(f"{boltzman_distribution_source=}", flush=True)
+    
 
+    totalSteps = int(simulation_parameters["Total steps"])
+
+    simulateTime = np.linspace(0, simulation_time, totalSteps)
+    simulateTime_ms = simulateTime*1e3
+
+    testMode = False
     print(f"LightOFF", flush=True)
+
     lightON=False
     Noff = solve_ivp(computeRateDistributionEquations, tspan, boltzman_distribution_source, dense_output=True)
-
-
-    print(f"LightON", flush=True)
-    lightON=True
-    Non = solve_ivp(computeRateDistributionEquations, tspan, boltzman_distribution_source, dense_output=True)
     
-    simulateTime = np.linspace(0, simulation_time, 1000)
     resOffCounts = Noff.sol(simulateTime)
-    resOnCounts = Non.sol(simulateTime)
+    print(f"boltzman population after trapping (Res OFF): {resOffCounts.T[-1]}", flush=True)
 
-    fig, (ax, ax1) = plt.subplots(ncols=2, figsize=(12, 4), dpi=100)
-    
-    legends = [f"N{i}" for i in range(totallevel)]
-    if includeAttachmentRate:
-        legends.append("NHe")
-        legends.append("NHe2")
-
-    simulateTime_ms = simulateTime*1e3
-    counter = 0
-    for on, off in zip(resOnCounts, resOffCounts):
-        ax.plot(simulateTime_ms, on, f"-C{counter}", label=legends[counter])
-        ax.plot(simulateTime_ms, off, f"--C{counter}")
-        counter += 1
+    if includeAttachmentRate and includeSpontaneousEmission:
+        print(f"LightON", flush=True)
+        lightON=True
+        Non = solve_ivp(computeRateDistributionEquations, tspan, boltzman_distribution_source, dense_output=True)
         
-    ax.plot(simulateTime_ms, resOnCounts.sum(axis=0), "k")
+        resOnCounts = Non.sol(simulateTime)
 
-    ax.legend(title=f"-ON, --OFF")
-    ax.set(yscale="log", ylabel="Counts", xlabel="Time(ms)")
-    ax.minorticks_on()
+        fig, (ax, ax1) = plt.subplots(ncols=2, figsize=(12, 4), dpi=100)
+        
+        legends = [f"N{i}" for i in range(totallevel)]
+        if includeAttachmentRate:
+            legends.append("NHe")
+            legends.append("NHe2")
 
-    signal = (1 - (resOnCounts[-2][1:] / resOffCounts[-2][1:]))*100
-    ax1.plot(simulateTime_ms[1:], signal)
-    ax1.legend([f"Max. Signal = {signal.max():.2f} at {(simulateTime_ms[1:][signal.argmax()]):.2f}ms"])
-    ax1.minorticks_on()
-    ax1.set(title="Signal as a function of trap time", xlabel="Time (ms)", ylabel="Signal (%)")
-    plt.tight_layout()
+        
+        counter = 0
+        for on, off in zip(resOnCounts, resOffCounts):
+            ax.plot(simulateTime_ms, on, f"-C{counter}", label=legends[counter])
+            ax.plot(simulateTime_ms, off, f"--C{counter}")
+            counter += 1
+            
+        ax.plot(simulateTime_ms, resOnCounts.sum(axis=0), "k")
 
-    print(f"Signal: {(1 - (resOnCounts[-2][-1] / resOffCounts[-2][-1]))*100:.2f}%", flush=True)
+        ax.legend(title=f"-ON, --OFF")
+        ax.set(yscale="log", ylabel="Counts", xlabel="Time(ms)")
+        ax.minorticks_on()
+
+        signal = (1 - (resOnCounts[-2][1:] / resOffCounts[-2][1:]))*100
+        ax1.plot(simulateTime_ms[1:], signal)
+        ax1.legend([f"Max. Signal = {signal.max():.2f} at {(simulateTime_ms[1:][signal.argmax()]):.2f}ms"])
+        ax1.minorticks_on()
+        ax1.set(title="Signal as a function of trap time", xlabel="Time (ms)", ylabel="Signal (%)")
+        plt.tight_layout()
+        plt.show()
+        print(f"Signal: {(1 - (resOnCounts[-2][-1] / resOffCounts[-2][-1]))*100:.2f}%", flush=True)
+    
+    else:
+        fig, ax = plt.subplots(figsize=(7, 5), dpi=100)
+        
+        legends = [f"N{i}" for i in range(totallevel)]
+        
+        ax.plot(simulateTime_ms.T, resOffCounts.T)
+        ax.plot(simulateTime_ms, resOffCounts.sum(axis=0), "k")
+
+        ax.legend([""], title=f"Collisional Cooling")
+        ax.set(ylabel="Counts", xlabel="Time(ms)")
+        ax.minorticks_on()
+        plt.tight_layout()
+        plt.show()

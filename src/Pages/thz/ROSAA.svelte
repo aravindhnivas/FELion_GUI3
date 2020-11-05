@@ -28,7 +28,6 @@
         
         {label:"Simulation time(ms)", value:600, id:window.getID()},
         {label:"Total steps", value:1000, id:window.getID()},
-        {label:"numberOfLevel (J levels)", value:3, id:window.getID()},
         {label:"excitedTo", value:1, id:window.getID()},
         {label:"excitedFrom", value:0, id:window.getID()},
     ]
@@ -70,7 +69,9 @@
     $: deexcitation = collisionalRateType==="deexcitation";
     let totalJLevel = 3
 
-    $: collisionalCoefficient = _.range(1, _.nth(simulationParameters, -1).value)
+    let numberOfLevels = 3;
+
+    $: collisionalCoefficient = _.range(1, numberOfLevels)
                                     .map(j=> _.range(j)
                                         .map(jj=> deexcitation ? {label:`q_${j}${jj}`, value:0, id:window.getID()} : {label:`q_${jj}${j}`, value:0, id:window.getID()})
                                     )
@@ -124,23 +125,21 @@
         const einstein_coefficient = {}
         einsteinCoefficient.forEach(f=>einstein_coefficient[f.label]=f.value)
 
+
         const rate_coefficients = {}
         rateCoefficients.forEach(f=>rate_coefficients[f.label]=f.value)
         
-        const conditions = { trapTemp, variable, variableRange, includeCollision, includeAttachmentRate, includeSpontaneousEmission, writefile, filename, currentLocation, deexcitation, 
-            collisional_rates, main_parameters, simulation_parameters, einstein_coefficient, power_broadening, lineshape_conditions, rate_coefficients
-        }
+        const conditions = { trapTemp, variable, variableRange, numberOfLevels, includeCollision, includeAttachmentRate, includeSpontaneousEmission, writefile, filename, currentLocation,  deexcitation, collisional_rates, main_parameters, simulation_parameters, einstein_coefficient, power_broadening, lineshape_conditions, rate_coefficients }
         dispatch('submit', { e, conditions })
 
-        running=true
-    
 
+        running=true
 
     }
 
+
     const style="width:12em; margin-bottom:1em;"
     let currentLocation = localStorage["thz_modal_location"] || localStorage["thz_location"] || ""
-    
     let filename = `ROSAA_modal_${mainParameters[0].value}_${mainParameters[1].value}`
 
     function browse_folder() {
@@ -150,14 +149,11 @@
 
         })
     
-    
-    
     }
 
-
     let writefile = true, includeCollision = true, includeSpontaneousEmission = true, includeAttachmentRate = true;
-    let variable = "time", variableRange = "1e12, 1e16, 10";
 
+    let variable = "time", variableRange = "1e12, 1e16, 10";
     const variablesList = ["time", "He density(cm3)", "Power(W)"]
 
 </script>
@@ -182,9 +178,8 @@
 
     .writefileCheck {
         border: solid 1px white;
-        
+        display: grid;
         padding: 0.3em;
-        width: 11em;
         margin: 1em;
         border-radius: 20px;
         float: right;
@@ -226,8 +221,9 @@
             grid-gap: 1em;
         
         }
-    
     }
+
+    .hide {display: none}
 
 </style>
 
@@ -237,7 +233,7 @@
     <div class="ROSAA__modal" slot="content">
 
         {#if reportToggle}
-            <div class="content" style="white-space: pre-wrap;">{statusReport}</div>
+            <div class="content" style="white-space: pre-wrap; user">{statusReport}</div>
         {:else}
 
             <div class="locationColumn">
@@ -277,6 +273,8 @@
             {#each simulationParameters as {label, value, id}(id)}
                 <Textfield {style} bind:value {label}/>
             {/each}
+
+            <Textfield {style} bind:value={numberOfLevels} label="numberOfLevel (J levels)"/>
 
             <div class="subtitle">Doppler lineshape</div>
             {#each dopplerLineshape as {label, value, id}(id)}
