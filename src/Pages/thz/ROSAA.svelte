@@ -29,8 +29,10 @@
         {label:"Simulation time(ms)", value:600, id:window.getID()},
         {label:"Total steps", value:1000, id:window.getID()},
         {label:"numberOfLevel (J levels)", value:3, id:window.getID()},
-        {label:"excitedLevel", value:1, id:window.getID()},
+        {label:"excitedTo", value:1, id:window.getID()},
+        {label:"excitedFrom", value:0, id:window.getID()},
     ]
+
     let dopplerLineshape = [
         
         {label:"IonMass(amu)", value:14, id:window.getID()},
@@ -47,7 +49,9 @@
         {label:"power(W)", value:"2e-5", id:window.getID()},
     ]
 
-    let einsteinCoefficient = [ {label:"SpontaneousEmission", value:"6.24e-4", id:window.getID()}]
+    let einsteinCoefficient = [ 
+        {label:"A_10", value:"6.24e-4", id:window.getID()}
+    ]
 
     let trapTemp = 5.7
     
@@ -57,6 +61,7 @@
         {label:"He density(cm3)", value:"2e14", id:window.getID()},
 
         {label:"k3", value:"9.6e-31, 2.9e-30", id:window.getID()},
+        
         {label:"kCID", value:"6.7e-16, 1.9e-15", id:window.getID()},
     ]
 
@@ -110,7 +115,7 @@
         const simulation_parameters = {}
         simulationParameters.forEach(f=>simulation_parameters[f.label]=f.value)
 
-        const doppler_lineshape = {}
+        const lineshape_conditions = {}
         dopplerLineshape.forEach(f=>doppler_lineshape[f.label]=f.value)
 
         const power_broadening = {}
@@ -122,7 +127,7 @@
         const rate_coefficients = {}
         rateCoefficients.forEach(f=>rate_coefficients[f.label]=f.value)
         
-        const conditions = { trapTemp, variable, variableRange, includeCollision, writefile, filename, currentLocation, deexcitation, 
+        const conditions = { trapTemp, variable, variableRange, includeCollision, includeAttachmentRate, includeSpontaneousEmission, writefile, filename, currentLocation, deexcitation, 
             collisional_rates, main_parameters, simulation_parameters, einstein_coefficient, power_broadening, doppler_lineshape, rate_coefficients
         }
         dispatch('submit', { e, conditions })
@@ -149,7 +154,8 @@
     
     }
 
-    let writefile = true, includeCollision = true;
+
+    let writefile = true, includeCollision = true, includeSpontaneousEmission = true, includeAttachmentRate = true;
     let variable = "time", variableRange = "1e12, 1e16, 10";
 
     const variablesList = ["time", "He density(cm3)", "Power(W)"]
@@ -247,6 +253,8 @@
 
             <div class="writefileCheck">
                 <CustomCheckbox bind:selected={includeCollision} label="includeCollision" />
+                <CustomCheckbox bind:selected={includeAttachmentRate} label="includeAttachmentRate" />
+                <CustomCheckbox bind:selected={includeSpontaneousEmission} label="includeSpontaneousEmission" />
             </div>
 
 
