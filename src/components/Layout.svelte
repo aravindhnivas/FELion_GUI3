@@ -67,7 +67,7 @@
 
     function tour_event() { dispatch('tour', {filetype}) }
 
-    let ContainerHeight, buttonContainerHeight;
+    let ContainerHeight, buttonContainerHeight, mounted=false;
 
     onMount(()=>{ toggleBrowser = true; mounted=true;})
 

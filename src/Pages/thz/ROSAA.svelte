@@ -128,7 +128,7 @@
         rateCoefficients.forEach(f=>rate_coefficients[f.label]=f.value)
         
         const conditions = { trapTemp, variable, variableRange, includeCollision, includeAttachmentRate, includeSpontaneousEmission, writefile, filename, currentLocation, deexcitation, 
-            collisional_rates, main_parameters, simulation_parameters, einstein_coefficient, power_broadening, doppler_lineshape, rate_coefficients
+            collisional_rates, main_parameters, simulation_parameters, einstein_coefficient, power_broadening, lineshape_conditions, rate_coefficients
         }
         dispatch('submit', { e, conditions })
 
