@@ -116,7 +116,7 @@
         simulationParameters.forEach(f=>simulation_parameters[f.label]=f.value)
 
         const lineshape_conditions = {}
-        dopplerLineshape.forEach(f=>doppler_lineshape[f.label]=f.value)
+        dopplerLineshape.forEach(f=>lineshape_conditions[f.label]=f.value)
 
         const power_broadening = {}
         powerBroadening.forEach(f=>power_broadening[f.label]=f.value)
