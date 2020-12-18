@@ -30,6 +30,7 @@
         if(filename && location){
             fileContents = fs.readFileSync(path.join(location, filename)).toString()
 
+            let line;
             for (line of fileContents.split("\n")) {
 
                 if(line.trim().length > 0 && line.startsWith("# Sect01 Ion Source")) {
