@@ -2,7 +2,7 @@
 
 ---
 
-## Unreleased
+## 3.1.0
 
 - ROSAA simulation modal added.
 - Individual page components are subdivided into smaller components for easier mangement and debugging.
