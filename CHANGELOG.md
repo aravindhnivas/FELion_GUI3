@@ -1,7 +1,9 @@
 # What's new
 
 ---
+## v3.1.1
 
+- Bug fix: Masspec
 ## 3.1.0
 
 - ROSAA simulation modal added.
