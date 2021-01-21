@@ -53,7 +53,7 @@
         if (!fs.existsSync(reportDir)) {
             fs.mkdir(reportDir, { recursive: true }, (err) => {
 
-                if (err) throw err;
+                if (err) return window.createToast("No write access for making report", "danger");
                 console.log("reports directory created")
             });
         }

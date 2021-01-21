@@ -80,8 +80,9 @@
             
             case "baseline":
                 
-                if($opoMode && opofiles.length<1) { return window.createToast("No OPO files selected", "danger") }
-                else if(felixfiles.length<1) { return window.createToast("No FELIX files selected", "danger") }
+                if($opoMode) { 
+                    if (opofiles.length<1) return window.createToast("No OPO files selected", "danger")
+                } else if(felixfiles.length<1) { return window.createToast("No FELIX files selected", "danger") }
 
                 pyfile="baseline.py", args= $opoMode ? opofiles: felixfiles
                 computePy_func({e, pyfile, args, general:true, openShell})

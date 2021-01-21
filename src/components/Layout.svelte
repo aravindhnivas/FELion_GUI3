@@ -55,7 +55,7 @@
 
     ////////////////////////////////////////////////////////////////////////////
 
-    export let id, fileChecked=[], filetype = "felix", toggleBrowser = false, preModal = {};
+    export let id, fileChecked=[], filetype = "felix", toggleBrowser = false, preModal = {}, fullfileslist = [];
     export let currentLocation = localStorage[`${filetype}_location`] || "";
     const dispatch = createEventDispatcher()
 
@@ -77,6 +77,7 @@
         plotContainer.style.height = `calc(${ContainerHeight}px - ${buttonContainerHeight}px - 11em)`
     
     });
+
 </script>
 
 <style lang="scss">
@@ -162,12 +163,11 @@
 
 
 <section {id} style="display:none" class="animated fadeIn">
-
     <div class="columns">
 
         {#if toggleBrowser}
             <div class="column is-one-fifth-widescreen is-one-quarter-desktop box filebrowser adjust-right" transition:fly="{{ x: -100, duration: 500 }}">
-                <FileBrowser bind:currentLocation {filetype} bind:fileChecked on:chdir/>
+                <FileBrowser bind:currentLocation {filetype} bind:fileChecked on:chdir bind:fullfileslist/>
             </div>
         {/if}
 

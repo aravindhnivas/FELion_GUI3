@@ -1,12 +1,19 @@
 # What's new
 
+## UNRELEASED
+- Feature updates:
+    - GetLabviewSettings updated
+- Bug fixed: 
+    - OPO create baseline doesn't work unless felix files are selected.
+    - GetLabviewSetings bqlenses label order were reversed.
 ---
+
 ## v3.1.1
-
 - Bug fix: Masspec
+- 
 ---
 
-## 3.1.0
+## v3.1.0
 
 - ROSAA simulation modal added.
 - Individual page components are subdivided into smaller components for easier mangement and debugging.

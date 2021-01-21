@@ -17,7 +17,7 @@
     const filetype = "mass", id = "Masspec"
     let fileChecked = [];
     let currentLocation = localStorage[`${filetype}_location`] || ""
-    $: massfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
+    $: massfiles = fs.existsSync(currentLocation) ? fileChecked.map(file=>path.resolve(currentLocation, file)) : []
     
     // $: if(currentLocation !== "") {OPOcalibFiles = fs.readdirSync(OPOLocation).filter(file=> file.endsWith(".calibOPO"))}
 
@@ -52,8 +52,11 @@
     // Functions
     function plotData({e=null, filetype="mass"}={}){
 
-        if (fileChecked.length === 0) {return window.createToast("No files selected", "danger")}
+        if (!fs.existsSync(currentLocation)) {return window.createToast("Location not defined", "danger")}
+        if (fileChecked.length<1) {return window.createToast("No files selected", "danger")}
         if (filetype === "find_peaks") {if (selected_file === "") return window.createToast("No files selected", "danger")}
+
+        // console.log("Running")
 
         let pyfileInfo = {
             mass: {pyfile:"mass.py" , args:[...massfiles, "run"]},
@@ -106,33 +109,36 @@
     let includePlotsInReport = [{id:"mplot", include:true, label:"Mass Spectrum"}]
 
     let preModal = {}, openSettings = false;
+    let fullfileslist = [];
+
 </script>
 
+
 <style>
+
     .masspec_buttonContainer {min-height: 5em;}
     .button {margin-right: 0.5em;}
     .buttonRow {margin-bottom: 1em!important; align-items: center;}
     * :global(.mdc-select__native-control option) {color: black}
     .active {display: flex!important;}
     .hide {display: none;}
+
 </style>
 
-<GetLabviewSettings location={currentLocation} filename={fileChecked[0]} bind:active={openSettings}/>
-<Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked >
+<Layout bind:preModal {filetype} bind:fullfileslist {id} bind:currentLocation bind:fileChecked >
     <div class="masspec_buttonContainer" slot="buttonContainer">
 
         <div class="content align buttonRow">
             <button class="button is-link" on:click="{(e)=>plotData({e:e})}">Masspec Plot</button>
             <button class="button is-link" on:click="{()=>{toggleRow1 = !toggleRow1}}">Find Peaks</button>
             <button class="button is-link" on:click="{()=>{toggleRow2 = !toggleRow2}}">NIST Webbook</button>
-            <button class="button is-link" on:click="{()=>{openSettings = true}}">GetLabviewSettings</button>
+            <GetLabviewSettings {currentLocation} {fullfileslist}/>
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"general"})}">Open in Matplotlib</button>
             <CustomIconSwitch style="padding:0;" bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
             <CustomSwitch style="margin: 0 1em;" on:change={linearlogCheck} bind:selected={logScale} label="Log"/>
         </div>
 
         <div class="animated fadeIn hide buttonRow" class:active={toggleRow1} >
-        
             <CustomSelect style="width:12em; height:3.5em; margin-right:0.5em" bind:picked={selected_file} label="Filename" options={["", ...fileChecked]}/>
             <Textfield type="number" {style} on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_prominance} label="Prominance" />
             <Textfield type="number" {style} on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_width} label="Width" />
