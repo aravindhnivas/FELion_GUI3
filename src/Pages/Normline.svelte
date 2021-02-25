@@ -27,14 +27,10 @@
     ///////////////////////////////////////////////////////////////////////
 
     const filetype="felix", id="Normline"
-
     let fileChecked=[], toggleBrowser = false;
-    
     let currentLocation = localStorage[`${filetype}_location`] || ""
     $: felixfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
-
     $: console.log(`${filetype} currentlocation: \n${currentLocation}`)
-    
     ///////////////////////////////////////////////////////////////////////
 
     // Theory file
@@ -44,8 +40,6 @@
     ///////////////////////////////////////////////////////////////////////
     let openShell = false;
     $: console.log("Open Shell: ", filetype, openShell)
-
-    // let felix_normMethod = "Relative";
 
     let graphPlotted = false, overwrite_expfit = false, writeFile = false
     $: console.log("Trace length: ", $fittedTraceCount)
@@ -68,29 +62,23 @@
             try {
                 Plotly.react($graphDiv, data, layout, { editable: true })
                 $expfittedLines = $felixPlotAnnotations = $expfittedLinesCollectedData = [], $fittedTraceCount = 0
-
             } catch (err) {
-                
-                
             }
 
         }
-    
     }
 
-    // OPO
-    let OPOLocation = localStorage["opoLocation"] || currentLocation
 
+    // OPO
+
+    let OPOLocation = localStorage["opoLocation"] || currentLocation
     let opofiles = []
 
-    // $: $normMethod = $opoMode ? "Log" : felix_normMethod
     $: $felixopoLocation = $opoMode ? OPOLocation : currentLocation
     
-
     $: $opoMode ? window.createToast("OPO MODE", "warning") : window.createToast("FELIX MODE")
     $: $Ngauss_sigma = $opoMode ? 2 : 5
     let addFileModal=false, addedFileCol="0, 1", addedFile={}, addedFileScale=1, addedfiles = [], extrafileAdded=0
-    
     $: console.log(`Extrafile added: ${extrafileAdded}`)
    
     function removeExtraFile() {
@@ -103,8 +91,8 @@
 
             }
             catch (err) {console.log("The plot is empty")}
+
         }
-        // window.createToast("Files removed", "warning")
     }
 
 
@@ -112,13 +100,14 @@
     
     $: $opoMode ? fullfiles = [...opofiles, ...addedfiles, path.resolve(currentLocation, "averaged.felix")] : fullfiles = [...felixfiles, ...addedfiles, path.resolve(currentLocation, "averaged.felix")]
 
+
     const init_tour = async () => {
+
         if (!toggleBrowser) {toggleBrowser = true; await sleep(600)} // Filebrowser toggling and its animation time to appear
         await tick() // For all the reactive components to render
         init_tour_normline({filetype})
 
     }
-
 
     const includePlotsInReport = [
 
@@ -136,17 +125,17 @@
 
     $: datlocation = path.resolve($felixopoLocation, "../EXPORT")
     
-
-
     $: datfiles = fs.existsSync(datlocation) ? fs.readdirSync(datlocation).filter(f=>f.endsWith(".dat")).map(f=>f={name:f, id:getID()}) : [{name:"", id:getID()}]
     
     
     $: calcfiles = fs.existsSync(theoryLocation) ? fs.readdirSync(theoryLocation).map(f=>f={name:f, id:getID()}) : [{name:"", id:getID()}]
 
+
+
     $: felixPlotCheckboxes = [
+    
             {label:"DAT file", options:datfiles, selected:[], style:"width:100%;", id:getID()},
             {label:"Fundamentals", options:calcfiles, selected:[], style:"width:25%; margin-left:1em;", id:getID()},
-
 
             {label:"Overtones", options:calcfiles, selected:[], style:"width:25%; margin-left:1em;", id:getID()},
             {label:"Combinations", options:calcfiles, selected:[], style:"width:25%; margin-left:1em;", id:getID()},
@@ -155,10 +144,10 @@
     let preModal = {};
 
     $: console.log(`$opoMode: ${$opoMode}`)
-
     onMount(()=>{  console.log("Normline mounted") })
 
     $: console.log(`graphDiv: ${$graphDiv}`)
+
 </script>
 
 
@@ -182,7 +171,6 @@
         <InitFunctionRow {removeExtraFile} {felixPlotCheckboxes} {opofiles} {felixfiles} normMethod={$normMethod} {theoryLocation} bind:preModal bind:graphPlotted bind:show_theoryplot/>
         <OPORow {removeExtraFile} bind:OPOLocation bind:OPOfilesChecked bind:opofiles bind:preModal bind:graphPlotted />
         <TheoryRow bind:theoryLocation bind:show_theoryplot bind:preModal normMethod={$normMethod} {currentLocation}/>
-
         <div style="display:flex;">
         
             <CustomRadio on:change={replot} bind:selected={$normMethod} options={["Log", "Relative", "IntensityPerPhoton"]}/>
@@ -210,31 +198,24 @@
             <div class="animated fadeIn" class:hide={!$opoMode} id="opoRelPlot"></div>
         </div>
     
-    
         {#if graphPlotted}
-    
             <div transition:fade>
-    
                 <!-- Write function buttons -->
                 <WriteFunctionContents on:addfile="{()=>{addFileModal=true}}" on:removefile={removeExtraFile} {output_namelists} bind:writeFileName bind:writeFile bind:overwrite_expfit />
 
                 <!-- Execute function buttons -->
                 <ExecuteFunctionContents {addedFileScale} {addedFileCol} normMethod={$normMethod} {writeFileName} {writeFile} {overwrite_expfit} {fullfiles} bind:preModal />
 
-    
                 <!-- Frequency table list -->
     
                 <FrequencyTable bind:keepTable/>
-
     
                 <!-- Report -->
-    
                 <ReportLayout bind:currentLocation={currentLocation} id={`${filetype}_report`} {includePlotsInReport} {includeTablesInReports} />
     
             </div>
         
         {/if}
+
     </div>
-
-
 </Layout>
