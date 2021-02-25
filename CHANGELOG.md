@@ -2,7 +2,7 @@
 
 ## UNRELEASED
 - Feature updates:
-    - GetLabviewSettings updated'
+    - GetLabviewSettings updated
     - Theory vs Exp. feature udpated
 - Bug fixed: 
     - OPO create baseline doesn't work unless felix files are selected.
