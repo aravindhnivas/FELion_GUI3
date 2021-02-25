@@ -7,7 +7,7 @@
     import Switch from '@smui/switch';
 
     import Textfield from '@smui/textfield';
-    
+    import {tick} from "svelte";
     import {onMount, afterUpdate} from "svelte"
     import CustomIconSwitch from './CustomIconSwitch.svelte';
 
@@ -34,7 +34,9 @@
     $: parentFolder = locationStatus ? path.basename(currentLocation) : "Undefined"
 
     let searchKey = "";
+    
     const searchfile = () => {
+
         console.log(searchKey)
         if (!searchKey) {fullfiles = original_files}
         else {fullfiles = original_files.filter(file=>file.name.includes(searchKey))}
@@ -94,6 +96,19 @@
 
     });
 
+    async function selectRange(event) {
+
+        await tick();
+        if (event.shiftKey && fileChecked.length) {
+            const _from = window._.indexOf(fullfileslist, fileChecked[0])
+            const _to = window._.indexOf(fullfileslist, fileChecked.slice(fileChecked.length-1)[0])
+
+            if (_from < _to) {fileChecked = fullfileslist.slice(_from, _to+1)}
+            else {fileChecked = fullfileslist.slice(_to, _from+1)}
+            
+
+        }
+	}
 </script>
 
 <style>
@@ -104,6 +119,7 @@
     .center {justify-content: center;}
     .browseIcons {cursor: pointer;}
 </style>
+
 
 <PreModal bind:preModal/>
 
@@ -139,9 +155,11 @@
     </div>
 
     {#if files_loaded && locationStatus}
-
         {#if showfiles && fullfiles.length>0 }
-            <VirtualCheckList bind:fileChecked bind:items={fullfiles} on:click="{()=>selectAll=false}"/>
+
+            <div on:click={selectRange}>
+                <VirtualCheckList bind:fileChecked bind:items={fullfiles} on:click="{()=>selectAll=false}" on:select="{(e)=>console.log(e)}"/>
+            </div>
         {:else if fullfiles.length <= 0}
             <div class="mdc-typography--subtitle1 align center">No {filetype} here!</div>        
         {/if}

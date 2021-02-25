@@ -4,6 +4,7 @@
 - Feature updates:
     - GetLabviewSettings updated
     - Theory vs Exp. feature udpated
+    - Select files in file explorer by range (untill) using shift key
 - Bug fixed: 
     - OPO create baseline doesn't work unless felix files are selected.
     - GetLabviewSetings bqlenses label order were reversed.
