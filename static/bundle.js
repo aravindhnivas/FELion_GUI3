@@ -24639,7 +24639,7 @@ function create_else_block$5(ctx) {
 			div = element("div");
 			div.textContent = "...loading";
 			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-cksuwj");
-			add_location(div, file_1, 184, 8, 6514);
+			add_location(div, file_1, 184, 8, 6512);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -24663,7 +24663,7 @@ function create_else_block$5(ctx) {
 	return block;
 }
 
-// (179:30) 
+// (180:30) 
 function create_if_block_3$1(ctx) {
 	let div;
 
@@ -24672,7 +24672,7 @@ function create_if_block_3$1(ctx) {
 			div = element("div");
 			div.textContent = "Location doesn't exist: Browse files again";
 			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-cksuwj");
-			add_location(div, file_1, 180, 8, 6383);
+			add_location(div, file_1, 181, 8, 6383);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -24689,14 +24689,14 @@ function create_if_block_3$1(ctx) {
 		block,
 		id: create_if_block_3$1.name,
 		type: "if",
-		source: "(179:30) ",
+		source: "(180:30) ",
 		ctx
 	});
 
 	return block;
 }
 
-// (157:4) {#if files_loaded && locationStatus}
+// (156:4) {#if files_loaded && locationStatus}
 function create_if_block$a(ctx) {
 	let current_block_type_index;
 	let if_block;
@@ -24709,7 +24709,7 @@ function create_if_block$a(ctx) {
 	const if_blocks = [];
 
 	function select_block_type_1(ctx, dirty) {
-		if (/*showfiles*/ ctx[8] && /*fullfiles*/ ctx[2].length > 0) return 0;
+		if (/*showfiles*/ ctx[8] && /*fullfiles*/ ctx[2].length) return 0;
 		if (/*fullfiles*/ ctx[2].length <= 0) return 1;
 		return -1;
 	}
@@ -24741,7 +24741,7 @@ function create_if_block$a(ctx) {
 
 			attr_dev(div, "class", "otherFolderlist");
 			set_style(div, "cursor", "pointer");
-			add_location(div, file_1, 167, 8, 5900);
+			add_location(div, file_1, 167, 8, 5898);
 		},
 		m: function mount(target, anchor) {
 			if (~current_block_type_index) {
@@ -24839,7 +24839,7 @@ function create_if_block$a(ctx) {
 		block,
 		id: create_if_block$a.name,
 		type: "if",
-		source: "(157:4) {#if files_loaded && locationStatus}",
+		source: "(156:4) {#if files_loaded && locationStatus}",
 		ctx
 	});
 
@@ -24860,7 +24860,7 @@ function create_if_block_2$2(ctx) {
 			t1 = text(/*filetype*/ ctx[1]);
 			t2 = text(" here!");
 			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-cksuwj");
-			add_location(div, file_1, 163, 12, 5778);
+			add_location(div, file_1, 163, 12, 5776);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -24889,7 +24889,7 @@ function create_if_block_2$2(ctx) {
 	return block;
 }
 
-// (158:8) {#if showfiles && fullfiles.length>0 }
+// (158:8) {#if showfiles && fullfiles.length }
 function create_if_block_1$3(ctx) {
 	let div;
 	let virtualchecklist;
@@ -24931,7 +24931,7 @@ function create_if_block_1$3(ctx) {
 		c: function create() {
 			div = element("div");
 			create_component(virtualchecklist.$$.fragment);
-			add_location(div, file_1, 159, 12, 5530);
+			add_location(div, file_1, 159, 12, 5528);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -24981,7 +24981,7 @@ function create_if_block_1$3(ctx) {
 		block,
 		id: create_if_block_1$3.name,
 		type: "if",
-		source: "(158:8) {#if showfiles && fullfiles.length>0 }",
+		source: "(158:8) {#if showfiles && fullfiles.length }",
 		ctx
 	});
 
@@ -25053,9 +25053,9 @@ function create_each_block$2(key_1, ctx) {
 			t1 = text(t1_value);
 			t2 = space();
 			attr_dev(div0, "class", "mdc-typography--subtitle1");
-			add_location(div0, file_1, 172, 20, 6216);
+			add_location(div0, file_1, 172, 20, 6214);
 			attr_dev(div1, "class", "align svelte-cksuwj");
-			add_location(div1, file_1, 169, 16, 6026);
+			add_location(div1, file_1, 169, 16, 6024);
 			this.first = div1;
 		},
 		m: function mount(target, anchor) {
@@ -51855,7 +51855,7 @@ function get_each_context_2$3(ctx, list, i) {
 	return child_ctx;
 }
 
-// (52:4) {#if addextraOption}
+// (58:4) {#if addextraOption}
 function create_if_block_2$5(ctx) {
 	let div;
 	let icon;
@@ -51876,8 +51876,8 @@ function create_if_block_2$5(ctx) {
 		c: function create() {
 			div = element("div");
 			create_component(icon.$$.fragment);
-			attr_dev(div, "class", "icon-holder svelte-1kqr05j");
-			add_location(div, file$15, 52, 8, 1103);
+			attr_dev(div, "class", "icon-holder svelte-1h36zvn");
+			add_location(div, file$15, 58, 8, 1188);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -51912,14 +51912,14 @@ function create_if_block_2$5(ctx) {
 		block,
 		id: create_if_block_2$5.name,
 		type: "if",
-		source: "(52:4) {#if addextraOption}",
+		source: "(58:4) {#if addextraOption}",
 		ctx
 	});
 
 	return block;
 }
 
-// (54:12) <Icon class="material-icons"  on:click="{addRow}">
+// (60:12) <Icon class="material-icons"  on:click="{addRow}">
 function create_default_slot_2$c(ctx) {
 	let t;
 
@@ -51939,14 +51939,14 @@ function create_default_slot_2$c(ctx) {
 		block,
 		id: create_default_slot_2$c.name,
 		type: "slot",
-		source: "(54:12) <Icon class=\\\"material-icons\\\"  on:click=\\\"{addRow}\\\">",
+		source: "(60:12) <Icon class=\\\"material-icons\\\"  on:click=\\\"{addRow}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (75:32) {#if sortOption}
+// (81:32) {#if sortOption}
 function create_if_block_1$9(ctx) {
 	let icon;
 	let current;
@@ -51986,14 +51986,14 @@ function create_if_block_1$9(ctx) {
 		block,
 		id: create_if_block_1$9.name,
 		type: "if",
-		source: "(75:32) {#if sortOption}",
+		source: "(81:32) {#if sortOption}",
 		ctx
 	});
 
 	return block;
 }
 
-// (76:36) <Icon class="material-icons" >
+// (82:36) <Icon class="material-icons" >
 function create_default_slot_1$d(ctx) {
 	let t;
 
@@ -52013,14 +52013,14 @@ function create_default_slot_1$d(ctx) {
 		block,
 		id: create_default_slot_1$d.name,
 		type: "slot",
-		source: "(76:36) <Icon class=\\\"material-icons\\\" >",
+		source: "(82:36) <Icon class=\\\"material-icons\\\" >",
 		ctx
 	});
 
 	return block;
 }
 
-// (70:20) {#each head as item, index }
+// (76:20) {#each head as item, index }
 function create_each_block_2$3(ctx) {
 	let th;
 	let div;
@@ -52045,13 +52045,13 @@ function create_each_block_2$3(ctx) {
 			t0 = space();
 			t1 = text(t1_value);
 			t2 = space();
-			attr_dev(div, "class", "tableIcon svelte-1kqr05j");
-			add_location(div, file$15, 73, 28, 1788);
+			attr_dev(div, "class", "tableIcon svelte-1h36zvn");
+			add_location(div, file$15, 79, 28, 1873);
 			set_style(th, "cursor", "pointer");
-			attr_dev(th, "class", "mdc-data-table__header-cell svelte-1kqr05j");
+			attr_dev(th, "class", "mdc-data-table__header-cell svelte-1h36zvn");
 			attr_dev(th, "role", "columnheader");
 			attr_dev(th, "scope", "col");
-			add_location(th, file$15, 71, 24, 1658);
+			add_location(th, file$15, 77, 24, 1743);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, th, anchor);
@@ -52114,14 +52114,14 @@ function create_each_block_2$3(ctx) {
 		block,
 		id: create_each_block_2$3.name,
 		type: "each",
-		source: "(70:20) {#each head as item, index }",
+		source: "(76:20) {#each head as item, index }",
 		ctx
 	});
 
 	return block;
 }
 
-// (94:24) {#each keyIDSets as {key, id}
+// (100:24) {#each keyIDSets as {key, id}
 function create_each_block_1$3(key_1, ctx) {
 	let td;
 	let t_value = /*row*/ ctx[15][/*key*/ ctx[18]] + "";
@@ -52140,11 +52140,11 @@ function create_each_block_1$3(key_1, ctx) {
 		c: function create() {
 			td = element("td");
 			t = text(t_value);
-			attr_dev(td, "class", "mdc-data-table__cell  mdc-data-table__cell--numeric svelte-1kqr05j");
+			attr_dev(td, "class", "mdc-data-table__cell  mdc-data-table__cell--numeric svelte-1h36zvn");
 			attr_dev(td, "contenteditable", "true");
 			attr_dev(td, "id", td_id_value = "" + (/*row*/ ctx[15].id + "-" + /*key*/ ctx[18]));
 			if (/*row*/ ctx[15][/*key*/ ctx[18]] === void 0) add_render_callback(td_input_handler);
-			add_location(td, file$15, 94, 28, 2654);
+			add_location(td, file$15, 100, 28, 2739);
 			this.first = td;
 		},
 		m: function mount(target, anchor) {
@@ -52183,14 +52183,14 @@ function create_each_block_1$3(key_1, ctx) {
 		block,
 		id: create_each_block_1$3.name,
 		type: "each",
-		source: "(94:24) {#each keyIDSets as {key, id}",
+		source: "(100:24) {#each keyIDSets as {key, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (99:24) {#if closeOption}
+// (105:24) {#if closeOption}
 function create_if_block$o(ctx) {
 	let td;
 	let icon;
@@ -52212,11 +52212,11 @@ function create_if_block$o(ctx) {
 		c: function create() {
 			td = element("td");
 			create_component(icon.$$.fragment);
-			attr_dev(td, "class", "mdc-data-table__cell svelte-1kqr05j");
+			attr_dev(td, "class", "mdc-data-table__cell svelte-1h36zvn");
 			set_style(td, "background", "#f14668");
 			set_style(td, "cursor", "pointer");
 			set_style(td, "width", "2em");
-			add_location(td, file$15, 100, 28, 2914);
+			add_location(td, file$15, 106, 28, 2999);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, td, anchor);
@@ -52252,14 +52252,14 @@ function create_if_block$o(ctx) {
 		block,
 		id: create_if_block$o.name,
 		type: "if",
-		source: "(99:24) {#if closeOption}",
+		source: "(105:24) {#if closeOption}",
 		ctx
 	});
 
 	return block;
 }
 
-// (102:32) <Icon id="{row.id}" class="material-icons" on:click="{(e)=> {rows = window._.filter(rows, (tb)=>tb.id != e.target.id)}}">
+// (108:32) <Icon id="{row.id}" class="material-icons" on:click="{(e)=> {rows = window._.filter(rows, (tb)=>tb.id != e.target.id)}}">
 function create_default_slot$r(ctx) {
 	let t;
 
@@ -52279,14 +52279,14 @@ function create_default_slot$r(ctx) {
 		block,
 		id: create_default_slot$r.name,
 		type: "slot",
-		source: "(102:32) <Icon id=\\\"{row.id}\\\" class=\\\"material-icons\\\" on:click=\\\"{(e)=> {rows = window._.filter(rows, (tb)=>tb.id != e.target.id)}}\\\">",
+		source: "(108:32) <Icon id=\\\"{row.id}\\\" class=\\\"material-icons\\\" on:click=\\\"{(e)=> {rows = window._.filter(rows, (tb)=>tb.id != e.target.id)}}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (90:16) {#each rows as row, index (row.id)}
+// (96:16) {#each rows as row, index (row.id)}
 function create_each_block$9(key_1, ctx) {
 	let tr;
 	let td;
@@ -52328,12 +52328,12 @@ function create_each_block$9(key_1, ctx) {
 			t2 = space();
 			if (if_block) if_block.c();
 			t3 = space();
-			attr_dev(td, "class", "mdc-data-table__cell svelte-1kqr05j");
+			attr_dev(td, "class", "mdc-data-table__cell svelte-1h36zvn");
 			set_style(td, "width", "2em");
-			add_location(td, file$15, 91, 24, 2495);
-			attr_dev(tr, "class", "mdc-data-table__row svelte-1kqr05j");
+			add_location(td, file$15, 97, 24, 2580);
+			attr_dev(tr, "class", "mdc-data-table__row svelte-1h36zvn");
 			set_style(tr, "background-color", "#fafafa");
-			add_location(tr, file$15, 90, 20, 2384);
+			add_location(tr, file$15, 96, 20, 2469);
 			this.first = tr;
 		},
 		m: function mount(target, anchor) {
@@ -52418,7 +52418,7 @@ function create_each_block$9(key_1, ctx) {
 		block,
 		id: create_each_block$9.name,
 		type: "each",
-		source: "(90:16) {#each rows as row, index (row.id)}",
+		source: "(96:16) {#each rows as row, index (row.id)}",
 		ctx
 	});
 
@@ -52488,25 +52488,25 @@ function create_fragment$1c(ctx) {
 				each_blocks[i].c();
 			}
 
-			attr_dev(th, "class", "mdc-data-table__header-cell svelte-1kqr05j");
+			attr_dev(th, "class", "mdc-data-table__header-cell svelte-1h36zvn");
 			set_style(th, "width", "2em");
 			attr_dev(th, "role", "columnheader");
 			attr_dev(th, "scope", "col");
-			add_location(th, file$15, 66, 20, 1478);
-			attr_dev(tr, "class", "mdc-data-table__header-row svelte-1kqr05j");
-			add_location(tr, file$15, 64, 16, 1415);
-			attr_dev(thead, "class", "svelte-1kqr05j");
-			add_location(thead, file$15, 62, 12, 1388);
-			attr_dev(tbody, "class", "mdc-data-table__content svelte-1kqr05j");
-			add_location(tbody, file$15, 87, 12, 2252);
-			attr_dev(table, "class", "mdc-data-table__table svelte-1kqr05j");
+			add_location(th, file$15, 72, 20, 1563);
+			attr_dev(tr, "class", "mdc-data-table__header-row svelte-1h36zvn");
+			add_location(tr, file$15, 70, 16, 1500);
+			attr_dev(thead, "class", "svelte-1h36zvn");
+			add_location(thead, file$15, 68, 12, 1473);
+			attr_dev(tbody, "class", "mdc-data-table__content svelte-1h36zvn");
+			add_location(tbody, file$15, 93, 12, 2337);
+			attr_dev(table, "class", "mdc-data-table__table svelte-1h36zvn");
 			attr_dev(table, "aria-label", /*label*/ ctx[3]);
 			attr_dev(table, "id", /*id*/ ctx[7]);
-			add_location(table, file$15, 61, 8, 1313);
-			attr_dev(div0, "class", "mdc-data-table tableContainer svelte-1kqr05j");
-			add_location(div0, file$15, 60, 4, 1244);
-			attr_dev(div1, "class", " svelte-1kqr05j");
-			add_location(div1, file$15, 49, 0, 1051);
+			add_location(table, file$15, 67, 8, 1398);
+			attr_dev(div0, "class", "mdc-data-table tableContainer svelte-1h36zvn");
+			add_location(div0, file$15, 66, 4, 1329);
+			attr_dev(div1, "class", " svelte-1h36zvn");
+			add_location(div1, file$15, 55, 0, 1136);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
