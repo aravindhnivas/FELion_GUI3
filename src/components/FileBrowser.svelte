@@ -151,11 +151,11 @@
             <Icon class="material-icons" >keyboard_arrow_right</Icon>
         </IconButton>
         <div class="mdc-typography--subtitle1">{parentFolder}</div>
-
     </div>
 
     {#if files_loaded && locationStatus}
-        {#if showfiles && fullfiles.length>0 }
+
+        {#if showfiles && fullfiles.length }
 
             <div on:click={selectRange}>
                 <VirtualCheckList bind:fileChecked bind:items={fullfiles} on:click="{()=>selectAll=false}" on:select="{(e)=>console.log(e)}"/>
@@ -172,6 +172,7 @@
 
                     <div class="mdc-typography--subtitle1">{folder.name}</div>
                 </div>
+
             {/each}
 
         </div>
@@ -179,10 +180,8 @@
     {:else if !locationStatus}
 
         <div class="mdc-typography--subtitle1 align center">Location doesn't exist: Browse files again</div>
-
     {:else}
     
         <div class="mdc-typography--subtitle1 align center">...loading</div>
-    
     {/if}
 </div>
