@@ -28,6 +28,7 @@ def computeNGaussian(wn, inten, sigma=5):
 
     _args = {}
     N = len(wn)
+    print(N)
     gfn = generateNGaussian(N)
     i = 0
     for x, y in zip(wn, inten):
@@ -86,14 +87,20 @@ def exp_theory(args, output_filename="averaged"):
     for theoryfile in theoryfiles:
 
         x, y = np.genfromtxt(theoryfile).T[:2]
-
-        if onlyExpRange: x = x[x<=xs.max()]
-
         x = x*scale
-        y = y[:len(x)]
+        # start_ind = 0
+        if onlyExpRange: 
+            x = x[x<=xs.max()]
 
+            new_x = x[x>=xs.min()]
+            start_ind, = np.where(x==new_x[0])[0]
+            x = new_x
+        else: start_ind = 0
+        y = y[start_ind:len(x)+start_ind]
         norm_factor = ys.max()/y.max()
         y = norm_factor*y
+        print(start_ind, len(x), len(y))
+
         theory_x, theory_y = computeNGaussian(x, y, sigma)
 
         if tkplot: ax.fill(theory_x, theory_y, label=theoryfile.stem)
