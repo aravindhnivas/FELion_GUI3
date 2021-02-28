@@ -9,6 +9,8 @@
     - OPO create baseline doesn't work unless felix files are selected.
     - GetLabviewSetings bqlenses label order were reversed.
     - Table width auto overflow.
+    - Theory plot with OPO mode.
+    
 ---
 
 ## v3.1.1
