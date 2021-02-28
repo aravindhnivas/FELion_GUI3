@@ -170,14 +170,12 @@
 
         <InitFunctionRow {removeExtraFile} {felixPlotCheckboxes} {opofiles} {felixfiles} normMethod={$normMethod} {theoryLocation} bind:preModal bind:graphPlotted bind:show_theoryplot/>
         <OPORow {removeExtraFile} bind:OPOLocation bind:OPOfilesChecked bind:opofiles bind:preModal bind:graphPlotted />
-        <TheoryRow bind:theoryLocation bind:show_theoryplot bind:preModal normMethod={$normMethod} {currentLocation}/>
+        <TheoryRow bind:theoryLocation bind:show_theoryplot bind:preModal normMethod={$normMethod} />
         <div style="display:flex;">
         
             <CustomRadio on:change={replot} bind:selected={$normMethod} options={["Log", "Relative", "IntensityPerPhoton"]}/>
         </div>
-    
     </div>
-
 
     <div class="plotSlot" slot="plotContainer">
 

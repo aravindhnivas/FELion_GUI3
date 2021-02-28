@@ -88,14 +88,17 @@ def exp_theory(args, output_filename="averaged"):
 
         x, y = np.genfromtxt(theoryfile).T[:2]
         x = x*scale
-        # start_ind = 0
-        if onlyExpRange: 
-            x = x[x<=xs.max()]
 
-            new_x = x[x>=xs.min()]
-            start_ind, = np.where(x==new_x[0])[0]
-            x = new_x
+        if onlyExpRange: 
+            new_x = x[x<=xs.max()]
+
+            new_x = new_x[new_x>=xs.min()]
+            if len(new_x) > 0: 
+                start_ind, = np.where(x==new_x[0])[0]
+                x = new_x
+            else: start_ind = 0
         else: start_ind = 0
+
 
         y = y[start_ind:len(x)+start_ind]
         norm_factor = ys.max()/y.max()

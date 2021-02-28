@@ -1,7 +1,7 @@
 
 <script>
 
-    import {toggleRow} from "../../functions/svelteWritables";
+    import {toggleRow, felixopoLocation} from "../../functions/svelteWritables";
     import Textfield from '@smui/textfield';
     import QuickBrowser from '../../../../components/QuickBrowser.svelte';
     import { fade } from 'svelte/transition';
@@ -9,18 +9,18 @@
     import {theory_func} from '../../functions/theory';
 
     import CustomSwitch from '../../../../components/CustomSwitch.svelte';
-    export let theoryLocation, currentLocation, show_theoryplot, normMethod, preModal;
+    export let theoryLocation, show_theoryplot, normMethod, preModal;
 
     let sigma=7, scale=1, theoryfiles=[], tkplot=false;
     let showTheoryFiles = false, theoryfilesChecked = []
     $: if(fs.existsSync(theoryLocation)) { theoryfiles =theoryfilesChecked.map(file=>path.resolve(theoryLocation, file)) }
 
-    function plotData({e=null}={}){
+    function plotData(e){
         let pyfile="theory.py", args;
         
         if(theoryfiles.length < 1) return window.createToast("No files selected", "danger")
         
-        args={theoryfiles, normMethod, sigma, scale, currentLocation, tkplot, onlyExpRange}
+        args={theoryfiles, normMethod, sigma, scale, currentLocation:$felixopoLocation, tkplot, onlyExpRange}
         args=[JSON.stringify(args)]
         computePy_func({e, pyfile, args})
         .then((dataFromPython)=>{
@@ -33,7 +33,7 @@
     let onlyExpRange = true;
 </script>
 
-<QuickBrowser title="Theory files" bind:active={showTheoryFiles} bind:currentLocation={theoryLocation} bind:fileChecked={theoryfilesChecked} on:submit="{(e)=>{plotData({e:e.detail.event}); localStorage["theoryLocation"] = theoryLocation}}"/>
+<QuickBrowser title="Theory files" bind:active={showTheoryFiles} bind:currentLocation={theoryLocation} bind:fileChecked={theoryfilesChecked} on:submit="{(e)=>{plotData(e.detail.event); localStorage["theoryLocation"] = theoryLocation}}"/>
 
 {#if $toggleRow}
     <div class="align" transition:fade>
@@ -47,6 +47,6 @@
         <CustomSwitch style="margin: 0 1em;" bind:selected={onlyExpRange} label="Only Exp. Range"/>
         <CustomSwitch style="margin: 0 1em;" bind:selected={tkplot} label="Matplotlib"/>
         
-        <button class="button is-link" on:click="{(e)=>plotData({e:e})}">Replot</button>
+        <button class="button is-link" on:click="{plotData}">Replot</button>
     </div>
 {/if}

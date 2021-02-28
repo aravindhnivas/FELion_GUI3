@@ -9519,8 +9519,8 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
 
         let target;
         if (!general) {
-            target = e.target;
-            target.classList.toggle("is-loading");
+            target = e?.target;
+            target?.classList.toggle("is-loading");
 
         }
 
@@ -9541,7 +9541,7 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                     
                     
                         const pyEvent = new CustomEvent('pyEvent', { bubbles: false, detail: { py, pyfile } });
-                        e.target.dispatchEvent(pyEvent);
+                        e?.target.dispatchEvent(pyEvent);
                         console.log("pyEvent dispatched");
                     }
 
@@ -9553,7 +9553,7 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
 
                         if(e) {
                             const pyEventClosed = new CustomEvent('pyEventClosed', { bubbles: false, detail: { py, pyfile } });
-                            e.target.dispatchEvent(pyEventClosed);
+                            e?.target.dispatchEvent(pyEventClosed);
                             console.log("pyEventClosed dispatched");
                         }
                      });
@@ -9565,7 +9565,7 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                         if(e) {
                     
                             const pyEventData = new CustomEvent('pyEventData', { bubbles: false, detail: { py, pyfile, dataReceived } });
-                            e.target.dispatchEvent(pyEventData);
+                            e?.target.dispatchEvent(pyEventData);
                          
                             console.log("pyEventData dispatched");
     
@@ -9585,7 +9585,7 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                     if(e) {
                     
                         const pyEvent = new CustomEvent('pyEvent', { bubbles: false, detail: { py, pyfile } });
-                        e.target.dispatchEvent(pyEvent);
+                        e?.target.dispatchEvent(pyEvent);
                         console.log("pyEvent dispatched");
 
                     }
@@ -9600,7 +9600,7 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                         if(e) {
                     
                             const pyEventData = new CustomEvent('pyEventData', { bubbles: false, detail: { py, pyfile, dataReceived } });
-                            e.target.dispatchEvent(pyEventData);
+                            e?.target.dispatchEvent(pyEventData);
                          
                             console.log("pyEventData dispatched");
     
@@ -9628,7 +9628,7 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
 
                         if(e) {
                             const pyEventClosed = new CustomEvent('pyEventClosed', { bubbles: false, detail: { py, pyfile } });
-                            e.target.dispatchEvent(pyEventClosed);
+                            e?.target.dispatchEvent(pyEventClosed);
                         
                             console.log("pyEventClosed dispatched");
                         }
@@ -51210,7 +51210,7 @@ function create_if_block$n(ctx) {
 	let dispose;
 
 	function textfield0_value_binding(value) {
-		/*textfield0_value_binding*/ ctx[18].call(null, value);
+		/*textfield0_value_binding*/ ctx[17].call(null, value);
 	}
 
 	let textfield0_props = {
@@ -51228,7 +51228,7 @@ function create_if_block$n(ctx) {
 	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
 
 	function textfield1_value_binding(value) {
-		/*textfield1_value_binding*/ ctx[19].call(null, value);
+		/*textfield1_value_binding*/ ctx[18].call(null, value);
 	}
 
 	let textfield1_props = {
@@ -51246,7 +51246,7 @@ function create_if_block$n(ctx) {
 	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding));
 
 	function customswitch0_selected_binding(value) {
-		/*customswitch0_selected_binding*/ ctx[20].call(null, value);
+		/*customswitch0_selected_binding*/ ctx[19].call(null, value);
 	}
 
 	let customswitch0_props = {
@@ -51266,7 +51266,7 @@ function create_if_block$n(ctx) {
 	binding_callbacks.push(() => bind(customswitch0, "selected", customswitch0_selected_binding));
 
 	function customswitch1_selected_binding(value) {
-		/*customswitch1_selected_binding*/ ctx[21].call(null, value);
+		/*customswitch1_selected_binding*/ ctx[20].call(null, value);
 	}
 
 	let customswitch1_props = {
@@ -51302,11 +51302,11 @@ function create_if_block$n(ctx) {
 			button1 = element("button");
 			button1.textContent = "Replot";
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$14, 40, 8, 1735);
+			add_location(button0, file$14, 40, 8, 1740);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$14, 49, 8, 2300);
+			add_location(button1, file$14, 49, 8, 2305);
 			attr_dev(div, "class", "align");
-			add_location(div, file$14, 38, 4, 1688);
+			add_location(div, file$14, 38, 4, 1693);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -51325,8 +51325,8 @@ function create_if_block$n(ctx) {
 
 			if (!mounted) {
 				dispose = [
-					listen_dev(button0, "click", /*click_handler*/ ctx[17], false, false, false),
-					listen_dev(button1, "click", /*click_handler_1*/ ctx[22], false, false, false)
+					listen_dev(button0, "click", /*click_handler*/ ctx[16], false, false, false),
+					listen_dev(button1, "click", /*plotData*/ ctx[8], false, false, false)
 				];
 
 				mounted = true;
@@ -51426,15 +51426,15 @@ function create_fragment$1b(ctx) {
 	let current;
 
 	function quickbrowser_active_binding(value) {
-		/*quickbrowser_active_binding*/ ctx[13].call(null, value);
+		/*quickbrowser_active_binding*/ ctx[12].call(null, value);
 	}
 
 	function quickbrowser_currentLocation_binding(value) {
-		/*quickbrowser_currentLocation_binding*/ ctx[14].call(null, value);
+		/*quickbrowser_currentLocation_binding*/ ctx[13].call(null, value);
 	}
 
 	function quickbrowser_fileChecked_binding(value) {
-		/*quickbrowser_fileChecked_binding*/ ctx[15].call(null, value);
+		/*quickbrowser_fileChecked_binding*/ ctx[14].call(null, value);
 	}
 
 	let quickbrowser_props = { title: "Theory files" };
@@ -51459,7 +51459,7 @@ function create_fragment$1b(ctx) {
 	binding_callbacks.push(() => bind(quickbrowser, "active", quickbrowser_active_binding));
 	binding_callbacks.push(() => bind(quickbrowser, "currentLocation", quickbrowser_currentLocation_binding));
 	binding_callbacks.push(() => bind(quickbrowser, "fileChecked", quickbrowser_fileChecked_binding));
-	quickbrowser.$on("submit", /*submit_handler*/ ctx[16]);
+	quickbrowser.$on("submit", /*submit_handler*/ ctx[15]);
 	let if_block = /*$toggleRow*/ ctx[7] && create_if_block$n(ctx);
 
 	const block = {
@@ -51556,14 +51556,16 @@ function create_fragment$1b(ctx) {
 }
 
 function instance$1b($$self, $$props, $$invalidate) {
+	let $felixopoLocation;
 	let $toggleRow;
+	validate_store(felixopoLocation, "felixopoLocation");
+	component_subscribe($$self, felixopoLocation, $$value => $$invalidate(22, $felixopoLocation = $$value));
 	validate_store(toggleRow, "toggleRow");
 	component_subscribe($$self, toggleRow, $$value => $$invalidate(7, $toggleRow = $$value));
 	let { $$slots: slots = {}, $$scope } = $$props;
 	validate_slots("TheoryRow", slots, []);
 
 	let { theoryLocation } = $$props,
-		{ currentLocation } = $$props,
 		{ show_theoryplot } = $$props,
 		{ normMethod } = $$props,
 		{ preModal } = $$props;
@@ -51571,7 +51573,7 @@ function instance$1b($$self, $$props, $$invalidate) {
 	let sigma = 7, scale = 1, theoryfiles = [], tkplot = false;
 	let showTheoryFiles = false, theoryfilesChecked = [];
 
-	function plotData({ e = null } = {}) {
+	function plotData(e) {
 		let pyfile = "theory.py", args;
 		if (theoryfiles.length < 1) return window.createToast("No files selected", "danger");
 
@@ -51580,7 +51582,7 @@ function instance$1b($$self, $$props, $$invalidate) {
 			normMethod,
 			sigma,
 			scale,
-			currentLocation,
+			currentLocation: $felixopoLocation,
 			tkplot,
 			onlyExpRange
 		};
@@ -51598,14 +51600,7 @@ function instance$1b($$self, $$props, $$invalidate) {
 	}
 
 	let onlyExpRange = true;
-
-	const writable_props = [
-		"theoryLocation",
-		"currentLocation",
-		"show_theoryplot",
-		"normMethod",
-		"preModal"
-	];
+	const writable_props = ["theoryLocation", "show_theoryplot", "normMethod", "preModal"];
 
 	Object.keys($$props).forEach(key => {
 		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<TheoryRow> was created with unknown prop '${key}'`);
@@ -51627,7 +51622,7 @@ function instance$1b($$self, $$props, $$invalidate) {
 	}
 
 	const submit_handler = e => {
-		plotData({ e: e.detail.event });
+		plotData(e.detail.event);
 		localStorage["theoryLocation"] = theoryLocation;
 	};
 
@@ -51655,25 +51650,22 @@ function instance$1b($$self, $$props, $$invalidate) {
 		$$invalidate(4, tkplot);
 	}
 
-	const click_handler_1 = e => plotData({ e });
-
 	$$self.$$set = $$props => {
 		if ("theoryLocation" in $$props) $$invalidate(0, theoryLocation = $$props.theoryLocation);
-		if ("currentLocation" in $$props) $$invalidate(11, currentLocation = $$props.currentLocation);
 		if ("show_theoryplot" in $$props) $$invalidate(9, show_theoryplot = $$props.show_theoryplot);
-		if ("normMethod" in $$props) $$invalidate(12, normMethod = $$props.normMethod);
+		if ("normMethod" in $$props) $$invalidate(11, normMethod = $$props.normMethod);
 		if ("preModal" in $$props) $$invalidate(10, preModal = $$props.preModal);
 	};
 
 	$$self.$capture_state = () => ({
 		toggleRow,
+		felixopoLocation,
 		Textfield,
 		QuickBrowser,
 		fade,
 		theory_func,
 		CustomSwitch,
 		theoryLocation,
-		currentLocation,
 		show_theoryplot,
 		normMethod,
 		preModal,
@@ -51685,14 +51677,14 @@ function instance$1b($$self, $$props, $$invalidate) {
 		theoryfilesChecked,
 		plotData,
 		onlyExpRange,
+		$felixopoLocation,
 		$toggleRow
 	});
 
 	$$self.$inject_state = $$props => {
 		if ("theoryLocation" in $$props) $$invalidate(0, theoryLocation = $$props.theoryLocation);
-		if ("currentLocation" in $$props) $$invalidate(11, currentLocation = $$props.currentLocation);
 		if ("show_theoryplot" in $$props) $$invalidate(9, show_theoryplot = $$props.show_theoryplot);
-		if ("normMethod" in $$props) $$invalidate(12, normMethod = $$props.normMethod);
+		if ("normMethod" in $$props) $$invalidate(11, normMethod = $$props.normMethod);
 		if ("preModal" in $$props) $$invalidate(10, preModal = $$props.preModal);
 		if ("sigma" in $$props) $$invalidate(2, sigma = $$props.sigma);
 		if ("scale" in $$props) $$invalidate(3, scale = $$props.scale);
@@ -51727,7 +51719,6 @@ function instance$1b($$self, $$props, $$invalidate) {
 		plotData,
 		show_theoryplot,
 		preModal,
-		currentLocation,
 		normMethod,
 		quickbrowser_active_binding,
 		quickbrowser_currentLocation_binding,
@@ -51737,8 +51728,7 @@ function instance$1b($$self, $$props, $$invalidate) {
 		textfield0_value_binding,
 		textfield1_value_binding,
 		customswitch0_selected_binding,
-		customswitch1_selected_binding,
-		click_handler_1
+		customswitch1_selected_binding
 	];
 }
 
@@ -51748,9 +51738,8 @@ class TheoryRow extends SvelteComponentDev {
 
 		init(this, options, instance$1b, create_fragment$1b, safe_not_equal, {
 			theoryLocation: 0,
-			currentLocation: 11,
 			show_theoryplot: 9,
-			normMethod: 12,
+			normMethod: 11,
 			preModal: 10
 		});
 
@@ -51768,15 +51757,11 @@ class TheoryRow extends SvelteComponentDev {
 			console.warn("<TheoryRow> was created without expected prop 'theoryLocation'");
 		}
 
-		if (/*currentLocation*/ ctx[11] === undefined && !("currentLocation" in props)) {
-			console.warn("<TheoryRow> was created without expected prop 'currentLocation'");
-		}
-
 		if (/*show_theoryplot*/ ctx[9] === undefined && !("show_theoryplot" in props)) {
 			console.warn("<TheoryRow> was created without expected prop 'show_theoryplot'");
 		}
 
-		if (/*normMethod*/ ctx[12] === undefined && !("normMethod" in props)) {
+		if (/*normMethod*/ ctx[11] === undefined && !("normMethod" in props)) {
 			console.warn("<TheoryRow> was created without expected prop 'normMethod'");
 		}
 
@@ -51790,14 +51775,6 @@ class TheoryRow extends SvelteComponentDev {
 	}
 
 	set theoryLocation(value) {
-		throw new Error("<TheoryRow>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	get currentLocation() {
-		throw new Error("<TheoryRow>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	set currentLocation(value) {
 		throw new Error("<TheoryRow>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 
@@ -55616,10 +55593,7 @@ function create_buttonContainer_slot(ctx) {
 		/*theoryrow_preModal_binding*/ ctx[55].call(null, value);
 	}
 
-	let theoryrow_props = {
-		normMethod: /*$normMethod*/ ctx[25],
-		currentLocation: /*currentLocation*/ ctx[1]
-	};
+	let theoryrow_props = { normMethod: /*$normMethod*/ ctx[25] };
 
 	if (/*theoryLocation*/ ctx[2] !== void 0) {
 		theoryrow_props.theoryLocation = /*theoryLocation*/ ctx[2];
@@ -55666,7 +55640,7 @@ function create_buttonContainer_slot(ctx) {
 			div1 = element("div");
 			create_component(customradio.$$.fragment);
 			set_style(div1, "display", "flex");
-			add_location(div1, file$1a, 173, 8, 7214);
+			add_location(div1, file$1a, 173, 8, 7197);
 			attr_dev(div0, "class", "buttonSlot");
 			attr_dev(div0, "slot", "buttonContainer");
 			add_location(div0, file$1a, 168, 4, 6726);
@@ -55745,7 +55719,6 @@ function create_buttonContainer_slot(ctx) {
 			oporow.$set(oporow_changes);
 			const theoryrow_changes = {};
 			if (dirty[0] & /*$normMethod*/ 33554432) theoryrow_changes.normMethod = /*$normMethod*/ ctx[25];
-			if (dirty[0] & /*currentLocation*/ 2) theoryrow_changes.currentLocation = /*currentLocation*/ ctx[1];
 
 			if (!updating_theoryLocation && dirty[0] & /*theoryLocation*/ 4) {
 				updating_theoryLocation = true;
@@ -55811,7 +55784,7 @@ function create_buttonContainer_slot(ctx) {
 	return block;
 }
 
-// (201:8) {#if graphPlotted}
+// (199:8) {#if graphPlotted}
 function create_if_block$s(ctx) {
 	let div;
 	let writefunctioncontents;
@@ -55943,7 +55916,7 @@ function create_if_block$s(ctx) {
 			t2 = space();
 			create_component(reportlayout.$$.fragment);
 			attr_dev(div, "class", "svelte-1soq9o5");
-			add_location(div, file$1a, 201, 12, 8203);
+			add_location(div, file$1a, 199, 12, 8178);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -56051,14 +56024,14 @@ function create_if_block$s(ctx) {
 		block,
 		id: create_if_block$s.name,
 		type: "if",
-		source: "(201:8) {#if graphPlotted}",
+		source: "(199:8) {#if graphPlotted}",
 		ctx
 	});
 
 	return block;
 }
 
-// (182:4) <div class="plotSlot" slot="plotContainer">
+// (180:4) <div class="plotSlot" slot="plotContainer">
 function create_plotContainer_slot(ctx) {
 	let div0;
 	let getfileinfotable;
@@ -56114,33 +56087,33 @@ function create_plotContainer_slot(ctx) {
 			attr_dev(div1, "class", "animated fadeIn svelte-1soq9o5");
 			attr_dev(div1, "id", "exp-theory-plot");
 			toggle_class(div1, "hide", !/*show_theoryplot*/ ctx[12]);
-			add_location(div1, file$1a, 189, 12, 7674);
+			add_location(div1, file$1a, 187, 12, 7649);
 			attr_dev(div2, "id", "bplot");
 			attr_dev(div2, "class", "svelte-1soq9o5");
-			add_location(div2, file$1a, 190, 12, 7774);
+			add_location(div2, file$1a, 188, 12, 7749);
 			attr_dev(div3, "id", "saPlot");
 			attr_dev(div3, "class", "svelte-1soq9o5");
-			add_location(div3, file$1a, 191, 12, 7810);
+			add_location(div3, file$1a, 189, 12, 7785);
 			attr_dev(div4, "id", "avgplot");
 			attr_dev(div4, "class", "svelte-1soq9o5");
-			add_location(div4, file$1a, 192, 12, 7847);
+			add_location(div4, file$1a, 190, 12, 7822);
 			attr_dev(div5, "class", "animated fadeIn svelte-1soq9o5");
 			attr_dev(div5, "id", "opoplot");
 			toggle_class(div5, "hide", !/*$opoMode*/ ctx[9]);
-			add_location(div5, file$1a, 194, 12, 7891);
+			add_location(div5, file$1a, 192, 12, 7866);
 			attr_dev(div6, "class", "animated fadeIn svelte-1soq9o5");
 			attr_dev(div6, "id", "opoSA");
 			toggle_class(div6, "hide", !/*$opoMode*/ ctx[9]);
-			add_location(div6, file$1a, 196, 12, 7982);
+			add_location(div6, file$1a, 194, 12, 7957);
 			attr_dev(div7, "class", "animated fadeIn svelte-1soq9o5");
 			attr_dev(div7, "id", "opoRelPlot");
 			toggle_class(div7, "hide", !/*$opoMode*/ ctx[9]);
-			add_location(div7, file$1a, 197, 12, 8065);
+			add_location(div7, file$1a, 195, 12, 8040);
 			attr_dev(div8, "class", "felixPlot svelte-1soq9o5");
-			add_location(div8, file$1a, 188, 8, 7637);
+			add_location(div8, file$1a, 186, 8, 7612);
 			attr_dev(div0, "class", "plotSlot svelte-1soq9o5");
 			attr_dev(div0, "slot", "plotContainer");
-			add_location(div0, file$1a, 181, 4, 7422);
+			add_location(div0, file$1a, 179, 4, 7397);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -56231,7 +56204,7 @@ function create_plotContainer_slot(ctx) {
 		block,
 		id: create_plotContainer_slot.name,
 		type: "slot",
-		source: "(182:4) <div class=\\\"plotSlot\\\" slot=\\\"plotContainer\\\">",
+		source: "(180:4) <div class=\\\"plotSlot\\\" slot=\\\"plotContainer\\\">",
 		ctx
 	});
 
