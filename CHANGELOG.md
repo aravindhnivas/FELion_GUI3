@@ -10,7 +10,8 @@
     - GetLabviewSetings bqlenses label order were reversed.
     - Table width auto overflow.
     - Theory plot with OPO mode.
-    
+
+    - Files refresh button added to FELIX matplotlib modal.    
 ---
 
 ## v3.1.1
