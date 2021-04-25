@@ -72,7 +72,6 @@
 <div >
 
     <div style="display:flex; flex-wrap:wrap;" use:refreshFunction>
-
         <button class="button is-link" on:click={refreshFunction}>Reload</button>
 
         {#key reload}
