@@ -12,7 +12,9 @@ from FELion_constants import colors
 
 
 def addTraceToPlot(args):
-    files = [pt(f) for f in args["files"]]
+    
+    if "files" in args: files = [pt(f) for f in args["files"]]
+    else: raise Exception("No files selected")
     col = np.array(args["col"].split(", "), dtype=int)
 
     scale = float(args["scale"])

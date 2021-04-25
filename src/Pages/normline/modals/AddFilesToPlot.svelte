@@ -17,8 +17,8 @@
 
     function plotData({e=null}={}){
 
+
         let pyfile="addTrace.py" , args;
-        
         if(addedFile.files < 1) return window.createToast("No files selected", "danger")
         addedFile["col"] = addedFileCol, addedFile["N"] = fileChecked.length + extrafileAdded
 
@@ -27,10 +27,10 @@
 
         computePy_func({e, pyfile, args})
         .then((dataFromPython)=>{
-            addFileModal = false
             Plotly.addTraces($graphDiv, dataFromPython)
             extrafileAdded += addedfiles.length
             window.createToast("Graph Plotted", "success")
+            active = false
         }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
 
     }

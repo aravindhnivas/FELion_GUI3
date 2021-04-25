@@ -82,15 +82,16 @@
     $: console.log(`Extrafile added: ${extrafileAdded}`)
    
     function removeExtraFile() {
-        for(let i=0; i<extrafileAdded; i++) {
+
+        for(let i=0; i<extrafileAdded+1; i++) {
 
             try {
 
                 Plotly.deleteTraces($graphDiv, [-1])
-                extrafileAdded = 0, addedfiles = []
-
-            }
-            catch (err) {console.log("The plot is empty")}
+        
+                extrafileAdded--
+                addedfiles = addedfiles.slice(0, addedfiles.length-1)
+            } catch (err) {console.log("The plot is empty")}
 
         }
     }
@@ -154,9 +155,11 @@
         <InitFunctionRow {removeExtraFile} {opofiles} {felixfiles} normMethod={$normMethod} {theoryLocation} bind:preModal bind:graphPlotted bind:show_theoryplot/>
         <OPORow {removeExtraFile} bind:OPOLocation bind:OPOfilesChecked bind:opofiles bind:preModal bind:graphPlotted />
         <TheoryRow bind:theoryLocation bind:show_theoryplot bind:preModal normMethod={$normMethod} />
+
         <div style="display:flex;">
         
             <CustomRadio on:change={replot} bind:selected={$normMethod} options={["Log", "Relative", "IntensityPerPhoton"]}/>
+        
         </div>
     </div>
 
