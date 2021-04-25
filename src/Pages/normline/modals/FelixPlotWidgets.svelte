@@ -130,4 +130,6 @@
         <button class="button is-link" on:click="{()=>{dispatch("addWidget", {type:"boolean"})}}">Add widget</button>
     </div>
 
+
+    
 </div>
