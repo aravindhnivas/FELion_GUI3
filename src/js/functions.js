@@ -42,8 +42,8 @@ window.togglepage = (id) => {
     window.getPageStatus(id) ? targetElement(id).style.display = "none" : targetElement(id).style.display = "block"
 }
 
-const electronVersion = process.versions.electron
-window.showinfo = electronVersion >= "7" ? remote.dialog.showMessageBoxSync : remote.dialog.showMessageBox
+const electronVersion = parseInt(process.versions.electron.split(".")[0])
+window.showinfo = electronVersion >= 7 ? remote.dialog.showMessageBoxSync : remote.dialog.showMessageBox
 
 
 // Checking curernt version

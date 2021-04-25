@@ -14,7 +14,11 @@
                 properties: [type, "multiSelections"],
             }
 
-            if (process.versions.electron >= "7") {
+
+            const version = parseInt(process.versions.electron.split(".")[0])
+
+            
+            if (version >= 7) {
                 remote.dialog.showOpenDialog(mainWindow, options)
                 .then(result => {
                     console.log(result.canceled)
@@ -61,7 +65,16 @@
 
     function browse_folder() {
         browse({dir:true}).then(result=>{
-            if (!result.canceled) { currentLocation= localStorage[`${filetype}_location`] = result.filePaths[0] }
+
+            console.log(result, currentLocation)
+
+
+            if (!result.canceled) { 
+                currentLocation= localStorage[`${filetype}_location`] = result.filePaths[0]
+
+                console.log(result, currentLocation)
+
+             }
         })
     }
 

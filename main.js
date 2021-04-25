@@ -6,7 +6,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1200, height: 700, frame: false,
     webPreferences: {
-      nodeIntegration: true, nativeWindowOpen: true, webviewTag: true, nodeIntegrationInWorker: true, enableRemoteModule: true
+      nodeIntegration: true, contextIsolation: false, nativeWindowOpen: true, webviewTag: true, nodeIntegrationInWorker: true, enableRemoteModule: true
     },
     backgroundColor: "#46307d"
   });

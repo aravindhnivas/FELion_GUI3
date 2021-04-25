@@ -205,7 +205,8 @@
                 let landscape;
                 exportMethod == "landscape" ? landscape = true : landscape = false
                 
-                if (process.versions.electron >= "7") {
+                const version = parseInt(process.versions.electron.split(".")[0])
+                if (version >= 7) {
                     reportWindow.webContents.printToPDF({printBackground: true, landscape:landscape, pageSize:pageSize})
                     .then(data => {
                         fs.writeFile(reportFile.replace(".html", ".pdf"), data, (err) => {
