@@ -40695,9 +40695,9 @@ function create_content_slot$1(ctx) {
 			button = element("button");
 			button.textContent = "Browse";
 			attr_dev(button, "class", "button is-link");
-			add_location(button, file$Q, 47, 12, 1640);
+			add_location(button, file$Q, 47, 12, 1626);
 			attr_dev(div, "slot", "content");
-			add_location(div, file$Q, 44, 8, 1398);
+			add_location(div, file$Q, 44, 8, 1384);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -40776,7 +40776,7 @@ function create_footerbtn_slot(ctx) {
 			button.textContent = "Add";
 			attr_dev(button, "slot", "footerbtn");
 			attr_dev(button, "class", "button is-link");
-			add_location(button, file$Q, 50, 8, 1742);
+			add_location(button, file$Q, 50, 8, 1728);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, button, anchor);
@@ -40905,10 +40905,10 @@ function instance$W($$self, $$props, $$invalidate) {
 		args = [JSON.stringify(addedFile)];
 
 		computePy_func({ e, pyfile, args }).then(dataFromPython => {
-			addFileModal = false;
 			Plotly.addTraces($graphDiv, dataFromPython);
 			$$invalidate(7, extrafileAdded += addedfiles.length);
 			window.createToast("Graph Plotted", "success");
+			$$invalidate(0, active = false);
 		}).catch(err => {
 			$$invalidate(8, preModal.modalContent = err, preModal);
 			$$invalidate(8, preModal.open = true, preModal);
@@ -46127,7 +46127,7 @@ function get_each_context_3$2(ctx, list, i) {
 	return child_ctx;
 }
 
-// (80:12) {#each felixPlotCheckboxes as {label, options, selected, style, id}
+// (79:12) {#each felixPlotCheckboxes as {label, options, selected, style, id}
 function create_each_block_3$2(key_1, ctx) {
 	let div1;
 	let div0;
@@ -46181,10 +46181,10 @@ function create_each_block_3$2(key_1, ctx) {
 			create_component(customchecklist.$$.fragment);
 			t2 = space();
 			attr_dev(div0, "class", "subtitle felix_tkplot_filelist_header svelte-2s0963");
-			add_location(div0, file$Y, 82, 20, 2437);
+			add_location(div0, file$Y, 81, 20, 2435);
 			attr_dev(div1, "style", div1_style_value = "flex-grow:1; " + /*style*/ ctx[27]);
 			attr_dev(div1, "class", "felix_tkplot_filelist_div svelte-2s0963");
-			add_location(div1, file$Y, 81, 16, 2331);
+			add_location(div1, file$Y, 80, 16, 2329);
 			this.first = div1;
 		},
 		m: function mount(target, anchor) {
@@ -46247,14 +46247,14 @@ function create_each_block_3$2(key_1, ctx) {
 		block,
 		id: create_each_block_3$2.name,
 		type: "each",
-		source: "(80:12) {#each felixPlotCheckboxes as {label, options, selected, style, id}",
+		source: "(79:12) {#each felixPlotCheckboxes as {label, options, selected, style, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (98:12) {#each felixPlotWidgets.text as {label, value, id}
+// (97:12) {#each felixPlotWidgets.text as {label, value, id}
 function create_each_block_2$2(key_1, ctx) {
 	let first;
 	let textfield;
@@ -46324,14 +46324,14 @@ function create_each_block_2$2(key_1, ctx) {
 		block,
 		id: create_each_block_2$2.name,
 		type: "each",
-		source: "(98:12) {#each felixPlotWidgets.text as {label, value, id}",
+		source: "(97:12) {#each felixPlotWidgets.text as {label, value, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (113:12) {#each felixPlotWidgets.number as {label, value, step, id}
+// (112:12) {#each felixPlotWidgets.number as {label, value, step, id}
 function create_each_block_1$2(key_1, ctx) {
 	let first;
 	let textfield;
@@ -46402,14 +46402,14 @@ function create_each_block_1$2(key_1, ctx) {
 		block,
 		id: create_each_block_1$2.name,
 		type: "each",
-		source: "(113:12) {#each felixPlotWidgets.number as {label, value, step, id}",
+		source: "(112:12) {#each felixPlotWidgets.number as {label, value, step, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (126:12) {#each felixPlotWidgets.boolean as {label, value, id}
+// (125:12) {#each felixPlotWidgets.boolean as {label, value, id}
 function create_each_block$7(key_1, ctx) {
 	let first;
 	let customcheckbox;
@@ -46481,7 +46481,7 @@ function create_each_block$7(key_1, ctx) {
 		block,
 		id: create_each_block$7.name,
 		type: "each",
-		source: "(126:12) {#each felixPlotWidgets.boolean as {label, value, id}",
+		source: "(125:12) {#each felixPlotWidgets.boolean as {label, value, id}",
 		ctx
 	});
 
@@ -46627,34 +46627,34 @@ function create_fragment$12(ctx) {
 			button3 = element("button");
 			button3.textContent = "Add widget";
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$Y, 75, 8, 2125);
+			add_location(button0, file$Y, 74, 8, 2123);
 			set_style(div0, "display", "flex");
 			set_style(div0, "flex-wrap", "wrap");
 			add_location(div0, file$Y, 73, 4, 2050);
 			attr_dev(h10, "class", "subtitle");
-			add_location(h10, file$Y, 94, 8, 2817);
+			add_location(h10, file$Y, 93, 8, 2815);
 			attr_dev(div1, "class", "widgets");
-			add_location(div1, file$Y, 95, 8, 2865);
+			add_location(div1, file$Y, 94, 8, 2863);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$Y, 104, 8, 3129);
+			add_location(button1, file$Y, 103, 8, 3127);
 			attr_dev(div2, "class", "felix_plotting_div svelte-2s0963");
-			add_location(div2, file$Y, 92, 4, 2773);
+			add_location(div2, file$Y, 91, 4, 2771);
 			attr_dev(h11, "class", "subtitle");
-			add_location(h11, file$Y, 110, 8, 3301);
+			add_location(h11, file$Y, 109, 8, 3299);
 			attr_dev(div3, "class", "widgets");
-			add_location(div3, file$Y, 111, 8, 3351);
+			add_location(div3, file$Y, 110, 8, 3349);
 			attr_dev(button2, "class", "button is-link");
-			add_location(button2, file$Y, 117, 8, 3607);
+			add_location(button2, file$Y, 116, 8, 3605);
 			attr_dev(div4, "class", "felix_plotting_div svelte-2s0963");
-			add_location(div4, file$Y, 108, 4, 3257);
+			add_location(div4, file$Y, 107, 4, 3255);
 			attr_dev(h12, "class", "subtitle");
-			add_location(h12, file$Y, 123, 8, 3785);
+			add_location(h12, file$Y, 122, 8, 3783);
 			attr_dev(div5, "class", "widgets");
-			add_location(div5, file$Y, 124, 8, 3836);
+			add_location(div5, file$Y, 123, 8, 3834);
 			attr_dev(button3, "class", "button is-link");
-			add_location(button3, file$Y, 129, 8, 4081);
+			add_location(button3, file$Y, 128, 8, 4079);
 			attr_dev(div6, "class", "felix_plotting_div svelte-2s0963");
-			add_location(div6, file$Y, 121, 4, 3737);
+			add_location(div6, file$Y, 120, 4, 3735);
 			add_location(div7, file$Y, 71, 0, 2036);
 		},
 		l: function claim(nodes) {
@@ -55380,7 +55380,7 @@ function init_tour_normline({filetype="felix"}={}) {
 const { console: console_1$a } = globals;
 const file$1a = "src\\Pages\\Normline.svelte";
 
-// (152:4) 
+// (153:4) 
 function create_buttonContainer_slot(ctx) {
 	let div1;
 	let initfunctionrow;
@@ -55556,10 +55556,10 @@ function create_buttonContainer_slot(ctx) {
 			div0 = element("div");
 			create_component(customradio.$$.fragment);
 			set_style(div0, "display", "flex");
-			add_location(div0, file$1a, 156, 8, 6224);
+			add_location(div0, file$1a, 158, 8, 6277);
 			attr_dev(div1, "class", "buttonSlot");
 			attr_dev(div1, "slot", "buttonContainer");
-			add_location(div1, file$1a, 151, 4, 5775);
+			add_location(div1, file$1a, 152, 4, 5826);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div1, anchor);
@@ -55692,14 +55692,14 @@ function create_buttonContainer_slot(ctx) {
 		block,
 		id: create_buttonContainer_slot.name,
 		type: "slot",
-		source: "(152:4) ",
+		source: "(153:4) ",
 		ctx
 	});
 
 	return block;
 }
 
-// (182:8) {#if graphPlotted}
+// (185:8) {#if graphPlotted}
 function create_if_block$s(ctx) {
 	let div;
 	let writefunctioncontents;
@@ -55831,7 +55831,7 @@ function create_if_block$s(ctx) {
 			t2 = space();
 			create_component(reportlayout.$$.fragment);
 			attr_dev(div, "class", "svelte-1soq9o5");
-			add_location(div, file$1a, 182, 12, 7205);
+			add_location(div, file$1a, 185, 12, 7268);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -55939,14 +55939,14 @@ function create_if_block$s(ctx) {
 		block,
 		id: create_if_block$s.name,
 		type: "if",
-		source: "(182:8) {#if graphPlotted}",
+		source: "(185:8) {#if graphPlotted}",
 		ctx
 	});
 
 	return block;
 }
 
-// (163:4) 
+// (166:4) 
 function create_plotContainer_slot(ctx) {
 	let div8;
 	let getfileinfotable;
@@ -56002,33 +56002,33 @@ function create_plotContainer_slot(ctx) {
 			attr_dev(div0, "class", "animated fadeIn svelte-1soq9o5");
 			attr_dev(div0, "id", "exp-theory-plot");
 			toggle_class(div0, "hide", !/*show_theoryplot*/ ctx[10]);
-			add_location(div0, file$1a, 170, 12, 6676);
+			add_location(div0, file$1a, 173, 12, 6739);
 			attr_dev(div1, "id", "bplot");
 			attr_dev(div1, "class", "svelte-1soq9o5");
-			add_location(div1, file$1a, 171, 12, 6776);
+			add_location(div1, file$1a, 174, 12, 6839);
 			attr_dev(div2, "id", "saPlot");
 			attr_dev(div2, "class", "svelte-1soq9o5");
-			add_location(div2, file$1a, 172, 12, 6812);
+			add_location(div2, file$1a, 175, 12, 6875);
 			attr_dev(div3, "id", "avgplot");
 			attr_dev(div3, "class", "svelte-1soq9o5");
-			add_location(div3, file$1a, 173, 12, 6849);
+			add_location(div3, file$1a, 176, 12, 6912);
 			attr_dev(div4, "class", "animated fadeIn svelte-1soq9o5");
 			attr_dev(div4, "id", "opoplot");
 			toggle_class(div4, "hide", !/*$opoMode*/ ctx[8]);
-			add_location(div4, file$1a, 175, 12, 6893);
+			add_location(div4, file$1a, 178, 12, 6956);
 			attr_dev(div5, "class", "animated fadeIn svelte-1soq9o5");
 			attr_dev(div5, "id", "opoSA");
 			toggle_class(div5, "hide", !/*$opoMode*/ ctx[8]);
-			add_location(div5, file$1a, 177, 12, 6984);
+			add_location(div5, file$1a, 180, 12, 7047);
 			attr_dev(div6, "class", "animated fadeIn svelte-1soq9o5");
 			attr_dev(div6, "id", "opoRelPlot");
 			toggle_class(div6, "hide", !/*$opoMode*/ ctx[8]);
-			add_location(div6, file$1a, 178, 12, 7067);
+			add_location(div6, file$1a, 181, 12, 7130);
 			attr_dev(div7, "class", "felixPlot svelte-1soq9o5");
-			add_location(div7, file$1a, 169, 8, 6639);
+			add_location(div7, file$1a, 172, 8, 6702);
 			attr_dev(div8, "class", "plotSlot svelte-1soq9o5");
 			attr_dev(div8, "slot", "plotContainer");
-			add_location(div8, file$1a, 162, 4, 6424);
+			add_location(div8, file$1a, 165, 4, 6487);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div8, anchor);
@@ -56119,7 +56119,7 @@ function create_plotContainer_slot(ctx) {
 		block,
 		id: create_plotContainer_slot.name,
 		type: "slot",
-		source: "(163:4) ",
+		source: "(166:4) ",
 		ctx
 	});
 
@@ -56470,10 +56470,11 @@ function instance$1h($$self, $$props, $$invalidate) {
 		extrafileAdded = 0;
 
 	function removeExtraFile() {
-		for (let i = 0; i < extrafileAdded; i++) {
+		for (let i = 0; i < extrafileAdded + 1; i++) {
 			try {
 				Plotly.deleteTraces($graphDiv, [-1]);
-				($$invalidate(6, extrafileAdded = 0), $$invalidate(5, addedfiles = []));
+				$$invalidate(6, extrafileAdded--, extrafileAdded);
+				$$invalidate(5, addedfiles = addedfiles.slice(0, addedfiles.length - 1));
 			} catch(err) {
 				console.log("The plot is empty");
 			}
