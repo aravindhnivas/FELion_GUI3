@@ -1,6 +1,6 @@
 # What's new
 
-## UNRELEASED
+## v3.2.0
 - Feature updates:
     - GetLabviewSettings updated
     - Theory vs Exp. feature udpated
