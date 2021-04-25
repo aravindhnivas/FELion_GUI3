@@ -4,11 +4,9 @@
     import Textfield from '@smui/textfield';
     import CustomIconSwitch from '../../../../components/CustomIconSwitch.svelte';
     import FelixPlotting from '../../modals/FelixPlotting.svelte';
-
     import {felix_func} from '../../functions/felix';
 
     export let felixPlotCheckboxes, preModal, felixfiles, graphPlotted, opofiles, normMethod, show_theoryplot, removeExtraFile, theoryLocation;
-
     let active=false, openShell=false, delta=1;
 
     let felixPlotWidgets = {
@@ -80,8 +78,9 @@
             
             case "baseline":
                 
-                if($opoMode && opofiles.length<1) { return window.createToast("No OPO files selected", "danger") }
-                else if(felixfiles.length<1) { return window.createToast("No FELIX files selected", "danger") }
+                if($opoMode) { 
+                    if (opofiles.length<1) return window.createToast("No OPO files selected", "danger")
+                } else if(felixfiles.length<1) { return window.createToast("No FELIX files selected", "danger") }
 
                 pyfile="baseline.py", args= $opoMode ? opofiles: felixfiles
                 computePy_func({e, pyfile, args, general:true, openShell})
@@ -108,7 +107,7 @@
 </script>
 
 
-<FelixPlotting bind:active bind:felixPlotWidgets {felixPlotCheckboxes} on:submit="{(e)=>plotData({e:e.detail.event, filetype:"matplotlib"})}"/>
+<FelixPlotting bind:active bind:felixPlotWidgets {theoryLocation} on:submit="{(e)=>plotData({e:e.detail.event, filetype:"matplotlib"})}"/>
 
 <div class="align">
 
@@ -119,4 +118,5 @@
     <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
     <button class="button is-link" on:click="{()=>$toggleRow = !$toggleRow}">Add Theory</button>
     <button class="button is-link" on:click="{()=>{$opoMode = !$opoMode}}">OPO</button>
+    
 </div>

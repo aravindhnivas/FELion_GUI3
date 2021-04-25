@@ -7,7 +7,7 @@
     import Switch from '@smui/switch';
 
     import Textfield from '@smui/textfield';
-    
+    import {tick} from "svelte";
     import {onMount, afterUpdate} from "svelte"
     import CustomIconSwitch from './CustomIconSwitch.svelte';
 
@@ -17,25 +17,29 @@
     
     ///////////////////////////////////////////////////////////////////////////
 
-    export let fileChecked = [],  currentLocation = "", filetype = "*.*"
+    export let fileChecked = [],  currentLocation = "", filetype = "*.*", fullfileslist = [];
 
     const dispatch = createEventDispatcher();
 
     let preModal = {};
+    let fullfiles = []
 
+    // $: fullfileslist
     function dispatch_chdir_event() { dispatch('chdir', { action: "chdir", filetype, currentLocation }) }
 
     let original_location = currentLocation
-    let files = [], otherfolders = [], selectAll=false, showfiles = true, original_files = [];
+    let otherfolders = [], selectAll=false, showfiles = true, original_files = [];
     $: locationStatus = fs.existsSync(currentLocation)
 
     $: parentFolder = locationStatus ? path.basename(currentLocation) : "Undefined"
 
     let searchKey = "";
+    
     const searchfile = () => {
+
         console.log(searchKey)
-        if (!searchKey) {files = original_files}
-        else {files = original_files.filter(file=>file.name.includes(searchKey))}
+        if (!searchKey) {fullfiles = original_files}
+        else {fullfiles = original_files.filter(file=>file.name.includes(searchKey))}
 
     }
 
@@ -45,14 +49,18 @@
     function getfiles(toast=false) {
     
         if (!locationStatus) {return window.createToast("Location undefined", "danger")}
-        original_files = otherfolders = files = fileChecked = []
+        original_files = otherfolders = fullfiles = fileChecked = []
+        
         selectAll = files_loaded = false
         
         try {
             console.log("Current location: ", currentLocation)
             
             let folderfile = fs.readdirSync(currentLocation)
-            original_files = files = folderfile.filter(file=>file.endsWith(filetype)&&fs.lstatSync(path.join(currentLocation, file)).isFile()).map(file=>file={name:file, id:getID()}).sort((a,b)=>a.name<b.name?1:-1)
+
+            original_files = fullfiles = folderfile.filter(file=>file.endsWith(filetype)&&fs.lstatSync(path.join(currentLocation, file)).isFile()).map(file=>file={name:file, id:getID()}).sort((a,b)=>a.name<b.name?1:-1)
+
+            fullfileslist = fullfiles.map(file=>file=file.name)
 
             otherfolders = folderfile.filter(file=>fs.lstatSync(path.join(currentLocation, file)).isDirectory()).map(file=>file={name:file, id:getID()}).sort((a,b)=>a.name>b.name?1:-1)
             
@@ -75,7 +83,7 @@
     }
 
     let sortFile = false
-    $: sortFile ? files = files.sort((a,b)=>a.name>b.name?1:-1) : files = files.sort((a,b)=>a.name<b.name?1:-1)
+    $: sortFile ? fullfiles = fullfiles.sort((a,b)=>a.name>b.name?1:-1) : fullfiles = fullfiles.sort((a,b)=>a.name<b.name?1:-1)
 
     const changeDirectory = (goto) => { currentLocation = path.resolve(currentLocation, goto); getfiles() }
 
@@ -88,6 +96,19 @@
 
     });
 
+    async function selectRange(event) {
+
+        await tick();
+        if (event.shiftKey && fileChecked.length) {
+            const _from = window._.indexOf(fullfileslist, fileChecked[0])
+            const _to = window._.indexOf(fullfileslist, fileChecked.slice(fileChecked.length-1)[0])
+
+            if (_from < _to) {fileChecked = fullfileslist.slice(_from, _to+1)}
+            else {fileChecked = fullfileslist.slice(_to, _from+1)}
+            
+
+        }
+	}
 </script>
 
 <style>
@@ -98,6 +119,7 @@
     .center {justify-content: center;}
     .browseIcons {cursor: pointer;}
 </style>
+
 
 <PreModal bind:preModal/>
 
@@ -114,7 +136,7 @@
 <div class="align center">
     <FormField>
     
-        <Switch bind:checked={selectAll} on:change="{()=>selectAll ? fileChecked = files.map(file=>file=file.name) : fileChecked = []}"/>
+        <Switch bind:checked={selectAll} on:change="{()=>selectAll ? fileChecked = fullfiles.map(file=>file=file.name) : fileChecked = []}"/>
         <span slot="label">Select All</span>
     </FormField>
 </div>
@@ -129,14 +151,16 @@
             <Icon class="material-icons" >keyboard_arrow_right</Icon>
         </IconButton>
         <div class="mdc-typography--subtitle1">{parentFolder}</div>
-
     </div>
 
     {#if files_loaded && locationStatus}
 
-        {#if showfiles && files.length>0 }
-            <VirtualCheckList bind:fileChecked bind:items={files} on:click="{()=>selectAll=false}"/>
-        {:else if files.length <= 0}
+        {#if showfiles && fullfiles.length }
+
+            <div on:click={selectRange}>
+                <VirtualCheckList bind:fileChecked bind:items={fullfiles} on:click="{()=>selectAll=false}" on:select="{(e)=>console.log(e)}"/>
+            </div>
+        {:else if fullfiles.length <= 0}
             <div class="mdc-typography--subtitle1 align center">No {filetype} here!</div>        
         {/if}
         
@@ -148,15 +172,16 @@
 
                     <div class="mdc-typography--subtitle1">{folder.name}</div>
                 </div>
+
             {/each}
 
         </div>
 
     {:else if !locationStatus}
-        <div class="mdc-typography--subtitle1 align center">Location doesn't exist: Browse files again</div>
 
+        <div class="mdc-typography--subtitle1 align center">Location doesn't exist: Browse files again</div>
     {:else}
-        <div class="mdc-typography--subtitle1 align center">...loading</div>
     
+        <div class="mdc-typography--subtitle1 align center">...loading</div>
     {/if}
 </div>

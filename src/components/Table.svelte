@@ -45,6 +45,12 @@
 
     
     td {text-align: center!important;}
+    .tableContainer {
+
+        overflow-x: auto;
+        max-width: calc(100vw - 27em);
+    }
+    
 </style>
 
 <div class="">

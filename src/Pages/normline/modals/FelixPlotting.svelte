@@ -2,17 +2,13 @@
 <script>
     import Modal from '../../../components/Modal.svelte';
     import FelixPlotWidgets from './FelixPlotWidgets.svelte';
-    import CustomCheckList from '../../../components/CustomCheckList.svelte';
-    import Textfield from '@smui/textfield';
-    import CustomCheckbox from '../../../components/CustomCheckbox.svelte';
-    
     import {loadfile, savefile} from "../functions/misc"
     import { createEventDispatcher } from 'svelte';
     import FelixPlotExtraWidgets from './FelixPlotExtraWidgets.svelte';
-    export let active=false, felixPlotWidgets = {}, felixPlotCheckboxes;
+
+    export let active=false, felixPlotWidgets = {}, theoryLocation;
 
     const dispatch = createEventDispatcher();
-
     let extraWidgetCollection = {text:[], number:[], boolean:[]}
 
     let extraWidget={ label:"", value:"", step:"" }
@@ -20,6 +16,8 @@
     let extraWidgetModal = false, widgetType = ""
 
     const widgetLocation = path.resolve(__dirname, "config")
+
+
     const widgetFile = "felixplotWidgets"
 
     function saveWidget(){ savefile({file:extraWidgetCollection, name:widgetFile, location:widgetLocation}) }
@@ -62,9 +60,9 @@
 
         <div slot="content" style="height:40vh;" use:loadExtraWidgets>
 
-            <FelixPlotWidgets bind:felixPlotWidgets bind:felixPlotCheckboxes on:addWidget={addExtraWidget}/>
-        </div>
+            <FelixPlotWidgets bind:felixPlotWidgets on:addWidget={addExtraWidget} {theoryLocation}/>
 
+        </div>
         <div class="" slot="footerbtn">
 
             <button class="button is-link" on:click={saveWidget}>Save Widgets</button>

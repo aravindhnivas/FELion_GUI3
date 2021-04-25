@@ -53,7 +53,7 @@
         if (!fs.existsSync(reportDir)) {
             fs.mkdir(reportDir, { recursive: true }, (err) => {
 
-                if (err) throw err;
+                if (err) return window.createToast("No write access for making report", "danger");
                 console.log("reports directory created")
             });
         }
@@ -205,7 +205,8 @@
                 let landscape;
                 exportMethod == "landscape" ? landscape = true : landscape = false
                 
-                if (process.versions.electron >= "7") {
+                const version = parseInt(process.versions.electron.split(".")[0])
+                if (version >= 7) {
                     reportWindow.webContents.printToPDF({printBackground: true, landscape:landscape, pageSize:pageSize})
                     .then(data => {
                         fs.writeFile(reportFile.replace(".html", ".pdf"), data, (err) => {

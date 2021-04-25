@@ -28,6 +28,7 @@ def computeNGaussian(wn, inten, sigma=5):
 
     _args = {}
     N = len(wn)
+    print(N)
     gfn = generateNGaussian(N)
     i = 0
     for x, y in zip(wn, inten):
@@ -41,10 +42,18 @@ def computeNGaussian(wn, inten, sigma=5):
     return full_wn, full_inten
 
 
-def exp_theory(theoryfiles, location, norm_method, sigma, scale, tkplot, output_filename="averaged"):
+def exp_theory(args, output_filename="averaged"):
 
-    location = pt(location)
+    theoryfiles = [pt(i) for i in args["theoryfiles"]]
+    normMethod = args["normMethod"]
+    sigma = args["sigma"]
+    
+    scale = args["scale"]
+    currentLocation = pt(args["currentLocation"])
+    tkplot = args["tkplot"]
 
+    onlyExpRange = args["onlyExpRange"]
+    
     if tkplot:
         
         widget = FELion_Tk(title="Exp. Vs Theory", location=theoryfiles[0].parent)
@@ -52,18 +61,19 @@ def exp_theory(theoryfiles, location, norm_method, sigma, scale, tkplot, output_
         if len(theoryfiles) == 1: savename=theoryfiles[0].stem
         else: savename = "Exp vs Theory"
         
-        if norm_method == "Relative": ylabel = "Relative Depletion (%)"
+        if normMethod == "Relative": ylabel = "Relative Depletion (%)"
+        
         else: ylabel =  "Norm. Intensity"
         ax = widget.make_figure_layout(title="Experimental vs Theory", xaxis="Wavenumber $(cm^{-1})$", yaxis=ylabel, yscale="linear", savename=savename)
 
-    print(location)
-    if location.name == "DATA": datfile_location = location.parent/"EXPORT"
-    else: datfile_location = location/"EXPORT"
+    print(currentLocation)
+    if currentLocation.name == "DATA": datfile_location = currentLocation.parent/"EXPORT"
+    else: datfile_location = currentLocation/"EXPORT"
 
     avgfile = datfile_location/f"{output_filename}.dat"
     print(avgfile)
 
-    xs, ys = read_dat_file(avgfile, norm_method)
+    xs, ys = read_dat_file(avgfile, normMethod)
 
     if tkplot: ax.plot(xs, ys, "k-", label="Experiment", alpha=0.9)
     else:
@@ -73,14 +83,27 @@ def exp_theory(theoryfiles, location, norm_method, sigma, scale, tkplot, output_
                     "mode": "lines", "marker": {"color": "black"},
             }}
 
+
     for theoryfile in theoryfiles:
 
         x, y = np.genfromtxt(theoryfile).T[:2]
         x = x*scale
 
+        if onlyExpRange: 
+            new_x = x[x<=xs.max()]
+
+            new_x = new_x[new_x>=xs.min()]
+            if len(new_x) > 0: 
+                start_ind, = np.where(x==new_x[0])[0]
+                x = new_x
+            else: start_ind = 0
+        else: start_ind = 0
+
+
+        y = y[start_ind:len(x)+start_ind]
         norm_factor = ys.max()/y.max()
-        
         y = norm_factor*y
+        
         theory_x, theory_y = computeNGaussian(x, y, sigma)
 
         if tkplot: ax.fill(theory_x, theory_y, label=theoryfile.stem)
@@ -90,6 +113,7 @@ def exp_theory(theoryfiles, location, norm_method, sigma, scale, tkplot, output_
                     "x":list(theory_x), "y":list(theory_y),  "name":f"{theoryfile.stem}", "fill":"tozerox"
                 }
 
+
     if not tkplot: sendData(data)
     else:
         widget.plot_legend = ax.legend()
@@ -97,17 +121,9 @@ def exp_theory(theoryfiles, location, norm_method, sigma, scale, tkplot, output_
 
 if __name__ == "__main__":
 
-    print("Argument received for theory.py: \n", sys.argv[1:][0])
-    
     args = sys.argv[1:][0].split(",")
+    args = json.loads(", ".join(args))
+
+    print(f"Received args: {args}, {type(args)}\n")
     
-    print("Argument procesed:\n", args)
-
-    theoryfiles = [pt(i) for i in args[0:-5]]
-    tkplot = (False, True)[args[-1] == "plot"]
-    location = args[-2]
-    scale = float(args[-3])
-    sigma = float(args[-4])
-    norm_method = args[-5]
-
-    exp_theory(theoryfiles, location, norm_method, sigma, scale, tkplot)
+    exp_theory(args)
