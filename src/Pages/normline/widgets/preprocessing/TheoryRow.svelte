@@ -15,7 +15,7 @@
     let showTheoryFiles = false, theoryfilesChecked = []
     $: if(fs.existsSync(theoryLocation)) { theoryfiles =theoryfilesChecked.map(file=>path.resolve(theoryLocation, file)) }
 
-    function plotData(e){
+    function plotData(e=null){
         let pyfile="theory.py", args;
         
         if(theoryfiles.length < 1) return window.createToast("No files selected", "danger")

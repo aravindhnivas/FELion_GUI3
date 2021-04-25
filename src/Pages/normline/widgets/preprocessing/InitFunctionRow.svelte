@@ -4,11 +4,9 @@
     import Textfield from '@smui/textfield';
     import CustomIconSwitch from '../../../../components/CustomIconSwitch.svelte';
     import FelixPlotting from '../../modals/FelixPlotting.svelte';
-
     import {felix_func} from '../../functions/felix';
 
     export let felixPlotCheckboxes, preModal, felixfiles, graphPlotted, opofiles, normMethod, show_theoryplot, removeExtraFile, theoryLocation;
-
     let active=false, openShell=false, delta=1;
 
     let felixPlotWidgets = {
@@ -109,7 +107,7 @@
 </script>
 
 
-<FelixPlotting bind:active bind:felixPlotWidgets {felixPlotCheckboxes} on:submit="{(e)=>plotData({e:e.detail.event, filetype:"matplotlib"})}"/>
+<FelixPlotting bind:active bind:felixPlotWidgets {theoryLocation} on:submit="{(e)=>plotData({e:e.detail.event, filetype:"matplotlib"})}"/>
 
 <div class="align">
 
@@ -120,4 +118,5 @@
     <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
     <button class="button is-link" on:click="{()=>$toggleRow = !$toggleRow}">Add Theory</button>
     <button class="button is-link" on:click="{()=>{$opoMode = !$opoMode}}">OPO</button>
+    
 </div>

@@ -121,25 +121,8 @@
     const includeTablesInReports = [
         {id:"felixTable", include:true, label:"Freq. table"}, {id:"felix_filedetails_table", include:false, label:"File info table"}
     ]
-    $: console.log(theoryLocation, calcfiles, felixPlotCheckboxes)
-
-    $: datlocation = path.resolve($felixopoLocation, "../EXPORT")
-    
-    $: datfiles = fs.existsSync(datlocation) ? fs.readdirSync(datlocation).filter(f=>f.endsWith(".dat")).map(f=>f={name:f, id:getID()}) : [{name:"", id:getID()}]
     
     
-    $: calcfiles = fs.existsSync(theoryLocation) ? fs.readdirSync(theoryLocation).map(f=>f={name:f, id:getID()}) : [{name:"", id:getID()}]
-
-
-
-    $: felixPlotCheckboxes = [
-    
-            {label:"DAT file", options:datfiles, selected:[], style:"width:100%;", id:getID()},
-            {label:"Fundamentals", options:calcfiles, selected:[], style:"width:25%; margin-left:1em;", id:getID()},
-
-            {label:"Overtones", options:calcfiles, selected:[], style:"width:25%; margin-left:1em;", id:getID()},
-            {label:"Combinations", options:calcfiles, selected:[], style:"width:25%; margin-left:1em;", id:getID()},
-        ]
     
     let preModal = {};
 
@@ -168,7 +151,7 @@
 
     <div class="buttonSlot" slot="buttonContainer">
 
-        <InitFunctionRow {removeExtraFile} {felixPlotCheckboxes} {opofiles} {felixfiles} normMethod={$normMethod} {theoryLocation} bind:preModal bind:graphPlotted bind:show_theoryplot/>
+        <InitFunctionRow {removeExtraFile} {opofiles} {felixfiles} normMethod={$normMethod} {theoryLocation} bind:preModal bind:graphPlotted bind:show_theoryplot/>
         <OPORow {removeExtraFile} bind:OPOLocation bind:OPOfilesChecked bind:opofiles bind:preModal bind:graphPlotted />
         <TheoryRow bind:theoryLocation bind:show_theoryplot bind:preModal normMethod={$normMethod} />
         <div style="display:flex;">

@@ -1,15 +1,37 @@
 
 
 <script>
+    import {felixopoLocation} from '../functions/svelteWritables';
     import CustomCheckList from '../../../components/CustomCheckList.svelte';
     import Textfield from '@smui/textfield';
     import CustomCheckbox from '../../../components/CustomCheckbox.svelte';
     import { createEventDispatcher } from 'svelte';
+    import { fade } from 'svelte/transition';
 
-    export let felixPlotCheckboxes, felixPlotWidgets;
-
+    export let felixPlotWidgets, theoryLocation;
     const dispatch = createEventDispatcher();
 
+    let felixPlotCheckboxes = [];
+    
+    let reload = false
+
+    function refreshFunction() {
+
+
+        let datlocation = path.resolve($felixopoLocation, "../EXPORT")
+        let datfiles = fs.existsSync(datlocation) ? fs.readdirSync(datlocation).filter(f=>f.endsWith(".dat")).map(f=>f={name:f, id:getID()}) : [{name:"", id:getID()}]
+        let calcfiles = fs.existsSync(theoryLocation) ? fs.readdirSync(theoryLocation).map(f=>f={name:f, id:getID()}) : [{name:"", id:getID()}]
+
+        felixPlotCheckboxes = [
+                {label:"DAT file", options:datfiles, selected:[], style:"width:100%;", id:getID()},
+                {label:"Fundamentals", options:calcfiles, selected:[], style:"width:25%; margin-left:1em;", id:getID()},
+                {label:"Overtones", options:calcfiles, selected:[], style:"width:25%; margin-left:1em;", id:getID()},
+                {label:"Combinations", options:calcfiles, selected:[], style:"width:25%; margin-left:1em;", id:getID()},
+            ]
+
+        reload != reload
+
+    }
 
 </script>
 
@@ -47,17 +69,25 @@
 
 </style>
 
-<div class="">
+<div >
 
-    <div style="display:flex; flex-wrap:wrap;">
+    <div style="display:flex; flex-wrap:wrap;" use:refreshFunction>
 
-        {#each felixPlotCheckboxes as {label, options, selected, style, id}(id)}
-            <div style="flex-grow:1; {style}" class="felix_tkplot_filelist_div">
-                <div class="subtitle felix_tkplot_filelist_header">{label}</div>
-                <CustomCheckList style="background: #836ac05c; border-radius: 20px; margin:1em 0;  height:20em; overflow:auto;" bind:fileChecked={selected} bind:items={options} />
+        <button class="button is-link" on:click={refreshFunction}>Reload</button>
 
-            </div>
-        {/each}
+        {#key reload}
+
+            {#each felixPlotCheckboxes as {label, options, selected, style, id}(id)}
+
+                <div style="flex-grow:1; {style}" class="felix_tkplot_filelist_div" transition:fade>
+                    <div class="subtitle felix_tkplot_filelist_header">{label}</div>
+
+                    <CustomCheckList style="background: #836ac05c; border-radius: 20px; margin:1em 0;  height:20em; overflow:auto;" bind:fileChecked={selected} bind:items={options} />
+
+                </div>
+            {/each}
+        {/key}
+
     </div>
 
     <div class="felix_plotting_div">
