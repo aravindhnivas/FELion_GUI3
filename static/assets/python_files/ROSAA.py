@@ -59,6 +59,7 @@ def getCollisionalRate(collisional_rates):
                     rates[exciteRateConstantKey] = _temp * distribution(i, j, Energy, trapTemp)
                     
                 else:
+
                     _temp = collisional_rates[exciteRateConstantKey]
                     rates[exciteRateConstantKey] = _temp
                     rates[deexciteRateConstantKey] = _temp * distribution(j, i, Energy, trapTemp)
@@ -296,17 +297,15 @@ if __name__ == "__main__":
     
     else:
         fig, ax = plt.subplots(figsize=(7, 5), dpi=100)
-        
         legends = [f"{molecule}{i}" for i in range(totallevel)]
-        
         ax.plot(simulateTime_ms.T, resOffCounts.T)
         ax.plot(simulateTime_ms, resOffCounts.sum(axis=0), "k")
         ax.legend(legends, title=f"Collisional Cooling")
+        ax.set(ylabel="Counts", xlabel="Time(ms)", title=f"Simulation: Thermal stabilisation by collision with {taggingPartner} atoms (300=>{trapTemp})K")
 
-        ax.set(ylabel="Counts", xlabel="Time(ms)", \
-            title=f"Simulation: Thermal stabilisation by collision with {taggingPartner} atoms (300=>{trapTemp})K")
         ax.minorticks_on()
         plt.tight_layout()
         plt.show()
+
 
     logFile.close()
