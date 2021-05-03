@@ -53,12 +53,12 @@
     ]
 
     let trapTemp = 5.7
-    
     let rateCoefficients = [
+
+        {label:"totalAttachmentLevels", value:2, id:window.getID()},
         {label:"branching-ratio", value:0.5, id:window.getID()},
         {label:"a", value:0.5, id:window.getID()},
         {label:"He density(cm3)", value:"2e14", id:window.getID()},
-
         {label:"k3", value:"9.6e-31, 2.9e-30", id:window.getID()},
         
         {label:"kCID", value:"6.7e-16, 1.9e-15", id:window.getID()},
@@ -67,25 +67,20 @@
     let collisionalRateType = "deexcitation"
 
     $: deexcitation = collisionalRateType==="deexcitation";
-    let totalJLevel = 3
-
     let numberOfLevels = 3;
 
     $: collisionalCoefficient = _.range(1, numberOfLevels)
                                     .map(j=> _.range(j)
                                         .map(jj=> deexcitation ? {label:`q_${j}${jj}`, value:0, id:window.getID()} : {label:`q_${jj}${j}`, value:0, id:window.getID()})
                                     )
-    $: console.log(collisionalCoefficient)
 
     let py, running = false;
-
 
     const pyEventHandle = (e) => {
 
         statusReport = ""
         const events = e.detail
         py = events.py
-
     }
 
     let statusReport = "";
@@ -159,6 +154,7 @@
 </script>
 
 <style lang="scss">
+
     .locationColumn {
 
         display: grid;
@@ -229,7 +225,6 @@
 
 
 <Modal bind:active title="ROSAA modal" >
-
     <div class="ROSAA__modal" slot="content">
 
         {#if reportToggle}
