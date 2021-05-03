@@ -61195,7 +61195,7 @@ function create_else_block$b(ctx) {
 			t30 = space();
 			div14 = element("div");
 			div12 = element("div");
-			div12.textContent = "He attachment (K3) and diisociation (kCID) constants";
+			div12.textContent = "Rare-gas attachment (K3) and dissociation (kCID) constants";
 			t32 = space();
 			div13 = element("div");
 
@@ -61233,7 +61233,7 @@ function create_else_block$b(ctx) {
 			attr_dev(div12, "class", "subtitle svelte-1eiecyv");
 			add_location(div12, file$1e, 289, 16, 10164);
 			attr_dev(div13, "class", "rates__mainContainer svelte-1eiecyv");
-			add_location(div13, file$1e, 290, 16, 10262);
+			add_location(div13, file$1e, 290, 16, 10268);
 			attr_dev(div14, "class", "rates__div attachmentDissociationRate__div svelte-1eiecyv");
 			add_location(div14, file$1e, 288, 12, 10090);
 		},
@@ -62548,7 +62548,7 @@ function create_content_slot$6(ctx) {
 	return block;
 }
 
-// (301:4) 
+// (302:4) 
 function create_footerbtn_slot$4(ctx) {
 	let div;
 	let button0;
@@ -62572,15 +62572,15 @@ function create_footerbtn_slot$4(ctx) {
 			button2 = element("button");
 			button2.textContent = "Submit";
 			attr_dev(button0, "class", "button is-danger");
-			add_location(button0, file$1e, 302, 8, 10583);
+			add_location(button0, file$1e, 303, 8, 10591);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$1e, 304, 8, 10727);
+			add_location(button1, file$1e, 306, 8, 10741);
 			attr_dev(button2, "class", "button is-link");
 			toggle_class(button2, "is-loading", /*running*/ ctx[13]);
-			add_location(button2, file$1e, 305, 8, 10840);
+			add_location(button2, file$1e, 307, 8, 10854);
 			attr_dev(div, "class", "align");
 			attr_dev(div, "slot", "footerbtn");
-			add_location(div, file$1e, 300, 4, 10535);
+			add_location(div, file$1e, 301, 4, 10543);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -62622,7 +62622,7 @@ function create_footerbtn_slot$4(ctx) {
 		block,
 		id: create_footerbtn_slot$4.name,
 		type: "slot",
-		source: "(301:4) ",
+		source: "(302:4) ",
 		ctx
 	});
 

@@ -314,7 +314,7 @@
             
 
             <div class="rates__div attachmentDissociationRate__div">
-                <div class="subtitle">He attachment (K3) and diisociation (kCID) constants</div>
+                <div class="subtitle">Rare-gas attachment (K3) and dissociation (kCID) constants</div>
                 <div class="rates__mainContainer">
                     {#each rateCoefficients as {label, value, id}(id)}
                         <Textfield bind:value {label}/>
@@ -325,10 +325,12 @@
 
     </div>
 
+
     <div class="align" slot="footerbtn">
 
         <button  class="button is-danger" on:click="{()=>{py&&running? py.kill() : console.log('pyEvent is not available')}}" >Stop</button>
 
+    
         <button  class="button is-link" on:click="{(e)=>{reportToggle = !reportToggle}}" >{buttonName}</button>
         <button  class="button is-link" class:is-loading={running} on:click="{simulation}" on:pyEvent={pyEventHandle} on:pyEventClosed="{pyEventClosedHandle}" on:pyEventData={pyEventDataReceivedHandle}>Submit</button>
     </div>

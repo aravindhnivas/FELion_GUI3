@@ -73,37 +73,9 @@ def getAttachmentRates():
     Rate_kCID = [float(i.strip())*nHe for i in rate_coefficients["kCID"].split(",")]
     return Rate_K3, Rate_kCID, Rate_K3_excited
 
-    # Rate_k31_0 = k31_0*nHe**2
-    # Rate_k31_1 = k31_1*nHe**2
-    # Rate_k32 = k32*nHe**2
-    # Rate_kCID1 = kCID1*nHe
-    # Rate_kCID2 = kCID2*nHe
-    # return Rate_k31_0, Rate_k31_1, Rate_k32, Rate_kCID1, Rate_kCID2
-
 
 def computeAttachmentProcess(N, N_He, dR_dt):
     
-    # attachmentRate0, attachmentRate1, attachmentRate2 = get_attachment_rates(N, N_He)
-    # Adding rare gas atom attachment and dissociation rates
-
-    # attachmentRate0 = - Rate_k31_0*N[0] + Rate_kCID1*N_He[0]*p
-    # attachmentRate1 = - Rate_k31_1*N[1] + Rate_kCID1*N_He[0]*(1-p)
-    # attachmentRate2 = - Rate_k32*N_He[0] + Rate_kCID2*N_He[1]
-    
-    # if testMode: print(f"{dR_dt=}, {attachmentRate0=}, {attachmentRate1=}")
-    # dR_dt[0] += attachmentRate0
-    # dR_dt[1] += attachmentRate1
-    # if testMode: print(f"{dR_dt=}")
-    # # CDHe:
-    # dCDHe_dt = - attachmentRate0 - attachmentRate1 + attachmentRate2
-    # dR_dt.append(dCDHe_dt)
-
-    # # CDHe2
-    # dCDHe2_dt = - attachmentRate2
-    # dR_dt.append(dCDHe2_dt)
-    # if testMode: print(f"{dR_dt=}")
-    # return dR_dt
-
     attachmentRate0 = - Rate_K3[0]*N[0] + Rate_kCID[0]*N_He[0]*p
     attachmentRate1 = - Rate_K3_excited*N[1] + Rate_kCID[0]*N_He[0]*(1-p)
     dR_dt[0] += attachmentRate0
@@ -117,7 +89,6 @@ def computeAttachmentProcess(N, N_He, dR_dt):
         dR_dt.append(attachmentRate)
         
     dR_dt.append(currentRate)
-
     if testMode: print(f"{dR_dt=}")
     return dR_dt
 
@@ -138,7 +109,6 @@ def computeCollisionalProcess(i, N):
     return collections
 
 def computeEinsteinProcess(i, N):
-    
     collections = []
     
     if includeSpontaneousEmission:
@@ -153,7 +123,6 @@ def computeEinsteinProcess(i, N):
             collections.append(temp)
 
     # Einstein Coefficient B
-
     if lightON:
         
         # B_rate defined from excited state 
@@ -167,14 +136,10 @@ def computeEinsteinProcess(i, N):
             temp = B_rate
             collections.append(temp)
     if testMode: print(f"einstein_collection: \t{collections}")
-        
     return collections
 
-
 def computeRateDistributionEquations(t, counts):
-    
     if includeAttachmentRate:
-
         N =  counts[:-totalAttachmentLevels]
         N_He = counts[-totalAttachmentLevels:]
 
@@ -187,7 +152,6 @@ def computeRateDistributionEquations(t, counts):
         if testMode: print(f"\n\nLevel {i=}\n\n")
         collisional_collection = computeCollisionalProcess(i, N)
         einstein_collection = computeEinsteinProcess(i, N)
-        
         collections = collisional_collection + einstein_collection
         rateCollection.append(collections)
         if testMode: print(f"{rateCollection=}")
@@ -199,7 +163,6 @@ def computeRateDistributionEquations(t, counts):
         
     if includeAttachmentRate:
         dR_dt = computeAttachmentProcess(N, N_He, dR_dt)
-    
     return dR_dt
 
 def sendData(currentLocation, filename, dataToSend):
@@ -207,7 +170,6 @@ def sendData(currentLocation, filename, dataToSend):
 
         data = json.dumps(dataToSend, sort_keys=True, indent=4, separators=(',', ': '))
         f.write(data)
-
 
 if __name__ == "__main__":
 
@@ -226,23 +188,10 @@ if __name__ == "__main__":
     rate_coefficients = conditions["rate_coefficients"]
     power_broadening = conditions["power_broadening"]
 
-    
+    variable, variableRange = conditions["variable"], conditions["variableRange"]
     nHe = float(rate_coefficients["He density(cm3)"])
     print(f"{nHe=:.2e}\n", flush=True)
 
-    # k31_0, k32 = [float(i.strip()) for i in rate_coefficients["k3"].split(",")]
-    # a = float(rate_coefficients["a"])
-    # k31_1 = a*k31_0
-
-    # kCID1, kCID2 = [float(i.strip()) for i in rate_coefficients["kCID"].split(",")]
-    # Rate_k31_0, Rate_k31_1, Rate_k32, Rate_kCID1, Rate_kCID2 =  getAttachmentRates()
-
-    # print(f"k31_1 dependent factor: {a}\n", flush=True)
-    # print(f"{k31_0=:.2e}\t{Rate_k31_0=:.2f}", flush=True)
-    # print(f"{k31_1=:.2e}\t{Rate_k31_1=:.2f}", flush=True)
-    # print(f"{k32=:.2e}\t{Rate_k32=:.2f}\n", flush=True)
-    # print(f"{kCID1=:.2e}\t{Rate_kCID1=:.2f}", flush=True)
-    # print(f"{kCID2=:.2e}\t{Rate_kCID2=:.2f}\n", flush=True)
     Rate_K3, Rate_kCID, Rate_K3_excited = getAttachmentRates()
 
     p = float(rate_coefficients["branching-ratio"])
@@ -251,6 +200,7 @@ if __name__ == "__main__":
     includeSpontaneousEmission = conditions["includeSpontaneousEmission"]
     includeCollision = conditions["includeCollision"]
     includeAttachmentRate = conditions["includeAttachmentRate"]
+    
     print(f"{includeAttachmentRate=}\n{includeCollision=}\n{includeSpontaneousEmission=}\n", flush=True)
 
     totallevel = int(conditions["numberOfLevels"])
@@ -267,7 +217,6 @@ if __name__ == "__main__":
     print(f"{freq=:.4e} Hz\n", flush=True)
 
     norm = lineshape_normalise()
-
     A_10 = float(einstein_coefficient["A_10"])
     print(f"{A_10=:.2e}\n", flush=True)
 
@@ -358,6 +307,6 @@ if __name__ == "__main__":
             title=f"Simulation: Thermal stabilisation by collision with {taggingPartner} atoms (300=>{trapTemp})K")
         ax.minorticks_on()
         plt.tight_layout()
-
         plt.show()
+
     logFile.close()
