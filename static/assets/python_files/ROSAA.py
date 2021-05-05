@@ -140,12 +140,11 @@ def computeEinsteinProcess(i, N):
     return collections
 
 def computeRateDistributionEquations(t, counts):
+
     if includeAttachmentRate:
         N =  counts[:-totalAttachmentLevels]
         N_He = counts[-totalAttachmentLevels:]
-
-    else:
-        N = counts
+    else: N = counts
     
     rateCollection = []
     
@@ -155,20 +154,20 @@ def computeRateDistributionEquations(t, counts):
         einstein_collection = computeEinsteinProcess(i, N)
         collections = collisional_collection + einstein_collection
         rateCollection.append(collections)
+
         if testMode: print(f"{rateCollection=}")
         
     dR_dt = []
     for _ in rateCollection:
         _temp = reduce(lambda a, b: a+b, _)
         dR_dt.append(_temp)
-        
     if includeAttachmentRate:
         dR_dt = computeAttachmentProcess(N, N_He, dR_dt)
+
     return dR_dt
 
 def sendData(currentLocation, filename, dataToSend):
     with open(pt(currentLocation) / f"{filename}.json", 'w+') as f:
-
         data = json.dumps(dataToSend, sort_keys=True, indent=4, separators=(',', ': '))
         f.write(data)
 
@@ -302,9 +301,10 @@ if __name__ == "__main__":
         ax.plot(simulateTime_ms, resOffCounts.sum(axis=0), "k")
         ax.legend(legends, title=f"Collisional Cooling")
         ax.set(ylabel="Counts", xlabel="Time(ms)", title=f"Simulation: Thermal stabilisation by collision with {taggingPartner} atoms (300=>{trapTemp})K")
-
         ax.minorticks_on()
+
         plt.tight_layout()
+        
         plt.show()
 
 

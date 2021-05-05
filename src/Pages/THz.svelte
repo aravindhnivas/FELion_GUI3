@@ -97,7 +97,7 @@
 
 </style>
 
-<ROSAA bind:active={ROSAA_modal_active} on:submit="{(e)=>{plotData({e:e.detail.e, filetype:"general", general:{pyfile:"ROSAA.py", args:[JSON.stringify(e.detail.conditions)]}})}}" />
+<ROSAA bind:active={ROSAA_modal_active} on:submit="{(e)=>{plotData({e:e.detail.e, filetype:"general", general:{pyfile:"ROSAA_class.py", args:[JSON.stringify(e.detail.conditions)]}})}}" />
 
 <Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked>
 

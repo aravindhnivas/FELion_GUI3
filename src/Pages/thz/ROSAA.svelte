@@ -90,7 +90,6 @@
         let dataReceived = e.detail.dataReceived
         statusReport += `${dataReceived}\n`
     }
-
     $: console.log(statusReport)
 
     const pyEventClosedHandle = (e) => {
@@ -253,7 +252,9 @@
             <div class="variableColumn">
 
                 <CustomSelect options={variablesList} bind:picked={variable} />
-                <Textfield bind:value={variableRange} label="Range (min, max, totalsteps)" />
+                {#if variable !== "time"}
+                    <Textfield bind:value={variableRange} label="Range (min, max, totalsteps)" />
+                {/if}
             </div>
 
 
