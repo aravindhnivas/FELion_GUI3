@@ -281,7 +281,6 @@ class ROSAA():
         self.lightON=True
         Non = solve_ivp(self.computeRateDistributionEquations, self.tspan, self.boltzman_distribution_source, dense_output=True)
         resOnCounts = Non.sol(self.simulation_duration_data_points)
-
         return Noff, Non
 
     def computeRateDistributionEquations(self, t, counts):
