@@ -224,8 +224,28 @@ class ROSAA():
 
             print(f"Time taken to simulation: {round(perf_counter()-self.time_start, 2)} s", flush=True)
 
-            self.write_signal_file(resOnCounts, resOffCounts)
             self.plot_results(changing_parameters, resOnCounts, resOffCounts)
+
+
+            savefile = pt(self.currentLocation)/self.filename
+            f = open(f"{savefile}_raw_data.dat", "w+")
+            f.write(f"############################## Begin: Run ##############################\n")
+            
+            self.write_signal_file(f, resOnCounts.T, resOffCounts.T)
+            f.write(f"############################## END: Run ##############################\n\n")
+            f.close()
+
+
+            with open(f"{savefile}_signal.dat", "w+") as f:
+                f.write(f"# Time(ms) \tSignal (%)\n")
+                f.write(f"# Time evolution (s): 0, {self.simulation_duration}, {self.totalSteps}\n")
+                simulateTime_ms = self.simulation_duration_data_points*1e3
+                signal_index = self.totallevel+1
+                signal = (1 - (resOnCounts[signal_index][1:] / resOffCounts[signal_index][1:]))*100
+
+                for var, sig in zip(simulateTime_ms[1:], signal):
+                    f.write(f"{var:.2f}\t{sig:.2f}\n")
+            
 
         elif changing_parameters == "He density(cm3)":
             power = float(self.power_broadening["power(W)"])
@@ -313,9 +333,11 @@ class ROSAA():
 
         return norm
 
+
     def plot_results(self, changing_parameters, resOnCounts=None, resOffCounts=None, x=None, y=None):
 
         if changing_parameters == "time":
+
             fig, (ax, ax1) = plt.subplots(ncols=2, figsize=(12, 4), dpi=100)
             
             legends = [f"{self.molecule}{i}" for i in range(self.totallevel)]
@@ -375,74 +397,63 @@ class ROSAA():
         savefile_name = f"{self.filename}_{changing_parameters.split('(')[0]}_{start:.1e}-{end:.1e}"
         savefile = pt(self.currentLocation)/savefile_name
         
-        with open(f"{savefile}_raw_data.dat", "w+") as f:
-            f.write(f"# {changing_parameters}: {changing_parameters_range}\n")
-            f.write(f"# Time evolution (s): 0, {self.simulation_duration}, {self.totalSteps}\n")
-            for index, var in enumerate(variable_range):
-                f.write(f"############################## Begin: Run_{index}: {var} ##############################\n")
+        f = open(f"{savefile}_raw_data.dat", "w+")
+        # with open(f"{savefile}_raw_data.dat", "w+") as f:
+        f.write(f"# {changing_parameters}: {changing_parameters_range}\n")
+        f.write(f"# Time evolution (s): 0, {self.simulation_duration}, {self.totalSteps}\n")
+        for index, var in enumerate(variable_range):
+            f.write(f"############################## Begin: Run_{index}: {var} ##############################\n")
 
-                data_on = resOnCounts_list[index].T
-                data_off = resOffCounts_list[index].T
-
-                f.write("# lightOFF\n")
-                legends = [f"{self.molecule}{i}" for i in range(self.totallevel)]
-                if self.includeAttachmentRate:
-                    legends += [f"{self.molecule}{self.taggingPartner}"]
-                    legends += [f"{self.molecule}{self.taggingPartner}{i+1}" for i in range(1, self.totalAttachmentLevels)]
-                f.write("#" + "\t".join([f'{i}' for i in legends]) + "\n")
-
-                for off in data_off: 
-                    f.write("\t".join([f'{i}' for i in off])+"\n")
-
-                f.write("# lightON\n")
-                for on in data_on: 
-                    f.write("\t".join([f'{i}' for i in on])+"\n")
-
-                f.write(f"############################## END: Run_{index}: {var} ##############################\n\n")
+            data_on = resOnCounts_list[index].T
+            data_off = resOffCounts_list[index].T
+            self.write_signal_file(f, data_on, data_off)
+            f.write(f"############################## END: Run_{index}: {var} ##############################\n\n")
+        f.close()
 
         with open(f"{savefile}_signal.dat", "w+") as f:
             f.write(f"# {changing_parameters}\tSignal (%)\n")
             for var, sig in zip(variable_range, signal):
                 f.write(f"{var:.2e}\t{sig:.2f}\n")
 
-
         print(f"File written: {savefile}")
 
-    def write_signal_file(self, data_on, data_off):
-        savefile = pt(self.currentLocation)/self.filename
+    def write_signal_file(self, f, data_on, data_off):
 
-        with open(f"{savefile}_raw_data.dat", "w+") as f:
+        # savefile = pt(self.currentLocation)/self.filename
 
-            f.write(f"# Time evolution (s): 0, {self.simulation_duration}, {self.totalSteps}\n")
-            f.write(f"############################## Begin: Run ##############################\n")
+        # with open(f"{savefile}_raw_data.dat", "w+") as f:
+        f.write(f"# Time evolution (s): 0, {self.simulation_duration}, {self.totalSteps}\n")
+        # f.write(f"############################## Begin: Run ##############################\n")
 
-            f.write("# lightOFF\n")
-            legends = [f"{self.molecule}{i}" for i in range(self.totallevel)]
+        f.write("# lightOFF\n")
+        legends = [f"{self.molecule}{i}" for i in range(self.totallevel)]
+        
+        if self.includeAttachmentRate:
+            legends += [f"{self.molecule}{self.taggingPartner}"]
+            legends += [f"{self.molecule}{self.taggingPartner}{i+1}" for i in range(1, self.totalAttachmentLevels)]
+
+        
+        f.write("#" + "\t".join([f'{i}' for i in legends]) + "\n")
+        for off in data_off:
+            f.write("\t".join([f'{i}' for i in off])+"\n")
+
+        f.write("# lightON\n")
+        for on in data_on: 
+            f.write("\t".join([f'{i}' for i in on])+"\n")
+        # f.write(f"############################## END: Run ##############################\n\n")
+
+        # f.close()
+        
+        # with open(f"{savefile}_signal.dat", "w+") as f:
+        #     f.write(f"# Time(ms) \tSignal (%)\n")
+
+        #     simulateTime_ms = self.simulation_duration_data_points*1e3
+        #     signal_index = self.totallevel+1
             
-            if self.includeAttachmentRate:
-                legends += [f"{self.molecule}{self.taggingPartner}"]
-                legends += [f"{self.molecule}{self.taggingPartner}{i+1}" for i in range(1, self.totalAttachmentLevels)]
+        #     signal = (1 - (data_on[signal_index][1:] / data_off[signal_index][1:]))*100
 
-            
-            f.write("#" + "\t".join([f'{i}' for i in legends]) + "\n")
-            for off in data_off.T:
-                f.write("\t".join([f'{i}' for i in off])+"\n")
-
-            f.write("# lightON\n")
-            for on in data_on.T: 
-                f.write("\t".join([f'{i}' for i in on])+"\n")
-            f.write(f"############################## END: Run ##############################\n\n")
-
-        with open(f"{savefile}_signal.dat", "w+") as f:
-            f.write(f"# Time(ms) \tSignal (%)\n")
-
-            simulateTime_ms = self.simulation_duration_data_points*1e3
-            signal_index = self.totallevel+1
-            
-            signal = (1 - (data_on[signal_index][1:] / data_off[signal_index][1:]))*100
-
-            for var, sig in zip(simulateTime_ms[1:], signal):
-                f.write(f"{var:.2f}\t{sig:.2f}\n")
+        #     for var, sig in zip(simulateTime_ms[1:], signal):
+        #         f.write(f"{var:.2f}\t{sig:.2f}\n")
 
 if __name__ == "__main__":
     args = sys.argv[1:][0].split(",")
