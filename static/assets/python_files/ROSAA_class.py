@@ -11,18 +11,21 @@ from ROSAA_func import distribution, boltzman_distribution, \
     stimulated_absorption, stimulated_emission,\
     voigt, lorrentz_fwhm, gauss_fwhm
 
+from time import perf_counter
+
 class ROSAA():
 
     def __init__(self, conditions):
 
+
         self.conditions = conditions
-
-
         self.save_parameters_to_file()
         self.deconstruct_parameters()
         self.get_collisional_rates()
-        self.begin_simulation()
+        self.time_start = perf_counter()
 
+        self.begin_simulation()
+        
     def save_parameters_to_file(self):
         self.currentLocation = self.conditions["currentLocation"]
         self.filename = self.conditions["filename"]
@@ -145,114 +148,92 @@ class ROSAA():
         dR_dt.append(currentRate)
         return dR_dt
 
-
     def begin_simulation(self):
-
 
         changing_parameters = self.conditions["variable"]
         changing_parameters_range = self.conditions["variableRange"]
+        self.simulation_duration = int(self.simulation_parameters["Simulation time(ms)"])*1e-3 # sec --> ms
+        self.totalSteps = int(self.simulation_parameters["Total steps"])
 
-        simulation_duration = int(self.simulation_parameters["Simulation time(ms)"])*1e-3 # sec --> ms
-        totalSteps = int(self.simulation_parameters["Total steps"])
-        self.simulation_duration_data_points = np.linspace(0, simulation_duration, totalSteps)
+        self.simulation_duration_data_points = np.linspace(0, self.simulation_duration, self.totalSteps)
         
-        self.tspan = [0, simulation_duration]
+        self.tspan = [0, self.simulation_duration]
+        
         initial_temperature = 300
-
         N = boltzman_distribution(self.Energy, initial_temperature)[:self.totallevel]
         N_He = self.totalAttachmentLevels*[0]
         self.boltzman_distribution_source = (N, [*N, *N_He])[self.includeAttachmentRate]
         
+        def run_for_each(const, run_type="nHe"):
+            start, end, steps = changing_parameters_range.split(",")
+
+            start = float(start)
+            end = float(end)
+            steps = int(steps)
+
+            variable_range = np.linspace(start, end, steps)
+
+            print(f"{start=:.2e}==>{end=:.2e} in {steps=}\n")
+
+
+            resOffCounts_list = []
+            resOnCounts_list = []
+
+            for index, var in enumerate(variable_range):
+                print(f"Running ({run_type}): {index}: {var=:.2e}\n", flush=True)
+                time_start = perf_counter()
+                if run_type=="nHe":
+                    Noff, Non = self.get_simulation_results(var, const)
+
+                else:
+                    Noff, Non = self.get_simulation_results(const, var)
+
+                resOffCounts = Noff.sol(self.simulation_duration_data_points)
+                resOnCounts = Non.sol(self.simulation_duration_data_points)
+                resOffCounts_list.append(resOffCounts)
+                resOnCounts_list.append(resOnCounts)
+                print(f"Time taken for run-{index} ({var=:.2e}): {round(perf_counter()-time_start, 2)} s", flush=True)
+                print(f"Total time taken: {round(perf_counter()-self.time_start, 2)} s", flush=True)
+
+            resOffCounts_list = np.array(resOffCounts_list, dtype=np.float)
+            resOnCounts_list = np.array(resOnCounts_list, dtype=np.float)
+
+            
+            off_counts = []
+            on_counts = []
+
+            for i in range(steps):
+                off_counts.append(resOffCounts_list[i, self.totallevel, -1])
+                on_counts.append(resOnCounts_list[i, self.totallevel, -1])
+            
+            off_counts = np.array(off_counts, dtype=np.float)
+            on_counts = np.array(on_counts, dtype=np.float)
+            signal = (1 - (on_counts / off_counts))*100
+            print(f"Total time taken for simulation: {round(perf_counter()-self.time_start, 2)} s", flush=True)
+
+            
+            self.write_data_to_file(changing_parameters, changing_parameters_range, resOnCounts_list, resOffCounts_list, signal)
+            self.plot_results(changing_parameters, x=variable_range, y=signal)
 
         if changing_parameters == "time":
-
             nHe = float(self.rate_coefficients["He density(cm3)"])
             power = float(self.power_broadening["power(W)"])
             Noff, Non = self.get_simulation_results(nHe, power)
             resOffCounts = Noff.sol(self.simulation_duration_data_points)
             resOnCounts = Non.sol(self.simulation_duration_data_points)
+
+            print(f"Time taken to simulation: {round(perf_counter()-self.time_start, 2)} s", flush=True)
+
+            self.write_signal_file(resOnCounts, resOffCounts)
             self.plot_results(changing_parameters, resOnCounts, resOffCounts)
 
         elif changing_parameters == "He density(cm3)":
-
             power = float(self.power_broadening["power(W)"])
-            resOffCounts_list = []
-            resOnCounts_list = []
-
-            start, end, steps = changing_parameters_range.split(",")
-            start = float(start)
+            run_for_each(power, run_type="nHe")
             
-            end = float(end)
-            steps = int(steps)
-            variable_range = np.linspace(start, end, steps)
-
-            for index, nHe in enumerate(variable_range):
-                
-                print(f"Running: {index}\n", flush=True)
-                Noff, Non = self.get_simulation_results(nHe, power)
-            
-                resOffCounts = Noff.sol(self.simulation_duration_data_points)
-                resOnCounts = Non.sol(self.simulation_duration_data_points)
-                resOffCounts_list.append(resOffCounts)
-                resOnCounts_list.append(resOnCounts)
-
-            resOffCounts_list = np.array(resOffCounts_list, dtype=np.float)
-            resOnCounts_list = np.array(resOnCounts_list, dtype=np.float)
-
-            off_counts = []
-            on_counts = []
-            
-            for i in range(steps):
-
-                off_counts.append(resOffCounts_list[i, self.totallevel, -1])
-                on_counts.append(resOnCounts_list[i, self.totallevel, -1])
-            
-            off_counts = np.array(off_counts, dtype=np.float)
-            on_counts = np.array(on_counts, dtype=np.float)
-            signal = (1 - (on_counts / off_counts))*100
-
-            self.plot_results(changing_parameters, x=variable_range, y=signal)
-        
         elif changing_parameters == "Power(W)":
-
             nHe = float(self.rate_coefficients["He density(cm3)"])
-            resOffCounts_list = []
-            resOnCounts_list = []
-
-            start, end, steps = changing_parameters_range
-            start = float(start)
-            end = float(end)
-            steps = int(steps)
-            variable_range = np.linspace(start, end, steps)
-
-            for index, power in enumerate(variable_range):
-                
-                print(f"Running: {index}\n", flush=True)
-                Noff, Non = self.get_simulation_results(nHe, power)
-                resOffCounts = Noff.sol(self.simulation_duration_data_points)
-                resOnCounts = Non.sol(self.simulation_duration_data_points)
-                resOffCounts_list.append(resOffCounts)
-                resOnCounts_list.append(resOnCounts)
-            
-
-
-            resOffCounts_list = np.array(resOffCounts_list, dtype=np.float)
-            resOnCounts_list = np.array(resOnCounts_list, dtype=np.float)
-            off_counts = []
-            on_counts = []
-            
-
-            for i in range(steps):
-                off_counts.append(resOffCounts_list[i, self.totallevel, -1])
-
-                on_counts.append(resOnCounts_list[i, self.totallevel, -1])
-            
-            off_counts = np.array(off_counts, dtype=np.float)
-            on_counts = np.array(on_counts, dtype=np.float)
-            signal = (1 - (on_counts / off_counts))*100
-
-            self.plot_results(changing_parameters, x=variable_range, y=signal)
-
+            run_for_each(nHe, run_type="power")
 
     def get_attachment_rates(self):
         self.Rate_K3 = [float(i.strip())*self.nHe**2 for i in self.rate_coefficients["k3"].split(",")]
@@ -264,7 +245,7 @@ class ROSAA():
     def get_simulation_results(self, nHe, power):
         
         self.nHe = nHe
-        
+        print(f"{nHe=:.2e}\n{power=:.2e}", flush=True)
         norm = self.lineshape_normalise(power)
         self.A_10 = float(self.einstein_coefficient["A_10"])
 
@@ -306,7 +287,6 @@ class ROSAA():
             dR_dt = self.compute_attachment_process(N, N_He, dR_dt)
         return dR_dt
 
-
     def lineshape_normalise(self, power):
 
         # doppler line width
@@ -340,7 +320,7 @@ class ROSAA():
             
             legends = [f"{self.molecule}{i}" for i in range(self.totallevel)]
             if self.includeAttachmentRate:
-                legends += [f"{self.molecule}He"]
+                legends += [f"{self.molecule}{self.taggingPartner}"]
                 legends += [f"{self.molecule}{self.taggingPartner}{i+1}" for i in range(1, self.totalAttachmentLevels)]
 
             simulateTime_ms = self.simulation_duration_data_points*1e3
@@ -352,19 +332,18 @@ class ROSAA():
                 counter += 1
                 
             ax.plot(simulateTime_ms, resOnCounts.sum(axis=0), "k")
-
             ax.legend(title=f"-ON, --OFF")
-            ax.set(yscale="log", ylabel="Counts", xlabel="Time(ms)")
+            ax.set(yscale="log", ylabel="Counts", xlabel="Time(ms)")\
+
             ax.minorticks_on()
-
-            
             signal_index = self.totallevel+1
-
             signal = (1 - (resOnCounts[signal_index][1:] / resOffCounts[signal_index][1:]))*100
+
             ax1.plot(simulateTime_ms[1:], signal)
             ax1.legend([f"Max. Signal = {signal.max():.2f} at {(simulateTime_ms[1:][signal.argmax()]):.2f}ms"])
             ax1.minorticks_on()
             ax1.set(title="Signal as a function of trap time", xlabel="Time (ms)", ylabel="Signal (%)")
+
             plt.tight_layout()
             plt.show()
 
@@ -375,18 +354,100 @@ class ROSAA():
             legends = [f"{self.molecule}{i}" for i in range(self.totallevel)]
 
             print(x, y)
-            ax.plot(x, y, ".-")
+            ax.plot(x, y, ".-", label=f"{self.molecule}-{self.taggingPartner}")
 
-            ax.legend(legends)
-            ax.set(ylabel="Signal(%)", xlabel="Time(ms)")
+            ax.legend()
+            ax.set(ylabel="Signal(%)", xlabel=changing_parameters)
             
             ax.minorticks_on()
             plt.tight_layout()
+            plt.ticklabel_format(axis="x", style="sci", scilimits=(0,0))
             plt.show()
 
+    def write_data_to_file(self, changing_parameters, changing_parameters_range, resOnCounts_list, resOffCounts_list, signal):
+
+        start, end, steps = changing_parameters_range.split(",")
+        start = float(start)
+        end = float(end)
+        steps = int(steps)
+        variable_range = np.linspace(start, end, steps)
+
+        savefile_name = f"{self.filename}_{changing_parameters.split('(')[0]}_{start:.1e}-{end:.1e}"
+        savefile = pt(self.currentLocation)/savefile_name
+        
+        with open(f"{savefile}_raw_data.dat", "w+") as f:
+            f.write(f"# {changing_parameters}: {changing_parameters_range}\n")
+            f.write(f"# Time evolution (s): 0, {self.simulation_duration}, {self.totalSteps}\n")
+            for index, var in enumerate(variable_range):
+                f.write(f"############################## Begin: Run_{index}: {var} ##############################\n")
+
+                data_on = resOnCounts_list[index].T
+                data_off = resOffCounts_list[index].T
+
+                f.write("# lightOFF\n")
+                legends = [f"{self.molecule}{i}" for i in range(self.totallevel)]
+                if self.includeAttachmentRate:
+                    legends += [f"{self.molecule}{self.taggingPartner}"]
+                    legends += [f"{self.molecule}{self.taggingPartner}{i+1}" for i in range(1, self.totalAttachmentLevels)]
+                f.write("#" + "\t".join([f'{i}' for i in legends]) + "\n")
+
+                for off in data_off: 
+                    f.write("\t".join([f'{i}' for i in off])+"\n")
+
+                f.write("# lightON\n")
+                for on in data_on: 
+                    f.write("\t".join([f'{i}' for i in on])+"\n")
+
+                f.write(f"############################## END: Run_{index}: {var} ##############################\n\n")
+
+        with open(f"{savefile}_signal.dat", "w+") as f:
+            f.write(f"# {changing_parameters}\tSignal (%)\n")
+            for var, sig in zip(variable_range, signal):
+                f.write(f"{var:.2e}\t{sig:.2f}\n")
+
+
+        print(f"File written: {savefile}")
+
+    def write_signal_file(self, data_on, data_off):
+        savefile = pt(self.currentLocation)/self.filename
+
+        with open(f"{savefile}_raw_data.dat", "w+") as f:
+
+            f.write(f"# Time evolution (s): 0, {self.simulation_duration}, {self.totalSteps}\n")
+            f.write(f"############################## Begin: Run ##############################\n")
+
+            f.write("# lightOFF\n")
+            legends = [f"{self.molecule}{i}" for i in range(self.totallevel)]
+            
+            if self.includeAttachmentRate:
+                legends += [f"{self.molecule}{self.taggingPartner}"]
+                legends += [f"{self.molecule}{self.taggingPartner}{i+1}" for i in range(1, self.totalAttachmentLevels)]
+
+            
+            f.write("#" + "\t".join([f'{i}' for i in legends]) + "\n")
+            for off in data_off.T:
+                f.write("\t".join([f'{i}' for i in off])+"\n")
+
+            f.write("# lightON\n")
+            for on in data_on.T: 
+                f.write("\t".join([f'{i}' for i in on])+"\n")
+            f.write(f"############################## END: Run ##############################\n\n")
+
+        with open(f"{savefile}_signal.dat", "w+") as f:
+            f.write(f"# Time(ms) \tSignal (%)\n")
+
+            simulateTime_ms = self.simulation_duration_data_points*1e3
+            signal_index = self.totallevel+1
+            
+            signal = (1 - (data_on[signal_index][1:] / data_off[signal_index][1:]))*100
+
+            for var, sig in zip(simulateTime_ms[1:], signal):
+                f.write(f"{var:.2f}\t{sig:.2f}\n")
+
 if __name__ == "__main__":
-
     args = sys.argv[1:][0].split(",")
-    conditions = json.loads(", ".join(args))
 
+    conditions = json.loads(", ".join(args))
+    time_start = perf_counter()
+    
     ROSAA(conditions)
