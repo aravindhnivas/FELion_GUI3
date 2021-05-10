@@ -48,7 +48,7 @@
 
 <script>
     
-    import { fly } from 'svelte/transition';
+    import { fly, fade } from 'svelte/transition';
     import Textfield from '@smui/textfield';
     import {onMount, afterUpdate} from "svelte";
     import FileBrowser from "./FileBrowser.svelte"
@@ -60,7 +60,7 @@
     ////////////////////////////////////////////////////////////////////////////
 
     export let id, fileChecked=[], filetype = "felix", toggleBrowser = false, preModal = {}, fullfileslist = [];
-    export let currentLocation = localStorage[`${filetype}_location`] || "";
+    export let currentLocation = localStorage[`${filetype}_location`] || "", graphPlotted=false;
     const dispatch = createEventDispatcher()
 
     function browse_folder() {
@@ -149,22 +149,21 @@
     }
 
     .plotContainer {
-        overflow-y: auto; padding-bottom: 12em; max-height: calc(100vh - 20em);
-
+        overflow-y: auto; padding-bottom: 12em; max-height: calc(100vh - 20em); padding-right: 1em;
         div {margin-top: 1em;}
-
-        
-    
     }
      
     .filebrowser {
+
         padding-left: 2em;
         padding-top: 1em;
         background-color: $box1;
+
         border-radius: 0;
     }
     
     .fileContainer {
+
         margin: 0 2em; padding-bottom: 5rem; width: auto;
         @include tablet { width: 60%; }
     }
@@ -172,17 +171,17 @@
     .buttonContainer { max-height: 20em; overflow-y: auto; }
     .box {border-radius: 0;}
     .container {height: calc(100vh - 7em);}
-
 </style>
 
 <PreModal bind:preModal />
 
-
 <section {id} style="display:none" class="animated fadeIn">
+
     <div class="columns">
 
         {#if toggleBrowser}
             <div class="column is-one-fifth-widescreen is-one-quarter-desktop box filebrowser adjust-right" transition:fly="{{ x: -100, duration: 500 }}">
+
                 <FileBrowser bind:currentLocation {filetype} bind:fileChecked on:chdir bind:fullfileslist/>
             </div>
         {/if}
@@ -198,17 +197,22 @@
 
                     <Textfield style="margin-bottom:1em; width:70%;" bind:value={currentLocation} label="Current location" />
                     <button class="button is-link is-pulled-right" on:click={tour_event}>Need help?</button>
-
                 </div>
                 <div class="align buttonContainer" id="{filetype}-buttonContainer" bind:clientHeight={buttonContainerHeight}>
                     {#if toggleBrowser}
                         <slot name="buttonContainer" />
                     {/if}
                  </div>
-                <div class="plotContainer" id="{filetype}-plotContainer"> 
+
+                <div class="plotContainer" id="{filetype}-plotContainer" transition:fade> 
 
                     <slot name="plotContainer" />
-                    <slot name="plotContainer_functions" />
+                    {#if graphPlotted}
+                        <slot name="plotContainer_functions" />
+                        <slot name="plotContainer_reports" />
+
+                    {/if}
+                    
                 </div>
             </div>
         </div>
