@@ -145,9 +145,9 @@
 
         <TheoryRow bind:theoryLocation bind:show_theoryplot bind:preModal normMethod={$normMethod} />
         <div style="display:flex;">
+
             <CustomRadio on:change={replot} bind:selected={$normMethod} options={["Log", "Relative", "IntensityPerPhoton"]}/>
         </div>
-        
     </div>
 
     <svelte:fragment slot="plotContainer">
