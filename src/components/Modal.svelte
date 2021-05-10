@@ -1,13 +1,17 @@
 
 <script>
-    export let active =  false, title =  "Title", style="width:60vw", bodyBackground = "#634e96";
+  import {onMount} from "svelte";
+  import { createEventDispatcher } from 'svelte';
+  export let active =  false, title =  "Title", style="width:60vw", bodyBackground = "#634e96", bodyStyle="max-height: 30em;", contentID="";
+
+  const dispatch = createEventDispatcher()
+
 </script>
 
 <style>
-  .modal-card-body {color: black; overflow-y: auto; max-height: 30em;}
+  .modal-card-body {color: black; overflow-y: auto; height: 100%;}
   
   .delete {background-color: #fafafa;}
-  
   .delete:hover {background-color: #f14668;}
 </style>
 
@@ -17,19 +21,25 @@
 
   <div class="modal-background"></div>
 
+
   <div class="modal-card animated fadeIn faster" {style}>
 
     <header class="modal-card-head">
       <p class="modal-card-title">{title}</p>
-      <span class="delete is-pulled-right" on:click="{()=>active=false}"></span>
+      <span class="delete is-pulled-right" on:click="{()=>{active=false; dispatch('closed', {active}) }}"></span>
+
     </header>
-    <section class="modal-card-body" style="background: {bodyBackground};"><slot name="content" style="white-space: pre-wrap;"/></section>
 
-    <footer class="modal-card-foot">
-      <div style="margin-left:auto; display:flex;">
-        <slot name="footerbtn" /> 
-      </div>
-    </footer>
+    <section class="modal-card-body" style="background: {bodyBackground}; {bodyStyle}" id="{contentID||window.getID()}"><slot name="content" style="white-space: pre-wrap;"/></section>
+
+    {#if $$slots.footerbtn}
+      <footer class="modal-card-foot">
+        <div style="margin-left:auto; display:flex;">
+          <slot name="footerbtn" /> 
+
+        </div>
+      </footer>
+    {/if}
+    
   </div>
-
 </div>
