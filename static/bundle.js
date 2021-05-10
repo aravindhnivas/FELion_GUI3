@@ -55408,7 +55408,7 @@ function init_tour_normline({filetype="felix"}={}) {
 const { console: console_1$a } = globals;
 const file$1a = "src\\Pages\\Normline.svelte";
 
-// (148:4) 
+// (147:4) 
 function create_buttonContainer_slot(ctx) {
 	let div1;
 	let initfunctionrow;
@@ -55431,11 +55431,7 @@ function create_buttonContainer_slot(ctx) {
 	let div0;
 	let customradio;
 	let updating_selected;
-	let t3;
-	let button;
 	let current;
-	let mounted;
-	let dispose;
 
 	function initfunctionrow_preModal_binding(value) {
 		/*initfunctionrow_preModal_binding*/ ctx[46](value);
@@ -55587,16 +55583,11 @@ function create_buttonContainer_slot(ctx) {
 			t2 = space();
 			div0 = element("div");
 			create_component(customradio.$$.fragment);
-			t3 = space();
-			button = element("button");
-			button.textContent = "openGraphWindow";
 			set_style(div0, "display", "flex");
-			add_location(div0, file$1a, 152, 8, 6617);
-			attr_dev(button, "class", "button is-warning");
-			add_location(button, file$1a, 157, 8, 6809);
+			add_location(div0, file$1a, 152, 8, 6254);
 			attr_dev(div1, "class", "buttonSlot");
 			attr_dev(div1, "slot", "buttonContainer");
-			add_location(div1, file$1a, 147, 4, 6168);
+			add_location(div1, file$1a, 146, 4, 5803);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div1, anchor);
@@ -55608,14 +55599,7 @@ function create_buttonContainer_slot(ctx) {
 			append_dev(div1, t2);
 			append_dev(div1, div0);
 			mount_component(customradio, div0, null);
-			append_dev(div1, t3);
-			append_dev(div1, button);
 			current = true;
-
-			if (!mounted) {
-				dispose = listen_dev(button, "click", openGraphWindow, false, false, false);
-				mounted = true;
-			}
 		},
 		p: function update(ctx, dirty) {
 			const initfunctionrow_changes = {};
@@ -55729,8 +55713,6 @@ function create_buttonContainer_slot(ctx) {
 			destroy_component(oporow);
 			destroy_component(theoryrow);
 			destroy_component(customradio);
-			mounted = false;
-			dispose();
 		}
 	};
 
@@ -55738,14 +55720,14 @@ function create_buttonContainer_slot(ctx) {
 		block,
 		id: create_buttonContainer_slot.name,
 		type: "slot",
-		source: "(148:4) ",
+		source: "(147:4) ",
 		ctx
 	});
 
 	return block;
 }
 
-// (161:4) 
+// (160:4) 
 function create_plotContainer_slot(ctx) {
 	let div8;
 	let getfileinfotable;
@@ -55794,37 +55776,37 @@ function create_plotContainer_slot(ctx) {
 			div5 = element("div");
 			t6 = space();
 			div6 = element("div");
-			attr_dev(div0, "class", "animated fadeIn svelte-1soq9o5");
+			attr_dev(div0, "class", "animated fadeIn svelte-zs2kpx");
 			attr_dev(div0, "id", "exp-theory-plot");
 			toggle_class(div0, "hide", !/*show_theoryplot*/ ctx[10]);
-			add_location(div0, file$1a, 167, 12, 7197);
+			add_location(div0, file$1a, 166, 12, 6739);
 			attr_dev(div1, "id", "bplot");
-			attr_dev(div1, "class", "svelte-1soq9o5");
-			add_location(div1, file$1a, 169, 12, 7299);
+			attr_dev(div1, "class", "svelte-zs2kpx");
+			add_location(div1, file$1a, 168, 12, 6841);
 			attr_dev(div2, "id", "saPlot");
-			attr_dev(div2, "class", "svelte-1soq9o5");
-			add_location(div2, file$1a, 170, 12, 7335);
+			attr_dev(div2, "class", "svelte-zs2kpx");
+			add_location(div2, file$1a, 169, 12, 6877);
 			attr_dev(div3, "id", "avgplot");
-			attr_dev(div3, "class", "svelte-1soq9o5");
-			add_location(div3, file$1a, 171, 12, 7372);
-			attr_dev(div4, "class", "animated fadeIn svelte-1soq9o5");
+			attr_dev(div3, "class", "svelte-zs2kpx");
+			add_location(div3, file$1a, 170, 12, 6914);
+			attr_dev(div4, "class", "animated fadeIn svelte-zs2kpx");
 			attr_dev(div4, "id", "opoplot");
 			toggle_class(div4, "hide", !/*$opoMode*/ ctx[8]);
-			add_location(div4, file$1a, 173, 12, 7424);
-			attr_dev(div5, "class", "animated fadeIn svelte-1soq9o5");
+			add_location(div4, file$1a, 172, 12, 6966);
+			attr_dev(div5, "class", "animated fadeIn svelte-zs2kpx");
 			attr_dev(div5, "id", "opoSA");
 			toggle_class(div5, "hide", !/*$opoMode*/ ctx[8]);
-			add_location(div5, file$1a, 174, 12, 7509);
-			attr_dev(div6, "class", "animated fadeIn svelte-1soq9o5");
+			add_location(div5, file$1a, 173, 12, 7051);
+			attr_dev(div6, "class", "animated fadeIn svelte-zs2kpx");
 			attr_dev(div6, "id", "opoRelPlot");
 			toggle_class(div6, "hide", !/*$opoMode*/ ctx[8]);
-			add_location(div6, file$1a, 175, 12, 7592);
-			attr_dev(div7, "class", "felixPlot svelte-1soq9o5");
+			add_location(div6, file$1a, 174, 12, 7134);
+			attr_dev(div7, "class", "felixPlot svelte-zs2kpx");
 			attr_dev(div7, "id", div7_id_value = "plot_container__div__" + filetype);
-			add_location(div7, file$1a, 166, 8, 7123);
-			attr_dev(div8, "class", "plotSlot svelte-1soq9o5");
+			add_location(div7, file$1a, 165, 8, 6665);
+			attr_dev(div8, "class", "plotSlot svelte-zs2kpx");
 			attr_dev(div8, "slot", "plotContainer");
-			add_location(div8, file$1a, 160, 4, 6914);
+			add_location(div8, file$1a, 159, 4, 6456);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div8, anchor);
@@ -55887,14 +55869,14 @@ function create_plotContainer_slot(ctx) {
 		block,
 		id: create_plotContainer_slot.name,
 		type: "slot",
-		source: "(161:4) ",
+		source: "(160:4) ",
 		ctx
 	});
 
 	return block;
 }
 
-// (183:8) {#if graphPlotted}
+// (182:8) {#if graphPlotted}
 function create_if_block$s(ctx) {
 	let div;
 	let writefunctioncontents;
@@ -56025,7 +56007,7 @@ function create_if_block$s(ctx) {
 			create_component(frequencytable.$$.fragment);
 			t2 = space();
 			create_component(reportlayout.$$.fragment);
-			add_location(div, file$1a, 183, 12, 7808);
+			add_location(div, file$1a, 182, 12, 7350);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -56133,14 +56115,14 @@ function create_if_block$s(ctx) {
 		block,
 		id: create_if_block$s.name,
 		type: "if",
-		source: "(183:8) {#if graphPlotted}",
+		source: "(182:8) {#if graphPlotted}",
 		ctx
 	});
 
 	return block;
 }
 
-// (182:4) <svelte:fragment slot="plotContainer_functions">
+// (181:4) <svelte:fragment slot="plotContainer_functions">
 function create_plotContainer_functions_slot(ctx) {
 	let if_block_anchor;
 	let current;
@@ -56199,7 +56181,7 @@ function create_plotContainer_functions_slot(ctx) {
 		block,
 		id: create_plotContainer_functions_slot.name,
 		type: "slot",
-		source: "(182:4) <svelte:fragment slot=\\\"plotContainer_functions\\\">",
+		source: "(181:4) <svelte:fragment slot=\\\"plotContainer_functions\\\">",
 		ctx
 	});
 
@@ -56408,7 +56390,7 @@ function create_fragment$1h(ctx) {
 			addfilestoplot.$set(addfilestoplot_changes);
 			const layout_changes = {};
 
-			if (dirty[0] & /*currentLocation, keepTable, addedFileScale, addedFileCol, $normMethod, writeFileName, writeFile, overwrite_expfit, fullfiles, preModal, output_namelists, addFileModal, graphPlotted, $opoMode, show_theoryplot, felixfiles, theoryLocation, OPOLocation, OPOfilesChecked, opofiles*/ 33029534 | dirty[2] & /*$$scope*/ 256) {
+			if (dirty[0] & /*currentLocation, keepTable, addedFileScale, addedFileCol, $normMethod, writeFileName, writeFile, overwrite_expfit, fullfiles, preModal, output_namelists, addFileModal, graphPlotted, $opoMode, show_theoryplot, felixfiles, theoryLocation, OPOLocation, OPOfilesChecked, opofiles*/ 33029534 | dirty[2] & /*$$scope*/ 512) {
 				layout_changes.$$scope = { dirty, ctx };
 			}
 
@@ -56468,16 +56450,6 @@ function create_fragment$1h(ctx) {
 }
 
 const filetype = "felix", id = "Normline";
-
-function openGraphWindow() {
-	const graphWindow = window.open("", "modal");
-	const content = document.getElementById(`plot_container__div__${filetype}`);
-	graphWindow.document.write(content.outerHTML);
-	const script_element = document.createElement("script");
-	const plotly_path = path.resolve(__dirname, "assets/js/plotly-latest.min.js");
-	script_element.src = plotly_path;
-	graphWindow.document.body.appendChild(script_element);
-}
 
 function instance$1h($$self, $$props, $$invalidate) {
 	let felixfiles;
@@ -56640,6 +56612,16 @@ function instance$1h($$self, $$props, $$invalidate) {
 	onMount(() => {
 		console.log("Normline mounted");
 	});
+
+	const graphDivIds = [
+		"exp-theory-plot",
+		"bplot",
+		"saPlot",
+		"avgplot",
+		"opoplot",
+		"opoSA",
+		"opoRelPlot"
+	];
 
 	const writable_props = [];
 
@@ -56851,7 +56833,7 @@ function instance$1h($$self, $$props, $$invalidate) {
 		includePlotsInReport,
 		includeTablesInReports,
 		preModal,
-		openGraphWindow,
+		graphDivIds,
 		felixfiles,
 		plottedFiles,
 		$opoMode,

@@ -225,28 +225,26 @@ class ROSAA():
             print(f"Time taken to simulation: {round(perf_counter()-self.time_start, 2)} s", flush=True)
 
             self.plot_results(changing_parameters, resOnCounts, resOffCounts)
-
-
             savefile = pt(self.currentLocation)/self.filename
+
             f = open(f"{savefile}_raw_data.dat", "w+")
             f.write(f"############################## Begin: Run ##############################\n")
-            
             self.write_signal_file(f, resOnCounts.T, resOffCounts.T)
+
             f.write(f"############################## END: Run ##############################\n\n")
             f.close()
 
+            if self.includeAttachmentRate:
 
-            with open(f"{savefile}_signal.dat", "w+") as f:
-                f.write(f"# Time(ms) \tSignal (%)\n")
-                f.write(f"# Time evolution (s): 0, {self.simulation_duration}, {self.totalSteps}\n")
-                simulateTime_ms = self.simulation_duration_data_points*1e3
-                signal_index = self.totallevel+1
-                signal = (1 - (resOnCounts[signal_index][1:] / resOffCounts[signal_index][1:]))*100
-
-                for var, sig in zip(simulateTime_ms[1:], signal):
-                    f.write(f"{var:.2f}\t{sig:.2f}\n")
+                with open(f"{savefile}_signal.dat", "w+") as f:
+                    f.write(f"# Time(ms) \tSignal (%)\n")
+                    f.write(f"# Time evolution (s): 0, {self.simulation_duration}, {self.totalSteps}\n")
+                    simulateTime_ms = self.simulation_duration_data_points*1e3
+                    signal_index = self.totallevel+1
+                    signal = (1 - (resOnCounts[signal_index][1:] / resOffCounts[signal_index][1:]))*100
+                    for var, sig in zip(simulateTime_ms[1:], signal):
+                        f.write(f"{var:.2f}\t{sig:.2f}\n")
             
-
         elif changing_parameters == "He density(cm3)":
             power = float(self.power_broadening["power(W)"])
             run_for_each(power, run_type="nHe")
@@ -263,12 +261,11 @@ class ROSAA():
         self.Rate_kCID = [float(i.strip())*self.nHe for i in self.rate_coefficients["kCID"].split(",")]
 
     def get_simulation_results(self, nHe, power):
-        
         self.nHe = nHe
+
         print(f"{nHe=:.2e}\n{power=:.2e}", flush=True)
         norm = self.lineshape_normalise(power)
         self.A_10 = float(self.einstein_coefficient["A_10"])
-
         self.B_10 = stimulated_emission(self.A_10, self.freq)*norm
         self.B_01 = stimulated_absorption(self.excitedFrom, self.excitedTo, self.B_10)
 
@@ -279,15 +276,20 @@ class ROSAA():
         Noff = solve_ivp(self.computeRateDistributionEquations, self.tspan, self.boltzman_distribution_source, dense_output=True)
         resOffCounts = Noff.sol(self.simulation_duration_data_points)
 
+        # Non = []
+        # if self.includeAttachmentRate:
         self.lightON=True
         Non = solve_ivp(self.computeRateDistributionEquations, self.tspan, self.boltzman_distribution_source, dense_output=True)
+        
         resOnCounts = Non.sol(self.simulation_duration_data_points)
+
         return Noff, Non
 
     def computeRateDistributionEquations(self, t, counts):
 
         if self.includeAttachmentRate:
             N =  counts[:-self.totalAttachmentLevels]
+
             N_He = counts[-self.totalAttachmentLevels:]
         else: N = counts
         
@@ -352,39 +354,37 @@ class ROSAA():
                 ax.plot(simulateTime_ms, on, f"-C{counter}", label=legends[counter])
                 ax.plot(simulateTime_ms, off, f"--C{counter}")
                 counter += 1
-                
-            ax.plot(simulateTime_ms, resOnCounts.sum(axis=0), "k")
+
+
+            # ax.plot(simulateTime_ms, resOnCounts.sum(axis=0), "k")
             ax.legend(title=f"-ON, --OFF")
-            ax.set(yscale="log", ylabel="Counts", xlabel="Time(ms)")\
 
+            ax.set(yscale="log", ylabel="Counts", xlabel="Time(ms)")
             ax.minorticks_on()
-            signal_index = self.totallevel+1
-            signal = (1 - (resOnCounts[signal_index][1:] / resOffCounts[signal_index][1:]))*100
 
-            ax1.plot(simulateTime_ms[1:], signal)
-            ax1.legend([f"Max. Signal = {signal.max():.2f} at {(simulateTime_ms[1:][signal.argmax()]):.2f}ms"])
-            ax1.minorticks_on()
-            ax1.set(title="Signal as a function of trap time", xlabel="Time (ms)", ylabel="Signal (%)")
+            if self.includeAttachmentRate:
+                signal_index = self.totallevel+1
+                signal = (1 - (resOnCounts[signal_index][1:] / resOffCounts[signal_index][1:]))*100
+                ax1.plot(simulateTime_ms[1:], signal)
+                ax1.legend([f"Max. Signal = {signal.max():.2f} at {(simulateTime_ms[1:][signal.argmax()]):.2f}ms"])
 
+                ax1.minorticks_on()
+                ax1.set(title="Signal as a function of trap time", xlabel="Time (ms)", ylabel="Signal (%)")
             plt.tight_layout()
             plt.show()
 
         else:
-
             fig, ax = plt.subplots(figsize=(7, 5), dpi=100)
-
             legends = [f"{self.molecule}{i}" for i in range(self.totallevel)]
 
-            print(x, y)
             ax.plot(x, y, ".-", label=f"{self.molecule}-{self.taggingPartner}")
-
             ax.legend()
             ax.set(ylabel="Signal(%)", xlabel=changing_parameters)
-            
             ax.minorticks_on()
             plt.tight_layout()
             plt.ticklabel_format(axis="x", style="sci", scilimits=(0,0))
             plt.show()
+
 
     def write_data_to_file(self, changing_parameters, changing_parameters_range, resOnCounts_list, resOffCounts_list, signal):
 
@@ -410,21 +410,19 @@ class ROSAA():
             f.write(f"############################## END: Run_{index}: {var} ##############################\n\n")
         f.close()
 
-        with open(f"{savefile}_signal.dat", "w+") as f:
-            f.write(f"# {changing_parameters}\tSignal (%)\n")
-            for var, sig in zip(variable_range, signal):
-                f.write(f"{var:.2e}\t{sig:.2f}\n")
+
+        if self.includeAttachmentRate:
+            with open(f"{savefile}_signal.dat", "w+") as f:
+                f.write(f"# {changing_parameters}\tSignal (%)\n")
+                for var, sig in zip(variable_range, signal):
+                    f.write(f"{var:.2e}\t{sig:.2f}\n")
 
         print(f"File written: {savefile}")
 
     def write_signal_file(self, f, data_on, data_off):
 
-        # savefile = pt(self.currentLocation)/self.filename
 
-        # with open(f"{savefile}_raw_data.dat", "w+") as f:
         f.write(f"# Time evolution (s): 0, {self.simulation_duration}, {self.totalSteps}\n")
-        # f.write(f"############################## Begin: Run ##############################\n")
-
         f.write("# lightOFF\n")
         legends = [f"{self.molecule}{i}" for i in range(self.totallevel)]
         
@@ -440,25 +438,12 @@ class ROSAA():
         f.write("# lightON\n")
         for on in data_on: 
             f.write("\t".join([f'{i}' for i in on])+"\n")
-        # f.write(f"############################## END: Run ##############################\n\n")
-
-        # f.close()
         
-        # with open(f"{savefile}_signal.dat", "w+") as f:
-        #     f.write(f"# Time(ms) \tSignal (%)\n")
-
-        #     simulateTime_ms = self.simulation_duration_data_points*1e3
-        #     signal_index = self.totallevel+1
-            
-        #     signal = (1 - (data_on[signal_index][1:] / data_off[signal_index][1:]))*100
-
-        #     for var, sig in zip(simulateTime_ms[1:], signal):
-        #         f.write(f"{var:.2f}\t{sig:.2f}\n")
 
 if __name__ == "__main__":
-    args = sys.argv[1:][0].split(",")
 
+    args = sys.argv[1:][0].split(",")
     conditions = json.loads(", ".join(args))
     time_start = perf_counter()
-    
+
     ROSAA(conditions)

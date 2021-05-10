@@ -82,13 +82,16 @@
 
     let ContainerHeight, buttonContainerHeight, mounted=false;
 
+    
+    // let plotContainer_component;
     onMount(()=>{ toggleBrowser = true; mounted=true;})
-
+    
     afterUpdate(() => {
         const plotContainer = document.getElementById(`${filetype}-plotContainer`)
         
         plotContainer.style.height = `calc(${ContainerHeight}px - ${buttonContainerHeight}px - 11em)`
-    
+        // console.log(plotContainer_component)
+
     });
 
 </script>
@@ -202,7 +205,11 @@
                         <slot name="buttonContainer" />
                     {/if}
                  </div>
-                <div class="plotContainer" id="{filetype}-plotContainer"> <slot name="plotContainer" /> </div>
+                <div class="plotContainer" id="{filetype}-plotContainer"> 
+
+                    <slot name="plotContainer" />
+                    <slot name="plotContainer_functions" />
+                </div>
             </div>
         </div>
     </div>
