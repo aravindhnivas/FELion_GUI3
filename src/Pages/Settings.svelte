@@ -54,10 +54,10 @@
             } , 1000)
 
         updateCheck({info:false})
-        setInterval(()=>{updateCheck({info:false})}, 1*1000*60*15)
+        const timer_for_update = setInterval(()=>{updateCheck({info:false})}, 1*1000*60*15)
 
+        return clearInterval(timer_for_update)
     })
-
     const handlepythonPathCheck = () => { console.log("Python path checking done") }
     
     const update = async () => {
