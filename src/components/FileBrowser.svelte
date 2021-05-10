@@ -45,11 +45,12 @@
 
     let files_loaded = false
     
-    
-    function getfiles(toast=false) {
+    function getfiles(toast=false, keepfiles=false) {
     
         if (!locationStatus) {return window.createToast("Location undefined", "danger")}
-        original_files = otherfolders = fullfiles = fileChecked = []
+        original_files = otherfolders = fullfiles = []
+
+        if(!keepfiles){fileChecked = []}
         
         selectAll = files_loaded = false
         
@@ -79,6 +80,7 @@
             preModal.modalContent = err.stack;
             preModal.open = true;
             return 
+        
         }
     }
 
@@ -102,32 +104,26 @@
         if (event.shiftKey && fileChecked.length) {
             const _from = window._.indexOf(fullfileslist, fileChecked[0])
             const _to = window._.indexOf(fullfileslist, fileChecked.slice(fileChecked.length-1)[0])
-
             if (_from < _to) {fileChecked = fullfileslist.slice(_from, _to+1)}
             else {fileChecked = fullfileslist.slice(_to, _from+1)}
-            
-
         }
+
 	}
+
 </script>
 
 <style>
-
     .folderfile-list {max-height: calc(100vh - 20em); overflow-y: auto;}
     .align {display: flex; align-items: center;}
-
     .center {justify-content: center;}
     .browseIcons {cursor: pointer;}
 </style>
-
 
 <PreModal bind:preModal/>
 
 <div class="align center browseIcons">
     <Icon class="material-icons" on:click="{()=>changeDirectory("..")}">arrow_back</Icon>
-
-    <Icon class="material-icons" on:click="{()=>{getfiles(true)}}">refresh</Icon>
-
+    <Icon class="material-icons" on:click="{()=>{getfiles(true, true)}}">refresh</Icon>
     <CustomIconSwitch bind:toggler={sortFile} icons={["trending_up", "trending_down"]}/>
 
 </div>
@@ -141,12 +137,10 @@
     </FormField>
 </div>
 
+
 <div class="folderfile-list" id="{filetype}_filebrowser">
-
     <div class="align folderlist" >
-
         <IconButton  toggle bind:pressed={showfiles}>
-
             <Icon class="material-icons" on>keyboard_arrow_down</Icon>
             <Icon class="material-icons" >keyboard_arrow_right</Icon>
         </IconButton>
@@ -154,9 +148,7 @@
     </div>
 
     {#if files_loaded && locationStatus}
-
         {#if showfiles && fullfiles.length }
-
             <div on:click={selectRange}>
                 <VirtualCheckList bind:fileChecked bind:items={fullfiles} on:click="{()=>selectAll=false}" on:select="{(e)=>console.log(e)}"/>
             </div>
@@ -164,24 +156,19 @@
             <div class="mdc-typography--subtitle1 align center">No {filetype} here!</div>        
         {/if}
         
-
         <div class="otherFolderlist" style="cursor:pointer">
             {#each otherfolders as folder (folder.id)}
                 <div class="align" on:click="{()=>changeDirectory(folder.name)}" transition:slide|local>
                     <Icon class="material-icons">keyboard_arrow_right</Icon>
-
                     <div class="mdc-typography--subtitle1">{folder.name}</div>
                 </div>
-
             {/each}
-
         </div>
 
     {:else if !locationStatus}
-
         <div class="mdc-typography--subtitle1 align center">Location doesn't exist: Browse files again</div>
     {:else}
-    
         <div class="mdc-typography--subtitle1 align center">...loading</div>
     {/if}
+
 </div>
