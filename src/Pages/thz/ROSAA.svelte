@@ -84,8 +84,8 @@
     }
 
     let statusReport = "";
-    $: reportToggle = false
-    $: buttonName = reportToggle ? "Go Back" : "Status report"
+    $: showreport = false
+    $: buttonName = showreport ? "Go Back" : "Status report"
     const pyEventDataReceivedHandle = (e) => {
         let dataReceived = e.detail.dataReceived
         statusReport += `${dataReceived}\n`
@@ -226,11 +226,12 @@
 <Modal bind:active title="ROSAA modal" >
     <div class="ROSAA__modal" slot="content">
 
-        {#if reportToggle}
-            <div class="content" style="white-space: pre-wrap; user">{statusReport}</div>
-        {:else}
-
-            <div class="locationColumn">
+        <!-- {#if reportToggle} -->
+        <div class="content" class:hide={!showreport} style="white-space: pre-wrap; user">{statusReport}</div>
+    <!-- {:else} -->
+        <div class:hide={showreport}>
+        
+            <div class="locationColumn" >
                 <button class="button is-link" id="thz_modal_filebrowser_btn" on:click={browse_folder}>Browse</button>
 
                 <Textfield bind:value={currentLocation} label="Current location" />
@@ -322,8 +323,8 @@
                     {/each}
                 </div>
             </div>
-        {/if}
-
+        <!-- {/if} -->
+        </div>
     </div>
 
 
@@ -332,7 +333,7 @@
         <button  class="button is-danger" on:click="{()=>{py&&running? py.kill() : console.log('pyEvent is not available')}}" >Stop</button>
 
     
-        <button  class="button is-link" on:click="{(e)=>{reportToggle = !reportToggle}}" >{buttonName}</button>
+        <button  class="button is-link" on:click="{(e)=>{showreport = !showreport}}" >{buttonName}</button>
         <button  class="button is-link" class:is-loading={running} on:click="{simulation}" on:pyEvent={pyEventHandle} on:pyEventClosed="{pyEventClosedHandle}" on:pyEventData={pyEventDataReceivedHandle}>Submit</button>
     </div>
     
