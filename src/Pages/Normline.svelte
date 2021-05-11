@@ -115,58 +115,91 @@
     ]
     
     let preModal = {};
-    $: console.log(`$opoMode: ${$opoMode}`)
     
     onMount(()=>{  console.log("Normline mounted") })
     const graphDivIds = ["exp-theory-plot", "bplot", "saPlot", "avgplot", "opoplot", "opoSA", "opoRelPlot"]
-</script>
 
+    let graphWindow;
+    let graphWidth;
+    let graphWindowClosed = false;
+
+    $: if(graphPlotted&&graphWidth) {
+
+        graphDivIds.forEach(id=>{
+            const content = document.getElementById(id).innerHTML
+    
+            if(content){ Plotly.relayout(id, {width:graphWidth}) }
+        })
+
+    
+    }
+
+    function openGraph(){
+        graphWindowClosed = false
+
+        graphWindow = new WinBox({
+            root:document.getElementById("pageContainer"), 
+            mount: document.getElementById("felix-plotContainer"), 
+
+            title: `Modal: ${filetype}`,
+
+            x: "center", y: "center",
+            width: "70%", height: "70%",
+
+            background:"#634e96",
+            top: 100,
+            onclose: function(){
+                graphWindowClosed = true
+                console.log(`${filetype}=> graphWindowClosed: ${graphWindowClosed}`)
+
+                return false
+            } 
+
+        });
+    }
+</script>
 
 <style>
     .hide {display: none;}
     .felixPlot > div {margin-bottom: 1em;}
-
 </style>
 
 <!-- Modals -->
-
-
-
 <AddFilesToPlot {fileChecked} bind:extrafileAdded bind:active={addFileModal} bind:addedFileCol bind:addedFileScale bind:addedfiles bind:addedFile bind:preModal />
 
 <!-- Layout -->
 <Layout bind:preModal {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>
 
-
     <div slot="buttonContainer">
-
         <InitFunctionRow {removeExtraFile} {opofiles} {felixfiles} normMethod={$normMethod} {theoryLocation} bind:preModal bind:graphPlotted bind:show_theoryplot/>
-        <OPORow {removeExtraFile} bind:OPOLocation bind:OPOfilesChecked bind:opofiles bind:preModal bind:graphPlotted />
 
+        <OPORow {removeExtraFile} bind:OPOLocation bind:OPOfilesChecked bind:opofiles bind:preModal bind:graphPlotted />
         <TheoryRow bind:theoryLocation bind:show_theoryplot bind:preModal normMethod={$normMethod} />
         <div style="display:flex;">
-
             <CustomRadio on:change={replot} bind:selected={$normMethod} options={["Log", "Relative", "IntensityPerPhoton"]}/>
+            {#if graphPlotted}
+                <button class="button is-warning animated fadeIn" on:click={openGraph}>Graph:Open separately</button>
+            {/if}
         </div>
+        
     </div>
 
-    <svelte:fragment slot="plotContainer">
+    <svelte:fragment slot="plotContainer" >
 
         <!-- Get file info functions -->
         <GetFileInfoTable {felixfiles} normMethod={$normMethod} />
         
         <!-- Plots container -->
+
         <div class="felixPlot" id="plot_container__div__{filetype}">
             <div class="animated fadeIn" class:hide={!show_theoryplot} id="exp-theory-plot"></div>
-            <div id="bplot"></div>
+            <div id="bplot" bind:clientWidth={graphWidth}></div>
             <div id="saPlot"></div>
             <div id="avgplot"></div>
             <div class="animated fadeIn" class:hide={!$opoMode} id="opoplot"></div>
             <div class="animated fadeIn" class:hide={!$opoMode} id="opoSA"></div>
-
             <div class="animated fadeIn" class:hide={!$opoMode} id="opoRelPlot"></div>
         </div>
-        
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer_functions" >

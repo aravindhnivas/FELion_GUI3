@@ -48,7 +48,7 @@
 
 <Home />
 
-<div class="pageContainer" style="overflow: hidden;">
+<div id="pageContainer" style="overflow: hidden;">
 
 	
 	<!-- <svelte:component this={components[$activePage]}/> -->
