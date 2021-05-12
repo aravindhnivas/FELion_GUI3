@@ -60,7 +60,7 @@
     ////////////////////////////////////////////////////////////////////////////
 
     export let id, fileChecked=[], filetype = "felix", toggleBrowser = false, preModal = {}, fullfileslist = [];
-    export let currentLocation = localStorage[`${filetype}_location`] || "", graphPlotted=false;
+    export let currentLocation = localStorage[`${filetype}_location`] || "", graphPlotted=false, graphModal = false;
     const dispatch = createEventDispatcher()
 
     function browse_folder() {
@@ -81,18 +81,11 @@
     function tour_event() { dispatch('tour', {filetype}) }
 
     let ContainerHeight, buttonContainerHeight, mounted=false;
-
     
-    // let plotContainer_component;
+    
     onMount(()=>{ toggleBrowser = true; mounted=true;})
-    
-    afterUpdate(() => {
-        const plotContainer = document.getElementById(`${filetype}-plotContainer`)
-        
-        plotContainer.style.height = `calc(${ContainerHeight}px - ${buttonContainerHeight}px - 11em)`
-        // console.log(plotContainer_component)
-
-    });
+    const plotContainer = document.getElementById(`${filetype}-plotContainer`)
+    $: plotContainerStyle = graphModal ? "" : `max-height: calc(100vh - 20em); height:calc(${ContainerHeight}px - ${buttonContainerHeight}px - 11em)`
 
 </script>
 
@@ -149,7 +142,7 @@
     }
 
     .plotContainer {
-        overflow-y: auto; padding-bottom: 12em; max-height: calc(100vh - 20em); padding-right: 1em;
+        overflow-y: auto; padding-bottom: 12em;  padding-right: 1em;
         div {margin-top: 1em;}
     }
      
@@ -204,7 +197,7 @@
                     {/if}
                  </div>
 
-                <div class="plotContainer" id="{filetype}-plotContainer" transition:fade> 
+                <div class="plotContainer" id="{filetype}-plotContainer" style="{plotContainerStyle}" transition:fade> 
 
                     <slot name="plotContainer" />
                     {#if graphPlotted}

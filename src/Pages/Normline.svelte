@@ -121,7 +121,7 @@
 
     let graphWindow;
     let graphWidth;
-    let graphWindowClosed = false;
+    let graphWindowClosed = true;
 
     $: if(graphPlotted&&graphWidth) {
 
@@ -133,13 +133,15 @@
 
     
     }
-
+    $: graphModal = !graphWindowClosed
     function openGraph(){
         graphWindowClosed = false
 
+        const mount = document.getElementById("felix-plotContainer")
+
         graphWindow = new WinBox({
             root:document.getElementById("pageContainer"), 
-            mount: document.getElementById("felix-plotContainer"), 
+            mount, 
 
             title: `Modal: ${filetype}`,
 
@@ -147,28 +149,32 @@
             width: "70%", height: "70%",
 
             background:"#634e96",
-            top: 100,
+            top: 50,
             onclose: function(){
                 graphWindowClosed = true
                 console.log(`${filetype}=> graphWindowClosed: ${graphWindowClosed}`)
-
                 return false
+
             } 
 
         });
+
     }
 </script>
 
 <style>
+
     .hide {display: none;}
     .felixPlot > div {margin-bottom: 1em;}
+
 </style>
+
 
 <!-- Modals -->
 <AddFilesToPlot {fileChecked} bind:extrafileAdded bind:active={addFileModal} bind:addedFileCol bind:addedFileScale bind:addedfiles bind:addedFile bind:preModal />
 
 <!-- Layout -->
-<Layout bind:preModal {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour}>
+<Layout bind:preModal {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour} bind:graphModal>
 
     <div slot="buttonContainer">
         <InitFunctionRow {removeExtraFile} {opofiles} {felixfiles} normMethod={$normMethod} {theoryLocation} bind:preModal bind:graphPlotted bind:show_theoryplot/>
