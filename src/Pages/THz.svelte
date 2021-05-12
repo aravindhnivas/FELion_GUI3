@@ -87,21 +87,14 @@
 
 </script>
 <style>
-    .thz_buttonContainer {min-height: 5em;}
-
-    .button {margin-right: 0.5em;}
-    .buttonRow {margin-bottom: 1em!important; align-items: center;}
-    .hide {display: none;}
-
-    * :global(.mdc-select__native-control option) {color: black}
 
 </style>
 
 <ROSAA bind:active={ROSAA_modal_active} on:submit="{(e)=>{plotData({e:e.detail.e, filetype:"general", general:{pyfile:"ROSAA_class.py", args:[JSON.stringify(e.detail.conditions)]}})}}" />
 
-<Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked>
+<Layout bind:preModal {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked>
 
-    <div class="thz_buttonContainer" slot="buttonContainer">
+    <svelte:fragment slot="buttonContainer">
 
         <div class="content align buttonRow">
             <button class="{btnClass}" on:click="{()=>{ROSAA_modal_active=true}}">ROSAA</button>
@@ -134,7 +127,7 @@
             <button class="{btnClass}" on:click="{(e)=>plotData({e:e, filetype:"boltzman", tkplot:"plot"})}">Open in Matplotlib</button>
         </div>
 
-    </div>
+    </svelte:fragment>
 
     <div style="margin-right: 1em;" slot="plotContainer">
 

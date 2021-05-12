@@ -60,7 +60,7 @@
     ////////////////////////////////////////////////////////////////////////////
 
     export let id, fileChecked=[], filetype = "felix", toggleBrowser = false, preModal = {}, fullfileslist = [];
-    export let currentLocation = localStorage[`${filetype}_location`] || "", graphPlotted=false, graphModal = false;
+    export let currentLocation = localStorage[`${filetype}_location`] || "", graphPlotted=false;
     const dispatch = createEventDispatcher()
 
     function browse_folder() {
@@ -84,9 +84,44 @@
     
     
     onMount(()=>{ toggleBrowser = true; mounted=true;})
-    const plotContainer = document.getElementById(`${filetype}-plotContainer`)
-    $: plotContainerStyle = graphModal ? "padding-left: 1em;" : `max-height: calc(100vh - 20em); height:calc(${ContainerHeight}px - ${buttonContainerHeight}px - 11em)`
 
+    let graphWindowClosed = true;
+    $: graphModal = !graphWindowClosed
+
+    const plotContainer = document.getElementById(`${filetype}-plotContainer`)
+    $: plotContainerStyle = graphModal ? "padding: 1em;" : `max-height: calc(100vh - 20em); height:calc(${ContainerHeight}px - ${buttonContainerHeight}px - 11em)`
+    
+
+    function openGraph(){
+
+        if(!graphWindowClosed) {
+            return graphWindow.show()
+        }
+        graphWindowClosed = false
+
+        const mount = document.getElementById(`${filetype}-plotContainer`)
+
+        graphWindow = new WinBox({
+            root:document.getElementById("pageContainer"), 
+            mount, 
+
+            title: `Modal: ${filetype}`,
+
+            x: "center", y: "center",
+            width: "70%", height: "70%",
+
+            background:"#634e96",
+            top: 50, bottom:50,
+            onclose: function(){
+                graphWindowClosed = true
+                console.log(`${filetype}=> graphWindowClosed: ${graphWindowClosed}`)
+                return false
+
+            } 
+
+        });
+
+    }
 </script>
 
 <style lang="scss">
@@ -164,6 +199,22 @@
     .buttonContainer { max-height: 20em; overflow-y: auto; }
     .box {border-radius: 0;}
     .container {height: calc(100vh - 7em);}
+    .location__bar {
+        display:grid;
+        grid-auto-flow: column;
+        grid-template-columns: 1fr 1fr 16fr;
+        grid-column-gap: 1em;
+        place-items: center;
+        margin-bottom: 1em;
+    }
+
+    .buttonContainer {
+        display: grid;
+
+        grid-auto-flow: row;
+        align-items: center;
+    }
+
 </style>
 
 <PreModal bind:preModal />
@@ -182,18 +233,18 @@
         <div class="column fileContainer" >
 
             <div class="container button-plot-container box" id="{filetype}-button-plot-container" bind:clientHeight={ContainerHeight}>
-                <div class="align" style="flex-wrap: nowrap;">
-
-
+                <div class="location__bar" >
                     <Hamburger1 bind:active={toggleBrowser}/>
                     <button class="button is-link gap" id="{filetype}_filebrowser_btn" on:click={browse_folder}>Browse</button>
-
-                    <Textfield style="margin-bottom:1em; width:70%;" bind:value={currentLocation} label="Current location" />
-                    <button class="button is-link is-pulled-right" on:click={tour_event}>Need help?</button>
+                    <Textfield bind:value={currentLocation} label="Current location" />
+                    <!-- <button class="button is-link is-pulled-right" on:click={tour_event}>Need help?</button> -->
                 </div>
-                <div class="align buttonContainer" id="{filetype}-buttonContainer" bind:clientHeight={buttonContainerHeight}>
+                <div class="buttonContainer" id="{filetype}-buttonContainer" bind:clientHeight={buttonContainerHeight}>
                     {#if toggleBrowser}
                         <slot name="buttonContainer" />
+                        {#if graphPlotted}
+                            <button class="button is-warning animated fadeIn" style="width:12em;" on:click={openGraph}>Graph:Open separately</button>
+                        {/if}
                     {/if}
                  </div>
 

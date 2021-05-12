@@ -90,3 +90,9 @@ hr {background-color: #dbdbdb;}
 .wb-body {background:#634e96!important;}
 
 .wb-header {background:#46356f!important;}
+.hide {display: none;}
+
+.buttonRow {margin-bottom: 0!important; align-items: center;}
+.mdc-select__native-control option {color: black}
+.button {margin-right: 0.5em;}
+.active {display: flex!important;}

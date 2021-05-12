@@ -116,17 +116,10 @@
 
 <style>
 
-    .masspec_buttonContainer {min-height: 5em;}
-    .button {margin-right: 0.5em;}
-    .buttonRow {margin-bottom: 1em!important; align-items: center;}
-    * :global(.mdc-select__native-control option) {color: black}
-    .active {display: flex!important;}
-    .hide {display: none;}
-
 </style>
 
-<Layout bind:preModal {filetype} bind:fullfileslist {id} bind:currentLocation bind:fileChecked >
-    <div class="masspec_buttonContainer" slot="buttonContainer">
+<Layout bind:preModal {filetype} bind:fullfileslist {id} bind:currentLocation bind:fileChecked {graphPlotted}>
+    <svelte:fragment slot="buttonContainer">
 
         <div class="content align buttonRow">
             <button class="button is-link" on:click="{(e)=>plotData({e:e})}">Masspec Plot</button>
@@ -152,7 +145,8 @@
             <Textfield {style2} on:change={set_nist_url} bind:value={nist_formula} label="Molecule Formula" />
         </div>
 
-    </div>
+    </svelte:fragment>
+
 
     <div style="margin-right: 1em;" slot="plotContainer">
 

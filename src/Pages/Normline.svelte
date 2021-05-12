@@ -133,33 +133,7 @@
 
     
     }
-    $: graphModal = !graphWindowClosed
-    function openGraph(){
-        graphWindowClosed = false
-
-        const mount = document.getElementById("felix-plotContainer")
-
-        graphWindow = new WinBox({
-            root:document.getElementById("pageContainer"), 
-            mount, 
-
-            title: `Modal: ${filetype}`,
-
-            x: "center", y: "center",
-            width: "70%", height: "70%",
-
-            background:"#634e96",
-            top: 50, bottom:50,
-            onclose: function(){
-                graphWindowClosed = true
-                console.log(`${filetype}=> graphWindowClosed: ${graphWindowClosed}`)
-                return false
-
-            } 
-
-        });
-
-    }
+    
 </script>
 
 <style>
@@ -174,21 +148,19 @@
 <AddFilesToPlot {fileChecked} bind:extrafileAdded bind:active={addFileModal} bind:addedFileCol bind:addedFileScale bind:addedfiles bind:addedFile bind:preModal />
 
 <!-- Layout -->
-<Layout bind:preModal {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour} bind:graphModal>
+<Layout bind:preModal {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour} >
 
-    <div slot="buttonContainer">
+    <svelte:fragment slot="buttonContainer">
         <InitFunctionRow {removeExtraFile} {opofiles} {felixfiles} normMethod={$normMethod} {theoryLocation} bind:preModal bind:graphPlotted bind:show_theoryplot/>
 
         <OPORow {removeExtraFile} bind:OPOLocation bind:OPOfilesChecked bind:opofiles bind:preModal bind:graphPlotted />
         <TheoryRow bind:theoryLocation bind:show_theoryplot bind:preModal normMethod={$normMethod} />
         <div style="display:flex;">
             <CustomRadio on:change={replot} bind:selected={$normMethod} options={["Log", "Relative", "IntensityPerPhoton"]}/>
-            {#if graphPlotted}
-                <button class="button is-warning animated fadeIn" on:click={openGraph}>Graph:Open separately</button>
-            {/if}
+            
         </div>
         
-    </div>
+    </svelte:fragment>
 
     <svelte:fragment slot="plotContainer" >
 
