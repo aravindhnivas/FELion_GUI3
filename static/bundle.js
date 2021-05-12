@@ -30571,90 +30571,8 @@ class CustomDialog extends SvelteComponentDev {
 const { console: console_1$3 } = globals;
 const file$H = "src\\Pages\\Powerfile.svelte";
 
-// (96:72) <Label>
-function create_default_slot_5$2(ctx) {
-	let t;
-
-	const block = {
-		c: function create() {
-			t = text("Browse");
-		},
-		m: function mount(target, anchor) {
-			insert_dev(target, t, anchor);
-		},
-		d: function destroy(detaching) {
-			if (detaching) detach_dev(t);
-		}
-	};
-
-	dispatch_dev("SvelteRegisterBlock", {
-		block,
-		id: create_default_slot_5$2.name,
-		type: "slot",
-		source: "(96:72) <Label>",
-		ctx
-	});
-
-	return block;
-}
-
-// (96:12) <Fab class="is-pulled-right" on:click={openFolder} extended>
-function create_default_slot_4$3(ctx) {
-	let label;
-	let current;
-
-	label = new Label({
-			props: {
-				$$slots: { default: [create_default_slot_5$2] },
-				$$scope: { ctx }
-			},
-			$$inline: true
-		});
-
-	const block = {
-		c: function create() {
-			create_component(label.$$.fragment);
-		},
-		m: function mount(target, anchor) {
-			mount_component(label, target, anchor);
-			current = true;
-		},
-		p: function update(ctx, dirty) {
-			const label_changes = {};
-
-			if (dirty & /*$$scope*/ 268435456) {
-				label_changes.$$scope = { dirty, ctx };
-			}
-
-			label.$set(label_changes);
-		},
-		i: function intro(local) {
-			if (current) return;
-			transition_in(label.$$.fragment, local);
-			current = true;
-		},
-		o: function outro(local) {
-			transition_out(label.$$.fragment, local);
-			current = false;
-		},
-		d: function destroy(detaching) {
-			destroy_component(label, detaching);
-		}
-	};
-
-	dispatch_dev("SvelteRegisterBlock", {
-		block,
-		id: create_default_slot_4$3.name,
-		type: "slot",
-		source: "(96:12) <Fab class=\\\"is-pulled-right\\\" on:click={openFolder} extended>",
-		ctx
-	});
-
-	return block;
-}
-
-// (103:12) <FormField>
-function create_default_slot_3$3(ctx) {
+// (123:12) <FormField>
+function create_default_slot_1$7(ctx) {
 	let checkbox;
 	let updating_checked;
 	let current;
@@ -30710,16 +30628,16 @@ function create_default_slot_3$3(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_3$3.name,
+		id: create_default_slot_1$7.name,
 		type: "slot",
-		source: "(103:12) <FormField>",
+		source: "(123:12) <FormField>",
 		ctx
 	});
 
 	return block;
 }
 
-// (105:16) 
+// (125:16) 
 function create_label_slot$1(ctx) {
 	let span;
 
@@ -30728,7 +30646,7 @@ function create_label_slot$1(ctx) {
 			span = element("span");
 			span.textContent = "Convert to µm";
 			attr_dev(span, "slot", "label");
-			add_location(span, file$H, 104, 16, 3958);
+			add_location(span, file$H, 124, 16, 4238);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -30742,15 +30660,15 @@ function create_label_slot$1(ctx) {
 		block,
 		id: create_label_slot$1.name,
 		type: "slot",
-		source: "(105:16) ",
+		source: "(125:16) ",
 		ctx
 	});
 
 	return block;
 }
 
-// (111:8) <HelperText id="powercontent_help">
-function create_default_slot_2$7(ctx) {
+// (132:12) <HelperText id="powercontent_help">
+function create_default_slot$c(ctx) {
 	let t0;
 	let t1;
 	let t2;
@@ -30778,91 +30696,9 @@ function create_default_slot_2$7(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_2$7.name,
-		type: "slot",
-		source: "(111:8) <HelperText id=\\\"powercontent_help\\\">",
-		ctx
-	});
-
-	return block;
-}
-
-// (112:64) <Label>
-function create_default_slot_1$7(ctx) {
-	let t;
-
-	const block = {
-		c: function create() {
-			t = text("Save");
-		},
-		m: function mount(target, anchor) {
-			insert_dev(target, t, anchor);
-		},
-		d: function destroy(detaching) {
-			if (detaching) detach_dev(t);
-		}
-	};
-
-	dispatch_dev("SvelteRegisterBlock", {
-		block,
-		id: create_default_slot_1$7.name,
-		type: "slot",
-		source: "(112:64) <Label>",
-		ctx
-	});
-
-	return block;
-}
-
-// (112:8) <Fab style="margin:2em 0;" on:click={savefile} extended>
-function create_default_slot$c(ctx) {
-	let label;
-	let current;
-
-	label = new Label({
-			props: {
-				$$slots: { default: [create_default_slot_1$7] },
-				$$scope: { ctx }
-			},
-			$$inline: true
-		});
-
-	const block = {
-		c: function create() {
-			create_component(label.$$.fragment);
-		},
-		m: function mount(target, anchor) {
-			mount_component(label, target, anchor);
-			current = true;
-		},
-		p: function update(ctx, dirty) {
-			const label_changes = {};
-
-			if (dirty & /*$$scope*/ 268435456) {
-				label_changes.$$scope = { dirty, ctx };
-			}
-
-			label.$set(label_changes);
-		},
-		i: function intro(local) {
-			if (current) return;
-			transition_in(label.$$.fragment, local);
-			current = true;
-		},
-		o: function outro(local) {
-			transition_out(label.$$.fragment, local);
-			current = false;
-		},
-		d: function destroy(detaching) {
-			destroy_component(label, detaching);
-		}
-	};
-
-	dispatch_dev("SvelteRegisterBlock", {
-		block,
 		id: create_default_slot$c.name,
 		type: "slot",
-		source: "(112:8) <Fab style=\\\"margin:2em 0;\\\" on:click={savefile} extended>",
+		source: "(132:12) <HelperText id=\\\"powercontent_help\\\">",
 		ctx
 	});
 
@@ -30877,32 +30713,35 @@ function create_fragment$M(ctx) {
 	let updating_dialog;
 	let t1;
 	let section;
-	let div2;
+	let div3;
 	let div0;
+	let button0;
+	let t3;
 	let textfield0;
 	let updating_value;
-	let t2;
-	let fab0;
-	let t3;
+	let t4;
 	let div1;
 	let textfield1;
 	let updating_value_1;
-	let t4;
+	let t5;
 	let textfield2;
 	let updating_value_2;
-	let t5;
+	let t6;
 	let textfield3;
 	let updating_value_3;
-	let t6;
-	let formfield;
 	let t7;
+	let formfield;
+	let t8;
+	let div2;
 	let textfield4;
 	let updating_value_4;
-	let t8;
-	let helpertext;
 	let t9;
-	let fab1;
+	let helpertext;
+	let t10;
+	let button1;
 	let current;
+	let mounted;
+	let dispose;
 
 	function premodal_preModal_binding(value) {
 		/*premodal_preModal_binding*/ ctx[12](value);
@@ -30943,10 +30782,7 @@ function create_fragment$M(ctx) {
 		/*textfield0_value_binding*/ ctx[14](value);
 	}
 
-	let textfield0_props = {
-		style: "width:90%",
-		label: "Current Location"
-	};
+	let textfield0_props = { label: "Current Location" };
 
 	if (/*location*/ ctx[3] !== void 0) {
 		textfield0_props.value = /*location*/ ctx[3];
@@ -30955,23 +30791,11 @@ function create_fragment$M(ctx) {
 	textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
 
-	fab0 = new Fab({
-			props: {
-				class: "is-pulled-right",
-				extended: true,
-				$$slots: { default: [create_default_slot_4$3] },
-				$$scope: { ctx }
-			},
-			$$inline: true
-		});
-
-	fab0.$on("click", /*openFolder*/ ctx[9]);
-
 	function textfield1_value_binding(value) {
 		/*textfield1_value_binding*/ ctx[15](value);
 	}
 
-	let textfield1_props = { style: "width:20%", label: "Filename" };
+	let textfield1_props = { label: "Filename" };
 
 	if (/*filename*/ ctx[4] !== void 0) {
 		textfield1_props.value = /*filename*/ ctx[4];
@@ -30984,7 +30808,7 @@ function create_fragment$M(ctx) {
 		/*textfield2_value_binding*/ ctx[16](value);
 	}
 
-	let textfield2_props = { style: "width:20%", label: "FELIX Shots" };
+	let textfield2_props = { label: "FELIX Shots" };
 
 	if (/*felixShots*/ ctx[1] !== void 0) {
 		textfield2_props.value = /*felixShots*/ ctx[1];
@@ -30998,7 +30822,7 @@ function create_fragment$M(ctx) {
 		/*textfield3_value_binding*/ ctx[18](value);
 	}
 
-	let textfield3_props = { style: "width:20%", label: "FELIX Hz" };
+	let textfield3_props = { label: "FELIX Hz" };
 
 	if (/*felixHz*/ ctx[0] !== void 0) {
 		textfield3_props.value = /*felixHz*/ ctx[0];
@@ -31011,7 +30835,7 @@ function create_fragment$M(ctx) {
 			props: {
 				$$slots: {
 					label: [create_label_slot$1],
-					default: [create_default_slot_3$3]
+					default: [create_default_slot_1$7]
 				},
 				$$scope: { ctx }
 			},
@@ -31039,23 +30863,11 @@ function create_fragment$M(ctx) {
 	helpertext = new HelperText({
 			props: {
 				id: "powercontent_help",
-				$$slots: { default: [create_default_slot_2$7] },
-				$$scope: { ctx }
-			},
-			$$inline: true
-		});
-
-	fab1 = new Fab({
-			props: {
-				style: "margin:2em 0;",
-				extended: true,
 				$$slots: { default: [create_default_slot$c] },
 				$$scope: { ctx }
 			},
 			$$inline: true
 		});
-
-	fab1.$on("click", /*savefile*/ ctx[8]);
 
 	const block = {
 		c: function create() {
@@ -31064,37 +30876,47 @@ function create_fragment$M(ctx) {
 			create_component(customdialog.$$.fragment);
 			t1 = space();
 			section = element("section");
-			div2 = element("div");
+			div3 = element("div");
 			div0 = element("div");
-			create_component(textfield0.$$.fragment);
-			t2 = space();
-			create_component(fab0.$$.fragment);
+			button0 = element("button");
+			button0.textContent = "Browse";
 			t3 = space();
+			create_component(textfield0.$$.fragment);
+			t4 = space();
 			div1 = element("div");
 			create_component(textfield1.$$.fragment);
-			t4 = space();
-			create_component(textfield2.$$.fragment);
 			t5 = space();
-			create_component(textfield3.$$.fragment);
+			create_component(textfield2.$$.fragment);
 			t6 = space();
-			create_component(formfield.$$.fragment);
+			create_component(textfield3.$$.fragment);
 			t7 = space();
-			create_component(textfield4.$$.fragment);
+			create_component(formfield.$$.fragment);
 			t8 = space();
-			create_component(helpertext.$$.fragment);
+			div2 = element("div");
+			create_component(textfield4.$$.fragment);
 			t9 = space();
-			create_component(fab1.$$.fragment);
-			set_style(div0, "margin-bottom", "2em");
-			add_location(div0, file$H, 93, 8, 3246);
-			set_style(div1, "margin-bottom", "2em");
-			add_location(div1, file$H, 98, 8, 3500);
-			attr_dev(div2, "class", "container svelte-sxoy95");
-			attr_dev(div2, "id", "powfileContainer");
-			add_location(div2, file$H, 91, 4, 3189);
-			attr_dev(section, "class", "section svelte-sxoy95");
+			create_component(helpertext.$$.fragment);
+			t10 = space();
+			button1 = element("button");
+			button1.textContent = "Save";
+			attr_dev(button0, "class", "button is-link");
+			add_location(button0, file$H, 114, 12, 3640);
+			attr_dev(div0, "class", "grid_column__container location__bar svelte-1kvsa0w");
+			add_location(div0, file$H, 113, 8, 3576);
+			attr_dev(div1, "class", "grid_column__container file__details__bar svelte-1kvsa0w");
+			add_location(div1, file$H, 118, 8, 3811);
+			attr_dev(button1, "class", "button is-success");
+			set_style(button1, "width", "12em");
+			add_location(button1, file$H, 132, 12, 4717);
+			attr_dev(div2, "class", "power_value__container svelte-1kvsa0w");
+			add_location(div2, file$H, 128, 8, 4337);
+			attr_dev(div3, "class", "main__container svelte-1kvsa0w");
+			attr_dev(div3, "id", "powfileContainer");
+			add_location(div3, file$H, 111, 4, 3513);
+			attr_dev(section, "class", "section svelte-1kvsa0w");
 			attr_dev(section, "id", "Powerfile");
 			set_style(section, "display", "none");
-			add_location(section, file$H, 90, 0, 3122);
+			add_location(section, file$H, 110, 0, 3446);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -31105,27 +30927,37 @@ function create_fragment$M(ctx) {
 			mount_component(customdialog, target, anchor);
 			insert_dev(target, t1, anchor);
 			insert_dev(target, section, anchor);
-			append_dev(section, div2);
-			append_dev(div2, div0);
+			append_dev(section, div3);
+			append_dev(div3, div0);
+			append_dev(div0, button0);
+			append_dev(div0, t3);
 			mount_component(textfield0, div0, null);
-			append_dev(div0, t2);
-			mount_component(fab0, div0, null);
-			append_dev(div2, t3);
-			append_dev(div2, div1);
+			append_dev(div3, t4);
+			append_dev(div3, div1);
 			mount_component(textfield1, div1, null);
-			append_dev(div1, t4);
-			mount_component(textfield2, div1, null);
 			append_dev(div1, t5);
-			mount_component(textfield3, div1, null);
+			mount_component(textfield2, div1, null);
 			append_dev(div1, t6);
+			mount_component(textfield3, div1, null);
+			append_dev(div1, t7);
 			mount_component(formfield, div1, null);
-			append_dev(div2, t7);
+			append_dev(div3, t8);
+			append_dev(div3, div2);
 			mount_component(textfield4, div2, null);
-			append_dev(div2, t8);
-			mount_component(helpertext, div2, null);
 			append_dev(div2, t9);
-			mount_component(fab1, div2, null);
+			mount_component(helpertext, div2, null);
+			append_dev(div2, t10);
+			append_dev(div2, button1);
 			current = true;
+
+			if (!mounted) {
+				dispose = [
+					listen_dev(button0, "click", /*openFolder*/ ctx[9], false, false, false),
+					listen_dev(button1, "click", /*savefile*/ ctx[8], false, false, false)
+				];
+
+				mounted = true;
+			}
 		},
 		p: function update(ctx, [dirty]) {
 			const premodal_changes = {};
@@ -31156,13 +30988,6 @@ function create_fragment$M(ctx) {
 			}
 
 			textfield0.$set(textfield0_changes);
-			const fab0_changes = {};
-
-			if (dirty & /*$$scope*/ 268435456) {
-				fab0_changes.$$scope = { dirty, ctx };
-			}
-
-			fab0.$set(fab0_changes);
 			const textfield1_changes = {};
 
 			if (!updating_value_1 && dirty & /*filename*/ 16) {
@@ -31213,41 +31038,30 @@ function create_fragment$M(ctx) {
 			}
 
 			helpertext.$set(helpertext_changes);
-			const fab1_changes = {};
-
-			if (dirty & /*$$scope*/ 268435456) {
-				fab1_changes.$$scope = { dirty, ctx };
-			}
-
-			fab1.$set(fab1_changes);
 		},
 		i: function intro(local) {
 			if (current) return;
 			transition_in(premodal.$$.fragment, local);
 			transition_in(customdialog.$$.fragment, local);
 			transition_in(textfield0.$$.fragment, local);
-			transition_in(fab0.$$.fragment, local);
 			transition_in(textfield1.$$.fragment, local);
 			transition_in(textfield2.$$.fragment, local);
 			transition_in(textfield3.$$.fragment, local);
 			transition_in(formfield.$$.fragment, local);
 			transition_in(textfield4.$$.fragment, local);
 			transition_in(helpertext.$$.fragment, local);
-			transition_in(fab1.$$.fragment, local);
 			current = true;
 		},
 		o: function outro(local) {
 			transition_out(premodal.$$.fragment, local);
 			transition_out(customdialog.$$.fragment, local);
 			transition_out(textfield0.$$.fragment, local);
-			transition_out(fab0.$$.fragment, local);
 			transition_out(textfield1.$$.fragment, local);
 			transition_out(textfield2.$$.fragment, local);
 			transition_out(textfield3.$$.fragment, local);
 			transition_out(formfield.$$.fragment, local);
 			transition_out(textfield4.$$.fragment, local);
 			transition_out(helpertext.$$.fragment, local);
-			transition_out(fab1.$$.fragment, local);
 			current = false;
 		},
 		d: function destroy(detaching) {
@@ -31257,14 +31071,14 @@ function create_fragment$M(ctx) {
 			if (detaching) detach_dev(t1);
 			if (detaching) detach_dev(section);
 			destroy_component(textfield0);
-			destroy_component(fab0);
 			destroy_component(textfield1);
 			destroy_component(textfield2);
 			destroy_component(textfield3);
 			destroy_component(formfield);
 			destroy_component(textfield4);
 			destroy_component(helpertext);
-			destroy_component(fab1);
+			mounted = false;
+			run_all(dispose);
 		}
 	};
 
@@ -36539,7 +36353,7 @@ function create_if_block_5$2(ctx) {
 	}
 
 	let menu_props = {
-		$$slots: { default: [create_default_slot_3$4] },
+		$$slots: { default: [create_default_slot_3$3] },
 		$$scope: { ctx }
 	};
 
@@ -36674,7 +36488,7 @@ function create_if_block_5$2(ctx) {
 }
 
 // (48:6) <List {...prefixFilter($$props, 'list$')}>
-function create_default_slot_4$4(ctx) {
+function create_default_slot_4$3(ctx) {
 	let current;
 	const default_slot_template = /*#slots*/ ctx[29].default;
 	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[40], null);
@@ -36713,7 +36527,7 @@ function create_default_slot_4$4(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_4$4.name,
+		id: create_default_slot_4$3.name,
 		type: "slot",
 		source: "(48:6) <List {...prefixFilter($$props, 'list$')}>",
 		ctx
@@ -36723,13 +36537,13 @@ function create_default_slot_4$4(ctx) {
 }
 
 // (41:4) <Menu       class="mdc-select__menu {menu$class}"       role="listbox"       anchor={false}       bind:anchorElement={element}       {...exclude(prefixFilter($$props, 'menu$'), ['class'])}     >
-function create_default_slot_3$4(ctx) {
+function create_default_slot_3$3(ctx) {
 	let list;
 	let current;
 	const list_spread_levels = [prefixFilter(/*$$props*/ ctx[22], "list$")];
 
 	let list_props = {
-		$$slots: { default: [create_default_slot_4$4] },
+		$$slots: { default: [create_default_slot_4$3] },
 		$$scope: { ctx }
 	};
 
@@ -36774,7 +36588,7 @@ function create_default_slot_3$4(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_3$4.name,
+		id: create_default_slot_3$3.name,
 		type: "slot",
 		source: "(41:4) <Menu       class=\\\"mdc-select__menu {menu$class}\\\"       role=\\\"listbox\\\"       anchor={false}       bind:anchorElement={element}       {...exclude(prefixFilter($$props, 'menu$'), ['class'])}     >",
 		ctx
@@ -36899,7 +36713,7 @@ function create_if_block_4$2(ctx) {
 	];
 
 	let floatinglabel_props = {
-		$$slots: { default: [create_default_slot_2$8] },
+		$$slots: { default: [create_default_slot_2$7] },
 		$$scope: { ctx }
 	};
 
@@ -36966,7 +36780,7 @@ function create_if_block_4$2(ctx) {
 }
 
 // (66:6) <FloatingLabel         for={inputId}         id={inputId+'-smui-label'}         class="{value !== '' ? 'mdc-floating-label--float-above' : ''} {label$class}"         {...exclude(prefixFilter($$props, 'label$'), ['class'])}       >
-function create_default_slot_2$8(ctx) {
+function create_default_slot_2$7(ctx) {
 	let t;
 	let current;
 	const label_slot_template = /*#slots*/ ctx[29].label;
@@ -37012,7 +36826,7 @@ function create_default_slot_2$8(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_2$8.name,
+		id: create_default_slot_2$7.name,
 		type: "slot",
 		source: "(66:6) <FloatingLabel         for={inputId}         id={inputId+'-smui-label'}         class=\\\"{value !== '' ? 'mdc-floating-label--float-above' : ''} {label$class}\\\"         {...exclude(prefixFilter($$props, 'label$'), ['class'])}       >",
 		ctx
@@ -39041,7 +38855,7 @@ function get_each_context_4(ctx, list, i) {
 }
 
 // (284:16) <FormField >
-function create_default_slot_3$5(ctx) {
+function create_default_slot_3$4(ctx) {
 	let radio;
 	let updating_group;
 	let t;
@@ -39098,7 +38912,7 @@ function create_default_slot_3$5(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_3$5.name,
+		id: create_default_slot_3$4.name,
 		type: "slot",
 		source: "(284:16) <FormField >",
 		ctx
@@ -39151,7 +38965,7 @@ function create_each_block_4(ctx) {
 			props: {
 				$$slots: {
 					label: [create_label_slot_1],
-					default: [create_default_slot_3$5]
+					default: [create_default_slot_3$4]
 				},
 				$$scope: { ctx }
 			},
@@ -39441,7 +39255,7 @@ function create_each_block_2(key_1, ctx) {
 }
 
 // (333:16) <FormField >
-function create_default_slot_2$9(ctx) {
+function create_default_slot_2$8(ctx) {
 	let radio;
 	let updating_group;
 	let current;
@@ -39494,7 +39308,7 @@ function create_default_slot_2$9(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_2$9.name,
+		id: create_default_slot_2$8.name,
 		type: "slot",
 		source: "(333:16) <FormField >",
 		ctx
@@ -39546,7 +39360,7 @@ function create_each_block_1(ctx) {
 			props: {
 				$$slots: {
 					label: [create_label_slot$4],
-					default: [create_default_slot_2$9]
+					default: [create_default_slot_2$8]
 				},
 				$$scope: { ctx }
 			},
@@ -45024,7 +44838,7 @@ function create_default_slot_6$2(ctx) {
 }
 
 // (64:24) <Cell>
-function create_default_slot_5$3(ctx) {
+function create_default_slot_5$2(ctx) {
 	let t_value = /*table*/ ctx[16].sig + "";
 	let t;
 
@@ -45045,7 +44859,7 @@ function create_default_slot_5$3(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_5$3.name,
+		id: create_default_slot_5$2.name,
 		type: "slot",
 		source: "(64:24) <Cell>",
 		ctx
@@ -45055,7 +44869,7 @@ function create_default_slot_5$3(ctx) {
 }
 
 // (66:28) <Icon id="{table.id}" class="material-icons"                                   on:click="{(e)=> {dataTable_weighted_avg = window._.filter(dataTable_weighted_avg, (tb)=>tb.id != e.target.id)}}">
-function create_default_slot_4$5(ctx) {
+function create_default_slot_4$4(ctx) {
 	let t;
 
 	const block = {
@@ -45072,7 +44886,7 @@ function create_default_slot_4$5(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_4$5.name,
+		id: create_default_slot_4$4.name,
 		type: "slot",
 		source: "(66:28) <Icon id=\\\"{table.id}\\\" class=\\\"material-icons\\\"                                   on:click=\\\"{(e)=> {dataTable_weighted_avg = window._.filter(dataTable_weighted_avg, (tb)=>tb.id != e.target.id)}}\\\">",
 		ctx
@@ -45082,7 +44896,7 @@ function create_default_slot_4$5(ctx) {
 }
 
 // (65:24) <Cell style="background: #f14668; cursor: pointer;">
-function create_default_slot_3$6(ctx) {
+function create_default_slot_3$5(ctx) {
 	let icon;
 	let current;
 
@@ -45090,7 +44904,7 @@ function create_default_slot_3$6(ctx) {
 			props: {
 				id: /*table*/ ctx[16].id,
 				class: "material-icons",
-				$$slots: { default: [create_default_slot_4$5] },
+				$$slots: { default: [create_default_slot_4$4] },
 				$$scope: { ctx }
 			},
 			$$inline: true
@@ -45132,7 +44946,7 @@ function create_default_slot_3$6(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_3$6.name,
+		id: create_default_slot_3$5.name,
 		type: "slot",
 		source: "(65:24) <Cell style=\\\"background: #f14668; cursor: pointer;\\\">",
 		ctx
@@ -45142,7 +44956,7 @@ function create_default_slot_3$6(ctx) {
 }
 
 // (58:20) <Row>
-function create_default_slot_2$a(ctx) {
+function create_default_slot_2$9(ctx) {
 	let cell0;
 	let t0;
 	let cell1;
@@ -45202,7 +45016,7 @@ function create_default_slot_2$a(ctx) {
 
 	cell5 = new Cell({
 			props: {
-				$$slots: { default: [create_default_slot_5$3] },
+				$$slots: { default: [create_default_slot_5$2] },
 				$$scope: { ctx }
 			},
 			$$inline: true
@@ -45211,7 +45025,7 @@ function create_default_slot_2$a(ctx) {
 	cell6 = new Cell({
 			props: {
 				style: "background: #f14668; cursor: pointer;",
-				$$slots: { default: [create_default_slot_3$6] },
+				$$slots: { default: [create_default_slot_3$5] },
 				$$scope: { ctx }
 			},
 			$$inline: true
@@ -45343,7 +45157,7 @@ function create_default_slot_2$a(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_2$a.name,
+		id: create_default_slot_2$9.name,
 		type: "slot",
 		source: "(58:20) <Row>",
 		ctx
@@ -45360,7 +45174,7 @@ function create_each_block$5(key_1, ctx) {
 
 	row = new Row({
 			props: {
-				$$slots: { default: [create_default_slot_2$a] },
+				$$slots: { default: [create_default_slot_2$9] },
 				$$scope: { ctx }
 			},
 			$$inline: true
@@ -45954,7 +45768,7 @@ function get_each_context$6(ctx, list, i) {
 }
 
 // (14:20) <Label>
-function create_default_slot_3$7(ctx) {
+function create_default_slot_3$6(ctx) {
 	let t_value = /*item*/ ctx[5].name + "";
 	let t;
 
@@ -45975,7 +45789,7 @@ function create_default_slot_3$7(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_3$7.name,
+		id: create_default_slot_3$6.name,
 		type: "slot",
 		source: "(14:20) <Label>",
 		ctx
@@ -45985,7 +45799,7 @@ function create_default_slot_3$7(ctx) {
 }
 
 // (16:20) <Meta>
-function create_default_slot_2$b(ctx) {
+function create_default_slot_2$a(ctx) {
 	let checkbox;
 	let updating_group;
 	let current;
@@ -46040,7 +45854,7 @@ function create_default_slot_2$b(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_2$b.name,
+		id: create_default_slot_2$a.name,
 		type: "slot",
 		source: "(16:20) <Meta>",
 		ctx
@@ -46059,7 +45873,7 @@ function create_default_slot_1$b(ctx) {
 
 	label = new Label$1({
 			props: {
-				$$slots: { default: [create_default_slot_3$7] },
+				$$slots: { default: [create_default_slot_3$6] },
 				$$scope: { ctx }
 			},
 			$$inline: true
@@ -46067,7 +45881,7 @@ function create_default_slot_1$b(ctx) {
 
 	meta = new Meta({
 			props: {
-				$$slots: { default: [create_default_slot_2$b] },
+				$$slots: { default: [create_default_slot_2$a] },
 				$$scope: { ctx }
 			},
 			$$inline: true
@@ -52165,7 +51979,7 @@ function create_if_block_2$6(ctx) {
 	icon = new Icon({
 			props: {
 				class: "material-icons",
-				$$slots: { default: [create_default_slot_2$c] },
+				$$slots: { default: [create_default_slot_2$b] },
 				$$scope: { ctx }
 			},
 			$$inline: true
@@ -52221,7 +52035,7 @@ function create_if_block_2$6(ctx) {
 }
 
 // (60:12) <Icon class="material-icons"  on:click="{addRow}">
-function create_default_slot_2$c(ctx) {
+function create_default_slot_2$b(ctx) {
 	let t;
 
 	const block = {
@@ -52238,7 +52052,7 @@ function create_default_slot_2$c(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_2$c.name,
+		id: create_default_slot_2$b.name,
 		type: "slot",
 		source: "(60:12) <Icon class=\\\"material-icons\\\"  on:click=\\\"{addRow}\\\">",
 		ctx
@@ -59190,7 +59004,7 @@ function create_if_block$u(ctx) {
 }
 
 // (163:16) <Icon on:click="{()=>window.nist_webview.goToIndex(0)}" class="material-icons hvr-glow">
-function create_default_slot_3$8(ctx) {
+function create_default_slot_3$7(ctx) {
 	let t;
 
 	const block = {
@@ -59207,7 +59021,7 @@ function create_default_slot_3$8(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_3$8.name,
+		id: create_default_slot_3$7.name,
 		type: "slot",
 		source: "(163:16) <Icon on:click=\\\"{()=>window.nist_webview.goToIndex(0)}\\\" class=\\\"material-icons hvr-glow\\\">",
 		ctx
@@ -59217,7 +59031,7 @@ function create_default_slot_3$8(ctx) {
 }
 
 // (165:16) <Icon on:click="{()=>window.nist_webview.reload()}" class="material-icons hvr-glow">
-function create_default_slot_2$d(ctx) {
+function create_default_slot_2$c(ctx) {
 	let t;
 
 	const block = {
@@ -59234,7 +59048,7 @@ function create_default_slot_2$d(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_2$d.name,
+		id: create_default_slot_2$c.name,
 		type: "slot",
 		source: "(165:16) <Icon on:click=\\\"{()=>window.nist_webview.reload()}\\\" class=\\\"material-icons hvr-glow\\\">",
 		ctx
@@ -59322,7 +59136,7 @@ function create_plotContainer_slot$1(ctx) {
 	icon0 = new Icon({
 			props: {
 				class: "material-icons hvr-glow",
-				$$slots: { default: [create_default_slot_3$8] },
+				$$slots: { default: [create_default_slot_3$7] },
 				$$scope: { ctx }
 			},
 			$$inline: true
@@ -59333,7 +59147,7 @@ function create_plotContainer_slot$1(ctx) {
 	icon1 = new Icon({
 			props: {
 				class: "material-icons hvr-glow",
-				$$slots: { default: [create_default_slot_2$d] },
+				$$slots: { default: [create_default_slot_2$c] },
 				$$scope: { ctx }
 			},
 			$$inline: true
@@ -76729,7 +76543,7 @@ class Settings extends SvelteComponentDev {
 const file$1j = "src\\Pages\\Misc.svelte";
 
 // (96:24) <Label>
-function create_default_slot_2$e(ctx) {
+function create_default_slot_2$d(ctx) {
 	let t_value = /*tab*/ ctx[51] + "";
 	let t;
 
@@ -76750,7 +76564,7 @@ function create_default_slot_2$e(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot_2$e.name,
+		id: create_default_slot_2$d.name,
 		type: "slot",
 		source: "(96:24) <Label>",
 		ctx
@@ -76766,7 +76580,7 @@ function create_default_slot_1$g(ctx) {
 
 	label = new Label({
 			props: {
-				$$slots: { default: [create_default_slot_2$e] },
+				$$slots: { default: [create_default_slot_2$d] },
 				$$scope: { ctx }
 			},
 			$$inline: true

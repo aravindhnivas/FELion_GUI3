@@ -74,43 +74,65 @@
     let preModal = {};
 </script>
 
-
 <style>
-   
-    .section {height: 70vh;}
-    .container { height: 100%; margin-bottom: 3em; }
-    @media only screen and (max-height: 800px) {.section {overflow-y: auto;}}
+    .section {max-height: 70vh;overflow-y: auto;}
+    
+    .main__container {
+        display: grid; 
+        height: 100%;
+        width: 100%;
+        grid-row-gap: 1em;
+    }
+    .grid_column__container {
+        display: grid;
+        grid-auto-flow: column;
+        grid-column-gap: 1em;
+    }
+    .location__bar {
+        grid-template-columns: 1fr 10fr;
+    }
+
+    .file__details__bar {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .power_value__container {
+        display: grid;
+        grid-template-rows: 12fr 1fr 2fr;
+    }
 
 </style>
 
-
 <PreModal bind:preModal />
+
 <CustomDialog id="powerfile-overwrite" bind:dialog={overwrite_dialog} on:response={handleOverwrite}
     title={"Overwrite?"} content={`${filename} already exists. Do you want to overwrite it?`}/>
 
 <section class="section" id="Powerfile" style="display:none">
-    <div class="container" id="powfileContainer">
+    <div class="main__container" id="powfileContainer">
 
-        <div style="margin-bottom:2em;">
-            <Textfield  style="width:90%" bind:value={location} label="Current Location" />
-            <Fab class="is-pulled-right" on:click={openFolder} extended><Label>Browse</Label></Fab>
+        <div class="grid_column__container location__bar">
+            <button class="button is-link" on:click={openFolder}>Browse</button>
+            <Textfield  bind:value={location} label="Current Location" />
         </div>
 
-        <div style="margin-bottom:2em;">
-            <Textfield style="width:20%" bind:value={filename} label="Filename" />
-            <Textfield style="width:20%" bind:value={felixShots} label="FELIX Shots" on:change={()=>{console.log(felixShots)}}/>
-            <Textfield style="width:20%" bind:value={felixHz} label="FELIX Hz" />
+        <div class="grid_column__container file__details__bar">
+            <Textfield bind:value={filename} label="Filename" />
+            <Textfield bind:value={felixShots} label="FELIX Shots" on:change={()=>{console.log(felixShots)}}/>
+            <Textfield bind:value={felixHz} label="FELIX Hz" />
             <FormField>
                 <Checkbox bind:checked={convert} indeterminate={convert === null} />
                 <span slot="label">Convert to &micro;m</span>
             </FormField>
         </div>
 
-        <Textfield textarea bind:value={powerfileContent} label="Powerfile contents" 
-            input$aria-controls="powercontent_help" input$aria-describedby="powercontent_help"/>
-        <HelperText id="powercontent_help">Enter powerfile measured for {filename}.felix file (wavenumber power-in mJ)</HelperText>
-        <Fab style="margin:2em 0;" on:click={savefile} extended><Label>Save</Label></Fab>
+        <div class="power_value__container">
+            <Textfield textarea bind:value={powerfileContent} label="Powerfile contents" 
+                input$aria-controls="powercontent_help" input$aria-describedby="powercontent_help"/>
+            <HelperText id="powercontent_help">Enter powerfile measured for {filename}.felix file (wavenumber power-in mJ)</HelperText>
+            <button class="button is-success" style="width:12em;" on:click={savefile}>Save</button>
+        </div>
+        
     
     </div>
-
 </section>
