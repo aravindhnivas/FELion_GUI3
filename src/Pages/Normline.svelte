@@ -149,7 +149,7 @@
             width: "70%", height: "70%",
 
             background:"#634e96",
-            top: 50,
+            top: 50, bottom:50,
             onclose: function(){
                 graphWindowClosed = true
                 console.log(`${filetype}=> graphWindowClosed: ${graphWindowClosed}`)

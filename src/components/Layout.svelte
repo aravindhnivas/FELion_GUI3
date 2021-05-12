@@ -85,7 +85,7 @@
     
     onMount(()=>{ toggleBrowser = true; mounted=true;})
     const plotContainer = document.getElementById(`${filetype}-plotContainer`)
-    $: plotContainerStyle = graphModal ? "" : `max-height: calc(100vh - 20em); height:calc(${ContainerHeight}px - ${buttonContainerHeight}px - 11em)`
+    $: plotContainerStyle = graphModal ? "padding-left: 1em;" : `max-height: calc(100vh - 20em); height:calc(${ContainerHeight}px - ${buttonContainerHeight}px - 11em)`
 
 </script>
 

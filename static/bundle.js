@@ -26718,7 +26718,7 @@ function create_if_block_2$4(ctx) {
 			div = element("div");
 			create_component(filebrowser.$$.fragment);
 			attr_dev(div, "class", "column is-one-fifth-widescreen is-one-quarter-desktop box filebrowser adjust-right svelte-pu9vce");
-			add_location(div, file$D, 133, 12, 3933);
+			add_location(div, file$D, 133, 12, 3951);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -27016,32 +27016,32 @@ function create_fragment$G(ctx) {
 			if (if_block2) if_block2.c();
 			attr_dev(button0, "class", "button is-link gap");
 			attr_dev(button0, "id", button0_id_value = "" + (/*filetype*/ ctx[6] + "_filebrowser_btn"));
-			add_location(button0, file$D, 146, 20, 4560);
+			add_location(button0, file$D, 146, 20, 4578);
 			attr_dev(button1, "class", "button is-link is-pulled-right");
-			add_location(button1, file$D, 149, 20, 4818);
+			add_location(button1, file$D, 149, 20, 4836);
 			attr_dev(div0, "class", "align");
 			set_style(div0, "flex-wrap", "nowrap");
-			add_location(div0, file$D, 142, 16, 4425);
+			add_location(div0, file$D, 142, 16, 4443);
 			attr_dev(div1, "class", "align buttonContainer svelte-pu9vce");
 			attr_dev(div1, "id", div1_id_value = "" + (/*filetype*/ ctx[6] + "-buttonContainer"));
 			add_render_callback(() => /*div1_elementresize_handler*/ ctx[23].call(div1));
-			add_location(div1, file$D, 151, 16, 4948);
+			add_location(div1, file$D, 151, 16, 4966);
 			attr_dev(div2, "class", "plotContainer svelte-pu9vce");
 			attr_dev(div2, "id", div2_id_value = "" + (/*filetype*/ ctx[6] + "-plotContainer"));
 			attr_dev(div2, "style", /*plotContainerStyle*/ ctx[10]);
-			add_location(div2, file$D, 157, 16, 5227);
+			add_location(div2, file$D, 157, 16, 5245);
 			attr_dev(div3, "class", "container button-plot-container box svelte-pu9vce");
 			attr_dev(div3, "id", div3_id_value = "" + (/*filetype*/ ctx[6] + "-button-plot-container"));
 			add_render_callback(() => /*div3_elementresize_handler*/ ctx[24].call(div3));
-			add_location(div3, file$D, 141, 12, 4284);
+			add_location(div3, file$D, 141, 12, 4302);
 			attr_dev(div4, "class", "column fileContainer svelte-pu9vce");
-			add_location(div4, file$D, 139, 8, 4233);
+			add_location(div4, file$D, 139, 8, 4251);
 			attr_dev(div5, "class", "columns");
-			add_location(div5, file$D, 130, 4, 3867);
+			add_location(div5, file$D, 130, 4, 3885);
 			attr_dev(section, "id", /*id*/ ctx[5]);
 			set_style(section, "display", "none");
 			attr_dev(section, "class", "animated fadeIn");
-			add_location(section, file$D, 128, 0, 3800);
+			add_location(section, file$D, 128, 0, 3818);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -27492,7 +27492,7 @@ function instance$G($$self, $$props, $$invalidate) {
 	$$self.$$.update = () => {
 		if ($$self.$$.dirty & /*graphModal, ContainerHeight, buttonContainerHeight*/ 8960) {
 			 $$invalidate(10, plotContainerStyle = graphModal
-			? ""
+			? "padding-left: 1em;"
 			: `max-height: calc(100vh - 20em); height:calc(${ContainerHeight}px - ${buttonContainerHeight}px - 11em)`);
 		}
 	};
@@ -55696,7 +55696,7 @@ function create_if_block$t(ctx) {
 			button = element("button");
 			button.textContent = "Graph:Open separately";
 			attr_dev(button, "class", "button is-warning animated fadeIn");
-			add_location(button, file$1a, 186, 16, 7340);
+			add_location(button, file$1a, 186, 16, 7351);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, button, anchor);
@@ -55905,9 +55905,9 @@ function create_buttonContainer_slot(ctx) {
 			t3 = space();
 			if (if_block) if_block.c();
 			set_style(div0, "display", "flex");
-			add_location(div0, file$1a, 183, 8, 7136);
+			add_location(div0, file$1a, 183, 8, 7147);
 			attr_dev(div1, "slot", "buttonContainer");
-			add_location(div1, file$1a, 178, 4, 6706);
+			add_location(div1, file$1a, 178, 4, 6717);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div1, anchor);
@@ -56114,32 +56114,32 @@ function create_plotContainer_slot(ctx) {
 			attr_dev(div0, "class", "animated fadeIn svelte-1ygqegk");
 			attr_dev(div0, "id", "exp-theory-plot");
 			toggle_class(div0, "hide", !/*show_theoryplot*/ ctx[12]);
-			add_location(div0, file$1a, 200, 12, 7787);
+			add_location(div0, file$1a, 200, 12, 7798);
 			attr_dev(div1, "id", "bplot");
 			attr_dev(div1, "class", "svelte-1ygqegk");
 			add_render_callback(() => /*div1_elementresize_handler*/ ctx[49].call(div1));
-			add_location(div1, file$1a, 201, 12, 7887);
+			add_location(div1, file$1a, 201, 12, 7898);
 			attr_dev(div2, "id", "saPlot");
 			attr_dev(div2, "class", "svelte-1ygqegk");
-			add_location(div2, file$1a, 202, 12, 7953);
+			add_location(div2, file$1a, 202, 12, 7964);
 			attr_dev(div3, "id", "avgplot");
 			attr_dev(div3, "class", "svelte-1ygqegk");
-			add_location(div3, file$1a, 203, 12, 7990);
+			add_location(div3, file$1a, 203, 12, 8001);
 			attr_dev(div4, "class", "animated fadeIn svelte-1ygqegk");
 			attr_dev(div4, "id", "opoplot");
 			toggle_class(div4, "hide", !/*$opoMode*/ ctx[10]);
-			add_location(div4, file$1a, 204, 12, 8028);
+			add_location(div4, file$1a, 204, 12, 8039);
 			attr_dev(div5, "class", "animated fadeIn svelte-1ygqegk");
 			attr_dev(div5, "id", "opoSA");
 			toggle_class(div5, "hide", !/*$opoMode*/ ctx[10]);
-			add_location(div5, file$1a, 205, 12, 8113);
+			add_location(div5, file$1a, 205, 12, 8124);
 			attr_dev(div6, "class", "animated fadeIn svelte-1ygqegk");
 			attr_dev(div6, "id", "opoRelPlot");
 			toggle_class(div6, "hide", !/*$opoMode*/ ctx[10]);
-			add_location(div6, file$1a, 206, 12, 8196);
+			add_location(div6, file$1a, 206, 12, 8207);
 			attr_dev(div7, "class", "felixPlot svelte-1ygqegk");
 			attr_dev(div7, "id", div7_id_value = "plot_container__div__" + filetype);
-			add_location(div7, file$1a, 199, 8, 7713);
+			add_location(div7, file$1a, 199, 8, 7724);
 		},
 		m: function mount(target, anchor) {
 			mount_component(getfileinfotable, target, anchor);
@@ -56948,6 +56948,7 @@ function instance$1h($$self, $$props, $$invalidate) {
 				height: "70%",
 				background: "#634e96",
 				top: 50,
+				bottom: 50,
 				onclose() {
 					$$invalidate(33, graphWindowClosed = true);
 					console.log(`${filetype}=> graphWindowClosed: ${graphWindowClosed}`);
