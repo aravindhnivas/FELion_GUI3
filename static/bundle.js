@@ -77475,7 +77475,7 @@ class Terminal extends SvelteComponentDev {
 const { console: console_1$e } = globals;
 const file$1l = "src\\Pages\\Settings.svelte";
 
-// (169:20) {#if $developerMode}
+// (172:20) {#if $developerMode}
 function create_if_block$C(ctx) {
 	let textfield0;
 	let updating_value;
@@ -77499,8 +77499,8 @@ function create_if_block$C(ctx) {
 		label: "Python path"
 	};
 
-	if (/*$pythonpath*/ ctx[7] !== void 0) {
-		textfield0_props.value = /*$pythonpath*/ ctx[7];
+	if (/*$pythonpath*/ ctx[8] !== void 0) {
+		textfield0_props.value = /*$pythonpath*/ ctx[8];
 	}
 
 	textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
@@ -77515,8 +77515,8 @@ function create_if_block$C(ctx) {
 		label: "Python script path"
 	};
 
-	if (/*$pythonscript*/ ctx[8] !== void 0) {
-		textfield1_props.value = /*$pythonscript*/ ctx[8];
+	if (/*$pythonscript*/ ctx[9] !== void 0) {
+		textfield1_props.value = /*$pythonscript*/ ctx[9];
 	}
 
 	textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
@@ -77534,9 +77534,9 @@ function create_if_block$C(ctx) {
 			button1 = element("button");
 			button1.textContent = "Save";
 			attr_dev(button0, "class", "button is-link svelte-7chplr");
-			add_location(button0, file$1l, 172, 24, 5858);
+			add_location(button0, file$1l, 175, 24, 6030);
 			attr_dev(button1, "class", "button is-link svelte-7chplr");
-			add_location(button1, file$1l, 173, 24, 5954);
+			add_location(button1, file$1l, 176, 24, 6126);
 		},
 		m: function mount(target, anchor) {
 			mount_component(textfield0, target, anchor);
@@ -77560,18 +77560,18 @@ function create_if_block$C(ctx) {
 		p: function update(ctx, dirty) {
 			const textfield0_changes = {};
 
-			if (!updating_value && dirty & /*$pythonpath*/ 128) {
+			if (!updating_value && dirty & /*$pythonpath*/ 256) {
 				updating_value = true;
-				textfield0_changes.value = /*$pythonpath*/ ctx[7];
+				textfield0_changes.value = /*$pythonpath*/ ctx[8];
 				add_flush_callback(() => updating_value = false);
 			}
 
 			textfield0.$set(textfield0_changes);
 			const textfield1_changes = {};
 
-			if (!updating_value_1 && dirty & /*$pythonscript*/ 256) {
+			if (!updating_value_1 && dirty & /*$pythonscript*/ 512) {
 				updating_value_1 = true;
-				textfield1_changes.value = /*$pythonscript*/ ctx[8];
+				textfield1_changes.value = /*$pythonscript*/ ctx[9];
 				add_flush_callback(() => updating_value_1 = false);
 			}
 
@@ -77605,7 +77605,7 @@ function create_if_block$C(ctx) {
 		block,
 		id: create_if_block$C.name,
 		type: "if",
-		source: "(169:20) {#if $developerMode}",
+		source: "(172:20) {#if $developerMode}",
 		ctx
 	});
 
@@ -77695,8 +77695,8 @@ function create_fragment$1s(ctx) {
 
 	let premodal_props = {};
 
-	if (/*preModal*/ ctx[3] !== void 0) {
-		premodal_props.preModal = /*preModal*/ ctx[3];
+	if (/*preModal*/ ctx[4] !== void 0) {
+		premodal_props.preModal = /*preModal*/ ctx[4];
 	}
 
 	premodal = new PreModal({ props: premodal_props, $$inline: true });
@@ -77714,8 +77714,8 @@ function create_fragment$1s(ctx) {
 		label2: "Cancel"
 	};
 
-	if (/*pythonpathCheck*/ ctx[2] !== void 0) {
-		customdialog_props.dialog = /*pythonpathCheck*/ ctx[2];
+	if (/*pythonpathCheck*/ ctx[3] !== void 0) {
+		customdialog_props.dialog = /*pythonpathCheck*/ ctx[3];
 	}
 
 	customdialog = new CustomDialog({
@@ -77737,8 +77737,8 @@ function create_fragment$1s(ctx) {
 		label: "Github username"
 	};
 
-	if (/*$github*/ ctx[9].username !== void 0) {
-		textfield0_props.value = /*$github*/ ctx[9].username;
+	if (/*$github*/ ctx[1].username !== void 0) {
+		textfield0_props.value = /*$github*/ ctx[1].username;
 	}
 
 	textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
@@ -77753,8 +77753,8 @@ function create_fragment$1s(ctx) {
 		label: "Github Repo"
 	};
 
-	if (/*$github*/ ctx[9].repo !== void 0) {
-		textfield1_props.value = /*$github*/ ctx[9].repo;
+	if (/*$github*/ ctx[1].repo !== void 0) {
+		textfield1_props.value = /*$github*/ ctx[1].repo;
 	}
 
 	textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
@@ -77769,8 +77769,8 @@ function create_fragment$1s(ctx) {
 		options: ["master", "developer"]
 	};
 
-	if (/*$github*/ ctx[9].branch !== void 0) {
-		customselect_props.picked = /*$github*/ ctx[9].branch;
+	if (/*$github*/ ctx[1].branch !== void 0) {
+		customselect_props.picked = /*$github*/ ctx[1].branch;
 	}
 
 	customselect = new CustomSelect({
@@ -77806,12 +77806,12 @@ function create_fragment$1s(ctx) {
 
 	let terminal_props = { id: "Terminal-settings" };
 
-	if (/*commandToRun*/ ctx[4] !== void 0) {
-		terminal_props.commandToRun = /*commandToRun*/ ctx[4];
+	if (/*commandToRun*/ ctx[5] !== void 0) {
+		terminal_props.commandToRun = /*commandToRun*/ ctx[5];
 	}
 
-	if (/*commandArgsToRun*/ ctx[5] !== void 0) {
-		terminal_props.commandArgsToRun = /*commandArgsToRun*/ ctx[5];
+	if (/*commandArgsToRun*/ ctx[6] !== void 0) {
+		terminal_props.commandArgsToRun = /*commandArgsToRun*/ ctx[6];
 	}
 
 	terminal = new Terminal({ props: terminal_props, $$inline: true });
@@ -77849,7 +77849,7 @@ function create_fragment$1s(ctx) {
 			h10.textContent = "Configuration";
 			t12 = space();
 			div6 = element("div");
-			t13 = text(/*$pyVersion*/ ctx[6]);
+			t13 = text(/*$pyVersion*/ ctx[7]);
 			t14 = space();
 			button0 = element("button");
 			t15 = text("Developer mode: ");
@@ -77900,76 +77900,76 @@ function create_fragment$1s(ctx) {
 			h13 = element("h1");
 			h13.textContent = "About";
 			attr_dev(div0, "class", "title nav hvr-glow svelte-7chplr");
-			toggle_class(div0, "clicked", /*selected*/ ctx[1] === "Configuration");
-			add_location(div0, file$1l, 151, 16, 4520);
+			toggle_class(div0, "clicked", /*selected*/ ctx[2] === "Configuration");
+			add_location(div0, file$1l, 154, 16, 4692);
 			attr_dev(div1, "class", "title nav hvr-glow svelte-7chplr");
-			toggle_class(div1, "clicked", /*selected*/ ctx[1] === "Update");
-			add_location(div1, file$1l, 152, 16, 4652);
+			toggle_class(div1, "clicked", /*selected*/ ctx[2] === "Update");
+			add_location(div1, file$1l, 155, 16, 4824);
 			attr_dev(div2, "class", "title nav hvr-glow svelte-7chplr");
-			toggle_class(div2, "clicked", /*selected*/ ctx[1] === "Terminal");
-			add_location(div2, file$1l, 153, 16, 4770);
+			toggle_class(div2, "clicked", /*selected*/ ctx[2] === "Terminal");
+			add_location(div2, file$1l, 156, 16, 4942);
 			attr_dev(div3, "class", "title nav hvr-glow svelte-7chplr");
-			toggle_class(div3, "clicked", /*selected*/ ctx[1] === "About");
-			add_location(div3, file$1l, 154, 16, 4892);
+			toggle_class(div3, "clicked", /*selected*/ ctx[2] === "About");
+			add_location(div3, file$1l, 157, 16, 5064);
 			attr_dev(div4, "class", "container left svelte-7chplr");
-			add_location(div4, file$1l, 150, 12, 4474);
+			add_location(div4, file$1l, 153, 12, 4646);
 			attr_dev(div5, "class", "column side-panel is-2-widescreen is-3-desktop is-4-tablet box adjust-right svelte-7chplr");
-			add_location(div5, file$1l, 148, 8, 4369);
+			add_location(div5, file$1l, 151, 8, 4541);
 			attr_dev(h10, "class", "title svelte-7chplr");
-			add_location(h10, file$1l, 164, 20, 5266);
+			add_location(h10, file$1l, 167, 20, 5438);
 			attr_dev(div6, "class", "subtitle svelte-7chplr");
-			add_location(div6, file$1l, 165, 20, 5324);
+			add_location(div6, file$1l, 168, 20, 5496);
 			attr_dev(button0, "class", "button is-link svelte-7chplr");
-			add_location(button0, file$1l, 167, 20, 5388);
+			add_location(button0, file$1l, 170, 20, 5560);
 			attr_dev(div7, "class", "content animated fadeIn svelte-7chplr");
-			toggle_class(div7, "hide", /*selected*/ ctx[1] !== "Configuration");
-			add_location(div7, file$1l, 163, 16, 5167);
+			toggle_class(div7, "hide", /*selected*/ ctx[2] !== "Configuration");
+			add_location(div7, file$1l, 166, 16, 5339);
 			attr_dev(h11, "class", "title svelte-7chplr");
-			add_location(h11, file$1l, 178, 20, 6187);
+			add_location(h11, file$1l, 181, 20, 6359);
 			attr_dev(div8, "class", "subtitle svelte-7chplr");
-			add_location(div8, file$1l, 180, 20, 6240);
+			add_location(div8, file$1l, 183, 20, 6412);
 			attr_dev(div9, "class", "content svelte-7chplr");
-			add_location(div9, file$1l, 181, 20, 6329);
+			add_location(div9, file$1l, 184, 20, 6501);
 			attr_dev(button1, "class", "button is-link svelte-7chplr");
 			attr_dev(button1, "id", "updateCheckBtn");
-			add_location(button1, file$1l, 188, 24, 6827);
+			add_location(button1, file$1l, 191, 24, 6999);
 			attr_dev(button2, "class", "button is-link svelte-7chplr");
 			attr_dev(button2, "id", "updateBtn");
-			add_location(button2, file$1l, 189, 24, 6969);
+			add_location(button2, file$1l, 192, 24, 7141);
 			attr_dev(button3, "class", "button is-warning svelte-7chplr");
-			add_location(button3, file$1l, 191, 24, 7100);
+			add_location(button3, file$1l, 194, 24, 7272);
 			attr_dev(div10, "class", "content svelte-7chplr");
-			add_location(div10, file$1l, 187, 20, 6780);
+			add_location(div10, file$1l, 190, 20, 6952);
 			attr_dev(button4, "class", "button is-link svelte-7chplr");
-			add_location(button4, file$1l, 197, 24, 7424);
+			add_location(button4, file$1l, 200, 24, 7596);
 			attr_dev(button5, "class", "button is-link svelte-7chplr");
-			add_location(button5, file$1l, 198, 24, 7514);
+			add_location(button5, file$1l, 201, 24, 7686);
 			attr_dev(div11, "class", "content svelte-7chplr");
-			add_location(div11, file$1l, 195, 20, 7252);
+			add_location(div11, file$1l, 198, 20, 7424);
 			attr_dev(div12, "class", "content animated fadeIn svelte-7chplr");
-			toggle_class(div12, "hide", /*selected*/ ctx[1] !== "Update");
-			add_location(div12, file$1l, 177, 16, 6095);
+			toggle_class(div12, "hide", /*selected*/ ctx[2] !== "Update");
+			add_location(div12, file$1l, 180, 16, 6267);
 			attr_dev(h12, "class", "title svelte-7chplr");
-			add_location(h12, file$1l, 204, 20, 7768);
+			add_location(h12, file$1l, 207, 20, 7940);
 			attr_dev(div13, "class", "content animated fadeIn svelte-7chplr");
-			toggle_class(div13, "hide", /*selected*/ ctx[1] !== "Terminal");
-			add_location(div13, file$1l, 203, 16, 7674);
+			toggle_class(div13, "hide", /*selected*/ ctx[2] !== "Terminal");
+			add_location(div13, file$1l, 206, 16, 7846);
 			attr_dev(h13, "class", "title svelte-7chplr");
-			add_location(h13, file$1l, 209, 20, 8046);
+			add_location(h13, file$1l, 212, 20, 8218);
 			attr_dev(div14, "class", "content animated fadeIn svelte-7chplr");
-			toggle_class(div14, "hide", /*selected*/ ctx[1] !== "About");
-			add_location(div14, file$1l, 208, 16, 7955);
+			toggle_class(div14, "hide", /*selected*/ ctx[2] !== "About");
+			add_location(div14, file$1l, 211, 16, 8127);
 			attr_dev(div15, "class", "container right svelte-7chplr");
 			attr_dev(div15, "id", "Settings_right_column");
-			add_location(div15, file$1l, 161, 12, 5091);
+			add_location(div15, file$1l, 164, 12, 5263);
 			attr_dev(div16, "class", "column main-panel box svelte-7chplr");
-			add_location(div16, file$1l, 159, 8, 5040);
+			add_location(div16, file$1l, 162, 8, 5212);
 			attr_dev(div17, "class", "columns svelte-7chplr");
-			add_location(div17, file$1l, 147, 4, 4338);
+			add_location(div17, file$1l, 150, 4, 4510);
 			attr_dev(section, "class", "section animated fadeIn svelte-7chplr");
 			attr_dev(section, "id", "Settings");
 			set_style(section, "display", "none");
-			add_location(section, file$1l, 145, 0, 4254);
+			add_location(section, file$1l, 148, 0, 4426);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -78063,40 +78063,40 @@ function create_fragment$1s(ctx) {
 		p: function update(ctx, [dirty]) {
 			const premodal_changes = {};
 
-			if (!updating_preModal && dirty & /*preModal*/ 8) {
+			if (!updating_preModal && dirty & /*preModal*/ 16) {
 				updating_preModal = true;
-				premodal_changes.preModal = /*preModal*/ ctx[3];
+				premodal_changes.preModal = /*preModal*/ ctx[4];
 				add_flush_callback(() => updating_preModal = false);
 			}
 
 			premodal.$set(premodal_changes);
 			const customdialog_changes = {};
 
-			if (!updating_dialog && dirty & /*pythonpathCheck*/ 4) {
+			if (!updating_dialog && dirty & /*pythonpathCheck*/ 8) {
 				updating_dialog = true;
-				customdialog_changes.dialog = /*pythonpathCheck*/ ctx[2];
+				customdialog_changes.dialog = /*pythonpathCheck*/ ctx[3];
 				add_flush_callback(() => updating_dialog = false);
 			}
 
 			customdialog.$set(customdialog_changes);
 
-			if (dirty & /*selected*/ 2) {
-				toggle_class(div0, "clicked", /*selected*/ ctx[1] === "Configuration");
+			if (dirty & /*selected*/ 4) {
+				toggle_class(div0, "clicked", /*selected*/ ctx[2] === "Configuration");
 			}
 
-			if (dirty & /*selected*/ 2) {
-				toggle_class(div1, "clicked", /*selected*/ ctx[1] === "Update");
+			if (dirty & /*selected*/ 4) {
+				toggle_class(div1, "clicked", /*selected*/ ctx[2] === "Update");
 			}
 
-			if (dirty & /*selected*/ 2) {
-				toggle_class(div2, "clicked", /*selected*/ ctx[1] === "Terminal");
+			if (dirty & /*selected*/ 4) {
+				toggle_class(div2, "clicked", /*selected*/ ctx[2] === "Terminal");
 			}
 
-			if (dirty & /*selected*/ 2) {
-				toggle_class(div3, "clicked", /*selected*/ ctx[1] === "About");
+			if (dirty & /*selected*/ 4) {
+				toggle_class(div3, "clicked", /*selected*/ ctx[2] === "About");
 			}
 
-			if (!current || dirty & /*$pyVersion*/ 64) set_data_dev(t13, /*$pyVersion*/ ctx[6]);
+			if (!current || dirty & /*$pyVersion*/ 128) set_data_dev(t13, /*$pyVersion*/ ctx[7]);
 			if (!current || dirty & /*$developerMode*/ 1) set_data_dev(t16, /*$developerMode*/ ctx[0]);
 
 			if (/*$developerMode*/ ctx[0]) {
@@ -78122,33 +78122,33 @@ function create_fragment$1s(ctx) {
 				check_outros();
 			}
 
-			if (dirty & /*selected*/ 2) {
-				toggle_class(div7, "hide", /*selected*/ ctx[1] !== "Configuration");
+			if (dirty & /*selected*/ 4) {
+				toggle_class(div7, "hide", /*selected*/ ctx[2] !== "Configuration");
 			}
 
 			const textfield0_changes = {};
 
-			if (!updating_value && dirty & /*$github*/ 512) {
+			if (!updating_value && dirty & /*$github*/ 2) {
 				updating_value = true;
-				textfield0_changes.value = /*$github*/ ctx[9].username;
+				textfield0_changes.value = /*$github*/ ctx[1].username;
 				add_flush_callback(() => updating_value = false);
 			}
 
 			textfield0.$set(textfield0_changes);
 			const textfield1_changes = {};
 
-			if (!updating_value_1 && dirty & /*$github*/ 512) {
+			if (!updating_value_1 && dirty & /*$github*/ 2) {
 				updating_value_1 = true;
-				textfield1_changes.value = /*$github*/ ctx[9].repo;
+				textfield1_changes.value = /*$github*/ ctx[1].repo;
 				add_flush_callback(() => updating_value_1 = false);
 			}
 
 			textfield1.$set(textfield1_changes);
 			const customselect_changes = {};
 
-			if (!updating_picked && dirty & /*$github*/ 512) {
+			if (!updating_picked && dirty & /*$github*/ 2) {
 				updating_picked = true;
-				customselect_changes.picked = /*$github*/ ctx[9].branch;
+				customselect_changes.picked = /*$github*/ ctx[1].branch;
 				add_flush_callback(() => updating_picked = false);
 			}
 
@@ -78163,32 +78163,32 @@ function create_fragment$1s(ctx) {
 
 			textfield2.$set(textfield2_changes);
 
-			if (dirty & /*selected*/ 2) {
-				toggle_class(div12, "hide", /*selected*/ ctx[1] !== "Update");
+			if (dirty & /*selected*/ 4) {
+				toggle_class(div12, "hide", /*selected*/ ctx[2] !== "Update");
 			}
 
 			const terminal_changes = {};
 
-			if (!updating_commandToRun && dirty & /*commandToRun*/ 16) {
+			if (!updating_commandToRun && dirty & /*commandToRun*/ 32) {
 				updating_commandToRun = true;
-				terminal_changes.commandToRun = /*commandToRun*/ ctx[4];
+				terminal_changes.commandToRun = /*commandToRun*/ ctx[5];
 				add_flush_callback(() => updating_commandToRun = false);
 			}
 
-			if (!updating_commandArgsToRun && dirty & /*commandArgsToRun*/ 32) {
+			if (!updating_commandArgsToRun && dirty & /*commandArgsToRun*/ 64) {
 				updating_commandArgsToRun = true;
-				terminal_changes.commandArgsToRun = /*commandArgsToRun*/ ctx[5];
+				terminal_changes.commandArgsToRun = /*commandArgsToRun*/ ctx[6];
 				add_flush_callback(() => updating_commandArgsToRun = false);
 			}
 
 			terminal.$set(terminal_changes);
 
-			if (dirty & /*selected*/ 2) {
-				toggle_class(div13, "hide", /*selected*/ ctx[1] !== "Terminal");
+			if (dirty & /*selected*/ 4) {
+				toggle_class(div13, "hide", /*selected*/ ctx[2] !== "Terminal");
 			}
 
-			if (dirty & /*selected*/ 2) {
-				toggle_class(div14, "hide", /*selected*/ ctx[1] !== "About");
+			if (dirty & /*selected*/ 4) {
+				toggle_class(div14, "hide", /*selected*/ ctx[2] !== "About");
 			}
 		},
 		i: function intro(local) {
@@ -78255,15 +78255,15 @@ function instance$1s($$self, $$props, $$invalidate) {
 	let $activateChangelog;
 	let $backupName;
 	validate_store(pyVersion, "pyVersion");
-	component_subscribe($$self, pyVersion, $$value => $$invalidate(6, $pyVersion = $$value));
+	component_subscribe($$self, pyVersion, $$value => $$invalidate(7, $pyVersion = $$value));
 	validate_store(developerMode, "developerMode");
 	component_subscribe($$self, developerMode, $$value => $$invalidate(0, $developerMode = $$value));
 	validate_store(pythonpath, "pythonpath");
-	component_subscribe($$self, pythonpath, $$value => $$invalidate(7, $pythonpath = $$value));
+	component_subscribe($$self, pythonpath, $$value => $$invalidate(8, $pythonpath = $$value));
 	validate_store(pythonscript, "pythonscript");
-	component_subscribe($$self, pythonscript, $$value => $$invalidate(8, $pythonscript = $$value));
+	component_subscribe($$self, pythonscript, $$value => $$invalidate(9, $pythonscript = $$value));
 	validate_store(github, "github");
-	component_subscribe($$self, github, $$value => $$invalidate(9, $github = $$value));
+	component_subscribe($$self, github, $$value => $$invalidate(1, $github = $$value));
 	validate_store(activateChangelog, "activateChangelog");
 	component_subscribe($$self, activateChangelog, $$value => $$invalidate(10, $activateChangelog = $$value));
 	validate_store(backupName, "backupName");
@@ -78273,22 +78273,22 @@ function instance$1s($$self, $$props, $$invalidate) {
 
 	const backup = event => {
 		backupRestore({ event, method: "backup" }).then(() => console.log("Backup Completed")).catch(err => {
-			$$invalidate(3, preModal.modalContent = err, preModal);
-			$$invalidate(3, preModal.open = true, preModal);
+			$$invalidate(4, preModal.modalContent = err, preModal);
+			$$invalidate(4, preModal.open = true, preModal);
 		});
 	};
 
 	const restore = event => {
 		backupRestore({ event, method: "restore" }).then(() => console.log("Restore Completed")).catch(err => {
-			$$invalidate(3, preModal.modalContent = err, preModal);
-			$$invalidate(3, preModal.open = true, preModal);
+			$$invalidate(4, preModal.modalContent = err, preModal);
+			$$invalidate(4, preModal.open = true, preModal);
 		});
 	};
 
 	let selected = "Update";
 
 	const navigate = e => {
-		$$invalidate(1, selected = e.target.innerHTML);
+		$$invalidate(2, selected = e.target.innerHTML);
 	};
 
 	let pythonpathCheck;
@@ -78337,8 +78337,8 @@ function instance$1s($$self, $$props, $$invalidate) {
 			await download(updateFolder);
 			InstallUpdate(target, updateFolder);
 		} catch(err) {
-			$$invalidate(3, preModal.modalContent = err.stack, preModal);
-			$$invalidate(3, preModal.open = true, preModal);
+			$$invalidate(4, preModal.modalContent = err.stack, preModal);
+			$$invalidate(4, preModal.open = true, preModal);
 		}
 	};
 
@@ -78352,12 +78352,12 @@ function instance$1s($$self, $$props, $$invalidate) {
 
 	function premodal_preModal_binding(value) {
 		preModal = value;
-		$$invalidate(3, preModal);
+		$$invalidate(4, preModal);
 	}
 
 	function customdialog_dialog_binding(value) {
 		pythonpathCheck = value;
-		$$invalidate(2, pythonpathCheck);
+		$$invalidate(3, pythonpathCheck);
 	}
 
 	const click_handler = () => set_store_value(developerMode, $developerMode = !$developerMode, $developerMode);
@@ -78404,12 +78404,12 @@ function instance$1s($$self, $$props, $$invalidate) {
 
 	function terminal_commandToRun_binding(value) {
 		commandToRun = value;
-		$$invalidate(4, commandToRun);
+		$$invalidate(5, commandToRun);
 	}
 
 	function terminal_commandArgsToRun_binding(value) {
 		commandArgsToRun = value;
-		$$invalidate(5, commandArgsToRun);
+		$$invalidate(6, commandArgsToRun);
 	}
 
 	$$self.$capture_state = () => ({
@@ -78458,11 +78458,11 @@ function instance$1s($$self, $$props, $$invalidate) {
 	});
 
 	$$self.$inject_state = $$props => {
-		if ("selected" in $$props) $$invalidate(1, selected = $$props.selected);
-		if ("pythonpathCheck" in $$props) $$invalidate(2, pythonpathCheck = $$props.pythonpathCheck);
-		if ("preModal" in $$props) $$invalidate(3, preModal = $$props.preModal);
-		if ("commandToRun" in $$props) $$invalidate(4, commandToRun = $$props.commandToRun);
-		if ("commandArgsToRun" in $$props) $$invalidate(5, commandArgsToRun = $$props.commandArgsToRun);
+		if ("selected" in $$props) $$invalidate(2, selected = $$props.selected);
+		if ("pythonpathCheck" in $$props) $$invalidate(3, pythonpathCheck = $$props.pythonpathCheck);
+		if ("preModal" in $$props) $$invalidate(4, preModal = $$props.preModal);
+		if ("commandToRun" in $$props) $$invalidate(5, commandToRun = $$props.commandToRun);
+		if ("commandArgsToRun" in $$props) $$invalidate(6, commandArgsToRun = $$props.commandArgsToRun);
 	};
 
 	if ($$props && "$$inject" in $$props) {
@@ -78478,7 +78478,17 @@ function instance$1s($$self, $$props, $$invalidate) {
 			} else {
 				window.showStackContext({
 					title: "Warning",
-					text: "Be cautious: If python path invalid, the program might not work",
+					text: "If python path is invalid, the program might not work",
+					type: "error"
+				});
+			}
+		}
+
+		if ($$self.$$.dirty & /*$github*/ 2) {
+			 if ($github.branch === "developer") {
+				window.showStackContext({
+					title: "Warning",
+					text: "Developer channel may not be stable and contains bugs.",
 					type: "error"
 				});
 			}
@@ -78487,6 +78497,7 @@ function instance$1s($$self, $$props, $$invalidate) {
 
 	return [
 		$developerMode,
+		$github,
 		selected,
 		pythonpathCheck,
 		preModal,
@@ -78495,7 +78506,6 @@ function instance$1s($$self, $$props, $$invalidate) {
 		$pyVersion,
 		$pythonpath,
 		$pythonscript,
-		$github,
 		$activateChangelog,
 		$backupName,
 		backup,

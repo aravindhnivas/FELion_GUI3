@@ -85,7 +85,12 @@
         $pythonpath = path.resolve(__dirname, "../python3/python")
         $pythonscript = path.resolve(__dirname, "assets/python_files")
     } else {
-        window.showStackContext({title:"Warning", text:"Be cautious: If python path invalid, the program might not work", type:"error"});
+        window.showStackContext({title:"Warning", text:"If python path is invalid, the program might not work", type:"error"});
+
+    }
+
+    $: if($github.branch === "developer") {
+        window.showStackContext({title:"Warning", text:"Developer channel may not be stable and contains bugs.", type:"error"});
 
     }
 
@@ -124,8 +129,6 @@
 <CustomDialog id="pythonpath_Check" bind:dialog={pythonpathCheck} on:response={handlepythonPathCheck} title={"Python path is not valid"} content={"Change it in Settings --> Configuration"} label1="Okay" label2="Cancel" />
 
 <Changelog  />
-
-
 
 <section class="section animated fadeIn" id="Settings" style="display:none">
 
@@ -192,12 +195,9 @@
                 
                 <div class="content animated fadeIn" class:hide={selected!=="About"}>
                     <h1 class="title">About</h1>
+
                 </div>
                 
-                <!-- <Message active={$developerMode} title="Developer mode: {$developerMode}">
-                    Be cautious: If python path invalid, the program might not work
-
-                </Message> -->
             </div>
         </div>
 
