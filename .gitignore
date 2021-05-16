@@ -6,3 +6,4 @@ static/dist/
 python3/
 out/
 static/output.log
+*.zip
