@@ -11,7 +11,7 @@
 
     const colorSets = {warning: "#ffdd57", danger:"#f14668", info:"#2098d1", normal:"#fafafa", success:"#20f996"}
 
-    export let commandToRun = localStorage["pythonpath"] || "", commandArgsToRun = "-m pip", commandResults = [{color:colorSets.normal, results:">> "}], teminalFontSize=20;
+    export let commandToRun = db.get("pythonpath") || "", commandArgsToRun = "-m pip", commandResults = [{color:colorSets.normal, results:">> "}], teminalFontSize=20;
 
     export let commandInputDiv = true, runShell = false, id="terminal";
     
@@ -75,7 +75,7 @@
     const installPythonPackages = () => {
 
 
-        commandToRun = localStorage["pythonpath"]
+        commandToRun = db.get("pythonpath")
         
         commandArgsToRun = "-m pip install"
 

@@ -15,7 +15,7 @@
 
     const filetype = "scan", id = "Timescan"
     let fileChecked = [];
-    let currentLocation = localStorage[`${filetype}_location`] || ""
+    let currentLocation = db.get(`${filetype}_location`) || ""
 
     $: scanfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
     

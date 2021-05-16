@@ -47,10 +47,6 @@ window.showinfo = electronVersion >= 7 ? remote.dialog.showMessageBoxSync : remo
 
 
 // Checking curernt version
-
-const versionFile = fs.readFileSync(path.join(__dirname, "../version.json"))
-
-window.currentVersion = localStorage["version"] = JSON.parse(versionFile.toString("utf-8")).version
 window.asyncForEach = async (array, callback) => {
 
     for (let index = 0; index < array.length; index++) {

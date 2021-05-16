@@ -133,13 +133,14 @@
 
 
     const style="width:12em; margin-bottom:1em;"
-    let currentLocation = localStorage["thz_modal_location"] || localStorage["thz_location"] || ""
+    let currentLocation = db.get("thz_modal_location") || db.get("thz_location") || ""
     let filename = `ROSAA_modal_${mainParameters[0].value}_${mainParameters[1].value}`
+    $: if(currentLocation&&fs.existsSync(currentLocation)) {db.set("thz_modal_location")}
 
     function browse_folder() {
 
         browse({dir:true}).then(result=>{
-            if (!result.canceled) { currentLocation= localStorage["thz_modal_location"] = result.filePaths[0] }
+            if (!result.canceled) { currentLocation = result.filePaths[0]; db.set("thz_modal_location", currentLocation)}
 
         })
     
@@ -153,7 +154,6 @@
 </script>
 
 <style lang="scss">
-
     .locationColumn {
 
         display: grid;

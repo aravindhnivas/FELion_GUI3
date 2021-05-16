@@ -17,7 +17,7 @@
 
     const filetype = "thz", id = "THz"
     let fileChecked = [];
-    let currentLocation = localStorage[`${filetype}_location`] || ""
+    let currentLocation = db.get(`${filetype}_location`) || ""
     $: thzfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
     let openShell = false, graphPlotted = false
     let delta = 10, gamma = 0

@@ -16,11 +16,11 @@
     // Initialisation
     const filetype = "mass", id = "Masspec"
     let fileChecked = [];
-    let currentLocation = localStorage[`${filetype}_location`] || ""
+
+
+    let currentLocation = db.get(`${filetype}_location`) || ""
     $: massfiles = fs.existsSync(currentLocation) ? fileChecked.map(file=>path.resolve(currentLocation, file)) : []
     
-    // $: if(currentLocation !== "") {OPOcalibFiles = fs.readdirSync(OPOLocation).filter(file=> file.endsWith(".calibOPO"))}
-
     let openShell = false, graphPlotted = false
 
     // Find peaks

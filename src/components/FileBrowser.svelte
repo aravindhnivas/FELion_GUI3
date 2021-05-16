@@ -70,8 +70,8 @@
             files_loaded = true
             console.log("Folder updated", otherfolders);
             dispatch_chdir_event()
-            if (filetype.length > 2) {localStorage[`${filetype}_location`] = currentLocation}
-            
+
+            if (filetype.length > 2) { db.set(`${filetype}_location`, currentLocation) }
             if (toast) { window.createToast("Files updated"); }
 
         } catch (err) {

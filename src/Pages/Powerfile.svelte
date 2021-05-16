@@ -34,7 +34,9 @@
         browse({dir:true}).then(result=>{
 
             if (!result.canceled) {
-                location = localStorage["powerfile_location"] = result.filePaths[0]
+                
+                location = result.filePaths[0]
+                db.set("powerfile_location", location)
                 window.createToast("Location updated", "success")
 
                 if (save) savefile()
@@ -44,7 +46,7 @@
 
     let powerfileContent = '', felixHz = 10, felixShots = 16, convert = null;
 
-    let location = localStorage["powerfile_location"] || "";
+    let location = db.get("powerfile_location") || "";
     let overwrite_dialog;
 
     let today = new Date();

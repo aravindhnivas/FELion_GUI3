@@ -28,14 +28,14 @@
 
     const filetype="felix", id="Normline"
     let fileChecked=[], toggleBrowser = false;
-    let currentLocation = localStorage[`${filetype}_location`] || ""
+    let currentLocation = db.get(`${filetype}_location`) || ""
     $: felixfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
     $: console.log(`${filetype} currentlocation: \n${currentLocation}`)
     ///////////////////////////////////////////////////////////////////////
 
     // Theory file
     let show_theoryplot = false
-    let theoryLocation = localStorage["theoryLocation"] || currentLocation
+    let theoryLocation = db.get("theoryLocation") || currentLocation
 
     ///////////////////////////////////////////////////////////////////////
     let openShell = false;
@@ -67,7 +67,7 @@
 
     // OPO
 
-    let OPOLocation = localStorage["opoLocation"] || currentLocation
+    let OPOLocation = db.get("ofelix_location") || currentLocation
     let opofiles = []
     $: $felixopoLocation = $opoMode ? OPOLocation : currentLocation
     $: $opoMode ? window.createToast("OPO MODE", "warning") : window.createToast("FELIX MODE")

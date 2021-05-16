@@ -33,7 +33,7 @@
     let onlyExpRange = true;
 </script>
 
-<QuickBrowser title="Theory files" bind:active={showTheoryFiles} bind:currentLocation={theoryLocation} bind:fileChecked={theoryfilesChecked} on:submit="{(e)=>{plotData(e.detail.event); localStorage["theoryLocation"] = theoryLocation}}"/>
+<QuickBrowser title="Theory files" bind:active={showTheoryFiles} bind:currentLocation={theoryLocation} bind:fileChecked={theoryfilesChecked} on:submit="{(e)=>{plotData(e.detail.event); db.set("theoryLocation", theoryLocation)}}"/>
 
 {#if $toggleRow}
     <div class="align" transition:fade>

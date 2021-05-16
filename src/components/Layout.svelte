@@ -60,8 +60,10 @@
     ////////////////////////////////////////////////////////////////////////////
 
     export let id, fileChecked=[], filetype = "felix", toggleBrowser = false, preModal = {}, fullfileslist = [];
-    export let currentLocation = localStorage[`${filetype}_location`] || "", graphPlotted=false;
+    export let currentLocation = db.get(`${filetype}_location`) || "", graphPlotted=false;
+
     const dispatch = createEventDispatcher()
+
 
     function browse_folder() {
         browse({dir:true}).then(result=>{
@@ -70,14 +72,16 @@
 
 
             if (!result.canceled) { 
-                currentLocation= localStorage[`${filetype}_location`] = result.filePaths[0]
+                currentLocation = result.filePaths[0]
 
+                db.set(`${filetype}_location`, currentLocation)
                 console.log(result, currentLocation)
 
              }
         })
     }
 
+    
     function tour_event() { dispatch('tour', {filetype}) }
 
     let ContainerHeight, buttonContainerHeight, mounted=false;
@@ -217,16 +221,16 @@
 
 </style>
 
+
 <PreModal bind:preModal />
 
 <section {id} style="display:none" class="animated fadeIn">
-
     <div class="columns">
 
         {#if toggleBrowser}
             <div class="column is-one-fifth-widescreen is-one-quarter-desktop box filebrowser adjust-right" transition:fly="{{ x: -100, duration: 500 }}">
-
                 <FileBrowser bind:currentLocation {filetype} bind:fileChecked on:chdir bind:fullfileslist/>
+
             </div>
         {/if}
 
@@ -236,9 +240,11 @@
                 <div class="location__bar" >
                     <Hamburger1 bind:active={toggleBrowser}/>
                     <button class="button is-link gap" id="{filetype}_filebrowser_btn" on:click={browse_folder}>Browse</button>
+
+                    
                     <Textfield bind:value={currentLocation} label="Current location" />
-                    <!-- <button class="button is-link is-pulled-right" on:click={tour_event}>Need help?</button> -->
                 </div>
+
                 <div class="buttonContainer" id="{filetype}-buttonContainer" bind:clientHeight={buttonContainerHeight}>
                     {#if toggleBrowser}
                         <slot name="buttonContainer" />
@@ -254,11 +260,11 @@
                     {#if graphPlotted}
                         <slot name="plotContainer_functions" />
                         <slot name="plotContainer_reports" />
-
                     {/if}
-                    
                 </div>
+
             </div>
         </div>
     </div>
+    
 </section>
