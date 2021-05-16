@@ -97,6 +97,10 @@ hr {background-color: #dbdbdb;}
 .button {margin-right: 0.5em;}
 .active {display: flex!important;}
 .pnotify { background: #634e96; }
+.pnotify-closer, .pnotify-sticker {
+    outline: none;
+}
+
 .modebar-group {
     display: grid!important;
     grid-auto-flow: column;
