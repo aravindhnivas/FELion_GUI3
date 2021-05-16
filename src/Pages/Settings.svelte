@@ -45,57 +45,50 @@
 
     
     onMount(()=>{
-    
         setTimeout(async ()=>{
-            await tick()
 
+            await tick()
             checkPython()
                 .then(res=>{ $pyVersion = res; console.log("Python path is valid")})
+
                 .catch(()=>pythonpathCheck.open() )
 
             } , 1000)
 
+
         updateCheck({info:false})
         const timer_for_update = setInterval(()=>{updateCheck({info:false})}, 1*1000*60*15)
-
         return ()=>{clearInterval(timer_for_update)}
+
     })
+
     const handlepythonPathCheck = () => { console.log("Python path checking done") }
-    
     const update = async () => {
 
         try {
             const updateFolder = path.resolve(__dirname, "..", "update")
-
             let target = document.getElementById("updateBtn")
-            
             target.classList.toggle("is-loading")
-
             if (!fs.existsSync(updateFolder)) {fs.mkdirSync(updateFolder)}
-            
             await download(updateFolder)
             InstallUpdate(target, updateFolder)
-
         } catch (err) {preModal.modalContent = err.stack; preModal.open = true}
         
     }
 
     let preModal = {};
-
     let commandToRun = "", commandArgsToRun = "";
 
-
+    
     $: if(!$developerMode) {
         console.log("Setting default pathon path")
         $pythonpath = path.resolve(__dirname, "../python3/python")
-
         $pythonscript = path.resolve(__dirname, "assets/python_files")
     } else {
-        
-        Snackbar.create(
-            { message: 'Be cautious: If python path invalid, the program might not work', type: 'is-danger', actionText: 'Ok', position: 'is-top', duration:5000}
-        )
+        window.showStackContext({title:"Warning", text:"Be cautious: If python path invalid, the program might not work", type:"error"});
+
     }
+
 </script>
 
 
@@ -116,30 +109,15 @@
     * :global(option) { color: black; }
     .container {padding: 2em; display: grid;}
     .container .left {place-content: center;}
-    // .active {display: ""!important; }
-
-    .hide {display: none!important;}
 
     .right.title {
         letter-spacing: 0.1em; 
-        
         text-transform: uppercase;
-        
         border-bottom: solid;
         margin-bottom: 2em;
         padding-bottom: 0.2em;
         width: fit-content;
     }
-
-
-    // .message {
-    //     display: grid;
-    //     place-items: center;
-    //     position: fixed;
-    //     z-index: 100;
-    //     place-content: center;
-    //     background: #836ac05c;
-    // }
 
 </style>
 <PreModal bind:preModal />
@@ -165,7 +143,7 @@
 
         <div class="column main-panel box">
 
-            <div class="container right" >
+            <div class="container right" id="Settings_right_column">
 
                 <div class="content animated fadeIn" class:hide={selected!=="Configuration"}>
                     <h1 class="title">Configuration</h1>

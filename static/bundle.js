@@ -77475,7 +77475,7 @@ class Terminal extends SvelteComponentDev {
 const { console: console_1$e } = globals;
 const file$1l = "src\\Pages\\Settings.svelte";
 
-// (179:20) {#if $developerMode}
+// (169:20) {#if $developerMode}
 function create_if_block$C(ctx) {
 	let textfield0;
 	let updating_value;
@@ -77533,10 +77533,10 @@ function create_if_block$C(ctx) {
 			t3 = space();
 			button1 = element("button");
 			button1.textContent = "Save";
-			attr_dev(button0, "class", "button is-link svelte-3kstg5");
-			add_location(button0, file$1l, 182, 24, 5978);
-			attr_dev(button1, "class", "button is-link svelte-3kstg5");
-			add_location(button1, file$1l, 183, 24, 6074);
+			attr_dev(button0, "class", "button is-link svelte-7chplr");
+			add_location(button0, file$1l, 172, 24, 5858);
+			attr_dev(button1, "class", "button is-link svelte-7chplr");
+			add_location(button1, file$1l, 173, 24, 5954);
 		},
 		m: function mount(target, anchor) {
 			mount_component(textfield0, target, anchor);
@@ -77605,7 +77605,7 @@ function create_if_block$C(ctx) {
 		block,
 		id: create_if_block$C.name,
 		type: "if",
-		source: "(179:20) {#if $developerMode}",
+		source: "(169:20) {#if $developerMode}",
 		ctx
 	});
 
@@ -77899,76 +77899,77 @@ function create_fragment$1s(ctx) {
 			div14 = element("div");
 			h13 = element("h1");
 			h13.textContent = "About";
-			attr_dev(div0, "class", "title nav hvr-glow svelte-3kstg5");
+			attr_dev(div0, "class", "title nav hvr-glow svelte-7chplr");
 			toggle_class(div0, "clicked", /*selected*/ ctx[1] === "Configuration");
-			add_location(div0, file$1l, 161, 16, 4666);
-			attr_dev(div1, "class", "title nav hvr-glow svelte-3kstg5");
+			add_location(div0, file$1l, 151, 16, 4520);
+			attr_dev(div1, "class", "title nav hvr-glow svelte-7chplr");
 			toggle_class(div1, "clicked", /*selected*/ ctx[1] === "Update");
-			add_location(div1, file$1l, 162, 16, 4798);
-			attr_dev(div2, "class", "title nav hvr-glow svelte-3kstg5");
+			add_location(div1, file$1l, 152, 16, 4652);
+			attr_dev(div2, "class", "title nav hvr-glow svelte-7chplr");
 			toggle_class(div2, "clicked", /*selected*/ ctx[1] === "Terminal");
-			add_location(div2, file$1l, 163, 16, 4916);
-			attr_dev(div3, "class", "title nav hvr-glow svelte-3kstg5");
+			add_location(div2, file$1l, 153, 16, 4770);
+			attr_dev(div3, "class", "title nav hvr-glow svelte-7chplr");
 			toggle_class(div3, "clicked", /*selected*/ ctx[1] === "About");
-			add_location(div3, file$1l, 164, 16, 5038);
-			attr_dev(div4, "class", "container left svelte-3kstg5");
-			add_location(div4, file$1l, 160, 12, 4620);
-			attr_dev(div5, "class", "column side-panel is-2-widescreen is-3-desktop is-4-tablet box adjust-right svelte-3kstg5");
-			add_location(div5, file$1l, 158, 8, 4515);
-			attr_dev(h10, "class", "title svelte-3kstg5");
-			add_location(h10, file$1l, 174, 20, 5386);
-			attr_dev(div6, "class", "subtitle svelte-3kstg5");
-			add_location(div6, file$1l, 175, 20, 5444);
-			attr_dev(button0, "class", "button is-link svelte-3kstg5");
-			add_location(button0, file$1l, 177, 20, 5508);
-			attr_dev(div7, "class", "content animated fadeIn svelte-3kstg5");
+			add_location(div3, file$1l, 154, 16, 4892);
+			attr_dev(div4, "class", "container left svelte-7chplr");
+			add_location(div4, file$1l, 150, 12, 4474);
+			attr_dev(div5, "class", "column side-panel is-2-widescreen is-3-desktop is-4-tablet box adjust-right svelte-7chplr");
+			add_location(div5, file$1l, 148, 8, 4369);
+			attr_dev(h10, "class", "title svelte-7chplr");
+			add_location(h10, file$1l, 164, 20, 5266);
+			attr_dev(div6, "class", "subtitle svelte-7chplr");
+			add_location(div6, file$1l, 165, 20, 5324);
+			attr_dev(button0, "class", "button is-link svelte-7chplr");
+			add_location(button0, file$1l, 167, 20, 5388);
+			attr_dev(div7, "class", "content animated fadeIn svelte-7chplr");
 			toggle_class(div7, "hide", /*selected*/ ctx[1] !== "Configuration");
-			add_location(div7, file$1l, 173, 16, 5287);
-			attr_dev(h11, "class", "title svelte-3kstg5");
-			add_location(h11, file$1l, 188, 20, 6307);
-			attr_dev(div8, "class", "subtitle svelte-3kstg5");
-			add_location(div8, file$1l, 190, 20, 6360);
-			attr_dev(div9, "class", "content svelte-3kstg5");
-			add_location(div9, file$1l, 191, 20, 6449);
-			attr_dev(button1, "class", "button is-link svelte-3kstg5");
+			add_location(div7, file$1l, 163, 16, 5167);
+			attr_dev(h11, "class", "title svelte-7chplr");
+			add_location(h11, file$1l, 178, 20, 6187);
+			attr_dev(div8, "class", "subtitle svelte-7chplr");
+			add_location(div8, file$1l, 180, 20, 6240);
+			attr_dev(div9, "class", "content svelte-7chplr");
+			add_location(div9, file$1l, 181, 20, 6329);
+			attr_dev(button1, "class", "button is-link svelte-7chplr");
 			attr_dev(button1, "id", "updateCheckBtn");
-			add_location(button1, file$1l, 198, 24, 6947);
-			attr_dev(button2, "class", "button is-link svelte-3kstg5");
+			add_location(button1, file$1l, 188, 24, 6827);
+			attr_dev(button2, "class", "button is-link svelte-7chplr");
 			attr_dev(button2, "id", "updateBtn");
-			add_location(button2, file$1l, 199, 24, 7089);
-			attr_dev(button3, "class", "button is-warning svelte-3kstg5");
-			add_location(button3, file$1l, 201, 24, 7220);
-			attr_dev(div10, "class", "content svelte-3kstg5");
-			add_location(div10, file$1l, 197, 20, 6900);
-			attr_dev(button4, "class", "button is-link svelte-3kstg5");
-			add_location(button4, file$1l, 207, 24, 7544);
-			attr_dev(button5, "class", "button is-link svelte-3kstg5");
-			add_location(button5, file$1l, 208, 24, 7634);
-			attr_dev(div11, "class", "content svelte-3kstg5");
-			add_location(div11, file$1l, 205, 20, 7372);
-			attr_dev(div12, "class", "content animated fadeIn svelte-3kstg5");
+			add_location(button2, file$1l, 189, 24, 6969);
+			attr_dev(button3, "class", "button is-warning svelte-7chplr");
+			add_location(button3, file$1l, 191, 24, 7100);
+			attr_dev(div10, "class", "content svelte-7chplr");
+			add_location(div10, file$1l, 187, 20, 6780);
+			attr_dev(button4, "class", "button is-link svelte-7chplr");
+			add_location(button4, file$1l, 197, 24, 7424);
+			attr_dev(button5, "class", "button is-link svelte-7chplr");
+			add_location(button5, file$1l, 198, 24, 7514);
+			attr_dev(div11, "class", "content svelte-7chplr");
+			add_location(div11, file$1l, 195, 20, 7252);
+			attr_dev(div12, "class", "content animated fadeIn svelte-7chplr");
 			toggle_class(div12, "hide", /*selected*/ ctx[1] !== "Update");
-			add_location(div12, file$1l, 187, 16, 6215);
-			attr_dev(h12, "class", "title svelte-3kstg5");
-			add_location(h12, file$1l, 214, 20, 7888);
-			attr_dev(div13, "class", "content animated fadeIn svelte-3kstg5");
+			add_location(div12, file$1l, 177, 16, 6095);
+			attr_dev(h12, "class", "title svelte-7chplr");
+			add_location(h12, file$1l, 204, 20, 7768);
+			attr_dev(div13, "class", "content animated fadeIn svelte-7chplr");
 			toggle_class(div13, "hide", /*selected*/ ctx[1] !== "Terminal");
-			add_location(div13, file$1l, 213, 16, 7794);
-			attr_dev(h13, "class", "title svelte-3kstg5");
-			add_location(h13, file$1l, 219, 20, 8166);
-			attr_dev(div14, "class", "content animated fadeIn svelte-3kstg5");
+			add_location(div13, file$1l, 203, 16, 7674);
+			attr_dev(h13, "class", "title svelte-7chplr");
+			add_location(h13, file$1l, 209, 20, 8046);
+			attr_dev(div14, "class", "content animated fadeIn svelte-7chplr");
 			toggle_class(div14, "hide", /*selected*/ ctx[1] !== "About");
-			add_location(div14, file$1l, 218, 16, 8075);
-			attr_dev(div15, "class", "container right svelte-3kstg5");
-			add_location(div15, file$1l, 171, 12, 5237);
-			attr_dev(div16, "class", "column main-panel box svelte-3kstg5");
-			add_location(div16, file$1l, 169, 8, 5186);
-			attr_dev(div17, "class", "columns svelte-3kstg5");
-			add_location(div17, file$1l, 157, 4, 4484);
-			attr_dev(section, "class", "section animated fadeIn svelte-3kstg5");
+			add_location(div14, file$1l, 208, 16, 7955);
+			attr_dev(div15, "class", "container right svelte-7chplr");
+			attr_dev(div15, "id", "Settings_right_column");
+			add_location(div15, file$1l, 161, 12, 5091);
+			attr_dev(div16, "class", "column main-panel box svelte-7chplr");
+			add_location(div16, file$1l, 159, 8, 5040);
+			attr_dev(div17, "class", "columns svelte-7chplr");
+			add_location(div17, file$1l, 147, 4, 4338);
+			attr_dev(section, "class", "section animated fadeIn svelte-7chplr");
 			attr_dev(section, "id", "Settings");
 			set_style(section, "display", "none");
-			add_location(section, file$1l, 155, 0, 4400);
+			add_location(section, file$1l, 145, 0, 4254);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -78475,12 +78476,10 @@ function instance$1s($$self, $$props, $$invalidate) {
 				set_store_value(pythonpath, $pythonpath = path.resolve(__dirname, "../python3/python"), $pythonpath);
 				set_store_value(pythonscript, $pythonscript = path.resolve(__dirname, "assets/python_files"), $pythonscript);
 			} else {
-				Snackbar.create({
-					message: "Be cautious: If python path invalid, the program might not work",
-					type: "is-danger",
-					actionText: "Ok",
-					position: "is-top",
-					duration: 5000
+				window.showStackContext({
+					title: "Warning",
+					text: "Be cautious: If python path invalid, the program might not work",
+					type: "error"
 				});
 			}
 		}
@@ -80311,6 +80310,5028 @@ class App extends SvelteComponentDev {
 		throw new Error("<App>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 }
+
+class Stack {
+  constructor(options) {
+    // TODO: label for close all button
+    Object.assign(
+      this,
+      {
+        dir1: null,
+        dir2: null,
+        firstpos1: null,
+        firstpos2: null,
+        spacing1: 25,
+        spacing2: 25,
+        push: 'bottom',
+        maxOpen: 1,
+        maxStrategy: 'wait',
+        maxClosureCausesWait: true,
+        modal: 'ish',
+        modalishFlash: true,
+        overlayClose: true,
+        overlayClosesPinned: false,
+        positioned: true,
+        context: (window && document.body) || null
+      },
+      options
+    );
+
+    // Validate the options.
+    if (this.modal === 'ish' && this.maxOpen !== 1) {
+      throw new Error('A modalish stack must have a maxOpen value of 1.');
+    }
+    if (this.modal === 'ish' && !this.dir1) {
+      throw new Error('A modalish stack must have a direction.');
+    }
+    if (
+      this.push === 'top' &&
+      this.modal === 'ish' &&
+      this.maxStrategy !== 'close'
+    ) {
+      throw new Error(
+        'A modalish stack that pushes to the top must use the close maxStrategy.'
+      );
+    }
+
+    // -- Private properties.
+
+    // The head of the notice double linked list.
+    this._noticeHead = {
+      notice: null,
+      prev: null,
+      next: null
+    };
+    // The tail of the notice double linked list.
+    this._noticeTail = {
+      notice: null,
+      prev: this._noticeHead,
+      next: null
+    };
+    this._noticeHead.next = this._noticeTail;
+    // The map of notices to nodes.
+    this._noticeMap = new WeakMap();
+    // The number of notices in the stack.
+    this._length = 0;
+
+    // How much space to add along the secondary axis when moving notices to the
+    // next column/row.
+    this._addpos2 = 0;
+    // Whether the stack's notices should animate while moving.
+    this._animation = true;
+    // A timer to debounce positioning.
+    this._posTimer = null;
+    // The number of open notices.
+    this._openNotices = 0;
+    // A listener for positioning events.
+    this._listener = null;
+    // Whether the overlay is currently open.
+    this._overlayOpen = false;
+    // Whether the overlay is currently inserted into the DOM.
+    this._overlayInserted = false;
+    // Whether the modal state is collapsing. (Notices go back to waiting and
+    // shouldn't resposition.)
+    this._collapsingModalState = false;
+    // The leader is the first open notice in a modalish stack.
+    this._leader = null;
+    this._leaderOff = null;
+    // The next waiting notice that is masking.
+    this._masking = null;
+    this._maskingOff = null;
+    // Swapping notices, so don't open a new one. Set to the opening notice on
+    // swap.
+    this._swapping = false;
+    // Event listener callbacks.
+    this._callbacks = {};
+  }
+
+  get notices() {
+    const notices = [];
+    this.forEach(notice => notices.push(notice));
+    return notices;
+  }
+
+  get length() {
+    return this._length;
+  }
+
+  get leader() {
+    return this._leader;
+  }
+
+  forEach(
+    callback,
+    { start = 'oldest', dir = 'newer', skipModuleHandled = false } = {}
+  ) {
+    let node;
+    if (
+      start === 'head' ||
+      (start === 'newest' && this.push === 'top') ||
+      (start === 'oldest' && this.push === 'bottom')
+    ) {
+      node = this._noticeHead.next;
+    } else if (
+      start === 'tail' ||
+      (start === 'newest' && this.push === 'bottom') ||
+      (start === 'oldest' && this.push === 'top')
+    ) {
+      node = this._noticeTail.prev;
+    } else if (this._noticeMap.has(start)) {
+      node = this._noticeMap.get(start);
+    } else {
+      throw new Error('Invalid start param.');
+    }
+    while (node.notice) {
+      const notice = node.notice;
+      // Get the next node first.
+      if (
+        dir === 'prev' ||
+        (this.push === 'top' && dir === 'newer') ||
+        (this.push === 'bottom' && dir === 'older')
+      ) {
+        node = node.prev;
+      } else if (
+        dir === 'next' ||
+        (this.push === 'top' && dir === 'older') ||
+        (this.push === 'bottom' && dir === 'newer')
+      ) {
+        node = node.next;
+      } else {
+        throw new Error('Invalid dir param.');
+      }
+      // Call the callback last, just in case the callback removes the notice.
+      if (
+        (!skipModuleHandled || !notice.getModuleHandled()) &&
+        callback(notice) === false
+      ) {
+        break;
+      }
+    }
+  }
+
+  close(immediate) {
+    this.forEach(notice => notice.close(immediate, false, false));
+  }
+
+  open(immediate) {
+    this.forEach(notice => notice.open(immediate));
+  }
+
+  openLast() {
+    // Look up the last notice, and display it.
+    this.forEach(
+      notice => {
+        if (['opening', 'open', 'waiting'].indexOf(notice.getState()) === -1) {
+          notice.open();
+          return false;
+        }
+      },
+      { start: 'newest', dir: 'older' }
+    );
+  }
+
+  swap(one, theOther, immediate = false, waitAfter = false) {
+    if (['open', 'opening', 'closing'].indexOf(one.getState()) === -1) {
+      // One is closed. Return rejected promise.
+      return Promise.reject();
+    }
+    this._swapping = theOther;
+    return one
+      .close(immediate, false, waitAfter)
+      .then(() => theOther.open(immediate))
+      .finally(() => {
+        this._swapping = false;
+      });
+  }
+
+  on(event, callback) {
+    if (!(event in this._callbacks)) {
+      this._callbacks[event] = [];
+    }
+    this._callbacks[event].push(callback);
+    return () => {
+      this._callbacks[event].splice(
+        this._callbacks[event].indexOf(callback),
+        1
+      );
+    };
+  }
+
+  fire(event, detail = {}) {
+    detail.stack = this;
+    if (event in this._callbacks) {
+      this._callbacks[event].forEach(cb => cb(detail));
+    }
+  }
+
+  position() {
+    // Reset the next position data.
+    if (this.positioned && this._length > 0) {
+      this.fire('beforePosition');
+      this._resetPositionData();
+      this.forEach(
+        notice => {
+          this._positionNotice(notice);
+        },
+        { start: 'head', dir: 'next', skipModuleHandled: true }
+      );
+      this.fire('afterPosition');
+    } else {
+      delete this._nextpos1;
+      delete this._nextpos2;
+    }
+  }
+
+  // Queue the position so it doesn't run repeatedly and use up resources.
+  queuePosition(milliseconds = 10) {
+    if (this._posTimer) {
+      clearTimeout(this._posTimer);
+    }
+    this._posTimer = setTimeout(() => this.position(), milliseconds);
+  }
+
+  _resetPositionData() {
+    this._nextpos1 = this.firstpos1;
+    this._nextpos2 = this.firstpos2;
+    this._addpos2 = 0;
+  }
+
+  // Position the notice.
+  _positionNotice(notice, masking = notice === this._masking) {
+    if (!this.positioned) {
+      return;
+    }
+
+    // Get the notice's element.
+    const elem = notice.refs.elem;
+    if (!elem) {
+      return;
+    }
+
+    // Skip this notice if it's not shown.
+    if (
+      !elem.classList.contains('pnotify-in') &&
+      !elem.classList.contains('pnotify-initial') &&
+      !masking
+    ) {
+      return;
+    }
+
+    // Use local variables, since a masking notice position shouldn't update the
+    // stack.
+    let [firstpos1, firstpos2, _nextpos1, _nextpos2, _addpos2] = [
+      this.firstpos1,
+      this.firstpos2,
+      this._nextpos1,
+      this._nextpos2,
+      this._addpos2
+    ];
+
+    // Read from the DOM to cause refresh.
+    elem.getBoundingClientRect();
+
+    if (this._animation && !masking && !this._collapsingModalState) {
+      // Add animate class.
+      notice._setMoveClass('pnotify-move');
+    } else {
+      notice._setMoveClass('');
+    }
+
+    const spaceY =
+      this.context === document.body
+        ? window.innerHeight
+        : this.context.scrollHeight;
+    const spaceX =
+      this.context === document.body
+        ? window.innerWidth
+        : this.context.scrollWidth;
+
+    let csspos1;
+
+    if (this.dir1) {
+      csspos1 = {
+        down: 'top',
+        up: 'bottom',
+        left: 'right',
+        right: 'left'
+      }[this.dir1];
+
+      // Calculate the current pos1 value.
+      let curpos1;
+      switch (this.dir1) {
+        case 'down':
+          curpos1 = elem.offsetTop;
+          break;
+        case 'up':
+          curpos1 = spaceY - elem.scrollHeight - elem.offsetTop;
+          break;
+        case 'left':
+          curpos1 = spaceX - elem.scrollWidth - elem.offsetLeft;
+          break;
+        case 'right':
+          curpos1 = elem.offsetLeft;
+          break;
+      }
+      // Remember the first pos1, so the first notice goes there.
+      if (firstpos1 == null) {
+        firstpos1 = curpos1;
+        _nextpos1 = firstpos1;
+      }
+    }
+
+    if (this.dir1 && this.dir2) {
+      const csspos2 = {
+        down: 'top',
+        up: 'bottom',
+        left: 'right',
+        right: 'left'
+      }[this.dir2];
+
+      // Calculate the current pos2 value.
+      let curpos2;
+      switch (this.dir2) {
+        case 'down':
+          curpos2 = elem.offsetTop;
+          break;
+        case 'up':
+          curpos2 = spaceY - elem.scrollHeight - elem.offsetTop;
+          break;
+        case 'left':
+          curpos2 = spaceX - elem.scrollWidth - elem.offsetLeft;
+          break;
+        case 'right':
+          curpos2 = elem.offsetLeft;
+          break;
+      }
+      // Remember the first pos2, so the first notice goes there.
+      if (firstpos2 == null) {
+        firstpos2 = curpos2;
+        _nextpos2 = firstpos2;
+      }
+
+      // Don't move masking notices along dir2. They should always be beside the
+      // leader along dir1.
+      if (!masking) {
+        // Check that it's not beyond the viewport edge.
+        const endY = _nextpos1 + elem.offsetHeight + this.spacing1;
+        const endX = _nextpos1 + elem.offsetWidth + this.spacing1;
+        if (
+          ((this.dir1 === 'down' || this.dir1 === 'up') && endY > spaceY) ||
+          ((this.dir1 === 'left' || this.dir1 === 'right') && endX > spaceX)
+        ) {
+          // If it is, it needs to go back to the first pos1, and over on pos2.
+          _nextpos1 = firstpos1;
+          _nextpos2 += _addpos2 + this.spacing2;
+          _addpos2 = 0;
+        }
+      }
+
+      // Move the notice on dir2.
+      if (_nextpos2 != null) {
+        elem.style[csspos2] = `${_nextpos2}px`;
+        if (!this._animation) {
+          elem.style[csspos2]; // Read from the DOM for update.
+        }
+      }
+
+      // Keep track of the widest/tallest notice in the column/row, so we can push the next column/row.
+      switch (this.dir2) {
+        case 'down':
+        case 'up':
+          if (
+            elem.offsetHeight +
+              (parseFloat(elem.style.marginTop, 10) || 0) +
+              (parseFloat(elem.style.marginBottom, 10) || 0) >
+            _addpos2
+          ) {
+            _addpos2 = elem.offsetHeight;
+          }
+          break;
+        case 'left':
+        case 'right':
+          if (
+            elem.offsetWidth +
+              (parseFloat(elem.style.marginLeft, 10) || 0) +
+              (parseFloat(elem.style.marginRight, 10) || 0) >
+            _addpos2
+          ) {
+            _addpos2 = elem.offsetWidth;
+          }
+          break;
+      }
+    } else if (this.dir1) {
+      // Center the notice along dir1 axis, because the stack has no dir2.
+      let cssMiddle, cssposCross;
+      switch (this.dir1) {
+        case 'down':
+        case 'up':
+          cssposCross = ['left', 'right'];
+          cssMiddle = this.context.scrollWidth / 2 - elem.offsetWidth / 2;
+          break;
+        case 'left':
+        case 'right':
+          cssposCross = ['top', 'bottom'];
+          cssMiddle = spaceY / 2 - elem.offsetHeight / 2;
+          break;
+      }
+      elem.style[cssposCross[0]] = `${cssMiddle}px`;
+      elem.style[cssposCross[1]] = 'auto';
+      if (!this._animation) {
+        elem.style[cssposCross[0]]; // Read from the DOM for update.
+      }
+    }
+
+    if (this.dir1) {
+      // Move the notice on dir1.
+      if (_nextpos1 != null) {
+        elem.style[csspos1] = `${_nextpos1}px`;
+        if (!this._animation) {
+          elem.style[csspos1]; // Read from the DOM for update.
+        }
+      }
+
+      // Calculate the next dir1 position.
+      switch (this.dir1) {
+        case 'down':
+        case 'up':
+          _nextpos1 += elem.offsetHeight + this.spacing1;
+          break;
+        case 'left':
+        case 'right':
+          _nextpos1 += elem.offsetWidth + this.spacing1;
+          break;
+      }
+    } else {
+      // Center the notice on the screen, because the stack has no dir1.
+      const cssMiddleLeft = spaceX / 2 - elem.offsetWidth / 2;
+      const cssMiddleTop = spaceY / 2 - elem.offsetHeight / 2;
+      elem.style.left = `${cssMiddleLeft}px`;
+      elem.style.top = `${cssMiddleTop}px`;
+      if (!this._animation) {
+        elem.style.left; // Read from the DOM for update.
+      }
+    }
+
+    // If we're not positioning the masking notice, update the stack properties.
+    if (!masking) {
+      this.firstpos1 = firstpos1;
+      this.firstpos2 = firstpos2;
+      this._nextpos1 = _nextpos1;
+      this._nextpos2 = _nextpos2;
+      this._addpos2 = _addpos2;
+    }
+  }
+
+  _addNotice(notice) {
+    this.fire('beforeAddNotice', { notice });
+
+    const handleNoticeOpen = () => {
+      this.fire('beforeOpenNotice', { notice });
+
+      if (notice.getModuleHandled()) {
+        // We don't deal with notices that are handled by a module.
+        this.fire('afterOpenNotice', { notice });
+        return;
+      }
+
+      this._openNotices++;
+
+      // Check the max in stack.
+      if (
+        !(this.modal === 'ish' && this._overlayOpen) &&
+        this.maxOpen !== Infinity &&
+        this._openNotices > this.maxOpen &&
+        this.maxStrategy === 'close'
+      ) {
+        let toClose = this._openNotices - this.maxOpen;
+        this.forEach(notice => {
+          if (['opening', 'open'].indexOf(notice.getState()) !== -1) {
+            // Close oldest notices, leaving only stack.maxOpen from the stack.
+            notice.close(false, false, this.maxClosureCausesWait);
+            if (notice === this._leader) {
+              this._setLeader(null);
+            }
+            toClose--;
+            return !!toClose;
+          }
+        });
+      }
+
+      if (this.modal === true) {
+        this._insertOverlay();
+      }
+
+      if (
+        this.modal === 'ish' &&
+        (!this._leader ||
+          ['opening', 'open', 'closing'].indexOf(this._leader.getState()) ===
+            -1)
+      ) {
+        this._setLeader(notice);
+      }
+
+      if (this.modal === 'ish' && this._overlayOpen) {
+        notice._preventTimerClose(true);
+      }
+
+      // this.queuePosition(0);
+
+      this.fire('afterOpenNotice', { notice });
+    };
+
+    const handleNoticeClosed = () => {
+      this.fire('beforeCloseNotice', { notice });
+
+      if (notice.getModuleHandled()) {
+        // We don't deal with notices that are handled by a module.
+        this.fire('afterCloseNotice', { notice });
+        return;
+      }
+
+      this._openNotices--;
+
+      if (this.modal === 'ish' && notice === this._leader) {
+        this._setLeader(null);
+        if (this._masking) {
+          this._setMasking(null);
+        }
+      }
+
+      if (
+        !this._swapping &&
+        this.maxOpen !== Infinity &&
+        this._openNotices < this.maxOpen
+      ) {
+        let done = false;
+        const open = contender => {
+          if (contender !== notice && contender.getState() === 'waiting') {
+            contender.open().catch(() => {});
+            if (this._openNotices >= this.maxOpen) {
+              done = true;
+              return false;
+            }
+          }
+        };
+        if (this.maxStrategy === 'wait') {
+          // Check for the next waiting notice and open it.
+          this.forEach(open, {
+            start: notice,
+            dir: 'next'
+          });
+          if (!done) {
+            this.forEach(open, {
+              start: notice,
+              dir: 'prev'
+            });
+          }
+        } else if (this.maxStrategy === 'close' && this.maxClosureCausesWait) {
+          // Check for the last closed notice and re-open it.
+          this.forEach(open, {
+            start: notice,
+            dir: 'older'
+          });
+          if (!done) {
+            this.forEach(open, {
+              start: notice,
+              dir: 'newer'
+            });
+          }
+        }
+      }
+
+      if (this._openNotices <= 0) {
+        this._openNotices = 0;
+        this._resetPositionData();
+
+        if (this._overlayOpen && !this._swapping) {
+          this._removeOverlay();
+        }
+      } else if (!this._collapsingModalState) {
+        this.queuePosition(0);
+      }
+
+      this.fire('afterCloseNotice', { notice });
+    };
+
+    // This is the linked list node.
+    const node = {
+      notice,
+      prev: null,
+      next: null,
+      beforeOpenOff: notice.on('pnotify:beforeOpen', handleNoticeOpen),
+      afterCloseOff: notice.on('pnotify:afterClose', handleNoticeClosed)
+    };
+
+    // Push to the correct side of the linked list.
+    if (this.push === 'top') {
+      node.next = this._noticeHead.next;
+      node.prev = this._noticeHead;
+      node.next.prev = node;
+      node.prev.next = node;
+    } else {
+      node.prev = this._noticeTail.prev;
+      node.next = this._noticeTail;
+      node.prev.next = node;
+      node.next.prev = node;
+    }
+
+    // Add to the map.
+    this._noticeMap.set(notice, node);
+
+    // Increment the length to match.
+    this._length++;
+
+    if (!this._listener) {
+      this._listener = () => this.position();
+      this.context.addEventListener('pnotify:position', this._listener);
+    }
+
+    if (['open', 'opening', 'closing'].indexOf(notice.getState()) !== -1) {
+      // If the notice is already open, handle it immediately.
+      handleNoticeOpen();
+    } else if (
+      this.modal === 'ish' &&
+      this.modalishFlash &&
+      this._shouldNoticeWait(notice)
+    ) {
+      // If it's not open, and it's going to be a waiting notice, flash it.
+      const off = notice.on('pnotify:mount', () => {
+        off();
+        notice._setMasking(true, false, () => {
+          notice._setMasking(false);
+        });
+        this._resetPositionData();
+        this._positionNotice(this._leader);
+        window.requestAnimationFrame(() => {
+          this._positionNotice(notice, true);
+        });
+      });
+    }
+
+    this.fire('afterAddNotice', { notice });
+  }
+
+  _removeNotice(notice) {
+    if (!this._noticeMap.has(notice)) {
+      return;
+    }
+
+    this.fire('beforeRemoveNotice', { notice });
+
+    const node = this._noticeMap.get(notice);
+
+    if (this._leader === notice) {
+      // Clear the leader.
+      this._setLeader(null);
+    }
+
+    if (this._masking === notice) {
+      // Clear masking.
+      this._setMasking(null);
+    }
+
+    // Remove the notice from the linked list.
+    node.prev.next = node.next;
+    node.next.prev = node.prev;
+    node.prev = null;
+    node.next = null;
+    node.beforeOpenOff();
+    node.beforeOpenOff = null;
+    node.afterCloseOff();
+    node.afterCloseOff = null;
+
+    // Remove the notice from the map.
+    this._noticeMap.delete(notice);
+
+    // Reduce the length to match.
+    this._length--;
+
+    if (!this._length && this._listener) {
+      // Remove the listener.
+      this.context.removeEventListener('pnotify:position', this._listener);
+      this._listener = null;
+    }
+
+    if (!this._length && this._overlayOpen) {
+      this._removeOverlay();
+    }
+
+    // If the notice is open, handle it as if it had closed.
+    if (['open', 'opening', 'closing'].indexOf(notice.getState()) !== -1) {
+      this._handleNoticeClosed(notice);
+    }
+
+    this.fire('afterRemoveNotice', { notice });
+  }
+
+  _setLeader(leader) {
+    this.fire('beforeSetLeader', { leader });
+
+    if (this._leaderOff) {
+      this._leaderOff();
+      this._leaderOff = null;
+    }
+
+    this._leader = leader;
+
+    if (!this._leader) {
+      this.fire('afterSetLeader', { leader });
+      return;
+    }
+
+    // If the mouse enters this notice while it's the leader, then the next
+    // waiting notice should start masking.
+    const leaderInteraction = () => {
+      // This is a workaround for leaving the modal state.
+      let nextNoticeFromModalState = null;
+
+      // If the leader is moused over:
+      if (this._overlayOpen) {
+        this._collapsingModalState = true;
+
+        this.forEach(
+          notice => {
+            // Allow the notices to timed close.
+            notice._preventTimerClose(false);
+
+            // Close and set to wait any open notices other than the leader.
+            if (
+              notice !== this._leader &&
+              ['opening', 'open'].indexOf(notice.getState()) !== -1
+            ) {
+              if (!nextNoticeFromModalState) {
+                nextNoticeFromModalState = notice;
+              }
+              notice.close(notice === nextNoticeFromModalState, false, true);
+            }
+          },
+          {
+            start: this._leader,
+            dir: 'next',
+            skipModuleHandled: true
+          }
+        );
+
+        // Remove the modal state overlay.
+        this._removeOverlay();
+      }
+
+      // Turn off any masking off timer that may still be running.
+      if (maskingOffTimer) {
+        clearTimeout(maskingOffTimer);
+        maskingOffTimer = null;
+      }
+
+      // Set the next waiting notice to be masking.
+      this.forEach(
+        notice => {
+          if (notice === this._leader) {
+            // Skip the leader, and start with the next one.
+            return;
+          }
+          // The next notice that is "waiting" is usually fine, but if we're
+          // leaving the modal state, it will still be "closing" here, so we have
+          // to work around that. :P
+          // Also, when coming back from modal state, the notice should
+          // immediately be masking instead of fading in.
+          if (
+            notice.getState() === 'waiting' ||
+            notice === nextNoticeFromModalState
+          ) {
+            this._setMasking(notice, !!nextNoticeFromModalState);
+            return false;
+          }
+        },
+        {
+          start: this._leader,
+          dir: 'next',
+          skipModuleHandled: true
+        }
+      );
+    };
+
+    // If the mouse leaves this notice while it's the leader, then the next
+    // waiting notice should stop masking.
+    let maskingOffTimer = null;
+    const leaderLeaveInteraction = () => {
+      if (maskingOffTimer) {
+        clearTimeout(maskingOffTimer);
+        maskingOffTimer = null;
+      }
+      // TODO: Something wrong here when you come right back from the modal state.
+      maskingOffTimer = setTimeout(() => {
+        maskingOffTimer = null;
+        this._setMasking(null);
+      }, 750);
+    };
+
+    this._leaderOff = (offs => () => offs.map(off => off()))([
+      this._leader.on('mouseenter', leaderInteraction),
+      this._leader.on('focusin', leaderInteraction),
+      this._leader.on('mouseleave', leaderLeaveInteraction),
+      this._leader.on('focusout', leaderLeaveInteraction)
+    ]);
+
+    this.fire('afterSetLeader', { leader });
+  }
+
+  _setMasking(masking, immediate) {
+    if (this._masking) {
+      if (this._masking === masking) {
+        // Nothing to do.
+        return;
+      }
+      this._masking._setMasking(false, immediate);
+    }
+
+    if (this._maskingOff) {
+      this._maskingOff();
+      this._maskingOff = null;
+    }
+
+    this._masking = masking;
+
+    if (!this._masking) {
+      return;
+    }
+
+    // Reset the position data and position the leader.
+    this._resetPositionData();
+    if (this._leader) {
+      this._positionNotice(this._leader);
+    }
+
+    // Get this notice ready for positioning.
+    this._masking._setMasking(true, immediate);
+
+    // Wait for the DOM to update.
+    window.requestAnimationFrame(() => {
+      if (this._masking) {
+        this._positionNotice(this._masking);
+      }
+    });
+
+    const maskingInteraction = () => {
+      // If the masked notice is moused over or focused, the stack enters the
+      // modal state, and the notices appear.
+      if (this.modal === 'ish') {
+        this._insertOverlay();
+
+        this._setMasking(null, true);
+
+        this.forEach(
+          notice => {
+            // Prevent the notices from timed closing.
+            notice._preventTimerClose(true);
+
+            if (notice.getState() === 'waiting') {
+              notice.open();
+            }
+          },
+          {
+            start: this._leader,
+            dir: 'next',
+            skipModuleHandled: true
+          }
+        );
+      }
+    };
+
+    this._maskingOff = (offs => () => offs.map(off => off()))([
+      this._masking.on('mouseenter', maskingInteraction),
+      this._masking.on('focusin', maskingInteraction)
+    ]);
+  }
+
+  _shouldNoticeWait(notice) {
+    return (
+      this._swapping !== notice &&
+      !(this.modal === 'ish' && this._overlayOpen) &&
+      this.maxOpen !== Infinity &&
+      this._openNotices >= this.maxOpen &&
+      this.maxStrategy === 'wait'
+    );
+  }
+
+  _insertOverlay() {
+    if (!this._overlay) {
+      this._overlay = document.createElement('div');
+      this._overlay.classList.add('pnotify-modal-overlay');
+      if (this.dir1) {
+        this._overlay.classList.add(`pnotify-modal-overlay-${this.dir1}`);
+      }
+      if (this.overlayClose) {
+        this._overlay.classList.add('pnotify-modal-overlay-closes');
+      }
+      if (this.context !== document.body) {
+        this._overlay.style.height = `${this.context.scrollHeight}px`;
+        this._overlay.style.width = `${this.context.scrollWidth}px`;
+      }
+      // Close the notices on overlay click.
+      this._overlay.addEventListener('click', clickEvent => {
+        if (this.overlayClose) {
+          this.fire('overlayClose', { clickEvent });
+
+          if (clickEvent.defaultPrevented) {
+            return;
+          }
+
+          if (this._leader) {
+            // Clear the leader. A new one will be found while closing.
+            this._setLeader(null);
+          }
+
+          this.forEach(
+            notice => {
+              if (
+                ['closed', 'closing', 'waiting'].indexOf(notice.getState()) !==
+                -1
+              ) {
+                return;
+              }
+              if (notice.hide || this.overlayClosesPinned) {
+                notice.close();
+              } else if (!notice.hide && this.modal === 'ish') {
+                if (this._leader) {
+                  notice.close(false, false, true);
+                } else {
+                  this._setLeader(notice);
+                }
+              }
+            },
+            {
+              skipModuleHandled: true
+            }
+          );
+
+          if (this._overlayOpen) {
+            this._removeOverlay();
+          }
+        }
+      });
+    }
+    if (this._overlay.parentNode !== this.context) {
+      this.fire('beforeAddOverlay');
+      this._overlay.classList.remove('pnotify-modal-overlay-in');
+      this._overlay = this.context.insertBefore(
+        this._overlay,
+        this.context.firstChild
+      );
+      this._overlayOpen = true;
+      this._overlayInserted = true;
+      window.requestAnimationFrame(() => {
+        this._overlay.classList.add('pnotify-modal-overlay-in');
+        this.fire('afterAddOverlay');
+      });
+    }
+    this._collapsingModalState = false;
+  }
+
+  _removeOverlay() {
+    if (this._overlay.parentNode) {
+      this.fire('beforeRemoveOverlay');
+
+      this._overlay.classList.remove('pnotify-modal-overlay-in');
+      this._overlayOpen = false;
+      setTimeout(() => {
+        this._overlayInserted = false;
+        if (this._overlay.parentNode) {
+          this._overlay.parentNode.removeChild(this._overlay);
+          this.fire('afterRemoveOverlay');
+        }
+      }, 250);
+      setTimeout(() => {
+        this._collapsingModalState = false;
+      }, 400);
+    }
+  }
+}
+
+const component = (...args) => new Core(...args);
+
+function forwardEventsBuilder$1(component, additionalEvents = []) {
+  // prettier-ignore
+  const events = [
+    'focus', 'blur',
+    'fullscreenchange', 'fullscreenerror', 'scroll',
+    'cut', 'copy', 'paste',
+    'keydown', 'keypress', 'keyup',
+    'auxclick', 'click', 'contextmenu', 'dblclick', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove', 'mouseover', 'mouseout', 'mouseup', 'pointerlockchange', 'pointerlockerror', 'select', 'wheel',
+    'drag', 'dragend', 'dragenter', 'dragstart', 'dragleave', 'dragover', 'drop',
+    'touchcancel', 'touchend', 'touchmove', 'touchstart',
+    'pointerover', 'pointerenter', 'pointerdown', 'pointermove', 'pointerup', 'pointercancel', 'pointerout', 'pointerleave', 'gotpointercapture', 'lostpointercapture',
+    ...additionalEvents
+  ];
+
+  function forward(e) {
+    bubble(component, e);
+  }
+
+  return node => {
+    const destructors = [];
+
+    for (let i = 0; i < events.length; i++) {
+      destructors.push(listen(node, events[i], forward));
+    }
+
+    return {
+      destroy: () => {
+        for (let i = 0; i < destructors.length; i++) {
+          destructors[i]();
+        }
+      }
+    };
+  };
+}
+
+/* node_modules\@pnotify\core\index.svelte generated by Svelte v3.37.0 */
+
+const { Error: Error_1$4, Map: Map_1 } = globals;
+const file$1o = "node_modules\\@pnotify\\core\\index.svelte";
+
+function get_each_context$e(ctx, list, i) {
+	const child_ctx = ctx.slice();
+	child_ctx[109] = list[i][0];
+	child_ctx[110] = list[i][1];
+	return child_ctx;
+}
+
+function get_each_context_1$6(ctx, list, i) {
+	const child_ctx = ctx.slice();
+	child_ctx[109] = list[i][0];
+	child_ctx[110] = list[i][1];
+	return child_ctx;
+}
+
+function get_each_context_2$6(ctx, list, i) {
+	const child_ctx = ctx.slice();
+	child_ctx[109] = list[i][0];
+	child_ctx[110] = list[i][1];
+	return child_ctx;
+}
+
+function get_each_context_3$5(ctx, list, i) {
+	const child_ctx = ctx.slice();
+	child_ctx[109] = list[i][0];
+	child_ctx[110] = list[i][1];
+	return child_ctx;
+}
+
+// (931:4) {#each modulesPrependContainer as [module, options] (module)}
+function create_each_block_3$5(key_1, ctx) {
+	let first;
+	let switch_instance;
+	let switch_instance_anchor;
+	let current;
+	const switch_instance_spread_levels = [{ self: /*self*/ ctx[42] }, /*options*/ ctx[110]];
+	var switch_value = /*module*/ ctx[109].default;
+
+	function switch_props(ctx) {
+		let switch_instance_props = {};
+
+		for (let i = 0; i < switch_instance_spread_levels.length; i += 1) {
+			switch_instance_props = assign(switch_instance_props, switch_instance_spread_levels[i]);
+		}
+
+		return {
+			props: switch_instance_props,
+			$$inline: true
+		};
+	}
+
+	if (switch_value) {
+		switch_instance = new switch_value(switch_props());
+	}
+
+	const block = {
+		key: key_1,
+		first: null,
+		c: function create() {
+			first = empty();
+			if (switch_instance) create_component(switch_instance.$$.fragment);
+			switch_instance_anchor = empty();
+			this.first = first;
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, first, anchor);
+
+			if (switch_instance) {
+				mount_component(switch_instance, target, anchor);
+			}
+
+			insert_dev(target, switch_instance_anchor, anchor);
+			current = true;
+		},
+		p: function update(new_ctx, dirty) {
+			ctx = new_ctx;
+
+			const switch_instance_changes = (dirty[1] & /*self, modulesPrependContainer*/ 2176)
+			? get_spread_update(switch_instance_spread_levels, [
+					dirty[1] & /*self*/ 2048 && { self: /*self*/ ctx[42] },
+					dirty[1] & /*modulesPrependContainer*/ 128 && get_spread_object(/*options*/ ctx[110])
+				])
+			: {};
+
+			if (switch_value !== (switch_value = /*module*/ ctx[109].default)) {
+				if (switch_instance) {
+					group_outros();
+					const old_component = switch_instance;
+
+					transition_out(old_component.$$.fragment, 1, 0, () => {
+						destroy_component(old_component, 1);
+					});
+
+					check_outros();
+				}
+
+				if (switch_value) {
+					switch_instance = new switch_value(switch_props());
+					create_component(switch_instance.$$.fragment);
+					transition_in(switch_instance.$$.fragment, 1);
+					mount_component(switch_instance, switch_instance_anchor.parentNode, switch_instance_anchor);
+				} else {
+					switch_instance = null;
+				}
+			} else if (switch_value) {
+				switch_instance.$set(switch_instance_changes);
+			}
+		},
+		i: function intro(local) {
+			if (current) return;
+			if (switch_instance) transition_in(switch_instance.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			if (switch_instance) transition_out(switch_instance.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(first);
+			if (detaching) detach_dev(switch_instance_anchor);
+			if (switch_instance) destroy_component(switch_instance, detaching);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_each_block_3$5.name,
+		type: "each",
+		source: "(931:4) {#each modulesPrependContainer as [module, options] (module)}",
+		ctx
+	});
+
+	return block;
+}
+
+// (934:4) {#if closer && !_nonBlock}
+function create_if_block_8(ctx) {
+	let div;
+	let span;
+	let span_class_value;
+	let div_class_value;
+	let div_title_value;
+	let mounted;
+	let dispose;
+
+	const block = {
+		c: function create() {
+			div = element("div");
+			span = element("span");
+			attr_dev(span, "class", span_class_value = /*getIcon*/ ctx[22]("closer"));
+			add_location(span, file$1o, 941, 8, 26647);
+
+			attr_dev(div, "class", div_class_value = `pnotify-closer ${/*getStyle*/ ctx[21]("closer")} ${(!/*closerHover*/ ctx[17] || /*_interacting*/ ctx[29]) && !/*_masking*/ ctx[31]
+			? ""
+			: "pnotify-hidden"}`);
+
+			attr_dev(div, "role", "button");
+			attr_dev(div, "tabindex", "0");
+			attr_dev(div, "title", div_title_value = /*labels*/ ctx[20].close);
+			add_location(div, file$1o, 934, 6, 26390);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, div, anchor);
+			append_dev(div, span);
+
+			if (!mounted) {
+				dispose = listen_dev(div, "click", /*click_handler*/ ctx[84], false, false, false);
+				mounted = true;
+			}
+		},
+		p: function update(ctx, dirty) {
+			if (dirty[0] & /*closerHover, _interacting*/ 537001984 | dirty[1] & /*_masking*/ 1 && div_class_value !== (div_class_value = `pnotify-closer ${/*getStyle*/ ctx[21]("closer")} ${(!/*closerHover*/ ctx[17] || /*_interacting*/ ctx[29]) && !/*_masking*/ ctx[31]
+			? ""
+			: "pnotify-hidden"}`)) {
+				attr_dev(div, "class", div_class_value);
+			}
+
+			if (dirty[0] & /*labels*/ 1048576 && div_title_value !== (div_title_value = /*labels*/ ctx[20].close)) {
+				attr_dev(div, "title", div_title_value);
+			}
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(div);
+			mounted = false;
+			dispose();
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_if_block_8.name,
+		type: "if",
+		source: "(934:4) {#if closer && !_nonBlock}",
+		ctx
+	});
+
+	return block;
+}
+
+// (945:4) {#if sticker && !_nonBlock}
+function create_if_block_7(ctx) {
+	let div;
+	let span;
+	let span_class_value;
+	let div_class_value;
+	let div_aria_pressed_value;
+	let div_title_value;
+	let mounted;
+	let dispose;
+
+	const block = {
+		c: function create() {
+			div = element("div");
+			span = element("span");
+
+			attr_dev(span, "class", span_class_value = `${/*getIcon*/ ctx[22]("sticker")} ${/*hide*/ ctx[3]
+			? /*getIcon*/ ctx[22]("unstuck")
+			: /*getIcon*/ ctx[22]("stuck")}`);
+
+			add_location(span, file$1o, 953, 8, 27058);
+
+			attr_dev(div, "class", div_class_value = `pnotify-sticker ${/*getStyle*/ ctx[21]("sticker")} ${(!/*stickerHover*/ ctx[19] || /*_interacting*/ ctx[29]) && !/*_masking*/ ctx[31]
+			? ""
+			: "pnotify-hidden"}`);
+
+			attr_dev(div, "role", "button");
+			attr_dev(div, "aria-pressed", div_aria_pressed_value = !/*hide*/ ctx[3]);
+			attr_dev(div, "tabindex", "0");
+
+			attr_dev(div, "title", div_title_value = /*hide*/ ctx[3]
+			? /*labels*/ ctx[20].stick
+			: /*labels*/ ctx[20].unstick);
+
+			add_location(div, file$1o, 945, 6, 26743);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, div, anchor);
+			append_dev(div, span);
+
+			if (!mounted) {
+				dispose = listen_dev(div, "click", /*click_handler_1*/ ctx[85], false, false, false);
+				mounted = true;
+			}
+		},
+		p: function update(ctx, dirty) {
+			if (dirty[0] & /*hide*/ 8 && span_class_value !== (span_class_value = `${/*getIcon*/ ctx[22]("sticker")} ${/*hide*/ ctx[3]
+			? /*getIcon*/ ctx[22]("unstuck")
+			: /*getIcon*/ ctx[22]("stuck")}`)) {
+				attr_dev(span, "class", span_class_value);
+			}
+
+			if (dirty[0] & /*stickerHover, _interacting*/ 537395200 | dirty[1] & /*_masking*/ 1 && div_class_value !== (div_class_value = `pnotify-sticker ${/*getStyle*/ ctx[21]("sticker")} ${(!/*stickerHover*/ ctx[19] || /*_interacting*/ ctx[29]) && !/*_masking*/ ctx[31]
+			? ""
+			: "pnotify-hidden"}`)) {
+				attr_dev(div, "class", div_class_value);
+			}
+
+			if (dirty[0] & /*hide*/ 8 && div_aria_pressed_value !== (div_aria_pressed_value = !/*hide*/ ctx[3])) {
+				attr_dev(div, "aria-pressed", div_aria_pressed_value);
+			}
+
+			if (dirty[0] & /*hide, labels*/ 1048584 && div_title_value !== (div_title_value = /*hide*/ ctx[3]
+			? /*labels*/ ctx[20].stick
+			: /*labels*/ ctx[20].unstick)) {
+				attr_dev(div, "title", div_title_value);
+			}
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(div);
+			mounted = false;
+			dispose();
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_if_block_7.name,
+		type: "if",
+		source: "(945:4) {#if sticker && !_nonBlock}",
+		ctx
+	});
+
+	return block;
+}
+
+// (959:4) {#if icon !== false}
+function create_if_block_6$2(ctx) {
+	let div;
+	let span;
+	let span_class_value;
+	let div_class_value;
+
+	const block = {
+		c: function create() {
+			div = element("div");
+			span = element("span");
+
+			attr_dev(span, "class", span_class_value = /*icon*/ ctx[13] === true
+			? /*getIcon*/ ctx[22](/*type*/ ctx[4])
+			: /*icon*/ ctx[13]);
+
+			add_location(span, file$1o, 963, 8, 27330);
+			attr_dev(div, "class", div_class_value = `pnotify-icon ${/*getStyle*/ ctx[21]("icon")}`);
+			add_location(div, file$1o, 959, 6, 27219);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, div, anchor);
+			append_dev(div, span);
+			/*div_binding*/ ctx[86](div);
+		},
+		p: function update(ctx, dirty) {
+			if (dirty[0] & /*icon, type*/ 8208 && span_class_value !== (span_class_value = /*icon*/ ctx[13] === true
+			? /*getIcon*/ ctx[22](/*type*/ ctx[4])
+			: /*icon*/ ctx[13])) {
+				attr_dev(span, "class", span_class_value);
+			}
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(div);
+			/*div_binding*/ ctx[86](null);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_if_block_6$2.name,
+		type: "if",
+		source: "(959:4) {#if icon !== false}",
+		ctx
+	});
+
+	return block;
+}
+
+// (971:6) {#each modulesPrependContent as [module, options] (module)}
+function create_each_block_2$6(key_1, ctx) {
+	let first;
+	let switch_instance;
+	let switch_instance_anchor;
+	let current;
+	const switch_instance_spread_levels = [{ self: /*self*/ ctx[42] }, /*options*/ ctx[110]];
+	var switch_value = /*module*/ ctx[109].default;
+
+	function switch_props(ctx) {
+		let switch_instance_props = {};
+
+		for (let i = 0; i < switch_instance_spread_levels.length; i += 1) {
+			switch_instance_props = assign(switch_instance_props, switch_instance_spread_levels[i]);
+		}
+
+		return {
+			props: switch_instance_props,
+			$$inline: true
+		};
+	}
+
+	if (switch_value) {
+		switch_instance = new switch_value(switch_props());
+	}
+
+	const block = {
+		key: key_1,
+		first: null,
+		c: function create() {
+			first = empty();
+			if (switch_instance) create_component(switch_instance.$$.fragment);
+			switch_instance_anchor = empty();
+			this.first = first;
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, first, anchor);
+
+			if (switch_instance) {
+				mount_component(switch_instance, target, anchor);
+			}
+
+			insert_dev(target, switch_instance_anchor, anchor);
+			current = true;
+		},
+		p: function update(new_ctx, dirty) {
+			ctx = new_ctx;
+
+			const switch_instance_changes = (dirty[1] & /*self, modulesPrependContent*/ 2304)
+			? get_spread_update(switch_instance_spread_levels, [
+					dirty[1] & /*self*/ 2048 && { self: /*self*/ ctx[42] },
+					dirty[1] & /*modulesPrependContent*/ 256 && get_spread_object(/*options*/ ctx[110])
+				])
+			: {};
+
+			if (switch_value !== (switch_value = /*module*/ ctx[109].default)) {
+				if (switch_instance) {
+					group_outros();
+					const old_component = switch_instance;
+
+					transition_out(old_component.$$.fragment, 1, 0, () => {
+						destroy_component(old_component, 1);
+					});
+
+					check_outros();
+				}
+
+				if (switch_value) {
+					switch_instance = new switch_value(switch_props());
+					create_component(switch_instance.$$.fragment);
+					transition_in(switch_instance.$$.fragment, 1);
+					mount_component(switch_instance, switch_instance_anchor.parentNode, switch_instance_anchor);
+				} else {
+					switch_instance = null;
+				}
+			} else if (switch_value) {
+				switch_instance.$set(switch_instance_changes);
+			}
+		},
+		i: function intro(local) {
+			if (current) return;
+			if (switch_instance) transition_in(switch_instance.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			if (switch_instance) transition_out(switch_instance.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(first);
+			if (detaching) detach_dev(switch_instance_anchor);
+			if (switch_instance) destroy_component(switch_instance, detaching);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_each_block_2$6.name,
+		type: "each",
+		source: "(971:6) {#each modulesPrependContent as [module, options] (module)}",
+		ctx
+	});
+
+	return block;
+}
+
+// (974:6) {#if title !== false}
+function create_if_block_3$7(ctx) {
+	let div;
+	let div_class_value;
+	let if_block = !/*_titleElement*/ ctx[25] && create_if_block_4$5(ctx);
+
+	const block = {
+		c: function create() {
+			div = element("div");
+			if (if_block) if_block.c();
+			attr_dev(div, "class", div_class_value = `pnotify-title ${/*getStyle*/ ctx[21]("title")}`);
+			add_location(div, file$1o, 974, 8, 27695);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, div, anchor);
+			if (if_block) if_block.m(div, null);
+			/*div_binding_1*/ ctx[87](div);
+		},
+		p: function update(ctx, dirty) {
+			if (!/*_titleElement*/ ctx[25]) {
+				if (if_block) {
+					if_block.p(ctx, dirty);
+				} else {
+					if_block = create_if_block_4$5(ctx);
+					if_block.c();
+					if_block.m(div, null);
+				}
+			} else if (if_block) {
+				if_block.d(1);
+				if_block = null;
+			}
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(div);
+			if (if_block) if_block.d();
+			/*div_binding_1*/ ctx[87](null);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_if_block_3$7.name,
+		type: "if",
+		source: "(974:6) {#if title !== false}",
+		ctx
+	});
+
+	return block;
+}
+
+// (979:10) {#if !_titleElement}
+function create_if_block_4$5(ctx) {
+	let if_block_anchor;
+
+	function select_block_type(ctx, dirty) {
+		if (/*titleTrusted*/ ctx[6]) return create_if_block_5$4;
+		return create_else_block_1$1;
+	}
+
+	let current_block_type = select_block_type(ctx);
+	let if_block = current_block_type(ctx);
+
+	const block = {
+		c: function create() {
+			if_block.c();
+			if_block_anchor = empty();
+		},
+		m: function mount(target, anchor) {
+			if_block.m(target, anchor);
+			insert_dev(target, if_block_anchor, anchor);
+		},
+		p: function update(ctx, dirty) {
+			if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block) {
+				if_block.p(ctx, dirty);
+			} else {
+				if_block.d(1);
+				if_block = current_block_type(ctx);
+
+				if (if_block) {
+					if_block.c();
+					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+				}
+			}
+		},
+		d: function destroy(detaching) {
+			if_block.d(detaching);
+			if (detaching) detach_dev(if_block_anchor);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_if_block_4$5.name,
+		type: "if",
+		source: "(979:10) {#if !_titleElement}",
+		ctx
+	});
+
+	return block;
+}
+
+// (982:12) {:else}
+function create_else_block_1$1(ctx) {
+	let span;
+	let t;
+
+	const block = {
+		c: function create() {
+			span = element("span");
+			t = text(/*title*/ ctx[5]);
+			attr_dev(span, "class", "pnotify-pre-line");
+			add_location(span, file$1o, 982, 14, 27931);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, span, anchor);
+			append_dev(span, t);
+		},
+		p: function update(ctx, dirty) {
+			if (dirty[0] & /*title*/ 32) set_data_dev(t, /*title*/ ctx[5]);
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(span);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_else_block_1$1.name,
+		type: "else",
+		source: "(982:12) {:else}",
+		ctx
+	});
+
+	return block;
+}
+
+// (980:12) {#if titleTrusted}
+function create_if_block_5$4(ctx) {
+	let html_tag;
+	let html_anchor;
+
+	const block = {
+		c: function create() {
+			html_anchor = empty();
+			html_tag = new HtmlTag(html_anchor);
+		},
+		m: function mount(target, anchor) {
+			html_tag.m(/*title*/ ctx[5], target, anchor);
+			insert_dev(target, html_anchor, anchor);
+		},
+		p: function update(ctx, dirty) {
+			if (dirty[0] & /*title*/ 32) html_tag.p(/*title*/ ctx[5]);
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(html_anchor);
+			if (detaching) html_tag.d();
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_if_block_5$4.name,
+		type: "if",
+		source: "(980:12) {#if titleTrusted}",
+		ctx
+	});
+
+	return block;
+}
+
+// (988:6) {#if text !== false}
+function create_if_block$E(ctx) {
+	let div;
+	let div_class_value;
+	let if_block = !/*_textElement*/ ctx[26] && create_if_block_1$g(ctx);
+
+	const block = {
+		c: function create() {
+			div = element("div");
+			if (if_block) if_block.c();
+
+			attr_dev(div, "class", div_class_value = `pnotify-text ${/*getStyle*/ ctx[21]("text")} ${/*_maxTextHeightStyle*/ ctx[35] === ""
+			? ""
+			: "pnotify-text-with-max-height"}`);
+
+			attr_dev(div, "style", /*_maxTextHeightStyle*/ ctx[35]);
+			attr_dev(div, "role", "alert");
+			add_location(div, file$1o, 988, 8, 28073);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, div, anchor);
+			if (if_block) if_block.m(div, null);
+			/*div_binding_2*/ ctx[88](div);
+		},
+		p: function update(ctx, dirty) {
+			if (!/*_textElement*/ ctx[26]) {
+				if (if_block) {
+					if_block.p(ctx, dirty);
+				} else {
+					if_block = create_if_block_1$g(ctx);
+					if_block.c();
+					if_block.m(div, null);
+				}
+			} else if (if_block) {
+				if_block.d(1);
+				if_block = null;
+			}
+
+			if (dirty[1] & /*_maxTextHeightStyle*/ 16 && div_class_value !== (div_class_value = `pnotify-text ${/*getStyle*/ ctx[21]("text")} ${/*_maxTextHeightStyle*/ ctx[35] === ""
+			? ""
+			: "pnotify-text-with-max-height"}`)) {
+				attr_dev(div, "class", div_class_value);
+			}
+
+			if (dirty[1] & /*_maxTextHeightStyle*/ 16) {
+				attr_dev(div, "style", /*_maxTextHeightStyle*/ ctx[35]);
+			}
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(div);
+			if (if_block) if_block.d();
+			/*div_binding_2*/ ctx[88](null);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_if_block$E.name,
+		type: "if",
+		source: "(988:6) {#if text !== false}",
+		ctx
+	});
+
+	return block;
+}
+
+// (995:10) {#if !_textElement}
+function create_if_block_1$g(ctx) {
+	let if_block_anchor;
+
+	function select_block_type_1(ctx, dirty) {
+		if (/*textTrusted*/ ctx[8]) return create_if_block_2$a;
+		return create_else_block$e;
+	}
+
+	let current_block_type = select_block_type_1(ctx);
+	let if_block = current_block_type(ctx);
+
+	const block = {
+		c: function create() {
+			if_block.c();
+			if_block_anchor = empty();
+		},
+		m: function mount(target, anchor) {
+			if_block.m(target, anchor);
+			insert_dev(target, if_block_anchor, anchor);
+		},
+		p: function update(ctx, dirty) {
+			if (current_block_type === (current_block_type = select_block_type_1(ctx)) && if_block) {
+				if_block.p(ctx, dirty);
+			} else {
+				if_block.d(1);
+				if_block = current_block_type(ctx);
+
+				if (if_block) {
+					if_block.c();
+					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+				}
+			}
+		},
+		d: function destroy(detaching) {
+			if_block.d(detaching);
+			if (detaching) detach_dev(if_block_anchor);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_if_block_1$g.name,
+		type: "if",
+		source: "(995:10) {#if !_textElement}",
+		ctx
+	});
+
+	return block;
+}
+
+// (998:12) {:else}
+function create_else_block$e(ctx) {
+	let span;
+	let t;
+
+	const block = {
+		c: function create() {
+			span = element("span");
+			t = text(/*text*/ ctx[7]);
+			attr_dev(span, "class", "pnotify-pre-line");
+			add_location(span, file$1o, 998, 14, 28432);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, span, anchor);
+			append_dev(span, t);
+		},
+		p: function update(ctx, dirty) {
+			if (dirty[0] & /*text*/ 128) set_data_dev(t, /*text*/ ctx[7]);
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(span);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_else_block$e.name,
+		type: "else",
+		source: "(998:12) {:else}",
+		ctx
+	});
+
+	return block;
+}
+
+// (996:12) {#if textTrusted}
+function create_if_block_2$a(ctx) {
+	let html_tag;
+	let html_anchor;
+
+	const block = {
+		c: function create() {
+			html_anchor = empty();
+			html_tag = new HtmlTag(html_anchor);
+		},
+		m: function mount(target, anchor) {
+			html_tag.m(/*text*/ ctx[7], target, anchor);
+			insert_dev(target, html_anchor, anchor);
+		},
+		p: function update(ctx, dirty) {
+			if (dirty[0] & /*text*/ 128) html_tag.p(/*text*/ ctx[7]);
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(html_anchor);
+			if (detaching) html_tag.d();
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_if_block_2$a.name,
+		type: "if",
+		source: "(996:12) {#if textTrusted}",
+		ctx
+	});
+
+	return block;
+}
+
+// (1004:6) {#each modulesAppendContent as [module, options] (module)}
+function create_each_block_1$6(key_1, ctx) {
+	let first;
+	let switch_instance;
+	let switch_instance_anchor;
+	let current;
+	const switch_instance_spread_levels = [{ self: /*self*/ ctx[42] }, /*options*/ ctx[110]];
+	var switch_value = /*module*/ ctx[109].default;
+
+	function switch_props(ctx) {
+		let switch_instance_props = {};
+
+		for (let i = 0; i < switch_instance_spread_levels.length; i += 1) {
+			switch_instance_props = assign(switch_instance_props, switch_instance_spread_levels[i]);
+		}
+
+		return {
+			props: switch_instance_props,
+			$$inline: true
+		};
+	}
+
+	if (switch_value) {
+		switch_instance = new switch_value(switch_props());
+	}
+
+	const block = {
+		key: key_1,
+		first: null,
+		c: function create() {
+			first = empty();
+			if (switch_instance) create_component(switch_instance.$$.fragment);
+			switch_instance_anchor = empty();
+			this.first = first;
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, first, anchor);
+
+			if (switch_instance) {
+				mount_component(switch_instance, target, anchor);
+			}
+
+			insert_dev(target, switch_instance_anchor, anchor);
+			current = true;
+		},
+		p: function update(new_ctx, dirty) {
+			ctx = new_ctx;
+
+			const switch_instance_changes = (dirty[1] & /*self, modulesAppendContent*/ 2560)
+			? get_spread_update(switch_instance_spread_levels, [
+					dirty[1] & /*self*/ 2048 && { self: /*self*/ ctx[42] },
+					dirty[1] & /*modulesAppendContent*/ 512 && get_spread_object(/*options*/ ctx[110])
+				])
+			: {};
+
+			if (switch_value !== (switch_value = /*module*/ ctx[109].default)) {
+				if (switch_instance) {
+					group_outros();
+					const old_component = switch_instance;
+
+					transition_out(old_component.$$.fragment, 1, 0, () => {
+						destroy_component(old_component, 1);
+					});
+
+					check_outros();
+				}
+
+				if (switch_value) {
+					switch_instance = new switch_value(switch_props());
+					create_component(switch_instance.$$.fragment);
+					transition_in(switch_instance.$$.fragment, 1);
+					mount_component(switch_instance, switch_instance_anchor.parentNode, switch_instance_anchor);
+				} else {
+					switch_instance = null;
+				}
+			} else if (switch_value) {
+				switch_instance.$set(switch_instance_changes);
+			}
+		},
+		i: function intro(local) {
+			if (current) return;
+			if (switch_instance) transition_in(switch_instance.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			if (switch_instance) transition_out(switch_instance.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(first);
+			if (detaching) detach_dev(switch_instance_anchor);
+			if (switch_instance) destroy_component(switch_instance, detaching);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_each_block_1$6.name,
+		type: "each",
+		source: "(1004:6) {#each modulesAppendContent as [module, options] (module)}",
+		ctx
+	});
+
+	return block;
+}
+
+// (1008:4) {#each modulesAppendContainer as [module, options] (module)}
+function create_each_block$e(key_1, ctx) {
+	let first;
+	let switch_instance;
+	let switch_instance_anchor;
+	let current;
+	const switch_instance_spread_levels = [{ self: /*self*/ ctx[42] }, /*options*/ ctx[110]];
+	var switch_value = /*module*/ ctx[109].default;
+
+	function switch_props(ctx) {
+		let switch_instance_props = {};
+
+		for (let i = 0; i < switch_instance_spread_levels.length; i += 1) {
+			switch_instance_props = assign(switch_instance_props, switch_instance_spread_levels[i]);
+		}
+
+		return {
+			props: switch_instance_props,
+			$$inline: true
+		};
+	}
+
+	if (switch_value) {
+		switch_instance = new switch_value(switch_props());
+	}
+
+	const block = {
+		key: key_1,
+		first: null,
+		c: function create() {
+			first = empty();
+			if (switch_instance) create_component(switch_instance.$$.fragment);
+			switch_instance_anchor = empty();
+			this.first = first;
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, first, anchor);
+
+			if (switch_instance) {
+				mount_component(switch_instance, target, anchor);
+			}
+
+			insert_dev(target, switch_instance_anchor, anchor);
+			current = true;
+		},
+		p: function update(new_ctx, dirty) {
+			ctx = new_ctx;
+
+			const switch_instance_changes = (dirty[1] & /*self, modulesAppendContainer*/ 3072)
+			? get_spread_update(switch_instance_spread_levels, [
+					dirty[1] & /*self*/ 2048 && { self: /*self*/ ctx[42] },
+					dirty[1] & /*modulesAppendContainer*/ 1024 && get_spread_object(/*options*/ ctx[110])
+				])
+			: {};
+
+			if (switch_value !== (switch_value = /*module*/ ctx[109].default)) {
+				if (switch_instance) {
+					group_outros();
+					const old_component = switch_instance;
+
+					transition_out(old_component.$$.fragment, 1, 0, () => {
+						destroy_component(old_component, 1);
+					});
+
+					check_outros();
+				}
+
+				if (switch_value) {
+					switch_instance = new switch_value(switch_props());
+					create_component(switch_instance.$$.fragment);
+					transition_in(switch_instance.$$.fragment, 1);
+					mount_component(switch_instance, switch_instance_anchor.parentNode, switch_instance_anchor);
+				} else {
+					switch_instance = null;
+				}
+			} else if (switch_value) {
+				switch_instance.$set(switch_instance_changes);
+			}
+		},
+		i: function intro(local) {
+			if (current) return;
+			if (switch_instance) transition_in(switch_instance.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			if (switch_instance) transition_out(switch_instance.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(first);
+			if (detaching) detach_dev(switch_instance_anchor);
+			if (switch_instance) destroy_component(switch_instance, detaching);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_each_block$e.name,
+		type: "each",
+		source: "(1008:4) {#each modulesAppendContainer as [module, options] (module)}",
+		ctx
+	});
+
+	return block;
+}
+
+function create_fragment$1v(ctx) {
+	let div2;
+	let div1;
+	let each_blocks_3 = [];
+	let each0_lookup = new Map_1();
+	let t0;
+	let t1;
+	let t2;
+	let t3;
+	let div0;
+	let each_blocks_2 = [];
+	let each1_lookup = new Map_1();
+	let t4;
+	let t5;
+	let t6;
+	let each_blocks_1 = [];
+	let each2_lookup = new Map_1();
+	let div0_class_value;
+	let t7;
+	let each_blocks = [];
+	let each3_lookup = new Map_1();
+	let div1_class_value;
+	let div1_style_value;
+	let div2_class_value;
+	let forwardEvents_action;
+	let current;
+	let mounted;
+	let dispose;
+	let each_value_3 = /*modulesPrependContainer*/ ctx[38];
+	validate_each_argument(each_value_3);
+	const get_key = ctx => /*module*/ ctx[109];
+	validate_each_keys(ctx, each_value_3, get_each_context_3$5, get_key);
+
+	for (let i = 0; i < each_value_3.length; i += 1) {
+		let child_ctx = get_each_context_3$5(ctx, each_value_3, i);
+		let key = get_key(child_ctx);
+		each0_lookup.set(key, each_blocks_3[i] = create_each_block_3$5(key, child_ctx));
+	}
+
+	let if_block0 = /*closer*/ ctx[16] && !/*_nonBlock*/ ctx[36] && create_if_block_8(ctx);
+	let if_block1 = /*sticker*/ ctx[18] && !/*_nonBlock*/ ctx[36] && create_if_block_7(ctx);
+	let if_block2 = /*icon*/ ctx[13] !== false && create_if_block_6$2(ctx);
+	let each_value_2 = /*modulesPrependContent*/ ctx[39];
+	validate_each_argument(each_value_2);
+	const get_key_1 = ctx => /*module*/ ctx[109];
+	validate_each_keys(ctx, each_value_2, get_each_context_2$6, get_key_1);
+
+	for (let i = 0; i < each_value_2.length; i += 1) {
+		let child_ctx = get_each_context_2$6(ctx, each_value_2, i);
+		let key = get_key_1(child_ctx);
+		each1_lookup.set(key, each_blocks_2[i] = create_each_block_2$6(key, child_ctx));
+	}
+
+	let if_block3 = /*title*/ ctx[5] !== false && create_if_block_3$7(ctx);
+	let if_block4 = /*text*/ ctx[7] !== false && create_if_block$E(ctx);
+	let each_value_1 = /*modulesAppendContent*/ ctx[40];
+	validate_each_argument(each_value_1);
+	const get_key_2 = ctx => /*module*/ ctx[109];
+	validate_each_keys(ctx, each_value_1, get_each_context_1$6, get_key_2);
+
+	for (let i = 0; i < each_value_1.length; i += 1) {
+		let child_ctx = get_each_context_1$6(ctx, each_value_1, i);
+		let key = get_key_2(child_ctx);
+		each2_lookup.set(key, each_blocks_1[i] = create_each_block_1$6(key, child_ctx));
+	}
+
+	let each_value = /*modulesAppendContainer*/ ctx[41];
+	validate_each_argument(each_value);
+	const get_key_3 = ctx => /*module*/ ctx[109];
+	validate_each_keys(ctx, each_value, get_each_context$e, get_key_3);
+
+	for (let i = 0; i < each_value.length; i += 1) {
+		let child_ctx = get_each_context$e(ctx, each_value, i);
+		let key = get_key_3(child_ctx);
+		each3_lookup.set(key, each_blocks[i] = create_each_block$e(key, child_ctx));
+	}
+
+	const block = {
+		c: function create() {
+			div2 = element("div");
+			div1 = element("div");
+
+			for (let i = 0; i < each_blocks_3.length; i += 1) {
+				each_blocks_3[i].c();
+			}
+
+			t0 = space();
+			if (if_block0) if_block0.c();
+			t1 = space();
+			if (if_block1) if_block1.c();
+			t2 = space();
+			if (if_block2) if_block2.c();
+			t3 = space();
+			div0 = element("div");
+
+			for (let i = 0; i < each_blocks_2.length; i += 1) {
+				each_blocks_2[i].c();
+			}
+
+			t4 = space();
+			if (if_block3) if_block3.c();
+			t5 = space();
+			if (if_block4) if_block4.c();
+			t6 = space();
+
+			for (let i = 0; i < each_blocks_1.length; i += 1) {
+				each_blocks_1[i].c();
+			}
+
+			t7 = space();
+
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+
+			attr_dev(div0, "class", div0_class_value = `pnotify-content ${/*getStyle*/ ctx[21]("content")}`);
+			add_location(div0, file$1o, 966, 4, 27411);
+			attr_dev(div1, "class", div1_class_value = `pnotify-container ${/*getStyle*/ ctx[21]("container")} ${/*getStyle*/ ctx[21](/*type*/ ctx[4])} ${/*shadow*/ ctx[15] ? "pnotify-shadow" : ""} ${/*_moduleClasses*/ ctx[30].container.join(" ")}`);
+			attr_dev(div1, "style", div1_style_value = `${/*_widthStyle*/ ctx[33]} ${/*_minHeightStyle*/ ctx[34]}`);
+			attr_dev(div1, "role", "alert");
+			add_location(div1, file$1o, 924, 2, 25954);
+			attr_dev(div2, "data-pnotify", "");
+
+			attr_dev(div2, "class", div2_class_value = `pnotify ${!/*stack*/ ctx[0] || /*stack*/ ctx[0].positioned
+			? "pnotify-positioned"
+			: ""} ${/*icon*/ ctx[13] !== false ? "pnotify-with-icon" : ""} ${/*getStyle*/ ctx[21]("elem")} pnotify-mode-${/*mode*/ ctx[9]} ${/*addClass*/ ctx[10]} ${/*_animatingClass*/ ctx[27]} ${/*_moveClass*/ ctx[28]} ${/*_stackDirClass*/ ctx[37]} ${/*animation*/ ctx[2] === "fade"
+			? `pnotify-fade-${/*animateSpeed*/ ctx[14]}`
+			: ""} ${/*_modal*/ ctx[24]
+			? `pnotify-modal ${/*addModalClass*/ ctx[11]}`
+			: /*addModelessClass*/ ctx[12]} ${/*_masking*/ ctx[31] ? "pnotify-masking" : ""} ${/*_maskingIn*/ ctx[32] ? "pnotify-masking-in" : ""} ${/*_moduleClasses*/ ctx[30].elem.join(" ")}`);
+
+			attr_dev(div2, "aria-live", "assertive");
+			attr_dev(div2, "role", "alertdialog");
+			add_location(div2, file$1o, 912, 0, 25227);
+		},
+		l: function claim(nodes) {
+			throw new Error_1$4("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, div2, anchor);
+			append_dev(div2, div1);
+
+			for (let i = 0; i < each_blocks_3.length; i += 1) {
+				each_blocks_3[i].m(div1, null);
+			}
+
+			append_dev(div1, t0);
+			if (if_block0) if_block0.m(div1, null);
+			append_dev(div1, t1);
+			if (if_block1) if_block1.m(div1, null);
+			append_dev(div1, t2);
+			if (if_block2) if_block2.m(div1, null);
+			append_dev(div1, t3);
+			append_dev(div1, div0);
+
+			for (let i = 0; i < each_blocks_2.length; i += 1) {
+				each_blocks_2[i].m(div0, null);
+			}
+
+			append_dev(div0, t4);
+			if (if_block3) if_block3.m(div0, null);
+			append_dev(div0, t5);
+			if (if_block4) if_block4.m(div0, null);
+			append_dev(div0, t6);
+
+			for (let i = 0; i < each_blocks_1.length; i += 1) {
+				each_blocks_1[i].m(div0, null);
+			}
+
+			/*div0_binding*/ ctx[89](div0);
+			append_dev(div1, t7);
+
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(div1, null);
+			}
+
+			/*div1_binding*/ ctx[90](div1);
+			/*div2_binding*/ ctx[91](div2);
+			current = true;
+
+			if (!mounted) {
+				dispose = [
+					action_destroyer(forwardEvents_action = /*forwardEvents*/ ctx[43].call(null, div2)),
+					listen_dev(div2, "mouseenter", /*handleInteraction*/ ctx[44], false, false, false),
+					listen_dev(div2, "mouseleave", /*handleLeaveInteraction*/ ctx[45], false, false, false),
+					listen_dev(div2, "focusin", /*handleInteraction*/ ctx[44], false, false, false),
+					listen_dev(div2, "focusout", /*handleLeaveInteraction*/ ctx[45], false, false, false)
+				];
+
+				mounted = true;
+			}
+		},
+		p: function update(ctx, dirty) {
+			if (dirty[1] & /*modulesPrependContainer, self*/ 2176) {
+				each_value_3 = /*modulesPrependContainer*/ ctx[38];
+				validate_each_argument(each_value_3);
+				group_outros();
+				validate_each_keys(ctx, each_value_3, get_each_context_3$5, get_key);
+				each_blocks_3 = update_keyed_each(each_blocks_3, dirty, get_key, 1, ctx, each_value_3, each0_lookup, div1, outro_and_destroy_block, create_each_block_3$5, t0, get_each_context_3$5);
+				check_outros();
+			}
+
+			if (/*closer*/ ctx[16] && !/*_nonBlock*/ ctx[36]) {
+				if (if_block0) {
+					if_block0.p(ctx, dirty);
+				} else {
+					if_block0 = create_if_block_8(ctx);
+					if_block0.c();
+					if_block0.m(div1, t1);
+				}
+			} else if (if_block0) {
+				if_block0.d(1);
+				if_block0 = null;
+			}
+
+			if (/*sticker*/ ctx[18] && !/*_nonBlock*/ ctx[36]) {
+				if (if_block1) {
+					if_block1.p(ctx, dirty);
+				} else {
+					if_block1 = create_if_block_7(ctx);
+					if_block1.c();
+					if_block1.m(div1, t2);
+				}
+			} else if (if_block1) {
+				if_block1.d(1);
+				if_block1 = null;
+			}
+
+			if (/*icon*/ ctx[13] !== false) {
+				if (if_block2) {
+					if_block2.p(ctx, dirty);
+				} else {
+					if_block2 = create_if_block_6$2(ctx);
+					if_block2.c();
+					if_block2.m(div1, t3);
+				}
+			} else if (if_block2) {
+				if_block2.d(1);
+				if_block2 = null;
+			}
+
+			if (dirty[1] & /*modulesPrependContent, self*/ 2304) {
+				each_value_2 = /*modulesPrependContent*/ ctx[39];
+				validate_each_argument(each_value_2);
+				group_outros();
+				validate_each_keys(ctx, each_value_2, get_each_context_2$6, get_key_1);
+				each_blocks_2 = update_keyed_each(each_blocks_2, dirty, get_key_1, 1, ctx, each_value_2, each1_lookup, div0, outro_and_destroy_block, create_each_block_2$6, t4, get_each_context_2$6);
+				check_outros();
+			}
+
+			if (/*title*/ ctx[5] !== false) {
+				if (if_block3) {
+					if_block3.p(ctx, dirty);
+				} else {
+					if_block3 = create_if_block_3$7(ctx);
+					if_block3.c();
+					if_block3.m(div0, t5);
+				}
+			} else if (if_block3) {
+				if_block3.d(1);
+				if_block3 = null;
+			}
+
+			if (/*text*/ ctx[7] !== false) {
+				if (if_block4) {
+					if_block4.p(ctx, dirty);
+				} else {
+					if_block4 = create_if_block$E(ctx);
+					if_block4.c();
+					if_block4.m(div0, t6);
+				}
+			} else if (if_block4) {
+				if_block4.d(1);
+				if_block4 = null;
+			}
+
+			if (dirty[1] & /*modulesAppendContent, self*/ 2560) {
+				each_value_1 = /*modulesAppendContent*/ ctx[40];
+				validate_each_argument(each_value_1);
+				group_outros();
+				validate_each_keys(ctx, each_value_1, get_each_context_1$6, get_key_2);
+				each_blocks_1 = update_keyed_each(each_blocks_1, dirty, get_key_2, 1, ctx, each_value_1, each2_lookup, div0, outro_and_destroy_block, create_each_block_1$6, null, get_each_context_1$6);
+				check_outros();
+			}
+
+			if (dirty[1] & /*modulesAppendContainer, self*/ 3072) {
+				each_value = /*modulesAppendContainer*/ ctx[41];
+				validate_each_argument(each_value);
+				group_outros();
+				validate_each_keys(ctx, each_value, get_each_context$e, get_key_3);
+				each_blocks = update_keyed_each(each_blocks, dirty, get_key_3, 1, ctx, each_value, each3_lookup, div1, outro_and_destroy_block, create_each_block$e, null, get_each_context$e);
+				check_outros();
+			}
+
+			if (!current || dirty[0] & /*type, shadow, _moduleClasses*/ 1073774608 && div1_class_value !== (div1_class_value = `pnotify-container ${/*getStyle*/ ctx[21]("container")} ${/*getStyle*/ ctx[21](/*type*/ ctx[4])} ${/*shadow*/ ctx[15] ? "pnotify-shadow" : ""} ${/*_moduleClasses*/ ctx[30].container.join(" ")}`)) {
+				attr_dev(div1, "class", div1_class_value);
+			}
+
+			if (!current || dirty[1] & /*_widthStyle, _minHeightStyle*/ 12 && div1_style_value !== (div1_style_value = `${/*_widthStyle*/ ctx[33]} ${/*_minHeightStyle*/ ctx[34]}`)) {
+				attr_dev(div1, "style", div1_style_value);
+			}
+
+			if (!current || dirty[0] & /*stack, icon, mode, addClass, _animatingClass, _moveClass, animation, animateSpeed, _modal, addModalClass, addModelessClass, _moduleClasses*/ 1493204485 | dirty[1] & /*_stackDirClass, _masking, _maskingIn*/ 67 && div2_class_value !== (div2_class_value = `pnotify ${!/*stack*/ ctx[0] || /*stack*/ ctx[0].positioned
+			? "pnotify-positioned"
+			: ""} ${/*icon*/ ctx[13] !== false ? "pnotify-with-icon" : ""} ${/*getStyle*/ ctx[21]("elem")} pnotify-mode-${/*mode*/ ctx[9]} ${/*addClass*/ ctx[10]} ${/*_animatingClass*/ ctx[27]} ${/*_moveClass*/ ctx[28]} ${/*_stackDirClass*/ ctx[37]} ${/*animation*/ ctx[2] === "fade"
+			? `pnotify-fade-${/*animateSpeed*/ ctx[14]}`
+			: ""} ${/*_modal*/ ctx[24]
+			? `pnotify-modal ${/*addModalClass*/ ctx[11]}`
+			: /*addModelessClass*/ ctx[12]} ${/*_masking*/ ctx[31] ? "pnotify-masking" : ""} ${/*_maskingIn*/ ctx[32] ? "pnotify-masking-in" : ""} ${/*_moduleClasses*/ ctx[30].elem.join(" ")}`)) {
+				attr_dev(div2, "class", div2_class_value);
+			}
+		},
+		i: function intro(local) {
+			if (current) return;
+
+			for (let i = 0; i < each_value_3.length; i += 1) {
+				transition_in(each_blocks_3[i]);
+			}
+
+			for (let i = 0; i < each_value_2.length; i += 1) {
+				transition_in(each_blocks_2[i]);
+			}
+
+			for (let i = 0; i < each_value_1.length; i += 1) {
+				transition_in(each_blocks_1[i]);
+			}
+
+			for (let i = 0; i < each_value.length; i += 1) {
+				transition_in(each_blocks[i]);
+			}
+
+			current = true;
+		},
+		o: function outro(local) {
+			for (let i = 0; i < each_blocks_3.length; i += 1) {
+				transition_out(each_blocks_3[i]);
+			}
+
+			for (let i = 0; i < each_blocks_2.length; i += 1) {
+				transition_out(each_blocks_2[i]);
+			}
+
+			for (let i = 0; i < each_blocks_1.length; i += 1) {
+				transition_out(each_blocks_1[i]);
+			}
+
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				transition_out(each_blocks[i]);
+			}
+
+			current = false;
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(div2);
+
+			for (let i = 0; i < each_blocks_3.length; i += 1) {
+				each_blocks_3[i].d();
+			}
+
+			if (if_block0) if_block0.d();
+			if (if_block1) if_block1.d();
+			if (if_block2) if_block2.d();
+
+			for (let i = 0; i < each_blocks_2.length; i += 1) {
+				each_blocks_2[i].d();
+			}
+
+			if (if_block3) if_block3.d();
+			if (if_block4) if_block4.d();
+
+			for (let i = 0; i < each_blocks_1.length; i += 1) {
+				each_blocks_1[i].d();
+			}
+
+			/*div0_binding*/ ctx[89](null);
+
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].d();
+			}
+
+			/*div1_binding*/ ctx[90](null);
+			/*div2_binding*/ ctx[91](null);
+			mounted = false;
+			run_all(dispose);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_fragment$1v.name,
+		type: "component",
+		source: "",
+		ctx
+	});
+
+	return block;
+}
+
+const alert = options => component(getDefaultArgs(options));
+const notice = options => component(getDefaultArgs(options, "notice"));
+const info = options => component(getDefaultArgs(options, "info"));
+const success = options => component(getDefaultArgs(options, "success"));
+const error = options => component(getDefaultArgs(options, "error"));
+
+// Default arguments for the new notice helper functions.
+function getDefaultArgs(options, type) {
+	if (typeof options !== "object") {
+		options = { text: options };
+	}
+
+	// Only assign the type if it was requested, so we don't overwrite
+	// options.type if it has something assigned.
+	if (type) {
+		options.type = type;
+	}
+
+	let target = document.body;
+
+	if ("stack" in options && options.stack && options.stack.context) {
+		target = options.stack.context;
+	}
+
+	return { target, props: options };
+}
+
+const defaultStack = new Stack({
+		dir1: "down",
+		dir2: "left",
+		firstpos1: 25,
+		firstpos2: 25,
+		spacing1: 36,
+		spacing2: 36,
+		push: "bottom"
+	});
+
+const defaultModules = new Map();
+
+const defaults$1 = {
+	type: "notice",
+	title: false,
+	titleTrusted: false,
+	text: false,
+	textTrusted: false,
+	styling: "brighttheme",
+	icons: "brighttheme",
+	mode: "no-preference",
+	addClass: "",
+	addModalClass: "",
+	addModelessClass: "",
+	autoOpen: true,
+	width: "360px",
+	minHeight: "16px",
+	maxTextHeight: "200px",
+	icon: true,
+	animation: "fade",
+	animateSpeed: "normal",
+	shadow: true,
+	hide: true,
+	delay: 8000,
+	mouseReset: true,
+	closer: true,
+	closerHover: true,
+	sticker: true,
+	stickerHover: true,
+	labels: {
+		close: "Close",
+		stick: "Pin",
+		unstick: "Unpin"
+	},
+	remove: true,
+	destroy: true,
+	stack: defaultStack,
+	modules: defaultModules
+};
+
+let posTimer;
+
+// These actions need to be done once the DOM is ready.
+function onDocumentLoaded() {
+	if (!defaultStack.context) {
+		defaultStack.context = document.body;
+	}
+
+	// Reposition the notices when the window resizes.
+	window.addEventListener("resize", () => {
+		// This timer is used for queueing the position event so it doesn't run
+		// repeatedly.
+		if (posTimer) {
+			clearTimeout(posTimer);
+		}
+
+		posTimer = setTimeout(
+			() => {
+				const event = new Event("pnotify:position");
+				document.body.dispatchEvent(event);
+				posTimer = null;
+			},
+			10
+		);
+	});
+}
+
+// Run the deferred actions once the DOM is ready.
+if (window && document.body) {
+	onDocumentLoaded();
+} else {
+	document.addEventListener("DOMContentLoaded", onDocumentLoaded);
+}
+
+function instance$1v($$self, $$props, $$invalidate) {
+	let _widthStyle;
+	let _minHeightStyle;
+	let _maxTextHeightStyle;
+	let _titleElement;
+	let _textElement;
+	let _nonBlock;
+	let _stackDirClass;
+	let modulesPrependContainer;
+	let modulesPrependContent;
+	let modulesAppendContent;
+	let modulesAppendContainer;
+	let { $$slots: slots = {}, $$scope } = $$props;
+	validate_slots("Core", slots, []);
+	const self = get_current_component();
+	const dispatch = createEventDispatcher();
+
+	const forwardEvents = forwardEventsBuilder$1(self, [
+		"pnotify:init",
+		"pnotify:mount",
+		"pnotify:update",
+		"pnotify:beforeOpen",
+		"pnotify:afterOpen",
+		"pnotify:enterModal",
+		"pnotify:leaveModal",
+		"pnotify:beforeClose",
+		"pnotify:afterClose",
+		"pnotify:beforeDestroy",
+		"pnotify:afterDestroy",
+		"focusin",
+		"focusout",
+		"animationend",
+		"transitionend"
+	]);
+
+	let { modules = new Map(defaults$1.modules) } = $$props;
+	let { stack = defaults$1.stack } = $$props;
+
+	const refs = {
+		elem: null,
+		container: null,
+		content: null,
+		iconContainer: null,
+		titleContainer: null,
+		textContainer: null
+	};
+
+	// Run init to give a chance for modules to override defaults.
+	const selfDefaults = { ...defaults$1 };
+
+	dispatchLifecycleEvent("init", { notice: self, defaults: selfDefaults });
+	let { type = selfDefaults.type } = $$props;
+	let { title = selfDefaults.title } = $$props;
+	let { titleTrusted = selfDefaults.titleTrusted } = $$props;
+	let { text = selfDefaults.text } = $$props;
+	let { textTrusted = selfDefaults.textTrusted } = $$props;
+	let { styling = selfDefaults.styling } = $$props;
+	let { icons = selfDefaults.icons } = $$props;
+	let { mode = selfDefaults.mode } = $$props;
+	let { addClass = selfDefaults.addClass } = $$props;
+	let { addModalClass = selfDefaults.addModalClass } = $$props;
+	let { addModelessClass = selfDefaults.addModelessClass } = $$props;
+	let { autoOpen = selfDefaults.autoOpen } = $$props;
+	let { width = selfDefaults.width } = $$props;
+	let { minHeight = selfDefaults.minHeight } = $$props;
+	let { maxTextHeight = selfDefaults.maxTextHeight } = $$props;
+	let { icon = selfDefaults.icon } = $$props;
+	let { animation = selfDefaults.animation } = $$props;
+	let { animateSpeed = selfDefaults.animateSpeed } = $$props;
+	let { shadow = selfDefaults.shadow } = $$props;
+	let { hide = selfDefaults.hide } = $$props;
+	let { delay = selfDefaults.delay } = $$props;
+	let { mouseReset = selfDefaults.mouseReset } = $$props;
+	let { closer = selfDefaults.closer } = $$props;
+	let { closerHover = selfDefaults.closerHover } = $$props;
+	let { sticker = selfDefaults.sticker } = $$props;
+	let { stickerHover = selfDefaults.stickerHover } = $$props;
+	let { labels = selfDefaults.labels } = $$props;
+	let { remove = selfDefaults.remove } = $$props;
+	let { destroy = selfDefaults.destroy } = $$props;
+
+	// The state can be 'waiting', 'opening', 'open', 'closing', or 'closed'.
+	let _state = "closed";
+
+	// Auto close timer.
+	let _timer = null;
+
+	// Animation timers.
+	let _animInTimer = null;
+
+	let _animOutTimer = null;
+
+	// Stores what is currently being animated (in or out).
+	let _animating = false;
+
+	// Stores the class that adds entry/exit animation effects.
+	let _animatingClass = "";
+
+	// Stores the class that adds movement animation effects.
+	let _moveClass = "";
+
+	// Stores whether the notice was hidden by a timer.
+	let _timerHide = false;
+
+	// Whether the mouse is over the notice or the notice is focused.
+	let _interacting = false;
+
+	// Holds classes that modules add for the notice element or container element.
+	let _moduleClasses = { elem: [], container: [] };
+
+	// Modules that change how the notice displays (causing the notice element to
+	// not appear) can set these to true to make PNotify handle it correctly.
+	let _moduleHandled = false;
+
+	let _moduleOpen = false;
+
+	// The masking control for the second notice in a modalish stack when the
+	// first notice is hovered.
+	let _masking = false;
+
+	let _maskingIn = false;
+	let _maskingTimer = null;
+
+	// Save the old value of hide, so we can reset the timer if it changes.
+	let _oldHide = hide;
+
+	// Promise that resolves when the notice has opened.
+	let _openPromise = null;
+
+	// Promise that resolved when the notice closes.
+	let _closePromise = null;
+
+	const getState = () => _state;
+	const getTimer = () => _timer;
+
+	const getStyle = name => typeof styling === "string"
+	? `${styling}-${name}`
+	: name in styling
+		? styling[name]
+		: `${styling.prefix}-${name}`;
+
+	const getIcon = name => typeof icons === "string"
+	? `${icons}-icon-${name}`
+	: name in icons
+		? icons[name]
+		: `${icons.prefix}-icon-${name}`;
+
+	// Whether the notification is in a modal stack (or a modalish stack in modal
+	// state).
+	let _modal = stack && (stack.modal === true || stack.modal === "ish" && _timer === "prevented");
+
+	let _oldStack = NaN;
+	let _stackBeforeAddOverlayOff = null;
+	let _stackAfterRemoveOverlayOff = null;
+
+	onMount(() => {
+		dispatchLifecycleEvent("mount");
+
+		// Display the notice.
+		if (autoOpen) {
+			open().catch(() => {
+				
+			});
+		}
+	});
+
+	beforeUpdate(() => {
+		dispatchLifecycleEvent("update");
+
+		// Update the timed hiding.
+		if (_state !== "closed" && _state !== "waiting" && hide !== _oldHide) {
+			if (!hide) {
+				cancelClose();
+			} else if (!_oldHide) {
+				queueClose();
+			}
+		}
+
+		// Queue a position
+		if (_state !== "closed" && _state !== "closing" && stack && !stack._collapsingModalState) {
+			stack.queuePosition();
+		}
+
+		// Save old options.
+		_oldHide = hide;
+	});
+
+	function handleInteraction(e) {
+		$$invalidate(29, _interacting = true);
+
+		// Stop animation, reset the removal timer when the user interacts.
+		if (mouseReset && _state === "closing") {
+			if (!_timerHide) {
+				return;
+			}
+
+			cancelClose();
+		}
+
+		// Stop the close timer.
+		if (hide && mouseReset) {
+			cancelClose();
+		}
+	}
+
+	function handleLeaveInteraction(e) {
+		$$invalidate(29, _interacting = false);
+
+		// Start the close timer.
+		if (hide && mouseReset && _animating !== "out" && ["open", "opening"].indexOf(_state) !== -1) {
+			queueClose();
+		}
+	}
+
+	// This runs an event on all the modules.
+	function dispatchLifecycleEvent(event, detail = {}) {
+		const eventDetail = { notice: self, ...detail };
+
+		if (event === "init") {
+			Array.from(modules).forEach(([module, options]) => "init" in module && module.init(eventDetail));
+		}
+
+		let target = refs.elem || stack && stack.context || document.body;
+
+		if (!target) {
+			dispatch(`pnotify:${event}`, eventDetail);
+			return true;
+		}
+
+		const eventObj = new Event(`pnotify:${event}`,
+		{
+				bubbles: event === "init" || event === "mount",
+				cancelable: event.startsWith("before")
+			});
+
+		eventObj.detail = eventDetail;
+		target.dispatchEvent(eventObj);
+		return !eventObj.defaultPrevented;
+	}
+
+	function insertIntoDOM() {
+		// If the notice is not in the DOM, or in the wrong context, append it.
+		const target = stack && stack.context || document.body;
+
+		if (!target) {
+			throw new Error("No context to insert this notice into.");
+		}
+
+		if (!refs.elem) {
+			throw new Error("Trying to insert notice before element is available.");
+		}
+
+		if (refs.elem.parentNode !== target) {
+			target.appendChild(refs.elem);
+		}
+	}
+
+	function removeFromDOM() {
+		refs.elem && refs.elem.parentNode.removeChild(refs.elem);
+	}
+
+	let { open = immediate => {
+		if (_state === "opening") {
+			return _openPromise;
+		}
+
+		if (_state === "open") {
+			if (hide) {
+				queueClose();
+			}
+
+			return Promise.resolve();
+		}
+
+		if (!_moduleHandled && stack && stack._shouldNoticeWait(self)) {
+			_state = "waiting";
+			return Promise.reject();
+		}
+
+		if (!dispatchLifecycleEvent("beforeOpen", { immediate })) {
+			return Promise.reject();
+		}
+
+		_state = "opening";
+		$$invalidate(31, _masking = false);
+
+		// This makes the notice visibity: hidden; so its dimensions can be
+		// determined.
+		$$invalidate(27, _animatingClass = "pnotify-initial pnotify-hidden");
+
+		let resolve;
+		let reject;
+
+		const promise = new Promise((res, rej) => {
+				resolve = res;
+				reject = rej;
+			});
+
+		_openPromise = promise;
+
+		const afterOpenCallback = () => {
+			// Now set it to hide.
+			if (hide) {
+				queueClose();
+			}
+
+			_state = "open";
+			dispatchLifecycleEvent("afterOpen", { immediate });
+			_openPromise = null;
+			resolve();
+		};
+
+		if (_moduleOpen) {
+			afterOpenCallback();
+			return Promise.resolve();
+		}
+
+		insertIntoDOM();
+
+		// Wait until the DOM is updated.
+		window.requestAnimationFrame(() => {
+			if (_state !== "opening") {
+				reject();
+				_openPromise = null;
+				return;
+			}
+
+			if (stack) {
+				// Mark the stack so it won't animate the new notice.
+				$$invalidate(0, stack._animation = false, stack);
+
+				if (stack.push === "top") {
+					// Reset the position data so the notice is positioned as the first
+					// notice.
+					stack._resetPositionData();
+				}
+
+				// Now position the stack's the notices.
+				stack._positionNotice(self);
+
+				stack.queuePosition(0);
+
+				// Reset animation.
+				$$invalidate(0, stack._animation = true, stack);
+			}
+
+			animateIn(afterOpenCallback, immediate);
+		});
+
+		return promise;
+	} } = $$props;
+
+	let { close = (immediate, timerHide, waitAfterward) => {
+		if (_state === "closing") {
+			return _closePromise;
+		}
+
+		if (_state === "closed") {
+			return Promise.resolve();
+		}
+
+		const runDestroy = () => {
+			if (!dispatchLifecycleEvent("beforeDestroy")) {
+				return;
+			}
+
+			if (stack) {
+				stack._removeNotice(self);
+			}
+
+			self.$destroy();
+			dispatchLifecycleEvent("afterDestroy");
+		};
+
+		if (_state === "waiting") {
+			if (waitAfterward) {
+				return Promise.resolve();
+			}
+
+			_state = "closed";
+
+			// It's debatable whether the notice should be destroyed in this case, but
+			// I'm going to go ahead and say yes.
+			if (destroy && !waitAfterward) {
+				runDestroy();
+			}
+
+			return Promise.resolve();
+		}
+
+		if (!dispatchLifecycleEvent("beforeClose", { immediate, timerHide, waitAfterward })) {
+			return Promise.reject();
+		}
+
+		_state = "closing";
+		_timerHide = !!timerHide; // Make sure it's a boolean.
+
+		if (_timer && _timer !== "prevented" && clearTimeout) {
+			clearTimeout(_timer);
+		}
+
+		_timer = null;
+		let resolve;
+
+		const promise = new Promise((res, rej) => {
+				resolve = res;
+			});
+
+		_closePromise = promise;
+
+		animateOut(
+			() => {
+				$$invalidate(29, _interacting = false);
+				_timerHide = false;
+				_state = waitAfterward ? "waiting" : "closed";
+				dispatchLifecycleEvent("afterClose", { immediate, timerHide, waitAfterward });
+				_closePromise = null;
+				resolve();
+
+				if (!waitAfterward) {
+					if (destroy) {
+						// If we're supposed to destroy the notice, run the destroy module
+						// events, remove from stack, and let Svelte handle DOM removal.
+						runDestroy();
+					} else if (remove) {
+						// If we're supposed to remove the notice from the DOM, do it.
+						removeFromDOM();
+					}
+				}
+			},
+			immediate
+		);
+
+		return promise;
+	} } = $$props;
+
+	let { animateIn = (callback, immediate) => {
+		// Declare that the notice is animating in.
+		_animating = "in";
+
+		const finished = event => {
+			if (event && refs.elem && event.target !== refs.elem) {
+				return;
+			}
+
+			refs.elem && refs.elem.removeEventListener("transitionend", finished);
+
+			if (_animInTimer) {
+				clearTimeout(_animInTimer);
+			}
+
+			if (_animating !== "in") {
+				return;
+			}
+
+			let visible = _moduleOpen;
+
+			if (!visible && refs.elem) {
+				const domRect = refs.elem.getBoundingClientRect();
+
+				for (let prop in domRect) {
+					if (domRect[prop] > 0) {
+						visible = true;
+						break;
+					}
+				}
+			}
+
+			if (visible) {
+				if (callback) {
+					callback.call();
+				}
+
+				// Declare that the notice has completed animating.
+				_animating = false;
+			} else {
+				_animInTimer = setTimeout(finished, 40);
+			}
+		};
+
+		if (animation === "fade" && !immediate) {
+			refs.elem && refs.elem.addEventListener("transitionend", finished);
+			$$invalidate(27, _animatingClass = "pnotify-in");
+
+			tick().then(() => {
+				$$invalidate(27, _animatingClass = "pnotify-in pnotify-fade-in");
+
+				// Just in case the event doesn't fire, call it after 650 ms.
+				_animInTimer = setTimeout(finished, 650);
+			});
+		} else {
+			const _animation = animation;
+			$$invalidate(2, animation = "none");
+			$$invalidate(27, _animatingClass = `pnotify-in ${_animation === "fade" ? "pnotify-fade-in" : ""}`);
+
+			tick().then(() => {
+				$$invalidate(2, animation = _animation);
+				finished();
+			});
+		}
+	} } = $$props;
+
+	let { animateOut = (callback, immediate) => {
+		// Declare that the notice is animating out.
+		_animating = "out";
+
+		const finished = event => {
+			if (event && refs.elem && event.target !== refs.elem) {
+				return;
+			}
+
+			refs.elem && refs.elem.removeEventListener("transitionend", finished);
+
+			if (_animOutTimer) {
+				clearTimeout(_animOutTimer);
+			}
+
+			if (_animating !== "out") {
+				return;
+			}
+
+			let visible = _moduleOpen;
+
+			if (!visible && refs.elem) {
+				const domRect = refs.elem.getBoundingClientRect();
+
+				for (let prop in domRect) {
+					if (domRect[prop] > 0) {
+						visible = true;
+						break;
+					}
+				}
+			}
+
+			if (!refs.elem || !refs.elem.style.opacity || refs.elem.style.opacity === "0" || !visible) {
+				$$invalidate(27, _animatingClass = "");
+
+				if (callback) {
+					callback.call();
+				}
+
+				// Declare that the notice has completed animating.
+				_animating = false;
+			} else {
+				// In case this was called before the notice finished animating.
+				_animOutTimer = setTimeout(finished, 40);
+			}
+		};
+
+		if (animation === "fade" && !immediate) {
+			refs.elem && refs.elem.addEventListener("transitionend", finished);
+			$$invalidate(27, _animatingClass = "pnotify-in");
+
+			// Just in case the event doesn't fire, call it after 650 ms.
+			_animOutTimer = setTimeout(finished, 650);
+		} else {
+			$$invalidate(27, _animatingClass = "");
+
+			tick().then(() => {
+				finished();
+			});
+		}
+	} } = $$props;
+
+	function cancelClose() {
+		if (_timer && _timer !== "prevented") {
+			clearTimeout(_timer);
+			_timer = null;
+		}
+
+		if (_animOutTimer) {
+			clearTimeout(_animOutTimer);
+		}
+
+		if (_state === "closing") {
+			// If it's animating out, stop it.
+			_state = "open";
+
+			_animating = false;
+
+			$$invalidate(27, _animatingClass = animation === "fade"
+			? "pnotify-in pnotify-fade-in"
+			: "pnotify-in");
+		}
+	}
+
+	function queueClose() {
+		if (_timer === "prevented") {
+			return;
+		}
+
+		// Cancel any current close timer.
+		cancelClose();
+
+		if (delay !== Infinity) {
+			_timer = setTimeout(() => close(false, true), isNaN(delay) ? 0 : delay);
+		}
+	}
+
+	function _preventTimerClose(prevent) {
+		if (prevent) {
+			cancelClose();
+			_timer = "prevented";
+		} else if (_timer === "prevented") {
+			_timer = null;
+
+			if (_state === "open" && hide) {
+				queueClose();
+			}
+		}
+	}
+
+	function on(...args) {
+		return self.$on(...args);
+	}
+
+	function update(...args) {
+		return self.$set(...args);
+	}
+
+	function fire(name, detail) {
+		dispatch(name, detail);
+	}
+
+	function addModuleClass(element, ...classNames) {
+		for (let i = 0; i < classNames.length; i++) {
+			let className = classNames[i];
+
+			if (_moduleClasses[element].indexOf(className) === -1) {
+				_moduleClasses[element].push(className);
+			}
+		}
+
+		$$invalidate(30, _moduleClasses);
+	}
+
+	function removeModuleClass(element, ...classNames) {
+		for (let i = 0; i < classNames.length; i++) {
+			let className = classNames[i];
+			const idx = _moduleClasses[element].indexOf(className);
+
+			if (idx !== -1) {
+				_moduleClasses[element].splice(idx, 1);
+			}
+		}
+
+		$$invalidate(30, _moduleClasses);
+	}
+
+	function hasModuleClass(element, ...classNames) {
+		for (let i = 0; i < classNames.length; i++) {
+			let className = classNames[i];
+
+			if (_moduleClasses[element].indexOf(className) === -1) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	function getModuleHandled() {
+		return _moduleHandled;
+	}
+
+	function setModuleHandled(value) {
+		return _moduleHandled = value;
+	}
+
+	function getModuleOpen() {
+		return _moduleOpen;
+	}
+
+	function setModuleOpen(value) {
+		return _moduleOpen = value;
+	}
+
+	function setAnimating(value) {
+		return _animating = value;
+	}
+
+	function getAnimatingClass() {
+		return _animatingClass;
+	}
+
+	function setAnimatingClass(value) {
+		return $$invalidate(27, _animatingClass = value);
+	}
+
+	function _getMoveClass() {
+		return _moveClass;
+	}
+
+	function _setMoveClass(value) {
+		return $$invalidate(28, _moveClass = value);
+	}
+
+	function _setMasking(value, immediate, callback) {
+		if (_maskingTimer) {
+			clearTimeout(_maskingTimer);
+		}
+
+		if (_masking === value) {
+			return;
+		}
+
+		if (value) {
+			$$invalidate(31, _masking = true);
+			$$invalidate(32, _maskingIn = !!immediate);
+			insertIntoDOM();
+
+			tick().then(() => {
+				window.requestAnimationFrame(() => {
+					if (_masking) {
+						if (immediate && callback) {
+							callback();
+						} else {
+							$$invalidate(32, _maskingIn = true);
+
+							const finished = () => {
+								refs.elem && refs.elem.removeEventListener("transitionend", finished);
+
+								if (_maskingTimer) {
+									clearTimeout(_maskingTimer);
+								}
+
+								if (_maskingIn && callback) {
+									callback();
+								}
+							};
+
+							refs.elem && refs.elem.addEventListener("transitionend", finished);
+							_maskingTimer = setTimeout(finished, 650);
+						}
+					}
+				});
+			});
+		} else if (immediate) {
+			$$invalidate(31, _masking = false);
+			$$invalidate(32, _maskingIn = false);
+
+			if (remove && ["open", "opening", "closing"].indexOf(_state) === -1) {
+				removeFromDOM();
+			}
+
+			if (callback) {
+				callback();
+			}
+		} else {
+			const finished = () => {
+				refs.elem && refs.elem.removeEventListener("transitionend", finished);
+
+				if (_maskingTimer) {
+					clearTimeout(_maskingTimer);
+				}
+
+				if (!_maskingIn) {
+					$$invalidate(31, _masking = false);
+
+					if (remove && ["open", "opening", "closing"].indexOf(_state) === -1) {
+						removeFromDOM();
+					}
+
+					if (callback) {
+						callback();
+					}
+				}
+			};
+
+			$$invalidate(32, _maskingIn = false);
+			refs.elem && refs.elem.addEventListener("transitionend", finished);
+			refs.elem && refs.elem.style.opacity; // This line is necessary for some reason. Some notices don't fade without it.
+
+			// Just in case the event doesn't fire, call it after 650 ms.
+			_maskingTimer = setTimeout(finished, 650);
+		}
+	}
+
+	const writable_props = [
+		"modules",
+		"stack",
+		"type",
+		"title",
+		"titleTrusted",
+		"text",
+		"textTrusted",
+		"styling",
+		"icons",
+		"mode",
+		"addClass",
+		"addModalClass",
+		"addModelessClass",
+		"autoOpen",
+		"width",
+		"minHeight",
+		"maxTextHeight",
+		"icon",
+		"animation",
+		"animateSpeed",
+		"shadow",
+		"hide",
+		"delay",
+		"mouseReset",
+		"closer",
+		"closerHover",
+		"sticker",
+		"stickerHover",
+		"labels",
+		"remove",
+		"destroy",
+		"open",
+		"close",
+		"animateIn",
+		"animateOut"
+	];
+
+	Object.keys($$props).forEach(key => {
+		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Core> was created with unknown prop '${key}'`);
+	});
+
+	const click_handler = () => close(false);
+	const click_handler_1 = () => $$invalidate(3, hide = !hide);
+
+	function div_binding($$value) {
+		binding_callbacks[$$value ? "unshift" : "push"](() => {
+			refs.iconContainer = $$value;
+			$$invalidate(1, refs);
+		});
+	}
+
+	function div_binding_1($$value) {
+		binding_callbacks[$$value ? "unshift" : "push"](() => {
+			refs.titleContainer = $$value;
+			$$invalidate(1, refs);
+		});
+	}
+
+	function div_binding_2($$value) {
+		binding_callbacks[$$value ? "unshift" : "push"](() => {
+			refs.textContainer = $$value;
+			$$invalidate(1, refs);
+		});
+	}
+
+	function div0_binding($$value) {
+		binding_callbacks[$$value ? "unshift" : "push"](() => {
+			refs.content = $$value;
+			$$invalidate(1, refs);
+		});
+	}
+
+	function div1_binding($$value) {
+		binding_callbacks[$$value ? "unshift" : "push"](() => {
+			refs.container = $$value;
+			$$invalidate(1, refs);
+		});
+	}
+
+	function div2_binding($$value) {
+		binding_callbacks[$$value ? "unshift" : "push"](() => {
+			refs.elem = $$value;
+			$$invalidate(1, refs);
+		});
+	}
+
+	$$self.$$set = $$props => {
+		if ("modules" in $$props) $$invalidate(46, modules = $$props.modules);
+		if ("stack" in $$props) $$invalidate(0, stack = $$props.stack);
+		if ("type" in $$props) $$invalidate(4, type = $$props.type);
+		if ("title" in $$props) $$invalidate(5, title = $$props.title);
+		if ("titleTrusted" in $$props) $$invalidate(6, titleTrusted = $$props.titleTrusted);
+		if ("text" in $$props) $$invalidate(7, text = $$props.text);
+		if ("textTrusted" in $$props) $$invalidate(8, textTrusted = $$props.textTrusted);
+		if ("styling" in $$props) $$invalidate(47, styling = $$props.styling);
+		if ("icons" in $$props) $$invalidate(48, icons = $$props.icons);
+		if ("mode" in $$props) $$invalidate(9, mode = $$props.mode);
+		if ("addClass" in $$props) $$invalidate(10, addClass = $$props.addClass);
+		if ("addModalClass" in $$props) $$invalidate(11, addModalClass = $$props.addModalClass);
+		if ("addModelessClass" in $$props) $$invalidate(12, addModelessClass = $$props.addModelessClass);
+		if ("autoOpen" in $$props) $$invalidate(49, autoOpen = $$props.autoOpen);
+		if ("width" in $$props) $$invalidate(50, width = $$props.width);
+		if ("minHeight" in $$props) $$invalidate(51, minHeight = $$props.minHeight);
+		if ("maxTextHeight" in $$props) $$invalidate(52, maxTextHeight = $$props.maxTextHeight);
+		if ("icon" in $$props) $$invalidate(13, icon = $$props.icon);
+		if ("animation" in $$props) $$invalidate(2, animation = $$props.animation);
+		if ("animateSpeed" in $$props) $$invalidate(14, animateSpeed = $$props.animateSpeed);
+		if ("shadow" in $$props) $$invalidate(15, shadow = $$props.shadow);
+		if ("hide" in $$props) $$invalidate(3, hide = $$props.hide);
+		if ("delay" in $$props) $$invalidate(53, delay = $$props.delay);
+		if ("mouseReset" in $$props) $$invalidate(54, mouseReset = $$props.mouseReset);
+		if ("closer" in $$props) $$invalidate(16, closer = $$props.closer);
+		if ("closerHover" in $$props) $$invalidate(17, closerHover = $$props.closerHover);
+		if ("sticker" in $$props) $$invalidate(18, sticker = $$props.sticker);
+		if ("stickerHover" in $$props) $$invalidate(19, stickerHover = $$props.stickerHover);
+		if ("labels" in $$props) $$invalidate(20, labels = $$props.labels);
+		if ("remove" in $$props) $$invalidate(55, remove = $$props.remove);
+		if ("destroy" in $$props) $$invalidate(56, destroy = $$props.destroy);
+		if ("open" in $$props) $$invalidate(59, open = $$props.open);
+		if ("close" in $$props) $$invalidate(23, close = $$props.close);
+		if ("animateIn" in $$props) $$invalidate(60, animateIn = $$props.animateIn);
+		if ("animateOut" in $$props) $$invalidate(61, animateOut = $$props.animateOut);
+	};
+
+	$$self.$capture_state = () => ({
+		component,
+		Stack,
+		alert,
+		notice,
+		info,
+		success,
+		error,
+		getDefaultArgs,
+		defaultStack,
+		defaultModules,
+		defaults: defaults$1,
+		posTimer,
+		onDocumentLoaded,
+		onMount,
+		beforeUpdate,
+		tick,
+		createEventDispatcher,
+		get_current_component,
+		forwardEventsBuilder: forwardEventsBuilder$1,
+		self,
+		dispatch,
+		forwardEvents,
+		modules,
+		stack,
+		refs,
+		selfDefaults,
+		type,
+		title,
+		titleTrusted,
+		text,
+		textTrusted,
+		styling,
+		icons,
+		mode,
+		addClass,
+		addModalClass,
+		addModelessClass,
+		autoOpen,
+		width,
+		minHeight,
+		maxTextHeight,
+		icon,
+		animation,
+		animateSpeed,
+		shadow,
+		hide,
+		delay,
+		mouseReset,
+		closer,
+		closerHover,
+		sticker,
+		stickerHover,
+		labels,
+		remove,
+		destroy,
+		_state,
+		_timer,
+		_animInTimer,
+		_animOutTimer,
+		_animating,
+		_animatingClass,
+		_moveClass,
+		_timerHide,
+		_interacting,
+		_moduleClasses,
+		_moduleHandled,
+		_moduleOpen,
+		_masking,
+		_maskingIn,
+		_maskingTimer,
+		_oldHide,
+		_openPromise,
+		_closePromise,
+		getState,
+		getTimer,
+		getStyle,
+		getIcon,
+		_modal,
+		_oldStack,
+		_stackBeforeAddOverlayOff,
+		_stackAfterRemoveOverlayOff,
+		handleInteraction,
+		handleLeaveInteraction,
+		dispatchLifecycleEvent,
+		insertIntoDOM,
+		removeFromDOM,
+		open,
+		close,
+		animateIn,
+		animateOut,
+		cancelClose,
+		queueClose,
+		_preventTimerClose,
+		on,
+		update,
+		fire,
+		addModuleClass,
+		removeModuleClass,
+		hasModuleClass,
+		getModuleHandled,
+		setModuleHandled,
+		getModuleOpen,
+		setModuleOpen,
+		setAnimating,
+		getAnimatingClass,
+		setAnimatingClass,
+		_getMoveClass,
+		_setMoveClass,
+		_setMasking,
+		_widthStyle,
+		_minHeightStyle,
+		_maxTextHeightStyle,
+		_titleElement,
+		_textElement,
+		_nonBlock,
+		_stackDirClass,
+		modulesPrependContainer,
+		modulesPrependContent,
+		modulesAppendContent,
+		modulesAppendContainer
+	});
+
+	$$self.$inject_state = $$props => {
+		if ("modules" in $$props) $$invalidate(46, modules = $$props.modules);
+		if ("stack" in $$props) $$invalidate(0, stack = $$props.stack);
+		if ("type" in $$props) $$invalidate(4, type = $$props.type);
+		if ("title" in $$props) $$invalidate(5, title = $$props.title);
+		if ("titleTrusted" in $$props) $$invalidate(6, titleTrusted = $$props.titleTrusted);
+		if ("text" in $$props) $$invalidate(7, text = $$props.text);
+		if ("textTrusted" in $$props) $$invalidate(8, textTrusted = $$props.textTrusted);
+		if ("styling" in $$props) $$invalidate(47, styling = $$props.styling);
+		if ("icons" in $$props) $$invalidate(48, icons = $$props.icons);
+		if ("mode" in $$props) $$invalidate(9, mode = $$props.mode);
+		if ("addClass" in $$props) $$invalidate(10, addClass = $$props.addClass);
+		if ("addModalClass" in $$props) $$invalidate(11, addModalClass = $$props.addModalClass);
+		if ("addModelessClass" in $$props) $$invalidate(12, addModelessClass = $$props.addModelessClass);
+		if ("autoOpen" in $$props) $$invalidate(49, autoOpen = $$props.autoOpen);
+		if ("width" in $$props) $$invalidate(50, width = $$props.width);
+		if ("minHeight" in $$props) $$invalidate(51, minHeight = $$props.minHeight);
+		if ("maxTextHeight" in $$props) $$invalidate(52, maxTextHeight = $$props.maxTextHeight);
+		if ("icon" in $$props) $$invalidate(13, icon = $$props.icon);
+		if ("animation" in $$props) $$invalidate(2, animation = $$props.animation);
+		if ("animateSpeed" in $$props) $$invalidate(14, animateSpeed = $$props.animateSpeed);
+		if ("shadow" in $$props) $$invalidate(15, shadow = $$props.shadow);
+		if ("hide" in $$props) $$invalidate(3, hide = $$props.hide);
+		if ("delay" in $$props) $$invalidate(53, delay = $$props.delay);
+		if ("mouseReset" in $$props) $$invalidate(54, mouseReset = $$props.mouseReset);
+		if ("closer" in $$props) $$invalidate(16, closer = $$props.closer);
+		if ("closerHover" in $$props) $$invalidate(17, closerHover = $$props.closerHover);
+		if ("sticker" in $$props) $$invalidate(18, sticker = $$props.sticker);
+		if ("stickerHover" in $$props) $$invalidate(19, stickerHover = $$props.stickerHover);
+		if ("labels" in $$props) $$invalidate(20, labels = $$props.labels);
+		if ("remove" in $$props) $$invalidate(55, remove = $$props.remove);
+		if ("destroy" in $$props) $$invalidate(56, destroy = $$props.destroy);
+		if ("_state" in $$props) _state = $$props._state;
+		if ("_timer" in $$props) _timer = $$props._timer;
+		if ("_animInTimer" in $$props) _animInTimer = $$props._animInTimer;
+		if ("_animOutTimer" in $$props) _animOutTimer = $$props._animOutTimer;
+		if ("_animating" in $$props) _animating = $$props._animating;
+		if ("_animatingClass" in $$props) $$invalidate(27, _animatingClass = $$props._animatingClass);
+		if ("_moveClass" in $$props) $$invalidate(28, _moveClass = $$props._moveClass);
+		if ("_timerHide" in $$props) _timerHide = $$props._timerHide;
+		if ("_interacting" in $$props) $$invalidate(29, _interacting = $$props._interacting);
+		if ("_moduleClasses" in $$props) $$invalidate(30, _moduleClasses = $$props._moduleClasses);
+		if ("_moduleHandled" in $$props) _moduleHandled = $$props._moduleHandled;
+		if ("_moduleOpen" in $$props) _moduleOpen = $$props._moduleOpen;
+		if ("_masking" in $$props) $$invalidate(31, _masking = $$props._masking);
+		if ("_maskingIn" in $$props) $$invalidate(32, _maskingIn = $$props._maskingIn);
+		if ("_maskingTimer" in $$props) _maskingTimer = $$props._maskingTimer;
+		if ("_oldHide" in $$props) _oldHide = $$props._oldHide;
+		if ("_openPromise" in $$props) _openPromise = $$props._openPromise;
+		if ("_closePromise" in $$props) _closePromise = $$props._closePromise;
+		if ("_modal" in $$props) $$invalidate(24, _modal = $$props._modal);
+		if ("_oldStack" in $$props) $$invalidate(81, _oldStack = $$props._oldStack);
+		if ("_stackBeforeAddOverlayOff" in $$props) $$invalidate(82, _stackBeforeAddOverlayOff = $$props._stackBeforeAddOverlayOff);
+		if ("_stackAfterRemoveOverlayOff" in $$props) $$invalidate(83, _stackAfterRemoveOverlayOff = $$props._stackAfterRemoveOverlayOff);
+		if ("open" in $$props) $$invalidate(59, open = $$props.open);
+		if ("close" in $$props) $$invalidate(23, close = $$props.close);
+		if ("animateIn" in $$props) $$invalidate(60, animateIn = $$props.animateIn);
+		if ("animateOut" in $$props) $$invalidate(61, animateOut = $$props.animateOut);
+		if ("_widthStyle" in $$props) $$invalidate(33, _widthStyle = $$props._widthStyle);
+		if ("_minHeightStyle" in $$props) $$invalidate(34, _minHeightStyle = $$props._minHeightStyle);
+		if ("_maxTextHeightStyle" in $$props) $$invalidate(35, _maxTextHeightStyle = $$props._maxTextHeightStyle);
+		if ("_titleElement" in $$props) $$invalidate(25, _titleElement = $$props._titleElement);
+		if ("_textElement" in $$props) $$invalidate(26, _textElement = $$props._textElement);
+		if ("_nonBlock" in $$props) $$invalidate(36, _nonBlock = $$props._nonBlock);
+		if ("_stackDirClass" in $$props) $$invalidate(37, _stackDirClass = $$props._stackDirClass);
+		if ("modulesPrependContainer" in $$props) $$invalidate(38, modulesPrependContainer = $$props.modulesPrependContainer);
+		if ("modulesPrependContent" in $$props) $$invalidate(39, modulesPrependContent = $$props.modulesPrependContent);
+		if ("modulesAppendContent" in $$props) $$invalidate(40, modulesAppendContent = $$props.modulesAppendContent);
+		if ("modulesAppendContainer" in $$props) $$invalidate(41, modulesAppendContainer = $$props.modulesAppendContainer);
+	};
+
+	if ($$props && "$$inject" in $$props) {
+		$$self.$inject_state($$props.$$inject);
+	}
+
+	$$self.$$.update = () => {
+		if ($$self.$$.dirty[1] & /*width*/ 524288) {
+			// Grab the icons from the icons object or use provided icons
+			 $$invalidate(33, _widthStyle = typeof width === "string" ? `width: ${width};` : "");
+		}
+
+		if ($$self.$$.dirty[1] & /*minHeight*/ 1048576) {
+			 $$invalidate(34, _minHeightStyle = typeof minHeight === "string"
+			? `min-height: ${minHeight};`
+			: "");
+		}
+
+		if ($$self.$$.dirty[1] & /*maxTextHeight*/ 2097152) {
+			 $$invalidate(35, _maxTextHeightStyle = typeof maxTextHeight === "string"
+			? `max-height: ${maxTextHeight};`
+			: "");
+		}
+
+		if ($$self.$$.dirty[0] & /*title*/ 32) {
+			 $$invalidate(25, _titleElement = title instanceof HTMLElement);
+		}
+
+		if ($$self.$$.dirty[0] & /*text*/ 128) {
+			 $$invalidate(26, _textElement = text instanceof HTMLElement);
+		}
+
+		if ($$self.$$.dirty[0] & /*stack*/ 1 | $$self.$$.dirty[2] & /*_oldStack, _stackBeforeAddOverlayOff, _stackAfterRemoveOverlayOff*/ 3670016) {
+			 if (_oldStack !== stack) {
+				if (_oldStack) {
+					// Remove the notice from the old stack.
+					_oldStack._removeNotice(self);
+
+					// Remove the listeners.
+					$$invalidate(24, _modal = false);
+
+					_stackBeforeAddOverlayOff();
+					_stackAfterRemoveOverlayOff();
+				}
+
+				if (stack) {
+					// Add the notice to the stack.
+					stack._addNotice(self);
+
+					// Add listeners for modal state.
+					$$invalidate(82, _stackBeforeAddOverlayOff = stack.on("beforeAddOverlay", () => {
+						$$invalidate(24, _modal = true);
+						dispatchLifecycleEvent("enterModal");
+					}));
+
+					$$invalidate(83, _stackAfterRemoveOverlayOff = stack.on("afterRemoveOverlay", () => {
+						$$invalidate(24, _modal = false);
+						dispatchLifecycleEvent("leaveModal");
+					}));
+				}
+
+				$$invalidate(81, _oldStack = stack);
+			}
+		}
+
+		if ($$self.$$.dirty[0] & /*addClass, addModalClass, _modal, addModelessClass*/ 16784384) {
+			 $$invalidate(36, _nonBlock = addClass.match(/\bnonblock\b/) || addModalClass.match(/\bnonblock\b/) && _modal || addModelessClass.match(/\bnonblock\b/) && !_modal);
+		}
+
+		if ($$self.$$.dirty[0] & /*stack*/ 1) {
+			// This is for specific styling for how notices stack.
+			 $$invalidate(37, _stackDirClass = stack && stack.dir1 ? `pnotify-stack-${stack.dir1}` : "");
+		}
+
+		if ($$self.$$.dirty[1] & /*modules*/ 32768) {
+			// Filter through the module objects, getting an array for each position.
+			 $$invalidate(38, modulesPrependContainer = Array.from(modules).filter(([module, options]) => module.position === "PrependContainer"));
+		}
+
+		if ($$self.$$.dirty[1] & /*modules*/ 32768) {
+			 $$invalidate(39, modulesPrependContent = Array.from(modules).filter(([module, options]) => module.position === "PrependContent"));
+		}
+
+		if ($$self.$$.dirty[1] & /*modules*/ 32768) {
+			 $$invalidate(40, modulesAppendContent = Array.from(modules).filter(([module, options]) => module.position === "AppendContent"));
+		}
+
+		if ($$self.$$.dirty[1] & /*modules*/ 32768) {
+			 $$invalidate(41, modulesAppendContainer = Array.from(modules).filter(([module, options]) => module.position === "AppendContainer"));
+		}
+
+		if ($$self.$$.dirty[0] & /*_titleElement, refs, title*/ 33554466) {
+			 if (_titleElement && refs.titleContainer) {
+				refs.titleContainer.appendChild(title);
+			}
+		}
+
+		if ($$self.$$.dirty[0] & /*_textElement, refs, text*/ 67108994) {
+			 if (_textElement && refs.textContainer) {
+				refs.textContainer.appendChild(text);
+			}
+		}
+	};
+
+	return [
+		stack,
+		refs,
+		animation,
+		hide,
+		type,
+		title,
+		titleTrusted,
+		text,
+		textTrusted,
+		mode,
+		addClass,
+		addModalClass,
+		addModelessClass,
+		icon,
+		animateSpeed,
+		shadow,
+		closer,
+		closerHover,
+		sticker,
+		stickerHover,
+		labels,
+		getStyle,
+		getIcon,
+		close,
+		_modal,
+		_titleElement,
+		_textElement,
+		_animatingClass,
+		_moveClass,
+		_interacting,
+		_moduleClasses,
+		_masking,
+		_maskingIn,
+		_widthStyle,
+		_minHeightStyle,
+		_maxTextHeightStyle,
+		_nonBlock,
+		_stackDirClass,
+		modulesPrependContainer,
+		modulesPrependContent,
+		modulesAppendContent,
+		modulesAppendContainer,
+		self,
+		forwardEvents,
+		handleInteraction,
+		handleLeaveInteraction,
+		modules,
+		styling,
+		icons,
+		autoOpen,
+		width,
+		minHeight,
+		maxTextHeight,
+		delay,
+		mouseReset,
+		remove,
+		destroy,
+		getState,
+		getTimer,
+		open,
+		animateIn,
+		animateOut,
+		cancelClose,
+		queueClose,
+		_preventTimerClose,
+		on,
+		update,
+		fire,
+		addModuleClass,
+		removeModuleClass,
+		hasModuleClass,
+		getModuleHandled,
+		setModuleHandled,
+		getModuleOpen,
+		setModuleOpen,
+		setAnimating,
+		getAnimatingClass,
+		setAnimatingClass,
+		_getMoveClass,
+		_setMoveClass,
+		_setMasking,
+		_oldStack,
+		_stackBeforeAddOverlayOff,
+		_stackAfterRemoveOverlayOff,
+		click_handler,
+		click_handler_1,
+		div_binding,
+		div_binding_1,
+		div_binding_2,
+		div0_binding,
+		div1_binding,
+		div2_binding
+	];
+}
+
+class Core extends SvelteComponentDev {
+	constructor(options) {
+		super(options);
+
+		init(
+			this,
+			options,
+			instance$1v,
+			create_fragment$1v,
+			safe_not_equal,
+			{
+				modules: 46,
+				stack: 0,
+				refs: 1,
+				type: 4,
+				title: 5,
+				titleTrusted: 6,
+				text: 7,
+				textTrusted: 8,
+				styling: 47,
+				icons: 48,
+				mode: 9,
+				addClass: 10,
+				addModalClass: 11,
+				addModelessClass: 12,
+				autoOpen: 49,
+				width: 50,
+				minHeight: 51,
+				maxTextHeight: 52,
+				icon: 13,
+				animation: 2,
+				animateSpeed: 14,
+				shadow: 15,
+				hide: 3,
+				delay: 53,
+				mouseReset: 54,
+				closer: 16,
+				closerHover: 17,
+				sticker: 18,
+				stickerHover: 19,
+				labels: 20,
+				remove: 55,
+				destroy: 56,
+				getState: 57,
+				getTimer: 58,
+				getStyle: 21,
+				getIcon: 22,
+				open: 59,
+				close: 23,
+				animateIn: 60,
+				animateOut: 61,
+				cancelClose: 62,
+				queueClose: 63,
+				_preventTimerClose: 64,
+				on: 65,
+				update: 66,
+				fire: 67,
+				addModuleClass: 68,
+				removeModuleClass: 69,
+				hasModuleClass: 70,
+				getModuleHandled: 71,
+				setModuleHandled: 72,
+				getModuleOpen: 73,
+				setModuleOpen: 74,
+				setAnimating: 75,
+				getAnimatingClass: 76,
+				setAnimatingClass: 77,
+				_getMoveClass: 78,
+				_setMoveClass: 79,
+				_setMasking: 80
+			},
+			[-1, -1, -1, -1]
+		);
+
+		dispatch_dev("SvelteRegisterComponent", {
+			component: this,
+			tagName: "Core",
+			options,
+			id: create_fragment$1v.name
+		});
+	}
+
+	get modules() {
+		return this.$$.ctx[46];
+	}
+
+	set modules(modules) {
+		this.$set({ modules });
+		flush();
+	}
+
+	get stack() {
+		return this.$$.ctx[0];
+	}
+
+	set stack(stack) {
+		this.$set({ stack });
+		flush();
+	}
+
+	get refs() {
+		return this.$$.ctx[1];
+	}
+
+	set refs(value) {
+		throw new Error_1$4("<Core>: Cannot set read-only property 'refs'");
+	}
+
+	get type() {
+		return this.$$.ctx[4];
+	}
+
+	set type(type) {
+		this.$set({ type });
+		flush();
+	}
+
+	get title() {
+		return this.$$.ctx[5];
+	}
+
+	set title(title) {
+		this.$set({ title });
+		flush();
+	}
+
+	get titleTrusted() {
+		return this.$$.ctx[6];
+	}
+
+	set titleTrusted(titleTrusted) {
+		this.$set({ titleTrusted });
+		flush();
+	}
+
+	get text() {
+		return this.$$.ctx[7];
+	}
+
+	set text(text) {
+		this.$set({ text });
+		flush();
+	}
+
+	get textTrusted() {
+		return this.$$.ctx[8];
+	}
+
+	set textTrusted(textTrusted) {
+		this.$set({ textTrusted });
+		flush();
+	}
+
+	get styling() {
+		return this.$$.ctx[47];
+	}
+
+	set styling(styling) {
+		this.$set({ styling });
+		flush();
+	}
+
+	get icons() {
+		return this.$$.ctx[48];
+	}
+
+	set icons(icons) {
+		this.$set({ icons });
+		flush();
+	}
+
+	get mode() {
+		return this.$$.ctx[9];
+	}
+
+	set mode(mode) {
+		this.$set({ mode });
+		flush();
+	}
+
+	get addClass() {
+		return this.$$.ctx[10];
+	}
+
+	set addClass(addClass) {
+		this.$set({ addClass });
+		flush();
+	}
+
+	get addModalClass() {
+		return this.$$.ctx[11];
+	}
+
+	set addModalClass(addModalClass) {
+		this.$set({ addModalClass });
+		flush();
+	}
+
+	get addModelessClass() {
+		return this.$$.ctx[12];
+	}
+
+	set addModelessClass(addModelessClass) {
+		this.$set({ addModelessClass });
+		flush();
+	}
+
+	get autoOpen() {
+		return this.$$.ctx[49];
+	}
+
+	set autoOpen(autoOpen) {
+		this.$set({ autoOpen });
+		flush();
+	}
+
+	get width() {
+		return this.$$.ctx[50];
+	}
+
+	set width(width) {
+		this.$set({ width });
+		flush();
+	}
+
+	get minHeight() {
+		return this.$$.ctx[51];
+	}
+
+	set minHeight(minHeight) {
+		this.$set({ minHeight });
+		flush();
+	}
+
+	get maxTextHeight() {
+		return this.$$.ctx[52];
+	}
+
+	set maxTextHeight(maxTextHeight) {
+		this.$set({ maxTextHeight });
+		flush();
+	}
+
+	get icon() {
+		return this.$$.ctx[13];
+	}
+
+	set icon(icon) {
+		this.$set({ icon });
+		flush();
+	}
+
+	get animation() {
+		return this.$$.ctx[2];
+	}
+
+	set animation(animation) {
+		this.$set({ animation });
+		flush();
+	}
+
+	get animateSpeed() {
+		return this.$$.ctx[14];
+	}
+
+	set animateSpeed(animateSpeed) {
+		this.$set({ animateSpeed });
+		flush();
+	}
+
+	get shadow() {
+		return this.$$.ctx[15];
+	}
+
+	set shadow(shadow) {
+		this.$set({ shadow });
+		flush();
+	}
+
+	get hide() {
+		return this.$$.ctx[3];
+	}
+
+	set hide(hide) {
+		this.$set({ hide });
+		flush();
+	}
+
+	get delay() {
+		return this.$$.ctx[53];
+	}
+
+	set delay(delay) {
+		this.$set({ delay });
+		flush();
+	}
+
+	get mouseReset() {
+		return this.$$.ctx[54];
+	}
+
+	set mouseReset(mouseReset) {
+		this.$set({ mouseReset });
+		flush();
+	}
+
+	get closer() {
+		return this.$$.ctx[16];
+	}
+
+	set closer(closer) {
+		this.$set({ closer });
+		flush();
+	}
+
+	get closerHover() {
+		return this.$$.ctx[17];
+	}
+
+	set closerHover(closerHover) {
+		this.$set({ closerHover });
+		flush();
+	}
+
+	get sticker() {
+		return this.$$.ctx[18];
+	}
+
+	set sticker(sticker) {
+		this.$set({ sticker });
+		flush();
+	}
+
+	get stickerHover() {
+		return this.$$.ctx[19];
+	}
+
+	set stickerHover(stickerHover) {
+		this.$set({ stickerHover });
+		flush();
+	}
+
+	get labels() {
+		return this.$$.ctx[20];
+	}
+
+	set labels(labels) {
+		this.$set({ labels });
+		flush();
+	}
+
+	get remove() {
+		return this.$$.ctx[55];
+	}
+
+	set remove(remove) {
+		this.$set({ remove });
+		flush();
+	}
+
+	get destroy() {
+		return this.$$.ctx[56];
+	}
+
+	set destroy(destroy) {
+		this.$set({ destroy });
+		flush();
+	}
+
+	get getState() {
+		return this.$$.ctx[57];
+	}
+
+	set getState(value) {
+		throw new Error_1$4("<Core>: Cannot set read-only property 'getState'");
+	}
+
+	get getTimer() {
+		return this.$$.ctx[58];
+	}
+
+	set getTimer(value) {
+		throw new Error_1$4("<Core>: Cannot set read-only property 'getTimer'");
+	}
+
+	get getStyle() {
+		return this.$$.ctx[21];
+	}
+
+	set getStyle(value) {
+		throw new Error_1$4("<Core>: Cannot set read-only property 'getStyle'");
+	}
+
+	get getIcon() {
+		return this.$$.ctx[22];
+	}
+
+	set getIcon(value) {
+		throw new Error_1$4("<Core>: Cannot set read-only property 'getIcon'");
+	}
+
+	get open() {
+		return this.$$.ctx[59];
+	}
+
+	set open(open) {
+		this.$set({ open });
+		flush();
+	}
+
+	get close() {
+		return this.$$.ctx[23];
+	}
+
+	set close(close) {
+		this.$set({ close });
+		flush();
+	}
+
+	get animateIn() {
+		return this.$$.ctx[60];
+	}
+
+	set animateIn(animateIn) {
+		this.$set({ animateIn });
+		flush();
+	}
+
+	get animateOut() {
+		return this.$$.ctx[61];
+	}
+
+	set animateOut(animateOut) {
+		this.$set({ animateOut });
+		flush();
+	}
+
+	get cancelClose() {
+		return this.$$.ctx[62];
+	}
+
+	set cancelClose(value) {
+		throw new Error_1$4("<Core>: Cannot set read-only property 'cancelClose'");
+	}
+
+	get queueClose() {
+		return this.$$.ctx[63];
+	}
+
+	set queueClose(value) {
+		throw new Error_1$4("<Core>: Cannot set read-only property 'queueClose'");
+	}
+
+	get _preventTimerClose() {
+		return this.$$.ctx[64];
+	}
+
+	set _preventTimerClose(value) {
+		throw new Error_1$4("<Core>: Cannot set read-only property '_preventTimerClose'");
+	}
+
+	get on() {
+		return this.$$.ctx[65];
+	}
+
+	set on(value) {
+		throw new Error_1$4("<Core>: Cannot set read-only property 'on'");
+	}
+
+	get update() {
+		return this.$$.ctx[66];
+	}
+
+	set update(value) {
+		throw new Error_1$4("<Core>: Cannot set read-only property 'update'");
+	}
+
+	get fire() {
+		return this.$$.ctx[67];
+	}
+
+	set fire(value) {
+		throw new Error_1$4("<Core>: Cannot set read-only property 'fire'");
+	}
+
+	get addModuleClass() {
+		return this.$$.ctx[68];
+	}
+
+	set addModuleClass(value) {
+		throw new Error_1$4("<Core>: Cannot set read-only property 'addModuleClass'");
+	}
+
+	get removeModuleClass() {
+		return this.$$.ctx[69];
+	}
+
+	set removeModuleClass(value) {
+		throw new Error_1$4("<Core>: Cannot set read-only property 'removeModuleClass'");
+	}
+
+	get hasModuleClass() {
+		return this.$$.ctx[70];
+	}
+
+	set hasModuleClass(value) {
+		throw new Error_1$4("<Core>: Cannot set read-only property 'hasModuleClass'");
+	}
+
+	get getModuleHandled() {
+		return this.$$.ctx[71];
+	}
+
+	set getModuleHandled(value) {
+		throw new Error_1$4("<Core>: Cannot set read-only property 'getModuleHandled'");
+	}
+
+	get setModuleHandled() {
+		return this.$$.ctx[72];
+	}
+
+	set setModuleHandled(value) {
+		throw new Error_1$4("<Core>: Cannot set read-only property 'setModuleHandled'");
+	}
+
+	get getModuleOpen() {
+		return this.$$.ctx[73];
+	}
+
+	set getModuleOpen(value) {
+		throw new Error_1$4("<Core>: Cannot set read-only property 'getModuleOpen'");
+	}
+
+	get setModuleOpen() {
+		return this.$$.ctx[74];
+	}
+
+	set setModuleOpen(value) {
+		throw new Error_1$4("<Core>: Cannot set read-only property 'setModuleOpen'");
+	}
+
+	get setAnimating() {
+		return this.$$.ctx[75];
+	}
+
+	set setAnimating(value) {
+		throw new Error_1$4("<Core>: Cannot set read-only property 'setAnimating'");
+	}
+
+	get getAnimatingClass() {
+		return this.$$.ctx[76];
+	}
+
+	set getAnimatingClass(value) {
+		throw new Error_1$4("<Core>: Cannot set read-only property 'getAnimatingClass'");
+	}
+
+	get setAnimatingClass() {
+		return this.$$.ctx[77];
+	}
+
+	set setAnimatingClass(value) {
+		throw new Error_1$4("<Core>: Cannot set read-only property 'setAnimatingClass'");
+	}
+
+	get _getMoveClass() {
+		return this.$$.ctx[78];
+	}
+
+	set _getMoveClass(value) {
+		throw new Error_1$4("<Core>: Cannot set read-only property '_getMoveClass'");
+	}
+
+	get _setMoveClass() {
+		return this.$$.ctx[79];
+	}
+
+	set _setMoveClass(value) {
+		throw new Error_1$4("<Core>: Cannot set read-only property '_setMoveClass'");
+	}
+
+	get _setMasking() {
+		return this.$$.ctx[80];
+	}
+
+	set _setMasking(value) {
+		throw new Error_1$4("<Core>: Cannot set read-only property '_setMasking'");
+	}
+}
+
+/* node_modules\@pnotify\mobile\index.svelte generated by Svelte v3.37.0 */
+
+const { window: window_1$1 } = globals;
+
+function create_fragment$1w(ctx) {
+	let mounted;
+	let dispose;
+
+	const block = {
+		c: noop,
+		l: function claim(nodes) {
+			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		},
+		m: function mount(target, anchor) {
+			if (!mounted) {
+				dispose = listen_dev(window_1$1, "resize", /*resize_handler*/ ctx[3], false, false, false);
+				mounted = true;
+			}
+		},
+		p: noop,
+		i: noop,
+		o: noop,
+		d: function destroy(detaching) {
+			mounted = false;
+			dispose();
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_fragment$1w.name,
+		type: "component",
+		source: "",
+		ctx
+	});
+
+	return block;
+}
+
+const position = "PrependContainer";
+const defaults$2 = { swipeDismiss: true };
+
+function instance$1w($$self, $$props, $$invalidate) {
+	let { $$slots: slots = {}, $$scope } = $$props;
+	validate_slots("Mobile", slots, []);
+	let { self = null } = $$props;
+	let { swipeDismiss = defaults$2.swipeDismiss } = $$props;
+	let origXY = null;
+	let diffXY = null;
+	let noticeWidthHeight = null;
+	let noticeOpacity = null;
+	let csspos = "left";
+	let direction = "X";
+	let span = "Width";
+	let windowInnerWidth = window.innerWidth;
+	let offs = [];
+
+	onMount(() => {
+		offs = [
+			self.on("touchstart", e => {
+				if (!swipeDismiss) {
+					return;
+				}
+
+				const stack = self.stack;
+
+				if (stack) {
+					switch (stack.dir1) {
+						case "up":
+						case "down":
+							csspos = "left";
+							direction = "X";
+							span = "Width";
+							break;
+						case "left":
+						case "right":
+							csspos = "top";
+							direction = "Y";
+							span = "Height";
+							break;
+					}
+				}
+
+				origXY = e.touches[0][`screen${direction}`];
+				noticeWidthHeight = self.refs.elem[`scroll${span}`];
+				noticeOpacity = window.getComputedStyle(self.refs.elem)["opacity"];
+				$$invalidate(1, self.refs.container.style[csspos] = 0, self);
+			}),
+			self.on("touchmove", e => {
+				if (!origXY || !swipeDismiss) {
+					return;
+				}
+
+				const curXY = e.touches[0][`screen${direction}`];
+				diffXY = curXY - origXY;
+				const opacity = (1 - Math.abs(diffXY) / noticeWidthHeight) * noticeOpacity;
+				$$invalidate(1, self.refs.elem.style.opacity = opacity, self);
+				$$invalidate(1, self.refs.container.style[csspos] = `${diffXY}px`, self);
+			}),
+			self.on("touchend", () => {
+				if (!origXY || !swipeDismiss) {
+					return;
+				}
+
+				self.refs.container.classList.add("pnotify-mobile-animate-left");
+
+				if (Math.abs(diffXY) > 40) {
+					const goLeft = diffXY < 0
+					? noticeWidthHeight * -2
+					: noticeWidthHeight * 2;
+
+					$$invalidate(1, self.refs.elem.style.opacity = 0, self);
+					$$invalidate(1, self.refs.container.style[csspos] = `${goLeft}px`, self);
+					self.close();
+				} else {
+					self.refs.elem.style.removeProperty("opacity");
+					self.refs.container.style.removeProperty(csspos);
+				}
+
+				origXY = null;
+				diffXY = null;
+				noticeWidthHeight = null;
+				noticeOpacity = null;
+			}),
+			self.on("touchcancel", () => {
+				if (!origXY || !swipeDismiss) {
+					return;
+				}
+
+				self.refs.elem.style.removeProperty("opacity");
+				self.refs.container.style.removeProperty(csspos);
+				origXY = null;
+				diffXY = null;
+				noticeWidthHeight = null;
+				noticeOpacity = null;
+			}),
+			self.on("pnotify:afterClose", () => {
+				// Remove any styling we added to close it.
+				if (!swipeDismiss) {
+					return;
+				}
+
+				self.refs.elem.style.removeProperty("opacity");
+				self.refs.container.style.removeProperty("left");
+				self.refs.container.style.removeProperty("top");
+			})
+		];
+	});
+
+	onDestroy(() => {
+		offs.forEach(off => off());
+	});
+
+	const writable_props = ["self", "swipeDismiss"];
+
+	Object.keys($$props).forEach(key => {
+		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Mobile> was created with unknown prop '${key}'`);
+	});
+
+	const resize_handler = () => $$invalidate(0, windowInnerWidth = window.innerWidth);
+
+	$$self.$$set = $$props => {
+		if ("self" in $$props) $$invalidate(1, self = $$props.self);
+		if ("swipeDismiss" in $$props) $$invalidate(2, swipeDismiss = $$props.swipeDismiss);
+	};
+
+	$$self.$capture_state = () => ({
+		position,
+		defaults: defaults$2,
+		onMount,
+		onDestroy,
+		self,
+		swipeDismiss,
+		origXY,
+		diffXY,
+		noticeWidthHeight,
+		noticeOpacity,
+		csspos,
+		direction,
+		span,
+		windowInnerWidth,
+		offs
+	});
+
+	$$self.$inject_state = $$props => {
+		if ("self" in $$props) $$invalidate(1, self = $$props.self);
+		if ("swipeDismiss" in $$props) $$invalidate(2, swipeDismiss = $$props.swipeDismiss);
+		if ("origXY" in $$props) origXY = $$props.origXY;
+		if ("diffXY" in $$props) diffXY = $$props.diffXY;
+		if ("noticeWidthHeight" in $$props) noticeWidthHeight = $$props.noticeWidthHeight;
+		if ("noticeOpacity" in $$props) noticeOpacity = $$props.noticeOpacity;
+		if ("csspos" in $$props) csspos = $$props.csspos;
+		if ("direction" in $$props) direction = $$props.direction;
+		if ("span" in $$props) span = $$props.span;
+		if ("windowInnerWidth" in $$props) $$invalidate(0, windowInnerWidth = $$props.windowInnerWidth);
+		if ("offs" in $$props) offs = $$props.offs;
+	};
+
+	if ($$props && "$$inject" in $$props) {
+		$$self.$inject_state($$props.$$inject);
+	}
+
+	$$self.$$.update = () => {
+		if ($$self.$$.dirty & /*self, windowInnerWidth*/ 3) {
+			 {
+				const stack = self.stack;
+
+				if (stack) {
+					if (windowInnerWidth <= 480) {
+						if (!("_m_spacing1" in stack)) {
+							stack._m_spacing1 = stack.spacing1;
+							stack._m_firstpos1 = stack.firstpos1;
+							stack._m_spacing2 = stack.spacing2;
+							stack._m_firstpos2 = stack.firstpos2;
+							stack.spacing1 = 0;
+							stack.firstpos1 = 0;
+							stack.spacing2 = 0;
+							stack.firstpos2 = 0;
+							stack.queuePosition();
+						}
+					} else {
+						if ("_m_spacing1" in stack) {
+							stack.spacing1 = stack._m_spacing1;
+							delete stack._m_spacing1;
+							stack.firstpos1 = stack._m_firstpos1;
+							delete stack._m_firstpos1;
+							stack.spacing2 = stack._m_spacing2;
+							delete stack._m_spacing2;
+							stack.firstpos2 = stack._m_firstpos2;
+							delete stack._m_firstpos2;
+							stack.queuePosition();
+						}
+					}
+				}
+			}
+		}
+	};
+
+	return [windowInnerWidth, self, swipeDismiss, resize_handler];
+}
+
+class Mobile extends SvelteComponentDev {
+	constructor(options) {
+		super(options);
+		init(this, options, instance$1w, create_fragment$1w, safe_not_equal, { self: 1, swipeDismiss: 2 });
+
+		dispatch_dev("SvelteRegisterComponent", {
+			component: this,
+			tagName: "Mobile",
+			options,
+			id: create_fragment$1w.name
+		});
+	}
+
+	get self() {
+		throw new Error("<Mobile>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set self(value) {
+		throw new Error("<Mobile>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get swipeDismiss() {
+		throw new Error("<Mobile>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set swipeDismiss(value) {
+		throw new Error("<Mobile>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+}
+
+var PNotifyMobile = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    'default': Mobile,
+    position: position,
+    defaults: defaults$2
+});
+
+/* node_modules\@pnotify\font-awesome5-fix\index.svelte generated by Svelte v3.37.0 */
+
+function create_fragment$1x(ctx) {
+	const block = {
+		c: noop,
+		l: function claim(nodes) {
+			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		},
+		m: noop,
+		p: noop,
+		i: noop,
+		o: noop,
+		d: noop
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_fragment$1x.name,
+		type: "component",
+		source: "",
+		ctx
+	});
+
+	return block;
+}
+
+const position$1 = "PrependContainer";
+const defaults$3 = {};
+
+function instance$1x($$self, $$props, $$invalidate) {
+	let { $$slots: slots = {}, $$scope } = $$props;
+	validate_slots("Font_awesome5_fix", slots, []);
+	let { self = null } = $$props;
+
+	// This keeps the beforeUpdate handler from going into a loop when we're
+	// taming Font Awesome's magic.
+	let _updatingIcon = false;
+
+	let _updatingSticker = false;
+
+	// Save the old value of icon, so we can do our magic.
+	let _oldIconProp = self.icon;
+
+	let _oldIconValue = self.icon === true ? self.getIcon(self.type) : self.icon;
+
+	let _oldSticker = `${self.getIcon("sticker")} ${self.hide
+	? self.getIcon("unstuck")
+	: self.getIcon("stuck")}`;
+
+	let newIconProp;
+	let newIconValue;
+	let newSticker;
+
+	const removeIconHandler = self.on("pnotify:update", () => {
+		if (_updatingIcon) {
+			return;
+		}
+
+		// Font Awesome 5 uses dark magic by replacing the icon element with an SVG.
+		// In order to make it play nice with Svelte, we have to clear the element
+		// and make it again.
+		newIconProp = self.icon;
+
+		newIconValue = self.icon === true ? self.getIcon(self.type) : self.icon;
+
+		if (newIconValue !== _oldIconValue && (typeof newIconValue === "string" && newIconValue.match(/(^| )fa[srlb]($| )/) || typeof _oldIconValue === "string" && _oldIconValue.match(/(^| )fa[srlb]($| )/))) {
+			$$invalidate(0, self.icon = false, self);
+			_updatingIcon = true;
+
+			tick().then(() => {
+				$$invalidate(0, self.icon = newIconProp, self);
+				_updatingIcon = false;
+
+				// Update seved icon.
+				_oldIconProp = newIconProp;
+
+				_oldIconValue = newIconValue;
+			});
+		} else {
+			// Update seved icon.
+			_oldIconProp = newIconProp;
+
+			_oldIconValue = newIconValue;
+		}
+	});
+
+	const removeStickerHandler = self.on("pnotify:update", () => {
+		if (_updatingSticker) {
+			return;
+		}
+
+		// Font Awesome 5 uses dark magic by replacing the icon element with an SVG.
+		// In order to make it play nice with Svelte, we have to clear the element
+		// and make it again.
+		newSticker = `${self.getIcon("sticker")} ${self.hide
+		? self.getIcon("unstuck")
+		: self.getIcon("stuck")}`;
+
+		if (self.sticker && newSticker !== _oldSticker && typeof newSticker === "string" && newSticker.match(/(^| )fa[srlb]($| )/)) {
+			$$invalidate(0, self.sticker = false, self);
+			_updatingSticker = true;
+
+			tick().then(() => {
+				$$invalidate(0, self.sticker = true, self);
+				_updatingSticker = false;
+
+				// Update seved icon.
+				_oldSticker = newSticker;
+			});
+		} else {
+			// Update seved icon.
+			_oldSticker = newSticker;
+		}
+	});
+
+	onDestroy(() => {
+		removeIconHandler && removeIconHandler();
+		removeStickerHandler && removeStickerHandler();
+	});
+
+	const writable_props = ["self"];
+
+	Object.keys($$props).forEach(key => {
+		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Font_awesome5_fix> was created with unknown prop '${key}'`);
+	});
+
+	$$self.$$set = $$props => {
+		if ("self" in $$props) $$invalidate(0, self = $$props.self);
+	};
+
+	$$self.$capture_state = () => ({
+		position: position$1,
+		defaults: defaults$3,
+		onDestroy,
+		tick,
+		self,
+		_updatingIcon,
+		_updatingSticker,
+		_oldIconProp,
+		_oldIconValue,
+		_oldSticker,
+		newIconProp,
+		newIconValue,
+		newSticker,
+		removeIconHandler,
+		removeStickerHandler
+	});
+
+	$$self.$inject_state = $$props => {
+		if ("self" in $$props) $$invalidate(0, self = $$props.self);
+		if ("_updatingIcon" in $$props) _updatingIcon = $$props._updatingIcon;
+		if ("_updatingSticker" in $$props) _updatingSticker = $$props._updatingSticker;
+		if ("_oldIconProp" in $$props) _oldIconProp = $$props._oldIconProp;
+		if ("_oldIconValue" in $$props) _oldIconValue = $$props._oldIconValue;
+		if ("_oldSticker" in $$props) _oldSticker = $$props._oldSticker;
+		if ("newIconProp" in $$props) newIconProp = $$props.newIconProp;
+		if ("newIconValue" in $$props) newIconValue = $$props.newIconValue;
+		if ("newSticker" in $$props) newSticker = $$props.newSticker;
+	};
+
+	if ($$props && "$$inject" in $$props) {
+		$$self.$inject_state($$props.$$inject);
+	}
+
+	return [self];
+}
+
+class Font_awesome5_fix extends SvelteComponentDev {
+	constructor(options) {
+		super(options);
+		init(this, options, instance$1x, create_fragment$1x, safe_not_equal, { self: 0 });
+
+		dispatch_dev("SvelteRegisterComponent", {
+			component: this,
+			tagName: "Font_awesome5_fix",
+			options,
+			id: create_fragment$1x.name
+		});
+	}
+
+	get self() {
+		throw new Error("<Font_awesome5_fix>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set self(value) {
+		throw new Error("<Font_awesome5_fix>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+}
+
+var PNotifyFontAwesome5Fix = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    'default': Font_awesome5_fix,
+    position: position$1,
+    defaults: defaults$3
+});
+
+/* node_modules\@pnotify\font-awesome5\index.svelte generated by Svelte v3.37.0 */
+
+function create_fragment$1y(ctx) {
+	const block = {
+		c: noop,
+		l: function claim(nodes) {
+			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		},
+		m: noop,
+		p: noop,
+		i: noop,
+		o: noop,
+		d: noop
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_fragment$1y.name,
+		type: "component",
+		source: "",
+		ctx
+	});
+
+	return block;
+}
+
+const position$2 = "PrependContainer";
+const defaults$4 = {};
+
+function init$2(eventDetail) {
+	// You must have Font Awesome v5.0+
+	eventDetail.defaults.icons = {
+		prefix: "fontawesome5",
+		notice: "fas fa-exclamation-circle",
+		info: "fas fa-info-circle",
+		success: "fas fa-check-circle",
+		error: "fas fa-exclamation-triangle",
+		// Buttons Module
+		closer: "fas fa-times",
+		sticker: "fas",
+		stuck: "fa-play",
+		unstuck: "fa-pause",
+		// Reference Module (Useful for other modules.)
+		refresh: "fas fa-sync"
+	};
+}
+
+function instance$1y($$self, $$props, $$invalidate) {
+	let { $$slots: slots = {}, $$scope } = $$props;
+	validate_slots("Font_awesome5", slots, []);
+	const writable_props = [];
+
+	Object.keys($$props).forEach(key => {
+		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Font_awesome5> was created with unknown prop '${key}'`);
+	});
+
+	$$self.$capture_state = () => ({ position: position$2, defaults: defaults$4, init: init$2 });
+	return [];
+}
+
+class Font_awesome5 extends SvelteComponentDev {
+	constructor(options) {
+		super(options);
+		init(this, options, instance$1y, create_fragment$1y, safe_not_equal, {});
+
+		dispatch_dev("SvelteRegisterComponent", {
+			component: this,
+			tagName: "Font_awesome5",
+			options,
+			id: create_fragment$1y.name
+		});
+	}
+}
+
+var PNotifyFontAwesome5 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    'default': Font_awesome5,
+    position: position$2,
+    defaults: defaults$4,
+    init: init$2
+});
+
+defaultModules.set(PNotifyFontAwesome5Fix, {});
+defaultModules.set(PNotifyFontAwesome5, {});
+defaultModules.set(PNotifyMobile, {});
+
+window.showStackContext = ({title="Info", text, type="Info"}={}) => {
+    if (typeof window.stackContext === 'undefined') {
+
+        window.stackContext = new Stack({
+            dir1: 'down',
+            dir2: 'left',
+            firstpos1: 70,
+            firstpos2: 25,
+
+
+            hide: false,
+            context: document.getElementById('pageContainer')
+        });
+    }
+    const opts = {
+
+        title, text, type,
+
+        stack: window.stackContext
+    };
+    notice(opts);
+};
 
 const app = new App({
 	target: document.body,
