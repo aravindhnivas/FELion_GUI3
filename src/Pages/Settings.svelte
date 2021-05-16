@@ -1,7 +1,7 @@
 <script>
 
     // Importing modules
-    import {pythonpath, pythonscript, pyVersion, github, backupName} from "./settings/svelteWritables";
+    import {pythonpath, pythonscript, pyVersion, github, backupName, developerMode} from "./settings/svelteWritables";
     import {activateChangelog} from "../js/functions"
     import Textfield from '@smui/textfield';
     import {onMount} from "svelte";
@@ -10,14 +10,16 @@
     import CustomSelect from '../components/CustomSelect.svelte';
     import PreModal from "../components/PreModal.svelte";
     import Changelog from "../components/Changelog.svelte";
+
     import {download} from "./settings/donwloadUpdate";
     
     import {InstallUpdate} from "./settings/installUpdate";
     
+    import { Button, Message, Snackbar } from 'svelma'
+
+    
     import {updateCheck} from "./settings/updateCheck";
-
     import {resetPyConfig, updatePyConfig} from "./settings/checkPython";
-
     import {backupRestore} from "./settings/backupAndRestore";
     import {tick} from "svelte";
     import Terminal from '../components/Terminal.svelte';
@@ -81,8 +83,19 @@
     let preModal = {};
 
     let commandToRun = "", commandArgsToRun = "";
-    // $: console.log(commandResults)
 
+
+    $: if(!$developerMode) {
+        console.log("Setting default pathon path")
+        $pythonpath = path.resolve(__dirname, "../python3/python")
+
+        $pythonscript = path.resolve(__dirname, "assets/python_files")
+    } else {
+        
+        Snackbar.create(
+            { message: 'Be cautious: If python path invalid, the program might not work', type: 'is-danger', actionText: 'Ok', position: 'is-top', duration:5000}
+        )
+    }
 </script>
 
 
@@ -108,7 +121,6 @@
     .hide {display: none!important;}
 
     .right.title {
-
         letter-spacing: 0.1em; 
         
         text-transform: uppercase;
@@ -116,39 +128,57 @@
         border-bottom: solid;
         margin-bottom: 2em;
         padding-bottom: 0.2em;
-        
         width: fit-content;
     }
 
+
+    // .message {
+    //     display: grid;
+    //     place-items: center;
+    //     position: fixed;
+    //     z-index: 100;
+    //     place-content: center;
+    //     background: #836ac05c;
+    // }
+
 </style>
 <PreModal bind:preModal />
-
 <CustomDialog id="pythonpath_Check" bind:dialog={pythonpathCheck} on:response={handlepythonPathCheck} title={"Python path is not valid"} content={"Change it in Settings --> Configuration"} label1="Okay" label2="Cancel" />
 
 <Changelog  />
+
+
 
 <section class="section animated fadeIn" id="Settings" style="display:none">
 
     <div class="columns">
         <div class="column side-panel is-2-widescreen is-3-desktop is-4-tablet box adjust-right">
+
             <div class="container left">
                 <div class="title nav hvr-glow" class:clicked={selected==="Configuration"} on:click={navigate}>Configuration</div>
                 <div class="title nav hvr-glow" class:clicked={selected==="Update"} on:click={navigate}>Update</div>
                 <div class="title nav hvr-glow" class:clicked={selected==="Terminal"} on:click={navigate}>Terminal</div>
                 <div class="title nav hvr-glow" class:clicked={selected==="About"} on:click={navigate}>About</div>
+
             </div>
         </div>
 
         <div class="column main-panel box">
+
             <div class="container right" >
 
                 <div class="content animated fadeIn" class:hide={selected!=="Configuration"}>
                     <h1 class="title">Configuration</h1>
                     <div class="subtitle">{$pyVersion}</div>
-                    <Textfield style="margin-bottom:1em;" bind:value={$pythonpath} label="Python path" />
-                    <Textfield style="margin-bottom:1em;" bind:value={$pythonscript} label="Python script path" />
-                    <button class="button is-link" on:click={resetPyConfig}>Reset</button>
-                    <button class="button is-link" on:click={updatePyConfig}>Save</button>
+
+                    <button class="button is-link" on:click="{()=>$developerMode = !$developerMode}">Developer mode: {$developerMode} </button>
+                    {#if $developerMode}
+                         <!-- content here -->
+                        <Textfield style="margin-bottom:1em;" bind:value={$pythonpath} label="Python path" />
+                        <Textfield style="margin-bottom:1em;" bind:value={$pythonscript} label="Python script path" />
+                        <button class="button is-link" on:click={resetPyConfig}>Reset</button>
+                        <button class="button is-link" on:click={updatePyConfig}>Save</button>
+                    {/if}
                 </div>
 
                 <div class="content animated fadeIn" class:hide={selected!=="Update"}>
@@ -186,6 +216,10 @@
                     <h1 class="title">About</h1>
                 </div>
                 
+                <!-- <Message active={$developerMode} title="Developer mode: {$developerMode}">
+                    Be cautious: If python path invalid, the program might not work
+
+                </Message> -->
             </div>
         </div>
 

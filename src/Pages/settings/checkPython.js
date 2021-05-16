@@ -43,14 +43,15 @@ export function resetPyConfig() {
 
 
 export function updatePyConfig(){
+
     checkPython()
         .then(version=>{
+    
             pyVersion.set(version);
-
             db.set("pythonpath", get(pythonpath))
+
             window.createToast("Location updated", "success")
         })
 
         db.set("pythonscript", get(pythonscript))
-        
 }

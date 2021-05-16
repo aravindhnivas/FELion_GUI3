@@ -16,3 +16,6 @@ if (!db.get("pythonpath")) db.set("pythonpath", get(pythonpath))
 if (!db.get("pythonscript")) db.set("pythonscript", get(pythonscript))
 
 export const backupName = writable("FELion_GUI_backup")
+
+
+export const developerMode = writable(false)
