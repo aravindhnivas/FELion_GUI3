@@ -29,38 +29,48 @@
 </head>
 
 <body class="mdc-typography">
-	<script>
 
+	<script>
 		window._ = require('./assets/js/lodash.js')
 		window.electron = require("electron")
 		window.remote = electron.remote
+		
 		window.path = require("path")
+		
 		window.fs = require("fs")
 		window.spawn = require("child_process").spawn
 
-		// const util = require('util');
-		// const log_file = fs.createWriteStream(__dirname + '/debug.log', { flags: 'w' });
-		// const log_stdout = process.stdout;
+		const low = require('lowdb')
+		const FileSync = require('lowdb/adapters/FileSync')
 
-		// console.log = function (d) {
-		// 	log_file.write(util.format(d) + '\n');
-		// 	log_stdout.write(util.format(d) + '\n');
-		// };
+		
+		const adapter = new FileSync(path.resolve(__dirname, './db.json'))
+		const db = low(adapter)
 
+		// Set some defaults (required if your JSON file is empty)
+		const versionFile_ = path.resolve(__dirname, "../version.json")
+		const versionFileContent = fs.readFileSync(versionFile_).toString("utf-8")
+
+		const versionFileJSON = JSON.parse(versionFileContent)
+
+		console.log(versionFileJSON)
+		db.defaults({ version: versionFileJSON.version , location: {} }).write()
+		
 	</script>
+
 
 	<script src='./assets/js/bulma-extensions.min.js'></script>
 
 	<script src='./assets/js/interact.min.js'></script>
 	<script src='./assets/js/marked.min.js'></script>
-	<script src='./assets/js/intro.js'></script>
 
+	<script src='./assets/js/intro.js'></script>
 
 	<script src="./assets/js/katex/katex.min.js"></script>
 
 	<script src="./assets/js/highlight/highlight.min.js"></script>
-	<script src='./assets/js/editor/quill/quill.min.js'></script>
 
+	<script src='./assets/js/editor/quill/quill.min.js'></script>
 	<script src='./bundle.js'></script>
 
 	<script>
@@ -68,8 +78,8 @@
 		const customTitlebar = require('./custom-electron-titlebar/lib/index')
 
 		const MyTitleBar = new customTitlebar.Titlebar({ backgroundColor: customTitlebar.Color.fromHex('#38236b') });
-		MyTitleBar.updateTitle("FELion Spectrum Analyser")
 
+		MyTitleBar.updateTitle("FELion Spectrum Analyser")
 	</script>
 
 </body>
