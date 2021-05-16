@@ -3,11 +3,11 @@
 ## v3.3.0
 - New features:
     - ROSAA modal udpated and working
-    - PNotify integrated
-    - WinBox.js modal integraeted
 - Feature updates:
     - New window for FELIX plotting (usefull for smaller screens)
     - While refreshing to get files, the selected files remains checked
+    - PNotify integrated
+    - WinBox.js modal integraeted
 - Bug fixes    
 ---
 
