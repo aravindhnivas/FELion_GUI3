@@ -119,28 +119,22 @@
     onMount(()=>{  console.log("Normline mounted") })
     const graphDivIds = ["exp-theory-plot", "bplot", "saPlot", "avgplot", "opoplot", "opoSA", "opoRelPlot"]
 
-    let graphWindow;
     let graphWidth;
-    let graphWindowClosed = true;
 
     $: if(graphPlotted&&graphWidth) {
 
         graphDivIds.forEach(id=>{
             const content = document.getElementById(id).innerHTML
-    
             if(content){ Plotly.relayout(id, {width:graphWidth}) }
         })
 
-    
     }
+
     
 </script>
 
 <style>
-
-    .hide {display: none;}
     .felixPlot > div {margin-bottom: 1em;}
-
 </style>
 
 

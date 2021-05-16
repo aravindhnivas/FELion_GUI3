@@ -55570,7 +55570,7 @@ function init_tour_normline({filetype="felix"}={}) {
 const { console: console_1$a } = globals;
 const file$1a = "src\\Pages\\Normline.svelte";
 
-// (153:4) <svelte:fragment slot="buttonContainer">
+// (147:4) <svelte:fragment slot="buttonContainer">
 function create_buttonContainer_slot(ctx) {
 	let initfunctionrow;
 	let updating_preModal;
@@ -55744,7 +55744,7 @@ function create_buttonContainer_slot(ctx) {
 			div = element("div");
 			create_component(customradio.$$.fragment);
 			set_style(div, "display", "flex");
-			add_location(div, file$1a, 157, 8, 6425);
+			add_location(div, file$1a, 151, 8, 6330);
 		},
 		m: function mount(target, anchor) {
 			mount_component(initfunctionrow, target, anchor);
@@ -55879,14 +55879,14 @@ function create_buttonContainer_slot(ctx) {
 		block,
 		id: create_buttonContainer_slot.name,
 		type: "slot",
-		source: "(153:4) <svelte:fragment slot=\\\"buttonContainer\\\">",
+		source: "(147:4) <svelte:fragment slot=\\\"buttonContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (165:4) <svelte:fragment slot="plotContainer" >
+// (159:4) <svelte:fragment slot="plotContainer" >
 function create_plotContainer_slot(ctx) {
 	let getfileinfotable;
 	let t0;
@@ -55934,35 +55934,35 @@ function create_plotContainer_slot(ctx) {
 			div5 = element("div");
 			t6 = space();
 			div6 = element("div");
-			attr_dev(div0, "class", "animated fadeIn svelte-1ygqegk");
+			attr_dev(div0, "class", "animated fadeIn svelte-6f1gzr");
 			attr_dev(div0, "id", "exp-theory-plot");
 			toggle_class(div0, "hide", !/*show_theoryplot*/ ctx[12]);
-			add_location(div0, file$1a, 172, 12, 6932);
+			add_location(div0, file$1a, 166, 12, 6837);
 			attr_dev(div1, "id", "bplot");
-			attr_dev(div1, "class", "svelte-1ygqegk");
+			attr_dev(div1, "class", "svelte-6f1gzr");
 			add_render_callback(() => /*div1_elementresize_handler*/ ctx[46].call(div1));
-			add_location(div1, file$1a, 173, 12, 7032);
+			add_location(div1, file$1a, 167, 12, 6937);
 			attr_dev(div2, "id", "saPlot");
-			attr_dev(div2, "class", "svelte-1ygqegk");
-			add_location(div2, file$1a, 174, 12, 7098);
+			attr_dev(div2, "class", "svelte-6f1gzr");
+			add_location(div2, file$1a, 168, 12, 7003);
 			attr_dev(div3, "id", "avgplot");
-			attr_dev(div3, "class", "svelte-1ygqegk");
-			add_location(div3, file$1a, 175, 12, 7135);
-			attr_dev(div4, "class", "animated fadeIn svelte-1ygqegk");
+			attr_dev(div3, "class", "svelte-6f1gzr");
+			add_location(div3, file$1a, 169, 12, 7040);
+			attr_dev(div4, "class", "animated fadeIn svelte-6f1gzr");
 			attr_dev(div4, "id", "opoplot");
 			toggle_class(div4, "hide", !/*$opoMode*/ ctx[10]);
-			add_location(div4, file$1a, 176, 12, 7173);
-			attr_dev(div5, "class", "animated fadeIn svelte-1ygqegk");
+			add_location(div4, file$1a, 170, 12, 7078);
+			attr_dev(div5, "class", "animated fadeIn svelte-6f1gzr");
 			attr_dev(div5, "id", "opoSA");
 			toggle_class(div5, "hide", !/*$opoMode*/ ctx[10]);
-			add_location(div5, file$1a, 177, 12, 7258);
-			attr_dev(div6, "class", "animated fadeIn svelte-1ygqegk");
+			add_location(div5, file$1a, 171, 12, 7163);
+			attr_dev(div6, "class", "animated fadeIn svelte-6f1gzr");
 			attr_dev(div6, "id", "opoRelPlot");
 			toggle_class(div6, "hide", !/*$opoMode*/ ctx[10]);
-			add_location(div6, file$1a, 178, 12, 7341);
-			attr_dev(div7, "class", "felixPlot svelte-1ygqegk");
+			add_location(div6, file$1a, 172, 12, 7246);
+			attr_dev(div7, "class", "felixPlot svelte-6f1gzr");
 			attr_dev(div7, "id", div7_id_value = "plot_container__div__" + filetype);
-			add_location(div7, file$1a, 171, 8, 6858);
+			add_location(div7, file$1a, 165, 8, 6763);
 		},
 		m: function mount(target, anchor) {
 			mount_component(getfileinfotable, target, anchor);
@@ -56027,14 +56027,14 @@ function create_plotContainer_slot(ctx) {
 		block,
 		id: create_plotContainer_slot.name,
 		type: "slot",
-		source: "(165:4) <svelte:fragment slot=\\\"plotContainer\\\" >",
+		source: "(159:4) <svelte:fragment slot=\\\"plotContainer\\\" >",
 		ctx
 	});
 
 	return block;
 }
 
-// (183:4) <svelte:fragment slot="plotContainer_functions" >
+// (177:4) <svelte:fragment slot="plotContainer_functions" >
 function create_plotContainer_functions_slot(ctx) {
 	let writefunctioncontents;
 	let updating_writeFileName;
@@ -56183,14 +56183,14 @@ function create_plotContainer_functions_slot(ctx) {
 		block,
 		id: create_plotContainer_functions_slot.name,
 		type: "slot",
-		source: "(183:4) <svelte:fragment slot=\\\"plotContainer_functions\\\" >",
+		source: "(177:4) <svelte:fragment slot=\\\"plotContainer_functions\\\" >",
 		ctx
 	});
 
 	return block;
 }
 
-// (194:4) <svelte:fragment slot="plotContainer_reports">
+// (188:4) <svelte:fragment slot="plotContainer_reports">
 function create_plotContainer_reports_slot(ctx) {
 	let frequencytable;
 	let updating_keepTable;
@@ -56291,7 +56291,7 @@ function create_plotContainer_reports_slot(ctx) {
 		block,
 		id: create_plotContainer_reports_slot.name,
 		type: "slot",
-		source: "(194:4) <svelte:fragment slot=\\\"plotContainer_reports\\\">",
+		source: "(188:4) <svelte:fragment slot=\\\"plotContainer_reports\\\">",
 		ctx
 	});
 
@@ -56503,7 +56503,7 @@ function create_fragment$1h(ctx) {
 			const layout_changes = {};
 			if (dirty[0] & /*graphPlotted*/ 4) layout_changes.graphPlotted = /*graphPlotted*/ ctx[2];
 
-			if (dirty[0] & /*currentLocation, keepTable, addedFileScale, addedFileCol, $normMethod, writeFileName, writeFile, overwrite_expfit, fullfiles, preModal, output_namelists, addFileModal, $opoMode, graphWidth, show_theoryplot, felixfiles, theoryLocation, OPOLocation, OPOfilesChecked, opofiles, graphPlotted*/ 66058046 | dirty[2] & /*$$scope*/ 8192) {
+			if (dirty[0] & /*currentLocation, keepTable, addedFileScale, addedFileCol, $normMethod, writeFileName, writeFile, overwrite_expfit, fullfiles, preModal, output_namelists, addFileModal, $opoMode, graphWidth, show_theoryplot, felixfiles, theoryLocation, OPOLocation, OPOfilesChecked, opofiles, graphPlotted*/ 66058046 | dirty[2] & /*$$scope*/ 2048) {
 				layout_changes.$$scope = { dirty, ctx };
 			}
 
@@ -56736,9 +56736,7 @@ function instance$1h($$self, $$props, $$invalidate) {
 		"opoRelPlot"
 	];
 
-	let graphWindow;
 	let graphWidth;
-	let graphWindowClosed = true;
 	const writable_props = [];
 
 	Object.keys($$props).forEach(key => {
@@ -56955,9 +56953,7 @@ function instance$1h($$self, $$props, $$invalidate) {
 		includeTablesInReports,
 		preModal,
 		graphDivIds,
-		graphWindow,
 		graphWidth,
-		graphWindowClosed,
 		felixfiles,
 		plottedFiles,
 		$opoMode,
@@ -56996,9 +56992,7 @@ function instance$1h($$self, $$props, $$invalidate) {
 		if ("extrafileAdded" in $$props) $$invalidate(7, extrafileAdded = $$props.extrafileAdded);
 		if ("fullfiles" in $$props) $$invalidate(22, fullfiles = $$props.fullfiles);
 		if ("preModal" in $$props) $$invalidate(23, preModal = $$props.preModal);
-		if ("graphWindow" in $$props) graphWindow = $$props.graphWindow;
 		if ("graphWidth" in $$props) $$invalidate(8, graphWidth = $$props.graphWidth);
-		if ("graphWindowClosed" in $$props) graphWindowClosed = $$props.graphWindowClosed;
 		if ("felixfiles" in $$props) $$invalidate(9, felixfiles = $$props.felixfiles);
 		if ("plottedFiles" in $$props) $$invalidate(31, plottedFiles = $$props.plottedFiles);
 		if ("output_namelists" in $$props) $$invalidate(24, output_namelists = $$props.output_namelists);
@@ -78113,7 +78107,7 @@ function create_fragment$1r(ctx) {
 			create_component(footer.$$.fragment);
 			attr_dev(div, "id", "pageContainer");
 			set_style(div, "overflow", "hidden");
-			add_location(div, file$1k, 66, 0, 2153);
+			add_location(div, file$1k, 50, 0, 1593);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -78248,23 +78242,6 @@ function instance$1r($$self, $$props, $$invalidate) {
 		false
 	);
 
-	const low = require("lowdb");
-	const FileSync = require("lowdb/adapters/FileSync");
-	const adapter = new FileSync(path.resolve(__dirname, "./db.json"));
-	window.db = low(adapter);
-
-	// Set some defaults (required if your JSON file is empty)
-	const versionFile_ = path.resolve(__dirname, "../version.json");
-
-	const versionFileContent = fs.readFileSync(versionFile_).toString("utf-8");
-	const versionFileJSON = JSON.parse(versionFileContent);
-	console.log(versionFileJSON);
-
-	db.defaults({
-		version: versionFileJSON.version,
-		location: {}
-	}).write();
-
 	const writable_props = ["version"];
 
 	Object.keys($$props).forEach(key => {
@@ -78290,13 +78267,7 @@ function instance$1r($$self, $$props, $$invalidate) {
 		navItems,
 		version,
 		menu,
-		rightClickPosition,
-		low,
-		FileSync,
-		adapter,
-		versionFile_,
-		versionFileContent,
-		versionFileJSON
+		rightClickPosition
 	});
 
 	$$self.$inject_state = $$props => {
