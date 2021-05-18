@@ -7892,25 +7892,25 @@ function create_fragment$9(ctx) {
 			div3 = element("div");
 			div2 = element("div");
 			p1 = element("p");
-			p1.textContent = "2020 © AN Marimuthu | MIT License";
+			p1.textContent = "2021 © AN Marimuthu";
 			p2 = element("p");
-			add_location(p0, file$9, 22, 8, 518);
+			add_location(p0, file$9, 10, 8, 254);
 			attr_dev(div0, "class", "navbar-item");
-			add_location(div0, file$9, 21, 6, 483);
+			add_location(div0, file$9, 9, 6, 219);
 			attr_dev(div1, "class", "navbar-start");
-			add_location(div1, file$9, 19, 4, 447);
-			add_location(p1, file$9, 29, 8, 677);
-			add_location(p2, file$9, 29, 49, 718);
+			add_location(div1, file$9, 8, 4, 185);
+			add_location(p1, file$9, 20, 8, 419);
+			add_location(p2, file$9, 20, 35, 446);
 			attr_dev(div2, "class", "navbar-item");
-			add_location(div2, file$9, 27, 6, 640);
+			add_location(div2, file$9, 17, 6, 380);
 			attr_dev(div3, "class", "navbar-end");
-			add_location(div3, file$9, 26, 4, 608);
+			add_location(div3, file$9, 15, 4, 346);
 			attr_dev(div4, "class", "navbar-menu");
-			add_location(div4, file$9, 18, 2, 416);
-			attr_dev(nav, "class", "navbar is-fixed-bottom animated fadeInUp svelte-t975c1");
+			add_location(div4, file$9, 6, 2, 152);
+			attr_dev(nav, "class", "navbar is-fixed-bottom animated fadeInUp svelte-1v6ucl5");
 			attr_dev(nav, "id", "footer");
-			set_style(nav, "display", "none");
-			add_location(nav, file$9, 17, 0, 325);
+			set_style(nav, "display", status);
+			add_location(nav, file$9, 5, 0, 57);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -7946,26 +7946,15 @@ function create_fragment$9(ctx) {
 	return block;
 }
 
-function instance$9($$self, $$props, $$invalidate) {
-	let $activePage;
-	validate_store(activePage, "activePage");
-	component_subscribe($$self, activePage, $$value => $$invalidate(0, $activePage = $$value));
+function instance$9($$self, $$props) {
 	let { $$slots: slots = {}, $$scope } = $$props;
 	validate_slots("Footer", slots, []);
-
-	afterUpdate(() => {
-		$activePage === "Home"
-		? hidepage("footer")
-		: showpage("footer");
-	});
-
 	const writable_props = [];
 
 	Object.keys($$props).forEach(key => {
 		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Footer> was created with unknown prop '${key}'`);
 	});
 
-	$$self.$capture_state = () => ({ afterUpdate, activePage, $activePage });
 	return [];
 }
 
@@ -7991,93 +7980,12 @@ const get_footer_slot_context = ctx => ({});
 const get_header_slot_changes = dirty => ({});
 const get_header_slot_context = ctx => ({});
 
-// (136:36)                       
-function fallback_block_1(ctx) {
-	let h1;
-	let t1;
-	let br;
-	let t2;
-	let h2;
-
-	const block = {
-		c: function create() {
-			h1 = element("h1");
-			h1.textContent = "FELion Spectrum Analyser";
-			t1 = space();
-			br = element("br");
-			t2 = space();
-			h2 = element("h2");
-			h2.textContent = "To analyse FELIX data for FELion Instrument";
-			attr_dev(h1, "class", "svelte-jlsh69");
-			add_location(h1, file$a, 144, 20, 3519);
-			add_location(br, file$a, 145, 20, 3575);
-			attr_dev(h2, "class", "svelte-jlsh69");
-			add_location(h2, file$a, 146, 20, 3601);
-		},
-		m: function mount(target, anchor) {
-			insert_dev(target, h1, anchor);
-			insert_dev(target, t1, anchor);
-			insert_dev(target, br, anchor);
-			insert_dev(target, t2, anchor);
-			insert_dev(target, h2, anchor);
-		},
-		d: function destroy(detaching) {
-			if (detaching) detach_dev(h1);
-			if (detaching) detach_dev(t1);
-			if (detaching) detach_dev(br);
-			if (detaching) detach_dev(t2);
-			if (detaching) detach_dev(h2);
-		}
-	};
-
-	dispatch_dev("SvelteRegisterBlock", {
-		block,
-		id: fallback_block_1.name,
-		type: "fallback",
-		source: "(136:36)                       ",
-		ctx
-	});
-
-	return block;
-}
-
-// (177:28) <p>
-function fallback_block(ctx) {
-	let p;
-
-	const block = {
-		c: function create() {
-			p = element("p");
-			p.textContent = "Developed at Dr.Brünken's group FELion@FELIX | 2020 © AN Marimuthu | MIT License";
-			attr_dev(p, "class", "svelte-jlsh69");
-			add_location(p, file$a, 176, 28, 4776);
-		},
-		m: function mount(target, anchor) {
-			insert_dev(target, p, anchor);
-		},
-		d: function destroy(detaching) {
-			if (detaching) detach_dev(p);
-		}
-	};
-
-	dispatch_dev("SvelteRegisterBlock", {
-		block,
-		id: fallback_block.name,
-		type: "fallback",
-		source: "(177:28) <p>",
-		ctx
-	});
-
-	return block;
-}
-
 function create_fragment$a(ctx) {
-	let div5;
-	let div3;
-	let div1;
+	let div4;
+	let div2;
 	let div0;
 	let t0;
-	let div2;
+	let div1;
 	let svg;
 	let defs;
 	let path;
@@ -8087,24 +7995,21 @@ function create_fragment$a(ctx) {
 	let use2;
 	let use3;
 	let t1;
-	let div4;
+	let div3;
 	let current;
 	const header_slot_template = /*#slots*/ ctx[1].header;
 	const header_slot = create_slot(header_slot_template, ctx, /*$$scope*/ ctx[0], get_header_slot_context);
-	const header_slot_or_fallback = header_slot || fallback_block_1(ctx);
 	const footer_slot_template = /*#slots*/ ctx[1].footer;
 	const footer_slot = create_slot(footer_slot_template, ctx, /*$$scope*/ ctx[0], get_footer_slot_context);
-	const footer_slot_or_fallback = footer_slot || fallback_block(ctx);
 
 	const block = {
 		c: function create() {
-			div5 = element("div");
-			div3 = element("div");
-			div1 = element("div");
-			div0 = element("div");
-			if (header_slot_or_fallback) header_slot_or_fallback.c();
-			t0 = space();
+			div4 = element("div");
 			div2 = element("div");
+			div0 = element("div");
+			if (header_slot) header_slot.c();
+			t0 = space();
+			div1 = element("div");
 			svg = svg_element("svg");
 			defs = svg_element("defs");
 			path = svg_element("path");
@@ -8114,74 +8019,71 @@ function create_fragment$a(ctx) {
 			use2 = svg_element("use");
 			use3 = svg_element("use");
 			t1 = space();
-			div4 = element("div");
-			if (footer_slot_or_fallback) footer_slot_or_fallback.c();
-			attr_dev(div0, "class", "container title_container svelte-jlsh69");
-			add_location(div0, file$a, 134, 12, 2376);
-			attr_dev(div1, "class", "inner-header flex svelte-jlsh69");
-			add_location(div1, file$a, 130, 8, 2317);
+			div3 = element("div");
+			if (footer_slot) footer_slot.c();
+			attr_dev(div0, "class", "inner-header svelte-1fv4eq6");
+			add_location(div0, file$a, 50, 8, 995);
 			attr_dev(path, "id", "gentle-wave");
 			attr_dev(path, "d", "M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z");
-			add_location(path, file$a, 157, 20, 4020);
-			add_location(defs, file$a, 155, 16, 3990);
+			add_location(path, file$a, 59, 20, 1345);
+			add_location(defs, file$a, 58, 16, 1317);
 			xlink_attr(use0, "xlink:href", "#gentle-wave");
 			attr_dev(use0, "x", "48");
 			attr_dev(use0, "y", "0");
 			attr_dev(use0, "fill", "rgba(255,255,255,0.7");
-			attr_dev(use0, "class", "svelte-jlsh69");
-			add_location(use0, file$a, 160, 20, 4207);
+			attr_dev(use0, "class", "svelte-1fv4eq6");
+			add_location(use0, file$a, 63, 20, 1534);
 			xlink_attr(use1, "xlink:href", "#gentle-wave");
 			attr_dev(use1, "x", "48");
 			attr_dev(use1, "y", "3");
 			attr_dev(use1, "fill", "rgba(255,255,255,0.5)");
-			attr_dev(use1, "class", "svelte-jlsh69");
-			add_location(use1, file$a, 161, 20, 4303);
+			attr_dev(use1, "class", "svelte-1fv4eq6");
+			add_location(use1, file$a, 64, 20, 1630);
 			xlink_attr(use2, "xlink:href", "#gentle-wave");
 			attr_dev(use2, "x", "48");
 			attr_dev(use2, "y", "5");
 			attr_dev(use2, "fill", "rgba(255,255,255,0.3)");
-			attr_dev(use2, "class", "svelte-jlsh69");
-			add_location(use2, file$a, 162, 20, 4400);
+			attr_dev(use2, "class", "svelte-1fv4eq6");
+			add_location(use2, file$a, 65, 20, 1727);
 			xlink_attr(use3, "xlink:href", "#gentle-wave");
 			attr_dev(use3, "x", "48");
 			attr_dev(use3, "y", "7");
 			attr_dev(use3, "fill", "#fff");
-			attr_dev(use3, "class", "svelte-jlsh69");
-			add_location(use3, file$a, 163, 20, 4497);
-			attr_dev(g, "class", "parallax svelte-jlsh69");
-			add_location(g, file$a, 159, 16, 4165);
-			attr_dev(svg, "class", "waves svelte-jlsh69");
+			attr_dev(use3, "class", "svelte-1fv4eq6");
+			add_location(use3, file$a, 67, 20, 1842);
+			attr_dev(g, "class", "parallax svelte-1fv4eq6");
+			add_location(g, file$a, 62, 16, 1492);
+			attr_dev(svg, "class", "waves svelte-1fv4eq6");
 			attr_dev(svg, "xmlns", "http://www.w3.org/2000/svg");
 			attr_dev(svg, "xmlns:xlink", "http://www.w3.org/1999/xlink");
 			attr_dev(svg, "viewBox", "0 24 150 28");
 			attr_dev(svg, "preserveAspectRatio", "none");
 			attr_dev(svg, "shape-rendering", "auto");
-			add_location(svg, file$a, 154, 12, 3803);
-			attr_dev(div2, "class", "wave_container svelte-jlsh69");
-			add_location(div2, file$a, 153, 8, 3761);
-			attr_dev(div3, "class", "header svelte-jlsh69");
-			add_location(div3, file$a, 126, 4, 2246);
-			attr_dev(div4, "class", "content flex svelte-jlsh69");
-			add_location(div4, file$a, 175, 4, 4720);
-			attr_dev(div5, "class", "animated fadeIn slower");
-			add_location(div5, file$a, 125, 0, 2204);
+			add_location(svg, file$a, 56, 12, 1128);
+			attr_dev(div1, "class", "waves svelte-1fv4eq6");
+			add_location(div1, file$a, 55, 8, 1095);
+			attr_dev(div2, "class", "home-header svelte-1fv4eq6");
+			add_location(div2, file$a, 48, 4, 958);
+			attr_dev(div3, "class", "home-footer svelte-1fv4eq6");
+			add_location(div3, file$a, 76, 4, 2004);
+			attr_dev(div4, "class", "animated fadeIn slower home-container svelte-1fv4eq6");
+			add_location(div4, file$a, 47, 0, 901);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
 		},
 		m: function mount(target, anchor) {
-			insert_dev(target, div5, anchor);
-			append_dev(div5, div3);
-			append_dev(div3, div1);
-			append_dev(div1, div0);
+			insert_dev(target, div4, anchor);
+			append_dev(div4, div2);
+			append_dev(div2, div0);
 
-			if (header_slot_or_fallback) {
-				header_slot_or_fallback.m(div0, null);
+			if (header_slot) {
+				header_slot.m(div0, null);
 			}
 
-			append_dev(div3, t0);
-			append_dev(div3, div2);
-			append_dev(div2, svg);
+			append_dev(div2, t0);
+			append_dev(div2, div1);
+			append_dev(div1, svg);
 			append_dev(svg, defs);
 			append_dev(defs, path);
 			append_dev(svg, g);
@@ -8189,11 +8091,11 @@ function create_fragment$a(ctx) {
 			append_dev(g, use1);
 			append_dev(g, use2);
 			append_dev(g, use3);
-			append_dev(div5, t1);
-			append_dev(div5, div4);
+			append_dev(div4, t1);
+			append_dev(div4, div3);
 
-			if (footer_slot_or_fallback) {
-				footer_slot_or_fallback.m(div4, null);
+			if (footer_slot) {
+				footer_slot.m(div3, null);
 			}
 
 			current = true;
@@ -8213,19 +8115,19 @@ function create_fragment$a(ctx) {
 		},
 		i: function intro(local) {
 			if (current) return;
-			transition_in(header_slot_or_fallback, local);
-			transition_in(footer_slot_or_fallback, local);
+			transition_in(header_slot, local);
+			transition_in(footer_slot, local);
 			current = true;
 		},
 		o: function outro(local) {
-			transition_out(header_slot_or_fallback, local);
-			transition_out(footer_slot_or_fallback, local);
+			transition_out(header_slot, local);
+			transition_out(footer_slot, local);
 			current = false;
 		},
 		d: function destroy(detaching) {
-			if (detaching) detach_dev(div5);
-			if (header_slot_or_fallback) header_slot_or_fallback.d(detaching);
-			if (footer_slot_or_fallback) footer_slot_or_fallback.d(detaching);
+			if (detaching) detach_dev(div4);
+			if (header_slot) header_slot.d(detaching);
+			if (footer_slot) footer_slot.d(detaching);
 		}
 	};
 
@@ -11669,7 +11571,7 @@ function subplot(mainTitle, xtitle, ytitle, data, plotArea, x2, y2, data2) {
 /* src\Pages\Home.svelte generated by Svelte v3.37.0 */
 const file$i = "src\\Pages\\Home.svelte";
 
-// (18:4) {#if $windowLoaded}
+// (22:4) {#if $windowLoaded}
 function create_if_block$5(ctx) {
 	let await_block_anchor;
 	let promise;
@@ -11729,7 +11631,7 @@ function create_if_block$5(ctx) {
 		block,
 		id: create_if_block$5.name,
 		type: "if",
-		source: "(18:4) {#if $windowLoaded}",
+		source: "(22:4) {#if $windowLoaded}",
 		ctx
 	});
 
@@ -11757,11 +11659,21 @@ function create_catch_block(ctx) {
 	return block;
 }
 
-// (20:43)           <Simplewave />        {/await}
+// (24:43)           <Simplewave>              <svelte:fragment slot="header">              <h1 class="title">FELion Spectrum Analyser</h1>              <h2 class="subtitle">To analyse FELIX data for FELion Instrument</h2>            </svelte:fragment>              <svelte:fragment slot="footer">              <p>Developed at Dr.Br&uuml;nken's group FELion@FELIX | 2021 &copy; AN Marimuthu</p>            </svelte:fragment>          </Simplewave>        {/await}
 function create_then_block(ctx) {
 	let simplewave;
 	let current;
-	simplewave = new Simplewave({ $$inline: true });
+
+	simplewave = new Simplewave({
+			props: {
+				$$slots: {
+					footer: [create_footer_slot],
+					header: [create_header_slot]
+				},
+				$$scope: { ctx }
+			},
+			$$inline: true
+		});
 
 	const block = {
 		c: function create() {
@@ -11789,7 +11701,78 @@ function create_then_block(ctx) {
 		block,
 		id: create_then_block.name,
 		type: "then",
-		source: "(20:43)           <Simplewave />        {/await}",
+		source: "(24:43)           <Simplewave>              <svelte:fragment slot=\\\"header\\\">              <h1 class=\\\"title\\\">FELion Spectrum Analyser</h1>              <h2 class=\\\"subtitle\\\">To analyse FELIX data for FELion Instrument</h2>            </svelte:fragment>              <svelte:fragment slot=\\\"footer\\\">              <p>Developed at Dr.Br&uuml;nken's group FELion@FELIX | 2021 &copy; AN Marimuthu</p>            </svelte:fragment>          </Simplewave>        {/await}",
+		ctx
+	});
+
+	return block;
+}
+
+// (27:10) <svelte:fragment slot="header">
+function create_header_slot(ctx) {
+	let h1;
+	let t1;
+	let h2;
+
+	const block = {
+		c: function create() {
+			h1 = element("h1");
+			h1.textContent = "FELion Spectrum Analyser";
+			t1 = space();
+			h2 = element("h2");
+			h2.textContent = "To analyse FELIX data for FELion Instrument";
+			attr_dev(h1, "class", "title");
+			add_location(h1, file$i, 27, 12, 488);
+			attr_dev(h2, "class", "subtitle");
+			add_location(h2, file$i, 28, 12, 549);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, h1, anchor);
+			insert_dev(target, t1, anchor);
+			insert_dev(target, h2, anchor);
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(h1);
+			if (detaching) detach_dev(t1);
+			if (detaching) detach_dev(h2);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_header_slot.name,
+		type: "slot",
+		source: "(27:10) <svelte:fragment slot=\\\"header\\\">",
+		ctx
+	});
+
+	return block;
+}
+
+// (32:10) <svelte:fragment slot="footer">
+function create_footer_slot(ctx) {
+	let p;
+
+	const block = {
+		c: function create() {
+			p = element("p");
+			p.textContent = "Developed at Dr.Brünken's group FELion@FELIX | 2021 © AN Marimuthu";
+			attr_dev(p, "class", "svelte-vvl6f4");
+			add_location(p, file$i, 32, 12, 707);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, p, anchor);
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(p);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_footer_slot.name,
+		type: "slot",
+		source: "(32:10) <svelte:fragment slot=\\\"footer\\\">",
 		ctx
 	});
 
@@ -11826,9 +11809,9 @@ function create_fragment$i(ctx) {
 		c: function create() {
 			section = element("section");
 			if (if_block) if_block.c();
-			attr_dev(section, "class", "section animated fadeIn svelte-1atxx5i");
+			attr_dev(section, "class", "section animated fadeIn svelte-vvl6f4");
 			attr_dev(section, "id", "Home");
-			add_location(section, file$i, 15, 0, 223);
+			add_location(section, file$i, 19, 0, 278);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -24739,7 +24722,7 @@ const get_default_slot_changes$1 = dirty => ({ item: dirty & /*visible*/ 16 });
 const get_default_slot_context$1 = ctx => ({ item: /*row*/ ctx[23].data });
 
 // (166:26) Missing template
-function fallback_block$1(ctx) {
+function fallback_block(ctx) {
 	let t;
 
 	const block = {
@@ -24756,7 +24739,7 @@ function fallback_block$1(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: fallback_block$1.name,
+		id: fallback_block.name,
 		type: "fallback",
 		source: "(166:26) Missing template",
 		ctx
@@ -24772,7 +24755,7 @@ function create_each_block$1(key_1, ctx) {
 	let current;
 	const default_slot_template = /*#slots*/ ctx[14].default;
 	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[13], get_default_slot_context$1);
-	const default_slot_or_fallback = default_slot || fallback_block$1(ctx);
+	const default_slot_or_fallback = default_slot || fallback_block(ctx);
 
 	const block = {
 		key: key_1,
@@ -51495,7 +51478,7 @@ const get_footer_slot_changes$1 = dirty => ({});
 const get_footer_slot_context$1 = ctx => ({});
 
 // (37:13) Contents
-function fallback_block$2(ctx) {
+function fallback_block$1(ctx) {
 	let t;
 
 	const block = {
@@ -51512,7 +51495,7 @@ function fallback_block$2(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: fallback_block$2.name,
+		id: fallback_block$1.name,
 		type: "fallback",
 		source: "(37:13) Contents",
 		ctx
@@ -51596,7 +51579,7 @@ function create_fragment$1a(ctx) {
 	let dispose;
 	const default_slot_template = /*#slots*/ ctx[7].default;
 	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[6], null);
-	const default_slot_or_fallback = default_slot || fallback_block$2(ctx);
+	const default_slot_or_fallback = default_slot || fallback_block$1(ctx);
 	let if_block = /*footer*/ ctx[2] && create_if_block$o(ctx);
 
 	const block = {
@@ -51965,7 +51948,7 @@ function create_default_slot$m(ctx) {
 }
 
 // (16:4) 
-function create_footer_slot(ctx) {
+function create_footer_slot$1(ctx) {
 	let div;
 	let button;
 	let mounted;
@@ -52001,7 +51984,7 @@ function create_footer_slot(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_footer_slot.name,
+		id: create_footer_slot$1.name,
 		type: "slot",
 		source: "(16:4) ",
 		ctx
@@ -52030,7 +52013,7 @@ function create_fragment$1b(ctx) {
 		style: "padding:1em;",
 		title: /*title*/ ctx[4],
 		$$slots: {
-			footer: [create_footer_slot],
+			footer: [create_footer_slot$1],
 			default: [create_default_slot$m]
 		},
 		$$scope: { ctx }
@@ -80050,8 +80033,6 @@ class Misc extends SvelteComponentDev {
 }
 
 /* src\App.svelte generated by Svelte v3.37.0 */
-
-const { console: console_1$f } = globals;
 const file$1n = "src\\App.svelte";
 
 function create_fragment$1u(ctx) {
@@ -80116,7 +80097,7 @@ function create_fragment$1u(ctx) {
 			create_component(footer.$$.fragment);
 			attr_dev(div, "id", "pageContainer");
 			set_style(div, "overflow", "hidden");
-			add_location(div, file$1n, 50, 0, 1593);
+			add_location(div, file$1n, 53, 0, 1457);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -80221,8 +80202,6 @@ function instance$1u($$self, $$props, $$invalidate) {
 		"Settings"
 	];
 
-	let { version } = $$props;
-	console.log("Svelte: ", version);
 	window.Menu = remote.Menu;
 	window.MenuItem = remote.MenuItem;
 	let menu = new Menu();
@@ -80251,15 +80230,11 @@ function instance$1u($$self, $$props, $$invalidate) {
 		false
 	);
 
-	const writable_props = ["version"];
+	const writable_props = [];
 
 	Object.keys($$props).forEach(key => {
-		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1$f.warn(`<App> was created with unknown prop '${key}'`);
+		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<App> was created with unknown prop '${key}'`);
 	});
-
-	$$self.$$set = $$props => {
-		if ("version" in $$props) $$invalidate(1, version = $$props.version);
-	};
 
 	$$self.$capture_state = () => ({
 		Navbar,
@@ -80274,13 +80249,11 @@ function instance$1u($$self, $$props, $$invalidate) {
 		Misc,
 		onMount,
 		navItems,
-		version,
 		menu,
 		rightClickPosition
 	});
 
 	$$self.$inject_state = $$props => {
-		if ("version" in $$props) $$invalidate(1, version = $$props.version);
 		if ("menu" in $$props) menu = $$props.menu;
 		if ("rightClickPosition" in $$props) rightClickPosition = $$props.rightClickPosition;
 	};
@@ -80289,13 +80262,13 @@ function instance$1u($$self, $$props, $$invalidate) {
 		$$self.$inject_state($$props.$$inject);
 	}
 
-	return [navItems, version];
+	return [navItems];
 }
 
 class App extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$1u, create_fragment$1u, safe_not_equal, { version: 1 });
+		init(this, options, instance$1u, create_fragment$1u, safe_not_equal, {});
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
@@ -80303,21 +80276,6 @@ class App extends SvelteComponentDev {
 			options,
 			id: create_fragment$1u.name
 		});
-
-		const { ctx } = this.$$;
-		const props = options.props || {};
-
-		if (/*version*/ ctx[1] === undefined && !("version" in props)) {
-			console_1$f.warn("<App> was created without expected prop 'version'");
-		}
-	}
-
-	get version() {
-		throw new Error("<App>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	set version(value) {
-		throw new Error("<App>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 }
 
@@ -85344,6 +85302,7 @@ window.showStackContext = ({title="Info", text, type="Info"}={}) => {
 };
 
 const app = new App({
+	
 	target: document.body,
 	props: { version: "" }
 });
