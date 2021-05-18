@@ -62795,7 +62795,7 @@ const get_footerbtn_slot_context$1 = ctx => ({});
 const get_content_slot_changes$1 = dirty => ({});
 const get_content_slot_context$1 = ctx => ({});
 
-// (72:4) {#if $$slots.footerbtn}
+// (74:4) {#if $$slots.footerbtn}
 function create_if_block$y(ctx) {
 	let div;
 	let div_resize_listener;
@@ -62810,7 +62810,7 @@ function create_if_block$y(ctx) {
 			set_style(div, "margin-left", "auto");
 			set_style(div, "display", "flex");
 			add_render_callback(() => /*div_elementresize_handler*/ ctx[8].call(div));
-			add_location(div, file$1h, 73, 8, 1465);
+			add_location(div, file$1h, 74, 8, 1502);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -62849,7 +62849,7 @@ function create_if_block$y(ctx) {
 		block,
 		id: create_if_block$y.name,
 		type: "if",
-		source: "(72:4) {#if $$slots.footerbtn}",
+		source: "(74:4) {#if $$slots.footerbtn}",
 		ctx
 	});
 
@@ -62873,11 +62873,11 @@ function create_fragment$1o(ctx) {
 			t = space();
 			if (if_block) if_block.c();
 			set_style(div0, "max-height", /*maxHeight*/ ctx[1] + "px");
-			attr_dev(div0, "class", "main_content svelte-5kc6wg");
-			add_location(div0, file$1h, 69, 4, 1331);
+			attr_dev(div0, "class", "main_content svelte-1j0a50g");
+			add_location(div0, file$1h, 71, 4, 1370);
 			attr_dev(div1, "id", /*id*/ ctx[0]);
-			attr_dev(div1, "class", "main_content__div svelte-5kc6wg");
-			add_location(div1, file$1h, 67, 0, 1287);
+			attr_dev(div1, "class", "main_content__div svelte-1j0a50g");
+			add_location(div1, file$1h, 69, 0, 1326);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -63001,7 +63001,11 @@ function instance$1o($$self, $$props, $$invalidate) {
 			});
 	}
 
-	onMount(openGraph);
+	onMount(async () => {
+		await tick();
+		openGraph();
+	});
+
 	const writable_props = ["id", "title", "active"];
 
 	Object.keys($$props).forEach(key => {
