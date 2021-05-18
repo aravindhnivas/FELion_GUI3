@@ -3,11 +3,11 @@
     import { createEventDispatcher } from 'svelte';
     import {browse} from "../../components/Layout.svelte";
     import Textfield from '@smui/textfield';
-    import Modal from '../../components/Modal.svelte';
+    // import Modal from '../../components/Modal.svelte';
+    import SeparateWindow from '../../components/SeparateWindow.svelte';
+
     import CustomCheckbox from "../../components/CustomCheckbox.svelte";
-
     import CustomSelect from "../../components/CustomSelect.svelte";
-
     export let active=false;
     const dispatch = createEventDispatcher();
 
@@ -154,6 +154,7 @@
 </script>
 
 <style lang="scss">
+
     .locationColumn {
 
         display: grid;
@@ -205,9 +206,9 @@
 
     }
 
-    .ROSAA__modal {
-        .subtitle {margin-bottom: 0}
-    }
+    // #ROSAA__modal {
+    //     .subtitle {margin-bottom: 0}
+    // }
     
     .attachmentDissociationRate__div {
         .rates__mainContainer {
@@ -223,118 +224,118 @@
 </style>
 
 
-<Modal bind:active title="ROSAA modal" >
-    <div class="ROSAA__modal" slot="content">
+{#if active}
+    <SeparateWindow id="ROSAA__modal" title="ROSAA modal" bind:active >
 
-        <!-- {#if reportToggle} -->
-        <div class="content" class:hide={!showreport} style="white-space: pre-wrap; user">{statusReport}</div>
-    <!-- {:else} -->
-        <div class:hide={showreport}>
-        
-            <div class="locationColumn" >
-                <button class="button is-link" id="thz_modal_filebrowser_btn" on:click={browse_folder}>Browse</button>
+        <svelte:fragment slot="content" >
 
-                <Textfield bind:value={currentLocation} label="Current location" />
-                <Textfield bind:value={filename} label="filename" />
-            </div>
+            <div class="content" class:hide={!showreport} style="white-space: pre-wrap; user">{statusReport}</div>
 
-            <div class="writefileCheck">
-                <CustomCheckbox bind:selected={writefile} label="writefile" />
-            </div>
+            <div class:hide={showreport}>
+            
+                <div class="locationColumn" >
+                    <button class="button is-link" id="thz_modal_filebrowser_btn" on:click={browse_folder}>Browse</button>
 
-            <div class="writefileCheck">
-                <CustomCheckbox bind:selected={includeCollision} label="includeCollision" />
-                <CustomCheckbox bind:selected={includeAttachmentRate} label="includeAttachmentRate" />
-                <CustomCheckbox bind:selected={includeSpontaneousEmission} label="includeSpontaneousEmission" />
-            </div>
-
-
-            <div class="subtitle">Simulate signal(%) as a function of "{variable}"</div>
-            <div class="variableColumn">
-
-                <CustomSelect options={variablesList} bind:picked={variable} />
-                {#if variable !== "time"}
-                    <Textfield bind:value={variableRange} label="Range (min, max, totalsteps)" />
-                {/if}
-            </div>
-
-
-            <div class="subtitle">Main Parameters</div>
-
-            {#each mainParameters as {label, value, id}(id)}
-
-                <Textfield {style} bind:value {label}/>
-            {/each}
-
-            <div class="subtitle">Simulation parameters</div>
-            {#each simulationParameters as {label, value, id}(id)}
-                <Textfield {style} bind:value {label}/>
-            {/each}
-
-            <Textfield {style} bind:value={numberOfLevels} label="numberOfLevel (J levels)"/>
-
-            <div class="subtitle">Doppler lineshape</div>
-            {#each dopplerLineshape as {label, value, id}(id)}
-                <Textfield {style} bind:value {label}/>
-            {/each}
-
-            <div class="subtitle">Lorrentz lineshape</div>
-            {#each powerBroadening as {label, value, id}(id)}
-                <Textfield {style} bind:value {label}/>
-            {/each}
-
-            <div class="rates__div einsteinRate__div">
-                <div class="subtitle">Einstein Co-efficients</div>
-                <div class="rates__mainContainer">
-                    {#each einsteinCoefficient as {label, value, id}(id)}
-                        <Textfield style="width:12em;" bind:value {label}/>
-                    {/each}
+                    <Textfield bind:value={currentLocation} label="Current location" />
+                    <Textfield bind:value={filename} label="filename" />
                 </div>
-            </div>
+
+                <div class="writefileCheck">
+                    <CustomCheckbox bind:selected={writefile} label="writefile" />
+                </div>
+
+                <div class="writefileCheck">
+                    <CustomCheckbox bind:selected={includeCollision} label="includeCollision" />
+                    <CustomCheckbox bind:selected={includeAttachmentRate} label="includeAttachmentRate" />
+                    <CustomCheckbox bind:selected={includeSpontaneousEmission} label="includeSpontaneousEmission" />
+                </div>
 
 
-            {#if includeCollision}
+                <div class="subtitle">Simulate signal(%) as a function of "{variable}"</div>
+                <div class="variableColumn">
 
-                <div class="rates__div collisionalRate__div">
+                    <CustomSelect options={variablesList} bind:picked={variable} />
+                    {#if variable !== "time"}
+                        <Textfield bind:value={variableRange} label="Range (min, max, totalsteps)" />
+                    {/if}
+                </div>
 
-                    <div class="subtitle">Collisional rate constants</div>
-                    <CustomSelect style="width: 12em;" options={["deexcitation", "excitation"]} bind:picked={collisionalRateType} />
+
+                <div class="subtitle">Main Parameters</div>
+
+                {#each mainParameters as {label, value, id}(id)}
+
+                    <Textfield {style} bind:value {label}/>
+                {/each}
+
+                <div class="subtitle">Simulation parameters</div>
+                {#each simulationParameters as {label, value, id}(id)}
+                    <Textfield {style} bind:value {label}/>
+                {/each}
+
+                <Textfield {style} bind:value={numberOfLevels} label="numberOfLevel (J levels)"/>
+
+                <div class="subtitle">Doppler lineshape</div>
+                {#each dopplerLineshape as {label, value, id}(id)}
+                    <Textfield {style} bind:value {label}/>
+                {/each}
+
+                <div class="subtitle">Lorrentz lineshape</div>
+                {#each powerBroadening as {label, value, id}(id)}
+                    <Textfield {style} bind:value {label}/>
+                {/each}
+
+                <div class="rates__div einsteinRate__div">
+                    <div class="subtitle">Einstein Co-efficients</div>
                     <div class="rates__mainContainer">
-                        <Textfield style="width:12em;" bind:value={trapTemp} label="trapTemp(K)"/>
-                        {#each collisionalCoefficient as rateConstant}
-                            <div class="">
-                                {#each rateConstant as {label, value, id}(id)}
-                                    <Textfield style="width:12em;" {value} {label} id={label} />
-                                {/each}
-                            </div>
+                        {#each einsteinCoefficient as {label, value, id}(id)}
+                            <Textfield style="width:12em;" bind:value {label}/>
                         {/each}
                     </div>
-
                 </div>
 
-            {/if}
-            
 
-            <div class="rates__div attachmentDissociationRate__div">
-                <div class="subtitle">Rare-gas attachment (K3) and dissociation (kCID) constants</div>
-                <div class="rates__mainContainer">
-                    {#each rateCoefficients as {label, value, id}(id)}
-                        <Textfield bind:value {label}/>
-                    {/each}
+                {#if includeCollision}
+
+                    <div class="rates__div collisionalRate__div">
+
+                        <div class="subtitle">Collisional rate constants</div>
+                        <CustomSelect style="width: 12em;" options={["deexcitation", "excitation"]} bind:picked={collisionalRateType} />
+                        <div class="rates__mainContainer">
+                            <Textfield style="width:12em;" bind:value={trapTemp} label="trapTemp(K)"/>
+                            {#each collisionalCoefficient as rateConstant}
+                                <div class="">
+                                    {#each rateConstant as {label, value, id}(id)}
+                                        <Textfield style="width:12em;" {value} {label} id={label} />
+                                    {/each}
+                                </div>
+                            {/each}
+                        </div>
+
+                    </div>
+
+                {/if}
+                
+
+                <div class="rates__div attachmentDissociationRate__div">
+                    <div class="subtitle">Rare-gas attachment (K3) and dissociation (kCID) constants</div>
+                    <div class="rates__mainContainer">
+                        {#each rateCoefficients as {label, value, id}(id)}
+                            <Textfield bind:value {label}/>
+                        {/each}
+                    </div>
                 </div>
             </div>
-        <!-- {/if} -->
-        </div>
-    </div>
+        </svelte:fragment>
 
+        <svelte:fragment slot="footerbtn">
 
-    <div class="align" slot="footerbtn">
+            <button  class="button is-danger" on:click="{()=>{py&&running? py.kill() : console.log('pyEvent is not available')}}" >Stop</button>
 
-        <button  class="button is-danger" on:click="{()=>{py&&running? py.kill() : console.log('pyEvent is not available')}}" >Stop</button>
+        
+            <button  class="button is-link" on:click="{(e)=>{showreport = !showreport}}" >{buttonName}</button>
+            <button  class="button is-link" class:is-loading={running} on:click="{simulation}" on:pyEvent={pyEventHandle} on:pyEventClosed="{pyEventClosedHandle}" on:pyEventData={pyEventDataReceivedHandle}>Submit</button>
+        </svelte:fragment>
 
-    
-        <button  class="button is-link" on:click="{(e)=>{showreport = !showreport}}" >{buttonName}</button>
-        <button  class="button is-link" class:is-loading={running} on:click="{simulation}" on:pyEvent={pyEventHandle} on:pyEventClosed="{pyEventClosedHandle}" on:pyEventData={pyEventDataReceivedHandle}>Submit</button>
-    </div>
-    
-</Modal>
+    </SeparateWindow>
+{/if}
