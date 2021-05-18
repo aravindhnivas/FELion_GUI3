@@ -36,11 +36,11 @@
 
         grid-template-rows: 5fr 1fr;
     }
-    .home-header {
 
+    .home-header {
         display: grid;
         grid-template-rows: 1fr auto;
-    
+
     
     }
 
@@ -51,10 +51,10 @@
         place-items: center;
     }
 
-    .inner-header {place-self: center;}
+    .inner-header {place-self: center; padding: 2em;}
+
     .waves {display: grid;}
 </style>
-
 
 <div class="animated fadeIn slower home-container">
     <div class="home-header">

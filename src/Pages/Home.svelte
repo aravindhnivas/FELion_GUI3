@@ -13,8 +13,14 @@
     
   }
 
+  h1 {letter-spacing: 2px;}
+
+  .title {font-size: 4em;}
+
+
   p {color: black;}
 
+  @media (max-width: 768px) {.title {font-size: 3em;}}
 </style>
 
 <section class="section animated fadeIn" id="Home">
@@ -26,7 +32,7 @@
 
           <svelte:fragment slot="header">
             <h1 class="title">FELion Spectrum Analyser</h1>
-            <h2 class="subtitle">To analyse FELIX data for FELion Instrument</h2>
+            <h1 class="subtitle">To analyse FELIX data for FELion Instrument</h1>
           </svelte:fragment>
 
           <svelte:fragment slot="footer">
@@ -36,5 +42,5 @@
       {/await}
 
     {/if}
-    
+
 </section>
