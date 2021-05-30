@@ -87,9 +87,9 @@ hr {background-color: #dbdbdb;}
   
 }
 
-.wb-body {background:#634e96!important;}
+.wb-body {background-color:#5f3db199!important;background-image: url(intro.svg);}
 
-.wb-header {background:#46356f!important;}
+.wb-header {background-color:#46356f!important;}
 .hide {display: none!important;}
 
 .buttonRow {margin-bottom: 0!important; align-items: center;}

@@ -51,8 +51,8 @@
     let keepTable = true;
 
     //////// OPO Plot ///////////
-
     window.getID = () => Math.random().toString(32).substring(2)
+    
     const replot = () => {
         if (graphPlotted) {
             let {data, layout} = $normMethodDatas[$normMethod]

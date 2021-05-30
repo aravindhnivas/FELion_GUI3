@@ -91,6 +91,7 @@
 
     onMount(()=> {if(locationStatus) {getfiles(); console.log("onMount Updating location for ", filetype)}} )
     afterUpdate(() => {
+        
         if (original_location !== currentLocation && locationStatus) {
 
             getfiles(true); console.log("Updating location for ", filetype)

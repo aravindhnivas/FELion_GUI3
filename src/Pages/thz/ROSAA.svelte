@@ -3,7 +3,7 @@
     import { createEventDispatcher } from 'svelte';
     import {browse} from "../../components/Layout.svelte";
     import Textfield from '@smui/textfield';
-    // import Modal from '../../components/Modal.svelte';
+    import {fade} from "svelte/transition";
     import SeparateWindow from '../../components/SeparateWindow.svelte';
 
     import CustomCheckbox from "../../components/CustomCheckbox.svelte";
@@ -32,21 +32,24 @@
         {label:"excitedFrom", value:0, id:window.getID()},
     ]
 
+
     let dopplerLineshape = [
+
+        {label:"IonMass(amu)", value:14, id:window.getID(), type:"number", step:1},
         
-        {label:"IonMass(amu)", value:14, id:window.getID()},
-        
-        {label:"IonTemperature(K)", value:12, id:window.getID()},
-    
+        {label:"IonTemperature(K)", value:12, id:window.getID(), type:"number", step:0.5},
     ]
+
+
 
     let powerBroadening = [
 
-    
         {label:"cp", value:"4.9e7", id:window.getID()},
         {label:"dipoleMoment(D)", value:0, id:window.getID()},
+
         {label:"power(W)", value:"2e-5", id:window.getID()},
     ]
+
 
     let einsteinCoefficient = [ 
         {label:"A_10", value:"6.24e-4", id:window.getID()}
@@ -67,12 +70,14 @@
     let collisionalRateType = "deexcitation"
 
     $: deexcitation = collisionalRateType==="deexcitation";
+
     let numberOfLevels = 3;
+
 
     $: collisionalCoefficient = _.range(1, numberOfLevels)
                                     .map(j=> _.range(j)
                                         .map(jj=> deexcitation ? {label:`q_${j}${jj}`, value:0, id:window.getID()} : {label:`q_${jj}${j}`, value:0, id:window.getID()})
-                                    )
+                                    );
 
     let py, running = false;
 
@@ -84,13 +89,11 @@
     }
 
     let statusReport = "";
-    $: showreport = false
-    $: buttonName = showreport ? "Go Back" : "Status report"
+    let showreport = false
     const pyEventDataReceivedHandle = (e) => {
         let dataReceived = e.detail.dataReceived
         statusReport += `${dataReceived}\n`
     }
-    $: console.log(statusReport)
 
     const pyEventClosedHandle = (e) => {
         running=false;
@@ -100,7 +103,6 @@
 
     const simulation = (e) => {
         const collisionalRates = window._.flatten(collisionalCoefficient)
-
         const collisional_rates = {}
         collisionalRates.forEach(f=>collisional_rates[f.label] = parseFloat(document.querySelector(`#${f.label} input`).value) )
 
@@ -119,41 +121,35 @@
         const einstein_coefficient = {}
         einsteinCoefficient.forEach(f=>einstein_coefficient[f.label]=f.value)
 
-
         const rate_coefficients = {}
         rateCoefficients.forEach(f=>rate_coefficients[f.label]=f.value)
         
         const conditions = { trapTemp, variable, variableRange, numberOfLevels, includeCollision, includeAttachmentRate, includeSpontaneousEmission, writefile, filename, currentLocation,  deexcitation, collisional_rates, main_parameters, simulation_parameters, einstein_coefficient, power_broadening, lineshape_conditions, rate_coefficients }
         dispatch('submit', { e, conditions })
-
-
         running=true
 
     }
 
 
-    const style="width:12em; margin-bottom:1em;"
-    let currentLocation = db.get("thz_modal_location") || db.get("thz_location") || ""
-    let filename = `ROSAA_modal_${mainParameters[0].value}_${mainParameters[1].value}`
-    $: if(currentLocation&&fs.existsSync(currentLocation)) {db.set("thz_modal_location")}
 
-    function browse_folder() {
+    let currentLocation = db.get("thz_modal_location") || db.get("thz_location") || "";
 
-        browse({dir:true}).then(result=>{
-            if (!result.canceled) { currentLocation = result.filePaths[0]; db.set("thz_modal_location", currentLocation)}
+    let filename = `ROSAA_modal_${mainParameters[0].value}_${mainParameters[1].value}`;
+    $: if(currentLocation&&fs.existsSync(currentLocation)) {db.set("thz_modal_location", currentLocation)}
 
-        })
-    
+    async function browse_folder() {
+        const result = await browse({dir:true})
+        if (!result.canceled) { currentLocation = result.filePaths[0]; }
     }
 
     let writefile = true, includeCollision = true, includeSpontaneousEmission = true, includeAttachmentRate = true;
-
     let variable = "time", variableRange = "1e12, 1e16, 10";
     const variablesList = ["time", "He density(cm3)", "Power(W)"]
 
 </script>
 
 <style lang="scss">
+
 
     .locationColumn {
 
@@ -171,9 +167,9 @@
         }
     }
 
-
-
+    hr {background-color: #fafafa;}
     .writefileCheck {
+
         display: grid;
         grid-auto-flow: column;
         border: solid 1px white;
@@ -181,18 +177,16 @@
     }
 
     .variableColumn {
-
         display: grid;
+
         .subtitle {margin: 0;}
         .variableColumn__dropdown {
             display: grid;
             grid-auto-flow: column;
             grid-template-columns: auto 1fr;
             grid-column-gap: 1em;
-
         }
     }
-
 
     .main_container__div {
         display: grid;
@@ -217,6 +211,12 @@
             border-radius: 2em;
             place-content: center;
         }
+    }
+
+    .status_report__div {
+        white-space: pre-wrap; 
+        -webkit-user-select: text;
+        padding:1em;
     }
 </style>
 
@@ -254,13 +254,13 @@
 
         </svelte:fragment>
 
-        <svelte:fragment slot="main_content__slot" >
+        <svelte:fragment slot="main_content__slot">
 
-            <div class="content" class:hide={!showreport} style="white-space: pre-wrap; user">{statusReport}</div>
-
+            {#if showreport}
+                <div class="content status_report__div" ><hr>{statusReport || "Status report"}<hr></div>
+            {/if}
             <div class="main_container__div" class:hide={showreport}>
             
-                
                 <div class="sub_container__div">
 
                     <div class="subtitle">Main Parameters</div>
@@ -269,8 +269,6 @@
                             <Textfield bind:value {label}/>
                         {/each}
                     </div>
-
-
                 </div>
                 
 
@@ -280,7 +278,7 @@
                         {#each simulationParameters as {label, value, id}(id)}
                             <Textfield bind:value {label}/>
                         {/each}
-                        <Textfield bind:value={numberOfLevels} label="numberOfLevel (J levels)"/>
+                        <Textfield bind:value={numberOfLevels} label="numberOfLevels (J levels)"/>
                     </div>
                 </div>
                 
@@ -288,8 +286,8 @@
                 <div class="sub_container__div">
                     <div class="subtitle">Doppler lineshape</div>
                     <div class="content__div">
-                        {#each dopplerLineshape as {label, value, id}(id)}
-                            <Textfield bind:value {label}/>
+                        {#each dopplerLineshape as {label, value, id, type, step}(id)}
+                            <Textfield bind:value {label} input$type={type} input$step={step}/>
                         {/each}
                     </div>
                 </div>
@@ -304,26 +302,25 @@
                     </div>
                 </div>
                 
-
-                <div class="sub_container__div">
-                    <div class="subtitle">Einstein Co-efficients</div>
-                    <div class="content__div">
-                        {#each einsteinCoefficient as {label, value, id}(id)}
-                            <Textfield bind:value {label}/>
-                        {/each}
+                {#if includeSpontaneousEmission}
+                    <div class="sub_container__div">
+                        <div class="subtitle">Einstein Co-efficients</div>
+                        <div class="content__div">
+                            {#each einsteinCoefficient as {label, value, id}(id)}
+                                <Textfield bind:value {label}/>
+                            {/each}
+                        </div>
                     </div>
-                </div>
-
+                {/if}
+                
 
                 {#if includeCollision}
-
 
                     <div class="sub_container__div">
                         <div class="subtitle">Collisional rate constants</div>
                         <div class="content__div">
                             <CustomSelect options={["deexcitation", "excitation"]} bind:picked={collisionalRateType} />
                             <Textfield bind:value={trapTemp} label="trapTemp(K)"/>
-
                         </div>
 
                         {#each collisionalCoefficient as rateConstant}
@@ -336,33 +333,37 @@
 
                     </div>
                 {/if}
-                
-                <div class="sub_container__div">
-
 
                 
-                    <div class="subtitle">Rare-gas attachment (K3) and dissociation (kCID) constants</div>
+                {#if includeAttachmentRate}
+                    
+                    <div class="sub_container__div">
 
+                        <div class="subtitle">Rare-gas attachment (K3) and dissociation (kCID) constants</div>
 
-                    <div class="content__div">
-                        {#each rateCoefficients as {label, value, id}(id)}
-                            <Textfield bind:value {label}/>
-                        {/each}
+                        <div class="content__div">
+                            {#each rateCoefficients as {label, value, id}(id)}
+
+                                <Textfield bind:value {label} />
+                            {/each}
+                        </div>
+
                     </div>
-
-                </div>
+                {/if}
             </div>
-
         </svelte:fragment>
 
         <svelte:fragment slot="footer_content__slot">
 
-            <button  class="button is-danger" on:click="{()=>{py&&running? py.kill() : console.log('pyEvent is not available')}}" >Stop</button>
-
-            <button  class="button is-link" on:click="{(e)=>{showreport = !showreport}}" >{buttonName}</button>
+            {#if running}
+                <button transition:fade class="button is-danger" on:click="{()=>{py ? py.kill() : console.log('pyEvent is not available')}}" >Stop</button>
+            {/if}    
+        
+            <button  class="button is-link" on:click="{(e)=>{showreport = !showreport}}" >{showreport ? "Go Back" : "Status report"}</button>
 
             <button  class="button is-link" class:is-loading={running} on:click="{simulation}" on:pyEvent={pyEventHandle} on:pyEventClosed="{pyEventClosedHandle}" on:pyEventData={pyEventDataReceivedHandle}>Submit</button>
         </svelte:fragment>
 
     </SeparateWindow>
+
 {/if}
