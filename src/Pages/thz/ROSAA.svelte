@@ -8,10 +8,13 @@
 
     import CustomCheckbox from "../../components/CustomCheckbox.svelte";
     import CustomSelect from "../../components/CustomSelect.svelte";
+    import EditCoefficients from './EditCoefficients.svelte';
+    // import EinsteinACoefficients from './EinsteinACoefficients.svelte';
+
     export let active=false;
     const dispatch = createEventDispatcher();
 
-    let mainParameters = [
+    const mainParameters = [
     
         {label:"molecule", value:"CD", id:window.getID()},
         
@@ -22,7 +25,7 @@
         {label:"Energy", value:"0, 15.127861, 45.373851", id:window.getID()},
     ]
 
-    let simulationParameters = [
+    const simulationParameters = [
 
         {label:"totalIonCounts", value:1000, id:window.getID()},
         
@@ -33,7 +36,7 @@
     ]
 
 
-    let dopplerLineshape = [
+    const dopplerLineshape = [
 
         {label:"IonMass(amu)", value:14, id:window.getID(), type:"number", step:1},
         
@@ -42,7 +45,7 @@
 
 
 
-    let powerBroadening = [
+    const powerBroadening = [
 
         {label:"cp", value:"4.9e7", id:window.getID()},
         {label:"dipoleMoment(D)", value:0, id:window.getID()},
@@ -51,22 +54,22 @@
     ]
 
 
-    let einsteinCoefficient = [ 
-        {label:"A_10", value:"6.24e-4", id:window.getID()}
-    ]
+    // $: einsteinCoefficient = _.range(numberOfLevels).map(i=>{return {label:`A${i+1}${i}`, value:"0", id:window.getID()}})
 
     let trapTemp = 5.7
-    let rateCoefficients = [
+    const rateCoefficients = [
 
         {label:"totalAttachmentLevels", value:2, id:window.getID()},
-        {label:"branching-ratio", value:0.5, id:window.getID()},
-        {label:"a", value:0.5, id:window.getID()},
+        {label:"branching-ratio(kCID)", value:0.5, id:window.getID()},
+        {label:"a(k31)", value:0.5, id:window.getID()},
         {label:"He density(cm3)", value:"2e14", id:window.getID()},
         {label:"k3", value:"9.6e-31, 2.9e-30", id:window.getID()},
         
         {label:"kCID", value:"6.7e-16, 1.9e-15", id:window.getID()},
     ]
 
+    
+    let electronSpin=false, zeemanSplit= false;
     let collisionalRateType = "deexcitation"
 
     $: deexcitation = collisionalRateType==="deexcitation";
@@ -74,10 +77,10 @@
     let numberOfLevels = 3;
 
 
-    $: collisionalCoefficient = _.range(1, numberOfLevels)
-                                    .map(j=> _.range(j)
-                                        .map(jj=> deexcitation ? {label:`q_${j}${jj}`, value:0, id:window.getID()} : {label:`q_${jj}${j}`, value:0, id:window.getID()})
-                                    );
+    // $: collisionalCoefficient = _.range(1, numberOfLevels)
+    //                                 .map(j=> _.range(j)
+    //                                     .map(jj=> deexcitation ? {label:`q_${j}${jj}`, value:0, id:window.getID()} : {label:`q_${jj}${j}`, value:0, id:window.getID()})
+    //                                 );
 
     let py, running = false;
 
@@ -104,11 +107,13 @@
     const simulation = (e) => {
         const collisionalRates = window._.flatten(collisionalCoefficient)
         const collisional_rates = {}
-        collisionalRates.forEach(f=>collisional_rates[f.label] = parseFloat(document.querySelector(`#${f.label} input`).value) )
+        if (includeCollision) {
+            collisionalRates.forEach(f=>collisional_rates[f.label] = parseFloat(document.querySelector(`#${f.label} input`).value) )
+        }
 
         const main_parameters = {}
         mainParameters.forEach(f=>main_parameters[f.label]=f.value)
-        
+
         const simulation_parameters = {}
         simulationParameters.forEach(f=>simulation_parameters[f.label]=f.value)
 
@@ -118,13 +123,14 @@
         const power_broadening = {}
         powerBroadening.forEach(f=>power_broadening[f.label]=f.value)
 
+        // const einstein_coefficient = einsteinCoefficient.map(f=>f.value)
         const einstein_coefficient = {}
         einsteinCoefficient.forEach(f=>einstein_coefficient[f.label]=f.value)
 
         const rate_coefficients = {}
         rateCoefficients.forEach(f=>rate_coefficients[f.label]=f.value)
         
-        const conditions = { trapTemp, variable, variableRange, numberOfLevels, includeCollision, includeAttachmentRate, includeSpontaneousEmission, writefile, filename, currentLocation,  deexcitation, collisional_rates, main_parameters, simulation_parameters, einstein_coefficient, power_broadening, lineshape_conditions, rate_coefficients }
+        const conditions = { trapTemp, variable, variableRange, numberOfLevels, includeCollision, includeAttachmentRate, includeSpontaneousEmission, writefile, filename, currentLocation,  deexcitation, collisional_rates, main_parameters, simulation_parameters, einstein_coefficient, power_broadening, lineshape_conditions, rate_coefficients, electronSpin, zeemanSplit }
         dispatch('submit', { e, conditions })
         running=true
 
@@ -145,8 +151,9 @@
     let writefile = true, includeCollision = true, includeSpontaneousEmission = true, includeAttachmentRate = true;
     let variable = "time", variableRange = "1e12, 1e16, 10";
     const variablesList = ["time", "He density(cm3)", "Power(W)"]
-
+    let editCollisionalCoefficients = false, editEinsteinCoefficients= false, collisionalCoefficient=[], einsteinCoefficient=[];
 </script>
+
 
 <style lang="scss">
 
@@ -218,10 +225,18 @@
         -webkit-user-select: text;
         padding:1em;
     }
+
+
+    .center {
+        margin:auto;
+        width:max-content;
+    }
 </style>
 
-{#if active}
+<EditCoefficients title="Collisional rate constants" bind:active={editCollisionalCoefficients} bind:coefficients={collisionalCoefficient} />
+<EditCoefficients title="Einstein Co-efficients" bind:active={editEinsteinCoefficients} bind:coefficients={einsteinCoefficient} />
 
+{#if active}
     <SeparateWindow id="ROSAA__modal" title="ROSAA modal" bind:active >
 
         <svelte:fragment slot="header_content__slot" >
@@ -238,9 +253,10 @@
                 <CustomCheckbox bind:selected={includeCollision} label="includeCollision" />
                 <CustomCheckbox bind:selected={includeAttachmentRate} label="includeAttachmentRate" />
                 <CustomCheckbox bind:selected={includeSpontaneousEmission} label="includeSpontaneousEmission" />
+                <CustomCheckbox bind:selected={electronSpin} label="Electron Spin" />
+                <CustomCheckbox bind:selected={zeemanSplit} label="Zeeman" />
             </div>
 
-            
             <div class="variableColumn">
                 <div class="subtitle">Simulate signal(%) as a function of {variable}</div>
                 <div class="variableColumn__dropdown">
@@ -258,8 +274,8 @@
 
             {#if showreport}
                 <div class="content status_report__div" ><hr>{statusReport || "Status report"}<hr></div>
-            {/if}
-            <div class="main_container__div" class:hide={showreport}>
+            {:else}
+            <div class="main_container__div" >
             
                 <div class="sub_container__div">
 
@@ -305,9 +321,11 @@
                 {#if includeSpontaneousEmission}
                     <div class="sub_container__div">
                         <div class="subtitle">Einstein Co-efficients</div>
+                        <button class="button is-link center" on:click={() => editEinsteinCoefficients=true}>Edit constats</button>
+
                         <div class="content__div">
                             {#each einsteinCoefficient as {label, value, id}(id)}
-                                <Textfield bind:value {label}/>
+                                <Textfield {value} {label}/>
                             {/each}
                         </div>
                     </div>
@@ -321,17 +339,18 @@
                         <div class="content__div">
                             <CustomSelect options={["deexcitation", "excitation"]} bind:picked={collisionalRateType} />
                             <Textfield bind:value={trapTemp} label="trapTemp(K)"/>
+
+                            <button class="button is-link" on:click={() => editCollisionalCoefficients=true}>Edit constats</button>
                         </div>
 
-                        {#each collisionalCoefficient as rateConstant}
+                        {#each collisionalCoefficient as {label, value, id}(id)}
                             <div class="content__div">
-                                {#each rateConstant as {label, value, id}(id)}
-                                    <Textfield  {value} {label} id={label} />
-                                {/each}
+                                <Textfield  {value} {label} id={label} />
                             </div>
                         {/each}
-
+                        
                     </div>
+
                 {/if}
 
                 
@@ -351,6 +370,8 @@
                     </div>
                 {/if}
             </div>
+
+            {/if}
         </svelte:fragment>
 
         <svelte:fragment slot="footer_content__slot">

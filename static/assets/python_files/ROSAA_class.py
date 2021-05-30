@@ -2,7 +2,7 @@
 import sys, json
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.constants import speed_of_light, Boltzmann, Planck
+from scipy.constants import speed_of_light
 from functools import reduce
 from scipy.integrate import solve_ivp
 
@@ -21,10 +21,13 @@ class ROSAA():
         self.conditions = conditions
         self.save_parameters_to_file()
         self.deconstruct_parameters()
-        self.get_collisional_rates()
+        if self.includeCollision: 
+            self.get_collisional_rates()
+
         self.time_start = perf_counter()
 
         self.begin_simulation()
+
         
     def save_parameters_to_file(self):
         self.currentLocation = self.conditions["currentLocation"]
@@ -63,7 +66,10 @@ class ROSAA():
         collisional_rates = {q:float(value) for q, value in self.conditions["collisional_rates"].items()}
         q_deexcitation_mode = self.conditions["deexcitation"]
         rates = {}
+
+        
         for i in range(self.totallevel):
+
             for j in range(self.totallevel):
 
                 if i != j & j>i:
@@ -102,18 +108,21 @@ class ROSAA():
         return collections
     
     def compute_einstein_process(self, i, N):
+
         collections = []
         
         if self.includeSpontaneousEmission:
 
-            # Einstein Coefficient A
-            if i == self.excitedFrom: 
-                temp = self.A_10*N[self.excitedTo]
-                collections.append(temp)
+            # # Einstein Coefficient A
+            # if i == self.excitedFrom: 
+            #     temp = self.A_10*N[self.excitedTo]
+            #     collections.append(temp)
 
-            if i == self.excitedTo:
-                temp = -self.A_10*N[self.excitedTo]
-                collections.append(temp)
+            # if i == self.excitedTo:
+            #     temp = -self.A_10*N[self.excitedTo]
+            #     collections.append(temp)
+            temp = self.A_10*N[self.excitedTo]
+            temp = self.A_10*N[self.excitedTo]
 
         # Einstein Coefficient B
 
@@ -129,6 +138,7 @@ class ROSAA():
             if i == self.excitedTo:
                 temp = B_rate
                 collections.append(temp)
+
         return collections
 
     def compute_attachment_process(self, N, N_He, dR_dt):
@@ -148,19 +158,18 @@ class ROSAA():
         dR_dt.append(currentRate)
         return dR_dt
 
-    def begin_simulation(self):
 
+    def begin_simulation(self):
         changing_parameters = self.conditions["variable"]
         changing_parameters_range = self.conditions["variableRange"]
         self.simulation_duration = int(self.simulation_parameters["Simulation time(ms)"])*1e-3 # sec --> ms
-        self.totalSteps = int(self.simulation_parameters["Total steps"])
 
+        self.totalSteps = int(self.simulation_parameters["Total steps"])
         self.simulation_duration_data_points = np.linspace(0, self.simulation_duration, self.totalSteps)
-        
         self.tspan = [0, self.simulation_duration]
-        
-        initial_temperature = 300
-        N = boltzman_distribution(self.Energy, initial_temperature)[:self.totallevel]
+        self.initial_temperature = 300
+
+        boltzman_ratio = N = boltzman_distribution(self.Energy, self.initial_temperature)[:self.totallevel]
         N_He = self.totalAttachmentLevels*[0]
         self.boltzman_distribution_source = (N, [*N, *N_He])[self.includeAttachmentRate]
         
@@ -173,8 +182,7 @@ class ROSAA():
 
             variable_range = np.linspace(start, end, steps)
 
-            print(f"{start=:.2e}==>{end=:.2e} in {steps=}\n")
-
+            print(f"{start=:.2e}==>{end=:.2e} in {steps=}\n", flush=True)
 
             resOffCounts_list = []
             resOnCounts_list = []
@@ -256,7 +264,7 @@ class ROSAA():
     def get_attachment_rates(self):
         self.Rate_K3 = [float(i.strip())*self.nHe**2 for i in self.rate_coefficients["k3"].split(",")]
 
-        a = float(self.rate_coefficients["a"])
+        a = float(self.rate_coefficients["a(k31)"])
         self.Rate_K3_excited = a*self.Rate_K3[0]
         self.Rate_kCID = [float(i.strip())*self.nHe for i in self.rate_coefficients["kCID"].split(",")]
 
@@ -270,7 +278,7 @@ class ROSAA():
         self.B_01 = stimulated_absorption(self.excitedFrom, self.excitedTo, self.B_10)
 
         self.get_attachment_rates()
-        self.p = float(self.rate_coefficients["branching-ratio"])
+        self.p = float(self.rate_coefficients["branching-ratio(kCID)"])
 
         self.lightON=False
         Noff = solve_ivp(self.computeRateDistributionEquations, self.tspan, self.boltzman_distribution_source, dense_output=True)
@@ -293,9 +301,22 @@ class ROSAA():
             N_He = counts[-self.totalAttachmentLevels:]
         else: N = counts
         
+
         rateCollection = []
+        
+        
         for i in range(self.totallevel):
-            collisional_collection = self.compute_collision_process(i, N)
+            collisional_collection = [0]
+            einstein_collection = [0]
+            if self.includeCollision:
+                collisional_collection = self.compute_collision_process(i, N)
+
+            
+            # else:
+            #     for i, ratio in enumerate(boltzman_ratio):
+            #         N[i] *= ratio
+
+
             einstein_collection = self.compute_einstein_process(i, N)
             collections = collisional_collection + einstein_collection
             rateCollection.append(collections)
@@ -334,7 +355,6 @@ class ROSAA():
         print(f"{massIon=}\n{tempIon=}\n{sigma=:.2e}\n{gamma=:.2e}\n{LineShape=:.2e}\n{norm=:.2e}\n", flush=True)
 
         return norm
-
 
     def plot_results(self, changing_parameters, resOnCounts=None, resOffCounts=None, x=None, y=None):
 
@@ -384,7 +404,6 @@ class ROSAA():
             plt.tight_layout()
             plt.ticklabel_format(axis="x", style="sci", scilimits=(0,0))
             plt.show()
-
 
     def write_data_to_file(self, changing_parameters, changing_parameters_range, resOnCounts_list, resOffCounts_list, signal):
 
@@ -442,8 +461,10 @@ class ROSAA():
 
 if __name__ == "__main__":
 
-    args = sys.argv[1:][0].split(",")
-    conditions = json.loads(", ".join(args))
-    time_start = perf_counter()
 
-    ROSAA(conditions)
+    args = sys.argv[1:][0].split(",")
+    
+    conditions = json.loads(", ".join(args))
+    print(conditions)
+    # time_start = perf_counter()
+    # ROSAA(conditions)

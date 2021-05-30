@@ -1,30 +1,28 @@
 <script>
 
-
     import { fade, scale } from 'svelte/transition';
     import {Icon} from '@smui/icon-button';
     import {tick} from "svelte";
     export let head, rows, keys, id=window.getID(), label="table", sortOption = false, closeOption = true, addextraOption = true;
-
     const keyIDSets = keys.map(key=>{return {key, id:window.getID()}})
 
     const sortTable = (type) => { if(sortOption) {rows = _.orderBy(rows, [type], ["asc"])} }
 
-
     let emptyRow = {}
-
     keys.forEach(key=>emptyRow[key] = "")
 
     const addRow = async () => {
 
         const id = window.getID()
+
         rows = [...rows, {...emptyRow, id}]
+        
+        
         await tick()
         const focusTargetID = `${id}-${keys[0]}`
         document.getElementById(focusTargetID).focus()
     }
-
-    $: console.log("Row: ", rows)
+    // $: console.log("Row: ", rows)
 
 </script>
 
