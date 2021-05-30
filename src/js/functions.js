@@ -42,15 +42,9 @@ window.togglepage = (id) => {
     window.getPageStatus(id) ? targetElement(id).style.display = "none" : targetElement(id).style.display = "block"
 }
 
-const electronVersion = parseInt(process.versions.electron.split(".")[0])
-window.showinfo = electronVersion >= 7 ? remote.dialog.showMessageBoxSync : remote.dialog.showMessageBox
-
-
-// Checking curernt version
 window.asyncForEach = async (array, callback) => {
 
     for (let index = 0; index < array.length; index++) {
-
         await callback(array[index], index, array);
 
     }
@@ -60,12 +54,15 @@ window.asyncForEach = async (array, callback) => {
 window.addEventListener('DOMContentLoaded', (event) => {
     console.log('DOM fully loaded and parsed');
     windowLoaded.set(true)
+    const electronVersion = parseInt(process.versions.electron.split(".")[0])
 
+    window.showinfo = electronVersion >= 7 ? remote.dialog.showMessageBoxSync : remote.dialog.showMessageBox
 });
 
-export function resizableDiv({ div, change = { width: true, height: true }, cursor = { left: false, right: false, bottom: false, top: false } } = {}) {
-    interact(div).resizable({
 
+export function resizableDiv({ div, change = { width: true, height: true }, cursor = { left: false, right: false, bottom: false, top: false } } = {}) {
+
+    interact(div).resizable({
         edges: cursor,
 
         modifiers: [
@@ -105,6 +102,7 @@ export function resizableDiv({ div, change = { width: true, height: true }, curs
     })
 
 }
+
 resizableDiv({ div: ".adjust-right", cursor: { right: true }, change: { width: true, height: false } })
 
 export function plot(mainTitle, xtitle, ytitle, data, plotArea, filetype = null) {
@@ -141,11 +139,14 @@ export function subplot(mainTitle, xtitle, ytitle, data, plotArea, x2, y2, data2
         height: 450,
 
     }
-
     let dataPlot1 = [];
+
     for (let x in data) { dataPlot1.push(data[x]) }
+
     let dataPlot2 = [];
     for (let x in data2) { dataPlot2.push(data2[x]) }
+    
     Plotly.react(plotArea, dataPlot1.concat(dataPlot2), dataLayout, { editable: true })
+
 }
 
