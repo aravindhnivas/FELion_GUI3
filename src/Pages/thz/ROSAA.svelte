@@ -100,16 +100,16 @@
 
     const pyEventClosedHandle = (e) => {
         running=false;
+
         window.createToast("Terminated", "danger")
         statusReport += "\n######## TERMINATED ########"
     }
 
     const simulation = (e) => {
-        const collisionalRates = window._.flatten(collisionalCoefficient)
+
         const collisional_rates = {}
-        if (includeCollision) {
-            collisionalRates.forEach(f=>collisional_rates[f.label] = parseFloat(document.querySelector(`#${f.label} input`).value) )
-        }
+        collisionalCoefficient.forEach(f=>collisional_rates[f.label] = f.value)
+        
 
         const main_parameters = {}
         mainParameters.forEach(f=>main_parameters[f.label]=f.value)
@@ -340,7 +340,7 @@
                         <div class="content__div">
                             <CustomSelect options={["deexcitation", "excitation"]} bind:picked={collisionalRateType} />
                             <Textfield bind:value={trapTemp} label="trapTemp(K)"/>
-                            
+
                             <button class="button is-link" on:click={() => editCollisionalCoefficients=true}>Edit constats</button>
                         </div>
 

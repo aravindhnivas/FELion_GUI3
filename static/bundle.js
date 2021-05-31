@@ -63897,17 +63897,17 @@ function create_header_content__slot_slot(ctx) {
 			if (if_block) if_block.c();
 			attr_dev(button, "class", "button is-link svelte-12t72zx");
 			attr_dev(button, "id", "thz_modal_filebrowser_btn");
-			add_location(button, file$1j, 224, 16, 7715);
+			add_location(button, file$1j, 224, 16, 7557);
 			attr_dev(div0, "class", "locationColumn svelte-12t72zx");
-			add_location(div0, file$1j, 223, 12, 7668);
+			add_location(div0, file$1j, 223, 12, 7510);
 			attr_dev(div1, "class", "writefileCheck svelte-12t72zx");
-			add_location(div1, file$1j, 230, 12, 8010);
+			add_location(div1, file$1j, 230, 12, 7852);
 			attr_dev(div2, "class", "subtitle svelte-12t72zx");
-			add_location(div2, file$1j, 240, 16, 8678);
+			add_location(div2, file$1j, 240, 16, 8520);
 			attr_dev(div3, "class", "variableColumn__dropdown svelte-12t72zx");
-			add_location(div3, file$1j, 241, 16, 8770);
+			add_location(div3, file$1j, 241, 16, 8612);
 			attr_dev(div4, "class", "variableColumn svelte-12t72zx");
-			add_location(div4, file$1j, 239, 12, 8632);
+			add_location(div4, file$1j, 239, 12, 8474);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -64264,31 +64264,31 @@ function create_else_block$b(ctx) {
 			t14 = space();
 			if (if_block2) if_block2.c();
 			attr_dev(div0, "class", "subtitle svelte-12t72zx");
-			add_location(div0, file$1j, 261, 20, 9512);
+			add_location(div0, file$1j, 261, 20, 9354);
 			attr_dev(div1, "class", "content__div svelte-12t72zx");
-			add_location(div1, file$1j, 262, 20, 9577);
+			add_location(div1, file$1j, 262, 20, 9419);
 			attr_dev(div2, "class", "sub_container__div svelte-12t72zx");
-			add_location(div2, file$1j, 259, 16, 9456);
+			add_location(div2, file$1j, 259, 16, 9298);
 			attr_dev(div3, "class", "subtitle svelte-12t72zx");
-			add_location(div3, file$1j, 271, 20, 9915);
+			add_location(div3, file$1j, 271, 20, 9757);
 			attr_dev(div4, "class", "content__div svelte-12t72zx");
-			add_location(div4, file$1j, 272, 20, 9986);
+			add_location(div4, file$1j, 272, 20, 9828);
 			attr_dev(div5, "class", "sub_container__div svelte-12t72zx");
-			add_location(div5, file$1j, 270, 16, 9861);
+			add_location(div5, file$1j, 270, 16, 9703);
 			attr_dev(div6, "class", "subtitle svelte-12t72zx");
-			add_location(div6, file$1j, 282, 20, 10430);
+			add_location(div6, file$1j, 282, 20, 10272);
 			attr_dev(div7, "class", "content__div svelte-12t72zx");
-			add_location(div7, file$1j, 283, 20, 10497);
+			add_location(div7, file$1j, 283, 20, 10339);
 			attr_dev(div8, "class", "sub_container__div svelte-12t72zx");
-			add_location(div8, file$1j, 281, 16, 10376);
+			add_location(div8, file$1j, 281, 16, 10218);
 			attr_dev(div9, "class", "subtitle svelte-12t72zx");
-			add_location(div9, file$1j, 294, 20, 10889);
+			add_location(div9, file$1j, 294, 20, 10731);
 			attr_dev(div10, "class", "content__div svelte-12t72zx");
-			add_location(div10, file$1j, 295, 20, 10957);
+			add_location(div10, file$1j, 295, 20, 10799);
 			attr_dev(div11, "class", "sub_container__div svelte-12t72zx");
-			add_location(div11, file$1j, 291, 16, 10831);
+			add_location(div11, file$1j, 291, 16, 10673);
 			attr_dev(div12, "class", "main_container__div svelte-12t72zx");
-			add_location(div12, file$1j, 257, 12, 9390);
+			add_location(div12, file$1j, 257, 12, 9232);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div12, anchor);
@@ -64560,11 +64560,11 @@ function create_if_block_2$9(ctx) {
 			t = text(t_value);
 			hr1 = element("hr");
 			attr_dev(hr0, "class", "svelte-12t72zx");
-			add_location(hr0, file$1j, 255, 57, 9308);
+			add_location(hr0, file$1j, 255, 57, 9150);
 			attr_dev(hr1, "class", "svelte-12t72zx");
-			add_location(hr1, file$1j, 255, 94, 9345);
+			add_location(hr1, file$1j, 255, 94, 9187);
 			attr_dev(div, "class", "content status_report__div svelte-12t72zx");
-			add_location(div, file$1j, 255, 16, 9267);
+			add_location(div, file$1j, 255, 16, 9109);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -64927,13 +64927,13 @@ function create_if_block_5$4(ctx) {
 			}
 
 			attr_dev(div0, "class", "subtitle svelte-12t72zx");
-			add_location(div0, file$1j, 304, 24, 11352);
+			add_location(div0, file$1j, 304, 24, 11194);
 			attr_dev(button, "class", "button is-link center svelte-12t72zx");
-			add_location(button, file$1j, 305, 24, 11428);
+			add_location(button, file$1j, 305, 24, 11270);
 			attr_dev(div1, "class", "content__div svelte-12t72zx");
-			add_location(div1, file$1j, 307, 24, 11563);
+			add_location(div1, file$1j, 307, 24, 11405);
 			attr_dev(div2, "class", "sub_container__div svelte-12t72zx");
-			add_location(div2, file$1j, 303, 20, 11294);
+			add_location(div2, file$1j, 303, 20, 11136);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div2, anchor);
@@ -65157,15 +65157,15 @@ function create_if_block_4$5(ctx) {
 			}
 
 			attr_dev(div0, "class", "subtitle svelte-12t72zx");
-			add_location(div0, file$1j, 318, 24, 11997);
+			add_location(div0, file$1j, 318, 24, 11839);
 			attr_dev(button, "class", "button is-link");
-			add_location(button, file$1j, 323, 28, 12368);
+			add_location(button, file$1j, 323, 28, 12182);
 			attr_dev(div1, "class", "content__div svelte-12t72zx");
-			add_location(div1, file$1j, 319, 24, 12077);
+			add_location(div1, file$1j, 319, 24, 11919);
 			attr_dev(div2, "class", "content__div svelte-12t72zx");
-			add_location(div2, file$1j, 326, 24, 12531);
+			add_location(div2, file$1j, 326, 24, 12345);
 			attr_dev(div3, "class", "sub_container__div svelte-12t72zx");
-			add_location(div3, file$1j, 317, 20, 11939);
+			add_location(div3, file$1j, 317, 20, 11781);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div3, anchor);
@@ -65371,11 +65371,11 @@ function create_if_block_3$7(ctx) {
 			}
 
 			attr_dev(div0, "class", "subtitle svelte-12t72zx");
-			add_location(div0, file$1j, 339, 24, 12997);
+			add_location(div0, file$1j, 339, 24, 12811);
 			attr_dev(div1, "class", "content__div svelte-12t72zx");
-			add_location(div1, file$1j, 341, 24, 13111);
+			add_location(div1, file$1j, 341, 24, 12925);
 			attr_dev(div2, "class", "sub_container__div svelte-12t72zx");
-			add_location(div2, file$1j, 337, 20, 12937);
+			add_location(div2, file$1j, 337, 20, 12751);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div2, anchor);
@@ -65600,7 +65600,7 @@ function create_if_block_1$d(ctx) {
 			button = element("button");
 			button.textContent = "Stop";
 			attr_dev(button, "class", "button is-danger");
-			add_location(button, file$1j, 358, 16, 13580);
+			add_location(button, file$1j, 358, 16, 13394);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, button, anchor);
@@ -65669,10 +65669,10 @@ function create_footer_content__slot_slot(ctx) {
 			button1 = element("button");
 			button1.textContent = "Submit";
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$1j, 361, 12, 13766);
+			add_location(button0, file$1j, 361, 12, 13580);
 			attr_dev(button1, "class", "button is-link");
 			toggle_class(button1, "is-loading", /*running*/ ctx[13]);
-			add_location(button1, file$1j, 363, 12, 13911);
+			add_location(button1, file$1j, 363, 12, 13725);
 		},
 		m: function mount(target, anchor) {
 			if (if_block) if_block.m(target, anchor);
@@ -66096,13 +66096,8 @@ function instance$1q($$self, $$props, $$invalidate) {
 	};
 
 	const simulation = e => {
-		const collisionalRates = window._.flatten(collisionalCoefficient);
 		const collisional_rates = {};
-
-		if (includeCollision) {
-			collisionalRates.forEach(f => collisional_rates[f.label] = parseFloat(document.querySelector(`#${f.label} input`).value));
-		}
-
+		collisionalCoefficient.forEach(f => collisional_rates[f.label] = f.value);
 		const main_parameters = {};
 		mainParameters.forEach(f => main_parameters[f.label] = f.value);
 		const simulation_parameters = {};

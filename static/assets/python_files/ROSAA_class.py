@@ -113,16 +113,16 @@ class ROSAA():
         
         if self.includeSpontaneousEmission:
 
-            # # Einstein Coefficient A
-            # if i == self.excitedFrom: 
-            #     temp = self.A_10*N[self.excitedTo]
-            #     collections.append(temp)
+            # Einstein Coefficient A
+            if i == self.excitedFrom: 
+                temp = self.A_10*N[self.excitedTo]
+                collections.append(temp)
 
-            # if i == self.excitedTo:
-            #     temp = -self.A_10*N[self.excitedTo]
-            #     collections.append(temp)
-            temp = self.A_10*N[self.excitedTo]
-            temp = self.A_10*N[self.excitedTo]
+            if i == self.excitedTo:
+                temp = -self.A_10*N[self.excitedTo]
+                collections.append(temp)
+            # temp = self.A_10*N[self.excitedTo]
+            # temp = self.A_10*N[self.excitedTo]
 
         # Einstein Coefficient B
 
@@ -465,6 +465,5 @@ if __name__ == "__main__":
     args = sys.argv[1:][0].split(",")
     
     conditions = json.loads(", ".join(args))
-    print(conditions)
-    # time_start = perf_counter()
+    print(conditions, flush=True)
     # ROSAA(conditions)
