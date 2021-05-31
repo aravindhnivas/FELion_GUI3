@@ -310,6 +310,8 @@
 
                 
                 <div class="sub_container__div">
+
+
                     <div class="subtitle">Lorrentz lineshape</div>
                     <div class="content__div">
                         {#each powerBroadening as {label, value, id}(id)}
@@ -325,13 +327,12 @@
 
                         <div class="content__div">
                             {#each einsteinCoefficient as {label, value, id}(id)}
-                                <Textfield {value} {label}/>
+                                <Textfield bind:value {label}/>
                             {/each}
                         </div>
                     </div>
                 {/if}
                 
-
                 {#if includeCollision}
 
                     <div class="sub_container__div">
@@ -339,18 +340,16 @@
                         <div class="content__div">
                             <CustomSelect options={["deexcitation", "excitation"]} bind:picked={collisionalRateType} />
                             <Textfield bind:value={trapTemp} label="trapTemp(K)"/>
-
+                            
                             <button class="button is-link" on:click={() => editCollisionalCoefficients=true}>Edit constats</button>
                         </div>
 
-                        {#each collisionalCoefficient as {label, value, id}(id)}
-                            <div class="content__div">
-                                <Textfield  {value} {label} id={label} />
-                            </div>
-                        {/each}
-                        
+                        <div class="content__div">
+                            {#each collisionalCoefficient as {label, value, id}(id)}
+                                <Textfield bind:value {label}/>
+                            {/each}
+                        </div>
                     </div>
-
                 {/if}
 
                 

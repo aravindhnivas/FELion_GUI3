@@ -1,6 +1,6 @@
 
 <script>
-  import {onMount} from "svelte";
+  // import {onMount} from "svelte";
   import { createEventDispatcher } from 'svelte';
   export let active =  false, title =  "Title", style="width:60vw", bodyBackground = "#634e96", bodyStyle="max-height: 30em;", contentID="";
 
