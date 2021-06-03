@@ -42,7 +42,7 @@ class ROSAA():
         self.simulation_parameters = self.conditions["simulation_parameters"]
 
 
-        self.einstein_coefficient = self.conditions["einstein_coefficient"]
+        self.einstein_coefficient = {q:float(value) for q, value in self.conditions["einstein_coefficient"].items()}
         
         self.lineshape_conditions = self.conditions["lineshape_conditions"]
         self.rate_coefficients = self.conditions["rate_coefficients"]
@@ -119,14 +119,31 @@ class ROSAA():
 
             # Einstein Coefficient A
             if i == self.excitedFrom: 
-                temp = self.A_10*N[self.excitedTo]
+                # temp = self.A_10*N[self.excitedTo]
+                temp = self.einstein_coefficient[f"{self.excitedTo} --> {self.excitedFrom}"]*N[self.excitedFrom]
                 collections.append(temp)
 
             if i == self.excitedTo:
-                temp = -self.A_10*N[self.excitedTo]
+                # temp = -self.A_10*N[self.excitedTo]
+                temp = -self.einstein_coefficient[f"{self.excitedTo} --> {self.excitedFrom}"]*N[self.excitedTo]
                 collections.append(temp)
-            # temp = self.A_10*N[self.excitedTo]
-            # temp = self.A_10*N[self.excitedTo]
+            # if i == 0:
+            #     temp_from = self.einstein_coefficient[f"{i+1} --> {i}"]*N[i+1]
+            #     collections.append(temp_from)
+            # elif i<self.totallevel-1:
+
+
+
+            #     temp_from = self.einstein_coefficient[f"{i+1} --> {i}"]*N[i+1]
+            
+            #     temp_to = -self.einstein_coefficient[f"{i} --> {i-1}"]*N[i]
+            #     collections.append(temp_from)
+
+            #     collections.append(temp_to)
+            # elif i == self.totallevel-1:
+            #     temp_to = -self.einstein_coefficient[f"{i} --> {i-1}"]*N[i]
+
+            #     collections.append(temp_to)
 
         # Einstein Coefficient B
 
@@ -140,6 +157,7 @@ class ROSAA():
                 collections.append(temp)
 
             if i == self.excitedTo:
+
                 temp = B_rate
                 collections.append(temp)
 
@@ -276,7 +294,7 @@ class ROSAA():
 
         print(f"{nHe=:.2e}\n{power=:.2e}", flush=True)
         norm = self.lineshape_normalise(power)
-        self.A_10 = float(self.einstein_coefficient["A_10"])
+        self.A_10 = float(self.einstein_coefficient[f"{self.excitedTo} --> {self.excitedFrom}"])
         self.B_10 = stimulated_emission(self.A_10, self.freq)*norm
         self.B_01 = stimulated_absorption(self.excitedFrom, self.excitedTo, self.B_10)
 
@@ -309,16 +327,12 @@ class ROSAA():
         
         
         for i in range(self.totallevel):
+
+
             collisional_collection = [0]
             einstein_collection = [0]
             if self.includeCollision:
                 collisional_collection = self.compute_collision_process(i, N)
-
-            
-            # else:
-            #     for i, ratio in enumerate(boltzman_ratio):
-            #         N[i] *= ratio
-
 
             einstein_collection = self.compute_einstein_process(i, N)
             collections = collisional_collection + einstein_collection
