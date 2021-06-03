@@ -121,7 +121,8 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
 
                     py.on("close", () => {
                         if (!error_occured_py) {
-                            let dataFromPython = fs.readFileSync(path.join(get(pythonscript), "data.json"))
+                            const dataFile = pyfile.split(".")[0]
+                            let dataFromPython = fs.readFileSync(path.join(get(pythonscript), "local", dataFile+"_data.json"))
                             window.dataFromPython = dataFromPython = JSON.parse(dataFromPython.toString("utf-8"))
                             console.log(dataFromPython)
                             resolve(dataFromPython)

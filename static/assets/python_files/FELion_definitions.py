@@ -15,6 +15,9 @@ from scipy.interpolate import interp1d
 
 from uncertainties import ufloat as uf, unumpy as unp
 
+
+
+
 def gaussian(x, amp, sig, cen): return amp*np.exp(-0.5*((x-cen)/sig)**2)
 
 def move(pathdir, x): return (shutil.move(join(pathdir, x), join(pathdir, "DATA", x)), print("%s moved to DATA folder" % x))
@@ -72,8 +75,11 @@ def read_dat_file(filename, norm_method):
     return xs, ys
 
 def sendData(dataToSend):
-    with open(pt(__file__).parent / "data.json", 'w+') as f:
 
+    calling_file = pt(inspect.stack()[-1].filename).stem
+    
+    with open(pt(__file__).parent / f"local/{calling_file}_data.json", 'w+') as f:
+        
         data = json.dumps(dataToSend, sort_keys=True, indent=4, separators=(',', ': '))
         f.write(data)
 

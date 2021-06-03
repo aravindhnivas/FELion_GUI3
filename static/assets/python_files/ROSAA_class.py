@@ -32,10 +32,14 @@ class ROSAA():
     def save_parameters_to_file(self):
         self.currentLocation = self.conditions["currentLocation"]
         self.filename = self.conditions["filename"]
+
         self.writefile = conditions["writefile"]
-        with open(pt(self.currentLocation) / f"{self.filename}.json", 'w+') as f:
-            data = json.dumps(self.conditions, sort_keys=True, indent=4, separators=(',', ': '))
-            f.write(data)
+        
+        if self.writefile:
+
+            with open(pt(self.currentLocation) / f"{self.filename}.json", 'w+') as f:
+                data = json.dumps(self.conditions, sort_keys=True, indent=4, separators=(',', ': '))
+                f.write(data)
 
     def deconstruct_parameters(self):
         self.main_parameters = self.conditions["main_parameters"]
@@ -118,32 +122,33 @@ class ROSAA():
         if self.includeSpontaneousEmission:
 
             # Einstein Coefficient A
-            if i == self.excitedFrom: 
-                # temp = self.A_10*N[self.excitedTo]
-                temp = self.einstein_coefficient[f"{self.excitedTo} --> {self.excitedFrom}"]*N[self.excitedFrom]
-                collections.append(temp)
+            # if i == self.excitedFrom: 
+            #     # temp = self.A_10*N[self.excitedTo]
+            #     temp = self.einstein_coefficient[f"{self.excitedTo} --> {self.excitedFrom}"]*N[self.excitedFrom]
+            #     collections.append(temp)
 
-            if i == self.excitedTo:
-                # temp = -self.A_10*N[self.excitedTo]
-                temp = -self.einstein_coefficient[f"{self.excitedTo} --> {self.excitedFrom}"]*N[self.excitedTo]
-                collections.append(temp)
-            # if i == 0:
-            #     temp_from = self.einstein_coefficient[f"{i+1} --> {i}"]*N[i+1]
-            #     collections.append(temp_from)
-            # elif i<self.totallevel-1:
-
+            # if i == self.excitedTo:
+            #     # temp = -self.A_10*N[self.excitedTo]
+            #     temp = -self.einstein_coefficient[f"{self.excitedTo} --> {self.excitedFrom}"]*N[self.excitedTo]
+            #     collections.append(temp)
+            if i == 0:
+                temp_from = self.einstein_coefficient[f"{i+1} --> {i}"]*N[i+1]
+                collections.append(temp_from)
 
 
-            #     temp_from = self.einstein_coefficient[f"{i+1} --> {i}"]*N[i+1]
-            
-            #     temp_to = -self.einstein_coefficient[f"{i} --> {i-1}"]*N[i]
-            #     collections.append(temp_from)
+            elif i<self.totallevel-1:
 
-            #     collections.append(temp_to)
-            # elif i == self.totallevel-1:
-            #     temp_to = -self.einstein_coefficient[f"{i} --> {i-1}"]*N[i]
+                temp_from = self.einstein_coefficient[f"{i+1} --> {i}"]*N[i+1]
+                temp_to = -self.einstein_coefficient[f"{i} --> {i-1}"]*N[i]
 
-            #     collections.append(temp_to)
+                collections.append(temp_from)
+                collections.append(temp_to)
+            elif i == self.totallevel-1:
+
+                temp_to = -self.einstein_coefficient[f"{i} --> {i-1}"]*N[i]
+
+                collections.append(temp_to)
+
 
         # Einstein Coefficient B
 
@@ -241,7 +246,8 @@ class ROSAA():
             print(f"Total time taken for simulation: {round(perf_counter()-self.time_start, 2)} s", flush=True)
 
             
-            self.write_data_to_file(changing_parameters, changing_parameters_range, resOnCounts_list, resOffCounts_list, signal)
+            if self.writefile:
+                self.write_data_to_file(changing_parameters, changing_parameters_range, resOnCounts_list, resOffCounts_list, signal)
             self.plot_results(changing_parameters, x=variable_range, y=signal)
 
         if changing_parameters == "time":
@@ -256,14 +262,15 @@ class ROSAA():
             self.plot_results(changing_parameters, resOnCounts, resOffCounts)
             savefile = pt(self.currentLocation)/self.filename
 
-            f = open(f"{savefile}_raw_data.dat", "w+")
-            f.write(f"############################## Begin: Run ##############################\n")
-            self.write_signal_file(f, resOnCounts.T, resOffCounts.T)
+            if self.writefile:
+                f = open(f"{savefile}_raw_data.dat", "w+")
+                f.write(f"############################## Begin: Run ##############################\n")
+                self.write_signal_file(f, resOnCounts.T, resOffCounts.T)
 
-            f.write(f"############################## END: Run ##############################\n\n")
-            f.close()
+                f.write(f"############################## END: Run ##############################\n\n")
+                f.close()
 
-            if self.includeAttachmentRate:
+            if self.includeAttachmentRate and self.writefile:
 
                 with open(f"{savefile}_signal.dat", "w+") as f:
                     f.write(f"# Time(ms) \tSignal (%)\n")
