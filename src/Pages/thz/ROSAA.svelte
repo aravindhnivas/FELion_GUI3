@@ -1,6 +1,6 @@
 
 <script>
-    import { createEventDispatcher, onMount} from 'svelte';
+    import { createEventDispatcher } from 'svelte';
     import {browse} from "../../components/Layout.svelte";
     import Textfield from '@smui/textfield';
     import {fade} from "svelte/transition";
@@ -66,7 +66,7 @@
     
     
     let electronSpin=false, zeemanSplit= false;
-    let collisionalRateType = "deexcitation"
+    let collisionalRateType = "excitation"
     $: deexcitation = collisionalRateType==="deexcitation";
 
     let numberOfLevels = 3;
@@ -141,16 +141,15 @@
     let editCollisionalCoefficients = false, editEinsteinCoefficients= false, collisionalCoefficient=[], einsteinCoefficient=[];
 
 
-    async function getRateLabels(e, type="einstein"){
+    async function getRateLabelsEinstein(e){
         try {
             const args = [JSON.stringify({numberOfLevels, electronSpin, zeemanSplit})]
-            const pyfile = "get_rate_labels.py"
+            const pyfile = "get_rate_labels_einstein.py"
             
             const dataFromPython = await computePy_func({e, pyfile, args})
-            // console.log(dataFromPython)
             const {transition_labels, transition_labels_J0, transition_labels_J1} = dataFromPython
             
-            type=="einstein" ? einsteinCoefficient = [] : collisionalCoefficient = []
+            einsteinCoefficient = []
             
 
             transition_labels.forEach(level=>{
@@ -159,32 +158,37 @@
             
                 if (electronSpin && zeemanSplit) {
                     labels = level.map(f=>f={label:f, value:0, id:window.getID()})
-                    type=="einstein" ? einsteinCoefficient = [...einsteinCoefficient, ...labels] : collisionalCoefficient =  [...collisionalCoefficient, ...labels]
+                    einsteinCoefficient = [...einsteinCoefficient, ...labels]
                 } else {
                     labels = {label:level, value:0, id:window.getID()}
-                    type=="einstein" ? einsteinCoefficient = [...einsteinCoefficient, labels] : collisionalCoefficient = [...collisionalCoefficient, labels]
+                    einsteinCoefficient = [...einsteinCoefficient, labels]
 
                 }
-
-                if (type=="collision") {collisionalRateType="deexcitation"}
-
             })
         } catch (error) { console.error(error) }
     }
 
+    async function getRateLabelsCollision(e){
+        try {
+            const args = [JSON.stringify({numberOfLevels, electronSpin, zeemanSplit})]
+            const pyfile = "get_rate_labels_collision.py"
+            
+            const dataFromPython = await computePy_func({e, pyfile, args})
+            const {transition_labels} = dataFromPython
+            collisionalCoefficient = transition_labels.map(label=>{return {label, value:0, id:window.getID()}})
+
+            collisionalRateType = "excitation"
+    
+        } catch (error) { console.error(error) }
+    }
 
     function changeCollisionalRateType() {
-        
         collisionalCoefficient = collisionalCoefficient.map(level=>{
             const level_arr = level.label.split(" --> ")
             const label = `${level_arr[1]} --> ${level_arr[0]}`
             return {label, value:level.value, id:level.id}
         })
     }
-
-    let mounted=false;
-    onMount(()=>{mounted= true;})
-
 </script>
 
 <style lang="scss">
@@ -368,7 +372,7 @@
 
                         <div class="control__div ">
                             <button class="button is-link center" on:click={() => editEinsteinCoefficients=true}>Edit constats</button>
-                            <button class="button is-link center" on:click={getRateLabels}>Get labels</button>
+                            <button class="button is-link center" on:click={getRateLabelsEinstein}>Get labels</button>
 
                         </div>
                         {#if einsteinCoefficient.length>0}
@@ -389,7 +393,7 @@
                             <Textfield bind:value={trapTemp} label="trapTemp(K)"/>
                             <button class="button is-link" on:click={() => editCollisionalCoefficients=true}>Edit constats</button>
 
-                            <button class="button is-link center" on:click={(e)=>getRateLabels(e, "collision")}>Get labels</button>
+                            <button class="button is-link center" on:click={getRateLabelsCollision}>Get labels</button>
                         </div>
 
                         {#if collisionalCoefficient.length>0}

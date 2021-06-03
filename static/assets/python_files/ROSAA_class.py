@@ -40,19 +40,23 @@ class ROSAA():
     def deconstruct_parameters(self):
         self.main_parameters = self.conditions["main_parameters"]
         self.simulation_parameters = self.conditions["simulation_parameters"]
+
+
         self.einstein_coefficient = self.conditions["einstein_coefficient"]
+        
         self.lineshape_conditions = self.conditions["lineshape_conditions"]
         self.rate_coefficients = self.conditions["rate_coefficients"]
         self.power_broadening = self.conditions["power_broadening"]
 
         self.includeSpontaneousEmission = conditions["includeSpontaneousEmission"]
         self.includeCollision = conditions["includeCollision"]
+
         self.includeAttachmentRate = conditions["includeAttachmentRate"]
 
         self.totallevel = int(conditions["numberOfLevels"])
         self.totalAttachmentLevels = int(self.rate_coefficients["totalAttachmentLevels"])
 
-        self.Energy = [float(_) for _ in self.main_parameters["Energy"].split(", ")]
+        self.Energy = [float(_) for _ in self.main_parameters["Energy"].split(",")]
         self.trapTemp = float(self.conditions["trapTemp"])
         self.excitedTo = self.simulation_parameters["excitedTo"]
         self.excitedFrom = self.simulation_parameters["excitedFrom"]
@@ -74,8 +78,8 @@ class ROSAA():
 
                 if i != j & j>i:
                 
-                    deexciteRateConstantKey = f"q_{j}{i}"
-                    exciteRateConstantKey = f"q_{i}{j}"
+                    deexciteRateConstantKey = f"{j} --> {i}"
+                    exciteRateConstantKey = f"{i} --> {j}"
                     
                     if q_deexcitation_mode:
                         
@@ -99,8 +103,8 @@ class ROSAA():
         for j in range(self.totallevel):
             if i!= j: 
                 
-                key = f"q_{j}{i}"
-                keyInverse = f"q_{i}{j}"
+                key = f"{j} --> {i}"
+                keyInverse = f"{i} --> {j}"
                 
                 k = self.collisional_rates[key]*self.nHe*N[j] - self.collisional_rates[keyInverse]*self.nHe*N[i]
                 collections.append(k)
@@ -157,7 +161,6 @@ class ROSAA():
             
         dR_dt.append(currentRate)
         return dR_dt
-
 
     def begin_simulation(self):
         changing_parameters = self.conditions["variable"]
@@ -458,12 +461,9 @@ class ROSAA():
         for on in data_on: 
             f.write("\t".join([f'{i}' for i in on])+"\n")
         
-
 if __name__ == "__main__":
 
-
     args = sys.argv[1:][0].split(",")
-    
     conditions = json.loads(", ".join(args))
     print(conditions, flush=True)
-    # ROSAA(conditions)
+    ROSAA(conditions)
