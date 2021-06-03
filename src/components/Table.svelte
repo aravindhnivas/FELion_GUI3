@@ -62,7 +62,7 @@
     {/if}
 
 
-    <div class="mdc-data-table tableContainer" transition:fade>
+    <div class="mdc-data-table tableContainer" >
         <table class="mdc-data-table__table" aria-label={label} {id}>
             <thead>
 

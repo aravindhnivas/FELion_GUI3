@@ -1,6 +1,6 @@
 
 <script>
-    import { createEventDispatcher } from 'svelte';
+    import { createEventDispatcher, onMount} from 'svelte';
     import {browse} from "../../components/Layout.svelte";
     import Textfield from '@smui/textfield';
     import {fade} from "svelte/transition";
@@ -9,20 +9,21 @@
     import CustomCheckbox from "../../components/CustomCheckbox.svelte";
     import CustomSelect from "../../components/CustomSelect.svelte";
     import EditCoefficients from './EditCoefficients.svelte';
-    // import EinsteinACoefficients from './EinsteinACoefficients.svelte';
+
 
     export let active=false;
     const dispatch = createEventDispatcher();
-
     const mainParameters = [
     
         {label:"molecule", value:"CD", id:window.getID()},
+
         
         {label:"tagging partner", value:"He", id:window.getID()},
         
         {label:"freq", value:"453_521_850_000", id:window.getID()},
         {label:"trap_area", value:"5e-5", id:window.getID()},
         {label:"Energy", value:"0, 15.127861, 45.373851", id:window.getID()},
+
     ]
 
     const simulationParameters = [
@@ -35,15 +36,12 @@
         {label:"excitedFrom", value:0, id:window.getID()},
     ]
 
-
     const dopplerLineshape = [
 
         {label:"IonMass(amu)", value:14, id:window.getID(), type:"number", step:1},
         
         {label:"IonTemperature(K)", value:12, id:window.getID(), type:"number", step:0.5},
     ]
-
-
 
     const powerBroadening = [
 
@@ -52,9 +50,6 @@
 
         {label:"power(W)", value:"2e-5", id:window.getID()},
     ]
-
-
-    // $: einsteinCoefficient = _.range(numberOfLevels).map(i=>{return {label:`A${i+1}${i}`, value:"0", id:window.getID()}})
 
     let trapTemp = 5.7
     const rateCoefficients = [
@@ -66,23 +61,18 @@
         {label:"k3", value:"9.6e-31, 2.9e-30", id:window.getID()},
         
         {label:"kCID", value:"6.7e-16, 1.9e-15", id:window.getID()},
+    
     ]
-
+    
     
     let electronSpin=false, zeemanSplit= false;
     let collisionalRateType = "deexcitation"
-
     $: deexcitation = collisionalRateType==="deexcitation";
 
     let numberOfLevels = 3;
 
-
-    // $: collisionalCoefficient = _.range(1, numberOfLevels)
-    //                                 .map(j=> _.range(j)
-    //                                     .map(jj=> deexcitation ? {label:`q_${j}${jj}`, value:0, id:window.getID()} : {label:`q_${jj}${j}`, value:0, id:window.getID()})
-    //                                 );
-
     let py, running = false;
+
 
     const pyEventHandle = (e) => {
 
@@ -97,7 +87,6 @@
         let dataReceived = e.detail.dataReceived
         statusReport += `${dataReceived}\n`
     }
-
     const pyEventClosedHandle = (e) => {
         running=false;
 
@@ -136,10 +125,7 @@
 
     }
 
-
-
     let currentLocation = db.get("thz_modal_location") || db.get("thz_location") || "";
-
     let filename = `ROSAA_modal_${mainParameters[0].value}_${mainParameters[1].value}`;
     $: if(currentLocation&&fs.existsSync(currentLocation)) {db.set("thz_modal_location", currentLocation)}
 
@@ -150,19 +136,62 @@
 
     let writefile = true, includeCollision = true, includeSpontaneousEmission = true, includeAttachmentRate = true;
     let variable = "time", variableRange = "1e12, 1e16, 10";
+
     const variablesList = ["time", "He density(cm3)", "Power(W)"]
     let editCollisionalCoefficients = false, editEinsteinCoefficients= false, collisionalCoefficient=[], einsteinCoefficient=[];
+
+
+    async function getRateLabels(e, type="einstein"){
+        try {
+            const args = [JSON.stringify({numberOfLevels, electronSpin, zeemanSplit})]
+            const pyfile = "get_rate_labels.py"
+            
+            const dataFromPython = await computePy_func({e, pyfile, args})
+            // console.log(dataFromPython)
+            const {transition_labels, transition_labels_J0, transition_labels_J1} = dataFromPython
+            
+            type=="einstein" ? einsteinCoefficient = [] : collisionalCoefficient = []
+            
+
+            transition_labels.forEach(level=>{
+
+                let labels;
+            
+                if (electronSpin && zeemanSplit) {
+                    labels = level.map(f=>f={label:f, value:0, id:window.getID()})
+                    type=="einstein" ? einsteinCoefficient = [...einsteinCoefficient, ...labels] : collisionalCoefficient =  [...collisionalCoefficient, ...labels]
+                } else {
+                    labels = {label:level, value:0, id:window.getID()}
+                    type=="einstein" ? einsteinCoefficient = [...einsteinCoefficient, labels] : collisionalCoefficient = [...collisionalCoefficient, labels]
+
+                }
+
+                if (type=="collision") {collisionalRateType="deexcitation"}
+
+            })
+        } catch (error) { console.error(error) }
+    }
+
+
+    function changeCollisionalRateType() {
+        
+        collisionalCoefficient = collisionalCoefficient.map(level=>{
+            const level_arr = level.label.split(" --> ")
+            const label = `${level_arr[1]} --> ${level_arr[0]}`
+            return {label, value:level.value, id:level.id}
+        })
+    }
+
+    let mounted=false;
+    onMount(()=>{mounted= true;})
+
 </script>
 
-
 <style lang="scss">
-
-
     .locationColumn {
-
         display: grid;
-
         grid-auto-flow: column;
+
         grid-gap: 1em;
         grid-template-columns: 1fr 4fr 2fr;
 
@@ -170,8 +199,8 @@
         .button {
             margin:0;
             align-self: center;
-
         }
+
     }
 
     hr {background-color: #fafafa;}
@@ -201,7 +230,7 @@
         padding: 1em;
         .subtitle {margin:0;}
     }
-
+    :global(.content__div label) {flex-basis: 30%;}
     .sub_container__div {
         display: grid;
 
@@ -209,35 +238,47 @@
 
         .subtitle {place-self:center;}
         .content__div {
+            max-height: 30rem;
+            overflow-y: auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-self: center;
+        }
+        .control__div {
+
             display: grid;
             grid-auto-flow: column;
+            justify-self: center;
+            gap: 0.5em;
 
-            grid-gap: 1em;
-            border: solid white 1px;
-            padding: 1em;
-            border-radius: 2em;
-            place-content: center;
         }
+
     }
 
     .status_report__div {
         white-space: pre-wrap; 
+
         -webkit-user-select: text;
         padding:1em;
     }
+
 
 
     .center {
         margin:auto;
         width:max-content;
     }
+
 </style>
 
 <EditCoefficients title="Collisional rate constants" bind:active={editCollisionalCoefficients} bind:coefficients={collisionalCoefficient} />
 <EditCoefficients title="Einstein Co-efficients" bind:active={editEinsteinCoefficients} bind:coefficients={einsteinCoefficient} />
 
+
 {#if active}
+
     <SeparateWindow id="ROSAA__modal" title="ROSAA modal" bind:active >
+
 
         <svelte:fragment slot="header_content__slot" >
 
@@ -277,10 +318,10 @@
             {:else}
             <div class="main_container__div" >
             
-                <div class="sub_container__div">
+                <div class="sub_container__div box">
 
                     <div class="subtitle">Main Parameters</div>
-                    <div class="content__div">
+                    <div class="content__div ">
                         {#each mainParameters as {label, value, id}(id)}
                             <Textfield bind:value {label}/>
                         {/each}
@@ -288,9 +329,9 @@
                 </div>
                 
 
-                <div class="sub_container__div">
+                <div class="sub_container__div box">
                     <div class="subtitle">Simulation parameters</div>
-                    <div class="content__div">
+                    <div class="content__div ">
                         {#each simulationParameters as {label, value, id}(id)}
                             <Textfield bind:value {label}/>
                         {/each}
@@ -299,9 +340,9 @@
                 </div>
                 
 
-                <div class="sub_container__div">
+                <div class="sub_container__div box">
                     <div class="subtitle">Doppler lineshape</div>
-                    <div class="content__div">
+                    <div class="content__div ">
                         {#each dopplerLineshape as {label, value, id, type, step}(id)}
                             <Textfield bind:value {label} input$type={type} input$step={step}/>
                         {/each}
@@ -309,11 +350,11 @@
                 </div>
 
                 
-                <div class="sub_container__div">
+                <div class="sub_container__div box">
 
 
                     <div class="subtitle">Lorrentz lineshape</div>
-                    <div class="content__div">
+                    <div class="content__div ">
                         {#each powerBroadening as {label, value, id}(id)}
                             <Textfield bind:value {label}/>
                         {/each}
@@ -321,41 +362,50 @@
                 </div>
                 
                 {#if includeSpontaneousEmission}
-                    <div class="sub_container__div">
-                        <div class="subtitle">Einstein Co-efficients</div>
-                        <button class="button is-link center" on:click={() => editEinsteinCoefficients=true}>Edit constats</button>
+                    <div class="sub_container__div box">
 
-                        <div class="content__div">
-                            {#each einsteinCoefficient as {label, value, id}(id)}
-                                <Textfield bind:value {label}/>
-                            {/each}
+                        <div class="subtitle">Einstein Co-efficients</div>
+
+                        <div class="control__div ">
+                            <button class="button is-link center" on:click={() => editEinsteinCoefficients=true}>Edit constats</button>
+                            <button class="button is-link center" on:click={getRateLabels}>Get labels</button>
+
                         </div>
+                        {#if einsteinCoefficient.length>0}
+                            <div class="content__div ">
+                                {#each einsteinCoefficient as {label, value, id}(id)}
+                                    <Textfield bind:value {label}/>
+                                {/each}
+                            </div>
+                        {/if}
                     </div>
                 {/if}
                 
                 {#if includeCollision}
-
-                    <div class="sub_container__div">
+                    <div class="sub_container__div box">
                         <div class="subtitle">Collisional rate constants</div>
-                        <div class="content__div">
-                            <CustomSelect options={["deexcitation", "excitation"]} bind:picked={collisionalRateType} />
+                        <div class="control__div ">
+                            <CustomSelect options={["deexcitation", "excitation"]} bind:picked={collisionalRateType} on:change={changeCollisionalRateType}/>
                             <Textfield bind:value={trapTemp} label="trapTemp(K)"/>
-
                             <button class="button is-link" on:click={() => editCollisionalCoefficients=true}>Edit constats</button>
+
+                            <button class="button is-link center" on:click={(e)=>getRateLabels(e, "collision")}>Get labels</button>
                         </div>
 
-                        <div class="content__div">
-                            {#each collisionalCoefficient as {label, value, id}(id)}
-                                <Textfield bind:value {label}/>
-                            {/each}
-                        </div>
+                        {#if collisionalCoefficient.length>0}
+                            <div class="content__div ">
+                                {#each collisionalCoefficient as {label, value, id}(id)}
+                                    <Textfield bind:value {label}/>
+                                {/each}
+                            </div>
+                        {/if}
                     </div>
                 {/if}
 
                 
                 {#if includeAttachmentRate}
                     
-                    <div class="sub_container__div">
+                    <div class="sub_container__div box">
 
                         <div class="subtitle">Rare-gas attachment (K3) and dissociation (kCID) constants</div>
 
