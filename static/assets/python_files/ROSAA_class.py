@@ -78,7 +78,6 @@ class ROSAA():
         self.excitedTo = str(self.simulation_parameters["excitedTo"])
         self.excitedFrom = str(self.simulation_parameters["excitedFrom"])
         self.freq = float(self.main_parameters["freq"])
-        
         self.molecule = self.main_parameters["molecule"]
 
         self.taggingPartner = self.main_parameters["tagging partner"]
@@ -132,6 +131,7 @@ class ROSAA():
 
     
     
+    
     def compute_einstein_process(self, i, N):
 
         collections = []
@@ -172,7 +172,6 @@ class ROSAA():
                 temp = B_rate
                 collections.append(temp)
         return collections
-
 
     def compute_attachment_process(self, N, N_He, dR_dt):
     
@@ -307,14 +306,14 @@ class ROSAA():
             run_for_each(nHe, run_type="power")
 
     def get_attachment_rates(self):
-        self.Rate_K3 = [float(i.strip())*self.nHe**2 for i in self.rate_coefficients["k3"].split(",")]
 
+        self.Rate_K3 = [float(i.strip())*self.nHe**2 for i in self.rate_coefficients["k3"].split(",")]
         a = float(self.rate_coefficients["a(k31)"])
         self.Rate_K3_excited = a*self.Rate_K3[0]
+
+
         self.Rate_kCID = [float(i.strip())*self.nHe for i in self.rate_coefficients["kCID"].split(",")]
 
-    
-    
     def get_simulation_results(self, nHe, power):
 
         self.nHe = nHe
@@ -324,7 +323,7 @@ class ROSAA():
         norm = self.lineshape_normalise(power)
         self.A_10 = float(self.einstein_coefficient[f"{self.excitedTo} --> {self.excitedFrom}"])
         self.B_10 = stimulated_emission(self.A_10, self.freq)*norm
-        self.B_01 = stimulated_absorption(int(self.excitedFrom), int(self.excitedTo), self.B_10, self.electronSpin, self.zeemanSplit)
+        self.B_01 = stimulated_absorption(self.excitedFrom, self.excitedTo, self.B_10, self.electronSpin, self.zeemanSplit)
 
         self.get_attachment_rates()
         self.p = float(self.rate_coefficients["branching-ratio(kCID)"])
@@ -339,20 +338,27 @@ class ROSAA():
         resOnCounts = Non.sol(self.simulation_duration_data_points)
         return Noff, Non
 
+
     def computeRateDistributionEquations(self, t, counts):
 
         if self.includeAttachmentRate:
-            N =  counts[:-self.totalAttachmentLevels]
+            N = counts[:-self.totalAttachmentLevels]
 
             N_He = counts[-self.totalAttachmentLevels:]
         else: N = counts
         
         
-        energy_keys = self.energy_levels.keys()
-        ion_counts = {key:value for key, value in zip(energy_keys, N)}
-        
         rateCollection = []
 
+        # if not self.includeCollision:
+        #     N = N.sum()*self.boltzman_ratio
+        
+            # temp_collision_boltzman = new_distribution[counter]
+            # collisional_collection.append(temp_collision_boltzman)
+
+        energy_keys = self.energy_levels.keys()
+        ion_counts = {key: value for key, value in zip(energy_keys, N)}
+        
         counter = 0
         for i in energy_keys:
 
@@ -366,15 +372,13 @@ class ROSAA():
                 if self.includeCollision:
                 
                     if i!= j:
-                    
                         if key in self.collisional_rates and keyInverse in self.collisional_rates:
                             k = self.collisional_rates[key]*self.nHe*ion_counts[j] - self.collisional_rates[keyInverse]*self.nHe*ion_counts[i]
                             collisional_collection.append(k)
-
-                else:
-                    new_distribution = N.sum()*self.boltzman_ratio
-                    # temp_collision_boltzman = new_distribution[counter]
-                    # collisional_collection.append(temp_collision_boltzman)
+                # else:
+                #     new_distribution = N.sum()*self.boltzman_ratio
+                #     temp_collision_boltzman = new_distribution[counter]
+                #     collisional_collection.append(temp_collision_boltzman)
 
                 temp_E = 0
 
@@ -549,7 +553,6 @@ class ROSAA():
 if __name__ == "__main__":
 
     args = sys.argv[1:][0].split(",")
-
     conditions = json.loads(", ".join(args))
 
     print(conditions, flush=True)
