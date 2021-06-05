@@ -22,7 +22,7 @@
         
         {label:"freq", value:"453_521_850_000", id:window.getID()},
         {label:"trap_area", value:"5e-5", id:window.getID()},
-        {label:"Energy", value:"0, 15.127861, 45.373851", id:window.getID()},
+        // {label:"Energy", value:"0, 15.127861, 45.373851", id:window.getID()},
 
     ]
 
@@ -69,7 +69,7 @@
     let collisionalRateType = "excitation"
     $: deexcitation = collisionalRateType==="deexcitation";
 
-    let numberOfLevels = 3;
+    
 
     let py, running = false;
 
@@ -112,14 +112,16 @@
         const power_broadening = {}
         powerBroadening.forEach(f=>power_broadening[f.label]=f.value)
 
-        // const einstein_coefficient = einsteinCoefficient.map(f=>f.value)
         const einstein_coefficient = {}
         einsteinCoefficient.forEach(f=>einstein_coefficient[f.label]=f.value)
 
         const rate_coefficients = {}
         rateCoefficients.forEach(f=>rate_coefficients[f.label]=f.value)
+
+        const energy_levels = {}
+        energyLevels.forEach(f=>energy_levels[f.label]=f.value)
         
-        const conditions = { trapTemp, variable, variableRange, numberOfLevels, includeCollision, includeAttachmentRate, includeSpontaneousEmission, writefile, filename, currentLocation,  deexcitation, collisional_rates, main_parameters, simulation_parameters, einstein_coefficient, power_broadening, lineshape_conditions, rate_coefficients, electronSpin, zeemanSplit }
+        const conditions = { trapTemp, variable, variableRange, numberOfLevels, includeCollision, includeAttachmentRate, includeSpontaneousEmission, writefile, filename, currentLocation,  deexcitation, collisional_rates, main_parameters, simulation_parameters, einstein_coefficient, energy_levels, energyUnit, power_broadening, lineshape_conditions, rate_coefficients, electronSpin, zeemanSplit }
         dispatch('submit', { e, conditions })
         running=true
 
@@ -170,16 +172,16 @@
 
     async function getRateLabelsCollision(e){
         try {
+
             const args = [JSON.stringify({numberOfLevels, electronSpin, zeemanSplit})]
             const pyfile = "get_rate_labels_collision.py"
-            
             const dataFromPython = await computePy_func({e, pyfile, args})
             const {transition_labels} = dataFromPython
             collisionalCoefficient = transition_labels.map(label=>{return {label, value:0, id:window.getID()}})
 
             collisionalRateType = "excitation"
-    
         } catch (error) { console.error(error) }
+
     }
 
     function changeCollisionalRateType() {
@@ -189,6 +191,42 @@
             return {label, value:level.value, id:level.id}
         })
     }
+    let editEnergy=false, energyLevels=[], energyUnit="cm-1";
+
+    let numberOfLevels = 3;
+    let energy_level_info = []
+    function getEnergyLabels(){
+
+        const value=0
+        
+        energy_level_info = _.fill(Array(numberOfLevels)).map((N, i)=>i).map((N, i)=>{
+            if (electronSpin) {
+                const splitLevels = [-0.5, 0.5]
+                N = []
+                splitLevels.forEach(s=>{
+                    const current_J = i+s
+                    if (current_J>0) {
+                        if (zeemanSplit) {
+                            let mJ = []
+                            for (let current_mJ=current_J; current_mJ >= -current_J; current_mJ--) {
+                                mJ = [...mJ, {label:`${i}_${current_J}__${current_mJ}`, value, id:window.getID()}]
+                            } 
+                            N = [...N, mJ]
+                        } else {N = [...N, {label:`${i}_${current_J}`, value, id:window.getID()}]}
+                    }
+
+                })
+
+                return N
+
+            } else {return {label:i, value, id:window.getID()}}
+        })
+
+        energyLevels = _.flattenDeep(energy_level_info)
+    
+    }
+    getEnergyLabels();
+
 </script>
 
 <style lang="scss">
@@ -279,10 +317,10 @@
 <EditCoefficients title="Einstein Co-efficients" bind:active={editEinsteinCoefficients} bind:coefficients={einsteinCoefficient} />
 
 
+<EditCoefficients title="Energy levels" bind:active={editEnergy} bind:coefficients={energyLevels} />
+
 {#if active}
-
     <SeparateWindow id="ROSAA__modal" title="ROSAA modal" bind:active >
-
 
         <svelte:fragment slot="header_content__slot" >
 
@@ -316,14 +354,13 @@
         </svelte:fragment>
 
         <svelte:fragment slot="main_content__slot">
-
             {#if showreport}
                 <div class="content status_report__div" ><hr>{statusReport || "Status report"}<hr></div>
             {:else}
+
             <div class="main_container__div" >
             
                 <div class="sub_container__div box">
-
                     <div class="subtitle">Main Parameters</div>
                     <div class="content__div ">
                         {#each mainParameters as {label, value, id}(id)}
@@ -331,46 +368,30 @@
                         {/each}
                     </div>
                 </div>
-                
 
-                <div class="sub_container__div box">
-                    <div class="subtitle">Simulation parameters</div>
-                    <div class="content__div ">
-                        {#each simulationParameters as {label, value, id}(id)}
-                            <Textfield bind:value {label}/>
-                        {/each}
-                        <Textfield bind:value={numberOfLevels} label="numberOfLevels (J levels)"/>
+                <div class="sub_container__div box" >
+                    <div class="subtitle">Energy levels</div>
+                    <div class="control__div ">
+                        <Textfield bind:value={numberOfLevels} label="numberOfLevels (J levels)" input$step={1} input$min={0} input$type={"number"} />
+                        <CustomSelect options={["MHz", "cm-1"]} bind:picked={energyUnit} />
+                        <button class="button is-link" on:click={() => editEnergy=true}>Edit Energy</button>
+
+                        <button class="button is-link center" on:click={getEnergyLabels}>Get labels</button>
                     </div>
-                </div>
-                
 
-                <div class="sub_container__div box">
-                    <div class="subtitle">Doppler lineshape</div>
                     <div class="content__div ">
-                        {#each dopplerLineshape as {label, value, id, type, step}(id)}
-                            <Textfield bind:value {label} input$type={type} input$step={step}/>
+                        {#each energyLevels as {label, value, id}(id)}
+                            <Textfield bind:value {label} />
                         {/each}
                     </div>
                 </div>
 
-                
-                <div class="sub_container__div box">
-
-
-                    <div class="subtitle">Lorrentz lineshape</div>
-                    <div class="content__div ">
-                        {#each powerBroadening as {label, value, id}(id)}
-                            <Textfield bind:value {label}/>
-                        {/each}
-                    </div>
-                </div>
-                
                 {#if includeSpontaneousEmission}
                     <div class="sub_container__div box">
 
                         <div class="subtitle">Einstein Co-efficients</div>
-
                         <div class="control__div ">
+
                             <button class="button is-link center" on:click={() => editEinsteinCoefficients=true}>Edit constats</button>
                             <button class="button is-link center" on:click={getRateLabelsEinstein}>Get labels</button>
 
@@ -383,8 +404,9 @@
                             </div>
                         {/if}
                     </div>
+
                 {/if}
-                
+
                 {#if includeCollision}
                     <div class="sub_container__div box">
                         <div class="subtitle">Collisional rate constants</div>
@@ -392,7 +414,6 @@
                             <CustomSelect options={["deexcitation", "excitation"]} bind:picked={collisionalRateType} on:change={changeCollisionalRateType}/>
                             <Textfield bind:value={trapTemp} label="trapTemp(K)"/>
                             <button class="button is-link" on:click={() => editCollisionalCoefficients=true}>Edit constats</button>
-
                             <button class="button is-link center" on:click={getRateLabelsCollision}>Get labels</button>
                         </div>
 
@@ -405,14 +426,41 @@
                         {/if}
                     </div>
                 {/if}
+                
+                <div class="sub_container__div box">
+                    <div class="subtitle">Simulation parameters</div>
+                    <div class="content__div ">
+                        {#each simulationParameters as {label, value, id}(id)}
+                            <Textfield bind:value {label}/>
+                        {/each}
+                        
+                    </div>
+                </div>
+
+                <div class="sub_container__div box">
+                    <div class="subtitle">Doppler lineshape</div>
+                    <div class="content__div ">
+                        {#each dopplerLineshape as {label, value, id, type, step}(id)}
+                            <Textfield bind:value {label} input$type={type} input$step={step}/>
+                        {/each}
+                    </div>
+                </div>
 
                 
+                <div class="sub_container__div box">
+                    <div class="subtitle">Lorrentz lineshape</div>
+                    <div class="content__div ">
+                        {#each powerBroadening as {label, value, id}(id)}
+                            <Textfield bind:value {label}/>
+                        {/each}
+                    </div>
+                </div>
+
                 {#if includeAttachmentRate}
                     
                     <div class="sub_container__div box">
 
                         <div class="subtitle">Rare-gas attachment (K3) and dissociation (kCID) constants</div>
-
                         <div class="content__div">
                             {#each rateCoefficients as {label, value, id}(id)}
 
@@ -439,5 +487,6 @@
         </svelte:fragment>
 
     </SeparateWindow>
+
 
 {/if}

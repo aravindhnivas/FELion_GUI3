@@ -19,86 +19,127 @@ class ROSAA():
 
 
         self.conditions = conditions
-        self.save_parameters_to_file()
+        self.currentLocation = conditions["currentLocation"]
+        self.filename = conditions["filename"]
+        self.writefile = conditions["writefile"]
+        if self.writefile: 
+            self.save_parameters_to_file()
+
         self.deconstruct_parameters()
         if self.includeCollision: 
             self.get_collisional_rates()
 
         self.time_start = perf_counter()
-
         self.begin_simulation()
 
-        
+
     def save_parameters_to_file(self):
-        self.currentLocation = self.conditions["currentLocation"]
-        self.filename = self.conditions["filename"]
 
-        self.writefile = conditions["writefile"]
+        with open(pt(self.currentLocation) / f"{self.filename}.json", 'w+') as f:
         
-        if self.writefile:
+            data = json.dumps(self.conditions, sort_keys=True, indent=4, separators=(',', ': '))
+            f.write(data)
 
-            with open(pt(self.currentLocation) / f"{self.filename}.json", 'w+') as f:
-                data = json.dumps(self.conditions, sort_keys=True, indent=4, separators=(',', ': '))
-                f.write(data)
-
+        
+            
     def deconstruct_parameters(self):
+
         self.main_parameters = self.conditions["main_parameters"]
         self.simulation_parameters = self.conditions["simulation_parameters"]
 
-
         self.einstein_coefficient = {q:float(value) for q, value in self.conditions["einstein_coefficient"].items()}
-        
         self.lineshape_conditions = self.conditions["lineshape_conditions"]
         self.rate_coefficients = self.conditions["rate_coefficients"]
+
         self.power_broadening = self.conditions["power_broadening"]
 
         self.includeSpontaneousEmission = conditions["includeSpontaneousEmission"]
         self.includeCollision = conditions["includeCollision"]
 
         self.includeAttachmentRate = conditions["includeAttachmentRate"]
-
         self.totallevel = int(conditions["numberOfLevels"])
         self.totalAttachmentLevels = int(self.rate_coefficients["totalAttachmentLevels"])
 
-        self.Energy = [float(_) for _ in self.main_parameters["Energy"].split(",")]
         self.trapTemp = float(self.conditions["trapTemp"])
+
+        self.energyUnit = self.conditions["energyUnit"]
+        speed_of_light_in_cm = speed_of_light*100
+
+        self.energy_levels = {} # in cm-1
+        for label, value in self.conditions["energy_levels"].items():
+            value = float(value)
+
+            if self.energyUnit == "MHz":
+            
+                value = (value*1e6)/speed_of_light_in_cm
+            self.energy_levels[label] = value
+
         self.excitedTo = self.simulation_parameters["excitedTo"]
         self.excitedFrom = self.simulation_parameters["excitedFrom"]
         self.freq = float(self.main_parameters["freq"])
         
         self.molecule = self.main_parameters["molecule"]
+
         self.taggingPartner = self.main_parameters["tagging partner"]
+        self.electronSpin = self.conditions["electronSpin"]
+
+        self.zeemanSplit = self.conditions["zeemanSplit"]
 
     def get_collisional_rates(self):
 
         collisional_rates = {q:float(value) for q, value in self.conditions["collisional_rates"].items()}
+        
         q_deexcitation_mode = self.conditions["deexcitation"]
         rates = {}
 
+        def compute_q_rate(ground, excited):
+            
+            deexciteRateConstantKey = f"{excited} --> {ground}"
+            exciteRateConstantKey = f"{ground} --> {excited}"
+
+            if q_deexcitation_mode:
+                _temp = collisional_rates[deexciteRateConstantKey]
+                rates[deexciteRateConstantKey] = _temp
+
+                rates[exciteRateConstantKey] = _temp*distribution(ground, excited, self.energy_levels, self.trapTemp, self.electronSpin, self.zeemanSplit )
+                
+            else:
+
+                _temp = collisional_rates[exciteRateConstantKey]
+                
+                rates[exciteRateConstantKey] = _temp
+                rates[deexciteRateConstantKey] = _temp * distribution(excited, ground, self.energy_levels, self.trapTemp, self.electronSpin, self.zeemanSplit )
+
+
+        N_levels = [i for i in range(self.totallevel)]
+        if self.electronSpin:
+
+            J = self.totallevel*[0]
+            
+            for level in N_levels:
+                if level == 0: J[level] = [level+0.5]
+                else: J[level] = [level+0.5, level-0.5]
+
+            for index_N, current_N in enumerate(J[:-1]):
+                for index_J, current_J in enumerate(current_N):
+                    for index_next, next_N in enumerate(J[index_N+1:]):
+                        for next_J in next_N:
+                            ground = f"{index_N}_{current_J}"
+                            excited = f"{index_next+index_N+1}_{next_J}"
+                            compute_q_rate(ground, excited)
         
-        for i in range(self.totallevel):
+        else:
 
-            for j in range(self.totallevel):
 
-                if i != j & j>i:
-                
-                    deexciteRateConstantKey = f"{j} --> {i}"
-                    exciteRateConstantKey = f"{i} --> {j}"
-                    
-                    if q_deexcitation_mode:
-                        
-                        _temp = collisional_rates[deexciteRateConstantKey]
-                
-                        rates[deexciteRateConstantKey] = _temp
-                        rates[exciteRateConstantKey] = _temp * distribution(i, j, self.Energy, self.trapTemp)
-                        
-                    else:
-                        _temp = collisional_rates[exciteRateConstantKey]
-                        rates[exciteRateConstantKey] = _temp
 
-                        rates[deexciteRateConstantKey] = _temp * distribution(j, i, self.Energy, self.trapTemp)
+            for i in range(self.totallevel):
+                for j in range(self.totallevel):
+                    if i != j & j>i:
+                        compute_q_rate(i, j)
 
         self.collisional_rates = rates
+
+        print(f"{self.collisional_rates=}", flush=True)
 
     def compute_collision_process(self, i, N):
     
@@ -120,21 +161,11 @@ class ROSAA():
         collections = []
         
         if self.includeSpontaneousEmission:
-
             # Einstein Coefficient A
-            # if i == self.excitedFrom: 
-            #     # temp = self.A_10*N[self.excitedTo]
-            #     temp = self.einstein_coefficient[f"{self.excitedTo} --> {self.excitedFrom}"]*N[self.excitedFrom]
-            #     collections.append(temp)
-
-            # if i == self.excitedTo:
-            #     # temp = -self.A_10*N[self.excitedTo]
-            #     temp = -self.einstein_coefficient[f"{self.excitedTo} --> {self.excitedFrom}"]*N[self.excitedTo]
-            #     collections.append(temp)
+            
             if i == 0:
                 temp_from = self.einstein_coefficient[f"{i+1} --> {i}"]*N[i+1]
                 collections.append(temp_from)
-
 
             elif i<self.totallevel-1:
 
@@ -148,7 +179,6 @@ class ROSAA():
                 temp_to = -self.einstein_coefficient[f"{i} --> {i-1}"]*N[i]
 
                 collections.append(temp_to)
-
 
         # Einstein Coefficient B
 
@@ -195,7 +225,7 @@ class ROSAA():
         self.tspan = [0, self.simulation_duration]
         self.initial_temperature = 300
 
-        boltzman_ratio = N = boltzman_distribution(self.Energy, self.initial_temperature)[:self.totallevel]
+        N = boltzman_distribution(self.energy_levels, self.initial_temperature, self.electronSpin, self.zeemanSplit)[:self.totallevel]
         N_He = self.totalAttachmentLevels*[0]
         self.boltzman_distribution_source = (N, [*N, *N_He])[self.includeAttachmentRate]
         
@@ -482,9 +512,13 @@ class ROSAA():
         for on in data_on: 
             f.write("\t".join([f'{i}' for i in on])+"\n")
         
+
 if __name__ == "__main__":
 
     args = sys.argv[1:][0].split(",")
+
     conditions = json.loads(", ".join(args))
+
     print(conditions, flush=True)
+
     ROSAA(conditions)
