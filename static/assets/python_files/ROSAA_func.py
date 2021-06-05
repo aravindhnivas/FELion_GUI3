@@ -33,46 +33,7 @@ def stimulated_emission(spontaneous_emission, freq):
     return (C**3 / (8*np.pi*Planck*freq**3)) * spontaneous_emission
 
 
-def stimulated_absorption(j0, j1, emission): 
-    return ((2*j1+1)/(2*j0+1)) * emission
-
-
-def boltzman_distribution(energy_levels, temp=5, electronSpin=False, zeemanSplit=False):
-    KT = k_boltzmann_wavenumber*temp
-
-
-
-    Nj = []
-
-    
-    for label, energy in energy_levels.items():
-        if electronSpin:
-            if zeemanSplit:
-                Gj = 1
-            else:
-                j = float(label.split("_")[1])
-                Gj = int(2*j+1)
-                
-            
-        else:
-
-            if zeemanSplit:
-                Gj = 1
-            else:
-                j = int(label)
-                Gj = int(2*j+1)
-
-        temp = Gj*np.exp(-energy/KT)
-        Nj.append(temp)
-
-    Nj = np.array(Nj, dtype=np.float)
-    Nj = Nj/Nj.sum()
-    return Nj
-
-def distribution(j0, j1, energy_levels, temp, electronSpin, zeemanSplit):
-
-
-    KT = k_boltzmann_wavenumber*temp
+def stimulated_absorption(j0, j1, emission, electronSpin=False, zeemanSplit=False):
 
     if electronSpin:
         if zeemanSplit:
@@ -97,8 +58,65 @@ def distribution(j0, j1, energy_levels, temp, electronSpin, zeemanSplit):
             N1 = int(2*excited+1)
 
             Gj = N1/N0
-    
-    print(energy_levels, flush=True)
-    delE = abs(energy_levels[f"{j0}"]-energy_levels[f"{j1}"])
+    return Gj * emission
 
+def boltzman_distribution(energy_levels, temp=5, electronSpin=False, zeemanSplit=False):
+    
+    KT = k_boltzmann_wavenumber*temp
+    Nj = []
+
+    for label, energy in energy_levels.items():
+
+        if electronSpin:
+            if zeemanSplit:
+                Gj = 1
+            else:
+                j = float(label.split("_")[1])
+                Gj = int(2*j+1)
+                
+            
+        else:
+            if zeemanSplit:
+                Gj = 1
+            else:
+                j = int(label)
+                Gj = int(2*j+1)
+
+        temp = Gj*np.exp(-energy/KT)
+        Nj.append(temp)
+
+    Nj = np.array(Nj, dtype=np.float)
+    Nj = Nj/Nj.sum()
+    return Nj
+
+def distribution(j0, j1, energy_levels, temp, electronSpin, zeemanSplit):
+
+
+    KT = k_boltzmann_wavenumber*temp
+
+    if electronSpin:
+        if zeemanSplit:
+            Gj = 1
+        else:
+            ground = float(j0.split("_")[1])
+            excited = float(j1.split("_")[1])
+            
+            N0 = int(2*ground+1)
+            N1 = int(2*excited+1)
+
+            Gj = N1/N0
+    else:
+
+        if zeemanSplit:
+            Gj = 1
+        else:
+
+            ground = int(j0)
+            excited = int(j1)
+            N0 = int(2*ground+1)
+            N1 = int(2*excited+1)
+
+            Gj = N1/N0
+    
+    delE = abs(energy_levels[f"{j0}"]-energy_levels[f"{j1}"])
     return Gj*np.exp(-delE/KT)
