@@ -60,7 +60,6 @@ class ROSAA():
         self.includeAttachmentRate = conditions["includeAttachmentRate"]
         self.totallevel = int(conditions["numberOfLevels"])
         self.totalAttachmentLevels = int(self.rate_coefficients["totalAttachmentLevels"])
-
         self.trapTemp = float(self.conditions["trapTemp"])
 
         self.energyUnit = self.conditions["energyUnit"]
@@ -71,13 +70,20 @@ class ROSAA():
             value = float(value)
 
             if self.energyUnit == "MHz":
-            
                 value = (value*1e6)/speed_of_light_in_cm
             self.energy_levels[label] = value
+        print(f"{self.energy_levels=}", flush=True)
 
+        self.total_energy_levels = len(self.energy_levels)
         self.excitedTo = str(self.simulation_parameters["excitedTo"])
         self.excitedFrom = str(self.simulation_parameters["excitedFrom"])
-        self.freq = float(self.main_parameters["freq"])
+        # self.freq = float(self.main_parameters["freq"])
+        
+        self.freq = abs(self.energy_levels[self.excitedTo] - self.energy_levels[self.excitedFrom]) # in cm-1
+        
+        self.freq = self.freq*speed_of_light_in_cm # in cm-1*cm/s --> Hz
+        print(f"{self.freq=}")
+
         self.molecule = self.main_parameters["molecule"]
 
         self.taggingPartner = self.main_parameters["tagging partner"]
@@ -196,7 +202,8 @@ class ROSAA():
         changing_parameters = self.conditions["variable"]
         
         changing_parameters_range = self.conditions["variableRange"]
-        self.simulation_duration = int(self.simulation_parameters["Simulation time(ms)"])*1e-3 # sec --> ms
+        self.simulation_duration = int(self.simulation_parameters["Simulation time(ms)"])*1e-3 # ms --> sec
+
         self.totalSteps = int(self.simulation_parameters["Total steps"])
         self.simulation_duration_data_points = np.linspace(0, self.simulation_duration, self.totalSteps)
         self.tspan = [0, self.simulation_duration]
@@ -244,29 +251,27 @@ class ROSAA():
                 resOnCounts_list.append(resOnCounts)
                 print(f"Time taken for run-{index} ({var=:.2e}): {round(perf_counter()-time_start, 2)} s", flush=True)
                 print(f"Total time taken: {round(perf_counter()-self.time_start, 2)} s", flush=True)
-
             resOffCounts_list = np.array(resOffCounts_list, dtype=np.float)
             resOnCounts_list = np.array(resOnCounts_list, dtype=np.float)
 
-            
             off_counts = []
             on_counts = []
-
             for i in range(steps):
-                off_counts.append(resOffCounts_list[i, self.totallevel, -1])
-                on_counts.append(resOnCounts_list[i, self.totallevel, -1])
+                off_counts.append(resOffCounts_list[i, self.total_energy_levels, -1])
+                on_counts.append(resOnCounts_list[i, self.total_energy_levels, -1])
             
             off_counts = np.array(off_counts, dtype=np.float)
             on_counts = np.array(on_counts, dtype=np.float)
             signal = (1 - (on_counts / off_counts))*100
             print(f"Total time taken for simulation: {round(perf_counter()-self.time_start, 2)} s", flush=True)
-
             
             if self.writefile:
                 self.write_data_to_file(changing_parameters, changing_parameters_range, resOnCounts_list, resOffCounts_list, signal)
             self.plot_results(changing_parameters, x=variable_range, y=signal)
 
+
         if changing_parameters == "time":
+
             nHe = float(self.rate_coefficients["He density(cm3)"])
             power = float(self.power_broadening["power(W)"])
             Noff, Non = self.get_simulation_results(nHe, power)
@@ -274,25 +279,24 @@ class ROSAA():
             resOnCounts = Non.sol(self.simulation_duration_data_points)
 
             print(f"Time taken to simulation: {round(perf_counter()-self.time_start, 2)} s", flush=True)
-
             self.plot_results(changing_parameters, resOnCounts, resOffCounts)
+
             savefile = pt(self.currentLocation)/self.filename
 
             if self.writefile:
-                f = open(f"{savefile}_raw_data.dat", "w+")
+                f = open(f"{savefile}_{self.excitedFrom}--{self.excitedTo}_raw_data.dat", "w+")
                 f.write(f"############################## Begin: Run ##############################\n")
                 self.write_signal_file(f, resOnCounts.T, resOffCounts.T)
-
                 f.write(f"############################## END: Run ##############################\n\n")
                 f.close()
 
             if self.includeAttachmentRate and self.writefile:
 
-                with open(f"{savefile}_signal.dat", "w+") as f:
+                with open(f"{savefile}_{self.excitedFrom}--{self.excitedTo}_signal.dat", "w+") as f:
                     f.write(f"# Time(ms) \tSignal (%)\n")
                     f.write(f"# Time evolution (s): 0, {self.simulation_duration}, {self.totalSteps}\n")
                     simulateTime_ms = self.simulation_duration_data_points*1e3
-                    signal_index = self.totallevel+1
+                    signal_index = self.total_energy_levels+1
                     signal = (1 - (resOnCounts[signal_index][1:] / resOffCounts[signal_index][1:]))*100
                     for var, sig in zip(simulateTime_ms[1:], signal):
                         f.write(f"{var:.2f}\t{sig:.2f}\n")
@@ -332,10 +336,14 @@ class ROSAA():
 
 
         resOffCounts = Noff.sol(self.simulation_duration_data_points)
+        print(f"{resOffCounts.shape=}")
+
         self.lightON=True
 
         Non = solve_ivp(self.computeRateDistributionEquations, self.tspan, self.boltzman_distribution_source, dense_output=True)
         resOnCounts = Non.sol(self.simulation_duration_data_points)
+        
+        print(f"{resOnCounts.shape=}")
         return Noff, Non
 
 
@@ -376,9 +384,9 @@ class ROSAA():
                             k = self.collisional_rates[key]*self.nHe*ion_counts[j] - self.collisional_rates[keyInverse]*self.nHe*ion_counts[i]
                             collisional_collection.append(k)
                 # else:
-                #     new_distribution = N.sum()*self.boltzman_ratio
-                #     temp_collision_boltzman = new_distribution[counter]
-                #     collisional_collection.append(temp_collision_boltzman)
+                    # new_distribution = N.sum()*self.boltzman_ratio - N_He.sum()
+                    # temp_collision_boltzman = new_distribution[counter]
+                    # collisional_collection.append(temp_collision_boltzman)
 
                 temp_E = 0
 
@@ -454,20 +462,19 @@ class ROSAA():
         if changing_parameters == "time":
 
             fig, (ax, ax1) = plt.subplots(ncols=2, figsize=(12, 4), dpi=100)
+            legends = [f"{self.molecule} ({key})" for key in self.energy_levels.keys()]
             
-            legends = [f"{self.molecule}{i}" for i in range(self.totallevel)]
             if self.includeAttachmentRate:
                 legends += [f"{self.molecule}{self.taggingPartner}"]
-                legends += [f"{self.molecule}{self.taggingPartner}{i+1}" for i in range(1, self.totalAttachmentLevels)]
+                legends += [f"{self.molecule}{self.taggingPartner}$_{i+1}$" for i in range(1, self.totalAttachmentLevels)]
 
             simulateTime_ms = self.simulation_duration_data_points*1e3
-            counter = 0
 
+            counter = 0
             for on, off in zip(resOnCounts, resOffCounts):
                 ax.plot(simulateTime_ms, on, f"-C{counter}", label=legends[counter])
                 ax.plot(simulateTime_ms, off, f"--C{counter}")
                 counter += 1
-
 
             # ax.plot(simulateTime_ms, resOnCounts.sum(axis=0), "k")
             ax.legend(title=f"-ON, --OFF")
@@ -476,10 +483,12 @@ class ROSAA():
 
             ax.axhline(1, xmin=simulateTime_ms[0], xmax=simulateTime_ms[-1], c="k")
             if self.includeAttachmentRate:
-                signal_index = self.totallevel+1
+                signal_index = self.total_energy_levels+1
+
                 signal = (1 - (resOnCounts[signal_index][1:] / resOffCounts[signal_index][1:]))*100
-                ax1.plot(simulateTime_ms[1:], signal)
-                ax1.legend([f"Max. Signal = {signal.max():.2f} at {(simulateTime_ms[1:][signal.argmax()]):.2f}ms"])
+                ax1.plot(simulateTime_ms[1:], signal, ".-")
+                # ax1.legend([f"Max. Signal = {signal.max():.2f} at {(simulateTime_ms[1:][signal.argmax()]):.2f}ms"])
+                ax1.legend([f"Signal = {signal[-1]:.2f} (%) at {simulateTime_ms[-1]:.0f}ms"])
 
                 ax1.minorticks_on()
                 ax1.set(title="Signal as a function of trap time", xlabel="Time (ms)", ylabel="Signal (%)")
@@ -488,7 +497,7 @@ class ROSAA():
 
         else:
             fig, ax = plt.subplots(figsize=(7, 5), dpi=100)
-            legends = [f"{self.molecule}{i}" for i in range(self.totallevel)]
+            legends = [f"{self.molecule}{i}" for i in range(self.total_energy_levels)]
 
             ax.plot(x, y, ".-", label=f"{self.molecule}-{self.taggingPartner}")
             ax.legend()
@@ -509,7 +518,8 @@ class ROSAA():
         savefile_name = f"{self.filename}_{changing_parameters.split('(')[0]}_{start:.1e}-{end:.1e}"
         savefile = pt(self.currentLocation)/savefile_name
         
-        f = open(f"{savefile}_raw_data.dat", "w+")
+        f = open(f"{savefile}_{self.excitedFrom}--{self.excitedTo}_raw_data.dat", "w+")
+
         # with open(f"{savefile}_raw_data.dat", "w+") as f:
         f.write(f"# {changing_parameters}: {changing_parameters_range}\n")
         f.write(f"# Time evolution (s): 0, {self.simulation_duration}, {self.totalSteps}\n")
@@ -524,7 +534,7 @@ class ROSAA():
 
 
         if self.includeAttachmentRate:
-            with open(f"{savefile}_signal.dat", "w+") as f:
+            with open(f"{savefile}_{self.excitedFrom}--{self.excitedTo}_signal.dat", "w+") as f:
                 f.write(f"# {changing_parameters}\tSignal (%)\n")
                 for var, sig in zip(variable_range, signal):
                     f.write(f"{var:.2e}\t{sig:.2f}\n")
@@ -536,7 +546,8 @@ class ROSAA():
 
         f.write(f"# Time evolution (s): 0, {self.simulation_duration}, {self.totalSteps}\n")
         f.write("# lightOFF\n")
-        legends = [f"{self.molecule}{i}" for i in range(self.totallevel)]
+
+        legends = [f"{self.molecule}{i}" for i in range(self.total_energy_levels)]
         
         if self.includeAttachmentRate:
             legends += [f"{self.molecule}{self.taggingPartner}"]
@@ -551,10 +562,7 @@ class ROSAA():
             f.write("\t".join([f'{i}' for i in on])+"\n")
         
 if __name__ == "__main__":
-
     args = sys.argv[1:][0].split(",")
     conditions = json.loads(", ".join(args))
-
     print(conditions, flush=True)
-
     ROSAA(conditions)
