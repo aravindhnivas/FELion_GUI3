@@ -69,11 +69,11 @@ def get_energy_labels(energy_level_info, N, J):
                 temp_transition_labels = f"{current_N} --> {ground_levels}"
                 transition_labels.append(temp_transition_labels)
                 total_transition += 1
-
             if spin:
 
                 print("###############################################################\n")
                 print(f"Current N: {N[index_N]} splitted into J: {J[index_N]}")
+
                 print("-------\n")
 
                 for index_J, current_J in enumerate(current_N):
@@ -82,14 +82,16 @@ def get_energy_labels(energy_level_info, N, J):
                     
                     if zeeman:
                         total_transition_J1 = 0
+
                         total_transition_J0 = 0
                         print(f"Current J: {index_N}_{max(current_J)} splitted into mJ: {current_J}")
                         print(f"each mJ {current_J} in {index_N} level will undergo transition with {ground_levels=:}")
                         print(f"Selection rule: del_M = 0, 1, -1\n")
-
                         temp_transition_labels = []
+
                         temp_transition_labels_J0 = []
                         temp_transition_labels_J1 = []
+
                         
                         for index_mJ, current_mJ in enumerate(current_J):
 
@@ -97,37 +99,42 @@ def get_energy_labels(energy_level_info, N, J):
                             print(f"\n==={current_mJ_label=:}===")
 
                             for index_ground_J, ground_J in enumerate(ground_levels):
+                                
 
-                                if index_N>1: print(f"\nFor {ground_J=:}")
-                                for ground_mJ in ground_J:
+                                del_J = max(current_J) - max(ground_J) 
 
-                                    del_M = current_mJ-ground_mJ
+                                if del_J == 0 or del_J == 1 or del_J == -1:
+                                    if index_N>1: print(f"\nFor {ground_J=:}")
+                                    for ground_mJ in ground_J:
 
-                                    if del_M==0 or del_M==1 or del_M==-1:
+                                        del_M = current_mJ-ground_mJ
 
-                                        ground_mJ_label = f"{index_N-1}_{max(ground_J)}__{ground_mJ}"
+                                        if del_M==0 or del_M==1 or del_M==-1:
 
-                                        current_transition_label = f"{current_mJ_label} --> {ground_mJ_label}"
-                                        temp_transition_labels.append(current_transition_label)
-                                        print(f"{current_transition_label=:}")
+                                            ground_mJ_label = f"{index_N-1}_{max(ground_J)}__{ground_mJ}"
 
-                                        total_transition += 1
+                                            current_transition_label = f"{current_mJ_label} --> {ground_mJ_label}"
+                                            temp_transition_labels.append(current_transition_label)
+                                            print(f"{current_transition_label=:}")
 
-                                        if index_ground_J == 0: 
-                                            total_transition_J1 += 1
-                                            temp_transition_labels_J1.append(current_transition_label)
+                                            total_transition += 1
 
-                                        else: 
-                                            total_transition_J0 += 1
-                                            temp_transition_labels_J0.append(current_transition_label)
+                                            if index_ground_J == 0: 
+                                                total_transition_J1 += 1
+                                                temp_transition_labels_J1.append(current_transition_label)
 
-                                if index_N>1: print(f"-.-.-.-.-.-.-.-.-.-.\n")
+                                            else: 
+                                                total_transition_J0 += 1
+                                                temp_transition_labels_J0.append(current_transition_label)
+
+                                    if index_N>1: print(f"-.-.-.-.-.-.-.-.-.-.\n")
 
                             if index_N>1: print(f"===Close current mJ===\n")
                     
                         transition_labels.append(temp_transition_labels)
                         transition_labels_J0.append(temp_transition_labels_J0)
                         transition_labels_J1.append(temp_transition_labels_J1)
+
 
                         if index_N>1:
                             print(f"{total_transition_J0=:} for {index_N}_{max(current_J)} --> {index_N-1}_{max(ground_levels[1])}")
