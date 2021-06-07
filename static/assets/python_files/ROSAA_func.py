@@ -13,8 +13,8 @@ k_boltzmann_wavenumber = k_boltzmann/1.98630e-23
 
 trap_area = 5e-5
 
-
 def gauss_fwhm(freq, mass, temp):
+
     return freq * np.sqrt((8*k_boltzmann*temp*np.log(2)) / (m_p*mass*C**2))
 
 
@@ -74,14 +74,12 @@ def boltzman_distribution(energy_levels, temp=5, electronSpin=False, zeemanSplit
                 j = float(label.split("_")[1])
                 Gj = int(2*j+1)
                 
-            
         else:
             if zeemanSplit:
                 Gj = 1
             else:
                 j = int(label)
                 Gj = int(2*j+1)
-
         temp = Gj*np.exp(-energy/KT)
         Nj.append(temp)
 
@@ -100,17 +98,14 @@ def distribution(j0, j1, energy_levels, temp, electronSpin, zeemanSplit):
         else:
             ground = float(j0.split("_")[1])
             excited = float(j1.split("_")[1])
-            
             N0 = int(2*ground+1)
             N1 = int(2*excited+1)
 
             Gj = N1/N0
     else:
-
         if zeemanSplit:
             Gj = 1
         else:
-
             ground = int(j0)
             excited = int(j1)
             N0 = int(2*ground+1)

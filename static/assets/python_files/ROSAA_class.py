@@ -12,7 +12,7 @@ from ROSAA_func import distribution, boltzman_distribution, \
     voigt, lorrentz_fwhm, gauss_fwhm
 
 from time import perf_counter
-
+from FELion_constants import colors
 class ROSAA():
 
     def __init__(self, conditions):
@@ -66,22 +66,23 @@ class ROSAA():
         speed_of_light_in_cm = speed_of_light*100
 
         self.energy_levels = {} # in cm-1
+        print(f"{list(self.conditions['energy_levels'].keys())=}")
         for label, value in self.conditions["energy_levels"].items():
             value = float(value)
-
             if self.energyUnit == "MHz":
                 value = (value*1e6)/speed_of_light_in_cm
-            self.energy_levels[label] = value
+            self.energy_levels[label.rstrip()] = value
         print(f"{self.energy_levels=}", flush=True)
 
         self.total_energy_levels = len(self.energy_levels)
         self.excitedTo = str(self.simulation_parameters["excitedTo"])
         self.excitedFrom = str(self.simulation_parameters["excitedFrom"])
+
         # self.freq = float(self.main_parameters["freq"])
         
         self.freq = abs(self.energy_levels[self.excitedTo] - self.energy_levels[self.excitedFrom]) # in cm-1
-        
         self.freq = self.freq*speed_of_light_in_cm # in cm-1*cm/s --> Hz
+
         print(f"{self.freq=}")
 
         self.molecule = self.main_parameters["molecule"]
@@ -218,10 +219,9 @@ class ROSAA():
             print(f"{self.boltzman_ratio=}\n{self.boltzman_ratio.sum()=}", flush=True)
 
         N_He = self.totalAttachmentLevels*[0]
-        
-        
         self.boltzman_distribution_source = (N, [*N, *N_He])[self.includeAttachmentRate]
-        
+        self.boltzman_distribution_source = np.array(self.boltzman_distribution_source, dtype=np.float)
+
         def run_for_each(const, run_type="nHe"):
 
             start, end, steps = changing_parameters_range.split(",")
@@ -279,10 +279,8 @@ class ROSAA():
             resOnCounts = Non.sol(self.simulation_duration_data_points)
 
             print(f"Time taken to simulation: {round(perf_counter()-self.time_start, 2)} s", flush=True)
-            self.plot_results(changing_parameters, resOnCounts, resOffCounts)
 
             savefile = pt(self.currentLocation)/self.filename
-
             if self.writefile:
                 f = open(f"{savefile}_{self.excitedFrom}--{self.excitedTo}_raw_data.dat", "w+")
                 f.write(f"############################## Begin: Run ##############################\n")
@@ -301,6 +299,13 @@ class ROSAA():
                     for var, sig in zip(simulateTime_ms[1:], signal):
                         f.write(f"{var:.2f}\t{sig:.2f}\n")
             
+            if self.includeAttachmentRate:
+                signal_index = self.total_energy_levels+1
+
+                signal = (1 - (resOnCounts[signal_index][1:] / resOffCounts[signal_index][1:]))*100
+                print(f"{signal[-1]=}")
+            self.plot_results(changing_parameters, resOnCounts, resOffCounts)
+
         elif changing_parameters == "He density(cm3)":
             power = float(self.power_broadening["power(W)"])
             run_for_each(power, run_type="nHe")
@@ -345,7 +350,6 @@ class ROSAA():
         
         print(f"{resOnCounts.shape=}")
         return Noff, Non
-
 
     def computeRateDistributionEquations(self, t, counts):
 
@@ -392,12 +396,12 @@ class ROSAA():
 
                 if self.includeSpontaneousEmission:
                     
-                    if j > i:
+                    if self.energy_levels[j] > self.energy_levels[i]:
                         if key in self.einstein_coefficient:
                             temp_E = self.einstein_coefficient[key]*ion_counts[j]
                             einstein_collection.append(temp_E)
 
-                    elif j < i:
+                    else:
                         if key in self.einstein_coefficient:
                             temp_E = -self.einstein_coefficient[keyInverse]*ion_counts[i]
                             einstein_collection.append(temp_E)
@@ -462,26 +466,34 @@ class ROSAA():
         if changing_parameters == "time":
 
             fig, (ax, ax1) = plt.subplots(ncols=2, figsize=(12, 4), dpi=100)
-            legends = [f"{self.molecule} ({key})" for key in self.energy_levels.keys()]
-            
+            legends = [f"{self.molecule} ({key.strip()})" for key in self.energy_levels.keys()]
+            print(legends)
             if self.includeAttachmentRate:
                 legends += [f"{self.molecule}{self.taggingPartner}"]
                 legends += [f"{self.molecule}{self.taggingPartner}$_{i+1}$" for i in range(1, self.totalAttachmentLevels)]
-
             simulateTime_ms = self.simulation_duration_data_points*1e3
-
+            # print(f"{simulateTime_ms=}")
+            
+            colorSchemes = []
+            for color in colors[::2]:
+                scale = 1/255
+                temp = [_*scale for _ in color]
+                colorSchemes.append(temp)
             counter = 0
             for on, off in zip(resOnCounts, resOffCounts):
-                ax.plot(simulateTime_ms, on, f"-C{counter}", label=legends[counter])
-                ax.plot(simulateTime_ms, off, f"--C{counter}")
+                # ax.plot(simulateTime_ms, on, "-C"+str(counter), label=f"{legends[counter]}")
+                # ax.plot(simulateTime_ms, off, "--C"+str(counter))
+                ax.plot(simulateTime_ms, on, ls="-", c=colorSchemes[counter], label=f"{legends[counter]}")
+                ax.plot(simulateTime_ms, off, ls="--", c=colorSchemes[counter])
                 counter += 1
 
-            # ax.plot(simulateTime_ms, resOnCounts.sum(axis=0), "k")
-            ax.legend(title=f"-ON, --OFF")
+            ax.plot(simulateTime_ms, resOnCounts.sum(axis=0), "k", label="Total SUM")
+            legend_axis = ax.legend(title=f"-ON, --OFF")
+            legend_axis.set_draggable(True)
             ax.set(yscale="log", ylabel="Counts", xlabel="Time(ms)")
             ax.minorticks_on()
 
-            ax.axhline(1, xmin=simulateTime_ms[0], xmax=simulateTime_ms[-1], c="k")
+            # ax.axhline(1, xmin=simulateTime_ms[0], xmax=simulateTime_ms[-1], c="k", ls="--")
             if self.includeAttachmentRate:
                 signal_index = self.total_energy_levels+1
 
@@ -541,19 +553,16 @@ class ROSAA():
 
         print(f"File written: {savefile}")
 
-
     def write_signal_file(self, f, data_on, data_off):
 
         f.write(f"# Time evolution (s): 0, {self.simulation_duration}, {self.totalSteps}\n")
         f.write("# lightOFF\n")
 
-        legends = [f"{self.molecule}{i}" for i in range(self.total_energy_levels)]
-        
+        legends = [f"{self.molecule}({key.strip()})" for key in self.energy_levels.keys()]
         if self.includeAttachmentRate:
             legends += [f"{self.molecule}{self.taggingPartner}"]
             legends += [f"{self.molecule}{self.taggingPartner}{i+1}" for i in range(1, self.totalAttachmentLevels)]
 
-        
         f.write("#" + "\t".join([f'{i}' for i in legends]) + "\n")
         for off in data_off:
             f.write("\t".join([f'{i}' for i in off])+"\n")

@@ -1,5 +1,5 @@
 <script context="module">
-    export function browse({filetype="", dir=true}={}) {
+    export function browse({filetype="", dir=true, multiple=true}={}) {
         return new Promise((resolve, reject)=>{
             const mainWindow = remote.getCurrentWindow()
             let type;
@@ -9,9 +9,9 @@
                 filters: [
                     { name: filetype, extensions: [`*${filetype}`] },
                     { name: 'All Files', extensions: ['*'] }
-
                 ],
-                properties: [type, "multiSelections"],
+
+                properties: [type, multiple ? "multiSelections" : ""],
             }
 
 

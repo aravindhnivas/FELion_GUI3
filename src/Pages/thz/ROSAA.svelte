@@ -227,6 +227,64 @@
     }
     getEnergyLabels();
 
+
+    async function readEinsteinCoefficientFromFile(){
+        let filename = await browse({dir:false, multiple:false})
+
+        if (filename.filePaths.length==0) return;        
+        filename = filename.filePaths[0]
+        const fileContents = fs.readFileSync(filename, "utf-8").split("\n")
+        
+
+        let ground, excited;
+        einsteinCoefficient = []
+        fileContents.forEach(line=>{
+            if (line.length>1){
+                
+                if (line.includes("#")){
+                    line = line.split("#")[1].split("\t").map(f=>f.trim());
+                    [ground, excited] = [line[0], line[1]]
+
+                } 
+                else {
+                    line = line.split("\t").map(f=>f.trim())
+                    const separator = electronSpin&&zeemanSplit ? "__" : "_"
+                    const label = `${excited}${separator}${line[1]} --> ${ground}${separator}${line[0]}`
+                    const [energy, value] = [line[2], line[3]]
+                    einsteinCoefficient = [...einsteinCoefficient, {label, value, id:window.getID()}]
+
+                }
+            }
+        })
+
+    }
+
+    async function readEnergyFromFile(){
+        let filename = await browse({dir:false, multiple:false})
+        if (filename.filePaths.length==0) return;
+
+        filename = filename.filePaths[0]
+        const fileContents = fs.readFileSync(filename, "utf-8").split("\n")
+
+        energyLevels = []
+        let preLabel;
+        fileContents.forEach(line=>{
+            if (line.length>1){
+                
+                
+                if (line.includes("#")){preLabel = line.split("#")[1].trim()} 
+                else {
+                    line = line.split("\t").map(f=>f.trim())
+                    const separator = electronSpin&&zeemanSplit ? "__" : "_"
+                    const label = preLabel+separator+line[0]
+                    const value = line[1]
+                    energyLevels = [...energyLevels, {label, value, id:window.getID()}]
+                }
+            }
+
+        })
+    }
+
 </script>
 
 <style lang="scss">
@@ -377,6 +435,7 @@
                         <button class="button is-link" on:click={() => editEnergy=true}>Edit Energy</button>
 
                         <button class="button is-link center" on:click={getEnergyLabels}>Get labels</button>
+                        <button class="button is-link center" on:click={readEnergyFromFile}>Read from file</button>
                     </div>
 
                     <div class="content__div ">
@@ -388,15 +447,17 @@
 
                 {#if includeSpontaneousEmission}
                     <div class="sub_container__div box">
-
                         <div class="subtitle">Einstein Co-efficients</div>
-                        <div class="control__div ">
 
+                        <div class="control__div ">
                             <button class="button is-link center" on:click={() => editEinsteinCoefficients=true}>Edit constats</button>
                             <button class="button is-link center" on:click={getRateLabelsEinstein}>Get labels</button>
 
+                            <button class="button is-link center" on:click={readEinsteinCoefficientFromFile}>Read from file</button>
+
                         </div>
                         {#if einsteinCoefficient.length>0}
+
                             <div class="content__div ">
                                 {#each einsteinCoefficient as {label, value, id}(id)}
                                     <Textfield bind:value {label}/>
