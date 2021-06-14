@@ -78,8 +78,6 @@ class ROSAA():
         self.excitedTo = str(self.simulation_parameters["excitedTo"])
         self.excitedFrom = str(self.simulation_parameters["excitedFrom"])
 
-        
-
         # self.freq = float(self.main_parameters["freq"])
         
         self.freq = abs(self.energy_levels[self.excitedTo] - self.energy_levels[self.excitedFrom]) # in cm-1
@@ -165,11 +163,10 @@ class ROSAA():
 
                 collections.append(temp_to)
 
-
         # Einstein Coefficient B
-        
-        if self.lightON:
 
+        if self.lightON:
+            
             # B_rate defined from excited state 
             B_rate = self.B_01*N[self.excitedFrom] - self.B_10*N[self.excitedTo]
 
@@ -183,49 +180,49 @@ class ROSAA():
                 collections.append(temp)
         return collections
 
-    def compute_attachment_process(self, N_He, ion_counts):
+    def compute_attachment_process(self, N, N_He, dR_dt):
     
-        # energy_keys = self.energy_levels.keys()
-        # ion_counts = {key: value for key, value in zip(energy_keys, dR_dt)}
+        energy_keys = self.energy_levels.keys()
+        ion_counts = {key: value for key, value in zip(energy_keys, dR_dt)}
         if self.includeCollision:
             attachmentRate0 = - self.Rate_K3[0]*ion_counts[self.excitedFrom] + self.Rate_kCID[0]*N_He[0]*self.p
             attachmentRate1 = - self.Rate_K3_excited*ion_counts[self.excitedTo] + self.Rate_kCID[0]*N_He[0]*(1-self.p)
-            
-            ion_counts[self.excitedFrom] += attachmentRate0
-            ion_counts[self.excitedTo] += attachmentRate1
-
+            dR_dt[0] += attachmentRate0
+            dR_dt[1] += attachmentRate1
         else:
+
+            # dR_dt = ion_counts
+            attachmentRate0 = - self.Rate_K3[0]*ion_counts[self.excitedFrom] + self.Rate_kCID[0]*N_He[0]*self.p
+            ion_counts[self.excitedFrom] += - self.Rate_K3[0]*ion_counts[self.excitedFrom]
+
+            attachmentRate1 = - self.Rate_K3_excited*ion_counts[self.excitedTo] + self.Rate_kCID[0]*N_He[0]*(1-self.p)
+            ion_counts[self.excitedTo] += - self.Rate_K3_excited*ion_counts[self.excitedTo]
             
-            forward_reaction_0 = - self.Rate_K3[0]*ion_counts[self.excitedFrom]
-            ion_counts[self.excitedFrom] += forward_reaction_0
+            dR_dt = list(ion_counts.values())
 
-            forward_reaction_1 = - self.Rate_K3_excited*ion_counts[self.excitedTo]
-            ion_counts[self.excitedTo] += forward_reaction_1
-
-            # for the first complex formed (sign not corrected)
-            attachmentRate0 =  forward_reaction_0 + self.Rate_kCID[0]*N_He[0]*self.p
-            attachmentRate1 = forward_reaction_1 + self.Rate_kCID[0]*N_He[0]*(1-self.p)
-
-        dR_dt = list(ion_counts.values())
-
-        # for the first complex formed (sign corrected)
+        # attachmentRate0 = - self.Rate_K3[0]*N[0] + self.Rate_kCID[0]*N_He[0]*self.p
+        # attachmentRate1 = - self.Rate_K3_excited*N[1] + self.Rate_kCID[0]*N_He[0]*(1-self.p)
+        # dR_dt[0] += attachmentRate0
+        # dR_dt[1] += attachmentRate1
         currentRate =  - attachmentRate0 - attachmentRate1
 
         for i in range(self.totalAttachmentLevels-1):
             nextRate = - self.Rate_K3[i+1]*N_He[i] + self.Rate_kCID[i+1]*N_He[i+1]
             attachmentRate = currentRate + nextRate
             currentRate = -nextRate
+
             dR_dt.append(attachmentRate)
+            
         dR_dt.append(currentRate)
+
         return dR_dt
 
     def begin_simulation(self):
 
         changing_parameters = self.conditions["variable"]
+        
         changing_parameters_range = self.conditions["variableRange"]
-
-        self.total_trap_time = int(self.simulation_parameters["Simulation time(ms)"])
-        self.simulation_duration = self.total_trap_time*1e-3 # ms --> sec
+        self.simulation_duration = int(self.simulation_parameters["Simulation time(ms)"])*1e-3 # ms --> sec
 
         self.totalSteps = int(self.simulation_parameters["Total steps"])
         self.simulation_duration_data_points = np.linspace(0, self.simulation_duration, self.totalSteps)
@@ -233,19 +230,16 @@ class ROSAA():
         self.initial_temperature = 300
         if self.includeCollision:
             N = boltzman_distribution(self.energy_levels, self.initial_temperature, self.electronSpin, self.zeemanSplit)
+
         else:
             self.boltzman_ratio = boltzman_distribution(self.energy_levels, self.trapTemp, self.electronSpin, self.zeemanSplit)
-
+            N = self.boltzman_ratio
             print(f"{self.boltzman_ratio.sum()=}", flush=True)
             print(f"{self.boltzman_ratio=}\n{self.boltzman_ratio.sum()=}", flush=True)
 
-        if self.includeAttachmentRate:
-            
-            
-            self.boltzman_distribution_source = np.append(self.boltzman_ratio, np.zeros(self.totalAttachmentLevels))
-        else:
-
-            self.boltzman_distribution_source = self.boltzman_ratio
+        N_He = self.totalAttachmentLevels*[0]
+        self.boltzman_distribution_source = (N, [*N, *N_He])[self.includeAttachmentRate]
+        self.boltzman_distribution_source = np.array(self.boltzman_distribution_source, dtype=np.float)
 
         def run_for_each(const, run_type="nHe"):
 
@@ -350,15 +344,15 @@ class ROSAA():
         print(f"{self.Rate_kCID=}", flush=True)
 
     def get_simulation_results(self, nHe, power):
+
         self.nHe = nHe
+        
         print(f"{nHe=:.2e}\n{power=:.2e}", flush=True)
+
         norm = self.lineshape_normalise(power)
         self.A_10 = float(self.einstein_coefficient[f"{self.excitedTo} --> {self.excitedFrom}"])
         self.B_10 = stimulated_emission(self.A_10, self.freq)*norm
         self.B_01 = stimulated_absorption(self.excitedFrom, self.excitedTo, self.B_10, self.electronSpin, self.zeemanSplit)
-
-        print(f"{self.B_01=}\n{self.B_10=}", flush=True)
-        # self.B_rate = self.B_01*ion_counts[f"{self.excitedFrom}"] - self.B_10*ion_counts[f"{self.excitedTo}"]
 
         self.get_attachment_rates()
         self.p = float(self.rate_coefficients["branching-ratio(kCID)"])
@@ -377,29 +371,77 @@ class ROSAA():
         print(f"{resOnCounts.shape=}")
         return Noff, Non
 
-
     def computeRateDistributionEquations(self, t, counts):
 
         if self.includeAttachmentRate:
             N = counts[:-self.totalAttachmentLevels]
             N_He = counts[-self.totalAttachmentLevels:]
         else: N = counts
-
+        
         if not self.includeCollision:
-            N = N.sum()*self.boltzman_ratio/self.boltzman_ratio.sum()
-            print(f"{t}\n{N.sum()=}\t{self.boltzman_ratio.sum()=}")
+            N = N.sum()*self.boltzman_ratio
 
-            ion_counts = {key: value for key, value in zip(self.energy_levels.keys(), N)}
+        energy_keys = self.energy_levels.keys()
+        ion_counts = {key: value for key, value in zip(energy_keys, N)}
+
+        rateCollection = []
+        for i in energy_keys:
+            collisional_collection = [0]
+            einstein_collection = [0]
+
+            if self.includeCollision:
+                
+                for j in energy_keys:
+
+                    key = f"{j} --> {i}"
+                    keyInverse = f"{i} --> {j}"
+                    
+                    if i!= j:
+                        if key in self.collisional_rates and keyInverse in self.collisional_rates:
+                            k = self.collisional_rates[key]*self.nHe*ion_counts[j] - self.collisional_rates[keyInverse]*self.nHe*ion_counts[i]
+                            collisional_collection.append(k)
+
+                    temp_E = 0
+                    if self.includeSpontaneousEmission:
+                        
+                        if self.energy_levels[j] > self.energy_levels[i]:
+                            if key in self.einstein_coefficient:
+                                temp_E = self.einstein_coefficient[key]*ion_counts[j]
+                                einstein_collection.append(temp_E)
+                        else:
+                            if key in self.einstein_coefficient:
+                                temp_E = -self.einstein_coefficient[keyInverse]*ion_counts[i]
+                                einstein_collection.append(temp_E)
+
+            else:
+                temp_E = ion_counts[i]
+                einstein_collection.append(temp_E)
+
             if self.lightON:
-                sum_of_two_level = np.sum([ion_counts[self.excitedFrom], ion_counts[self.excitedTo]])
-                ratio = 0.5
-                ion_counts[self.excitedTo] = ratio*sum_of_two_level
-                ion_counts[self.excitedFrom] = (1-ratio)*sum_of_two_level
+                # B_rate defined from excited state 
+                B_rate = self.B_01*ion_counts[f"{self.excitedFrom}"] - self.B_10*ion_counts[f"{self.excitedTo}"]
+                temp_B = 0
+                
+                if i == self.excitedFrom:
+                    temp_B = -B_rate
+                    einstein_collection.append(temp_B)
+
+                if i == self.excitedTo:
+
+                    temp_B = B_rate
+                    einstein_collection.append(temp_B)
+
+            collections = collisional_collection + einstein_collection
+            rateCollection.append(collections)
+
+        dR_dt = []
+        for _ in rateCollection:
+            _temp = reduce(lambda a, b: a+b, _)
+            dR_dt.append(_temp)
+
+        
         if self.includeAttachmentRate:
-            dR_dt = self.compute_attachment_process(N_He, ion_counts)
-        else:
-            dR_dt = list(ion_counts.values())
-        dR_dt = np.array(dR_dt, dtype=np.float)
+            dR_dt = self.compute_attachment_process(N, N_He, dR_dt)
         return dR_dt
 
     def lineshape_normalise(self, power):
@@ -412,24 +454,27 @@ class ROSAA():
         # power broadening
         dipoleMoment = float(self.power_broadening["dipoleMoment(D)"])
         
-        trap_area = float(self.main_parameters["trap_area"])
+
         cp = float(self.power_broadening["cp"])
-        gamma = lorrentz_fwhm(dipoleMoment, power, cp, trap_area)
+        gamma = lorrentz_fwhm(dipoleMoment, power, cp)
 
         # normalised line shape factor
         LineShape = voigt(gamma, sigma)
-        # normalisation factor
-        norm = (power/(trap_area*speed_of_light))*LineShape
         
-        print(f"{massIon=}\n{tempIon=}\n{sigma=:.2e}\n{gamma=:.2e}\n{LineShape=:.2e}\n{norm=:.2e}\n", flush=True)
-        return norm
+        # transition rate due to influence of mm-wave 
+        # normalisation factor
 
+        trap_area = float(self.main_parameters["trap_area"])
+        norm = (power/(trap_area*speed_of_light))*LineShape
+        print(f"{massIon=}\n{tempIon=}\n{sigma=:.2e}\n{gamma=:.2e}\n{LineShape=:.2e}\n{norm=:.2e}\n", flush=True)
+
+        return norm
 
     def plot_results(self, changing_parameters, resOnCounts=None, resOffCounts=None, x=None, y=None):
 
         if changing_parameters == "time":
-            fig, (ax, ax1) = plt.subplots(ncols=2, figsize=(12, 7), dpi=100)
 
+            fig, (ax, ax1) = plt.subplots(ncols=2, figsize=(12, 4), dpi=100)
             legends = [f"{self.molecule} ({key.strip()})" for key in self.energy_levels.keys()]
             print(legends)
             if self.includeAttachmentRate:
@@ -449,47 +494,31 @@ class ROSAA():
                 ax.plot(simulateTime_ms, off, ls="--", c=colorSchemes[counter])
                 counter += 1
 
-            # ax.plot(simulateTime_ms, resOnCounts.sum(axis=0), "-k", label="Total SUM (ON)")
-            # ax.plot(simulateTime_ms, resOffCounts.sum(axis=0), "--k", label="Total SUM (OFF)")
+            ax.plot(simulateTime_ms, resOnCounts.sum(axis=0), "k", label="Total SUM")
             
-            ax.axhline(1, xmin=0, xmax=self.total_trap_time, c="k", ls="-.")
-            legend_axis = ax.legend(title="-ON, --OFF", fontsize=12, title_fontsize=12)
-            # legend_axis.set_title("-ON, --OFF", fontsize=12)
-            legend_axis.set_draggable(True)
+            # legend_axis = ax.legend(title=f"-ON, --OFF")
+            # legend_axis.set_draggable(True)
+            ax.set(yscale="log", ylabel="Counts", xlabel="Time(ms)")
+            ax.minorticks_on()
 
-            ax.set(yscale="log")
-            ax.set_xlabel("Time(ms)", fontsize=16)
-            ax.set_ylabel("Counts", fontsize=16)
-            
+            ax.axhline(1, xmin=simulateTime_ms[0], xmax=simulateTime_ms[-1], c="k", ls="--")
             if self.includeAttachmentRate:
-
                 signal_index = self.total_energy_levels+1
-                
-                
-                start_index = 1
-                
-                signal = (1 - (resOnCounts[signal_index][start_index:] / resOffCounts[signal_index][start_index:]))*100
+
+                signal = (1 - (resOnCounts[signal_index][1:] / resOffCounts[signal_index][1:]))*100
                 ax1.plot(simulateTime_ms[1:], signal, ".-")
-                ax1.legend([f"Signal = {signal[-1]:.2f} (%) at {simulateTime_ms[-1]:.0f}ms"], fontsize=16)
-                ax1.set_title("Signal as a function of trap time", fontsize=18)
-                ax1.set_xlabel("Time(ms)", fontsize=16)
-                ax1.set_ylabel("Signal (%)", fontsize=16)
+                # ax1.legend([f"Max. Signal = {signal.max():.2f} at {(simulateTime_ms[1:][signal.argmax()]):.2f}ms"])
+                ax1.legend([f"Signal = {signal[-1]:.2f} (%) at {simulateTime_ms[-1]:.0f}ms"])
 
-            for axes in (ax, ax1):
-                axes.minorticks_on()
-                axes.tick_params(axis='both', labelsize=16)
-                axes.tick_params(which='both', width=2)
-                axes.tick_params(which='major', length=7)
-                axes.tick_params(which='minor', length=4)
-
+                ax1.minorticks_on()
+                ax1.set(title="Signal as a function of trap time", xlabel="Time (ms)", ylabel="Signal (%)")
             plt.tight_layout()
-
             plt.show()
 
         else:
             fig, ax = plt.subplots(figsize=(7, 5), dpi=100)
-            
             legends = [f"{self.molecule}{i}" for i in range(self.total_energy_levels)]
+
             ax.plot(x, y, ".-", label=f"{self.molecule}-{self.taggingPartner}")
             ax.legend()
             ax.set(ylabel="Signal(%)", xlabel=changing_parameters)
@@ -532,7 +561,6 @@ class ROSAA():
 
         print(f"File written: {savefile}")
 
-
     def write_signal_file(self, f, data_on, data_off):
 
         f.write(f"# Time evolution (s): 0, {self.simulation_duration}, {self.totalSteps}\n")
@@ -549,8 +577,7 @@ class ROSAA():
         f.write("# lightON\n")
         for on in data_on: 
             f.write("\t".join([f'{i}' for i in on])+"\n")
-
-
+        
 if __name__ == "__main__":
     args = sys.argv[1:][0].split(",")
     conditions = json.loads(", ".join(args))

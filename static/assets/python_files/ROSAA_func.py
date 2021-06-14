@@ -11,14 +11,14 @@ epsilon = 8.854e-12
 reduced_plank = Planck / (2*np.pi)
 k_boltzmann_wavenumber = k_boltzmann/1.98630e-23
 
-trap_area = 5e-5
+# trap_area = 5e-5
 
 def gauss_fwhm(freq, mass, temp):
 
     return freq * np.sqrt((8*k_boltzmann*temp*np.log(2)) / (m_p*mass*C**2))
 
 
-def lorrentz_fwhm(dipole, power, cp=None):
+def lorrentz_fwhm(dipole, power, cp, trap_area):
     if cp > 0:
         return cp*np.sqrt(power)
     return (dipole*3.33564e-30)/(reduced_plank*np.pi*np.sqrt(C*epsilon*trap_area)) * np.sqrt(power)

@@ -473,7 +473,6 @@
                         <div class="subtitle">Collisional rate constants</div>
                         <div class="control__div ">
                             <CustomSelect options={["deexcitation", "excitation"]} bind:picked={collisionalRateType} on:change={changeCollisionalRateType}/>
-                            <Textfield bind:value={trapTemp} label="trapTemp(K)"/>
                             <button class="button is-link" on:click={() => editCollisionalCoefficients=true}>Edit constats</button>
                             <button class="button is-link center" on:click={getRateLabelsCollision}>Get labels</button>
                         </div>
@@ -501,6 +500,7 @@
                 <div class="sub_container__div box">
                     <div class="subtitle">Doppler lineshape</div>
                     <div class="content__div ">
+                        <Textfield bind:value={trapTemp} label="trapTemp(K)"/>
                         {#each dopplerLineshape as {label, value, id, type, step}(id)}
                             <Textfield bind:value {label} input$type={type} input$step={step}/>
                         {/each}

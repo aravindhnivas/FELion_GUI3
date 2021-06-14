@@ -1511,7 +1511,6 @@ var MDCFoundation = /** @class */ (function () {
     };
     return MDCFoundation;
 }());
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -1609,7 +1608,6 @@ var MDCComponent = /** @class */ (function () {
     };
     return MDCComponent;
 }());
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -1661,7 +1659,6 @@ function applyPassive(globalObj, forceRefresh) {
     }
     return supportsPassive_ ? { passive: true } : false;
 }
-//# sourceMappingURL=events.js.map
 
 /**
  * @license
@@ -1708,7 +1705,6 @@ function matches(element, selector) {
         || element.msMatchesSelector;
     return nativeMatches.call(element, selector);
 }
-//# sourceMappingURL=ponyfill.js.map
 
 /**
  * @license
@@ -1757,7 +1753,6 @@ var numbers = {
     PADDING: 10,
     TAP_DELAY_MS: 300,
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * Stores result from supportsCssVariables to avoid redundant processing to
@@ -1833,7 +1828,6 @@ function getNormalizedEventCoords(evt, pageOffset, clientRect) {
     }
     return { x: normalizedX, y: normalizedY };
 }
-//# sourceMappingURL=util.js.map
 
 /**
  * @license
@@ -2288,7 +2282,6 @@ var MDCRippleFoundation = /** @class */ (function (_super) {
     };
     return MDCRippleFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -2394,7 +2387,6 @@ var MDCRipple = /** @class */ (function (_super) {
     };
     return MDCRipple;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -2426,7 +2418,6 @@ var cssClasses$1 = {
 var strings$1 = {
     CONTENT_SELECTOR: '.mdc-tab-indicator__content',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -2488,7 +2479,6 @@ var MDCTabIndicatorFoundation = /** @class */ (function (_super) {
     };
     return MDCTabIndicatorFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -2526,7 +2516,6 @@ var MDCFadingTabIndicatorFoundation = /** @class */ (function (_super) {
     };
     return MDCFadingTabIndicatorFoundation;
 }(MDCTabIndicatorFoundation));
-//# sourceMappingURL=fading-foundation.js.map
 
 /**
  * @license
@@ -2582,7 +2571,6 @@ var MDCSlidingTabIndicatorFoundation = /** @class */ (function (_super) {
     };
     return MDCSlidingTabIndicatorFoundation;
 }(MDCTabIndicatorFoundation));
-//# sourceMappingURL=sliding-foundation.js.map
 
 /**
  * @license
@@ -2646,7 +2634,6 @@ var MDCTabIndicator = /** @class */ (function (_super) {
     };
     return MDCTabIndicator;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -2681,7 +2668,6 @@ var strings$2 = {
     TABINDEX: 'tabIndex',
     TAB_INDICATOR_SELECTOR: '.mdc-tab-indicator',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -2804,7 +2790,6 @@ var MDCTabFoundation = /** @class */ (function (_super) {
     };
     return MDCTabFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -2926,7 +2911,6 @@ var MDCTab = /** @class */ (function (_super) {
     };
     return MDCTab;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 function forwardEventsBuilder(component, additionalEvents = []) {
   const events = [
@@ -5237,7 +5221,6 @@ var strings$3 = {
     AREA_SELECTOR: '.mdc-tab-scroller__scroll-area',
     CONTENT_SELECTOR: '.mdc-tab-scroller__scroll-content',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -5267,7 +5250,6 @@ var MDCTabScrollerRTL = /** @class */ (function () {
     }
     return MDCTabScrollerRTL;
 }());
-//# sourceMappingURL=rtl-scroller.js.map
 
 /**
  * @license
@@ -5336,7 +5318,6 @@ var MDCTabScrollerRTLDefault = /** @class */ (function (_super) {
     };
     return MDCTabScrollerRTLDefault;
 }(MDCTabScrollerRTL));
-//# sourceMappingURL=rtl-default-scroller.js.map
 
 /**
  * @license
@@ -5402,7 +5383,6 @@ var MDCTabScrollerRTLNegative = /** @class */ (function (_super) {
     };
     return MDCTabScrollerRTLNegative;
 }(MDCTabScrollerRTL));
-//# sourceMappingURL=rtl-negative-scroller.js.map
 
 /**
  * @license
@@ -5469,7 +5449,6 @@ var MDCTabScrollerRTLReverse = /** @class */ (function (_super) {
     };
     return MDCTabScrollerRTLReverse;
 }(MDCTabScrollerRTL));
-//# sourceMappingURL=rtl-reverse-scroller.js.map
 
 /**
  * @license
@@ -5796,7 +5775,6 @@ var MDCTabScrollerFoundation = /** @class */ (function (_super) {
     };
     return MDCTabScrollerFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -5843,7 +5821,6 @@ function computeHorizontalScrollbarHeight(documentObj, shouldCacheResult) {
     }
     return horizontalScrollbarHeight;
 }
-//# sourceMappingURL=util.js.map
 
 /**
  * @license
@@ -5951,7 +5928,6 @@ var MDCTabScroller = /** @class */ (function (_super) {
     };
     return MDCTabScroller;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -5995,7 +5971,6 @@ var numbers$1 = {
     HOME_KEYCODE: 36,
     SPACE_KEYCODE: 32,
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -6359,7 +6334,6 @@ var MDCTabBarFoundation = /** @class */ (function (_super) {
     };
     return MDCTabBarFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -6523,7 +6497,6 @@ var MDCTabBar = /** @class */ (function (_super) {
     };
     return MDCTabBar;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\tab-scroller\TabScroller.svelte generated by Svelte v3.38.2 */
 const file$6 = "node_modules\\@smui\\tab-scroller\\TabScroller.svelte";
@@ -11931,7 +11904,6 @@ var cssClasses$4 = {
     LABEL_SHAKE: 'mdc-floating-label--shake',
     ROOT: 'mdc-floating-label',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -12032,7 +12004,6 @@ var MDCFloatingLabelFoundation = /** @class */ (function (_super) {
     };
     return MDCFloatingLabelFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -12098,7 +12069,6 @@ var MDCFloatingLabel = /** @class */ (function (_super) {
     };
     return MDCFloatingLabel;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -12126,7 +12096,6 @@ var cssClasses$5 = {
     LINE_RIPPLE_ACTIVE: 'mdc-line-ripple--active',
     LINE_RIPPLE_DEACTIVATING: 'mdc-line-ripple--deactivating',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -12212,7 +12181,6 @@ var MDCLineRippleFoundation = /** @class */ (function (_super) {
     };
     return MDCLineRippleFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -12281,7 +12249,6 @@ var MDCLineRipple = /** @class */ (function (_super) {
     };
     return MDCLineRipple;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -12317,7 +12284,6 @@ var cssClasses$6 = {
     OUTLINE_NOTCHED: 'mdc-notched-outline--notched',
     OUTLINE_UPGRADED: 'mdc-notched-outline--upgraded',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -12405,7 +12371,6 @@ var MDCNotchedOutlineFoundation = /** @class */ (function (_super) {
     };
     return MDCNotchedOutlineFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -12480,7 +12445,6 @@ var MDCNotchedOutline = /** @class */ (function (_super) {
     };
     return MDCNotchedOutline;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -12510,7 +12474,6 @@ var cssClasses$7 = {
 var strings$7 = {
     ROOT_SELECTOR: "." + cssClasses$7.ROOT,
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -12571,7 +12534,6 @@ var MDCTextFieldCharacterCounterFoundation = /** @class */ (function (_super) {
     };
     return MDCTextFieldCharacterCounterFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -12623,7 +12585,6 @@ var MDCTextFieldCharacterCounter = /** @class */ (function (_super) {
     };
     return MDCTextFieldCharacterCounter;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -12686,7 +12647,6 @@ var VALIDATION_ATTR_WHITELIST = [
 var ALWAYS_FLOAT_TYPES = [
     'color', 'date', 'datetime-local', 'month', 'range', 'time', 'week',
 ];
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -13141,7 +13101,6 @@ var MDCTextFieldFoundation = /** @class */ (function (_super) {
     };
     return MDCTextFieldFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -13175,7 +13134,6 @@ var strings$9 = {
     ROLE: 'role',
     ROOT_SELECTOR: "." + cssClasses$9.ROOT,
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -13296,7 +13254,6 @@ var MDCTextFieldHelperTextFoundation = /** @class */ (function (_super) {
     };
     return MDCTextFieldHelperTextFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -13355,7 +13312,6 @@ var MDCTextFieldHelperText = /** @class */ (function (_super) {
     };
     return MDCTextFieldHelperText;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -13386,7 +13342,6 @@ var strings$a = {
 var cssClasses$a = {
     ROOT: 'mdc-text-field__icon',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -13493,7 +13448,6 @@ var MDCTextFieldIconFoundation = /** @class */ (function (_super) {
     };
     return MDCTextFieldIconFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -13553,7 +13507,6 @@ var MDCTextFieldIcon = /** @class */ (function (_super) {
     };
     return MDCTextFieldIcon;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -13990,7 +13943,6 @@ var MDCTextField = /** @class */ (function (_super) {
     };
     return MDCTextField;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\floating-label\FloatingLabel.svelte generated by Svelte v3.38.2 */
 const file$j = "node_modules\\@smui\\floating-label\\FloatingLabel.svelte";
@@ -18181,7 +18133,6 @@ function getCorrectEventName(windowObj, eventType) {
     }
     return eventType;
 }
-//# sourceMappingURL=util.js.map
 
 /**
  * @license
@@ -18236,7 +18187,6 @@ var strings$b = {
 var numbers$4 = {
     ANIM_END_LATCH_MS: 250,
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -18417,7 +18367,6 @@ var MDCCheckboxFoundation = /** @class */ (function (_super) {
     };
     return MDCCheckboxFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -18592,7 +18541,6 @@ var MDCCheckbox = /** @class */ (function (_super) {
 function validDescriptor(inputPropDesc) {
     return !!inputPropDesc && typeof inputPropDesc.set === 'function';
 }
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\checkbox\Checkbox.svelte generated by Svelte v3.38.2 */
 const file$r = "node_modules\\@smui\\checkbox\\Checkbox.svelte";
@@ -19210,7 +19158,6 @@ var cssClasses$c = {
 var strings$c = {
     LABEL_SELECTOR: '.mdc-form-field > label',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -19280,7 +19227,6 @@ var MDCFormFieldFoundation = /** @class */ (function (_super) {
     };
     return MDCFormFieldFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -19360,7 +19306,6 @@ var MDCFormField = /** @class */ (function (_super) {
     };
     return MDCFormField;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\form-field\FormField.svelte generated by Svelte v3.38.2 */
 const file$s = "node_modules\\@smui\\form-field\\FormField.svelte";
@@ -19697,7 +19642,6 @@ var strings$d = {
     ARIA_PRESSED: 'aria-pressed',
     CHANGE_EVENT: 'MDCIconButtonToggle:change',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -19775,7 +19719,6 @@ var MDCIconButtonToggleFoundation = /** @class */ (function (_super) {
     };
     return MDCIconButtonToggleFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -19857,7 +19800,6 @@ var MDCIconButtonToggle = /** @class */ (function (_super) {
     };
     return MDCIconButtonToggle;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\icon-button\IconButton.svelte generated by Svelte v3.38.2 */
 const file$t = "node_modules\\@smui\\icon-button\\IconButton.svelte";
@@ -20474,7 +20416,6 @@ var strings$f = {
     /** A CSS selector used to locate the ripple surface element for the switch. */
     RIPPLE_SURFACE_SELECTOR: '.mdc-switch__thumb-underlay',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -20563,7 +20504,6 @@ var MDCSwitchFoundation = /** @class */ (function (_super) {
     };
     return MDCSwitchFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -20682,7 +20622,6 @@ var MDCSwitch = /** @class */ (function (_super) {
     });
     return MDCSwitch;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\switch\Switch.svelte generated by Svelte v3.38.2 */
 const file$u = "node_modules\\@smui\\switch\\Switch.svelte";
@@ -21518,7 +21457,6 @@ var strings$g = {
 var numbers$5 = {
     UNSET_INDEX: -1,
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -21976,7 +21914,6 @@ var MDCListFoundation = /** @class */ (function (_super) {
     };
     return MDCListFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -22225,7 +22162,6 @@ var MDCList = /** @class */ (function (_super) {
     };
     return MDCList;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\list\List.svelte generated by Svelte v3.38.2 */
 const file$v = "node_modules\\@smui\\list\\List.svelte";
@@ -30100,7 +30036,6 @@ function areTopsMisaligned(els) {
     [].forEach.call(els, function (el) { return tops.add(el.offsetTop); });
     return tops.size > 1;
 }
-//# sourceMappingURL=util.js.map
 
 /**
  * @license
@@ -30156,7 +30091,6 @@ var numbers$6 = {
     DIALOG_ANIMATION_CLOSE_TIME_MS: 75,
     DIALOG_ANIMATION_OPEN_TIME_MS: 150,
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -30410,7 +30344,6 @@ var MDCDialogFoundation = /** @class */ (function (_super) {
     };
     return MDCDialogFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -30588,7 +30521,6 @@ var MDCDialog = /** @class */ (function (_super) {
     };
     return MDCDialog;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\dialog\Dialog.svelte generated by Svelte v3.38.2 */
 const file$H = "node_modules\\@smui\\dialog\\Dialog.svelte";
@@ -33224,7 +33156,6 @@ var cssClasses$h = {
     DISABLED: 'mdc-radio--disabled',
     ROOT: 'mdc-radio',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -33290,7 +33221,6 @@ var MDCRadioFoundation = /** @class */ (function (_super) {
     };
     return MDCRadioFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -33402,7 +33332,6 @@ var MDCRadio = /** @class */ (function (_super) {
     });
     return MDCRadio;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\radio\Radio.svelte generated by Svelte v3.38.2 */
 const file$L = "node_modules\\@smui\\radio\\Radio.svelte";
@@ -34518,7 +34447,6 @@ var Corner;
     Corner[Corner["BOTTOM_START"] = 9] = "BOTTOM_START";
     Corner[Corner["BOTTOM_END"] = 13] = "BOTTOM_END";
 })(Corner || (Corner = {}));
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -34962,7 +34890,6 @@ var MDCMenuSurfaceFoundation = /** @class */ (function (_super) {
     };
     return MDCMenuSurfaceFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -34998,7 +34925,6 @@ function getTransformPropertyName(globalObj, forceRefresh) {
     }
     return cachedCssTransformPropertyName_;
 }
-//# sourceMappingURL=util.js.map
 
 /**
  * @license
@@ -35165,7 +35091,6 @@ var MDCMenuSurface = /** @class */ (function (_super) {
     };
     return MDCMenuSurface;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -35211,7 +35136,6 @@ var DefaultFocusState;
     DefaultFocusState[DefaultFocusState["FIRST_ITEM"] = 2] = "FIRST_ITEM";
     DefaultFocusState[DefaultFocusState["LAST_ITEM"] = 3] = "LAST_ITEM";
 })(DefaultFocusState || (DefaultFocusState = {}));
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -35386,7 +35310,6 @@ var MDCMenuFoundation = /** @class */ (function (_super) {
     };
     return MDCMenuFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -35605,7 +35528,6 @@ var MDCMenu = /** @class */ (function (_super) {
     };
     return MDCMenu;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -35658,7 +35580,6 @@ var strings$m = {
 var numbers$9 = {
     LABEL_SCALE: 0.75,
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -35909,7 +35830,6 @@ var MDCSelectFoundation = /** @class */ (function (_super) {
     };
     return MDCSelectFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -35941,7 +35861,6 @@ var cssClasses$l = {
     HELPER_TEXT_PERSISTENT: 'mdc-select-helper-text--persistent',
     HELPER_TEXT_VALIDATION_MSG: 'mdc-select-helper-text--validation-msg',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -36062,7 +35981,6 @@ var MDCSelectHelperTextFoundation = /** @class */ (function (_super) {
     };
     return MDCSelectHelperTextFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -36121,7 +36039,6 @@ var MDCSelectHelperText = /** @class */ (function (_super) {
     };
     return MDCSelectHelperText;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -36149,7 +36066,6 @@ var strings$o = {
     ICON_EVENT: 'MDCSelect:icon',
     ICON_ROLE: 'button',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -36249,7 +36165,6 @@ var MDCSelectIconFoundation = /** @class */ (function (_super) {
     };
     return MDCSelectIconFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -36309,7 +36224,6 @@ var MDCSelectIcon = /** @class */ (function (_super) {
     };
     return MDCSelectIcon;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /**
  * @license
@@ -36843,7 +36757,6 @@ var MDCSelect = /** @class */ (function (_super) {
     };
     return MDCSelect;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\menu-surface\MenuSurface.svelte generated by Svelte v3.38.2 */
 const file$O = "node_modules\\@smui\\menu-surface\\MenuSurface.svelte";
@@ -43180,7 +43093,6 @@ var events = {
     SELECTED_ALL: 'MDCDataTable:selectedAll',
     UNSELECTED_ALL: 'MDCDataTable:unselectedAll',
 };
-//# sourceMappingURL=constants.js.map
 
 /**
  * @license
@@ -43366,7 +43278,6 @@ var MDCDataTableFoundation = /** @class */ (function (_super) {
     };
     return MDCDataTableFoundation;
 }(MDCFoundation));
-//# sourceMappingURL=foundation.js.map
 
 /**
  * @license
@@ -43514,7 +43425,6 @@ var MDCDataTable = /** @class */ (function (_super) {
     };
     return MDCDataTable;
 }(MDCComponent));
-//# sourceMappingURL=component.js.map
 
 /* node_modules\@smui\data-table\DataTable.svelte generated by Svelte v3.38.2 */
 
@@ -63576,7 +63486,7 @@ function create_if_block$A(ctx) {
 		p: function update(ctx, dirty) {
 			const separatewindow_changes = {};
 
-			if (dirty[0] & /*running, showreport, py, statusReport, rateCoefficients, includeAttachmentRate, powerBroadening, dopplerLineshape, simulationParameters, collisionalCoefficient, editCollisionalCoefficients, trapTemp, collisionalRateType, includeCollision, einsteinCoefficient, editEinsteinCoefficients, includeSpontaneousEmission, energyLevels, editEnergy, energyUnit, numberOfLevels, mainParameters, variableRange, variable, zeemanSplit, electronSpin, writefile, filename, currentLocation*/ 1073741822 | dirty[3] & /*$$scope*/ 128) {
+			if (dirty[0] & /*running, showreport, py, statusReport, rateCoefficients, includeAttachmentRate, powerBroadening, dopplerLineshape, trapTemp, simulationParameters, collisionalCoefficient, editCollisionalCoefficients, collisionalRateType, includeCollision, einsteinCoefficient, editEinsteinCoefficients, includeSpontaneousEmission, energyLevels, editEnergy, energyUnit, numberOfLevels, mainParameters, variableRange, variable, zeemanSplit, electronSpin, writefile, filename, currentLocation*/ 1073741822 | dirty[3] & /*$$scope*/ 128) {
 				separatewindow_changes.$$scope = { dirty, ctx };
 			}
 
@@ -63619,8 +63529,8 @@ function create_if_block_8(ctx) {
 	let updating_value;
 	let current;
 
-	function textfield_value_binding_10(value) {
-		/*textfield_value_binding_10*/ ctx[74](value);
+	function textfield_value_binding_8(value) {
+		/*textfield_value_binding_8*/ ctx[74](value);
 	}
 
 	let textfield_props = { label: "Range (min, max, totalsteps)" };
@@ -63630,7 +63540,7 @@ function create_if_block_8(ctx) {
 	}
 
 	textfield = new Textfield({ props: textfield_props, $$inline: true });
-	binding_callbacks.push(() => bind(textfield, "value", textfield_value_binding_10));
+	binding_callbacks.push(() => bind(textfield, "value", textfield_value_binding_8));
 
 	const block = {
 		c: function create() {
@@ -63719,8 +63629,8 @@ function create_header_content__slot_slot(ctx) {
 	let mounted;
 	let dispose;
 
-	function textfield0_value_binding(value) {
-		/*textfield0_value_binding*/ ctx[65](value);
+	function textfield0_value_binding_1(value) {
+		/*textfield0_value_binding_1*/ ctx[65](value);
 	}
 
 	let textfield0_props = { label: "Current location" };
@@ -63730,10 +63640,10 @@ function create_header_content__slot_slot(ctx) {
 	}
 
 	textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
-	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
+	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding_1));
 
-	function textfield1_value_binding(value) {
-		/*textfield1_value_binding*/ ctx[66](value);
+	function textfield1_value_binding_1(value) {
+		/*textfield1_value_binding_1*/ ctx[66](value);
 	}
 
 	let textfield1_props = { label: "filename" };
@@ -63743,7 +63653,7 @@ function create_header_content__slot_slot(ctx) {
 	}
 
 	textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
-	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding));
+	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding_1));
 
 	function customcheckbox0_selected_binding(value) {
 		/*customcheckbox0_selected_binding*/ ctx[67](value);
@@ -64128,7 +64038,7 @@ function create_else_block$b(ctx) {
 	let div3;
 	let t4;
 	let div4;
-	let textfield;
+	let textfield0;
 	let updating_value;
 	let t5;
 	let customselect;
@@ -64157,16 +64067,19 @@ function create_else_block$b(ctx) {
 	let div10;
 	let t20;
 	let div11;
+	let textfield1;
+	let updating_value_1;
+	let t21;
 	let each_blocks_1 = [];
 	let each3_lookup = new Map();
-	let t21;
+	let t22;
 	let div15;
 	let div13;
-	let t23;
+	let t24;
 	let div14;
 	let each_blocks = [];
 	let each4_lookup = new Map();
-	let t24;
+	let t25;
 	let current;
 	let mounted;
 	let dispose;
@@ -64181,11 +64094,11 @@ function create_else_block$b(ctx) {
 		each0_lookup.set(key, each_blocks_4[i] = create_each_block_7(key, child_ctx));
 	}
 
-	function textfield_value_binding_1(value) {
-		/*textfield_value_binding_1*/ ctx[51](value);
+	function textfield0_value_binding(value) {
+		/*textfield0_value_binding*/ ctx[51](value);
 	}
 
-	let textfield_props = {
+	let textfield0_props = {
 		label: "numberOfLevels (J levels)",
 		input$step: 1,
 		input$min: 0,
@@ -64193,11 +64106,11 @@ function create_else_block$b(ctx) {
 	};
 
 	if (/*numberOfLevels*/ ctx[29] !== void 0) {
-		textfield_props.value = /*numberOfLevels*/ ctx[29];
+		textfield0_props.value = /*numberOfLevels*/ ctx[29];
 	}
 
-	textfield = new Textfield({ props: textfield_props, $$inline: true });
-	binding_callbacks.push(() => bind(textfield, "value", textfield_value_binding_1));
+	textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
+	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
 
 	function customselect_picked_binding(value) {
 		/*customselect_picked_binding*/ ctx[52](value);
@@ -64239,6 +64152,18 @@ function create_else_block$b(ctx) {
 		each2_lookup.set(key, each_blocks_2[i] = create_each_block_3$4(key, child_ctx));
 	}
 
+	function textfield1_value_binding(value) {
+		/*textfield1_value_binding*/ ctx[61](value);
+	}
+
+	let textfield1_props = { label: "trapTemp(K)" };
+
+	if (/*trapTemp*/ ctx[7] !== void 0) {
+		textfield1_props.value = /*trapTemp*/ ctx[7];
+	}
+
+	textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
+	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding));
 	let each_value_2 = /*dopplerLineshape*/ ctx[5];
 	validate_each_argument(each_value_2);
 	const get_key_3 = ctx => /*id*/ ctx[81];
@@ -64282,7 +64207,7 @@ function create_else_block$b(ctx) {
 			div3.textContent = "Energy levels";
 			t4 = space();
 			div4 = element("div");
-			create_component(textfield.$$.fragment);
+			create_component(textfield0.$$.fragment);
 			t5 = space();
 			create_component(customselect.$$.fragment);
 			t6 = space();
@@ -64322,23 +64247,25 @@ function create_else_block$b(ctx) {
 			div10.textContent = "Doppler lineshape";
 			t20 = space();
 			div11 = element("div");
+			create_component(textfield1.$$.fragment);
+			t21 = space();
 
 			for (let i = 0; i < each_blocks_1.length; i += 1) {
 				each_blocks_1[i].c();
 			}
 
-			t21 = space();
+			t22 = space();
 			div15 = element("div");
 			div13 = element("div");
 			div13.textContent = "Lorrentz lineshape";
-			t23 = space();
+			t24 = space();
 			div14 = element("div");
 
 			for (let i = 0; i < each_blocks.length; i += 1) {
 				each_blocks[i].c();
 			}
 
-			t24 = space();
+			t25 = space();
 			if (if_block2) if_block2.c();
 			attr_dev(div0, "class", "subtitle svelte-1uiccjf");
 			add_location(div0, file$1j, 401, 20, 14343);
@@ -64361,23 +64288,23 @@ function create_else_block$b(ctx) {
 			attr_dev(div6, "class", "sub_container__div box svelte-1uiccjf");
 			add_location(div6, file$1j, 409, 16, 14675);
 			attr_dev(div7, "class", "subtitle svelte-1uiccjf");
-			add_location(div7, file$1j, 471, 20, 18105);
+			add_location(div7, file$1j, 470, 20, 18021);
 			attr_dev(div8, "class", "content__div  svelte-1uiccjf");
-			add_location(div8, file$1j, 472, 20, 18176);
+			add_location(div8, file$1j, 471, 20, 18092);
 			attr_dev(div9, "class", "sub_container__div box svelte-1uiccjf");
-			add_location(div9, file$1j, 470, 16, 18047);
+			add_location(div9, file$1j, 469, 16, 17963);
 			attr_dev(div10, "class", "subtitle svelte-1uiccjf");
-			add_location(div10, file$1j, 481, 20, 18533);
+			add_location(div10, file$1j, 480, 20, 18449);
 			attr_dev(div11, "class", "content__div  svelte-1uiccjf");
-			add_location(div11, file$1j, 482, 20, 18600);
+			add_location(div11, file$1j, 481, 20, 18516);
 			attr_dev(div12, "class", "sub_container__div box svelte-1uiccjf");
-			add_location(div12, file$1j, 480, 16, 18475);
+			add_location(div12, file$1j, 479, 16, 18391);
 			attr_dev(div13, "class", "subtitle svelte-1uiccjf");
-			add_location(div13, file$1j, 491, 20, 18993);
+			add_location(div13, file$1j, 491, 20, 18989);
 			attr_dev(div14, "class", "content__div  svelte-1uiccjf");
-			add_location(div14, file$1j, 492, 20, 19061);
+			add_location(div14, file$1j, 492, 20, 19057);
 			attr_dev(div15, "class", "sub_container__div box svelte-1uiccjf");
-			add_location(div15, file$1j, 490, 16, 18935);
+			add_location(div15, file$1j, 490, 16, 18931);
 			attr_dev(div16, "class", "main_container__div svelte-1uiccjf");
 			add_location(div16, file$1j, 398, 12, 14219);
 		},
@@ -64397,7 +64324,7 @@ function create_else_block$b(ctx) {
 			append_dev(div6, div3);
 			append_dev(div6, t4);
 			append_dev(div6, div4);
-			mount_component(textfield, div4, null);
+			mount_component(textfield0, div4, null);
 			append_dev(div4, t5);
 			mount_component(customselect, div4, null);
 			append_dev(div4, t6);
@@ -64432,22 +64359,24 @@ function create_else_block$b(ctx) {
 			append_dev(div12, div10);
 			append_dev(div12, t20);
 			append_dev(div12, div11);
+			mount_component(textfield1, div11, null);
+			append_dev(div11, t21);
 
 			for (let i = 0; i < each_blocks_1.length; i += 1) {
 				each_blocks_1[i].m(div11, null);
 			}
 
-			append_dev(div16, t21);
+			append_dev(div16, t22);
 			append_dev(div16, div15);
 			append_dev(div15, div13);
-			append_dev(div15, t23);
+			append_dev(div15, t24);
 			append_dev(div15, div14);
 
 			for (let i = 0; i < each_blocks.length; i += 1) {
 				each_blocks[i].m(div14, null);
 			}
 
-			append_dev(div16, t24);
+			append_dev(div16, t25);
 			if (if_block2) if_block2.m(div16, null);
 			current = true;
 
@@ -64471,15 +64400,15 @@ function create_else_block$b(ctx) {
 				check_outros();
 			}
 
-			const textfield_changes = {};
+			const textfield0_changes = {};
 
 			if (!updating_value && dirty[0] & /*numberOfLevels*/ 536870912) {
 				updating_value = true;
-				textfield_changes.value = /*numberOfLevels*/ ctx[29];
+				textfield0_changes.value = /*numberOfLevels*/ ctx[29];
 				add_flush_callback(() => updating_value = false);
 			}
 
-			textfield.$set(textfield_changes);
+			textfield0.$set(textfield0_changes);
 			const customselect_changes = {};
 
 			if (!updating_picked && dirty[0] & /*energyUnit*/ 268435456) {
@@ -64554,6 +64483,16 @@ function create_else_block$b(ctx) {
 				check_outros();
 			}
 
+			const textfield1_changes = {};
+
+			if (!updating_value_1 && dirty[0] & /*trapTemp*/ 128) {
+				updating_value_1 = true;
+				textfield1_changes.value = /*trapTemp*/ ctx[7];
+				add_flush_callback(() => updating_value_1 = false);
+			}
+
+			textfield1.$set(textfield1_changes);
+
 			if (dirty[0] & /*dopplerLineshape*/ 32) {
 				each_value_2 = /*dopplerLineshape*/ ctx[5];
 				validate_each_argument(each_value_2);
@@ -64602,7 +64541,7 @@ function create_else_block$b(ctx) {
 				transition_in(each_blocks_4[i]);
 			}
 
-			transition_in(textfield.$$.fragment, local);
+			transition_in(textfield0.$$.fragment, local);
 			transition_in(customselect.$$.fragment, local);
 
 			for (let i = 0; i < each_value_6.length; i += 1) {
@@ -64615,6 +64554,8 @@ function create_else_block$b(ctx) {
 			for (let i = 0; i < each_value_3.length; i += 1) {
 				transition_in(each_blocks_2[i]);
 			}
+
+			transition_in(textfield1.$$.fragment, local);
 
 			for (let i = 0; i < each_value_2.length; i += 1) {
 				transition_in(each_blocks_1[i]);
@@ -64632,7 +64573,7 @@ function create_else_block$b(ctx) {
 				transition_out(each_blocks_4[i]);
 			}
 
-			transition_out(textfield.$$.fragment, local);
+			transition_out(textfield0.$$.fragment, local);
 			transition_out(customselect.$$.fragment, local);
 
 			for (let i = 0; i < each_blocks_3.length; i += 1) {
@@ -64645,6 +64586,8 @@ function create_else_block$b(ctx) {
 			for (let i = 0; i < each_blocks_2.length; i += 1) {
 				transition_out(each_blocks_2[i]);
 			}
+
+			transition_out(textfield1.$$.fragment, local);
 
 			for (let i = 0; i < each_blocks_1.length; i += 1) {
 				transition_out(each_blocks_1[i]);
@@ -64664,7 +64607,7 @@ function create_else_block$b(ctx) {
 				each_blocks_4[i].d();
 			}
 
-			destroy_component(textfield);
+			destroy_component(textfield0);
 			destroy_component(customselect);
 
 			for (let i = 0; i < each_blocks_3.length; i += 1) {
@@ -64677,6 +64620,8 @@ function create_else_block$b(ctx) {
 			for (let i = 0; i < each_blocks_2.length; i += 1) {
 				each_blocks_2[i].d();
 			}
+
+			destroy_component(textfield1);
 
 			for (let i = 0; i < each_blocks_1.length; i += 1) {
 				each_blocks_1[i].d();
@@ -64830,8 +64775,8 @@ function create_each_block_6(key_1, ctx) {
 	let updating_value;
 	let current;
 
-	function textfield_value_binding_2(value) {
-		/*textfield_value_binding_2*/ ctx[54](value, /*value*/ ctx[80], /*each_value_6*/ ctx[96], /*each_index_6*/ ctx[97]);
+	function textfield_value_binding_1(value) {
+		/*textfield_value_binding_1*/ ctx[54](value, /*value*/ ctx[80], /*each_value_6*/ ctx[96], /*each_index_6*/ ctx[97]);
 	}
 
 	let textfield_props = { label: /*label*/ ctx[79] };
@@ -64841,7 +64786,7 @@ function create_each_block_6(key_1, ctx) {
 	}
 
 	textfield = new Textfield({ props: textfield_props, $$inline: true });
-	binding_callbacks.push(() => bind(textfield, "value", textfield_value_binding_2));
+	binding_callbacks.push(() => bind(textfield, "value", textfield_value_binding_1));
 
 	const block = {
 		key: key_1,
@@ -65108,8 +65053,8 @@ function create_each_block_5(key_1, ctx) {
 	let updating_value;
 	let current;
 
-	function textfield_value_binding_3(value) {
-		/*textfield_value_binding_3*/ ctx[56](value, /*value*/ ctx[80], /*each_value_5*/ ctx[94], /*each_index_5*/ ctx[95]);
+	function textfield_value_binding_2(value) {
+		/*textfield_value_binding_2*/ ctx[56](value, /*value*/ ctx[80], /*each_value_5*/ ctx[94], /*each_index_5*/ ctx[95]);
 	}
 
 	let textfield_props = { label: /*label*/ ctx[79] };
@@ -65119,7 +65064,7 @@ function create_each_block_5(key_1, ctx) {
 	}
 
 	textfield = new Textfield({ props: textfield_props, $$inline: true });
-	binding_callbacks.push(() => bind(textfield, "value", textfield_value_binding_3));
+	binding_callbacks.push(() => bind(textfield, "value", textfield_value_binding_2));
 
 	const block = {
 		key: key_1,
@@ -65182,13 +65127,10 @@ function create_if_block_4$5(ctx) {
 	let customselect;
 	let updating_picked;
 	let t2;
-	let textfield;
-	let updating_value;
-	let t3;
 	let button0;
-	let t5;
+	let t4;
 	let button1;
-	let t7;
+	let t6;
 	let current;
 	let mounted;
 	let dispose;
@@ -65210,19 +65152,6 @@ function create_if_block_4$5(ctx) {
 
 	binding_callbacks.push(() => bind(customselect, "picked", customselect_picked_binding_1));
 	customselect.$on("change", /*changeCollisionalRateType*/ ctx[38]);
-
-	function textfield_value_binding_4(value) {
-		/*textfield_value_binding_4*/ ctx[58](value);
-	}
-
-	let textfield_props = { label: "trapTemp(K)" };
-
-	if (/*trapTemp*/ ctx[7] !== void 0) {
-		textfield_props.value = /*trapTemp*/ ctx[7];
-	}
-
-	textfield = new Textfield({ props: textfield_props, $$inline: true });
-	binding_callbacks.push(() => bind(textfield, "value", textfield_value_binding_4));
 	let if_block = /*collisionalCoefficient*/ ctx[24].length > 0 && create_if_block_5$4(ctx);
 
 	const block = {
@@ -65234,21 +65163,19 @@ function create_if_block_4$5(ctx) {
 			div1 = element("div");
 			create_component(customselect.$$.fragment);
 			t2 = space();
-			create_component(textfield.$$.fragment);
-			t3 = space();
 			button0 = element("button");
 			button0.textContent = "Edit constats";
-			t5 = space();
+			t4 = space();
 			button1 = element("button");
 			button1.textContent = "Get labels";
-			t7 = space();
+			t6 = space();
 			if (if_block) if_block.c();
 			attr_dev(div0, "class", "subtitle svelte-1uiccjf");
 			add_location(div0, file$1j, 452, 24, 16936);
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$1j, 456, 28, 17315);
+			add_location(button0, file$1j, 455, 28, 17231);
 			attr_dev(button1, "class", "button is-link center svelte-1uiccjf");
-			add_location(button1, file$1j, 457, 28, 17448);
+			add_location(button1, file$1j, 456, 28, 17364);
 			attr_dev(div1, "class", "control__div  svelte-1uiccjf");
 			add_location(div1, file$1j, 453, 24, 17016);
 			attr_dev(div2, "class", "sub_container__div box svelte-1uiccjf");
@@ -65261,18 +65188,16 @@ function create_if_block_4$5(ctx) {
 			append_dev(div2, div1);
 			mount_component(customselect, div1, null);
 			append_dev(div1, t2);
-			mount_component(textfield, div1, null);
-			append_dev(div1, t3);
 			append_dev(div1, button0);
-			append_dev(div1, t5);
+			append_dev(div1, t4);
 			append_dev(div1, button1);
-			append_dev(div2, t7);
+			append_dev(div2, t6);
 			if (if_block) if_block.m(div2, null);
 			current = true;
 
 			if (!mounted) {
 				dispose = [
-					listen_dev(button0, "click", /*click_handler_4*/ ctx[59], false, false, false),
+					listen_dev(button0, "click", /*click_handler_4*/ ctx[58], false, false, false),
 					listen_dev(button1, "click", /*getRateLabelsCollision*/ ctx[37], false, false, false)
 				];
 
@@ -65289,15 +65214,6 @@ function create_if_block_4$5(ctx) {
 			}
 
 			customselect.$set(customselect_changes);
-			const textfield_changes = {};
-
-			if (!updating_value && dirty[0] & /*trapTemp*/ 128) {
-				updating_value = true;
-				textfield_changes.value = /*trapTemp*/ ctx[7];
-				add_flush_callback(() => updating_value = false);
-			}
-
-			textfield.$set(textfield_changes);
 
 			if (/*collisionalCoefficient*/ ctx[24].length > 0) {
 				if (if_block) {
@@ -65325,20 +65241,17 @@ function create_if_block_4$5(ctx) {
 		i: function intro(local) {
 			if (current) return;
 			transition_in(customselect.$$.fragment, local);
-			transition_in(textfield.$$.fragment, local);
 			transition_in(if_block);
 			current = true;
 		},
 		o: function outro(local) {
 			transition_out(customselect.$$.fragment, local);
-			transition_out(textfield.$$.fragment, local);
 			transition_out(if_block);
 			current = false;
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(div2);
 			destroy_component(customselect);
-			destroy_component(textfield);
 			if (if_block) if_block.d();
 			mounted = false;
 			run_all(dispose);
@@ -65356,7 +65269,7 @@ function create_if_block_4$5(ctx) {
 	return block;
 }
 
-// (461:24) {#if collisionalCoefficient.length>0}
+// (460:24) {#if collisionalCoefficient.length>0}
 function create_if_block_5$4(ctx) {
 	let div;
 	let each_blocks = [];
@@ -65382,7 +65295,7 @@ function create_if_block_5$4(ctx) {
 			}
 
 			attr_dev(div, "class", "content__div  svelte-1uiccjf");
-			add_location(div, file$1j, 461, 28, 17666);
+			add_location(div, file$1j, 460, 28, 17582);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -65432,22 +65345,22 @@ function create_if_block_5$4(ctx) {
 		block,
 		id: create_if_block_5$4.name,
 		type: "if",
-		source: "(461:24) {#if collisionalCoefficient.length>0}",
+		source: "(460:24) {#if collisionalCoefficient.length>0}",
 		ctx
 	});
 
 	return block;
 }
 
-// (463:32) {#each collisionalCoefficient as {label, value, id}
+// (462:32) {#each collisionalCoefficient as {label, value, id}
 function create_each_block_4$2(key_1, ctx) {
 	let first;
 	let textfield;
 	let updating_value;
 	let current;
 
-	function textfield_value_binding_5(value) {
-		/*textfield_value_binding_5*/ ctx[60](value, /*value*/ ctx[80], /*each_value_4*/ ctx[92], /*each_index_4*/ ctx[93]);
+	function textfield_value_binding_3(value) {
+		/*textfield_value_binding_3*/ ctx[59](value, /*value*/ ctx[80], /*each_value_4*/ ctx[92], /*each_index_4*/ ctx[93]);
 	}
 
 	let textfield_props = { label: /*label*/ ctx[79] };
@@ -65457,7 +65370,7 @@ function create_each_block_4$2(key_1, ctx) {
 	}
 
 	textfield = new Textfield({ props: textfield_props, $$inline: true });
-	binding_callbacks.push(() => bind(textfield, "value", textfield_value_binding_5));
+	binding_callbacks.push(() => bind(textfield, "value", textfield_value_binding_3));
 
 	const block = {
 		key: key_1,
@@ -65504,22 +65417,22 @@ function create_each_block_4$2(key_1, ctx) {
 		block,
 		id: create_each_block_4$2.name,
 		type: "each",
-		source: "(463:32) {#each collisionalCoefficient as {label, value, id}",
+		source: "(462:32) {#each collisionalCoefficient as {label, value, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (474:24) {#each simulationParameters as {label, value, id}
+// (473:24) {#each simulationParameters as {label, value, id}
 function create_each_block_3$4(key_1, ctx) {
 	let first;
 	let textfield;
 	let updating_value;
 	let current;
 
-	function textfield_value_binding_6(value) {
-		/*textfield_value_binding_6*/ ctx[61](value, /*value*/ ctx[80], /*each_value_3*/ ctx[90], /*each_index_3*/ ctx[91]);
+	function textfield_value_binding_4(value) {
+		/*textfield_value_binding_4*/ ctx[60](value, /*value*/ ctx[80], /*each_value_3*/ ctx[90], /*each_index_3*/ ctx[91]);
 	}
 
 	let textfield_props = { label: /*label*/ ctx[79] };
@@ -65529,7 +65442,7 @@ function create_each_block_3$4(key_1, ctx) {
 	}
 
 	textfield = new Textfield({ props: textfield_props, $$inline: true });
-	binding_callbacks.push(() => bind(textfield, "value", textfield_value_binding_6));
+	binding_callbacks.push(() => bind(textfield, "value", textfield_value_binding_4));
 
 	const block = {
 		key: key_1,
@@ -65576,7 +65489,7 @@ function create_each_block_3$4(key_1, ctx) {
 		block,
 		id: create_each_block_3$4.name,
 		type: "each",
-		source: "(474:24) {#each simulationParameters as {label, value, id}",
+		source: "(473:24) {#each simulationParameters as {label, value, id}",
 		ctx
 	});
 
@@ -65590,8 +65503,8 @@ function create_each_block_2$5(key_1, ctx) {
 	let updating_value;
 	let current;
 
-	function textfield_value_binding_7(value) {
-		/*textfield_value_binding_7*/ ctx[62](value, /*value*/ ctx[80], /*each_value_2*/ ctx[88], /*each_index_2*/ ctx[89]);
+	function textfield_value_binding_5(value) {
+		/*textfield_value_binding_5*/ ctx[62](value, /*value*/ ctx[80], /*each_value_2*/ ctx[88], /*each_index_2*/ ctx[89]);
 	}
 
 	let textfield_props = {
@@ -65605,7 +65518,7 @@ function create_each_block_2$5(key_1, ctx) {
 	}
 
 	textfield = new Textfield({ props: textfield_props, $$inline: true });
-	binding_callbacks.push(() => bind(textfield, "value", textfield_value_binding_7));
+	binding_callbacks.push(() => bind(textfield, "value", textfield_value_binding_5));
 
 	const block = {
 		key: key_1,
@@ -65668,8 +65581,8 @@ function create_each_block_1$5(key_1, ctx) {
 	let updating_value;
 	let current;
 
-	function textfield_value_binding_8(value) {
-		/*textfield_value_binding_8*/ ctx[63](value, /*value*/ ctx[80], /*each_value_1*/ ctx[84], /*each_index_1*/ ctx[85]);
+	function textfield_value_binding_6(value) {
+		/*textfield_value_binding_6*/ ctx[63](value, /*value*/ ctx[80], /*each_value_1*/ ctx[84], /*each_index_1*/ ctx[85]);
 	}
 
 	let textfield_props = { label: /*label*/ ctx[79] };
@@ -65679,7 +65592,7 @@ function create_each_block_1$5(key_1, ctx) {
 	}
 
 	textfield = new Textfield({ props: textfield_props, $$inline: true });
-	binding_callbacks.push(() => bind(textfield, "value", textfield_value_binding_8));
+	binding_callbacks.push(() => bind(textfield, "value", textfield_value_binding_6));
 
 	const block = {
 		key: key_1,
@@ -65766,11 +65679,11 @@ function create_if_block_3$7(ctx) {
 			}
 
 			attr_dev(div0, "class", "subtitle svelte-1uiccjf");
-			add_location(div0, file$1j, 503, 24, 19464);
+			add_location(div0, file$1j, 503, 24, 19460);
 			attr_dev(div1, "class", "content__div svelte-1uiccjf");
-			add_location(div1, file$1j, 504, 24, 19576);
+			add_location(div1, file$1j, 504, 24, 19572);
 			attr_dev(div2, "class", "sub_container__div box svelte-1uiccjf");
-			add_location(div2, file$1j, 501, 20, 19400);
+			add_location(div2, file$1j, 501, 20, 19396);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div2, anchor);
@@ -65837,8 +65750,8 @@ function create_each_block$c(key_1, ctx) {
 	let updating_value;
 	let current;
 
-	function textfield_value_binding_9(value) {
-		/*textfield_value_binding_9*/ ctx[64](value, /*value*/ ctx[80], /*each_value*/ ctx[82], /*each_index*/ ctx[83]);
+	function textfield_value_binding_7(value) {
+		/*textfield_value_binding_7*/ ctx[64](value, /*value*/ ctx[80], /*each_value*/ ctx[82], /*each_index*/ ctx[83]);
 	}
 
 	let textfield_props = { label: /*label*/ ctx[79] };
@@ -65848,7 +65761,7 @@ function create_each_block$c(key_1, ctx) {
 	}
 
 	textfield = new Textfield({ props: textfield_props, $$inline: true });
-	binding_callbacks.push(() => bind(textfield, "value", textfield_value_binding_9));
+	binding_callbacks.push(() => bind(textfield, "value", textfield_value_binding_7));
 
 	const block = {
 		key: key_1,
@@ -65995,7 +65908,7 @@ function create_if_block_1$d(ctx) {
 			button = element("button");
 			button.textContent = "Stop";
 			attr_dev(button, "class", "button is-danger");
-			add_location(button, file$1j, 521, 16, 20045);
+			add_location(button, file$1j, 521, 16, 20041);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, button, anchor);
@@ -66064,10 +65977,10 @@ function create_footer_content__slot_slot(ctx) {
 			button1 = element("button");
 			button1.textContent = "Submit";
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$1j, 524, 12, 20231);
+			add_location(button0, file$1j, 524, 12, 20227);
 			attr_dev(button1, "class", "button is-link");
 			toggle_class(button1, "is-loading", /*running*/ ctx[12]);
-			add_location(button1, file$1j, 526, 12, 20376);
+			add_location(button1, file$1j, 526, 12, 20372);
 		},
 		m: function mount(target, anchor) {
 			if (if_block) if_block.m(target, anchor);
@@ -66821,7 +66734,7 @@ function instance$1q($$self, $$props, $$invalidate) {
 		$$invalidate(3, mainParameters);
 	}
 
-	function textfield_value_binding_1(value) {
+	function textfield0_value_binding(value) {
 		numberOfLevels = value;
 		$$invalidate(29, numberOfLevels);
 	}
@@ -66833,14 +66746,14 @@ function instance$1q($$self, $$props, $$invalidate) {
 
 	const click_handler_2 = () => $$invalidate(26, editEnergy = true);
 
-	function textfield_value_binding_2(value$1, value, each_value_6, each_index_6) {
+	function textfield_value_binding_1(value$1, value, each_value_6, each_index_6) {
 		each_value_6[each_index_6].value = value$1;
 		$$invalidate(27, energyLevels);
 	}
 
 	const click_handler_3 = () => $$invalidate(23, editEinsteinCoefficients = true);
 
-	function textfield_value_binding_3(value$1, value, each_value_5, each_index_5) {
+	function textfield_value_binding_2(value$1, value, each_value_5, each_index_5) {
 		each_value_5[each_index_5].value = value$1;
 		$$invalidate(25, einsteinCoefficient);
 	}
@@ -66850,44 +66763,44 @@ function instance$1q($$self, $$props, $$invalidate) {
 		$$invalidate(1, collisionalRateType);
 	}
 
-	function textfield_value_binding_4(value) {
-		trapTemp = value;
-		$$invalidate(7, trapTemp);
-	}
-
 	const click_handler_4 = () => $$invalidate(22, editCollisionalCoefficients = true);
 
-	function textfield_value_binding_5(value$1, value, each_value_4, each_index_4) {
+	function textfield_value_binding_3(value$1, value, each_value_4, each_index_4) {
 		each_value_4[each_index_4].value = value$1;
 		$$invalidate(24, collisionalCoefficient);
 	}
 
-	function textfield_value_binding_6(value$1, value, each_value_3, each_index_3) {
+	function textfield_value_binding_4(value$1, value, each_value_3, each_index_3) {
 		each_value_3[each_index_3].value = value$1;
 		$$invalidate(4, simulationParameters);
 	}
 
-	function textfield_value_binding_7(value$1, value, each_value_2, each_index_2) {
+	function textfield1_value_binding(value) {
+		trapTemp = value;
+		$$invalidate(7, trapTemp);
+	}
+
+	function textfield_value_binding_5(value$1, value, each_value_2, each_index_2) {
 		each_value_2[each_index_2].value = value$1;
 		$$invalidate(5, dopplerLineshape);
 	}
 
-	function textfield_value_binding_8(value$1, value, each_value_1, each_index_1) {
+	function textfield_value_binding_6(value$1, value, each_value_1, each_index_1) {
 		each_value_1[each_index_1].value = value$1;
 		$$invalidate(6, powerBroadening);
 	}
 
-	function textfield_value_binding_9(value$1, value, each_value, each_index) {
+	function textfield_value_binding_7(value$1, value, each_value, each_index) {
 		each_value[each_index].value = value$1;
 		$$invalidate(8, rateCoefficients);
 	}
 
-	function textfield0_value_binding(value) {
+	function textfield0_value_binding_1(value) {
 		currentLocation = value;
 		$$invalidate(2, currentLocation);
 	}
 
-	function textfield1_value_binding(value) {
+	function textfield1_value_binding_1(value) {
 		filename = value;
 		$$invalidate(15, filename);
 	}
@@ -66927,7 +66840,7 @@ function instance$1q($$self, $$props, $$invalidate) {
 		$$invalidate(20, variable);
 	}
 
-	function textfield_value_binding_10(value) {
+	function textfield_value_binding_8(value) {
 		variableRange = value;
 		$$invalidate(21, variableRange);
 	}
@@ -67095,22 +67008,22 @@ function instance$1q($$self, $$props, $$invalidate) {
 		click_handler,
 		click_handler_1,
 		textfield_value_binding,
-		textfield_value_binding_1,
+		textfield0_value_binding,
 		customselect_picked_binding,
 		click_handler_2,
-		textfield_value_binding_2,
+		textfield_value_binding_1,
 		click_handler_3,
-		textfield_value_binding_3,
+		textfield_value_binding_2,
 		customselect_picked_binding_1,
-		textfield_value_binding_4,
 		click_handler_4,
+		textfield_value_binding_3,
+		textfield_value_binding_4,
+		textfield1_value_binding,
 		textfield_value_binding_5,
 		textfield_value_binding_6,
 		textfield_value_binding_7,
-		textfield_value_binding_8,
-		textfield_value_binding_9,
-		textfield0_value_binding,
-		textfield1_value_binding,
+		textfield0_value_binding_1,
+		textfield1_value_binding_1,
 		customcheckbox0_selected_binding,
 		customcheckbox1_selected_binding,
 		customcheckbox2_selected_binding,
@@ -67118,7 +67031,7 @@ function instance$1q($$self, $$props, $$invalidate) {
 		customcheckbox4_selected_binding,
 		customcheckbox5_selected_binding,
 		customselect_picked_binding_2,
-		textfield_value_binding_10,
+		textfield_value_binding_8,
 		separatewindow_active_binding
 	];
 }
