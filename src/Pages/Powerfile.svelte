@@ -1,61 +1,57 @@
+
 <script>
-    
-    // Importing modules
     import Textfield from '@smui/textfield'
     import HelperText from '@smui/textfield/helper-text/index';
-    import Fab, {Label} from '@smui/fab';
     import Checkbox from '@smui/checkbox';
     import FormField from '@smui/form-field';
     import {browse} from "../components/Layout.svelte";
     import CustomDialog from "../components/CustomDialog.svelte";
     import PreModal from "../components/PreModal.svelte";
-    //////////////////////////////////////////////////////////////////////////////////
 
     const writePowfile = () => {
-
         let contents = `${initContent}\n${powerfileContent}`
 
         fs.writeFile(powfile, contents , function(err) {
-
             if(err) { return window.createToast("Power file couldn't be saved.", "danger") }
             window.createToast("Power file saved", "success")
         })
     }
+
     
     async function savefile() {
-
         if (location.length == 0) { return openFolder({save:true}) }
-
         const overwrite = await fs.existsSync(powfile)
         overwrite ? overwrite_dialog.open() : writePowfile()
     }
 
     function openFolder({save=false}={}) {
-        browse({dir:true}).then(result=>{
+        browse({dir:true})
+            .then(result=>{
+                if (!result.canceled) {
+                    location = result.filePaths[0]
+                    db.set("powerfile_location", location)
+                    window.createToast("Location updated", "success")
+                    if (save) savefile()
 
-            if (!result.canceled) {
-                
-                location = result.filePaths[0]
-                db.set("powerfile_location", location)
-                window.createToast("Location updated", "success")
-
-                if (save) savefile()
-            }
-        }).catch(err=>{preModal.modalContent = err.stack; preModal.open=true})
+                }
+            
+            }).catch(err=>{preModal.modalContent = err.stack; preModal.open=true})
+    
     }
 
     let powerfileContent = '', felixHz = 10, felixShots = 16, convert = null;
 
-    let location = db.get("powerfile_location") || "";
-    let overwrite_dialog;
 
+    let location = db.get("powerfile_location") || "";
+    
+    let overwrite_dialog;
     let today = new Date();
+
     const dd = String(today.getDate()).padStart(2, '0')
     const mm = String(today.getMonth() + 1).padStart(2, '0')
-    
     const yy = today.getFullYear().toString().substr(2)
-    let filename = `${dd}_${mm}_${yy}-#`;
 
+    let filename = `${dd}_${mm}_${yy}-#`;
     $: powfile = path.resolve(location, `${filename}.pow`)
     $: conversion = "_no_"
     $: convert ? conversion = "_" : conversion = "_no_"
@@ -63,10 +59,12 @@
         `# ${felixHz} Hz FELIX\n` +
         `#SHOTS=${felixShots}\n` +
         `#INTERP=linear\n` +
+
         `#    IN${conversion}UM (if one deletes the no the firs number will be in \mu m\n` +
         `# wavelength/cm-1      energy/pulse/mJ\n`
 
     
+
     const handleOverwrite = (e) => {
         let action = e.detail.action
         if (action === "Cancel" || action === "close") window.createToast("Powerfile saving cancelled", "warning")
@@ -82,8 +80,10 @@
     .main__container {
         display: grid; 
         height: 100%;
-        width: 100%;
+
         grid-row-gap: 1em;
+        margin: auto;
+        width: 90%;
     }
     .grid_column__container {
         display: grid;
@@ -112,7 +112,7 @@
     
 
 <section class="section" id="Powerfile" style="display:none">
-    <div class="main__container" id="powfileContainer">
+    <div class="box main__container" id="powfileContainer">
 
         <div class="grid_column__container location__bar">
             <button class="button is-link" on:click={openFolder}>Browse</button>
@@ -133,7 +133,7 @@
             <Textfield textarea bind:value={powerfileContent} label="Powerfile contents" 
                 input$aria-controls="powercontent_help" input$aria-describedby="powercontent_help"/>
             <HelperText id="powercontent_help">Enter powerfile measured for {filename}.felix file (wavenumber power-in mJ)</HelperText>
-            <button class="button is-success" style="width:12em;" on:click={savefile}>Save</button>
+            <button class="button is-success" style="width:12em;margin-left: auto;" on:click={savefile}>Save</button>
         </div>
         
     
