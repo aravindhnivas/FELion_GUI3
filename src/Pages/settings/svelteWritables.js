@@ -15,4 +15,4 @@ export const pyVersion = writable("")
 
 export const backupName = writable("FELion_GUI_backup")
 
-export const developerMode = writable(false)
+export const developerMode = writable(versionFileJSON.developer)
