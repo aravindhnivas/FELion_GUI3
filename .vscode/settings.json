@@ -1,7 +1,0 @@
-{
-    "python.pythonPath": "C:\\Users\\aravi\\anaconda3\\python.exe",
-    "python.linting.flake8Enabled": true,
-    "python.linting.enabled": true,
-    "python.terminal.activateEnvironment": true,
-    "jupyter.jupyterServerType": "local"
-}
