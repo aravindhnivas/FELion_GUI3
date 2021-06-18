@@ -171,7 +171,6 @@ class normplot:
         
         # Exporting averaged.dat file
         self.export_file(f"averaged", binns, intens, intens_r, energyJ_norm)
-
         sendData(dataToSend)
 
     def inten_per_photon(self, wn, inten): return (np.array(wn) * np.array(inten)) / 1e3

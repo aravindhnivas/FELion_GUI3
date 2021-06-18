@@ -37,7 +37,6 @@
             opofile_func({dataFromPython, delta:deltaOPO})
             window.createToast("Graph Plotted", "success")
             graphPlotted = true, $opoMode = true
-            localStorage["opoLocation"] = OPOLocation; 
             showOPOFiles=false
         }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
 

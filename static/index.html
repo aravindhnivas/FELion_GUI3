@@ -3,72 +3,80 @@
 
 <head>
 	<meta charset='utf8'>
-	<meta name="viewport"
-		content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>FELion_GUI3</title>
 
-
-	<link rel="stylesheet"
-		href="./assets/material-icons/material-icon.css">
+	<link rel="stylesheet" href="./assets/material-icons/material-icon.css">
 	<link rel='stylesheet' href='./assets/css/animate.compat.css'>
 	<link rel='stylesheet' href='./assets/css/introjs.css'>
-
 	<link rel="stylesheet" href="./assets/js/katex/katex.min.css" />
 
-	<link rel="stylesheet"
-		href="./assets/js/highlight/monokai-sublime.min.css" />
+	<link rel="stylesheet" href="./assets/js/highlight/monokai-sublime.min.css" />
 
-	<link rel="stylesheet"
-		href="./assets/js/editor/quill/quill.snow.css" />
+	<link rel="stylesheet" href="./assets/js/editor/quill/quill.snow.css" />
+	
 	<link rel='stylesheet' href='./assets/css/global.css'>
+	
+	
+	<link rel='stylesheet' href='./assets/fontawesome5/css/all.min.css'>
 	<link rel='stylesheet' href='./bundle.css'>
-
 	<script src='./assets/js/plotly-latest.min.js'></script>
+	<script src='./assets/js/winbox.bundle.js'></script>
 
 </head>
 
 <body class="mdc-typography">
+	
 	<script>
-
 		window._ = require('./assets/js/lodash.js')
 		window.electron = require("electron")
 		window.remote = electron.remote
+		
 		window.path = require("path")
+		
 		window.fs = require("fs")
 		window.spawn = require("child_process").spawn
 
-		// const util = require('util');
-		// const log_file = fs.createWriteStream(__dirname + '/debug.log', { flags: 'w' });
-		// const log_stdout = process.stdout;
 
-		// console.log = function (d) {
-		// 	log_file.write(util.format(d) + '\n');
-		// 	log_stdout.write(util.format(d) + '\n');
-		// };
 
+		const JSONdb = require('./assets/js/JSONdb')
+		
+		const db = new JSONdb(path.resolve(__dirname, "db.json"))
+		const versionFile_ = path.resolve(__dirname, "../version.json")
+		const versionFileContent = fs.readFileSync(versionFile_).toString("utf-8")
+
+		const versionFileJSON = JSON.parse(versionFileContent)
+		window.currentVersion = versionFileJSON.version
+
+		db.set("version", currentVersion)
 	</script>
+	
 
 	<script src='./assets/js/bulma-extensions.min.js'></script>
 
 	<script src='./assets/js/interact.min.js'></script>
 	<script src='./assets/js/marked.min.js'></script>
-	<script src='./assets/js/intro.js'></script>
 
+	<script src='./assets/js/intro.js'></script>
 
 	<script src="./assets/js/katex/katex.min.js"></script>
 
 	<script src="./assets/js/highlight/highlight.min.js"></script>
-	<script src='./assets/js/editor/quill/quill.min.js'></script>
 
+	<script src='./assets/js/editor/quill/quill.min.js'></script>
 	<script src='./bundle.js'></script>
 
 	<script>
 
 		const customTitlebar = require('./custom-electron-titlebar/lib/index')
 
-		const MyTitleBar = new customTitlebar.Titlebar({ backgroundColor: customTitlebar.Color.fromHex('#38236b') });
-		MyTitleBar.updateTitle("FELion Spectrum Analyser")
+		const MyTitleBar = new customTitlebar.Titlebar({ 
+			backgroundColor: customTitlebar.Color.fromHex('#38236b'),
+			menu: null
 
+		 });
+
+		MyTitleBar.updateTitle("FELion Spectrum Analyser")
 	</script>
 
 </body>

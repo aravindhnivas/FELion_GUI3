@@ -15,7 +15,7 @@
 
     const filetype = "scan", id = "Timescan"
     let fileChecked = [];
-    let currentLocation = localStorage[`${filetype}_location`] || ""
+    let currentLocation = db.get(`${filetype}_location`) || ""
 
     $: scanfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
     
@@ -98,17 +98,12 @@
 </script>
 
 <style>
-    .timescan_buttonContainer {min-height: 5em;}
-    .button {margin-right: 0.5em;}
-    .buttonRow {margin-bottom: 1em!important; align-items: center;}
-    * :global(.mdc-select__native-control option) {color: black}
-    .active {display: flex!important;}
-    .hide {display: none;}
+    
 </style>
 
-<Layout bind:preModal {filetype} {id} bind:currentLocation bind:fileChecked on:chdir={dir_changed}>
+<Layout bind:preModal {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked on:chdir={dir_changed}>
 
-    <div class="timescan_buttonContainer" slot="buttonContainer">
+    <svelte:fragment slot="buttonContainer">
 
         <div class="content align buttonRow">
             <button class="button is-link" on:click="{(e)=>plotData({e:e})}">Timescan Plot</button>
@@ -128,7 +123,7 @@
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"general"})}">Submit</button>
         </div>
 
-    </div>
+    </svelte:fragment>
 
     <div style="margin-right: 1em;" slot="plotContainer">
         <div id="tplotContainer">

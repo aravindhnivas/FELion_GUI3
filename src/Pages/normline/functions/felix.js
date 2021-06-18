@@ -29,6 +29,19 @@ export async function felix_func({ normMethod, dataFromPython, delta } = {}) {
         plotlyEventCreatedFELIX.set(true)
 
     }
+
+    const graphDivIds = ["exp-theory-plot", "bplot", "saPlot", "avgplot", "opoplot", "opoSA", "opoRelPlot"]
+    graphDivIds.forEach(id=>{
+
+        const content = document.getElementById(id).innerHTML
+        
+        const width = document.getElementById(id).clientWidth
+        
+        if(content){ Plotly.relayout(id, {width}) }
+    })
+
+
+
     console.log("Graph Plotted")
 
 }

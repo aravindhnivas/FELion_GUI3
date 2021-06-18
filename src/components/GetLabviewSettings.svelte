@@ -82,7 +82,9 @@
 
 </style>
 <button class="button is-link" on:click="{()=>{active = true}}">GetLabviewSettings</button>
+
 {#if active}
+
     <Modal title="Labview Settings" bind:active>
 
         <div slot="content" transition:fade >
@@ -91,11 +93,12 @@
 
 
             {#if settingsLoaded}
+
                 <div class="container">
+
                     <div class="b0 col">
                         
                         {#each settingsVariable.b0 as item, index (item)}
-                        
                             <Textfield {style} value={variableValues[item]} label={labelRowB0[index]} />
                     
                         {/each}
@@ -140,13 +143,14 @@
                         {/each}
 
                     </div>
-                    <div class="row">
+
+                    <div class="row" style="padding: 1em 0;">
 
                         <Textfield {style} value={variableValues[settingsVariable.bl5]} label="bl5" />
                         <Textfield {style} value={variableValues[settingsVariable.res]} label="Resolution" />
+
                         <Textfield {style} value={variableValues[settingsVariable.q2float]} label="Quad 2 float" />
                     </div>
-
                 </div>
             {/if}
         </div>

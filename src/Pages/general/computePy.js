@@ -121,24 +121,26 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
 
                     py.on("close", () => {
                         if (!error_occured_py) {
-                            let dataFromPython = fs.readFileSync(path.join(get(pythonscript), "data.json"))
+                            const dataFile = pyfile.split(".")[0]
+                            let dataFromPython = fs.readFileSync(path.join(get(pythonscript), "local", dataFile+"_data.json"))
                             window.dataFromPython = dataFromPython = JSON.parse(dataFromPython.toString("utf-8"))
                             console.log(dataFromPython)
                             resolve(dataFromPython)
-
                         }
 
                         if(e) {
                             const pyEventClosed = new CustomEvent('pyEventClosed', { bubbles: false, detail: { py, pyfile } });
+
+
                             e.target.dispatchEvent(pyEventClosed)
                         
                             console.log("pyEventClosed dispatched")
                         }
                         
                         target.classList.toggle("is-loading")
-
                         console.log("Process closed")
                     })
+
                 }
 
             }).catch(err => { reject(err.stack); if (!general) { target.classList.toggle("is-loading") } })

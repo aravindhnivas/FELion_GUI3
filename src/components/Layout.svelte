@@ -1,5 +1,5 @@
 <script context="module">
-    export function browse({filetype="", dir=true}={}) {
+    export function browse({filetype="", dir=true, multiple=true}={}) {
         return new Promise((resolve, reject)=>{
             const mainWindow = remote.getCurrentWindow()
             let type;
@@ -9,9 +9,9 @@
                 filters: [
                     { name: filetype, extensions: [`*${filetype}`] },
                     { name: 'All Files', extensions: ['*'] }
-
                 ],
-                properties: [type, "multiSelections"],
+
+                properties: [type, multiple ? "multiSelections" : ""],
             }
 
 
@@ -48,7 +48,7 @@
 
 <script>
     
-    import { fly } from 'svelte/transition';
+    import { fly, fade } from 'svelte/transition';
     import Textfield from '@smui/textfield';
     import {onMount, afterUpdate} from "svelte";
     import FileBrowser from "./FileBrowser.svelte"
@@ -60,8 +60,10 @@
     ////////////////////////////////////////////////////////////////////////////
 
     export let id, fileChecked=[], filetype = "felix", toggleBrowser = false, preModal = {}, fullfileslist = [];
-    export let currentLocation = localStorage[`${filetype}_location`] || "";
+    export let currentLocation = db.get(`${filetype}_location`) || "", graphPlotted=false;
+
     const dispatch = createEventDispatcher()
+
 
     function browse_folder() {
         browse({dir:true}).then(result=>{
@@ -70,27 +72,60 @@
 
 
             if (!result.canceled) { 
-                currentLocation= localStorage[`${filetype}_location`] = result.filePaths[0]
+                currentLocation = result.filePaths[0]
 
+                db.set(`${filetype}_location`, currentLocation)
                 console.log(result, currentLocation)
 
              }
         })
     }
 
+    
     function tour_event() { dispatch('tour', {filetype}) }
 
     let ContainerHeight, buttonContainerHeight, mounted=false;
-
+    
+    
     onMount(()=>{ toggleBrowser = true; mounted=true;})
 
-    afterUpdate(() => {
-        const plotContainer = document.getElementById(`${filetype}-plotContainer`)
-        
-        plotContainer.style.height = `calc(${ContainerHeight}px - ${buttonContainerHeight}px - 11em)`
-    
-    });
+    let graphWindowClosed = true;
+    $: graphModal = !graphWindowClosed
 
+    const plotContainer = document.getElementById(`${filetype}-plotContainer`)
+    $: plotContainerStyle = graphModal ? "padding: 1em;" : `max-height: calc(100vh - 20em); height:calc(${ContainerHeight}px - ${buttonContainerHeight}px - 11em)`
+    
+
+    function openGraph(){
+
+        if(!graphWindowClosed) {
+            return graphWindow.show()
+        }
+        graphWindowClosed = false
+
+        const mount = document.getElementById(`${filetype}-plotContainer`)
+
+        graphWindow = new WinBox({
+            root:document.getElementById("pageContainer"), 
+            mount, 
+
+            title: `Modal: ${filetype}`,
+
+            x: "center", y: "center",
+            width: "70%", height: "70%",
+
+            background:"#634e96",
+            top: 50, bottom:50,
+            onclose: function(){
+                graphWindowClosed = true
+                console.log(`${filetype}=> graphWindowClosed: ${graphWindowClosed}`)
+                return false
+
+            } 
+
+        });
+
+    }
 </script>
 
 <style lang="scss">
@@ -146,22 +181,21 @@
     }
 
     .plotContainer {
-        overflow-y: auto; padding-bottom: 12em; max-height: calc(100vh - 20em);
-
+        overflow-y: auto; padding-bottom: 12em;  padding-right: 1em;
         div {margin-top: 1em;}
-
-        
-    
     }
      
     .filebrowser {
+
         padding-left: 2em;
         padding-top: 1em;
         background-color: $box1;
+
         border-radius: 0;
     }
     
     .fileContainer {
+
         margin: 0 2em; padding-bottom: 5rem; width: auto;
         @include tablet { width: 60%; }
     }
@@ -169,11 +203,26 @@
     .buttonContainer { max-height: 20em; overflow-y: auto; }
     .box {border-radius: 0;}
     .container {height: calc(100vh - 7em);}
+    .location__bar {
+        display:grid;
+        grid-auto-flow: column;
+        grid-template-columns: 1fr 1fr 16fr;
+        grid-column-gap: 1em;
+        place-items: center;
+        margin-bottom: 1em;
+    }
+
+    .buttonContainer {
+        display: grid;
+
+        grid-auto-flow: row;
+        align-items: center;
+    }
 
 </style>
 
-<PreModal bind:preModal />
 
+<PreModal bind:preModal />
 
 <section {id} style="display:none" class="animated fadeIn">
     <div class="columns">
@@ -181,29 +230,41 @@
         {#if toggleBrowser}
             <div class="column is-one-fifth-widescreen is-one-quarter-desktop box filebrowser adjust-right" transition:fly="{{ x: -100, duration: 500 }}">
                 <FileBrowser bind:currentLocation {filetype} bind:fileChecked on:chdir bind:fullfileslist/>
+
             </div>
         {/if}
 
         <div class="column fileContainer" >
 
             <div class="container button-plot-container box" id="{filetype}-button-plot-container" bind:clientHeight={ContainerHeight}>
-                <div class="align" style="flex-wrap: nowrap;">
-
-
+                <div class="location__bar" >
                     <Hamburger1 bind:active={toggleBrowser}/>
                     <button class="button is-link gap" id="{filetype}_filebrowser_btn" on:click={browse_folder}>Browse</button>
 
-                    <Textfield style="margin-bottom:1em; width:70%;" bind:value={currentLocation} label="Current location" />
-                    <button class="button is-link is-pulled-right" on:click={tour_event}>Need help?</button>
-
+                    
+                    <Textfield bind:value={currentLocation} label="Current location" />
                 </div>
-                <div class="align buttonContainer" id="{filetype}-buttonContainer" bind:clientHeight={buttonContainerHeight}>
+
+                <div class="buttonContainer" id="{filetype}-buttonContainer" bind:clientHeight={buttonContainerHeight}>
                     {#if toggleBrowser}
                         <slot name="buttonContainer" />
+                        {#if graphPlotted}
+                            <button class="button is-warning animated fadeIn" style="width:12em;" on:click={openGraph}>Graph:Open separately</button>
+                        {/if}
                     {/if}
                  </div>
-                <div class="plotContainer" id="{filetype}-plotContainer"> <slot name="plotContainer" /> </div>
+
+                <div class="plotContainer" id="{filetype}-plotContainer" style="{plotContainerStyle}" transition:fade> 
+
+                    <slot name="plotContainer" />
+                    {#if graphPlotted}
+                        <slot name="plotContainer_functions" />
+                        <slot name="plotContainer_reports" />
+                    {/if}
+                </div>
+
             </div>
         </div>
     </div>
+    
 </section>

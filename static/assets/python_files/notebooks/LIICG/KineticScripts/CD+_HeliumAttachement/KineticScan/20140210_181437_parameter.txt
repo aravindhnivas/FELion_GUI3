@@ -1,0 +1,12 @@
+Timesteps 20
+StartTimeStep 1
+NumberOfMasses 4
+SimulationTime 3000
+Temperature 4
+n_He 1.768e14
+k01 2.7e-30 
+k12 6e-30
+k23 32e-30
+k10 1.9e-15	 
+k21 4e-15
+k32 24e-15

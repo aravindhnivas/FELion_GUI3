@@ -23,18 +23,18 @@ renamePy()
 
 export function resetPyConfig() {
 
-    localStorage["pythonscript"] = path.resolve(__dirname, "assets/python_files")
-    pythonscript.set(localStorage["pythonscript"])
+
+    db.set("pythonscript", path.resolve(__dirname, "assets/python_files"))
+    pythonscript.set(db.get("pythonscript"))
     const defaultPy = path.resolve(__dirname, "../python3/python")
 
-
-    localStorage["pythonpath"] = defaultPy
+    db.set("pythonpath", defaultPy)
 
     checkPython({defaultPy})
         .then((version)=>{
     
             pyVersion.set(version);
-            pythonpath.set(localStorage["pythonpath"]); 
+            pythonpath.set(db.get("pythonpath")); 
             window.createToast("Location resetted", "warning")
     
         })
@@ -43,12 +43,15 @@ export function resetPyConfig() {
 
 
 export function updatePyConfig(){
+
     checkPython()
         .then(version=>{
+    
             pyVersion.set(version);
-            localStorage["pythonpath"] = get(pythonpath)
+            db.set("pythonpath", get(pythonpath))
+
             window.createToast("Location updated", "success")
         })
-        localStorage["pythonscript"] = get(pythonscript)
-        
+
+        db.set("pythonscript", get(pythonscript))
 }
