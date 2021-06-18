@@ -80,15 +80,18 @@
     let commandToRun = "", commandArgsToRun = "";
 
     
-    $: if(!$developerMode) {
-        console.log("Setting default pathon path")
-        $pythonpath = path.resolve(__dirname, "../python3/python")
-        $pythonscript = path.resolve(__dirname, "assets/python_files")
-    } else {
-        window.showStackContext({title:"Warning", text:"If python path is invalid, the program might not work", type:"error"});
+    // $: if(!$developerMode) {
+    //     console.log("Setting default pathon path")
+    //     $pythonpath = path.resolve(__dirname, "../python3/python")
+    //     $pythonscript = path.resolve(__dirname, "assets/python_files")
+    // } else {
+    //     window.showStackContext({title:"Warning", text:"If python path is invalid, the program might not work", type:"error"});
 
-    }
+    // }
 
+    $: if($developerMode) {window.showStackContext({title:"Warning", text:"If python path is invalid, the program might not work", type:"error"});}
+
+    
     $: if($github.branch === "developer") {
         window.showStackContext({title:"Warning", text:"Developer channel may not be stable and contains bugs.", type:"error"});
 
