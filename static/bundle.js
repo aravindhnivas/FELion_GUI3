@@ -79145,7 +79145,7 @@ function create_if_block$E(ctx) {
 	let dispose;
 
 	function textfield0_value_binding(value) {
-		/*textfield0_value_binding*/ ctx[20](value);
+		/*textfield0_value_binding*/ ctx[21](value);
 	}
 
 	let textfield0_props = {
@@ -79161,7 +79161,7 @@ function create_if_block$E(ctx) {
 	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
 
 	function textfield1_value_binding(value) {
-		/*textfield1_value_binding*/ ctx[21](value);
+		/*textfield1_value_binding*/ ctx[22](value);
 	}
 
 	let textfield1_props = {
@@ -79188,9 +79188,9 @@ function create_if_block$E(ctx) {
 			button1 = element("button");
 			button1.textContent = "Save";
 			attr_dev(button0, "class", "button is-link svelte-7chplr");
-			add_location(button0, file$1m, 178, 24, 6208);
+			add_location(button0, file$1m, 178, 24, 6233);
 			attr_dev(button1, "class", "button is-link svelte-7chplr");
-			add_location(button1, file$1m, 179, 24, 6304);
+			add_location(button1, file$1m, 179, 24, 6329);
 		},
 		m: function mount(target, anchor) {
 			mount_component(textfield0, target, anchor);
@@ -79344,7 +79344,7 @@ function create_fragment$1t(ctx) {
 	let dispose;
 
 	function premodal_preModal_binding(value) {
-		/*premodal_preModal_binding*/ ctx[17](value);
+		/*premodal_preModal_binding*/ ctx[18](value);
 	}
 
 	let premodal_props = {};
@@ -79357,7 +79357,7 @@ function create_fragment$1t(ctx) {
 	binding_callbacks.push(() => bind(premodal, "preModal", premodal_preModal_binding));
 
 	function customdialog_dialog_binding(value) {
-		/*customdialog_dialog_binding*/ ctx[18](value);
+		/*customdialog_dialog_binding*/ ctx[19](value);
 	}
 
 	let customdialog_props = {
@@ -79383,7 +79383,7 @@ function create_fragment$1t(ctx) {
 	let if_block = /*$developerMode*/ ctx[0] && create_if_block$E(ctx);
 
 	function textfield0_value_binding_1(value) {
-		/*textfield0_value_binding_1*/ ctx[22](value);
+		/*textfield0_value_binding_1*/ ctx[23](value);
 	}
 
 	let textfield0_props = {
@@ -79399,7 +79399,7 @@ function create_fragment$1t(ctx) {
 	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding_1));
 
 	function textfield1_value_binding_1(value) {
-		/*textfield1_value_binding_1*/ ctx[23](value);
+		/*textfield1_value_binding_1*/ ctx[24](value);
 	}
 
 	let textfield1_props = {
@@ -79415,7 +79415,7 @@ function create_fragment$1t(ctx) {
 	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding_1));
 
 	function customselect_picked_binding(value) {
-		/*customselect_picked_binding*/ ctx[24](value);
+		/*customselect_picked_binding*/ ctx[25](value);
 	}
 
 	let customselect_props = {
@@ -79435,7 +79435,7 @@ function create_fragment$1t(ctx) {
 	binding_callbacks.push(() => bind(customselect, "picked", customselect_picked_binding));
 
 	function textfield2_value_binding(value) {
-		/*textfield2_value_binding*/ ctx[26](value);
+		/*textfield2_value_binding*/ ctx[27](value);
 	}
 
 	let textfield2_props = {
@@ -79451,11 +79451,11 @@ function create_fragment$1t(ctx) {
 	binding_callbacks.push(() => bind(textfield2, "value", textfield2_value_binding));
 
 	function terminal_commandToRun_binding(value) {
-		/*terminal_commandToRun_binding*/ ctx[27](value);
+		/*terminal_commandToRun_binding*/ ctx[28](value);
 	}
 
 	function terminal_commandArgsToRun_binding(value) {
-		/*terminal_commandArgsToRun_binding*/ ctx[28](value);
+		/*terminal_commandArgsToRun_binding*/ ctx[29](value);
 	}
 
 	let terminal_props = { id: "Terminal-settings" };
@@ -79555,75 +79555,75 @@ function create_fragment$1t(ctx) {
 			h13.textContent = "About";
 			attr_dev(div0, "class", "title nav hvr-glow svelte-7chplr");
 			toggle_class(div0, "clicked", /*selected*/ ctx[2] === "Configuration");
-			add_location(div0, file$1m, 157, 16, 4870);
+			add_location(div0, file$1m, 157, 16, 4895);
 			attr_dev(div1, "class", "title nav hvr-glow svelte-7chplr");
 			toggle_class(div1, "clicked", /*selected*/ ctx[2] === "Update");
-			add_location(div1, file$1m, 158, 16, 5002);
+			add_location(div1, file$1m, 158, 16, 5027);
 			attr_dev(div2, "class", "title nav hvr-glow svelte-7chplr");
 			toggle_class(div2, "clicked", /*selected*/ ctx[2] === "Terminal");
-			add_location(div2, file$1m, 159, 16, 5120);
+			add_location(div2, file$1m, 159, 16, 5145);
 			attr_dev(div3, "class", "title nav hvr-glow svelte-7chplr");
 			toggle_class(div3, "clicked", /*selected*/ ctx[2] === "About");
-			add_location(div3, file$1m, 160, 16, 5242);
+			add_location(div3, file$1m, 160, 16, 5267);
 			attr_dev(div4, "class", "container left svelte-7chplr");
-			add_location(div4, file$1m, 156, 12, 4824);
+			add_location(div4, file$1m, 156, 12, 4849);
 			attr_dev(div5, "class", "column side-panel is-2-widescreen is-3-desktop is-4-tablet box adjust-right svelte-7chplr");
-			add_location(div5, file$1m, 154, 8, 4719);
+			add_location(div5, file$1m, 154, 8, 4744);
 			attr_dev(h10, "class", "title svelte-7chplr");
-			add_location(h10, file$1m, 170, 20, 5616);
+			add_location(h10, file$1m, 170, 20, 5641);
 			attr_dev(div6, "class", "subtitle svelte-7chplr");
-			add_location(div6, file$1m, 171, 20, 5674);
+			add_location(div6, file$1m, 171, 20, 5699);
 			attr_dev(button0, "class", "button is-link svelte-7chplr");
-			add_location(button0, file$1m, 173, 20, 5738);
+			add_location(button0, file$1m, 173, 20, 5763);
 			attr_dev(div7, "class", "content animated fadeIn svelte-7chplr");
 			toggle_class(div7, "hide", /*selected*/ ctx[2] !== "Configuration");
-			add_location(div7, file$1m, 169, 16, 5517);
+			add_location(div7, file$1m, 169, 16, 5542);
 			attr_dev(h11, "class", "title svelte-7chplr");
-			add_location(h11, file$1m, 184, 20, 6537);
+			add_location(h11, file$1m, 184, 20, 6562);
 			attr_dev(div8, "class", "subtitle svelte-7chplr");
-			add_location(div8, file$1m, 186, 20, 6590);
+			add_location(div8, file$1m, 186, 20, 6615);
 			attr_dev(div9, "class", "content svelte-7chplr");
-			add_location(div9, file$1m, 187, 20, 6679);
+			add_location(div9, file$1m, 187, 20, 6704);
 			attr_dev(button1, "class", "button is-link svelte-7chplr");
 			attr_dev(button1, "id", "updateCheckBtn");
-			add_location(button1, file$1m, 194, 24, 7177);
+			add_location(button1, file$1m, 194, 24, 7202);
 			attr_dev(button2, "class", "button is-link svelte-7chplr");
 			attr_dev(button2, "id", "updateBtn");
-			add_location(button2, file$1m, 195, 24, 7319);
+			add_location(button2, file$1m, 195, 24, 7344);
 			attr_dev(button3, "class", "button is-warning svelte-7chplr");
-			add_location(button3, file$1m, 197, 24, 7450);
+			add_location(button3, file$1m, 197, 24, 7475);
 			attr_dev(div10, "class", "content svelte-7chplr");
-			add_location(div10, file$1m, 193, 20, 7130);
+			add_location(div10, file$1m, 193, 20, 7155);
 			attr_dev(button4, "class", "button is-link svelte-7chplr");
-			add_location(button4, file$1m, 203, 24, 7774);
+			add_location(button4, file$1m, 203, 24, 7799);
 			attr_dev(button5, "class", "button is-link svelte-7chplr");
-			add_location(button5, file$1m, 204, 24, 7864);
+			add_location(button5, file$1m, 204, 24, 7889);
 			attr_dev(div11, "class", "content svelte-7chplr");
-			add_location(div11, file$1m, 201, 20, 7602);
+			add_location(div11, file$1m, 201, 20, 7627);
 			attr_dev(div12, "class", "content animated fadeIn svelte-7chplr");
 			toggle_class(div12, "hide", /*selected*/ ctx[2] !== "Update");
-			add_location(div12, file$1m, 183, 16, 6445);
+			add_location(div12, file$1m, 183, 16, 6470);
 			attr_dev(h12, "class", "title svelte-7chplr");
-			add_location(h12, file$1m, 210, 20, 8118);
+			add_location(h12, file$1m, 210, 20, 8143);
 			attr_dev(div13, "class", "content animated fadeIn svelte-7chplr");
 			toggle_class(div13, "hide", /*selected*/ ctx[2] !== "Terminal");
-			add_location(div13, file$1m, 209, 16, 8024);
+			add_location(div13, file$1m, 209, 16, 8049);
 			attr_dev(h13, "class", "title svelte-7chplr");
-			add_location(h13, file$1m, 215, 20, 8396);
+			add_location(h13, file$1m, 215, 20, 8421);
 			attr_dev(div14, "class", "content animated fadeIn svelte-7chplr");
 			toggle_class(div14, "hide", /*selected*/ ctx[2] !== "About");
-			add_location(div14, file$1m, 214, 16, 8305);
+			add_location(div14, file$1m, 214, 16, 8330);
 			attr_dev(div15, "class", "container right svelte-7chplr");
 			attr_dev(div15, "id", "Settings_right_column");
-			add_location(div15, file$1m, 167, 12, 5441);
+			add_location(div15, file$1m, 167, 12, 5466);
 			attr_dev(div16, "class", "column main-panel box svelte-7chplr");
-			add_location(div16, file$1m, 165, 8, 5390);
+			add_location(div16, file$1m, 165, 8, 5415);
 			attr_dev(div17, "class", "columns svelte-7chplr");
-			add_location(div17, file$1m, 153, 4, 4688);
+			add_location(div17, file$1m, 153, 4, 4713);
 			attr_dev(section, "class", "section animated fadeIn svelte-7chplr");
 			attr_dev(section, "id", "Settings");
 			set_style(section, "display", "none");
-			add_location(section, file$1m, 151, 0, 4604);
+			add_location(section, file$1m, 151, 0, 4629);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -79702,11 +79702,11 @@ function create_fragment$1t(ctx) {
 					listen_dev(div1, "click", /*navigate*/ ctx[14], false, false, false),
 					listen_dev(div2, "click", /*navigate*/ ctx[14], false, false, false),
 					listen_dev(div3, "click", /*navigate*/ ctx[14], false, false, false),
-					listen_dev(button0, "click", /*click_handler*/ ctx[19], false, false, false),
+					listen_dev(button0, "click", /*click_handler*/ ctx[20], false, false, false),
 					listen_dev(button1, "click", updateCheck, false, false, false),
 					listen_dev(button1, "update", /*update*/ ctx[16], false, false, false),
 					listen_dev(button2, "click", /*update*/ ctx[16], false, false, false),
-					listen_dev(button3, "click", /*click_handler_1*/ ctx[25], false, false, false),
+					listen_dev(button3, "click", /*click_handler_1*/ ctx[26], false, false, false),
 					listen_dev(button4, "click", /*backup*/ ctx[12], false, false, false),
 					listen_dev(button5, "click", /*restore*/ ctx[13], false, false, false)
 				];
@@ -79903,6 +79903,7 @@ function create_fragment$1t(ctx) {
 function instance$1t($$self, $$props, $$invalidate) {
 	let $pyVersion;
 	let $developerMode;
+	let $windowLoaded;
 	let $github;
 	let $pythonpath;
 	let $pythonscript;
@@ -79912,6 +79913,8 @@ function instance$1t($$self, $$props, $$invalidate) {
 	component_subscribe($$self, pyVersion, $$value => $$invalidate(7, $pyVersion = $$value));
 	validate_store(developerMode, "developerMode");
 	component_subscribe($$self, developerMode, $$value => $$invalidate(0, $developerMode = $$value));
+	validate_store(windowLoaded, "windowLoaded");
+	component_subscribe($$self, windowLoaded, $$value => $$invalidate(17, $windowLoaded = $$value));
 	validate_store(github, "github");
 	component_subscribe($$self, github, $$value => $$invalidate(1, $github = $$value));
 	validate_store(pythonpath, "pythonpath");
@@ -80074,6 +80077,7 @@ function instance$1t($$self, $$props, $$invalidate) {
 		backupName,
 		developerMode,
 		activateChangelog,
+		windowLoaded,
 		Textfield,
 		onMount,
 		fade,
@@ -80104,6 +80108,7 @@ function instance$1t($$self, $$props, $$invalidate) {
 		commandArgsToRun,
 		$pyVersion,
 		$developerMode,
+		$windowLoaded,
 		$github,
 		$pythonpath,
 		$pythonscript,
@@ -80124,7 +80129,7 @@ function instance$1t($$self, $$props, $$invalidate) {
 	}
 
 	$$self.$$.update = () => {
-		if ($$self.$$.dirty & /*$developerMode*/ 1) {
+		if ($$self.$$.dirty & /*$developerMode, $windowLoaded*/ 131073) {
 			// $: if(!$developerMode) {
 			//     console.log("Setting default pathon path")
 			//     $pythonpath = path.resolve(__dirname, "../python3/python")
@@ -80132,7 +80137,7 @@ function instance$1t($$self, $$props, $$invalidate) {
 			// } else {
 			//     window.showStackContext({title:"Warning", text:"If python path is invalid, the program might not work", type:"error"});
 			// }
-			 if ($developerMode) {
+			 if ($developerMode && $windowLoaded) {
 				window.showStackContext({
 					title: "Warning",
 					text: "If python path is invalid, the program might not work",
@@ -80170,6 +80175,7 @@ function instance$1t($$self, $$props, $$invalidate) {
 		navigate,
 		handlepythonPathCheck,
 		update,
+		$windowLoaded,
 		premodal_preModal_binding,
 		customdialog_dialog_binding,
 		click_handler,

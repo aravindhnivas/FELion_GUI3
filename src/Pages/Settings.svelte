@@ -2,7 +2,7 @@
 
     // Importing modules
     import {pythonpath, pythonscript, pyVersion, github, backupName, developerMode} from "./settings/svelteWritables";
-    import {activateChangelog} from "../js/functions"
+    import {activateChangelog, windowLoaded} from "../js/functions"
     import Textfield from '@smui/textfield';
     import {onMount} from "svelte";
     import { fade } from 'svelte/transition';
@@ -89,9 +89,9 @@
 
     // }
 
-    $: if($developerMode) {window.showStackContext({title:"Warning", text:"If python path is invalid, the program might not work", type:"error"});}
+    $: if($developerMode&&$windowLoaded) {window.showStackContext({title:"Warning", text:"If python path is invalid, the program might not work", type:"error"});}
 
-    
+
     $: if($github.branch === "developer") {
         window.showStackContext({title:"Warning", text:"Developer channel may not be stable and contains bugs.", type:"error"});
 
