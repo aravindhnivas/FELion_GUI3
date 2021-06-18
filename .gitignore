@@ -6,6 +6,7 @@ static/dist/
 python3/
 out/
 static/output.log
+static/db.json
 *.zip
 static/assets/python_files/local/*.json
 static/assets/python_files/__pycache__/*.pyc
