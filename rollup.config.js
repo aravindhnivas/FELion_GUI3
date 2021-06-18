@@ -10,7 +10,7 @@ const production = !process.env.ROLLUP_WATCH;
 
 export default {
 	input: 'src/App.js',
-	
+
 	output: [
 		{ sourcemap: true, format: 'cjs', name: 'app', file: 'static/bundle.js' },
 		// { sourcemap: true, format: 'cjs', name: 'app', file: 'static/bundle.min.js', plugins: [terser()] },
@@ -21,12 +21,12 @@ export default {
 		svelte({
 			emitCss: true,
 			dev: !production,
-			css: css => { css.write('static/bundle.css'); },
+			css: css => { css.write('bundle.css'); },
 			preprocess: autoPreprocess()
-		
+
 		}),
-		
-		resolve({dedupe: ['svelte', 'svelte/transition', 'svelte/internal']}),
+
+		resolve({ dedupe: ['svelte', 'svelte/transition', 'svelte/internal'] }),
 		commonjs(),
 		!production && livereload('static'),
 
@@ -40,11 +40,11 @@ export default {
 				}]
 			]
 		})
-	
-	
+
+
 	],
-	
+
 	watch: { clearScreen: false },
 	external: ['electron', 'child_process', 'fs', 'path', 'url', 'module', 'os']
-	
+
 };
