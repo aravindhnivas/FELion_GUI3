@@ -94,7 +94,7 @@
 
     const plotContainer = document.getElementById(`${filetype}-plotContainer`)
     $: plotContainerStyle = graphModal ? "padding: 1em;" : `max-height: calc(100vh - 20em); height:calc(${ContainerHeight}px - ${buttonContainerHeight}px - 11em)`
-    
+    let graphWindow;
 
     function openGraph(){
 
