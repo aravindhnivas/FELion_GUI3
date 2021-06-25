@@ -9,7 +9,10 @@
     import CustomCheckbox from "../../components/CustomCheckbox.svelte";
     import CustomSelect from "../../components/CustomSelect.svelte";
     import EditCoefficients from './EditCoefficients.svelte';
-import path from 'path';
+    import path from 'path';
+
+    import boltzmanDistribution from "./functions/boltzman_distribution";
+    import BoltzmanDistribution from "./windows/BoltzmanDistribution.svelte";
 
 
     export let active=false;
@@ -192,14 +195,14 @@ import path from 'path';
             return {label, value:level.value, id:level.id}
         })
     }
+
     let editEnergy=false, energyLevels=[], energyUnit="cm-1";
 
     let numberOfLevels = 3;
     let energy_level_info = []
+    
     function getEnergyLabels(){
-
         const value=0
-        
         energy_level_info = _.fill(Array(numberOfLevels)).map((_, i)=>i).map((N, i)=>{
             if (electronSpin) {
                 const splitLevels = [-0.5, 0.5]
@@ -222,12 +225,10 @@ import path from 'path';
 
             } else {return {label:i, value, id:window.getID()}}
         })
-
-        console.table(energy_level_info)
         energyLevels = energy_level_info.flat(Infinity)
     }
-    getEnergyLabels();
 
+    getEnergyLabels();
 
     async function readEinsteinCoefficientFromFile(){
         let filename = await browse({dir:false, multiple:false})
@@ -260,7 +261,9 @@ import path from 'path';
 
     }
 
-    let energyDetailsFile;
+    let energyDetailsFile, distribution;
+
+    let boltzmanWindow = false;
 
     async function readEnergyFromFile({browseFile=false}={}){
         
@@ -270,9 +273,10 @@ import path from 'path';
         }
         const filename = energyDetailsFile.filePaths[0]
         const fileContents = fs.readFileSync(filename, "utf-8").split("\n")
+
         energyLevels = []
         let preLabel;
-
+        let value, label;
         let no_of_levels_counter = 0
 
 
@@ -282,35 +286,40 @@ import path from 'path';
                 if (line.includes("//")){
                     if (line.includes("units")){energyUnit=line.split("=")[1].trim()}
 
-                } else if (line.includes("#")){
+                } else if (line.includes("#") && (electronSpin||zeemanSplit)){
                         preLabel = line.split("#")[1].trim()
                         no_of_levels_counter++
 
                 } else {
-                    line = line.split("\t").map(f=>f.trim())
-                    if (!electronSpin && !zeemanSplit) {
-                        energyLevels = [...energyLevels, {label:preLabel, value:line[0], id:window.getID()}]
-                    } else {
-                        const separator = electronSpin&&zeemanSplit ? "__" : "_"
-                        const label = preLabel+separator+line[0]
 
-                        const value = line[1]
-                        energyLevels = [...energyLevels, {label, value, id:window.getID()}]
-                    }
                     
+                    if (!electronSpin && !zeemanSplit) {
+                        value = line.trim()
+                        label = no_of_levels_counter
+                        no_of_levels_counter++
+                    } else {
+                        line = line.split("\t").map(f=>f.trim())
+                        value = line[1]
+                        const separator = electronSpin&&zeemanSplit ? "__" : "_"
+                        label = preLabel+separator+line[0]
+                    }
+                    energyLevels = [...energyLevels, {label, value, id:window.getID()}]
                 }
             }
         })
         numberOfLevels = no_of_levels_counter
-
         await tick()
-
         window.createToast("Energy file read: "+path.basename(filename))
+
+
+        distribution = boltzmanDistribution({energyLevels, trapTemp, electronSpin, zeemanSplit, energyUnit})
+        console.table(distribution)
+
     }
 
+    const boltzmanArgs = {trapTemp, electronSpin, zeemanSplit, energyUnit}
+    
 </script>
-
-
 
 <style lang="scss">
 
@@ -401,6 +410,8 @@ import path from 'path';
 <EditCoefficients title="Einstein Co-efficients" bind:active={editEinsteinCoefficients} bind:coefficients={einsteinCoefficient} />
 <EditCoefficients title="Energy levels" bind:active={editEnergy} bind:coefficients={energyLevels} />
 
+<BoltzmanDistribution {energyLevels} {boltzmanArgs} bind:active={boltzmanWindow} />
+
 {#if active}
     <SeparateWindow id="ROSAA__modal" title="ROSAA modal" bind:active >
 
@@ -464,7 +475,8 @@ import path from 'path';
                         {#if energyDetailsFile}
                             <button class="button is-link center" on:click="{readEnergyFromFile}">Read again</button>
                         {/if}
-                        
+                        <button class="button is-link center" on:click={()=>boltzmanWindow=true}>Show Boltzman distribution</button>
+
                     </div>
 
                     <div class="content__div ">
@@ -490,7 +502,7 @@ import path from 'path';
 
                             <div class="content__div ">
                                 {#each einsteinCoefficient as {label, value, id}(id)}
-                                    <Textfield bind:value {label}/>
+                                    <Textfield bind:value {label} />
                                 {/each}
                             </div>
                         {/if}
@@ -521,7 +533,7 @@ import path from 'path';
                     <div class="subtitle">Simulation parameters</div>
                     <div class="content__div ">
                         {#each simulationParameters as {label, value, id}(id)}
-                            <Textfield bind:value {label}/>
+                            <Textfield bind:value {label} />
                         {/each}
                         
                     </div>
@@ -542,7 +554,7 @@ import path from 'path';
                     <div class="subtitle">Lorrentz lineshape</div>
                     <div class="content__div ">
                         {#each powerBroadening as {label, value, id}(id)}
-                            <Textfield bind:value {label}/>
+                            <Textfield bind:value {label} />
                         {/each}
                     </div>
                 </div>
@@ -555,7 +567,7 @@ import path from 'path';
                         <div class="content__div">
                             {#each rateCoefficients as {label, value, id}(id)}
 
-                                <Textfield bind:value {label} />
+                                <Textfield bind:value {label}  />
                             {/each}
                         </div>
 

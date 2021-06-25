@@ -71,7 +71,6 @@ export default function beforePlot({ delta, dataFromPython, graphDiv, baseGraphD
     plot(
         "Baseline Corrected",
         "Wavelength (cm-1)",
-
         "Counts",
         dataFromPython["base"], baseGraphDiv
         
@@ -83,7 +82,6 @@ export default function beforePlot({ delta, dataFromPython, graphDiv, baseGraphD
         ylabel,
         avgdataToPlot, graphDiv
     );
-
 
     return Promise.resolve()
 

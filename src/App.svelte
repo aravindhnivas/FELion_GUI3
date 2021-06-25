@@ -12,14 +12,16 @@
 	import Settings from "./Pages/Settings.svelte"
 
 	import Misc from "./Pages/Misc.svelte"
-	import {onMount} from "svelte"
-
+	import {onMount, tick} from "svelte"
+	let mounted=false;
 	
-	onMount(()=>{
+	onMount(async ()=>{
 	
 	
 		let allbuttons = Array.from(document.querySelectorAll(".button"))
 		allbuttons.forEach(button=>button.classList.add("hvr-glow"))
+		await tick()
+		mounted=true;
 	})
 
 	const navItems = ["Home", "Normline", "Masspec", "Timescan", "THz", "Powerfile", "Misc", "Settings"]
@@ -51,18 +53,14 @@
 
 <Home />
 
-<div id="pageContainer" style="overflow: hidden;">
+<div id="pageContainer" style="overflow: hidden;display: {mounted ? 'block': 'none'}">
 
 	<Normline />
 	<Masspec />
-
 	<Timescan />
-
 	<THz />
 	<Powerfile />
-
 	<Misc />
 	<Settings />
 </div>
-
 <Footer />
