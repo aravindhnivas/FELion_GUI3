@@ -11,12 +11,15 @@
 	export let navItems;
 	
 	
-	let active = 'Home';
+	let active = db.get('active_tab') || 'Home';
 	$: $activePage = active
 	$: console.log(`Current page: ${$activePage}`)
 
+	$: db.set('active_tab', $activePage)
+
+
 	const navigate = () =>{navItems.forEach(item=> item == active ? showpage(item) : hidepage(item))}
-	onMount(()=>{showpage("navbar");})
+	onMount(()=>{showpage("navbar");navigate()})
 </script>
 
 <style lang="scss">

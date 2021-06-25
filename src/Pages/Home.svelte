@@ -23,7 +23,7 @@
   @media (max-width: 768px) {.title {font-size: 3em;}}
 </style>
 
-<section class="section animated fadeIn" id="Home">
+<section class="section animated fadeIn" id="Home" style="display:none">
 
     {#if $windowLoaded}
     
