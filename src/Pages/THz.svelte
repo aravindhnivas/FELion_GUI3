@@ -33,21 +33,22 @@
 
     let plotStyleSelected = plotStyle[3], plotFill = true;
 
-    let binData = false;
+    let binData = false, saveInMHz = false;
 
     const changePlotStyle = () => { Plotly.restyle("thzPlot", {mode:plotStyleSelected, fill: plotFill ? "tozeroy" : ""})}
 
-    function plotData({e=null, filetype="thz", tkplot="run", justPlot=false, general={} }={}){
+    function plotData({e=null, filetype="thz", tkplot=false, justPlot=false, general={} }={}){
 
         if (fileChecked.length === 0 && filetype === "thz") {return window.createToast("No files selected", "danger")}
 
     
+        const thz_args = {thzfiles, binData, delta, tkplot, gamma, justPlot, saveInMHz}
         let pyfileInfo = {general,
-            thz: {pyfile:"thz_scan.py" , args:[...thzfiles, binData, delta, tkplot, gamma, justPlot]},
+            thz: {pyfile:"thz_scan.py" , args:[JSON.stringify(thz_args)]},
             boltzman: {pyfile:"boltzman.py" , args:[currentLocation, B0, D0, H0, temp, totalJ, tkplot]},
         }
         let {pyfile, args} = pyfileInfo[filetype]
-        if (tkplot == "plot") {filetype = "general"}
+        if (tkplot) {filetype = "general"}
 
         if (filetype == "general") {
             return computePy_func({e, pyfile, args, general:true, openShell}).catch(err=>{preModal.modalContent = err;  preModal.open = true})
@@ -102,8 +103,9 @@
             <button class="{btnClass}" on:click="{(e)=>{plotData({e:e, justPlot:true})}}">Plot</button>
 
             <CustomSwitch bind:selected={binData} label="Bin" style="margin:0 1em;"/>
+            <CustomSwitch bind:selected={saveInMHz} label="saveInMHz" style="margin:0 1em;"/>
             <button class="{btnClass}" on:click="{(e)=>{plotData({e:e})}}">Fit</button>
-            <button class="{btnClass}" on:click="{(e)=>plotData({e:e, tkplot:"plot"})}">Open in Matplotlib</button>
+            <button class="{btnClass}" on:click="{(e)=>plotData({e:e, tkplot:true})}">Open in Matplotlib</button>
             <CustomIconSwitch style="padding:0;" bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
             <button class="{btnClass}" on:click="{()=>{toggleRow = !toggleRow}}">Boltzman</button>
             <Textfield type="number" style="width:4em; height:3.5em; margin-right:0.5em" bind:value={delta} label="Delta" />
@@ -124,7 +126,7 @@
             <Textfield type="number" {style}  bind:value={temp} label="Temp." />
             <Textfield type="number" {style}  bind:value={totalJ} label="Total J" />
             <button class="{btnClass}" on:click="{(e)=>plotData({e:e, filetype:"boltzman"})}">Submit</button>
-            <button class="{btnClass}" on:click="{(e)=>plotData({e:e, filetype:"boltzman", tkplot:"plot"})}">Open in Matplotlib</button>
+            <button class="{btnClass}" on:click="{(e)=>plotData({e:e, filetype:"boltzman", tkplot:true})}">Open in Matplotlib</button>
         </div>
 
     </svelte:fragment>
