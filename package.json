@@ -1,6 +1,6 @@
 {
   "name": "FELion_GUI3",
-  "version": "3.3.0",
+  "version": "3.4.0-d",
   "license": "MIT",
   "author": "A.N.Marimuthu",
   "repository": {
@@ -28,9 +28,9 @@
     "@sveltejs/svelte-virtual-list": "^3.0.1",
     "bulma": "^0.8.2",
     "concurrently": "^5.3.0",
-    "electron": "^12.0.8",
+    "electron": "^12.0.12",
     "jest": "^26.4.2",
-    "node-sass": "^4.14.1",
+    "node-sass": "^6.0.1",
     "rollup": "^1.32.0",
     "rollup-plugin-livereload": "^1.0.0",
     "rollup-plugin-postcss": "^2.9.0",
@@ -38,12 +38,12 @@
     "rollup-plugin-terser": "^5.1.2",
     "svelma": "^0.3.2",
     "svelte": "^3.38.2",
-    "svelte-check": "^0.1.59",
+    "svelte-check": "^2.2.0",
     "svelte-material-ui": "^1.0.0",
     "svelte-preprocess": "^3.9.12"
   },
   "scripts": {
-    "build": "rollup -c",
+    "build": "npm run svelte-check && rollup -c",
     "autobuild": "rollup -c -w",
     "dev": "concurrently \"npm run autobuild\" \"electron .\"",
     "start": "electron .",
