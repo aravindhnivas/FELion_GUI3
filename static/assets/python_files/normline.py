@@ -271,6 +271,7 @@ class normplot:
                     if line.find("Hz") == 1:
                         return int(line.split(" ")[1])
 
+
 if __name__ == "__main__":
 
     print("Argument received for normline.py: \n", sys.argv[1:][0])
