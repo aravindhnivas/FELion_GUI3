@@ -1,6 +1,6 @@
 
 <script>
-    import { createEventDispatcher } from 'svelte';
+    import { createEventDispatcher, tick } from 'svelte';
     import {browse} from "../../components/Layout.svelte";
     import Textfield from '@smui/textfield';
     import {fade} from "svelte/transition";
@@ -9,6 +9,7 @@
     import CustomCheckbox from "../../components/CustomCheckbox.svelte";
     import CustomSelect from "../../components/CustomSelect.svelte";
     import EditCoefficients from './EditCoefficients.svelte';
+import path from 'path';
 
 
     export let active=false;
@@ -199,7 +200,7 @@
 
         const value=0
         
-        energy_level_info = _.fill(Array(numberOfLevels)).map((N, i)=>i).map((N, i)=>{
+        energy_level_info = _.fill(Array(numberOfLevels)).map((_, i)=>i).map((N, i)=>{
             if (electronSpin) {
                 const splitLevels = [-0.5, 0.5]
                 N = []
@@ -222,8 +223,8 @@
             } else {return {label:i, value, id:window.getID()}}
         })
 
-        energyLevels = _.flattenDeep(energy_level_info)
-    
+        console.table(energy_level_info)
+        energyLevels = energy_level_info.flat(Infinity)
     }
     getEnergyLabels();
 
@@ -259,35 +260,60 @@
 
     }
 
-    async function readEnergyFromFile(){
-        let filename = await browse({dir:false, multiple:false})
-        if (filename.filePaths.length==0) return;
+    let energyDetailsFile;
 
-        filename = filename.filePaths[0]
+    async function readEnergyFromFile({browseFile=false}={}){
+        
+        if (browseFile || !energyDetailsFile) {
+            energyDetailsFile = await browse({dir:false, multiple:false})
+            if (energyDetailsFile.filePaths.length==0) return;
+        }
+        const filename = energyDetailsFile.filePaths[0]
         const fileContents = fs.readFileSync(filename, "utf-8").split("\n")
-
         energyLevels = []
         let preLabel;
+
+        let no_of_levels_counter = 0
+
+
         fileContents.forEach(line=>{
             if (line.length>1){
                 
-                
-                if (line.includes("#")){preLabel = line.split("#")[1].trim()} 
-                else {
+                if (line.includes("//")){
+                    if (line.includes("units")){energyUnit=line.split("=")[1].trim()}
+
+                } else if (line.includes("#")){
+                        preLabel = line.split("#")[1].trim()
+                        no_of_levels_counter++
+
+                } else {
                     line = line.split("\t").map(f=>f.trim())
-                    const separator = electronSpin&&zeemanSplit ? "__" : "_"
-                    const label = preLabel+separator+line[0]
-                    const value = line[1]
-                    energyLevels = [...energyLevels, {label, value, id:window.getID()}]
+                    if (!electronSpin && !zeemanSplit) {
+                        energyLevels = [...energyLevels, {label:preLabel, value:line[0], id:window.getID()}]
+                    } else {
+                        const separator = electronSpin&&zeemanSplit ? "__" : "_"
+                        const label = preLabel+separator+line[0]
+
+                        const value = line[1]
+                        energyLevels = [...energyLevels, {label, value, id:window.getID()}]
+                    }
+                    
                 }
             }
-
         })
+        numberOfLevels = no_of_levels_counter
+
+        await tick()
+
+        window.createToast("Energy file read: "+path.basename(filename))
     }
 
 </script>
 
+
+
 <style lang="scss">
+
     .locationColumn {
         display: grid;
         grid-auto-flow: column;
@@ -373,24 +399,23 @@
 
 <EditCoefficients title="Collisional rate constants" bind:active={editCollisionalCoefficients} bind:coefficients={collisionalCoefficient} />
 <EditCoefficients title="Einstein Co-efficients" bind:active={editEinsteinCoefficients} bind:coefficients={einsteinCoefficient} />
-
-
 <EditCoefficients title="Energy levels" bind:active={editEnergy} bind:coefficients={energyLevels} />
 
 {#if active}
     <SeparateWindow id="ROSAA__modal" title="ROSAA modal" bind:active >
 
         <svelte:fragment slot="header_content__slot" >
-
             <div class="locationColumn" >
-                <button class="button is-link" id="thz_modal_filebrowser_btn" on:click={browse_folder}>Browse</button>
 
+                <button class="button is-link" id="thz_modal_filebrowser_btn" on:click={browse_folder}>Browse</button>
                 <Textfield bind:value={currentLocation} label="Current location" />
                 <Textfield bind:value={filename} label="filename" />
+
             </div>
 
             <div class="writefileCheck">
                 <CustomCheckbox bind:selected={writefile} label="writefile" />
+
                 <CustomCheckbox bind:selected={includeCollision} label="includeCollision" />
                 <CustomCheckbox bind:selected={includeAttachmentRate} label="includeAttachmentRate" />
                 <CustomCheckbox bind:selected={includeSpontaneousEmission} label="includeSpontaneousEmission" />
@@ -399,6 +424,7 @@
             </div>
 
             <div class="variableColumn">
+
                 <div class="subtitle">Simulate signal(%) as a function of {variable}</div>
                 <div class="variableColumn__dropdown">
                     <CustomSelect options={variablesList} bind:picked={variable} />
@@ -406,7 +432,6 @@
                         <Textfield bind:value={variableRange} label="Range (min, max, totalsteps)" />
                     {/if}
                 </div>
-                
             </div>
 
         </svelte:fragment>
@@ -435,13 +460,18 @@
                         <button class="button is-link" on:click={() => editEnergy=true}>Edit Energy</button>
 
                         <button class="button is-link center" on:click={getEnergyLabels}>Get labels</button>
-                        <button class="button is-link center" on:click={readEnergyFromFile}>Read from file</button>
+                        <button class="button is-link center" on:click={()=>readEnergyFromFile({browseFile:true})}>Read from file</button>
+                        {#if energyDetailsFile}
+                            <button class="button is-link center" on:click="{readEnergyFromFile}">Read again</button>
+                        {/if}
+                        
                     </div>
 
                     <div class="content__div ">
                         {#each energyLevels as {label, value, id}(id)}
                             <Textfield bind:value {label} />
                         {/each}
+
                     </div>
                 </div>
 
