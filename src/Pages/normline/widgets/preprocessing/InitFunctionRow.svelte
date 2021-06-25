@@ -113,7 +113,9 @@
 
     <button class="button is-link" id="create_baseline_btn" on:click="{(e)=>plotData({e:e, filetype:"baseline"})}"> Create Baseline</button>
     <button class="button is-link" id="felix_plotting_btn" on:click="{(e)=>plotData({e:e, filetype:"felix"})}">FELIX Plot</button>
-    <Textfield style="width:7em" variant="outlined" type="number" step="0.5" bind:value={delta} label="Delta"/>
+
+    <Textfield style="width:7em" variant="outlined" input$type="number" input$step="0.1" input$min="0" bind:value={delta} label="Delta"/>
+    
     <button class="button is-link" on:click="{()=>active = true}"> Open in Matplotlib</button>
     <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
     <button class="button is-link" on:click="{()=>$toggleRow = !$toggleRow}">Add Theory</button>
