@@ -179,17 +179,14 @@
         <!-- Write function buttons -->
 
         <WriteFunctionContents on:addfile="{()=>{addFileModal=true}}" on:removefile={removeExtraFile} {output_namelists} bind:writeFileName bind:writeFile bind:overwrite_expfit />
-
         <!-- Execute function buttons -->
         <ExecuteFunctionContents {addedFileScale} {addedFileCol} normMethod={$normMethod} {writeFileName} {writeFile} {overwrite_expfit} {fullfiles} bind:preModal />
 
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer_reports">
-
         <!-- Frequency table list -->
         <FrequencyTable bind:keepTable/>
-
         <!-- Report -->
         <ReportLayout bind:currentLocation={currentLocation} id={`${filetype}_report`} {includePlotsInReport} {includeTablesInReports} />
     </svelte:fragment>
