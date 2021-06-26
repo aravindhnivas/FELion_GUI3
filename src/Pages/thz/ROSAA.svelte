@@ -234,22 +234,15 @@
         })
 
     }
-
     let boltzmanWindow = false;
 
-    
     let energyFilename=null;
     $: boltzmanArgs = {energyLevels, trapTemp, electronSpin, zeemanSplit, energyUnit}
     $: readEnergyFileArgs = {energyFilename, electronSpin, zeemanSplit, energyUnit}
-
     const readEnergyFile = async () => {
-        const received = await readEnergyFromFile(readEnergyFileArgs)
 
-        console.log(received)
-        ({energyLevels, numberOfLevels, energyFilename, energyUnit} = received)
+        ({energyLevels, numberOfLevels, energyFilename, energyUnit} = await readEnergyFromFile(readEnergyFileArgs))
     }
-
-    
 </script>
 
 <style lang="scss">
@@ -336,56 +329,57 @@
     }
 
 </style>
-
 <EditCoefficients title="Collisional rate constants" bind:active={editCollisionalCoefficients} bind:coefficients={collisionalCoefficient} />
+
 <EditCoefficients title="Einstein Co-efficients" bind:active={editEinsteinCoefficients} bind:coefficients={einsteinCoefficient} />
 <EditCoefficients title="Energy levels" bind:active={editEnergy} bind:coefficients={energyLevels} />
 <BoltzmanDistribution {boltzmanArgs} bind:active={boltzmanWindow} />
 
 {#if active}
-    <SeparateWindow id="ROSAA__modal" title="ROSAA modal" bind:active >
 
+    <SeparateWindow id="ROSAA__modal" title="ROSAA modal" bind:active >
         <svelte:fragment slot="header_content__slot" >
             <div class="locationColumn" >
 
                 <button class="button is-link" id="thz_modal_filebrowser_btn" on:click={browse_folder}>Browse</button>
                 <Textfield bind:value={currentLocation} label="Current location" />
-                <Textfield bind:value={filename} label="filename" />
 
+                <Textfield bind:value={filename} label="filename" />
             </div>
+
 
             <div class="writefileCheck">
                 <CustomCheckbox bind:selected={writefile} label="writefile" />
-
                 <CustomCheckbox bind:selected={includeCollision} label="includeCollision" />
                 <CustomCheckbox bind:selected={includeAttachmentRate} label="includeAttachmentRate" />
+
                 <CustomCheckbox bind:selected={includeSpontaneousEmission} label="includeSpontaneousEmission" />
                 <CustomCheckbox bind:selected={electronSpin} label="Electron Spin" />
                 <CustomCheckbox bind:selected={zeemanSplit} label="Zeeman" />
             </div>
 
             <div class="variableColumn">
-
                 <div class="subtitle">Simulate signal(%) as a function of {variable}</div>
                 <div class="variableColumn__dropdown">
+                    
                     <CustomSelect options={variablesList} bind:picked={variable} />
                     {#if variable !== "time"}
                         <Textfield bind:value={variableRange} label="Range (min, max, totalsteps)" />
                     {/if}
                 </div>
+
             </div>
-
         </svelte:fragment>
-
 
         <svelte:fragment slot="main_content__slot">
             {#if showreport}
                 <div class="content status_report__div" ><hr>{statusReport || "Status report"}<hr></div>
+
             {:else}
 
             <div class="main_container__div" >
-            
                 <div class="sub_container__div box">
+
                     <div class="subtitle">Main Parameters</div>
                     <div class="content__div ">
                         {#each mainParameters as {label, value, id}(id)}
@@ -393,6 +387,7 @@
                         {/each}
                     </div>
                 </div>
+
 
                 <div class="sub_container__div box" >
                     <div class="subtitle">Energy levels</div>
@@ -493,37 +488,29 @@
                 </div>
 
                 {#if includeAttachmentRate}
-                    
                     <div class="sub_container__div box">
-
                         <div class="subtitle">Rare-gas attachment (K3) and dissociation (kCID) constants</div>
                         <div class="content__div">
                             {#each rateCoefficients as {label, value, id}(id)}
-
                                 <Textfield bind:value {label}  />
                             {/each}
                         </div>
-
                     </div>
-                
                     {/if}
-
             </div>
-
             {/if}
-
         </svelte:fragment>
+
         <svelte:fragment slot="footer_content__slot">
 
             {#if running}
                 <button transition:fade class="button is-danger" on:click="{()=>{py ? py.kill() : console.log('pyEvent is not available')}}" >Stop</button>
+
             {/if}    
         
             <button  class="button is-link" on:click="{(e)=>{showreport = !showreport}}" >{showreport ? "Go Back" : "Status report"}</button>
-
             <button  class="button is-link" class:is-loading={running} on:click="{simulation}" on:pyEvent={pyEventHandle} on:pyEventClosed="{pyEventClosedHandle}" on:pyEventData={pyEventDataReceivedHandle}>Submit</button>
+        
         </svelte:fragment>
-
     </SeparateWindow>
-
 {/if}
