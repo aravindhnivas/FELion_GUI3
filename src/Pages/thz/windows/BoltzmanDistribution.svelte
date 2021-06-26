@@ -31,7 +31,7 @@
             setTimeout(()=>graphWindow.focus(), 100)
         }
     }
-    $: windowReady && plotGraph()
+    $: if (windowReady && trapTemp>0) {plotGraph()}
 
 </script>
 

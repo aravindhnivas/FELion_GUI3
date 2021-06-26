@@ -41,7 +41,7 @@ export default function({energyLevels, trapTemp=5, electronSpin=false, zeemanSpl
         })
 
         const partitionValue = _.sumBy(distribution, energy=>energy.value).toFixed(2)
-        console.log("partitionValue: "+partitionValue)
+        // console.log("partitionValue: "+partitionValue)
 
 
         distribution = distribution.map(({label, value, id})=>{
@@ -53,7 +53,7 @@ export default function({energyLevels, trapTemp=5, electronSpin=false, zeemanSpl
 
     } catch (error) {
 
-        console.log(error)
+        console.error(error)
         window.createToast("Error occured", "danger")
 
         return null
