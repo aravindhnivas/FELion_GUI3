@@ -12,7 +12,7 @@
     const title="Boltzman Distribution"
 
     const plotID = "boltzmanDistributionPlot"
-    let plotted=false;
+    let stepSize=0.1;
     function plotGraph() {
 
         boltzmanArgs.trapTemp = trapTemp
@@ -20,15 +20,16 @@
 
         console.log(boltzmanArgs)
         const distribution = boltzmanDistribution({energyLevels, ...boltzmanArgs})
+        const totalSum = _.sumBy(distribution, e=>e.value).toFixed(2)
         const energyLevel = distribution.map(e=>e.label)
         const populations = distribution.map(e=>e.value)
-        const data = {  "x": energyLevel, "y": populations, "mode": "lines+markers"}
+
+        const data = {  x: energyLevel, y: populations, mode: "lines+markers", showlegend:true, name:`Temp: ${trapTemp}K, Total: ${totalSum}`}
         dataToPlot = {data}
-
         plot( `${title}: ${trapTemp}K`, "Energy Levels", "Population", dataToPlot, plotID)
-
     }
     
+
 </script>
 
 <style>
@@ -47,8 +48,9 @@
         <svelte:fragment slot="header_content__slot" >
         
             <div class="header">
-
-                <Textfield bind:value={trapTemp} label="temperature" input$type="number" input$step=0.1 input$min=0 style="width:auto;"/>
+                
+                <Textfield bind:value={stepSize} label="stepSize" style="width:auto;"/>
+                <Textfield bind:value={trapTemp} label="temperature" input$type="number" input$step={stepSize} input$min=0 style="width:auto;"/>
                 <button class="button is-link" on:click={plotGraph}>Compute</button>
             </div>
 
@@ -56,8 +58,7 @@
         </svelte:fragment>
 
         <svelte:fragment slot="main_content__slot" >
-            <div use:plotGraph id="boltzmanDistributionPlot"></div>
-
+            <div use:plotGraph id="{plotID}"></div>
         </svelte:fragment>
 
     </SeparateWindow>

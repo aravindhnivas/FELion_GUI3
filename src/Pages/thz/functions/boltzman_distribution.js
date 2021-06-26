@@ -48,6 +48,5 @@ export default function({energyLevels, trapTemp=5, electronSpin=false, zeemanSpl
         value /= partitionValue
         return {label, value, id}
     })
-    
     return distribution
 }
