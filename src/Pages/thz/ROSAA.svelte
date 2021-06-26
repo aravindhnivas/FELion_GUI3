@@ -11,8 +11,11 @@
     import EditCoefficients from './EditCoefficients.svelte';
     import path from 'path';
 
-    import boltzmanDistribution from "./functions/boltzman_distribution";
+    // import boltzmanDistribution from "./functions/boltzman_distribution";
     import BoltzmanDistribution from "./windows/BoltzmanDistribution.svelte";
+    import {getEnergyLabels} from "./functions/level_labels";
+
+    import {readEnergyFromFile} from "./functions/read_files";
 
 
     export let active=false;
@@ -196,45 +199,16 @@
         })
     }
 
-    let editEnergy=false, energyLevels=[], energyUnit="cm-1";
+    let editEnergy=false, energyUnit="cm-1";
 
     let numberOfLevels = 3;
-    let energy_level_info = []
-    
-    function getEnergyLabels(){
-        const value=0
-        energy_level_info = _.fill(Array(numberOfLevels)).map((_, i)=>i).map((N, i)=>{
-            if (electronSpin) {
-                const splitLevels = [-0.5, 0.5]
-                N = []
-                splitLevels.forEach(s=>{
-                    const current_J = i+s
-                    if (current_J>0) {
-                        if (zeemanSplit) {
-                            let mJ = []
-                            for (let current_mJ=current_J; current_mJ >= -current_J; current_mJ--) {
-                                mJ = [...mJ, {label:`${i}_${current_J}__${current_mJ}`, value, id:window.getID()}]
-                            } 
-                            N = [...N, mJ]
-                        } else {N = [...N, {label:`${i}_${current_J}`, value, id:window.getID()}]}
-                    }
-
-                })
-
-                return N
-
-            } else {return {label:i, value, id:window.getID()}}
-        })
-        energyLevels = energy_level_info.flat(Infinity)
-    }
-
-    getEnergyLabels();
+    let {energyLevels=[]} = getEnergyLabels({numberOfLevels, electronSpin, zeemanSplit})
 
     async function readEinsteinCoefficientFromFile(){
         let filename = await browse({dir:false, multiple:false})
-
-        if (filename.filePaths.length==0) return;        
+        if (filename.filePaths.length==0) return;      
         filename = filename.filePaths[0]
+
         const fileContents = fs.readFileSync(filename, "utf-8").split("\n")
         
 
@@ -261,63 +235,20 @@
 
     }
 
-    let energyDetailsFile, distribution;
-
     let boltzmanWindow = false;
 
-    async function readEnergyFromFile({browseFile=false}={}){
-        
-        if (browseFile || !energyDetailsFile) {
-            energyDetailsFile = await browse({dir:false, multiple:false})
-            if (energyDetailsFile.filePaths.length==0) return;
-        }
-        const filename = energyDetailsFile.filePaths[0]
-        const fileContents = fs.readFileSync(filename, "utf-8").split("\n")
+    
+    let energyFilename=null;
+    $: boltzmanArgs = {energyLevels, trapTemp, electronSpin, zeemanSplit, energyUnit}
+    $: readEnergyFileArgs = {energyFilename, electronSpin, zeemanSplit, energyUnit}
 
-        energyLevels = []
-        let preLabel;
-        let value, label;
-        let no_of_levels_counter = 0
+    const readEnergyFile = async () => {
+        const received = await readEnergyFromFile(readEnergyFileArgs)
 
-
-        fileContents.forEach(line=>{
-            if (line.length>1){
-                
-                if (line.includes("//")){
-                    if (line.includes("units")){energyUnit=line.split("=")[1].trim()}
-
-                } else if (line.includes("#") && (electronSpin||zeemanSplit)){
-                        preLabel = line.split("#")[1].trim()
-                        no_of_levels_counter++
-
-                } else {
-
-                    
-                    if (!electronSpin && !zeemanSplit) {
-                        value = line.trim()
-                        label = no_of_levels_counter
-                        no_of_levels_counter++
-                    } else {
-                        line = line.split("\t").map(f=>f.trim())
-                        value = line[1]
-                        const separator = electronSpin&&zeemanSplit ? "__" : "_"
-                        label = preLabel+separator+line[0]
-                    }
-                    energyLevels = [...energyLevels, {label, value, id:window.getID()}]
-                }
-            }
-        })
-        numberOfLevels = no_of_levels_counter
-        await tick()
-        window.createToast("Energy file read: "+path.basename(filename))
-
-
-        distribution = boltzmanDistribution({energyLevels, trapTemp, electronSpin, zeemanSplit, energyUnit})
-        console.table(distribution)
-
+        console.log(received)
+        ({energyLevels, numberOfLevels, energyFilename, energyUnit} = received)
     }
 
-    const boltzmanArgs = {trapTemp, electronSpin, zeemanSplit, energyUnit}
     
 </script>
 
@@ -409,7 +340,7 @@
 <EditCoefficients title="Collisional rate constants" bind:active={editCollisionalCoefficients} bind:coefficients={collisionalCoefficient} />
 <EditCoefficients title="Einstein Co-efficients" bind:active={editEinsteinCoefficients} bind:coefficients={einsteinCoefficient} />
 <EditCoefficients title="Energy levels" bind:active={editEnergy} bind:coefficients={energyLevels} />
-<BoltzmanDistribution {energyLevels} {boltzmanArgs} bind:active={boltzmanWindow} />
+<BoltzmanDistribution {boltzmanArgs} bind:active={boltzmanWindow} />
 
 {#if active}
     <SeparateWindow id="ROSAA__modal" title="ROSAA modal" bind:active >
@@ -446,6 +377,7 @@
 
         </svelte:fragment>
 
+
         <svelte:fragment slot="main_content__slot">
             {#if showreport}
                 <div class="content status_report__div" ><hr>{statusReport || "Status report"}<hr></div>
@@ -469,10 +401,12 @@
                         <CustomSelect options={["MHz", "cm-1"]} bind:picked={energyUnit} />
                         <button class="button is-link" on:click={() => editEnergy=true}>Edit Energy</button>
 
-                        <button class="button is-link center" on:click={getEnergyLabels}>Get labels</button>
-                        <button class="button is-link center" on:click={()=>readEnergyFromFile({browseFile:true})}>Read from file</button>
-                        {#if energyDetailsFile}
-                            <button class="button is-link center" on:click="{readEnergyFromFile}">Read again</button>
+                        <button class="button is-link center" on:click={()=>{
+                            ({energyLevels} = getEnergyLabels({numberOfLevels, electronSpin, zeemanSplit}))
+                        }}>Get labels</button>
+                        <button class="button is-link center" on:click="{readEnergyFile}">Read from file</button>
+                        {#if energyFilename}
+                            <button class="button is-link center" on:click="{readEnergyFile}">Read again</button>
                         {/if}
                         <button class="button is-link center" on:click={()=>boltzmanWindow=true}>Show Boltzman distribution</button>
 
@@ -538,6 +472,7 @@
                     </div>
                 </div>
 
+
                 <div class="sub_container__div box">
                     <div class="subtitle">Doppler lineshape</div>
                     <div class="content__div ">
@@ -547,7 +482,6 @@
                         {/each}
                     </div>
                 </div>
-
                 
                 <div class="sub_container__div box">
                     <div class="subtitle">Lorrentz lineshape</div>
@@ -571,12 +505,14 @@
                         </div>
 
                     </div>
-                {/if}
+                
+                    {/if}
+
             </div>
 
             {/if}
-        </svelte:fragment>
 
+        </svelte:fragment>
         <svelte:fragment slot="footer_content__slot">
 
             {#if running}
@@ -589,6 +525,5 @@
         </svelte:fragment>
 
     </SeparateWindow>
-
 
 {/if}
