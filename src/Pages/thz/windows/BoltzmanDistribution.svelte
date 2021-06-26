@@ -4,7 +4,7 @@
     import { plot } from "../../../js/functions";
     import boltzmanDistribution from "../functions/boltzman_distribution";
     import Textfield from '@smui/textfield';
-    
+    // import {onMount} from 'svelte';
 
     export let active;
     export let boltzmanArgs, energyLevels;
@@ -12,23 +12,26 @@
     const title="Boltzman Distribution"
 
     const plotID = "boltzmanDistributionPlot"
+
+    let graphWindow=null, windowReady=false;
+
     let stepSize=0.1;
-    function plotGraph() {
-
-        boltzmanArgs.trapTemp = trapTemp
-
-
-        console.log(boltzmanArgs)
-        const distribution = boltzmanDistribution({energyLevels, ...boltzmanArgs})
-        const totalSum = _.sumBy(distribution, e=>e.value).toFixed(2)
-        const energyLevel = distribution.map(e=>e.label)
-        const populations = distribution.map(e=>e.value)
-
-        const data = {  x: energyLevel, y: populations, mode: "lines+markers", showlegend:true, name:`Temp: ${trapTemp}K, Total: ${totalSum}`}
-        dataToPlot = {data}
-        plot( `${title}: ${trapTemp}K`, "Energy Levels", "Population", dataToPlot, plotID)
-    }
     
+    
+    function plotGraph() {
+        boltzmanArgs.trapTemp = trapTemp
+        const distribution = boltzmanDistribution({energyLevels, ...boltzmanArgs})
+        if(distribution) {
+            const totalSum = _.sumBy(distribution, e=>e.value).toFixed(2)
+            const energyLevel = distribution.map(e=>e.label)
+            const populations = distribution.map(e=>e.value)
+            const data = {  x: energyLevel, y: populations, mode: "lines+markers", showlegend:true, name:`Temp: ${trapTemp}K, Total: ${totalSum}`}
+            dataToPlot = {data}
+            plot( `${title}: ${trapTemp}K`, "Energy Levels", "Population", dataToPlot, plotID)
+            setTimeout(()=>graphWindow.focus(), 100)
+        }
+    }
+    $: windowReady && plotGraph()
 
 </script>
 
@@ -41,12 +44,12 @@
     }
 </style>
 
-
 {#if active}
-    <SeparateWindow  {title} bind:active >
+
+
+    <SeparateWindow {title} bind:active bind:windowReady bind:graphWindow >
 
         <svelte:fragment slot="header_content__slot" >
-        
             <div class="header">
                 
                 <Textfield bind:value={stepSize} label="stepSize" style="width:auto;"/>
@@ -57,10 +60,9 @@
 
         </svelte:fragment>
 
-        <svelte:fragment slot="main_content__slot" >
-            <div use:plotGraph id="{plotID}"></div>
+        <svelte:fragment slot="main_content__slot">
+            <div id="{plotID}"></div>
+
         </svelte:fragment>
-
     </SeparateWindow>
-
 {/if}

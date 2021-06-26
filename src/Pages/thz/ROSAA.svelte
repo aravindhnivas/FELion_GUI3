@@ -409,7 +409,6 @@
 <EditCoefficients title="Collisional rate constants" bind:active={editCollisionalCoefficients} bind:coefficients={collisionalCoefficient} />
 <EditCoefficients title="Einstein Co-efficients" bind:active={editEinsteinCoefficients} bind:coefficients={einsteinCoefficient} />
 <EditCoefficients title="Energy levels" bind:active={editEnergy} bind:coefficients={energyLevels} />
-
 <BoltzmanDistribution {energyLevels} {boltzmanArgs} bind:active={boltzmanWindow} />
 
 {#if active}
