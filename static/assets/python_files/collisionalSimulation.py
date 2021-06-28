@@ -11,25 +11,41 @@ def collisionalRateDistribution(t, N):
 
     rateCollection = []
     
-    N = {key:value for key, value in zip(energyKeys, boltzmanDistribution)}
+    global _rateCollection
+    N = {key:value for key, value in zip(energyKeys, N)}
+    _N = [f"N{i}" for i in range(len(energyKeys))]
+
+    _N = {key:value for key, value in zip(energyKeys, _N)}
+    
+    
+    _rateCollection = []
+    rateCollection = []
+    
     for i in energyKeys:
+        _collisional = []
         collisional = []
+
         for j in energyKeys:
-
             if i!= j: 
-
-
                 key = f"{j} --> {i}"
                 keyInverse = f"{i} --> {j}"
+                _k = f" + q({key})*{_N[j]} - q({keyInverse})*{_N[i]}"
+                _collisional.append(_k)
+                
                 k = rate_constants[key]*nHe*N[j] - rate_constants[keyInverse]*nHe*N[i]
                 collisional.append(k)
-        rateCollection.append(collisional)
 
+                
+        _rateCollection.append(_collisional)
+        rateCollection.append(collisional)
+    
     dR_dt = []
+
 
     for _ in rateCollection:
         temp = reduce(lambda a, b: a+b, _)
         dR_dt.append(temp)
+    
     return dR_dt
 
 def simulate(args):
@@ -62,7 +78,11 @@ def plot(simulateTime, simulateCounts):
 
     plt.show()
 
+
 if __name__ == "__main__":
+
+    _rateCollection = []
+
     args = sys.argv[1:][0].split(",")
 
     args = json.loads(", ".join(args))
@@ -78,6 +98,13 @@ if __name__ == "__main__":
 
     print(f"Received args: {args}, {type(args)}\n")
     
-    print(f"{boltzmanDistributionValues=}\n")
-
+    print(f"{rate_constants=}\n")
     simulate(args)
+
+    print(_rateCollection)
+    _dR_dt = []
+
+    for _ in _rateCollection:
+        _temp = reduce(lambda a, b: a+b, _)
+        _dR_dt.append(_temp)
+    print("\n", _dR_dt)
