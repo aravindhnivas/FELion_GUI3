@@ -89,7 +89,7 @@ def boltzman_distribution(energy_levels, temp=5, electronSpin=False, zeemanSplit
 
 def distribution(j0, j1, energy_levels, temp, electronSpin, zeemanSplit):
 
-
+    # defined for excitation rate constants
     KT = k_boltzmann_wavenumber*temp
 
     if electronSpin:

@@ -11,7 +11,7 @@
     import EditCoefficients from './EditCoefficients.svelte';
     // import path from 'path';
 
-    // import boltzmanDistribution from "./functions/boltzman_distribution";
+    import balance_distribution from "./functions/balance_distribution";
     import BoltzmanDistribution from "./windows/BoltzmanDistribution.svelte";
     import {getEnergyLabels} from "./functions/level_labels";
 
@@ -223,17 +223,45 @@
     const readCollisionalFile = async (bowseFile=true) => {
         try {
             const readFileArgs = {bowseFile, energyFilename:collisionalFilename, electronSpin, zeemanSplit, energyUnit, collisionalFile:true};
-            ({energyLevels:collisionalCoefficient, energyFilename:collisionalFilename, collisionalRateType} = await readFromFile(readFileArgs))
+
+            ({energyLevels:collisionalCoefficient, energyFilename:collisionalFilename, collisionalRateType} = await readFromFile(readFileArgs));
         } catch (error) {console.error(error)}
         
     }
     const readEinsteinFile = async (bowseFile=true) => {
-
         try {
             const readFileArgs = {bowseFile, energyFilename:einsteinFilename, electronSpin, zeemanSplit, energyUnit};
             ({energyLevels:einsteinCoefficient, energyFilename:einsteinFilename} = await readFromFile(readFileArgs))
+        
         } catch (error) {console.error(error)}
-}
+    }
+
+    let collisionalCoefficient_balance = [];
+    const compteCollisionalBalanceConstants = () => {
+        const balanceArgs  = {energyLevels, trapTemp,  electronSpin, zeemanSplit, energyUnit}
+        collisionalCoefficient_balance = collisionalCoefficient.map(coefficient=>{
+
+
+            const {label, value} = coefficient
+            const levelLabels = label.split(" --> ").map(f=>f.trim())
+
+            let newLabel, newValue;
+
+            if(deexcitation) {
+                const [excitedLevel, groundLevel] = levelLabels
+                newValue = value*balance_distribution({...balanceArgs, groundLevel, excitedLevel})
+
+                newLabel = `${groundLevel} --> ${excitedLevel}`
+            } else {
+
+                const [groundLevel, excitedLevel] = levelLabels
+                newValue = value*balance_distribution({...balanceArgs, groundLevel:excitedLevel, excitedLevel:groundLevel})
+                newLabel = `${excitedLevel} --> ${groundLevel}`
+            }
+            return {label:newLabel, value:newValue.toExponential(3), id:getID()}
+
+        })
+    }
 
 </script>
 
@@ -367,8 +395,9 @@
         <svelte:fragment slot="main_content__slot">
             {#if showreport}
                 <div class="content status_report__div" ><hr>{statusReport || "Status report"}<hr></div>
-
             {:else}
+
+            <!-- Main Parameters -->
 
             <div class="main_container__div" >
                 <div class="sub_container__div box">
@@ -381,7 +410,7 @@
                     </div>
                 </div>
 
-
+                <!-- Energy levels -->
                 <div class="sub_container__div box" >
                     <div class="subtitle">Energy levels</div>
                     <div class="control__div ">
@@ -437,9 +466,9 @@
                         <div class="control__div ">
                             <CustomSelect options={["deexcitation", "excitation"]} bind:picked={collisionalRateType} on:change={changeCollisionalRateType}/>
                             <button class="button is-link" on:click={() => editCollisionalCoefficients=true}>Edit constats</button>
-                            
                             <button class="button is-link center" on:click={getRateLabelsCollision}>Get labels</button>
                             <button class="button is-link center" on:click={readCollisionalFile}>Read from file</button>
+                            <button class="button is-link center" on:click={compteCollisionalBalanceConstants}>Compute balance rate</button>
                         
                         </div>
 
@@ -449,10 +478,25 @@
                                     <Textfield bind:value {label}/>
                                 {/each}
                             </div>
+
                         {/if}
+                        <hr>
+
+                        {#if collisionalCoefficient_balance.length>0}
+                            <div class="content__div ">
+                                {#each collisionalCoefficient_balance as {label, value, id}(id)}
+                                    <Textfield bind:value {label}/>
+                                {/each}
+                            </div>
+
+                        {/if}
+
                     </div>
                 {/if}
                 
+                
+                
+                <!-- Simulation parameters -->
                 <div class="sub_container__div box">
                     <div class="subtitle">Simulation parameters</div>
                     <div class="content__div ">
@@ -464,6 +508,7 @@
                 </div>
 
 
+                <!-- Doppler lineshape -->
                 <div class="sub_container__div box">
                     <div class="subtitle">Doppler lineshape</div>
                     <div class="content__div ">
@@ -471,9 +516,11 @@
                         {#each dopplerLineshape as {label, value, id, type, step}(id)}
                             <Textfield bind:value {label} input$type={type} input$step={step}/>
                         {/each}
+                
                     </div>
                 </div>
                 
+                <!-- Lorrentz lineshape -->
                 <div class="sub_container__div box">
                     <div class="subtitle">Lorrentz lineshape</div>
                     <div class="content__div ">
