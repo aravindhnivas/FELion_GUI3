@@ -49,16 +49,13 @@
         
         {label:"IonTemperature(K)", value:12, id:window.getID(), type:"number", step:0.5},
     ]
-
     const powerBroadening = [
-
         {label:"cp", value:"4.9e7", id:window.getID()},
         {label:"dipoleMoment(D)", value:0, id:window.getID()},
-
         {label:"power(W)", value:"2e-5", id:window.getID()},
     ]
-
     let trapTemp = 5.7
+
     const rateCoefficients = [
 
         {label:"totalAttachmentLevels", value:2, id:window.getID()},
@@ -66,38 +63,39 @@
         {label:"a(k31)", value:0.5, id:window.getID()},
         {label:"He density(cm3)", value:"2e14", id:window.getID()},
         {label:"k3", value:"9.6e-31, 2.9e-30", id:window.getID()},
-        
         {label:"kCID", value:"6.7e-16, 1.9e-15", id:window.getID()},
     
     ]
-    
     
     let electronSpin=false, zeemanSplit= false;
     let collisionalRateType = "excitation"
     $: deexcitation = collisionalRateType==="deexcitation";
 
     
-
     let py, running = false;
-
 
     const pyEventHandle = (e) => {
 
         statusReport = ""
+
         const events = e.detail
         py = events.py
     }
+
 
     let statusReport = "";
     let showreport = false
     const pyEventDataReceivedHandle = (e) => {
         let dataReceived = e.detail.dataReceived
         statusReport += `${dataReceived}\n`
+    
     }
+    
+    
     const pyEventClosedHandle = (e) => {
         running=false;
-
         window.createToast("Terminated", "danger")
+
         statusReport += "\n######## TERMINATED ########"
     }
 
@@ -105,15 +103,19 @@
 
         const collisional_rates = {}
         collisionalCoefficient.forEach(f=>collisional_rates[f.label] = f.value)
-        
+
 
         const main_parameters = {}
+
         mainParameters.forEach(f=>main_parameters[f.label]=f.value)
 
         const simulation_parameters = {}
+
         simulationParameters.forEach(f=>simulation_parameters[f.label]=f.value)
 
+
         const lineshape_conditions = {}
+
         dopplerLineshape.forEach(f=>lineshape_conditions[f.label]=f.value)
 
         const power_broadening = {}
@@ -203,28 +205,34 @@
     let numberOfLevels = 3;
     let {energyLevels=[]} = getEnergyLabels({numberOfLevels, electronSpin, zeemanSplit})
     let boltzmanWindow = false;
-    let einsteinCoefficientFilename, collisionalCoefficientFilename;
+    // let einsteinCoefficientFilename, collisionalCoefficientFilename;
 
     let energyFilename, collisionalFilename, einsteinFilename;
     $: boltzmanArgs = {energyLevels, trapTemp, electronSpin, zeemanSplit, energyUnit}
-    $: readFileArgs = {energyFilename, electronSpin, zeemanSplit, energyUnit, twoLabel:false}
+    // $: readFileArgs = {electronSpin, zeemanSplit}
 
-    const readEnergyFile = async () => {
+    const readEnergyFile = async (bowseFile=true) => {
     
-        ({energyLevels, numberOfLevels, energyFilename, energyUnit} = await readFromFile(readFileArgs))
+        try {
+            const readFileArgs = {bowseFile, energyFilename, electronSpin, zeemanSplit, energyUnit, twoLabel:false};
+            ({energyLevels, numberOfLevels, energyFilename, energyUnit} = await readFromFile(readFileArgs))
+        } catch (error) {console.error(error)}
     
     }
     
-    const readCollisionalFile = async () => {
-
-        readFileArgs.twoLabel = true
-        ({energyLevels:collisionalCoefficient, energyFilename:collisionalCoefficientFilename} = await readFromFile({...readFileArgs, energyFilename:collisionalFilename}))
+    const readCollisionalFile = async (bowseFile=true) => {
+        try {
+            const readFileArgs = {bowseFile, energyFilename:collisionalFilename, electronSpin, zeemanSplit, energyUnit, collisionalFile:true};
+            ({energyLevels:collisionalCoefficient, energyFilename:collisionalFilename, collisionalRateType} = await readFromFile(readFileArgs))
+        } catch (error) {console.error(error)}
+        
     }
+    const readEinsteinFile = async (bowseFile=true) => {
 
-    const readEinsteinFile = async () => {
-
-        readFileArgs.twoLabel = true
-        ({energyLevels:einsteinCoefficient, energyFilename:einsteinCoefficientFilename} = await readFromFile({...readFileArgs, energyFilename:einsteinFilename}))
+        try {
+            const readFileArgs = {bowseFile, energyFilename:einsteinFilename, electronSpin, zeemanSplit, energyUnit};
+            ({energyLevels:einsteinCoefficient, energyFilename:einsteinFilename} = await readFromFile(readFileArgs))
+        } catch (error) {console.error(error)}
 }
 
 </script>
@@ -313,9 +321,10 @@
     }
 
 </style>
-<EditCoefficients title="Collisional rate constants" bind:active={editCollisionalCoefficients} bind:coefficients={collisionalCoefficient} />
 
+<EditCoefficients title="Collisional rate constants" bind:active={editCollisionalCoefficients} bind:coefficients={collisionalCoefficient} />
 <EditCoefficients title="Einstein Co-efficients" bind:active={editEinsteinCoefficients} bind:coefficients={einsteinCoefficient} />
+
 <EditCoefficients title="Energy levels" bind:active={editEnergy} bind:coefficients={energyLevels} />
 <BoltzmanDistribution {boltzmanArgs} bind:active={boltzmanWindow} />
 
@@ -385,7 +394,7 @@
                         }}>Get labels</button>
                         <button class="button is-link center" on:click="{readEnergyFile}">Read from file</button>
                         {#if energyFilename}
-                            <button class="button is-link center" on:click="{readEnergyFile}">Read again</button>
+                            <button class="button is-link center" on:click="{()=>readEnergyFile(false)}">Read again</button>
                         {/if}
                         <button class="button is-link center" on:click={()=>boltzmanWindow=true}>Show Boltzman distribution</button>
 
