@@ -225,7 +225,7 @@
             const readFileArgs = {bowseFile, energyFilename:collisionalFilename, electronSpin, zeemanSplit, energyUnit, collisionalFile:true};
 
             ({energyLevels:collisionalCoefficient, energyFilename:collisionalFilename, collisionalRateType} = await readFromFile(readFileArgs));
-            compteCollisionalBalanceConstants();
+            // compteCollisionalBalanceConstants();
 
         } catch (error) {console.error(error)}
     
@@ -300,7 +300,7 @@
         await readEinsteinFile(bowseFile);
         await readCollisionalFile(bowseFile);
     }
-    $: console.log(energyFilename, collisionalFilename, einsteinFilename)
+    // $: console.log(energyFilename, collisionalFilename, einsteinFilename)
 
 </script>
 
@@ -396,7 +396,6 @@
     <EditCoefficients title="Energy levels" bind:active={editEnergy} bind:coefficients={energyLevels} />
 
     <BoltzmanDistribution {boltzmanArgs} bind:active={boltzmanWindow} />
-    <CollisionalDistribution {boltzmanArgs} bind:active={boltzmanWindow} />
     <CollisionalDistribution {...collisionalArgs} bind:active={collisionalWindow} />
 
     <SeparateWindow id="ROSAA__modal" title="ROSAA modal" bind:active >
