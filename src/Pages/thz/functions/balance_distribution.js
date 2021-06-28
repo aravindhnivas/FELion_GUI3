@@ -56,15 +56,13 @@ export default function({groundLevel, excitedLevel, energyLevels, trapTemp=5, el
         const energyTerm = Math.exp(-delE/KT)
         const rateConstant = Gj*energyTerm
 
-        console.log(KT, groundLevel, excitedLevel, delE.toFixed(2), energyTerm, Gj.toFixed(2), rateConstant)
         return rateConstant.toExponential(3)
     } catch (error) {
-
         console.error(error)
 
         window.createToast("Error occured", "danger")
-        return null
 
+        return null
     }
 
 }
