@@ -9,14 +9,16 @@
     import CustomCheckbox from "../../components/CustomCheckbox.svelte";
     import CustomSelect from "../../components/CustomSelect.svelte";
     import EditCoefficients from './EditCoefficients.svelte';
-    // import path from 'path';
-
     import balance_distribution from "./functions/balance_distribution";
+
     import BoltzmanDistribution from "./windows/BoltzmanDistribution.svelte";
+    import CollisionalDistribution from "./windows/CollisionalDistribution.svelte";
     import {getEnergyLabels} from "./functions/level_labels";
 
     import {readFromFile} from "./functions/read_files";
 
+
+    // import path from 'path';
 
     export let active=false;
     const dispatch = createEventDispatcher();
@@ -205,13 +207,11 @@
     let numberOfLevels = 3;
     let {energyLevels=[]} = getEnergyLabels({numberOfLevels, electronSpin, zeemanSplit})
     let boltzmanWindow = false;
-    // let einsteinCoefficientFilename, collisionalCoefficientFilename;
-
     let energyFilename, collisionalFilename, einsteinFilename;
     $: boltzmanArgs = {energyLevels, trapTemp, electronSpin, zeemanSplit, energyUnit}
-    // $: readFileArgs = {electronSpin, zeemanSplit}
+    $: collisionalArgs = {energyLevels, trapTemp, electronSpin, zeemanSplit, energyUnit}
 
-    const readEnergyFile = async (bowseFile=true) => {
+    const readEnergyFile = async (bowseFile=false) => {
     
         try {
             const readFileArgs = {bowseFile, energyFilename, electronSpin, zeemanSplit, energyUnit, twoLabel:false};
@@ -220,27 +220,31 @@
     
     }
     
-    const readCollisionalFile = async (bowseFile=true) => {
+    const readCollisionalFile = async (bowseFile=false) => {
         try {
             const readFileArgs = {bowseFile, energyFilename:collisionalFilename, electronSpin, zeemanSplit, energyUnit, collisionalFile:true};
 
             ({energyLevels:collisionalCoefficient, energyFilename:collisionalFilename, collisionalRateType} = await readFromFile(readFileArgs));
+            compteCollisionalBalanceConstants();
+
         } catch (error) {console.error(error)}
-        
+    
     }
-    const readEinsteinFile = async (bowseFile=true) => {
+
+    const readEinsteinFile = async (bowseFile=false) => {
+    
         try {
             const readFileArgs = {bowseFile, energyFilename:einsteinFilename, electronSpin, zeemanSplit, energyUnit};
+    
             ({energyLevels:einsteinCoefficient, energyFilename:einsteinFilename} = await readFromFile(readFileArgs))
-        
         } catch (error) {console.error(error)}
     }
 
     let collisionalCoefficient_balance = [];
+
     const compteCollisionalBalanceConstants = () => {
         const balanceArgs  = {energyLevels, trapTemp,  electronSpin, zeemanSplit, energyUnit}
         collisionalCoefficient_balance = collisionalCoefficient.map(coefficient=>{
-
 
             const {label, value} = coefficient
             const levelLabels = label.split(" --> ").map(f=>f.trim())
@@ -262,6 +266,41 @@
 
         })
     }
+
+    let collisionalWindow = false;
+
+    $: collisionalRateConstants = [...collisionalCoefficient, ...collisionalCoefficient_balance]
+    $: collisionalArgs = {collisionalRateConstants, energyLevels, electronSpin, zeemanSplit, energyUnit}
+    
+    let configFile = db.get("ROSAA_config_file") || ""
+    async function loadConfig() {
+
+        if(configFile) return setConfig();
+        const congFilePath = await browse({dir:false, multiple:false})
+
+        if (congFilePath.filePaths.length==0) return Promise.reject("No files selected");
+        configFile = congFilePath.filePaths[0]
+        db.set("ROSAA_config_file", configFile)
+        setConfig()
+    }
+
+    async function setConfig() {
+        const configFileLocation = window.path.dirname(configFile);
+
+        const configFileContent = fs.readFileSync(configFile, "utf-8");
+        const configJSON = JSON.parse(configFileContent);
+        ({energyFilename, collisionalFilename, einsteinFilename} = configJSON);
+        energyFilename = path.join(configFileLocation, energyFilename)
+        collisionalFilename = path.join(configFileLocation, collisionalFilename)
+        einsteinFilename = path.join(configFileLocation, einsteinFilename)
+
+        const bowseFile = false;
+
+        await readEnergyFile(bowseFile);
+        await readEinsteinFile(bowseFile);
+        await readCollisionalFile(bowseFile);
+    }
+    $: console.log(energyFilename, collisionalFilename, einsteinFilename)
 
 </script>
 
@@ -348,15 +387,17 @@
         width:max-content;
     }
 
+
 </style>
 
-<EditCoefficients title="Collisional rate constants" bind:active={editCollisionalCoefficients} bind:coefficients={collisionalCoefficient} />
-<EditCoefficients title="Einstein Co-efficients" bind:active={editEinsteinCoefficients} bind:coefficients={einsteinCoefficient} />
-
-<EditCoefficients title="Energy levels" bind:active={editEnergy} bind:coefficients={energyLevels} />
-<BoltzmanDistribution {boltzmanArgs} bind:active={boltzmanWindow} />
-
 {#if active}
+    <EditCoefficients title="Collisional rate constants" bind:active={editCollisionalCoefficients} bind:coefficients={collisionalCoefficient} />
+    <EditCoefficients title="Einstein Co-efficients" bind:active={editEinsteinCoefficients} bind:coefficients={einsteinCoefficient} />
+    <EditCoefficients title="Energy levels" bind:active={editEnergy} bind:coefficients={energyLevels} />
+
+    <BoltzmanDistribution {boltzmanArgs} bind:active={boltzmanWindow} />
+    <CollisionalDistribution {boltzmanArgs} bind:active={boltzmanWindow} />
+    <CollisionalDistribution {...collisionalArgs} bind:active={collisionalWindow} />
 
     <SeparateWindow id="ROSAA__modal" title="ROSAA modal" bind:active >
         <svelte:fragment slot="header_content__slot" >
@@ -364,7 +405,6 @@
 
                 <button class="button is-link" id="thz_modal_filebrowser_btn" on:click={browse_folder}>Browse</button>
                 <Textfield bind:value={currentLocation} label="Current location" />
-
                 <Textfield bind:value={filename} label="filename" />
             </div>
 
@@ -387,6 +427,7 @@
                     {#if variable !== "time"}
                         <Textfield bind:value={variableRange} label="Range (min, max, totalsteps)" />
                     {/if}
+                    <button class="button is-link center" on:click={loadConfig}>Load config</button>
                 </div>
 
             </div>
@@ -421,7 +462,7 @@
                         <button class="button is-link center" on:click={()=>{
                             ({energyLevels} = getEnergyLabels({numberOfLevels, electronSpin, zeemanSplit}))
                         }}>Get labels</button>
-                        <button class="button is-link center" on:click="{readEnergyFile}">Read from file</button>
+                        <button class="button is-link center" on:click="{()=>readEnergyFile(true)}">Read from file</button>
                         {#if energyFilename}
                             <button class="button is-link center" on:click="{()=>readEnergyFile(false)}">Read again</button>
                         {/if}
@@ -445,7 +486,7 @@
                             <button class="button is-link center" on:click={() => editEinsteinCoefficients=true}>Edit constats</button>
                             <button class="button is-link center" on:click={getRateLabelsEinstein}>Get labels</button>
 
-                            <button class="button is-link center" on:click={readEinsteinFile}>Read from file</button>
+                            <button class="button is-link center" on:click={()=>readEinsteinFile(true)}>Read from file</button>
 
                         </div>
                         {#if einsteinCoefficient.length>0}
@@ -464,11 +505,13 @@
                     <div class="sub_container__div box">
                         <div class="subtitle">Collisional rate constants</div>
                         <div class="control__div ">
+
                             <CustomSelect options={["deexcitation", "excitation"]} bind:picked={collisionalRateType} on:change={changeCollisionalRateType}/>
                             <button class="button is-link" on:click={() => editCollisionalCoefficients=true}>Edit constats</button>
                             <button class="button is-link center" on:click={getRateLabelsCollision}>Get labels</button>
-                            <button class="button is-link center" on:click={readCollisionalFile}>Read from file</button>
+                            <button class="button is-link center" on:click={()=>readCollisionalFile(true)}>Read from file</button>
                             <button class="button is-link center" on:click={compteCollisionalBalanceConstants}>Compute balance rate</button>
+                            <button class="button is-link center" on:click={()=>collisionalWindow=true}>Compute Collisional Cooling</button>
                         
                         </div>
 
