@@ -2,7 +2,7 @@
 import {tick} from "svelte";
 import {browse} from "../../../components/Layout.svelte";
 
-export async function readEnergyFromFile({energyFilename=null, electronSpin, zeemanSplit, energyUnit}={}){
+export async function readFromFile({energyFilename=null, electronSpin, zeemanSplit, energyUnit, twoLabel=false}={}){
     if (!energyFilename) {
         const energyDetailsFile = await browse({dir:false, multiple:false})
 
@@ -18,7 +18,7 @@ export async function readEnergyFromFile({energyFilename=null, electronSpin, zee
     let value, label;
     let numberOfLevels = 0
 
-
+    let ground, excited;
     fileContents.forEach(line=>{
         if (line.length>1){
             
@@ -26,29 +26,59 @@ export async function readEnergyFromFile({energyFilename=null, electronSpin, zee
                 if (line.includes("units")){energyUnit=line.split("=")[1].trim()}
 
             } else if (line.includes("#") && (electronSpin||zeemanSplit)){
-                    preLabel = line.split("#")[1].trim()
+                let currentLineLabel = line.split("#")[1]
+                if (twoLabel) {
+                    preLabel  = currentLineLabel.split("\t").map(f=>f.trim())
+                }
+                else {
+                    preLabel = currentLineLabel.trim()
                     numberOfLevels++
+
+                }
 
             } else {
-
                 
                 if (!electronSpin && !zeemanSplit) {
-                    value = line.trim()
-                    label = numberOfLevels
-                    numberOfLevels++
+                    line = line.split("\t").map(f=>f.trim())
+
+                    if (twoLabel) {
+                        [ground, excited] = preLabel
+                        label = `${excited} --> ${ground}`
+                        value = line[0].trim()
+                    } else {
+                        
+                        label = numberOfLevels
+                        numberOfLevels++
+                        value = line[0].trim()
+                        
+                    }
+
                 } else {
                     line = line.split("\t").map(f=>f.trim())
-                    value = line[1]
+
                     const separator = electronSpin&&zeemanSplit ? "__" : "_"
-                    label = preLabel+separator+line[0]
+                    if (twoLabel) {
+                        [ground, excited] = preLabel
+
+                        label = `${excited}${separator}${line[1]} --> ${ground}${separator}${line[0]}`
+
+                    } else {
+                        value = line[1]
+
+                        label = preLabel+separator+line[0]
+                    }
                 }
+
                 energyLevels = [...energyLevels, {label, value, id:window.getID()}]
+
             }
         }
+
     })
 
     await tick()
-    window.createToast("Energy file read: "+path.basename(energyFilename))
-    return Promise.resolve({energyLevels, numberOfLevels, energyFilename, energyUnit})
 
+    window.createToast("Energy file read: "+path.basename(energyFilename))
+
+    return Promise.resolve({energyLevels, numberOfLevels, energyFilename, energyUnit})
 }
