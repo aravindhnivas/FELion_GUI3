@@ -9,13 +9,13 @@
     import CustomCheckbox from "../../components/CustomCheckbox.svelte";
     import CustomSelect from "../../components/CustomSelect.svelte";
     import EditCoefficients from './EditCoefficients.svelte';
-    import path from 'path';
+    // import path from 'path';
 
     // import boltzmanDistribution from "./functions/boltzman_distribution";
     import BoltzmanDistribution from "./windows/BoltzmanDistribution.svelte";
     import {getEnergyLabels} from "./functions/level_labels";
 
-    import {readEnergyFromFile} from "./functions/read_files";
+    import {readFromFile} from "./functions/read_files";
 
 
     export let active=false;
@@ -200,49 +200,33 @@
     }
 
     let editEnergy=false, energyUnit="cm-1";
-
     let numberOfLevels = 3;
     let {energyLevels=[]} = getEnergyLabels({numberOfLevels, electronSpin, zeemanSplit})
-
-    async function readEinsteinCoefficientFromFile(){
-        let filename = await browse({dir:false, multiple:false})
-        if (filename.filePaths.length==0) return;      
-        filename = filename.filePaths[0]
-
-        const fileContents = fs.readFileSync(filename, "utf-8").split("\n")
-        
-
-        let ground, excited;
-        einsteinCoefficient = []
-        fileContents.forEach(line=>{
-            if (line.length>1){
-                
-                if (line.includes("#")){
-                    line = line.split("#")[1].split("\t").map(f=>f.trim());
-                    [ground, excited] = [line[0], line[1]]
-
-                } 
-                else {
-                    line = line.split("\t").map(f=>f.trim())
-                    const separator = electronSpin&&zeemanSplit ? "__" : "_"
-                    const label = `${excited}${separator}${line[1]} --> ${ground}${separator}${line[0]}`
-                    const [energy, value] = [line[2], line[3]]
-                    einsteinCoefficient = [...einsteinCoefficient, {label, value, id:window.getID()}]
-
-                }
-            }
-        })
-
-    }
     let boltzmanWindow = false;
+    let einsteinCoefficientFilename, collisionalCoefficientFilename;
 
-    let energyFilename=null;
+    let energyFilename, collisionalFilename, einsteinFilename;
     $: boltzmanArgs = {energyLevels, trapTemp, electronSpin, zeemanSplit, energyUnit}
-    $: readEnergyFileArgs = {energyFilename, electronSpin, zeemanSplit, energyUnit}
-    const readEnergyFile = async () => {
+    $: readFileArgs = {energyFilename, electronSpin, zeemanSplit, energyUnit, twoLabel:false}
 
-        ({energyLevels, numberOfLevels, energyFilename, energyUnit} = await readEnergyFromFile(readEnergyFileArgs))
+    const readEnergyFile = async () => {
+    
+        ({energyLevels, numberOfLevels, energyFilename, energyUnit} = await readFromFile(readFileArgs))
+    
     }
+    
+    const readCollisionalFile = async () => {
+
+        readFileArgs.twoLabel = true
+        ({energyLevels:collisionalCoefficient, energyFilename:collisionalCoefficientFilename} = await readFromFile({...readFileArgs, energyFilename:collisionalFilename}))
+    }
+
+    const readEinsteinFile = async () => {
+
+        readFileArgs.twoLabel = true
+        ({energyLevels:einsteinCoefficient, energyFilename:einsteinCoefficientFilename} = await readFromFile({...readFileArgs, energyFilename:einsteinFilename}))
+}
+
 </script>
 
 <style lang="scss">
@@ -423,7 +407,7 @@
                             <button class="button is-link center" on:click={() => editEinsteinCoefficients=true}>Edit constats</button>
                             <button class="button is-link center" on:click={getRateLabelsEinstein}>Get labels</button>
 
-                            <button class="button is-link center" on:click={readEinsteinCoefficientFromFile}>Read from file</button>
+                            <button class="button is-link center" on:click={readEinsteinFile}>Read from file</button>
 
                         </div>
                         {#if einsteinCoefficient.length>0}
@@ -444,7 +428,10 @@
                         <div class="control__div ">
                             <CustomSelect options={["deexcitation", "excitation"]} bind:picked={collisionalRateType} on:change={changeCollisionalRateType}/>
                             <button class="button is-link" on:click={() => editCollisionalCoefficients=true}>Edit constats</button>
+                            
                             <button class="button is-link center" on:click={getRateLabelsCollision}>Get labels</button>
+                            <button class="button is-link center" on:click={readCollisionalFile}>Read from file</button>
+                        
                         </div>
 
                         {#if collisionalCoefficient.length>0}
