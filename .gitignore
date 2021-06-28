@@ -9,3 +9,4 @@ static/db.json
 static/assets/python_files/local/*.json
 static/assets/python_files/__pycache__/*.pyc
 .vscode
+static/assets/python_files/notebooks/CollisionalSimulations/*.png
