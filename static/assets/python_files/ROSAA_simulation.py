@@ -95,9 +95,9 @@ class ROSAA:
 
             dR_dt.append(temp)
 
-        return [*dR_dt, *N_He]
+        # return [*dR_dt, *N_He]
 
-        # return dR_dt
+        return dR_dt
     
     def Simulate(self):
 
