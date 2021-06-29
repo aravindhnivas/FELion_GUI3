@@ -113,7 +113,9 @@ class ROSAA:
 
         self.totalAttachmentLevels = int(self.rate_coefficients["totalAttachmentLevels"])
         self.includeAttachmentRate = conditions["includeAttachmentRate"]
+
         N_He = []
+        
         if self.includeAttachmentRate:
             N_He = self.totalAttachmentLevels*[0]
 
@@ -122,21 +124,22 @@ class ROSAA:
         totalSteps = int(self.simulation_parameters["Total steps"])
         
         self.simulateTime = np.linspace(0, duration, totalSteps)
+        
         self.lightOFF_distribution = N_OFF.sol(self.simulateTime)
-
         self.plot()
 
     def plot(self):
         fig, ax = plt.subplots(figsize=(7, 4), dpi=100)
+
+
         ax.plot(self.simulateTime.T*1e3, self.lightOFF_distribution.T)
         ax.plot(self.simulateTime*1e3, self.lightOFF_distribution.sum(axis=0), "k")
         ax.legend([*[f"J{i}" for i in self.energyKeys], "SUM"], title=f"He: {self.nHe:.2e}cm3")
         ax.set(xlabel="Time (ms)", ylabel="Population (%)", title="Simulation", yscale="linear")
+
         pp.pprint(self.lightOFF_distribution.T[-1])
         sys.stdout.flush()
-
         plt.show()
-
 
 if __name__ == "__main__":
 
