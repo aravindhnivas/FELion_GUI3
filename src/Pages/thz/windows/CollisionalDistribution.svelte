@@ -31,51 +31,59 @@
 
             const collisionalRateConstantValues = {}
             collisionalRateConstants.forEach(f=>collisionalRateConstantValues[f.label]=f.value)
-            // const energyKeys = boltzmanDistribution.map(f=>f.label)
-
             const pyfile = "collisionalSimulation.py";
             
             const args=[JSON.stringify(
+
                 {numberDensity, boltzmanDistributionValues, duration, collisionalRateConstantValues}
+            
             )]
             const {data, collisionalBoltzmanPlotData} = await computePy_func({e, pyfile, args})
             plot( `${title}: ${initialTemp}K --> ${collisionalTemp}K (${numberDensity}/cm3)`, "Time (s)", "Population", data, plotID)
 
 
             const boltzmanDistributionCold = boltzman_distribution({energyLevels, trapTemp:collisionalTemp, electronSpin, zeemanSplit, energyUnit})
-            const boltzmanPlotData = {data:{x:boltzmanDistributionCold.map(f=>f.label), y:boltzmanDistributionCold.map(f=>f.value), name:"boltzman"}}
-            plot( `Collisional distribution: ${collisionalTemp}K`, "Energy Levels", "Population", collisionalBoltzmanPlotData, `${plotID}_collisionalBoltzman`)
-            plot( `Boltzman distribution: ${collisionalTemp}K`, "Energy Levels", "Population", boltzmanPlotData, `${plotID}_boltzman`)
+            
+            const boltzmanPlotData = {boltzmanData:{x:boltzmanDistributionCold.map(f=>f.label), y:boltzmanDistributionCold.map(f=>f.value), name:"boltzman"}}
+            const combinedData = {...collisionalBoltzmanPlotData, ...boltzmanPlotData}
+            
+            plot( 
+                ` Distribution: ${collisionalTemp}K`, 
+                "Energy Levels", "Population", combinedData, 
+                `${plotID}_collisionalBoltzman`, 
+            )
 
-        } catch (error) {
-            window.createToast(error, "danger")
-
-        }
+        } catch (error) { window.createToast(error, "danger") }
     }
+
     $: if (windowReady) {setTimeout(()=>graphWindow.focus(), 100)}
 
 </script>
 
-
 <style lang="scss">
+    
     .header {
         display: flex;
+
         gap: 1em;
         margin-bottom: 1em;
-    
     }
+
     .graph__container {
 
         display: flex;
         flex-direction: column;
+
         row-gap: 1em;
+
         padding: 1em;
+    
     }
 
 </style>
 
-{#if active}
 
+{#if active}
 
     <SeparateWindow {title} bind:active bind:windowReady bind:graphWindow >
 
@@ -97,10 +105,7 @@
             <div class="graph__container">
                 <div id="{plotID}"></div>
                 <div id="{plotID}_collisionalBoltzman"></div>
-                <div id="{plotID}_boltzman"></div>
             </div>
         </svelte:fragment>
-
     </SeparateWindow>
-
 {/if}
