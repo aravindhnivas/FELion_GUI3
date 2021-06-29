@@ -119,8 +119,9 @@ class ROSAA:
 
         N_OFF = solve_ivp(self.SimulateODE, tspan, [*self.boltzmanDistribution, *N_He], dense_output=True)
 
-
-        self.simulateTime = np.linspace(0, duration, 100)
+        totalSteps = int(self.simulation_parameters["Total steps"])
+        
+        self.simulateTime = np.linspace(0, duration, totalSteps)
         self.lightOFF_distribution = N_OFF.sol(self.simulateTime)
 
         self.plot()
