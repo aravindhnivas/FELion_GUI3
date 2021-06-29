@@ -33,16 +33,14 @@
         {label:"He density(cm3)", value:"2e14", id:window.getID()},
         {label:"Initial temperature (K)", value:300, id:window.getID()},
         {label:"Total steps", value:1000, id:window.getID()},
-        {label:"excitedTo", value:1, id:window.getID()},
-        {label:"excitedFrom", value:0, id:window.getID()},
     ]
 
     const dopplerLineshape = [
         {label:"IonMass(amu)", value:14, id:window.getID(), type:"number", step:1},
         {label:"IonTemperature(K)", value:12, id:window.getID(), type:"number", step:0.5}
-
-    
     ]
+    let excitedTo="excitedTo", excitedFrom="excitedFrom";
+
 
     const powerBroadening = [
         {label:"cp", value:"4.9e7", id:window.getID()},
@@ -122,7 +120,9 @@
         energyLevels.forEach(f=>energy_levels[f.label]=f.value)
         
         const conditions = { 
-            trapTemp, variable, variableRange, numberOfLevels, includeCollision, includeAttachmentRate, includeSpontaneousEmission, writefile, filename, currentLocation,  deexcitation, collisional_rates, main_parameters, simulation_parameters, einstein_coefficient, energy_levels, energyUnit, power_broadening, lineshape_conditions, rate_coefficients, electronSpin, zeemanSplit
+
+            trapTemp, variable, variableRange, numberOfLevels, includeCollision, includeAttachmentRate, includeSpontaneousEmission, writefile, filename, currentLocation,  deexcitation, collisional_rates, main_parameters, simulation_parameters, einstein_coefficient, energy_levels, energyUnit, power_broadening, lineshape_conditions, rate_coefficients, electronSpin, zeemanSplit, excitedFrom, excitedTo
+        
         }
         
         dispatch('submit', { e, conditions })
@@ -550,9 +550,21 @@
                             <Textfield bind:value {label} />
                         {/each}
                         
-                    </div>
-                </div>
+                        <hr> <div class="subtitle" style="width: 100%; display:grid; place-items: center;">Transition levels</div> <hr>
 
+
+                        <div style="display: flex; gap: 1em; place-content: center; width: 100%;">
+                            
+                            <CustomSelect options={["excitedFrom", ...energyLevels.map(f=>f.label)]} 
+                                bind:picked={excitedFrom} />
+                            <CustomSelect options={["excitedTo", ...energyLevels.map(f=>f.label)]} 
+                                bind:picked={excitedTo} />
+
+                        </div>
+                    
+                    </div>
+
+                </div>
 
                 <!-- Doppler lineshape -->
                 <div class="sub_container__div box">
