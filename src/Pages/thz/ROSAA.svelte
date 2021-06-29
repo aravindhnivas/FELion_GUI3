@@ -225,7 +225,7 @@
             const readFileArgs = {bowseFile, energyFilename:collisionalFilename, electronSpin, zeemanSplit, energyUnit, collisionalFile:true};
 
             ({energyLevels:collisionalCoefficient, energyFilename:collisionalFilename, collisionalRateType} = await readFromFile(readFileArgs));
-            // compteCollisionalBalanceConstants();
+            collisionalCoefficient_balance = []
 
         } catch (error) {console.error(error)}
     
@@ -285,22 +285,21 @@
     }
 
     async function setConfig() {
-        const configFileLocation = window.path.dirname(configFile);
 
+        const configFileLocation = window.path.dirname(configFile);
         const configFileContent = fs.readFileSync(configFile, "utf-8");
         const configJSON = JSON.parse(configFileContent);
+
         ({energyFilename, collisionalFilename, einsteinFilename} = configJSON);
         energyFilename = path.join(configFileLocation, energyFilename)
         collisionalFilename = path.join(configFileLocation, collisionalFilename)
         einsteinFilename = path.join(configFileLocation, einsteinFilename)
-
+        console.log({configJSON, energyFilename, collisionalFilename, einsteinFilename})
         const bowseFile = false;
-
         await readEnergyFile(bowseFile);
         await readEinsteinFile(bowseFile);
         await readCollisionalFile(bowseFile);
     }
-    // $: console.log(energyFilename, collisionalFilename, einsteinFilename)
 
 </script>
 

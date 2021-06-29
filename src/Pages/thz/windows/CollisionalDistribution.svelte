@@ -11,7 +11,7 @@
     export let collisionalRateConstants, energyLevels, electronSpin, zeemanSplit, energyUnit;
     
     
-    let initialTemp = 300, duration=600;
+    let initialTemp = 300, duration=600, collisionalTemp=10;
 
     let numberDensity="2e14";
 
@@ -31,31 +31,47 @@
 
             const collisionalRateConstantValues = {}
             collisionalRateConstants.forEach(f=>collisionalRateConstantValues[f.label]=f.value)
-
+            // const energyKeys = boltzmanDistribution.map(f=>f.label)
 
             const pyfile = "collisionalSimulation.py";
             
             const args=[JSON.stringify(
                 {numberDensity, boltzmanDistributionValues, duration, collisionalRateConstantValues}
             )]
-            const dataFromPython = await computePy_func({e, pyfile, args})
+            const {data, collisionalBoltzmanPlotData} = await computePy_func({e, pyfile, args})
+            plot( `${title}: ${initialTemp}K --> ${collisionalTemp}K (${numberDensity}/cm3)`, "Time (s)", "Population", data, plotID)
 
-            console.log(dataFromPython)
+
+            const boltzmanDistributionCold = boltzman_distribution({energyLevels, trapTemp:collisionalTemp, electronSpin, zeemanSplit, energyUnit})
+            const boltzmanPlotData = {data:{x:boltzmanDistributionCold.map(f=>f.label), y:boltzmanDistributionCold.map(f=>f.value), name:"boltzman"}}
+            plot( `Collisional distribution: ${collisionalTemp}K`, "Energy Levels", "Population", collisionalBoltzmanPlotData, `${plotID}_collisionalBoltzman`)
+            plot( `Boltzman distribution: ${collisionalTemp}K`, "Energy Levels", "Population", boltzmanPlotData, `${plotID}_boltzman`)
+
         } catch (error) {
             window.createToast(error, "danger")
+
         }
     }
     $: if (windowReady) {setTimeout(()=>graphWindow.focus(), 100)}
 
 </script>
 
-<style>
+
+<style lang="scss">
     .header {
         display: flex;
         gap: 1em;
         margin-bottom: 1em;
     
     }
+    .graph__container {
+
+        display: flex;
+        flex-direction: column;
+        row-gap: 1em;
+        padding: 1em;
+    }
+
 </style>
 
 {#if active}
@@ -67,9 +83,10 @@
             <div class="header">
                 
                 <Textfield bind:value={stepSize} label="stepSize" style="width:auto;"/>
-                <Textfield bind:value={initialTemp} label="temperature" input$type="number" input$step={stepSize} input$min=0 style="width:auto;"/>
-                <Textfield bind:value={duration} label="duration (in ms)" input$type="number" input$step={stepSize} input$min=0 style="width:auto;"/>
-                <Textfield bind:value={numberDensity} label="Number density" style="width:auto;"/>
+                <Textfield bind:value={initialTemp} label="Initial temp (K)" input$type="number" input$step={stepSize} input$min=0 style="width:auto;"/>
+                <Textfield bind:value={collisionalTemp} label="Coll. temp (K)" input$type="number" input$step={stepSize} input$min=0.1 style="width:auto;"/>
+                <Textfield bind:value={duration} label="duration (in ms)" style="width:auto;"/>
+                <Textfield bind:value={numberDensity} label="Number density (cm-3)" style="width:auto;"/>
                 <button class="button is-link" on:click={computeCollisionalProcess}>Compute</button>
             </div>
 
@@ -77,8 +94,13 @@
         </svelte:fragment>
 
         <svelte:fragment slot="main_content__slot">
-            <div id="{plotID}"></div>
-
+            <div class="graph__container">
+                <div id="{plotID}"></div>
+                <div id="{plotID}_collisionalBoltzman"></div>
+                <div id="{plotID}_boltzman"></div>
+            </div>
         </svelte:fragment>
+
     </SeparateWindow>
+
 {/if}

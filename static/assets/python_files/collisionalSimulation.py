@@ -6,6 +6,8 @@ from pathlib import Path as pt
 from scipy.integrate import solve_ivp
 from FELion_definitions import sendData
 
+from FELion_constants import colors
+
 from functools import reduce
 def collisionalRateDistribution(t, N):
 
@@ -50,15 +52,46 @@ def collisionalRateDistribution(t, N):
 
 def simulate(args):
 
-    time = int(args["duration"])*1e-3
+    time = float(args["duration"])*1e-3
 
     tspan = [0, time]
     
     N_collisional = solve_ivp(collisionalRateDistribution, tspan, boltzmanDistribution, dense_output=True)
     simulateTime = np.linspace(0, time, 100)
     simulateCounts = N_collisional.sol(simulateTime)
-    dataToSend = {"data" : simulateCounts.tolist()}
-    plot(simulateTime, simulateCounts)
+    data = simulateCounts.tolist()
+    defaultStyle={"mode": "lines+markers", "fill": 'tozeroy', "marker": {"size":1}}
+    
+    dataWithLabel = {}
+    
+
+    colorIndex = 0
+    for key, value in zip(energyKeys, data):
+        lineColor = {"color": f"rgb{colors[colorIndex]}"}
+        dataWithLabel[key] = {"x":simulateTime.tolist(), "y":value, "name":key, **defaultStyle, **lineColor}
+        colorIndex += 2
+    
+    collisionalBoltzmanPlotData = {"data":{"x":energyKeys, "y":simulateCounts.T[-1].tolist()}}
+
+
+    # colorIndex = 0
+    # boltzmanDistributionCold = {}
+    # for level, population in boltzmanDistributionValues:
+        
+    #     lineColor = {"color": f"rgb{colors[colorIndex]}"}
+
+    #     style = {"fill": 'none'}
+    #     boltzmanDistributionCold[level] = {"x":level, "y":population, "name":level, **defaultStyle, **style, **lineColor} 
+
+    #     colorIndex += 2
+    
+    dataToSend = {
+        "data" : dataWithLabel, 
+        "collisionalBoltzmanPlotData" : collisionalBoltzmanPlotData,
+        # "boltzmanDistributionCold" : boltzmanDistributionCold
+    }
+
+    # plot(simulateTime, simulateCounts)
 
     return sendData(dataToSend)
 
@@ -90,10 +123,9 @@ if __name__ == "__main__":
     rate_constants = {key:float(value) for key, value in args["collisionalRateConstantValues"].items()}
 
     nHe = float(args["numberDensity"])
-
     boltzmanDistributionValues = args["boltzmanDistributionValues"]
-    energyKeys = list(boltzmanDistributionValues.keys())
 
+    energyKeys = list(boltzmanDistributionValues.keys())
     boltzmanDistribution = list(boltzmanDistributionValues.values())
 
     print(f"Received args: {args}, {type(args)}\n")
@@ -101,7 +133,7 @@ if __name__ == "__main__":
     print(f"{rate_constants=}\n")
     simulate(args)
 
-    print(_rateCollection)
+    # print(_rateCollection)
     _dR_dt = []
 
     for _ in _rateCollection:
