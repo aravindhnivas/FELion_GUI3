@@ -78,8 +78,6 @@ def plot(simulateTime, simulateCounts):
 
 if __name__ == "__main__":
 
-    _rateCollection = []
-
     args = sys.argv[1:][0].split(",")
     args = json.loads(", ".join(args))
 

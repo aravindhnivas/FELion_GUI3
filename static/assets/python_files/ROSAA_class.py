@@ -343,6 +343,7 @@ class ROSAA():
 
         self.Rate_K3 = [float(i.strip())*self.nHe**2 for i in self.rate_coefficients["k3"].split(",")]
         a = float(self.rate_coefficients["a(k31)"])
+        
         self.Rate_K3_excited = a*self.Rate_K3[0]
         print(f"{self.Rate_K3=}", flush=True)
 
@@ -373,8 +374,8 @@ class ROSAA():
 
         Non = solve_ivp(self.computeRateDistributionEquations, self.tspan, self.boltzman_distribution_source, dense_output=True)
         resOnCounts = Non.sol(self.simulation_duration_data_points)
-        
         print(f"{resOnCounts.shape=}")
+
         return Noff, Non
 
 

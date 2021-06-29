@@ -90,20 +90,17 @@
 <style>
 
 </style>
-
-<ROSAA bind:active={ROSAA_modal_active} on:submit="{(e)=>{plotData({e:e.detail.e, filetype:"general", general:{pyfile:"ROSAA_class.py", args:[JSON.stringify(e.detail.conditions)]}})}}" />
+<ROSAA bind:active={ROSAA_modal_active} on:submit="{(e)=>{plotData({e:e.detail.e, filetype:"general", general:{pyfile:"ROSAA_simulation.py", args:[JSON.stringify(e.detail.conditions)]}})}}" />
 
 <Layout bind:preModal {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked>
 
     <svelte:fragment slot="buttonContainer">
-
         <div class="content align buttonRow">
             <button class="{btnClass}" on:click="{()=>{ROSAA_modal_active=true}}">ROSAA</button>
-
             <button class="{btnClass}" on:click="{(e)=>{plotData({e:e, justPlot:true})}}">Plot</button>
-
             <CustomSwitch bind:selected={binData} label="Bin" style="margin:0 1em;"/>
             <CustomSwitch bind:selected={saveInMHz} label="saveInMHz" style="margin:0 1em;"/>
+
             <button class="{btnClass}" on:click="{(e)=>{plotData({e:e})}}">Fit</button>
             <button class="{btnClass}" on:click="{(e)=>plotData({e:e, tkplot:true})}">Open in Matplotlib</button>
             <CustomIconSwitch style="padding:0;" bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
@@ -113,8 +110,8 @@
 
             <div class="animated fadeIn" class:hide={!graphPlotted} on:change={changePlotStyle}>
                 <CustomSelect options={plotStyle} bind:picked={plotStyleSelected} label="Plot Style"/>
-                <CustomSwitch bind:selected={plotFill} label="Fill area"/>
 
+                <CustomSwitch bind:selected={plotFill} label="Fill area"/>
             </div>
 
         </div>
