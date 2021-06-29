@@ -18,41 +18,32 @@
 
     import {readFromFile} from "./functions/read_files";
 
-
-    
-    // import path from 'path';
-
     export let active=false;
     const dispatch = createEventDispatcher();
     const mainParameters = [
-    
         {label:"molecule", value:"CD", id:window.getID()},
-
-        
         {label:"tagging partner", value:"He", id:window.getID()},
-        
         {label:"freq", value:"453_521_850_000", id:window.getID()},
         {label:"trap_area", value:"5e-5", id:window.getID()},
-        // {label:"Energy", value:"0, 15.127861, 45.373851", id:window.getID()},
-
     ]
 
     const simulationParameters = [
-
         {label:"totalIonCounts", value:1000, id:window.getID()},
-        
         {label:"Simulation time(ms)", value:600, id:window.getID()},
+        {label:"He density(cm3)", value:"2e14", id:window.getID()},
+        {label:"Initial temperature (K)", value:300, id:window.getID()},
         {label:"Total steps", value:1000, id:window.getID()},
         {label:"excitedTo", value:1, id:window.getID()},
         {label:"excitedFrom", value:0, id:window.getID()},
     ]
 
     const dopplerLineshape = [
-
         {label:"IonMass(amu)", value:14, id:window.getID(), type:"number", step:1},
-        
-        {label:"IonTemperature(K)", value:12, id:window.getID(), type:"number", step:0.5},
+        {label:"IonTemperature(K)", value:12, id:window.getID(), type:"number", step:0.5}
+
+    
     ]
+
     const powerBroadening = [
         {label:"cp", value:"4.9e7", id:window.getID()},
         {label:"dipoleMoment(D)", value:0, id:window.getID()},
@@ -64,8 +55,8 @@
 
         {label:"totalAttachmentLevels", value:2, id:window.getID()},
         {label:"branching-ratio(kCID)", value:0.5, id:window.getID()},
+
         {label:"a(k31)", value:0.5, id:window.getID()},
-        {label:"He density(cm3)", value:"2e14", id:window.getID()},
         {label:"k3", value:"9.6e-31, 2.9e-30", id:window.getID()},
         {label:"kCID", value:"6.7e-16, 1.9e-15", id:window.getID()},
     
@@ -73,50 +64,44 @@
     
     let electronSpin=false, zeemanSplit= false;
     let collisionalRateType = "excitation"
-    $: deexcitation = collisionalRateType==="deexcitation";
-
     
+    $: deexcitation = collisionalRateType==="deexcitation";
     let py, running = false;
-
     const pyEventHandle = (e) => {
 
         statusReport = ""
 
         const events = e.detail
         py = events.py
-    }
 
+    }
 
     let statusReport = "";
+
     let showreport = false
+
     const pyEventDataReceivedHandle = (e) => {
         let dataReceived = e.detail.dataReceived
+
         statusReport += `${dataReceived}\n`
-    
     }
-    
-    
+
     const pyEventClosedHandle = (e) => {
         running=false;
         window.createToast("Terminated", "danger")
-
         statusReport += "\n######## TERMINATED ########"
     }
 
     const simulation = (e) => {
-
         const collisional_rates = {}
         collisionalCoefficient.forEach(f=>collisional_rates[f.label] = f.value)
 
-
         const main_parameters = {}
-
         mainParameters.forEach(f=>main_parameters[f.label]=f.value)
 
         const simulation_parameters = {}
 
         simulationParameters.forEach(f=>simulation_parameters[f.label]=f.value)
-
 
         const lineshape_conditions = {}
 
@@ -125,28 +110,37 @@
         const power_broadening = {}
         powerBroadening.forEach(f=>power_broadening[f.label]=f.value)
 
+
         const einstein_coefficient = {}
         einsteinCoefficient.forEach(f=>einstein_coefficient[f.label]=f.value)
 
         const rate_coefficients = {}
+        
         rateCoefficients.forEach(f=>rate_coefficients[f.label]=f.value)
 
         const energy_levels = {}
         energyLevels.forEach(f=>energy_levels[f.label]=f.value)
         
-        const conditions = { trapTemp, variable, variableRange, numberOfLevels, includeCollision, includeAttachmentRate, includeSpontaneousEmission, writefile, filename, currentLocation,  deexcitation, collisional_rates, main_parameters, simulation_parameters, einstein_coefficient, energy_levels, energyUnit, power_broadening, lineshape_conditions, rate_coefficients, electronSpin, zeemanSplit }
+        const conditions = { 
+            trapTemp, variable, variableRange, numberOfLevels, includeCollision, includeAttachmentRate, includeSpontaneousEmission, writefile, filename, currentLocation,  deexcitation, collisional_rates, main_parameters, simulation_parameters, einstein_coefficient, energy_levels, energyUnit, power_broadening, lineshape_conditions, rate_coefficients, electronSpin, zeemanSplit
+        }
+        
         dispatch('submit', { e, conditions })
         running=true
 
     }
 
+
+    
     let currentLocation = db.get("thz_modal_location") || db.get("thz_location") || "";
     let filename = `ROSAA_modal_${mainParameters[0].value}_${mainParameters[1].value}`;
     $: if(currentLocation&&fs.existsSync(currentLocation)) {db.set("thz_modal_location", currentLocation)}
 
+    
     async function browse_folder() {
         const result = await browse({dir:true})
         if (!result.canceled) { currentLocation = result.filePaths[0]; }
+    
     }
 
     let writefile = true, includeCollision = true, includeSpontaneousEmission = true, includeAttachmentRate = true;
@@ -163,27 +157,26 @@
             
             const dataFromPython = await computePy_func({e, pyfile, args})
             const {transition_labels, transition_labels_J0, transition_labels_J1} = dataFromPython
-            
             einsteinCoefficient = []
             
-
             transition_labels.forEach(level=>{
 
                 let labels;
-            
                 if (electronSpin && zeemanSplit) {
+
                     labels = level.map(f=>f={label:f, value:0, id:window.getID()})
                     einsteinCoefficient = [...einsteinCoefficient, ...labels]
                 } else {
                     labels = {label:level, value:0, id:window.getID()}
                     einsteinCoefficient = [...einsteinCoefficient, labels]
-
                 }
             })
         } catch (error) { console.error(error) }
+
     }
 
     async function getRateLabelsCollision(e){
+
         try {
 
             const args = [JSON.stringify({numberOfLevels, electronSpin, zeemanSplit})]
@@ -191,13 +184,13 @@
             const dataFromPython = await computePy_func({e, pyfile, args})
             const {transition_labels} = dataFromPython
             collisionalCoefficient = transition_labels.map(label=>{return {label, value:0, id:window.getID()}})
-
             collisionalRateType = "excitation"
         } catch (error) { console.error(error) }
 
     }
 
     function changeCollisionalRateType() {
+
         collisionalCoefficient = collisionalCoefficient.map(level=>{
             const level_arr = level.label.split(" --> ")
             const label = `${level_arr[1]} --> ${level_arr[0]}`
@@ -225,34 +218,35 @@
     const readCollisionalFile = async (bowseFile=false) => {
         try {
             const readFileArgs = {bowseFile, energyFilename:collisionalFilename, electronSpin, zeemanSplit, energyUnit, collisionalFile:true};
-
             ({energyLevels:collisionalCoefficient, energyFilename:collisionalFilename, collisionalRateType} = await readFromFile(readFileArgs));
             collisionalCoefficient_balance = []
-
         } catch (error) {console.error(error)}
-    
     }
+
 
     const readEinsteinFile = async (bowseFile=false) => {
-    
         try {
-            const readFileArgs = {bowseFile, energyFilename:einsteinFilename, electronSpin, zeemanSplit, energyUnit};
     
+            const readFileArgs = {bowseFile, energyFilename:einsteinFilename, electronSpin, zeemanSplit, energyUnit};
             ({energyLevels:einsteinCoefficient, energyFilename:einsteinFilename} = await readFromFile(readFileArgs))
         } catch (error) {console.error(error)}
+    
     }
 
+    
     let collisionalCoefficient_balance = [];
 
+    
     const compteCollisionalBalanceConstants = () => {
         const balanceArgs  = {energyLevels, trapTemp,  electronSpin, zeemanSplit, energyUnit}
+
+        
+        
         collisionalCoefficient_balance = collisionalCoefficient.map(coefficient=>{
-
             const {label, value} = coefficient
+
             const levelLabels = label.split(" --> ").map(f=>f.trim())
-
             let newLabel, newValue;
-
             if(deexcitation) {
                 const [excitedLevel, groundLevel] = levelLabels
                 newValue = value*balance_distribution({...balanceArgs, groundLevel, excitedLevel})
