@@ -1,12 +1,13 @@
 
 <script>
+    import {mainPreModal} from "../../../svelteWritable";
     import {graphDiv} from '../functions/svelteWritables';
     import Modal from '../../../components/Modal.svelte';
     import Textfield from '@smui/textfield';
     import {browse} from "../../../components/Layout.svelte";
    
     
-    export let active=false, fileChecked=[], addedFileCol=1, addedFileScale=1000, addedfiles=[], addedFile={}, extrafileAdded=0, preModal;
+    export let active=false, fileChecked=[], addedFileCol=1, addedFileScale=1000, addedfiles=[], addedFile={}, extrafileAdded=0;
 
 
     function addFileSelection() {
@@ -31,7 +32,7 @@
             extrafileAdded += addedfiles.length
             window.createToast("Graph Plotted", "success")
             active = false
-        }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
+        }).catch(err=>{$mainPreModal.modalContent = err;  $mainPreModal.open = true})
 
     }
 

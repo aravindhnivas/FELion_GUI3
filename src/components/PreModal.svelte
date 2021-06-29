@@ -24,7 +24,8 @@
 
 </script>
 
-<Modal bind:active title={preModal.modalTitle || "Error details"} bodyBackground="#fafafa">
-
-  <div slot="content" style="color:black; white-space: pre-wrap; user-select:text;">{preModal.modalContent}</div>
-</Modal>
+{#if active}
+  <Modal bind:active title={preModal.modalTitle || "Error details"} bodyBackground="#fafafa">
+    <div slot="content" style="color:black; white-space: pre-wrap; user-select:text;">{preModal.modalContent}</div>
+  </Modal>
+{/if}

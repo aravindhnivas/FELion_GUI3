@@ -1,6 +1,6 @@
 
 <script>
-
+    import {mainPreModal} from "../../../../svelteWritable";
     import { filedetails, opoMode } from "../../functions/svelteWritables";
     import CustomIconSwitch from '../../../../components/CustomIconSwitch.svelte';
     import Table from '../../../../components/Table.svelte';
@@ -11,7 +11,7 @@
     import {get_details_func} from '../../functions/get_details';
     export let felixfiles, normMethod;
 
-    let toggleFileDetailsTable = false, preModal = {}
+    let toggleFileDetailsTable = false
     
     function plotData({e=null}={}){
         
@@ -22,7 +22,7 @@
         args=[JSON.stringify({files:$opoMode?opofiles : felixfiles, normMethod})]
         computePy_func({e, pyfile, args})
         .then((dataFromPython)=>{ get_details_func({dataFromPython}); toggleFileDetailsTable = true })
-        .catch(err=>{preModal.modalContent = err;  preModal.open = true})
+        .catch(err=>{$mainPreModal.modalContent = err;  $mainPreModal.open = true})
         
     }
 

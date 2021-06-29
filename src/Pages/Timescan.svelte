@@ -1,6 +1,6 @@
-<script>
 
-    //  Importing
+<script>
+    import {mainPreModal} from "../svelteWritable";
     import Layout from "../components/Layout.svelte"
     import CustomIconSwitch from "../components/CustomIconSwitch.svelte"
     import CustomSelect from "../components/CustomSelect.svelte"
@@ -60,7 +60,7 @@
         if (filetype == "scan") {graphPlotted = false}
         if (filetype == "general") {
 
-            return computePy_func({e, pyfile, args, general:true, openShell}).catch(err=>{preModal.modalContent = err;  preModal.open = true})
+            return computePy_func({e, pyfile, args, general:true, openShell}).catch(err=>{$mainPreModal.modalContent = err;  $mainPreModal.open = true})
         }
 
 
@@ -76,7 +76,7 @@
 
                     graphPlotted = true
 
-                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
+                }).catch(err=>{$mainPreModal.modalContent = err;  $mainPreModal.open = true})
 
     }
 
@@ -94,14 +94,9 @@
 
     $: includePlotsInReport = fileChecked.map(file=>file={id:`${file}_tplot`, include:false, label:file})
 
-    let preModal = {};
 </script>
 
-<style>
-    
-</style>
-
-<Layout bind:preModal {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked on:chdir={dir_changed}>
+<Layout {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked on:chdir={dir_changed}>
 
     <svelte:fragment slot="buttonContainer">
 

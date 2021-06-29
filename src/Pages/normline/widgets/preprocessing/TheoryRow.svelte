@@ -1,6 +1,6 @@
 
 <script>
-
+    import {mainPreModal} from "../../../../svelteWritable";
     import {toggleRow, felixopoLocation} from "../../functions/svelteWritables";
     import Textfield from '@smui/textfield';
     import QuickBrowser from '../../../../components/QuickBrowser.svelte';
@@ -9,7 +9,7 @@
     import {theory_func} from '../../functions/theory';
 
     import CustomSwitch from '../../../../components/CustomSwitch.svelte';
-    export let theoryLocation, show_theoryplot, normMethod, preModal;
+    export let theoryLocation, show_theoryplot, normMethod;
 
     let sigma=7, scale=1, theoryfiles=[], tkplot=false;
     let showTheoryFiles = false, theoryfilesChecked = []
@@ -27,7 +27,7 @@
             theory_func({dataFromPython, normMethod})
             window.createToast("Graph Plotted", "success")
             show_theoryplot = true, showTheoryFiles = false
-        }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
+        }).catch(err=>{$mainPreModal.modalContent = err;  $mainPreModal.open = true})
     }
 
     let onlyExpRange = true;

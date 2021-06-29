@@ -1,5 +1,5 @@
 <script>
-
+    import {mainPreModal} from "../svelteWritable";
     import Layout from "../components/Layout.svelte"
     import CustomIconSwitch from "../components/CustomIconSwitch.svelte"
     import CustomSelect from "../components/CustomSelect.svelte"
@@ -68,7 +68,7 @@
         let {pyfile, args} = pyfileInfo[filetype]
         if (filetype == "general") {
 
-            return computePy_func({e, pyfile, args, general:true, openShell}).catch(err=>{preModal.modalContent = err;  preModal.open = true})
+            return computePy_func({e, pyfile, args, general:true, openShell}).catch(err=>{$mainPreModal.modalContent = err;  $mainPreModal.open = true})
             
         }
 
@@ -95,7 +95,7 @@
                     window.createToast("Graph plotted", "success")
                     graphPlotted = true
 
-                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
+                }).catch(err=>{$mainPreModal.modalContent = err;  $mainPreModal.open = true})
         
     }
 
@@ -108,9 +108,7 @@
     
     let includePlotsInReport = [{id:"mplot", include:true, label:"Mass Spectrum"}]
 
-    let preModal = {}, openSettings = false;
     let fullfileslist = [];
-
 </script>
 
 
@@ -118,7 +116,7 @@
 
 </style>
 
-<Layout bind:preModal {filetype} bind:fullfileslist {id} bind:currentLocation bind:fileChecked {graphPlotted}>
+<Layout  {filetype} bind:fullfileslist {id} bind:currentLocation bind:fileChecked {graphPlotted}>
     <svelte:fragment slot="buttonContainer">
 
         <div class="content align buttonRow">

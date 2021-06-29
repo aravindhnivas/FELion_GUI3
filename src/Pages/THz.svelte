@@ -1,5 +1,5 @@
 <script>
-
+    import {mainPreModal} from "../svelteWritable";
     //  Importing
     import Layout from "../components/Layout.svelte"
     import CustomIconSwitch from "../components/CustomIconSwitch.svelte"
@@ -51,7 +51,7 @@
         if (tkplot) {filetype = "general"}
 
         if (filetype == "general") {
-            return computePy_func({e, pyfile, args, general:true, openShell}).catch(err=>{preModal.modalContent = err;  preModal.open = true})
+            return computePy_func({e, pyfile, args, general:true, openShell}).catch(err=>{$mainPreModal.modalContent = err;  $mainPreModal.open = true})
         }
 
         computePy_func({e, pyfile, args})
@@ -76,13 +76,12 @@
                 window.createToast("Graph plotted", "success")
                 
                 graphPlotted = true
-            }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
+            }).catch(err=>{$mainPreModal.modalContent = err;  $mainPreModal.open = true})
 
         
     }
 
     let includePlotsInReport = [{id:"resOnOffPlot", include:false, label:"THz Res-ON/OFF"}, {id:"thzPlot", include:true, label:"Normalised THz Spectrum"}, {id:"boltzman_plot", include:false, label:"Boltzman plot"}]
-    let preModal = {};
 
     let ROSAA_modal_active = false;
 
@@ -91,8 +90,7 @@
 
 </style>
 <ROSAA bind:active={ROSAA_modal_active} on:submit="{(e)=>{plotData({e:e.detail.e, filetype:"general", general:{pyfile:"ROSAA_simulation.py", args:[JSON.stringify(e.detail.conditions)]}})}}" />
-
-<Layout bind:preModal {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked>
+<Layout  {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked>
 
     <svelte:fragment slot="buttonContainer">
         <div class="content align buttonRow">

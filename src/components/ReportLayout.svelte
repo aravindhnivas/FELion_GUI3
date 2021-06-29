@@ -1,5 +1,6 @@
 
 <script>
+    import {mainPreModal} from "../svelteWritable";
     import Radio from '@smui/radio'
     import FormField from '@smui/form-field'
     import CustomCheckbox from './CustomCheckbox.svelte'
@@ -8,7 +9,6 @@
 
     import {onMount} from "svelte";
     import Hamburger1 from "./icon_animations/Hamburger1.svelte";
-    import PreModal from "./PreModal.svelte";
     import Editor from "./Editor.svelte";
 
     const {BrowserWindow} = remote
@@ -23,7 +23,6 @@
     const stylesheet2 = path.resolve(__dirname, `assets/reports/template.css`)
     const reportHTML = document.createElement( 'html' )
 
-    let preModal = {};
 
     $: reportHTMLTemplate = `<!DOCTYPE html>
                                 <html lang="en">
@@ -210,16 +209,16 @@
                     reportWindow.webContents.printToPDF({printBackground: true, landscape:landscape, pageSize:pageSize})
                     .then(data => {
                         fs.writeFile(reportFile.replace(".html", ".pdf"), data, (err) => {
-                            if (err) {preModal.modalContent = err.stack; preModal.open = true; return}
+                            if (err) {$mainPreModal.modalContent = err.stack; $mainPreModal.open = true; return}
                             window.createToast('Write PDF successfully.', "success")
                         })
-                    }).catch(err => { preModal.modalContent = err.stack; preModal.open = true })
+                    }).catch(err => { $mainPreModal.modalContent = err.stack; $mainPreModal.open = true })
 
                 } else {
                     reportWindow.webContents.printToPDF({printBackground: true, landscape:landscape, pageSize:pageSize}, (err, data) => {
-                        if(err) { preModal.modalContent = err.stack; preModal.open = true; return}
+                        if(err) { $mainPreModal.modalContent = err.stack; $mainPreModal.open = true; return}
                         fs.writeFile(reportFile.replace(".html", ".pdf"), data, (err) => {
-                            if (err) {preModal.modalContent = err.stack; preModal.open = true; return}
+                            if (err) {$mainPreModal.modalContent = err.stack; $mainPreModal.open = true; return}
                             window.createToast('Write PDF successfully.', "success")
                         })
                     })
@@ -262,7 +261,7 @@
     .hide {display: none;}
 
 </style>
-<PreModal bind:preModal/>
+
 
 <div class="content align heading">
     <div class="title notification is-link">Add to report</div>

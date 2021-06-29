@@ -50,16 +50,14 @@
     
     import { fly, fade } from 'svelte/transition';
     import Textfield from '@smui/textfield';
-    import {onMount, afterUpdate} from "svelte";
+    import {onMount} from "svelte";
     import FileBrowser from "./FileBrowser.svelte"
     import Hamburger1 from "../components/icon_animations/Hamburger1.svelte";
     import { createEventDispatcher } from 'svelte';
 
-    import PreModal from "./PreModal.svelte";
-
     ////////////////////////////////////////////////////////////////////////////
 
-    export let id, fileChecked=[], filetype = "felix", toggleBrowser = false, preModal = {}, fullfileslist = [];
+    export let id, fileChecked=[], filetype = "felix", toggleBrowser = false, fullfileslist = [];
     export let currentLocation = db.get(`${filetype}_location`) || "", graphPlotted=false;
 
     const dispatch = createEventDispatcher()
@@ -221,8 +219,6 @@
 
 </style>
 
-
-<PreModal bind:preModal />
 
 <section {id} style="display:none" class="animated fadeIn">
     <div class="columns">

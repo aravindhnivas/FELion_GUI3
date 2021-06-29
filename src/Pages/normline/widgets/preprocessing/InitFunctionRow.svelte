@@ -1,12 +1,13 @@
 
 <script>
     import {opoMode, toggleRow, felixOutputName, felixPlotAnnotations, felixPeakTable, expfittedLines, expfittedLinesCollectedData, fittedTraceCount, felixopoLocation} from "../../functions/svelteWritables";
+    import {mainPreModal} from "../../../../svelteWritable";
     import Textfield from '@smui/textfield';
     import CustomIconSwitch from '../../../../components/CustomIconSwitch.svelte';
     import FelixPlotting from '../../modals/FelixPlotting.svelte';
     import {felix_func} from '../../functions/felix';
 
-    export let felixPlotCheckboxes, preModal, felixfiles, graphPlotted, opofiles, normMethod, show_theoryplot, removeExtraFile, theoryLocation;
+    export let felixPlotCheckboxes, felixfiles, graphPlotted, opofiles, normMethod, show_theoryplot, removeExtraFile, theoryLocation;
     let active=false, openShell=false, delta=1;
 
     let felixPlotWidgets = {
@@ -72,7 +73,7 @@
                     window.createToast("Graph Plotted", "success")
                     graphPlotted = true
 
-                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
+                }).catch(err=>{$mainPreModal.modalContent = err;  $mainPreModal.open = true})
 
                 break;
             
@@ -84,7 +85,7 @@
 
                 pyfile="baseline.py", args= $opoMode ? opofiles: felixfiles
                 computePy_func({e, pyfile, args, general:true, openShell})
-                .catch(err=>{preModal.modalContent = err;  preModal.open = true})
+                .catch(err=>{$mainPreModal.modalContent = err;  $mainPreModal.open = true})
                 break;
 
             case "matplotlib":
@@ -96,7 +97,7 @@
 
                 pyfile="felix_tkplot.py", args=[JSON.stringify({numberWidgets, textWidgets, booleanWidgets, selectedWidgets, location: $felixopoLocation, normMethod, theoryLocation})]
                 computePy_func({e, pyfile, args, general:true, openShell})
-                .catch(err=>{preModal.modalContent = err;  preModal.open = true})
+                .catch(err=>{$mainPreModal.modalContent = err;  $mainPreModal.open = true})
             default:
                 break;
                 

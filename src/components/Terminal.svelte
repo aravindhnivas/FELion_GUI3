@@ -1,8 +1,7 @@
 
 <script>
-
+    import {mainPreModal} from "../svelteWritable";
     import IconButton from '@smui/icon-button';
-    import PreModal from "./PreModal.svelte";
     import {tick} from "svelte";
     import Textfield from '@smui/textfield';
 
@@ -15,7 +14,6 @@
 
     export let commandInputDiv = true, runShell = false, id="terminal";
     
-    let preModal = {}
     let openShellTerminal = false;
 
     const srollTerminalDiv = async () => {
@@ -40,7 +38,7 @@
         try {
             commandArgsToRun += ` ${packagesName}`
             ls = spawn(commandToRun, commandArgsToRun.split(" ").map(arg=>arg.trim()), { detached: true, stdio: 'pipe', shell: openShellTerminal });
-        } catch (err) {preModal.modalContent = err.stack;  preModal.open = true}
+        } catch (err) {$mainPreModal.modalContent = err.stack;  $mainPreModal.open = true}
 
         ls.stdout.on("data", data => {
             commandResults = [...commandResults, {color:colorSets.info, results:`>> ${data || ""}`}]
@@ -110,8 +108,6 @@
 
     }
 </style>
-
-<PreModal bind:preModal/>
 
 <div class="content contentBox terminalBox" >
 

@@ -1,12 +1,12 @@
 
 <script>
+    import {mainPreModal} from "../svelteWritable";
     import Textfield from '@smui/textfield'
     import HelperText from '@smui/textfield/helper-text/index';
     import Checkbox from '@smui/checkbox';
     import FormField from '@smui/form-field';
     import {browse} from "../components/Layout.svelte";
     import CustomDialog from "../components/CustomDialog.svelte";
-    import PreModal from "../components/PreModal.svelte";
 
     const writePowfile = () => {
         let contents = `${initContent}\n${powerfileContent}`
@@ -35,7 +35,7 @@
 
                 }
             
-            }).catch(err=>{preModal.modalContent = err.stack; preModal.open=true})
+            }).catch(err=>{$mainPreModal.modalContent = err.stack; $mainPreModal.open=true})
     
     }
 
@@ -71,7 +71,6 @@
         if (action === "Yes") writePowfile()
     }
 
-    let preModal = {};
 </script>
 
 <style>
@@ -105,7 +104,6 @@
 
 </style>
 
-<PreModal bind:preModal />
 
 <CustomDialog id="powerfile-overwrite" bind:dialog={overwrite_dialog} on:response={handleOverwrite}
     title={"Overwrite?"} content={`${filename} already exists. Do you want to overwrite it?`}/>

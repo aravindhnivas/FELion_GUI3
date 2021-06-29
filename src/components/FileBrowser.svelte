@@ -1,5 +1,6 @@
 
 <script>
+    import {mainPreModal} from "../svelteWritable";
     import IconButton, {Icon} from '@smui/icon-button';
 
     import { slide } from 'svelte/transition';
@@ -13,15 +14,14 @@
 
     import VirtualCheckList from './VirtualCheckList.svelte';
     import { createEventDispatcher } from 'svelte';
-    import PreModal from "./PreModal.svelte";
     
     ///////////////////////////////////////////////////////////////////////////
+    
 
     export let fileChecked = [],  currentLocation = "", filetype = "*.*", fullfileslist = [];
 
     const dispatch = createEventDispatcher();
 
-    let preModal = {};
     let fullfiles = []
 
     // $: fullfileslist
@@ -77,8 +77,8 @@
         } catch (err) {
             
             console.log(err)
-            preModal.modalContent = err.stack;
-            preModal.open = true;
+            $mainPreModal.modalContent = err.stack;
+            $mainPreModal.open = true;
             return 
         
         }
@@ -120,7 +120,6 @@
     .browseIcons {cursor: pointer;}
 </style>
 
-<PreModal bind:preModal/>
 
 <div class="align center browseIcons">
     <Icon class="material-icons" on:click="{()=>changeDirectory("..")}">arrow_back</Icon>

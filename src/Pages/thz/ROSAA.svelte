@@ -1,6 +1,7 @@
 
 <script>
-    import { createEventDispatcher, tick } from 'svelte';
+    import {mainPreModal} from "../../svelteWritable";
+    import { createEventDispatcher } from 'svelte';
     import {browse} from "../../components/Layout.svelte";
     import Textfield from '@smui/textfield';
     import {fade} from "svelte/transition";
@@ -18,6 +19,7 @@
     import {readFromFile} from "./functions/read_files";
 
 
+    
     // import path from 'path';
 
     export let active=false;
@@ -275,17 +277,24 @@
     let configFile = db.get("ROSAA_config_file") || ""
     async function loadConfig() {
 
-        if(configFile) return setConfig();
-        const congFilePath = await browse({dir:false, multiple:false})
+        try {
+            if(configFile) return setConfig();
+            const congFilePath = await browse({dir:false, multiple:false})
+            if (congFilePath.filePaths.length==0) return Promise.reject("No files selected");
+            configFile = congFilePath.filePaths[0]
 
-        if (congFilePath.filePaths.length==0) return Promise.reject("No files selected");
-        configFile = congFilePath.filePaths[0]
-        db.set("ROSAA_config_file", configFile)
-        setConfig()
+            db.set("ROSAA_config_file", configFile)
+            setConfig()
+            
+        } catch (error) {
+            console.log(error)
+            $mainPreModal = {modalContent:error, open:true}
+        }
+
     }
 
     async function setConfig() {
-
+        $mainPreModal = {modalContent:"Working", open:true}
         const configFileLocation = window.path.dirname(configFile);
         const configFileContent = fs.readFileSync(configFile, "utf-8");
         const configJSON = JSON.parse(configFileContent);
@@ -299,9 +308,11 @@
         await readEnergyFile(bowseFile);
         await readEinsteinFile(bowseFile);
         await readCollisionalFile(bowseFile);
-    }
 
+    
+    }
 </script>
+
 
 <style lang="scss">
 

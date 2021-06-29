@@ -2,13 +2,13 @@
 
     // Importing modules
     import {pythonpath, pythonscript, pyVersion, github, backupName, developerMode} from "./settings/svelteWritables";
+    import {mainPreModal} from "../svelteWritable";
     import {activateChangelog, windowLoaded} from "../js/functions"
     import Textfield from '@smui/textfield';
     import {onMount} from "svelte";
     import { fade } from 'svelte/transition';
     import CustomDialog from "../components/CustomDialog.svelte"
     import CustomSelect from '../components/CustomSelect.svelte';
-    import PreModal from "../components/PreModal.svelte";
     import Changelog from "../components/Changelog.svelte";
 
     import {download} from "./settings/donwloadUpdate";
@@ -27,13 +27,13 @@
     const backup = (event) => {
         backupRestore({event, method:"backup"})
             .then(()=>console.log("Backup Completed"))
-            .catch((err)=>{preModal.modalContent = err; preModal.open = true})
+            .catch((err)=>{$mainPreModal.modalContent = err; $mainPreModal.open = true})
     }
 
     const restore = (event) => {
         backupRestore({event, method:"restore"})
         .then(()=>console.log("Restore Completed"))
-        .catch((err)=>{preModal.modalContent = err; preModal.open = true})
+        .catch((err)=>{$mainPreModal.modalContent = err; $mainPreModal.open = true})
 
     }
 
@@ -72,11 +72,10 @@
             if (!fs.existsSync(updateFolder)) {fs.mkdirSync(updateFolder)}
             await download(updateFolder)
             InstallUpdate(target, updateFolder)
-        } catch (err) {preModal.modalContent = err.stack; preModal.open = true}
+        } catch (err) {$mainPreModal.modalContent = err.stack; $mainPreModal.open = true}
         
     }
 
-    let preModal = {};
     let commandToRun = "", commandArgsToRun = "";
 
     
@@ -128,7 +127,6 @@
     }
 
 </style>
-<PreModal bind:preModal />
 <CustomDialog id="pythonpath_Check" bind:dialog={pythonpathCheck} on:response={handlepythonPathCheck} title={"Python path is not valid"} content={"Change it in Settings --> Configuration"} label1="Okay" label2="Cancel" />
 
 <Changelog  />

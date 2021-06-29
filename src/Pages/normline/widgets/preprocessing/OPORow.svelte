@@ -2,6 +2,7 @@
 <script>
 
     import {opoMode, felixPlotAnnotations} from "../../functions/svelteWritables";
+    import {mainPreModal} from "../../../../svelteWritable";
     import Textfield from '@smui/textfield';
     import CustomSelect from '../../../../components/CustomSelect.svelte';
     import QuickBrowser from '../../../../components/QuickBrowser.svelte';
@@ -9,7 +10,7 @@
     import { fade } from 'svelte/transition';
     import {opofile_func} from '../../functions/opofile';
 
-    export let OPOLocation, opofiles, OPOfilesChecked, preModal, graphPlotted, removeExtraFile;
+    export let OPOLocation, opofiles, OPOfilesChecked, graphPlotted, removeExtraFile;
 
     let showOPOFiles =false, OPOcalibFiles = [];
 
@@ -38,7 +39,7 @@
             window.createToast("Graph Plotted", "success")
             graphPlotted = true, $opoMode = true
             showOPOFiles=false
-        }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
+        }).catch(err=>{$mainPreModal.modalContent = err;  $mainPreModal.open = true})
 
     }
 
