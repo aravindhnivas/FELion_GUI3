@@ -18,7 +18,8 @@ class ROSAA:
         self.rate_coefficients = conditions["rate_coefficients"]
 
 
-        self.nHe = float(self.rate_coefficients["He density(cm3)"])
+        self.simulation_parameters = conditions["simulation_parameters"]
+        self.nHe = float(self.simulation_parameters["He density(cm3)"])
         # print(self.rate_coefficients["He density(cm3)"], flush=True)
         self.energyLevels = {key : float(value) for key, value in conditions["energy_levels"].items()}
         self.energyKeys = list(self.energyLevels.keys())
@@ -34,15 +35,22 @@ class ROSAA:
         self.includeSpontaneousEmission = conditions["includeSpontaneousEmission"]
 
         self.includeCollision = conditions["includeCollision"]
-        
+
         if self.includeSpontaneousEmission:
-        
             self.einsteinA_rateConstants = {key : float(value) for key, value in conditions["einstein_coefficient"].items()}
 
         self.Simulate()
-        
 
-    def SimulateODE(self, t, N):
+        
+        
+    def SimulateODE(self, t, counts):
+
+
+        if self.includeAttachmentRate:
+            N = counts[:-self.totalAttachmentLevels]
+            N_He = counts[-self.totalAttachmentLevels:]
+
+        else: N = counts
 
         rateCollection = []
         N = {key:value for key, value in zip(self.energyKeys, N)}
@@ -81,11 +89,15 @@ class ROSAA:
             rateCollection.append(collisional)
 
         dR_dt = []
-        for _ in rateCollection:
 
+        for _ in rateCollection:
             temp = reduce(lambda a, b: a+b, _)
+
             dR_dt.append(temp)
-        return dR_dt
+
+        return [*dR_dt, *N_He]
+
+        # return dR_dt
     
     def Simulate(self):
 
@@ -93,15 +105,24 @@ class ROSAA:
         duration = float(duration)*1e-3 # converting ms ==> s
 
         tspan = [0, duration]
-        self.initialTemp = 300
+        initialTemp = float(self.simulation_parameters["Initial temperature (K)"])
         self.boltzmanDistribution = boltzman_distribution(
-            self.energyLevels, self.initialTemp, 
+            self.energyLevels, initialTemp, 
             self.electronSpin, self.zeemanSplit
         )
-        N_OFF = solve_ivp(self.SimulateODE, tspan, self.boltzmanDistribution, dense_output=True)
+
+        self.totalAttachmentLevels = int(self.rate_coefficients["totalAttachmentLevels"])
+        self.includeAttachmentRate = conditions["includeAttachmentRate"]
+        N_He = []
+        if self.includeAttachmentRate:
+            N_He = self.totalAttachmentLevels*[0]
+
+        N_OFF = solve_ivp(self.SimulateODE, tspan, [*self.boltzmanDistribution, *N_He], dense_output=True)
+
 
         self.simulateTime = np.linspace(0, duration, 100)
         self.lightOFF_distribution = N_OFF.sol(self.simulateTime)
+
         self.plot()
 
     def plot(self):
@@ -111,17 +132,18 @@ class ROSAA:
         ax.legend([*[f"J{i}" for i in self.energyKeys], "SUM"], title=f"He: {self.nHe:.2e}cm3")
         ax.set(xlabel="Time (ms)", ylabel="Population (%)", title="Simulation", yscale="linear")
         pp.pprint(self.lightOFF_distribution.T[-1])
-        
         sys.stdout.flush()
+
         plt.show()
+
 
 if __name__ == "__main__":
 
     args = sys.argv[1:][0].split(",")
-    
     conditions = json.loads(", ".join(args))
 
     pp = pprint.PrettyPrinter(indent=4)
     pp.pprint(conditions)
     sys.stdout.flush()
+
     ROSAA()
