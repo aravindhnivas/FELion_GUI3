@@ -113,26 +113,34 @@
 
         <div class="location__bar">
             <button class="button is-link" on:click={openFolder}>Browse</button>
-            <Textfield  bind:value={location} label="Current Location" style="flex-grow:2; "/>
+
+            <Textfield  bind:value={location} label="Current Location" style="flex-grow:1;"/>
+        
         </div>
 
         <div class="grid_column__container file__details__bar">
             <Textfield bind:value={filename} label="Filename" />
+
             <Textfield bind:value={felixShots} label="FELIX Shots" on:change={()=>{console.log(felixShots)}}/>
-            <Textfield bind:value={felixHz} label="FELIX Hz" />
+
+                <Textfield bind:value={felixHz} label="FELIX Hz" />
+
             <FormField>
                 <Checkbox bind:checked={convert} indeterminate={convert === null} />
+
                 <span slot="label">Convert to &micro;m</span>
             </FormField>
+
+
         </div>
 
         <div class="power_value__container">
-            <Textfield textarea bind:value={powerfileContent} label="Powerfile contents" 
-                input$aria-controls="powercontent_help" input$aria-describedby="powercontent_help"/>
+            <Textfield textarea bind:value={powerfileContent} label="Powerfile contents" input$aria-controls="powercontent_help" input$aria-describedby="powercontent_help"/>
+
             <HelperText id="powercontent_help">Enter powerfile measured for {filename}.felix file (wavenumber power-in mJ)</HelperText>
             <button class="button is-success" style="width:12em;margin-left: auto;" on:click={savefile}>Save</button>
         </div>
         
-    
     </div>
+    
 </section>
