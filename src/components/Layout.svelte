@@ -128,14 +128,12 @@
 
 <style lang="scss">
 
-
-    // Small tablets (portrait view)
     $screen-tablet: 770px;
     @mixin tablet {
 
+
         @media (min-width: #{$screen-tablet}) {
             @content;
-        
         }
     }
 
@@ -208,14 +206,22 @@
         grid-column-gap: 1em;
         align-items: baseline;
         margin-bottom: 1em;
-    
     }
 
-    .buttonContainer {
-        display: grid;
+    .main__div {
 
-        grid-auto-flow: row;
-        align-items: center;
+
+        display: grid;
+        grid-template-rows: auto 1fr;
+        row-gap: 1em;
+        height: 100%;
+        width: 100%;
+        
+        .plotContainer {
+            overflow-y: auto;
+            @include sm { max-height: 30vh; }
+            @include md { max-height: 60vh; }
+        }
     }
 
 </style>
@@ -241,26 +247,26 @@
                     <Textfield bind:value={currentLocation} label="Current location" style="width:100%; "/>
                 </div>
 
-                <div class="buttonContainer" id="{filetype}-buttonContainer" bind:clientHeight={buttonContainerHeight}>
-                    {#if toggleBrowser}
+                <div class="main__div">
+                    <div class="align" id="{filetype}-buttonContainer" >
                         <slot name="buttonContainer" />
                         {#if graphPlotted}
-                            <button class="button is-warning animated fadeIn" style="width:12em; margin: 1em auto; " on:click={openGraph}>Graph:Open separately</button>
+                            <button class="button is-warning animated fadeIn" on:click={openGraph}>Graph:Open separately</button>
                         {/if}
-                    {/if}
-                 </div>
+                     </div>
+    
+                    <div class="plotContainer" id="{filetype}-plotContainer" transition:fade> 
+                        <slot name="plotContainer" />
+                        {#if graphPlotted}
+                            <slot name="plotContainer_functions" />
 
-                <div class="plotContainer" id="{filetype}-plotContainer" style="{plotContainerStyle}" transition:fade> 
-
-                    <slot name="plotContainer" />
-                    {#if graphPlotted}
-                        <slot name="plotContainer_functions" />
-                        <slot name="plotContainer_reports" />
-                    {/if}
+                            <slot name="plotContainer_reports" />
+                        {/if}
+                    </div>
                 </div>
 
             </div>
         </div>
+
     </div>
-    
 </section>
