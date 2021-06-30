@@ -324,7 +324,7 @@
 
     }
 
-    hr {background-color: #fafafa;}
+    hr {background-color: #fafafa; margin: 0;}
     .writefileCheck {
 
         display: grid;
@@ -354,7 +354,7 @@
         .subtitle {margin:0;}
 
     }
-    :global(.content__div label) {flex-basis: 30%;}
+    // :global(.content__div label) {flex-basis: 30%;}
     .sub_container__div {
         display: grid;
         grid-row-gap: 1em;
@@ -366,9 +366,11 @@
             overflow-y: auto;
             display: flex;
             flex-wrap: wrap;
-            justify-self: center;
+            justify-self: center; // grow from center (width is auto adjusted)
 
             gap: 1em;
+            justify-content: center; // align items center
+
         }
         .control__div {
 
@@ -525,20 +527,24 @@
                                 {#each collisionalCoefficient as {label, value, id}(id)}
                                     <Textfield bind:value {label}/>
                                 {/each}
+
                             </div>
 
-                        {/if}
-                        <hr>
+                            {/if}
+                        
 
                         {#if collisionalCoefficient_balance.length>0}
+
                             <div class="content__div ">
+                                <hr><hr>
                                 {#each collisionalCoefficient_balance as {label, value, id}(id)}
                                     <Textfield bind:value {label}/>
                                 {/each}
+                        
+                        
                             </div>
 
                         {/if}
-
                     </div>
                 {/if}
                 
