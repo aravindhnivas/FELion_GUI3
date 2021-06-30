@@ -23,8 +23,8 @@
     const mainParameters = [
         {label:"molecule", value:"CD", id:window.getID()},
         {label:"tagging partner", value:"He", id:window.getID()},
-        {label:"freq", value:"453_521_850_000", id:window.getID()},
-        {label:"trap_area", value:"5e-5", id:window.getID()},
+
+        {label:"trap_area", value:"5e-5", id:window.getID()}
     ]
 
     const simulationParameters = [
@@ -269,10 +269,11 @@
     $: collisionalArgs = {collisionalRateConstants, energyLevels, electronSpin, zeemanSplit, energyUnit}
     
     let configFile = db.get("ROSAA_config_file") || ""
-    async function loadConfig() {
 
+    async function loadConfig() {
+    
         try {
-            if(configFile) return setConfig();
+            if(fs.existsSync(configFile)) return setConfig();
             const congFilePath = await browse({dir:false, multiple:false})
             if (congFilePath.filePaths.length==0) return Promise.reject("No files selected");
             configFile = congFilePath.filePaths[0]
@@ -288,11 +289,10 @@
     }
 
     async function setConfig() {
-        $mainPreModal = {modalContent:"Working", open:true}
+
         const configFileLocation = window.path.dirname(configFile);
         const configFileContent = fs.readFileSync(configFile, "utf-8");
         const configJSON = JSON.parse(configFileContent);
-
         ({energyFilename, collisionalFilename, einsteinFilename} = configJSON);
         energyFilename = path.join(configFileLocation, energyFilename)
         collisionalFilename = path.join(configFileLocation, collisionalFilename)
@@ -303,20 +303,19 @@
         await readEinsteinFile(bowseFile);
         await readCollisionalFile(bowseFile);
 
-    
     }
+
 </script>
 
 
 <style lang="scss">
-
     .locationColumn {
+
+
         display: grid;
         grid-auto-flow: column;
-
         grid-gap: 1em;
         grid-template-columns: 1fr 4fr 2fr;
-
 
         .button {
             margin:0;
@@ -335,62 +334,63 @@
     }
 
     .variableColumn {
+
         display: grid;
 
         .subtitle {margin: 0;}
+        
         .variableColumn__dropdown {
-            display: grid;
-            grid-auto-flow: column;
-            grid-template-columns: auto 1fr;
-            grid-column-gap: 1em;
+            display: flex;
+            gap: 1em;
+            place-items: baseline;
+        
         }
     }
-
     .main_container__div {
+
         display: grid;
         grid-row-gap: 1em;
         padding: 1em;
         .subtitle {margin:0;}
+
     }
     :global(.content__div label) {flex-basis: 30%;}
     .sub_container__div {
         display: grid;
-
         grid-row-gap: 1em;
 
         .subtitle {place-self:center;}
         .content__div {
+
             max-height: 30rem;
             overflow-y: auto;
             display: flex;
             flex-wrap: wrap;
             justify-self: center;
+
+            gap: 1em;
         }
         .control__div {
 
-            display: grid;
-            grid-auto-flow: column;
-            justify-self: center;
-            gap: 0.5em;
-
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1em;
         }
-
     }
 
     .status_report__div {
-        white-space: pre-wrap; 
 
+        white-space: pre-wrap; 
         -webkit-user-select: text;
         padding:1em;
     }
+    // .center {
+    //     margin:auto;
+    //     width:max-content;
 
-
-
-    .center {
-        margin:auto;
-        width:max-content;
-    }
-
+    // }
 
 </style>
 
@@ -428,9 +428,11 @@
                     
                     <CustomSelect options={variablesList} bind:picked={variable} />
                     {#if variable !== "time"}
-                        <Textfield bind:value={variableRange} label="Range (min, max, totalsteps)" />
+                        <Textfield bind:value={variableRange} label="Range (min, max, totalsteps)" style="width: auto;"/>
                     {/if}
-                    <button class="button is-link center" on:click={loadConfig}>Load config</button>
+                    <button class="button is-link" on:click={loadConfig}>Load config</button>
+                    <button class="button is-link" on:click={()=>{configFile=""; window.createToast("Config file cleared", "warning")}}>Reset Config</button>
+
                 </div>
 
             </div>
@@ -462,14 +464,14 @@
                         <CustomSelect options={["MHz", "cm-1"]} bind:picked={energyUnit} />
                         <button class="button is-link" on:click={() => editEnergy=true}>Edit Energy</button>
 
-                        <button class="button is-link center" on:click={()=>{
+                        <button class="button is-link " on:click={()=>{
                             ({energyLevels} = getEnergyLabels({numberOfLevels, electronSpin, zeemanSplit}))
                         }}>Get labels</button>
-                        <button class="button is-link center" on:click="{()=>readEnergyFile(true)}">Read from file</button>
+                        <button class="button is-link " on:click="{()=>readEnergyFile(true)}">Read from file</button>
                         {#if energyFilename}
-                            <button class="button is-link center" on:click="{()=>readEnergyFile(false)}">Read again</button>
+                            <button class="button is-link " on:click="{()=>readEnergyFile(false)}">Read again</button>
                         {/if}
-                        <button class="button is-link center" on:click={()=>boltzmanWindow=true}>Show Boltzman distribution</button>
+                        <button class="button is-link " on:click={()=>boltzmanWindow=true}>Show Boltzman distribution</button>
 
                     </div>
 
@@ -486,10 +488,10 @@
                         <div class="subtitle">Einstein Co-efficients</div>
 
                         <div class="control__div ">
-                            <button class="button is-link center" on:click={() => editEinsteinCoefficients=true}>Edit constats</button>
-                            <button class="button is-link center" on:click={getRateLabelsEinstein}>Get labels</button>
+                            <button class="button is-link " on:click={() => editEinsteinCoefficients=true}>Edit constats</button>
+                            <button class="button is-link " on:click={getRateLabelsEinstein}>Get labels</button>
 
-                            <button class="button is-link center" on:click={()=>readEinsteinFile(true)}>Read from file</button>
+                            <button class="button is-link " on:click={()=>readEinsteinFile(true)}>Read from file</button>
 
                         </div>
                         {#if einsteinCoefficient.length>0}
@@ -511,10 +513,10 @@
 
                             <CustomSelect options={["deexcitation", "excitation"]} bind:picked={collisionalRateType} on:change={changeCollisionalRateType}/>
                             <button class="button is-link" on:click={() => editCollisionalCoefficients=true}>Edit constats</button>
-                            <button class="button is-link center" on:click={getRateLabelsCollision}>Get labels</button>
-                            <button class="button is-link center" on:click={()=>readCollisionalFile(true)}>Read from file</button>
-                            <button class="button is-link center" on:click={compteCollisionalBalanceConstants}>Compute balance rate</button>
-                            <button class="button is-link center" on:click={()=>collisionalWindow=true}>Compute Collisional Cooling</button>
+                            <button class="button is-link " on:click={getRateLabelsCollision}>Get labels</button>
+                            <button class="button is-link " on:click={()=>readCollisionalFile(true)}>Read from file</button>
+                            <button class="button is-link " on:click={compteCollisionalBalanceConstants}>Compute balance rate</button>
+                            <button class="button is-link " on:click={()=>collisionalWindow=true}>Compute Collisional Cooling</button>
                         
                         </div>
 
@@ -599,19 +601,24 @@
                     </div>
                     {/if}
             </div>
+
             {/if}
         </svelte:fragment>
 
         <svelte:fragment slot="footer_content__slot">
 
-            {#if running}
-                <button transition:fade class="button is-danger" on:click="{()=>{py ? py.kill() : console.log('pyEvent is not available')}}" >Stop</button>
+            <div style="display: flex; gap: 1em; ">
 
-            {/if}    
-        
-            <button  class="button is-link" on:click="{(e)=>{showreport = !showreport}}" >{showreport ? "Go Back" : "Status report"}</button>
-            <button  class="button is-link" class:is-loading={running} on:click="{simulation}" on:pyEvent={pyEventHandle} on:pyEventClosed="{pyEventClosedHandle}" on:pyEventData={pyEventDataReceivedHandle}>Submit</button>
+                {#if running}
+
+                    <button transition:fade class="button is-danger" on:click="{()=>{py ? py.kill() : console.log('pyEvent is not available')}}" >Stop</button>
+                {/if}    
+            
+                <button  class="button is-link" on:click="{(e)=>{showreport = !showreport}}" >{showreport ? "Go Back" : "Status report"}</button>
+                <button  class="button is-link" class:is-loading={running} on:click="{simulation}" on:pyEvent={pyEventHandle} on:pyEventClosed="{pyEventClosedHandle}" on:pyEventData={pyEventDataReceivedHandle}>Submit</button>
+            </div>
         
         </svelte:fragment>
+    
     </SeparateWindow>
 {/if}

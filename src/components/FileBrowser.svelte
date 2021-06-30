@@ -128,7 +128,7 @@
 
 </div>
 
-<Textfield on:keyup={searchfile} style="margin-bottom:1em;" bind:value={searchKey} label="Seach" />
+<Textfield on:keyup={searchfile} style="margin-bottom:1em; width:100%; " bind:value={searchKey} label="Seach" />
 <div class="align center">
     <FormField>
     

@@ -403,8 +403,8 @@
     /* nav-icon-6 */
     .nav-icon-6{
     width: 35px;
-    height: 30px;
-    margin: 10px 10px;
+    /* height: 30px;
+    margin: 10px 10px; */
     position: relative;
     cursor: pointer;
     display: inline-block;

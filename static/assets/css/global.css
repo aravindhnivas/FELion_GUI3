@@ -94,7 +94,7 @@ hr {background-color: #dbdbdb;}
 
 .buttonRow {margin-bottom: 0!important; align-items: center;}
 .mdc-select__native-control option {color: black}
-.button {margin-right: 0.5em;}
+/* .button {margin-right: 0.5em;} */
 .active {display: flex!important;}
 .pnotify { background: #634e96; }
 .pnotify-closer, .pnotify-sticker {

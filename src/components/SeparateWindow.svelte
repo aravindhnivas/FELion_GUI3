@@ -37,38 +37,25 @@
 
 <style>
 
-    .main_content {
-        overflow: auto;
-    }
-
+    .main_content {overflow: auto; margin-bottom: 1em;}
     .main_content__div {
         display:grid;
-        /* grid-template-rows: 3fr 12fr 1fr; */
+
+
         grid-template-rows: auto 1fr auto;
+
         max-height: 100%;
         padding: 1em;
+
     }
-
-    .header_content {
-
-        display:grid;
-
-        grid-row-gap: 1em;
-    }
-
-    .footer_content {
-        display: grid;
-        grid-auto-flow: column;
-
-        grid-auto-columns: max-content;
-        
-        margin-left: auto;
-    }
+    .header_content { display:grid; grid-row-gap: 1em; }
+    .footer_content {margin-left: auto;}
 
 </style>
 
 <div {id} class="main_content__div" use:openGraph>
     <div class="header_content"><slot name="header_content__slot" /></div>
+
     <div class="main_content"><slot name="main_content__slot" /></div>
     <div class="footer_content" ><slot name="footer_content__slot"/> </div>
 </div>

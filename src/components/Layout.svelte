@@ -204,10 +204,11 @@
     .location__bar {
         display:grid;
         grid-auto-flow: column;
-        grid-template-columns: 1fr 1fr 16fr;
+        grid-template-columns: auto auto 1fr;
         grid-column-gap: 1em;
-        place-items: center;
+        align-items: baseline;
         margin-bottom: 1em;
+    
     }
 
     .buttonContainer {
@@ -235,10 +236,9 @@
             <div class="container button-plot-container box" id="{filetype}-button-plot-container" bind:clientHeight={ContainerHeight}>
                 <div class="location__bar" >
                     <Hamburger1 bind:active={toggleBrowser}/>
-                    <button class="button is-link gap" id="{filetype}_filebrowser_btn" on:click={browse_folder}>Browse</button>
 
-                    
-                    <Textfield bind:value={currentLocation} label="Current location" />
+                    <button class="button is-link" id="{filetype}_filebrowser_btn" on:click={browse_folder}>Browse</button>
+                    <Textfield bind:value={currentLocation} label="Current location" style="width:100%; "/>
                 </div>
 
                 <div class="buttonContainer" id="{filetype}-buttonContainer" bind:clientHeight={buttonContainerHeight}>
