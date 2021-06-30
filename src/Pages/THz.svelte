@@ -4,7 +4,7 @@
     import Layout from "../components/Layout.svelte"
     import CustomIconSwitch from "../components/CustomIconSwitch.svelte"
     import CustomSelect from "../components/CustomSelect.svelte"
-    import CustomSwitch from "../components/CustomSwitch.svelte"
+    import CustomCheckbox from "../components/CustomCheckbox.svelte"
 
     import ReportLayout from "../components/ReportLayout.svelte"
     import Textfield from '@smui/textfield'
@@ -93,28 +93,27 @@
 <Layout  {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked>
 
     <svelte:fragment slot="buttonContainer">
-        <div class="content align buttonRow">
+        <div class="align v-center">
             <button class="{btnClass}" on:click="{()=>{ROSAA_modal_active=true}}">ROSAA</button>
             <button class="{btnClass}" on:click="{(e)=>{plotData({e:e, justPlot:true})}}">Plot</button>
-            <CustomSwitch bind:selected={binData} label="Bin" style="margin:0 1em;"/>
-            <CustomSwitch bind:selected={saveInMHz} label="saveInMHz" style="margin:0 1em;"/>
+            <CustomCheckbox bind:selected={binData} label="Bin" />
+            <CustomCheckbox bind:selected={saveInMHz} label="saveInMHz" />
 
             <button class="{btnClass}" on:click="{(e)=>{plotData({e:e})}}">Fit</button>
             <button class="{btnClass}" on:click="{(e)=>plotData({e:e, tkplot:true})}">Open in Matplotlib</button>
             <CustomIconSwitch style="padding:0;" bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
-            <button class="{btnClass}" on:click="{()=>{toggleRow = !toggleRow}}">Boltzman</button>
-            <Textfield type="number" style="width:4em; height:3.5em; margin-right:0.5em" bind:value={delta} label="Delta" />
-            <Textfield type="number" style="width:4em; height:3.5em; margin-right:0.5em" bind:value={gamma} label="Gamma" />
+            <!-- <button class="{btnClass}" on:click="{()=>{toggleRow = !toggleRow}}">Boltzman</button> -->
+            <Textfield type="number" bind:value={delta} label="Delta" input$step="0.1" />
+            <Textfield type="number" bind:value={gamma} label="Gamma" input$step="0.1" />
 
             <div class="animated fadeIn" class:hide={!graphPlotted} on:change={changePlotStyle}>
                 <CustomSelect options={plotStyle} bind:picked={plotStyleSelected} label="Plot Style"/>
-
-                <CustomSwitch bind:selected={plotFill} label="Fill area"/>
+                <CustomCheckbox bind:selected={plotFill} label="Fill area"/>
             </div>
 
         </div>
 
-        <div class="animated fadeIn buttonRow" class:hide={!toggleRow} >
+        <!-- <div class="animated fadeIn" class:hide={!toggleRow} >
             <Textfield type="number" {style} bind:value={B0} label="B0 (MHz)" />
             <Textfield type="number" {style} bind:value={D0} label="D0 (MHz)" />
             <Textfield type="number" {style} bind:value={H0} label="H0 (MHz)" />
@@ -122,7 +121,7 @@
             <Textfield type="number" {style}  bind:value={totalJ} label="Total J" />
             <button class="{btnClass}" on:click="{(e)=>plotData({e:e, filetype:"boltzman"})}">Submit</button>
             <button class="{btnClass}" on:click="{(e)=>plotData({e:e, filetype:"boltzman", tkplot:true})}">Open in Matplotlib</button>
-        </div>
+        </div> -->
 
     </svelte:fragment>
 
@@ -132,7 +131,7 @@
         
         <div id="resOnOffPlot" style="margin-bottom: 1em;"></div>
         <div id="thzPlot" style="margin-bottom: 1em;"></div>
-        <div id="boltzman_plot" style="margin-bottom: 1em;"></div>
+        <!-- <div id="boltzman_plot" style="margin-bottom: 1em;"></div> -->
 
         <!-- Reports -->
 

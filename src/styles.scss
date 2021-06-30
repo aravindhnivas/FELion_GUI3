@@ -22,12 +22,14 @@ table td:not([align]) {text-align: center; padding: 1em;}
 .tableContainer {border: 1px solid $primaryColor; width:100%; padding-right: 1em;}
 .tableContainer thead {background-color: #e1e1e1;}
 
-.align {display: flex; align-items: center; flex-wrap: wrap; margin-bottom: 0.5em; gap: 1em;}
+.align {display: flex; align-items: baseline; justify-content: flex-start; flex-wrap: wrap; margin-bottom: 0.5em; gap: 1em;}
 
+.v-center {align-items: center;}
+.h-center {justify-content: center;}
 .box{background-color: #6a50ad8a!important;}
 
 .mdc-list-item{height: 2em;}
-.center {justify-content: center;}
+// .center {justify-content: center;}
 .gap {margin-right: 2em;}
 
 .cl {

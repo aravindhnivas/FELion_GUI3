@@ -245,7 +245,7 @@
                     {#if toggleBrowser}
                         <slot name="buttonContainer" />
                         {#if graphPlotted}
-                            <button class="button is-warning animated fadeIn" style="width:12em;" on:click={openGraph}>Graph:Open separately</button>
+                            <button class="button is-warning animated fadeIn" style="width:12em; margin: 1em auto; " on:click={openGraph}>Graph:Open separately</button>
                         {/if}
                     {/if}
                  </div>

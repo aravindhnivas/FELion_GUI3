@@ -24,13 +24,13 @@
     let openShell = false, graphPlotted = false
 
     // Find peaks
-    let toggleRow1 = false
+    let toggleRow1 = true
 
     let selected_file = "", peak_prominance = 3, peak_width = 2, peak_height = 40;
     const style = "width:7em; height:3.5em; margin-right:0.5em"
 
     // NIST 
-    let toggleRow2 = false, nist_molecule = localStorage["nist_molecule"] || "", nist_formula = localStorage["nist_formula"] || ""
+    let toggleRow2 = true, nist_molecule = localStorage["nist_molecule"] || "", nist_formula = localStorage["nist_formula"] || ""
     const style2 = "width:12em; height:3em; margin-right:0.5em"
 
     $: nist_molecule_name = `Name=${nist_molecule}`
@@ -119,7 +119,7 @@
 <Layout  {filetype} bind:fullfileslist {id} bind:currentLocation bind:fileChecked {graphPlotted}>
     <svelte:fragment slot="buttonContainer">
 
-        <div class="content align buttonRow">
+        <div class="content align " style="align-items: center;">
             <button class="button is-link" on:click="{(e)=>plotData({e:e})}">Masspec Plot</button>
             <button class="button is-link" on:click="{()=>{toggleRow1 = !toggleRow1}}">Find Peaks</button>
             <button class="button is-link" on:click="{()=>{toggleRow2 = !toggleRow2}}">NIST Webbook</button>
@@ -129,7 +129,7 @@
             <CustomSwitch style="margin: 0 1em;" on:change={linearlogCheck} bind:selected={logScale} label="Log"/>
         </div>
 
-        <div class="animated fadeIn hide buttonRow" class:active={toggleRow1} >
+        <div class="align animated fadeIn" class:hide={toggleRow1} >
             <CustomSelect style="width:12em; height:3.5em; margin-right:0.5em" bind:picked={selected_file} label="Filename" options={["", ...fileChecked]}/>
             <Textfield type="number" {style} on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_prominance} label="Prominance" />
             <Textfield type="number" {style} on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_width} label="Width" />
@@ -138,7 +138,7 @@
             <button class="button is-danger" on:click="{()=>window.Plotly.relayout("mplot", { annotations: [] })}">Clear</button>
         </div>
 
-        <div class="animated fadeIn hide buttonRow" class:active={toggleRow2}>
+        <div class="align animated fadeIn " class:hide={toggleRow2}>
             <Textfield {style2} on:change="{()=>set_nist_url("by_name")}" bind:value={nist_molecule} label="Molecule Name" />
             <Textfield {style2} on:change={set_nist_url} bind:value={nist_formula} label="Molecule Formula" />
         </div>
@@ -156,17 +156,12 @@
             </div>
 
         {/if}
-        <div class="hide animated fadeIn" class:active={toggleRow2} style="margin-top: 1em; display:none; flex-direction:column;">
-            <div style="margin:1em;">
-                <Icon on:click="{()=>window.nist_webview.goToIndex(0)}" class="material-icons hvr-glow">home</Icon>
-
-                <Icon on:click="{()=>window.nist_webview.reload()}" class="material-icons hvr-glow">refresh</Icon>
-                <Icon on:click="{()=>{if(window.nist_webview.canGoBack()) {window.nist_webview.goBack()}}}" class="material-icons hvr-glow">arrow_left</Icon>
-                <Icon on:click="{()=>{if(window.nist_webview.canGoForward()) {window.nist_webview.goForward()}}}" class="material-icons hvr-glow">arrow_right</Icon>
-            </div>
-            <div class="">
-                <webview src={nist_url} id="nist_webview" style="height: 50vh; padding-bottom:3em;"></webview>
-            </div>
+        <div class="align animated fadeIn" class:hide={toggleRow2}>
+            <Icon on:click="{()=>window.nist_webview.goToIndex(0)}" class="material-icons hvr-glow">home</Icon>
+            <Icon on:click="{()=>window.nist_webview.reload()}" class="material-icons hvr-glow">refresh</Icon>
+            <Icon on:click="{()=>{if(window.nist_webview.canGoBack()) {window.nist_webview.goBack()}}}" class="material-icons hvr-glow">arrow_left</Icon>
+            <Icon on:click="{()=>{if(window.nist_webview.canGoForward()) {window.nist_webview.goForward()}}}" class="material-icons hvr-glow">arrow_right</Icon>
+            <webview src={nist_url} id="nist_webview" style="height: 50vh; padding-bottom:3em; width: 100%; "></webview>
         </div>
 
     </div>

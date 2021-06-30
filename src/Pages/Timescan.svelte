@@ -34,7 +34,7 @@
     $: console.log(`ResOn: ${resON_Files}\nResOff: ${resOFF_Files}`)
 
     // Depletion Row
-    let toggleRow = false
+    let toggleRow = true
     let style = "width:7em; height:3.5em; margin-right:0.5em"
 
     // Linear log
@@ -100,18 +100,18 @@
 
     <svelte:fragment slot="buttonContainer">
 
-        <div class="content align buttonRow">
+        <div class="align " style="align-items: center;">
             <button class="button is-link" on:click="{(e)=>plotData({e:e})}">Timescan Plot</button>
             <button class="button is-link" on:click="{()=>{toggleRow = !toggleRow}}">Depletion Plot</button>
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"scan", tkplot:"plot"})}">Open in Matplotlib</button>
-            <CustomIconSwitch style="padding:0;" bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
-            <CustomSwitch style="margin: 0 1em;" on:change={linearlogCheck} bind:selected={logScale} label="Log"/>
+            <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
+            <CustomSwitch on:change={linearlogCheck} bind:selected={logScale} label="Log"/>
         </div>
 
-        <div class="animated fadeIn hide buttonRow" class:active={toggleRow} >
-            <CustomSelect style="width:12em; height:3.5em; margin-right:0.5em" bind:picked={resON_Files} label="ResOn" options={fullfiles}/>
-            <CustomSelect style="width:12em; height:3.5em; margin-right:0.5em" bind:picked={resOFF_Files} label="ResOFF" options={fullfiles}/>
-            <Textfield style= "width:9em; height:3.5em; margin-right:0.5em" bind:value={power} label="Power (ON, OFF) [mJ]" />
+        <div class="align animated fadeIn " class:hide={toggleRow} >
+            <CustomSelect bind:picked={resON_Files} label="ResOn" options={fullfiles}/>
+            <CustomSelect bind:picked={resOFF_Files} label="ResOFF" options={fullfiles}/>
+            <Textfield bind:value={power} label="Power (ON, OFF) [mJ]" />
             <Textfield type="number" {style} bind:value={nshots} label="FELIX Hz" />
             <Textfield type="number" {style} bind:value={massIndex} label="Mass Index" />
             <Textfield type="number" {style} bind:value={timestartIndex} label="Time Index" />
@@ -122,18 +122,22 @@
 
     <div style="margin-right: 1em;" slot="plotContainer">
         <div id="tplotContainer">
+
             {#each fileChecked as scanfile}
+            
                 <div id="{scanfile}_tplot" style="padding-bottom:1em" />
             {/each}
+        
         </div>
 
+        
+        
         {#if graphPlotted}
 
             <div class="animated fadeIn" style="flex-direction:column ">
-
                 <ReportLayout bind:currentLocation={currentLocation} id={`${filetype}_report`} {includePlotsInReport} />
-            </div>
 
+            </div>
         {/if}
         
         
