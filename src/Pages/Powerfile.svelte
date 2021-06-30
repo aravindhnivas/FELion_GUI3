@@ -89,9 +89,8 @@
         grid-auto-flow: column;
         grid-column-gap: 1em;
     }
-    .location__bar {
-        grid-template-columns: 1fr 10fr;
-    }
+
+    .location__bar { display: flex; align-items: baseline; gap: 1em;}
 
     .file__details__bar {
         grid-template-columns: repeat(4, 1fr);
@@ -112,9 +111,9 @@
 <section class="section" id="Powerfile" style="display:none">
     <div class="box main__container" id="powfileContainer">
 
-        <div class="grid_column__container location__bar">
+        <div class="location__bar">
             <button class="button is-link" on:click={openFolder}>Browse</button>
-            <Textfield  bind:value={location} label="Current Location" />
+            <Textfield  bind:value={location} label="Current Location" style="flex-grow:2; "/>
         </div>
 
         <div class="grid_column__container file__details__bar">
