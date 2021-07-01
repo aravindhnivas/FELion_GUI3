@@ -1,5 +1,6 @@
 
 <script>
+    import {mainPreModal} from "../../../svelteWritable";
     import SeparateWindow from "../../../components/SeparateWindow.svelte";
     import { plot } from "../../../js/functions";
     import boltzman_distribution from "../functions/boltzman_distribution";
@@ -53,7 +54,8 @@
                 `${plotID}_collisionalBoltzman`, 
             )
 
-        } catch (error) { window.createToast(error, "danger") }
+        } catch (error) { $mainPreModal = {modalContent:error, open:true}
+ }
     }
 
     $: if (windowReady) {setTimeout(()=>graphWindow.focus(), 100)}

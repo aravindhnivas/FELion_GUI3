@@ -147,7 +147,7 @@
 
         <OPORow {removeExtraFile} bind:OPOLocation bind:OPOfilesChecked bind:opofiles  bind:graphPlotted />
         <TheoryRow bind:theoryLocation bind:show_theoryplot  normMethod={$normMethod} />
-        <div style="display:flex;">
+        <div class="align">
             <CustomRadio on:change={replot} bind:selected={$normMethod} options={["Log", "Relative", "IntensityPerPhoton"]}/>
             
         </div>

@@ -152,14 +152,15 @@
                 <div class="content animated fadeIn" class:hide={selected!=="Configuration"}>
                     <h1 class="title">Configuration</h1>
                     <div class="subtitle">{$pyVersion}</div>
-
                     <button class="button is-link" on:click="{()=>$developerMode = !$developerMode}">Developer mode: {$developerMode} </button>
+
                     {#if $developerMode}
-                         <!-- content here -->
-                        <Textfield style="margin-bottom:1em;" bind:value={$pythonpath} label="Python path" />
-                        <Textfield style="margin-bottom:1em;" bind:value={$pythonscript} label="Python script path" />
-                        <button class="button is-link" on:click={resetPyConfig}>Reset</button>
-                        <button class="button is-link" on:click={updatePyConfig}>Save</button>
+                        <div class="align">
+                            <Textfield bind:value={$pythonpath} label="Python path" style="width: 100%; "/>
+                            <Textfield bind:value={$pythonscript} label="Python script path" style="width: 100%; " />
+                            <button class="button is-link" on:click={resetPyConfig}>Reset</button>
+                            <button class="button is-link" on:click={updatePyConfig}>Save</button>
+                        </div>
                     {/if}
                 </div>
 
@@ -167,34 +168,37 @@
                     <h1 class="title">Update</h1>
 
                     <div class="subtitle">Current Version {window.currentVersion}</div>
-                    <div class="content">
-                        <Textfield style="width:7em; margin-right:2em;" bind:value={$github.username} label="Github username" />
-                        <Textfield style="width:7em; margin-right:2em;" bind:value={$github.repo} label="Github Repo" />
-                        <CustomSelect bind:picked={$github.branch} label="Github branch" options={["master", "developer"]}/>
-                    </div>
+                    <div class="align">
+                    
+                        <div class="align">
+                            <Textfield  bind:value={$github.username} label="Github username" />
+                            <Textfield  bind:value={$github.repo} label="Github Repo" />
+                            <CustomSelect bind:picked={$github.branch} label="Github branch" options={["master", "developer"]}/>
+                        </div>
 
-                    <div class="content">
-                        <button class="button is-link" id="updateCheckBtn" on:click="{updateCheck}" on:update={update}>Check update</button>
-                        <button class="button is-link" id="updateBtn" on:click={update}>Update</button>
-                        
-                        <button class="button is-warning" on:click="{()=>{$activateChangelog = true}}">What's New</button>
-                    </div>
+                        <div class="align">
+                            <button class="button is-link" id="updateCheckBtn" on:click="{updateCheck}" on:update={update}>Check update</button>
+                            <button class="button is-link" id="updateBtn" on:click={update}>Update</button>
+                            
+                            <button class="button is-warning" on:click="{()=>{$activateChangelog = true}}">What's New</button>
+                        </div>
 
 
-                    <div class="content">
-                        <Textfield style="width:30%; margin-right:2em;" bind:value={$backupName} label="Github username" />
-                        <button class="button is-link" on:click={backup}>Backup</button>
-                        <button class="button is-link" on:click={restore}>Restore</button>
+                        <div class="align">
+                            <Textfield  bind:value={$backupName} label="Github username" />
+                            <button class="button is-link" on:click={backup}>Backup</button>
+                            <button class="button is-link" on:click={restore}>Restore</button>
+                        </div>
                     </div>
                     
                 </div>
 
-                <div class="content animated fadeIn" class:hide={selected!=="Terminal"}>
+                <div class="animated fadeIn" class:hide={selected!=="Terminal"}>
                     <h1 class="title">Terminal</h1>
                     <Terminal bind:commandToRun bind:commandArgsToRun id="Terminal-settings"/>
                 </div>
                 
-                <div class="content animated fadeIn" class:hide={selected!=="About"}>
+                <div class="align animated fadeIn" class:hide={selected!=="About"}>
                     <h1 class="title">About</h1>
 
                 </div>
