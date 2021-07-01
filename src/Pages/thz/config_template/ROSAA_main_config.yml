@@ -31,6 +31,8 @@ electronSpin: false
 zeemanSplit: false
 trapTemp: 5
 energyUnit: "cm-1"
-energyFilename: energy_CD+.txt
-collisionalFilename: collisional_CD+_He_10K.txt
-einsteinFilename: einstein_A_CD+.txt
+energyFilename: ""
+collisionalFilename: ""
+einsteinFilename: ""
+filename: ""
+currentLocation: ""
