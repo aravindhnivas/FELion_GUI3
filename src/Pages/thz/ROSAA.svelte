@@ -194,10 +194,10 @@
             collisionalFilename = window.path.join(configFileLocation, collisionalFilename);
             einsteinFilename = window.path.join(configFileLocation, einsteinFilename);
 
-            ({energyLevels, energyUnit} = await getYMLFileContents(energyFilename));
+            ({levels:energyLevels, unit:energyUnit} = await getYMLFileContents(energyFilename));
             numberOfLevels = energyLevels.length;
-            ({collisionalCoefficient, collisionalRateType} = await getYMLFileContents(collisionalFilename));
-            ({einsteinCoefficient} = await getYMLFileContents(einsteinFilename));
+            ({rateConstants:collisionalCoefficient, type:collisionalRateType} = await getYMLFileContents(collisionalFilename));
+            ({rateConstants:einsteinCoefficient} = await getYMLFileContents(einsteinFilename));
             window.createToast("CONFIG loaded");
         } catch (error) {$mainPreModal = {modalContent:error, open:true}}
     }
