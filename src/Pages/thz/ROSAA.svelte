@@ -93,7 +93,6 @@
     }
 
     let currentLocation = db.get("thz_modal_location") || db.get("thz_location") || "";
-    // let filename = `ROSAA_modal_${mainParameters[0].value}_${mainParameters[1].value}`;
     let filename = ""
     $: if(currentLocation&&fs.existsSync(currentLocation)) {db.set("thz_modal_location", currentLocation)}
 
@@ -105,54 +104,27 @@
     let writefile = true, includeCollision = true, includeSpontaneousEmission = true, includeAttachmentRate = true;
     let variable = "time", variableRange = "1e12, 1e16, 10";
     const variablesList = ["time", "He density(cm3)", "Power(W)"]
-    let editCollisionalCoefficients = false, editEinsteinCoefficients= false, collisionalCoefficient=[], einsteinCoefficient=[];
 
+    let collisionalCoefficient=[], einsteinCoefficient=[];
 
     function changeCollisionalRateType() {
-
         collisionalCoefficient = collisionalCoefficient.map(level=>{
             const level_arr = level.label.split(" --> ")
+
             const label = `${level_arr[1]} --> ${level_arr[0]}`
             return {label, value:level.value}
+
         })
+    
     }
 
-    let editEnergy=false, energyUnit="cm-1";
+    let energyUnit="cm-1";
     let numberOfLevels = 3;
     let {energyLevels=[]} = getEnergyLabels({numberOfLevels, electronSpin, zeemanSplit})
     let boltzmanWindow = false;
     let energyFilename, collisionalFilename, einsteinFilename;
     $: boltzmanArgs = {energyLevels, trapTemp, electronSpin, zeemanSplit, energyUnit}
-    $: collisionalArgs = {energyLevels, trapTemp, electronSpin, zeemanSplit, energyUnit}
 
-    const readEnergyFile = async (bowseFile=false) => {
-    
-        try {
-            const readFileArgs = {bowseFile, energyFilename, electronSpin, zeemanSplit, energyUnit, twoLabel:false};
-            ({energyLevels, numberOfLevels, energyFilename, energyUnit} = await readFromFile(readFileArgs))
-        } catch (error) {console.error(error)}
-    
-    }
-    
-    const readCollisionalFile = async (bowseFile=false) => {
-        try {
-            const readFileArgs = {bowseFile, energyFilename:collisionalFilename, electronSpin, zeemanSplit, energyUnit, collisionalFile:true};
-            ({energyLevels:collisionalCoefficient, energyFilename:collisionalFilename, collisionalRateType} = await readFromFile(readFileArgs));
-            collisionalCoefficient_balance = []
-        } catch (error) {console.error(error)}
-    }
-
-    const readEinsteinFile = async (bowseFile=false) => {
-        try {
-    
-            const readFileArgs = {bowseFile, energyFilename:einsteinFilename, electronSpin, zeemanSplit, energyUnit};
-            ({energyLevels:einsteinCoefficient, energyFilename:einsteinFilename} = await readFromFile(readFileArgs))
-        } catch (error) {console.error(error)}
-    
-    }
-
-    let collisionalCoefficient_balance = [];
-    
     const compteCollisionalBalanceConstants = () => {
 
         const balanceArgs  = {energyLevels, trapTemp,  electronSpin, zeemanSplit, energyUnit}
@@ -179,6 +151,7 @@
     }
 
     let collisionalWindow = false;
+    let collisionalCoefficient_balance = [];
     $: collisionalRateConstants = [...collisionalCoefficient, ...collisionalCoefficient_balance]
     $: collisionalArgs = {collisionalRateConstants, energyLevels, electronSpin, zeemanSplit, energyUnit}
     
@@ -190,36 +163,43 @@
             if(fs.existsSync(configFile)) return setConfig();
             const congFilePath = await browse({dir:false, multiple:false})
             if (congFilePath.filePaths.length==0) return Promise.reject("No files selected");
-            configFile = congFilePath.filePaths[0]
 
+            configFile = congFilePath.filePaths[0]
             db.set("ROSAA_config_file", configFile)
             setConfig()
-            
-        } catch (error) {
-            console.log(error)
-            $mainPreModal = {modalContent:error, open:true}
-        }
+
+        } catch (error) {$mainPreModal = {modalContent:error, open:true}}
+    }
+    const getYMLFileContents = (filename) => {
+        if (fs.existsSync(filename)) {
+
+            const fileContent = fs.readFileSync(filename, "utf-8")
+            const YMLcontent = Yml(fileContent)
+            return Promise.resolve(YMLcontent)
+        } else return Promise.reject(filename + " file doesn't exist")
     }
 
     async function setConfig() {
+        try {
 
-        const configFileLocation = window.path.dirname(configFile);
-        const CONFIG = Yml(fs.readFileSync(configFile, "utf-8"));
-        console.log(CONFIG);
-        
-        ({mainParameters, simulationParameters, dopplerLineshape, powerBroadening, rateCoefficients} = CONFIG);
-        ({trapTemp, electronSpin, zeemanSplit, energyUnit} = CONFIG);
-        ({energyFilename, collisionalFilename, einsteinFilename} = CONFIG);
+            const configFileLocation = window.path.dirname(configFile);
+            
+            const CONFIG = Yml(fs.readFileSync(configFile, "utf-8"));
+            
+            ({mainParameters, simulationParameters, dopplerLineshape, powerBroadening, rateCoefficients} = CONFIG);
+            ({trapTemp, electronSpin, zeemanSplit, energyUnit, currentLocation, filename} = CONFIG);
+            ({energyFilename, collisionalFilename, einsteinFilename} = CONFIG);
 
-        energyFilename = path.join(configFileLocation, energyFilename)
-        collisionalFilename = path.join(configFileLocation, collisionalFilename)
-        einsteinFilename = path.join(configFileLocation, einsteinFilename)
+            energyFilename = window.path.join(configFileLocation, energyFilename);
+            collisionalFilename = window.path.join(configFileLocation, collisionalFilename);
+            einsteinFilename = window.path.join(configFileLocation, einsteinFilename);
 
-        const bowseFile = false;
-        await readEnergyFile(bowseFile);
-        await readEinsteinFile(bowseFile);
-        await readCollisionalFile(bowseFile);
-
+            ({energyLevels, energyUnit} = await getYMLFileContents(energyFilename));
+            numberOfLevels = energyLevels.length;
+            ({collisionalCoefficient, collisionalRateType} = await getYMLFileContents(collisionalFilename));
+            ({einsteinCoefficient} = await getYMLFileContents(einsteinFilename));
+            window.createToast("CONFIG loaded");
+        } catch (error) {$mainPreModal = {modalContent:error, open:true}}
     }
 
 </script>
@@ -375,13 +355,9 @@
                 <div class="sub_container__div box" >
                     <div class="subtitle">Energy levels</div>
                     <div class="control__div ">
+
                         <Textfield bind:value={numberOfLevels} label="numberOfLevels (J levels)" input$step={1} input$min={0} input$type={"number"} />
                         <CustomSelect options={["MHz", "cm-1"]} bind:picked={energyUnit} />
-                        <button class="button is-link" on:click={() => editEnergy=true}>Edit Energy</button>
-                        <button class="button is-link " on:click="{()=>readEnergyFile(true)}">Read from file</button>
-                        {#if energyFilename}
-                            <button class="button is-link " on:click="{()=>readEnergyFile(false)}">Read again</button>
-                        {/if}
                         <button class="button is-link " on:click={()=>boltzmanWindow=true}>Show Boltzman distribution</button>
                     </div>
 
@@ -395,10 +371,7 @@
                 {#if includeSpontaneousEmission}
                     <div class="sub_container__div box">
                         <div class="subtitle">Einstein Co-efficients</div>
-                        <div class="control__div ">
-                            <button class="button is-link " on:click={() => editEinsteinCoefficients=true}>Edit constats</button>
-                            <button class="button is-link " on:click={()=>readEinsteinFile(true)}>Read from file</button>
-                        </div>
+                        
                         {#if einsteinCoefficient.length>0}
                             <div class="content__div ">
                                 {#each einsteinCoefficient as {label, value}(label)}
@@ -415,13 +388,10 @@
                     <div class="sub_container__div box">
                         <div class="subtitle">Collisional rate constants</div>
                         <div class="control__div ">
+                            <CustomSelect options={["deexcitation", "excitation", "both"]} bind:picked={collisionalRateType} on:change={changeCollisionalRateType}/>
 
-                            <CustomSelect options={["deexcitation", "excitation"]} bind:picked={collisionalRateType} on:change={changeCollisionalRateType}/>
-                            <button class="button is-link" on:click={() => editCollisionalCoefficients=true}>Edit constats</button>
-                            <button class="button is-link " on:click={()=>readCollisionalFile(true)}>Read from file</button>
                             <button class="button is-link " on:click={compteCollisionalBalanceConstants}>Compute balance rate</button>
                             <button class="button is-link " on:click={()=>collisionalWindow=true}>Compute Collisional Cooling</button>
-                        
                         </div>
 
                         {#if collisionalCoefficient.length>0}
@@ -429,49 +399,40 @@
                                 {#each collisionalCoefficient as {label, value}(label)}
                                     <Textfield bind:value {label}/>
                                 {/each}
-
                             </div>
-
                             {/if}
-                        
 
                         {#if collisionalCoefficient_balance.length>0}
-
                             <div class="content__div ">
+
                                 <hr><hr>
                                 {#each collisionalCoefficient_balance as {label, value}(label)}
                                     <Textfield bind:value {label}/>
                                 {/each}
-                        
-                        
                             </div>
-
                         {/if}
+
                     </div>
                 {/if}
                 
-                
-                
                 <!-- Simulation parameters -->
+
                 <div class="sub_container__div box">
                     <div class="subtitle">Simulation parameters</div>
                     <div class="content__div ">
+
                         {#each simulationParameters as {label, value}(label)}
                             <Textfield bind:value {label} />
                         {/each}
-                        
                         <hr> <div class="subtitle" style="width: 100%; display:grid; place-items: center;">Transition levels</div> <hr>
 
-
                         <div style="display: flex; gap: 1em; place-content: center; width: 100%;">
-                            
                             <CustomSelect options={["excitedFrom", ...energyLevels.map(f=>f.label)]} 
                                 bind:picked={excitedFrom} />
                             <CustomSelect options={["excitedTo", ...energyLevels.map(f=>f.label)]} 
                                 bind:picked={excitedTo} />
 
                         </div>
-                    
                     </div>
 
                 </div>
@@ -484,7 +445,6 @@
                         {#each dopplerLineshape as {label, value, type, step}(label)}
                             <Textfield bind:value {label} input$type={type} input$step={step}/>
                         {/each}
-                
                     </div>
                 </div>
                 
@@ -507,26 +467,24 @@
                             {/each}
                         </div>
                     </div>
-                    {/if}
+                {/if}
             </div>
-
             {/if}
+
         </svelte:fragment>
 
         <svelte:fragment slot="footer_content__slot">
 
             <div style="display: flex; gap: 1em; ">
-
                 {#if running}
-
                     <button transition:fade class="button is-danger" on:click="{()=>{py ? py.kill() : console.log('pyEvent is not available')}}" >Stop</button>
                 {/if}    
             
                 <button  class="button is-link" on:click="{(e)=>{showreport = !showreport}}" >{showreport ? "Go Back" : "Status report"}</button>
                 <button  class="button is-link" class:is-loading={running} on:click="{simulation}" on:pyEvent={pyEventHandle} on:pyEventClosed="{pyEventClosedHandle}" on:pyEventData={pyEventDataReceivedHandle}>Submit</button>
             </div>
-        
         </svelte:fragment>
     
     </SeparateWindow>
+
 {/if}
