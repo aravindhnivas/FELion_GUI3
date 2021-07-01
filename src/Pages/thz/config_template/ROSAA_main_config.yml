@@ -1,0 +1,36 @@
+mainParameters:
+    - {label: molecule, value: }
+    - {label: tagging partner, value: He}
+    - {label: trap_area (sq-meter), value: "5e-5"}
+
+simulationParameters:
+    - {label: totalIonCounts, value: 1000}
+    - {label: Simulation time(ms), value: 600}
+    - {label: He density(cm3), value: 1e14}
+    - {label: Initial temperature (K), value: 300}
+    - {label: Total steps, value: 1000}
+
+
+dopplerLineshape:
+    - {label: IonMass(amu), value: , type: number, step: 1}
+    - {label: IonTemperature(K), value: , type: number, step: 0.5}
+
+powerBroadening:
+    - {label: cp, value: }
+    - {label: dipoleMoment(D), value: }
+    - {label: power(W), value: "2e-5"}
+
+rateCoefficients:
+    - {label: totalAttachmentLevels, value: 2}
+    - {label: branching-ratio(kCID), value: 0.5}
+    - {label: a(k31), value: 0.5}
+    - {label: k3, value: }
+    - {label: kCID, value: }
+
+electronSpin: false
+zeemanSplit: false
+trapTemp: 5
+energyUnit: "cm-1"
+energyFilename: energy_CD+.txt
+collisionalFilename: collisional_CD+_He_10K.txt
+einsteinFilename: einstein_A_CD+.txt

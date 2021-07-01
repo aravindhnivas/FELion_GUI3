@@ -14,68 +14,32 @@
 
     import BoltzmanDistribution from "./windows/BoltzmanDistribution.svelte";
     import CollisionalDistribution from "./windows/CollisionalDistribution.svelte";
+
     import {getEnergyLabels} from "./functions/level_labels";
 
+    
     import {readFromFile} from "./functions/read_files";
+    import { parse as Yml } from 'yaml';
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     export let active=false;
+    
     const dispatch = createEventDispatcher();
-    const mainParameters = [
-        {label:"molecule", value:"CD", id:window.getID()},
-        {label:"tagging partner", value:"He", id:window.getID()},
-
-        {label:"trap_area", value:"5e-5", id:window.getID()}
-    ]
-
-    const simulationParameters = [
-        {label:"totalIonCounts", value:1000, id:window.getID()},
-        {label:"Simulation time(ms)", value:600, id:window.getID()},
-        {label:"He density(cm3)", value:"2e14", id:window.getID()},
-        {label:"Initial temperature (K)", value:300, id:window.getID()},
-        {label:"Total steps", value:1000, id:window.getID()},
-    ]
-
-    const dopplerLineshape = [
-        {label:"IonMass(amu)", value:14, id:window.getID(), type:"number", step:1},
-        {label:"IonTemperature(K)", value:12, id:window.getID(), type:"number", step:0.5}
-    ]
-    let excitedTo="excitedTo", excitedFrom="excitedFrom";
-
-
-    const powerBroadening = [
-        {label:"cp", value:"4.9e7", id:window.getID()},
-        {label:"dipoleMoment(D)", value:0, id:window.getID()},
-        {label:"power(W)", value:"2e-5", id:window.getID()},
-    ]
-    let trapTemp = 5.7
-
-    const rateCoefficients = [
-
-        {label:"totalAttachmentLevels", value:2, id:window.getID()},
-        {label:"branching-ratio(kCID)", value:0.5, id:window.getID()},
-
-        {label:"a(k31)", value:0.5, id:window.getID()},
-        {label:"k3", value:"9.6e-31, 2.9e-30", id:window.getID()},
-        {label:"kCID", value:"6.7e-16, 1.9e-15", id:window.getID()},
-    
-    ]
-    
     let electronSpin=false, zeemanSplit= false;
     let collisionalRateType = "excitation"
-    
+    let trapTemp = 5.7
+    let excitedTo="excitedTo", excitedFrom="excitedFrom";
+    let [mainParameters, simulationParameters, dopplerLineshape, powerBroadening, rateCoefficients] = Array(5).fill([])
+
     $: deexcitation = collisionalRateType==="deexcitation";
     let py, running = false;
     const pyEventHandle = (e) => {
-
         statusReport = ""
-
         const events = e.detail
         py = events.py
-
     }
 
     let statusReport = "";
-
     let showreport = false
 
     const pyEventDataReceivedHandle = (e) => {
@@ -91,110 +55,65 @@
     }
 
     const simulation = (e) => {
+
         const collisional_rates = {}
         collisionalCoefficient.forEach(f=>collisional_rates[f.label] = f.value)
 
         const main_parameters = {}
         mainParameters.forEach(f=>main_parameters[f.label]=f.value)
 
+
         const simulation_parameters = {}
 
         simulationParameters.forEach(f=>simulation_parameters[f.label]=f.value)
 
-        const lineshape_conditions = {}
 
+        const lineshape_conditions = {}
         dopplerLineshape.forEach(f=>lineshape_conditions[f.label]=f.value)
 
         const power_broadening = {}
         powerBroadening.forEach(f=>power_broadening[f.label]=f.value)
 
-
         const einstein_coefficient = {}
         einsteinCoefficient.forEach(f=>einstein_coefficient[f.label]=f.value)
 
         const rate_coefficients = {}
-        
         rateCoefficients.forEach(f=>rate_coefficients[f.label]=f.value)
 
         const energy_levels = {}
         energyLevels.forEach(f=>energy_levels[f.label]=f.value)
         
         const conditions = { 
-
             trapTemp, variable, variableRange, numberOfLevels, includeCollision, includeAttachmentRate, includeSpontaneousEmission, writefile, filename, currentLocation,  deexcitation, collisional_rates, main_parameters, simulation_parameters, einstein_coefficient, energy_levels, energyUnit, power_broadening, lineshape_conditions, rate_coefficients, electronSpin, zeemanSplit, excitedFrom, excitedTo
         
         }
         
         dispatch('submit', { e, conditions })
         running=true
-
     }
 
-
-    
     let currentLocation = db.get("thz_modal_location") || db.get("thz_location") || "";
-    let filename = `ROSAA_modal_${mainParameters[0].value}_${mainParameters[1].value}`;
+    // let filename = `ROSAA_modal_${mainParameters[0].value}_${mainParameters[1].value}`;
+    let filename = ""
     $: if(currentLocation&&fs.existsSync(currentLocation)) {db.set("thz_modal_location", currentLocation)}
 
-    
     async function browse_folder() {
         const result = await browse({dir:true})
         if (!result.canceled) { currentLocation = result.filePaths[0]; }
-    
     }
 
     let writefile = true, includeCollision = true, includeSpontaneousEmission = true, includeAttachmentRate = true;
     let variable = "time", variableRange = "1e12, 1e16, 10";
-
     const variablesList = ["time", "He density(cm3)", "Power(W)"]
     let editCollisionalCoefficients = false, editEinsteinCoefficients= false, collisionalCoefficient=[], einsteinCoefficient=[];
 
-
-    async function getRateLabelsEinstein(e){
-        try {
-            const args = [JSON.stringify({numberOfLevels, electronSpin, zeemanSplit})]
-            const pyfile = "get_rate_labels_einstein.py"
-            
-            const dataFromPython = await computePy_func({e, pyfile, args})
-            const {transition_labels, transition_labels_J0, transition_labels_J1} = dataFromPython
-            einsteinCoefficient = []
-            
-            transition_labels.forEach(level=>{
-
-                let labels;
-                if (electronSpin && zeemanSplit) {
-
-                    labels = level.map(f=>f={label:f, value:0, id:window.getID()})
-                    einsteinCoefficient = [...einsteinCoefficient, ...labels]
-                } else {
-                    labels = {label:level, value:0, id:window.getID()}
-                    einsteinCoefficient = [...einsteinCoefficient, labels]
-                }
-            })
-        } catch (error) { console.error(error) }
-
-    }
-
-    async function getRateLabelsCollision(e){
-
-        try {
-
-            const args = [JSON.stringify({numberOfLevels, electronSpin, zeemanSplit})]
-            const pyfile = "get_rate_labels_collision.py"
-            const dataFromPython = await computePy_func({e, pyfile, args})
-            const {transition_labels} = dataFromPython
-            collisionalCoefficient = transition_labels.map(label=>{return {label, value:0, id:window.getID()}})
-            collisionalRateType = "excitation"
-        } catch (error) { console.error(error) }
-
-    }
 
     function changeCollisionalRateType() {
 
         collisionalCoefficient = collisionalCoefficient.map(level=>{
             const level_arr = level.label.split(" --> ")
             const label = `${level_arr[1]} --> ${level_arr[0]}`
-            return {label, value:level.value, id:level.id}
+            return {label, value:level.value}
         })
     }
 
@@ -223,7 +142,6 @@
         } catch (error) {console.error(error)}
     }
 
-
     const readEinsteinFile = async (bowseFile=false) => {
         try {
     
@@ -233,15 +151,12 @@
     
     }
 
-    
     let collisionalCoefficient_balance = [];
-
     
     const compteCollisionalBalanceConstants = () => {
+
         const balanceArgs  = {energyLevels, trapTemp,  electronSpin, zeemanSplit, energyUnit}
 
-        
-        
         collisionalCoefficient_balance = collisionalCoefficient.map(coefficient=>{
             const {label, value} = coefficient
 
@@ -264,7 +179,6 @@
     }
 
     let collisionalWindow = false;
-
     $: collisionalRateConstants = [...collisionalCoefficient, ...collisionalCoefficient_balance]
     $: collisionalArgs = {collisionalRateConstants, energyLevels, electronSpin, zeemanSplit, energyUnit}
     
@@ -285,19 +199,22 @@
             console.log(error)
             $mainPreModal = {modalContent:error, open:true}
         }
-
     }
 
     async function setConfig() {
 
         const configFileLocation = window.path.dirname(configFile);
-        const configFileContent = fs.readFileSync(configFile, "utf-8");
-        const configJSON = JSON.parse(configFileContent);
-        ({energyFilename, collisionalFilename, einsteinFilename} = configJSON);
+        const CONFIG = Yml(fs.readFileSync(configFile, "utf-8"));
+        console.log(CONFIG);
+        
+        ({mainParameters, simulationParameters, dopplerLineshape, powerBroadening, rateCoefficients} = CONFIG);
+        ({trapTemp, electronSpin, zeemanSplit, energyUnit} = CONFIG);
+        ({energyFilename, collisionalFilename, einsteinFilename} = CONFIG);
+
         energyFilename = path.join(configFileLocation, energyFilename)
         collisionalFilename = path.join(configFileLocation, collisionalFilename)
         einsteinFilename = path.join(configFileLocation, einsteinFilename)
-        console.log({configJSON, energyFilename, collisionalFilename, einsteinFilename})
+
         const bowseFile = false;
         await readEnergyFile(bowseFile);
         await readEinsteinFile(bowseFile);
@@ -307,10 +224,8 @@
 
 </script>
 
-
 <style lang="scss">
     .locationColumn {
-
 
         display: grid;
         grid-auto-flow: column;
@@ -396,10 +311,8 @@
 
 </style>
 
+
 {#if active}
-    <EditCoefficients title="Collisional rate constants" bind:active={editCollisionalCoefficients} bind:coefficients={collisionalCoefficient} />
-    <EditCoefficients title="Einstein Co-efficients" bind:active={editEinsteinCoefficients} bind:coefficients={einsteinCoefficient} />
-    <EditCoefficients title="Energy levels" bind:active={editEnergy} bind:coefficients={energyLevels} />
 
     <BoltzmanDistribution {boltzmanArgs} bind:active={boltzmanWindow} />
     <CollisionalDistribution {...collisionalArgs} bind:active={collisionalWindow} />
@@ -452,7 +365,7 @@
 
                     <div class="subtitle">Main Parameters</div>
                     <div class="content__div ">
-                        {#each mainParameters as {label, value, id}(id)}
+                        {#each mainParameters as {label, value}(label)}
                             <Textfield bind:value {label}/>
                         {/each}
                     </div>
@@ -465,57 +378,46 @@
                         <Textfield bind:value={numberOfLevels} label="numberOfLevels (J levels)" input$step={1} input$min={0} input$type={"number"} />
                         <CustomSelect options={["MHz", "cm-1"]} bind:picked={energyUnit} />
                         <button class="button is-link" on:click={() => editEnergy=true}>Edit Energy</button>
-
-                        <button class="button is-link " on:click={()=>{
-                            ({energyLevels} = getEnergyLabels({numberOfLevels, electronSpin, zeemanSplit}))
-                        }}>Get labels</button>
                         <button class="button is-link " on:click="{()=>readEnergyFile(true)}">Read from file</button>
                         {#if energyFilename}
                             <button class="button is-link " on:click="{()=>readEnergyFile(false)}">Read again</button>
                         {/if}
                         <button class="button is-link " on:click={()=>boltzmanWindow=true}>Show Boltzman distribution</button>
-
                     </div>
 
                     <div class="content__div ">
-                        {#each energyLevels as {label, value, id}(id)}
+                        {#each energyLevels as {label, value}(label)}
                             <Textfield bind:value {label} />
                         {/each}
-
                     </div>
                 </div>
 
                 {#if includeSpontaneousEmission}
                     <div class="sub_container__div box">
                         <div class="subtitle">Einstein Co-efficients</div>
-
                         <div class="control__div ">
                             <button class="button is-link " on:click={() => editEinsteinCoefficients=true}>Edit constats</button>
-                            <button class="button is-link " on:click={getRateLabelsEinstein}>Get labels</button>
-
                             <button class="button is-link " on:click={()=>readEinsteinFile(true)}>Read from file</button>
-
                         </div>
                         {#if einsteinCoefficient.length>0}
-
                             <div class="content__div ">
-                                {#each einsteinCoefficient as {label, value, id}(id)}
+                                {#each einsteinCoefficient as {label, value}(label)}
                                     <Textfield bind:value {label} />
                                 {/each}
                             </div>
                         {/if}
-                    </div>
 
+                    </div>
                 {/if}
 
                 {#if includeCollision}
+
                     <div class="sub_container__div box">
                         <div class="subtitle">Collisional rate constants</div>
                         <div class="control__div ">
 
                             <CustomSelect options={["deexcitation", "excitation"]} bind:picked={collisionalRateType} on:change={changeCollisionalRateType}/>
                             <button class="button is-link" on:click={() => editCollisionalCoefficients=true}>Edit constats</button>
-                            <button class="button is-link " on:click={getRateLabelsCollision}>Get labels</button>
                             <button class="button is-link " on:click={()=>readCollisionalFile(true)}>Read from file</button>
                             <button class="button is-link " on:click={compteCollisionalBalanceConstants}>Compute balance rate</button>
                             <button class="button is-link " on:click={()=>collisionalWindow=true}>Compute Collisional Cooling</button>
@@ -524,7 +426,7 @@
 
                         {#if collisionalCoefficient.length>0}
                             <div class="content__div ">
-                                {#each collisionalCoefficient as {label, value, id}(id)}
+                                {#each collisionalCoefficient as {label, value}(label)}
                                     <Textfield bind:value {label}/>
                                 {/each}
 
@@ -537,7 +439,7 @@
 
                             <div class="content__div ">
                                 <hr><hr>
-                                {#each collisionalCoefficient_balance as {label, value, id}(id)}
+                                {#each collisionalCoefficient_balance as {label, value}(label)}
                                     <Textfield bind:value {label}/>
                                 {/each}
                         
@@ -554,7 +456,7 @@
                 <div class="sub_container__div box">
                     <div class="subtitle">Simulation parameters</div>
                     <div class="content__div ">
-                        {#each simulationParameters as {label, value, id}(id)}
+                        {#each simulationParameters as {label, value}(label)}
                             <Textfield bind:value {label} />
                         {/each}
                         
@@ -579,7 +481,7 @@
                     <div class="subtitle">Doppler lineshape</div>
                     <div class="content__div ">
                         <Textfield bind:value={trapTemp} label="trapTemp(K)"/>
-                        {#each dopplerLineshape as {label, value, id, type, step}(id)}
+                        {#each dopplerLineshape as {label, value, type, step}(label)}
                             <Textfield bind:value {label} input$type={type} input$step={step}/>
                         {/each}
                 
@@ -590,7 +492,7 @@
                 <div class="sub_container__div box">
                     <div class="subtitle">Lorrentz lineshape</div>
                     <div class="content__div ">
-                        {#each powerBroadening as {label, value, id}(id)}
+                        {#each powerBroadening as {label, value}(label)}
                             <Textfield bind:value {label} />
                         {/each}
                     </div>
@@ -600,7 +502,7 @@
                     <div class="sub_container__div box">
                         <div class="subtitle">Rare-gas attachment (K3) and dissociation (kCID) constants</div>
                         <div class="content__div">
-                            {#each rateCoefficients as {label, value, id}(id)}
+                            {#each rateCoefficients as {label, value}(label)}
                                 <Textfield bind:value {label}  />
                             {/each}
                         </div>
