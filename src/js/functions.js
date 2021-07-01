@@ -16,7 +16,7 @@ export const updating = writable(false);
 window.createToast = (msg, type = "primary") => Toast.create({ message: msg, position: "is-top", type: `is-${type}` })
 window.sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-window.onerror = function(message, source, lineno, colno, error) { 
+window.onerror = function (message, source, lineno, colno, error) {
 
     // message: error message (string). Available as event (sic!) in HTML onerror="" handler.
     // source: URL of the script where the error was raised (string)
@@ -24,8 +24,8 @@ window.onerror = function(message, source, lineno, colno, error) {
     // colno: Column number for the line where the error occurred (number)
     // error: Error Object (object)
     console.error(error)
-    Snackbar.create({ message:error.name, position: "is-top", type: `is-danger` })
- };
+    Snackbar.create({ message: error.name, position: "is-top", type: `is-danger` })
+};
 
 window.process.on('unhandledRejection', (reason, promise) => {
     console.error(`Uncaught error in`, promise);
@@ -103,7 +103,7 @@ export function resizableDiv({ div, change = { width: true, height: true }, curs
 
 }
 
-resizableDiv({ div: ".adjust-right", cursor: { right: true }, change: { width: true, height: false } })
+resizableDiv({ div: ".left_container__div", cursor: { right: true }, change: { width: true, height: false } })
 
 export function plot(mainTitle, xtitle, ytitle, data, plotArea, filetype = null) {
 
@@ -145,7 +145,7 @@ export function subplot(mainTitle, xtitle, ytitle, data, plotArea, x2, y2, data2
 
     let dataPlot2 = [];
     for (let x in data2) { dataPlot2.push(data2[x]) }
-    
+
     Plotly.react(plotArea, dataPlot1.concat(dataPlot2), dataLayout, { editable: true })
 
 }
