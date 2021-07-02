@@ -7,20 +7,19 @@
     // import {onMount} from 'svelte';
 
     export let active;
-    export let boltzmanArgs, energyLevels;
-    let {trapTemp}=boltzmanArgs;
+    export let energyLevels, trapTemp, electronSpin, zeemanSplit, energyUnit;
     const title="Boltzman Distribution"
-
     const plotID = "boltzmanDistributionPlot"
 
     let graphWindow=null, windowReady=false;
-
+    
     let stepSize=0.1;
-    
-    
+
     function plotGraph() {
-        boltzmanArgs.trapTemp = trapTemp
-        const distribution = boltzmanDistribution({energyLevels, ...boltzmanArgs})
+    
+    
+        const distribution = boltzmanDistribution({energyLevels, trapTemp, electronSpin, zeemanSplit, energyUnit})
+        console.log(distribution)
         if(distribution) {
             const totalSum = _.sumBy(distribution, e=>e.value).toFixed(2)
             const energyLevel = distribution.map(e=>e.label)
@@ -28,11 +27,12 @@
             const data = {  x: energyLevel, y: populations, mode: "lines+markers", showlegend:true, name:`Temp: ${trapTemp}K, Total: ${totalSum}`}
             dataToPlot = {data}
             plot( `${title}: ${trapTemp}K`, "Energy Levels", "Population", dataToPlot, plotID)
-            setTimeout(()=>graphWindow.focus(), 100)
+            // setTimeout(()=>graphWindow.focus(), 100)
         }
     }
-    $: if (windowReady && trapTemp>0) {plotGraph()}
-
+    $: if (windowReady) {setTimeout(()=>graphWindow.focus(), 100);}
+    $: if (windowReady && trapTemp>0) {plotGraph();}
+    
 </script>
 
 <style>
@@ -45,7 +45,6 @@
 </style>
 
 {#if active}
-
 
     <SeparateWindow {title} bind:active bind:windowReady bind:graphWindow >
 
