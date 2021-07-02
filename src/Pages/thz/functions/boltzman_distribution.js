@@ -7,25 +7,30 @@ export default function({energyLevels, trapTemp=5, electronSpin=false, zeemanSpl
     const speedOfLightIn_cm = speedOfLight*100 // in cm/s
 
     try {
-        energyLevels = energyLevels.map(({label, value, id})=> {
-            if (value.includes("_")) {value = parseFloat(value.replaceAll("_", ""))}
-            else {value = parseFloat(value)}
+
+        console.log(energyLevels)
+        
+        
+        energyLevels = energyLevels.map(({label, value})=> {
+            if ( typeof value === "string") {
+                if (value.includes("_")) {value = parseFloat(value.replaceAll("_", ""))}
+                else {value = parseFloat(value)}
+            }
             
-            return {label, value, id}
-    
+            
+            return {label, value}
         })
 
+
         if (energyUnit==="MHz") {
-
-
-            energyLevels = energyLevels.map(({label, value, id})=>{
+            energyLevels = energyLevels.map(({label, value})=>{
                 value = (value*1e6)/speedOfLightIn_cm
-                return {label, value, id}
+                return {label, value}
             })
+
         }
 
-        let distribution = energyLevels.map(({label, value:currentEnergy, id})=>{
-
+        let distribution = energyLevels.map(({label, value:currentEnergy})=>{
             if (electronSpin) {
                 if (zeemanSplit) {Gj = 1}
                 else {
@@ -37,25 +42,17 @@ export default function({energyLevels, trapTemp=5, electronSpin=false, zeemanSpl
                 else {Gj = parseInt( 2*+label + 1 )}
             }
             const value = Gj*Math.exp(-currentEnergy/KT)
-            return {label, value, id}
+            return {label, value}
         })
 
+
+        console.log(distribution)
         const partitionValue = _.sumBy(distribution, energy=>energy.value).toFixed(2)
-        // console.log("partitionValue: "+partitionValue)
 
-
-        distribution = distribution.map(({label, value, id})=>{
+        distribution = distribution.map(({label, value})=>{
             value /= partitionValue
-
-            return {label, value, id}
+            return {label, value}
         })
         return distribution
-
-    } catch (error) {
-
-        console.error(error)
-        window.createToast("Error occured", "danger")
-
-        return null
-    }
+    } catch (error) {return error}
 }
