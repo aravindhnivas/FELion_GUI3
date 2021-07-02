@@ -11,15 +11,13 @@
     export let active;
     export let collisionalRateConstants, energyLevels, electronSpin, zeemanSplit, energyUnit;
     
-    
     let initialTemp = 300, duration=600, collisionalTemp=10;
-
     let numberDensity="2e14";
-
     const title="Collisional cooling"
 
-    
     const plotID = "collisionalDistributionPlot"
+
+    
     let graphWindow=null, windowReady=false;
     let stepSize=0.1;
 
@@ -54,12 +52,10 @@
                 `${plotID}_collisionalBoltzman`, 
             )
 
-        } catch (error) { $mainPreModal = {modalContent:error, open:true}
- }
+        } catch (error) { $mainPreModal = {modalContent:error, open:true} }
+
     }
-
     $: if (windowReady) {setTimeout(()=>graphWindow.focus(), 100)}
-
 </script>
 
 <style lang="scss">
@@ -91,16 +87,14 @@
 
         <svelte:fragment slot="header_content__slot" >
             <div class="header">
-                
-                <Textfield bind:value={stepSize} label="stepSize" style="width:auto;"/>
-                <Textfield bind:value={initialTemp} label="Initial temp (K)" input$type="number" input$step={stepSize} input$min=0 style="width:auto;"/>
-                <Textfield bind:value={collisionalTemp} label="Coll. temp (K)" input$type="number" input$step={stepSize} input$min=0.1 style="width:auto;"/>
-                <Textfield bind:value={duration} label="duration (in ms)" style="width:auto;"/>
-                <Textfield bind:value={numberDensity} label="Number density (cm-3)" style="width:auto;"/>
+                <Textfield bind:value={stepSize} label="stepSize"/>
+                <Textfield bind:value={initialTemp} label="Initial temp (K)" input$type="number" input$step={stepSize} input$min=0/>
+
+                <Textfield bind:value={collisionalTemp} label="Coll. temp (K)" input$type="number" input$step={stepSize} input$min=0.1 />
+                <Textfield bind:value={duration} label="duration (in ms)" />
+                <Textfield bind:value={numberDensity} label="Number density (cm-3)"/>
                 <button class="button is-link" on:click={computeCollisionalProcess}>Compute</button>
             </div>
-
-
         </svelte:fragment>
 
         <svelte:fragment slot="main_content__slot">
@@ -110,4 +104,5 @@
             </div>
         </svelte:fragment>
     </SeparateWindow>
+
 {/if}
