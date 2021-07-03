@@ -537,7 +537,6 @@
                 <button  class="button is-link" class:is-loading={running} on:click="{simulation}" on:pyEvent={pyEventHandle} on:pyEventClosed="{pyEventClosedHandle}" on:pyEventData={pyEventDataReceivedHandle}>Submit</button>
             </div>
         </svelte:fragment>
-    
     </SeparateWindow>
-
+    
 {/if}
