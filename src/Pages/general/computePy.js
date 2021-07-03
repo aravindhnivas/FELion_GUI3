@@ -121,8 +121,14 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
 
                     py.on("close", () => {
                         if (!error_occured_py) {
-                            const dataFile = pyfile.split(".")[0]
-                            let dataFromPython = fs.readFileSync(path.join(get(pythonscript), "local", dataFile+"_data.json"))
+                            const dataFile = path.basename(pyfile).split(".")[0]
+
+                            const outputFile = path.join(get(pythonscript), "local", dataFile+"_data.json")
+
+                            if(!fs.existsSync(outputFile)) {
+                                return reject(`${outputFile} doesn't exist.`)
+                            }
+                            let dataFromPython = fs.readFileSync(outputFile)
                             window.dataFromPython = dataFromPython = JSON.parse(dataFromPython.toString("utf-8"))
                             console.log(dataFromPython)
                             resolve(dataFromPython)
@@ -142,8 +148,9 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                     })
 
                 }
+            }).catch(err => { reject(err.stack); })
+            // .finally(()=>{if (!general) { target.classList.toggle("is-loading") }})
 
-            }).catch(err => { reject(err.stack); if (!general) { target.classList.toggle("is-loading") } })
     })
 
 }
