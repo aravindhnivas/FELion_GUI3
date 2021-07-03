@@ -134,7 +134,7 @@
 <section class="section animated fadeIn" id="Settings" style="display:none">
 
     <div class="columns">
-        <div class="column side-panel is-2-widescreen is-3-desktop is-4-tablet box adjust-right">
+        <div class="column side-panel is-2-widescreen is-3-desktop is-4-tablet box left_container__div">
 
             <div class="container left">
                 <div class="title nav hvr-glow" class:clicked={selected==="Configuration"} on:click={navigate}>Configuration</div>
