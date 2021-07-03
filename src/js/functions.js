@@ -28,7 +28,7 @@ window.onerror = function (message, source, lineno, colno, error) {
 };
 
 window.process.on('unhandledRejection', (reason, promise) => {
-    console.error(`Uncaught error in`, promise);
+    console.error(`Uncaught error in`, promise, "reason: ", reason);
 });
 
 window.targetElement = (id) => document.getElementById(id)
