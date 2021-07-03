@@ -233,6 +233,21 @@
         
     }
 
+    let lorrentz=0, gaussian=0, toggleEinsteinBcolumn=false;
+    async function computeEinsteinBRate(e) {
+
+        const args = [JSON.stringify({lorrentz, gaussian})]
+        const pyfile = "ROSAA/voigt.py"
+        try {
+            const dataFromPython = computePy_func({e, pyfile, args})
+            console.log(dataFromPython)
+        } catch (error) {
+            $mainPreModal = {modalContent:error, open:true}
+        }
+        
+    }
+
+
 </script>
 
 
@@ -329,7 +344,7 @@
     <BoltzmanDistribution {...boltzmanArgs} bind:active={boltzmanWindow} />
     <CollisionalDistribution {...collisionalArgs} bind:active={collisionalWindow} />
 
-    <SeparateWindow id="ROSAA__modal" title="ROSAA modal" bind:active >
+    <SeparateWindow id="ROSAA__modal" title="ROSAA modal" bind:active maximize={true}>
         <svelte:fragment slot="header_content__slot" >
             <div class="locationColumn" >
 
@@ -426,6 +441,17 @@
                         {#if einsteinCoefficientB.length>0}
                             <hr>
                             <div class="subtitle">Einstein B Co-efficients</div>
+                            <div class="control__div ">
+
+                                <button class="button is-link" on:click={()=>toggleEinsteinBcolumn = !toggleEinsteinBcolumn}>Compute rate constants</button>
+                                {#if toggleEinsteinBcolumn}
+                                    <Textfield bind:value={lorrentz} label="lorrentz" />
+                                    <Textfield bind:value={gaussian} label="gaussian"/>
+                                    <button class="button is-link " on:click={computeEinsteinBRate}>Compute</button>
+                                {/if}
+                            </div>
+                            
+
                             <div class="content__div ">
                                 {#each einsteinCoefficientB as {label, value}(label)}
                                     <Textfield bind:value {label} />
