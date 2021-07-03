@@ -52,13 +52,13 @@
     import Textfield from '@smui/textfield';
     import {onMount} from "svelte";
     import FileBrowser from "./FileBrowser.svelte"
-    import { createEventDispatcher } from 'svelte';
+    // import { createEventDispatcher } from 'svelte';
 
     ////////////////////////////////////////////////////////////////////////////
 
     export let id, fileChecked=[], filetype = "felix", toggleBrowser = false, fullfileslist = [];
     export let currentLocation = db.get(`${filetype}_location`) || "", graphPlotted=false;
-
+    export let graphWindowClasses = ["no-full"]
     // const dispatch = createEventDispatcher()
     // function tour_event() { dispatch('tour', {filetype}) }
 
@@ -89,7 +89,7 @@
         graphWindowClosed = false
         const mount = document.getElementById(`${filetype}-plotContainer`)
 
-        graphWindow = new WinBox({
+        graphWindow = new WinBox({ class: graphWindowClasses,
             root:document.getElementById("pageContainer"),
 
             mount,  title: `Modal: ${filetype}`,
@@ -105,12 +105,13 @@
             } 
         });
 
+        graphWindow.maximize(true);
+
     }
 
 </script>
 
 <style lang="scss">
-
     .plot__div {padding: 1em;}
     .box {background-image: url(./assets/css/intro.svg); border-radius: 0;}
 
@@ -149,6 +150,7 @@
                 flex-direction: column;
                 overflow: auto;
                 padding-right: 1em;
+                padding-bottom: 12em;
             }
         }
     }
@@ -156,8 +158,8 @@
 </style>
 
 <section {id} style="display:none" class="animated fadeIn">
-    <div class="main__layout__div">
 
+    <div class="main__layout__div">
         <div class="left_container__div box " transition:fly="{{ x: -100, duration: 500 }}">
             <FileBrowser bind:currentLocation {filetype} bind:fileChecked on:chdir bind:fullfileslist/>
         </div>
@@ -170,22 +172,27 @@
             </div>
 
             <div class="button__div align" id="{filetype}-buttonContainer" >
+
                 <slot name="buttonContainer" />
                 {#if graphPlotted}
-
                     <button class="button is-warning animated fadeIn" on:click={openGraph}>Graph:Open separately</button>
-                {/if}
-            </div>
 
+                {/if}
+
+            </div>
             <div class="plot__div" id="{filetype}-plotContainer" transition:fade> 
+
                 <slot name="plotContainer" />
                 {#if graphPlotted}
                     <slot name="plotContainer_functions" />
-
                     <slot name="plotContainer_reports" />
+
                 {/if}
+
             </div>
+
         </div>
+
     </div>
 
 </section>

@@ -6,9 +6,9 @@
     
     import Layout from "../components/Layout.svelte"
     
-    import { fade } from 'svelte/transition'
+    // import { fade } from 'svelte/transition'
     import CustomRadio from '../components/CustomRadio.svelte';
-    import ReportLayout from '../components/ReportLayout.svelte';
+    // import ReportLayout from '../components/ReportLayout.svelte';
     import {onMount, tick} from "svelte"
 
     import AddFilesToPlot from './normline/modals/AddFilesToPlot.svelte';
@@ -169,6 +169,7 @@
             <div class="animated fadeIn" class:hide={!$opoMode} id="opoplot"></div>
             <div class="animated fadeIn" class:hide={!$opoMode} id="opoSA"></div>
             <div class="animated fadeIn" class:hide={!$opoMode} id="opoRelPlot"></div>
+        
         </div>
     </svelte:fragment>
 
@@ -185,8 +186,5 @@
     <svelte:fragment slot="plotContainer_reports">
         <!-- Frequency table list -->
         <FrequencyTable bind:keepTable/>
-        <!-- Report -->
-        <ReportLayout bind:currentLocation={currentLocation} id={`${filetype}_report`} {includePlotsInReport} {includeTablesInReports} />
     </svelte:fragment>
-
 </Layout>

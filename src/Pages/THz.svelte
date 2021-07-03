@@ -6,7 +6,7 @@
     import CustomSelect from "../components/CustomSelect.svelte"
     import CustomCheckbox from "../components/CustomCheckbox.svelte"
 
-    import ReportLayout from "../components/ReportLayout.svelte"
+    // import ReportLayout from "../components/ReportLayout.svelte"
     import Textfield from '@smui/textfield'
     import {plot} from "../js/functions.js"
     import ROSAA from "./thz/ROSAA.svelte"
@@ -102,44 +102,27 @@
             <button class="{btnClass}" on:click="{(e)=>{plotData({e:e})}}">Fit</button>
             <button class="{btnClass}" on:click="{(e)=>plotData({e:e, tkplot:true})}">Open in Matplotlib</button>
             <CustomIconSwitch style="padding:0;" bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
-            <!-- <button class="{btnClass}" on:click="{()=>{toggleRow = !toggleRow}}">Boltzman</button> -->
             <Textfield type="number" bind:value={delta} label="Delta" input$step="0.1" />
             <Textfield type="number" bind:value={gamma} label="Gamma" input$step="0.1" />
 
-            <div class="animated fadeIn" class:hide={!graphPlotted} on:change={changePlotStyle}>
-                <CustomSelect options={plotStyle} bind:picked={plotStyleSelected} label="Plot Style"/>
-                <CustomCheckbox bind:selected={plotFill} label="Fill area"/>
-            </div>
-
         </div>
-
-        <!-- <div class="animated fadeIn" class:hide={!toggleRow} >
-            <Textfield type="number" {style} bind:value={B0} label="B0 (MHz)" />
-            <Textfield type="number" {style} bind:value={D0} label="D0 (MHz)" />
-            <Textfield type="number" {style} bind:value={H0} label="H0 (MHz)" />
-            <Textfield type="number" {style}  bind:value={temp} label="Temp." />
-            <Textfield type="number" {style}  bind:value={totalJ} label="Total J" />
-            <button class="{btnClass}" on:click="{(e)=>plotData({e:e, filetype:"boltzman"})}">Submit</button>
-            <button class="{btnClass}" on:click="{(e)=>plotData({e:e, filetype:"boltzman", tkplot:true})}">Open in Matplotlib</button>
-        </div> -->
 
     </svelte:fragment>
 
-    <div style="margin-right: 1em;" slot="plotContainer">
+    <svelte:fragment slot="plotContainer">
 
         <!-- Plots -->
-        
-        <div id="resOnOffPlot" style="margin-bottom: 1em;"></div>
-        <div id="thzPlot" style="margin-bottom: 1em;"></div>
-        <!-- <div id="boltzman_plot" style="margin-bottom: 1em;"></div> -->
-
-        <!-- Reports -->
+        <div id="resOnOffPlot" ></div>
 
         {#if graphPlotted}
-            <div class="animated fadeIn" style="flex-direction:column ">
-                <ReportLayout bind:currentLocation={currentLocation} id={`${filetype}_report`} {includePlotsInReport} />
+            <div class="animated fadeIn align h-end" style="margin-bottom: 0.5em;" class:hide={!graphPlotted} on:change={changePlotStyle}>
+                <CustomSelect options={plotStyle} bind:picked={plotStyleSelected} label="Plot Style"/>
+                <CustomCheckbox bind:selected={plotFill} label="Fill area"/>
             </div>
         {/if}
+        
+        <div id="thzPlot" ></div>
+    
+    </svelte:fragment>
 
-    </div>
 </Layout>

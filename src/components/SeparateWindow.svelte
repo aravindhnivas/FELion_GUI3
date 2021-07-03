@@ -8,7 +8,7 @@
 
     export let background="#634e96";
     
-    export let graphWindow=null, windowReady=false, maximize=false;
+    export let graphWindow=null, windowReady=false, maximize=true;
     let graphWindowClosed = true;
 
     async function openGraph(){

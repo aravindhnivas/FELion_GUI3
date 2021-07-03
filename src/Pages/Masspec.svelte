@@ -5,7 +5,7 @@
     import CustomSelect from "../components/CustomSelect.svelte"
     import CustomSwitch from "../components/CustomSwitch.svelte"
 
-    import ReportLayout from "../components/ReportLayout.svelte"
+    // import ReportLayout from "../components/ReportLayout.svelte"
     import Textfield from '@smui/textfield'
     import {plot} from "../js/functions.js"
     import {Icon} from '@smui/icon-button'
@@ -150,12 +150,6 @@
 
         <div id="mplot"></div>
        
-        {#if graphPlotted}
-            <div class="animated fadeIn" style="flex-direction:column ">
-                <ReportLayout bind:currentLocation={currentLocation} id={`${filetype}_report`} {includePlotsInReport} />
-            </div>
-
-        {/if}
         <div class="align animated fadeIn" class:hide={toggleRow2}>
             <Icon on:click="{()=>window.nist_webview.goToIndex(0)}" class="material-icons hvr-glow">home</Icon>
             <Icon on:click="{()=>window.nist_webview.reload()}" class="material-icons hvr-glow">refresh</Icon>

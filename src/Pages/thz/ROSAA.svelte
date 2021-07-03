@@ -341,10 +341,10 @@
 
 {#if active}
 
-    <BoltzmanDistribution {...boltzmanArgs} bind:active={boltzmanWindow} />
-    <CollisionalDistribution {...collisionalArgs} bind:active={collisionalWindow} />
+    <BoltzmanDistribution {...boltzmanArgs} bind:active={boltzmanWindow} maximize={false}/>
+    <CollisionalDistribution {...collisionalArgs} bind:active={collisionalWindow} maximize={false}/>
 
-    <SeparateWindow id="ROSAA__modal" title="ROSAA modal" bind:active maximize={true}>
+    <SeparateWindow id="ROSAA__modal" title="ROSAA modal" bind:active>
         <svelte:fragment slot="header_content__slot" >
             <div class="locationColumn" >
 

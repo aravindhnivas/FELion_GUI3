@@ -6,7 +6,7 @@
     import CustomSelect from "../components/CustomSelect.svelte"
     import CustomSwitch from "../components/CustomSwitch.svelte"
 
-    import ReportLayout from "../components/ReportLayout.svelte"
+    // import ReportLayout from "../components/ReportLayout.svelte"
     import Textfield from '@smui/textfield'
     import {plot} from "../js/functions.js"
     /////////////////////////////////////////////////////////////////////////
@@ -130,15 +130,6 @@
         
         </div>
 
-        
-        
-        {#if graphPlotted}
-
-            <div class="animated fadeIn" style="flex-direction:column ">
-                <ReportLayout bind:currentLocation={currentLocation} id={`${filetype}_report`} {includePlotsInReport} />
-
-            </div>
-        {/if}
         
         
     </div>
