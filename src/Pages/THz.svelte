@@ -115,14 +115,15 @@
         <div id="resOnOffPlot" ></div>
 
         {#if graphPlotted}
-            <div class="animated fadeIn align h-end" style="margin-bottom: 0.5em;" class:hide={!graphPlotted} on:change={changePlotStyle}>
+
+            <div class="animated fadeIn align h-end v-center" on:change={changePlotStyle}>
                 <CustomSelect options={plotStyle} bind:picked={plotStyleSelected} label="Plot Style"/>
                 <CustomCheckbox bind:selected={plotFill} label="Fill area"/>
             </div>
-        {/if}
+        
+            {/if}
         
         <div id="thzPlot" ></div>
     
     </svelte:fragment>
-
 </Layout>
