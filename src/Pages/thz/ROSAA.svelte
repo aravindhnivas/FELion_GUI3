@@ -9,20 +9,16 @@
 
     import CustomCheckbox from "../../components/CustomCheckbox.svelte";
     import CustomSelect from "../../components/CustomSelect.svelte";
-    import balance_distribution, {computeStatisticalWeight} from "./functions/balance_distribution";
-
     import BoltzmanDistribution from "./windows/BoltzmanDistribution.svelte";
-    import CollisionalDistribution from "./windows/CollisionalDistribution.svelte";
+
     import { parse as Yml } from 'yaml';
+    import EinsteinCoefficients from "./components/EinsteinCoefficients.svelte";
+    import CollisionalCoefficients from "./components/CollisionalCoefficients.svelte";
 
-    
-
-
-    import EinsteinCoefficients from "./components/EinsteinCoefficients.svelte"
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    
     export let active=false;
-
     const dispatch = createEventDispatcher();
 
     let electronSpin=false, zeemanSplit= false;
@@ -40,6 +36,7 @@
     }
 
     let statusReport = "";
+
     let showreport = false
 
     const pyEventDataReceivedHandle = (e) => {
@@ -53,7 +50,6 @@
         window.createToast("Terminated", "danger")
         statusReport += "\n######## TERMINATED ########"
     }
-
     const simulation = (e) => {
 
         const collisional_rates = {}
@@ -107,54 +103,19 @@
 
     let collisionalCoefficient=[], einsteinCoefficientA=[], einsteinCoefficientB=[];
 
-    function changeCollisionalRateType() {
-        collisionalCoefficient = collisionalCoefficient.map(level=>{
-            const level_arr = level.label.split(" --> ")
-
-            const label = `${level_arr[1]} --> ${level_arr[0]}`
-            return {label, value:level.value}
-
-        })
-    
-    }
-
     let energyUnit="cm-1";
     let numberOfLevels = 3;
+
     let energyLevels = [];
     let boltzmanWindow = false;
+    
     let energyFilename, collisionalFilename, einsteinFilename;
+    
     $: boltzmanArgs = {energyLevels, trapTemp, electronSpin, zeemanSplit, energyUnit}
 
-    const compteCollisionalBalanceConstants = () => {
-
-        const balanceArgs  = {energyLevels, trapTemp,  electronSpin, zeemanSplit, energyUnit}
-
-        collisionalCoefficient_balance = collisionalCoefficient.map(coefficient=>{
-            const {label, value} = coefficient
-
-            const levelLabels = label.split(" --> ").map(f=>f.trim())
-            let newLabel, newValue;
-            if(deexcitation) {
-                const [excitedLevel, groundLevel] = levelLabels
-                newValue = value*balance_distribution({...balanceArgs, groundLevel, excitedLevel})
-
-                newLabel = `${groundLevel} --> ${excitedLevel}`
-            } else {
-
-                const [groundLevel, excitedLevel] = levelLabels
-                newValue = value*balance_distribution({...balanceArgs, groundLevel:excitedLevel, excitedLevel:groundLevel})
-                newLabel = `${excitedLevel} --> ${groundLevel}`
-            }
-            return {label:newLabel, value:newValue.toExponential(3), id:getID()}
-
-        })
-    }
-
-    let collisionalWindow = false;
     let collisionalCoefficient_balance = [];
     $: collisionalRateConstants = [...collisionalCoefficient, ...collisionalCoefficient_balance]
     $: collisionalArgs = {collisionalRateConstants, energyLevels, electronSpin, zeemanSplit, energyUnit}
-    
     let configFile = db.get("ROSAA_config_file") || ""
 
     async function loadConfig() {
@@ -205,54 +166,12 @@
             window.createToast("CONFIG loaded");
         } catch (error) {$mainPreModal = {modalContent:error, open:true}}
     }
-    
-    // function computeEinsteinB() {
-    //     const einsteinCoefficientB_emission = einsteinCoefficientA.map(({label, value})=>{
-    //         const [final, initial] = label.split("-->").map(l=>l.trim())
-    //         const {value:v0} = window._.find(energyLevels, (e)=>e.label==initial)
-    //         const {value:v1} = window._.find(energyLevels, (e)=>e.label==final)
-            
-    //         let freq = parseFloat(v1) - parseFloat(v0) // in Hz or s-1
-            
-    //         energyUnit === "MHz" ? freq *= 1e6 : freq *= SpeedOfLight*100;
-
-    //         const constTerm = SpeedOfLight**3/(8*Math.PI*PlanksConstant*freq**3)
-    //         const B = constTerm*value
-    //         return {label, value:B.toExponential(3)}
-    //     })
-    //     const einsteinCoefficientB_absorption = einsteinCoefficientB_emission.map(({label, value})=>{
-    //         const [final, initial] = label.split("-->").map(l=>l.trim())
-            
-    //         const {Gi, Gf} = computeStatisticalWeight({electronSpin, zeemanSplit, final, initial});
-    //         const weight = Gf/Gi
-
-    //         const B = weight*parseFloat(value)
-    //         const newLabel = `${initial} --> ${final}`
-    //         return {label:newLabel, value:B.toExponential(3)}
-    //     })
-    //     einsteinCoefficientB = [...einsteinCoefficientB_emission, ...einsteinCoefficientB_absorption]
-        
-    // }
-
-    // let lorrentz=0, gaussian=0, toggleEinsteinBcolumn=false;
-    // async function computeEinsteinBRate(e) {
-
-    //     const args = [JSON.stringify({lorrentz, gaussian})]
-    //     const pyfile = "ROSAA/voigt.py"
-    //     try {
-    //         const dataFromPython = computePy_func({e, pyfile, args})
-    //         console.log(dataFromPython)
-    //     } catch (error) {
-    //         $mainPreModal = {modalContent:error, open:true}
-    //     }
-        
-    // }
 
 
 </script>
 
-
 <style lang="scss">
+
     .locationColumn {
 
         display: grid;
@@ -341,19 +260,16 @@
 
 
 {#if active}
-
     <BoltzmanDistribution {...boltzmanArgs} bind:active={boltzmanWindow} maximize={false}/>
-    <CollisionalDistribution {...collisionalArgs} bind:active={collisionalWindow} maximize={false}/>
 
     <SeparateWindow id="ROSAA__modal" title="ROSAA modal" bind:active>
         <svelte:fragment slot="header_content__slot" >
             <div class="locationColumn" >
-
                 <button class="button is-link" id="thz_modal_filebrowser_btn" on:click={browse_folder}>Browse</button>
                 <Textfield bind:value={currentLocation} label="Current location" />
+
                 <Textfield bind:value={filename} label="filename" />
             </div>
-
 
             <div class="writefileCheck">
                 <CustomCheckbox bind:selected={writefile} label="writefile" />
@@ -421,36 +337,7 @@
                 {/if}
 
                 {#if includeCollision}
-
-                    <div class="sub_container__div box">
-                        <div class="subtitle">Collisional rate constants</div>
-                        <div class="control__div ">
-                            <CustomSelect options={["deexcitation", "excitation", "both"]} bind:picked={collisionalRateType} on:change={changeCollisionalRateType}/>
-
-                            <button class="button is-link " on:click={compteCollisionalBalanceConstants}>Compute balance rate</button>
-                            <button class="button is-link " on:click={()=>collisionalWindow=true}>Compute Collisional Cooling</button>
-                            
-                        </div>
-
-                        {#if collisionalCoefficient.length>0}
-                            <div class="content__div ">
-                                {#each collisionalCoefficient as {label, value}(label)}
-                                    <Textfield bind:value {label}/>
-                                {/each}
-                            </div>
-                            {/if}
-
-                        {#if collisionalCoefficient_balance.length>0}
-                            <div class="content__div ">
-
-                                <hr><hr>
-                                {#each collisionalCoefficient_balance as {label, value}(label)}
-                                    <Textfield bind:value {label}/>
-                                {/each}
-                            </div>
-                        {/if}
-
-                    </div>
+                    <CollisionalCoefficients bind:collisionalCoefficient bind:collisionalCoefficient_balance bind:collisionalRateType {collisionalArgs} {trapTemp} />
                 {/if}
                 
                 <!-- Simulation parameters -->
@@ -519,8 +406,9 @@
                 {/if}    
                 <button  class="button is-link" on:click="{(e)=>{showreport = !showreport}}" >{showreport ? "Go Back" : "Status report"}</button>
                 <button  class="button is-link" class:is-loading={running} on:click="{simulation}" on:pyEvent={pyEventHandle} on:pyEventClosed="{pyEventClosedHandle}" on:pyEventData={pyEventDataReceivedHandle}>Submit</button>
+
             </div>
         </svelte:fragment>
     </SeparateWindow>
-
+    
 {/if}
