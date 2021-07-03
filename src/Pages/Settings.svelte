@@ -102,50 +102,57 @@
 <style lang="scss">
 
     section { margin: 0; padding: 0; }
-    .side-panel, .main-panel {height: calc(100vh - 7em);}
-    .box { background-color: #6a50ad8a}
-    .main-panel {margin: 0 5em;}
-
-    .left .title { 
-        letter-spacing: 0.1em; text-transform: uppercase; padding: 0.5em; text-align: center;
-        font-size: larger; cursor: pointer; margin-bottom: 1em; border-radius: 20px; 
-    }
-    
-    .clicked {border-left: 2px solid #fafafa; border: solid 1px;}
-    
+    .clicked {border-left: 2px solid #fafafa; border: solid 1px; border-radius: 1em;}
     * :global(option) { color: black; }
-    .container {padding: 2em; display: grid;}
-    .container .left {place-content: center;}
+    .main__div {
+        display: grid;
+        grid-template-columns: 1fr 4fr;
+        column-gap: 3em;
+        height: calc(100vh - 7rem);
+        .box {
 
-    .right.title {
-        letter-spacing: 0.1em; 
-        text-transform: uppercase;
-        border-bottom: solid;
-        margin-bottom: 2em;
-        padding-bottom: 0.2em;
-        width: fit-content;
+            margin-bottom: 0px;
+            border-radius: 0;
+
+            background-color: #6a50ad8a;
+
+        }
+        .title__div{
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            text-align: center;
+            cursor: pointer;
+            display: grid;
+            row-gap: 2em;
+
+            div {font-size: 25px; border-radius: 1em;}
+        } 
+
     }
+
+
 
 </style>
-<CustomDialog id="pythonpath_Check" bind:dialog={pythonpathCheck} on:response={handlepythonPathCheck} title={"Python path is not valid"} content={"Change it in Settings --> Configuration"} label1="Okay" label2="Cancel" />
 
+<CustomDialog id="pythonpath_Check" bind:dialog={pythonpathCheck} on:response={handlepythonPathCheck} title={"Python path is not valid"} content={"Change it in Settings --> Configuration"} label1="Okay" label2="Cancel" />
 <Changelog  />
 
 <section class="section animated fadeIn" id="Settings" style="display:none">
+    <div class="main__div">
 
-    <div class="columns">
-        <div class="column side-panel is-2-widescreen is-3-desktop is-4-tablet box left_container__div">
+        <div class="box left_container__div">
 
-            <div class="container left">
-                <div class="title nav hvr-glow" class:clicked={selected==="Configuration"} on:click={navigate}>Configuration</div>
-                <div class="title nav hvr-glow" class:clicked={selected==="Update"} on:click={navigate}>Update</div>
-                <div class="title nav hvr-glow" class:clicked={selected==="Terminal"} on:click={navigate}>Terminal</div>
-                <div class="title nav hvr-glow" class:clicked={selected==="About"} on:click={navigate}>About</div>
+           <div class="title__div">
 
-            </div>
+                <div class="hvr-glow" class:clicked={selected==="Configuration"} on:click={navigate}>Configuration</div>
+                <div class="hvr-glow" class:clicked={selected==="Update"} on:click={navigate}>Update</div>
+                <div class="hvr-glow" class:clicked={selected==="Terminal"} on:click={navigate}>Terminal</div>
+                <div class="hvr-glow" class:clicked={selected==="About"} on:click={navigate}>About</div>
+           </div>
+
         </div>
 
-        <div class="column main-panel box">
+        <div class="box">
 
             <div class="container right" id="Settings_right_column">
 
@@ -204,7 +211,9 @@
                 </div>
                 
             </div>
+        
         </div>
 
     </div>
+
 </section>
