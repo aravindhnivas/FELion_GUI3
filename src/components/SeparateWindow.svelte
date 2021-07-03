@@ -8,7 +8,7 @@
 
     export let background="#634e96";
     
-    export let graphWindow=null, windowReady=false;
+    export let graphWindow=null, windowReady=false, maximize=false;
     let graphWindowClosed = true;
 
     async function openGraph(){
@@ -31,6 +31,7 @@
             },
             onfocus: function(){windowReady = true;console.log(windowReady, graphWindow)}
         });
+        graphWindow.maximize(maximize);
     }
 
 </script>
