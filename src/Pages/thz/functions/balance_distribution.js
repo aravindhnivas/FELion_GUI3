@@ -66,3 +66,21 @@ export default function({groundLevel, excitedLevel, energyLevels, trapTemp=5, el
     }
 
 }
+
+export function computeStatisticalWeight({electronSpin=false, zeemanSplit=false, final, initial}={}) {
+
+    let Gi, Gf;
+
+    if (!zeemanSplit) {
+        if (electronSpin) {
+
+            Gi = 2*+initial.split("_")[1] + 1
+            Gf = 2*+final.split("_")[1] + 1
+        } else {
+            Gi = 2*+initial + 1
+            Gf = 2*+final + 1
+        }
+    } else {Gi=1, Gf=1}
+    return {Gi, Gf}
+
+}

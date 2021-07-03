@@ -9,22 +9,21 @@
 
     import CustomCheckbox from "../../components/CustomCheckbox.svelte";
     import CustomSelect from "../../components/CustomSelect.svelte";
-    import EditCoefficients from './EditCoefficients.svelte';
-    import balance_distribution from "./functions/balance_distribution";
+    import balance_distribution, {computeStatisticalWeight} from "./functions/balance_distribution";
 
     import BoltzmanDistribution from "./windows/BoltzmanDistribution.svelte";
     import CollisionalDistribution from "./windows/CollisionalDistribution.svelte";
-
-    import {getEnergyLabels} from "./functions/level_labels";
-
-    
-    import {readFromFile} from "./functions/read_files";
     import { parse as Yml } from 'yaml';
+
+    import {PlanksConstant, SpeedOfLight} from "./functions/constants";
+
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     export let active=false;
-    
+
     const dispatch = createEventDispatcher();
+
     let electronSpin=false, zeemanSplit= false;
     let collisionalRateType = "excitation"
     let trapTemp = 5.7
@@ -75,7 +74,7 @@
         powerBroadening.forEach(f=>power_broadening[f.label]=f.value)
 
         const einstein_coefficient = {}
-        einsteinCoefficient.forEach(f=>einstein_coefficient[f.label]=f.value)
+        einsteinCoefficientA.forEach(f=>einstein_coefficient[f.label]=f.value)
 
         const rate_coefficients = {}
         rateCoefficients.forEach(f=>rate_coefficients[f.label]=f.value)
@@ -105,7 +104,7 @@
     let variable = "time", variableRange = "1e12, 1e16, 10";
     const variablesList = ["time", "He density(cm3)", "Power(W)"]
 
-    let collisionalCoefficient=[], einsteinCoefficient=[];
+    let collisionalCoefficient=[], einsteinCoefficientA=[], einsteinCoefficientB=[];
 
     function changeCollisionalRateType() {
         collisionalCoefficient = collisionalCoefficient.map(level=>{
@@ -120,7 +119,7 @@
 
     let energyUnit="cm-1";
     let numberOfLevels = 3;
-    let {energyLevels=[]} = getEnergyLabels({numberOfLevels, electronSpin, zeemanSplit})
+    let energyLevels = [];
     let boltzmanWindow = false;
     let energyFilename, collisionalFilename, einsteinFilename;
     $: boltzmanArgs = {energyLevels, trapTemp, electronSpin, zeemanSplit, energyUnit}
@@ -187,7 +186,7 @@
             const CONFIG = Yml(fs.readFileSync(configFile, "utf-8"));
             
             ({mainParameters, simulationParameters, dopplerLineshape, powerBroadening, rateCoefficients} = CONFIG);
-            ({trapTemp, electronSpin, zeemanSplit, energyUnit, currentLocation, filename} = CONFIG);
+            ({trapTemp, electronSpin, zeemanSplit, currentLocation, filename} = CONFIG);
             ({energyFilename, collisionalFilename, einsteinFilename} = CONFIG);
 
             energyFilename = window.path.join(configFileLocation, energyFilename);
@@ -197,12 +196,45 @@
             ({levels:energyLevels, unit:energyUnit} = await getYMLFileContents(energyFilename));
             numberOfLevels = energyLevels.length;
             ({rateConstants:collisionalCoefficient, type:collisionalRateType} = await getYMLFileContents(collisionalFilename));
-            ({rateConstants:einsteinCoefficient} = await getYMLFileContents(einsteinFilename));
+            ({rateConstants:einsteinCoefficientA} = await getYMLFileContents(einsteinFilename));
+
+            einsteinCoefficientA = einsteinCoefficientA.map((e)=>{e.value = e.value.toExponential(3); return e});
+            collisionalCoefficient = collisionalCoefficient.map((e)=>{e.value = e.value.toExponential(3); return e});
             window.createToast("CONFIG loaded");
         } catch (error) {$mainPreModal = {modalContent:error, open:true}}
     }
+    
+    function computeEinsteinB() {
+        const einsteinCoefficientB_emission = einsteinCoefficientA.map(({label, value})=>{
+            const [final, initial] = label.split("-->").map(l=>l.trim())
+            
+            const {value:v0} = window._.find(energyLevels, (e)=>e.label==initial)
+            const {value:v1} = window._.find(energyLevels, (e)=>e.label==final)
+            
+            let freq = parseFloat(v1) - parseFloat(v0) // in Hz or s-1
+            
+            energyUnit === "MHz" ? freq *= 1e6 : freq *= SpeedOfLight*100;
+
+            const constTerm = SpeedOfLight**3/(8*Math.PI*PlanksConstant*freq**3)
+            const B = constTerm*value
+            return {label, value:B.toExponential(3)}
+        })
+        const einsteinCoefficientB_absorption = einsteinCoefficientB_emission.map(({label, value})=>{
+            const [final, initial] = label.split("-->").map(l=>l.trim())
+            
+            const {Gi, Gf} = computeStatisticalWeight({electronSpin, zeemanSplit, final, initial});
+            const weight = Gf/Gi
+
+            const B = weight*parseFloat(value)
+            const newLabel = `${initial} --> ${final}`
+            return {label:newLabel, value:B.toExponential(3)}
+        })
+        einsteinCoefficientB = [...einsteinCoefficientB_emission, ...einsteinCoefficientB_absorption]
+        
+    }
 
 </script>
+
 
 <style lang="scss">
     .locationColumn {
@@ -294,7 +326,7 @@
 
 {#if active}
 
-    <BoltzmanDistribution {boltzmanArgs} bind:active={boltzmanWindow} />
+    <BoltzmanDistribution {...boltzmanArgs} bind:active={boltzmanWindow} />
     <CollisionalDistribution {...collisionalArgs} bind:active={collisionalWindow} />
 
     <SeparateWindow id="ROSAA__modal" title="ROSAA modal" bind:active >
@@ -371,10 +403,31 @@
                 {#if includeSpontaneousEmission}
                     <div class="sub_container__div box">
                         <div class="subtitle">Einstein Co-efficients</div>
+
+                        <div class="control__div ">
+                            <button class="button is-link " on:click={computeEinsteinB}>Compute Einstein B</button>
+
+                        </div>
+
                         
-                        {#if einsteinCoefficient.length>0}
+                        <hr>
+                        <div class="subtitle">Einstein A Co-efficients</div>
+
+                        {#if einsteinCoefficientA.length>0}
                             <div class="content__div ">
-                                {#each einsteinCoefficient as {label, value}(label)}
+                                {#each einsteinCoefficientA as {label, value}(label)}
+                                    <Textfield bind:value {label} />
+                                {/each}
+                            </div>
+                        {/if}
+
+
+                        
+                        {#if einsteinCoefficientB.length>0}
+                            <hr>
+                            <div class="subtitle">Einstein B Co-efficients</div>
+                            <div class="content__div ">
+                                {#each einsteinCoefficientB as {label, value}(label)}
                                     <Textfield bind:value {label} />
                                 {/each}
                             </div>
@@ -392,6 +445,7 @@
 
                             <button class="button is-link " on:click={compteCollisionalBalanceConstants}>Compute balance rate</button>
                             <button class="button is-link " on:click={()=>collisionalWindow=true}>Compute Collisional Cooling</button>
+                            
                         </div>
 
                         {#if collisionalCoefficient.length>0}
@@ -479,7 +533,6 @@
                 {#if running}
                     <button transition:fade class="button is-danger" on:click="{()=>{py ? py.kill() : console.log('pyEvent is not available')}}" >Stop</button>
                 {/if}    
-            
                 <button  class="button is-link" on:click="{(e)=>{showreport = !showreport}}" >{showreport ? "Go Back" : "Status report"}</button>
                 <button  class="button is-link" class:is-loading={running} on:click="{simulation}" on:pyEvent={pyEventHandle} on:pyEventClosed="{pyEventClosedHandle}" on:pyEventData={pyEventDataReceivedHandle}>Submit</button>
             </div>
