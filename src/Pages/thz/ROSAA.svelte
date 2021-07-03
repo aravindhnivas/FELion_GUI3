@@ -112,12 +112,8 @@
     let energyFilename, collisionalFilename, einsteinFilename;
     
     $: boltzmanArgs = {energyLevels, trapTemp, electronSpin, zeemanSplit, energyUnit}
-
     let collisionalCoefficient_balance = [];
-    $: collisionalRateConstants = [...collisionalCoefficient, ...collisionalCoefficient_balance]
-    $: collisionalArgs = {collisionalRateConstants, energyLevels, electronSpin, zeemanSplit, energyUnit}
     let configFile = db.get("ROSAA_config_file") || ""
-
     async function loadConfig() {
     
         try {
@@ -337,7 +333,7 @@
                 {/if}
 
                 {#if includeCollision}
-                    <CollisionalCoefficients bind:collisionalCoefficient bind:collisionalCoefficient_balance bind:collisionalRateType {collisionalArgs} {trapTemp} />
+                    <CollisionalCoefficients bind:collisionalCoefficient bind:collisionalCoefficient_balance bind:collisionalRateType {...{energyLevels, electronSpin, zeemanSplit, energyUnit, trapTemp}} />
                 {/if}
                 
                 <!-- Simulation parameters -->
@@ -410,5 +406,5 @@
             </div>
         </svelte:fragment>
     </SeparateWindow>
-    
+
 {/if}

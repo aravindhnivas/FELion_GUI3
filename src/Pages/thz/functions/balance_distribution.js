@@ -29,7 +29,7 @@ export default function({groundLevel, excitedLevel, energyLevels, trapTemp=5, el
         const delE = Math.abs(energy_levels[groundLevel] - energy_levels[excitedLevel])
         const energyTerm = Math.exp(-delE/KT)
         const rateConstant = Gj*energyTerm
-        console.log(rateConstant)
+        console.log(energyLevels)
         return rateConstant.toExponential(3)
     } catch (error) {
         console.error(error)

@@ -7,11 +7,11 @@
     import balance_distribution from "../functions/balance_distribution";
 
     export let collisionalCoefficient=[], collisionalCoefficient_balance=[], collisionalRateType="both";
-    export let collisionalArgs, trapTemp;
+    export let energyLevels, electronSpin, zeemanSplit, energyUnit, trapTemp;
     $: deexcitation = collisionalRateType==="deexcitation";
     let collisionalWindow=false;
     
-    let {energyLevels, electronSpin, zeemanSplit, energyUnit} = collisionalArgs;
+    let {} = collisionalArgs;
 
     function changeCollisionalRateType() {
     
@@ -26,6 +26,7 @@
 
     const compteCollisionalBalanceConstants = () => {
         const balanceArgs  = {energyLevels, trapTemp,  electronSpin, zeemanSplit, energyUnit}
+        console.log(balanceArgs)
         collisionalCoefficient_balance = collisionalCoefficient.map(coefficient=>{
             const {label, value} = coefficient
             const levelLabels = label.split(" --> ").map(f=>f.trim())
@@ -49,6 +50,9 @@
         })
 
     }
+
+    $: collisionalRateConstants = [...collisionalCoefficient, ...collisionalCoefficient_balance]
+    $: collisionalArgs = {collisionalRateConstants, energyLevels, electronSpin, zeemanSplit, energyUnit}
 
 </script>
 
