@@ -11,7 +11,7 @@
     $: deexcitation = collisionalRateType==="deexcitation";
     let collisionalWindow=false;
     
-    let {} = collisionalArgs;
+    let numberDensity = "2e14";
 
     function changeCollisionalRateType() {
     
@@ -54,6 +54,18 @@
     $: collisionalRateConstants = [...collisionalCoefficient, ...collisionalCoefficient_balance]
     $: collisionalArgs = {collisionalRateConstants, energyLevels, electronSpin, zeemanSplit, energyUnit}
 
+    function computeRateConstant() {
+
+        const compute = (rate) => {
+            rate.value *= numberDensity; 
+            rate.value = rate.value.toExponential(3);
+            return rate
+        }
+
+        collisionalCoefficient = collisionalCoefficient.map(rate=>compute(rate))
+        collisionalCoefficient_balance = collisionalCoefficient_balance.map(rate=>compute(rate))
+            
+    }
 </script>
 
 <style lang="scss">
@@ -95,10 +107,13 @@
     <div class="subtitle">Collisional rate constants</div>
     <div class="control__div ">
         <CustomSelect options={["deexcitation", "excitation", "both"]} bind:picked={collisionalRateType} on:change={changeCollisionalRateType}/>
-
         <button class="button is-link " on:click={compteCollisionalBalanceConstants}>Compute balance rate</button>
         <button class="button is-link " on:click={()=>collisionalWindow=true}>Compute Collisional Cooling</button>
-        
+    </div>
+
+    <div class="control__div">
+        <Textfield bind:value={numberDensity} label="numberDensity (cm-3)"/>
+        <button class="button is-link " on:click={computeRateConstant}>Compute rate constants</button>
     </div>
 
     {#if collisionalCoefficient.length>0}
@@ -107,16 +122,23 @@
                 <Textfield bind:value {label}/>
             {/each}
         </div>
-        {/if}
+    
+    {/if}
 
     {#if collisionalCoefficient_balance.length>0}
         <div class="content__div ">
 
             <hr><hr>
+            
+
+
             {#each collisionalCoefficient_balance as {label, value}(label)}
+            
                 <Textfield bind:value {label}/>
             {/each}
+
         </div>
+
     {/if}
 
 </div>

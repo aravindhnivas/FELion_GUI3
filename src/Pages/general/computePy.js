@@ -113,9 +113,9 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
 
                     py.stderr.on("data", err => {
                         
-                        errContent = err.toString()
+                        errContent += err.toString()
                         console.error(errContent)
-                        reject(errContent)
+                        
                         error_occured_py = true
                     });
 
@@ -133,7 +133,7 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                             console.log(dataFromPython)
                             resolve(dataFromPython)
                         }
-
+                        reject(errContent)
                         if(e) {
                             const pyEventClosed = new CustomEvent('pyEventClosed', { bubbles: false, detail: { py, pyfile } });
 
