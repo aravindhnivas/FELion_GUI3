@@ -169,6 +169,7 @@
 
         } catch (error) {$mainPreModal = {modalContent:error, open:true}}
     }
+
     const getYMLFileContents = (filename) => {
         if (fs.existsSync(filename)) {
 
@@ -207,7 +208,6 @@
     function computeEinsteinB() {
         const einsteinCoefficientB_emission = einsteinCoefficientA.map(({label, value})=>{
             const [final, initial] = label.split("-->").map(l=>l.trim())
-            
             const {value:v0} = window._.find(energyLevels, (e)=>e.label==initial)
             const {value:v1} = window._.find(energyLevels, (e)=>e.label==final)
             
@@ -538,5 +538,5 @@
             </div>
         </svelte:fragment>
     </SeparateWindow>
-    
+
 {/if}
