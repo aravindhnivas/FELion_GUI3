@@ -35,6 +35,7 @@
 
                 newValue = value*balance_distribution({...balanceArgs, groundLevel, excitedLevel})
                 newLabel = `${groundLevel} --> ${excitedLevel}`
+                
             } else {
 
                 const [groundLevel, excitedLevel] = levelLabels
@@ -43,7 +44,7 @@
 
 
             }
-
+            // console.log(value, newValue)
             return {label:newLabel, value:newValue.toExponential(3), id:getID()}
         })
 
@@ -85,7 +86,7 @@
 
 </style>
 
-<CollisionalDistribution {...collisionalArgs} bind:active={collisionalWindow} maximize={false}/>
+<CollisionalDistribution {...collisionalArgs} bind:active={collisionalWindow} />
 <div class="sub_container__div box">
     <div class="subtitle">Collisional rate constants</div>
     <div class="control__div ">
