@@ -34,7 +34,7 @@ def plotGraph(plotArgs):
     datfiles, fundamentalsfiles, overtonefiles, combinationfiles = plotArgs["selectedWidgets"]
     datfiles = [datlocation/i for i in datfiles]
     
-    grid_ratio = np.array(ratio.split(","), dtype=np.float)
+    grid_ratio = np.array(ratio.split(","), dtype=float)
     grid = {"hspace": hspace, "wspace": wspace, "width_ratios": grid_ratio}
     
     nrows = (2, 1)[onlyExp]

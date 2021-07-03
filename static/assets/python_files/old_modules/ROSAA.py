@@ -253,8 +253,8 @@ def ROSAA_modal(args):
     
     ##############################################
     
-    _on = np.array(Non.y[numberOfLevel], dtype=np.float)
-    _off = np.array(Noff.y[numberOfLevel], dtype=np.float)
+    _on = np.array(Non.y[numberOfLevel], dtype=float)
+    _off = np.array(Noff.y[numberOfLevel], dtype=float)
 
     signal = 1 - (_on[-1] / _off[-1])
     
@@ -317,9 +317,9 @@ def main(conditions):
                 writeFile(Non.y.T, label=f"{_range[i]:.2e}_on")
 
         
-        signal_nHe = np.array(signal_nHe, dtype=np.float)*100
-        Noff_nHe = np.array(Noff_nHe, dtype=np.float)
-        Non_nHe = np.array(Non_nHe, dtype=np.float)
+        signal_nHe = np.array(signal_nHe, dtype=float)*100
+        Noff_nHe = np.array(Noff_nHe, dtype=float)
+        Non_nHe = np.array(Non_nHe, dtype=float)
         
         if write:
 

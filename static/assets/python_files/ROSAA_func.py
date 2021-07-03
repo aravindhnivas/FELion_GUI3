@@ -83,7 +83,7 @@ def boltzman_distribution(energy_levels, temp=5, electronSpin=False, zeemanSplit
         temp = Gj*np.exp(-energy/KT)
         Nj.append(temp)
 
-    Nj = np.array(Nj, dtype=np.float)
+    Nj = np.array(Nj, dtype=float)
     Nj = Nj/Nj.sum()
     return Nj
 

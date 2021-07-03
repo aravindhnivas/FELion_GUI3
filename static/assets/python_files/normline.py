@@ -55,10 +55,10 @@ class normplot:
         dataToSend = {"base": {}, "SA": {}, "pow": {}, "average": {}, "average_rel": {}, "average_per_photon": {}}
 
         # For Average binning (Norm. method: log)
-        xs = np.array([], dtype=np.float)
-        ys = np.array([], dtype=np.float)
-        xs_r = np.array([], dtype=np.float)
-        ys_r = np.array([], dtype=np.float)
+        xs = np.array([], dtype=float)
+        ys = np.array([], dtype=float)
+        xs_r = np.array([], dtype=float)
+        ys_r = np.array([], dtype=float)
 
         def makeDataToSend(x, y, name, update={}):
 

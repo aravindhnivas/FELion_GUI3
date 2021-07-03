@@ -276,8 +276,8 @@ class ROSAA():
                 resOnCounts_list.append(resOnCounts)
                 print(f"Time taken for run-{index} ({var=:.2e}): {round(perf_counter()-time_start, 2)} s", flush=True)
                 print(f"Total time taken: {round(perf_counter()-self.time_start, 2)} s", flush=True)
-            resOffCounts_list = np.array(resOffCounts_list, dtype=np.float)
-            resOnCounts_list = np.array(resOnCounts_list, dtype=np.float)
+            resOffCounts_list = np.array(resOffCounts_list, dtype=float)
+            resOnCounts_list = np.array(resOnCounts_list, dtype=float)
 
             off_counts = []
             on_counts = []
@@ -285,8 +285,8 @@ class ROSAA():
                 off_counts.append(resOffCounts_list[i, self.total_energy_levels, -1])
                 on_counts.append(resOnCounts_list[i, self.total_energy_levels, -1])
             
-            off_counts = np.array(off_counts, dtype=np.float)
-            on_counts = np.array(on_counts, dtype=np.float)
+            off_counts = np.array(off_counts, dtype=float)
+            on_counts = np.array(on_counts, dtype=float)
             signal = (1 - (on_counts / off_counts))*100
             print(f"Total time taken for simulation: {round(perf_counter()-self.time_start, 2)} s", flush=True)
             
@@ -400,7 +400,7 @@ class ROSAA():
             dR_dt = self.compute_attachment_process(N_He, ion_counts)
         else:
             dR_dt = list(ion_counts.values())
-        dR_dt = np.array(dR_dt, dtype=np.float)
+        dR_dt = np.array(dR_dt, dtype=float)
         return dR_dt
 
     def lineshape_normalise(self, power):

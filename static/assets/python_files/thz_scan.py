@@ -48,8 +48,8 @@ def thz_plot(filename):
     #############################################
 
     # print(f"{resOn}\n{resOff}")
-    resOn = np.array(resOn, dtype=np.float)
-    resOff = np.array(resOff, dtype=np.float)
+    resOn = np.array(resOn, dtype=float)
+    resOff = np.array(resOff, dtype=float)
 
     #############################################
 
@@ -111,9 +111,9 @@ def binning(xs, ys, delta=1e-5):
     # binsx = bins[non_zero_i] - BIN_STEP/2
     # data_binned = bin_a[non_zero_i]/bin_occ[non_zero_i]
     # print("after binning", binsx, data_binned)
-    binsx = np.array(binsx, dtype=np.float)
+    binsx = np.array(binsx, dtype=float)
 
-    data_binned = np.array(data_binned, dtype=np.float)
+    data_binned = np.array(data_binned, dtype=float)
     return binsx, data_binned
 
 def plot_thz(ax=None, save_dat=True, latex=False):
@@ -304,8 +304,8 @@ def save_fig():
 
 def export_file(fname, freq, inten):
 
-        freq = np.array(freq, dtype=np.float)
-        inten = np.array(inten, dtype=np.float)
+        freq = np.array(freq, dtype=float)
+        inten = np.array(inten, dtype=float)
         if not pt("./EXPORT").exists(): 
             os.mkdir("./EXPORT")
         

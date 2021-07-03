@@ -239,7 +239,7 @@ class ROSAA():
 
         N_He = self.totalAttachmentLevels*[0]
         self.boltzman_distribution_source = (N, [*N, *N_He])[self.includeAttachmentRate]
-        self.boltzman_distribution_source = np.array(self.boltzman_distribution_source, dtype=np.float)
+        self.boltzman_distribution_source = np.array(self.boltzman_distribution_source, dtype=float)
 
         def run_for_each(const, run_type="nHe"):
 
@@ -270,8 +270,8 @@ class ROSAA():
                 resOnCounts_list.append(resOnCounts)
                 print(f"Time taken for run-{index} ({var=:.2e}): {round(perf_counter()-time_start, 2)} s", flush=True)
                 print(f"Total time taken: {round(perf_counter()-self.time_start, 2)} s", flush=True)
-            resOffCounts_list = np.array(resOffCounts_list, dtype=np.float)
-            resOnCounts_list = np.array(resOnCounts_list, dtype=np.float)
+            resOffCounts_list = np.array(resOffCounts_list, dtype=float)
+            resOnCounts_list = np.array(resOnCounts_list, dtype=float)
 
             off_counts = []
             on_counts = []
@@ -279,8 +279,8 @@ class ROSAA():
                 off_counts.append(resOffCounts_list[i, self.total_energy_levels, -1])
                 on_counts.append(resOnCounts_list[i, self.total_energy_levels, -1])
             
-            off_counts = np.array(off_counts, dtype=np.float)
-            on_counts = np.array(on_counts, dtype=np.float)
+            off_counts = np.array(off_counts, dtype=float)
+            on_counts = np.array(on_counts, dtype=float)
             signal = (1 - (on_counts / off_counts))*100
             print(f"Total time taken for simulation: {round(perf_counter()-self.time_start, 2)} s", flush=True)
             

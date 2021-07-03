@@ -158,7 +158,7 @@ class depletionplot:
         self.resOnFile = self.location / self.widget.resOnList.get()
         self.resOffFile = self.location / self.widget.resOffList.get()
         
-        power = np.asarray(self.new_power.get().split(","), dtype=np.float)
+        power = np.asarray(self.new_power.get().split(","), dtype=float)
         self.power = {"resOn": power[0]/1000, "resOff": power[1]/1000} # mJ to J
 
         self.nshots = self.new_nshots.get()
@@ -466,7 +466,7 @@ if __name__ == "__main__":
     location = args[0]
     resOnFile = pt(location)/args[1]
     resOffFile = pt(location)/args[2]
-    power = np.asarray(args[3:5], dtype=np.float)
+    power = np.asarray(args[3:5], dtype=float)
     nshots = int(args[5])
     
     massIndex = int(args[6])
