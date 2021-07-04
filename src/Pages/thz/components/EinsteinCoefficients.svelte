@@ -21,7 +21,7 @@
             energyUnit === "MHz" ? freq *= 1e6 : freq *= SpeedOfLight*100;
             const constTerm = SpeedOfLight**3/(8*Math.PI*PlanksConstant*freq**3)
             const B = constTerm*value
-            return {label, value:B.toExponential(3)}
+            return {label, value:B.toExponential(3), id:getID()}
         })
 
         const einsteinCoefficientB_absorption = einsteinCoefficientB_emission.map(({label, value})=>{
@@ -30,14 +30,14 @@
             const weight = Gf/Gi
             const B = weight*parseFloat(value)
             const newLabel = `${initial} --> ${final}`
-            return {label:newLabel, value:B.toExponential(3)}
+            return {label:newLabel, value:B.toExponential(3), id:getID()}
         })
 
         einsteinCoefficientB = [...einsteinCoefficientB_emission, ...einsteinCoefficientB_absorption]
         
     }
 
-    let lorrentz="2e5", gaussian="2e5", toggleEinsteinBcolumn=false;
+    let lorrentz="2e5", gaussian="2e5";
     let power="2e-5", trapArea="5e-5"
     async function computeEinsteinBRate(e) {
         const args = [JSON.stringify({lorrentz, gaussian})]
@@ -51,15 +51,14 @@
             const constantTerm = power/(trapArea*SpeedOfLight)
             const norm = constantTerm*linshape
 
+            computeEinsteinB();
             einsteinCoefficientB = einsteinCoefficientB.map(e=>{
                 e.value *= norm;
                 e.value = e.value.toExponential(3) 
                 return e
             })
 
-        } catch (error) {
-            $mainPreModal = {modalContent:error, open:true}
-        }
+        } catch (error) {$mainPreModal = {modalContent:error, open:true}}
     }
 
 </script>
@@ -105,7 +104,7 @@
     <div class="subtitle">Einstein A Co-efficients</div>
     {#if einsteinCoefficientA.length>0}
         <div class="content__div ">
-            {#each einsteinCoefficientA as {label, value}(label)}
+            {#each einsteinCoefficientA as {label, value, id}(id)}
                 <Textfield bind:value {label} />
             {/each}
         </div>
@@ -131,7 +130,7 @@
         </div>
 
         <div class="content__div ">
-            {#each einsteinCoefficientB as {label, value}(label)}
+            {#each einsteinCoefficientB as {label, value, id}(id)}
 
                 <Textfield bind:value {label} />
             {/each}

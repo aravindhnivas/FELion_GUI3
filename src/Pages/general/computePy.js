@@ -132,8 +132,8 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                             window.dataFromPython = dataFromPython = JSON.parse(dataFromPython.toString("utf-8"))
                             console.log(dataFromPython)
                             resolve(dataFromPython)
-                        }
-                        reject(errContent)
+                        } else {reject(errContent)}
+                        
                         if(e) {
                             const pyEventClosed = new CustomEvent('pyEventClosed', { bubbles: false, detail: { py, pyfile } });
 

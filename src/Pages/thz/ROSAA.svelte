@@ -50,6 +50,7 @@
         window.createToast("Terminated", "danger")
         statusReport += "\n######## TERMINATED ########"
     }
+
     const simulation = (e) => {
 
         const collisional_rates = {}
@@ -137,14 +138,32 @@
         } else return Promise.reject(filename + " file doesn't exist")
     }
 
+    const setID = (obj) => {
+        obj.id = window.getID();
+        return obj
+
+    }
+
+    const correctObjValue = (obj) => {
+        obj.value = obj.value.toExponential(3)
+        return obj
+
+    }
+
     async function setConfig() {
         try {
-
             const configFileLocation = window.path.dirname(configFile);
-            
             const CONFIG = Yml(fs.readFileSync(configFile, "utf-8"));
             
             ({mainParameters, simulationParameters, dopplerLineshape, powerBroadening, rateCoefficients} = CONFIG);
+
+            mainParameters = mainParameters.map(setID);
+            simulationParameters = simulationParameters.map(setID);
+            dopplerLineshape = dopplerLineshape.map(setID);
+            powerBroadening = powerBroadening.map(setID);
+            rateCoefficients = rateCoefficients.map(setID);
+
+
             ({trapTemp, electronSpin, zeemanSplit, currentLocation, filename} = CONFIG);
             ({energyFilename, collisionalFilename, einsteinFilename} = CONFIG);
 
@@ -153,16 +172,20 @@
             einsteinFilename = window.path.join(configFileLocation, einsteinFilename);
 
             ({levels:energyLevels, unit:energyUnit} = await getYMLFileContents(energyFilename));
+            
+            energyLevels = energyLevels.map(setID);
             numberOfLevels = energyLevels.length;
+            
             ({rateConstants:collisionalCoefficient, type:collisionalRateType} = await getYMLFileContents(collisionalFilename));
-            ({rateConstants:einsteinCoefficientA} = await getYMLFileContents(einsteinFilename));
+            collisionalCoefficient = collisionalCoefficient.map(setID).map(correctObjValue);
 
-            einsteinCoefficientA = einsteinCoefficientA.map((e)=>{e.value = e.value.toExponential(3); return e});
-            collisionalCoefficient = collisionalCoefficient.map((e)=>{e.value = e.value.toExponential(3); return e});
+            ({rateConstants:einsteinCoefficientA} = await getYMLFileContents(einsteinFilename));
+            einsteinCoefficientA = einsteinCoefficientA.map(setID).map(correctObjValue);
+            
+            console.log(energyLevels, collisionalCoefficient, einsteinCoefficientA);
             window.createToast("CONFIG loaded");
         } catch (error) {$mainPreModal = {modalContent:error, open:true}}
     }
-
 
 </script>
 
@@ -254,11 +277,11 @@
 
 </style>
 
-
 {#if active}
-    <BoltzmanDistribution {...boltzmanArgs} bind:active={boltzmanWindow} maximize={false}/>
 
+    <BoltzmanDistribution {...boltzmanArgs} bind:active={boltzmanWindow} maximize={false}/>
     <SeparateWindow id="ROSAA__modal" title="ROSAA modal" bind:active>
+
         <svelte:fragment slot="header_content__slot" >
             <div class="locationColumn" >
                 <button class="button is-link" id="thz_modal_filebrowser_btn" on:click={browse_folder}>Browse</button>
@@ -305,7 +328,7 @@
 
                     <div class="subtitle">Main Parameters</div>
                     <div class="content__div ">
-                        {#each mainParameters as {label, value}(label)}
+                        {#each mainParameters as {label, value, id}(id)}
                             <Textfield bind:value {label}/>
                         {/each}
                     </div>
@@ -322,7 +345,7 @@
                     </div>
 
                     <div class="content__div ">
-                        {#each energyLevels as {label, value}(label)}
+                        {#each energyLevels as {label, value, id}(id)}
                             <Textfield bind:value {label} />
                         {/each}
                     </div>
@@ -342,7 +365,7 @@
                     <div class="subtitle">Simulation parameters</div>
                     <div class="content__div ">
 
-                        {#each simulationParameters as {label, value}(label)}
+                        {#each simulationParameters as {label, value, id}(id)}
                             <Textfield bind:value {label} />
                         {/each}
                         <hr> <div class="subtitle" style="width: 100%; display:grid; place-items: center;">Transition levels</div> <hr>
@@ -363,7 +386,7 @@
                     <div class="subtitle">Doppler lineshape</div>
                     <div class="content__div ">
                         <Textfield bind:value={trapTemp} label="trapTemp(K)"/>
-                        {#each dopplerLineshape as {label, value, type, step}(label)}
+                        {#each dopplerLineshape as {label, value, type, step, id}(id)}
                             <Textfield bind:value {label} input$type={type} input$step={step}/>
                         {/each}
                     </div>
@@ -373,7 +396,7 @@
                 <div class="sub_container__div box">
                     <div class="subtitle">Lorrentz lineshape</div>
                     <div class="content__div ">
-                        {#each powerBroadening as {label, value}(label)}
+                        {#each powerBroadening as {label, value, id}(id)}
                             <Textfield bind:value {label} />
                         {/each}
                     </div>
@@ -383,7 +406,7 @@
                     <div class="sub_container__div box">
                         <div class="subtitle">Rare-gas attachment (K3) and dissociation (kCID) constants</div>
                         <div class="content__div">
-                            {#each rateCoefficients as {label, value}(label)}
+                            {#each rateCoefficients as {label, value, id}(id)}
                                 <Textfield bind:value {label}  />
                             {/each}
                         </div>

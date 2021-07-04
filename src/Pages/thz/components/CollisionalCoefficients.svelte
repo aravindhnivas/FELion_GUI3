@@ -26,11 +26,13 @@
 
     const compteCollisionalBalanceConstants = () => {
         const balanceArgs  = {energyLevels, trapTemp,  electronSpin, zeemanSplit, energyUnit}
-        console.log(balanceArgs)
-        collisionalCoefficient_balance = collisionalCoefficient.map(coefficient=>{
+        collisionalCoefficient_balance = []
+        collisionalCoefficient.forEach(coefficient=>{
             const {label, value} = coefficient
             const levelLabels = label.split(" --> ").map(f=>f.trim())
             let newLabel, newValue;
+            
+
             if(deexcitation) {
                 const [excitedLevel, groundLevel] = levelLabels
 
@@ -42,47 +44,49 @@
                 const [groundLevel, excitedLevel] = levelLabels
                 newValue = value*balance_distribution({...balanceArgs, groundLevel:excitedLevel, excitedLevel:groundLevel})
                 newLabel = `${excitedLevel} --> ${groundLevel}`
-
-
             }
-            // console.log(value, newValue)
-            return {label:newLabel, value:newValue.toExponential(3), id:getID()}
+            const alreadyComputed = _.find(collisionalCoefficient, (rate)=>rate.label==newLabel)
+
+            if(!alreadyComputed)  {
+                collisionalCoefficient_balance = [...collisionalCoefficient_balance, {label:newLabel, value:newValue.toExponential(3), id:getID()}]
+             }
+            
         })
 
     }
 
     $: collisionalRateConstants = [...collisionalCoefficient, ...collisionalCoefficient_balance]
     $: collisionalArgs = {collisionalRateConstants, energyLevels, electronSpin, zeemanSplit, energyUnit}
+    let rateConstants = []
+    
+    const computeRate = (rate) => {
 
-    function computeRateConstant() {
+        rate.value *= numberDensity; 
+        rate.value = rate.value.toExponential(3);
 
-        const compute = (rate) => {
-            rate.value *= numberDensity; 
-            rate.value = rate.value.toExponential(3);
-            return rate
-        }
-
-        collisionalCoefficient = collisionalCoefficient.map(rate=>compute(rate))
-        collisionalCoefficient_balance = collisionalCoefficient_balance.map(rate=>compute(rate))
-            
+        return rate
     }
+    $: if(collisionalRateConstants.length>0 && numberDensity) {
+        rateConstants = _.cloneDeep(collisionalRateConstants).map(computeRate)
+
+    }
+
 </script>
 
 <style lang="scss">
+
     .sub_container__div {
 
         display: grid;
         grid-row-gap: 1em;
-
-        .subtitle {place-self:center;}
+        .subtitle {place-self:center; margin-bottom: 0;}
         .content__div {
-
             max-height: 30rem;
             overflow-y: auto;
+
             display: flex;
             flex-wrap: wrap;
             justify-self: center; // grow from center (width is auto adjusted)
-
             gap: 1em;
             justify-content: center; // align items center
 
@@ -94,51 +98,63 @@
             flex-wrap: wrap;
             justify-content: center;
             gap: 1em;
-     
         }
     }
-
     hr {background-color: #fafafa; margin: 0;}
 
 </style>
 
 <CollisionalDistribution {...collisionalArgs} bind:active={collisionalWindow} />
+
 <div class="sub_container__div box">
     <div class="subtitle">Collisional rate constants</div>
+
     <div class="control__div ">
         <CustomSelect options={["deexcitation", "excitation", "both"]} bind:picked={collisionalRateType} on:change={changeCollisionalRateType}/>
         <button class="button is-link " on:click={compteCollisionalBalanceConstants}>Compute balance rate</button>
         <button class="button is-link " on:click={()=>collisionalWindow=true}>Compute Collisional Cooling</button>
-    </div>
 
-    <div class="control__div">
-        <Textfield bind:value={numberDensity} label="numberDensity (cm-3)"/>
-        <button class="button is-link " on:click={computeRateConstant}>Compute rate constants</button>
     </div>
 
     {#if collisionalCoefficient.length>0}
+
         <div class="content__div ">
-            {#each collisionalCoefficient as {label, value}(label)}
+            {#each collisionalCoefficient as {label, value, id}(id)}
+
                 <Textfield bind:value {label}/>
+
             {/each}
         </div>
     
     {/if}
 
     {#if collisionalCoefficient_balance.length>0}
+        <hr>
+
+
         <div class="content__div ">
-
-            <hr><hr>
-            
-
-
-            {#each collisionalCoefficient_balance as {label, value}(label)}
-            
+    
+            {#each collisionalCoefficient_balance as {label, value, id}(id)}
                 <Textfield bind:value {label}/>
+            
             {/each}
-
         </div>
-
     {/if}
+
+    <hr>
+    <div class="subtitle">Collisional Rates (per sec) </div>
+    <div class="control__div">
+        <Textfield bind:value={numberDensity} label="numberDensity (cm-3)"/>
+
+    </div>
+
+    <div class="content__div ">
+
+        {#each rateConstants as {label, value, id}(id)}
+
+            <Textfield bind:value {label}/>
+        {/each}
+
+    </div>
 
 </div>
