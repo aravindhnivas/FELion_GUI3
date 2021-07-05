@@ -10,3 +10,6 @@ static/assets/python_files/local/*.json
 static/assets/python_files/__pycache__/*.pyc
 .vscode
 static/assets/python_files/notebooks/CollisionalSimulations/*.png
+static/assets/python_files/notebooks/profile_fit/.ipynb_checkpoints/voigt_profile-checkpoint.ipynb
+static/assets/python_files/notebooks/profile_fit/CD+_J01.pdf
+static/assets/python_files/notebooks/profile_fit/CD+_J01.png
