@@ -1,21 +1,21 @@
 <script>
 
     // Importing modules
-    import {pythonpath, pythonscript, pyVersion, github, backupName, developerMode} from "./settings/svelteWritables";
+    import {pythonpath, pythonscript, pyVersion, github, backupName, developerMode, suppressInitialDeveloperWarning} from "./settings/svelteWritables";
     import {mainPreModal} from "../svelteWritable";
     import {activateChangelog, windowLoaded} from "../js/functions"
     import Textfield from '@smui/textfield';
     import {onMount} from "svelte";
-    import { fade } from 'svelte/transition';
     import CustomDialog from "../components/CustomDialog.svelte"
     import CustomSelect from '../components/CustomSelect.svelte';
+    import CustomSwitch from '../components/CustomSwitch.svelte';
     import Changelog from "../components/Changelog.svelte";
 
     import {download} from "./settings/donwloadUpdate";
     
     import {InstallUpdate} from "./settings/installUpdate";
     
-    import { Button, Message, Snackbar } from 'svelma'
+    // import { Button, Message, Snackbar } from 'svelma'
 
     
     import {updateCheck} from "./settings/updateCheck";
@@ -37,13 +37,13 @@
 
     }
 
-    let selected = "Update"
+    let selected = db.get("settingsActiveTab") || "Update"
     
-    const navigate = (e) => {selected = e.target.innerHTML}
+    const navigate = (e) => {selected = e.target.innerHTML; db.set("settingsActiveTab", selected);}
+
 
     let pythonpathCheck;
 
-    
     onMount(()=>{
         setTimeout(async ()=>{
 
@@ -77,19 +77,8 @@
     }
 
     let commandToRun = "", commandArgsToRun = "";
-
     
-    // $: if(!$developerMode) {
-    //     console.log("Setting default pathon path")
-    //     $pythonpath = path.resolve(__dirname, "../python3/python")
-    //     $pythonscript = path.resolve(__dirname, "assets/python_files")
-    // } else {
-    //     window.showStackContext({title:"Warning", text:"If python path is invalid, the program might not work", type:"error"});
-
-    // }
-
-    $: if($developerMode&&$windowLoaded) {window.showStackContext({title:"Warning", text:"If python path is invalid, the program might not work", type:"error"});}
-
+    $: if($developerMode&&$windowLoaded&&!$suppressInitialDeveloperWarning) {window.showStackContext({title:"Warning", text:"If python path is invalid, the program might not work", type:"error"});}
 
     $: if($github.branch === "developer") {
         window.showStackContext({title:"Warning", text:"Developer channel may not be stable and contains bugs.", type:"error"});
@@ -98,11 +87,11 @@
 
 </script>
 
-
 <style lang="scss">
 
     section { margin: 0; padding: 0; }
     .clicked {border-left: 2px solid #fafafa; border: solid 1px; border-radius: 1em;}
+
     * :global(option) { color: black; }
     .main__div {
         display: grid;
@@ -139,36 +128,40 @@
 
 <section class="section animated fadeIn" id="Settings" style="display:none">
     <div class="main__div">
-
         <div class="box left_container__div">
 
            <div class="title__div">
-
                 <div class="hvr-glow" class:clicked={selected==="Configuration"} on:click={navigate}>Configuration</div>
                 <div class="hvr-glow" class:clicked={selected==="Update"} on:click={navigate}>Update</div>
                 <div class="hvr-glow" class:clicked={selected==="Terminal"} on:click={navigate}>Terminal</div>
+
                 <div class="hvr-glow" class:clicked={selected==="About"} on:click={navigate}>About</div>
            </div>
-
         </div>
 
         <div class="box">
-
             <div class="container right" id="Settings_right_column">
-
                 <div class="content animated fadeIn" class:hide={selected!=="Configuration"}>
                     <h1 class="title">Configuration</h1>
-                    <div class="subtitle">{$pyVersion}</div>
-                    <button class="button is-link" on:click="{()=>$developerMode = !$developerMode}">Developer mode: {$developerMode} </button>
 
-                    {#if $developerMode}
-                        <div class="align">
-                            <Textfield bind:value={$pythonpath} label="Python path" style="width: 100%; "/>
-                            <Textfield bind:value={$pythonscript} label="Python script path" style="width: 100%; " />
-                            <button class="button is-link" on:click={resetPyConfig}>Reset</button>
-                            <button class="button is-link" on:click={updatePyConfig}>Save</button>
-                        </div>
-                    {/if}
+                    <div class="subtitle">{$pyVersion}</div>
+
+                    <div class="align">
+                        <button class="button is-link" on:click="{()=>$developerMode = !$developerMode}">Developer mode: {$developerMode} </button>
+                        {#if $developerMode}
+
+                            <div class="align">
+                                <Textfield bind:value={$pythonpath} label="Python path" style="width: 100%; "/>
+                                <Textfield bind:value={$pythonscript} label="Python script path" style="width: 100%; " />
+                                <button class="button is-link" on:click={resetPyConfig}>Reset</button>
+        
+                                <button class="button is-link" on:click={updatePyConfig}>Save</button>
+                            </div>
+                            <div class="align">
+                                <CustomSwitch on:change={()=>db.set("suppressInitialDeveloperWarning", $suppressInitialDeveloperWarning)} bind:selected={$suppressInitialDeveloperWarning} label="suppressWarning"/>
+                            </div>
+                        {/if}
+                    </div>
                 </div>
 
                 <div class="content animated fadeIn" class:hide={selected!=="Update"}>
