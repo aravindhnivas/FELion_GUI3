@@ -139,12 +139,9 @@ class ROSAA:
         plt.show()
 
 if __name__ == "__main__":
-
-    args = sys.argv[1:][0].split(",")
-    conditions = json.loads(", ".join(args))
+    conditions = json.loads(sys.argv[1])
 
     pp = pprint.PrettyPrinter(indent=4)
     pp.pprint(conditions)
     sys.stdout.flush()
-
     ROSAA()
