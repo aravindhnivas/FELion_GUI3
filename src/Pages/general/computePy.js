@@ -15,7 +15,7 @@ window.checkPython = function checkPython({ defaultPy } = {}) {
     })
 }
 
-window.computePy_func = function computePy_func({ e = null, pyfile = "", args = "", general = false, openShell = false} = {}) {
+window.computePy_func = function computePy_func({ e = null, pyfile = "", args = "", general = false, openShell = false } = {}) {
 
     return new Promise((resolve, reject) => {
 
@@ -39,40 +39,41 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
 
                     )
 
-                    if(e) {
-                    
-                    
+                    if (e) {
+
+
                         const pyEvent = new CustomEvent('pyEvent', { bubbles: false, detail: { py, pyfile } });
                         e.target.dispatchEvent(pyEvent)
                         console.log("pyEvent dispatched")
                     }
 
-                    // target.classList.toggle("is-loading")
+                    let error = ""
 
-                    py.on("close", () => { 
+                    py.on("close", () => {
 
                         console.log("Closed")
 
-                        if(e) {
+                        if (e) {
                             const pyEventClosed = new CustomEvent('pyEventClosed', { bubbles: false, detail: { py, pyfile } });
                             e.target.dispatchEvent(pyEventClosed)
                             console.log("pyEventClosed dispatched")
                         }
-                     })
-                    py.stderr.on("data", (err) => { console.log(`Error Occured: ${err.toString()}`); reject(err.toString()) })
-                    py.stdout.on("data", (data) => { 
+                        if (error) reject(error);
+                    })
+                    py.stderr.on("data", (err) => { console.log(`Error Occured: ${err.toString()}`); error += err.toString() })
+                    py.stdout.on("data", (data) => {
 
                         const dataReceived = data.toString()
                         console.log(`Output from python: ${dataReceived}`)
-                        if(e) {
-                    
+                        if (e) {
+
                             const pyEventData = new CustomEvent('pyEventData', { bubbles: false, detail: { py, pyfile, dataReceived } });
                             e.target.dispatchEvent(pyEventData)
-                         
+
                             console.log("pyEventData dispatched")
-    
+
                         }
-                     })
+                    })
 
 
                     py.unref()
@@ -84,8 +85,8 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                     try { py = spawn(get(pythonpath), [path.resolve(get(pythonscript), pyfile), args]) }
                     catch (err) { reject("Error accessing python. Set python location properly in Settings\n" + err) }
 
-                    if(e) {
-                    
+                    if (e) {
+
                         const pyEvent = new CustomEvent('pyEvent', { bubbles: false, detail: { py, pyfile } });
                         e.target.dispatchEvent(pyEvent)
                         console.log("pyEvent dispatched")
@@ -99,23 +100,23 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                         let dataReceived = data.toString("utf8")
                         console.log(dataReceived)
 
-                        if(e) {
-                    
+                        if (e) {
+
                             const pyEventData = new CustomEvent('pyEventData', { bubbles: false, detail: { py, pyfile, dataReceived } });
                             e.target.dispatchEvent(pyEventData)
-                         
+
                             console.log("pyEventData dispatched")
-    
+
                         }
                     })
 
-                    let error_occured_py = false, errContent="";
+                    let error_occured_py = false, errContent = "";
 
                     py.stderr.on("data", err => {
-                        
+
                         errContent += err.toString()
                         console.error(errContent)
-                        
+
                         error_occured_py = true
                     });
 
@@ -123,33 +124,33 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                         if (!error_occured_py) {
                             const dataFile = path.basename(pyfile).split(".")[0]
 
-                            const outputFile = path.join(get(pythonscript), "local", dataFile+"_data.json")
+                            const outputFile = path.join(get(pythonscript), "local", dataFile + "_data.json")
 
-                            if(!fs.existsSync(outputFile)) {
+                            if (!fs.existsSync(outputFile)) {
                                 return reject(`${outputFile} doesn't exist.`)
                             }
                             let dataFromPython = fs.readFileSync(outputFile)
                             window.dataFromPython = dataFromPython = JSON.parse(dataFromPython.toString("utf-8"))
                             console.log(dataFromPython)
                             resolve(dataFromPython)
-                        } else {reject(errContent)}
-                        
-                        if(e) {
+                        } else { reject(errContent) }
+
+                        if (e) {
                             const pyEventClosed = new CustomEvent('pyEventClosed', { bubbles: false, detail: { py, pyfile } });
 
 
                             e.target.dispatchEvent(pyEventClosed)
-                        
+
                             console.log("pyEventClosed dispatched")
                         }
-                        
+
                         target.classList.toggle("is-loading")
                         console.log("Process closed")
                     })
 
                 }
             }).catch(err => { reject(err.stack); })
-            // .finally(()=>{if (!general) { target.classList.toggle("is-loading") }})
+        // .finally(()=>{if (!general) { target.classList.toggle("is-loading") }})
 
     })
 

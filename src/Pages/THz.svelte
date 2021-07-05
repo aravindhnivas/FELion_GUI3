@@ -89,7 +89,7 @@
 <style>
 
 </style>
-<ROSAA bind:active={ROSAA_modal_active} on:submit="{(e)=>{plotData({e:e.detail.e, filetype:"general", general:{pyfile:"ROSAA_simulation.py", args:[JSON.stringify(e.detail.conditions)]}})}}" />
+<ROSAA bind:active={ROSAA_modal_active}  />
 <Layout  {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked>
 
     <svelte:fragment slot="buttonContainer">

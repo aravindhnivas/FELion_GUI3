@@ -4,44 +4,43 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path as pt
 from scipy.integrate import solve_ivp
+sys.path.insert(0, "D:/FELion_GUI3/static/assets/python_files")
+
 from FELion_definitions import sendData
 
 from FELion_constants import colors
 from functools import reduce
+
 from ROSAA_func import boltzman_distribution
+
 import pprint
 
 class ROSAA:
 
+
     def __init__(self):
 
         self.rate_coefficients = conditions["rate_coefficients"]
-
-
         self.simulation_parameters = conditions["simulation_parameters"]
         self.nHe = float(self.simulation_parameters["He density(cm3)"])
-        # print(self.rate_coefficients["He density(cm3)"], flush=True)
+
         self.energyLevels = {key : float(value) for key, value in conditions["energy_levels"].items()}
         self.energyKeys = list(self.energyLevels.keys())
-        
         self.lineshape_conditions = conditions["lineshape_conditions"]
-        
         self.collisionalTemp = float(self.lineshape_conditions["IonTemperature(K)"])
         self.electronSpin = conditions["electronSpin"]
         self.zeemanSplit = conditions["zeemanSplit"]
         energyUnit = conditions["energyUnit"]
-
         self.collisionalRateConstants = {key : float(value) for key, value in conditions["collisional_rates"].items()}
+
         self.includeSpontaneousEmission = conditions["includeSpontaneousEmission"]
 
         self.includeCollision = conditions["includeCollision"]
 
         if self.includeSpontaneousEmission:
             self.einsteinA_rateConstants = {key : float(value) for key, value in conditions["einstein_coefficient"].items()}
-
         self.Simulate()
 
-        
         
     def SimulateODE(self, t, counts):
 

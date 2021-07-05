@@ -85,7 +85,10 @@
         
         }
         
-        dispatch('submit', { e, conditions })
+        // dispatch('submit', { e, conditions })
+        const pyfile = "ROSAA/ROSAA_simulation.py"
+        const args = [JSON.stringify(conditions)]
+        computePy_func({e, pyfile, args, general:true}).catch(err=>{$mainPreModal.modalContent = err;  $mainPreModal.open = true})
         running=true
     }
 
