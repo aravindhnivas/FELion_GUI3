@@ -46,10 +46,12 @@
     }
 
     const pyEventClosedHandle = (e) => {
-        running=false;
+        running=false; pyProcessCounter--;
         window.createToast("Terminated", "danger")
         statusReport += "\n######## TERMINATED ########"
     }
+
+    let pyProcessCounter = 0;
 
     const simulation = (e) => {
 
@@ -89,7 +91,9 @@
         const pyfile = "ROSAA/ROSAA_simulation.py"
         const args = [JSON.stringify(conditions)]
         computePy_func({e, pyfile, args, general:true}).catch(err=>{$mainPreModal.modalContent = err;  $mainPreModal.open = true})
+
         running=true
+        pyProcessCounter++
     }
 
     let currentLocation = db.get("thz_modal_location") || db.get("thz_location") || "";
@@ -151,7 +155,7 @@
         obj.value = obj.value.toExponential(3)
         return obj
     }
-
+    
     async function setConfig() {
         try {
             const configFileLocation = window.path.dirname(configFile);
@@ -419,13 +423,14 @@
         </svelte:fragment>
 
         <svelte:fragment slot="footer_content__slot">
+            <div class="align">
 
-            <div style="display: flex; gap: 1em; ">
+                <div class="subtitle">Running: {pyProcessCounter} {pyProcessCounter>1 ? "simulations" : "simulation"}</div>
                 {#if running}
                     <button transition:fade class="button is-danger" on:click="{()=>{py ? py.kill() : console.log('pyEvent is not available')}}" >Stop</button>
                 {/if}    
                 <button  class="button is-link" on:click="{(e)=>{showreport = !showreport}}" >{showreport ? "Go Back" : "Status report"}</button>
-                <button  class="button is-link" class:is-loading={running} on:click="{simulation}" on:pyEvent={pyEventHandle} on:pyEventClosed="{pyEventClosedHandle}" on:pyEventData={pyEventDataReceivedHandle}>Submit</button>
+                <button  class="button is-link" on:click="{simulation}" on:pyEvent={pyEventHandle} on:pyEventClosed="{pyEventClosedHandle}" on:pyEventData={pyEventDataReceivedHandle}>Submit</button>
 
             </div>
         </svelte:fragment>
