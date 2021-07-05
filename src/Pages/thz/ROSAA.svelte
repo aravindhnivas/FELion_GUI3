@@ -140,14 +140,14 @@
 
     const setID = (obj) => {
         obj.id = window.getID();
+
         return obj
 
     }
-
     const correctObjValue = (obj) => {
+
         obj.value = obj.value.toExponential(3)
         return obj
-
     }
 
     async function setConfig() {
@@ -278,7 +278,6 @@
 </style>
 
 {#if active}
-
     <BoltzmanDistribution {...boltzmanArgs} bind:active={boltzmanWindow} maximize={false}/>
     <SeparateWindow id="ROSAA__modal" title="ROSAA modal" bind:active>
 
@@ -429,5 +428,5 @@
             </div>
         </svelte:fragment>
     </SeparateWindow>
-
+    
 {/if}
