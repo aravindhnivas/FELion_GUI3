@@ -18,10 +18,8 @@ if __name__ == "__main__":
     fL = float(args["lorrentz"])*1e6
 
 
-    dataToSend = {}
     sigma = fG/(2*np.sqrt(2*np.log(2)))
     gamma = fL/2
     linshape = float(voigt_profile(0, sigma, gamma))
-    dataToSend["linshape"] = linshape
-    
+    dataToSend = {"linshape" : linshape}
     sendData(dataToSend)
