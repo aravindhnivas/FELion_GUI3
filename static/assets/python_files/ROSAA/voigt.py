@@ -11,12 +11,16 @@ if __name__ == "__main__":
     args = json.loads(", ".join(args))
     print(args, flush=True)
 
-    sigma = float(args["gaussian"])
-    gamma = float(args["lorrentz"])
+    fG = float(args["gaussian"])*1e6
+    fL = float(args["lorrentz"])*1e6
     dataToSend = {}
     
-    linshape = float(voigt_profile(0, sigma, gamma))
+    
 
+
+    sigma = fG/(2*np.sqrt(2*np.log(2)))
+    gamma = fL/2
+    linshape = float(voigt_profile(0, sigma, gamma))
 
     print(f"{sigma=}\n{gamma=}\n{linshape=}", flush=True)
     print(f"{sigma=}\n{gamma=}\n{linshape=}", flush=True)

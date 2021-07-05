@@ -37,50 +37,49 @@
         
     }
 
-    let lorrentz="2e5", gaussian="2e5";
+    let lorrentz=0.320, gaussian=0.210;
     let power="2e-5", trapArea="5e-5"
     async function computeEinsteinBRate(e) {
         const args = [JSON.stringify({lorrentz, gaussian})]
 
-
         const pyfile = "ROSAA/voigt.py"
 
         try {
-
             const {linshape} = await computePy_func({e, pyfile, args})
+
             const constantTerm = power/(trapArea*SpeedOfLight)
             const norm = constantTerm*linshape
-
             computeEinsteinB();
+
             einsteinCoefficientB = einsteinCoefficientB.map(e=>{
+
                 e.value *= norm;
                 e.value = e.value.toExponential(3) 
+
                 return e
             })
-
         } catch (error) {$mainPreModal = {modalContent:error, open:true}}
+
     }
+
 
 </script>
 
 <style lang="scss">
     .sub_container__div {
-
         display: grid;
         grid-row-gap: 1em;
-
         .subtitle {place-self:center;}
-        .content__div {
 
+        .content__div {
             max-height: 30rem;
+
             overflow-y: auto;
             display: flex;
             flex-wrap: wrap;
             justify-self: center; // grow from center (width is auto adjusted)
-
             gap: 1em;
             justify-content: center; // align items center
-
         }
         .control__div {
 
@@ -94,45 +93,47 @@
     }
 
     hr {background-color: #fafafa; margin: 0;}
-
 </style>
 
 <div class="sub_container__div box">
     <div class="subtitle">Einstein Co-efficients</div>
-
     <hr>
     <div class="subtitle">Einstein A Co-efficients</div>
     {#if einsteinCoefficientA.length>0}
+
         <div class="content__div ">
             {#each einsteinCoefficientA as {label, value, id}(id)}
                 <Textfield bind:value {label} />
             {/each}
         </div>
+    
     {/if}
 
     <div class="control__div ">
-        <button class="button is-link " on:click={computeEinsteinB}>Compute Einstein B</button>
 
+        <button class="button is-link " on:click={computeEinsteinB}>Compute Einstein B</button>
     </div>
     
     {#if einsteinCoefficientB.length>0}
+
         <hr>
         <div class="subtitle">Einstein B Co-efficients</div>
         <div class="control__div ">
+            <Textfield bind:value={lorrentz} label="lorrentz (MHz)" />
+            <Textfield bind:value={gaussian} label="gaussian (MHz)"/>
+            <Textfield bind:value={power} label="Power (W)" />
 
-            <Textfield bind:value={lorrentz} label="lorrentz" />
-            <Textfield bind:value={gaussian} label="gaussian"/>
-            <Textfield bind:value={power} label="Power (W)"/>
             <Textfield bind:value={trapArea} label="TrapArea (sq-m)"/>
+
             <button class="button is-link " on:click={computeEinsteinBRate}>Compute rate constants</button>
-
-
         </div>
 
         <div class="content__div ">
             {#each einsteinCoefficientB as {label, value, id}(id)}
 
+
                 <Textfield bind:value {label} />
+    
             {/each}
         </div>
     
