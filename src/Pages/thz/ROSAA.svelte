@@ -28,11 +28,17 @@
     let [mainParameters, simulationParameters, dopplerLineshape, powerBroadening, rateCoefficients] = Array(5).fill([])
 
     $: deexcitation = collisionalRateType==="deexcitation";
-    let py, running = false;
+    let py, pyProcesses=[], running = false;
+
     const pyEventHandle = (e) => {
         statusReport = ""
+    
         const events = e.detail
-        py = events.py
+
+        py = events.py;
+        console.log(py);
+
+        pyProcesses = [...pyProcesses, py]
     }
 
     let statusReport = "";
@@ -46,12 +52,22 @@
     }
 
     const pyEventClosedHandle = (e) => {
-        running=false; pyProcessCounter--;
+        running=false; 
+        pyProcesses = _.difference(pyProcesses, [e.detail.py]);
         window.createToast("Terminated", "danger")
         statusReport += "\n######## TERMINATED ########"
     }
 
-    let pyProcessCounter = 0;
+
+    const pyKillProcess = () => {
+        const lastInvokedPyProcess = _.last(pyProcesses);
+
+        if(lastInvokedPyProcess) {
+
+            lastInvokedPyProcess.kill(); pyProcesses.pop()
+        }
+    }
+
 
     const simulation = (e) => {
 
@@ -87,38 +103,40 @@
         
         }
         
-        // dispatch('submit', { e, conditions })
         const pyfile = "ROSAA/ROSAA_simulation.py"
         const args = [JSON.stringify(conditions)]
         computePy_func({e, pyfile, args, general:true}).catch(err=>{$mainPreModal.modalContent = err;  $mainPreModal.open = true})
-
         running=true
-        pyProcessCounter++
     }
 
     let currentLocation = db.get("thz_modal_location") || db.get("thz_location") || "";
+    
     let filename = ""
-
     $: if(currentLocation&&fs.existsSync(currentLocation)) {db.set("thz_modal_location", currentLocation)}
+
     async function browse_folder() {
+
         const result = await browse({dir:true})
         if (!result.canceled) { currentLocation = result.filePaths[0]; }
     }
     let writefile = true, includeCollision = true, includeSpontaneousEmission = true, includeAttachmentRate = true;
+
     let variable = "time", variableRange = "1e12, 1e16, 10";
+
     const variablesList = ["time", "He density(cm3)", "Power(W)"]
 
     let collisionalCoefficient=[], einsteinCoefficientA=[], einsteinCoefficientB=[];
-
     let energyUnit="cm-1";
+
     let numberOfLevels = 3;
+
+
 
     let energyLevels = [];
     let boltzmanWindow = false;
-    
     let energyFilename, collisionalFilename, einsteinFilename;
-    
     $: boltzmanArgs = {energyLevels, trapTemp, electronSpin, zeemanSplit, energyUnit}
+
     let collisionalCoefficient_balance = [];
     let configFile = db.get("ROSAA_config_file") || ""
     async function loadConfig() {
@@ -415,6 +433,7 @@
                                 <Textfield bind:value {label}  />
                             {/each}
                         </div>
+
                     </div>
                 {/if}
             </div>
@@ -425,15 +444,19 @@
         <svelte:fragment slot="footer_content__slot">
             <div class="align">
 
-                <div class="subtitle">Running: {pyProcessCounter} {pyProcessCounter>1 ? "simulations" : "simulation"}</div>
-                {#if running}
-                    <button transition:fade class="button is-danger" on:click="{()=>{py ? py.kill() : console.log('pyEvent is not available')}}" >Stop</button>
-                {/if}    
+                {#if pyProcesses.length>0}
+                    <div >Running: {pyProcesses.length} {pyProcesses.length>1 ? "simulations" : "simulation"}</div>
+                {/if}
+                
+                {#if pyProcesses.length>0}
+                    <button transition:fade class="button is-danger" on:click="{pyKillProcess}" >Stop</button>
+                {/if}
+
                 <button  class="button is-link" on:click="{(e)=>{showreport = !showreport}}" >{showreport ? "Go Back" : "Status report"}</button>
                 <button  class="button is-link" on:click="{simulation}" on:pyEvent={pyEventHandle} on:pyEventClosed="{pyEventClosedHandle}" on:pyEventData={pyEventDataReceivedHandle}>Submit</button>
-
             </div>
+
         </svelte:fragment>
+        
     </SeparateWindow>
-    
 {/if}
