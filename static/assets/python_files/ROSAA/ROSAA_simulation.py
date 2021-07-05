@@ -1,19 +1,17 @@
 
-import sys, json, time
+import sys, json, pprint
 import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path as pt
 from scipy.integrate import solve_ivp
-sys.path.insert(0, "D:/FELion_GUI3/static/assets/python_files")
-
-from FELion_definitions import sendData
-
-from FELion_constants import colors
 from functools import reduce
 
-from ROSAA_func import boltzman_distribution
+main_module_loc = str(pt(__file__).joinpath("../../"))
+sys.path.insert(0, main_module_loc)
+from FELion_definitions import sendData
+from FELion_constants import colors
 
-import pprint
+from ROSAA_func import boltzman_distribution
 
 class ROSAA:
 
