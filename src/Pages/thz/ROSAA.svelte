@@ -91,13 +91,12 @@
 
     let currentLocation = db.get("thz_modal_location") || db.get("thz_location") || "";
     let filename = ""
-    $: if(currentLocation&&fs.existsSync(currentLocation)) {db.set("thz_modal_location", currentLocation)}
 
+    $: if(currentLocation&&fs.existsSync(currentLocation)) {db.set("thz_modal_location", currentLocation)}
     async function browse_folder() {
         const result = await browse({dir:true})
         if (!result.canceled) { currentLocation = result.filePaths[0]; }
     }
-
     let writefile = true, includeCollision = true, includeSpontaneousEmission = true, includeAttachmentRate = true;
     let variable = "time", variableRange = "1e12, 1e16, 10";
     const variablesList = ["time", "He density(cm3)", "Power(W)"]
