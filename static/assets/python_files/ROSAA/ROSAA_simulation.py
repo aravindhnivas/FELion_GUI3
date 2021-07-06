@@ -1,5 +1,5 @@
 
-import sys, json, pprint
+import sys, json, pprint, time
 import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path as pt
@@ -41,16 +41,19 @@ class ROSAA:
         self.excitedTo = conditions["excitedTo"]
         self.transitionLevels = [self.excitedFrom, self.excitedTo]
 
-
+        start_time = time.perf_counter()
         self.Simulate()
+        end_time = time.perf_counter()
+        print(f"Total simulation time {(end_time - start_time):.2f} s", flush=True)
+        self.plot()
 
     def SimulateODE(self, t, counts):
         
         if self.includeAttachmentRate:
+
             N = counts[:-self.totalAttachmentLevels]
 
             N_He = counts[-self.totalAttachmentLevels:]
-
         else: N = counts
 
         rateCollection = []
@@ -176,7 +179,7 @@ class ROSAA:
         
         N_ON = solve_ivp(self.SimulateODE, tspan, [*self.boltzmanDistribution, *N_He], dense_output=True)
         self.lightON_distribution = N_ON.sol(self.simulateTime)
-        self.plot()
+        
 
     def plot(self):
 
@@ -203,18 +206,18 @@ class ROSAA:
             ax.plot(simulationTime, on, ls="-", c=colorSchemes[counter], label=f"{legends[counter]}")
             ax.plot(simulationTime, off, ls="--", c=colorSchemes[counter])
             counter += 1
-
         ax.plot(simulationTime, self.lightOFF_distribution.sum(axis=0), "--k")
         ax.plot(simulationTime, self.lightON_distribution.sum(axis=0), "-k", alpha=0.5)
-        ax.legend(title=f"--OFF, -ON")
+        
+        ax.hlines(1, 0, simulationTime[-1]+simulationTime[-1]*0.2, colors='k', linestyles="dashdot")
+
+        lg = ax.legend(title=f"--OFF, -ON")
+        lg.set_draggable(True)
         ax.set(xlabel="Time (ms)", ylabel="Population (%)", title="Simulation", yscale="linear")
-
-
 
         signal_index = len(self.energyKeys)+1
 
         signal = (1 - (self.lightON_distribution[signal_index][1:] / self.lightOFF_distribution[signal_index][1:]))*100
-        # pp.pprint(signal)
         fig1, ax1 = plt.subplots(figsize=(7, 4), dpi=100)
         ax1.plot(simulationTime[1:], signal)
         ax1.set(xlabel="Time (ms)", ylabel="Signal (%)", title="Simulation", yscale="linear")
@@ -224,6 +227,5 @@ if __name__ == "__main__":
     conditions = json.loads(sys.argv[1])
     pp = pprint.PrettyPrinter(indent=4)
     pp.pprint(conditions)
-
     sys.stdout.flush()
     ROSAA()
