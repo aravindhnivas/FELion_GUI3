@@ -15,6 +15,8 @@
     import EinsteinCoefficients from "./components/EinsteinCoefficients.svelte";
     import CollisionalCoefficients from "./components/CollisionalCoefficients.svelte";
 
+    import AttachmentCoefficients from "./components/AttachmentCoefficients.svelte";
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     
@@ -25,8 +27,8 @@
     let collisionalRateType = "excitation"
     let trapTemp = 5.7
     let excitedTo="excitedTo", excitedFrom="excitedFrom";
-    let [mainParameters, simulationParameters, dopplerLineshape, powerBroadening, rateCoefficients] = Array(5).fill([])
-
+    let [mainParameters, simulationParameters, dopplerLineshape, powerBroadening] = Array(4).fill([])
+    let attachmentCoefficients=[], k3={constant:[], rate:[]}, kCID={constant:[], rate:[]};
     $: deexcitation = collisionalRateType==="deexcitation";
     let py, pyProcesses=[], running = false;
 
@@ -90,15 +92,13 @@
         einsteinCoefficientA.forEach(f=>einstein_coefficient.A[f.label]=f.value)
         einsteinCoefficientB.forEach(f=>einstein_coefficient.B[f.label]=f.value)
 
-        const rate_coefficients = {}
+        const attachment_rate_coefficients = {rateConstants:{k3:k3.rate.map(rate=>rate.value), kCID:kCID.rate.map(rate=>rate.value)}}
         
-        rateCoefficients.forEach(f=>rate_coefficients[f.label]=f.value)
-
+        attachmentCoefficients.forEach(f=>attachment_rate_coefficients[f.label]=f.value)
         const energy_levels = {}
         energyLevels.forEach(f=>energy_levels[f.label]=f.value)
-        
         const conditions = { 
-            trapTemp, variable, variableRange, numberOfLevels, includeCollision, includeAttachmentRate, includeSpontaneousEmission, writefile, filename, currentLocation,  deexcitation, collisional_rates, main_parameters, simulation_parameters, einstein_coefficient, energy_levels, energyUnit, power_broadening, lineshape_conditions, rate_coefficients, electronSpin, zeemanSplit, excitedFrom, excitedTo
+            trapTemp, variable, variableRange, numberOfLevels, includeCollision, includeAttachmentRate, includeSpontaneousEmission, writefile, filename, currentLocation,  deexcitation, collisional_rates, main_parameters, simulation_parameters, einstein_coefficient, energy_levels, energyUnit, power_broadening, lineshape_conditions, attachment_rate_coefficients, electronSpin, zeemanSplit, excitedFrom, excitedTo
         }
         
         const pyfile = "ROSAA/ROSAA_simulation.py"
@@ -108,10 +108,10 @@
     }
 
     let currentLocation = db.get("thz_modal_location") || db.get("thz_location") || "";
-    
-    let filename = ""
-    $: if(currentLocation&&fs.existsSync(currentLocation)) {db.set("thz_modal_location", currentLocation)}
 
+    let filename = ""
+    
+    $: if(currentLocation&&fs.existsSync(currentLocation)) {db.set("thz_modal_location", currentLocation)}
     async function browse_folder() {
 
         const result = await browse({dir:true})
@@ -124,8 +124,8 @@
     const variablesList = ["time", "He density(cm3)", "Power(W)"]
 
     let collisionalCoefficient=[], einsteinCoefficientA=[], einsteinCoefficientB=[];
-    let energyUnit="cm-1";
 
+    let energyUnit="cm-1", numberDensity = "2e14";
     let numberOfLevels = 3;
 
 
@@ -166,30 +166,30 @@
         obj.id = window.getID();
         return obj
     }
-
-
     const correctObjValue = (obj) => {
-        obj.value = obj.value.toExponential(3)
 
+        obj.value = obj.value.toExponential(3)
         return obj
+
     }
     
     async function setConfig() {
         try {
-
             const configFileLocation = window.path.dirname(configFile);
             const CONFIG = Yml(fs.readFileSync(configFile, "utf-8"));
-            
-            ({mainParameters, simulationParameters, dopplerLineshape, powerBroadening, rateCoefficients} = CONFIG);
+            let attachmentRateConstants = {};
+            ({mainParameters, simulationParameters, dopplerLineshape, powerBroadening, attachmentCoefficients, attachmentRateConstants} = CONFIG);
 
             mainParameters = mainParameters.map(setID);
             simulationParameters = simulationParameters.map(setID);
             dopplerLineshape = dopplerLineshape.map(setID);
             powerBroadening = powerBroadening.map(setID);
-            rateCoefficients = rateCoefficients.map(setID);
+            attachmentCoefficients = attachmentCoefficients.map(setID);
 
+            k3.constant = attachmentRateConstants.k3.map(setID).map(correctObjValue);
+            kCID.constant = attachmentRateConstants.kCID.map(setID).map(correctObjValue);
 
-            ({trapTemp, electronSpin, zeemanSplit, currentLocation, filename} = CONFIG);
+            ({trapTemp, electronSpin, zeemanSplit, currentLocation, filename, numberDensity} = CONFIG);
             ({energyFilename, collisionalFilename, einsteinFilename} = CONFIG);
 
             energyFilename = window.path.join(configFileLocation, energyFilename);
@@ -212,6 +212,8 @@
         } catch (error) {$mainPreModal = {modalContent:error, open:true}}
 
     }
+
+    
 
 </script>
 
@@ -295,11 +297,6 @@
         -webkit-user-select: text;
         padding:1em;
     }
-    // .center {
-    //     margin:auto;
-    //     width:max-content;
-
-    // }
 
 </style>
 
@@ -376,12 +373,12 @@
                     </div>
                 </div>
 
-                {#if includeSpontaneousEmission}
-                    <EinsteinCoefficients bind:einsteinCoefficientA bind:einsteinCoefficientB {energyLevels} {electronSpin} {zeemanSplit} {energyUnit}/>
-                {/if}
+                <!-- {#if includeSpontaneousEmission} -->
+                <EinsteinCoefficients bind:einsteinCoefficientA bind:einsteinCoefficientB {energyLevels} {electronSpin} {zeemanSplit} {energyUnit}/>
+                <!-- {/if} -->
 
                 {#if includeCollision}
-                    <CollisionalCoefficients bind:collisionalCoefficient bind:collisionalCoefficient_balance bind:collisionalRateType {...{energyLevels, electronSpin, zeemanSplit, energyUnit, trapTemp}} bind:collisionalRates/>
+                    <CollisionalCoefficients bind:collisionalCoefficient bind:collisionalCoefficient_balance bind:collisionalRateType {...{energyLevels, electronSpin, zeemanSplit, energyUnit, trapTemp}} bind:collisionalRates bind:numberDensity/>
                 {/if}
                 
                 <!-- Simulation parameters -->
@@ -428,17 +425,10 @@
                 </div>
 
                 {#if includeAttachmentRate}
-                    <div class="sub_container__div box">
-                        <div class="subtitle">Rare-gas attachment (K3) and dissociation (kCID) constants</div>
-                        <div class="content__div">
-                            {#each rateCoefficients as {label, value, id}(id)}
-                                <Textfield bind:value {label}  />
-                            {/each}
-                        </div>
-
-                    </div>
+                    <AttachmentCoefficients bind:attachmentCoefficients bind:k3 bind:kCID bind:numberDensity />
                 {/if}
             </div>
+
             {/if}
 
         </svelte:fragment>

@@ -18,9 +18,8 @@ class ROSAA:
 
     def __init__(self):
 
-        self.rate_coefficients = conditions["rate_coefficients"]
-        self.simulation_parameters = conditions["simulation_parameters"]
-        self.nHe = float(self.simulation_parameters["He density(cm3)"])
+        
+        
 
         self.energyLevels = {key : float(value) for key, value in conditions["energy_levels"].items()}
         self.energyKeys = list(self.energyLevels.keys())
@@ -37,8 +36,13 @@ class ROSAA:
             self.einsteinA_Rates = {key : float(value) for key, value in conditions["einstein_coefficient"]["A"].items()}
             self.einsteinB_Rates = {key : float(value) for key, value in conditions["einstein_coefficient"]["B"].items()}
 
+
+        self.excitedFrom = conditions["excitedFrom"]
+        self.excitedTo = conditions["excitedTo"]
+        self.transitionLevels = [self.excitedFrom, self.excitedTo]
+
+
         self.Simulate()
-        
 
     def SimulateODE(self, t, counts):
         
@@ -90,56 +94,92 @@ class ROSAA:
             rateCollection.append(collections)
 
         dR_dt = []
-
         for _ in rateCollection:
             temp = reduce(lambda a, b: a+b, _)
 
             dR_dt.append(temp)
 
-        # return [*dR_dt, *N_He]
-
+        if self.includeAttachmentRate:
+            dR_dt = self.compute_attachment_process(N_He, dR_dt)
+        
+        # dR_dt = np.array(dR_dt, dtype=float)
         return dR_dt
+
+    def compute_attachment_process(self, N_He, N):
+        
+        N = {key:value for key, value in zip(self.energyKeys, N)}
+        attachmentRate0 = - self.k3[0]*N[self.excitedFrom] + self.kCID[0]*N_He[0]*self.kCID_branch
+        attachmentRate1 = - self.k31_excited*N[self.excitedTo] + self.kCID[0]*N_He[0]*(1-self.kCID_branch)
+        
+        N[self.excitedFrom] += attachmentRate0
+        N[self.excitedTo] += attachmentRate1
+        dR_dt = list(N.values())
+        # for the first complex formed (sign corrected)
+        currentRate =  - attachmentRate0 - attachmentRate1
+
+        for i in range(self.totalAttachmentLevels-1):
+            nextRate = - self.k3[i+1]*N_He[i] + self.kCID[i+1]*N_He[i+1]
+            attachmentRate = currentRate + nextRate
+            dR_dt.append(attachmentRate)
+            currentRate = -nextRate
+        dR_dt.append(currentRate)
+        return dR_dt
+
+    def GetAttachmentRatesParameters(self):
+
+        self.attachment_rate_coefficients = conditions["attachment_rate_coefficients"]
+        self.rateConstants = self.attachment_rate_coefficients["rateConstants"]
+        self.k3 = [float(_) for _ in self.rateConstants["k3"]]
+
+        self.k3_branch = float(self.attachment_rate_coefficients["a(k31)"])
+        self.k31_excited = self.k3_branch*self.k3[0]
+        
+        self.kCID  = [float(_) for _ in self.rateConstants["kCID"]]
+        self.kCID_branch = float(self.attachment_rate_coefficients["branching-ratio(kCID)"])
+
+        self.totalAttachmentLevels = int(self.attachment_rate_coefficients["totalAttachmentLevels"])
+        self.includeAttachmentRate = conditions["includeAttachmentRate"]
     
     def Simulate(self):
 
-        duration = conditions["simulation_parameters"]["Simulation time(ms)"]
+        self.simulation_parameters = conditions["simulation_parameters"]
+        
+        duration = self.simulation_parameters["Simulation time(ms)"]
         duration = float(duration)*1e-3 # converting ms ==> s
 
         tspan = [0, duration]
+
         self.electronSpin = conditions["electronSpin"]
         self.zeemanSplit = conditions["zeemanSplit"]
         # energyUnit = conditions["energyUnit"]
         initialTemp = float(self.simulation_parameters["Initial temperature (K)"])
-        self.boltzmanDistribution = boltzman_distribution(
-            self.energyLevels, initialTemp, 
-            self.electronSpin, self.zeemanSplit
-        )
 
-        self.totalAttachmentLevels = int(self.rate_coefficients["totalAttachmentLevels"])
-        self.includeAttachmentRate = False # conditions["includeAttachmentRate"]
+        self.boltzmanDistribution = boltzman_distribution( self.energyLevels, initialTemp, self.electronSpin, self.zeemanSplit )
+
+        self.GetAttachmentRatesParameters()
 
         N_He = []
-        
         if self.includeAttachmentRate:
+        
             N_He = self.totalAttachmentLevels*[0]
+            print(f"{N_He=}", flush=True)
 
         totalSteps = int(self.simulation_parameters["Total steps"])
         self.simulateTime = np.linspace(0, duration, totalSteps)
-
         self.lightON=False
 
         N_OFF = solve_ivp(self.SimulateODE, tspan, [*self.boltzmanDistribution, *N_He], dense_output=True)
-        self.lightOFF_distribution = N_OFF.sol(self.simulateTime)
 
+        self.lightOFF_distribution = N_OFF.sol(self.simulateTime)
         self.lightON=True
-        self.excitedFrom = conditions["excitedFrom"]
-        self.excitedTo = conditions["excitedTo"]
-        self.transitionLevels = [self.excitedFrom, self.excitedTo]
+
+        
         N_ON = solve_ivp(self.SimulateODE, tspan, [*self.boltzmanDistribution, *N_He], dense_output=True)
         self.lightON_distribution = N_ON.sol(self.simulateTime)
         self.plot()
 
     def plot(self):
+
         fig, ax = plt.subplots(figsize=(7, 4), dpi=100)
 
         simulationTime = self.simulateTime.T*1e3
@@ -150,8 +190,13 @@ class ROSAA:
             colorSchemes.append(temp)
         
         self.molecule = conditions["main_parameters"]["molecule"]
-        legends = [f"{self.molecule} ({key.strip()})" for key in self.energyKeys]
+        self.taggingPartner = conditions["main_parameters"]["tagging partner"]
+        legends = [f"${self.molecule}$ ({key.strip()})" for key in self.energyKeys]
 
+
+        if self.includeAttachmentRate:
+            legends += [f"${self.molecule}${self.taggingPartner}"]
+            legends += [f"${self.molecule}${self.taggingPartner}$_{i+1}$" for i in range(1, self.totalAttachmentLevels)]
         counter = 0
         for on, off in zip(self.lightON_distribution, self.lightOFF_distribution):
 
@@ -164,8 +209,15 @@ class ROSAA:
         ax.legend(title=f"--OFF, -ON")
         ax.set(xlabel="Time (ms)", ylabel="Population (%)", title="Simulation", yscale="linear")
 
-        pp.pprint(self.lightOFF_distribution.T[-1])
-        sys.stdout.flush()
+
+
+        signal_index = len(self.energyKeys)+1
+
+        signal = (1 - (self.lightON_distribution[signal_index][1:] / self.lightOFF_distribution[signal_index][1:]))*100
+        # pp.pprint(signal)
+        fig1, ax1 = plt.subplots(figsize=(7, 4), dpi=100)
+        ax1.plot(simulationTime[1:], signal)
+        ax1.set(xlabel="Time (ms)", ylabel="Signal (%)", title="Simulation", yscale="linear")
         plt.show()
 
 if __name__ == "__main__":
