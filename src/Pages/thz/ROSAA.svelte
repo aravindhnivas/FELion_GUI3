@@ -67,21 +67,18 @@
             lastInvokedPyProcess.kill(); pyProcesses.pop()
         }
     }
-
+    let collisionalRates = []
 
     const simulation = (e) => {
 
         const collisional_rates = {}
-        collisionalCoefficient.forEach(f=>collisional_rates[f.label] = f.value)
+        collisionalRates.forEach(f=>collisional_rates[f.label] = f.value)
 
         const main_parameters = {}
         mainParameters.forEach(f=>main_parameters[f.label]=f.value)
 
-
         const simulation_parameters = {}
-
         simulationParameters.forEach(f=>simulation_parameters[f.label]=f.value)
-
 
         const lineshape_conditions = {}
         dopplerLineshape.forEach(f=>lineshape_conditions[f.label]=f.value)
@@ -89,10 +86,12 @@
         const power_broadening = {}
         powerBroadening.forEach(f=>power_broadening[f.label]=f.value)
 
-        const einstein_coefficient = {}
-        einsteinCoefficientA.forEach(f=>einstein_coefficient[f.label]=f.value)
+        const einstein_coefficient = {A:{}, B:{}};
+        einsteinCoefficientA.forEach(f=>einstein_coefficient.A[f.label]=f.value)
+        einsteinCoefficientB.forEach(f=>einstein_coefficient.B[f.label]=f.value)
 
         const rate_coefficients = {}
+        
         rateCoefficients.forEach(f=>rate_coefficients[f.label]=f.value)
 
         const energy_levels = {}
@@ -100,7 +99,6 @@
         
         const conditions = { 
             trapTemp, variable, variableRange, numberOfLevels, includeCollision, includeAttachmentRate, includeSpontaneousEmission, writefile, filename, currentLocation,  deexcitation, collisional_rates, main_parameters, simulation_parameters, einstein_coefficient, energy_levels, energyUnit, power_broadening, lineshape_conditions, rate_coefficients, electronSpin, zeemanSplit, excitedFrom, excitedTo
-        
         }
         
         const pyfile = "ROSAA/ROSAA_simulation.py"
@@ -154,6 +152,7 @@
     }
 
     const getYMLFileContents = (filename) => {
+
         if (fs.existsSync(filename)) {
 
             const fileContent = fs.readFileSync(filename, "utf-8")
@@ -162,20 +161,22 @@
         } else return Promise.reject(filename + " file doesn't exist")
     }
 
+
     const setID = (obj) => {
         obj.id = window.getID();
-
         return obj
-
     }
-    const correctObjValue = (obj) => {
 
+
+    const correctObjValue = (obj) => {
         obj.value = obj.value.toExponential(3)
+
         return obj
     }
     
     async function setConfig() {
         try {
+
             const configFileLocation = window.path.dirname(configFile);
             const CONFIG = Yml(fs.readFileSync(configFile, "utf-8"));
             
@@ -205,10 +206,11 @@
 
             ({rateConstants:einsteinCoefficientA} = await getYMLFileContents(einsteinFilename));
             einsteinCoefficientA = einsteinCoefficientA.map(setID).map(correctObjValue);
-            
             console.log(energyLevels, collisionalCoefficient, einsteinCoefficientA);
             window.createToast("CONFIG loaded");
+
         } catch (error) {$mainPreModal = {modalContent:error, open:true}}
+
     }
 
 </script>
@@ -379,7 +381,7 @@
                 {/if}
 
                 {#if includeCollision}
-                    <CollisionalCoefficients bind:collisionalCoefficient bind:collisionalCoefficient_balance bind:collisionalRateType {...{energyLevels, electronSpin, zeemanSplit, energyUnit, trapTemp}} />
+                    <CollisionalCoefficients bind:collisionalCoefficient bind:collisionalCoefficient_balance bind:collisionalRateType {...{energyLevels, electronSpin, zeemanSplit, energyUnit, trapTemp}} bind:collisionalRates/>
                 {/if}
                 
                 <!-- Simulation parameters -->
@@ -457,6 +459,6 @@
             </div>
 
         </svelte:fragment>
-        
+
     </SeparateWindow>
 {/if}
