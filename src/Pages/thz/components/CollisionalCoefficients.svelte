@@ -6,13 +6,11 @@
     import CustomSelect from "../../../components/CustomSelect.svelte";
     import balance_distribution from "../functions/balance_distribution";
 
-    export let collisionalCoefficient=[], collisionalCoefficient_balance=[], collisionalRateType="both";
-    export let energyLevels, electronSpin, zeemanSplit, energyUnit, trapTemp;
+    export let collisionalCoefficient=[], collisionalCoefficient_balance=[], collisionalRateType="both", collisionalRates = [];
+    export let energyLevels, electronSpin, zeemanSplit, energyUnit, trapTemp, numberDensity = "2e14";
     $: deexcitation = collisionalRateType==="deexcitation";
     let collisionalWindow=false;
     
-    let numberDensity = "2e14";
-
     function changeCollisionalRateType() {
     
         collisionalCoefficient = collisionalCoefficient.map(level=>{
@@ -54,10 +52,10 @@
         })
 
     }
-
     $: collisionalRateConstants = [...collisionalCoefficient, ...collisionalCoefficient_balance]
+
     $: collisionalArgs = {collisionalRateConstants, energyLevels, electronSpin, zeemanSplit, energyUnit}
-    let rateConstants = []
+    
     
     const computeRate = (rate) => {
 
@@ -67,7 +65,7 @@
         return rate
     }
     $: if(collisionalRateConstants.length>0 && numberDensity) {
-        rateConstants = _.cloneDeep(collisionalRateConstants).map(computeRate)
+        collisionalRates = _.cloneDeep(collisionalRateConstants).map(computeRate)
 
     }
 
@@ -150,7 +148,7 @@
 
     <div class="content__div ">
 
-        {#each rateConstants as {label, value, id}(id)}
+        {#each collisionalRates as {label, value, id}(id)}
 
             <Textfield bind:value {label}/>
         {/each}
