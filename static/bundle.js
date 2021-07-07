@@ -67592,7 +67592,7 @@ function get_each_context_4$1(ctx, list, i) {
 	return child_ctx;
 }
 
-// (61:8) {#each attachmentCoefficients as {label, value, id}
+// (63:8) {#each attachmentCoefficients as {label, value, id}
 function create_each_block_4$1(key_1, ctx) {
 	let first;
 	let textfield;
@@ -67628,9 +67628,9 @@ function create_each_block_4$1(key_1, ctx) {
 		p: function update(new_ctx, dirty) {
 			ctx = new_ctx;
 			const textfield_changes = {};
-			if (dirty & /*attachmentCoefficients*/ 4) textfield_changes.label = /*label*/ ctx[13];
+			if (dirty & /*attachmentCoefficients*/ 8) textfield_changes.label = /*label*/ ctx[13];
 
-			if (!updating_value && dirty & /*attachmentCoefficients*/ 4) {
+			if (!updating_value && dirty & /*attachmentCoefficients*/ 8) {
 				updating_value = true;
 				textfield_changes.value = /*value*/ ctx[14];
 				add_flush_callback(() => updating_value = false);
@@ -67657,14 +67657,14 @@ function create_each_block_4$1(key_1, ctx) {
 		block,
 		id: create_each_block_4$1.name,
 		type: "each",
-		source: "(61:8) {#each attachmentCoefficients as {label, value, id}",
+		source: "(63:8) {#each attachmentCoefficients as {label, value, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (71:16) {#each k3.constant as {label, value, id}
+// (73:16) {#each k3.constant as {label, value, id}
 function create_each_block_3$3(key_1, ctx) {
 	let first;
 	let textfield;
@@ -67700,9 +67700,9 @@ function create_each_block_3$3(key_1, ctx) {
 		p: function update(new_ctx, dirty) {
 			ctx = new_ctx;
 			const textfield_changes = {};
-			if (dirty & /*k3*/ 1) textfield_changes.label = /*label*/ ctx[13];
+			if (dirty & /*k3*/ 2) textfield_changes.label = /*label*/ ctx[13];
 
-			if (!updating_value && dirty & /*k3*/ 1) {
+			if (!updating_value && dirty & /*k3*/ 2) {
 				updating_value = true;
 				textfield_changes.value = /*value*/ ctx[14];
 				add_flush_callback(() => updating_value = false);
@@ -67729,14 +67729,14 @@ function create_each_block_3$3(key_1, ctx) {
 		block,
 		id: create_each_block_3$3.name,
 		type: "each",
-		source: "(71:16) {#each k3.constant as {label, value, id}",
+		source: "(73:16) {#each k3.constant as {label, value, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (79:16) {#each kCID.constant as {label, value, id}
+// (83:16) {#each kCID.constant as {label, value, id}
 function create_each_block_2$5(key_1, ctx) {
 	let first;
 	let textfield;
@@ -67772,9 +67772,9 @@ function create_each_block_2$5(key_1, ctx) {
 		p: function update(new_ctx, dirty) {
 			ctx = new_ctx;
 			const textfield_changes = {};
-			if (dirty & /*kCID*/ 2) textfield_changes.label = /*label*/ ctx[13];
+			if (dirty & /*kCID*/ 4) textfield_changes.label = /*label*/ ctx[13];
 
-			if (!updating_value && dirty & /*kCID*/ 2) {
+			if (!updating_value && dirty & /*kCID*/ 4) {
 				updating_value = true;
 				textfield_changes.value = /*value*/ ctx[14];
 				add_flush_callback(() => updating_value = false);
@@ -67801,14 +67801,14 @@ function create_each_block_2$5(key_1, ctx) {
 		block,
 		id: create_each_block_2$5.name,
 		type: "each",
-		source: "(79:16) {#each kCID.constant as {label, value, id}",
+		source: "(83:16) {#each kCID.constant as {label, value, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (90:16) {#each k3.rate as {label, value, id}
+// (94:16) {#each k3.rate as {label, value, id}
 function create_each_block_1$6(key_1, ctx) {
 	let first;
 	let textfield;
@@ -67844,9 +67844,9 @@ function create_each_block_1$6(key_1, ctx) {
 		p: function update(new_ctx, dirty) {
 			ctx = new_ctx;
 			const textfield_changes = {};
-			if (dirty & /*k3*/ 1) textfield_changes.label = /*label*/ ctx[13];
+			if (dirty & /*k3*/ 2) textfield_changes.label = /*label*/ ctx[13];
 
-			if (!updating_value && dirty & /*k3*/ 1) {
+			if (!updating_value && dirty & /*k3*/ 2) {
 				updating_value = true;
 				textfield_changes.value = /*value*/ ctx[14];
 				add_flush_callback(() => updating_value = false);
@@ -67873,14 +67873,14 @@ function create_each_block_1$6(key_1, ctx) {
 		block,
 		id: create_each_block_1$6.name,
 		type: "each",
-		source: "(90:16) {#each k3.rate as {label, value, id}",
+		source: "(94:16) {#each k3.rate as {label, value, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (98:16) {#each kCID.rate as {label, value, id}
+// (102:16) {#each kCID.rate as {label, value, id}
 function create_each_block$d(key_1, ctx) {
 	let first;
 	let textfield;
@@ -67916,9 +67916,9 @@ function create_each_block$d(key_1, ctx) {
 		p: function update(new_ctx, dirty) {
 			ctx = new_ctx;
 			const textfield_changes = {};
-			if (dirty & /*kCID*/ 2) textfield_changes.label = /*label*/ ctx[13];
+			if (dirty & /*kCID*/ 4) textfield_changes.label = /*label*/ ctx[13];
 
-			if (!updating_value && dirty & /*kCID*/ 2) {
+			if (!updating_value && dirty & /*kCID*/ 4) {
 				updating_value = true;
 				textfield_changes.value = /*value*/ ctx[14];
 				add_flush_callback(() => updating_value = false);
@@ -67945,7 +67945,7 @@ function create_each_block$d(key_1, ctx) {
 		block,
 		id: create_each_block$d.name,
 		type: "each",
-		source: "(98:16) {#each kCID.rate as {label, value, id}",
+		source: "(102:16) {#each kCID.rate as {label, value, id}",
 		ctx
 	});
 
@@ -67994,7 +67994,7 @@ function create_fragment$1l(ctx) {
 	let current;
 	let mounted;
 	let dispose;
-	let each_value_4 = /*attachmentCoefficients*/ ctx[2];
+	let each_value_4 = /*attachmentCoefficients*/ ctx[3];
 	validate_each_argument(each_value_4);
 	const get_key = ctx => /*id*/ ctx[15];
 	validate_each_keys(ctx, each_value_4, get_each_context_4$1, get_key);
@@ -68011,13 +68011,13 @@ function create_fragment$1l(ctx) {
 
 	let textfield_props = { label: "numberDensity (cm-3)" };
 
-	if (/*numberDensity*/ ctx[3] !== void 0) {
-		textfield_props.value = /*numberDensity*/ ctx[3];
+	if (/*numberDensity*/ ctx[0] !== void 0) {
+		textfield_props.value = /*numberDensity*/ ctx[0];
 	}
 
 	textfield = new Textfield({ props: textfield_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield, "value", textfield_value_binding_1));
-	let each_value_3 = /*k3*/ ctx[0].constant;
+	let each_value_3 = /*k3*/ ctx[1].constant;
 	validate_each_argument(each_value_3);
 	const get_key_1 = ctx => /*id*/ ctx[15];
 	validate_each_keys(ctx, each_value_3, get_each_context_3$3, get_key_1);
@@ -68028,7 +68028,7 @@ function create_fragment$1l(ctx) {
 		each1_lookup.set(key, each_blocks_3[i] = create_each_block_3$3(key, child_ctx));
 	}
 
-	let each_value_2 = /*kCID*/ ctx[1].constant;
+	let each_value_2 = /*kCID*/ ctx[2].constant;
 	validate_each_argument(each_value_2);
 	const get_key_2 = ctx => /*id*/ ctx[15];
 	validate_each_keys(ctx, each_value_2, get_each_context_2$5, get_key_2);
@@ -68039,7 +68039,7 @@ function create_fragment$1l(ctx) {
 		each2_lookup.set(key, each_blocks_2[i] = create_each_block_2$5(key, child_ctx));
 	}
 
-	let each_value_1 = /*k3*/ ctx[0].rate;
+	let each_value_1 = /*k3*/ ctx[1].rate;
 	validate_each_argument(each_value_1);
 	const get_key_3 = ctx => /*id*/ ctx[15];
 	validate_each_keys(ctx, each_value_1, get_each_context_1$6, get_key_3);
@@ -68050,7 +68050,7 @@ function create_fragment$1l(ctx) {
 		each3_lookup.set(key, each_blocks_1[i] = create_each_block_1$6(key, child_ctx));
 	}
 
-	let each_value = /*kCID*/ ctx[1].rate;
+	let each_value = /*kCID*/ ctx[2].rate;
 	validate_each_argument(each_value);
 	const get_key_4 = ctx => /*id*/ ctx[15];
 	validate_each_keys(ctx, each_value, get_each_context$d, get_key_4);
@@ -68122,37 +68122,37 @@ function create_fragment$1l(ctx) {
 			}
 
 			attr_dev(div0, "class", "subtitle svelte-1t65zux");
-			add_location(div0, file$1e, 57, 4, 1310);
+			add_location(div0, file$1e, 59, 4, 1362);
 			attr_dev(button, "class", "button is-link");
-			add_location(button, file$1e, 66, 12, 1696);
+			add_location(button, file$1e, 68, 12, 1748);
 			attr_dev(div1, "class", "");
-			add_location(div1, file$1e, 69, 16, 1874);
+			add_location(div1, file$1e, 71, 16, 1926);
 			attr_dev(div2, "class", "align h-center");
 			set_style(div2, "width", "100%");
-			add_location(div2, file$1e, 68, 12, 1807);
+			add_location(div2, file$1e, 70, 12, 1859);
 			attr_dev(div3, "class", "");
-			add_location(div3, file$1e, 77, 16, 2155);
+			add_location(div3, file$1e, 81, 16, 2227);
 			attr_dev(div4, "class", "align h-center");
 			set_style(div4, "width", "100%");
-			add_location(div4, file$1e, 75, 12, 2086);
+			add_location(div4, file$1e, 79, 12, 2158);
 			attr_dev(hr, "class", "svelte-1t65zux");
-			add_location(hr, file$1e, 84, 12, 2374);
+			add_location(hr, file$1e, 88, 12, 2446);
 			attr_dev(div5, "class", "");
-			add_location(div5, file$1e, 87, 16, 2461);
+			add_location(div5, file$1e, 91, 16, 2533);
 			attr_dev(div6, "class", "align h-center");
 			set_style(div6, "width", "100%");
-			add_location(div6, file$1e, 86, 12, 2394);
+			add_location(div6, file$1e, 90, 12, 2466);
 			attr_dev(div7, "class", "");
-			add_location(div7, file$1e, 96, 16, 2741);
+			add_location(div7, file$1e, 100, 16, 2813);
 			attr_dev(div8, "class", "align h-center");
 			set_style(div8, "width", "100%");
-			add_location(div8, file$1e, 94, 12, 2672);
+			add_location(div8, file$1e, 98, 12, 2744);
 			attr_dev(div9, "class", "align h-center");
-			add_location(div9, file$1e, 64, 8, 1572);
+			add_location(div9, file$1e, 66, 8, 1624);
 			attr_dev(div10, "class", "content__div svelte-1t65zux");
-			add_location(div10, file$1e, 59, 4, 1404);
+			add_location(div10, file$1e, 61, 4, 1456);
 			attr_dev(div11, "class", "sub_container__div box svelte-1t65zux");
-			add_location(div11, file$1e, 56, 0, 1268);
+			add_location(div11, file$1e, 57, 0, 1318);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -68218,8 +68218,8 @@ function create_fragment$1l(ctx) {
 			}
 		},
 		p: function update(ctx, [dirty]) {
-			if (dirty & /*attachmentCoefficients*/ 4) {
-				each_value_4 = /*attachmentCoefficients*/ ctx[2];
+			if (dirty & /*attachmentCoefficients*/ 8) {
+				each_value_4 = /*attachmentCoefficients*/ ctx[3];
 				validate_each_argument(each_value_4);
 				group_outros();
 				validate_each_keys(ctx, each_value_4, get_each_context_4$1, get_key);
@@ -68229,16 +68229,16 @@ function create_fragment$1l(ctx) {
 
 			const textfield_changes = {};
 
-			if (!updating_value && dirty & /*numberDensity*/ 8) {
+			if (!updating_value && dirty & /*numberDensity*/ 1) {
 				updating_value = true;
-				textfield_changes.value = /*numberDensity*/ ctx[3];
+				textfield_changes.value = /*numberDensity*/ ctx[0];
 				add_flush_callback(() => updating_value = false);
 			}
 
 			textfield.$set(textfield_changes);
 
-			if (dirty & /*k3*/ 1) {
-				each_value_3 = /*k3*/ ctx[0].constant;
+			if (dirty & /*k3*/ 2) {
+				each_value_3 = /*k3*/ ctx[1].constant;
 				validate_each_argument(each_value_3);
 				group_outros();
 				validate_each_keys(ctx, each_value_3, get_each_context_3$3, get_key_1);
@@ -68246,8 +68246,8 @@ function create_fragment$1l(ctx) {
 				check_outros();
 			}
 
-			if (dirty & /*kCID*/ 2) {
-				each_value_2 = /*kCID*/ ctx[1].constant;
+			if (dirty & /*kCID*/ 4) {
+				each_value_2 = /*kCID*/ ctx[2].constant;
 				validate_each_argument(each_value_2);
 				group_outros();
 				validate_each_keys(ctx, each_value_2, get_each_context_2$5, get_key_2);
@@ -68255,8 +68255,8 @@ function create_fragment$1l(ctx) {
 				check_outros();
 			}
 
-			if (dirty & /*k3*/ 1) {
-				each_value_1 = /*k3*/ ctx[0].rate;
+			if (dirty & /*k3*/ 2) {
+				each_value_1 = /*k3*/ ctx[1].rate;
 				validate_each_argument(each_value_1);
 				group_outros();
 				validate_each_keys(ctx, each_value_1, get_each_context_1$6, get_key_3);
@@ -68264,8 +68264,8 @@ function create_fragment$1l(ctx) {
 				check_outros();
 			}
 
-			if (dirty & /*kCID*/ 2) {
-				each_value = /*kCID*/ ctx[1].rate;
+			if (dirty & /*kCID*/ 4) {
+				each_value = /*kCID*/ ctx[2].rate;
 				validate_each_argument(each_value);
 				group_outros();
 				validate_each_keys(ctx, each_value, get_each_context$d, get_key_4);
@@ -68388,7 +68388,7 @@ function instance$1l($$self, $$props, $$invalidate) {
 
 	const computeAttachmentRate = () => {
 		$$invalidate(
-			0,
+			1,
 			k3.rate = _.cloneDeep(k3.constant).map(rate => {
 				rate.value *= numberDensity ** 2;
 				return rate;
@@ -68397,7 +68397,7 @@ function instance$1l($$self, $$props, $$invalidate) {
 		);
 
 		$$invalidate(
-			1,
+			2,
 			kCID.rate = _.cloneDeep(kCID.constant).map(rate => {
 				rate.value *= numberDensity;
 				return rate;
@@ -68414,39 +68414,39 @@ function instance$1l($$self, $$props, $$invalidate) {
 
 	function textfield_value_binding(value$1, value, each_value_4, each_index_4) {
 		each_value_4[each_index_4].value = value$1;
-		$$invalidate(2, attachmentCoefficients);
+		$$invalidate(3, attachmentCoefficients);
 	}
 
 	function textfield_value_binding_1(value) {
 		numberDensity = value;
-		$$invalidate(3, numberDensity);
+		$$invalidate(0, numberDensity);
 	}
 
 	function textfield_value_binding_2(value$1, value, each_value_3, each_index_3) {
 		each_value_3[each_index_3].value = value$1;
-		$$invalidate(0, k3);
+		$$invalidate(1, k3);
 	}
 
 	function textfield_value_binding_3(value$1, value, each_value_2, each_index_2) {
 		each_value_2[each_index_2].value = value$1;
-		$$invalidate(1, kCID);
+		$$invalidate(2, kCID);
 	}
 
 	function textfield_value_binding_4(value$1, value, each_value_1, each_index_1) {
 		each_value_1[each_index_1].value = value$1;
-		$$invalidate(0, k3);
+		$$invalidate(1, k3);
 	}
 
 	function textfield_value_binding_5(value$1, value, each_value, each_index) {
 		each_value[each_index].value = value$1;
-		$$invalidate(1, kCID);
+		$$invalidate(2, kCID);
 	}
 
 	$$self.$$set = $$props => {
-		if ("k3" in $$props) $$invalidate(0, k3 = $$props.k3);
-		if ("kCID" in $$props) $$invalidate(1, kCID = $$props.kCID);
-		if ("attachmentCoefficients" in $$props) $$invalidate(2, attachmentCoefficients = $$props.attachmentCoefficients);
-		if ("numberDensity" in $$props) $$invalidate(3, numberDensity = $$props.numberDensity);
+		if ("k3" in $$props) $$invalidate(1, k3 = $$props.k3);
+		if ("kCID" in $$props) $$invalidate(2, kCID = $$props.kCID);
+		if ("attachmentCoefficients" in $$props) $$invalidate(3, attachmentCoefficients = $$props.attachmentCoefficients);
+		if ("numberDensity" in $$props) $$invalidate(0, numberDensity = $$props.numberDensity);
 	};
 
 	$$self.$capture_state = () => ({
@@ -68461,21 +68461,27 @@ function instance$1l($$self, $$props, $$invalidate) {
 	});
 
 	$$self.$inject_state = $$props => {
-		if ("k3" in $$props) $$invalidate(0, k3 = $$props.k3);
-		if ("kCID" in $$props) $$invalidate(1, kCID = $$props.kCID);
-		if ("attachmentCoefficients" in $$props) $$invalidate(2, attachmentCoefficients = $$props.attachmentCoefficients);
-		if ("numberDensity" in $$props) $$invalidate(3, numberDensity = $$props.numberDensity);
+		if ("k3" in $$props) $$invalidate(1, k3 = $$props.k3);
+		if ("kCID" in $$props) $$invalidate(2, kCID = $$props.kCID);
+		if ("attachmentCoefficients" in $$props) $$invalidate(3, attachmentCoefficients = $$props.attachmentCoefficients);
+		if ("numberDensity" in $$props) $$invalidate(0, numberDensity = $$props.numberDensity);
 	};
 
 	if ($$props && "$$inject" in $$props) {
 		$$self.$inject_state($$props.$$inject);
 	}
 
+	$$self.$$.update = () => {
+		if ($$self.$$.dirty & /*numberDensity*/ 1) {
+			 if (numberDensity) computeAttachmentRate();
+		}
+	};
+
 	return [
+		numberDensity,
 		k3,
 		kCID,
 		attachmentCoefficients,
-		numberDensity,
 		computeAttachmentRate,
 		textfield_value_binding,
 		textfield_value_binding_1,
@@ -68491,10 +68497,10 @@ class AttachmentCoefficients extends SvelteComponentDev {
 		super(options);
 
 		init(this, options, instance$1l, create_fragment$1l, safe_not_equal, {
-			k3: 0,
-			kCID: 1,
-			attachmentCoefficients: 2,
-			numberDensity: 3
+			k3: 1,
+			kCID: 2,
+			attachmentCoefficients: 3,
+			numberDensity: 0
 		});
 
 		dispatch_dev("SvelteRegisterComponent", {
@@ -68507,7 +68513,7 @@ class AttachmentCoefficients extends SvelteComponentDev {
 		const { ctx } = this.$$;
 		const props = options.props || {};
 
-		if (/*numberDensity*/ ctx[3] === undefined && !("numberDensity" in props)) {
+		if (/*numberDensity*/ ctx[0] === undefined && !("numberDensity" in props)) {
 			console.warn("<AttachmentCoefficients> was created without expected prop 'numberDensity'");
 		}
 	}
