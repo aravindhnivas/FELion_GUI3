@@ -6,13 +6,14 @@ from pathlib import Path as pt
 from scipy.integrate import solve_ivp
 from functools import reduce
 
+from ROSAA_func import boltzman_distribution
+from optimizePlot import optimizePlot
 main_module_loc = str(pt(__file__).joinpath("../../"))
 sys.path.insert(0, main_module_loc)
+
 from FELion_definitions import sendData
 from FELion_constants import colors
 
-from ROSAA_func import boltzman_distribution
-from optimizePlot import optimizePlot
 class ROSAA:
 
 
@@ -45,7 +46,7 @@ class ROSAA:
         self.Simulate()
         end_time = time.perf_counter()
         print(f"Total simulation time {(end_time - start_time):.2f} s", flush=True)
-        self.plot()
+        self.Plot()
 
     def SimulateODE(self, t, counts):
         
@@ -181,7 +182,7 @@ class ROSAA:
         self.lightON_distribution = N_ON.sol(self.simulateTime)
         
 
-    def plot(self):
+    def Plot(self):
 
         fig, ax = plt.subplots(figsize=(10, 6), dpi=100)
         # plt.subplots_adjust(top=0.95, right=0.95, left=0.07)
@@ -214,11 +215,10 @@ class ROSAA:
         lg = ax.legend(title=f"--OFF, -ON", fontsize=14, title_fontsize=16)
         
         lg.set_draggable(True)
-        ax = optimizePlot(ax, xlabel="Time (ms)", ylabel="Population (%)")
 
+        ax = optimizePlot(ax, xlabel="Time (ms)", ylabel="Population (%)")
         signal_index = len(self.energyKeys)+1
         signal = (1 - (self.lightON_distribution[signal_index][1:] / self.lightOFF_distribution[signal_index][1:]))*100
-
         fig1, ax1 = plt.subplots(figsize=(10, 6), dpi=100)
         ax1.plot(simulationTime[1:], signal)
         ax1 = optimizePlot(ax1, xlabel="Time (ms)", ylabel="Signal (%)")
@@ -226,10 +226,11 @@ class ROSAA:
         plt.show()
 
 if __name__ == "__main__":
-    conditions = json.loads(sys.argv[1])
 
+    conditions = json.loads(sys.argv[1])
     pp = pprint.PrettyPrinter(indent=4)
     pp.pprint(conditions)
+
     sys.stdout.flush()
 
     ROSAA()
