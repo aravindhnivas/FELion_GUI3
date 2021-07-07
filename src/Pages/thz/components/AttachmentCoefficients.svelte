@@ -22,6 +22,7 @@
         k3.rate = _.cloneDeep(k3.constant).map((rate) => {rate.value *= numberDensity**2; return rate }).map(setID).map(correctObjValue);
         kCID.rate = _.cloneDeep(kCID.constant).map((rate) => {rate.value *= numberDensity; return rate }).map(setID).map(correctObjValue);
     }
+    $: if(numberDensity) computeAttachmentRate()
 
 </script>
 
@@ -56,6 +57,7 @@
 </style>
 
 <div class="sub_container__div box">
+
     <div class="subtitle">Rare-gas attachment (K3) and dissociation (kCID) constants</div>
 
     <div class="content__div">
@@ -71,7 +73,9 @@
                 <div class="">k3 (cm6/s): </div>
                 {#each k3.constant as {label, value, id} (id)}
                     <Textfield bind:value {label}  />
+
                 {/each}
+                
             </div>
 
             <div class="align h-center" style="width: 100%;">
