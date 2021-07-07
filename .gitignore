@@ -13,3 +13,4 @@ static/assets/python_files/notebooks/CollisionalSimulations/*.png
 static/assets/python_files/notebooks/profile_fit/.ipynb_checkpoints/voigt_profile-checkpoint.ipynb
 static/assets/python_files/notebooks/profile_fit/CD+_J01.pdf
 static/assets/python_files/notebooks/profile_fit/CD+_J01.png
+static/assets/python_files/ROSAA/__pycache__/*.pyc

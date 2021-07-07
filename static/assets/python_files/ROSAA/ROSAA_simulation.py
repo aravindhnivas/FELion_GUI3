@@ -12,7 +12,7 @@ from FELion_definitions import sendData
 from FELion_constants import colors
 
 from ROSAA_func import boltzman_distribution
-
+from optimizePlot import optimizePlot
 class ROSAA:
 
 
@@ -183,8 +183,8 @@ class ROSAA:
 
     def plot(self):
 
-        fig, ax = plt.subplots(figsize=(7, 4), dpi=100)
-
+        fig, ax = plt.subplots(figsize=(10, 6), dpi=100)
+        # plt.subplots_adjust(top=0.95, right=0.95, left=0.07)
         simulationTime = self.simulateTime.T*1e3
         colorSchemes = []
         for color in colors[::2]:
@@ -211,21 +211,25 @@ class ROSAA:
         
         ax.hlines(1, 0, simulationTime[-1]+simulationTime[-1]*0.2, colors='k', linestyles="dashdot")
 
-        lg = ax.legend(title=f"--OFF, -ON")
+        lg = ax.legend(title=f"--OFF, -ON", fontsize=14, title_fontsize=16)
+        
         lg.set_draggable(True)
-        ax.set(xlabel="Time (ms)", ylabel="Population (%)", title="Simulation", yscale="linear")
+        ax = optimizePlot(ax, xlabel="Time (ms)", ylabel="Population (%)")
 
         signal_index = len(self.energyKeys)+1
-
         signal = (1 - (self.lightON_distribution[signal_index][1:] / self.lightOFF_distribution[signal_index][1:]))*100
-        fig1, ax1 = plt.subplots(figsize=(7, 4), dpi=100)
+
+        fig1, ax1 = plt.subplots(figsize=(10, 6), dpi=100)
         ax1.plot(simulationTime[1:], signal)
-        ax1.set(xlabel="Time (ms)", ylabel="Signal (%)", title="Simulation", yscale="linear")
+        ax1 = optimizePlot(ax1, xlabel="Time (ms)", ylabel="Signal (%)")
+
         plt.show()
 
 if __name__ == "__main__":
     conditions = json.loads(sys.argv[1])
+
     pp = pprint.PrettyPrinter(indent=4)
     pp.pprint(conditions)
     sys.stdout.flush()
+
     ROSAA()
