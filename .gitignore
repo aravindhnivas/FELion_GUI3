@@ -14,3 +14,5 @@ static/assets/python_files/notebooks/profile_fit/.ipynb_checkpoints/voigt_profil
 static/assets/python_files/notebooks/profile_fit/CD+_J01.pdf
 static/assets/python_files/notebooks/profile_fit/CD+_J01.png
 static/assets/python_files/ROSAA/__pycache__/*.pyc
+static/assets/python_files/notebooks/profile_fit/__pycache__/optimizePlot.cpython-38.pyc
+static/assets/python_files/notebooks/profile_fit/CD+_in_MHz_fit.dat
