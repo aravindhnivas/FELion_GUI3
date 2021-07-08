@@ -69,7 +69,7 @@
             <Textfield bind:value={numberDensity} label="numberDensity (cm-3)"/>
             <button class="button is-link" on:click={computeAttachmentRate}>Compute rate constants</button>
 
-            <div class="align h-center" style="width: 100%;">
+            <div class="align h-center" >
                 <div class="">k3 (cm6/s): </div>
                 {#each k3.constant as {label, value, id} (id)}
                     <Textfield bind:value {label}  />
@@ -78,7 +78,7 @@
                 
             </div>
 
-            <div class="align h-center" style="width: 100%;">
+            <div class="align h-center">
 
                 <div class="">kCID  (cm3/s): </div>
                 {#each kCID.constant as {label, value, id} (id)}
@@ -89,7 +89,7 @@
 
             <hr>
 
-            <div class="align h-center" style="width: 100%;">
+            <div class="align h-center">
                 <div class="">k3 (per sec): </div>
 
                 {#each k3.rate as {label, value, id} (id)}
@@ -97,7 +97,7 @@
                 {/each}
             </div>
 
-            <div class="align h-center" style="width: 100%;">
+            <div class="align h-center">
 
                 <div class="">kCID (per sec): </div>
                 {#each kCID.rate as {label, value, id} (id)}
@@ -108,4 +108,5 @@
         </div>
     
     </div>
+
 </div>
