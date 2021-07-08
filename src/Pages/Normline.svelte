@@ -121,14 +121,14 @@
 
     let graphWidth;
 
-    $: if(graphPlotted&&graphWidth) {
+    // $: if(graphPlotted&&graphWidth) {
 
-        graphDivIds.forEach(id=>{
-            const content = document.getElementById(id).innerHTML
-            if(content){ Plotly.relayout(id, {width:graphWidth}) }
-        })
+    //     graphDivIds.forEach(id=>{
+    //         const content = document.getElementById(id).innerHTML
+    //         if(content){ Plotly.relayout(id, {width:graphWidth}) }
+    //     })
 
-    }
+    // }
 
     
 </script>
