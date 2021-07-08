@@ -50,7 +50,7 @@
     
     import { fly, fade } from 'svelte/transition';
     import Textfield from '@smui/textfield';
-    import {onMount} from "svelte";
+    import {onMount, tick} from "svelte";
     import FileBrowser from "./FileBrowser.svelte"
     // import { createEventDispatcher } from 'svelte';
 
@@ -75,8 +75,11 @@
     }
 
     let mounted=false;
-    
-    onMount(()=>{ toggleBrowser = true; mounted=true;})
+    let graphDivs = []
+    onMount(()=>{ 
+        toggleBrowser = true; mounted=true;
+        graphDivs = Array.from(document.querySelectorAll(`#${filetype}-plotContainer .graph__div`))
+    })
 
     let graphWindowClosed = true;
     $: graphModal = !graphWindowClosed
@@ -97,17 +100,30 @@
             width: "70%", height: "70%",
             background:"#634e96",
             top: 50, bottom:50,
-            onclose: function(){
+            onclose: async function(){
                 graphWindowClosed = true
                 console.log(`${filetype}=> graphWindowClosed: ${graphWindowClosed}`)
-
+                changeGraphDivWidth()
                 return false
-            } 
-        });
+            },
 
+            onresize: function(width, height){changeGraphDivWidth()},
+        });
         graphWindow.maximize(true);
 
     }
+    let fileBrowserWidth;
+
+    const changeGraphDivWidth = async (ms=0) => {
+
+        await tick(); 
+        if (ms>0) await sleep(ms);
+        graphDivs.forEach(id=>{
+            if(id.data) {Plotly.relayout(id, {width:id.clientWidth})}
+        })
+    }
+    
+    $: if (fileBrowserWidth) {changeGraphDivWidth(500)};
 
 </script>
 
@@ -142,17 +158,17 @@
             }
         
 
-            .plot__div {
-        
-                display: flex;
-                row-gap: 1em;
-
-                flex-direction: column;
-                overflow: auto;
-                padding-right: 1em;
-                padding-bottom: 12em;
-            }
+            
         }
+    }
+
+    .plot__div {
+        display: flex;
+        row-gap: 1em;
+        flex-direction: column;
+        overflow: auto;
+        padding-right: 1em;
+        padding-bottom: 12em;
     }
 
 </style>
@@ -160,7 +176,7 @@
 <section {id} style="display:none" class="animated fadeIn">
 
     <div class="main__layout__div">
-        <div class="left_container__div box " transition:fly="{{ x: -100, duration: 500 }}">
+        <div class="left_container__div box " transition:fly="{{ x: -100, duration: 500 }}" bind:clientWidth={fileBrowserWidth}>
             <FileBrowser bind:currentLocation {filetype} bind:fileChecked on:chdir bind:fullfileslist/>
         </div>
 

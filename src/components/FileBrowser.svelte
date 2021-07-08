@@ -67,20 +67,19 @@
             
             original_location = currentLocation
             
-            files_loaded = true
-            console.log("Folder updated", otherfolders);
-            dispatch_chdir_event()
+            files_loaded = true;
 
-            if (filetype.length > 2) { db.set(`${filetype}_location`, currentLocation) }
-            if (toast) { window.createToast("Files updated"); }
-
-        } catch (err) {
+            console.log("Folder updated");
             
+            dispatch_chdir_event()
+            if (filetype.length > 2) { db.set(`${filetype}_location`, currentLocation) }
+
+            if (toast) { window.createToast("Files updated"); }
+        } catch (err) {
             console.log(err)
             $mainPreModal.modalContent = err.stack;
             $mainPreModal.open = true;
             return 
-        
         }
     }
 

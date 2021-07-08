@@ -42,7 +42,7 @@
         }).catch(err=>{$mainPreModal.modalContent = err;  $mainPreModal.open = true})
 
     }
-
+    // $: console.log(OPOfilesChecked)
 </script>
 
 <QuickBrowser title="OPO files" bind:active={showOPOFiles} bind:currentLocation={OPOLocation} bind:fileChecked={OPOfilesChecked} filetype="ofelix" on:submit="{(e)=>{plotData({e:e.detail.event})}}"/>

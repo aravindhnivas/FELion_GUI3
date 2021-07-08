@@ -23143,7 +23143,7 @@ function get_each_context$2(ctx, list, i) {
 	return child_ctx;
 }
 
-// (125:4) <Icon class="material-icons" on:click="{()=>changeDirectory("..")}">
+// (124:4) <Icon class="material-icons" on:click="{()=>changeDirectory("..")}">
 function create_default_slot_6(ctx) {
 	let t;
 
@@ -23163,14 +23163,14 @@ function create_default_slot_6(ctx) {
 		block,
 		id: create_default_slot_6.name,
 		type: "slot",
-		source: "(125:4) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>changeDirectory(\\\"..\\\")}\\\">",
+		source: "(124:4) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>changeDirectory(\\\"..\\\")}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (126:4) <Icon class="material-icons" on:click="{()=>{getfiles(true, true)}}">
+// (125:4) <Icon class="material-icons" on:click="{()=>{getfiles(true, true)}}">
 function create_default_slot_5(ctx) {
 	let t;
 
@@ -23190,14 +23190,14 @@ function create_default_slot_5(ctx) {
 		block,
 		id: create_default_slot_5.name,
 		type: "slot",
-		source: "(126:4) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>{getfiles(true, true)}}\\\">",
+		source: "(125:4) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>{getfiles(true, true)}}\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (133:4) <FormField>
+// (132:4) <FormField>
 function create_default_slot_4$1(ctx) {
 	let switch_1;
 	let updating_checked;
@@ -23254,14 +23254,14 @@ function create_default_slot_4$1(ctx) {
 		block,
 		id: create_default_slot_4$1.name,
 		type: "slot",
-		source: "(133:4) <FormField>",
+		source: "(132:4) <FormField>",
 		ctx
 	});
 
 	return block;
 }
 
-// (136:8) 
+// (135:8) 
 function create_label_slot(ctx) {
 	let span;
 
@@ -23270,7 +23270,7 @@ function create_label_slot(ctx) {
 			span = element("span");
 			span.textContent = "Select All";
 			attr_dev(span, "slot", "label");
-			add_location(span, file_1, 135, 8, 4962);
+			add_location(span, file_1, 134, 8, 4939);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -23284,14 +23284,14 @@ function create_label_slot(ctx) {
 		block,
 		id: create_label_slot.name,
 		type: "slot",
-		source: "(136:8) ",
+		source: "(135:8) ",
 		ctx
 	});
 
 	return block;
 }
 
-// (144:12) <Icon class="material-icons" on>
+// (143:12) <Icon class="material-icons" on>
 function create_default_slot_3$1(ctx) {
 	let t;
 
@@ -23311,14 +23311,14 @@ function create_default_slot_3$1(ctx) {
 		block,
 		id: create_default_slot_3$1.name,
 		type: "slot",
-		source: "(144:12) <Icon class=\\\"material-icons\\\" on>",
+		source: "(143:12) <Icon class=\\\"material-icons\\\" on>",
 		ctx
 	});
 
 	return block;
 }
 
-// (145:12) <Icon class="material-icons" >
+// (144:12) <Icon class="material-icons" >
 function create_default_slot_2$4(ctx) {
 	let t;
 
@@ -23338,14 +23338,14 @@ function create_default_slot_2$4(ctx) {
 		block,
 		id: create_default_slot_2$4.name,
 		type: "slot",
-		source: "(145:12) <Icon class=\\\"material-icons\\\" >",
+		source: "(144:12) <Icon class=\\\"material-icons\\\" >",
 		ctx
 	});
 
 	return block;
 }
 
-// (143:8) <IconButton  toggle bind:pressed={showfiles}>
+// (142:8) <IconButton  toggle bind:pressed={showfiles}>
 function create_default_slot_1$5(ctx) {
 	let icon0;
 	let t;
@@ -23421,14 +23421,14 @@ function create_default_slot_1$5(ctx) {
 		block,
 		id: create_default_slot_1$5.name,
 		type: "slot",
-		source: "(143:8) <IconButton  toggle bind:pressed={showfiles}>",
+		source: "(142:8) <IconButton  toggle bind:pressed={showfiles}>",
 		ctx
 	});
 
 	return block;
 }
 
-// (170:4) {:else}
+// (169:4) {:else}
 function create_else_block$5(ctx) {
 	let div;
 
@@ -23437,7 +23437,7 @@ function create_else_block$5(ctx) {
 			div = element("div");
 			div.textContent = "...loading";
 			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-1mficwx");
-			add_location(div, file_1, 170, 8, 6498);
+			add_location(div, file_1, 169, 8, 6475);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -23454,14 +23454,14 @@ function create_else_block$5(ctx) {
 		block,
 		id: create_else_block$5.name,
 		type: "else",
-		source: "(170:4) {:else}",
+		source: "(169:4) {:else}",
 		ctx
 	});
 
 	return block;
 }
 
-// (168:30) 
+// (167:30) 
 function create_if_block_3$1(ctx) {
 	let div;
 
@@ -23470,7 +23470,7 @@ function create_if_block_3$1(ctx) {
 			div = element("div");
 			div.textContent = "Location doesn't exist: Browse files again";
 			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-1mficwx");
-			add_location(div, file_1, 168, 8, 6375);
+			add_location(div, file_1, 167, 8, 6352);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -23487,14 +23487,14 @@ function create_if_block_3$1(ctx) {
 		block,
 		id: create_if_block_3$1.name,
 		type: "if",
-		source: "(168:30) ",
+		source: "(167:30) ",
 		ctx
 	});
 
 	return block;
 }
 
-// (150:4) {#if files_loaded && locationStatus}
+// (149:4) {#if files_loaded && locationStatus}
 function create_if_block$a(ctx) {
 	let current_block_type_index;
 	let if_block;
@@ -23539,7 +23539,7 @@ function create_if_block$a(ctx) {
 
 			attr_dev(div, "class", "otherFolderlist");
 			set_style(div, "cursor", "pointer");
-			add_location(div, file_1, 158, 8, 5898);
+			add_location(div, file_1, 157, 8, 5875);
 		},
 		m: function mount(target, anchor) {
 			if (~current_block_type_index) {
@@ -23637,14 +23637,14 @@ function create_if_block$a(ctx) {
 		block,
 		id: create_if_block$a.name,
 		type: "if",
-		source: "(150:4) {#if files_loaded && locationStatus}",
+		source: "(149:4) {#if files_loaded && locationStatus}",
 		ctx
 	});
 
 	return block;
 }
 
-// (155:40) 
+// (154:40) 
 function create_if_block_2$2(ctx) {
 	let div;
 	let t0;
@@ -23658,7 +23658,7 @@ function create_if_block_2$2(ctx) {
 			t1 = text(/*filetype*/ ctx[1]);
 			t2 = text(" here!");
 			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-1mficwx");
-			add_location(div, file_1, 155, 12, 5778);
+			add_location(div, file_1, 154, 12, 5755);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -23680,14 +23680,14 @@ function create_if_block_2$2(ctx) {
 		block,
 		id: create_if_block_2$2.name,
 		type: "if",
-		source: "(155:40) ",
+		source: "(154:40) ",
 		ctx
 	});
 
 	return block;
 }
 
-// (151:8) {#if showfiles && fullfiles.length }
+// (150:8) {#if showfiles && fullfiles.length }
 function create_if_block_1$3(ctx) {
 	let div;
 	let virtualchecklist;
@@ -23729,7 +23729,7 @@ function create_if_block_1$3(ctx) {
 		c: function create() {
 			div = element("div");
 			create_component(virtualchecklist.$$.fragment);
-			add_location(div, file_1, 151, 12, 5530);
+			add_location(div, file_1, 150, 12, 5507);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -23779,14 +23779,14 @@ function create_if_block_1$3(ctx) {
 		block,
 		id: create_if_block_1$3.name,
 		type: "if",
-		source: "(151:8) {#if showfiles && fullfiles.length }",
+		source: "(150:8) {#if showfiles && fullfiles.length }",
 		ctx
 	});
 
 	return block;
 }
 
-// (162:20) <Icon class="material-icons">
+// (161:20) <Icon class="material-icons">
 function create_default_slot$9(ctx) {
 	let t;
 
@@ -23806,14 +23806,14 @@ function create_default_slot$9(ctx) {
 		block,
 		id: create_default_slot$9.name,
 		type: "slot",
-		source: "(162:20) <Icon class=\\\"material-icons\\\">",
+		source: "(161:20) <Icon class=\\\"material-icons\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (160:12) {#each otherfolders as folder (folder.id)}
+// (159:12) {#each otherfolders as folder (folder.id)}
 function create_each_block$2(key_1, ctx) {
 	let div1;
 	let icon;
@@ -23851,9 +23851,9 @@ function create_each_block$2(key_1, ctx) {
 			t1 = text(t1_value);
 			t2 = space();
 			attr_dev(div0, "class", "mdc-typography--subtitle1");
-			add_location(div0, file_1, 162, 20, 6212);
+			add_location(div0, file_1, 161, 20, 6189);
 			attr_dev(div1, "class", "align svelte-1mficwx");
-			add_location(div1, file_1, 160, 16, 6024);
+			add_location(div1, file_1, 159, 16, 6001);
 			this.first = div1;
 		},
 		m: function mount(target, anchor) {
@@ -23917,7 +23917,7 @@ function create_each_block$2(key_1, ctx) {
 		block,
 		id: create_each_block$2.name,
 		type: "each",
-		source: "(160:12) {#each otherfolders as folder (folder.id)}",
+		source: "(159:12) {#each otherfolders as folder (folder.id)}",
 		ctx
 	});
 
@@ -24070,16 +24070,16 @@ function create_fragment$z(ctx) {
 			t7 = space();
 			if_block.c();
 			attr_dev(div0, "class", "align center browseIcons svelte-1mficwx");
-			add_location(div0, file_1, 123, 0, 4324);
+			add_location(div0, file_1, 122, 0, 4301);
 			attr_dev(div1, "class", "align center svelte-1mficwx");
-			add_location(div1, file_1, 131, 0, 4760);
+			add_location(div1, file_1, 130, 0, 4737);
 			attr_dev(div2, "class", "mdc-typography--subtitle1");
-			add_location(div2, file_1, 146, 8, 5355);
+			add_location(div2, file_1, 145, 8, 5332);
 			attr_dev(div3, "class", "align folderlist svelte-1mficwx");
-			add_location(div3, file_1, 141, 4, 5093);
+			add_location(div3, file_1, 140, 4, 5070);
 			attr_dev(div4, "class", "folderfile-list svelte-1mficwx");
 			attr_dev(div4, "id", div4_id_value = "" + (/*filetype*/ ctx[1] + "_filebrowser"));
-			add_location(div4, file_1, 140, 0, 5030);
+			add_location(div4, file_1, 139, 0, 5007);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -24303,7 +24303,7 @@ function instance$z($$self, $$props, $$invalidate) {
 			$$invalidate(5, otherfolders = folderfile.filter(file => fs.lstatSync(path.join(currentLocation, file)).isDirectory()).map(file => file = { name: file, id: getID() }).sort((a, b) => a.name > b.name ? 1 : -1));
 			original_location = currentLocation;
 			$$invalidate(9, files_loaded = true);
-			console.log("Folder updated", otherfolders);
+			console.log("Folder updated");
 			dispatch_chdir_event();
 
 			if (filetype.length > 2) {
@@ -24598,7 +24598,7 @@ const get_plotContainer_slot_context = ctx => ({});
 const get_buttonContainer_slot_changes = dirty => ({});
 const get_buttonContainer_slot_context = ctx => ({});
 
-// (172:16) {#if graphPlotted}
+// (189:16) {#if graphPlotted}
 function create_if_block_1$4(ctx) {
 	let button;
 	let mounted;
@@ -24609,13 +24609,13 @@ function create_if_block_1$4(ctx) {
 			button = element("button");
 			button.textContent = "Graph:Open separately";
 			attr_dev(button, "class", "button is-warning animated fadeIn");
-			add_location(button, file$x, 172, 20, 5381);
+			add_location(button, file$x, 189, 20, 5961);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, button, anchor);
 
 			if (!mounted) {
-				dispose = listen_dev(button, "click", /*openGraph*/ ctx[7], false, false, false);
+				dispose = listen_dev(button, "click", /*openGraph*/ ctx[8], false, false, false);
 				mounted = true;
 			}
 		},
@@ -24631,21 +24631,21 @@ function create_if_block_1$4(ctx) {
 		block,
 		id: create_if_block_1$4.name,
 		type: "if",
-		source: "(172:16) {#if graphPlotted}",
+		source: "(189:16) {#if graphPlotted}",
 		ctx
 	});
 
 	return block;
 }
 
-// (181:16) {#if graphPlotted}
+// (198:16) {#if graphPlotted}
 function create_if_block$b(ctx) {
 	let t;
 	let current;
-	const plotContainer_functions_slot_template = /*#slots*/ ctx[12].plotContainer_functions;
-	const plotContainer_functions_slot = create_slot(plotContainer_functions_slot_template, ctx, /*$$scope*/ ctx[11], get_plotContainer_functions_slot_context);
-	const plotContainer_reports_slot_template = /*#slots*/ ctx[12].plotContainer_reports;
-	const plotContainer_reports_slot = create_slot(plotContainer_reports_slot_template, ctx, /*$$scope*/ ctx[11], get_plotContainer_reports_slot_context);
+	const plotContainer_functions_slot_template = /*#slots*/ ctx[13].plotContainer_functions;
+	const plotContainer_functions_slot = create_slot(plotContainer_functions_slot_template, ctx, /*$$scope*/ ctx[12], get_plotContainer_functions_slot_context);
+	const plotContainer_reports_slot_template = /*#slots*/ ctx[13].plotContainer_reports;
+	const plotContainer_reports_slot = create_slot(plotContainer_reports_slot_template, ctx, /*$$scope*/ ctx[12], get_plotContainer_reports_slot_context);
 
 	const block = {
 		c: function create() {
@@ -24668,14 +24668,14 @@ function create_if_block$b(ctx) {
 		},
 		p: function update(ctx, dirty) {
 			if (plotContainer_functions_slot) {
-				if (plotContainer_functions_slot.p && (!current || dirty & /*$$scope*/ 2048)) {
-					update_slot(plotContainer_functions_slot, plotContainer_functions_slot_template, ctx, /*$$scope*/ ctx[11], dirty, get_plotContainer_functions_slot_changes, get_plotContainer_functions_slot_context);
+				if (plotContainer_functions_slot.p && (!current || dirty & /*$$scope*/ 4096)) {
+					update_slot(plotContainer_functions_slot, plotContainer_functions_slot_template, ctx, /*$$scope*/ ctx[12], dirty, get_plotContainer_functions_slot_changes, get_plotContainer_functions_slot_context);
 				}
 			}
 
 			if (plotContainer_reports_slot) {
-				if (plotContainer_reports_slot.p && (!current || dirty & /*$$scope*/ 2048)) {
-					update_slot(plotContainer_reports_slot, plotContainer_reports_slot_template, ctx, /*$$scope*/ ctx[11], dirty, get_plotContainer_reports_slot_changes, get_plotContainer_reports_slot_context);
+				if (plotContainer_reports_slot.p && (!current || dirty & /*$$scope*/ 4096)) {
+					update_slot(plotContainer_reports_slot, plotContainer_reports_slot_template, ctx, /*$$scope*/ ctx[12], dirty, get_plotContainer_reports_slot_changes, get_plotContainer_reports_slot_context);
 				}
 			}
 		},
@@ -24701,7 +24701,7 @@ function create_if_block$b(ctx) {
 		block,
 		id: create_if_block$b.name,
 		type: "if",
-		source: "(181:16) {#if graphPlotted}",
+		source: "(198:16) {#if graphPlotted}",
 		ctx
 	});
 
@@ -24716,6 +24716,7 @@ function create_fragment$A(ctx) {
 	let updating_currentLocation;
 	let updating_fileChecked;
 	let updating_fullfileslist;
+	let div0_resize_listener;
 	let div0_transition;
 	let t0;
 	let div4;
@@ -24741,15 +24742,15 @@ function create_fragment$A(ctx) {
 	let dispose;
 
 	function filebrowser_currentLocation_binding(value) {
-		/*filebrowser_currentLocation_binding*/ ctx[13](value);
+		/*filebrowser_currentLocation_binding*/ ctx[14](value);
 	}
 
 	function filebrowser_fileChecked_binding(value) {
-		/*filebrowser_fileChecked_binding*/ ctx[14](value);
+		/*filebrowser_fileChecked_binding*/ ctx[15](value);
 	}
 
 	function filebrowser_fullfileslist_binding(value) {
-		/*filebrowser_fullfileslist_binding*/ ctx[15](value);
+		/*filebrowser_fullfileslist_binding*/ ctx[16](value);
 	}
 
 	let filebrowser_props = { filetype: /*filetype*/ ctx[4] };
@@ -24770,10 +24771,10 @@ function create_fragment$A(ctx) {
 	binding_callbacks.push(() => bind(filebrowser, "currentLocation", filebrowser_currentLocation_binding));
 	binding_callbacks.push(() => bind(filebrowser, "fileChecked", filebrowser_fileChecked_binding));
 	binding_callbacks.push(() => bind(filebrowser, "fullfileslist", filebrowser_fullfileslist_binding));
-	filebrowser.$on("chdir", /*chdir_handler*/ ctx[16]);
+	filebrowser.$on("chdir", /*chdir_handler*/ ctx[17]);
 
 	function textfield_value_binding(value) {
-		/*textfield_value_binding*/ ctx[17](value);
+		/*textfield_value_binding*/ ctx[19](value);
 	}
 
 	let textfield_props = {
@@ -24787,11 +24788,11 @@ function create_fragment$A(ctx) {
 
 	textfield = new Textfield({ props: textfield_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield, "value", textfield_value_binding));
-	const buttonContainer_slot_template = /*#slots*/ ctx[12].buttonContainer;
-	const buttonContainer_slot = create_slot(buttonContainer_slot_template, ctx, /*$$scope*/ ctx[11], get_buttonContainer_slot_context);
+	const buttonContainer_slot_template = /*#slots*/ ctx[13].buttonContainer;
+	const buttonContainer_slot = create_slot(buttonContainer_slot_template, ctx, /*$$scope*/ ctx[12], get_buttonContainer_slot_context);
 	let if_block0 = /*graphPlotted*/ ctx[5] && create_if_block_1$4(ctx);
-	const plotContainer_slot_template = /*#slots*/ ctx[12].plotContainer;
-	const plotContainer_slot = create_slot(plotContainer_slot_template, ctx, /*$$scope*/ ctx[11], get_plotContainer_slot_context);
+	const plotContainer_slot_template = /*#slots*/ ctx[13].plotContainer;
+	const plotContainer_slot = create_slot(plotContainer_slot_template, ctx, /*$$scope*/ ctx[12], get_plotContainer_slot_context);
 	let if_block1 = /*graphPlotted*/ ctx[5] && create_if_block$b(ctx);
 
 	const block = {
@@ -24817,28 +24818,29 @@ function create_fragment$A(ctx) {
 			if (plotContainer_slot) plotContainer_slot.c();
 			t6 = space();
 			if (if_block1) if_block1.c();
-			attr_dev(div0, "class", "left_container__div box  svelte-tpcjis");
-			add_location(div0, file$x, 157, 8, 4609);
+			attr_dev(div0, "class", "left_container__div box  svelte-dlj54n");
+			add_render_callback(() => /*div0_elementresize_handler*/ ctx[18].call(div0));
+			add_location(div0, file$x, 174, 8, 5153);
 			attr_dev(button, "class", "button is-link");
 			attr_dev(button, "id", button_id_value = "" + (/*filetype*/ ctx[4] + "_filebrowser_btn"));
-			add_location(button, file$x, 164, 16, 4964);
-			attr_dev(div1, "class", "location__div svelte-tpcjis");
-			add_location(div1, file$x, 163, 12, 4918);
+			add_location(button, file$x, 181, 16, 5544);
+			attr_dev(div1, "class", "location__div svelte-dlj54n");
+			add_location(div1, file$x, 180, 12, 5498);
 			attr_dev(div2, "class", "button__div align");
 			attr_dev(div2, "id", div2_id_value = "" + (/*filetype*/ ctx[4] + "-buttonContainer"));
-			add_location(div2, file$x, 168, 12, 5208);
-			attr_dev(div3, "class", "plot__div svelte-tpcjis");
+			add_location(div2, file$x, 185, 12, 5788);
+			attr_dev(div3, "class", "plot__div svelte-dlj54n");
 			attr_dev(div3, "id", div3_id_value = "" + (/*filetype*/ ctx[4] + "-plotContainer"));
-			add_location(div3, file$x, 177, 12, 5543);
-			attr_dev(div4, "class", "right_container__div box  svelte-tpcjis");
+			add_location(div3, file$x, 194, 12, 6123);
+			attr_dev(div4, "class", "right_container__div box  svelte-dlj54n");
 			attr_dev(div4, "id", div4_id_value = "" + (/*filetype*/ ctx[4] + "__mainContainer__div"));
-			add_location(div4, file$x, 161, 8, 4826);
-			attr_dev(div5, "class", "main__layout__div svelte-tpcjis");
-			add_location(div5, file$x, 156, 4, 4568);
+			add_location(div4, file$x, 178, 8, 5406);
+			attr_dev(div5, "class", "main__layout__div svelte-dlj54n");
+			add_location(div5, file$x, 173, 4, 5112);
 			attr_dev(section, "id", /*id*/ ctx[3]);
 			set_style(section, "display", "none");
 			attr_dev(section, "class", "animated fadeIn");
-			add_location(section, file$x, 154, 0, 4501);
+			add_location(section, file$x, 171, 0, 5045);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -24848,6 +24850,7 @@ function create_fragment$A(ctx) {
 			append_dev(section, div5);
 			append_dev(div5, div0);
 			mount_component(filebrowser, div0, null);
+			div0_resize_listener = add_resize_listener(div0, /*div0_elementresize_handler*/ ctx[18].bind(div0));
 			append_dev(div5, t0);
 			append_dev(div5, div4);
 			append_dev(div4, div1);
@@ -24876,7 +24879,7 @@ function create_fragment$A(ctx) {
 			current = true;
 
 			if (!mounted) {
-				dispose = listen_dev(button, "click", /*browse_folder*/ ctx[6], false, false, false);
+				dispose = listen_dev(button, "click", /*browse_folder*/ ctx[7], false, false, false);
 				mounted = true;
 			}
 		},
@@ -24919,8 +24922,8 @@ function create_fragment$A(ctx) {
 			textfield.$set(textfield_changes);
 
 			if (buttonContainer_slot) {
-				if (buttonContainer_slot.p && (!current || dirty & /*$$scope*/ 2048)) {
-					update_slot(buttonContainer_slot, buttonContainer_slot_template, ctx, /*$$scope*/ ctx[11], dirty, get_buttonContainer_slot_changes, get_buttonContainer_slot_context);
+				if (buttonContainer_slot.p && (!current || dirty & /*$$scope*/ 4096)) {
+					update_slot(buttonContainer_slot, buttonContainer_slot_template, ctx, /*$$scope*/ ctx[12], dirty, get_buttonContainer_slot_changes, get_buttonContainer_slot_context);
 				}
 			}
 
@@ -24942,8 +24945,8 @@ function create_fragment$A(ctx) {
 			}
 
 			if (plotContainer_slot) {
-				if (plotContainer_slot.p && (!current || dirty & /*$$scope*/ 2048)) {
-					update_slot(plotContainer_slot, plotContainer_slot_template, ctx, /*$$scope*/ ctx[11], dirty, get_plotContainer_slot_changes, get_plotContainer_slot_context);
+				if (plotContainer_slot.p && (!current || dirty & /*$$scope*/ 4096)) {
+					update_slot(plotContainer_slot, plotContainer_slot_template, ctx, /*$$scope*/ ctx[12], dirty, get_plotContainer_slot_changes, get_plotContainer_slot_context);
 				}
 			}
 
@@ -25018,6 +25021,7 @@ function create_fragment$A(ctx) {
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(section);
 			destroy_component(filebrowser);
+			div0_resize_listener();
 			if (detaching && div0_transition) div0_transition.end();
 			destroy_component(textfield);
 			if (buttonContainer_slot) buttonContainer_slot.d(detaching);
@@ -25119,10 +25123,12 @@ function instance$A($$self, $$props, $$invalidate) {
 	}
 
 	let mounted = false;
+	let graphDivs = [];
 
 	onMount(() => {
-		$$invalidate(8, toggleBrowser = true);
+		$$invalidate(9, toggleBrowser = true);
 		mounted = true;
+		graphDivs = Array.from(document.querySelectorAll(`#${filetype}-plotContainer .graph__div`));
 	});
 
 	let graphWindowClosed = true;
@@ -25133,7 +25139,7 @@ function instance$A($$self, $$props, $$invalidate) {
 			return graphWindow.show();
 		}
 
-		$$invalidate(10, graphWindowClosed = false);
+		$$invalidate(11, graphWindowClosed = false);
 		const mount = document.getElementById(`${filetype}-plotContainer`);
 
 		graphWindow = new WinBox({
@@ -25148,15 +25154,34 @@ function instance$A($$self, $$props, $$invalidate) {
 				background: "#634e96",
 				top: 50,
 				bottom: 50,
-				onclose() {
-					$$invalidate(10, graphWindowClosed = true);
+				async onclose() {
+					$$invalidate(11, graphWindowClosed = true);
 					console.log(`${filetype}=> graphWindowClosed: ${graphWindowClosed}`);
+					changeGraphDivWidth();
 					return false;
+				},
+				onresize(width, height) {
+					changeGraphDivWidth();
 				}
 			});
 
 		graphWindow.maximize(true);
 	}
+
+	let fileBrowserWidth;
+
+	const changeGraphDivWidth = async (ms = 0) => {
+		await tick();
+		if (ms > 0) await sleep(ms);
+
+		graphDivs.forEach(id => {
+			if (id.data) {
+				Plotly.relayout(id, { width: id.clientWidth });
+			}
+		});
+	};
+
+	
 
 	const writable_props = [
 		"id",
@@ -25192,6 +25217,11 @@ function instance$A($$self, $$props, $$invalidate) {
 		bubble($$self, event);
 	}
 
+	function div0_elementresize_handler() {
+		fileBrowserWidth = this.clientWidth;
+		$$invalidate(6, fileBrowserWidth);
+	}
+
 	function textfield_value_binding(value) {
 		currentLocation = value;
 		$$invalidate(2, currentLocation);
@@ -25201,12 +25231,12 @@ function instance$A($$self, $$props, $$invalidate) {
 		if ("id" in $$props) $$invalidate(3, id = $$props.id);
 		if ("fileChecked" in $$props) $$invalidate(0, fileChecked = $$props.fileChecked);
 		if ("filetype" in $$props) $$invalidate(4, filetype = $$props.filetype);
-		if ("toggleBrowser" in $$props) $$invalidate(8, toggleBrowser = $$props.toggleBrowser);
+		if ("toggleBrowser" in $$props) $$invalidate(9, toggleBrowser = $$props.toggleBrowser);
 		if ("fullfileslist" in $$props) $$invalidate(1, fullfileslist = $$props.fullfileslist);
 		if ("currentLocation" in $$props) $$invalidate(2, currentLocation = $$props.currentLocation);
 		if ("graphPlotted" in $$props) $$invalidate(5, graphPlotted = $$props.graphPlotted);
-		if ("graphWindowClasses" in $$props) $$invalidate(9, graphWindowClasses = $$props.graphWindowClasses);
-		if ("$$scope" in $$props) $$invalidate(11, $$scope = $$props.$$scope);
+		if ("graphWindowClasses" in $$props) $$invalidate(10, graphWindowClasses = $$props.graphWindowClasses);
+		if ("$$scope" in $$props) $$invalidate(12, $$scope = $$props.$$scope);
 	};
 
 	$$self.$capture_state = () => ({
@@ -25215,6 +25245,7 @@ function instance$A($$self, $$props, $$invalidate) {
 		fade,
 		Textfield,
 		onMount,
+		tick,
 		FileBrowser,
 		id,
 		fileChecked,
@@ -25226,9 +25257,12 @@ function instance$A($$self, $$props, $$invalidate) {
 		graphWindowClasses,
 		browse_folder,
 		mounted,
+		graphDivs,
 		graphWindowClosed,
 		graphWindow,
 		openGraph,
+		fileBrowserWidth,
+		changeGraphDivWidth,
 		graphModal
 	});
 
@@ -25236,14 +25270,16 @@ function instance$A($$self, $$props, $$invalidate) {
 		if ("id" in $$props) $$invalidate(3, id = $$props.id);
 		if ("fileChecked" in $$props) $$invalidate(0, fileChecked = $$props.fileChecked);
 		if ("filetype" in $$props) $$invalidate(4, filetype = $$props.filetype);
-		if ("toggleBrowser" in $$props) $$invalidate(8, toggleBrowser = $$props.toggleBrowser);
+		if ("toggleBrowser" in $$props) $$invalidate(9, toggleBrowser = $$props.toggleBrowser);
 		if ("fullfileslist" in $$props) $$invalidate(1, fullfileslist = $$props.fullfileslist);
 		if ("currentLocation" in $$props) $$invalidate(2, currentLocation = $$props.currentLocation);
 		if ("graphPlotted" in $$props) $$invalidate(5, graphPlotted = $$props.graphPlotted);
-		if ("graphWindowClasses" in $$props) $$invalidate(9, graphWindowClasses = $$props.graphWindowClasses);
+		if ("graphWindowClasses" in $$props) $$invalidate(10, graphWindowClasses = $$props.graphWindowClasses);
 		if ("mounted" in $$props) mounted = $$props.mounted;
-		if ("graphWindowClosed" in $$props) $$invalidate(10, graphWindowClosed = $$props.graphWindowClosed);
+		if ("graphDivs" in $$props) graphDivs = $$props.graphDivs;
+		if ("graphWindowClosed" in $$props) $$invalidate(11, graphWindowClosed = $$props.graphWindowClosed);
 		if ("graphWindow" in $$props) graphWindow = $$props.graphWindow;
+		if ("fileBrowserWidth" in $$props) $$invalidate(6, fileBrowserWidth = $$props.fileBrowserWidth);
 		if ("graphModal" in $$props) graphModal = $$props.graphModal;
 	};
 
@@ -25252,8 +25288,14 @@ function instance$A($$self, $$props, $$invalidate) {
 	}
 
 	$$self.$$.update = () => {
-		if ($$self.$$.dirty & /*graphWindowClosed*/ 1024) {
+		if ($$self.$$.dirty & /*graphWindowClosed*/ 2048) {
 			 graphModal = !graphWindowClosed;
+		}
+
+		if ($$self.$$.dirty & /*fileBrowserWidth*/ 64) {
+			 if (fileBrowserWidth) {
+				changeGraphDivWidth(500);
+			}
 		}
 	};
 
@@ -25264,6 +25306,7 @@ function instance$A($$self, $$props, $$invalidate) {
 		id,
 		filetype,
 		graphPlotted,
+		fileBrowserWidth,
 		browse_folder,
 		openGraph,
 		toggleBrowser,
@@ -25275,6 +25318,7 @@ function instance$A($$self, $$props, $$invalidate) {
 		filebrowser_fileChecked_binding,
 		filebrowser_fullfileslist_binding,
 		chdir_handler,
+		div0_elementresize_handler,
 		textfield_value_binding
 	];
 }
@@ -25287,11 +25331,11 @@ class Layout extends SvelteComponentDev {
 			id: 3,
 			fileChecked: 0,
 			filetype: 4,
-			toggleBrowser: 8,
+			toggleBrowser: 9,
 			fullfileslist: 1,
 			currentLocation: 2,
 			graphPlotted: 5,
-			graphWindowClasses: 9
+			graphWindowClasses: 10
 		});
 
 		dispatch_dev("SvelteRegisterComponent", {
@@ -46478,11 +46522,11 @@ function create_if_block$l(ctx) {
 			button1 = element("button");
 			button1.textContent = "Replot";
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$Z, 58, 8, 2414);
+			add_location(button0, file$Z, 58, 8, 2452);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$Z, 59, 8, 2525);
+			add_location(button1, file$Z, 59, 8, 2563);
 			attr_dev(div, "class", "align");
-			add_location(div, file$Z, 51, 4, 1915);
+			add_location(div, file$Z, 51, 4, 1953);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -51459,7 +51503,7 @@ function init_tour_normline({filetype="felix"}={}) {
 const { console: console_1$8 } = globals;
 const file$15 = "src\\Pages\\Normline.svelte";
 
-// (145:4) <svelte:fragment slot="buttonContainer">
+// (133:4) <svelte:fragment slot="buttonContainer">
 function create_buttonContainer_slot(ctx) {
 	let initfunctionrow;
 	let updating_graphPlotted;
@@ -51481,18 +51525,18 @@ function create_buttonContainer_slot(ctx) {
 	let current;
 
 	function initfunctionrow_graphPlotted_binding(value) {
-		/*initfunctionrow_graphPlotted_binding*/ ctx[41](value);
+		/*initfunctionrow_graphPlotted_binding*/ ctx[39](value);
 	}
 
 	function initfunctionrow_show_theoryplot_binding(value) {
-		/*initfunctionrow_show_theoryplot_binding*/ ctx[42](value);
+		/*initfunctionrow_show_theoryplot_binding*/ ctx[40](value);
 	}
 
 	let initfunctionrow_props = {
-		removeExtraFile: /*removeExtraFile*/ ctx[26],
+		removeExtraFile: /*removeExtraFile*/ ctx[25],
 		opofiles: /*opofiles*/ ctx[4],
 		felixfiles: /*felixfiles*/ ctx[7],
-		normMethod: /*$normMethod*/ ctx[24],
+		normMethod: /*$normMethod*/ ctx[23],
 		theoryLocation: /*theoryLocation*/ ctx[11]
 	};
 
@@ -51513,23 +51557,23 @@ function create_buttonContainer_slot(ctx) {
 	binding_callbacks.push(() => bind(initfunctionrow, "show_theoryplot", initfunctionrow_show_theoryplot_binding));
 
 	function oporow_OPOLocation_binding(value) {
-		/*oporow_OPOLocation_binding*/ ctx[43](value);
+		/*oporow_OPOLocation_binding*/ ctx[41](value);
 	}
 
 	function oporow_OPOfilesChecked_binding(value) {
-		/*oporow_OPOfilesChecked_binding*/ ctx[44](value);
+		/*oporow_OPOfilesChecked_binding*/ ctx[42](value);
 	}
 
 	function oporow_opofiles_binding(value) {
-		/*oporow_opofiles_binding*/ ctx[45](value);
+		/*oporow_opofiles_binding*/ ctx[43](value);
 	}
 
 	function oporow_graphPlotted_binding(value) {
-		/*oporow_graphPlotted_binding*/ ctx[46](value);
+		/*oporow_graphPlotted_binding*/ ctx[44](value);
 	}
 
 	let oporow_props = {
-		removeExtraFile: /*removeExtraFile*/ ctx[26]
+		removeExtraFile: /*removeExtraFile*/ ctx[25]
 	};
 
 	if (/*OPOLocation*/ ctx[3] !== void 0) {
@@ -51555,14 +51599,14 @@ function create_buttonContainer_slot(ctx) {
 	binding_callbacks.push(() => bind(oporow, "graphPlotted", oporow_graphPlotted_binding));
 
 	function theoryrow_theoryLocation_binding(value) {
-		/*theoryrow_theoryLocation_binding*/ ctx[47](value);
+		/*theoryrow_theoryLocation_binding*/ ctx[45](value);
 	}
 
 	function theoryrow_show_theoryplot_binding(value) {
-		/*theoryrow_show_theoryplot_binding*/ ctx[48](value);
+		/*theoryrow_show_theoryplot_binding*/ ctx[46](value);
 	}
 
-	let theoryrow_props = { normMethod: /*$normMethod*/ ctx[24] };
+	let theoryrow_props = { normMethod: /*$normMethod*/ ctx[23] };
 
 	if (/*theoryLocation*/ ctx[11] !== void 0) {
 		theoryrow_props.theoryLocation = /*theoryLocation*/ ctx[11];
@@ -51577,20 +51621,20 @@ function create_buttonContainer_slot(ctx) {
 	binding_callbacks.push(() => bind(theoryrow, "show_theoryplot", theoryrow_show_theoryplot_binding));
 
 	function customradio_selected_binding(value) {
-		/*customradio_selected_binding*/ ctx[49](value);
+		/*customradio_selected_binding*/ ctx[47](value);
 	}
 
 	let customradio_props = {
 		options: ["Log", "Relative", "IntensityPerPhoton"]
 	};
 
-	if (/*$normMethod*/ ctx[24] !== void 0) {
-		customradio_props.selected = /*$normMethod*/ ctx[24];
+	if (/*$normMethod*/ ctx[23] !== void 0) {
+		customradio_props.selected = /*$normMethod*/ ctx[23];
 	}
 
 	customradio = new CustomRadio({ props: customradio_props, $$inline: true });
 	binding_callbacks.push(() => bind(customradio, "selected", customradio_selected_binding));
-	customradio.$on("change", /*replot*/ ctx[25]);
+	customradio.$on("change", /*replot*/ ctx[24]);
 
 	const block = {
 		c: function create() {
@@ -51603,7 +51647,7 @@ function create_buttonContainer_slot(ctx) {
 			div = element("div");
 			create_component(customradio.$$.fragment);
 			attr_dev(div, "class", "align");
-			add_location(div, file$15, 149, 8, 6249);
+			add_location(div, file$15, 137, 8, 5968);
 		},
 		m: function mount(target, anchor) {
 			mount_component(initfunctionrow, target, anchor);
@@ -51620,7 +51664,7 @@ function create_buttonContainer_slot(ctx) {
 			const initfunctionrow_changes = {};
 			if (dirty[0] & /*opofiles*/ 16) initfunctionrow_changes.opofiles = /*opofiles*/ ctx[4];
 			if (dirty[0] & /*felixfiles*/ 128) initfunctionrow_changes.felixfiles = /*felixfiles*/ ctx[7];
-			if (dirty[0] & /*$normMethod*/ 16777216) initfunctionrow_changes.normMethod = /*$normMethod*/ ctx[24];
+			if (dirty[0] & /*$normMethod*/ 8388608) initfunctionrow_changes.normMethod = /*$normMethod*/ ctx[23];
 			if (dirty[0] & /*theoryLocation*/ 2048) initfunctionrow_changes.theoryLocation = /*theoryLocation*/ ctx[11];
 
 			if (!updating_graphPlotted && dirty[0] & /*graphPlotted*/ 4096) {
@@ -51664,7 +51708,7 @@ function create_buttonContainer_slot(ctx) {
 
 			oporow.$set(oporow_changes);
 			const theoryrow_changes = {};
-			if (dirty[0] & /*$normMethod*/ 16777216) theoryrow_changes.normMethod = /*$normMethod*/ ctx[24];
+			if (dirty[0] & /*$normMethod*/ 8388608) theoryrow_changes.normMethod = /*$normMethod*/ ctx[23];
 
 			if (!updating_theoryLocation && dirty[0] & /*theoryLocation*/ 2048) {
 				updating_theoryLocation = true;
@@ -51681,9 +51725,9 @@ function create_buttonContainer_slot(ctx) {
 			theoryrow.$set(theoryrow_changes);
 			const customradio_changes = {};
 
-			if (!updating_selected && dirty[0] & /*$normMethod*/ 16777216) {
+			if (!updating_selected && dirty[0] & /*$normMethod*/ 8388608) {
 				updating_selected = true;
-				customradio_changes.selected = /*$normMethod*/ ctx[24];
+				customradio_changes.selected = /*$normMethod*/ ctx[23];
 				add_flush_callback(() => updating_selected = false);
 			}
 
@@ -51720,14 +51764,14 @@ function create_buttonContainer_slot(ctx) {
 		block,
 		id: create_buttonContainer_slot.name,
 		type: "slot",
-		source: "(145:4) <svelte:fragment slot=\\\"buttonContainer\\\">",
+		source: "(133:4) <svelte:fragment slot=\\\"buttonContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (157:4) <svelte:fragment slot="plotContainer" >
+// (144:4) <svelte:fragment slot="plotContainer" >
 function create_plotContainer_slot(ctx) {
 	let getfileinfotable;
 	let t0;
@@ -51735,7 +51779,6 @@ function create_plotContainer_slot(ctx) {
 	let div0;
 	let t1;
 	let div1;
-	let div1_resize_listener;
 	let t2;
 	let div2;
 	let t3;
@@ -51752,7 +51795,7 @@ function create_plotContainer_slot(ctx) {
 	getfileinfotable = new GetFileInfoTable({
 			props: {
 				felixfiles: /*felixfiles*/ ctx[7],
-				normMethod: /*$normMethod*/ ctx[24]
+				normMethod: /*$normMethod*/ ctx[23]
 			},
 			$$inline: true
 		});
@@ -51775,35 +51818,34 @@ function create_plotContainer_slot(ctx) {
 			div5 = element("div");
 			t6 = space();
 			div6 = element("div");
-			attr_dev(div0, "class", "animated fadeIn svelte-6f1gzr");
+			attr_dev(div0, "class", "animated fadeIn graph__div svelte-6f1gzr");
 			attr_dev(div0, "id", "exp-theory-plot");
 			toggle_class(div0, "hide", !/*show_theoryplot*/ ctx[10]);
-			add_location(div0, file$15, 164, 12, 6748);
+			add_location(div0, file$15, 151, 12, 6445);
 			attr_dev(div1, "id", "bplot");
-			attr_dev(div1, "class", "svelte-6f1gzr");
-			add_render_callback(() => /*div1_elementresize_handler*/ ctx[40].call(div1));
-			add_location(div1, file$15, 165, 12, 6848);
+			attr_dev(div1, "class", "graph__div svelte-6f1gzr");
+			add_location(div1, file$15, 152, 12, 6556);
 			attr_dev(div2, "id", "saPlot");
-			attr_dev(div2, "class", "svelte-6f1gzr");
-			add_location(div2, file$15, 166, 12, 6914);
+			attr_dev(div2, "class", "graph__div svelte-6f1gzr");
+			add_location(div2, file$15, 153, 12, 6611);
 			attr_dev(div3, "id", "avgplot");
-			attr_dev(div3, "class", "svelte-6f1gzr");
-			add_location(div3, file$15, 167, 12, 6951);
-			attr_dev(div4, "class", "animated fadeIn svelte-6f1gzr");
+			attr_dev(div3, "class", "graph__div svelte-6f1gzr");
+			add_location(div3, file$15, 154, 12, 6667);
+			attr_dev(div4, "class", "animated fadeIn graph__div svelte-6f1gzr");
 			attr_dev(div4, "id", "opoplot");
 			toggle_class(div4, "hide", !/*$opoMode*/ ctx[8]);
-			add_location(div4, file$15, 168, 12, 6989);
-			attr_dev(div5, "class", "animated fadeIn svelte-6f1gzr");
+			add_location(div4, file$15, 155, 12, 6724);
+			attr_dev(div5, "class", "animated fadeIn graph__div svelte-6f1gzr");
 			attr_dev(div5, "id", "opoSA");
 			toggle_class(div5, "hide", !/*$opoMode*/ ctx[8]);
-			add_location(div5, file$15, 169, 12, 7074);
-			attr_dev(div6, "class", "animated fadeIn svelte-6f1gzr");
+			add_location(div5, file$15, 156, 12, 6820);
+			attr_dev(div6, "class", "animated fadeIn graph__div svelte-6f1gzr");
 			attr_dev(div6, "id", "opoRelPlot");
 			toggle_class(div6, "hide", !/*$opoMode*/ ctx[8]);
-			add_location(div6, file$15, 170, 12, 7157);
+			add_location(div6, file$15, 157, 12, 6914);
 			attr_dev(div7, "class", "felixPlot svelte-6f1gzr");
 			attr_dev(div7, "id", div7_id_value = "plot_container__div__" + filetype);
-			add_location(div7, file$15, 163, 8, 6674);
+			add_location(div7, file$15, 150, 8, 6371);
 		},
 		m: function mount(target, anchor) {
 			mount_component(getfileinfotable, target, anchor);
@@ -51812,7 +51854,6 @@ function create_plotContainer_slot(ctx) {
 			append_dev(div7, div0);
 			append_dev(div7, t1);
 			append_dev(div7, div1);
-			div1_resize_listener = add_resize_listener(div1, /*div1_elementresize_handler*/ ctx[40].bind(div1));
 			append_dev(div7, t2);
 			append_dev(div7, div2);
 			append_dev(div7, t3);
@@ -51828,7 +51869,7 @@ function create_plotContainer_slot(ctx) {
 		p: function update(ctx, dirty) {
 			const getfileinfotable_changes = {};
 			if (dirty[0] & /*felixfiles*/ 128) getfileinfotable_changes.felixfiles = /*felixfiles*/ ctx[7];
-			if (dirty[0] & /*$normMethod*/ 16777216) getfileinfotable_changes.normMethod = /*$normMethod*/ ctx[24];
+			if (dirty[0] & /*$normMethod*/ 8388608) getfileinfotable_changes.normMethod = /*$normMethod*/ ctx[23];
 			getfileinfotable.$set(getfileinfotable_changes);
 
 			if (dirty[0] & /*show_theoryplot*/ 1024) {
@@ -51860,7 +51901,6 @@ function create_plotContainer_slot(ctx) {
 			destroy_component(getfileinfotable, detaching);
 			if (detaching) detach_dev(t0);
 			if (detaching) detach_dev(div7);
-			div1_resize_listener();
 		}
 	};
 
@@ -51868,14 +51908,14 @@ function create_plotContainer_slot(ctx) {
 		block,
 		id: create_plotContainer_slot.name,
 		type: "slot",
-		source: "(157:4) <svelte:fragment slot=\\\"plotContainer\\\" >",
+		source: "(144:4) <svelte:fragment slot=\\\"plotContainer\\\" >",
 		ctx
 	});
 
 	return block;
 }
 
-// (176:4) <svelte:fragment slot="plotContainer_functions" >
+// (163:4) <svelte:fragment slot="plotContainer_functions" >
 function create_plotContainer_functions_slot(ctx) {
 	let writefunctioncontents;
 	let updating_writeFileName;
@@ -51886,19 +51926,19 @@ function create_plotContainer_functions_slot(ctx) {
 	let current;
 
 	function writefunctioncontents_writeFileName_binding(value) {
-		/*writefunctioncontents_writeFileName_binding*/ ctx[36](value);
+		/*writefunctioncontents_writeFileName_binding*/ ctx[35](value);
 	}
 
 	function writefunctioncontents_writeFile_binding(value) {
-		/*writefunctioncontents_writeFile_binding*/ ctx[37](value);
+		/*writefunctioncontents_writeFile_binding*/ ctx[36](value);
 	}
 
 	function writefunctioncontents_overwrite_expfit_binding(value) {
-		/*writefunctioncontents_overwrite_expfit_binding*/ ctx[38](value);
+		/*writefunctioncontents_overwrite_expfit_binding*/ ctx[37](value);
 	}
 
 	let writefunctioncontents_props = {
-		output_namelists: /*output_namelists*/ ctx[23]
+		output_namelists: /*output_namelists*/ ctx[22]
 	};
 
 	if (/*writeFileName*/ ctx[15] !== void 0) {
@@ -51921,14 +51961,14 @@ function create_plotContainer_functions_slot(ctx) {
 	binding_callbacks.push(() => bind(writefunctioncontents, "writeFileName", writefunctioncontents_writeFileName_binding));
 	binding_callbacks.push(() => bind(writefunctioncontents, "writeFile", writefunctioncontents_writeFile_binding));
 	binding_callbacks.push(() => bind(writefunctioncontents, "overwrite_expfit", writefunctioncontents_overwrite_expfit_binding));
-	writefunctioncontents.$on("addfile", /*addfile_handler*/ ctx[39]);
-	writefunctioncontents.$on("removefile", /*removeExtraFile*/ ctx[26]);
+	writefunctioncontents.$on("addfile", /*addfile_handler*/ ctx[38]);
+	writefunctioncontents.$on("removefile", /*removeExtraFile*/ ctx[25]);
 
 	executefunctioncontents = new ExecuteFunctionContents({
 			props: {
 				addedFileScale: /*addedFileScale*/ ctx[20],
 				addedFileCol: /*addedFileCol*/ ctx[18],
-				normMethod: /*$normMethod*/ ctx[24],
+				normMethod: /*$normMethod*/ ctx[23],
 				writeFileName: /*writeFileName*/ ctx[15],
 				writeFile: /*writeFile*/ ctx[14],
 				overwrite_expfit: /*overwrite_expfit*/ ctx[13],
@@ -51951,7 +51991,7 @@ function create_plotContainer_functions_slot(ctx) {
 		},
 		p: function update(ctx, dirty) {
 			const writefunctioncontents_changes = {};
-			if (dirty[0] & /*output_namelists*/ 8388608) writefunctioncontents_changes.output_namelists = /*output_namelists*/ ctx[23];
+			if (dirty[0] & /*output_namelists*/ 4194304) writefunctioncontents_changes.output_namelists = /*output_namelists*/ ctx[22];
 
 			if (!updating_writeFileName && dirty[0] & /*writeFileName*/ 32768) {
 				updating_writeFileName = true;
@@ -51975,7 +52015,7 @@ function create_plotContainer_functions_slot(ctx) {
 			const executefunctioncontents_changes = {};
 			if (dirty[0] & /*addedFileScale*/ 1048576) executefunctioncontents_changes.addedFileScale = /*addedFileScale*/ ctx[20];
 			if (dirty[0] & /*addedFileCol*/ 262144) executefunctioncontents_changes.addedFileCol = /*addedFileCol*/ ctx[18];
-			if (dirty[0] & /*$normMethod*/ 16777216) executefunctioncontents_changes.normMethod = /*$normMethod*/ ctx[24];
+			if (dirty[0] & /*$normMethod*/ 8388608) executefunctioncontents_changes.normMethod = /*$normMethod*/ ctx[23];
 			if (dirty[0] & /*writeFileName*/ 32768) executefunctioncontents_changes.writeFileName = /*writeFileName*/ ctx[15];
 			if (dirty[0] & /*writeFile*/ 16384) executefunctioncontents_changes.writeFile = /*writeFile*/ ctx[14];
 			if (dirty[0] & /*overwrite_expfit*/ 8192) executefunctioncontents_changes.overwrite_expfit = /*overwrite_expfit*/ ctx[13];
@@ -52004,21 +52044,21 @@ function create_plotContainer_functions_slot(ctx) {
 		block,
 		id: create_plotContainer_functions_slot.name,
 		type: "slot",
-		source: "(176:4) <svelte:fragment slot=\\\"plotContainer_functions\\\" >",
+		source: "(163:4) <svelte:fragment slot=\\\"plotContainer_functions\\\" >",
 		ctx
 	});
 
 	return block;
 }
 
-// (186:4) <svelte:fragment slot="plotContainer_reports">
+// (173:4) <svelte:fragment slot="plotContainer_reports">
 function create_plotContainer_reports_slot(ctx) {
 	let frequencytable;
 	let updating_keepTable;
 	let current;
 
 	function frequencytable_keepTable_binding(value) {
-		/*frequencytable_keepTable_binding*/ ctx[35](value);
+		/*frequencytable_keepTable_binding*/ ctx[34](value);
 	}
 
 	let frequencytable_props = {};
@@ -52071,7 +52111,7 @@ function create_plotContainer_reports_slot(ctx) {
 		block,
 		id: create_plotContainer_reports_slot.name,
 		type: "slot",
-		source: "(186:4) <svelte:fragment slot=\\\"plotContainer_reports\\\">",
+		source: "(173:4) <svelte:fragment slot=\\\"plotContainer_reports\\\">",
 		ctx
 	});
 
@@ -52094,27 +52134,27 @@ function create_fragment$1c(ctx) {
 	let current;
 
 	function addfilestoplot_extrafileAdded_binding(value) {
-		/*addfilestoplot_extrafileAdded_binding*/ ctx[29](value);
+		/*addfilestoplot_extrafileAdded_binding*/ ctx[28](value);
 	}
 
 	function addfilestoplot_active_binding(value) {
-		/*addfilestoplot_active_binding*/ ctx[30](value);
+		/*addfilestoplot_active_binding*/ ctx[29](value);
 	}
 
 	function addfilestoplot_addedFileCol_binding(value) {
-		/*addfilestoplot_addedFileCol_binding*/ ctx[31](value);
+		/*addfilestoplot_addedFileCol_binding*/ ctx[30](value);
 	}
 
 	function addfilestoplot_addedFileScale_binding(value) {
-		/*addfilestoplot_addedFileScale_binding*/ ctx[32](value);
+		/*addfilestoplot_addedFileScale_binding*/ ctx[31](value);
 	}
 
 	function addfilestoplot_addedfiles_binding(value) {
-		/*addfilestoplot_addedfiles_binding*/ ctx[33](value);
+		/*addfilestoplot_addedfiles_binding*/ ctx[32](value);
 	}
 
 	function addfilestoplot_addedFile_binding(value) {
-		/*addfilestoplot_addedFile_binding*/ ctx[34](value);
+		/*addfilestoplot_addedFile_binding*/ ctx[33](value);
 	}
 
 	let addfilestoplot_props = { fileChecked: /*fileChecked*/ ctx[0] };
@@ -52156,15 +52196,15 @@ function create_fragment$1c(ctx) {
 	binding_callbacks.push(() => bind(addfilestoplot, "addedFile", addfilestoplot_addedFile_binding));
 
 	function layout_currentLocation_binding(value) {
-		/*layout_currentLocation_binding*/ ctx[50](value);
+		/*layout_currentLocation_binding*/ ctx[48](value);
 	}
 
 	function layout_fileChecked_binding(value) {
-		/*layout_fileChecked_binding*/ ctx[51](value);
+		/*layout_fileChecked_binding*/ ctx[49](value);
 	}
 
 	function layout_toggleBrowser_binding(value) {
-		/*layout_toggleBrowser_binding*/ ctx[52](value);
+		/*layout_toggleBrowser_binding*/ ctx[50](value);
 	}
 
 	let layout_props = {
@@ -52196,7 +52236,7 @@ function create_fragment$1c(ctx) {
 	binding_callbacks.push(() => bind(layout, "currentLocation", layout_currentLocation_binding));
 	binding_callbacks.push(() => bind(layout, "fileChecked", layout_fileChecked_binding));
 	binding_callbacks.push(() => bind(layout, "toggleBrowser", layout_toggleBrowser_binding));
-	layout.$on("tour", /*init_tour*/ ctx[27]);
+	layout.$on("tour", /*init_tour*/ ctx[26]);
 
 	const block = {
 		c: function create() {
@@ -52257,7 +52297,7 @@ function create_fragment$1c(ctx) {
 			const layout_changes = {};
 			if (dirty[0] & /*graphPlotted*/ 4096) layout_changes.graphPlotted = /*graphPlotted*/ ctx[12];
 
-			if (dirty[0] & /*keepTable, addedFileScale, addedFileCol, $normMethod, writeFileName, writeFile, overwrite_expfit, fullfiles, output_namelists, addFileModal, $opoMode, graphWidth, show_theoryplot, felixfiles, theoryLocation, OPOLocation, OPOfilesChecked, opofiles, graphPlotted*/ 33029532 | dirty[2] & /*$$scope*/ 8) {
+			if (dirty[0] & /*keepTable, addedFileScale, addedFileCol, $normMethod, writeFileName, writeFile, overwrite_expfit, fullfiles, output_namelists, addFileModal, $opoMode, show_theoryplot, felixfiles, theoryLocation, OPOLocation, OPOfilesChecked, opofiles, graphPlotted*/ 16252316 | dirty[2] & /*$$scope*/ 2) {
 				layout_changes.$$scope = { dirty, ctx };
 			}
 
@@ -52329,23 +52369,23 @@ function instance$1c($$self, $$props, $$invalidate) {
 	validate_store(opoMode, "opoMode");
 	component_subscribe($$self, opoMode, $$value => $$invalidate(8, $opoMode = $$value));
 	validate_store(normMethodDatas, "normMethodDatas");
-	component_subscribe($$self, normMethodDatas, $$value => $$invalidate(53, $normMethodDatas = $$value));
+	component_subscribe($$self, normMethodDatas, $$value => $$invalidate(51, $normMethodDatas = $$value));
 	validate_store(normMethod, "normMethod");
-	component_subscribe($$self, normMethod, $$value => $$invalidate(24, $normMethod = $$value));
+	component_subscribe($$self, normMethod, $$value => $$invalidate(23, $normMethod = $$value));
 	validate_store(graphDiv, "graphDiv");
-	component_subscribe($$self, graphDiv, $$value => $$invalidate(54, $graphDiv = $$value));
+	component_subscribe($$self, graphDiv, $$value => $$invalidate(52, $graphDiv = $$value));
 	validate_store(expfittedLines, "expfittedLines");
-	component_subscribe($$self, expfittedLines, $$value => $$invalidate(55, $expfittedLines = $$value));
+	component_subscribe($$self, expfittedLines, $$value => $$invalidate(53, $expfittedLines = $$value));
 	validate_store(felixPlotAnnotations, "felixPlotAnnotations");
-	component_subscribe($$self, felixPlotAnnotations, $$value => $$invalidate(56, $felixPlotAnnotations = $$value));
+	component_subscribe($$self, felixPlotAnnotations, $$value => $$invalidate(54, $felixPlotAnnotations = $$value));
 	validate_store(expfittedLinesCollectedData, "expfittedLinesCollectedData");
-	component_subscribe($$self, expfittedLinesCollectedData, $$value => $$invalidate(57, $expfittedLinesCollectedData = $$value));
+	component_subscribe($$self, expfittedLinesCollectedData, $$value => $$invalidate(55, $expfittedLinesCollectedData = $$value));
 	validate_store(fittedTraceCount, "fittedTraceCount");
-	component_subscribe($$self, fittedTraceCount, $$value => $$invalidate(58, $fittedTraceCount = $$value));
+	component_subscribe($$self, fittedTraceCount, $$value => $$invalidate(56, $fittedTraceCount = $$value));
 	validate_store(felixopoLocation, "felixopoLocation");
-	component_subscribe($$self, felixopoLocation, $$value => $$invalidate(59, $felixopoLocation = $$value));
+	component_subscribe($$self, felixopoLocation, $$value => $$invalidate(57, $felixopoLocation = $$value));
 	validate_store(Ngauss_sigma, "Ngauss_sigma");
-	component_subscribe($$self, Ngauss_sigma, $$value => $$invalidate(60, $Ngauss_sigma = $$value));
+	component_subscribe($$self, Ngauss_sigma, $$value => $$invalidate(58, $Ngauss_sigma = $$value));
 	let { $$slots: slots = {}, $$scope } = $$props;
 	validate_slots("Normline", slots, []);
 	let fileChecked = [], toggleBrowser = false;
@@ -52482,7 +52522,6 @@ function instance$1c($$self, $$props, $$invalidate) {
 		"opoRelPlot"
 	];
 
-	let graphWidth;
 	const writable_props = [];
 
 	Object.keys($$props).forEach(key => {
@@ -52542,11 +52581,6 @@ function instance$1c($$self, $$props, $$invalidate) {
 	const addfile_handler = () => {
 		$$invalidate(17, addFileModal = true);
 	};
-
-	function div1_elementresize_handler() {
-		graphWidth = this.clientWidth;
-		$$invalidate(22, graphWidth);
-	}
 
 	function initfunctionrow_graphPlotted_binding(value) {
 		graphPlotted = value;
@@ -52661,7 +52695,6 @@ function instance$1c($$self, $$props, $$invalidate) {
 		includePlotsInReport,
 		includeTablesInReports,
 		graphDivIds,
-		graphWidth,
 		felixfiles,
 		plottedFiles,
 		$opoMode,
@@ -52699,10 +52732,9 @@ function instance$1c($$self, $$props, $$invalidate) {
 		if ("addedfiles" in $$props) $$invalidate(5, addedfiles = $$props.addedfiles);
 		if ("extrafileAdded" in $$props) $$invalidate(6, extrafileAdded = $$props.extrafileAdded);
 		if ("fullfiles" in $$props) $$invalidate(21, fullfiles = $$props.fullfiles);
-		if ("graphWidth" in $$props) $$invalidate(22, graphWidth = $$props.graphWidth);
 		if ("felixfiles" in $$props) $$invalidate(7, felixfiles = $$props.felixfiles);
-		if ("plottedFiles" in $$props) $$invalidate(28, plottedFiles = $$props.plottedFiles);
-		if ("output_namelists" in $$props) $$invalidate(23, output_namelists = $$props.output_namelists);
+		if ("plottedFiles" in $$props) $$invalidate(27, plottedFiles = $$props.plottedFiles);
+		if ("output_namelists" in $$props) $$invalidate(22, output_namelists = $$props.output_namelists);
 	};
 
 	if ($$props && "$$inject" in $$props) {
@@ -52719,13 +52751,13 @@ function instance$1c($$self, $$props, $$invalidate) {
 		}
 
 		if ($$self.$$.dirty[0] & /*$opoMode, OPOfilesChecked, fileChecked*/ 261) {
-			 $$invalidate(28, plottedFiles = $opoMode
+			 $$invalidate(27, plottedFiles = $opoMode
 			? OPOfilesChecked.map(file => file.split(".")[0]) || []
 			: fileChecked.map(file => file.split(".")[0]) || []);
 		}
 
-		if ($$self.$$.dirty[0] & /*plottedFiles, addedfiles*/ 268435488) {
-			 $$invalidate(23, output_namelists = [
+		if ($$self.$$.dirty[0] & /*plottedFiles, addedfiles*/ 134217760) {
+			 $$invalidate(22, output_namelists = [
 				"averaged",
 				...plottedFiles,
 				...addedfiles.map(file => path.basename(file)).map(file => file.split(".")[0])
@@ -52788,7 +52820,6 @@ function instance$1c($$self, $$props, $$invalidate) {
 		addedFile,
 		addedFileScale,
 		fullfiles,
-		graphWidth,
 		output_namelists,
 		$normMethod,
 		replot,
@@ -52806,7 +52837,6 @@ function instance$1c($$self, $$props, $$invalidate) {
 		writefunctioncontents_writeFile_binding,
 		writefunctioncontents_overwrite_expfit_binding,
 		addfile_handler,
-		div1_elementresize_handler,
 		initfunctionrow_graphPlotted_binding,
 		initfunctionrow_show_theoryplot_binding,
 		oporow_OPOLocation_binding,
@@ -54792,16 +54822,17 @@ function create_plotContainer_slot$1(ctx) {
 			t4 = space();
 			webview = element("webview");
 			attr_dev(div0, "id", "mplot");
+			attr_dev(div0, "class", "graph__div");
 			add_location(div0, file$17, 150, 8, 6961);
 			if (webview.src !== (webview_src_value = /*nist_url*/ ctx[12])) attr_dev(webview, "src", webview_src_value);
 			attr_dev(webview, "id", "nist_webview");
 			set_style(webview, "height", "50vh");
 			set_style(webview, "padding-bottom", "3em");
 			set_style(webview, "width", "100%");
-			add_location(webview, file$17, 157, 12, 7617);
+			add_location(webview, file$17, 157, 12, 7636);
 			attr_dev(div1, "class", "align animated fadeIn");
 			toggle_class(div1, "hide", /*toggleRow2*/ ctx[11]);
-			add_location(div1, file$17, 152, 8, 7002);
+			add_location(div1, file$17, 152, 8, 7021);
 			set_style(div2, "margin-right", "1em");
 			attr_dev(div2, "slot", "plotContainer");
 			add_location(div2, file$17, 148, 4, 6896);
@@ -55802,6 +55833,7 @@ function create_each_block$a(ctx) {
 		c: function create() {
 			div = element("div");
 			attr_dev(div, "id", div_id_value = "" + (/*scanfile*/ ctx[34] + "_tplot"));
+			attr_dev(div, "class", "graph__div");
 			set_style(div, "padding-bottom", "1em");
 			add_location(div, file$18, 127, 16, 5335);
 		},
@@ -72061,7 +72093,7 @@ function create_if_block$x(ctx) {
 			t = space();
 			create_component(customcheckbox.$$.fragment);
 			attr_dev(div, "class", "animated fadeIn align h-end v-center");
-			add_location(div, file$1g, 118, 12, 5048);
+			add_location(div, file$1g, 118, 12, 5067);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -72143,9 +72175,11 @@ function create_plotContainer_slot$3(ctx) {
 			t1 = space();
 			div1 = element("div");
 			attr_dev(div0, "id", "resOnOffPlot");
+			attr_dev(div0, "class", "graph__div");
 			add_location(div0, file$1g, 114, 8, 4972);
 			attr_dev(div1, "id", "thzPlot");
-			add_location(div1, file$1g, 125, 8, 5377);
+			attr_dev(div1, "class", "graph__div");
+			add_location(div1, file$1g, 125, 8, 5396);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);

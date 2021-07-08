@@ -148,7 +148,7 @@
 
     <div style="margin-right: 1em;" slot="plotContainer">
 
-        <div id="mplot"></div>
+        <div id="mplot" class="graph__div"></div>
        
         <div class="align animated fadeIn" class:hide={toggleRow2}>
             <Icon on:click="{()=>window.nist_webview.goToIndex(0)}" class="material-icons hvr-glow">home</Icon>

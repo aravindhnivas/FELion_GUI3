@@ -125,7 +125,7 @@
 
             {#each fileChecked as scanfile}
             
-                <div id="{scanfile}_tplot" style="padding-bottom:1em" />
+                <div id="{scanfile}_tplot" class="graph__div" style="padding-bottom:1em" />
             {/each}
         
         </div>

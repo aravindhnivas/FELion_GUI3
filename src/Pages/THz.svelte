@@ -112,7 +112,7 @@
     <svelte:fragment slot="plotContainer">
 
         <!-- Plots -->
-        <div id="resOnOffPlot" ></div>
+        <div id="resOnOffPlot" class="graph__div" ></div>
 
         {#if graphPlotted}
 
@@ -123,7 +123,7 @@
         
             {/if}
         
-        <div id="thzPlot" ></div>
+        <div id="thzPlot" class="graph__div" ></div>
     
     </svelte:fragment>
 </Layout>

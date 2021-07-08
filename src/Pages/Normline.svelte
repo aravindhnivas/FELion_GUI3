@@ -117,18 +117,6 @@
     onMount(()=>{  console.log("Normline mounted") })
     const graphDivIds = ["exp-theory-plot", "bplot", "saPlot", "avgplot", "opoplot", "opoSA", "opoRelPlot"]
 
-    let graphWidth;
-
-    // $: if(graphPlotted&&graphWidth) {
-
-    //     graphDivIds.forEach(id=>{
-    //         const content = document.getElementById(id).innerHTML
-    //         if(content){ Plotly.relayout(id, {width:graphWidth}) }
-    //     })
-
-    // }
-
-    
 </script>
 
 <style>
@@ -148,10 +136,9 @@
         <OPORow {removeExtraFile} bind:OPOLocation bind:OPOfilesChecked bind:opofiles  bind:graphPlotted />
         <TheoryRow bind:theoryLocation bind:show_theoryplot  normMethod={$normMethod} />
         <div class="align">
+
             <CustomRadio on:change={replot} bind:selected={$normMethod} options={["Log", "Relative", "IntensityPerPhoton"]}/>
-            
         </div>
-        
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer" >
@@ -162,13 +149,13 @@
         <!-- Plots container -->
 
         <div class="felixPlot" id="plot_container__div__{filetype}">
-            <div class="animated fadeIn" class:hide={!show_theoryplot} id="exp-theory-plot"></div>
-            <div id="bplot" bind:clientWidth={graphWidth}></div>
-            <div id="saPlot"></div>
-            <div id="avgplot"></div>
-            <div class="animated fadeIn" class:hide={!$opoMode} id="opoplot"></div>
-            <div class="animated fadeIn" class:hide={!$opoMode} id="opoSA"></div>
-            <div class="animated fadeIn" class:hide={!$opoMode} id="opoRelPlot"></div>
+            <div class="animated fadeIn graph__div" class:hide={!show_theoryplot} id="exp-theory-plot"></div>
+            <div id="bplot" class="graph__div"></div>
+            <div id="saPlot" class="graph__div"></div>
+            <div id="avgplot" class="graph__div"></div>
+            <div class="animated fadeIn graph__div" class:hide={!$opoMode} id="opoplot"></div>
+            <div class="animated fadeIn graph__div" class:hide={!$opoMode} id="opoSA"></div>
+            <div class="animated fadeIn graph__div" class:hide={!$opoMode} id="opoRelPlot"></div>
         
         </div>
     </svelte:fragment>
