@@ -228,7 +228,7 @@ class ROSAA:
 
     def WriteData(self):
         location = pt(conditions["currentLocation"])
-        savefilename = conditions["filename"]
+        savefilename = conditions["savelocation"]
         dataToSend = {
             "legends":self.legends,
             "time (in s)":self.simulateTime.tolist(), 
@@ -240,7 +240,7 @@ class ROSAA:
             data = json.dumps(dataToSend, sort_keys=True, indent=4, separators=(',', ': '))
             f.write(data)
 
-            
+
 
 if __name__ == "__main__":
     conditions = json.loads(sys.argv[1])

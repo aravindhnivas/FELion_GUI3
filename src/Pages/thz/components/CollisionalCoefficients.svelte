@@ -2,6 +2,7 @@
 <script>
     // import {mainPreModal} from "../../../svelteWritable";
     import CollisionalDistribution from "../windows/CollisionalDistribution.svelte";
+    import CollisionalFit from "../windows/CollisionalFit.svelte";
     import Textfield from '@smui/textfield';
     import CustomSelect from "../../../components/CustomSelect.svelte";
     import balance_distribution from "../functions/balance_distribution";
@@ -9,7 +10,7 @@
     export let collisionalCoefficient=[], collisionalCoefficient_balance=[], collisionalRateType="both", collisionalRates = [];
     export let energyLevels, electronSpin, zeemanSplit, energyUnit, trapTemp, numberDensity = "2e14";
     $: deexcitation = collisionalRateType==="deexcitation";
-    let collisionalWindow=false;
+    let collisionalWindow=false, collisionalFitWindow=false;
     
     function changeCollisionalRateType() {
     
@@ -64,15 +65,14 @@
 
         return rate
     }
+
     $: if(collisionalRateConstants.length>0 && numberDensity) {
         collisionalRates = _.cloneDeep(collisionalRateConstants).map(computeRate)
-
     }
 
 </script>
 
 <style lang="scss">
-
     .sub_container__div {
 
         display: grid;
@@ -103,56 +103,56 @@
 </style>
 
 <CollisionalDistribution {...collisionalArgs} bind:active={collisionalWindow} />
+<CollisionalFit bind:active={collisionalFitWindow} />
 
 <div class="sub_container__div box">
     <div class="subtitle">Collisional rate constants</div>
-
     <div class="control__div ">
         <CustomSelect options={["deexcitation", "excitation", "both"]} bind:picked={collisionalRateType} on:change={changeCollisionalRateType}/>
         <button class="button is-link " on:click={compteCollisionalBalanceConstants}>Compute balance rate</button>
+
         <button class="button is-link " on:click={()=>collisionalWindow=true}>Compute Collisional Cooling</button>
+        <button class="button is-link " on:click={()=>collisionalFitWindow=true}>Compute from fit</button>
 
     </div>
 
     {#if collisionalCoefficient.length>0}
-
         <div class="content__div ">
             {#each collisionalCoefficient as {label, value, id}(id)}
-
                 <Textfield bind:value {label}/>
-
             {/each}
         </div>
-    
+
     {/if}
 
     {#if collisionalCoefficient_balance.length>0}
         <hr>
-
-
         <div class="content__div ">
     
             {#each collisionalCoefficient_balance as {label, value, id}(id)}
-                <Textfield bind:value {label}/>
-            
-            {/each}
-        </div>
-    {/if}
 
-    <hr>
+                <Textfield bind:value {label}/>
+            {/each}
+
+        </div>
+
+
+
+        {/if}
+
+        <hr>
     <div class="subtitle">Collisional Rates (per sec) </div>
+
     <div class="control__div">
         <Textfield bind:value={numberDensity} label="numberDensity (cm-3)"/>
-
     </div>
 
     <div class="content__div ">
 
         {#each collisionalRates as {label, value, id}(id)}
-
             <Textfield bind:value {label}/>
-        {/each}
 
+        {/each}
     </div>
 
 </div>

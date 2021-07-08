@@ -116,7 +116,13 @@ colors = []
 
 for i, j in zip(colorfull, lighterColor):
 
-
     colors.append(i)
-    
     colors.append(j)
+
+pltColors = []
+for color in colors[::2]:
+    scale = 1/255
+
+    temp = [_*scale for _ in color]
+
+    pltColors.append(temp)
