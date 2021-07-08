@@ -14,23 +14,18 @@ sys.path.insert(0, main_module_loc)
 from FELion_definitions import sendData
 from FELion_constants import colors
 
+
 class ROSAA:
 
 
     def __init__(self):
 
-        
-        
-
         self.energyLevels = {key : float(value) for key, value in conditions["energy_levels"].items()}
         self.energyKeys = list(self.energyLevels.keys())
         self.lineshape_conditions = conditions["lineshape_conditions"]
         self.collisionalTemp = float(self.lineshape_conditions["IonTemperature(K)"])
-        
         self.collisionalRates = {key : float(value) for key, value in conditions["collisional_rates"].items()}
-
         self.includeSpontaneousEmission = conditions["includeSpontaneousEmission"]
-
         self.includeCollision = conditions["includeCollision"]
 
         if self.includeSpontaneousEmission:
@@ -45,8 +40,21 @@ class ROSAA:
         start_time = time.perf_counter()
         self.Simulate()
         end_time = time.perf_counter()
+
+
         print(f"Total simulation time {(end_time - start_time):.2f} s", flush=True)
+
+        self.molecule = conditions["main_parameters"]["molecule"]
+        self.taggingPartner = conditions["main_parameters"]["tagging partner"]
+
+        self.legends = [f"${self.molecule}$ ({key.strip()})" for key in self.energyKeys]
+        if self.includeAttachmentRate:
+            self.legends += [f"${self.molecule}${self.taggingPartner}"]
+            self.legends += [f"${self.molecule}${self.taggingPartner}$_{i+1}$" for i in range(1, self.totalAttachmentLevels)]
+        
+        self.WriteData()
         self.Plot()
+
 
     def SimulateODE(self, t, counts):
         
@@ -181,7 +189,6 @@ class ROSAA:
         N_ON = solve_ivp(self.SimulateODE, tspan, [*self.boltzmanDistribution, *N_He], dense_output=True)
         self.lightON_distribution = N_ON.sol(self.simulateTime)
         
-
     def Plot(self):
 
         fig, ax = plt.subplots(figsize=(10, 6), dpi=100)
@@ -193,18 +200,10 @@ class ROSAA:
             temp = [_*scale for _ in color]
             colorSchemes.append(temp)
         
-        self.molecule = conditions["main_parameters"]["molecule"]
-        self.taggingPartner = conditions["main_parameters"]["tagging partner"]
-        legends = [f"${self.molecule}$ ({key.strip()})" for key in self.energyKeys]
-
-
-        if self.includeAttachmentRate:
-            legends += [f"${self.molecule}${self.taggingPartner}"]
-            legends += [f"${self.molecule}${self.taggingPartner}$_{i+1}$" for i in range(1, self.totalAttachmentLevels)]
         counter = 0
         for on, off in zip(self.lightON_distribution, self.lightOFF_distribution):
 
-            ax.plot(simulationTime, on, ls="-", c=colorSchemes[counter], label=f"{legends[counter]}")
+            ax.plot(simulationTime, on, ls="-", c=colorSchemes[counter], label=f"{self.legends[counter]}")
             ax.plot(simulationTime, off, ls="--", c=colorSchemes[counter])
             counter += 1
         ax.plot(simulationTime, self.lightOFF_distribution.sum(axis=0), "--k")
@@ -225,12 +224,29 @@ class ROSAA:
 
         plt.show()
 
-if __name__ == "__main__":
+    def WriteData(self):
+        location = pt(conditions["currentLocation"])
 
+        savefilename = conditions["filename"]
+        dataToSend = {
+            "legends":self.legends,
+            "time (in s)":self.simulateTime.tolist(), 
+            "lightON_distribution":self.lightON_distribution.tolist(),
+            "lightOFF_distribution":self.lightOFF_distribution.tolist()
+        }
+
+        with open(location / f"{savefilename}_ROSAA_output.json", 'w+') as f:
+        
+            data = json.dumps(dataToSend, sort_keys=True, indent=4, separators=(',', ': '))
+            f.write(data)
+
+
+
+if __name__ == "__main__":
     conditions = json.loads(sys.argv[1])
+
     pp = pprint.PrettyPrinter(indent=4)
     pp.pprint(conditions)
-
     sys.stdout.flush()
 
     ROSAA()
