@@ -1,12 +1,16 @@
 # What's new
-## v3.3.0
 
+## v3.3.1
+- Bug fix for Quickview browser
+---
+## v3.3.0
 - Feature updates:
     - New window for FELIX plotting (usefull for smaller screens)
     - While refreshing to get files, the selected files remains checked
     - PNotify integrated
     - WinBox.js modal integraeted
     - db.json replaced localStorage for saving datas.
+
 - Bug fixes    
 ---
 ## v3.2.0
