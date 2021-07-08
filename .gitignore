@@ -9,3 +9,9 @@ static/db.json
 static/assets/python_files/local/*.json
 static/assets/python_files/__pycache__/*.pyc
 .vscode
+static/assets/python_files/notebooks/profile_fit/.ipynb_checkpoints/*
+static/assets/python_files/notebooks/profile_fit/__pycache__/*
+static/assets/python_files/notebooks/profile_fit/*.dat
+static/assets/python_files/notebooks/profile_fit/*.png
+static/assets/python_files/ROSAA/__pycache__/*.pyc
+static/assets/python_files/notebooks/profile_fit/*.pdf
