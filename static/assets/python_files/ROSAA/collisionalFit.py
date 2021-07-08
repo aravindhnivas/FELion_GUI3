@@ -37,18 +37,19 @@ def collisionalFit():
     # data = np.genfromtxt(fullname)
     temperature = np.array(data[0], dtype=float)
 
-    fitTemp = np.arange(1, temperature[-1], 1)
-    requiredTemp = float(args["requiredTemp"])
+    fitTemp = np.arange(1, temperature[-1]+0.1, 1)
+    collisionalTemp = float(args["collisionalTemp"])
     collisionalRateType = args["collisionalRateType"]
     dataToSend = {"type" : collisionalRateType, "rateConstants" : []}
     # dataToSend = {}
     fig, ax = plt.subplots(figsize=(10, 6), dpi=100)
 
+    size = 2+len(temperature)
     for counter, rate in enumerate(data[1:]):
         # print(f"{rate=}", flush=True)
         i, j = rate[:2]
         
-        rateConstants = np.array(rate[2:], dtype=float)
+        rateConstants = np.array(rate[2:size], dtype=float)
         ax.plot(temperature, rateConstants, ".", c=pltColors[counter])
         pop, pcov = curve_fit(linearFit, temperature, rateConstants)
         perr = np.diag(np.sqrt(pcov))
@@ -58,22 +59,26 @@ def collisionalFit():
 
 
         ax.plot(fitTemp, linearFit(fitTemp, *pop), "-", c=pltColors[counter], label=lg)
-        _requiredRate = {"label": lg, "value": float(linearFit(requiredTemp, *pop))}
+        _requiredRate = {"label": lg, "value": float(linearFit(collisionalTemp, *pop))}
         dataToSend["rateConstants"].append(_requiredRate)
 
     ax.legend()
 
+
+    ax.set(xlabel="Temp (K)", ylabel="k$_{jj'}$ (cm$^3$ molecule$^{-1}$ s$^{-1}$)", title="Collisional rate constants", yscale="log")
+
     saveFilename = args["saveFilename"]
 
-    # with open(fullname.parent/f"{saveFilename}_{requiredTemp}K.yml", 'w+') as f:
+    # with open(fullname.parent/f"{saveFilename}_{requiredTemp}K.json", 'w+') as f:
     #     saveData = json.dump(dataToSend, f, sort_keys=True, indent=4, separators=(',', ': '))
     sendData(dataToSend)
+    # plt.show()
 
 if __name__ == "__main__":
 
     args = json.loads(sys.argv[1])
-    print(args, flush=True)
     
-    pp = pprint.PrettyPrinter(indent=4)
+    print(args, flush=True)
 
+    pp = pprint.PrettyPrinter(indent=4)
     collisionalFit()

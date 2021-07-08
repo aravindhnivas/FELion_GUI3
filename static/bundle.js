@@ -15912,8 +15912,8 @@ const file$l = "node_modules\\@smui\\checkbox\\Checkbox.svelte";
 function create_fragment$l(ctx) {
 	let div2;
 	let input;
-	let input_value_value;
 	let input_class_value;
+	let input_value_value;
 	let useActions_action;
 	let t0;
 	let div1;
@@ -15929,15 +15929,15 @@ function create_fragment$l(ctx) {
 
 	let input_levels = [
 		{
-			__value: input_value_value = /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
-			? /*value*/ ctx[3]
-			: /*valueKey*/ ctx[4]
+			class: input_class_value = "mdc-checkbox__native-control " + /*input$class*/ ctx[6]
 		},
 		{ type: "checkbox" },
 		/*inputProps*/ ctx[11],
 		{ disabled: /*disabled*/ ctx[2] },
 		{
-			class: input_class_value = "mdc-checkbox__native-control " + /*input$class*/ ctx[6]
+			__value: input_value_value = /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
+			? /*value*/ ctx[3]
+			: /*valueKey*/ ctx[4]
 		},
 		exclude(prefixFilter(/*$$props*/ ctx[15], "input$"), ["use", "class"])
 	];
@@ -16022,8 +16022,8 @@ function create_fragment$l(ctx) {
 					listen_dev(input, "change", /*input_change_handler*/ ctx[24]),
 					listen_dev(input, "change", /*handleChange*/ ctx[14], false, false, false),
 					listen_dev(input, "input", /*handleChange*/ ctx[14], false, false, false),
-					listen_dev(input, "change", /*change_handler*/ ctx[23], false, false, false),
-					listen_dev(input, "input", /*input_handler*/ ctx[22], false, false, false),
+					listen_dev(input, "change", /*change_handler*/ ctx[22], false, false, false),
+					listen_dev(input, "input", /*input_handler*/ ctx[23], false, false, false),
 					action_destroyer(useActions_action_1 = useActions.call(null, div2, /*use*/ ctx[0])),
 					action_destroyer(forwardEvents_action = /*forwardEvents*/ ctx[9].call(null, div2))
 				];
@@ -16033,13 +16033,13 @@ function create_fragment$l(ctx) {
 		},
 		p: function update(ctx, dirty) {
 			set_attributes(input, input_data = get_spread_update(input_levels, [
-				dirty[0] & /*valueKey, value*/ 24 && input_value_value !== (input_value_value = /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
-				? /*value*/ ctx[3]
-				: /*valueKey*/ ctx[4]) && { __value: input_value_value },
+				dirty[0] & /*input$class*/ 64 && input_class_value !== (input_class_value = "mdc-checkbox__native-control " + /*input$class*/ ctx[6]) && { class: input_class_value },
 				{ type: "checkbox" },
 				/*inputProps*/ ctx[11],
 				dirty[0] & /*disabled*/ 4 && { disabled: /*disabled*/ ctx[2] },
-				dirty[0] & /*input$class*/ 64 && input_class_value !== (input_class_value = "mdc-checkbox__native-control " + /*input$class*/ ctx[6]) && { class: input_class_value },
+				dirty[0] & /*valueKey, value*/ 24 && input_value_value !== (input_value_value = /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
+				? /*value*/ ctx[3]
+				: /*valueKey*/ ctx[4]) && { __value: input_value_value },
 				dirty[0] & /*$$props*/ 32768 && exclude(prefixFilter(/*$$props*/ ctx[15], "input$"), ["use", "class"])
 			]));
 
@@ -16176,11 +16176,11 @@ function instance$l($$self, $$props, $$invalidate) {
 		return inputProps && inputProps.id;
 	}
 
-	function input_handler(event) {
+	function change_handler(event) {
 		bubble($$self, event);
 	}
 
-	function change_handler(event) {
+	function input_handler(event) {
 		bubble($$self, event);
 	}
 
@@ -16364,8 +16364,8 @@ function instance$l($$self, $$props, $$invalidate) {
 		getId,
 		checkbox,
 		previousChecked,
-		input_handler,
 		change_handler,
+		input_handler,
 		input_change_handler,
 		div2_binding
 	];
@@ -18124,19 +18124,19 @@ function create_fragment$o(ctx) {
 	let dispose;
 
 	let input_levels = [
-		exclude(prefixFilter(/*$$props*/ ctx[13], "input$"), ["use", "class"]),
+		{
+			class: input_class_value = "mdc-switch__native-control " + /*input$class*/ ctx[6]
+		},
 		{ type: "checkbox" },
 		{ role: "switch" },
 		/*inputProps*/ ctx[11],
 		{ disabled: /*disabled*/ ctx[2] },
 		{
-			class: input_class_value = "mdc-switch__native-control " + /*input$class*/ ctx[6]
-		},
-		{
 			__value: input_value_value = /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
 			? /*value*/ ctx[3]
 			: /*valueKey*/ ctx[4]
-		}
+		},
+		exclude(prefixFilter(/*$$props*/ ctx[13], "input$"), ["use", "class"])
 	];
 
 	let input_data = {};
@@ -18206,15 +18206,15 @@ function create_fragment$o(ctx) {
 		},
 		p: function update(ctx, [dirty]) {
 			set_attributes(input, input_data = get_spread_update(input_levels, [
-				dirty & /*$$props*/ 8192 && exclude(prefixFilter(/*$$props*/ ctx[13], "input$"), ["use", "class"]),
+				dirty & /*input$class*/ 64 && input_class_value !== (input_class_value = "mdc-switch__native-control " + /*input$class*/ ctx[6]) && { class: input_class_value },
 				{ type: "checkbox" },
 				{ role: "switch" },
 				/*inputProps*/ ctx[11],
 				dirty & /*disabled*/ 4 && { disabled: /*disabled*/ ctx[2] },
-				dirty & /*input$class*/ 64 && input_class_value !== (input_class_value = "mdc-switch__native-control " + /*input$class*/ ctx[6]) && { class: input_class_value },
 				dirty & /*valueKey, value*/ 24 && input_value_value !== (input_value_value = /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
 				? /*value*/ ctx[3]
-				: /*valueKey*/ ctx[4]) && { __value: input_value_value }
+				: /*valueKey*/ ctx[4]) && { __value: input_value_value },
+				dirty & /*$$props*/ 8192 && exclude(prefixFilter(/*$$props*/ ctx[13], "input$"), ["use", "class"])
 			]));
 
 			if (useActions_action && is_function(useActions_action.update) && dirty & /*input$use*/ 32) useActions_action.update.call(null, /*input$use*/ ctx[5]);
@@ -20369,24 +20369,24 @@ function create_else_block$4(ctx) {
 	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[19], null);
 
 	let li_levels = [
-		/*role*/ ctx[6] === "option"
-		? {
-				"aria-selected": /*selected*/ ctx[7] ? "true" : "false"
-			}
-		: {},
-		/*props*/ ctx[12],
 		{
 			class: li_class_value = "\n      mdc-list-item\n      " + /*className*/ ctx[2] + "\n      " + (/*activated*/ ctx[5] ? "mdc-list-item--activated" : "") + "\n      " + (/*selected*/ ctx[7] ? "mdc-list-item--selected" : "") + "\n      " + (/*disabled*/ ctx[8] ? "mdc-list-item--disabled" : "") + "\n      " + (/*role*/ ctx[6] === "menuitem" && /*selected*/ ctx[7]
 			? "mdc-menu-item--selected"
 			: "") + "\n    "
 		},
 		{ role: /*role*/ ctx[6] },
+		/*role*/ ctx[6] === "option"
+		? {
+				"aria-selected": /*selected*/ ctx[7] ? "true" : "false"
+			}
+		: {},
 		/*role*/ ctx[6] === "radio" || /*role*/ ctx[6] === "checkbox"
 		? {
 				"aria-checked": /*checked*/ ctx[10] ? "true" : "false"
 			}
 		: {},
-		{ tabindex: /*tabindex*/ ctx[0] }
+		{ tabindex: /*tabindex*/ ctx[0] },
+		/*props*/ ctx[12]
 	];
 
 	let li_data = {};
@@ -20436,22 +20436,22 @@ function create_else_block$4(ctx) {
 			}
 
 			set_attributes(li, li_data = get_spread_update(li_levels, [
+				(!current || dirty & /*className, activated, selected, disabled, role*/ 484 && li_class_value !== (li_class_value = "\n      mdc-list-item\n      " + /*className*/ ctx[2] + "\n      " + (/*activated*/ ctx[5] ? "mdc-list-item--activated" : "") + "\n      " + (/*selected*/ ctx[7] ? "mdc-list-item--selected" : "") + "\n      " + (/*disabled*/ ctx[8] ? "mdc-list-item--disabled" : "") + "\n      " + (/*role*/ ctx[6] === "menuitem" && /*selected*/ ctx[7]
+				? "mdc-menu-item--selected"
+				: "") + "\n    ")) && { class: li_class_value },
+				(!current || dirty & /*role*/ 64) && { role: /*role*/ ctx[6] },
 				dirty & /*role, selected*/ 192 && (/*role*/ ctx[6] === "option"
 				? {
 						"aria-selected": /*selected*/ ctx[7] ? "true" : "false"
 					}
 				: {}),
-				dirty & /*props*/ 4096 && /*props*/ ctx[12],
-				(!current || dirty & /*className, activated, selected, disabled, role*/ 484 && li_class_value !== (li_class_value = "\n      mdc-list-item\n      " + /*className*/ ctx[2] + "\n      " + (/*activated*/ ctx[5] ? "mdc-list-item--activated" : "") + "\n      " + (/*selected*/ ctx[7] ? "mdc-list-item--selected" : "") + "\n      " + (/*disabled*/ ctx[8] ? "mdc-list-item--disabled" : "") + "\n      " + (/*role*/ ctx[6] === "menuitem" && /*selected*/ ctx[7]
-				? "mdc-menu-item--selected"
-				: "") + "\n    ")) && { class: li_class_value },
-				(!current || dirty & /*role*/ 64) && { role: /*role*/ ctx[6] },
 				dirty & /*role, checked*/ 1088 && (/*role*/ ctx[6] === "radio" || /*role*/ ctx[6] === "checkbox"
 				? {
 						"aria-checked": /*checked*/ ctx[10] ? "true" : "false"
 					}
 				: {}),
-				(!current || dirty & /*tabindex*/ 1) && { tabindex: /*tabindex*/ ctx[0] }
+				(!current || dirty & /*tabindex*/ 1) && { tabindex: /*tabindex*/ ctx[0] },
+				dirty & /*props*/ 4096 && /*props*/ ctx[12]
 			]));
 
 			if (useActions_action && is_function(useActions_action.update) && dirty & /*use*/ 2) useActions_action.update.call(null, /*use*/ ctx[1]);
@@ -20617,13 +20617,13 @@ function create_if_block$9(ctx) {
 	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[19], null);
 
 	let a_levels = [
-		{ href: /*href*/ ctx[9] },
-		/*props*/ ctx[12],
 		{
 			class: a_class_value = "\n      mdc-list-item\n      " + /*className*/ ctx[2] + "\n      " + (/*activated*/ ctx[5] ? "mdc-list-item--activated" : "") + "\n      " + (/*selected*/ ctx[7] ? "mdc-list-item--selected" : "") + "\n      " + (/*disabled*/ ctx[8] ? "mdc-list-item--disabled" : "") + "\n    "
 		},
+		{ href: /*href*/ ctx[9] },
 		/*activated*/ ctx[5] ? { "aria-current": "page" } : {},
-		{ tabindex: /*tabindex*/ ctx[0] }
+		{ tabindex: /*tabindex*/ ctx[0] },
+		/*props*/ ctx[12]
 	];
 
 	let a_data = {};
@@ -20673,11 +20673,11 @@ function create_if_block$9(ctx) {
 			}
 
 			set_attributes(a, a_data = get_spread_update(a_levels, [
-				(!current || dirty & /*href*/ 512) && { href: /*href*/ ctx[9] },
-				dirty & /*props*/ 4096 && /*props*/ ctx[12],
 				(!current || dirty & /*className, activated, selected, disabled*/ 420 && a_class_value !== (a_class_value = "\n      mdc-list-item\n      " + /*className*/ ctx[2] + "\n      " + (/*activated*/ ctx[5] ? "mdc-list-item--activated" : "") + "\n      " + (/*selected*/ ctx[7] ? "mdc-list-item--selected" : "") + "\n      " + (/*disabled*/ ctx[8] ? "mdc-list-item--disabled" : "") + "\n    ")) && { class: a_class_value },
+				(!current || dirty & /*href*/ 512) && { href: /*href*/ ctx[9] },
 				dirty & /*activated*/ 32 && (/*activated*/ ctx[5] ? { "aria-current": "page" } : {}),
-				(!current || dirty & /*tabindex*/ 1) && { tabindex: /*tabindex*/ ctx[0] }
+				(!current || dirty & /*tabindex*/ 1) && { tabindex: /*tabindex*/ ctx[0] },
+				dirty & /*props*/ 4096 && /*props*/ ctx[12]
 			]));
 
 			if (useActions_action && is_function(useActions_action.update) && dirty & /*use*/ 2) useActions_action.update.call(null, /*use*/ ctx[1]);
@@ -29536,8 +29536,8 @@ const file$E = "node_modules\\@smui\\radio\\Radio.svelte";
 function create_fragment$J(ctx) {
 	let div3;
 	let input;
-	let input_value_value;
 	let input_class_value;
+	let input_value_value;
 	let useActions_action;
 	let t0;
 	let div2;
@@ -29552,15 +29552,15 @@ function create_fragment$J(ctx) {
 
 	let input_levels = [
 		{
-			value: input_value_value = /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
-			? /*value*/ ctx[3]
-			: /*valueKey*/ ctx[4]
+			class: input_class_value = "mdc-radio__native-control " + /*input$class*/ ctx[6]
 		},
 		{ type: "radio" },
 		/*inputProps*/ ctx[11],
 		{ disabled: /*disabled*/ ctx[2] },
 		{
-			class: input_class_value = "mdc-radio__native-control " + /*input$class*/ ctx[6]
+			value: input_value_value = /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
+			? /*value*/ ctx[3]
+			: /*valueKey*/ ctx[4]
 		},
 		{ checked: /*checked*/ ctx[7] },
 		exclude(prefixFilter(/*$$props*/ ctx[13], "input$"), ["use", "class"])
@@ -29633,13 +29633,13 @@ function create_fragment$J(ctx) {
 		},
 		p: function update(ctx, [dirty]) {
 			set_attributes(input, input_data = get_spread_update(input_levels, [
-				dirty & /*valueKey, value*/ 24 && input_value_value !== (input_value_value = /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
-				? /*value*/ ctx[3]
-				: /*valueKey*/ ctx[4]) && { value: input_value_value },
+				dirty & /*input$class*/ 64 && input_class_value !== (input_class_value = "mdc-radio__native-control " + /*input$class*/ ctx[6]) && { class: input_class_value },
 				{ type: "radio" },
 				/*inputProps*/ ctx[11],
 				dirty & /*disabled*/ 4 && { disabled: /*disabled*/ ctx[2] },
-				dirty & /*input$class*/ 64 && input_class_value !== (input_class_value = "mdc-radio__native-control " + /*input$class*/ ctx[6]) && { class: input_class_value },
+				dirty & /*valueKey, value*/ 24 && input_value_value !== (input_value_value = /*valueKey*/ ctx[4] === /*uninitializedValue*/ ctx[10]
+				? /*value*/ ctx[3]
+				: /*valueKey*/ ctx[4]) && { value: input_value_value },
 				dirty & /*checked*/ 128 && { checked: /*checked*/ ctx[7] },
 				dirty & /*$$props*/ 8192 && exclude(prefixFilter(/*$$props*/ ctx[13], "input$"), ["use", "class"])
 			]));
@@ -64640,12 +64640,12 @@ const PlanksConstant = 6.62607004e-34; // J.s
 const SpeedOfLight = 299792458; // m/s
  // in cm-1
 
-function balance_distribution({groundLevel, excitedLevel, energyLevels, trapTemp=5, electronSpin=false, zeemanSplit=false, energyUnit="cm-1"}={}){
+function balance_distribution({label, energyLevels, collisionalTemp=5, electronSpin=false, zeemanSplit=false, energyUnit="cm-1"}={}){
     // defined for excitation rate constants
 
     const boltzmanConstant = 1.38064852e-23; // in J.K-1
     const boltzmanConstantInWavenumber = boltzmanConstant/1.98630e-23; // in cm-1
-    const KT = boltzmanConstantInWavenumber*trapTemp;
+    const KT = boltzmanConstantInWavenumber*collisionalTemp;
     
     const speedOfLight = 299792458; // in m/s
     const speedOfLightIn_cm = speedOfLight*100; // in cm/s
@@ -64660,14 +64660,16 @@ function balance_distribution({groundLevel, excitedLevel, energyLevels, trapTemp
 
 
         }
+
+        const [initial, final] = label.split(" --> ").map(f=>f.trim());
         
-        const {Gi, Gf} = computeStatisticalWeight({electronSpin, zeemanSplit, final:excitedLevel, initial:groundLevel});
-        const Gj = Gf/Gi;
+        const {Gi, Gf} = computeStatisticalWeight({electronSpin, zeemanSplit, final, initial});
+        const Gj = Gi/Gf;
 
         const energy_levels = {};
         energyLevels.forEach(f=>energy_levels[f.label]=f.value);
 
-        const delE = Math.abs(energy_levels[groundLevel] - energy_levels[excitedLevel]);
+        const delE = Math.abs(energy_levels[initial] - energy_levels[final]);
         const energyTerm = Math.exp(-delE/KT);
         const rateConstant = Gj*energyTerm;
         console.log(energyLevels);
@@ -64722,7 +64724,7 @@ function get_each_context_1$4(ctx, list, i) {
 	return child_ctx;
 }
 
-// (101:4) {#if einsteinCoefficientA.length>0}
+// (103:4) {#if einsteinCoefficientA.length>0}
 function create_if_block_1$a(ctx) {
 	let div;
 	let each_blocks = [];
@@ -64748,7 +64750,7 @@ function create_if_block_1$a(ctx) {
 			}
 
 			attr_dev(div, "class", "content__div  svelte-1t65zux");
-			add_location(div, file$1b, 102, 8, 3280);
+			add_location(div, file$1b, 104, 8, 3335);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -64798,14 +64800,14 @@ function create_if_block_1$a(ctx) {
 		block,
 		id: create_if_block_1$a.name,
 		type: "if",
-		source: "(101:4) {#if einsteinCoefficientA.length>0}",
+		source: "(103:4) {#if einsteinCoefficientA.length>0}",
 		ctx
 	});
 
 	return block;
 }
 
-// (104:12) {#each einsteinCoefficientA as {label, value, id}
+// (106:12) {#each einsteinCoefficientA as {label, value, id}
 function create_each_block_1$4(key_1, ctx) {
 	let first;
 	let textfield;
@@ -64870,14 +64872,14 @@ function create_each_block_1$4(key_1, ctx) {
 		block,
 		id: create_each_block_1$4.name,
 		type: "each",
-		source: "(104:12) {#each einsteinCoefficientA as {label, value, id}",
+		source: "(106:12) {#each einsteinCoefficientA as {label, value, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (116:4) {#if einsteinCoefficientB.length>0}
+// (118:4) {#if einsteinCoefficientB.length>0}
 function create_if_block$t(ctx) {
 	let hr;
 	let t0;
@@ -64993,15 +64995,15 @@ function create_if_block$t(ctx) {
 			}
 
 			attr_dev(hr, "class", "svelte-1t65zux");
-			add_location(hr, file$1b, 117, 8, 3684);
+			add_location(hr, file$1b, 119, 8, 3739);
 			attr_dev(div0, "class", "subtitle svelte-1t65zux");
-			add_location(div0, file$1b, 118, 8, 3698);
+			add_location(div0, file$1b, 120, 8, 3753);
 			attr_dev(button, "class", "button is-link ");
-			add_location(button, file$1b, 126, 12, 4084);
+			add_location(button, file$1b, 128, 12, 4139);
 			attr_dev(div1, "class", "control__div  svelte-1t65zux");
-			add_location(div1, file$1b, 119, 8, 3760);
+			add_location(div1, file$1b, 121, 8, 3815);
 			attr_dev(div2, "class", "content__div  svelte-1t65zux");
-			add_location(div2, file$1b, 129, 8, 4207);
+			add_location(div2, file$1b, 131, 8, 4262);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, hr, anchor);
@@ -65130,14 +65132,14 @@ function create_if_block$t(ctx) {
 		block,
 		id: create_if_block$t.name,
 		type: "if",
-		source: "(116:4) {#if einsteinCoefficientB.length>0}",
+		source: "(118:4) {#if einsteinCoefficientB.length>0}",
 		ctx
 	});
 
 	return block;
 }
 
-// (131:12) {#each einsteinCoefficientB as {label, value, id}
+// (133:12) {#each einsteinCoefficientB as {label, value, id}
 function create_each_block$b(key_1, ctx) {
 	let first;
 	let textfield;
@@ -65202,7 +65204,7 @@ function create_each_block$b(key_1, ctx) {
 		block,
 		id: create_each_block$b.name,
 		type: "each",
-		source: "(131:12) {#each einsteinCoefficientB as {label, value, id}",
+		source: "(133:12) {#each einsteinCoefficientB as {label, value, id}",
 		ctx
 	});
 
@@ -65246,17 +65248,17 @@ function create_fragment$1i(ctx) {
 			t7 = space();
 			if (if_block1) if_block1.c();
 			attr_dev(div0, "class", "subtitle svelte-1t65zux");
-			add_location(div0, file$1b, 97, 4, 3109);
+			add_location(div0, file$1b, 99, 4, 3164);
 			attr_dev(hr, "class", "svelte-1t65zux");
-			add_location(hr, file$1b, 98, 4, 3165);
+			add_location(hr, file$1b, 100, 4, 3220);
 			attr_dev(div1, "class", "subtitle svelte-1t65zux");
-			add_location(div1, file$1b, 99, 4, 3175);
+			add_location(div1, file$1b, 101, 4, 3230);
 			attr_dev(button, "class", "button is-link ");
-			add_location(button, file$1b, 112, 8, 3526);
+			add_location(button, file$1b, 114, 8, 3581);
 			attr_dev(div2, "class", "control__div  svelte-1t65zux");
-			add_location(div2, file$1b, 110, 4, 3487);
+			add_location(div2, file$1b, 112, 4, 3542);
 			attr_dev(div3, "class", "sub_container__div box svelte-1t65zux");
-			add_location(div3, file$1b, 96, 0, 3067);
+			add_location(div3, file$1b, 98, 0, 3122);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -65533,6 +65535,12 @@ function instance$1i($$self, $$props, $$invalidate) {
 		$$self.$inject_state($$props.$$inject);
 	}
 
+	$$self.$$.update = () => {
+		if ($$self.$$.dirty & /*einsteinCoefficientA*/ 1) {
+			 if (einsteinCoefficientA) computeEinsteinB();
+		}
+	};
+
 	return [
 		einsteinCoefficientA,
 		einsteinCoefficientB,
@@ -65682,12 +65690,12 @@ function create_if_block$u(ctx) {
 		separatewindow_props.active = /*active*/ ctx[0];
 	}
 
-	if (/*windowReady*/ ctx[2] !== void 0) {
-		separatewindow_props.windowReady = /*windowReady*/ ctx[2];
+	if (/*windowReady*/ ctx[3] !== void 0) {
+		separatewindow_props.windowReady = /*windowReady*/ ctx[3];
 	}
 
-	if (/*graphWindow*/ ctx[1] !== void 0) {
-		separatewindow_props.graphWindow = /*graphWindow*/ ctx[1];
+	if (/*graphWindow*/ ctx[2] !== void 0) {
+		separatewindow_props.graphWindow = /*graphWindow*/ ctx[2];
 	}
 
 	separatewindow = new SeparateWindow({
@@ -65710,7 +65718,7 @@ function create_if_block$u(ctx) {
 		p: function update(ctx, dirty) {
 			const separatewindow_changes = {};
 
-			if (dirty & /*$$scope, numberDensity, duration, stepSize, collisionalTemp, initialTemp*/ 8388856) {
+			if (dirty & /*$$scope, numberDensity, duration, stepSize, collisionalTemp, initialTemp*/ 8388850) {
 				separatewindow_changes.$$scope = { dirty, ctx };
 			}
 
@@ -65720,15 +65728,15 @@ function create_if_block$u(ctx) {
 				add_flush_callback(() => updating_active = false);
 			}
 
-			if (!updating_windowReady && dirty & /*windowReady*/ 4) {
+			if (!updating_windowReady && dirty & /*windowReady*/ 8) {
 				updating_windowReady = true;
-				separatewindow_changes.windowReady = /*windowReady*/ ctx[2];
+				separatewindow_changes.windowReady = /*windowReady*/ ctx[3];
 				add_flush_callback(() => updating_windowReady = false);
 			}
 
-			if (!updating_graphWindow && dirty & /*graphWindow*/ 2) {
+			if (!updating_graphWindow && dirty & /*graphWindow*/ 4) {
 				updating_graphWindow = true;
-				separatewindow_changes.graphWindow = /*graphWindow*/ ctx[1];
+				separatewindow_changes.graphWindow = /*graphWindow*/ ctx[2];
 				add_flush_callback(() => updating_graphWindow = false);
 			}
 
@@ -65806,8 +65814,8 @@ function create_header_content__slot_slot$1(ctx) {
 		input$min: "0"
 	};
 
-	if (/*initialTemp*/ ctx[3] !== void 0) {
-		textfield1_props.value = /*initialTemp*/ ctx[3];
+	if (/*initialTemp*/ ctx[4] !== void 0) {
+		textfield1_props.value = /*initialTemp*/ ctx[4];
 	}
 
 	textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
@@ -65824,8 +65832,8 @@ function create_header_content__slot_slot$1(ctx) {
 		input$min: "0.1"
 	};
 
-	if (/*collisionalTemp*/ ctx[5] !== void 0) {
-		textfield2_props.value = /*collisionalTemp*/ ctx[5];
+	if (/*collisionalTemp*/ ctx[1] !== void 0) {
+		textfield2_props.value = /*collisionalTemp*/ ctx[1];
 	}
 
 	textfield2 = new Textfield({ props: textfield2_props, $$inline: true });
@@ -65837,8 +65845,8 @@ function create_header_content__slot_slot$1(ctx) {
 
 	let textfield3_props = { label: "duration (in ms)" };
 
-	if (/*duration*/ ctx[4] !== void 0) {
-		textfield3_props.value = /*duration*/ ctx[4];
+	if (/*duration*/ ctx[5] !== void 0) {
+		textfield3_props.value = /*duration*/ ctx[5];
 	}
 
 	textfield3 = new Textfield({ props: textfield3_props, $$inline: true });
@@ -65910,9 +65918,9 @@ function create_header_content__slot_slot$1(ctx) {
 			const textfield1_changes = {};
 			if (dirty & /*stepSize*/ 128) textfield1_changes.input$step = /*stepSize*/ ctx[7];
 
-			if (!updating_value_1 && dirty & /*initialTemp*/ 8) {
+			if (!updating_value_1 && dirty & /*initialTemp*/ 16) {
 				updating_value_1 = true;
-				textfield1_changes.value = /*initialTemp*/ ctx[3];
+				textfield1_changes.value = /*initialTemp*/ ctx[4];
 				add_flush_callback(() => updating_value_1 = false);
 			}
 
@@ -65920,18 +65928,18 @@ function create_header_content__slot_slot$1(ctx) {
 			const textfield2_changes = {};
 			if (dirty & /*stepSize*/ 128) textfield2_changes.input$step = /*stepSize*/ ctx[7];
 
-			if (!updating_value_2 && dirty & /*collisionalTemp*/ 32) {
+			if (!updating_value_2 && dirty & /*collisionalTemp*/ 2) {
 				updating_value_2 = true;
-				textfield2_changes.value = /*collisionalTemp*/ ctx[5];
+				textfield2_changes.value = /*collisionalTemp*/ ctx[1];
 				add_flush_callback(() => updating_value_2 = false);
 			}
 
 			textfield2.$set(textfield2_changes);
 			const textfield3_changes = {};
 
-			if (!updating_value_3 && dirty & /*duration*/ 16) {
+			if (!updating_value_3 && dirty & /*duration*/ 32) {
 				updating_value_3 = true;
-				textfield3_changes.value = /*duration*/ ctx[4];
+				textfield3_changes.value = /*duration*/ ctx[5];
 				add_flush_callback(() => updating_value_3 = false);
 			}
 
@@ -66107,7 +66115,7 @@ function instance$1j($$self, $$props, $$invalidate) {
 	component_subscribe($$self, mainPreModal, $$value => $$invalidate(22, $mainPreModal = $$value));
 	let { $$slots: slots = {}, $$scope } = $$props;
 	validate_slots("CollisionalDistribution", slots, []);
-	let { active } = $$props;
+	let { active } = $$props, { collisionalTemp = 10 } = $$props;
 
 	let { collisionalRateConstants } = $$props,
 		{ energyLevels } = $$props,
@@ -66115,7 +66123,7 @@ function instance$1j($$self, $$props, $$invalidate) {
 		{ zeemanSplit } = $$props,
 		{ energyUnit } = $$props;
 
-	let initialTemp = 300, duration = 600, collisionalTemp = 10;
+	let initialTemp = 300, duration = 600;
 	let numberDensity = "2e14";
 	let graphWindow = null, windowReady = false;
 	let stepSize = 0.1;
@@ -66177,6 +66185,7 @@ function instance$1j($$self, $$props, $$invalidate) {
 
 	const writable_props = [
 		"active",
+		"collisionalTemp",
 		"collisionalRateConstants",
 		"energyLevels",
 		"electronSpin",
@@ -66195,17 +66204,17 @@ function instance$1j($$self, $$props, $$invalidate) {
 
 	function textfield1_value_binding(value) {
 		initialTemp = value;
-		$$invalidate(3, initialTemp);
+		$$invalidate(4, initialTemp);
 	}
 
 	function textfield2_value_binding(value) {
 		collisionalTemp = value;
-		$$invalidate(5, collisionalTemp);
+		$$invalidate(1, collisionalTemp);
 	}
 
 	function textfield3_value_binding(value) {
 		duration = value;
-		$$invalidate(4, duration);
+		$$invalidate(5, duration);
 	}
 
 	function textfield4_value_binding(value) {
@@ -66220,16 +66229,17 @@ function instance$1j($$self, $$props, $$invalidate) {
 
 	function separatewindow_windowReady_binding(value) {
 		windowReady = value;
-		$$invalidate(2, windowReady);
+		$$invalidate(3, windowReady);
 	}
 
 	function separatewindow_graphWindow_binding(value) {
 		graphWindow = value;
-		$$invalidate(1, graphWindow);
+		$$invalidate(2, graphWindow);
 	}
 
 	$$self.$$set = $$props => {
 		if ("active" in $$props) $$invalidate(0, active = $$props.active);
+		if ("collisionalTemp" in $$props) $$invalidate(1, collisionalTemp = $$props.collisionalTemp);
 		if ("collisionalRateConstants" in $$props) $$invalidate(9, collisionalRateConstants = $$props.collisionalRateConstants);
 		if ("energyLevels" in $$props) $$invalidate(10, energyLevels = $$props.energyLevels);
 		if ("electronSpin" in $$props) $$invalidate(11, electronSpin = $$props.electronSpin);
@@ -66244,6 +66254,7 @@ function instance$1j($$self, $$props, $$invalidate) {
 		boltzman_distribution,
 		Textfield,
 		active,
+		collisionalTemp,
 		collisionalRateConstants,
 		energyLevels,
 		electronSpin,
@@ -66251,7 +66262,6 @@ function instance$1j($$self, $$props, $$invalidate) {
 		energyUnit,
 		initialTemp,
 		duration,
-		collisionalTemp,
 		numberDensity,
 		title: title$1,
 		plotID: plotID$1,
@@ -66264,17 +66274,17 @@ function instance$1j($$self, $$props, $$invalidate) {
 
 	$$self.$inject_state = $$props => {
 		if ("active" in $$props) $$invalidate(0, active = $$props.active);
+		if ("collisionalTemp" in $$props) $$invalidate(1, collisionalTemp = $$props.collisionalTemp);
 		if ("collisionalRateConstants" in $$props) $$invalidate(9, collisionalRateConstants = $$props.collisionalRateConstants);
 		if ("energyLevels" in $$props) $$invalidate(10, energyLevels = $$props.energyLevels);
 		if ("electronSpin" in $$props) $$invalidate(11, electronSpin = $$props.electronSpin);
 		if ("zeemanSplit" in $$props) $$invalidate(12, zeemanSplit = $$props.zeemanSplit);
 		if ("energyUnit" in $$props) $$invalidate(13, energyUnit = $$props.energyUnit);
-		if ("initialTemp" in $$props) $$invalidate(3, initialTemp = $$props.initialTemp);
-		if ("duration" in $$props) $$invalidate(4, duration = $$props.duration);
-		if ("collisionalTemp" in $$props) $$invalidate(5, collisionalTemp = $$props.collisionalTemp);
+		if ("initialTemp" in $$props) $$invalidate(4, initialTemp = $$props.initialTemp);
+		if ("duration" in $$props) $$invalidate(5, duration = $$props.duration);
 		if ("numberDensity" in $$props) $$invalidate(6, numberDensity = $$props.numberDensity);
-		if ("graphWindow" in $$props) $$invalidate(1, graphWindow = $$props.graphWindow);
-		if ("windowReady" in $$props) $$invalidate(2, windowReady = $$props.windowReady);
+		if ("graphWindow" in $$props) $$invalidate(2, graphWindow = $$props.graphWindow);
+		if ("windowReady" in $$props) $$invalidate(3, windowReady = $$props.windowReady);
 		if ("stepSize" in $$props) $$invalidate(7, stepSize = $$props.stepSize);
 	};
 
@@ -66283,7 +66293,7 @@ function instance$1j($$self, $$props, $$invalidate) {
 	}
 
 	$$self.$$.update = () => {
-		if ($$self.$$.dirty & /*windowReady, graphWindow*/ 6) {
+		if ($$self.$$.dirty & /*windowReady, graphWindow*/ 12) {
 			 if (windowReady) {
 				setTimeout(() => graphWindow.focus(), 100);
 			}
@@ -66292,11 +66302,11 @@ function instance$1j($$self, $$props, $$invalidate) {
 
 	return [
 		active,
+		collisionalTemp,
 		graphWindow,
 		windowReady,
 		initialTemp,
 		duration,
-		collisionalTemp,
 		numberDensity,
 		stepSize,
 		computeCollisionalProcess,
@@ -66322,6 +66332,7 @@ class CollisionalDistribution extends SvelteComponentDev {
 
 		init(this, options, instance$1j, create_fragment$1j, safe_not_equal, {
 			active: 0,
+			collisionalTemp: 1,
 			collisionalRateConstants: 9,
 			energyLevels: 10,
 			electronSpin: 11,
@@ -66372,6 +66383,14 @@ class CollisionalDistribution extends SvelteComponentDev {
 		throw new Error("<CollisionalDistribution>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 
+	get collisionalTemp() {
+		throw new Error("<CollisionalDistribution>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set collisionalTemp(value) {
+		throw new Error("<CollisionalDistribution>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
 	get collisionalRateConstants() {
 		throw new Error("<CollisionalDistribution>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
@@ -66418,35 +66437,35 @@ const file$1d = "src\\Pages\\thz\\components\\CollisionalCoefficients.svelte";
 
 function get_each_context$c(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[24] = list[i].label;
-	child_ctx[25] = list[i].value;
-	child_ctx[26] = list[i].id;
-	child_ctx[27] = list;
-	child_ctx[28] = i;
+	child_ctx[33] = list[i].label;
+	child_ctx[34] = list[i].value;
+	child_ctx[35] = list[i].id;
+	child_ctx[36] = list;
+	child_ctx[37] = i;
 	return child_ctx;
 }
 
 function get_each_context_1$5(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[24] = list[i].label;
-	child_ctx[25] = list[i].value;
-	child_ctx[26] = list[i].id;
-	child_ctx[29] = list;
-	child_ctx[30] = i;
+	child_ctx[33] = list[i].label;
+	child_ctx[34] = list[i].value;
+	child_ctx[35] = list[i].id;
+	child_ctx[38] = list;
+	child_ctx[39] = i;
 	return child_ctx;
 }
 
 function get_each_context_2$4(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[24] = list[i].label;
-	child_ctx[25] = list[i].value;
-	child_ctx[26] = list[i].id;
-	child_ctx[31] = list;
-	child_ctx[32] = i;
+	child_ctx[33] = list[i].label;
+	child_ctx[34] = list[i].value;
+	child_ctx[35] = list[i].id;
+	child_ctx[40] = list;
+	child_ctx[41] = i;
 	return child_ctx;
 }
 
-// (116:4) {#if collisionalCoefficient.length>0}
+// (136:4) {#if collisionalCoefficient.length>0}
 function create_if_block_1$b(ctx) {
 	let div;
 	let each_blocks = [];
@@ -66454,7 +66473,7 @@ function create_if_block_1$b(ctx) {
 	let current;
 	let each_value_2 = /*collisionalCoefficient*/ ctx[0];
 	validate_each_argument(each_value_2);
-	const get_key = ctx => /*id*/ ctx[26];
+	const get_key = ctx => /*id*/ ctx[35];
 	validate_each_keys(ctx, each_value_2, get_each_context_2$4, get_key);
 
 	for (let i = 0; i < each_value_2.length; i += 1) {
@@ -66472,7 +66491,7 @@ function create_if_block_1$b(ctx) {
 			}
 
 			attr_dev(div, "class", "content__div  svelte-cz3hcg");
-			add_location(div, file$1d, 117, 8, 4069);
+			add_location(div, file$1d, 136, 8, 5249);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -66522,14 +66541,14 @@ function create_if_block_1$b(ctx) {
 		block,
 		id: create_if_block_1$b.name,
 		type: "if",
-		source: "(116:4) {#if collisionalCoefficient.length>0}",
+		source: "(136:4) {#if collisionalCoefficient.length>0}",
 		ctx
 	});
 
 	return block;
 }
 
-// (119:12) {#each collisionalCoefficient as {label, value, id}
+// (138:12) {#each collisionalCoefficient as {label, value, id}
 function create_each_block_2$4(key_1, ctx) {
 	let first;
 	let textfield;
@@ -66537,13 +66556,13 @@ function create_each_block_2$4(key_1, ctx) {
 	let current;
 
 	function textfield_value_binding(value) {
-		/*textfield_value_binding*/ ctx[18](value, /*value*/ ctx[25], /*each_value_2*/ ctx[31], /*each_index_2*/ ctx[32]);
+		/*textfield_value_binding*/ ctx[24](value, /*value*/ ctx[34], /*each_value_2*/ ctx[40], /*each_index_2*/ ctx[41]);
 	}
 
-	let textfield_props = { label: /*label*/ ctx[24] };
+	let textfield_props = { label: /*label*/ ctx[33] };
 
-	if (/*value*/ ctx[25] !== void 0) {
-		textfield_props.value = /*value*/ ctx[25];
+	if (/*value*/ ctx[34] !== void 0) {
+		textfield_props.value = /*value*/ ctx[34];
 	}
 
 	textfield = new Textfield({ props: textfield_props, $$inline: true });
@@ -66565,11 +66584,11 @@ function create_each_block_2$4(key_1, ctx) {
 		p: function update(new_ctx, dirty) {
 			ctx = new_ctx;
 			const textfield_changes = {};
-			if (dirty[0] & /*collisionalCoefficient*/ 1) textfield_changes.label = /*label*/ ctx[24];
+			if (dirty[0] & /*collisionalCoefficient*/ 1) textfield_changes.label = /*label*/ ctx[33];
 
 			if (!updating_value && dirty[0] & /*collisionalCoefficient*/ 1) {
 				updating_value = true;
-				textfield_changes.value = /*value*/ ctx[25];
+				textfield_changes.value = /*value*/ ctx[34];
 				add_flush_callback(() => updating_value = false);
 			}
 
@@ -66594,14 +66613,14 @@ function create_each_block_2$4(key_1, ctx) {
 		block,
 		id: create_each_block_2$4.name,
 		type: "each",
-		source: "(119:12) {#each collisionalCoefficient as {label, value, id}",
+		source: "(138:12) {#each collisionalCoefficient as {label, value, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (128:4) {#if collisionalCoefficient_balance.length>0}
+// (145:4) {#if collisionalCoefficient_balance.length>0}
 function create_if_block$v(ctx) {
 	let hr;
 	let t;
@@ -66611,7 +66630,7 @@ function create_if_block$v(ctx) {
 	let current;
 	let each_value_1 = /*collisionalCoefficient_balance*/ ctx[1];
 	validate_each_argument(each_value_1);
-	const get_key = ctx => /*id*/ ctx[26];
+	const get_key = ctx => /*id*/ ctx[35];
 	validate_each_keys(ctx, each_value_1, get_each_context_1$5, get_key);
 
 	for (let i = 0; i < each_value_1.length; i += 1) {
@@ -66631,9 +66650,9 @@ function create_if_block$v(ctx) {
 			}
 
 			attr_dev(hr, "class", "svelte-cz3hcg");
-			add_location(hr, file$1d, 128, 8, 4336);
+			add_location(hr, file$1d, 146, 8, 5514);
 			attr_dev(div, "class", "content__div  svelte-cz3hcg");
-			add_location(div, file$1d, 131, 8, 4354);
+			add_location(div, file$1d, 147, 8, 5528);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, hr, anchor);
@@ -66687,14 +66706,14 @@ function create_if_block$v(ctx) {
 		block,
 		id: create_if_block$v.name,
 		type: "if",
-		source: "(128:4) {#if collisionalCoefficient_balance.length>0}",
+		source: "(145:4) {#if collisionalCoefficient_balance.length>0}",
 		ctx
 	});
 
 	return block;
 }
 
-// (134:12) {#each collisionalCoefficient_balance as {label, value, id}
+// (149:12) {#each collisionalCoefficient_balance as {label, value, id}
 function create_each_block_1$5(key_1, ctx) {
 	let first;
 	let textfield;
@@ -66702,13 +66721,13 @@ function create_each_block_1$5(key_1, ctx) {
 	let current;
 
 	function textfield_value_binding_1(value) {
-		/*textfield_value_binding_1*/ ctx[19](value, /*value*/ ctx[25], /*each_value_1*/ ctx[29], /*each_index_1*/ ctx[30]);
+		/*textfield_value_binding_1*/ ctx[25](value, /*value*/ ctx[34], /*each_value_1*/ ctx[38], /*each_index_1*/ ctx[39]);
 	}
 
-	let textfield_props = { label: /*label*/ ctx[24] };
+	let textfield_props = { label: /*label*/ ctx[33] };
 
-	if (/*value*/ ctx[25] !== void 0) {
-		textfield_props.value = /*value*/ ctx[25];
+	if (/*value*/ ctx[34] !== void 0) {
+		textfield_props.value = /*value*/ ctx[34];
 	}
 
 	textfield = new Textfield({ props: textfield_props, $$inline: true });
@@ -66730,11 +66749,11 @@ function create_each_block_1$5(key_1, ctx) {
 		p: function update(new_ctx, dirty) {
 			ctx = new_ctx;
 			const textfield_changes = {};
-			if (dirty[0] & /*collisionalCoefficient_balance*/ 2) textfield_changes.label = /*label*/ ctx[24];
+			if (dirty[0] & /*collisionalCoefficient_balance*/ 2) textfield_changes.label = /*label*/ ctx[33];
 
 			if (!updating_value && dirty[0] & /*collisionalCoefficient_balance*/ 2) {
 				updating_value = true;
-				textfield_changes.value = /*value*/ ctx[25];
+				textfield_changes.value = /*value*/ ctx[34];
 				add_flush_callback(() => updating_value = false);
 			}
 
@@ -66759,32 +66778,32 @@ function create_each_block_1$5(key_1, ctx) {
 		block,
 		id: create_each_block_1$5.name,
 		type: "each",
-		source: "(134:12) {#each collisionalCoefficient_balance as {label, value, id}",
+		source: "(149:12) {#each collisionalCoefficient_balance as {label, value, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (150:8) {#each collisionalRates as {label, value, id}
+// (164:8) {#each collisionalRates as {label, value, id}
 function create_each_block$c(key_1, ctx) {
 	let first;
 	let textfield;
 	let updating_value;
 	let current;
 
-	function textfield_value_binding_3(value) {
-		/*textfield_value_binding_3*/ ctx[21](value, /*value*/ ctx[25], /*each_value*/ ctx[27], /*each_index*/ ctx[28]);
+	function textfield_value_binding_2(value) {
+		/*textfield_value_binding_2*/ ctx[27](value, /*value*/ ctx[34], /*each_value*/ ctx[36], /*each_index*/ ctx[37]);
 	}
 
-	let textfield_props = { label: /*label*/ ctx[24] };
+	let textfield_props = { label: /*label*/ ctx[33] };
 
-	if (/*value*/ ctx[25] !== void 0) {
-		textfield_props.value = /*value*/ ctx[25];
+	if (/*value*/ ctx[34] !== void 0) {
+		textfield_props.value = /*value*/ ctx[34];
 	}
 
 	textfield = new Textfield({ props: textfield_props, $$inline: true });
-	binding_callbacks.push(() => bind(textfield, "value", textfield_value_binding_3));
+	binding_callbacks.push(() => bind(textfield, "value", textfield_value_binding_2));
 
 	const block = {
 		key: key_1,
@@ -66802,11 +66821,11 @@ function create_each_block$c(key_1, ctx) {
 		p: function update(new_ctx, dirty) {
 			ctx = new_ctx;
 			const textfield_changes = {};
-			if (dirty[0] & /*collisionalRates*/ 16) textfield_changes.label = /*label*/ ctx[24];
+			if (dirty[0] & /*collisionalRates*/ 8) textfield_changes.label = /*label*/ ctx[33];
 
-			if (!updating_value && dirty[0] & /*collisionalRates*/ 16) {
+			if (!updating_value && dirty[0] & /*collisionalRates*/ 8) {
 				updating_value = true;
-				textfield_changes.value = /*value*/ ctx[25];
+				textfield_changes.value = /*value*/ ctx[34];
 				add_flush_callback(() => updating_value = false);
 			}
 
@@ -66831,7 +66850,7 @@ function create_each_block$c(key_1, ctx) {
 		block,
 		id: create_each_block$c.name,
 		type: "each",
-		source: "(150:8) {#each collisionalRates as {label, value, id}",
+		source: "(164:8) {#each collisionalRates as {label, value, id}",
 		ctx
 	});
 
@@ -66842,37 +66861,49 @@ function create_fragment$1k(ctx) {
 	let collisionaldistribution;
 	let updating_active;
 	let t0;
-	let div5;
+	let div6;
 	let div0;
 	let t2;
-	let div1;
-	let customselect;
-	let updating_picked;
-	let t3;
-	let button0;
-	let t5;
-	let button1;
-	let t7;
-	let t8;
-	let t9;
-	let hr;
-	let t10;
 	let div2;
-	let t12;
-	let div3;
-	let textfield;
+	let button0;
+	let t4;
+	let button1;
+	let t6;
+	let button2;
+	let t8;
+	let div1;
+	let textfield0;
 	let updating_value;
-	let t13;
+	let t9;
+	let textfield1;
+	let updating_value_1;
+	let t10;
+	let button3;
+	let t12;
+	let button4;
+	let t14;
+	let button5;
+	let t16;
+	let t17;
+	let t18;
+	let hr;
+	let t19;
+	let div3;
+	let t21;
 	let div4;
+	let textfield2;
+	let updating_value_2;
+	let t22;
+	let div5;
 	let each_blocks = [];
 	let each_1_lookup = new Map();
 	let current;
 	let mounted;
 	let dispose;
-	const collisionaldistribution_spread_levels = [/*collisionalArgs*/ ctx[6]];
+	const collisionaldistribution_spread_levels = [/*collisionalArgs*/ ctx[8]];
 
 	function collisionaldistribution_active_binding(value) {
-		/*collisionaldistribution_active_binding*/ ctx[15](value);
+		/*collisionaldistribution_active_binding*/ ctx[19](value);
 	}
 
 	let collisionaldistribution_props = {};
@@ -66892,43 +66923,49 @@ function create_fragment$1k(ctx) {
 
 	binding_callbacks.push(() => bind(collisionaldistribution, "active", collisionaldistribution_active_binding));
 
-	function customselect_picked_binding(value) {
-		/*customselect_picked_binding*/ ctx[16](value);
+	function textfield0_value_binding(value) {
+		/*textfield0_value_binding*/ ctx[22](value);
 	}
 
-	let customselect_props = {
-		options: ["deexcitation", "excitation", "both"]
-	};
+	let textfield0_props = { label: "saveFilename" };
 
-	if (/*collisionalRateType*/ ctx[2] !== void 0) {
-		customselect_props.picked = /*collisionalRateType*/ ctx[2];
+	if (/*saveFilename*/ ctx[7] !== void 0) {
+		textfield0_props.value = /*saveFilename*/ ctx[7];
 	}
 
-	customselect = new CustomSelect({
-			props: customselect_props,
-			$$inline: true
-		});
+	textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
+	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
 
-	binding_callbacks.push(() => bind(customselect, "picked", customselect_picked_binding));
-	customselect.$on("change", /*changeCollisionalRateType*/ ctx[7]);
+	function textfield1_value_binding(value) {
+		/*textfield1_value_binding*/ ctx[23](value);
+	}
+
+	let textfield1_props = { label: "collisionalTemp" };
+
+	if (/*collisionalTemp*/ ctx[4] !== void 0) {
+		textfield1_props.value = /*collisionalTemp*/ ctx[4];
+	}
+
+	textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
+	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding));
 	let if_block0 = /*collisionalCoefficient*/ ctx[0].length > 0 && create_if_block_1$b(ctx);
 	let if_block1 = /*collisionalCoefficient_balance*/ ctx[1].length > 0 && create_if_block$v(ctx);
 
-	function textfield_value_binding_2(value) {
-		/*textfield_value_binding_2*/ ctx[20](value);
+	function textfield2_value_binding(value) {
+		/*textfield2_value_binding*/ ctx[26](value);
 	}
 
-	let textfield_props = { label: "numberDensity (cm-3)" };
+	let textfield2_props = { label: "numberDensity (cm-3)" };
 
-	if (/*numberDensity*/ ctx[3] !== void 0) {
-		textfield_props.value = /*numberDensity*/ ctx[3];
+	if (/*numberDensity*/ ctx[2] !== void 0) {
+		textfield2_props.value = /*numberDensity*/ ctx[2];
 	}
 
-	textfield = new Textfield({ props: textfield_props, $$inline: true });
-	binding_callbacks.push(() => bind(textfield, "value", textfield_value_binding_2));
-	let each_value = /*collisionalRates*/ ctx[4];
+	textfield2 = new Textfield({ props: textfield2_props, $$inline: true });
+	binding_callbacks.push(() => bind(textfield2, "value", textfield2_value_binding));
+	let each_value = /*collisionalRates*/ ctx[3];
 	validate_each_argument(each_value);
-	const get_key = ctx => /*id*/ ctx[26];
+	const get_key = ctx => /*id*/ ctx[35];
 	validate_each_keys(ctx, each_value, get_each_context$c, get_key);
 
 	for (let i = 0; i < each_value.length; i += 1) {
@@ -66941,55 +66978,81 @@ function create_fragment$1k(ctx) {
 		c: function create() {
 			create_component(collisionaldistribution.$$.fragment);
 			t0 = space();
-			div5 = element("div");
+			div6 = element("div");
 			div0 = element("div");
 			div0.textContent = "Collisional rate constants";
 			t2 = space();
-			div1 = element("div");
-			create_component(customselect.$$.fragment);
-			t3 = space();
+			div2 = element("div");
 			button0 = element("button");
 			button0.textContent = "Compute balance rate";
-			t5 = space();
+			t4 = space();
 			button1 = element("button");
 			button1.textContent = "Compute Collisional Cooling";
-			t7 = space();
-			if (if_block0) if_block0.c();
+			t6 = space();
+			button2 = element("button");
+			button2.textContent = "Compute from fit";
 			t8 = space();
-			if (if_block1) if_block1.c();
+			div1 = element("div");
+			create_component(textfield0.$$.fragment);
 			t9 = space();
-			hr = element("hr");
+			create_component(textfield1.$$.fragment);
 			t10 = space();
-			div2 = element("div");
-			div2.textContent = "Collisional Rates (per sec)";
+			button3 = element("button");
+			button3.textContent = "Browse";
 			t12 = space();
+			button4 = element("button");
+			button4.textContent = "Compute";
+			t14 = space();
+			button5 = element("button");
+			button5.textContent = "Save values";
+			t16 = space();
+			if (if_block0) if_block0.c();
+			t17 = space();
+			if (if_block1) if_block1.c();
+			t18 = space();
+			hr = element("hr");
+			t19 = space();
 			div3 = element("div");
-			create_component(textfield.$$.fragment);
-			t13 = space();
+			div3.textContent = "Collisional Rates (per sec)";
+			t21 = space();
 			div4 = element("div");
+			create_component(textfield2.$$.fragment);
+			t22 = space();
+			div5 = element("div");
 
 			for (let i = 0; i < each_blocks.length; i += 1) {
 				each_blocks[i].c();
 			}
 
 			attr_dev(div0, "class", "subtitle svelte-cz3hcg");
-			add_location(div0, file$1d, 106, 4, 3531);
+			add_location(div0, file$1d, 116, 4, 3956);
 			attr_dev(button0, "class", "button is-link ");
-			add_location(button0, file$1d, 110, 8, 3776);
+			add_location(button0, file$1d, 119, 8, 4171);
 			attr_dev(button1, "class", "button is-link ");
-			add_location(button1, file$1d, 111, 8, 3892);
-			attr_dev(div1, "class", "control__div  svelte-cz3hcg");
-			add_location(div1, file$1d, 108, 4, 3593);
+			add_location(button1, file$1d, 120, 8, 4287);
+			attr_dev(button2, "class", "button is-link ");
+			add_location(button2, file$1d, 121, 8, 4403);
+			attr_dev(button3, "class", "button is-link");
+			add_location(button3, file$1d, 127, 12, 4881);
+			attr_dev(button4, "class", "button is-link");
+			add_location(button4, file$1d, 128, 12, 4976);
+			attr_dev(button5, "class", "button is-link");
+			add_location(button5, file$1d, 129, 12, 5070);
+			attr_dev(div1, "class", "align h-center");
+			toggle_class(div1, "hide", !/*collisionalFitWindow*/ ctx[6]);
+			add_location(div1, file$1d, 123, 8, 4530);
+			attr_dev(div2, "class", "control__div  svelte-cz3hcg");
+			add_location(div2, file$1d, 117, 4, 4016);
 			attr_dev(hr, "class", "svelte-cz3hcg");
-			add_location(hr, file$1d, 140, 4, 4584);
-			attr_dev(div2, "class", "subtitle svelte-cz3hcg");
-			add_location(div2, file$1d, 141, 4, 4594);
-			attr_dev(div3, "class", "control__div svelte-cz3hcg");
-			add_location(div3, file$1d, 142, 4, 4656);
-			attr_dev(div4, "class", "content__div  svelte-cz3hcg");
-			add_location(div4, file$1d, 147, 4, 4782);
-			attr_dev(div5, "class", "sub_container__div box svelte-cz3hcg");
-			add_location(div5, file$1d, 105, 0, 3489);
+			add_location(hr, file$1d, 155, 8, 5748);
+			attr_dev(div3, "class", "subtitle svelte-cz3hcg");
+			add_location(div3, file$1d, 156, 4, 5758);
+			attr_dev(div4, "class", "control__div svelte-cz3hcg");
+			add_location(div4, file$1d, 158, 4, 5822);
+			attr_dev(div5, "class", "content__div  svelte-cz3hcg");
+			add_location(div5, file$1d, 162, 4, 5946);
+			attr_dev(div6, "class", "sub_container__div box svelte-cz3hcg");
+			add_location(div6, file$1d, 114, 0, 3912);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -66997,47 +67060,62 @@ function create_fragment$1k(ctx) {
 		m: function mount(target, anchor) {
 			mount_component(collisionaldistribution, target, anchor);
 			insert_dev(target, t0, anchor);
-			insert_dev(target, div5, anchor);
-			append_dev(div5, div0);
-			append_dev(div5, t2);
-			append_dev(div5, div1);
-			mount_component(customselect, div1, null);
-			append_dev(div1, t3);
-			append_dev(div1, button0);
-			append_dev(div1, t5);
-			append_dev(div1, button1);
-			append_dev(div5, t7);
-			if (if_block0) if_block0.m(div5, null);
-			append_dev(div5, t8);
-			if (if_block1) if_block1.m(div5, null);
-			append_dev(div5, t9);
-			append_dev(div5, hr);
-			append_dev(div5, t10);
-			append_dev(div5, div2);
-			append_dev(div5, t12);
-			append_dev(div5, div3);
-			mount_component(textfield, div3, null);
-			append_dev(div5, t13);
-			append_dev(div5, div4);
+			insert_dev(target, div6, anchor);
+			append_dev(div6, div0);
+			append_dev(div6, t2);
+			append_dev(div6, div2);
+			append_dev(div2, button0);
+			append_dev(div2, t4);
+			append_dev(div2, button1);
+			append_dev(div2, t6);
+			append_dev(div2, button2);
+			append_dev(div2, t8);
+			append_dev(div2, div1);
+			mount_component(textfield0, div1, null);
+			append_dev(div1, t9);
+			mount_component(textfield1, div1, null);
+			append_dev(div1, t10);
+			append_dev(div1, button3);
+			append_dev(div1, t12);
+			append_dev(div1, button4);
+			append_dev(div1, t14);
+			append_dev(div1, button5);
+			append_dev(div6, t16);
+			if (if_block0) if_block0.m(div6, null);
+			append_dev(div6, t17);
+			if (if_block1) if_block1.m(div6, null);
+			append_dev(div6, t18);
+			append_dev(div6, hr);
+			append_dev(div6, t19);
+			append_dev(div6, div3);
+			append_dev(div6, t21);
+			append_dev(div6, div4);
+			mount_component(textfield2, div4, null);
+			append_dev(div6, t22);
+			append_dev(div6, div5);
 
 			for (let i = 0; i < each_blocks.length; i += 1) {
-				each_blocks[i].m(div4, null);
+				each_blocks[i].m(div5, null);
 			}
 
 			current = true;
 
 			if (!mounted) {
 				dispose = [
-					listen_dev(button0, "click", /*compteCollisionalBalanceConstants*/ ctx[8], false, false, false),
-					listen_dev(button1, "click", /*click_handler*/ ctx[17], false, false, false)
+					listen_dev(button0, "click", /*compteCollisionalBalanceConstants*/ ctx[9], false, false, false),
+					listen_dev(button1, "click", /*click_handler*/ ctx[20], false, false, false),
+					listen_dev(button2, "click", /*click_handler_1*/ ctx[21], false, false, false),
+					listen_dev(button3, "click", /*browse_collisional_file*/ ctx[10], false, false, false),
+					listen_dev(button4, "click", /*computeCollisionalFit*/ ctx[11], false, false, false),
+					listen_dev(button5, "click", /*saveComputedCollisionalValues*/ ctx[12], false, false, false)
 				];
 
 				mounted = true;
 			}
 		},
 		p: function update(ctx, dirty) {
-			const collisionaldistribution_changes = (dirty[0] & /*collisionalArgs*/ 64)
-			? get_spread_update(collisionaldistribution_spread_levels, [get_spread_object(/*collisionalArgs*/ ctx[6])])
+			const collisionaldistribution_changes = (dirty[0] & /*collisionalArgs*/ 256)
+			? get_spread_update(collisionaldistribution_spread_levels, [get_spread_object(/*collisionalArgs*/ ctx[8])])
 			: {};
 
 			if (!updating_active && dirty[0] & /*collisionalWindow*/ 32) {
@@ -67047,15 +67125,28 @@ function create_fragment$1k(ctx) {
 			}
 
 			collisionaldistribution.$set(collisionaldistribution_changes);
-			const customselect_changes = {};
+			const textfield0_changes = {};
 
-			if (!updating_picked && dirty[0] & /*collisionalRateType*/ 4) {
-				updating_picked = true;
-				customselect_changes.picked = /*collisionalRateType*/ ctx[2];
-				add_flush_callback(() => updating_picked = false);
+			if (!updating_value && dirty[0] & /*saveFilename*/ 128) {
+				updating_value = true;
+				textfield0_changes.value = /*saveFilename*/ ctx[7];
+				add_flush_callback(() => updating_value = false);
 			}
 
-			customselect.$set(customselect_changes);
+			textfield0.$set(textfield0_changes);
+			const textfield1_changes = {};
+
+			if (!updating_value_1 && dirty[0] & /*collisionalTemp*/ 16) {
+				updating_value_1 = true;
+				textfield1_changes.value = /*collisionalTemp*/ ctx[4];
+				add_flush_callback(() => updating_value_1 = false);
+			}
+
+			textfield1.$set(textfield1_changes);
+
+			if (dirty[0] & /*collisionalFitWindow*/ 64) {
+				toggle_class(div1, "hide", !/*collisionalFitWindow*/ ctx[6]);
+			}
 
 			if (/*collisionalCoefficient*/ ctx[0].length > 0) {
 				if (if_block0) {
@@ -67068,7 +67159,7 @@ function create_fragment$1k(ctx) {
 					if_block0 = create_if_block_1$b(ctx);
 					if_block0.c();
 					transition_in(if_block0, 1);
-					if_block0.m(div5, t8);
+					if_block0.m(div6, t17);
 				}
 			} else if (if_block0) {
 				group_outros();
@@ -67091,7 +67182,7 @@ function create_fragment$1k(ctx) {
 					if_block1 = create_if_block$v(ctx);
 					if_block1.c();
 					transition_in(if_block1, 1);
-					if_block1.m(div5, t9);
+					if_block1.m(div6, t18);
 				}
 			} else if (if_block1) {
 				group_outros();
@@ -67103,32 +67194,33 @@ function create_fragment$1k(ctx) {
 				check_outros();
 			}
 
-			const textfield_changes = {};
+			const textfield2_changes = {};
 
-			if (!updating_value && dirty[0] & /*numberDensity*/ 8) {
-				updating_value = true;
-				textfield_changes.value = /*numberDensity*/ ctx[3];
-				add_flush_callback(() => updating_value = false);
+			if (!updating_value_2 && dirty[0] & /*numberDensity*/ 4) {
+				updating_value_2 = true;
+				textfield2_changes.value = /*numberDensity*/ ctx[2];
+				add_flush_callback(() => updating_value_2 = false);
 			}
 
-			textfield.$set(textfield_changes);
+			textfield2.$set(textfield2_changes);
 
-			if (dirty[0] & /*collisionalRates*/ 16) {
-				each_value = /*collisionalRates*/ ctx[4];
+			if (dirty[0] & /*collisionalRates*/ 8) {
+				each_value = /*collisionalRates*/ ctx[3];
 				validate_each_argument(each_value);
 				group_outros();
 				validate_each_keys(ctx, each_value, get_each_context$c, get_key);
-				each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value, each_1_lookup, div4, outro_and_destroy_block, create_each_block$c, null, get_each_context$c);
+				each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value, each_1_lookup, div5, outro_and_destroy_block, create_each_block$c, null, get_each_context$c);
 				check_outros();
 			}
 		},
 		i: function intro(local) {
 			if (current) return;
 			transition_in(collisionaldistribution.$$.fragment, local);
-			transition_in(customselect.$$.fragment, local);
+			transition_in(textfield0.$$.fragment, local);
+			transition_in(textfield1.$$.fragment, local);
 			transition_in(if_block0);
 			transition_in(if_block1);
-			transition_in(textfield.$$.fragment, local);
+			transition_in(textfield2.$$.fragment, local);
 
 			for (let i = 0; i < each_value.length; i += 1) {
 				transition_in(each_blocks[i]);
@@ -67138,10 +67230,11 @@ function create_fragment$1k(ctx) {
 		},
 		o: function outro(local) {
 			transition_out(collisionaldistribution.$$.fragment, local);
-			transition_out(customselect.$$.fragment, local);
+			transition_out(textfield0.$$.fragment, local);
+			transition_out(textfield1.$$.fragment, local);
 			transition_out(if_block0);
 			transition_out(if_block1);
-			transition_out(textfield.$$.fragment, local);
+			transition_out(textfield2.$$.fragment, local);
 
 			for (let i = 0; i < each_blocks.length; i += 1) {
 				transition_out(each_blocks[i]);
@@ -67152,11 +67245,12 @@ function create_fragment$1k(ctx) {
 		d: function destroy(detaching) {
 			destroy_component(collisionaldistribution, detaching);
 			if (detaching) detach_dev(t0);
-			if (detaching) detach_dev(div5);
-			destroy_component(customselect);
+			if (detaching) detach_dev(div6);
+			destroy_component(textfield0);
+			destroy_component(textfield1);
 			if (if_block0) if_block0.d();
 			if (if_block1) if_block1.d();
-			destroy_component(textfield);
+			destroy_component(textfield2);
 
 			for (let i = 0; i < each_blocks.length; i += 1) {
 				each_blocks[i].d();
@@ -67179,9 +67273,11 @@ function create_fragment$1k(ctx) {
 }
 
 function instance$1k($$self, $$props, $$invalidate) {
-	let deexcitation;
 	let collisionalRateConstants;
 	let collisionalArgs;
+	let $mainPreModal;
+	validate_store(mainPreModal, "mainPreModal");
+	component_subscribe($$self, mainPreModal, $$value => $$invalidate(29, $mainPreModal = $$value));
 	let { $$slots: slots = {}, $$scope } = $$props;
 	validate_slots("CollisionalCoefficients", slots, []);
 
@@ -67194,23 +67290,14 @@ function instance$1k($$self, $$props, $$invalidate) {
 		{ electronSpin } = $$props,
 		{ zeemanSplit } = $$props,
 		{ energyUnit } = $$props,
-		{ trapTemp } = $$props,
 		{ numberDensity = "2e14" } = $$props;
 
-	let collisionalWindow = false;
-
-	function changeCollisionalRateType() {
-		$$invalidate(0, collisionalCoefficient = collisionalCoefficient.map(level => {
-			const level_arr = level.label.split(" --> ");
-			level.label = `${level_arr[1]} --> ${level_arr[0]}`;
-			return level;
-		}));
-	}
+	let collisionalWindow = false, collisionalFitWindow = false;
 
 	const compteCollisionalBalanceConstants = () => {
 		const balanceArgs = {
 			energyLevels,
-			trapTemp,
+			collisionalTemp,
 			electronSpin,
 			zeemanSplit,
 			energyUnit
@@ -67222,29 +67309,8 @@ function instance$1k($$self, $$props, $$invalidate) {
 			const { label, value } = coefficient;
 			const levelLabels = label.split(" --> ").map(f => f.trim());
 			let newLabel, newValue;
-
-			if (deexcitation) {
-				const [excitedLevel, groundLevel] = levelLabels;
-
-				newValue = value * balance_distribution({
-					...balanceArgs,
-					groundLevel,
-					excitedLevel
-				});
-
-				newLabel = `${groundLevel} --> ${excitedLevel}`;
-			} else {
-				const [groundLevel, excitedLevel] = levelLabels;
-
-				newValue = value * balance_distribution({
-					...balanceArgs,
-					groundLevel: excitedLevel,
-					excitedLevel: groundLevel
-				});
-
-				newLabel = `${excitedLevel} --> ${groundLevel}`;
-			}
-
+			newValue = value * balance_distribution({ ...balanceArgs, label });
+			newLabel = `${levelLabels[1]} --> ${levelLabels[0]}`;
 			const alreadyComputed = _.find(collisionalCoefficient, rate => rate.label == newLabel);
 
 			if (!alreadyComputed) {
@@ -67266,6 +67332,57 @@ function instance$1k($$self, $$props, $$invalidate) {
 		return rate;
 	};
 
+	async function browse_collisional_file() {
+		const result = await browse({ dir: false });
+
+		if (!result.canceled) {
+			collisionlFile = result.filePaths[0];
+		}
+	}
+
+	let collisionlFile = "";
+	let saveFilename = "collisional_rate_constants";
+	let collisionalTemp = 5;
+
+	const setID = obj => {
+		obj.id = window.getID();
+		return obj;
+	};
+
+	const correctObjValue = obj => {
+		obj.value = obj.value.toExponential(3);
+		return obj;
+	};
+
+	async function computeCollisionalFit(e) {
+		try {
+			if (collisionlFile) {
+				const pyfile = "ROSAA/collisionalFit.py";
+
+				const args = [
+					JSON.stringify({
+						collisionlFile,
+						collisionalTemp,
+						saveFilename,
+						collisionalRateType
+					})
+				];
+
+				const dataFromPython = await computePy_func({ e, pyfile, args });
+				const { rateConstants } = dataFromPython;
+				$$invalidate(0, collisionalCoefficient = rateConstants.map(setID).map(correctObjValue));
+			} else {
+				browse_collisional_file();
+			}
+		} catch(error) {
+			set_store_value(mainPreModal, $mainPreModal = { modalContent: error, open: true }, $mainPreModal);
+		}
+	}
+
+	const saveComputedCollisionalValues = () => {
+		
+	};
+
 	const writable_props = [
 		"collisionalCoefficient",
 		"collisionalCoefficient_balance",
@@ -67275,7 +67392,6 @@ function instance$1k($$self, $$props, $$invalidate) {
 		"electronSpin",
 		"zeemanSplit",
 		"energyUnit",
-		"trapTemp",
 		"numberDensity"
 	];
 
@@ -67288,12 +67404,18 @@ function instance$1k($$self, $$props, $$invalidate) {
 		$$invalidate(5, collisionalWindow);
 	}
 
-	function customselect_picked_binding(value) {
-		collisionalRateType = value;
-		$$invalidate(2, collisionalRateType);
+	const click_handler = () => $$invalidate(5, collisionalWindow = true);
+	const click_handler_1 = () => $$invalidate(6, collisionalFitWindow = !collisionalFitWindow);
+
+	function textfield0_value_binding(value) {
+		saveFilename = value;
+		$$invalidate(7, saveFilename);
 	}
 
-	const click_handler = () => $$invalidate(5, collisionalWindow = true);
+	function textfield1_value_binding(value) {
+		collisionalTemp = value;
+		$$invalidate(4, collisionalTemp);
+	}
 
 	function textfield_value_binding(value$1, value, each_value_2, each_index_2) {
 		each_value_2[each_index_2].value = value$1;
@@ -67305,33 +67427,33 @@ function instance$1k($$self, $$props, $$invalidate) {
 		$$invalidate(1, collisionalCoefficient_balance);
 	}
 
-	function textfield_value_binding_2(value) {
+	function textfield2_value_binding(value) {
 		numberDensity = value;
-		$$invalidate(3, numberDensity);
+		$$invalidate(2, numberDensity);
 	}
 
-	function textfield_value_binding_3(value$1, value, each_value, each_index) {
+	function textfield_value_binding_2(value$1, value, each_value, each_index) {
 		each_value[each_index].value = value$1;
-		(((($$invalidate(4, collisionalRates), $$invalidate(14, collisionalRateConstants)), $$invalidate(3, numberDensity)), $$invalidate(0, collisionalCoefficient)), $$invalidate(1, collisionalCoefficient_balance));
+		(((($$invalidate(3, collisionalRates), $$invalidate(18, collisionalRateConstants)), $$invalidate(2, numberDensity)), $$invalidate(0, collisionalCoefficient)), $$invalidate(1, collisionalCoefficient_balance));
 	}
 
 	$$self.$$set = $$props => {
 		if ("collisionalCoefficient" in $$props) $$invalidate(0, collisionalCoefficient = $$props.collisionalCoefficient);
 		if ("collisionalCoefficient_balance" in $$props) $$invalidate(1, collisionalCoefficient_balance = $$props.collisionalCoefficient_balance);
-		if ("collisionalRateType" in $$props) $$invalidate(2, collisionalRateType = $$props.collisionalRateType);
-		if ("collisionalRates" in $$props) $$invalidate(4, collisionalRates = $$props.collisionalRates);
-		if ("energyLevels" in $$props) $$invalidate(9, energyLevels = $$props.energyLevels);
-		if ("electronSpin" in $$props) $$invalidate(10, electronSpin = $$props.electronSpin);
-		if ("zeemanSplit" in $$props) $$invalidate(11, zeemanSplit = $$props.zeemanSplit);
-		if ("energyUnit" in $$props) $$invalidate(12, energyUnit = $$props.energyUnit);
-		if ("trapTemp" in $$props) $$invalidate(13, trapTemp = $$props.trapTemp);
-		if ("numberDensity" in $$props) $$invalidate(3, numberDensity = $$props.numberDensity);
+		if ("collisionalRateType" in $$props) $$invalidate(13, collisionalRateType = $$props.collisionalRateType);
+		if ("collisionalRates" in $$props) $$invalidate(3, collisionalRates = $$props.collisionalRates);
+		if ("energyLevels" in $$props) $$invalidate(14, energyLevels = $$props.energyLevels);
+		if ("electronSpin" in $$props) $$invalidate(15, electronSpin = $$props.electronSpin);
+		if ("zeemanSplit" in $$props) $$invalidate(16, zeemanSplit = $$props.zeemanSplit);
+		if ("energyUnit" in $$props) $$invalidate(17, energyUnit = $$props.energyUnit);
+		if ("numberDensity" in $$props) $$invalidate(2, numberDensity = $$props.numberDensity);
 	};
 
 	$$self.$capture_state = () => ({
+		mainPreModal,
 		CollisionalDistribution,
+		browse,
 		Textfield,
-		CustomSelect,
 		balance_distribution,
 		collisionalCoefficient,
 		collisionalCoefficient_balance,
@@ -67341,32 +67463,41 @@ function instance$1k($$self, $$props, $$invalidate) {
 		electronSpin,
 		zeemanSplit,
 		energyUnit,
-		trapTemp,
 		numberDensity,
 		collisionalWindow,
-		changeCollisionalRateType,
+		collisionalFitWindow,
 		compteCollisionalBalanceConstants,
 		computeRate,
-		deexcitation,
+		browse_collisional_file,
+		collisionlFile,
+		saveFilename,
+		collisionalTemp,
+		setID,
+		correctObjValue,
+		computeCollisionalFit,
+		saveComputedCollisionalValues,
 		collisionalRateConstants,
-		collisionalArgs
+		collisionalArgs,
+		$mainPreModal
 	});
 
 	$$self.$inject_state = $$props => {
 		if ("collisionalCoefficient" in $$props) $$invalidate(0, collisionalCoefficient = $$props.collisionalCoefficient);
 		if ("collisionalCoefficient_balance" in $$props) $$invalidate(1, collisionalCoefficient_balance = $$props.collisionalCoefficient_balance);
-		if ("collisionalRateType" in $$props) $$invalidate(2, collisionalRateType = $$props.collisionalRateType);
-		if ("collisionalRates" in $$props) $$invalidate(4, collisionalRates = $$props.collisionalRates);
-		if ("energyLevels" in $$props) $$invalidate(9, energyLevels = $$props.energyLevels);
-		if ("electronSpin" in $$props) $$invalidate(10, electronSpin = $$props.electronSpin);
-		if ("zeemanSplit" in $$props) $$invalidate(11, zeemanSplit = $$props.zeemanSplit);
-		if ("energyUnit" in $$props) $$invalidate(12, energyUnit = $$props.energyUnit);
-		if ("trapTemp" in $$props) $$invalidate(13, trapTemp = $$props.trapTemp);
-		if ("numberDensity" in $$props) $$invalidate(3, numberDensity = $$props.numberDensity);
+		if ("collisionalRateType" in $$props) $$invalidate(13, collisionalRateType = $$props.collisionalRateType);
+		if ("collisionalRates" in $$props) $$invalidate(3, collisionalRates = $$props.collisionalRates);
+		if ("energyLevels" in $$props) $$invalidate(14, energyLevels = $$props.energyLevels);
+		if ("electronSpin" in $$props) $$invalidate(15, electronSpin = $$props.electronSpin);
+		if ("zeemanSplit" in $$props) $$invalidate(16, zeemanSplit = $$props.zeemanSplit);
+		if ("energyUnit" in $$props) $$invalidate(17, energyUnit = $$props.energyUnit);
+		if ("numberDensity" in $$props) $$invalidate(2, numberDensity = $$props.numberDensity);
 		if ("collisionalWindow" in $$props) $$invalidate(5, collisionalWindow = $$props.collisionalWindow);
-		if ("deexcitation" in $$props) deexcitation = $$props.deexcitation;
-		if ("collisionalRateConstants" in $$props) $$invalidate(14, collisionalRateConstants = $$props.collisionalRateConstants);
-		if ("collisionalArgs" in $$props) $$invalidate(6, collisionalArgs = $$props.collisionalArgs);
+		if ("collisionalFitWindow" in $$props) $$invalidate(6, collisionalFitWindow = $$props.collisionalFitWindow);
+		if ("collisionlFile" in $$props) collisionlFile = $$props.collisionlFile;
+		if ("saveFilename" in $$props) $$invalidate(7, saveFilename = $$props.saveFilename);
+		if ("collisionalTemp" in $$props) $$invalidate(4, collisionalTemp = $$props.collisionalTemp);
+		if ("collisionalRateConstants" in $$props) $$invalidate(18, collisionalRateConstants = $$props.collisionalRateConstants);
+		if ("collisionalArgs" in $$props) $$invalidate(8, collisionalArgs = $$props.collisionalArgs);
 	};
 
 	if ($$props && "$$inject" in $$props) {
@@ -67374,27 +67505,24 @@ function instance$1k($$self, $$props, $$invalidate) {
 	}
 
 	$$self.$$.update = () => {
-		if ($$self.$$.dirty[0] & /*collisionalRateType*/ 4) {
-			 deexcitation = collisionalRateType === "deexcitation";
-		}
-
 		if ($$self.$$.dirty[0] & /*collisionalCoefficient, collisionalCoefficient_balance*/ 3) {
-			 $$invalidate(14, collisionalRateConstants = [...collisionalCoefficient, ...collisionalCoefficient_balance]);
+			 $$invalidate(18, collisionalRateConstants = [...collisionalCoefficient, ...collisionalCoefficient_balance]);
 		}
 
-		if ($$self.$$.dirty[0] & /*collisionalRateConstants, energyLevels, electronSpin, zeemanSplit, energyUnit*/ 24064) {
-			 $$invalidate(6, collisionalArgs = {
+		if ($$self.$$.dirty[0] & /*collisionalRateConstants, energyLevels, electronSpin, zeemanSplit, energyUnit, collisionalTemp*/ 507920) {
+			 $$invalidate(8, collisionalArgs = {
 				collisionalRateConstants,
 				energyLevels,
 				electronSpin,
 				zeemanSplit,
-				energyUnit
+				energyUnit,
+				collisionalTemp
 			});
 		}
 
-		if ($$self.$$.dirty[0] & /*collisionalRateConstants, numberDensity*/ 16392) {
+		if ($$self.$$.dirty[0] & /*collisionalRateConstants, numberDensity*/ 262148) {
 			 if (collisionalRateConstants.length > 0 && numberDensity) {
-				$$invalidate(4, collisionalRates = _.cloneDeep(collisionalRateConstants).map(computeRate));
+				$$invalidate(3, collisionalRates = _.cloneDeep(collisionalRateConstants).map(computeRate));
 			}
 		}
 	};
@@ -67402,26 +67530,32 @@ function instance$1k($$self, $$props, $$invalidate) {
 	return [
 		collisionalCoefficient,
 		collisionalCoefficient_balance,
-		collisionalRateType,
 		numberDensity,
 		collisionalRates,
+		collisionalTemp,
 		collisionalWindow,
+		collisionalFitWindow,
+		saveFilename,
 		collisionalArgs,
-		changeCollisionalRateType,
 		compteCollisionalBalanceConstants,
+		browse_collisional_file,
+		computeCollisionalFit,
+		saveComputedCollisionalValues,
+		collisionalRateType,
 		energyLevels,
 		electronSpin,
 		zeemanSplit,
 		energyUnit,
-		trapTemp,
 		collisionalRateConstants,
 		collisionaldistribution_active_binding,
-		customselect_picked_binding,
 		click_handler,
+		click_handler_1,
+		textfield0_value_binding,
+		textfield1_value_binding,
 		textfield_value_binding,
 		textfield_value_binding_1,
-		textfield_value_binding_2,
-		textfield_value_binding_3
+		textfield2_value_binding,
+		textfield_value_binding_2
 	];
 }
 
@@ -67438,14 +67572,13 @@ class CollisionalCoefficients extends SvelteComponentDev {
 			{
 				collisionalCoefficient: 0,
 				collisionalCoefficient_balance: 1,
-				collisionalRateType: 2,
-				collisionalRates: 4,
-				energyLevels: 9,
-				electronSpin: 10,
-				zeemanSplit: 11,
-				energyUnit: 12,
-				trapTemp: 13,
-				numberDensity: 3
+				collisionalRateType: 13,
+				collisionalRates: 3,
+				energyLevels: 14,
+				electronSpin: 15,
+				zeemanSplit: 16,
+				energyUnit: 17,
+				numberDensity: 2
 			},
 			[-1, -1]
 		);
@@ -67460,24 +67593,20 @@ class CollisionalCoefficients extends SvelteComponentDev {
 		const { ctx } = this.$$;
 		const props = options.props || {};
 
-		if (/*energyLevels*/ ctx[9] === undefined && !("energyLevels" in props)) {
+		if (/*energyLevels*/ ctx[14] === undefined && !("energyLevels" in props)) {
 			console.warn("<CollisionalCoefficients> was created without expected prop 'energyLevels'");
 		}
 
-		if (/*electronSpin*/ ctx[10] === undefined && !("electronSpin" in props)) {
+		if (/*electronSpin*/ ctx[15] === undefined && !("electronSpin" in props)) {
 			console.warn("<CollisionalCoefficients> was created without expected prop 'electronSpin'");
 		}
 
-		if (/*zeemanSplit*/ ctx[11] === undefined && !("zeemanSplit" in props)) {
+		if (/*zeemanSplit*/ ctx[16] === undefined && !("zeemanSplit" in props)) {
 			console.warn("<CollisionalCoefficients> was created without expected prop 'zeemanSplit'");
 		}
 
-		if (/*energyUnit*/ ctx[12] === undefined && !("energyUnit" in props)) {
+		if (/*energyUnit*/ ctx[17] === undefined && !("energyUnit" in props)) {
 			console.warn("<CollisionalCoefficients> was created without expected prop 'energyUnit'");
-		}
-
-		if (/*trapTemp*/ ctx[13] === undefined && !("trapTemp" in props)) {
-			console.warn("<CollisionalCoefficients> was created without expected prop 'trapTemp'");
 		}
 	}
 
@@ -67542,14 +67671,6 @@ class CollisionalCoefficients extends SvelteComponentDev {
 	}
 
 	set energyUnit(value) {
-		throw new Error("<CollisionalCoefficients>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	get trapTemp() {
-		throw new Error("<CollisionalCoefficients>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	set trapTemp(value) {
 		throw new Error("<CollisionalCoefficients>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 
@@ -68149,27 +68270,23 @@ function create_fragment$1l(ctx) {
 			attr_dev(button, "class", "button is-link");
 			add_location(button, file$1e, 68, 12, 1748);
 			attr_dev(div1, "class", "");
-			add_location(div1, file$1e, 71, 16, 1926);
+			add_location(div1, file$1e, 71, 16, 1906);
 			attr_dev(div2, "class", "align h-center");
-			set_style(div2, "width", "100%");
 			add_location(div2, file$1e, 70, 12, 1859);
 			attr_dev(div3, "class", "");
-			add_location(div3, file$1e, 81, 16, 2227);
+			add_location(div3, file$1e, 81, 16, 2186);
 			attr_dev(div4, "class", "align h-center");
-			set_style(div4, "width", "100%");
-			add_location(div4, file$1e, 79, 12, 2158);
+			add_location(div4, file$1e, 79, 12, 2138);
 			attr_dev(hr, "class", "svelte-1t65zux");
-			add_location(hr, file$1e, 88, 12, 2446);
+			add_location(hr, file$1e, 88, 12, 2405);
 			attr_dev(div5, "class", "");
-			add_location(div5, file$1e, 91, 16, 2533);
+			add_location(div5, file$1e, 91, 16, 2471);
 			attr_dev(div6, "class", "align h-center");
-			set_style(div6, "width", "100%");
-			add_location(div6, file$1e, 90, 12, 2466);
+			add_location(div6, file$1e, 90, 12, 2425);
 			attr_dev(div7, "class", "");
-			add_location(div7, file$1e, 100, 16, 2813);
+			add_location(div7, file$1e, 100, 16, 2730);
 			attr_dev(div8, "class", "align h-center");
-			set_style(div8, "width", "100%");
-			add_location(div8, file$1e, 98, 12, 2744);
+			add_location(div8, file$1e, 98, 12, 2682);
 			attr_dev(div9, "class", "align h-center");
 			add_location(div9, file$1e, 66, 8, 1624);
 			attr_dev(div10, "class", "content__div svelte-1t65zux");
@@ -68631,7 +68748,7 @@ function get_each_context_4$2(ctx, list, i) {
 	return child_ctx;
 }
 
-// (294:0) {#if active}
+// (291:0) {#if active}
 function create_if_block$w(ctx) {
 	let boltzmandistribution;
 	let updating_active;
@@ -68717,7 +68834,7 @@ function create_if_block$w(ctx) {
 			boltzmandistribution.$set(boltzmandistribution_changes);
 			const separatewindow_changes = {};
 
-			if (dirty[0] & /*showreport, pyProcesses, statusReport, attachmentCoefficients, k3, kCID, includeAttachmentRate, powerBroadening, dopplerLineshape, trapTemp, energyLevels, excitedTo, excitedFrom, simulationParameters, electronSpin, zeemanSplit, energyUnit, collisionalCoefficient, collisionalRateType, collisionalRates, includeCollision, einsteinCoefficientA, einsteinCoefficientB, mainParameters, variableRange, variable, includeSpontaneousEmission, writefile, filename, currentLocation*/ 2147483646 | dirty[1] & /*numberDensity, collisionalCoefficient_balance, boltzmanWindow, numberOfLevels, configFile*/ 31 | dirty[3] & /*$$scope*/ 32768) {
+			if (dirty[0] & /*showreport, pyProcesses, statusReport, attachmentCoefficients, k3, kCID, includeAttachmentRate, powerBroadening, dopplerLineshape, trapTemp, energyLevels, excitedTo, excitedFrom, simulationParameters, electronSpin, zeemanSplit, energyUnit, collisionalCoefficient, collisionalRateType, collisionalRates, includeCollision, einsteinCoefficientA, einsteinCoefficientB, mainParameters, variableRange, variable, includeSpontaneousEmission, writefile, savefilename, currentLocation*/ 2147483646 | dirty[1] & /*numberDensity, collisionalCoefficient_balance, boltzmanWindow, numberOfLevels, configFile*/ 31 | dirty[3] & /*$$scope*/ 32768) {
 				separatewindow_changes.$$scope = { dirty, ctx };
 			}
 
@@ -68751,14 +68868,14 @@ function create_if_block$w(ctx) {
 		block,
 		id: create_if_block$w.name,
 		type: "if",
-		source: "(294:0) {#if active}",
+		source: "(291:0) {#if active}",
 		ctx
 	});
 
 	return block;
 }
 
-// (321:20) {#if variable !== "time"}
+// (318:20) {#if variable !== "time"}
 function create_if_block_6$1(ctx) {
 	let textfield;
 	let updating_value;
@@ -68817,14 +68934,14 @@ function create_if_block_6$1(ctx) {
 		block,
 		id: create_if_block_6$1.name,
 		type: "if",
-		source: "(321:20) {#if variable !== \\\"time\\\"}",
+		source: "(318:20) {#if variable !== \\\"time\\\"}",
 		ctx
 	});
 
 	return block;
 }
 
-// (298:8) <svelte:fragment slot="header_content__slot" >
+// (295:8) <svelte:fragment slot="header_content__slot" >
 function create_header_content__slot_slot$2(ctx) {
 	let div0;
 	let button0;
@@ -68888,10 +69005,10 @@ function create_header_content__slot_slot$2(ctx) {
 		/*textfield1_value_binding_1*/ ctx[70](value);
 	}
 
-	let textfield1_props = { label: "filename" };
+	let textfield1_props = { label: "savefilename" };
 
-	if (/*filename*/ ctx[21] !== void 0) {
-		textfield1_props.value = /*filename*/ ctx[21];
+	if (/*savefilename*/ ctx[21] !== void 0) {
+		textfield1_props.value = /*savefilename*/ ctx[21];
 	}
 
 	textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
@@ -69057,21 +69174,21 @@ function create_header_content__slot_slot$2(ctx) {
 			button2.textContent = "Reset Config";
 			attr_dev(button0, "class", "button is-link svelte-1gffrzh");
 			attr_dev(button0, "id", "thz_modal_filebrowser_btn");
-			add_location(button0, file$1f, 299, 16, 10321);
+			add_location(button0, file$1f, 296, 16, 10400);
 			attr_dev(div0, "class", "locationColumn svelte-1gffrzh");
-			add_location(div0, file$1f, 298, 12, 10274);
+			add_location(div0, file$1f, 295, 12, 10353);
 			attr_dev(div1, "class", "writefileCheck svelte-1gffrzh");
-			add_location(div1, file$1f, 305, 12, 10616);
+			add_location(div1, file$1f, 302, 12, 10703);
 			attr_dev(div2, "class", "subtitle svelte-1gffrzh");
-			add_location(div2, file$1f, 316, 16, 11286);
+			add_location(div2, file$1f, 313, 16, 11373);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$1f, 323, 20, 11742);
+			add_location(button1, file$1f, 320, 20, 11829);
 			attr_dev(button2, "class", "button is-link");
-			add_location(button2, file$1f, 324, 20, 11837);
+			add_location(button2, file$1f, 321, 20, 11924);
 			attr_dev(div3, "class", "variableColumn__dropdown svelte-1gffrzh");
-			add_location(div3, file$1f, 317, 16, 11378);
+			add_location(div3, file$1f, 314, 16, 11465);
 			attr_dev(div4, "class", "variableColumn svelte-1gffrzh");
-			add_location(div4, file$1f, 315, 12, 11240);
+			add_location(div4, file$1f, 312, 12, 11327);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -69131,9 +69248,9 @@ function create_header_content__slot_slot$2(ctx) {
 			textfield0.$set(textfield0_changes);
 			const textfield1_changes = {};
 
-			if (!updating_value_1 && dirty[0] & /*filename*/ 2097152) {
+			if (!updating_value_1 && dirty[0] & /*savefilename*/ 2097152) {
 				updating_value_1 = true;
-				textfield1_changes.value = /*filename*/ ctx[21];
+				textfield1_changes.value = /*savefilename*/ ctx[21];
 				add_flush_callback(() => updating_value_1 = false);
 			}
 
@@ -69278,14 +69395,14 @@ function create_header_content__slot_slot$2(ctx) {
 		block,
 		id: create_header_content__slot_slot$2.name,
 		type: "slot",
-		source: "(298:8) <svelte:fragment slot=\\\"header_content__slot\\\" >",
+		source: "(295:8) <svelte:fragment slot=\\\"header_content__slot\\\" >",
 		ctx
 	});
 
 	return block;
 }
 
-// (335:12) {:else}
+// (332:12) {:else}
 function create_else_block$a(ctx) {
 	let div18;
 	let div2;
@@ -69614,55 +69731,55 @@ function create_else_block$a(ctx) {
 			t27 = space();
 			if (if_block1) if_block1.c();
 			attr_dev(div0, "class", "subtitle svelte-1gffrzh");
-			add_location(div0, file$1f, 341, 20, 12430);
+			add_location(div0, file$1f, 338, 20, 12517);
 			attr_dev(div1, "class", "content__div  svelte-1gffrzh");
-			add_location(div1, file$1f, 342, 20, 12495);
+			add_location(div1, file$1f, 339, 20, 12582);
 			attr_dev(div2, "class", "sub_container__div box svelte-1gffrzh");
-			add_location(div2, file$1f, 339, 16, 12370);
+			add_location(div2, file$1f, 336, 16, 12457);
 			attr_dev(div3, "class", "subtitle svelte-1gffrzh");
-			add_location(div3, file$1f, 351, 20, 12861);
+			add_location(div3, file$1f, 348, 20, 12948);
 			attr_dev(button, "class", "button is-link ");
-			add_location(button, file$1f, 356, 24, 13224);
+			add_location(button, file$1f, 353, 24, 13311);
 			attr_dev(div4, "class", "control__div  svelte-1gffrzh");
-			add_location(div4, file$1f, 352, 20, 12924);
+			add_location(div4, file$1f, 349, 20, 13011);
 			attr_dev(div5, "class", "content__div  svelte-1gffrzh");
-			add_location(div5, file$1f, 359, 20, 13378);
+			add_location(div5, file$1f, 356, 20, 13465);
 			attr_dev(div6, "class", "sub_container__div box svelte-1gffrzh");
-			add_location(div6, file$1f, 350, 16, 12802);
+			add_location(div6, file$1f, 347, 16, 12889);
 			attr_dev(div7, "class", "subtitle svelte-1gffrzh");
-			add_location(div7, file$1f, 377, 20, 14323);
+			add_location(div7, file$1f, 374, 20, 14400);
 			attr_dev(hr0, "class", "svelte-1gffrzh");
-			add_location(hr0, file$1f, 383, 24, 14624);
+			add_location(hr0, file$1f, 380, 24, 14701);
 			attr_dev(div8, "class", "subtitle svelte-1gffrzh");
 			set_style(div8, "width", "100%");
 			set_style(div8, "display", "grid");
 			set_style(div8, "place-items", "center");
-			add_location(div8, file$1f, 383, 29, 14629);
+			add_location(div8, file$1f, 380, 29, 14706);
 			attr_dev(hr1, "class", "svelte-1gffrzh");
-			add_location(hr1, file$1f, 383, 131, 14731);
+			add_location(hr1, file$1f, 380, 131, 14808);
 			set_style(div9, "display", "flex");
 			set_style(div9, "gap", "1em");
 			set_style(div9, "place-content", "center");
 			set_style(div9, "width", "100%");
-			add_location(div9, file$1f, 385, 24, 14763);
+			add_location(div9, file$1f, 382, 24, 14840);
 			attr_dev(div10, "class", "content__div  svelte-1gffrzh");
-			add_location(div10, file$1f, 378, 20, 14394);
+			add_location(div10, file$1f, 375, 20, 14471);
 			attr_dev(div11, "class", "sub_container__div box svelte-1gffrzh");
-			add_location(div11, file$1f, 376, 16, 14265);
+			add_location(div11, file$1f, 373, 16, 14342);
 			attr_dev(div12, "class", "subtitle svelte-1gffrzh");
-			add_location(div12, file$1f, 398, 20, 15373);
+			add_location(div12, file$1f, 394, 20, 15448);
 			attr_dev(div13, "class", "content__div  svelte-1gffrzh");
-			add_location(div13, file$1f, 399, 20, 15440);
+			add_location(div13, file$1f, 395, 20, 15515);
 			attr_dev(div14, "class", "sub_container__div box svelte-1gffrzh");
-			add_location(div14, file$1f, 397, 16, 15315);
+			add_location(div14, file$1f, 393, 16, 15390);
 			attr_dev(div15, "class", "subtitle svelte-1gffrzh");
-			add_location(div15, file$1f, 409, 20, 15956);
+			add_location(div15, file$1f, 405, 20, 16031);
 			attr_dev(div16, "class", "content__div  svelte-1gffrzh");
-			add_location(div16, file$1f, 410, 20, 16024);
+			add_location(div16, file$1f, 406, 20, 16099);
 			attr_dev(div17, "class", "sub_container__div box svelte-1gffrzh");
-			add_location(div17, file$1f, 408, 16, 15898);
+			add_location(div17, file$1f, 404, 16, 15973);
 			attr_dev(div18, "class", "main_container__div svelte-1gffrzh");
-			add_location(div18, file$1f, 338, 12, 12318);
+			add_location(div18, file$1f, 335, 12, 12405);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div18, anchor);
@@ -70022,14 +70139,14 @@ function create_else_block$a(ctx) {
 		block,
 		id: create_else_block$a.name,
 		type: "else",
-		source: "(335:12) {:else}",
+		source: "(332:12) {:else}",
 		ctx
 	});
 
 	return block;
 }
 
-// (333:12) {#if showreport}
+// (330:12) {#if showreport}
 function create_if_block_3$3(ctx) {
 	let div;
 	let hr0;
@@ -70044,11 +70161,11 @@ function create_if_block_3$3(ctx) {
 			t = text(t_value);
 			hr1 = element("hr");
 			attr_dev(hr0, "class", "svelte-1gffrzh");
-			add_location(hr0, file$1f, 333, 57, 12194);
+			add_location(hr0, file$1f, 330, 57, 12281);
 			attr_dev(hr1, "class", "svelte-1gffrzh");
-			add_location(hr1, file$1f, 333, 94, 12231);
+			add_location(hr1, file$1f, 330, 94, 12318);
 			attr_dev(div, "class", "content status_report__div svelte-1gffrzh");
-			add_location(div, file$1f, 333, 16, 12153);
+			add_location(div, file$1f, 330, 16, 12240);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -70070,14 +70187,14 @@ function create_if_block_3$3(ctx) {
 		block,
 		id: create_if_block_3$3.name,
 		type: "if",
-		source: "(333:12) {#if showreport}",
+		source: "(330:12) {#if showreport}",
 		ctx
 	});
 
 	return block;
 }
 
-// (344:24) {#each mainParameters as {label, value, id}
+// (341:24) {#each mainParameters as {label, value, id}
 function create_each_block_4$2(key_1, ctx) {
 	let first;
 	let textfield;
@@ -70142,14 +70259,14 @@ function create_each_block_4$2(key_1, ctx) {
 		block,
 		id: create_each_block_4$2.name,
 		type: "each",
-		source: "(344:24) {#each mainParameters as {label, value, id}",
+		source: "(341:24) {#each mainParameters as {label, value, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (361:24) {#each energyLevels as {label, value, id}
+// (358:24) {#each energyLevels as {label, value, id}
 function create_each_block_3$4(key_1, ctx) {
 	let first;
 	let textfield;
@@ -70214,14 +70331,14 @@ function create_each_block_3$4(key_1, ctx) {
 		block,
 		id: create_each_block_3$4.name,
 		type: "each",
-		source: "(361:24) {#each energyLevels as {label, value, id}",
+		source: "(358:24) {#each energyLevels as {label, value, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (371:16) {#if includeCollision}
+// (368:16) {#if includeCollision}
 function create_if_block_5$2(ctx) {
 	let collisionalcoefficients;
 	let updating_collisionalCoefficient;
@@ -70236,8 +70353,7 @@ function create_if_block_5$2(ctx) {
 			energyLevels: /*energyLevels*/ ctx[7],
 			electronSpin: /*electronSpin*/ ctx[1],
 			zeemanSplit: /*zeemanSplit*/ ctx[2],
-			energyUnit: /*energyUnit*/ ctx[6],
-			trapTemp: /*trapTemp*/ ctx[4]
+			energyUnit: /*energyUnit*/ ctx[6]
 		}
 	];
 
@@ -70307,14 +70423,13 @@ function create_if_block_5$2(ctx) {
 			current = true;
 		},
 		p: function update(ctx, dirty) {
-			const collisionalcoefficients_changes = (dirty[0] & /*energyLevels, electronSpin, zeemanSplit, energyUnit, trapTemp*/ 214)
+			const collisionalcoefficients_changes = (dirty[0] & /*energyLevels, electronSpin, zeemanSplit, energyUnit*/ 198)
 			? get_spread_update(collisionalcoefficients_spread_levels, [
 					{
 						energyLevels: /*energyLevels*/ ctx[7],
 						electronSpin: /*electronSpin*/ ctx[1],
 						zeemanSplit: /*zeemanSplit*/ ctx[2],
-						energyUnit: /*energyUnit*/ ctx[6],
-						trapTemp: /*trapTemp*/ ctx[4]
+						energyUnit: /*energyUnit*/ ctx[6]
 					}
 				])
 			: {};
@@ -70369,14 +70484,14 @@ function create_if_block_5$2(ctx) {
 		block,
 		id: create_if_block_5$2.name,
 		type: "if",
-		source: "(371:16) {#if includeCollision}",
+		source: "(368:16) {#if includeCollision}",
 		ctx
 	});
 
 	return block;
 }
 
-// (381:24) {#each simulationParameters as {label, value, id}
+// (378:24) {#each simulationParameters as {label, value, id}
 function create_each_block_2$6(key_1, ctx) {
 	let first;
 	let textfield;
@@ -70441,14 +70556,14 @@ function create_each_block_2$6(key_1, ctx) {
 		block,
 		id: create_each_block_2$6.name,
 		type: "each",
-		source: "(381:24) {#each simulationParameters as {label, value, id}",
+		source: "(378:24) {#each simulationParameters as {label, value, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (402:24) {#each dopplerLineshape as {label, value, type, step, id}
+// (398:24) {#each dopplerLineshape as {label, value, type, step, id}
 function create_each_block_1$7(key_1, ctx) {
 	let first;
 	let textfield;
@@ -70519,14 +70634,14 @@ function create_each_block_1$7(key_1, ctx) {
 		block,
 		id: create_each_block_1$7.name,
 		type: "each",
-		source: "(402:24) {#each dopplerLineshape as {label, value, type, step, id}",
+		source: "(398:24) {#each dopplerLineshape as {label, value, type, step, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (412:24) {#each powerBroadening as {label, value, id}
+// (408:24) {#each powerBroadening as {label, value, id}
 function create_each_block$e(key_1, ctx) {
 	let first;
 	let textfield;
@@ -70591,14 +70706,14 @@ function create_each_block$e(key_1, ctx) {
 		block,
 		id: create_each_block$e.name,
 		type: "each",
-		source: "(412:24) {#each powerBroadening as {label, value, id}",
+		source: "(408:24) {#each powerBroadening as {label, value, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (418:16) {#if includeAttachmentRate}
+// (414:16) {#if includeAttachmentRate}
 function create_if_block_4$2(ctx) {
 	let attachmentcoefficients;
 	let updating_attachmentCoefficients;
@@ -70706,14 +70821,14 @@ function create_if_block_4$2(ctx) {
 		block,
 		id: create_if_block_4$2.name,
 		type: "if",
-		source: "(418:16) {#if includeAttachmentRate}",
+		source: "(414:16) {#if includeAttachmentRate}",
 		ctx
 	});
 
 	return block;
 }
 
-// (332:8) <svelte:fragment slot="main_content__slot">
+// (329:8) <svelte:fragment slot="main_content__slot">
 function create_main_content__slot_slot$2(ctx) {
 	let current_block_type_index;
 	let if_block;
@@ -70786,14 +70901,14 @@ function create_main_content__slot_slot$2(ctx) {
 		block,
 		id: create_main_content__slot_slot$2.name,
 		type: "slot",
-		source: "(332:8) <svelte:fragment slot=\\\"main_content__slot\\\">",
+		source: "(329:8) <svelte:fragment slot=\\\"main_content__slot\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (430:16) {#if pyProcesses.length>0}
+// (425:16) {#if pyProcesses.length>0}
 function create_if_block_2$5(ctx) {
 	let div;
 	let t0;
@@ -70814,7 +70929,7 @@ function create_if_block_2$5(ctx) {
 			t1 = text(t1_value);
 			t2 = space();
 			t3 = text(t3_value);
-			add_location(div, file$1f, 430, 20, 16685);
+			add_location(div, file$1f, 425, 20, 16758);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -70839,14 +70954,14 @@ function create_if_block_2$5(ctx) {
 		block,
 		id: create_if_block_2$5.name,
 		type: "if",
-		source: "(430:16) {#if pyProcesses.length>0}",
+		source: "(425:16) {#if pyProcesses.length>0}",
 		ctx
 	});
 
 	return block;
 }
 
-// (434:16) {#if pyProcesses.length>0}
+// (429:16) {#if pyProcesses.length>0}
 function create_if_block_1$c(ctx) {
 	let button;
 	let button_transition;
@@ -70859,7 +70974,7 @@ function create_if_block_1$c(ctx) {
 			button = element("button");
 			button.textContent = "Stop";
 			attr_dev(button, "class", "button is-danger");
-			add_location(button, file$1f, 434, 20, 16887);
+			add_location(button, file$1f, 429, 20, 16960);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, button, anchor);
@@ -70898,14 +71013,14 @@ function create_if_block_1$c(ctx) {
 		block,
 		id: create_if_block_1$c.name,
 		type: "if",
-		source: "(434:16) {#if pyProcesses.length>0}",
+		source: "(429:16) {#if pyProcesses.length>0}",
 		ctx
 	});
 
 	return block;
 }
 
-// (427:8) <svelte:fragment slot="footer_content__slot">
+// (422:8) <svelte:fragment slot="footer_content__slot">
 function create_footer_content__slot_slot(ctx) {
 	let div;
 	let t0;
@@ -70934,11 +71049,11 @@ function create_footer_content__slot_slot(ctx) {
 			button1 = element("button");
 			button1.textContent = "Submit";
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$1f, 437, 16, 17020);
+			add_location(button0, file$1f, 431, 16, 17091);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$1f, 438, 16, 17167);
+			add_location(button1, file$1f, 433, 16, 17240);
 			attr_dev(div, "class", "align");
-			add_location(div, file$1f, 427, 12, 16598);
+			add_location(div, file$1f, 422, 12, 16671);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -71025,7 +71140,7 @@ function create_footer_content__slot_slot(ctx) {
 		block,
 		id: create_footer_content__slot_slot.name,
 		type: "slot",
-		source: "(427:8) <svelte:fragment slot=\\\"footer_content__slot\\\">",
+		source: "(422:8) <svelte:fragment slot=\\\"footer_content__slot\\\">",
 		ctx
 	});
 
@@ -71194,7 +71309,7 @@ function instance$1m($$self, $$props, $$invalidate) {
 			includeAttachmentRate,
 			includeSpontaneousEmission,
 			writefile,
-			filename,
+			savefilename,
 			currentLocation,
 			deexcitation,
 			collisional_rates,
@@ -71224,7 +71339,7 @@ function instance$1m($$self, $$props, $$invalidate) {
 	};
 
 	let currentLocation = db.get("thz_modal_location") || db.get("thz_location") || "";
-	let filename = "";
+	let savefilename = "";
 
 	async function browse_folder() {
 		const result = await browse({ dir: true });
@@ -71298,8 +71413,9 @@ function instance$1m($$self, $$props, $$invalidate) {
 			$$invalidate(14, attachmentCoefficients = attachmentCoefficients.map(setID));
 			$$invalidate(15, k3.constant = attachmentRateConstants.k3.map(setID).map(correctObjValue), k3);
 			$$invalidate(16, kCID.constant = attachmentRateConstants.kCID.map(setID).map(correctObjValue), kCID);
-			$$invalidate(4, { trapTemp, electronSpin, zeemanSplit, currentLocation, filename, numberDensity } = CONFIG, trapTemp, $$invalidate(1, electronSpin), $$invalidate(2, zeemanSplit), $$invalidate(5, currentLocation), $$invalidate(21, filename), $$invalidate(31, numberDensity));
-			({ energyFilename, collisionalFilename, einsteinFilename } = CONFIG);
+			$$invalidate(4, { trapTemp, electronSpin, zeemanSplit, numberDensity } = CONFIG, trapTemp, $$invalidate(1, electronSpin), $$invalidate(2, zeemanSplit), $$invalidate(31, numberDensity));
+			$$invalidate(5, { savelocation: currentLocation, savefilename } = CONFIG.saveFile, currentLocation, $$invalidate(21, savefilename));
+			({ energy: energyFilename, collision: collisionalFilename, einsteinA: einsteinFilename } = CONFIG.filenames);
 			energyFilename = window.path.join(configFileLocation, energyFilename);
 			collisionalFilename = window.path.join(configFileLocation, collisionalFilename);
 			einsteinFilename = window.path.join(configFileLocation, einsteinFilename);
@@ -71445,8 +71561,8 @@ function instance$1m($$self, $$props, $$invalidate) {
 	}
 
 	function textfield1_value_binding_1(value) {
-		filename = value;
-		$$invalidate(21, filename);
+		savefilename = value;
+		$$invalidate(21, savefilename);
 	}
 
 	function customcheckbox0_selected_binding(value) {
@@ -71544,7 +71660,7 @@ function instance$1m($$self, $$props, $$invalidate) {
 		collisionalRates,
 		simulation,
 		currentLocation,
-		filename,
+		savefilename,
 		browse_folder,
 		writefile,
 		includeCollision,
@@ -71598,7 +71714,7 @@ function instance$1m($$self, $$props, $$invalidate) {
 		if ("showreport" in $$props) $$invalidate(19, showreport = $$props.showreport);
 		if ("collisionalRates" in $$props) $$invalidate(20, collisionalRates = $$props.collisionalRates);
 		if ("currentLocation" in $$props) $$invalidate(5, currentLocation = $$props.currentLocation);
-		if ("filename" in $$props) $$invalidate(21, filename = $$props.filename);
+		if ("savefilename" in $$props) $$invalidate(21, savefilename = $$props.savefilename);
 		if ("writefile" in $$props) $$invalidate(22, writefile = $$props.writefile);
 		if ("includeCollision" in $$props) $$invalidate(23, includeCollision = $$props.includeCollision);
 		if ("includeSpontaneousEmission" in $$props) $$invalidate(24, includeSpontaneousEmission = $$props.includeSpontaneousEmission);
@@ -71670,7 +71786,7 @@ function instance$1m($$self, $$props, $$invalidate) {
 		statusReport,
 		showreport,
 		collisionalRates,
-		filename,
+		savefilename,
 		writefile,
 		includeCollision,
 		includeSpontaneousEmission,
@@ -79527,21 +79643,21 @@ var ownProp$1 = common.ownProp;
 var childrenIgnored$1 = common.childrenIgnored;
 var isIgnored$1 = common.isIgnored;
 
-function globSync(pattern, options) {
+function globSync (pattern, options) {
   if (typeof options === 'function' || arguments.length === 3)
-    throw new TypeError('callback provided to sync glob\n' +
-      'See: https://github.com/isaacs/node-glob/issues/167')
+    throw new TypeError('callback provided to sync glob\n'+
+                        'See: https://github.com/isaacs/node-glob/issues/167')
 
   return new GlobSync(pattern, options).found
 }
 
-function GlobSync(pattern, options) {
+function GlobSync (pattern, options) {
   if (!pattern)
     throw new Error('must provide pattern')
 
   if (typeof options === 'function' || arguments.length === 3)
-    throw new TypeError('callback provided to sync glob\n' +
-      'See: https://github.com/isaacs/node-glob/issues/167')
+    throw new TypeError('callback provided to sync glob\n'+
+                        'See: https://github.com/isaacs/node-glob/issues/167')
 
   if (!(this instanceof GlobSync))
     return new GlobSync(pattern, options)
@@ -79553,7 +79669,7 @@ function GlobSync(pattern, options) {
 
   var n = this.minimatch.set.length;
   this.matches = new Array(n);
-  for (var i = 0; i < n; i++) {
+  for (var i = 0; i < n; i ++) {
     this._process(this.minimatch.set[i], i, false);
   }
   this._finish();
@@ -79589,7 +79705,7 @@ GlobSync.prototype._process = function (pattern, index, inGlobStar) {
   // Get the first [n] parts of pattern that are all strings.
   var n = 0;
   while (typeof pattern[n] === 'string') {
-    n++;
+    n ++;
   }
   // now n is the index of the first one that is *not* a string.
 
@@ -79685,7 +79801,7 @@ GlobSync.prototype._processReaddir = function (prefix, read, abs, remain, index,
     if (!this.matches[index])
       this.matches[index] = Object.create(null);
 
-    for (var i = 0; i < len; i++) {
+    for (var i = 0; i < len; i ++) {
       var e = matchedEntries[i];
       if (prefix) {
         if (prefix.slice(-1) !== '/')
@@ -79706,7 +79822,7 @@ GlobSync.prototype._processReaddir = function (prefix, read, abs, remain, index,
   // now test all matched entries as stand-ins for that part
   // of the pattern.
   remain.shift();
-  for (var i = 0; i < len; i++) {
+  for (var i = 0; i < len; i ++) {
     var e = matchedEntries[i];
     var newPattern;
     if (prefix)
@@ -79804,7 +79920,7 @@ GlobSync.prototype._readdirEntries = function (abs, entries) {
   // assume that everything in there exists, so we can avoid
   // having to stat it a second time.
   if (!this.mark && !this.stat) {
-    for (var i = 0; i < entries.length; i++) {
+    for (var i = 0; i < entries.length; i ++) {
       var e = entries[i];
       if (abs === '/')
         e = abs + e;
@@ -79864,7 +79980,7 @@ GlobSync.prototype._processGlobStar = function (prefix, read, abs, remain, index
   // test without the globstar, and with every child both below
   // and replacing the globstar.
   var remainWithoutGlobStar = remain.slice(1);
-  var gspref = prefix ? [prefix] : [];
+  var gspref = prefix ? [ prefix ] : [];
   var noGlobStar = gspref.concat(remainWithoutGlobStar);
 
   // the noGlobStar pattern exits the inGlobStar state

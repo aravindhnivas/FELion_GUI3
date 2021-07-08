@@ -130,6 +130,8 @@
 
 
 
+
+
     let energyLevels = [];
     let boltzmanWindow = false;
     let energyFilename, collisionalFilename, einsteinFilename;
@@ -143,43 +145,38 @@
             if(fs.existsSync(configFile)) return setConfig();
             const congFilePath = await browse({dir:false, multiple:false})
             if (congFilePath.filePaths.length==0) return Promise.reject("No files selected");
-
             configFile = congFilePath.filePaths[0]
             db.set("ROSAA_config_file", configFile)
             setConfig()
-
         } catch (error) {$mainPreModal = {modalContent:error, open:true}}
     }
 
     const getYMLFileContents = (filename) => {
-
         if (fs.existsSync(filename)) {
-
             const fileContent = fs.readFileSync(filename, "utf-8")
             const YMLcontent = Yml(fileContent)
             return Promise.resolve(YMLcontent)
+
         } else return Promise.reject(filename + " file doesn't exist")
     }
-
-
     const setID = (obj) => {
         obj.id = window.getID();
         return obj
     }
-    const correctObjValue = (obj) => {
 
+    const correctObjValue = (obj) => {
         obj.value = obj.value.toExponential(3)
         return obj
 
     }
-    
+
     async function setConfig() {
         try {
+
             const configFileLocation = window.path.dirname(configFile);
             const CONFIG = Yml(fs.readFileSync(configFile, "utf-8"));
             let attachmentRateConstants = {};
             ({mainParameters, simulationParameters, dopplerLineshape, powerBroadening, attachmentCoefficients, attachmentRateConstants} = CONFIG);
-
             mainParameters = mainParameters.map(setID);
             simulationParameters = simulationParameters.map(setID);
             dopplerLineshape = dopplerLineshape.map(setID);
@@ -214,8 +211,6 @@
         } catch (error) {$mainPreModal = {modalContent:error, open:true}}
 
     }
-
-    
 
 </script>
 
@@ -380,7 +375,7 @@
                 <!-- {/if} -->
 
                 {#if includeCollision}
-                    <CollisionalCoefficients bind:collisionalCoefficient bind:collisionalCoefficient_balance bind:collisionalRateType {...{energyLevels, electronSpin, zeemanSplit, energyUnit, trapTemp}} bind:collisionalRates bind:numberDensity/>
+                    <CollisionalCoefficients bind:collisionalCoefficient bind:collisionalCoefficient_balance bind:collisionalRateType {...{energyLevels, electronSpin, zeemanSplit, energyUnit}} bind:collisionalRates bind:numberDensity/>
                 {/if}
                 
                 <!-- Simulation parameters -->
@@ -433,7 +428,6 @@
             {/if}
 
         </svelte:fragment>
-
         <svelte:fragment slot="footer_content__slot">
             <div class="align">
 
@@ -444,12 +438,10 @@
                 {#if pyProcesses.length>0}
                     <button transition:fade class="button is-danger" on:click="{pyKillProcess}" >Stop</button>
                 {/if}
-
                 <button  class="button is-link" on:click="{(e)=>{showreport = !showreport}}" >{showreport ? "Go Back" : "Status report"}</button>
+
                 <button  class="button is-link" on:click="{simulation}" on:pyEvent={pyEventHandle} on:pyEventClosed="{pyEventClosedHandle}" on:pyEventData={pyEventDataReceivedHandle}>Submit</button>
             </div>
-
         </svelte:fragment>
-
     </SeparateWindow>
 {/if}

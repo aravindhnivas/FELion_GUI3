@@ -8,10 +8,10 @@
     import Textfield from '@smui/textfield';
     // import {onMount} from 'svelte';
 
-    export let active;
+    export let active, collisionalTemp=10;
     export let collisionalRateConstants, energyLevels, electronSpin, zeemanSplit, energyUnit;
     
-    let initialTemp = 300, duration=600, collisionalTemp=10;
+    let initialTemp = 300, duration=600;
     let numberDensity="2e14";
     const title="Collisional cooling"
 

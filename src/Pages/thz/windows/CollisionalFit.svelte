@@ -54,9 +54,7 @@
 
 
 {#if active}
-
     <SeparateWindow {title} bind:active bind:windowReady bind:graphWindow maximize={false}>
-
         <svelte:fragment slot="header_content__slot" >
             <div class="align">
                 <CustomSelect options={["deexcitation", "excitation", "both"]} bind:picked={collisionalRateType} />

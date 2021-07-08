@@ -1,74 +1,82 @@
 
 <script>
-    // import {mainPreModal} from "../../../svelteWritable";
+    import {mainPreModal} from "../../../svelteWritable";
     import CollisionalDistribution from "../windows/CollisionalDistribution.svelte";
-    import CollisionalFit from "../windows/CollisionalFit.svelte";
+    import {browse} from "../../../components/Layout.svelte";
     import Textfield from '@smui/textfield';
-    import CustomSelect from "../../../components/CustomSelect.svelte";
     import balance_distribution from "../functions/balance_distribution";
 
     export let collisionalCoefficient=[], collisionalCoefficient_balance=[], collisionalRateType="both", collisionalRates = [];
-    export let energyLevels, electronSpin, zeemanSplit, energyUnit, trapTemp, numberDensity = "2e14";
-    $: deexcitation = collisionalRateType==="deexcitation";
+    export let energyLevels, electronSpin, zeemanSplit, energyUnit, numberDensity = "2e14";
+
     let collisionalWindow=false, collisionalFitWindow=false;
     
-    function changeCollisionalRateType() {
-    
-        collisionalCoefficient = collisionalCoefficient.map(level=>{
-
-    
-            const level_arr = level.label.split(" --> ")
-            level.label = `${level_arr[1]} --> ${level_arr[0]}`
-            return level
-        })
-    }
-
     const compteCollisionalBalanceConstants = () => {
-        const balanceArgs  = {energyLevels, trapTemp,  electronSpin, zeemanSplit, energyUnit}
+        const balanceArgs  = {energyLevels, collisionalTemp,  electronSpin, zeemanSplit, energyUnit}
         collisionalCoefficient_balance = []
+
         collisionalCoefficient.forEach(coefficient=>{
             const {label, value} = coefficient
             const levelLabels = label.split(" --> ").map(f=>f.trim())
             let newLabel, newValue;
-            
-
-            if(deexcitation) {
-                const [excitedLevel, groundLevel] = levelLabels
-
-                newValue = value*balance_distribution({...balanceArgs, groundLevel, excitedLevel})
-                newLabel = `${groundLevel} --> ${excitedLevel}`
-                
-            } else {
-
-                const [groundLevel, excitedLevel] = levelLabels
-                newValue = value*balance_distribution({...balanceArgs, groundLevel:excitedLevel, excitedLevel:groundLevel})
-                newLabel = `${excitedLevel} --> ${groundLevel}`
-            }
+            newValue = value*balance_distribution({...balanceArgs, label})
+            newLabel = `${levelLabels[1]} --> ${levelLabels[0]}`
+        
             const alreadyComputed = _.find(collisionalCoefficient, (rate)=>rate.label==newLabel)
-
             if(!alreadyComputed)  {
                 collisionalCoefficient_balance = [...collisionalCoefficient_balance, {label:newLabel, value:newValue.toExponential(3), id:getID()}]
              }
-            
         })
-
     }
     $: collisionalRateConstants = [...collisionalCoefficient, ...collisionalCoefficient_balance]
-
-    $: collisionalArgs = {collisionalRateConstants, energyLevels, electronSpin, zeemanSplit, energyUnit}
-    
-    
+    $: collisionalArgs = {collisionalRateConstants, energyLevels, electronSpin, zeemanSplit, energyUnit, collisionalTemp}
     const computeRate = (rate) => {
-
         rate.value *= numberDensity; 
         rate.value = rate.value.toExponential(3);
-
         return rate
     }
 
     $: if(collisionalRateConstants.length>0 && numberDensity) {
         collisionalRates = _.cloneDeep(collisionalRateConstants).map(computeRate)
     }
+
+    async function browse_collisional_file() {
+        const result = await browse({dir:false})
+        if (!result.canceled) { collisionlFile = result.filePaths[0] }
+    }
+
+    let collisionlFile = ""
+    
+    let saveFilename = "collisional_rate_constants"
+    let collisionalTemp = 5
+    const setID = (obj) => {
+    
+        obj.id = window.getID();
+    
+        return obj
+    }
+
+    const correctObjValue = (obj) => {
+        obj.value = obj.value.toExponential(3)
+        return obj
+    
+    }
+
+    async function computeCollisionalFit(e) {
+        try {
+    
+            if (collisionlFile) {
+                const pyfile = "ROSAA/collisionalFit.py"
+                const args = [JSON.stringify({collisionlFile, collisionalTemp, saveFilename, collisionalRateType})]
+                const dataFromPython = await computePy_func({e, pyfile, args});
+                const {rateConstants} = dataFromPython
+    
+                collisionalCoefficient = rateConstants.map(setID).map(correctObjValue)
+            } else {browse_collisional_file()}
+    
+        } catch (error) { $mainPreModal = {modalContent:error, open:true} }
+    }
+    const saveComputedCollisionalValues = () => {}
 
 </script>
 
@@ -81,16 +89,15 @@
         .content__div {
             max-height: 30rem;
             overflow-y: auto;
-
             display: flex;
             flex-wrap: wrap;
+
             justify-self: center; // grow from center (width is auto adjusted)
             gap: 1em;
             justify-content: center; // align items center
 
         }
         .control__div {
-
             display: flex;
             align-items: baseline;
             flex-wrap: wrap;
@@ -103,40 +110,45 @@
 </style>
 
 <CollisionalDistribution {...collisionalArgs} bind:active={collisionalWindow} />
-<CollisionalFit bind:active={collisionalFitWindow} />
 
 <div class="sub_container__div box">
+
     <div class="subtitle">Collisional rate constants</div>
     <div class="control__div ">
-        <CustomSelect options={["deexcitation", "excitation", "both"]} bind:picked={collisionalRateType} on:change={changeCollisionalRateType}/>
+        <!-- <CustomSelect options={["deexcitation", "excitation", "both"]} bind:picked={collisionalRateType} /> -->
         <button class="button is-link " on:click={compteCollisionalBalanceConstants}>Compute balance rate</button>
-
         <button class="button is-link " on:click={()=>collisionalWindow=true}>Compute Collisional Cooling</button>
-        <button class="button is-link " on:click={()=>collisionalFitWindow=true}>Compute from fit</button>
+        <button class="button is-link " on:click={()=>collisionalFitWindow=!collisionalFitWindow}>Compute from fit</button>
 
+        <div class="align h-center" class:hide={!collisionalFitWindow}>
+            <!-- <CustomSelect options={["deexcitation", "excitation", "both"]} bind:picked={collisionalRateType} /> -->
+            <Textfield bind:value={saveFilename} label="saveFilename"/>
+            <Textfield bind:value={collisionalTemp} label="collisionalTemp"/>
+            <button class="button is-link" on:click={browse_collisional_file}>Browse</button>
+            <button class="button is-link" on:click={computeCollisionalFit}>Compute</button>
+            <button class="button is-link" on:click={saveComputedCollisionalValues}>Save values</button>
+        </div>
     </div>
+
+
 
     {#if collisionalCoefficient.length>0}
         <div class="content__div ">
             {#each collisionalCoefficient as {label, value, id}(id)}
                 <Textfield bind:value {label}/>
+    
             {/each}
         </div>
-
     {/if}
 
     {#if collisionalCoefficient_balance.length>0}
+
         <hr>
         <div class="content__div ">
-    
             {#each collisionalCoefficient_balance as {label, value, id}(id)}
-
                 <Textfield bind:value {label}/>
             {/each}
-
         </div>
-
-
 
         {/if}
 
@@ -148,11 +160,9 @@
     </div>
 
     <div class="content__div ">
-
         {#each collisionalRates as {label, value, id}(id)}
             <Textfield bind:value {label}/>
-
         {/each}
-    </div>
 
+    </div>
 </div>
