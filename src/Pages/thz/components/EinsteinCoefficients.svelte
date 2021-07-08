@@ -62,6 +62,8 @@
 
     }
 
+    $: if(einsteinCoefficientA) computeEinsteinB();
+
 
 </script>
 
