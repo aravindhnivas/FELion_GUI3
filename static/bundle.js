@@ -46362,17 +46362,20 @@ class QuickBrowser extends SvelteComponentDev {
 
 async function opofile_func({ dataFromPython, delta } = {}) {
 
-    await beforePlot({ delta, dataFromPython, graphDiv: "opoRelPlot", baseGraphDiv:"opoplot" });
+    try {
+        await beforePlot({ delta, dataFromPython, graphDiv: "opoRelPlot", baseGraphDiv:"opoplot" });
+        plot("OPO Calibration", "Set Wavenumber (cm-1)", "Measured Wavenumber (cm-1)", dataFromPython["SA"], "opoSA");
+        if (!get_store_value(plotlyEventCreatedOPO)) {
 
-    plot("OPO Calibration", "Set Wavenumber (cm-1)", "Measured Wavenumber (cm-1)", dataFromPython["SA"], "opoSA");
+            const plot = { graphDiv: "opoRelPlot", mode: "opo" };
+            plotlySelection(plot), plotlyClick(plot);
+            plotlyEventCreatedOPO.set(true);
+
+        }
 
 
-    if (!get_store_value(plotlyEventCreatedOPO)) {
-
-        const plot = { graphDiv: "opoRelPlot", mode: "opo" };
-
-        plotlySelection(plot), plotlyClick(plot);
-        plotlyEventCreatedOPO.set(true);
+    } catch (error) {
+        console.error(error);        
     }
 }
 
@@ -51487,18 +51490,18 @@ function create_buttonContainer_slot(ctx) {
 
 	let initfunctionrow_props = {
 		removeExtraFile: /*removeExtraFile*/ ctx[26],
-		opofiles: /*opofiles*/ ctx[5],
-		felixfiles: /*felixfiles*/ ctx[9],
+		opofiles: /*opofiles*/ ctx[4],
+		felixfiles: /*felixfiles*/ ctx[7],
 		normMethod: /*$normMethod*/ ctx[24],
-		theoryLocation: /*theoryLocation*/ ctx[13]
+		theoryLocation: /*theoryLocation*/ ctx[11]
 	};
 
-	if (/*graphPlotted*/ ctx[2] !== void 0) {
-		initfunctionrow_props.graphPlotted = /*graphPlotted*/ ctx[2];
+	if (/*graphPlotted*/ ctx[12] !== void 0) {
+		initfunctionrow_props.graphPlotted = /*graphPlotted*/ ctx[12];
 	}
 
-	if (/*show_theoryplot*/ ctx[12] !== void 0) {
-		initfunctionrow_props.show_theoryplot = /*show_theoryplot*/ ctx[12];
+	if (/*show_theoryplot*/ ctx[10] !== void 0) {
+		initfunctionrow_props.show_theoryplot = /*show_theoryplot*/ ctx[10];
 	}
 
 	initfunctionrow = new InitFunctionRow({
@@ -51529,20 +51532,20 @@ function create_buttonContainer_slot(ctx) {
 		removeExtraFile: /*removeExtraFile*/ ctx[26]
 	};
 
-	if (/*OPOLocation*/ ctx[4] !== void 0) {
-		oporow_props.OPOLocation = /*OPOLocation*/ ctx[4];
+	if (/*OPOLocation*/ ctx[3] !== void 0) {
+		oporow_props.OPOLocation = /*OPOLocation*/ ctx[3];
 	}
 
-	if (/*OPOfilesChecked*/ ctx[3] !== void 0) {
-		oporow_props.OPOfilesChecked = /*OPOfilesChecked*/ ctx[3];
+	if (/*OPOfilesChecked*/ ctx[2] !== void 0) {
+		oporow_props.OPOfilesChecked = /*OPOfilesChecked*/ ctx[2];
 	}
 
-	if (/*opofiles*/ ctx[5] !== void 0) {
-		oporow_props.opofiles = /*opofiles*/ ctx[5];
+	if (/*opofiles*/ ctx[4] !== void 0) {
+		oporow_props.opofiles = /*opofiles*/ ctx[4];
 	}
 
-	if (/*graphPlotted*/ ctx[2] !== void 0) {
-		oporow_props.graphPlotted = /*graphPlotted*/ ctx[2];
+	if (/*graphPlotted*/ ctx[12] !== void 0) {
+		oporow_props.graphPlotted = /*graphPlotted*/ ctx[12];
 	}
 
 	oporow = new OPORow({ props: oporow_props, $$inline: true });
@@ -51561,12 +51564,12 @@ function create_buttonContainer_slot(ctx) {
 
 	let theoryrow_props = { normMethod: /*$normMethod*/ ctx[24] };
 
-	if (/*theoryLocation*/ ctx[13] !== void 0) {
-		theoryrow_props.theoryLocation = /*theoryLocation*/ ctx[13];
+	if (/*theoryLocation*/ ctx[11] !== void 0) {
+		theoryrow_props.theoryLocation = /*theoryLocation*/ ctx[11];
 	}
 
-	if (/*show_theoryplot*/ ctx[12] !== void 0) {
-		theoryrow_props.show_theoryplot = /*show_theoryplot*/ ctx[12];
+	if (/*show_theoryplot*/ ctx[10] !== void 0) {
+		theoryrow_props.show_theoryplot = /*show_theoryplot*/ ctx[10];
 	}
 
 	theoryrow = new TheoryRow({ props: theoryrow_props, $$inline: true });
@@ -51600,7 +51603,7 @@ function create_buttonContainer_slot(ctx) {
 			div = element("div");
 			create_component(customradio.$$.fragment);
 			attr_dev(div, "class", "align");
-			add_location(div, file$15, 149, 8, 6231);
+			add_location(div, file$15, 149, 8, 6249);
 		},
 		m: function mount(target, anchor) {
 			mount_component(initfunctionrow, target, anchor);
@@ -51615,47 +51618,47 @@ function create_buttonContainer_slot(ctx) {
 		},
 		p: function update(ctx, dirty) {
 			const initfunctionrow_changes = {};
-			if (dirty[0] & /*opofiles*/ 32) initfunctionrow_changes.opofiles = /*opofiles*/ ctx[5];
-			if (dirty[0] & /*felixfiles*/ 512) initfunctionrow_changes.felixfiles = /*felixfiles*/ ctx[9];
+			if (dirty[0] & /*opofiles*/ 16) initfunctionrow_changes.opofiles = /*opofiles*/ ctx[4];
+			if (dirty[0] & /*felixfiles*/ 128) initfunctionrow_changes.felixfiles = /*felixfiles*/ ctx[7];
 			if (dirty[0] & /*$normMethod*/ 16777216) initfunctionrow_changes.normMethod = /*$normMethod*/ ctx[24];
-			if (dirty[0] & /*theoryLocation*/ 8192) initfunctionrow_changes.theoryLocation = /*theoryLocation*/ ctx[13];
+			if (dirty[0] & /*theoryLocation*/ 2048) initfunctionrow_changes.theoryLocation = /*theoryLocation*/ ctx[11];
 
-			if (!updating_graphPlotted && dirty[0] & /*graphPlotted*/ 4) {
+			if (!updating_graphPlotted && dirty[0] & /*graphPlotted*/ 4096) {
 				updating_graphPlotted = true;
-				initfunctionrow_changes.graphPlotted = /*graphPlotted*/ ctx[2];
+				initfunctionrow_changes.graphPlotted = /*graphPlotted*/ ctx[12];
 				add_flush_callback(() => updating_graphPlotted = false);
 			}
 
-			if (!updating_show_theoryplot && dirty[0] & /*show_theoryplot*/ 4096) {
+			if (!updating_show_theoryplot && dirty[0] & /*show_theoryplot*/ 1024) {
 				updating_show_theoryplot = true;
-				initfunctionrow_changes.show_theoryplot = /*show_theoryplot*/ ctx[12];
+				initfunctionrow_changes.show_theoryplot = /*show_theoryplot*/ ctx[10];
 				add_flush_callback(() => updating_show_theoryplot = false);
 			}
 
 			initfunctionrow.$set(initfunctionrow_changes);
 			const oporow_changes = {};
 
-			if (!updating_OPOLocation && dirty[0] & /*OPOLocation*/ 16) {
+			if (!updating_OPOLocation && dirty[0] & /*OPOLocation*/ 8) {
 				updating_OPOLocation = true;
-				oporow_changes.OPOLocation = /*OPOLocation*/ ctx[4];
+				oporow_changes.OPOLocation = /*OPOLocation*/ ctx[3];
 				add_flush_callback(() => updating_OPOLocation = false);
 			}
 
-			if (!updating_OPOfilesChecked && dirty[0] & /*OPOfilesChecked*/ 8) {
+			if (!updating_OPOfilesChecked && dirty[0] & /*OPOfilesChecked*/ 4) {
 				updating_OPOfilesChecked = true;
-				oporow_changes.OPOfilesChecked = /*OPOfilesChecked*/ ctx[3];
+				oporow_changes.OPOfilesChecked = /*OPOfilesChecked*/ ctx[2];
 				add_flush_callback(() => updating_OPOfilesChecked = false);
 			}
 
-			if (!updating_opofiles && dirty[0] & /*opofiles*/ 32) {
+			if (!updating_opofiles && dirty[0] & /*opofiles*/ 16) {
 				updating_opofiles = true;
-				oporow_changes.opofiles = /*opofiles*/ ctx[5];
+				oporow_changes.opofiles = /*opofiles*/ ctx[4];
 				add_flush_callback(() => updating_opofiles = false);
 			}
 
-			if (!updating_graphPlotted_1 && dirty[0] & /*graphPlotted*/ 4) {
+			if (!updating_graphPlotted_1 && dirty[0] & /*graphPlotted*/ 4096) {
 				updating_graphPlotted_1 = true;
-				oporow_changes.graphPlotted = /*graphPlotted*/ ctx[2];
+				oporow_changes.graphPlotted = /*graphPlotted*/ ctx[12];
 				add_flush_callback(() => updating_graphPlotted_1 = false);
 			}
 
@@ -51663,15 +51666,15 @@ function create_buttonContainer_slot(ctx) {
 			const theoryrow_changes = {};
 			if (dirty[0] & /*$normMethod*/ 16777216) theoryrow_changes.normMethod = /*$normMethod*/ ctx[24];
 
-			if (!updating_theoryLocation && dirty[0] & /*theoryLocation*/ 8192) {
+			if (!updating_theoryLocation && dirty[0] & /*theoryLocation*/ 2048) {
 				updating_theoryLocation = true;
-				theoryrow_changes.theoryLocation = /*theoryLocation*/ ctx[13];
+				theoryrow_changes.theoryLocation = /*theoryLocation*/ ctx[11];
 				add_flush_callback(() => updating_theoryLocation = false);
 			}
 
-			if (!updating_show_theoryplot_1 && dirty[0] & /*show_theoryplot*/ 4096) {
+			if (!updating_show_theoryplot_1 && dirty[0] & /*show_theoryplot*/ 1024) {
 				updating_show_theoryplot_1 = true;
-				theoryrow_changes.show_theoryplot = /*show_theoryplot*/ ctx[12];
+				theoryrow_changes.show_theoryplot = /*show_theoryplot*/ ctx[10];
 				add_flush_callback(() => updating_show_theoryplot_1 = false);
 			}
 
@@ -51748,7 +51751,7 @@ function create_plotContainer_slot(ctx) {
 
 	getfileinfotable = new GetFileInfoTable({
 			props: {
-				felixfiles: /*felixfiles*/ ctx[9],
+				felixfiles: /*felixfiles*/ ctx[7],
 				normMethod: /*$normMethod*/ ctx[24]
 			},
 			$$inline: true
@@ -51774,33 +51777,33 @@ function create_plotContainer_slot(ctx) {
 			div6 = element("div");
 			attr_dev(div0, "class", "animated fadeIn svelte-6f1gzr");
 			attr_dev(div0, "id", "exp-theory-plot");
-			toggle_class(div0, "hide", !/*show_theoryplot*/ ctx[12]);
-			add_location(div0, file$15, 164, 12, 6730);
+			toggle_class(div0, "hide", !/*show_theoryplot*/ ctx[10]);
+			add_location(div0, file$15, 164, 12, 6748);
 			attr_dev(div1, "id", "bplot");
 			attr_dev(div1, "class", "svelte-6f1gzr");
 			add_render_callback(() => /*div1_elementresize_handler*/ ctx[40].call(div1));
-			add_location(div1, file$15, 165, 12, 6830);
+			add_location(div1, file$15, 165, 12, 6848);
 			attr_dev(div2, "id", "saPlot");
 			attr_dev(div2, "class", "svelte-6f1gzr");
-			add_location(div2, file$15, 166, 12, 6896);
+			add_location(div2, file$15, 166, 12, 6914);
 			attr_dev(div3, "id", "avgplot");
 			attr_dev(div3, "class", "svelte-6f1gzr");
-			add_location(div3, file$15, 167, 12, 6933);
+			add_location(div3, file$15, 167, 12, 6951);
 			attr_dev(div4, "class", "animated fadeIn svelte-6f1gzr");
 			attr_dev(div4, "id", "opoplot");
-			toggle_class(div4, "hide", !/*$opoMode*/ ctx[10]);
-			add_location(div4, file$15, 168, 12, 6971);
+			toggle_class(div4, "hide", !/*$opoMode*/ ctx[8]);
+			add_location(div4, file$15, 168, 12, 6989);
 			attr_dev(div5, "class", "animated fadeIn svelte-6f1gzr");
 			attr_dev(div5, "id", "opoSA");
-			toggle_class(div5, "hide", !/*$opoMode*/ ctx[10]);
-			add_location(div5, file$15, 169, 12, 7056);
+			toggle_class(div5, "hide", !/*$opoMode*/ ctx[8]);
+			add_location(div5, file$15, 169, 12, 7074);
 			attr_dev(div6, "class", "animated fadeIn svelte-6f1gzr");
 			attr_dev(div6, "id", "opoRelPlot");
-			toggle_class(div6, "hide", !/*$opoMode*/ ctx[10]);
-			add_location(div6, file$15, 170, 12, 7139);
+			toggle_class(div6, "hide", !/*$opoMode*/ ctx[8]);
+			add_location(div6, file$15, 170, 12, 7157);
 			attr_dev(div7, "class", "felixPlot svelte-6f1gzr");
 			attr_dev(div7, "id", div7_id_value = "plot_container__div__" + filetype);
-			add_location(div7, file$15, 163, 8, 6656);
+			add_location(div7, file$15, 163, 8, 6674);
 		},
 		m: function mount(target, anchor) {
 			mount_component(getfileinfotable, target, anchor);
@@ -51824,24 +51827,24 @@ function create_plotContainer_slot(ctx) {
 		},
 		p: function update(ctx, dirty) {
 			const getfileinfotable_changes = {};
-			if (dirty[0] & /*felixfiles*/ 512) getfileinfotable_changes.felixfiles = /*felixfiles*/ ctx[9];
+			if (dirty[0] & /*felixfiles*/ 128) getfileinfotable_changes.felixfiles = /*felixfiles*/ ctx[7];
 			if (dirty[0] & /*$normMethod*/ 16777216) getfileinfotable_changes.normMethod = /*$normMethod*/ ctx[24];
 			getfileinfotable.$set(getfileinfotable_changes);
 
-			if (dirty[0] & /*show_theoryplot*/ 4096) {
-				toggle_class(div0, "hide", !/*show_theoryplot*/ ctx[12]);
+			if (dirty[0] & /*show_theoryplot*/ 1024) {
+				toggle_class(div0, "hide", !/*show_theoryplot*/ ctx[10]);
 			}
 
-			if (dirty[0] & /*$opoMode*/ 1024) {
-				toggle_class(div4, "hide", !/*$opoMode*/ ctx[10]);
+			if (dirty[0] & /*$opoMode*/ 256) {
+				toggle_class(div4, "hide", !/*$opoMode*/ ctx[8]);
 			}
 
-			if (dirty[0] & /*$opoMode*/ 1024) {
-				toggle_class(div5, "hide", !/*$opoMode*/ ctx[10]);
+			if (dirty[0] & /*$opoMode*/ 256) {
+				toggle_class(div5, "hide", !/*$opoMode*/ ctx[8]);
 			}
 
-			if (dirty[0] & /*$opoMode*/ 1024) {
-				toggle_class(div6, "hide", !/*$opoMode*/ ctx[10]);
+			if (dirty[0] & /*$opoMode*/ 256) {
+				toggle_class(div6, "hide", !/*$opoMode*/ ctx[8]);
 			}
 		},
 		i: function intro(local) {
@@ -51898,16 +51901,16 @@ function create_plotContainer_functions_slot(ctx) {
 		output_namelists: /*output_namelists*/ ctx[23]
 	};
 
-	if (/*writeFileName*/ ctx[16] !== void 0) {
-		writefunctioncontents_props.writeFileName = /*writeFileName*/ ctx[16];
+	if (/*writeFileName*/ ctx[15] !== void 0) {
+		writefunctioncontents_props.writeFileName = /*writeFileName*/ ctx[15];
 	}
 
-	if (/*writeFile*/ ctx[15] !== void 0) {
-		writefunctioncontents_props.writeFile = /*writeFile*/ ctx[15];
+	if (/*writeFile*/ ctx[14] !== void 0) {
+		writefunctioncontents_props.writeFile = /*writeFile*/ ctx[14];
 	}
 
-	if (/*overwrite_expfit*/ ctx[14] !== void 0) {
-		writefunctioncontents_props.overwrite_expfit = /*overwrite_expfit*/ ctx[14];
+	if (/*overwrite_expfit*/ ctx[13] !== void 0) {
+		writefunctioncontents_props.overwrite_expfit = /*overwrite_expfit*/ ctx[13];
 	}
 
 	writefunctioncontents = new WriteFunctionContents({
@@ -51923,13 +51926,13 @@ function create_plotContainer_functions_slot(ctx) {
 
 	executefunctioncontents = new ExecuteFunctionContents({
 			props: {
-				addedFileScale: /*addedFileScale*/ ctx[21],
-				addedFileCol: /*addedFileCol*/ ctx[19],
+				addedFileScale: /*addedFileScale*/ ctx[20],
+				addedFileCol: /*addedFileCol*/ ctx[18],
 				normMethod: /*$normMethod*/ ctx[24],
-				writeFileName: /*writeFileName*/ ctx[16],
-				writeFile: /*writeFile*/ ctx[15],
-				overwrite_expfit: /*overwrite_expfit*/ ctx[14],
-				fullfiles: /*fullfiles*/ ctx[22]
+				writeFileName: /*writeFileName*/ ctx[15],
+				writeFile: /*writeFile*/ ctx[14],
+				overwrite_expfit: /*overwrite_expfit*/ ctx[13],
+				fullfiles: /*fullfiles*/ ctx[21]
 			},
 			$$inline: true
 		});
@@ -51950,33 +51953,33 @@ function create_plotContainer_functions_slot(ctx) {
 			const writefunctioncontents_changes = {};
 			if (dirty[0] & /*output_namelists*/ 8388608) writefunctioncontents_changes.output_namelists = /*output_namelists*/ ctx[23];
 
-			if (!updating_writeFileName && dirty[0] & /*writeFileName*/ 65536) {
+			if (!updating_writeFileName && dirty[0] & /*writeFileName*/ 32768) {
 				updating_writeFileName = true;
-				writefunctioncontents_changes.writeFileName = /*writeFileName*/ ctx[16];
+				writefunctioncontents_changes.writeFileName = /*writeFileName*/ ctx[15];
 				add_flush_callback(() => updating_writeFileName = false);
 			}
 
-			if (!updating_writeFile && dirty[0] & /*writeFile*/ 32768) {
+			if (!updating_writeFile && dirty[0] & /*writeFile*/ 16384) {
 				updating_writeFile = true;
-				writefunctioncontents_changes.writeFile = /*writeFile*/ ctx[15];
+				writefunctioncontents_changes.writeFile = /*writeFile*/ ctx[14];
 				add_flush_callback(() => updating_writeFile = false);
 			}
 
-			if (!updating_overwrite_expfit && dirty[0] & /*overwrite_expfit*/ 16384) {
+			if (!updating_overwrite_expfit && dirty[0] & /*overwrite_expfit*/ 8192) {
 				updating_overwrite_expfit = true;
-				writefunctioncontents_changes.overwrite_expfit = /*overwrite_expfit*/ ctx[14];
+				writefunctioncontents_changes.overwrite_expfit = /*overwrite_expfit*/ ctx[13];
 				add_flush_callback(() => updating_overwrite_expfit = false);
 			}
 
 			writefunctioncontents.$set(writefunctioncontents_changes);
 			const executefunctioncontents_changes = {};
-			if (dirty[0] & /*addedFileScale*/ 2097152) executefunctioncontents_changes.addedFileScale = /*addedFileScale*/ ctx[21];
-			if (dirty[0] & /*addedFileCol*/ 524288) executefunctioncontents_changes.addedFileCol = /*addedFileCol*/ ctx[19];
+			if (dirty[0] & /*addedFileScale*/ 1048576) executefunctioncontents_changes.addedFileScale = /*addedFileScale*/ ctx[20];
+			if (dirty[0] & /*addedFileCol*/ 262144) executefunctioncontents_changes.addedFileCol = /*addedFileCol*/ ctx[18];
 			if (dirty[0] & /*$normMethod*/ 16777216) executefunctioncontents_changes.normMethod = /*$normMethod*/ ctx[24];
-			if (dirty[0] & /*writeFileName*/ 65536) executefunctioncontents_changes.writeFileName = /*writeFileName*/ ctx[16];
-			if (dirty[0] & /*writeFile*/ 32768) executefunctioncontents_changes.writeFile = /*writeFile*/ ctx[15];
-			if (dirty[0] & /*overwrite_expfit*/ 16384) executefunctioncontents_changes.overwrite_expfit = /*overwrite_expfit*/ ctx[14];
-			if (dirty[0] & /*fullfiles*/ 4194304) executefunctioncontents_changes.fullfiles = /*fullfiles*/ ctx[22];
+			if (dirty[0] & /*writeFileName*/ 32768) executefunctioncontents_changes.writeFileName = /*writeFileName*/ ctx[15];
+			if (dirty[0] & /*writeFile*/ 16384) executefunctioncontents_changes.writeFile = /*writeFile*/ ctx[14];
+			if (dirty[0] & /*overwrite_expfit*/ 8192) executefunctioncontents_changes.overwrite_expfit = /*overwrite_expfit*/ ctx[13];
+			if (dirty[0] & /*fullfiles*/ 2097152) executefunctioncontents_changes.fullfiles = /*fullfiles*/ ctx[21];
 			executefunctioncontents.$set(executefunctioncontents_changes);
 		},
 		i: function intro(local) {
@@ -52020,8 +52023,8 @@ function create_plotContainer_reports_slot(ctx) {
 
 	let frequencytable_props = {};
 
-	if (/*keepTable*/ ctx[17] !== void 0) {
-		frequencytable_props.keepTable = /*keepTable*/ ctx[17];
+	if (/*keepTable*/ ctx[16] !== void 0) {
+		frequencytable_props.keepTable = /*keepTable*/ ctx[16];
 	}
 
 	frequencytable = new FrequencyTable({
@@ -52042,9 +52045,9 @@ function create_plotContainer_reports_slot(ctx) {
 		p: function update(ctx, dirty) {
 			const frequencytable_changes = {};
 
-			if (!updating_keepTable && dirty[0] & /*keepTable*/ 131072) {
+			if (!updating_keepTable && dirty[0] & /*keepTable*/ 65536) {
 				updating_keepTable = true;
-				frequencytable_changes.keepTable = /*keepTable*/ ctx[17];
+				frequencytable_changes.keepTable = /*keepTable*/ ctx[16];
 				add_flush_callback(() => updating_keepTable = false);
 			}
 
@@ -52116,28 +52119,28 @@ function create_fragment$1c(ctx) {
 
 	let addfilestoplot_props = { fileChecked: /*fileChecked*/ ctx[0] };
 
-	if (/*extrafileAdded*/ ctx[7] !== void 0) {
-		addfilestoplot_props.extrafileAdded = /*extrafileAdded*/ ctx[7];
+	if (/*extrafileAdded*/ ctx[6] !== void 0) {
+		addfilestoplot_props.extrafileAdded = /*extrafileAdded*/ ctx[6];
 	}
 
-	if (/*addFileModal*/ ctx[18] !== void 0) {
-		addfilestoplot_props.active = /*addFileModal*/ ctx[18];
+	if (/*addFileModal*/ ctx[17] !== void 0) {
+		addfilestoplot_props.active = /*addFileModal*/ ctx[17];
 	}
 
-	if (/*addedFileCol*/ ctx[19] !== void 0) {
-		addfilestoplot_props.addedFileCol = /*addedFileCol*/ ctx[19];
+	if (/*addedFileCol*/ ctx[18] !== void 0) {
+		addfilestoplot_props.addedFileCol = /*addedFileCol*/ ctx[18];
 	}
 
-	if (/*addedFileScale*/ ctx[21] !== void 0) {
-		addfilestoplot_props.addedFileScale = /*addedFileScale*/ ctx[21];
+	if (/*addedFileScale*/ ctx[20] !== void 0) {
+		addfilestoplot_props.addedFileScale = /*addedFileScale*/ ctx[20];
 	}
 
-	if (/*addedfiles*/ ctx[6] !== void 0) {
-		addfilestoplot_props.addedfiles = /*addedfiles*/ ctx[6];
+	if (/*addedfiles*/ ctx[5] !== void 0) {
+		addfilestoplot_props.addedfiles = /*addedfiles*/ ctx[5];
 	}
 
-	if (/*addedFile*/ ctx[20] !== void 0) {
-		addfilestoplot_props.addedFile = /*addedFile*/ ctx[20];
+	if (/*addedFile*/ ctx[19] !== void 0) {
+		addfilestoplot_props.addedFile = /*addedFile*/ ctx[19];
 	}
 
 	addfilestoplot = new AddFilesToPlot({
@@ -52166,7 +52169,7 @@ function create_fragment$1c(ctx) {
 
 	let layout_props = {
 		filetype,
-		graphPlotted: /*graphPlotted*/ ctx[2],
+		graphPlotted: /*graphPlotted*/ ctx[12],
 		id,
 		$$slots: {
 			plotContainer_reports: [create_plotContainer_reports_slot],
@@ -52185,8 +52188,8 @@ function create_fragment$1c(ctx) {
 		layout_props.fileChecked = /*fileChecked*/ ctx[0];
 	}
 
-	if (/*toggleBrowser*/ ctx[11] !== void 0) {
-		layout_props.toggleBrowser = /*toggleBrowser*/ ctx[11];
+	if (/*toggleBrowser*/ ctx[9] !== void 0) {
+		layout_props.toggleBrowser = /*toggleBrowser*/ ctx[9];
 	}
 
 	layout = new Layout({ props: layout_props, $$inline: true });
@@ -52214,47 +52217,47 @@ function create_fragment$1c(ctx) {
 			const addfilestoplot_changes = {};
 			if (dirty[0] & /*fileChecked*/ 1) addfilestoplot_changes.fileChecked = /*fileChecked*/ ctx[0];
 
-			if (!updating_extrafileAdded && dirty[0] & /*extrafileAdded*/ 128) {
+			if (!updating_extrafileAdded && dirty[0] & /*extrafileAdded*/ 64) {
 				updating_extrafileAdded = true;
-				addfilestoplot_changes.extrafileAdded = /*extrafileAdded*/ ctx[7];
+				addfilestoplot_changes.extrafileAdded = /*extrafileAdded*/ ctx[6];
 				add_flush_callback(() => updating_extrafileAdded = false);
 			}
 
-			if (!updating_active && dirty[0] & /*addFileModal*/ 262144) {
+			if (!updating_active && dirty[0] & /*addFileModal*/ 131072) {
 				updating_active = true;
-				addfilestoplot_changes.active = /*addFileModal*/ ctx[18];
+				addfilestoplot_changes.active = /*addFileModal*/ ctx[17];
 				add_flush_callback(() => updating_active = false);
 			}
 
-			if (!updating_addedFileCol && dirty[0] & /*addedFileCol*/ 524288) {
+			if (!updating_addedFileCol && dirty[0] & /*addedFileCol*/ 262144) {
 				updating_addedFileCol = true;
-				addfilestoplot_changes.addedFileCol = /*addedFileCol*/ ctx[19];
+				addfilestoplot_changes.addedFileCol = /*addedFileCol*/ ctx[18];
 				add_flush_callback(() => updating_addedFileCol = false);
 			}
 
-			if (!updating_addedFileScale && dirty[0] & /*addedFileScale*/ 2097152) {
+			if (!updating_addedFileScale && dirty[0] & /*addedFileScale*/ 1048576) {
 				updating_addedFileScale = true;
-				addfilestoplot_changes.addedFileScale = /*addedFileScale*/ ctx[21];
+				addfilestoplot_changes.addedFileScale = /*addedFileScale*/ ctx[20];
 				add_flush_callback(() => updating_addedFileScale = false);
 			}
 
-			if (!updating_addedfiles && dirty[0] & /*addedfiles*/ 64) {
+			if (!updating_addedfiles && dirty[0] & /*addedfiles*/ 32) {
 				updating_addedfiles = true;
-				addfilestoplot_changes.addedfiles = /*addedfiles*/ ctx[6];
+				addfilestoplot_changes.addedfiles = /*addedfiles*/ ctx[5];
 				add_flush_callback(() => updating_addedfiles = false);
 			}
 
-			if (!updating_addedFile && dirty[0] & /*addedFile*/ 1048576) {
+			if (!updating_addedFile && dirty[0] & /*addedFile*/ 524288) {
 				updating_addedFile = true;
-				addfilestoplot_changes.addedFile = /*addedFile*/ ctx[20];
+				addfilestoplot_changes.addedFile = /*addedFile*/ ctx[19];
 				add_flush_callback(() => updating_addedFile = false);
 			}
 
 			addfilestoplot.$set(addfilestoplot_changes);
 			const layout_changes = {};
-			if (dirty[0] & /*graphPlotted*/ 4) layout_changes.graphPlotted = /*graphPlotted*/ ctx[2];
+			if (dirty[0] & /*graphPlotted*/ 4096) layout_changes.graphPlotted = /*graphPlotted*/ ctx[12];
 
-			if (dirty[0] & /*keepTable, addedFileScale, addedFileCol, $normMethod, writeFileName, writeFile, overwrite_expfit, fullfiles, output_namelists, addFileModal, $opoMode, graphWidth, show_theoryplot, felixfiles, theoryLocation, OPOLocation, OPOfilesChecked, opofiles, graphPlotted*/ 32503612 | dirty[2] & /*$$scope*/ 8) {
+			if (dirty[0] & /*keepTable, addedFileScale, addedFileCol, $normMethod, writeFileName, writeFile, overwrite_expfit, fullfiles, output_namelists, addFileModal, $opoMode, graphWidth, show_theoryplot, felixfiles, theoryLocation, OPOLocation, OPOfilesChecked, opofiles, graphPlotted*/ 33029532 | dirty[2] & /*$$scope*/ 8) {
 				layout_changes.$$scope = { dirty, ctx };
 			}
 
@@ -52270,9 +52273,9 @@ function create_fragment$1c(ctx) {
 				add_flush_callback(() => updating_fileChecked = false);
 			}
 
-			if (!updating_toggleBrowser && dirty[0] & /*toggleBrowser*/ 2048) {
+			if (!updating_toggleBrowser && dirty[0] & /*toggleBrowser*/ 512) {
 				updating_toggleBrowser = true;
-				layout_changes.toggleBrowser = /*toggleBrowser*/ ctx[11];
+				layout_changes.toggleBrowser = /*toggleBrowser*/ ctx[9];
 				add_flush_callback(() => updating_toggleBrowser = false);
 			}
 
@@ -52324,7 +52327,7 @@ function instance$1c($$self, $$props, $$invalidate) {
 	let $felixopoLocation;
 	let $Ngauss_sigma;
 	validate_store(opoMode, "opoMode");
-	component_subscribe($$self, opoMode, $$value => $$invalidate(10, $opoMode = $$value));
+	component_subscribe($$self, opoMode, $$value => $$invalidate(8, $opoMode = $$value));
 	validate_store(normMethodDatas, "normMethodDatas");
 	component_subscribe($$self, normMethodDatas, $$value => $$invalidate(53, $normMethodDatas = $$value));
 	validate_store(normMethod, "normMethod");
@@ -52394,8 +52397,8 @@ function instance$1c($$self, $$props, $$invalidate) {
 		for (let i = 0; i < extrafileAdded + 1; i++) {
 			try {
 				Plotly.deleteTraces($graphDiv, [-1]);
-				$$invalidate(7, extrafileAdded--, extrafileAdded);
-				$$invalidate(6, addedfiles = addedfiles.slice(0, addedfiles.length - 1));
+				$$invalidate(6, extrafileAdded--, extrafileAdded);
+				$$invalidate(5, addedfiles = addedfiles.slice(0, addedfiles.length - 1));
 			} catch(err) {
 				console.log("The plot is empty");
 			}
@@ -52406,7 +52409,7 @@ function instance$1c($$self, $$props, $$invalidate) {
 
 	const init_tour = async () => {
 		if (!toggleBrowser) {
-			$$invalidate(11, toggleBrowser = true);
+			$$invalidate(9, toggleBrowser = true);
 			await sleep(600);
 		} // Filebrowser toggling and its animation time to appear
 
@@ -52488,101 +52491,101 @@ function instance$1c($$self, $$props, $$invalidate) {
 
 	function addfilestoplot_extrafileAdded_binding(value) {
 		extrafileAdded = value;
-		$$invalidate(7, extrafileAdded);
+		$$invalidate(6, extrafileAdded);
 	}
 
 	function addfilestoplot_active_binding(value) {
 		addFileModal = value;
-		$$invalidate(18, addFileModal);
+		$$invalidate(17, addFileModal);
 	}
 
 	function addfilestoplot_addedFileCol_binding(value) {
 		addedFileCol = value;
-		$$invalidate(19, addedFileCol);
+		$$invalidate(18, addedFileCol);
 	}
 
 	function addfilestoplot_addedFileScale_binding(value) {
 		addedFileScale = value;
-		$$invalidate(21, addedFileScale);
+		$$invalidate(20, addedFileScale);
 	}
 
 	function addfilestoplot_addedfiles_binding(value) {
 		addedfiles = value;
-		$$invalidate(6, addedfiles);
+		$$invalidate(5, addedfiles);
 	}
 
 	function addfilestoplot_addedFile_binding(value) {
 		addedFile = value;
-		$$invalidate(20, addedFile);
+		$$invalidate(19, addedFile);
 	}
 
 	function frequencytable_keepTable_binding(value) {
 		keepTable = value;
-		$$invalidate(17, keepTable);
+		$$invalidate(16, keepTable);
 	}
 
 	function writefunctioncontents_writeFileName_binding(value) {
 		writeFileName = value;
-		$$invalidate(16, writeFileName);
+		$$invalidate(15, writeFileName);
 	}
 
 	function writefunctioncontents_writeFile_binding(value) {
 		writeFile = value;
-		$$invalidate(15, writeFile);
+		$$invalidate(14, writeFile);
 	}
 
 	function writefunctioncontents_overwrite_expfit_binding(value) {
 		overwrite_expfit = value;
-		$$invalidate(14, overwrite_expfit);
+		$$invalidate(13, overwrite_expfit);
 	}
 
 	const addfile_handler = () => {
-		$$invalidate(18, addFileModal = true);
+		$$invalidate(17, addFileModal = true);
 	};
 
 	function div1_elementresize_handler() {
 		graphWidth = this.clientWidth;
-		$$invalidate(8, graphWidth);
+		$$invalidate(22, graphWidth);
 	}
 
 	function initfunctionrow_graphPlotted_binding(value) {
 		graphPlotted = value;
-		$$invalidate(2, graphPlotted);
+		$$invalidate(12, graphPlotted);
 	}
 
 	function initfunctionrow_show_theoryplot_binding(value) {
 		show_theoryplot = value;
-		$$invalidate(12, show_theoryplot);
+		$$invalidate(10, show_theoryplot);
 	}
 
 	function oporow_OPOLocation_binding(value) {
 		OPOLocation = value;
-		$$invalidate(4, OPOLocation);
+		$$invalidate(3, OPOLocation);
 	}
 
 	function oporow_OPOfilesChecked_binding(value) {
 		OPOfilesChecked = value;
-		$$invalidate(3, OPOfilesChecked);
+		$$invalidate(2, OPOfilesChecked);
 	}
 
 	function oporow_opofiles_binding(value) {
 		opofiles = value;
-		$$invalidate(5, opofiles);
+		$$invalidate(4, opofiles);
 	}
 
 	function oporow_graphPlotted_binding(value) {
 		graphPlotted = value;
-		$$invalidate(2, graphPlotted);
+		$$invalidate(12, graphPlotted);
 	}
 
 	function theoryrow_theoryLocation_binding(value) {
 		theoryLocation = value;
-		$$invalidate(13, theoryLocation);
+		$$invalidate(11, theoryLocation);
 	}
 
 	function theoryrow_show_theoryplot_binding(value) {
 		show_theoryplot = value;
-		$$invalidate(12, show_theoryplot);
+		$$invalidate(10, show_theoryplot);
 	}
 
 	function customradio_selected_binding(value) {
@@ -52602,7 +52605,7 @@ function instance$1c($$self, $$props, $$invalidate) {
 
 	function layout_toggleBrowser_binding(value) {
 		toggleBrowser = value;
-		$$invalidate(11, toggleBrowser);
+		$$invalidate(9, toggleBrowser);
 	}
 
 	$$self.$capture_state = () => ({
@@ -52676,28 +52679,28 @@ function instance$1c($$self, $$props, $$invalidate) {
 
 	$$self.$inject_state = $$props => {
 		if ("fileChecked" in $$props) $$invalidate(0, fileChecked = $$props.fileChecked);
-		if ("toggleBrowser" in $$props) $$invalidate(11, toggleBrowser = $$props.toggleBrowser);
+		if ("toggleBrowser" in $$props) $$invalidate(9, toggleBrowser = $$props.toggleBrowser);
 		if ("currentLocation" in $$props) $$invalidate(1, currentLocation = $$props.currentLocation);
-		if ("show_theoryplot" in $$props) $$invalidate(12, show_theoryplot = $$props.show_theoryplot);
-		if ("theoryLocation" in $$props) $$invalidate(13, theoryLocation = $$props.theoryLocation);
+		if ("show_theoryplot" in $$props) $$invalidate(10, show_theoryplot = $$props.show_theoryplot);
+		if ("theoryLocation" in $$props) $$invalidate(11, theoryLocation = $$props.theoryLocation);
 		if ("openShell" in $$props) openShell = $$props.openShell;
-		if ("graphPlotted" in $$props) $$invalidate(2, graphPlotted = $$props.graphPlotted);
-		if ("overwrite_expfit" in $$props) $$invalidate(14, overwrite_expfit = $$props.overwrite_expfit);
-		if ("writeFile" in $$props) $$invalidate(15, writeFile = $$props.writeFile);
-		if ("OPOfilesChecked" in $$props) $$invalidate(3, OPOfilesChecked = $$props.OPOfilesChecked);
-		if ("writeFileName" in $$props) $$invalidate(16, writeFileName = $$props.writeFileName);
-		if ("keepTable" in $$props) $$invalidate(17, keepTable = $$props.keepTable);
-		if ("OPOLocation" in $$props) $$invalidate(4, OPOLocation = $$props.OPOLocation);
-		if ("opofiles" in $$props) $$invalidate(5, opofiles = $$props.opofiles);
-		if ("addFileModal" in $$props) $$invalidate(18, addFileModal = $$props.addFileModal);
-		if ("addedFileCol" in $$props) $$invalidate(19, addedFileCol = $$props.addedFileCol);
-		if ("addedFile" in $$props) $$invalidate(20, addedFile = $$props.addedFile);
-		if ("addedFileScale" in $$props) $$invalidate(21, addedFileScale = $$props.addedFileScale);
-		if ("addedfiles" in $$props) $$invalidate(6, addedfiles = $$props.addedfiles);
-		if ("extrafileAdded" in $$props) $$invalidate(7, extrafileAdded = $$props.extrafileAdded);
-		if ("fullfiles" in $$props) $$invalidate(22, fullfiles = $$props.fullfiles);
-		if ("graphWidth" in $$props) $$invalidate(8, graphWidth = $$props.graphWidth);
-		if ("felixfiles" in $$props) $$invalidate(9, felixfiles = $$props.felixfiles);
+		if ("graphPlotted" in $$props) $$invalidate(12, graphPlotted = $$props.graphPlotted);
+		if ("overwrite_expfit" in $$props) $$invalidate(13, overwrite_expfit = $$props.overwrite_expfit);
+		if ("writeFile" in $$props) $$invalidate(14, writeFile = $$props.writeFile);
+		if ("OPOfilesChecked" in $$props) $$invalidate(2, OPOfilesChecked = $$props.OPOfilesChecked);
+		if ("writeFileName" in $$props) $$invalidate(15, writeFileName = $$props.writeFileName);
+		if ("keepTable" in $$props) $$invalidate(16, keepTable = $$props.keepTable);
+		if ("OPOLocation" in $$props) $$invalidate(3, OPOLocation = $$props.OPOLocation);
+		if ("opofiles" in $$props) $$invalidate(4, opofiles = $$props.opofiles);
+		if ("addFileModal" in $$props) $$invalidate(17, addFileModal = $$props.addFileModal);
+		if ("addedFileCol" in $$props) $$invalidate(18, addedFileCol = $$props.addedFileCol);
+		if ("addedFile" in $$props) $$invalidate(19, addedFile = $$props.addedFile);
+		if ("addedFileScale" in $$props) $$invalidate(20, addedFileScale = $$props.addedFileScale);
+		if ("addedfiles" in $$props) $$invalidate(5, addedfiles = $$props.addedfiles);
+		if ("extrafileAdded" in $$props) $$invalidate(6, extrafileAdded = $$props.extrafileAdded);
+		if ("fullfiles" in $$props) $$invalidate(21, fullfiles = $$props.fullfiles);
+		if ("graphWidth" in $$props) $$invalidate(22, graphWidth = $$props.graphWidth);
+		if ("felixfiles" in $$props) $$invalidate(7, felixfiles = $$props.felixfiles);
 		if ("plottedFiles" in $$props) $$invalidate(28, plottedFiles = $$props.plottedFiles);
 		if ("output_namelists" in $$props) $$invalidate(23, output_namelists = $$props.output_namelists);
 	};
@@ -52708,20 +52711,20 @@ function instance$1c($$self, $$props, $$invalidate) {
 
 	$$self.$$.update = () => {
 		if ($$self.$$.dirty[0] & /*fileChecked, currentLocation*/ 3) {
-			 $$invalidate(9, felixfiles = fileChecked.map(file => path.resolve(currentLocation, file)));
+			 $$invalidate(7, felixfiles = fileChecked.map(file => path.resolve(currentLocation, file)));
 		}
 
 		if ($$self.$$.dirty[0] & /*currentLocation*/ 2) {
 			 console.log(`${filetype} currentlocation: \n${currentLocation}`);
 		}
 
-		if ($$self.$$.dirty[0] & /*$opoMode, OPOfilesChecked, fileChecked*/ 1033) {
+		if ($$self.$$.dirty[0] & /*$opoMode, OPOfilesChecked, fileChecked*/ 261) {
 			 $$invalidate(28, plottedFiles = $opoMode
 			? OPOfilesChecked.map(file => file.split(".")[0]) || []
 			: fileChecked.map(file => file.split(".")[0]) || []);
 		}
 
-		if ($$self.$$.dirty[0] & /*plottedFiles, addedfiles*/ 268435520) {
+		if ($$self.$$.dirty[0] & /*plottedFiles, addedfiles*/ 268435488) {
 			 $$invalidate(23, output_namelists = [
 				"averaged",
 				...plottedFiles,
@@ -52729,66 +52732,53 @@ function instance$1c($$self, $$props, $$invalidate) {
 			]);
 		}
 
-		if ($$self.$$.dirty[0] & /*$opoMode, OPOLocation, currentLocation*/ 1042) {
+		if ($$self.$$.dirty[0] & /*$opoMode, OPOLocation, currentLocation*/ 266) {
 			 set_store_value(felixopoLocation, $felixopoLocation = $opoMode ? OPOLocation : currentLocation, $felixopoLocation);
 		}
 
-		if ($$self.$$.dirty[0] & /*$opoMode*/ 1024) {
+		if ($$self.$$.dirty[0] & /*$opoMode*/ 256) {
 			 $opoMode
 			? window.createToast("OPO MODE", "warning")
 			: window.createToast("FELIX MODE");
 		}
 
-		if ($$self.$$.dirty[0] & /*$opoMode*/ 1024) {
+		if ($$self.$$.dirty[0] & /*$opoMode*/ 256) {
 			 set_store_value(Ngauss_sigma, $Ngauss_sigma = $opoMode ? 2 : 5, $Ngauss_sigma);
 		}
 
-		if ($$self.$$.dirty[0] & /*extrafileAdded*/ 128) {
+		if ($$self.$$.dirty[0] & /*extrafileAdded*/ 64) {
 			 console.log(`Extrafile added: ${extrafileAdded}`);
 		}
 
-		if ($$self.$$.dirty[0] & /*$opoMode, opofiles, addedfiles, currentLocation, felixfiles*/ 1634) {
+		if ($$self.$$.dirty[0] & /*$opoMode, opofiles, addedfiles, currentLocation, felixfiles*/ 434) {
 			 $opoMode
-			? $$invalidate(22, fullfiles = [
+			? $$invalidate(21, fullfiles = [
 					...opofiles,
 					...addedfiles,
 					path.resolve(currentLocation, "averaged.felix")
 				])
-			: $$invalidate(22, fullfiles = [
+			: $$invalidate(21, fullfiles = [
 					...felixfiles,
 					...addedfiles,
 					path.resolve(currentLocation, "averaged.felix")
 				]);
-		}
-
-		if ($$self.$$.dirty[0] & /*graphPlotted, graphWidth*/ 260) {
-			 if (graphPlotted && graphWidth) {
-				graphDivIds.forEach(id => {
-					const content = document.getElementById(id).innerHTML;
-
-					if (content) {
-						Plotly.relayout(id, { width: graphWidth });
-					}
-				});
-			}
 		}
 	};
 
 	return [
 		fileChecked,
 		currentLocation,
-		graphPlotted,
 		OPOfilesChecked,
 		OPOLocation,
 		opofiles,
 		addedfiles,
 		extrafileAdded,
-		graphWidth,
 		felixfiles,
 		$opoMode,
 		toggleBrowser,
 		show_theoryplot,
 		theoryLocation,
+		graphPlotted,
 		overwrite_expfit,
 		writeFile,
 		writeFileName,
@@ -52798,6 +52788,7 @@ function instance$1c($$self, $$props, $$invalidate) {
 		addedFile,
 		addedFileScale,
 		fullfiles,
+		graphWidth,
 		output_namelists,
 		$normMethod,
 		replot,
