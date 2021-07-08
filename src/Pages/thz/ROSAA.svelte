@@ -98,7 +98,7 @@
         const energy_levels = {}
         energyLevels.forEach(f=>energy_levels[f.label]=f.value)
         const conditions = { 
-            trapTemp, variable, variableRange, numberOfLevels, includeCollision, includeAttachmentRate, includeSpontaneousEmission, writefile, filename, currentLocation,  deexcitation, collisional_rates, main_parameters, simulation_parameters, einstein_coefficient, energy_levels, energyUnit, power_broadening, lineshape_conditions, attachment_rate_coefficients, electronSpin, zeemanSplit, excitedFrom, excitedTo
+            trapTemp, variable, variableRange, numberOfLevels, includeCollision, includeAttachmentRate, includeSpontaneousEmission, writefile, savefilename, currentLocation,  deexcitation, collisional_rates, main_parameters, simulation_parameters, einstein_coefficient, energy_levels, energyUnit, power_broadening, lineshape_conditions, attachment_rate_coefficients, electronSpin, zeemanSplit, excitedFrom, excitedTo
         }
         
         const pyfile = "ROSAA/ROSAA_simulation.py"
@@ -109,7 +109,7 @@
 
     let currentLocation = db.get("thz_modal_location") || db.get("thz_location") || "";
 
-    let filename = ""
+    let savefilename = ""
     
     $: if(currentLocation&&fs.existsSync(currentLocation)) {db.set("thz_modal_location", currentLocation)}
     async function browse_folder() {
@@ -189,8 +189,10 @@
             k3.constant = attachmentRateConstants.k3.map(setID).map(correctObjValue);
             kCID.constant = attachmentRateConstants.kCID.map(setID).map(correctObjValue);
 
-            ({trapTemp, electronSpin, zeemanSplit, currentLocation, filename, numberDensity} = CONFIG);
-            ({energyFilename, collisionalFilename, einsteinFilename} = CONFIG);
+            ({trapTemp, electronSpin, zeemanSplit, numberDensity} = CONFIG);
+
+            ({savelocation:currentLocation, savefilename}=CONFIG.saveFile);
+            ({energy:energyFilename, collision:collisionalFilename, einsteinA:einsteinFilename} = CONFIG.filenames);
 
             energyFilename = window.path.join(configFileLocation, energyFilename);
             collisionalFilename = window.path.join(configFileLocation, collisionalFilename);
@@ -309,7 +311,7 @@
                 <button class="button is-link" id="thz_modal_filebrowser_btn" on:click={browse_folder}>Browse</button>
                 <Textfield bind:value={currentLocation} label="Current location" />
 
-                <Textfield bind:value={filename} label="filename" />
+                <Textfield bind:value={savefilename} label="savefilename" />
             </div>
 
             <div class="writefileCheck">
@@ -400,7 +402,6 @@
 
                         </div>
                     </div>
-
                 </div>
 
                 <!-- Doppler lineshape -->

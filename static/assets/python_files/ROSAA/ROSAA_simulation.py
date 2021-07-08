@@ -80,14 +80,11 @@ class ROSAA:
 
                     if self.includeCollision:
                         if key in self.collisionalRates and keyInverse in self.collisionalRates:
-
                             R_coll = self.collisionalRates[key]*N[j] - self.collisionalRates[keyInverse]*N[i]
                             collisional.append(R_coll)
 
-                    
                     if self.includeSpontaneousEmission:
                         if key in self.einsteinA_Rates:
-
                             R_einsteinA = self.einsteinA_Rates[key]*N[j]
                             einstein.append(R_einsteinA)
 
@@ -95,15 +92,14 @@ class ROSAA:
                             R_einsteinA = -self.einsteinA_Rates[keyInverse]*N[i]
                             einstein.append(R_einsteinA)
 
-
                     if self.lightON:
                         if i in self.transitionLevels and j in self.transitionLevels:
-
                             R_einsteinB = self.einsteinB_Rates[key]*N[j] - self.einsteinB_Rates[keyInverse]*N[i]
                             einstein.append(R_einsteinB)
 
             collections = collisional + einstein
             rateCollection.append(collections)
+
 
         dR_dt = []
         for _ in rateCollection:
@@ -113,8 +109,6 @@ class ROSAA:
 
         if self.includeAttachmentRate:
             dR_dt = self.compute_attachment_process(N_He, dR_dt)
-        
-        # dR_dt = np.array(dR_dt, dtype=float)
         return dR_dt
 
     def compute_attachment_process(self, N_He, N):
@@ -177,7 +171,15 @@ class ROSAA:
             print(f"{N_He=}", flush=True)
 
         totalSteps = int(self.simulation_parameters["Total steps"])
-        self.simulateTime = np.linspace(0, duration, totalSteps)
+        initialDuration = 5e-3
+
+        initialSteps = np.linspace(0, initialDuration, int(totalSteps*0.5))
+        finalSteps = np.linspace(initialDuration, duration, int(totalSteps*0.5))
+        if duration>initialDuration:
+            self.simulateTime = np.append(initialSteps, finalSteps)
+        else:
+            self.simulateTime = np.linspace(0, duration, int(totalSteps*0.5))
+
         self.lightON=False
 
         N_OFF = solve_ivp(self.SimulateODE, tspan, [*self.boltzmanDistribution, *N_He], dense_output=True)
@@ -226,7 +228,6 @@ class ROSAA:
 
     def WriteData(self):
         location = pt(conditions["currentLocation"])
-
         savefilename = conditions["filename"]
         dataToSend = {
             "legends":self.legends,
@@ -236,11 +237,10 @@ class ROSAA:
         }
 
         with open(location / f"{savefilename}_ROSAA_output.json", 'w+') as f:
-        
             data = json.dumps(dataToSend, sort_keys=True, indent=4, separators=(',', ': '))
             f.write(data)
 
-
+            
 
 if __name__ == "__main__":
     conditions = json.loads(sys.argv[1])

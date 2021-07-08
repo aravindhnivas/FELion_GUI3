@@ -1,5 +1,5 @@
 mainParameters:
-    - {label: molecule, value: CD+}
+    - {label: molecule, value: "CD^+"}
     - {label: tagging partner, value: He}
     - {label: trap_area (sq-meter), value: "5e-5"}
 
@@ -32,14 +32,17 @@ attachmentRateConstants:
     kCID: 
         - {label: kCID1, value: 6.7e-16}
         - {label: kCID2, value: 1.9e-15}
+        
+saveFile:
+    savefilename: ROSAA_CD+_test_simulations
+    savelocation: Z:\22pole_iontrap-exchange\Students\Aravindh\Simulations\ROSAA_modal\CD+\Simulations
+
+filenames:
+    collision: collisional_CD+_He_5K.yml
+    einsteinA: einstein_A_CD+.yml
+    energy: energy_CD+.yml
  
 numberDensity: "2e14"
 electronSpin: false
 zeemanSplit: false
 trapTemp: 5
-energyUnit: "cm-1"
-energyFilename: energy_CD+.yml
-collisionalFilename: collisional_CD+_He_5K.yml
-einsteinFilename: einstein_A_CD+.yml
-filename: ROSAA_CD+_test_simulations
-currentLocation: D:\SurfDrive\THz_Measurements\CD+\Simulations\ROSAA_model
