@@ -15,3 +15,4 @@ static/assets/python_files/notebooks/profile_fit/*.dat
 static/assets/python_files/notebooks/profile_fit/*.png
 static/assets/python_files/ROSAA/__pycache__/*.pyc
 static/assets/python_files/notebooks/profile_fit/*.pdf
+static/output.log
