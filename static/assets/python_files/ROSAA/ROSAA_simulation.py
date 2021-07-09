@@ -120,7 +120,9 @@ class ROSAA:
         N[self.excitedFrom] += attachmentRate0
         N[self.excitedTo] += attachmentRate1
         dR_dt = list(N.values())
+
         # for the first complex formed (sign corrected)
+        
         currentRate =  - attachmentRate0 - attachmentRate1
 
         for i in range(self.totalAttachmentLevels-1):
@@ -128,26 +130,29 @@ class ROSAA:
             attachmentRate = currentRate + nextRate
             dR_dt.append(attachmentRate)
             currentRate = -nextRate
+        
+        
         dR_dt.append(currentRate)
+
         return dR_dt
 
-    def GetAttachmentRatesParameters(self):
 
+    def GetAttachmentRatesParameters(self):
         self.attachment_rate_coefficients = conditions["attachment_rate_coefficients"]
         self.rateConstants = self.attachment_rate_coefficients["rateConstants"]
-        self.k3 = [float(_) for _ in self.rateConstants["k3"]]
 
+        self.k3 = [float(_) for _ in self.rateConstants["k3"]]
         self.k3_branch = float(self.attachment_rate_coefficients["a(k31)"])
+
         self.k31_excited = self.k3_branch*self.k3[0]
         
-        self.kCID  = [float(_) for _ in self.rateConstants["kCID"]]
+        self.kCID = [float(_) for _ in self.rateConstants["kCID"]]
         self.kCID_branch = float(self.attachment_rate_coefficients["branching-ratio(kCID)"])
 
         self.totalAttachmentLevels = int(self.attachment_rate_coefficients["totalAttachmentLevels"])
         self.includeAttachmentRate = conditions["includeAttachmentRate"]
     
     def Simulate(self):
-
         self.simulation_parameters = conditions["simulation_parameters"]
         
         duration = self.simulation_parameters["Simulation time(ms)"]
@@ -240,13 +245,11 @@ class ROSAA:
             data = json.dumps(dataToSend, sort_keys=True, indent=4, separators=(',', ': '))
             f.write(data)
 
-
-
 if __name__ == "__main__":
     conditions = json.loads(sys.argv[1])
-
     pp = pprint.PrettyPrinter(indent=4)
-    pp.pprint(conditions)
-    sys.stdout.flush()
 
+    pp.pprint(conditions)
+
+    sys.stdout.flush()
     ROSAA()
