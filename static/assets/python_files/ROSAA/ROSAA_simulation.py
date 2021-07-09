@@ -3,6 +3,7 @@ import sys, json, pprint, time
 import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path as pt
+from numpy.lib.npyio import save
 from scipy.integrate import solve_ivp
 from functools import reduce
 
@@ -51,10 +52,12 @@ class ROSAA:
         if self.includeAttachmentRate:
             self.legends += [f"${self.molecule}${self.taggingPartner}"]
             self.legends += [f"${self.molecule}${self.taggingPartner}$_{i+1}$" for i in range(1, self.totalAttachmentLevels)]
+        self.writeFile = conditions["writefile"]
         
-        self.WriteData()
-        self.Plot()
+        if self.writeFile:
+            self.WriteData()
 
+        self.Plot()
 
     def SimulateODE(self, t, counts):
         
@@ -219,21 +222,22 @@ class ROSAA:
         ax.hlines(1, 0, simulationTime[-1]+simulationTime[-1]*0.2, colors='k', linestyles="dashdot")
 
         lg = ax.legend(title=f"--OFF, -ON", fontsize=14, title_fontsize=16)
-        
         lg.set_draggable(True)
-
         ax = optimizePlot(ax, xlabel="Time (ms)", ylabel="Population (%)")
-        signal_index = len(self.energyKeys)+1
-        signal = (1 - (self.lightON_distribution[signal_index][1:] / self.lightOFF_distribution[signal_index][1:]))*100
-        fig1, ax1 = plt.subplots(figsize=(10, 6), dpi=100)
-        ax1.plot(simulationTime[1:], signal)
-        ax1 = optimizePlot(ax1, xlabel="Time (ms)", ylabel="Signal (%)")
 
+        if self.includeAttachmentRate:
+            signal_index = len(self.energyKeys)+1
+
+            signal = (1 - (self.lightON_distribution[signal_index][1:] / self.lightOFF_distribution[signal_index][1:]))*100
+            fig1, ax1 = plt.subplots(figsize=(10, 6), dpi=100)
+            ax1.plot(simulationTime[1:], signal)
+            ax1 = optimizePlot(ax1, xlabel="Time (ms)", ylabel="Signal (%)")
         plt.show()
 
     def WriteData(self):
         location = pt(conditions["currentLocation"])
-        savefilename = conditions["savelocation"]
+
+        savefilename = conditions["savefilename"]
         dataToSend = {
             "legends":self.legends,
             "time (in s)":self.simulateTime.tolist(), 
@@ -241,15 +245,18 @@ class ROSAA:
             "lightOFF_distribution":self.lightOFF_distribution.tolist()
         }
 
+
         with open(location / f"{savefilename}_ROSAA_output.json", 'w+') as f:
             data = json.dumps(dataToSend, sort_keys=True, indent=4, separators=(',', ': '))
             f.write(data)
 
+            print(f"{savefilename} file written in {location} folder.", flush=True)
+
 if __name__ == "__main__":
     conditions = json.loads(sys.argv[1])
     pp = pprint.PrettyPrinter(indent=4)
-
     pp.pprint(conditions)
 
     sys.stdout.flush()
+
     ROSAA()

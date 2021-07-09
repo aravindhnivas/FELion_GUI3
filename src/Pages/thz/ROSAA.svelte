@@ -200,8 +200,8 @@
             energyLevels = energyLevels.map(setID);
             numberOfLevels = energyLevels.length;
             
-            ({rateConstants:collisionalCoefficient, type:collisionalRateType} = await getYMLFileContents(collisionalFilename));
-            collisionalCoefficient = collisionalCoefficient.map(setID).map(correctObjValue);
+            // ({rateConstants:collisionalCoefficient, type:collisionalRateType} = await getYMLFileContents(collisionalFilename));
+            // collisionalCoefficient = collisionalCoefficient.map(setID).map(correctObjValue);
 
             ({rateConstants:einsteinCoefficientA} = await getYMLFileContents(einsteinFilename));
             einsteinCoefficientA = einsteinCoefficientA.map(setID).map(correctObjValue);
@@ -209,7 +209,6 @@
             window.createToast("CONFIG loaded");
 
         } catch (error) {$mainPreModal = {modalContent:error, open:true}}
-
     }
 
 </script>
@@ -370,12 +369,11 @@
                     </div>
                 </div>
 
-                <!-- {#if includeSpontaneousEmission} -->
                 <EinsteinCoefficients bind:einsteinCoefficientA bind:einsteinCoefficientB {energyLevels} {electronSpin} {zeemanSplit} {energyUnit}/>
-                <!-- {/if} -->
 
                 {#if includeCollision}
-                    <CollisionalCoefficients bind:collisionalCoefficient bind:collisionalCoefficient_balance bind:collisionalRateType {...{energyLevels, electronSpin, zeemanSplit, energyUnit}} bind:collisionalRates bind:numberDensity/>
+                    <CollisionalCoefficients bind:collisionalCoefficient bind:collisionalCoefficient_balance bind:collisionalRateType 
+                    {...{energyLevels, electronSpin, zeemanSplit, energyUnit, collisionalFilename}} bind:collisionalRates bind:numberDensity />
                 {/if}
                 
                 <!-- Simulation parameters -->

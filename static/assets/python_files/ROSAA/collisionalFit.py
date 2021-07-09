@@ -15,7 +15,7 @@ def linearFit(x, m, c): return m*x + c
 
 def collisionalFit():
 
-    fullname = pt(args["collisionlFile"])
+    fullname = pt(args["collisionalFilename"])
 
 
     with open(fullname, "r") as f:

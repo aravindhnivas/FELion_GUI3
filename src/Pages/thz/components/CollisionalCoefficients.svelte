@@ -7,9 +7,9 @@
     import balance_distribution from "../functions/balance_distribution";
 
     export let collisionalCoefficient=[], collisionalCoefficient_balance=[], collisionalRateType="both", collisionalRates = [];
-    export let energyLevels, electronSpin, zeemanSplit, energyUnit, numberDensity = "2e14";
+    export let energyLevels, electronSpin, zeemanSplit, energyUnit, numberDensity = "2e14", collisionalFilename;
 
-    let collisionalWindow=false, collisionalFitWindow=false;
+    let collisionalWindow=false;
     
     const compteCollisionalBalanceConstants = () => {
         const balanceArgs  = {energyLevels, collisionalTemp,  electronSpin, zeemanSplit, energyUnit}
@@ -42,10 +42,10 @@
 
     async function browse_collisional_file() {
         const result = await browse({dir:false})
-        if (!result.canceled) { collisionlFile = result.filePaths[0] }
+        if (!result.canceled) { collisionalFilename = result.filePaths[0] }
     }
 
-    let collisionlFile = ""
+    // let collisionlFile = ""
     
     let saveFilename = "collisional_rate_constants"
     let collisionalTemp = 5
@@ -65,9 +65,9 @@
     async function computeCollisionalFit(e) {
         try {
     
-            if (collisionlFile) {
+            if (collisionalFilename) {
                 const pyfile = "ROSAA/collisionalFit.py"
-                const args = [JSON.stringify({collisionlFile, collisionalTemp, saveFilename, collisionalRateType})]
+                const args = [JSON.stringify({collisionalFilename, collisionalTemp, saveFilename, collisionalRateType})]
                 const dataFromPython = await computePy_func({e, pyfile, args});
                 const {rateConstants} = dataFromPython
     
@@ -76,7 +76,7 @@
     
         } catch (error) { $mainPreModal = {modalContent:error, open:true} }
     }
-    const saveComputedCollisionalValues = () => {}
+    // const saveComputedCollisionalValues = () => {}
 
 </script>
 
@@ -112,33 +112,31 @@
 <CollisionalDistribution {...collisionalArgs} bind:active={collisionalWindow} />
 
 <div class="sub_container__div box">
-
     <div class="subtitle">Collisional rate constants</div>
     <div class="control__div ">
-        <!-- <CustomSelect options={["deexcitation", "excitation", "both"]} bind:picked={collisionalRateType} /> -->
         <button class="button is-link " on:click={compteCollisionalBalanceConstants}>Compute balance rate</button>
         <button class="button is-link " on:click={()=>collisionalWindow=true}>Compute Collisional Cooling</button>
-        <button class="button is-link " on:click={()=>collisionalFitWindow=!collisionalFitWindow}>Compute from fit</button>
-
-        <div class="align h-center" class:hide={!collisionalFitWindow}>
-            <!-- <CustomSelect options={["deexcitation", "excitation", "both"]} bind:picked={collisionalRateType} /> -->
-            <Textfield bind:value={saveFilename} label="saveFilename"/>
+        <div class="align h-center">
             <Textfield bind:value={collisionalTemp} label="collisionalTemp"/>
             <button class="button is-link" on:click={browse_collisional_file}>Browse</button>
             <button class="button is-link" on:click={computeCollisionalFit}>Compute</button>
-            <button class="button is-link" on:click={saveComputedCollisionalValues}>Save values</button>
+            <!-- <Textfield bind:value={saveFilename} label="saveFilename"/> -->
+            <!-- <button class="button is-link" on:click={saveComputedCollisionalValues}>Save values</button> -->
+
         </div>
+
     </div>
-
-
-
     {#if collisionalCoefficient.length>0}
+
         <div class="content__div ">
-            {#each collisionalCoefficient as {label, value, id}(id)}
-                <Textfield bind:value {label}/>
-    
-            {/each}
+
+
+
+        {#each collisionalCoefficient as {label, value, id}(id)}
+            <Textfield bind:value {label}/>
+        {/each}
         </div>
+
     {/if}
 
     {#if collisionalCoefficient_balance.length>0}
@@ -147,18 +145,17 @@
         <div class="content__div ">
             {#each collisionalCoefficient_balance as {label, value, id}(id)}
                 <Textfield bind:value {label}/>
+
             {/each}
         </div>
-
-        {/if}
-
-        <hr>
+    {/if}
+    
+    <hr>
     <div class="subtitle">Collisional Rates (per sec) </div>
-
     <div class="control__div">
         <Textfield bind:value={numberDensity} label="numberDensity (cm-3)"/>
-    </div>
 
+    </div>
     <div class="content__div ">
         {#each collisionalRates as {label, value, id}(id)}
             <Textfield bind:value {label}/>
