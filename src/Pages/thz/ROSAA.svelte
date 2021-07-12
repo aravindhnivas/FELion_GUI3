@@ -208,15 +208,14 @@
             gaussian = Number(Cg*Math.sqrt(collisionalTemp)*1e-6).toFixed(3)
         };
         if(powerBroadening.length) {
-            [power, dipole] = powerBroadening.map(f=>f.value);
+            [dipole, power] = powerBroadening.map(f=>f.value);
             trapArea = findAndGetValue(mainParameters, "trap_area (sq-meter)")
 
-            console.log(2*dipole*DebyeToCm/PlanksConstant, Math.sqrt( 1 / (trapArea*SpeedOfLight*VaccumPermitivity) ), trapArea)
             Cp = (2*dipole*DebyeToCm/PlanksConstant) * Math.sqrt( 1 / (trapArea*SpeedOfLight*VaccumPermitivity) );
+
             lorrentz = Number(Cp*Math.sqrt(power)*1e-6).toFixed(3)
 
         };
-
     }
 
     async function setConfig() {
