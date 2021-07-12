@@ -4,10 +4,13 @@
     import Textfield from '@smui/textfield';
     import {PlanksConstant, SpeedOfLight} from "..//functions/constants";
     import {computeStatisticalWeight} from "../functions/balance_distribution";
+
+
     export let einsteinCoefficientA=[], einsteinCoefficientB=[];
-
     export let energyLevels, electronSpin, zeemanSplit, energyUnit;
+    export let lorrentz=0.320, gaussian=0.210, power="2e-5", trapArea="5e-5";
 
+    
     function computeEinsteinB() {
         const einsteinCoefficientB_emission = einsteinCoefficientA.map(({label, value})=>{
 
@@ -37,8 +40,8 @@
         
     }
 
-    let lorrentz=0.320, gaussian=0.210;
-    let power="2e-5", trapArea="5e-5"
+    // let lorrentz=0.320, gaussian=0.210;
+    // let power="2e-5", trapArea="5e-5"
     async function computeEinsteinBRate(e) {
         const args = [JSON.stringify({lorrentz, gaussian})]
 
@@ -121,11 +124,11 @@
         <hr>
         <div class="subtitle">Einstein B Co-efficients</div>
         <div class="control__div ">
-            <Textfield bind:value={lorrentz} label="lorrentz (MHz)" />
+            <!-- <Textfield bind:value={lorrentz} label="lorrentz (MHz)" />
             <Textfield bind:value={gaussian} label="gaussian (MHz)"/>
             <Textfield bind:value={power} label="Power (W)" />
 
-            <Textfield bind:value={trapArea} label="TrapArea (sq-m)"/>
+            <Textfield bind:value={trapArea} label="TrapArea (sq-m)"/> -->
 
             <button class="button is-link " on:click={computeEinsteinBRate}>Compute rate constants</button>
         </div>

@@ -422,12 +422,15 @@
                     </div>
                 </div>
 
-                <EinsteinCoefficients bind:einsteinCoefficientA bind:einsteinCoefficientB {energyLevels} {electronSpin} {zeemanSplit} {energyUnit}/>
+                <EinsteinCoefficients bind:einsteinCoefficientA bind:einsteinCoefficientB 
+                {energyLevels} {electronSpin} {zeemanSplit} {energyUnit} {gaussian} {trapArea} {lorrentz} {power} />
 
                 {#if includeCollision}
                     <CollisionalCoefficients bind:collisionalCoefficient bind:collisionalCoefficient_balance bind:collisionalRateType 
-                    {...{energyLevels, electronSpin, zeemanSplit, energyUnit, collisionalFilename}} bind:collisionalRates bind:numberDensity />
+                    {...{energyLevels, electronSpin, zeemanSplit, energyUnit, collisionalFilename, collisionalTemp}} bind:collisionalRates bind:numberDensity />
+                    
                 {/if}
+                
                 
                 <!-- Simulation parameters -->
 
@@ -455,15 +458,11 @@
                     <div class="subtitle">Doppler lineshape</div>
                     <div class="content__div ">
                         {#each dopplerLineshape as {label, value, type, step, id}(id)}
-                    
                             <Textfield bind:value {label} input$type={type} input$step={step}/>
-
                         {/each}
 
-
-                        <Textfield bind:value={collisionalTemp} label="collisionalTemp(K)"/>
-                        <Textfield bind:value={gaussian} label="gaussian(MHz)"/>
-
+                        <Textfield bind:value={collisionalTemp} label="collisionalTemp(K)" disabled />
+                        <Textfield bind:value={gaussian} label="gaussian(MHz)" disabled />
                     </div>
                 </div>
                 
@@ -474,8 +473,7 @@
                         {#each powerBroadening as {label, value, id}(id)}
                             <Textfield bind:value {label} />
                         {/each}
-
-                        <Textfield bind:value={lorrentz} label="lorrentz(MHz)"/>
+                        <Textfield bind:value={lorrentz} label="lorrentz(MHz)" disabled />
                     </div>
                 </div>
 
@@ -487,9 +485,10 @@
             {/if}
 
         </svelte:fragment>
-        <svelte:fragment slot="footer_content__slot">
-            <div class="align">
 
+        <svelte:fragment slot="footer_content__slot">
+        
+            <div class="align">
                 {#if pyProcesses.length>0}
                     <div >Running: {pyProcesses.length} {pyProcesses.length>1 ? "simulations" : "simulation"}</div>
                 {/if}
@@ -500,9 +499,8 @@
                 <button  class="button is-link" on:click="{(e)=>{showreport = !showreport}}" >{showreport ? "Go Back" : "Status report"}</button>
                 <button  class="button is-link" on:click="{simulation}" on:pyEvent={pyEventHandle} on:pyEventClosed="{pyEventClosedHandle}" on:pyEventData={pyEventDataReceivedHandle}>Submit</button>
             </div>
-
-
-
         </svelte:fragment>
+    
     </SeparateWindow>
+
 {/if}

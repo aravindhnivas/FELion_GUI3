@@ -7,7 +7,7 @@
     import balance_distribution from "../functions/balance_distribution";
 
     export let collisionalCoefficient=[], collisionalCoefficient_balance=[], collisionalRateType="both", collisionalRates = [];
-    export let energyLevels, electronSpin, zeemanSplit, energyUnit, numberDensity = "2e14", collisionalFilename;
+    export let energyLevels, electronSpin, zeemanSplit, energyUnit, numberDensity = "2e14", collisionalFilename, collisionalTemp;
 
     let collisionalWindow=false;
     
@@ -48,7 +48,7 @@
     // let collisionlFile = ""
     
     let saveFilename = "collisional_rate_constants"
-    let collisionalTemp = 5
+    // let collisionalTemp = 5
     const setID = (obj) => {
     
         obj.id = window.getID();
