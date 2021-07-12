@@ -38,7 +38,7 @@ def simulate(args):
     time = float(args["duration"])*1e-3
 
     tspan = [0, time]
-    N_collisional = solve_ivp(collisionalRateDistribution, tspan, boltzmanDistribution, dense_output=True)
+    N_collisional = solve_ivp(collisionalRateDistribution, tspan, boltzmanDistributionInitial, dense_output=True)
     simulateTime = np.linspace(0, time, 100)
 
 
@@ -55,13 +55,13 @@ def simulate(args):
 
         dataWithLabel[key] = {"x":simulateTime.tolist(), "y":value, "name":key, **defaultStyle, **lineColor}
         colorIndex += 2
-    
-    collisionalBoltzmanPlotData = {"collisionalData":{"x":energyKeys, "y":simulateCounts.T[-1].tolist(), "name" : "collisional"}}
-    
+
+    collisionalDistribution = simulateCounts.T[-1]
+    differenceFromBoltzman = np.around(collisionalDistribution - boltzmanDistributionCold, decimals=2)
     dataToSend = {
         "data" : dataWithLabel, 
-        "collisionalBoltzmanPlotData" : collisionalBoltzmanPlotData,
-
+        "collisionalBoltzmanPlotData" : {"collisionalData":{"x":energyKeys, "y":collisionalDistribution.tolist(), "name" : "collisional"}},
+        "differenceFromBoltzman": {"data": {"x":energyKeys, "y":differenceFromBoltzman.tolist(), "name":"Difference"}}
     }
     return sendData(dataToSend)
 
@@ -80,12 +80,16 @@ if __name__ == "__main__":
 
     args = sys.argv[1:][0].split(",")
     args = json.loads(", ".join(args))
-
     print(args, flush=True)
     rate_constants = {key:float(value) for key, value in args["collisionalRateConstantValues"].items()}
+
     nHe = float(args["numberDensity"])
+    
     boltzmanDistributionValues = args["boltzmanDistributionValues"]
-    energyKeys = list(boltzmanDistributionValues.keys())
-    boltzmanDistribution = list(boltzmanDistributionValues.values())
+    boltzmanDistributionInitial = list(boltzmanDistributionValues.values())
+    boltzmanDistributionCold = args["boltzmanDistributionCold"]
+    energyKeys = boltzmanDistributionCold["x"]
+    boltzmanDistributionCold = np.array(boltzmanDistributionCold["y"], dtype=float)
     print(f"Received args: {args}, {type(args)}\n")
+
     simulate(args)

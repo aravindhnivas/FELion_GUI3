@@ -297,6 +297,7 @@
 </style>
 
 {#if active}
+
     <BoltzmanDistribution {...boltzmanArgs} bind:active={boltzmanWindow} maximize={false}/>
     <SeparateWindow id="ROSAA__modal" title="ROSAA modal" bind:active>
 
@@ -437,9 +438,11 @@
                     <button transition:fade class="button is-danger" on:click="{pyKillProcess}" >Stop</button>
                 {/if}
                 <button  class="button is-link" on:click="{(e)=>{showreport = !showreport}}" >{showreport ? "Go Back" : "Status report"}</button>
-
                 <button  class="button is-link" on:click="{simulation}" on:pyEvent={pyEventHandle} on:pyEventClosed="{pyEventClosedHandle}" on:pyEventData={pyEventDataReceivedHandle}>Submit</button>
             </div>
+
+
+
         </svelte:fragment>
     </SeparateWindow>
 {/if}

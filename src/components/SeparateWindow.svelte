@@ -26,12 +26,29 @@
                 graphWindowClosed = true
                 active = false
                 windowReady = false
-                console.log(`graphWindowClosed: ${graphWindowClosed}`)
                 return false
             },
-            onfocus: function(){windowReady = true;console.log(windowReady, graphWindow)}
+            onfocus: function(){windowReady = true;},
+            onresize: function(width, height){changeGraphDivWidth()},
         });
         graphWindow.maximize(maximize);
+    }
+    $: if(active) openGraph()
+
+    const changeGraphDivWidth = async (ms=0) => {
+
+        await tick(); 
+        if (ms>0) await sleep(ms);
+        graphDivs.forEach(id=>{
+            if(id.data) {Plotly.relayout(id, {width:id.clientWidth})}
+        })
+    }
+
+    let graphDivs=[];
+    function lookForGraph() {
+
+        try {graphDivs = Array.from(document.querySelectorAll(`#${id} .graph__div`))} 
+        catch (error) {console.log("No graph in this window")}
     }
 
 </script>
@@ -54,9 +71,11 @@
 
 </style>
 
-<div {id} class="main_content__div" use:openGraph>
+<div {id} class="main_content__div" class:hide={!active}>
     <div class="header_content"><slot name="header_content__slot" /></div>
 
-    <div class="main_content"><slot name="main_content__slot" /></div>
+    <div class="main_content" use:lookForGraph><slot name="main_content__slot" /></div>
+    
     <div class="footer_content" ><slot name="footer_content__slot"/> </div>
+    
 </div>

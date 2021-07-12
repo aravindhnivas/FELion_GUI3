@@ -31,7 +31,7 @@
         }
     }
     $: if (windowReady) {setTimeout(()=>graphWindow.focus(), 100);}
-    $: if (windowReady && trapTemp>0) {plotGraph();}
+    $: if (windowReady&&trapTemp>0) {plotGraph();}
     
 </script>
 
@@ -44,24 +44,17 @@
     }
 </style>
 
-{#if active}
+<SeparateWindow {title} bind:active bind:windowReady bind:graphWindow maximize={false}>
+    <svelte:fragment slot="header_content__slot" >
+        <div class="header">
+            <Textfield bind:value={stepSize} label="stepSize" style="width:auto;"/>
+            <Textfield bind:value={trapTemp} label="temperature" input$type="number" input$step={stepSize} input$min=0 style="width:auto;"/>
+            <button class="button is-link" on:click={plotGraph}>Compute</button>
+        </div>
+    </svelte:fragment>
 
-    <SeparateWindow {title} bind:active bind:windowReady bind:graphWindow maximize={false}>
+    <svelte:fragment slot="main_content__slot">
+        <div id="{plotID}" class="graph__div"></div>
 
-        <svelte:fragment slot="header_content__slot" >
-            <div class="header">
-                
-                <Textfield bind:value={stepSize} label="stepSize" style="width:auto;"/>
-                <Textfield bind:value={trapTemp} label="temperature" input$type="number" input$step={stepSize} input$min=0 style="width:auto;"/>
-                <button class="button is-link" on:click={plotGraph}>Compute</button>
-            </div>
-
-
-        </svelte:fragment>
-
-        <svelte:fragment slot="main_content__slot">
-            <div id="{plotID}"></div>
-
-        </svelte:fragment>
-    </SeparateWindow>
-{/if}
+    </svelte:fragment>
+</SeparateWindow>

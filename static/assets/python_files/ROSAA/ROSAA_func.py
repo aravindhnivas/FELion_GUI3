@@ -67,24 +67,22 @@ def boltzman_distribution(energy_levels, temp=5, electronSpin=False, zeemanSplit
 
     for label, energy in energy_levels.items():
 
-        if electronSpin:
-            if zeemanSplit:
-                Gj = 1
-            else:
+        if not zeemanSplit:
+            if electronSpin:
                 j = float(label.split("_")[1])
                 Gj = int(2*j+1)
-                
-        else:
-            if zeemanSplit:
-                Gj = 1
             else:
                 j = int(label)
+
                 Gj = int(2*j+1)
+        else:
+            Gj = 1
+
         temp = Gj*np.exp(-energy/KT)
         Nj.append(temp)
-
     Nj = np.array(Nj, dtype=float)
     Nj = Nj/Nj.sum()
+    
     return Nj
 
 def distribution(j0, j1, energy_levels, temp, electronSpin, zeemanSplit):
