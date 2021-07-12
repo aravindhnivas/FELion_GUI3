@@ -1,7 +1,7 @@
 
 <script>
     import {mainPreModal} from "../../svelteWritable";
-    import { createEventDispatcher } from 'svelte';
+    // import { createEventDispatcher } from 'svelte';
     import {browse} from "../../components/Layout.svelte";
     import Textfield from '@smui/textfield';
     import {fade} from "svelte/transition";
@@ -17,16 +17,19 @@
 
     import AttachmentCoefficients from "./components/AttachmentCoefficients.svelte";
 
+
+    import {PlanksConstant, SpeedOfLight, boltzmanConstant, DebyeToCm, VaccumPermitivity, amuToKG} from "./functions/constants";
+    import {findAndGetValue} from "./functions/misc";
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     
     export let active=false;
-    const dispatch = createEventDispatcher();
+    // const dispatch = createEventDispatcher();
 
     let electronSpin=false, zeemanSplit= false;
     let collisionalRateType = "excitation"
-    let trapTemp = 5.7
-    let excitedTo="excitedTo", excitedFrom="excitedFrom";
+    // let trapTemp = 5.7
+    
     let [mainParameters, simulationParameters, dopplerLineshape, powerBroadening] = Array(4).fill([])
     let attachmentCoefficients=[], k3={constant:[], rate:[]}, kCID={constant:[], rate:[]};
     $: deexcitation = collisionalRateType==="deexcitation";
@@ -60,7 +63,6 @@
         statusReport += "\n######## TERMINATED ########"
     }
 
-
     const pyKillProcess = () => {
         const lastInvokedPyProcess = _.last(pyProcesses);
 
@@ -69,9 +71,12 @@
             lastInvokedPyProcess.kill(); pyProcesses.pop()
         }
     }
-    let collisionalRates = []
 
+    let collisionalRates = []
     const simulation = (e) => {
+
+        if(!configLoaded) return window.createToast("Config file not loaded", "danger");
+        if(!transitionFrequency) return window.createToast("Transition frequency is not defined", "danger");
 
         const collisional_rates = {}
         collisionalRates.forEach(f=>collisional_rates[f.label] = f.value)
@@ -130,8 +135,6 @@
 
 
 
-
-
     let energyLevels = [];
     let boltzmanWindow = false;
     let energyFilename, collisionalFilename, einsteinFilename;
@@ -139,6 +142,9 @@
 
     let collisionalCoefficient_balance = [];
     let configFile = db.get("ROSAA_config_file") || ""
+
+
+    let configLoaded = false;
     async function loadConfig() {
     
         try {
@@ -170,17 +176,63 @@
 
     }
 
+    let trapArea;
+    // Transition freq.
+    let excitedTo, excitedFrom;
+    let transitionFrequency=0, transitionFrequencyInHz;
+
+    // Doppler linewidth parameters
+    let ionMass=14, RGmass=4, ionTemp=12, trapTemp=5, gaussian=0, collisionalTemp=0;
+    let Cg=0; // doppler-broadening proportionality constant
+
+    // Lorrentz linewidth parameters
+    let lorrentz=0, power="2e-5", dipole=1
+    let Cp=0; // power-broadening proportionality constant
+    $: console.log({Cg, Cp});
+    $: {
+    
+        if(energyLevels.length>1) {
+            const {value:lowerLevelEnergy} = _.find(energyLevels, (energy)=>energy.label==excitedFrom)
+            const {value:upperLevelEnergy} = _.find(energyLevels, (energy)=>energy.label==excitedTo)
+            transitionFrequency = upperLevelEnergy - lowerLevelEnergy;
+            transitionFrequencyInHz = energyUnit=="cm-1" ? transitionFrequency*SpeedOfLight*1e2 : transitionFrequency*1e6;
+            console.log({transitionFrequency, transitionFrequencyInHz})
+        }
+
+        if(dopplerLineshape.length) {
+            [ionMass, RGmass, ionTemp, trapTemp] = dopplerLineshape.map(f=>f.value);
+            collisionalTemp = Number((RGmass*ionTemp + ionMass*trapTemp)/(ionMass+RGmass)).toFixed(1);
+            const sqrtTerm = 8*boltzmanConstant*Math.log(2) / (ionMass*amuToKG*SpeedOfLight
+            **2)
+            Cg = transitionFrequencyInHz*Math.sqrt(sqrtTerm)
+            gaussian = Number(Cg*Math.sqrt(collisionalTemp)*1e-6).toFixed(3)
+        };
+        if(powerBroadening.length) {
+            [power, dipole] = powerBroadening.map(f=>f.value);
+            trapArea = findAndGetValue(mainParameters, "trap_area (sq-meter)")
+
+            console.log(2*dipole*DebyeToCm/PlanksConstant, Math.sqrt( 1 / (trapArea*SpeedOfLight*VaccumPermitivity) ), trapArea)
+            Cp = (2*dipole*DebyeToCm/PlanksConstant) * Math.sqrt( 1 / (trapArea*SpeedOfLight*VaccumPermitivity) );
+            lorrentz = Number(Cp*Math.sqrt(power)*1e-6).toFixed(3)
+
+        };
+
+    }
+
     async function setConfig() {
+
         try {
 
             const configFileLocation = window.path.dirname(configFile);
             const CONFIG = Yml(fs.readFileSync(configFile, "utf-8"));
+
             let attachmentRateConstants = {};
             ({mainParameters, simulationParameters, dopplerLineshape, powerBroadening, attachmentCoefficients, attachmentRateConstants} = CONFIG);
             mainParameters = mainParameters.map(setID);
             simulationParameters = simulationParameters.map(setID);
             dopplerLineshape = dopplerLineshape.map(setID);
             powerBroadening = powerBroadening.map(setID);
+
             attachmentCoefficients = attachmentCoefficients.map(setID);
 
             k3.constant = attachmentRateConstants.k3.map(setID).map(correctObjValue);
@@ -207,6 +259,7 @@
             einsteinCoefficientA = einsteinCoefficientA.map(setID).map(correctObjValue);
             console.log(energyLevels, collisionalCoefficient, einsteinCoefficientA);
             window.createToast("CONFIG loaded");
+            configLoaded = true;
 
         } catch (error) {$mainPreModal = {modalContent:error, open:true}}
     }
@@ -388,24 +441,30 @@
                         {/each}
                         <hr> <div class="subtitle" style="width: 100%; display:grid; place-items: center;">Transition levels</div> <hr>
 
-                        <div style="display: flex; gap: 1em; place-content: center; width: 100%;">
-                            <CustomSelect options={["excitedFrom", ...energyLevels.map(f=>f.label)]} 
-                                bind:picked={excitedFrom} />
-                            <CustomSelect options={["excitedTo", ...energyLevels.map(f=>f.label)]} 
-                                bind:picked={excitedTo} />
+                        <div class="align h-center">
+                            <CustomSelect options={[...energyLevels.map(f=>f.label)]} bind:picked={excitedFrom} label="excitedFrom" style="min-width: 7em;"/>
+                            <CustomSelect options={[...energyLevels.map(f=>f.label)]} bind:picked={excitedTo} label="excitedTo" style="min-width: 7em;"/>
 
+                            <Textfield bind:value={transitionFrequency} label="transitionFrequency ({energyUnit})" />
                         </div>
                     </div>
                 </div>
 
                 <!-- Doppler lineshape -->
                 <div class="sub_container__div box">
+
                     <div class="subtitle">Doppler lineshape</div>
                     <div class="content__div ">
-                        <Textfield bind:value={trapTemp} label="trapTemp(K)"/>
                         {#each dopplerLineshape as {label, value, type, step, id}(id)}
+                    
                             <Textfield bind:value {label} input$type={type} input$step={step}/>
+
                         {/each}
+
+
+                        <Textfield bind:value={collisionalTemp} label="collisionalTemp(K)"/>
+                        <Textfield bind:value={gaussian} label="gaussian(MHz)"/>
+
                     </div>
                 </div>
                 
@@ -416,6 +475,8 @@
                         {#each powerBroadening as {label, value, id}(id)}
                             <Textfield bind:value {label} />
                         {/each}
+
+                        <Textfield bind:value={lorrentz} label="lorrentz(MHz)"/>
                     </div>
                 </div>
 
