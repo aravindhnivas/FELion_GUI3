@@ -205,7 +205,7 @@
             const sqrtTerm = 8*boltzmanConstant*Math.log(2) / (ionMass*amuToKG*SpeedOfLight
             **2)
             Cg = transitionFrequencyInHz*Math.sqrt(sqrtTerm)
-            gaussian = Number(Cg*Math.sqrt(collisionalTemp)*1e-6).toFixed(3)
+            gaussian = Number(Cg*Math.sqrt(ionTemp)*1e-6).toFixed(3)
         };
         if(powerBroadening.length) {
             [dipole, power] = powerBroadening.map(f=>f.value);
