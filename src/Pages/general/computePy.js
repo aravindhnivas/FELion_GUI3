@@ -1,5 +1,6 @@
 
 import { pythonpath, pythonscript, get } from "../settings/svelteWritables";
+// import { mainPreModal } from "../../svelteWritable";
 const { exec } = require("child_process")
 window.checkPython = function checkPython({ defaultPy } = {}) {
 
@@ -29,7 +30,6 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
         checkPython()
 
             .then(res => {
-
                 console.log(res)
                 if (general) {
                     console.log("Sending general arguments: ", args)
@@ -47,23 +47,24 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                         console.log("pyEvent dispatched")
                     }
 
-                    let error = ""
-
+                    let error = "", error_occured_py=false;
+                    let dataReceived="";
                     py.on("close", () => {
 
                         console.log("Closed")
 
+                        if (error) {error_occured_py=true; reject(error); } 
                         if (e) {
-                            const pyEventClosed = new CustomEvent('pyEventClosed', { bubbles: false, detail: { py, pyfile } });
+                            const pyEventClosed = new CustomEvent('pyEventClosed', { bubbles: false, detail: { py, pyfile, dataReceived, error_occured_py } });
                             e.target.dispatchEvent(pyEventClosed)
                             console.log("pyEventClosed dispatched")
                         }
-                        if (error) reject(error);
+                        
                     })
                     py.stderr.on("data", (err) => { console.log(`Error Occured: ${err.toString()}`); error += err.toString() })
                     py.stdout.on("data", (data) => {
 
-                        const dataReceived = data.toString()
+                        dataReceived += `${data.toString()}\n`
                         console.log(`Output from python: ${dataReceived}`)
                         if (e) {
 
@@ -90,14 +91,14 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                         const pyEvent = new CustomEvent('pyEvent', { bubbles: false, detail: { py, pyfile } });
                         e.target.dispatchEvent(pyEvent)
                         console.log("pyEvent dispatched")
-
                     }
 
                     window.createToast("Process Started")
+                    let dataReceived = "";
                     py.stdout.on("data", data => {
 
                         console.log("Ouput from python")
-                        let dataReceived = data.toString("utf8")
+                        dataReceived += data.toString("utf8")
                         console.log(dataReceived)
 
                         if (e) {
@@ -109,7 +110,6 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
 
                         }
                     })
-
                     let error_occured_py = false, errContent = "";
 
                     py.stderr.on("data", err => {
@@ -130,13 +130,16 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                                 return reject(`${outputFile} doesn't exist.`)
                             }
                             let dataFromPython = fs.readFileSync(outputFile)
+
+
+
                             window.dataFromPython = dataFromPython = JSON.parse(dataFromPython.toString("utf-8"))
                             console.log(dataFromPython)
                             resolve(dataFromPython)
-                        } else { reject(errContent) }
-
+                        
+                        } else { reject(errContent);  }
                         if (e) {
-                            const pyEventClosed = new CustomEvent('pyEventClosed', { bubbles: false, detail: { py, pyfile } });
+                            const pyEventClosed = new CustomEvent('pyEventClosed', { bubbles: false, detail: { py, pyfile, dataReceived, error_occured_py } });
 
 
                             e.target.dispatchEvent(pyEventClosed)

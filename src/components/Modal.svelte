@@ -3,7 +3,7 @@
   // import {onMount} from "svelte";
   import { createEventDispatcher } from 'svelte';
   export let active =  false, title =  "Title", style="width:60vw", bodyBackground = "#634e96", bodyStyle="max-height: 30em;", contentID="";
-
+  export let headerBackground="#836ac05c";
   const dispatch = createEventDispatcher()
 
 </script>
@@ -24,7 +24,7 @@
   <div class="modal-card animated fadeIn faster" {style}>
 
 
-    <header class="modal-card-head">
+    <header class="modal-card-head" style="background-color: {headerBackground};">
       <p class="modal-card-title">{title}</p>
       <span class="delete is-pulled-right" on:click="{()=>{active=false; dispatch('closed', {active}) }}"></span>
     </header>

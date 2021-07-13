@@ -17,8 +17,9 @@ html, body {
 
     user-select: none;
 
-}
 
+}
+.modal-card-body {background-image: url(intro.svg)!important;}
 table {user-select: text;}
 
 body::-webkit-scrollbar {width: 0 !important;}

@@ -43,7 +43,7 @@
 
 
 {#if mounted}
-	<PreModal bind:preModal={$mainPreModal} />
+	<PreModal />
 {/if}
 <Navbar {navItems} />
 
