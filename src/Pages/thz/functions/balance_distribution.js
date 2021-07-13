@@ -31,7 +31,7 @@ export default function({label, energyLevels, collisionalTemp=5, electronSpin=fa
         const delE = Math.abs(energy_levels[initial] - energy_levels[final])
         const energyTerm = Math.exp(-delE/KT)
         const rateConstant = Gj*energyTerm
-        console.log(energyLevels)
+        // console.log(energyLevels)
         return rateConstant.toExponential(3)
     } catch (error) {
         console.error(error)

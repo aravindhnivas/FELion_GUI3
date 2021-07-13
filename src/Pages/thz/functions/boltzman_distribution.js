@@ -8,7 +8,7 @@ export default function({energyLevels, trapTemp=5, electronSpin=false, zeemanSpl
 
     try {
 
-        console.log(energyLevels)
+        // console.log(energyLevels)
         
         
         energyLevels = energyLevels.map(({label, value})=> {
@@ -46,7 +46,7 @@ export default function({energyLevels, trapTemp=5, electronSpin=false, zeemanSpl
         })
 
 
-        console.log(distribution)
+        // console.log(distribution)
         const partitionValue = _.sumBy(distribution, energy=>energy.value).toFixed(2)
 
         distribution = distribution.map(({label, value})=>{
