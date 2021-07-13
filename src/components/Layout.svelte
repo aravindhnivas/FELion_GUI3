@@ -76,19 +76,19 @@
 
     let mounted=false;
     let graphDivs = []
-    onMount(()=>{ 
-        toggleBrowser = true; mounted=true;
-        graphDivs = Array.from(document.querySelectorAll(`#${filetype}-plotContainer .graph__div`))
-    })
+    onMount(()=>{ toggleBrowser = true; mounted=true; })
+
+    const lookForGraph = () => {
+        try {graphDivs = Array.from(document.querySelectorAll(`#${filetype}-plotContainer .graph__div`)) } 
+        catch (error) {console.log(error)}
+    }
 
     let graphWindowClosed = true;
-    $: graphModal = !graphWindowClosed
     let graphWindow;
 
-
     function openGraph(){
-
         if(!graphWindowClosed) {return graphWindow.show()}
+
         graphWindowClosed = false
         const mount = document.getElementById(`${filetype}-plotContainer`)
 
@@ -103,70 +103,74 @@
             onclose: async function(){
                 graphWindowClosed = true
                 console.log(`${filetype}=> graphWindowClosed: ${graphWindowClosed}`)
+
                 changeGraphDivWidth()
                 return false
             },
 
             onresize: function(width, height){changeGraphDivWidth()},
+            onfocus: ()=>{changeGraphDivWidth()}
         });
+
         graphWindow.maximize(true);
-
+    
     }
-    let fileBrowserWidth;
 
-    const changeGraphDivWidth = async (ms=0) => {
+    let plotWidth;
+    const changeGraphDivWidth = async () => {
 
         await tick(); 
-        if (ms>0) await sleep(ms);
         graphDivs.forEach(id=>{
             if(id.data) {Plotly.relayout(id, {width:id.clientWidth})}
         })
     }
-    
-    $: if (fileBrowserWidth) {changeGraphDivWidth(500)};
+
+    $: if (plotWidth && mouseReleased) {changeGraphDivWidth()};
+    let mouseReleased = true;
 
 </script>
 
+
+
 <style lang="scss">
     .plot__div {padding: 1em;}
+
     .box {background-image: url(./assets/css/intro.svg); border-radius: 0;}
+
+
 
     .main__layout__div {
         display: grid;
         grid-auto-flow: column;
         width: 100%;
+
         height: calc(100vh - 6rem);
         grid-template-columns: auto 1fr;
         column-gap: 3em;
+
         .left_container__div { max-width: 100%; }
-
         .right_container__div {
-
             display: grid;
             row-gap: 1em;
-        
-            grid-template-rows: auto auto 1fr;
-            max-height: calc(100vh - 7rem);
 
-        
+            grid-template-rows: auto auto 1fr;
+            max-height: calc(100vh - 8rem);
             .location__div {
                 display:grid;
                 grid-template-columns: auto 1fr;
                 column-gap: 1em;
-        
                 align-items: baseline;
             }
-        
 
-            
         }
     }
-
     .plot__div {
+
         display: flex;
         row-gap: 1em;
         flex-direction: column;
         overflow: auto;
+
         padding-right: 1em;
         padding-bottom: 12em;
     }
@@ -174,9 +178,10 @@
 </style>
 
 <section {id} style="display:none" class="animated fadeIn">
-
     <div class="main__layout__div">
-        <div class="left_container__div box " transition:fly="{{ x: -100, duration: 500 }}" bind:clientWidth={fileBrowserWidth}>
+
+        <div class="left_container__div box " transition:fly="{{ x: -100, duration: 500 }}" 
+            on:mouseup={()=>mouseReleased=true} on:mousedown={()=>mouseReleased=false} >
             <FileBrowser bind:currentLocation {filetype} bind:fileChecked on:chdir bind:fullfileslist/>
         </div>
 
@@ -184,6 +189,7 @@
 
             <div class="location__div" >
                 <button class="button is-link" id="{filetype}_filebrowser_btn" on:click={browse_folder}>Browse</button>
+
                 <Textfield bind:value={currentLocation} label="Current location" style="width:100%; "/>
             </div>
 
@@ -196,19 +202,17 @@
                 {/if}
 
             </div>
-            <div class="plot__div" id="{filetype}-plotContainer" transition:fade> 
 
-                <slot name="plotContainer" />
+            <div class="plot__div" id="{filetype}-plotContainer" transition:fade use:lookForGraph bind:clientWidth={plotWidth}> 
+
+                <slot name="plotContainer" {lookForGraph} />
                 {#if graphPlotted}
                     <slot name="plotContainer_functions" />
                     <slot name="plotContainer_reports" />
-
                 {/if}
-
             </div>
 
         </div>
 
     </div>
-
 </section>

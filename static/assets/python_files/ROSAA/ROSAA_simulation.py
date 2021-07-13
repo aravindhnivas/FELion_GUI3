@@ -253,6 +253,7 @@ class ROSAA:
             print(f"{savefilename} file written in {location} folder.", flush=True)
 
 if __name__ == "__main__":
+    
     conditions = json.loads(sys.argv[1])
     pp = pprint.PrettyPrinter(indent=4)
     pp.pprint(conditions)
