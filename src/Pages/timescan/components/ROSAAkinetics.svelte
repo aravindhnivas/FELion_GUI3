@@ -53,7 +53,10 @@
         try {
             const pyfile = "ROSAA/kinetics.py"
 
-            const args = [JSON.stringify({currentData, selectedFile, currentLocation, nameOfReactants, ratek3, ratekCID, numberDensity})]
+            const data = {}
+            massOfReactants.split(",").map(mass=>mass.trim()).forEach(mass=>data[mass]=currentData[mass])
+
+            const args = [JSON.stringify({data, selectedFile, currentLocation, nameOfReactants, ratek3, ratekCID, numberDensity})]
     
             await computePy_func({e, pyfile, args, general:true})
         } catch (error) {$mainPreModal.modalContent = error;  $mainPreModal.open = true}
