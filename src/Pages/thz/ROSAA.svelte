@@ -435,8 +435,8 @@
                             <hr> <div class="subtitle" style="width: 100%; display:grid; place-items: center;">Transition levels</div> <hr>
 
                             <div class="align h-center">
-                                <CustomSelect options={[...energyLevels.map(f=>f.label)]} bind:picked={excitedFrom} label="excitedFrom" style="min-width: 7em;"/>
-                                <CustomSelect options={[...energyLevels.map(f=>f.label)]} bind:picked={excitedTo} label="excitedTo" style="min-width: 7em;"/>
+                                <CustomSelect options={["", ...energyLevels.map(f=>f.label)]} bind:picked={excitedFrom} label="excitedFrom" style="min-width: 7em;"/>
+                                <CustomSelect options={["", ...energyLevels.map(f=>f.label)]} bind:picked={excitedTo} label="excitedTo" style="min-width: 7em;"/>
 
                                 <Textfield bind:value={transitionFrequency} label="transitionFrequency ({energyUnit})" />
                             </div>

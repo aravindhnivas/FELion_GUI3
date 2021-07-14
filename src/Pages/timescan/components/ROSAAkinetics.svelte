@@ -12,7 +12,7 @@
     let ratek3="k31", ratekCID="kCID1";
 
     let selectedFile = "", totalMass = [], requiredLength=0;
-
+    let k3Guess = "1e-30", kCIDGuess="1e-15";
     let currentData = {}
 
     function computeParameters() {
@@ -30,37 +30,57 @@
     }
 
     function computeOtherParameters() {
-        requiredLength = massOfReactants.split(",").length
+        const masses = massOfReactants.split(",").map(m=>m.trim())
+        requiredLength = masses.length
         nameOfReactants =`${molecule}, ${molecule}${tag}`
         ratek3="k31", ratekCID="kCID1";
-        for (let index = 2; index < requiredLength; index++) {
 
+        initialValues = String(_.max(currentData[masses[0]]["y"]))
+
+        for (let index = 2; index < requiredLength; index++) {
+            initialValues += ", 0"
             ratek3 += `, k3${index}`
+        
+        
             ratekCID += `, kCID${index}`
+        
             nameOfReactants += `, ${molecule}${tag}${index}`
         }
+    
     }
 
-
     $: if(massOfReactants) {computeOtherParameters()}
-    $: calibrationFactor = srgMode ? 200 : 1
+
+    let calibrationFactor = 1;
+
+    $: if(srgMode) {
+        calibrationFactor = 1
+
+        pbefore = Number(7e-5).toExponential(0)
+    } else {
+        calibrationFactor = 200
+
+        pbefore = Number(1e-8).toExponential(0)
+    
+    }
     const constantValue = 4.2e17
+
     $: numberDensity = Number((constantValue*calibrationFactor*(pafter - pbefore))/(temp**0.5)).toExponential(3)
-
     $: if(selectedFile) {computeParameters()}
-
     async function kineticSimulation(e) {
+    
         try {
+
             const pyfile = "ROSAA/kinetics.py"
+            const nameOfReactantsArray = nameOfReactants.split(",").map(m=>m.trim())
 
             const data = {}
-            massOfReactants.split(",").map(mass=>mass.trim()).forEach(mass=>data[mass]=currentData[mass])
+            massOfReactants.split(",").map(mass=>mass.trim()).forEach((mass, i)=>data[nameOfReactantsArray[i]]=currentData[mass])
+            const args = [JSON.stringify({data, selectedFile, currentLocation, nameOfReactantsArray, ratek3, ratekCID, numberDensity, k3Guess, kCIDGuess, initialValues})]
 
-            const args = [JSON.stringify({data, selectedFile, currentLocation, nameOfReactants, ratek3, ratekCID, numberDensity})]
-    
             await computePy_func({e, pyfile, args, general:true})
-        } catch (error) {$mainPreModal.modalContent = error;  $mainPreModal.open = true}
 
+        } catch (error) {$mainPreModal.modalContent = error;  $mainPreModal.open = true; $mainPreModal.type="danger"}
     }
 
     const pyEventClosed = (e) => {
@@ -68,6 +88,8 @@
         if(!error_occured_py) {$mainPreModal.open = true; $mainPreModal.modalContent = dataReceived; $mainPreModal.type="info"; }
     }
 
+    let defaultInitialValues = true;
+    let initialValues = ""
 </script>
 
 <div class="align animated fadeIn" class:hide={!kineticMode} >
@@ -83,17 +105,30 @@
 
     <div class="align">
 
-        <CustomSelect bind:picked={selectedFile} label="Filename" options={["", ...fileChecked]} />
+        <CustomSelect bind:picked={selectedFile} label="Filename" options={["", ...fileChecked]} style="min-width: 7em; "/>
         <Textfield bind:value={molecule} label="Molecule" />
     
         <Textfield bind:value={tag} label="tag" />
         <Textfield bind:value={massOfReactants} label="massOfReactants" />
         <Textfield bind:value={nameOfReactants} label="nameOfReactants" />
+
+        <CustomSwitch bind:selected={defaultInitialValues} label="defaultInitialValues"/>
+        
+        {#if defaultInitialValues}
+            <Textfield bind:value={initialValues} label="initialValues" />
+        {/if}
+
         <Textfield bind:value={ratek3} label="ratek3" />
+        
+        <Textfield bind:value={k3Guess} label="k3Guess" />
+        
         <Textfield bind:value={ratekCID} label="ratekCID" />
+        
+        <Textfield bind:value={kCIDGuess} label="kCIDGuess" />
     
         <button class="button is-link" on:click="{computeParameters}">Compute parameters</button>
+        
         <button class="button is-link" on:click="{kineticSimulation}" on:pyEventClosed="{pyEventClosed}">Submit</button>
-
     </div>
+
 </div>

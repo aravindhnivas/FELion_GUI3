@@ -3,7 +3,6 @@ import sys, json, pprint, time
 import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path as pt
-from numpy.lib.npyio import save
 from scipy.integrate import solve_ivp
 from functools import reduce
 
@@ -189,7 +188,6 @@ class ROSAA:
             self.simulateTime = np.linspace(0, duration, int(totalSteps*0.5))
 
         self.lightON=False
-
         N_OFF = solve_ivp(self.SimulateODE, tspan, [*self.boltzmanDistribution, *N_He], dense_output=True)
 
         self.lightOFF_distribution = N_OFF.sol(self.simulateTime)

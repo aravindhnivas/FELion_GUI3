@@ -142,9 +142,9 @@ class timescanplot:
                 self.widget.lines[f"{mass_value}"] = ax.errorbar(time, mass_sort, yerr=error_sort, label=label, fmt=".-")
 
             else:
-                m[f"{mass_value}u"] = {"x":list(time), "y":list(mass_sort), 
+                m[f"{mass_value}u"] = {"x":time.tolist(), "y":mass_sort.tolist(), 
                         "name": label, "mode": 'lines+markers',
-                        "error_y":{"type": "data","array": list(error_sort),"visible": True}}
+                        "error_y":{"type": "data","array": error_sort.tolist(),"visible": True}}
             j = k + j
 
         self.mass = mass
@@ -152,8 +152,8 @@ class timescanplot:
         error = error.reshape(run, cycle)
 
         self.time, self.mean, self.error = time, mean, error
-        m["SUM"] = {"x":list(time), "y":list(mean.sum(axis=0)), "name": f"SUM", "mode": 'lines+markers', "line":{"color":"black"},
-            "error_y":{"type": "data","array": list(error.sum(axis=0)),"visible": True}}
+        m["SUM"] = {"x":time.tolist(), "y":mean.sum(axis=0).tolist(), "name": f"SUM", "mode": 'lines+markers', "line":{"color":"black"},
+            "error_y":{"type": "data", "array": error.sum(axis=0).tolist(),"visible": True}}
 
         self.m = m
 
@@ -233,5 +233,5 @@ if __name__ == "__main__":
         for i in filename:
             data = timescanplot(i)
             dataToSend[i.name] = data.get_plotly_data()
-            print(i.name)
+            # print(i.name)
         sendData(dataToSend)
