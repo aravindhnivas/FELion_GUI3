@@ -30,27 +30,22 @@
     }
 
     function computeOtherParameters() {
-        const masses = massOfReactants.split(",").map(m=>m.trim())
+        masses = massOfReactants.split(",").map(m=>m.trim())
         requiredLength = masses.length
+
         nameOfReactants =`${molecule}, ${molecule}${tag}`
+        
         ratek3="k31", ratekCID="kCID1";
 
-        initialValues = String(_.max(currentData[masses[0]]["y"]))
-
         for (let index = 2; index < requiredLength; index++) {
-            initialValues += ", 0"
             ratek3 += `, k3${index}`
-        
-        
             ratekCID += `, kCID${index}`
-        
             nameOfReactants += `, ${molecule}${tag}${index}`
+
         }
-    
     }
-
+    let masses;
     $: if(massOfReactants) {computeOtherParameters()}
-
     let calibrationFactor = 1;
 
     $: if(srgMode) {
@@ -82,14 +77,19 @@
 
         } catch (error) {$mainPreModal.modalContent = error;  $mainPreModal.open = true; $mainPreModal.type="danger"}
     }
-
     const pyEventClosed = (e) => {
         const {error_occured_py, dataReceived} = e.detail
         if(!error_occured_py) {$mainPreModal.open = true; $mainPreModal.modalContent = dataReceived; $mainPreModal.type="info"; }
     }
-
     let defaultInitialValues = true;
+
     let initialValues = ""
+    $: if(defaultInitialValues && masses) {
+            initialValues = masses.map(m=>currentData[m]["y"][0].toFixed(0))
+    } else if(masses) {
+        initialValues = Array(masses.length).fill(0)
+        initialValues[0] = _.max(currentData[masses[0]]["y"]).toFixed(0)
+    }
 </script>
 
 <div class="align animated fadeIn" class:hide={!kineticMode} >
@@ -114,9 +114,7 @@
 
         <CustomSwitch bind:selected={defaultInitialValues} label="defaultInitialValues"/>
         
-        {#if defaultInitialValues}
-            <Textfield bind:value={initialValues} label="initialValues" />
-        {/if}
+        <Textfield bind:value={initialValues} label="initialValues" />
 
         <Textfield bind:value={ratek3} label="ratek3" />
         
