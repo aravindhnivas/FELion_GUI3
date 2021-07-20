@@ -6,22 +6,24 @@
     import {computeStatisticalWeight} from "../functions/balance_distribution";
 
 
-    export let einsteinCoefficientA=[], einsteinCoefficientB=[];
+    export let einsteinCoefficientA=[], einsteinCoefficientB=[], einsteinB_rateComputed=false;
     export let energyLevels, electronSpin, zeemanSplit, energyUnit;
     export let lorrentz=0.320, gaussian=0.210, power="2e-5", trapArea="5e-5";
 
     
     function computeEinsteinB() {
+
+        einsteinB_rateComputed=false;
+
         const einsteinCoefficientB_emission = einsteinCoefficientA.map(({label, value})=>{
 
+        
             const [final, initial] = label.split("-->").map(l=>l.trim())
             const {value:v0} = window._.find(energyLevels, (e)=>e.label==initial)
             const {value:v1} = window._.find(energyLevels, (e)=>e.label==final)
-            
             let freq = parseFloat(v1) - parseFloat(v0) // in Hz or s-1
-            
-
             energyUnit === "MHz" ? freq *= 1e6 : freq *= SpeedOfLight*100;
+
             const constTerm = SpeedOfLight**3/(8*Math.PI*PlanksConstant*freq**3)
             const B = constTerm*value
             return {label, value:B.toExponential(3), id:getID()}
@@ -34,35 +36,33 @@
             const B = weight*parseFloat(value)
             const newLabel = `${initial} --> ${final}`
             return {label:newLabel, value:B.toExponential(3), id:getID()}
-        })
 
+        })
         einsteinCoefficientB = [...einsteinCoefficientB_emission, ...einsteinCoefficientB_absorption]
-        
     }
 
-    // let lorrentz=0.320, gaussian=0.210;
-    // let power="2e-5", trapArea="5e-5"
-    async function computeEinsteinBRate(e) {
-        const args = [JSON.stringify({lorrentz, gaussian})]
 
+    async function computeEinsteinBRate(e) {
+
+        const args = [JSON.stringify({lorrentz, gaussian})]
         const pyfile = "ROSAA/voigt.py"
 
         try {
             const {linshape} = await computePy_func({e, pyfile, args})
-
             const constantTerm = power/(trapArea*SpeedOfLight)
+
             const norm = constantTerm*linshape
             computeEinsteinB();
-
             einsteinCoefficientB = einsteinCoefficientB.map(e=>{
-
                 e.value *= norm;
-                e.value = e.value.toExponential(3) 
 
+                e.value = e.value.toExponential(3) 
                 return e
             })
-        } catch (error) {$mainPreModal = {modalContent:error, open:true}}
 
+            einsteinB_rateComputed=true;
+
+        } catch (error) {$mainPreModal = {modalContent:error, open:true}}
     }
 
     $: if(einsteinCoefficientA) computeEinsteinB();
@@ -122,25 +122,19 @@
 
         <hr>
         <div class="subtitle">Einstein B Co-efficients</div>
+
         <div class="control__div ">
-            <!-- <Textfield bind:value={lorrentz} label="lorrentz (MHz)" />
-            <Textfield bind:value={gaussian} label="gaussian (MHz)"/>
-            <Textfield bind:value={power} label="Power (W)" />
-
-            <Textfield bind:value={trapArea} label="TrapArea (sq-m)"/> -->
-
             <button class="button is-link " on:click={computeEinsteinBRate}>Compute rate constants</button>
         </div>
 
         <div class="content__div ">
+        
+        
             {#each einsteinCoefficientB as {label, value, id}(id)}
 
-
                 <Textfield bind:value {label} />
-    
             {/each}
-        </div>
-    
-    {/if}
 
+        </div>
+    {/if}
 </div>

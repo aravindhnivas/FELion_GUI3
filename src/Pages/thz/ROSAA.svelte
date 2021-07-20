@@ -73,11 +73,22 @@
     }
 
     let collisionalRates = []
+
+    let einsteinB_rateComputed=false;
     const simulation = (e) => {
 
         if(!configLoaded) return window.createToast("Config file not loaded", "danger");
         if(!transitionFrequency) return window.createToast("Transition frequency is not defined", "danger");
+        if(!einsteinB_rateComputed) return window.createToast("Compute einsteinB rate constants", "danger");
+        if(includeCollision) {
+            if(collisionalRates.length<1) return window.createToast("Compute collisional rate constants", "danger")
+        
+        }
 
+        if(includeAttachmentRate){
+            if(k3.rate.length<1) return window.createToast("Compute attachment rate constants", "danger")
+        }
+        
         const collisional_rates = {}
         collisionalRates.forEach(f=>collisional_rates[f.label] = f.value)
 
@@ -472,7 +483,7 @@
 
                     </div>
 
-                    <EinsteinCoefficients bind:einsteinCoefficientA bind:einsteinCoefficientB 
+                    <EinsteinCoefficients bind:einsteinCoefficientA bind:einsteinCoefficientB bind:einsteinB_rateComputed
                     {energyLevels} {electronSpin} {zeemanSplit} {energyUnit} {gaussian} {trapArea} {lorrentz} {power} />
 
                     {#if includeCollision}
