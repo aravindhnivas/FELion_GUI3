@@ -29,8 +29,9 @@ export default function({energyLevels, trapTemp=5, electronSpin=false, zeemanSpl
             })
 
         }
-
+        
         let distribution = energyLevels.map(({label, value:currentEnergy})=>{
+            let Gj;
             if (electronSpin) {
                 if (zeemanSplit) {Gj = 1}
                 else {
