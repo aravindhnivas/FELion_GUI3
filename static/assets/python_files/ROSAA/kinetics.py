@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from optimizePlot import optimizePlot
 
-from matplotlib.widgets import Slider, Button
+from matplotlib.widgets import Slider, Button, RadioButtons, TextBox
 from scipy.optimize import curve_fit
 from scipy.integrate import solve_ivp
 
@@ -90,48 +90,57 @@ def KineticMain():
 
     return
 
-def fitfunc(event):
-    p0 = [[10**rate.val for rate in k3Sliders], [10**rate.val for rate in kCIDSliders]]
-    k_fit, kcov = curve_fit(fitODE, expTime, expData, p0=p0)
+# def fitfunc(event):
 
-    print(k_fit)
-
+#     p0 = [[10**rate.val for rate in k3Sliders], [10**rate.val for rate in kCIDSliders]]
+#     k_fit, kcov = curve_fit(fitODE, expTime, expData, p0=p0)
+#     print(k_fit)
 
 fig = None
 ax = None
 fitPlot = []
 
+
+def ChangeYScale(yscale):
+    ax.set_yscale(yscale)
+    fig.canvas.draw_idle()
+
 def plot_exp():
     global data, fig, ax, k3Sliders, kCIDSliders
     fig, ax = plt.subplots(figsize=(12, 6))
-    plt.subplots_adjust(right=0.6, top=1, bottom=0.25)
+
+    plt.subplots_adjust(right=0.6, top=0.95, left=0.09, bottom=0.25)
 
     axcolor = 'lightgoldenrodyellow'
-
     k3Sliders, kCIDSliders = make_slider(ax, axcolor)
 
-    buttonAxes = plt.axes([0.1, 0.1, 0.1, 0.05], facecolor=axcolor)
-    button = Button(buttonAxes, 'Fit', color=axcolor, hovercolor='0.975')
-    button.on_clicked(fitfunc)
-
+    left, bottom, width, height = 0.1, 0.05, 0.1, 0.1
+    rax = plt.axes([left, bottom, width, height], facecolor=axcolor)
+    radio = RadioButtons(rax, ('log', 'linear'), active=0)
+    radio.on_clicked(ChangeYScale)
+    
+    # buttonAxes = plt.axes([left+width+0.01, bottom, width, height], facecolor=axcolor)
+    # button = Button(buttonAxes, 'Fit', color=axcolor, hovercolor='0.975')
+    # button.on_clicked(fitfunc)
 
     for counter, key in enumerate(data.keys()):
+
         expTime = data[key]["x"]
         counts = data[key]["y"]
         error = data[key]["error_y"]["array"]
         ax.errorbar(expTime, counts, error, fmt=".", ms=10, label=key, c=pltColors[counter])
     ax = optimizePlot(ax, xlabel="Time (s)", ylabel="Counts", yscale="log")
 
+    
     dNdt = solve_ivp(compute_attachment_process, tspan, initialValues, args=(ratek3, ratekCID), dense_output=True)
     dNdtSol = dNdt.sol(simulateTime)
+    
     for counter, data in enumerate(dNdtSol):
 
         _fitPlot, = ax.plot(simulateTime*1e3, data, "-", c=pltColors[counter])
         fitPlot.append(_fitPlot)
-
-
-
     legend = ax.legend(nameOfReactants)
+
     legend.set_draggable(True)
     plt.show()
 
@@ -143,16 +152,14 @@ def update(val):
     for line, data in zip(fitPlot, dNdtSol):
         line.set_ydata(data)
     fig.canvas.draw_idle()
-
-
 k3Sliders = []
 kCIDSliders = []
 
 def make_slider(ax, axcolor):
 
     global k3Sliders, kCIDSliders
-    ax.margins(x=0)
 
+    ax.margins(x=0)
     height = 0.03
     width = 0.25
     bottom = 0.9
