@@ -74,23 +74,26 @@
 
     let collisionalRates = []
 
+    let collisionalRateConstants = []
+
     let einsteinB_rateComputed=false;
     const simulation = (e) => {
-
+        if(!fs.existsSync(currentLocation)) return window.createToast("Location doesn't exist", "danger");
         if(!configLoaded) return window.createToast("Config file not loaded", "danger");
         if(!transitionFrequency) return window.createToast("Transition frequency is not defined", "danger");
         if(!einsteinB_rateComputed) return window.createToast("Compute einsteinB rate constants", "danger");
         if(includeCollision) {
-            if(collisionalRates.length<1) return window.createToast("Compute collisional rate constants", "danger")
+            collisionalRateConstants = [...collisionalCoefficient, ...collisionalCoefficient_balance]
+            if(collisionalRateConstants.length<1) return window.createToast("Compute collisional rate constants", "danger")
         
         }
 
         if(includeAttachmentRate){
-            if(k3.rate.length<1) return window.createToast("Compute attachment rate constants", "danger")
+            if(k3.constant.length<1) return window.createToast("Compute attachment rate constants", "danger")
         }
         
         const collisional_rates = {}
-        collisionalRates.forEach(f=>collisional_rates[f.label] = f.value)
+        collisionalRateConstants.forEach(f=>collisional_rates[f.label] = f.value)
 
         const main_parameters = {}
         mainParameters.forEach(f=>main_parameters[f.label]=f.value)
@@ -108,44 +111,45 @@
         einsteinCoefficientA.forEach(f=>einstein_coefficient.A[f.label]=f.value)
         einsteinCoefficientB.forEach(f=>einstein_coefficient.B[f.label]=f.value)
 
-        const attachment_rate_coefficients = {rateConstants:{k3:k3.rate.map(rate=>rate.value), kCID:kCID.rate.map(rate=>rate.value)}}
+        const attachment_rate_coefficients = {rateConstants:{k3:k3.constant.map(rate=>rate.value), kCID:kCID.constant.map(rate=>rate.value)}}
         
         attachmentCoefficients.forEach(f=>attachment_rate_coefficients[f.label]=f.value)
         const energy_levels = {}
         energyLevels.forEach(f=>energy_levels[f.label]=f.value)
         const conditions = { 
-            trapTemp, variable, variableRange, numberOfLevels, includeCollision, includeAttachmentRate, includeSpontaneousEmission, writefile, savefilename, currentLocation,  deexcitation, collisional_rates, main_parameters, simulation_parameters, einstein_coefficient, energy_levels, energyUnit, power_broadening, lineshape_conditions, attachment_rate_coefficients, electronSpin, zeemanSplit, excitedFrom, excitedTo
+            trapTemp, variable, variableRange, numberOfLevels, includeCollision, includeAttachmentRate, includeSpontaneousEmission, writefile, savefilename, currentLocation,  deexcitation, collisional_rates, main_parameters, simulation_parameters, einstein_coefficient, energy_levels, energyUnit, power_broadening, lineshape_conditions, attachment_rate_coefficients, electronSpin, zeemanSplit, excitedFrom, excitedTo, numberDensity
+        
         }
         
         const pyfile = "ROSAA/ROSAA_simulation.py"
+        
         const args = [JSON.stringify(conditions)]
+        
         computePy_func({e, pyfile, args, general:true}).catch(err=>{$mainPreModal.modalContent = err;  $mainPreModal.open = true})
         running=true
     }
+    let currentLocation = fs.existsSync(db.get("thz_modal_location")) ? db.get("thz_modal_location") : "";
 
-    let currentLocation = db.get("thz_modal_location") || db.get("thz_location") || "";
+
 
     let savefilename = ""
-    
+
     $: if(currentLocation&&fs.existsSync(currentLocation)) {db.set("thz_modal_location", currentLocation)}
     async function browse_folder() {
 
         const result = await browse({dir:true})
         if (!result.canceled) { currentLocation = result.filePaths[0]; }
     }
+
     let writefile = true, includeCollision = true, includeSpontaneousEmission = true, includeAttachmentRate = true;
 
     let variable = "time", variableRange = "1e12, 1e16, 10";
-
     const variablesList = ["time", "He density(cm3)", "Power(W)"]
 
     let collisionalCoefficient=[], einsteinCoefficientA=[], einsteinCoefficientB=[];
 
     let energyUnit="cm-1", numberDensity = "2e14";
     let numberOfLevels = 3;
-
-
-
     let energyLevels = [];
     let boltzmanWindow = false;
     let energyFilename, collisionalFilename, einsteinFilename;
@@ -153,18 +157,19 @@
 
     let collisionalCoefficient_balance = [];
     let configFile = db.get("ROSAA_config_file") || ""
-
-
     let configLoaded = false;
+
     async function loadConfig() {
     
         try {
             if(fs.existsSync(configFile)) return setConfig();
+
             const congFilePath = await browse({dir:false, multiple:false})
             if (congFilePath.filePaths.length==0) return Promise.reject("No files selected");
             configFile = congFilePath.filePaths[0]
             db.set("ROSAA_config_file", configFile)
             setConfig()
+        
         } catch (error) {$mainPreModal = {modalContent:error, open:true}}
     }
 
@@ -174,8 +179,9 @@
             const YMLcontent = Yml(fileContent)
             return Promise.resolve(YMLcontent)
         } else return Promise.reject(filename + " file doesn't exist")
-
     }
+
+    
     const setID = (obj) => {
         obj.id = window.getID();
         return obj
@@ -183,11 +189,12 @@
 
     const correctObjValue = (obj) => {
         obj.value = obj.value.toExponential(3)
-
         return obj
+
     }
 
     let trapArea;
+
     // Transition freq.
     let excitedTo, excitedFrom;
     let transitionFrequency=0, transitionFrequencyInHz;
@@ -483,12 +490,10 @@
 
                     </div>
 
-                    <EinsteinCoefficients bind:einsteinCoefficientA bind:einsteinCoefficientB bind:einsteinB_rateComputed
-                    {energyLevels} {electronSpin} {zeemanSplit} {energyUnit} {gaussian} {trapArea} {lorrentz} {power} />
+                    <EinsteinCoefficients bind:einsteinCoefficientA bind:einsteinCoefficientB bind:einsteinB_rateComputed {energyLevels} {electronSpin} {zeemanSplit} {energyUnit} {gaussian} {trapArea} {lorrentz} {power} />
 
                     {#if includeCollision}
-                        <CollisionalCoefficients bind:collisionalCoefficient bind:collisionalCoefficient_balance bind:collisionalRateType 
-                        {...{energyLevels, electronSpin, zeemanSplit, energyUnit, collisionalFilename, collisionalTemp}} bind:collisionalRates bind:numberDensity />
+                        <CollisionalCoefficients bind:collisionalCoefficient bind:collisionalCoefficient_balance bind:collisionalRateType bind:collisionalRates bind:numberDensity {...{energyLevels, electronSpin, zeemanSplit, energyUnit, collisionalFilename, collisionalTemp}}  />
                         
                     {/if}
                     
