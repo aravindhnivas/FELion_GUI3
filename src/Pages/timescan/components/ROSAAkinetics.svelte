@@ -33,6 +33,7 @@
         masses = massOfReactants.split(",").map(m=>m.trim())
         requiredLength = masses.length
 
+        if(defaultInitialValues && masses) { initialValues = masses.map(m=>currentData[m]["y"][0].toFixed(0)) }
         nameOfReactants =`${molecule}, ${molecule}${tag}`
         
         ratek3="k31", ratekCID="kCID1";
@@ -65,12 +66,12 @@
     async function kineticSimulation(e) {
     
         try {
-
             const pyfile = "ROSAA/kinetics.py"
             const nameOfReactantsArray = nameOfReactants.split(",").map(m=>m.trim())
 
             const data = {}
             massOfReactants.split(",").map(mass=>mass.trim()).forEach((mass, i)=>data[nameOfReactantsArray[i]]=currentData[mass])
+            if(typeof initialValues === "string") { initialValues = initialValues.split(",") }
             const args = [JSON.stringify({data, selectedFile, currentLocation, nameOfReactantsArray, ratek3, ratekCID, numberDensity, k3Guess, kCIDGuess, initialValues})]
 
             await computePy_func({e, pyfile, args, general:true})
@@ -84,12 +85,7 @@
     let defaultInitialValues = true;
 
     let initialValues = ""
-    $: if(defaultInitialValues && masses) {
-            initialValues = masses.map(m=>currentData[m]["y"][0].toFixed(0))
-    } else if(masses) {
-        initialValues = Array(masses.length).fill(0)
-        initialValues[0] = _.max(currentData[masses[0]]["y"]).toFixed(0)
-    }
+
 </script>
 
 <div class="align animated fadeIn" class:hide={!kineticMode} >
@@ -98,34 +94,26 @@
         <Textfield bind:value={pbefore} label="pbefore" />
         <Textfield bind:value={pafter} label="pafter" />
         <Textfield input$type="number" input$step="0.5" bind:value={calibrationFactor} label="calibrationFactor" />
-
         <Textfield input$type="number" input$step="0.1" bind:value={temp} label="temp(K)" />
         <Textfield bind:value={numberDensity} label="numberDensity" disabled />
     </div>
-
     <div class="align">
 
         <CustomSelect bind:picked={selectedFile} label="Filename" options={["", ...fileChecked]} style="min-width: 7em; "/>
+        
         <Textfield bind:value={molecule} label="Molecule" />
-    
+
         <Textfield bind:value={tag} label="tag" />
         <Textfield bind:value={massOfReactants} label="massOfReactants" />
         <Textfield bind:value={nameOfReactants} label="nameOfReactants" />
 
         <CustomSwitch bind:selected={defaultInitialValues} label="defaultInitialValues"/>
-        
         <Textfield bind:value={initialValues} label="initialValues" />
-
         <Textfield bind:value={ratek3} label="ratek3" />
-        
         <Textfield bind:value={k3Guess} label="k3Guess" />
-        
         <Textfield bind:value={ratekCID} label="ratekCID" />
-        
         <Textfield bind:value={kCIDGuess} label="kCIDGuess" />
-    
         <button class="button is-link" on:click="{computeParameters}">Compute parameters</button>
-        
         <button class="button is-link" on:click="{kineticSimulation}" on:pyEventClosed="{pyEventClosed}">Submit</button>
     </div>
 
