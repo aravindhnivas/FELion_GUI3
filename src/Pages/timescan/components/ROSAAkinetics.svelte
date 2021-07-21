@@ -72,7 +72,7 @@
             const data = {}
             massOfReactants.split(",").map(mass=>mass.trim()).forEach((mass, i)=>data[nameOfReactantsArray[i]]=currentData[mass])
             if(typeof initialValues === "string") { initialValues = initialValues.split(",") }
-            const args = [JSON.stringify({data, selectedFile, currentLocation, nameOfReactantsArray, ratek3, ratekCID, numberDensity, k3Guess, kCIDGuess, initialValues})]
+            const args = [JSON.stringify({data, selectedFile, temp, currentLocation, nameOfReactantsArray, ratek3, ratekCID, numberDensity, k3Guess, kCIDGuess, initialValues})]
 
             await computePy_func({e, pyfile, args, general:true})
 
