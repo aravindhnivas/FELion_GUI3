@@ -98,14 +98,26 @@ def KineticMain():
     return
 
 def fitfunc(event):
+    global rateCoefficientArgs
     p0 = [*[10**rate.val for rate in k3Sliders], *[10**rate.val for rate in kCIDSliders]]
+    
     log(f"{p0=}")
 
     print(f"{expData.shape=}\n{expTime.shape=}")
-    k_fit, kcov = curve_fit(fitODE, expTime, expData.flatten(), p0=p0)
+    k_fit, kcov = curve_fit(fitODE, expTime, expData.flatten(),
+        p0=p0, sigma=expDataError.flatten(), absolute_sigma=True,
+        bounds=([*[1e-33]*len(k3Sliders), *[1e-17]*len(k3Sliders)], [*[1e-29]*len(k3Sliders), *[1e-14]*len(k3Sliders)])    
+    )
     k_err = np.sqrt(np.diag(kcov))
     log(f"{k_fit=}\n{k_err=}")
+
+    for counter0, _k3 in enumerate(k3Sliders):
+        _k3.set_val(np.log10(k_fit[:totalAttachmentLevels][counter0]))
+    
+    for counter1, _kCID in enumerate(kCIDSliders):
+        _kCID.set_val(np.log10(k_fit[totalAttachmentLevels:][counter1]))
     log("fitted")
+    
 
 fig = None
 ax = None
@@ -162,14 +174,13 @@ rateCoefficientArgs = ()
 def update(val):
 
     global rateCoefficientArgs
-    # args=([10**rate.val for rate in k3Sliders], [10**rate.val for rate in kCIDSliders])
     rateCoefficientArgs=([10**rate.val for rate in k3Sliders], [10**rate.val for rate in kCIDSliders])
     dNdt = solve_ivp(compute_attachment_process, tspan, initialValues, dense_output=True)
-
     dNdtSol = dNdt.sol(simulateTime)
     for line, data in zip(fitPlot, dNdtSol):
         line.set_ydata(data)
     fig.canvas.draw_idle()
+
 k3Sliders = []
 kCIDSliders = []
 
@@ -207,7 +218,7 @@ if __name__ == "__main__":
     data = args["data"]
     nameOfReactants = args["nameOfReactantsArray"]
     expData = np.array([data[name]["y"] for name in nameOfReactants], dtype=float)
-
+    expDataError = np.array([data[name]["error_y"]["array"] for name in nameOfReactants], dtype=float)
     temp = args["temp"]
     selectedFile = args["selectedFile"]
 
