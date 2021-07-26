@@ -22,7 +22,8 @@
     let currentLocation = db.get(`${filetype}_location`) || ""
     $: scanfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
     let openShell = false, graphPlotted = false
-    let massIndex = 0, timestartIndex = 1, nshots = 10, power = "21, 21", resON_Files = "", resOFF_Files = ""
+    let massIndex = 0, timestartIndex = 1, nshots = 10, power = "21, 21", resON_Files = "", resOFF_Files = "";
+    let timestartIndexScan = 0;
     let fullfiles = []
     function dir_changed() {
         if (fs.existsSync(currentLocation)) {
@@ -61,25 +62,29 @@
             return computePy_func({e, pyfile, args, general:true, openShell}).catch(err=>{$mainPreModal.modalContent = err;  $mainPreModal.open = true})
         }
 
-
         try {
             const dataFromPython = await computePy_func({e, pyfile, args})
 
             if (filetype=="scan") {
-                timescanData = dataFromPython;
-                // if(kineticMode) {
-                //     plot(`Timescan Plot: ${fileChecked[0]}`, "Time (in ms)", "Counts", dataFromPython[fileChecked[0]], "kinetic_plot__div")
-                // } else {
+                Object.keys(dataFromPython).forEach(data=>{
+                    Object.keys(dataFromPython[data]).forEach(innerData=>{
+                        const newData = dataFromPython[data][innerData]
+                        const length = newData.x.length
+                        newData.x = newData.x.slice(timestartIndexScan, length)
+                        newData.y = newData.y.slice(timestartIndexScan, length)
+                        newData["error_y"]["array"] = newData["error_y"]["array"].slice(timestartIndexScan, length)
 
-                    fileChecked.forEach(file=>{
-                        plot(`Timescan Plot: ${file}`, "Time (in ms)", "Counts", dataFromPython[file], `${file}_tplot`)
-                        
+                        dataFromPython[data][innerData] = newData
                     })
-                // }
+                })
+                timescanData = dataFromPython;
+                fileChecked.forEach(file=>{
+                    plot(`Timescan Plot: ${file}`, "Time (in ms)", "Counts", dataFromPython[file], `${file}_tplot`)
+                })
             } 
-
             window.createToast("Graph plotted", "success")
             graphPlotted = true
+
         } catch (error) {$mainPreModal.modalContent = error;  $mainPreModal.open = true}
 
     }
@@ -108,8 +113,12 @@
     <svelte:fragment slot="buttonContainer">
         <div class="align " style="align-items: center;">
             <button class="button is-link" on:click="{(e)=>plotData({e:e})}">Timescan Plot</button>
+            <Textfield type="number" {style} bind:value={timestartIndexScan} label="Time Index" />
+
+            
             <button class="button is-link" on:click="{()=>{toggleRow = !toggleRow}}">Depletion Plot</button>
             <button class="button is-link" on:click="{()=>{kineticMode = !kineticMode}}">ROSAA Kinetics</button>
+            
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"scan", tkplot:"plot"})}">Open in Matplotlib</button>
             <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
             <CustomSwitch on:change={linearlogCheck} bind:selected={logScale} label="Log"/>
@@ -132,13 +141,9 @@
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer" let:lookForGraph>
-        <!-- {#if kineticMode}
-            <div class="graph__div" id="kinetic_plot__div" use:lookForGraph ></div>
-        {:else} -->
-            {#each fileChecked as scanfile}
-                <div id="{scanfile}_tplot" class="graph__div" style="padding-bottom:1em" use:lookForGraph />
-            {/each}
-        <!-- {/if} -->
+        {#each fileChecked as scanfile}
+            <div id="{scanfile}_tplot" class="graph__div" style="padding-bottom:1em" use:lookForGraph />
+        {/each}
     </svelte:fragment>
     
 </Layout>
