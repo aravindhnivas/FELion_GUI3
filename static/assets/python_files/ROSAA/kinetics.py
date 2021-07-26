@@ -18,6 +18,8 @@ sys.path.insert(0, main_module_loc)
 from FELion_constants import pltColors
 
 
+def log(msg):
+    print(msg, flush=True)
 class Sliderlog(Slider):
 
     """Logarithmic slider.
@@ -69,41 +71,48 @@ def compute_attachment_process(t, N):
 
     return dR_dt
 
-def fitODE(t, args):
+def fitODE(t, *args):
 
+    # print(f"{args=}", flush=True)
     global rateCoefficientArgs
     tspan = [0, t.max()]
 
     rateCoefficientArgs=(args[:totalAttachmentLevels], args[totalAttachmentLevels:])
+    # log(f"{rateCoefficientArgs=}")
     dNdt = solve_ivp(compute_attachment_process, tspan, initialValues, dense_output=True)
     dNdtSol = dNdt.sol(t)
-    return dNdtSol.T
+    # log(f"{dNdtSol.shape=}")
+
+    return dNdtSol.flatten()
 
 tspan = None
 simulateTime = None
 def KineticMain():
 
-
     global initialValues, tspan, simulateTime
     duration = expTime.max()*1.2
+
     tspan = [0, duration]
     simulateTime = np.linspace(0, duration, 1000)
     plot_exp()
-
     return
 
 def fitfunc(event):
+    p0 = [*[10**rate.val for rate in k3Sliders], *[10**rate.val for rate in kCIDSliders]]
+    log(f"{p0=}")
 
-    p0 = [[10**rate.val for rate in k3Sliders], [10**rate.val for rate in kCIDSliders]]
-    k_fit, kcov = curve_fit(fitODE, expTime, expData, p0=p0)
-    print(k_fit)
+    print(f"{expData.shape=}\n{expTime.shape=}")
+    k_fit, kcov = curve_fit(fitODE, expTime, expData.flatten(), p0=p0)
+    k_err = np.sqrt(np.diag(kcov))
+    log(f"{k_fit=}\n{k_err=}")
+    log("fitted")
 
 fig = None
 ax = None
 fitPlot = []
 
-
 def ChangeYScale(yscale):
+
     ax.set_yscale(yscale)
     fig.canvas.draw_idle()
 
@@ -126,27 +135,30 @@ def plot_exp():
     button.on_clicked(fitfunc)
 
     for counter, key in enumerate(data.keys()):
+        time = data[key]["x"]
 
-        expTime = data[key]["x"]
         counts = data[key]["y"]
         error = data[key]["error_y"]["array"]
-        ax.errorbar(expTime, counts, error, fmt=".", ms=10, label=key, c=pltColors[counter])
+        ax.errorbar(time, counts, error, fmt=".", ms=10, label=key, c=pltColors[counter])
+
     ax = optimizePlot(ax, xlabel="Time (s)", ylabel="Counts", yscale="log")
 
     ax.set_title(f"{selectedFile}: {temp:.1f} K {numberDensity:.3e}"+"$cm^{-3}$")
     rateCoefficientArgs=(ratek3, ratekCID)
+
     dNdt = solve_ivp(compute_attachment_process, tspan, initialValues, dense_output=True)
     dNdtSol = dNdt.sol(simulateTime)
-
     for counter, data in enumerate(dNdtSol):
+
         _fitPlot, = ax.plot(simulateTime*1e3, data, "-", c=pltColors[counter])
         fitPlot.append(_fitPlot)
-
     legend = ax.legend([f"${_}$" for _ in nameOfReactants])
-
     legend.set_draggable(True)
+
     plt.show()
+
 rateCoefficientArgs = ()
+
 def update(val):
 
     global rateCoefficientArgs
@@ -162,7 +174,6 @@ k3Sliders = []
 kCIDSliders = []
 
 def make_slider(ax, axcolor):
-
     global k3Sliders, kCIDSliders
 
     ax.margins(x=0)
@@ -195,13 +206,13 @@ if __name__ == "__main__":
     currentLocation = pt(args["currentLocation"])
     data = args["data"]
     nameOfReactants = args["nameOfReactantsArray"]
-    expData = [data[name]["y"] for name in nameOfReactants]
+    expData = np.array([data[name]["y"] for name in nameOfReactants], dtype=float)
 
     temp = args["temp"]
     selectedFile = args["selectedFile"]
+
     numberDensity = float(args["numberDensity"])
     initialValues = [float(i) for i in args["initialValues"]]
-
     expTime = np.array(data[nameOfReactants[0]]["x"], dtype=float)*1e-3 # ms --> s
 
     if "," in args["ratek3"]:
