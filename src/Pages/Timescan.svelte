@@ -79,34 +79,32 @@
                 })
                 timescanData = dataFromPython;
                 fileChecked.forEach(file=>{
-                    plot(`Timescan Plot: ${file}`, "Time (in ms)", "Counts", dataFromPython[file], `${file}_tplot`)
+                    plot(`Timescan Plot: ${file}`, "Time (in ms)", "Counts", dataFromPython[file], `${file}_tplot`, logScale ? "log" : null)
                 })
+                // linearlogCheck()
+
             } 
             window.createToast("Graph plotted", "success")
             graphPlotted = true
-
         } catch (error) {$mainPreModal.modalContent = error;  $mainPreModal.open = true}
-
     }
 
     // Linearlog check
     const linearlogCheck = () => {
+
         let layout = { yaxis: { title: "Counts", type: logScale ? "log" : null } }
         if(graphPlotted) {
             fileChecked.forEach(file => {
                 let tplot = file + "_tplot";
                 Plotly.relayout(tplot, layout);
             })
-
         }
     }
-
-    // $: includePlotsInReport = fileChecked.map(file=>file={id:`${file}_tplot`, include:false, label:file})
-    // ROSAA kinetics
 
     let kineticMode = false;
 
     $: if(kineticMode) createToast("Kinetic mode", "warning")
+
 </script>
 
 <Layout {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked on:chdir={dir_changed}>

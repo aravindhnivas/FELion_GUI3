@@ -98,25 +98,24 @@ export function resizableDiv({ div, change = { width: true, height: true }, curs
         target.style.webkitTransform = target.style.transform = 'translate(' + x + 'px,' + y + 'px)'
         target.setAttribute('data-x', x)
         target.setAttribute('data-y', y)
-
     })
-
 }
 
 resizableDiv({ div: ".left_container__div", cursor: { right: true }, change: { width: true, height: false } })
 
-export function plot(mainTitle, xtitle, ytitle, data, plotArea, filetype = null) {
+export function plot(mainTitle, xtitle, ytitle, data, plotArea, logScale=null) {
 
     let dataLayout = {
         title: mainTitle,
         xaxis: { title: xtitle },
-        yaxis: { title: ytitle },
+        yaxis: { title: ytitle , type: logScale},
         hovermode: 'closest',
+
         autosize: true,
         height: 450,
     }
 
-    if (filetype == 'mass') { dataLayout.yaxis.type = "log" }
+    // if (filetype == 'mass') { dataLayout.yaxis.type = "log" }
 
     let dataPlot = [];
 

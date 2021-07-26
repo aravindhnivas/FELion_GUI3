@@ -79,7 +79,7 @@
 
                     if (filetype=="mass") {
                     
-                        plot("Mass spectrum", "Mass [u]", "Counts", dataFromPython, "mplot", "mass")
+                        plot("Mass spectrum", "Mass [u]", "Counts", dataFromPython, "mplot", "log")
                     
                     } else if (filetype =="find_peaks") {
 
