@@ -69,7 +69,7 @@ def compute_attachment_process(t, N):
 def fitODE(t, *args):
     global rateCoefficientArgs
 
-    tspan = [0, t.max()]
+    tspan = [0, t.max()*1.2]
     rateCoefficientArgs=(args[:totalAttachmentLevels], args[totalAttachmentLevels:])
     dNdt = solve_ivp(compute_attachment_process, tspan, initialValues, dense_output=True)
     dNdtSol = dNdt.sol(t)
@@ -94,7 +94,7 @@ def fitfunc(event=None):
     
     log(f"{p0=}")
 
-    print(f"{expData.shape=}\n{expTime.shape=}")
+    log(f"{expData.shape=}\n{expTime.shape=}")
     k_fit, kcov = curve_fit(fitODE, expTime, expData.flatten(),
         p0=p0, sigma=expDataError.flatten(), absolute_sigma=True,
         bounds=([*[1e-33]*len(k3Sliders), *[1e-17]*len(k3Sliders)], [*[1e-29]*len(k3Sliders), *[1e-14]*len(k3Sliders)])    
@@ -110,11 +110,11 @@ def fitfunc(event=None):
     log("fitted")
 
 fig = None
+
 ax = None
 fitPlot = []
 
 def ChangeYScale(yscale):
-
     ax.set_yscale(yscale)
     fig.canvas.draw_idle()
 
@@ -125,17 +125,16 @@ def setNumberDensity(val):
     
     ax.set_title(f"{selectedFile}: {temp:.1f} K {numberDensity:.2e}"+"$cm^{-3}$")
     
-    
-    
     fitfunc()
 
 def plot_exp():
     global data, fig, ax, k3Sliders, kCIDSliders, rateCoefficientArgs
 
+
+
     fig, ax = plt.subplots(figsize=(12, 6))
     plt.subplots_adjust(right=0.6, top=0.95, left=0.09, bottom=0.25)
     axcolor = 'lightgoldenrodyellow'
-
     k3Sliders, kCIDSliders = make_slider(ax, axcolor)
 
     left, bottom, width, height = 0.1, 0.05, 0.1, 0.05
@@ -143,7 +142,6 @@ def plot_exp():
     radio = RadioButtons(rax, ('log', 'linear'), active=0)
 
     radio.on_clicked(ChangeYScale)
-    
     buttonAxes = plt.axes([left+width+0.01, bottom, width, height], facecolor=axcolor)
     button = Button(buttonAxes, 'Fit', color=axcolor, hovercolor='0.975')
     button.on_clicked(fitfunc)
@@ -153,9 +151,10 @@ def plot_exp():
     numberDensityWidget = TextBox(numberDensityWidgetAxes, 'Number density', initial=f"{numberDensity:.2e}")
     numberDensityWidget.on_submit(setNumberDensity)
 
+
     for counter, key in enumerate(data.keys()):
         time = data[key]["x"]
-
+    
         counts = data[key]["y"]
         error = data[key]["error_y"]["array"]
         ax.errorbar(time, counts, error, fmt=".", ms=10, label=key, c=pltColors[counter])
@@ -164,6 +163,7 @@ def plot_exp():
     ax.set_title(f"{selectedFile}: {temp:.1f} K {numberDensity:.2e}"+"$cm^{-3}$")
     rateCoefficientArgs=(ratek3, ratekCID)
     dNdt = solve_ivp(compute_attachment_process, tspan, initialValues, dense_output=True)
+
     dNdtSol = dNdt.sol(simulateTime)
 
     for counter, data in enumerate(dNdtSol):
@@ -172,6 +172,12 @@ def plot_exp():
 
     legend = ax.legend([f"${_}$" for _ in nameOfReactants])
     legend.set_draggable(True)
+
+    try:
+        if numberDensity > 0:
+            fitfunc()
+    except Exception as error:
+        log(error)
     plt.show()
 
 rateCoefficientArgs = ()
@@ -180,6 +186,7 @@ rateCoefficientArgs = ()
 def update(val=None):
 
     global rateCoefficientArgs
+
     rateCoefficientArgs=([10**rate.val for rate in k3Sliders], [10**rate.val for rate in kCIDSliders])
     dNdt = solve_ivp(compute_attachment_process, tspan, initialValues, dense_output=True)
     dNdtSol = dNdt.sol(simulateTime)
@@ -188,6 +195,7 @@ def update(val=None):
     fig.canvas.draw_idle()
 
 k3Sliders = []
+
 kCIDSliders = []
 
 def make_slider(ax, axcolor):
@@ -220,9 +228,10 @@ def make_slider(ax, axcolor):
 
     return k3Sliders, kCIDSliders
 
+
 if __name__ == "__main__":
-    
     args = json.loads(sys.argv[1])
+
     currentLocation = pt(args["currentLocation"])
     data = args["data"]
     nameOfReactants = args["nameOfReactantsArray"]
@@ -231,25 +240,25 @@ if __name__ == "__main__":
     temp = args["temp"]
     selectedFile = args["selectedFile"]
     numberDensity = float(args["numberDensity"])
-    initialValues = [float(i) for i in args["initialValues"]]
 
+    initialValues = [float(i) for i in args["initialValues"]]
     expTime = np.array(data[nameOfReactants[0]]["x"], dtype=float)*1e-3 # ms --> s
 
     if "," in args["ratek3"]:
 
         k3Labels = [i.strip() for i in args["ratek3"].split(",")]
-
         kCIDLabels = [i.strip() for i in args["ratekCID"].split(",")]
-    else:
 
+    else:
         k3Labels = [args["ratek3"].strip()]
         kCIDLabels = [args["ratekCID"].strip()]
     totalAttachmentLevels = len(initialValues)-1
-    print(f"{k3Labels=}\n{totalAttachmentLevels=}", flush=True)
 
+    log(f"{k3Labels=}\n{totalAttachmentLevels=}")
 
     ratek3 = [float(args["k3Guess"]) for _ in k3Labels]
     ratekCID = [float(args["kCIDGuess"]) for _ in kCIDLabels]
 
-    print(f"{expData=}\n{nameOfReactants=}", flush=True)
+    log(f"{expData=}\n{nameOfReactants=}")
+
     KineticMain()

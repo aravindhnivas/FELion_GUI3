@@ -36,7 +36,25 @@
     let toggleRow = true;
     let style = "width:7em; height:3.5em; margin-right:0.5em"
     let logScale = false;
+
     let timescanData = {};
+    let dataLength;
+    function sliceData(dataFromPython) {
+        const reduceData = _.cloneDeep(dataFromPython)
+        Object.keys(reduceData).forEach(data=>{
+            Object.keys(reduceData[data]).forEach(innerData=>{
+                const newData = reduceData[data][innerData]
+                newData.x = newData.x.slice(timestartIndexScan, dataLength)
+                newData.y = newData.y.slice(timestartIndexScan, dataLength)
+
+                newData["error_y"]["array"] = newData["error_y"]["array"].slice(timestartIndexScan, length)
+                reduceData[data][innerData] = newData
+            })
+
+        })
+
+        return reduceData
+    }
 
     async function plotData({e=null, filetype="scan", tkplot="run"}={}){
 
@@ -68,18 +86,14 @@
             if (filetype=="scan") {
                 Object.keys(dataFromPython).forEach(data=>{
                     Object.keys(dataFromPython[data]).forEach(innerData=>{
-                        const newData = dataFromPython[data][innerData]
-                        const length = newData.x.length
-                        newData.x = newData.x.slice(timestartIndexScan, length)
-                        newData.y = newData.y.slice(timestartIndexScan, length)
-                        newData["error_y"]["array"] = newData["error_y"]["array"].slice(timestartIndexScan, length)
-
-                        dataFromPython[data][innerData] = newData
+                        dataLength = dataFromPython[data][innerData].x.length
                     })
                 })
-                timescanData = dataFromPython;
+
+                timescanData = sliceData(dataFromPython)
+
                 fileChecked.forEach(file=>{
-                    plot(`Timescan Plot: ${file}`, "Time (in ms)", "Counts", dataFromPython[file], `${file}_tplot`, logScale ? "log" : null)
+                    plot(`Timescan Plot: ${file}`, "Time (in ms)", "Counts", timescanData[file], `${file}_tplot`, logScale ? "log" : null)
                 })
                 // linearlogCheck()
 
@@ -105,13 +119,19 @@
 
     $: if(kineticMode) createToast("Kinetic mode", "warning")
 
+    function updateData(){
+        const data = _.cloneDeep(sliceData(timescanData))
+        fileChecked.forEach(file=>{
+            plot(`Timescan Plot: ${file}`, "Time (in ms)", "Counts", data[file], `${file}_tplot`, logScale ? "log" : null)
+        })
+    }
 </script>
 
 <Layout {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked on:chdir={dir_changed}>
     <svelte:fragment slot="buttonContainer">
         <div class="align " style="align-items: center;">
             <button class="button is-link" on:click="{(e)=>plotData({e:e})}">Timescan Plot</button>
-            <Textfield type="number" {style} bind:value={timestartIndexScan} label="Time Index" />
+            <Textfield type="number" input$min=0 {style} bind:value={timestartIndexScan} label="Time Index" on:change={updateData}/>
 
             
             <button class="button is-link" on:click="{()=>{toggleRow = !toggleRow}}">Depletion Plot</button>

@@ -33,7 +33,7 @@
         masses = massOfReactants.split(",").map(m=>m.trim())
         requiredLength = masses.length
 
-        if(defaultInitialValues && masses) { initialValues = masses.map(m=>currentData[m]["y"][0].toFixed(0)) }
+        if(defaultInitialValues && masses) { initialValues = [currentData[masses[0]]["y"][0].toFixed(0), ...Array(requiredLength-1).fill(1)] }
         nameOfReactants =`${molecule}, ${molecule}${tag}`
         
         ratek3="k31", ratekCID="kCID1";
