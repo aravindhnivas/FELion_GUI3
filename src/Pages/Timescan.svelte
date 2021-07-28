@@ -38,22 +38,22 @@
     let logScale = false;
 
     let timescanData = {};
-    let dataLength;
-    function sliceData(dataFromPython) {
-        const reduceData = _.cloneDeep(dataFromPython)
+    let dataLength=1;
+    function sliceData(modifyData) {
+        const reduceData = _.cloneDeep(modifyData)
         Object.keys(reduceData).forEach(data=>{
             Object.keys(reduceData[data]).forEach(innerData=>{
                 const newData = reduceData[data][innerData]
                 newData.x = newData.x.slice(timestartIndexScan, dataLength)
                 newData.y = newData.y.slice(timestartIndexScan, dataLength)
 
-                newData["error_y"]["array"] = newData["error_y"]["array"].slice(timestartIndexScan, length)
+                newData["error_y"]["array"] = newData["error_y"]["array"].slice(timestartIndexScan, dataLength)
                 reduceData[data][innerData] = newData
             })
 
         })
 
-        return reduceData
+        return _.cloneDeep(reduceData)
     }
 
     async function plotData({e=null, filetype="scan", tkplot="run"}={}){
@@ -89,8 +89,8 @@
                         dataLength = dataFromPython[data][innerData].x.length
                     })
                 })
-
                 timescanData = sliceData(dataFromPython)
+                kineticData = sliceData(dataFromPython)
 
                 fileChecked.forEach(file=>{
                     plot(`Timescan Plot: ${file}`, "Time (in ms)", "Counts", timescanData[file], `${file}_tplot`, logScale ? "log" : null)
@@ -119,19 +119,24 @@
 
     $: if(kineticMode) createToast("Kinetic mode", "warning")
 
-    function updateData(){
-        const data = _.cloneDeep(sliceData(timescanData))
+    let kineticData = {}
+    async function updateData(){
+        kineticData = sliceData(timescanData)
+
         fileChecked.forEach(file=>{
-            plot(`Timescan Plot: ${file}`, "Time (in ms)", "Counts", data[file], `${file}_tplot`, logScale ? "log" : null)
+        
+            plot(`Timescan Plot: ${file}`, "Time (in ms)", "Counts", kineticData[file], `${file}_tplot`, logScale ? "log" : null)
         })
+    
     }
 </script>
+
 
 <Layout {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked on:chdir={dir_changed}>
     <svelte:fragment slot="buttonContainer">
         <div class="align " style="align-items: center;">
             <button class="button is-link" on:click="{(e)=>plotData({e:e})}">Timescan Plot</button>
-            <Textfield type="number" input$min=0 {style} bind:value={timestartIndexScan} label="Time Index" on:change={updateData}/>
+            <Textfield type="number" input$min=0 input$max={dataLength} {style} bind:value={timestartIndexScan} label="Time Index" on:change={updateData}/>
 
             
             <button class="button is-link" on:click="{()=>{toggleRow = !toggleRow}}">Depletion Plot</button>
@@ -155,7 +160,7 @@
         
         </div>
         
-        <ROSAAkinetics {fileChecked} {currentLocation} {kineticMode} {timescanData}/>
+        <ROSAAkinetics {fileChecked} {currentLocation} {kineticMode} {kineticData}/>
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer" let:lookForGraph>

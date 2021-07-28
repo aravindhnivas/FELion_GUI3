@@ -230,19 +230,26 @@ def make_slider(ax, axcolor):
 
 
 if __name__ == "__main__":
+
     args = json.loads(sys.argv[1])
 
     currentLocation = pt(args["currentLocation"])
     data = args["data"]
+    
     nameOfReactants = args["nameOfReactantsArray"]
+    expTime = np.array(data[nameOfReactants[0]]["x"], dtype=float)*1e-3 # ms --> s
     expData = np.array([data[name]["y"] for name in nameOfReactants], dtype=float)
     expDataError = np.array([data[name]["error_y"]["array"] for name in nameOfReactants], dtype=float)
+
+    log(f"{expTime.shape=}")
+    log(f"{expData.shape=}")
+    log(f"{expDataError.shape=}")
+
     temp = args["temp"]
     selectedFile = args["selectedFile"]
     numberDensity = float(args["numberDensity"])
 
     initialValues = [float(i) for i in args["initialValues"]]
-    expTime = np.array(data[nameOfReactants[0]]["x"], dtype=float)*1e-3 # ms --> s
 
     if "," in args["ratek3"]:
 
@@ -259,6 +266,6 @@ if __name__ == "__main__":
     ratek3 = [float(args["k3Guess"]) for _ in k3Labels]
     ratekCID = [float(args["kCIDGuess"]) for _ in kCIDLabels]
 
-    log(f"{expData=}\n{nameOfReactants=}")
+    # log(f"{expData=}\n{nameOfReactants=}")
 
     KineticMain()

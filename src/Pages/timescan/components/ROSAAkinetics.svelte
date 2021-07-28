@@ -1,30 +1,33 @@
 
 <script>
+    import { createEventDispatcher } from 'svelte';
     import {mainPreModal} from "../../../svelteWritable";
     import CustomSwitch from "../../../components/CustomSwitch.svelte"
     import CustomSelect from "../../../components/CustomSelect.svelte"
     import Textfield from '@smui/textfield'
-    export let fileChecked=[], currentLocation="", kineticMode=true, timescanData={};
-    let srgMode=true, pbefore=0, pafter=0, temp=5;
+    export let fileChecked=[], currentLocation="", kineticMode=true, kineticData;
+    
+    const dispatch = createEventDispatcher();
 
-    // let numberDensity=0;
+    let srgMode=true, pbefore=0, pafter=0, temp=5;
+    
     let molecule="CD", tag="He", massOfReactants="", nameOfReactants="";
     let ratek3="k31", ratekCID="kCID1";
-
     let selectedFile = "", totalMass = [], requiredLength=0;
+
     let k3Guess = "1e-30", kCIDGuess="1e-15";
+
+
     let currentData = {}
-
     function computeParameters() {
-
-
-        currentData = timescanData[selectedFile];
+        currentData = kineticData[selectedFile];
         if(currentData) {
             
             totalMass = Object.keys(currentData)
             totalMass = totalMass.slice(0, totalMass.length-1)
             
             massOfReactants = totalMass.join(", ")
+            
             computeOtherParameters()
         }
     }
@@ -60,9 +63,10 @@
     
     }
     const constantValue = 4.2e17
-
     $: numberDensity = Number((constantValue*calibrationFactor*(pafter - pbefore))/(temp**0.5)).toExponential(3)
-    $: if(selectedFile) {computeParameters()}
+
+    $: if(selectedFile || kineticData) {computeParameters()}
+
     async function kineticSimulation(e) {
     
         try {
@@ -113,7 +117,7 @@
         <Textfield bind:value={k3Guess} label="k3Guess" />
         <Textfield bind:value={ratekCID} label="ratekCID" />
         <Textfield bind:value={kCIDGuess} label="kCIDGuess" />
-        <button class="button is-link" on:click="{computeParameters}">Compute parameters</button>
+        <button class="button is-link" on:click="{computeParameters}" >Compute parameters</button>
         <button class="button is-link" on:click="{kineticSimulation}" on:pyEventClosed="{pyEventClosed}">Submit</button>
     </div>
 

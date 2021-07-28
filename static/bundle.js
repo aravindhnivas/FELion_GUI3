@@ -55843,16 +55843,16 @@ function create_fragment$1f(ctx) {
 			button1 = element("button");
 			button1.textContent = "Submit";
 			attr_dev(div0, "class", "align");
-			add_location(div0, file$18, 91, 4, 3414);
+			add_location(div0, file$18, 95, 4, 3521);
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$18, 115, 8, 4765);
+			add_location(button0, file$18, 119, 8, 4872);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$18, 116, 8, 4864);
+			add_location(button1, file$18, 120, 8, 4972);
 			attr_dev(div1, "class", "align");
-			add_location(div1, file$18, 99, 4, 3922);
+			add_location(div1, file$18, 103, 4, 4029);
 			attr_dev(div2, "class", "align animated fadeIn");
 			toggle_class(div2, "hide", !/*kineticMode*/ ctx[1]);
-			add_location(div2, file$18, 90, 0, 3346);
+			add_location(div2, file$18, 94, 0, 3453);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -56159,20 +56159,18 @@ function instance$1f($$self, $$props, $$invalidate) {
 	let { fileChecked = [] } = $$props,
 		{ currentLocation = "" } = $$props,
 		{ kineticMode = true } = $$props,
-		{ timescanData = {} } = $$props;
+		{ kineticData } = $$props;
 
+	const dispatch = createEventDispatcher();
 	let srgMode = true, pbefore = 0, pafter = 0, temp = 5;
-
-	// let numberDensity=0;
 	let molecule = "CD", tag = "He", massOfReactants = "", nameOfReactants = "";
-
 	let ratek3 = "k31", ratekCID = "kCID1";
 	let selectedFile = "", totalMass = [], requiredLength = 0;
 	let k3Guess = "1e-30", kCIDGuess = "1e-15";
 	let currentData = {};
 
 	function computeParameters() {
-		currentData = timescanData[selectedFile];
+		currentData = kineticData[selectedFile];
 
 		if (currentData) {
 			totalMass = Object.keys(currentData);
@@ -56253,7 +56251,7 @@ function instance$1f($$self, $$props, $$invalidate) {
 
 	let defaultInitialValues = true;
 	let initialValues = "";
-	const writable_props = ["fileChecked", "currentLocation", "kineticMode", "timescanData"];
+	const writable_props = ["fileChecked", "currentLocation", "kineticMode", "kineticData"];
 
 	Object_1$1.keys($$props).forEach(key => {
 		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<ROSAAkinetics> was created with unknown prop '${key}'`);
@@ -56348,10 +56346,11 @@ function instance$1f($$self, $$props, $$invalidate) {
 		if ("fileChecked" in $$props) $$invalidate(0, fileChecked = $$props.fileChecked);
 		if ("currentLocation" in $$props) $$invalidate(22, currentLocation = $$props.currentLocation);
 		if ("kineticMode" in $$props) $$invalidate(1, kineticMode = $$props.kineticMode);
-		if ("timescanData" in $$props) $$invalidate(23, timescanData = $$props.timescanData);
+		if ("kineticData" in $$props) $$invalidate(23, kineticData = $$props.kineticData);
 	};
 
 	$$self.$capture_state = () => ({
+		createEventDispatcher,
 		mainPreModal,
 		CustomSwitch,
 		CustomSelect,
@@ -56359,7 +56358,8 @@ function instance$1f($$self, $$props, $$invalidate) {
 		fileChecked,
 		currentLocation,
 		kineticMode,
-		timescanData,
+		kineticData,
+		dispatch,
 		srgMode,
 		pbefore,
 		pafter,
@@ -56393,7 +56393,7 @@ function instance$1f($$self, $$props, $$invalidate) {
 		if ("fileChecked" in $$props) $$invalidate(0, fileChecked = $$props.fileChecked);
 		if ("currentLocation" in $$props) $$invalidate(22, currentLocation = $$props.currentLocation);
 		if ("kineticMode" in $$props) $$invalidate(1, kineticMode = $$props.kineticMode);
-		if ("timescanData" in $$props) $$invalidate(23, timescanData = $$props.timescanData);
+		if ("kineticData" in $$props) $$invalidate(23, kineticData = $$props.kineticData);
 		if ("srgMode" in $$props) $$invalidate(2, srgMode = $$props.srgMode);
 		if ("pbefore" in $$props) $$invalidate(3, pbefore = $$props.pbefore);
 		if ("pafter" in $$props) $$invalidate(4, pafter = $$props.pafter);
@@ -56442,8 +56442,8 @@ function instance$1f($$self, $$props, $$invalidate) {
 			 $$invalidate(18, numberDensity = Number(constantValue * calibrationFactor * (pafter - pbefore) / temp ** 0.5).toExponential(3));
 		}
 
-		if ($$self.$$.dirty[0] & /*selectedFile*/ 128) {
-			 if (selectedFile) {
+		if ($$self.$$.dirty[0] & /*selectedFile, kineticData*/ 8388736) {
+			 if (selectedFile || kineticData) {
 				computeParameters();
 			}
 		}
@@ -56473,7 +56473,7 @@ function instance$1f($$self, $$props, $$invalidate) {
 		kineticSimulation,
 		pyEventClosed,
 		currentLocation,
-		timescanData,
+		kineticData,
 		customswitch0_selected_binding,
 		textfield0_value_binding,
 		textfield1_value_binding,
@@ -56508,7 +56508,7 @@ class ROSAAkinetics extends SvelteComponentDev {
 				fileChecked: 0,
 				currentLocation: 22,
 				kineticMode: 1,
-				timescanData: 23
+				kineticData: 23
 			},
 			[-1, -1]
 		);
@@ -56519,6 +56519,13 @@ class ROSAAkinetics extends SvelteComponentDev {
 			options,
 			id: create_fragment$1f.name
 		});
+
+		const { ctx } = this.$$;
+		const props = options.props || {};
+
+		if (/*kineticData*/ ctx[23] === undefined && !("kineticData" in props)) {
+			console.warn("<ROSAAkinetics> was created without expected prop 'kineticData'");
+		}
 	}
 
 	get fileChecked() {
@@ -56545,11 +56552,11 @@ class ROSAAkinetics extends SvelteComponentDev {
 		throw new Error("<ROSAAkinetics>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 
-	get timescanData() {
+	get kineticData() {
 		throw new Error("<ROSAAkinetics>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 
-	set timescanData(value) {
+	set kineticData(value) {
 		throw new Error("<ROSAAkinetics>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 }
@@ -56561,11 +56568,11 @@ const file$19 = "src\\Pages\\Timescan.svelte";
 
 function get_each_context$a(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[42] = list[i];
+	child_ctx[43] = list[i];
 	return child_ctx;
 }
 
-// (131:4) <svelte:fragment slot="buttonContainer">
+// (136:4) <svelte:fragment slot="buttonContainer">
 function create_buttonContainer_slot$2(ctx) {
 	let div0;
 	let button0;
@@ -56612,13 +56619,14 @@ function create_buttonContainer_slot$2(ctx) {
 	let dispose;
 
 	function textfield0_value_binding(value) {
-		/*textfield0_value_binding*/ ctx[22](value);
+		/*textfield0_value_binding*/ ctx[23](value);
 	}
 
 	let textfield0_props = {
 		type: "number",
 		input$min: "0",
-		style: /*style*/ ctx[17],
+		input$max: /*dataLength*/ ctx[15],
+		style: /*style*/ ctx[18],
 		label: "Time Index"
 	};
 
@@ -56628,10 +56636,10 @@ function create_buttonContainer_slot$2(ctx) {
 
 	textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
-	textfield0.$on("change", /*updateData*/ ctx[20]);
+	textfield0.$on("change", /*updateData*/ ctx[21]);
 
 	function customiconswitch_toggler_binding(value) {
-		/*customiconswitch_toggler_binding*/ ctx[26](value);
+		/*customiconswitch_toggler_binding*/ ctx[27](value);
 	}
 
 	let customiconswitch_props = { icons: ["settings_ethernet", "code"] };
@@ -56648,7 +56656,7 @@ function create_buttonContainer_slot$2(ctx) {
 	binding_callbacks.push(() => bind(customiconswitch, "toggler", customiconswitch_toggler_binding));
 
 	function customswitch_selected_binding(value) {
-		/*customswitch_selected_binding*/ ctx[27](value);
+		/*customswitch_selected_binding*/ ctx[28](value);
 	}
 
 	let customswitch_props = { label: "Log" };
@@ -56663,10 +56671,10 @@ function create_buttonContainer_slot$2(ctx) {
 		});
 
 	binding_callbacks.push(() => bind(customswitch, "selected", customswitch_selected_binding));
-	customswitch.$on("change", /*linearlogCheck*/ ctx[19]);
+	customswitch.$on("change", /*linearlogCheck*/ ctx[20]);
 
 	function customselect0_picked_binding(value) {
-		/*customselect0_picked_binding*/ ctx[28](value);
+		/*customselect0_picked_binding*/ ctx[29](value);
 	}
 
 	let customselect0_props = {
@@ -56686,7 +56694,7 @@ function create_buttonContainer_slot$2(ctx) {
 	binding_callbacks.push(() => bind(customselect0, "picked", customselect0_picked_binding));
 
 	function customselect1_picked_binding(value) {
-		/*customselect1_picked_binding*/ ctx[29](value);
+		/*customselect1_picked_binding*/ ctx[30](value);
 	}
 
 	let customselect1_props = {
@@ -56706,7 +56714,7 @@ function create_buttonContainer_slot$2(ctx) {
 	binding_callbacks.push(() => bind(customselect1, "picked", customselect1_picked_binding));
 
 	function textfield1_value_binding(value) {
-		/*textfield1_value_binding*/ ctx[30](value);
+		/*textfield1_value_binding*/ ctx[31](value);
 	}
 
 	let textfield1_props = { label: "Power (ON, OFF) [mJ]" };
@@ -56719,12 +56727,12 @@ function create_buttonContainer_slot$2(ctx) {
 	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding));
 
 	function textfield2_value_binding(value) {
-		/*textfield2_value_binding*/ ctx[31](value);
+		/*textfield2_value_binding*/ ctx[32](value);
 	}
 
 	let textfield2_props = {
 		type: "number",
-		style: /*style*/ ctx[17],
+		style: /*style*/ ctx[18],
 		label: "FELIX Hz"
 	};
 
@@ -56736,12 +56744,12 @@ function create_buttonContainer_slot$2(ctx) {
 	binding_callbacks.push(() => bind(textfield2, "value", textfield2_value_binding));
 
 	function textfield3_value_binding(value) {
-		/*textfield3_value_binding*/ ctx[32](value);
+		/*textfield3_value_binding*/ ctx[33](value);
 	}
 
 	let textfield3_props = {
 		type: "number",
-		style: /*style*/ ctx[17],
+		style: /*style*/ ctx[18],
 		label: "Mass Index"
 	};
 
@@ -56753,12 +56761,12 @@ function create_buttonContainer_slot$2(ctx) {
 	binding_callbacks.push(() => bind(textfield3, "value", textfield3_value_binding));
 
 	function textfield4_value_binding(value) {
-		/*textfield4_value_binding*/ ctx[33](value);
+		/*textfield4_value_binding*/ ctx[34](value);
 	}
 
 	let textfield4_props = {
 		type: "number",
-		style: /*style*/ ctx[17],
+		style: /*style*/ ctx[18],
 		label: "Time Index"
 	};
 
@@ -56774,7 +56782,7 @@ function create_buttonContainer_slot$2(ctx) {
 				fileChecked: /*fileChecked*/ ctx[0],
 				currentLocation: /*currentLocation*/ ctx[1],
 				kineticMode: /*kineticMode*/ ctx[4],
-				timescanData: /*timescanData*/ ctx[15]
+				kineticData: /*kineticData*/ ctx[16]
 			},
 			$$inline: true
 		});
@@ -56818,21 +56826,21 @@ function create_buttonContainer_slot$2(ctx) {
 			t18 = space();
 			create_component(rosaakinetics.$$.fragment);
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$19, 132, 12, 5097);
+			add_location(button0, file$19, 137, 12, 5210);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$19, 136, 12, 5348);
+			add_location(button1, file$19, 141, 12, 5484);
 			attr_dev(button2, "class", "button is-link");
-			add_location(button2, file$19, 137, 12, 5458);
+			add_location(button2, file$19, 142, 12, 5594);
 			attr_dev(button3, "class", "button is-link");
-			add_location(button3, file$19, 139, 12, 5586);
+			add_location(button3, file$19, 144, 12, 5722);
 			attr_dev(div0, "class", "align ");
 			set_style(div0, "align-items", "center");
-			add_location(div0, file$19, 131, 8, 5034);
+			add_location(div0, file$19, 136, 8, 5147);
 			attr_dev(button4, "class", "button is-link");
-			add_location(button4, file$19, 153, 12, 6540);
+			add_location(button4, file$19, 158, 12, 6676);
 			attr_dev(div1, "class", "align animated fadeIn");
 			toggle_class(div1, "hide", /*toggleRow*/ ctx[13]);
-			add_location(div1, file$19, 144, 8, 5927);
+			add_location(div1, file$19, 149, 8, 6063);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -56870,11 +56878,11 @@ function create_buttonContainer_slot$2(ctx) {
 
 			if (!mounted) {
 				dispose = [
-					listen_dev(button0, "click", /*click_handler*/ ctx[21], false, false, false),
-					listen_dev(button1, "click", /*click_handler_1*/ ctx[23], false, false, false),
-					listen_dev(button2, "click", /*click_handler_2*/ ctx[24], false, false, false),
-					listen_dev(button3, "click", /*click_handler_3*/ ctx[25], false, false, false),
-					listen_dev(button4, "click", /*click_handler_4*/ ctx[34], false, false, false)
+					listen_dev(button0, "click", /*click_handler*/ ctx[22], false, false, false),
+					listen_dev(button1, "click", /*click_handler_1*/ ctx[24], false, false, false),
+					listen_dev(button2, "click", /*click_handler_2*/ ctx[25], false, false, false),
+					listen_dev(button3, "click", /*click_handler_3*/ ctx[26], false, false, false),
+					listen_dev(button4, "click", /*click_handler_4*/ ctx[35], false, false, false)
 				];
 
 				mounted = true;
@@ -56882,6 +56890,7 @@ function create_buttonContainer_slot$2(ctx) {
 		},
 		p: function update(ctx, dirty) {
 			const textfield0_changes = {};
+			if (dirty[0] & /*dataLength*/ 32768) textfield0_changes.input$max = /*dataLength*/ ctx[15];
 
 			if (!updating_value && dirty[0] & /*timestartIndexScan*/ 2048) {
 				updating_value = true;
@@ -56973,7 +56982,7 @@ function create_buttonContainer_slot$2(ctx) {
 			if (dirty[0] & /*fileChecked*/ 1) rosaakinetics_changes.fileChecked = /*fileChecked*/ ctx[0];
 			if (dirty[0] & /*currentLocation*/ 2) rosaakinetics_changes.currentLocation = /*currentLocation*/ ctx[1];
 			if (dirty[0] & /*kineticMode*/ 16) rosaakinetics_changes.kineticMode = /*kineticMode*/ ctx[4];
-			if (dirty[0] & /*timescanData*/ 32768) rosaakinetics_changes.timescanData = /*timescanData*/ ctx[15];
+			if (dirty[0] & /*kineticData*/ 65536) rosaakinetics_changes.kineticData = /*kineticData*/ ctx[16];
 			rosaakinetics.$set(rosaakinetics_changes);
 		},
 		i: function intro(local) {
@@ -57027,14 +57036,14 @@ function create_buttonContainer_slot$2(ctx) {
 		block,
 		id: create_buttonContainer_slot$2.name,
 		type: "slot",
-		source: "(131:4) <svelte:fragment slot=\\\"buttonContainer\\\">",
+		source: "(136:4) <svelte:fragment slot=\\\"buttonContainer\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (162:8) {#each fileChecked as scanfile}
+// (167:8) {#each fileChecked as scanfile}
 function create_each_block$a(ctx) {
 	let div;
 	let div_id_value;
@@ -57045,21 +57054,21 @@ function create_each_block$a(ctx) {
 	const block = {
 		c: function create() {
 			div = element("div");
-			attr_dev(div, "id", div_id_value = "" + (/*scanfile*/ ctx[42] + "_tplot"));
+			attr_dev(div, "id", div_id_value = "" + (/*scanfile*/ ctx[43] + "_tplot"));
 			attr_dev(div, "class", "graph__div");
 			set_style(div, "padding-bottom", "1em");
-			add_location(div, file$19, 162, 12, 6905);
+			add_location(div, file$19, 167, 12, 7040);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
 
 			if (!mounted) {
-				dispose = action_destroyer(lookForGraph_action = /*lookForGraph*/ ctx[41].call(null, div));
+				dispose = action_destroyer(lookForGraph_action = /*lookForGraph*/ ctx[42].call(null, div));
 				mounted = true;
 			}
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*fileChecked*/ 1 && div_id_value !== (div_id_value = "" + (/*scanfile*/ ctx[42] + "_tplot"))) {
+			if (dirty[0] & /*fileChecked*/ 1 && div_id_value !== (div_id_value = "" + (/*scanfile*/ ctx[43] + "_tplot"))) {
 				attr_dev(div, "id", div_id_value);
 			}
 		},
@@ -57074,14 +57083,14 @@ function create_each_block$a(ctx) {
 		block,
 		id: create_each_block$a.name,
 		type: "each",
-		source: "(162:8) {#each fileChecked as scanfile}",
+		source: "(167:8) {#each fileChecked as scanfile}",
 		ctx
 	});
 
 	return block;
 }
 
-// (161:4) <svelte:fragment slot="plotContainer" let:lookForGraph>
+// (166:4) <svelte:fragment slot="plotContainer" let:lookForGraph>
 function create_plotContainer_slot$2(ctx) {
 	let each_1_anchor;
 	let each_value = /*fileChecked*/ ctx[0];
@@ -57142,7 +57151,7 @@ function create_plotContainer_slot$2(ctx) {
 		block,
 		id: create_plotContainer_slot$2.name,
 		type: "slot",
-		source: "(161:4) <svelte:fragment slot=\\\"plotContainer\\\" let:lookForGraph>",
+		source: "(166:4) <svelte:fragment slot=\\\"plotContainer\\\" let:lookForGraph>",
 		ctx
 	});
 
@@ -57156,11 +57165,11 @@ function create_fragment$1g(ctx) {
 	let current;
 
 	function layout_currentLocation_binding(value) {
-		/*layout_currentLocation_binding*/ ctx[35](value);
+		/*layout_currentLocation_binding*/ ctx[36](value);
 	}
 
 	function layout_fileChecked_binding(value) {
-		/*layout_fileChecked_binding*/ ctx[36](value);
+		/*layout_fileChecked_binding*/ ctx[37](value);
 	}
 
 	let layout_props = {
@@ -57170,8 +57179,8 @@ function create_fragment$1g(ctx) {
 		$$slots: {
 			plotContainer: [
 				create_plotContainer_slot$2,
-				({ lookForGraph }) => ({ 41: lookForGraph }),
-				({ lookForGraph }) => [0, lookForGraph ? 1024 : 0]
+				({ lookForGraph }) => ({ 42: lookForGraph }),
+				({ lookForGraph }) => [0, lookForGraph ? 2048 : 0]
 			],
 			buttonContainer: [create_buttonContainer_slot$2]
 		},
@@ -57189,7 +57198,7 @@ function create_fragment$1g(ctx) {
 	layout = new Layout({ props: layout_props, $$inline: true });
 	binding_callbacks.push(() => bind(layout, "currentLocation", layout_currentLocation_binding));
 	binding_callbacks.push(() => bind(layout, "fileChecked", layout_fileChecked_binding));
-	layout.$on("chdir", /*dir_changed*/ ctx[16]);
+	layout.$on("chdir", /*dir_changed*/ ctx[17]);
 
 	const block = {
 		c: function create() {
@@ -57206,7 +57215,7 @@ function create_fragment$1g(ctx) {
 			const layout_changes = {};
 			if (dirty[0] & /*graphPlotted*/ 64) layout_changes.graphPlotted = /*graphPlotted*/ ctx[6];
 
-			if (dirty[0] & /*fileChecked, currentLocation, kineticMode, timescanData, toggleRow, timestartIndex, massIndex, nshots, power, fullfiles, resOFF_Files, resON_Files, logScale, openShell, timestartIndexScan*/ 65471 | dirty[1] & /*$$scope*/ 16384) {
+			if (dirty[0] & /*fileChecked, currentLocation, kineticMode, kineticData, toggleRow, timestartIndex, massIndex, nshots, power, fullfiles, resOFF_Files, resON_Files, logScale, openShell, dataLength, timestartIndexScan*/ 131007 | dirty[1] & /*$$scope*/ 32768) {
 				layout_changes.$$scope = { dirty, ctx };
 			}
 
@@ -57255,7 +57264,7 @@ function instance$1g($$self, $$props, $$invalidate) {
 	let scanfiles;
 	let $mainPreModal;
 	validate_store(mainPreModal, "mainPreModal");
-	component_subscribe($$self, mainPreModal, $$value => $$invalidate(39, $mainPreModal = $$value));
+	component_subscribe($$self, mainPreModal, $$value => $$invalidate(40, $mainPreModal = $$value));
 	let { $$slots: slots = {}, $$scope } = $$props;
 	validate_slots("Timescan", slots, []);
 	let fileChecked = [];
@@ -57287,22 +57296,22 @@ function instance$1g($$self, $$props, $$invalidate) {
 	let style = "width:7em; height:3.5em; margin-right:0.5em";
 	let logScale = false;
 	let timescanData = {};
-	let dataLength;
+	let dataLength = 1;
 
-	function sliceData(dataFromPython) {
-		const reduceData = _.cloneDeep(dataFromPython);
+	function sliceData(modifyData) {
+		const reduceData = _.cloneDeep(modifyData);
 
 		Object.keys(reduceData).forEach(data => {
 			Object.keys(reduceData[data]).forEach(innerData => {
 				const newData = reduceData[data][innerData];
 				newData.x = newData.x.slice(timestartIndexScan, dataLength);
 				newData.y = newData.y.slice(timestartIndexScan, dataLength);
-				newData["error_y"]["array"] = newData["error_y"]["array"].slice(timestartIndexScan, length);
+				newData["error_y"]["array"] = newData["error_y"]["array"].slice(timestartIndexScan, dataLength);
 				reduceData[data][innerData] = newData;
 			});
 		});
 
-		return reduceData;
+		return _.cloneDeep(reduceData);
 	}
 
 	async function plotData({ e = null, filetype = "scan", tkplot = "run" } = {}) {
@@ -57360,11 +57369,12 @@ function instance$1g($$self, $$props, $$invalidate) {
 			if (filetype == "scan") {
 				Object.keys(dataFromPython).forEach(data => {
 					Object.keys(dataFromPython[data]).forEach(innerData => {
-						dataLength = dataFromPython[data][innerData].x.length;
+						$$invalidate(15, dataLength = dataFromPython[data][innerData].x.length);
 					});
 				});
 
-				$$invalidate(15, timescanData = sliceData(dataFromPython));
+				timescanData = sliceData(dataFromPython);
+				$$invalidate(16, kineticData = sliceData(dataFromPython));
 
 				fileChecked.forEach(file => {
 					plot(`Timescan Plot: ${file}`, "Time (in ms)", "Counts", timescanData[file], `${file}_tplot`, logScale ? "log" : null);
@@ -57397,12 +57407,13 @@ function instance$1g($$self, $$props, $$invalidate) {
 	};
 
 	let kineticMode = false;
+	let kineticData = {};
 
-	function updateData() {
-		const data = _.cloneDeep(sliceData(timescanData));
+	async function updateData() {
+		$$invalidate(16, kineticData = sliceData(timescanData));
 
 		fileChecked.forEach(file => {
-			plot(`Timescan Plot: ${file}`, "Time (in ms)", "Counts", data[file], `${file}_tplot`, logScale ? "log" : null);
+			plot(`Timescan Plot: ${file}`, "Time (in ms)", "Counts", kineticData[file], `${file}_tplot`, logScale ? "log" : null);
 		});
 	}
 
@@ -57514,6 +57525,7 @@ function instance$1g($$self, $$props, $$invalidate) {
 		plotData,
 		linearlogCheck,
 		kineticMode,
+		kineticData,
 		updateData,
 		scanfiles,
 		$mainPreModal
@@ -57533,11 +57545,12 @@ function instance$1g($$self, $$props, $$invalidate) {
 		if ("timestartIndexScan" in $$props) $$invalidate(11, timestartIndexScan = $$props.timestartIndexScan);
 		if ("fullfiles" in $$props) $$invalidate(12, fullfiles = $$props.fullfiles);
 		if ("toggleRow" in $$props) $$invalidate(13, toggleRow = $$props.toggleRow);
-		if ("style" in $$props) $$invalidate(17, style = $$props.style);
+		if ("style" in $$props) $$invalidate(18, style = $$props.style);
 		if ("logScale" in $$props) $$invalidate(14, logScale = $$props.logScale);
-		if ("timescanData" in $$props) $$invalidate(15, timescanData = $$props.timescanData);
-		if ("dataLength" in $$props) dataLength = $$props.dataLength;
+		if ("timescanData" in $$props) timescanData = $$props.timescanData;
+		if ("dataLength" in $$props) $$invalidate(15, dataLength = $$props.dataLength);
 		if ("kineticMode" in $$props) $$invalidate(4, kineticMode = $$props.kineticMode);
+		if ("kineticData" in $$props) $$invalidate(16, kineticData = $$props.kineticData);
 		if ("scanfiles" in $$props) scanfiles = $$props.scanfiles;
 	};
 
@@ -57575,7 +57588,8 @@ function instance$1g($$self, $$props, $$invalidate) {
 		fullfiles,
 		toggleRow,
 		logScale,
-		timescanData,
+		dataLength,
+		kineticData,
 		dir_changed,
 		style,
 		plotData,
