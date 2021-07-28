@@ -88,16 +88,32 @@ def KineticMain():
     plot_exp()
     return
 
-def fitfunc(event=None):
+def fitfunc(event=None, nobound=False):
     global rateCoefficientArgs
     p0 = [*[10**rate.val for rate in k3Sliders], *[10**rate.val for rate in kCIDSliders]]
     
     log(f"{p0=}")
 
+    if nobound:
+        bounds=([*[1e-33]*len(k3Sliders), *[1e-17]*len(k3Sliders)], [*[1e-29]*len(k3Sliders), *[1e-14]*len(k3Sliders)])
+    else:
+        ratio = 0.5
+        bounds=(
+            [
+                *[np.format_float_scientific(10**(rate.val-ratio), precision=2) for rate in k3Sliders], 
+                *[np.format_float_scientific(10**(rate.val-ratio), precision=2) for rate in kCIDSliders]
+            ],
+            [
+                *[np.format_float_scientific(10**(rate.val+ratio), precision=2) for rate in k3Sliders],
+                *[np.format_float_scientific(10**(rate.val+ratio), precision=2) for rate in kCIDSliders]
+            ]
+        )
+    
+    log(f"{bounds=}")
     log(f"{expData.shape=}\n{expTime.shape=}")
     k_fit, kcov = curve_fit(fitODE, expTime, expData.flatten(),
         p0=p0, sigma=expDataError.flatten(), absolute_sigma=True,
-        bounds=([*[1e-33]*len(k3Sliders), *[1e-17]*len(k3Sliders)], [*[1e-29]*len(k3Sliders), *[1e-14]*len(k3Sliders)])    
+        bounds=bounds   
     )
     k_err = np.sqrt(np.diag(kcov))
     log(f"{k_fit=}\n{k_err=}")
@@ -175,7 +191,7 @@ def plot_exp():
 
     try:
         if numberDensity > 0:
-            fitfunc()
+            fitfunc(nobound=True)
     except Exception as error:
         log(error)
     plt.show()
