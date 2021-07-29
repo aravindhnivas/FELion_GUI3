@@ -1,5 +1,5 @@
 
-
+import {mainPreModal} from "../svelteWritable";
 import { writable } from 'svelte/store';
 import { Toast, Snackbar } from 'svelma';
 import "../Pages/general/computePy";
@@ -25,6 +25,11 @@ window.onerror = function (message, source, lineno, colno, error) {
     // error: Error Object (object)
     console.error(error)
     Snackbar.create({ message: error.name, position: "is-top", type: `is-danger` })
+    mainPreModal.update(data=>{
+        const modalContent =  `${error.name}: ${message}\nsource: ${source}\nlineno: ${lineno}\tcolno: ${colno}`
+        return {...data, modalContent, open: true, type:"danger"}
+    })
+    // $mainPreModal.modalContent = error;  $mainPreModal.open = true; $mainPreModal.type="danger"
 };
 
 window.process.on('unhandledRejection', (reason, promise) => {
