@@ -7,7 +7,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 from optimizePlot import optimizePlot
-from matplotlib.widgets import Slider, Button, RadioButtons, TextBox
+from matplotlib.widgets import Slider, Button, RadioButtons, TextBox, CheckButtons
 from scipy.optimize import curve_fit
 from scipy.integrate import solve_ivp
 
@@ -86,18 +86,17 @@ def KineticMain():
     tspan = [0, duration]
     simulateTime = np.linspace(0, duration, 1000)
     plot_exp()
+
     return
 
-def fitfunc(event=None, nobound=False):
+def fitfunc(event=None):
     global rateCoefficientArgs
+
     p0 = [*[10**rate.val for rate in k3Sliders], *[10**rate.val for rate in kCIDSliders]]
-    
     log(f"{p0=}")
 
-    if nobound:
-        bounds=([*[1e-33]*len(k3Sliders), *[1e-17]*len(k3Sliders)], [*[1e-29]*len(k3Sliders), *[1e-14]*len(k3Sliders)])
-    else:
-        ratio = 0.5
+    if checkboxes["setbound"]:
+        ratio = 0.1
         bounds=(
             [
                 *[np.format_float_scientific(10**(rate.val-ratio), precision=2) for rate in k3Sliders], 
@@ -107,9 +106,14 @@ def fitfunc(event=None, nobound=False):
                 *[np.format_float_scientific(10**(rate.val+ratio), precision=2) for rate in k3Sliders],
                 *[np.format_float_scientific(10**(rate.val+ratio), precision=2) for rate in kCIDSliders]
             ]
+
         )
-    
+        
+    else:
+
+        bounds=([*[1e-33]*len(k3Sliders), *[1e-17]*len(k3Sliders)], [*[1e-29]*len(k3Sliders), *[1e-14]*len(k3Sliders)])
     log(f"{bounds=}")
+
     log(f"{expData.shape=}\n{expTime.shape=}")
     k_fit, kcov = curve_fit(fitODE, expTime, expData.flatten(),
         p0=p0, sigma=expDataError.flatten(), absolute_sigma=True,
@@ -118,19 +122,27 @@ def fitfunc(event=None, nobound=False):
     k_err = np.sqrt(np.diag(kcov))
     log(f"{k_fit=}\n{k_err=}")
 
+
     for counter0, _k3 in enumerate(k3Sliders):
+
         _k3.set_val(np.log10(k_fit[:totalAttachmentLevels][counter0]))
     
+
     for counter1, _kCID in enumerate(kCIDSliders):
+
+
+
         _kCID.set_val(np.log10(k_fit[totalAttachmentLevels:][counter1]))
+
     log("fitted")
 
-fig = None
 
+fig = None
 ax = None
 fitPlot = []
 
 def ChangeYScale(yscale):
+
     ax.set_yscale(yscale)
     fig.canvas.draw_idle()
 
@@ -138,17 +150,23 @@ def setNumberDensity(val):
     global numberDensity
     numberDensity = float(val)
     log(f"{numberDensity=}")
-    
     ax.set_title(f"{selectedFile}: {temp:.1f} K {numberDensity:.2e}"+"$cm^{-3}$")
-    
     fitfunc()
+
+checkboxes = {
+
+    "setbound": False
+}
+
+def checkboxesFunc(label):
+    global checkboxes
+    checkboxes[label] = not checkboxes[label]
+    fig.canvas.draw_idle()
 
 def plot_exp():
     global data, fig, ax, k3Sliders, kCIDSliders, rateCoefficientArgs
-
-
-
     fig, ax = plt.subplots(figsize=(12, 6))
+
     plt.subplots_adjust(right=0.6, top=0.95, left=0.09, bottom=0.25)
     axcolor = 'lightgoldenrodyellow'
     k3Sliders, kCIDSliders = make_slider(ax, axcolor)
@@ -156,12 +174,17 @@ def plot_exp():
     left, bottom, width, height = 0.1, 0.05, 0.1, 0.05
     rax = plt.axes([left, bottom, width, height], facecolor=axcolor)
     radio = RadioButtons(rax, ('log', 'linear'), active=0)
-
     radio.on_clicked(ChangeYScale)
-    buttonAxes = plt.axes([left+width+0.01, bottom, width, height], facecolor=axcolor)
+
+    left += width+0.01
+    buttonAxes = plt.axes([left, bottom, width, height], facecolor=axcolor)
     button = Button(buttonAxes, 'Fit', color=axcolor, hovercolor='0.975')
     button.on_clicked(fitfunc)
 
+    left += width+0.01
+    checkAxes = plt.axes([left, bottom, width, height], facecolor=axcolor)
+    checkbox = CheckButtons(checkAxes, ("setbound", ), list(checkboxes.values()))
+    checkbox.on_clicked(checkboxesFunc)
 
     numberDensityWidgetAxes = plt.axes([0.9-width, bottom, width, height], facecolor=axcolor)
     numberDensityWidget = TextBox(numberDensityWidgetAxes, 'Number density', initial=f"{numberDensity:.2e}")
@@ -175,7 +198,7 @@ def plot_exp():
         error = data[key]["error_y"]["array"]
         ax.errorbar(time, counts, error, fmt=".", ms=10, label=key, c=pltColors[counter])
 
-    ax = optimizePlot(ax, xlabel="Time (s)", ylabel="Counts", yscale="log")
+    ax = optimizePlot(ax, xlabel="Time (ms)", ylabel="Counts", yscale="log")
     ax.set_title(f"{selectedFile}: {temp:.1f} K {numberDensity:.2e}"+"$cm^{-3}$")
     rateCoefficientArgs=(ratek3, ratekCID)
     dNdt = solve_ivp(compute_attachment_process, tspan, initialValues, dense_output=True)
@@ -191,19 +214,19 @@ def plot_exp():
 
     try:
         if numberDensity > 0:
-            fitfunc(nobound=True)
+
+            fitfunc()
     except Exception as error:
         log(error)
     plt.show()
 
 rateCoefficientArgs = ()
 
-
 def update(val=None):
 
     global rateCoefficientArgs
-
     rateCoefficientArgs=([10**rate.val for rate in k3Sliders], [10**rate.val for rate in kCIDSliders])
+
     dNdt = solve_ivp(compute_attachment_process, tspan, initialValues, dense_output=True)
     dNdtSol = dNdt.sol(simulateTime)
     for line, data in zip(fitPlot, dNdtSol):
@@ -278,10 +301,7 @@ if __name__ == "__main__":
     totalAttachmentLevels = len(initialValues)-1
 
     log(f"{k3Labels=}\n{totalAttachmentLevels=}")
-
     ratek3 = [float(args["k3Guess"]) for _ in k3Labels]
     ratekCID = [float(args["kCIDGuess"]) for _ in kCIDLabels]
-
-    # log(f"{expData=}\n{nameOfReactants=}")
 
     KineticMain()
