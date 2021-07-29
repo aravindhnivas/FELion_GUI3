@@ -1,32 +1,27 @@
 
 <script>
-    // import { createEventDispatcher } from 'svelte';
     import {mainPreModal} from "../../../svelteWritable";
     import CustomSwitch from "../../../components/CustomSwitch.svelte"
     import CustomSelect from "../../../components/CustomSelect.svelte"
     import Textfield from '@smui/textfield'
-import path from "path";
     export let fileChecked=[], currentLocation="", kineticMode=true, kineticData;
-    
-    // const dispatch = createEventDispatcher();
 
     let srgMode=true, pbefore=0, pafter=0, temp=5;
-    
     let molecule="CD^+", tag="He", massOfReactants="", nameOfReactants="";
     let ratek3="k31", ratekCID="kCID1";
     let selectedFile = "", totalMass = [], requiredLength=0;
 
     let k3Guess = "1e-30", kCIDGuess="1e-15";
 
-
     let currentData = {}
+
     function computeParameters() {
+
+
         currentData = kineticData[selectedFile];
         if(currentData) {
-            
             totalMass = Object.keys(currentData)
             totalMass = totalMass.slice(0, totalMass.length-1)
-            
             massOfReactants = totalMass.join(", ")
             
             computeOtherParameters()
@@ -36,8 +31,8 @@ import path from "path";
     function computeOtherParameters() {
         masses = massOfReactants.split(",").map(m=>m.trim())
         requiredLength = masses.length
-
         if(defaultInitialValues && masses) { initialValues = [currentData[masses[0]]["y"][0].toFixed(0), ...Array(requiredLength-1).fill(1)] }
+
         nameOfReactants =`${molecule}, ${molecule}${tag}`
         
         ratek3="k31", ratekCID="kCID1";
@@ -52,15 +47,14 @@ import path from "path";
     let masses;
     $: if(massOfReactants) {computeOtherParameters()}
     let calibrationFactor = 1;
-
+    let update_pbefore = true;
     $: if(srgMode) {
         calibrationFactor = 1
 
-        pbefore = Number(7e-5).toExponential(0)
+        if(update_pbefore) pbefore = Number(7e-5).toExponential(0)
     } else {
         calibrationFactor = 200
-
-        pbefore = Number(1e-8).toExponential(0)
+        if(update_pbefore) pbefore = Number(1e-8).toExponential(0)
     
     }
     const constantValue = 4.2e17
@@ -97,8 +91,10 @@ import path from "path";
                 console.log("file exists", "reading file")
                 const config_content = fs.readFileSync(config_file, "utf8");
                 console.log("file read", config_content);
+
                 const config_parsed = JSON.parse(config_content)
                 if(config_parsed[selectedFile]) {
+                    update_pbefore = false;
                     ({srgMode, pbefore, pafter, calibrationFactor, temp} = config_parsed[selectedFile]);
 
                     window.createToast("Config file loaded: "+config_file_ROSAAkinetics, "warning");
