@@ -267,10 +267,10 @@ def make_slider(ax, axcolor):
 
     return k3Sliders, kCIDSliders
 
-
 if __name__ == "__main__":
 
     args = json.loads(sys.argv[1])
+    log(f"{args=}")
 
     currentLocation = pt(args["currentLocation"])
     data = args["data"]
