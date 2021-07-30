@@ -4,20 +4,24 @@
     import CustomSwitch from "../../../components/CustomSwitch.svelte"
     import CustomSelect from "../../../components/CustomSelect.svelte"
     import Textfield from '@smui/textfield'
+    import ModalTable from '../../../components/ModalTable.svelte'
+
+    import {Icon} from '@smui/icon-button';
+
     export let fileChecked=[], currentLocation="", kineticMode=true, kineticData;
+
 
     let srgMode=true, pbefore=0, pafter=0, temp=5;
     let molecule="CD^+", tag="He", massOfReactants="", nameOfReactants="";
+    
     let ratek3="k31", ratekCID="kCID1";
     let selectedFile = "", totalMass = [], requiredLength=0;
-
     let k3Guess = "1e-30", kCIDGuess="1e-15";
 
     let currentData = {}
+    
 
     function computeParameters() {
-
-
         currentData = kineticData[selectedFile];
         if(currentData) {
             totalMass = Object.keys(currentData)
@@ -65,15 +69,24 @@
     
     function saveConfig() {
 
+        let config_content = {}
+
+        const keys = configKeys.slice(1, configKeys.length)
+        configArray.forEach(content => {
+
+            const filename = content["filename"]
+            const newKeyValue = {}
+            keys.forEach(key=>{newKeyValue[key]=content[key]})
+            
+            config_content[filename] = newKeyValue
+        })
         const config_file = path.join(currentLocation, config_file_ROSAAkinetics);
         if(fs.existsSync(currentLocation) && selectedFile) {
             
-            let config_content={};
-            if(fs.existsSync(config_file)) {
-                const file_content = fs.readFileSync(config_file, "utf8");
-                if(file_content.length>0) {config_content = JSON.parse(file_content)}
+            const contentExists = Object.keys(config_content[selectedFile]).length > 0
+            if(!contentExists) {
+                config_content[selectedFile] = {srgMode, pbefore, pafter, calibrationFactor, temp}
             }
-            config_content[selectedFile] = {srgMode, pbefore, pafter, calibrationFactor, temp}
             fs.writeFile(config_file, JSON.stringify(config_content, null, 4), "utf8", function (err) {
                 if (err) return window.createToast("Error occured while saving file", "danger");
 
@@ -81,6 +94,41 @@
             });
         } else {return window.createToast("Invalid location or filename", "danger")}
     }
+
+    function makeConfigArray(obj) {
+        configArray = []
+
+        // const filenameKeys = Object.keys(obj)
+        
+        fileChecked.forEach(filename=>{
+        
+            const id = window.getID()
+        
+            
+            if (filename in obj) {
+                const currentValue = {filename, id}
+                const currentObj = obj[filename]
+                configKeys.forEach(key=>{
+                    if(key in currentObj) {currentValue[key] = currentObj[key]}
+                })
+                configArray = [...configArray, currentValue]
+            } else if (filename) {
+                const currentValue = {filename, id}
+                configKeys.forEach(key=>{
+
+                    if(key !== "filename") {currentValue[key] = ""}
+                
+                })
+                configArray = [...configArray, currentValue]
+            
+            }
+            
+        
+        
+        })
+
+    }
+
 
     function loadConfig() {
         try {
@@ -93,45 +141,45 @@
                 console.log("file read", config_content);
 
                 const config_parsed = JSON.parse(config_content)
+                makeConfigArray(config_parsed)
                 if(config_parsed[selectedFile]) {
                     update_pbefore = false;
                     ({srgMode, pbefore, pafter, calibrationFactor, temp} = config_parsed[selectedFile]);
+                    srgMode = JSON.parse(srgMode);
                     window.createToast("Config file loaded: "+config_file_ROSAAkinetics, "warning");
-                    // update_pbefore = true;
 
                 } else {
                     return window.createToast("config file not available for "+selectedFile, "danger")
                 }
-                
-                
             } else {return window.createToast("config file not available", "danger")}
-        } catch (error) {
 
+        } catch (error) {
             console.log(error)
             $mainPreModal.modalContent = error.stack;  $mainPreModal.open = true; $mainPreModal.type="danger"
-            
         }
     }
 
     async function kineticSimulation(e) {
-    
         try {
-            if(!selectedFile) return createToast("Select a file", "danger")
-            if(!kineticData) return createToast("No data available", "danger")
 
+            if(!selectedFile) return createToast("Select a file", "danger")
+            if(Object.keys(kineticData).length === 0) return createToast("No data available", "danger")
             const pyfile = "ROSAA/kinetics.py"
             const nameOfReactantsArray = nameOfReactants.split(",").map(m=>m.trim())
-
             const data = {}
+
             massOfReactants.split(",").map(mass=>mass.trim()).forEach((mass, i)=>data[nameOfReactantsArray[i]]=currentData[mass])
+
             if(typeof initialValues === "string") { initialValues = initialValues.split(",") }
             const args = [JSON.stringify({data, selectedFile, temp, currentLocation, nameOfReactantsArray, ratek3, ratekCID, numberDensity, k3Guess, kCIDGuess, initialValues})]
 
-            await computePy_func({e, pyfile, args, general:true})
             pyEventCounter++;
-        } catch (error) {$mainPreModal.modalContent = error.stack;  $mainPreModal.open = true; $mainPreModal.type="danger"}
-    }
+            await computePy_func({e, pyfile, args, general:true})
 
+
+        } catch (error) {$mainPreModal.modalContent = error.stack;  $mainPreModal.open = true; $mainPreModal.type="danger"; }
+
+    }
     let pyEventCounter = 0
 
     const pyEventClosed = (e) => {
@@ -139,18 +187,28 @@
 
         const {error_occured_py, dataReceived} = e.detail
         if(!error_occured_py) {$mainPreModal.open = true; $mainPreModal.modalContent = dataReceived; $mainPreModal.type="info"; }
+
     }
     
     let defaultInitialValues = true;
     
     let initialValues = ""
-    
-</script>
+    let adjustConfig = false;
+    let configArray = []
+    let configKeys = ["filename", "srgMode", "pbefore", "pafter", "calibrationFactor", "temp"]
 
+</script>
+<ModalTable bind:active={adjustConfig} title="Config table" bind:rows={configArray} keys={configKeys}>
+    <svelte:fragment slot="footer">
+
+        <button class="button is-link" on:click="{saveConfig}" >Save</button>
+        <button class="button is-link" on:click="{()=>adjustConfig=false}" >Close</button>
+
+    </svelte:fragment>
+
+</ModalTable>
 
 <div class="align animated fadeIn" class:hide={!kineticMode} >
-
-
 
     <div class="align">
         <CustomSwitch bind:selected={srgMode} label="SRG"/>
@@ -163,7 +221,7 @@
 
     <div class="align">
 
-        <CustomSelect bind:picked={selectedFile} label="Filename" options={["", ...fileChecked]} style="min-width: 7em; "/>
+        <CustomSelect bind:picked={selectedFile} label="Filename" options={["", ...fileChecked]} />
         <Textfield bind:value={molecule} label="Molecule" />
 
         <Textfield bind:value={tag} label="tag" />
@@ -177,10 +235,14 @@
 
         <Textfield bind:value={ratekCID} label="ratekCID" />
         <Textfield bind:value={kCIDGuess} label="kCIDGuess" />
+    </div>
+
+    <div class="align v-center">
         <button class="button is-link" on:click="{computeParameters}" >Compute parameters</button>
 
         <button class="button is-link" on:click="{saveConfig}">saveConfig</button>
         <button class="button is-link" on:click="{loadConfig}">loadConfig</button>
+        <Icon class="material-icons" on:click="{()=> adjustConfig = true}">settings</Icon>
         <button class="button is-link" on:click="{kineticSimulation}" on:pyEventClosed="{pyEventClosed}">Submit</button>
 
         {#if pyEventCounter}

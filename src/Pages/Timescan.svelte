@@ -95,8 +95,6 @@
                 fileChecked.forEach(file=>{
                     plot(`Timescan Plot: ${file}`, "Time (in ms)", "Counts", timescanData[file], `${file}_tplot`, logScale ? "log" : null)
                 })
-                // linearlogCheck()
-
             } 
             window.createToast("Graph plotted", "success")
             graphPlotted = true
