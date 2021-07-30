@@ -89,6 +89,8 @@ def KineticMain():
     plot_exp()
 
     return
+def formatArray(arr, precision=2):
+    return [np.format_float_scientific(value, precision=precision) for value in arr]
 
 def fitfunc(event=None):
     p0 = [*[10**rate.val for rate in k3Sliders], *[10**rate.val for rate in kCIDSliders]]
@@ -151,20 +153,24 @@ def saveData(event, k_fit=None, k_err=None):
                 if data:
                     dataToSave = json.loads(data)
 
+
         with open(savefile, "w+") as f:
             if event:
+
                 k_fit = rateCoefficientArgs
                 k_err = None
             else:
-                k_fit = k_fit.tolist()
-                k_fit = [k_fit[:totalAttachmentLevels], k_fit[totalAttachmentLevels:]]
 
-                k_err = k_err.tolist()
-                k_err = [k_err[:totalAttachmentLevels], k_err[totalAttachmentLevels:]]
-            
-            dataToSave[selectedFile] = {"k_fit": k_fit, "k_err": k_err}
+                k_fit = [formatArray(k_fit[:totalAttachmentLevels]), formatArray(k_fit[totalAttachmentLevels:])]
+                k_err = [formatArray(k_err[:totalAttachmentLevels]), formatArray(k_err[totalAttachmentLevels:])]
+
+            dataToSave[selectedFile] = {
+                "k_fit": k_fit,
+                "k_err": k_err, 
+                "temp": f"{temp:.1f}", 
+                "numberDensity (cm3)": f"{numberDensity:.2e}"
+            }
             data = json.dumps(dataToSave, sort_keys=True, indent=4, separators=(',', ': '))
-            
             f.write(data)
             
             log(f"file written: {savefile.name} in {currentLocation} folder")
