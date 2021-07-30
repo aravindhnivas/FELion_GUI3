@@ -70,9 +70,12 @@ def compute_attachment_process(t, N):
     return dR_dt
 
 def fitODE(t, *args):
+
     global rateCoefficientArgs
     tspan = [0, t.max()*1.2]
+    
     rateCoefficientArgs=(args[:totalAttachmentLevels], args[totalAttachmentLevels:])
+
     dNdt = solve_ivp(compute_attachment_process, tspan, initialValues, dense_output=True)
     dNdtSol = dNdt.sol(t)
     return dNdtSol.flatten()
@@ -91,8 +94,9 @@ def KineticMain():
     return
 def formatArray(arr, precision=2):
     return [np.format_float_scientific(value, precision=precision) for value in arr]
-
+k_err = []
 def fitfunc(event=None):
+    global k_err
     p0 = [*[10**rate.val for rate in k3Sliders], *[10**rate.val for rate in kCIDSliders]]
     log(f"{p0=}")
 
@@ -127,19 +131,19 @@ def fitfunc(event=None):
             _k3.set_val(np.log10(k_fit[:totalAttachmentLevels][counter0]))
         for counter1, _kCID in enumerate(kCIDSliders):
             _kCID.set_val(np.log10(k_fit[totalAttachmentLevels:][counter1]))
+
         
-        saveData(None, k_fit, k_err)
+        # saveData(None, k_fit, k_err)
 
     except Exception as error:
         error = f"Error occured while fitting: \n{error}"
-        
-        
         log(error)
+        # k_err = []
+        if plotted: MsgBox("Error", error, MB_ICONERROR)
 
-        MsgBox("Error", error, MB_ICONERROR)
+def saveData(event, k_fit=None):
 
-    
-def saveData(event, k_fit=None, k_err=None):
+    # global k_err
     try:
         savefile = currentLocation/"k_fit.json"
 
@@ -153,37 +157,36 @@ def saveData(event, k_fit=None, k_err=None):
                 if data:
                     dataToSave = json.loads(data)
 
-
         with open(savefile, "w+") as f:
+
             if event:
-
-                k_fit = rateCoefficientArgs
-                k_err = None
+                k_fit = [formatArray(rateCoefficientArgs[0]), formatArray(rateCoefficientArgs[1])]
             else:
-
                 k_fit = [formatArray(k_fit[:totalAttachmentLevels]), formatArray(k_fit[totalAttachmentLevels:])]
-                k_err = [formatArray(k_err[:totalAttachmentLevels]), formatArray(k_err[totalAttachmentLevels:])]
 
+            if len(k_err)>0:
+                k_err_format = [formatArray(k_err[:totalAttachmentLevels]), formatArray(k_err[totalAttachmentLevels:])]
+            else: k_err_format = None
             dataToSave[selectedFile] = {
                 "k_fit": k_fit,
-                "k_err": k_err, 
+                "k_err": k_err_format, 
                 "temp": f"{temp:.1f}", 
-                "numberDensity (cm3)": f"{numberDensity:.2e}"
+                "numberDensity": f"{numberDensity:.2e}"
             }
             data = json.dumps(dataToSave, sort_keys=True, indent=4, separators=(',', ': '))
             f.write(data)
             
             log(f"file written: {savefile.name} in {currentLocation} folder")
-            MsgBox("Saved", f"Rate constants written in json format : '{savefile.name}'\nLocation: {currentLocation}", MB_ICONINFORMATION)
+            if plotted: MsgBox("Saved", f"Rate constants written in json format : '{savefile.name}'\nLocation: {currentLocation}", MB_ICONINFORMATION)
     except Exception as error:
-        MsgBox("Error occured: ", f"Error occured while saving the file\n{error}", MB_ICONERROR)
+        if plotted: MsgBox("Error occured: ", f"Error occured while saving the file\n{error}", MB_ICONERROR)
         log(f"Error occured while saving the file\n{error}")
 
 fig = None
 ax = None
 
 fitPlot = []
-
+plotted=False
 def ChangeYScale(yscale):
     ax.set_yscale(yscale)
     fig.canvas.draw_idle()
@@ -252,7 +255,6 @@ def plot_exp():
     ax.set_title(f"{selectedFile}: {temp:.1f} K {numberDensity:.2e}"+"$cm^{-3}$")
     rateCoefficientArgs=(ratek3, ratekCID)
     dNdt = solve_ivp(compute_attachment_process, tspan, initialValues, dense_output=True)
-    
     dNdtSol = dNdt.sol(simulateTime)
 
     for counter, data in enumerate(dNdtSol):
@@ -263,9 +265,11 @@ def plot_exp():
     legend.set_draggable(True)
 
     try:
+
+        global plotted
         if numberDensity > 0:
             fitfunc()
-
+        plotted = True
     except Exception as error:
         log(error)
     plt.show()
