@@ -1,3 +1,5 @@
+
+import 'source-map-support/register'
 import App from './App.svelte';
 
 import './App.scss';
