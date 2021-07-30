@@ -96,8 +96,8 @@
                 if(config_parsed[selectedFile]) {
                     update_pbefore = false;
                     ({srgMode, pbefore, pafter, calibrationFactor, temp} = config_parsed[selectedFile]);
-
                     window.createToast("Config file loaded: "+config_file_ROSAAkinetics, "warning");
+                    // update_pbefore = true;
 
                 } else {
                     return window.createToast("config file not available for "+selectedFile, "danger")
@@ -108,7 +108,7 @@
         } catch (error) {
 
             console.log(error)
-            $mainPreModal.modalContent = error;  $mainPreModal.open = true; $mainPreModal.type="danger"
+            $mainPreModal.modalContent = error.stack;  $mainPreModal.open = true; $mainPreModal.type="danger"
             
         }
     }
@@ -116,6 +116,9 @@
     async function kineticSimulation(e) {
     
         try {
+            if(!selectedFile) return createToast("Select a file", "danger")
+            if(!kineticData) return createToast("No data available", "danger")
+
             const pyfile = "ROSAA/kinetics.py"
             const nameOfReactantsArray = nameOfReactants.split(",").map(m=>m.trim())
 
@@ -124,13 +127,16 @@
             if(typeof initialValues === "string") { initialValues = initialValues.split(",") }
             const args = [JSON.stringify({data, selectedFile, temp, currentLocation, nameOfReactantsArray, ratek3, ratekCID, numberDensity, k3Guess, kCIDGuess, initialValues})]
 
-            fs.write
             await computePy_func({e, pyfile, args, general:true})
-
-        } catch (error) {$mainPreModal.modalContent = error;  $mainPreModal.open = true; $mainPreModal.type="danger"}
+            pyEventCounter++;
+        } catch (error) {$mainPreModal.modalContent = error.stack;  $mainPreModal.open = true; $mainPreModal.type="danger"}
     }
-    
+
+    let pyEventCounter = 0
+
     const pyEventClosed = (e) => {
+        pyEventCounter--;
+
         const {error_occured_py, dataReceived} = e.detail
         if(!error_occured_py) {$mainPreModal.open = true; $mainPreModal.modalContent = dataReceived; $mainPreModal.type="info"; }
     }
@@ -176,6 +182,10 @@
         <button class="button is-link" on:click="{saveConfig}">saveConfig</button>
         <button class="button is-link" on:click="{loadConfig}">loadConfig</button>
         <button class="button is-link" on:click="{kineticSimulation}" on:pyEventClosed="{pyEventClosed}">Submit</button>
+
+        {#if pyEventCounter}
+            <div class="subtitle">{pyEventCounter} process running</div>
+        {/if}
     </div>
 
 </div>
