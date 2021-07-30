@@ -4,18 +4,3893 @@
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
+var path$2 = _interopDefault(require('path'));
+var fs$4 = _interopDefault(require('fs'));
 var child_process = _interopDefault(require('child_process'));
 var https = _interopDefault(require('https'));
-var fs$4 = _interopDefault(require('fs'));
 var originalFs$1 = _interopDefault(require('original-fs'));
-var path$2 = _interopDefault(require('path'));
 var zlib = _interopDefault(require('zlib'));
 var domain$1 = _interopDefault(require('domain'));
 var constants$1 = _interopDefault(require('constants'));
 var stream = _interopDefault(require('stream'));
-var util$1 = _interopDefault(require('util'));
+var util$2 = _interopDefault(require('util'));
 var assert = _interopDefault(require('assert'));
 var events$2 = _interopDefault(require('events'));
+
+var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
+function createCommonjsModule(fn, module) {
+	return module = { exports: {} }, fn(module, module.exports), module.exports;
+}
+
+/* -*- Mode: js; js-indent-level: 2; -*- */
+/*
+ * Copyright 2011 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ */
+
+var intToCharMap = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'.split('');
+
+/**
+ * Encode an integer in the range of 0 to 63 to a single base 64 digit.
+ */
+var encode = function (number) {
+  if (0 <= number && number < intToCharMap.length) {
+    return intToCharMap[number];
+  }
+  throw new TypeError("Must be between 0 and 63: " + number);
+};
+
+/**
+ * Decode a single base 64 character code digit to an integer. Returns -1 on
+ * failure.
+ */
+var decode = function (charCode) {
+  var bigA = 65;     // 'A'
+  var bigZ = 90;     // 'Z'
+
+  var littleA = 97;  // 'a'
+  var littleZ = 122; // 'z'
+
+  var zero = 48;     // '0'
+  var nine = 57;     // '9'
+
+  var plus = 43;     // '+'
+  var slash = 47;    // '/'
+
+  var littleOffset = 26;
+  var numberOffset = 52;
+
+  // 0 - 25: ABCDEFGHIJKLMNOPQRSTUVWXYZ
+  if (bigA <= charCode && charCode <= bigZ) {
+    return (charCode - bigA);
+  }
+
+  // 26 - 51: abcdefghijklmnopqrstuvwxyz
+  if (littleA <= charCode && charCode <= littleZ) {
+    return (charCode - littleA + littleOffset);
+  }
+
+  // 52 - 61: 0123456789
+  if (zero <= charCode && charCode <= nine) {
+    return (charCode - zero + numberOffset);
+  }
+
+  // 62: +
+  if (charCode == plus) {
+    return 62;
+  }
+
+  // 63: /
+  if (charCode == slash) {
+    return 63;
+  }
+
+  // Invalid base64 digit.
+  return -1;
+};
+
+var base64 = {
+	encode: encode,
+	decode: decode
+};
+
+/* -*- Mode: js; js-indent-level: 2; -*- */
+/*
+ * Copyright 2011 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ *
+ * Based on the Base 64 VLQ implementation in Closure Compiler:
+ * https://code.google.com/p/closure-compiler/source/browse/trunk/src/com/google/debugging/sourcemap/Base64VLQ.java
+ *
+ * Copyright 2011 The Closure Compiler Authors. All rights reserved.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ *  * Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *  * Redistributions in binary form must reproduce the above
+ *    copyright notice, this list of conditions and the following
+ *    disclaimer in the documentation and/or other materials provided
+ *    with the distribution.
+ *  * Neither the name of Google Inc. nor the names of its
+ *    contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+
+
+// A single base 64 digit can contain 6 bits of data. For the base 64 variable
+// length quantities we use in the source map spec, the first bit is the sign,
+// the next four bits are the actual value, and the 6th bit is the
+// continuation bit. The continuation bit tells us whether there are more
+// digits in this value following this digit.
+//
+//   Continuation
+//   |    Sign
+//   |    |
+//   V    V
+//   101011
+
+var VLQ_BASE_SHIFT = 5;
+
+// binary: 100000
+var VLQ_BASE = 1 << VLQ_BASE_SHIFT;
+
+// binary: 011111
+var VLQ_BASE_MASK = VLQ_BASE - 1;
+
+// binary: 100000
+var VLQ_CONTINUATION_BIT = VLQ_BASE;
+
+/**
+ * Converts from a two-complement value to a value where the sign bit is
+ * placed in the least significant bit.  For example, as decimals:
+ *   1 becomes 2 (10 binary), -1 becomes 3 (11 binary)
+ *   2 becomes 4 (100 binary), -2 becomes 5 (101 binary)
+ */
+function toVLQSigned(aValue) {
+  return aValue < 0
+    ? ((-aValue) << 1) + 1
+    : (aValue << 1) + 0;
+}
+
+/**
+ * Converts to a two-complement value from a value where the sign bit is
+ * placed in the least significant bit.  For example, as decimals:
+ *   2 (10 binary) becomes 1, 3 (11 binary) becomes -1
+ *   4 (100 binary) becomes 2, 5 (101 binary) becomes -2
+ */
+function fromVLQSigned(aValue) {
+  var isNegative = (aValue & 1) === 1;
+  var shifted = aValue >> 1;
+  return isNegative
+    ? -shifted
+    : shifted;
+}
+
+/**
+ * Returns the base 64 VLQ encoded value.
+ */
+var encode$1 = function base64VLQ_encode(aValue) {
+  var encoded = "";
+  var digit;
+
+  var vlq = toVLQSigned(aValue);
+
+  do {
+    digit = vlq & VLQ_BASE_MASK;
+    vlq >>>= VLQ_BASE_SHIFT;
+    if (vlq > 0) {
+      // There are still more digits in this value, so we must make sure the
+      // continuation bit is marked.
+      digit |= VLQ_CONTINUATION_BIT;
+    }
+    encoded += base64.encode(digit);
+  } while (vlq > 0);
+
+  return encoded;
+};
+
+/**
+ * Decodes the next base 64 VLQ value from the given string and returns the
+ * value and the rest of the string via the out parameter.
+ */
+var decode$1 = function base64VLQ_decode(aStr, aIndex, aOutParam) {
+  var strLen = aStr.length;
+  var result = 0;
+  var shift = 0;
+  var continuation, digit;
+
+  do {
+    if (aIndex >= strLen) {
+      throw new Error("Expected more digits in base 64 VLQ value.");
+    }
+
+    digit = base64.decode(aStr.charCodeAt(aIndex++));
+    if (digit === -1) {
+      throw new Error("Invalid base64 digit: " + aStr.charAt(aIndex - 1));
+    }
+
+    continuation = !!(digit & VLQ_CONTINUATION_BIT);
+    digit &= VLQ_BASE_MASK;
+    result = result + (digit << shift);
+    shift += VLQ_BASE_SHIFT;
+  } while (continuation);
+
+  aOutParam.value = fromVLQSigned(result);
+  aOutParam.rest = aIndex;
+};
+
+var base64Vlq = {
+	encode: encode$1,
+	decode: decode$1
+};
+
+var util = createCommonjsModule(function (module, exports) {
+/* -*- Mode: js; js-indent-level: 2; -*- */
+/*
+ * Copyright 2011 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ */
+
+/**
+ * This is a helper function for getting values from parameter/options
+ * objects.
+ *
+ * @param args The object we are extracting values from
+ * @param name The name of the property we are getting.
+ * @param defaultValue An optional value to return if the property is missing
+ * from the object. If this is not specified and the property is missing, an
+ * error will be thrown.
+ */
+function getArg(aArgs, aName, aDefaultValue) {
+  if (aName in aArgs) {
+    return aArgs[aName];
+  } else if (arguments.length === 3) {
+    return aDefaultValue;
+  } else {
+    throw new Error('"' + aName + '" is a required argument.');
+  }
+}
+exports.getArg = getArg;
+
+var urlRegexp = /^(?:([\w+\-.]+):)?\/\/(?:(\w+:\w+)@)?([\w.-]*)(?::(\d+))?(.*)$/;
+var dataUrlRegexp = /^data:.+\,.+$/;
+
+function urlParse(aUrl) {
+  var match = aUrl.match(urlRegexp);
+  if (!match) {
+    return null;
+  }
+  return {
+    scheme: match[1],
+    auth: match[2],
+    host: match[3],
+    port: match[4],
+    path: match[5]
+  };
+}
+exports.urlParse = urlParse;
+
+function urlGenerate(aParsedUrl) {
+  var url = '';
+  if (aParsedUrl.scheme) {
+    url += aParsedUrl.scheme + ':';
+  }
+  url += '//';
+  if (aParsedUrl.auth) {
+    url += aParsedUrl.auth + '@';
+  }
+  if (aParsedUrl.host) {
+    url += aParsedUrl.host;
+  }
+  if (aParsedUrl.port) {
+    url += ":" + aParsedUrl.port;
+  }
+  if (aParsedUrl.path) {
+    url += aParsedUrl.path;
+  }
+  return url;
+}
+exports.urlGenerate = urlGenerate;
+
+/**
+ * Normalizes a path, or the path portion of a URL:
+ *
+ * - Replaces consecutive slashes with one slash.
+ * - Removes unnecessary '.' parts.
+ * - Removes unnecessary '<dir>/..' parts.
+ *
+ * Based on code in the Node.js 'path' core module.
+ *
+ * @param aPath The path or url to normalize.
+ */
+function normalize(aPath) {
+  var path = aPath;
+  var url = urlParse(aPath);
+  if (url) {
+    if (!url.path) {
+      return aPath;
+    }
+    path = url.path;
+  }
+  var isAbsolute = exports.isAbsolute(path);
+
+  var parts = path.split(/\/+/);
+  for (var part, up = 0, i = parts.length - 1; i >= 0; i--) {
+    part = parts[i];
+    if (part === '.') {
+      parts.splice(i, 1);
+    } else if (part === '..') {
+      up++;
+    } else if (up > 0) {
+      if (part === '') {
+        // The first part is blank if the path is absolute. Trying to go
+        // above the root is a no-op. Therefore we can remove all '..' parts
+        // directly after the root.
+        parts.splice(i + 1, up);
+        up = 0;
+      } else {
+        parts.splice(i, 2);
+        up--;
+      }
+    }
+  }
+  path = parts.join('/');
+
+  if (path === '') {
+    path = isAbsolute ? '/' : '.';
+  }
+
+  if (url) {
+    url.path = path;
+    return urlGenerate(url);
+  }
+  return path;
+}
+exports.normalize = normalize;
+
+/**
+ * Joins two paths/URLs.
+ *
+ * @param aRoot The root path or URL.
+ * @param aPath The path or URL to be joined with the root.
+ *
+ * - If aPath is a URL or a data URI, aPath is returned, unless aPath is a
+ *   scheme-relative URL: Then the scheme of aRoot, if any, is prepended
+ *   first.
+ * - Otherwise aPath is a path. If aRoot is a URL, then its path portion
+ *   is updated with the result and aRoot is returned. Otherwise the result
+ *   is returned.
+ *   - If aPath is absolute, the result is aPath.
+ *   - Otherwise the two paths are joined with a slash.
+ * - Joining for example 'http://' and 'www.example.com' is also supported.
+ */
+function join(aRoot, aPath) {
+  if (aRoot === "") {
+    aRoot = ".";
+  }
+  if (aPath === "") {
+    aPath = ".";
+  }
+  var aPathUrl = urlParse(aPath);
+  var aRootUrl = urlParse(aRoot);
+  if (aRootUrl) {
+    aRoot = aRootUrl.path || '/';
+  }
+
+  // `join(foo, '//www.example.org')`
+  if (aPathUrl && !aPathUrl.scheme) {
+    if (aRootUrl) {
+      aPathUrl.scheme = aRootUrl.scheme;
+    }
+    return urlGenerate(aPathUrl);
+  }
+
+  if (aPathUrl || aPath.match(dataUrlRegexp)) {
+    return aPath;
+  }
+
+  // `join('http://', 'www.example.com')`
+  if (aRootUrl && !aRootUrl.host && !aRootUrl.path) {
+    aRootUrl.host = aPath;
+    return urlGenerate(aRootUrl);
+  }
+
+  var joined = aPath.charAt(0) === '/'
+    ? aPath
+    : normalize(aRoot.replace(/\/+$/, '') + '/' + aPath);
+
+  if (aRootUrl) {
+    aRootUrl.path = joined;
+    return urlGenerate(aRootUrl);
+  }
+  return joined;
+}
+exports.join = join;
+
+exports.isAbsolute = function (aPath) {
+  return aPath.charAt(0) === '/' || urlRegexp.test(aPath);
+};
+
+/**
+ * Make a path relative to a URL or another path.
+ *
+ * @param aRoot The root path or URL.
+ * @param aPath The path or URL to be made relative to aRoot.
+ */
+function relative(aRoot, aPath) {
+  if (aRoot === "") {
+    aRoot = ".";
+  }
+
+  aRoot = aRoot.replace(/\/$/, '');
+
+  // It is possible for the path to be above the root. In this case, simply
+  // checking whether the root is a prefix of the path won't work. Instead, we
+  // need to remove components from the root one by one, until either we find
+  // a prefix that fits, or we run out of components to remove.
+  var level = 0;
+  while (aPath.indexOf(aRoot + '/') !== 0) {
+    var index = aRoot.lastIndexOf("/");
+    if (index < 0) {
+      return aPath;
+    }
+
+    // If the only part of the root that is left is the scheme (i.e. http://,
+    // file:///, etc.), one or more slashes (/), or simply nothing at all, we
+    // have exhausted all components, so the path is not relative to the root.
+    aRoot = aRoot.slice(0, index);
+    if (aRoot.match(/^([^\/]+:\/)?\/*$/)) {
+      return aPath;
+    }
+
+    ++level;
+  }
+
+  // Make sure we add a "../" for each component we removed from the root.
+  return Array(level + 1).join("../") + aPath.substr(aRoot.length + 1);
+}
+exports.relative = relative;
+
+var supportsNullProto = (function () {
+  var obj = Object.create(null);
+  return !('__proto__' in obj);
+}());
+
+function identity (s) {
+  return s;
+}
+
+/**
+ * Because behavior goes wacky when you set `__proto__` on objects, we
+ * have to prefix all the strings in our set with an arbitrary character.
+ *
+ * See https://github.com/mozilla/source-map/pull/31 and
+ * https://github.com/mozilla/source-map/issues/30
+ *
+ * @param String aStr
+ */
+function toSetString(aStr) {
+  if (isProtoString(aStr)) {
+    return '$' + aStr;
+  }
+
+  return aStr;
+}
+exports.toSetString = supportsNullProto ? identity : toSetString;
+
+function fromSetString(aStr) {
+  if (isProtoString(aStr)) {
+    return aStr.slice(1);
+  }
+
+  return aStr;
+}
+exports.fromSetString = supportsNullProto ? identity : fromSetString;
+
+function isProtoString(s) {
+  if (!s) {
+    return false;
+  }
+
+  var length = s.length;
+
+  if (length < 9 /* "__proto__".length */) {
+    return false;
+  }
+
+  if (s.charCodeAt(length - 1) !== 95  /* '_' */ ||
+      s.charCodeAt(length - 2) !== 95  /* '_' */ ||
+      s.charCodeAt(length - 3) !== 111 /* 'o' */ ||
+      s.charCodeAt(length - 4) !== 116 /* 't' */ ||
+      s.charCodeAt(length - 5) !== 111 /* 'o' */ ||
+      s.charCodeAt(length - 6) !== 114 /* 'r' */ ||
+      s.charCodeAt(length - 7) !== 112 /* 'p' */ ||
+      s.charCodeAt(length - 8) !== 95  /* '_' */ ||
+      s.charCodeAt(length - 9) !== 95  /* '_' */) {
+    return false;
+  }
+
+  for (var i = length - 10; i >= 0; i--) {
+    if (s.charCodeAt(i) !== 36 /* '$' */) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+/**
+ * Comparator between two mappings where the original positions are compared.
+ *
+ * Optionally pass in `true` as `onlyCompareGenerated` to consider two
+ * mappings with the same original source/line/column, but different generated
+ * line and column the same. Useful when searching for a mapping with a
+ * stubbed out mapping.
+ */
+function compareByOriginalPositions(mappingA, mappingB, onlyCompareOriginal) {
+  var cmp = strcmp(mappingA.source, mappingB.source);
+  if (cmp !== 0) {
+    return cmp;
+  }
+
+  cmp = mappingA.originalLine - mappingB.originalLine;
+  if (cmp !== 0) {
+    return cmp;
+  }
+
+  cmp = mappingA.originalColumn - mappingB.originalColumn;
+  if (cmp !== 0 || onlyCompareOriginal) {
+    return cmp;
+  }
+
+  cmp = mappingA.generatedColumn - mappingB.generatedColumn;
+  if (cmp !== 0) {
+    return cmp;
+  }
+
+  cmp = mappingA.generatedLine - mappingB.generatedLine;
+  if (cmp !== 0) {
+    return cmp;
+  }
+
+  return strcmp(mappingA.name, mappingB.name);
+}
+exports.compareByOriginalPositions = compareByOriginalPositions;
+
+/**
+ * Comparator between two mappings with deflated source and name indices where
+ * the generated positions are compared.
+ *
+ * Optionally pass in `true` as `onlyCompareGenerated` to consider two
+ * mappings with the same generated line and column, but different
+ * source/name/original line and column the same. Useful when searching for a
+ * mapping with a stubbed out mapping.
+ */
+function compareByGeneratedPositionsDeflated(mappingA, mappingB, onlyCompareGenerated) {
+  var cmp = mappingA.generatedLine - mappingB.generatedLine;
+  if (cmp !== 0) {
+    return cmp;
+  }
+
+  cmp = mappingA.generatedColumn - mappingB.generatedColumn;
+  if (cmp !== 0 || onlyCompareGenerated) {
+    return cmp;
+  }
+
+  cmp = strcmp(mappingA.source, mappingB.source);
+  if (cmp !== 0) {
+    return cmp;
+  }
+
+  cmp = mappingA.originalLine - mappingB.originalLine;
+  if (cmp !== 0) {
+    return cmp;
+  }
+
+  cmp = mappingA.originalColumn - mappingB.originalColumn;
+  if (cmp !== 0) {
+    return cmp;
+  }
+
+  return strcmp(mappingA.name, mappingB.name);
+}
+exports.compareByGeneratedPositionsDeflated = compareByGeneratedPositionsDeflated;
+
+function strcmp(aStr1, aStr2) {
+  if (aStr1 === aStr2) {
+    return 0;
+  }
+
+  if (aStr1 === null) {
+    return 1; // aStr2 !== null
+  }
+
+  if (aStr2 === null) {
+    return -1; // aStr1 !== null
+  }
+
+  if (aStr1 > aStr2) {
+    return 1;
+  }
+
+  return -1;
+}
+
+/**
+ * Comparator between two mappings with inflated source and name strings where
+ * the generated positions are compared.
+ */
+function compareByGeneratedPositionsInflated(mappingA, mappingB) {
+  var cmp = mappingA.generatedLine - mappingB.generatedLine;
+  if (cmp !== 0) {
+    return cmp;
+  }
+
+  cmp = mappingA.generatedColumn - mappingB.generatedColumn;
+  if (cmp !== 0) {
+    return cmp;
+  }
+
+  cmp = strcmp(mappingA.source, mappingB.source);
+  if (cmp !== 0) {
+    return cmp;
+  }
+
+  cmp = mappingA.originalLine - mappingB.originalLine;
+  if (cmp !== 0) {
+    return cmp;
+  }
+
+  cmp = mappingA.originalColumn - mappingB.originalColumn;
+  if (cmp !== 0) {
+    return cmp;
+  }
+
+  return strcmp(mappingA.name, mappingB.name);
+}
+exports.compareByGeneratedPositionsInflated = compareByGeneratedPositionsInflated;
+
+/**
+ * Strip any JSON XSSI avoidance prefix from the string (as documented
+ * in the source maps specification), and then parse the string as
+ * JSON.
+ */
+function parseSourceMapInput(str) {
+  return JSON.parse(str.replace(/^\)]}'[^\n]*\n/, ''));
+}
+exports.parseSourceMapInput = parseSourceMapInput;
+
+/**
+ * Compute the URL of a source given the the source root, the source's
+ * URL, and the source map's URL.
+ */
+function computeSourceURL(sourceRoot, sourceURL, sourceMapURL) {
+  sourceURL = sourceURL || '';
+
+  if (sourceRoot) {
+    // This follows what Chrome does.
+    if (sourceRoot[sourceRoot.length - 1] !== '/' && sourceURL[0] !== '/') {
+      sourceRoot += '/';
+    }
+    // The spec says:
+    //   Line 4: An optional source root, useful for relocating source
+    //   files on a server or removing repeated values in the
+    //   “sources” entry.  This value is prepended to the individual
+    //   entries in the “source” field.
+    sourceURL = sourceRoot + sourceURL;
+  }
+
+  // Historically, SourceMapConsumer did not take the sourceMapURL as
+  // a parameter.  This mode is still somewhat supported, which is why
+  // this code block is conditional.  However, it's preferable to pass
+  // the source map URL to SourceMapConsumer, so that this function
+  // can implement the source URL resolution algorithm as outlined in
+  // the spec.  This block is basically the equivalent of:
+  //    new URL(sourceURL, sourceMapURL).toString()
+  // ... except it avoids using URL, which wasn't available in the
+  // older releases of node still supported by this library.
+  //
+  // The spec says:
+  //   If the sources are not absolute URLs after prepending of the
+  //   “sourceRoot”, the sources are resolved relative to the
+  //   SourceMap (like resolving script src in a html document).
+  if (sourceMapURL) {
+    var parsed = urlParse(sourceMapURL);
+    if (!parsed) {
+      throw new Error("sourceMapURL could not be parsed");
+    }
+    if (parsed.path) {
+      // Strip the last path component, but keep the "/".
+      var index = parsed.path.lastIndexOf('/');
+      if (index >= 0) {
+        parsed.path = parsed.path.substring(0, index + 1);
+      }
+    }
+    sourceURL = join(urlGenerate(parsed), sourceURL);
+  }
+
+  return normalize(sourceURL);
+}
+exports.computeSourceURL = computeSourceURL;
+});
+var util_1 = util.getArg;
+var util_2 = util.urlParse;
+var util_3 = util.urlGenerate;
+var util_4 = util.normalize;
+var util_5 = util.join;
+var util_6 = util.isAbsolute;
+var util_7 = util.relative;
+var util_8 = util.toSetString;
+var util_9 = util.fromSetString;
+var util_10 = util.compareByOriginalPositions;
+var util_11 = util.compareByGeneratedPositionsDeflated;
+var util_12 = util.compareByGeneratedPositionsInflated;
+var util_13 = util.parseSourceMapInput;
+var util_14 = util.computeSourceURL;
+
+/* -*- Mode: js; js-indent-level: 2; -*- */
+/*
+ * Copyright 2011 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ */
+
+
+var has = Object.prototype.hasOwnProperty;
+var hasNativeMap = typeof Map !== "undefined";
+
+/**
+ * A data structure which is a combination of an array and a set. Adding a new
+ * member is O(1), testing for membership is O(1), and finding the index of an
+ * element is O(1). Removing elements from the set is not supported. Only
+ * strings are supported for membership.
+ */
+function ArraySet() {
+  this._array = [];
+  this._set = hasNativeMap ? new Map() : Object.create(null);
+}
+
+/**
+ * Static method for creating ArraySet instances from an existing array.
+ */
+ArraySet.fromArray = function ArraySet_fromArray(aArray, aAllowDuplicates) {
+  var set = new ArraySet();
+  for (var i = 0, len = aArray.length; i < len; i++) {
+    set.add(aArray[i], aAllowDuplicates);
+  }
+  return set;
+};
+
+/**
+ * Return how many unique items are in this ArraySet. If duplicates have been
+ * added, than those do not count towards the size.
+ *
+ * @returns Number
+ */
+ArraySet.prototype.size = function ArraySet_size() {
+  return hasNativeMap ? this._set.size : Object.getOwnPropertyNames(this._set).length;
+};
+
+/**
+ * Add the given string to this set.
+ *
+ * @param String aStr
+ */
+ArraySet.prototype.add = function ArraySet_add(aStr, aAllowDuplicates) {
+  var sStr = hasNativeMap ? aStr : util.toSetString(aStr);
+  var isDuplicate = hasNativeMap ? this.has(aStr) : has.call(this._set, sStr);
+  var idx = this._array.length;
+  if (!isDuplicate || aAllowDuplicates) {
+    this._array.push(aStr);
+  }
+  if (!isDuplicate) {
+    if (hasNativeMap) {
+      this._set.set(aStr, idx);
+    } else {
+      this._set[sStr] = idx;
+    }
+  }
+};
+
+/**
+ * Is the given string a member of this set?
+ *
+ * @param String aStr
+ */
+ArraySet.prototype.has = function ArraySet_has(aStr) {
+  if (hasNativeMap) {
+    return this._set.has(aStr);
+  } else {
+    var sStr = util.toSetString(aStr);
+    return has.call(this._set, sStr);
+  }
+};
+
+/**
+ * What is the index of the given string in the array?
+ *
+ * @param String aStr
+ */
+ArraySet.prototype.indexOf = function ArraySet_indexOf(aStr) {
+  if (hasNativeMap) {
+    var idx = this._set.get(aStr);
+    if (idx >= 0) {
+        return idx;
+    }
+  } else {
+    var sStr = util.toSetString(aStr);
+    if (has.call(this._set, sStr)) {
+      return this._set[sStr];
+    }
+  }
+
+  throw new Error('"' + aStr + '" is not in the set.');
+};
+
+/**
+ * What is the element at the given index?
+ *
+ * @param Number aIdx
+ */
+ArraySet.prototype.at = function ArraySet_at(aIdx) {
+  if (aIdx >= 0 && aIdx < this._array.length) {
+    return this._array[aIdx];
+  }
+  throw new Error('No element indexed by ' + aIdx);
+};
+
+/**
+ * Returns the array representation of this set (which has the proper indices
+ * indicated by indexOf). Note that this is a copy of the internal array used
+ * for storing the members so that no one can mess with internal state.
+ */
+ArraySet.prototype.toArray = function ArraySet_toArray() {
+  return this._array.slice();
+};
+
+var ArraySet_1 = ArraySet;
+
+var arraySet = {
+	ArraySet: ArraySet_1
+};
+
+/* -*- Mode: js; js-indent-level: 2; -*- */
+/*
+ * Copyright 2014 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ */
+
+
+
+/**
+ * Determine whether mappingB is after mappingA with respect to generated
+ * position.
+ */
+function generatedPositionAfter(mappingA, mappingB) {
+  // Optimized for most common case
+  var lineA = mappingA.generatedLine;
+  var lineB = mappingB.generatedLine;
+  var columnA = mappingA.generatedColumn;
+  var columnB = mappingB.generatedColumn;
+  return lineB > lineA || lineB == lineA && columnB >= columnA ||
+         util.compareByGeneratedPositionsInflated(mappingA, mappingB) <= 0;
+}
+
+/**
+ * A data structure to provide a sorted view of accumulated mappings in a
+ * performance conscious manner. It trades a neglibable overhead in general
+ * case for a large speedup in case of mappings being added in order.
+ */
+function MappingList() {
+  this._array = [];
+  this._sorted = true;
+  // Serves as infimum
+  this._last = {generatedLine: -1, generatedColumn: 0};
+}
+
+/**
+ * Iterate through internal items. This method takes the same arguments that
+ * `Array.prototype.forEach` takes.
+ *
+ * NOTE: The order of the mappings is NOT guaranteed.
+ */
+MappingList.prototype.unsortedForEach =
+  function MappingList_forEach(aCallback, aThisArg) {
+    this._array.forEach(aCallback, aThisArg);
+  };
+
+/**
+ * Add the given source mapping.
+ *
+ * @param Object aMapping
+ */
+MappingList.prototype.add = function MappingList_add(aMapping) {
+  if (generatedPositionAfter(this._last, aMapping)) {
+    this._last = aMapping;
+    this._array.push(aMapping);
+  } else {
+    this._sorted = false;
+    this._array.push(aMapping);
+  }
+};
+
+/**
+ * Returns the flat, sorted array of mappings. The mappings are sorted by
+ * generated position.
+ *
+ * WARNING: This method returns internal data without copying, for
+ * performance. The return value must NOT be mutated, and should be treated as
+ * an immutable borrow. If you want to take ownership, you must make your own
+ * copy.
+ */
+MappingList.prototype.toArray = function MappingList_toArray() {
+  if (!this._sorted) {
+    this._array.sort(util.compareByGeneratedPositionsInflated);
+    this._sorted = true;
+  }
+  return this._array;
+};
+
+var MappingList_1 = MappingList;
+
+var mappingList = {
+	MappingList: MappingList_1
+};
+
+/* -*- Mode: js; js-indent-level: 2; -*- */
+/*
+ * Copyright 2011 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ */
+
+
+
+var ArraySet$1 = arraySet.ArraySet;
+var MappingList$1 = mappingList.MappingList;
+
+/**
+ * An instance of the SourceMapGenerator represents a source map which is
+ * being built incrementally. You may pass an object with the following
+ * properties:
+ *
+ *   - file: The filename of the generated source.
+ *   - sourceRoot: A root for all relative URLs in this source map.
+ */
+function SourceMapGenerator(aArgs) {
+  if (!aArgs) {
+    aArgs = {};
+  }
+  this._file = util.getArg(aArgs, 'file', null);
+  this._sourceRoot = util.getArg(aArgs, 'sourceRoot', null);
+  this._skipValidation = util.getArg(aArgs, 'skipValidation', false);
+  this._sources = new ArraySet$1();
+  this._names = new ArraySet$1();
+  this._mappings = new MappingList$1();
+  this._sourcesContents = null;
+}
+
+SourceMapGenerator.prototype._version = 3;
+
+/**
+ * Creates a new SourceMapGenerator based on a SourceMapConsumer
+ *
+ * @param aSourceMapConsumer The SourceMap.
+ */
+SourceMapGenerator.fromSourceMap =
+  function SourceMapGenerator_fromSourceMap(aSourceMapConsumer) {
+    var sourceRoot = aSourceMapConsumer.sourceRoot;
+    var generator = new SourceMapGenerator({
+      file: aSourceMapConsumer.file,
+      sourceRoot: sourceRoot
+    });
+    aSourceMapConsumer.eachMapping(function (mapping) {
+      var newMapping = {
+        generated: {
+          line: mapping.generatedLine,
+          column: mapping.generatedColumn
+        }
+      };
+
+      if (mapping.source != null) {
+        newMapping.source = mapping.source;
+        if (sourceRoot != null) {
+          newMapping.source = util.relative(sourceRoot, newMapping.source);
+        }
+
+        newMapping.original = {
+          line: mapping.originalLine,
+          column: mapping.originalColumn
+        };
+
+        if (mapping.name != null) {
+          newMapping.name = mapping.name;
+        }
+      }
+
+      generator.addMapping(newMapping);
+    });
+    aSourceMapConsumer.sources.forEach(function (sourceFile) {
+      var sourceRelative = sourceFile;
+      if (sourceRoot !== null) {
+        sourceRelative = util.relative(sourceRoot, sourceFile);
+      }
+
+      if (!generator._sources.has(sourceRelative)) {
+        generator._sources.add(sourceRelative);
+      }
+
+      var content = aSourceMapConsumer.sourceContentFor(sourceFile);
+      if (content != null) {
+        generator.setSourceContent(sourceFile, content);
+      }
+    });
+    return generator;
+  };
+
+/**
+ * Add a single mapping from original source line and column to the generated
+ * source's line and column for this source map being created. The mapping
+ * object should have the following properties:
+ *
+ *   - generated: An object with the generated line and column positions.
+ *   - original: An object with the original line and column positions.
+ *   - source: The original source file (relative to the sourceRoot).
+ *   - name: An optional original token name for this mapping.
+ */
+SourceMapGenerator.prototype.addMapping =
+  function SourceMapGenerator_addMapping(aArgs) {
+    var generated = util.getArg(aArgs, 'generated');
+    var original = util.getArg(aArgs, 'original', null);
+    var source = util.getArg(aArgs, 'source', null);
+    var name = util.getArg(aArgs, 'name', null);
+
+    if (!this._skipValidation) {
+      this._validateMapping(generated, original, source, name);
+    }
+
+    if (source != null) {
+      source = String(source);
+      if (!this._sources.has(source)) {
+        this._sources.add(source);
+      }
+    }
+
+    if (name != null) {
+      name = String(name);
+      if (!this._names.has(name)) {
+        this._names.add(name);
+      }
+    }
+
+    this._mappings.add({
+      generatedLine: generated.line,
+      generatedColumn: generated.column,
+      originalLine: original != null && original.line,
+      originalColumn: original != null && original.column,
+      source: source,
+      name: name
+    });
+  };
+
+/**
+ * Set the source content for a source file.
+ */
+SourceMapGenerator.prototype.setSourceContent =
+  function SourceMapGenerator_setSourceContent(aSourceFile, aSourceContent) {
+    var source = aSourceFile;
+    if (this._sourceRoot != null) {
+      source = util.relative(this._sourceRoot, source);
+    }
+
+    if (aSourceContent != null) {
+      // Add the source content to the _sourcesContents map.
+      // Create a new _sourcesContents map if the property is null.
+      if (!this._sourcesContents) {
+        this._sourcesContents = Object.create(null);
+      }
+      this._sourcesContents[util.toSetString(source)] = aSourceContent;
+    } else if (this._sourcesContents) {
+      // Remove the source file from the _sourcesContents map.
+      // If the _sourcesContents map is empty, set the property to null.
+      delete this._sourcesContents[util.toSetString(source)];
+      if (Object.keys(this._sourcesContents).length === 0) {
+        this._sourcesContents = null;
+      }
+    }
+  };
+
+/**
+ * Applies the mappings of a sub-source-map for a specific source file to the
+ * source map being generated. Each mapping to the supplied source file is
+ * rewritten using the supplied source map. Note: The resolution for the
+ * resulting mappings is the minimium of this map and the supplied map.
+ *
+ * @param aSourceMapConsumer The source map to be applied.
+ * @param aSourceFile Optional. The filename of the source file.
+ *        If omitted, SourceMapConsumer's file property will be used.
+ * @param aSourceMapPath Optional. The dirname of the path to the source map
+ *        to be applied. If relative, it is relative to the SourceMapConsumer.
+ *        This parameter is needed when the two source maps aren't in the same
+ *        directory, and the source map to be applied contains relative source
+ *        paths. If so, those relative source paths need to be rewritten
+ *        relative to the SourceMapGenerator.
+ */
+SourceMapGenerator.prototype.applySourceMap =
+  function SourceMapGenerator_applySourceMap(aSourceMapConsumer, aSourceFile, aSourceMapPath) {
+    var sourceFile = aSourceFile;
+    // If aSourceFile is omitted, we will use the file property of the SourceMap
+    if (aSourceFile == null) {
+      if (aSourceMapConsumer.file == null) {
+        throw new Error(
+          'SourceMapGenerator.prototype.applySourceMap requires either an explicit source file, ' +
+          'or the source map\'s "file" property. Both were omitted.'
+        );
+      }
+      sourceFile = aSourceMapConsumer.file;
+    }
+    var sourceRoot = this._sourceRoot;
+    // Make "sourceFile" relative if an absolute Url is passed.
+    if (sourceRoot != null) {
+      sourceFile = util.relative(sourceRoot, sourceFile);
+    }
+    // Applying the SourceMap can add and remove items from the sources and
+    // the names array.
+    var newSources = new ArraySet$1();
+    var newNames = new ArraySet$1();
+
+    // Find mappings for the "sourceFile"
+    this._mappings.unsortedForEach(function (mapping) {
+      if (mapping.source === sourceFile && mapping.originalLine != null) {
+        // Check if it can be mapped by the source map, then update the mapping.
+        var original = aSourceMapConsumer.originalPositionFor({
+          line: mapping.originalLine,
+          column: mapping.originalColumn
+        });
+        if (original.source != null) {
+          // Copy mapping
+          mapping.source = original.source;
+          if (aSourceMapPath != null) {
+            mapping.source = util.join(aSourceMapPath, mapping.source);
+          }
+          if (sourceRoot != null) {
+            mapping.source = util.relative(sourceRoot, mapping.source);
+          }
+          mapping.originalLine = original.line;
+          mapping.originalColumn = original.column;
+          if (original.name != null) {
+            mapping.name = original.name;
+          }
+        }
+      }
+
+      var source = mapping.source;
+      if (source != null && !newSources.has(source)) {
+        newSources.add(source);
+      }
+
+      var name = mapping.name;
+      if (name != null && !newNames.has(name)) {
+        newNames.add(name);
+      }
+
+    }, this);
+    this._sources = newSources;
+    this._names = newNames;
+
+    // Copy sourcesContents of applied map.
+    aSourceMapConsumer.sources.forEach(function (sourceFile) {
+      var content = aSourceMapConsumer.sourceContentFor(sourceFile);
+      if (content != null) {
+        if (aSourceMapPath != null) {
+          sourceFile = util.join(aSourceMapPath, sourceFile);
+        }
+        if (sourceRoot != null) {
+          sourceFile = util.relative(sourceRoot, sourceFile);
+        }
+        this.setSourceContent(sourceFile, content);
+      }
+    }, this);
+  };
+
+/**
+ * A mapping can have one of the three levels of data:
+ *
+ *   1. Just the generated position.
+ *   2. The Generated position, original position, and original source.
+ *   3. Generated and original position, original source, as well as a name
+ *      token.
+ *
+ * To maintain consistency, we validate that any new mapping being added falls
+ * in to one of these categories.
+ */
+SourceMapGenerator.prototype._validateMapping =
+  function SourceMapGenerator_validateMapping(aGenerated, aOriginal, aSource,
+                                              aName) {
+    // When aOriginal is truthy but has empty values for .line and .column,
+    // it is most likely a programmer error. In this case we throw a very
+    // specific error message to try to guide them the right way.
+    // For example: https://github.com/Polymer/polymer-bundler/pull/519
+    if (aOriginal && typeof aOriginal.line !== 'number' && typeof aOriginal.column !== 'number') {
+        throw new Error(
+            'original.line and original.column are not numbers -- you probably meant to omit ' +
+            'the original mapping entirely and only map the generated position. If so, pass ' +
+            'null for the original mapping instead of an object with empty or null values.'
+        );
+    }
+
+    if (aGenerated && 'line' in aGenerated && 'column' in aGenerated
+        && aGenerated.line > 0 && aGenerated.column >= 0
+        && !aOriginal && !aSource && !aName) {
+      // Case 1.
+      return;
+    }
+    else if (aGenerated && 'line' in aGenerated && 'column' in aGenerated
+             && aOriginal && 'line' in aOriginal && 'column' in aOriginal
+             && aGenerated.line > 0 && aGenerated.column >= 0
+             && aOriginal.line > 0 && aOriginal.column >= 0
+             && aSource) {
+      // Cases 2 and 3.
+      return;
+    }
+    else {
+      throw new Error('Invalid mapping: ' + JSON.stringify({
+        generated: aGenerated,
+        source: aSource,
+        original: aOriginal,
+        name: aName
+      }));
+    }
+  };
+
+/**
+ * Serialize the accumulated mappings in to the stream of base 64 VLQs
+ * specified by the source map format.
+ */
+SourceMapGenerator.prototype._serializeMappings =
+  function SourceMapGenerator_serializeMappings() {
+    var previousGeneratedColumn = 0;
+    var previousGeneratedLine = 1;
+    var previousOriginalColumn = 0;
+    var previousOriginalLine = 0;
+    var previousName = 0;
+    var previousSource = 0;
+    var result = '';
+    var next;
+    var mapping;
+    var nameIdx;
+    var sourceIdx;
+
+    var mappings = this._mappings.toArray();
+    for (var i = 0, len = mappings.length; i < len; i++) {
+      mapping = mappings[i];
+      next = '';
+
+      if (mapping.generatedLine !== previousGeneratedLine) {
+        previousGeneratedColumn = 0;
+        while (mapping.generatedLine !== previousGeneratedLine) {
+          next += ';';
+          previousGeneratedLine++;
+        }
+      }
+      else {
+        if (i > 0) {
+          if (!util.compareByGeneratedPositionsInflated(mapping, mappings[i - 1])) {
+            continue;
+          }
+          next += ',';
+        }
+      }
+
+      next += base64Vlq.encode(mapping.generatedColumn
+                                 - previousGeneratedColumn);
+      previousGeneratedColumn = mapping.generatedColumn;
+
+      if (mapping.source != null) {
+        sourceIdx = this._sources.indexOf(mapping.source);
+        next += base64Vlq.encode(sourceIdx - previousSource);
+        previousSource = sourceIdx;
+
+        // lines are stored 0-based in SourceMap spec version 3
+        next += base64Vlq.encode(mapping.originalLine - 1
+                                   - previousOriginalLine);
+        previousOriginalLine = mapping.originalLine - 1;
+
+        next += base64Vlq.encode(mapping.originalColumn
+                                   - previousOriginalColumn);
+        previousOriginalColumn = mapping.originalColumn;
+
+        if (mapping.name != null) {
+          nameIdx = this._names.indexOf(mapping.name);
+          next += base64Vlq.encode(nameIdx - previousName);
+          previousName = nameIdx;
+        }
+      }
+
+      result += next;
+    }
+
+    return result;
+  };
+
+SourceMapGenerator.prototype._generateSourcesContent =
+  function SourceMapGenerator_generateSourcesContent(aSources, aSourceRoot) {
+    return aSources.map(function (source) {
+      if (!this._sourcesContents) {
+        return null;
+      }
+      if (aSourceRoot != null) {
+        source = util.relative(aSourceRoot, source);
+      }
+      var key = util.toSetString(source);
+      return Object.prototype.hasOwnProperty.call(this._sourcesContents, key)
+        ? this._sourcesContents[key]
+        : null;
+    }, this);
+  };
+
+/**
+ * Externalize the source map.
+ */
+SourceMapGenerator.prototype.toJSON =
+  function SourceMapGenerator_toJSON() {
+    var map = {
+      version: this._version,
+      sources: this._sources.toArray(),
+      names: this._names.toArray(),
+      mappings: this._serializeMappings()
+    };
+    if (this._file != null) {
+      map.file = this._file;
+    }
+    if (this._sourceRoot != null) {
+      map.sourceRoot = this._sourceRoot;
+    }
+    if (this._sourcesContents) {
+      map.sourcesContent = this._generateSourcesContent(map.sources, map.sourceRoot);
+    }
+
+    return map;
+  };
+
+/**
+ * Render the source map being generated to a string.
+ */
+SourceMapGenerator.prototype.toString =
+  function SourceMapGenerator_toString() {
+    return JSON.stringify(this.toJSON());
+  };
+
+var SourceMapGenerator_1 = SourceMapGenerator;
+
+var sourceMapGenerator = {
+	SourceMapGenerator: SourceMapGenerator_1
+};
+
+var binarySearch = createCommonjsModule(function (module, exports) {
+/* -*- Mode: js; js-indent-level: 2; -*- */
+/*
+ * Copyright 2011 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ */
+
+exports.GREATEST_LOWER_BOUND = 1;
+exports.LEAST_UPPER_BOUND = 2;
+
+/**
+ * Recursive implementation of binary search.
+ *
+ * @param aLow Indices here and lower do not contain the needle.
+ * @param aHigh Indices here and higher do not contain the needle.
+ * @param aNeedle The element being searched for.
+ * @param aHaystack The non-empty array being searched.
+ * @param aCompare Function which takes two elements and returns -1, 0, or 1.
+ * @param aBias Either 'binarySearch.GREATEST_LOWER_BOUND' or
+ *     'binarySearch.LEAST_UPPER_BOUND'. Specifies whether to return the
+ *     closest element that is smaller than or greater than the one we are
+ *     searching for, respectively, if the exact element cannot be found.
+ */
+function recursiveSearch(aLow, aHigh, aNeedle, aHaystack, aCompare, aBias) {
+  // This function terminates when one of the following is true:
+  //
+  //   1. We find the exact element we are looking for.
+  //
+  //   2. We did not find the exact element, but we can return the index of
+  //      the next-closest element.
+  //
+  //   3. We did not find the exact element, and there is no next-closest
+  //      element than the one we are searching for, so we return -1.
+  var mid = Math.floor((aHigh - aLow) / 2) + aLow;
+  var cmp = aCompare(aNeedle, aHaystack[mid], true);
+  if (cmp === 0) {
+    // Found the element we are looking for.
+    return mid;
+  }
+  else if (cmp > 0) {
+    // Our needle is greater than aHaystack[mid].
+    if (aHigh - mid > 1) {
+      // The element is in the upper half.
+      return recursiveSearch(mid, aHigh, aNeedle, aHaystack, aCompare, aBias);
+    }
+
+    // The exact needle element was not found in this haystack. Determine if
+    // we are in termination case (3) or (2) and return the appropriate thing.
+    if (aBias == exports.LEAST_UPPER_BOUND) {
+      return aHigh < aHaystack.length ? aHigh : -1;
+    } else {
+      return mid;
+    }
+  }
+  else {
+    // Our needle is less than aHaystack[mid].
+    if (mid - aLow > 1) {
+      // The element is in the lower half.
+      return recursiveSearch(aLow, mid, aNeedle, aHaystack, aCompare, aBias);
+    }
+
+    // we are in termination case (3) or (2) and return the appropriate thing.
+    if (aBias == exports.LEAST_UPPER_BOUND) {
+      return mid;
+    } else {
+      return aLow < 0 ? -1 : aLow;
+    }
+  }
+}
+
+/**
+ * This is an implementation of binary search which will always try and return
+ * the index of the closest element if there is no exact hit. This is because
+ * mappings between original and generated line/col pairs are single points,
+ * and there is an implicit region between each of them, so a miss just means
+ * that you aren't on the very start of a region.
+ *
+ * @param aNeedle The element you are looking for.
+ * @param aHaystack The array that is being searched.
+ * @param aCompare A function which takes the needle and an element in the
+ *     array and returns -1, 0, or 1 depending on whether the needle is less
+ *     than, equal to, or greater than the element, respectively.
+ * @param aBias Either 'binarySearch.GREATEST_LOWER_BOUND' or
+ *     'binarySearch.LEAST_UPPER_BOUND'. Specifies whether to return the
+ *     closest element that is smaller than or greater than the one we are
+ *     searching for, respectively, if the exact element cannot be found.
+ *     Defaults to 'binarySearch.GREATEST_LOWER_BOUND'.
+ */
+exports.search = function search(aNeedle, aHaystack, aCompare, aBias) {
+  if (aHaystack.length === 0) {
+    return -1;
+  }
+
+  var index = recursiveSearch(-1, aHaystack.length, aNeedle, aHaystack,
+                              aCompare, aBias || exports.GREATEST_LOWER_BOUND);
+  if (index < 0) {
+    return -1;
+  }
+
+  // We have found either the exact element, or the next-closest element than
+  // the one we are searching for. However, there may be more than one such
+  // element. Make sure we always return the smallest of these.
+  while (index - 1 >= 0) {
+    if (aCompare(aHaystack[index], aHaystack[index - 1], true) !== 0) {
+      break;
+    }
+    --index;
+  }
+
+  return index;
+};
+});
+var binarySearch_1 = binarySearch.GREATEST_LOWER_BOUND;
+var binarySearch_2 = binarySearch.LEAST_UPPER_BOUND;
+var binarySearch_3 = binarySearch.search;
+
+/* -*- Mode: js; js-indent-level: 2; -*- */
+/*
+ * Copyright 2011 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ */
+
+// It turns out that some (most?) JavaScript engines don't self-host
+// `Array.prototype.sort`. This makes sense because C++ will likely remain
+// faster than JS when doing raw CPU-intensive sorting. However, when using a
+// custom comparator function, calling back and forth between the VM's C++ and
+// JIT'd JS is rather slow *and* loses JIT type information, resulting in
+// worse generated code for the comparator function than would be optimal. In
+// fact, when sorting with a comparator, these costs outweigh the benefits of
+// sorting in C++. By using our own JS-implemented Quick Sort (below), we get
+// a ~3500ms mean speed-up in `bench/bench.html`.
+
+/**
+ * Swap the elements indexed by `x` and `y` in the array `ary`.
+ *
+ * @param {Array} ary
+ *        The array.
+ * @param {Number} x
+ *        The index of the first item.
+ * @param {Number} y
+ *        The index of the second item.
+ */
+function swap(ary, x, y) {
+  var temp = ary[x];
+  ary[x] = ary[y];
+  ary[y] = temp;
+}
+
+/**
+ * Returns a random integer within the range `low .. high` inclusive.
+ *
+ * @param {Number} low
+ *        The lower bound on the range.
+ * @param {Number} high
+ *        The upper bound on the range.
+ */
+function randomIntInRange(low, high) {
+  return Math.round(low + (Math.random() * (high - low)));
+}
+
+/**
+ * The Quick Sort algorithm.
+ *
+ * @param {Array} ary
+ *        An array to sort.
+ * @param {function} comparator
+ *        Function to use to compare two items.
+ * @param {Number} p
+ *        Start index of the array
+ * @param {Number} r
+ *        End index of the array
+ */
+function doQuickSort(ary, comparator, p, r) {
+  // If our lower bound is less than our upper bound, we (1) partition the
+  // array into two pieces and (2) recurse on each half. If it is not, this is
+  // the empty array and our base case.
+
+  if (p < r) {
+    // (1) Partitioning.
+    //
+    // The partitioning chooses a pivot between `p` and `r` and moves all
+    // elements that are less than or equal to the pivot to the before it, and
+    // all the elements that are greater than it after it. The effect is that
+    // once partition is done, the pivot is in the exact place it will be when
+    // the array is put in sorted order, and it will not need to be moved
+    // again. This runs in O(n) time.
+
+    // Always choose a random pivot so that an input array which is reverse
+    // sorted does not cause O(n^2) running time.
+    var pivotIndex = randomIntInRange(p, r);
+    var i = p - 1;
+
+    swap(ary, pivotIndex, r);
+    var pivot = ary[r];
+
+    // Immediately after `j` is incremented in this loop, the following hold
+    // true:
+    //
+    //   * Every element in `ary[p .. i]` is less than or equal to the pivot.
+    //
+    //   * Every element in `ary[i+1 .. j-1]` is greater than the pivot.
+    for (var j = p; j < r; j++) {
+      if (comparator(ary[j], pivot) <= 0) {
+        i += 1;
+        swap(ary, i, j);
+      }
+    }
+
+    swap(ary, i + 1, j);
+    var q = i + 1;
+
+    // (2) Recurse on each half.
+
+    doQuickSort(ary, comparator, p, q - 1);
+    doQuickSort(ary, comparator, q + 1, r);
+  }
+}
+
+/**
+ * Sort the given array in-place with the given comparator function.
+ *
+ * @param {Array} ary
+ *        An array to sort.
+ * @param {function} comparator
+ *        Function to use to compare two items.
+ */
+var quickSort_1 = function (ary, comparator) {
+  doQuickSort(ary, comparator, 0, ary.length - 1);
+};
+
+var quickSort = {
+	quickSort: quickSort_1
+};
+
+/* -*- Mode: js; js-indent-level: 2; -*- */
+/*
+ * Copyright 2011 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ */
+
+
+
+var ArraySet$2 = arraySet.ArraySet;
+
+var quickSort$1 = quickSort.quickSort;
+
+function SourceMapConsumer(aSourceMap, aSourceMapURL) {
+  var sourceMap = aSourceMap;
+  if (typeof aSourceMap === 'string') {
+    sourceMap = util.parseSourceMapInput(aSourceMap);
+  }
+
+  return sourceMap.sections != null
+    ? new IndexedSourceMapConsumer(sourceMap, aSourceMapURL)
+    : new BasicSourceMapConsumer(sourceMap, aSourceMapURL);
+}
+
+SourceMapConsumer.fromSourceMap = function(aSourceMap, aSourceMapURL) {
+  return BasicSourceMapConsumer.fromSourceMap(aSourceMap, aSourceMapURL);
+};
+
+/**
+ * The version of the source mapping spec that we are consuming.
+ */
+SourceMapConsumer.prototype._version = 3;
+
+// `__generatedMappings` and `__originalMappings` are arrays that hold the
+// parsed mapping coordinates from the source map's "mappings" attribute. They
+// are lazily instantiated, accessed via the `_generatedMappings` and
+// `_originalMappings` getters respectively, and we only parse the mappings
+// and create these arrays once queried for a source location. We jump through
+// these hoops because there can be many thousands of mappings, and parsing
+// them is expensive, so we only want to do it if we must.
+//
+// Each object in the arrays is of the form:
+//
+//     {
+//       generatedLine: The line number in the generated code,
+//       generatedColumn: The column number in the generated code,
+//       source: The path to the original source file that generated this
+//               chunk of code,
+//       originalLine: The line number in the original source that
+//                     corresponds to this chunk of generated code,
+//       originalColumn: The column number in the original source that
+//                       corresponds to this chunk of generated code,
+//       name: The name of the original symbol which generated this chunk of
+//             code.
+//     }
+//
+// All properties except for `generatedLine` and `generatedColumn` can be
+// `null`.
+//
+// `_generatedMappings` is ordered by the generated positions.
+//
+// `_originalMappings` is ordered by the original positions.
+
+SourceMapConsumer.prototype.__generatedMappings = null;
+Object.defineProperty(SourceMapConsumer.prototype, '_generatedMappings', {
+  configurable: true,
+  enumerable: true,
+  get: function () {
+    if (!this.__generatedMappings) {
+      this._parseMappings(this._mappings, this.sourceRoot);
+    }
+
+    return this.__generatedMappings;
+  }
+});
+
+SourceMapConsumer.prototype.__originalMappings = null;
+Object.defineProperty(SourceMapConsumer.prototype, '_originalMappings', {
+  configurable: true,
+  enumerable: true,
+  get: function () {
+    if (!this.__originalMappings) {
+      this._parseMappings(this._mappings, this.sourceRoot);
+    }
+
+    return this.__originalMappings;
+  }
+});
+
+SourceMapConsumer.prototype._charIsMappingSeparator =
+  function SourceMapConsumer_charIsMappingSeparator(aStr, index) {
+    var c = aStr.charAt(index);
+    return c === ";" || c === ",";
+  };
+
+/**
+ * Parse the mappings in a string in to a data structure which we can easily
+ * query (the ordered arrays in the `this.__generatedMappings` and
+ * `this.__originalMappings` properties).
+ */
+SourceMapConsumer.prototype._parseMappings =
+  function SourceMapConsumer_parseMappings(aStr, aSourceRoot) {
+    throw new Error("Subclasses must implement _parseMappings");
+  };
+
+SourceMapConsumer.GENERATED_ORDER = 1;
+SourceMapConsumer.ORIGINAL_ORDER = 2;
+
+SourceMapConsumer.GREATEST_LOWER_BOUND = 1;
+SourceMapConsumer.LEAST_UPPER_BOUND = 2;
+
+/**
+ * Iterate over each mapping between an original source/line/column and a
+ * generated line/column in this source map.
+ *
+ * @param Function aCallback
+ *        The function that is called with each mapping.
+ * @param Object aContext
+ *        Optional. If specified, this object will be the value of `this` every
+ *        time that `aCallback` is called.
+ * @param aOrder
+ *        Either `SourceMapConsumer.GENERATED_ORDER` or
+ *        `SourceMapConsumer.ORIGINAL_ORDER`. Specifies whether you want to
+ *        iterate over the mappings sorted by the generated file's line/column
+ *        order or the original's source/line/column order, respectively. Defaults to
+ *        `SourceMapConsumer.GENERATED_ORDER`.
+ */
+SourceMapConsumer.prototype.eachMapping =
+  function SourceMapConsumer_eachMapping(aCallback, aContext, aOrder) {
+    var context = aContext || null;
+    var order = aOrder || SourceMapConsumer.GENERATED_ORDER;
+
+    var mappings;
+    switch (order) {
+    case SourceMapConsumer.GENERATED_ORDER:
+      mappings = this._generatedMappings;
+      break;
+    case SourceMapConsumer.ORIGINAL_ORDER:
+      mappings = this._originalMappings;
+      break;
+    default:
+      throw new Error("Unknown order of iteration.");
+    }
+
+    var sourceRoot = this.sourceRoot;
+    mappings.map(function (mapping) {
+      var source = mapping.source === null ? null : this._sources.at(mapping.source);
+      source = util.computeSourceURL(sourceRoot, source, this._sourceMapURL);
+      return {
+        source: source,
+        generatedLine: mapping.generatedLine,
+        generatedColumn: mapping.generatedColumn,
+        originalLine: mapping.originalLine,
+        originalColumn: mapping.originalColumn,
+        name: mapping.name === null ? null : this._names.at(mapping.name)
+      };
+    }, this).forEach(aCallback, context);
+  };
+
+/**
+ * Returns all generated line and column information for the original source,
+ * line, and column provided. If no column is provided, returns all mappings
+ * corresponding to a either the line we are searching for or the next
+ * closest line that has any mappings. Otherwise, returns all mappings
+ * corresponding to the given line and either the column we are searching for
+ * or the next closest column that has any offsets.
+ *
+ * The only argument is an object with the following properties:
+ *
+ *   - source: The filename of the original source.
+ *   - line: The line number in the original source.  The line number is 1-based.
+ *   - column: Optional. the column number in the original source.
+ *    The column number is 0-based.
+ *
+ * and an array of objects is returned, each with the following properties:
+ *
+ *   - line: The line number in the generated source, or null.  The
+ *    line number is 1-based.
+ *   - column: The column number in the generated source, or null.
+ *    The column number is 0-based.
+ */
+SourceMapConsumer.prototype.allGeneratedPositionsFor =
+  function SourceMapConsumer_allGeneratedPositionsFor(aArgs) {
+    var line = util.getArg(aArgs, 'line');
+
+    // When there is no exact match, BasicSourceMapConsumer.prototype._findMapping
+    // returns the index of the closest mapping less than the needle. By
+    // setting needle.originalColumn to 0, we thus find the last mapping for
+    // the given line, provided such a mapping exists.
+    var needle = {
+      source: util.getArg(aArgs, 'source'),
+      originalLine: line,
+      originalColumn: util.getArg(aArgs, 'column', 0)
+    };
+
+    needle.source = this._findSourceIndex(needle.source);
+    if (needle.source < 0) {
+      return [];
+    }
+
+    var mappings = [];
+
+    var index = this._findMapping(needle,
+                                  this._originalMappings,
+                                  "originalLine",
+                                  "originalColumn",
+                                  util.compareByOriginalPositions,
+                                  binarySearch.LEAST_UPPER_BOUND);
+    if (index >= 0) {
+      var mapping = this._originalMappings[index];
+
+      if (aArgs.column === undefined) {
+        var originalLine = mapping.originalLine;
+
+        // Iterate until either we run out of mappings, or we run into
+        // a mapping for a different line than the one we found. Since
+        // mappings are sorted, this is guaranteed to find all mappings for
+        // the line we found.
+        while (mapping && mapping.originalLine === originalLine) {
+          mappings.push({
+            line: util.getArg(mapping, 'generatedLine', null),
+            column: util.getArg(mapping, 'generatedColumn', null),
+            lastColumn: util.getArg(mapping, 'lastGeneratedColumn', null)
+          });
+
+          mapping = this._originalMappings[++index];
+        }
+      } else {
+        var originalColumn = mapping.originalColumn;
+
+        // Iterate until either we run out of mappings, or we run into
+        // a mapping for a different line than the one we were searching for.
+        // Since mappings are sorted, this is guaranteed to find all mappings for
+        // the line we are searching for.
+        while (mapping &&
+               mapping.originalLine === line &&
+               mapping.originalColumn == originalColumn) {
+          mappings.push({
+            line: util.getArg(mapping, 'generatedLine', null),
+            column: util.getArg(mapping, 'generatedColumn', null),
+            lastColumn: util.getArg(mapping, 'lastGeneratedColumn', null)
+          });
+
+          mapping = this._originalMappings[++index];
+        }
+      }
+    }
+
+    return mappings;
+  };
+
+var SourceMapConsumer_1 = SourceMapConsumer;
+
+/**
+ * A BasicSourceMapConsumer instance represents a parsed source map which we can
+ * query for information about the original file positions by giving it a file
+ * position in the generated source.
+ *
+ * The first parameter is the raw source map (either as a JSON string, or
+ * already parsed to an object). According to the spec, source maps have the
+ * following attributes:
+ *
+ *   - version: Which version of the source map spec this map is following.
+ *   - sources: An array of URLs to the original source files.
+ *   - names: An array of identifiers which can be referrenced by individual mappings.
+ *   - sourceRoot: Optional. The URL root from which all sources are relative.
+ *   - sourcesContent: Optional. An array of contents of the original source files.
+ *   - mappings: A string of base64 VLQs which contain the actual mappings.
+ *   - file: Optional. The generated file this source map is associated with.
+ *
+ * Here is an example source map, taken from the source map spec[0]:
+ *
+ *     {
+ *       version : 3,
+ *       file: "out.js",
+ *       sourceRoot : "",
+ *       sources: ["foo.js", "bar.js"],
+ *       names: ["src", "maps", "are", "fun"],
+ *       mappings: "AA,AB;;ABCDE;"
+ *     }
+ *
+ * The second parameter, if given, is a string whose value is the URL
+ * at which the source map was found.  This URL is used to compute the
+ * sources array.
+ *
+ * [0]: https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit?pli=1#
+ */
+function BasicSourceMapConsumer(aSourceMap, aSourceMapURL) {
+  var sourceMap = aSourceMap;
+  if (typeof aSourceMap === 'string') {
+    sourceMap = util.parseSourceMapInput(aSourceMap);
+  }
+
+  var version = util.getArg(sourceMap, 'version');
+  var sources = util.getArg(sourceMap, 'sources');
+  // Sass 3.3 leaves out the 'names' array, so we deviate from the spec (which
+  // requires the array) to play nice here.
+  var names = util.getArg(sourceMap, 'names', []);
+  var sourceRoot = util.getArg(sourceMap, 'sourceRoot', null);
+  var sourcesContent = util.getArg(sourceMap, 'sourcesContent', null);
+  var mappings = util.getArg(sourceMap, 'mappings');
+  var file = util.getArg(sourceMap, 'file', null);
+
+  // Once again, Sass deviates from the spec and supplies the version as a
+  // string rather than a number, so we use loose equality checking here.
+  if (version != this._version) {
+    throw new Error('Unsupported version: ' + version);
+  }
+
+  if (sourceRoot) {
+    sourceRoot = util.normalize(sourceRoot);
+  }
+
+  sources = sources
+    .map(String)
+    // Some source maps produce relative source paths like "./foo.js" instead of
+    // "foo.js".  Normalize these first so that future comparisons will succeed.
+    // See bugzil.la/1090768.
+    .map(util.normalize)
+    // Always ensure that absolute sources are internally stored relative to
+    // the source root, if the source root is absolute. Not doing this would
+    // be particularly problematic when the source root is a prefix of the
+    // source (valid, but why??). See github issue #199 and bugzil.la/1188982.
+    .map(function (source) {
+      return sourceRoot && util.isAbsolute(sourceRoot) && util.isAbsolute(source)
+        ? util.relative(sourceRoot, source)
+        : source;
+    });
+
+  // Pass `true` below to allow duplicate names and sources. While source maps
+  // are intended to be compressed and deduplicated, the TypeScript compiler
+  // sometimes generates source maps with duplicates in them. See Github issue
+  // #72 and bugzil.la/889492.
+  this._names = ArraySet$2.fromArray(names.map(String), true);
+  this._sources = ArraySet$2.fromArray(sources, true);
+
+  this._absoluteSources = this._sources.toArray().map(function (s) {
+    return util.computeSourceURL(sourceRoot, s, aSourceMapURL);
+  });
+
+  this.sourceRoot = sourceRoot;
+  this.sourcesContent = sourcesContent;
+  this._mappings = mappings;
+  this._sourceMapURL = aSourceMapURL;
+  this.file = file;
+}
+
+BasicSourceMapConsumer.prototype = Object.create(SourceMapConsumer.prototype);
+BasicSourceMapConsumer.prototype.consumer = SourceMapConsumer;
+
+/**
+ * Utility function to find the index of a source.  Returns -1 if not
+ * found.
+ */
+BasicSourceMapConsumer.prototype._findSourceIndex = function(aSource) {
+  var relativeSource = aSource;
+  if (this.sourceRoot != null) {
+    relativeSource = util.relative(this.sourceRoot, relativeSource);
+  }
+
+  if (this._sources.has(relativeSource)) {
+    return this._sources.indexOf(relativeSource);
+  }
+
+  // Maybe aSource is an absolute URL as returned by |sources|.  In
+  // this case we can't simply undo the transform.
+  var i;
+  for (i = 0; i < this._absoluteSources.length; ++i) {
+    if (this._absoluteSources[i] == aSource) {
+      return i;
+    }
+  }
+
+  return -1;
+};
+
+/**
+ * Create a BasicSourceMapConsumer from a SourceMapGenerator.
+ *
+ * @param SourceMapGenerator aSourceMap
+ *        The source map that will be consumed.
+ * @param String aSourceMapURL
+ *        The URL at which the source map can be found (optional)
+ * @returns BasicSourceMapConsumer
+ */
+BasicSourceMapConsumer.fromSourceMap =
+  function SourceMapConsumer_fromSourceMap(aSourceMap, aSourceMapURL) {
+    var smc = Object.create(BasicSourceMapConsumer.prototype);
+
+    var names = smc._names = ArraySet$2.fromArray(aSourceMap._names.toArray(), true);
+    var sources = smc._sources = ArraySet$2.fromArray(aSourceMap._sources.toArray(), true);
+    smc.sourceRoot = aSourceMap._sourceRoot;
+    smc.sourcesContent = aSourceMap._generateSourcesContent(smc._sources.toArray(),
+                                                            smc.sourceRoot);
+    smc.file = aSourceMap._file;
+    smc._sourceMapURL = aSourceMapURL;
+    smc._absoluteSources = smc._sources.toArray().map(function (s) {
+      return util.computeSourceURL(smc.sourceRoot, s, aSourceMapURL);
+    });
+
+    // Because we are modifying the entries (by converting string sources and
+    // names to indices into the sources and names ArraySets), we have to make
+    // a copy of the entry or else bad things happen. Shared mutable state
+    // strikes again! See github issue #191.
+
+    var generatedMappings = aSourceMap._mappings.toArray().slice();
+    var destGeneratedMappings = smc.__generatedMappings = [];
+    var destOriginalMappings = smc.__originalMappings = [];
+
+    for (var i = 0, length = generatedMappings.length; i < length; i++) {
+      var srcMapping = generatedMappings[i];
+      var destMapping = new Mapping;
+      destMapping.generatedLine = srcMapping.generatedLine;
+      destMapping.generatedColumn = srcMapping.generatedColumn;
+
+      if (srcMapping.source) {
+        destMapping.source = sources.indexOf(srcMapping.source);
+        destMapping.originalLine = srcMapping.originalLine;
+        destMapping.originalColumn = srcMapping.originalColumn;
+
+        if (srcMapping.name) {
+          destMapping.name = names.indexOf(srcMapping.name);
+        }
+
+        destOriginalMappings.push(destMapping);
+      }
+
+      destGeneratedMappings.push(destMapping);
+    }
+
+    quickSort$1(smc.__originalMappings, util.compareByOriginalPositions);
+
+    return smc;
+  };
+
+/**
+ * The version of the source mapping spec that we are consuming.
+ */
+BasicSourceMapConsumer.prototype._version = 3;
+
+/**
+ * The list of original sources.
+ */
+Object.defineProperty(BasicSourceMapConsumer.prototype, 'sources', {
+  get: function () {
+    return this._absoluteSources.slice();
+  }
+});
+
+/**
+ * Provide the JIT with a nice shape / hidden class.
+ */
+function Mapping() {
+  this.generatedLine = 0;
+  this.generatedColumn = 0;
+  this.source = null;
+  this.originalLine = null;
+  this.originalColumn = null;
+  this.name = null;
+}
+
+/**
+ * Parse the mappings in a string in to a data structure which we can easily
+ * query (the ordered arrays in the `this.__generatedMappings` and
+ * `this.__originalMappings` properties).
+ */
+BasicSourceMapConsumer.prototype._parseMappings =
+  function SourceMapConsumer_parseMappings(aStr, aSourceRoot) {
+    var generatedLine = 1;
+    var previousGeneratedColumn = 0;
+    var previousOriginalLine = 0;
+    var previousOriginalColumn = 0;
+    var previousSource = 0;
+    var previousName = 0;
+    var length = aStr.length;
+    var index = 0;
+    var cachedSegments = {};
+    var temp = {};
+    var originalMappings = [];
+    var generatedMappings = [];
+    var mapping, str, segment, end, value;
+
+    while (index < length) {
+      if (aStr.charAt(index) === ';') {
+        generatedLine++;
+        index++;
+        previousGeneratedColumn = 0;
+      }
+      else if (aStr.charAt(index) === ',') {
+        index++;
+      }
+      else {
+        mapping = new Mapping();
+        mapping.generatedLine = generatedLine;
+
+        // Because each offset is encoded relative to the previous one,
+        // many segments often have the same encoding. We can exploit this
+        // fact by caching the parsed variable length fields of each segment,
+        // allowing us to avoid a second parse if we encounter the same
+        // segment again.
+        for (end = index; end < length; end++) {
+          if (this._charIsMappingSeparator(aStr, end)) {
+            break;
+          }
+        }
+        str = aStr.slice(index, end);
+
+        segment = cachedSegments[str];
+        if (segment) {
+          index += str.length;
+        } else {
+          segment = [];
+          while (index < end) {
+            base64Vlq.decode(aStr, index, temp);
+            value = temp.value;
+            index = temp.rest;
+            segment.push(value);
+          }
+
+          if (segment.length === 2) {
+            throw new Error('Found a source, but no line and column');
+          }
+
+          if (segment.length === 3) {
+            throw new Error('Found a source and line, but no column');
+          }
+
+          cachedSegments[str] = segment;
+        }
+
+        // Generated column.
+        mapping.generatedColumn = previousGeneratedColumn + segment[0];
+        previousGeneratedColumn = mapping.generatedColumn;
+
+        if (segment.length > 1) {
+          // Original source.
+          mapping.source = previousSource + segment[1];
+          previousSource += segment[1];
+
+          // Original line.
+          mapping.originalLine = previousOriginalLine + segment[2];
+          previousOriginalLine = mapping.originalLine;
+          // Lines are stored 0-based
+          mapping.originalLine += 1;
+
+          // Original column.
+          mapping.originalColumn = previousOriginalColumn + segment[3];
+          previousOriginalColumn = mapping.originalColumn;
+
+          if (segment.length > 4) {
+            // Original name.
+            mapping.name = previousName + segment[4];
+            previousName += segment[4];
+          }
+        }
+
+        generatedMappings.push(mapping);
+        if (typeof mapping.originalLine === 'number') {
+          originalMappings.push(mapping);
+        }
+      }
+    }
+
+    quickSort$1(generatedMappings, util.compareByGeneratedPositionsDeflated);
+    this.__generatedMappings = generatedMappings;
+
+    quickSort$1(originalMappings, util.compareByOriginalPositions);
+    this.__originalMappings = originalMappings;
+  };
+
+/**
+ * Find the mapping that best matches the hypothetical "needle" mapping that
+ * we are searching for in the given "haystack" of mappings.
+ */
+BasicSourceMapConsumer.prototype._findMapping =
+  function SourceMapConsumer_findMapping(aNeedle, aMappings, aLineName,
+                                         aColumnName, aComparator, aBias) {
+    // To return the position we are searching for, we must first find the
+    // mapping for the given position and then return the opposite position it
+    // points to. Because the mappings are sorted, we can use binary search to
+    // find the best mapping.
+
+    if (aNeedle[aLineName] <= 0) {
+      throw new TypeError('Line must be greater than or equal to 1, got '
+                          + aNeedle[aLineName]);
+    }
+    if (aNeedle[aColumnName] < 0) {
+      throw new TypeError('Column must be greater than or equal to 0, got '
+                          + aNeedle[aColumnName]);
+    }
+
+    return binarySearch.search(aNeedle, aMappings, aComparator, aBias);
+  };
+
+/**
+ * Compute the last column for each generated mapping. The last column is
+ * inclusive.
+ */
+BasicSourceMapConsumer.prototype.computeColumnSpans =
+  function SourceMapConsumer_computeColumnSpans() {
+    for (var index = 0; index < this._generatedMappings.length; ++index) {
+      var mapping = this._generatedMappings[index];
+
+      // Mappings do not contain a field for the last generated columnt. We
+      // can come up with an optimistic estimate, however, by assuming that
+      // mappings are contiguous (i.e. given two consecutive mappings, the
+      // first mapping ends where the second one starts).
+      if (index + 1 < this._generatedMappings.length) {
+        var nextMapping = this._generatedMappings[index + 1];
+
+        if (mapping.generatedLine === nextMapping.generatedLine) {
+          mapping.lastGeneratedColumn = nextMapping.generatedColumn - 1;
+          continue;
+        }
+      }
+
+      // The last mapping for each line spans the entire line.
+      mapping.lastGeneratedColumn = Infinity;
+    }
+  };
+
+/**
+ * Returns the original source, line, and column information for the generated
+ * source's line and column positions provided. The only argument is an object
+ * with the following properties:
+ *
+ *   - line: The line number in the generated source.  The line number
+ *     is 1-based.
+ *   - column: The column number in the generated source.  The column
+ *     number is 0-based.
+ *   - bias: Either 'SourceMapConsumer.GREATEST_LOWER_BOUND' or
+ *     'SourceMapConsumer.LEAST_UPPER_BOUND'. Specifies whether to return the
+ *     closest element that is smaller than or greater than the one we are
+ *     searching for, respectively, if the exact element cannot be found.
+ *     Defaults to 'SourceMapConsumer.GREATEST_LOWER_BOUND'.
+ *
+ * and an object is returned with the following properties:
+ *
+ *   - source: The original source file, or null.
+ *   - line: The line number in the original source, or null.  The
+ *     line number is 1-based.
+ *   - column: The column number in the original source, or null.  The
+ *     column number is 0-based.
+ *   - name: The original identifier, or null.
+ */
+BasicSourceMapConsumer.prototype.originalPositionFor =
+  function SourceMapConsumer_originalPositionFor(aArgs) {
+    var needle = {
+      generatedLine: util.getArg(aArgs, 'line'),
+      generatedColumn: util.getArg(aArgs, 'column')
+    };
+
+    var index = this._findMapping(
+      needle,
+      this._generatedMappings,
+      "generatedLine",
+      "generatedColumn",
+      util.compareByGeneratedPositionsDeflated,
+      util.getArg(aArgs, 'bias', SourceMapConsumer.GREATEST_LOWER_BOUND)
+    );
+
+    if (index >= 0) {
+      var mapping = this._generatedMappings[index];
+
+      if (mapping.generatedLine === needle.generatedLine) {
+        var source = util.getArg(mapping, 'source', null);
+        if (source !== null) {
+          source = this._sources.at(source);
+          source = util.computeSourceURL(this.sourceRoot, source, this._sourceMapURL);
+        }
+        var name = util.getArg(mapping, 'name', null);
+        if (name !== null) {
+          name = this._names.at(name);
+        }
+        return {
+          source: source,
+          line: util.getArg(mapping, 'originalLine', null),
+          column: util.getArg(mapping, 'originalColumn', null),
+          name: name
+        };
+      }
+    }
+
+    return {
+      source: null,
+      line: null,
+      column: null,
+      name: null
+    };
+  };
+
+/**
+ * Return true if we have the source content for every source in the source
+ * map, false otherwise.
+ */
+BasicSourceMapConsumer.prototype.hasContentsOfAllSources =
+  function BasicSourceMapConsumer_hasContentsOfAllSources() {
+    if (!this.sourcesContent) {
+      return false;
+    }
+    return this.sourcesContent.length >= this._sources.size() &&
+      !this.sourcesContent.some(function (sc) { return sc == null; });
+  };
+
+/**
+ * Returns the original source content. The only argument is the url of the
+ * original source file. Returns null if no original source content is
+ * available.
+ */
+BasicSourceMapConsumer.prototype.sourceContentFor =
+  function SourceMapConsumer_sourceContentFor(aSource, nullOnMissing) {
+    if (!this.sourcesContent) {
+      return null;
+    }
+
+    var index = this._findSourceIndex(aSource);
+    if (index >= 0) {
+      return this.sourcesContent[index];
+    }
+
+    var relativeSource = aSource;
+    if (this.sourceRoot != null) {
+      relativeSource = util.relative(this.sourceRoot, relativeSource);
+    }
+
+    var url;
+    if (this.sourceRoot != null
+        && (url = util.urlParse(this.sourceRoot))) {
+      // XXX: file:// URIs and absolute paths lead to unexpected behavior for
+      // many users. We can help them out when they expect file:// URIs to
+      // behave like it would if they were running a local HTTP server. See
+      // https://bugzilla.mozilla.org/show_bug.cgi?id=885597.
+      var fileUriAbsPath = relativeSource.replace(/^file:\/\//, "");
+      if (url.scheme == "file"
+          && this._sources.has(fileUriAbsPath)) {
+        return this.sourcesContent[this._sources.indexOf(fileUriAbsPath)]
+      }
+
+      if ((!url.path || url.path == "/")
+          && this._sources.has("/" + relativeSource)) {
+        return this.sourcesContent[this._sources.indexOf("/" + relativeSource)];
+      }
+    }
+
+    // This function is used recursively from
+    // IndexedSourceMapConsumer.prototype.sourceContentFor. In that case, we
+    // don't want to throw if we can't find the source - we just want to
+    // return null, so we provide a flag to exit gracefully.
+    if (nullOnMissing) {
+      return null;
+    }
+    else {
+      throw new Error('"' + relativeSource + '" is not in the SourceMap.');
+    }
+  };
+
+/**
+ * Returns the generated line and column information for the original source,
+ * line, and column positions provided. The only argument is an object with
+ * the following properties:
+ *
+ *   - source: The filename of the original source.
+ *   - line: The line number in the original source.  The line number
+ *     is 1-based.
+ *   - column: The column number in the original source.  The column
+ *     number is 0-based.
+ *   - bias: Either 'SourceMapConsumer.GREATEST_LOWER_BOUND' or
+ *     'SourceMapConsumer.LEAST_UPPER_BOUND'. Specifies whether to return the
+ *     closest element that is smaller than or greater than the one we are
+ *     searching for, respectively, if the exact element cannot be found.
+ *     Defaults to 'SourceMapConsumer.GREATEST_LOWER_BOUND'.
+ *
+ * and an object is returned with the following properties:
+ *
+ *   - line: The line number in the generated source, or null.  The
+ *     line number is 1-based.
+ *   - column: The column number in the generated source, or null.
+ *     The column number is 0-based.
+ */
+BasicSourceMapConsumer.prototype.generatedPositionFor =
+  function SourceMapConsumer_generatedPositionFor(aArgs) {
+    var source = util.getArg(aArgs, 'source');
+    source = this._findSourceIndex(source);
+    if (source < 0) {
+      return {
+        line: null,
+        column: null,
+        lastColumn: null
+      };
+    }
+
+    var needle = {
+      source: source,
+      originalLine: util.getArg(aArgs, 'line'),
+      originalColumn: util.getArg(aArgs, 'column')
+    };
+
+    var index = this._findMapping(
+      needle,
+      this._originalMappings,
+      "originalLine",
+      "originalColumn",
+      util.compareByOriginalPositions,
+      util.getArg(aArgs, 'bias', SourceMapConsumer.GREATEST_LOWER_BOUND)
+    );
+
+    if (index >= 0) {
+      var mapping = this._originalMappings[index];
+
+      if (mapping.source === needle.source) {
+        return {
+          line: util.getArg(mapping, 'generatedLine', null),
+          column: util.getArg(mapping, 'generatedColumn', null),
+          lastColumn: util.getArg(mapping, 'lastGeneratedColumn', null)
+        };
+      }
+    }
+
+    return {
+      line: null,
+      column: null,
+      lastColumn: null
+    };
+  };
+
+var BasicSourceMapConsumer_1 = BasicSourceMapConsumer;
+
+/**
+ * An IndexedSourceMapConsumer instance represents a parsed source map which
+ * we can query for information. It differs from BasicSourceMapConsumer in
+ * that it takes "indexed" source maps (i.e. ones with a "sections" field) as
+ * input.
+ *
+ * The first parameter is a raw source map (either as a JSON string, or already
+ * parsed to an object). According to the spec for indexed source maps, they
+ * have the following attributes:
+ *
+ *   - version: Which version of the source map spec this map is following.
+ *   - file: Optional. The generated file this source map is associated with.
+ *   - sections: A list of section definitions.
+ *
+ * Each value under the "sections" field has two fields:
+ *   - offset: The offset into the original specified at which this section
+ *       begins to apply, defined as an object with a "line" and "column"
+ *       field.
+ *   - map: A source map definition. This source map could also be indexed,
+ *       but doesn't have to be.
+ *
+ * Instead of the "map" field, it's also possible to have a "url" field
+ * specifying a URL to retrieve a source map from, but that's currently
+ * unsupported.
+ *
+ * Here's an example source map, taken from the source map spec[0], but
+ * modified to omit a section which uses the "url" field.
+ *
+ *  {
+ *    version : 3,
+ *    file: "app.js",
+ *    sections: [{
+ *      offset: {line:100, column:10},
+ *      map: {
+ *        version : 3,
+ *        file: "section.js",
+ *        sources: ["foo.js", "bar.js"],
+ *        names: ["src", "maps", "are", "fun"],
+ *        mappings: "AAAA,E;;ABCDE;"
+ *      }
+ *    }],
+ *  }
+ *
+ * The second parameter, if given, is a string whose value is the URL
+ * at which the source map was found.  This URL is used to compute the
+ * sources array.
+ *
+ * [0]: https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit#heading=h.535es3xeprgt
+ */
+function IndexedSourceMapConsumer(aSourceMap, aSourceMapURL) {
+  var sourceMap = aSourceMap;
+  if (typeof aSourceMap === 'string') {
+    sourceMap = util.parseSourceMapInput(aSourceMap);
+  }
+
+  var version = util.getArg(sourceMap, 'version');
+  var sections = util.getArg(sourceMap, 'sections');
+
+  if (version != this._version) {
+    throw new Error('Unsupported version: ' + version);
+  }
+
+  this._sources = new ArraySet$2();
+  this._names = new ArraySet$2();
+
+  var lastOffset = {
+    line: -1,
+    column: 0
+  };
+  this._sections = sections.map(function (s) {
+    if (s.url) {
+      // The url field will require support for asynchronicity.
+      // See https://github.com/mozilla/source-map/issues/16
+      throw new Error('Support for url field in sections not implemented.');
+    }
+    var offset = util.getArg(s, 'offset');
+    var offsetLine = util.getArg(offset, 'line');
+    var offsetColumn = util.getArg(offset, 'column');
+
+    if (offsetLine < lastOffset.line ||
+        (offsetLine === lastOffset.line && offsetColumn < lastOffset.column)) {
+      throw new Error('Section offsets must be ordered and non-overlapping.');
+    }
+    lastOffset = offset;
+
+    return {
+      generatedOffset: {
+        // The offset fields are 0-based, but we use 1-based indices when
+        // encoding/decoding from VLQ.
+        generatedLine: offsetLine + 1,
+        generatedColumn: offsetColumn + 1
+      },
+      consumer: new SourceMapConsumer(util.getArg(s, 'map'), aSourceMapURL)
+    }
+  });
+}
+
+IndexedSourceMapConsumer.prototype = Object.create(SourceMapConsumer.prototype);
+IndexedSourceMapConsumer.prototype.constructor = SourceMapConsumer;
+
+/**
+ * The version of the source mapping spec that we are consuming.
+ */
+IndexedSourceMapConsumer.prototype._version = 3;
+
+/**
+ * The list of original sources.
+ */
+Object.defineProperty(IndexedSourceMapConsumer.prototype, 'sources', {
+  get: function () {
+    var sources = [];
+    for (var i = 0; i < this._sections.length; i++) {
+      for (var j = 0; j < this._sections[i].consumer.sources.length; j++) {
+        sources.push(this._sections[i].consumer.sources[j]);
+      }
+    }
+    return sources;
+  }
+});
+
+/**
+ * Returns the original source, line, and column information for the generated
+ * source's line and column positions provided. The only argument is an object
+ * with the following properties:
+ *
+ *   - line: The line number in the generated source.  The line number
+ *     is 1-based.
+ *   - column: The column number in the generated source.  The column
+ *     number is 0-based.
+ *
+ * and an object is returned with the following properties:
+ *
+ *   - source: The original source file, or null.
+ *   - line: The line number in the original source, or null.  The
+ *     line number is 1-based.
+ *   - column: The column number in the original source, or null.  The
+ *     column number is 0-based.
+ *   - name: The original identifier, or null.
+ */
+IndexedSourceMapConsumer.prototype.originalPositionFor =
+  function IndexedSourceMapConsumer_originalPositionFor(aArgs) {
+    var needle = {
+      generatedLine: util.getArg(aArgs, 'line'),
+      generatedColumn: util.getArg(aArgs, 'column')
+    };
+
+    // Find the section containing the generated position we're trying to map
+    // to an original position.
+    var sectionIndex = binarySearch.search(needle, this._sections,
+      function(needle, section) {
+        var cmp = needle.generatedLine - section.generatedOffset.generatedLine;
+        if (cmp) {
+          return cmp;
+        }
+
+        return (needle.generatedColumn -
+                section.generatedOffset.generatedColumn);
+      });
+    var section = this._sections[sectionIndex];
+
+    if (!section) {
+      return {
+        source: null,
+        line: null,
+        column: null,
+        name: null
+      };
+    }
+
+    return section.consumer.originalPositionFor({
+      line: needle.generatedLine -
+        (section.generatedOffset.generatedLine - 1),
+      column: needle.generatedColumn -
+        (section.generatedOffset.generatedLine === needle.generatedLine
+         ? section.generatedOffset.generatedColumn - 1
+         : 0),
+      bias: aArgs.bias
+    });
+  };
+
+/**
+ * Return true if we have the source content for every source in the source
+ * map, false otherwise.
+ */
+IndexedSourceMapConsumer.prototype.hasContentsOfAllSources =
+  function IndexedSourceMapConsumer_hasContentsOfAllSources() {
+    return this._sections.every(function (s) {
+      return s.consumer.hasContentsOfAllSources();
+    });
+  };
+
+/**
+ * Returns the original source content. The only argument is the url of the
+ * original source file. Returns null if no original source content is
+ * available.
+ */
+IndexedSourceMapConsumer.prototype.sourceContentFor =
+  function IndexedSourceMapConsumer_sourceContentFor(aSource, nullOnMissing) {
+    for (var i = 0; i < this._sections.length; i++) {
+      var section = this._sections[i];
+
+      var content = section.consumer.sourceContentFor(aSource, true);
+      if (content) {
+        return content;
+      }
+    }
+    if (nullOnMissing) {
+      return null;
+    }
+    else {
+      throw new Error('"' + aSource + '" is not in the SourceMap.');
+    }
+  };
+
+/**
+ * Returns the generated line and column information for the original source,
+ * line, and column positions provided. The only argument is an object with
+ * the following properties:
+ *
+ *   - source: The filename of the original source.
+ *   - line: The line number in the original source.  The line number
+ *     is 1-based.
+ *   - column: The column number in the original source.  The column
+ *     number is 0-based.
+ *
+ * and an object is returned with the following properties:
+ *
+ *   - line: The line number in the generated source, or null.  The
+ *     line number is 1-based. 
+ *   - column: The column number in the generated source, or null.
+ *     The column number is 0-based.
+ */
+IndexedSourceMapConsumer.prototype.generatedPositionFor =
+  function IndexedSourceMapConsumer_generatedPositionFor(aArgs) {
+    for (var i = 0; i < this._sections.length; i++) {
+      var section = this._sections[i];
+
+      // Only consider this section if the requested source is in the list of
+      // sources of the consumer.
+      if (section.consumer._findSourceIndex(util.getArg(aArgs, 'source')) === -1) {
+        continue;
+      }
+      var generatedPosition = section.consumer.generatedPositionFor(aArgs);
+      if (generatedPosition) {
+        var ret = {
+          line: generatedPosition.line +
+            (section.generatedOffset.generatedLine - 1),
+          column: generatedPosition.column +
+            (section.generatedOffset.generatedLine === generatedPosition.line
+             ? section.generatedOffset.generatedColumn - 1
+             : 0)
+        };
+        return ret;
+      }
+    }
+
+    return {
+      line: null,
+      column: null
+    };
+  };
+
+/**
+ * Parse the mappings in a string in to a data structure which we can easily
+ * query (the ordered arrays in the `this.__generatedMappings` and
+ * `this.__originalMappings` properties).
+ */
+IndexedSourceMapConsumer.prototype._parseMappings =
+  function IndexedSourceMapConsumer_parseMappings(aStr, aSourceRoot) {
+    this.__generatedMappings = [];
+    this.__originalMappings = [];
+    for (var i = 0; i < this._sections.length; i++) {
+      var section = this._sections[i];
+      var sectionMappings = section.consumer._generatedMappings;
+      for (var j = 0; j < sectionMappings.length; j++) {
+        var mapping = sectionMappings[j];
+
+        var source = section.consumer._sources.at(mapping.source);
+        source = util.computeSourceURL(section.consumer.sourceRoot, source, this._sourceMapURL);
+        this._sources.add(source);
+        source = this._sources.indexOf(source);
+
+        var name = null;
+        if (mapping.name) {
+          name = section.consumer._names.at(mapping.name);
+          this._names.add(name);
+          name = this._names.indexOf(name);
+        }
+
+        // The mappings coming from the consumer for the section have
+        // generated positions relative to the start of the section, so we
+        // need to offset them to be relative to the start of the concatenated
+        // generated file.
+        var adjustedMapping = {
+          source: source,
+          generatedLine: mapping.generatedLine +
+            (section.generatedOffset.generatedLine - 1),
+          generatedColumn: mapping.generatedColumn +
+            (section.generatedOffset.generatedLine === mapping.generatedLine
+            ? section.generatedOffset.generatedColumn - 1
+            : 0),
+          originalLine: mapping.originalLine,
+          originalColumn: mapping.originalColumn,
+          name: name
+        };
+
+        this.__generatedMappings.push(adjustedMapping);
+        if (typeof adjustedMapping.originalLine === 'number') {
+          this.__originalMappings.push(adjustedMapping);
+        }
+      }
+    }
+
+    quickSort$1(this.__generatedMappings, util.compareByGeneratedPositionsDeflated);
+    quickSort$1(this.__originalMappings, util.compareByOriginalPositions);
+  };
+
+var IndexedSourceMapConsumer_1 = IndexedSourceMapConsumer;
+
+var sourceMapConsumer = {
+	SourceMapConsumer: SourceMapConsumer_1,
+	BasicSourceMapConsumer: BasicSourceMapConsumer_1,
+	IndexedSourceMapConsumer: IndexedSourceMapConsumer_1
+};
+
+/* -*- Mode: js; js-indent-level: 2; -*- */
+/*
+ * Copyright 2011 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ */
+
+var SourceMapGenerator$1 = sourceMapGenerator.SourceMapGenerator;
+
+
+// Matches a Windows-style `\r\n` newline or a `\n` newline used by all other
+// operating systems these days (capturing the result).
+var REGEX_NEWLINE = /(\r?\n)/;
+
+// Newline character code for charCodeAt() comparisons
+var NEWLINE_CODE = 10;
+
+// Private symbol for identifying `SourceNode`s when multiple versions of
+// the source-map library are loaded. This MUST NOT CHANGE across
+// versions!
+var isSourceNode = "$$$isSourceNode$$$";
+
+/**
+ * SourceNodes provide a way to abstract over interpolating/concatenating
+ * snippets of generated JavaScript source code while maintaining the line and
+ * column information associated with the original source code.
+ *
+ * @param aLine The original line number.
+ * @param aColumn The original column number.
+ * @param aSource The original source's filename.
+ * @param aChunks Optional. An array of strings which are snippets of
+ *        generated JS, or other SourceNodes.
+ * @param aName The original identifier.
+ */
+function SourceNode(aLine, aColumn, aSource, aChunks, aName) {
+  this.children = [];
+  this.sourceContents = {};
+  this.line = aLine == null ? null : aLine;
+  this.column = aColumn == null ? null : aColumn;
+  this.source = aSource == null ? null : aSource;
+  this.name = aName == null ? null : aName;
+  this[isSourceNode] = true;
+  if (aChunks != null) this.add(aChunks);
+}
+
+/**
+ * Creates a SourceNode from generated code and a SourceMapConsumer.
+ *
+ * @param aGeneratedCode The generated code
+ * @param aSourceMapConsumer The SourceMap for the generated code
+ * @param aRelativePath Optional. The path that relative sources in the
+ *        SourceMapConsumer should be relative to.
+ */
+SourceNode.fromStringWithSourceMap =
+  function SourceNode_fromStringWithSourceMap(aGeneratedCode, aSourceMapConsumer, aRelativePath) {
+    // The SourceNode we want to fill with the generated code
+    // and the SourceMap
+    var node = new SourceNode();
+
+    // All even indices of this array are one line of the generated code,
+    // while all odd indices are the newlines between two adjacent lines
+    // (since `REGEX_NEWLINE` captures its match).
+    // Processed fragments are accessed by calling `shiftNextLine`.
+    var remainingLines = aGeneratedCode.split(REGEX_NEWLINE);
+    var remainingLinesIndex = 0;
+    var shiftNextLine = function() {
+      var lineContents = getNextLine();
+      // The last line of a file might not have a newline.
+      var newLine = getNextLine() || "";
+      return lineContents + newLine;
+
+      function getNextLine() {
+        return remainingLinesIndex < remainingLines.length ?
+            remainingLines[remainingLinesIndex++] : undefined;
+      }
+    };
+
+    // We need to remember the position of "remainingLines"
+    var lastGeneratedLine = 1, lastGeneratedColumn = 0;
+
+    // The generate SourceNodes we need a code range.
+    // To extract it current and last mapping is used.
+    // Here we store the last mapping.
+    var lastMapping = null;
+
+    aSourceMapConsumer.eachMapping(function (mapping) {
+      if (lastMapping !== null) {
+        // We add the code from "lastMapping" to "mapping":
+        // First check if there is a new line in between.
+        if (lastGeneratedLine < mapping.generatedLine) {
+          // Associate first line with "lastMapping"
+          addMappingWithCode(lastMapping, shiftNextLine());
+          lastGeneratedLine++;
+          lastGeneratedColumn = 0;
+          // The remaining code is added without mapping
+        } else {
+          // There is no new line in between.
+          // Associate the code between "lastGeneratedColumn" and
+          // "mapping.generatedColumn" with "lastMapping"
+          var nextLine = remainingLines[remainingLinesIndex] || '';
+          var code = nextLine.substr(0, mapping.generatedColumn -
+                                        lastGeneratedColumn);
+          remainingLines[remainingLinesIndex] = nextLine.substr(mapping.generatedColumn -
+                                              lastGeneratedColumn);
+          lastGeneratedColumn = mapping.generatedColumn;
+          addMappingWithCode(lastMapping, code);
+          // No more remaining code, continue
+          lastMapping = mapping;
+          return;
+        }
+      }
+      // We add the generated code until the first mapping
+      // to the SourceNode without any mapping.
+      // Each line is added as separate string.
+      while (lastGeneratedLine < mapping.generatedLine) {
+        node.add(shiftNextLine());
+        lastGeneratedLine++;
+      }
+      if (lastGeneratedColumn < mapping.generatedColumn) {
+        var nextLine = remainingLines[remainingLinesIndex] || '';
+        node.add(nextLine.substr(0, mapping.generatedColumn));
+        remainingLines[remainingLinesIndex] = nextLine.substr(mapping.generatedColumn);
+        lastGeneratedColumn = mapping.generatedColumn;
+      }
+      lastMapping = mapping;
+    }, this);
+    // We have processed all mappings.
+    if (remainingLinesIndex < remainingLines.length) {
+      if (lastMapping) {
+        // Associate the remaining code in the current line with "lastMapping"
+        addMappingWithCode(lastMapping, shiftNextLine());
+      }
+      // and add the remaining lines without any mapping
+      node.add(remainingLines.splice(remainingLinesIndex).join(""));
+    }
+
+    // Copy sourcesContent into SourceNode
+    aSourceMapConsumer.sources.forEach(function (sourceFile) {
+      var content = aSourceMapConsumer.sourceContentFor(sourceFile);
+      if (content != null) {
+        if (aRelativePath != null) {
+          sourceFile = util.join(aRelativePath, sourceFile);
+        }
+        node.setSourceContent(sourceFile, content);
+      }
+    });
+
+    return node;
+
+    function addMappingWithCode(mapping, code) {
+      if (mapping === null || mapping.source === undefined) {
+        node.add(code);
+      } else {
+        var source = aRelativePath
+          ? util.join(aRelativePath, mapping.source)
+          : mapping.source;
+        node.add(new SourceNode(mapping.originalLine,
+                                mapping.originalColumn,
+                                source,
+                                code,
+                                mapping.name));
+      }
+    }
+  };
+
+/**
+ * Add a chunk of generated JS to this source node.
+ *
+ * @param aChunk A string snippet of generated JS code, another instance of
+ *        SourceNode, or an array where each member is one of those things.
+ */
+SourceNode.prototype.add = function SourceNode_add(aChunk) {
+  if (Array.isArray(aChunk)) {
+    aChunk.forEach(function (chunk) {
+      this.add(chunk);
+    }, this);
+  }
+  else if (aChunk[isSourceNode] || typeof aChunk === "string") {
+    if (aChunk) {
+      this.children.push(aChunk);
+    }
+  }
+  else {
+    throw new TypeError(
+      "Expected a SourceNode, string, or an array of SourceNodes and strings. Got " + aChunk
+    );
+  }
+  return this;
+};
+
+/**
+ * Add a chunk of generated JS to the beginning of this source node.
+ *
+ * @param aChunk A string snippet of generated JS code, another instance of
+ *        SourceNode, or an array where each member is one of those things.
+ */
+SourceNode.prototype.prepend = function SourceNode_prepend(aChunk) {
+  if (Array.isArray(aChunk)) {
+    for (var i = aChunk.length-1; i >= 0; i--) {
+      this.prepend(aChunk[i]);
+    }
+  }
+  else if (aChunk[isSourceNode] || typeof aChunk === "string") {
+    this.children.unshift(aChunk);
+  }
+  else {
+    throw new TypeError(
+      "Expected a SourceNode, string, or an array of SourceNodes and strings. Got " + aChunk
+    );
+  }
+  return this;
+};
+
+/**
+ * Walk over the tree of JS snippets in this node and its children. The
+ * walking function is called once for each snippet of JS and is passed that
+ * snippet and the its original associated source's line/column location.
+ *
+ * @param aFn The traversal function.
+ */
+SourceNode.prototype.walk = function SourceNode_walk(aFn) {
+  var chunk;
+  for (var i = 0, len = this.children.length; i < len; i++) {
+    chunk = this.children[i];
+    if (chunk[isSourceNode]) {
+      chunk.walk(aFn);
+    }
+    else {
+      if (chunk !== '') {
+        aFn(chunk, { source: this.source,
+                     line: this.line,
+                     column: this.column,
+                     name: this.name });
+      }
+    }
+  }
+};
+
+/**
+ * Like `String.prototype.join` except for SourceNodes. Inserts `aStr` between
+ * each of `this.children`.
+ *
+ * @param aSep The separator.
+ */
+SourceNode.prototype.join = function SourceNode_join(aSep) {
+  var newChildren;
+  var i;
+  var len = this.children.length;
+  if (len > 0) {
+    newChildren = [];
+    for (i = 0; i < len-1; i++) {
+      newChildren.push(this.children[i]);
+      newChildren.push(aSep);
+    }
+    newChildren.push(this.children[i]);
+    this.children = newChildren;
+  }
+  return this;
+};
+
+/**
+ * Call String.prototype.replace on the very right-most source snippet. Useful
+ * for trimming whitespace from the end of a source node, etc.
+ *
+ * @param aPattern The pattern to replace.
+ * @param aReplacement The thing to replace the pattern with.
+ */
+SourceNode.prototype.replaceRight = function SourceNode_replaceRight(aPattern, aReplacement) {
+  var lastChild = this.children[this.children.length - 1];
+  if (lastChild[isSourceNode]) {
+    lastChild.replaceRight(aPattern, aReplacement);
+  }
+  else if (typeof lastChild === 'string') {
+    this.children[this.children.length - 1] = lastChild.replace(aPattern, aReplacement);
+  }
+  else {
+    this.children.push(''.replace(aPattern, aReplacement));
+  }
+  return this;
+};
+
+/**
+ * Set the source content for a source file. This will be added to the SourceMapGenerator
+ * in the sourcesContent field.
+ *
+ * @param aSourceFile The filename of the source file
+ * @param aSourceContent The content of the source file
+ */
+SourceNode.prototype.setSourceContent =
+  function SourceNode_setSourceContent(aSourceFile, aSourceContent) {
+    this.sourceContents[util.toSetString(aSourceFile)] = aSourceContent;
+  };
+
+/**
+ * Walk over the tree of SourceNodes. The walking function is called for each
+ * source file content and is passed the filename and source content.
+ *
+ * @param aFn The traversal function.
+ */
+SourceNode.prototype.walkSourceContents =
+  function SourceNode_walkSourceContents(aFn) {
+    for (var i = 0, len = this.children.length; i < len; i++) {
+      if (this.children[i][isSourceNode]) {
+        this.children[i].walkSourceContents(aFn);
+      }
+    }
+
+    var sources = Object.keys(this.sourceContents);
+    for (var i = 0, len = sources.length; i < len; i++) {
+      aFn(util.fromSetString(sources[i]), this.sourceContents[sources[i]]);
+    }
+  };
+
+/**
+ * Return the string representation of this source node. Walks over the tree
+ * and concatenates all the various snippets together to one string.
+ */
+SourceNode.prototype.toString = function SourceNode_toString() {
+  var str = "";
+  this.walk(function (chunk) {
+    str += chunk;
+  });
+  return str;
+};
+
+/**
+ * Returns the string representation of this source node along with a source
+ * map.
+ */
+SourceNode.prototype.toStringWithSourceMap = function SourceNode_toStringWithSourceMap(aArgs) {
+  var generated = {
+    code: "",
+    line: 1,
+    column: 0
+  };
+  var map = new SourceMapGenerator$1(aArgs);
+  var sourceMappingActive = false;
+  var lastOriginalSource = null;
+  var lastOriginalLine = null;
+  var lastOriginalColumn = null;
+  var lastOriginalName = null;
+  this.walk(function (chunk, original) {
+    generated.code += chunk;
+    if (original.source !== null
+        && original.line !== null
+        && original.column !== null) {
+      if(lastOriginalSource !== original.source
+         || lastOriginalLine !== original.line
+         || lastOriginalColumn !== original.column
+         || lastOriginalName !== original.name) {
+        map.addMapping({
+          source: original.source,
+          original: {
+            line: original.line,
+            column: original.column
+          },
+          generated: {
+            line: generated.line,
+            column: generated.column
+          },
+          name: original.name
+        });
+      }
+      lastOriginalSource = original.source;
+      lastOriginalLine = original.line;
+      lastOriginalColumn = original.column;
+      lastOriginalName = original.name;
+      sourceMappingActive = true;
+    } else if (sourceMappingActive) {
+      map.addMapping({
+        generated: {
+          line: generated.line,
+          column: generated.column
+        }
+      });
+      lastOriginalSource = null;
+      sourceMappingActive = false;
+    }
+    for (var idx = 0, length = chunk.length; idx < length; idx++) {
+      if (chunk.charCodeAt(idx) === NEWLINE_CODE) {
+        generated.line++;
+        generated.column = 0;
+        // Mappings end at eol
+        if (idx + 1 === length) {
+          lastOriginalSource = null;
+          sourceMappingActive = false;
+        } else if (sourceMappingActive) {
+          map.addMapping({
+            source: original.source,
+            original: {
+              line: original.line,
+              column: original.column
+            },
+            generated: {
+              line: generated.line,
+              column: generated.column
+            },
+            name: original.name
+          });
+        }
+      } else {
+        generated.column++;
+      }
+    }
+  });
+  this.walkSourceContents(function (sourceFile, sourceContent) {
+    map.setSourceContent(sourceFile, sourceContent);
+  });
+
+  return { code: generated.code, map: map };
+};
+
+var SourceNode_1 = SourceNode;
+
+var sourceNode = {
+	SourceNode: SourceNode_1
+};
+
+/*
+ * Copyright 2009-2011 Mozilla Foundation and contributors
+ * Licensed under the New BSD license. See LICENSE.txt or:
+ * http://opensource.org/licenses/BSD-3-Clause
+ */
+var SourceMapGenerator$2 = sourceMapGenerator.SourceMapGenerator;
+var SourceMapConsumer$1 = sourceMapConsumer.SourceMapConsumer;
+var SourceNode$1 = sourceNode.SourceNode;
+
+var sourceMap = {
+	SourceMapGenerator: SourceMapGenerator$2,
+	SourceMapConsumer: SourceMapConsumer$1,
+	SourceNode: SourceNode$1
+};
+
+var toString = Object.prototype.toString;
+
+var isModern = (
+  typeof Buffer.alloc === 'function' &&
+  typeof Buffer.allocUnsafe === 'function' &&
+  typeof Buffer.from === 'function'
+);
+
+function isArrayBuffer (input) {
+  return toString.call(input).slice(8, -1) === 'ArrayBuffer'
+}
+
+function fromArrayBuffer (obj, byteOffset, length) {
+  byteOffset >>>= 0;
+
+  var maxLength = obj.byteLength - byteOffset;
+
+  if (maxLength < 0) {
+    throw new RangeError("'offset' is out of bounds")
+  }
+
+  if (length === undefined) {
+    length = maxLength;
+  } else {
+    length >>>= 0;
+
+    if (length > maxLength) {
+      throw new RangeError("'length' is out of bounds")
+    }
+  }
+
+  return isModern
+    ? Buffer.from(obj.slice(byteOffset, byteOffset + length))
+    : new Buffer(new Uint8Array(obj.slice(byteOffset, byteOffset + length)))
+}
+
+function fromString (string, encoding) {
+  if (typeof encoding !== 'string' || encoding === '') {
+    encoding = 'utf8';
+  }
+
+  if (!Buffer.isEncoding(encoding)) {
+    throw new TypeError('"encoding" must be a valid string encoding')
+  }
+
+  return isModern
+    ? Buffer.from(string, encoding)
+    : new Buffer(string, encoding)
+}
+
+function bufferFrom (value, encodingOrOffset, length) {
+  if (typeof value === 'number') {
+    throw new TypeError('"value" argument must not be a number')
+  }
+
+  if (isArrayBuffer(value)) {
+    return fromArrayBuffer(value, encodingOrOffset, length)
+  }
+
+  if (typeof value === 'string') {
+    return fromString(value, encodingOrOffset)
+  }
+
+  return isModern
+    ? Buffer.from(value)
+    : new Buffer(value)
+}
+
+var bufferFrom_1 = bufferFrom;
+
+var sourceMapSupport = createCommonjsModule(function (module, exports) {
+var SourceMapConsumer = sourceMap.SourceMapConsumer;
+var path = path$2;
+
+var fs;
+try {
+  fs = fs$4;
+  if (!fs.existsSync || !fs.readFileSync) {
+    // fs doesn't have all methods we need
+    fs = null;
+  }
+} catch (err) {
+  /* nop */
+}
+
+
+
+/**
+ * Requires a module which is protected against bundler minification.
+ *
+ * @param {NodeModule} mod
+ * @param {string} request
+ */
+function dynamicRequire(mod, request) {
+  return mod.require(request);
+}
+
+// Only install once if called multiple times
+var errorFormatterInstalled = false;
+var uncaughtShimInstalled = false;
+
+// If true, the caches are reset before a stack trace formatting operation
+var emptyCacheBetweenOperations = false;
+
+// Supports {browser, node, auto}
+var environment = "auto";
+
+// Maps a file path to a string containing the file contents
+var fileContentsCache = {};
+
+// Maps a file path to a source map for that file
+var sourceMapCache = {};
+
+// Regex for detecting source maps
+var reSourceMap = /^data:application\/json[^,]+base64,/;
+
+// Priority list of retrieve handlers
+var retrieveFileHandlers = [];
+var retrieveMapHandlers = [];
+
+function isInBrowser() {
+  if (environment === "browser")
+    return true;
+  if (environment === "node")
+    return false;
+  return ((typeof window !== 'undefined') && (typeof XMLHttpRequest === 'function') && !(window.require && window.module && window.process && window.process.type === "renderer"));
+}
+
+function hasGlobalProcessEventEmitter() {
+  return ((typeof process === 'object') && (process !== null) && (typeof process.on === 'function'));
+}
+
+function handlerExec(list) {
+  return function(arg) {
+    for (var i = 0; i < list.length; i++) {
+      var ret = list[i](arg);
+      if (ret) {
+        return ret;
+      }
+    }
+    return null;
+  };
+}
+
+var retrieveFile = handlerExec(retrieveFileHandlers);
+
+retrieveFileHandlers.push(function(path) {
+  // Trim the path to make sure there is no extra whitespace.
+  path = path.trim();
+  if (/^file:/.test(path)) {
+    // existsSync/readFileSync can't handle file protocol, but once stripped, it works
+    path = path.replace(/file:\/\/\/(\w:)?/, function(protocol, drive) {
+      return drive ?
+        '' : // file:///C:/dir/file -> C:/dir/file
+        '/'; // file:///root-dir/file -> /root-dir/file
+    });
+  }
+  if (path in fileContentsCache) {
+    return fileContentsCache[path];
+  }
+
+  var contents = '';
+  try {
+    if (!fs) {
+      // Use SJAX if we are in the browser
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', path, /** async */ false);
+      xhr.send(null);
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        contents = xhr.responseText;
+      }
+    } else if (fs.existsSync(path)) {
+      // Otherwise, use the filesystem
+      contents = fs.readFileSync(path, 'utf8');
+    }
+  } catch (er) {
+    /* ignore any errors */
+  }
+
+  return fileContentsCache[path] = contents;
+});
+
+// Support URLs relative to a directory, but be careful about a protocol prefix
+// in case we are in the browser (i.e. directories may start with "http://" or "file:///")
+function supportRelativeURL(file, url) {
+  if (!file) return url;
+  var dir = path.dirname(file);
+  var match = /^\w+:\/\/[^\/]*/.exec(dir);
+  var protocol = match ? match[0] : '';
+  var startPath = dir.slice(protocol.length);
+  if (protocol && /^\/\w\:/.test(startPath)) {
+    // handle file:///C:/ paths
+    protocol += '/';
+    return protocol + path.resolve(dir.slice(protocol.length), url).replace(/\\/g, '/');
+  }
+  return protocol + path.resolve(dir.slice(protocol.length), url);
+}
+
+function retrieveSourceMapURL(source) {
+  var fileData;
+
+  if (isInBrowser()) {
+     try {
+       var xhr = new XMLHttpRequest();
+       xhr.open('GET', source, false);
+       xhr.send(null);
+       fileData = xhr.readyState === 4 ? xhr.responseText : null;
+
+       // Support providing a sourceMappingURL via the SourceMap header
+       var sourceMapHeader = xhr.getResponseHeader("SourceMap") ||
+                             xhr.getResponseHeader("X-SourceMap");
+       if (sourceMapHeader) {
+         return sourceMapHeader;
+       }
+     } catch (e) {
+     }
+  }
+
+  // Get the URL of the source map
+  fileData = retrieveFile(source);
+  var re = /(?:\/\/[@#][\s]*sourceMappingURL=([^\s'"]+)[\s]*$)|(?:\/\*[@#][\s]*sourceMappingURL=([^\s*'"]+)[\s]*(?:\*\/)[\s]*$)/mg;
+  // Keep executing the search to find the *last* sourceMappingURL to avoid
+  // picking up sourceMappingURLs from comments, strings, etc.
+  var lastMatch, match;
+  while (match = re.exec(fileData)) lastMatch = match;
+  if (!lastMatch) return null;
+  return lastMatch[1];
+}
+// Can be overridden by the retrieveSourceMap option to install. Takes a
+// generated source filename; returns a {map, optional url} object, or null if
+// there is no source map.  The map field may be either a string or the parsed
+// JSON object (ie, it must be a valid argument to the SourceMapConsumer
+// constructor).
+var retrieveSourceMap = handlerExec(retrieveMapHandlers);
+retrieveMapHandlers.push(function(source) {
+  var sourceMappingURL = retrieveSourceMapURL(source);
+  if (!sourceMappingURL) return null;
+
+  // Read the contents of the source map
+  var sourceMapData;
+  if (reSourceMap.test(sourceMappingURL)) {
+    // Support source map URL as a data url
+    var rawData = sourceMappingURL.slice(sourceMappingURL.indexOf(',') + 1);
+    sourceMapData = bufferFrom_1(rawData, "base64").toString();
+    sourceMappingURL = source;
+  } else {
+    // Support source map URLs relative to the source URL
+    sourceMappingURL = supportRelativeURL(source, sourceMappingURL);
+    sourceMapData = retrieveFile(sourceMappingURL);
+  }
+
+  if (!sourceMapData) {
+    return null;
+  }
+
+  return {
+    url: sourceMappingURL,
+    map: sourceMapData
+  };
+});
+
+function mapSourcePosition(position) {
+  var sourceMap = sourceMapCache[position.source];
+  if (!sourceMap) {
+    // Call the (overrideable) retrieveSourceMap function to get the source map.
+    var urlAndMap = retrieveSourceMap(position.source);
+    if (urlAndMap) {
+      sourceMap = sourceMapCache[position.source] = {
+        url: urlAndMap.url,
+        map: new SourceMapConsumer(urlAndMap.map)
+      };
+
+      // Load all sources stored inline with the source map into the file cache
+      // to pretend like they are already loaded. They may not exist on disk.
+      if (sourceMap.map.sourcesContent) {
+        sourceMap.map.sources.forEach(function(source, i) {
+          var contents = sourceMap.map.sourcesContent[i];
+          if (contents) {
+            var url = supportRelativeURL(sourceMap.url, source);
+            fileContentsCache[url] = contents;
+          }
+        });
+      }
+    } else {
+      sourceMap = sourceMapCache[position.source] = {
+        url: null,
+        map: null
+      };
+    }
+  }
+
+  // Resolve the source URL relative to the URL of the source map
+  if (sourceMap && sourceMap.map && typeof sourceMap.map.originalPositionFor === 'function') {
+    var originalPosition = sourceMap.map.originalPositionFor(position);
+
+    // Only return the original position if a matching line was found. If no
+    // matching line is found then we return position instead, which will cause
+    // the stack trace to print the path and line for the compiled file. It is
+    // better to give a precise location in the compiled file than a vague
+    // location in the original file.
+    if (originalPosition.source !== null) {
+      originalPosition.source = supportRelativeURL(
+        sourceMap.url, originalPosition.source);
+      return originalPosition;
+    }
+  }
+
+  return position;
+}
+
+// Parses code generated by FormatEvalOrigin(), a function inside V8:
+// https://code.google.com/p/v8/source/browse/trunk/src/messages.js
+function mapEvalOrigin(origin) {
+  // Most eval() calls are in this format
+  var match = /^eval at ([^(]+) \((.+):(\d+):(\d+)\)$/.exec(origin);
+  if (match) {
+    var position = mapSourcePosition({
+      source: match[2],
+      line: +match[3],
+      column: match[4] - 1
+    });
+    return 'eval at ' + match[1] + ' (' + position.source + ':' +
+      position.line + ':' + (position.column + 1) + ')';
+  }
+
+  // Parse nested eval() calls using recursion
+  match = /^eval at ([^(]+) \((.+)\)$/.exec(origin);
+  if (match) {
+    return 'eval at ' + match[1] + ' (' + mapEvalOrigin(match[2]) + ')';
+  }
+
+  // Make sure we still return useful information if we didn't find anything
+  return origin;
+}
+
+// This is copied almost verbatim from the V8 source code at
+// https://code.google.com/p/v8/source/browse/trunk/src/messages.js. The
+// implementation of wrapCallSite() used to just forward to the actual source
+// code of CallSite.prototype.toString but unfortunately a new release of V8
+// did something to the prototype chain and broke the shim. The only fix I
+// could find was copy/paste.
+function CallSiteToString() {
+  var fileName;
+  var fileLocation = "";
+  if (this.isNative()) {
+    fileLocation = "native";
+  } else {
+    fileName = this.getScriptNameOrSourceURL();
+    if (!fileName && this.isEval()) {
+      fileLocation = this.getEvalOrigin();
+      fileLocation += ", ";  // Expecting source position to follow.
+    }
+
+    if (fileName) {
+      fileLocation += fileName;
+    } else {
+      // Source code does not originate from a file and is not native, but we
+      // can still get the source position inside the source string, e.g. in
+      // an eval string.
+      fileLocation += "<anonymous>";
+    }
+    var lineNumber = this.getLineNumber();
+    if (lineNumber != null) {
+      fileLocation += ":" + lineNumber;
+      var columnNumber = this.getColumnNumber();
+      if (columnNumber) {
+        fileLocation += ":" + columnNumber;
+      }
+    }
+  }
+
+  var line = "";
+  var functionName = this.getFunctionName();
+  var addSuffix = true;
+  var isConstructor = this.isConstructor();
+  var isMethodCall = !(this.isToplevel() || isConstructor);
+  if (isMethodCall) {
+    var typeName = this.getTypeName();
+    // Fixes shim to be backward compatable with Node v0 to v4
+    if (typeName === "[object Object]") {
+      typeName = "null";
+    }
+    var methodName = this.getMethodName();
+    if (functionName) {
+      if (typeName && functionName.indexOf(typeName) != 0) {
+        line += typeName + ".";
+      }
+      line += functionName;
+      if (methodName && functionName.indexOf("." + methodName) != functionName.length - methodName.length - 1) {
+        line += " [as " + methodName + "]";
+      }
+    } else {
+      line += typeName + "." + (methodName || "<anonymous>");
+    }
+  } else if (isConstructor) {
+    line += "new " + (functionName || "<anonymous>");
+  } else if (functionName) {
+    line += functionName;
+  } else {
+    line += fileLocation;
+    addSuffix = false;
+  }
+  if (addSuffix) {
+    line += " (" + fileLocation + ")";
+  }
+  return line;
+}
+
+function cloneCallSite(frame) {
+  var object = {};
+  Object.getOwnPropertyNames(Object.getPrototypeOf(frame)).forEach(function(name) {
+    object[name] = /^(?:is|get)/.test(name) ? function() { return frame[name].call(frame); } : frame[name];
+  });
+  object.toString = CallSiteToString;
+  return object;
+}
+
+function wrapCallSite(frame, state) {
+  // provides interface backward compatibility
+  if (state === undefined) {
+    state = { nextPosition: null, curPosition: null };
+  }
+  if(frame.isNative()) {
+    state.curPosition = null;
+    return frame;
+  }
+
+  // Most call sites will return the source file from getFileName(), but code
+  // passed to eval() ending in "//# sourceURL=..." will return the source file
+  // from getScriptNameOrSourceURL() instead
+  var source = frame.getFileName() || frame.getScriptNameOrSourceURL();
+  if (source) {
+    var line = frame.getLineNumber();
+    var column = frame.getColumnNumber() - 1;
+
+    // Fix position in Node where some (internal) code is prepended.
+    // See https://github.com/evanw/node-source-map-support/issues/36
+    // Header removed in node at ^10.16 || >=11.11.0
+    // v11 is not an LTS candidate, we can just test the one version with it.
+    // Test node versions for: 10.16-19, 10.20+, 12-19, 20-99, 100+, or 11.11
+    var noHeader = /^v(10\.1[6-9]|10\.[2-9][0-9]|10\.[0-9]{3,}|1[2-9]\d*|[2-9]\d|\d{3,}|11\.11)/;
+    var headerLength = noHeader.test(process.version) ? 0 : 62;
+    if (line === 1 && column > headerLength && !isInBrowser() && !frame.isEval()) {
+      column -= headerLength;
+    }
+
+    var position = mapSourcePosition({
+      source: source,
+      line: line,
+      column: column
+    });
+    state.curPosition = position;
+    frame = cloneCallSite(frame);
+    var originalFunctionName = frame.getFunctionName;
+    frame.getFunctionName = function() {
+      if (state.nextPosition == null) {
+        return originalFunctionName();
+      }
+      return state.nextPosition.name || originalFunctionName();
+    };
+    frame.getFileName = function() { return position.source; };
+    frame.getLineNumber = function() { return position.line; };
+    frame.getColumnNumber = function() { return position.column + 1; };
+    frame.getScriptNameOrSourceURL = function() { return position.source; };
+    return frame;
+  }
+
+  // Code called using eval() needs special handling
+  var origin = frame.isEval() && frame.getEvalOrigin();
+  if (origin) {
+    origin = mapEvalOrigin(origin);
+    frame = cloneCallSite(frame);
+    frame.getEvalOrigin = function() { return origin; };
+    return frame;
+  }
+
+  // If we get here then we were unable to change the source position
+  return frame;
+}
+
+// This function is part of the V8 stack trace API, for more info see:
+// https://v8.dev/docs/stack-trace-api
+function prepareStackTrace(error, stack) {
+  if (emptyCacheBetweenOperations) {
+    fileContentsCache = {};
+    sourceMapCache = {};
+  }
+
+  var name = error.name || 'Error';
+  var message = error.message || '';
+  var errorString = name + ": " + message;
+
+  var state = { nextPosition: null, curPosition: null };
+  var processedStack = [];
+  for (var i = stack.length - 1; i >= 0; i--) {
+    processedStack.push('\n    at ' + wrapCallSite(stack[i], state));
+    state.nextPosition = state.curPosition;
+  }
+  state.curPosition = state.nextPosition = null;
+  return errorString + processedStack.reverse().join('');
+}
+
+// Generate position and snippet of original source with pointer
+function getErrorSource(error) {
+  var match = /\n    at [^(]+ \((.*):(\d+):(\d+)\)/.exec(error.stack);
+  if (match) {
+    var source = match[1];
+    var line = +match[2];
+    var column = +match[3];
+
+    // Support the inline sourceContents inside the source map
+    var contents = fileContentsCache[source];
+
+    // Support files on disk
+    if (!contents && fs && fs.existsSync(source)) {
+      try {
+        contents = fs.readFileSync(source, 'utf8');
+      } catch (er) {
+        contents = '';
+      }
+    }
+
+    // Format the line from the original source code like node does
+    if (contents) {
+      var code = contents.split(/(?:\r\n|\r|\n)/)[line - 1];
+      if (code) {
+        return source + ':' + line + '\n' + code + '\n' +
+          new Array(column).join(' ') + '^';
+      }
+    }
+  }
+  return null;
+}
+
+function printErrorAndExit (error) {
+  var source = getErrorSource(error);
+
+  // Ensure error is printed synchronously and not truncated
+  if (process.stderr._handle && process.stderr._handle.setBlocking) {
+    process.stderr._handle.setBlocking(true);
+  }
+
+  if (source) {
+    console.error();
+    console.error(source);
+  }
+
+  console.error(error.stack);
+  process.exit(1);
+}
+
+function shimEmitUncaughtException () {
+  var origEmit = process.emit;
+
+  process.emit = function (type) {
+    if (type === 'uncaughtException') {
+      var hasStack = (arguments[1] && arguments[1].stack);
+      var hasListeners = (this.listeners(type).length > 0);
+
+      if (hasStack && !hasListeners) {
+        return printErrorAndExit(arguments[1]);
+      }
+    }
+
+    return origEmit.apply(this, arguments);
+  };
+}
+
+var originalRetrieveFileHandlers = retrieveFileHandlers.slice(0);
+var originalRetrieveMapHandlers = retrieveMapHandlers.slice(0);
+
+exports.wrapCallSite = wrapCallSite;
+exports.getErrorSource = getErrorSource;
+exports.mapSourcePosition = mapSourcePosition;
+exports.retrieveSourceMap = retrieveSourceMap;
+
+exports.install = function(options) {
+  options = options || {};
+
+  if (options.environment) {
+    environment = options.environment;
+    if (["node", "browser", "auto"].indexOf(environment) === -1) {
+      throw new Error("environment " + environment + " was unknown. Available options are {auto, browser, node}")
+    }
+  }
+
+  // Allow sources to be found by methods other than reading the files
+  // directly from disk.
+  if (options.retrieveFile) {
+    if (options.overrideRetrieveFile) {
+      retrieveFileHandlers.length = 0;
+    }
+
+    retrieveFileHandlers.unshift(options.retrieveFile);
+  }
+
+  // Allow source maps to be found by methods other than reading the files
+  // directly from disk.
+  if (options.retrieveSourceMap) {
+    if (options.overrideRetrieveSourceMap) {
+      retrieveMapHandlers.length = 0;
+    }
+
+    retrieveMapHandlers.unshift(options.retrieveSourceMap);
+  }
+
+  // Support runtime transpilers that include inline source maps
+  if (options.hookRequire && !isInBrowser()) {
+    // Use dynamicRequire to avoid including in browser bundles
+    var Module = dynamicRequire(module, 'module');
+    var $compile = Module.prototype._compile;
+
+    if (!$compile.__sourceMapSupport) {
+      Module.prototype._compile = function(content, filename) {
+        fileContentsCache[filename] = content;
+        sourceMapCache[filename] = undefined;
+        return $compile.call(this, content, filename);
+      };
+
+      Module.prototype._compile.__sourceMapSupport = true;
+    }
+  }
+
+  // Configure options
+  if (!emptyCacheBetweenOperations) {
+    emptyCacheBetweenOperations = 'emptyCacheBetweenOperations' in options ?
+      options.emptyCacheBetweenOperations : false;
+  }
+
+  // Install the error reformatter
+  if (!errorFormatterInstalled) {
+    errorFormatterInstalled = true;
+    Error.prepareStackTrace = prepareStackTrace;
+  }
+
+  if (!uncaughtShimInstalled) {
+    var installHandler = 'handleUncaughtExceptions' in options ?
+      options.handleUncaughtExceptions : true;
+
+    // Do not override 'uncaughtException' with our own handler in Node.js
+    // Worker threads. Workers pass the error to the main thread as an event,
+    // rather than printing something to stderr and exiting.
+    try {
+      // We need to use `dynamicRequire` because `require` on it's own will be optimized by WebPack/Browserify.
+      var worker_threads = dynamicRequire(module, 'worker_threads');
+      if (worker_threads.isMainThread === false) {
+        installHandler = false;
+      }
+    } catch(e) {}
+
+    // Provide the option to not install the uncaught exception handler. This is
+    // to support other uncaught exception handlers (in test frameworks, for
+    // example). If this handler is not installed and there are no other uncaught
+    // exception handlers, uncaught exceptions will be caught by node's built-in
+    // exception handler and the process will still be terminated. However, the
+    // generated JavaScript code will be shown above the stack trace instead of
+    // the original source code.
+    if (installHandler && hasGlobalProcessEventEmitter()) {
+      uncaughtShimInstalled = true;
+      shimEmitUncaughtException();
+    }
+  }
+};
+
+exports.resetRetrieveHandlers = function() {
+  retrieveFileHandlers.length = 0;
+  retrieveMapHandlers.length = 0;
+
+  retrieveFileHandlers = originalRetrieveFileHandlers.slice(0);
+  retrieveMapHandlers = originalRetrieveMapHandlers.slice(0);
+
+  retrieveSourceMap = handlerExec(retrieveMapHandlers);
+  retrieveFile = handlerExec(retrieveFileHandlers);
+};
+});
+var sourceMapSupport_1 = sourceMapSupport.wrapCallSite;
+var sourceMapSupport_2 = sourceMapSupport.getErrorSource;
+var sourceMapSupport_3 = sourceMapSupport.mapSourcePosition;
+var sourceMapSupport_4 = sourceMapSupport.retrieveSourceMap;
+var sourceMapSupport_5 = sourceMapSupport.install;
+var sourceMapSupport_6 = sourceMapSupport.resetRetrieveHandlers;
+
+sourceMapSupport.install();
 
 function noop() { }
 const identity = x => x;
@@ -9179,7 +13054,7 @@ window.onerror = function (message, source, lineno, colno, error) {
         const modalContent =  `${error.name}: ${message}\nsource: ${source}\nlineno: ${lineno}\tcolno: ${colno}`;
         return {...data, modalContent, open: true, type:"danger"}
     });
-    // $mainPreModal.modalContent = error;  $mainPreModal.open = true; $mainPreModal.type="danger"
+    // $mainPreModal.modalContent = error.stack;  $mainPreModal.open = true; $mainPreModal.type="danger"
 };
 
 window.process.on('unhandledRejection', (reason, promise) => {
@@ -30912,9 +34787,9 @@ function create_content_slot(ctx) {
 			button = element("button");
 			button.textContent = "Browse";
 			attr_dev(button, "class", "button is-link");
-			add_location(button, file$H, 48, 12, 1685);
+			add_location(button, file$H, 48, 12, 1691);
 			attr_dev(div, "slot", "content");
-			add_location(div, file$H, 45, 8, 1443);
+			add_location(div, file$H, 45, 8, 1449);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -30993,7 +34868,7 @@ function create_footerbtn_slot(ctx) {
 			button.textContent = "Add";
 			attr_dev(button, "slot", "footerbtn");
 			attr_dev(button, "class", "button is-link");
-			add_location(button, file$H, 51, 8, 1787);
+			add_location(button, file$H, 51, 8, 1793);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, button, anchor);
@@ -31129,7 +35004,7 @@ function instance$M($$self, $$props, $$invalidate) {
 			window.createToast("Graph Plotted", "success");
 			$$invalidate(0, active = false);
 		}).catch(err => {
-			set_store_value(mainPreModal, $mainPreModal.modalContent = err, $mainPreModal);
+			set_store_value(mainPreModal, $mainPreModal.modalContent = err.stack, $mainPreModal);
 			set_store_value(mainPreModal, $mainPreModal.open = true, $mainPreModal);
 		});
 	}
@@ -38877,18 +42752,18 @@ function create_fragment$Y(ctx) {
 			button4.textContent = "OPO";
 			attr_dev(button0, "class", "button is-link");
 			attr_dev(button0, "id", "create_baseline_btn");
-			add_location(button0, file$T, 114, 4, 4778);
+			add_location(button0, file$T, 114, 4, 4796);
 			attr_dev(button1, "class", "button is-link");
 			attr_dev(button1, "id", "felix_plotting_btn");
-			add_location(button1, file$T, 115, 4, 4920);
+			add_location(button1, file$T, 115, 4, 4938);
 			attr_dev(button2, "class", "button is-link");
-			add_location(button2, file$T, 119, 4, 5199);
+			add_location(button2, file$T, 119, 4, 5217);
 			attr_dev(button3, "class", "button is-link");
-			add_location(button3, file$T, 121, 4, 5383);
+			add_location(button3, file$T, 121, 4, 5401);
 			attr_dev(button4, "class", "button is-link");
-			add_location(button4, file$T, 122, 4, 5481);
+			add_location(button4, file$T, 122, 4, 5499);
 			attr_dev(div, "class", "align");
-			add_location(div, file$T, 112, 0, 4751);
+			add_location(div, file$T, 112, 0, 4769);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -39167,7 +43042,7 @@ function instance$Y($$self, $$props, $$invalidate) {
 					window.createToast("Graph Plotted", "success");
 					$$invalidate(8, graphPlotted = true);
 				}).catch(err => {
-					set_store_value(mainPreModal, $mainPreModal.modalContent = err, $mainPreModal);
+					set_store_value(mainPreModal, $mainPreModal.modalContent = err.stack, $mainPreModal);
 					set_store_value(mainPreModal, $mainPreModal.open = true, $mainPreModal);
 				});
 				break;
@@ -39185,7 +43060,7 @@ function instance$Y($$self, $$props, $$invalidate) {
 					general: true,
 					openShell
 				}).catch(err => {
-					set_store_value(mainPreModal, $mainPreModal.modalContent = err, $mainPreModal);
+					set_store_value(mainPreModal, $mainPreModal.modalContent = err.stack, $mainPreModal);
 					set_store_value(mainPreModal, $mainPreModal.open = true, $mainPreModal);
 				});
 				break;
@@ -39212,7 +43087,7 @@ function instance$Y($$self, $$props, $$invalidate) {
 					general: true,
 					openShell
 				}).catch(err => {
-					set_store_value(mainPreModal, $mainPreModal.modalContent = err, $mainPreModal);
+					set_store_value(mainPreModal, $mainPreModal.modalContent = err.stack, $mainPreModal);
 					set_store_value(mainPreModal, $mainPreModal.open = true, $mainPreModal);
 				});
 		}
@@ -46594,11 +50469,11 @@ function create_if_block$l(ctx) {
 			button1 = element("button");
 			button1.textContent = "Replot";
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$Z, 58, 8, 2452);
+			add_location(button0, file$Z, 58, 8, 2458);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$Z, 59, 8, 2563);
+			add_location(button1, file$Z, 59, 8, 2569);
 			attr_dev(div, "class", "align");
-			add_location(div, file$Z, 51, 4, 1953);
+			add_location(div, file$Z, 51, 4, 1959);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -46878,7 +50753,7 @@ function instance$14($$self, $$props, $$invalidate) {
 			($$invalidate(10, graphPlotted = true), set_store_value(opoMode, $opoMode = true, $opoMode));
 			$$invalidate(2, showOPOFiles = false);
 		}).catch(err => {
-			set_store_value(mainPreModal, $mainPreModal.modalContent = err, $mainPreModal);
+			set_store_value(mainPreModal, $mainPreModal.modalContent = err.stack, $mainPreModal);
 			set_store_value(mainPreModal, $mainPreModal.open = true, $mainPreModal);
 		});
 	}
@@ -47494,11 +51369,11 @@ function create_if_block$m(ctx) {
 			button1 = element("button");
 			button1.textContent = "Replot";
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$$, 40, 8, 1798);
+			add_location(button0, file$$, 40, 8, 1804);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$$, 49, 8, 2363);
+			add_location(button1, file$$, 49, 8, 2369);
 			attr_dev(div, "class", "align");
-			add_location(div, file$$, 38, 4, 1751);
+			add_location(div, file$$, 38, 4, 1757);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -47788,7 +51663,7 @@ function instance$16($$self, $$props, $$invalidate) {
 			window.createToast("Graph Plotted", "success");
 			($$invalidate(9, show_theoryplot = true), $$invalidate(5, showTheoryFiles = false));
 		}).catch(err => {
-			set_store_value(mainPreModal, $mainPreModal.modalContent = err, $mainPreModal);
+			set_store_value(mainPreModal, $mainPreModal.modalContent = err.stack, $mainPreModal);
 			set_store_value(mainPreModal, $mainPreModal.open = true, $mainPreModal);
 		});
 	}
@@ -49181,13 +53056,13 @@ function create_fragment$18(ctx) {
 			t6 = space();
 			if (if_block) if_block.c();
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$11, 35, 4, 1347);
+			add_location(button0, file$11, 35, 4, 1353);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$11, 37, 4, 1546);
+			add_location(button1, file$11, 37, 4, 1552);
 			attr_dev(button2, "class", "button is-link");
-			add_location(button2, file$11, 39, 4, 1665);
+			add_location(button2, file$11, 39, 4, 1671);
 			attr_dev(div, "class", "align");
-			add_location(div, file$11, 34, 0, 1321);
+			add_location(div, file$11, 34, 0, 1327);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -49310,7 +53185,7 @@ function instance$18($$self, $$props, $$invalidate) {
 			get_details_func({ dataFromPython });
 			$$invalidate(0, toggleFileDetailsTable = true);
 		}).catch(err => {
-			set_store_value(mainPreModal, $mainPreModal.modalContent = err, $mainPreModal);
+			set_store_value(mainPreModal, $mainPreModal.modalContent = err.stack, $mainPreModal);
 			set_store_value(mainPreModal, $mainPreModal.open = true, $mainPreModal);
 		});
 	}
@@ -50509,20 +54384,20 @@ function create_if_block$q(ctx) {
 			button4 = element("button");
 			button4.textContent = "Clear";
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$14, 234, 12, 10295);
+			add_location(button0, file$14, 234, 12, 10325);
 			attr_dev(div0, "class", "align");
-			add_location(div0, file$14, 226, 8, 9748);
+			add_location(div0, file$14, 226, 8, 9778);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$14, 239, 12, 10568);
+			add_location(button1, file$14, 239, 12, 10598);
 			attr_dev(button2, "class", "button is-link");
-			add_location(button2, file$14, 241, 12, 10831);
+			add_location(button2, file$14, 241, 12, 10861);
 			attr_dev(button3, "class", "button is-link");
-			add_location(button3, file$14, 242, 12, 10968);
+			add_location(button3, file$14, 242, 12, 10998);
 			attr_dev(button4, "class", "button is-danger");
-			add_location(button4, file$14, 244, 12, 11061);
+			add_location(button4, file$14, 244, 12, 11091);
 			attr_dev(div1, "class", "align");
-			add_location(div1, file$14, 237, 8, 10437);
-			add_location(div2, file$14, 225, 4, 9717);
+			add_location(div1, file$14, 237, 8, 10467);
+			add_location(div2, file$14, 225, 4, 9747);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div2, anchor);
@@ -50777,19 +54652,19 @@ function create_fragment$1b(ctx) {
 			if (if_block) if_block.c();
 			if_block_anchor = empty();
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$14, 212, 4, 8979);
+			add_location(button0, file$14, 212, 4, 9009);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$14, 213, 4, 9087);
+			add_location(button1, file$14, 213, 4, 9117);
 			attr_dev(button2, "class", "button is-warning");
-			add_location(button2, file$14, 214, 4, 9202);
+			add_location(button2, file$14, 214, 4, 9232);
 			attr_dev(button3, "class", "button is-danger");
-			add_location(button3, file$14, 215, 4, 9286);
+			add_location(button3, file$14, 215, 4, 9316);
 			attr_dev(button4, "class", "button is-link");
-			add_location(button4, file$14, 216, 4, 9367);
+			add_location(button4, file$14, 216, 4, 9397);
 			attr_dev(button5, "class", "button is-warning");
-			add_location(button5, file$14, 217, 4, 9480);
+			add_location(button5, file$14, 217, 4, 9510);
 			attr_dev(div, "class", "align");
-			add_location(div, file$14, 211, 0, 8954);
+			add_location(div, file$14, 211, 0, 8984);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -51052,7 +54927,7 @@ function instance$1b($$self, $$props, $$invalidate) {
 			const { pyfile, args } = general;
 
 			computePy_func({ pyfile, args, general: true }).catch(err => {
-				set_store_value(mainPreModal, $mainPreModal.modalContent = err, $mainPreModal);
+				set_store_value(mainPreModal, $mainPreModal.modalContent = err.stack, $mainPreModal);
 				set_store_value(mainPreModal, $mainPreModal.open = true, $mainPreModal);
 			});
 
@@ -51084,7 +54959,7 @@ function instance$1b($$self, $$props, $$invalidate) {
 					exp_fit_func({ dataFromPython });
 					window.createToast("Line fitted with gaussian function", "success");
 				}).catch(err => {
-					set_store_value(mainPreModal, $mainPreModal.modalContent = err, $mainPreModal);
+					set_store_value(mainPreModal, $mainPreModal.modalContent = err.stack, $mainPreModal);
 					set_store_value(mainPreModal, $mainPreModal.open = true, $mainPreModal);
 				});
 				break;
@@ -51126,7 +55001,7 @@ function instance$1b($$self, $$props, $$invalidate) {
 					console.log("Line fitted");
 					window.createToast(`Line fitted with ${dataFromPython["fitted_parameter"].length} gaussian function`, "success");
 				}).catch(err => {
-					set_store_value(mainPreModal, $mainPreModal.modalContent = err, $mainPreModal);
+					set_store_value(mainPreModal, $mainPreModal.modalContent = err.stack, $mainPreModal);
 					set_store_value(mainPreModal, $mainPreModal.open = true, $mainPreModal);
 				});
 				break;
@@ -51154,7 +55029,7 @@ function instance$1b($$self, $$props, $$invalidate) {
 					console.log(`felixPeakTable:`, $felixPeakTable);
 					window.createToast("Peaks found", "success");
 				}).catch(err => {
-					set_store_value(mainPreModal, $mainPreModal.modalContent = err, $mainPreModal);
+					set_store_value(mainPreModal, $mainPreModal.modalContent = err.stack, $mainPreModal);
 					set_store_value(mainPreModal, $mainPreModal.open = true, $mainPreModal);
 				});
 				break;
@@ -51165,7 +55040,7 @@ function instance$1b($$self, $$props, $$invalidate) {
 					get_err_func({ dataFromPython });
 					window.createToast("Weighted fit. done", "success");
 				}).catch(err => {
-					set_store_value(mainPreModal, $mainPreModal.modalContent = err, $mainPreModal);
+					set_store_value(mainPreModal, $mainPreModal.modalContent = err.stack, $mainPreModal);
 					set_store_value(mainPreModal, $mainPreModal.open = true, $mainPreModal);
 				});
 				break;
@@ -54495,26 +58370,26 @@ function create_buttonContainer_slot$1(ctx) {
 			t19 = space();
 			create_component(textfield4.$$.fragment);
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$17, 122, 12, 4842);
+			add_location(button0, file$17, 122, 12, 4848);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$17, 123, 12, 4942);
+			add_location(button1, file$17, 123, 12, 4948);
 			attr_dev(button2, "class", "button is-link");
-			add_location(button2, file$17, 124, 12, 5050);
+			add_location(button2, file$17, 124, 12, 5056);
 			attr_dev(button3, "class", "button is-link");
-			add_location(button3, file$17, 126, 12, 5229);
+			add_location(button3, file$17, 126, 12, 5235);
 			attr_dev(div0, "class", "content align ");
 			set_style(div0, "align-items", "center");
-			add_location(div0, file$17, 121, 8, 4771);
+			add_location(div0, file$17, 121, 8, 4777);
 			attr_dev(button4, "class", "button is-link");
-			add_location(button4, file$17, 136, 12, 6279);
+			add_location(button4, file$17, 136, 12, 6285);
 			attr_dev(button5, "class", "button is-danger");
-			add_location(button5, file$17, 137, 12, 6399);
+			add_location(button5, file$17, 137, 12, 6405);
 			attr_dev(div1, "class", "align animated fadeIn");
 			toggle_class(div1, "hide", /*toggleRow1*/ ctx[6]);
-			add_location(div1, file$17, 131, 8, 5600);
+			add_location(div1, file$17, 131, 8, 5606);
 			attr_dev(div2, "class", "align animated fadeIn ");
 			toggle_class(div2, "hide", /*toggleRow2*/ ctx[11]);
-			add_location(div2, file$17, 140, 8, 6544);
+			add_location(div2, file$17, 140, 8, 6550);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -54895,19 +58770,19 @@ function create_plotContainer_slot$1(ctx) {
 			webview = element("webview");
 			attr_dev(div0, "id", "mplot");
 			attr_dev(div0, "class", "graph__div");
-			add_location(div0, file$17, 150, 8, 6960);
+			add_location(div0, file$17, 150, 8, 6966);
 			if (webview.src !== (webview_src_value = /*nist_url*/ ctx[12])) attr_dev(webview, "src", webview_src_value);
 			attr_dev(webview, "id", "nist_webview");
 			set_style(webview, "height", "50vh");
 			set_style(webview, "padding-bottom", "3em");
 			set_style(webview, "width", "100%");
-			add_location(webview, file$17, 157, 12, 7635);
+			add_location(webview, file$17, 157, 12, 7641);
 			attr_dev(div1, "class", "align animated fadeIn");
 			toggle_class(div1, "hide", /*toggleRow2*/ ctx[11]);
-			add_location(div1, file$17, 152, 8, 7020);
+			add_location(div1, file$17, 152, 8, 7026);
 			set_style(div2, "margin-right", "1em");
 			attr_dev(div2, "slot", "plotContainer");
-			add_location(div2, file$17, 148, 4, 6895);
+			add_location(div2, file$17, 148, 4, 6901);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div2, anchor);
@@ -55199,7 +59074,7 @@ function instance$1e($$self, $$props, $$invalidate) {
 				general: true,
 				openShell
 			}).catch(err => {
-				set_store_value(mainPreModal, $mainPreModal.modalContent = err, $mainPreModal);
+				set_store_value(mainPreModal, $mainPreModal.modalContent = err.stack, $mainPreModal);
 				set_store_value(mainPreModal, $mainPreModal.open = true, $mainPreModal);
 			});
 		}
@@ -55496,6 +59371,44 @@ class Masspec extends SvelteComponentDev {
 const { Object: Object_1$1, console: console_1$a } = globals;
 const file$18 = "src\\Pages\\timescan\\components\\ROSAAkinetics.svelte";
 
+// (186:8) {#if pyEventCounter}
+function create_if_block$s(ctx) {
+	let div;
+	let t0;
+	let t1;
+
+	const block = {
+		c: function create() {
+			div = element("div");
+			t0 = text(/*pyEventCounter*/ ctx[16]);
+			t1 = text(" process running");
+			attr_dev(div, "class", "subtitle");
+			add_location(div, file$18, 186, 12, 7850);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, div, anchor);
+			append_dev(div, t0);
+			append_dev(div, t1);
+		},
+		p: function update(ctx, dirty) {
+			if (dirty[0] & /*pyEventCounter*/ 65536) set_data_dev(t0, /*pyEventCounter*/ ctx[16]);
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(div);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_if_block$s.name,
+		type: "if",
+		source: "(186:8) {#if pyEventCounter}",
+		ctx
+	});
+
+	return block;
+}
+
 function create_fragment$1f(ctx) {
 	let div2;
 	let div0;
@@ -55558,12 +59471,13 @@ function create_fragment$1f(ctx) {
 	let button2;
 	let t22;
 	let button3;
+	let t24;
 	let current;
 	let mounted;
 	let dispose;
 
 	function customswitch0_selected_binding(value) {
-		/*customswitch0_selected_binding*/ ctx[27](value);
+		/*customswitch0_selected_binding*/ ctx[28](value);
 	}
 
 	let customswitch0_props = { label: "SRG" };
@@ -55580,7 +59494,7 @@ function create_fragment$1f(ctx) {
 	binding_callbacks.push(() => bind(customswitch0, "selected", customswitch0_selected_binding));
 
 	function textfield0_value_binding(value) {
-		/*textfield0_value_binding*/ ctx[28](value);
+		/*textfield0_value_binding*/ ctx[29](value);
 	}
 
 	let textfield0_props = { label: "pbefore" };
@@ -55593,7 +59507,7 @@ function create_fragment$1f(ctx) {
 	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
 
 	function textfield1_value_binding(value) {
-		/*textfield1_value_binding*/ ctx[29](value);
+		/*textfield1_value_binding*/ ctx[30](value);
 	}
 
 	let textfield1_props = { label: "pafter" };
@@ -55606,7 +59520,7 @@ function create_fragment$1f(ctx) {
 	binding_callbacks.push(() => bind(textfield1, "value", textfield1_value_binding));
 
 	function textfield2_value_binding(value) {
-		/*textfield2_value_binding*/ ctx[30](value);
+		/*textfield2_value_binding*/ ctx[31](value);
 	}
 
 	let textfield2_props = {
@@ -55623,7 +59537,7 @@ function create_fragment$1f(ctx) {
 	binding_callbacks.push(() => bind(textfield2, "value", textfield2_value_binding));
 
 	function textfield3_value_binding(value) {
-		/*textfield3_value_binding*/ ctx[31](value);
+		/*textfield3_value_binding*/ ctx[32](value);
 	}
 
 	let textfield3_props = {
@@ -55640,20 +59554,20 @@ function create_fragment$1f(ctx) {
 	binding_callbacks.push(() => bind(textfield3, "value", textfield3_value_binding));
 
 	function textfield4_value_binding(value) {
-		/*textfield4_value_binding*/ ctx[32](value);
+		/*textfield4_value_binding*/ ctx[33](value);
 	}
 
 	let textfield4_props = { label: "numberDensity", disabled: true };
 
-	if (/*numberDensity*/ ctx[18] !== void 0) {
-		textfield4_props.value = /*numberDensity*/ ctx[18];
+	if (/*numberDensity*/ ctx[19] !== void 0) {
+		textfield4_props.value = /*numberDensity*/ ctx[19];
 	}
 
 	textfield4 = new Textfield({ props: textfield4_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield4, "value", textfield4_value_binding));
 
 	function customselect_picked_binding(value) {
-		/*customselect_picked_binding*/ ctx[33](value);
+		/*customselect_picked_binding*/ ctx[34](value);
 	}
 
 	let customselect_props = {
@@ -55674,7 +59588,7 @@ function create_fragment$1f(ctx) {
 	binding_callbacks.push(() => bind(customselect, "picked", customselect_picked_binding));
 
 	function textfield5_value_binding(value) {
-		/*textfield5_value_binding*/ ctx[34](value);
+		/*textfield5_value_binding*/ ctx[35](value);
 	}
 
 	let textfield5_props = { label: "Molecule" };
@@ -55687,7 +59601,7 @@ function create_fragment$1f(ctx) {
 	binding_callbacks.push(() => bind(textfield5, "value", textfield5_value_binding));
 
 	function textfield6_value_binding(value) {
-		/*textfield6_value_binding*/ ctx[35](value);
+		/*textfield6_value_binding*/ ctx[36](value);
 	}
 
 	let textfield6_props = { label: "tag" };
@@ -55700,7 +59614,7 @@ function create_fragment$1f(ctx) {
 	binding_callbacks.push(() => bind(textfield6, "value", textfield6_value_binding));
 
 	function textfield7_value_binding(value) {
-		/*textfield7_value_binding*/ ctx[36](value);
+		/*textfield7_value_binding*/ ctx[37](value);
 	}
 
 	let textfield7_props = { label: "massOfReactants" };
@@ -55713,7 +59627,7 @@ function create_fragment$1f(ctx) {
 	binding_callbacks.push(() => bind(textfield7, "value", textfield7_value_binding));
 
 	function textfield8_value_binding(value) {
-		/*textfield8_value_binding*/ ctx[37](value);
+		/*textfield8_value_binding*/ ctx[38](value);
 	}
 
 	let textfield8_props = { label: "nameOfReactants" };
@@ -55726,13 +59640,13 @@ function create_fragment$1f(ctx) {
 	binding_callbacks.push(() => bind(textfield8, "value", textfield8_value_binding));
 
 	function customswitch1_selected_binding(value) {
-		/*customswitch1_selected_binding*/ ctx[38](value);
+		/*customswitch1_selected_binding*/ ctx[39](value);
 	}
 
 	let customswitch1_props = { label: "defaultInitialValues" };
 
-	if (/*defaultInitialValues*/ ctx[16] !== void 0) {
-		customswitch1_props.selected = /*defaultInitialValues*/ ctx[16];
+	if (/*defaultInitialValues*/ ctx[17] !== void 0) {
+		customswitch1_props.selected = /*defaultInitialValues*/ ctx[17];
 	}
 
 	customswitch1 = new CustomSwitch({
@@ -55743,20 +59657,20 @@ function create_fragment$1f(ctx) {
 	binding_callbacks.push(() => bind(customswitch1, "selected", customswitch1_selected_binding));
 
 	function textfield9_value_binding(value) {
-		/*textfield9_value_binding*/ ctx[39](value);
+		/*textfield9_value_binding*/ ctx[40](value);
 	}
 
 	let textfield9_props = { label: "initialValues" };
 
-	if (/*initialValues*/ ctx[17] !== void 0) {
-		textfield9_props.value = /*initialValues*/ ctx[17];
+	if (/*initialValues*/ ctx[18] !== void 0) {
+		textfield9_props.value = /*initialValues*/ ctx[18];
 	}
 
 	textfield9 = new Textfield({ props: textfield9_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield9, "value", textfield9_value_binding));
 
 	function textfield10_value_binding(value) {
-		/*textfield10_value_binding*/ ctx[40](value);
+		/*textfield10_value_binding*/ ctx[41](value);
 	}
 
 	let textfield10_props = { label: "ratek3" };
@@ -55769,7 +59683,7 @@ function create_fragment$1f(ctx) {
 	binding_callbacks.push(() => bind(textfield10, "value", textfield10_value_binding));
 
 	function textfield11_value_binding(value) {
-		/*textfield11_value_binding*/ ctx[41](value);
+		/*textfield11_value_binding*/ ctx[42](value);
 	}
 
 	let textfield11_props = { label: "k3Guess" };
@@ -55782,7 +59696,7 @@ function create_fragment$1f(ctx) {
 	binding_callbacks.push(() => bind(textfield11, "value", textfield11_value_binding));
 
 	function textfield12_value_binding(value) {
-		/*textfield12_value_binding*/ ctx[42](value);
+		/*textfield12_value_binding*/ ctx[43](value);
 	}
 
 	let textfield12_props = { label: "ratekCID" };
@@ -55795,7 +59709,7 @@ function create_fragment$1f(ctx) {
 	binding_callbacks.push(() => bind(textfield12, "value", textfield12_value_binding));
 
 	function textfield13_value_binding(value) {
-		/*textfield13_value_binding*/ ctx[43](value);
+		/*textfield13_value_binding*/ ctx[44](value);
 	}
 
 	let textfield13_props = { label: "kCIDGuess" };
@@ -55806,6 +59720,7 @@ function create_fragment$1f(ctx) {
 
 	textfield13 = new Textfield({ props: textfield13_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield13, "value", textfield13_value_binding));
+	let if_block = /*pyEventCounter*/ ctx[16] && create_if_block$s(ctx);
 
 	const block = {
 		c: function create() {
@@ -55857,21 +59772,23 @@ function create_fragment$1f(ctx) {
 			t22 = space();
 			button3 = element("button");
 			button3.textContent = "Submit";
+			t24 = space();
+			if (if_block) if_block.c();
 			attr_dev(div0, "class", "align");
-			add_location(div0, file$18, 148, 4, 5799);
+			add_location(div0, file$18, 154, 4, 6077);
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$18, 173, 8, 7144);
+			add_location(button0, file$18, 179, 8, 7422);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$18, 175, 8, 7246);
+			add_location(button1, file$18, 181, 8, 7524);
 			attr_dev(button2, "class", "button is-link");
-			add_location(button2, file$18, 176, 8, 7330);
+			add_location(button2, file$18, 182, 8, 7608);
 			attr_dev(button3, "class", "button is-link");
-			add_location(button3, file$18, 177, 8, 7414);
+			add_location(button3, file$18, 183, 8, 7692);
 			attr_dev(div1, "class", "align");
-			add_location(div1, file$18, 157, 4, 6309);
+			add_location(div1, file$18, 163, 4, 6587);
 			attr_dev(div2, "class", "align animated fadeIn");
 			toggle_class(div2, "hide", !/*kineticMode*/ ctx[1]);
-			add_location(div2, file$18, 144, 0, 5725);
+			add_location(div2, file$18, 150, 0, 6003);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -55921,15 +59838,17 @@ function create_fragment$1f(ctx) {
 			append_dev(div1, button2);
 			append_dev(div1, t22);
 			append_dev(div1, button3);
+			append_dev(div1, t24);
+			if (if_block) if_block.m(div1, null);
 			current = true;
 
 			if (!mounted) {
 				dispose = [
-					listen_dev(button0, "click", /*computeParameters*/ ctx[19], false, false, false),
-					listen_dev(button1, "click", /*saveConfig*/ ctx[20], false, false, false),
-					listen_dev(button2, "click", /*loadConfig*/ ctx[21], false, false, false),
-					listen_dev(button3, "click", /*kineticSimulation*/ ctx[22], false, false, false),
-					listen_dev(button3, "pyEventClosed", /*pyEventClosed*/ ctx[23], false, false, false)
+					listen_dev(button0, "click", /*computeParameters*/ ctx[20], false, false, false),
+					listen_dev(button1, "click", /*saveConfig*/ ctx[21], false, false, false),
+					listen_dev(button2, "click", /*loadConfig*/ ctx[22], false, false, false),
+					listen_dev(button3, "click", /*kineticSimulation*/ ctx[23], false, false, false),
+					listen_dev(button3, "pyEventClosed", /*pyEventClosed*/ ctx[24], false, false, false)
 				];
 
 				mounted = true;
@@ -55983,9 +59902,9 @@ function create_fragment$1f(ctx) {
 			textfield3.$set(textfield3_changes);
 			const textfield4_changes = {};
 
-			if (!updating_value_4 && dirty[0] & /*numberDensity*/ 262144) {
+			if (!updating_value_4 && dirty[0] & /*numberDensity*/ 524288) {
 				updating_value_4 = true;
-				textfield4_changes.value = /*numberDensity*/ ctx[18];
+				textfield4_changes.value = /*numberDensity*/ ctx[19];
 				add_flush_callback(() => updating_value_4 = false);
 			}
 
@@ -56038,18 +59957,18 @@ function create_fragment$1f(ctx) {
 			textfield8.$set(textfield8_changes);
 			const customswitch1_changes = {};
 
-			if (!updating_selected_1 && dirty[0] & /*defaultInitialValues*/ 65536) {
+			if (!updating_selected_1 && dirty[0] & /*defaultInitialValues*/ 131072) {
 				updating_selected_1 = true;
-				customswitch1_changes.selected = /*defaultInitialValues*/ ctx[16];
+				customswitch1_changes.selected = /*defaultInitialValues*/ ctx[17];
 				add_flush_callback(() => updating_selected_1 = false);
 			}
 
 			customswitch1.$set(customswitch1_changes);
 			const textfield9_changes = {};
 
-			if (!updating_value_9 && dirty[0] & /*initialValues*/ 131072) {
+			if (!updating_value_9 && dirty[0] & /*initialValues*/ 262144) {
 				updating_value_9 = true;
-				textfield9_changes.value = /*initialValues*/ ctx[17];
+				textfield9_changes.value = /*initialValues*/ ctx[18];
 				add_flush_callback(() => updating_value_9 = false);
 			}
 
@@ -56090,6 +60009,19 @@ function create_fragment$1f(ctx) {
 			}
 
 			textfield13.$set(textfield13_changes);
+
+			if (/*pyEventCounter*/ ctx[16]) {
+				if (if_block) {
+					if_block.p(ctx, dirty);
+				} else {
+					if_block = create_if_block$s(ctx);
+					if_block.c();
+					if_block.m(div1, null);
+				}
+			} else if (if_block) {
+				if_block.d(1);
+				if_block = null;
+			}
 
 			if (dirty[0] & /*kineticMode*/ 2) {
 				toggle_class(div2, "hide", !/*kineticMode*/ ctx[1]);
@@ -56155,6 +60087,7 @@ function create_fragment$1f(ctx) {
 			destroy_component(textfield11);
 			destroy_component(textfield12);
 			destroy_component(textfield13);
+			if (if_block) if_block.d();
 			mounted = false;
 			run_all(dispose);
 		}
@@ -56177,7 +60110,7 @@ function instance$1f($$self, $$props, $$invalidate) {
 	let numberDensity;
 	let $mainPreModal;
 	validate_store(mainPreModal, "mainPreModal");
-	component_subscribe($$self, mainPreModal, $$value => $$invalidate(48, $mainPreModal = $$value));
+	component_subscribe($$self, mainPreModal, $$value => $$invalidate(49, $mainPreModal = $$value));
 	let { $$slots: slots = {}, $$scope } = $$props;
 	validate_slots("ROSAAkinetics", slots, []);
 
@@ -56209,7 +60142,7 @@ function instance$1f($$self, $$props, $$invalidate) {
 		requiredLength = masses.length;
 
 		if (defaultInitialValues && masses) {
-			$$invalidate(17, initialValues = [
+			$$invalidate(18, initialValues = [
 				currentData[masses[0]]["y"][0].toFixed(0),
 				...Array(requiredLength - 1).fill(1)
 			]);
@@ -56273,18 +60206,18 @@ function instance$1f($$self, $$props, $$invalidate) {
 				const config_parsed = JSON.parse(config_content);
 
 				if (config_parsed[selectedFile]) {
-					$$invalidate(26, update_pbefore = false);
-					$$invalidate(2, { srgMode, pbefore, pafter, calibrationFactor, temp } = config_parsed[selectedFile], srgMode, (($$invalidate(3, pbefore), $$invalidate(2, srgMode)), $$invalidate(26, update_pbefore)), $$invalidate(4, pafter), (($$invalidate(8, calibrationFactor), $$invalidate(2, srgMode)), $$invalidate(26, update_pbefore)), $$invalidate(5, temp));
+					$$invalidate(27, update_pbefore = false);
+					$$invalidate(2, { srgMode, pbefore, pafter, calibrationFactor, temp } = config_parsed[selectedFile], srgMode, (($$invalidate(3, pbefore), $$invalidate(2, srgMode)), $$invalidate(27, update_pbefore)), $$invalidate(4, pafter), (($$invalidate(8, calibrationFactor), $$invalidate(2, srgMode)), $$invalidate(27, update_pbefore)), $$invalidate(5, temp));
 					window.createToast("Config file loaded: " + config_file_ROSAAkinetics, "warning");
 				} else {
-					return window.createToast("config file not available for " + selectedFile, "danger");
+					return window.createToast("config file not available for " + selectedFile, "danger"); // update_pbefore = true;
 				}
 			} else {
 				return window.createToast("config file not available", "danger");
 			}
 		} catch(error) {
 			console.log(error);
-			set_store_value(mainPreModal, $mainPreModal.modalContent = error, $mainPreModal);
+			set_store_value(mainPreModal, $mainPreModal.modalContent = error.stack, $mainPreModal);
 			set_store_value(mainPreModal, $mainPreModal.open = true, $mainPreModal);
 			set_store_value(mainPreModal, $mainPreModal.type = "danger", $mainPreModal);
 		}
@@ -56292,13 +60225,15 @@ function instance$1f($$self, $$props, $$invalidate) {
 
 	async function kineticSimulation(e) {
 		try {
+			if (!selectedFile) return createToast("Select a file", "danger");
+			if (!kineticData) return createToast("No data available", "danger");
 			const pyfile = "ROSAA/kinetics.py";
 			const nameOfReactantsArray = nameOfReactants.split(",").map(m => m.trim());
 			const data = {};
 			massOfReactants.split(",").map(mass => mass.trim()).forEach((mass, i) => data[nameOfReactantsArray[i]] = currentData[mass]);
 
 			if (typeof initialValues === "string") {
-				$$invalidate(17, initialValues = initialValues.split(","));
+				$$invalidate(18, initialValues = initialValues.split(","));
 			}
 
 			const args = [
@@ -56317,16 +60252,19 @@ function instance$1f($$self, $$props, $$invalidate) {
 				})
 			];
 
-			fs.write;
 			await computePy_func({ e, pyfile, args, general: true });
+			$$invalidate(16, pyEventCounter++, pyEventCounter);
 		} catch(error) {
-			set_store_value(mainPreModal, $mainPreModal.modalContent = error, $mainPreModal);
+			set_store_value(mainPreModal, $mainPreModal.modalContent = error.stack, $mainPreModal);
 			set_store_value(mainPreModal, $mainPreModal.open = true, $mainPreModal);
 			set_store_value(mainPreModal, $mainPreModal.type = "danger", $mainPreModal);
 		}
 	}
 
+	let pyEventCounter = 0;
+
 	const pyEventClosed = e => {
+		$$invalidate(16, pyEventCounter--, pyEventCounter);
 		const { error_occured_py, dataReceived } = e.detail;
 
 		if (!error_occured_py) {
@@ -56351,7 +60289,7 @@ function instance$1f($$self, $$props, $$invalidate) {
 
 	function textfield0_value_binding(value) {
 		pbefore = value;
-		(($$invalidate(3, pbefore), $$invalidate(2, srgMode)), $$invalidate(26, update_pbefore));
+		(($$invalidate(3, pbefore), $$invalidate(2, srgMode)), $$invalidate(27, update_pbefore));
 	}
 
 	function textfield1_value_binding(value) {
@@ -56361,7 +60299,7 @@ function instance$1f($$self, $$props, $$invalidate) {
 
 	function textfield2_value_binding(value) {
 		calibrationFactor = value;
-		(($$invalidate(8, calibrationFactor), $$invalidate(2, srgMode)), $$invalidate(26, update_pbefore));
+		(($$invalidate(8, calibrationFactor), $$invalidate(2, srgMode)), $$invalidate(27, update_pbefore));
 	}
 
 	function textfield3_value_binding(value) {
@@ -56371,7 +60309,7 @@ function instance$1f($$self, $$props, $$invalidate) {
 
 	function textfield4_value_binding(value) {
 		numberDensity = value;
-		(((((($$invalidate(18, numberDensity), $$invalidate(8, calibrationFactor)), $$invalidate(4, pafter)), $$invalidate(3, pbefore)), $$invalidate(5, temp)), $$invalidate(2, srgMode)), $$invalidate(26, update_pbefore));
+		(((((($$invalidate(19, numberDensity), $$invalidate(8, calibrationFactor)), $$invalidate(4, pafter)), $$invalidate(3, pbefore)), $$invalidate(5, temp)), $$invalidate(2, srgMode)), $$invalidate(27, update_pbefore));
 	}
 
 	function customselect_picked_binding(value) {
@@ -56401,12 +60339,12 @@ function instance$1f($$self, $$props, $$invalidate) {
 
 	function customswitch1_selected_binding(value) {
 		defaultInitialValues = value;
-		$$invalidate(16, defaultInitialValues);
+		$$invalidate(17, defaultInitialValues);
 	}
 
 	function textfield9_value_binding(value) {
 		initialValues = value;
-		$$invalidate(17, initialValues);
+		$$invalidate(18, initialValues);
 	}
 
 	function textfield10_value_binding(value) {
@@ -56431,9 +60369,9 @@ function instance$1f($$self, $$props, $$invalidate) {
 
 	$$self.$$set = $$props => {
 		if ("fileChecked" in $$props) $$invalidate(0, fileChecked = $$props.fileChecked);
-		if ("currentLocation" in $$props) $$invalidate(24, currentLocation = $$props.currentLocation);
+		if ("currentLocation" in $$props) $$invalidate(25, currentLocation = $$props.currentLocation);
 		if ("kineticMode" in $$props) $$invalidate(1, kineticMode = $$props.kineticMode);
-		if ("kineticData" in $$props) $$invalidate(25, kineticData = $$props.kineticData);
+		if ("kineticData" in $$props) $$invalidate(26, kineticData = $$props.kineticData);
 	};
 
 	$$self.$capture_state = () => ({
@@ -56471,6 +60409,7 @@ function instance$1f($$self, $$props, $$invalidate) {
 		saveConfig,
 		loadConfig,
 		kineticSimulation,
+		pyEventCounter,
 		pyEventClosed,
 		defaultInitialValues,
 		initialValues,
@@ -56480,9 +60419,9 @@ function instance$1f($$self, $$props, $$invalidate) {
 
 	$$self.$inject_state = $$props => {
 		if ("fileChecked" in $$props) $$invalidate(0, fileChecked = $$props.fileChecked);
-		if ("currentLocation" in $$props) $$invalidate(24, currentLocation = $$props.currentLocation);
+		if ("currentLocation" in $$props) $$invalidate(25, currentLocation = $$props.currentLocation);
 		if ("kineticMode" in $$props) $$invalidate(1, kineticMode = $$props.kineticMode);
-		if ("kineticData" in $$props) $$invalidate(25, kineticData = $$props.kineticData);
+		if ("kineticData" in $$props) $$invalidate(26, kineticData = $$props.kineticData);
 		if ("srgMode" in $$props) $$invalidate(2, srgMode = $$props.srgMode);
 		if ("pbefore" in $$props) $$invalidate(3, pbefore = $$props.pbefore);
 		if ("pafter" in $$props) $$invalidate(4, pafter = $$props.pafter);
@@ -56501,11 +60440,12 @@ function instance$1f($$self, $$props, $$invalidate) {
 		if ("currentData" in $$props) currentData = $$props.currentData;
 		if ("masses" in $$props) masses = $$props.masses;
 		if ("calibrationFactor" in $$props) $$invalidate(8, calibrationFactor = $$props.calibrationFactor);
-		if ("update_pbefore" in $$props) $$invalidate(26, update_pbefore = $$props.update_pbefore);
+		if ("update_pbefore" in $$props) $$invalidate(27, update_pbefore = $$props.update_pbefore);
 		if ("config_file_ROSAAkinetics" in $$props) config_file_ROSAAkinetics = $$props.config_file_ROSAAkinetics;
-		if ("defaultInitialValues" in $$props) $$invalidate(16, defaultInitialValues = $$props.defaultInitialValues);
-		if ("initialValues" in $$props) $$invalidate(17, initialValues = $$props.initialValues);
-		if ("numberDensity" in $$props) $$invalidate(18, numberDensity = $$props.numberDensity);
+		if ("pyEventCounter" in $$props) $$invalidate(16, pyEventCounter = $$props.pyEventCounter);
+		if ("defaultInitialValues" in $$props) $$invalidate(17, defaultInitialValues = $$props.defaultInitialValues);
+		if ("initialValues" in $$props) $$invalidate(18, initialValues = $$props.initialValues);
+		if ("numberDensity" in $$props) $$invalidate(19, numberDensity = $$props.numberDensity);
 	};
 
 	if ($$props && "$$inject" in $$props) {
@@ -56519,7 +60459,7 @@ function instance$1f($$self, $$props, $$invalidate) {
 			}
 		}
 
-		if ($$self.$$.dirty[0] & /*srgMode, update_pbefore*/ 67108868) {
+		if ($$self.$$.dirty[0] & /*srgMode, update_pbefore*/ 134217732) {
 			 if (srgMode) {
 				$$invalidate(8, calibrationFactor = 1);
 				if (update_pbefore) $$invalidate(3, pbefore = Number(0.00007).toExponential(0));
@@ -56530,10 +60470,10 @@ function instance$1f($$self, $$props, $$invalidate) {
 		}
 
 		if ($$self.$$.dirty[0] & /*calibrationFactor, pafter, pbefore, temp*/ 312) {
-			 $$invalidate(18, numberDensity = Number(constantValue * calibrationFactor * (pafter - pbefore) / temp ** 0.5).toExponential(3));
+			 $$invalidate(19, numberDensity = Number(constantValue * calibrationFactor * (pafter - pbefore) / temp ** 0.5).toExponential(3));
 		}
 
-		if ($$self.$$.dirty[0] & /*selectedFile, kineticData*/ 33554560) {
+		if ($$self.$$.dirty[0] & /*selectedFile, kineticData*/ 67108992) {
 			 if (selectedFile || kineticData) {
 				computeParameters();
 			}
@@ -56557,6 +60497,7 @@ function instance$1f($$self, $$props, $$invalidate) {
 		ratekCID,
 		k3Guess,
 		kCIDGuess,
+		pyEventCounter,
 		defaultInitialValues,
 		initialValues,
 		numberDensity,
@@ -56600,9 +60541,9 @@ class ROSAAkinetics extends SvelteComponentDev {
 			safe_not_equal,
 			{
 				fileChecked: 0,
-				currentLocation: 24,
+				currentLocation: 25,
 				kineticMode: 1,
-				kineticData: 25
+				kineticData: 26
 			},
 			[-1, -1]
 		);
@@ -56617,7 +60558,7 @@ class ROSAAkinetics extends SvelteComponentDev {
 		const { ctx } = this.$$;
 		const props = options.props || {};
 
-		if (/*kineticData*/ ctx[25] === undefined && !("kineticData" in props)) {
+		if (/*kineticData*/ ctx[26] === undefined && !("kineticData" in props)) {
 			console_1$a.warn("<ROSAAkinetics> was created without expected prop 'kineticData'");
 		}
 	}
@@ -56920,21 +60861,21 @@ function create_buttonContainer_slot$2(ctx) {
 			t18 = space();
 			create_component(rosaakinetics.$$.fragment);
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$19, 137, 12, 5210);
+			add_location(button0, file$19, 137, 12, 5222);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$19, 141, 12, 5484);
+			add_location(button1, file$19, 141, 12, 5496);
 			attr_dev(button2, "class", "button is-link");
-			add_location(button2, file$19, 142, 12, 5594);
+			add_location(button2, file$19, 142, 12, 5606);
 			attr_dev(button3, "class", "button is-link");
-			add_location(button3, file$19, 144, 12, 5722);
+			add_location(button3, file$19, 144, 12, 5734);
 			attr_dev(div0, "class", "align ");
 			set_style(div0, "align-items", "center");
-			add_location(div0, file$19, 136, 8, 5147);
+			add_location(div0, file$19, 136, 8, 5159);
 			attr_dev(button4, "class", "button is-link");
-			add_location(button4, file$19, 158, 12, 6676);
+			add_location(button4, file$19, 158, 12, 6688);
 			attr_dev(div1, "class", "align animated fadeIn");
 			toggle_class(div1, "hide", /*toggleRow*/ ctx[13]);
-			add_location(div1, file$19, 149, 8, 6063);
+			add_location(div1, file$19, 149, 8, 6075);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -57151,7 +61092,7 @@ function create_each_block$a(ctx) {
 			attr_dev(div, "id", div_id_value = "" + (/*scanfile*/ ctx[43] + "_tplot"));
 			attr_dev(div, "class", "graph__div");
 			set_style(div, "padding-bottom", "1em");
-			add_location(div, file$19, 167, 12, 7040);
+			add_location(div, file$19, 167, 12, 7052);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -57452,7 +61393,7 @@ function instance$1g($$self, $$props, $$invalidate) {
 				general: true,
 				openShell
 			}).catch(err => {
-				set_store_value(mainPreModal, $mainPreModal.modalContent = err, $mainPreModal);
+				set_store_value(mainPreModal, $mainPreModal.modalContent = err.stack, $mainPreModal);
 				set_store_value(mainPreModal, $mainPreModal.open = true, $mainPreModal);
 			});
 		}
@@ -57478,7 +61419,7 @@ function instance$1g($$self, $$props, $$invalidate) {
 			window.createToast("Graph plotted", "success");
 			$$invalidate(6, graphPlotted = true);
 		} catch(error) {
-			set_store_value(mainPreModal, $mainPreModal.modalContent = error, $mainPreModal);
+			set_store_value(mainPreModal, $mainPreModal.modalContent = error.stack, $mainPreModal);
 			set_store_value(mainPreModal, $mainPreModal.open = true, $mainPreModal);
 		}
 	}
@@ -66235,7 +70176,7 @@ function create_each_block_1$4(key_1, ctx) {
 }
 
 // (120:4) {#if einsteinCoefficientB.length>0}
-function create_if_block$s(ctx) {
+function create_if_block$t(ctx) {
 	let hr;
 	let t0;
 	let div0;
@@ -66355,7 +70296,7 @@ function create_if_block$s(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_if_block$s.name,
+		id: create_if_block$t.name,
 		type: "if",
 		source: "(120:4) {#if einsteinCoefficientB.length>0}",
 		ctx
@@ -66452,7 +70393,7 @@ function create_fragment$1j(ctx) {
 	let mounted;
 	let dispose;
 	let if_block0 = /*einsteinCoefficientA*/ ctx[0].length > 0 && create_if_block_1$a(ctx);
-	let if_block1 = /*einsteinCoefficientB*/ ctx[1].length > 0 && create_if_block$s(ctx);
+	let if_block1 = /*einsteinCoefficientB*/ ctx[1].length > 0 && create_if_block$t(ctx);
 
 	const block = {
 		c: function create() {
@@ -66541,7 +70482,7 @@ function create_fragment$1j(ctx) {
 						transition_in(if_block1, 1);
 					}
 				} else {
-					if_block1 = create_if_block$s(ctx);
+					if_block1 = create_if_block$t(ctx);
 					if_block1.c();
 					transition_in(if_block1, 1);
 					if_block1.m(div3, null);
@@ -67834,7 +71775,7 @@ function create_each_block_2$4(key_1, ctx) {
 }
 
 // (143:4) {#if collisionalCoefficient_balance.length>0}
-function create_if_block$t(ctx) {
+function create_if_block$u(ctx) {
 	let hr;
 	let t;
 	let div;
@@ -67917,7 +71858,7 @@ function create_if_block$t(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_if_block$t.name,
+		id: create_if_block$u.name,
 		type: "if",
 		source: "(143:4) {#if collisionalCoefficient_balance.length>0}",
 		ctx
@@ -68142,7 +72083,7 @@ function create_fragment$1l(ctx) {
 	textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
 	binding_callbacks.push(() => bind(textfield0, "value", textfield0_value_binding));
 	let if_block0 = /*collisionalCoefficient*/ ctx[0].length > 0 && create_if_block_1$b(ctx);
-	let if_block1 = /*collisionalCoefficient_balance*/ ctx[1].length > 0 && create_if_block$t(ctx);
+	let if_block1 = /*collisionalCoefficient_balance*/ ctx[1].length > 0 && create_if_block$u(ctx);
 
 	function textfield1_value_binding(value) {
 		/*textfield1_value_binding*/ ctx[22](value);
@@ -68338,7 +72279,7 @@ function create_fragment$1l(ctx) {
 						transition_in(if_block1, 1);
 					}
 				} else {
-					if_block1 = create_if_block$t(ctx);
+					if_block1 = create_if_block$u(ctx);
 					if_block1.c();
 					transition_in(if_block1, 1);
 					if_block1.m(div6, t13);
@@ -69938,7 +73879,7 @@ function get_each_context_4$2(ctx, list, i) {
 }
 
 // (360:0) {#if active}
-function create_if_block$u(ctx) {
+function create_if_block$v(ctx) {
 	let boltzmandistribution;
 	let updating_active;
 	let t;
@@ -70055,7 +73996,7 @@ function create_if_block$u(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_if_block$u.name,
+		id: create_if_block$v.name,
 		type: "if",
 		source: "(360:0) {#if active}",
 		ctx
@@ -70363,21 +74304,21 @@ function create_header_content__slot_slot$2(ctx) {
 			button2.textContent = "Reset Config";
 			attr_dev(button0, "class", "button is-link svelte-1gffrzh");
 			attr_dev(button0, "id", "thz_modal_filebrowser_btn");
-			add_location(button0, file$1g, 366, 16, 13577);
+			add_location(button0, file$1g, 366, 16, 13583);
 			attr_dev(div0, "class", "locationColumn svelte-1gffrzh");
-			add_location(div0, file$1g, 365, 12, 13530);
+			add_location(div0, file$1g, 365, 12, 13536);
 			attr_dev(div1, "class", "writefileCheck svelte-1gffrzh");
-			add_location(div1, file$1g, 372, 12, 13880);
+			add_location(div1, file$1g, 372, 12, 13886);
 			attr_dev(div2, "class", "subtitle svelte-1gffrzh");
-			add_location(div2, file$1g, 383, 16, 14550);
+			add_location(div2, file$1g, 383, 16, 14556);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$1g, 390, 20, 15006);
+			add_location(button1, file$1g, 390, 20, 15012);
 			attr_dev(button2, "class", "button is-link");
-			add_location(button2, file$1g, 391, 20, 15101);
+			add_location(button2, file$1g, 391, 20, 15107);
 			attr_dev(div3, "class", "variableColumn__dropdown svelte-1gffrzh");
-			add_location(div3, file$1g, 384, 16, 14642);
+			add_location(div3, file$1g, 384, 16, 14648);
 			attr_dev(div4, "class", "variableColumn svelte-1gffrzh");
-			add_location(div4, file$1g, 382, 12, 14504);
+			add_location(div4, file$1g, 382, 12, 14510);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -70996,52 +74937,52 @@ function create_else_block$a(ctx) {
 			t30 = space();
 			if (if_block1) if_block1.c();
 			attr_dev(div0, "class", "subtitle svelte-1gffrzh");
-			add_location(div0, file$1g, 408, 24, 15710);
+			add_location(div0, file$1g, 408, 24, 15716);
 			attr_dev(div1, "class", "content__div  svelte-1gffrzh");
-			add_location(div1, file$1g, 409, 24, 15779);
+			add_location(div1, file$1g, 409, 24, 15785);
 			attr_dev(div2, "class", "sub_container__div box svelte-1gffrzh");
-			add_location(div2, file$1g, 406, 20, 15646);
+			add_location(div2, file$1g, 406, 20, 15652);
 			attr_dev(div3, "class", "subtitle svelte-1gffrzh");
-			add_location(div3, file$1g, 419, 24, 16179);
+			add_location(div3, file$1g, 419, 24, 16185);
 			attr_dev(button, "class", "button is-link ");
-			add_location(button, file$1g, 424, 28, 16558);
+			add_location(button, file$1g, 424, 28, 16564);
 			attr_dev(div4, "class", "control__div  svelte-1gffrzh");
-			add_location(div4, file$1g, 420, 24, 16246);
+			add_location(div4, file$1g, 420, 24, 16252);
 			attr_dev(div5, "class", "content__div  svelte-1gffrzh");
-			add_location(div5, file$1g, 427, 24, 16720);
+			add_location(div5, file$1g, 427, 24, 16726);
 			attr_dev(div6, "class", "sub_container__div box svelte-1gffrzh");
-			add_location(div6, file$1g, 418, 20, 16116);
+			add_location(div6, file$1g, 418, 20, 16122);
 			attr_dev(div7, "class", "subtitle svelte-1gffrzh");
-			add_location(div7, file$1g, 437, 24, 17126);
+			add_location(div7, file$1g, 437, 24, 17132);
 			attr_dev(hr0, "class", "svelte-1gffrzh");
-			add_location(hr0, file$1g, 443, 28, 17447);
+			add_location(hr0, file$1g, 443, 28, 17453);
 			attr_dev(div8, "class", "subtitle svelte-1gffrzh");
 			set_style(div8, "width", "100%");
 			set_style(div8, "display", "grid");
 			set_style(div8, "place-items", "center");
-			add_location(div8, file$1g, 443, 33, 17452);
+			add_location(div8, file$1g, 443, 33, 17458);
 			attr_dev(hr1, "class", "svelte-1gffrzh");
-			add_location(hr1, file$1g, 443, 135, 17554);
+			add_location(hr1, file$1g, 443, 135, 17560);
 			attr_dev(div9, "class", "align h-center");
-			add_location(div9, file$1g, 445, 28, 17590);
+			add_location(div9, file$1g, 445, 28, 17596);
 			attr_dev(div10, "class", "content__div  svelte-1gffrzh");
-			add_location(div10, file$1g, 438, 24, 17201);
+			add_location(div10, file$1g, 438, 24, 17207);
 			attr_dev(div11, "class", "sub_container__div box svelte-1gffrzh");
-			add_location(div11, file$1g, 436, 20, 17064);
+			add_location(div11, file$1g, 436, 20, 17070);
 			attr_dev(div12, "class", "subtitle svelte-1gffrzh");
-			add_location(div12, file$1g, 458, 24, 18307);
+			add_location(div12, file$1g, 458, 24, 18313);
 			attr_dev(div13, "class", "content__div  svelte-1gffrzh");
-			add_location(div13, file$1g, 459, 24, 18378);
+			add_location(div13, file$1g, 459, 24, 18384);
 			attr_dev(div14, "class", "sub_container__div box svelte-1gffrzh");
-			add_location(div14, file$1g, 456, 20, 18243);
+			add_location(div14, file$1g, 456, 20, 18249);
 			attr_dev(div15, "class", "subtitle svelte-1gffrzh");
-			add_location(div15, file$1g, 473, 24, 19080);
+			add_location(div15, file$1g, 473, 24, 19086);
 			attr_dev(div16, "class", "content__div  svelte-1gffrzh");
-			add_location(div16, file$1g, 474, 24, 19152);
+			add_location(div16, file$1g, 474, 24, 19158);
 			attr_dev(div17, "class", "sub_container__div box svelte-1gffrzh");
-			add_location(div17, file$1g, 472, 20, 19018);
+			add_location(div17, file$1g, 472, 20, 19024);
 			attr_dev(div18, "class", "main_container__div svelte-1gffrzh");
-			add_location(div18, file$1g, 405, 16, 15590);
+			add_location(div18, file$1g, 405, 16, 15596);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div18, anchor);
@@ -71477,11 +75418,11 @@ function create_if_block_3$3(ctx) {
 			t = text(t_value);
 			hr1 = element("hr");
 			attr_dev(hr0, "class", "svelte-1gffrzh");
-			add_location(hr0, file$1g, 400, 57, 15458);
+			add_location(hr0, file$1g, 400, 57, 15464);
 			attr_dev(hr1, "class", "svelte-1gffrzh");
-			add_location(hr1, file$1g, 400, 94, 15495);
+			add_location(hr1, file$1g, 400, 94, 15501);
 			attr_dev(div, "class", "content status_report__div svelte-1gffrzh");
-			add_location(div, file$1g, 400, 16, 15417);
+			add_location(div, file$1g, 400, 16, 15423);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -72249,7 +76190,7 @@ function create_if_block_2$5(ctx) {
 			t1 = text(t1_value);
 			t2 = space();
 			t3 = text(t3_value);
-			add_location(div, file$1g, 504, 20, 20603);
+			add_location(div, file$1g, 504, 20, 20609);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -72294,7 +76235,7 @@ function create_if_block_1$c(ctx) {
 			button = element("button");
 			button.textContent = "Stop";
 			attr_dev(button, "class", "button is-danger");
-			add_location(button, file$1g, 508, 20, 20805);
+			add_location(button, file$1g, 508, 20, 20811);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, button, anchor);
@@ -72369,11 +76310,11 @@ function create_footer_content__slot_slot(ctx) {
 			button1 = element("button");
 			button1.textContent = "Submit";
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$1g, 510, 16, 20936);
+			add_location(button0, file$1g, 510, 16, 20942);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$1g, 511, 16, 21083);
+			add_location(button1, file$1g, 511, 16, 21089);
 			attr_dev(div, "class", "align");
-			add_location(div, file$1g, 502, 12, 20518);
+			add_location(div, file$1g, 502, 12, 20524);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -72470,7 +76411,7 @@ function create_footer_content__slot_slot(ctx) {
 function create_fragment$1n(ctx) {
 	let if_block_anchor;
 	let current;
-	let if_block = /*active*/ ctx[0] && create_if_block$u(ctx);
+	let if_block = /*active*/ ctx[0] && create_if_block$v(ctx);
 
 	const block = {
 		c: function create() {
@@ -72494,7 +76435,7 @@ function create_fragment$1n(ctx) {
 						transition_in(if_block, 1);
 					}
 				} else {
-					if_block = create_if_block$u(ctx);
+					if_block = create_if_block$v(ctx);
 					if_block.c();
 					transition_in(if_block, 1);
 					if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -72670,7 +76611,7 @@ function instance$1n($$self, $$props, $$invalidate) {
 		const args = [JSON.stringify(conditions)];
 
 		computePy_func({ e, pyfile, args, general: true }).catch(err => {
-			set_store_value(mainPreModal, $mainPreModal.modalContent = err, $mainPreModal);
+			set_store_value(mainPreModal, $mainPreModal.modalContent = err.stack, $mainPreModal);
 			set_store_value(mainPreModal, $mainPreModal.open = true, $mainPreModal);
 		});
 
@@ -73498,15 +77439,15 @@ function create_buttonContainer_slot$3(ctx) {
 			t11 = space();
 			create_component(textfield1.$$.fragment);
 			attr_dev(button0, "class", btnClass);
-			add_location(button0, file$1h, 96, 12, 4010);
+			add_location(button0, file$1h, 96, 12, 4022);
 			attr_dev(button1, "class", btnClass);
-			add_location(button1, file$1h, 97, 12, 4108);
+			add_location(button1, file$1h, 97, 12, 4120);
 			attr_dev(button2, "class", btnClass);
-			add_location(button2, file$1h, 101, 12, 4359);
+			add_location(button2, file$1h, 101, 12, 4371);
 			attr_dev(button3, "class", btnClass);
-			add_location(button3, file$1h, 102, 12, 4448);
+			add_location(button3, file$1h, 102, 12, 4460);
 			attr_dev(div, "class", "align v-center");
-			add_location(div, file$1h, 95, 8, 3968);
+			add_location(div, file$1h, 95, 8, 3980);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -73632,7 +77573,7 @@ function create_buttonContainer_slot$3(ctx) {
 }
 
 // (117:8) {#if graphPlotted}
-function create_if_block$v(ctx) {
+function create_if_block$w(ctx) {
 	let div;
 	let customselect;
 	let updating_picked;
@@ -73687,7 +77628,7 @@ function create_if_block$v(ctx) {
 			t = space();
 			create_component(customcheckbox.$$.fragment);
 			attr_dev(div, "class", "animated fadeIn align h-end v-center");
-			add_location(div, file$1h, 118, 12, 5067);
+			add_location(div, file$1h, 118, 12, 5079);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -73743,7 +77684,7 @@ function create_if_block$v(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_if_block$v.name,
+		id: create_if_block$w.name,
 		type: "if",
 		source: "(117:8) {#if graphPlotted}",
 		ctx
@@ -73759,7 +77700,7 @@ function create_plotContainer_slot$3(ctx) {
 	let t1;
 	let div1;
 	let current;
-	let if_block = /*graphPlotted*/ ctx[3] && create_if_block$v(ctx);
+	let if_block = /*graphPlotted*/ ctx[3] && create_if_block$w(ctx);
 
 	const block = {
 		c: function create() {
@@ -73770,10 +77711,10 @@ function create_plotContainer_slot$3(ctx) {
 			div1 = element("div");
 			attr_dev(div0, "id", "resOnOffPlot");
 			attr_dev(div0, "class", "graph__div");
-			add_location(div0, file$1h, 114, 8, 4972);
+			add_location(div0, file$1h, 114, 8, 4984);
 			attr_dev(div1, "id", "thzPlot");
 			attr_dev(div1, "class", "graph__div");
-			add_location(div1, file$1h, 125, 8, 5396);
+			add_location(div1, file$1h, 125, 8, 5408);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -73792,7 +77733,7 @@ function create_plotContainer_slot$3(ctx) {
 						transition_in(if_block, 1);
 					}
 				} else {
-					if_block = create_if_block$v(ctx);
+					if_block = create_if_block$w(ctx);
 					if_block.c();
 					transition_in(if_block, 1);
 					if_block.m(t1.parentNode, t1);
@@ -74038,7 +77979,7 @@ function instance$1o($$self, $$props, $$invalidate) {
 				general: true,
 				openShell
 			}).catch(err => {
-				set_store_value(mainPreModal, $mainPreModal.modalContent = err, $mainPreModal);
+				set_store_value(mainPreModal, $mainPreModal.modalContent = err.stack, $mainPreModal);
 				set_store_value(mainPreModal, $mainPreModal.open = true, $mainPreModal);
 			});
 		}
@@ -74065,7 +78006,7 @@ function instance$1o($$self, $$props, $$invalidate) {
 			window.createToast("Graph plotted", "success");
 			$$invalidate(3, graphPlotted = true);
 		}).catch(err => {
-			set_store_value(mainPreModal, $mainPreModal.modalContent = err, $mainPreModal);
+			set_store_value(mainPreModal, $mainPreModal.modalContent = err.stack, $mainPreModal);
 			set_store_value(mainPreModal, $mainPreModal.open = true, $mainPreModal);
 		});
 	}
@@ -74279,7 +78220,7 @@ class THz extends SvelteComponentDev {
 const file$1i = "src\\components\\Changelog.svelte";
 
 // (61:0) {#if $activateChangelog && $windowLoaded}
-function create_if_block$w(ctx) {
+function create_if_block$x(ctx) {
 	let modal;
 	let updating_active;
 	let current;
@@ -74344,7 +78285,7 @@ function create_if_block$w(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_if_block$w.name,
+		id: create_if_block$x.name,
 		type: "if",
 		source: "(61:0) {#if $activateChangelog && $windowLoaded}",
 		ctx
@@ -74623,7 +78564,7 @@ h1, h2 {
 	let t;
 	let if_block_anchor;
 	let current;
-	let if_block = /*$activateChangelog*/ ctx[3] && /*$windowLoaded*/ ctx[4] && create_if_block$w(ctx);
+	let if_block = /*$activateChangelog*/ ctx[3] && /*$windowLoaded*/ ctx[4] && create_if_block$x(ctx);
 
 	const block = {
 		c: function create() {
@@ -74651,7 +78592,7 @@ h1, h2 {
 						transition_in(if_block, 1);
 					}
 				} else {
-					if_block = create_if_block$w(ctx);
+					if_block = create_if_block$x(ctx);
 					if_block.c();
 					transition_in(if_block, 1);
 					if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -75295,17 +79236,17 @@ var fattr = function(/*String*/path) {
 
 };
 
-var util = utils;
+var util$1 = utils;
 var FileSystem = fileSystem;
 var Constants = constants;
 var Errors = errors$1;
 var FileAttr = fattr;
-util.FileSystem = FileSystem;
-util.Constants = Constants;
-util.Errors = Errors;
-util.FileAttr = FileAttr;
+util$1.FileSystem = FileSystem;
+util$1.Constants = Constants;
+util$1.Errors = Errors;
+util$1.FileAttr = FileAttr;
 
-var Constants$1 = util.Constants;
+var Constants$1 = util$1.Constants;
 
 /* The central directory file header */
 var entryHeader = function () {
@@ -75416,7 +79357,7 @@ var entryHeader = function () {
             var data = input.slice(_offset, _offset + Constants$1.LOCHDR);
             // 30 bytes and should start with "PK\003\004"
             if (data.readUInt32LE(0) !== Constants$1.LOCSIG) {
-                throw new Error(util.Errors.INVALID_LOC);
+                throw new Error(util$1.Errors.INVALID_LOC);
             }
             _dataHeader = {
                 // version needed to extract
@@ -75443,7 +79384,7 @@ var entryHeader = function () {
         loadFromBinary : function(/*Buffer*/data) {
             // data should be 46 bytes and start with "PK 01 02"
             if (data.length !== Constants$1.CENHDR || data.readUInt32LE(0) !== Constants$1.CENSIG) {
-                throw new Error(util.Errors.INVALID_CEN);
+                throw new Error(util$1.Errors.INVALID_CEN);
             }
             // version made by
             _verMade = data.readUInt16LE(Constants$1.CENVEM);
@@ -75548,7 +79489,7 @@ var entryHeader = function () {
                 '\t"made" : ' + _verMade + ",\n" +
                 '\t"version" : ' + _version + ",\n" +
                 '\t"flags" : ' + _flags + ",\n" +
-                '\t"method" : ' + util.methodToString(_method) + ",\n" +
+                '\t"method" : ' + util$1.methodToString(_method) + ",\n" +
                 '\t"time" : ' + this.time + ",\n" +
                 '\t"crc" : 0x' + _crc.toString(16).toUpperCase() + ",\n" +
                 '\t"compressedSize" : ' + _compressedSize + " bytes,\n" +
@@ -75566,7 +79507,7 @@ var entryHeader = function () {
     }
 };
 
-var Constants$2 = util.Constants;
+var Constants$2 = util$1.Constants;
 
 /* The entries in the end of central directory */
 var mainHeader = function () {
@@ -75602,7 +79543,7 @@ var mainHeader = function () {
             if ((data.length !== Constants$2.ENDHDR || data.readUInt32LE(0) !== Constants$2.ENDSIG) &&
                 (data.length < Constants$2.ZIP64HDR || data.readUInt32LE(0) !== Constants$2.ZIP64SIG)) {
 
-                throw new Error(util.Errors.INVALID_END);
+                throw new Error(util$1.Errors.INVALID_END);
             }
 
             if (data.readUInt32LE(0) === Constants$2.ENDSIG) {
@@ -75618,13 +79559,13 @@ var mainHeader = function () {
                 _commentLength = data.readUInt16LE(Constants$2.ENDCOM);
             } else {
                 // number of entries on this volume
-                _volumeEntries = util.readBigUInt64LE(data, Constants$2.ZIP64SUB);
+                _volumeEntries = util$1.readBigUInt64LE(data, Constants$2.ZIP64SUB);
                 // total number of entries
-                _totalEntries = util.readBigUInt64LE(data, Constants$2.ZIP64TOT);
+                _totalEntries = util$1.readBigUInt64LE(data, Constants$2.ZIP64TOT);
                 // central directory size in bytes
-                _size = util.readBigUInt64LE(data, Constants$2.ZIP64SIZ);
+                _size = util$1.readBigUInt64LE(data, Constants$2.ZIP64SIZ);
                 // offset of first CEN header
-                _offset = util.readBigUInt64LE(data, Constants$2.ZIP64OFF);
+                _offset = util$1.readBigUInt64LE(data, Constants$2.ZIP64OFF);
 
                 _commentLength = 0;
             }
@@ -75742,7 +79683,7 @@ var methods = {
 	Inflater: Inflater
 };
 
-var Constants$3 = util.Constants;
+var Constants$3 = util$1.Constants;
 
 var zipEntry = function (/*Buffer*/input) {
 
@@ -75764,7 +79705,7 @@ var zipEntry = function (/*Buffer*/input) {
     function crc32OK(data) {
         // if bit 3 (0x08) of the general-purpose flags field is set, then the CRC-32 and file sizes are not known when the header is written
         if ((_entryHeader.flags & 0x8) !== 0x8) {
-           if (util.crc32(data) !== _entryHeader.dataHeader.crc) {
+           if (util$1.crc32(data) !== _entryHeader.dataHeader.crc) {
                return false;
            }
         }
@@ -75777,7 +79718,7 @@ var zipEntry = function (/*Buffer*/input) {
         }
         if (_isDirectory) {
             if (async && callback) {
-                callback(Buffer.alloc(0), util.Errors.DIRECTORY_CONTENT_ERROR); //si added error.
+                callback(Buffer.alloc(0), util$1.Errors.DIRECTORY_CONTENT_ERROR); //si added error.
             }
             return Buffer.alloc(0);
         }
@@ -75793,29 +79734,29 @@ var zipEntry = function (/*Buffer*/input) {
         var data = Buffer.alloc(_entryHeader.size);
 
         switch (_entryHeader.method) {
-            case util.Constants.STORED:
+            case util$1.Constants.STORED:
                 compressedData.copy(data);
                 if (!crc32OK(data)) {
-                    if (async && callback) callback(data, util.Errors.BAD_CRC);//si added error
-                    throw new Error(util.Errors.BAD_CRC);
+                    if (async && callback) callback(data, util$1.Errors.BAD_CRC);//si added error
+                    throw new Error(util$1.Errors.BAD_CRC);
                 } else {//si added otherwise did not seem to return data.
                     if (async && callback) callback(data);
                     return data;
                 }
-            case util.Constants.DEFLATED:
+            case util$1.Constants.DEFLATED:
                 var inflater = new methods.Inflater(compressedData);
                 if (!async) {
                     var result = inflater.inflate(data);
                     result.copy(data, 0);
                     if (!crc32OK(data)) {
-                        throw new Error(util.Errors.BAD_CRC + " " + _entryName.toString());
+                        throw new Error(util$1.Errors.BAD_CRC + " " + _entryName.toString());
                     }
                     return data;
                 } else {
                     inflater.inflateAsync(function(result) {
                         result.copy(data, 0);
                         if (!crc32OK(data)) {
-                            if (callback) callback(data, util.Errors.BAD_CRC); //si added error
+                            if (callback) callback(data, util$1.Errors.BAD_CRC); //si added error
                         } else { //si added otherwise did not seem to return data.
                             if (callback) callback(data);
                         }
@@ -75823,8 +79764,8 @@ var zipEntry = function (/*Buffer*/input) {
                 }
                 break;
             default:
-                if (async && callback) callback(Buffer.alloc(0), util.Errors.UNKNOWN_METHOD);
-                throw new Error(util.Errors.UNKNOWN_METHOD);
+                if (async && callback) callback(Buffer.alloc(0), util$1.Errors.UNKNOWN_METHOD);
+                throw new Error(util$1.Errors.UNKNOWN_METHOD);
         }
     }
 
@@ -75839,7 +79780,7 @@ var zipEntry = function (/*Buffer*/input) {
             var compressedData;
             // Local file header
             switch (_entryHeader.method) {
-                case util.Constants.STORED:
+                case util$1.Constants.STORED:
                     _entryHeader.compressedSize = _entryHeader.size;
 
                     compressedData = Buffer.alloc(uncompressedData.length);
@@ -75848,7 +79789,7 @@ var zipEntry = function (/*Buffer*/input) {
                     if (async && callback) callback(compressedData);
                     return compressedData;
                 default:
-                case util.Constants.DEFLATED:
+                case util$1.Constants.DEFLATED:
 
                     var deflater = new methods.Deflater(uncompressedData);
                     if (!async) {
@@ -75930,7 +79871,7 @@ var zipEntry = function (/*Buffer*/input) {
         get entryName () { return _entryName.toString(); },
         get rawEntryName() { return _entryName; },
         set entryName (val) {
-            _entryName = util.toBuffer(val);
+            _entryName = util$1.toBuffer(val);
             var lastChar = _entryName[_entryName.length - 1];
             _isDirectory = (lastChar === 47) || (lastChar === 92);
             _entryHeader.fileNameLength = _entryName.length;
@@ -75945,7 +79886,7 @@ var zipEntry = function (/*Buffer*/input) {
 
         get comment () { return _comment.toString(); },
         set comment (val) {
-            _comment = util.toBuffer(val);
+            _comment = util$1.toBuffer(val);
             _entryHeader.commentLength = _comment.length;
         },
 
@@ -75961,14 +79902,14 @@ var zipEntry = function (/*Buffer*/input) {
         },
 
         setData : function(value) {
-            uncompressedData = util.toBuffer(value);
+            uncompressedData = util$1.toBuffer(value);
             if (!_isDirectory && uncompressedData.length) {
                 _entryHeader.size = uncompressedData.length;
-                _entryHeader.method = util.Constants.DEFLATED;
-                _entryHeader.crc = util.crc32(value);
+                _entryHeader.method = util$1.Constants.DEFLATED;
+                _entryHeader.crc = util$1.crc32(value);
                 _entryHeader.changed = true;
             } else { // folders and blank files should be stored
-                _entryHeader.method = util.Constants.STORED;
+                _entryHeader.method = util$1.Constants.STORED;
             }
         },
 
@@ -76002,12 +79943,12 @@ var zipEntry = function (/*Buffer*/input) {
         packHeader : function() {
             var header = _entryHeader.entryHeaderToBinary();
             // add
-            _entryName.copy(header, util.Constants.CENHDR);
+            _entryName.copy(header, util$1.Constants.CENHDR);
             if (_entryHeader.extraLength) {
-                _extra.copy(header, util.Constants.CENHDR + _entryName.length);
+                _extra.copy(header, util$1.Constants.CENHDR + _entryName.length);
             }
             if (_entryHeader.commentLength) {
-                _comment.copy(header, util.Constants.CENHDR + _entryName.length + _entryHeader.extraLength, _comment.length);
+                _comment.copy(header, util$1.Constants.CENHDR + _entryName.length + _entryHeader.extraLength, _comment.length);
             }
             return header;
         },
@@ -76031,17 +79972,17 @@ var zipFile = function (/*String|Buffer*/input, /*Number*/inputType) {
 		entryTable = {},
 		_comment = Buffer.alloc(0),
 		filename = "",
-		fs = util.FileSystem.require(),
+		fs = util$1.FileSystem.require(),
 		inBuffer = null,
 		mainHeader = new headers.MainHeader(),
 		loadedEntries = false;
 
-	if (inputType === util.Constants.FILE) {
+	if (inputType === util$1.Constants.FILE) {
 		// is a filename
 		filename = input;
 		inBuffer = fs.readFileSync(filename);
 		readMainHeader();
-	} else if (inputType === util.Constants.BUFFER) {
+	} else if (inputType === util$1.Constants.BUFFER) {
 		// is a memory buffer
 		inBuffer = input;
 		readMainHeader();
@@ -76058,7 +79999,7 @@ var zipFile = function (/*String|Buffer*/input, /*Number*/inputType) {
 			let tmp = index;
 			const entry = new zipEntry(inBuffer);
 
-			entry.header = inBuffer.slice(tmp, tmp += util.Constants.CENHDR);
+			entry.header = inBuffer.slice(tmp, tmp += util$1.Constants.CENHDR);
 			entry.entryName = inBuffer.slice(tmp, tmp += entry.header.fileNameLength);
 
 			index += entry.header.entryHeaderSize;
@@ -76076,7 +80017,7 @@ var zipFile = function (/*String|Buffer*/input, /*Number*/inputType) {
 
 			var tmp = index,
 				entry = new zipEntry(inBuffer);
-			entry.header = inBuffer.slice(tmp, tmp += util.Constants.CENHDR);
+			entry.header = inBuffer.slice(tmp, tmp += util$1.Constants.CENHDR);
 
 			entry.entryName = inBuffer.slice(tmp, tmp += entry.header.fileNameLength);
 
@@ -76095,7 +80036,7 @@ var zipFile = function (/*String|Buffer*/input, /*Number*/inputType) {
 	}
 
 	function readMainHeader() {
-		var i = inBuffer.length - util.Constants.ENDHDR, // END header size
+		var i = inBuffer.length - util$1.Constants.ENDHDR, // END header size
 			max = Math.max(0, i - 0xFFFF), // 0xFFFF is the max zip file comment length
 			n = max,
 			endStart = inBuffer.length,
@@ -76104,35 +80045,35 @@ var zipFile = function (/*String|Buffer*/input, /*Number*/inputType) {
 
 		for (i; i >= n; i--) {
 			if (inBuffer[i] !== 0x50) continue; // quick check that the byte is 'P'
-			if (inBuffer.readUInt32LE(i) === util.Constants.ENDSIG) { // "PK\005\006"
+			if (inBuffer.readUInt32LE(i) === util$1.Constants.ENDSIG) { // "PK\005\006"
 				endOffset = i;
 				commentEnd = i;
-				endStart = i + util.Constants.ENDHDR;
+				endStart = i + util$1.Constants.ENDHDR;
 				// We already found a regular signature, let's look just a bit further to check if there's any zip64 signature
-				n = i - util.Constants.END64HDR;
+				n = i - util$1.Constants.END64HDR;
 				continue;
 			}
 
-			if (inBuffer.readUInt32LE(i) === util.Constants.END64SIG) {
+			if (inBuffer.readUInt32LE(i) === util$1.Constants.END64SIG) {
 				// Found a zip64 signature, let's continue reading the whole zip64 record
 				n = max;
 				continue;
 			}
 
-			if (inBuffer.readUInt32LE(i) == util.Constants.ZIP64SIG) {
+			if (inBuffer.readUInt32LE(i) == util$1.Constants.ZIP64SIG) {
 				// Found the zip64 record, let's determine it's size
 				endOffset = i;
-				endStart = i + util.readBigUInt64LE(inBuffer, i + util.Constants.ZIP64SIZE) + util.Constants.ZIP64LEAD;
+				endStart = i + util$1.readBigUInt64LE(inBuffer, i + util$1.Constants.ZIP64SIZE) + util$1.Constants.ZIP64LEAD;
 				break;
 			}
 		}
 
 		if (!~endOffset)
-			throw new Error(util.Errors.INVALID_FORMAT);
+			throw new Error(util$1.Errors.INVALID_FORMAT);
 
 		mainHeader.loadFromBinary(inBuffer.slice(endOffset, endStart));
 		if (mainHeader.commentLength) {
-			_comment = inBuffer.slice(commentEnd + util.Constants.ENDHDR);
+			_comment = inBuffer.slice(commentEnd + util$1.Constants.ENDHDR);
 		}
 		// readEntries();
 	}
@@ -76328,7 +80269,7 @@ var zipFile = function (/*String|Buffer*/input, /*Number*/inputType) {
 
 			var mh = mainHeader.toBinary();
 			if (_comment) {
-				Buffer.from(_comment).copy(mh, util.Constants.ENDHDR); // add zip file comment
+				Buffer.from(_comment).copy(mh, util$1.Constants.ENDHDR); // add zip file comment
 			}
 
 			mh.copy(outBuffer, dindex); // write main header
@@ -76415,7 +80356,7 @@ var zipFile = function (/*String|Buffer*/input, /*Number*/inputType) {
 
 							var mh = mainHeader.toBinary();
 							if (_comment) {
-								_comment.copy(mh, util.Constants.ENDHDR); // add zip file comment
+								_comment.copy(mh, util$1.Constants.ENDHDR); // add zip file comment
 							}
 
 							mh.copy(outBuffer, dindex); // write main header
@@ -76431,7 +80372,7 @@ var zipFile = function (/*String|Buffer*/input, /*Number*/inputType) {
 	}
 };
 
-var fs$3 = util.FileSystem.require();
+var fs$3 = util$1.FileSystem.require();
 
 fs$3.existsSync = fs$3.existsSync || path$2.existsSync;
 
@@ -76447,14 +80388,14 @@ var admZip = function (/**String*/input) {
 	if (input && typeof input === "string") { // load zip file
 		if (fs$3.existsSync(input)) {
 			_filename = input;
-			_zip = new zipFile(input, util.Constants.FILE);
+			_zip = new zipFile(input, util$1.Constants.FILE);
 		} else {
-			throw new Error(util.Errors.INVALID_FILENAME);
+			throw new Error(util$1.Errors.INVALID_FILENAME);
 		}
 	} else if (input && Buffer.isBuffer(input)) { // load buffer
-		_zip = new zipFile(input, util.Constants.BUFFER);
+		_zip = new zipFile(input, util$1.Constants.BUFFER);
 	} else { // create new zip file
-		_zip = new zipFile(null, util.Constants.NONE);
+		_zip = new zipFile(null, util$1.Constants.NONE);
 	}
 
 	function sanitize(prefix, name) {
@@ -76656,7 +80597,7 @@ var admZip = function (/**String*/input) {
 					this.addFile(zipPath + p, fs$3.readFileSync(localPath), "", 0);
 				}
 			} else {
-				throw new Error(util.Errors.FILE_NOT_FOUND.replace("%s", localPath));
+				throw new Error(util$1.Errors.FILE_NOT_FOUND.replace("%s", localPath));
 			}
 		},
 
@@ -76697,7 +80638,7 @@ var admZip = function (/**String*/input) {
 
 			if (fs$3.existsSync(localPath)) {
 
-				var items = util.findFiles(localPath),
+				var items = util$1.findFiles(localPath),
 					self = this;
 
 				if (items.length) {
@@ -76713,7 +80654,7 @@ var admZip = function (/**String*/input) {
 					});
 				}
 			} else {
-				throw new Error(util.Errors.FILE_NOT_FOUND.replace("%s", localPath));
+				throw new Error(util$1.Errors.FILE_NOT_FOUND.replace("%s", localPath));
 			}
 		},
 
@@ -76755,11 +80696,11 @@ var admZip = function (/**String*/input) {
 			var self = this;
 			fs$3.open(localPath, 'r', function (err, fd) {
 				if (err && err.code === 'ENOENT') {
-					callback(undefined, util.Errors.FILE_NOT_FOUND.replace("%s", localPath));
+					callback(undefined, util$1.Errors.FILE_NOT_FOUND.replace("%s", localPath));
 				} else if (err) {
 					callback(undefined, err);
 				} else {
-					var items = util.findFiles(localPath);
+					var items = util$1.findFiles(localPath);
 					var i = -1;
 
 					var next = function () {
@@ -76874,7 +80815,7 @@ var admZip = function (/**String*/input) {
 
 			var item = getEntry(entry);
 			if (!item) {
-				throw new Error(util.Errors.NO_ENTRY);
+				throw new Error(util$1.Errors.NO_ENTRY);
 			}
 
 			var entryName = item.entryName;
@@ -76888,22 +80829,22 @@ var admZip = function (/**String*/input) {
 					if (child.isDirectory) return;
 					var content = child.getData();
 					if (!content) {
-						throw new Error(util.Errors.CANT_EXTRACT_FILE);
+						throw new Error(util$1.Errors.CANT_EXTRACT_FILE);
 					}
 					var childName = sanitize(targetPath, maintainEntryPath ? child.entryName : path$2.basename(child.entryName));
 
-					util.writeFileTo(childName, content, overwrite);
+					util$1.writeFileTo(childName, content, overwrite);
 				});
 				return true;
 			}
 
 			var content = item.getData();
-			if (!content) throw new Error(util.Errors.CANT_EXTRACT_FILE);
+			if (!content) throw new Error(util$1.Errors.CANT_EXTRACT_FILE);
 
 			if (fs$3.existsSync(target) && !overwrite) {
-				throw new Error(util.Errors.CANT_OVERRIDE);
+				throw new Error(util$1.Errors.CANT_OVERRIDE);
 			}
-			util.writeFileTo(target, content, overwrite);
+			util$1.writeFileTo(target, content, overwrite);
 
 			return true;
 		},
@@ -76943,23 +80884,23 @@ var admZip = function (/**String*/input) {
 		extractAllTo: function (/**String*/targetPath, /**Boolean*/overwrite) {
 			overwrite = overwrite || false;
 			if (!_zip) {
-				throw new Error(util.Errors.NO_ZIP);
+				throw new Error(util$1.Errors.NO_ZIP);
 			}
 			_zip.entries.forEach(function (entry) {
 				var entryName = sanitize(targetPath, entry.entryName.toString());
 				if (entry.isDirectory) {
-					util.makeDir(entryName);
+					util$1.makeDir(entryName);
 					return;
 				}
 				var content = entry.getData();
 				if (!content) {
-					throw new Error(util.Errors.CANT_EXTRACT_FILE);
+					throw new Error(util$1.Errors.CANT_EXTRACT_FILE);
 				}
-				util.writeFileTo(entryName, content, overwrite);
+				util$1.writeFileTo(entryName, content, overwrite);
 				try {
 					fs$3.utimesSync(entryName, entry.header.time, entry.header.time);
 				} catch (err) {
-					throw new Error(util.Errors.CANT_EXTRACT_FILE);
+					throw new Error(util$1.Errors.CANT_EXTRACT_FILE);
 				}
 			});
 		},
@@ -76978,7 +80919,7 @@ var admZip = function (/**String*/input) {
 			}
 			overwrite = overwrite || false;
 			if (!_zip) {
-				callback(new Error(util.Errors.NO_ZIP));
+				callback(new Error(util$1.Errors.NO_ZIP));
 				return;
 			}
 
@@ -76990,7 +80931,7 @@ var admZip = function (/**String*/input) {
 				var entryName = path$2.normalize(entry.entryName.toString());
 
 				if (entry.isDirectory) {
-					util.makeDir(sanitize(targetPath, entryName));
+					util$1.makeDir(sanitize(targetPath, entryName));
 					if (--i === 0)
 						callback(undefined);
 					return;
@@ -77003,11 +80944,11 @@ var admZip = function (/**String*/input) {
 					}
 					if (!content) {
 						i = 0;
-						callback(new Error(util.Errors.CANT_EXTRACT_FILE));
+						callback(new Error(util$1.Errors.CANT_EXTRACT_FILE));
 						return;
 					}
 
-					util.writeFileToAsync(sanitize(targetPath, entryName), content, overwrite, function (succ) {
+					util$1.writeFileToAsync(sanitize(targetPath, entryName), content, overwrite, function (succ) {
 						try {
 							fs$3.utimesSync(path$2.resolve(targetPath, entryName), entry.header.time, entry.header.time);
 						} catch (err) {
@@ -77047,7 +80988,7 @@ var admZip = function (/**String*/input) {
 
 			var zipData = _zip.compressToBuffer();
 			if (zipData) {
-				var ok = util.writeFileTo(targetFileName, zipData, true);
+				var ok = util$1.writeFileTo(targetFileName, zipData, true);
 				if (typeof callback === 'function') callback(!ok ? new Error("failed") : null, "");
 			}
 		},
@@ -77101,12 +81042,6 @@ function download(updateFolder) {
         
         });
     })
-}
-
-var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
-
-function createCommonjsModule(fn, module) {
-	return module = { exports: {} }, fn(module, module.exports), module.exports;
 }
 
 var domain; // The domain module is executed on demand
@@ -78289,11 +82224,11 @@ function publishQueue(context, queue) {
 }
 
 var debug = noop;
-if (util$1.debuglog)
-  debug = util$1.debuglog('gfs4');
+if (util$2.debuglog)
+  debug = util$2.debuglog('gfs4');
 else if (/\bgfs4\b/i.test(process.env.NODE_DEBUG || ''))
   debug = function() {
-    var m = util$1.format.apply(util$1, arguments);
+    var m = util$2.format.apply(util$2, arguments);
     m = 'GFS4: ' + m.split(/\n/).join('\nGFS4: ');
     console.error(m);
   };
@@ -80830,7 +84765,7 @@ if (typeof Object.create === 'function') {
 
 var inherits = createCommonjsModule(function (module) {
 try {
-  var util = util$1;
+  var util = util$2;
   /* istanbul ignore next */
   if (typeof util.inherits !== 'function') throw '';
   module.exports = util.inherits;
@@ -84300,7 +88235,7 @@ function get_each_context$f(ctx, list, i) {
 }
 
 // (114:4) {#if commandInputDiv}
-function create_if_block$x(ctx) {
+function create_if_block$y(ctx) {
 	let div2;
 	let button;
 	let t1;
@@ -84537,7 +88472,7 @@ function create_if_block$x(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_if_block$x.name,
+		id: create_if_block$y.name,
 		type: "if",
 		source: "(114:4) {#if commandInputDiv}",
 		ctx
@@ -84811,7 +88746,7 @@ function create_fragment$1q(ctx) {
 	let t;
 	let div0;
 	let current;
-	let if_block = /*commandInputDiv*/ ctx[4] && create_if_block$x(ctx);
+	let if_block = /*commandInputDiv*/ ctx[4] && create_if_block$y(ctx);
 	let each_value = /*commandResults*/ ctx[2];
 	validate_each_argument(each_value);
 	let each_blocks = [];
@@ -84862,7 +88797,7 @@ function create_fragment$1q(ctx) {
 						transition_in(if_block, 1);
 					}
 				} else {
-					if_block = create_if_block$x(ctx);
+					if_block = create_if_block$y(ctx);
 					if_block.c();
 					transition_in(if_block, 1);
 					if_block.m(div1, t);
@@ -85263,7 +89198,7 @@ const { console: console_1$f } = globals;
 const file$1k = "src\\Pages\\Settings.svelte";
 
 // (154:24) {#if $developerMode}
-function create_if_block$y(ctx) {
+function create_if_block$z(ctx) {
 	let div0;
 	let textfield0;
 	let updating_value;
@@ -85348,13 +89283,13 @@ function create_if_block$y(ctx) {
 			div1 = element("div");
 			create_component(customswitch.$$.fragment);
 			attr_dev(button0, "class", "button is-link svelte-5mfame");
-			add_location(button0, file$1k, 158, 32, 5773);
+			add_location(button0, file$1k, 158, 32, 5785);
 			attr_dev(button1, "class", "button is-link svelte-5mfame");
-			add_location(button1, file$1k, 160, 32, 5887);
+			add_location(button1, file$1k, 160, 32, 5899);
 			attr_dev(div0, "class", "align svelte-5mfame");
-			add_location(div0, file$1k, 155, 28, 5484);
+			add_location(div0, file$1k, 155, 28, 5496);
 			attr_dev(div1, "class", "align svelte-5mfame");
-			add_location(div1, file$1k, 162, 28, 6023);
+			add_location(div1, file$1k, 162, 28, 6035);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -85435,7 +89370,7 @@ function create_if_block$y(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_if_block$y.name,
+		id: create_if_block$z.name,
 		type: "if",
 		source: "(154:24) {#if $developerMode}",
 		ctx
@@ -85544,7 +89479,7 @@ function create_fragment$1r(ctx) {
 	binding_callbacks.push(() => bind(customdialog, "dialog", customdialog_dialog_binding));
 	customdialog.$on("response", /*handlepythonPathCheck*/ ctx[15]);
 	changelog = new Changelog({ $$inline: true });
-	let if_block = /*$developerMode*/ ctx[0] && create_if_block$y(ctx);
+	let if_block = /*$developerMode*/ ctx[0] && create_if_block$z(ctx);
 
 	function textfield0_value_binding_1(value) {
 		/*textfield0_value_binding_1*/ ctx[24](value);
@@ -85710,79 +89645,79 @@ function create_fragment$1r(ctx) {
 			h13.textContent = "About";
 			attr_dev(div0, "class", "hvr-glow svelte-5mfame");
 			toggle_class(div0, "clicked", /*selected*/ ctx[3] === "Configuration");
-			add_location(div0, file$1k, 136, 16, 4431);
+			add_location(div0, file$1k, 136, 16, 4443);
 			attr_dev(div1, "class", "hvr-glow svelte-5mfame");
 			toggle_class(div1, "clicked", /*selected*/ ctx[3] === "Update");
-			add_location(div1, file$1k, 137, 16, 4553);
+			add_location(div1, file$1k, 137, 16, 4565);
 			attr_dev(div2, "class", "hvr-glow svelte-5mfame");
 			toggle_class(div2, "clicked", /*selected*/ ctx[3] === "Terminal");
-			add_location(div2, file$1k, 138, 16, 4661);
+			add_location(div2, file$1k, 138, 16, 4673);
 			attr_dev(div3, "class", "hvr-glow svelte-5mfame");
 			toggle_class(div3, "clicked", /*selected*/ ctx[3] === "About");
-			add_location(div3, file$1k, 140, 16, 4775);
+			add_location(div3, file$1k, 140, 16, 4787);
 			attr_dev(div4, "class", "title__div svelte-5mfame");
-			add_location(div4, file$1k, 135, 11, 4389);
+			add_location(div4, file$1k, 135, 11, 4401);
 			attr_dev(div5, "class", "box left_container__div svelte-5mfame");
-			add_location(div5, file$1k, 133, 8, 4337);
+			add_location(div5, file$1k, 133, 8, 4349);
 			attr_dev(h10, "class", "title svelte-5mfame");
-			add_location(h10, file$1k, 147, 20, 5114);
+			add_location(h10, file$1k, 147, 20, 5126);
 			attr_dev(div6, "class", "subtitle svelte-5mfame");
-			add_location(div6, file$1k, 149, 20, 5174);
+			add_location(div6, file$1k, 149, 20, 5186);
 			attr_dev(button0, "class", "button is-link svelte-5mfame");
-			add_location(button0, file$1k, 152, 24, 5283);
+			add_location(button0, file$1k, 152, 24, 5295);
 			attr_dev(div7, "class", "align svelte-5mfame");
-			add_location(div7, file$1k, 151, 20, 5238);
+			add_location(div7, file$1k, 151, 20, 5250);
 			attr_dev(div8, "class", "content animated fadeIn svelte-5mfame");
 			toggle_class(div8, "hide", /*selected*/ ctx[3] !== "Configuration");
-			add_location(div8, file$1k, 146, 16, 5015);
+			add_location(div8, file$1k, 146, 16, 5027);
 			attr_dev(h11, "class", "title svelte-5mfame");
-			add_location(h11, file$1k, 170, 20, 6487);
+			add_location(h11, file$1k, 170, 20, 6499);
 			attr_dev(div9, "class", "subtitle svelte-5mfame");
-			add_location(div9, file$1k, 172, 20, 6540);
+			add_location(div9, file$1k, 172, 20, 6552);
 			attr_dev(div10, "class", "align svelte-5mfame");
-			add_location(div10, file$1k, 175, 24, 6696);
+			add_location(div10, file$1k, 175, 24, 6708);
 			attr_dev(button1, "class", "button is-link svelte-5mfame");
 			attr_dev(button1, "id", "updateCheckBtn");
-			add_location(button1, file$1k, 182, 28, 7142);
+			add_location(button1, file$1k, 182, 28, 7154);
 			attr_dev(button2, "class", "button is-link svelte-5mfame");
 			attr_dev(button2, "id", "updateBtn");
-			add_location(button2, file$1k, 183, 28, 7288);
+			add_location(button2, file$1k, 183, 28, 7300);
 			attr_dev(button3, "class", "button is-warning svelte-5mfame");
-			add_location(button3, file$1k, 185, 28, 7427);
+			add_location(button3, file$1k, 185, 28, 7439);
 			attr_dev(div11, "class", "align svelte-5mfame");
-			add_location(div11, file$1k, 181, 24, 7093);
+			add_location(div11, file$1k, 181, 24, 7105);
 			attr_dev(button4, "class", "button is-link svelte-5mfame");
-			add_location(button4, file$1k, 191, 28, 7729);
+			add_location(button4, file$1k, 191, 28, 7741);
 			attr_dev(button5, "class", "button is-link svelte-5mfame");
-			add_location(button5, file$1k, 192, 28, 7823);
+			add_location(button5, file$1k, 192, 28, 7835);
 			attr_dev(div12, "class", "align svelte-5mfame");
-			add_location(div12, file$1k, 189, 24, 7587);
+			add_location(div12, file$1k, 189, 24, 7599);
 			attr_dev(div13, "class", "align svelte-5mfame");
-			add_location(div13, file$1k, 173, 20, 6629);
+			add_location(div13, file$1k, 173, 20, 6641);
 			attr_dev(div14, "class", "content animated fadeIn svelte-5mfame");
 			toggle_class(div14, "hide", /*selected*/ ctx[3] !== "Update");
-			add_location(div14, file$1k, 169, 16, 6395);
+			add_location(div14, file$1k, 169, 16, 6407);
 			attr_dev(h12, "class", "title svelte-5mfame");
-			add_location(h12, file$1k, 199, 20, 8101);
+			add_location(h12, file$1k, 199, 20, 8113);
 			attr_dev(div15, "class", "animated fadeIn svelte-5mfame");
 			toggle_class(div15, "hide", /*selected*/ ctx[3] !== "Terminal");
-			add_location(div15, file$1k, 198, 16, 8015);
+			add_location(div15, file$1k, 198, 16, 8027);
 			attr_dev(h13, "class", "title svelte-5mfame");
-			add_location(h13, file$1k, 204, 20, 8377);
+			add_location(h13, file$1k, 204, 20, 8389);
 			attr_dev(div16, "class", "align animated fadeIn svelte-5mfame");
 			toggle_class(div16, "hide", /*selected*/ ctx[3] !== "About");
-			add_location(div16, file$1k, 203, 16, 8288);
+			add_location(div16, file$1k, 203, 16, 8300);
 			attr_dev(div17, "class", "container right svelte-5mfame");
 			attr_dev(div17, "id", "Settings_right_column");
-			add_location(div17, file$1k, 145, 12, 4941);
+			add_location(div17, file$1k, 145, 12, 4953);
 			attr_dev(div18, "class", "box svelte-5mfame");
-			add_location(div18, file$1k, 144, 8, 4910);
+			add_location(div18, file$1k, 144, 8, 4922);
 			attr_dev(div19, "class", "main__div svelte-5mfame");
-			add_location(div19, file$1k, 132, 4, 4304);
+			add_location(div19, file$1k, 132, 4, 4316);
 			attr_dev(section, "class", "section animated fadeIn svelte-5mfame");
 			attr_dev(section, "id", "Settings");
 			set_style(section, "display", "none");
-			add_location(section, file$1k, 131, 0, 4222);
+			add_location(section, file$1k, 131, 0, 4234);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -85911,7 +89846,7 @@ function create_fragment$1r(ctx) {
 						transition_in(if_block, 1);
 					}
 				} else {
-					if_block = create_if_block$y(ctx);
+					if_block = create_if_block$z(ctx);
 					if_block.c();
 					transition_in(if_block, 1);
 					if_block.m(div7, null);
@@ -86082,14 +90017,14 @@ function instance$1r($$self, $$props, $$invalidate) {
 
 	const backup = event => {
 		backupRestore({ event, method: "backup" }).then(() => console.log("Backup Completed")).catch(err => {
-			set_store_value(mainPreModal, $mainPreModal.modalContent = err, $mainPreModal);
+			set_store_value(mainPreModal, $mainPreModal.modalContent = err.stack, $mainPreModal);
 			set_store_value(mainPreModal, $mainPreModal.open = true, $mainPreModal);
 		});
 	};
 
 	const restore = event => {
 		backupRestore({ event, method: "restore" }).then(() => console.log("Restore Completed")).catch(err => {
-			set_store_value(mainPreModal, $mainPreModal.modalContent = err, $mainPreModal);
+			set_store_value(mainPreModal, $mainPreModal.modalContent = err.stack, $mainPreModal);
 			set_store_value(mainPreModal, $mainPreModal.open = true, $mainPreModal);
 		});
 	};
@@ -86538,7 +90473,7 @@ function create_else_block$d(ctx) {
 }
 
 // (100:4) {#if active=="Unit Conversion"}
-function create_if_block$z(ctx) {
+function create_if_block$A(ctx) {
 	let div8;
 	let div3;
 	let div0;
@@ -87376,7 +91311,7 @@ function create_if_block$z(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_if_block$z.name,
+		id: create_if_block$A.name,
 		type: "if",
 		source: "(100:4) {#if active==\\\"Unit Conversion\\\"}",
 		ctx
@@ -87417,7 +91352,7 @@ function create_fragment$1s(ctx) {
 
 	tabbar = new TabBar({ props: tabbar_props, $$inline: true });
 	binding_callbacks.push(() => bind(tabbar, "active", tabbar_active_binding));
-	const if_block_creators = [create_if_block$z, create_else_block$d];
+	const if_block_creators = [create_if_block$A, create_else_block$d];
 	const if_blocks = [];
 
 	function select_block_type(ctx, dirty) {
@@ -87862,7 +91797,7 @@ class Misc extends SvelteComponentDev {
 const file$1m = "src\\components\\PreModal.svelte";
 
 // (35:0) {#if active}
-function create_if_block$A(ctx) {
+function create_if_block$B(ctx) {
 	let modal;
 	let updating_active;
 	let current;
@@ -87927,7 +91862,7 @@ function create_if_block$A(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_if_block$A.name,
+		id: create_if_block$B.name,
 		type: "if",
 		source: "(35:0) {#if active}",
 		ctx
@@ -87978,7 +91913,7 @@ function create_content_slot$6(ctx) {
 function create_fragment$1t(ctx) {
 	let if_block_anchor;
 	let current;
-	let if_block = /*active*/ ctx[0] && create_if_block$A(ctx);
+	let if_block = /*active*/ ctx[0] && create_if_block$B(ctx);
 
 	const block = {
 		c: function create() {
@@ -88002,7 +91937,7 @@ function create_fragment$1t(ctx) {
 						transition_in(if_block, 1);
 					}
 				} else {
-					if_block = create_if_block$A(ctx);
+					if_block = create_if_block$B(ctx);
 					if_block.c();
 					transition_in(if_block, 1);
 					if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -88138,7 +92073,7 @@ class PreModal extends SvelteComponentDev {
 const file$1n = "src\\App.svelte";
 
 // (45:0) {#if mounted}
-function create_if_block$B(ctx) {
+function create_if_block$C(ctx) {
 	let premodal;
 	let current;
 	premodal = new PreModal({ $$inline: true });
@@ -88167,7 +92102,7 @@ function create_if_block$B(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_if_block$B.name,
+		id: create_if_block$C.name,
 		type: "if",
 		source: "(45:0) {#if mounted}",
 		ctx
@@ -88199,7 +92134,7 @@ function create_fragment$1u(ctx) {
 	let t9;
 	let footer;
 	let current;
-	let if_block = /*mounted*/ ctx[0] && create_if_block$B(ctx);
+	let if_block = /*mounted*/ ctx[0] && create_if_block$C(ctx);
 
 	navbar = new Navbar({
 			props: { navItems: /*navItems*/ ctx[1] },
@@ -88280,7 +92215,7 @@ function create_fragment$1u(ctx) {
 						transition_in(if_block, 1);
 					}
 				} else {
-					if_block = create_if_block$B(ctx);
+					if_block = create_if_block$C(ctx);
 					if_block.c();
 					transition_in(if_block, 1);
 					if_block.m(t0.parentNode, t0);
@@ -90112,7 +94047,7 @@ function create_if_block_5$3(ctx) {
 }
 
 // (988:6) {#if text !== false}
-function create_if_block$C(ctx) {
+function create_if_block$D(ctx) {
 	let div;
 	let div_class_value;
 	let if_block = !/*_textElement*/ ctx[26] && create_if_block_1$f(ctx);
@@ -90168,7 +94103,7 @@ function create_if_block$C(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_if_block$C.name,
+		id: create_if_block$D.name,
 		type: "if",
 		source: "(988:6) {#if text !== false}",
 		ctx
@@ -90563,7 +94498,7 @@ function create_fragment$1v(ctx) {
 	}
 
 	let if_block3 = /*title*/ ctx[5] !== false && create_if_block_3$4(ctx);
-	let if_block4 = /*text*/ ctx[7] !== false && create_if_block$C(ctx);
+	let if_block4 = /*text*/ ctx[7] !== false && create_if_block$D(ctx);
 	let each_value_1 = /*modulesAppendContent*/ ctx[40];
 	validate_each_argument(each_value_1);
 	const get_key_2 = ctx => /*module*/ ctx[109];
@@ -90776,7 +94711,7 @@ function create_fragment$1v(ctx) {
 				if (if_block4) {
 					if_block4.p(ctx, dirty);
 				} else {
-					if_block4 = create_if_block$C(ctx);
+					if_block4 = create_if_block$D(ctx);
 					if_block4.c();
 					if_block4.m(div0, t6);
 				}
@@ -93175,10 +97110,10 @@ class Mobile extends SvelteComponentDev {
 }
 
 var PNotifyMobile = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    'default': Mobile,
-    position: position,
-    defaults: defaults$2
+	__proto__: null,
+	'default': Mobile,
+	position: position,
+	defaults: defaults$2
 });
 
 /* node_modules\@pnotify\font-awesome5-fix\index.svelte generated by Svelte v3.38.2 */
@@ -93371,10 +97306,10 @@ class Font_awesome5_fix extends SvelteComponentDev {
 }
 
 var PNotifyFontAwesome5Fix = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    'default': Font_awesome5_fix,
-    position: position$1,
-    defaults: defaults$3
+	__proto__: null,
+	'default': Font_awesome5_fix,
+	position: position$1,
+	defaults: defaults$3
 });
 
 /* node_modules\@pnotify\font-awesome5\index.svelte generated by Svelte v3.38.2 */
@@ -93452,11 +97387,11 @@ class Font_awesome5 extends SvelteComponentDev {
 }
 
 var PNotifyFontAwesome5 = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    'default': Font_awesome5,
-    position: position$2,
-    defaults: defaults$4,
-    init: init$2
+	__proto__: null,
+	'default': Font_awesome5,
+	position: position$2,
+	defaults: defaults$4,
+	init: init$2
 });
 
 defaultModules.set(PNotifyFontAwesome5Fix, {});
