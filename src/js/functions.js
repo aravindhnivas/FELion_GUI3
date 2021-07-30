@@ -29,7 +29,7 @@ window.onerror = function (message, source, lineno, colno, error) {
         const modalContent =  `${error.name}: ${message}\nsource: ${source}\nlineno: ${lineno}\tcolno: ${colno}`
         return {...data, modalContent, open: true, type:"danger"}
     })
-    // $mainPreModal.modalContent = error;  $mainPreModal.open = true; $mainPreModal.type="danger"
+    // $mainPreModal.modalContent = error.stack;  $mainPreModal.open = true; $mainPreModal.type="danger"
 };
 
 window.process.on('unhandledRejection', (reason, promise) => {
