@@ -39,7 +39,7 @@
             window.createToast("Graph Plotted", "success")
             graphPlotted = true, $opoMode = true
             showOPOFiles=false
-        }).catch(err=>{$mainPreModal.modalContent = err;  $mainPreModal.open = true})
+        }).catch(err=>{$mainPreModal.modalContent = err.stack;  $mainPreModal.open = true})
 
     }
     // $: console.log(OPOfilesChecked)

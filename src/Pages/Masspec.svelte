@@ -68,7 +68,7 @@
         let {pyfile, args} = pyfileInfo[filetype]
         if (filetype == "general") {
 
-            return computePy_func({e, pyfile, args, general:true, openShell}).catch(err=>{$mainPreModal.modalContent = err;  $mainPreModal.open = true})
+            return computePy_func({e, pyfile, args, general:true, openShell}).catch(err=>{$mainPreModal.modalContent = err.stack;  $mainPreModal.open = true})
             
         }
 

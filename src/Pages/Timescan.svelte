@@ -77,7 +77,7 @@
         if (filetype == "scan") {graphPlotted = false}
         if (filetype == "general") {
 
-            return computePy_func({e, pyfile, args, general:true, openShell}).catch(err=>{$mainPreModal.modalContent = err;  $mainPreModal.open = true})
+            return computePy_func({e, pyfile, args, general:true, openShell}).catch(err=>{$mainPreModal.modalContent = err.stack;  $mainPreModal.open = true})
         }
 
         try {
@@ -100,7 +100,7 @@
             } 
             window.createToast("Graph plotted", "success")
             graphPlotted = true
-        } catch (error) {$mainPreModal.modalContent = error;  $mainPreModal.open = true}
+        } catch (error) {$mainPreModal.modalContent = error.stack;  $mainPreModal.open = true}
     }
 
     // Linearlog check

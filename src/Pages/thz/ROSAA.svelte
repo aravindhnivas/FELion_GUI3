@@ -125,7 +125,7 @@
         
         const args = [JSON.stringify(conditions)]
         
-        computePy_func({e, pyfile, args, general:true}).catch(err=>{$mainPreModal.modalContent = err;  $mainPreModal.open = true})
+        computePy_func({e, pyfile, args, general:true}).catch(err=>{$mainPreModal.modalContent = err.stack;  $mainPreModal.open = true})
         running=true
     }
     let currentLocation = fs.existsSync(db.get("thz_modal_location")) ? db.get("thz_modal_location") : "";

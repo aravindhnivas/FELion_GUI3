@@ -27,13 +27,13 @@
     const backup = (event) => {
         backupRestore({event, method:"backup"})
             .then(()=>console.log("Backup Completed"))
-            .catch((err)=>{$mainPreModal.modalContent = err; $mainPreModal.open = true})
+            .catch((err)=>{$mainPreModal.modalContent = err.stack; $mainPreModal.open = true})
     }
 
     const restore = (event) => {
         backupRestore({event, method:"restore"})
         .then(()=>console.log("Restore Completed"))
-        .catch((err)=>{$mainPreModal.modalContent = err; $mainPreModal.open = true})
+        .catch((err)=>{$mainPreModal.modalContent = err.stack; $mainPreModal.open = true})
 
     }
 

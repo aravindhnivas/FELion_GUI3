@@ -99,7 +99,7 @@
             const {pyfile, args} = general
 
             computePy_func({pyfile, args, general:true})
-            .catch(err=>{$mainPreModal.modalContent = err;  $mainPreModal.open = true})
+            .catch(err=>{$mainPreModal.modalContent = err.stack;  $mainPreModal.open = true})
             return;
         
         }
@@ -119,7 +119,7 @@
                 .then((dataFromPython)=>{
                     exp_fit_func({dataFromPython})
                     window.createToast("Line fitted with gaussian function", "success")
-                }).catch(err=>{$mainPreModal.modalContent = err;  $mainPreModal.open = true})
+                }).catch(err=>{$mainPreModal.modalContent = err.stack;  $mainPreModal.open = true})
 
                 break;
 
@@ -153,7 +153,7 @@
                     NGauss_fit_func({dataFromPython})
                     console.log("Line fitted")
                     window.createToast(`Line fitted with ${dataFromPython["fitted_parameter"].length} gaussian function`, "success")
-                }).catch(err=>{$mainPreModal.modalContent = err;  $mainPreModal.open = true})
+                }).catch(err=>{$mainPreModal.modalContent = err.stack;  $mainPreModal.open = true})
                 break;
             
             case "find_peaks":
@@ -174,7 +174,7 @@
                     find_peaks_func({dataFromPython})
                     console.log(`felixPeakTable:`, $felixPeakTable)
                     window.createToast("Peaks found", "success")
-                }).catch(err=>{$mainPreModal.modalContent = err;  $mainPreModal.open = true})
+                }).catch(err=>{$mainPreModal.modalContent = err.stack;  $mainPreModal.open = true})
 
                 break;
 
@@ -185,7 +185,7 @@
                 .then((dataFromPython)=>{
                     get_err_func({dataFromPython})
                     window.createToast("Weighted fit. done", "success")
-                }).catch(err=>{$mainPreModal.modalContent = err;  $mainPreModal.open = true})
+                }).catch(err=>{$mainPreModal.modalContent = err.stack;  $mainPreModal.open = true})
                 break;
 
          
