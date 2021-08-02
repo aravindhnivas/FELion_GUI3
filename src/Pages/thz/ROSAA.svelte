@@ -284,7 +284,6 @@
 </script>
 
 <style lang="scss">
-
     .locationColumn {
 
         display: grid;
@@ -317,12 +316,11 @@
         .variableColumn__dropdown {
             display: flex;
             gap: 1em;
+
             place-items: baseline;
-        
         }
     }
     .main_container__div {
-
         display: grid;
         grid-row-gap: 1em;
         padding: 1em;
@@ -332,8 +330,8 @@
     // :global(.content__div label) {flex-basis: 30%;}
     .sub_container__div {
         display: grid;
-        grid-row-gap: 1em;
 
+        grid-row-gap: 1em;
         .subtitle {place-self:center;}
         .content__div {
 
