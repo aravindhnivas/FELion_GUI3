@@ -2,7 +2,7 @@
 <script>
   // import {onMount} from "svelte";
   import { createEventDispatcher } from 'svelte';
-  export let active =  false, title =  "Title", style="width:60vw", bodyBackground = "#634e96", bodyStyle="max-height: 30em;", contentID="";
+  export let active =  false, title =  "Title", style="width:60vw", bodyBackground = "#634e96", bodyStyle="max-height: 30em; height: 30em", contentID="";
   export let headerBackground="#836ac05c";
   const dispatch = createEventDispatcher()
 
