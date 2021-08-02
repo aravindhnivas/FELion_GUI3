@@ -69,44 +69,44 @@
     
     function saveConfig() {
 
+        if(!fs.existsSync(currentLocation)) {return window.createToast("Invalid location or filename", "danger")}
+
         let config_content = {}
-
         const keys = configKeys.slice(1, configKeys.length)
-        configArray.forEach(content => {
 
+        configArray.forEach(content => {
             const filename = content["filename"]
             const newKeyValue = {}
             keys.forEach(key=>{newKeyValue[key]=content[key]})
-            
             config_content[filename] = newKeyValue
         })
+        const save_config_content = JSON.stringify(config_content, null, 4)
         const config_file = path.join(currentLocation, config_file_ROSAAkinetics);
-        if(fs.existsSync(currentLocation) && selectedFile) {
-            
-            const contentExists = Object.keys(config_content[selectedFile]).length > 0
-            if(!contentExists) {
-                config_content[selectedFile] = {srgMode, pbefore, pafter, calibrationFactor, temp}
-            }
-            fs.writeFile(config_file, JSON.stringify(config_content, null, 4), "utf8", function (err) {
-                if (err) return window.createToast("Error occured while saving file", "danger");
 
-                window.createToast("Config file saved"+config_file_ROSAAkinetics, "warning")
-            });
-        } else {return window.createToast("Invalid location or filename", "danger")}
+        fs.writeFile(config_file, save_config_content, "utf8", function (err) {
+            if (err) return window.createToast("Error occured while saving file", "danger");
+            window.createToast("Config file saved"+config_file_ROSAAkinetics, "warning")
+        });
     }
 
     function makeConfigArray(obj) {
-        configArray = []
+        const keys = Object.keys(obj)
 
-        // const filenameKeys = Object.keys(obj)
+        configArray = keys.map(
+            filename=>{
+                const id = window.getID()
+                return {filename, id, ...obj[filename]}
+            }
+        )
         
-        fileChecked.forEach(filename=>{
-        
+        const fileCheckedRemaining = _.difference(fileChecked, keys)
+
+        fileCheckedRemaining.forEach(filename=>{
             const id = window.getID()
-        
-            
             if (filename in obj) {
+
                 const currentValue = {filename, id}
+
                 const currentObj = obj[filename]
                 configKeys.forEach(key=>{
                     if(key in currentObj) {currentValue[key] = currentObj[key]}
@@ -115,49 +115,54 @@
             } else if (filename) {
                 const currentValue = {filename, id}
                 configKeys.forEach(key=>{
-
                     if(key !== "filename") {currentValue[key] = ""}
-                
                 })
                 configArray = [...configArray, currentValue]
             
             }
             
-        
-        
         })
-
     }
 
-
-    function loadConfig() {
+    async function loadConfig() {
         try {
+
+
             console.log("loadConfig")
             const config_file = path.join(currentLocation, config_file_ROSAAkinetics);
-
             if(fs.existsSync(config_file)) {
-                console.log("file exists", "reading file")
-                const config_content = fs.readFileSync(config_file, "utf8");
-                console.log("file read", config_content);
+                const config_content = JSON.parse(fs.readFileSync(config_file, "utf8"))
 
-                const config_parsed = JSON.parse(config_content)
-                makeConfigArray(config_parsed)
-                if(config_parsed[selectedFile]) {
+                console.log(config_content)
+                window.createToast("Config file loaded: "+config_file_ROSAAkinetics, "warning");
+                makeConfigArray(config_content)
+
+                if(config_content[selectedFile]) {
                     update_pbefore = false;
-                    ({srgMode, pbefore, pafter, calibrationFactor, temp} = config_parsed[selectedFile]);
-                    srgMode = JSON.parse(srgMode);
-                    window.createToast("Config file loaded: "+config_file_ROSAAkinetics, "warning");
+                    try {
+                        ({srgMode, pbefore, pafter, calibrationFactor, temp} = config_content[selectedFile]);
 
+                        srgMode = JSON.parse(srgMode);
+                    } catch (error) {
+                        console.error(error.stack)
+                        window.createToast("Error while reading the values: Check config file", "danger");
+
+                    }
                 } else {
-                    return window.createToast("config file not available for "+selectedFile, "danger")
-                }
-            } else {return window.createToast("config file not available", "danger")}
+                    return window.createToast("config file not available for selected file: "+selectedFile, "danger")
 
+                }
+            } else {
+                // if(selectedFile)
+                return window.createToast("config file not available", "danger")
+            }
         } catch (error) {
             console.log(error)
             $mainPreModal.modalContent = error.stack;  $mainPreModal.open = true; $mainPreModal.type="danger"
+
         }
     }
+
 
     async function kineticSimulation(e) {
         try {
@@ -221,7 +226,7 @@
 
     <div class="align">
 
-        <CustomSelect bind:picked={selectedFile} label="Filename" options={["", ...fileChecked]} />
+        <CustomSelect bind:picked={selectedFile} label="Filename" options={["", ...fileChecked]} style="min-width: 7em; "/>
         <Textfield bind:value={molecule} label="Molecule" />
 
         <Textfield bind:value={tag} label="tag" />
@@ -238,13 +243,11 @@
     </div>
 
     <div class="align v-center">
-        <button class="button is-link" on:click="{computeParameters}" >Compute parameters</button>
 
-        <button class="button is-link" on:click="{saveConfig}">saveConfig</button>
+        <button class="button is-link" on:click="{computeParameters}" >Compute parameters</button>
         <button class="button is-link" on:click="{loadConfig}">loadConfig</button>
         <Icon class="material-icons" on:click="{()=> adjustConfig = true}">settings</Icon>
         <button class="button is-link" on:click="{kineticSimulation}" on:pyEventClosed="{pyEventClosed}">Submit</button>
-
         {#if pyEventCounter}
             <div class="subtitle">{pyEventCounter} process running</div>
         {/if}
