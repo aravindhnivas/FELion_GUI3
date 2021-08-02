@@ -44332,29 +44332,29 @@ class TheoryRow extends SvelteComponent {
 
 function get_each_context$8(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[17] = list[i];
-	child_ctx[18] = list;
-	child_ctx[19] = i;
+	child_ctx[18] = list[i];
+	child_ctx[19] = list;
+	child_ctx[20] = i;
 	return child_ctx;
 }
 
 function get_each_context_1$6(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[20] = list[i].key;
-	child_ctx[7] = list[i].id;
-	child_ctx[21] = list;
-	child_ctx[22] = i;
+	child_ctx[21] = list[i].key;
+	child_ctx[8] = list[i].id;
+	child_ctx[22] = list;
+	child_ctx[23] = i;
 	return child_ctx;
 }
 
 function get_each_context_2$5(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[23] = list[i];
-	child_ctx[19] = i;
+	child_ctx[24] = list[i];
+	child_ctx[20] = i;
 	return child_ctx;
 }
 
-// (56:4) {#if addextraOption}
+// (57:4) {#if addextraOption}
 function create_if_block_2$3(ctx) {
 	let div;
 	let icon;
@@ -44368,7 +44368,7 @@ function create_if_block_2$3(ctx) {
 			}
 		});
 
-	icon.$on("click", /*addRow*/ ctx[11]);
+	icon.$on("click", /*addRow*/ ctx[12]);
 
 	return {
 		c() {
@@ -44384,7 +44384,7 @@ function create_if_block_2$3(ctx) {
 		p(ctx, dirty) {
 			const icon_changes = {};
 
-			if (dirty & /*$$scope*/ 33554432) {
+			if (dirty & /*$$scope*/ 67108864) {
 				icon_changes.$$scope = { dirty, ctx };
 			}
 
@@ -44406,7 +44406,7 @@ function create_if_block_2$3(ctx) {
 	};
 }
 
-// (58:12) <Icon class="material-icons"  on:click="{addRow}">
+// (59:12) <Icon class="material-icons"  on:click="{addRow}">
 function create_default_slot_2$2(ctx) {
 	let t;
 
@@ -44423,7 +44423,7 @@ function create_default_slot_2$2(ctx) {
 	};
 }
 
-// (79:32) {#if sortOption}
+// (81:32) {#if sortOption}
 function create_if_block_1$7(ctx) {
 	let icon;
 	let current;
@@ -44459,7 +44459,7 @@ function create_if_block_1$7(ctx) {
 	};
 }
 
-// (80:36) <Icon class="material-icons" >
+// (82:36) <Icon class="material-icons" >
 function create_default_slot_1$3(ctx) {
 	let t;
 
@@ -44476,21 +44476,21 @@ function create_default_slot_1$3(ctx) {
 	};
 }
 
-// (74:20) {#each head as item, index }
+// (76:20) {#each head as item, index }
 function create_each_block_2$5(ctx) {
 	let th;
 	let div;
 	let t0;
-	let t1_value = /*item*/ ctx[23] + "";
+	let t1_value = /*item*/ ctx[24] + "";
 	let t1;
 	let t2;
 	let current;
 	let mounted;
 	let dispose;
-	let if_block = /*sortOption*/ ctx[4] && create_if_block_1$7(ctx);
+	let if_block = /*sortOption*/ ctx[5] && create_if_block_1$7(ctx);
 
 	function click_handler() {
-		return /*click_handler*/ ctx[13](/*index*/ ctx[19]);
+		return /*click_handler*/ ctx[14](/*index*/ ctx[20]);
 	}
 
 	return {
@@ -44524,9 +44524,9 @@ function create_each_block_2$5(ctx) {
 		p(new_ctx, dirty) {
 			ctx = new_ctx;
 
-			if (/*sortOption*/ ctx[4]) {
+			if (/*sortOption*/ ctx[5]) {
 				if (if_block) {
-					if (dirty & /*sortOption*/ 16) {
+					if (dirty & /*sortOption*/ 32) {
 						transition_in(if_block, 1);
 					}
 				} else {
@@ -44545,7 +44545,7 @@ function create_each_block_2$5(ctx) {
 				check_outros();
 			}
 
-			if ((!current || dirty & /*head*/ 2) && t1_value !== (t1_value = /*item*/ ctx[23] + "")) set_data(t1, t1_value);
+			if ((!current || dirty & /*head*/ 2) && t1_value !== (t1_value = /*item*/ ctx[24] + "")) set_data(t1, t1_value);
 		},
 		i(local) {
 			if (current) return;
@@ -44565,17 +44565,16 @@ function create_each_block_2$5(ctx) {
 	};
 }
 
-// (97:20) {#each keyIDSets as {key, id}
+// (99:20) {#each keyIDSets as {key, id}
 function create_each_block_1$6(key_1, ctx) {
 	let td;
-	let t_value = /*row*/ ctx[17][/*key*/ ctx[20]] + "";
-	let t;
+	let input;
 	let td_id_value;
 	let mounted;
 	let dispose;
 
-	function td_input_handler() {
-		/*td_input_handler*/ ctx[14].call(td, /*key*/ ctx[20], /*each_value*/ ctx[18], /*index*/ ctx[19]);
+	function input_input_handler() {
+		/*input_input_handler*/ ctx[15].call(input, /*key*/ ctx[21], /*each_value*/ ctx[19], /*index*/ ctx[20]);
 	}
 
 	return {
@@ -44583,36 +44582,34 @@ function create_each_block_1$6(key_1, ctx) {
 		first: null,
 		c() {
 			td = element("td");
-			t = text(t_value);
+			input = element("input");
+			attr(input, "type", "text");
+			set_style(input, "color", "black");
+			set_style(input, "width", "100%");
+			attr(input, "class", "svelte-1kiu7tv");
 			attr(td, "class", "mdc-data-table__cell  mdc-data-table__cell--numeric svelte-1kiu7tv");
-			attr(td, "contenteditable", "true");
-			attr(td, "id", td_id_value = "" + (/*row*/ ctx[17].id + "-" + /*key*/ ctx[20]));
-			if (/*row*/ ctx[17][/*key*/ ctx[20]] === void 0) add_render_callback(td_input_handler);
+			attr(td, "id", td_id_value = "" + (/*row*/ ctx[18].id + "-" + /*key*/ ctx[21]));
 			this.first = td;
 		},
 		m(target, anchor) {
 			insert(target, td, anchor);
-			append(td, t);
-
-			if (/*row*/ ctx[17][/*key*/ ctx[20]] !== void 0) {
-				td.innerHTML = /*row*/ ctx[17][/*key*/ ctx[20]];
-			}
+			append(td, input);
+			set_input_value(input, /*row*/ ctx[18][/*key*/ ctx[21]]);
 
 			if (!mounted) {
-				dispose = listen(td, "input", td_input_handler);
+				dispose = listen(input, "input", input_input_handler);
 				mounted = true;
 			}
 		},
 		p(new_ctx, dirty) {
 			ctx = new_ctx;
-			if (dirty & /*rows*/ 1 && t_value !== (t_value = /*row*/ ctx[17][/*key*/ ctx[20]] + "")) set_data(t, t_value);
 
-			if (dirty & /*rows*/ 1 && td_id_value !== (td_id_value = "" + (/*row*/ ctx[17].id + "-" + /*key*/ ctx[20]))) {
-				attr(td, "id", td_id_value);
+			if (dirty & /*rows, keyIDSets*/ 1025 && input.value !== /*row*/ ctx[18][/*key*/ ctx[21]]) {
+				set_input_value(input, /*row*/ ctx[18][/*key*/ ctx[21]]);
 			}
 
-			if (dirty & /*rows, keyIDSets*/ 513 && /*row*/ ctx[17][/*key*/ ctx[20]] !== td.innerHTML) {
-				td.innerHTML = /*row*/ ctx[17][/*key*/ ctx[20]];
+			if (dirty & /*rows*/ 1 && td_id_value !== (td_id_value = "" + (/*row*/ ctx[18].id + "-" + /*key*/ ctx[21]))) {
+				attr(td, "id", td_id_value);
 			}
 		},
 		d(detaching) {
@@ -44623,7 +44620,7 @@ function create_each_block_1$6(key_1, ctx) {
 	};
 }
 
-// (100:20) {#if closeOption}
+// (104:20) {#if closeOption}
 function create_if_block$h(ctx) {
 	let td;
 	let icon;
@@ -44631,14 +44628,14 @@ function create_if_block$h(ctx) {
 
 	icon = new Icon$1({
 			props: {
-				id: /*row*/ ctx[17].id,
+				id: /*row*/ ctx[18].id,
 				class: "material-icons",
 				$$slots: { default: [create_default_slot$5] },
 				$$scope: { ctx }
 			}
 		});
 
-	icon.$on("click", /*click_handler_1*/ ctx[15]);
+	icon.$on("click", /*click_handler_1*/ ctx[16]);
 
 	return {
 		c() {
@@ -44656,9 +44653,9 @@ function create_if_block$h(ctx) {
 		},
 		p(ctx, dirty) {
 			const icon_changes = {};
-			if (dirty & /*rows*/ 1) icon_changes.id = /*row*/ ctx[17].id;
+			if (dirty & /*rows*/ 1) icon_changes.id = /*row*/ ctx[18].id;
 
-			if (dirty & /*$$scope*/ 33554432) {
+			if (dirty & /*$$scope*/ 67108864) {
 				icon_changes.$$scope = { dirty, ctx };
 			}
 
@@ -44680,7 +44677,7 @@ function create_if_block$h(ctx) {
 	};
 }
 
-// (102:28) <Icon id="{row.id}" class="material-icons" on:click="{(e)=> {rows = window._.filter(rows, (tb)=>tb.id != e.target.id)}}">
+// (106:28) <Icon id="{row.id}" class="material-icons" on:click="{(e)=> {rows = window._.filter(rows, (tb)=>tb.id != e.target.id)}}">
 function create_default_slot$5(ctx) {
 	let t;
 
@@ -44697,11 +44694,11 @@ function create_default_slot$5(ctx) {
 	};
 }
 
-// (93:16) {#each rows as row, index (row.id)}
+// (95:16) {#each rows as row, index (row.id)}
 function create_each_block$8(key_1, ctx) {
 	let tr;
 	let td;
-	let t0_value = /*index*/ ctx[19] + "";
+	let t0_value = /*index*/ ctx[20] + "";
 	let t0;
 	let t1;
 	let each_blocks = [];
@@ -44710,8 +44707,8 @@ function create_each_block$8(key_1, ctx) {
 	let t3;
 	let tr_transition;
 	let current;
-	let each_value_1 = /*keyIDSets*/ ctx[9];
-	const get_key = ctx => /*id*/ ctx[7];
+	let each_value_1 = /*keyIDSets*/ ctx[10];
+	const get_key = ctx => /*id*/ ctx[8];
 
 	for (let i = 0; i < each_value_1.length; i += 1) {
 		let child_ctx = get_each_context_1$6(ctx, each_value_1, i);
@@ -44719,7 +44716,7 @@ function create_each_block$8(key_1, ctx) {
 		each_1_lookup.set(key, each_blocks[i] = create_each_block_1$6(key, child_ctx));
 	}
 
-	let if_block = /*closeOption*/ ctx[5] && create_if_block$h(ctx);
+	let if_block = /*closeOption*/ ctx[6] && create_if_block$h(ctx);
 
 	return {
 		key: key_1,
@@ -44760,18 +44757,18 @@ function create_each_block$8(key_1, ctx) {
 		},
 		p(new_ctx, dirty) {
 			ctx = new_ctx;
-			if ((!current || dirty & /*rows*/ 1) && t0_value !== (t0_value = /*index*/ ctx[19] + "")) set_data(t0, t0_value);
+			if ((!current || dirty & /*rows*/ 1) && t0_value !== (t0_value = /*index*/ ctx[20] + "")) set_data(t0, t0_value);
 
-			if (dirty & /*rows, keyIDSets*/ 513) {
-				each_value_1 = /*keyIDSets*/ ctx[9];
+			if (dirty & /*rows, keyIDSets*/ 1025) {
+				each_value_1 = /*keyIDSets*/ ctx[10];
 				each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value_1, each_1_lookup, tr, destroy_block, create_each_block_1$6, t2, get_each_context_1$6);
 			}
 
-			if (/*closeOption*/ ctx[5]) {
+			if (/*closeOption*/ ctx[6]) {
 				if (if_block) {
 					if_block.p(ctx, dirty);
 
-					if (dirty & /*closeOption*/ 32) {
+					if (dirty & /*closeOption*/ 64) {
 						transition_in(if_block, 1);
 					}
 				} else {
@@ -44795,7 +44792,7 @@ function create_each_block$8(key_1, ctx) {
 			transition_in(if_block);
 
 			add_render_callback(() => {
-				if (!tr_transition) tr_transition = create_bidirectional_transition(tr, /*animate*/ ctx[8], {}, true);
+				if (!tr_transition) tr_transition = create_bidirectional_transition(tr, /*animate*/ ctx[9], {}, true);
 				tr_transition.run(1);
 			});
 
@@ -44803,7 +44800,7 @@ function create_each_block$8(key_1, ctx) {
 		},
 		o(local) {
 			transition_out(if_block);
-			if (!tr_transition) tr_transition = create_bidirectional_transition(tr, /*animate*/ ctx[8], {}, false);
+			if (!tr_transition) tr_transition = create_bidirectional_transition(tr, /*animate*/ ctx[9], {}, false);
 			tr_transition.run(0);
 			current = false;
 		},
@@ -44834,7 +44831,7 @@ function create_fragment$q(ctx) {
 	let each_blocks = [];
 	let each1_lookup = new Map();
 	let current;
-	let if_block = /*addextraOption*/ ctx[6] && create_if_block_2$3(ctx);
+	let if_block = /*addextraOption*/ ctx[7] && create_if_block_2$3(ctx);
 	let each_value_2 = /*head*/ ctx[1];
 	let each_blocks_1 = [];
 
@@ -44847,7 +44844,7 @@ function create_fragment$q(ctx) {
 	});
 
 	let each_value = /*rows*/ ctx[0];
-	const get_key = ctx => /*row*/ ctx[17].id;
+	const get_key = ctx => /*row*/ ctx[18].id;
 
 	for (let i = 0; i < each_value.length; i += 1) {
 		let child_ctx = get_each_context$8(ctx, each_value, i);
@@ -44888,7 +44885,8 @@ function create_fragment$q(ctx) {
 			attr(tbody, "class", "mdc-data-table__content svelte-1kiu7tv");
 			attr(table, "class", "mdc-data-table__table svelte-1kiu7tv");
 			attr(table, "aria-label", /*label*/ ctx[3]);
-			attr(table, "id", /*id*/ ctx[7]);
+			attr(table, "id", /*id*/ ctx[8]);
+			set_style(table, "user-select", (/*userSelect*/ ctx[4] ? 'text' : 'none') + " ");
 			attr(div0, "class", "mdc-data-table tableContainer svelte-1kiu7tv");
 			attr(div1, "class", " svelte-1kiu7tv");
 		},
@@ -44917,11 +44915,11 @@ function create_fragment$q(ctx) {
 			current = true;
 		},
 		p(ctx, [dirty]) {
-			if (/*addextraOption*/ ctx[6]) {
+			if (/*addextraOption*/ ctx[7]) {
 				if (if_block) {
 					if_block.p(ctx, dirty);
 
-					if (dirty & /*addextraOption*/ 64) {
+					if (dirty & /*addextraOption*/ 128) {
 						transition_in(if_block, 1);
 					}
 				} else {
@@ -44940,7 +44938,7 @@ function create_fragment$q(ctx) {
 				check_outros();
 			}
 
-			if (dirty & /*sortTable, keys, head, sortOption*/ 1046) {
+			if (dirty & /*sortTable, keys, head, sortOption*/ 2086) {
 				each_value_2 = /*head*/ ctx[1];
 				let i;
 
@@ -44967,7 +44965,7 @@ function create_fragment$q(ctx) {
 				check_outros();
 			}
 
-			if (dirty & /*rows, window, closeOption, keyIDSets*/ 545) {
+			if (dirty & /*rows, window, closeOption, keyIDSets*/ 1089) {
 				each_value = /*rows*/ ctx[0];
 				group_outros();
 				each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value, each1_lookup, tbody, outro_and_destroy_block, create_each_block$8, null, get_each_context$8);
@@ -44978,8 +44976,12 @@ function create_fragment$q(ctx) {
 				attr(table, "aria-label", /*label*/ ctx[3]);
 			}
 
-			if (!current || dirty & /*id*/ 128) {
-				attr(table, "id", /*id*/ ctx[7]);
+			if (!current || dirty & /*id*/ 256) {
+				attr(table, "id", /*id*/ ctx[8]);
+			}
+
+			if (!current || dirty & /*userSelect*/ 16) {
+				set_style(table, "user-select", (/*userSelect*/ ctx[4] ? 'text' : 'none') + " ");
 			}
 		},
 		i(local) {
@@ -45024,7 +45026,8 @@ function create_fragment$q(ctx) {
 
 function instance$r($$self, $$props, $$invalidate) {
 	let animate;
-	let { head, rows, keys, id = window.getID(), label = "table", sortOption = false, closeOption = true, addextraOption = true, animateRow = true } = $$props;
+	let { head, rows, keys, id = window.getID(), label = "table", userSelect = true } = $$props;
+	let { sortOption = false, closeOption = true, addextraOption = true, animateRow = true } = $$props;
 
 	const keyIDSets = keys.map(key => {
 		return { key, id: window.getID() };
@@ -45049,10 +45052,10 @@ function instance$r($$self, $$props, $$invalidate) {
 
 	const click_handler = index => sortTable(keys[index]);
 
-	function td_input_handler(key, each_value, index) {
-		each_value[index][key] = this.innerHTML;
+	function input_input_handler(key, each_value, index) {
+		each_value[index][key] = this.value;
 		$$invalidate(0, rows);
-		$$invalidate(9, keyIDSets);
+		$$invalidate(10, keyIDSets);
 	}
 
 	const click_handler_1 = e => {
@@ -45063,17 +45066,18 @@ function instance$r($$self, $$props, $$invalidate) {
 		if ('head' in $$props) $$invalidate(1, head = $$props.head);
 		if ('rows' in $$props) $$invalidate(0, rows = $$props.rows);
 		if ('keys' in $$props) $$invalidate(2, keys = $$props.keys);
-		if ('id' in $$props) $$invalidate(7, id = $$props.id);
+		if ('id' in $$props) $$invalidate(8, id = $$props.id);
 		if ('label' in $$props) $$invalidate(3, label = $$props.label);
-		if ('sortOption' in $$props) $$invalidate(4, sortOption = $$props.sortOption);
-		if ('closeOption' in $$props) $$invalidate(5, closeOption = $$props.closeOption);
-		if ('addextraOption' in $$props) $$invalidate(6, addextraOption = $$props.addextraOption);
-		if ('animateRow' in $$props) $$invalidate(12, animateRow = $$props.animateRow);
+		if ('userSelect' in $$props) $$invalidate(4, userSelect = $$props.userSelect);
+		if ('sortOption' in $$props) $$invalidate(5, sortOption = $$props.sortOption);
+		if ('closeOption' in $$props) $$invalidate(6, closeOption = $$props.closeOption);
+		if ('addextraOption' in $$props) $$invalidate(7, addextraOption = $$props.addextraOption);
+		if ('animateRow' in $$props) $$invalidate(13, animateRow = $$props.animateRow);
 	};
 
 	$$self.$$.update = () => {
-		if ($$self.$$.dirty & /*animateRow*/ 4096) {
-			$$invalidate(8, animate = animateRow
+		if ($$self.$$.dirty & /*animateRow*/ 8192) {
+			$$invalidate(9, animate = animateRow
 			? scale
 			: e => {
 					
@@ -45086,6 +45090,7 @@ function instance$r($$self, $$props, $$invalidate) {
 		head,
 		keys,
 		label,
+		userSelect,
 		sortOption,
 		closeOption,
 		addextraOption,
@@ -45096,7 +45101,7 @@ function instance$r($$self, $$props, $$invalidate) {
 		addRow,
 		animateRow,
 		click_handler,
-		td_input_handler,
+		input_input_handler,
 		click_handler_1
 	];
 }
@@ -45109,12 +45114,13 @@ class Table extends SvelteComponent {
 			head: 1,
 			rows: 0,
 			keys: 2,
-			id: 7,
+			id: 8,
 			label: 3,
-			sortOption: 4,
-			closeOption: 5,
-			addextraOption: 6,
-			animateRow: 12
+			userSelect: 4,
+			sortOption: 5,
+			closeOption: 6,
+			addextraOption: 7,
+			animateRow: 13
 		});
 	}
 }
@@ -50280,7 +50286,7 @@ function create_if_block$c(ctx) {
 	let current;
 
 	function modal_active_binding(value) {
-		/*modal_active_binding*/ ctx[11](value);
+		/*modal_active_binding*/ ctx[12](value);
 	}
 
 	let modal_props = {
@@ -50311,7 +50317,7 @@ function create_if_block$c(ctx) {
 			const modal_changes = {};
 			if (dirty & /*title*/ 4) modal_changes.title = /*title*/ ctx[2];
 
-			if (dirty & /*$$scope, active, keys, sortOption, closeOption, addextraOption, animateRow, rows*/ 4347) {
+			if (dirty & /*$$scope, active, keys, sortOption, closeOption, addextraOption, animateRow, userSelect, rows*/ 8699) {
 				modal_changes.$$scope = { dirty, ctx };
 			}
 
@@ -50345,16 +50351,17 @@ function create_content_slot$2(ctx) {
 	let current;
 
 	function table_rows_binding(value) {
-		/*table_rows_binding*/ ctx[10](value);
+		/*table_rows_binding*/ ctx[11](value);
 	}
 
 	let table_props = {
 		head: /*keys*/ ctx[3],
 		keys: /*keys*/ ctx[3],
-		sortOption: /*sortOption*/ ctx[4],
-		closeOption: /*closeOption*/ ctx[5],
-		addextraOption: /*addextraOption*/ ctx[6],
-		animateRow: /*animateRow*/ ctx[7]
+		sortOption: /*sortOption*/ ctx[5],
+		closeOption: /*closeOption*/ ctx[6],
+		addextraOption: /*addextraOption*/ ctx[7],
+		animateRow: /*animateRow*/ ctx[8],
+		userSelect: /*userSelect*/ ctx[4]
 	};
 
 	if (/*rows*/ ctx[1] !== void 0) {
@@ -50376,10 +50383,11 @@ function create_content_slot$2(ctx) {
 			const table_changes = {};
 			if (dirty & /*keys*/ 8) table_changes.head = /*keys*/ ctx[3];
 			if (dirty & /*keys*/ 8) table_changes.keys = /*keys*/ ctx[3];
-			if (dirty & /*sortOption*/ 16) table_changes.sortOption = /*sortOption*/ ctx[4];
-			if (dirty & /*closeOption*/ 32) table_changes.closeOption = /*closeOption*/ ctx[5];
-			if (dirty & /*addextraOption*/ 64) table_changes.addextraOption = /*addextraOption*/ ctx[6];
-			if (dirty & /*animateRow*/ 128) table_changes.animateRow = /*animateRow*/ ctx[7];
+			if (dirty & /*sortOption*/ 32) table_changes.sortOption = /*sortOption*/ ctx[5];
+			if (dirty & /*closeOption*/ 64) table_changes.closeOption = /*closeOption*/ ctx[6];
+			if (dirty & /*addextraOption*/ 128) table_changes.addextraOption = /*addextraOption*/ ctx[7];
+			if (dirty & /*animateRow*/ 256) table_changes.animateRow = /*animateRow*/ ctx[8];
+			if (dirty & /*userSelect*/ 16) table_changes.userSelect = /*userSelect*/ ctx[4];
 
 			if (!updating_rows && dirty & /*rows*/ 2) {
 				updating_rows = true;
@@ -50420,7 +50428,7 @@ function fallback_block(ctx) {
 			insert(target, button, anchor);
 
 			if (!mounted) {
-				dispose = listen(button, "click", /*click_handler*/ ctx[9]);
+				dispose = listen(button, "click", /*click_handler*/ ctx[10]);
 				mounted = true;
 			}
 		},
@@ -50436,8 +50444,8 @@ function fallback_block(ctx) {
 // (17:8) <svelte:fragment slot="footerbtn">
 function create_footerbtn_slot$1(ctx) {
 	let current;
-	const footer_slot_template = /*#slots*/ ctx[8].footer;
-	const footer_slot = create_slot(footer_slot_template, ctx, /*$$scope*/ ctx[12], get_footer_slot_context);
+	const footer_slot_template = /*#slots*/ ctx[9].footer;
+	const footer_slot = create_slot(footer_slot_template, ctx, /*$$scope*/ ctx[13], get_footer_slot_context);
 	const footer_slot_or_fallback = footer_slot || fallback_block(ctx);
 
 	return {
@@ -50453,15 +50461,15 @@ function create_footerbtn_slot$1(ctx) {
 		},
 		p(ctx, dirty) {
 			if (footer_slot) {
-				if (footer_slot.p && (!current || dirty & /*$$scope*/ 4096)) {
+				if (footer_slot.p && (!current || dirty & /*$$scope*/ 8192)) {
 					update_slot_base(
 						footer_slot,
 						footer_slot_template,
 						ctx,
-						/*$$scope*/ ctx[12],
+						/*$$scope*/ ctx[13],
 						!current
-						? get_all_dirty_from_scope(/*$$scope*/ ctx[12])
-						: get_slot_changes(footer_slot_template, /*$$scope*/ ctx[12], dirty, get_footer_slot_changes),
+						? get_all_dirty_from_scope(/*$$scope*/ ctx[13])
+						: get_slot_changes(footer_slot_template, /*$$scope*/ ctx[13], dirty, get_footer_slot_changes),
 						get_footer_slot_context
 					);
 				}
@@ -50543,7 +50551,7 @@ function create_fragment$i(ctx) {
 
 function instance$j($$self, $$props, $$invalidate) {
 	let { $$slots: slots = {}, $$scope } = $$props;
-	let { active = false, title = "Title", rows = [], keys = [] } = $$props;
+	let { active = false, title = "Title", rows = [], keys = [], userSelect = true } = $$props;
 	let { sortOption = false, closeOption = true, addextraOption = true, animateRow = false } = $$props;
 	const click_handler = () => $$invalidate(0, active = false);
 
@@ -50562,11 +50570,12 @@ function instance$j($$self, $$props, $$invalidate) {
 		if ('title' in $$props) $$invalidate(2, title = $$props.title);
 		if ('rows' in $$props) $$invalidate(1, rows = $$props.rows);
 		if ('keys' in $$props) $$invalidate(3, keys = $$props.keys);
-		if ('sortOption' in $$props) $$invalidate(4, sortOption = $$props.sortOption);
-		if ('closeOption' in $$props) $$invalidate(5, closeOption = $$props.closeOption);
-		if ('addextraOption' in $$props) $$invalidate(6, addextraOption = $$props.addextraOption);
-		if ('animateRow' in $$props) $$invalidate(7, animateRow = $$props.animateRow);
-		if ('$$scope' in $$props) $$invalidate(12, $$scope = $$props.$$scope);
+		if ('userSelect' in $$props) $$invalidate(4, userSelect = $$props.userSelect);
+		if ('sortOption' in $$props) $$invalidate(5, sortOption = $$props.sortOption);
+		if ('closeOption' in $$props) $$invalidate(6, closeOption = $$props.closeOption);
+		if ('addextraOption' in $$props) $$invalidate(7, addextraOption = $$props.addextraOption);
+		if ('animateRow' in $$props) $$invalidate(8, animateRow = $$props.animateRow);
+		if ('$$scope' in $$props) $$invalidate(13, $$scope = $$props.$$scope);
 	};
 
 	return [
@@ -50574,6 +50583,7 @@ function instance$j($$self, $$props, $$invalidate) {
 		rows,
 		title,
 		keys,
+		userSelect,
 		sortOption,
 		closeOption,
 		addextraOption,
@@ -50595,10 +50605,11 @@ class ModalTable extends SvelteComponent {
 			title: 2,
 			rows: 1,
 			keys: 3,
-			sortOption: 4,
-			closeOption: 5,
-			addextraOption: 6,
-			animateRow: 7
+			userSelect: 4,
+			sortOption: 5,
+			closeOption: 6,
+			addextraOption: 7,
+			animateRow: 8
 		});
 	}
 }
@@ -50630,7 +50641,7 @@ function create_footer_slot(ctx) {
 			if (!mounted) {
 				dispose = [
 					listen(button0, "click", /*saveConfig*/ ctx[23]),
-					listen(button1, "click", /*click_handler*/ ctx[31])
+					listen(button1, "click", /*click_handler*/ ctx[34])
 				];
 
 				mounted = true;
@@ -50647,7 +50658,7 @@ function create_footer_slot(ctx) {
 	};
 }
 
-// (249:8) <Icon class="material-icons" on:click="{()=> adjustConfig = true}">
+// (255:8) <Icon class="material-icons" on:click="{()=> adjustConfig = true}">
 function create_default_slot$2(ctx) {
 	let t;
 
@@ -50664,7 +50675,7 @@ function create_default_slot$2(ctx) {
 	};
 }
 
-// (251:8) {#if pyEventCounter}
+// (257:8) {#if pyEventCounter}
 function create_if_block$b(ctx) {
 	let div;
 	let t0;
@@ -50764,16 +50775,17 @@ function create_fragment$h(ctx) {
 	let dispose;
 
 	function modaltable_active_binding(value) {
-		/*modaltable_active_binding*/ ctx[32](value);
+		/*modaltable_active_binding*/ ctx[35](value);
 	}
 
 	function modaltable_rows_binding(value) {
-		/*modaltable_rows_binding*/ ctx[33](value);
+		/*modaltable_rows_binding*/ ctx[36](value);
 	}
 
 	let modaltable_props = {
 		title: "Config table",
 		keys: /*configKeys*/ ctx[27],
+		userSelect: false,
 		$$slots: { footer: [create_footer_slot] },
 		$$scope: { ctx }
 	};
@@ -50791,46 +50803,46 @@ function create_fragment$h(ctx) {
 	binding_callbacks.push(() => bind(modaltable, 'rows', modaltable_rows_binding));
 
 	function customswitch0_selected_binding(value) {
-		/*customswitch0_selected_binding*/ ctx[34](value);
+		/*customswitch0_selected_binding*/ ctx[37](value);
 	}
 
 	let customswitch0_props = { label: "SRG" };
 
-	if (/*srgMode*/ ctx[2] !== void 0) {
-		customswitch0_props.selected = /*srgMode*/ ctx[2];
+	if (/*srgMode*/ ctx[1] !== void 0) {
+		customswitch0_props.selected = /*srgMode*/ ctx[1];
 	}
 
 	customswitch0 = new CustomSwitch({ props: customswitch0_props });
 	binding_callbacks.push(() => bind(customswitch0, 'selected', customswitch0_selected_binding));
 
 	function textfield0_value_binding(value) {
-		/*textfield0_value_binding*/ ctx[35](value);
+		/*textfield0_value_binding*/ ctx[38](value);
 	}
 
 	let textfield0_props = { label: "pbefore" };
 
-	if (/*pbefore*/ ctx[3] !== void 0) {
-		textfield0_props.value = /*pbefore*/ ctx[3];
+	if (/*pbefore*/ ctx[2] !== void 0) {
+		textfield0_props.value = /*pbefore*/ ctx[2];
 	}
 
 	textfield0 = new Textfield({ props: textfield0_props });
 	binding_callbacks.push(() => bind(textfield0, 'value', textfield0_value_binding));
 
 	function textfield1_value_binding(value) {
-		/*textfield1_value_binding*/ ctx[36](value);
+		/*textfield1_value_binding*/ ctx[39](value);
 	}
 
 	let textfield1_props = { label: "pafter" };
 
-	if (/*pafter*/ ctx[4] !== void 0) {
-		textfield1_props.value = /*pafter*/ ctx[4];
+	if (/*pafter*/ ctx[3] !== void 0) {
+		textfield1_props.value = /*pafter*/ ctx[3];
 	}
 
 	textfield1 = new Textfield({ props: textfield1_props });
 	binding_callbacks.push(() => bind(textfield1, 'value', textfield1_value_binding));
 
 	function textfield2_value_binding(value) {
-		/*textfield2_value_binding*/ ctx[37](value);
+		/*textfield2_value_binding*/ ctx[40](value);
 	}
 
 	let textfield2_props = {
@@ -50839,15 +50851,15 @@ function create_fragment$h(ctx) {
 		label: "calibrationFactor"
 	};
 
-	if (/*calibrationFactor*/ ctx[8] !== void 0) {
-		textfield2_props.value = /*calibrationFactor*/ ctx[8];
+	if (/*calibrationFactor*/ ctx[7] !== void 0) {
+		textfield2_props.value = /*calibrationFactor*/ ctx[7];
 	}
 
 	textfield2 = new Textfield({ props: textfield2_props });
 	binding_callbacks.push(() => bind(textfield2, 'value', textfield2_value_binding));
 
 	function textfield3_value_binding(value) {
-		/*textfield3_value_binding*/ ctx[38](value);
+		/*textfield3_value_binding*/ ctx[41](value);
 	}
 
 	let textfield3_props = {
@@ -50856,15 +50868,15 @@ function create_fragment$h(ctx) {
 		label: "temp(K)"
 	};
 
-	if (/*temp*/ ctx[5] !== void 0) {
-		textfield3_props.value = /*temp*/ ctx[5];
+	if (/*temp*/ ctx[4] !== void 0) {
+		textfield3_props.value = /*temp*/ ctx[4];
 	}
 
 	textfield3 = new Textfield({ props: textfield3_props });
 	binding_callbacks.push(() => bind(textfield3, 'value', textfield3_value_binding));
 
 	function textfield4_value_binding(value) {
-		/*textfield4_value_binding*/ ctx[39](value);
+		/*textfield4_value_binding*/ ctx[42](value);
 	}
 
 	let textfield4_props = { label: "numberDensity", disabled: true };
@@ -50877,24 +50889,24 @@ function create_fragment$h(ctx) {
 	binding_callbacks.push(() => bind(textfield4, 'value', textfield4_value_binding));
 
 	function customselect_picked_binding(value) {
-		/*customselect_picked_binding*/ ctx[40](value);
+		/*customselect_picked_binding*/ ctx[43](value);
 	}
 
 	let customselect_props = {
 		label: "Filename",
-		options: ["", .../*fileChecked*/ ctx[0]],
+		options: ["", .../*fileCollections*/ ctx[8]],
 		style: "min-width: 7em; "
 	};
 
-	if (/*selectedFile*/ ctx[7] !== void 0) {
-		customselect_props.picked = /*selectedFile*/ ctx[7];
+	if (/*selectedFile*/ ctx[6] !== void 0) {
+		customselect_props.picked = /*selectedFile*/ ctx[6];
 	}
 
 	customselect = new CustomSelect({ props: customselect_props });
 	binding_callbacks.push(() => bind(customselect, 'picked', customselect_picked_binding));
 
 	function textfield5_value_binding(value) {
-		/*textfield5_value_binding*/ ctx[41](value);
+		/*textfield5_value_binding*/ ctx[44](value);
 	}
 
 	let textfield5_props = { label: "Molecule" };
@@ -50907,7 +50919,7 @@ function create_fragment$h(ctx) {
 	binding_callbacks.push(() => bind(textfield5, 'value', textfield5_value_binding));
 
 	function textfield6_value_binding(value) {
-		/*textfield6_value_binding*/ ctx[42](value);
+		/*textfield6_value_binding*/ ctx[45](value);
 	}
 
 	let textfield6_props = { label: "tag" };
@@ -50920,20 +50932,20 @@ function create_fragment$h(ctx) {
 	binding_callbacks.push(() => bind(textfield6, 'value', textfield6_value_binding));
 
 	function textfield7_value_binding(value) {
-		/*textfield7_value_binding*/ ctx[43](value);
+		/*textfield7_value_binding*/ ctx[46](value);
 	}
 
 	let textfield7_props = { label: "massOfReactants" };
 
-	if (/*massOfReactants*/ ctx[6] !== void 0) {
-		textfield7_props.value = /*massOfReactants*/ ctx[6];
+	if (/*massOfReactants*/ ctx[5] !== void 0) {
+		textfield7_props.value = /*massOfReactants*/ ctx[5];
 	}
 
 	textfield7 = new Textfield({ props: textfield7_props });
 	binding_callbacks.push(() => bind(textfield7, 'value', textfield7_value_binding));
 
 	function textfield8_value_binding(value) {
-		/*textfield8_value_binding*/ ctx[44](value);
+		/*textfield8_value_binding*/ ctx[47](value);
 	}
 
 	let textfield8_props = { label: "nameOfReactants" };
@@ -50946,7 +50958,7 @@ function create_fragment$h(ctx) {
 	binding_callbacks.push(() => bind(textfield8, 'value', textfield8_value_binding));
 
 	function customswitch1_selected_binding(value) {
-		/*customswitch1_selected_binding*/ ctx[45](value);
+		/*customswitch1_selected_binding*/ ctx[48](value);
 	}
 
 	let customswitch1_props = { label: "defaultInitialValues" };
@@ -50959,7 +50971,7 @@ function create_fragment$h(ctx) {
 	binding_callbacks.push(() => bind(customswitch1, 'selected', customswitch1_selected_binding));
 
 	function textfield9_value_binding(value) {
-		/*textfield9_value_binding*/ ctx[46](value);
+		/*textfield9_value_binding*/ ctx[49](value);
 	}
 
 	let textfield9_props = { label: "initialValues" };
@@ -50972,7 +50984,7 @@ function create_fragment$h(ctx) {
 	binding_callbacks.push(() => bind(textfield9, 'value', textfield9_value_binding));
 
 	function textfield10_value_binding(value) {
-		/*textfield10_value_binding*/ ctx[47](value);
+		/*textfield10_value_binding*/ ctx[50](value);
 	}
 
 	let textfield10_props = { label: "ratek3" };
@@ -50985,7 +50997,7 @@ function create_fragment$h(ctx) {
 	binding_callbacks.push(() => bind(textfield10, 'value', textfield10_value_binding));
 
 	function textfield11_value_binding(value) {
-		/*textfield11_value_binding*/ ctx[48](value);
+		/*textfield11_value_binding*/ ctx[51](value);
 	}
 
 	let textfield11_props = { label: "k3Guess" };
@@ -50998,7 +51010,7 @@ function create_fragment$h(ctx) {
 	binding_callbacks.push(() => bind(textfield11, 'value', textfield11_value_binding));
 
 	function textfield12_value_binding(value) {
-		/*textfield12_value_binding*/ ctx[49](value);
+		/*textfield12_value_binding*/ ctx[52](value);
 	}
 
 	let textfield12_props = { label: "ratekCID" };
@@ -51011,7 +51023,7 @@ function create_fragment$h(ctx) {
 	binding_callbacks.push(() => bind(textfield12, 'value', textfield12_value_binding));
 
 	function textfield13_value_binding(value) {
-		/*textfield13_value_binding*/ ctx[50](value);
+		/*textfield13_value_binding*/ ctx[53](value);
 	}
 
 	let textfield13_props = { label: "kCIDGuess" };
@@ -51031,7 +51043,7 @@ function create_fragment$h(ctx) {
 			}
 		});
 
-	icon.$on("click", /*click_handler_1*/ ctx[51]);
+	icon.$on("click", /*click_handler_1*/ ctx[54]);
 	let if_block = /*pyEventCounter*/ ctx[16] && create_if_block$b(ctx);
 
 	return {
@@ -51095,7 +51107,7 @@ function create_fragment$h(ctx) {
 			attr(button2, "class", "button is-link");
 			attr(div2, "class", "align v-center");
 			attr(div3, "class", "align animated fadeIn");
-			toggle_class(div3, "hide", !/*kineticMode*/ ctx[1]);
+			toggle_class(div3, "hide", !/*kineticMode*/ ctx[0]);
 		},
 		m(target, anchor) {
 			mount_component(modaltable, target, anchor);
@@ -51163,7 +51175,7 @@ function create_fragment$h(ctx) {
 		p(ctx, dirty) {
 			const modaltable_changes = {};
 
-			if (dirty[0] & /*adjustConfig*/ 524288 | dirty[1] & /*$$scope*/ 268435456) {
+			if (dirty[0] & /*adjustConfig*/ 524288 | dirty[2] & /*$$scope*/ 2) {
 				modaltable_changes.$$scope = { dirty, ctx };
 			}
 
@@ -51182,45 +51194,45 @@ function create_fragment$h(ctx) {
 			modaltable.$set(modaltable_changes);
 			const customswitch0_changes = {};
 
-			if (!updating_selected && dirty[0] & /*srgMode*/ 4) {
+			if (!updating_selected && dirty[0] & /*srgMode*/ 2) {
 				updating_selected = true;
-				customswitch0_changes.selected = /*srgMode*/ ctx[2];
+				customswitch0_changes.selected = /*srgMode*/ ctx[1];
 				add_flush_callback(() => updating_selected = false);
 			}
 
 			customswitch0.$set(customswitch0_changes);
 			const textfield0_changes = {};
 
-			if (!updating_value && dirty[0] & /*pbefore*/ 8) {
+			if (!updating_value && dirty[0] & /*pbefore*/ 4) {
 				updating_value = true;
-				textfield0_changes.value = /*pbefore*/ ctx[3];
+				textfield0_changes.value = /*pbefore*/ ctx[2];
 				add_flush_callback(() => updating_value = false);
 			}
 
 			textfield0.$set(textfield0_changes);
 			const textfield1_changes = {};
 
-			if (!updating_value_1 && dirty[0] & /*pafter*/ 16) {
+			if (!updating_value_1 && dirty[0] & /*pafter*/ 8) {
 				updating_value_1 = true;
-				textfield1_changes.value = /*pafter*/ ctx[4];
+				textfield1_changes.value = /*pafter*/ ctx[3];
 				add_flush_callback(() => updating_value_1 = false);
 			}
 
 			textfield1.$set(textfield1_changes);
 			const textfield2_changes = {};
 
-			if (!updating_value_2 && dirty[0] & /*calibrationFactor*/ 256) {
+			if (!updating_value_2 && dirty[0] & /*calibrationFactor*/ 128) {
 				updating_value_2 = true;
-				textfield2_changes.value = /*calibrationFactor*/ ctx[8];
+				textfield2_changes.value = /*calibrationFactor*/ ctx[7];
 				add_flush_callback(() => updating_value_2 = false);
 			}
 
 			textfield2.$set(textfield2_changes);
 			const textfield3_changes = {};
 
-			if (!updating_value_3 && dirty[0] & /*temp*/ 32) {
+			if (!updating_value_3 && dirty[0] & /*temp*/ 16) {
 				updating_value_3 = true;
-				textfield3_changes.value = /*temp*/ ctx[5];
+				textfield3_changes.value = /*temp*/ ctx[4];
 				add_flush_callback(() => updating_value_3 = false);
 			}
 
@@ -51235,11 +51247,11 @@ function create_fragment$h(ctx) {
 
 			textfield4.$set(textfield4_changes);
 			const customselect_changes = {};
-			if (dirty[0] & /*fileChecked*/ 1) customselect_changes.options = ["", .../*fileChecked*/ ctx[0]];
+			if (dirty[0] & /*fileCollections*/ 256) customselect_changes.options = ["", .../*fileCollections*/ ctx[8]];
 
-			if (!updating_picked && dirty[0] & /*selectedFile*/ 128) {
+			if (!updating_picked && dirty[0] & /*selectedFile*/ 64) {
 				updating_picked = true;
-				customselect_changes.picked = /*selectedFile*/ ctx[7];
+				customselect_changes.picked = /*selectedFile*/ ctx[6];
 				add_flush_callback(() => updating_picked = false);
 			}
 
@@ -51264,9 +51276,9 @@ function create_fragment$h(ctx) {
 			textfield6.$set(textfield6_changes);
 			const textfield7_changes = {};
 
-			if (!updating_value_7 && dirty[0] & /*massOfReactants*/ 64) {
+			if (!updating_value_7 && dirty[0] & /*massOfReactants*/ 32) {
 				updating_value_7 = true;
-				textfield7_changes.value = /*massOfReactants*/ ctx[6];
+				textfield7_changes.value = /*massOfReactants*/ ctx[5];
 				add_flush_callback(() => updating_value_7 = false);
 			}
 
@@ -51336,7 +51348,7 @@ function create_fragment$h(ctx) {
 			textfield13.$set(textfield13_changes);
 			const icon_changes = {};
 
-			if (dirty[1] & /*$$scope*/ 268435456) {
+			if (dirty[2] & /*$$scope*/ 2) {
 				icon_changes.$$scope = { dirty, ctx };
 			}
 
@@ -51355,8 +51367,8 @@ function create_fragment$h(ctx) {
 				if_block = null;
 			}
 
-			if (dirty[0] & /*kineticMode*/ 2) {
-				toggle_class(div3, "hide", !/*kineticMode*/ ctx[1]);
+			if (dirty[0] & /*kineticMode*/ 1) {
+				toggle_class(div3, "hide", !/*kineticMode*/ ctx[0]);
 			}
 		},
 		i(local) {
@@ -51439,8 +51451,9 @@ let config_file_ROSAAkinetics = "config_file_ROSAAkinetics.json";
 function instance$i($$self, $$props, $$invalidate) {
 	let numberDensity;
 	let $mainPreModal;
-	component_subscribe($$self, mainPreModal, $$value => $$invalidate(56, $mainPreModal = $$value));
-	let { fileChecked = [], currentLocation = "", kineticMode = true, kineticData } = $$props;
+	component_subscribe($$self, mainPreModal, $$value => $$invalidate(59, $mainPreModal = $$value));
+	let { fileChecked = [], currentLocation = "", kineticMode = true, kineticData = {} } = $$props;
+	let fileCollections = [];
 	let srgMode = true, pbefore = 0, pafter = 0, temp = 5;
 	let molecule = "CD^+", tag = "He", massOfReactants = "", nameOfReactants = "";
 	let ratek3 = "k31", ratekCID = "kCID1";
@@ -51454,7 +51467,7 @@ function instance$i($$self, $$props, $$invalidate) {
 		if (currentData) {
 			totalMass = Object.keys(currentData);
 			totalMass = totalMass.slice(0, totalMass.length - 1);
-			$$invalidate(6, massOfReactants = totalMass.join(", "));
+			$$invalidate(5, massOfReactants = totalMass.join(", "));
 			computeOtherParameters();
 		}
 	}
@@ -51483,13 +51496,13 @@ function instance$i($$self, $$props, $$invalidate) {
 	let masses;
 	let calibrationFactor = 1;
 	let update_pbefore = true;
+	let config_content = {};
 
 	function saveConfig() {
 		if (!fs.existsSync(currentLocation)) {
 			return window.createToast("Invalid location or filename", "danger");
 		}
 
-		let config_content = {};
 		const keys = configKeys.slice(1, configKeys.length);
 
 		configArray.forEach(content => {
@@ -51500,7 +51513,7 @@ function instance$i($$self, $$props, $$invalidate) {
 				newKeyValue[key] = content[key];
 			});
 
-			config_content[filename] = newKeyValue;
+			$$invalidate(32, config_content[filename] = newKeyValue, config_content);
 		});
 
 		const save_config_content = JSON.stringify(config_content, null, 4);
@@ -51520,7 +51533,7 @@ function instance$i($$self, $$props, $$invalidate) {
 			return { filename, id, ...obj[filename] };
 		}));
 
-		const fileCheckedRemaining = _.difference(fileChecked, keys);
+		const fileCheckedRemaining = _.difference(fileCollections, keys);
 
 		fileCheckedRemaining.forEach(filename => {
 			const id = window.getID();
@@ -51550,32 +51563,35 @@ function instance$i($$self, $$props, $$invalidate) {
 		});
 	}
 
+	function updateConfig() {
+		$$invalidate(31, update_pbefore = false);
+
+		try {
+			if (!config_content[selectedFile]) {
+				return window.createToast("config file not available for selected file: " + selectedFile, "danger");
+			}
+
+			$$invalidate(1, { srgMode, pbefore, pafter, calibrationFactor, temp } = config_content[selectedFile], srgMode, (($$invalidate(2, pbefore), $$invalidate(1, srgMode)), $$invalidate(31, update_pbefore)), $$invalidate(3, pafter), (($$invalidate(7, calibrationFactor), $$invalidate(1, srgMode)), $$invalidate(31, update_pbefore)), $$invalidate(4, temp));
+			$$invalidate(1, srgMode = JSON.parse(srgMode));
+		} catch(error) {
+			console.error(error.stack);
+			window.createToast("Error while reading the values: Check config file", "danger");
+		}
+	}
+
+	let config_loaded = false;
+
 	async function loadConfig() {
 		try {
-			console.log("loadConfig");
 			const config_file = path.join(currentLocation, config_file_ROSAAkinetics);
 
 			if (fs.existsSync(config_file)) {
-				const config_content = JSON.parse(fs.readFileSync(config_file, "utf8"));
+				$$invalidate(32, config_content = JSON.parse(fs.readFileSync(config_file, "utf8")));
 				console.log(config_content);
 				window.createToast("Config file loaded: " + config_file_ROSAAkinetics, "warning");
 				makeConfigArray(config_content);
-
-				if (config_content[selectedFile]) {
-					$$invalidate(30, update_pbefore = false);
-
-					try {
-						$$invalidate(2, { srgMode, pbefore, pafter, calibrationFactor, temp } = config_content[selectedFile], srgMode, (($$invalidate(3, pbefore), $$invalidate(2, srgMode)), $$invalidate(30, update_pbefore)), $$invalidate(4, pafter), (($$invalidate(8, calibrationFactor), $$invalidate(2, srgMode)), $$invalidate(30, update_pbefore)), $$invalidate(5, temp));
-						$$invalidate(2, srgMode = JSON.parse(srgMode));
-					} catch(error) {
-						console.error(error.stack);
-						window.createToast("Error while reading the values: Check config file", "danger");
-					}
-				} else {
-					return window.createToast("config file not available for selected file: " + selectedFile, "danger");
-				}
+				$$invalidate(33, config_loaded = true);
 			} else {
-				// if(selectedFile)
 				return window.createToast("config file not available", "danger");
 			}
 		} catch(error) {
@@ -51656,37 +51672,37 @@ function instance$i($$self, $$props, $$invalidate) {
 
 	function customswitch0_selected_binding(value) {
 		srgMode = value;
-		$$invalidate(2, srgMode);
+		$$invalidate(1, srgMode);
 	}
 
 	function textfield0_value_binding(value) {
 		pbefore = value;
-		(($$invalidate(3, pbefore), $$invalidate(2, srgMode)), $$invalidate(30, update_pbefore));
+		(($$invalidate(2, pbefore), $$invalidate(1, srgMode)), $$invalidate(31, update_pbefore));
 	}
 
 	function textfield1_value_binding(value) {
 		pafter = value;
-		$$invalidate(4, pafter);
+		$$invalidate(3, pafter);
 	}
 
 	function textfield2_value_binding(value) {
 		calibrationFactor = value;
-		(($$invalidate(8, calibrationFactor), $$invalidate(2, srgMode)), $$invalidate(30, update_pbefore));
+		(($$invalidate(7, calibrationFactor), $$invalidate(1, srgMode)), $$invalidate(31, update_pbefore));
 	}
 
 	function textfield3_value_binding(value) {
 		temp = value;
-		$$invalidate(5, temp);
+		$$invalidate(4, temp);
 	}
 
 	function textfield4_value_binding(value) {
 		numberDensity = value;
-		(((((($$invalidate(21, numberDensity), $$invalidate(8, calibrationFactor)), $$invalidate(4, pafter)), $$invalidate(3, pbefore)), $$invalidate(5, temp)), $$invalidate(2, srgMode)), $$invalidate(30, update_pbefore));
+		(((((($$invalidate(21, numberDensity), $$invalidate(7, calibrationFactor)), $$invalidate(3, pafter)), $$invalidate(2, pbefore)), $$invalidate(4, temp)), $$invalidate(1, srgMode)), $$invalidate(31, update_pbefore));
 	}
 
 	function customselect_picked_binding(value) {
 		selectedFile = value;
-		$$invalidate(7, selectedFile);
+		$$invalidate(6, selectedFile);
 	}
 
 	function textfield5_value_binding(value) {
@@ -51701,7 +51717,7 @@ function instance$i($$self, $$props, $$invalidate) {
 
 	function textfield7_value_binding(value) {
 		massOfReactants = value;
-		$$invalidate(6, massOfReactants);
+		$$invalidate(5, massOfReactants);
 	}
 
 	function textfield8_value_binding(value) {
@@ -51742,42 +51758,55 @@ function instance$i($$self, $$props, $$invalidate) {
 	const click_handler_1 = () => $$invalidate(19, adjustConfig = true);
 
 	$$self.$$set = $$props => {
-		if ('fileChecked' in $$props) $$invalidate(0, fileChecked = $$props.fileChecked);
-		if ('currentLocation' in $$props) $$invalidate(28, currentLocation = $$props.currentLocation);
-		if ('kineticMode' in $$props) $$invalidate(1, kineticMode = $$props.kineticMode);
-		if ('kineticData' in $$props) $$invalidate(29, kineticData = $$props.kineticData);
+		if ('fileChecked' in $$props) $$invalidate(28, fileChecked = $$props.fileChecked);
+		if ('currentLocation' in $$props) $$invalidate(29, currentLocation = $$props.currentLocation);
+		if ('kineticMode' in $$props) $$invalidate(0, kineticMode = $$props.kineticMode);
+		if ('kineticData' in $$props) $$invalidate(30, kineticData = $$props.kineticData);
 	};
 
 	$$self.$$.update = () => {
-		if ($$self.$$.dirty[0] & /*massOfReactants*/ 64) {
+		if ($$self.$$.dirty[0] & /*fileChecked, kineticData*/ 1342177280) {
+			if (fileChecked && kineticData) {
+				const keys = Object.keys(kineticData);
+				console.log(kineticData, keys);
+				$$invalidate(8, fileCollections = fileChecked.filter(filename => keys.includes(filename)));
+			}
+		}
+
+		if ($$self.$$.dirty[0] & /*massOfReactants*/ 32) {
 			if (massOfReactants) {
 				computeOtherParameters();
 			}
 		}
 
-		if ($$self.$$.dirty[0] & /*srgMode, update_pbefore*/ 1073741828) {
+		if ($$self.$$.dirty[0] & /*srgMode*/ 2 | $$self.$$.dirty[1] & /*update_pbefore*/ 1) {
 			if (srgMode) {
-				$$invalidate(8, calibrationFactor = 1);
-				if (update_pbefore) $$invalidate(3, pbefore = Number(7e-5).toExponential(0));
+				$$invalidate(7, calibrationFactor = 1);
+				if (update_pbefore) $$invalidate(2, pbefore = Number(7e-5).toExponential(0));
 			} else {
-				$$invalidate(8, calibrationFactor = 200);
-				if (update_pbefore) $$invalidate(3, pbefore = Number(1e-8).toExponential(0));
+				$$invalidate(7, calibrationFactor = 200);
+				if (update_pbefore) $$invalidate(2, pbefore = Number(1e-8).toExponential(0));
 			}
 		}
 
-		if ($$self.$$.dirty[0] & /*calibrationFactor, pafter, pbefore, temp*/ 312) {
+		if ($$self.$$.dirty[0] & /*calibrationFactor, pafter, pbefore, temp*/ 156) {
 			$$invalidate(21, numberDensity = Number(constantValue * calibrationFactor * (pafter - pbefore) / temp ** 0.5).toExponential(3));
 		}
 
-		if ($$self.$$.dirty[0] & /*selectedFile, kineticData*/ 536871040) {
+		if ($$self.$$.dirty[0] & /*selectedFile, kineticData*/ 1073741888) {
 			if (selectedFile || kineticData) {
 				computeParameters();
+			}
+		}
+
+		if ($$self.$$.dirty[0] & /*selectedFile*/ 64 | $$self.$$.dirty[1] & /*config_content, config_loaded*/ 6) {
+			if (selectedFile && config_content && config_loaded) {
+				updateConfig();
 			}
 		}
 	};
 
 	return [
-		fileChecked,
 		kineticMode,
 		srgMode,
 		pbefore,
@@ -51786,6 +51815,7 @@ function instance$i($$self, $$props, $$invalidate) {
 		massOfReactants,
 		selectedFile,
 		calibrationFactor,
+		fileCollections,
 		molecule,
 		tag,
 		nameOfReactants,
@@ -51805,9 +51835,12 @@ function instance$i($$self, $$props, $$invalidate) {
 		kineticSimulation,
 		pyEventClosed,
 		configKeys,
+		fileChecked,
 		currentLocation,
 		kineticData,
 		update_pbefore,
+		config_content,
+		config_loaded,
 		click_handler,
 		modaltable_active_binding,
 		modaltable_rows_binding,
@@ -51843,13 +51876,13 @@ class ROSAAkinetics extends SvelteComponent {
 			create_fragment$h,
 			safe_not_equal,
 			{
-				fileChecked: 0,
-				currentLocation: 28,
-				kineticMode: 1,
-				kineticData: 29
+				fileChecked: 28,
+				currentLocation: 29,
+				kineticMode: 0,
+				kineticData: 30
 			},
 			null,
-			[-1, -1]
+			[-1, -1, -1]
 		);
 	}
 }
