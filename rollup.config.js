@@ -6,6 +6,9 @@ import { terser } from 'rollup-plugin-terser';
 import autoPreprocess from 'svelte-preprocess';
 import postcss from 'rollup-plugin-postcss';
 
+import json from '@rollup/plugin-json';
+import yaml from '@rollup/plugin-yaml';
+
 const production = !process.env.ROLLUP_WATCH;
 
 export default {
@@ -39,12 +42,11 @@ export default {
 					includePaths: ['./src/theme', './node_modules']
 				}]
 			]
-		})
+		}),
 
-
+		json(), yaml()
 	],
 
 	watch: { clearScreen: false },
 	external: ['electron', 'child_process', 'fs', 'path', 'url', 'module', 'os']
-
 };
