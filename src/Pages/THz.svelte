@@ -51,7 +51,7 @@
         if (tkplot) {filetype = "general"}
 
         if (filetype == "general") {
-            return computePy_func({e, pyfile, args, general:true, openShell}).catch(err=>{$mainPreModal.modalContent = err.stack;  $mainPreModal.open = true})
+            return computePy_func({e, pyfile, args, general:true, openShell}).catch(error=>{mainPreModal.error(error.stack || error)})
         }
 
         computePy_func({e, pyfile, args})
@@ -76,7 +76,7 @@
                 window.createToast("Graph plotted", "success")
                 
                 graphPlotted = true
-            }).catch(err=>{$mainPreModal.modalContent = err.stack;  $mainPreModal.open = true})
+            }).catch(error=>{mainPreModal.error(error.stack || error)})
 
         
     }

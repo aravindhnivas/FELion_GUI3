@@ -38,7 +38,7 @@
         try {
             commandArgsToRun += ` ${packagesName}`
             ls = spawn(commandToRun, commandArgsToRun.split(" ").map(arg=>arg.trim()), { detached: true, stdio: 'pipe', shell: openShellTerminal });
-        } catch (err) {$mainPreModal.modalContent = err.stack;  $mainPreModal.open = true}
+        } catch (error) {mainPreModal.error(error.stack || error)}
 
         ls.stdout.on("data", data => {
             commandResults = [...commandResults, {color:colorSets.info, results:`>> ${data || ""}`}]

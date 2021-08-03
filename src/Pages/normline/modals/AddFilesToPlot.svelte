@@ -32,7 +32,7 @@
             extrafileAdded += addedfiles.length
             window.createToast("Graph Plotted", "success")
             active = false
-        }).catch(err=>{$mainPreModal.modalContent = err.stack;  $mainPreModal.open = true})
+        }).catch(error=>{mainPreModal.error(error.stack || error)})
 
     }
 

@@ -191,7 +191,7 @@
             await computePy_func({e, pyfile, args, general:true})
 
 
-        } catch (error) {mainPreModal.error(error.stack)}
+        } catch (error) {mainPreModal.error(error.stack || error);}
     }
 
     let pyEventCounter = 0

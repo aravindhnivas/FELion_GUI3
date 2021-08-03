@@ -27,13 +27,13 @@
     const backup = (event) => {
         backupRestore({event, method:"backup"})
             .then(()=>console.log("Backup Completed"))
-            .catch((err)=>{$mainPreModal.modalContent = err.stack; $mainPreModal.open = true})
+            .catch((error)=>{mainPreModal.error(error.stack || error)})
     }
 
     const restore = (event) => {
         backupRestore({event, method:"restore"})
         .then(()=>console.log("Restore Completed"))
-        .catch((err)=>{$mainPreModal.modalContent = err.stack; $mainPreModal.open = true})
+        .catch((error)=>{mainPreModal.error(error.stack || error)})
 
     }
 
@@ -72,7 +72,7 @@
             if (!fs.existsSync(updateFolder)) {fs.mkdirSync(updateFolder)}
             await download(updateFolder)
             InstallUpdate(target, updateFolder)
-        } catch (err) {$mainPreModal.modalContent = err.stack; $mainPreModal.open = true}
+        } catch (error) {mainPreModal.error(error.stack || error)}
         
     }
 

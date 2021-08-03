@@ -53,7 +53,7 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
 
                         console.log("Closed")
 
-                        if (error) {error_occured_py=true; reject(error); } 
+                        if (error) {error_occured_py=true; reject(error); console.log("error Ocurred: ", error) } 
                         if (e) {
                             const pyEventClosed = new CustomEvent('pyEventClosed', { bubbles: false, detail: { py, pyfile, dataReceived, error_occured_py } });
                             e.target.dispatchEvent(pyEventClosed)
@@ -61,7 +61,7 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                         }
                         
                     })
-                    py.stderr.on("data", (err) => { console.log(`Error Occured: ${err.toString()}`); error += err.toString() })
+                    py.stderr.on("data", (err) => { console.log(`Error Ocurred: ${err.toString()}`); error += err.toString() })
                     py.stdout.on("data", (data) => {
 
                         dataReceived += `${data.toString()}\n`

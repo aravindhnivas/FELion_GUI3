@@ -27,7 +27,7 @@
             theory_func({dataFromPython, normMethod})
             window.createToast("Graph Plotted", "success")
             show_theoryplot = true, showTheoryFiles = false
-        }).catch(err=>{$mainPreModal.modalContent = err.stack;  $mainPreModal.open = true})
+        }).catch(error=>{mainPreModal.error(error.stack || error)})
     }
 
     let onlyExpRange = true;

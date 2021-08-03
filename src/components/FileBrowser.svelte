@@ -75,10 +75,9 @@
             if (filetype.length > 2) { db.set(`${filetype}_location`, currentLocation) }
 
             if (toast) { window.createToast("Files updated"); }
-        } catch (err) {
-            console.log(err)
-            $mainPreModal.modalContent = err.stack;
-            $mainPreModal.open = true;
+        } catch (error) {
+            console.log(error)
+            mainPreModal.error(error.stack || error)
             return 
         }
     }

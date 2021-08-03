@@ -72,8 +72,7 @@
                     felix_func({normMethod, dataFromPython, delta})
                     window.createToast("Graph Plotted", "success")
                     graphPlotted = true
-
-                }).catch(err=>{$mainPreModal.modalContent = err.stack;  $mainPreModal.open = true})
+                }).catch(error=>{mainPreModal.error(error.stack || error)})
 
                 break;
             
@@ -85,7 +84,7 @@
 
                 pyfile="baseline.py", args= $opoMode ? opofiles: felixfiles
                 computePy_func({e, pyfile, args, general:true, openShell})
-                .catch(err=>{$mainPreModal.modalContent = err.stack;  $mainPreModal.open = true})
+                .catch(error=>{mainPreModal.error(error.stack || error)})
                 break;
 
             case "matplotlib":
@@ -97,7 +96,7 @@
 
                 pyfile="felix_tkplot.py", args=[JSON.stringify({numberWidgets, textWidgets, booleanWidgets, selectedWidgets, location: $felixopoLocation, normMethod, theoryLocation})]
                 computePy_func({e, pyfile, args, general:true, openShell})
-                .catch(err=>{$mainPreModal.modalContent = err.stack;  $mainPreModal.open = true})
+                .catch(error=>{mainPreModal.error(error.stack || error)})
             default:
                 break;
                 
