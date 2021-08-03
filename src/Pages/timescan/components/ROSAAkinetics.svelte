@@ -106,7 +106,7 @@
             }
         )
         
-        const fileCheckedRemaining = _.difference(fileCollections, keys)
+        const fileCheckedRemaining = _.difference(fileChecked, keys)
 
         fileCheckedRemaining.forEach(filename=>{
             const id = window.getID()
@@ -253,11 +253,14 @@
         <button class="button is-link" on:click="{computeParameters}" >Compute parameters</button>
         <button class="button is-link" on:click="{loadConfig}">loadConfig</button>
         <Icon class="material-icons" on:click="{()=> adjustConfig = true}">settings</Icon>
-        <button class="button is-link" on:click="{kineticSimulation}" on:pyEventClosed="{pyEventClosed}">Submit</button>
-        {#if pyEventCounter}
-            <div class="subtitle">{pyEventCounter} process running</div>
-        {/if}
 
+        <button class="button is-link" on:click="{kineticSimulation}" on:pyEventClosed="{pyEventClosed}">Submit</button>
+
+        {#if pyEventCounter}
+        
+            <div class="subtitle">{pyEventCounter} process running</div>
+        
+            {/if}
     </div>
 
 </div>
