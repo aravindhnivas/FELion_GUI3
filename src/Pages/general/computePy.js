@@ -136,22 +136,21 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                         
                         } else { reject(errContent);  console.log(errContent)}
                         if (e) {
+
                             const pyEventClosed = new CustomEvent('pyEventClosed', { bubbles: false, detail: { py, pyfile, dataReceived, error_occured_py } });
-
-
                             e.target.dispatchEvent(pyEventClosed)
-
                             console.log("pyEventClosed dispatched")
+
                         }
 
                         target.classList.toggle("is-loading")
                         console.log("Process closed")
+
                     })
 
                 }
+
             }).catch(err => { reject(err.stack); })
-        // .finally(()=>{if (!general) { target.classList.toggle("is-loading") }})
 
     })
-
 }
