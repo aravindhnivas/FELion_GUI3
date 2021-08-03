@@ -22,14 +22,11 @@
     
   }
 
-  $: if($mainPreModal.open) {
+  $: if($mainPreModal.open) {openModal()}
 
-    if($mainPreModal.type === "danger") {$mainPreModal.forError()}
-    else if($mainPreModal.type === "info") {$mainPreModal.forInfo()}
-    openModal()
-  }
+  $: console.log($mainPreModal)
   let headerBackground="#836ac05c";
-  $: if(active) {headerBackground = $mainPreModal.type === "info" ? "#836ac05c" : "#f14668"}
+  $: if(active) {headerBackground = $mainPreModal.type === "danger" ? "#f14668" : "#836ac05c" }
 </script>
 
 {#if active}
