@@ -8,7 +8,7 @@ import postcss from 'rollup-plugin-postcss';
 
 import json from '@rollup/plugin-json';
 import yaml from '@rollup/plugin-yaml';
-
+import css from 'rollup-plugin-css-only';
 const production = !process.env.ROLLUP_WATCH;
 
 export default {
@@ -23,12 +23,15 @@ export default {
 	plugins: [
 		svelte({
 			emitCss: true,
-			dev: !production,
-			css: css => { css.write('bundle.css'); },
+			compilerOptions: {
+				// enable run-time checks when not in production
+				dev: !production
+			},
+			// we'll extract any component CSS out into
+			// a separate file - better for performance
 			preprocess: autoPreprocess()
-
 		}),
-
+		css({ output: 'bundle.css' }),
 		resolve({ dedupe: ['svelte', 'svelte/transition', 'svelte/internal'] }),
 		commonjs(),
 		!production && livereload('static'),
@@ -37,6 +40,9 @@ export default {
 		postcss({
 			extract: true,
 			minimize: true,
+
+			
+			sourceMap: true,
 			use: [
 				['sass', {
 					includePaths: ['./src/theme', './node_modules']
