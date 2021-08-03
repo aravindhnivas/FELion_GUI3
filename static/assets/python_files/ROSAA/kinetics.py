@@ -252,7 +252,10 @@ def plot_exp():
         ax.errorbar(time, counts, error, fmt=".", ms=10, label=key, c=pltColors[counter])
 
     ax = optimizePlot(ax, xlabel="Time (ms)", ylabel="Counts", yscale="log")
-    ax.set_title(f"{selectedFile}: {temp:.1f} K {numberDensity:.2e}"+"$cm^{-3}$")
+    # log(f"{temp=}")
+
+    ax.set_title(f"{selectedFile}: @{temp:.1f} K {numberDensity:.2e}"+"$cm^{-3}$")
+
     rateCoefficientArgs=(ratek3, ratekCID)
     dNdt = solve_ivp(compute_attachment_process, tspan, initialValues, dense_output=True)
     dNdtSol = dNdt.sol(simulateTime)
@@ -343,7 +346,7 @@ if __name__ == "__main__":
     log(f"{expTime.shape=}")
     log(f"{expData.shape=}")
     log(f"{expDataError.shape=}")
-    temp = args["temp"]
+    temp = float(args["temp"])
 
     selectedFile = args["selectedFile"]
     numberDensity = float(args["numberDensity"])

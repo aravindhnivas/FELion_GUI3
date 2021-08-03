@@ -169,9 +169,8 @@
             }
         } catch (error) {
             console.log(error)
-            $mainPreModal.modalContent = error.stack;  $mainPreModal.open = true; $mainPreModal.type="danger"
+            mainPreModal.error(error.stack)
         }
-    
     }
 
     async function kineticSimulation(e) {
@@ -192,17 +191,15 @@
             await computePy_func({e, pyfile, args, general:true})
 
 
-        } catch (error) {$mainPreModal.modalContent = error.stack;  $mainPreModal.open = true; $mainPreModal.type="danger"; }
+        } catch (error) {mainPreModal.error(error.stack)}
     }
 
     let pyEventCounter = 0
 
     const pyEventClosed = (e) => {
         pyEventCounter--;
-
         const {error_occured_py, dataReceived} = e.detail
-        if(!error_occured_py) {$mainPreModal.open = true; $mainPreModal.modalContent = dataReceived; $mainPreModal.type="info"; }
-
+        if(!error_occured_py) {mainPreModal.info(dataReceived)}
     }
     
     let defaultInitialValues = true;
@@ -210,12 +207,14 @@
     let adjustConfig = false;
     let configArray = []
     let configKeys = ["filename", "srgMode", "pbefore", "pafter", "calibrationFactor", "temp"]
-
 </script>
+
 <ModalTable bind:active={adjustConfig} title="Config table" bind:rows={configArray} keys={configKeys} userSelect={false}>
+
     <svelte:fragment slot="footer">
 
         <button class="button is-link" on:click="{saveConfig}" >Save</button>
+
         <button class="button is-link" on:click="{()=>adjustConfig=false}" >Close</button>
     </svelte:fragment>
 
@@ -234,16 +233,15 @@
 
     <div class="align">
         <CustomSelect bind:picked={selectedFile} label="Filename" options={["", ...fileCollections]} style="min-width: 7em; "/>
-
         <Textfield bind:value={molecule} label="Molecule" />
         <Textfield bind:value={tag} label="tag" />
+
         <Textfield bind:value={massOfReactants} label="massOfReactants" />
         <Textfield bind:value={nameOfReactants} label="nameOfReactants" />
         <CustomSwitch bind:selected={defaultInitialValues} label="defaultInitialValues"/>
         <Textfield bind:value={initialValues} label="initialValues" />
         <Textfield bind:value={ratek3} label="ratek3" />
         <Textfield bind:value={k3Guess} label="k3Guess" />
-
         <Textfield bind:value={ratekCID} label="ratekCID" />
         <Textfield bind:value={kCIDGuess} label="kCIDGuess" />
 
@@ -253,14 +251,13 @@
         <button class="button is-link" on:click="{computeParameters}" >Compute parameters</button>
         <button class="button is-link" on:click="{loadConfig}">loadConfig</button>
         <Icon class="material-icons" on:click="{()=> adjustConfig = true}">settings</Icon>
-
         <button class="button is-link" on:click="{kineticSimulation}" on:pyEventClosed="{pyEventClosed}">Submit</button>
-
         {#if pyEventCounter}
-        
+
             <div class="subtitle">{pyEventCounter} process running</div>
         
-            {/if}
+        {/if}
+    
     </div>
 
 </div>
