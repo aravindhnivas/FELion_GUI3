@@ -110,20 +110,17 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
 
                         }
                     })
-                    let error_occured_py = false, errContent = "";
 
+                    let errContent = "";
+                    let error_occured_py = false;
                     py.stderr.on("data", err => {
-
                         errContent += err.toString()
-                        console.error(errContent)
-
                         error_occured_py = true
                     });
 
                     py.on("close", () => {
                         if (!error_occured_py) {
                             const dataFile = path.basename(pyfile).split(".")[0]
-
                             const outputFile = path.join(get(pythonscript), "local", dataFile + "_data.json")
 
                             if (!fs.existsSync(outputFile)) {
@@ -131,13 +128,13 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                             }
                             let dataFromPython = fs.readFileSync(outputFile)
 
-
-
                             window.dataFromPython = dataFromPython = JSON.parse(dataFromPython.toString("utf-8"))
                             console.log(dataFromPython)
+
+
                             resolve(dataFromPython)
                         
-                        } else { reject(errContent);  }
+                        } else { reject(errContent);  console.log(errContent)}
                         if (e) {
                             const pyEventClosed = new CustomEvent('pyEventClosed', { bubbles: false, detail: { py, pyfile, dataReceived, error_occured_py } });
 
