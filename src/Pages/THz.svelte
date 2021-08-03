@@ -22,11 +22,6 @@
     let openShell = false, graphPlotted = false
     let delta = 10, gamma = 0
 
-    let B0=0, D0=0, H0=0, temp=300, totalJ=20
-
-    // Depletion Row
-    let toggleRow = false
-    const style = "width:7em; height:3.5em; margin-right:0.5em"
     const btnClass = "button is-link"
 
     const plotStyle = ["", "lines", "markers", "lines+markers"]
