@@ -25,15 +25,16 @@ window.onerror = function (message, source, lineno, colno, error) {
     // error: Error Object (object)
     console.error(error)
     Snackbar.create({ message: error.name, position: "is-top", type: `is-danger` })
-    mainPreModal.update(data=>{
-        const modalContent =  `${error.name}: ${message}\nsource: ${source}\nlineno: ${lineno}\tcolno: ${colno}`
-        return {...data, modalContent, open: true, type:"danger"}
-    })
-    // $mainPreModal.modalContent = error.stack;  $mainPreModal.open = true; $mainPreModal.type="danger"
+    const modalContent =  `${error.name}: ${message}\nsource: ${source}\nlineno: ${lineno}\tcolno: ${colno}`
+    mainPreModal.error(modalContent)
 };
-
+// throw Error("New error");
 window.process.on('unhandledRejection', (reason, promise) => {
-    console.error(`Uncaught error in`, promise, "reason: ", reason);
+    const errorMsg = "Uncaught error in "+promise+" reason: "+ reason
+    console.error(errorMsg);
+    Snackbar.create({ message: reason, position: "is-top", type: `is-danger` })
+    mainPreModal.error(errorMsg)
+    
 });
 
 window.targetElement = (id) => document.getElementById(id)

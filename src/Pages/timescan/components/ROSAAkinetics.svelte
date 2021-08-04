@@ -7,7 +7,7 @@
     import ModalTable from '../../../components/ModalTable.svelte'
 
     import {Icon} from '@smui/icon-button';
-
+    import { tick } from "svelte";
     export let fileChecked=[], currentLocation="", kineticMode=true, kineticData={};
     let fileCollections = []
 
@@ -19,11 +19,9 @@
 
 
     let currentData = {}
-    $: if(fileChecked && kineticData) {
+    $: if(fileChecked && kineticData && kineticMode) {
         const keys = Object.keys(kineticData)
-        console.log(kineticData, keys)
         fileCollections = fileChecked.filter(filename=>keys.includes(filename))
-
     }
 
     function computeParameters() {
@@ -65,14 +63,22 @@
         if(update_pbefore) pbefore = Number(1e-8).toExponential(0)
     }
 
-    const constantValue = 4.2e17
-
-    $: numberDensity = Number((constantValue*calibrationFactor*(pafter - pbefore))/(temp**0.5)).toExponential(3)
-    $: if(selectedFile || kineticData) {computeParameters()}
-    let config_file_ROSAAkinetics="config_file_ROSAAkinetics.json";
     
-    let config_content = {}
 
+    let numberDensity = 0;
+    const computeNumberDensity = async () => {
+        await tick()
+        const constantValue = 4.2e17
+        numberDensity = Number((constantValue*calibrationFactor*(pafter - pbefore))/(temp**0.5)).toExponential(3)
+
+    }
+
+
+    $: if (pafter || temp || config_content[selectedFile]) {computeNumberDensity()}
+    $: if(selectedFile || kineticData) {computeParameters()}
+
+    let config_file_ROSAAkinetics="config_file_ROSAAkinetics.json";
+    let config_content = {}
 
     function saveConfig() {
 
@@ -145,7 +151,6 @@
         } catch (error) {
             
             console.error(error.stack)
-
             window.createToast("Error while reading the values: Check config file", "danger");
         }
     }
@@ -154,12 +159,10 @@
     let config_loaded = false;
 
     async function loadConfig() {
-    
         try {
             const config_file = path.join(currentLocation, config_file_ROSAAkinetics);
             if(fs.existsSync(config_file)) {
                 config_content = JSON.parse(fs.readFileSync(config_file, "utf8"))
-                console.log(config_content)
                 window.createToast("Config file loaded: "+config_file_ROSAAkinetics, "warning");
                 makeConfigArray(config_content)
                 config_loaded = true
@@ -195,7 +198,6 @@
     }
 
     let pyEventCounter = 0
-
     const pyEventClosed = (e) => {
         pyEventCounter--;
         const {error_occured_py, dataReceived} = e.detail
@@ -209,7 +211,8 @@
     let configKeys = ["filename", "srgMode", "pbefore", "pafter", "calibrationFactor", "temp"]
 </script>
 
-<ModalTable bind:active={adjustConfig} title="Config table" bind:rows={configArray} keys={configKeys} userSelect={false}>
+<ModalTable bind:active={adjustConfig} title="Config table" 
+    bind:rows={configArray} keys={configKeys} userSelect={false} sortOption={true} >
 
     <svelte:fragment slot="footer">
 

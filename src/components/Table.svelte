@@ -7,16 +7,22 @@
     export let sortOption = false, closeOption = true, addextraOption = true, animateRow = true;
 
     const keyIDSets = keys.map(key=>{return {key, id:window.getID()}})
-    const sortTable = (type) => { if(sortOption) {rows = _.orderBy(rows, [type], ["asc"])} }
+    let sortTypeAscending = true;
+    const sortTable = (type) => { 
+        if(sortOption) {
+
+            sortTypeAscending = !sortTypeAscending
+            rows = _.orderBy(rows, [type], [sortTypeAscending ? "asc" : "desc"])
+        }
+
+     }
+
 
     $: animate = animateRow ? scale : (e)=>{}
-
     let emptyRow = {}
     keys.forEach(key=>emptyRow[key] = "")
     const addRow = async () => {
-
         const id = window.getID()
-
 
         rows = [...rows, {...emptyRow, id}]
         await tick()
@@ -79,7 +85,7 @@
 
                             <div class="tableIcon" on:click="{()=>sortTable(keys[index])}">
                                 {#if sortOption}
-                                    <Icon class="material-icons" >arrow_downward</Icon>
+                                    <Icon class="material-icons" >{sortTypeAscending ? "arrow_upward": "arrow_downward"}</Icon>
                                 {/if}
 
                                 {item}

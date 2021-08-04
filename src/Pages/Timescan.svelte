@@ -101,15 +101,16 @@
         } catch (error) {mainPreModal.error(error.stack || error)}
     }
 
-    // Linearlog check
     const linearlogCheck = () => {
-
         let layout = { yaxis: { title: "Counts", type: logScale ? "log" : null } }
         if(graphPlotted) {
             fileChecked.forEach(file => {
                 let tplot = file + "_tplot";
-                Plotly.relayout(tplot, layout);
+                const id = document.getElementById(tplot)
+                if(id?.data) {Plotly.relayout(id, layout);}
+
             })
+
         }
     }
 
