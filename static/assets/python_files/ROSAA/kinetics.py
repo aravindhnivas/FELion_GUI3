@@ -363,5 +363,5 @@ if __name__ == "__main__":
     log(f"{k3Labels=}\n{totalAttachmentLevels=}")
     ratek3 = [float(args["k3Guess"]) for _ in k3Labels]
     ratekCID = [float(args["kCIDGuess"]) for _ in kCIDLabels]
-    raise Exception("Error testing")
     KineticMain()
+    
