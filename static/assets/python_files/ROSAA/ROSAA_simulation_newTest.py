@@ -162,7 +162,7 @@ class ROSAA:
         self.Noff = []
         def SimulateODEAttachment(self, t, N_He, ratio, nHe):
             self.N = (ratio/ratio.sum())*self.N.sum()
-            self.Noff.append(self.N)
+            self.Noff = np.append(self.Noff, self.N)
 
             self.N = {key:value for key, value in zip(self.energyKeys, self.N)}
             attachmentRate0 = - self.k3[0]*nHe**2*self.N[self.excitedFrom] + self.kCID[0]*nHe*N_He[0]*self.kCID_branch
