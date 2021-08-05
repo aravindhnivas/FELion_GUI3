@@ -8,7 +8,7 @@ import postcss from 'rollup-plugin-postcss';
 
 import json from '@rollup/plugin-json';
 import yaml from '@rollup/plugin-yaml';
-
+import alias from '@rollup/plugin-alias';
 const production = !process.env.ROLLUP_WATCH;
 
 export default {
@@ -16,6 +16,14 @@ export default {
 	output: [ { sourcemap: true, format: 'cjs', name: 'app', file: 'static/bundle.js' } ],
 
 	plugins: [
+
+
+		alias({
+			entries: [
+				{ find: 'src', replacement: './src' },
+				{ find: 'components', replacement: './src/components' }
+			]
+		}),
 
 
 		svelte({
