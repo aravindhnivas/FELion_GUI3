@@ -77515,7 +77515,7 @@ function get_each_context_4(ctx, list, i) {
 	return child_ctx;
 }
 
-// (360:0) {#if active}
+// (364:0) {#if active}
 function create_if_block$8(ctx) {
 	let boltzmandistribution;
 	let updating_active;
@@ -77635,14 +77635,14 @@ function create_if_block$8(ctx) {
 		block,
 		id: create_if_block$8.name,
 		type: "if",
-		source: "(360:0) {#if active}",
+		source: "(364:0) {#if active}",
 		ctx
 	});
 
 	return block;
 }
 
-// (388:20) {#if variable !== "time"}
+// (392:20) {#if variable !== "time"}
 function create_if_block_6$1(ctx) {
 	let textfield;
 	let updating_value;
@@ -77701,14 +77701,14 @@ function create_if_block_6$1(ctx) {
 		block,
 		id: create_if_block_6$1.name,
 		type: "if",
-		source: "(388:20) {#if variable !== \\\"time\\\"}",
+		source: "(392:20) {#if variable !== \\\"time\\\"}",
 		ctx
 	});
 
 	return block;
 }
 
-// (365:8) <svelte:fragment slot="header_content__slot" >
+// (369:8) <svelte:fragment slot="header_content__slot" >
 function create_header_content__slot_slot(ctx) {
 	let div0;
 	let button0;
@@ -77941,21 +77941,21 @@ function create_header_content__slot_slot(ctx) {
 			button2.textContent = "Reset Config";
 			attr_dev(button0, "class", "button is-link svelte-1gffrzh");
 			attr_dev(button0, "id", "thz_modal_filebrowser_btn");
-			add_location(button0, file$8, 366, 16, 13559);
+			add_location(button0, file$8, 370, 16, 13681);
 			attr_dev(div0, "class", "locationColumn svelte-1gffrzh");
-			add_location(div0, file$8, 365, 12, 13512);
+			add_location(div0, file$8, 369, 12, 13634);
 			attr_dev(div1, "class", "writefileCheck svelte-1gffrzh");
-			add_location(div1, file$8, 372, 12, 13862);
+			add_location(div1, file$8, 376, 12, 13984);
 			attr_dev(div2, "class", "subtitle svelte-1gffrzh");
-			add_location(div2, file$8, 383, 16, 14532);
+			add_location(div2, file$8, 387, 16, 14654);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$8, 390, 20, 14988);
+			add_location(button1, file$8, 394, 20, 15110);
 			attr_dev(button2, "class", "button is-link");
-			add_location(button2, file$8, 391, 20, 15083);
+			add_location(button2, file$8, 395, 20, 15205);
 			attr_dev(div3, "class", "variableColumn__dropdown svelte-1gffrzh");
-			add_location(div3, file$8, 384, 16, 14624);
+			add_location(div3, file$8, 388, 16, 14746);
 			attr_dev(div4, "class", "variableColumn svelte-1gffrzh");
-			add_location(div4, file$8, 382, 12, 14486);
+			add_location(div4, file$8, 386, 12, 14608);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div0, anchor);
@@ -78162,14 +78162,14 @@ function create_header_content__slot_slot(ctx) {
 		block,
 		id: create_header_content__slot_slot.name,
 		type: "slot",
-		source: "(365:8) <svelte:fragment slot=\\\"header_content__slot\\\" >",
+		source: "(369:8) <svelte:fragment slot=\\\"header_content__slot\\\" >",
 		ctx
 	});
 
 	return block;
 }
 
-// (402:12) {:else}
+// (406:12) {:else}
 function create_else_block$4(ctx) {
 	let div18;
 	let div2;
@@ -78574,52 +78574,52 @@ function create_else_block$4(ctx) {
 			t30 = space();
 			if (if_block1) if_block1.c();
 			attr_dev(div0, "class", "subtitle svelte-1gffrzh");
-			add_location(div0, file$8, 408, 24, 15692);
+			add_location(div0, file$8, 412, 24, 15814);
 			attr_dev(div1, "class", "content__div  svelte-1gffrzh");
-			add_location(div1, file$8, 409, 24, 15761);
+			add_location(div1, file$8, 413, 24, 15883);
 			attr_dev(div2, "class", "sub_container__div box svelte-1gffrzh");
-			add_location(div2, file$8, 406, 20, 15628);
+			add_location(div2, file$8, 410, 20, 15750);
 			attr_dev(div3, "class", "subtitle svelte-1gffrzh");
-			add_location(div3, file$8, 419, 24, 16161);
+			add_location(div3, file$8, 423, 24, 16283);
 			attr_dev(button, "class", "button is-link ");
-			add_location(button, file$8, 424, 28, 16540);
+			add_location(button, file$8, 428, 28, 16662);
 			attr_dev(div4, "class", "control__div  svelte-1gffrzh");
-			add_location(div4, file$8, 420, 24, 16228);
+			add_location(div4, file$8, 424, 24, 16350);
 			attr_dev(div5, "class", "content__div  svelte-1gffrzh");
-			add_location(div5, file$8, 427, 24, 16702);
+			add_location(div5, file$8, 431, 24, 16824);
 			attr_dev(div6, "class", "sub_container__div box svelte-1gffrzh");
-			add_location(div6, file$8, 418, 20, 16098);
+			add_location(div6, file$8, 422, 20, 16220);
 			attr_dev(div7, "class", "subtitle svelte-1gffrzh");
-			add_location(div7, file$8, 437, 24, 17108);
+			add_location(div7, file$8, 441, 24, 17230);
 			attr_dev(hr0, "class", "svelte-1gffrzh");
-			add_location(hr0, file$8, 443, 28, 17429);
+			add_location(hr0, file$8, 447, 28, 17551);
 			attr_dev(div8, "class", "subtitle svelte-1gffrzh");
 			set_style(div8, "width", "100%");
 			set_style(div8, "display", "grid");
 			set_style(div8, "place-items", "center");
-			add_location(div8, file$8, 443, 33, 17434);
+			add_location(div8, file$8, 447, 33, 17556);
 			attr_dev(hr1, "class", "svelte-1gffrzh");
-			add_location(hr1, file$8, 443, 135, 17536);
+			add_location(hr1, file$8, 447, 135, 17658);
 			attr_dev(div9, "class", "align h-center");
-			add_location(div9, file$8, 445, 28, 17572);
+			add_location(div9, file$8, 449, 28, 17694);
 			attr_dev(div10, "class", "content__div  svelte-1gffrzh");
-			add_location(div10, file$8, 438, 24, 17183);
+			add_location(div10, file$8, 442, 24, 17305);
 			attr_dev(div11, "class", "sub_container__div box svelte-1gffrzh");
-			add_location(div11, file$8, 436, 20, 17046);
+			add_location(div11, file$8, 440, 20, 17168);
 			attr_dev(div12, "class", "subtitle svelte-1gffrzh");
-			add_location(div12, file$8, 458, 24, 18289);
+			add_location(div12, file$8, 462, 24, 18411);
 			attr_dev(div13, "class", "content__div  svelte-1gffrzh");
-			add_location(div13, file$8, 459, 24, 18360);
+			add_location(div13, file$8, 463, 24, 18482);
 			attr_dev(div14, "class", "sub_container__div box svelte-1gffrzh");
-			add_location(div14, file$8, 456, 20, 18225);
+			add_location(div14, file$8, 460, 20, 18347);
 			attr_dev(div15, "class", "subtitle svelte-1gffrzh");
-			add_location(div15, file$8, 473, 24, 19062);
+			add_location(div15, file$8, 477, 24, 19184);
 			attr_dev(div16, "class", "content__div  svelte-1gffrzh");
-			add_location(div16, file$8, 474, 24, 19134);
+			add_location(div16, file$8, 478, 24, 19256);
 			attr_dev(div17, "class", "sub_container__div box svelte-1gffrzh");
-			add_location(div17, file$8, 472, 20, 19000);
+			add_location(div17, file$8, 476, 20, 19122);
 			attr_dev(div18, "class", "main_container__div svelte-1gffrzh");
-			add_location(div18, file$8, 405, 16, 15572);
+			add_location(div18, file$8, 409, 16, 15694);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div18, anchor);
@@ -79033,14 +79033,14 @@ function create_else_block$4(ctx) {
 		block,
 		id: create_else_block$4.name,
 		type: "else",
-		source: "(402:12) {:else}",
+		source: "(406:12) {:else}",
 		ctx
 	});
 
 	return block;
 }
 
-// (400:12) {#if showreport}
+// (404:12) {#if showreport}
 function create_if_block_3$1(ctx) {
 	let div;
 	let hr0;
@@ -79055,11 +79055,11 @@ function create_if_block_3$1(ctx) {
 			t = text(t_value);
 			hr1 = element("hr");
 			attr_dev(hr0, "class", "svelte-1gffrzh");
-			add_location(hr0, file$8, 400, 57, 15440);
+			add_location(hr0, file$8, 404, 57, 15562);
 			attr_dev(hr1, "class", "svelte-1gffrzh");
-			add_location(hr1, file$8, 400, 94, 15477);
+			add_location(hr1, file$8, 404, 94, 15599);
 			attr_dev(div, "class", "content status_report__div svelte-1gffrzh");
-			add_location(div, file$8, 400, 16, 15399);
+			add_location(div, file$8, 404, 16, 15521);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -79081,14 +79081,14 @@ function create_if_block_3$1(ctx) {
 		block,
 		id: create_if_block_3$1.name,
 		type: "if",
-		source: "(400:12) {#if showreport}",
+		source: "(404:12) {#if showreport}",
 		ctx
 	});
 
 	return block;
 }
 
-// (411:28) {#each mainParameters as {label, value, id}
+// (415:28) {#each mainParameters as {label, value, id}
 function create_each_block_4(key_1, ctx) {
 	let first;
 	let textfield;
@@ -79153,14 +79153,14 @@ function create_each_block_4(key_1, ctx) {
 		block,
 		id: create_each_block_4.name,
 		type: "each",
-		source: "(411:28) {#each mainParameters as {label, value, id}",
+		source: "(415:28) {#each mainParameters as {label, value, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (429:28) {#each energyLevels as {label, value, id}
+// (433:28) {#each energyLevels as {label, value, id}
 function create_each_block_3$1(key_1, ctx) {
 	let first;
 	let textfield;
@@ -79225,14 +79225,14 @@ function create_each_block_3$1(key_1, ctx) {
 		block,
 		id: create_each_block_3$1.name,
 		type: "each",
-		source: "(429:28) {#each energyLevels as {label, value, id}",
+		source: "(433:28) {#each energyLevels as {label, value, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (441:28) {#each simulationParameters as {label, value, id}
+// (445:28) {#each simulationParameters as {label, value, id}
 function create_each_block_2$1(key_1, ctx) {
 	let first;
 	let textfield;
@@ -79297,14 +79297,14 @@ function create_each_block_2$1(key_1, ctx) {
 		block,
 		id: create_each_block_2$1.name,
 		type: "each",
-		source: "(441:28) {#each simulationParameters as {label, value, id}",
+		source: "(445:28) {#each simulationParameters as {label, value, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (461:28) {#each dopplerLineshape as {label, value, type, step, id}
+// (465:28) {#each dopplerLineshape as {label, value, type, step, id}
 function create_each_block_1$1(key_1, ctx) {
 	let first;
 	let textfield;
@@ -79375,14 +79375,14 @@ function create_each_block_1$1(key_1, ctx) {
 		block,
 		id: create_each_block_1$1.name,
 		type: "each",
-		source: "(461:28) {#each dopplerLineshape as {label, value, type, step, id}",
+		source: "(465:28) {#each dopplerLineshape as {label, value, type, step, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (476:28) {#each powerBroadening as {label, value, id}
+// (480:28) {#each powerBroadening as {label, value, id}
 function create_each_block$2(key_1, ctx) {
 	let first;
 	let textfield;
@@ -79447,14 +79447,14 @@ function create_each_block$2(key_1, ctx) {
 		block,
 		id: create_each_block$2.name,
 		type: "each",
-		source: "(476:28) {#each powerBroadening as {label, value, id}",
+		source: "(480:28) {#each powerBroadening as {label, value, id}",
 		ctx
 	});
 
 	return block;
 }
 
-// (486:20) {#if includeCollision}
+// (490:20) {#if includeCollision}
 function create_if_block_5$1(ctx) {
 	let collisionalcoefficients;
 	let updating_collisionalCoefficient;
@@ -79604,14 +79604,14 @@ function create_if_block_5$1(ctx) {
 		block,
 		id: create_if_block_5$1.name,
 		type: "if",
-		source: "(486:20) {#if includeCollision}",
+		source: "(490:20) {#if includeCollision}",
 		ctx
 	});
 
 	return block;
 }
 
-// (491:20) {#if includeAttachmentRate}
+// (495:20) {#if includeAttachmentRate}
 function create_if_block_4$1(ctx) {
 	let attachmentcoefficients;
 	let updating_attachmentCoefficients;
@@ -79719,14 +79719,14 @@ function create_if_block_4$1(ctx) {
 		block,
 		id: create_if_block_4$1.name,
 		type: "if",
-		source: "(491:20) {#if includeAttachmentRate}",
+		source: "(495:20) {#if includeAttachmentRate}",
 		ctx
 	});
 
 	return block;
 }
 
-// (399:8) <svelte:fragment slot="main_content__slot">
+// (403:8) <svelte:fragment slot="main_content__slot">
 function create_main_content__slot_slot(ctx) {
 	let current_block_type_index;
 	let if_block;
@@ -79799,14 +79799,14 @@ function create_main_content__slot_slot(ctx) {
 		block,
 		id: create_main_content__slot_slot.name,
 		type: "slot",
-		source: "(399:8) <svelte:fragment slot=\\\"main_content__slot\\\">",
+		source: "(403:8) <svelte:fragment slot=\\\"main_content__slot\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (504:16) {#if pyProcesses.length>0}
+// (508:16) {#if pyProcesses.length>0}
 function create_if_block_2$2(ctx) {
 	let div;
 	let t0;
@@ -79827,7 +79827,7 @@ function create_if_block_2$2(ctx) {
 			t1 = text(t1_value);
 			t2 = space();
 			t3 = text(t3_value);
-			add_location(div, file$8, 504, 20, 20585);
+			add_location(div, file$8, 508, 20, 20707);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -79852,14 +79852,14 @@ function create_if_block_2$2(ctx) {
 		block,
 		id: create_if_block_2$2.name,
 		type: "if",
-		source: "(504:16) {#if pyProcesses.length>0}",
+		source: "(508:16) {#if pyProcesses.length>0}",
 		ctx
 	});
 
 	return block;
 }
 
-// (508:16) {#if pyProcesses.length>0}
+// (512:16) {#if pyProcesses.length>0}
 function create_if_block_1$3(ctx) {
 	let button;
 	let button_transition;
@@ -79872,7 +79872,7 @@ function create_if_block_1$3(ctx) {
 			button = element("button");
 			button.textContent = "Stop";
 			attr_dev(button, "class", "button is-danger");
-			add_location(button, file$8, 508, 20, 20787);
+			add_location(button, file$8, 512, 20, 20909);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, button, anchor);
@@ -79911,14 +79911,14 @@ function create_if_block_1$3(ctx) {
 		block,
 		id: create_if_block_1$3.name,
 		type: "if",
-		source: "(508:16) {#if pyProcesses.length>0}",
+		source: "(512:16) {#if pyProcesses.length>0}",
 		ctx
 	});
 
 	return block;
 }
 
-// (501:8) <svelte:fragment slot="footer_content__slot">
+// (505:8) <svelte:fragment slot="footer_content__slot">
 function create_footer_content__slot_slot(ctx) {
 	let div;
 	let t0;
@@ -79947,11 +79947,11 @@ function create_footer_content__slot_slot(ctx) {
 			button1 = element("button");
 			button1.textContent = "Submit";
 			attr_dev(button0, "class", "button is-link");
-			add_location(button0, file$8, 510, 16, 20918);
+			add_location(button0, file$8, 514, 16, 21040);
 			attr_dev(button1, "class", "button is-link");
-			add_location(button1, file$8, 511, 16, 21065);
+			add_location(button1, file$8, 515, 16, 21187);
 			attr_dev(div, "class", "align");
-			add_location(div, file$8, 502, 12, 20500);
+			add_location(div, file$8, 506, 12, 20622);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -80038,7 +80038,7 @@ function create_footer_content__slot_slot(ctx) {
 		block,
 		id: create_footer_content__slot_slot.name,
 		type: "slot",
-		source: "(501:8) <svelte:fragment slot=\\\"footer_content__slot\\\">",
+		source: "(505:8) <svelte:fragment slot=\\\"footer_content__slot\\\">",
 		ctx
 	});
 
@@ -80241,10 +80241,13 @@ function instance$b($$self, $$props, $$invalidate) {
 			zeemanSplit,
 			excitedFrom,
 			excitedTo,
-			numberDensity
+			numberDensity,
+			collisionalTemp
 		};
 
-		const pyfile = "ROSAA/ROSAA_simulation.py";
+		// const pyfile = "ROSAA/ROSAA_simulation.py"
+		const pyfile = "ROSAA/ROSAA_simulation_newTest.py";
+
 		const args = [JSON.stringify(conditions)];
 
 		computePy_func({ e, pyfile, args, general: true }).catch(error => {
