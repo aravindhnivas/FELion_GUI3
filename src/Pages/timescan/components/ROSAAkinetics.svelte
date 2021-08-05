@@ -1,10 +1,10 @@
 
 <script>
-    import {mainPreModal} from "../../../svelteWritable";
-    import CustomSwitch from "../../../components/CustomSwitch.svelte"
-    import CustomSelect from "../../../components/CustomSelect.svelte"
+    import {mainPreModal} from "src/svelteWritable.js";
+    import CustomSwitch from "components/CustomSwitch.svelte"
+    import CustomSelect from "components/CustomSelect.svelte"
     import Textfield from '@smui/textfield'
-    import ModalTable from '../../../components/ModalTable.svelte'
+    import ModalTable from 'components/ModalTable.svelte'
 
     import {Icon} from '@smui/icon-button';
     import { tick } from "svelte";
@@ -81,7 +81,6 @@
     let config_content = {}
 
     function saveConfig() {
-
         if(!fs.existsSync(currentLocation)) {return window.createToast("Invalid location or filename", "danger")}
 
         const keys = configKeys.slice(1, configKeys.length)
