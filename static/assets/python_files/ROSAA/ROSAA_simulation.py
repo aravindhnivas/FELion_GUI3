@@ -23,7 +23,7 @@ class ROSAA:
         self.energyLevels = {key: float(value) for key, value in conditions["energy_levels"].items()}
         self.energyKeys = list(self.energyLevels.keys())
         self.lineshape_conditions = conditions["lineshape_conditions"]
-        self.collisionalTemp = float(self.lineshape_conditions["IonTemperature(K)"])
+        self.collisionalTemp = float(conditions["collisionalTemp"])
         
         self.collisionalRateConstants = {key: float(value) for key, value in conditions["collisional_rates"].items()}
         self.includeSpontaneousEmission = conditions["includeSpontaneousEmission"]
