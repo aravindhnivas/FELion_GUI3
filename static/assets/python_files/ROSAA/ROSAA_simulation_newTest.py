@@ -6,6 +6,8 @@ from pathlib import Path as pt
 from scipy.integrate import solve_ivp
 from functools import reduce
 
+from scipy.integrate._ivp.radau import T
+
 from ROSAA_func import boltzman_distribution
 from optimizePlot import optimizePlot
 main_module_loc = str(pt(__file__).joinpath("../../"))
@@ -273,6 +275,7 @@ class ROSAA:
 
 
         signal = (1 - (N_He_OFF_distribution[1][1:] / N_He_ON_distribution[1][1:]))*100
+        signal = np.nan_to_num(signal).clip(min=0)
         print(f"{signal=}", flush=True)
         
     def compute_attachment_process(self, N_He, N, nHe):
@@ -399,6 +402,7 @@ class ROSAA:
             signal_index = len(self.energyKeys)+1
 
             signal = (1 - (self.lightON_distribution[signal_index][1:] / self.lightOFF_distribution[signal_index][1:]))*100
+            print(f"{signal=}", flush=True)
             fig1, ax1 = plt.subplots(figsize=(10, 6), dpi=100)
             ax1.plot(simulationTime[1:], signal)
             ax1 = optimizePlot(ax1, xlabel="Time (ms)", ylabel="Signal (%)")
