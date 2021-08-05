@@ -143,7 +143,7 @@
     async function browse_folder() {
 
         const result = await browse({dir:true})
-        if (!result.canceled) { currentLocation = result.filePaths[0]; }
+        if (!result.canceled) { currentLocation = result.filePaths[0];}
     }
 
     let writefile = true, includeCollision = true, includeSpontaneousEmission = true, includeAttachmentRate = true;
@@ -168,11 +168,11 @@
     
         try {
             if(fs.existsSync(configFile)) return setConfig();
-
             const congFilePath = await browse({dir:false, multiple:false})
             if (congFilePath.filePaths.length==0) return Promise.reject("No files selected");
             configFile = congFilePath.filePaths[0]
             db.set("ROSAA_config_file", configFile)
+
             setConfig()
         
         } catch (error) {$mainPreModal = {modalContent:error, open:true}}
@@ -261,8 +261,10 @@
             kCID.constant = attachmentRateConstants.kCID.map(setID).map(correctObjValue);
 
             ({trapTemp, electronSpin, zeemanSplit, numberDensity} = CONFIG);
+            ({savefilename}=CONFIG.saveFile);
 
-            ({savelocation:currentLocation, savefilename}=CONFIG.saveFile);
+            const {savelocation} = CONFIG.saveFile;
+            if(fs.existsSync(savelocation)) {currentLocation = savelocation};
             ({energy:energyFilename, collision:collisionalFilename, einsteinA:einsteinFilename} = CONFIG.filenames);
 
             energyFilename = window.path.join(configFileLocation, energyFilename);
@@ -408,13 +410,13 @@
         </svelte:fragment>
 
         <svelte:fragment slot="main_content__slot">
-            {#if showreport}
-                <div class="content status_report__div" ><hr>{statusReport || "Status report"}<hr></div>
-            {:else}
+            <!-- {#if showreport} -->
+                <div class="content status_report__div" class:hide={!showreport} ><hr>{statusReport || "Status report"}<hr></div>
+            <!-- {:else} -->
 
                 <!-- Main Parameters -->
 
-                <div class="main_container__div" >
+                <div class="main_container__div" class:hide={showreport}>
                     <div class="sub_container__div box">
 
                         <div class="subtitle">Main Parameters</div>
@@ -505,7 +507,7 @@
                     
                 </div>
 
-            {/if}
+            <!-- {/if} -->
 
         </svelte:fragment>
 
@@ -519,7 +521,11 @@
                 {#if pyProcesses.length>0}
                     <button transition:fade class="button is-danger" on:click="{pyKillProcess}" >Stop</button>
                 {/if}
+                {#if showreport}
+                    <button  class="button is-warning" on:click="{(e)=>{statusReport = ""}}" >Clear</button>
+                {/if}
                 <button  class="button is-link" on:click="{(e)=>{showreport = !showreport}}" >{showreport ? "Go Back" : "Status report"}</button>
+
                 <button  class="button is-link" on:click="{simulation}" on:pyEvent={pyEventHandle} on:pyEventClosed="{pyEventClosedHandle}" on:pyEventData={pyEventDataReceivedHandle}>Submit</button>
             </div>
         </svelte:fragment>
