@@ -7,18 +7,18 @@ from scipy.integrate import solve_ivp
 from functools import reduce
 
 from scipy.integrate._ivp.radau import T
-
 from ROSAA_func import boltzman_distribution
 from optimizePlot import optimizePlot
 main_module_loc = str(pt(__file__).joinpath("../../"))
+
 sys.path.insert(0, main_module_loc)
 
 from FELion_definitions import sendData
 from FELion_constants import colors
 
 
-class ROSAA:
 
+class ROSAA:
 
     def __init__(self):
 
@@ -72,17 +72,17 @@ class ROSAA:
                 print(f"{counter+1}/{int(_steps)}: {_nHe=:.2e}", flush=True)
 
                 self.Simulate(_nHe)
-                
                 if self.includeAttachmentRate:
+
                     signal_index = len(self.energyKeys)+1
                 
                     signal = (1 - (self.lightON_distribution[signal_index][1:] / self.lightOFF_distribution[signal_index][1:]))*100
 
                     signal = round(signal[-1], 1)
                     signalList.append(signal)
-
             
             signalList = np.nan_to_num(signalList).clip(min=0)
+            
             print(signalList, flush=True)
 
             location = pt(conditions["currentLocation"])/"OUT"
@@ -159,13 +159,12 @@ class ROSAA:
 
         return dR_dt
 
-    def SimulateODESeparate(self, nHe, duration, initialDuration=0.1, totalSteps=1000):
+    def SimulateODESeparate(self, nHe, duration, totalSteps=1000, initialDuration=0.1):
 
         self.N_distribution = []
         self.t_distribution = []
 
         def SimulateODEAttachment(t, N_He, ratio):
-
             if self.N is None:
                 self.N = ratio
             else:
@@ -173,28 +172,25 @@ class ROSAA:
 
             self.N_distribution = np.append(self.N_distribution, self.N)
             self.t_distribution = np.append(self.t_distribution, t)
-            N = {key:value for key, value in zip(self.energyKeys, self.N)}
 
+            N = {key: value for key, value in zip(self.energyKeys, self.N)}
             attachmentRate0 = - self.k3[0]*nHe**2*N[self.excitedFrom] + self.kCID[0]*nHe*N_He[0]*self.kCID_branch
-
             attachmentRate1 = - self.k31_excited*nHe**2*N[self.excitedTo] + self.kCID[0]*nHe*N_He[0]*(1-self.kCID_branch)
-
 
             N[self.excitedFrom] += attachmentRate0
             N[self.excitedTo] += attachmentRate1
+
             self.N = np.array(list(N.values()), dtype=float)
             dR_dt = []
 
-            # for the first complex formed (sign corrected)
             currentRate =  - attachmentRate0 - attachmentRate1
             for i in range(self.totalAttachmentLevels-1):
                 nextRate = - self.k3[i+1]*nHe**2*N_He[i] + self.kCID[i+1]*nHe*N_He[i+1]
                 attachmentRate = currentRate + nextRate
                 dR_dt.append(attachmentRate)
-                currentRate = -nextRate
-                
-            dR_dt.append(currentRate)
 
+                currentRate = -nextRate
+            dR_dt.append(currentRate)
             return dR_dt
 
         def SimulateODECollisional(t, N, lightON):
@@ -241,56 +237,123 @@ class ROSAA:
 
             return dR_dt
 
-        simulateTime_collisional = np.linspace(0, initialDuration, int(totalSteps))
+        def plot():
+            fig, ax = plt.subplots(figsize=(10, 6), dpi=100)
+            # simulationTime = self.simulateTime.T*1e3
 
+            colorSchemes = []
+
+            for color in colors[::2]:
+                scale = 1/255
+                temp = [_*scale for _ in color]
+                colorSchemes.append(temp)
+            counter = 0
+
+            simulationTimeON = N_ON_distribution["t"]*1e3
+            simulationTimeOFF = N_OFF_distribution["t"]*1e3
+
+            for on, off in zip(N_ON_distribution["y"], N_OFF_distribution["y"]):
+                ax.plot(simulationTimeON, on, ls="-", c=colorSchemes[counter], label=f"{counter}")
+                ax.plot(simulationTimeOFF, off, ls="--", c=colorSchemes[counter])
+                counter += 1
+            tagCounter = 1
+            for on, off in zip(N_He_ON_distribution, N_He_OFF_distribution):
+                ax.plot(simulateTime_attachment, on, ls="-", c=colorSchemes[counter], label=f"{tagCounter}")
+                ax.plot(simulateTime_attachment, off, ls="--", c=colorSchemes[counter])
+
+                tagCounter += 1
+                counter += 1
+
+            # ax.plot(simulationTimeON, N_ON_distribution["y"].sum(axis=0), "--k")
+            # ax.plot(simulationTimeOFF, N_OFF_distribution["y"].sum(axis=0), "-k", alpha=0.5)
+            
+            ax.hlines(1, 0, simulationTimeON[-1]+simulationTimeON[-1]*0.2, colors='k', linestyles="dashdot")
+
+            lg = ax.legend(title=f"--OFF, -ON", fontsize=14, title_fontsize=16)
+            lg.set_draggable(True)
+            ax = optimizePlot(ax, xlabel="Time (ms)", ylabel="Population (%)")
+
+            if self.includeAttachmentRate:
+                # signal_index = 1
+
+                # signal = (1 - (self.lightON_distribution[signal_index][1:] / self.lightOFF_distribution[signal_index][1:]))*100
+                # print(f"{signal=}", flush=True)
+                fig1, ax1 = plt.subplots(figsize=(10, 6), dpi=100)
+                ax1.plot(simulateTime_attachment[1:], signal)
+                ax1 = optimizePlot(ax1, xlabel="Time (ms)", ylabel="Signal (%)")
+            plt.show(block = True)
+
+        simulateTime_collisional = np.linspace(0, initialDuration, int(totalSteps))
 
         simulateTime_attachment = np.linspace(initialDuration, duration, int(totalSteps))
         start_time = time.perf_counter()
 
         # Light OFF
+
+        # Compute collisional
         N_OFF_collisional = solve_ivp(SimulateODECollisional, [0, initialDuration], self.boltzmanDistribution, args=(False, ), dense_output=True)
+        self.N_distribution = []
+        self.t_distribution = []
         self.N = None
 
         ratio = N_OFF_collisional.sol(simulateTime_collisional).T[-1]
+        
+        # Compute attachment
+        
         N_OFF_attachment = solve_ivp(SimulateODEAttachment, [initialDuration, duration], [0, 0], args=(ratio, ), dense_output=True)
+        
         N_He_OFF_distribution = N_OFF_attachment.sol(simulateTime_attachment)
+        shape = (len(self.t_distribution), len(self.boltzmanDistribution))
+        self.N_distribution = np.array(self.N_distribution, dtype=float).reshape(shape).T
         N_OFF_distribution = {"t": self.t_distribution, "y": self.N_distribution}
 
+        ########################################################################################
+
         # Light ON
+        # Compute collisional
+
         N_ON_collisional = solve_ivp(SimulateODECollisional, [0, initialDuration], self.boltzmanDistribution, args=(True, ), dense_output=True)
+
+        self.N_distribution = []
+
+        self.t_distribution = []
         self.N = None
 
         ratio = N_ON_collisional.sol(simulateTime_collisional).T[-1]
+
+        # Compute attachment
+
         N_ON_attachment = solve_ivp(SimulateODEAttachment, [initialDuration, duration], [0, 0], args=(ratio, ), dense_output=True)
         N_He_ON_distribution = N_ON_attachment.sol(simulateTime_attachment)
+        shape = (len(self.t_distribution), len(self.boltzmanDistribution))
+
+        self.N_distribution = np.array(self.N_distribution, dtype=float).reshape(shape).T
         N_ON_distribution = {"t": self.t_distribution, "y": self.N_distribution}
 
+        ########################################################################################
+        ########################################################################################
         end_time = time.perf_counter()
+
         print(f"Total simulation time: {(end_time-start_time):.2f} s", flush=True)
-
-        print(f"{N_He_OFF_distribution=}", flush=True)
-        # print(f"{N_OFF_distribution=}", flush=True)
-        print(f"{N_He_ON_distribution=}", flush=True)
-        # print(f"{N_ON_distribution=}", flush=True)
-
 
         signal = (1 - (N_He_OFF_distribution[1][1:] / N_He_ON_distribution[1][1:]))*100
         signal = np.nan_to_num(signal).clip(min=0)
+
         print(f"{signal=}", flush=True)
+        plot()
         
     def compute_attachment_process(self, N_He, N, nHe):
-        
         N = {key:value for key, value in zip(self.energyKeys, N)}
+
         attachmentRate0 = - self.k3[0]*nHe**2*N[self.excitedFrom] + self.kCID[0]*nHe*N_He[0]*self.kCID_branch
         attachmentRate1 = - self.k31_excited*nHe**2*N[self.excitedTo] + self.kCID[0]*nHe*N_He[0]*(1-self.kCID_branch)
-        
-        
+
+
         N[self.excitedFrom] += attachmentRate0
         N[self.excitedTo] += attachmentRate1
         dR_dt = list(N.values())
 
-        # for the first complex formed (sign corrected)
-        
+
         currentRate =  - attachmentRate0 - attachmentRate1
 
         for i in range(self.totalAttachmentLevels-1):
@@ -337,34 +400,28 @@ class ROSAA:
         self.fixedPopulation = boltzman_distribution( self.energyLevels, self.collisionalTemp, self.electronSpin, self.zeemanSplit )
         self.GetAttachmentRatesParameters()
 
-        
         N_He = []
         if self.includeAttachmentRate:
-        
             N_He = self.totalAttachmentLevels*[0]
 
         totalSteps = int(self.simulation_parameters["Total steps"])
 
-        self.SimulateODESeparate(nHe, duration)
-
+        self.SimulateODESeparate(nHe, duration, totalSteps)
         initialDuration = 5e-3
         initialSteps = np.linspace(0, initialDuration, int(totalSteps*0.5))
-
         finalSteps = np.linspace(initialDuration, duration, int(totalSteps*0.5))
+
         if duration>initialDuration:
             self.simulateTime = np.append(initialSteps, finalSteps)
-
         else:
             self.simulateTime = np.linspace(0, duration, int(totalSteps*0.5))
 
         self.lightON=False
-
         start_time = time.perf_counter()
         N_OFF = solve_ivp(self.SimulateODE, tspan, [*self.boltzmanDistribution, *N_He], args=(nHe,), dense_output=True)
 
         self.lightOFF_distribution = N_OFF.sol(self.simulateTime)
         self.lightON=True
-
         N_ON = solve_ivp(self.SimulateODE, tspan, [*self.boltzmanDistribution, *N_He], args=(nHe, ), dense_output=True)
         self.lightON_distribution = N_ON.sol(self.simulateTime)
 
@@ -375,14 +432,14 @@ class ROSAA:
     def Plot(self):
 
         fig, ax = plt.subplots(figsize=(10, 6), dpi=100)
-        # plt.subplots_adjust(top=0.95, right=0.95, left=0.07)
         simulationTime = self.simulateTime.T*1e3
+
         colorSchemes = []
         for color in colors[::2]:
             scale = 1/255
             temp = [_*scale for _ in color]
             colorSchemes.append(temp)
-        
+
         counter = 0
         for on, off in zip(self.lightON_distribution, self.lightOFF_distribution):
             ax.plot(simulationTime, on, ls="-", c=colorSchemes[counter], label=f"{self.legends[counter]}")
@@ -419,7 +476,6 @@ class ROSAA:
             "lightOFF_distribution":self.lightOFF_distribution.tolist()
         }
 
-
         with open(location / f"{savefilename}_ROSAA_output.json", 'w+') as f:
             data = json.dumps(dataToSend, sort_keys=True, indent=4, separators=(',', ': '))
             f.write(data)
@@ -430,5 +486,4 @@ if __name__ == "__main__":
     conditions = json.loads(sys.argv[1])
     pp = pprint.PrettyPrinter(indent=4)
     pp.pprint(conditions)
-    sys.stdout.flush()
     ROSAA()
