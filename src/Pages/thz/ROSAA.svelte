@@ -125,7 +125,8 @@
         
         }
         
-        const pyfile = "ROSAA/ROSAA_simulation.py"
+        // const pyfile = "ROSAA/ROSAA_simulation.py"
+        const pyfile = "ROSAA/ROSAA_simulation_newTest.py"
         
         const args = [JSON.stringify(conditions)]
         
@@ -269,7 +270,6 @@
             einsteinFilename = window.path.join(configFileLocation, einsteinFilename);
 
             ({levels:energyLevels, unit:energyUnit} = await getYMLFileContents(energyFilename));
-            
             energyLevels = energyLevels.map(setID);
             numberOfLevels = energyLevels.length;
             
