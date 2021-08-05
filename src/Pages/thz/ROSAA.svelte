@@ -117,7 +117,11 @@
         const energy_levels = {}
         energyLevels.forEach(f=>energy_levels[f.label]=f.value)
         const conditions = { 
-            trapTemp, variable, variableRange, numberOfLevels, includeCollision, includeAttachmentRate, includeSpontaneousEmission, writefile, savefilename, currentLocation,  deexcitation, collisional_rates, main_parameters, simulation_parameters, einstein_coefficient, energy_levels, energyUnit, power_broadening, lineshape_conditions, attachment_rate_coefficients, electronSpin, zeemanSplit, excitedFrom, excitedTo, numberDensity
+            trapTemp, variable, variableRange, numberOfLevels, includeCollision, includeAttachmentRate, 
+            includeSpontaneousEmission, writefile, savefilename, currentLocation,  deexcitation, 
+            collisional_rates, main_parameters, simulation_parameters, einstein_coefficient, 
+            energy_levels, energyUnit, power_broadening, lineshape_conditions, attachment_rate_coefficients, 
+            electronSpin, zeemanSplit, excitedFrom, excitedTo, numberDensity, collisionalTemp
         
         }
         
