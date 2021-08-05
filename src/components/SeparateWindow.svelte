@@ -60,7 +60,7 @@
         display:grid;
 
 
-        grid-template-rows: auto 1fr auto;
+        grid-template-rows: 1fr 7fr 0.5fr;
 
         max-height: 100%;
         padding: 1em;
