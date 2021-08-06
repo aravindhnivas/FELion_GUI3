@@ -168,7 +168,7 @@ class ROSAA:
         def SimulateODEAttachment(t, N_He, ratio):
             if self.N is None:
                 self.N = ratio
-            
+            self.N = (ratio/ratio.sum())*(1-np.sum(N_He))
             self.N_distribution = np.append(self.N_distribution, self.N)
             self.t_distribution = np.append(self.t_distribution, t)
 
@@ -194,13 +194,6 @@ class ROSAA:
 
             dR_dt.append(currentRate)
             dR_dt = np.array(dR_dt, dtype=float)
-            # log(f"{dR_dt=}\n{dR_dt.sum()=}")
-
-            self.N = (ratio/ratio.sum())*(1-dR_dt.sum())
-            # log(f"{self.N.sum()=}")
-
-            # total = np.append(self.N, dR_dt)
-            # log(f"{total.sum()=}")
 
             return dR_dt
 
@@ -292,47 +285,49 @@ class ROSAA:
 
             simulationTimeON = N_ON_distribution["t"]*1e3
             simulationTimeOFF = N_OFF_distribution["t"]*1e3
-
+            
             for on, off in zip(N_ON_distribution["y"], N_OFF_distribution["y"]):
-
                 ax.plot(simulationTimeON, on, ls="-", c=colorSchemes[counter], label=f"{counter}")
                 ax.plot(simulationTimeOFF, off, ls="--", c=colorSchemes[counter])
                 counter += 1
 
             tagCounter = 1
             for on, off in zip(N_He_ON_distribution, N_He_OFF_distribution):
+
                 ax.plot(self.simulateTime_attachment*1e3, on, ls="-", c=colorSchemes[counter], label=f"{tagCounter}")
                 ax.plot(self.simulateTime_attachment*1e3, off, ls="--", c=colorSchemes[counter])
-
                 tagCounter += 1
                 counter += 1
-
+            
             ax.hlines(1, 0, simulationTimeON[-1]+simulationTimeON[-1]*0.2, colors='k', linestyles="dashdot")
-
             lg = ax.legend(title=f"--OFF, -ON", fontsize=14, title_fontsize=16)
             lg.set_draggable(True)
-            ax = optimizePlot(ax, xlabel="Time (ms)", ylabel="Population (%)")
 
+            ax = optimizePlot(ax, xlabel="Time (ms)", ylabel="Population (%)")
             if self.includeAttachmentRate:
                 fig1, ax1 = plt.subplots(figsize=(10, 6), dpi=100)
                 signalTime = self.simulateTime_attachment*1e3
-                ax1.plot(signalTime[1:], signal)
+                ax1.set_ylim([0, 100])
+                ax1.plot(signalTime[1:], signal, label=f"Signal={signal[-1]:.0f}%")
                 ax1 = optimizePlot(ax1, xlabel="Time (ms)", ylabel="Signal (%)")
+
+
+                ax1.legend()
             plt.show(block = True)
 
         simulateTime_collisional = np.linspace(0, initialDuration, int(totalSteps))
+        
         self.simulateTime_attachment = np.linspace(initialDuration, duration, int(totalSteps))
         start_time = time.perf_counter()
-
         ########################################################################################
-        
         # Light OFF
         self.N_distribution = []
-
         self.t_distribution = []
+
         self.N = None
 
         if self.includeCollision:
+
             # Compute collisional
             N_OFF_collisional = solve_ivp(
                 SimulateODECollisional, [0, initialDuration], self.boltzmanDistribution, args=(False, ), dense_output=True
@@ -401,7 +396,6 @@ class ROSAA:
         log(f"{signal=}")
 
         self.directSignal =signal
-
         plot()
         
     def compute_attachment_process(self, N_He, N, nHe):
