@@ -164,14 +164,11 @@ class ROSAA:
         self.N_distribution = []
         self.t_distribution = []
 
+        self.N = None
         def SimulateODEAttachment(t, N_He, ratio):
             if self.N is None:
                 self.N = ratio
-            # self.N = (ratio/ratio.sum())*self.N.sum()
-            # if lightON:
-            #     self.N = N_ON_collisional.sol(t).T
-            # else:
-            #     self.N = N_OFF_collisional.sol(t).T
+            
             self.N_distribution = np.append(self.N_distribution, self.N)
             self.t_distribution = np.append(self.t_distribution, t)
 
@@ -209,12 +206,12 @@ class ROSAA:
 
         def SimulateODECollisional(t, N, lightON):
 
-            N = {key:value for key, value in zip(self.energyKeys, N)}
+            N = {key: value for key, value in zip(self.energyKeys, N)}
+
             rateCollection = []
 
             for i in self.energyKeys:
                 collisional = [0]
-
                 einstein = [0]
                 for j in self.energyKeys:
                     if i!= j:
@@ -250,6 +247,37 @@ class ROSAA:
                 dR_dt.append(temp)
 
             return dR_dt
+
+        def simulatedFixedCollisional(lightON=True):
+            N = {key: value for key, value in zip(self.energyKeys, self.boltzmanDistributionCold)}
+
+            if lightON:
+
+                if not self.zeemanSplit:
+                
+                    if self.electronSpin:
+                
+                        j0 = float(self.excitedFrom.split("_")[1])
+                        j1 = float(self.excitedTo.split("_")[1])
+
+                    else:
+                        j0 = int(self.excitedFrom)
+                        j1 = int(self.excitedTo)
+                    G0 = int(2*j0+1)
+                    G1 = int(2*j1+1)
+
+                else:
+                    G0 = G1 = 1
+
+                twoLeveltotal = N[self.excitedFrom] + N[self.excitedTo]
+                log(f"{twoLeveltotal=}")
+                
+                norm = G0 + G1
+                N[self.excitedFrom] = (G0/norm)*twoLeveltotal
+                N[self.excitedTo] = (G1/norm)*twoLeveltotal
+                log(f"{N=}")
+            converted_N = np.array(list(N.values()), dtype=float)
+            return converted_N
 
         def plot():
             fig, ax = plt.subplots(figsize=(10, 6), dpi=100)
@@ -290,7 +318,7 @@ class ROSAA:
                 signalTime = self.simulateTime_attachment*1e3
                 ax1.plot(signalTime[1:], signal)
                 ax1 = optimizePlot(ax1, xlabel="Time (ms)", ylabel="Signal (%)")
-            plt.show(block = False)
+            plt.show(block = True)
 
         simulateTime_collisional = np.linspace(0, initialDuration, int(totalSteps))
         self.simulateTime_attachment = np.linspace(initialDuration, duration, int(totalSteps))
@@ -299,19 +327,24 @@ class ROSAA:
         ########################################################################################
         
         # Light OFF
-        # Compute collisional
-
-        N_OFF_collisional = solve_ivp(
-            SimulateODECollisional, [0, initialDuration], self.boltzmanDistribution, args=(False, ), dense_output=True
-        )
-
         self.N_distribution = []
+
         self.t_distribution = []
         self.N = None
 
-        ratio = N_OFF_collisional.sol(simulateTime_collisional).T[-1]
+        if self.includeCollision:
+            # Compute collisional
+            N_OFF_collisional = solve_ivp(
+                SimulateODECollisional, [0, initialDuration], self.boltzmanDistribution, args=(False, ), dense_output=True
+            )
 
-        # log(f"OFF: {ratio=}")
+            ratio = N_OFF_collisional.sol(simulateTime_collisional).T[-1]
+
+        else:
+
+            ratio = self.boltzmanDistributionCold
+
+        log(f"OFF: {ratio=}")
 
         # Compute attachment
         N_OFF_attachment = solve_ivp(
@@ -327,23 +360,21 @@ class ROSAA:
         N_OFF_distribution = {"t": self.t_distribution, "y": self.N_distribution}
 
         ########################################################################################
-
         # Light ON
-        
-        # Compute collisional
-
-        N_ON_collisional = solve_ivp(
-            SimulateODECollisional, [0, initialDuration], self.boltzmanDistribution, args=(True, ), dense_output=True
-        
-        )
         self.N_distribution = []
         self.t_distribution = []
         self.N = None
+        
+        if self.includeCollision:
+            # Compute collisional
+            N_ON_collisional = solve_ivp(
+                SimulateODECollisional, [0, initialDuration], self.boltzmanDistribution, args=(True, ), dense_output=True
+            )
+            ratio = N_ON_collisional.sol(simulateTime_collisional).T[-1]
+        else:
+            ratio = simulatedFixedCollisional()
 
-        ratio = N_ON_collisional.sol(simulateTime_collisional).T[-1]
-        # ratio = np.nan_to_num(ratio).clip(min=0)
         log(f"ON: {ratio=}")
-
 
         # Compute attachment
 
@@ -440,7 +471,7 @@ class ROSAA:
         totalSteps = int(self.simulation_parameters["Total steps"])
 
         self.SimulateODESeparate(nHe, duration, totalSteps)
-        # return
+        if not self.includeCollision: return
 
         initialDuration = 5e-3
         initialSteps = np.linspace(0, initialDuration, int(totalSteps*0.5))
@@ -529,5 +560,5 @@ if __name__ == "__main__":
     pp = pprint.PrettyPrinter(indent=4)
     
     pp.pprint(conditions)
-    
+
     ROSAA()
