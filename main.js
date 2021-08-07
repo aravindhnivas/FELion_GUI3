@@ -4,7 +4,7 @@ let mainWindow;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 1200, height: 700, frame: false, icon: path.resolve(__dirname, "assets/logo/felion_icon.icns"),
+    width: 1200, height: 700, frame: false, icon: path.resolve(__dirname, "assets/logo/felion_icon.ics"),
     webPreferences: {
       nodeIntegration: true, contextIsolation: false, nativeWindowOpen: true, webviewTag: true, nodeIntegrationInWorker: true, enableRemoteModule: true
     },
