@@ -550,7 +550,9 @@ class ROSAA:
             log(f"{savefilename} file written in {location} folder.")
 
 if __name__ == "__main__":
+
     conditions = json.loads(sys.argv[1])
+    
     pp = pprint.PrettyPrinter(indent=4)
     
     pp.pprint(conditions)
