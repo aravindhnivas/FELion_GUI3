@@ -40,40 +40,31 @@
         const thz_args = {thzfiles, binData, delta, tkplot, gamma, justPlot, saveInMHz}
         let pyfileInfo = {general,
             thz: {pyfile:"thz_scan.py" , args:[JSON.stringify(thz_args)]},
-            boltzman: {pyfile:"boltzman.py" , args:[currentLocation, B0, D0, H0, temp, totalJ, tkplot]},
         }
         let {pyfile, args} = pyfileInfo[filetype]
         if (tkplot) {filetype = "general"}
 
         if (filetype == "general") {
             return computePy_func({e, pyfile, args, general:true, openShell}).catch(error=>{mainPreModal.error(error.stack || error)})
-        }
 
+        }
         computePy_func({e, pyfile, args})
             .then((dataFromPython)=>{
                 if (filetype=="thz") {
 
                     plot(`THz Scan: Depletion (%)`, "Frequency (GHz)", "Depletion (%)", dataFromPython["thz"], "thzPlot")
                     plot(`THz Scan`, "Frequency (GHz)", "Counts", dataFromPython["resOnOff_Counts"], "resOnOffPlot")
-
                     if (!justPlot) {
                         let lines = [];
-
                         for (let x in dataFromPython["shapes"]) { lines.push(dataFromPython["shapes"][x]) }
-                        let layout_update = {
-                            shapes: lines
-                        }
+                        let layout_update = { shapes: lines }
                         Plotly.relayout("thzPlot", layout_update)
                     }
-                } else if (filetype == "boltzman") {
-                    plot(`Boltzman Distribution`, "Rotational levels (J)", "Probability (%)", dataFromPython, "boltzman_plot");
                 }
                 window.createToast("Graph plotted", "success")
-                
                 graphPlotted = true
             }).catch(error=>{mainPreModal.error(error.stack || error)})
 
-        
     }
 
     let includePlotsInReport = [{id:"resOnOffPlot", include:false, label:"THz Res-ON/OFF"}, {id:"thzPlot", include:true, label:"Normalised THz Spectrum"}, {id:"boltzman_plot", include:false, label:"Boltzman plot"}]
