@@ -1,4 +1,13 @@
 # What's new
+
+## v3.4.0
+- ROSAA modal integrated.
+- ROSAA kinetics integrated.
+- several bug fixes.
+- several minor feature updates included.
+
+## v3.3.1
+- Bug fix: OPO mode
 ## v3.3.0
 
 - Feature updates:
@@ -26,12 +35,12 @@
 
     - Files refresh button added to FELIX matplotlib modal.    
 ---
-
 ## v3.1.1
 
 - Bug fix: Masspec
 
 ---
+
 
 ## v3.1.0
 
