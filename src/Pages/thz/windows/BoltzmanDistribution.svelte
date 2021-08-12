@@ -19,7 +19,7 @@
     
     
         const distribution = boltzmanDistribution({energyLevels, trapTemp, electronSpin, zeemanSplit, energyUnit})
-        console.log(distribution)
+        // console.log(distribution)
         if(distribution) {
             const totalSum = _.sumBy(distribution, e=>e.value).toFixed(2)
             const energyLevel = distribution.map(e=>e.label)
