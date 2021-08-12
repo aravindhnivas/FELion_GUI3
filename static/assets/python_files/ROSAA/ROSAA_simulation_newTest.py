@@ -171,7 +171,6 @@ class ROSAA:
             self.N = (ratio/ratio.sum())*(1-np.sum(N_He))
             self.N_distribution = np.append(self.N_distribution, self.N)
             self.t_distribution = np.append(self.t_distribution, t)
-
             N = {key: value for key, value in zip(self.energyKeys, self.N)}
 
             attachmentRate0 = - self.k3[0] * nHe**2 * N[self.excitedFrom] + \
@@ -181,8 +180,8 @@ class ROSAA:
 
             N[self.excitedFrom] += attachmentRate0
             N[self.excitedTo] += attachmentRate1
+            # self.N = np.array(list(N.values()), dtype=float)
 
-            self.N = np.array(list(N.values()), dtype=float)
             dR_dt = []
 
             currentRate =  - attachmentRate0 - attachmentRate1
@@ -424,8 +423,8 @@ class ROSAA:
         return dR_dt
 
     def GetAttachmentRatesParameters(self):
-        self.attachment_rate_coefficients = conditions["attachment_rate_coefficients"]
 
+        self.attachment_rate_coefficients = conditions["attachment_rate_coefficients"]
         self.rateConstants = self.attachment_rate_coefficients["rateConstants"]
 
         self.k3 = [float(_) for _ in self.rateConstants["k3"]]
@@ -532,6 +531,7 @@ class ROSAA:
 
         plt.show(block=True)
 
+
     def WriteData(self):
         location = pt(conditions["currentLocation"])
 
@@ -549,6 +549,7 @@ class ROSAA:
 
             log(f"{savefilename} file written in {location} folder.")
 
+
 if __name__ == "__main__":
 
     conditions = json.loads(sys.argv[1])
@@ -556,5 +557,4 @@ if __name__ == "__main__":
     pp = pprint.PrettyPrinter(indent=4)
     
     pp.pprint(conditions)
-
     ROSAA()

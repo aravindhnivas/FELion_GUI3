@@ -274,9 +274,6 @@
             ({levels:energyLevels, unit:energyUnit} = await getYMLFileContents(energyFilename));
             energyLevels = energyLevels.map(setID);
             numberOfLevels = energyLevels.length;
-            
-            // ({rateConstants:collisionalCoefficient, type:collisionalRateType} = await getYMLFileContents(collisionalFilename));
-            // collisionalCoefficient = collisionalCoefficient.map(setID).map(correctObjValue);
 
             ({rateConstants:einsteinCoefficientA} = await getYMLFileContents(einsteinFilename));
             einsteinCoefficientA = einsteinCoefficientA.map(setID).map(correctObjValue);
@@ -286,43 +283,37 @@
 
         } catch (error) {$mainPreModal = {modalContent:error, open:true}}
     }
-
 </script>
 
 <style lang="scss">
     .locationColumn {
-
         display: grid;
         grid-auto-flow: column;
+
         grid-gap: 1em;
         grid-template-columns: 1fr 4fr 2fr;
-
         .button {
             margin:0;
             align-self: center;
         }
-
     }
 
     hr {background-color: #fafafa; margin: 0;}
     .writefileCheck {
-
         display: grid;
         grid-auto-flow: column;
         border: solid 1px white;
         border-radius: 20px;
     }
-
     .variableColumn {
 
         display: grid;
-
         .subtitle {margin: 0;}
-        
         .variableColumn__dropdown {
+
+
             display: flex;
             gap: 1em;
-
             place-items: baseline;
         }
     }
@@ -331,9 +322,7 @@
         grid-row-gap: 1em;
         padding: 1em;
         .subtitle {margin:0;}
-
     }
-    // :global(.content__div label) {flex-basis: 30%;}
     .sub_container__div {
         display: grid;
 
@@ -410,105 +399,100 @@
         </svelte:fragment>
 
         <svelte:fragment slot="main_content__slot">
-            <!-- {#if showreport} -->
-                <div class="content status_report__div" class:hide={!showreport} ><hr>{statusReport || "Status report"}<hr></div>
-            <!-- {:else} -->
+            <div class="content status_report__div" class:hide={!showreport} ><hr>{statusReport || "Status report"}<hr></div>
 
-                <!-- Main Parameters -->
+            <!-- Main Parameters -->
 
-                <div class="main_container__div" class:hide={showreport}>
-                    <div class="sub_container__div box">
+            <div class="main_container__div" class:hide={showreport}>
+                <div class="sub_container__div box">
 
-                        <div class="subtitle">Main Parameters</div>
-                        <div class="content__div ">
-                            {#each mainParameters as {label, value, id}(id)}
-                                <Textfield bind:value {label}/>
-                            {/each}
-                        </div>
+                    <div class="subtitle">Main Parameters</div>
+                    <div class="content__div ">
+                        {#each mainParameters as {label, value, id}(id)}
+                            <Textfield bind:value {label}/>
+                        {/each}
                     </div>
-
-                    <!-- Energy levels -->
-
-                    <div class="sub_container__div box" >
-                        <div class="subtitle">Energy levels</div>
-                        <div class="control__div ">
-
-                            <Textfield bind:value={numberOfLevels} label="numberOfLevels (J levels)" input$step={1} input$min={0} input$type={"number"} />
-                            <CustomSelect options={["MHz", "cm-1"]} bind:picked={energyUnit} />
-                            <button class="button is-link " on:click={()=>boltzmanWindow=true}>Show Boltzman distribution</button>
-                        </div>
-
-                        <div class="content__div ">
-                            {#each energyLevels as {label, value, id}(id)}
-                                <Textfield bind:value {label} />
-                            {/each}
-                        </div>
-                    </div>
-
-                    <!-- Simulation parameters -->
-
-                    <div class="sub_container__div box">
-                        <div class="subtitle">Simulation parameters</div>
-                        <div class="content__div ">
-
-                            {#each simulationParameters as {label, value, id}(id)}
-                                <Textfield bind:value {label} />
-                            {/each}
-                            <hr> <div class="subtitle" style="width: 100%; display:grid; place-items: center;">Transition levels</div> <hr>
-
-                            <div class="align h-center">
-                                <CustomSelect options={["", ...energyLevels.map(f=>f.label)]} bind:picked={excitedFrom} label="excitedFrom" style="min-width: 7em;"/>
-                                <CustomSelect options={["", ...energyLevels.map(f=>f.label)]} bind:picked={excitedTo} label="excitedTo" style="min-width: 7em;"/>
-
-                                <Textfield bind:value={transitionFrequency} label="transitionFrequency ({energyUnit})" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Doppler lineshape -->
-
-                    <div class="sub_container__div box">
-
-                        <div class="subtitle">Doppler lineshape</div>
-                        <div class="content__div ">
-                            {#each dopplerLineshape as {label, value, type, step, id}(id)}
-                                <Textfield bind:value {label} input$type={type} input$step={step}/>
-                            {/each}
-
-                            <Textfield bind:value={collisionalTemp} label="collisionalTemp(K)" disabled />
-                            <Textfield bind:value={gaussian} label="gaussian(MHz)" disabled />
-                        </div>
-                    </div>
-                    
-                    
-                    <!-- Lorrentz lineshape -->
-
-                    <div class="sub_container__div box">
-                        <div class="subtitle">Lorrentz lineshape</div>
-                        <div class="content__div ">
-                            {#each powerBroadening as {label, value, id}(id)}
-                                <Textfield bind:value {label} />
-                            {/each}
-                            <Textfield bind:value={lorrentz} label="lorrentz(MHz)" disabled />
-                        </div>
-
-                    </div>
-
-                    <EinsteinCoefficients bind:einsteinCoefficientA bind:einsteinCoefficientB bind:einsteinB_rateComputed {energyLevels} {electronSpin} {zeemanSplit} {energyUnit} {gaussian} {trapArea} {lorrentz} {power} />
-
-                    {#if includeCollision}
-                        <CollisionalCoefficients bind:collisionalCoefficient bind:collisionalCoefficient_balance bind:collisionalRateType bind:collisionalRates bind:numberDensity {...{energyLevels, electronSpin, zeemanSplit, energyUnit, collisionalFilename, collisionalTemp}}  />
-                        
-                    {/if}
-                    
-                    {#if includeAttachmentRate}
-                        <AttachmentCoefficients bind:attachmentCoefficients bind:k3 bind:kCID bind:numberDensity />
-                    {/if}
-                    
                 </div>
 
-            <!-- {/if} -->
+                <!-- Energy levels -->
 
+                <div class="sub_container__div box" >
+                    <div class="subtitle">Energy levels</div>
+                    <div class="control__div ">
+
+                        <Textfield bind:value={numberOfLevels} label="numberOfLevels (J levels)" input$step={1} input$min={0} input$type={"number"} />
+                        <CustomSelect options={["MHz", "cm-1"]} bind:picked={energyUnit} />
+                        <button class="button is-link " on:click={()=>boltzmanWindow=true}>Show Boltzman distribution</button>
+                    </div>
+
+                    <div class="content__div ">
+                        {#each energyLevels as {label, value, id}(id)}
+                            <Textfield bind:value {label} />
+                        {/each}
+                    </div>
+                </div>
+
+                <!-- Simulation parameters -->
+
+                <div class="sub_container__div box">
+                    <div class="subtitle">Simulation parameters</div>
+                    <div class="content__div ">
+
+                        {#each simulationParameters as {label, value, id}(id)}
+                            <Textfield bind:value {label} />
+                        {/each}
+                        <hr> <div class="subtitle" style="width: 100%; display:grid; place-items: center;">Transition levels</div> <hr>
+
+                        <div class="align h-center">
+                            <CustomSelect options={["", ...energyLevels.map(f=>f.label)]} bind:picked={excitedFrom} label="excitedFrom" style="min-width: 7em;"/>
+                            <CustomSelect options={["", ...energyLevels.map(f=>f.label)]} bind:picked={excitedTo} label="excitedTo" style="min-width: 7em;"/>
+
+                            <Textfield bind:value={transitionFrequency} label="transitionFrequency ({energyUnit})" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Doppler lineshape -->
+
+                <div class="sub_container__div box">
+
+                    <div class="subtitle">Doppler lineshape</div>
+                    <div class="content__div ">
+                        {#each dopplerLineshape as {label, value, type, step, id}(id)}
+                            <Textfield bind:value {label} input$type={type} input$step={step}/>
+                        {/each}
+
+                        <Textfield bind:value={collisionalTemp} label="collisionalTemp(K)" disabled />
+                        <Textfield bind:value={gaussian} label="gaussian(MHz)" disabled />
+                    </div>
+                </div>
+                
+                
+                <!-- Lorrentz lineshape -->
+
+                <div class="sub_container__div box">
+                    <div class="subtitle">Lorrentz lineshape</div>
+                    <div class="content__div ">
+                        {#each powerBroadening as {label, value, id}(id)}
+                            <Textfield bind:value {label} />
+                        {/each}
+                        <Textfield bind:value={lorrentz} label="lorrentz(MHz)" disabled />
+                    </div>
+
+                </div>
+
+                <EinsteinCoefficients bind:einsteinCoefficientA bind:einsteinCoefficientB bind:einsteinB_rateComputed {energyLevels} {electronSpin} {zeemanSplit} {energyUnit} {gaussian} {trapArea} {lorrentz} {power} />
+
+                {#if includeCollision}
+                    <CollisionalCoefficients bind:collisionalCoefficient bind:collisionalCoefficient_balance bind:collisionalRateType bind:collisionalRates bind:numberDensity {...{energyLevels, electronSpin, zeemanSplit, energyUnit, collisionalFilename, collisionalTemp}}  />
+                    
+                {/if}
+                
+                {#if includeAttachmentRate}
+                    <AttachmentCoefficients bind:attachmentCoefficients bind:k3 bind:kCID bind:numberDensity />
+                {/if}
+                
+            </div>
         </svelte:fragment>
 
         <svelte:fragment slot="footer_content__slot">
@@ -529,7 +513,6 @@
                 <button  class="button is-link" on:click="{simulation}" on:pyEvent={pyEventHandle} on:pyEventClosed="{pyEventClosedHandle}" on:pyEventData={pyEventDataReceivedHandle}>Submit</button>
             </div>
         </svelte:fragment>
-    
     </SeparateWindow>
 
 {/if}
