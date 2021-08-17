@@ -30,7 +30,7 @@
         }).catch(error=>{mainPreModal.error(error.stack || error)})
     }
 
-    let onlyExpRange = true;
+    let onlyExpRange = false;
 </script>
 
 <QuickBrowser title="Theory files" bind:active={showTheoryFiles} bind:currentLocation={theoryLocation} bind:fileChecked={theoryfilesChecked} on:submit="{(e)=>{plotData(e.detail.event); db.set("theoryLocation", theoryLocation)}}"/>
@@ -39,10 +39,10 @@
     <div class="align" transition:fade>
 
         <button class="button is-link" on:click="{()=>{showTheoryFiles = !showTheoryFiles;}}"> Browse File</button>
-        <Textfield type="number" style="width:7em; margin-right:0.5em;" variant="outlined" bind:value={sigma} label="Sigma"/>
+        <Textfield style="width:7em; margin-right:0.5em;" variant="outlined" bind:value={sigma} label="Sigma" input$type="number" input$step="0.5" input$min="0"/>
 
 
-        <Textfield type="number" style="width:7em" variant="outlined" bind:value={scale} label="Scale"/>
+        <Textfield style="width:7em" variant="outlined" bind:value={scale} label="Scale" input$type="number" input$step="0.01" input$min="0" input$max="1"/>
         
         <CustomSwitch style="margin: 0 1em;" bind:selected={onlyExpRange} label="Only Exp. Range"/>
         <CustomSwitch style="margin: 0 1em;" bind:selected={tkplot} label="Matplotlib"/>

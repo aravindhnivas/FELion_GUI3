@@ -103,16 +103,13 @@ def exp_theory(args, output_filename="averaged"):
         y = y[start_ind:len(x)+start_ind]
         norm_factor = ys.max()/y.max()
         y = norm_factor*y
-        
         theory_x, theory_y = computeNGaussian(x, y, sigma)
-
         if tkplot: ax.fill(theory_x, theory_y, label=theoryfile.stem)
 
         else:
             data["line_simulation"][f"{theoryfile.name}"] = {
                     "x":list(theory_x), "y":list(theory_y),  "name":f"{theoryfile.stem}", "fill":"tozerox"
                 }
-
 
     if not tkplot: sendData(data)
     else:
