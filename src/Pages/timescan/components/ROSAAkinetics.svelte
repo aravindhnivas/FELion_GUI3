@@ -38,7 +38,7 @@
     function computeOtherParameters() {
         masses = massOfReactants.split(",").map(m=>m.trim())
         requiredLength = masses.length
-        if(defaultInitialValues && masses) { initialValues = [currentData[masses[0]]["y"][0].toFixed(0), ...Array(requiredLength-1).fill(1)] }
+        if(defaultInitialValues && masses) { initialValues = [currentData?.[masses[0]]["y"][0].toFixed(0), ...Array(requiredLength-1).fill(1)] }
 
         nameOfReactants =`${molecule}, ${molecule}${tag}`
         
@@ -69,7 +69,10 @@
     const computeNumberDensity = async () => {
         await tick()
         const constantValue = 4.2e17
-        numberDensity = Number((constantValue*calibrationFactor*(pafter - pbefore))/(temp**0.5)).toExponential(3)
+        const pDiff = Number(pafter) - Number(pbefore)
+        calibrationFactor = Number(calibrationFactor)
+        temp = Number(temp)
+        numberDensity = Number((constantValue*calibrationFactor*pDiff)/(temp**0.5)).toExponential(3)
 
     }
 
@@ -244,20 +247,23 @@
         <Textfield bind:value={initialValues} label="initialValues" />
         <Textfield bind:value={ratek3} label="ratek3" />
         <Textfield bind:value={k3Guess} label="k3Guess" />
+
         <Textfield bind:value={ratekCID} label="ratekCID" />
         <Textfield bind:value={kCIDGuess} label="kCIDGuess" />
-
     </div>
 
     <div class="align v-center">
+
         <button class="button is-link" on:click="{computeParameters}" >Compute parameters</button>
         <button class="button is-link" on:click="{loadConfig}">loadConfig</button>
+
         <Icon class="material-icons" on:click="{()=> adjustConfig = true}">settings</Icon>
+
         <button class="button is-link" on:click="{kineticSimulation}" on:pyEventClosed="{pyEventClosed}">Submit</button>
+
         {#if pyEventCounter}
 
             <div class="subtitle">{pyEventCounter} process running</div>
-        
         {/if}
     
     </div>
