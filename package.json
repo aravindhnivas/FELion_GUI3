@@ -43,7 +43,7 @@
     "sass": "^1.35.1",
     "source-map-support": "^0.5.19",
     "svelma": "^0.3.2",
-    "svelte": "^3.41.0",
+    "svelte": "^3.42.1",
     "svelte-check": "^2.2.3",
     "svelte-material-ui": "^1.0.0",
     "svelte-preprocess": "^4.7.4"
