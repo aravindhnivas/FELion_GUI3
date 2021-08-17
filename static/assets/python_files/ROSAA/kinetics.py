@@ -1,5 +1,5 @@
 
-import sys, json
+import sys, json, os
 from pathlib import Path as pt
 import numpy as np
 import matplotlib.pyplot as plt
@@ -143,9 +143,13 @@ def fitfunc(event=None):
 
 def saveData(event, k_fit=None):
 
-    # global k_err
     try:
-        savefile = currentLocation/"k_fit.json"
+        savedir = currentLocation/"OUT"
+
+        if not savedir.exists():
+            os.mkdir(savedir)
+        
+        savefile = savedir/"k_fit.json"
 
         dataToSave = {}
 
@@ -157,6 +161,7 @@ def saveData(event, k_fit=None):
                 if data:
                     dataToSave = json.loads(data)
 
+
         with open(savefile, "w+") as f:
 
             if event:
@@ -167,6 +172,7 @@ def saveData(event, k_fit=None):
             if len(k_err)>0:
                 k_err_format = [formatArray(k_err[:totalAttachmentLevels]), formatArray(k_err[totalAttachmentLevels:])]
             else: k_err_format = None
+
             dataToSave[selectedFile] = {
                 "k_fit": k_fit,
                 "k_err": k_err_format, 
@@ -175,9 +181,11 @@ def saveData(event, k_fit=None):
             }
             data = json.dumps(dataToSave, sort_keys=True, indent=4, separators=(',', ': '))
             f.write(data)
-            
+
             log(f"file written: {savefile.name} in {currentLocation} folder")
-            if plotted: MsgBox("Saved", f"Rate constants written in json format : '{savefile.name}'\nLocation: {currentLocation}", MB_ICONINFORMATION)
+            if plotted: 
+                MsgBox("Saved", f"Rate constants written in json format : '{savefile.name}'\nLocation: {currentLocation}", MB_ICONINFORMATION)
+            fig.savefig(f"{savedir/selectedFile}_.png", dpi=200)
     except Exception as error:
         if plotted: MsgBox("Error occured: ", f"Error occured while saving the file\n{error}", MB_ICONERROR)
         log(f"Error occured while saving the file\n{error}")
