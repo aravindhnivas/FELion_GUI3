@@ -31,6 +31,7 @@ def plotGraph(plotArgs):
     wspace = 0.05
 
     datlocation = pt(plotArgs["location"]) / "../EXPORT"
+    print(plotArgs["selectedWidgets"], flush=True)
     datfiles, fundamentalsfiles, overtonefiles, combinationfiles = plotArgs["selectedWidgets"]
     datfiles = [datlocation/i for i in datfiles]
     

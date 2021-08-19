@@ -1,26 +1,29 @@
 
 <script>
-    import {opoMode, toggleRow, felixOutputName, felixPlotAnnotations, felixPeakTable, expfittedLines, expfittedLinesCollectedData, fittedTraceCount, felixopoLocation} from "../../functions/svelteWritables";
-    import {mainPreModal} from "../../../../svelteWritable";
+    import {opoMode, toggleRow, felixOutputName, felixPlotAnnotations, felixPeakTable, expfittedLines, expfittedLinesCollectedData, fittedTraceCount, felixopoLocation, felixPlotCheckboxes} from "../../functions/svelteWritables";
+    import {mainPreModal} from "src/svelteWritable.js";
     import Textfield from '@smui/textfield';
-    import CustomIconSwitch from '../../../../components/CustomIconSwitch.svelte';
+    import CustomIconSwitch from 'components/CustomIconSwitch.svelte';
     import FelixPlotting from '../../modals/FelixPlotting.svelte';
     import {felix_func} from '../../functions/felix';
 
-    export let felixPlotCheckboxes, felixfiles, graphPlotted, opofiles, normMethod, show_theoryplot, removeExtraFile, theoryLocation;
+    export let felixfiles, graphPlotted, opofiles, normMethod, show_theoryplot, removeExtraFile, theoryLocation;
     let active=false, openShell=false, delta=1;
+    // let felixPlotCheckboxes = []
 
     let felixPlotWidgets = {
 
         text:[
 
-            {label:"Fig. caption", value:" ", id:getID()},
+            {label:"Fig. caption", value:"caption", id:getID()},
+
             
-            {label:"Fig. title", value:" ", id:getID()},
-            {label:"Exp. title", value:" ", id:getID()},
-            {label:"Exp. legend", value:" ", id:getID()},
-            {label:"Cal. title", value:" ", id:getID()},
-            {label:"markers", value:" ", id:getID()},
+            {label:"Fig. title", value:"Title", id:getID()},
+            {label:"Exp. title", value:"Exp. title", id:getID()},
+            {label:"Exp. legend", value:"legend", id:getID()},
+            {label:"Cal. title", value:"calc title", id:getID()},
+            {label:"markers", value:":1", id:getID()},
+        
         ],
     
         number:[
@@ -67,13 +70,11 @@
                 computePy_func({e, pyfile, args})
                 .then((dataFromPython)=>{
                     $expfittedLines = [], $felixPlotAnnotations = [], $expfittedLinesCollectedData = [], $fittedTraceCount = 0
-                    
                     show_theoryplot = false
                     felix_func({normMethod, dataFromPython, delta})
                     window.createToast("Graph Plotted", "success")
                     graphPlotted = true
                 }).catch(error=>{mainPreModal.error(error.stack || error)})
-
                 break;
             
             case "baseline":
@@ -90,13 +91,13 @@
             case "matplotlib":
                 const numberWidgets = felixPlotWidgets.number.map(n=>n.value)
                 const textWidgets = felixPlotWidgets.text.map(n=>n.value)
-                
+
                 const booleanWidgets = felixPlotWidgets.boolean.map(n=>n.value)
-                const selectedWidgets = felixPlotCheckboxes.map(n=>n.selected)
+                const selectedWidgets = $felixPlotCheckboxes.map(n=>n.selected)
 
                 pyfile="felix_tkplot.py", args=[JSON.stringify({numberWidgets, textWidgets, booleanWidgets, selectedWidgets, location: $felixopoLocation, normMethod, theoryLocation})]
                 computePy_func({e, pyfile, args, general:true, openShell})
-                .catch(error=>{mainPreModal.error(error.stack || error)})
+                    .catch(error=>{mainPreModal.error(error.stack || error)})
             default:
                 break;
                 
@@ -107,10 +108,10 @@
 </script>
 
 
-<FelixPlotting bind:active bind:felixPlotWidgets {theoryLocation} on:submit="{(e)=>plotData({e:e.detail.event, filetype:"matplotlib"})}"/>
+<FelixPlotting bind:active bind:felixPlotWidgets {theoryLocation} on:submit="{(e)=>plotData({e:e.detail.event, filetype:"matplotlib"})}" />
+
 
 <div class="align">
-
     <button class="button is-link" id="create_baseline_btn" on:click="{(e)=>plotData({e:e, filetype:"baseline"})}"> Create Baseline</button>
     <button class="button is-link" id="felix_plotting_btn" on:click="{(e)=>plotData({e:e, filetype:"felix"})}">FELIX Plot</button>
 

@@ -3,10 +3,9 @@ import { pythonpath, pythonscript, get } from "../settings/svelteWritables";
 // import { mainPreModal } from "../../svelteWritable";
 const { exec } = require("child_process")
 window.checkPython = function checkPython({ defaultPy } = {}) {
-
     if (!defaultPy) { defaultPy = get(pythonpath) }
-
     console.log("Python path checking \n", defaultPy)
+
     return new Promise((resolve, reject) => {
         exec(`${defaultPy} -V`, (err, stdout) => {
             if (err) { reject("Invalid python location"); window.createToast("Python location is not valid", "danger") }
@@ -17,6 +16,7 @@ window.checkPython = function checkPython({ defaultPy } = {}) {
 }
 
 window.computePy_func = function computePy_func({ e = null, pyfile = "", args = "", general = false, openShell = false } = {}) {
+    
 
     return new Promise((resolve, reject) => {
 

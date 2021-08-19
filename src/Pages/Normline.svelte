@@ -99,23 +99,23 @@
         init_tour_normline({filetype})
     }
 
-    const includePlotsInReport = [
+    // const includePlotsInReport = [
 
-        {id: "bplot", include:true, label:"Baseline"}, {id:"saPlot", include:false, label:"SA-Pow"}, 
+    //     {id: "bplot", include:true, label:"Baseline"}, {id:"saPlot", include:false, label:"SA-Pow"}, 
     
-        {id:"avgplot", include:false, label:"Normalised Spectrum"}, {id:"exp-theory-plot", include:false, label:"Exp-Theory plot"}, 
+    //     {id:"avgplot", include:false, label:"Normalised Spectrum"}, {id:"exp-theory-plot", include:false, label:"Exp-Theory plot"}, 
     
-        {id:"opoplot", include:false, label:"OPO: Baseline"}, {id:"opoSA", include:false, label:"OPO: SA-pow"}, 
-        {id:"opoRelPlot", include:false, label:"OPO: Normalised Spectrum"}
-    ]
+    //     {id:"opoplot", include:false, label:"OPO: Baseline"}, {id:"opoSA", include:false, label:"OPO: SA-pow"}, 
+    //     {id:"opoRelPlot", include:false, label:"OPO: Normalised Spectrum"}
+    // ]
 
-    const includeTablesInReports = [
+    // const includeTablesInReports = [
 
-        {id:"felixTable", include:true, label:"Freq. table"}, {id:"felix_filedetails_table", include:false, label:"File info table"}
-    ]
+    //     {id:"felixTable", include:true, label:"Freq. table"}, {id:"felix_filedetails_table", include:false, label:"File info table"}
+    // ]
     
-    onMount(()=>{  console.log("Normline mounted") })
-    const graphDivIds = ["exp-theory-plot", "bplot", "saPlot", "avgplot", "opoplot", "opoSA", "opoRelPlot"]
+    // onMount(()=>{  console.log("Normline mounted") })
+    // const graphDivIds = ["exp-theory-plot", "bplot", "saPlot", "avgplot", "opoplot", "opoSA", "opoRelPlot"]
 
 </script>
 

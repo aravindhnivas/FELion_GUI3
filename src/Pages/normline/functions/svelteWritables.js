@@ -35,5 +35,6 @@ export const collectData = writable(false)
 export const avgfittedLineCount = writable(0)
 export const fittedTraceCount = writable(0)
 export const felixAnnotationColor = writable("black")
-
 export const normMethod = writable("Relative")
+
+export const felixPlotCheckboxes = writable([])
