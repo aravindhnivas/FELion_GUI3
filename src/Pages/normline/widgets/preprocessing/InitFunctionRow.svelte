@@ -107,11 +107,10 @@
 
 </script>
 
-
 <FelixPlotting bind:active bind:felixPlotWidgets {theoryLocation} on:submit="{(e)=>plotData({e:e.detail.event, filetype:"matplotlib"})}" />
 
-
 <div class="align">
+    
     <button class="button is-link" id="create_baseline_btn" on:click="{(e)=>plotData({e:e, filetype:"baseline"})}"> Create Baseline</button>
     <button class="button is-link" id="felix_plotting_btn" on:click="{(e)=>plotData({e:e, filetype:"felix"})}">FELIX Plot</button>
 
