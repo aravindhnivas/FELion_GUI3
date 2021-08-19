@@ -15,8 +15,10 @@
 
     function refreshFunction() {
 
-        let datlocation = path.resolve($felixopoLocation, "../EXPORT")
+        // $felixPlotCheckboxes = []
 
+
+        let datlocation = path.resolve($felixopoLocation, "../EXPORT")
 
         let datfiles = fs.existsSync(datlocation) ? fs.readdirSync(datlocation).filter(f=>f.endsWith(".dat")).map(f=>f={name:f, id:getID()}) : [{name:"", id:getID()}]
         let calcfiles = [];
@@ -37,7 +39,7 @@
                 {label:"Overtones", options:calcfiles, selected:[], id:getID()},
                 {label:"Combinations", options:calcfiles, selected:[], id:getID()},
         ]
-        console.log($felixPlotCheckboxes)
+        // console.log($felixPlotCheckboxes)
         reload != reload
 
     }
@@ -93,7 +95,7 @@
 
 <div style="padding-bottom: 1em;">
 
-    <div use:refreshFunction>
+    <div >
         <button class="button is-link" on:click={refreshFunction}>Reload</button>
 
         {#key reload}
@@ -107,8 +109,8 @@
                     </div>
                 {/each}
             </div>
-
         {/key}
+
     </div>
 
     <div class="felix_plotting_div">
