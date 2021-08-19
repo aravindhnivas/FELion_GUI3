@@ -77,7 +77,7 @@
     }
 
 
-    $: if (pafter || temp || config_content[selectedFile]) {computeNumberDensity()}
+    $: if (pbefore || pafter || temp || calibrationFactor || config_content[selectedFile]) {computeNumberDensity()}
     $: if(selectedFile || kineticData) {computeParameters()}
 
     let config_file_ROSAAkinetics="config_file_ROSAAkinetics.json";
