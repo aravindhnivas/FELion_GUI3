@@ -1,0 +1,4 @@
+numpy
+scipy
+uncertainties
+matplotlib==3.3.1
