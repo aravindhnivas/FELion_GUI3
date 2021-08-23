@@ -90,8 +90,25 @@ class normplot:
                                 break
                 self.felix_hz = int(felix_hz)
             except: self.felix_hz = 10
+            # self.nshots = int((trap/1000) * self.felix_hz)
 
-            self.nshots = int((trap/1000) * self.felix_hz)
+            if trap > 50:
+                try:
+                    with open(f"./DATA/{powerfile}") as f:
+                        for line in f:
+                            if line[0] == "#":
+                                if line.find("SHOTS") > -1:
+                                    nshots = int(line.split("=")[1].strip())
+                                    break
+
+                    self.nshots = int(nshots)
+                except Exception as error:
+                    print(error, flush=True) 
+                    raise Exception("FELIX SHOTS not defined in the powerfile")
+            else: 
+                self.nshots = int((trap/1000) * self.felix_hz)
+
+                
             self.filetypes = [felixfile, basefile, powerfile]
 
             for folder, filetype in zip(folders, self.filetypes):
