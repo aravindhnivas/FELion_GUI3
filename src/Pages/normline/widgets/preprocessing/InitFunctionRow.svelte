@@ -105,7 +105,6 @@
         }
 
     }
-
 </script>
 
 <FelixPlotting bind:active bind:felixPlotWidgets {theoryLocation} on:submit="{(e)=>plotData({e:e.detail.event, filetype:"matplotlib"})}" />
