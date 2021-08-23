@@ -1,6 +1,6 @@
 
 <script>
-    import {mainPreModal} from "src/svelteWritable.js";
+    import {mainPreModal} from "../../../svelteWritable.js";
     import CustomSwitch from "components/CustomSwitch.svelte"
     import CustomSelect from "components/CustomSelect.svelte"
     import Textfield from '@smui/textfield'

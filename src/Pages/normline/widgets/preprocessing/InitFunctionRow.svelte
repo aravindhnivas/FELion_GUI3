@@ -1,7 +1,7 @@
 
 <script>
     import {opoMode, toggleRow, felixOutputName, felixPlotAnnotations, felixPeakTable, expfittedLines, expfittedLinesCollectedData, fittedTraceCount, felixopoLocation, felixPlotCheckboxes} from "../../functions/svelteWritables";
-    import {mainPreModal} from "src/svelteWritable.js";
+    import {mainPreModal} from "../../../../svelteWritable";
     import Textfield from '@smui/textfield';
     import CustomIconSwitch from 'components/CustomIconSwitch.svelte';
     import FelixPlotting from '../../modals/FelixPlotting.svelte';
@@ -73,8 +73,9 @@
                     show_theoryplot = false
                     felix_func({normMethod, dataFromPython, delta})
                     window.createToast("Graph Plotted", "success")
+
                     graphPlotted = true
-                }).catch(error=>{mainPreModal.error(error.stack || error)})
+                }).catch(error=>{mainPreModal.error(error.stack || error); console.error("Error main: ", error.stack || error)})
                 break;
             
             case "baseline":
@@ -110,7 +111,7 @@
 <FelixPlotting bind:active bind:felixPlotWidgets {theoryLocation} on:submit="{(e)=>plotData({e:e.detail.event, filetype:"matplotlib"})}" />
 
 <div class="align">
-    
+
     <button class="button is-link" id="create_baseline_btn" on:click="{(e)=>plotData({e:e, filetype:"baseline"})}"> Create Baseline</button>
     <button class="button is-link" id="felix_plotting_btn" on:click="{(e)=>plotData({e:e, filetype:"felix"})}">FELIX Plot</button>
 
