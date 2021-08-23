@@ -1,7 +1,8 @@
 
 <script>
 
-	import { mainPreModal } from './svelteWritable';
+	// import { mainPreModal } from './svelteWritable';
+	import { windowLoaded } from './js/functions';
 	import Navbar from "./components/Navbar.svelte"
 	import Footer from "./components/Footer.svelte"
 	import Home from "./Pages/Home.svelte"
@@ -41,26 +42,22 @@
 </script>
 
 
+{#if $windowLoaded}
+	{#if mounted}
+		<PreModal />
+	{/if}
 
-{#if mounted}
-	<PreModal />
+	<Navbar {navItems} />
+	<Home />
+	<div id="pageContainer" style="overflow: hidden;display: {mounted ? 'block': 'none'}">
+
+		<Normline />
+		<Masspec />
+		<Timescan />
+		<THz />
+		<Powerfile />
+		<Misc />
+		<Settings />
+	</div>
+	<Footer />
 {/if}
-<Navbar {navItems} />
-
-<Home />
-
-<div id="pageContainer" style="overflow: hidden;display: {mounted ? 'block': 'none'}">
-
-	<Normline />
-
-	<Masspec />
-	<Timescan />
-
-	<THz />
-	<Powerfile />
-	<Misc />
-
-	<Settings />
-
-</div>
-<Footer />
