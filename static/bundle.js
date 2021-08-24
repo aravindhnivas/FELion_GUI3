@@ -37144,7 +37144,7 @@ const felixAnnotationColor = writable("black");
 const normMethod = writable("Relative");
 
 const felixPlotCheckboxes = writable([]);
-const felixConfigDB = writable(new JSONdb(path.resolve("../config.json")));
+const felixConfigDB = writable(new JSONdb(path.resolve(__dirname, "../src/Pages/normline/config.json")));
 
 /**
  * @license
