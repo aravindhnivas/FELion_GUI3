@@ -1,22 +1,29 @@
 
 <script>
 
-    import {opoMode, felixPlotAnnotations} from "../../functions/svelteWritables";
+    import {opoMode, felixPlotAnnotations, felixConfigDB} from "../../functions/svelteWritables";
     import {mainPreModal} from "../../../../svelteWritable";
     import Textfield from '@smui/textfield';
     import CustomSelect from '../../../../components/CustomSelect.svelte';
     import QuickBrowser from '../../../../components/QuickBrowser.svelte';
-
     import { fade } from 'svelte/transition';
     import {opofile_func} from '../../functions/opofile';
-
     export let OPOLocation, opofiles, OPOfilesChecked, graphPlotted, removeExtraFile;
+    export let updateConfig=false;
 
     let showOPOFiles =false, OPOcalibFiles = [];
 
     let deltaOPO = 0.3, calibFile = "", opoPower=1;
     
+    let odelta=$felixConfigDB.get("odelta");
+
     
+    function loadConfig() {
+        odelta =  $felixConfigDB.get("odelta")
+        console.log("odelta updated", odelta)
+    }
+    $: if(updateConfig) loadConfig()
+
     $: if(fs.existsSync(OPOLocation)) {
     
         OPOcalibFiles = fs.readdirSync(OPOLocation).filter(file=> file.endsWith(".calibOPO"))
@@ -53,7 +60,7 @@
 
         <CustomSelect style="width:7em;" bind:picked={calibFile} label="Calib. file" options={["", ...OPOcalibFiles]}/>
         
-        <Textfield style="width:7em; margin:0 0.5em;" input$type="number" input$step="0.02" input$min="0" variant="outlined" bind:value={deltaOPO} label="Delta OPO"/>
+        <Textfield style="width:7em; margin:0 0.5em;" input$type="number" input$step={odelta} input$min="0" variant="outlined" bind:value={deltaOPO} label="Delta OPO"/>
         <Textfield style="width:9em" input$type="number" input$step="0.1" input$min="0" variant="outlined" bind:value={opoPower} label="Power (mJ)"/>
 
         <button class="button is-link" on:click="{()=>{showOPOFiles = !showOPOFiles;}}"> Browse File</button>

@@ -1,15 +1,17 @@
 
 <script>
-    import {opoMode, toggleRow, felixOutputName, felixPlotAnnotations, felixPeakTable, expfittedLines, expfittedLinesCollectedData, fittedTraceCount, felixopoLocation, felixPlotCheckboxes} from "../../functions/svelteWritables";
+    import {
+        opoMode, toggleRow, felixOutputName, felixPlotAnnotations, felixPeakTable, expfittedLines, expfittedLinesCollectedData, fittedTraceCount, felixopoLocation, felixPlotCheckboxes, felixConfigDB
+    } from "../../functions/svelteWritables";
     import {mainPreModal} from "../../../../svelteWritable";
     import Textfield from '@smui/textfield';
     import CustomIconSwitch from 'components/CustomIconSwitch.svelte';
     import FelixPlotting from '../../modals/FelixPlotting.svelte';
     import {felix_func} from '../../functions/felix';
-
     export let felixfiles, graphPlotted, opofiles, normMethod, show_theoryplot, removeExtraFile, theoryLocation;
     let active=false, openShell=false, delta=1;
-    // let felixPlotCheckboxes = []
+
+    export let updateConfig=false;
 
     let felixPlotWidgets = {
 
@@ -104,7 +106,17 @@
                 
         }
 
+    
     }
+
+
+
+    let fdelta=$felixConfigDB.get("fdelta");
+    function loadConfig() {
+        fdelta =  $felixConfigDB.get("fdelta")
+        console.log("fdelta updated", fdelta)
+    }
+    $: if(updateConfig) loadConfig()
 </script>
 
 <FelixPlotting bind:active bind:felixPlotWidgets {theoryLocation} on:submit="{(e)=>plotData({e:e.detail.event, filetype:"matplotlib"})}" />
@@ -114,7 +126,7 @@
     <button class="button is-link" id="create_baseline_btn" on:click="{(e)=>plotData({e:e, filetype:"baseline"})}"> Create Baseline</button>
     <button class="button is-link" id="felix_plotting_btn" on:click="{(e)=>plotData({e:e, filetype:"felix"})}">FELIX Plot</button>
 
-    <Textfield style="width:7em" variant="outlined" input$type="number" input$step="0.1" input$min="0" bind:value={delta} label="Delta"/>
+    <Textfield style="width:7em" variant="outlined" input$type="number" input$step={fdelta} input$min="0" bind:value={delta} label="Delta"/>
     
     <button class="button is-link" on:click="{()=>active = true}"> Open in Matplotlib</button>
     <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>

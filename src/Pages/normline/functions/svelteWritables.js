@@ -38,3 +38,4 @@ export const felixAnnotationColor = writable("black")
 export const normMethod = writable("Relative")
 
 export const felixPlotCheckboxes = writable([])
+export const felixConfigDB = writable(new JSONdb(path.resolve("../config.json")))

@@ -1,12 +1,12 @@
 
 <script>
 
-    // IMPORTING Modules
-    import {opoMode, normMethodDatas, Ngauss_sigma, felixopoLocation, felixPlotAnnotations, expfittedLines, expfittedLinesCollectedData, fittedTraceCount, graphDiv, normMethod} from './normline/functions/svelteWritables';
-    
+    import {
+        opoMode, normMethodDatas, Ngauss_sigma, felixopoLocation, felixPlotAnnotations, 
+        expfittedLines, expfittedLinesCollectedData, fittedTraceCount, graphDiv, normMethod,
+        felixConfigDB
+    } from './normline/functions/svelteWritables';
     import Layout from "../components/Layout.svelte"
-    
-    // import { fade } from 'svelte/transition'
     import CustomRadio from '../components/CustomRadio.svelte';
     // import ReportLayout from '../components/ReportLayout.svelte';
     import {onMount, tick} from "svelte"
@@ -23,7 +23,7 @@
     import WriteFunctionContents from './normline/widgets/postprocessing/WriteFunctionContents.svelte';
     import ExecuteFunctionContents from './normline/widgets/postprocessing/ExecuteFunctionContents.svelte';
     import {init_tour_normline} from './normline/initTour';
-
+    import Textfield from '@smui/textfield';
     ///////////////////////////////////////////////////////////////////////
 
     const filetype="felix", id="Normline"
@@ -89,7 +89,7 @@
     }
 
     let fullfiles = []
-    
+    let activateConfigModal = false;
     $: $opoMode ? fullfiles = [...opofiles, ...addedfiles, path.resolve(currentLocation, "averaged.felix")] : fullfiles = [...felixfiles, ...addedfiles, path.resolve(currentLocation, "averaged.felix")]
 
     const init_tour = async () => {
@@ -98,7 +98,24 @@
         await tick() // For all the reactive components to render
         init_tour_normline({filetype})
     }
+    let fdelta = $felixConfigDB.get("fdelta") || 0.5
+    let odelta = $felixConfigDB.get("odelta") || 0.001
 
+    let scalingBin = $felixConfigDB.get("scalingBin") || 0.001
+    let updateConfig = false
+    async function configSave(e) {
+
+        $felixConfigDB.set("fdelta", fdelta)
+        $felixConfigDB.set("odelta", odelta)
+        $felixConfigDB.set("scalingBin", scalingBin)
+        updateConfig = true;
+        console.log("Config file saved", $felixConfigDB.JSON())
+
+        await tick()
+        updateConfig = false
+
+        console.log("Config updated")
+    }
     // const includePlotsInReport = [
 
     //     {id: "bplot", include:true, label:"Baseline"}, {id:"saPlot", include:false, label:"SA-Pow"}, 
@@ -128,13 +145,13 @@
 <AddFilesToPlot {fileChecked} bind:extrafileAdded bind:active={addFileModal} bind:addedFileCol bind:addedFileScale bind:addedfiles bind:addedFile  />
 
 <!-- Layout -->
-<Layout  {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour} >
+<Layout  {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour} bind:activateConfigModal on:configSave={configSave}>
 
     <svelte:fragment slot="buttonContainer">
-        <InitFunctionRow {removeExtraFile} {opofiles} {felixfiles} normMethod={$normMethod} {theoryLocation}  bind:graphPlotted bind:show_theoryplot/>
+        <InitFunctionRow {removeExtraFile} {opofiles} {felixfiles} normMethod={$normMethod} {theoryLocation}  bind:graphPlotted bind:show_theoryplot {updateConfig} />
 
-        <OPORow {removeExtraFile} bind:OPOLocation bind:OPOfilesChecked bind:opofiles  bind:graphPlotted />
-        <TheoryRow bind:theoryLocation bind:show_theoryplot  normMethod={$normMethod} />
+        <OPORow {removeExtraFile} bind:OPOLocation bind:OPOfilesChecked bind:opofiles  bind:graphPlotted {updateConfig} />
+        <TheoryRow bind:theoryLocation bind:show_theoryplot  normMethod={$normMethod} {updateConfig} />
         <div class="align">
 
             <CustomRadio on:change={replot} bind:selected={$normMethod} options={["Log", "Relative", "IntensityPerPhoton"]}/>
@@ -147,7 +164,6 @@
         <GetFileInfoTable {felixfiles} normMethod={$normMethod} />
         
         <!-- Plots container -->
-
         <div class="felixPlot" id="plot_container__div__{filetype}">
             <div class="animated fadeIn graph__div" class:hide={!show_theoryplot} id="exp-theory-plot"></div>
             <div id="bplot" class="graph__div"></div>
@@ -155,6 +171,7 @@
             <div id="avgplot" class="graph__div"></div>
             <div class="animated fadeIn graph__div" class:hide={!$opoMode} id="opoplot"></div>
             <div class="animated fadeIn graph__div" class:hide={!$opoMode} id="opoSA"></div>
+
             <div class="animated fadeIn graph__div" class:hide={!$opoMode} id="opoRelPlot"></div>
         
         </div>
@@ -171,7 +188,18 @@
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer_reports">
-        <!-- Frequency table list -->
         <FrequencyTable bind:keepTable/>
+
     </svelte:fragment>
+
+    <svelte:fragment slot="config">
+        <div class="align">
+            <Textfield bind:value={fdelta} label="FELIX delta steps" varient="outlined" input$type="number" input$min="0" input$step="1e-5"/>
+            <Textfield bind:value={odelta} label="OPO delta steps" varient="outlined" input$type="number" input$min="0" input$step="1e-5"/>
+            <Textfield bind:value={scalingBin} label="Theory scaling steps" varient="outlined" input$type="number" input$min="0" input$step="1e-5" />
+
+        </div>
+
+    </svelte:fragment>
+
 </Layout>

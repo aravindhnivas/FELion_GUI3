@@ -52,14 +52,17 @@
     import Textfield from '@smui/textfield';
     import {onMount, tick} from "svelte";
     import FileBrowser from "./FileBrowser.svelte"
-    // import { createEventDispatcher } from 'svelte';
+    import Modal from "./Modal.svelte"
+    import { createEventDispatcher } from 'svelte';
+    import IconButton from '@smui/icon-button';
 
     ////////////////////////////////////////////////////////////////////////////
 
     export let id, fileChecked=[], filetype = "felix", toggleBrowser = false, fullfileslist = [];
     export let currentLocation = db.get(`${filetype}_location`) || "", graphPlotted=false;
     export let graphWindowClasses = ["no-full"]
-    // const dispatch = createEventDispatcher()
+    export let activateConfigModal = false
+    const dispatch = createEventDispatcher()
     // function tour_event() { dispatch('tour', {filetype}) }
 
     function browse_folder() {
@@ -131,7 +134,6 @@
 </script>
 
 
-
 <style lang="scss">
     .plot__div {padding: 1em;}
 
@@ -157,7 +159,7 @@
             max-height: calc(100vh - 8rem);
             .location__div {
                 display:grid;
-                grid-template-columns: auto 1fr;
+                grid-template-columns: auto 1fr auto;
                 column-gap: 1em;
                 align-items: baseline;
             }
@@ -191,6 +193,7 @@
                 <button class="button is-link" id="{filetype}_filebrowser_btn" on:click={browse_folder}>Browse</button>
 
                 <Textfield bind:value={currentLocation} label="Current location" style="width:100%; "/>
+                <IconButton class="material-icons" on:click={() => activateConfigModal=true} >build</IconButton>
             </div>
 
             <div class="button__div align" id="{filetype}-buttonContainer" >
@@ -214,5 +217,15 @@
 
         </div>
 
+        {#if activateConfigModal}
+            <Modal title="{filetype.toUpperCase()} Settings" bind:active={activateConfigModal} >
+                <svelte:fragment slot="content">
+                    <slot name="config"></slot>
+                </svelte:fragment>
+                <svelte:fragment slot="footerbtn">
+                    <button class="button is-link" on:click={()=>{dispatch('configSave', {filetype})}}>Save</button>
+                </svelte:fragment>
+            </Modal>
+        {/if}
     </div>
 </section>
