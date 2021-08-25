@@ -28,13 +28,13 @@
 
 <body class="mdc-typography">
 	<script>
-		const _ = require('./assets/js/lodash.js')
-		const electron = require("electron")
-		const remote = electron.remote
-		const path = require("path")
+		window._ = require('./assets/js/lodash.js')
+		window.electron = require("electron")
+		window.remote = electron.remote
+		window.path = require("path")
 		
-		const fs = require("fs")
-		const spawn = require("child_process").spawn
+		window.fs = require("fs")
+		window.spawn = require("child_process").spawn
 		const JSONdb = require('./assets/js/JSONdb')
 
 		const db = new JSONdb(path.resolve(__dirname, "db.json"))
@@ -44,7 +44,7 @@
 
 		const versionFileJSON = JSON.parse(versionFileContent)
 
-		const currentVersion = versionFileJSON.version
+		window.currentVersion = versionFileJSON.version
 		db.set("version", currentVersion)
 
 	</script>
