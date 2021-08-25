@@ -19,4 +19,4 @@ static/assets/python_files/notebooks/profile_fit/CD+_in_MHz_fit.dat
 static/assets/python_files/data.json
 static/output.log
 out/
-src/Pages/normline/config.json
+src/Pages/**/config.json
