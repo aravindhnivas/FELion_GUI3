@@ -3,7 +3,7 @@
     import { scale } from 'svelte/transition';
     import {Icon} from '@smui/icon-button';
     import {tick} from "svelte";
-    export let head, rows, keys, id=window.getID(), label="table", userSelect=true;
+    export let head, rows, keys, id=window.getID(), label="table", userSelect=true, style="width: 100%;";
     export let sortOption = false, closeOption = true, addextraOption = true, animateRow = true;
 
     const keyIDSets = keys.map(key=>{return {key, id:window.getID()}})
@@ -57,7 +57,7 @@
     
 </style>
 
-<div class="">
+<div {style}>
 
 
     {#if addextraOption}
