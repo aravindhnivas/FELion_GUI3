@@ -1,7 +1,7 @@
 
 <script>
 
-    import {opoMode, felixPlotAnnotations, felixConfigDB} from "../../functions/svelteWritables";
+    import {opoMode, felixPlotAnnotations, felixConfigDB, baselineFile} from "../../functions/svelteWritables";
     import {mainPreModal} from "../../../../svelteWritable";
     import Textfield from '@smui/textfield';
     import CustomSelect from '../../../../components/CustomSelect.svelte';
@@ -52,7 +52,7 @@
     // $: console.log(OPOfilesChecked)
 </script>
 
-<QuickBrowser title="OPO files" bind:active={showOPOFiles} bind:currentLocation={OPOLocation} bind:fileChecked={OPOfilesChecked} filetype="ofelix" on:submit="{(e)=>{plotData({e:e.detail.event})}}"/>
+<QuickBrowser title="OPO files" bind:active={showOPOFiles} bind:currentLocation={OPOLocation} bind:fileChecked={OPOfilesChecked} filetype="ofelix" on:submit="{(e)=>{plotData({e:e.detail.event})}}" on:markedFile="{(e)=>$baselineFile = e.detail.markedFile}"/>
 
 {#if $opoMode}
 

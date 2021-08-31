@@ -184,7 +184,7 @@
 
         <div class="left_container__div box " transition:fly="{{ x: -100, duration: 500 }}" 
             on:mouseup={()=>mouseReleased=true} on:mousedown={()=>mouseReleased=false} >
-            <FileBrowser bind:currentLocation {filetype} bind:fileChecked on:chdir bind:fullfileslist/>
+            <FileBrowser bind:currentLocation {filetype} bind:fileChecked on:chdir bind:fullfileslist on:markedFile/>
         </div>
 
         <div class="right_container__div box " id="{filetype}__mainContainer__div" >

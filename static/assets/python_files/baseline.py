@@ -484,14 +484,22 @@ class Create_Baseline():
                 return showinfo('Info', f'{self.basefile} file is saved in /DATA directory')
         
         except Exception as error: return showerror("Error", f"Following error has occured while saving {self.basefile} file\n{error}")
-
     def get_data(self): return np.asarray([self.data[0], self.data[1]]), np.asarray([self.line.get_data()])
 
 if __name__ == "__main__":
 
     args = sys.argv[1:][0].split(",")
-    filepaths = [pt(files) for files in args]
-    for files in filepaths:
-        felixfile = files.name
-        location = files.parent
-        Create_Baseline(felixfile, location)
+    args = json.loads(", ".join(args))
+    print(f"Received args: {args}, {type(args)}\n")
+
+    # print(sys.argv[1:], flush=True)
+    # args = sys.argv[1:][0].split(",")
+    filename = pt(args["filename"])
+    felixfile = filename.name
+    location = filename.parent
+    Create_Baseline(felixfile, location)
+    # filepaths = [pt(files) for files in args]
+    # for files in filepaths:
+    #     felixfile = files.name
+    #     location = files.parent
+    #     Create_Baseline(felixfile, location)

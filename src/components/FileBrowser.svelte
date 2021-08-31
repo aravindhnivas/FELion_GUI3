@@ -18,7 +18,7 @@
     ///////////////////////////////////////////////////////////////////////////
     
 
-    export let fileChecked = [],  currentLocation = "", filetype = "*.*", fullfileslist = [];
+    export let fileChecked = [],  currentLocation = "", filetype = "*.*", fullfileslist = [], markedFile = "";
 
     const dispatch = createEventDispatcher();
 
@@ -109,6 +109,8 @@
 
 	}
 
+    // let markedFile = ""
+
 </script>
 
 <style>
@@ -148,7 +150,11 @@
     {#if files_loaded && locationStatus}
         {#if showfiles && fullfiles.length }
             <div on:click={selectRange}>
-                <VirtualCheckList bind:fileChecked bind:items={fullfiles} on:click="{()=>selectAll=false}" on:select="{(e)=>console.log(e)}"/>
+                <VirtualCheckList bind:fileChecked bind:items={fullfiles} {markedFile} on:click="{(e)=>{
+                    selectAll=false;
+                    if(e.ctrlKey && filetype.includes("felix") ) { markedFile = e.target.value; dispatch('markedFile', {  markedFile })}
+                }}" on:select="{(e)=>console.log(e)}"/>
+
             </div>
         {:else if fullfiles.length <= 0}
             <div class="mdc-typography--subtitle1 align center">No {filetype} here!</div>        

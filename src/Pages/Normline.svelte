@@ -4,7 +4,7 @@
     import {
         opoMode, normMethodDatas, Ngauss_sigma, felixopoLocation, felixPlotAnnotations, 
         expfittedLines, expfittedLinesCollectedData, fittedTraceCount, graphDiv, normMethod,
-        felixConfigDB
+        felixConfigDB, baselineFile
     } from './normline/functions/svelteWritables';
     import Layout from "../components/Layout.svelte"
     import CustomRadio from '../components/CustomRadio.svelte';
@@ -116,6 +116,7 @@
 
         console.log("Config updated")
     }
+    let markedFile = ""
     // const includePlotsInReport = [
 
     //     {id: "bplot", include:true, label:"Baseline"}, {id:"saPlot", include:false, label:"SA-Pow"}, 
@@ -145,7 +146,7 @@
 <AddFilesToPlot {fileChecked} bind:extrafileAdded bind:active={addFileModal} bind:addedFileCol bind:addedFileScale bind:addedfiles bind:addedFile  />
 
 <!-- Layout -->
-<Layout  {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour} bind:activateConfigModal on:configSave={configSave}>
+<Layout  {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour} bind:activateConfigModal on:configSave={configSave} on:markedFile="{(e)=>$baselineFile = e.detail.markedFile}">
 
     <svelte:fragment slot="buttonContainer">
         <InitFunctionRow {removeExtraFile} {opofiles} {felixfiles} normMethod={$normMethod} {theoryLocation}  bind:graphPlotted bind:show_theoryplot {updateConfig} />
