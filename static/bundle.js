@@ -2,12 +2,12 @@
 (function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
 'use strict';
 
-var path$1 = require('path');
+var require$$1 = require('path');
 var require$$2 = require('fs');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-var path__default = /*#__PURE__*/_interopDefaultLegacy(path$1);
+var require$$1__default = /*#__PURE__*/_interopDefaultLegacy(require$$1);
 var require$$2__default = /*#__PURE__*/_interopDefaultLegacy(require$$2);
 
 var sourceMapSupport = {exports: {}};
@@ -3243,7 +3243,7 @@ var bufferFrom_1 = bufferFrom;
 
 (function (module, exports) {
 var SourceMapConsumer = sourceMap.SourceMapConsumer;
-var path = path__default['default'];
+var path = require$$1__default['default'];
 
 var fs;
 try {
@@ -47235,11 +47235,11 @@ function create_fragment$F(ctx) {
 	let dispose;
 
 	function felixplotting_active_binding(value) {
-		/*felixplotting_active_binding*/ ctx[17](value);
+		/*felixplotting_active_binding*/ ctx[16](value);
 	}
 
 	function felixplotting_felixPlotWidgets_binding(value) {
-		/*felixplotting_felixPlotWidgets_binding*/ ctx[18](value);
+		/*felixplotting_felixPlotWidgets_binding*/ ctx[17](value);
 	}
 
 	let felixplotting_props = {
@@ -47261,10 +47261,10 @@ function create_fragment$F(ctx) {
 
 	binding_callbacks.push(() => bind(felixplotting, 'active', felixplotting_active_binding));
 	binding_callbacks.push(() => bind(felixplotting, 'felixPlotWidgets', felixplotting_felixPlotWidgets_binding));
-	felixplotting.$on("submit", /*submit_handler*/ ctx[19]);
+	felixplotting.$on("submit", /*submit_handler*/ ctx[18]);
 
 	function textfield_value_binding(value) {
-		/*textfield_value_binding*/ ctx[22](value);
+		/*textfield_value_binding*/ ctx[21](value);
 	}
 
 	let textfield_props = {
@@ -47284,7 +47284,7 @@ function create_fragment$F(ctx) {
 	binding_callbacks.push(() => bind(textfield, 'value', textfield_value_binding));
 
 	function customiconswitch_toggler_binding(value) {
-		/*customiconswitch_toggler_binding*/ ctx[24](value);
+		/*customiconswitch_toggler_binding*/ ctx[23](value);
 	}
 
 	let customiconswitch_props = { icons: ["settings_ethernet", "code"] };
@@ -47306,7 +47306,7 @@ function create_fragment$F(ctx) {
 			t0 = space();
 			div = element("div");
 			button0 = element("button");
-			t1 = text("Create Baseline");
+			t1 = text("Create Baseline ");
 			span = element("span");
 			span.textContent = "b";
 			t3 = space();
@@ -47325,22 +47325,24 @@ function create_fragment$F(ctx) {
 			t11 = space();
 			button4 = element("button");
 			button4.textContent = "OPO";
-			attr_dev(span, "class", "tag is-warning svelte-8k4cg5");
-			add_location(span, file$z, 140, 131, 5472);
+			attr_dev(span, "class", "tag is-warning  svelte-8k4cg5");
+			attr_dev(span, "aria-label", "ctrl + left-click to select file for baseline correction");
+			attr_dev(span, "data-cooltipz-dir", "bottom");
+			add_location(span, file$z, 139, 132, 5435);
 			attr_dev(button0, "class", "button is-link");
 			attr_dev(button0, "id", "create_baseline_btn");
-			add_location(button0, file$z, 140, 4, 5345);
+			add_location(button0, file$z, 139, 4, 5307);
 			attr_dev(button1, "class", "button is-link");
 			attr_dev(button1, "id", "felix_plotting_btn");
-			add_location(button1, file$z, 141, 4, 5524);
+			add_location(button1, file$z, 141, 4, 5592);
 			attr_dev(button2, "class", "button is-link");
-			add_location(button2, file$z, 145, 4, 5806);
+			add_location(button2, file$z, 145, 4, 5874);
 			attr_dev(button3, "class", "button is-link");
-			add_location(button3, file$z, 147, 4, 5990);
+			add_location(button3, file$z, 147, 4, 6058);
 			attr_dev(button4, "class", "button is-link");
-			add_location(button4, file$z, 148, 4, 6088);
+			add_location(button4, file$z, 148, 4, 6156);
 			attr_dev(div, "class", "align");
-			add_location(div, file$z, 138, 0, 5318);
+			add_location(div, file$z, 137, 0, 5280);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -47368,11 +47370,11 @@ function create_fragment$F(ctx) {
 
 			if (!mounted) {
 				dispose = [
-					listen_dev(button0, "click", /*click_handler*/ ctx[20], false, false, false),
-					listen_dev(button1, "click", /*click_handler_1*/ ctx[21], false, false, false),
-					listen_dev(button2, "click", /*click_handler_2*/ ctx[23], false, false, false),
-					listen_dev(button3, "click", /*click_handler_3*/ ctx[25], false, false, false),
-					listen_dev(button4, "click", /*click_handler_4*/ ctx[26], false, false, false)
+					listen_dev(button0, "click", /*click_handler*/ ctx[19], false, false, false),
+					listen_dev(button1, "click", /*click_handler_1*/ ctx[20], false, false, false),
+					listen_dev(button2, "click", /*click_handler_2*/ ctx[22], false, false, false),
+					listen_dev(button3, "click", /*click_handler_3*/ ctx[24], false, false, false),
+					listen_dev(button4, "click", /*click_handler_4*/ ctx[25], false, false, false)
 				];
 
 				mounted = true;
@@ -47464,32 +47466,32 @@ function instance$F($$self, $$props, $$invalidate) {
 	let $felixOutputName;
 	let $toggleRow;
 	validate_store(felixConfigDB, 'felixConfigDB');
-	component_subscribe($$self, felixConfigDB, $$value => $$invalidate(27, $felixConfigDB = $$value));
+	component_subscribe($$self, felixConfigDB, $$value => $$invalidate(26, $felixConfigDB = $$value));
 	validate_store(felixopoLocation, 'felixopoLocation');
-	component_subscribe($$self, felixopoLocation, $$value => $$invalidate(28, $felixopoLocation = $$value));
+	component_subscribe($$self, felixopoLocation, $$value => $$invalidate(27, $felixopoLocation = $$value));
 	validate_store(felixPlotCheckboxes, 'felixPlotCheckboxes');
-	component_subscribe($$self, felixPlotCheckboxes, $$value => $$invalidate(29, $felixPlotCheckboxes = $$value));
+	component_subscribe($$self, felixPlotCheckboxes, $$value => $$invalidate(28, $felixPlotCheckboxes = $$value));
 	validate_store(baselineFile, 'baselineFile');
-	component_subscribe($$self, baselineFile, $$value => $$invalidate(30, $baselineFile = $$value));
+	component_subscribe($$self, baselineFile, $$value => $$invalidate(29, $baselineFile = $$value));
 	validate_store(opoMode, 'opoMode');
 	component_subscribe($$self, opoMode, $$value => $$invalidate(6, $opoMode = $$value));
 	validate_store(fittedTraceCount, 'fittedTraceCount');
-	component_subscribe($$self, fittedTraceCount, $$value => $$invalidate(31, $fittedTraceCount = $$value));
+	component_subscribe($$self, fittedTraceCount, $$value => $$invalidate(30, $fittedTraceCount = $$value));
 	validate_store(expfittedLinesCollectedData, 'expfittedLinesCollectedData');
-	component_subscribe($$self, expfittedLinesCollectedData, $$value => $$invalidate(32, $expfittedLinesCollectedData = $$value));
+	component_subscribe($$self, expfittedLinesCollectedData, $$value => $$invalidate(31, $expfittedLinesCollectedData = $$value));
 	validate_store(felixPlotAnnotations, 'felixPlotAnnotations');
-	component_subscribe($$self, felixPlotAnnotations, $$value => $$invalidate(33, $felixPlotAnnotations = $$value));
+	component_subscribe($$self, felixPlotAnnotations, $$value => $$invalidate(32, $felixPlotAnnotations = $$value));
 	validate_store(expfittedLines, 'expfittedLines');
-	component_subscribe($$self, expfittedLines, $$value => $$invalidate(34, $expfittedLines = $$value));
+	component_subscribe($$self, expfittedLines, $$value => $$invalidate(33, $expfittedLines = $$value));
 	validate_store(felixPeakTable, 'felixPeakTable');
-	component_subscribe($$self, felixPeakTable, $$value => $$invalidate(35, $felixPeakTable = $$value));
+	component_subscribe($$self, felixPeakTable, $$value => $$invalidate(34, $felixPeakTable = $$value));
 	validate_store(felixOutputName, 'felixOutputName');
-	component_subscribe($$self, felixOutputName, $$value => $$invalidate(36, $felixOutputName = $$value));
+	component_subscribe($$self, felixOutputName, $$value => $$invalidate(35, $felixOutputName = $$value));
 	validate_store(toggleRow, 'toggleRow');
 	component_subscribe($$self, toggleRow, $$value => $$invalidate(7, $toggleRow = $$value));
 	let { $$slots: slots = {}, $$scope } = $$props;
 	validate_slots('InitFunctionRow', slots, []);
-	let { felixfiles, graphPlotted, opofiles, normMethod, show_theoryplot, removeExtraFile, theoryLocation, markedFile } = $$props;
+	let { felixfiles, graphPlotted, opofiles, normMethod, show_theoryplot, removeExtraFile, theoryLocation } = $$props;
 	let active = false, openShell = false, delta = 1;
 	let { updateConfig = false } = $$props;
 
@@ -47634,7 +47636,7 @@ function instance$F($$self, $$props, $$invalidate) {
 				// args= $opoMode ? opofiles: felixfiles
 				args = [
 					JSON.stringify({
-						filename: path__default['default'].join($felixopoLocation, $baselineFile)
+						filename: path.join($felixopoLocation, $baselineFile)
 					})
 				];
 				computePy_func({
@@ -47690,7 +47692,6 @@ function instance$F($$self, $$props, $$invalidate) {
 		'show_theoryplot',
 		'removeExtraFile',
 		'theoryLocation',
-		'markedFile',
 		'updateConfig'
 	];
 
@@ -47742,8 +47743,7 @@ function instance$F($$self, $$props, $$invalidate) {
 		if ('show_theoryplot' in $$props) $$invalidate(10, show_theoryplot = $$props.show_theoryplot);
 		if ('removeExtraFile' in $$props) $$invalidate(14, removeExtraFile = $$props.removeExtraFile);
 		if ('theoryLocation' in $$props) $$invalidate(0, theoryLocation = $$props.theoryLocation);
-		if ('markedFile' in $$props) $$invalidate(15, markedFile = $$props.markedFile);
-		if ('updateConfig' in $$props) $$invalidate(16, updateConfig = $$props.updateConfig);
+		if ('updateConfig' in $$props) $$invalidate(15, updateConfig = $$props.updateConfig);
 	};
 
 	$$self.$capture_state = () => ({
@@ -47764,7 +47764,6 @@ function instance$F($$self, $$props, $$invalidate) {
 		CustomIconSwitch,
 		FelixPlotting,
 		felix_func,
-		path: path__default['default'],
 		felixfiles,
 		graphPlotted,
 		opofiles,
@@ -47772,7 +47771,6 @@ function instance$F($$self, $$props, $$invalidate) {
 		show_theoryplot,
 		removeExtraFile,
 		theoryLocation,
-		markedFile,
 		active,
 		openShell,
 		delta,
@@ -47803,11 +47801,10 @@ function instance$F($$self, $$props, $$invalidate) {
 		if ('show_theoryplot' in $$props) $$invalidate(10, show_theoryplot = $$props.show_theoryplot);
 		if ('removeExtraFile' in $$props) $$invalidate(14, removeExtraFile = $$props.removeExtraFile);
 		if ('theoryLocation' in $$props) $$invalidate(0, theoryLocation = $$props.theoryLocation);
-		if ('markedFile' in $$props) $$invalidate(15, markedFile = $$props.markedFile);
 		if ('active' in $$props) $$invalidate(1, active = $$props.active);
 		if ('openShell' in $$props) $$invalidate(2, openShell = $$props.openShell);
 		if ('delta' in $$props) $$invalidate(3, delta = $$props.delta);
-		if ('updateConfig' in $$props) $$invalidate(16, updateConfig = $$props.updateConfig);
+		if ('updateConfig' in $$props) $$invalidate(15, updateConfig = $$props.updateConfig);
 		if ('felixPlotWidgets' in $$props) $$invalidate(4, felixPlotWidgets = $$props.felixPlotWidgets);
 		if ('fdelta' in $$props) $$invalidate(5, fdelta = $$props.fdelta);
 	};
@@ -47817,7 +47814,7 @@ function instance$F($$self, $$props, $$invalidate) {
 	}
 
 	$$self.$$.update = () => {
-		if ($$self.$$.dirty[0] & /*updateConfig*/ 65536) {
+		if ($$self.$$.dirty[0] & /*updateConfig*/ 32768) {
 			if (updateConfig) loadConfig();
 		}
 	};
@@ -47838,7 +47835,6 @@ function instance$F($$self, $$props, $$invalidate) {
 		opofiles,
 		normMethod,
 		removeExtraFile,
-		markedFile,
 		updateConfig,
 		felixplotting_active_binding,
 		felixplotting_felixPlotWidgets_binding,
@@ -47871,8 +47867,7 @@ class InitFunctionRow extends SvelteComponentDev {
 				show_theoryplot: 10,
 				removeExtraFile: 14,
 				theoryLocation: 0,
-				markedFile: 15,
-				updateConfig: 16
+				updateConfig: 15
 			},
 			null,
 			[-1, -1]
@@ -47914,10 +47909,6 @@ class InitFunctionRow extends SvelteComponentDev {
 
 		if (/*theoryLocation*/ ctx[0] === undefined && !('theoryLocation' in props)) {
 			console_1$c.warn("<InitFunctionRow> was created without expected prop 'theoryLocation'");
-		}
-
-		if (/*markedFile*/ ctx[15] === undefined && !('markedFile' in props)) {
-			console_1$c.warn("<InitFunctionRow> was created without expected prop 'markedFile'");
 		}
 	}
 
@@ -47974,14 +47965,6 @@ class InitFunctionRow extends SvelteComponentDev {
 	}
 
 	set theoryLocation(value) {
-		throw new Error("<InitFunctionRow>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	get markedFile() {
-		throw new Error("<InitFunctionRow>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	set markedFile(value) {
 		throw new Error("<InitFunctionRow>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 
@@ -93569,10 +93552,9 @@ window.showStackContext = ({title="Info", text, type="Info"}={}) => {
 };
 
 const app = new App({
-	
 	target: document.body,
+
 	props: { version: "" }
-	
 });
 
 module.exports = app;

@@ -8,8 +8,7 @@
     import CustomIconSwitch from 'components/CustomIconSwitch.svelte';
     import FelixPlotting from '../../modals/FelixPlotting.svelte';
     import {felix_func} from '../../functions/felix';
-import path from "path";
-    export let felixfiles, graphPlotted, opofiles, normMethod, show_theoryplot, removeExtraFile, theoryLocation, markedFile;
+    export let felixfiles, graphPlotted, opofiles, normMethod, show_theoryplot, removeExtraFile, theoryLocation;
     let active=false, openShell=false, delta=1;
 
     export let updateConfig=false;
@@ -138,7 +137,8 @@ import path from "path";
     
 <div class="align">
 
-    <button class="button is-link" id="create_baseline_btn" on:click="{(e)=>plotData({e:e, filetype:"baseline"})}"> Create Baseline<span class="tag is-warning">b</span></button>
+    <button class="button is-link" id="create_baseline_btn" on:click="{(e)=>plotData({e:e, filetype:"baseline"})}"> Create Baseline <span class="tag is-warning " aria-label="ctrl + left-click to select file for baseline correction" data-cooltipz-dir="bottom" >b</span>
+    </button>
     <button class="button is-link" id="felix_plotting_btn" on:click="{(e)=>plotData({e:e, filetype:"felix"})}">FELIX Plot</button>
 
     <Textfield style="width:7em" variant="outlined" input$type="number" input$step={fdelta} input$min="0" bind:value={delta} label="Delta"/>
