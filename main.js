@@ -3,7 +3,7 @@ const path = require("path");
 let mainWindow;
 
 function createWindow() {
-  const icon = process.platform == 'darwin' ? path.resolve(__dirname, "assets/logo/mac/icon.icns") : path.resolve(__dirname, "assets/logo/win/icon.ico")
+  const icon = process.platform == 'darwin' ? path.resolve(__dirname, "static/assets/logo/mac/icon.icns") : path.resolve(__dirname, "static/assets/logo/win/icon.ico")
   mainWindow = new BrowserWindow({
 
     width: 1200, height: 700, frame: false, icon,
