@@ -81,17 +81,15 @@
                 break;
             
             case "baseline":
-                
-                if($opoMode) { 
-                    if (opofiles.length<1) return window.createToast("No OPO files selected", "danger")
-                } else if(felixfiles.length<1) { return window.createToast("No FELIX files selected", "danger") }
-
+                if(!$baselineFile) {
+                    
+                    return window.createToast("No files: ctrl + left-click to select file for baseline correction", "danger")
+                }
                 pyfile="baseline.py"
-                // args= $opoMode ? opofiles: felixfiles
                 args=[JSON.stringify({filename: path.join($felixopoLocation, $baselineFile)})]
-
                 computePy_func({e, pyfile, args, general:true, openShell})
                 .catch(error=>{mainPreModal.error(error.stack || error)})
+                
                 break;
 
             case "matplotlib":
