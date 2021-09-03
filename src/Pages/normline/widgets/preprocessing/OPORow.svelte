@@ -57,7 +57,7 @@
 {#if $opoMode}
 
     <div class="align" transition:fade>
-
+        <span class="tag is-warning " >OPO Mode: </span>
         <CustomSelect style="width:7em;" bind:picked={calibFile} label="Calib. file" options={["", ...OPOcalibFiles]}/>
         
         <Textfield style="width:7em; margin:0 0.5em;" input$type="number" input$step={odelta} input$min="0" variant="outlined" bind:value={deltaOPO} label="Delta OPO"/>
