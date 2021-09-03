@@ -8,6 +8,18 @@
 
 </script>
 
+
+<style>
+
+.tag {
+        border-radius: 2em;
+        margin: 0 1em;
+    }
+
+
+
+</style>
+
 <div {style}>
     <VirtualList {items} let:item {height}>
 
