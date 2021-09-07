@@ -20,7 +20,7 @@ $modal-card-foot-radius: 0;
 $background: lighten($mainColor, 20);
 $modal-card-title-color: $white;
 $link:#634e96;
-@import 'bulma/bulma.sass';
+@import '~bulma';
 
 $link-color: #dbdbdb;
 $transparent: rgba(0,0,0,0);
