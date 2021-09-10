@@ -136,15 +136,15 @@
             <Textfield type="number" {style} on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_height} label="Height" />
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"find_peaks"})}">Get Peaks</button>
             <button class="button is-danger" on:click="{()=> {if(graphPlotted) {Plotly.relayout("mplot", { annotations: [] })} }}">Clear</button>
-        </div>
 
+        </div>
         <div class="align animated fadeIn " class:hide={toggleRow2}>
             <Textfield {style2} on:change="{()=>set_nist_url("by_name")}" bind:value={nist_molecule} label="Molecule Name" />
-            <Textfield {style2} on:change={set_nist_url} bind:value={nist_formula} label="Molecule Formula" />
+
+                <Textfield {style2} on:change={set_nist_url} bind:value={nist_formula} label="Molecule Formula" />
         </div>
 
     </svelte:fragment>
-
 
     <div style="margin-right: 1em;" slot="plotContainer">
 
@@ -154,6 +154,7 @@
             <Icon on:click="{()=>window.nist_webview.goToIndex(0)}" class="material-icons hvr-glow">home</Icon>
             <Icon on:click="{()=>window.nist_webview.reload()}" class="material-icons hvr-glow">refresh</Icon>
             <Icon on:click="{()=>{if(window.nist_webview.canGoBack()) {window.nist_webview.goBack()}}}" class="material-icons hvr-glow">arrow_left</Icon>
+
             <Icon on:click="{()=>{if(window.nist_webview.canGoForward()) {window.nist_webview.goForward()}}}" class="material-icons hvr-glow">arrow_right</Icon>
             <webview src={nist_url} id="nist_webview" style="height: 50vh; padding-bottom:3em; width: 100%; "></webview>
         </div>
