@@ -1,5 +1,7 @@
 # What's new
 
+## v3.4.1
+- Plotly bug fix (Plotly is not included in window object)
 ## v3.4.0
 - ROSAA modal integrated.
 - ROSAA kinetics integrated.
