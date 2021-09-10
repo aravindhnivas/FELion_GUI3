@@ -9,24 +9,32 @@ PNotify.defaultModules.set(PNotifyFontAwesome5, {});
 PNotify.defaultModules.set(PNotifyMobile, {});
 
 window.showStackContext = ({title="Info", text, type="Info"}={}) => {
-    if (typeof window.stackContext === 'undefined') {
+    try {
 
-        window.stackContext = new PNotify.Stack({
-            dir1: 'down',
-            dir2: 'left',
-            firstpos1: 70,
-            firstpos2: 25,
+        if (typeof window.stackContext === 'undefined') {
 
-
-            hide: false,
-            context: document.getElementById('pageContainer')
-        });
+            window.stackContext = new PNotify.Stack({
+                dir1: 'down',
+                dir2: 'left',
+                firstpos1: 70,
+                firstpos2: 25,
+    
+    
+                hide: false,
+                context: document.getElementById('pageContainer')
+            });
+        }
+        const opts = {
+    
+            title, text, type,
+    
+            stack: window.stackContext
+        };
+        PNotify.notice(opts);
+        
+    } catch (error) {
+        console.log("Could not load PNotify")
+        console.error(error)
     }
-    const opts = {
 
-        title, text, type,
-
-        stack: window.stackContext
-    };
-    PNotify.notice(opts);
 }
