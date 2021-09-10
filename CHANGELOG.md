@@ -3,6 +3,7 @@
 ## v3.4.0
 - ROSAA modal integrated.
 - ROSAA kinetics integrated.
+- Individual file selection for baseline correction.
 - several bug fixes.
 - several minor feature updates included.
 
