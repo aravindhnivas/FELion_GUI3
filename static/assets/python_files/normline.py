@@ -39,12 +39,12 @@ def var_find(openfile):
 
 class normplot:
 
-    def __init__(self, received_files, delta, output_filename="averaged"):
+    def __init__(self, received_files, delta):
 
 
         self.delta = delta
-        received_files = [pt(files) for files in received_files]
-        location = received_files[0].parent
+        self.received_files = [pt(files) for files in received_files]
+        location = self.received_files[0].parent
         back_dir = dirname(location)
         folders = ["DATA", "EXPORT", "OUT"]
         if set(folders).issubset(os.listdir(back_dir)): 
@@ -55,10 +55,10 @@ class normplot:
         dataToSend = {"base": {}, "SA": {}, "pow": {}, "average": {}, "average_rel": {}, "average_per_photon": {}}
 
         # For Average binning (Norm. method: log)
-        xs = np.array([], dtype=np.float)
-        ys = np.array([], dtype=np.float)
-        xs_r = np.array([], dtype=np.float)
-        ys_r = np.array([], dtype=np.float)
+        xs = np.array([], dtype=float)
+        ys = np.array([], dtype=float)
+        xs_r = np.array([], dtype=float)
+        ys_r = np.array([], dtype=float)
 
         def makeDataToSend(x, y, name, update={}):
 
@@ -69,7 +69,7 @@ class normplot:
         group = 1
         color_size = len(colors)
 
-        for filename in received_files:
+        for filename in self.received_files:
 
             felixfile = filename.name
             res, b0, trap = var_find(filename)
@@ -90,30 +90,30 @@ class normplot:
                                 break
                 self.felix_hz = int(felix_hz)
             except: self.felix_hz = 10
-            # self.nshots = int((trap/1000) * self.felix_hz)
+
 
             if trap > 50:
-                try:
-                    with open(f"./DATA/{powerfile}") as f:
+                with open(f"./DATA/{powerfile}") as f:
+                    try:
                         for line in f:
                             if line[0] == "#":
                                 if line.find("SHOTS") > -1:
                                     nshots = int(line.split("=")[1].strip())
                                     break
 
-                    self.nshots = int(nshots)
-                except Exception as error:
-                    print(error, flush=True) 
-                    raise Exception("FELIX SHOTS not defined in the powerfile")
+                        self.nshots = int(nshots)
+                    except Exception as error:
+                        print(error, flush=True) 
+                        raise Exception(error)
+                
             else: 
                 self.nshots = int((trap/1000) * self.felix_hz)
-
-                
             self.filetypes = [felixfile, basefile, powerfile]
 
             for folder, filetype in zip(folders, self.filetypes):
                 if not isdir(folder):
                     os.mkdir(folder)
+
                 if isfile(filetype):
                     shutil.move(
                         self.location.joinpath(filetype),
@@ -227,16 +227,27 @@ class normplot:
     def export_file(self, fname, wn, inten, relative_depletion, energyPerPhoton, raw_intensity=None):
 
         with open('EXPORT/' + fname + '.dat', 'w+') as f:
+
+            fileInfo = None
+            if fname=="averaged":
+                fileInfo = [_.name for _ in self.received_files]
+                fileInfo = f"# {fileInfo}\n#########################################\n\n"
+            unitInfo = f"# cm-1\tNorm. Int./J\t%\tNorm. Int./photon\n"
             if raw_intensity is not None:
                 f.write("#NormalisedWavelength(cm-1)\t#NormalisedIntensity\t#RelativeDepletion(%)\t#IntensityPerPhoton\t#RawIntensity\n")
+                f.write(unitInfo)
+                if fileInfo is not None: f.write(fileInfo)
                 for i in range(len(wn)):
                     f.write(f"{wn[i]}\t{inten[i]}\t{relative_depletion[i]}\t{energyPerPhoton[i]}\t{raw_intensity[i]}\n")
-
             else:
                 f.write("#NormalisedWavelength(cm-1)\t#NormalisedIntensity\t#RelativeDepletion(%)\t#IntensityPerPhoton\n")
+                f.write(unitInfo)
+                if fileInfo is not None: f.write(fileInfo)
+
                 for i in range(len(wn)):
                     f.write(f"{wn[i]}\t{inten[i]}\t{relative_depletion[i]}\t{energyPerPhoton[i]}\n")
-        
+
+
     def felix_binning(self, xs, ys):
 
         delta = self.delta
@@ -287,6 +298,7 @@ class normplot:
                 if line[0] == "#":
                     if line.find("Hz") == 1:
                         return int(line.split(" ")[1])
+
 
 if __name__ == "__main__":
 

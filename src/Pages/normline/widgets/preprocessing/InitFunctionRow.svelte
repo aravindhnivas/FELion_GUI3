@@ -1,25 +1,31 @@
 
 <script>
-    import {opoMode, toggleRow, felixOutputName, felixPlotAnnotations, felixPeakTable, expfittedLines, expfittedLinesCollectedData, fittedTraceCount, felixopoLocation} from "../../functions/svelteWritables";
+    import {
+        opoMode, toggleRow, felixOutputName, felixPlotAnnotations, felixPeakTable, expfittedLines, expfittedLinesCollectedData, fittedTraceCount, felixopoLocation, felixPlotCheckboxes, felixConfigDB, baselineFile
+    } from "../../functions/svelteWritables";
+    import {mainPreModal} from "../../../../svelteWritable";
     import Textfield from '@smui/textfield';
-    import CustomIconSwitch from '../../../../components/CustomIconSwitch.svelte';
+    import CustomIconSwitch from 'components/CustomIconSwitch.svelte';
     import FelixPlotting from '../../modals/FelixPlotting.svelte';
     import {felix_func} from '../../functions/felix';
-
-    export let felixPlotCheckboxes, preModal, felixfiles, graphPlotted, opofiles, normMethod, show_theoryplot, removeExtraFile, theoryLocation;
+    export let felixfiles, graphPlotted, opofiles, normMethod, show_theoryplot, removeExtraFile, theoryLocation;
     let active=false, openShell=false, delta=1;
+
+    export let updateConfig=false;
 
     let felixPlotWidgets = {
 
         text:[
 
-            {label:"Fig. caption", value:" ", id:getID()},
+            {label:"Fig. caption", value:"caption", id:getID()},
+
             
-            {label:"Fig. title", value:" ", id:getID()},
-            {label:"Exp. title", value:" ", id:getID()},
-            {label:"Exp. legend", value:" ", id:getID()},
-            {label:"Cal. title", value:" ", id:getID()},
-            {label:"markers", value:" ", id:getID()},
+            {label:"Fig. title", value:"Title", id:getID()},
+            {label:"Exp. title", value:"Exp. title", id:getID()},
+            {label:"Exp. legend", value:"legend", id:getID()},
+            {label:"Cal. title", value:"calc title", id:getID()},
+            {label:"markers", value:":1", id:getID()},
+        
         ],
     
         number:[
@@ -66,54 +72,75 @@
                 computePy_func({e, pyfile, args})
                 .then((dataFromPython)=>{
                     $expfittedLines = [], $felixPlotAnnotations = [], $expfittedLinesCollectedData = [], $fittedTraceCount = 0
-                    
                     show_theoryplot = false
                     felix_func({normMethod, dataFromPython, delta})
                     window.createToast("Graph Plotted", "success")
+
                     graphPlotted = true
-
-                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
-
+                }).catch(error=>{mainPreModal.error(error.stack || error); console.error("Error main: ", error.stack || error)})
                 break;
             
             case "baseline":
-                
-                if($opoMode) { 
-                    if (opofiles.length<1) return window.createToast("No OPO files selected", "danger")
-                } else if(felixfiles.length<1) { return window.createToast("No FELIX files selected", "danger") }
-
-                pyfile="baseline.py", args= $opoMode ? opofiles: felixfiles
+                if(!$baselineFile) {
+                    
+                    return window.createToast("No files: ctrl + left-click to select file for baseline correction", "danger")
+                }
+                pyfile="baseline.py"
+                args=[JSON.stringify({filename: path.join($felixopoLocation, $baselineFile)})]
                 computePy_func({e, pyfile, args, general:true, openShell})
-                .catch(err=>{preModal.modalContent = err;  preModal.open = true})
+                .catch(error=>{mainPreModal.error(error.stack || error)})
+                
                 break;
 
             case "matplotlib":
                 const numberWidgets = felixPlotWidgets.number.map(n=>n.value)
                 const textWidgets = felixPlotWidgets.text.map(n=>n.value)
-                
+
                 const booleanWidgets = felixPlotWidgets.boolean.map(n=>n.value)
-                const selectedWidgets = felixPlotCheckboxes.map(n=>n.selected)
+                const selectedWidgets = $felixPlotCheckboxes.map(n=>n.selected)
 
                 pyfile="felix_tkplot.py", args=[JSON.stringify({numberWidgets, textWidgets, booleanWidgets, selectedWidgets, location: $felixopoLocation, normMethod, theoryLocation})]
                 computePy_func({e, pyfile, args, general:true, openShell})
-                .catch(err=>{preModal.modalContent = err;  preModal.open = true})
+                    .catch(error=>{mainPreModal.error(error.stack || error)})
             default:
                 break;
                 
         }
 
+    
     }
 
+
+
+    let fdelta=$felixConfigDB.get("fdelta");
+    function loadConfig() {
+        fdelta =  $felixConfigDB.get("fdelta")
+        console.log("fdelta updated", fdelta)
+    }
+    $: if(updateConfig) loadConfig()
 </script>
 
+<style>
+    .tag {
+        border-radius: 2em;
 
-<FelixPlotting bind:active bind:felixPlotWidgets {theoryLocation} on:submit="{(e)=>plotData({e:e.detail.event, filetype:"matplotlib"})}"/>
+        margin: 0 1em;
+    
+    }
+</style>
 
+<FelixPlotting bind:active bind:felixPlotWidgets {theoryLocation} on:submit="{(e)=>plotData({e:e.detail.event, filetype:"matplotlib"})}" />
+
+
+    
 <div class="align">
 
-    <button class="button is-link" id="create_baseline_btn" on:click="{(e)=>plotData({e:e, filetype:"baseline"})}"> Create Baseline</button>
+    <button class="button is-link" id="create_baseline_btn" on:click="{(e)=>plotData({e:e, filetype:"baseline"})}"> Create Baseline <span class="tag is-warning " aria-label="ctrl + left-click to select file for baseline correction" data-cooltipz-dir="bottom" >b</span>
+    </button>
     <button class="button is-link" id="felix_plotting_btn" on:click="{(e)=>plotData({e:e, filetype:"felix"})}">FELIX Plot</button>
-    <Textfield style="width:7em" variant="outlined" type="number" step="0.5" bind:value={delta} label="Delta"/>
+
+    <Textfield style="width:7em" variant="outlined" input$type="number" input$step={fdelta} input$min="0" bind:value={delta} label="Delta"/>
+    
     <button class="button is-link" on:click="{()=>active = true}"> Open in Matplotlib</button>
     <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
     <button class="button is-link" on:click="{()=>$toggleRow = !$toggleRow}">Add Theory</button>

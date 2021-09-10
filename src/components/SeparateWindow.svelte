@@ -1,93 +1,81 @@
 
 <script>
-    import {onMount, tick} from "svelte"
-    export let id, title="Title", active=false;
+    import {tick} from "svelte"
+    export let id=window.getID(), title="Title", active=false;
+    export let top=50, bottom=50;
+    export let width="70%", height="70%";
+    export let x="center", y="center";
 
+    export let background="#634e96";
+    
+    export let graphWindow=null, windowReady=false, maximize=true;
     let graphWindowClosed = true;
-    let graphWindow = null;
 
-    // let maxHeight;
-    // let buttonHeight=0, headerHeight=0;
-
-    function openGraph(){
-
+    async function openGraph(){
+        
+        await tick()
         if(!graphWindowClosed) {return graphWindow.show()}
-
         graphWindowClosed = false
 
+
         graphWindow = new WinBox({
-
-
-            root:document.getElementById("pageContainer"), 
-            mount: document.getElementById(id), title,
-            x: "center", y: "center",
-            width: "70%", height: "70%",
-            background:"#634e96",
-            top: 50, bottom:50,
+            root:document.getElementById("pageContainer"),
+            mount: document.getElementById(id), 
+            title, x, y, width, height, top, bottom, background,
             onclose: function(){
                 graphWindowClosed = true
                 active = false
-                console.log(`graphWindowClosed: ${graphWindowClosed}`)
+                windowReady = false
                 return false
             },
-            // onresize: function(width, height){maxHeight = height-buttonHeight-headerHeight-100},
+            onfocus: function(){windowReady = true;},
+            onresize: function(width, height){changeGraphDivWidth()},
         });
-        
+        graphWindow.maximize(maximize);
     }
-    
+    $: if(active) openGraph()
 
+    const changeGraphDivWidth = async (ms=0) => {
 
-    onMount(async ()=> {
-        await tick(); openGraph()
-    })
+        await tick(); 
+        if (ms>0) await sleep(ms);
+        graphDivs.forEach(id=>{
+            if(id.data) {Plotly.relayout(id, {width:id.clientWidth})}
+        })
+    }
 
+    let graphDivs=[];
+    function lookForGraph() {
+
+        try {graphDivs = Array.from(document.querySelectorAll(`#${id} .graph__div`))} 
+        catch (error) {console.log("No graph in this window")}
+    }
 
 </script>
 
-
 <style>
 
-    .main_content {
-        overflow: auto;
-    }
-
+    .main_content {overflow: auto; margin-bottom: 1em;}
     .main_content__div {
         display:grid;
-        grid-template-rows: 3fr 12fr 1fr;
+
+
+        grid-template-rows: 1fr 7fr 0.5fr;
+
         max-height: 100%;
         padding: 1em;
+
     }
-
-    .header_content {
-
-        display:grid;
-
-        grid-row-gap: 1em;
-    }
-
-    .footer_content {
-        display: grid;
-        grid-auto-flow: column;
-
-        grid-auto-columns: max-content;
-        
-        margin-left: auto;
-    }
+    .header_content { display:grid; grid-row-gap: 1em; }
+    .footer_content {margin-left: auto;}
 
 </style>
 
-<div {id} class="main_content__div">
-
+<div {id} class="main_content__div" class:hide={!active}>
     <div class="header_content"><slot name="header_content__slot" /></div>
-    <div class="main_content"><slot name="main_content__slot" /></div>
 
-    {#if $$slots.footer_content__slot}
-
-        <div class="footer_content" >
-
-            <slot name="footer_content__slot"/> 
+    <div class="main_content" use:lookForGraph><slot name="main_content__slot" /></div>
     
-        </div>
-    {/if}
-
+    <div class="footer_content" ><slot name="footer_content__slot"/> </div>
+    
 </div>

@@ -48,8 +48,8 @@ def thz_plot(filename):
     #############################################
 
     # print(f"{resOn}\n{resOff}")
-    resOn = np.array(resOn, dtype=np.float)
-    resOff = np.array(resOff, dtype=np.float)
+    resOn = np.array(resOn, dtype=float)
+    resOff = np.array(resOff, dtype=float)
 
     #############################################
 
@@ -111,13 +111,16 @@ def binning(xs, ys, delta=1e-5):
     # binsx = bins[non_zero_i] - BIN_STEP/2
     # data_binned = bin_a[non_zero_i]/bin_occ[non_zero_i]
     # print("after binning", binsx, data_binned)
-    binsx = np.array(binsx, dtype=np.float)
+    binsx = np.array(binsx, dtype=float)
 
-    data_binned = np.array(data_binned, dtype=np.float)
+    data_binned = np.array(data_binned, dtype=float)
     return binsx, data_binned
 
-def plot_thz(ax=None, tkplot=False, save_dat=True, latex=False, justPlot=False, binData=False, delta=1e-5):
+def plot_thz(ax=None, save_dat=True, latex=False):
 
+    justPlot = args["justPlot"]
+    binData = args["binData"]
+    delta = args["delta"]*1e-6 # in kHz
     xs, ys = [], []
     data = {"resOnOff_Counts":{}, "thz":{}}
     c =  0
@@ -163,6 +166,7 @@ def plot_thz(ax=None, tkplot=False, save_dat=True, latex=False, justPlot=False, 
         if tkplot:
             ax.plot(freq, depletion_counts, f"C{i}.", label=lg, ms=ms)
             ax.plot(freq, fit_data, f"C{i}-", label=lg_fit, zorder=100)
+
         else:
 
             data["thz"][f"{filename.name}"] = {"x": list(freq), "y": list(depletion_counts), "name": lg, 
@@ -207,8 +211,6 @@ def plot_thz(ax=None, tkplot=False, save_dat=True, latex=False, justPlot=False, 
             f.write("#Frequency(in MHz)\t#Intensity\n")
             for freq, inten in zip(binx, fit_data): f.write(f"{freq*1e3}\t{inten}\n")
 
-    
-
     if tkplot:
 
         ax.plot(binx, biny, "k.", label=label, ms=ms)
@@ -251,24 +253,22 @@ def plot_thz(ax=None, tkplot=False, save_dat=True, latex=False, justPlot=False, 
             }
 
         return data
+
 def save_fig():
 
     save_fname = f"{widget.name.get()}.{widget.save_fmt.get()}"
+
     print(f"Saving filename: {save_fname}")
     location = filenames[0].parent
 
     save_filename = location / save_fname
+
     if not widget.latex.get(): widget.save_fig()
-
     else:
-
         style_path = pt(__file__).parent / "matplolib_styles/styles/science.mplstyle"
-
         with plt.style.context([f"{style_path}"]):
-
             fig, ax = plt.subplots()
-            fit_data = plot_thz(ax=ax, tkplot=True, save_dat=False, latex=True)
-
+            fit_data = plot_thz(ax=ax, save_dat=False, latex=True)
             # Setting fig ax properties
             ax.grid(widget.plotGrid.get())
 
@@ -301,49 +301,54 @@ def save_fig():
                     os.system(f"{save_filename}")
             except: showerror("Error", traceback.format_exc(5))
 
+
 def export_file(fname, freq, inten):
-        if not pt("./EXPORT").exists(): os.mkdir("./EXPORT")
+
+        freq = np.array(freq, dtype=float)
+        inten = np.array(inten, dtype=float)
+        if not pt("./EXPORT").exists(): 
+            os.mkdir("./EXPORT")
+        
+        if args["saveInMHz"]: 
+        
+            unit = "MHz"
+            freq *= 1000
+        else:
+            unit = "GHz"
+
 
         with open(f"./EXPORT/{fname}.dat", 'w+') as f:
-    
-            f.write("#Frequency(GHz)\t#DepletionCounts(%)\n")
+            f.write(f"#Frequency({unit})\t#DepletionCounts(%)\n")
             for i in range(len(freq)): f.write(f"{freq[i]}\t{inten[i]}\n")
 
-def main(filenames, delta, tkplot, gamma=None, justPlot=False, binData=False):
-
-    global widget
+def main(args):
     
+    global widget
     os.chdir(filenames[0].parent)
 
     if tkplot:
         widget = FELion_Tk(title="THz Scan", location=filenames[0].parent)
         fig, canvas = widget.Figure(default_save_widget=False)
         widget.save_fmt = widget.Entries("Entry", "png", 0.1, 0.05*9+0.02)
-        widget.save_btn = widget.Buttons("Save", 0.5, 0.05*9, save_fig)
 
+        widget.save_btn = widget.Buttons("Save", 0.5, 0.05*9, save_fig)
         if len(filenames) == 1: savename=filenames[0].stem
         else: savename = "averaged_thzScan"
-        ax = widget.make_figure_layout(title="THz scan", xaxis="Frequency (GHz)", yaxis="Depletion (%)", savename=savename)
 
-        fit_data = plot_thz(ax=ax, tkplot=True)
+        ax = widget.make_figure_layout(title="THz scan", xaxis="Frequency (GHz)", yaxis="Depletion (%)", savename=savename)
+        fit_data = plot_thz(ax=ax)
         widget.plot_legend = ax.legend(title=f"Intensity: {fit_data.max():.2f} %")
         widget.mainloop()
     else: 
-        data = plot_thz(delta=delta, justPlot=justPlot, binData=binData)
+        data = plot_thz()
         sendData(data)
 
+
 if __name__ == "__main__":
-    global filenames
     args = sys.argv[1:][0].split(",")
+    args = json.loads(", ".join(args))
+    print(args, flush=True)
 
-    filenames = [pt(i) for i in args[0:-5]]
-    gamma = float(args[-2])*1e-3
-
-    tkplot = (False, True)[args[-3] == "plot"]
-
-    delta = float(args[-4]) # in KHz
-    delta = delta*1e-6 # in GHz (to compare with our data)
-
-    binData = (False, True)[args[-5] == "true"]
-    justPlot = (False, True)[args[-1] == "true"]
-    main(filenames, delta, tkplot, gamma, justPlot, binData)
+    tkplot = args["tkplot"]
+    filenames = [pt(i) for i in args["thzfiles"]]
+    main(args)

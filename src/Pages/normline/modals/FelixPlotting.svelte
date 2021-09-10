@@ -1,6 +1,6 @@
 
 <script>
-    import Modal from '../../../components/Modal.svelte';
+    import Modal from 'components/Modal.svelte';
     import FelixPlotWidgets from './FelixPlotWidgets.svelte';
     import {loadfile, savefile} from "../functions/misc"
     import { createEventDispatcher } from 'svelte';
@@ -74,4 +74,4 @@
 
 {/if}
 
-<FelixPlotExtraWidgets bind:active={extraWidgetModal} bind:extraWidget {widgetType} on:widgetadded={widgetAdded}/>
+<FelixPlotExtraWidgets bind:active={extraWidgetModal} bind:extraWidget {widgetType} on:widgetadded={widgetAdded} />

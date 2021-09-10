@@ -1,12 +1,12 @@
 
 <script>
+    import {mainPreModal} from "../svelteWritable";
     import Textfield from '@smui/textfield'
     import HelperText from '@smui/textfield/helper-text/index';
     import Checkbox from '@smui/checkbox';
     import FormField from '@smui/form-field';
     import {browse} from "../components/Layout.svelte";
     import CustomDialog from "../components/CustomDialog.svelte";
-    import PreModal from "../components/PreModal.svelte";
 
     const writePowfile = () => {
         let contents = `${initContent}\n${powerfileContent}`
@@ -35,7 +35,7 @@
 
                 }
             
-            }).catch(err=>{preModal.modalContent = err.stack; preModal.open=true})
+            }).catch(error=>{mainPreModal.error(error.stack || error)})
     
     }
 
@@ -71,7 +71,6 @@
         if (action === "Yes") writePowfile()
     }
 
-    let preModal = {};
 </script>
 
 <style>
@@ -90,9 +89,8 @@
         grid-auto-flow: column;
         grid-column-gap: 1em;
     }
-    .location__bar {
-        grid-template-columns: 1fr 10fr;
-    }
+
+    .location__bar { display: flex; align-items: baseline; gap: 1em;}
 
     .file__details__bar {
         grid-template-columns: repeat(4, 1fr);
@@ -105,7 +103,6 @@
 
 </style>
 
-<PreModal bind:preModal />
 
 <CustomDialog id="powerfile-overwrite" bind:dialog={overwrite_dialog} on:response={handleOverwrite}
     title={"Overwrite?"} content={`${filename} already exists. Do you want to overwrite it?`}/>
@@ -114,28 +111,36 @@
 <section class="section" id="Powerfile" style="display:none">
     <div class="box main__container" id="powfileContainer">
 
-        <div class="grid_column__container location__bar">
+        <div class="location__bar">
             <button class="button is-link" on:click={openFolder}>Browse</button>
-            <Textfield  bind:value={location} label="Current Location" />
+
+            <Textfield  bind:value={location} label="Current Location" style="flex-grow:1;"/>
+        
         </div>
 
         <div class="grid_column__container file__details__bar">
             <Textfield bind:value={filename} label="Filename" />
+
             <Textfield bind:value={felixShots} label="FELIX Shots" on:change={()=>{console.log(felixShots)}}/>
-            <Textfield bind:value={felixHz} label="FELIX Hz" />
+
+                <Textfield bind:value={felixHz} label="FELIX Hz" />
+
             <FormField>
                 <Checkbox bind:checked={convert} indeterminate={convert === null} />
+
                 <span slot="label">Convert to &micro;m</span>
             </FormField>
+
+
         </div>
 
         <div class="power_value__container">
-            <Textfield textarea bind:value={powerfileContent} label="Powerfile contents" 
-                input$aria-controls="powercontent_help" input$aria-describedby="powercontent_help"/>
+            <Textfield textarea bind:value={powerfileContent} label="Powerfile contents" input$aria-controls="powercontent_help" input$aria-describedby="powercontent_help"/>
+
             <HelperText id="powercontent_help">Enter powerfile measured for {filename}.felix file (wavenumber power-in mJ)</HelperText>
             <button class="button is-success" style="width:12em;margin-left: auto;" on:click={savefile}>Save</button>
         </div>
         
-    
     </div>
+    
 </section>

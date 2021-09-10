@@ -49,8 +49,8 @@ if __name__ == "__main__":
         fwhm_err = data[5::8]
         sigma_err = data[7::8]
 
-        value = np.array([freq, amp, fwhm, sigma], dtype=np.float)
-        err = np.array([freq_err, amp_err, fwhm_err, sigma_err], dtype=np.float)
+        value = np.array([freq, amp, fwhm, sigma], dtype=float)
+        err = np.array([freq_err, amp_err, fwhm_err, sigma_err], dtype=float)
         print(f"Converted data:\n {value} \n{err}")
         receiveData = []
         for x, y in zip(value, err):

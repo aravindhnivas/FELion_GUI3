@@ -1,21 +1,29 @@
 
 <script>
 
-    import {opoMode, felixPlotAnnotations} from "../../functions/svelteWritables";
+    import {opoMode, felixPlotAnnotations, felixConfigDB, baselineFile} from "../../functions/svelteWritables";
+    import {mainPreModal} from "../../../../svelteWritable";
     import Textfield from '@smui/textfield';
     import CustomSelect from '../../../../components/CustomSelect.svelte';
     import QuickBrowser from '../../../../components/QuickBrowser.svelte';
-
     import { fade } from 'svelte/transition';
     import {opofile_func} from '../../functions/opofile';
-
-    export let OPOLocation, opofiles, OPOfilesChecked, preModal, graphPlotted, removeExtraFile;
+    export let OPOLocation, opofiles, OPOfilesChecked, graphPlotted, removeExtraFile;
+    export let updateConfig=false;
 
     let showOPOFiles =false, OPOcalibFiles = [];
 
     let deltaOPO = 0.3, calibFile = "", opoPower=1;
     
+    let odelta=$felixConfigDB.get("odelta");
+
     
+    function loadConfig() {
+        odelta =  $felixConfigDB.get("odelta")
+        console.log("odelta updated", odelta)
+    }
+    $: if(updateConfig) loadConfig()
+
     $: if(fs.existsSync(OPOLocation)) {
     
         OPOcalibFiles = fs.readdirSync(OPOLocation).filter(file=> file.endsWith(".calibOPO"))
@@ -38,22 +46,22 @@
             window.createToast("Graph Plotted", "success")
             graphPlotted = true, $opoMode = true
             showOPOFiles=false
-        }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
+        }).catch(error=>{mainPreModal.error(error.stack || error)})
 
     }
-
+    // $: console.log(OPOfilesChecked)
 </script>
 
-<QuickBrowser title="OPO files" bind:active={showOPOFiles} bind:currentLocation={OPOLocation} bind:fileChecked={OPOfilesChecked} filetype="ofelix" on:submit="{(e)=>{plotData({e:e.detail.event})}}"/>
+<QuickBrowser title="OPO files" bind:active={showOPOFiles} bind:currentLocation={OPOLocation} bind:fileChecked={OPOfilesChecked} filetype="ofelix" on:submit="{(e)=>{plotData({e:e.detail.event})}}" on:markedFile="{(e)=>$baselineFile = e.detail.markedFile}"/>
 
 {#if $opoMode}
 
     <div class="align" transition:fade>
-
+        <span class="tag is-warning " >OPO Mode: </span>
         <CustomSelect style="width:7em;" bind:picked={calibFile} label="Calib. file" options={["", ...OPOcalibFiles]}/>
         
-        <Textfield style="width:7em; margin:0 0.5em;" type="number" step="0.02" min="0" variant="outlined" bind:value={deltaOPO} label="Delta OPO"/>
-        <Textfield style="width:9em" type="number" step="0.1" min="0" variant="outlined" bind:value={opoPower} label="Power (mJ)"/>
+        <Textfield style="width:7em; margin:0 0.5em;" input$type="number" input$step={odelta} input$min="0" variant="outlined" bind:value={deltaOPO} label="Delta OPO"/>
+        <Textfield style="width:9em" input$type="number" input$step="0.1" input$min="0" variant="outlined" bind:value={opoPower} label="Power (mJ)"/>
 
         <button class="button is-link" on:click="{()=>{showOPOFiles = !showOPOFiles;}}"> Browse File</button>
         <button class="button is-link" on:click="{(e)=>plotData({e:e})}">Replot</button>

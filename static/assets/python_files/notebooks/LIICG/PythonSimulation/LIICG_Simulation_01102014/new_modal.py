@@ -24,7 +24,7 @@ def stimulated_absorption(j0, j1, emission): return ((2*j1+1)/(2*j0+1)) * emissi
 def boltzman_distribution(energyLevels, temp=5):
     KT = k_boltzmann_wavenumber*temp
     Nj = [(2*i+1)*np.exp(-energy/KT) for i, energy in enumerate(energyLevels)]
-    Nj = np.array(Nj, dtype=np.float)
+    Nj = np.array(Nj, dtype=float)
     Nj = Nj/Nj.sum()
     return Nj
 

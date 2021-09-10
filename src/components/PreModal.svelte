@@ -1,30 +1,36 @@
 
 <script>
-  
+  import {mainPreModal} from "../svelteWritable";
   import { Snackbar } from 'svelma';
   import Modal from './Modal.svelte';
   
-  export let preModal = {}
+  // export let $mainPreModal = {}
 
   let active=false;
 
   function openModal() {
     Snackbar.create({ 
 
-      message: preModal.message || "Error Occured", position:"is-top", type:`is-${preModal.type || "danger"}`, duration: 5000,
+      message: $mainPreModal.message || "Error Occured", position:"is-top", type:`is-${$mainPreModal.type || "danger"}`, duration: 5000,
 
-      actionText: preModal.actionText || "Show Details", onAction: ()=>{ active = true; }
+      actionText: $mainPreModal.actionText || "Show Details", onAction: ()=>{ active = true; }
     
     })
+
     
-    preModal.open = false;
+    $mainPreModal.open = false;
+    
   }
 
-  $: if(preModal.open) openModal()
+  $: if($mainPreModal.open) {openModal()}
 
+  $: console.log($mainPreModal)
+  let headerBackground="#836ac05c";
+  $: if(active) {headerBackground = $mainPreModal.type === "danger" ? "#f14668" : "#836ac05c" }
 </script>
 
-<Modal bind:active title={preModal.modalTitle || "Error details"} bodyBackground="#fafafa">
-
-  <div slot="content" style="color:black; white-space: pre-wrap; user-select:text;">{preModal.modalContent}</div>
-</Modal>
+{#if active}
+  <Modal bind:active title={$mainPreModal.modalTitle || "Error details"} bodyBackground="#634e96" {headerBackground} >
+    <div slot="content" style="color:#fafafa; white-space: pre-wrap; user-select:text;">{$mainPreModal.modalContent}</div>
+  </Modal>
+{/if}

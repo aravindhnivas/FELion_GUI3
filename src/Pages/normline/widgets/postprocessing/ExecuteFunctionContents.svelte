@@ -2,7 +2,7 @@
 <script>
 
     import { fittedTraceCount, felixPlotAnnotations, felixIndex, expfittedLines, expfittedLinesCollectedData , graphDiv, dataTable, Ngauss_sigma, felixOutputName, felixPeakTable, felixopoLocation, felixAnnotationColor} from "../../functions/svelteWritables";
-
+    import {mainPreModal} from "../../../../svelteWritable";
     import Textfield from '@smui/textfield';
     import CustomSwitch from '../../../../components/CustomSwitch.svelte';
 
@@ -19,7 +19,7 @@
     import {exp_fit_func} from '../../functions/exp_fit';
     import {get_err_func} from '../../functions/get_err';
     
-    export let addedFileScale, addedFileCol, normMethod, writeFileName, writeFile, overwrite_expfit, fullfiles, preModal;
+    export let addedFileScale, addedFileCol, normMethod, writeFileName, writeFile, overwrite_expfit, fullfiles;
     
     let boxSelected_peakfinder=false, NGauss_fit_args={}
 
@@ -99,7 +99,7 @@
             const {pyfile, args} = general
 
             computePy_func({pyfile, args, general:true})
-            .catch(err=>{preModal.modalContent = err;  preModal.open = true})
+            .catch(error=>{mainPreModal.error(error.stack || error)})
             return;
         
         }
@@ -119,7 +119,7 @@
                 .then((dataFromPython)=>{
                     exp_fit_func({dataFromPython})
                     window.createToast("Line fitted with gaussian function", "success")
-                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
+                }).catch(error=>{mainPreModal.error(error.stack || error)})
 
                 break;
 
@@ -153,7 +153,7 @@
                     NGauss_fit_func({dataFromPython})
                     console.log("Line fitted")
                     window.createToast(`Line fitted with ${dataFromPython["fitted_parameter"].length} gaussian function`, "success")
-                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
+                }).catch(error=>{mainPreModal.error(error.stack || error)})
                 break;
             
             case "find_peaks":
@@ -174,7 +174,7 @@
                     find_peaks_func({dataFromPython})
                     console.log(`felixPeakTable:`, $felixPeakTable)
                     window.createToast("Peaks found", "success")
-                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
+                }).catch(error=>{mainPreModal.error(error.stack || error)})
 
                 break;
 
@@ -185,7 +185,7 @@
                 .then((dataFromPython)=>{
                     get_err_func({dataFromPython})
                     window.createToast("Weighted fit. done", "success")
-                }).catch(err=>{preModal.modalContent = err;  preModal.open = true})
+                }).catch(error=>{mainPreModal.error(error.stack || error)})
                 break;
 
          
@@ -223,8 +223,8 @@
 
 {#if toggleFindPeaksRow}
 
-    <div class="align" transition:fade>
-        <div class="align" style="margin:1em 0">
+    <div transition:fade>
+        <div class="align">
         
             <CustomSwitch style="margin: 0 1em;" bind:selected={boxSelected_peakfinder} label="BoxSelected"/>
             <Textfield type="number" {style} step="0.5" bind:value={peak_prominence} label="Prominance" />

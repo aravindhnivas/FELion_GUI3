@@ -29,9 +29,19 @@ class BaselineCalibrator(object):
     def val(self, x): return self.f(x)
 
 def export_file(fname, wn, inten, relative_depletion, energyPerPhoton):
+    fileInfo = None
+    if fname=="averaged":
+        fileInfo = [_.name for _ in opofiles]
+        fileInfo = f"# {fileInfo}\n#########################################\n\n"
+    unitInfo = f"# cm-1\tNorm. Int./J\t%\tNorm. Int./photon\n"
     filename = f"EXPORT/{fname}.dat"
     with open(filename, 'w+') as f:
+        
         f.write("#NormalisedWavelength(cm-1)\t#NormalisedIntensity\t#RelativeDepletion(%)\t#IntensityPerPhoton\n")
+        f.write(unitInfo)
+        if fileInfo is not None: f.write(fileInfo)
+
+
         for i in range(len(wn)):
             f.write(f"{wn[i]}\t{inten[i]}\t{relative_depletion[i]}\t{energyPerPhoton[i]}\n")
                 
@@ -80,15 +90,17 @@ def binning(xs, ys, delta=0.2):
 
         return binsx, data_binned
 
-
 def makeDataToSend(x, y, name, update={}):
+
     return { **update, "x": list(x), "y": list(y), "name": name}
 
+opofiles = []
 def opoplot(args):
 
+    global opofiles
     opofiles = args["opofiles"]
-    
     opofiles = [pt(f) for f in opofiles]
+
     tkplot = args["tkplot"]
     if tkplot == "run": tkplot = False
     else: tkplot = True

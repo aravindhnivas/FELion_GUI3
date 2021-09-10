@@ -1,5 +1,6 @@
 
 <script>
+    import {mainPreModal} from "../svelteWritable";
     import IconButton, {Icon} from '@smui/icon-button';
 
     import { slide } from 'svelte/transition';
@@ -13,15 +14,14 @@
 
     import VirtualCheckList from './VirtualCheckList.svelte';
     import { createEventDispatcher } from 'svelte';
-    import PreModal from "./PreModal.svelte";
     
     ///////////////////////////////////////////////////////////////////////////
+    
 
-    export let fileChecked = [],  currentLocation = "", filetype = "*.*", fullfileslist = [];
+    export let fileChecked = [],  currentLocation = "", filetype = "*.*", fullfileslist = [], markedFile = "";
 
     const dispatch = createEventDispatcher();
 
-    let preModal = {};
     let fullfiles = []
 
     // $: fullfileslist
@@ -67,20 +67,18 @@
             
             original_location = currentLocation
             
-            files_loaded = true
-            console.log("Folder updated", otherfolders);
-            dispatch_chdir_event()
+            files_loaded = true;
 
-            if (filetype.length > 2) { db.set(`${filetype}_location`, currentLocation) }
-            if (toast) { window.createToast("Files updated"); }
-
-        } catch (err) {
+            console.log("Folder updated");
             
-            console.log(err)
-            preModal.modalContent = err.stack;
-            preModal.open = true;
+            dispatch_chdir_event()
+            if (filetype.length > 2) { db.set(`${filetype}_location`, currentLocation) }
+
+            if (toast) { window.createToast("Files updated"); }
+        } catch (error) {
+            console.log(error)
+            mainPreModal.error(error.stack || error)
             return 
-        
         }
     }
 
@@ -111,6 +109,8 @@
 
 	}
 
+    // let markedFile = ""
+
 </script>
 
 <style>
@@ -120,7 +120,6 @@
     .browseIcons {cursor: pointer;}
 </style>
 
-<PreModal bind:preModal/>
 
 <div class="align center browseIcons">
     <Icon class="material-icons" on:click="{()=>changeDirectory("..")}">arrow_back</Icon>
@@ -129,7 +128,7 @@
 
 </div>
 
-<Textfield on:keyup={searchfile} style="margin-bottom:1em;" bind:value={searchKey} label="Seach" />
+<Textfield on:keyup={searchfile} style="margin-bottom:1em; width:100%; " bind:value={searchKey} label="Seach" />
 <div class="align center">
     <FormField>
     
@@ -151,7 +150,11 @@
     {#if files_loaded && locationStatus}
         {#if showfiles && fullfiles.length }
             <div on:click={selectRange}>
-                <VirtualCheckList bind:fileChecked bind:items={fullfiles} on:click="{()=>selectAll=false}" on:select="{(e)=>console.log(e)}"/>
+                <VirtualCheckList bind:fileChecked bind:items={fullfiles} {markedFile} on:click="{(e)=>{
+                    selectAll=false;
+                    if(e.ctrlKey && filetype.includes("felix") ) { markedFile = e.target.value; dispatch('markedFile', {  markedFile })}
+                }}" on:select="{(e)=>console.log(e)}"/>
+
             </div>
         {:else if fullfiles.length <= 0}
             <div class="mdc-typography--subtitle1 align center">No {filetype} here!</div>        

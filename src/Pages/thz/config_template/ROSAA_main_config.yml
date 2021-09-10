@@ -1,0 +1,51 @@
+mainParameters:
+    - {label: molecule, value: "CD^+"}
+    - {label: tagging partner, value: He}
+    - {label: trap_area (sq-meter), value: "5e-5"}
+
+simulationParameters:
+    - {label: Simulation time(ms), value: 600}
+   
+    - {label: Initial temperature (K), value: 300}
+    - {label: Total steps, value: 1000}
+    
+
+
+dopplerLineshape:
+    - {label: IonMass(amu), value: 14, type: number, step: 0.5}
+    - {label: RG Mass(amu), value: 4, type: number, step: 0.5}
+    - {label: IonTemperature(K), value: 14, type: number, step: 0.1}
+    - {label: TrapTemp(K), value: 5, type: number, step: 0.1}
+
+
+powerBroadening:
+    - {label: dipoleMoment(D), value: 1.313}
+    - {label: power(W), value: "2e-5"}
+
+
+attachmentCoefficients:
+    - {label: totalAttachmentLevels, value: 2}
+    - {label: branching-ratio(kCID), value: 0.5}
+    - {label: a(k31), value: 0.5}
+        
+attachmentRateConstants:
+    k3:
+        - {label: k31, value: 9.6e-31}
+        - {label: k32, value: 2.9e-30}
+    kCID: 
+        - {label: kCID1, value: 6.7e-16}
+        - {label: kCID2, value: 1.9e-15}
+        
+saveFile:
+    savefilename: ROSAA_CD+_test_simulations
+    savelocation: Z:\22pole_iontrap-exchange\Students\Aravindh\Simulations\ROSAA_modal\CD+\Simulations
+
+filenames:
+    collision: CD+He_collisionalRateConstant.txt
+    einsteinA: einstein_A_CD+.yml
+    energy: energy_CD+.yml
+ 
+numberDensity: "2e14"
+electronSpin: false
+zeemanSplit: false
+trapTemp: 5

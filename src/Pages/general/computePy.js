@@ -1,11 +1,11 @@
 
 import { pythonpath, pythonscript, get } from "../settings/svelteWritables";
+// import { mainPreModal } from "../../svelteWritable";
 const { exec } = require("child_process")
 window.checkPython = function checkPython({ defaultPy } = {}) {
-
     if (!defaultPy) { defaultPy = get(pythonpath) }
-
     console.log("Python path checking \n", defaultPy)
+
     return new Promise((resolve, reject) => {
         exec(`${defaultPy} -V`, (err, stdout) => {
             if (err) { reject("Invalid python location"); window.createToast("Python location is not valid", "danger") }
@@ -15,7 +15,8 @@ window.checkPython = function checkPython({ defaultPy } = {}) {
     })
 }
 
-window.computePy_func = function computePy_func({ e = null, pyfile = "", args = "", general = false, openShell = false} = {}) {
+window.computePy_func = function computePy_func({ e = null, pyfile = "", args = "", general = false, openShell = false } = {}) {
+    
 
     return new Promise((resolve, reject) => {
 
@@ -29,7 +30,6 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
         checkPython()
 
             .then(res => {
-
                 console.log(res)
                 if (general) {
                     console.log("Sending general arguments: ", args)
@@ -39,40 +39,42 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
 
                     )
 
-                    if(e) {
-                    
-                    
+                    if (e) {
+
+
                         const pyEvent = new CustomEvent('pyEvent', { bubbles: false, detail: { py, pyfile } });
                         e.target.dispatchEvent(pyEvent)
                         console.log("pyEvent dispatched")
                     }
 
-                    // target.classList.toggle("is-loading")
-
-                    py.on("close", () => { 
+                    let error = "", error_occured_py=false;
+                    let dataReceived="";
+                    py.on("close", () => {
 
                         console.log("Closed")
 
-                        if(e) {
-                            const pyEventClosed = new CustomEvent('pyEventClosed', { bubbles: false, detail: { py, pyfile } });
+                        if (error) {error_occured_py=true; reject(error); console.log("error Ocurred: ", error) } 
+                        if (e) {
+                            const pyEventClosed = new CustomEvent('pyEventClosed', { bubbles: false, detail: { py, pyfile, dataReceived, error_occured_py } });
                             e.target.dispatchEvent(pyEventClosed)
                             console.log("pyEventClosed dispatched")
                         }
-                     })
-                    py.stderr.on("data", (err) => { console.log(`Error Occured: ${err.toString()}`); reject(err.toString()) })
-                    py.stdout.on("data", (data) => { 
+                        
+                    })
+                    py.stderr.on("data", (err) => { console.log(`Error Ocurred: ${err.toString()}`); error += err.toString() })
+                    py.stdout.on("data", (data) => {
 
-                        const dataReceived = data.toString()
+                        dataReceived += `${data.toString()}\n`
                         console.log(`Output from python: ${dataReceived}`)
-                        if(e) {
-                    
+                        if (e) {
+
                             const pyEventData = new CustomEvent('pyEventData', { bubbles: false, detail: { py, pyfile, dataReceived } });
                             e.target.dispatchEvent(pyEventData)
-                         
+
                             console.log("pyEventData dispatched")
-    
+
                         }
-                     })
+                    })
 
 
                     py.unref()
@@ -84,66 +86,71 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                     try { py = spawn(get(pythonpath), [path.resolve(get(pythonscript), pyfile), args]) }
                     catch (err) { reject("Error accessing python. Set python location properly in Settings\n" + err) }
 
-                    if(e) {
-                    
+                    if (e) {
+
                         const pyEvent = new CustomEvent('pyEvent', { bubbles: false, detail: { py, pyfile } });
                         e.target.dispatchEvent(pyEvent)
                         console.log("pyEvent dispatched")
-
                     }
 
                     window.createToast("Process Started")
+                    let dataReceived = "";
                     py.stdout.on("data", data => {
 
                         console.log("Ouput from python")
-                        let dataReceived = data.toString("utf8")
+                        dataReceived += data.toString("utf8")
                         console.log(dataReceived)
 
-                        if(e) {
-                    
+                        if (e) {
+
                             const pyEventData = new CustomEvent('pyEventData', { bubbles: false, detail: { py, pyfile, dataReceived } });
                             e.target.dispatchEvent(pyEventData)
-                         
+
                             console.log("pyEventData dispatched")
-    
+
                         }
                     })
 
-                    let error_occured_py = false, errContent="";
-
+                    let errContent = "";
+                    let error_occured_py = false;
                     py.stderr.on("data", err => {
-                        
-                        errContent = err.toString()
-                        console.error(errContent)
-                        reject(errContent)
+                        errContent += err.toString()
                         error_occured_py = true
                     });
 
                     py.on("close", () => {
                         if (!error_occured_py) {
-                            const dataFile = pyfile.split(".")[0]
-                            let dataFromPython = fs.readFileSync(path.join(get(pythonscript), "local", dataFile+"_data.json"))
+                            const dataFile = path.basename(pyfile).split(".")[0]
+                            const outputFile = path.join(get(pythonscript), "local", dataFile + "_data.json")
+
+                            if (!fs.existsSync(outputFile)) {
+                                return reject(`${outputFile} doesn't exist.`)
+                            }
+                            let dataFromPython = fs.readFileSync(outputFile)
+
                             window.dataFromPython = dataFromPython = JSON.parse(dataFromPython.toString("utf-8"))
                             console.log(dataFromPython)
+
+
                             resolve(dataFromPython)
-                        }
+                        
+                        } else { reject(errContent);  console.log(errContent)}
+                        if (e) {
 
-                        if(e) {
-                            const pyEventClosed = new CustomEvent('pyEventClosed', { bubbles: false, detail: { py, pyfile } });
-
-
+                            const pyEventClosed = new CustomEvent('pyEventClosed', { bubbles: false, detail: { py, pyfile, dataReceived, error_occured_py } });
                             e.target.dispatchEvent(pyEventClosed)
-                        
                             console.log("pyEventClosed dispatched")
+
                         }
-                        
+
                         target.classList.toggle("is-loading")
                         console.log("Process closed")
+
                     })
 
                 }
 
-            }).catch(err => { reject(err.stack); if (!general) { target.classList.toggle("is-loading") } })
-    })
+            }).catch(err => { reject(err.stack); })
 
+    })
 }

@@ -17,10 +17,9 @@ html, body {
 
     user-select: none;
 
+
 }
-
-table {user-select: text;}
-
+.modal-card-body {background-image: url(intro.svg)!important;}
 body::-webkit-scrollbar {width: 0 !important;}
 hr {background-color: #dbdbdb;}
 
@@ -88,21 +87,14 @@ hr {background-color: #dbdbdb;}
 }
 
 .wb-body {background-color:#5f3db199!important;background-image: url(intro.svg);}
-
 .wb-header {background-color:#46356f!important;}
+
 .hide {display: none!important;}
 
-.buttonRow {margin-bottom: 0!important; align-items: center;}
 .mdc-select__native-control option {color: black}
-.button {margin-right: 0.5em;}
-.active {display: flex!important;}
 .pnotify { background: #634e96; }
-.pnotify-closer, .pnotify-sticker {
-    outline: none;
-}
-
+.pnotify-closer, .pnotify-sticker {outline: none;}
 .modebar-group {
     display: grid!important;
     grid-auto-flow: column;
-    
 }

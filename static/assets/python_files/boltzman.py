@@ -26,7 +26,7 @@ def calculate_population(B, D=0, H=0, temp=5, totalJ=20, tkplot=False, location=
 
     totalJ = np.arange(totalJ)
 
-    Z = np.array([intenJ(j) for j in totalJ], dtype=np.float).sum()
+    Z = np.array([intenJ(j) for j in totalJ], dtype=float).sum()
     distribution = np.array([pJ(j, Z) for j in totalJ])
 
     maxIntenJ = np.argmax(distribution)

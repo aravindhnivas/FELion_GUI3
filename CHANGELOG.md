@@ -1,20 +1,27 @@
 # What's new
 
+## v3.4.0
+- ROSAA modal integrated.
+- ROSAA kinetics integrated.
+- Individual file selection for baseline correction.
+- several bug fixes.
+- several minor feature updates included.
+
 ## v3.3.2
 - Bug fix for wrong trap time in felix file 
     - nshots will be taken from pow file if trap time in felix file is very large >50s.
 ---
+
 ## v3.3.1
-- Bug fix for Quickview browser
----
+- Bug fix: OPO mode
 ## v3.3.0
+
 - Feature updates:
     - New window for FELIX plotting (usefull for smaller screens)
     - While refreshing to get files, the selected files remains checked
     - PNotify integrated
     - WinBox.js modal integraeted
     - db.json replaced localStorage for saving datas.
-
 - Bug fixes    
 ---
 ## v3.2.0
@@ -34,12 +41,12 @@
 
     - Files refresh button added to FELIX matplotlib modal.    
 ---
-
 ## v3.1.1
 
 - Bug fix: Masspec
 
 ---
+
 
 ## v3.1.0
 

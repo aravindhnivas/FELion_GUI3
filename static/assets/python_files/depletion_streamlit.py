@@ -108,7 +108,7 @@ class depletionplot:
         if self.method == "Power dependence":
             powerWidget = pwidget.text_input("Power (ON, OFF)", "12, 12")
 
-            power_values = np.asarray(powerWidget.split(","), dtype=np.float)
+            power_values = np.asarray(powerWidget.split(","), dtype=float)
 
             self.powerOn = power_values[0]
             self.powerOff = power_values[1]
@@ -125,11 +125,11 @@ class depletionplot:
 
     def make_slider(self, Koff, Kon, N, Na0, Nn0):
 
-        self.koff_slider = st.sidebar.slider("Koff", 0.0, np.float(Koff*10), np.float(Koff))
-        self.kon_slider = st.sidebar.slider("Kon", 0.0, np.float(Kon*10), np.float(Kon))
-        self.n_slider = st.sidebar.slider("N", 0.0, np.float(N*10), np.float(N))
-        self.na_slider = st.sidebar.slider("Na0", 0.0, np.float(Na0*10), np.float(Na0))
-        self.nn_slider = st.sidebar.slider("Nn0", 0.0, np.float(Nn0*10), np.float(Nn0))
+        self.koff_slider = st.sidebar.slider("Koff", 0.0, float(Koff*10), float(Koff))
+        self.kon_slider = st.sidebar.slider("Kon", 0.0, float(Kon*10), float(Kon))
+        self.n_slider = st.sidebar.slider("N", 0.0, float(N*10), float(N))
+        self.na_slider = st.sidebar.slider("Na0", 0.0, float(Na0*10), float(Na0))
+        self.nn_slider = st.sidebar.slider("Nn0", 0.0, float(Nn0*10), float(Nn0))
         
     def runFit(self, Koff, Kon, N, Na0, Nn0, plot=True):
 

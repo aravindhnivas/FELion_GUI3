@@ -19,6 +19,7 @@ export const felixData = writable({})
 
 export const normMethodDatas = derived([opoMode, felixData, opoData], ([$opoMode, $felixData, $opoData]) => { return $opoMode ? $opoData : $felixData })
 export const felixopoLocation = writable("")
+export const baselineFile = writable("")
 
 export const filedetails = writable([])
 export const felixPlotAnnotations = writable([])
@@ -35,5 +36,7 @@ export const collectData = writable(false)
 export const avgfittedLineCount = writable(0)
 export const fittedTraceCount = writable(0)
 export const felixAnnotationColor = writable("black")
-
 export const normMethod = writable("Relative")
+
+export const felixPlotCheckboxes = writable([])
+export const felixConfigDB = writable(new JSONdb(path.resolve(__dirname, "../src/Pages/normline/config.json")))
