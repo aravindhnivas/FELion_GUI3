@@ -63658,7 +63658,7 @@ function create_default_slot_1$3(ctx) {
 	return block;
 }
 
-// (157:12) <Icon on:click="{()=>{if(window.nist_webview.canGoForward()) {window.nist_webview.goForward()}}}" class="material-icons hvr-glow">
+// (158:12) <Icon on:click="{()=>{if(window.nist_webview.canGoForward()) {window.nist_webview.goForward()}}}" class="material-icons hvr-glow">
 function create_default_slot$5(ctx) {
 	let t;
 
@@ -63678,7 +63678,7 @@ function create_default_slot$5(ctx) {
 		block,
 		id: create_default_slot$5.name,
 		type: "slot",
-		source: "(157:12) <Icon on:click=\\\"{()=>{if(window.nist_webview.canGoForward()) {window.nist_webview.goForward()}}}\\\" class=\\\"material-icons hvr-glow\\\">",
+		source: "(158:12) <Icon on:click=\\\"{()=>{if(window.nist_webview.canGoForward()) {window.nist_webview.goForward()}}}\\\" class=\\\"material-icons hvr-glow\\\">",
 		ctx
 	});
 
@@ -63764,19 +63764,19 @@ function create_plotContainer_slot$2(ctx) {
 			webview = element("webview");
 			attr_dev(div0, "id", "mplot");
 			attr_dev(div0, "class", "graph__div");
-			add_location(div0, file$j, 150, 8, 6940);
+			add_location(div0, file$j, 150, 8, 6944);
 			if (!src_url_equal(webview.src, webview_src_value = /*nist_url*/ ctx[12])) attr_dev(webview, "src", webview_src_value);
 			attr_dev(webview, "id", "nist_webview");
 			set_style(webview, "height", "50vh");
 			set_style(webview, "padding-bottom", "3em");
 			set_style(webview, "width", "100%");
-			add_location(webview, file$j, 157, 12, 7615);
+			add_location(webview, file$j, 158, 12, 7621);
 			attr_dev(div1, "class", "align animated fadeIn");
 			toggle_class(div1, "hide", /*toggleRow2*/ ctx[11]);
-			add_location(div1, file$j, 152, 8, 7000);
+			add_location(div1, file$j, 152, 8, 7004);
 			set_style(div2, "margin-right", "1em");
 			attr_dev(div2, "slot", "plotContainer");
-			add_location(div2, file$j, 148, 4, 6875);
+			add_location(div2, file$j, 148, 4, 6879);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div2, anchor);
