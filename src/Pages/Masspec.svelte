@@ -135,7 +135,7 @@
             <Textfield type="number" {style} on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_width} label="Width" />
             <Textfield type="number" {style} on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_height} label="Height" />
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"find_peaks"})}">Get Peaks</button>
-            <button class="button is-danger" on:click="{()=>window.Plotly.relayout("mplot", { annotations: [] })}">Clear</button>
+            <button class="button is-danger" on:click="{()=> {if(graphPlotted) {Plotly.relayout("mplot", { annotations: [] })} }}">Clear</button>
         </div>
 
         <div class="align animated fadeIn " class:hide={toggleRow2}>

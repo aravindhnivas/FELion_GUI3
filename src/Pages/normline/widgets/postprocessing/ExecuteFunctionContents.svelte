@@ -242,7 +242,7 @@
             <button class="button is-link" on:click="{()=>savefile({file:$felixPeakTable, name:savePeakfilename})}">Save peaks</button>
             <button class="button is-link" on:click="{loadpeakTable}">Load peaks</button>
 
-            <button class="button is-danger" on:click="{()=>{$felixPlotAnnotations=[]; $felixPeakTable=[];NGauss_fit_args={}; window.Plotly.relayout($graphDiv, { annotations: [] }); window.createToast("Cleared", "warning")}}">Clear</button>
+            <button class="button is-danger" on:click="{()=>{$felixPlotAnnotations=[]; $felixPeakTable=[];NGauss_fit_args={}; Plotly.relayout($graphDiv, { annotations: [] }); window.createToast("Cleared", "warning")}}">Clear</button>
 
         </div>
 
