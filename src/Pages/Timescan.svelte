@@ -11,6 +11,7 @@
     import Textfield from '@smui/textfield'
     import {plot} from "../js/functions.js"
 
+    
     /////////////////////////////////////////////////////////////////////////
 
     // Initialisation
@@ -20,14 +21,14 @@
 
     let fileChecked = [];
     let currentLocation = db.get(`${filetype}_location`) || ""
-    $: scanfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
+    $: scanfiles = fileChecked.map(file=>pathResolve(currentLocation, file))
     let openShell = false, graphPlotted = false
     let massIndex = 0, timestartIndex = 1, nshots = 10, power = "21, 21", resON_Files = "", resOFF_Files = "";
     let timestartIndexScan = 0;
     let fullfiles = []
     function dir_changed() {
-        if (fs.existsSync(currentLocation)) {
-            fullfiles = ["", ...fs.readdirSync(currentLocation).filter(file=>file.endsWith(".scan"))]
+        if (existsSync(currentLocation)) {
+            fullfiles = ["", ...readdirSync(currentLocation).filter(file=>file.endsWith(".scan"))]
         }
     }
     $: console.log(`ResOn: ${resON_Files}\nResOff: ${resOFF_Files}`)

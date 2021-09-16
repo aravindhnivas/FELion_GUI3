@@ -6,14 +6,14 @@ export async function readFromFile({bowseFile=true, energyFilename=null, electro
     if (!energyFilename || bowseFile) {
         const energyDetailsFile = await browse({dir:false, multiple:false})
 
-        if (energyDetailsFile.filePaths.length==0) return Promise.reject("No files selected");
-        energyFilename = energyDetailsFile.filePaths[0]
+        if (energyDetailsFile) return Promise.reject("No files selected");
+        energyFilename = energyDetailsFile[0]
     
     }
 
     const noSplittings = !electronSpin && !zeemanSplit
     const splittings = electronSpin||zeemanSplit
-    const fileContents = fs.readFileSync(energyFilename, "utf-8").split("\n")
+    const fileContents = readFileSync(energyFilename).split("\n")
     let energyLevels = []
 
     let preLabel;
@@ -87,7 +87,7 @@ export async function readFromFile({bowseFile=true, energyFilename=null, electro
 
     await tick()
 
-    window.createToast("Energy file read: "+path.basename(energyFilename))
+    window.createToast("Energy file read: "+basename(energyFilename))
     
     console.log(energyLevels)
     return Promise.resolve({energyLevels, numberOfLevels, energyFilename, energyUnit, collisionalRateType})

@@ -1,47 +1,18 @@
 <script context="module">
-    export function browse({filetype="", dir=true, multiple=true}={}) {
-        return new Promise((resolve, reject)=>{
-            const mainWindow = remote.getCurrentWindow()
-            let type;
-            dir ? type = "openDirectory" : type = "openFile"
+    export async function browse({filetype="", dir=true, multiple=true}={}) {
+        let type;
+        dir ? type = "openDirectory" : type = "openFile"
+        const options = {
+            filters: [
+                { name: filetype, extensions: [`*${filetype}`] },
+                { name: 'All Files', extensions: ['*'] }
+            ],
+            properties: [type, multiple ? "multiSelections" : ""],
+        }
+        const {showOpenDialogSync} = dialogs
 
-            const options = {
-                filters: [
-                    { name: filetype, extensions: [`*${filetype}`] },
-                    { name: 'All Files', extensions: ['*'] }
-                ],
-
-                properties: [type, multiple ? "multiSelections" : ""],
-            }
-
-
-            const version = parseInt(process.versions.electron.split(".")[0])
-
-            
-            if (version >= 7) {
-                remote.dialog.showOpenDialog(mainWindow, options)
-                .then(result => {
-                    console.log(result.canceled)
-                    console.log(result.filePaths)
-                    resolve(result)
-
-                }).catch(err => {
-
-                    window.createToast("Couldn't open folder", "danger")
-                    reject(err) })
-            } else {
-                let result = {}
-                remote.dialog.showOpenDialog(null, options, location => {
-                location === undefined ? result = {canceled:true, filePaths:[]}: result = {canceled:false, filePaths:location}
-
-                console.log(result.canceled)
-                console.log(result.filePaths)
-                resolve(result)
-
-            })
-            }
-
-        })
+        const result = await showOpenDialogSync(options)
+        return result
     }
 </script>
 
@@ -55,7 +26,7 @@
     import Modal from "./Modal.svelte"
     import { createEventDispatcher } from 'svelte';
     import IconButton from '@smui/icon-button';
-
+    
     ////////////////////////////////////////////////////////////////////////////
 
     export let id, fileChecked=[], filetype = "felix", toggleBrowser = false, fullfileslist = [];
@@ -63,17 +34,15 @@
     export let graphWindowClasses = ["no-full"]
     export let activateConfigModal = false
     const dispatch = createEventDispatcher()
-    // function tour_event() { dispatch('tour', {filetype}) }
 
     function browse_folder() {
-        browse({dir:true}).then(result=>{
 
-            console.log(result, currentLocation)
-            if (!result.canceled) { 
-                currentLocation = result.filePaths[0]
+        browse({dir:true}).then(result=>{
+            if (result) { 
+                currentLocation = result[0]
                 db.set(`${filetype}_location`, currentLocation)
-                console.log(result, currentLocation)
-             }
+                console.log(result, currentLocation)                
+            }
         })
     }
 
@@ -135,12 +104,8 @@
 
 
 <style lang="scss">
-    .plot__div {padding: 1em;}
-
+    // .plot__div {padding: 1em;}
     .box {background-image: url(./assets/css/intro.svg); border-radius: 0;}
-
-
-
     .main__layout__div {
         display: grid;
         grid-auto-flow: column;
@@ -150,13 +115,13 @@
         grid-template-columns: auto 1fr;
         column-gap: 3em;
 
-        .left_container__div { max-width: 100%; }
+        .left_container__div { max-width: 100%; margin-bottom: 0;}
         .right_container__div {
             display: grid;
             row-gap: 1em;
 
             grid-template-rows: auto auto 1fr;
-            max-height: calc(100vh - 8rem);
+            max-height: calc(100vh - 6rem);
             .location__div {
                 display:grid;
                 grid-template-columns: auto 1fr auto;

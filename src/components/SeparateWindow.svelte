@@ -1,6 +1,7 @@
 
 <script>
     import {tick} from "svelte"
+    
     export let id=window.getID(), title="Title", active=false;
     export let top=50, bottom=50;
     export let width="70%", height="70%";

@@ -18,13 +18,13 @@
         // $felixPlotCheckboxes = []
 
 
-        let datlocation = path.resolve($felixopoLocation, "../EXPORT")
+        let datlocation = pathResolve($felixopoLocation, "../EXPORT")
 
-        let datfiles = fs.existsSync(datlocation) ? fs.readdirSync(datlocation).filter(f=>f.endsWith(".dat")).map(f=>f={name:f, id:getID()}) : [{name:"", id:getID()}]
+        let datfiles = existsSync(datlocation) ? readdirSync(datlocation).filter(f=>f.endsWith(".dat")).map(f=>f={name:f, id:getID()}) : [{name:"", id:getID()}]
         let calcfiles = [];
-        if(fs.existsSync(theoryLocation)) {
-            fs.readdirSync(theoryLocation).forEach(file=>{
-                const isfile = fs.lstatSync(path.join(theoryLocation, file)).isFile()
+        if(existsSync(theoryLocation)) {
+            readdirSync(theoryLocation).forEach(file=>{
+                const isfile = lstatSync(pathJoin(theoryLocation, file)).isFile()
                 if(isfile) {
                     calcfiles = [...calcfiles, {name:file, id:getID()}]
                 }

@@ -1,7 +1,7 @@
 
 import { pythonpath, pythonscript, get } from "../settings/svelteWritables";
 // import { mainPreModal } from "../../svelteWritable";
-const { exec } = require("child_process")
+// import { spawn, exec } from "child_process"
 window.checkPython = function checkPython({ defaultPy } = {}) {
     if (!defaultPy) { defaultPy = get(pythonpath) }
     console.log("Python path checking \n", defaultPy)
@@ -35,7 +35,7 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                     console.log("Sending general arguments: ", args)
                     window.createToast("Process Started")
                     const py = spawn(
-                        get(pythonpath), [path.join(get(pythonscript), pyfile), args], { detached: true, stdio: 'pipe', shell: openShell }
+                        get(pythonpath), [pathJoin(get(pythonscript), pyfile), args], { detached: true, stdio: 'pipe', shell: openShell }
 
                     )
 
@@ -83,7 +83,7 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                 } else {
 
                     let py = null;
-                    try { py = spawn(get(pythonpath), [path.resolve(get(pythonscript), pyfile), args]) }
+                    try { py = spawn(get(pythonpath), [pathResolve(get(pythonscript), pyfile), args]) }
                     catch (err) { reject("Error accessing python. Set python location properly in Settings\n" + err) }
 
                     if (e) {
@@ -120,13 +120,13 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
 
                     py.on("close", () => {
                         if (!error_occured_py) {
-                            const dataFile = path.basename(pyfile).split(".")[0]
-                            const outputFile = path.join(get(pythonscript), "local", dataFile + "_data.json")
+                            const dataFile = basename(pyfile).split(".")[0]
+                            const outputFile = pathJoin(get(pythonscript), "local", dataFile + "_data.json")
 
-                            if (!fs.existsSync(outputFile)) {
+                            if (!existsSync(outputFile)) {
                                 return reject(`${outputFile} doesn't exist.`)
                             }
-                            let dataFromPython = fs.readFileSync(outputFile)
+                            let dataFromPython = readFileSync(outputFile)
 
                             window.dataFromPython = dataFromPython = JSON.parse(dataFromPython.toString("utf-8"))
                             console.log(dataFromPython)

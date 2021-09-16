@@ -9,7 +9,7 @@
     import Layout from "../components/Layout.svelte"
     import CustomRadio from '../components/CustomRadio.svelte';
     // import ReportLayout from '../components/ReportLayout.svelte';
-    import {onMount, tick} from "svelte"
+    import {onMount, tick} from "svelte";
 
     import AddFilesToPlot from './normline/modals/AddFilesToPlot.svelte';
     import FrequencyTable from './normline/components/FrequencyTable.svelte';
@@ -24,12 +24,13 @@
     import ExecuteFunctionContents from './normline/widgets/postprocessing/ExecuteFunctionContents.svelte';
     import {init_tour_normline} from './normline/initTour';
     import Textfield from '@smui/textfield';
+    
     ///////////////////////////////////////////////////////////////////////
 
     const filetype="felix", id="Normline"
     let fileChecked=[], toggleBrowser = false;
     let currentLocation = db.get(`${filetype}_location`) || ""
-    $: felixfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
+    $: felixfiles = fileChecked.map(file=>pathResolve(currentLocation, file))
     $: console.log(`${filetype} currentlocation: \n${currentLocation}`)
     ///////////////////////////////////////////////////////////////////////
 
@@ -45,7 +46,7 @@
     let OPOfilesChecked = []
     
     $: plottedFiles = $opoMode ? OPOfilesChecked.map(file=>file.split(".")[0]) || [] : fileChecked.map(file=>file.split(".")[0]) || []
-    $: output_namelists = ["averaged", ...plottedFiles, ...addedfiles.map(file=>path.basename(file)).map(file=>file.split(".")[0])]
+    $: output_namelists = ["averaged", ...plottedFiles, ...addedfiles.map(file=>basename(file)).map(file=>file.split(".")[0])]
 
     let writeFileName = ""
     let keepTable = true;
@@ -90,7 +91,7 @@
 
     let fullfiles = []
     let activateConfigModal = false;
-    $: $opoMode ? fullfiles = [...opofiles, ...addedfiles, path.resolve(currentLocation, "averaged.felix")] : fullfiles = [...felixfiles, ...addedfiles, path.resolve(currentLocation, "averaged.felix")]
+    $: $opoMode ? fullfiles = [...opofiles, ...addedfiles, pathResolve(currentLocation, "averaged.felix")] : fullfiles = [...felixfiles, ...addedfiles, pathResolve(currentLocation, "averaged.felix")]
 
     const init_tour = async () => {
 

@@ -1,15 +1,15 @@
 
 import {backupName, get} from "./svelteWritables";
 import {browse} from "../../components/Layout.svelte";
-const copy = require('recursive-copy');
-
+// const copy = require('recursive-copy');
+// import copy from "recursive-copy";
 export function transferFiles({dest, src, includeNode=true}={}) {
     return new Promise((resolve, reject)=>{
 
 
-        // const filter = fs.readdirSync(src).filter((file) => {return file !== "node_modules" && file !== "python3"})
+        // const filter = readdirSync(src).filter((file) => {return file !== "node_modules" && file !== "python3"})
 
-        // const options = {overwrite: true, filter: includeNode ?  fs.readdirSync(src) : filter}
+        // const options = {overwrite: true, filter: includeNode ?  readdirSync(src) : filter}
         
         // console.log(options)
 
@@ -43,7 +43,7 @@ export function backupRestore({event, method="backup"}={}) {
 
             .then( async (result) =>{
                 let folderName;
-                if (!result.canceled) { folderName = result.filePaths[0] } else {return console.log("Cancelled")}
+                if (result) { folderName = result[0] } else {return console.log("Cancelled")}
                 
         
                 console.log("Selected folder: ", folderName)
@@ -51,12 +51,12 @@ export function backupRestore({event, method="backup"}={}) {
                 let dest, src;
                 if(method === "backup") {
 
-                    dest = path.resolve(folderName, get(backupName))
-                    src = path.resolve(__dirname, "..")
+                    dest = pathResolve(folderName, get(backupName))
+                    src = pathResolve(__dirname, "..")
                 } else {
 
-                    dest = path.resolve(__dirname, "..")
-                    src = path.resolve(folderName)
+                    dest = pathResolve(__dirname, "..")
+                    src = pathResolve(folderName)
                 }
                 console.info(`Destination: ${dest}\nSource: ${src}\n`)
 

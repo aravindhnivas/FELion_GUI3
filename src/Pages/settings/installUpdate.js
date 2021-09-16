@@ -4,16 +4,18 @@ import { updating } from "../../js/functions";
 import { transferFiles } from "./backupAndRestore";
 
 const restart_program = () => {
-    let response = window.showinfo(remote.getCurrentWindow(), { title: "FELion_GUI3", type: "info", message: "Update succesfull", buttons: ["Restart", "Restart later"] })
-    response === 0 ? remote.getCurrentWindow().reload() : console.log("Restarting later")
+    let response = window.showinfo({ title: "FELion_GUI3", type: "info", message: "Update succesfull", buttons: ["Restart", "Restart later"] })
+    
+    const mainWindowReload = window["electron-modules"]["reload"]
+    response === 0 ? mainWindowReload() : console.log("Restarting later")
 
 }
 
 export function InstallUpdate(target, updateFolder) {
 
-    let src = path.resolve(updateFolder, `${get(github).repo}-${get(github).branch}`)
+    let src = pathResolve(updateFolder, `${get(github).repo}-${get(github).branch}`)
 
-    let dest = path.resolve(__dirname, "..")
+    let dest = pathResolve(__dirname, "..")
 
     transferFiles({ dest, src })
         .then(() => {console.log("Copying downloaded files");})

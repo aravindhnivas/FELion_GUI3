@@ -86,7 +86,7 @@
                     return window.createToast("No files: ctrl + left-click to select file for baseline correction", "danger")
                 }
                 pyfile="baseline.py"
-                args=[JSON.stringify({filename: path.join($felixopoLocation, $baselineFile)})]
+                args=[JSON.stringify({filename: pathJoin($felixopoLocation, $baselineFile)})]
                 computePy_func({e, pyfile, args, general:true, openShell})
                 .catch(error=>{mainPreModal.error(error.stack || error)})
                 

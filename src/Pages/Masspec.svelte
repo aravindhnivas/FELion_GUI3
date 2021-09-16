@@ -4,7 +4,7 @@
     import CustomIconSwitch from "../components/CustomIconSwitch.svelte"
     import CustomSelect from "../components/CustomSelect.svelte"
     import CustomSwitch from "../components/CustomSwitch.svelte"
-
+    
     // import ReportLayout from "../components/ReportLayout.svelte"
     import Textfield from '@smui/textfield'
     import {plot} from "../js/functions.js"
@@ -19,7 +19,7 @@
 
 
     let currentLocation = db.get(`${filetype}_location`) || ""
-    $: massfiles = fs.existsSync(currentLocation) ? fileChecked.map(file=>path.resolve(currentLocation, file)) : []
+    $: massfiles = existsSync(currentLocation) ? fileChecked.map(file=>pathResolve(currentLocation, file)) : []
     
     let openShell = false, graphPlotted = false
 
@@ -52,7 +52,7 @@
     // Functions
     function plotData({e=null, filetype="mass"}={}){
 
-        if (!fs.existsSync(currentLocation)) {return window.createToast("Location not defined", "danger")}
+        if (!existsSync(currentLocation)) {return window.createToast("Location not defined", "danger")}
         if (fileChecked.length<1) {return window.createToast("No files selected", "danger")}
         if (filetype === "find_peaks") {if (selected_file === "") return window.createToast("No files selected", "danger")}
 
@@ -61,7 +61,7 @@
         let pyfileInfo = {
             mass: {pyfile:"mass.py" , args:[...massfiles, "run"]},
             general: {pyfile:"mass.py" , args:[...massfiles, "plot"]},
-            find_peaks: {pyfile:"find_peaks_masspec.py" , args:[path.resolve(currentLocation, selected_file), peak_prominance, peak_width, peak_height]},
+            find_peaks: {pyfile:"find_peaks_masspec.py" , args:[pathResolve(currentLocation, selected_file), peak_prominance, peak_width, peak_height]},
 
         }
         

@@ -66,10 +66,10 @@
     const update = async () => {
 
         try {
-            const updateFolder = path.resolve(__dirname, "..", "update")
+            const updateFolder = pathResolve(__dirname, "..", "update")
             let target = document.getElementById("updateBtn")
             target.classList.toggle("is-loading")
-            if (!fs.existsSync(updateFolder)) {fs.mkdirSync(updateFolder)}
+            if (!existsSync(updateFolder)) {mkdirSync(updateFolder)}
             await download(updateFolder)
             InstallUpdate(target, updateFolder)
         } catch (error) {mainPreModal.error(error.stack || error)}

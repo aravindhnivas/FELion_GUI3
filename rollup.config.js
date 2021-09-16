@@ -9,6 +9,7 @@ import postcss from 'rollup-plugin-postcss';
 import json from '@rollup/plugin-json';
 import yaml from '@rollup/plugin-yaml';
 import alias from '@rollup/plugin-alias';
+import nodePolyfills from 'rollup-plugin-polyfill-node';
 
 
 const production = !process.env.ROLLUP_WATCH;
@@ -18,8 +19,11 @@ export default {
 	input: 'src/App.js',
 
 
-	output: [ { sourcemap: true, format: 'cjs', name: 'app', file: 'static/bundle.js' } ],
+	output: [ { sourcemap: true, format: 'iife', name: 'app', file: 'static/bundle.js' } ],
 	plugins: [
+		nodePolyfills({
+			exclude: ["admZip"]
+		}),
 		alias({
 			entries: [
 				{ find: 'src', replacement: './src' },
@@ -31,7 +35,7 @@ export default {
 			compilerOptions: {dev: !production},
 			preprocess: autoPreprocess()
 		}),
-		resolve({ dedupe: ['svelte', 'svelte/transition', 'svelte/internal'] }),
+		resolve({ browser:true, dedupe: ['svelte', 'svelte/transition', 'svelte/internal'] }),
 
 		commonjs(),
 
@@ -49,6 +53,6 @@ export default {
 
 	],
 	watch: { clearScreen: false },
-	external: ['electron', 'child_process', 'fs', 'path', 'url', 'module', 'os']
+	external: ['electron']
 
 };

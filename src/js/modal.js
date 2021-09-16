@@ -10,7 +10,7 @@ PNotify.defaultModules.set(PNotifyMobile, {});
 
 window.showStackContext = ({title="Info", text, type="Info"}={}) => {
     try {
-
+        
         if (typeof window.stackContext === 'undefined') {
 
             window.stackContext = new PNotify.Stack({
@@ -31,10 +31,8 @@ window.showStackContext = ({title="Info", text, type="Info"}={}) => {
             stack: window.stackContext
         };
         PNotify.notice(opts);
-        
     } catch (error) {
-        console.log("Could not load PNotify")
-        console.error(error)
+        
+        console.log(error)
     }
-
 }

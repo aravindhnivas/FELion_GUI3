@@ -6,12 +6,12 @@ function renamePy() {
 
     console.log("Checking for python old path")
 
-    const oldPath = path.resolve(__dirname, "../python3.7")
-    const newPath = path.resolve(__dirname, "../python3")
+    const oldPath = pathResolve(__dirname, "../python3.7")
+    const newPath = pathResolve(__dirname, "../python3")
 
-    if (fs.existsSync(oldPath)) {
+    if (existsSync(oldPath)) {
 
-        fs.rename(oldPath, newPath, function(err) {
+        rename(oldPath, newPath, function(err) {
 
             if (err) throw console.log(err)
             
@@ -24,9 +24,9 @@ renamePy()
 export function resetPyConfig() {
 
 
-    db.set("pythonscript", path.resolve(__dirname, "assets/python_files"))
+    db.set("pythonscript", pathResolve(__dirname, "assets/python_files"))
     pythonscript.set(db.get("pythonscript"))
-    const defaultPy = path.resolve(__dirname, "../python3/python")
+    const defaultPy = pathResolve(__dirname, "../python3/python")
 
     db.set("pythonpath", defaultPy)
 

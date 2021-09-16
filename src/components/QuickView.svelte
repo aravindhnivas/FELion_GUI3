@@ -7,7 +7,7 @@
   function browse_folder() {
   
     browse({dir:true}).then(result=>{
-        if (!result.canceled) { currentLocation = result.filePaths[0]; window.createToast("Location updated") }
+        if (result) { currentLocation = result[0]; window.createToast("Location updated") }
     })
   }
 

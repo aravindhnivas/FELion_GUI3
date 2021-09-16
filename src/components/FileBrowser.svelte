@@ -29,9 +29,9 @@
 
     let original_location = currentLocation
     let otherfolders = [], selectAll=false, showfiles = true, original_files = [];
-    $: locationStatus = fs.existsSync(currentLocation)
+    $: locationStatus = existsSync(currentLocation)
 
-    $: parentFolder = locationStatus ? path.basename(currentLocation) : "Undefined"
+    $: parentFolder = locationStatus ? basename(currentLocation) : "Undefined"
 
     let searchKey = "";
     
@@ -57,13 +57,13 @@
         try {
             console.log("Current location: ", currentLocation)
             
-            let folderfile = fs.readdirSync(currentLocation)
+            let folderfile = readdirSync(currentLocation)
 
-            original_files = fullfiles = folderfile.filter(file=>file.endsWith(filetype)&&fs.lstatSync(path.join(currentLocation, file)).isFile()).map(file=>file={name:file, id:getID()}).sort((a,b)=>a.name<b.name?1:-1)
+            original_files = fullfiles = folderfile.filter(file=>file.endsWith(filetype)&&lstatSync(pathJoin(currentLocation, file)).isFile()).map(file=>file={name:file, id:getID()}).sort((a,b)=>a.name<b.name?1:-1)
 
             fullfileslist = fullfiles.map(file=>file=file.name)
 
-            otherfolders = folderfile.filter(file=>fs.lstatSync(path.join(currentLocation, file)).isDirectory()).map(file=>file={name:file, id:getID()}).sort((a,b)=>a.name>b.name?1:-1)
+            otherfolders = folderfile.filter(file=>lstatSync(pathJoin(currentLocation, file)).isDirectory()).map(file=>file={name:file, id:getID()}).sort((a,b)=>a.name>b.name?1:-1)
             
             original_location = currentLocation
             
@@ -85,7 +85,7 @@
     let sortFile = false
     $: sortFile ? fullfiles = fullfiles.sort((a,b)=>a.name>b.name?1:-1) : fullfiles = fullfiles.sort((a,b)=>a.name<b.name?1:-1)
 
-    const changeDirectory = (goto) => { currentLocation = path.resolve(currentLocation, goto); getfiles() }
+    const changeDirectory = (goto) => { currentLocation = pathResolve(currentLocation, goto); getfiles() }
 
     onMount(()=> {if(locationStatus) {getfiles(); console.log("onMount Updating location for ", filetype)}} )
     afterUpdate(() => {

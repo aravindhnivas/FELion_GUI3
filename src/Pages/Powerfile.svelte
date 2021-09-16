@@ -11,7 +11,7 @@
     const writePowfile = () => {
         let contents = `${initContent}\n${powerfileContent}`
 
-        fs.writeFile(powfile, contents , function(err) {
+        writeFile(powfile, contents , function(err) {
             if(err) { return window.createToast("Power file couldn't be saved.", "danger") }
             window.createToast("Power file saved", "success")
         })
@@ -20,15 +20,15 @@
     
     async function savefile() {
         if (location.length == 0) { return openFolder({save:true}) }
-        const overwrite = await fs.existsSync(powfile)
+        const overwrite = await existsSync(powfile)
         overwrite ? overwrite_dialog.open() : writePowfile()
     }
 
     function openFolder({save=false}={}) {
         browse({dir:true})
             .then(result=>{
-                if (!result.canceled) {
-                    location = result.filePaths[0]
+                if (result) {
+                    location = result[0]
                     db.set("powerfile_location", location)
                     window.createToast("Location updated", "success")
                     if (save) savefile()
@@ -52,7 +52,7 @@
     const yy = today.getFullYear().toString().substr(2)
 
     let filename = `${dd}_${mm}_${yy}-#`;
-    $: powfile = path.resolve(location, `${filename}.pow`)
+    $: powfile = pathResolve(location, `${filename}.pow`)
     $: conversion = "_no_"
     $: convert ? conversion = "_" : conversion = "_no_"
     $: initContent = `#POWER file\n` +

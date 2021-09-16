@@ -29,13 +29,13 @@
     let variableValues = {}
     let settingsLoaded = false;
     afterUpdate(()=>{
-        const fullFilename = path.join(currentLocation, selected_file)
+        const fullFilename = pathJoin(currentLocation, selected_file)
         console.log(fullFilename)
         settingsLoaded = false;
 
-        if(fs.existsSync(fullFilename) && selected_file){
+        if(existsSync(fullFilename) && selected_file){
             
-            fileContents = fs.readFileSync(fullFilename).toString()
+            fileContents = readFileSync(fullFilename)
 
             for (const line of fileContents.split("\n")) {
 

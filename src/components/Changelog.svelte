@@ -2,11 +2,12 @@
 <script>
     import {windowLoaded, activateChangelog, updateAvailable, newVersion, updating} from "../js/functions";
     import Modal from "./Modal.svelte";
-    import {onMount, beforeUpdate} from "svelte";
+    import { beforeUpdate} from "svelte";
+    import marked from "marked";
     import { fade } from 'svelte/transition';
-    let changelogContent = fs.readFileSync(path.resolve(__dirname, "../CHANGELOG.md")).toString()
+    let changelogContent = readFileSync(pathResolve(__dirname, "../CHANGELOG.md")).toString()
     
-    beforeUpdate(()=>{changelogContent = fs.readFileSync(path.resolve(__dirname, "../CHANGELOG.md")).toString()})
+    beforeUpdate(()=>{changelogContent = readFileSync(pathResolve(__dirname, "../CHANGELOG.md")).toString()})
     
     const updateEvent = new CustomEvent('update', { bubbles: false });
 
@@ -64,9 +65,9 @@
         <div slot="content" transition:fade style="user-select:text;">
             {#if $updateAvailable && window.changelogNewContent}
 
-                {@html window.marked(window.changelogNewContent)}
+                {@html marked(window.changelogNewContent)}
             {:else}
-                {@html window.marked(changelogContent)}
+                {@html marked(changelogContent)}
             {/if}
         
         </div>

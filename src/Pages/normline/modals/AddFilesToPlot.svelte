@@ -12,7 +12,7 @@
 
     function addFileSelection() {
 
-        browse({dir:false}).then(result=>{  if (!result.canceled) {addedfiles = addedFile["files"] = result.filePaths} })
+        browse({dir:false}).then(result=>{  if (result) {addedfiles = addedFile["files"] = result} })
         
     }
 

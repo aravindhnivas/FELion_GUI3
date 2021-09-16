@@ -17,10 +17,10 @@
 
     export let currentLocation = "", id="report", includePlotsInReport=[], includeTablesInReports=[]
     let reportTitle = "", reportMethod = "info", reportMolecule = ""
-    $: reportFile = path.resolve(currentLocation, `reports/${reportMolecule}_report.html`)
-    // const reportExist = fs.existsSync(reportFile)
-    const stylesheet1 = path.resolve(__dirname, `assets/reports/report.css`)
-    const stylesheet2 = path.resolve(__dirname, `assets/reports/template.css`)
+    $: reportFile = pathResolve(currentLocation, `reports/${reportMolecule}_report.html`)
+    // const reportExist = existsSync(reportFile)
+    const stylesheet1 = pathResolve(__dirname, `assets/reports/report.css`)
+    const stylesheet2 = pathResolve(__dirname, `assets/reports/template.css`)
     const reportHTML = document.createElement( 'html' )
 
 
@@ -43,13 +43,13 @@
 
     function init_report(){
 
-        reportHTML.innerHTML = fs.existsSync(reportFile) ? fs.readFileSync(reportFile) : reportHTMLTemplate
+        reportHTML.innerHTML = existsSync(reportFile) ? readFileSync(reportFile) : reportHTMLTemplate
         console.log("ReportHTML: ", reportHTML)
         reportMainContainer = reportHTML.querySelector("#mainSection")
         
-        const reportDir = path.resolve(currentLocation, "reports")
+        const reportDir = pathResolve(currentLocation, "reports")
 
-        if (!fs.existsSync(reportDir)) {
+        if (!existsSync(reportDir)) {
             fs.mkdir(reportDir, { recursive: true }, (err) => {
 
                 if (err) return window.createToast("No write access for making report", "danger");

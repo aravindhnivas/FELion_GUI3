@@ -24,10 +24,10 @@
     }
     $: if(updateConfig) loadConfig()
 
-    $: if(fs.existsSync(OPOLocation)) {
+    $: if(existsSync(OPOLocation)) {
     
-        OPOcalibFiles = fs.readdirSync(OPOLocation).filter(file=> file.endsWith(".calibOPO"))
-        opofiles = OPOfilesChecked.map(file=>path.resolve(OPOLocation, file))
+        OPOcalibFiles = readdirSync(OPOLocation).filter(file=> file.endsWith(".calibOPO"))
+        opofiles = OPOfilesChecked.map(file=>pathResolve(OPOLocation, file))
     }
 
     function plotData({e=null, tkplot="run"}={}){

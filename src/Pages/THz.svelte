@@ -11,6 +11,7 @@
     import {plot} from "../js/functions.js"
     import ROSAA from "./thz/ROSAA.svelte"
 
+    
     /////////////////////////////////////////////////////////////////////////
 
     // Initialisation
@@ -18,7 +19,7 @@
     const filetype = "thz", id = "THz"
     let fileChecked = [];
     let currentLocation = db.get(`${filetype}_location`) || ""
-    $: thzfiles = fileChecked.map(file=>path.resolve(currentLocation, file))
+    $: thzfiles = fileChecked.map(file=>pathResolve(currentLocation, file))
     let openShell = false, graphPlotted = false
     let delta = 10, gamma = 0
 

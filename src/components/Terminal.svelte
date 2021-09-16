@@ -4,6 +4,7 @@
     import IconButton from '@smui/icon-button';
     import {tick} from "svelte";
     import Textfield from '@smui/textfield';
+    // import { spawn } from "child_process"
 
     import CustomSwitch from './CustomSwitch.svelte';
     ///////////////////////////////////////////////////////////////////////////////
@@ -60,7 +61,7 @@
 
             const outputLog = `${new Date().toLocaleString()}\n\n-----------------------------------------\nRunning terminal commands\n${commandResults.map(cmd=>cmd.results).join("")}\n-----------------------------------------\n`
             
-            try { fs.writeFileSync(path.resolve(__dirname, "output.log"), outputLog)} 
+            try { writeFileSync(pathResolve(__dirname, "output.log"), outputLog)} 
             
             catch (error) { window.createToast("Could not save the outputs to file: output.log", "warning")}
 

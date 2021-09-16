@@ -42,7 +42,7 @@
 
     async function browse_collisional_file() {
         const result = await browse({dir:false})
-        if (!result.canceled) { collisionalFilename = result.filePaths[0] }
+        if (result) { collisionalFilename = result[0] }
     }
 
     // let collisionlFile = ""

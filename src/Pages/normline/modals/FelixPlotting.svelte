@@ -15,7 +15,7 @@
     
     let extraWidgetModal = false, widgetType = ""
 
-    const widgetLocation = path.resolve(__dirname, "config")
+    const widgetLocation = pathResolve(__dirname, "config")
 
 
     const widgetFile = "felixplotWidgets"

@@ -2,7 +2,12 @@
 import {mainPreModal} from "../svelteWritable";
 import { writable } from 'svelte/store';
 import { Toast, Snackbar } from 'svelma';
+// import interact from 'interactjs';
+import {bulmaQuickview} from 'bulma-extensions';
 import "../Pages/general/computePy";
+
+
+
 export const activateChangelog = writable(false)
 export const windowLoaded = writable(false);
 
@@ -11,8 +16,9 @@ export const newVersion = writable("");
 export const updating = writable(false);
 
 
-// Global variables
 
+
+// Global variables
 window.createToast = (msg, type = "primary") => Toast.create({ message: msg, position: "is-top", type: `is-${type}` })
 window.sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -29,13 +35,13 @@ window.onerror = function (message, source, lineno, colno, error) {
     mainPreModal.error(modalContent)
 };
 // throw Error("New error");
-window.process.on('unhandledRejection', (reason, promise) => {
-    const errorMsg = "Uncaught error in "+promise+" reason: "+ reason
-    console.error(errorMsg);
-    Snackbar.create({ message: reason, position: "is-top", type: `is-danger` })
-    mainPreModal.error(errorMsg)
+// window.process.on('unhandledRejection', (reason, promise) => {
+//     const errorMsg = "Uncaught error in "+promise+" reason: "+ reason
+//     console.error(errorMsg);
+//     Snackbar.create({ message: reason, position: "is-top", type: `is-danger` })
+//     mainPreModal.error(errorMsg)
     
-});
+// });
 
 window.targetElement = (id) => document.getElementById(id)
 window.getPageStatus = (id) => targetElement(id).style.display !== "none"
@@ -60,14 +66,14 @@ window.asyncForEach = async (array, callback) => {
 window.addEventListener('DOMContentLoaded', (event) => {
     console.log('DOM fully loaded and parsed');
     windowLoaded.set(true)
-    const electronVersion = parseInt(process.versions.electron.split(".")[0])
+    bulmaQuickview.attach()
 
-    window.showinfo = electronVersion >= 7 ? remote.dialog.showMessageBoxSync : remote.dialog.showMessageBox
+
+    // window.showinfo = window["electron-modules"]["showMessageBox"]
 });
 
-
 export function resizableDiv({ div, change = { width: true, height: true }, cursor = { left: false, right: false, bottom: false, top: false } } = {}) {
-
+    
     interact(div).resizable({
         edges: cursor,
 
@@ -106,7 +112,6 @@ export function resizableDiv({ div, change = { width: true, height: true }, curs
         target.setAttribute('data-y', y)
     })
 }
-
 resizableDiv({ div: ".left_container__div", cursor: { right: true }, change: { width: true, height: false } })
 
 export function plot(mainTitle, xtitle, ytitle, data, plotArea, logScale=null) {

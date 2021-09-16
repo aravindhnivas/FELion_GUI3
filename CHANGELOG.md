@@ -9,10 +9,10 @@
 - several bug fixes.
 - several minor feature updates included.
 
+---
 ## v3.3.2
 - Bug fix for wrong trap time in felix file 
     - nshots will be taken from pow file if trap time in felix file is very large >50s.
----
 
 ## v3.3.1
 - Bug fix: OPO mode

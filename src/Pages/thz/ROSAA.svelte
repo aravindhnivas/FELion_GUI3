@@ -78,7 +78,7 @@
 
     let einsteinB_rateComputed=false;
     const simulation = (e) => {
-        if(!fs.existsSync(currentLocation)) return window.createToast("Location doesn't exist", "danger");
+        if(!existsSync(currentLocation)) return window.createToast("Location doesn't exist", "danger");
         if(!configLoaded) return window.createToast("Config file not loaded", "danger");
         if(!transitionFrequency) return window.createToast("Transition frequency is not defined", "danger");
         if(!einsteinB_rateComputed) return window.createToast("Compute einsteinB rate constants", "danger");
@@ -133,17 +133,17 @@
         computePy_func({e, pyfile, args, general:true}).catch(error=>{mainPreModal.error(error.stack || error)})
         running=true
     }
-    let currentLocation = fs.existsSync(db.get("thz_modal_location")) ? db.get("thz_modal_location") : "";
+    let currentLocation = existsSync(db.get("thz_modal_location")) ? db.get("thz_modal_location") : "";
 
 
 
     let savefilename = ""
 
-    $: if(currentLocation&&fs.existsSync(currentLocation)) {db.set("thz_modal_location", currentLocation)}
+    $: if(currentLocation&&existsSync(currentLocation)) {db.set("thz_modal_location", currentLocation)}
     async function browse_folder() {
 
         const result = await browse({dir:true})
-        if (!result.canceled) { currentLocation = result.filePaths[0];}
+        if (result) { currentLocation = result[0];}
     }
 
     let writefile = true, includeCollision = true, includeSpontaneousEmission = true, includeAttachmentRate = true;
@@ -167,10 +167,10 @@
     async function loadConfig() {
     
         try {
-            if(fs.existsSync(configFile)) return setConfig();
+            if(existsSync(configFile)) return setConfig();
             const congFilePath = await browse({dir:false, multiple:false})
-            if (congFilePath.filePaths.length==0) return Promise.reject("No files selected");
-            configFile = congFilePath.filePaths[0]
+            if (congFilePath) return Promise.reject("No files selected");
+            configFile = congFilePath[0]
             db.set("ROSAA_config_file", configFile)
 
             setConfig()
@@ -179,8 +179,8 @@
     }
 
     const getYMLFileContents = (filename) => {
-        if (fs.existsSync(filename)) {
-            const fileContent = fs.readFileSync(filename, "utf-8")
+        if (existsSync(filename)) {
+            const fileContent = readFileSync(filename)
             const YMLcontent = Yml(fileContent)
             return Promise.resolve(YMLcontent)
         } else return Promise.reject(filename + " file doesn't exist")
@@ -245,8 +245,8 @@
 
         try {
 
-            const configFileLocation = window.path.dirname(configFile);
-            const CONFIG = Yml(fs.readFileSync(configFile, "utf-8"));
+            const configFileLocation = dirname(configFile);
+            const CONFIG = Yml(readFileSync(configFile));
 
             let attachmentRateConstants = {};
             ({mainParameters, simulationParameters, dopplerLineshape, powerBroadening, attachmentCoefficients, attachmentRateConstants} = CONFIG);
@@ -264,12 +264,12 @@
             ({savefilename}=CONFIG.saveFile);
 
             const {savelocation} = CONFIG.saveFile;
-            if(fs.existsSync(savelocation)) {currentLocation = savelocation};
+            if(existsSync(savelocation)) {currentLocation = savelocation};
             ({energy:energyFilename, collision:collisionalFilename, einsteinA:einsteinFilename} = CONFIG.filenames);
 
-            energyFilename = window.path.join(configFileLocation, energyFilename);
-            collisionalFilename = window.path.join(configFileLocation, collisionalFilename);
-            einsteinFilename = window.path.join(configFileLocation, einsteinFilename);
+            energyFilename = window.pathJoin(configFileLocation, energyFilename);
+            collisionalFilename = window.pathJoin(configFileLocation, collisionalFilename);
+            einsteinFilename = window.pathJoin(configFileLocation, einsteinFilename);
 
             ({levels:energyLevels, unit:energyUnit} = await getYMLFileContents(energyFilename));
             energyLevels = energyLevels.map(setID);

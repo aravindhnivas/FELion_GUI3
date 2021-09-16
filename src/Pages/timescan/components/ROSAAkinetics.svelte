@@ -84,7 +84,7 @@
     let config_content = {}
 
     function saveConfig() {
-        if(!fs.existsSync(currentLocation)) {return window.createToast("Invalid location or filename", "danger")}
+        if(!existsSync(currentLocation)) {return window.createToast("Invalid location or filename", "danger")}
 
         const keys = configKeys.slice(1, configKeys.length)
 
@@ -96,8 +96,8 @@
             config_content[filename] = newKeyValue
         })
         const save_config_content = JSON.stringify(config_content, null, 4)
-        const config_file = path.join(currentLocation, config_file_ROSAAkinetics);
-        fs.writeFile(config_file, save_config_content, "utf8", function (err) {
+        const config_file = pathJoin(currentLocation, config_file_ROSAAkinetics);
+        writeFile(config_file, save_config_content, function (err) {
             if (err) return window.createToast("Error occured while saving file", "danger");
 
             window.createToast("Config file saved"+config_file_ROSAAkinetics, "warning")
@@ -162,9 +162,9 @@
 
     async function loadConfig() {
         try {
-            const config_file = path.join(currentLocation, config_file_ROSAAkinetics);
-            if(fs.existsSync(config_file)) {
-                config_content = JSON.parse(fs.readFileSync(config_file, "utf8"))
+            const config_file = pathJoin(currentLocation, config_file_ROSAAkinetics);
+            if(existsSync(config_file)) {
+                config_content = JSON.parse(readFileSync(config_file, "utf8"))
                 window.createToast("Config file loaded: "+config_file_ROSAAkinetics, "warning");
                 makeConfigArray(config_content)
                 config_loaded = true

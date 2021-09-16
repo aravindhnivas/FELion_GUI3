@@ -1,25 +1,42 @@
 const { app, BrowserWindow } = require('electron');
 const path = require("path");
-let mainWindow;
+// let mainWindow;
 
 function createWindow() {
-  const icon = process.platform == 'darwin' ? path.resolve(__dirname, "static/assets/logo/mac/icon.icns") : path.resolve(__dirname, "static/assets/logo/win/icon.ico")
-  mainWindow = new BrowserWindow({
+  let icon;
+  if(process.platform == 'darwin') {
 
-    width: 1200, height: 700, frame: false, icon,
-    webPreferences: {
-      nodeIntegration: true, contextIsolation: false, nativeWindowOpen: true, webviewTag: true, nodeIntegrationInWorker: true, enableRemoteModule: true
-    }, backgroundColor: "#46307d"
+    icon = path.resolve(__dirname, "static/assets/logo/mac/icon.icns")
+  } else {
+    icon = path.resolve(__dirname, "static/assets/logo/win/icon.ico")
+  }
 
+  const mainWindow = new BrowserWindow({
+    width: 1200, height: 700, frame: true, icon,
+    webPreferences: { preload: path.join(__dirname, 'preload.js'), nodeIntegration: true }
   });
+
+
+
   mainWindow.loadFile('static/index.html');
-  mainWindow.on('closed', function () { mainWindow = null })
+  
 }
 
+app.whenReady().then(() => {
+  createWindow()
+  require("./main/Menu")
+  require("./main/dialogs")
 
-
-app.on('ready', createWindow);
-app.on('window-all-closed', function () {
-  if (process.platform !== 'darwin') app.quit();
+  app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+      createWindow()
+    }
+  })
 })
-app.on('activate', function () { if (mainWindow === null) createWindow() })
+
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit()
+  }
+})
+

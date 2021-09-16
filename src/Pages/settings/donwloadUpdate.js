@@ -1,9 +1,7 @@
 
 import {urlzip, get} from "./svelteWritables";
 import { updating } from "../../js/functions";
-const https = require('https');
-const admZip = require('adm-zip');
-
+import https from 'https'
 export function download(updateFolder) {
 
     return new Promise((resolve, reject)=>{
@@ -11,14 +9,14 @@ export function download(updateFolder) {
         updating.set(true)
         const updatefilename = "update.zip"
 
-        const zipFile = path.resolve(updateFolder, updatefilename)
+        const zipFile = pathResolve(updateFolder, updatefilename)
 
         const response = https.get(get(urlzip), (res) => {
 
             console.log(`URL: ${get(urlzip)}`)
             console.log('statusCode:', res.statusCode);
             console.log('headers:', res.headers);
-            res.pipe(fs.createWriteStream(zipFile))
+            res.pipe(createWriteStream(zipFile))
             console.log("File downloaded")
         })
 
@@ -28,7 +26,7 @@ export function download(updateFolder) {
 
             setTimeout(()=>{
 
-                let zip = new admZip(zipFile);
+                let zip = admZip(zipFile);
                 zip.extractAllTo(updateFolder, /*overwrite*/true);
                 console.log("File Extracted")
                 resolve("File extracted")
