@@ -2,11 +2,11 @@
 import { github, get } from "./svelteWritables";
 import { updating } from "../../js/functions";
 import { transferFiles } from "./backupAndRestore";
-
-const restart_program = () => {
-    let response = showMessageBoxSync({ title: "FELion_GUI3", type: "info", message: "Update succesfull", buttons: ["Restart", "Restart later"] })
+const {showMessageBoxSync} = dialogs
+const restart_program = async () => {
+    const response = await showMessageBoxSync({ title: "FELion_GUI3", type: "info", message: "Update succesfull", buttons: ["Restart", "Restart later"] })
     
-    // const mainWindowReload = window["electron-modules"]["reload"]
+    console.log("Restart: ", response)
     response === 0 ? reload() : console.log("Restarting later")
 
 }
@@ -22,3 +22,4 @@ export function InstallUpdate(target, updateFolder) {
         .catch((err) => { window.createToast("Error occured while copying downloaded files"); throw err; })
         .finally(() => { target.classList.toggle("is-loading"); updating.set(false); restart_program() })
 }
+// restart_program()
