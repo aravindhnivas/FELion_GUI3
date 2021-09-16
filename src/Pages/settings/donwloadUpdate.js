@@ -26,7 +26,7 @@ export function download(updateFolder) {
 
             setTimeout(()=>{
 
-                let zip = admZip(zipFile);
+                const zip = admZip(zipFile);
                 zip.extractAllTo(updateFolder, /*overwrite*/true);
                 console.log("File Extracted")
                 resolve("File extracted")

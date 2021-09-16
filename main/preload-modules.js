@@ -1,5 +1,5 @@
 
-const { contextBridge, process } = require('electron')
+const { contextBridge } = require('electron')
 const {versions} = require("process")
 require("./preload/fs-modules")
 require("./preload/path-modules")

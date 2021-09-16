@@ -1,5 +1,5 @@
 // Preload (Isolated World)
-require('source-map-support/register')
+// require('source-map-support/register')
 const { contextBridge } = require('electron')
 const { ipcRenderer } = require('electron')
 const path = require("path")

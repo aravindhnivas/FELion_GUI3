@@ -12,3 +12,4 @@ contextBridge.exposeInMainWorld("dialogs", {
     }
 
 })
+contextBridge.exposeInMainWorld("reload", ()=>ipcRenderer.handle('reload'))
