@@ -51,8 +51,8 @@
     let showreport = false
 
     const pyEventDataReceivedHandle = (e) => {
-        let dataReceived = e.detail.dataReceived
-
+        const {dataReceived} = e.detail
+        console.log(dataReceived)
         statusReport += `${dataReceived}\n`
     }
 
@@ -201,7 +201,7 @@
     let trapArea;
 
     // Transition freq.
-    let excitedTo, excitedFrom;
+    let excitedTo=1, excitedFrom=0;
     let transitionFrequency=0, transitionFrequencyInHz;
 
     // Doppler linewidth parameters
@@ -223,12 +223,14 @@
         }
 
         if(dopplerLineshape.length) {
+            console.log("Changing doppler parameters");
             [ionMass, RGmass, ionTemp, trapTemp] = dopplerLineshape.map(f=>f.value);
             collisionalTemp = Number((RGmass*ionTemp + ionMass*trapTemp)/(ionMass+RGmass)).toFixed(1);
             const sqrtTerm = 8*boltzmanConstant*Math.log(2) / (ionMass*amuToKG*SpeedOfLight
             **2)
             Cg = transitionFrequencyInHz*Math.sqrt(sqrtTerm)
             gaussian = Number(Cg*Math.sqrt(ionTemp)*1e-6).toFixed(3)
+
         };
         if(powerBroadening.length) {
             [dipole, power] = powerBroadening.map(f=>f.value);
@@ -247,7 +249,6 @@
 
             const configFileLocation = dirname(configFile);
             const CONFIG = Yml(readFileSync(configFile));
-
             let attachmentRateConstants = {};
             ({mainParameters, simulationParameters, dopplerLineshape, powerBroadening, attachmentCoefficients, attachmentRateConstants} = CONFIG);
             mainParameters = mainParameters.map(setID);
@@ -259,7 +260,6 @@
 
             k3.constant = attachmentRateConstants.k3.map(setID).map(correctObjValue);
             kCID.constant = attachmentRateConstants.kCID.map(setID).map(correctObjValue);
-
             ({trapTemp, electronSpin, zeemanSplit, numberDensity} = CONFIG);
             ({savefilename}=CONFIG.saveFile);
 
@@ -270,6 +270,7 @@
             energyFilename = window.pathJoin(configFileLocation, energyFilename);
             collisionalFilename = window.pathJoin(configFileLocation, collisionalFilename);
             einsteinFilename = window.pathJoin(configFileLocation, einsteinFilename);
+
 
             ({levels:energyLevels, unit:energyUnit} = await getYMLFileContents(energyFilename));
             energyLevels = energyLevels.map(setID);
@@ -287,9 +288,9 @@
 
 <style lang="scss">
     .locationColumn {
+
         display: grid;
         grid-auto-flow: column;
-
         grid-gap: 1em;
         grid-template-columns: 1fr 4fr 2fr;
         .button {
@@ -513,6 +514,7 @@
                 <button  class="button is-link" on:click="{simulation}" on:pyEvent={pyEventHandle} on:pyEventClosed="{pyEventClosedHandle}" on:pyEventData={pyEventDataReceivedHandle}>Submit</button>
             </div>
         </svelte:fragment>
+
     </SeparateWindow>
 
 {/if}

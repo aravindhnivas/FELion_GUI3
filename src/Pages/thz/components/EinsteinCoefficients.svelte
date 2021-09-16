@@ -45,6 +45,7 @@
     async function computeEinsteinBRate(e) {
 
         const args = [JSON.stringify({lorrentz, gaussian})]
+        console.log(args)
         const pyfile = "ROSAA/voigt.py"
 
         try {
@@ -55,8 +56,7 @@
             computeEinsteinB();
             einsteinCoefficientB = einsteinCoefficientB.map(e=>{
                 e.value *= norm;
-
-                e.value = e.value.toExponential(3) 
+                e.value = e.value.toExponential(3)
                 return e
             })
 

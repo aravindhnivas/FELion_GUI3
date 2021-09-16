@@ -59,12 +59,16 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                             e.target.dispatchEvent(pyEventClosed)
                             console.log("pyEventClosed dispatched")
                         }
-                        
                     })
-                    py.stderr.on("data", (err) => { console.log(`Error Ocurred: ${err.toString()}`); error += err.toString() })
+                    py.stderr.on("data", (err) => { 
+                        error = String.fromCharCode.apply(null, err)
+                        console.log(`Error Ocurred: ${error}`); 
+                    })
+
                     py.stdout.on("data", (data) => {
 
-                        dataReceived += `${data.toString()}\n`
+                        // dataReceived += `${data.toString()}\n`
+                        dataReceived += `${String.fromCharCode.apply(null, data)}\n`
                         console.log(`Output from python: ${dataReceived}`)
                         if (e) {
 
@@ -96,9 +100,10 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                     window.createToast("Process Started")
                     let dataReceived = "";
                     py.stdout.on("data", data => {
-
+                        // console.log(typeof data, data)
                         console.log("Ouput from python")
-                        dataReceived += data.toString("utf8")
+                        // dataReceived += data.toString("utf8")
+                        dataReceived += String.fromCharCode.apply(null, data)
                         console.log(dataReceived)
 
                         if (e) {
@@ -114,7 +119,7 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                     let errContent = "";
                     let error_occured_py = false;
                     py.stderr.on("data", err => {
-                        errContent += err.toString()
+                        errContent += String.fromCharCode.apply(null, err)
                         error_occured_py = true
                     });
 
@@ -128,7 +133,7 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                             }
                             let dataFromPython = readFileSync(outputFile)
 
-                            window.dataFromPython = dataFromPython = JSON.parse(dataFromPython.toString("utf-8"))
+                            window.dataFromPython = dataFromPython = JSON.parse(dataFromPython)
                             console.log(dataFromPython)
 
 
