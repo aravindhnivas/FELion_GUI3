@@ -18,7 +18,6 @@ export default {
 
 	input: 'src/App.js',
 
-
 	output: [ { sourcemap: true, format: 'iife', name: 'app', file: 'static/bundle.js' } ],
 	plugins: [
 		nodePolyfills({

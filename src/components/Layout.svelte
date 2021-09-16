@@ -162,8 +162,8 @@
             </div>
 
             <div class="button__div align" id="{filetype}-buttonContainer" >
-
                 <slot name="buttonContainer" />
+
                 {#if graphPlotted}
                     <button class="button is-warning animated fadeIn" on:click={openGraph}>Graph:Open separately</button>
 
@@ -190,7 +190,10 @@
                 <svelte:fragment slot="footerbtn">
                     <button class="button is-link" on:click={()=>{dispatch('configSave', {filetype})}}>Save</button>
                 </svelte:fragment>
+
             </Modal>
         {/if}
     </div>
+
+    
 </section>

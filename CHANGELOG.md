@@ -1,8 +1,12 @@
 # What's new
 
 ## v3.4.1
+
 - Plotly bug fix (Plotly is not included in window object)
+- node API changed to preload js for electron-v14
+
 ## v3.4.0
+
 - ROSAA modal integrated.
 - ROSAA kinetics integrated.
 - Individual file selection for baseline correction.
@@ -11,10 +15,13 @@
 
 ---
 ## v3.3.2
+
 - Bug fix for wrong trap time in felix file 
     - nshots will be taken from pow file if trap time in felix file is very large >50s.
 
+
 ## v3.3.1
+
 - Bug fix: OPO mode
 ## v3.3.0
 
@@ -46,9 +53,6 @@
 ## v3.1.1
 
 - Bug fix: Masspec
-
----
-
 
 ## v3.1.0
 
