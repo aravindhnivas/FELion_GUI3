@@ -25,7 +25,7 @@
             const energyLevel = distribution.map(e=>e.label)
             const populations = distribution.map(e=>e.value)
             const data = {  x: energyLevel, y: populations, mode: "lines+markers", showlegend:true, name:`Temp: ${trapTemp}K, Total: ${totalSum}`}
-            dataToPlot = {data}
+            const dataToPlot = {data}
             plot( `${title}: ${trapTemp}K`, "Energy Levels", "Population", dataToPlot, plotID)
             // setTimeout(()=>graphWindow.focus(), 100)
         }
