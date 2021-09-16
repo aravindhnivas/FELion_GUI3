@@ -78,12 +78,12 @@
 
     let commandToRun = "", commandArgsToRun = "";
     
-    $: if($developerMode&&$windowLoaded&&!$suppressInitialDeveloperWarning) {window.showStackContext({title:"Warning", text:"If python path is invalid, the program might not work", type:"error"});}
+    // $: if($developerMode&&$windowLoaded&&!$suppressInitialDeveloperWarning) {window.showStackContext({title:"Warning", text:"If python path is invalid, the program might not work", type:"error"});}
 
-    $: if($github.branch === "developer") {
-        window.showStackContext({title:"Warning", text:"Developer channel may not be stable and contains bugs.", type:"error"});
+    // $: if($github.branch === "developer") {
+    //     window.showStackContext({title:"Warning", text:"Developer channel may not be stable and contains bugs.", type:"error"});
 
-    }
+    // }
 
 </script>
 

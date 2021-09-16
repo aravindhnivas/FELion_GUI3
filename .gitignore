@@ -20,3 +20,4 @@ static/assets/python_files/data.json
 static/output.log
 out/
 src/Pages/**/config.json
+update/*
