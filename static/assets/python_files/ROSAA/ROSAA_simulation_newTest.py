@@ -6,15 +6,13 @@ from pathlib import Path as pt
 from scipy.integrate import solve_ivp
 from functools import reduce
 
-from scipy.integrate._ivp.radau import T
 from ROSAA_func import boltzman_distribution
 from optimizePlot import optimizePlot
 main_module_loc = str(pt(__file__).joinpath("../../"))
-
 sys.path.insert(0, main_module_loc)
 
-from FELion_definitions import sendData
-from FELion_constants import colors
+# from FELion_definitions import sendData
+from FELion_constants import pltColors
 def log(msg): return print(msg, flush=True)
 
 
@@ -190,11 +188,13 @@ class ROSAA:
                 attachmentRate = currentRate + nextRate
                 dR_dt.append(attachmentRate)
                 currentRate = -nextRate
-
             dR_dt.append(currentRate)
             dR_dt = np.array(dR_dt, dtype=float)
 
-            return dR_dt
+            if self.includeAttachmentRate:
+                return dR_dt
+            else:
+                return [0, 0]
 
         def SimulateODECollisional(t, N, lightON):
 
@@ -271,24 +271,16 @@ class ROSAA:
             converted_N = np.array(list(N.values()), dtype=float)
             return converted_N
 
-
         def plot():
             fig, ax = plt.subplots(figsize=(10, 6), dpi=100)
-            colorSchemes = []
-            for color in colors[::2]:
-                scale = 1/255
-                temp = [_*scale for _ in color]
 
-                colorSchemes.append(temp)
-            
             counter = 0
-
             simulationTimeON = N_ON_distribution["t"]*1e3
             simulationTimeOFF = N_OFF_distribution["t"]*1e3
             
             for on, off in zip(N_ON_distribution["y"], N_OFF_distribution["y"]):
-                ax.plot(simulationTimeON, on, ls="-", c=colorSchemes[counter], label=f"{self.legends[counter]}")
-                ax.plot(simulationTimeOFF, off, ls="--", c=colorSchemes[counter])
+                ax.plot(simulationTimeON, on, ls="-", c=pltColors[counter], label=f"{self.legends[counter]}")
+                ax.plot(simulationTimeOFF, off, ls="--", c=pltColors[counter])
                 counter += 1
 
             ax.hlines(1, 0, simulationTimeON[-1]+simulationTimeON[-1]*0.2, colors='k', linestyles="dashdot")
@@ -299,8 +291,8 @@ class ROSAA:
             if self.includeAttachmentRate:
                 for on, off in zip(N_He_ON_distribution, N_He_OFF_distribution):
 
-                    ax.plot(self.simulateTime_attachment*1e3, on, ls="-", c=colorSchemes[counter], label=f"{self.legends[counter]}")
-                    ax.plot(self.simulateTime_attachment*1e3, off, ls="--", c=colorSchemes[counter])
+                    ax.plot(self.simulateTime_attachment*1e3, on, ls="-", c=pltColors[counter], label=f"{self.legends[counter]}")
+                    ax.plot(self.simulateTime_attachment*1e3, off, ls="--", c=pltColors[counter])
                     # tagCounter += 1
                     counter += 1
             
@@ -356,27 +348,21 @@ class ROSAA:
         self.N_distribution = []
         self.t_distribution = []
         self.N = None
-        
         if self.includeCollision:
-            # Compute collisional
             N_ON_collisional = solve_ivp(
                 SimulateODECollisional, [0, initialDuration], self.boltzmanDistribution, args=(True, ), dense_output=True
             )
+
             ratio = N_ON_collisional.sol(simulateTime_collisional).T[-1]
         else:
             ratio = simulatedFixedCollisional()
-
         log(f"ON: {ratio=}")
-
         # Compute attachment
-
         N_ON_attachment = solve_ivp(
             SimulateODEAttachment, [initialDuration, duration], [0, 0], args=(ratio, ), dense_output=True
         )
 
         N_He_ON_distribution = N_ON_attachment.sol(self.simulateTime_attachment)
-
-
         shape = (len(self.t_distribution), len(self.boltzmanDistribution))
         self.N_distribution = np.array(self.N_distribution, dtype=float).reshape(shape).T
 
@@ -387,12 +373,16 @@ class ROSAA:
         ########################################################################################
 
         end_time = time.perf_counter()
-        log(f"Total simulation time: {(end_time-start_time):.2f} s")
-        signal = (1 - (N_He_ON_distribution[1][1:] / N_He_OFF_distribution[1][1:]))*100
-        signal = np.around(np.nan_to_num(signal).clip(min=0), 0)
-        log(f"{signal=}")
+        if self.includeAttachmentRate:
+            log(f"Total simulation time: {(end_time-start_time):.2f} s")
+            signal = (1 - (N_He_ON_distribution[1][1:] / N_He_OFF_distribution[1][1:]))*100
+            signal = np.around(np.nan_to_num(signal).clip(min=0), 0)
+            log(f"{signal=}")
+            self.directSignal = signal
 
-        self.directSignal =signal
+        else:
+            signal = np.array([0])
+
         dataToSend = {
             "legends" : self.legends,
             "N_ON_distribution" : {"t": N_ON_distribution["t"].tolist(), "y": N_ON_distribution["y"].tolist()},
@@ -400,7 +390,7 @@ class ROSAA:
             "N_He_ON_distribution" : N_He_ON_distribution.tolist(),
             "N_He_OFF_distribution" : N_He_OFF_distribution.tolist(),
             "simulateTime_attachment" : self.simulateTime_attachment.tolist(),
-            "directSignal": self.directSignal.tolist()
+            "signal": signal.tolist()
         }
         if self.writeFile: self.WriteData("separate", dataToSend)
         plot()
@@ -507,17 +497,10 @@ class ROSAA:
 
         fig, ax = plt.subplots(figsize=(10, 6), dpi=100)
         simulationTime = self.simulateTime.T*1e3
-
-        colorSchemes = []
-        for color in colors[::2]:
-            scale = 1/255
-            temp = [_*scale for _ in color]
-            colorSchemes.append(temp)
-
         counter = 0
         for on, off in zip(self.lightON_distribution, self.lightOFF_distribution):
-            ax.plot(simulationTime, on, ls="-", c=colorSchemes[counter], label=f"{self.legends[counter]}")
-            ax.plot(simulationTime, off, ls="--", c=colorSchemes[counter])
+            ax.plot(simulationTime, on, ls="-", c=pltColors[counter], label=f"{self.legends[counter]}")
+            ax.plot(simulationTime, off, ls="--", c=pltColors[counter])
             counter += 1
 
         ax.plot(simulationTime, self.lightOFF_distribution.sum(axis=0), "--k")
@@ -536,14 +519,14 @@ class ROSAA:
             signal = np.around(np.nan_to_num(signal).clip(min=0), 1)
             log(f"{signal=}")
             fig1, ax1 = plt.subplots(figsize=(10, 6), dpi=100)
-            ax1.plot(simulationTime[1:], signal)
-            ax1.plot(self.simulateTime_attachment[1:]*1e3, self.directSignal)
+            ax1.plot(simulationTime[1:], signal, label=f"Signal: {signal[-1]} (%)")
+            ax1.plot(self.simulateTime_attachment[1:]*1e3, self.directSignal, label=f"Signal: {self.directSignal[-1]} (%)")
 
             ax1 = optimizePlot(ax1, xlabel="Time (ms)", ylabel="Signal (%)")
 
             difference = signal[-1] - self.directSignal[-1]
             log(f"{difference=}")
-
+            ax1.legend()
         plt.show(block=True)
 
     def WriteData(self, name, dataToSend):
@@ -552,7 +535,7 @@ class ROSAA:
 
         savefilename = conditions["savefilename"]
 
-        with open(location / f"{savefilename}_{name}ROSAA_output.json", 'w+') as f:
+        with open(location / f"{savefilename}_no-attachement_{name}_ROSAA_output.json", 'w+') as f:
             data = json.dumps(dataToSend, sort_keys=True, indent=4, separators=(',', ': '))
             f.write(data)
 
