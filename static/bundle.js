@@ -5595,7 +5595,6 @@ var app = (function (marked) {
                             dataReceived += `${String.fromCharCode.apply(null, data)}\n`;
                             console.log(`Output from python: ${dataReceived}`);
                             if (e) {
-
                                 const pyEventData = new CustomEvent('pyEventData', { bubbles: false, detail: { py, pyfile, dataReceived } });
                                 e.target.dispatchEvent(pyEventData);
 
