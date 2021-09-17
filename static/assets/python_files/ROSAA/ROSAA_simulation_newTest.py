@@ -45,25 +45,25 @@ class ROSAA:
 
         
         if variable == "time":
-
             nHe = float(conditions["numberDensity"])
-            self.Simulate(nHe)
-            
 
             self.molecule = conditions["main_parameters"]["molecule"]
             self.taggingPartner = conditions["main_parameters"]["tagging partner"]
-
+            self.GetAttachmentRatesParameters()
             self.legends = [f"${self.molecule}$ ({key.strip()})" for key in self.energyKeys]
             if self.includeAttachmentRate:
                 self.legends += [f"${self.molecule}${self.taggingPartner}"]
                 self.legends += [f"${self.molecule}${self.taggingPartner}$_{i+1}$" for i in range(1, self.totalAttachmentLevels)]
-            self.writeFile = conditions["writefile"]
             
+
+            self.Simulate(nHe)
+            self.writeFile = conditions["writefile"]
             if self.writeFile:
                 self.WriteData()
             self.Plot()
         
         elif variable == "He density(cm3)":
+
             signalList = []
             _start, _end, _steps = variableRange.split(",")
 
@@ -271,6 +271,7 @@ class ROSAA:
             converted_N = np.array(list(N.values()), dtype=float)
             return converted_N
 
+
         def plot():
             fig, ax = plt.subplots(figsize=(10, 6), dpi=100)
             colorSchemes = []
@@ -286,22 +287,23 @@ class ROSAA:
             simulationTimeOFF = N_OFF_distribution["t"]*1e3
             
             for on, off in zip(N_ON_distribution["y"], N_OFF_distribution["y"]):
-                ax.plot(simulationTimeON, on, ls="-", c=colorSchemes[counter], label=f"{counter}")
+                ax.plot(simulationTimeON, on, ls="-", c=colorSchemes[counter], label=f"{self.legends[counter]}")
                 ax.plot(simulationTimeOFF, off, ls="--", c=colorSchemes[counter])
                 counter += 1
 
-            tagCounter = 1
-            for on, off in zip(N_He_ON_distribution, N_He_OFF_distribution):
-
-                ax.plot(self.simulateTime_attachment*1e3, on, ls="-", c=colorSchemes[counter], label=f"{tagCounter}")
-                ax.plot(self.simulateTime_attachment*1e3, off, ls="--", c=colorSchemes[counter])
-                tagCounter += 1
-                counter += 1
-            
             ax.hlines(1, 0, simulationTimeON[-1]+simulationTimeON[-1]*0.2, colors='k', linestyles="dashdot")
             lg = ax.legend(title=f"--OFF, -ON", fontsize=14, title_fontsize=16)
             lg.set_draggable(True)
 
+            # tagCounter = 1
+            if self.includeAttachmentRate:
+                for on, off in zip(N_He_ON_distribution, N_He_OFF_distribution):
+
+                    ax.plot(self.simulateTime_attachment*1e3, on, ls="-", c=colorSchemes[counter], label=f"{self.legends[counter]}")
+                    ax.plot(self.simulateTime_attachment*1e3, off, ls="--", c=colorSchemes[counter])
+                    # tagCounter += 1
+                    counter += 1
+            
             ax = optimizePlot(ax, xlabel="Time (ms)", ylabel="Population (%)")
             if self.includeAttachmentRate:
                 fig1, ax1 = plt.subplots(figsize=(10, 6), dpi=100)
@@ -312,7 +314,7 @@ class ROSAA:
 
 
                 ax1.legend()
-            plt.show(block = True)
+            plt.show(block = False)
 
         simulateTime_collisional = np.linspace(0, initialDuration, int(totalSteps))
         
@@ -333,18 +335,14 @@ class ROSAA:
             )
 
             ratio = N_OFF_collisional.sol(simulateTime_collisional).T[-1]
-
         else:
 
             ratio = self.boltzmanDistributionCold
-
         log(f"OFF: {ratio=}")
-
         # Compute attachment
         N_OFF_attachment = solve_ivp(
             SimulateODEAttachment, [initialDuration, duration], [0, 0], args=(ratio, ), dense_output=True
         )
-
 
         N_He_OFF_distribution = N_OFF_attachment.sol(self.simulateTime_attachment)
 
@@ -395,7 +393,18 @@ class ROSAA:
         log(f"{signal=}")
 
         self.directSignal =signal
+        dataToSend = {
+            "legends" : self.legends,
+            "N_ON_distribution" : {"t": N_ON_distribution["t"].tolist(), "y": N_ON_distribution["y"].tolist()},
+            "N_OFF_distribution" : {"t": N_OFF_distribution["t"].tolist(), "y": N_OFF_distribution["y"].tolist()},
+            "N_He_ON_distribution" : N_He_ON_distribution.tolist(),
+            "N_He_OFF_distribution" : N_He_OFF_distribution.tolist(),
+            "simulateTime_attachment" : self.simulateTime_attachment.tolist(),
+            "directSignal": self.directSignal.tolist()
+        }
+        self.WriteData("separate", dataToSend)
         plot()
+
         
     def compute_attachment_process(self, N_He, N, nHe):
         N = {key:value for key, value in zip(self.energyKeys, N)}
@@ -455,7 +464,7 @@ class ROSAA:
         self.boltzmanDistributionCold = boltzman_distribution( self.energyLevels, self.collisionalTemp, self.electronSpin, self.zeemanSplit )
         self.fixedPopulation = boltzman_distribution( self.energyLevels, self.collisionalTemp, self.electronSpin, self.zeemanSplit )
         
-        self.GetAttachmentRatesParameters()
+        # self.GetAttachmentRatesParameters()
 
         N_He = []
         if self.includeAttachmentRate:
@@ -483,7 +492,13 @@ class ROSAA:
         self.lightON=True
         N_ON = solve_ivp(self.SimulateODE, tspan, [*self.boltzmanDistribution, *N_He], args=(nHe, ), dense_output=True)
         self.lightON_distribution = N_ON.sol(self.simulateTime)
-
+        dataToSend = {
+            "legends":self.legends,
+            "time (in s)":self.simulateTime.tolist(), 
+            "lightON_distribution":self.lightON_distribution.tolist(),
+            "lightOFF_distribution":self.lightOFF_distribution.tolist()
+        }
+        self.WriteData("full", dataToSend)
         end_time = time.perf_counter()
         log(f"Current simulation time {(end_time - start_time):.2f} s")
         log(f"Total simulation time {(end_time - self.start_time):.2f} s")
@@ -531,19 +546,13 @@ class ROSAA:
 
         plt.show(block=True)
 
+    def WriteData(self, name, dataToSend):
 
-    def WriteData(self):
         location = pt(conditions["currentLocation"])
 
         savefilename = conditions["savefilename"]
-        dataToSend = {
-            "legends":self.legends,
-            "time (in s)":self.simulateTime.tolist(), 
-            "lightON_distribution":self.lightON_distribution.tolist(),
-            "lightOFF_distribution":self.lightOFF_distribution.tolist()
-        }
 
-        with open(location / f"{savefilename}_ROSAA_output.json", 'w+') as f:
+        with open(location / f"{savefilename}_{name}ROSAA_output.json", 'w+') as f:
             data = json.dumps(dataToSend, sort_keys=True, indent=4, separators=(',', ': '))
             f.write(data)
 
