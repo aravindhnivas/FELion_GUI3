@@ -169,7 +169,7 @@
         try {
             if(existsSync(configFile)) return setConfig();
             const congFilePath = await browse({dir:false, multiple:false})
-            if (congFilePath) return Promise.reject("No files selected");
+            if (!congFilePath) return window.createToast("No files selected", "danger");
             configFile = congFilePath[0]
             db.set("ROSAA_config_file", configFile)
 
