@@ -42,7 +42,7 @@ class ROSAA:
         self.start_time = time.perf_counter()
         variable = conditions["variable"]
         variableRange = conditions["variableRange"]
-
+        self.writeFile = conditions["writefile"]
         
         if variable == "time":
             nHe = float(conditions["numberDensity"])
@@ -57,9 +57,9 @@ class ROSAA:
             
 
             self.Simulate(nHe)
-            self.writeFile = conditions["writefile"]
-            if self.writeFile:
-                self.WriteData()
+            
+            # if self.writeFile:
+                # self.WriteData()
             self.Plot()
         
         elif variable == "He density(cm3)":
@@ -402,7 +402,7 @@ class ROSAA:
             "simulateTime_attachment" : self.simulateTime_attachment.tolist(),
             "directSignal": self.directSignal.tolist()
         }
-        self.WriteData("separate", dataToSend)
+        if self.writeFile: self.WriteData("separate", dataToSend)
         plot()
 
         
@@ -498,7 +498,7 @@ class ROSAA:
             "lightON_distribution":self.lightON_distribution.tolist(),
             "lightOFF_distribution":self.lightOFF_distribution.tolist()
         }
-        self.WriteData("full", dataToSend)
+        if self.writeFile: self.WriteData("full", dataToSend)
         end_time = time.perf_counter()
         log(f"Current simulation time {(end_time - start_time):.2f} s")
         log(f"Total simulation time {(end_time - self.start_time):.2f} s")
