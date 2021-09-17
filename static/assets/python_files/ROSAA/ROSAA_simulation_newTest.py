@@ -535,7 +535,11 @@ class ROSAA:
 
         savefilename = conditions["savefilename"]
 
-        with open(location / f"{savefilename}_no-attachement_{name}_ROSAA_output.json", 'w+') as f:
+        addText = ""
+        if not self.includeAttachmentRate:
+            addText = "_no-attachement"
+
+        with open(location / f"{savefilename}{addText}_{name}_ROSAA_output.json", 'w+') as f:
             data = json.dumps(dataToSend, sort_keys=True, indent=4, separators=(',', ': '))
             f.write(data)
 
