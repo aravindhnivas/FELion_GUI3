@@ -3,8 +3,10 @@
 ## v3.4.1
 
 - Plotly bug fix (Plotly is not included in window object)
-- node API changed to preload js for electron-v14
-
+- node API changed to preload js for electron-v14 (more secured)
+- Masspec:
+    - Getlabview setting can be varied to show only selected files or full files list
+    - Masspectrum can now annotate a peak position (ctrl + left click) and delete annotation (ctrl + shift + left click)
 ## v3.4.0
 
 - ROSAA modal integrated.

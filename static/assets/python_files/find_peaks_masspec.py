@@ -10,14 +10,16 @@ from FELion_definitions import sendData
 
 def find_mass_peaks(filename, prominence, width, height):
 
+
     mass, counts = np.genfromtxt(filename).T
     indices, _ = peak(counts, prominence=prominence, width=width, height=height)
-
     mass = list(mass[indices])
     counts = list(counts[indices])
     
-    annotations = [
 
+
+    annotations = [
+        
         {
             "x": x,
             "y": y,

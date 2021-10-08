@@ -6,10 +6,10 @@
     import Textfield from '@smui/textfield';
     import CustomSelect from './CustomSelect.svelte';
 
-    export let currentLocation, fullfileslist;
+    import CustomSwitch from "./CustomSwitch.svelte"
+    export let currentLocation, fullfileslist, fileChecked;
 
     export let active=false;
-    // console.log(filename, location)
 
     const settingsVariable = {
 
@@ -45,11 +45,13 @@
                     variableValues[tempLine[7]] = parseFloat(tempLine[9])
                 }
             }
-
             settingsLoaded = true;
+
         }    
     })
+    let showAllFiles = true;
 
+    $: displayFiles = showAllFiles ? fullfileslist : fileChecked
 
     const labelRowB0 = ["B0 Low", "B0 high", "B0 Width"]
 
@@ -89,7 +91,8 @@
 
         <div slot="content" transition:fade >
 
-            <CustomSelect style="width:12em; height:3.5em; margin-right:0.5em" bind:picked={selected_file} label="Filename" options={["", ...fullfileslist]}/>
+            <CustomSwitch style="margin: 0 1em;" bind:selected={showAllFiles} label="show all"/>
+            <CustomSelect style="width:12em; height:3.5em; margin-right:0.5em" bind:picked={selected_file} label="Filename" options={["", ...displayFiles]}/>
 
 
             {#if settingsLoaded}

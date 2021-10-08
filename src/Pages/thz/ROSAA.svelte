@@ -468,7 +468,6 @@
                     </div>
                 </div>
                 
-                
                 <!-- Lorrentz lineshape -->
 
                 <div class="sub_container__div box">
