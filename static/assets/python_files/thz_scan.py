@@ -21,20 +21,31 @@ widget = None
 
 def thz_plot(filename):
 
-    with open(filename, "r") as fileContents: file = fileContents.readlines()
+    with open(filename, "r") as fileContents:
+        file = fileContents.readlines()
 
-    file = file[1:]
+    startInd = 1
+    if "=" in file[0]:
+        iteraton = int(file[0].split("=")[-1])
+        startInd = 2
+    else:
+        iteraton = int(file[0].split("\n")[0].split("\t")[-1])
+    print(f"{iteraton=}", flush=True)
+    
+    # Getting rid of the first line
+    file = file[startInd:]
+
+    # Reading Res ON values
     resOn = []
-
     for line in file:
         if line.startswith("#"): break
         line = line.split("\n")[0].split("\t")[:-1]
-        if not "0" in line: resOn.append(line)
+        resOn.append(line)
     resOn = resOn[1:]
 
     resOff = []
     start = False
-
+    
     for line in file:
         if line.startswith("# freq"):
             start = True
@@ -42,7 +53,7 @@ def thz_plot(filename):
         if start: 
             if line.startswith("#"): break
             line = line.split("\n")[0].split("\t")[:-1]
-            if not "0" in line: resOff.append(line)
+            resOff.append(line)
             
     resOff = resOff[1:]
     #############################################
@@ -55,17 +66,18 @@ def thz_plot(filename):
 
     freq = resOn.T[0]
     freq_resOff = resOff.T[0][0]
-    depletion = (resOff.T[1:] - resOn.T[1:])/resOff.T[1:]
-    depletion_counts = depletion.T.mean(axis=1)
 
+    resOnCounts = resOn.T[1:iteraton+1]
+    resOffCounts = resOff.T[1:iteraton+1]
+    
+    depletion = (resOffCounts - resOnCounts)/resOffCounts
+    depletion_counts = depletion.T.mean(axis=1)
     # depletion_error = depletion.T.std(axis=1)*100
 
     depletion_counts = depletion_counts*100
-
-    iteraton = int(len(resOn[0, 1:]))
+    # iteraton = int(len(resOn[0, 1:]))
     steps = int(round((freq[1]-freq[0])*1e6, 0))
-
-    resOffCounts, resOnCounts = resOff.T[1:], resOn.T[1:]
+    # resOffCounts, resOnCounts = resOff.T[1:], resOn.T[1:]
 
     return freq, depletion_counts, steps, iteraton, resOffCounts, resOnCounts, freq_resOff
 
