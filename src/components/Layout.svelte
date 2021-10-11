@@ -55,26 +55,25 @@
         catch (error) {console.log(error)}
     }
 
-    let graphWindowClosed = true;
-    let graphWindow;
+    // let graphWindowClosed = true;
+    // let graphWindow;
 
     function openGraph(){
-        if(!graphWindowClosed) {return graphWindow.show()}
-
-        graphWindowClosed = false
+        // if(!graphWindowClosed) {return graphWindow.show()}
+        // graphWindowClosed = false
         const mount = document.getElementById(`${filetype}-plotContainer`)
 
-        graphWindow = new WinBox({ class: graphWindowClasses,
-            root:document.getElementById("pageContainer"),
+        const graphWindow = new WinBox({ class: graphWindowClasses,
 
+            root:document.getElementById("pageContainer"),
             mount,  title: `Modal: ${filetype}`,
             x: "center", y: "center",
             width: "70%", height: "70%",
             background:"#634e96",
             top: 50, bottom:50,
             onclose: async function(){
-                graphWindowClosed = true
-                console.log(`${filetype}=> graphWindowClosed: ${graphWindowClosed}`)
+                // graphWindowClosed = true
+                // console.log(`${filetype}=> graphWindowClosed: ${graphWindowClosed}`)
 
                 changeGraphDivWidth()
                 return false
