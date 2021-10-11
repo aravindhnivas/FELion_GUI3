@@ -9,7 +9,7 @@
     - Mention the number of iteration to be considered (useful in case you stopped the scan); write # iterations = number to be taken in the first line of the file
 - Program updates
     - Plotly bug fix (Plotly is not included in window object)
-    - node API changed to preload js for electron-v14 (more secured)
+    - node API changed to preload js for electron-v14 (more secure)
 
 ## v3.4.0
 
