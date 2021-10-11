@@ -84,7 +84,8 @@
 
                 Plotly.deleteTraces($graphDiv, [-1])
                 extrafileAdded--
-                addedfiles = addedfiles.slice(0, addedfiles.length-1)
+                // addedfiles = addedfiles.slice(0, addedfiles.length-1)
+                const removeLastFile = addedfiles.pop()
             } catch (err) {console.log("The plot is empty")}
         }
     }

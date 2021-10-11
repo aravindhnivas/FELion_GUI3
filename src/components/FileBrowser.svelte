@@ -98,11 +98,11 @@
     });
 
     async function selectRange(event) {
-
         await tick();
         if (event.shiftKey && fileChecked.length) {
-            const _from = window._.indexOf(fullfileslist, fileChecked[0])
-            const _to = window._.indexOf(fullfileslist, fileChecked.slice(fileChecked.length-1)[0])
+            
+            const _from = fullfileslist.indexOf(fileChecked.at(0))
+            const _to = fullfileslist.indexOf(fileChecked.at(-1))
             if (_from < _to) {fileChecked = fullfileslist.slice(_from, _to+1)}
             else {fileChecked = fullfileslist.slice(_to, _from+1)}
         }
