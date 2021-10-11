@@ -26514,7 +26514,7 @@ var app = (function (marked) {
     			span = element("span");
     			span.textContent = "Select All";
     			attr_dev(span, "slot", "label");
-    			add_location(span, file_1, 135, 8, 4947);
+    			add_location(span, file_1, 135, 8, 4918);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -26681,7 +26681,7 @@ var app = (function (marked) {
     			div = element("div");
     			div.textContent = "...loading";
     			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-ujy50h");
-    			add_location(div, file_1, 174, 8, 6680);
+    			add_location(div, file_1, 174, 8, 6651);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -26714,7 +26714,7 @@ var app = (function (marked) {
     			div = element("div");
     			div.textContent = "Location doesn't exist: Browse files again";
     			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-ujy50h");
-    			add_location(div, file_1, 172, 8, 6557);
+    			add_location(div, file_1, 172, 8, 6528);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -26783,7 +26783,7 @@ var app = (function (marked) {
 
     			attr_dev(div, "class", "otherFolderlist");
     			set_style(div, "cursor", "pointer");
-    			add_location(div, file_1, 162, 8, 6080);
+    			add_location(div, file_1, 162, 8, 6051);
     		},
     		m: function mount(target, anchor) {
     			if (~current_block_type_index) {
@@ -26902,7 +26902,7 @@ var app = (function (marked) {
     			t1 = text(/*filetype*/ ctx[2]);
     			t2 = text(" here!");
     			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-ujy50h");
-    			add_location(div, file_1, 159, 12, 5960);
+    			add_location(div, file_1, 159, 12, 5931);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -26973,7 +26973,7 @@ var app = (function (marked) {
     		c: function create() {
     			div = element("div");
     			create_component(virtualchecklist.$$.fragment);
-    			add_location(div, file_1, 151, 12, 5515);
+    			add_location(div, file_1, 151, 12, 5486);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -27096,9 +27096,9 @@ var app = (function (marked) {
     			t1 = text(t1_value);
     			t2 = space();
     			attr_dev(div0, "class", "mdc-typography--subtitle1");
-    			add_location(div0, file_1, 166, 20, 6394);
+    			add_location(div0, file_1, 166, 20, 6365);
     			attr_dev(div1, "class", "align svelte-ujy50h");
-    			add_location(div1, file_1, 164, 16, 6206);
+    			add_location(div1, file_1, 164, 16, 6177);
     			this.first = div1;
     		},
     		m: function mount(target, anchor) {
@@ -27315,16 +27315,16 @@ var app = (function (marked) {
     			t7 = space();
     			if_block.c();
     			attr_dev(div0, "class", "align center browseIcons svelte-ujy50h");
-    			add_location(div0, file_1, 123, 0, 4309);
+    			add_location(div0, file_1, 123, 0, 4280);
     			attr_dev(div1, "class", "align center svelte-ujy50h");
-    			add_location(div1, file_1, 131, 0, 4745);
+    			add_location(div1, file_1, 131, 0, 4716);
     			attr_dev(div2, "class", "mdc-typography--subtitle1");
-    			add_location(div2, file_1, 146, 8, 5340);
+    			add_location(div2, file_1, 146, 8, 5311);
     			attr_dev(div3, "class", "align folderlist svelte-ujy50h");
-    			add_location(div3, file_1, 141, 4, 5078);
+    			add_location(div3, file_1, 141, 4, 5049);
     			attr_dev(div4, "class", "folderfile-list svelte-ujy50h");
     			attr_dev(div4, "id", div4_id_value = "" + (/*filetype*/ ctx[2] + "_filebrowser"));
-    			add_location(div4, file_1, 140, 0, 5015);
+    			add_location(div4, file_1, 140, 0, 4986);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -27582,8 +27582,8 @@ var app = (function (marked) {
     		await tick();
 
     		if (event.shiftKey && fileChecked.length) {
-    			const _from = window._.indexOf(fullfileslist, fileChecked[0]);
-    			const _to = window._.indexOf(fullfileslist, fileChecked.slice(fileChecked.length - 1)[0]);
+    			const _from = fullfileslist.indexOf(fileChecked.at(0));
+    			const _to = fullfileslist.indexOf(fileChecked.at(-1));
 
     			if (_from < _to) {
     				$$invalidate(0, fileChecked = fullfileslist.slice(_from, _to + 1));
@@ -28283,7 +28283,7 @@ var app = (function (marked) {
     const get_buttonContainer_slot_changes = dirty => ({});
     const get_buttonContainer_slot_context = ctx => ({});
 
-    // (159:16) <IconButton class="material-icons" on:click={() => activateConfigModal=true} >
+    // (147:16) <IconButton class="material-icons" on:click={() => activateConfigModal=true} >
     function create_default_slot$m(ctx) {
     	let t;
 
@@ -28303,14 +28303,14 @@ var app = (function (marked) {
     		block,
     		id: create_default_slot$m.name,
     		type: "slot",
-    		source: "(159:16) <IconButton class=\\\"material-icons\\\" on:click={() => activateConfigModal=true} >",
+    		source: "(147:16) <IconButton class=\\\"material-icons\\\" on:click={() => activateConfigModal=true} >",
     		ctx
     	});
 
     	return block;
     }
 
-    // (165:16) {#if graphPlotted}
+    // (153:16) {#if graphPlotted}
     function create_if_block_2$5(ctx) {
     	let button;
     	let mounted;
@@ -28321,7 +28321,7 @@ var app = (function (marked) {
     			button = element("button");
     			button.textContent = "Graph:Open separately";
     			attr_dev(button, "class", "button is-warning animated fadeIn");
-    			add_location(button, file$W, 165, 20, 5270);
+    			add_location(button, file$W, 153, 20, 4988);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -28343,14 +28343,14 @@ var app = (function (marked) {
     		block,
     		id: create_if_block_2$5.name,
     		type: "if",
-    		source: "(165:16) {#if graphPlotted}",
+    		source: "(153:16) {#if graphPlotted}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (175:16) {#if graphPlotted}
+    // (163:16) {#if graphPlotted}
     function create_if_block_1$c(ctx) {
     	let t;
     	let current;
@@ -28431,14 +28431,14 @@ var app = (function (marked) {
     		block,
     		id: create_if_block_1$c.name,
     		type: "if",
-    		source: "(175:16) {#if graphPlotted}",
+    		source: "(163:16) {#if graphPlotted}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (183:8) {#if activateConfigModal}
+    // (171:8) {#if activateConfigModal}
     function create_if_block$t(ctx) {
     	let modal;
     	let updating_active;
@@ -28506,14 +28506,14 @@ var app = (function (marked) {
     		block,
     		id: create_if_block$t.name,
     		type: "if",
-    		source: "(183:8) {#if activateConfigModal}",
+    		source: "(171:8) {#if activateConfigModal}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (185:16) <svelte:fragment slot="content">
+    // (173:16) <svelte:fragment slot="content">
     function create_content_slot$8(ctx) {
     	let current;
     	const config_slot_template = /*#slots*/ ctx[15].config;
@@ -28564,14 +28564,14 @@ var app = (function (marked) {
     		block,
     		id: create_content_slot$8.name,
     		type: "slot",
-    		source: "(185:16) <svelte:fragment slot=\\\"content\\\">",
+    		source: "(173:16) <svelte:fragment slot=\\\"content\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (188:16) <svelte:fragment slot="footerbtn">
+    // (176:16) <svelte:fragment slot="footerbtn">
     function create_footerbtn_slot$6(ctx) {
     	let button;
     	let mounted;
@@ -28582,7 +28582,7 @@ var app = (function (marked) {
     			button = element("button");
     			button.textContent = "Save";
     			attr_dev(button, "class", "button is-link");
-    			add_location(button, file$W, 188, 20, 6175);
+    			add_location(button, file$W, 176, 20, 5893);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -28604,7 +28604,7 @@ var app = (function (marked) {
     		block,
     		id: create_footerbtn_slot$6.name,
     		type: "slot",
-    		source: "(188:16) <svelte:fragment slot=\\\"footerbtn\\\">",
+    		source: "(176:16) <svelte:fragment slot=\\\"footerbtn\\\">",
     		ctx
     	});
 
@@ -28742,28 +28742,28 @@ var app = (function (marked) {
     			t8 = space();
     			if (if_block2) if_block2.c();
     			attr_dev(div0, "class", "left_container__div box  svelte-ds15ez");
-    			add_location(div0, file$W, 147, 8, 4278);
+    			add_location(div0, file$W, 135, 8, 3996);
     			attr_dev(button, "class", "button is-link");
     			attr_dev(button, "id", button_id_value = "" + (/*filetype*/ ctx[5] + "_filebrowser_btn"));
-    			add_location(button, file$W, 155, 16, 4737);
+    			add_location(button, file$W, 143, 16, 4455);
     			attr_dev(div1, "class", "location__div svelte-ds15ez");
-    			add_location(div1, file$W, 154, 12, 4691);
+    			add_location(div1, file$W, 142, 12, 4409);
     			attr_dev(div2, "class", "button__div align");
     			attr_dev(div2, "id", div2_id_value = "" + (/*filetype*/ ctx[5] + "-buttonContainer"));
-    			add_location(div2, file$W, 161, 12, 5097);
+    			add_location(div2, file$W, 149, 12, 4815);
     			attr_dev(div3, "class", "plot__div svelte-ds15ez");
     			attr_dev(div3, "id", div3_id_value = "" + (/*filetype*/ ctx[5] + "-plotContainer"));
     			add_render_callback(() => /*div3_elementresize_handler*/ ctx[25].call(div3));
-    			add_location(div3, file$W, 171, 12, 5434);
+    			add_location(div3, file$W, 159, 12, 5152);
     			attr_dev(div4, "class", "right_container__div box  svelte-ds15ez");
     			attr_dev(div4, "id", div4_id_value = "" + (/*filetype*/ ctx[5] + "__mainContainer__div"));
-    			add_location(div4, file$W, 152, 8, 4599);
+    			add_location(div4, file$W, 140, 8, 4317);
     			attr_dev(div5, "class", "main__layout__div svelte-ds15ez");
-    			add_location(div5, file$W, 145, 4, 4235);
+    			add_location(div5, file$W, 133, 4, 3953);
     			attr_dev(section, "id", /*id*/ ctx[4]);
     			set_style(section, "display", "none");
     			attr_dev(section, "class", "animated fadeIn");
-    			add_location(section, file$W, 144, 0, 4170);
+    			add_location(section, file$W, 132, 0, 3888);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -29091,18 +29091,10 @@ var app = (function (marked) {
     		}
     	};
 
-    	let graphWindowClosed = true;
-    	let graphWindow;
-
     	function openGraph() {
-    		if (!graphWindowClosed) {
-    			return graphWindow.show();
-    		}
-
-    		graphWindowClosed = false;
     		const mount = document.getElementById(`${filetype}-plotContainer`);
 
-    		graphWindow = new WinBox({
+    		const graphWindow = new WinBox({
     				class: graphWindowClasses,
     				root: document.getElementById("pageContainer"),
     				mount,
@@ -29115,8 +29107,6 @@ var app = (function (marked) {
     				top: 50,
     				bottom: 50,
     				async onclose() {
-    					graphWindowClosed = true;
-    					console.log(`${filetype}=> graphWindowClosed: ${graphWindowClosed}`);
     					changeGraphDivWidth();
     					return false;
     				},
@@ -29247,8 +29237,6 @@ var app = (function (marked) {
     		mounted,
     		graphDivs,
     		lookForGraph,
-    		graphWindowClosed,
-    		graphWindow,
     		openGraph,
     		plotWidth,
     		changeGraphDivWidth,
@@ -29267,8 +29255,6 @@ var app = (function (marked) {
     		if ('activateConfigModal' in $$props) $$invalidate(3, activateConfigModal = $$props.activateConfigModal);
     		if ('mounted' in $$props) mounted = $$props.mounted;
     		if ('graphDivs' in $$props) graphDivs = $$props.graphDivs;
-    		if ('graphWindowClosed' in $$props) graphWindowClosed = $$props.graphWindowClosed;
-    		if ('graphWindow' in $$props) graphWindow = $$props.graphWindow;
     		if ('plotWidth' in $$props) $$invalidate(7, plotWidth = $$props.plotWidth);
     		if ('mouseReleased' in $$props) $$invalidate(8, mouseReleased = $$props.mouseReleased);
     	};
@@ -56388,7 +56374,7 @@ var app = (function (marked) {
     const { console: console_1$9 } = globals;
     const file$l = "src\\Pages\\Normline.svelte";
 
-    // (152:4) <svelte:fragment slot="buttonContainer">
+    // (153:4) <svelte:fragment slot="buttonContainer">
     function create_buttonContainer_slot$3(ctx) {
     	let initfunctionrow;
     	let updating_graphPlotted;
@@ -56537,7 +56523,7 @@ var app = (function (marked) {
     			div = element("div");
     			create_component(customradio.$$.fragment);
     			attr_dev(div, "class", "align");
-    			add_location(div, file$l, 156, 8, 6823);
+    			add_location(div, file$l, 157, 8, 6883);
     		},
     		m: function mount(target, anchor) {
     			mount_component(initfunctionrow, target, anchor);
@@ -56657,14 +56643,14 @@ var app = (function (marked) {
     		block,
     		id: create_buttonContainer_slot$3.name,
     		type: "slot",
-    		source: "(152:4) <svelte:fragment slot=\\\"buttonContainer\\\">",
+    		source: "(153:4) <svelte:fragment slot=\\\"buttonContainer\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (163:4) <svelte:fragment slot="plotContainer" >
+    // (164:4) <svelte:fragment slot="plotContainer" >
     function create_plotContainer_slot$3(ctx) {
     	let getfileinfotable;
     	let t0;
@@ -56713,31 +56699,31 @@ var app = (function (marked) {
     			attr_dev(div0, "class", "animated fadeIn graph__div svelte-f1bxvr");
     			attr_dev(div0, "id", "exp-theory-plot");
     			toggle_class(div0, "hide", !/*show_theoryplot*/ ctx[10]);
-    			add_location(div0, file$l, 169, 12, 7298);
+    			add_location(div0, file$l, 170, 12, 7358);
     			attr_dev(div1, "id", "bplot");
     			attr_dev(div1, "class", "graph__div svelte-f1bxvr");
-    			add_location(div1, file$l, 170, 12, 7409);
+    			add_location(div1, file$l, 171, 12, 7469);
     			attr_dev(div2, "id", "saPlot");
     			attr_dev(div2, "class", "graph__div svelte-f1bxvr");
-    			add_location(div2, file$l, 171, 12, 7464);
+    			add_location(div2, file$l, 172, 12, 7524);
     			attr_dev(div3, "id", "avgplot");
     			attr_dev(div3, "class", "graph__div svelte-f1bxvr");
-    			add_location(div3, file$l, 172, 12, 7520);
+    			add_location(div3, file$l, 173, 12, 7580);
     			attr_dev(div4, "class", "animated fadeIn graph__div svelte-f1bxvr");
     			attr_dev(div4, "id", "opoplot");
     			toggle_class(div4, "hide", !/*$opoMode*/ ctx[8]);
-    			add_location(div4, file$l, 173, 12, 7577);
+    			add_location(div4, file$l, 174, 12, 7637);
     			attr_dev(div5, "class", "animated fadeIn graph__div svelte-f1bxvr");
     			attr_dev(div5, "id", "opoSA");
     			toggle_class(div5, "hide", !/*$opoMode*/ ctx[8]);
-    			add_location(div5, file$l, 174, 12, 7673);
+    			add_location(div5, file$l, 175, 12, 7733);
     			attr_dev(div6, "class", "animated fadeIn graph__div svelte-f1bxvr");
     			attr_dev(div6, "id", "opoRelPlot");
     			toggle_class(div6, "hide", !/*$opoMode*/ ctx[8]);
-    			add_location(div6, file$l, 176, 12, 7769);
+    			add_location(div6, file$l, 177, 12, 7829);
     			attr_dev(div7, "class", "felixPlot svelte-f1bxvr");
     			attr_dev(div7, "id", "plot_container__div__" + filetype$3);
-    			add_location(div7, file$l, 168, 8, 7224);
+    			add_location(div7, file$l, 169, 8, 7284);
     		},
     		m: function mount(target, anchor) {
     			mount_component(getfileinfotable, target, anchor);
@@ -56800,14 +56786,14 @@ var app = (function (marked) {
     		block,
     		id: create_plotContainer_slot$3.name,
     		type: "slot",
-    		source: "(163:4) <svelte:fragment slot=\\\"plotContainer\\\" >",
+    		source: "(164:4) <svelte:fragment slot=\\\"plotContainer\\\" >",
     		ctx
     	});
 
     	return block;
     }
 
-    // (182:4) <svelte:fragment slot="plotContainer_functions" >
+    // (183:4) <svelte:fragment slot="plotContainer_functions" >
     function create_plotContainer_functions_slot$1(ctx) {
     	let writefunctioncontents;
     	let updating_writeFileName;
@@ -56936,14 +56922,14 @@ var app = (function (marked) {
     		block,
     		id: create_plotContainer_functions_slot$1.name,
     		type: "slot",
-    		source: "(182:4) <svelte:fragment slot=\\\"plotContainer_functions\\\" >",
+    		source: "(183:4) <svelte:fragment slot=\\\"plotContainer_functions\\\" >",
     		ctx
     	});
 
     	return block;
     }
 
-    // (192:4) <svelte:fragment slot="plotContainer_reports">
+    // (193:4) <svelte:fragment slot="plotContainer_reports">
     function create_plotContainer_reports_slot(ctx) {
     	let frequencytable;
     	let updating_keepTable;
@@ -57003,14 +56989,14 @@ var app = (function (marked) {
     		block,
     		id: create_plotContainer_reports_slot.name,
     		type: "slot",
-    		source: "(192:4) <svelte:fragment slot=\\\"plotContainer_reports\\\">",
+    		source: "(193:4) <svelte:fragment slot=\\\"plotContainer_reports\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (197:4) <svelte:fragment slot="config">
+    // (198:4) <svelte:fragment slot="config">
     function create_config_slot(ctx) {
     	let div;
     	let textfield0;
@@ -57089,7 +57075,7 @@ var app = (function (marked) {
     			t1 = space();
     			create_component(textfield2.$$.fragment);
     			attr_dev(div, "class", "align");
-    			add_location(div, file$l, 197, 8, 8581);
+    			add_location(div, file$l, 198, 8, 8641);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -57154,7 +57140,7 @@ var app = (function (marked) {
     		block,
     		id: create_config_slot.name,
     		type: "slot",
-    		source: "(197:4) <svelte:fragment slot=\\\"config\\\">",
+    		source: "(198:4) <svelte:fragment slot=\\\"config\\\">",
     		ctx
     	});
 
@@ -57506,7 +57492,9 @@ var app = (function (marked) {
     			try {
     				Plotly.deleteTraces($graphDiv, [-1]);
     				$$invalidate(6, extrafileAdded--, extrafileAdded);
-    				$$invalidate(5, addedfiles = addedfiles.slice(0, addedfiles.length - 1));
+
+    				// addedfiles = addedfiles.slice(0, addedfiles.length-1)
+    				const removeLastFile = addedfiles.pop();
     			} catch(err) {
     				console.log("The plot is empty");
     			}
