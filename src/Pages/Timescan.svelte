@@ -62,15 +62,18 @@
         if (fileChecked.length === 0 && filetype === "scan") {return window.createToast("No files selected", "danger")}
         if (filetype === "general") {
             if (resOFF_Files === "" || resON_Files === "") {return window.createToast("No files selected", "danger")}
-
-
         }
+
+
+        const depletionArgs = [JSON.stringify({
+            currentLocation, resON_Files, resOFF_Files, 
+            power, nshots, massIndex, timestartIndex, saveOutputDepletion
+        })]
         
         let pyfileInfo = {
             scan: {pyfile:"timescan.py" , args:[...scanfiles, tkplot]},
 
-            general: {pyfile:"depletionscan.py" , args:[currentLocation,
-                resON_Files, resOFF_Files, ...power.split(",").map(pow=>parseFloat(pow)), nshots, massIndex, timestartIndex]},
+            general: {pyfile:"depletionscan.py" , args: depletionArgs},
         }
 
         let {pyfile, args} = pyfileInfo[filetype]
@@ -127,8 +130,8 @@
         
             plot(`Timescan Plot: ${file}`, "Time (in ms)", "Counts", kineticData[file], `${file}_tplot`, logScale ? "log" : null)
         })
-    
     }
+    let saveOutputDepletion = true;
 </script>
 
 
@@ -145,16 +148,17 @@
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"scan", tkplot:"plot"})}">Open in Matplotlib</button>
             <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
             <CustomSwitch on:change={linearlogCheck} bind:selected={logScale} label="Log"/>
+
         </div>
 
         <div class="align animated fadeIn" class:hide={toggleRow} >
-
             <CustomSelect bind:picked={resON_Files} label="ResOn" options={fullfiles}/>
             <CustomSelect bind:picked={resOFF_Files} label="ResOFF" options={fullfiles}/>
             <Textfield bind:value={power} label="Power (ON, OFF) [mJ]" />
             <Textfield type="number" {style} bind:value={nshots} label="FELIX Hz" />
             <Textfield type="number" {style} bind:value={massIndex} label="Mass Index" />
-        
+
+            <CustomSwitch bind:selected={saveOutputDepletion} label="save_output"/>
             <Textfield type="number" {style} bind:value={timestartIndex} label="Time Index" />
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"general"})}">Submit</button>
         

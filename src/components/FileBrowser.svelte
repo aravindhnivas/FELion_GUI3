@@ -58,8 +58,9 @@
             console.log("Current location: ", currentLocation)
             
             let folderfile = readdirSync(currentLocation)
-
-            original_files = fullfiles = folderfile.filter(file=>file.endsWith(filetype)&&lstatSync(pathJoin(currentLocation, file)).isFile()).map(file=>file={name:file, id:getID()}).sort((a,b)=>a.name<b.name?1:-1)
+            const fileIncludePattern = new RegExp(`.+\\.[^fr]?${filetype}`) // f or r keyword is to avoid getting fscan and rscan files
+            // original_files = fullfiles = folderfile.filter(file=>file.endsWith(filetype)&&lstatSync(pathJoin(currentLocation, file)).isFile()).map(file=>file={name:file, id:getID()}).sort((a,b)=>a.name<b.name?1:-1)
+            original_files = fullfiles = folderfile.filter(file=>fileIncludePattern.test(file)&&lstatSync(pathJoin(currentLocation, file)).isFile()).map(file=>file={name:file, id:getID()}).sort((a,b)=>a.name<b.name?1:-1)
 
             fullfileslist = fullfiles.map(file=>file=file.name)
 

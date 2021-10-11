@@ -1,6 +1,6 @@
 
 # Built-In modules
-import os, sys, traceback
+import json, sys, traceback
 from pathlib import Path as pt
 
 # DATA analysis modules
@@ -21,7 +21,7 @@ np.seterr(all="ignore")
 
 class depletionplot:
     
-    def __init__(self, location, resOnFile=None, resOffFile=None, power=None, nshots=10, massIndex=0, timeStart=1):
+    def __init__(self, location, resOnFile=None, resOffFile=None, power=None, nshots=10, massIndex=0, timestartIndex=1, saveOutputDepletion=True):
         self.location = pt(location)
         self.scanfiles = list(self.location.glob("*.scan"))
         self.resOnFile = resOnFile
@@ -32,13 +32,13 @@ class depletionplot:
         self.powerStr = f"{power[0]}, {power[1]}"
         self.nshots = nshots
         self.massIndex = massIndex
-        self.timeStart = timeStart
+        self.timestartIndex = timestartIndex
 
         self.widget = FELion_Tk(title="Depletion Plot", location=self.location)
         self.create_figure()
 
         self.startPlotting()
-        self.saveFile(show=False)
+        if saveOutputDepletion: self.saveFile(show=False)
         self.widget.mainloop()
         
     def create_figure(self):
@@ -124,7 +124,7 @@ class depletionplot:
         # Row 7
         y += y_diff
         self.new_massIndex = self.widget.Entries("Entry", self.massIndex, x0, y, bind_return=True, bind_func=self.replot)
-        self.new_timeStart = self.widget.Entries("Entry", self.timeStart, x0+x_diff, y, bind_return=True, bind_func=self.replot)
+        self.new_timeStart = self.widget.Entries("Entry", self.timestartIndex, x0+x_diff, y, bind_return=True, bind_func=self.replot)
 
         # Row 8
         y += y_diff
@@ -164,16 +164,18 @@ class depletionplot:
         self.nshots = self.new_nshots.get()
         self.massIndex = int(self.new_massIndex.get())
 
-        self.timeStart = int(self.new_timeStart.get())
+        self.timestartIndex = int(self.new_timeStart.get())
         
-        print(f"ON: {self.resOnFile}\nOFF: {self.resOffFile}\nPower: {self.power}\nMassIndex: {self.massIndex}\nTimeStartIndex: {self.timeStart}")
+        print(f"ON: {self.resOnFile}\nOFF: {self.resOffFile}\nPower: {self.power}\nMassIndex: {self.massIndex}\nTimeStartIndex: {self.timestartIndex}")
         self.startPlotting(make_slider_widget=False)
         self.canvas.draw()
 
     def saveFile(self, event=None, show=True):
-        timescanfile_reduced = self.location / f"{self.resOnFile.stem}__{self.resOffFile.stem}.rscan"
+        depletion_dir = self.location / "depletion_output"
 
-        timescanfile_fitted = self.location / f"{self.resOnFile.stem}__{self.resOffFile.stem}.fscan"
+        if not depletion_dir.exists(): depletion_dir.mkdir()
+        timescanfile_reduced = depletion_dir / f"{self.resOnFile.stem}__{self.resOffFile.stem}.rscan"
+        timescanfile_fitted = depletion_dir / f"{self.resOnFile.stem}__{self.resOffFile.stem}.fscan"
 
         with open(timescanfile_reduced, "w+") as f:
 
@@ -331,9 +333,9 @@ class depletionplot:
             ind = np.where(error==0)
             error[ind] = 1e-5
 
-            self.time[index] = np.array(time[self.timeStart:])
-            self.counts[index] = np.array(counts[self.massIndex][self.timeStart:])
-            self.error[index] = np.array(error[self.massIndex][self.timeStart:])
+            self.time[index] = np.array(time[self.timestartIndex:])
+            self.counts[index] = np.array(counts[self.massIndex][self.timestartIndex:])
+            self.error[index] = np.array(error[self.massIndex][self.timestartIndex:])
             self.power[index] = np.array((self.power[index] * self.nshots * self.time[index]))
             self.ax0.errorbar(self.power[index], self.counts[index], yerr=self.error[index], fmt=f"C{i}.")
 
@@ -462,16 +464,17 @@ class depletionplot:
 
 if __name__ == "__main__":
     args = sys.argv[1:][0].split(",")
+    arguments = json.loads(", ".join(args))
+    print(f"{arguments=}", flush=True)
 
-    location = args[0]
-    resOnFile = pt(location)/args[1]
-    resOffFile = pt(location)/args[2]
-    power = np.asarray(args[3:5], dtype=float)
-    nshots = int(args[5])
+    location = arguments["currentLocation"]
+    resOnFile = pt(location)/arguments["resON_Files"]
+    resOffFile = pt(location)/arguments["resOFF_Files"]
+    power = np.asarray(arguments["power"].split(","), dtype=float)
+    nshots = int(arguments["nshots"])
     
-    massIndex = int(args[6])
-    TimeIndex = int(args[7])
-    print(f'Location: {location}\nON: {resOnFile}\nOFF: {resOffFile}\npower: {power} {type(power)}\nshots: {nshots} {type(nshots)}')
-    print(f"MassIndex: {massIndex}\nTimeIndex: {TimeIndex}")
+    massIndex = int(arguments["massIndex"])
+    timestartIndex = int(arguments["timestartIndex"])
+    saveOutputDepletion = arguments["saveOutputDepletion"]
+    depletionplot(location, resOnFile, resOffFile, power, nshots, massIndex, timestartIndex, saveOutputDepletion)
     
-    depletionplot(location, resOnFile, resOffFile, power, nshots, massIndex, TimeIndex)

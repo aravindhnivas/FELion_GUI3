@@ -26387,7 +26387,7 @@ var app = (function (marked) {
     	return child_ctx;
     }
 
-    // (125:4) <Icon class="material-icons" on:click="{()=>changeDirectory("..")}">
+    // (126:4) <Icon class="material-icons" on:click="{()=>changeDirectory("..")}">
     function create_default_slot_6$2(ctx) {
     	let t;
 
@@ -26407,14 +26407,14 @@ var app = (function (marked) {
     		block,
     		id: create_default_slot_6$2.name,
     		type: "slot",
-    		source: "(125:4) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>changeDirectory(\\\"..\\\")}\\\">",
+    		source: "(126:4) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>changeDirectory(\\\"..\\\")}\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (126:4) <Icon class="material-icons" on:click="{()=>{getfiles(true, true)}}">
+    // (127:4) <Icon class="material-icons" on:click="{()=>{getfiles(true, true)}}">
     function create_default_slot_5$2(ctx) {
     	let t;
 
@@ -26434,14 +26434,14 @@ var app = (function (marked) {
     		block,
     		id: create_default_slot_5$2.name,
     		type: "slot",
-    		source: "(126:4) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>{getfiles(true, true)}}\\\">",
+    		source: "(127:4) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>{getfiles(true, true)}}\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (133:4) <FormField>
+    // (134:4) <FormField>
     function create_default_slot_4$3(ctx) {
     	let switch_1;
     	let updating_checked;
@@ -26498,14 +26498,14 @@ var app = (function (marked) {
     		block,
     		id: create_default_slot_4$3.name,
     		type: "slot",
-    		source: "(133:4) <FormField>",
+    		source: "(134:4) <FormField>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (136:8) 
+    // (137:8) 
     function create_label_slot$6(ctx) {
     	let span;
 
@@ -26514,7 +26514,7 @@ var app = (function (marked) {
     			span = element("span");
     			span.textContent = "Select All";
     			attr_dev(span, "slot", "label");
-    			add_location(span, file_1, 135, 8, 4918);
+    			add_location(span, file_1, 136, 8, 5278);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -26528,14 +26528,14 @@ var app = (function (marked) {
     		block,
     		id: create_label_slot$6.name,
     		type: "slot",
-    		source: "(136:8) ",
+    		source: "(137:8) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (144:12) <Icon class="material-icons" on>
+    // (145:12) <Icon class="material-icons" on>
     function create_default_slot_3$4(ctx) {
     	let t;
 
@@ -26555,14 +26555,14 @@ var app = (function (marked) {
     		block,
     		id: create_default_slot_3$4.name,
     		type: "slot",
-    		source: "(144:12) <Icon class=\\\"material-icons\\\" on>",
+    		source: "(145:12) <Icon class=\\\"material-icons\\\" on>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (145:12) <Icon class="material-icons" >
+    // (146:12) <Icon class="material-icons" >
     function create_default_slot_2$7(ctx) {
     	let t;
 
@@ -26582,14 +26582,14 @@ var app = (function (marked) {
     		block,
     		id: create_default_slot_2$7.name,
     		type: "slot",
-    		source: "(145:12) <Icon class=\\\"material-icons\\\" >",
+    		source: "(146:12) <Icon class=\\\"material-icons\\\" >",
     		ctx
     	});
 
     	return block;
     }
 
-    // (143:8) <IconButton  toggle bind:pressed={showfiles}>
+    // (144:8) <IconButton  toggle bind:pressed={showfiles}>
     function create_default_slot_1$b(ctx) {
     	let icon0;
     	let t;
@@ -26665,14 +26665,14 @@ var app = (function (marked) {
     		block,
     		id: create_default_slot_1$b.name,
     		type: "slot",
-    		source: "(143:8) <IconButton  toggle bind:pressed={showfiles}>",
+    		source: "(144:8) <IconButton  toggle bind:pressed={showfiles}>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (174:4) {:else}
+    // (175:4) {:else}
     function create_else_block$8(ctx) {
     	let div;
 
@@ -26681,7 +26681,7 @@ var app = (function (marked) {
     			div = element("div");
     			div.textContent = "...loading";
     			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-ujy50h");
-    			add_location(div, file_1, 174, 8, 6651);
+    			add_location(div, file_1, 175, 8, 7011);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -26698,14 +26698,14 @@ var app = (function (marked) {
     		block,
     		id: create_else_block$8.name,
     		type: "else",
-    		source: "(174:4) {:else}",
+    		source: "(175:4) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (172:30) 
+    // (173:30) 
     function create_if_block_3$3(ctx) {
     	let div;
 
@@ -26714,7 +26714,7 @@ var app = (function (marked) {
     			div = element("div");
     			div.textContent = "Location doesn't exist: Browse files again";
     			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-ujy50h");
-    			add_location(div, file_1, 172, 8, 6528);
+    			add_location(div, file_1, 173, 8, 6888);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -26731,14 +26731,14 @@ var app = (function (marked) {
     		block,
     		id: create_if_block_3$3.name,
     		type: "if",
-    		source: "(172:30) ",
+    		source: "(173:30) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (150:4) {#if files_loaded && locationStatus}
+    // (151:4) {#if files_loaded && locationStatus}
     function create_if_block$v(ctx) {
     	let current_block_type_index;
     	let if_block;
@@ -26783,7 +26783,7 @@ var app = (function (marked) {
 
     			attr_dev(div, "class", "otherFolderlist");
     			set_style(div, "cursor", "pointer");
-    			add_location(div, file_1, 162, 8, 6051);
+    			add_location(div, file_1, 163, 8, 6411);
     		},
     		m: function mount(target, anchor) {
     			if (~current_block_type_index) {
@@ -26881,14 +26881,14 @@ var app = (function (marked) {
     		block,
     		id: create_if_block$v.name,
     		type: "if",
-    		source: "(150:4) {#if files_loaded && locationStatus}",
+    		source: "(151:4) {#if files_loaded && locationStatus}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (159:40) 
+    // (160:40) 
     function create_if_block_2$6(ctx) {
     	let div;
     	let t0;
@@ -26902,7 +26902,7 @@ var app = (function (marked) {
     			t1 = text(/*filetype*/ ctx[2]);
     			t2 = text(" here!");
     			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-ujy50h");
-    			add_location(div, file_1, 159, 12, 5931);
+    			add_location(div, file_1, 160, 12, 6291);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -26924,14 +26924,14 @@ var app = (function (marked) {
     		block,
     		id: create_if_block_2$6.name,
     		type: "if",
-    		source: "(159:40) ",
+    		source: "(160:40) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (151:8) {#if showfiles && fullfiles.length }
+    // (152:8) {#if showfiles && fullfiles.length }
     function create_if_block_1$d(ctx) {
     	let div;
     	let virtualchecklist;
@@ -26973,7 +26973,7 @@ var app = (function (marked) {
     		c: function create() {
     			div = element("div");
     			create_component(virtualchecklist.$$.fragment);
-    			add_location(div, file_1, 151, 12, 5486);
+    			add_location(div, file_1, 152, 12, 5846);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -27024,14 +27024,14 @@ var app = (function (marked) {
     		block,
     		id: create_if_block_1$d.name,
     		type: "if",
-    		source: "(151:8) {#if showfiles && fullfiles.length }",
+    		source: "(152:8) {#if showfiles && fullfiles.length }",
     		ctx
     	});
 
     	return block;
     }
 
-    // (166:20) <Icon class="material-icons">
+    // (167:20) <Icon class="material-icons">
     function create_default_slot$n(ctx) {
     	let t;
 
@@ -27051,14 +27051,14 @@ var app = (function (marked) {
     		block,
     		id: create_default_slot$n.name,
     		type: "slot",
-    		source: "(166:20) <Icon class=\\\"material-icons\\\">",
+    		source: "(167:20) <Icon class=\\\"material-icons\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (164:12) {#each otherfolders as folder (folder.id)}
+    // (165:12) {#each otherfolders as folder (folder.id)}
     function create_each_block$f(key_1, ctx) {
     	let div1;
     	let icon;
@@ -27096,9 +27096,9 @@ var app = (function (marked) {
     			t1 = text(t1_value);
     			t2 = space();
     			attr_dev(div0, "class", "mdc-typography--subtitle1");
-    			add_location(div0, file_1, 166, 20, 6365);
+    			add_location(div0, file_1, 167, 20, 6725);
     			attr_dev(div1, "class", "align svelte-ujy50h");
-    			add_location(div1, file_1, 164, 16, 6177);
+    			add_location(div1, file_1, 165, 16, 6537);
     			this.first = div1;
     		},
     		m: function mount(target, anchor) {
@@ -27162,7 +27162,7 @@ var app = (function (marked) {
     		block,
     		id: create_each_block$f.name,
     		type: "each",
-    		source: "(164:12) {#each otherfolders as folder (folder.id)}",
+    		source: "(165:12) {#each otherfolders as folder (folder.id)}",
     		ctx
     	});
 
@@ -27315,16 +27315,16 @@ var app = (function (marked) {
     			t7 = space();
     			if_block.c();
     			attr_dev(div0, "class", "align center browseIcons svelte-ujy50h");
-    			add_location(div0, file_1, 123, 0, 4280);
+    			add_location(div0, file_1, 124, 0, 4640);
     			attr_dev(div1, "class", "align center svelte-ujy50h");
-    			add_location(div1, file_1, 131, 0, 4716);
+    			add_location(div1, file_1, 132, 0, 5076);
     			attr_dev(div2, "class", "mdc-typography--subtitle1");
-    			add_location(div2, file_1, 146, 8, 5311);
+    			add_location(div2, file_1, 147, 8, 5671);
     			attr_dev(div3, "class", "align folderlist svelte-ujy50h");
-    			add_location(div3, file_1, 141, 4, 5049);
+    			add_location(div3, file_1, 142, 4, 5409);
     			attr_dev(div4, "class", "folderfile-list svelte-ujy50h");
     			attr_dev(div4, "id", div4_id_value = "" + (/*filetype*/ ctx[2] + "_filebrowser"));
-    			add_location(div4, file_1, 140, 0, 4986);
+    			add_location(div4, file_1, 141, 0, 5346);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -27535,7 +27535,11 @@ var app = (function (marked) {
     		try {
     			console.log("Current location: ", currentLocation);
     			let folderfile = readdirSync(currentLocation);
-    			original_files = $$invalidate(3, fullfiles = folderfile.filter(file => file.endsWith(filetype) && lstatSync(pathJoin(currentLocation, file)).isFile()).map(file => file = { name: file, id: getID() }).sort((a, b) => a.name < b.name ? 1 : -1));
+    			const fileIncludePattern = new RegExp(`.+\\.[^fr]?${filetype}`); // f or r keyword is to avoid getting fscan and rscan files
+
+    			// original_files = fullfiles = folderfile.filter(file=>file.endsWith(filetype)&&lstatSync(pathJoin(currentLocation, file)).isFile()).map(file=>file={name:file, id:getID()}).sort((a,b)=>a.name<b.name?1:-1)
+    			original_files = $$invalidate(3, fullfiles = folderfile.filter(file => fileIncludePattern.test(file) && lstatSync(pathJoin(currentLocation, file)).isFile()).map(file => file = { name: file, id: getID() }).sort((a, b) => a.name < b.name ? 1 : -1));
+
     			$$invalidate(18, fullfileslist = fullfiles.map(file => file = file.name));
     			$$invalidate(6, otherfolders = folderfile.filter(file => lstatSync(pathJoin(currentLocation, file)).isDirectory()).map(file => file = { name: file, id: getID() }).sort((a, b) => a.name > b.name ? 1 : -1));
     			original_location = currentLocation;
@@ -62913,11 +62917,11 @@ var app = (function (marked) {
 
     function get_each_context$6(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[42] = list[i];
+    	child_ctx[44] = list[i];
     	return child_ctx;
     }
 
-    // (136:4) <svelte:fragment slot="buttonContainer">
+    // (139:4) <svelte:fragment slot="buttonContainer">
     function create_buttonContainer_slot$1(ctx) {
     	let div0;
     	let button0;
@@ -62934,7 +62938,7 @@ var app = (function (marked) {
     	let customiconswitch;
     	let updating_toggler;
     	let t9;
-    	let customswitch;
+    	let customswitch0;
     	let updating_selected;
     	let t10;
     	let div1;
@@ -62953,25 +62957,28 @@ var app = (function (marked) {
     	let textfield3;
     	let updating_value_3;
     	let t15;
+    	let customswitch1;
+    	let updating_selected_1;
+    	let t16;
     	let textfield4;
     	let updating_value_4;
-    	let t16;
+    	let t17;
     	let button4;
-    	let t18;
+    	let t19;
     	let rosaakinetics;
     	let current;
     	let mounted;
     	let dispose;
 
     	function textfield0_value_binding(value) {
-    		/*textfield0_value_binding*/ ctx[23](value);
+    		/*textfield0_value_binding*/ ctx[24](value);
     	}
 
     	let textfield0_props = {
     		type: "number",
     		input$min: "0",
     		input$max: /*dataLength*/ ctx[15],
-    		style: /*style*/ ctx[18],
+    		style: /*style*/ ctx[19],
     		label: "Time Index"
     	};
 
@@ -62981,10 +62988,10 @@ var app = (function (marked) {
 
     	textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
     	binding_callbacks.push(() => bind(textfield0, 'value', textfield0_value_binding));
-    	textfield0.$on("change", /*updateData*/ ctx[21]);
+    	textfield0.$on("change", /*updateData*/ ctx[22]);
 
     	function customiconswitch_toggler_binding(value) {
-    		/*customiconswitch_toggler_binding*/ ctx[27](value);
+    		/*customiconswitch_toggler_binding*/ ctx[28](value);
     	}
 
     	let customiconswitch_props = { icons: ["settings_ethernet", "code"] };
@@ -63000,26 +63007,26 @@ var app = (function (marked) {
 
     	binding_callbacks.push(() => bind(customiconswitch, 'toggler', customiconswitch_toggler_binding));
 
-    	function customswitch_selected_binding(value) {
-    		/*customswitch_selected_binding*/ ctx[28](value);
+    	function customswitch0_selected_binding(value) {
+    		/*customswitch0_selected_binding*/ ctx[29](value);
     	}
 
-    	let customswitch_props = { label: "Log" };
+    	let customswitch0_props = { label: "Log" };
 
     	if (/*logScale*/ ctx[14] !== void 0) {
-    		customswitch_props.selected = /*logScale*/ ctx[14];
+    		customswitch0_props.selected = /*logScale*/ ctx[14];
     	}
 
-    	customswitch = new CustomSwitch$1({
-    			props: customswitch_props,
+    	customswitch0 = new CustomSwitch$1({
+    			props: customswitch0_props,
     			$$inline: true
     		});
 
-    	binding_callbacks.push(() => bind(customswitch, 'selected', customswitch_selected_binding));
-    	customswitch.$on("change", /*linearlogCheck*/ ctx[20]);
+    	binding_callbacks.push(() => bind(customswitch0, 'selected', customswitch0_selected_binding));
+    	customswitch0.$on("change", /*linearlogCheck*/ ctx[21]);
 
     	function customselect0_picked_binding(value) {
-    		/*customselect0_picked_binding*/ ctx[29](value);
+    		/*customselect0_picked_binding*/ ctx[30](value);
     	}
 
     	let customselect0_props = {
@@ -63039,7 +63046,7 @@ var app = (function (marked) {
     	binding_callbacks.push(() => bind(customselect0, 'picked', customselect0_picked_binding));
 
     	function customselect1_picked_binding(value) {
-    		/*customselect1_picked_binding*/ ctx[30](value);
+    		/*customselect1_picked_binding*/ ctx[31](value);
     	}
 
     	let customselect1_props = {
@@ -63059,7 +63066,7 @@ var app = (function (marked) {
     	binding_callbacks.push(() => bind(customselect1, 'picked', customselect1_picked_binding));
 
     	function textfield1_value_binding(value) {
-    		/*textfield1_value_binding*/ ctx[31](value);
+    		/*textfield1_value_binding*/ ctx[32](value);
     	}
 
     	let textfield1_props = { label: "Power (ON, OFF) [mJ]" };
@@ -63072,12 +63079,12 @@ var app = (function (marked) {
     	binding_callbacks.push(() => bind(textfield1, 'value', textfield1_value_binding));
 
     	function textfield2_value_binding(value) {
-    		/*textfield2_value_binding*/ ctx[32](value);
+    		/*textfield2_value_binding*/ ctx[33](value);
     	}
 
     	let textfield2_props = {
     		type: "number",
-    		style: /*style*/ ctx[18],
+    		style: /*style*/ ctx[19],
     		label: "FELIX Hz"
     	};
 
@@ -63089,12 +63096,12 @@ var app = (function (marked) {
     	binding_callbacks.push(() => bind(textfield2, 'value', textfield2_value_binding));
 
     	function textfield3_value_binding(value) {
-    		/*textfield3_value_binding*/ ctx[33](value);
+    		/*textfield3_value_binding*/ ctx[34](value);
     	}
 
     	let textfield3_props = {
     		type: "number",
-    		style: /*style*/ ctx[18],
+    		style: /*style*/ ctx[19],
     		label: "Mass Index"
     	};
 
@@ -63105,13 +63112,30 @@ var app = (function (marked) {
     	textfield3 = new Textfield({ props: textfield3_props, $$inline: true });
     	binding_callbacks.push(() => bind(textfield3, 'value', textfield3_value_binding));
 
+    	function customswitch1_selected_binding(value) {
+    		/*customswitch1_selected_binding*/ ctx[35](value);
+    	}
+
+    	let customswitch1_props = { label: "save_output" };
+
+    	if (/*saveOutputDepletion*/ ctx[17] !== void 0) {
+    		customswitch1_props.selected = /*saveOutputDepletion*/ ctx[17];
+    	}
+
+    	customswitch1 = new CustomSwitch$1({
+    			props: customswitch1_props,
+    			$$inline: true
+    		});
+
+    	binding_callbacks.push(() => bind(customswitch1, 'selected', customswitch1_selected_binding));
+
     	function textfield4_value_binding(value) {
-    		/*textfield4_value_binding*/ ctx[34](value);
+    		/*textfield4_value_binding*/ ctx[36](value);
     	}
 
     	let textfield4_props = {
     		type: "number",
-    		style: /*style*/ ctx[18],
+    		style: /*style*/ ctx[19],
     		label: "Time Index"
     	};
 
@@ -63151,7 +63175,7 @@ var app = (function (marked) {
     			t8 = space();
     			create_component(customiconswitch.$$.fragment);
     			t9 = space();
-    			create_component(customswitch.$$.fragment);
+    			create_component(customswitch0.$$.fragment);
     			t10 = space();
     			div1 = element("div");
     			create_component(customselect0.$$.fragment);
@@ -63164,28 +63188,30 @@ var app = (function (marked) {
     			t14 = space();
     			create_component(textfield3.$$.fragment);
     			t15 = space();
-    			create_component(textfield4.$$.fragment);
+    			create_component(customswitch1.$$.fragment);
     			t16 = space();
+    			create_component(textfield4.$$.fragment);
+    			t17 = space();
     			button4 = element("button");
     			button4.textContent = "Submit";
-    			t18 = space();
+    			t19 = space();
     			create_component(rosaakinetics.$$.fragment);
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$f, 137, 12, 5179);
+    			add_location(button0, file$f, 140, 12, 5276);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$f, 141, 12, 5453);
+    			add_location(button1, file$f, 144, 12, 5550);
     			attr_dev(button2, "class", "button is-link");
-    			add_location(button2, file$f, 142, 12, 5563);
+    			add_location(button2, file$f, 145, 12, 5660);
     			attr_dev(button3, "class", "button is-link");
-    			add_location(button3, file$f, 144, 12, 5691);
+    			add_location(button3, file$f, 147, 12, 5788);
     			attr_dev(div0, "class", "align ");
     			set_style(div0, "align-items", "center");
-    			add_location(div0, file$f, 136, 8, 5116);
+    			add_location(div0, file$f, 139, 8, 5213);
     			attr_dev(button4, "class", "button is-link");
-    			add_location(button4, file$f, 158, 12, 6645);
+    			add_location(button4, file$f, 162, 12, 6819);
     			attr_dev(div1, "class", "align animated fadeIn");
     			toggle_class(div1, "hide", /*toggleRow*/ ctx[13]);
-    			add_location(div1, file$f, 149, 8, 6032);
+    			add_location(div1, file$f, 153, 8, 6131);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -63201,7 +63227,7 @@ var app = (function (marked) {
     			append_dev(div0, t8);
     			mount_component(customiconswitch, div0, null);
     			append_dev(div0, t9);
-    			mount_component(customswitch, div0, null);
+    			mount_component(customswitch0, div0, null);
     			insert_dev(target, t10, anchor);
     			insert_dev(target, div1, anchor);
     			mount_component(customselect0, div1, null);
@@ -63214,20 +63240,22 @@ var app = (function (marked) {
     			append_dev(div1, t14);
     			mount_component(textfield3, div1, null);
     			append_dev(div1, t15);
-    			mount_component(textfield4, div1, null);
+    			mount_component(customswitch1, div1, null);
     			append_dev(div1, t16);
+    			mount_component(textfield4, div1, null);
+    			append_dev(div1, t17);
     			append_dev(div1, button4);
-    			insert_dev(target, t18, anchor);
+    			insert_dev(target, t19, anchor);
     			mount_component(rosaakinetics, target, anchor);
     			current = true;
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(button0, "click", /*click_handler*/ ctx[22], false, false, false),
-    					listen_dev(button1, "click", /*click_handler_1*/ ctx[24], false, false, false),
-    					listen_dev(button2, "click", /*click_handler_2*/ ctx[25], false, false, false),
-    					listen_dev(button3, "click", /*click_handler_3*/ ctx[26], false, false, false),
-    					listen_dev(button4, "click", /*click_handler_4*/ ctx[35], false, false, false)
+    					listen_dev(button0, "click", /*click_handler*/ ctx[23], false, false, false),
+    					listen_dev(button1, "click", /*click_handler_1*/ ctx[25], false, false, false),
+    					listen_dev(button2, "click", /*click_handler_2*/ ctx[26], false, false, false),
+    					listen_dev(button3, "click", /*click_handler_3*/ ctx[27], false, false, false),
+    					listen_dev(button4, "click", /*click_handler_4*/ ctx[37], false, false, false)
     				];
 
     				mounted = true;
@@ -63253,15 +63281,15 @@ var app = (function (marked) {
     			}
 
     			customiconswitch.$set(customiconswitch_changes);
-    			const customswitch_changes = {};
+    			const customswitch0_changes = {};
 
     			if (!updating_selected && dirty[0] & /*logScale*/ 16384) {
     				updating_selected = true;
-    				customswitch_changes.selected = /*logScale*/ ctx[14];
+    				customswitch0_changes.selected = /*logScale*/ ctx[14];
     				add_flush_callback(() => updating_selected = false);
     			}
 
-    			customswitch.$set(customswitch_changes);
+    			customswitch0.$set(customswitch0_changes);
     			const customselect0_changes = {};
     			if (dirty[0] & /*fullfiles*/ 4096) customselect0_changes.options = /*fullfiles*/ ctx[12];
 
@@ -63309,6 +63337,15 @@ var app = (function (marked) {
     			}
 
     			textfield3.$set(textfield3_changes);
+    			const customswitch1_changes = {};
+
+    			if (!updating_selected_1 && dirty[0] & /*saveOutputDepletion*/ 131072) {
+    				updating_selected_1 = true;
+    				customswitch1_changes.selected = /*saveOutputDepletion*/ ctx[17];
+    				add_flush_callback(() => updating_selected_1 = false);
+    			}
+
+    			customswitch1.$set(customswitch1_changes);
     			const textfield4_changes = {};
 
     			if (!updating_value_4 && dirty[0] & /*timestartIndex*/ 256) {
@@ -63334,12 +63371,13 @@ var app = (function (marked) {
     			if (current) return;
     			transition_in(textfield0.$$.fragment, local);
     			transition_in(customiconswitch.$$.fragment, local);
-    			transition_in(customswitch.$$.fragment, local);
+    			transition_in(customswitch0.$$.fragment, local);
     			transition_in(customselect0.$$.fragment, local);
     			transition_in(customselect1.$$.fragment, local);
     			transition_in(textfield1.$$.fragment, local);
     			transition_in(textfield2.$$.fragment, local);
     			transition_in(textfield3.$$.fragment, local);
+    			transition_in(customswitch1.$$.fragment, local);
     			transition_in(textfield4.$$.fragment, local);
     			transition_in(rosaakinetics.$$.fragment, local);
     			current = true;
@@ -63347,12 +63385,13 @@ var app = (function (marked) {
     		o: function outro(local) {
     			transition_out(textfield0.$$.fragment, local);
     			transition_out(customiconswitch.$$.fragment, local);
-    			transition_out(customswitch.$$.fragment, local);
+    			transition_out(customswitch0.$$.fragment, local);
     			transition_out(customselect0.$$.fragment, local);
     			transition_out(customselect1.$$.fragment, local);
     			transition_out(textfield1.$$.fragment, local);
     			transition_out(textfield2.$$.fragment, local);
     			transition_out(textfield3.$$.fragment, local);
+    			transition_out(customswitch1.$$.fragment, local);
     			transition_out(textfield4.$$.fragment, local);
     			transition_out(rosaakinetics.$$.fragment, local);
     			current = false;
@@ -63361,7 +63400,7 @@ var app = (function (marked) {
     			if (detaching) detach_dev(div0);
     			destroy_component(textfield0);
     			destroy_component(customiconswitch);
-    			destroy_component(customswitch);
+    			destroy_component(customswitch0);
     			if (detaching) detach_dev(t10);
     			if (detaching) detach_dev(div1);
     			destroy_component(customselect0);
@@ -63369,8 +63408,9 @@ var app = (function (marked) {
     			destroy_component(textfield1);
     			destroy_component(textfield2);
     			destroy_component(textfield3);
+    			destroy_component(customswitch1);
     			destroy_component(textfield4);
-    			if (detaching) detach_dev(t18);
+    			if (detaching) detach_dev(t19);
     			destroy_component(rosaakinetics, detaching);
     			mounted = false;
     			run_all(dispose);
@@ -63381,14 +63421,14 @@ var app = (function (marked) {
     		block,
     		id: create_buttonContainer_slot$1.name,
     		type: "slot",
-    		source: "(136:4) <svelte:fragment slot=\\\"buttonContainer\\\">",
+    		source: "(139:4) <svelte:fragment slot=\\\"buttonContainer\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (167:8) {#each fileChecked as scanfile}
+    // (171:8) {#each fileChecked as scanfile}
     function create_each_block$6(ctx) {
     	let div;
     	let div_id_value;
@@ -63398,21 +63438,21 @@ var app = (function (marked) {
     	const block = {
     		c: function create() {
     			div = element("div");
-    			attr_dev(div, "id", div_id_value = "" + (/*scanfile*/ ctx[42] + "_tplot"));
+    			attr_dev(div, "id", div_id_value = "" + (/*scanfile*/ ctx[44] + "_tplot"));
     			attr_dev(div, "class", "graph__div");
     			set_style(div, "padding-bottom", "1em");
-    			add_location(div, file$f, 167, 12, 7009);
+    			add_location(div, file$f, 171, 12, 7183);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
 
     			if (!mounted) {
-    				dispose = action_destroyer(/*lookForGraph*/ ctx[41].call(null, div));
+    				dispose = action_destroyer(/*lookForGraph*/ ctx[43].call(null, div));
     				mounted = true;
     			}
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty[0] & /*fileChecked*/ 1 && div_id_value !== (div_id_value = "" + (/*scanfile*/ ctx[42] + "_tplot"))) {
+    			if (dirty[0] & /*fileChecked*/ 1 && div_id_value !== (div_id_value = "" + (/*scanfile*/ ctx[44] + "_tplot"))) {
     				attr_dev(div, "id", div_id_value);
     			}
     		},
@@ -63427,14 +63467,14 @@ var app = (function (marked) {
     		block,
     		id: create_each_block$6.name,
     		type: "each",
-    		source: "(167:8) {#each fileChecked as scanfile}",
+    		source: "(171:8) {#each fileChecked as scanfile}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (166:4) <svelte:fragment slot="plotContainer" let:lookForGraph>
+    // (170:4) <svelte:fragment slot="plotContainer" let:lookForGraph>
     function create_plotContainer_slot$1(ctx) {
     	let each_1_anchor;
     	let each_value = /*fileChecked*/ ctx[0];
@@ -63495,7 +63535,7 @@ var app = (function (marked) {
     		block,
     		id: create_plotContainer_slot$1.name,
     		type: "slot",
-    		source: "(166:4) <svelte:fragment slot=\\\"plotContainer\\\" let:lookForGraph>",
+    		source: "(170:4) <svelte:fragment slot=\\\"plotContainer\\\" let:lookForGraph>",
     		ctx
     	});
 
@@ -63509,11 +63549,11 @@ var app = (function (marked) {
     	let current;
 
     	function layout_currentLocation_binding(value) {
-    		/*layout_currentLocation_binding*/ ctx[36](value);
+    		/*layout_currentLocation_binding*/ ctx[38](value);
     	}
 
     	function layout_fileChecked_binding(value) {
-    		/*layout_fileChecked_binding*/ ctx[37](value);
+    		/*layout_fileChecked_binding*/ ctx[39](value);
     	}
 
     	let layout_props = {
@@ -63523,8 +63563,8 @@ var app = (function (marked) {
     		$$slots: {
     			plotContainer: [
     				create_plotContainer_slot$1,
-    				({ lookForGraph }) => ({ 41: lookForGraph }),
-    				({ lookForGraph }) => [0, lookForGraph ? 1024 : 0]
+    				({ lookForGraph }) => ({ 43: lookForGraph }),
+    				({ lookForGraph }) => [0, lookForGraph ? 4096 : 0]
     			],
     			buttonContainer: [create_buttonContainer_slot$1]
     		},
@@ -63542,7 +63582,7 @@ var app = (function (marked) {
     	layout = new Layout({ props: layout_props, $$inline: true });
     	binding_callbacks.push(() => bind(layout, 'currentLocation', layout_currentLocation_binding));
     	binding_callbacks.push(() => bind(layout, 'fileChecked', layout_fileChecked_binding));
-    	layout.$on("chdir", /*dir_changed*/ ctx[17]);
+    	layout.$on("chdir", /*dir_changed*/ ctx[18]);
 
     	const block = {
     		c: function create() {
@@ -63559,7 +63599,7 @@ var app = (function (marked) {
     			const layout_changes = {};
     			if (dirty[0] & /*graphPlotted*/ 64) layout_changes.graphPlotted = /*graphPlotted*/ ctx[6];
 
-    			if (dirty[0] & /*fileChecked, currentLocation, kineticMode, kineticData, toggleRow, timestartIndex, massIndex, nshots, power, fullfiles, resOFF_Files, resON_Files, logScale, openShell, dataLength, timestartIndexScan*/ 131007 | dirty[1] & /*$$scope*/ 16384) {
+    			if (dirty[0] & /*fileChecked, currentLocation, kineticMode, kineticData, toggleRow, timestartIndex, saveOutputDepletion, massIndex, nshots, power, fullfiles, resOFF_Files, resON_Files, logScale, openShell, dataLength, timestartIndexScan*/ 262079 | dirty[1] & /*$$scope*/ 65536) {
     				layout_changes.$$scope = { dirty, ctx };
     			}
 
@@ -63663,6 +63703,19 @@ var app = (function (marked) {
     			}
     		}
 
+    		const depletionArgs = [
+    			JSON.stringify({
+    				currentLocation,
+    				resON_Files,
+    				resOFF_Files,
+    				power,
+    				nshots,
+    				massIndex,
+    				timestartIndex,
+    				saveOutputDepletion
+    			})
+    		];
+
     		let pyfileInfo = {
     			scan: {
     				pyfile: "timescan.py",
@@ -63670,15 +63723,7 @@ var app = (function (marked) {
     			},
     			general: {
     				pyfile: "depletionscan.py",
-    				args: [
-    					currentLocation,
-    					resON_Files,
-    					resOFF_Files,
-    					...power.split(",").map(pow => parseFloat(pow)),
-    					nshots,
-    					massIndex,
-    					timestartIndex
-    				]
+    				args: depletionArgs
     			}
     		};
 
@@ -63756,6 +63801,7 @@ var app = (function (marked) {
     		});
     	}
 
+    	let saveOutputDepletion = true;
     	const writable_props = [];
 
     	Object_1.keys($$props).forEach(key => {
@@ -63784,7 +63830,7 @@ var app = (function (marked) {
     		$$invalidate(5, openShell);
     	}
 
-    	function customswitch_selected_binding(value) {
+    	function customswitch0_selected_binding(value) {
     		logScale = value;
     		$$invalidate(14, logScale);
     	}
@@ -63812,6 +63858,11 @@ var app = (function (marked) {
     	function textfield3_value_binding(value) {
     		massIndex = value;
     		$$invalidate(7, massIndex);
+    	}
+
+    	function customswitch1_selected_binding(value) {
+    		saveOutputDepletion = value;
+    		$$invalidate(17, saveOutputDepletion);
     	}
 
     	function textfield4_value_binding(value) {
@@ -63866,6 +63917,7 @@ var app = (function (marked) {
     		kineticMode,
     		kineticData,
     		updateData,
+    		saveOutputDepletion,
     		scanfiles
     	});
 
@@ -63883,12 +63935,13 @@ var app = (function (marked) {
     		if ('timestartIndexScan' in $$props) $$invalidate(11, timestartIndexScan = $$props.timestartIndexScan);
     		if ('fullfiles' in $$props) $$invalidate(12, fullfiles = $$props.fullfiles);
     		if ('toggleRow' in $$props) $$invalidate(13, toggleRow = $$props.toggleRow);
-    		if ('style' in $$props) $$invalidate(18, style = $$props.style);
+    		if ('style' in $$props) $$invalidate(19, style = $$props.style);
     		if ('logScale' in $$props) $$invalidate(14, logScale = $$props.logScale);
     		if ('timescanData' in $$props) timescanData = $$props.timescanData;
     		if ('dataLength' in $$props) $$invalidate(15, dataLength = $$props.dataLength);
     		if ('kineticMode' in $$props) $$invalidate(4, kineticMode = $$props.kineticMode);
     		if ('kineticData' in $$props) $$invalidate(16, kineticData = $$props.kineticData);
+    		if ('saveOutputDepletion' in $$props) $$invalidate(17, saveOutputDepletion = $$props.saveOutputDepletion);
     		if ('scanfiles' in $$props) scanfiles = $$props.scanfiles;
     	};
 
@@ -63928,6 +63981,7 @@ var app = (function (marked) {
     		logScale,
     		dataLength,
     		kineticData,
+    		saveOutputDepletion,
     		dir_changed,
     		style,
     		plotData,
@@ -63939,12 +63993,13 @@ var app = (function (marked) {
     		click_handler_2,
     		click_handler_3,
     		customiconswitch_toggler_binding,
-    		customswitch_selected_binding,
+    		customswitch0_selected_binding,
     		customselect0_picked_binding,
     		customselect1_picked_binding,
     		textfield1_value_binding,
     		textfield2_value_binding,
     		textfield3_value_binding,
+    		customswitch1_selected_binding,
     		textfield4_value_binding,
     		click_handler_4,
     		layout_currentLocation_binding,
