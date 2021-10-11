@@ -82353,7 +82353,7 @@ var app = (function (marked) {
         const response = await showMessageBoxSync({ title: "FELion_GUI3", type: "info", message: "Update succesfull", buttons: ["Restart", "Restart later"] });
         
         console.log("Restart: ", response);
-        response === 0 ? reload() : console.log("Restarting later");
+        response === 0 ? relaunch() : console.log("Restarting later");
 
     };
 
