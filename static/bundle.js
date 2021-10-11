@@ -82224,6 +82224,33 @@ var app = (function (marked) {
     	}
     }
 
+    function downloadFromGit(urlZip, zipFile) {
+
+        return new Promise((resolve, reject)=>{
+
+            const writer = fs.createWriteStream(zipFile);
+
+            writer.on("finish", () => resolve("Download completed") );
+
+
+            fetch(urlZip)
+                .then(response => response.body)
+                .then(body => {
+                    const reader = body.getReader();
+                    reader.read()
+                        .then( async function processFile({ done, value }) {
+                            if (done) {
+                                console.log("Stream complete");
+                                writer.end();
+                                return;
+                            }
+                            writer.write(value);
+                            return reader.read().then(processFile);
+                        });
+                })
+                .catch(err => reject(err));
+        })
+    }
     function download(updateFolder) {
 
         return new Promise(async (resolve, reject)=>{
@@ -82234,12 +82261,8 @@ var app = (function (marked) {
                 const zipFile = pathResolve(updateFolder, updatefilename);
 
                 const urlZip = get_store_value(urlzip);
-                
-                await request(urlZip, zipFile);
-
-                
-                
-                
+                const response = await downloadFromGit(urlZip, zipFile);
+                console.log(response);
                 const zip = admZip(zipFile);
                 zip.extractAllTo(updateFolder, /*overwrite*/true);
                 console.log("File Extracted");
@@ -83441,7 +83464,7 @@ var app = (function (marked) {
     const { console: console_1$1 } = globals;
     const file$4 = "src\\Pages\\Settings.svelte";
 
-    // (154:24) {#if $developerMode}
+    // (155:24) {#if $developerMode}
     function create_if_block$4(ctx) {
     	let div0;
     	let textfield0;
@@ -83527,13 +83550,13 @@ var app = (function (marked) {
     			div1 = element("div");
     			create_component(customswitch.$$.fragment);
     			attr_dev(button0, "class", "button is-link svelte-5mfame");
-    			add_location(button0, file$4, 158, 32, 5721);
+    			add_location(button0, file$4, 159, 32, 5778);
     			attr_dev(button1, "class", "button is-link svelte-5mfame");
-    			add_location(button1, file$4, 160, 32, 5835);
+    			add_location(button1, file$4, 161, 32, 5892);
     			attr_dev(div0, "class", "align svelte-5mfame");
-    			add_location(div0, file$4, 155, 28, 5432);
+    			add_location(div0, file$4, 156, 28, 5489);
     			attr_dev(div1, "class", "align svelte-5mfame");
-    			add_location(div1, file$4, 162, 28, 5971);
+    			add_location(div1, file$4, 163, 28, 6028);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -83616,7 +83639,7 @@ var app = (function (marked) {
     		block,
     		id: create_if_block$4.name,
     		type: "if",
-    		source: "(154:24) {#if $developerMode}",
+    		source: "(155:24) {#if $developerMode}",
     		ctx
     	});
 
@@ -83889,79 +83912,79 @@ var app = (function (marked) {
     			h13.textContent = "About";
     			attr_dev(div0, "class", "hvr-glow svelte-5mfame");
     			toggle_class(div0, "clicked", /*selected*/ ctx[0] === "Configuration");
-    			add_location(div0, file$4, 136, 16, 4379);
+    			add_location(div0, file$4, 137, 16, 4436);
     			attr_dev(div1, "class", "hvr-glow svelte-5mfame");
     			toggle_class(div1, "clicked", /*selected*/ ctx[0] === "Update");
-    			add_location(div1, file$4, 137, 16, 4501);
+    			add_location(div1, file$4, 138, 16, 4558);
     			attr_dev(div2, "class", "hvr-glow svelte-5mfame");
     			toggle_class(div2, "clicked", /*selected*/ ctx[0] === "Terminal");
-    			add_location(div2, file$4, 138, 16, 4609);
+    			add_location(div2, file$4, 139, 16, 4666);
     			attr_dev(div3, "class", "hvr-glow svelte-5mfame");
     			toggle_class(div3, "clicked", /*selected*/ ctx[0] === "About");
-    			add_location(div3, file$4, 140, 16, 4723);
+    			add_location(div3, file$4, 141, 16, 4780);
     			attr_dev(div4, "class", "title__div svelte-5mfame");
-    			add_location(div4, file$4, 135, 11, 4337);
+    			add_location(div4, file$4, 136, 11, 4394);
     			attr_dev(div5, "class", "box left_container__div svelte-5mfame");
-    			add_location(div5, file$4, 133, 8, 4285);
+    			add_location(div5, file$4, 134, 8, 4342);
     			attr_dev(h10, "class", "title svelte-5mfame");
-    			add_location(h10, file$4, 147, 20, 5062);
+    			add_location(h10, file$4, 148, 20, 5119);
     			attr_dev(div6, "class", "subtitle svelte-5mfame");
-    			add_location(div6, file$4, 149, 20, 5122);
+    			add_location(div6, file$4, 150, 20, 5179);
     			attr_dev(button0, "class", "button is-link svelte-5mfame");
-    			add_location(button0, file$4, 152, 24, 5231);
+    			add_location(button0, file$4, 153, 24, 5288);
     			attr_dev(div7, "class", "align svelte-5mfame");
-    			add_location(div7, file$4, 151, 20, 5186);
+    			add_location(div7, file$4, 152, 20, 5243);
     			attr_dev(div8, "class", "content animated fadeIn svelte-5mfame");
     			toggle_class(div8, "hide", /*selected*/ ctx[0] !== "Configuration");
-    			add_location(div8, file$4, 146, 16, 4963);
+    			add_location(div8, file$4, 147, 16, 5020);
     			attr_dev(h11, "class", "title svelte-5mfame");
-    			add_location(h11, file$4, 170, 20, 6435);
+    			add_location(h11, file$4, 171, 20, 6492);
     			attr_dev(div9, "class", "subtitle svelte-5mfame");
-    			add_location(div9, file$4, 172, 20, 6488);
+    			add_location(div9, file$4, 173, 20, 6545);
     			attr_dev(div10, "class", "align svelte-5mfame");
-    			add_location(div10, file$4, 175, 24, 6644);
+    			add_location(div10, file$4, 176, 24, 6701);
     			attr_dev(button1, "class", "button is-link svelte-5mfame");
     			attr_dev(button1, "id", "updateCheckBtn");
-    			add_location(button1, file$4, 182, 28, 7090);
+    			add_location(button1, file$4, 183, 28, 7147);
     			attr_dev(button2, "class", "button is-link svelte-5mfame");
     			attr_dev(button2, "id", "updateBtn");
-    			add_location(button2, file$4, 183, 28, 7236);
+    			add_location(button2, file$4, 184, 28, 7293);
     			attr_dev(button3, "class", "button is-warning svelte-5mfame");
-    			add_location(button3, file$4, 185, 28, 7375);
+    			add_location(button3, file$4, 186, 28, 7432);
     			attr_dev(div11, "class", "align svelte-5mfame");
-    			add_location(div11, file$4, 181, 24, 7041);
+    			add_location(div11, file$4, 182, 24, 7098);
     			attr_dev(button4, "class", "button is-link svelte-5mfame");
-    			add_location(button4, file$4, 191, 28, 7677);
+    			add_location(button4, file$4, 192, 28, 7734);
     			attr_dev(button5, "class", "button is-link svelte-5mfame");
-    			add_location(button5, file$4, 192, 28, 7771);
+    			add_location(button5, file$4, 193, 28, 7828);
     			attr_dev(div12, "class", "align svelte-5mfame");
-    			add_location(div12, file$4, 189, 24, 7535);
+    			add_location(div12, file$4, 190, 24, 7592);
     			attr_dev(div13, "class", "align svelte-5mfame");
-    			add_location(div13, file$4, 173, 20, 6577);
+    			add_location(div13, file$4, 174, 20, 6634);
     			attr_dev(div14, "class", "content animated fadeIn svelte-5mfame");
     			toggle_class(div14, "hide", /*selected*/ ctx[0] !== "Update");
-    			add_location(div14, file$4, 169, 16, 6343);
+    			add_location(div14, file$4, 170, 16, 6400);
     			attr_dev(h12, "class", "title svelte-5mfame");
-    			add_location(h12, file$4, 199, 20, 8049);
+    			add_location(h12, file$4, 200, 20, 8106);
     			attr_dev(div15, "class", "animated fadeIn svelte-5mfame");
     			toggle_class(div15, "hide", /*selected*/ ctx[0] !== "Terminal");
-    			add_location(div15, file$4, 198, 16, 7963);
+    			add_location(div15, file$4, 199, 16, 8020);
     			attr_dev(h13, "class", "title svelte-5mfame");
-    			add_location(h13, file$4, 204, 20, 8325);
+    			add_location(h13, file$4, 205, 20, 8382);
     			attr_dev(div16, "class", "align animated fadeIn svelte-5mfame");
     			toggle_class(div16, "hide", /*selected*/ ctx[0] !== "About");
-    			add_location(div16, file$4, 203, 16, 8236);
+    			add_location(div16, file$4, 204, 16, 8293);
     			attr_dev(div17, "class", "container right svelte-5mfame");
     			attr_dev(div17, "id", "Settings_right_column");
-    			add_location(div17, file$4, 145, 12, 4889);
+    			add_location(div17, file$4, 146, 12, 4946);
     			attr_dev(div18, "class", "box svelte-5mfame");
-    			add_location(div18, file$4, 144, 8, 4858);
+    			add_location(div18, file$4, 145, 8, 4915);
     			attr_dev(div19, "class", "main__div svelte-5mfame");
-    			add_location(div19, file$4, 132, 4, 4252);
+    			add_location(div19, file$4, 133, 4, 4309);
     			attr_dev(section, "class", "section animated fadeIn svelte-5mfame");
     			attr_dev(section, "id", "Settings");
     			set_style(section, "display", "none");
-    			add_location(section, file$4, 131, 0, 4170);
+    			add_location(section, file$4, 132, 0, 4227);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -84308,7 +84331,7 @@ var app = (function (marked) {
     	const update = async () => {
     		try {
     			const updateFolder = pathResolve(__dirname, "..", "update");
-    			let target = document.getElementById("updateBtn");
+    			const target = document.getElementById("updateBtn");
     			target.classList.toggle("is-loading");
 
     			if (!existsSync(updateFolder)) {
@@ -84316,7 +84339,9 @@ var app = (function (marked) {
     			}
 
     			await download(updateFolder);
-    			InstallUpdate(target, updateFolder);
+
+    			// InstallUpdate(target, updateFolder)
+    			target.classList.toggle("is-loading");
     		} catch(error) {
     			mainPreModal.error(error.stack || error);
     		}

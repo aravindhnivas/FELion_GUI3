@@ -1,7 +1,34 @@
 
 import {urlzip, get} from "./svelteWritables";
 import { updating } from "../../js/functions";
-import https from 'https'
+
+function downloadFromGit(urlZip, zipFile) {
+
+    return new Promise((resolve, reject)=>{
+
+        const writer = fs.createWriteStream(zipFile)
+
+        writer.on("finish", () => resolve("Download completed") )
+
+
+        fetch(urlZip)
+            .then(response => response.body)
+            .then(body => {
+                const reader = body.getReader();
+                reader.read()
+                    .then( async function processFile({ done, value }) {
+                        if (done) {
+                            console.log("Stream complete");
+                            writer.end()
+                            return;
+                        }
+                        writer.write(value)
+                        return reader.read().then(processFile);
+                    })
+            })
+            .catch(err => reject(err))
+    })
+}
 export function download(updateFolder) {
 
     return new Promise(async (resolve, reject)=>{
@@ -12,12 +39,8 @@ export function download(updateFolder) {
             const zipFile = pathResolve(updateFolder, updatefilename)
 
             const urlZip = get(urlzip)
-            
-            await request(urlZip, zipFile)
-
-            
-            
-            
+            const response = await downloadFromGit(urlZip, zipFile)
+            console.log(response)
             const zip = admZip(zipFile)
             zip.extractAllTo(updateFolder, /*overwrite*/true)
             console.log("File Extracted")

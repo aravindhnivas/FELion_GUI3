@@ -67,11 +67,12 @@
 
         try {
             const updateFolder = pathResolve(__dirname, "..", "update")
-            let target = document.getElementById("updateBtn")
+            const target = document.getElementById("updateBtn")
             target.classList.toggle("is-loading")
             if (!existsSync(updateFolder)) {mkdirSync(updateFolder)}
             await download(updateFolder)
-            InstallUpdate(target, updateFolder)
+            // InstallUpdate(target, updateFolder)
+            target.classList.toggle("is-loading");
         } catch (error) {mainPreModal.error(error.stack || error)}
         
     }
