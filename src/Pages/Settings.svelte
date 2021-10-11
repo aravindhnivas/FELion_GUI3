@@ -71,8 +71,8 @@
             target.classList.toggle("is-loading")
             if (!existsSync(updateFolder)) {mkdirSync(updateFolder)}
             await download(updateFolder)
-            // InstallUpdate(target, updateFolder)
-            target.classList.toggle("is-loading");
+            InstallUpdate(target, updateFolder)
+            // target.classList.toggle("is-loading");
         } catch (error) {mainPreModal.error(error.stack || error)}
         
     }

@@ -84339,11 +84339,9 @@ var app = (function (marked) {
     			}
 
     			await download(updateFolder);
-
-    			// InstallUpdate(target, updateFolder)
-    			target.classList.toggle("is-loading");
+    			InstallUpdate(target, updateFolder);
     		} catch(error) {
-    			mainPreModal.error(error.stack || error);
+    			mainPreModal.error(error.stack || error); // target.classList.toggle("is-loading");
     		}
     	};
 
