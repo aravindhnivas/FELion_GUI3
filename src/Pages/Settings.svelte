@@ -76,21 +76,13 @@
         } catch (error) {mainPreModal.error(error.stack || error)}
         
     }
-
     let commandToRun = "", commandArgsToRun = "";
-    
-    // $: if($developerMode&&$windowLoaded&&!$suppressInitialDeveloperWarning) {window.showStackContext({title:"Warning", text:"If python path is invalid, the program might not work", type:"error"});}
-
-    // $: if($github.branch === "developer") {
-    //     window.showStackContext({title:"Warning", text:"Developer channel may not be stable and contains bugs.", type:"error"});
-
-    // }
 
 </script>
 
 <style lang="scss">
-
     section { margin: 0; padding: 0; }
+
     .clicked {border-left: 2px solid #fafafa; border: solid 1px; border-radius: 1em;}
 
     * :global(option) { color: black; }
