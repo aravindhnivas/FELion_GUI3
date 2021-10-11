@@ -61,7 +61,6 @@
     const bqlensLabel = ["bq1", "bq2", "bq3", "bq4"]
     const benderLabel = ["Bender in", "Bender outer", "Bender inner"]
     let selected_file = "";
-
 </script>
 
 <style>
@@ -83,6 +82,7 @@
     }
 
 </style>
+
 <button class="button is-link" on:click="{()=>{active = true}}">GetLabviewSettings</button>
 
 {#if active}
