@@ -1,7 +1,7 @@
 
 const { contextBridge } = require('electron')
 const path = require("path")
-const fs = require("fs")
+const fs = require("fs-extra")
 
 const JSONdb = require(path.resolve(__dirname, "../../static/assets/js/JSONdb"))
 const db = new JSONdb(path.resolve(__dirname, "../../static/db.json"))
@@ -18,13 +18,14 @@ const versionFile_ = path.resolve(__dirname, "../../version.json")
 
 
 
-const versionFileContent = fs.readFileSync(versionFile_).toString("utf-8")
-const versionFileJSON = JSON.parse(versionFileContent)
+// const versionFileContent = fs.readFileSync(versionFile_).toString("utf-8")
+// const versionFileJSON = JSON.parse(versionFileContent)
+const versionFileJSON = fs.readJSONSync(versionFile_)
 const currentVersion = versionFileJSON.version
 db.set("version", currentVersion)
 contextBridge.exposeInMainWorld("versionFile_", versionFile_)
 
-contextBridge.exposeInMainWorld("versionFileContent", versionFileContent)
+// contextBridge.exposeInMainWorld("versionFileContent", versionFileContent)
 contextBridge.exposeInMainWorld("versionFileJSON", versionFileJSON)
 contextBridge.exposeInMainWorld("currentVersion", currentVersion)
 

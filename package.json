@@ -64,7 +64,11 @@
     "adm-zip": "^0.4.14",
     "bulma-extensions": "^6.2.7",
     "cooltipz-css": "^1.6.8",
+    "dotenv": "^10.0.0",
+    "electron-is-packaged": "^1.0.2",
     "electron-squirrel-startup": "^1.0.0",
+    "fs-extra": "^10.0.0",
+    "node-7z-forall": "^2.1.5",
     "recursive-copy": "^2.0.11",
     "yaml": "2.0.0-6"
   }

@@ -14,16 +14,15 @@
     import {download} from "./settings/donwloadUpdate";
     
     import {InstallUpdate} from "./settings/installUpdate";
-    
-    // import { Button, Message, Snackbar } from 'svelma'
-
-    
     import {updateCheck} from "./settings/updateCheck";
+    
+    
+    
     import {resetPyConfig, updatePyConfig} from "./settings/checkPython";
     import {backupRestore} from "./settings/backupAndRestore";
     import {tick} from "svelte";
     import Terminal from '../components/Terminal.svelte';
-
+    const isPackaged = !__main_location.includes("node_modules");
     const backup = (event) => {
         backupRestore({event, method:"backup"})
             .then(()=>console.log("Backup Completed"))
@@ -61,9 +60,12 @@
         return ()=>{clearInterval(timer_for_update)}
 
     })
-
+    console.log("Application packaged: ", isPackaged)
     const handlepythonPathCheck = () => { console.log("Python path checking done") }
+    
     const update = async () => {
+
+        if(!isPackaged) return window.createToast("Application not packaged", "danger")
 
         try {
             const updateFolder = pathResolve(__dirname, "..", "update")
@@ -72,7 +74,6 @@
             if (!existsSync(updateFolder)) {mkdirSync(updateFolder)}
             await download(updateFolder)
             InstallUpdate(target, updateFolder)
-            // target.classList.toggle("is-loading");
         } catch (error) {mainPreModal.error(error.stack || error)}
         
     }

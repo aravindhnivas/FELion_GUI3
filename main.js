@@ -26,7 +26,6 @@ app.whenReady().then(() => {
   createWindow()
   require("./main/Menu")
   require("./main/dialogs")
-
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow()

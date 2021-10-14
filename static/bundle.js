@@ -518,7 +518,7 @@ var app = (function (marked) {
             for (let i = 0; i < dirty_components.length; i += 1) {
                 const component = dirty_components[i];
                 set_current_component(component);
-                update(component.$$);
+                update$1(component.$$);
             }
             set_current_component(null);
             dirty_components.length = 0;
@@ -544,7 +544,7 @@ var app = (function (marked) {
         flushing = false;
         seen_callbacks.clear();
     }
-    function update($$) {
+    function update$1($$) {
         if ($$.fragment !== null) {
             $$.update();
             run_all($$.before_update);
@@ -5504,7 +5504,7 @@ var app = (function (marked) {
     const github = writable({ branch: "master", repo: "FELion_GUI3", username: "aravindhnivas" });
     const githubRepo = derived(github, ($github) => `https://raw.githubusercontent.com/${$github.username}/${$github.repo}/${$github.branch}`);
     const versionJson = derived(githubRepo, ($githubRepo) => `${$githubRepo}/version.json`);
-    const urlzip = derived(github, ($github) => `https://codeload.github.com/${$github.username}/${$github.repo}/zip/${$github.branch}`);
+    derived(github, ($github) => `https://codeload.github.com/${$github.username}/${$github.repo}/zip/${$github.branch}`);
 
     if (!db.get("pythonpath")) db.set("pythonpath", pathResolve(__dirname, "../python3/python"));
     if (!db.get("pythonscript")) db.set("pythonscript", pathResolve(__dirname, "assets/python_files"));
@@ -82224,7 +82224,40 @@ var app = (function (marked) {
     	}
     }
 
-    function downloadFromGit(urlZip, zipFile) {
+    // import { extractFull } from 'node-7z-forall';
+
+    const isPackaged = !__main_location.includes("node_modules");
+    const copyFiles = (downloadedFile) => {
+        try {
+
+            // const app_location = pathResolve(__main_location, "resources/app")
+            // fs.emptyDirSync(app_location)
+            fs.copySync(downloadedFile, __main_location);
+            console.log('success!');
+
+        } catch (err) { console.error(err); }
+    };
+
+
+
+
+
+    var update = async (zipfile, extractedFolder) => {
+        if(!isPackaged) return window.createToast("Application not packaged", "danger")
+        extractFull(zipfile, extractedFolder, {})
+            .then(() => {
+                copyFiles(zipfile);
+            })
+            .catch( (error) => mainPreModal.error(error.stack || error) );
+    };
+
+    const filename = "update.7z";
+    const foldername = "update";
+    const {urlZip} = versionFileJSON;
+
+    const zipFile = pathResolve(TEMP, filename);
+    const extractedFolder = pathResolve(TEMP, foldername);
+    function downloadFromGit() {
 
         return new Promise((resolve, reject)=>{
 
@@ -82251,25 +82284,21 @@ var app = (function (marked) {
                 .catch(err => reject(err));
         })
     }
-    function download(updateFolder) {
 
+
+    function download() {
         return new Promise(async (resolve, reject)=>{
-
             try {
-                updating.set(true);
-                const updatefilename = "update.zip";
-                const zipFile = pathResolve(updateFolder, updatefilename);
 
-                const urlZip = get_store_value(urlzip);
+                updating.set(true);
                 const response = await downloadFromGit(urlZip, zipFile);
                 console.log(response);
-                const zip = admZip(zipFile);
-                zip.extractAllTo(updateFolder, /*overwrite*/true);
-                console.log("File Extracted");
-                resolve("File extracted");
-                window.createToast("Downloading Completed");
+                update(zipFile, extractedFolder);
+
+                fs.emptyDirSync(TEMP);
             } catch (error) {reject(error);}
         })
+
     }
 
     // const copy = require('recursive-copy');
@@ -83464,7 +83493,7 @@ var app = (function (marked) {
     const { console: console_1$1 } = globals;
     const file$4 = "src\\Pages\\Settings.svelte";
 
-    // (147:24) {#if $developerMode}
+    // (148:24) {#if $developerMode}
     function create_if_block$4(ctx) {
     	let div0;
     	let textfield0;
@@ -83550,13 +83579,13 @@ var app = (function (marked) {
     			div1 = element("div");
     			create_component(customswitch.$$.fragment);
     			attr_dev(button0, "class", "button is-link svelte-5mfame");
-    			add_location(button0, file$4, 151, 32, 5373);
+    			add_location(button0, file$4, 152, 32, 5478);
     			attr_dev(button1, "class", "button is-link svelte-5mfame");
-    			add_location(button1, file$4, 153, 32, 5487);
+    			add_location(button1, file$4, 154, 32, 5592);
     			attr_dev(div0, "class", "align svelte-5mfame");
-    			add_location(div0, file$4, 148, 28, 5084);
+    			add_location(div0, file$4, 149, 28, 5189);
     			attr_dev(div1, "class", "align svelte-5mfame");
-    			add_location(div1, file$4, 155, 28, 5623);
+    			add_location(div1, file$4, 156, 28, 5728);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -83639,7 +83668,7 @@ var app = (function (marked) {
     		block,
     		id: create_if_block$4.name,
     		type: "if",
-    		source: "(147:24) {#if $developerMode}",
+    		source: "(148:24) {#if $developerMode}",
     		ctx
     	});
 
@@ -83912,79 +83941,79 @@ var app = (function (marked) {
     			h13.textContent = "About";
     			attr_dev(div0, "class", "hvr-glow svelte-5mfame");
     			toggle_class(div0, "clicked", /*selected*/ ctx[0] === "Configuration");
-    			add_location(div0, file$4, 129, 16, 4031);
+    			add_location(div0, file$4, 130, 16, 4136);
     			attr_dev(div1, "class", "hvr-glow svelte-5mfame");
     			toggle_class(div1, "clicked", /*selected*/ ctx[0] === "Update");
-    			add_location(div1, file$4, 130, 16, 4153);
+    			add_location(div1, file$4, 131, 16, 4258);
     			attr_dev(div2, "class", "hvr-glow svelte-5mfame");
     			toggle_class(div2, "clicked", /*selected*/ ctx[0] === "Terminal");
-    			add_location(div2, file$4, 131, 16, 4261);
+    			add_location(div2, file$4, 132, 16, 4366);
     			attr_dev(div3, "class", "hvr-glow svelte-5mfame");
     			toggle_class(div3, "clicked", /*selected*/ ctx[0] === "About");
-    			add_location(div3, file$4, 133, 16, 4375);
+    			add_location(div3, file$4, 134, 16, 4480);
     			attr_dev(div4, "class", "title__div svelte-5mfame");
-    			add_location(div4, file$4, 128, 11, 3989);
+    			add_location(div4, file$4, 129, 11, 4094);
     			attr_dev(div5, "class", "box left_container__div svelte-5mfame");
-    			add_location(div5, file$4, 126, 8, 3937);
+    			add_location(div5, file$4, 127, 8, 4042);
     			attr_dev(h10, "class", "title svelte-5mfame");
-    			add_location(h10, file$4, 140, 20, 4714);
+    			add_location(h10, file$4, 141, 20, 4819);
     			attr_dev(div6, "class", "subtitle svelte-5mfame");
-    			add_location(div6, file$4, 142, 20, 4774);
+    			add_location(div6, file$4, 143, 20, 4879);
     			attr_dev(button0, "class", "button is-link svelte-5mfame");
-    			add_location(button0, file$4, 145, 24, 4883);
+    			add_location(button0, file$4, 146, 24, 4988);
     			attr_dev(div7, "class", "align svelte-5mfame");
-    			add_location(div7, file$4, 144, 20, 4838);
+    			add_location(div7, file$4, 145, 20, 4943);
     			attr_dev(div8, "class", "content animated fadeIn svelte-5mfame");
     			toggle_class(div8, "hide", /*selected*/ ctx[0] !== "Configuration");
-    			add_location(div8, file$4, 139, 16, 4615);
+    			add_location(div8, file$4, 140, 16, 4720);
     			attr_dev(h11, "class", "title svelte-5mfame");
-    			add_location(h11, file$4, 163, 20, 6087);
+    			add_location(h11, file$4, 164, 20, 6192);
     			attr_dev(div9, "class", "subtitle svelte-5mfame");
-    			add_location(div9, file$4, 165, 20, 6140);
+    			add_location(div9, file$4, 166, 20, 6245);
     			attr_dev(div10, "class", "align svelte-5mfame");
-    			add_location(div10, file$4, 168, 24, 6296);
+    			add_location(div10, file$4, 169, 24, 6401);
     			attr_dev(button1, "class", "button is-link svelte-5mfame");
     			attr_dev(button1, "id", "updateCheckBtn");
-    			add_location(button1, file$4, 175, 28, 6742);
+    			add_location(button1, file$4, 176, 28, 6847);
     			attr_dev(button2, "class", "button is-link svelte-5mfame");
     			attr_dev(button2, "id", "updateBtn");
-    			add_location(button2, file$4, 176, 28, 6888);
+    			add_location(button2, file$4, 177, 28, 6993);
     			attr_dev(button3, "class", "button is-warning svelte-5mfame");
-    			add_location(button3, file$4, 178, 28, 7027);
+    			add_location(button3, file$4, 179, 28, 7132);
     			attr_dev(div11, "class", "align svelte-5mfame");
-    			add_location(div11, file$4, 174, 24, 6693);
+    			add_location(div11, file$4, 175, 24, 6798);
     			attr_dev(button4, "class", "button is-link svelte-5mfame");
-    			add_location(button4, file$4, 184, 28, 7329);
+    			add_location(button4, file$4, 185, 28, 7434);
     			attr_dev(button5, "class", "button is-link svelte-5mfame");
-    			add_location(button5, file$4, 185, 28, 7423);
+    			add_location(button5, file$4, 186, 28, 7528);
     			attr_dev(div12, "class", "align svelte-5mfame");
-    			add_location(div12, file$4, 182, 24, 7187);
+    			add_location(div12, file$4, 183, 24, 7292);
     			attr_dev(div13, "class", "align svelte-5mfame");
-    			add_location(div13, file$4, 166, 20, 6229);
+    			add_location(div13, file$4, 167, 20, 6334);
     			attr_dev(div14, "class", "content animated fadeIn svelte-5mfame");
     			toggle_class(div14, "hide", /*selected*/ ctx[0] !== "Update");
-    			add_location(div14, file$4, 162, 16, 5995);
+    			add_location(div14, file$4, 163, 16, 6100);
     			attr_dev(h12, "class", "title svelte-5mfame");
-    			add_location(h12, file$4, 192, 20, 7701);
+    			add_location(h12, file$4, 193, 20, 7806);
     			attr_dev(div15, "class", "animated fadeIn svelte-5mfame");
     			toggle_class(div15, "hide", /*selected*/ ctx[0] !== "Terminal");
-    			add_location(div15, file$4, 191, 16, 7615);
+    			add_location(div15, file$4, 192, 16, 7720);
     			attr_dev(h13, "class", "title svelte-5mfame");
-    			add_location(h13, file$4, 197, 20, 7977);
+    			add_location(h13, file$4, 198, 20, 8082);
     			attr_dev(div16, "class", "align animated fadeIn svelte-5mfame");
     			toggle_class(div16, "hide", /*selected*/ ctx[0] !== "About");
-    			add_location(div16, file$4, 196, 16, 7888);
+    			add_location(div16, file$4, 197, 16, 7993);
     			attr_dev(div17, "class", "container right svelte-5mfame");
     			attr_dev(div17, "id", "Settings_right_column");
-    			add_location(div17, file$4, 138, 12, 4541);
+    			add_location(div17, file$4, 139, 12, 4646);
     			attr_dev(div18, "class", "box svelte-5mfame");
-    			add_location(div18, file$4, 137, 8, 4510);
+    			add_location(div18, file$4, 138, 8, 4615);
     			attr_dev(div19, "class", "main__div svelte-5mfame");
-    			add_location(div19, file$4, 125, 4, 3904);
+    			add_location(div19, file$4, 126, 4, 4009);
     			attr_dev(section, "class", "section animated fadeIn svelte-5mfame");
     			attr_dev(section, "id", "Settings");
     			set_style(section, "display", "none");
-    			add_location(section, file$4, 124, 0, 3822);
+    			add_location(section, file$4, 125, 0, 3927);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -84275,6 +84304,7 @@ var app = (function (marked) {
     	component_subscribe($$self, backupName, $$value => $$invalidate(11, $backupName = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Settings', slots, []);
+    	const isPackaged = !__main_location.includes("node_modules");
 
     	const backup = event => {
     		backupRestore({ event, method: "backup" }).then(() => console.log("Backup Completed")).catch(error => {
@@ -84324,11 +84354,15 @@ var app = (function (marked) {
     		};
     	});
 
+    	console.log("Application packaged: ", isPackaged);
+
     	const handlepythonPathCheck = () => {
     		console.log("Python path checking done");
     	};
 
     	const update = async () => {
+    		if (!isPackaged) return window.createToast("Application not packaged", "danger");
+
     		try {
     			const updateFolder = pathResolve(__dirname, "..", "update");
     			const target = document.getElementById("updateBtn");
@@ -84341,7 +84375,7 @@ var app = (function (marked) {
     			await download(updateFolder);
     			InstallUpdate(target, updateFolder);
     		} catch(error) {
-    			mainPreModal.error(error.stack || error); // target.classList.toggle("is-loading");
+    			mainPreModal.error(error.stack || error);
     		}
     	};
 
@@ -84441,6 +84475,7 @@ var app = (function (marked) {
     		backupRestore,
     		tick,
     		Terminal,
+    		isPackaged,
     		backup,
     		restore,
     		selected,

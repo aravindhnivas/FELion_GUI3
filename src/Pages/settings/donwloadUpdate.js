@@ -1,8 +1,15 @@
 
-import {urlzip, get} from "./svelteWritables";
+// import {urlzip, get} from "./svelteWritables";
 import { updating } from "../../js/functions";
+import update from "./update.js";
 
-function downloadFromGit(urlZip, zipFile) {
+const filename = "update.7z"
+const foldername = "update"
+const {urlZip} = versionFileJSON
+
+const zipFile = pathResolve(TEMP, filename)
+const extractedFolder = pathResolve(TEMP, foldername)
+function downloadFromGit() {
 
     return new Promise((resolve, reject)=>{
 
@@ -29,23 +36,19 @@ function downloadFromGit(urlZip, zipFile) {
             .catch(err => reject(err))
     })
 }
-export function download(updateFolder) {
 
+
+export function download() {
     return new Promise(async (resolve, reject)=>{
-
         try {
-            updating.set(true)
-            const updatefilename = "update.zip"
-            const zipFile = pathResolve(updateFolder, updatefilename)
 
-            const urlZip = get(urlzip)
+            updating.set(true)
             const response = await downloadFromGit(urlZip, zipFile)
             console.log(response)
-            const zip = admZip(zipFile)
-            zip.extractAllTo(updateFolder, /*overwrite*/true)
-            console.log("File Extracted")
-            resolve("File extracted")
-            window.createToast("Downloading Completed")
+            update(zipFile, extractedFolder)
+
+            fs.emptyDirSync(TEMP)
         } catch (error) {reject(error)}
     })
+
 }
