@@ -7,10 +7,5 @@ require("./preload/child-process-modules")
 require("./preload/dialogs-modules")
 
 require("./preload/jsondb-modules")
-const admZip = require("adm-zip")
-contextBridge.exposeInMainWorld("admZip", (zipFile)=>{
-    const zip = new admZip(zipFile);
-
-    return {extractAllTo(updateFolder, overwrite){zip.extractAllTo(updateFolder, overwrite)}}
-})
+require("./preload/extract-modules")
 contextBridge.exposeInMainWorld("versions", versions)
