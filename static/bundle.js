@@ -518,7 +518,7 @@ var app = (function (marked) {
             for (let i = 0; i < dirty_components.length; i += 1) {
                 const component = dirty_components[i];
                 set_current_component(component);
-                update$1(component.$$);
+                update(component.$$);
             }
             set_current_component(null);
             dirty_components.length = 0;
@@ -544,7 +544,7 @@ var app = (function (marked) {
         flushing = false;
         seen_callbacks.clear();
     }
-    function update$1($$) {
+    function update($$) {
         if ($$.fragment !== null) {
             $$.update();
             run_all($$.before_update);
@@ -82224,180 +82224,34 @@ var app = (function (marked) {
     	}
     }
 
-    // import { extractFull } from 'node-7z-forall';
-
-    const isPackaged = !__main_location.includes("node_modules");
-    const copyFiles = (downloadedFile) => {
-        try {
-
-            // const app_location = pathResolve(__main_location, "resources/app")
-            // fs.emptyDirSync(app_location)
-            fs.copySync(downloadedFile, __main_location);
-            console.log('success!');
-
-        } catch (err) { console.error(err); }
-    };
-
-
-
-
-
-    var update = async (zipfile, extractedFolder) => {
-        if(!isPackaged) return window.createToast("Application not packaged", "danger")
-        extractFull(zipfile, extractedFolder, {})
-            .then(() => {
-                copyFiles(zipfile);
-            })
-            .catch( (error) => mainPreModal.error(error.stack || error) );
-    };
-
-    const filename = "update.7z";
-    const foldername = "update";
-    const {urlZip} = versionFileJSON;
-
-    const zipFile = pathResolve(TEMP, filename);
-    const extractedFolder = pathResolve(TEMP, foldername);
-    function downloadFromGit() {
-
+    function downloadFromGit(zipFile) {
         return new Promise((resolve, reject)=>{
-
+            console.log("Downloading file");
             const writer = fs.createWriteStream(zipFile);
-
-            writer.on("finish", () => resolve("Download completed") );
-
+            writer.on("finish", () => {resolve(); console.log("Download completed"); } );
+            const {urlZip} = versionFileJSON;
 
             fetch(urlZip)
                 .then(response => response.body)
                 .then(body => {
                     const reader = body.getReader();
-                    reader.read()
-                        .then( async function processFile({ done, value }) {
-                            if (done) {
-                                console.log("Stream complete");
-                                writer.end();
-                                return;
-                            }
-                            writer.write(value);
-                            return reader.read().then(processFile);
-                        });
+
+                    reader.read().then( function processFile({ done, value }) {
+                        if (done) {
+                            console.log("Stream complete");
+                            writer.end();
+                            return;
+                        }
+
+                        writer.write(value);
+                        return reader.read().then(processFile);
+                    });
                 })
                 .catch(err => reject(err));
-        })
-    }
-
-
-    function download() {
-        return new Promise(async (resolve, reject)=>{
-            try {
-
-                updating.set(true);
-                const response = await downloadFromGit(urlZip, zipFile);
-                console.log(response);
-                update(zipFile, extractedFolder);
-
-                fs.emptyDirSync(TEMP);
-            } catch (error) {reject(error);}
-        })
-
-    }
-
-    // const copy = require('recursive-copy');
-    // import copy from "recursive-copy";
-    function transferFiles({dest, src, includeNode=true}={}) {
-        return new Promise((resolve, reject)=>{
-
-
-            // const filter = readdirSync(src).filter((file) => {return file !== "node_modules" && file !== "python3"})
-
-            // const options = {overwrite: true, filter: includeNode ?  readdirSync(src) : filter}
-            
-            // console.log(options)
-
-            copy(src, dest, {overwrite: true}, function(error, results) {
-            
-                if (error) {
-            
-                    console.error('Copy failed: ' + error);
-                    window.createToast("Update failed.\nMaybe the user doesn't have necessary persmission to write files in the disk", "danger");
-
-                    reject(error);
-                } else {
-                    console.info('Copied ' + results.length + ' files');
-
-                    window.createToast("Transfer completed.", "success");
-                    resolve(results);
-                }
-            });
-        })
-    }
-
-    function backupRestore({event, method="backup"}={}) {
-
-        return new Promise((resolve, reject)=> {
-            
-            let target = event.target;
-
-            target.classList.toggle("is-loading");
-
-            browse({dir:true})
-
-                .then( async (result) =>{
-                    let folderName;
-                    if (result) { folderName = result[0]; } else {return console.log("Cancelled")}
-                    
-            
-                    console.log("Selected folder: ", folderName);
-            
-                    let dest, src;
-                    if(method === "backup") {
-
-                        dest = pathResolve(folderName, get_store_value(backupName));
-                        src = pathResolve(__dirname, "..");
-                    } else {
-
-                        dest = pathResolve(__dirname, "..");
-                        src = pathResolve(folderName);
-                    }
-                    console.info(`Destination: ${dest}\nSource: ${src}\n`);
-
-                    await transferFiles({dest, src, includeNode:false});
-                    resolve();
-                })
-
-                .catch(err=>{
-
-                    console.log(err);
-                    reject(err.stack);
-
-                })
-
-                .finally(()=>target.classList.toggle("is-loading"));
 
         })
 
     }
-
-    const {showMessageBoxSync} = dialogs;
-    const restart_program = async () => {
-        const response = await showMessageBoxSync({ title: "FELion_GUI3", type: "info", message: "Update succesfull", buttons: ["Restart", "Restart later"] });
-        
-        console.log("Restart: ", response);
-        response === 0 ? relaunch() : console.log("Restarting later");
-
-    };
-
-    function InstallUpdate(target, updateFolder) {
-
-        let src = pathResolve(updateFolder, `${get_store_value(github).repo}-${get_store_value(github).branch}`);
-
-        let dest = pathResolve(__dirname, "..");
-
-        transferFiles({ dest, src })
-            .then(() => {console.log("Copying downloaded files");})
-            .catch((err) => { window.createToast("Error occured while copying downloaded files"); throw err; })
-            .finally(() => { target.classList.toggle("is-loading"); updating.set(false); restart_program(); });
-    }
-    // restart_program()
 
     new CustomEvent('update', { bubbles: false });
 
@@ -82529,6 +82383,82 @@ var app = (function (marked) {
             });
 
             db.set("pythonscript", get_store_value(pythonscript));
+    }
+
+    // const copy = require('recursive-copy');
+    // import copy from "recursive-copy";
+    function transferFiles({dest, src, includeNode=true}={}) {
+        return new Promise((resolve, reject)=>{
+
+
+            // const filter = readdirSync(src).filter((file) => {return file !== "node_modules" && file !== "python3"})
+
+            // const options = {overwrite: true, filter: includeNode ?  readdirSync(src) : filter}
+            
+            // console.log(options)
+
+            copy(src, dest, {overwrite: true}, function(error, results) {
+            
+                if (error) {
+            
+                    console.error('Copy failed: ' + error);
+                    window.createToast("Update failed.\nMaybe the user doesn't have necessary persmission to write files in the disk", "danger");
+
+                    reject(error);
+                } else {
+                    console.info('Copied ' + results.length + ' files');
+
+                    window.createToast("Transfer completed.", "success");
+                    resolve(results);
+                }
+            });
+        })
+    }
+
+    function backupRestore({event, method="backup"}={}) {
+
+        return new Promise((resolve, reject)=> {
+            
+            let target = event.target;
+
+            target.classList.toggle("is-loading");
+
+            browse({dir:true})
+
+                .then( async (result) =>{
+                    let folderName;
+                    if (result) { folderName = result[0]; } else {return console.log("Cancelled")}
+                    
+            
+                    console.log("Selected folder: ", folderName);
+            
+                    let dest, src;
+                    if(method === "backup") {
+
+                        dest = pathResolve(folderName, get_store_value(backupName));
+                        src = pathResolve(__dirname, "..");
+                    } else {
+
+                        dest = pathResolve(__dirname, "..");
+                        src = pathResolve(folderName);
+                    }
+                    console.info(`Destination: ${dest}\nSource: ${src}\n`);
+
+                    await transferFiles({dest, src, includeNode:false});
+                    resolve();
+                })
+
+                .catch(err=>{
+
+                    console.log(err);
+                    reject(err.stack);
+
+                })
+
+                .finally(()=>target.classList.toggle("is-loading"));
+
+        })
+
     }
 
     /* src\components\Terminal.svelte generated by Svelte v3.42.1 */
@@ -83493,7 +83423,7 @@ var app = (function (marked) {
     const { console: console_1$1 } = globals;
     const file$4 = "src\\Pages\\Settings.svelte";
 
-    // (148:24) {#if $developerMode}
+    // (167:24) {#if $developerMode}
     function create_if_block$4(ctx) {
     	let div0;
     	let textfield0;
@@ -83579,13 +83509,13 @@ var app = (function (marked) {
     			div1 = element("div");
     			create_component(customswitch.$$.fragment);
     			attr_dev(button0, "class", "button is-link svelte-5mfame");
-    			add_location(button0, file$4, 152, 32, 5478);
+    			add_location(button0, file$4, 171, 32, 6398);
     			attr_dev(button1, "class", "button is-link svelte-5mfame");
-    			add_location(button1, file$4, 154, 32, 5592);
+    			add_location(button1, file$4, 173, 32, 6512);
     			attr_dev(div0, "class", "align svelte-5mfame");
-    			add_location(div0, file$4, 149, 28, 5189);
+    			add_location(div0, file$4, 168, 28, 6109);
     			attr_dev(div1, "class", "align svelte-5mfame");
-    			add_location(div1, file$4, 156, 28, 5728);
+    			add_location(div1, file$4, 175, 28, 6648);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -83668,7 +83598,7 @@ var app = (function (marked) {
     		block,
     		id: create_if_block$4.name,
     		type: "if",
-    		source: "(148:24) {#if $developerMode}",
+    		source: "(167:24) {#if $developerMode}",
     		ctx
     	});
 
@@ -83941,79 +83871,79 @@ var app = (function (marked) {
     			h13.textContent = "About";
     			attr_dev(div0, "class", "hvr-glow svelte-5mfame");
     			toggle_class(div0, "clicked", /*selected*/ ctx[0] === "Configuration");
-    			add_location(div0, file$4, 130, 16, 4136);
+    			add_location(div0, file$4, 149, 16, 5056);
     			attr_dev(div1, "class", "hvr-glow svelte-5mfame");
     			toggle_class(div1, "clicked", /*selected*/ ctx[0] === "Update");
-    			add_location(div1, file$4, 131, 16, 4258);
+    			add_location(div1, file$4, 150, 16, 5178);
     			attr_dev(div2, "class", "hvr-glow svelte-5mfame");
     			toggle_class(div2, "clicked", /*selected*/ ctx[0] === "Terminal");
-    			add_location(div2, file$4, 132, 16, 4366);
+    			add_location(div2, file$4, 151, 16, 5286);
     			attr_dev(div3, "class", "hvr-glow svelte-5mfame");
     			toggle_class(div3, "clicked", /*selected*/ ctx[0] === "About");
-    			add_location(div3, file$4, 134, 16, 4480);
+    			add_location(div3, file$4, 153, 16, 5400);
     			attr_dev(div4, "class", "title__div svelte-5mfame");
-    			add_location(div4, file$4, 129, 11, 4094);
+    			add_location(div4, file$4, 148, 11, 5014);
     			attr_dev(div5, "class", "box left_container__div svelte-5mfame");
-    			add_location(div5, file$4, 127, 8, 4042);
+    			add_location(div5, file$4, 146, 8, 4962);
     			attr_dev(h10, "class", "title svelte-5mfame");
-    			add_location(h10, file$4, 141, 20, 4819);
+    			add_location(h10, file$4, 160, 20, 5739);
     			attr_dev(div6, "class", "subtitle svelte-5mfame");
-    			add_location(div6, file$4, 143, 20, 4879);
+    			add_location(div6, file$4, 162, 20, 5799);
     			attr_dev(button0, "class", "button is-link svelte-5mfame");
-    			add_location(button0, file$4, 146, 24, 4988);
+    			add_location(button0, file$4, 165, 24, 5908);
     			attr_dev(div7, "class", "align svelte-5mfame");
-    			add_location(div7, file$4, 145, 20, 4943);
+    			add_location(div7, file$4, 164, 20, 5863);
     			attr_dev(div8, "class", "content animated fadeIn svelte-5mfame");
     			toggle_class(div8, "hide", /*selected*/ ctx[0] !== "Configuration");
-    			add_location(div8, file$4, 140, 16, 4720);
+    			add_location(div8, file$4, 159, 16, 5640);
     			attr_dev(h11, "class", "title svelte-5mfame");
-    			add_location(h11, file$4, 164, 20, 6192);
+    			add_location(h11, file$4, 183, 20, 7112);
     			attr_dev(div9, "class", "subtitle svelte-5mfame");
-    			add_location(div9, file$4, 166, 20, 6245);
+    			add_location(div9, file$4, 185, 20, 7165);
     			attr_dev(div10, "class", "align svelte-5mfame");
-    			add_location(div10, file$4, 169, 24, 6401);
+    			add_location(div10, file$4, 188, 24, 7321);
     			attr_dev(button1, "class", "button is-link svelte-5mfame");
     			attr_dev(button1, "id", "updateCheckBtn");
-    			add_location(button1, file$4, 176, 28, 6847);
+    			add_location(button1, file$4, 195, 28, 7767);
     			attr_dev(button2, "class", "button is-link svelte-5mfame");
     			attr_dev(button2, "id", "updateBtn");
-    			add_location(button2, file$4, 177, 28, 6993);
+    			add_location(button2, file$4, 196, 28, 7913);
     			attr_dev(button3, "class", "button is-warning svelte-5mfame");
-    			add_location(button3, file$4, 179, 28, 7132);
+    			add_location(button3, file$4, 198, 28, 8052);
     			attr_dev(div11, "class", "align svelte-5mfame");
-    			add_location(div11, file$4, 175, 24, 6798);
+    			add_location(div11, file$4, 194, 24, 7718);
     			attr_dev(button4, "class", "button is-link svelte-5mfame");
-    			add_location(button4, file$4, 185, 28, 7434);
+    			add_location(button4, file$4, 204, 28, 8354);
     			attr_dev(button5, "class", "button is-link svelte-5mfame");
-    			add_location(button5, file$4, 186, 28, 7528);
+    			add_location(button5, file$4, 205, 28, 8448);
     			attr_dev(div12, "class", "align svelte-5mfame");
-    			add_location(div12, file$4, 183, 24, 7292);
+    			add_location(div12, file$4, 202, 24, 8212);
     			attr_dev(div13, "class", "align svelte-5mfame");
-    			add_location(div13, file$4, 167, 20, 6334);
+    			add_location(div13, file$4, 186, 20, 7254);
     			attr_dev(div14, "class", "content animated fadeIn svelte-5mfame");
     			toggle_class(div14, "hide", /*selected*/ ctx[0] !== "Update");
-    			add_location(div14, file$4, 163, 16, 6100);
+    			add_location(div14, file$4, 182, 16, 7020);
     			attr_dev(h12, "class", "title svelte-5mfame");
-    			add_location(h12, file$4, 193, 20, 7806);
+    			add_location(h12, file$4, 212, 20, 8726);
     			attr_dev(div15, "class", "animated fadeIn svelte-5mfame");
     			toggle_class(div15, "hide", /*selected*/ ctx[0] !== "Terminal");
-    			add_location(div15, file$4, 192, 16, 7720);
+    			add_location(div15, file$4, 211, 16, 8640);
     			attr_dev(h13, "class", "title svelte-5mfame");
-    			add_location(h13, file$4, 198, 20, 8082);
+    			add_location(h13, file$4, 217, 20, 9002);
     			attr_dev(div16, "class", "align animated fadeIn svelte-5mfame");
     			toggle_class(div16, "hide", /*selected*/ ctx[0] !== "About");
-    			add_location(div16, file$4, 197, 16, 7993);
+    			add_location(div16, file$4, 216, 16, 8913);
     			attr_dev(div17, "class", "container right svelte-5mfame");
     			attr_dev(div17, "id", "Settings_right_column");
-    			add_location(div17, file$4, 139, 12, 4646);
+    			add_location(div17, file$4, 158, 12, 5566);
     			attr_dev(div18, "class", "box svelte-5mfame");
-    			add_location(div18, file$4, 138, 8, 4615);
+    			add_location(div18, file$4, 157, 8, 5535);
     			attr_dev(div19, "class", "main__div svelte-5mfame");
-    			add_location(div19, file$4, 126, 4, 4009);
+    			add_location(div19, file$4, 145, 4, 4929);
     			attr_dev(section, "class", "section animated fadeIn svelte-5mfame");
     			attr_dev(section, "id", "Settings");
     			set_style(section, "display", "none");
-    			add_location(section, file$4, 125, 0, 3927);
+    			add_location(section, file$4, 144, 0, 4847);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -84304,7 +84234,6 @@ var app = (function (marked) {
     	component_subscribe($$self, backupName, $$value => $$invalidate(11, $backupName = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Settings', slots, []);
-    	const isPackaged = !__main_location.includes("node_modules");
 
     	const backup = event => {
     		backupRestore({ event, method: "backup" }).then(() => console.log("Backup Completed")).catch(error => {
@@ -84354,32 +84283,56 @@ var app = (function (marked) {
     		};
     	});
 
+    	const isPackaged = !__main_location.includes("node_modules");
     	console.log("Application packaged: ", isPackaged);
 
     	const handlepythonPathCheck = () => {
     		console.log("Python path checking done");
     	};
 
+    	// const handleError = (error) => mainPreModal.error(error.stack || error)
     	const update = async () => {
-    		if (!isPackaged) return window.createToast("Application not packaged", "danger");
+    		if (!isPackaged) {
+    			return window.createToast("Application not packaged", "danger");
+    		}
+
+    		const filename = "update.7z";
+    		const foldername = "update";
+    		const zipFile = pathResolve(TEMP, filename);
+    		fs.ensureFileSync(zipFile);
+    		const zipfolder = pathResolve(TEMP, foldername);
+    		const target = document.getElementById("updateBtn");
 
     		try {
-    			const updateFolder = pathResolve(__dirname, "..", "update");
-    			const target = document.getElementById("updateBtn");
     			target.classList.toggle("is-loading");
+    			await downloadFromGit(zipFile);
+    			await extractFull(zipFile, zipfolder);
 
-    			if (!existsSync(updateFolder)) {
-    				mkdirSync(updateFolder);
-    			}
+    			// const app_location = pathResolve(__main_location, "resources/app")
+    			// fs.emptyDirSync(app_location)
+    			const zipfolderContainer = fs.readdirSync(zipfolder);
 
-    			await download(updateFolder);
-    			InstallUpdate(target, updateFolder);
+    			const mainFolder = zipfolderContainer.length > 1
+    			? zipfolder
+    			: pathJoin(zipfolder, zipfolderContainer[0]);
+
+    			const copyInfo = { src: mainFolder, dest: __main_location };
+    			updateFELion(copyInfo);
     		} catch(error) {
     			mainPreModal.error(error.stack || error);
+    			console.error(error);
+    		} finally {
+    			target.classList.toggle("is-loading");
     		}
     	};
 
+    	// const restart_program = async () => {
+    	//     const {showMessageBoxSync} = dialogs
+    	//     const response = await showMessageBoxSync({ title: "FELion_GUI3", type: "info", message: "Update succesfull", buttons: ["Restart", "Restart later"] })
+    	//     response === 0 ? relaunch() : console.log("Restarting later")
+    	// }
     	let commandToRun = "", commandArgsToRun = "";
+
     	const writable_props = [];
 
     	Object.keys($$props).forEach(key => {
@@ -84467,20 +84420,19 @@ var app = (function (marked) {
     		CustomSelect: CustomSelect$1,
     		CustomSwitch: CustomSwitch$1,
     		Changelog,
-    		download,
-    		InstallUpdate,
+    		downloadFromGit,
     		updateCheck,
     		resetPyConfig,
     		updatePyConfig,
     		backupRestore,
     		tick,
     		Terminal,
-    		isPackaged,
     		backup,
     		restore,
     		selected,
     		navigate,
     		pythonpathCheck,
+    		isPackaged,
     		handlepythonPathCheck,
     		update,
     		commandToRun,
