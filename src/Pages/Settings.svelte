@@ -78,14 +78,7 @@
             target.classList.toggle("is-loading")
             await downloadFromGit(zipFile)
             await extractFull(zipFile, zipfolder)
-            // const app_location = pathResolve(__main_location, "resources/app")
-            // fs.emptyDirSync(app_location)
-            const zipfolderContainer = fs.readdirSync(zipfolder)
-            const mainFolder = zipfolderContainer.length > 1 ? zipfolder : pathJoin(zipfolder, zipfolderContainer[0])
-
-            const copyInfo = {src: mainFolder, dest: __main_location}
-            updateFELion(copyInfo)
-            
+            updateFELion()
         } catch (error) {mainPreModal.error(error.stack || error); console.error(error)}
         finally { target.classList.toggle("is-loading") }
     }

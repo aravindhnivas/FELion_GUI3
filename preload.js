@@ -2,9 +2,9 @@
 // require('source-map-support/register')
 const { contextBridge, ipcRenderer } = require('electron')
 const path = require("path")
-const copy = require('recursive-copy');
 const os = require('os');
-const fs = require("fs-extra")
+const fs = require("fs-extra");
+
 
 window.addEventListener('contextmenu', (e) => {
     e.preventDefault()
@@ -27,6 +27,5 @@ const temp = path.resolve(os.tmpdir(), "FELion")
 fs.ensureDirSync(temp)
 
 contextBridge.exposeInMainWorld("TEMP", temp)
-contextBridge.exposeInMainWorld("copy", (src, dest, opts, callback)=>copy(src, dest, opts, callback))
 contextBridge.exposeInMainWorld("updateFELion", (args=null) => ipcRenderer.invoke("update", args) )
 console.log(process.argv)

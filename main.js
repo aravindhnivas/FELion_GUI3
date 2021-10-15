@@ -19,7 +19,6 @@ function createWindow() {
 
 
   mainWindow.loadFile('static/index.html');
-  
 }
 
 app.whenReady().then(() => {
