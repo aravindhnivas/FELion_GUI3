@@ -1,6 +1,5 @@
 <script>
 
-    // Importing modules
     import {pythonpath, pythonscript, pyVersion, github, backupName, developerMode, suppressInitialDeveloperWarning} from "./settings/svelteWritables";
     import {mainPreModal} from "../svelteWritable";
     import {activateChangelog, windowLoaded} from "../js/functions"
@@ -10,19 +9,18 @@
     import CustomSelect from '../components/CustomSelect.svelte';
     import CustomSwitch from '../components/CustomSwitch.svelte';
     import Changelog from "../components/Changelog.svelte";
+    import downloadFromGit from "./settings/downloadUpdate";
 
-    import {download} from "./settings/donwloadUpdate";
-    
-    import {InstallUpdate} from "./settings/installUpdate";
     import {updateCheck} from "./settings/updateCheck";
-    
-    
-    
     import {resetPyConfig, updatePyConfig} from "./settings/checkPython";
     import {backupRestore} from "./settings/backupAndRestore";
+
+
+
+
     import {tick} from "svelte";
     import Terminal from '../components/Terminal.svelte';
-    const isPackaged = !__main_location.includes("node_modules");
+    
     const backup = (event) => {
         backupRestore({event, method:"backup"})
             .then(()=>console.log("Backup Completed"))
@@ -60,25 +58,46 @@
         return ()=>{clearInterval(timer_for_update)}
 
     })
+    const isPackaged = !__main_location.includes("node_modules");
     console.log("Application packaged: ", isPackaged)
     const handlepythonPathCheck = () => { console.log("Python path checking done") }
-    
+
+    // const handleError = (error) => mainPreModal.error(error.stack || error)
     const update = async () => {
 
-        if(!isPackaged) return window.createToast("Application not packaged", "danger")
+        if(!isPackaged) {return window.createToast("Application not packaged", "danger")}
+        const filename = "update.7z"
+        const foldername = "update"
+
+        const zipFile = pathResolve(TEMP, filename)
+        fs.ensureFileSync(zipFile)
+        const zipfolder = pathResolve(TEMP, foldername)
+        const target = document.getElementById("updateBtn")
 
         try {
-            const updateFolder = pathResolve(__dirname, "..", "update")
-            const target = document.getElementById("updateBtn")
             target.classList.toggle("is-loading")
-            if (!existsSync(updateFolder)) {mkdirSync(updateFolder)}
-            await download(updateFolder)
-            InstallUpdate(target, updateFolder)
-        } catch (error) {mainPreModal.error(error.stack || error)}
-        
-    }
-    let commandToRun = "", commandArgsToRun = "";
+            await downloadFromGit(zipFile)
+            await extractFull(zipFile, zipfolder)
+            // const app_location = pathResolve(__main_location, "resources/app")
+            // fs.emptyDirSync(app_location)
+            const zipfolderContainer = fs.readdirSync(zipfolder)
+            const mainFolder = zipfolderContainer.length > 1 ? zipfolder : pathJoin(zipfolder, zipfolderContainer[0])
 
+            const copyInfo = {src: mainFolder, dest: __main_location}
+            updateFELion(copyInfo)
+            
+        } catch (error) {mainPreModal.error(error.stack || error); console.error(error)}
+        finally { target.classList.toggle("is-loading") }
+    }
+
+    // const restart_program = async () => {
+    //     const {showMessageBoxSync} = dialogs
+
+    //     const response = await showMessageBoxSync({ title: "FELion_GUI3", type: "info", message: "Update succesfull", buttons: ["Restart", "Restart later"] })
+    //     response === 0 ? relaunch() : console.log("Restarting later")
+    // }
+
+    let commandToRun = "", commandArgsToRun = "";
 </script>
 
 <style lang="scss">

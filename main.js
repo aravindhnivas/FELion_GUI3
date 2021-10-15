@@ -1,6 +1,6 @@
 const { app, BrowserWindow } = require('electron');
 const path = require("path");
-// let mainWindow;
+
 
 function createWindow() {
   let icon;
@@ -26,6 +26,7 @@ app.whenReady().then(() => {
   createWindow()
   require("./main/Menu")
   require("./main/dialogs")
+  require("./main/autoUpdater")
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow()
@@ -38,4 +39,3 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 })
-
