@@ -204,15 +204,27 @@
                     <Terminal bind:commandToRun bind:commandArgsToRun id="Terminal-settings"/>
                 </div>
                 
-                <div class="align animated fadeIn" class:hide={selected!=="About"}>
+                <div class="animated fadeIn" class:hide={selected!=="About"}>
+
                     <h1 class="title">About</h1>
+                    <div class="content">
+                    
+                        <ul style="user-select: text;">
+                    
+                            <li>FELionGUI: {window.currentVersion}</li>
+                            <li>{$pyVersion}</li>
+                            <hr>
 
+                            {#each Object.keys(window.versions) as key}
+                                <li>{key}: {window.versions[key]}</li>
+                            {/each}
+                    
+                        </ul>
+                    </div>
                 </div>
-                
-            </div>
-        
-        </div>
 
+            </div>
+        </div>
     </div>
 
 </section>
