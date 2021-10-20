@@ -276,16 +276,16 @@ def plot_exp():
     legend.set_draggable(True)
 
     try:
-
         global plotted
-        if numberDensity > 0:
+        if numberDensity > 0 and not keyFoundForRate:
             fitfunc()
         plotted = True
+
     except Exception as error:
         log(error)
     plt.show()
+    
 rateCoefficientArgs = ()
-
 def updateFitData():
 
     dNdt = solve_ivp(compute_attachment_process, tspan, initialValues, dense_output=True)
@@ -315,27 +315,30 @@ def make_slider(ax, axcolor):
     width = 0.25
     bottom = 0.9
 
-
+    counter = 0
 
     for label in k3Labels:
         k3SliderAxes = plt.axes([0.65, bottom, width, height], facecolor=axcolor)
-
-        _k3Slider = Sliderlog( ax=k3SliderAxes, label=label, valmin=-33, valmax=-25, valinit=np.log10(ratek3[0]), valstep=1e-4, valfmt="%.2e")
+        _k3Slider = Sliderlog( ax=k3SliderAxes, label=label, valmin=-33, valmax=-25, valinit=np.log10(ratek3[counter]), valstep=1e-4, valfmt="%.2e")
         _k3Slider.on_changed(update)
         k3Sliders.append(_k3Slider)
-
         bottom -= height*1.2
+        if keyFoundForRate:
+            counter += 1
 
     bottom -= height*2
 
-
+    counter = 0
     for label in kCIDLabels:
-        kCIDSliderAxes = plt.axes([0.65, bottom, width, height], facecolor=axcolor)
-        _kCIDSlider = Sliderlog( ax=kCIDSliderAxes, label=label, valmin=-20, valmax=-10, valinit=np.log10(ratekCID[0]), valstep=1e-4, valfmt="%.2e")
-        _kCIDSlider.on_changed(update)
-        kCIDSliders.append(_kCIDSlider)
 
+        kCIDSliderAxes = plt.axes([0.65, bottom, width, height], facecolor=axcolor)
+        _kCIDSlider = Sliderlog( ax=kCIDSliderAxes, label=label, valmin=-20, valmax=-10, valinit=np.log10(ratekCID[counter]), valstep=1e-4, valfmt="%.2e")
+        _kCIDSlider.on_changed(update)
+
+        kCIDSliders.append(_kCIDSlider)
         bottom -= height*1.2
+        if keyFoundForRate:
+            counter += 1
     return k3Sliders, kCIDSliders
 
 if __name__ == "__main__":
@@ -369,7 +372,26 @@ if __name__ == "__main__":
     totalAttachmentLevels = len(initialValues)-1
 
     log(f"{k3Labels=}\n{totalAttachmentLevels=}")
-    ratek3 = [float(args["k3Guess"]) for _ in k3Labels]
-    ratekCID = [float(args["kCIDGuess"]) for _ in kCIDLabels]
+
+    savedir = currentLocation/"OUT"
+    savefile = savedir/"k_fit.json"
+    keyFoundForRate = False
+    if savefile.exists():
+        with open(savefile, "r") as f:
+            k_fit_json = json.load(f)
+
+            print(k_fit_json, flush=True)
+            keyFound = selectedFile in k_fit_json
+            print(f"{keyFound=}", flush=True)
+            if keyFound:
+                k_fit_values = k_fit_json[selectedFile]["k_fit"]
+                ratek3 = np.asarray(k_fit_values[0], dtype=float)
+                ratekCID = np.asarray(k_fit_values[1], dtype=float)
+                keyFoundForRate = True
+
+    if not keyFoundForRate:
+        ratek3 = [float(args["k3Guess"]) for _ in k3Labels]
+        ratekCID = [float(args["kCIDGuess"]) for _ in kCIDLabels]
+
+    print(f"{keyFoundForRate=}\n{ratek3=}", flush=True)
     KineticMain()
-    
