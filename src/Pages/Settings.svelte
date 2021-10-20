@@ -96,7 +96,7 @@
 <style lang="scss">
     section { margin: 0; padding: 0; }
 
-    .clicked {border-left: 2px solid #fafafa; border: solid 1px; border-radius: 1em;}
+    .clicked {border-bottom: solid 1px; }
 
     * :global(option) { color: black; }
     .main__div {
@@ -120,7 +120,7 @@
             display: grid;
             row-gap: 2em;
 
-            div {font-size: 25px; border-radius: 1em;}
+            div {font-size: 22px; }
         } 
 
     }

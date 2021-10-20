@@ -83429,7 +83429,7 @@ var app = (function (marked) {
     	return child_ctx;
     }
 
-    // (160:24) {#if $developerMode}
+    // (157:24) {#if $developerMode}
     function create_if_block$4(ctx) {
     	let div0;
     	let textfield0;
@@ -83514,14 +83514,14 @@ var app = (function (marked) {
     			t5 = space();
     			div1 = element("div");
     			create_component(customswitch.$$.fragment);
-    			attr_dev(button0, "class", "button is-link svelte-5mfame");
-    			add_location(button0, file$4, 164, 32, 5989);
-    			attr_dev(button1, "class", "button is-link svelte-5mfame");
-    			add_location(button1, file$4, 166, 32, 6103);
-    			attr_dev(div0, "class", "align svelte-5mfame");
-    			add_location(div0, file$4, 161, 28, 5700);
-    			attr_dev(div1, "class", "align svelte-5mfame");
-    			add_location(div1, file$4, 168, 28, 6239);
+    			attr_dev(button0, "class", "button is-link svelte-11jfs33");
+    			add_location(button0, file$4, 161, 32, 5918);
+    			attr_dev(button1, "class", "button is-link svelte-11jfs33");
+    			add_location(button1, file$4, 163, 32, 6032);
+    			attr_dev(div0, "class", "align svelte-11jfs33");
+    			add_location(div0, file$4, 158, 28, 5629);
+    			attr_dev(div1, "class", "align svelte-11jfs33");
+    			add_location(div1, file$4, 165, 28, 6168);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -83604,14 +83604,14 @@ var app = (function (marked) {
     		block,
     		id: create_if_block$4.name,
     		type: "if",
-    		source: "(160:24) {#if $developerMode}",
+    		source: "(157:24) {#if $developerMode}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (221:28) {#each Object.keys(window.versions) as key}
+    // (218:28) {#each Object.keys(window.versions) as key}
     function create_each_block$1(ctx) {
     	let li;
     	let t0_value = /*key*/ ctx[31] + "";
@@ -83626,8 +83626,8 @@ var app = (function (marked) {
     			t0 = text(t0_value);
     			t1 = text(": ");
     			t2 = text(t2_value);
-    			attr_dev(li, "class", "svelte-5mfame");
-    			add_location(li, file$4, 221, 32, 9028);
+    			attr_dev(li, "class", "svelte-11jfs33");
+    			add_location(li, file$4, 218, 32, 8957);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -83645,7 +83645,7 @@ var app = (function (marked) {
     		block,
     		id: create_each_block$1.name,
     		type: "each",
-    		source: "(221:28) {#each Object.keys(window.versions) as key}",
+    		source: "(218:28) {#each Object.keys(window.versions) as key}",
     		ctx
     	});
 
@@ -83949,92 +83949,92 @@ var app = (function (marked) {
     				each_blocks[i].c();
     			}
 
-    			attr_dev(div0, "class", "hvr-glow svelte-5mfame");
+    			attr_dev(div0, "class", "hvr-glow svelte-11jfs33");
     			toggle_class(div0, "clicked", /*selected*/ ctx[0] === "Configuration");
-    			add_location(div0, file$4, 142, 16, 4647);
-    			attr_dev(div1, "class", "hvr-glow svelte-5mfame");
+    			add_location(div0, file$4, 139, 16, 4576);
+    			attr_dev(div1, "class", "hvr-glow svelte-11jfs33");
     			toggle_class(div1, "clicked", /*selected*/ ctx[0] === "Update");
-    			add_location(div1, file$4, 143, 16, 4769);
-    			attr_dev(div2, "class", "hvr-glow svelte-5mfame");
+    			add_location(div1, file$4, 140, 16, 4698);
+    			attr_dev(div2, "class", "hvr-glow svelte-11jfs33");
     			toggle_class(div2, "clicked", /*selected*/ ctx[0] === "Terminal");
-    			add_location(div2, file$4, 144, 16, 4877);
-    			attr_dev(div3, "class", "hvr-glow svelte-5mfame");
+    			add_location(div2, file$4, 141, 16, 4806);
+    			attr_dev(div3, "class", "hvr-glow svelte-11jfs33");
     			toggle_class(div3, "clicked", /*selected*/ ctx[0] === "About");
-    			add_location(div3, file$4, 146, 16, 4991);
-    			attr_dev(div4, "class", "title__div svelte-5mfame");
-    			add_location(div4, file$4, 141, 11, 4605);
-    			attr_dev(div5, "class", "box left_container__div svelte-5mfame");
-    			add_location(div5, file$4, 139, 8, 4553);
-    			attr_dev(h10, "class", "title svelte-5mfame");
-    			add_location(h10, file$4, 153, 20, 5330);
-    			attr_dev(div6, "class", "subtitle svelte-5mfame");
-    			add_location(div6, file$4, 155, 20, 5390);
-    			attr_dev(button0, "class", "button is-link svelte-5mfame");
-    			add_location(button0, file$4, 158, 24, 5499);
-    			attr_dev(div7, "class", "align svelte-5mfame");
-    			add_location(div7, file$4, 157, 20, 5454);
-    			attr_dev(div8, "class", "content animated fadeIn svelte-5mfame");
+    			add_location(div3, file$4, 143, 16, 4920);
+    			attr_dev(div4, "class", "title__div svelte-11jfs33");
+    			add_location(div4, file$4, 138, 11, 4534);
+    			attr_dev(div5, "class", "box left_container__div svelte-11jfs33");
+    			add_location(div5, file$4, 136, 8, 4482);
+    			attr_dev(h10, "class", "title svelte-11jfs33");
+    			add_location(h10, file$4, 150, 20, 5259);
+    			attr_dev(div6, "class", "subtitle svelte-11jfs33");
+    			add_location(div6, file$4, 152, 20, 5319);
+    			attr_dev(button0, "class", "button is-link svelte-11jfs33");
+    			add_location(button0, file$4, 155, 24, 5428);
+    			attr_dev(div7, "class", "align svelte-11jfs33");
+    			add_location(div7, file$4, 154, 20, 5383);
+    			attr_dev(div8, "class", "content animated fadeIn svelte-11jfs33");
     			toggle_class(div8, "hide", /*selected*/ ctx[0] !== "Configuration");
-    			add_location(div8, file$4, 152, 16, 5231);
-    			attr_dev(h11, "class", "title svelte-5mfame");
-    			add_location(h11, file$4, 176, 20, 6703);
-    			attr_dev(div9, "class", "subtitle svelte-5mfame");
-    			add_location(div9, file$4, 178, 20, 6756);
-    			attr_dev(div10, "class", "align svelte-5mfame");
-    			add_location(div10, file$4, 181, 24, 6912);
-    			attr_dev(button1, "class", "button is-link svelte-5mfame");
+    			add_location(div8, file$4, 149, 16, 5160);
+    			attr_dev(h11, "class", "title svelte-11jfs33");
+    			add_location(h11, file$4, 173, 20, 6632);
+    			attr_dev(div9, "class", "subtitle svelte-11jfs33");
+    			add_location(div9, file$4, 175, 20, 6685);
+    			attr_dev(div10, "class", "align svelte-11jfs33");
+    			add_location(div10, file$4, 178, 24, 6841);
+    			attr_dev(button1, "class", "button is-link svelte-11jfs33");
     			attr_dev(button1, "id", "updateCheckBtn");
-    			add_location(button1, file$4, 188, 28, 7358);
-    			attr_dev(button2, "class", "button is-link svelte-5mfame");
+    			add_location(button1, file$4, 185, 28, 7287);
+    			attr_dev(button2, "class", "button is-link svelte-11jfs33");
     			attr_dev(button2, "id", "updateBtn");
-    			add_location(button2, file$4, 189, 28, 7504);
-    			attr_dev(button3, "class", "button is-warning svelte-5mfame");
-    			add_location(button3, file$4, 191, 28, 7643);
-    			attr_dev(div11, "class", "align svelte-5mfame");
-    			add_location(div11, file$4, 187, 24, 7309);
-    			attr_dev(button4, "class", "button is-link svelte-5mfame");
-    			add_location(button4, file$4, 197, 28, 7945);
-    			attr_dev(button5, "class", "button is-link svelte-5mfame");
-    			add_location(button5, file$4, 198, 28, 8039);
-    			attr_dev(div12, "class", "align svelte-5mfame");
-    			add_location(div12, file$4, 195, 24, 7803);
-    			attr_dev(div13, "class", "align svelte-5mfame");
-    			add_location(div13, file$4, 179, 20, 6845);
-    			attr_dev(div14, "class", "content animated fadeIn svelte-5mfame");
+    			add_location(button2, file$4, 186, 28, 7433);
+    			attr_dev(button3, "class", "button is-warning svelte-11jfs33");
+    			add_location(button3, file$4, 188, 28, 7572);
+    			attr_dev(div11, "class", "align svelte-11jfs33");
+    			add_location(div11, file$4, 184, 24, 7238);
+    			attr_dev(button4, "class", "button is-link svelte-11jfs33");
+    			add_location(button4, file$4, 194, 28, 7874);
+    			attr_dev(button5, "class", "button is-link svelte-11jfs33");
+    			add_location(button5, file$4, 195, 28, 7968);
+    			attr_dev(div12, "class", "align svelte-11jfs33");
+    			add_location(div12, file$4, 192, 24, 7732);
+    			attr_dev(div13, "class", "align svelte-11jfs33");
+    			add_location(div13, file$4, 176, 20, 6774);
+    			attr_dev(div14, "class", "content animated fadeIn svelte-11jfs33");
     			toggle_class(div14, "hide", /*selected*/ ctx[0] !== "Update");
-    			add_location(div14, file$4, 175, 16, 6611);
-    			attr_dev(h12, "class", "title svelte-5mfame");
-    			add_location(h12, file$4, 205, 20, 8317);
-    			attr_dev(div15, "class", "animated fadeIn svelte-5mfame");
+    			add_location(div14, file$4, 172, 16, 6540);
+    			attr_dev(h12, "class", "title svelte-11jfs33");
+    			add_location(h12, file$4, 202, 20, 8246);
+    			attr_dev(div15, "class", "animated fadeIn svelte-11jfs33");
     			toggle_class(div15, "hide", /*selected*/ ctx[0] !== "Terminal");
-    			add_location(div15, file$4, 204, 16, 8231);
-    			attr_dev(h13, "class", "title svelte-5mfame");
-    			add_location(h13, file$4, 211, 20, 8589);
-    			attr_dev(li0, "class", "svelte-5mfame");
-    			add_location(li0, file$4, 216, 28, 8791);
-    			attr_dev(li1, "class", "svelte-5mfame");
-    			add_location(li1, file$4, 217, 28, 8864);
-    			attr_dev(hr, "class", "svelte-5mfame");
-    			add_location(hr, file$4, 218, 28, 8915);
+    			add_location(div15, file$4, 201, 16, 8160);
+    			attr_dev(h13, "class", "title svelte-11jfs33");
+    			add_location(h13, file$4, 208, 20, 8518);
+    			attr_dev(li0, "class", "svelte-11jfs33");
+    			add_location(li0, file$4, 213, 28, 8720);
+    			attr_dev(li1, "class", "svelte-11jfs33");
+    			add_location(li1, file$4, 214, 28, 8793);
+    			attr_dev(hr, "class", "svelte-11jfs33");
+    			add_location(hr, file$4, 215, 28, 8844);
     			set_style(ul, "user-select", "text");
-    			attr_dev(ul, "class", "svelte-5mfame");
-    			add_location(ul, file$4, 214, 24, 8708);
-    			attr_dev(div16, "class", "content svelte-5mfame");
-    			add_location(div16, file$4, 212, 20, 8639);
-    			attr_dev(div17, "class", "animated fadeIn svelte-5mfame");
+    			attr_dev(ul, "class", "svelte-11jfs33");
+    			add_location(ul, file$4, 211, 24, 8637);
+    			attr_dev(div16, "class", "content svelte-11jfs33");
+    			add_location(div16, file$4, 209, 20, 8568);
+    			attr_dev(div17, "class", "animated fadeIn svelte-11jfs33");
     			toggle_class(div17, "hide", /*selected*/ ctx[0] !== "About");
-    			add_location(div17, file$4, 209, 16, 8504);
-    			attr_dev(div18, "class", "container right svelte-5mfame");
+    			add_location(div17, file$4, 206, 16, 8433);
+    			attr_dev(div18, "class", "container right svelte-11jfs33");
     			attr_dev(div18, "id", "Settings_right_column");
-    			add_location(div18, file$4, 151, 12, 5157);
-    			attr_dev(div19, "class", "box svelte-5mfame");
-    			add_location(div19, file$4, 150, 8, 5126);
-    			attr_dev(div20, "class", "main__div svelte-5mfame");
-    			add_location(div20, file$4, 138, 4, 4520);
-    			attr_dev(section, "class", "section animated fadeIn svelte-5mfame");
+    			add_location(div18, file$4, 148, 12, 5086);
+    			attr_dev(div19, "class", "box svelte-11jfs33");
+    			add_location(div19, file$4, 147, 8, 5055);
+    			attr_dev(div20, "class", "main__div svelte-11jfs33");
+    			add_location(div20, file$4, 135, 4, 4449);
+    			attr_dev(section, "class", "section animated fadeIn svelte-11jfs33");
     			attr_dev(section, "id", "Settings");
     			set_style(section, "display", "none");
-    			add_location(section, file$4, 137, 0, 4438);
+    			add_location(section, file$4, 134, 0, 4367);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
