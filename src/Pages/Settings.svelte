@@ -1,96 +1,50 @@
 <script>
 
-    import {pythonpath, pythonscript, pyVersion, github, backupName, developerMode, suppressInitialDeveloperWarning} from "./settings/svelteWritables";
+    import {pythonpath, pythonscript, pyVersion, developerMode, suppressInitialDeveloperWarning} from "./settings/svelteWritables";
     import {mainPreModal} from "../svelteWritable";
-    import {activateChangelog, windowLoaded} from "../js/functions"
+    import {activateChangelog} from "../js/functions"
     import Textfield from '@smui/textfield';
     import {onMount} from "svelte";
+
     import CustomDialog from "../components/CustomDialog.svelte"
-    import CustomSelect from '../components/CustomSelect.svelte';
+    // import CustomSelect from '../components/CustomSelect.svelte';
     import CustomSwitch from '../components/CustomSwitch.svelte';
     import Changelog from "../components/Changelog.svelte";
-    import downloadFromGit from "./settings/downloadUpdate";
-
-    // import {updateCheck} from "./settings/updateCheck";
+    
     import {resetPyConfig, updatePyConfig} from "./settings/checkPython";
-    // import {backupRestore} from "./settings/backupAndRestore";
-
-
-
-
     import {tick} from "svelte";
     import Terminal from '../components/Terminal.svelte';
-    
-    // const backup = (event) => {
-    //     backupRestore({event, method:"backup"})
-    //         .then(()=>console.log("Backup Completed"))
-    //         .catch((error)=>{mainPreModal.error(error.stack || error)})
-    // }
-
-    // const restore = (event) => {
-    //     backupRestore({event, method:"restore"})
-    //     .then(()=>console.log("Restore Completed"))
-    //     .catch((error)=>{mainPreModal.error(error.stack || error)})
-
-    // }
 
     let selected = db.get("settingsActiveTab") || "Update"
-    
+
+
     const navigate = (e) => {selected = e.target.innerHTML; db.set("settingsActiveTab", selected);}
-
-
     let pythonpathCheck;
-
     onMount(()=>{
         setTimeout(async ()=>{
-
             await tick()
             checkPython()
                 .then(res=>{ $pyVersion = res; console.log("Python path is valid")})
-
                 .catch(()=>pythonpathCheck.open() )
-
-            } , 1000)
-
-
-        // updateCheck({info:false})
-        // const timer_for_update = setInterval(()=>{updateCheck({info:false})}, 1*1000*60*15)
-        // return ()=>{clearInterval(timer_for_update)}
-
+        } , 1000)
     })
-    // const isPackaged = !__main_location.includes("node_modules");
-    // console.log("Application packaged: ", isPackaged)
+    
     const handlepythonPathCheck = () => { console.log("Python path checking done") }
-
-    // const handleError = (error) => mainPreModal.error(error.stack || error)
-    // const update = async () => {
-
-    //     if(!isPackaged) {return window.createToast("Application not packaged", "danger")}
-    //     const filename = "update.7z"
-    //     const foldername = "update"
-
-    //     const zipFile = pathResolve(TEMP, filename)
-    //     fs.ensureFileSync(zipFile)
-    //     const zipfolder = pathResolve(TEMP, foldername)
-    //     const target = document.getElementById("updateBtn")
-
-    //     try {
-    //         target.classList.toggle("is-loading")
-    //         await downloadFromGit(zipFile)
-    //         await extractFull(zipFile, zipfolder)
-    //         updateFELion()
-    //     } catch (error) {mainPreModal.error(error.stack || error); console.error(error)}
-    //     finally { target.classList.toggle("is-loading") }
-    // }
-
-    // const restart_program = async () => {
-    //     const {showMessageBoxSync} = dialogs
-
-    //     const response = await showMessageBoxSync({ title: "FELion_GUI3", type: "info", message: "Update succesfull", buttons: ["Restart", "Restart later"] })
-    //     response === 0 ? relaunch() : console.log("Restarting later")
-    // }
-
     let commandToRun = "", commandArgsToRun = "";
+
+    function updateCheck(event){
+        const {target} = event
+
+        try {
+            target.classList.toggle("is-loading")
+            if (!navigator.onLine) {if (info) {window.createToast("No Internet Connection!", "warning")}; return}
+            checkupdate()
+        } catch (error) {
+            mainPreModal.error(error.stack || error)
+        } finally {
+            target.classList.toggle("is-loading")
+        }
+    }
 </script>
 
 <style lang="scss">
@@ -129,12 +83,14 @@
 
 </style>
 
+
 <CustomDialog id="pythonpath_Check" bind:dialog={pythonpathCheck} on:response={handlepythonPathCheck} title={"Python path is not valid"} content={"Change it in Settings --> Configuration"} label1="Okay" label2="Cancel" />
 <Changelog  />
 
 <section class="section animated fadeIn" id="Settings" style="display:none">
     <div class="main__div">
-        <div class="box left_container__div">
+        
+        <div class="box interact left_container__div">
 
            <div class="title__div">
                 <div class="hvr-glow" class:clicked={selected==="Configuration"} on:click={navigate}>Configuration</div>
@@ -153,7 +109,7 @@
                     <div class="subtitle">{$pyVersion}</div>
 
                     <div class="align">
-                        <button class="button is-link" on:click="{()=>$developerMode = !$developerMode}">Developer mode: {$developerMode} </button>
+                        <button class="button is-link" on:click="{()=> {$developerMode = !$developerMode; db.set("developerMode", $developerMode)}}">Developer mode: {$developerMode} </button>
                         {#if $developerMode}
 
                             <div class="align">
@@ -173,18 +129,18 @@
                 <div class="content animated fadeIn" class:hide={selected!=="Update"}>
                     <h1 class="title">Update</h1>
 
-                    <div class="subtitle">Current Version {window.currentVersion}</div>
+                    <div class="subtitle">App Version {window.appVersion}</div>
                     <div class="align">
                     
-                        <div class="align">
+                        <!-- <div class="align">
                             <Textfield  bind:value={$github.username} label="Github username" />
                             <Textfield  bind:value={$github.repo} label="Github Repo" />
                             <CustomSelect bind:picked={$github.branch} label="Github branch" options={["master", "developer"]}/>
-                        </div>
+                        </div> -->
 
                         <div class="align">
-                            <!-- <button class="button is-link" id="updateCheckBtn" on:click="{updateCheck}" on:update={update}>Check update</button>
-                            <button class="button is-link" id="updateBtn" on:click={update}>Update</button> -->
+                            <button class="button is-link" id="updateCheckBtn" on:click="{updateCheck}" >Check update</button>
+                            <!-- <button class="button is-link" id="updateBtn" on:click={update}>Update</button> -->
                             
                             <button class="button is-warning" on:click="{()=>{$activateChangelog = true}}">What's New</button>
                         </div>
@@ -211,7 +167,7 @@
                     
                         <ul style="user-select: text;">
                     
-                            <li>FELionGUI: {window.currentVersion}</li>
+                            <li>FELionGUI: {window.appVersion}</li>
                             <li>{$pyVersion}</li>
                             <hr>
 

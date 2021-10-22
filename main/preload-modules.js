@@ -7,5 +7,5 @@ require("./preload/child-process-modules")
 require("./preload/dialogs-modules")
 
 require("./preload/jsondb-modules")
-require("./preload/extract-modules")
+// require("./preload/extract-modules")
 contextBridge.exposeInMainWorld("versions", versions)

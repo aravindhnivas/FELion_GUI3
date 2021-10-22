@@ -120,23 +120,20 @@
         }
     }
     .plot__div {
-
         display: flex;
         row-gap: 1em;
         flex-direction: column;
         overflow: auto;
-
         padding-right: 1em;
         padding-bottom: 12em;
     }
-
 </style>
 
 <section {id} style="display:none" class="animated fadeIn">
-    <div class="main__layout__div">
 
-        <div class="left_container__div box " transition:fly="{{ x: -100, duration: 500 }}" 
-            on:mouseup={()=>mouseReleased=true} on:mousedown={()=>mouseReleased=false} >
+    <div class="main__layout__div">
+        <div class="interact left_container__div box " transition:fly="{{ x: -100, duration: 500 }}" on:mouseup={()=>mouseReleased=true} on:mousedown={()=>mouseReleased=false} >
+
             <FileBrowser bind:currentLocation {filetype} bind:fileChecked on:chdir bind:fullfileslist on:markedFile/>
         </div>
 

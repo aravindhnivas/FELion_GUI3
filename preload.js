@@ -1,12 +1,25 @@
 // Preload (Isolated World)
-const { contextBridge, ipcRenderer, app } = require('electron')
+const { contextBridge, ipcRenderer } = require('electron')
 const path = require("path")
+const fs = require("fs")
+require('source-map-support').install({
+    environment: 'browser',
+    retrieveSourceMap: function() {
+
+        return {
+            url: path.resolve(__dirname, "static/bundle.js"),
+            map: fs.readFileSync(path.resolve(__dirname, "static/bundle.js.map"), 'utf8')
+        };
+
+    }
+});
 window.addEventListener('contextmenu', (e) => {
     e.preventDefault()
     const rightClickPosition = {x: e.x, y: e.y}
     ipcRenderer.invoke("contextmenu", rightClickPosition)
 
 }, false)
-window.addEventListener('DOMContentLoaded', ()=>{console.log(__dirname, "loaded")})
-require("./main/preload-modules")
 contextBridge.exposeInMainWorld("__dirname", path.resolve(__dirname, "static/"))
+ipcRenderer.on('update-log-error', (event, error) => console.error(error))
+contextBridge.exposeInMainWorld("checkupdate", () => ipcRenderer.invoke("checkupdate", null))
+require("./main/preload-modules")
