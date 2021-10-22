@@ -4,25 +4,11 @@
   "license": "MIT",
   "author": "A.N.Marimuthu",
   "repository": {
-    "type": "git",
-    "url": "https://github.com/aravindhnivas/FELion_GUI3.git"
+    "type": "git", "url": "https://github.com/aravindhnivas/FELion_GUI3.git"
   },
-  "developer": true,
+  "description": "FELion Spectrum Analyser for FELIX data",
   "main": "main.js",
   "devDependencies": {
-    "@babel/core": "^7.11.6",
-    "@babel/preset-env": "^7.11.5",
-    "@editorjs/code": "^2.5.0",
-    "@editorjs/delimiter": "^1.1.0",
-    "@editorjs/inline-code": "^1.3.1",
-    "@editorjs/marker": "^1.2.2",
-    "@editorjs/quote": "^2.3.0",
-    "@editorjs/table": "^1.2.2",
-    "@editorjs/warning": "^1.1.1",
-    "@pnotify/core": "^5.2.0",
-    "@pnotify/font-awesome5": "^5.2.0",
-    "@pnotify/font-awesome5-fix": "^5.2.0",
-    "@pnotify/mobile": "^5.2.0",
     "@rollup/plugin-alias": "^3.1.5",
     "@rollup/plugin-commonjs": "^20.0.0",
     "@rollup/plugin-json": "^4.1.0",
@@ -33,7 +19,9 @@
     "child_process": "^1.0.2",
     "concurrently": "^5.3.0",
     "electron": "^15.2.0",
+    "electron-builder": "^22.13.1",
     "electron-packager": "^15.3.0",
+    "electron-winstaller": "^5.0.0",
     "jest": "^26.4.2",
     "postcss": "^8.3.6",
     "rollup": "^2.55.1",
@@ -57,15 +45,35 @@
     "dev": "concurrently \"npm run autobuild\" \"electron .\"",
     "start": "electron .",
     "svelte-check": "svelte-check",
-    "mc": "electron-packager . --overwrite --platform=darwin --arch=x64 --out=../release-builds --darwinDarkModeSupport=true",
-    "w": "electron-packager . --overwrite --platform=win32 --arch=x64 --out=../release-builds --icon=./static/assets/logo/win/icon.ico"
+    "publish": "electron-builder --win -p never"
   },
   "dependencies": {
     "bulma-extensions": "^6.2.7",
     "cooltipz-css": "^1.6.8",
+    "electron-log": "^4.4.1",
     "electron-squirrel-startup": "^1.0.0",
+    "electron-updater": "^4.3.9",
     "fs-extra": "^10.0.0",
     "node-7z-forall": "^2.1.5",
     "yaml": "2.0.0-6"
+  },
+  "build": {
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "aravindhnivas",
+        "repo": "FELion_GUI3",
+        "token": "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",
+        "private": false
+      }
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "./static/assets/logo/win/icon.ico",
+      "asar": false
+    },
+    "nsis": {
+      "oneClick": false
+    }
   }
 }

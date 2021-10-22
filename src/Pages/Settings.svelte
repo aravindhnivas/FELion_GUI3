@@ -11,9 +11,9 @@
     import Changelog from "../components/Changelog.svelte";
     import downloadFromGit from "./settings/downloadUpdate";
 
-    import {updateCheck} from "./settings/updateCheck";
+    // import {updateCheck} from "./settings/updateCheck";
     import {resetPyConfig, updatePyConfig} from "./settings/checkPython";
-    import {backupRestore} from "./settings/backupAndRestore";
+    // import {backupRestore} from "./settings/backupAndRestore";
 
 
 
@@ -21,18 +21,18 @@
     import {tick} from "svelte";
     import Terminal from '../components/Terminal.svelte';
     
-    const backup = (event) => {
-        backupRestore({event, method:"backup"})
-            .then(()=>console.log("Backup Completed"))
-            .catch((error)=>{mainPreModal.error(error.stack || error)})
-    }
+    // const backup = (event) => {
+    //     backupRestore({event, method:"backup"})
+    //         .then(()=>console.log("Backup Completed"))
+    //         .catch((error)=>{mainPreModal.error(error.stack || error)})
+    // }
 
-    const restore = (event) => {
-        backupRestore({event, method:"restore"})
-        .then(()=>console.log("Restore Completed"))
-        .catch((error)=>{mainPreModal.error(error.stack || error)})
+    // const restore = (event) => {
+    //     backupRestore({event, method:"restore"})
+    //     .then(()=>console.log("Restore Completed"))
+    //     .catch((error)=>{mainPreModal.error(error.stack || error)})
 
-    }
+    // }
 
     let selected = db.get("settingsActiveTab") || "Update"
     
@@ -53,35 +53,35 @@
             } , 1000)
 
 
-        updateCheck({info:false})
-        const timer_for_update = setInterval(()=>{updateCheck({info:false})}, 1*1000*60*15)
-        return ()=>{clearInterval(timer_for_update)}
+        // updateCheck({info:false})
+        // const timer_for_update = setInterval(()=>{updateCheck({info:false})}, 1*1000*60*15)
+        // return ()=>{clearInterval(timer_for_update)}
 
     })
-    const isPackaged = !__main_location.includes("node_modules");
-    console.log("Application packaged: ", isPackaged)
+    // const isPackaged = !__main_location.includes("node_modules");
+    // console.log("Application packaged: ", isPackaged)
     const handlepythonPathCheck = () => { console.log("Python path checking done") }
 
     // const handleError = (error) => mainPreModal.error(error.stack || error)
-    const update = async () => {
+    // const update = async () => {
 
-        if(!isPackaged) {return window.createToast("Application not packaged", "danger")}
-        const filename = "update.7z"
-        const foldername = "update"
+    //     if(!isPackaged) {return window.createToast("Application not packaged", "danger")}
+    //     const filename = "update.7z"
+    //     const foldername = "update"
 
-        const zipFile = pathResolve(TEMP, filename)
-        fs.ensureFileSync(zipFile)
-        const zipfolder = pathResolve(TEMP, foldername)
-        const target = document.getElementById("updateBtn")
+    //     const zipFile = pathResolve(TEMP, filename)
+    //     fs.ensureFileSync(zipFile)
+    //     const zipfolder = pathResolve(TEMP, foldername)
+    //     const target = document.getElementById("updateBtn")
 
-        try {
-            target.classList.toggle("is-loading")
-            await downloadFromGit(zipFile)
-            await extractFull(zipFile, zipfolder)
-            updateFELion()
-        } catch (error) {mainPreModal.error(error.stack || error); console.error(error)}
-        finally { target.classList.toggle("is-loading") }
-    }
+    //     try {
+    //         target.classList.toggle("is-loading")
+    //         await downloadFromGit(zipFile)
+    //         await extractFull(zipFile, zipfolder)
+    //         updateFELion()
+    //     } catch (error) {mainPreModal.error(error.stack || error); console.error(error)}
+    //     finally { target.classList.toggle("is-loading") }
+    // }
 
     // const restart_program = async () => {
     //     const {showMessageBoxSync} = dialogs
@@ -183,18 +183,18 @@
                         </div>
 
                         <div class="align">
-                            <button class="button is-link" id="updateCheckBtn" on:click="{updateCheck}" on:update={update}>Check update</button>
-                            <button class="button is-link" id="updateBtn" on:click={update}>Update</button>
+                            <!-- <button class="button is-link" id="updateCheckBtn" on:click="{updateCheck}" on:update={update}>Check update</button>
+                            <button class="button is-link" id="updateBtn" on:click={update}>Update</button> -->
                             
                             <button class="button is-warning" on:click="{()=>{$activateChangelog = true}}">What's New</button>
                         </div>
 
 
-                        <div class="align">
+                        <!-- <div class="align">
                             <Textfield  bind:value={$backupName} label="Github username" />
                             <button class="button is-link" on:click={backup}>Backup</button>
                             <button class="button is-link" on:click={restore}>Restore</button>
-                        </div>
+                        </div> -->
                     </div>
                     
                 </div>
