@@ -1,6 +1,5 @@
 
 <script>
-
     import {
         opoMode, normMethodDatas, Ngauss_sigma, felixopoLocation, felixPlotAnnotations, 
         expfittedLines, expfittedLinesCollectedData, fittedTraceCount, graphDiv, normMethod,
@@ -9,15 +8,17 @@
     import Layout from "../components/Layout.svelte"
     import CustomRadio from '../components/CustomRadio.svelte';
     // import ReportLayout from '../components/ReportLayout.svelte';
-    import {onMount, tick} from "svelte";
-
+    import {tick} from "svelte";
     import AddFilesToPlot from './normline/modals/AddFilesToPlot.svelte';
+
     import FrequencyTable from './normline/components/FrequencyTable.svelte';
     import InitFunctionRow from './normline/widgets/preprocessing/InitFunctionRow.svelte';
-    
     import OPORow from './normline/widgets/preprocessing/OPORow.svelte';
 
 
+
+    
+    import AdjustInitialGuess from './normline/modals/AdjustInitialGuess.svelte';
     import TheoryRow from './normline/widgets/preprocessing/TheoryRow.svelte';
     import GetFileInfoTable from './normline/widgets/preprocessing/GetFileInfoTable.svelte';
     import WriteFunctionContents from './normline/widgets/postprocessing/WriteFunctionContents.svelte';
@@ -33,18 +34,15 @@
     $: felixfiles = fileChecked.map(file=>pathResolve(currentLocation, file))
     $: console.log(`${filetype} currentlocation: \n${currentLocation}`)
     ///////////////////////////////////////////////////////////////////////
-
+    // const dispatch = createEventDispatcher();
     // Theory file
     let show_theoryplot = false
     let theoryLocation = db.get("theoryLocation") || currentLocation
 
     ///////////////////////////////////////////////////////////////////////
-    let openShell = false;
     let graphPlotted = false, overwrite_expfit = false, writeFile = false
 
-
     let OPOfilesChecked = []
-    
     $: plottedFiles = $opoMode ? OPOfilesChecked.map(file=>file.split(".")[0]) || [] : fileChecked.map(file=>file.split(".")[0]) || []
     $: output_namelists = ["averaged", ...plottedFiles, ...addedfiles.map(file=>basename(file)).map(file=>file.split(".")[0])]
 
@@ -62,12 +60,12 @@
                 $expfittedLines = $felixPlotAnnotations = $expfittedLinesCollectedData = [], $fittedTraceCount = 0
             } catch (err) {
             }
-
         }
     }
 
-    // OPO
 
+    // OPO
+    
     let OPOLocation = db.get("ofelix_location") || currentLocation
     let opofiles = []
     $: $felixopoLocation = $opoMode ? OPOLocation : currentLocation
@@ -78,16 +76,14 @@
     $: console.log(`Extrafile added: ${extrafileAdded}`)
    
     function removeExtraFile() {
-
         for(let i=0; i<extrafileAdded+1; i++) {
             try {
-
                 Plotly.deleteTraces($graphDiv, [-1])
                 extrafileAdded--
-                // addedfiles = addedfiles.slice(0, addedfiles.length-1)
-                const removeLastFile = addedfiles.pop()
+                addedfiles.pop()
             } catch (err) {console.log("The plot is empty")}
         }
+
     }
 
     let fullfiles = []
@@ -95,8 +91,8 @@
     $: $opoMode ? fullfiles = [...opofiles, ...addedfiles, pathResolve(currentLocation, "averaged.felix")] : fullfiles = [...felixfiles, ...addedfiles, pathResolve(currentLocation, "averaged.felix")]
 
     const init_tour = async () => {
-
         if (!toggleBrowser) {toggleBrowser = true; await sleep(600)} // Filebrowser toggling and its animation time to appear
+
         await tick() // For all the reactive components to render
         init_tour_normline({filetype})
     }
@@ -106,36 +102,17 @@
     let scalingBin = $felixConfigDB.get("scalingBin") || 0.001
     let updateConfig = false
     async function configSave(e) {
-
         $felixConfigDB.set("fdelta", fdelta)
         $felixConfigDB.set("odelta", odelta)
         $felixConfigDB.set("scalingBin", scalingBin)
         updateConfig = true;
         console.log("Config file saved", $felixConfigDB.JSON())
-
         await tick()
         updateConfig = false
-
         console.log("Config updated")
     }
-    let markedFile = ""
-    // const includePlotsInReport = [
 
-    //     {id: "bplot", include:true, label:"Baseline"}, {id:"saPlot", include:false, label:"SA-Pow"}, 
-    
-    //     {id:"avgplot", include:false, label:"Normalised Spectrum"}, {id:"exp-theory-plot", include:false, label:"Exp-Theory plot"}, 
-    
-    //     {id:"opoplot", include:false, label:"OPO: Baseline"}, {id:"opoSA", include:false, label:"OPO: SA-pow"}, 
-    //     {id:"opoRelPlot", include:false, label:"OPO: Normalised Spectrum"}
-    // ]
-
-    // const includeTablesInReports = [
-
-    //     {id:"felixTable", include:true, label:"Freq. table"}, {id:"felix_filedetails_table", include:false, label:"File info table"}
-    // ]
-    
-    // onMount(()=>{  console.log("Normline mounted") })
-    // const graphDivIds = ["exp-theory-plot", "bplot", "saPlot", "avgplot", "opoplot", "opoSA", "opoRelPlot"]
+    let modalActivate = false, adjustPeakTrigger=false;
 
 </script>
 
@@ -146,7 +123,7 @@
 
 <!-- Modals -->
 <AddFilesToPlot {fileChecked} bind:extrafileAdded bind:active={addFileModal} bind:addedFileCol bind:addedFileScale bind:addedfiles bind:addedFile  />
-
+<AdjustInitialGuess bind:active={modalActivate} on:save="{()=>adjustPeakTrigger=true}" />
 <!-- Layout -->
 <Layout  {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser on:tour={init_tour} bind:activateConfigModal on:configSave={configSave} on:markedFile="{(e)=>$baselineFile = e.detail.markedFile}">
 
@@ -186,7 +163,7 @@
 
         <WriteFunctionContents on:addfile="{()=>{addFileModal=true}}" on:removefile={removeExtraFile} {output_namelists} bind:writeFileName bind:writeFile bind:overwrite_expfit />
         <!-- Execute function buttons -->
-        <ExecuteFunctionContents {addedFileScale} {addedFileCol} normMethod={$normMethod} {writeFileName} {writeFile} {overwrite_expfit} {fullfiles}  />
+        <ExecuteFunctionContents {addedFileScale} {addedFileCol} normMethod={$normMethod} {writeFileName} {writeFile} {overwrite_expfit} {fullfiles}  bind:modalActivate bind:adjustPeakTrigger />
 
     </svelte:fragment>
 

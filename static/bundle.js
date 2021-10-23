@@ -28261,7 +28261,7 @@ var app = (function (marked) {
     const get_buttonContainer_slot_changes = dirty => ({});
     const get_buttonContainer_slot_context = ctx => ({});
 
-    // (147:16) <IconButton class="material-icons" on:click={() => activateConfigModal=true} >
+    // (146:16) <IconButton class="material-icons" on:click={() => activateConfigModal=true} >
     function create_default_slot$m(ctx) {
     	let t;
 
@@ -28281,14 +28281,14 @@ var app = (function (marked) {
     		block,
     		id: create_default_slot$m.name,
     		type: "slot",
-    		source: "(147:16) <IconButton class=\\\"material-icons\\\" on:click={() => activateConfigModal=true} >",
+    		source: "(146:16) <IconButton class=\\\"material-icons\\\" on:click={() => activateConfigModal=true} >",
     		ctx
     	});
 
     	return block;
     }
 
-    // (153:16) {#if graphPlotted}
+    // (152:16) {#if graphPlotted}
     function create_if_block_2$4(ctx) {
     	let button;
     	let mounted;
@@ -28299,7 +28299,7 @@ var app = (function (marked) {
     			button = element("button");
     			button.textContent = "Graph:Open separately";
     			attr_dev(button, "class", "button is-warning animated fadeIn");
-    			add_location(button, file$V, 153, 20, 4985);
+    			add_location(button, file$V, 152, 20, 4975);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -28321,14 +28321,14 @@ var app = (function (marked) {
     		block,
     		id: create_if_block_2$4.name,
     		type: "if",
-    		source: "(153:16) {#if graphPlotted}",
+    		source: "(152:16) {#if graphPlotted}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (163:16) {#if graphPlotted}
+    // (162:16) {#if graphPlotted}
     function create_if_block_1$b(ctx) {
     	let t;
     	let current;
@@ -28409,14 +28409,14 @@ var app = (function (marked) {
     		block,
     		id: create_if_block_1$b.name,
     		type: "if",
-    		source: "(163:16) {#if graphPlotted}",
+    		source: "(162:16) {#if graphPlotted}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (171:8) {#if activateConfigModal}
+    // (170:8) {#if activateConfigModal}
     function create_if_block$s(ctx) {
     	let modal;
     	let updating_active;
@@ -28484,14 +28484,14 @@ var app = (function (marked) {
     		block,
     		id: create_if_block$s.name,
     		type: "if",
-    		source: "(171:8) {#if activateConfigModal}",
+    		source: "(170:8) {#if activateConfigModal}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (173:16) <svelte:fragment slot="content">
+    // (172:16) <svelte:fragment slot="content">
     function create_content_slot$8(ctx) {
     	let current;
     	const config_slot_template = /*#slots*/ ctx[15].config;
@@ -28542,14 +28542,14 @@ var app = (function (marked) {
     		block,
     		id: create_content_slot$8.name,
     		type: "slot",
-    		source: "(173:16) <svelte:fragment slot=\\\"content\\\">",
+    		source: "(172:16) <svelte:fragment slot=\\\"content\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (176:16) <svelte:fragment slot="footerbtn">
+    // (175:16) <svelte:fragment slot="footerbtn">
     function create_footerbtn_slot$6(ctx) {
     	let button;
     	let mounted;
@@ -28560,7 +28560,7 @@ var app = (function (marked) {
     			button = element("button");
     			button.textContent = "Save";
     			attr_dev(button, "class", "button is-link");
-    			add_location(button, file$V, 176, 20, 5890);
+    			add_location(button, file$V, 175, 20, 5880);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -28582,7 +28582,7 @@ var app = (function (marked) {
     		block,
     		id: create_footerbtn_slot$6.name,
     		type: "slot",
-    		source: "(176:16) <svelte:fragment slot=\\\"footerbtn\\\">",
+    		source: "(175:16) <svelte:fragment slot=\\\"footerbtn\\\">",
     		ctx
     	});
 
@@ -28720,28 +28720,28 @@ var app = (function (marked) {
     			t8 = space();
     			if (if_block2) if_block2.c();
     			attr_dev(div0, "class", "interact left_container__div box  svelte-ds15ez");
-    			add_location(div0, file$V, 135, 8, 3996);
+    			add_location(div0, file$V, 134, 8, 3986);
     			attr_dev(button, "class", "button is-link");
     			attr_dev(button, "id", button_id_value = "" + (/*filetype*/ ctx[5] + "_filebrowser_btn"));
-    			add_location(button, file$V, 143, 16, 4452);
+    			add_location(button, file$V, 142, 16, 4442);
     			attr_dev(div1, "class", "location__div svelte-ds15ez");
-    			add_location(div1, file$V, 142, 12, 4406);
+    			add_location(div1, file$V, 141, 12, 4396);
     			attr_dev(div2, "class", "button__div align");
     			attr_dev(div2, "id", div2_id_value = "" + (/*filetype*/ ctx[5] + "-buttonContainer"));
-    			add_location(div2, file$V, 149, 12, 4812);
+    			add_location(div2, file$V, 148, 12, 4802);
     			attr_dev(div3, "class", "plot__div svelte-ds15ez");
     			attr_dev(div3, "id", div3_id_value = "" + (/*filetype*/ ctx[5] + "-plotContainer"));
     			add_render_callback(() => /*div3_elementresize_handler*/ ctx[25].call(div3));
-    			add_location(div3, file$V, 159, 12, 5149);
+    			add_location(div3, file$V, 158, 12, 5139);
     			attr_dev(div4, "class", "right_container__div box  svelte-ds15ez");
     			attr_dev(div4, "id", div4_id_value = "" + (/*filetype*/ ctx[5] + "__mainContainer__div"));
-    			add_location(div4, file$V, 140, 8, 4314);
+    			add_location(div4, file$V, 139, 8, 4304);
     			attr_dev(div5, "class", "main__layout__div svelte-ds15ez");
-    			add_location(div5, file$V, 134, 4, 3955);
+    			add_location(div5, file$V, 133, 4, 3945);
     			attr_dev(section, "id", /*id*/ ctx[4]);
     			set_style(section, "display", "none");
     			attr_dev(section, "class", "animated fadeIn");
-    			add_location(section, file$V, 132, 0, 3888);
+    			add_location(section, file$V, 131, 0, 3878);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -51791,920 +51791,8 @@ var app = (function (marked) {
     	}
     }
 
-    function theory_func({dataFromPython, normMethod}={}){
-        let ylabel;
-        if (normMethod === "Log") { ylabel = "Normalised Intensity per J"; }
-        else if (normMethod === "Relative") { ylabel = "Relative Depletion (%)"; }
-        else { ylabel = "Normalised Intensity per Photon"; }
-
-        let theoryData = [];
-        for (let x in dataFromPython["line_simulation"]) { theoryData.push(dataFromPython["line_simulation"][x]); }
-
-        plot(
-            "Experimental vs Theory",
-            "Calibrated Wavelength (cm-1)",
-            ylabel, [dataFromPython["averaged"], ...theoryData],
-            "exp-theory-plot"
-
-        );
-
-        console.log("Graph Plotted");
-    }
-
-    /* src\components\CustomSwitch.svelte generated by Svelte v3.42.1 */
-    const file$r = "src\\components\\CustomSwitch.svelte";
-
-    // (9:0) <FormField {style}>
-    function create_default_slot$7(ctx) {
-    	let switch_1;
-    	let updating_checked;
-    	let current;
-
-    	function switch_1_checked_binding(value) {
-    		/*switch_1_checked_binding*/ ctx[3](value);
-    	}
-
-    	let switch_1_props = {};
-
-    	if (/*selected*/ ctx[0] !== void 0) {
-    		switch_1_props.checked = /*selected*/ ctx[0];
-    	}
-
-    	switch_1 = new Switch({ props: switch_1_props, $$inline: true });
-    	binding_callbacks.push(() => bind(switch_1, 'checked', switch_1_checked_binding));
-    	switch_1.$on("change", /*change_handler*/ ctx[4]);
-
-    	const block = {
-    		c: function create() {
-    			create_component(switch_1.$$.fragment);
-    		},
-    		m: function mount(target, anchor) {
-    			mount_component(switch_1, target, anchor);
-    			current = true;
-    		},
-    		p: function update(ctx, dirty) {
-    			const switch_1_changes = {};
-
-    			if (!updating_checked && dirty & /*selected*/ 1) {
-    				updating_checked = true;
-    				switch_1_changes.checked = /*selected*/ ctx[0];
-    				add_flush_callback(() => updating_checked = false);
-    			}
-
-    			switch_1.$set(switch_1_changes);
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(switch_1.$$.fragment, local);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(switch_1.$$.fragment, local);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			destroy_component(switch_1, detaching);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_default_slot$7.name,
-    		type: "slot",
-    		source: "(9:0) <FormField {style}>",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (11:4) 
-    function create_label_slot$1(ctx) {
-    	let span;
-    	let t;
-
-    	const block = {
-    		c: function create() {
-    			span = element("span");
-    			t = text(/*label*/ ctx[2]);
-    			attr_dev(span, "slot", "label");
-    			add_location(span, file$r, 10, 4, 244);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, span, anchor);
-    			append_dev(span, t);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*label*/ 4) set_data_dev(t, /*label*/ ctx[2]);
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(span);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_label_slot$1.name,
-    		type: "slot",
-    		source: "(11:4) ",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    function create_fragment$s(ctx) {
-    	let formfield;
-    	let current;
-
-    	formfield = new FormField({
-    			props: {
-    				style: /*style*/ ctx[1],
-    				$$slots: {
-    					label: [create_label_slot$1],
-    					default: [create_default_slot$7]
-    				},
-    				$$scope: { ctx }
-    			},
-    			$$inline: true
-    		});
-
-    	const block = {
-    		c: function create() {
-    			create_component(formfield.$$.fragment);
-    		},
-    		l: function claim(nodes) {
-    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
-    		},
-    		m: function mount(target, anchor) {
-    			mount_component(formfield, target, anchor);
-    			current = true;
-    		},
-    		p: function update(ctx, [dirty]) {
-    			const formfield_changes = {};
-    			if (dirty & /*style*/ 2) formfield_changes.style = /*style*/ ctx[1];
-
-    			if (dirty & /*$$scope, label, selected*/ 37) {
-    				formfield_changes.$$scope = { dirty, ctx };
-    			}
-
-    			formfield.$set(formfield_changes);
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(formfield.$$.fragment, local);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(formfield.$$.fragment, local);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			destroy_component(formfield, detaching);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_fragment$s.name,
-    		type: "component",
-    		source: "",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    function instance$s($$self, $$props, $$invalidate) {
-    	let { $$slots: slots = {}, $$scope } = $$props;
-    	validate_slots('CustomSwitch', slots, []);
-    	let { selected = false, style = "", label = "" } = $$props;
-    	const writable_props = ['selected', 'style', 'label'];
-
-    	Object.keys($$props).forEach(key => {
-    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<CustomSwitch> was created with unknown prop '${key}'`);
-    	});
-
-    	function switch_1_checked_binding(value) {
-    		selected = value;
-    		$$invalidate(0, selected);
-    	}
-
-    	function change_handler(event) {
-    		bubble.call(this, $$self, event);
-    	}
-
-    	$$self.$$set = $$props => {
-    		if ('selected' in $$props) $$invalidate(0, selected = $$props.selected);
-    		if ('style' in $$props) $$invalidate(1, style = $$props.style);
-    		if ('label' in $$props) $$invalidate(2, label = $$props.label);
-    	};
-
-    	$$self.$capture_state = () => ({
-    		Switch,
-    		FormField,
-    		selected,
-    		style,
-    		label
-    	});
-
-    	$$self.$inject_state = $$props => {
-    		if ('selected' in $$props) $$invalidate(0, selected = $$props.selected);
-    		if ('style' in $$props) $$invalidate(1, style = $$props.style);
-    		if ('label' in $$props) $$invalidate(2, label = $$props.label);
-    	};
-
-    	if ($$props && "$$inject" in $$props) {
-    		$$self.$inject_state($$props.$$inject);
-    	}
-
-    	return [selected, style, label, switch_1_checked_binding, change_handler];
-    }
-
-    class CustomSwitch$1 extends SvelteComponentDev {
-    	constructor(options) {
-    		super(options);
-    		init$1(this, options, instance$s, create_fragment$s, safe_not_equal, { selected: 0, style: 1, label: 2 });
-
-    		dispatch_dev("SvelteRegisterComponent", {
-    			component: this,
-    			tagName: "CustomSwitch",
-    			options,
-    			id: create_fragment$s.name
-    		});
-    	}
-
-    	get selected() {
-    		throw new Error("<CustomSwitch>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set selected(value) {
-    		throw new Error("<CustomSwitch>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get style() {
-    		throw new Error("<CustomSwitch>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set style(value) {
-    		throw new Error("<CustomSwitch>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get label() {
-    		throw new Error("<CustomSwitch>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set label(value) {
-    		throw new Error("<CustomSwitch>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-    }
-
-    /* src\Pages\normline\widgets\preprocessing\TheoryRow.svelte generated by Svelte v3.42.1 */
-
-    const { console: console_1$c } = globals;
-    const file$q = "src\\Pages\\normline\\widgets\\preprocessing\\TheoryRow.svelte";
-
-    // (49:0) {#if $toggleRow}
-    function create_if_block$h(ctx) {
-    	let div;
-    	let button0;
-    	let t1;
-    	let textfield0;
-    	let updating_value;
-    	let t2;
-    	let textfield1;
-    	let updating_value_1;
-    	let t3;
-    	let customswitch0;
-    	let updating_selected;
-    	let t4;
-    	let customswitch1;
-    	let updating_selected_1;
-    	let t5;
-    	let button1;
-    	let div_transition;
-    	let current;
-    	let mounted;
-    	let dispose;
-
-    	function textfield0_value_binding(value) {
-    		/*textfield0_value_binding*/ ctx[18](value);
-    	}
-
-    	let textfield0_props = {
-    		style: "width:7em; margin-right:0.5em;",
-    		variant: "outlined",
-    		label: "Sigma",
-    		input$type: "number",
-    		input$step: "0.5",
-    		input$min: "0"
-    	};
-
-    	if (/*sigma*/ ctx[2] !== void 0) {
-    		textfield0_props.value = /*sigma*/ ctx[2];
-    	}
-
-    	textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
-    	binding_callbacks.push(() => bind(textfield0, 'value', textfield0_value_binding));
-
-    	function textfield1_value_binding(value) {
-    		/*textfield1_value_binding*/ ctx[19](value);
-    	}
-
-    	let textfield1_props = {
-    		style: "width:7em",
-    		variant: "outlined",
-    		label: "Scale",
-    		input$type: "number",
-    		input$step: /*scalingBin*/ ctx[6],
-    		input$min: "0",
-    		input$max: "1"
-    	};
-
-    	if (/*scale*/ ctx[3] !== void 0) {
-    		textfield1_props.value = /*scale*/ ctx[3];
-    	}
-
-    	textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
-    	binding_callbacks.push(() => bind(textfield1, 'value', textfield1_value_binding));
-
-    	function customswitch0_selected_binding(value) {
-    		/*customswitch0_selected_binding*/ ctx[20](value);
-    	}
-
-    	let customswitch0_props = {
-    		style: "margin: 0 1em;",
-    		label: "Only Exp. Range"
-    	};
-
-    	if (/*onlyExpRange*/ ctx[7] !== void 0) {
-    		customswitch0_props.selected = /*onlyExpRange*/ ctx[7];
-    	}
-
-    	customswitch0 = new CustomSwitch$1({
-    			props: customswitch0_props,
-    			$$inline: true
-    		});
-
-    	binding_callbacks.push(() => bind(customswitch0, 'selected', customswitch0_selected_binding));
-
-    	function customswitch1_selected_binding(value) {
-    		/*customswitch1_selected_binding*/ ctx[21](value);
-    	}
-
-    	let customswitch1_props = {
-    		style: "margin: 0 1em;",
-    		label: "Matplotlib"
-    	};
-
-    	if (/*tkplot*/ ctx[4] !== void 0) {
-    		customswitch1_props.selected = /*tkplot*/ ctx[4];
-    	}
-
-    	customswitch1 = new CustomSwitch$1({
-    			props: customswitch1_props,
-    			$$inline: true
-    		});
-
-    	binding_callbacks.push(() => bind(customswitch1, 'selected', customswitch1_selected_binding));
-
-    	const block = {
-    		c: function create() {
-    			div = element("div");
-    			button0 = element("button");
-    			button0.textContent = "Browse File";
-    			t1 = space();
-    			create_component(textfield0.$$.fragment);
-    			t2 = space();
-    			create_component(textfield1.$$.fragment);
-    			t3 = space();
-    			create_component(customswitch0.$$.fragment);
-    			t4 = space();
-    			create_component(customswitch1.$$.fragment);
-    			t5 = space();
-    			button1 = element("button");
-    			button1.textContent = "Replot";
-    			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$q, 51, 8, 2114);
-    			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$q, 60, 8, 2775);
-    			attr_dev(div, "class", "align");
-    			add_location(div, file$q, 49, 4, 2067);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    			append_dev(div, button0);
-    			append_dev(div, t1);
-    			mount_component(textfield0, div, null);
-    			append_dev(div, t2);
-    			mount_component(textfield1, div, null);
-    			append_dev(div, t3);
-    			mount_component(customswitch0, div, null);
-    			append_dev(div, t4);
-    			mount_component(customswitch1, div, null);
-    			append_dev(div, t5);
-    			append_dev(div, button1);
-    			current = true;
-
-    			if (!mounted) {
-    				dispose = [
-    					listen_dev(button0, "click", /*click_handler*/ ctx[17], false, false, false),
-    					listen_dev(button1, "click", /*plotData*/ ctx[9], false, false, false)
-    				];
-
-    				mounted = true;
-    			}
-    		},
-    		p: function update(ctx, dirty) {
-    			const textfield0_changes = {};
-
-    			if (!updating_value && dirty & /*sigma*/ 4) {
-    				updating_value = true;
-    				textfield0_changes.value = /*sigma*/ ctx[2];
-    				add_flush_callback(() => updating_value = false);
-    			}
-
-    			textfield0.$set(textfield0_changes);
-    			const textfield1_changes = {};
-    			if (dirty & /*scalingBin*/ 64) textfield1_changes.input$step = /*scalingBin*/ ctx[6];
-
-    			if (!updating_value_1 && dirty & /*scale*/ 8) {
-    				updating_value_1 = true;
-    				textfield1_changes.value = /*scale*/ ctx[3];
-    				add_flush_callback(() => updating_value_1 = false);
-    			}
-
-    			textfield1.$set(textfield1_changes);
-    			const customswitch0_changes = {};
-
-    			if (!updating_selected && dirty & /*onlyExpRange*/ 128) {
-    				updating_selected = true;
-    				customswitch0_changes.selected = /*onlyExpRange*/ ctx[7];
-    				add_flush_callback(() => updating_selected = false);
-    			}
-
-    			customswitch0.$set(customswitch0_changes);
-    			const customswitch1_changes = {};
-
-    			if (!updating_selected_1 && dirty & /*tkplot*/ 16) {
-    				updating_selected_1 = true;
-    				customswitch1_changes.selected = /*tkplot*/ ctx[4];
-    				add_flush_callback(() => updating_selected_1 = false);
-    			}
-
-    			customswitch1.$set(customswitch1_changes);
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(textfield0.$$.fragment, local);
-    			transition_in(textfield1.$$.fragment, local);
-    			transition_in(customswitch0.$$.fragment, local);
-    			transition_in(customswitch1.$$.fragment, local);
-
-    			add_render_callback(() => {
-    				if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, true);
-    				div_transition.run(1);
-    			});
-
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(textfield0.$$.fragment, local);
-    			transition_out(textfield1.$$.fragment, local);
-    			transition_out(customswitch0.$$.fragment, local);
-    			transition_out(customswitch1.$$.fragment, local);
-    			if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, false);
-    			div_transition.run(0);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    			destroy_component(textfield0);
-    			destroy_component(textfield1);
-    			destroy_component(customswitch0);
-    			destroy_component(customswitch1);
-    			if (detaching && div_transition) div_transition.end();
-    			mounted = false;
-    			run_all(dispose);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block$h.name,
-    		type: "if",
-    		source: "(49:0) {#if $toggleRow}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    function create_fragment$r(ctx) {
-    	let quickbrowser;
-    	let updating_active;
-    	let updating_currentLocation;
-    	let updating_fileChecked;
-    	let t;
-    	let if_block_anchor;
-    	let current;
-
-    	function quickbrowser_active_binding(value) {
-    		/*quickbrowser_active_binding*/ ctx[13](value);
-    	}
-
-    	function quickbrowser_currentLocation_binding(value) {
-    		/*quickbrowser_currentLocation_binding*/ ctx[14](value);
-    	}
-
-    	function quickbrowser_fileChecked_binding(value) {
-    		/*quickbrowser_fileChecked_binding*/ ctx[15](value);
-    	}
-
-    	let quickbrowser_props = { title: "Theory files" };
-
-    	if (/*showTheoryFiles*/ ctx[5] !== void 0) {
-    		quickbrowser_props.active = /*showTheoryFiles*/ ctx[5];
-    	}
-
-    	if (/*theoryLocation*/ ctx[0] !== void 0) {
-    		quickbrowser_props.currentLocation = /*theoryLocation*/ ctx[0];
-    	}
-
-    	if (/*theoryfilesChecked*/ ctx[1] !== void 0) {
-    		quickbrowser_props.fileChecked = /*theoryfilesChecked*/ ctx[1];
-    	}
-
-    	quickbrowser = new QuickBrowser({
-    			props: quickbrowser_props,
-    			$$inline: true
-    		});
-
-    	binding_callbacks.push(() => bind(quickbrowser, 'active', quickbrowser_active_binding));
-    	binding_callbacks.push(() => bind(quickbrowser, 'currentLocation', quickbrowser_currentLocation_binding));
-    	binding_callbacks.push(() => bind(quickbrowser, 'fileChecked', quickbrowser_fileChecked_binding));
-    	quickbrowser.$on("submit", /*submit_handler*/ ctx[16]);
-    	let if_block = /*$toggleRow*/ ctx[8] && create_if_block$h(ctx);
-
-    	const block = {
-    		c: function create() {
-    			create_component(quickbrowser.$$.fragment);
-    			t = space();
-    			if (if_block) if_block.c();
-    			if_block_anchor = empty();
-    		},
-    		l: function claim(nodes) {
-    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
-    		},
-    		m: function mount(target, anchor) {
-    			mount_component(quickbrowser, target, anchor);
-    			insert_dev(target, t, anchor);
-    			if (if_block) if_block.m(target, anchor);
-    			insert_dev(target, if_block_anchor, anchor);
-    			current = true;
-    		},
-    		p: function update(ctx, [dirty]) {
-    			const quickbrowser_changes = {};
-
-    			if (!updating_active && dirty & /*showTheoryFiles*/ 32) {
-    				updating_active = true;
-    				quickbrowser_changes.active = /*showTheoryFiles*/ ctx[5];
-    				add_flush_callback(() => updating_active = false);
-    			}
-
-    			if (!updating_currentLocation && dirty & /*theoryLocation*/ 1) {
-    				updating_currentLocation = true;
-    				quickbrowser_changes.currentLocation = /*theoryLocation*/ ctx[0];
-    				add_flush_callback(() => updating_currentLocation = false);
-    			}
-
-    			if (!updating_fileChecked && dirty & /*theoryfilesChecked*/ 2) {
-    				updating_fileChecked = true;
-    				quickbrowser_changes.fileChecked = /*theoryfilesChecked*/ ctx[1];
-    				add_flush_callback(() => updating_fileChecked = false);
-    			}
-
-    			quickbrowser.$set(quickbrowser_changes);
-
-    			if (/*$toggleRow*/ ctx[8]) {
-    				if (if_block) {
-    					if_block.p(ctx, dirty);
-
-    					if (dirty & /*$toggleRow*/ 256) {
-    						transition_in(if_block, 1);
-    					}
-    				} else {
-    					if_block = create_if_block$h(ctx);
-    					if_block.c();
-    					transition_in(if_block, 1);
-    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
-    				}
-    			} else if (if_block) {
-    				group_outros();
-
-    				transition_out(if_block, 1, 1, () => {
-    					if_block = null;
-    				});
-
-    				check_outros();
-    			}
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(quickbrowser.$$.fragment, local);
-    			transition_in(if_block);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(quickbrowser.$$.fragment, local);
-    			transition_out(if_block);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			destroy_component(quickbrowser, detaching);
-    			if (detaching) detach_dev(t);
-    			if (if_block) if_block.d(detaching);
-    			if (detaching) detach_dev(if_block_anchor);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_fragment$r.name,
-    		type: "component",
-    		source: "",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    function instance$r($$self, $$props, $$invalidate) {
-    	let $felixopoLocation;
-    	let $felixConfigDB;
-    	let $toggleRow;
-    	validate_store(felixopoLocation, 'felixopoLocation');
-    	component_subscribe($$self, felixopoLocation, $$value => $$invalidate(23, $felixopoLocation = $$value));
-    	validate_store(felixConfigDB, 'felixConfigDB');
-    	component_subscribe($$self, felixConfigDB, $$value => $$invalidate(24, $felixConfigDB = $$value));
-    	validate_store(toggleRow, 'toggleRow');
-    	component_subscribe($$self, toggleRow, $$value => $$invalidate(8, $toggleRow = $$value));
-    	let { $$slots: slots = {}, $$scope } = $$props;
-    	validate_slots('TheoryRow', slots, []);
-    	let { updateConfig = false } = $$props;
-    	let { theoryLocation, show_theoryplot, normMethod } = $$props;
-    	let sigma = 7, scale = 1, theoryfiles = [], tkplot = false;
-    	let showTheoryFiles = false, theoryfilesChecked = [];
-    	let scalingBin = $felixConfigDB.get("scalingBin");
-
-    	function loadConfig() {
-    		$$invalidate(6, scalingBin = $felixConfigDB.get("scalingBin"));
-    		console.log("scalingBin updated", scalingBin);
-    	}
-
-    	function plotData(e = null) {
-    		let pyfile = "theory.py", args;
-    		if (theoryfiles.length < 1) return window.createToast("No files selected", "danger");
-
-    		args = {
-    			theoryfiles,
-    			normMethod,
-    			sigma,
-    			scale,
-    			currentLocation: $felixopoLocation,
-    			tkplot,
-    			onlyExpRange
-    		};
-
-    		args = [JSON.stringify(args)];
-
-    		computePy_func({ e, pyfile, args }).then(dataFromPython => {
-    			theory_func({ dataFromPython, normMethod });
-    			window.createToast("Graph Plotted", "success");
-    			($$invalidate(10, show_theoryplot = true), $$invalidate(5, showTheoryFiles = false));
-    		}).catch(error => {
-    			mainPreModal.error(error.stack || error);
-    		});
-    	}
-
-    	let onlyExpRange = false;
-    	const writable_props = ['updateConfig', 'theoryLocation', 'show_theoryplot', 'normMethod'];
-
-    	Object.keys($$props).forEach(key => {
-    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1$c.warn(`<TheoryRow> was created with unknown prop '${key}'`);
-    	});
-
-    	function quickbrowser_active_binding(value) {
-    		showTheoryFiles = value;
-    		$$invalidate(5, showTheoryFiles);
-    	}
-
-    	function quickbrowser_currentLocation_binding(value) {
-    		theoryLocation = value;
-    		$$invalidate(0, theoryLocation);
-    	}
-
-    	function quickbrowser_fileChecked_binding(value) {
-    		theoryfilesChecked = value;
-    		$$invalidate(1, theoryfilesChecked);
-    	}
-
-    	const submit_handler = e => {
-    		plotData(e.detail.event);
-    	};
-
-    	const click_handler = () => {
-    		$$invalidate(5, showTheoryFiles = !showTheoryFiles);
-    	};
-
-    	function textfield0_value_binding(value) {
-    		sigma = value;
-    		$$invalidate(2, sigma);
-    	}
-
-    	function textfield1_value_binding(value) {
-    		scale = value;
-    		$$invalidate(3, scale);
-    	}
-
-    	function customswitch0_selected_binding(value) {
-    		onlyExpRange = value;
-    		$$invalidate(7, onlyExpRange);
-    	}
-
-    	function customswitch1_selected_binding(value) {
-    		tkplot = value;
-    		$$invalidate(4, tkplot);
-    	}
-
-    	$$self.$$set = $$props => {
-    		if ('updateConfig' in $$props) $$invalidate(11, updateConfig = $$props.updateConfig);
-    		if ('theoryLocation' in $$props) $$invalidate(0, theoryLocation = $$props.theoryLocation);
-    		if ('show_theoryplot' in $$props) $$invalidate(10, show_theoryplot = $$props.show_theoryplot);
-    		if ('normMethod' in $$props) $$invalidate(12, normMethod = $$props.normMethod);
-    	};
-
-    	$$self.$capture_state = () => ({
-    		mainPreModal,
-    		toggleRow,
-    		felixopoLocation,
-    		felixConfigDB,
-    		Textfield,
-    		QuickBrowser,
-    		fade,
-    		theory_func,
-    		updateConfig,
-    		CustomSwitch: CustomSwitch$1,
-    		theoryLocation,
-    		show_theoryplot,
-    		normMethod,
-    		sigma,
-    		scale,
-    		theoryfiles,
-    		tkplot,
-    		showTheoryFiles,
-    		theoryfilesChecked,
-    		scalingBin,
-    		loadConfig,
-    		plotData,
-    		onlyExpRange,
-    		$felixopoLocation,
-    		$felixConfigDB,
-    		$toggleRow
-    	});
-
-    	$$self.$inject_state = $$props => {
-    		if ('updateConfig' in $$props) $$invalidate(11, updateConfig = $$props.updateConfig);
-    		if ('theoryLocation' in $$props) $$invalidate(0, theoryLocation = $$props.theoryLocation);
-    		if ('show_theoryplot' in $$props) $$invalidate(10, show_theoryplot = $$props.show_theoryplot);
-    		if ('normMethod' in $$props) $$invalidate(12, normMethod = $$props.normMethod);
-    		if ('sigma' in $$props) $$invalidate(2, sigma = $$props.sigma);
-    		if ('scale' in $$props) $$invalidate(3, scale = $$props.scale);
-    		if ('theoryfiles' in $$props) theoryfiles = $$props.theoryfiles;
-    		if ('tkplot' in $$props) $$invalidate(4, tkplot = $$props.tkplot);
-    		if ('showTheoryFiles' in $$props) $$invalidate(5, showTheoryFiles = $$props.showTheoryFiles);
-    		if ('theoryfilesChecked' in $$props) $$invalidate(1, theoryfilesChecked = $$props.theoryfilesChecked);
-    		if ('scalingBin' in $$props) $$invalidate(6, scalingBin = $$props.scalingBin);
-    		if ('onlyExpRange' in $$props) $$invalidate(7, onlyExpRange = $$props.onlyExpRange);
-    	};
-
-    	if ($$props && "$$inject" in $$props) {
-    		$$self.$inject_state($$props.$$inject);
-    	}
-
-    	$$self.$$.update = () => {
-    		if ($$self.$$.dirty & /*theoryLocation, theoryfilesChecked*/ 3) {
-    			if (existsSync(theoryLocation)) {
-    				theoryfiles = theoryfilesChecked.map(file => pathResolve(theoryLocation, file));
-    			}
-    		}
-
-    		if ($$self.$$.dirty & /*updateConfig*/ 2048) {
-    			if (updateConfig) loadConfig();
-    		}
-
-    		if ($$self.$$.dirty & /*theoryLocation*/ 1) {
-    			if (theoryLocation) {
-    				db.set("theoryLocation", theoryLocation);
-    			}
-    		}
-    	};
-
-    	return [
-    		theoryLocation,
-    		theoryfilesChecked,
-    		sigma,
-    		scale,
-    		tkplot,
-    		showTheoryFiles,
-    		scalingBin,
-    		onlyExpRange,
-    		$toggleRow,
-    		plotData,
-    		show_theoryplot,
-    		updateConfig,
-    		normMethod,
-    		quickbrowser_active_binding,
-    		quickbrowser_currentLocation_binding,
-    		quickbrowser_fileChecked_binding,
-    		submit_handler,
-    		click_handler,
-    		textfield0_value_binding,
-    		textfield1_value_binding,
-    		customswitch0_selected_binding,
-    		customswitch1_selected_binding
-    	];
-    }
-
-    class TheoryRow extends SvelteComponentDev {
-    	constructor(options) {
-    		super(options);
-
-    		init$1(this, options, instance$r, create_fragment$r, safe_not_equal, {
-    			updateConfig: 11,
-    			theoryLocation: 0,
-    			show_theoryplot: 10,
-    			normMethod: 12
-    		});
-
-    		dispatch_dev("SvelteRegisterComponent", {
-    			component: this,
-    			tagName: "TheoryRow",
-    			options,
-    			id: create_fragment$r.name
-    		});
-
-    		const { ctx } = this.$$;
-    		const props = options.props || {};
-
-    		if (/*theoryLocation*/ ctx[0] === undefined && !('theoryLocation' in props)) {
-    			console_1$c.warn("<TheoryRow> was created without expected prop 'theoryLocation'");
-    		}
-
-    		if (/*show_theoryplot*/ ctx[10] === undefined && !('show_theoryplot' in props)) {
-    			console_1$c.warn("<TheoryRow> was created without expected prop 'show_theoryplot'");
-    		}
-
-    		if (/*normMethod*/ ctx[12] === undefined && !('normMethod' in props)) {
-    			console_1$c.warn("<TheoryRow> was created without expected prop 'normMethod'");
-    		}
-    	}
-
-    	get updateConfig() {
-    		throw new Error("<TheoryRow>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set updateConfig(value) {
-    		throw new Error("<TheoryRow>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get theoryLocation() {
-    		throw new Error("<TheoryRow>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set theoryLocation(value) {
-    		throw new Error("<TheoryRow>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get show_theoryplot() {
-    		throw new Error("<TheoryRow>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set show_theoryplot(value) {
-    		throw new Error("<TheoryRow>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get normMethod() {
-    		throw new Error("<TheoryRow>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set normMethod(value) {
-    		throw new Error("<TheoryRow>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-    }
-
     /* src\components\Table.svelte generated by Svelte v3.42.1 */
-    const file$p = "src\\components\\Table.svelte";
+    const file$r = "src\\components\\Table.svelte";
 
     function get_each_context$9(ctx, list, i) {
     	const child_ctx = ctx.slice();
@@ -52752,7 +51840,7 @@ var app = (function (marked) {
     			div = element("div");
     			create_component(icon.$$.fragment);
     			attr_dev(div, "class", "icon-holder svelte-1kiu7tv");
-    			add_location(div, file$p, 63, 8, 1487);
+    			add_location(div, file$r, 63, 8, 1487);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -52939,12 +52027,12 @@ var app = (function (marked) {
     			t1 = text(t1_value);
     			t2 = space();
     			attr_dev(div, "class", "tableIcon svelte-1kiu7tv");
-    			add_location(div, file$p, 85, 28, 2213);
+    			add_location(div, file$r, 85, 28, 2213);
     			set_style(th, "cursor", "pointer");
     			attr_dev(th, "class", "mdc-data-table__header-cell svelte-1kiu7tv");
     			attr_dev(th, "role", "columnheader");
     			attr_dev(th, "scope", "col");
-    			add_location(th, file$p, 83, 24, 2083);
+    			add_location(th, file$r, 83, 24, 2083);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, th, anchor);
@@ -53038,10 +52126,10 @@ var app = (function (marked) {
     			set_style(input, "color", "black");
     			set_style(input, "width", "100%");
     			attr_dev(input, "class", "svelte-1kiu7tv");
-    			add_location(input, file$p, 106, 28, 3205);
+    			add_location(input, file$r, 106, 28, 3205);
     			attr_dev(td, "class", "mdc-data-table__cell  mdc-data-table__cell--numeric svelte-1kiu7tv");
     			attr_dev(td, "id", td_id_value = "" + (/*row*/ ctx[20].id + "-" + /*key*/ ctx[23]));
-    			add_location(td, file$p, 105, 24, 3091);
+    			add_location(td, file$r, 105, 24, 3091);
     			this.first = td;
     		},
     		m: function mount(target, anchor) {
@@ -53084,7 +52172,7 @@ var app = (function (marked) {
     }
 
     // (110:20) {#if closeOption}
-    function create_if_block$g(ctx) {
+    function create_if_block$h(ctx) {
     	let td;
     	let icon;
     	let current;
@@ -53093,7 +52181,7 @@ var app = (function (marked) {
     			props: {
     				id: /*row*/ ctx[20].id,
     				class: "material-icons",
-    				$$slots: { default: [create_default_slot$6] },
+    				$$slots: { default: [create_default_slot$7] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -53109,7 +52197,7 @@ var app = (function (marked) {
     			set_style(td, "background", "#f14668");
     			set_style(td, "cursor", "pointer");
     			set_style(td, "width", "2em");
-    			add_location(td, file$p, 110, 24, 3406);
+    			add_location(td, file$r, 110, 24, 3406);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, td, anchor);
@@ -53143,7 +52231,7 @@ var app = (function (marked) {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block$g.name,
+    		id: create_if_block$h.name,
     		type: "if",
     		source: "(110:20) {#if closeOption}",
     		ctx
@@ -53153,7 +52241,7 @@ var app = (function (marked) {
     }
 
     // (112:28) <Icon id="{row.id}" class="material-icons" on:click="{(e)=> {rows = window._.filter(rows, (tb)=>tb.id != e.target.id)}}">
-    function create_default_slot$6(ctx) {
+    function create_default_slot$7(ctx) {
     	let t;
 
     	const block = {
@@ -53170,7 +52258,7 @@ var app = (function (marked) {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot$6.name,
+    		id: create_default_slot$7.name,
     		type: "slot",
     		source: "(112:28) <Icon id=\\\"{row.id}\\\" class=\\\"material-icons\\\" on:click=\\\"{(e)=> {rows = window._.filter(rows, (tb)=>tb.id != e.target.id)}}\\\">",
     		ctx
@@ -53203,7 +52291,7 @@ var app = (function (marked) {
     		each_1_lookup.set(key, each_blocks[i] = create_each_block_1$5(key, child_ctx));
     	}
 
-    	let if_block = /*closeOption*/ ctx[7] && create_if_block$g(ctx);
+    	let if_block = /*closeOption*/ ctx[7] && create_if_block$h(ctx);
 
     	const block = {
     		key: key_1,
@@ -53223,10 +52311,10 @@ var app = (function (marked) {
     			t3 = space();
     			attr_dev(td, "class", "mdc-data-table__cell svelte-1kiu7tv");
     			set_style(td, "width", "2em");
-    			add_location(td, file$p, 103, 20, 2942);
+    			add_location(td, file$r, 103, 20, 2942);
     			attr_dev(tr, "class", "mdc-data-table__row svelte-1kiu7tv");
     			set_style(tr, "background-color", "#fafafa");
-    			add_location(tr, file$p, 102, 20, 2833);
+    			add_location(tr, file$r, 102, 20, 2833);
     			this.first = tr;
     		},
     		m: function mount(target, anchor) {
@@ -53263,7 +52351,7 @@ var app = (function (marked) {
     						transition_in(if_block, 1);
     					}
     				} else {
-    					if_block = create_if_block$g(ctx);
+    					if_block = create_if_block$h(ctx);
     					if_block.c();
     					transition_in(if_block, 1);
     					if_block.m(tr, t3);
@@ -53318,7 +52406,7 @@ var app = (function (marked) {
     	return block;
     }
 
-    function create_fragment$q(ctx) {
+    function create_fragment$s(ctx) {
     	let div1;
     	let t0;
     	let div0;
@@ -53384,23 +52472,23 @@ var app = (function (marked) {
     			set_style(th, "width", "2em");
     			attr_dev(th, "role", "columnheader");
     			attr_dev(th, "scope", "col");
-    			add_location(th, file$p, 78, 20, 1903);
+    			add_location(th, file$r, 78, 20, 1903);
     			attr_dev(tr, "class", "mdc-data-table__header-row svelte-1kiu7tv");
-    			add_location(tr, file$p, 76, 16, 1840);
+    			add_location(tr, file$r, 76, 16, 1840);
     			attr_dev(thead, "class", "svelte-1kiu7tv");
-    			add_location(thead, file$p, 74, 12, 1813);
+    			add_location(thead, file$r, 74, 12, 1813);
     			attr_dev(tbody, "class", "mdc-data-table__content svelte-1kiu7tv");
-    			add_location(tbody, file$p, 99, 12, 2717);
+    			add_location(tbody, file$r, 99, 12, 2717);
     			attr_dev(table, "class", "mdc-data-table__table svelte-1kiu7tv");
     			attr_dev(table, "aria-label", /*label*/ ctx[3]);
     			attr_dev(table, "id", /*id*/ ctx[9]);
     			set_style(table, "user-select", (/*userSelect*/ ctx[4] ? 'text' : 'none') + " ");
-    			add_location(table, file$p, 73, 8, 1684);
+    			add_location(table, file$r, 73, 8, 1684);
     			attr_dev(div0, "class", "mdc-data-table tableContainer svelte-1kiu7tv");
-    			add_location(div0, file$p, 71, 4, 1628);
+    			add_location(div0, file$r, 71, 4, 1628);
     			attr_dev(div1, "style", /*style*/ ctx[5]);
     			attr_dev(div1, "class", "svelte-1kiu7tv");
-    			add_location(div1, file$p, 59, 0, 1434);
+    			add_location(div1, file$r, 59, 0, 1434);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -53547,7 +52635,7 @@ var app = (function (marked) {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_fragment$q.name,
+    		id: create_fragment$s.name,
     		type: "component",
     		source: "",
     		ctx
@@ -53556,7 +52644,7 @@ var app = (function (marked) {
     	return block;
     }
 
-    function instance$q($$self, $$props, $$invalidate) {
+    function instance$s($$self, $$props, $$invalidate) {
     	let animate;
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Table', slots, []);
@@ -53712,7 +52800,7 @@ var app = (function (marked) {
     	constructor(options) {
     		super(options);
 
-    		init$1(this, options, instance$q, create_fragment$q, safe_not_equal, {
+    		init$1(this, options, instance$s, create_fragment$s, safe_not_equal, {
     			head: 1,
     			rows: 0,
     			keys: 2,
@@ -53730,7 +52818,7 @@ var app = (function (marked) {
     			component: this,
     			tagName: "Table",
     			options,
-    			id: create_fragment$q.name
+    			id: create_fragment$s.name
     		});
 
     		const { ctx } = this.$$;
@@ -53838,6 +52926,1265 @@ var app = (function (marked) {
     	}
     }
 
+    /* src\Pages\normline\modals\AdjustInitialGuess.svelte generated by Svelte v3.42.1 */
+
+    const { console: console_1$c } = globals;
+    const file$q = "src\\Pages\\normline\\modals\\AdjustInitialGuess.svelte";
+
+    // (14:0) {#if active}
+    function create_if_block$g(ctx) {
+    	let modal;
+    	let updating_active;
+    	let current;
+
+    	function modal_active_binding(value) {
+    		/*modal_active_binding*/ ctx[5](value);
+    	}
+
+    	let modal_props = {
+    		title: "Adjust initial guess",
+    		$$slots: {
+    			footerbtn: [create_footerbtn_slot$2],
+    			content: [create_content_slot$4]
+    		},
+    		$$scope: { ctx }
+    	};
+
+    	if (/*active*/ ctx[0] !== void 0) {
+    		modal_props.active = /*active*/ ctx[0];
+    	}
+
+    	modal = new Modal$1({ props: modal_props, $$inline: true });
+    	binding_callbacks.push(() => bind(modal, 'active', modal_active_binding));
+
+    	const block = {
+    		c: function create() {
+    			create_component(modal.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(modal, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const modal_changes = {};
+
+    			if (dirty & /*$$scope, $felixPeakTable*/ 66) {
+    				modal_changes.$$scope = { dirty, ctx };
+    			}
+
+    			if (!updating_active && dirty & /*active*/ 1) {
+    				updating_active = true;
+    				modal_changes.active = /*active*/ ctx[0];
+    				add_flush_callback(() => updating_active = false);
+    			}
+
+    			modal.$set(modal_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(modal.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(modal.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(modal, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block$g.name,
+    		type: "if",
+    		source: "(14:0) {#if active}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (16:8) 
+    function create_content_slot$4(ctx) {
+    	let div;
+    	let table;
+    	let updating_rows;
+    	let current;
+
+    	function table_rows_binding(value) {
+    		/*table_rows_binding*/ ctx[4](value);
+    	}
+
+    	let table_props = {
+    		head: ["Frequency", "Amplitude", "Sigma"],
+    		keys: ["freq", "amp", "sig"],
+    		sortOption: true
+    	};
+
+    	if (/*$felixPeakTable*/ ctx[1] !== void 0) {
+    		table_props.rows = /*$felixPeakTable*/ ctx[1];
+    	}
+
+    	table = new Table({ props: table_props, $$inline: true });
+    	binding_callbacks.push(() => bind(table, 'rows', table_rows_binding));
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			create_component(table.$$.fragment);
+    			attr_dev(div, "slot", "content");
+    			add_location(div, file$q, 15, 8, 470);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			mount_component(table, div, null);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const table_changes = {};
+
+    			if (!updating_rows && dirty & /*$felixPeakTable*/ 2) {
+    				updating_rows = true;
+    				table_changes.rows = /*$felixPeakTable*/ ctx[1];
+    				add_flush_callback(() => updating_rows = false);
+    			}
+
+    			table.$set(table_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(table.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(table.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			destroy_component(table);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_content_slot$4.name,
+    		type: "slot",
+    		source: "(16:8) ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (22:8) 
+    function create_footerbtn_slot$2(ctx) {
+    	let button;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			button = element("button");
+    			button.textContent = "Save";
+    			attr_dev(button, "slot", "footerbtn");
+    			attr_dev(button, "class", "button is-link");
+    			add_location(button, file$q, 21, 8, 664);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, button, anchor);
+
+    			if (!mounted) {
+    				dispose = listen_dev(button, "click", /*click_handler*/ ctx[3], false, false, false);
+    				mounted = true;
+    			}
+    		},
+    		p: noop$1,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(button);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_footerbtn_slot$2.name,
+    		type: "slot",
+    		source: "(22:8) ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment$r(ctx) {
+    	let if_block_anchor;
+    	let current;
+    	let if_block = /*active*/ ctx[0] && create_if_block$g(ctx);
+
+    	const block = {
+    		c: function create() {
+    			if (if_block) if_block.c();
+    			if_block_anchor = empty();
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			if (if_block) if_block.m(target, anchor);
+    			insert_dev(target, if_block_anchor, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if (/*active*/ ctx[0]) {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+
+    					if (dirty & /*active*/ 1) {
+    						transition_in(if_block, 1);
+    					}
+    				} else {
+    					if_block = create_if_block$g(ctx);
+    					if_block.c();
+    					transition_in(if_block, 1);
+    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+    				}
+    			} else if (if_block) {
+    				group_outros();
+
+    				transition_out(if_block, 1, 1, () => {
+    					if_block = null;
+    				});
+
+    				check_outros();
+    			}
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(if_block);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(if_block);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (if_block) if_block.d(detaching);
+    			if (detaching) detach_dev(if_block_anchor);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$r.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$r($$self, $$props, $$invalidate) {
+    	let $felixPeakTable;
+    	validate_store(felixPeakTable, 'felixPeakTable');
+    	component_subscribe($$self, felixPeakTable, $$value => $$invalidate(1, $felixPeakTable = $$value));
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots('AdjustInitialGuess', slots, []);
+    	let { active = false } = $$props;
+    	const dispatch = createEventDispatcher();
+    	const writable_props = ['active'];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1$c.warn(`<AdjustInitialGuess> was created with unknown prop '${key}'`);
+    	});
+
+    	const click_handler = () => dispatch('save');
+
+    	function table_rows_binding(value) {
+    		$felixPeakTable = value;
+    		felixPeakTable.set($felixPeakTable);
+    	}
+
+    	function modal_active_binding(value) {
+    		active = value;
+    		$$invalidate(0, active);
+    	}
+
+    	$$self.$$set = $$props => {
+    		if ('active' in $$props) $$invalidate(0, active = $$props.active);
+    	};
+
+    	$$self.$capture_state = () => ({
+    		felixPeakTable,
+    		createEventDispatcher,
+    		Modal: Modal$1,
+    		Table,
+    		active,
+    		dispatch,
+    		$felixPeakTable
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ('active' in $$props) $$invalidate(0, active = $$props.active);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*$felixPeakTable*/ 2) {
+    			console.log(`peakTable:`, $felixPeakTable);
+    		}
+    	};
+
+    	return [
+    		active,
+    		$felixPeakTable,
+    		dispatch,
+    		click_handler,
+    		table_rows_binding,
+    		modal_active_binding
+    	];
+    }
+
+    class AdjustInitialGuess extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init$1(this, options, instance$r, create_fragment$r, safe_not_equal, { active: 0 });
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "AdjustInitialGuess",
+    			options,
+    			id: create_fragment$r.name
+    		});
+    	}
+
+    	get active() {
+    		throw new Error("<AdjustInitialGuess>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set active(value) {
+    		throw new Error("<AdjustInitialGuess>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    function theory_func({dataFromPython, normMethod}={}){
+        let ylabel;
+        if (normMethod === "Log") { ylabel = "Normalised Intensity per J"; }
+        else if (normMethod === "Relative") { ylabel = "Relative Depletion (%)"; }
+        else { ylabel = "Normalised Intensity per Photon"; }
+
+        let theoryData = [];
+        for (let x in dataFromPython["line_simulation"]) { theoryData.push(dataFromPython["line_simulation"][x]); }
+
+        plot(
+            "Experimental vs Theory",
+            "Calibrated Wavelength (cm-1)",
+            ylabel, [dataFromPython["averaged"], ...theoryData],
+            "exp-theory-plot"
+
+        );
+
+        console.log("Graph Plotted");
+    }
+
+    /* src\components\CustomSwitch.svelte generated by Svelte v3.42.1 */
+    const file$p = "src\\components\\CustomSwitch.svelte";
+
+    // (9:0) <FormField {style}>
+    function create_default_slot$6(ctx) {
+    	let switch_1;
+    	let updating_checked;
+    	let current;
+
+    	function switch_1_checked_binding(value) {
+    		/*switch_1_checked_binding*/ ctx[3](value);
+    	}
+
+    	let switch_1_props = {};
+
+    	if (/*selected*/ ctx[0] !== void 0) {
+    		switch_1_props.checked = /*selected*/ ctx[0];
+    	}
+
+    	switch_1 = new Switch({ props: switch_1_props, $$inline: true });
+    	binding_callbacks.push(() => bind(switch_1, 'checked', switch_1_checked_binding));
+    	switch_1.$on("change", /*change_handler*/ ctx[4]);
+
+    	const block = {
+    		c: function create() {
+    			create_component(switch_1.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(switch_1, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const switch_1_changes = {};
+
+    			if (!updating_checked && dirty & /*selected*/ 1) {
+    				updating_checked = true;
+    				switch_1_changes.checked = /*selected*/ ctx[0];
+    				add_flush_callback(() => updating_checked = false);
+    			}
+
+    			switch_1.$set(switch_1_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(switch_1.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(switch_1.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(switch_1, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_default_slot$6.name,
+    		type: "slot",
+    		source: "(9:0) <FormField {style}>",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (11:4) 
+    function create_label_slot$1(ctx) {
+    	let span;
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			span = element("span");
+    			t = text(/*label*/ ctx[2]);
+    			attr_dev(span, "slot", "label");
+    			add_location(span, file$p, 10, 4, 244);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, span, anchor);
+    			append_dev(span, t);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*label*/ 4) set_data_dev(t, /*label*/ ctx[2]);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(span);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_label_slot$1.name,
+    		type: "slot",
+    		source: "(11:4) ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment$q(ctx) {
+    	let formfield;
+    	let current;
+
+    	formfield = new FormField({
+    			props: {
+    				style: /*style*/ ctx[1],
+    				$$slots: {
+    					label: [create_label_slot$1],
+    					default: [create_default_slot$6]
+    				},
+    				$$scope: { ctx }
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		c: function create() {
+    			create_component(formfield.$$.fragment);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(formfield, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, [dirty]) {
+    			const formfield_changes = {};
+    			if (dirty & /*style*/ 2) formfield_changes.style = /*style*/ ctx[1];
+
+    			if (dirty & /*$$scope, label, selected*/ 37) {
+    				formfield_changes.$$scope = { dirty, ctx };
+    			}
+
+    			formfield.$set(formfield_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(formfield.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(formfield.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(formfield, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$q.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$q($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots('CustomSwitch', slots, []);
+    	let { selected = false, style = "", label = "" } = $$props;
+    	const writable_props = ['selected', 'style', 'label'];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<CustomSwitch> was created with unknown prop '${key}'`);
+    	});
+
+    	function switch_1_checked_binding(value) {
+    		selected = value;
+    		$$invalidate(0, selected);
+    	}
+
+    	function change_handler(event) {
+    		bubble.call(this, $$self, event);
+    	}
+
+    	$$self.$$set = $$props => {
+    		if ('selected' in $$props) $$invalidate(0, selected = $$props.selected);
+    		if ('style' in $$props) $$invalidate(1, style = $$props.style);
+    		if ('label' in $$props) $$invalidate(2, label = $$props.label);
+    	};
+
+    	$$self.$capture_state = () => ({
+    		Switch,
+    		FormField,
+    		selected,
+    		style,
+    		label
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ('selected' in $$props) $$invalidate(0, selected = $$props.selected);
+    		if ('style' in $$props) $$invalidate(1, style = $$props.style);
+    		if ('label' in $$props) $$invalidate(2, label = $$props.label);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	return [selected, style, label, switch_1_checked_binding, change_handler];
+    }
+
+    class CustomSwitch$1 extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init$1(this, options, instance$q, create_fragment$q, safe_not_equal, { selected: 0, style: 1, label: 2 });
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "CustomSwitch",
+    			options,
+    			id: create_fragment$q.name
+    		});
+    	}
+
+    	get selected() {
+    		throw new Error("<CustomSwitch>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set selected(value) {
+    		throw new Error("<CustomSwitch>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get style() {
+    		throw new Error("<CustomSwitch>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set style(value) {
+    		throw new Error("<CustomSwitch>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get label() {
+    		throw new Error("<CustomSwitch>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set label(value) {
+    		throw new Error("<CustomSwitch>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* src\Pages\normline\widgets\preprocessing\TheoryRow.svelte generated by Svelte v3.42.1 */
+
+    const { console: console_1$b } = globals;
+    const file$o = "src\\Pages\\normline\\widgets\\preprocessing\\TheoryRow.svelte";
+
+    // (49:0) {#if $toggleRow}
+    function create_if_block$f(ctx) {
+    	let div;
+    	let button0;
+    	let t1;
+    	let textfield0;
+    	let updating_value;
+    	let t2;
+    	let textfield1;
+    	let updating_value_1;
+    	let t3;
+    	let customswitch0;
+    	let updating_selected;
+    	let t4;
+    	let customswitch1;
+    	let updating_selected_1;
+    	let t5;
+    	let button1;
+    	let div_transition;
+    	let current;
+    	let mounted;
+    	let dispose;
+
+    	function textfield0_value_binding(value) {
+    		/*textfield0_value_binding*/ ctx[18](value);
+    	}
+
+    	let textfield0_props = {
+    		style: "width:7em; margin-right:0.5em;",
+    		variant: "outlined",
+    		label: "Sigma",
+    		input$type: "number",
+    		input$step: "0.5",
+    		input$min: "0"
+    	};
+
+    	if (/*sigma*/ ctx[2] !== void 0) {
+    		textfield0_props.value = /*sigma*/ ctx[2];
+    	}
+
+    	textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
+    	binding_callbacks.push(() => bind(textfield0, 'value', textfield0_value_binding));
+
+    	function textfield1_value_binding(value) {
+    		/*textfield1_value_binding*/ ctx[19](value);
+    	}
+
+    	let textfield1_props = {
+    		style: "width:7em",
+    		variant: "outlined",
+    		label: "Scale",
+    		input$type: "number",
+    		input$step: /*scalingBin*/ ctx[6],
+    		input$min: "0",
+    		input$max: "1"
+    	};
+
+    	if (/*scale*/ ctx[3] !== void 0) {
+    		textfield1_props.value = /*scale*/ ctx[3];
+    	}
+
+    	textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
+    	binding_callbacks.push(() => bind(textfield1, 'value', textfield1_value_binding));
+
+    	function customswitch0_selected_binding(value) {
+    		/*customswitch0_selected_binding*/ ctx[20](value);
+    	}
+
+    	let customswitch0_props = {
+    		style: "margin: 0 1em;",
+    		label: "Only Exp. Range"
+    	};
+
+    	if (/*onlyExpRange*/ ctx[7] !== void 0) {
+    		customswitch0_props.selected = /*onlyExpRange*/ ctx[7];
+    	}
+
+    	customswitch0 = new CustomSwitch$1({
+    			props: customswitch0_props,
+    			$$inline: true
+    		});
+
+    	binding_callbacks.push(() => bind(customswitch0, 'selected', customswitch0_selected_binding));
+
+    	function customswitch1_selected_binding(value) {
+    		/*customswitch1_selected_binding*/ ctx[21](value);
+    	}
+
+    	let customswitch1_props = {
+    		style: "margin: 0 1em;",
+    		label: "Matplotlib"
+    	};
+
+    	if (/*tkplot*/ ctx[4] !== void 0) {
+    		customswitch1_props.selected = /*tkplot*/ ctx[4];
+    	}
+
+    	customswitch1 = new CustomSwitch$1({
+    			props: customswitch1_props,
+    			$$inline: true
+    		});
+
+    	binding_callbacks.push(() => bind(customswitch1, 'selected', customswitch1_selected_binding));
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			button0 = element("button");
+    			button0.textContent = "Browse File";
+    			t1 = space();
+    			create_component(textfield0.$$.fragment);
+    			t2 = space();
+    			create_component(textfield1.$$.fragment);
+    			t3 = space();
+    			create_component(customswitch0.$$.fragment);
+    			t4 = space();
+    			create_component(customswitch1.$$.fragment);
+    			t5 = space();
+    			button1 = element("button");
+    			button1.textContent = "Replot";
+    			attr_dev(button0, "class", "button is-link");
+    			add_location(button0, file$o, 51, 8, 2114);
+    			attr_dev(button1, "class", "button is-link");
+    			add_location(button1, file$o, 60, 8, 2775);
+    			attr_dev(div, "class", "align");
+    			add_location(div, file$o, 49, 4, 2067);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			append_dev(div, button0);
+    			append_dev(div, t1);
+    			mount_component(textfield0, div, null);
+    			append_dev(div, t2);
+    			mount_component(textfield1, div, null);
+    			append_dev(div, t3);
+    			mount_component(customswitch0, div, null);
+    			append_dev(div, t4);
+    			mount_component(customswitch1, div, null);
+    			append_dev(div, t5);
+    			append_dev(div, button1);
+    			current = true;
+
+    			if (!mounted) {
+    				dispose = [
+    					listen_dev(button0, "click", /*click_handler*/ ctx[17], false, false, false),
+    					listen_dev(button1, "click", /*plotData*/ ctx[9], false, false, false)
+    				];
+
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, dirty) {
+    			const textfield0_changes = {};
+
+    			if (!updating_value && dirty & /*sigma*/ 4) {
+    				updating_value = true;
+    				textfield0_changes.value = /*sigma*/ ctx[2];
+    				add_flush_callback(() => updating_value = false);
+    			}
+
+    			textfield0.$set(textfield0_changes);
+    			const textfield1_changes = {};
+    			if (dirty & /*scalingBin*/ 64) textfield1_changes.input$step = /*scalingBin*/ ctx[6];
+
+    			if (!updating_value_1 && dirty & /*scale*/ 8) {
+    				updating_value_1 = true;
+    				textfield1_changes.value = /*scale*/ ctx[3];
+    				add_flush_callback(() => updating_value_1 = false);
+    			}
+
+    			textfield1.$set(textfield1_changes);
+    			const customswitch0_changes = {};
+
+    			if (!updating_selected && dirty & /*onlyExpRange*/ 128) {
+    				updating_selected = true;
+    				customswitch0_changes.selected = /*onlyExpRange*/ ctx[7];
+    				add_flush_callback(() => updating_selected = false);
+    			}
+
+    			customswitch0.$set(customswitch0_changes);
+    			const customswitch1_changes = {};
+
+    			if (!updating_selected_1 && dirty & /*tkplot*/ 16) {
+    				updating_selected_1 = true;
+    				customswitch1_changes.selected = /*tkplot*/ ctx[4];
+    				add_flush_callback(() => updating_selected_1 = false);
+    			}
+
+    			customswitch1.$set(customswitch1_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(textfield0.$$.fragment, local);
+    			transition_in(textfield1.$$.fragment, local);
+    			transition_in(customswitch0.$$.fragment, local);
+    			transition_in(customswitch1.$$.fragment, local);
+
+    			add_render_callback(() => {
+    				if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, true);
+    				div_transition.run(1);
+    			});
+
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(textfield0.$$.fragment, local);
+    			transition_out(textfield1.$$.fragment, local);
+    			transition_out(customswitch0.$$.fragment, local);
+    			transition_out(customswitch1.$$.fragment, local);
+    			if (!div_transition) div_transition = create_bidirectional_transition(div, fade, {}, false);
+    			div_transition.run(0);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			destroy_component(textfield0);
+    			destroy_component(textfield1);
+    			destroy_component(customswitch0);
+    			destroy_component(customswitch1);
+    			if (detaching && div_transition) div_transition.end();
+    			mounted = false;
+    			run_all(dispose);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block$f.name,
+    		type: "if",
+    		source: "(49:0) {#if $toggleRow}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment$p(ctx) {
+    	let quickbrowser;
+    	let updating_active;
+    	let updating_currentLocation;
+    	let updating_fileChecked;
+    	let t;
+    	let if_block_anchor;
+    	let current;
+
+    	function quickbrowser_active_binding(value) {
+    		/*quickbrowser_active_binding*/ ctx[13](value);
+    	}
+
+    	function quickbrowser_currentLocation_binding(value) {
+    		/*quickbrowser_currentLocation_binding*/ ctx[14](value);
+    	}
+
+    	function quickbrowser_fileChecked_binding(value) {
+    		/*quickbrowser_fileChecked_binding*/ ctx[15](value);
+    	}
+
+    	let quickbrowser_props = { title: "Theory files" };
+
+    	if (/*showTheoryFiles*/ ctx[5] !== void 0) {
+    		quickbrowser_props.active = /*showTheoryFiles*/ ctx[5];
+    	}
+
+    	if (/*theoryLocation*/ ctx[0] !== void 0) {
+    		quickbrowser_props.currentLocation = /*theoryLocation*/ ctx[0];
+    	}
+
+    	if (/*theoryfilesChecked*/ ctx[1] !== void 0) {
+    		quickbrowser_props.fileChecked = /*theoryfilesChecked*/ ctx[1];
+    	}
+
+    	quickbrowser = new QuickBrowser({
+    			props: quickbrowser_props,
+    			$$inline: true
+    		});
+
+    	binding_callbacks.push(() => bind(quickbrowser, 'active', quickbrowser_active_binding));
+    	binding_callbacks.push(() => bind(quickbrowser, 'currentLocation', quickbrowser_currentLocation_binding));
+    	binding_callbacks.push(() => bind(quickbrowser, 'fileChecked', quickbrowser_fileChecked_binding));
+    	quickbrowser.$on("submit", /*submit_handler*/ ctx[16]);
+    	let if_block = /*$toggleRow*/ ctx[8] && create_if_block$f(ctx);
+
+    	const block = {
+    		c: function create() {
+    			create_component(quickbrowser.$$.fragment);
+    			t = space();
+    			if (if_block) if_block.c();
+    			if_block_anchor = empty();
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(quickbrowser, target, anchor);
+    			insert_dev(target, t, anchor);
+    			if (if_block) if_block.m(target, anchor);
+    			insert_dev(target, if_block_anchor, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, [dirty]) {
+    			const quickbrowser_changes = {};
+
+    			if (!updating_active && dirty & /*showTheoryFiles*/ 32) {
+    				updating_active = true;
+    				quickbrowser_changes.active = /*showTheoryFiles*/ ctx[5];
+    				add_flush_callback(() => updating_active = false);
+    			}
+
+    			if (!updating_currentLocation && dirty & /*theoryLocation*/ 1) {
+    				updating_currentLocation = true;
+    				quickbrowser_changes.currentLocation = /*theoryLocation*/ ctx[0];
+    				add_flush_callback(() => updating_currentLocation = false);
+    			}
+
+    			if (!updating_fileChecked && dirty & /*theoryfilesChecked*/ 2) {
+    				updating_fileChecked = true;
+    				quickbrowser_changes.fileChecked = /*theoryfilesChecked*/ ctx[1];
+    				add_flush_callback(() => updating_fileChecked = false);
+    			}
+
+    			quickbrowser.$set(quickbrowser_changes);
+
+    			if (/*$toggleRow*/ ctx[8]) {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+
+    					if (dirty & /*$toggleRow*/ 256) {
+    						transition_in(if_block, 1);
+    					}
+    				} else {
+    					if_block = create_if_block$f(ctx);
+    					if_block.c();
+    					transition_in(if_block, 1);
+    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+    				}
+    			} else if (if_block) {
+    				group_outros();
+
+    				transition_out(if_block, 1, 1, () => {
+    					if_block = null;
+    				});
+
+    				check_outros();
+    			}
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(quickbrowser.$$.fragment, local);
+    			transition_in(if_block);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(quickbrowser.$$.fragment, local);
+    			transition_out(if_block);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(quickbrowser, detaching);
+    			if (detaching) detach_dev(t);
+    			if (if_block) if_block.d(detaching);
+    			if (detaching) detach_dev(if_block_anchor);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$p.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$p($$self, $$props, $$invalidate) {
+    	let $felixopoLocation;
+    	let $felixConfigDB;
+    	let $toggleRow;
+    	validate_store(felixopoLocation, 'felixopoLocation');
+    	component_subscribe($$self, felixopoLocation, $$value => $$invalidate(23, $felixopoLocation = $$value));
+    	validate_store(felixConfigDB, 'felixConfigDB');
+    	component_subscribe($$self, felixConfigDB, $$value => $$invalidate(24, $felixConfigDB = $$value));
+    	validate_store(toggleRow, 'toggleRow');
+    	component_subscribe($$self, toggleRow, $$value => $$invalidate(8, $toggleRow = $$value));
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots('TheoryRow', slots, []);
+    	let { updateConfig = false } = $$props;
+    	let { theoryLocation, show_theoryplot, normMethod } = $$props;
+    	let sigma = 7, scale = 1, theoryfiles = [], tkplot = false;
+    	let showTheoryFiles = false, theoryfilesChecked = [];
+    	let scalingBin = $felixConfigDB.get("scalingBin");
+
+    	function loadConfig() {
+    		$$invalidate(6, scalingBin = $felixConfigDB.get("scalingBin"));
+    		console.log("scalingBin updated", scalingBin);
+    	}
+
+    	function plotData(e = null) {
+    		let pyfile = "theory.py", args;
+    		if (theoryfiles.length < 1) return window.createToast("No files selected", "danger");
+
+    		args = {
+    			theoryfiles,
+    			normMethod,
+    			sigma,
+    			scale,
+    			currentLocation: $felixopoLocation,
+    			tkplot,
+    			onlyExpRange
+    		};
+
+    		args = [JSON.stringify(args)];
+
+    		computePy_func({ e, pyfile, args }).then(dataFromPython => {
+    			theory_func({ dataFromPython, normMethod });
+    			window.createToast("Graph Plotted", "success");
+    			($$invalidate(10, show_theoryplot = true), $$invalidate(5, showTheoryFiles = false));
+    		}).catch(error => {
+    			mainPreModal.error(error.stack || error);
+    		});
+    	}
+
+    	let onlyExpRange = false;
+    	const writable_props = ['updateConfig', 'theoryLocation', 'show_theoryplot', 'normMethod'];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1$b.warn(`<TheoryRow> was created with unknown prop '${key}'`);
+    	});
+
+    	function quickbrowser_active_binding(value) {
+    		showTheoryFiles = value;
+    		$$invalidate(5, showTheoryFiles);
+    	}
+
+    	function quickbrowser_currentLocation_binding(value) {
+    		theoryLocation = value;
+    		$$invalidate(0, theoryLocation);
+    	}
+
+    	function quickbrowser_fileChecked_binding(value) {
+    		theoryfilesChecked = value;
+    		$$invalidate(1, theoryfilesChecked);
+    	}
+
+    	const submit_handler = e => {
+    		plotData(e.detail.event);
+    	};
+
+    	const click_handler = () => {
+    		$$invalidate(5, showTheoryFiles = !showTheoryFiles);
+    	};
+
+    	function textfield0_value_binding(value) {
+    		sigma = value;
+    		$$invalidate(2, sigma);
+    	}
+
+    	function textfield1_value_binding(value) {
+    		scale = value;
+    		$$invalidate(3, scale);
+    	}
+
+    	function customswitch0_selected_binding(value) {
+    		onlyExpRange = value;
+    		$$invalidate(7, onlyExpRange);
+    	}
+
+    	function customswitch1_selected_binding(value) {
+    		tkplot = value;
+    		$$invalidate(4, tkplot);
+    	}
+
+    	$$self.$$set = $$props => {
+    		if ('updateConfig' in $$props) $$invalidate(11, updateConfig = $$props.updateConfig);
+    		if ('theoryLocation' in $$props) $$invalidate(0, theoryLocation = $$props.theoryLocation);
+    		if ('show_theoryplot' in $$props) $$invalidate(10, show_theoryplot = $$props.show_theoryplot);
+    		if ('normMethod' in $$props) $$invalidate(12, normMethod = $$props.normMethod);
+    	};
+
+    	$$self.$capture_state = () => ({
+    		mainPreModal,
+    		toggleRow,
+    		felixopoLocation,
+    		felixConfigDB,
+    		Textfield,
+    		QuickBrowser,
+    		fade,
+    		theory_func,
+    		updateConfig,
+    		CustomSwitch: CustomSwitch$1,
+    		theoryLocation,
+    		show_theoryplot,
+    		normMethod,
+    		sigma,
+    		scale,
+    		theoryfiles,
+    		tkplot,
+    		showTheoryFiles,
+    		theoryfilesChecked,
+    		scalingBin,
+    		loadConfig,
+    		plotData,
+    		onlyExpRange,
+    		$felixopoLocation,
+    		$felixConfigDB,
+    		$toggleRow
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ('updateConfig' in $$props) $$invalidate(11, updateConfig = $$props.updateConfig);
+    		if ('theoryLocation' in $$props) $$invalidate(0, theoryLocation = $$props.theoryLocation);
+    		if ('show_theoryplot' in $$props) $$invalidate(10, show_theoryplot = $$props.show_theoryplot);
+    		if ('normMethod' in $$props) $$invalidate(12, normMethod = $$props.normMethod);
+    		if ('sigma' in $$props) $$invalidate(2, sigma = $$props.sigma);
+    		if ('scale' in $$props) $$invalidate(3, scale = $$props.scale);
+    		if ('theoryfiles' in $$props) theoryfiles = $$props.theoryfiles;
+    		if ('tkplot' in $$props) $$invalidate(4, tkplot = $$props.tkplot);
+    		if ('showTheoryFiles' in $$props) $$invalidate(5, showTheoryFiles = $$props.showTheoryFiles);
+    		if ('theoryfilesChecked' in $$props) $$invalidate(1, theoryfilesChecked = $$props.theoryfilesChecked);
+    		if ('scalingBin' in $$props) $$invalidate(6, scalingBin = $$props.scalingBin);
+    		if ('onlyExpRange' in $$props) $$invalidate(7, onlyExpRange = $$props.onlyExpRange);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*theoryLocation, theoryfilesChecked*/ 3) {
+    			if (existsSync(theoryLocation)) {
+    				theoryfiles = theoryfilesChecked.map(file => pathResolve(theoryLocation, file));
+    			}
+    		}
+
+    		if ($$self.$$.dirty & /*updateConfig*/ 2048) {
+    			if (updateConfig) loadConfig();
+    		}
+
+    		if ($$self.$$.dirty & /*theoryLocation*/ 1) {
+    			if (theoryLocation) {
+    				db.set("theoryLocation", theoryLocation);
+    			}
+    		}
+    	};
+
+    	return [
+    		theoryLocation,
+    		theoryfilesChecked,
+    		sigma,
+    		scale,
+    		tkplot,
+    		showTheoryFiles,
+    		scalingBin,
+    		onlyExpRange,
+    		$toggleRow,
+    		plotData,
+    		show_theoryplot,
+    		updateConfig,
+    		normMethod,
+    		quickbrowser_active_binding,
+    		quickbrowser_currentLocation_binding,
+    		quickbrowser_fileChecked_binding,
+    		submit_handler,
+    		click_handler,
+    		textfield0_value_binding,
+    		textfield1_value_binding,
+    		customswitch0_selected_binding,
+    		customswitch1_selected_binding
+    	];
+    }
+
+    class TheoryRow extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+
+    		init$1(this, options, instance$p, create_fragment$p, safe_not_equal, {
+    			updateConfig: 11,
+    			theoryLocation: 0,
+    			show_theoryplot: 10,
+    			normMethod: 12
+    		});
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "TheoryRow",
+    			options,
+    			id: create_fragment$p.name
+    		});
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+
+    		if (/*theoryLocation*/ ctx[0] === undefined && !('theoryLocation' in props)) {
+    			console_1$b.warn("<TheoryRow> was created without expected prop 'theoryLocation'");
+    		}
+
+    		if (/*show_theoryplot*/ ctx[10] === undefined && !('show_theoryplot' in props)) {
+    			console_1$b.warn("<TheoryRow> was created without expected prop 'show_theoryplot'");
+    		}
+
+    		if (/*normMethod*/ ctx[12] === undefined && !('normMethod' in props)) {
+    			console_1$b.warn("<TheoryRow> was created without expected prop 'normMethod'");
+    		}
+    	}
+
+    	get updateConfig() {
+    		throw new Error("<TheoryRow>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set updateConfig(value) {
+    		throw new Error("<TheoryRow>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get theoryLocation() {
+    		throw new Error("<TheoryRow>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set theoryLocation(value) {
+    		throw new Error("<TheoryRow>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get show_theoryplot() {
+    		throw new Error("<TheoryRow>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set show_theoryplot(value) {
+    		throw new Error("<TheoryRow>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get normMethod() {
+    		throw new Error("<TheoryRow>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set normMethod(value) {
+    		throw new Error("<TheoryRow>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
     function get_details_func({dataFromPython}={}) {
         
         const info = dataFromPython.files.map(data=>{
@@ -53852,10 +54199,10 @@ var app = (function (marked) {
 
     /* src\Pages\normline\widgets\preprocessing\GetFileInfoTable.svelte generated by Svelte v3.42.1 */
 
-    const file$o = "src\\Pages\\normline\\widgets\\preprocessing\\GetFileInfoTable.svelte";
+    const file$n = "src\\Pages\\normline\\widgets\\preprocessing\\GetFileInfoTable.svelte";
 
     // (42:4) {#if toggleFileDetailsTable}
-    function create_if_block$f(ctx) {
+    function create_if_block$e(ctx) {
     	let table;
     	let updating_rows;
     	let current;
@@ -53924,7 +54271,7 @@ var app = (function (marked) {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block$f.name,
+    		id: create_if_block$e.name,
     		type: "if",
     		source: "(42:4) {#if toggleFileDetailsTable}",
     		ctx
@@ -53933,7 +54280,7 @@ var app = (function (marked) {
     	return block;
     }
 
-    function create_fragment$p(ctx) {
+    function create_fragment$o(ctx) {
     	let div;
     	let button0;
     	let t1;
@@ -53966,7 +54313,7 @@ var app = (function (marked) {
     		});
 
     	binding_callbacks.push(() => bind(customiconswitch, 'toggler', customiconswitch_toggler_binding));
-    	let if_block = /*toggleFileDetailsTable*/ ctx[0] && create_if_block$f(ctx);
+    	let if_block = /*toggleFileDetailsTable*/ ctx[0] && create_if_block$e(ctx);
 
     	const block = {
     		c: function create() {
@@ -53984,13 +54331,13 @@ var app = (function (marked) {
     			t6 = space();
     			if (if_block) if_block.c();
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$o, 35, 4, 1329);
+    			add_location(button0, file$n, 35, 4, 1329);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$o, 37, 4, 1528);
+    			add_location(button1, file$n, 37, 4, 1528);
     			attr_dev(button2, "class", "button is-link");
-    			add_location(button2, file$o, 39, 4, 1647);
+    			add_location(button2, file$n, 39, 4, 1647);
     			attr_dev(div, "class", "align");
-    			add_location(div, file$o, 34, 0, 1303);
+    			add_location(div, file$n, 34, 0, 1303);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -54037,7 +54384,7 @@ var app = (function (marked) {
     						transition_in(if_block, 1);
     					}
     				} else {
-    					if_block = create_if_block$f(ctx);
+    					if_block = create_if_block$e(ctx);
     					if_block.c();
     					transition_in(if_block, 1);
     					if_block.m(div, null);
@@ -54074,7 +54421,7 @@ var app = (function (marked) {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_fragment$p.name,
+    		id: create_fragment$o.name,
     		type: "component",
     		source: "",
     		ctx
@@ -54083,7 +54430,7 @@ var app = (function (marked) {
     	return block;
     }
 
-    function instance$p($$self, $$props, $$invalidate) {
+    function instance$o($$self, $$props, $$invalidate) {
     	let $filedetails;
     	let $opoMode;
     	validate_store(filedetails, 'filedetails');
@@ -54189,13 +54536,13 @@ var app = (function (marked) {
     class GetFileInfoTable extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init$1(this, options, instance$p, create_fragment$p, safe_not_equal, { felixfiles: 4, normMethod: 5 });
+    		init$1(this, options, instance$o, create_fragment$o, safe_not_equal, { felixfiles: 4, normMethod: 5 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
     			tagName: "GetFileInfoTable",
     			options,
-    			id: create_fragment$p.name
+    			id: create_fragment$o.name
     		});
 
     		const { ctx } = this.$$;
@@ -54228,9 +54575,9 @@ var app = (function (marked) {
     }
 
     /* src\Pages\normline\widgets\postprocessing\WriteFunctionContents.svelte generated by Svelte v3.42.1 */
-    const file$n = "src\\Pages\\normline\\widgets\\postprocessing\\WriteFunctionContents.svelte";
+    const file$m = "src\\Pages\\normline\\widgets\\postprocessing\\WriteFunctionContents.svelte";
 
-    function create_fragment$o(ctx) {
+    function create_fragment$n(ctx) {
     	let div;
     	let customselect;
     	let updating_picked;
@@ -54366,11 +54713,11 @@ var app = (function (marked) {
     			button1 = element("button");
     			button1.textContent = "Remove files";
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$n, 20, 4, 995);
+    			add_location(button0, file$m, 20, 4, 995);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$n, 21, 4, 1087);
+    			add_location(button1, file$m, 21, 4, 1087);
     			attr_dev(div, "class", "align");
-    			add_location(div, file$n, 13, 0, 494);
+    			add_location(div, file$m, 13, 0, 494);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -54480,7 +54827,7 @@ var app = (function (marked) {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_fragment$o.name,
+    		id: create_fragment$n.name,
     		type: "component",
     		source: "",
     		ctx
@@ -54489,7 +54836,7 @@ var app = (function (marked) {
     	return block;
     }
 
-    function instance$o($$self, $$props, $$invalidate) {
+    function instance$n($$self, $$props, $$invalidate) {
     	let $felixOutputName;
     	let $collectData;
     	validate_store(felixOutputName, 'felixOutputName');
@@ -54590,7 +54937,7 @@ var app = (function (marked) {
     	constructor(options) {
     		super(options);
 
-    		init$1(this, options, instance$o, create_fragment$o, safe_not_equal, {
+    		init$1(this, options, instance$n, create_fragment$n, safe_not_equal, {
     			output_namelists: 3,
     			writeFileName: 0,
     			writeFile: 1,
@@ -54601,7 +54948,7 @@ var app = (function (marked) {
     			component: this,
     			tagName: "WriteFunctionContents",
     			options,
-    			id: create_fragment$o.name
+    			id: create_fragment$n.name
     		});
 
     		const { ctx } = this.$$;
@@ -54654,355 +55001,6 @@ var app = (function (marked) {
 
     	set overwrite_expfit(value) {
     		throw new Error("<WriteFunctionContents>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-    }
-
-    /* src\Pages\normline\modals\AdjustInitialGuess.svelte generated by Svelte v3.42.1 */
-
-    const { console: console_1$b } = globals;
-    const file$m = "src\\Pages\\normline\\modals\\AdjustInitialGuess.svelte";
-
-    // (24:0) {#if active}
-    function create_if_block$e(ctx) {
-    	let modal;
-    	let updating_active;
-    	let current;
-
-    	function modal_active_binding(value) {
-    		/*modal_active_binding*/ ctx[5](value);
-    	}
-
-    	let modal_props = {
-    		title: "Adjust initial guess",
-    		$$slots: {
-    			footerbtn: [create_footerbtn_slot$2],
-    			content: [create_content_slot$4]
-    		},
-    		$$scope: { ctx }
-    	};
-
-    	if (/*active*/ ctx[0] !== void 0) {
-    		modal_props.active = /*active*/ ctx[0];
-    	}
-
-    	modal = new Modal$1({ props: modal_props, $$inline: true });
-    	binding_callbacks.push(() => bind(modal, 'active', modal_active_binding));
-
-    	const block = {
-    		c: function create() {
-    			create_component(modal.$$.fragment);
-    		},
-    		m: function mount(target, anchor) {
-    			mount_component(modal, target, anchor);
-    			current = true;
-    		},
-    		p: function update(ctx, dirty) {
-    			const modal_changes = {};
-
-    			if (dirty & /*$$scope, $felixPeakTable*/ 66) {
-    				modal_changes.$$scope = { dirty, ctx };
-    			}
-
-    			if (!updating_active && dirty & /*active*/ 1) {
-    				updating_active = true;
-    				modal_changes.active = /*active*/ ctx[0];
-    				add_flush_callback(() => updating_active = false);
-    			}
-
-    			modal.$set(modal_changes);
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(modal.$$.fragment, local);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(modal.$$.fragment, local);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			destroy_component(modal, detaching);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block$e.name,
-    		type: "if",
-    		source: "(24:0) {#if active}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (27:8) 
-    function create_content_slot$4(ctx) {
-    	let div;
-    	let table;
-    	let updating_rows;
-    	let current;
-
-    	function table_rows_binding(value) {
-    		/*table_rows_binding*/ ctx[4](value);
-    	}
-
-    	let table_props = {
-    		head: ["Frequency", "Amplitude", "Sigma"],
-    		keys: ["freq", "amp", "sig"],
-    		sortOption: true
-    	};
-
-    	if (/*$felixPeakTable*/ ctx[1] !== void 0) {
-    		table_props.rows = /*$felixPeakTable*/ ctx[1];
-    	}
-
-    	table = new Table({ props: table_props, $$inline: true });
-    	binding_callbacks.push(() => bind(table, 'rows', table_rows_binding));
-
-    	const block = {
-    		c: function create() {
-    			div = element("div");
-    			create_component(table.$$.fragment);
-    			attr_dev(div, "slot", "content");
-    			add_location(div, file$m, 26, 8, 639);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    			mount_component(table, div, null);
-    			current = true;
-    		},
-    		p: function update(ctx, dirty) {
-    			const table_changes = {};
-
-    			if (!updating_rows && dirty & /*$felixPeakTable*/ 2) {
-    				updating_rows = true;
-    				table_changes.rows = /*$felixPeakTable*/ ctx[1];
-    				add_flush_callback(() => updating_rows = false);
-    			}
-
-    			table.$set(table_changes);
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(table.$$.fragment, local);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(table.$$.fragment, local);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    			destroy_component(table);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_content_slot$4.name,
-    		type: "slot",
-    		source: "(27:8) ",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (32:8) 
-    function create_footerbtn_slot$2(ctx) {
-    	let button;
-    	let mounted;
-    	let dispose;
-
-    	const block = {
-    		c: function create() {
-    			button = element("button");
-    			button.textContent = "Save";
-    			attr_dev(button, "slot", "footerbtn");
-    			attr_dev(button, "class", "button is-link");
-    			add_location(button, file$m, 31, 8, 831);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, button, anchor);
-
-    			if (!mounted) {
-    				dispose = listen_dev(button, "click", /*click_handler*/ ctx[3], false, false, false);
-    				mounted = true;
-    			}
-    		},
-    		p: noop$1,
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(button);
-    			mounted = false;
-    			dispose();
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_footerbtn_slot$2.name,
-    		type: "slot",
-    		source: "(32:8) ",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    function create_fragment$n(ctx) {
-    	let if_block_anchor;
-    	let current;
-    	let if_block = /*active*/ ctx[0] && create_if_block$e(ctx);
-
-    	const block = {
-    		c: function create() {
-    			if (if_block) if_block.c();
-    			if_block_anchor = empty();
-    		},
-    		l: function claim(nodes) {
-    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
-    		},
-    		m: function mount(target, anchor) {
-    			if (if_block) if_block.m(target, anchor);
-    			insert_dev(target, if_block_anchor, anchor);
-    			current = true;
-    		},
-    		p: function update(ctx, [dirty]) {
-    			if (/*active*/ ctx[0]) {
-    				if (if_block) {
-    					if_block.p(ctx, dirty);
-
-    					if (dirty & /*active*/ 1) {
-    						transition_in(if_block, 1);
-    					}
-    				} else {
-    					if_block = create_if_block$e(ctx);
-    					if_block.c();
-    					transition_in(if_block, 1);
-    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
-    				}
-    			} else if (if_block) {
-    				group_outros();
-
-    				transition_out(if_block, 1, 1, () => {
-    					if_block = null;
-    				});
-
-    				check_outros();
-    			}
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(if_block);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(if_block);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			if (if_block) if_block.d(detaching);
-    			if (detaching) detach_dev(if_block_anchor);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_fragment$n.name,
-    		type: "component",
-    		source: "",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    function instance$n($$self, $$props, $$invalidate) {
-    	let $felixPeakTable;
-    	validate_store(felixPeakTable, 'felixPeakTable');
-    	component_subscribe($$self, felixPeakTable, $$value => $$invalidate(1, $felixPeakTable = $$value));
-    	let { $$slots: slots = {}, $$scope } = $$props;
-    	validate_slots('AdjustInitialGuess', slots, []);
-    	let { active = false } = $$props;
-    	const dispatch = createEventDispatcher();
-    	const writable_props = ['active'];
-
-    	Object.keys($$props).forEach(key => {
-    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1$b.warn(`<AdjustInitialGuess> was created with unknown prop '${key}'`);
-    	});
-
-    	const click_handler = () => dispatch('save');
-
-    	function table_rows_binding(value) {
-    		$felixPeakTable = value;
-    		felixPeakTable.set($felixPeakTable);
-    	}
-
-    	function modal_active_binding(value) {
-    		active = value;
-    		$$invalidate(0, active);
-    	}
-
-    	$$self.$$set = $$props => {
-    		if ('active' in $$props) $$invalidate(0, active = $$props.active);
-    	};
-
-    	$$self.$capture_state = () => ({
-    		felixPeakTable,
-    		fade,
-    		createEventDispatcher,
-    		Modal: Modal$1,
-    		Icon,
-    		Table,
-    		active,
-    		dispatch,
-    		$felixPeakTable
-    	});
-
-    	$$self.$inject_state = $$props => {
-    		if ('active' in $$props) $$invalidate(0, active = $$props.active);
-    	};
-
-    	if ($$props && "$$inject" in $$props) {
-    		$$self.$inject_state($$props.$$inject);
-    	}
-
-    	$$self.$$.update = () => {
-    		if ($$self.$$.dirty & /*$felixPeakTable*/ 2) {
-    			console.log(`peakTable:`, $felixPeakTable);
-    		}
-    	};
-
-    	return [
-    		active,
-    		$felixPeakTable,
-    		dispatch,
-    		click_handler,
-    		table_rows_binding,
-    		modal_active_binding
-    	];
-    }
-
-    class AdjustInitialGuess extends SvelteComponentDev {
-    	constructor(options) {
-    		super(options);
-    		init$1(this, options, instance$n, create_fragment$n, safe_not_equal, { active: 0 });
-
-    		dispatch_dev("SvelteRegisterComponent", {
-    			component: this,
-    			tagName: "AdjustInitialGuess",
-    			options,
-    			id: create_fragment$n.name
-    		});
-    	}
-
-    	get active() {
-    		throw new Error("<AdjustInitialGuess>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set active(value) {
-    		throw new Error("<AdjustInitialGuess>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
     }
 
@@ -55115,7 +55113,7 @@ var app = (function (marked) {
     const { console: console_1$a } = globals;
     const file$l = "src\\Pages\\normline\\widgets\\postprocessing\\ExecuteFunctionContents.svelte";
 
-    // (224:0) {#if toggleFindPeaksRow}
+    // (225:0) {#if toggleFindPeaksRow}
     function create_if_block$d(ctx) {
     	let div2;
     	let div0;
@@ -55155,7 +55153,7 @@ var app = (function (marked) {
     	let dispose;
 
     	function customswitch_selected_binding(value) {
-    		/*customswitch_selected_binding*/ ctx[30](value);
+    		/*customswitch_selected_binding*/ ctx[29](value);
     	}
 
     	let customswitch_props = {
@@ -55163,8 +55161,8 @@ var app = (function (marked) {
     		label: "BoxSelected"
     	};
 
-    	if (/*boxSelected_peakfinder*/ ctx[1] !== void 0) {
-    		customswitch_props.selected = /*boxSelected_peakfinder*/ ctx[1];
+    	if (/*boxSelected_peakfinder*/ ctx[2] !== void 0) {
+    		customswitch_props.selected = /*boxSelected_peakfinder*/ ctx[2];
     	}
 
     	customswitch = new CustomSwitch$1({
@@ -55175,7 +55173,7 @@ var app = (function (marked) {
     	binding_callbacks.push(() => bind(customswitch, 'selected', customswitch_selected_binding));
 
     	function textfield0_value_binding(value) {
-    		/*textfield0_value_binding*/ ctx[31](value);
+    		/*textfield0_value_binding*/ ctx[30](value);
     	}
 
     	let textfield0_props = {
@@ -55185,15 +55183,15 @@ var app = (function (marked) {
     		label: "Prominance"
     	};
 
-    	if (/*peak_prominence*/ ctx[5] !== void 0) {
-    		textfield0_props.value = /*peak_prominence*/ ctx[5];
+    	if (/*peak_prominence*/ ctx[6] !== void 0) {
+    		textfield0_props.value = /*peak_prominence*/ ctx[6];
     	}
 
     	textfield0 = new Textfield({ props: textfield0_props, $$inline: true });
     	binding_callbacks.push(() => bind(textfield0, 'value', textfield0_value_binding));
 
     	function textfield1_value_binding(value) {
-    		/*textfield1_value_binding*/ ctx[32](value);
+    		/*textfield1_value_binding*/ ctx[31](value);
     	}
 
     	let textfield1_props = {
@@ -55203,15 +55201,15 @@ var app = (function (marked) {
     		label: "Width"
     	};
 
-    	if (/*peak_width*/ ctx[4] !== void 0) {
-    		textfield1_props.value = /*peak_width*/ ctx[4];
+    	if (/*peak_width*/ ctx[5] !== void 0) {
+    		textfield1_props.value = /*peak_width*/ ctx[5];
     	}
 
     	textfield1 = new Textfield({ props: textfield1_props, $$inline: true });
     	binding_callbacks.push(() => bind(textfield1, 'value', textfield1_value_binding));
 
     	function textfield2_value_binding(value) {
-    		/*textfield2_value_binding*/ ctx[33](value);
+    		/*textfield2_value_binding*/ ctx[32](value);
     	}
 
     	let textfield2_props = {
@@ -55221,15 +55219,15 @@ var app = (function (marked) {
     		label: "Height"
     	};
 
-    	if (/*peak_height*/ ctx[3] !== void 0) {
-    		textfield2_props.value = /*peak_height*/ ctx[3];
+    	if (/*peak_height*/ ctx[4] !== void 0) {
+    		textfield2_props.value = /*peak_height*/ ctx[4];
     	}
 
     	textfield2 = new Textfield({ props: textfield2_props, $$inline: true });
     	binding_callbacks.push(() => bind(textfield2, 'value', textfield2_value_binding));
 
     	function textfield3_value_binding(value) {
-    		/*textfield3_value_binding*/ ctx[34](value);
+    		/*textfield3_value_binding*/ ctx[33](value);
     	}
 
     	let textfield3_props = { style: "width:9em", label: "Sigma" };
@@ -55250,10 +55248,10 @@ var app = (function (marked) {
     			$$inline: true
     		});
 
-    	icon.$on("click", /*click_handler_5*/ ctx[36]);
+    	icon.$on("click", /*click_handler_5*/ ctx[35]);
 
     	function textfield4_value_binding(value) {
-    		/*textfield4_value_binding*/ ctx[38](value);
+    		/*textfield4_value_binding*/ ctx[37](value);
     	}
 
     	let textfield4_props = {
@@ -55261,8 +55259,8 @@ var app = (function (marked) {
     		label: "savefile"
     	};
 
-    	if (/*savePeakfilename*/ ctx[7] !== void 0) {
-    		textfield4_props.value = /*savePeakfilename*/ ctx[7];
+    	if (/*savePeakfilename*/ ctx[8] !== void 0) {
+    		textfield4_props.value = /*savePeakfilename*/ ctx[8];
     	}
 
     	textfield4 = new Textfield({ props: textfield4_props, $$inline: true });
@@ -55302,20 +55300,20 @@ var app = (function (marked) {
     			button4 = element("button");
     			button4.textContent = "Clear";
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$l, 234, 12, 10205);
+    			add_location(button0, file$l, 235, 12, 10323);
     			attr_dev(div0, "class", "align");
-    			add_location(div0, file$l, 226, 8, 9658);
+    			add_location(div0, file$l, 227, 8, 9776);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$l, 239, 12, 10478);
+    			add_location(button1, file$l, 240, 12, 10596);
     			attr_dev(button2, "class", "button is-link");
-    			add_location(button2, file$l, 241, 12, 10741);
+    			add_location(button2, file$l, 242, 12, 10859);
     			attr_dev(button3, "class", "button is-link");
-    			add_location(button3, file$l, 242, 12, 10878);
+    			add_location(button3, file$l, 243, 12, 10996);
     			attr_dev(button4, "class", "button is-danger");
-    			add_location(button4, file$l, 244, 12, 10971);
+    			add_location(button4, file$l, 245, 12, 11089);
     			attr_dev(div1, "class", "align");
-    			add_location(div1, file$l, 237, 8, 10347);
-    			add_location(div2, file$l, 225, 4, 9627);
+    			add_location(div1, file$l, 238, 8, 10465);
+    			add_location(div2, file$l, 226, 4, 9745);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div2, anchor);
@@ -55348,11 +55346,11 @@ var app = (function (marked) {
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(button0, "click", /*click_handler_4*/ ctx[35], false, false, false),
-    					listen_dev(button1, "click", /*click_handler_6*/ ctx[37], false, false, false),
-    					listen_dev(button2, "click", /*click_handler_7*/ ctx[39], false, false, false),
+    					listen_dev(button0, "click", /*click_handler_4*/ ctx[34], false, false, false),
+    					listen_dev(button1, "click", /*click_handler_6*/ ctx[36], false, false, false),
+    					listen_dev(button2, "click", /*click_handler_7*/ ctx[38], false, false, false),
     					listen_dev(button3, "click", /*loadpeakTable*/ ctx[15], false, false, false),
-    					listen_dev(button4, "click", /*click_handler_8*/ ctx[40], false, false, false)
+    					listen_dev(button4, "click", /*click_handler_8*/ ctx[39], false, false, false)
     				];
 
     				mounted = true;
@@ -55361,36 +55359,36 @@ var app = (function (marked) {
     		p: function update(ctx, dirty) {
     			const customswitch_changes = {};
 
-    			if (!updating_selected && dirty[0] & /*boxSelected_peakfinder*/ 2) {
+    			if (!updating_selected && dirty[0] & /*boxSelected_peakfinder*/ 4) {
     				updating_selected = true;
-    				customswitch_changes.selected = /*boxSelected_peakfinder*/ ctx[1];
+    				customswitch_changes.selected = /*boxSelected_peakfinder*/ ctx[2];
     				add_flush_callback(() => updating_selected = false);
     			}
 
     			customswitch.$set(customswitch_changes);
     			const textfield0_changes = {};
 
-    			if (!updating_value && dirty[0] & /*peak_prominence*/ 32) {
+    			if (!updating_value && dirty[0] & /*peak_prominence*/ 64) {
     				updating_value = true;
-    				textfield0_changes.value = /*peak_prominence*/ ctx[5];
+    				textfield0_changes.value = /*peak_prominence*/ ctx[6];
     				add_flush_callback(() => updating_value = false);
     			}
 
     			textfield0.$set(textfield0_changes);
     			const textfield1_changes = {};
 
-    			if (!updating_value_1 && dirty[0] & /*peak_width*/ 16) {
+    			if (!updating_value_1 && dirty[0] & /*peak_width*/ 32) {
     				updating_value_1 = true;
-    				textfield1_changes.value = /*peak_width*/ ctx[4];
+    				textfield1_changes.value = /*peak_width*/ ctx[5];
     				add_flush_callback(() => updating_value_1 = false);
     			}
 
     			textfield1.$set(textfield1_changes);
     			const textfield2_changes = {};
 
-    			if (!updating_value_2 && dirty[0] & /*peak_height*/ 8) {
+    			if (!updating_value_2 && dirty[0] & /*peak_height*/ 16) {
     				updating_value_2 = true;
-    				textfield2_changes.value = /*peak_height*/ ctx[3];
+    				textfield2_changes.value = /*peak_height*/ ctx[4];
     				add_flush_callback(() => updating_value_2 = false);
     			}
 
@@ -55413,9 +55411,9 @@ var app = (function (marked) {
     			icon.$set(icon_changes);
     			const textfield4_changes = {};
 
-    			if (!updating_value_4 && dirty[0] & /*savePeakfilename*/ 128) {
+    			if (!updating_value_4 && dirty[0] & /*savePeakfilename*/ 256) {
     				updating_value_4 = true;
-    				textfield4_changes.value = /*savePeakfilename*/ ctx[7];
+    				textfield4_changes.value = /*savePeakfilename*/ ctx[8];
     				add_flush_callback(() => updating_value_4 = false);
     			}
 
@@ -55469,14 +55467,14 @@ var app = (function (marked) {
     		block,
     		id: create_if_block$d.name,
     		type: "if",
-    		source: "(224:0) {#if toggleFindPeaksRow}",
+    		source: "(225:0) {#if toggleFindPeaksRow}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (239:12) <Icon class="material-icons" on:click="{()=> modalActivate = true}">
+    // (240:12) <Icon class="material-icons" on:click="{()=> modalActivate = true}">
     function create_default_slot$5(ctx) {
     	let t;
 
@@ -55496,7 +55494,7 @@ var app = (function (marked) {
     		block,
     		id: create_default_slot$5.name,
     		type: "slot",
-    		source: "(239:12) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=> modalActivate = true}\\\">",
+    		source: "(240:12) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=> modalActivate = true}\\\">",
     		ctx
     	});
 
@@ -55504,138 +55502,103 @@ var app = (function (marked) {
     }
 
     function create_fragment$m(ctx) {
-    	let adjustinitialguess;
-    	let updating_active;
-    	let t0;
     	let div;
     	let button0;
-    	let t2;
+    	let t1;
     	let button1;
-    	let t4;
+    	let t3;
     	let button2;
-    	let t6;
+    	let t5;
     	let button3;
-    	let t8;
+    	let t7;
     	let button4;
-    	let t10;
+    	let t9;
     	let button5;
-    	let t12;
+    	let t11;
     	let if_block_anchor;
     	let current;
     	let mounted;
     	let dispose;
-
-    	function adjustinitialguess_active_binding(value) {
-    		/*adjustinitialguess_active_binding*/ ctx[25](value);
-    	}
-
-    	let adjustinitialguess_props = {};
-
-    	if (/*modalActivate*/ ctx[8] !== void 0) {
-    		adjustinitialguess_props.active = /*modalActivate*/ ctx[8];
-    	}
-
-    	adjustinitialguess = new AdjustInitialGuess({
-    			props: adjustinitialguess_props,
-    			$$inline: true
-    		});
-
-    	binding_callbacks.push(() => bind(adjustinitialguess, 'active', adjustinitialguess_active_binding));
-    	adjustinitialguess.$on("save", /*adjustPeak*/ ctx[16]);
-    	let if_block = /*toggleFindPeaksRow*/ ctx[6] && create_if_block$d(ctx);
+    	let if_block = /*toggleFindPeaksRow*/ ctx[7] && create_if_block$d(ctx);
 
     	const block = {
     		c: function create() {
-    			create_component(adjustinitialguess.$$.fragment);
-    			t0 = space();
     			div = element("div");
     			button0 = element("button");
     			button0.textContent = "Exp Fit.";
-    			t2 = space();
+    			t1 = space();
     			button1 = element("button");
     			button1.textContent = "Fit NGauss.";
-    			t4 = space();
+    			t3 = space();
     			button2 = element("button");
     			button2.textContent = "Clear Last";
-    			t6 = space();
+    			t5 = space();
     			button3 = element("button");
     			button3.textContent = "Clear All";
-    			t8 = space();
+    			t7 = space();
     			button4 = element("button");
     			button4.textContent = "Weighted Mean";
-    			t10 = space();
+    			t9 = space();
     			button5 = element("button");
     			button5.textContent = "Reset";
-    			t12 = space();
+    			t11 = space();
     			if (if_block) if_block.c();
     			if_block_anchor = empty();
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$l, 212, 4, 8889);
+    			add_location(button0, file$l, 213, 4, 9007);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$l, 213, 4, 8997);
+    			add_location(button1, file$l, 214, 4, 9115);
     			attr_dev(button2, "class", "button is-warning");
-    			add_location(button2, file$l, 214, 4, 9112);
+    			add_location(button2, file$l, 215, 4, 9230);
     			attr_dev(button3, "class", "button is-danger");
-    			add_location(button3, file$l, 215, 4, 9196);
+    			add_location(button3, file$l, 216, 4, 9314);
     			attr_dev(button4, "class", "button is-link");
-    			add_location(button4, file$l, 216, 4, 9277);
+    			add_location(button4, file$l, 217, 4, 9395);
     			attr_dev(button5, "class", "button is-warning");
-    			add_location(button5, file$l, 217, 4, 9390);
+    			add_location(button5, file$l, 218, 4, 9508);
     			attr_dev(div, "class", "align");
-    			add_location(div, file$l, 211, 0, 8864);
+    			add_location(div, file$l, 212, 0, 8982);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
-    			mount_component(adjustinitialguess, target, anchor);
-    			insert_dev(target, t0, anchor);
     			insert_dev(target, div, anchor);
     			append_dev(div, button0);
-    			append_dev(div, t2);
+    			append_dev(div, t1);
     			append_dev(div, button1);
-    			append_dev(div, t4);
+    			append_dev(div, t3);
     			append_dev(div, button2);
-    			append_dev(div, t6);
+    			append_dev(div, t5);
     			append_dev(div, button3);
-    			append_dev(div, t8);
+    			append_dev(div, t7);
     			append_dev(div, button4);
-    			append_dev(div, t10);
+    			append_dev(div, t9);
     			append_dev(div, button5);
-    			insert_dev(target, t12, anchor);
+    			insert_dev(target, t11, anchor);
     			if (if_block) if_block.m(target, anchor);
     			insert_dev(target, if_block_anchor, anchor);
     			current = true;
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(button0, "click", /*click_handler*/ ctx[26], false, false, false),
-    					listen_dev(button1, "click", /*click_handler_1*/ ctx[27], false, false, false),
+    					listen_dev(button0, "click", /*click_handler*/ ctx[25], false, false, false),
+    					listen_dev(button1, "click", /*click_handler_1*/ ctx[26], false, false, false),
     					listen_dev(button2, "click", /*clearLastPeak*/ ctx[14], false, false, false),
     					listen_dev(button3, "click", /*clearAllPeak*/ ctx[13], false, false, false),
-    					listen_dev(button4, "click", /*click_handler_2*/ ctx[28], false, false, false),
-    					listen_dev(button5, "click", /*click_handler_3*/ ctx[29], false, false, false)
+    					listen_dev(button4, "click", /*click_handler_2*/ ctx[27], false, false, false),
+    					listen_dev(button5, "click", /*click_handler_3*/ ctx[28], false, false, false)
     				];
 
     				mounted = true;
     			}
     		},
     		p: function update(ctx, dirty) {
-    			const adjustinitialguess_changes = {};
-
-    			if (!updating_active && dirty[0] & /*modalActivate*/ 256) {
-    				updating_active = true;
-    				adjustinitialguess_changes.active = /*modalActivate*/ ctx[8];
-    				add_flush_callback(() => updating_active = false);
-    			}
-
-    			adjustinitialguess.$set(adjustinitialguess_changes);
-
-    			if (/*toggleFindPeaksRow*/ ctx[6]) {
+    			if (/*toggleFindPeaksRow*/ ctx[7]) {
     				if (if_block) {
     					if_block.p(ctx, dirty);
 
-    					if (dirty[0] & /*toggleFindPeaksRow*/ 64) {
+    					if (dirty[0] & /*toggleFindPeaksRow*/ 128) {
     						transition_in(if_block, 1);
     					}
     				} else {
@@ -55656,20 +55619,16 @@ var app = (function (marked) {
     		},
     		i: function intro(local) {
     			if (current) return;
-    			transition_in(adjustinitialguess.$$.fragment, local);
     			transition_in(if_block);
     			current = true;
     		},
     		o: function outro(local) {
-    			transition_out(adjustinitialguess.$$.fragment, local);
     			transition_out(if_block);
     			current = false;
     		},
     		d: function destroy(detaching) {
-    			destroy_component(adjustinitialguess, detaching);
-    			if (detaching) detach_dev(t0);
     			if (detaching) detach_dev(div);
-    			if (detaching) detach_dev(t12);
+    			if (detaching) detach_dev(t11);
     			if (if_block) if_block.d(detaching);
     			if (detaching) detach_dev(if_block_anchor);
     			mounted = false;
@@ -55704,38 +55663,35 @@ var app = (function (marked) {
     	let $dataTable;
     	let $Ngauss_sigma;
     	validate_store(felixPeakTable, 'felixPeakTable');
-    	component_subscribe($$self, felixPeakTable, $$value => $$invalidate(0, $felixPeakTable = $$value));
+    	component_subscribe($$self, felixPeakTable, $$value => $$invalidate(1, $felixPeakTable = $$value));
     	validate_store(expfittedLinesCollectedData, 'expfittedLinesCollectedData');
     	component_subscribe($$self, expfittedLinesCollectedData, $$value => $$invalidate(9, $expfittedLinesCollectedData = $$value));
     	validate_store(felixopoLocation, 'felixopoLocation');
-    	component_subscribe($$self, felixopoLocation, $$value => $$invalidate(41, $felixopoLocation = $$value));
+    	component_subscribe($$self, felixopoLocation, $$value => $$invalidate(40, $felixopoLocation = $$value));
     	validate_store(felixOutputName, 'felixOutputName');
-    	component_subscribe($$self, felixOutputName, $$value => $$invalidate(42, $felixOutputName = $$value));
+    	component_subscribe($$self, felixOutputName, $$value => $$invalidate(41, $felixOutputName = $$value));
     	validate_store(felixIndex, 'felixIndex');
-    	component_subscribe($$self, felixIndex, $$value => $$invalidate(43, $felixIndex = $$value));
+    	component_subscribe($$self, felixIndex, $$value => $$invalidate(42, $felixIndex = $$value));
     	validate_store(felixPlotAnnotations, 'felixPlotAnnotations');
     	component_subscribe($$self, felixPlotAnnotations, $$value => $$invalidate(10, $felixPlotAnnotations = $$value));
     	validate_store(graphDiv, 'graphDiv');
     	component_subscribe($$self, graphDiv, $$value => $$invalidate(11, $graphDiv = $$value));
     	validate_store(felixAnnotationColor, 'felixAnnotationColor');
-    	component_subscribe($$self, felixAnnotationColor, $$value => $$invalidate(44, $felixAnnotationColor = $$value));
+    	component_subscribe($$self, felixAnnotationColor, $$value => $$invalidate(43, $felixAnnotationColor = $$value));
     	validate_store(fittedTraceCount, 'fittedTraceCount');
-    	component_subscribe($$self, fittedTraceCount, $$value => $$invalidate(45, $fittedTraceCount = $$value));
+    	component_subscribe($$self, fittedTraceCount, $$value => $$invalidate(44, $fittedTraceCount = $$value));
     	validate_store(expfittedLines, 'expfittedLines');
-    	component_subscribe($$self, expfittedLines, $$value => $$invalidate(46, $expfittedLines = $$value));
+    	component_subscribe($$self, expfittedLines, $$value => $$invalidate(45, $expfittedLines = $$value));
     	validate_store(dataTable, 'dataTable');
-    	component_subscribe($$self, dataTable, $$value => $$invalidate(47, $dataTable = $$value));
+    	component_subscribe($$self, dataTable, $$value => $$invalidate(46, $dataTable = $$value));
     	validate_store(Ngauss_sigma, 'Ngauss_sigma');
     	component_subscribe($$self, Ngauss_sigma, $$value => $$invalidate(12, $Ngauss_sigma = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('ExecuteFunctionContents', slots, []);
-    	let { addedFileScale, addedFileCol, normMethod, writeFileName, writeFile, overwrite_expfit, fullfiles } = $$props;
+    	let { addedFileScale, addedFileCol, normMethod, writeFileName, writeFile, overwrite_expfit, fullfiles, modalActivate = false, adjustPeakTrigger = false } = $$props;
     	let boxSelected_peakfinder = false, NGauss_fit_args = {};
     	let peak_height = 1, peak_width = 3, peak_prominence = 0;
-
-    	let toggleFindPeaksRow = false,
-    		savePeakfilename = "peakTable",
-    		modalActivate = false;
+    	let toggleFindPeaksRow = false, savePeakfilename = "peakTable";
 
     	const clearAllPeak = () => {
     		if ($fittedTraceCount === 0) {
@@ -55821,10 +55777,11 @@ var app = (function (marked) {
     		);
 
     		if (closeMainModal) {
-    			($$invalidate(8, modalActivate = false), window.createToast("Initial guess adjusted for full spectrum fitting"));
+    			($$invalidate(0, modalActivate = false), window.createToast("Initial guess adjusted for full spectrum fitting"));
     		}
 
     		Plotly.relayout($graphDiv, { annotations: $felixPlotAnnotations });
+    		$$invalidate(17, adjustPeakTrigger = false);
     	}
 
     	
@@ -55874,21 +55831,21 @@ var app = (function (marked) {
     						return window.createToast("Box selection is turned ON so please select a wn. range to fit", "danger");
     					}
 
-    					$$invalidate(2, NGauss_fit_args.index = $felixIndex, NGauss_fit_args);
+    					$$invalidate(3, NGauss_fit_args.index = $felixIndex, NGauss_fit_args);
     				} else {
     					delete NGauss_fit_args.index;
     				}
     				if ($felixPeakTable.length === 0) {
     					return window.createToast("No arguments initialised yet.", "danger");
     				}
-    				$$invalidate(2, NGauss_fit_args.fitNGauss_arguments = {}, NGauss_fit_args);
+    				$$invalidate(3, NGauss_fit_args.fitNGauss_arguments = {}, NGauss_fit_args);
     				set_store_value(felixPeakTable, $felixPeakTable = _.sortBy($felixPeakTable, [o => o["freq"]]), $felixPeakTable);
     				$felixPeakTable.forEach((f, index) => {
-    					$$invalidate(2, NGauss_fit_args.fitNGauss_arguments[`cen${index}`] = f.freq, NGauss_fit_args);
-    					$$invalidate(2, NGauss_fit_args.fitNGauss_arguments[`A${index}`] = f.amp, NGauss_fit_args);
-    					$$invalidate(2, NGauss_fit_args.fitNGauss_arguments[`sigma${index}`] = f.sig, NGauss_fit_args);
+    					$$invalidate(3, NGauss_fit_args.fitNGauss_arguments[`cen${index}`] = f.freq, NGauss_fit_args);
+    					$$invalidate(3, NGauss_fit_args.fitNGauss_arguments[`A${index}`] = f.amp, NGauss_fit_args);
+    					$$invalidate(3, NGauss_fit_args.fitNGauss_arguments[`sigma${index}`] = f.sig, NGauss_fit_args);
     				});
-    				$$invalidate(2, NGauss_fit_args = {
+    				$$invalidate(3, NGauss_fit_args = {
     					...NGauss_fit_args,
     					location: $felixopoLocation,
     					addedFileScale,
@@ -55956,20 +55913,17 @@ var app = (function (marked) {
     		'writeFileName',
     		'writeFile',
     		'overwrite_expfit',
-    		'fullfiles'
+    		'fullfiles',
+    		'modalActivate',
+    		'adjustPeakTrigger'
     	];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1$a.warn(`<ExecuteFunctionContents> was created with unknown prop '${key}'`);
     	});
 
-    	function adjustinitialguess_active_binding(value) {
-    		modalActivate = value;
-    		$$invalidate(8, modalActivate);
-    	}
-
     	const click_handler = e => plotData({ e, filetype: "exp_fit" });
-    	const click_handler_1 = () => $$invalidate(6, toggleFindPeaksRow = !toggleFindPeaksRow);
+    	const click_handler_1 = () => $$invalidate(7, toggleFindPeaksRow = !toggleFindPeaksRow);
     	const click_handler_2 = e => plotData({ e, filetype: "get_err" });
 
     	const click_handler_3 = () => {
@@ -55979,22 +55933,22 @@ var app = (function (marked) {
 
     	function customswitch_selected_binding(value) {
     		boxSelected_peakfinder = value;
-    		$$invalidate(1, boxSelected_peakfinder);
+    		$$invalidate(2, boxSelected_peakfinder);
     	}
 
     	function textfield0_value_binding(value) {
     		peak_prominence = value;
-    		$$invalidate(5, peak_prominence);
+    		$$invalidate(6, peak_prominence);
     	}
 
     	function textfield1_value_binding(value) {
     		peak_width = value;
-    		$$invalidate(4, peak_width);
+    		$$invalidate(5, peak_width);
     	}
 
     	function textfield2_value_binding(value) {
     		peak_height = value;
-    		$$invalidate(3, peak_height);
+    		$$invalidate(4, peak_height);
     	}
 
     	function textfield3_value_binding(value) {
@@ -56003,12 +55957,12 @@ var app = (function (marked) {
     	}
 
     	const click_handler_4 = e => plotData({ e, filetype: "find_peaks" });
-    	const click_handler_5 = () => $$invalidate(8, modalActivate = true);
+    	const click_handler_5 = () => $$invalidate(0, modalActivate = true);
     	const click_handler_6 = e => plotData({ e, filetype: "NGauss_fit" });
 
     	function textfield4_value_binding(value) {
     		savePeakfilename = value;
-    		$$invalidate(7, savePeakfilename);
+    		$$invalidate(8, savePeakfilename);
     	}
 
     	const click_handler_7 = () => savefile({
@@ -56019,7 +55973,7 @@ var app = (function (marked) {
     	const click_handler_8 = () => {
     		set_store_value(felixPlotAnnotations, $felixPlotAnnotations = [], $felixPlotAnnotations);
     		set_store_value(felixPeakTable, $felixPeakTable = [], $felixPeakTable);
-    		$$invalidate(2, NGauss_fit_args = {});
+    		$$invalidate(3, NGauss_fit_args = {});
     		Plotly.relayout($graphDiv, { annotations: [] });
     		window.createToast("Cleared", "warning");
     	};
@@ -56032,6 +55986,8 @@ var app = (function (marked) {
     		if ('writeFile' in $$props) $$invalidate(22, writeFile = $$props.writeFile);
     		if ('overwrite_expfit' in $$props) $$invalidate(23, overwrite_expfit = $$props.overwrite_expfit);
     		if ('fullfiles' in $$props) $$invalidate(24, fullfiles = $$props.fullfiles);
+    		if ('modalActivate' in $$props) $$invalidate(0, modalActivate = $$props.modalActivate);
+    		if ('adjustPeakTrigger' in $$props) $$invalidate(17, adjustPeakTrigger = $$props.adjustPeakTrigger);
     	};
 
     	$$self.$capture_state = () => ({
@@ -56066,6 +56022,8 @@ var app = (function (marked) {
     		writeFile,
     		overwrite_expfit,
     		fullfiles,
+    		modalActivate,
+    		adjustPeakTrigger,
     		boxSelected_peakfinder,
     		NGauss_fit_args,
     		peak_height,
@@ -56073,7 +56031,6 @@ var app = (function (marked) {
     		peak_prominence,
     		toggleFindPeaksRow,
     		savePeakfilename,
-    		modalActivate,
     		style: style$2,
     		clearAllPeak,
     		clearLastPeak,
@@ -56102,14 +56059,15 @@ var app = (function (marked) {
     		if ('writeFile' in $$props) $$invalidate(22, writeFile = $$props.writeFile);
     		if ('overwrite_expfit' in $$props) $$invalidate(23, overwrite_expfit = $$props.overwrite_expfit);
     		if ('fullfiles' in $$props) $$invalidate(24, fullfiles = $$props.fullfiles);
-    		if ('boxSelected_peakfinder' in $$props) $$invalidate(1, boxSelected_peakfinder = $$props.boxSelected_peakfinder);
-    		if ('NGauss_fit_args' in $$props) $$invalidate(2, NGauss_fit_args = $$props.NGauss_fit_args);
-    		if ('peak_height' in $$props) $$invalidate(3, peak_height = $$props.peak_height);
-    		if ('peak_width' in $$props) $$invalidate(4, peak_width = $$props.peak_width);
-    		if ('peak_prominence' in $$props) $$invalidate(5, peak_prominence = $$props.peak_prominence);
-    		if ('toggleFindPeaksRow' in $$props) $$invalidate(6, toggleFindPeaksRow = $$props.toggleFindPeaksRow);
-    		if ('savePeakfilename' in $$props) $$invalidate(7, savePeakfilename = $$props.savePeakfilename);
-    		if ('modalActivate' in $$props) $$invalidate(8, modalActivate = $$props.modalActivate);
+    		if ('modalActivate' in $$props) $$invalidate(0, modalActivate = $$props.modalActivate);
+    		if ('adjustPeakTrigger' in $$props) $$invalidate(17, adjustPeakTrigger = $$props.adjustPeakTrigger);
+    		if ('boxSelected_peakfinder' in $$props) $$invalidate(2, boxSelected_peakfinder = $$props.boxSelected_peakfinder);
+    		if ('NGauss_fit_args' in $$props) $$invalidate(3, NGauss_fit_args = $$props.NGauss_fit_args);
+    		if ('peak_height' in $$props) $$invalidate(4, peak_height = $$props.peak_height);
+    		if ('peak_width' in $$props) $$invalidate(5, peak_width = $$props.peak_width);
+    		if ('peak_prominence' in $$props) $$invalidate(6, peak_prominence = $$props.peak_prominence);
+    		if ('toggleFindPeaksRow' in $$props) $$invalidate(7, toggleFindPeaksRow = $$props.toggleFindPeaksRow);
+    		if ('savePeakfilename' in $$props) $$invalidate(8, savePeakfilename = $$props.savePeakfilename);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -56117,7 +56075,7 @@ var app = (function (marked) {
     	}
 
     	$$self.$$.update = () => {
-    		if ($$self.$$.dirty[0] & /*$felixPeakTable*/ 1) {
+    		if ($$self.$$.dirty[0] & /*$felixPeakTable*/ 2) {
     			set_store_value(
     				felixPeakTable,
     				$felixPeakTable = $felixPeakTable.map(f => {
@@ -56130,9 +56088,14 @@ var app = (function (marked) {
     				$felixPeakTable
     			);
     		}
+
+    		if ($$self.$$.dirty[0] & /*adjustPeakTrigger*/ 131072) {
+    			if (adjustPeakTrigger) adjustPeak();
+    		}
     	};
 
     	return [
+    		modalActivate,
     		$felixPeakTable,
     		boxSelected_peakfinder,
     		NGauss_fit_args,
@@ -56141,7 +56104,6 @@ var app = (function (marked) {
     		peak_prominence,
     		toggleFindPeaksRow,
     		savePeakfilename,
-    		modalActivate,
     		$expfittedLinesCollectedData,
     		$felixPlotAnnotations,
     		$graphDiv,
@@ -56149,8 +56111,8 @@ var app = (function (marked) {
     		clearAllPeak,
     		clearLastPeak,
     		loadpeakTable,
-    		adjustPeak,
     		plotData,
+    		adjustPeakTrigger,
     		addedFileScale,
     		addedFileCol,
     		normMethod,
@@ -56158,7 +56120,6 @@ var app = (function (marked) {
     		writeFile,
     		overwrite_expfit,
     		fullfiles,
-    		adjustinitialguess_active_binding,
     		click_handler,
     		click_handler_1,
     		click_handler_2,
@@ -56194,7 +56155,9 @@ var app = (function (marked) {
     				writeFileName: 21,
     				writeFile: 22,
     				overwrite_expfit: 23,
-    				fullfiles: 24
+    				fullfiles: 24,
+    				modalActivate: 0,
+    				adjustPeakTrigger: 17
     			},
     			null,
     			[-1, -1]
@@ -56294,6 +56257,22 @@ var app = (function (marked) {
     	set fullfiles(value) {
     		throw new Error("<ExecuteFunctionContents>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
+
+    	get modalActivate() {
+    		throw new Error("<ExecuteFunctionContents>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set modalActivate(value) {
+    		throw new Error("<ExecuteFunctionContents>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get adjustPeakTrigger() {
+    		throw new Error("<ExecuteFunctionContents>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set adjustPeakTrigger(value) {
+    		throw new Error("<ExecuteFunctionContents>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
     }
 
     function init_tour_normline({filetype="felix"}={}) {
@@ -56352,7 +56331,7 @@ var app = (function (marked) {
     const { console: console_1$9 } = globals;
     const file$k = "src\\Pages\\Normline.svelte";
 
-    // (153:4) <svelte:fragment slot="buttonContainer">
+    // (130:4) <svelte:fragment slot="buttonContainer">
     function create_buttonContainer_slot$3(ctx) {
     	let initfunctionrow;
     	let updating_graphPlotted;
@@ -56374,18 +56353,18 @@ var app = (function (marked) {
     	let current;
 
     	function initfunctionrow_graphPlotted_binding(value) {
-    		/*initfunctionrow_graphPlotted_binding*/ ctx[49](value);
+    		/*initfunctionrow_graphPlotted_binding*/ ctx[55](value);
     	}
 
     	function initfunctionrow_show_theoryplot_binding(value) {
-    		/*initfunctionrow_show_theoryplot_binding*/ ctx[50](value);
+    		/*initfunctionrow_show_theoryplot_binding*/ ctx[56](value);
     	}
 
     	let initfunctionrow_props = {
-    		removeExtraFile: /*removeExtraFile*/ ctx[31],
+    		removeExtraFile: /*removeExtraFile*/ ctx[33],
     		opofiles: /*opofiles*/ ctx[4],
     		felixfiles: /*felixfiles*/ ctx[7],
-    		normMethod: /*$normMethod*/ ctx[28],
+    		normMethod: /*$normMethod*/ ctx[30],
     		theoryLocation: /*theoryLocation*/ ctx[11],
     		updateConfig: /*updateConfig*/ ctx[26]
     	};
@@ -56407,23 +56386,23 @@ var app = (function (marked) {
     	binding_callbacks.push(() => bind(initfunctionrow, 'show_theoryplot', initfunctionrow_show_theoryplot_binding));
 
     	function oporow_OPOLocation_binding(value) {
-    		/*oporow_OPOLocation_binding*/ ctx[51](value);
+    		/*oporow_OPOLocation_binding*/ ctx[57](value);
     	}
 
     	function oporow_OPOfilesChecked_binding(value) {
-    		/*oporow_OPOfilesChecked_binding*/ ctx[52](value);
+    		/*oporow_OPOfilesChecked_binding*/ ctx[58](value);
     	}
 
     	function oporow_opofiles_binding(value) {
-    		/*oporow_opofiles_binding*/ ctx[53](value);
+    		/*oporow_opofiles_binding*/ ctx[59](value);
     	}
 
     	function oporow_graphPlotted_binding(value) {
-    		/*oporow_graphPlotted_binding*/ ctx[54](value);
+    		/*oporow_graphPlotted_binding*/ ctx[60](value);
     	}
 
     	let oporow_props = {
-    		removeExtraFile: /*removeExtraFile*/ ctx[31],
+    		removeExtraFile: /*removeExtraFile*/ ctx[33],
     		updateConfig: /*updateConfig*/ ctx[26]
     	};
 
@@ -56450,15 +56429,15 @@ var app = (function (marked) {
     	binding_callbacks.push(() => bind(oporow, 'graphPlotted', oporow_graphPlotted_binding));
 
     	function theoryrow_theoryLocation_binding(value) {
-    		/*theoryrow_theoryLocation_binding*/ ctx[55](value);
+    		/*theoryrow_theoryLocation_binding*/ ctx[61](value);
     	}
 
     	function theoryrow_show_theoryplot_binding(value) {
-    		/*theoryrow_show_theoryplot_binding*/ ctx[56](value);
+    		/*theoryrow_show_theoryplot_binding*/ ctx[62](value);
     	}
 
     	let theoryrow_props = {
-    		normMethod: /*$normMethod*/ ctx[28],
+    		normMethod: /*$normMethod*/ ctx[30],
     		updateConfig: /*updateConfig*/ ctx[26]
     	};
 
@@ -56475,20 +56454,20 @@ var app = (function (marked) {
     	binding_callbacks.push(() => bind(theoryrow, 'show_theoryplot', theoryrow_show_theoryplot_binding));
 
     	function customradio_selected_binding(value) {
-    		/*customradio_selected_binding*/ ctx[57](value);
+    		/*customradio_selected_binding*/ ctx[63](value);
     	}
 
     	let customradio_props = {
     		options: ["Log", "Relative", "IntensityPerPhoton"]
     	};
 
-    	if (/*$normMethod*/ ctx[28] !== void 0) {
-    		customradio_props.selected = /*$normMethod*/ ctx[28];
+    	if (/*$normMethod*/ ctx[30] !== void 0) {
+    		customradio_props.selected = /*$normMethod*/ ctx[30];
     	}
 
     	customradio = new CustomRadio({ props: customradio_props, $$inline: true });
     	binding_callbacks.push(() => bind(customradio, 'selected', customradio_selected_binding));
-    	customradio.$on("change", /*replot*/ ctx[30]);
+    	customradio.$on("change", /*replot*/ ctx[32]);
 
     	const block = {
     		c: function create() {
@@ -56501,7 +56480,7 @@ var app = (function (marked) {
     			div = element("div");
     			create_component(customradio.$$.fragment);
     			attr_dev(div, "class", "align");
-    			add_location(div, file$k, 157, 8, 6883);
+    			add_location(div, file$k, 134, 8, 6121);
     		},
     		m: function mount(target, anchor) {
     			mount_component(initfunctionrow, target, anchor);
@@ -56518,7 +56497,7 @@ var app = (function (marked) {
     			const initfunctionrow_changes = {};
     			if (dirty[0] & /*opofiles*/ 16) initfunctionrow_changes.opofiles = /*opofiles*/ ctx[4];
     			if (dirty[0] & /*felixfiles*/ 128) initfunctionrow_changes.felixfiles = /*felixfiles*/ ctx[7];
-    			if (dirty[0] & /*$normMethod*/ 268435456) initfunctionrow_changes.normMethod = /*$normMethod*/ ctx[28];
+    			if (dirty[0] & /*$normMethod*/ 1073741824) initfunctionrow_changes.normMethod = /*$normMethod*/ ctx[30];
     			if (dirty[0] & /*theoryLocation*/ 2048) initfunctionrow_changes.theoryLocation = /*theoryLocation*/ ctx[11];
     			if (dirty[0] & /*updateConfig*/ 67108864) initfunctionrow_changes.updateConfig = /*updateConfig*/ ctx[26];
 
@@ -56564,7 +56543,7 @@ var app = (function (marked) {
 
     			oporow.$set(oporow_changes);
     			const theoryrow_changes = {};
-    			if (dirty[0] & /*$normMethod*/ 268435456) theoryrow_changes.normMethod = /*$normMethod*/ ctx[28];
+    			if (dirty[0] & /*$normMethod*/ 1073741824) theoryrow_changes.normMethod = /*$normMethod*/ ctx[30];
     			if (dirty[0] & /*updateConfig*/ 67108864) theoryrow_changes.updateConfig = /*updateConfig*/ ctx[26];
 
     			if (!updating_theoryLocation && dirty[0] & /*theoryLocation*/ 2048) {
@@ -56582,9 +56561,9 @@ var app = (function (marked) {
     			theoryrow.$set(theoryrow_changes);
     			const customradio_changes = {};
 
-    			if (!updating_selected && dirty[0] & /*$normMethod*/ 268435456) {
+    			if (!updating_selected && dirty[0] & /*$normMethod*/ 1073741824) {
     				updating_selected = true;
-    				customradio_changes.selected = /*$normMethod*/ ctx[28];
+    				customradio_changes.selected = /*$normMethod*/ ctx[30];
     				add_flush_callback(() => updating_selected = false);
     			}
 
@@ -56621,14 +56600,14 @@ var app = (function (marked) {
     		block,
     		id: create_buttonContainer_slot$3.name,
     		type: "slot",
-    		source: "(153:4) <svelte:fragment slot=\\\"buttonContainer\\\">",
+    		source: "(130:4) <svelte:fragment slot=\\\"buttonContainer\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (164:4) <svelte:fragment slot="plotContainer" >
+    // (141:4) <svelte:fragment slot="plotContainer" >
     function create_plotContainer_slot$3(ctx) {
     	let getfileinfotable;
     	let t0;
@@ -56651,7 +56630,7 @@ var app = (function (marked) {
     	getfileinfotable = new GetFileInfoTable({
     			props: {
     				felixfiles: /*felixfiles*/ ctx[7],
-    				normMethod: /*$normMethod*/ ctx[28]
+    				normMethod: /*$normMethod*/ ctx[30]
     			},
     			$$inline: true
     		});
@@ -56677,31 +56656,31 @@ var app = (function (marked) {
     			attr_dev(div0, "class", "animated fadeIn graph__div svelte-f1bxvr");
     			attr_dev(div0, "id", "exp-theory-plot");
     			toggle_class(div0, "hide", !/*show_theoryplot*/ ctx[10]);
-    			add_location(div0, file$k, 170, 12, 7358);
+    			add_location(div0, file$k, 147, 12, 6596);
     			attr_dev(div1, "id", "bplot");
     			attr_dev(div1, "class", "graph__div svelte-f1bxvr");
-    			add_location(div1, file$k, 171, 12, 7469);
+    			add_location(div1, file$k, 148, 12, 6707);
     			attr_dev(div2, "id", "saPlot");
     			attr_dev(div2, "class", "graph__div svelte-f1bxvr");
-    			add_location(div2, file$k, 172, 12, 7524);
+    			add_location(div2, file$k, 149, 12, 6762);
     			attr_dev(div3, "id", "avgplot");
     			attr_dev(div3, "class", "graph__div svelte-f1bxvr");
-    			add_location(div3, file$k, 173, 12, 7580);
+    			add_location(div3, file$k, 150, 12, 6818);
     			attr_dev(div4, "class", "animated fadeIn graph__div svelte-f1bxvr");
     			attr_dev(div4, "id", "opoplot");
     			toggle_class(div4, "hide", !/*$opoMode*/ ctx[8]);
-    			add_location(div4, file$k, 174, 12, 7637);
+    			add_location(div4, file$k, 151, 12, 6875);
     			attr_dev(div5, "class", "animated fadeIn graph__div svelte-f1bxvr");
     			attr_dev(div5, "id", "opoSA");
     			toggle_class(div5, "hide", !/*$opoMode*/ ctx[8]);
-    			add_location(div5, file$k, 175, 12, 7733);
+    			add_location(div5, file$k, 152, 12, 6971);
     			attr_dev(div6, "class", "animated fadeIn graph__div svelte-f1bxvr");
     			attr_dev(div6, "id", "opoRelPlot");
     			toggle_class(div6, "hide", !/*$opoMode*/ ctx[8]);
-    			add_location(div6, file$k, 177, 12, 7829);
+    			add_location(div6, file$k, 154, 12, 7067);
     			attr_dev(div7, "class", "felixPlot svelte-f1bxvr");
     			attr_dev(div7, "id", "plot_container__div__" + filetype$3);
-    			add_location(div7, file$k, 169, 8, 7284);
+    			add_location(div7, file$k, 146, 8, 6522);
     		},
     		m: function mount(target, anchor) {
     			mount_component(getfileinfotable, target, anchor);
@@ -56725,7 +56704,7 @@ var app = (function (marked) {
     		p: function update(ctx, dirty) {
     			const getfileinfotable_changes = {};
     			if (dirty[0] & /*felixfiles*/ 128) getfileinfotable_changes.felixfiles = /*felixfiles*/ ctx[7];
-    			if (dirty[0] & /*$normMethod*/ 268435456) getfileinfotable_changes.normMethod = /*$normMethod*/ ctx[28];
+    			if (dirty[0] & /*$normMethod*/ 1073741824) getfileinfotable_changes.normMethod = /*$normMethod*/ ctx[30];
     			getfileinfotable.$set(getfileinfotable_changes);
 
     			if (dirty[0] & /*show_theoryplot*/ 1024) {
@@ -56764,14 +56743,14 @@ var app = (function (marked) {
     		block,
     		id: create_plotContainer_slot$3.name,
     		type: "slot",
-    		source: "(164:4) <svelte:fragment slot=\\\"plotContainer\\\" >",
+    		source: "(141:4) <svelte:fragment slot=\\\"plotContainer\\\" >",
     		ctx
     	});
 
     	return block;
     }
 
-    // (183:4) <svelte:fragment slot="plotContainer_functions" >
+    // (160:4) <svelte:fragment slot="plotContainer_functions" >
     function create_plotContainer_functions_slot$1(ctx) {
     	let writefunctioncontents;
     	let updating_writeFileName;
@@ -56779,22 +56758,24 @@ var app = (function (marked) {
     	let updating_overwrite_expfit;
     	let t;
     	let executefunctioncontents;
+    	let updating_modalActivate;
+    	let updating_adjustPeakTrigger;
     	let current;
 
     	function writefunctioncontents_writeFileName_binding(value) {
-    		/*writefunctioncontents_writeFileName_binding*/ ctx[45](value);
+    		/*writefunctioncontents_writeFileName_binding*/ ctx[49](value);
     	}
 
     	function writefunctioncontents_writeFile_binding(value) {
-    		/*writefunctioncontents_writeFile_binding*/ ctx[46](value);
+    		/*writefunctioncontents_writeFile_binding*/ ctx[50](value);
     	}
 
     	function writefunctioncontents_overwrite_expfit_binding(value) {
-    		/*writefunctioncontents_overwrite_expfit_binding*/ ctx[47](value);
+    		/*writefunctioncontents_overwrite_expfit_binding*/ ctx[51](value);
     	}
 
     	let writefunctioncontents_props = {
-    		output_namelists: /*output_namelists*/ ctx[27]
+    		output_namelists: /*output_namelists*/ ctx[29]
     	};
 
     	if (/*writeFileName*/ ctx[15] !== void 0) {
@@ -56817,21 +56798,42 @@ var app = (function (marked) {
     	binding_callbacks.push(() => bind(writefunctioncontents, 'writeFileName', writefunctioncontents_writeFileName_binding));
     	binding_callbacks.push(() => bind(writefunctioncontents, 'writeFile', writefunctioncontents_writeFile_binding));
     	binding_callbacks.push(() => bind(writefunctioncontents, 'overwrite_expfit', writefunctioncontents_overwrite_expfit_binding));
-    	writefunctioncontents.$on("addfile", /*addfile_handler*/ ctx[48]);
-    	writefunctioncontents.$on("removefile", /*removeExtraFile*/ ctx[31]);
+    	writefunctioncontents.$on("addfile", /*addfile_handler*/ ctx[52]);
+    	writefunctioncontents.$on("removefile", /*removeExtraFile*/ ctx[33]);
+
+    	function executefunctioncontents_modalActivate_binding(value) {
+    		/*executefunctioncontents_modalActivate_binding*/ ctx[53](value);
+    	}
+
+    	function executefunctioncontents_adjustPeakTrigger_binding(value) {
+    		/*executefunctioncontents_adjustPeakTrigger_binding*/ ctx[54](value);
+    	}
+
+    	let executefunctioncontents_props = {
+    		addedFileScale: /*addedFileScale*/ ctx[20],
+    		addedFileCol: /*addedFileCol*/ ctx[18],
+    		normMethod: /*$normMethod*/ ctx[30],
+    		writeFileName: /*writeFileName*/ ctx[15],
+    		writeFile: /*writeFile*/ ctx[14],
+    		overwrite_expfit: /*overwrite_expfit*/ ctx[13],
+    		fullfiles: /*fullfiles*/ ctx[21]
+    	};
+
+    	if (/*modalActivate*/ ctx[27] !== void 0) {
+    		executefunctioncontents_props.modalActivate = /*modalActivate*/ ctx[27];
+    	}
+
+    	if (/*adjustPeakTrigger*/ ctx[28] !== void 0) {
+    		executefunctioncontents_props.adjustPeakTrigger = /*adjustPeakTrigger*/ ctx[28];
+    	}
 
     	executefunctioncontents = new ExecuteFunctionContents({
-    			props: {
-    				addedFileScale: /*addedFileScale*/ ctx[20],
-    				addedFileCol: /*addedFileCol*/ ctx[18],
-    				normMethod: /*$normMethod*/ ctx[28],
-    				writeFileName: /*writeFileName*/ ctx[15],
-    				writeFile: /*writeFile*/ ctx[14],
-    				overwrite_expfit: /*overwrite_expfit*/ ctx[13],
-    				fullfiles: /*fullfiles*/ ctx[21]
-    			},
+    			props: executefunctioncontents_props,
     			$$inline: true
     		});
+
+    	binding_callbacks.push(() => bind(executefunctioncontents, 'modalActivate', executefunctioncontents_modalActivate_binding));
+    	binding_callbacks.push(() => bind(executefunctioncontents, 'adjustPeakTrigger', executefunctioncontents_adjustPeakTrigger_binding));
 
     	const block = {
     		c: function create() {
@@ -56847,7 +56849,7 @@ var app = (function (marked) {
     		},
     		p: function update(ctx, dirty) {
     			const writefunctioncontents_changes = {};
-    			if (dirty[0] & /*output_namelists*/ 134217728) writefunctioncontents_changes.output_namelists = /*output_namelists*/ ctx[27];
+    			if (dirty[0] & /*output_namelists*/ 536870912) writefunctioncontents_changes.output_namelists = /*output_namelists*/ ctx[29];
 
     			if (!updating_writeFileName && dirty[0] & /*writeFileName*/ 32768) {
     				updating_writeFileName = true;
@@ -56871,11 +56873,24 @@ var app = (function (marked) {
     			const executefunctioncontents_changes = {};
     			if (dirty[0] & /*addedFileScale*/ 1048576) executefunctioncontents_changes.addedFileScale = /*addedFileScale*/ ctx[20];
     			if (dirty[0] & /*addedFileCol*/ 262144) executefunctioncontents_changes.addedFileCol = /*addedFileCol*/ ctx[18];
-    			if (dirty[0] & /*$normMethod*/ 268435456) executefunctioncontents_changes.normMethod = /*$normMethod*/ ctx[28];
+    			if (dirty[0] & /*$normMethod*/ 1073741824) executefunctioncontents_changes.normMethod = /*$normMethod*/ ctx[30];
     			if (dirty[0] & /*writeFileName*/ 32768) executefunctioncontents_changes.writeFileName = /*writeFileName*/ ctx[15];
     			if (dirty[0] & /*writeFile*/ 16384) executefunctioncontents_changes.writeFile = /*writeFile*/ ctx[14];
     			if (dirty[0] & /*overwrite_expfit*/ 8192) executefunctioncontents_changes.overwrite_expfit = /*overwrite_expfit*/ ctx[13];
     			if (dirty[0] & /*fullfiles*/ 2097152) executefunctioncontents_changes.fullfiles = /*fullfiles*/ ctx[21];
+
+    			if (!updating_modalActivate && dirty[0] & /*modalActivate*/ 134217728) {
+    				updating_modalActivate = true;
+    				executefunctioncontents_changes.modalActivate = /*modalActivate*/ ctx[27];
+    				add_flush_callback(() => updating_modalActivate = false);
+    			}
+
+    			if (!updating_adjustPeakTrigger && dirty[0] & /*adjustPeakTrigger*/ 268435456) {
+    				updating_adjustPeakTrigger = true;
+    				executefunctioncontents_changes.adjustPeakTrigger = /*adjustPeakTrigger*/ ctx[28];
+    				add_flush_callback(() => updating_adjustPeakTrigger = false);
+    			}
+
     			executefunctioncontents.$set(executefunctioncontents_changes);
     		},
     		i: function intro(local) {
@@ -56900,21 +56915,21 @@ var app = (function (marked) {
     		block,
     		id: create_plotContainer_functions_slot$1.name,
     		type: "slot",
-    		source: "(183:4) <svelte:fragment slot=\\\"plotContainer_functions\\\" >",
+    		source: "(160:4) <svelte:fragment slot=\\\"plotContainer_functions\\\" >",
     		ctx
     	});
 
     	return block;
     }
 
-    // (193:4) <svelte:fragment slot="plotContainer_reports">
+    // (170:4) <svelte:fragment slot="plotContainer_reports">
     function create_plotContainer_reports_slot(ctx) {
     	let frequencytable;
     	let updating_keepTable;
     	let current;
 
     	function frequencytable_keepTable_binding(value) {
-    		/*frequencytable_keepTable_binding*/ ctx[44](value);
+    		/*frequencytable_keepTable_binding*/ ctx[48](value);
     	}
 
     	let frequencytable_props = {};
@@ -56967,14 +56982,14 @@ var app = (function (marked) {
     		block,
     		id: create_plotContainer_reports_slot.name,
     		type: "slot",
-    		source: "(193:4) <svelte:fragment slot=\\\"plotContainer_reports\\\">",
+    		source: "(170:4) <svelte:fragment slot=\\\"plotContainer_reports\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (198:4) <svelte:fragment slot="config">
+    // (175:4) <svelte:fragment slot="config">
     function create_config_slot(ctx) {
     	let div;
     	let textfield0;
@@ -56988,7 +57003,7 @@ var app = (function (marked) {
     	let current;
 
     	function textfield0_value_binding(value) {
-    		/*textfield0_value_binding*/ ctx[41](value);
+    		/*textfield0_value_binding*/ ctx[45](value);
     	}
 
     	let textfield0_props = {
@@ -57007,7 +57022,7 @@ var app = (function (marked) {
     	binding_callbacks.push(() => bind(textfield0, 'value', textfield0_value_binding));
 
     	function textfield1_value_binding(value) {
-    		/*textfield1_value_binding*/ ctx[42](value);
+    		/*textfield1_value_binding*/ ctx[46](value);
     	}
 
     	let textfield1_props = {
@@ -57026,7 +57041,7 @@ var app = (function (marked) {
     	binding_callbacks.push(() => bind(textfield1, 'value', textfield1_value_binding));
 
     	function textfield2_value_binding(value) {
-    		/*textfield2_value_binding*/ ctx[43](value);
+    		/*textfield2_value_binding*/ ctx[47](value);
     	}
 
     	let textfield2_props = {
@@ -57053,7 +57068,7 @@ var app = (function (marked) {
     			t1 = space();
     			create_component(textfield2.$$.fragment);
     			attr_dev(div, "class", "align");
-    			add_location(div, file$k, 198, 8, 8641);
+    			add_location(div, file$k, 175, 8, 7921);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -57118,7 +57133,7 @@ var app = (function (marked) {
     		block,
     		id: create_config_slot.name,
     		type: "slot",
-    		source: "(198:4) <svelte:fragment slot=\\\"config\\\">",
+    		source: "(175:4) <svelte:fragment slot=\\\"config\\\">",
     		ctx
     	});
 
@@ -57133,7 +57148,10 @@ var app = (function (marked) {
     	let updating_addedFileScale;
     	let updating_addedfiles;
     	let updating_addedFile;
-    	let t;
+    	let t0;
+    	let adjustinitialguess;
+    	let updating_active_1;
+    	let t1;
     	let layout;
     	let updating_currentLocation;
     	let updating_fileChecked;
@@ -57142,27 +57160,27 @@ var app = (function (marked) {
     	let current;
 
     	function addfilestoplot_extrafileAdded_binding(value) {
-    		/*addfilestoplot_extrafileAdded_binding*/ ctx[35](value);
+    		/*addfilestoplot_extrafileAdded_binding*/ ctx[37](value);
     	}
 
     	function addfilestoplot_active_binding(value) {
-    		/*addfilestoplot_active_binding*/ ctx[36](value);
+    		/*addfilestoplot_active_binding*/ ctx[38](value);
     	}
 
     	function addfilestoplot_addedFileCol_binding(value) {
-    		/*addfilestoplot_addedFileCol_binding*/ ctx[37](value);
+    		/*addfilestoplot_addedFileCol_binding*/ ctx[39](value);
     	}
 
     	function addfilestoplot_addedFileScale_binding(value) {
-    		/*addfilestoplot_addedFileScale_binding*/ ctx[38](value);
+    		/*addfilestoplot_addedFileScale_binding*/ ctx[40](value);
     	}
 
     	function addfilestoplot_addedfiles_binding(value) {
-    		/*addfilestoplot_addedfiles_binding*/ ctx[39](value);
+    		/*addfilestoplot_addedfiles_binding*/ ctx[41](value);
     	}
 
     	function addfilestoplot_addedFile_binding(value) {
-    		/*addfilestoplot_addedFile_binding*/ ctx[40](value);
+    		/*addfilestoplot_addedFile_binding*/ ctx[42](value);
     	}
 
     	let addfilestoplot_props = { fileChecked: /*fileChecked*/ ctx[0] };
@@ -57203,20 +57221,38 @@ var app = (function (marked) {
     	binding_callbacks.push(() => bind(addfilestoplot, 'addedfiles', addfilestoplot_addedfiles_binding));
     	binding_callbacks.push(() => bind(addfilestoplot, 'addedFile', addfilestoplot_addedFile_binding));
 
+    	function adjustinitialguess_active_binding(value) {
+    		/*adjustinitialguess_active_binding*/ ctx[43](value);
+    	}
+
+    	let adjustinitialguess_props = {};
+
+    	if (/*modalActivate*/ ctx[27] !== void 0) {
+    		adjustinitialguess_props.active = /*modalActivate*/ ctx[27];
+    	}
+
+    	adjustinitialguess = new AdjustInitialGuess({
+    			props: adjustinitialguess_props,
+    			$$inline: true
+    		});
+
+    	binding_callbacks.push(() => bind(adjustinitialguess, 'active', adjustinitialguess_active_binding));
+    	adjustinitialguess.$on("save", /*save_handler*/ ctx[44]);
+
     	function layout_currentLocation_binding(value) {
-    		/*layout_currentLocation_binding*/ ctx[58](value);
+    		/*layout_currentLocation_binding*/ ctx[64](value);
     	}
 
     	function layout_fileChecked_binding(value) {
-    		/*layout_fileChecked_binding*/ ctx[59](value);
+    		/*layout_fileChecked_binding*/ ctx[65](value);
     	}
 
     	function layout_toggleBrowser_binding(value) {
-    		/*layout_toggleBrowser_binding*/ ctx[60](value);
+    		/*layout_toggleBrowser_binding*/ ctx[66](value);
     	}
 
     	function layout_activateConfigModal_binding(value) {
-    		/*layout_activateConfigModal_binding*/ ctx[61](value);
+    		/*layout_activateConfigModal_binding*/ ctx[67](value);
     	}
 
     	let layout_props = {
@@ -57254,14 +57290,16 @@ var app = (function (marked) {
     	binding_callbacks.push(() => bind(layout, 'fileChecked', layout_fileChecked_binding));
     	binding_callbacks.push(() => bind(layout, 'toggleBrowser', layout_toggleBrowser_binding));
     	binding_callbacks.push(() => bind(layout, 'activateConfigModal', layout_activateConfigModal_binding));
-    	layout.$on("tour", /*init_tour*/ ctx[32]);
-    	layout.$on("configSave", /*configSave*/ ctx[33]);
-    	layout.$on("markedFile", /*markedFile_handler*/ ctx[62]);
+    	layout.$on("tour", /*init_tour*/ ctx[34]);
+    	layout.$on("configSave", /*configSave*/ ctx[35]);
+    	layout.$on("markedFile", /*markedFile_handler*/ ctx[68]);
 
     	const block = {
     		c: function create() {
     			create_component(addfilestoplot.$$.fragment);
-    			t = space();
+    			t0 = space();
+    			create_component(adjustinitialguess.$$.fragment);
+    			t1 = space();
     			create_component(layout.$$.fragment);
     		},
     		l: function claim(nodes) {
@@ -57269,7 +57307,9 @@ var app = (function (marked) {
     		},
     		m: function mount(target, anchor) {
     			mount_component(addfilestoplot, target, anchor);
-    			insert_dev(target, t, anchor);
+    			insert_dev(target, t0, anchor);
+    			mount_component(adjustinitialguess, target, anchor);
+    			insert_dev(target, t1, anchor);
     			mount_component(layout, target, anchor);
     			current = true;
     		},
@@ -57314,10 +57354,19 @@ var app = (function (marked) {
     			}
 
     			addfilestoplot.$set(addfilestoplot_changes);
+    			const adjustinitialguess_changes = {};
+
+    			if (!updating_active_1 && dirty[0] & /*modalActivate*/ 134217728) {
+    				updating_active_1 = true;
+    				adjustinitialguess_changes.active = /*modalActivate*/ ctx[27];
+    				add_flush_callback(() => updating_active_1 = false);
+    			}
+
+    			adjustinitialguess.$set(adjustinitialguess_changes);
     			const layout_changes = {};
     			if (dirty[0] & /*graphPlotted*/ 4096) layout_changes.graphPlotted = /*graphPlotted*/ ctx[12];
 
-    			if (dirty[0] & /*scalingBin, odelta, fdelta, keepTable, addedFileScale, addedFileCol, $normMethod, writeFileName, writeFile, overwrite_expfit, fullfiles, output_namelists, addFileModal, $opoMode, show_theoryplot, felixfiles, updateConfig, theoryLocation, OPOLocation, OPOfilesChecked, opofiles, graphPlotted*/ 532151708 | dirty[2] & /*$$scope*/ 4096) {
+    			if (dirty[0] & /*scalingBin, odelta, fdelta, keepTable, addedFileScale, addedFileCol, $normMethod, writeFileName, writeFile, overwrite_expfit, fullfiles, modalActivate, adjustPeakTrigger, output_namelists, addFileModal, $opoMode, show_theoryplot, felixfiles, updateConfig, theoryLocation, OPOLocation, OPOfilesChecked, opofiles, graphPlotted*/ 2142764444 | dirty[2] & /*$$scope*/ 65536) {
     				layout_changes.$$scope = { dirty, ctx };
     			}
 
@@ -57350,17 +57399,21 @@ var app = (function (marked) {
     		i: function intro(local) {
     			if (current) return;
     			transition_in(addfilestoplot.$$.fragment, local);
+    			transition_in(adjustinitialguess.$$.fragment, local);
     			transition_in(layout.$$.fragment, local);
     			current = true;
     		},
     		o: function outro(local) {
     			transition_out(addfilestoplot.$$.fragment, local);
+    			transition_out(adjustinitialguess.$$.fragment, local);
     			transition_out(layout.$$.fragment, local);
     			current = false;
     		},
     		d: function destroy(detaching) {
     			destroy_component(addfilestoplot, detaching);
-    			if (detaching) detach_dev(t);
+    			if (detaching) detach_dev(t0);
+    			destroy_component(adjustinitialguess, detaching);
+    			if (detaching) detach_dev(t1);
     			destroy_component(layout, detaching);
     		}
     	};
@@ -57395,44 +57448,44 @@ var app = (function (marked) {
     	let $normMethodDatas;
     	let $baselineFile;
     	validate_store(felixConfigDB, 'felixConfigDB');
-    	component_subscribe($$self, felixConfigDB, $$value => $$invalidate(63, $felixConfigDB = $$value));
+    	component_subscribe($$self, felixConfigDB, $$value => $$invalidate(69, $felixConfigDB = $$value));
     	validate_store(opoMode, 'opoMode');
     	component_subscribe($$self, opoMode, $$value => $$invalidate(8, $opoMode = $$value));
     	validate_store(graphDiv, 'graphDiv');
-    	component_subscribe($$self, graphDiv, $$value => $$invalidate(64, $graphDiv = $$value));
+    	component_subscribe($$self, graphDiv, $$value => $$invalidate(70, $graphDiv = $$value));
     	validate_store(Ngauss_sigma, 'Ngauss_sigma');
-    	component_subscribe($$self, Ngauss_sigma, $$value => $$invalidate(65, $Ngauss_sigma = $$value));
+    	component_subscribe($$self, Ngauss_sigma, $$value => $$invalidate(71, $Ngauss_sigma = $$value));
     	validate_store(felixopoLocation, 'felixopoLocation');
-    	component_subscribe($$self, felixopoLocation, $$value => $$invalidate(66, $felixopoLocation = $$value));
+    	component_subscribe($$self, felixopoLocation, $$value => $$invalidate(72, $felixopoLocation = $$value));
     	validate_store(fittedTraceCount, 'fittedTraceCount');
-    	component_subscribe($$self, fittedTraceCount, $$value => $$invalidate(67, $fittedTraceCount = $$value));
+    	component_subscribe($$self, fittedTraceCount, $$value => $$invalidate(73, $fittedTraceCount = $$value));
     	validate_store(expfittedLinesCollectedData, 'expfittedLinesCollectedData');
-    	component_subscribe($$self, expfittedLinesCollectedData, $$value => $$invalidate(68, $expfittedLinesCollectedData = $$value));
+    	component_subscribe($$self, expfittedLinesCollectedData, $$value => $$invalidate(74, $expfittedLinesCollectedData = $$value));
     	validate_store(felixPlotAnnotations, 'felixPlotAnnotations');
-    	component_subscribe($$self, felixPlotAnnotations, $$value => $$invalidate(69, $felixPlotAnnotations = $$value));
+    	component_subscribe($$self, felixPlotAnnotations, $$value => $$invalidate(75, $felixPlotAnnotations = $$value));
     	validate_store(expfittedLines, 'expfittedLines');
-    	component_subscribe($$self, expfittedLines, $$value => $$invalidate(70, $expfittedLines = $$value));
+    	component_subscribe($$self, expfittedLines, $$value => $$invalidate(76, $expfittedLines = $$value));
     	validate_store(normMethod, 'normMethod');
-    	component_subscribe($$self, normMethod, $$value => $$invalidate(28, $normMethod = $$value));
+    	component_subscribe($$self, normMethod, $$value => $$invalidate(30, $normMethod = $$value));
     	validate_store(normMethodDatas, 'normMethodDatas');
-    	component_subscribe($$self, normMethodDatas, $$value => $$invalidate(71, $normMethodDatas = $$value));
+    	component_subscribe($$self, normMethodDatas, $$value => $$invalidate(77, $normMethodDatas = $$value));
     	validate_store(baselineFile, 'baselineFile');
-    	component_subscribe($$self, baselineFile, $$value => $$invalidate(29, $baselineFile = $$value));
+    	component_subscribe($$self, baselineFile, $$value => $$invalidate(31, $baselineFile = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Normline', slots, []);
     	let fileChecked = [], toggleBrowser = false;
     	let currentLocation = db.get(`${filetype$3}_location`) || "";
 
     	///////////////////////////////////////////////////////////////////////
+    	// const dispatch = createEventDispatcher();
     	// Theory file
     	let show_theoryplot = false;
 
     	let theoryLocation = db.get("theoryLocation") || currentLocation;
 
     	///////////////////////////////////////////////////////////////////////
-    	let openShell = false;
-
     	let graphPlotted = false, overwrite_expfit = false, writeFile = false;
+
     	let OPOfilesChecked = [];
     	let writeFileName = "";
     	let keepTable = true;
@@ -57470,9 +57523,7 @@ var app = (function (marked) {
     			try {
     				Plotly.deleteTraces($graphDiv, [-1]);
     				$$invalidate(6, extrafileAdded--, extrafileAdded);
-
-    				// addedfiles = addedfiles.slice(0, addedfiles.length-1)
-    				const removeLastFile = addedfiles.pop();
+    				addedfiles.pop();
     			} catch(err) {
     				console.log("The plot is empty");
     			}
@@ -57508,7 +57559,7 @@ var app = (function (marked) {
     		console.log("Config updated");
     	}
 
-    	let markedFile = "";
+    	let modalActivate = false, adjustPeakTrigger = false;
     	const writable_props = [];
 
     	Object.keys($$props).forEach(key => {
@@ -57544,6 +57595,13 @@ var app = (function (marked) {
     		addedFile = value;
     		$$invalidate(19, addedFile);
     	}
+
+    	function adjustinitialguess_active_binding(value) {
+    		modalActivate = value;
+    		$$invalidate(27, modalActivate);
+    	}
+
+    	const save_handler = () => $$invalidate(28, adjustPeakTrigger = true);
 
     	function textfield0_value_binding(value) {
     		fdelta = value;
@@ -57583,6 +57641,16 @@ var app = (function (marked) {
     	const addfile_handler = () => {
     		$$invalidate(17, addFileModal = true);
     	};
+
+    	function executefunctioncontents_modalActivate_binding(value) {
+    		modalActivate = value;
+    		$$invalidate(27, modalActivate);
+    	}
+
+    	function executefunctioncontents_adjustPeakTrigger_binding(value) {
+    		adjustPeakTrigger = value;
+    		$$invalidate(28, adjustPeakTrigger);
+    	}
 
     	function initfunctionrow_graphPlotted_binding(value) {
     		graphPlotted = value;
@@ -57666,12 +57734,12 @@ var app = (function (marked) {
     		baselineFile,
     		Layout,
     		CustomRadio,
-    		onMount,
     		tick,
     		AddFilesToPlot,
     		FrequencyTable,
     		InitFunctionRow,
     		OPORow,
+    		AdjustInitialGuess,
     		TheoryRow,
     		GetFileInfoTable,
     		WriteFunctionContents,
@@ -57685,7 +57753,6 @@ var app = (function (marked) {
     		currentLocation,
     		show_theoryplot,
     		theoryLocation,
-    		openShell,
     		graphPlotted,
     		overwrite_expfit,
     		writeFile,
@@ -57710,7 +57777,8 @@ var app = (function (marked) {
     		scalingBin,
     		updateConfig,
     		configSave,
-    		markedFile,
+    		modalActivate,
+    		adjustPeakTrigger,
     		felixfiles,
     		plottedFiles,
     		output_namelists,
@@ -57734,7 +57802,6 @@ var app = (function (marked) {
     		if ('currentLocation' in $$props) $$invalidate(1, currentLocation = $$props.currentLocation);
     		if ('show_theoryplot' in $$props) $$invalidate(10, show_theoryplot = $$props.show_theoryplot);
     		if ('theoryLocation' in $$props) $$invalidate(11, theoryLocation = $$props.theoryLocation);
-    		if ('openShell' in $$props) openShell = $$props.openShell;
     		if ('graphPlotted' in $$props) $$invalidate(12, graphPlotted = $$props.graphPlotted);
     		if ('overwrite_expfit' in $$props) $$invalidate(13, overwrite_expfit = $$props.overwrite_expfit);
     		if ('writeFile' in $$props) $$invalidate(14, writeFile = $$props.writeFile);
@@ -57755,10 +57822,11 @@ var app = (function (marked) {
     		if ('odelta' in $$props) $$invalidate(24, odelta = $$props.odelta);
     		if ('scalingBin' in $$props) $$invalidate(25, scalingBin = $$props.scalingBin);
     		if ('updateConfig' in $$props) $$invalidate(26, updateConfig = $$props.updateConfig);
-    		if ('markedFile' in $$props) markedFile = $$props.markedFile;
+    		if ('modalActivate' in $$props) $$invalidate(27, modalActivate = $$props.modalActivate);
+    		if ('adjustPeakTrigger' in $$props) $$invalidate(28, adjustPeakTrigger = $$props.adjustPeakTrigger);
     		if ('felixfiles' in $$props) $$invalidate(7, felixfiles = $$props.felixfiles);
-    		if ('plottedFiles' in $$props) $$invalidate(34, plottedFiles = $$props.plottedFiles);
-    		if ('output_namelists' in $$props) $$invalidate(27, output_namelists = $$props.output_namelists);
+    		if ('plottedFiles' in $$props) $$invalidate(36, plottedFiles = $$props.plottedFiles);
+    		if ('output_namelists' in $$props) $$invalidate(29, output_namelists = $$props.output_namelists);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -57775,13 +57843,13 @@ var app = (function (marked) {
     		}
 
     		if ($$self.$$.dirty[0] & /*$opoMode, OPOfilesChecked, fileChecked*/ 261) {
-    			$$invalidate(34, plottedFiles = $opoMode
+    			$$invalidate(36, plottedFiles = $opoMode
     			? OPOfilesChecked.map(file => file.split(".")[0]) || []
     			: fileChecked.map(file => file.split(".")[0]) || []);
     		}
 
-    		if ($$self.$$.dirty[0] & /*addedfiles*/ 32 | $$self.$$.dirty[1] & /*plottedFiles*/ 8) {
-    			$$invalidate(27, output_namelists = [
+    		if ($$self.$$.dirty[0] & /*addedfiles*/ 32 | $$self.$$.dirty[1] & /*plottedFiles*/ 32) {
+    			$$invalidate(29, output_namelists = [
     				"averaged",
     				...plottedFiles,
     				...addedfiles.map(file => basename(file)).map(file => file.split(".")[0])
@@ -57849,6 +57917,8 @@ var app = (function (marked) {
     		odelta,
     		scalingBin,
     		updateConfig,
+    		modalActivate,
+    		adjustPeakTrigger,
     		output_namelists,
     		$normMethod,
     		$baselineFile,
@@ -57863,6 +57933,8 @@ var app = (function (marked) {
     		addfilestoplot_addedFileScale_binding,
     		addfilestoplot_addedfiles_binding,
     		addfilestoplot_addedFile_binding,
+    		adjustinitialguess_active_binding,
+    		save_handler,
     		textfield0_value_binding,
     		textfield1_value_binding,
     		textfield2_value_binding,
@@ -57871,6 +57943,8 @@ var app = (function (marked) {
     		writefunctioncontents_writeFile_binding,
     		writefunctioncontents_overwrite_expfit_binding,
     		addfile_handler,
+    		executefunctioncontents_modalActivate_binding,
+    		executefunctioncontents_adjustPeakTrigger_binding,
     		initfunctionrow_graphPlotted_binding,
     		initfunctionrow_show_theoryplot_binding,
     		oporow_OPOLocation_binding,

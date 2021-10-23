@@ -17,8 +17,8 @@
 </script>
 
 
+
 <script>
-    
     import { fly, fade } from 'svelte/transition';
     import Textfield from '@smui/textfield';
     import {onMount, tick} from "svelte";
@@ -26,13 +26,13 @@
     import Modal from "./Modal.svelte"
     import { createEventDispatcher } from 'svelte';
     import IconButton from '@smui/icon-button';
-    
     ////////////////////////////////////////////////////////////////////////////
 
     export let id, fileChecked=[], filetype = "felix", toggleBrowser = false, fullfileslist = [];
     export let currentLocation = db.get(`${filetype}_location`) || "", graphPlotted=false;
     export let graphWindowClasses = ["no-full"]
     export let activateConfigModal = false
+
     const dispatch = createEventDispatcher()
 
     function browse_folder() {
@@ -89,7 +89,6 @@
     let mouseReleased = true;
 
 </script>
-
 
 <style lang="scss">
     // .plot__div {padding: 1em;}

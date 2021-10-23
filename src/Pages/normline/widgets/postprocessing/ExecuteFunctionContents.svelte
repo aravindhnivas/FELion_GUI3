@@ -19,12 +19,12 @@
     import {exp_fit_func} from '../../functions/exp_fit';
     import {get_err_func} from '../../functions/get_err';
     
-    export let addedFileScale, addedFileCol, normMethod, writeFileName, writeFile, overwrite_expfit, fullfiles;
+    export let addedFileScale, addedFileCol, normMethod, writeFileName, writeFile, overwrite_expfit, fullfiles, modalActivate=false, adjustPeakTrigger=false;
     
     let boxSelected_peakfinder=false, NGauss_fit_args={}
 
     let peak_height = 1, peak_width = 3, peak_prominence = 0;
-    let toggleFindPeaksRow = false, savePeakfilename = "peakTable", modalActivate=false;
+    let toggleFindPeaksRow = false, savePeakfilename = "peakTable";
 
     const style = "width:7em; height:3.5em; margin-right:0.5em";
 
@@ -63,7 +63,6 @@
         const loadedfile = loadfile({name:savePeakfilename})
         $felixPeakTable = _.uniqBy([...loadedfile, ...$felixPeakTable], "freq")
         adjustPeak()
-
     }
 
     function adjustPeak({closeMainModal=true}={}) {
@@ -91,6 +90,8 @@
             modalActivate = false, window.createToast("Initial guess adjusted for full spectrum fitting")
         }
         Plotly.relayout($graphDiv, { annotations:$felixPlotAnnotations })
+        adjustPeakTrigger = false
+        
     };
 
     function plotData({e=null, filetype="exp_fit", general={}}={}){
@@ -203,10 +204,10 @@
             sig = parseFloat(sig)
             return {freq, amp, sig, id}
     })
-
+    $: if(adjustPeakTrigger) adjustPeak()
 </script>
 
-<AdjustInitialGuess bind:active={modalActivate} on:save={adjustPeak}/>
+<!-- <AdjustInitialGuess bind:active={modalActivate} on:save={adjustPeak}/> -->
 
 
 <div class="align">
