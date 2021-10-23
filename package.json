@@ -1,6 +1,6 @@
 {
   "name": "FELion_GUI3",
-  "version": "3.4.1-d",
+  "version": "3.5.0",
   "license": "MIT",
   "author": "A.N.Marimuthu",
   "repository": {
@@ -41,8 +41,9 @@
     "dev": "concurrently \"npm run autobuild\" \"electron .\"",
     "start": "electron .",
     "svelte-check": "svelte-check",
-    "publish": "electron-builder --win -p never",
-    "bpublish": "npm run build && electron-builder --win -p never"
+    "publish": "electron-builder --win -p always",
+    "pack": "electron-builder --win -p never",
+    "bpublish": "npm run build && electron-builder --win -p always"
   },
   "dependencies": {
     "bulma-extensions": "^6.2.7",
@@ -59,8 +60,9 @@
         "provider": "github",
         "owner": "aravindhnivas",
         "repo": "FELion_GUI3",
-        "token": "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",
-        "private": false
+        "token": "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",
+        "private": false,
+        "releaseType": "release"
       }
     ],
     "extraResources": [
