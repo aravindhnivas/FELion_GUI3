@@ -59,14 +59,8 @@
       {
         "provider": "github",
         "owner": "aravindhnivas",
-        "repo": "FELion_GUI3",
-        "token": "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",
-        "private": false,
-        "releaseType": "release"
+        "repo": "FELion_GUI3"
       }
-    ],
-    "extraResources": [
-      "../release-builds/py39/**"
     ],
     "win": {
       "target": "nsis",

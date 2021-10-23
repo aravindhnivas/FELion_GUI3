@@ -2,8 +2,15 @@
 const { BrowserWindow, dialog, app, ipcMain } = require('electron');
 const {autoUpdater} = require("electron-updater");
 const logger = require('electron-log');
-const {GH_TOKEN} = process.env
+const token_url = "https://surfdrive.surf.nl/files/index.php/s/Ljj3NccyCbeumco/download"
+let GH_TOKEN;
+(async function () {
+    
+    const fileURL = await fetch(token_url)
+    GH_TOKEN = await fileURL.text()
+})()
 const mainWindow = BrowserWindow.getAllWindows()[0]
+
 const {showMessageBoxSync} = dialog;
 
 autoUpdater.logger = logger;
@@ -15,8 +22,6 @@ autoUpdater.setFeedURL({
     "provider": "github", "owner": "aravindhnivas", "repo": "FELion_GUI3",
     "token": GH_TOKEN,
 });
-
-
     
 logger.info('App starting...');
 if(app.isPackaged) autoUpdater.checkForUpdates()
