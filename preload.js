@@ -19,12 +19,7 @@ window.addEventListener('contextmenu', (e) => {
     ipcRenderer.invoke("contextmenu", rightClickPosition)
 
 }, false);
-
-(async function() {
-    const appInfo = await ipcRenderer.invoke("appInfo", null)
-    contextBridge.exposeInMainWorld("appInfo", appInfo)
-})();
-
+contextBridge.exposeInMainWorld("appInfo", ipcRenderer.sendSync("appInfo", null))
 contextBridge.exposeInMainWorld("__dirname", path.resolve(__dirname, "static/"))
 ipcRenderer.on('update-log', (event, info) => console.info(info))
 ipcRenderer.on('update-progress', (event, progressObj) => {

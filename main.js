@@ -33,9 +33,10 @@ app.on('window-all-closed', () => {
   }
 })
 
-const appPathKeys = ["home" ,"appData" ,"userData" ,"cache" ,"temp" ,"exe" ,"module" ,"desktop" ,"documents" ,"downloads" ,"music" ,"pictures" ,"videos" ,"recent" ,"logs" ,"crashDumps"]
-const appInfo = {}
-appPathKeys.forEach(key => appInfo[key] = app.getPath(key) )
-
-ipcMain.handle("appInfo", (event, arg) => appInfo)
+ipcMain.on("appInfo", (event, arg) => {
+  const appPathKeys = ["home" ,"appData" ,"userData" ,"cache" ,"temp" ,"exe" ,"module" ,"desktop" ,"documents" ,"downloads" ,"music" ,"pictures" ,"videos" ,"recent" ,"logs" ,"crashDumps"]
+  const appInfo = {}
+  appPathKeys.forEach(key => appInfo[key] = app.getPath(key) )
+  event.returnValue = appInfo
+})
 ipcMain.on("appVersion", (event, arg) => {event.returnValue = app.getVersion()})
