@@ -2,13 +2,7 @@
 const { BrowserWindow, dialog, app, ipcMain } = require('electron');
 const {autoUpdater} = require("electron-updater");
 const logger = require('electron-log');
-const token_url = "https://surfdrive.surf.nl/files/index.php/s/Ljj3NccyCbeumco/download"
-let GH_TOKEN;
-(async function () {
-    
-    const fileURL = await fetch(token_url)
-    GH_TOKEN = await fileURL.text()
-})()
+
 const mainWindow = BrowserWindow.getAllWindows()[0]
 
 const {showMessageBoxSync} = dialog;
@@ -17,14 +11,27 @@ autoUpdater.logger = logger;
 autoUpdater.logger.transports.file.level = 'info';
 
 
+async function authGithub(token_url) {
+    try {
+        const fileURL = await fetch(token_url)
+        const GH_TOKEN = await fileURL.text()
 
-autoUpdater.setFeedURL({
-    "provider": "github", "owner": "aravindhnivas", "repo": "FELion_GUI3",
-    "token": GH_TOKEN,
-});
+
+
+        autoUpdater.setFeedURL({
+            "provider": "github", "owner": "aravindhnivas", "repo": "FELion_GUI3",
+            "token": GH_TOKEN,
+        });
+        autoUpdater.checkForUpdates()
+        
+    } catch (error) { console.error(error) }
+    
+}
+const token_url = "https://surfdrive.surf.nl/files/index.php/s/Ljj3NccyCbeumco/download"
+if(app.isPackaged) { authGithub(token_url) }
     
 logger.info('App starting...');
-if(app.isPackaged) autoUpdater.checkForUpdates()
+
 // ipcMain.handle("checkupdate", autoUpdater.checkForUpdates)
 ipcMain.handle("checkupdate", () => {console.log("Not implemented yet")})
 
