@@ -2,7 +2,7 @@
 const { BrowserWindow, dialog, app, ipcMain } = require('electron');
 const {autoUpdater} = require("electron-updater");
 const logger = require('electron-log');
-const {GH_TOKEN} = process.env
+// const {GH_TOKEN} = process.env
 const mainWindow = BrowserWindow.getAllWindows()[0]
 const {showMessageBoxSync} = dialog;
 
@@ -13,7 +13,7 @@ autoUpdater.logger.transports.file.level = 'info';
 
 autoUpdater.setFeedURL({
     "provider": "github", "owner": "aravindhnivas", "repo": "FELion_GUI3",
-    "token": GH_TOKEN,
+    "token": "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",
 });
 
 
