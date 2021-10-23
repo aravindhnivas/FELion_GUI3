@@ -31,7 +31,7 @@ const token_url = "https://surfdrive.surf.nl/files/index.php/s/Ljj3NccyCbeumco/d
 if(app.isPackaged) { 
     authGithub(token_url)
     autoUpdater.checkForUpdates()
- }
+}
     
 logger.info('App starting...');
 
@@ -48,6 +48,7 @@ autoUpdater.on('download-progress', (progressObj) => {
   log_message = log_message + ' - Downloaded ' + progressObj.percent + '%';
   log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
   updateLog('download-progress: ' + log_message + '\n-----------\n')
+  mainWindow.webContents.send("update-progress", progressObj)
 })
 
 autoUpdater.on('update-downloaded', async (info) => {

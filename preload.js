@@ -20,6 +20,15 @@ window.addEventListener('contextmenu', (e) => {
 
 }, false)
 contextBridge.exposeInMainWorld("__dirname", path.resolve(__dirname, "static/"))
+ipcRenderer.on('update-log', (event, info) => console.info(info))
+ipcRenderer.on('update-progress', (event, progressObj) => {
+    const progressContainer = document.getElementById("update-progress-container")
+    progressContainer.style.display = "grid"
+    const progressDiv = document.getElementById("update-progress")
+    progressDiv.value = progressObj.percent
+    console.info(progressObj)
+})
 ipcRenderer.on('update-log-error', (event, error) => console.error(error))
 contextBridge.exposeInMainWorld("checkupdate", () => ipcRenderer.invoke("checkupdate", null))
 require("./main/preload-modules")
+setTimeout(() => console.log({progressDiv:document.getElementById("update-progress")}), 1000)

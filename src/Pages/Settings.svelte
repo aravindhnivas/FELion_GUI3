@@ -15,9 +15,9 @@
     import {tick} from "svelte";
     import Terminal from '../components/Terminal.svelte';
 
+
+
     let selected = db.get("settingsActiveTab") || "Update"
-
-
     const navigate = (e) => {selected = e.target.innerHTML; db.set("settingsActiveTab", selected);}
     let pythonpathCheck;
     onMount(()=>{
@@ -76,6 +76,15 @@
 
             div {font-size: 22px; }
         } 
+
+        #update-progress-container {
+            progress {width: 100%;}
+            display: grid;
+            width: 100%;
+            gap: 1em;
+            grid-template-columns: auto 1fr;
+            align-items: center;
+        }
 
     }
 
@@ -146,11 +155,13 @@
                         </div>
 
 
-                        <!-- <div class="align">
-                            <Textfield  bind:value={$backupName} label="Github username" />
+                        <div id="update-progress-container" style="display: none;">
+                            <label for="file">Download progress:</label>
+                            <progress id="update-progress" max="100" value="0"> 70% </progress>
+                            <!-- <Textfield  bind:value={$backupName} label="Github username" />
                             <button class="button is-link" on:click={backup}>Backup</button>
-                            <button class="button is-link" on:click={restore}>Restore</button>
-                        </div> -->
+                            <button class="button is-link" on:click={restore}>Restore</button> -->
+                        </div>
                     </div>
                     
                 </div>
