@@ -20,7 +20,7 @@ async function authGithub(token_url) {
 
         autoUpdater.setFeedURL({
             "provider": "github", "owner": "aravindhnivas", "repo": "FELion_GUI3",
-            "token": GH_TOKEN,
+            "token": GH_TOKEN.trim(),
         });
         autoUpdater.checkForUpdates()
         
