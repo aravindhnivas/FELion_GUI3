@@ -13,7 +13,7 @@ autoUpdater.logger.transports.file.level = 'info';
 
 autoUpdater.setFeedURL({
     "provider": "github", "owner": "aravindhnivas", "repo": "FELion_GUI3",
-    "token": "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",
+    "token": "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",
 });
 
 
