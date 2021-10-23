@@ -157,7 +157,7 @@
 
                         <div id="update-progress-container" style="display: none;">
                             <label for="file">Download progress:</label>
-                            <progress id="update-progress" max="100" value="0"> 70% </progress>
+                            <progress id="update-progress" max="100" value="0"> 0%</progress>
                             <!-- <Textfield  bind:value={$backupName} label="Github username" />
                             <button class="button is-link" on:click={backup}>Backup</button>
                             <button class="button is-link" on:click={restore}>Restore</button> -->

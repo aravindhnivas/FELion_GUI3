@@ -31,4 +31,3 @@ ipcRenderer.on('update-progress', (event, progressObj) => {
 ipcRenderer.on('update-log-error', (event, error) => console.error(error))
 contextBridge.exposeInMainWorld("checkupdate", () => ipcRenderer.invoke("checkupdate", null))
 require("./main/preload-modules")
-setTimeout(() => console.log({progressDiv:document.getElementById("update-progress")}), 1000)
