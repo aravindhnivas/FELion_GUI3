@@ -62,10 +62,11 @@
         "repo": "FELion_GUI3"
       }
     ],
+    "asarUnpack": ["./python3/", "./static/assets/python_files"],
     "win": {
       "target": "nsis",
       "icon": "./static/assets/logo/win/icon.ico",
-      "asar": false
+      "asar": true
     },
     "nsis": {
       "oneClick": false

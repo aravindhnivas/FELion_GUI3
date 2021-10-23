@@ -22,11 +22,12 @@ function renamePy() {
 renamePy()
 
 export function resetPyConfig() {
+    const mainLocation = appInfo.isPackaged ? appInfo.module : __dirname + "../"
+    const unpackedLocation =  pathResolve(mainLocation, appInfo.isPackaged ? "../resources/app.asar.unpacked/" : "../" )
 
-
-    db.set("pythonscript", pathResolve(__dirname, "assets/python_files"))
+    db.set("pythonscript", pathResolve(unpackedLocation, "static/assets/python_files"))
     pythonscript.set(db.get("pythonscript"))
-    const defaultPy = pathResolve(__dirname, "../python3/python")
+    const defaultPy = pathResolve(unpackedLocation, "python3/python")
 
     db.set("pythonpath", defaultPy)
 
