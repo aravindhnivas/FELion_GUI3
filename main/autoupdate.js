@@ -11,34 +11,16 @@ autoUpdater.logger = logger;
 autoUpdater.logger.transports.file.level = 'info';
 
 
-async function authGithub(token_url) {
-    try {
-        const fileURL = await fetch(token_url)
-        const GH_TOKEN = await fileURL.text()
 
-
-
-        autoUpdater.setFeedURL({
-            "provider": "github", "owner": "aravindhnivas", "repo": "FELion_GUI3",
-            "token": GH_TOKEN.trim(),
-        });
-        
-        
-    } catch (error) { console.error(error) }
-    
-}
-const token_url = "https://surfdrive.surf.nl/files/index.php/s/Ljj3NccyCbeumco/download"
-if(app.isPackaged) { 
-    authGithub(token_url)
-    autoUpdater.checkForUpdates()
-}
-    
+if(app.isPackaged) { autoUpdater.checkForUpdates() }
 logger.info('App starting...');
 
-// ipcMain.handle("checkupdate", autoUpdater.checkForUpdates)
-ipcMain.handle("checkupdate", () => {console.log("Not implemented yet")})
 
+
+
+ipcMain.handle("checkupdate", () => {console.log("Not implemented yet")})
 const updateLog = (info) => {logger.info(info); mainWindow.webContents.send("update-log", info)}
+
 autoUpdater.on('checking-for-update', () => updateLog("checking-for-update" + '\n-----------\n'))
 autoUpdater.on('update-available', (info) => {updateLog('update-available: \n'+ info + '\n-----------\n');})
 autoUpdater.on('update-not-available', (info) => {updateLog('update-not-available ' + info + '\n-----------\n');})
