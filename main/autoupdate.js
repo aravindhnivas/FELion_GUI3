@@ -22,13 +22,16 @@ async function authGithub(token_url) {
             "provider": "github", "owner": "aravindhnivas", "repo": "FELion_GUI3",
             "token": GH_TOKEN.trim(),
         });
-        autoUpdater.checkForUpdates()
+        
         
     } catch (error) { console.error(error) }
     
 }
 const token_url = "https://surfdrive.surf.nl/files/index.php/s/Ljj3NccyCbeumco/download"
-if(app.isPackaged) { authGithub(token_url) }
+if(app.isPackaged) { 
+    authGithub(token_url)
+    autoUpdater.checkForUpdates()
+ }
     
 logger.info('App starting...');
 
