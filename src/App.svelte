@@ -26,6 +26,9 @@
 	})
 	const navItems = ["Home", "Normline", "Masspec", "Timescan", "THz", "Powerfile", "Misc", "Settings"]
 
+	// const db_file_location = path.resolve(__dirname, "../../static/db.json")
+	
+
 </script>
 
 

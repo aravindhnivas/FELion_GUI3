@@ -9,11 +9,12 @@ function createWindow() {
   });
 
   mainWindow.loadFile('static/index.html');
-  ipcMain.on("appVersion", (event, arg) => {event.returnValue = app.getVersion()})
+  
 
   require("./main/Menu")
   require("./main/dialogs")
   require("./main/autoupdate")
+  
 }
 
 
@@ -31,3 +32,10 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 })
+
+const appPathKeys = ["home" ,"appData" ,"userData" ,"cache" ,"temp" ,"exe" ,"module" ,"desktop" ,"documents" ,"downloads" ,"music" ,"pictures" ,"videos" ,"recent" ,"logs" ,"crashDumps"]
+const appInfo = {}
+appPathKeys.forEach(key => appInfo[key] = app.getPath(key) )
+
+ipcMain.handle("appInfo", (event, arg) => appInfo)
+ipcMain.on("appVersion", (event, arg) => {event.returnValue = app.getVersion()})

@@ -14,8 +14,8 @@ const makeJSONdb = (file_location) => {
         delete(key){return db.delete(key)}
     }
 }
-const db_file_location = path.resolve(__dirname, "../../static/db.json")
-contextBridge.exposeInMainWorld("db", makeJSONdb(db_file_location))
+
+
 
 
 contextBridge.exposeInMainWorld("appVersion", ipcRenderer.sendSync('appVersion', null))

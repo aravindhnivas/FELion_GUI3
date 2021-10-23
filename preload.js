@@ -18,7 +18,13 @@ window.addEventListener('contextmenu', (e) => {
     const rightClickPosition = {x: e.x, y: e.y}
     ipcRenderer.invoke("contextmenu", rightClickPosition)
 
-}, false)
+}, false);
+
+(async function() {
+    const appInfo = await ipcRenderer.invoke("appInfo", null)
+    contextBridge.exposeInMainWorld("appInfo", appInfo)
+})();
+
 contextBridge.exposeInMainWorld("__dirname", path.resolve(__dirname, "static/"))
 ipcRenderer.on('update-log', (event, info) => console.info(info))
 ipcRenderer.on('update-progress', (event, progressObj) => {
@@ -30,4 +36,5 @@ ipcRenderer.on('update-progress', (event, progressObj) => {
 })
 ipcRenderer.on('update-log-error', (event, error) => console.error(error))
 contextBridge.exposeInMainWorld("checkupdate", () => ipcRenderer.invoke("checkupdate", null))
+
 require("./main/preload-modules")
