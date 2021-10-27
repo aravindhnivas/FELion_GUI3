@@ -1,15 +1,15 @@
 # What's new
 
-## v3.4.1
-
+## v3.5.0
+- Plotly bug fix (Plotly is not included in window object)
 - Masspec:
     - Getlabview setting can be varied to show only selected files or full files list
     - Masspectrum can now annotate a peak position (ctrl + left click) and delete annotation (ctrl + shift + left click)
 - THz scans
     - Mention the number of iteration to be considered (useful in case you stopped the scan); write # iterations = number to be taken in the first line of the file
 - Program updates
-    - Plotly bug fix (Plotly is not included in window object)
-    - node API changed to preload js for electron-v14 (more secure)
+    - elctron-updater integrated with github as provider 
+    - node API changed to preload js for electron-v14 (more secure and needed for future electron updates)
 
 ## v3.4.0
 
