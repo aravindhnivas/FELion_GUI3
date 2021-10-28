@@ -27,28 +27,25 @@
     import { createEventDispatcher } from 'svelte';
     import IconButton from '@smui/icon-button';
     ////////////////////////////////////////////////////////////////////////////
-
     export let id, fileChecked=[], filetype = "felix", toggleBrowser = false, fullfileslist = [];
     export let currentLocation = db.get(`${filetype}_location`) || "", graphPlotted=false;
     export let graphWindowClasses = ["no-full"]
     export let activateConfigModal = false
-
     const dispatch = createEventDispatcher()
-
-    function browse_folder() {
-
-        browse({dir:true}).then(result=>{
-            if (result) { 
-                currentLocation = result[0]
-                db.set(`${filetype}_location`, currentLocation)
-                console.log(result, currentLocation)                
-            }
-        })
+    async function browse_folder() {
+        const result = await browse({dir:true})
+        if (result) { 
+            currentLocation = result[0]
+            db.set(`${filetype}_location`, currentLocation)
+            console.log(result, currentLocation)                
+        }
     }
+    
 
-    let mounted=false;
     let graphDivs = []
-    onMount(()=>{ toggleBrowser = true; mounted=true; })
+    onMount(()=>{ toggleBrowser = true;})
+    let graphContainer;
+   
 
     const lookForGraph = () => {
         try {graphDivs = Array.from(document.querySelectorAll(`#${filetype}-plotContainer .graph__div`)) } 
@@ -64,34 +61,26 @@
             width: "70%", height: "70%",
             background:"#634e96",
             top: 50, bottom:50,
-
-            onclose: async function(){
-                changeGraphDivWidth()
-                return false
-            },
-            onresize: function(width, height){changeGraphDivWidth()},
-            onfocus: ()=>{changeGraphDivWidth()}
         });
         graphWindow.maximize(true);
-        
     }
 
     let plotWidth;
     const changeGraphDivWidth = async () => {
+        await tick();
+        await sleep(100)
+        graphDivs.forEach(id=>{if(id.data) {Plotly.relayout(id, {width:id.clientWidth})}})
 
-        await tick(); 
-        graphDivs.forEach(id=>{
-            if(id.data) {Plotly.relayout(id, {width:id.clientWidth})}
-        })
     }
 
+    
     $: if (plotWidth && mouseReleased) {changeGraphDivWidth()};
     let mouseReleased = true;
 
 </script>
 
 <style lang="scss">
-    // .plot__div {padding: 1em;}
+
     .box {background-image: url(./assets/css/intro.svg); border-radius: 0;}
     .main__layout__div {
         display: grid;
@@ -155,7 +144,7 @@
 
             </div>
 
-            <div class="plot__div" id="{filetype}-plotContainer" transition:fade use:lookForGraph bind:clientWidth={plotWidth}> 
+            <div class="plot__div" id="{filetype}-plotContainer" transition:fade use:lookForGraph bind:clientWidth={plotWidth} bind:this={graphContainer}> 
 
                 <slot name="plotContainer" {lookForGraph} />
                 {#if graphPlotted}
@@ -178,6 +167,5 @@
             </Modal>
         {/if}
     </div>
-
     
 </section>

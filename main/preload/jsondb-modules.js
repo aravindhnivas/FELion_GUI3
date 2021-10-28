@@ -11,7 +11,8 @@ const makeJSONdb = (file_location) => {
         set(key, value){return db.set(key, value)},
         has(key){return db.has(key)},
 
-        delete(key){return db.delete(key)}
+        delete(key){return db.delete(key)},
+        JSON: () => db.JSON()
     }
 }
 

@@ -169,17 +169,15 @@
 
     <svelte:fragment slot="plotContainer_reports">
         <FrequencyTable bind:keepTable/>
-
     </svelte:fragment>
 
     <svelte:fragment slot="config">
-        <div class="align">
+
+        <div class="align" on:configSave={()=>console.log("Config save triggered")}>
             <Textfield bind:value={fdelta} label="FELIX delta steps" varient="outlined" input$type="number" input$min="0" input$step="1e-5"/>
             <Textfield bind:value={odelta} label="OPO delta steps" varient="outlined" input$type="number" input$min="0" input$step="1e-5"/>
             <Textfield bind:value={scalingBin} label="Theory scaling steps" varient="outlined" input$type="number" input$min="0" input$step="1e-5" />
-
         </div>
-
     </svelte:fragment>
 
 </Layout>

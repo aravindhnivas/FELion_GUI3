@@ -1,7 +1,7 @@
 // Preload (Isolated World)
 const { contextBridge, ipcRenderer } = require('electron')
 const path = require("path")
-const fs = require("fs")
+const fs = require("fs-extra")
 require('source-map-support').install({
     environment: 'browser',
     retrieveSourceMap: function() {
@@ -19,7 +19,9 @@ window.addEventListener('contextmenu', (e) => {
     ipcRenderer.invoke("contextmenu", rightClickPosition)
 
 }, false);
-contextBridge.exposeInMainWorld("appInfo", ipcRenderer.sendSync("appInfo", null))
+const appInfo = ipcRenderer.sendSync("appInfo", null)
+contextBridge.exposeInMainWorld("appInfo", appInfo)
+fs.ensureDirSync(path.resolve(appInfo.userData, "config"))
 contextBridge.exposeInMainWorld("__dirname", path.resolve(__dirname, "static/"))
 ipcRenderer.on('update-log', (event, info) => console.info(info))
 ipcRenderer.on('update-progress', (event, progressObj) => {
