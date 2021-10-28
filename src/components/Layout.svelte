@@ -68,12 +68,9 @@
     let plotWidth;
     const changeGraphDivWidth = async () => {
         await tick();
-        await sleep(100)
         graphDivs.forEach(id=>{if(id.data) {Plotly.relayout(id, {width:id.clientWidth})}})
-
     }
 
-    
     $: if (plotWidth && mouseReleased) {changeGraphDivWidth()};
     let mouseReleased = true;
 
