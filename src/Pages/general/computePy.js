@@ -6,13 +6,7 @@ window.checkPython = function checkPython({ defaultPy } = {}) {
     if (!defaultPy) { defaultPy = get(pythonpath) }
     console.log("Python path checking \n", defaultPy)
 
-    return new Promise((resolve, reject) => {
-        exec(`${defaultPy} -V`, (err, stdout) => {
-            if (err) { reject("Invalid python location"); window.createToast("Python location is not valid", "danger") }
-            else { resolve(stdout.trim()) }
-
-        })
-    })
+    return execFile(`${defaultPy}`, ["-V"])
 }
 
 window.computePy_func = function computePy_func({ e = null, pyfile = "", args = "", general = false, openShell = false } = {}) {

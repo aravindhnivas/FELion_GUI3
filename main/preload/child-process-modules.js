@@ -1,7 +1,8 @@
 
 const { contextBridge } = require('electron')
-const { spawn, exec } = require('child_process')
-
+const util = require('util');
+const { spawn, exec, execFile } = require('child_process')
+const execFileCommand = util.promisify(execFile);
 contextBridge.exposeInMainWorld("spawn", (cmd, args, opts)=>{
     const process = spawn(cmd, args, opts)
     return {
@@ -15,4 +16,7 @@ contextBridge.exposeInMainWorld("spawn", (cmd, args, opts)=>{
         kill(){return process.kill()},
     }
 })
+
+
 contextBridge.exposeInMainWorld("exec", (cmd, callback)=>exec(cmd, callback))
+contextBridge.exposeInMainWorld("execFile", (cmd, args)=> execFileCommand(cmd, args))

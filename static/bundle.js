@@ -5613,13 +5613,7 @@ var app = (function (marked) {
         if (!defaultPy) { defaultPy = get_store_value(pythonpath); }
         console.log("Python path checking \n", defaultPy);
 
-        return new Promise((resolve, reject) => {
-            exec(`${defaultPy} -V`, (err, stdout) => {
-                if (err) { reject("Invalid python location"); window.createToast("Python location is not valid", "danger"); }
-                else { resolve(stdout.trim()); }
-
-            });
-        })
+        return execFile(`${defaultPy}`, ["-V"])
     };
 
     window.computePy_func = function computePy_func({ e = null, pyfile = "", args = "", general = false, openShell = false } = {}) {
@@ -28265,7 +28259,7 @@ var app = (function (marked) {
     const get_buttonContainer_slot_changes = dirty => ({});
     const get_buttonContainer_slot_context = ctx => ({});
 
-    // (135:16) <IconButton class="material-icons" on:click={() => activateConfigModal=true} >
+    // (132:16) <IconButton class="material-icons" on:click={() => activateConfigModal=true} >
     function create_default_slot$m(ctx) {
     	let t;
 
@@ -28285,14 +28279,14 @@ var app = (function (marked) {
     		block,
     		id: create_default_slot$m.name,
     		type: "slot",
-    		source: "(135:16) <IconButton class=\\\"material-icons\\\" on:click={() => activateConfigModal=true} >",
+    		source: "(132:16) <IconButton class=\\\"material-icons\\\" on:click={() => activateConfigModal=true} >",
     		ctx
     	});
 
     	return block;
     }
 
-    // (141:16) {#if graphPlotted}
+    // (138:16) {#if graphPlotted}
     function create_if_block_2$4(ctx) {
     	let button;
     	let mounted;
@@ -28303,7 +28297,7 @@ var app = (function (marked) {
     			button = element("button");
     			button.textContent = "Graph:Open separately";
     			attr_dev(button, "class", "button is-warning animated fadeIn");
-    			add_location(button, file$V, 141, 20, 4693);
+    			add_location(button, file$V, 138, 20, 4659);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -28325,14 +28319,14 @@ var app = (function (marked) {
     		block,
     		id: create_if_block_2$4.name,
     		type: "if",
-    		source: "(141:16) {#if graphPlotted}",
+    		source: "(138:16) {#if graphPlotted}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (151:16) {#if graphPlotted}
+    // (148:16) {#if graphPlotted}
     function create_if_block_1$b(ctx) {
     	let t;
     	let current;
@@ -28413,14 +28407,14 @@ var app = (function (marked) {
     		block,
     		id: create_if_block_1$b.name,
     		type: "if",
-    		source: "(151:16) {#if graphPlotted}",
+    		source: "(148:16) {#if graphPlotted}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (159:8) {#if activateConfigModal}
+    // (156:8) {#if activateConfigModal}
     function create_if_block$s(ctx) {
     	let modal;
     	let updating_active;
@@ -28488,14 +28482,14 @@ var app = (function (marked) {
     		block,
     		id: create_if_block$s.name,
     		type: "if",
-    		source: "(159:8) {#if activateConfigModal}",
+    		source: "(156:8) {#if activateConfigModal}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (161:16) <svelte:fragment slot="content">
+    // (158:16) <svelte:fragment slot="content">
     function create_content_slot$8(ctx) {
     	let current;
     	const config_slot_template = /*#slots*/ ctx[16].config;
@@ -28546,14 +28540,14 @@ var app = (function (marked) {
     		block,
     		id: create_content_slot$8.name,
     		type: "slot",
-    		source: "(161:16) <svelte:fragment slot=\\\"content\\\">",
+    		source: "(158:16) <svelte:fragment slot=\\\"content\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (164:16) <svelte:fragment slot="footerbtn">
+    // (161:16) <svelte:fragment slot="footerbtn">
     function create_footerbtn_slot$6(ctx) {
     	let button;
     	let mounted;
@@ -28564,7 +28558,7 @@ var app = (function (marked) {
     			button = element("button");
     			button.textContent = "Save";
     			attr_dev(button, "class", "button is-link");
-    			add_location(button, file$V, 164, 20, 5625);
+    			add_location(button, file$V, 161, 20, 5591);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -28586,7 +28580,7 @@ var app = (function (marked) {
     		block,
     		id: create_footerbtn_slot$6.name,
     		type: "slot",
-    		source: "(164:16) <svelte:fragment slot=\\\"footerbtn\\\">",
+    		source: "(161:16) <svelte:fragment slot=\\\"footerbtn\\\">",
     		ctx
     	});
 
@@ -28724,28 +28718,28 @@ var app = (function (marked) {
     			t8 = space();
     			if (if_block2) if_block2.c();
     			attr_dev(div0, "class", "interact left_container__div box  svelte-ds15ez");
-    			add_location(div0, file$V, 123, 8, 3704);
+    			add_location(div0, file$V, 120, 8, 3670);
     			attr_dev(button, "class", "button is-link");
     			attr_dev(button, "id", button_id_value = "" + (/*filetype*/ ctx[5] + "_filebrowser_btn"));
-    			add_location(button, file$V, 131, 16, 4160);
+    			add_location(button, file$V, 128, 16, 4126);
     			attr_dev(div1, "class", "location__div svelte-ds15ez");
-    			add_location(div1, file$V, 130, 12, 4114);
+    			add_location(div1, file$V, 127, 12, 4080);
     			attr_dev(div2, "class", "button__div align");
     			attr_dev(div2, "id", div2_id_value = "" + (/*filetype*/ ctx[5] + "-buttonContainer"));
-    			add_location(div2, file$V, 137, 12, 4520);
+    			add_location(div2, file$V, 134, 12, 4486);
     			attr_dev(div3, "class", "plot__div svelte-ds15ez");
     			attr_dev(div3, "id", div3_id_value = "" + (/*filetype*/ ctx[5] + "-plotContainer"));
     			add_render_callback(() => /*div3_elementresize_handler*/ ctx[26].call(div3));
-    			add_location(div3, file$V, 147, 12, 4857);
+    			add_location(div3, file$V, 144, 12, 4823);
     			attr_dev(div4, "class", "right_container__div box  svelte-ds15ez");
     			attr_dev(div4, "id", div4_id_value = "" + (/*filetype*/ ctx[5] + "__mainContainer__div"));
-    			add_location(div4, file$V, 128, 8, 4022);
+    			add_location(div4, file$V, 125, 8, 3988);
     			attr_dev(div5, "class", "main__layout__div svelte-ds15ez");
-    			add_location(div5, file$V, 122, 4, 3663);
+    			add_location(div5, file$V, 119, 4, 3629);
     			attr_dev(section, "id", /*id*/ ctx[4]);
     			set_style(section, "display", "none");
     			attr_dev(section, "class", "animated fadeIn");
-    			add_location(section, file$V, 120, 0, 3596);
+    			add_location(section, file$V, 117, 0, 3562);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -29099,7 +29093,6 @@ var app = (function (marked) {
 
     	const changeGraphDivWidth = async () => {
     		await tick();
-    		await sleep(100);
 
     		graphDivs.forEach(id => {
     			if (id.data) {
@@ -82290,59 +82283,35 @@ var app = (function (marked) {
     	}
     }
 
-    // Renaming old python path (if exists)
-    function renamePy() {
-
-        console.log("Checking for python old path");
-
-        const oldPath = pathResolve(__dirname, "../python3.7");
-        const newPath = pathResolve(__dirname, "../python3");
-
-        if (existsSync(oldPath)) {
-
-            rename(oldPath, newPath, function(err) {
-
-                if (err) throw console.log(err)
-                
-                console.log("Successfully renamed the directory.");
-            });
-        }
-    }
-    renamePy();
-
     function resetPyConfig() {
         const mainLocation = appInfo.isPackaged ? appInfo.module : __dirname + "../";
         const unpackedLocation =  pathResolve(mainLocation, appInfo.isPackaged ? "../resources/app.asar.unpacked/" : "../" );
-
         db.set("pythonscript", pathResolve(unpackedLocation, "static/assets/python_files"));
+
         pythonscript.set(db.get("pythonscript"));
         const defaultPy = pathResolve(unpackedLocation, "python3/python");
-
         db.set("pythonpath", defaultPy);
 
+
         checkPython({defaultPy})
-            .then((version)=>{
-        
-                pyVersion.set(version);
+            .then(({stdout})=>{
+                pyVersion.set(stdout.trim());
                 pythonpath.set(db.get("pythonpath")); 
                 window.createToast("Location resetted", "warning");
         
-            });
+        
+            }).catch(handleError);
         
     }
-
 
     function updatePyConfig(){
 
         checkPython()
-            .then(version=>{
-        
-                pyVersion.set(version);
+            .then(({stdout})=>{
+                pyVersion.set(stdout.trim());
                 db.set("pythonpath", get_store_value(pythonpath));
-
                 window.createToast("Location updated", "success");
-            });
-
+            }).catch(handleError);
             db.set("pythonscript", get_store_value(pythonscript));
     }
 
@@ -83400,13 +83369,13 @@ var app = (function (marked) {
     			div1 = element("div");
     			create_component(customswitch.$$.fragment);
     			attr_dev(button0, "class", "button is-link svelte-1v533f1");
-    			add_location(button0, file$3, 127, 32, 4475);
+    			add_location(button0, file$3, 127, 32, 4485);
     			attr_dev(button1, "class", "button is-link svelte-1v533f1");
-    			add_location(button1, file$3, 129, 32, 4589);
+    			add_location(button1, file$3, 129, 32, 4599);
     			attr_dev(div0, "class", "align svelte-1v533f1");
-    			add_location(div0, file$3, 124, 28, 4186);
+    			add_location(div0, file$3, 124, 28, 4196);
     			attr_dev(div1, "class", "align svelte-1v533f1");
-    			add_location(div1, file$3, 131, 28, 4725);
+    			add_location(div1, file$3, 131, 28, 4735);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -83512,7 +83481,7 @@ var app = (function (marked) {
     			t1 = text(": ");
     			t2 = text(t2_value);
     			attr_dev(li, "class", "svelte-1v533f1");
-    			add_location(li, file$3, 186, 32, 7720);
+    			add_location(li, file$3, 186, 32, 7730);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -83750,91 +83719,91 @@ var app = (function (marked) {
 
     			attr_dev(div0, "class", "hvr-glow svelte-1v533f1");
     			toggle_class(div0, "clicked", /*selected*/ ctx[0] === "Configuration");
-    			add_location(div0, file$3, 105, 16, 3089);
+    			add_location(div0, file$3, 105, 16, 3099);
     			attr_dev(div1, "class", "hvr-glow svelte-1v533f1");
     			toggle_class(div1, "clicked", /*selected*/ ctx[0] === "Update");
-    			add_location(div1, file$3, 106, 16, 3211);
+    			add_location(div1, file$3, 106, 16, 3221);
     			attr_dev(div2, "class", "hvr-glow svelte-1v533f1");
     			toggle_class(div2, "clicked", /*selected*/ ctx[0] === "Terminal");
-    			add_location(div2, file$3, 107, 16, 3319);
+    			add_location(div2, file$3, 107, 16, 3329);
     			attr_dev(div3, "class", "hvr-glow svelte-1v533f1");
     			toggle_class(div3, "clicked", /*selected*/ ctx[0] === "About");
-    			add_location(div3, file$3, 109, 16, 3433);
+    			add_location(div3, file$3, 109, 16, 3443);
     			attr_dev(div4, "class", "title__div svelte-1v533f1");
-    			add_location(div4, file$3, 104, 11, 3047);
+    			add_location(div4, file$3, 104, 11, 3057);
     			attr_dev(div5, "class", "box interact left_container__div svelte-1v533f1");
-    			add_location(div5, file$3, 102, 8, 2986);
+    			add_location(div5, file$3, 102, 8, 2996);
     			attr_dev(h10, "class", "title svelte-1v533f1");
-    			add_location(h10, file$3, 116, 20, 3772);
+    			add_location(h10, file$3, 116, 20, 3782);
     			attr_dev(div6, "class", "subtitle svelte-1v533f1");
-    			add_location(div6, file$3, 118, 20, 3832);
+    			add_location(div6, file$3, 118, 20, 3842);
     			attr_dev(button0, "class", "button is-link svelte-1v533f1");
-    			add_location(button0, file$3, 121, 24, 3941);
+    			add_location(button0, file$3, 121, 24, 3951);
     			attr_dev(div7, "class", "align svelte-1v533f1");
-    			add_location(div7, file$3, 120, 20, 3896);
+    			add_location(div7, file$3, 120, 20, 3906);
     			attr_dev(div8, "class", "content animated fadeIn svelte-1v533f1");
     			toggle_class(div8, "hide", /*selected*/ ctx[0] !== "Configuration");
-    			add_location(div8, file$3, 115, 16, 3673);
+    			add_location(div8, file$3, 115, 16, 3683);
     			attr_dev(h11, "class", "title svelte-1v533f1");
-    			add_location(h11, file$3, 139, 20, 5189);
+    			add_location(h11, file$3, 139, 20, 5199);
     			attr_dev(div9, "class", "subtitle svelte-1v533f1");
-    			add_location(div9, file$3, 141, 20, 5242);
+    			add_location(div9, file$3, 141, 20, 5252);
     			attr_dev(button1, "class", "button is-link svelte-1v533f1");
     			attr_dev(button1, "id", "updateCheckBtn");
-    			add_location(button1, file$3, 151, 28, 5845);
+    			add_location(button1, file$3, 151, 28, 5855);
     			attr_dev(button2, "class", "button is-warning svelte-1v533f1");
-    			add_location(button2, file$3, 154, 28, 6121);
+    			add_location(button2, file$3, 154, 28, 6131);
     			attr_dev(div10, "class", "align svelte-1v533f1");
-    			add_location(div10, file$3, 150, 24, 5796);
+    			add_location(div10, file$3, 150, 24, 5806);
     			attr_dev(label, "for", "file");
     			attr_dev(label, "class", "svelte-1v533f1");
-    			add_location(label, file$3, 159, 28, 6370);
+    			add_location(label, file$3, 159, 28, 6380);
     			attr_dev(progress, "id", "update-progress");
     			attr_dev(progress, "max", "100");
     			progress.value = "0";
     			attr_dev(progress, "class", "svelte-1v533f1");
-    			add_location(progress, file$3, 160, 28, 6444);
+    			add_location(progress, file$3, 160, 28, 6454);
     			attr_dev(div11, "id", "update-progress-container");
     			set_style(div11, "display", "none");
     			attr_dev(div11, "class", "svelte-1v533f1");
-    			add_location(div11, file$3, 158, 24, 6281);
+    			add_location(div11, file$3, 158, 24, 6291);
     			attr_dev(div12, "class", "align svelte-1v533f1");
-    			add_location(div12, file$3, 142, 20, 5323);
+    			add_location(div12, file$3, 142, 20, 5333);
     			attr_dev(div13, "class", "content animated fadeIn svelte-1v533f1");
     			toggle_class(div13, "hide", /*selected*/ ctx[0] !== "Update");
-    			add_location(div13, file$3, 138, 16, 5097);
+    			add_location(div13, file$3, 138, 16, 5107);
     			attr_dev(h12, "class", "title svelte-1v533f1");
-    			add_location(h12, file$3, 170, 20, 7013);
+    			add_location(h12, file$3, 170, 20, 7023);
     			attr_dev(div14, "class", "animated fadeIn svelte-1v533f1");
     			toggle_class(div14, "hide", /*selected*/ ctx[0] !== "Terminal");
-    			add_location(div14, file$3, 169, 16, 6927);
+    			add_location(div14, file$3, 169, 16, 6937);
     			attr_dev(h13, "class", "title svelte-1v533f1");
-    			add_location(h13, file$3, 176, 20, 7285);
+    			add_location(h13, file$3, 176, 20, 7295);
     			attr_dev(li0, "class", "svelte-1v533f1");
-    			add_location(li0, file$3, 181, 28, 7487);
+    			add_location(li0, file$3, 181, 28, 7497);
     			attr_dev(li1, "class", "svelte-1v533f1");
-    			add_location(li1, file$3, 182, 28, 7556);
+    			add_location(li1, file$3, 182, 28, 7566);
     			attr_dev(hr, "class", "svelte-1v533f1");
-    			add_location(hr, file$3, 183, 28, 7607);
+    			add_location(hr, file$3, 183, 28, 7617);
     			set_style(ul, "user-select", "text");
     			attr_dev(ul, "class", "svelte-1v533f1");
-    			add_location(ul, file$3, 179, 24, 7404);
+    			add_location(ul, file$3, 179, 24, 7414);
     			attr_dev(div15, "class", "content svelte-1v533f1");
-    			add_location(div15, file$3, 177, 20, 7335);
+    			add_location(div15, file$3, 177, 20, 7345);
     			attr_dev(div16, "class", "animated fadeIn svelte-1v533f1");
     			toggle_class(div16, "hide", /*selected*/ ctx[0] !== "About");
-    			add_location(div16, file$3, 174, 16, 7200);
+    			add_location(div16, file$3, 174, 16, 7210);
     			attr_dev(div17, "class", "container right svelte-1v533f1");
     			attr_dev(div17, "id", "Settings_right_column");
-    			add_location(div17, file$3, 114, 12, 3599);
+    			add_location(div17, file$3, 114, 12, 3609);
     			attr_dev(div18, "class", "box svelte-1v533f1");
-    			add_location(div18, file$3, 113, 8, 3568);
+    			add_location(div18, file$3, 113, 8, 3578);
     			attr_dev(div19, "class", "main__div svelte-1v533f1");
-    			add_location(div19, file$3, 100, 4, 2943);
+    			add_location(div19, file$3, 100, 4, 2953);
     			attr_dev(section, "class", "section animated fadeIn svelte-1v533f1");
     			attr_dev(section, "id", "Settings");
     			set_style(section, "display", "none");
-    			add_location(section, file$3, 99, 0, 2861);
+    			add_location(section, file$3, 99, 0, 2871);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -84111,10 +84080,10 @@ var app = (function (marked) {
     			async () => {
     				await tick();
 
-    				checkPython().then(res => {
-    					set_store_value(pyVersion, $pyVersion = res, $pyVersion);
+    				checkPython().then(({ stdout }) => {
+    					set_store_value(pyVersion, $pyVersion = stdout.trim(), $pyVersion);
     					console.log("Python path is valid");
-    				}).catch(() => pythonpathCheck.open());
+    				}).catch(pythonpathCheck.open);
     			},
     			1000
     		);

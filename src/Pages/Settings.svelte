@@ -24,8 +24,8 @@
         setTimeout(async ()=>{
             await tick()
             checkPython()
-                .then(res=>{ $pyVersion = res; console.log("Python path is valid")})
-                .catch(()=>pythonpathCheck.open() )
+                .then(({stdout})=>{ $pyVersion = stdout.trim(); console.log("Python path is valid")})
+                .catch(pythonpathCheck.open)
         } , 1000)
     })
     
