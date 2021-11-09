@@ -78,7 +78,7 @@ def sendData(dataToSend):
 
     calling_file = pt(inspect.stack()[-1].filename).stem
     
-    save_location = pt(__file__).parent / "local"
+    save_location = pt(os.getenv("TEMP")) / "FELion_GUI3"
 
     if not save_location.exists(): os.mkdir(save_location)
     with open(save_location / f"{calling_file}_data.json", 'w+') as f:

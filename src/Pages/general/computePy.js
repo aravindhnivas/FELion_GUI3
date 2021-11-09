@@ -119,7 +119,7 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                     py.on("close", () => {
                         if (!error_occured_py) {
                             const dataFile = basename(pyfile).split(".")[0]
-                            const outputFile = pathJoin(get(pythonscript), "local", dataFile + "_data.json")
+                            const outputFile = pathJoin(appInfo.temp, "FELion_GUI3", dataFile + "_data.json")
 
                             if (!existsSync(outputFile)) {
                                 return reject(`${outputFile} doesn't exist.`)
