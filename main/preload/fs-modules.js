@@ -43,12 +43,19 @@ contextBridge.exposeInMainWorld("fs", {
             end: () => writer.end(),
             on: (key, callback) => writer.on(key, callback)
         }
+    },
+    lstatSync: (location) => {
+        const info = fs.lstatSync(location)
+        return {
+            isFile: () => info.isFile(),
+            isDirectory: () => info.isDirectory()
+        }
+    
     }
-
 })
+
 
 
 contextBridge.exposeInMainWorld("mkdirSync", (dir)=>fs.mkdirSync(dir))
 contextBridge.exposeInMainWorld("createWriteStream", (path)=>fs.createWriteStream(path))
 contextBridge.exposeInMainWorld("rename", (oldPath, newPath, callback)=>fs.rename(oldPath, newPath, callback))
-
