@@ -32676,7 +32676,7 @@ var app = (function (marked) {
     			span = element("span");
     			span.textContent = "Convert to µm";
     			attr_dev(span, "slot", "label");
-    			add_location(span, file$P, 130, 16, 4209);
+    			add_location(span, file$P, 130, 16, 4194);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -32915,24 +32915,24 @@ var app = (function (marked) {
     			button1 = element("button");
     			button1.textContent = "Save";
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$P, 114, 12, 3567);
+    			add_location(button0, file$P, 114, 12, 3552);
     			attr_dev(div0, "class", "location__bar svelte-kzx37e");
-    			add_location(div0, file$P, 113, 8, 3526);
+    			add_location(div0, file$P, 113, 8, 3511);
     			attr_dev(div1, "class", "grid_column__container file__details__bar svelte-kzx37e");
-    			add_location(div1, file$P, 120, 8, 3770);
+    			add_location(div1, file$P, 120, 8, 3755);
     			attr_dev(button1, "class", "button is-success");
     			set_style(button1, "width", "12em");
     			set_style(button1, "margin-left", "auto");
-    			add_location(button1, file$P, 140, 12, 4676);
+    			add_location(button1, file$P, 140, 12, 4661);
     			attr_dev(div2, "class", "power_value__container svelte-kzx37e");
-    			add_location(div2, file$P, 136, 8, 4312);
+    			add_location(div2, file$P, 136, 8, 4297);
     			attr_dev(div3, "class", "box main__container svelte-kzx37e");
     			attr_dev(div3, "id", "powfileContainer");
-    			add_location(div3, file$P, 111, 4, 3459);
+    			add_location(div3, file$P, 111, 4, 3444);
     			attr_dev(section, "class", "section svelte-kzx37e");
     			attr_dev(section, "id", "Powerfile");
     			set_style(section, "display", "none");
-    			add_location(section, file$P, 110, 0, 3392);
+    			add_location(section, file$P, 110, 0, 3377);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -33131,7 +33131,7 @@ var app = (function (marked) {
     				if (save) savefile();
     			}
     		}).catch(error => {
-    			mainPreModal.error(error.stack || error);
+    			window.handleError(error);
     		});
     	}
 
@@ -34458,9 +34458,9 @@ var app = (function (marked) {
     			button = element("button");
     			button.textContent = "Browse";
     			attr_dev(button, "class", "button is-link");
-    			add_location(button, file$M, 48, 12, 1647);
+    			add_location(button, file$M, 48, 12, 1632);
     			attr_dev(div, "slot", "content");
-    			add_location(div, file$M, 45, 8, 1405);
+    			add_location(div, file$M, 45, 8, 1390);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -34539,7 +34539,7 @@ var app = (function (marked) {
     			button.textContent = "Add";
     			attr_dev(button, "slot", "footerbtn");
     			attr_dev(button, "class", "button is-link");
-    			add_location(button, file$M, 51, 8, 1749);
+    			add_location(button, file$M, 51, 8, 1734);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -34665,7 +34665,7 @@ var app = (function (marked) {
     			window.createToast("Graph Plotted", "success");
     			$$invalidate(0, active = false);
     		}).catch(error => {
-    			mainPreModal.error(error.stack || error);
+    			window.handleError(error);
     		});
     	}
 
@@ -43417,21 +43417,21 @@ var app = (function (marked) {
     			attr_dev(span, "class", "tag is-warning  svelte-8k4cg5");
     			attr_dev(span, "aria-label", "ctrl + left-click to select file for baseline correction");
     			attr_dev(span, "data-cooltipz-dir", "bottom");
-    			add_location(span, file$y, 137, 132, 5325);
+    			add_location(span, file$y, 137, 132, 5280);
     			attr_dev(button0, "class", "button is-link");
     			attr_dev(button0, "id", "create_baseline_btn");
-    			add_location(button0, file$y, 137, 4, 5197);
+    			add_location(button0, file$y, 137, 4, 5152);
     			attr_dev(button1, "class", "button is-link");
     			attr_dev(button1, "id", "felix_plotting_btn");
-    			add_location(button1, file$y, 139, 4, 5482);
+    			add_location(button1, file$y, 139, 4, 5437);
     			attr_dev(button2, "class", "button is-link");
-    			add_location(button2, file$y, 143, 4, 5764);
+    			add_location(button2, file$y, 143, 4, 5719);
     			attr_dev(button3, "class", "button is-link");
-    			add_location(button3, file$y, 145, 4, 5948);
+    			add_location(button3, file$y, 145, 4, 5903);
     			attr_dev(button4, "class", "button is-link");
-    			add_location(button4, file$y, 146, 4, 6046);
+    			add_location(button4, file$y, 146, 4, 6001);
     			attr_dev(div, "class", "align");
-    			add_location(div, file$y, 135, 0, 5170);
+    			add_location(div, file$y, 135, 0, 5125);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -43711,7 +43711,7 @@ var app = (function (marked) {
     					window.createToast("Graph Plotted", "success");
     					$$invalidate(9, graphPlotted = true);
     				}).catch(error => {
-    					mainPreModal.error(error.stack || error);
+    					window.handleError(error);
     					console.error("Error main: ", error.stack || error);
     				});
     				break;
@@ -43732,7 +43732,7 @@ var app = (function (marked) {
     					general: true,
     					openShell
     				}).catch(error => {
-    					mainPreModal.error(error.stack || error);
+    					window.handleError(error);
     				});
     				break;
     			case "matplotlib":
@@ -43758,7 +43758,7 @@ var app = (function (marked) {
     					general: true,
     					openShell
     				}).catch(error => {
-    					mainPreModal.error(error.stack || error);
+    					window.handleError(error);
     				});
     		}
     	}
@@ -51240,13 +51240,13 @@ var app = (function (marked) {
     			button1 = element("button");
     			button1.textContent = "Replot";
     			attr_dev(span, "class", "tag is-warning ");
-    			add_location(span, file$s, 59, 8, 2318);
+    			add_location(span, file$s, 59, 8, 2303);
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$s, 65, 8, 2830);
+    			add_location(button0, file$s, 65, 8, 2815);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$s, 66, 8, 2941);
+    			add_location(button1, file$s, 66, 8, 2926);
     			attr_dev(div, "class", "align");
-    			add_location(div, file$s, 58, 4, 2273);
+    			add_location(div, file$s, 58, 4, 2258);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -51534,7 +51534,7 @@ var app = (function (marked) {
     			($$invalidate(12, graphPlotted = true), set_store_value(opoMode, $opoMode = true, $opoMode));
     			$$invalidate(2, showOPOFiles = false);
     		}).catch(error => {
-    			mainPreModal.error(error.stack || error);
+    			window.handleError(error);
     		});
     	}
 
@@ -53663,11 +53663,11 @@ var app = (function (marked) {
     			button1 = element("button");
     			button1.textContent = "Replot";
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$o, 51, 8, 2117);
+    			add_location(button0, file$o, 51, 8, 2102);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$o, 60, 8, 2778);
+    			add_location(button1, file$o, 60, 8, 2763);
     			attr_dev(div, "class", "align");
-    			add_location(div, file$o, 49, 4, 2070);
+    			add_location(div, file$o, 49, 4, 2055);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -53961,7 +53961,7 @@ var app = (function (marked) {
     			window.createToast("Graph Plotted", "success");
     			($$invalidate(10, show_theoryplot = true), $$invalidate(5, showTheoryFiles = false));
     		}).catch(error => {
-    			mainPreModal.error(error.stack || error);
+    			window.handleError(error);
     		});
     	}
 
@@ -54327,13 +54327,13 @@ var app = (function (marked) {
     			t6 = space();
     			if (if_block) if_block.c();
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$n, 35, 4, 1329);
+    			add_location(button0, file$n, 35, 4, 1314);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$n, 37, 4, 1528);
+    			add_location(button1, file$n, 37, 4, 1513);
     			attr_dev(button2, "class", "button is-link");
-    			add_location(button2, file$n, 39, 4, 1647);
+    			add_location(button2, file$n, 39, 4, 1632);
     			attr_dev(div, "class", "align");
-    			add_location(div, file$n, 34, 0, 1303);
+    			add_location(div, file$n, 34, 0, 1288);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -54453,7 +54453,7 @@ var app = (function (marked) {
     			get_details_func({ dataFromPython });
     			$$invalidate(0, toggleFileDetailsTable = true);
     		}).catch(error => {
-    			mainPreModal.error(error.stack || error);
+    			window.handleError(error);
     		});
     	}
 
@@ -55296,20 +55296,20 @@ var app = (function (marked) {
     			button4 = element("button");
     			button4.textContent = "Clear";
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$l, 235, 12, 10323);
+    			add_location(button0, file$l, 235, 12, 10248);
     			attr_dev(div0, "class", "align");
-    			add_location(div0, file$l, 227, 8, 9776);
+    			add_location(div0, file$l, 227, 8, 9701);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$l, 240, 12, 10596);
+    			add_location(button1, file$l, 240, 12, 10521);
     			attr_dev(button2, "class", "button is-link");
-    			add_location(button2, file$l, 242, 12, 10859);
+    			add_location(button2, file$l, 242, 12, 10784);
     			attr_dev(button3, "class", "button is-link");
-    			add_location(button3, file$l, 243, 12, 10996);
+    			add_location(button3, file$l, 243, 12, 10921);
     			attr_dev(button4, "class", "button is-danger");
-    			add_location(button4, file$l, 245, 12, 11089);
+    			add_location(button4, file$l, 245, 12, 11014);
     			attr_dev(div1, "class", "align");
-    			add_location(div1, file$l, 238, 8, 10465);
-    			add_location(div2, file$l, 226, 4, 9745);
+    			add_location(div1, file$l, 238, 8, 10390);
+    			add_location(div2, file$l, 226, 4, 9670);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div2, anchor);
@@ -55541,19 +55541,19 @@ var app = (function (marked) {
     			if (if_block) if_block.c();
     			if_block_anchor = empty();
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$l, 213, 4, 9007);
+    			add_location(button0, file$l, 213, 4, 8932);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$l, 214, 4, 9115);
+    			add_location(button1, file$l, 214, 4, 9040);
     			attr_dev(button2, "class", "button is-warning");
-    			add_location(button2, file$l, 215, 4, 9230);
+    			add_location(button2, file$l, 215, 4, 9155);
     			attr_dev(button3, "class", "button is-danger");
-    			add_location(button3, file$l, 216, 4, 9314);
+    			add_location(button3, file$l, 216, 4, 9239);
     			attr_dev(button4, "class", "button is-link");
-    			add_location(button4, file$l, 217, 4, 9395);
+    			add_location(button4, file$l, 217, 4, 9320);
     			attr_dev(button5, "class", "button is-warning");
-    			add_location(button5, file$l, 218, 4, 9508);
+    			add_location(button5, file$l, 218, 4, 9433);
     			attr_dev(div, "class", "align");
-    			add_location(div, file$l, 212, 0, 8982);
+    			add_location(div, file$l, 212, 0, 8907);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -55787,7 +55787,7 @@ var app = (function (marked) {
     			const { pyfile, args } = general;
 
     			computePy_func({ pyfile, args, general: true }).catch(error => {
-    				mainPreModal.error(error.stack || error);
+    				window.handleError(error);
     			});
 
     			return;
@@ -55818,7 +55818,7 @@ var app = (function (marked) {
     					exp_fit_func({ dataFromPython });
     					window.createToast("Line fitted with gaussian function", "success");
     				}).catch(error => {
-    					mainPreModal.error(error.stack || error);
+    					window.handleError(error);
     				});
     				break;
     			case "NGauss_fit":
@@ -55859,7 +55859,7 @@ var app = (function (marked) {
     					console.log("Line fitted");
     					window.createToast(`Line fitted with ${dataFromPython["fitted_parameter"].length} gaussian function`, "success");
     				}).catch(error => {
-    					mainPreModal.error(error.stack || error);
+    					window.handleError(error);
     				});
     				break;
     			case "find_peaks":
@@ -55886,7 +55886,7 @@ var app = (function (marked) {
     					console.log(`felixPeakTable:`, $felixPeakTable);
     					window.createToast("Peaks found", "success");
     				}).catch(error => {
-    					mainPreModal.error(error.stack || error);
+    					window.handleError(error);
     				});
     				break;
     			case "get_err":
@@ -55896,7 +55896,7 @@ var app = (function (marked) {
     					get_err_func({ dataFromPython });
     					window.createToast("Weighted fit. done", "success");
     				}).catch(error => {
-    					mainPreModal.error(error.stack || error);
+    					window.handleError(error);
     				});
     				break;
     		}
@@ -61502,9 +61502,9 @@ var app = (function (marked) {
     			button1 = element("button");
     			button1.textContent = "Close";
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$f, 220, 8, 8137);
+    			add_location(button0, file$f, 220, 8, 8116);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$f, 222, 8, 8218);
+    			add_location(button1, file$f, 222, 8, 8197);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button0, anchor);
@@ -61580,7 +61580,7 @@ var app = (function (marked) {
     			t0 = text(/*pyEventCounter*/ ctx[17]);
     			t1 = text(" process running");
     			attr_dev(div, "class", "subtitle");
-    			add_location(div, file$f, 265, 12, 10250);
+    			add_location(div, file$f, 265, 12, 10229);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -62019,20 +62019,20 @@ var app = (function (marked) {
     			t24 = space();
     			if (if_block) if_block.c();
     			attr_dev(div0, "class", "align");
-    			add_location(div0, file$f, 229, 4, 8415);
+    			add_location(div0, file$f, 229, 4, 8394);
     			attr_dev(div1, "class", "align");
-    			add_location(div1, file$f, 238, 4, 8925);
+    			add_location(div1, file$f, 238, 4, 8904);
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$f, 256, 8, 9810);
+    			add_location(button0, file$f, 256, 8, 9789);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$f, 257, 8, 9910);
+    			add_location(button1, file$f, 257, 8, 9889);
     			attr_dev(button2, "class", "button is-link");
-    			add_location(button2, file$f, 261, 8, 10090);
+    			add_location(button2, file$f, 261, 8, 10069);
     			attr_dev(div2, "class", "align v-center");
-    			add_location(div2, file$f, 254, 4, 9770);
+    			add_location(div2, file$f, 254, 4, 9749);
     			attr_dev(div3, "class", "align animated fadeIn");
     			toggle_class(div3, "hide", !/*kineticMode*/ ctx[0]);
-    			add_location(div3, file$f, 227, 0, 8345);
+    			add_location(div3, file$f, 227, 0, 8324);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -62541,7 +62541,7 @@ var app = (function (marked) {
     			}
     		} catch(error) {
     			console.log(error);
-    			mainPreModal.error(error.stack);
+    			window.handleError(error);
     		}
     	}
 
@@ -62577,7 +62577,7 @@ var app = (function (marked) {
     			$$invalidate(17, pyEventCounter++, pyEventCounter);
     			await computePy_func({ e, pyfile, args, general: true });
     		} catch(error) {
-    			mainPreModal.error(error.stack || error);
+    			window.handleError(error);
     		}
     	}
 
@@ -63086,6 +63086,7 @@ var app = (function (marked) {
     	}
 
     	let customselect0_props = {
+    		style: "min-width: 7em;",
     		label: "ResOn",
     		options: /*fullfiles*/ ctx[12]
     	};
@@ -63106,6 +63107,7 @@ var app = (function (marked) {
     	}
 
     	let customselect1_props = {
+    		style: "min-width: 7em;",
     		label: "ResOFF",
     		options: /*fullfiles*/ ctx[12]
     	};
@@ -63253,21 +63255,21 @@ var app = (function (marked) {
     			t19 = space();
     			create_component(rosaakinetics.$$.fragment);
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$e, 140, 12, 5282);
+    			add_location(button0, file$e, 140, 12, 5252);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$e, 144, 12, 5556);
+    			add_location(button1, file$e, 144, 12, 5526);
     			attr_dev(button2, "class", "button is-link");
-    			add_location(button2, file$e, 145, 12, 5666);
+    			add_location(button2, file$e, 145, 12, 5636);
     			attr_dev(button3, "class", "button is-link");
-    			add_location(button3, file$e, 147, 12, 5794);
+    			add_location(button3, file$e, 147, 12, 5764);
     			attr_dev(div0, "class", "align ");
     			set_style(div0, "align-items", "center");
-    			add_location(div0, file$e, 139, 8, 5219);
+    			add_location(div0, file$e, 139, 8, 5189);
     			attr_dev(button4, "class", "button is-link");
-    			add_location(button4, file$e, 162, 12, 6825);
+    			add_location(button4, file$e, 162, 12, 6843);
     			attr_dev(div1, "class", "align animated fadeIn");
     			toggle_class(div1, "hide", /*toggleRow*/ ctx[13]);
-    			add_location(div1, file$e, 153, 8, 6137);
+    			add_location(div1, file$e, 153, 8, 6107);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -63497,7 +63499,7 @@ var app = (function (marked) {
     			attr_dev(div, "id", div_id_value = "" + (/*scanfile*/ ctx[44] + "_tplot"));
     			attr_dev(div, "class", "graph__div");
     			set_style(div, "padding-bottom", "1em");
-    			add_location(div, file$e, 171, 12, 7189);
+    			add_location(div, file$e, 171, 12, 7207);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -63800,7 +63802,7 @@ var app = (function (marked) {
     				general: true,
     				openShell
     			}).catch(error => {
-    				mainPreModal.error(error.stack || error);
+    				window.handleError(error);
     			});
     		}
 
@@ -63825,7 +63827,7 @@ var app = (function (marked) {
     			window.createToast("Graph plotted", "success");
     			$$invalidate(6, graphPlotted = true);
     		} catch(error) {
-    			mainPreModal.error(error.stack || error);
+    			window.handleError(error);
     		}
     	}
 
@@ -77877,21 +77879,21 @@ var app = (function (marked) {
     			button2.textContent = "Reset Config";
     			attr_dev(button0, "class", "button is-link svelte-1gffrzh");
     			attr_dev(button0, "id", "thz_modal_filebrowser_btn");
-    			add_location(button0, file$7, 369, 16, 13510);
+    			add_location(button0, file$7, 369, 16, 13495);
     			attr_dev(div0, "class", "locationColumn svelte-1gffrzh");
-    			add_location(div0, file$7, 368, 12, 13463);
+    			add_location(div0, file$7, 368, 12, 13448);
     			attr_dev(div1, "class", "writefileCheck svelte-1gffrzh");
-    			add_location(div1, file$7, 375, 12, 13813);
+    			add_location(div1, file$7, 375, 12, 13798);
     			attr_dev(div2, "class", "subtitle svelte-1gffrzh");
-    			add_location(div2, file$7, 386, 16, 14483);
+    			add_location(div2, file$7, 386, 16, 14468);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$7, 393, 20, 14939);
+    			add_location(button1, file$7, 393, 20, 14924);
     			attr_dev(button2, "class", "button is-link");
-    			add_location(button2, file$7, 394, 20, 15034);
+    			add_location(button2, file$7, 394, 20, 15019);
     			attr_dev(div3, "class", "variableColumn__dropdown svelte-1gffrzh");
-    			add_location(div3, file$7, 387, 16, 14575);
+    			add_location(div3, file$7, 387, 16, 14560);
     			attr_dev(div4, "class", "variableColumn svelte-1gffrzh");
-    			add_location(div4, file$7, 385, 12, 14437);
+    			add_location(div4, file$7, 385, 12, 14422);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -79159,60 +79161,60 @@ var app = (function (marked) {
     			t32 = space();
     			if (if_block1) if_block1.c();
     			attr_dev(hr0, "class", "svelte-1gffrzh");
-    			add_location(hr0, file$7, 402, 78, 15382);
+    			add_location(hr0, file$7, 402, 78, 15367);
     			attr_dev(hr1, "class", "svelte-1gffrzh");
-    			add_location(hr1, file$7, 402, 115, 15419);
+    			add_location(hr1, file$7, 402, 115, 15404);
     			attr_dev(div0, "class", "content status_report__div svelte-1gffrzh");
     			toggle_class(div0, "hide", !/*showreport*/ ctx[21]);
-    			add_location(div0, file$7, 402, 12, 15316);
+    			add_location(div0, file$7, 402, 12, 15301);
     			attr_dev(div1, "class", "subtitle svelte-1gffrzh");
-    			add_location(div1, file$7, 409, 20, 15620);
+    			add_location(div1, file$7, 409, 20, 15605);
     			attr_dev(div2, "class", "content__div  svelte-1gffrzh");
-    			add_location(div2, file$7, 410, 20, 15685);
+    			add_location(div2, file$7, 410, 20, 15670);
     			attr_dev(div3, "class", "sub_container__div box svelte-1gffrzh");
-    			add_location(div3, file$7, 407, 16, 15560);
+    			add_location(div3, file$7, 407, 16, 15545);
     			attr_dev(div4, "class", "subtitle svelte-1gffrzh");
-    			add_location(div4, file$7, 420, 20, 16053);
+    			add_location(div4, file$7, 420, 20, 16038);
     			attr_dev(button, "class", "button is-link ");
-    			add_location(button, file$7, 425, 24, 16416);
+    			add_location(button, file$7, 425, 24, 16401);
     			attr_dev(div5, "class", "control__div  svelte-1gffrzh");
-    			add_location(div5, file$7, 421, 20, 16116);
+    			add_location(div5, file$7, 421, 20, 16101);
     			attr_dev(div6, "class", "content__div  svelte-1gffrzh");
-    			add_location(div6, file$7, 428, 20, 16570);
+    			add_location(div6, file$7, 428, 20, 16555);
     			attr_dev(div7, "class", "sub_container__div box svelte-1gffrzh");
-    			add_location(div7, file$7, 419, 16, 15994);
+    			add_location(div7, file$7, 419, 16, 15979);
     			attr_dev(div8, "class", "subtitle svelte-1gffrzh");
-    			add_location(div8, file$7, 438, 20, 16944);
+    			add_location(div8, file$7, 438, 20, 16929);
     			attr_dev(hr2, "class", "svelte-1gffrzh");
-    			add_location(hr2, file$7, 444, 24, 17245);
+    			add_location(hr2, file$7, 444, 24, 17230);
     			attr_dev(div9, "class", "subtitle svelte-1gffrzh");
     			set_style(div9, "width", "100%");
     			set_style(div9, "display", "grid");
     			set_style(div9, "place-items", "center");
-    			add_location(div9, file$7, 444, 29, 17250);
+    			add_location(div9, file$7, 444, 29, 17235);
     			attr_dev(hr3, "class", "svelte-1gffrzh");
-    			add_location(hr3, file$7, 444, 131, 17352);
+    			add_location(hr3, file$7, 444, 131, 17337);
     			attr_dev(div10, "class", "align h-center");
-    			add_location(div10, file$7, 446, 24, 17384);
+    			add_location(div10, file$7, 446, 24, 17369);
     			attr_dev(div11, "class", "content__div  svelte-1gffrzh");
-    			add_location(div11, file$7, 439, 20, 17015);
+    			add_location(div11, file$7, 439, 20, 17000);
     			attr_dev(div12, "class", "sub_container__div box svelte-1gffrzh");
-    			add_location(div12, file$7, 437, 16, 16886);
+    			add_location(div12, file$7, 437, 16, 16871);
     			attr_dev(div13, "class", "subtitle svelte-1gffrzh");
-    			add_location(div13, file$7, 459, 20, 18065);
+    			add_location(div13, file$7, 459, 20, 18050);
     			attr_dev(div14, "class", "content__div  svelte-1gffrzh");
-    			add_location(div14, file$7, 460, 20, 18132);
+    			add_location(div14, file$7, 460, 20, 18117);
     			attr_dev(div15, "class", "sub_container__div box svelte-1gffrzh");
-    			add_location(div15, file$7, 457, 16, 18005);
+    			add_location(div15, file$7, 457, 16, 17990);
     			attr_dev(div16, "class", "subtitle svelte-1gffrzh");
-    			add_location(div16, file$7, 473, 20, 18768);
+    			add_location(div16, file$7, 473, 20, 18753);
     			attr_dev(div17, "class", "content__div  svelte-1gffrzh");
-    			add_location(div17, file$7, 474, 20, 18836);
+    			add_location(div17, file$7, 474, 20, 18821);
     			attr_dev(div18, "class", "sub_container__div box svelte-1gffrzh");
-    			add_location(div18, file$7, 472, 16, 18710);
+    			add_location(div18, file$7, 472, 16, 18695);
     			attr_dev(div19, "class", "main_container__div svelte-1gffrzh");
     			toggle_class(div19, "hide", /*showreport*/ ctx[21]);
-    			add_location(div19, file$7, 406, 12, 15485);
+    			add_location(div19, file$7, 406, 12, 15470);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -79671,7 +79673,7 @@ var app = (function (marked) {
     			t1 = text(t1_value);
     			t2 = space();
     			t3 = text(t3_value);
-    			add_location(div, file$7, 501, 20, 20196);
+    			add_location(div, file$7, 501, 20, 20181);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -79716,7 +79718,7 @@ var app = (function (marked) {
     			button = element("button");
     			button.textContent = "Stop";
     			attr_dev(button, "class", "button is-danger");
-    			add_location(button, file$7, 505, 20, 20398);
+    			add_location(button, file$7, 505, 20, 20383);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -79773,7 +79775,7 @@ var app = (function (marked) {
     			button = element("button");
     			button.textContent = "Clear";
     			attr_dev(button, "class", "button is-warning");
-    			add_location(button, file$7, 508, 20, 20567);
+    			add_location(button, file$7, 508, 20, 20552);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -79835,11 +79837,11 @@ var app = (function (marked) {
     			button1 = element("button");
     			button1.textContent = "Submit";
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$7, 510, 16, 20696);
+    			add_location(button0, file$7, 510, 16, 20681);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$7, 512, 16, 20845);
+    			add_location(button1, file$7, 512, 16, 20830);
     			attr_dev(div, "class", "align");
-    			add_location(div, file$7, 499, 12, 20111);
+    			add_location(div, file$7, 499, 12, 20096);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -80153,7 +80155,7 @@ var app = (function (marked) {
     		const args = [JSON.stringify(conditions)];
 
     		computePy_func({ e, pyfile, args, general: true }).catch(error => {
-    			mainPreModal.error(error.stack || error);
+    			window.handleError(error);
     		});
 
     		running = true;
@@ -80988,15 +80990,15 @@ var app = (function (marked) {
     			t11 = space();
     			create_component(textfield1.$$.fragment);
     			attr_dev(button0, "class", btnClass);
-    			add_location(button0, file$6, 83, 12, 3441);
+    			add_location(button0, file$6, 83, 12, 3411);
     			attr_dev(button1, "class", btnClass);
-    			add_location(button1, file$6, 84, 12, 3539);
+    			add_location(button1, file$6, 84, 12, 3509);
     			attr_dev(button2, "class", btnClass);
-    			add_location(button2, file$6, 88, 12, 3790);
+    			add_location(button2, file$6, 88, 12, 3760);
     			attr_dev(button3, "class", btnClass);
-    			add_location(button3, file$6, 89, 12, 3879);
+    			add_location(button3, file$6, 89, 12, 3849);
     			attr_dev(div, "class", "align v-center");
-    			add_location(div, file$6, 82, 8, 3399);
+    			add_location(div, file$6, 82, 8, 3369);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -81177,7 +81179,7 @@ var app = (function (marked) {
     			t = space();
     			create_component(customcheckbox.$$.fragment);
     			attr_dev(div, "class", "animated fadeIn align h-end v-center");
-    			add_location(div, file$6, 105, 12, 4498);
+    			add_location(div, file$6, 105, 12, 4468);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -81260,10 +81262,10 @@ var app = (function (marked) {
     			div1 = element("div");
     			attr_dev(div0, "id", "resOnOffPlot");
     			attr_dev(div0, "class", "graph__div");
-    			add_location(div0, file$6, 101, 8, 4403);
+    			add_location(div0, file$6, 101, 8, 4373);
     			attr_dev(div1, "id", "thzPlot");
     			attr_dev(div1, "class", "graph__div");
-    			add_location(div1, file$6, 112, 8, 4827);
+    			add_location(div1, file$6, 112, 8, 4797);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -81515,7 +81517,7 @@ var app = (function (marked) {
     				general: true,
     				openShell
     			}).catch(error => {
-    				mainPreModal.error(error.stack || error);
+    				window.handleError(error);
     			});
     		}
 
@@ -81539,7 +81541,7 @@ var app = (function (marked) {
     			window.createToast("Graph plotted", "success");
     			$$invalidate(3, graphPlotted = true);
     		}).catch(error => {
-    			mainPreModal.error(error.stack || error);
+    			window.handleError(error);
     		});
     	}
 
@@ -83261,7 +83263,7 @@ var app = (function (marked) {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[22] = list[i];
+    	child_ctx[21] = list[i];
     	return child_ctx;
     }
 
@@ -83286,7 +83288,7 @@ var app = (function (marked) {
     	let dispose;
 
     	function textfield0_value_binding(value) {
-    		/*textfield0_value_binding*/ ctx[15](value);
+    		/*textfield0_value_binding*/ ctx[14](value);
     	}
 
     	let textfield0_props = {
@@ -83302,7 +83304,7 @@ var app = (function (marked) {
     	binding_callbacks.push(() => bind(textfield0, 'value', textfield0_value_binding));
 
     	function textfield1_value_binding(value) {
-    		/*textfield1_value_binding*/ ctx[16](value);
+    		/*textfield1_value_binding*/ ctx[15](value);
     	}
 
     	let textfield1_props = {
@@ -83318,7 +83320,7 @@ var app = (function (marked) {
     	binding_callbacks.push(() => bind(textfield1, 'value', textfield1_value_binding));
 
     	function customswitch_selected_binding(value) {
-    		/*customswitch_selected_binding*/ ctx[17](value);
+    		/*customswitch_selected_binding*/ ctx[16](value);
     	}
 
     	let customswitch_props = { label: "suppressWarning" };
@@ -83333,7 +83335,7 @@ var app = (function (marked) {
     		});
 
     	binding_callbacks.push(() => bind(customswitch, 'selected', customswitch_selected_binding));
-    	customswitch.$on("change", /*change_handler*/ ctx[18]);
+    	customswitch.$on("change", /*change_handler*/ ctx[17]);
 
     	const block = {
     		c: function create() {
@@ -83351,13 +83353,13 @@ var app = (function (marked) {
     			div1 = element("div");
     			create_component(customswitch.$$.fragment);
     			attr_dev(button0, "class", "button is-link svelte-1v533f1");
-    			add_location(button0, file$3, 127, 32, 4485);
+    			add_location(button0, file$3, 127, 32, 4470);
     			attr_dev(button1, "class", "button is-link svelte-1v533f1");
-    			add_location(button1, file$3, 129, 32, 4599);
+    			add_location(button1, file$3, 129, 32, 4584);
     			attr_dev(div0, "class", "align svelte-1v533f1");
-    			add_location(div0, file$3, 124, 28, 4196);
+    			add_location(div0, file$3, 124, 28, 4181);
     			attr_dev(div1, "class", "align svelte-1v533f1");
-    			add_location(div1, file$3, 131, 28, 4735);
+    			add_location(div1, file$3, 131, 28, 4720);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -83450,10 +83452,10 @@ var app = (function (marked) {
     // (186:28) {#each Object.keys(window.versions) as key}
     function create_each_block(ctx) {
     	let li;
-    	let t0_value = /*key*/ ctx[22] + "";
+    	let t0_value = /*key*/ ctx[21] + "";
     	let t0;
     	let t1;
-    	let t2_value = window.versions[/*key*/ ctx[22]] + "";
+    	let t2_value = window.versions[/*key*/ ctx[21]] + "";
     	let t2;
 
     	const block = {
@@ -83463,7 +83465,7 @@ var app = (function (marked) {
     			t1 = text(": ");
     			t2 = text(t2_value);
     			attr_dev(li, "class", "svelte-1v533f1");
-    			add_location(li, file$3, 186, 32, 7730);
+    			add_location(li, file$3, 186, 32, 7715);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -83560,7 +83562,7 @@ var app = (function (marked) {
     	let dispose;
 
     	function customdialog_dialog_binding(value) {
-    		/*customdialog_dialog_binding*/ ctx[13](value);
+    		/*customdialog_dialog_binding*/ ctx[12](value);
     	}
 
     	let customdialog_props = {
@@ -83586,11 +83588,11 @@ var app = (function (marked) {
     	let if_block = /*$developerMode*/ ctx[5] && create_if_block$3(ctx);
 
     	function terminal_commandToRun_binding(value) {
-    		/*terminal_commandToRun_binding*/ ctx[20](value);
+    		/*terminal_commandToRun_binding*/ ctx[19](value);
     	}
 
     	function terminal_commandArgsToRun_binding(value) {
-    		/*terminal_commandArgsToRun_binding*/ ctx[21](value);
+    		/*terminal_commandArgsToRun_binding*/ ctx[20](value);
     	}
 
     	let terminal_props = { id: "Terminal-settings" };
@@ -83701,91 +83703,91 @@ var app = (function (marked) {
 
     			attr_dev(div0, "class", "hvr-glow svelte-1v533f1");
     			toggle_class(div0, "clicked", /*selected*/ ctx[0] === "Configuration");
-    			add_location(div0, file$3, 105, 16, 3099);
+    			add_location(div0, file$3, 105, 16, 3084);
     			attr_dev(div1, "class", "hvr-glow svelte-1v533f1");
     			toggle_class(div1, "clicked", /*selected*/ ctx[0] === "Update");
-    			add_location(div1, file$3, 106, 16, 3221);
+    			add_location(div1, file$3, 106, 16, 3206);
     			attr_dev(div2, "class", "hvr-glow svelte-1v533f1");
     			toggle_class(div2, "clicked", /*selected*/ ctx[0] === "Terminal");
-    			add_location(div2, file$3, 107, 16, 3329);
+    			add_location(div2, file$3, 107, 16, 3314);
     			attr_dev(div3, "class", "hvr-glow svelte-1v533f1");
     			toggle_class(div3, "clicked", /*selected*/ ctx[0] === "About");
-    			add_location(div3, file$3, 109, 16, 3443);
+    			add_location(div3, file$3, 109, 16, 3428);
     			attr_dev(div4, "class", "title__div svelte-1v533f1");
-    			add_location(div4, file$3, 104, 11, 3057);
+    			add_location(div4, file$3, 104, 11, 3042);
     			attr_dev(div5, "class", "box interact left_container__div svelte-1v533f1");
-    			add_location(div5, file$3, 102, 8, 2996);
+    			add_location(div5, file$3, 102, 8, 2981);
     			attr_dev(h10, "class", "title svelte-1v533f1");
-    			add_location(h10, file$3, 116, 20, 3782);
+    			add_location(h10, file$3, 116, 20, 3767);
     			attr_dev(div6, "class", "subtitle svelte-1v533f1");
-    			add_location(div6, file$3, 118, 20, 3842);
+    			add_location(div6, file$3, 118, 20, 3827);
     			attr_dev(button0, "class", "button is-link svelte-1v533f1");
-    			add_location(button0, file$3, 121, 24, 3951);
+    			add_location(button0, file$3, 121, 24, 3936);
     			attr_dev(div7, "class", "align svelte-1v533f1");
-    			add_location(div7, file$3, 120, 20, 3906);
+    			add_location(div7, file$3, 120, 20, 3891);
     			attr_dev(div8, "class", "content animated fadeIn svelte-1v533f1");
     			toggle_class(div8, "hide", /*selected*/ ctx[0] !== "Configuration");
-    			add_location(div8, file$3, 115, 16, 3683);
+    			add_location(div8, file$3, 115, 16, 3668);
     			attr_dev(h11, "class", "title svelte-1v533f1");
-    			add_location(h11, file$3, 139, 20, 5199);
+    			add_location(h11, file$3, 139, 20, 5184);
     			attr_dev(div9, "class", "subtitle svelte-1v533f1");
-    			add_location(div9, file$3, 141, 20, 5252);
+    			add_location(div9, file$3, 141, 20, 5237);
     			attr_dev(button1, "class", "button is-link svelte-1v533f1");
     			attr_dev(button1, "id", "updateCheckBtn");
-    			add_location(button1, file$3, 151, 28, 5855);
+    			add_location(button1, file$3, 151, 28, 5840);
     			attr_dev(button2, "class", "button is-warning svelte-1v533f1");
-    			add_location(button2, file$3, 154, 28, 6131);
+    			add_location(button2, file$3, 154, 28, 6116);
     			attr_dev(div10, "class", "align svelte-1v533f1");
-    			add_location(div10, file$3, 150, 24, 5806);
+    			add_location(div10, file$3, 150, 24, 5791);
     			attr_dev(label, "for", "file");
     			attr_dev(label, "class", "svelte-1v533f1");
-    			add_location(label, file$3, 159, 28, 6380);
+    			add_location(label, file$3, 159, 28, 6365);
     			attr_dev(progress, "id", "update-progress");
     			attr_dev(progress, "max", "100");
     			progress.value = "0";
     			attr_dev(progress, "class", "svelte-1v533f1");
-    			add_location(progress, file$3, 160, 28, 6454);
+    			add_location(progress, file$3, 160, 28, 6439);
     			attr_dev(div11, "id", "update-progress-container");
     			set_style(div11, "display", "none");
     			attr_dev(div11, "class", "svelte-1v533f1");
-    			add_location(div11, file$3, 158, 24, 6291);
+    			add_location(div11, file$3, 158, 24, 6276);
     			attr_dev(div12, "class", "align svelte-1v533f1");
-    			add_location(div12, file$3, 142, 20, 5333);
+    			add_location(div12, file$3, 142, 20, 5318);
     			attr_dev(div13, "class", "content animated fadeIn svelte-1v533f1");
     			toggle_class(div13, "hide", /*selected*/ ctx[0] !== "Update");
-    			add_location(div13, file$3, 138, 16, 5107);
+    			add_location(div13, file$3, 138, 16, 5092);
     			attr_dev(h12, "class", "title svelte-1v533f1");
-    			add_location(h12, file$3, 170, 20, 7023);
+    			add_location(h12, file$3, 170, 20, 7008);
     			attr_dev(div14, "class", "animated fadeIn svelte-1v533f1");
     			toggle_class(div14, "hide", /*selected*/ ctx[0] !== "Terminal");
-    			add_location(div14, file$3, 169, 16, 6937);
+    			add_location(div14, file$3, 169, 16, 6922);
     			attr_dev(h13, "class", "title svelte-1v533f1");
-    			add_location(h13, file$3, 176, 20, 7295);
+    			add_location(h13, file$3, 176, 20, 7280);
     			attr_dev(li0, "class", "svelte-1v533f1");
-    			add_location(li0, file$3, 181, 28, 7497);
+    			add_location(li0, file$3, 181, 28, 7482);
     			attr_dev(li1, "class", "svelte-1v533f1");
-    			add_location(li1, file$3, 182, 28, 7566);
+    			add_location(li1, file$3, 182, 28, 7551);
     			attr_dev(hr, "class", "svelte-1v533f1");
-    			add_location(hr, file$3, 183, 28, 7617);
+    			add_location(hr, file$3, 183, 28, 7602);
     			set_style(ul, "user-select", "text");
     			attr_dev(ul, "class", "svelte-1v533f1");
-    			add_location(ul, file$3, 179, 24, 7414);
+    			add_location(ul, file$3, 179, 24, 7399);
     			attr_dev(div15, "class", "content svelte-1v533f1");
-    			add_location(div15, file$3, 177, 20, 7345);
+    			add_location(div15, file$3, 177, 20, 7330);
     			attr_dev(div16, "class", "animated fadeIn svelte-1v533f1");
     			toggle_class(div16, "hide", /*selected*/ ctx[0] !== "About");
-    			add_location(div16, file$3, 174, 16, 7210);
+    			add_location(div16, file$3, 174, 16, 7195);
     			attr_dev(div17, "class", "container right svelte-1v533f1");
     			attr_dev(div17, "id", "Settings_right_column");
-    			add_location(div17, file$3, 114, 12, 3609);
+    			add_location(div17, file$3, 114, 12, 3594);
     			attr_dev(div18, "class", "box svelte-1v533f1");
-    			add_location(div18, file$3, 113, 8, 3578);
+    			add_location(div18, file$3, 113, 8, 3563);
     			attr_dev(div19, "class", "main__div svelte-1v533f1");
-    			add_location(div19, file$3, 100, 4, 2953);
+    			add_location(div19, file$3, 100, 4, 2938);
     			attr_dev(section, "class", "section animated fadeIn svelte-1v533f1");
     			attr_dev(section, "id", "Settings");
     			set_style(section, "display", "none");
-    			add_location(section, file$3, 99, 0, 2871);
+    			add_location(section, file$3, 99, 0, 2856);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -83868,9 +83870,9 @@ var app = (function (marked) {
     					listen_dev(div1, "click", /*navigate*/ ctx[10], false, false, false),
     					listen_dev(div2, "click", /*navigate*/ ctx[10], false, false, false),
     					listen_dev(div3, "click", /*navigate*/ ctx[10], false, false, false),
-    					listen_dev(button0, "click", /*click_handler*/ ctx[14], false, false, false),
-    					listen_dev(button1, "click", /*updateCheck*/ ctx[12], false, false, false),
-    					listen_dev(button2, "click", /*click_handler_1*/ ctx[19], false, false, false)
+    					listen_dev(button0, "click", /*click_handler*/ ctx[13], false, false, false),
+    					listen_dev(button1, "click", updateCheck, false, false, false),
+    					listen_dev(button2, "click", /*click_handler_1*/ ctx[18], false, false, false)
     				];
 
     				mounted = true;
@@ -84027,6 +84029,29 @@ var app = (function (marked) {
     	return block;
     }
 
+    function updateCheck(event) {
+    	const { target } = event;
+
+    	try {
+    		target.classList.toggle("is-loading");
+
+    		if (!navigator.onLine) {
+    			if (info) {
+    				window.createToast("No Internet Connection!", "warning");
+    			}
+
+    			
+    			return;
+    		}
+
+    		checkupdate();
+    	} catch(error) {
+    		window.handleError(error);
+    	} finally {
+    		target.classList.toggle("is-loading");
+    	}
+    }
+
     function instance$3($$self, $$props, $$invalidate) {
     	let $pyVersion;
     	let $developerMode;
@@ -84076,30 +84101,6 @@ var app = (function (marked) {
     	};
 
     	let commandToRun = "", commandArgsToRun = "";
-
-    	function updateCheck(event) {
-    		const { target } = event;
-
-    		try {
-    			target.classList.toggle("is-loading");
-
-    			if (!navigator.onLine) {
-    				if (info) {
-    					window.createToast("No Internet Connection!", "warning");
-    				}
-
-    				
-    				return;
-    			}
-
-    			checkupdate();
-    		} catch(error) {
-    			mainPreModal.error(error.stack || error);
-    		} finally {
-    			target.classList.toggle("is-loading");
-    		}
-    	}
-
     	const writable_props = [];
 
     	Object_1.keys($$props).forEach(key => {
@@ -84203,7 +84204,6 @@ var app = (function (marked) {
     		$activateChangelog,
     		navigate,
     		handlepythonPathCheck,
-    		updateCheck,
     		customdialog_dialog_binding,
     		click_handler,
     		textfield0_value_binding,
