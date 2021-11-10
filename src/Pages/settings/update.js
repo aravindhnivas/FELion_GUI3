@@ -9,7 +9,7 @@
 //         console.log('success!')
 //     } catch (err) { console.error(err) }
 // }
-// const handleError = (error) => mainPreModal.error(error.stack || error)
+// const handleError = (error) => window.handleError(error)
 
 // export default async () => {
 //     extractFull(zipFile, zipfolder, {}).then(copyFiles).catch(handleError)

@@ -81,7 +81,7 @@
         if (filetype == "scan") {graphPlotted = false}
         if (filetype == "general") {
 
-            return computePy_func({e, pyfile, args, general:true, openShell}).catch(error=>{mainPreModal.error(error.stack || error)})
+            return computePy_func({e, pyfile, args, general:true, openShell}).catch(error=>{window.handleError(error)})
         }
 
         try {
@@ -102,7 +102,7 @@
             } 
             window.createToast("Graph plotted", "success")
             graphPlotted = true
-        } catch (error) {mainPreModal.error(error.stack || error)}
+        } catch (error) {window.handleError(error)}
     }
 
     const linearlogCheck = () => {

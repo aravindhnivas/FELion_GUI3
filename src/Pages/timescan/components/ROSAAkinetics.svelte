@@ -174,7 +174,7 @@
             }
         } catch (error) {
             console.log(error)
-            mainPreModal.error(error.stack)
+            window.handleError(error)
         }
     }
 
@@ -196,7 +196,7 @@
             await computePy_func({e, pyfile, args, general:true})
 
 
-        } catch (error) {mainPreModal.error(error.stack || error);}
+        } catch (error) {window.handleError(error);}
     }
 
     let pyEventCounter = 0

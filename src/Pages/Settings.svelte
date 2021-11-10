@@ -40,7 +40,7 @@
             if (!navigator.onLine) {if (info) {window.createToast("No Internet Connection!", "warning")}; return}
             checkupdate()
         } catch (error) {
-            mainPreModal.error(error.stack || error)
+            window.handleError(error)
         } finally {
             target.classList.toggle("is-loading")
         }

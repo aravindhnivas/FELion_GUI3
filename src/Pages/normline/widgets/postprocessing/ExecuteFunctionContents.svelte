@@ -100,7 +100,7 @@
             const {pyfile, args} = general
 
             computePy_func({pyfile, args, general:true})
-            .catch(error=>{mainPreModal.error(error.stack || error)})
+            .catch(error=>{window.handleError(error)})
             return;
         
         }
@@ -120,7 +120,7 @@
                 .then((dataFromPython)=>{
                     exp_fit_func({dataFromPython})
                     window.createToast("Line fitted with gaussian function", "success")
-                }).catch(error=>{mainPreModal.error(error.stack || error)})
+                }).catch(error=>{window.handleError(error)})
 
                 break;
 
@@ -154,7 +154,7 @@
                     NGauss_fit_func({dataFromPython})
                     console.log("Line fitted")
                     window.createToast(`Line fitted with ${dataFromPython["fitted_parameter"].length} gaussian function`, "success")
-                }).catch(error=>{mainPreModal.error(error.stack || error)})
+                }).catch(error=>{window.handleError(error)})
                 break;
             
             case "find_peaks":
@@ -175,7 +175,7 @@
                     find_peaks_func({dataFromPython})
                     console.log(`felixPeakTable:`, $felixPeakTable)
                     window.createToast("Peaks found", "success")
-                }).catch(error=>{mainPreModal.error(error.stack || error)})
+                }).catch(error=>{window.handleError(error)})
 
                 break;
 
@@ -186,7 +186,7 @@
                 .then((dataFromPython)=>{
                     get_err_func({dataFromPython})
                     window.createToast("Weighted fit. done", "success")
-                }).catch(error=>{mainPreModal.error(error.stack || error)})
+                }).catch(error=>{window.handleError(error)})
                 break;
 
          

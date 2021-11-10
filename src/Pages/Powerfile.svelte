@@ -35,7 +35,7 @@
 
                 }
             
-            }).catch(error=>{mainPreModal.error(error.stack || error)})
+            }).catch(error=>{window.handleError(error)})
     
     }
 

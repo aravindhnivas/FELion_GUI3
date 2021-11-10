@@ -77,7 +77,7 @@
                     window.createToast("Graph Plotted", "success")
 
                     graphPlotted = true
-                }).catch(error=>{mainPreModal.error(error.stack || error); console.error("Error main: ", error.stack || error)})
+                }).catch(error=>{window.handleError(error); console.error("Error main: ", error.stack || error)})
                 break;
             
             case "baseline":
@@ -88,7 +88,7 @@
                 pyfile="baseline.py"
                 args=[JSON.stringify({filename: pathJoin($felixopoLocation, $baselineFile)})]
                 computePy_func({e, pyfile, args, general:true, openShell})
-                .catch(error=>{mainPreModal.error(error.stack || error)})
+                .catch(error=>{window.handleError(error)})
                 
                 break;
 
@@ -101,7 +101,7 @@
 
                 pyfile="felix_tkplot.py", args=[JSON.stringify({numberWidgets, textWidgets, booleanWidgets, selectedWidgets, location: $felixopoLocation, normMethod, theoryLocation})]
                 computePy_func({e, pyfile, args, general:true, openShell})
-                    .catch(error=>{mainPreModal.error(error.stack || error)})
+                    .catch(error=>{window.handleError(error)})
             default:
                 break;
                 
