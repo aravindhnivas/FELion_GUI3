@@ -32,6 +32,7 @@ contextBridge.exposeInMainWorld("fs", {
     readFileSync: (filename) => fs.readFileSync(filename, "utf-8"),
     existsSync: (location) => fs.existsSync(location),
     copySync: (src, dest) => fs.copySync(src, dest),
+    writeFileSync: (path, data) => fs.writeFileSync(path, data.toString("utf-8") ),
     removeSync: (remove) => fs.removeSync(remove),
     readJsonSync: (jsonFile) => fs.readJsonSync(jsonFile),
     outputJsonSync: (file, obj) => fs.outputJsonSync(file, obj),
