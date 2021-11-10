@@ -1,6 +1,6 @@
 
 <script>
-    import {mainPreModal} from "../svelteWritable";
+    // import {mainPreModal} from "../svelteWritable";
     import IconButton from '@smui/icon-button';
     import {tick} from "svelte";
     import Textfield from '@smui/textfield';
@@ -39,16 +39,18 @@
         try {
             commandArgsToRun += ` ${packagesName}`
             ls = spawn(commandToRun, commandArgsToRun.split(" ").map(arg=>arg.trim()), { detached: true, stdio: 'pipe', shell: openShellTerminal });
-        } catch (error) {mainPreModal.error(error.stack || error)}
+        } catch (error) {window.handleError(error)}
 
         ls.stdout.on("data", data => {
-            commandResults = [...commandResults, {color:colorSets.info, results:`>> ${data || ""}`}]
+            const writeData = String.fromCharCode.apply(null, data)
+            commandResults = [...commandResults, {color:colorSets.info, results:`>> ${writeData || ""}`}]
             srollTerminalDiv()
 
         })
         
         ls.stderr.on("data", data => { 
-            commandResults = [...commandResults, {color:colorSets.danger, results:`>> ${data || ""}`}]
+            const errorData = String.fromCharCode.apply(null, data)
+            commandResults = [...commandResults, {color:colorSets.danger, results:`>> ${errorData || ""}`}]
 
             srollTerminalDiv()
         })
@@ -61,9 +63,9 @@
 
             const outputLog = `${new Date().toLocaleString()}\n\n-----------------------------------------\nRunning terminal commands\n${commandResults.map(cmd=>cmd.results).join("")}\n-----------------------------------------\n`
             
-            try { writeFileSync(pathResolve(__dirname, "output.log"), outputLog)} 
+            try { fs.writeFileSync(pathResolve(appInfo.temp, "FELion_GUI3/output.log"), outputLog)} 
             
-            catch (error) { window.createToast("Could not save the outputs to file: output.log", "warning")}
+            catch (error) { window.handleError(error)}
 
         })
     }
@@ -114,11 +116,11 @@
 
     {#if commandInputDiv}
 
-        <div class="commandInput">
+        <div style="margin-bottom: 1em;">
         
             <button class="button is-link" on:click={installPythonPackages}>Python package installation</button>
 
-            <div class="run" style="display:flex; align-items:center; margin-bottom:1em;">
+            <div class="align" >
 
                 {#if installPythonPackagesMode}
 
@@ -133,11 +135,10 @@
 
             </div>
 
+            <div class="align" >
 
-            <div class="run" style="display:flex; align-items:center; margin-bottom:1em;">
                 <IconButton class="material-icons" on:click={terminalShell}>play_arrow</IconButton>
                 <CustomSwitch style="margin: 0 1em;" bind:selected={openShellTerminal} label="Shell"/>
-
                 <Textfield type="number" step="1" min="0" bind:value={teminalFontSize} variant="outlined" style="width:7em" label="Font Size"/>
 
                 <IconButton class="material-icons is-pulled-right" style="background: #f14668; border-radius: 2em;" on:click="{()=>commandResults=[{color:colorSets.normal, results:`>> cleared`}] }">clear</IconButton>

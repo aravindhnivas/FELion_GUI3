@@ -175,7 +175,7 @@
 
             setConfig()
         
-        } catch (error) {$mainPreModal = {modalContent:error, open:true}}
+        } catch (error) {window.handleError(error)}
     }
 
     const getYMLFileContents = (filename) => {
@@ -282,7 +282,7 @@
             window.createToast("CONFIG loaded");
             configLoaded = true;
 
-        } catch (error) {$mainPreModal = {modalContent:error, open:true}}
+        } catch (error) {window.handleError(error)}
     }
 </script>
 

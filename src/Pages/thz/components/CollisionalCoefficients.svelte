@@ -74,7 +74,7 @@
                 collisionalCoefficient = rateConstants.map(setID).map(correctObjValue)
             } else {browse_collisional_file()}
     
-        } catch (error) { $mainPreModal = {modalContent:error, open:true} }
+        } catch (error) { window.handleError(error) }
     }
     // const saveComputedCollisionalValues = () => {}
 

@@ -56,7 +56,7 @@
                 `${plotID}_collisionalBoltzman_difference`,
             )
 
-        } catch (error) { $mainPreModal = {modalContent:error, open:true} }
+        } catch (error) { window.handleError(error) }
     }
     $: if (windowReady) {setTimeout(()=>graphWindow.focus(), 100)}
 

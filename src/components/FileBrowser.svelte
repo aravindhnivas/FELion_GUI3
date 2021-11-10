@@ -78,7 +78,7 @@
             if (toast) { window.createToast("Files updated"); }
         } catch (error) {
             console.log(error)
-            mainPreModal.error(error.stack || error)
+            window.handleError(error)
             return 
         }
     }

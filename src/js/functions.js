@@ -26,7 +26,7 @@ window.onerror = function (message, source, lineno, colno, error) {
     console.error(error)
     Snackbar.create({ message: error.name, position: "is-top", type: `is-danger` })
     const modalContent =  `${error.name}: ${message}\nsource: ${source}\nlineno: ${lineno}\tcolno: ${colno}`
-    mainPreModal.error(modalContent)
+    window.handleError(modalContent)
 };
 
 window.targetElement = (id) => document.getElementById(id)

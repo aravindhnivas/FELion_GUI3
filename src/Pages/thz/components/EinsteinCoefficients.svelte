@@ -62,7 +62,7 @@
 
             einsteinB_rateComputed=true;
 
-        } catch (error) {$mainPreModal = {modalContent:error, open:true}}
+        } catch (error) {window.handleError(error)}
     }
 
     $: if(einsteinCoefficientA) computeEinsteinB();
