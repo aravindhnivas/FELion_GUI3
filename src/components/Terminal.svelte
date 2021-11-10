@@ -116,7 +116,7 @@
 
     {#if commandInputDiv}
 
-        <div style="margin-bottom: 1em;">
+        <div class="align" style="margin-bottom: 1em;">
         
             <button class="button is-link" on:click={installPythonPackages}>Python package installation</button>
 
@@ -135,7 +135,7 @@
 
             </div>
 
-            <div class="align" >
+            <div class="align v-center" >
 
                 <IconButton class="material-icons" on:click={terminalShell}>play_arrow</IconButton>
                 <CustomSwitch style="margin: 0 1em;" bind:selected={openShellTerminal} label="Shell"/>
