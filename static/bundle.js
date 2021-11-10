@@ -5775,8 +5775,6 @@ var app = (function (marked) {
     window.handleError = (error) => mainPreModal.error(error.stack || error );
 
     window.onerror = function (message, source, lineno, colno, error) {
-        console.error(error);
-        Snackbar.create({ message: error.name, position: "is-top", type: `is-danger` });
         const modalContent =  `${error.name}: ${message}\nsource: ${source}\nlineno: ${lineno}\tcolno: ${colno}`;
         window.handleError(modalContent);
     };
@@ -11972,22 +11970,21 @@ var app = (function (marked) {
     			p1 = element("p");
     			p1.textContent = "2021 © AN Marimuthu";
     			p2 = element("p");
-    			add_location(p0, file$1g, 10, 8, 258);
+    			add_location(p0, file$1g, 10, 8, 234);
     			attr_dev(div0, "class", "navbar-item");
-    			add_location(div0, file$1g, 9, 6, 223);
+    			add_location(div0, file$1g, 9, 6, 199);
     			attr_dev(div1, "class", "navbar-start");
-    			add_location(div1, file$1g, 8, 4, 189);
-    			add_location(p1, file$1g, 20, 8, 423);
-    			add_location(p2, file$1g, 20, 35, 450);
+    			add_location(div1, file$1g, 8, 4, 165);
+    			add_location(p1, file$1g, 20, 8, 399);
+    			add_location(p2, file$1g, 20, 35, 426);
     			attr_dev(div2, "class", "navbar-item");
-    			add_location(div2, file$1g, 17, 6, 384);
+    			add_location(div2, file$1g, 17, 6, 360);
     			attr_dev(div3, "class", "navbar-end");
-    			add_location(div3, file$1g, 15, 4, 350);
+    			add_location(div3, file$1g, 15, 4, 326);
     			attr_dev(div4, "class", "navbar-menu");
-    			add_location(div4, file$1g, 6, 2, 156);
+    			add_location(div4, file$1g, 6, 2, 132);
     			attr_dev(nav, "class", "navbar is-fixed-bottom animated fadeInUp svelte-1p4s5kp");
     			attr_dev(nav, "id", "footer");
-    			set_style(nav, "display", status);
     			add_location(nav, file$1g, 5, 0, 61);
     		},
     		l: function claim(nodes) {
@@ -12358,7 +12355,7 @@ var app = (function (marked) {
     	return block;
     }
 
-    // (30:43)           <Simplewave>              <svelte:fragment slot="header">              <h1 class="title">FELion Spectrum Analyser</h1>              <h1 class="subtitle">To analyse FELIX data for FELion Instrument</h1>            </svelte:fragment>              <svelte:fragment slot="footer">              <p>Developed at Dr.Br&uuml;nken's group FELion@FELIX | 2021 &copy; AN Marimuthu</p>            </svelte:fragment>          </Simplewave>        {/await}
+    // (30:39)           <Simplewave>              <svelte:fragment slot="header">              <h1 class="title">FELion Spectrum Analyser</h1>              <h1 class="subtitle">To analyse FELIX data for FELion Instrument</h1>            </svelte:fragment>              <svelte:fragment slot="footer">              <p>Developed at Dr.Br&uuml;nken's group FELion@FELIX | 2021 &copy; AN Marimuthu</p>            </svelte:fragment>          </Simplewave>        {/await}
     function create_then_block(ctx) {
     	let simplewave;
     	let current;
@@ -12400,7 +12397,7 @@ var app = (function (marked) {
     		block,
     		id: create_then_block.name,
     		type: "then",
-    		source: "(30:43)           <Simplewave>              <svelte:fragment slot=\\\"header\\\">              <h1 class=\\\"title\\\">FELion Spectrum Analyser</h1>              <h1 class=\\\"subtitle\\\">To analyse FELIX data for FELion Instrument</h1>            </svelte:fragment>              <svelte:fragment slot=\\\"footer\\\">              <p>Developed at Dr.Br&uuml;nken's group FELion@FELIX | 2021 &copy; AN Marimuthu</p>            </svelte:fragment>          </Simplewave>        {/await}",
+    		source: "(30:39)           <Simplewave>              <svelte:fragment slot=\\\"header\\\">              <h1 class=\\\"title\\\">FELion Spectrum Analyser</h1>              <h1 class=\\\"subtitle\\\">To analyse FELIX data for FELion Instrument</h1>            </svelte:fragment>              <svelte:fragment slot=\\\"footer\\\">              <p>Developed at Dr.Br&uuml;nken's group FELion@FELIX | 2021 &copy; AN Marimuthu</p>            </svelte:fragment>          </Simplewave>        {/await}",
     		ctx
     	});
 
@@ -12421,9 +12418,9 @@ var app = (function (marked) {
     			h11 = element("h1");
     			h11.textContent = "To analyse FELIX data for FELion Instrument";
     			attr_dev(h10, "class", "title svelte-1v9fp82");
-    			add_location(h10, file$1e, 33, 12, 642);
+    			add_location(h10, file$1e, 33, 12, 638);
     			attr_dev(h11, "class", "subtitle svelte-1v9fp82");
-    			add_location(h11, file$1e, 34, 12, 703);
+    			add_location(h11, file$1e, 34, 12, 699);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h10, anchor);
@@ -12457,7 +12454,7 @@ var app = (function (marked) {
     			p = element("p");
     			p.textContent = "Developed at Dr.Brünken's group FELion@FELIX | 2021 © AN Marimuthu";
     			attr_dev(p, "class", "svelte-1v9fp82");
-    			add_location(p, file$1e, 38, 12, 861);
+    			add_location(p, file$1e, 38, 12, 857);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -26486,7 +26483,7 @@ var app = (function (marked) {
     			span = element("span");
     			span.textContent = "Select All";
     			attr_dev(span, "slot", "label");
-    			add_location(span, file_1, 135, 8, 5068);
+    			add_location(span, file_1, 135, 8, 5071);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -26653,7 +26650,7 @@ var app = (function (marked) {
     			div = element("div");
     			div.textContent = "...loading";
     			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-ujy50h");
-    			add_location(div, file_1, 174, 8, 6801);
+    			add_location(div, file_1, 174, 8, 6804);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -26686,7 +26683,7 @@ var app = (function (marked) {
     			div = element("div");
     			div.textContent = "Location doesn't exist: Browse files again";
     			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-ujy50h");
-    			add_location(div, file_1, 172, 8, 6678);
+    			add_location(div, file_1, 172, 8, 6681);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -26755,7 +26752,7 @@ var app = (function (marked) {
 
     			attr_dev(div, "class", "otherFolderlist");
     			set_style(div, "cursor", "pointer");
-    			add_location(div, file_1, 162, 8, 6201);
+    			add_location(div, file_1, 162, 8, 6204);
     		},
     		m: function mount(target, anchor) {
     			if (~current_block_type_index) {
@@ -26874,7 +26871,7 @@ var app = (function (marked) {
     			t1 = text(/*filetype*/ ctx[2]);
     			t2 = text(" here!");
     			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-ujy50h");
-    			add_location(div, file_1, 159, 12, 6081);
+    			add_location(div, file_1, 159, 12, 6084);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -26945,7 +26942,7 @@ var app = (function (marked) {
     		c: function create() {
     			div = element("div");
     			create_component(virtualchecklist.$$.fragment);
-    			add_location(div, file_1, 151, 12, 5636);
+    			add_location(div, file_1, 151, 12, 5639);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -27068,9 +27065,9 @@ var app = (function (marked) {
     			t1 = text(t1_value);
     			t2 = space();
     			attr_dev(div0, "class", "mdc-typography--subtitle1");
-    			add_location(div0, file_1, 166, 20, 6515);
+    			add_location(div0, file_1, 166, 20, 6518);
     			attr_dev(div1, "class", "align svelte-ujy50h");
-    			add_location(div1, file_1, 164, 16, 6327);
+    			add_location(div1, file_1, 164, 16, 6330);
     			this.first = div1;
     		},
     		m: function mount(target, anchor) {
@@ -27287,16 +27284,16 @@ var app = (function (marked) {
     			t7 = space();
     			if_block.c();
     			attr_dev(div0, "class", "align center browseIcons svelte-ujy50h");
-    			add_location(div0, file_1, 123, 0, 4430);
+    			add_location(div0, file_1, 123, 0, 4433);
     			attr_dev(div1, "class", "align center svelte-ujy50h");
-    			add_location(div1, file_1, 131, 0, 4866);
+    			add_location(div1, file_1, 131, 0, 4869);
     			attr_dev(div2, "class", "mdc-typography--subtitle1");
-    			add_location(div2, file_1, 146, 8, 5461);
+    			add_location(div2, file_1, 146, 8, 5464);
     			attr_dev(div3, "class", "align folderlist svelte-ujy50h");
-    			add_location(div3, file_1, 141, 4, 5199);
+    			add_location(div3, file_1, 141, 4, 5202);
     			attr_dev(div4, "class", "folderfile-list svelte-ujy50h");
     			attr_dev(div4, "id", div4_id_value = "" + (/*filetype*/ ctx[2] + "_filebrowser"));
-    			add_location(div4, file_1, 140, 0, 5136);
+    			add_location(div4, file_1, 140, 0, 5139);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -27633,7 +27630,6 @@ var app = (function (marked) {
     	};
 
     	$$self.$capture_state = () => ({
-    		mainPreModal,
     		IconButton,
     		Icon,
     		slide,
@@ -28252,7 +28248,7 @@ var app = (function (marked) {
     const get_plotContainer_functions_slot_changes = dirty => ({});
     const get_plotContainer_functions_slot_context = ctx => ({});
     const get_plotContainer_slot_changes = dirty => ({});
-    const get_plotContainer_slot_context = ctx => ({ lookForGraph: /*lookForGraph*/ ctx[12] });
+    const get_plotContainer_slot_context = ctx => ({ lookForGraph: /*lookForGraph*/ ctx[11] });
     const get_buttonContainer_slot_changes = dirty => ({});
     const get_buttonContainer_slot_context = ctx => ({});
 
@@ -28294,13 +28290,13 @@ var app = (function (marked) {
     			button = element("button");
     			button.textContent = "Graph:Open separately";
     			attr_dev(button, "class", "button is-warning animated fadeIn");
-    			add_location(button, file$V, 138, 20, 4659);
+    			add_location(button, file$V, 138, 20, 4662);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
 
     			if (!mounted) {
-    				dispose = listen_dev(button, "click", /*openGraph*/ ctx[13], false, false, false);
+    				dispose = listen_dev(button, "click", /*openGraph*/ ctx[12], false, false, false);
     				mounted = true;
     			}
     		},
@@ -28327,10 +28323,10 @@ var app = (function (marked) {
     function create_if_block_1$b(ctx) {
     	let t;
     	let current;
-    	const plotContainer_functions_slot_template = /*#slots*/ ctx[16].plotContainer_functions;
-    	const plotContainer_functions_slot = create_slot(plotContainer_functions_slot_template, ctx, /*$$scope*/ ctx[30], get_plotContainer_functions_slot_context);
-    	const plotContainer_reports_slot_template = /*#slots*/ ctx[16].plotContainer_reports;
-    	const plotContainer_reports_slot = create_slot(plotContainer_reports_slot_template, ctx, /*$$scope*/ ctx[30], get_plotContainer_reports_slot_context);
+    	const plotContainer_functions_slot_template = /*#slots*/ ctx[15].plotContainer_functions;
+    	const plotContainer_functions_slot = create_slot(plotContainer_functions_slot_template, ctx, /*$$scope*/ ctx[28], get_plotContainer_functions_slot_context);
+    	const plotContainer_reports_slot_template = /*#slots*/ ctx[15].plotContainer_reports;
+    	const plotContainer_reports_slot = create_slot(plotContainer_reports_slot_template, ctx, /*$$scope*/ ctx[28], get_plotContainer_reports_slot_context);
 
     	const block = {
     		c: function create() {
@@ -28353,30 +28349,30 @@ var app = (function (marked) {
     		},
     		p: function update(ctx, dirty) {
     			if (plotContainer_functions_slot) {
-    				if (plotContainer_functions_slot.p && (!current || dirty[0] & /*$$scope*/ 1073741824)) {
+    				if (plotContainer_functions_slot.p && (!current || dirty & /*$$scope*/ 268435456)) {
     					update_slot_base(
     						plotContainer_functions_slot,
     						plotContainer_functions_slot_template,
     						ctx,
-    						/*$$scope*/ ctx[30],
+    						/*$$scope*/ ctx[28],
     						!current
-    						? get_all_dirty_from_scope(/*$$scope*/ ctx[30])
-    						: get_slot_changes(plotContainer_functions_slot_template, /*$$scope*/ ctx[30], dirty, get_plotContainer_functions_slot_changes),
+    						? get_all_dirty_from_scope(/*$$scope*/ ctx[28])
+    						: get_slot_changes(plotContainer_functions_slot_template, /*$$scope*/ ctx[28], dirty, get_plotContainer_functions_slot_changes),
     						get_plotContainer_functions_slot_context
     					);
     				}
     			}
 
     			if (plotContainer_reports_slot) {
-    				if (plotContainer_reports_slot.p && (!current || dirty[0] & /*$$scope*/ 1073741824)) {
+    				if (plotContainer_reports_slot.p && (!current || dirty & /*$$scope*/ 268435456)) {
     					update_slot_base(
     						plotContainer_reports_slot,
     						plotContainer_reports_slot_template,
     						ctx,
-    						/*$$scope*/ ctx[30],
+    						/*$$scope*/ ctx[28],
     						!current
-    						? get_all_dirty_from_scope(/*$$scope*/ ctx[30])
-    						: get_slot_changes(plotContainer_reports_slot_template, /*$$scope*/ ctx[30], dirty, get_plotContainer_reports_slot_changes),
+    						? get_all_dirty_from_scope(/*$$scope*/ ctx[28])
+    						: get_slot_changes(plotContainer_reports_slot_template, /*$$scope*/ ctx[28], dirty, get_plotContainer_reports_slot_changes),
     						get_plotContainer_reports_slot_context
     					);
     				}
@@ -28418,7 +28414,7 @@ var app = (function (marked) {
     	let current;
 
     	function modal_active_binding(value) {
-    		/*modal_active_binding*/ ctx[29](value);
+    		/*modal_active_binding*/ ctx[27](value);
     	}
 
     	let modal_props = {
@@ -28447,13 +28443,13 @@ var app = (function (marked) {
     		},
     		p: function update(ctx, dirty) {
     			const modal_changes = {};
-    			if (dirty[0] & /*filetype*/ 32) modal_changes.title = "" + (/*filetype*/ ctx[5].toUpperCase() + " Settings");
+    			if (dirty & /*filetype*/ 32) modal_changes.title = "" + (/*filetype*/ ctx[5].toUpperCase() + " Settings");
 
-    			if (dirty[0] & /*$$scope, filetype*/ 1073741856) {
+    			if (dirty & /*$$scope, filetype*/ 268435488) {
     				modal_changes.$$scope = { dirty, ctx };
     			}
 
-    			if (!updating_active && dirty[0] & /*activateConfigModal*/ 8) {
+    			if (!updating_active && dirty & /*activateConfigModal*/ 8) {
     				updating_active = true;
     				modal_changes.active = /*activateConfigModal*/ ctx[3];
     				add_flush_callback(() => updating_active = false);
@@ -28489,8 +28485,8 @@ var app = (function (marked) {
     // (158:16) <svelte:fragment slot="content">
     function create_content_slot$8(ctx) {
     	let current;
-    	const config_slot_template = /*#slots*/ ctx[16].config;
-    	const config_slot = create_slot(config_slot_template, ctx, /*$$scope*/ ctx[30], get_config_slot_context);
+    	const config_slot_template = /*#slots*/ ctx[15].config;
+    	const config_slot = create_slot(config_slot_template, ctx, /*$$scope*/ ctx[28], get_config_slot_context);
 
     	const block = {
     		c: function create() {
@@ -28505,15 +28501,15 @@ var app = (function (marked) {
     		},
     		p: function update(ctx, dirty) {
     			if (config_slot) {
-    				if (config_slot.p && (!current || dirty[0] & /*$$scope*/ 1073741824)) {
+    				if (config_slot.p && (!current || dirty & /*$$scope*/ 268435456)) {
     					update_slot_base(
     						config_slot,
     						config_slot_template,
     						ctx,
-    						/*$$scope*/ ctx[30],
+    						/*$$scope*/ ctx[28],
     						!current
-    						? get_all_dirty_from_scope(/*$$scope*/ ctx[30])
-    						: get_slot_changes(config_slot_template, /*$$scope*/ ctx[30], dirty, get_config_slot_changes),
+    						? get_all_dirty_from_scope(/*$$scope*/ ctx[28])
+    						: get_slot_changes(config_slot_template, /*$$scope*/ ctx[28], dirty, get_config_slot_changes),
     						get_config_slot_context
     					);
     				}
@@ -28555,13 +28551,13 @@ var app = (function (marked) {
     			button = element("button");
     			button.textContent = "Save";
     			attr_dev(button, "class", "button is-link");
-    			add_location(button, file$V, 161, 20, 5591);
+    			add_location(button, file$V, 161, 20, 5568);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
 
     			if (!mounted) {
-    				dispose = listen_dev(button, "click", /*click_handler_1*/ ctx[28], false, false, false);
+    				dispose = listen_dev(button, "click", /*click_handler_1*/ ctx[26], false, false, false);
     				mounted = true;
     			}
     		},
@@ -28621,15 +28617,15 @@ var app = (function (marked) {
     	let dispose;
 
     	function filebrowser_currentLocation_binding(value) {
-    		/*filebrowser_currentLocation_binding*/ ctx[17](value);
+    		/*filebrowser_currentLocation_binding*/ ctx[16](value);
     	}
 
     	function filebrowser_fileChecked_binding(value) {
-    		/*filebrowser_fileChecked_binding*/ ctx[18](value);
+    		/*filebrowser_fileChecked_binding*/ ctx[17](value);
     	}
 
     	function filebrowser_fullfileslist_binding(value) {
-    		/*filebrowser_fullfileslist_binding*/ ctx[19](value);
+    		/*filebrowser_fullfileslist_binding*/ ctx[18](value);
     	}
 
     	let filebrowser_props = { filetype: /*filetype*/ ctx[5] };
@@ -28650,11 +28646,11 @@ var app = (function (marked) {
     	binding_callbacks.push(() => bind(filebrowser, 'currentLocation', filebrowser_currentLocation_binding));
     	binding_callbacks.push(() => bind(filebrowser, 'fileChecked', filebrowser_fileChecked_binding));
     	binding_callbacks.push(() => bind(filebrowser, 'fullfileslist', filebrowser_fullfileslist_binding));
-    	filebrowser.$on("chdir", /*chdir_handler*/ ctx[20]);
-    	filebrowser.$on("markedFile", /*markedFile_handler*/ ctx[21]);
+    	filebrowser.$on("chdir", /*chdir_handler*/ ctx[19]);
+    	filebrowser.$on("markedFile", /*markedFile_handler*/ ctx[20]);
 
     	function textfield_value_binding(value) {
-    		/*textfield_value_binding*/ ctx[24](value);
+    		/*textfield_value_binding*/ ctx[23](value);
     	}
 
     	let textfield_props = {
@@ -28678,12 +28674,12 @@ var app = (function (marked) {
     			$$inline: true
     		});
 
-    	iconbutton.$on("click", /*click_handler*/ ctx[25]);
-    	const buttonContainer_slot_template = /*#slots*/ ctx[16].buttonContainer;
-    	const buttonContainer_slot = create_slot(buttonContainer_slot_template, ctx, /*$$scope*/ ctx[30], get_buttonContainer_slot_context);
+    	iconbutton.$on("click", /*click_handler*/ ctx[24]);
+    	const buttonContainer_slot_template = /*#slots*/ ctx[15].buttonContainer;
+    	const buttonContainer_slot = create_slot(buttonContainer_slot_template, ctx, /*$$scope*/ ctx[28], get_buttonContainer_slot_context);
     	let if_block0 = /*graphPlotted*/ ctx[6] && create_if_block_2$4(ctx);
-    	const plotContainer_slot_template = /*#slots*/ ctx[16].plotContainer;
-    	const plotContainer_slot = create_slot(plotContainer_slot_template, ctx, /*$$scope*/ ctx[30], get_plotContainer_slot_context);
+    	const plotContainer_slot_template = /*#slots*/ ctx[15].plotContainer;
+    	const plotContainer_slot = create_slot(plotContainer_slot_template, ctx, /*$$scope*/ ctx[28], get_plotContainer_slot_context);
     	let if_block1 = /*graphPlotted*/ ctx[6] && create_if_block_1$b(ctx);
     	let if_block2 = /*activateConfigModal*/ ctx[3] && create_if_block$s(ctx);
 
@@ -28715,28 +28711,28 @@ var app = (function (marked) {
     			t8 = space();
     			if (if_block2) if_block2.c();
     			attr_dev(div0, "class", "interact left_container__div box  svelte-ds15ez");
-    			add_location(div0, file$V, 120, 8, 3670);
+    			add_location(div0, file$V, 120, 8, 3673);
     			attr_dev(button, "class", "button is-link");
     			attr_dev(button, "id", button_id_value = "" + (/*filetype*/ ctx[5] + "_filebrowser_btn"));
-    			add_location(button, file$V, 128, 16, 4126);
+    			add_location(button, file$V, 128, 16, 4129);
     			attr_dev(div1, "class", "location__div svelte-ds15ez");
-    			add_location(div1, file$V, 127, 12, 4080);
+    			add_location(div1, file$V, 127, 12, 4083);
     			attr_dev(div2, "class", "button__div align");
     			attr_dev(div2, "id", div2_id_value = "" + (/*filetype*/ ctx[5] + "-buttonContainer"));
-    			add_location(div2, file$V, 134, 12, 4486);
+    			add_location(div2, file$V, 134, 12, 4489);
     			attr_dev(div3, "class", "plot__div svelte-ds15ez");
     			attr_dev(div3, "id", div3_id_value = "" + (/*filetype*/ ctx[5] + "-plotContainer"));
-    			add_render_callback(() => /*div3_elementresize_handler*/ ctx[26].call(div3));
-    			add_location(div3, file$V, 144, 12, 4823);
+    			add_render_callback(() => /*div3_elementresize_handler*/ ctx[25].call(div3));
+    			add_location(div3, file$V, 144, 12, 4826);
     			attr_dev(div4, "class", "right_container__div box  svelte-ds15ez");
     			attr_dev(div4, "id", div4_id_value = "" + (/*filetype*/ ctx[5] + "__mainContainer__div"));
-    			add_location(div4, file$V, 125, 8, 3988);
+    			add_location(div4, file$V, 125, 8, 3991);
     			attr_dev(div5, "class", "main__layout__div svelte-ds15ez");
-    			add_location(div5, file$V, 119, 4, 3629);
+    			add_location(div5, file$V, 119, 4, 3632);
     			attr_dev(section, "id", /*id*/ ctx[4]);
     			set_style(section, "display", "none");
     			attr_dev(section, "class", "animated fadeIn");
-    			add_location(section, file$V, 117, 0, 3562);
+    			add_location(section, file$V, 117, 0, 3565);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -28773,40 +28769,39 @@ var app = (function (marked) {
 
     			append_dev(div3, t7);
     			if (if_block1) if_block1.m(div3, null);
-    			div3_resize_listener = add_resize_listener(div3, /*div3_elementresize_handler*/ ctx[26].bind(div3));
-    			/*div3_binding*/ ctx[27](div3);
+    			div3_resize_listener = add_resize_listener(div3, /*div3_elementresize_handler*/ ctx[25].bind(div3));
     			append_dev(div5, t8);
     			if (if_block2) if_block2.m(div5, null);
     			current = true;
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(div0, "mouseup", /*mouseup_handler*/ ctx[22], false, false, false),
-    					listen_dev(div0, "mousedown", /*mousedown_handler*/ ctx[23], false, false, false),
-    					listen_dev(button, "click", /*browse_folder*/ ctx[11], false, false, false),
-    					action_destroyer(/*lookForGraph*/ ctx[12].call(null, div3))
+    					listen_dev(div0, "mouseup", /*mouseup_handler*/ ctx[21], false, false, false),
+    					listen_dev(div0, "mousedown", /*mousedown_handler*/ ctx[22], false, false, false),
+    					listen_dev(button, "click", /*browse_folder*/ ctx[10], false, false, false),
+    					action_destroyer(/*lookForGraph*/ ctx[11].call(null, div3))
     				];
 
     				mounted = true;
     			}
     		},
-    		p: function update(ctx, dirty) {
+    		p: function update(ctx, [dirty]) {
     			const filebrowser_changes = {};
-    			if (dirty[0] & /*filetype*/ 32) filebrowser_changes.filetype = /*filetype*/ ctx[5];
+    			if (dirty & /*filetype*/ 32) filebrowser_changes.filetype = /*filetype*/ ctx[5];
 
-    			if (!updating_currentLocation && dirty[0] & /*currentLocation*/ 4) {
+    			if (!updating_currentLocation && dirty & /*currentLocation*/ 4) {
     				updating_currentLocation = true;
     				filebrowser_changes.currentLocation = /*currentLocation*/ ctx[2];
     				add_flush_callback(() => updating_currentLocation = false);
     			}
 
-    			if (!updating_fileChecked && dirty[0] & /*fileChecked*/ 1) {
+    			if (!updating_fileChecked && dirty & /*fileChecked*/ 1) {
     				updating_fileChecked = true;
     				filebrowser_changes.fileChecked = /*fileChecked*/ ctx[0];
     				add_flush_callback(() => updating_fileChecked = false);
     			}
 
-    			if (!updating_fullfileslist && dirty[0] & /*fullfileslist*/ 2) {
+    			if (!updating_fullfileslist && dirty & /*fullfileslist*/ 2) {
     				updating_fullfileslist = true;
     				filebrowser_changes.fullfileslist = /*fullfileslist*/ ctx[1];
     				add_flush_callback(() => updating_fullfileslist = false);
@@ -28814,13 +28809,13 @@ var app = (function (marked) {
 
     			filebrowser.$set(filebrowser_changes);
 
-    			if (!current || dirty[0] & /*filetype*/ 32 && button_id_value !== (button_id_value = "" + (/*filetype*/ ctx[5] + "_filebrowser_btn"))) {
+    			if (!current || dirty & /*filetype*/ 32 && button_id_value !== (button_id_value = "" + (/*filetype*/ ctx[5] + "_filebrowser_btn"))) {
     				attr_dev(button, "id", button_id_value);
     			}
 
     			const textfield_changes = {};
 
-    			if (!updating_value && dirty[0] & /*currentLocation*/ 4) {
+    			if (!updating_value && dirty & /*currentLocation*/ 4) {
     				updating_value = true;
     				textfield_changes.value = /*currentLocation*/ ctx[2];
     				add_flush_callback(() => updating_value = false);
@@ -28829,22 +28824,22 @@ var app = (function (marked) {
     			textfield.$set(textfield_changes);
     			const iconbutton_changes = {};
 
-    			if (dirty[0] & /*$$scope*/ 1073741824) {
+    			if (dirty & /*$$scope*/ 268435456) {
     				iconbutton_changes.$$scope = { dirty, ctx };
     			}
 
     			iconbutton.$set(iconbutton_changes);
 
     			if (buttonContainer_slot) {
-    				if (buttonContainer_slot.p && (!current || dirty[0] & /*$$scope*/ 1073741824)) {
+    				if (buttonContainer_slot.p && (!current || dirty & /*$$scope*/ 268435456)) {
     					update_slot_base(
     						buttonContainer_slot,
     						buttonContainer_slot_template,
     						ctx,
-    						/*$$scope*/ ctx[30],
+    						/*$$scope*/ ctx[28],
     						!current
-    						? get_all_dirty_from_scope(/*$$scope*/ ctx[30])
-    						: get_slot_changes(buttonContainer_slot_template, /*$$scope*/ ctx[30], dirty, get_buttonContainer_slot_changes),
+    						? get_all_dirty_from_scope(/*$$scope*/ ctx[28])
+    						: get_slot_changes(buttonContainer_slot_template, /*$$scope*/ ctx[28], dirty, get_buttonContainer_slot_changes),
     						get_buttonContainer_slot_context
     					);
     				}
@@ -28863,20 +28858,20 @@ var app = (function (marked) {
     				if_block0 = null;
     			}
 
-    			if (!current || dirty[0] & /*filetype*/ 32 && div2_id_value !== (div2_id_value = "" + (/*filetype*/ ctx[5] + "-buttonContainer"))) {
+    			if (!current || dirty & /*filetype*/ 32 && div2_id_value !== (div2_id_value = "" + (/*filetype*/ ctx[5] + "-buttonContainer"))) {
     				attr_dev(div2, "id", div2_id_value);
     			}
 
     			if (plotContainer_slot) {
-    				if (plotContainer_slot.p && (!current || dirty[0] & /*$$scope*/ 1073741824)) {
+    				if (plotContainer_slot.p && (!current || dirty & /*$$scope*/ 268435456)) {
     					update_slot_base(
     						plotContainer_slot,
     						plotContainer_slot_template,
     						ctx,
-    						/*$$scope*/ ctx[30],
+    						/*$$scope*/ ctx[28],
     						!current
-    						? get_all_dirty_from_scope(/*$$scope*/ ctx[30])
-    						: get_slot_changes(plotContainer_slot_template, /*$$scope*/ ctx[30], dirty, get_plotContainer_slot_changes),
+    						? get_all_dirty_from_scope(/*$$scope*/ ctx[28])
+    						: get_slot_changes(plotContainer_slot_template, /*$$scope*/ ctx[28], dirty, get_plotContainer_slot_changes),
     						get_plotContainer_slot_context
     					);
     				}
@@ -28886,7 +28881,7 @@ var app = (function (marked) {
     				if (if_block1) {
     					if_block1.p(ctx, dirty);
 
-    					if (dirty[0] & /*graphPlotted*/ 64) {
+    					if (dirty & /*graphPlotted*/ 64) {
     						transition_in(if_block1, 1);
     					}
     				} else {
@@ -28905,11 +28900,11 @@ var app = (function (marked) {
     				check_outros();
     			}
 
-    			if (!current || dirty[0] & /*filetype*/ 32 && div3_id_value !== (div3_id_value = "" + (/*filetype*/ ctx[5] + "-plotContainer"))) {
+    			if (!current || dirty & /*filetype*/ 32 && div3_id_value !== (div3_id_value = "" + (/*filetype*/ ctx[5] + "-plotContainer"))) {
     				attr_dev(div3, "id", div3_id_value);
     			}
 
-    			if (!current || dirty[0] & /*filetype*/ 32 && div4_id_value !== (div4_id_value = "" + (/*filetype*/ ctx[5] + "__mainContainer__div"))) {
+    			if (!current || dirty & /*filetype*/ 32 && div4_id_value !== (div4_id_value = "" + (/*filetype*/ ctx[5] + "__mainContainer__div"))) {
     				attr_dev(div4, "id", div4_id_value);
     			}
 
@@ -28917,7 +28912,7 @@ var app = (function (marked) {
     				if (if_block2) {
     					if_block2.p(ctx, dirty);
 
-    					if (dirty[0] & /*activateConfigModal*/ 8) {
+    					if (dirty & /*activateConfigModal*/ 8) {
     						transition_in(if_block2, 1);
     					}
     				} else {
@@ -28936,7 +28931,7 @@ var app = (function (marked) {
     				check_outros();
     			}
 
-    			if (!current || dirty[0] & /*id*/ 16) {
+    			if (!current || dirty & /*id*/ 16) {
     				attr_dev(section, "id", /*id*/ ctx[4]);
     			}
     		},
@@ -28988,7 +28983,6 @@ var app = (function (marked) {
     			if (plotContainer_slot) plotContainer_slot.d(detaching);
     			if (if_block1) if_block1.d();
     			div3_resize_listener();
-    			/*div3_binding*/ ctx[27](null);
     			if (detaching && div3_transition) div3_transition.end();
     			if (if_block2) if_block2.d();
     			mounted = false;
@@ -29053,11 +29047,10 @@ var app = (function (marked) {
     	let graphDivs = [];
 
     	onMount(() => {
-    		$$invalidate(14, toggleBrowser = true);
+    		$$invalidate(13, toggleBrowser = true);
     	});
 
-    	let graphContainer;
-
+    	// let graphContainer;
     	const lookForGraph = () => {
     		try {
     			graphDivs = Array.from(document.querySelectorAll(`#${filetype}-plotContainer .graph__div`));
@@ -29155,13 +29148,6 @@ var app = (function (marked) {
     		$$invalidate(7, plotWidth);
     	}
 
-    	function div3_binding($$value) {
-    		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
-    			graphContainer = $$value;
-    			$$invalidate(9, graphContainer);
-    		});
-    	}
-
     	const click_handler_1 = () => {
     		dispatch('configSave', { filetype });
     	};
@@ -29175,13 +29161,13 @@ var app = (function (marked) {
     		if ('id' in $$props) $$invalidate(4, id = $$props.id);
     		if ('fileChecked' in $$props) $$invalidate(0, fileChecked = $$props.fileChecked);
     		if ('filetype' in $$props) $$invalidate(5, filetype = $$props.filetype);
-    		if ('toggleBrowser' in $$props) $$invalidate(14, toggleBrowser = $$props.toggleBrowser);
+    		if ('toggleBrowser' in $$props) $$invalidate(13, toggleBrowser = $$props.toggleBrowser);
     		if ('fullfileslist' in $$props) $$invalidate(1, fullfileslist = $$props.fullfileslist);
     		if ('currentLocation' in $$props) $$invalidate(2, currentLocation = $$props.currentLocation);
     		if ('graphPlotted' in $$props) $$invalidate(6, graphPlotted = $$props.graphPlotted);
-    		if ('graphWindowClasses' in $$props) $$invalidate(15, graphWindowClasses = $$props.graphWindowClasses);
+    		if ('graphWindowClasses' in $$props) $$invalidate(14, graphWindowClasses = $$props.graphWindowClasses);
     		if ('activateConfigModal' in $$props) $$invalidate(3, activateConfigModal = $$props.activateConfigModal);
-    		if ('$$scope' in $$props) $$invalidate(30, $$scope = $$props.$$scope);
+    		if ('$$scope' in $$props) $$invalidate(28, $$scope = $$props.$$scope);
     	};
 
     	$$self.$capture_state = () => ({
@@ -29207,7 +29193,6 @@ var app = (function (marked) {
     		dispatch,
     		browse_folder,
     		graphDivs,
-    		graphContainer,
     		lookForGraph,
     		openGraph,
     		plotWidth,
@@ -29219,14 +29204,13 @@ var app = (function (marked) {
     		if ('id' in $$props) $$invalidate(4, id = $$props.id);
     		if ('fileChecked' in $$props) $$invalidate(0, fileChecked = $$props.fileChecked);
     		if ('filetype' in $$props) $$invalidate(5, filetype = $$props.filetype);
-    		if ('toggleBrowser' in $$props) $$invalidate(14, toggleBrowser = $$props.toggleBrowser);
+    		if ('toggleBrowser' in $$props) $$invalidate(13, toggleBrowser = $$props.toggleBrowser);
     		if ('fullfileslist' in $$props) $$invalidate(1, fullfileslist = $$props.fullfileslist);
     		if ('currentLocation' in $$props) $$invalidate(2, currentLocation = $$props.currentLocation);
     		if ('graphPlotted' in $$props) $$invalidate(6, graphPlotted = $$props.graphPlotted);
-    		if ('graphWindowClasses' in $$props) $$invalidate(15, graphWindowClasses = $$props.graphWindowClasses);
+    		if ('graphWindowClasses' in $$props) $$invalidate(14, graphWindowClasses = $$props.graphWindowClasses);
     		if ('activateConfigModal' in $$props) $$invalidate(3, activateConfigModal = $$props.activateConfigModal);
     		if ('graphDivs' in $$props) graphDivs = $$props.graphDivs;
-    		if ('graphContainer' in $$props) $$invalidate(9, graphContainer = $$props.graphContainer);
     		if ('plotWidth' in $$props) $$invalidate(7, plotWidth = $$props.plotWidth);
     		if ('mouseReleased' in $$props) $$invalidate(8, mouseReleased = $$props.mouseReleased);
     	};
@@ -29236,7 +29220,7 @@ var app = (function (marked) {
     	}
 
     	$$self.$$.update = () => {
-    		if ($$self.$$.dirty[0] & /*plotWidth, mouseReleased*/ 384) {
+    		if ($$self.$$.dirty & /*plotWidth, mouseReleased*/ 384) {
     			if (plotWidth && mouseReleased) {
     				changeGraphDivWidth();
     			}
@@ -29253,7 +29237,6 @@ var app = (function (marked) {
     		graphPlotted,
     		plotWidth,
     		mouseReleased,
-    		graphContainer,
     		dispatch,
     		browse_folder,
     		lookForGraph,
@@ -29271,7 +29254,6 @@ var app = (function (marked) {
     		textfield_value_binding,
     		click_handler,
     		div3_elementresize_handler,
-    		div3_binding,
     		click_handler_1,
     		modal_active_binding,
     		$$scope
@@ -29282,26 +29264,17 @@ var app = (function (marked) {
     	constructor(options) {
     		super(options);
 
-    		init$1(
-    			this,
-    			options,
-    			instance$$,
-    			create_fragment$$,
-    			safe_not_equal,
-    			{
-    				id: 4,
-    				fileChecked: 0,
-    				filetype: 5,
-    				toggleBrowser: 14,
-    				fullfileslist: 1,
-    				currentLocation: 2,
-    				graphPlotted: 6,
-    				graphWindowClasses: 15,
-    				activateConfigModal: 3
-    			},
-    			null,
-    			[-1, -1]
-    		);
+    		init$1(this, options, instance$$, create_fragment$$, safe_not_equal, {
+    			id: 4,
+    			fileChecked: 0,
+    			filetype: 5,
+    			toggleBrowser: 13,
+    			fullfileslist: 1,
+    			currentLocation: 2,
+    			graphPlotted: 6,
+    			graphWindowClasses: 14,
+    			activateConfigModal: 3
+    		});
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -32676,7 +32649,7 @@ var app = (function (marked) {
     			span = element("span");
     			span.textContent = "Convert to µm";
     			attr_dev(span, "slot", "label");
-    			add_location(span, file$P, 130, 16, 4194);
+    			add_location(span, file$P, 130, 16, 4197);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -32915,24 +32888,24 @@ var app = (function (marked) {
     			button1 = element("button");
     			button1.textContent = "Save";
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$P, 114, 12, 3552);
+    			add_location(button0, file$P, 114, 12, 3555);
     			attr_dev(div0, "class", "location__bar svelte-kzx37e");
-    			add_location(div0, file$P, 113, 8, 3511);
+    			add_location(div0, file$P, 113, 8, 3514);
     			attr_dev(div1, "class", "grid_column__container file__details__bar svelte-kzx37e");
-    			add_location(div1, file$P, 120, 8, 3755);
+    			add_location(div1, file$P, 120, 8, 3758);
     			attr_dev(button1, "class", "button is-success");
     			set_style(button1, "width", "12em");
     			set_style(button1, "margin-left", "auto");
-    			add_location(button1, file$P, 140, 12, 4661);
+    			add_location(button1, file$P, 140, 12, 4664);
     			attr_dev(div2, "class", "power_value__container svelte-kzx37e");
-    			add_location(div2, file$P, 136, 8, 4297);
+    			add_location(div2, file$P, 136, 8, 4300);
     			attr_dev(div3, "class", "box main__container svelte-kzx37e");
     			attr_dev(div3, "id", "powfileContainer");
-    			add_location(div3, file$P, 111, 4, 3444);
+    			add_location(div3, file$P, 111, 4, 3447);
     			attr_dev(section, "class", "section svelte-kzx37e");
     			attr_dev(section, "id", "Powerfile");
     			set_style(section, "display", "none");
-    			add_location(section, file$P, 110, 0, 3377);
+    			add_location(section, file$P, 110, 0, 3380);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -33196,7 +33169,6 @@ var app = (function (marked) {
     	}
 
     	$$self.$capture_state = () => ({
-    		mainPreModal,
     		Textfield,
     		HelperText,
     		Checkbox,
@@ -34458,9 +34430,9 @@ var app = (function (marked) {
     			button = element("button");
     			button.textContent = "Browse";
     			attr_dev(button, "class", "button is-link");
-    			add_location(button, file$M, 48, 12, 1632);
+    			add_location(button, file$M, 48, 12, 1635);
     			attr_dev(div, "slot", "content");
-    			add_location(div, file$M, 45, 8, 1390);
+    			add_location(div, file$M, 45, 8, 1393);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -34539,7 +34511,7 @@ var app = (function (marked) {
     			button.textContent = "Add";
     			attr_dev(button, "slot", "footerbtn");
     			attr_dev(button, "class", "button is-link");
-    			add_location(button, file$M, 51, 8, 1734);
+    			add_location(button, file$M, 51, 8, 1737);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -34711,7 +34683,6 @@ var app = (function (marked) {
     	};
 
     	$$self.$capture_state = () => ({
-    		mainPreModal,
     		graphDiv,
     		Modal: Modal$1,
     		Textfield,
@@ -43324,11 +43295,11 @@ var app = (function (marked) {
     	let dispose;
 
     	function felixplotting_active_binding(value) {
-    		/*felixplotting_active_binding*/ ctx[16](value);
+    		/*felixplotting_active_binding*/ ctx[15](value);
     	}
 
     	function felixplotting_felixPlotWidgets_binding(value) {
-    		/*felixplotting_felixPlotWidgets_binding*/ ctx[17](value);
+    		/*felixplotting_felixPlotWidgets_binding*/ ctx[16](value);
     	}
 
     	let felixplotting_props = {
@@ -43350,10 +43321,10 @@ var app = (function (marked) {
 
     	binding_callbacks.push(() => bind(felixplotting, 'active', felixplotting_active_binding));
     	binding_callbacks.push(() => bind(felixplotting, 'felixPlotWidgets', felixplotting_felixPlotWidgets_binding));
-    	felixplotting.$on("submit", /*submit_handler*/ ctx[18]);
+    	felixplotting.$on("submit", /*submit_handler*/ ctx[17]);
 
     	function textfield_value_binding(value) {
-    		/*textfield_value_binding*/ ctx[21](value);
+    		/*textfield_value_binding*/ ctx[20](value);
     	}
 
     	let textfield_props = {
@@ -43373,7 +43344,7 @@ var app = (function (marked) {
     	binding_callbacks.push(() => bind(textfield, 'value', textfield_value_binding));
 
     	function customiconswitch_toggler_binding(value) {
-    		/*customiconswitch_toggler_binding*/ ctx[23](value);
+    		/*customiconswitch_toggler_binding*/ ctx[22](value);
     	}
 
     	let customiconswitch_props = { icons: ["settings_ethernet", "code"] };
@@ -43417,21 +43388,21 @@ var app = (function (marked) {
     			attr_dev(span, "class", "tag is-warning  svelte-8k4cg5");
     			attr_dev(span, "aria-label", "ctrl + left-click to select file for baseline correction");
     			attr_dev(span, "data-cooltipz-dir", "bottom");
-    			add_location(span, file$y, 137, 132, 5280);
+    			add_location(span, file$y, 137, 132, 5273);
     			attr_dev(button0, "class", "button is-link");
     			attr_dev(button0, "id", "create_baseline_btn");
-    			add_location(button0, file$y, 137, 4, 5152);
+    			add_location(button0, file$y, 137, 4, 5145);
     			attr_dev(button1, "class", "button is-link");
     			attr_dev(button1, "id", "felix_plotting_btn");
-    			add_location(button1, file$y, 139, 4, 5437);
+    			add_location(button1, file$y, 139, 4, 5430);
     			attr_dev(button2, "class", "button is-link");
-    			add_location(button2, file$y, 143, 4, 5719);
+    			add_location(button2, file$y, 143, 4, 5712);
     			attr_dev(button3, "class", "button is-link");
-    			add_location(button3, file$y, 145, 4, 5903);
+    			add_location(button3, file$y, 145, 4, 5896);
     			attr_dev(button4, "class", "button is-link");
-    			add_location(button4, file$y, 146, 4, 6001);
+    			add_location(button4, file$y, 146, 4, 5994);
     			attr_dev(div, "class", "align");
-    			add_location(div, file$y, 135, 0, 5125);
+    			add_location(div, file$y, 135, 0, 5118);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -43459,11 +43430,11 @@ var app = (function (marked) {
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(button0, "click", /*click_handler*/ ctx[19], false, false, false),
-    					listen_dev(button1, "click", /*click_handler_1*/ ctx[20], false, false, false),
-    					listen_dev(button2, "click", /*click_handler_2*/ ctx[22], false, false, false),
-    					listen_dev(button3, "click", /*click_handler_3*/ ctx[24], false, false, false),
-    					listen_dev(button4, "click", /*click_handler_4*/ ctx[25], false, false, false)
+    					listen_dev(button0, "click", /*click_handler*/ ctx[18], false, false, false),
+    					listen_dev(button1, "click", /*click_handler_1*/ ctx[19], false, false, false),
+    					listen_dev(button2, "click", /*click_handler_2*/ ctx[21], false, false, false),
+    					listen_dev(button3, "click", /*click_handler_3*/ ctx[23], false, false, false),
+    					listen_dev(button4, "click", /*click_handler_4*/ ctx[24], false, false, false)
     				];
 
     				mounted = true;
@@ -43555,32 +43526,32 @@ var app = (function (marked) {
     	let $toggleRow;
     	let $opoMode;
     	validate_store(felixConfigDB, 'felixConfigDB');
-    	component_subscribe($$self, felixConfigDB, $$value => $$invalidate(26, $felixConfigDB = $$value));
+    	component_subscribe($$self, felixConfigDB, $$value => $$invalidate(25, $felixConfigDB = $$value));
     	validate_store(felixopoLocation, 'felixopoLocation');
-    	component_subscribe($$self, felixopoLocation, $$value => $$invalidate(27, $felixopoLocation = $$value));
+    	component_subscribe($$self, felixopoLocation, $$value => $$invalidate(26, $felixopoLocation = $$value));
     	validate_store(felixPlotCheckboxes, 'felixPlotCheckboxes');
-    	component_subscribe($$self, felixPlotCheckboxes, $$value => $$invalidate(28, $felixPlotCheckboxes = $$value));
+    	component_subscribe($$self, felixPlotCheckboxes, $$value => $$invalidate(27, $felixPlotCheckboxes = $$value));
     	validate_store(baselineFile, 'baselineFile');
-    	component_subscribe($$self, baselineFile, $$value => $$invalidate(29, $baselineFile = $$value));
+    	component_subscribe($$self, baselineFile, $$value => $$invalidate(28, $baselineFile = $$value));
     	validate_store(fittedTraceCount, 'fittedTraceCount');
-    	component_subscribe($$self, fittedTraceCount, $$value => $$invalidate(30, $fittedTraceCount = $$value));
+    	component_subscribe($$self, fittedTraceCount, $$value => $$invalidate(29, $fittedTraceCount = $$value));
     	validate_store(expfittedLinesCollectedData, 'expfittedLinesCollectedData');
-    	component_subscribe($$self, expfittedLinesCollectedData, $$value => $$invalidate(31, $expfittedLinesCollectedData = $$value));
+    	component_subscribe($$self, expfittedLinesCollectedData, $$value => $$invalidate(30, $expfittedLinesCollectedData = $$value));
     	validate_store(felixPlotAnnotations, 'felixPlotAnnotations');
-    	component_subscribe($$self, felixPlotAnnotations, $$value => $$invalidate(32, $felixPlotAnnotations = $$value));
+    	component_subscribe($$self, felixPlotAnnotations, $$value => $$invalidate(31, $felixPlotAnnotations = $$value));
     	validate_store(expfittedLines, 'expfittedLines');
-    	component_subscribe($$self, expfittedLines, $$value => $$invalidate(33, $expfittedLines = $$value));
+    	component_subscribe($$self, expfittedLines, $$value => $$invalidate(32, $expfittedLines = $$value));
     	validate_store(felixPeakTable, 'felixPeakTable');
-    	component_subscribe($$self, felixPeakTable, $$value => $$invalidate(34, $felixPeakTable = $$value));
+    	component_subscribe($$self, felixPeakTable, $$value => $$invalidate(33, $felixPeakTable = $$value));
     	validate_store(felixOutputName, 'felixOutputName');
-    	component_subscribe($$self, felixOutputName, $$value => $$invalidate(35, $felixOutputName = $$value));
+    	component_subscribe($$self, felixOutputName, $$value => $$invalidate(34, $felixOutputName = $$value));
     	validate_store(toggleRow, 'toggleRow');
     	component_subscribe($$self, toggleRow, $$value => $$invalidate(6, $toggleRow = $$value));
     	validate_store(opoMode, 'opoMode');
     	component_subscribe($$self, opoMode, $$value => $$invalidate(7, $opoMode = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('InitFunctionRow', slots, []);
-    	let { felixfiles, graphPlotted, opofiles, normMethod, show_theoryplot, removeExtraFile, theoryLocation } = $$props;
+    	let { felixfiles, graphPlotted, normMethod, show_theoryplot, removeExtraFile, theoryLocation } = $$props;
     	let active = false, openShell = false, delta = 1;
     	let { updateConfig = false } = $$props;
 
@@ -43773,7 +43744,6 @@ var app = (function (marked) {
     	const writable_props = [
     		'felixfiles',
     		'graphPlotted',
-    		'opofiles',
     		'normMethod',
     		'show_theoryplot',
     		'removeExtraFile',
@@ -43824,12 +43794,11 @@ var app = (function (marked) {
     	$$self.$$set = $$props => {
     		if ('felixfiles' in $$props) $$invalidate(11, felixfiles = $$props.felixfiles);
     		if ('graphPlotted' in $$props) $$invalidate(9, graphPlotted = $$props.graphPlotted);
-    		if ('opofiles' in $$props) $$invalidate(12, opofiles = $$props.opofiles);
-    		if ('normMethod' in $$props) $$invalidate(13, normMethod = $$props.normMethod);
+    		if ('normMethod' in $$props) $$invalidate(12, normMethod = $$props.normMethod);
     		if ('show_theoryplot' in $$props) $$invalidate(10, show_theoryplot = $$props.show_theoryplot);
-    		if ('removeExtraFile' in $$props) $$invalidate(14, removeExtraFile = $$props.removeExtraFile);
+    		if ('removeExtraFile' in $$props) $$invalidate(13, removeExtraFile = $$props.removeExtraFile);
     		if ('theoryLocation' in $$props) $$invalidate(0, theoryLocation = $$props.theoryLocation);
-    		if ('updateConfig' in $$props) $$invalidate(15, updateConfig = $$props.updateConfig);
+    		if ('updateConfig' in $$props) $$invalidate(14, updateConfig = $$props.updateConfig);
     	};
 
     	$$self.$capture_state = () => ({
@@ -43845,14 +43814,12 @@ var app = (function (marked) {
     		felixPlotCheckboxes,
     		felixConfigDB,
     		baselineFile,
-    		mainPreModal,
     		Textfield,
     		CustomIconSwitch,
     		FelixPlotting,
     		felix_func,
     		felixfiles,
     		graphPlotted,
-    		opofiles,
     		normMethod,
     		show_theoryplot,
     		removeExtraFile,
@@ -43882,15 +43849,14 @@ var app = (function (marked) {
     	$$self.$inject_state = $$props => {
     		if ('felixfiles' in $$props) $$invalidate(11, felixfiles = $$props.felixfiles);
     		if ('graphPlotted' in $$props) $$invalidate(9, graphPlotted = $$props.graphPlotted);
-    		if ('opofiles' in $$props) $$invalidate(12, opofiles = $$props.opofiles);
-    		if ('normMethod' in $$props) $$invalidate(13, normMethod = $$props.normMethod);
+    		if ('normMethod' in $$props) $$invalidate(12, normMethod = $$props.normMethod);
     		if ('show_theoryplot' in $$props) $$invalidate(10, show_theoryplot = $$props.show_theoryplot);
-    		if ('removeExtraFile' in $$props) $$invalidate(14, removeExtraFile = $$props.removeExtraFile);
+    		if ('removeExtraFile' in $$props) $$invalidate(13, removeExtraFile = $$props.removeExtraFile);
     		if ('theoryLocation' in $$props) $$invalidate(0, theoryLocation = $$props.theoryLocation);
     		if ('active' in $$props) $$invalidate(1, active = $$props.active);
     		if ('openShell' in $$props) $$invalidate(2, openShell = $$props.openShell);
     		if ('delta' in $$props) $$invalidate(3, delta = $$props.delta);
-    		if ('updateConfig' in $$props) $$invalidate(15, updateConfig = $$props.updateConfig);
+    		if ('updateConfig' in $$props) $$invalidate(14, updateConfig = $$props.updateConfig);
     		if ('felixPlotWidgets' in $$props) $$invalidate(4, felixPlotWidgets = $$props.felixPlotWidgets);
     		if ('fdelta' in $$props) $$invalidate(5, fdelta = $$props.fdelta);
     	};
@@ -43900,7 +43866,7 @@ var app = (function (marked) {
     	}
 
     	$$self.$$.update = () => {
-    		if ($$self.$$.dirty[0] & /*updateConfig*/ 32768) {
+    		if ($$self.$$.dirty[0] & /*updateConfig*/ 16384) {
     			if (updateConfig) loadConfig();
     		}
     	};
@@ -43918,7 +43884,6 @@ var app = (function (marked) {
     		graphPlotted,
     		show_theoryplot,
     		felixfiles,
-    		opofiles,
     		normMethod,
     		removeExtraFile,
     		updateConfig,
@@ -43948,12 +43913,11 @@ var app = (function (marked) {
     			{
     				felixfiles: 11,
     				graphPlotted: 9,
-    				opofiles: 12,
-    				normMethod: 13,
+    				normMethod: 12,
     				show_theoryplot: 10,
-    				removeExtraFile: 14,
+    				removeExtraFile: 13,
     				theoryLocation: 0,
-    				updateConfig: 15
+    				updateConfig: 14
     			},
     			null,
     			[-1, -1]
@@ -43977,11 +43941,7 @@ var app = (function (marked) {
     			console_1$e.warn("<InitFunctionRow> was created without expected prop 'graphPlotted'");
     		}
 
-    		if (/*opofiles*/ ctx[12] === undefined && !('opofiles' in props)) {
-    			console_1$e.warn("<InitFunctionRow> was created without expected prop 'opofiles'");
-    		}
-
-    		if (/*normMethod*/ ctx[13] === undefined && !('normMethod' in props)) {
+    		if (/*normMethod*/ ctx[12] === undefined && !('normMethod' in props)) {
     			console_1$e.warn("<InitFunctionRow> was created without expected prop 'normMethod'");
     		}
 
@@ -43989,7 +43949,7 @@ var app = (function (marked) {
     			console_1$e.warn("<InitFunctionRow> was created without expected prop 'show_theoryplot'");
     		}
 
-    		if (/*removeExtraFile*/ ctx[14] === undefined && !('removeExtraFile' in props)) {
+    		if (/*removeExtraFile*/ ctx[13] === undefined && !('removeExtraFile' in props)) {
     			console_1$e.warn("<InitFunctionRow> was created without expected prop 'removeExtraFile'");
     		}
 
@@ -44011,14 +43971,6 @@ var app = (function (marked) {
     	}
 
     	set graphPlotted(value) {
-    		throw new Error("<InitFunctionRow>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get opofiles() {
-    		throw new Error("<InitFunctionRow>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set opofiles(value) {
     		throw new Error("<InitFunctionRow>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
@@ -51240,13 +51192,13 @@ var app = (function (marked) {
     			button1 = element("button");
     			button1.textContent = "Replot";
     			attr_dev(span, "class", "tag is-warning ");
-    			add_location(span, file$s, 59, 8, 2303);
+    			add_location(span, file$s, 59, 8, 2306);
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$s, 65, 8, 2815);
+    			add_location(button0, file$s, 65, 8, 2818);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$s, 66, 8, 2926);
+    			add_location(button1, file$s, 66, 8, 2929);
     			attr_dev(div, "class", "align");
-    			add_location(div, file$s, 58, 4, 2258);
+    			add_location(div, file$s, 58, 4, 2261);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -51607,7 +51559,6 @@ var app = (function (marked) {
     		felixPlotAnnotations,
     		felixConfigDB,
     		baselineFile,
-    		mainPreModal,
     		Textfield,
     		CustomSelect: CustomSelect$1,
     		QuickBrowser,
@@ -51836,7 +51787,7 @@ var app = (function (marked) {
     			div = element("div");
     			create_component(icon.$$.fragment);
     			attr_dev(div, "class", "icon-holder svelte-1kiu7tv");
-    			add_location(div, file$r, 63, 8, 1487);
+    			add_location(div, file$r, 63, 8, 1486);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -52023,12 +51974,12 @@ var app = (function (marked) {
     			t1 = text(t1_value);
     			t2 = space();
     			attr_dev(div, "class", "tableIcon svelte-1kiu7tv");
-    			add_location(div, file$r, 85, 28, 2213);
+    			add_location(div, file$r, 85, 28, 2212);
     			set_style(th, "cursor", "pointer");
     			attr_dev(th, "class", "mdc-data-table__header-cell svelte-1kiu7tv");
     			attr_dev(th, "role", "columnheader");
     			attr_dev(th, "scope", "col");
-    			add_location(th, file$r, 83, 24, 2083);
+    			add_location(th, file$r, 83, 24, 2082);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, th, anchor);
@@ -52122,10 +52073,10 @@ var app = (function (marked) {
     			set_style(input, "color", "black");
     			set_style(input, "width", "100%");
     			attr_dev(input, "class", "svelte-1kiu7tv");
-    			add_location(input, file$r, 106, 28, 3205);
+    			add_location(input, file$r, 106, 28, 3204);
     			attr_dev(td, "class", "mdc-data-table__cell  mdc-data-table__cell--numeric svelte-1kiu7tv");
     			attr_dev(td, "id", td_id_value = "" + (/*row*/ ctx[20].id + "-" + /*key*/ ctx[23]));
-    			add_location(td, file$r, 105, 24, 3091);
+    			add_location(td, file$r, 105, 24, 3090);
     			this.first = td;
     		},
     		m: function mount(target, anchor) {
@@ -52193,7 +52144,7 @@ var app = (function (marked) {
     			set_style(td, "background", "#f14668");
     			set_style(td, "cursor", "pointer");
     			set_style(td, "width", "2em");
-    			add_location(td, file$r, 110, 24, 3406);
+    			add_location(td, file$r, 110, 24, 3405);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, td, anchor);
@@ -52307,10 +52258,10 @@ var app = (function (marked) {
     			t3 = space();
     			attr_dev(td, "class", "mdc-data-table__cell svelte-1kiu7tv");
     			set_style(td, "width", "2em");
-    			add_location(td, file$r, 103, 20, 2942);
+    			add_location(td, file$r, 103, 20, 2941);
     			attr_dev(tr, "class", "mdc-data-table__row svelte-1kiu7tv");
     			set_style(tr, "background-color", "#fafafa");
-    			add_location(tr, file$r, 102, 20, 2833);
+    			add_location(tr, file$r, 102, 20, 2832);
     			this.first = tr;
     		},
     		m: function mount(target, anchor) {
@@ -52468,23 +52419,23 @@ var app = (function (marked) {
     			set_style(th, "width", "2em");
     			attr_dev(th, "role", "columnheader");
     			attr_dev(th, "scope", "col");
-    			add_location(th, file$r, 78, 20, 1903);
+    			add_location(th, file$r, 78, 20, 1902);
     			attr_dev(tr, "class", "mdc-data-table__header-row svelte-1kiu7tv");
-    			add_location(tr, file$r, 76, 16, 1840);
+    			add_location(tr, file$r, 76, 16, 1839);
     			attr_dev(thead, "class", "svelte-1kiu7tv");
-    			add_location(thead, file$r, 74, 12, 1813);
+    			add_location(thead, file$r, 74, 12, 1812);
     			attr_dev(tbody, "class", "mdc-data-table__content svelte-1kiu7tv");
-    			add_location(tbody, file$r, 99, 12, 2717);
+    			add_location(tbody, file$r, 99, 12, 2716);
     			attr_dev(table, "class", "mdc-data-table__table svelte-1kiu7tv");
     			attr_dev(table, "aria-label", /*label*/ ctx[3]);
     			attr_dev(table, "id", /*id*/ ctx[9]);
     			set_style(table, "user-select", (/*userSelect*/ ctx[4] ? 'text' : 'none') + " ");
-    			add_location(table, file$r, 73, 8, 1684);
+    			add_location(table, file$r, 73, 8, 1683);
     			attr_dev(div0, "class", "mdc-data-table tableContainer svelte-1kiu7tv");
-    			add_location(div0, file$r, 71, 4, 1628);
+    			add_location(div0, file$r, 71, 4, 1627);
     			attr_dev(div1, "style", /*style*/ ctx[5]);
     			attr_dev(div1, "class", "svelte-1kiu7tv");
-    			add_location(div1, file$r, 59, 0, 1434);
+    			add_location(div1, file$r, 59, 0, 1433);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -52763,7 +52714,7 @@ var app = (function (marked) {
     		if ($$self.$$.dirty & /*animateRow*/ 32768) {
     			$$invalidate(11, animate = animateRow
     			? scale
-    			: e => {
+    			: () => {
     					
     				});
     		}
@@ -53663,11 +53614,11 @@ var app = (function (marked) {
     			button1 = element("button");
     			button1.textContent = "Replot";
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$o, 51, 8, 2102);
+    			add_location(button0, file$o, 51, 8, 2105);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$o, 60, 8, 2763);
+    			add_location(button1, file$o, 60, 8, 2766);
     			attr_dev(div, "class", "align");
-    			add_location(div, file$o, 49, 4, 2055);
+    			add_location(div, file$o, 49, 4, 2058);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -54023,7 +53974,6 @@ var app = (function (marked) {
     	};
 
     	$$self.$capture_state = () => ({
-    		mainPreModal,
     		toggleRow,
     		felixopoLocation,
     		felixConfigDB,
@@ -54327,13 +54277,13 @@ var app = (function (marked) {
     			t6 = space();
     			if (if_block) if_block.c();
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$n, 35, 4, 1314);
+    			add_location(button0, file$n, 35, 4, 1317);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$n, 37, 4, 1513);
+    			add_location(button1, file$n, 37, 4, 1516);
     			attr_dev(button2, "class", "button is-link");
-    			add_location(button2, file$n, 39, 4, 1632);
+    			add_location(button2, file$n, 39, 4, 1635);
     			attr_dev(div, "class", "align");
-    			add_location(div, file$n, 34, 0, 1288);
+    			add_location(div, file$n, 34, 0, 1291);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -54488,7 +54438,6 @@ var app = (function (marked) {
     	};
 
     	$$self.$capture_state = () => ({
-    		mainPreModal,
     		filedetails,
     		opoMode,
     		CustomIconSwitch: CustomIconSwitch$1,
@@ -55296,20 +55245,20 @@ var app = (function (marked) {
     			button4 = element("button");
     			button4.textContent = "Clear";
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$l, 235, 12, 10248);
+    			add_location(button0, file$l, 235, 12, 10254);
     			attr_dev(div0, "class", "align");
-    			add_location(div0, file$l, 227, 8, 9701);
+    			add_location(div0, file$l, 227, 8, 9707);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$l, 240, 12, 10521);
+    			add_location(button1, file$l, 240, 12, 10527);
     			attr_dev(button2, "class", "button is-link");
-    			add_location(button2, file$l, 242, 12, 10784);
+    			add_location(button2, file$l, 242, 12, 10790);
     			attr_dev(button3, "class", "button is-link");
-    			add_location(button3, file$l, 243, 12, 10921);
+    			add_location(button3, file$l, 243, 12, 10927);
     			attr_dev(button4, "class", "button is-danger");
-    			add_location(button4, file$l, 245, 12, 11014);
+    			add_location(button4, file$l, 245, 12, 11020);
     			attr_dev(div1, "class", "align");
-    			add_location(div1, file$l, 238, 8, 10390);
-    			add_location(div2, file$l, 226, 4, 9670);
+    			add_location(div1, file$l, 238, 8, 10396);
+    			add_location(div2, file$l, 226, 4, 9676);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div2, anchor);
@@ -55541,19 +55490,19 @@ var app = (function (marked) {
     			if (if_block) if_block.c();
     			if_block_anchor = empty();
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$l, 213, 4, 8932);
+    			add_location(button0, file$l, 213, 4, 8938);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$l, 214, 4, 9040);
+    			add_location(button1, file$l, 214, 4, 9046);
     			attr_dev(button2, "class", "button is-warning");
-    			add_location(button2, file$l, 215, 4, 9155);
+    			add_location(button2, file$l, 215, 4, 9161);
     			attr_dev(button3, "class", "button is-danger");
-    			add_location(button3, file$l, 216, 4, 9239);
+    			add_location(button3, file$l, 216, 4, 9245);
     			attr_dev(button4, "class", "button is-link");
-    			add_location(button4, file$l, 217, 4, 9320);
+    			add_location(button4, file$l, 217, 4, 9326);
     			attr_dev(button5, "class", "button is-warning");
-    			add_location(button5, file$l, 218, 4, 9433);
+    			add_location(button5, file$l, 218, 4, 9439);
     			attr_dev(div, "class", "align");
-    			add_location(div, file$l, 212, 0, 8907);
+    			add_location(div, file$l, 212, 0, 8913);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -55999,11 +55948,9 @@ var app = (function (marked) {
     		felixPeakTable,
     		felixopoLocation,
     		felixAnnotationColor,
-    		mainPreModal,
     		Textfield,
     		CustomSwitch: CustomSwitch$1,
     		Icon,
-    		AdjustInitialGuess,
     		savefile,
     		loadfile,
     		fade,
@@ -56476,7 +56423,7 @@ var app = (function (marked) {
     			div = element("div");
     			create_component(customradio.$$.fragment);
     			attr_dev(div, "class", "align");
-    			add_location(div, file$k, 134, 8, 6121);
+    			add_location(div, file$k, 134, 8, 6120);
     		},
     		m: function mount(target, anchor) {
     			mount_component(initfunctionrow, target, anchor);
@@ -56652,31 +56599,31 @@ var app = (function (marked) {
     			attr_dev(div0, "class", "animated fadeIn graph__div svelte-f1bxvr");
     			attr_dev(div0, "id", "exp-theory-plot");
     			toggle_class(div0, "hide", !/*show_theoryplot*/ ctx[10]);
-    			add_location(div0, file$k, 147, 12, 6596);
+    			add_location(div0, file$k, 147, 12, 6595);
     			attr_dev(div1, "id", "bplot");
     			attr_dev(div1, "class", "graph__div svelte-f1bxvr");
-    			add_location(div1, file$k, 148, 12, 6707);
+    			add_location(div1, file$k, 148, 12, 6706);
     			attr_dev(div2, "id", "saPlot");
     			attr_dev(div2, "class", "graph__div svelte-f1bxvr");
-    			add_location(div2, file$k, 149, 12, 6762);
+    			add_location(div2, file$k, 149, 12, 6761);
     			attr_dev(div3, "id", "avgplot");
     			attr_dev(div3, "class", "graph__div svelte-f1bxvr");
-    			add_location(div3, file$k, 150, 12, 6818);
+    			add_location(div3, file$k, 150, 12, 6817);
     			attr_dev(div4, "class", "animated fadeIn graph__div svelte-f1bxvr");
     			attr_dev(div4, "id", "opoplot");
     			toggle_class(div4, "hide", !/*$opoMode*/ ctx[8]);
-    			add_location(div4, file$k, 151, 12, 6875);
+    			add_location(div4, file$k, 151, 12, 6874);
     			attr_dev(div5, "class", "animated fadeIn graph__div svelte-f1bxvr");
     			attr_dev(div5, "id", "opoSA");
     			toggle_class(div5, "hide", !/*$opoMode*/ ctx[8]);
-    			add_location(div5, file$k, 152, 12, 6971);
+    			add_location(div5, file$k, 152, 12, 6970);
     			attr_dev(div6, "class", "animated fadeIn graph__div svelte-f1bxvr");
     			attr_dev(div6, "id", "opoRelPlot");
     			toggle_class(div6, "hide", !/*$opoMode*/ ctx[8]);
-    			add_location(div6, file$k, 154, 12, 7067);
+    			add_location(div6, file$k, 154, 12, 7066);
     			attr_dev(div7, "class", "felixPlot svelte-f1bxvr");
     			attr_dev(div7, "id", "plot_container__div__" + filetype$3);
-    			add_location(div7, file$k, 146, 8, 6522);
+    			add_location(div7, file$k, 146, 8, 6521);
     		},
     		m: function mount(target, anchor) {
     			mount_component(getfileinfotable, target, anchor);
@@ -57066,7 +57013,7 @@ var app = (function (marked) {
     			t1 = space();
     			create_component(textfield2.$$.fragment);
     			attr_dev(div, "class", "align");
-    			add_location(div, file$k, 175, 8, 7921);
+    			add_location(div, file$k, 175, 8, 7920);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -57553,7 +57500,7 @@ var app = (function (marked) {
     	let scalingBin = $felixConfigDB.get("scalingBin") || 0.001;
     	let updateConfig = false;
 
-    	async function configSave(e) {
+    	async function configSave() {
     		$felixConfigDB.set("fdelta", fdelta);
     		$felixConfigDB.set("odelta", odelta);
     		$felixConfigDB.set("scalingBin", scalingBin);
@@ -59576,21 +59523,21 @@ var app = (function (marked) {
     			button4 = element("button");
     			button4.textContent = "Clear";
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$i, 129, 12, 5514);
+    			add_location(button0, file$i, 129, 12, 5505);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$i, 130, 12, 5614);
+    			add_location(button1, file$i, 130, 12, 5605);
     			attr_dev(button2, "class", "button is-link");
-    			add_location(button2, file$i, 132, 12, 5806);
+    			add_location(button2, file$i, 132, 12, 5797);
     			attr_dev(div0, "class", "align ");
     			set_style(div0, "align-items", "center");
-    			add_location(div0, file$i, 128, 8, 5451);
+    			add_location(div0, file$i, 128, 8, 5442);
     			attr_dev(button3, "class", "button is-link");
-    			add_location(button3, file$i, 144, 12, 6860);
+    			add_location(button3, file$i, 144, 12, 6851);
     			attr_dev(button4, "class", "button is-danger");
-    			add_location(button4, file$i, 145, 12, 6980);
+    			add_location(button4, file$i, 145, 12, 6971);
     			attr_dev(div1, "class", "align animated fadeIn");
     			toggle_class(div1, "hide", /*toggleRow1*/ ctx[4]);
-    			add_location(div1, file$i, 137, 8, 6177);
+    			add_location(div1, file$i, 137, 8, 6168);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -59755,7 +59702,7 @@ var app = (function (marked) {
     			div = element("div");
     			attr_dev(div, "id", "mplot");
     			attr_dev(div, "class", "graph__div");
-    			add_location(div, file$i, 150, 42, 7201);
+    			add_location(div, file$i, 150, 42, 7192);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -59815,10 +59762,10 @@ var app = (function (marked) {
     			button = element("button");
     			button.textContent = "Clear";
     			attr_dev(button, "class", "button is-danger");
-    			add_location(button, file$i, 155, 12, 7502);
+    			add_location(button, file$i, 155, 12, 7493);
     			attr_dev(div, "class", "align");
     			set_style(div, "justify-content", "flex-end");
-    			add_location(div, file$i, 153, 8, 7327);
+    			add_location(div, file$i, 153, 8, 7318);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -60110,7 +60057,7 @@ var app = (function (marked) {
     			if (data.event.ctrlKey) {
     				const { points } = data;
     				const currentDataPoint = points[0];
-    				const { x: mass, y: counts, curveNumber } = currentDataPoint;
+    				const { x: mass, y: counts } = currentDataPoint;
 
     				if (data.event.shiftKey) {
     					const annotate = _.find(annotations, m => {
@@ -60227,7 +60174,6 @@ var app = (function (marked) {
     	}
 
     	$$self.$capture_state = () => ({
-    		mainPreModal,
     		Layout,
     		CustomIconSwitch: CustomIconSwitch$1,
     		CustomSelect: CustomSelect$1,
@@ -63255,21 +63201,21 @@ var app = (function (marked) {
     			t19 = space();
     			create_component(rosaakinetics.$$.fragment);
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$e, 140, 12, 5252);
+    			add_location(button0, file$e, 140, 12, 5255);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$e, 144, 12, 5526);
+    			add_location(button1, file$e, 144, 12, 5529);
     			attr_dev(button2, "class", "button is-link");
-    			add_location(button2, file$e, 145, 12, 5636);
+    			add_location(button2, file$e, 145, 12, 5639);
     			attr_dev(button3, "class", "button is-link");
-    			add_location(button3, file$e, 147, 12, 5764);
+    			add_location(button3, file$e, 147, 12, 5767);
     			attr_dev(div0, "class", "align ");
     			set_style(div0, "align-items", "center");
-    			add_location(div0, file$e, 139, 8, 5189);
+    			add_location(div0, file$e, 139, 8, 5192);
     			attr_dev(button4, "class", "button is-link");
-    			add_location(button4, file$e, 162, 12, 6843);
+    			add_location(button4, file$e, 162, 12, 6846);
     			attr_dev(div1, "class", "align animated fadeIn");
     			toggle_class(div1, "hide", /*toggleRow*/ ctx[13]);
-    			add_location(div1, file$e, 153, 8, 6107);
+    			add_location(div1, file$e, 153, 8, 6110);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -63499,7 +63445,7 @@ var app = (function (marked) {
     			attr_dev(div, "id", div_id_value = "" + (/*scanfile*/ ctx[44] + "_tplot"));
     			attr_dev(div, "class", "graph__div");
     			set_style(div, "padding-bottom", "1em");
-    			add_location(div, file$e, 171, 12, 7207);
+    			add_location(div, file$e, 171, 12, 7210);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -63944,7 +63890,6 @@ var app = (function (marked) {
     	}
 
     	$$self.$capture_state = () => ({
-    		mainPreModal,
     		Layout,
     		CustomIconSwitch: CustomIconSwitch$1,
     		CustomSelect: CustomSelect$1,
@@ -64122,15 +64067,15 @@ var app = (function (marked) {
     			div2 = element("div");
     			if (footer_content__slot_slot) footer_content__slot_slot.c();
     			attr_dev(div0, "class", "header_content svelte-159amfl");
-    			add_location(div0, file$d, 75, 4, 2042);
+    			add_location(div0, file$d, 75, 4, 2029);
     			attr_dev(div1, "class", "main_content svelte-159amfl");
-    			add_location(div1, file$d, 77, 4, 2120);
+    			add_location(div1, file$d, 77, 4, 2107);
     			attr_dev(div2, "class", "footer_content svelte-159amfl");
-    			add_location(div2, file$d, 79, 4, 2215);
+    			add_location(div2, file$d, 79, 4, 2202);
     			attr_dev(div3, "id", /*id*/ ctx[1]);
     			attr_dev(div3, "class", "main_content__div svelte-159amfl");
     			toggle_class(div3, "hide", !/*active*/ ctx[0]);
-    			add_location(div3, file$d, 74, 0, 1979);
+    			add_location(div3, file$d, 74, 0, 1966);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -64292,7 +64237,7 @@ var app = (function (marked) {
     				onfocus() {
     					$$invalidate(4, windowReady = true);
     				},
-    				onresize(width, height) {
+    				onresize() {
     					changeGraphDivWidth();
     				}
     			}));
@@ -73666,7 +73611,7 @@ var app = (function (marked) {
     			}
 
     			attr_dev(div, "class", "content__div  svelte-1t65zux");
-    			add_location(div, file$b, 106, 8, 3428);
+    			add_location(div, file$b, 106, 8, 3431);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -73839,15 +73784,15 @@ var app = (function (marked) {
     			}
 
     			attr_dev(hr, "class", "svelte-1t65zux");
-    			add_location(hr, file$b, 121, 8, 3832);
+    			add_location(hr, file$b, 121, 8, 3835);
     			attr_dev(div0, "class", "subtitle svelte-1t65zux");
-    			add_location(div0, file$b, 122, 8, 3846);
+    			add_location(div0, file$b, 122, 8, 3849);
     			attr_dev(button, "class", "button is-link ");
-    			add_location(button, file$b, 125, 12, 3951);
+    			add_location(button, file$b, 125, 12, 3954);
     			attr_dev(div1, "class", "control__div  svelte-1t65zux");
-    			add_location(div1, file$b, 124, 8, 3910);
+    			add_location(div1, file$b, 124, 8, 3913);
     			attr_dev(div2, "class", "content__div  svelte-1t65zux");
-    			add_location(div2, file$b, 128, 8, 4074);
+    			add_location(div2, file$b, 128, 8, 4077);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, hr, anchor);
@@ -74034,17 +73979,17 @@ var app = (function (marked) {
     			t7 = space();
     			if (if_block1) if_block1.c();
     			attr_dev(div0, "class", "subtitle svelte-1t65zux");
-    			add_location(div0, file$b, 101, 4, 3257);
+    			add_location(div0, file$b, 101, 4, 3260);
     			attr_dev(hr, "class", "svelte-1t65zux");
-    			add_location(hr, file$b, 102, 4, 3313);
+    			add_location(hr, file$b, 102, 4, 3316);
     			attr_dev(div1, "class", "subtitle svelte-1t65zux");
-    			add_location(div1, file$b, 103, 4, 3323);
+    			add_location(div1, file$b, 103, 4, 3326);
     			attr_dev(button, "class", "button is-link ");
-    			add_location(button, file$b, 116, 8, 3674);
+    			add_location(button, file$b, 116, 8, 3677);
     			attr_dev(div2, "class", "control__div  svelte-1t65zux");
-    			add_location(div2, file$b, 114, 4, 3635);
+    			add_location(div2, file$b, 114, 4, 3638);
     			attr_dev(div3, "class", "sub_container__div box svelte-1t65zux");
-    			add_location(div3, file$b, 100, 0, 3215);
+    			add_location(div3, file$b, 100, 0, 3218);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -74268,7 +74213,6 @@ var app = (function (marked) {
     	};
 
     	$$self.$capture_state = () => ({
-    		mainPreModal,
     		Textfield,
     		PlanksConstant,
     		SpeedOfLight,
@@ -74582,9 +74526,9 @@ var app = (function (marked) {
     			button = element("button");
     			button.textContent = "Compute";
     			attr_dev(button, "class", "button is-link");
-    			add_location(button, file$a, 86, 12, 3625);
+    			add_location(button, file$a, 86, 12, 3628);
     			attr_dev(div, "class", "header svelte-1mhcgqd");
-    			add_location(div, file$a, 79, 8, 3102);
+    			add_location(div, file$a, 79, 8, 3105);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -74714,15 +74658,15 @@ var app = (function (marked) {
     			div2 = element("div");
     			attr_dev(div0, "id", plotID);
     			attr_dev(div0, "class", "graph__div");
-    			add_location(div0, file$a, 92, 12, 3854);
+    			add_location(div0, file$a, 92, 12, 3857);
     			attr_dev(div1, "id", "" + (plotID + "_collisionalBoltzman"));
     			attr_dev(div1, "class", "graph__div");
-    			add_location(div1, file$a, 94, 12, 3914);
+    			add_location(div1, file$a, 94, 12, 3917);
     			attr_dev(div2, "id", "" + (plotID + "_collisionalBoltzman_difference"));
     			attr_dev(div2, "class", "graph__div");
-    			add_location(div2, file$a, 96, 12, 4006);
+    			add_location(div2, file$a, 96, 12, 4009);
     			attr_dev(div3, "class", "graph__container svelte-1mhcgqd");
-    			add_location(div3, file$a, 91, 8, 3810);
+    			add_location(div3, file$a, 91, 8, 3813);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div3, anchor);
@@ -74997,7 +74941,6 @@ var app = (function (marked) {
     	};
 
     	$$self.$capture_state = () => ({
-    		mainPreModal,
     		SeparateWindow,
     		plot,
     		boltzman_distribution,
@@ -75239,7 +75182,7 @@ var app = (function (marked) {
     			}
 
     			attr_dev(div, "class", "content__div  svelte-cz3hcg");
-    			add_location(div, file$9, 131, 8, 4855);
+    			add_location(div, file$9, 131, 8, 4858);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -75398,9 +75341,9 @@ var app = (function (marked) {
     			}
 
     			attr_dev(hr, "class", "svelte-cz3hcg");
-    			add_location(hr, file$9, 144, 8, 5110);
+    			add_location(hr, file$9, 144, 8, 5113);
     			attr_dev(div, "class", "content__div  svelte-cz3hcg");
-    			add_location(div, file$9, 145, 8, 5124);
+    			add_location(div, file$9, 145, 8, 5127);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, hr, anchor);
@@ -75745,29 +75688,29 @@ var app = (function (marked) {
     			}
 
     			attr_dev(div0, "class", "subtitle svelte-cz3hcg");
-    			add_location(div0, file$9, 115, 4, 3946);
+    			add_location(div0, file$9, 115, 4, 3949);
     			attr_dev(button0, "class", "button is-link ");
-    			add_location(button0, file$9, 117, 8, 4043);
+    			add_location(button0, file$9, 117, 8, 4046);
     			attr_dev(button1, "class", "button is-link ");
-    			add_location(button1, file$9, 118, 8, 4159);
+    			add_location(button1, file$9, 118, 8, 4162);
     			attr_dev(button2, "class", "button is-link");
-    			add_location(button2, file$9, 121, 12, 4396);
+    			add_location(button2, file$9, 121, 12, 4399);
     			attr_dev(button3, "class", "button is-link");
-    			add_location(button3, file$9, 122, 12, 4491);
+    			add_location(button3, file$9, 122, 12, 4494);
     			attr_dev(div1, "class", "align h-center");
-    			add_location(div1, file$9, 119, 8, 4275);
+    			add_location(div1, file$9, 119, 8, 4278);
     			attr_dev(div2, "class", "control__div  svelte-cz3hcg");
-    			add_location(div2, file$9, 116, 4, 4006);
+    			add_location(div2, file$9, 116, 4, 4009);
     			attr_dev(hr, "class", "svelte-cz3hcg");
-    			add_location(hr, file$9, 153, 4, 5340);
+    			add_location(hr, file$9, 153, 4, 5343);
     			attr_dev(div3, "class", "subtitle svelte-cz3hcg");
-    			add_location(div3, file$9, 154, 4, 5350);
+    			add_location(div3, file$9, 154, 4, 5353);
     			attr_dev(div4, "class", "control__div svelte-cz3hcg");
-    			add_location(div4, file$9, 155, 4, 5412);
+    			add_location(div4, file$9, 155, 4, 5415);
     			attr_dev(div5, "class", "content__div  svelte-cz3hcg");
-    			add_location(div5, file$9, 159, 4, 5536);
+    			add_location(div5, file$9, 159, 4, 5539);
     			attr_dev(div6, "class", "sub_container__div box svelte-cz3hcg");
-    			add_location(div6, file$9, 114, 0, 3904);
+    			add_location(div6, file$9, 114, 0, 3907);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -76122,7 +76065,6 @@ var app = (function (marked) {
     	};
 
     	$$self.$capture_state = () => ({
-    		mainPreModal,
     		CollisionalDistribution,
     		browse,
     		Textfield,
@@ -76427,7 +76369,7 @@ var app = (function (marked) {
     	return child_ctx;
     }
 
-    // (63:8) {#each attachmentCoefficients as {label, value, id}
+    // (56:8) {#each attachmentCoefficients as {label, value, id}
     function create_each_block_4$1(key_1, ctx) {
     	let first;
     	let textfield;
@@ -76492,14 +76434,14 @@ var app = (function (marked) {
     		block,
     		id: create_each_block_4$1.name,
     		type: "each",
-    		source: "(63:8) {#each attachmentCoefficients as {label, value, id}",
+    		source: "(56:8) {#each attachmentCoefficients as {label, value, id}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (73:16) {#each k3.constant as {label, value, id}
+    // (66:16) {#each k3.constant as {label, value, id}
     function create_each_block_3$1(key_1, ctx) {
     	let first;
     	let textfield;
@@ -76564,14 +76506,14 @@ var app = (function (marked) {
     		block,
     		id: create_each_block_3$1.name,
     		type: "each",
-    		source: "(73:16) {#each k3.constant as {label, value, id}",
+    		source: "(66:16) {#each k3.constant as {label, value, id}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (83:16) {#each kCID.constant as {label, value, id}
+    // (76:16) {#each kCID.constant as {label, value, id}
     function create_each_block_2$1(key_1, ctx) {
     	let first;
     	let textfield;
@@ -76636,14 +76578,14 @@ var app = (function (marked) {
     		block,
     		id: create_each_block_2$1.name,
     		type: "each",
-    		source: "(83:16) {#each kCID.constant as {label, value, id}",
+    		source: "(76:16) {#each kCID.constant as {label, value, id}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (94:16) {#each k3.rate as {label, value, id}
+    // (87:16) {#each k3.rate as {label, value, id}
     function create_each_block_1$1(key_1, ctx) {
     	let first;
     	let textfield;
@@ -76708,14 +76650,14 @@ var app = (function (marked) {
     		block,
     		id: create_each_block_1$1.name,
     		type: "each",
-    		source: "(94:16) {#each k3.rate as {label, value, id}",
+    		source: "(87:16) {#each k3.rate as {label, value, id}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (102:16) {#each kCID.rate as {label, value, id}
+    // (95:16) {#each kCID.rate as {label, value, id}
     function create_each_block$3(key_1, ctx) {
     	let first;
     	let textfield;
@@ -76780,7 +76722,7 @@ var app = (function (marked) {
     		block,
     		id: create_each_block$3.name,
     		type: "each",
-    		source: "(102:16) {#each kCID.rate as {label, value, id}",
+    		source: "(95:16) {#each kCID.rate as {label, value, id}",
     		ctx
     	});
 
@@ -76956,34 +76898,34 @@ var app = (function (marked) {
     				each_blocks[i].c();
     			}
 
-    			attr_dev(div0, "class", "subtitle svelte-1t65zux");
-    			add_location(div0, file$8, 59, 4, 1362);
+    			attr_dev(div0, "class", "subtitle svelte-1te572t");
+    			add_location(div0, file$8, 52, 4, 1224);
     			attr_dev(button, "class", "button is-link");
-    			add_location(button, file$8, 68, 12, 1748);
+    			add_location(button, file$8, 61, 12, 1610);
     			attr_dev(div1, "class", "");
-    			add_location(div1, file$8, 71, 16, 1906);
+    			add_location(div1, file$8, 64, 16, 1768);
     			attr_dev(div2, "class", "align h-center");
-    			add_location(div2, file$8, 70, 12, 1859);
+    			add_location(div2, file$8, 63, 12, 1721);
     			attr_dev(div3, "class", "");
-    			add_location(div3, file$8, 81, 16, 2186);
+    			add_location(div3, file$8, 74, 16, 2048);
     			attr_dev(div4, "class", "align h-center");
-    			add_location(div4, file$8, 79, 12, 2138);
-    			attr_dev(hr, "class", "svelte-1t65zux");
-    			add_location(hr, file$8, 88, 12, 2405);
+    			add_location(div4, file$8, 72, 12, 2000);
+    			attr_dev(hr, "class", "svelte-1te572t");
+    			add_location(hr, file$8, 81, 12, 2267);
     			attr_dev(div5, "class", "");
-    			add_location(div5, file$8, 91, 16, 2471);
+    			add_location(div5, file$8, 84, 16, 2333);
     			attr_dev(div6, "class", "align h-center");
-    			add_location(div6, file$8, 90, 12, 2425);
+    			add_location(div6, file$8, 83, 12, 2287);
     			attr_dev(div7, "class", "");
-    			add_location(div7, file$8, 100, 16, 2730);
+    			add_location(div7, file$8, 93, 16, 2592);
     			attr_dev(div8, "class", "align h-center");
-    			add_location(div8, file$8, 98, 12, 2682);
+    			add_location(div8, file$8, 91, 12, 2544);
     			attr_dev(div9, "class", "align h-center");
-    			add_location(div9, file$8, 66, 8, 1624);
-    			attr_dev(div10, "class", "content__div svelte-1t65zux");
-    			add_location(div10, file$8, 61, 4, 1456);
-    			attr_dev(div11, "class", "sub_container__div box svelte-1t65zux");
-    			add_location(div11, file$8, 57, 0, 1318);
+    			add_location(div9, file$8, 59, 8, 1486);
+    			attr_dev(div10, "class", "content__div svelte-1te572t");
+    			add_location(div10, file$8, 54, 4, 1318);
+    			attr_dev(div11, "class", "sub_container__div box svelte-1te572t");
+    			add_location(div11, file$8, 50, 0, 1180);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -77403,53 +77345,53 @@ var app = (function (marked) {
 
     function get_each_context$2(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[112] = list[i].label;
-    	child_ctx[113] = list[i].value;
-    	child_ctx[114] = list[i].id;
-    	child_ctx[115] = list;
-    	child_ctx[116] = i;
+    	child_ctx[111] = list[i].label;
+    	child_ctx[112] = list[i].value;
+    	child_ctx[113] = list[i].id;
+    	child_ctx[114] = list;
+    	child_ctx[115] = i;
     	return child_ctx;
     }
 
     function get_each_context_1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[112] = list[i].label;
-    	child_ctx[113] = list[i].value;
-    	child_ctx[117] = list[i].type;
-    	child_ctx[118] = list[i].step;
-    	child_ctx[114] = list[i].id;
-    	child_ctx[119] = list;
-    	child_ctx[120] = i;
+    	child_ctx[111] = list[i].label;
+    	child_ctx[112] = list[i].value;
+    	child_ctx[116] = list[i].type;
+    	child_ctx[117] = list[i].step;
+    	child_ctx[113] = list[i].id;
+    	child_ctx[118] = list;
+    	child_ctx[119] = i;
     	return child_ctx;
     }
 
     function get_each_context_2(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[112] = list[i].label;
-    	child_ctx[113] = list[i].value;
-    	child_ctx[114] = list[i].id;
-    	child_ctx[121] = list;
-    	child_ctx[122] = i;
+    	child_ctx[111] = list[i].label;
+    	child_ctx[112] = list[i].value;
+    	child_ctx[113] = list[i].id;
+    	child_ctx[120] = list;
+    	child_ctx[121] = i;
     	return child_ctx;
     }
 
     function get_each_context_3(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[112] = list[i].label;
-    	child_ctx[113] = list[i].value;
-    	child_ctx[114] = list[i].id;
-    	child_ctx[123] = list;
-    	child_ctx[124] = i;
+    	child_ctx[111] = list[i].label;
+    	child_ctx[112] = list[i].value;
+    	child_ctx[113] = list[i].id;
+    	child_ctx[122] = list;
+    	child_ctx[123] = i;
     	return child_ctx;
     }
 
     function get_each_context_4(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[112] = list[i].label;
-    	child_ctx[113] = list[i].value;
-    	child_ctx[114] = list[i].id;
-    	child_ctx[125] = list;
-    	child_ctx[126] = i;
+    	child_ctx[111] = list[i].label;
+    	child_ctx[112] = list[i].value;
+    	child_ctx[113] = list[i].id;
+    	child_ctx[124] = list;
+    	child_ctx[125] = i;
     	return child_ctx;
     }
 
@@ -77539,7 +77481,7 @@ var app = (function (marked) {
     			boltzmandistribution.$set(boltzmandistribution_changes);
     			const separatewindow_changes = {};
 
-    			if (dirty[0] & /*showreport, statusReport, pyProcesses, attachmentCoefficients, k3, kCID, includeAttachmentRate, energyLevels, electronSpin, zeemanSplit, energyUnit, collisionalRateType, collisionalRates, includeCollision, trapArea, power, einsteinB_rateComputed, powerBroadening, dopplerLineshape, transitionFrequency, excitedTo, excitedFrom, simulationParameters, mainParameters, variableRange, variable, includeSpontaneousEmission, writefile, savefilename, currentLocation*/ 2147483646 | dirty[1] & /*numberDensity, collisionalFilename, collisionalTemp, collisionalCoefficient, collisionalCoefficient_balance, gaussian, lorrentz, einsteinCoefficientA, einsteinCoefficientB, boltzmanWindow, numberOfLevels, configFile*/ 4095 | dirty[4] & /*$$scope*/ 8) {
+    			if (dirty[0] & /*showreport, statusReport, pyProcesses, attachmentCoefficients, k3, kCID, includeAttachmentRate, energyLevels, electronSpin, zeemanSplit, energyUnit, collisionalRateType, collisionalRates, includeCollision, trapArea, power, einsteinB_rateComputed, powerBroadening, dopplerLineshape, transitionFrequency, excitedTo, excitedFrom, simulationParameters, mainParameters, variableRange, variable, includeSpontaneousEmission, writefile, savefilename, currentLocation*/ 2147483646 | dirty[1] & /*numberDensity, collisionalFilename, collisionalTemp, collisionalCoefficient, collisionalCoefficient_balance, gaussian, lorrentz, einsteinCoefficientA, einsteinCoefficientB, boltzmanWindow, numberOfLevels, configFile*/ 4095 | dirty[4] & /*$$scope*/ 4) {
     				separatewindow_changes.$$scope = { dirty, ctx };
     			}
 
@@ -77879,21 +77821,21 @@ var app = (function (marked) {
     			button2.textContent = "Reset Config";
     			attr_dev(button0, "class", "button is-link svelte-1gffrzh");
     			attr_dev(button0, "id", "thz_modal_filebrowser_btn");
-    			add_location(button0, file$7, 369, 16, 13495);
+    			add_location(button0, file$7, 369, 16, 13481);
     			attr_dev(div0, "class", "locationColumn svelte-1gffrzh");
-    			add_location(div0, file$7, 368, 12, 13448);
+    			add_location(div0, file$7, 368, 12, 13434);
     			attr_dev(div1, "class", "writefileCheck svelte-1gffrzh");
-    			add_location(div1, file$7, 375, 12, 13798);
+    			add_location(div1, file$7, 375, 12, 13784);
     			attr_dev(div2, "class", "subtitle svelte-1gffrzh");
-    			add_location(div2, file$7, 386, 16, 14468);
+    			add_location(div2, file$7, 386, 16, 14454);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$7, 393, 20, 14924);
+    			add_location(button1, file$7, 393, 20, 14910);
     			attr_dev(button2, "class", "button is-link");
-    			add_location(button2, file$7, 394, 20, 15019);
+    			add_location(button2, file$7, 394, 20, 15005);
     			attr_dev(div3, "class", "variableColumn__dropdown svelte-1gffrzh");
-    			add_location(div3, file$7, 387, 16, 14560);
+    			add_location(div3, file$7, 387, 16, 14546);
     			attr_dev(div4, "class", "variableColumn svelte-1gffrzh");
-    			add_location(div4, file$7, 385, 12, 14422);
+    			add_location(div4, file$7, 385, 12, 14408);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -78115,13 +78057,13 @@ var app = (function (marked) {
     	let current;
 
     	function textfield_value_binding(value) {
-    		/*textfield_value_binding*/ ctx[63](value, /*value*/ ctx[113], /*each_value_4*/ ctx[125], /*each_index_4*/ ctx[126]);
+    		/*textfield_value_binding*/ ctx[63](value, /*value*/ ctx[112], /*each_value_4*/ ctx[124], /*each_index_4*/ ctx[125]);
     	}
 
-    	let textfield_props = { label: /*label*/ ctx[112] };
+    	let textfield_props = { label: /*label*/ ctx[111] };
 
-    	if (/*value*/ ctx[113] !== void 0) {
-    		textfield_props.value = /*value*/ ctx[113];
+    	if (/*value*/ ctx[112] !== void 0) {
+    		textfield_props.value = /*value*/ ctx[112];
     	}
 
     	textfield = new Textfield({ props: textfield_props, $$inline: true });
@@ -78143,11 +78085,11 @@ var app = (function (marked) {
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
     			const textfield_changes = {};
-    			if (dirty[0] & /*mainParameters*/ 16) textfield_changes.label = /*label*/ ctx[112];
+    			if (dirty[0] & /*mainParameters*/ 16) textfield_changes.label = /*label*/ ctx[111];
 
     			if (!updating_value && dirty[0] & /*mainParameters*/ 16) {
     				updating_value = true;
-    				textfield_changes.value = /*value*/ ctx[113];
+    				textfield_changes.value = /*value*/ ctx[112];
     				add_flush_callback(() => updating_value = false);
     			}
 
@@ -78187,13 +78129,13 @@ var app = (function (marked) {
     	let current;
 
     	function textfield_value_binding_1(value) {
-    		/*textfield_value_binding_1*/ ctx[67](value, /*value*/ ctx[113], /*each_value_3*/ ctx[123], /*each_index_3*/ ctx[124]);
+    		/*textfield_value_binding_1*/ ctx[67](value, /*value*/ ctx[112], /*each_value_3*/ ctx[122], /*each_index_3*/ ctx[123]);
     	}
 
-    	let textfield_props = { label: /*label*/ ctx[112] };
+    	let textfield_props = { label: /*label*/ ctx[111] };
 
-    	if (/*value*/ ctx[113] !== void 0) {
-    		textfield_props.value = /*value*/ ctx[113];
+    	if (/*value*/ ctx[112] !== void 0) {
+    		textfield_props.value = /*value*/ ctx[112];
     	}
 
     	textfield = new Textfield({ props: textfield_props, $$inline: true });
@@ -78215,11 +78157,11 @@ var app = (function (marked) {
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
     			const textfield_changes = {};
-    			if (dirty[0] & /*energyLevels*/ 512) textfield_changes.label = /*label*/ ctx[112];
+    			if (dirty[0] & /*energyLevels*/ 512) textfield_changes.label = /*label*/ ctx[111];
 
     			if (!updating_value && dirty[0] & /*energyLevels*/ 512) {
     				updating_value = true;
-    				textfield_changes.value = /*value*/ ctx[113];
+    				textfield_changes.value = /*value*/ ctx[112];
     				add_flush_callback(() => updating_value = false);
     			}
 
@@ -78259,13 +78201,13 @@ var app = (function (marked) {
     	let current;
 
     	function textfield_value_binding_2(value) {
-    		/*textfield_value_binding_2*/ ctx[68](value, /*value*/ ctx[113], /*each_value_2*/ ctx[121], /*each_index_2*/ ctx[122]);
+    		/*textfield_value_binding_2*/ ctx[68](value, /*value*/ ctx[112], /*each_value_2*/ ctx[120], /*each_index_2*/ ctx[121]);
     	}
 
-    	let textfield_props = { label: /*label*/ ctx[112] };
+    	let textfield_props = { label: /*label*/ ctx[111] };
 
-    	if (/*value*/ ctx[113] !== void 0) {
-    		textfield_props.value = /*value*/ ctx[113];
+    	if (/*value*/ ctx[112] !== void 0) {
+    		textfield_props.value = /*value*/ ctx[112];
     	}
 
     	textfield = new Textfield({ props: textfield_props, $$inline: true });
@@ -78287,11 +78229,11 @@ var app = (function (marked) {
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
     			const textfield_changes = {};
-    			if (dirty[0] & /*simulationParameters*/ 32768) textfield_changes.label = /*label*/ ctx[112];
+    			if (dirty[0] & /*simulationParameters*/ 32768) textfield_changes.label = /*label*/ ctx[111];
 
     			if (!updating_value && dirty[0] & /*simulationParameters*/ 32768) {
     				updating_value = true;
-    				textfield_changes.value = /*value*/ ctx[113];
+    				textfield_changes.value = /*value*/ ctx[112];
     				add_flush_callback(() => updating_value = false);
     			}
 
@@ -78331,17 +78273,17 @@ var app = (function (marked) {
     	let current;
 
     	function textfield_value_binding_3(value) {
-    		/*textfield_value_binding_3*/ ctx[72](value, /*value*/ ctx[113], /*each_value_1*/ ctx[119], /*each_index_1*/ ctx[120]);
+    		/*textfield_value_binding_3*/ ctx[72](value, /*value*/ ctx[112], /*each_value_1*/ ctx[118], /*each_index_1*/ ctx[119]);
     	}
 
     	let textfield_props = {
-    		label: /*label*/ ctx[112],
-    		input$type: /*type*/ ctx[117],
-    		input$step: /*step*/ ctx[118]
+    		label: /*label*/ ctx[111],
+    		input$type: /*type*/ ctx[116],
+    		input$step: /*step*/ ctx[117]
     	};
 
-    	if (/*value*/ ctx[113] !== void 0) {
-    		textfield_props.value = /*value*/ ctx[113];
+    	if (/*value*/ ctx[112] !== void 0) {
+    		textfield_props.value = /*value*/ ctx[112];
     	}
 
     	textfield = new Textfield({ props: textfield_props, $$inline: true });
@@ -78363,13 +78305,13 @@ var app = (function (marked) {
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
     			const textfield_changes = {};
-    			if (dirty[0] & /*dopplerLineshape*/ 32) textfield_changes.label = /*label*/ ctx[112];
-    			if (dirty[0] & /*dopplerLineshape*/ 32) textfield_changes.input$type = /*type*/ ctx[117];
-    			if (dirty[0] & /*dopplerLineshape*/ 32) textfield_changes.input$step = /*step*/ ctx[118];
+    			if (dirty[0] & /*dopplerLineshape*/ 32) textfield_changes.label = /*label*/ ctx[111];
+    			if (dirty[0] & /*dopplerLineshape*/ 32) textfield_changes.input$type = /*type*/ ctx[116];
+    			if (dirty[0] & /*dopplerLineshape*/ 32) textfield_changes.input$step = /*step*/ ctx[117];
 
     			if (!updating_value && dirty[0] & /*dopplerLineshape*/ 32) {
     				updating_value = true;
-    				textfield_changes.value = /*value*/ ctx[113];
+    				textfield_changes.value = /*value*/ ctx[112];
     				add_flush_callback(() => updating_value = false);
     			}
 
@@ -78409,13 +78351,13 @@ var app = (function (marked) {
     	let current;
 
     	function textfield_value_binding_4(value) {
-    		/*textfield_value_binding_4*/ ctx[75](value, /*value*/ ctx[113], /*each_value*/ ctx[115], /*each_index*/ ctx[116]);
+    		/*textfield_value_binding_4*/ ctx[75](value, /*value*/ ctx[112], /*each_value*/ ctx[114], /*each_index*/ ctx[115]);
     	}
 
-    	let textfield_props = { label: /*label*/ ctx[112] };
+    	let textfield_props = { label: /*label*/ ctx[111] };
 
-    	if (/*value*/ ctx[113] !== void 0) {
-    		textfield_props.value = /*value*/ ctx[113];
+    	if (/*value*/ ctx[112] !== void 0) {
+    		textfield_props.value = /*value*/ ctx[112];
     	}
 
     	textfield = new Textfield({ props: textfield_props, $$inline: true });
@@ -78437,11 +78379,11 @@ var app = (function (marked) {
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
     			const textfield_changes = {};
-    			if (dirty[0] & /*powerBroadening*/ 64) textfield_changes.label = /*label*/ ctx[112];
+    			if (dirty[0] & /*powerBroadening*/ 64) textfield_changes.label = /*label*/ ctx[111];
 
     			if (!updating_value && dirty[0] & /*powerBroadening*/ 64) {
     				updating_value = true;
-    				textfield_changes.value = /*value*/ ctx[113];
+    				textfield_changes.value = /*value*/ ctx[112];
     				add_flush_callback(() => updating_value = false);
     			}
 
@@ -78834,7 +78776,7 @@ var app = (function (marked) {
     	let dispose;
     	let each_value_4 = /*mainParameters*/ ctx[4];
     	validate_each_argument(each_value_4);
-    	const get_key = ctx => /*id*/ ctx[114];
+    	const get_key = ctx => /*id*/ ctx[113];
     	validate_each_keys(ctx, each_value_4, get_each_context_4, get_key);
 
     	for (let i = 0; i < each_value_4.length; i += 1) {
@@ -78879,7 +78821,7 @@ var app = (function (marked) {
     	binding_callbacks.push(() => bind(customselect0, 'picked', customselect0_picked_binding));
     	let each_value_3 = /*energyLevels*/ ctx[9];
     	validate_each_argument(each_value_3);
-    	const get_key_1 = ctx => /*id*/ ctx[114];
+    	const get_key_1 = ctx => /*id*/ ctx[113];
     	validate_each_keys(ctx, each_value_3, get_each_context_3, get_key_1);
 
     	for (let i = 0; i < each_value_3.length; i += 1) {
@@ -78890,7 +78832,7 @@ var app = (function (marked) {
 
     	let each_value_2 = /*simulationParameters*/ ctx[15];
     	validate_each_argument(each_value_2);
-    	const get_key_2 = ctx => /*id*/ ctx[114];
+    	const get_key_2 = ctx => /*id*/ ctx[113];
     	validate_each_keys(ctx, each_value_2, get_each_context_2, get_key_2);
 
     	for (let i = 0; i < each_value_2.length; i += 1) {
@@ -78957,7 +78899,7 @@ var app = (function (marked) {
     	binding_callbacks.push(() => bind(textfield1, 'value', textfield1_value_binding));
     	let each_value_1 = /*dopplerLineshape*/ ctx[5];
     	validate_each_argument(each_value_1);
-    	const get_key_3 = ctx => /*id*/ ctx[114];
+    	const get_key_3 = ctx => /*id*/ ctx[113];
     	validate_each_keys(ctx, each_value_1, get_each_context_1, get_key_3);
 
     	for (let i = 0; i < each_value_1.length; i += 1) {
@@ -78996,7 +78938,7 @@ var app = (function (marked) {
     	binding_callbacks.push(() => bind(textfield3, 'value', textfield3_value_binding));
     	let each_value = /*powerBroadening*/ ctx[6];
     	validate_each_argument(each_value);
-    	const get_key_4 = ctx => /*id*/ ctx[114];
+    	const get_key_4 = ctx => /*id*/ ctx[113];
     	validate_each_keys(ctx, each_value, get_each_context$2, get_key_4);
 
     	for (let i = 0; i < each_value.length; i += 1) {
@@ -79161,60 +79103,60 @@ var app = (function (marked) {
     			t32 = space();
     			if (if_block1) if_block1.c();
     			attr_dev(hr0, "class", "svelte-1gffrzh");
-    			add_location(hr0, file$7, 402, 78, 15367);
+    			add_location(hr0, file$7, 402, 78, 15353);
     			attr_dev(hr1, "class", "svelte-1gffrzh");
-    			add_location(hr1, file$7, 402, 115, 15404);
+    			add_location(hr1, file$7, 402, 115, 15390);
     			attr_dev(div0, "class", "content status_report__div svelte-1gffrzh");
     			toggle_class(div0, "hide", !/*showreport*/ ctx[21]);
-    			add_location(div0, file$7, 402, 12, 15301);
+    			add_location(div0, file$7, 402, 12, 15287);
     			attr_dev(div1, "class", "subtitle svelte-1gffrzh");
-    			add_location(div1, file$7, 409, 20, 15605);
+    			add_location(div1, file$7, 409, 20, 15591);
     			attr_dev(div2, "class", "content__div  svelte-1gffrzh");
-    			add_location(div2, file$7, 410, 20, 15670);
+    			add_location(div2, file$7, 410, 20, 15656);
     			attr_dev(div3, "class", "sub_container__div box svelte-1gffrzh");
-    			add_location(div3, file$7, 407, 16, 15545);
+    			add_location(div3, file$7, 407, 16, 15531);
     			attr_dev(div4, "class", "subtitle svelte-1gffrzh");
-    			add_location(div4, file$7, 420, 20, 16038);
+    			add_location(div4, file$7, 420, 20, 16024);
     			attr_dev(button, "class", "button is-link ");
-    			add_location(button, file$7, 425, 24, 16401);
+    			add_location(button, file$7, 425, 24, 16387);
     			attr_dev(div5, "class", "control__div  svelte-1gffrzh");
-    			add_location(div5, file$7, 421, 20, 16101);
+    			add_location(div5, file$7, 421, 20, 16087);
     			attr_dev(div6, "class", "content__div  svelte-1gffrzh");
-    			add_location(div6, file$7, 428, 20, 16555);
+    			add_location(div6, file$7, 428, 20, 16541);
     			attr_dev(div7, "class", "sub_container__div box svelte-1gffrzh");
-    			add_location(div7, file$7, 419, 16, 15979);
+    			add_location(div7, file$7, 419, 16, 15965);
     			attr_dev(div8, "class", "subtitle svelte-1gffrzh");
-    			add_location(div8, file$7, 438, 20, 16929);
+    			add_location(div8, file$7, 438, 20, 16915);
     			attr_dev(hr2, "class", "svelte-1gffrzh");
-    			add_location(hr2, file$7, 444, 24, 17230);
+    			add_location(hr2, file$7, 444, 24, 17216);
     			attr_dev(div9, "class", "subtitle svelte-1gffrzh");
     			set_style(div9, "width", "100%");
     			set_style(div9, "display", "grid");
     			set_style(div9, "place-items", "center");
-    			add_location(div9, file$7, 444, 29, 17235);
+    			add_location(div9, file$7, 444, 29, 17221);
     			attr_dev(hr3, "class", "svelte-1gffrzh");
-    			add_location(hr3, file$7, 444, 131, 17337);
+    			add_location(hr3, file$7, 444, 131, 17323);
     			attr_dev(div10, "class", "align h-center");
-    			add_location(div10, file$7, 446, 24, 17369);
+    			add_location(div10, file$7, 446, 24, 17355);
     			attr_dev(div11, "class", "content__div  svelte-1gffrzh");
-    			add_location(div11, file$7, 439, 20, 17000);
+    			add_location(div11, file$7, 439, 20, 16986);
     			attr_dev(div12, "class", "sub_container__div box svelte-1gffrzh");
-    			add_location(div12, file$7, 437, 16, 16871);
+    			add_location(div12, file$7, 437, 16, 16857);
     			attr_dev(div13, "class", "subtitle svelte-1gffrzh");
-    			add_location(div13, file$7, 459, 20, 18050);
+    			add_location(div13, file$7, 459, 20, 18036);
     			attr_dev(div14, "class", "content__div  svelte-1gffrzh");
-    			add_location(div14, file$7, 460, 20, 18117);
+    			add_location(div14, file$7, 460, 20, 18103);
     			attr_dev(div15, "class", "sub_container__div box svelte-1gffrzh");
-    			add_location(div15, file$7, 457, 16, 17990);
+    			add_location(div15, file$7, 457, 16, 17976);
     			attr_dev(div16, "class", "subtitle svelte-1gffrzh");
-    			add_location(div16, file$7, 473, 20, 18753);
+    			add_location(div16, file$7, 473, 20, 18739);
     			attr_dev(div17, "class", "content__div  svelte-1gffrzh");
-    			add_location(div17, file$7, 474, 20, 18821);
+    			add_location(div17, file$7, 474, 20, 18807);
     			attr_dev(div18, "class", "sub_container__div box svelte-1gffrzh");
-    			add_location(div18, file$7, 472, 16, 18695);
+    			add_location(div18, file$7, 472, 16, 18681);
     			attr_dev(div19, "class", "main_container__div svelte-1gffrzh");
     			toggle_class(div19, "hide", /*showreport*/ ctx[21]);
-    			add_location(div19, file$7, 406, 12, 15470);
+    			add_location(div19, file$7, 406, 12, 15456);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -79673,7 +79615,7 @@ var app = (function (marked) {
     			t1 = text(t1_value);
     			t2 = space();
     			t3 = text(t3_value);
-    			add_location(div, file$7, 501, 20, 20181);
+    			add_location(div, file$7, 501, 20, 20167);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -79718,7 +79660,7 @@ var app = (function (marked) {
     			button = element("button");
     			button.textContent = "Stop";
     			attr_dev(button, "class", "button is-danger");
-    			add_location(button, file$7, 505, 20, 20383);
+    			add_location(button, file$7, 505, 20, 20369);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -79775,7 +79717,7 @@ var app = (function (marked) {
     			button = element("button");
     			button.textContent = "Clear";
     			attr_dev(button, "class", "button is-warning");
-    			add_location(button, file$7, 508, 20, 20552);
+    			add_location(button, file$7, 508, 20, 20538);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -79837,11 +79779,11 @@ var app = (function (marked) {
     			button1 = element("button");
     			button1.textContent = "Submit";
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$7, 510, 16, 20681);
+    			add_location(button0, file$7, 510, 16, 20666);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$7, 512, 16, 20830);
+    			add_location(button1, file$7, 512, 16, 20814);
     			attr_dev(div, "class", "align");
-    			add_location(div, file$7, 499, 12, 20096);
+    			add_location(div, file$7, 499, 12, 20082);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -80041,7 +79983,7 @@ var app = (function (marked) {
     		k3 = { constant: [], rate: [] },
     		kCID = { constant: [], rate: [] };
 
-    	let py, pyProcesses = [], running = false;
+    	let py, pyProcesses = [];
 
     	const pyEventHandle = e => {
     		$$invalidate(20, statusReport = "");
@@ -80299,11 +80241,11 @@ var app = (function (marked) {
     		$$invalidate(36, boltzmanWindow);
     	}
 
-    	const click_handler = e => {
+    	const click_handler = () => {
     		$$invalidate(20, statusReport = "");
     	};
 
-    	const click_handler_1 = e => {
+    	const click_handler_1 = () => {
     		$$invalidate(21, showreport = !showreport);
     	};
 
@@ -80499,7 +80441,6 @@ var app = (function (marked) {
     	};
 
     	$$self.$capture_state = () => ({
-    		mainPreModal,
     		browse,
     		Textfield,
     		fade,
@@ -80531,7 +80472,6 @@ var app = (function (marked) {
     		kCID,
     		py,
     		pyProcesses,
-    		running,
     		pyEventHandle,
     		statusReport,
     		showreport,
@@ -80605,7 +80545,6 @@ var app = (function (marked) {
     		if ('kCID' in $$props) $$invalidate(18, kCID = $$props.kCID);
     		if ('py' in $$props) py = $$props.py;
     		if ('pyProcesses' in $$props) $$invalidate(19, pyProcesses = $$props.pyProcesses);
-    		if ('running' in $$props) running = $$props.running;
     		if ('statusReport' in $$props) $$invalidate(20, statusReport = $$props.statusReport);
     		if ('showreport' in $$props) $$invalidate(21, showreport = $$props.showreport);
     		if ('collisionalRates' in $$props) $$invalidate(22, collisionalRates = $$props.collisionalRates);
@@ -80990,15 +80929,15 @@ var app = (function (marked) {
     			t11 = space();
     			create_component(textfield1.$$.fragment);
     			attr_dev(button0, "class", btnClass);
-    			add_location(button0, file$6, 83, 12, 3411);
+    			add_location(button0, file$6, 83, 12, 3417);
     			attr_dev(button1, "class", btnClass);
-    			add_location(button1, file$6, 84, 12, 3509);
+    			add_location(button1, file$6, 84, 12, 3515);
     			attr_dev(button2, "class", btnClass);
-    			add_location(button2, file$6, 88, 12, 3760);
+    			add_location(button2, file$6, 88, 12, 3766);
     			attr_dev(button3, "class", btnClass);
-    			add_location(button3, file$6, 89, 12, 3849);
+    			add_location(button3, file$6, 89, 12, 3855);
     			attr_dev(div, "class", "align v-center");
-    			add_location(div, file$6, 82, 8, 3369);
+    			add_location(div, file$6, 82, 8, 3375);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -81179,7 +81118,7 @@ var app = (function (marked) {
     			t = space();
     			create_component(customcheckbox.$$.fragment);
     			attr_dev(div, "class", "animated fadeIn align h-end v-center");
-    			add_location(div, file$6, 105, 12, 4468);
+    			add_location(div, file$6, 105, 12, 4474);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -81262,10 +81201,10 @@ var app = (function (marked) {
     			div1 = element("div");
     			attr_dev(div0, "id", "resOnOffPlot");
     			attr_dev(div0, "class", "graph__div");
-    			add_location(div0, file$6, 101, 8, 4373);
+    			add_location(div0, file$6, 101, 8, 4379);
     			attr_dev(div1, "id", "thzPlot");
     			attr_dev(div1, "class", "graph__div");
-    			add_location(div1, file$6, 112, 8, 4797);
+    			add_location(div1, file$6, 112, 8, 4803);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -81409,7 +81348,7 @@ var app = (function (marked) {
     			const layout_changes = {};
     			if (dirty & /*graphPlotted*/ 8) layout_changes.graphPlotted = /*graphPlotted*/ ctx[3];
 
-    			if (dirty & /*$$scope, plotFill, plotStyleSelected, graphPlotted, gamma, delta, openShell, saveInMHz, binData, ROSAA_modal_active*/ 1073743868) {
+    			if (dirty & /*$$scope, plotFill, plotStyleSelected, graphPlotted, gamma, delta, openShell, saveInMHz, binData, ROSAA_modal_active*/ 536872956) {
     				layout_changes.$$scope = { dirty, ctx };
     			}
 
@@ -81545,25 +81484,9 @@ var app = (function (marked) {
     		});
     	}
 
-    	let includePlotsInReport = [
-    		{
-    			id: "resOnOffPlot",
-    			include: false,
-    			label: "THz Res-ON/OFF"
-    		},
-    		{
-    			id: "thzPlot",
-    			include: true,
-    			label: "Normalised THz Spectrum"
-    		},
-    		{
-    			id: "boltzman_plot",
-    			include: false,
-    			label: "Boltzman plot"
-    		}
-    	];
-
+    	// let includePlotsInReport = [{id:"resOnOffPlot", include:false, label:"THz Res-ON/OFF"}, {id:"thzPlot", include:true, label:"Normalised THz Spectrum"}, {id:"boltzman_plot", include:false, label:"Boltzman plot"}]
     	let ROSAA_modal_active = false;
+
     	const writable_props = [];
 
     	Object.keys($$props).forEach(key => {
@@ -81635,7 +81558,6 @@ var app = (function (marked) {
     	}
 
     	$$self.$capture_state = () => ({
-    		mainPreModal,
     		Layout,
     		CustomIconSwitch: CustomIconSwitch$1,
     		CustomSelect: CustomSelect$1,
@@ -81659,7 +81581,6 @@ var app = (function (marked) {
     		saveInMHz,
     		changePlotStyle,
     		plotData,
-    		includePlotsInReport,
     		ROSAA_modal_active,
     		thzfiles
     	});
@@ -81675,7 +81596,6 @@ var app = (function (marked) {
     		if ('plotFill' in $$props) $$invalidate(7, plotFill = $$props.plotFill);
     		if ('binData' in $$props) $$invalidate(8, binData = $$props.binData);
     		if ('saveInMHz' in $$props) $$invalidate(9, saveInMHz = $$props.saveInMHz);
-    		if ('includePlotsInReport' in $$props) includePlotsInReport = $$props.includePlotsInReport;
     		if ('ROSAA_modal_active' in $$props) $$invalidate(10, ROSAA_modal_active = $$props.ROSAA_modal_active);
     		if ('thzfiles' in $$props) thzfiles = $$props.thzfiles;
     	};
@@ -81904,7 +81824,7 @@ var app = (function (marked) {
     			if_block.c();
     			attr_dev(div, "slot", "content");
     			set_style(div, "user-select", "text");
-    			add_location(div, file$5, 64, 8, 1544);
+    			add_location(div, file$5, 64, 8, 1543);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -81969,7 +81889,7 @@ var app = (function (marked) {
     			button.textContent = "Update Now";
     			attr_dev(button, "class", "button is-warning");
     			toggle_class(button, "is-loading", /*$updating*/ ctx[5]);
-    			add_location(button, file$5, 76, 16, 1938);
+    			add_location(button, file$5, 76, 16, 1937);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -82012,7 +81932,7 @@ var app = (function (marked) {
     			div = element("div");
     			if (if_block) if_block.c();
     			attr_dev(div, "slot", "footerbtn");
-    			add_location(div, file$5, 74, 8, 1862);
+    			add_location(div, file$5, 74, 8, 1861);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -82184,7 +82104,7 @@ var app = (function (marked) {
 
     	const updateEvent = new CustomEvent('update', { bubbles: false });
 
-    	const updateNow = e => {
+    	const updateNow = () => {
     		let target = document.getElementById("updateCheckBtn");
     		target.dispatchEvent(updateEvent);
     	};
@@ -83353,13 +83273,13 @@ var app = (function (marked) {
     			div1 = element("div");
     			create_component(customswitch.$$.fragment);
     			attr_dev(button0, "class", "button is-link svelte-1v533f1");
-    			add_location(button0, file$3, 127, 32, 4470);
+    			add_location(button0, file$3, 127, 32, 4473);
     			attr_dev(button1, "class", "button is-link svelte-1v533f1");
-    			add_location(button1, file$3, 129, 32, 4584);
+    			add_location(button1, file$3, 129, 32, 4587);
     			attr_dev(div0, "class", "align svelte-1v533f1");
-    			add_location(div0, file$3, 124, 28, 4181);
+    			add_location(div0, file$3, 124, 28, 4184);
     			attr_dev(div1, "class", "align svelte-1v533f1");
-    			add_location(div1, file$3, 131, 28, 4720);
+    			add_location(div1, file$3, 131, 28, 4723);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -83465,7 +83385,7 @@ var app = (function (marked) {
     			t1 = text(": ");
     			t2 = text(t2_value);
     			attr_dev(li, "class", "svelte-1v533f1");
-    			add_location(li, file$3, 186, 32, 7715);
+    			add_location(li, file$3, 186, 32, 7718);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -83703,91 +83623,91 @@ var app = (function (marked) {
 
     			attr_dev(div0, "class", "hvr-glow svelte-1v533f1");
     			toggle_class(div0, "clicked", /*selected*/ ctx[0] === "Configuration");
-    			add_location(div0, file$3, 105, 16, 3084);
+    			add_location(div0, file$3, 105, 16, 3087);
     			attr_dev(div1, "class", "hvr-glow svelte-1v533f1");
     			toggle_class(div1, "clicked", /*selected*/ ctx[0] === "Update");
-    			add_location(div1, file$3, 106, 16, 3206);
+    			add_location(div1, file$3, 106, 16, 3209);
     			attr_dev(div2, "class", "hvr-glow svelte-1v533f1");
     			toggle_class(div2, "clicked", /*selected*/ ctx[0] === "Terminal");
-    			add_location(div2, file$3, 107, 16, 3314);
+    			add_location(div2, file$3, 107, 16, 3317);
     			attr_dev(div3, "class", "hvr-glow svelte-1v533f1");
     			toggle_class(div3, "clicked", /*selected*/ ctx[0] === "About");
-    			add_location(div3, file$3, 109, 16, 3428);
+    			add_location(div3, file$3, 109, 16, 3431);
     			attr_dev(div4, "class", "title__div svelte-1v533f1");
-    			add_location(div4, file$3, 104, 11, 3042);
+    			add_location(div4, file$3, 104, 11, 3045);
     			attr_dev(div5, "class", "box interact left_container__div svelte-1v533f1");
-    			add_location(div5, file$3, 102, 8, 2981);
+    			add_location(div5, file$3, 102, 8, 2984);
     			attr_dev(h10, "class", "title svelte-1v533f1");
-    			add_location(h10, file$3, 116, 20, 3767);
+    			add_location(h10, file$3, 116, 20, 3770);
     			attr_dev(div6, "class", "subtitle svelte-1v533f1");
-    			add_location(div6, file$3, 118, 20, 3827);
+    			add_location(div6, file$3, 118, 20, 3830);
     			attr_dev(button0, "class", "button is-link svelte-1v533f1");
-    			add_location(button0, file$3, 121, 24, 3936);
+    			add_location(button0, file$3, 121, 24, 3939);
     			attr_dev(div7, "class", "align svelte-1v533f1");
-    			add_location(div7, file$3, 120, 20, 3891);
+    			add_location(div7, file$3, 120, 20, 3894);
     			attr_dev(div8, "class", "content animated fadeIn svelte-1v533f1");
     			toggle_class(div8, "hide", /*selected*/ ctx[0] !== "Configuration");
-    			add_location(div8, file$3, 115, 16, 3668);
+    			add_location(div8, file$3, 115, 16, 3671);
     			attr_dev(h11, "class", "title svelte-1v533f1");
-    			add_location(h11, file$3, 139, 20, 5184);
+    			add_location(h11, file$3, 139, 20, 5187);
     			attr_dev(div9, "class", "subtitle svelte-1v533f1");
-    			add_location(div9, file$3, 141, 20, 5237);
+    			add_location(div9, file$3, 141, 20, 5240);
     			attr_dev(button1, "class", "button is-link svelte-1v533f1");
     			attr_dev(button1, "id", "updateCheckBtn");
-    			add_location(button1, file$3, 151, 28, 5840);
+    			add_location(button1, file$3, 151, 28, 5843);
     			attr_dev(button2, "class", "button is-warning svelte-1v533f1");
-    			add_location(button2, file$3, 154, 28, 6116);
+    			add_location(button2, file$3, 154, 28, 6119);
     			attr_dev(div10, "class", "align svelte-1v533f1");
-    			add_location(div10, file$3, 150, 24, 5791);
+    			add_location(div10, file$3, 150, 24, 5794);
     			attr_dev(label, "for", "file");
     			attr_dev(label, "class", "svelte-1v533f1");
-    			add_location(label, file$3, 159, 28, 6365);
+    			add_location(label, file$3, 159, 28, 6368);
     			attr_dev(progress, "id", "update-progress");
     			attr_dev(progress, "max", "100");
     			progress.value = "0";
     			attr_dev(progress, "class", "svelte-1v533f1");
-    			add_location(progress, file$3, 160, 28, 6439);
+    			add_location(progress, file$3, 160, 28, 6442);
     			attr_dev(div11, "id", "update-progress-container");
     			set_style(div11, "display", "none");
     			attr_dev(div11, "class", "svelte-1v533f1");
-    			add_location(div11, file$3, 158, 24, 6276);
+    			add_location(div11, file$3, 158, 24, 6279);
     			attr_dev(div12, "class", "align svelte-1v533f1");
-    			add_location(div12, file$3, 142, 20, 5318);
+    			add_location(div12, file$3, 142, 20, 5321);
     			attr_dev(div13, "class", "content animated fadeIn svelte-1v533f1");
     			toggle_class(div13, "hide", /*selected*/ ctx[0] !== "Update");
-    			add_location(div13, file$3, 138, 16, 5092);
+    			add_location(div13, file$3, 138, 16, 5095);
     			attr_dev(h12, "class", "title svelte-1v533f1");
-    			add_location(h12, file$3, 170, 20, 7008);
+    			add_location(h12, file$3, 170, 20, 7011);
     			attr_dev(div14, "class", "animated fadeIn svelte-1v533f1");
     			toggle_class(div14, "hide", /*selected*/ ctx[0] !== "Terminal");
-    			add_location(div14, file$3, 169, 16, 6922);
+    			add_location(div14, file$3, 169, 16, 6925);
     			attr_dev(h13, "class", "title svelte-1v533f1");
-    			add_location(h13, file$3, 176, 20, 7280);
+    			add_location(h13, file$3, 176, 20, 7283);
     			attr_dev(li0, "class", "svelte-1v533f1");
-    			add_location(li0, file$3, 181, 28, 7482);
+    			add_location(li0, file$3, 181, 28, 7485);
     			attr_dev(li1, "class", "svelte-1v533f1");
-    			add_location(li1, file$3, 182, 28, 7551);
+    			add_location(li1, file$3, 182, 28, 7554);
     			attr_dev(hr, "class", "svelte-1v533f1");
-    			add_location(hr, file$3, 183, 28, 7602);
+    			add_location(hr, file$3, 183, 28, 7605);
     			set_style(ul, "user-select", "text");
     			attr_dev(ul, "class", "svelte-1v533f1");
-    			add_location(ul, file$3, 179, 24, 7399);
+    			add_location(ul, file$3, 179, 24, 7402);
     			attr_dev(div15, "class", "content svelte-1v533f1");
-    			add_location(div15, file$3, 177, 20, 7330);
+    			add_location(div15, file$3, 177, 20, 7333);
     			attr_dev(div16, "class", "animated fadeIn svelte-1v533f1");
     			toggle_class(div16, "hide", /*selected*/ ctx[0] !== "About");
-    			add_location(div16, file$3, 174, 16, 7195);
+    			add_location(div16, file$3, 174, 16, 7198);
     			attr_dev(div17, "class", "container right svelte-1v533f1");
     			attr_dev(div17, "id", "Settings_right_column");
-    			add_location(div17, file$3, 114, 12, 3594);
+    			add_location(div17, file$3, 114, 12, 3597);
     			attr_dev(div18, "class", "box svelte-1v533f1");
-    			add_location(div18, file$3, 113, 8, 3563);
+    			add_location(div18, file$3, 113, 8, 3566);
     			attr_dev(div19, "class", "main__div svelte-1v533f1");
-    			add_location(div19, file$3, 100, 4, 2938);
+    			add_location(div19, file$3, 100, 4, 2941);
     			attr_dev(section, "class", "section animated fadeIn svelte-1v533f1");
     			attr_dev(section, "id", "Settings");
     			set_style(section, "display", "none");
-    			add_location(section, file$3, 99, 0, 2856);
+    			add_location(section, file$3, 99, 0, 2859);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -84154,7 +84074,6 @@ var app = (function (marked) {
     		pyVersion,
     		developerMode,
     		suppressInitialDeveloperWarning,
-    		mainPreModal,
     		activateChangelog,
     		Textfield,
     		onMount,
