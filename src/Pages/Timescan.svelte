@@ -152,8 +152,8 @@
         </div>
 
         <div class="align animated fadeIn" class:hide={toggleRow} >
-            <CustomSelect bind:picked={resON_Files} label="ResOn" options={fullfiles}/>
-            <CustomSelect bind:picked={resOFF_Files} label="ResOFF" options={fullfiles}/>
+            <CustomSelect style="min-width: 7em;" bind:picked={resON_Files} label="ResOn" options={fullfiles}/>
+            <CustomSelect style="min-width: 7em;" bind:picked={resOFF_Files} label="ResOFF" options={fullfiles}/>
             <Textfield bind:value={power} label="Power (ON, OFF) [mJ]" />
             <Textfield type="number" {style} bind:value={nshots} label="FELIX Hz" />
             <Textfield type="number" {style} bind:value={massIndex} label="Mass Index" />
