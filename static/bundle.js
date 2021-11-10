@@ -5728,10 +5728,10 @@ var app = (function (marked) {
                                 const dataFile = basename(pyfile).split(".")[0];
                                 const outputFile = pathJoin(appInfo.temp, "FELion_GUI3", dataFile + "_data.json");
 
-                                if (!existsSync(outputFile)) {
+                                if (!fs.existsSync(outputFile)) {
                                     return reject(`${outputFile} doesn't exist.`)
                                 }
-                                let dataFromPython = readFileSync(outputFile);
+                                let dataFromPython = fs.readFileSync(outputFile);
 
                                 window.dataFromPython = dataFromPython = JSON.parse(dataFromPython);
                                 console.log(dataFromPython);
@@ -26359,7 +26359,7 @@ var app = (function (marked) {
     	return child_ctx;
     }
 
-    // (126:4) <Icon class="material-icons" on:click="{()=>changeDirectory("..")}">
+    // (125:4) <Icon class="material-icons" on:click="{()=>changeDirectory("..")}">
     function create_default_slot_6$2(ctx) {
     	let t;
 
@@ -26379,14 +26379,14 @@ var app = (function (marked) {
     		block,
     		id: create_default_slot_6$2.name,
     		type: "slot",
-    		source: "(126:4) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>changeDirectory(\\\"..\\\")}\\\">",
+    		source: "(125:4) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>changeDirectory(\\\"..\\\")}\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (127:4) <Icon class="material-icons" on:click="{()=>{getfiles(true, true)}}">
+    // (126:4) <Icon class="material-icons" on:click="{()=>{getfiles(true, true)}}">
     function create_default_slot_5$2(ctx) {
     	let t;
 
@@ -26406,14 +26406,14 @@ var app = (function (marked) {
     		block,
     		id: create_default_slot_5$2.name,
     		type: "slot",
-    		source: "(127:4) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>{getfiles(true, true)}}\\\">",
+    		source: "(126:4) <Icon class=\\\"material-icons\\\" on:click=\\\"{()=>{getfiles(true, true)}}\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (134:4) <FormField>
+    // (133:4) <FormField>
     function create_default_slot_4$3(ctx) {
     	let switch_1;
     	let updating_checked;
@@ -26470,14 +26470,14 @@ var app = (function (marked) {
     		block,
     		id: create_default_slot_4$3.name,
     		type: "slot",
-    		source: "(134:4) <FormField>",
+    		source: "(133:4) <FormField>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (137:8) 
+    // (136:8) 
     function create_label_slot$6(ctx) {
     	let span;
 
@@ -26486,7 +26486,7 @@ var app = (function (marked) {
     			span = element("span");
     			span.textContent = "Select All";
     			attr_dev(span, "slot", "label");
-    			add_location(span, file_1, 136, 8, 5263);
+    			add_location(span, file_1, 135, 8, 5068);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -26500,14 +26500,14 @@ var app = (function (marked) {
     		block,
     		id: create_label_slot$6.name,
     		type: "slot",
-    		source: "(137:8) ",
+    		source: "(136:8) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (145:12) <Icon class="material-icons" on>
+    // (144:12) <Icon class="material-icons" on>
     function create_default_slot_3$4(ctx) {
     	let t;
 
@@ -26527,14 +26527,14 @@ var app = (function (marked) {
     		block,
     		id: create_default_slot_3$4.name,
     		type: "slot",
-    		source: "(145:12) <Icon class=\\\"material-icons\\\" on>",
+    		source: "(144:12) <Icon class=\\\"material-icons\\\" on>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (146:12) <Icon class="material-icons" >
+    // (145:12) <Icon class="material-icons" >
     function create_default_slot_2$7(ctx) {
     	let t;
 
@@ -26554,14 +26554,14 @@ var app = (function (marked) {
     		block,
     		id: create_default_slot_2$7.name,
     		type: "slot",
-    		source: "(146:12) <Icon class=\\\"material-icons\\\" >",
+    		source: "(145:12) <Icon class=\\\"material-icons\\\" >",
     		ctx
     	});
 
     	return block;
     }
 
-    // (144:8) <IconButton  toggle bind:pressed={showfiles}>
+    // (143:8) <IconButton  toggle bind:pressed={showfiles}>
     function create_default_slot_1$b(ctx) {
     	let icon0;
     	let t;
@@ -26637,14 +26637,14 @@ var app = (function (marked) {
     		block,
     		id: create_default_slot_1$b.name,
     		type: "slot",
-    		source: "(144:8) <IconButton  toggle bind:pressed={showfiles}>",
+    		source: "(143:8) <IconButton  toggle bind:pressed={showfiles}>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (175:4) {:else}
+    // (174:4) {:else}
     function create_else_block$7(ctx) {
     	let div;
 
@@ -26653,7 +26653,7 @@ var app = (function (marked) {
     			div = element("div");
     			div.textContent = "...loading";
     			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-ujy50h");
-    			add_location(div, file_1, 175, 8, 6996);
+    			add_location(div, file_1, 174, 8, 6801);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -26670,14 +26670,14 @@ var app = (function (marked) {
     		block,
     		id: create_else_block$7.name,
     		type: "else",
-    		source: "(175:4) {:else}",
+    		source: "(174:4) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (173:30) 
+    // (172:30) 
     function create_if_block_3$2(ctx) {
     	let div;
 
@@ -26686,7 +26686,7 @@ var app = (function (marked) {
     			div = element("div");
     			div.textContent = "Location doesn't exist: Browse files again";
     			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-ujy50h");
-    			add_location(div, file_1, 173, 8, 6873);
+    			add_location(div, file_1, 172, 8, 6678);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -26703,14 +26703,14 @@ var app = (function (marked) {
     		block,
     		id: create_if_block_3$2.name,
     		type: "if",
-    		source: "(173:30) ",
+    		source: "(172:30) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (151:4) {#if files_loaded && locationStatus}
+    // (150:4) {#if files_loaded && locationStatus}
     function create_if_block$u(ctx) {
     	let current_block_type_index;
     	let if_block;
@@ -26755,7 +26755,7 @@ var app = (function (marked) {
 
     			attr_dev(div, "class", "otherFolderlist");
     			set_style(div, "cursor", "pointer");
-    			add_location(div, file_1, 163, 8, 6396);
+    			add_location(div, file_1, 162, 8, 6201);
     		},
     		m: function mount(target, anchor) {
     			if (~current_block_type_index) {
@@ -26853,14 +26853,14 @@ var app = (function (marked) {
     		block,
     		id: create_if_block$u.name,
     		type: "if",
-    		source: "(151:4) {#if files_loaded && locationStatus}",
+    		source: "(150:4) {#if files_loaded && locationStatus}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (160:40) 
+    // (159:40) 
     function create_if_block_2$5(ctx) {
     	let div;
     	let t0;
@@ -26874,7 +26874,7 @@ var app = (function (marked) {
     			t1 = text(/*filetype*/ ctx[2]);
     			t2 = text(" here!");
     			attr_dev(div, "class", "mdc-typography--subtitle1 align center svelte-ujy50h");
-    			add_location(div, file_1, 160, 12, 6276);
+    			add_location(div, file_1, 159, 12, 6081);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -26896,14 +26896,14 @@ var app = (function (marked) {
     		block,
     		id: create_if_block_2$5.name,
     		type: "if",
-    		source: "(160:40) ",
+    		source: "(159:40) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (152:8) {#if showfiles && fullfiles.length }
+    // (151:8) {#if showfiles && fullfiles.length }
     function create_if_block_1$c(ctx) {
     	let div;
     	let virtualchecklist;
@@ -26945,7 +26945,7 @@ var app = (function (marked) {
     		c: function create() {
     			div = element("div");
     			create_component(virtualchecklist.$$.fragment);
-    			add_location(div, file_1, 152, 12, 5831);
+    			add_location(div, file_1, 151, 12, 5636);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -26996,14 +26996,14 @@ var app = (function (marked) {
     		block,
     		id: create_if_block_1$c.name,
     		type: "if",
-    		source: "(152:8) {#if showfiles && fullfiles.length }",
+    		source: "(151:8) {#if showfiles && fullfiles.length }",
     		ctx
     	});
 
     	return block;
     }
 
-    // (167:20) <Icon class="material-icons">
+    // (166:20) <Icon class="material-icons">
     function create_default_slot$n(ctx) {
     	let t;
 
@@ -27023,14 +27023,14 @@ var app = (function (marked) {
     		block,
     		id: create_default_slot$n.name,
     		type: "slot",
-    		source: "(167:20) <Icon class=\\\"material-icons\\\">",
+    		source: "(166:20) <Icon class=\\\"material-icons\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (165:12) {#each otherfolders as folder (folder.id)}
+    // (164:12) {#each otherfolders as folder (folder.id)}
     function create_each_block$f(key_1, ctx) {
     	let div1;
     	let icon;
@@ -27068,9 +27068,9 @@ var app = (function (marked) {
     			t1 = text(t1_value);
     			t2 = space();
     			attr_dev(div0, "class", "mdc-typography--subtitle1");
-    			add_location(div0, file_1, 167, 20, 6710);
+    			add_location(div0, file_1, 166, 20, 6515);
     			attr_dev(div1, "class", "align svelte-ujy50h");
-    			add_location(div1, file_1, 165, 16, 6522);
+    			add_location(div1, file_1, 164, 16, 6327);
     			this.first = div1;
     		},
     		m: function mount(target, anchor) {
@@ -27134,7 +27134,7 @@ var app = (function (marked) {
     		block,
     		id: create_each_block$f.name,
     		type: "each",
-    		source: "(165:12) {#each otherfolders as folder (folder.id)}",
+    		source: "(164:12) {#each otherfolders as folder (folder.id)}",
     		ctx
     	});
 
@@ -27287,16 +27287,16 @@ var app = (function (marked) {
     			t7 = space();
     			if_block.c();
     			attr_dev(div0, "class", "align center browseIcons svelte-ujy50h");
-    			add_location(div0, file_1, 124, 0, 4625);
+    			add_location(div0, file_1, 123, 0, 4430);
     			attr_dev(div1, "class", "align center svelte-ujy50h");
-    			add_location(div1, file_1, 132, 0, 5061);
+    			add_location(div1, file_1, 131, 0, 4866);
     			attr_dev(div2, "class", "mdc-typography--subtitle1");
-    			add_location(div2, file_1, 147, 8, 5656);
+    			add_location(div2, file_1, 146, 8, 5461);
     			attr_dev(div3, "class", "align folderlist svelte-ujy50h");
-    			add_location(div3, file_1, 142, 4, 5394);
+    			add_location(div3, file_1, 141, 4, 5199);
     			attr_dev(div4, "class", "folderfile-list svelte-ujy50h");
     			attr_dev(div4, "id", div4_id_value = "" + (/*filetype*/ ctx[2] + "_filebrowser"));
-    			add_location(div4, file_1, 141, 0, 5331);
+    			add_location(div4, file_1, 140, 0, 5136);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -27506,14 +27506,11 @@ var app = (function (marked) {
 
     		try {
     			console.log("Current location: ", currentLocation);
-    			let folderfile = readdirSync(currentLocation);
+    			let folderfile = fs.readdirSync(currentLocation);
     			const fileIncludePattern = new RegExp(`.+\\.[^fr]?${filetype}`); // f or r keyword is to avoid getting fscan and rscan files
-
-    			// original_files = fullfiles = folderfile.filter(file=>file.endsWith(filetype)&&lstatSync(pathJoin(currentLocation, file)).isFile()).map(file=>file={name:file, id:getID()}).sort((a,b)=>a.name<b.name?1:-1)
-    			original_files = $$invalidate(3, fullfiles = folderfile.filter(file => fileIncludePattern.test(file) && lstatSync(pathJoin(currentLocation, file)).isFile()).map(file => file = { name: file, id: getID() }).sort((a, b) => a.name < b.name ? 1 : -1));
-
+    			original_files = $$invalidate(3, fullfiles = folderfile.filter(file => fileIncludePattern.test(file) && fs.lstatSync(pathJoin(currentLocation, file)).isFile()).map(file => file = { name: file, id: getID() }).sort((a, b) => a.name < b.name ? 1 : -1));
     			$$invalidate(18, fullfileslist = fullfiles.map(file => file = file.name));
-    			$$invalidate(6, otherfolders = folderfile.filter(file => lstatSync(pathJoin(currentLocation, file)).isDirectory()).map(file => file = { name: file, id: getID() }).sort((a, b) => a.name > b.name ? 1 : -1));
+    			$$invalidate(6, otherfolders = folderfile.filter(file => fs.lstatSync(pathJoin(currentLocation, file)).isDirectory()).map(file => file = { name: file, id: getID() }).sort((a, b) => a.name > b.name ? 1 : -1));
     			original_location = currentLocation;
     			$$invalidate(10, files_loaded = true);
     			console.log("Folder updated");
@@ -27698,7 +27695,7 @@ var app = (function (marked) {
 
     	$$self.$$.update = () => {
     		if ($$self.$$.dirty[0] & /*currentLocation*/ 131072) {
-    			$$invalidate(5, locationStatus = existsSync(currentLocation));
+    			$$invalidate(5, locationStatus = fs.existsSync(currentLocation));
     		}
 
     		if ($$self.$$.dirty[0] & /*locationStatus, currentLocation*/ 131104) {
@@ -32679,7 +32676,7 @@ var app = (function (marked) {
     			span = element("span");
     			span.textContent = "Convert to µm";
     			attr_dev(span, "slot", "label");
-    			add_location(span, file$P, 130, 16, 4203);
+    			add_location(span, file$P, 130, 16, 4209);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -32918,24 +32915,24 @@ var app = (function (marked) {
     			button1 = element("button");
     			button1.textContent = "Save";
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$P, 114, 12, 3561);
+    			add_location(button0, file$P, 114, 12, 3567);
     			attr_dev(div0, "class", "location__bar svelte-kzx37e");
-    			add_location(div0, file$P, 113, 8, 3520);
+    			add_location(div0, file$P, 113, 8, 3526);
     			attr_dev(div1, "class", "grid_column__container file__details__bar svelte-kzx37e");
-    			add_location(div1, file$P, 120, 8, 3764);
+    			add_location(div1, file$P, 120, 8, 3770);
     			attr_dev(button1, "class", "button is-success");
     			set_style(button1, "width", "12em");
     			set_style(button1, "margin-left", "auto");
-    			add_location(button1, file$P, 140, 12, 4670);
+    			add_location(button1, file$P, 140, 12, 4676);
     			attr_dev(div2, "class", "power_value__container svelte-kzx37e");
-    			add_location(div2, file$P, 136, 8, 4306);
+    			add_location(div2, file$P, 136, 8, 4312);
     			attr_dev(div3, "class", "box main__container svelte-kzx37e");
     			attr_dev(div3, "id", "powfileContainer");
-    			add_location(div3, file$P, 111, 4, 3453);
+    			add_location(div3, file$P, 111, 4, 3459);
     			attr_dev(section, "class", "section svelte-kzx37e");
     			attr_dev(section, "id", "Powerfile");
     			set_style(section, "display", "none");
-    			add_location(section, file$P, 110, 0, 3386);
+    			add_location(section, file$P, 110, 0, 3392);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -33107,7 +33104,7 @@ var app = (function (marked) {
     	const writePowfile = () => {
     		let contents = `${initContent}\n${powerfileContent}`;
 
-    		writeFile(powfile, contents, function (err) {
+    		fs.writeFile(powfile, contents, function (err) {
     			if (err) {
     				return window.createToast("Power file couldn't be saved.", "danger");
     			}
@@ -33121,7 +33118,7 @@ var app = (function (marked) {
     			return openFolder({ save: true });
     		}
 
-    		const overwrite = await existsSync(powfile);
+    		const overwrite = await fs.existsSync(powfile);
     		overwrite ? overwrite_dialog.open() : writePowfile();
     	}
 
@@ -41171,9 +41168,9 @@ var app = (function (marked) {
     			create_component(customchecklist.$$.fragment);
     			t2 = space();
     			attr_dev(div0, "class", "subtitle felix_tkplot_filelist_header svelte-gj4r84");
-    			add_location(div0, file$B, 106, 24, 2969);
+    			add_location(div0, file$B, 106, 24, 2984);
     			attr_dev(div1, "class", "felix_tkplot_filelist_div svelte-gj4r84");
-    			add_location(div1, file$B, 105, 20, 2888);
+    			add_location(div1, file$B, 105, 20, 2903);
     			this.first = div1;
     		},
     		m: function mount(target, anchor) {
@@ -41606,36 +41603,36 @@ var app = (function (marked) {
     			button3 = element("button");
     			button3.textContent = "Add widget";
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$B, 98, 8, 2642);
+    			add_location(button0, file$B, 98, 8, 2657);
     			attr_dev(div0, "class", "files__div svelte-gj4r84");
-    			add_location(div0, file$B, 102, 12, 2756);
-    			add_location(div1, file$B, 97, 4, 2626);
+    			add_location(div0, file$B, 102, 12, 2771);
+    			add_location(div1, file$B, 97, 4, 2641);
     			attr_dev(h10, "class", "subtitle");
-    			add_location(h10, file$B, 116, 8, 3375);
+    			add_location(h10, file$B, 116, 8, 3390);
     			attr_dev(div2, "class", "widgets svelte-gj4r84");
-    			add_location(div2, file$B, 117, 8, 3423);
+    			add_location(div2, file$B, 117, 8, 3438);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$B, 126, 8, 3648);
+    			add_location(button1, file$B, 126, 8, 3663);
     			attr_dev(div3, "class", "felix_plotting_div svelte-gj4r84");
-    			add_location(div3, file$B, 115, 4, 3333);
+    			add_location(div3, file$B, 115, 4, 3348);
     			attr_dev(h11, "class", "subtitle");
-    			add_location(h11, file$B, 132, 8, 3820);
+    			add_location(h11, file$B, 132, 8, 3835);
     			attr_dev(div4, "class", "widgets svelte-gj4r84");
-    			add_location(div4, file$B, 133, 8, 3870);
+    			add_location(div4, file$B, 133, 8, 3885);
     			attr_dev(button2, "class", "button is-link");
-    			add_location(button2, file$B, 139, 8, 4087);
+    			add_location(button2, file$B, 139, 8, 4102);
     			attr_dev(div5, "class", "felix_plotting_div svelte-gj4r84");
-    			add_location(div5, file$B, 130, 4, 3776);
+    			add_location(div5, file$B, 130, 4, 3791);
     			attr_dev(h12, "class", "subtitle");
-    			add_location(h12, file$B, 145, 8, 4265);
+    			add_location(h12, file$B, 145, 8, 4280);
     			attr_dev(div6, "class", "widgets svelte-gj4r84");
-    			add_location(div6, file$B, 146, 8, 4316);
+    			add_location(div6, file$B, 146, 8, 4331);
     			attr_dev(button3, "class", "button is-link");
-    			add_location(button3, file$B, 151, 8, 4522);
+    			add_location(button3, file$B, 151, 8, 4537);
     			attr_dev(div7, "class", "felix_plotting_div svelte-gj4r84");
-    			add_location(div7, file$B, 143, 4, 4217);
+    			add_location(div7, file$B, 143, 4, 4232);
     			set_style(div8, "padding-bottom", "1em");
-    			add_location(div8, file$B, 95, 0, 2584);
+    			add_location(div8, file$B, 95, 0, 2599);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -41829,15 +41826,15 @@ var app = (function (marked) {
     		// $felixPlotCheckboxes = []
     		let datlocation = pathResolve($felixopoLocation, "../EXPORT");
 
-    		let datfiles = existsSync(datlocation)
-    		? readdirSync(datlocation).filter(f => f.endsWith(".dat")).map(f => f = { name: f, id: getID() })
+    		let datfiles = fs.existsSync(datlocation)
+    		? fs.readdirSync(datlocation).filter(f => f.endsWith(".dat")).map(f => f = { name: f, id: getID() })
     		: [{ name: "", id: getID() }];
 
     		let calcfiles = [];
 
-    		if (existsSync(theoryLocation)) {
-    			readdirSync(theoryLocation).forEach(file => {
-    				const isfile = lstatSync(pathJoin(theoryLocation, file)).isFile();
+    		if (fs.existsSync(theoryLocation)) {
+    			fs.readdirSync(theoryLocation).forEach(file => {
+    				const isfile = fs.lstatSync(pathJoin(theoryLocation, file)).isFile();
 
     				if (isfile) {
     					calcfiles = [...calcfiles, { name: file, id: getID() }];
@@ -42016,7 +42013,7 @@ var app = (function (marked) {
     function savefile({file={}, name="", location=""}={}) {
 
         let filename = pathJoin(location || get_store_value(felixopoLocation), `${name}.json`);
-        writeFile(filename, JSON.stringify({file}), 'utf8', function (err) {
+        fs.writeFile(filename, JSON.stringify({file}), 'utf8', function (err) {
 
             if (err) {
                 console.log("An error occured while writing to File.");
@@ -42028,9 +42025,9 @@ var app = (function (marked) {
 
     function loadfile({name="", location=""}={}) {
         let filename = pathJoin( location || get_store_value(felixopoLocation), `${name}.json`);
-        if(!existsSync(filename)) {window.createToast(`${name}.json doesn't exist in DATA dir.`, "danger"); return {}}
+        if(!fs.existsSync(filename)) {window.createToast(`${name}.json doesn't exist in DATA dir.`, "danger"); return {}}
 
-        let loadedfile = JSON.parse(readFileSync(filename)).file;
+        let loadedfile = JSON.parse(fs.readFileSync(filename)).file;
 
         window.createToast(`${name}.json has been loaded.`, "success");
         return loadedfile
@@ -51243,13 +51240,13 @@ var app = (function (marked) {
     			button1 = element("button");
     			button1.textContent = "Replot";
     			attr_dev(span, "class", "tag is-warning ");
-    			add_location(span, file$s, 59, 8, 2312);
+    			add_location(span, file$s, 59, 8, 2318);
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$s, 65, 8, 2824);
+    			add_location(button0, file$s, 65, 8, 2830);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$s, 66, 8, 2935);
+    			add_location(button1, file$s, 66, 8, 2941);
     			attr_dev(div, "class", "align");
-    			add_location(div, file$s, 58, 4, 2267);
+    			add_location(div, file$s, 58, 4, 2273);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -51661,8 +51658,8 @@ var app = (function (marked) {
     		}
 
     		if ($$self.$$.dirty & /*OPOLocation, OPOfilesChecked*/ 3) {
-    			if (existsSync(OPOLocation)) {
-    				$$invalidate(3, OPOcalibFiles = readdirSync(OPOLocation).filter(file => file.endsWith(".calibOPO")));
+    			if (fs.existsSync(OPOLocation)) {
+    				$$invalidate(3, OPOcalibFiles = fs.readdirSync(OPOLocation).filter(file => file.endsWith(".calibOPO")));
     				$$invalidate(11, opofiles = OPOfilesChecked.map(file => pathResolve(OPOLocation, file)));
     			}
     		}
@@ -53666,11 +53663,11 @@ var app = (function (marked) {
     			button1 = element("button");
     			button1.textContent = "Replot";
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$o, 51, 8, 2114);
+    			add_location(button0, file$o, 51, 8, 2117);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$o, 60, 8, 2775);
+    			add_location(button1, file$o, 60, 8, 2778);
     			attr_dev(div, "class", "align");
-    			add_location(div, file$o, 49, 4, 2067);
+    			add_location(div, file$o, 49, 4, 2070);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -54075,7 +54072,7 @@ var app = (function (marked) {
 
     	$$self.$$.update = () => {
     		if ($$self.$$.dirty & /*theoryLocation, theoryfilesChecked*/ 3) {
-    			if (existsSync(theoryLocation)) {
+    			if (fs.existsSync(theoryLocation)) {
     				theoryfiles = theoryfilesChecked.map(file => pathResolve(theoryLocation, file));
     			}
     		}
@@ -58328,28 +58325,28 @@ var app = (function (marked) {
     			t11 = space();
     			create_component(textfield7.$$.fragment);
     			attr_dev(div0, "class", "b0 col svelte-1ykr1ya");
-    			add_location(div0, file$j, 101, 20, 3306);
+    			add_location(div0, file$j, 101, 20, 3312);
     			attr_dev(div1, "class", "row svelte-1ykr1ya");
-    			add_location(div1, file$j, 109, 20, 3660);
+    			add_location(div1, file$j, 109, 20, 3666);
     			attr_dev(div2, "class", "bqLenses col svelte-1ykr1ya");
-    			add_location(div2, file$j, 113, 20, 3948);
+    			add_location(div2, file$j, 113, 20, 3954);
     			attr_dev(div3, "class", "row svelte-1ykr1ya");
-    			add_location(div3, file$j, 119, 20, 4263);
+    			add_location(div3, file$j, 119, 20, 4269);
     			attr_dev(div4, "class", "benderLenses col svelte-1ykr1ya");
-    			add_location(div4, file$j, 120, 20, 4386);
+    			add_location(div4, file$j, 120, 20, 4392);
     			attr_dev(div5, "class", "row svelte-1ykr1ya");
-    			add_location(div5, file$j, 128, 20, 4721);
+    			add_location(div5, file$j, 128, 20, 4727);
     			attr_dev(div6, "class", "se row svelte-1ykr1ya");
-    			add_location(div6, file$j, 131, 20, 4892);
+    			add_location(div6, file$j, 131, 20, 4898);
     			attr_dev(div7, "class", "row svelte-1ykr1ya");
-    			add_location(div7, file$j, 139, 20, 5222);
+    			add_location(div7, file$j, 139, 20, 5228);
     			attr_dev(div8, "class", "sa row svelte-1ykr1ya");
-    			add_location(div8, file$j, 141, 20, 5359);
+    			add_location(div8, file$j, 141, 20, 5365);
     			attr_dev(div9, "class", "row svelte-1ykr1ya");
     			set_style(div9, "padding", "1em 0");
-    			add_location(div9, file$j, 149, 20, 5649);
+    			add_location(div9, file$j, 149, 20, 5655);
     			attr_dev(div10, "class", "container svelte-1ykr1ya");
-    			add_location(div10, file$j, 99, 16, 3259);
+    			add_location(div10, file$j, 99, 16, 3265);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div10, anchor);
@@ -58969,7 +58966,7 @@ var app = (function (marked) {
     			t1 = space();
     			if (if_block) if_block.c();
     			attr_dev(div, "slot", "content");
-    			add_location(div, file$j, 91, 8, 2905);
+    			add_location(div, file$j, 91, 8, 2911);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -59082,7 +59079,7 @@ var app = (function (marked) {
     			if (if_block) if_block.c();
     			if_block_anchor = empty();
     			attr_dev(button, "class", "button is-link");
-    			add_location(button, file$j, 85, 0, 2734);
+    			add_location(button, file$j, 85, 0, 2740);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -59197,8 +59194,8 @@ var app = (function (marked) {
     		console.log(fullFilename);
     		$$invalidate(3, settingsLoaded = false);
 
-    		if (existsSync(fullFilename) && selected_file) {
-    			fileContents = readFileSync(fullFilename);
+    		if (fs.existsSync(fullFilename) && selected_file) {
+    			fileContents = fs.readFileSync(fullFilename);
 
     			for (const line of fileContents.split("\n")) {
     				if (line.trim().length > 0 && line.startsWith("# Sect01 Ion Source")) {
@@ -59579,21 +59576,21 @@ var app = (function (marked) {
     			button4 = element("button");
     			button4.textContent = "Clear";
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$i, 129, 12, 5508);
+    			add_location(button0, file$i, 129, 12, 5514);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$i, 130, 12, 5608);
+    			add_location(button1, file$i, 130, 12, 5614);
     			attr_dev(button2, "class", "button is-link");
-    			add_location(button2, file$i, 132, 12, 5800);
+    			add_location(button2, file$i, 132, 12, 5806);
     			attr_dev(div0, "class", "align ");
     			set_style(div0, "align-items", "center");
-    			add_location(div0, file$i, 128, 8, 5445);
+    			add_location(div0, file$i, 128, 8, 5451);
     			attr_dev(button3, "class", "button is-link");
-    			add_location(button3, file$i, 144, 12, 6854);
+    			add_location(button3, file$i, 144, 12, 6860);
     			attr_dev(button4, "class", "button is-danger");
-    			add_location(button4, file$i, 145, 12, 6974);
+    			add_location(button4, file$i, 145, 12, 6980);
     			attr_dev(div1, "class", "align animated fadeIn");
     			toggle_class(div1, "hide", /*toggleRow1*/ ctx[4]);
-    			add_location(div1, file$i, 137, 8, 6171);
+    			add_location(div1, file$i, 137, 8, 6177);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -59758,7 +59755,7 @@ var app = (function (marked) {
     			div = element("div");
     			attr_dev(div, "id", "mplot");
     			attr_dev(div, "class", "graph__div");
-    			add_location(div, file$i, 150, 42, 7195);
+    			add_location(div, file$i, 150, 42, 7201);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -59818,10 +59815,10 @@ var app = (function (marked) {
     			button = element("button");
     			button.textContent = "Clear";
     			attr_dev(button, "class", "button is-danger");
-    			add_location(button, file$i, 155, 12, 7496);
+    			add_location(button, file$i, 155, 12, 7502);
     			attr_dev(div, "class", "align");
     			set_style(div, "justify-content", "flex-end");
-    			add_location(div, file$i, 153, 8, 7321);
+    			add_location(div, file$i, 153, 8, 7327);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -60006,7 +60003,7 @@ var app = (function (marked) {
 
     	// Functions
     	function plotData({ e = null, filetype = "mass" } = {}) {
-    		if (!existsSync(currentLocation)) {
+    		if (!fs.existsSync(currentLocation)) {
     			return window.createToast("Location not defined", "danger");
     		}
 
@@ -60285,7 +60282,7 @@ var app = (function (marked) {
 
     	$$self.$$.update = () => {
     		if ($$self.$$.dirty[0] & /*currentLocation, fileChecked*/ 3) {
-    			massfiles = existsSync(currentLocation)
+    			massfiles = fs.existsSync(currentLocation)
     			? fileChecked.map(file => pathResolve(currentLocation, file))
     			: [];
     		}
@@ -61505,9 +61502,9 @@ var app = (function (marked) {
     			button1 = element("button");
     			button1.textContent = "Close";
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$f, 220, 8, 8125);
+    			add_location(button0, file$f, 220, 8, 8137);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$f, 222, 8, 8206);
+    			add_location(button1, file$f, 222, 8, 8218);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button0, anchor);
@@ -61583,7 +61580,7 @@ var app = (function (marked) {
     			t0 = text(/*pyEventCounter*/ ctx[17]);
     			t1 = text(" process running");
     			attr_dev(div, "class", "subtitle");
-    			add_location(div, file$f, 265, 12, 10238);
+    			add_location(div, file$f, 265, 12, 10250);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -62022,20 +62019,20 @@ var app = (function (marked) {
     			t24 = space();
     			if (if_block) if_block.c();
     			attr_dev(div0, "class", "align");
-    			add_location(div0, file$f, 229, 4, 8403);
+    			add_location(div0, file$f, 229, 4, 8415);
     			attr_dev(div1, "class", "align");
-    			add_location(div1, file$f, 238, 4, 8913);
+    			add_location(div1, file$f, 238, 4, 8925);
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$f, 256, 8, 9798);
+    			add_location(button0, file$f, 256, 8, 9810);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$f, 257, 8, 9898);
+    			add_location(button1, file$f, 257, 8, 9910);
     			attr_dev(button2, "class", "button is-link");
-    			add_location(button2, file$f, 261, 8, 10078);
+    			add_location(button2, file$f, 261, 8, 10090);
     			attr_dev(div2, "class", "align v-center");
-    			add_location(div2, file$f, 254, 4, 9758);
+    			add_location(div2, file$f, 254, 4, 9770);
     			attr_dev(div3, "class", "align animated fadeIn");
     			toggle_class(div3, "hide", !/*kineticMode*/ ctx[0]);
-    			add_location(div3, file$f, 227, 0, 8333);
+    			add_location(div3, file$f, 227, 0, 8345);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -62448,7 +62445,7 @@ var app = (function (marked) {
     	let config_content = {};
 
     	function saveConfig() {
-    		if (!existsSync(currentLocation)) {
+    		if (!fs.existsSync(currentLocation)) {
     			return window.createToast("Invalid location or filename", "danger");
     		}
 
@@ -62468,7 +62465,7 @@ var app = (function (marked) {
     		const save_config_content = JSON.stringify(config_content, null, 4);
     		const config_file = pathJoin(currentLocation, config_file_ROSAAkinetics);
 
-    		writeFile(config_file, save_config_content, function (err) {
+    		fs.writeFile(config_file, save_config_content, function (err) {
     			if (err) return window.createToast("Error occured while saving file", "danger");
     			window.createToast("Config file saved" + config_file_ROSAAkinetics, "warning");
     		});
@@ -62534,8 +62531,8 @@ var app = (function (marked) {
     		try {
     			const config_file = pathJoin(currentLocation, config_file_ROSAAkinetics);
 
-    			if (existsSync(config_file)) {
-    				$$invalidate(32, config_content = JSON.parse(readFileSync(config_file, "utf8")));
+    			if (fs.existsSync(config_file)) {
+    				$$invalidate(32, config_content = JSON.parse(fs.readFileSync(config_file, "utf8")));
     				window.createToast("Config file loaded: " + config_file_ROSAAkinetics, "warning");
     				makeConfigArray(config_content);
     				$$invalidate(33, config_loaded = true);
@@ -63256,21 +63253,21 @@ var app = (function (marked) {
     			t19 = space();
     			create_component(rosaakinetics.$$.fragment);
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$e, 140, 12, 5276);
+    			add_location(button0, file$e, 140, 12, 5282);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$e, 144, 12, 5550);
+    			add_location(button1, file$e, 144, 12, 5556);
     			attr_dev(button2, "class", "button is-link");
-    			add_location(button2, file$e, 145, 12, 5660);
+    			add_location(button2, file$e, 145, 12, 5666);
     			attr_dev(button3, "class", "button is-link");
-    			add_location(button3, file$e, 147, 12, 5788);
+    			add_location(button3, file$e, 147, 12, 5794);
     			attr_dev(div0, "class", "align ");
     			set_style(div0, "align-items", "center");
-    			add_location(div0, file$e, 139, 8, 5213);
+    			add_location(div0, file$e, 139, 8, 5219);
     			attr_dev(button4, "class", "button is-link");
-    			add_location(button4, file$e, 162, 12, 6819);
+    			add_location(button4, file$e, 162, 12, 6825);
     			attr_dev(div1, "class", "align animated fadeIn");
     			toggle_class(div1, "hide", /*toggleRow*/ ctx[13]);
-    			add_location(div1, file$e, 153, 8, 6131);
+    			add_location(div1, file$e, 153, 8, 6137);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -63500,7 +63497,7 @@ var app = (function (marked) {
     			attr_dev(div, "id", div_id_value = "" + (/*scanfile*/ ctx[44] + "_tplot"));
     			attr_dev(div, "class", "graph__div");
     			set_style(div, "padding-bottom", "1em");
-    			add_location(div, file$e, 171, 12, 7183);
+    			add_location(div, file$e, 171, 12, 7189);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -63722,8 +63719,11 @@ var app = (function (marked) {
     	let fullfiles = [];
 
     	function dir_changed() {
-    		if (existsSync(currentLocation)) {
-    			$$invalidate(12, fullfiles = ["", ...readdirSync(currentLocation).filter(file => file.endsWith(".scan"))]);
+    		if (fs.existsSync(currentLocation)) {
+    			$$invalidate(12, fullfiles = [
+    				"",
+    				...fs.readdirSync(currentLocation).filter(file => file.endsWith(".scan"))
+    			]);
     		}
     	}
 
@@ -77877,21 +77877,21 @@ var app = (function (marked) {
     			button2.textContent = "Reset Config";
     			attr_dev(button0, "class", "button is-link svelte-1gffrzh");
     			attr_dev(button0, "id", "thz_modal_filebrowser_btn");
-    			add_location(button0, file$7, 369, 16, 13486);
+    			add_location(button0, file$7, 369, 16, 13510);
     			attr_dev(div0, "class", "locationColumn svelte-1gffrzh");
-    			add_location(div0, file$7, 368, 12, 13439);
+    			add_location(div0, file$7, 368, 12, 13463);
     			attr_dev(div1, "class", "writefileCheck svelte-1gffrzh");
-    			add_location(div1, file$7, 375, 12, 13789);
+    			add_location(div1, file$7, 375, 12, 13813);
     			attr_dev(div2, "class", "subtitle svelte-1gffrzh");
-    			add_location(div2, file$7, 386, 16, 14459);
+    			add_location(div2, file$7, 386, 16, 14483);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$7, 393, 20, 14915);
+    			add_location(button1, file$7, 393, 20, 14939);
     			attr_dev(button2, "class", "button is-link");
-    			add_location(button2, file$7, 394, 20, 15010);
+    			add_location(button2, file$7, 394, 20, 15034);
     			attr_dev(div3, "class", "variableColumn__dropdown svelte-1gffrzh");
-    			add_location(div3, file$7, 387, 16, 14551);
+    			add_location(div3, file$7, 387, 16, 14575);
     			attr_dev(div4, "class", "variableColumn svelte-1gffrzh");
-    			add_location(div4, file$7, 385, 12, 14413);
+    			add_location(div4, file$7, 385, 12, 14437);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -79159,60 +79159,60 @@ var app = (function (marked) {
     			t32 = space();
     			if (if_block1) if_block1.c();
     			attr_dev(hr0, "class", "svelte-1gffrzh");
-    			add_location(hr0, file$7, 402, 78, 15358);
+    			add_location(hr0, file$7, 402, 78, 15382);
     			attr_dev(hr1, "class", "svelte-1gffrzh");
-    			add_location(hr1, file$7, 402, 115, 15395);
+    			add_location(hr1, file$7, 402, 115, 15419);
     			attr_dev(div0, "class", "content status_report__div svelte-1gffrzh");
     			toggle_class(div0, "hide", !/*showreport*/ ctx[21]);
-    			add_location(div0, file$7, 402, 12, 15292);
+    			add_location(div0, file$7, 402, 12, 15316);
     			attr_dev(div1, "class", "subtitle svelte-1gffrzh");
-    			add_location(div1, file$7, 409, 20, 15596);
+    			add_location(div1, file$7, 409, 20, 15620);
     			attr_dev(div2, "class", "content__div  svelte-1gffrzh");
-    			add_location(div2, file$7, 410, 20, 15661);
+    			add_location(div2, file$7, 410, 20, 15685);
     			attr_dev(div3, "class", "sub_container__div box svelte-1gffrzh");
-    			add_location(div3, file$7, 407, 16, 15536);
+    			add_location(div3, file$7, 407, 16, 15560);
     			attr_dev(div4, "class", "subtitle svelte-1gffrzh");
-    			add_location(div4, file$7, 420, 20, 16029);
+    			add_location(div4, file$7, 420, 20, 16053);
     			attr_dev(button, "class", "button is-link ");
-    			add_location(button, file$7, 425, 24, 16392);
+    			add_location(button, file$7, 425, 24, 16416);
     			attr_dev(div5, "class", "control__div  svelte-1gffrzh");
-    			add_location(div5, file$7, 421, 20, 16092);
+    			add_location(div5, file$7, 421, 20, 16116);
     			attr_dev(div6, "class", "content__div  svelte-1gffrzh");
-    			add_location(div6, file$7, 428, 20, 16546);
+    			add_location(div6, file$7, 428, 20, 16570);
     			attr_dev(div7, "class", "sub_container__div box svelte-1gffrzh");
-    			add_location(div7, file$7, 419, 16, 15970);
+    			add_location(div7, file$7, 419, 16, 15994);
     			attr_dev(div8, "class", "subtitle svelte-1gffrzh");
-    			add_location(div8, file$7, 438, 20, 16920);
+    			add_location(div8, file$7, 438, 20, 16944);
     			attr_dev(hr2, "class", "svelte-1gffrzh");
-    			add_location(hr2, file$7, 444, 24, 17221);
+    			add_location(hr2, file$7, 444, 24, 17245);
     			attr_dev(div9, "class", "subtitle svelte-1gffrzh");
     			set_style(div9, "width", "100%");
     			set_style(div9, "display", "grid");
     			set_style(div9, "place-items", "center");
-    			add_location(div9, file$7, 444, 29, 17226);
+    			add_location(div9, file$7, 444, 29, 17250);
     			attr_dev(hr3, "class", "svelte-1gffrzh");
-    			add_location(hr3, file$7, 444, 131, 17328);
+    			add_location(hr3, file$7, 444, 131, 17352);
     			attr_dev(div10, "class", "align h-center");
-    			add_location(div10, file$7, 446, 24, 17360);
+    			add_location(div10, file$7, 446, 24, 17384);
     			attr_dev(div11, "class", "content__div  svelte-1gffrzh");
-    			add_location(div11, file$7, 439, 20, 16991);
+    			add_location(div11, file$7, 439, 20, 17015);
     			attr_dev(div12, "class", "sub_container__div box svelte-1gffrzh");
-    			add_location(div12, file$7, 437, 16, 16862);
+    			add_location(div12, file$7, 437, 16, 16886);
     			attr_dev(div13, "class", "subtitle svelte-1gffrzh");
-    			add_location(div13, file$7, 459, 20, 18041);
+    			add_location(div13, file$7, 459, 20, 18065);
     			attr_dev(div14, "class", "content__div  svelte-1gffrzh");
-    			add_location(div14, file$7, 460, 20, 18108);
+    			add_location(div14, file$7, 460, 20, 18132);
     			attr_dev(div15, "class", "sub_container__div box svelte-1gffrzh");
-    			add_location(div15, file$7, 457, 16, 17981);
+    			add_location(div15, file$7, 457, 16, 18005);
     			attr_dev(div16, "class", "subtitle svelte-1gffrzh");
-    			add_location(div16, file$7, 473, 20, 18744);
+    			add_location(div16, file$7, 473, 20, 18768);
     			attr_dev(div17, "class", "content__div  svelte-1gffrzh");
-    			add_location(div17, file$7, 474, 20, 18812);
+    			add_location(div17, file$7, 474, 20, 18836);
     			attr_dev(div18, "class", "sub_container__div box svelte-1gffrzh");
-    			add_location(div18, file$7, 472, 16, 18686);
+    			add_location(div18, file$7, 472, 16, 18710);
     			attr_dev(div19, "class", "main_container__div svelte-1gffrzh");
     			toggle_class(div19, "hide", /*showreport*/ ctx[21]);
-    			add_location(div19, file$7, 406, 12, 15461);
+    			add_location(div19, file$7, 406, 12, 15485);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -79671,7 +79671,7 @@ var app = (function (marked) {
     			t1 = text(t1_value);
     			t2 = space();
     			t3 = text(t3_value);
-    			add_location(div, file$7, 501, 20, 20172);
+    			add_location(div, file$7, 501, 20, 20196);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -79716,7 +79716,7 @@ var app = (function (marked) {
     			button = element("button");
     			button.textContent = "Stop";
     			attr_dev(button, "class", "button is-danger");
-    			add_location(button, file$7, 505, 20, 20374);
+    			add_location(button, file$7, 505, 20, 20398);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -79773,7 +79773,7 @@ var app = (function (marked) {
     			button = element("button");
     			button.textContent = "Clear";
     			attr_dev(button, "class", "button is-warning");
-    			add_location(button, file$7, 508, 20, 20543);
+    			add_location(button, file$7, 508, 20, 20567);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -79835,11 +79835,11 @@ var app = (function (marked) {
     			button1 = element("button");
     			button1.textContent = "Submit";
     			attr_dev(button0, "class", "button is-link");
-    			add_location(button0, file$7, 510, 16, 20672);
+    			add_location(button0, file$7, 510, 16, 20696);
     			attr_dev(button1, "class", "button is-link");
-    			add_location(button1, file$7, 512, 16, 20821);
+    			add_location(button1, file$7, 512, 16, 20845);
     			attr_dev(div, "class", "align");
-    			add_location(div, file$7, 499, 12, 20087);
+    			add_location(div, file$7, 499, 12, 20111);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -80079,7 +80079,7 @@ var app = (function (marked) {
     	let einsteinB_rateComputed = false;
 
     	const simulation = e => {
-    		if (!existsSync(currentLocation)) return window.createToast("Location doesn't exist", "danger");
+    		if (!fs.existsSync(currentLocation)) return window.createToast("Location doesn't exist", "danger");
     		if (!configLoaded) return window.createToast("Config file not loaded", "danger");
     		if (!transitionFrequency) return window.createToast("Transition frequency is not defined", "danger");
     		if (!einsteinB_rateComputed) return window.createToast("Compute einsteinB rate constants", "danger");
@@ -80159,7 +80159,7 @@ var app = (function (marked) {
     		running = true;
     	};
 
-    	let currentLocation = existsSync(db.get("thz_modal_location"))
+    	let currentLocation = fs.existsSync(db.get("thz_modal_location"))
     	? db.get("thz_modal_location")
     	: "";
 
@@ -80196,7 +80196,7 @@ var app = (function (marked) {
 
     	async function loadConfig() {
     		try {
-    			if (existsSync(configFile)) return setConfig();
+    			if (fs.existsSync(configFile)) return setConfig();
     			const congFilePath = await browse({ dir: false, multiple: false });
     			if (!congFilePath) return window.createToast("No files selected", "danger");
     			$$invalidate(39, configFile = congFilePath[0]);
@@ -80208,8 +80208,8 @@ var app = (function (marked) {
     	}
 
     	const getYMLFileContents = filename => {
-    		if (existsSync(filename)) {
-    			const fileContent = readFileSync(filename);
+    		if (fs.existsSync(filename)) {
+    			const fileContent = fs.readFileSync(filename);
     			const YMLcontent = parse(fileContent);
     			return Promise.resolve(YMLcontent);
     		} else return Promise.reject(filename + " file doesn't exist");
@@ -80250,7 +80250,7 @@ var app = (function (marked) {
     	async function setConfig() {
     		try {
     			const configFileLocation = dirname(configFile);
-    			const CONFIG = parse(readFileSync(configFile));
+    			const CONFIG = parse(fs.readFileSync(configFile));
     			let attachmentRateConstants = {};
     			$$invalidate(4, { mainParameters, simulationParameters, dopplerLineshape, powerBroadening, attachmentCoefficients, attachmentRateConstants } = CONFIG, mainParameters, $$invalidate(15, simulationParameters), $$invalidate(5, dopplerLineshape), $$invalidate(6, powerBroadening), $$invalidate(16, attachmentCoefficients));
     			$$invalidate(4, mainParameters = mainParameters.map(setID));
@@ -80264,7 +80264,7 @@ var app = (function (marked) {
     			$$invalidate(24, { savefilename } = CONFIG.saveFile, savefilename);
     			const { savelocation } = CONFIG.saveFile;
 
-    			if (existsSync(savelocation)) {
+    			if (fs.existsSync(savelocation)) {
     				$$invalidate(7, currentLocation = savelocation);
     			}
 
@@ -80661,7 +80661,7 @@ var app = (function (marked) {
     		}
 
     		if ($$self.$$.dirty[0] & /*currentLocation*/ 128) {
-    			if (currentLocation && existsSync(currentLocation)) {
+    			if (currentLocation && fs.existsSync(currentLocation)) {
     				db.set("thz_modal_location", currentLocation);
     			}
     		}
@@ -81902,7 +81902,7 @@ var app = (function (marked) {
     			if_block.c();
     			attr_dev(div, "slot", "content");
     			set_style(div, "user-select", "text");
-    			add_location(div, file$5, 64, 8, 1538);
+    			add_location(div, file$5, 64, 8, 1544);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -81967,7 +81967,7 @@ var app = (function (marked) {
     			button.textContent = "Update Now";
     			attr_dev(button, "class", "button is-warning");
     			toggle_class(button, "is-loading", /*$updating*/ ctx[5]);
-    			add_location(button, file$5, 76, 16, 1932);
+    			add_location(button, file$5, 76, 16, 1938);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -82010,7 +82010,7 @@ var app = (function (marked) {
     			div = element("div");
     			if (if_block) if_block.c();
     			attr_dev(div, "slot", "footerbtn");
-    			add_location(div, file$5, 74, 8, 1856);
+    			add_location(div, file$5, 74, 8, 1862);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -82174,10 +82174,10 @@ var app = (function (marked) {
     	component_subscribe($$self, updating, $$value => $$invalidate(5, $updating = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Changelog', slots, []);
-    	let changelogContent = readFileSync(pathResolve(__dirname, "../CHANGELOG.md"));
+    	let changelogContent = fs.readFileSync(pathResolve(__dirname, "../CHANGELOG.md"));
 
     	beforeUpdate(() => {
-    		$$invalidate(1, changelogContent = readFileSync(pathResolve(__dirname, "../CHANGELOG.md")));
+    		$$invalidate(1, changelogContent = fs.readFileSync(pathResolve(__dirname, "../CHANGELOG.md")));
     	});
 
     	const updateEvent = new CustomEvent('update', { bubbles: false });
