@@ -33,9 +33,9 @@
         console.log(fullFilename)
         settingsLoaded = false;
 
-        if(existsSync(fullFilename) && selected_file){
+        if(fs.existsSync(fullFilename) && selected_file){
             
-            fileContents = readFileSync(fullFilename)
+            fileContents = fs.readFileSync(fullFilename)
 
             for (const line of fileContents.split("\n")) {
 

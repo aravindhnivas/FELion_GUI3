@@ -5,9 +5,9 @@
     import { beforeUpdate} from "svelte";
     import marked from "marked";
     import { fade } from 'svelte/transition';
-    let changelogContent = readFileSync(pathResolve(__dirname, "../CHANGELOG.md"))
+    let changelogContent = fs.readFileSync(pathResolve(__dirname, "../CHANGELOG.md"))
     
-    beforeUpdate(()=>{changelogContent = readFileSync(pathResolve(__dirname, "../CHANGELOG.md"))})
+    beforeUpdate(()=>{changelogContent = fs.readFileSync(pathResolve(__dirname, "../CHANGELOG.md"))})
     
     const updateEvent = new CustomEvent('update', { bubbles: false });
 

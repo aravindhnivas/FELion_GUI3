@@ -2,25 +2,6 @@
 const { contextBridge } = require('electron')
 const fs = require("fs-extra")
 
-contextBridge.exposeInMainWorld("readdirSync", (dir="./", options=null)=>fs.readdirSync(dir, options))
-contextBridge.exposeInMainWorld("readFileSync", (filename)=>fs.readFileSync(filename, "utf-8"))
-contextBridge.exposeInMainWorld("existsSync", (location)=>fs.existsSync(location))
-
-contextBridge.exposeInMainWorld("lstatSync", (location)=>{
-    const info = fs.lstatSync(location)
-    return {
-        isFile: () => info.isFile(),
-
-        isDirectory: () => info.isDirectory()
-
-    }
-
-
-})
-contextBridge.exposeInMainWorld("writeFile", (filename, contents, callback)=>{
-    return fs.writeFile(filename, contents, "utf8", callback)
-})
-
 contextBridge.exposeInMainWorld("fs", {
     mkdirSync: (dir) => fs.mkdirSync(dir),
     emptyDirSync: (dir) => fs.emptyDirSync(dir),
@@ -36,6 +17,8 @@ contextBridge.exposeInMainWorld("fs", {
     removeSync: (remove) => fs.removeSync(remove),
     readJsonSync: (jsonFile) => fs.readJsonSync(jsonFile),
     outputJsonSync: (file, obj) => fs.outputJsonSync(file, obj),
+
+    writeFile:  (filename, contents, callback)=>fs.writeFile(filename, contents, "utf8", callback),
     createWriteStream: (path) => {
         const writer = fs.createWriteStream(path)
         return {
@@ -53,9 +36,3 @@ contextBridge.exposeInMainWorld("fs", {
     
     }
 })
-
-
-
-contextBridge.exposeInMainWorld("mkdirSync", (dir)=>fs.mkdirSync(dir))
-contextBridge.exposeInMainWorld("createWriteStream", (path)=>fs.createWriteStream(path))
-contextBridge.exposeInMainWorld("rename", (oldPath, newPath, callback)=>fs.rename(oldPath, newPath, callback))

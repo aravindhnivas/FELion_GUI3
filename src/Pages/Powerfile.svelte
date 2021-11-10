@@ -11,7 +11,7 @@
     const writePowfile = () => {
         let contents = `${initContent}\n${powerfileContent}`
 
-        writeFile(powfile, contents , function(err) {
+        fs.writeFile(powfile, contents , function(err) {
             if(err) { return window.createToast("Power file couldn't be saved.", "danger") }
             window.createToast("Power file saved", "success")
         })
@@ -20,7 +20,7 @@
     
     async function savefile() {
         if (location.length == 0) { return openFolder({save:true}) }
-        const overwrite = await existsSync(powfile)
+        const overwrite = await fs.existsSync(powfile)
         overwrite ? overwrite_dialog.open() : writePowfile()
     }
 

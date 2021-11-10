@@ -24,9 +24,9 @@
     }
     $: if(updateConfig) loadConfig()
 
-    $: if(existsSync(OPOLocation)) {
+    $: if(fs.existsSync(OPOLocation)) {
     
-        OPOcalibFiles = readdirSync(OPOLocation).filter(file=> file.endsWith(".calibOPO"))
+        OPOcalibFiles = fs.readdirSync(OPOLocation).filter(file=> file.endsWith(".calibOPO"))
         opofiles = OPOfilesChecked.map(file=>pathResolve(OPOLocation, file))
     }
 

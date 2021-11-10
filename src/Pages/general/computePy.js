@@ -121,10 +121,10 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                             const dataFile = basename(pyfile).split(".")[0]
                             const outputFile = pathJoin(appInfo.temp, "FELion_GUI3", dataFile + "_data.json")
 
-                            if (!existsSync(outputFile)) {
+                            if (!fs.existsSync(outputFile)) {
                                 return reject(`${outputFile} doesn't exist.`)
                             }
-                            let dataFromPython = readFileSync(outputFile)
+                            let dataFromPython = fs.readFileSync(outputFile)
 
                             window.dataFromPython = dataFromPython = JSON.parse(dataFromPython)
                             console.log(dataFromPython)

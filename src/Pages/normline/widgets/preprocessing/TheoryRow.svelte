@@ -13,7 +13,7 @@
 
     let sigma=7, scale=1, theoryfiles=[], tkplot=false;
     let showTheoryFiles = false, theoryfilesChecked = []
-    $: if(existsSync(theoryLocation)) { theoryfiles =theoryfilesChecked.map(file=>pathResolve(theoryLocation, file)) }
+    $: if(fs.existsSync(theoryLocation)) { theoryfiles =theoryfilesChecked.map(file=>pathResolve(theoryLocation, file)) }
 
     
     

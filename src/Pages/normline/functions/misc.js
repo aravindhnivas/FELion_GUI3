@@ -6,7 +6,7 @@ import {felixopoLocation, felixPeakTable, felixIndex, felixOutputName, felixPlot
 export function savefile({file={}, name="", location=""}={}) {
 
     let filename = pathJoin(location || get(felixopoLocation), `${name}.json`)
-    writeFile(filename, JSON.stringify({file}), 'utf8', function (err) {
+    fs.writeFile(filename, JSON.stringify({file}), 'utf8', function (err) {
 
         if (err) {
             console.log("An error occured while writing to File.");
@@ -18,9 +18,9 @@ export function savefile({file={}, name="", location=""}={}) {
 
 export function loadfile({name="", location=""}={}) {
     let filename = pathJoin( location || get(felixopoLocation), `${name}.json`)
-    if(!existsSync(filename)) {window.createToast(`${name}.json doesn't exist in DATA dir.`, "danger"); return {}}
+    if(!fs.existsSync(filename)) {window.createToast(`${name}.json doesn't exist in DATA dir.`, "danger"); return {}}
 
-    let loadedfile = JSON.parse(readFileSync(filename)).file
+    let loadedfile = JSON.parse(fs.readFileSync(filename)).file
 
     window.createToast(`${name}.json has been loaded.`, "success")
     return loadedfile

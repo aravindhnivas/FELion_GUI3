@@ -13,7 +13,7 @@ export async function readFromFile({bowseFile=true, energyFilename=null, electro
 
     const noSplittings = !electronSpin && !zeemanSplit
     const splittings = electronSpin||zeemanSplit
-    const fileContents = readFileSync(energyFilename).split("\n")
+    const fileContents = fs.readFileSync(energyFilename).split("\n")
     let energyLevels = []
 
     let preLabel;

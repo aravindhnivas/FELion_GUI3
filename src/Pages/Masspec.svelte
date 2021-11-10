@@ -19,7 +19,7 @@
 
 
     let currentLocation = db.get(`${filetype}_location`) || ""
-    $: massfiles = existsSync(currentLocation) ? fileChecked.map(file=>pathResolve(currentLocation, file)) : []
+    $: massfiles = fs.existsSync(currentLocation) ? fileChecked.map(file=>pathResolve(currentLocation, file)) : []
     
     let openShell = false, graphPlotted = false
 
@@ -32,7 +32,7 @@
     // Functions
     function plotData({e=null, filetype="mass"}={}){
 
-        if (!existsSync(currentLocation)) {return window.createToast("Location not defined", "danger")}
+        if (!fs.existsSync(currentLocation)) {return window.createToast("Location not defined", "danger")}
         if (fileChecked.length<1) {return window.createToast("No files selected", "danger")}
         if (filetype === "find_peaks") {if (selected_file === "") return window.createToast("No files selected", "danger")}
 

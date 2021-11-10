@@ -27,8 +27,8 @@
     let timestartIndexScan = 0;
     let fullfiles = []
     function dir_changed() {
-        if (existsSync(currentLocation)) {
-            fullfiles = ["", ...readdirSync(currentLocation).filter(file=>file.endsWith(".scan"))]
+        if (fs.existsSync(currentLocation)) {
+            fullfiles = ["", ...fs.readdirSync(currentLocation).filter(file=>file.endsWith(".scan"))]
         }
     }
     $: console.log(`ResOn: ${resON_Files}\nResOff: ${resOFF_Files}`)

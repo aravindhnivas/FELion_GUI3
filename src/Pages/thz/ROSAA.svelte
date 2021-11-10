@@ -78,7 +78,7 @@
 
     let einsteinB_rateComputed=false;
     const simulation = (e) => {
-        if(!existsSync(currentLocation)) return window.createToast("Location doesn't exist", "danger");
+        if(!fs.existsSync(currentLocation)) return window.createToast("Location doesn't exist", "danger");
         if(!configLoaded) return window.createToast("Config file not loaded", "danger");
         if(!transitionFrequency) return window.createToast("Transition frequency is not defined", "danger");
         if(!einsteinB_rateComputed) return window.createToast("Compute einsteinB rate constants", "danger");
@@ -133,13 +133,13 @@
         computePy_func({e, pyfile, args, general:true}).catch(error=>{mainPreModal.error(error.stack || error)})
         running=true
     }
-    let currentLocation = existsSync(db.get("thz_modal_location")) ? db.get("thz_modal_location") : "";
+    let currentLocation = fs.existsSync(db.get("thz_modal_location")) ? db.get("thz_modal_location") : "";
 
 
 
     let savefilename = ""
 
-    $: if(currentLocation&&existsSync(currentLocation)) {db.set("thz_modal_location", currentLocation)}
+    $: if(currentLocation&&fs.existsSync(currentLocation)) {db.set("thz_modal_location", currentLocation)}
     async function browse_folder() {
 
         const result = await browse({dir:true})
@@ -167,7 +167,7 @@
     async function loadConfig() {
     
         try {
-            if(existsSync(configFile)) return setConfig();
+            if(fs.existsSync(configFile)) return setConfig();
             const congFilePath = await browse({dir:false, multiple:false})
             if (!congFilePath) return window.createToast("No files selected", "danger");
             configFile = congFilePath[0]
@@ -179,8 +179,8 @@
     }
 
     const getYMLFileContents = (filename) => {
-        if (existsSync(filename)) {
-            const fileContent = readFileSync(filename)
+        if (fs.existsSync(filename)) {
+            const fileContent = fs.readFileSync(filename)
             const YMLcontent = Yml(fileContent)
             return Promise.resolve(YMLcontent)
         } else return Promise.reject(filename + " file doesn't exist")
@@ -248,7 +248,7 @@
         try {
 
             const configFileLocation = dirname(configFile);
-            const CONFIG = Yml(readFileSync(configFile));
+            const CONFIG = Yml(fs.readFileSync(configFile));
             let attachmentRateConstants = {};
             ({mainParameters, simulationParameters, dopplerLineshape, powerBroadening, attachmentCoefficients, attachmentRateConstants} = CONFIG);
             mainParameters = mainParameters.map(setID);
@@ -264,7 +264,7 @@
             ({savefilename}=CONFIG.saveFile);
 
             const {savelocation} = CONFIG.saveFile;
-            if(existsSync(savelocation)) {currentLocation = savelocation};
+            if(fs.existsSync(savelocation)) {currentLocation = savelocation};
             ({energy:energyFilename, collision:collisionalFilename, einsteinA:einsteinFilename} = CONFIG.filenames);
 
             energyFilename = window.pathJoin(configFileLocation, energyFilename);
