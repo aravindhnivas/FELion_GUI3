@@ -1,7 +1,7 @@
 
 import {mainPreModal} from "../svelteWritable";
 import { writable } from 'svelte/store';
-import { Toast, Snackbar } from 'svelma';
+import { Toast } from 'svelma';
 import {bulmaQuickview} from 'bulma-extensions';
 
 export const activateChangelog = writable(false)
@@ -23,8 +23,6 @@ window.sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 window.handleError = (error) => mainPreModal.error(error.stack || error )
 
 window.onerror = function (message, source, lineno, colno, error) {
-    console.error(error)
-    Snackbar.create({ message: error.name, position: "is-top", type: `is-danger` })
     const modalContent =  `${error.name}: ${message}\nsource: ${source}\nlineno: ${lineno}\tcolno: ${colno}`
     window.handleError(modalContent)
 };
