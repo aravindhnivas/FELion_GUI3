@@ -18,7 +18,7 @@
      }
 
 
-    $: animate = animateRow ? scale : (e)=>{}
+    $: animate = animateRow ? scale : ()=>{}
     let emptyRow = {}
     keys.forEach(key=>emptyRow[key] = "")
     const addRow = async () => {

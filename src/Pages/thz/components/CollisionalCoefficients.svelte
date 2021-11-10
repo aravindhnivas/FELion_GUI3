@@ -1,6 +1,6 @@
 
 <script>
-    import {mainPreModal} from "../../../svelteWritable";
+    // import {mainPreModal} from "../../../svelteWritable";
     import CollisionalDistribution from "../windows/CollisionalDistribution.svelte";
     import {browse} from "../../../components/Layout.svelte";
     import Textfield from '@smui/textfield';

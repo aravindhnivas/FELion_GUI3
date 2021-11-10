@@ -1,6 +1,6 @@
 
 <script>
-    import {mainPreModal} from "../../svelteWritable";
+    // import {mainPreModal} from "../../svelteWritable";
     // import { createEventDispatcher } from 'svelte';
     import {browse} from "../../components/Layout.svelte";
     import Textfield from '@smui/textfield';
@@ -33,7 +33,7 @@
     let [mainParameters, simulationParameters, dopplerLineshape, powerBroadening] = Array(4).fill([])
     let attachmentCoefficients=[], k3={constant:[], rate:[]}, kCID={constant:[], rate:[]};
     $: deexcitation = collisionalRateType==="deexcitation";
-    let py, pyProcesses=[], running = false;
+    let py, pyProcesses=[];
 
     const pyEventHandle = (e) => {
         statusReport = ""
@@ -506,9 +506,9 @@
                     <button transition:fade class="button is-danger" on:click="{pyKillProcess}" >Stop</button>
                 {/if}
                 {#if showreport}
-                    <button  class="button is-warning" on:click="{(e)=>{statusReport = ""}}" >Clear</button>
+                    <button  class="button is-warning" on:click="{()=>{statusReport = ""}}" >Clear</button>
                 {/if}
-                <button  class="button is-link" on:click="{(e)=>{showreport = !showreport}}" >{showreport ? "Go Back" : "Status report"}</button>
+                <button  class="button is-link" on:click="{()=>{showreport = !showreport}}" >{showreport ? "Go Back" : "Status report"}</button>
 
                 <button  class="button is-link" on:click="{simulation}" on:pyEvent={pyEventHandle} on:pyEventClosed="{pyEventClosedHandle}" on:pyEventData={pyEventDataReceivedHandle}>Submit</button>
             </div>

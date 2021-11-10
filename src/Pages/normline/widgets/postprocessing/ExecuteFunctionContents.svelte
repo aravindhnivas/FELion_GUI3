@@ -2,13 +2,13 @@
 <script>
 
     import { fittedTraceCount, felixPlotAnnotations, felixIndex, expfittedLines, expfittedLinesCollectedData , graphDiv, dataTable, Ngauss_sigma, felixOutputName, felixPeakTable, felixopoLocation, felixAnnotationColor} from "../../functions/svelteWritables";
-    import {mainPreModal} from "../../../../svelteWritable";
+    // import {mainPreModal} from "../../../../svelteWritable";
     import Textfield from '@smui/textfield';
     import CustomSwitch from '../../../../components/CustomSwitch.svelte';
 
     import {Icon} from '@smui/icon-button';
 
-    import AdjustInitialGuess from "../../modals/AdjustInitialGuess.svelte";
+    // import AdjustInitialGuess from "../../modals/AdjustInitialGuess.svelte";
     import {savefile, loadfile} from "../../functions/misc";
     
     import { fade } from 'svelte/transition';

@@ -30,7 +30,7 @@
                 return false
             },
             onfocus: function(){windowReady = true;},
-            onresize: function(width, height){changeGraphDivWidth()},
+            onresize: function(){changeGraphDivWidth()},
         });
         graphWindow.maximize(maximize);
     }

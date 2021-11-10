@@ -1,6 +1,6 @@
 
 <script>
-    import {mainPreModal} from "../../../svelteWritable";
+    // import {mainPreModal} from "../../../svelteWritable";
     import {graphDiv} from '../functions/svelteWritables';
     import Modal from '../../../components/Modal.svelte';
     import Textfield from '@smui/textfield';

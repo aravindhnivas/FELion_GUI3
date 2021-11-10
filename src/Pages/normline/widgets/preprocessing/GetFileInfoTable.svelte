@@ -1,6 +1,6 @@
 
 <script>
-    import {mainPreModal} from "../../../../svelteWritable";
+    // import {mainPreModal} from "../../../../svelteWritable";
     import { filedetails, opoMode } from "../../functions/svelteWritables";
     import CustomIconSwitch from '../../../../components/CustomIconSwitch.svelte';
     import Table from '../../../../components/Table.svelte';

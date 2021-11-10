@@ -42,15 +42,7 @@
             gap: 1em;
             justify-content: center; // align items center
         }
-        .control__div {
-
-            display: flex;
-            align-items: baseline;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1em;
-     
-        }
+        
     }
 
     hr {background-color: #fafafa; margin: 0;}

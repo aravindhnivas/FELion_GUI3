@@ -3,12 +3,12 @@
     import {
         opoMode, toggleRow, felixOutputName, felixPlotAnnotations, felixPeakTable, expfittedLines, expfittedLinesCollectedData, fittedTraceCount, felixopoLocation, felixPlotCheckboxes, felixConfigDB, baselineFile
     } from "../../functions/svelteWritables";
-    import {mainPreModal} from "../../../../svelteWritable";
+    // import {mainPreModal} from "../../../../svelteWritable";
     import Textfield from '@smui/textfield';
     import CustomIconSwitch from 'components/CustomIconSwitch.svelte';
     import FelixPlotting from '../../modals/FelixPlotting.svelte';
     import {felix_func} from '../../functions/felix';
-    export let felixfiles, graphPlotted, opofiles, normMethod, show_theoryplot, removeExtraFile, theoryLocation;
+    export let felixfiles, graphPlotted, normMethod, show_theoryplot, removeExtraFile, theoryLocation;
     let active=false, openShell=false, delta=1;
 
     export let updateConfig=false;

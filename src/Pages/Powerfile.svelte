@@ -1,6 +1,6 @@
 
 <script>
-    import {mainPreModal} from "../svelteWritable";
+    // import {mainPreModal} from "../svelteWritable";
     import Textfield from '@smui/textfield'
     import HelperText from '@smui/textfield/helper-text/index';
     import Checkbox from '@smui/checkbox';

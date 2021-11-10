@@ -27,7 +27,7 @@
 
     {#if $windowLoaded}
     
-      {#await window.sleep(500) then value}
+      {#await window.sleep(500) then _}
         <Simplewave>
 
           <svelte:fragment slot="header">

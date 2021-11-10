@@ -101,7 +101,7 @@
 
     let scalingBin = $felixConfigDB.get("scalingBin") || 0.001
     let updateConfig = false
-    async function configSave(e) {
+    async function configSave() {
         $felixConfigDB.set("fdelta", fdelta)
         $felixConfigDB.set("odelta", odelta)
         $felixConfigDB.set("scalingBin", scalingBin)

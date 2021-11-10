@@ -1,5 +1,5 @@
 <script>
-    import {mainPreModal} from "../svelteWritable";
+    // import {mainPreModal} from "../svelteWritable";
     //  Importing
     import Layout from "../components/Layout.svelte"
     import CustomIconSwitch from "../components/CustomIconSwitch.svelte"
@@ -68,7 +68,7 @@
 
     }
 
-    let includePlotsInReport = [{id:"resOnOffPlot", include:false, label:"THz Res-ON/OFF"}, {id:"thzPlot", include:true, label:"Normalised THz Spectrum"}, {id:"boltzman_plot", include:false, label:"Boltzman plot"}]
+    // let includePlotsInReport = [{id:"resOnOffPlot", include:false, label:"THz Res-ON/OFF"}, {id:"thzPlot", include:true, label:"Normalised THz Spectrum"}, {id:"boltzman_plot", include:false, label:"Boltzman plot"}]
 
     let ROSAA_modal_active = false;
 

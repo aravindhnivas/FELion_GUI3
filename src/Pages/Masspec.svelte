@@ -1,5 +1,5 @@
 <script>
-    import {mainPreModal} from "../svelteWritable";
+    // import {mainPreModal} from "../svelteWritable";
     import Layout from "../components/Layout.svelte"
     import CustomIconSwitch from "../components/CustomIconSwitch.svelte"
     import CustomSelect from "../components/CustomSelect.svelte"
@@ -97,7 +97,7 @@
             if(data.event.ctrlKey) {
                 const {points} = data
                 const currentDataPoint = points[0]
-                const {x: mass , y: counts, curveNumber} = currentDataPoint
+                const {x: mass , y: counts } = currentDataPoint
                 if(data.event.shiftKey) {
                     const annotate = _.find(annotations, (m) => {
 

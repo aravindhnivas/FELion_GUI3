@@ -1,6 +1,6 @@
 
 <script>
-    import {mainPreModal} from "../../../svelteWritable";
+    // import {mainPreModal} from "../../../svelteWritable";
     import Textfield from '@smui/textfield';
     import {PlanksConstant, SpeedOfLight} from "../functions/constants";
     import {computeStatisticalWeight} from "../functions/balance_distribution";

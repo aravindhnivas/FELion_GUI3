@@ -2,7 +2,7 @@
 <script>
 
     import {opoMode, felixPlotAnnotations, felixConfigDB, baselineFile} from "../../functions/svelteWritables";
-    import {mainPreModal} from "../../../../svelteWritable";
+    // import {mainPreModal} from "../../../../svelteWritable";
     import Textfield from '@smui/textfield';
     import CustomSelect from '../../../../components/CustomSelect.svelte';
     import QuickBrowser from '../../../../components/QuickBrowser.svelte';

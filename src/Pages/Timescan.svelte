@@ -1,6 +1,6 @@
 
 <script>
-    import {mainPreModal} from "../svelteWritable";
+    // import {mainPreModal} from "../svelteWritable";
     import Layout from "../components/Layout.svelte"
     import CustomIconSwitch from "../components/CustomIconSwitch.svelte"
     import CustomSelect from "../components/CustomSelect.svelte"

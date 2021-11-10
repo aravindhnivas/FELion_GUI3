@@ -3,7 +3,7 @@
     .navbar { background: #38236b; }
 </style>
 
-<nav class="navbar is-fixed-bottom animated fadeInUp" id="footer" style="display:{status}">
+<nav class="navbar is-fixed-bottom animated fadeInUp" id="footer" >
   <div class="navbar-menu">
 
     <div class="navbar-start">

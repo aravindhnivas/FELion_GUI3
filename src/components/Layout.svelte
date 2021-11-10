@@ -44,7 +44,7 @@
 
     let graphDivs = []
     onMount(()=>{ toggleBrowser = true;})
-    let graphContainer;
+    // let graphContainer;
    
 
     const lookForGraph = () => {
@@ -141,7 +141,7 @@
 
             </div>
 
-            <div class="plot__div" id="{filetype}-plotContainer" transition:fade use:lookForGraph bind:clientWidth={plotWidth} bind:this={graphContainer}> 
+            <div class="plot__div" id="{filetype}-plotContainer" transition:fade use:lookForGraph bind:clientWidth={plotWidth} > 
 
                 <slot name="plotContainer" {lookForGraph} />
                 {#if graphPlotted}

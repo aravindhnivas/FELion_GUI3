@@ -1,7 +1,7 @@
 <script>
 
     import {pythonpath, pythonscript, pyVersion, developerMode, suppressInitialDeveloperWarning} from "./settings/svelteWritables";
-    import {mainPreModal} from "../svelteWritable";
+    // import {mainPreModal} from "../svelteWritable";
     import {activateChangelog} from "../js/functions"
     import Textfield from '@smui/textfield';
     import {onMount} from "svelte";

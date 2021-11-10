@@ -1,6 +1,6 @@
 
 <script>
-    import {mainPreModal} from "../svelteWritable";
+    // import {mainPreModal} from "../svelteWritable";
     import IconButton, {Icon} from '@smui/icon-button';
 
     import { slide } from 'svelte/transition';

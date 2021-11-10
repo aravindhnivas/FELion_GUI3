@@ -12,7 +12,7 @@
     const updateEvent = new CustomEvent('update', { bubbles: false });
 
 
-    const updateNow = (e) => {
+    const updateNow = () => {
         
         let target = document.getElementById("updateCheckBtn")
 
