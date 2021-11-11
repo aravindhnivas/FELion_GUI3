@@ -30,6 +30,7 @@
     })
     
     const handlepythonPathCheck = () => { console.log("Python path checking done") }
+    
     let commandToRun = "", commandArgsToRun = "";
 
     function updateCheck(event){
@@ -125,7 +126,6 @@
                                 <Textfield bind:value={$pythonpath} label="Python path" style="width: 100%; "/>
                                 <Textfield bind:value={$pythonscript} label="Python script path" style="width: 100%; " />
                                 <button class="button is-link" on:click={resetPyConfig}>Reset</button>
-        
                                 <button class="button is-link" on:click={updatePyConfig}>Save</button>
                             </div>
                             <div class="align">
@@ -141,16 +141,8 @@
                     <div class="subtitle">App Version {window.appVersion}</div>
                     <div class="align">
                     
-                        <!-- <div class="align">
-                            <Textfield  bind:value={$github.username} label="Github username" />
-                            <Textfield  bind:value={$github.repo} label="Github Repo" />
-                            <CustomSelect bind:picked={$github.branch} label="Github branch" options={["master", "developer"]}/>
-                        </div> -->
-
                         <div class="align">
                             <button class="button is-link" id="updateCheckBtn" on:click="{updateCheck}" >Check update</button>
-                            <!-- <button class="button is-link" id="updateBtn" on:click={update}>Update</button> -->
-                            
                             <button class="button is-warning" on:click="{()=>{$activateChangelog = true}}">What's New</button>
                         </div>
 
@@ -158,12 +150,8 @@
                         <div id="update-progress-container" style="display: none;">
                             <label for="file">Download progress:</label>
                             <progress id="update-progress" max="100" value="0"> 0%</progress>
-                            <!-- <Textfield  bind:value={$backupName} label="Github username" />
-                            <button class="button is-link" on:click={backup}>Backup</button>
-                            <button class="button is-link" on:click={restore}>Restore</button> -->
                         </div>
                     </div>
-                    
                 </div>
 
                 <div class="animated fadeIn" class:hide={selected!=="Terminal"}>
@@ -177,11 +165,9 @@
                     <div class="content">
                     
                         <ul style="user-select: text;">
-                    
                             <li>FELionGUI: {window.appVersion}</li>
                             <li>{$pyVersion}</li>
                             <hr>
-
                             {#each Object.keys(window.versions) as key}
                                 <li>{key}: {window.versions[key]}</li>
                             {/each}
@@ -193,5 +179,4 @@
             </div>
         </div>
     </div>
-
 </section>
