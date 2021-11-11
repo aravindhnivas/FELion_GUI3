@@ -18,7 +18,7 @@ logger.info('App starting...');
 
 
 
-ipcMain.handle("checkupdate", () => {console.log("Not implemented yet")})
+ipcMain.handle("checkupdate", () => {autoUpdater.checkForUpdates()})
 const updateLog = (info) => {logger.info(info); mainWindow.webContents.send("update-log", info)}
 
 autoUpdater.on('checking-for-update', () => updateLog("checking-for-update" + '\n-----------\n'))
