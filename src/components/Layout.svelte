@@ -26,11 +26,14 @@
     import Modal from "./Modal.svelte"
     import { createEventDispatcher } from 'svelte';
     import IconButton from '@smui/icon-button';
+    import Editor from './Editor.svelte';
+    
     ////////////////////////////////////////////////////////////////////////////
     export let id, fileChecked=[], filetype = "felix", toggleBrowser = false, fullfileslist = [];
     export let currentLocation = db.get(`${filetype}_location`) || "", graphPlotted=false;
     export let graphWindowClasses = ["no-full"]
     export let activateConfigModal = false
+
     const dispatch = createEventDispatcher()
     async function browse_folder() {
         const result = await browse({dir:true})
@@ -148,7 +151,10 @@
                     <slot name="plotContainer_functions" />
                     <slot name="plotContainer_reports" />
                 {/if}
+                <Editor id="{filetype}-report-editor" />
             </div>
+
+            
 
         </div>
 
