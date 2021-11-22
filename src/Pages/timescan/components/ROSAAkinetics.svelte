@@ -1,10 +1,10 @@
 
 <script>
     import {mainPreModal} from "../../../svelteWritable.js";
-    import CustomSwitch from "components/CustomSwitch.svelte"
-    import CustomSelect from "components/CustomSelect.svelte"
+    import CustomSwitch from "$components/CustomSwitch.svelte"
+    import CustomSelect from "$components/CustomSelect.svelte"
     import Textfield from '@smui/textfield'
-    import ModalTable from 'components/ModalTable.svelte'
+    import ModalTable from '$components/ModalTable.svelte'
 
     import {Icon} from '@smui/icon-button';
     import { tick } from "svelte";

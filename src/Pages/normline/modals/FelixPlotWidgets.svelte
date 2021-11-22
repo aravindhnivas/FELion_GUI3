@@ -2,9 +2,9 @@
 
 <script>
     import {felixopoLocation, felixPlotCheckboxes} from '../functions/svelteWritables';
-    import CustomCheckList from 'components/CustomCheckList.svelte';
+    import CustomCheckList from '$components/CustomCheckList.svelte';
     import Textfield from '@smui/textfield';
-    import CustomCheckbox from 'components/CustomCheckbox.svelte';
+    import CustomCheckbox from '$components/CustomCheckbox.svelte';
     import { createEventDispatcher } from 'svelte';
     import { fade } from 'svelte/transition';
 

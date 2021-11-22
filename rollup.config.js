@@ -11,7 +11,7 @@ import yaml from '@rollup/plugin-yaml';
 import alias from '@rollup/plugin-alias';
 import nodePolyfills from 'rollup-plugin-polyfill-node';
 
-
+import path from "path";
 const production = !process.env.ROLLUP_WATCH;
 
 export default {
@@ -20,13 +20,12 @@ export default {
 
 	output: [ { sourcemap: true, format: 'iife', name: 'app', file: 'static/bundle.js' } ],
 	plugins: [
-		nodePolyfills({
-			exclude: ["admZip"]
-		}),
+		nodePolyfills(),
 		alias({
 			entries: [
-				{ find: 'src', replacement: './src' },
-				{ find: 'components', replacement: './src/components' }
+				{ find: '$src', replacement: path.resolve('./src') },
+				{ find: '$static', replacement: path.resolve('./static') },
+				{ find: '$components', replacement: path.resolve('./src/components') }
 			]
 		}),
 		svelte({

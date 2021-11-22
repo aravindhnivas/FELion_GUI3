@@ -1,6 +1,6 @@
 
 <script>
-    import Modal from 'components/Modal.svelte';
+    import Modal from '$components/Modal.svelte';
     import FelixPlotWidgets from './FelixPlotWidgets.svelte';
     import {loadfile, savefile} from "../functions/misc"
     import { createEventDispatcher } from 'svelte';

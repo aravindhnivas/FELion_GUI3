@@ -5,7 +5,7 @@
     } from "../../functions/svelteWritables";
     // import {mainPreModal} from "../../../../svelteWritable";
     import Textfield from '@smui/textfield';
-    import CustomIconSwitch from 'components/CustomIconSwitch.svelte';
+    import CustomIconSwitch from '$components/CustomIconSwitch.svelte';
     import FelixPlotting from '../../modals/FelixPlotting.svelte';
     import {felix_func} from '../../functions/felix';
     export let felixfiles, graphPlotted, normMethod, show_theoryplot, removeExtraFile, theoryLocation;
