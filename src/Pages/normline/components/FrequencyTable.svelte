@@ -26,18 +26,16 @@
 
 <style>
     .dataTable { display: flex; justify-content: center; }
-    .notification {width: 100%; border: 1px solid;}
-
 </style>
 
-<div class="content">
-    <div class="title notification is-link">Frequency table</div>
+<div class="align v-center">
+    <div class="notice__div">Frequency table</div>
     <CustomCheckbox bind:selected={show_dataTable_only_averaged} label="Only Averaged" />
 
     <CustomCheckbox bind:selected={show_dataTable_only_weighted_averaged} label="Only weighted Averaged" />
     <CustomCheckbox bind:selected={keepTable} label="Keep table" />
 
-    <button class="button is-danger is-pulled-right" on:click="{clearTable}">Clear Table</button>
+    <button class="button is-danger" style="margin-left: auto;" on:click="{clearTable}">Clear Table</button>
 </div>
 
  <div class="dataTable" >

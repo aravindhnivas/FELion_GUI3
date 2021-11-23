@@ -114,6 +114,11 @@
         overflow: auto;
         padding-right: 1em;
         padding-bottom: 12em;
+
+        .report-editor-div {
+            display: grid;
+            gap: 1em;
+        }
     }
 </style>
 
@@ -151,7 +156,9 @@
                     <slot name="plotContainer_functions" />
                     <slot name="plotContainer_reports" />
                 {/if}
-                <Editor location={window.db.get(`${filetype}_location`)} {filetype} id="{filetype}-report-editor" />
+                <div class="report-editor-div" id="{filetype}-plotContainer-report-editor-div">
+                    <Editor location={window.db.get(`${filetype}_location`)} {filetype} id="{filetype}-report-editor" />
+                </div>
             </div>
 
             

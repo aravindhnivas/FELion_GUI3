@@ -37,31 +37,27 @@
             }
         } catch (error) {window.handleError( error )}
     }
-
+    let reportWindowClosed = true;
+    // let graphWindow;
     function openReport() {
-        const reportContent = fs.existsSync(reportFile) ? fs.readFileSync(reportFile) : editor.getData()
-        const reportHTML = `
-        <div class="ck ck-editor__main ck-content content" 
-            style="
-            background: #fff; 
-            padding: 1em;
-            margin: 1em;
-            user-select: text;
-            ">
-            ${window.marked(reportContent)}
-        </div>
-        `
-
+        
+        const mount = document.querySelector(`#${filetype}-plotContainer-report-editor-div`)
         const graphWindow = new WinBox({
-            root: document.getElementById("pageContainer"),
+            root: document.getElementById("pageContainer"), mount,
             title: `Report ${filetype} `,
             x: "center", y: "center",
             width: "70%", height: "70%",
             background:"#634e96",
             top: 50, bottom:50,
-            html: reportHTML
+            onclose: function(){
+                reportWindowClosed = true
+            },
+            
         });
+        reportWindowClosed = false;
+        
     }
+
 </script>
 
 <style global >
@@ -75,16 +71,40 @@
         border: 2px double black;
         background: white;
     }
-    .notification {width: 100%; border: 1px solid;}
+    .notice__div {
+        width: 100%;
+        background: #634e96;
+        border: 1px solid;
+        border-radius: 0.2em;
+        padding: 0.2em;
+        font-size: 25px;
+        font-weight: bold;
+        display: grid;
+        grid-auto-flow: column;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+    }
     .editor-div * {color: black;}
+    .wb-body > .report-editor-div {
+        padding: 1em;
+        display: grid;
+        gap: 1em;
+    }
+
 </style>
 
-<div class="align">
+<div class="align v-center">
 
-    <div class="title notification is-link">Report/Editor</div>
+    <div class="notice__div">
+        Report/Editor
+        {#if reportWindowClosed}
+            <i class="material-icons" on:click="{openReport}">zoom_out_map</i>
+        {/if}
+    </div>
     <button class="button is-link" on:click="{browse_folder}">Browse</button>
     <button class="button is-link" on:click="{saveReport}">Save</button>
-    <button class="button is-link" on:click="{openReport}">Show report</button>
+    
+    
     
 </div>
 
