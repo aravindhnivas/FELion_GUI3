@@ -103,15 +103,18 @@
     </div>
     <button class="button is-link" on:click="{browse_folder}">Browse</button>
     <button class="button is-link" on:click="{saveReport}">Save</button>
-    
-    
-    
 </div>
 
 <div class="ckeditor-svelte content" {id} use:mountEditor >
+    
     {#if window.fs.existsSync(reportFile)}
-        {@html window.marked(window.fs.readFileSync(reportFile))}
+        
+    {@html window.marked(window.fs.readFileSync(reportFile))}
+
     {:else}
         <h1>{filetype.toUpperCase()} Report</h1>
+    
     {/if}
+
+
 </div>
