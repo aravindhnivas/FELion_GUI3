@@ -95,5 +95,7 @@
 <div class="ckeditor-svelte content" {id} use:mountEditor >
     {#if window.fs.existsSync(reportFile)}
         {@html window.marked(window.fs.readFileSync(reportFile))}
+    {:else}
+        <h1>{filetype.toUpperCase()} Report</h1>
     {/if}
 </div>
