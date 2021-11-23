@@ -151,7 +151,7 @@
                     <slot name="plotContainer_functions" />
                     <slot name="plotContainer_reports" />
                 {/if}
-                <Editor id="{filetype}-report-editor" />
+                <Editor location={window.db.get(`${filetype}_location`)} {filetype} id="{filetype}-report-editor" />
             </div>
 
             
