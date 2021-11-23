@@ -4,8 +4,8 @@
     import {opoMode, felixPlotAnnotations, felixConfigDB, baselineFile} from "../../functions/svelteWritables";
     // import {mainPreModal} from "../../../../svelteWritable";
     import Textfield from '@smui/textfield';
-    import CustomSelect from '../../../../components/CustomSelect.svelte';
-    import QuickBrowser from '../../../../components/QuickBrowser.svelte';
+    import CustomSelect from '$components/CustomSelect.svelte';
+    import QuickBrowser from '$components/QuickBrowser.svelte';
     import { fade } from 'svelte/transition';
     import {opofile_func} from '../../functions/opofile';
     export let OPOLocation, opofiles, OPOfilesChecked, graphPlotted, removeExtraFile;

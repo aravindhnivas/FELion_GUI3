@@ -2,9 +2,9 @@
 <script>
     // import {mainPreModal} from "../../../svelteWritable";
     import {graphDiv} from '../functions/svelteWritables';
-    import Modal from '../../../components/Modal.svelte';
+    import Modal from '$components/Modal.svelte';
     import Textfield from '@smui/textfield';
-    import {browse} from "../../../components/Layout.svelte";
+    import {browse} from "$components/Layout.svelte";
    
     
     export let active=false, fileChecked=[], addedFileCol=1, addedFileScale=1000, addedfiles=[], addedFile={}, extrafileAdded=0;

@@ -1,15 +1,15 @@
 <script>
     // import {mainPreModal} from "../svelteWritable";
-    import Layout from "../components/Layout.svelte"
-    import CustomIconSwitch from "../components/CustomIconSwitch.svelte"
-    import CustomSelect from "../components/CustomSelect.svelte"
-    import CustomSwitch from "../components/CustomSwitch.svelte"
+    import Layout from "$components/Layout.svelte"
+    import CustomIconSwitch from "$components/CustomIconSwitch.svelte"
+    import CustomSelect from "$components/CustomSelect.svelte"
+    import CustomSwitch from "$components/CustomSwitch.svelte"
     
-    // import ReportLayout from "../components/ReportLayout.svelte"
+    // import ReportLayout from "$components/ReportLayout.svelte"
     import Textfield from '@smui/textfield'
     import {plot} from "../js/functions.js"
     // import {Icon} from '@smui/icon-button'
-    import GetLabviewSettings from "../components/GetLabviewSettings.svelte"
+    import GetLabviewSettings from "$components/GetLabviewSettings.svelte"
 
     /////////////////////////////////////////////////////////////////////////
 

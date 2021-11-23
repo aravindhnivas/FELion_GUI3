@@ -1,6 +1,6 @@
 
 import {backupName, get} from "./svelteWritables";
-import {browse} from "../../components/Layout.svelte";
+import {browse} from "$components/Layout.svelte";
 // const copy = require('recursive-copy');
 // import copy from "recursive-copy";
 export function transferFiles({dest, src, includeNode=true}={}) {

@@ -1,6 +1,6 @@
 
 import {tick} from "svelte";
-import {browse} from "../../../components/Layout.svelte";
+import {browse} from "$components/Layout.svelte";
 
 export async function readFromFile({bowseFile=true, energyFilename=null, electronSpin, zeemanSplit, energyUnit, twoLabel=true, collisionalFile=false}={}){
     if (!energyFilename || bowseFile) {

@@ -1,7 +1,7 @@
 
 <script>
     // import {mainPreModal} from "../../../svelteWritable";
-    import SeparateWindow from "../../../components/SeparateWindow.svelte";
+    import SeparateWindow from "$components/SeparateWindow.svelte";
     import { plot } from "../../../js/functions";
     import boltzman_distribution from "../functions/boltzman_distribution";
     import Textfield from '@smui/textfield';

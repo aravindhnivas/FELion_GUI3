@@ -5,9 +5,9 @@
         expfittedLines, expfittedLinesCollectedData, fittedTraceCount, graphDiv, normMethod,
         felixConfigDB, baselineFile
     } from './normline/functions/svelteWritables';
-    import Layout from "../components/Layout.svelte"
-    import CustomRadio from '../components/CustomRadio.svelte';
-    // import ReportLayout from '../components/ReportLayout.svelte';
+    import Layout from "$components/Layout.svelte"
+    import CustomRadio from '$components/CustomRadio.svelte';
+    // import ReportLayout from '$components/ReportLayout.svelte';
     import {tick} from "svelte";
     import AddFilesToPlot from './normline/modals/AddFilesToPlot.svelte';
 

@@ -3,12 +3,12 @@
     // import {mainPreModal} from "../../../../svelteWritable";
     import {toggleRow, felixopoLocation, felixConfigDB} from "../../functions/svelteWritables";
     import Textfield from '@smui/textfield';
-    import QuickBrowser from '../../../../components/QuickBrowser.svelte';
+    import QuickBrowser from '$components/QuickBrowser.svelte';
     import { fade } from 'svelte/transition';
     
     import {theory_func} from '../../functions/theory';
     export let updateConfig=false;
-    import CustomSwitch from '../../../../components/CustomSwitch.svelte';
+    import CustomSwitch from '$components/CustomSwitch.svelte';
     export let theoryLocation, show_theoryplot, normMethod;
 
     let sigma=7, scale=1, theoryfiles=[], tkplot=false;

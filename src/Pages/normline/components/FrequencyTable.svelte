@@ -3,7 +3,7 @@
     import {dataTable_avg, dataTable, expfittedLinesCollectedData, avgfittedLineCount} from '../functions/svelteWritables';
     import DataTable, {Head, Body, Row, Cell} from '@smui/data-table';
     import {Icon} from '@smui/icon-button';
-    import CustomCheckbox from '../../../components/CustomCheckbox.svelte';
+    import CustomCheckbox from '$components/CustomCheckbox.svelte';
     export let keepTable=true;
 
     const dataTableHead = ["Filename", "Frequency (cm-1)", "Amplitude", "FWHM", "Sigma"]

@@ -1,8 +1,8 @@
 
 <script>
 	import { windowLoaded } from './js/functions';
-	import Navbar from "./components/Navbar.svelte"
-	import Footer from "./components/Footer.svelte"
+	import Navbar from "$components/Navbar.svelte"
+	import Footer from "$components/Footer.svelte"
 	import Home from "./Pages/Home.svelte"
 	import Powerfile from "./Pages/Powerfile.svelte"
 	import Normline from "./Pages/Normline.svelte"
@@ -12,7 +12,7 @@
 	import Settings from "./Pages/Settings.svelte"
 
 	import Misc from "./Pages/Misc.svelte"
-	import PreModal from "./components/PreModal.svelte";
+	import PreModal from "$components/PreModal.svelte";
 	import {onMount, tick} from "svelte";
 	let mounted=false;
 

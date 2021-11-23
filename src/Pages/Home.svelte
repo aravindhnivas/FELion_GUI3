@@ -1,6 +1,6 @@
 
 <script>
-  import Simplewave from "../components/starterpage_animations/Simplewave.svelte";
+  import Simplewave from "$components/starterpage_animations/Simplewave.svelte";
   import {windowLoaded} from "../js/functions"
 </script>
 

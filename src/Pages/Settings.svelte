@@ -6,14 +6,14 @@
     import Textfield from '@smui/textfield';
     import {onMount} from "svelte";
 
-    import CustomDialog from "../components/CustomDialog.svelte"
-    // import CustomSelect from '../components/CustomSelect.svelte';
-    import CustomSwitch from '../components/CustomSwitch.svelte';
-    import Changelog from "../components/Changelog.svelte";
+    import CustomDialog from "$components/CustomDialog.svelte"
+    // import CustomSelect from '$components/CustomSelect.svelte';
+    import CustomSwitch from '$components/CustomSwitch.svelte';
+    import Changelog from "$components/Changelog.svelte";
     
     import {resetPyConfig, updatePyConfig} from "./settings/checkPython";
     import {tick} from "svelte";
-    import Terminal from '../components/Terminal.svelte';
+    import Terminal from '$components/Terminal.svelte';
 
 
 

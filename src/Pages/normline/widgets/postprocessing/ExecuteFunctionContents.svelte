@@ -4,7 +4,7 @@
     import { fittedTraceCount, felixPlotAnnotations, felixIndex, expfittedLines, expfittedLinesCollectedData , graphDiv, dataTable, Ngauss_sigma, felixOutputName, felixPeakTable, felixopoLocation, felixAnnotationColor} from "../../functions/svelteWritables";
     // import {mainPreModal} from "../../../../svelteWritable";
     import Textfield from '@smui/textfield';
-    import CustomSwitch from '../../../../components/CustomSwitch.svelte';
+    import CustomSwitch from '$components/CustomSwitch.svelte';
 
     import {Icon} from '@smui/icon-button';
 

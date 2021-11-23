@@ -2,13 +2,13 @@
 <script>
     // import {mainPreModal} from "../../svelteWritable";
     // import { createEventDispatcher } from 'svelte';
-    import {browse} from "../../components/Layout.svelte";
+    import {browse} from "$components/Layout.svelte";
     import Textfield from '@smui/textfield';
     import {fade} from "svelte/transition";
-    import SeparateWindow from '../../components/SeparateWindow.svelte';
+    import SeparateWindow from '$components/SeparateWindow.svelte';
 
-    import CustomCheckbox from "../../components/CustomCheckbox.svelte";
-    import CustomSelect from "../../components/CustomSelect.svelte";
+    import CustomCheckbox from "$components/CustomCheckbox.svelte";
+    import CustomSelect from "$components/CustomSelect.svelte";
     import BoltzmanDistribution from "./windows/BoltzmanDistribution.svelte";
 
     import { parse as Yml } from 'yaml';

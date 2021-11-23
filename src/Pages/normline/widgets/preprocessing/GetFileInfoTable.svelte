@@ -2,8 +2,8 @@
 <script>
     // import {mainPreModal} from "../../../../svelteWritable";
     import { filedetails, opoMode } from "../../functions/svelteWritables";
-    import CustomIconSwitch from '../../../../components/CustomIconSwitch.svelte';
-    import Table from '../../../../components/Table.svelte';
+    import CustomIconSwitch from '$components/CustomIconSwitch.svelte';
+    import Table from '$components/Table.svelte';
     import { savefile,  loadfile } from '../../functions/misc';
 
     // import {computePy_func} from '../../functions/computePy';

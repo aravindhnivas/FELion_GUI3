@@ -1,7 +1,7 @@
 
 <script>
 
-    import Modal from '../../../components/Modal.svelte';
+    import Modal from '$components/Modal.svelte';
     import Textfield from '@smui/textfield';
     import { createEventDispatcher } from 'svelte';
 

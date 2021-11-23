@@ -2,8 +2,8 @@
 <script>
     import { felixOutputName, collectData } from "../../functions/svelteWritables";
     import Textfield from '@smui/textfield';
-    import CustomSelect from '../../../../components/CustomSelect.svelte';
-    import CustomSwitch from '../../../../components/CustomSwitch.svelte';
+    import CustomSelect from '$components/CustomSelect.svelte';
+    import CustomSwitch from '$components/CustomSwitch.svelte';
     import { createEventDispatcher } from 'svelte';
 
     export let output_namelists, writeFileName, writeFile, overwrite_expfit;

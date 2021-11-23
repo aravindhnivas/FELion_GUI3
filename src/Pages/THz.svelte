@@ -1,12 +1,12 @@
 <script>
     // import {mainPreModal} from "../svelteWritable";
     //  Importing
-    import Layout from "../components/Layout.svelte"
-    import CustomIconSwitch from "../components/CustomIconSwitch.svelte"
-    import CustomSelect from "../components/CustomSelect.svelte"
-    import CustomCheckbox from "../components/CustomCheckbox.svelte"
+    import Layout from "$components/Layout.svelte"
+    import CustomIconSwitch from "$components/CustomIconSwitch.svelte"
+    import CustomSelect from "$components/CustomSelect.svelte"
+    import CustomCheckbox from "$components/CustomCheckbox.svelte"
 
-    // import ReportLayout from "../components/ReportLayout.svelte"
+    // import ReportLayout from "$components/ReportLayout.svelte"
     import Textfield from '@smui/textfield'
     import {plot} from "../js/functions.js"
     import ROSAA from "./thz/ROSAA.svelte"

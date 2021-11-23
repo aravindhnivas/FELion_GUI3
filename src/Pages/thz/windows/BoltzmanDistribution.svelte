@@ -1,6 +1,6 @@
 
 <script>
-    import SeparateWindow from "../../../components/SeparateWindow.svelte";
+    import SeparateWindow from "$components/SeparateWindow.svelte";
     import { plot } from "../../../js/functions";
     import boltzmanDistribution from "../functions/boltzman_distribution";
     import Textfield from '@smui/textfield';
