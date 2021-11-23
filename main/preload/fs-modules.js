@@ -34,5 +34,11 @@ contextBridge.exposeInMainWorld("fs", {
             isDirectory: () => info.isDirectory()
         }
     
+    },
+    createReadStream: (inFile) => {
+        const reader = fs.createReadStream(inFile)
+        return {
+            pipe: (callback) => reader.pipe(callback)
+        }
     }
 })
