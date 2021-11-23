@@ -15,7 +15,7 @@
         } catch (error) {window.handleError( error );}
     }
 
-    let reportFile = window.pathJoin(location, "report.md")
+    $: reportFile = window.pathJoin(location, "report.md")
 
     
     
@@ -23,9 +23,9 @@
         try {
             [location] = await browse({dir:true})
             console.log(location)
-            if(location) {
-                reportFile = window.pathJoin(location, "report.md")
-            }
+            // if(location) {
+            //     reportFile = window.pathJoin(location, "report.md")
+            // }
         } catch (error) {window.handleError( error )}
     }
 
@@ -84,11 +84,7 @@
     <div class="title notification is-link">Report/Editor</div>
     <button class="button is-link" on:click="{browse_folder}">Browse</button>
     <button class="button is-link" on:click="{saveReport}">Save</button>
-
-    <button class="button is-link" on:click="{()=>{
-        console.log(window.marked(editor.getData()))
-        openReport()
-    }}">Show report</button>
+    <button class="button is-link" on:click="{openReport}">Show report</button>
     
 </div>
 
