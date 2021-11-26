@@ -54,10 +54,12 @@
             onclose: function(){
                 reportWindowClosed = true
             },
-            
         });
-        reportWindowClosed = false;
         
+        reportWindowClosed = false;
+        setTimeout(() => {
+            graphWindow.focus()
+        }, 100);
     }
 
 </script>
