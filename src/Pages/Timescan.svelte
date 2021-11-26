@@ -7,17 +7,13 @@
     import CustomSwitch from "$components/CustomSwitch.svelte"
 
     import ROSAAkinetics from "../Pages/timescan/components/ROSAAkinetics.svelte"
-    // import ReportLayout from "$components/ReportLayout.svelte"
     import Textfield from '@smui/textfield'
     import {plot} from "../js/functions.js"
-
-    
     /////////////////////////////////////////////////////////////////////////
 
     // Initialisation
 
     const filetype = "scan", id = "Timescan"
-
 
     let fileChecked = [];
     let currentLocation = db.get(`${filetype}_location`) || ""
@@ -47,7 +43,6 @@
                 const newData = reduceData[data][innerData]
                 newData.x = newData.x.slice(timestartIndexScan, dataLength)
                 newData.y = newData.y.slice(timestartIndexScan, dataLength)
-
                 newData["error_y"]["array"] = newData["error_y"]["array"].slice(timestartIndexScan, dataLength)
                 reduceData[data][innerData] = newData
             })
@@ -112,15 +107,11 @@
                 let tplot = file + "_tplot";
                 const id = document.getElementById(tplot)
                 if(id?.data) {Plotly.relayout(id, layout);}
-
             })
-
         }
     }
 
     let kineticMode = false;
-
-    $: if(kineticMode) createToast("Kinetic mode", "warning")
 
     let kineticData = {}
     async function updateData(){
@@ -131,24 +122,29 @@
             plot(`Timescan Plot: ${file}`, "Time (in ms)", "Counts", kineticData[file], `${file}_tplot`, logScale ? "log" : null)
         })
     }
+
     let saveOutputDepletion = true;
+
 </script>
 
 
+<ROSAAkinetics {fileChecked} {currentLocation} bind:kineticMode {kineticData}/>
+
+
+
 <Layout {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked on:chdir={dir_changed}>
+
     <svelte:fragment slot="buttonContainer">
         <div class="align " style="align-items: center;">
             <button class="button is-link" on:click="{(e)=>plotData({e:e})}">Timescan Plot</button>
-            <Textfield type="number" input$min=0 input$max={dataLength} {style} bind:value={timestartIndexScan} label="Time Index" on:change={updateData}/>
 
-            
+            <Textfield type="number" input$min=0 input$max={dataLength} {style} bind:value={timestartIndexScan} label="Time Index" on:change={updateData}/>
             <button class="button is-link" on:click="{()=>{toggleRow = !toggleRow}}">Depletion Plot</button>
             <button class="button is-link" on:click="{()=>{kineticMode = !kineticMode}}">ROSAA Kinetics</button>
             
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"scan", tkplot:"plot"})}">Open in Matplotlib</button>
             <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
             <CustomSwitch on:change={linearlogCheck} bind:selected={logScale} label="Log"/>
-
         </div>
 
         <div class="align animated fadeIn" class:hide={toggleRow} >
@@ -157,20 +153,18 @@
             <Textfield bind:value={power} label="Power (ON, OFF) [mJ]" />
             <Textfield type="number" {style} bind:value={nshots} label="FELIX Hz" />
             <Textfield type="number" {style} bind:value={massIndex} label="Mass Index" />
-
             <CustomSwitch bind:selected={saveOutputDepletion} label="save_output"/>
             <Textfield type="number" {style} bind:value={timestartIndex} label="Time Index" />
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"general"})}">Submit</button>
-        
         </div>
-        
-        <ROSAAkinetics {fileChecked} {currentLocation} {kineticMode} {kineticData}/>
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer" let:lookForGraph>
         {#each fileChecked as scanfile}
             <div id="{scanfile}_tplot" class="graph__div" style="padding-bottom:1em" use:lookForGraph />
         {/each}
+
     </svelte:fragment>
     
 </Layout>
+

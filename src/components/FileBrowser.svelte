@@ -1,7 +1,7 @@
 
 <script>
     // import {mainPreModal} from "../svelteWritable";
-    import IconButton, {Icon} from '@smui/icon-button';
+    // import IconButton, {Icon} from '@smui/icon-button';
 
     import { slide } from 'svelte/transition';
     import FormField from '@smui/form-field';
@@ -122,8 +122,10 @@
 
 
 <div class="align center browseIcons">
-    <Icon class="material-icons" on:click="{()=>changeDirectory("..")}">arrow_back</Icon>
-    <Icon class="material-icons" on:click="{()=>{getfiles(true, true)}}">refresh</Icon>
+    <i class="material-icons" on:click="{()=>changeDirectory("..")}">arrow_back</i>
+    <i class="material-icons animated faster" 
+        on:animationend={({target})=>target.classList.remove("rotateIn")} 
+        on:click="{({target})=>{target.classList.add("rotateIn"); getfiles(true, true)}}">refresh</i>
     <CustomIconSwitch bind:toggler={sortFile} icons={["trending_up", "trending_down"]}/>
 
 </div>
@@ -140,10 +142,8 @@
 
 <div class="folderfile-list" id="{filetype}_filebrowser">
     <div class="align folderlist" >
-        <IconButton  toggle bind:pressed={showfiles}>
-            <Icon class="material-icons" on>keyboard_arrow_down</Icon>
-            <Icon class="material-icons" >keyboard_arrow_right</Icon>
-        </IconButton>
+        <i class="material-icons" on>keyboard_arrow_down</i>
+        <i class="material-icons" >keyboard_arrow_right</i>
         <div class="mdc-typography--subtitle1">{parentFolder}</div>
     </div>
 
@@ -163,7 +163,7 @@
         <div class="otherFolderlist" style="cursor:pointer">
             {#each otherfolders as folder (folder.id)}
                 <div class="align" on:click="{()=>changeDirectory(folder.name)}" transition:slide|local>
-                    <Icon class="material-icons">keyboard_arrow_right</Icon>
+                    <i class="material-icons">keyboard_arrow_right</i>
                     <div class="mdc-typography--subtitle1">{folder.name}</div>
                 </div>
             {/each}

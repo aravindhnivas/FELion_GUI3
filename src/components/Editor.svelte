@@ -1,11 +1,16 @@
 <script>
     import ClassicEditor from '$static/assets/js/ckeditor5';
     import {browse} from '$components/Layout.svelte';
+    import Textfield from '@smui/textfield';
+    import CustomSelect from "$components/CustomSelect.svelte"
+
     export let id = window.getID();
     export let location = ""
     export let filetype = ""
     export let editor="";
     export let mount=null;
+    export let mainTitle="Report/Editor";
+    export let savefilename="report";
 
     
     async function mountEditor(node) {
@@ -16,17 +21,33 @@
         } catch (error) {window.handleError( error );}
     }
 
-    $: reportFile = window.pathJoin(location, "report.md")
+    if(db.get(`${filetype}-report-md`)) {
+        location = db.get(`${filetype}-report-md`)
+    }
 
-    
-    
+    $: reportFile = window.pathJoin(location , savefilename+".md")
+    let reportFiles = []
+
+    const updateFiles = (node=null) => {
+        if(node) {
+            const {target} = node
+            target.classList.add("rotateIn")
+
+        }
+        // console.log(target)
+        reportFiles =  fs.readdirSync(pathResolve(location))
+                        .filter(name=>name.endsWith(".md"))
+                        .map(name=>name.replace(extname(name), ""))
+    }
+    $: if(fs.existsSync(location)) {
+        db.set(`${filetype}-report-md`, location)
+        updateFiles()
+    }
+
     async function browse_folder() {
         try {
             [location] = await browse({dir:true})
-            console.log(location)
-            // if(location) {
-            //     reportFile = window.pathJoin(location, "report.md")
-            // }
+            
         } catch (error) {window.handleError( error )}
     }
 
@@ -34,15 +55,16 @@
         try {
             if(location) {
                 fs.writeFileSync( reportFile, editor.getData() )
-                window.createToast("report.md file saved", "link")
+                window.createToast(savefilename+".md file saved", "link")
             }
         } catch (error) {window.handleError( error )}
+    
     }
+
     let reportWindowClosed = true;
-    // let graphWindow;
+
     function openReport() {
         
-        // const mount = document.querySelector(`#${filetype}-plotContainer-report-editor-div`)
         const graphWindow = new WinBox({
             root: document.getElementById("pageContainer"), 
             mount: document.querySelector(mount),
@@ -61,14 +83,29 @@
             graphWindow.focus()
         }, 100);
     }
-
+    
+    let changeWidget = false
+    const readFromFile = () => {
+        if(fs.existsSync(reportFile)) { editor?.setData(fs.readFileSync(reportFile)) }
+    }
 </script>
 
-<style global >
+<style global lang="scss">
+
+    .report-editor-div {
+        display: grid;
+        gap: 1em;
+    }
+
     .ck.ck-content * {color: black;}
-    .ck-editor { min-height: 10em;}
+    .ck-editor { 
+        min-height: 10em;
+        width: 100%;
+    }
+
     .ck-editor__main {
         overflow: auto;
+
         max-height: 25em;
     }
     .ck-content .table table {
@@ -89,36 +126,102 @@
         align-items: center;
     }
     .editor-div * {color: black;}
-    .wb-body > .report-editor-div {
-        padding: 1em;
+    .wb-body {
+        .report-editor-div {
+            padding: 1em;
+            display: grid;
+            gap: 1em;
+            height: 100%;
+            grid-template-rows: auto 1fr;
+            
+            .ck-editor__main {
+                max-height: calc(100% - 5em);
+            }
+            
+        }
+    }
+
+    .report_location__div {
         display: grid;
+
+        grid-template-columns: auto 3fr 1fr auto;
+        width: 100%;
         gap: 1em;
+        
+        align-items: center;
+    }
+
+    .btn-row {
+        
+        display: flex;
+        gap: 1em;
+    }
+
+    .report_main__div {
+        .report_controler__div {
+            display: grid;
+            gap: 1em;
+
+            width: 100%;
+            margin: 0;
+        }
     }
 
 </style>
 
-<div class="align v-center">
+<div class="report_main__div align">
 
     <div class="notice__div">
-        Report/Editor
+        {mainTitle}
         {#if reportWindowClosed}
             <i class="material-icons" on:click="{openReport}">zoom_out_map</i>
         {/if}
     </div>
-    <button class="button is-link" on:click="{browse_folder}">Browse</button>
-    <button class="button is-link" on:click="{saveReport}">Save</button>
+
+    <div class="report_controler__div box">
+
+        <div class="report_location__div" >
+        
+            <button class="button is-link" on:click="{browse_folder}">Browse</button>
+            
+            <Textfield bind:value={location} label="report location" />
+            <div use:window.clickOutside on:click_outside={()=>changeWidget=false}>
+
+                {#if changeWidget}
+        
+                    <CustomSelect bind:picked={savefilename} label="report name" style="min-width: 70%;"
+                        options={["", ...reportFiles]}
+                    />
+                    
+                {:else}
+                    <Textfield on:dblclick={()=>{changeWidget=true}} bind:value={savefilename} label="report name" style="min-width: 70%;"/>
+
+                {/if}
+
+                <i class="material-icons animated faster" 
+                    on:animationend={({target})=>target.classList.remove("rotateIn")} 
+                    on:click="{updateFiles}">
+                    refresh
+                </i>
+            </div>
+        </div>
+    
+        <div class="btn-row">
+            <slot name="btn-row"></slot>
+            <button class="button is-warning" on:click={readFromFile}>read</button>
+            <button class="button is-link" on:click="{saveReport}">Save</button>
+        </div>
+    </div>
+
 </div>
 
 <div class="ckeditor-svelte content" {id} use:mountEditor >
     
     {#if window.fs.existsSync(reportFile)}
-        
         {@html window.marked(window.fs.readFileSync(reportFile))}
-
     {:else}
         <h1>{filetype.toUpperCase()} Report</h1>
-    
-    {/if}
 
+    {/if}
 
 </div>

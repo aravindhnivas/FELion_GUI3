@@ -51,32 +51,32 @@
         try {graphDivs = Array.from(document.querySelectorAll(`#${id} .graph__div`))} 
         catch (error) {console.log("No graph in this window")}
     }
-
 </script>
 
 <style>
+    .main_content { overflow: auto; }
 
-    .main_content {overflow: auto; margin-bottom: 1em;}
     .main_content__div {
         display:grid;
-
-
-        grid-template-rows: 1fr 7fr 0.5fr;
-
         max-height: 100%;
+        grid-template-rows: auto 1fr auto;
+        height: 100%;
+        gap: 1em;
         padding: 1em;
-
     }
-    .header_content { display:grid; grid-row-gap: 1em; }
-    .footer_content {margin-left: auto;}
 
+
+    .header_content { display:grid; grid-row-gap: 1em; }
+
+    .footer_content {
+        display: flex;
+        gap: 1em;
+        justify-content: flex-end;
+    }
 </style>
 
 <div {id} class="main_content__div" class:hide={!active}>
     <div class="header_content"><slot name="header_content__slot" /></div>
-
     <div class="main_content" use:lookForGraph><slot name="main_content__slot" /></div>
-    
     <div class="footer_content" ><slot name="footer_content__slot"/> </div>
-    
 </div>

@@ -7,7 +7,7 @@ from tkinter.messagebox import askokcancel, showerror
 # System modules
 
 import sys, json, os, traceback
-from os.path import isdir, isfile
+# from os.path import isdir, isfile
 from pathlib import Path as pt
 import warnings
 

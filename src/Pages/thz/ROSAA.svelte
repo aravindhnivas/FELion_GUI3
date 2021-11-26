@@ -497,7 +497,7 @@
 
         <svelte:fragment slot="footer_content__slot">
         
-            <div class="align">
+            <!-- <div class="align"> -->
                 {#if pyProcesses.length>0}
                     <div >Running: {pyProcesses.length} {pyProcesses.length>1 ? "simulations" : "simulation"}</div>
                 {/if}
@@ -511,7 +511,7 @@
                 <button  class="button is-link" on:click="{()=>{showreport = !showreport}}" >{showreport ? "Go Back" : "Status report"}</button>
 
                 <button  class="button is-link" on:click="{simulation}" on:pyEvent={pyEventHandle} on:pyEventClosed="{pyEventClosedHandle}" on:pyEventData={pyEventDataReceivedHandle}>Submit</button>
-            </div>
+            <!-- </div> -->
         </svelte:fragment>
 
     </SeparateWindow>

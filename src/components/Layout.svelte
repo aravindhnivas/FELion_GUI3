@@ -115,10 +115,6 @@
         padding-right: 1em;
         padding-bottom: 12em;
 
-        .report-editor-div {
-            display: grid;
-            gap: 1em;
-        }
     }
 </style>
 

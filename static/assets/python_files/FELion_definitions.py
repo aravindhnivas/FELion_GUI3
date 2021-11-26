@@ -123,15 +123,14 @@ def convert_intesities(felixlocation, output_filename, wn, inten, norm_method):
     return [relative_depletion.nominal_value, relative_depletion.std_dev], [log_intensity.nominal_value, log_intensity.std_dev], [log_hv_intensity.nominal_value, log_hv_intensity.std_dev]
 
 
-def extractCodeFromMarkedDownFile(filename):
-    
+def readCodeFromFile(filename):
     info = []
     codeToRun = ""
     start = False
-    
+
     with open(filename, "r") as f:
         info = f.readlines()
-        
+
     for line in info:
         if "```plaintext" in line:
             start = True
@@ -141,14 +140,19 @@ def extractCodeFromMarkedDownFile(filename):
             continue
         if start:
             codeToRun += line
-            
-    def funtionToRun(code):
-        exec(code)
-        return locals()
-    
-    finalCodeOutput = funtionToRun(codeToRun)
 
+    return codeToRun
+
+def codeToRun(code):
+    exec(code)
+    return locals()
+    
+
+def runCodeFromMarkedDownFile(filename):
+    codeToRun = readCodeFromFile(filename)
+    finalCodeOutput = codeToRun(codeToRun)
     return finalCodeOutput
+
 
 def profile_func(func):
 

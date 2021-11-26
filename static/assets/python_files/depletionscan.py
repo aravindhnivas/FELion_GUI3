@@ -270,53 +270,51 @@ class depletionplot:
         self.saveFile(show=False)
 
     def savefig(self):
-
         try:
-            if not self.latex.get():
-                
-                save_name = f"{self.widget.name.get()}.png"
-                save_file = self.location / save_name
-                self.fig.savefig(save_file, dpi=self.widget.dpi_value.get())
-                print(f"File saved: {save_name} in {self.location}")
-                showinfo("Saved", f"File saved: {save_name} in {self.location}")
 
-            else: self.latexPlot()
+            # if not self.latex.get():
+            save_name = f"{self.widget.name.get()}.png"
+            save_file = self.location / save_name
+            self.fig.savefig(save_file, dpi=self.widget.dpi_value.get())
+            print(f"File saved: {save_name} in {self.location}")
+            showinfo("Saved", f"File saved: {save_name} in {self.location}")
+            # else: self.latexPlot()
         except: showerror("Error occured", traceback.format_exc(5))
 
-    def latexPlot(self):
+    # def latexPlot(self):
 
-        style_path = pt(__file__).parent / "matplolib_styles/styles/science.mplstyle"
-        with plt.style.context([f"{style_path}"]):
+    #     style_path = pt(__file__).parent / "matplolib_styles/styles/science.mplstyle"
+    #     with plt.style.context([f"{style_path}"]):
 
-            fig, ax0 = plt.subplots()
-            fig2, ax1 = plt.subplots()
-            on = self.resOnFile.name.replace("_", "\_")
-            off = self.resOffFile.name.replace("_", "\_")
-            ax0.set(xlabel="n*t*E (mJ)", ylabel="Counts", title=f"ON:{on}\nOFF:{off}")
-            ax1.set(xlabel="n*t*E (mJ)", ylabel="Relative abundace of active isomer", title="$D(t)=A*(1-e^{-K_{ON}*(ntE)})$")
-            ax0.grid()
+    #         fig, ax0 = plt.subplots()
+    #         fig2, ax1 = plt.subplots()
+    #         on = self.resOnFile.name.replace("_", "\_")
+    #         off = self.resOffFile.name.replace("_", "\_")
+    #         ax0.set(xlabel="n*t*E (mJ)", ylabel="Counts", title=f"ON:{on}\nOFF:{off}")
+    #         ax1.set(xlabel="n*t*E (mJ)", ylabel="Relative abundace of active isomer", title="$D(t)=A*(1-e^{-K_{ON}*(ntE)})$")
+    #         ax0.grid()
 
-            ax1.grid()
+    #         ax1.grid()
 
-            for index, fitY, i in zip(["resOn", "resOff"], [self.fitOn, self.fitOff], [0, 1]):
-                ax0.errorbar(self.power[index], self.counts[index], yerr=self.error[index], fmt=f"C{i}.")
-                ax0.plot(self.fitX, fitY, f"C{i}")
+    #         for index, fitY, i in zip(["resOn", "resOff"], [self.fitOn, self.fitOff], [0, 1]):
+    #             ax0.errorbar(self.power[index], self.counts[index], yerr=self.error[index], fmt=f"C{i}.")
+    #             ax0.plot(self.fitX, fitY, f"C{i}")
 
-            ax1.errorbar(self.power["resOn"], self.depletion_exp, yerr=self.depletion_exp_err, fmt="k.")
-            ax1.plot(self.fitX, self.depletion_fitted)
-            ax1.plot(self.fitX, self.relative_abundance)
-            ax0.legend(labels=["ResON", "ResOFF"], title=f"Mass: {self.mass[0]}u, Res: {self.t_res}V, B0: {self.t_b0}ms")
-            ax1.legend(["Fitted", f"A: {self.uA:.3f}", "Experiment"])
+    #         ax1.errorbar(self.power["resOn"], self.depletion_exp, yerr=self.depletion_exp_err, fmt="k.")
+    #         ax1.plot(self.fitX, self.depletion_fitted)
+    #         ax1.plot(self.fitX, self.relative_abundance)
+    #         ax0.legend(labels=["ResON", "ResOFF"], title=f"Mass: {self.mass[0]}u, Res: {self.t_res}V, B0: {self.t_b0}ms")
+    #         ax1.legend(["Fitted", f"A: {self.uA:.3f}", "Experiment"])
 
-            save_name = f"{self.widget.name.get()}_timescan.png"
-            save_name2 = f"{self.widget.name.get()}_depletion.png"
-            save_file = self.location / save_name
-            save_file2 = self.location / save_name2
+    #         save_name = f"{self.widget.name.get()}_timescan.png"
+    #         save_name2 = f"{self.widget.name.get()}_depletion.png"
+    #         save_file = self.location / save_name
+    #         save_file2 = self.location / save_name2
 
-            fig.savefig(save_file, dpi=self.widget.dpi_value.get()*3)
-            fig2.savefig(save_file2, dpi=self.widget.dpi_value.get()*3)
+    #         fig.savefig(save_file, dpi=self.widget.dpi_value.get()*3)
+    #         fig2.savefig(save_file2, dpi=self.widget.dpi_value.get()*3)
 
-            showinfo("Saved", f"File saved: {save_name} and {save_name2} \nin {self.location}")
+    #         showinfo("Saved", f"File saved: {save_name} and {save_name2} \nin {self.location}")
     
     def get_timescan_data(self):
 

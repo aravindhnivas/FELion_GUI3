@@ -12,6 +12,7 @@ export const updating = writable(false);
 export {plot, subplot} from "./plot"
 
 import "./resizableDiv"
+import "./clickOutside"
 import "../Pages/general/computePy"
 
 
