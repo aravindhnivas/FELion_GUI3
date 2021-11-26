@@ -157,7 +157,12 @@
                     <slot name="plotContainer_reports" />
                 {/if}
                 <div class="report-editor-div" id="{filetype}-plotContainer-report-editor-div">
-                    <Editor location={window.db.get(`${filetype}_location`)} {filetype} id="{filetype}-report-editor" />
+                    <Editor 
+                        location={window.db.get(`${filetype}_location`)} 
+                        {filetype} 
+                        id="{filetype}-report-editor"
+                        mount="#{filetype}-plotContainer-report-editor-div"
+                    />
                 </div>
             </div>
 

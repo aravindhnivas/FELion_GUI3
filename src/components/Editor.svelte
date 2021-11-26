@@ -4,7 +4,8 @@
     export let id = window.getID();
     export let location = ""
     export let filetype = ""
-    export let editor;
+    export let editor="";
+    export let mount=null;
 
     
     async function mountEditor(node) {
@@ -41,9 +42,10 @@
     // let graphWindow;
     function openReport() {
         
-        const mount = document.querySelector(`#${filetype}-plotContainer-report-editor-div`)
+        // const mount = document.querySelector(`#${filetype}-plotContainer-report-editor-div`)
         const graphWindow = new WinBox({
-            root: document.getElementById("pageContainer"), mount,
+            root: document.getElementById("pageContainer"), 
+            mount: document.querySelector(mount),
             title: `Report ${filetype} `,
             x: "center", y: "center",
             width: "70%", height: "70%",
@@ -109,7 +111,7 @@
     
     {#if window.fs.existsSync(reportFile)}
         
-    {@html window.marked(window.fs.readFileSync(reportFile))}
+        {@html window.marked(window.fs.readFileSync(reportFile))}
 
     {:else}
         <h1>{filetype.toUpperCase()} Report</h1>
