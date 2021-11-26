@@ -55,7 +55,7 @@ window.computePy_func = function computePy_func({ e = null, pyfile = "", args = 
                         }
                     })
                     py.stderr.on("data", (err) => { 
-                        error = String.fromCharCode.apply(null, err)
+                        error += String.fromCharCode.apply(null, err)
                         console.log(`Error Ocurred: ${error}`); 
                     })
 
