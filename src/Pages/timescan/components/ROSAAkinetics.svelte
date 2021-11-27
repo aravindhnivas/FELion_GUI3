@@ -66,87 +66,15 @@
         const rateReverseArr = ratekCID.split(",").map(name => name.trim())
 
         let dataToSet = "# Kinetics code\n"
-        let dataToSave = []
 
         /////////////////////////////////////////////////////////////////////////
 
+        if (rateForwardArr.length !== rateReverseArr.length) {
+            dataToSet += "## Defining min-max-value for new slider\n"
+            dataToSet += "```plaintext\nkvalueLimits = {\n\t'label': (min, max, value)\n}\n"
+            dataToSet += "```\n"
 
-        // dataToSet += "## Defining data alias name\n"
-        // dataToSet += "```plaintext\n"
-
-        // dataToSave = massOfReactantsArr.map((mass, index) => {
-        //     return `${nameOfReactantsArr[index].toLowerCase()} = m["${mass}"]["y"]`
-        // })
-
-        // dataToSet += `${dataToSave.join("\n")}\n`
-        // dataToSet += "```\n---\n"
-        /////////////////////////////////////////////////////////////////////////
-        
-        /////////////////////////////////////////////////////////////////////////
-        // dataToSet += "## Defining initial variables and parameters\n"
-
-        // dataToSet += "```plaintext\n"
-        // // dataToSet += `rateForward = ${rateForwardArr}\n`
-        // // dataToSet += `rateReverse = ${rateReverseArr}\n`
-        // dataToSet += `${nameOfReactantsArr.join(", ")}, t = variables("${nameOfReactantsArr.join(", ")}, t")\n`
-        // dataToSet += `${ratek3} = parameters("${ratek3}")\n`
-        // dataToSet += `${ratekCID} = parameters("${ratekCID}")\n`
-        
-        // dataToSet += "```\n---\n"
-        // /////////////////////////////////////////////////////////////////////////
-        
-        
-        // /////////////////////////////////////////////////////////////////////////
-        // dataToSet += "## Initial Condition\n"
-        // dataToSet += "```plaintext\n"
-        // dataToSet += "initial_condition = {\n\tt: 0,\n\t"
-
-        // dataToSave = initialValues.map((value, index) => {
-        //     return `${nameOfReactantsArr[index]} : ${value},`
-
-        // })
-
-        // dataToSet += `${dataToSave.join("\n\t")}`
-
-        // dataToSet += "\n}\n"
-        // dataToSet += "```\n---\n"
-        // /////////////////////////////////////////////////////////////////////////
-
-        // /////////////////////////////////////////////////////////////////////////
-        // dataToSet += "## Defining formation rate equations\n"
-        // dataToSet += "```plaintext\n"
-        
-        // for (let index = 0; index < nameOfReactantsArr.length-1; index++) {
-        //     const currentMolecule = nameOfReactantsArr[index]
-        //     const nextMolecule = nameOfReactantsArr[index+1]
-        //     dataToSet += `${currentMolecule}_f = -(${rateForwardArr[index]} * ${currentMolecule})`
-        //     dataToSet += `+ (${rateReverseArr[index]} * ${nextMolecule})\n`
-        // }
-
-        // dataToSet += "```\n---\n"
-        // /////////////////////////////////////////////////////////////////////////
-
-        // /////////////////////////////////////////////////////////////////////////
-        // dataToSet += "## Defining rate model\n"
-        // dataToSet += "```plaintext\n"
-
-        // dataToSet += `rate_model = {\n\tD(${nameOfReactantsArr.at(0)}, t): ${nameOfReactantsArr.at(0)}_f,\n`
-
-        // for (let index = 1; index < nameOfReactantsArr.length - 1; index++) {
-        //     const currentMolecule = nameOfReactantsArr[index]
-        //     const prevMolecule = nameOfReactantsArr[index-1]
-        //     dataToSet += `\tD(${currentMolecule}, t): ${currentMolecule}_f - ${prevMolecule}_f,\n`
-        // }
-
-        // dataToSet += `\tD(${nameOfReactantsArr.at(-1)}, t): - ${nameOfReactantsArr.at(-2)}_f\n}\n`
-        
-
-        // dataToSet += "ode_model = ODEModel(rate_model, initial=initial_condition)\n"
-        // dataToSet += "```\n---\n"
-        /////////////////////////////////////////////////////////////////////////
-
-
-        /////////////////////////////////////////////////////////////////////////
+        }
         dataToSet += "## Defining ODE model\n"
         dataToSet += "```plaintext\n"
 
@@ -335,19 +263,37 @@
                 })
             ]
 
-            pyEventCounter++;
             await computePy_func({e, pyfile, args, general:true})
         } catch (error) {window.handleError(error);}
-
     }
 
     let pyEventCounter = 0
+    let py, pyProcesses=[];
+
+    const pyEventHandle = (e) => {
     
-    
-    const pyEventClosed = (e) => {
-        pyEventCounter--;
-        const {error_occured_py, dataReceived} = e.detail
-        if(!error_occured_py) {mainPreModal.info(dataReceived)}
+        const events = e.detail
+        py = events.py;
+        console.log(py);
+        pyProcesses = [...pyProcesses, py]
+        pyEventCounter++;
+    }
+
+    const pyEventDataReceivedHandle = (e) => {
+        const {dataReceived} = e.detail
+        console.log(dataReceived)
+    }
+
+    const pyEventClosedHandle = (e) => {
+        pyProcesses = _.difference(pyProcesses, [e.detail.py]);
+        pyEventCounter--
+    }
+
+    const pyKillProcess = () => {
+        const lastInvokedPyProcess = pyProcesses.at(-1);
+        if(lastInvokedPyProcess) {
+            lastInvokedPyProcess.kill(); pyProcesses.pop()
+        }
     }
     
     let defaultInitialValues = true;
@@ -444,7 +390,7 @@
     <svelte:fragment slot="footer_content__slot" >
 
         {#if pyEventCounter}
-        
+            <button class="button is-danger" on:click="{pyKillProcess}" >Stop</button>
             <div>{pyEventCounter} process running</div>
         {/if}
 
@@ -453,8 +399,12 @@
         <button class="button is-link" on:click="{computeParameters}" >Compute parameters</button>
         <button class="button is-link" on:click="{loadConfig}">loadConfig</button>
         <i class="material-icons" on:click="{()=> adjustConfig = true}">settings</i>
-        <button class="button is-link" on:click="{kineticSimulation}" on:pyEventClosed="{pyEventClosed}">Submit</button>
+        <button class="button is-link" 
+            on:click="{kineticSimulation}" 
+            on:pyEvent={pyEventHandle} 
+            on:pyEventClosed="{pyEventClosedHandle}" 
+            on:pyEventData={pyEventDataReceivedHandle}
+        >Submit</button>
     </svelte:fragment>
-
 
 </SeparateWindow>
