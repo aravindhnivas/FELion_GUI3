@@ -219,6 +219,8 @@ fitPlot = []
 plotted=False
 def ChangeYScale(yscale):
     ax.set_yscale(yscale)
+    if yscale == "log":
+        ax.set_ylim(ymin=0.1)
     fig.canvas.draw_idle()
 
 def setNumberDensity(val):
@@ -284,6 +286,8 @@ def plot_exp():
         ax.errorbar(time, counts, error, fmt=".", ms=10, label=key, c=pltColors[counter])
 
     ax = optimizePlot(ax, xlabel="Time (ms)", ylabel="Counts", yscale="log")
+    # if yscale == "log":
+    ax.set_ylim(ymin=0.1)
     # log(f"{temp=}")
     ax.set_title(f"{selectedFile}: @{temp:.1f} K {numberDensity:.2e}"+"$cm^{-3}$")
 
@@ -357,7 +361,11 @@ def make_slider(ax, axcolor):
 
     for label in k3Labels:
 
-        k3SliderAxes = plt.axes([0.65, bottom, width, height], facecolor=axcolor)
+        k3SliderAxes = plt.axes([0.65, bottom, width, height])
+        if counter+1 <= min(len(ratek3), len(ratekCID)):
+            k3SliderAxes.patch.set_facecolor(f"C{counter+1}")
+            k3SliderAxes.patch.set_alpha(0.7)
+
 
         valmin = -33
         valmax = -25
@@ -380,13 +388,16 @@ def make_slider(ax, axcolor):
         k3Sliders[label] = _k3Slider
         bottom -= height*1.2
 
-        if keyFoundForRate:
-            counter += 1
+        # if keyFoundForRate:
+        counter += 1
     bottom -= height*2
 
     counter = 0
     for label in kCIDLabels:
-        kCIDSliderAxes = plt.axes([0.65, bottom, width, height], facecolor=axcolor)
+        kCIDSliderAxes = plt.axes([0.65, bottom, width, height])
+        if counter+1 <= min(len(ratek3), len(ratekCID)):
+            kCIDSliderAxes.patch.set_facecolor(f"C{counter+1}")
+            kCIDSliderAxes.patch.set_alpha(0.7)
 
         valmin = -20
         valmax = -10
@@ -407,8 +418,8 @@ def make_slider(ax, axcolor):
 
 
         bottom -= height*1.2
-        if keyFoundForRate:
-            counter += 1
+        # if keyFoundForRate:
+        counter += 1
     return k3Sliders, kCIDSliders
 
 if __name__ == "__main__":

@@ -1,15 +1,15 @@
 
 <script>
-    import {mainPreModal} from "../../../svelteWritable.js";
+
+    import { tick } from "svelte"
+    import Textfield from '@smui/textfield'
     import CustomSwitch from "$components/CustomSwitch.svelte"
     import CustomSelect from "$components/CustomSelect.svelte"
-    import Textfield from '@smui/textfield'
     import ModalTable from '$components/ModalTable.svelte'
-
-    // import CustomSelect from "$components/CustomSelect.svelte"
-    import { tick } from "svelte";
+    import PyButton from "$components/PyButton.svelte"
     import SeparateWindow from "$components/SeparateWindow.svelte"
     import Editor from "$components/Editor.svelte"
+    import computeKineticCode from "../functions/computeKineticCode"
 
     export let fileChecked=[], currentLocation="", kineticMode=true, kineticData={};
     let fileCollections = []
@@ -54,63 +54,6 @@
         }
 
         // computeKineticCode()
-    }
-
-    function computeKineticCode() {
-
-        if(!massOfReactants) return window.createToast("No data available", "danger")
-
-        // const massOfReactantsArr = massOfReactants.split(", ")
-        const nameOfReactantsArr = nameOfReactants.split(",").map(name => name.trim())
-        const rateForwardArr = ratek3.split(",").map(name => name.trim())
-        const rateReverseArr = ratekCID.split(",").map(name => name.trim())
-
-        let dataToSet = "# Kinetics code\n"
-
-        /////////////////////////////////////////////////////////////////////////
-
-        if (rateForwardArr.length !== rateReverseArr.length) {
-            dataToSet += "## Defining min-max-value for new slider\n"
-            dataToSet += "```plaintext\nkvalueLimits = {\n\t'label': (min, max, value)\n}\n"
-            dataToSet += "```\n"
-
-        }
-        dataToSet += "## Defining ODE model\n"
-        dataToSet += "```plaintext\n"
-
-        dataToSet += "def compute_attachment_process(t, N):\n\n"
-        dataToSet += "\tk3, kCID = rateCoefficientArgs\n\n"
-        dataToSet += `\t${rateForwardArr.join(", ")}${rateForwardArr.length == 1 ? "," : ""} = k3\n`
-        dataToSet += `\t${rateReverseArr.join(", ")}${rateReverseArr.length == 1 ? "," : ""} = kCID\n\n`
-
-        dataToSet += `\t${nameOfReactantsArr.join(", ")} = N\n\n`
-        
-        for (let index = 0; index < nameOfReactantsArr.length-1; index++) {
-        
-            const currentMolecule = nameOfReactantsArr[index]
-            const nextMolecule = nameOfReactantsArr[index+1]
-            dataToSet += `\t${currentMolecule}_f = -(${rateForwardArr[index]} * numberDensity**2 * ${currentMolecule})`
-            dataToSet += `+ (${rateReverseArr[index]} * numberDensity * ${nextMolecule})\n`
-        
-        }
-
-        dataToSet += `\n\tdNdT = [\n\t\t${nameOfReactantsArr.at(0)}_f,\n`
-        for (let index = 1; index < nameOfReactantsArr.length - 1; index++) {
-            const currentMolecule = nameOfReactantsArr[index]
-            const prevMolecule = nameOfReactantsArr[index-1]
-            dataToSet += `\t\t${currentMolecule}_f - ${prevMolecule}_f,\n`
-        }
-
-        dataToSet += `\t\t- ${nameOfReactantsArr.at(-2)}_f\n\t]\n\n`
-
-        dataToSet += `\treturn dNdT\n`
-
-        dataToSet += "```\n---\n"
-
-        /////////////////////////////////////////////////////////////////////////
-        dataToSet += "\n\n"
-        editor.setData(dataToSet)
-    
     }
 
     let masses;
@@ -267,34 +210,8 @@
         } catch (error) {window.handleError(error);}
     }
 
-    let pyEventCounter = 0
-    let py, pyProcesses=[];
+    let pyProcesses=[];
 
-    const pyEventHandle = (e) => {
-    
-        const events = e.detail
-        py = events.py;
-        console.log(py);
-        pyProcesses = [...pyProcesses, py]
-        pyEventCounter++;
-    }
-
-    const pyEventDataReceivedHandle = (e) => {
-        const {dataReceived} = e.detail
-        console.log(dataReceived)
-    }
-
-    const pyEventClosedHandle = (e) => {
-        pyProcesses = _.difference(pyProcesses, [e.detail.py]);
-        pyEventCounter--
-    }
-
-    const pyKillProcess = () => {
-        const lastInvokedPyProcess = pyProcesses.at(-1);
-        if(lastInvokedPyProcess) {
-            lastInvokedPyProcess.kill(); pyProcesses.pop()
-        }
-    }
     
     let defaultInitialValues = true;
     let initialValues = ""
@@ -378,9 +295,15 @@
                     bind:savefilename={kineticEditorFilename}
                     bind:location={kineticEditorLocation}
                 >
+
                     <svelte:fragment slot="btn-row">
-                        <button class="button is-warning" on:click={computeKineticCode}>compute</button>
-                    </svelte:fragment>  
+                        <button class="button is-warning" 
+                            on:click={()=>{
+                                if(!massOfReactants) return window.createToast("No data available", "danger")
+                                const dataToSet = computeKineticCode({nameOfReactants, ratek3, ratekCID})
+                                if(dataToSet) {editor?.setData(dataToSet)}
+                            }}>compute</button>
+                    </svelte:fragment> 
                 </Editor>
             </div>
         </div>
@@ -389,9 +312,11 @@
 
     <svelte:fragment slot="footer_content__slot" >
 
-        {#if pyEventCounter}
-            <button class="button is-danger" on:click="{pyKillProcess}" >Stop</button>
-            <div>{pyEventCounter} process running</div>
+        {#if pyProcesses.length}
+            <button class="button is-danger" 
+                on:click="{()=>{pyProcesses.at(-1).kill(); pyProcesses.pop()}}"
+            >Stop</button>
+            <!-- <div>{pyProcesses.length} process running</div> -->
         {/if}
 
         <Textfield bind:value={pyfile} label="pyfile" />
@@ -399,12 +324,8 @@
         <button class="button is-link" on:click="{computeParameters}" >Compute parameters</button>
         <button class="button is-link" on:click="{loadConfig}">loadConfig</button>
         <i class="material-icons" on:click="{()=> adjustConfig = true}">settings</i>
-        <button class="button is-link" 
-            on:click="{kineticSimulation}" 
-            on:pyEvent={pyEventHandle} 
-            on:pyEventClosed="{pyEventClosedHandle}" 
-            on:pyEventData={pyEventDataReceivedHandle}
-        >Submit</button>
+        <PyButton on:click={kineticSimulation} bind:pyProcesses showLoading={true}/>
+        
     </svelte:fragment>
 
 </SeparateWindow>

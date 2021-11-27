@@ -20,6 +20,7 @@
     "concurrently": "^6.3.0",
     "electron": "^16.0.1",
     "electron-builder": "^22.13.1",
+    "ldbutton": "^1.0.2",
     "postcss": "^8.3.6",
     "rollup": "^2.55.1",
     "rollup-plugin-livereload": "^2.0.5",

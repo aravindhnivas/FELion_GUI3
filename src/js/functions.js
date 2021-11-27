@@ -21,7 +21,11 @@ import "../Pages/general/computePy"
 
 window.createToast = (msg, type = "primary") => Toast.create({ message: msg, position: "is-top", type: `is-${type}` })
 window.sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-window.handleError = (error) => mainPreModal.error(error.stack || error )
+window.handleError = (error) => {
+    console.error(error)
+    mainPreModal.error(error.stack || error )
+    return
+}
 
 window.onerror = function (message, source, lineno, colno, error) {
     const modalContent =  `${error.name}: ${message}\nsource: ${source}\nlineno: ${lineno}\tcolno: ${colno}`
