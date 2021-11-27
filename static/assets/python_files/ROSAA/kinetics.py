@@ -261,7 +261,6 @@ def plot_exp():
 
     ax = optimizePlot(ax, xlabel="Time (ms)", ylabel="Counts", yscale="log")
     # log(f"{temp=}")
-
     ax.set_title(f"{selectedFile}: @{temp:.1f} K {numberDensity:.2e}"+"$cm^{-3}$")
 
     rateCoefficientArgs=(ratek3, ratekCID)

@@ -72,7 +72,10 @@
         display: flex;
         gap: 1em;
         justify-content: flex-end;
+        align-items: center;
+
     }
+    
 </style>
 
 <div {id} class="main_content__div" class:hide={!active}>

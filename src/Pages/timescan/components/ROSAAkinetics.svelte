@@ -6,7 +6,7 @@
     import Textfield from '@smui/textfield'
     import ModalTable from '$components/ModalTable.svelte'
 
-    import {Icon} from '@smui/icon-button';
+    // import CustomSelect from "$components/CustomSelect.svelte"
     import { tick } from "svelte";
     import SeparateWindow from "$components/SeparateWindow.svelte"
     import Editor from "$components/Editor.svelte"
@@ -83,68 +83,103 @@
         /////////////////////////////////////////////////////////////////////////
         
         /////////////////////////////////////////////////////////////////////////
-        dataToSet += "## Defining initial variables and parameters\n"
+        // dataToSet += "## Defining initial variables and parameters\n"
 
-        dataToSet += "```plaintext\n"
-        // dataToSet += `rateForward = ${rateForwardArr}\n`
-        // dataToSet += `rateReverse = ${rateReverseArr}\n`
-        dataToSet += `${nameOfReactantsArr.join(", ")}, t = variables("${nameOfReactantsArr.join(", ")}, t")\n`
-        dataToSet += `${ratek3} = parameters("${ratek3}")\n`
-        dataToSet += `${ratekCID} = parameters("${ratekCID}")\n`
+        // dataToSet += "```plaintext\n"
+        // // dataToSet += `rateForward = ${rateForwardArr}\n`
+        // // dataToSet += `rateReverse = ${rateReverseArr}\n`
+        // dataToSet += `${nameOfReactantsArr.join(", ")}, t = variables("${nameOfReactantsArr.join(", ")}, t")\n`
+        // dataToSet += `${ratek3} = parameters("${ratek3}")\n`
+        // dataToSet += `${ratekCID} = parameters("${ratekCID}")\n`
         
-        dataToSet += "```\n---\n"
-        /////////////////////////////////////////////////////////////////////////
+        // dataToSet += "```\n---\n"
+        // /////////////////////////////////////////////////////////////////////////
         
         
+        // /////////////////////////////////////////////////////////////////////////
+        // dataToSet += "## Initial Condition\n"
+        // dataToSet += "```plaintext\n"
+        // dataToSet += "initial_condition = {\n\tt: 0,\n\t"
+
+        // dataToSave = initialValues.map((value, index) => {
+        //     return `${nameOfReactantsArr[index]} : ${value},`
+
+        // })
+
+        // dataToSet += `${dataToSave.join("\n\t")}`
+
+        // dataToSet += "\n}\n"
+        // dataToSet += "```\n---\n"
+        // /////////////////////////////////////////////////////////////////////////
+
+        // /////////////////////////////////////////////////////////////////////////
+        // dataToSet += "## Defining formation rate equations\n"
+        // dataToSet += "```plaintext\n"
+        
+        // for (let index = 0; index < nameOfReactantsArr.length-1; index++) {
+        //     const currentMolecule = nameOfReactantsArr[index]
+        //     const nextMolecule = nameOfReactantsArr[index+1]
+        //     dataToSet += `${currentMolecule}_f = -(${rateForwardArr[index]} * ${currentMolecule})`
+        //     dataToSet += `+ (${rateReverseArr[index]} * ${nextMolecule})\n`
+        // }
+
+        // dataToSet += "```\n---\n"
+        // /////////////////////////////////////////////////////////////////////////
+
+        // /////////////////////////////////////////////////////////////////////////
+        // dataToSet += "## Defining rate model\n"
+        // dataToSet += "```plaintext\n"
+
+        // dataToSet += `rate_model = {\n\tD(${nameOfReactantsArr.at(0)}, t): ${nameOfReactantsArr.at(0)}_f,\n`
+
+        // for (let index = 1; index < nameOfReactantsArr.length - 1; index++) {
+        //     const currentMolecule = nameOfReactantsArr[index]
+        //     const prevMolecule = nameOfReactantsArr[index-1]
+        //     dataToSet += `\tD(${currentMolecule}, t): ${currentMolecule}_f - ${prevMolecule}_f,\n`
+        // }
+
+        // dataToSet += `\tD(${nameOfReactantsArr.at(-1)}, t): - ${nameOfReactantsArr.at(-2)}_f\n}\n`
+        
+
+        // dataToSet += "ode_model = ODEModel(rate_model, initial=initial_condition)\n"
+        // dataToSet += "```\n---\n"
         /////////////////////////////////////////////////////////////////////////
-        dataToSet += "## Initial Condition\n"
+
+
+        /////////////////////////////////////////////////////////////////////////
+        dataToSet += "## Defining ODE model\n"
         dataToSet += "```plaintext\n"
-        dataToSet += "initial_condition = {\n\tt: 0,\n\t"
 
-        dataToSave = initialValues.map((value, index) => {
-            return `${nameOfReactantsArr[index]} : ${value},`
+        dataToSet += "def compute_attachment_process(t, N):\n\n"
+        dataToSet += "\tk3, kCID = rateCoefficientArgs\n\n"
+        dataToSet += `\t${rateForwardArr.join(", ")}${rateForwardArr.length == 1 ? "," : ""} = k3\n`
+        dataToSet += `\t${rateReverseArr.join(", ")}${rateReverseArr.length == 1 ? "," : ""} = kCID\n\n`
 
-        })
-
-        dataToSet += `${dataToSave.join("\n\t")}`
-
-        dataToSet += "\n}\n"
-        dataToSet += "```\n---\n"
-        /////////////////////////////////////////////////////////////////////////
-
-        /////////////////////////////////////////////////////////////////////////
-        dataToSet += "## Defining formation rate equations\n"
-        dataToSet += "```plaintext\n"
+        dataToSet += `\t${nameOfReactantsArr.join(", ")} = N\n\n`
         
         for (let index = 0; index < nameOfReactantsArr.length-1; index++) {
+        
             const currentMolecule = nameOfReactantsArr[index]
             const nextMolecule = nameOfReactantsArr[index+1]
-            dataToSet += `${currentMolecule}_f = -(${rateForwardArr[index]} * ${currentMolecule})`
-            dataToSet += `+ (${rateReverseArr[index]} * ${nextMolecule})\n`
+            dataToSet += `\t${currentMolecule}_f = -(${rateForwardArr[index]} * numberDensity**2 * ${currentMolecule})`
+            dataToSet += `+ (${rateReverseArr[index]} * numberDensity * ${nextMolecule})\n`
+        
         }
 
-        dataToSet += "```\n---\n"
-        /////////////////////////////////////////////////////////////////////////
-
-        /////////////////////////////////////////////////////////////////////////
-        dataToSet += "## Defining rate model\n"
-        dataToSet += "```plaintext\n"
-
-        dataToSet += `rate_model = {\n\tD(${nameOfReactantsArr.at(0)}, t): ${nameOfReactantsArr.at(0)}_f,\n`
-
-        for (let index = 1; index < nameOfReactantsArr.length - 2; index++) {
+        dataToSet += `\n\tdNdT = [\n\t\t${nameOfReactantsArr.at(0)}_f,\n`
+        for (let index = 1; index < nameOfReactantsArr.length - 1; index++) {
             const currentMolecule = nameOfReactantsArr[index]
             const prevMolecule = nameOfReactantsArr[index-1]
-            dataToSet += `\tD(${currentMolecule}, t): ${currentMolecule}_f - ${prevMolecule}_f,\n`
+            dataToSet += `\t\t${currentMolecule}_f - ${prevMolecule}_f,\n`
         }
 
-        dataToSet += `\tD(${nameOfReactantsArr.at(-1)}, t): - ${nameOfReactantsArr.at(-2)}_f\n}\n`
-        
+        dataToSet += `\t\t- ${nameOfReactantsArr.at(-2)}_f\n\t]\n\n`
 
-        dataToSet += "ode_model = ODEModel(rate_model, initial=initial_condition)\n"
+        dataToSet += `\treturn dNdT\n`
+
         dataToSet += "```\n---\n"
-        /////////////////////////////////////////////////////////////////////////
 
+        /////////////////////////////////////////////////////////////////////////
         dataToSet += "\n\n"
         editor.setData(dataToSet)
     
@@ -275,14 +310,17 @@
         } catch (error) {window.handleError(error)}
     }
 
+    let pyfile = "ROSAA/kineticsCode.py"
+
+    
     async function kineticSimulation(e) {
         try {
 
             if(!selectedFile) return createToast("Select a file", "danger")
             if(Object.keys(kineticData).length === 0) return createToast("No data available", "danger")
 
-            // const pyfile = "ROSAA/kinetics.py"
-            const pyfile = "kineticCode.py"
+            // const pyfile = "ROSAA/kineticsCode.py"
+            // const pyfile = "kineticCode.py"
             const nameOfReactantsArray = nameOfReactants.split(",").map(m=>m.trim())
             const data = {}
 
@@ -404,12 +442,17 @@
     </svelte:fragment>
 
     <svelte:fragment slot="footer_content__slot" >
+
         {#if pyEventCounter}
-            <div class="subtitle">{pyEventCounter} process running</div>
+        
+            <div>{pyEventCounter} process running</div>
         {/if}
+
+        <Textfield bind:value={pyfile} label="pyfile" />
+        
         <button class="button is-link" on:click="{computeParameters}" >Compute parameters</button>
         <button class="button is-link" on:click="{loadConfig}">loadConfig</button>
-        <Icon class="material-icons" on:click="{()=> adjustConfig = true}">settings</Icon>
+        <i class="material-icons" on:click="{()=> adjustConfig = true}">settings</i>
         <button class="button is-link" on:click="{kineticSimulation}" on:pyEventClosed="{pyEventClosed}">Submit</button>
     </svelte:fragment>
 
