@@ -18,7 +18,7 @@ from FELion_constants import pltColors
 from msgbox import MsgBox, MB_ICONERROR, MB_ICONINFORMATION
 
 
-from functools import reduce
+# from functools import reduce
 def log(msg): print(msg, flush=True)
 
 class Sliderlog(Slider):
@@ -77,7 +77,7 @@ def fitODE(t, *args):
     global rateCoefficientArgs
     tspan = [0, t.max()*1.2]
     
-    rateCoefficientArgs=(args[:len(ratek3)], args[len(ratekCID):])
+    rateCoefficientArgs=(args[:len(ratek3)], args[len(ratek3):])
 
     dNdt = solve_ivp(compute_attachment_process, tspan, initialValues, dense_output=True)
     dNdtSol = dNdt.sol(t)
@@ -87,10 +87,10 @@ tspan = None
 simulateTime = None
 
 compute_attachment_process = None
-
+kvalueLimits = {}
 
 def KineticMain():
-    global initialValues, tspan, simulateTime, compute_attachment_process
+    global initialValues, tspan, simulateTime, compute_attachment_process, kvalueLimits
 
     duration = expTime.max()*1.2
     tspan = [0, duration]
@@ -102,31 +102,40 @@ def KineticMain():
     codeOutput = codeToRun(codeContents)
 
     compute_attachment_process = codeOutput["compute_attachment_process"]
+    if "kvalueLimits" in codeOutput:
+        kvalueLimits = codeOutput["kvalueLimits"]
+        print(f"{kvalueLimits=}", flush=True)
     plot_exp()
 
     return
+
 def formatArray(arr, precision=2):
     return [np.format_float_scientific(value, precision=precision) for value in arr]
+
 k_err = []
+
 def fitfunc(event=None):
+
     global k_err
-    p0 = [*[10**rate.val for rate in k3Sliders], *[10**rate.val for rate in kCIDSliders]]
+
+    p0 = [*[10**rate.val for rate in k3Sliders.values()], *[10**rate.val for rate in kCIDSliders.values()]]
+
     log(f"{p0=}")
 
     if checkboxes["setbound"]:
         ratio = 0.1
         bounds=(
             [
-                *[np.format_float_scientific(10**(rate.val-ratio), precision=2) for rate in k3Sliders], 
-                *[np.format_float_scientific(10**(rate.val-ratio), precision=2) for rate in kCIDSliders]
+                *[np.format_float_scientific(10**(rate.val-ratio), precision=2) for rate in k3Sliders.values()], 
+                *[np.format_float_scientific(10**(rate.val-ratio), precision=2) for rate in kCIDSliders.values()]
             ],
             [
-                *[np.format_float_scientific(10**(rate.val+ratio), precision=2) for rate in k3Sliders],
-                *[np.format_float_scientific(10**(rate.val+ratio), precision=2) for rate in kCIDSliders]
+                *[np.format_float_scientific(10**(rate.val+ratio), precision=2) for rate in k3Sliders.values()],
+                *[np.format_float_scientific(10**(rate.val+ratio), precision=2) for rate in kCIDSliders.values()]
             ]
         )
     else:
-        bounds=([*[1e-33]*len(k3Sliders), *[1e-17]*len(k3Sliders)], [*[1e-29]*len(k3Sliders), *[1e-14]*len(k3Sliders)])
+        bounds=([*[1e-33]*len(ratek3), *[1e-17]*len(ratekCID)], [*[1e-29]*len(ratek3), *[1e-14]*len(ratekCID)])
     
     log(f"{bounds=}")
 
@@ -140,10 +149,10 @@ def fitfunc(event=None):
         log(f"{k_fit=}\n{k_err=}")
         log("fitted")
         
-        for counter0, _k3 in enumerate(k3Sliders):
-            _k3.set_val(np.log10(k_fit[:totalAttachmentLevels][counter0]))
-        for counter1, _kCID in enumerate(kCIDSliders):
-            _kCID.set_val(np.log10(k_fit[totalAttachmentLevels:][counter1]))
+        for counter0, _k3 in enumerate(k3Sliders.values()):
+            _k3.set_val(np.log10(k_fit[:len(ratek3)][counter0]))
+        for counter1, _kCID in enumerate(kCIDSliders.values()):
+            _kCID.set_val(np.log10(k_fit[len(ratek3):][counter1]))
 
         
         # saveData(None, k_fit, k_err)
@@ -180,10 +189,10 @@ def saveData(event, k_fit=None):
             if event:
                 k_fit = [formatArray(rateCoefficientArgs[0]), formatArray(rateCoefficientArgs[1])]
             else:
-                k_fit = [formatArray(k_fit[:totalAttachmentLevels]), formatArray(k_fit[totalAttachmentLevels:])]
+                k_fit = [formatArray(k_fit[:len(ratek3)]), formatArray(k_fit[len(ratek3):])]
 
             if len(k_err)>0:
-                k_err_format = [formatArray(k_err[:totalAttachmentLevels]), formatArray(k_err[totalAttachmentLevels:])]
+                k_err_format = [formatArray(k_err[:len(ratek3)]), formatArray(k_err[len(ratek3):])]
             else: k_err_format = None
 
             dataToSave[selectedFile] = {
@@ -231,11 +240,13 @@ def checkboxesFunc(label):
     fig.canvas.draw_idle()
 
 def plot_exp():
+
     global data, fig, ax, k3Sliders, kCIDSliders, rateCoefficientArgs
 
     fig, ax = plt.subplots(figsize=(12, 6))
 
     plt.subplots_adjust(right=0.6, top=0.95, left=0.09, bottom=0.25)
+    
     axcolor = 'lightgoldenrodyellow'
     k3Sliders, kCIDSliders = make_slider(ax, axcolor)
     left, bottom, width, height = 0.1, 0.05, 0.1, 0.05
@@ -306,6 +317,8 @@ def plot_exp():
     plt.show()
     
 rateCoefficientArgs = ()
+
+
 def updateFitData():
 
     dNdt = solve_ivp(compute_attachment_process, tspan, initialValues, dense_output=True)
@@ -316,60 +329,96 @@ def updateFitData():
     fig.canvas.draw_idle()
 
 def update(val=None):
-
     global rateCoefficientArgs
 
-    rateCoefficientArgs=([10**rate.val for rate in k3Sliders], [10**rate.val for rate in kCIDSliders])
+    rateCoefficientArgs=(
+
+        [10**rate.val for rate in k3Sliders.values()], 
+        [10**rate.val for rate in kCIDSliders.values()]
+    )
+
     updateFitData()
 
-k3Sliders = []
-kCIDSliders = []
+k3Sliders = {}
+kCIDSliders = {}
 
 def make_slider(ax, axcolor):
+
     global k3Sliders, kCIDSliders
 
     ax.margins(x=0)
     
-
     height = 0.03
     width = 0.25
     bottom = 0.9
 
+
     counter = 0
 
     for label in k3Labels:
+
         k3SliderAxes = plt.axes([0.65, bottom, width, height], facecolor=axcolor)
-        _k3Slider = Sliderlog( ax=k3SliderAxes, label=label, valmin=-33, valmax=-25, valinit=np.log10(ratek3[counter]), valstep=1e-4, valfmt="%.2e")
+
+        valmin = -33
+        valmax = -25
+        valstep = 1e-4
+        
+        
+        if label in kvalueLimits:
+            valmin, valmax, valinit = kvalueLimits[label]
+        else:
+            valinit=np.log10(ratek3[counter])
+
+        print(valmin, valmax, valinit, flush=True)
+        _k3Slider = Sliderlog( 
+            ax=k3SliderAxes, label=label, 
+            valmin=valmin, valmax=valmax, valinit=valinit, valstep=valstep, valfmt="%.2e",
+        )
+
         _k3Slider.on_changed(update)
-        k3Sliders.append(_k3Slider)
+        # k3Sliders.append(_k3Slider)
+        k3Sliders[label] = _k3Slider
         bottom -= height*1.2
+
         if keyFoundForRate:
             counter += 1
-
     bottom -= height*2
 
     counter = 0
     for label in kCIDLabels:
-
         kCIDSliderAxes = plt.axes([0.65, bottom, width, height], facecolor=axcolor)
-        _kCIDSlider = Sliderlog( ax=kCIDSliderAxes, label=label, valmin=-20, valmax=-10, valinit=np.log10(ratekCID[counter]), valstep=1e-4, valfmt="%.2e")
-        _kCIDSlider.on_changed(update)
 
-        kCIDSliders.append(_kCIDSlider)
+        valmin = -20
+        valmax = -10
+        valstep = 1e-4
+        
+        if label in kvalueLimits:
+            valmin, valmax, valinit = kvalueLimits[label]
+        else:
+            valinit=np.log10(ratekCID[counter])
+
+        _kCIDSlider = Sliderlog(
+            ax=kCIDSliderAxes, label=label, 
+            valmin=valmin, valmax=valmax, valinit=valinit, valstep=valstep, valfmt="%.2e",
+        )
+
+        _kCIDSlider.on_changed(update)
+        kCIDSliders[label] = _kCIDSlider
+
+
         bottom -= height*1.2
         if keyFoundForRate:
             counter += 1
     return k3Sliders, kCIDSliders
 
 if __name__ == "__main__":
+
     args = json.loads(sys.argv[1])
-    log(f"{args=}")
+    # log(f"{args=}")
 
     currentLocation = pt(args["currentLocation"])
     data = args["data"]
-
     nameOfReactants = args["nameOfReactantsArray"]
-
     expTime = np.array(data[nameOfReactants[0]]["x"], dtype=float)*1e-3 # ms --> s
     expData = np.array([data[name]["y"] for name in nameOfReactants], dtype=float)
     expDataError = np.array([data[name]["error_y"]["array"] for name in nameOfReactants], dtype=float)
@@ -387,32 +436,38 @@ if __name__ == "__main__":
     if "," in args["ratek3"]:
         k3Labels = [i.strip() for i in args["ratek3"].split(",")]
         kCIDLabels = [i.strip() for i in args["ratekCID"].split(",")]
+
     else:
         k3Labels = [args["ratek3"].strip()]
         kCIDLabels = [args["ratekCID"].strip()]
+
+
     totalAttachmentLevels = len(initialValues)-1
-
-    log(f"{k3Labels=}\n{totalAttachmentLevels=}")
-
     savedir = currentLocation/"OUT"
     savefile = savedir/"k_fit.json"
     keyFoundForRate = False
+
     if savefile.exists():
         with open(savefile, "r") as f:
-            k_fit_json = json.load(f)
 
+            k_fit_json = json.load(f)
             print(k_fit_json, flush=True)
+
             keyFound = selectedFile in k_fit_json
             print(f"{keyFound=}", flush=True)
+
             if keyFound:
                 k_fit_values = k_fit_json[selectedFile]["k_fit"]
+
                 ratek3 = np.asarray(k_fit_values[0], dtype=float)
                 ratekCID = np.asarray(k_fit_values[1], dtype=float)
                 keyFoundForRate = True
 
     if not keyFoundForRate:
+
         ratek3 = [float(args["k3Guess"]) for _ in k3Labels]
         ratekCID = [float(args["kCIDGuess"]) for _ in kCIDLabels]
 
-    print(f"{keyFoundForRate=}\n{ratek3=}", flush=True)
+    print(f"{keyFoundForRate=}\n{k3Labels=}", flush=True)
     KineticMain()
+    
