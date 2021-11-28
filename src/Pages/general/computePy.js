@@ -1,5 +1,5 @@
 
-import { pythonpath, pythonscript, get } from "../settings/svelteWritables";
+import { pythonpath, pythonscript, get, pyVersion } from "../settings/svelteWritables";
 
 const dispatchEvent = (e, detail, eventName) => {
     const pyEventClosed = new CustomEvent(eventName,  { bubbles: false, detail })
@@ -18,10 +18,9 @@ window.computePy_func = async (
         } = {}
     ) => {
 
-    
-    const [_, error] = await exec(`${get(pythonpath)} -V`)
-    if(error) {
-        window.handleError(error)
+    if(!get(pyVersion)) {
+        const error = "Python is not valid. Fix it in Settings --> Configuration"
+        // window.handleError(error)
         return Promise.reject(error)
     }
 
@@ -58,7 +57,7 @@ window.computePy_func = async (
 
             py.on("close", () => {
                 dispatchEvent(e, { py, pyfile, dataReceived, error }, "pyEventClosed")
-                loginfo.end()
+                
                 if(!error) {
                     
                     if(general) {
@@ -68,13 +67,13 @@ window.computePy_func = async (
                         console.table(dataFromPython)
                         resolve(dataFromPython)
                     }
-                } else { reject(error) }
-                
+                } else { reject(error); loginfo.write(`\n\n[ERROR OCCURED]\n${error}\n`) }
+                loginfo.end()
                 target?.classList.toggle("is-loading")
                 console.info("Process closed")
             })
 
-            py.stderr.on("data", (err) => { 
+            py.stderr.on("data", (err) => {
                 error += String.fromCharCode.apply(null, err)
                 dispatchEvent(e, { py, pyfile, dataReceived }, "pyEventData")
             })
