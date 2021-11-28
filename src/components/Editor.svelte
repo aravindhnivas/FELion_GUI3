@@ -197,13 +197,13 @@
                     <Textfield on:dblclick={()=>{changeWidget=true}} bind:value={savefilename} label="report name" style="min-width: 70%;"/>
 
                 {/if}
-
-                <i class="material-icons animated faster" 
-                    on:animationend={({target})=>target.classList.remove("rotateIn")} 
-                    on:click="{updateFiles}">
-                    refresh
-                </i>
             </div>
+
+            <i class="material-icons animated faster" 
+                on:animationend={({target})=>target.classList.remove("rotateIn")} 
+                on:click="{updateFiles}">
+                refresh
+            </i>
         </div>
     
         <div class="btn-row">
