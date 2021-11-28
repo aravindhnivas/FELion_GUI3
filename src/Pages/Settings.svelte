@@ -24,10 +24,10 @@
         setTimeout(async ()=>{
             await tick()
 
-            const [{stdout}, error] = await exec(`${$pythonpath} -V`)
+            const [data, error] = await exec(`${get(pythonpath)} -V`)
             if(error) return pythonpathCheck.open(error)
             
-            $pyVersion = stdout.trim(); console.log("Python path is valid")
+            $pyVersion = data.stdout.trim(); console.log("Python path is valid")
 
         } , 1000)
     })
