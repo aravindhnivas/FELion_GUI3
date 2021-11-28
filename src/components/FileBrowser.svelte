@@ -1,50 +1,35 @@
 
 <script>
-    // import {mainPreModal} from "../svelteWritable";
-    // import IconButton, {Icon} from '@smui/icon-button';
-
     import { slide } from 'svelte/transition';
-    import FormField from '@smui/form-field';
-    import Switch from '@smui/switch';
-
+    import CustomSwitch from '$components/CustomSwitch.svelte';
     import Textfield from '@smui/textfield';
     import {tick} from "svelte";
     import {onMount, afterUpdate} from "svelte"
-    import CustomIconSwitch from './CustomIconSwitch.svelte';
-
-    import VirtualCheckList from './VirtualCheckList.svelte';
+    import CustomIconSwitch from '$components/CustomIconSwitch.svelte';
+    import VirtualCheckList from '$components/VirtualCheckList.svelte';
     import { createEventDispatcher } from 'svelte';
-    
     ///////////////////////////////////////////////////////////////////////////
-    
-
     export let fileChecked = [],  currentLocation = "", filetype = "*.*", fullfileslist = [], markedFile = "";
 
     const dispatch = createEventDispatcher();
 
     let fullfiles = []
-
-    // $: fullfileslist
     function dispatch_chdir_event() { dispatch('chdir', { action: "chdir", filetype, currentLocation }) }
 
     let original_location = currentLocation
     let otherfolders = [], selectAll=false, showfiles = true, original_files = [];
+    
     $: locationStatus = fs.existsSync(currentLocation)
-
     $: parentFolder = locationStatus ? basename(currentLocation) : "Undefined"
 
     let searchKey = "";
-    
     const searchfile = () => {
-
         console.log(searchKey)
         if (!searchKey) {fullfiles = original_files}
         else {fullfiles = original_files.filter(file=>file.name.includes(searchKey))}
-
     }
 
     let files_loaded = false
-    
     function getfiles(toast=false, keepfiles=false) {
     
         if (!locationStatus) {return window.createToast("Location undefined", "danger")}
@@ -77,6 +62,7 @@
             if (toast) { window.createToast("Files updated"); }
         } catch (error) {
             console.log(error)
+
             window.handleError(error)
             return 
         }
@@ -85,22 +71,19 @@
     let sortFile = false
     $: sortFile ? fullfiles = fullfiles.sort((a,b)=>a.name>b.name?1:-1) : fullfiles = fullfiles.sort((a,b)=>a.name<b.name?1:-1)
 
+
     const changeDirectory = (goto) => { currentLocation = pathResolve(currentLocation, goto); getfiles() }
-
     onMount(()=> {if(locationStatus) {getfiles(); console.log("onMount Updating location for ", filetype)}} )
-    afterUpdate(() => {
-        
-        if (original_location !== currentLocation && locationStatus) {
 
+    afterUpdate(() => {
+        if (original_location !== currentLocation && locationStatus) {
             getfiles(true); console.log("Updating location for ", filetype)
         }
-
     });
 
     async function selectRange(event) {
         await tick();
         if (event.shiftKey && fileChecked.length) {
-            
             const _from = fullfileslist.indexOf(fileChecked.at(0))
             const _to = fullfileslist.indexOf(fileChecked.at(-1))
             if (_from < _to) {fileChecked = fullfileslist.slice(_from, _to+1)}
@@ -108,43 +91,24 @@
         }
 
 	}
-
-    // let markedFile = ""
-
 </script>
 
-<style>
-    .folderfile-list {max-height: calc(100vh - 20em); overflow-y: auto;}
-    .align {display: flex; align-items: center;}
-    .center {justify-content: center;}
-    .browseIcons {cursor: pointer;}
-</style>
-
-
-<div class="align center browseIcons">
+<div class="align h-center">
     <i class="material-icons" on:click="{()=>changeDirectory("..")}">arrow_back</i>
     <i class="material-icons animated faster" 
         on:animationend={({target})=>target.classList.remove("rotateIn")} 
         on:click="{({target})=>{target.classList.add("rotateIn"); getfiles(true, true)}}">refresh</i>
     <CustomIconSwitch bind:toggler={sortFile} icons={["trending_up", "trending_down"]}/>
-
 </div>
 
-<Textfield on:keyup={searchfile} style="margin-bottom:1em; width:100%; " bind:value={searchKey} label="Seach" />
-<div class="align center">
-    <FormField>
-    
-        <Switch bind:checked={selectAll} on:change="{()=>selectAll ? fileChecked = fullfiles.map(file=>file=file.name) : fileChecked = []}"/>
-        <span slot="label">Select All</span>
-    </FormField>
-</div>
+<Textfield on:keyup={searchfile} bind:value={searchKey} label="Search {filetype} files" />
+<CustomSwitch  bind:selected={selectAll} label="Select All" 
+    on:change="{()=>selectAll ? fileChecked = fullfiles.map(file=>file=file.name) : fileChecked = []}" />
 
-
-<div class="folderfile-list" id="{filetype}_filebrowser">
+<div id="{filetype}_filebrowser" style="width: 100%; overflow-y:auto;">
     <div class="align folderlist" >
-        <i class="material-icons" on>keyboard_arrow_down</i>
         <i class="material-icons" >keyboard_arrow_right</i>
-        <div class="mdc-typography--subtitle1">{parentFolder}</div>
+        <div>{parentFolder}</div>
     </div>
 
     {#if files_loaded && locationStatus}
@@ -157,12 +121,12 @@
 
             </div>
         {:else if fullfiles.length <= 0}
-            <div class="mdc-typography--subtitle1 align center">No {filetype} here!</div>        
+            <div >No {filetype} here!</div>        
         {/if}
         
-        <div class="otherFolderlist" style="cursor:pointer">
+        <div style="cursor:pointer">
             {#each otherfolders as folder (folder.id)}
-                <div class="align" on:click="{()=>changeDirectory(folder.name)}" transition:slide|local>
+                <div class="align" on:click="{()=>changeDirectory(folder.name)}" transition:slide|local >
                     <i class="material-icons">keyboard_arrow_right</i>
                     <div class="mdc-typography--subtitle1">{folder.name}</div>
                 </div>
@@ -170,7 +134,7 @@
         </div>
 
     {:else if !locationStatus}
-        <div class="mdc-typography--subtitle1 align center">Location doesn't exist: Browse files again</div>
+        <div >Location doesn't exist: Browse files again</div>
     {:else}
         <div class="mdc-typography--subtitle1 align center">...loading</div>
     {/if}
