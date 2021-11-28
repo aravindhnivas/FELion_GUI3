@@ -1,24 +1,14 @@
 
 import { pythonpath, pythonscript, get } from "../settings/svelteWritables";
 
-window.checkPython = function checkPython({ defaultPy } = {}) {
-
-    if (!defaultPy) { defaultPy = get(pythonpath) }
-    console.log("Python path checking \n", defaultPy)
-    
-    return execFile(`${defaultPy}`, ["-V"])
-
-}
-
-
 const dispatchEvent = (e, detail, eventName) => {
     const pyEventClosed = new CustomEvent(eventName,  { bubbles: false, detail })
+
     e?.target.dispatchEvent(pyEventClosed)
     console.info(eventName + " dispatched")
-
 }
 
-window.computePy_func = (
+window.computePy_func = async (
         { 
             e = null,
             pyfile = "",
@@ -27,18 +17,24 @@ window.computePy_func = (
             openShell = false 
         } = {}
     ) => {
+
+    
+    const [_, error] = await exec(`${get(pythonpath)} -V`)
+    if(error) {
+        window.handleError(error)
+        return Promise.reject(error)
+    }
+
+    let target;
+    if (!general) {
+        target = e.target
+        target.classList.toggle("is-loading")
+    }
     
     return new Promise(async (resolve, reject) => {
 
-        let target;
-        if (!general) {
-            target = e.target
-            target.classList.toggle("is-loading")
-        }
 
         try {
-            
-            await checkPython()
             console.info("Sending general arguments: ", args)
             window.createToast("Process Started")
 
@@ -48,6 +44,13 @@ window.computePy_func = (
                 { detached: general, shell: openShell }
             )
 
+            const dataFile = basename(pyfile).split(".")[0]
+            const outputFile = pathJoin(appInfo.temp, "FELion_GUI3", dataFile + "_data.json")
+            if(fs.existsSync(outputFile)) fs.removeSync(outputFile)
+
+            const logFile = pathJoin(appInfo.temp, "FELion_GUI3", dataFile + "_data.log")
+            const loginfo = fs.createWriteStream(logFile)
+
             dispatchEvent(e, { py, pyfile }, "pyEvent")
             
             let error = ""
@@ -55,33 +58,29 @@ window.computePy_func = (
 
             py.on("close", () => {
                 dispatchEvent(e, { py, pyfile, dataReceived, error }, "pyEventClosed")
+                loginfo.end()
                 if(!error) {
                     
                     if(general) {
                         resolve(dataReceived)
                     } else {
-                        const dataFile = basename(pyfile).split(".")[0]
-                        const outputFile = pathJoin(appInfo.temp, "FELion_GUI3", dataFile + "_data.json")
                         const dataFromPython = fs.readJsonSync(outputFile)
                         console.table(dataFromPython)
                         resolve(dataFromPython)
                     }
-                }
-
-                if(target) {
-                    target.classList.toggle("is-loading")
-                    console.info("Process closed")
-                }
+                } else { reject(error) }
                 
+                target?.classList.toggle("is-loading")
+                console.info("Process closed")
             })
 
             py.stderr.on("data", (err) => { 
                 error += String.fromCharCode.apply(null, err)
-                // console.log(`Error Ocurred: ${error}`); 
                 dispatchEvent(e, { py, pyfile, dataReceived }, "pyEventData")
             })
 
             py.stdout.on("data", (data) => {
+                loginfo.write(data)
                 dataReceived += `${String.fromCharCode.apply(null, data)}\n`
                 console.log(`Output from python: ${dataReceived}`)
                 dispatchEvent(e, { py, pyfile, dataReceived }, "pyEventData")
@@ -96,6 +95,7 @@ window.computePy_func = (
         } catch (error) {
             reject(error)
             window.handleError(error)
+            target?.classList.toggle("is-loading")
         }
     })
 

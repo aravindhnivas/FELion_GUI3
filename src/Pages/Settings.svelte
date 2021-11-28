@@ -23,9 +23,12 @@
     onMount(()=>{
         setTimeout(async ()=>{
             await tick()
-            checkPython()
-                .then(({stdout})=>{ $pyVersion = stdout.trim(); console.log("Python path is valid")})
-                .catch(pythonpathCheck.open)
+
+            const [{stdout}, error] = await exec(`${$pythonpath} -V`)
+            if(error) return pythonpathCheck.open(error)
+            
+            $pyVersion = stdout.trim(); console.log("Python path is valid")
+
         } , 1000)
     })
     
