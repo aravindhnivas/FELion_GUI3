@@ -20,7 +20,6 @@ window.computePy_func = async (
 
     if(!get(pyVersion)) {
         const error = "Python is not valid. Fix it in Settings --> Configuration"
-        // window.handleError(error)
         return Promise.reject(error)
     }
 
@@ -29,10 +28,7 @@ window.computePy_func = async (
         target = e.target
         target.classList.toggle("is-loading")
     }
-    
     return new Promise(async (resolve, reject) => {
-
-
         try {
             console.info("Sending general arguments: ", args)
             window.createToast("Process Started")
