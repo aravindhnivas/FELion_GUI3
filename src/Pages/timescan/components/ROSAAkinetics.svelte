@@ -299,7 +299,7 @@
                 >
 
                     <svelte:fragment slot="btn-row">
-                        <CustomSelect bind:picked={pyfile} label="computeFunction" options={["scipy", "sympy"]}  />
+                        <!-- <CustomSelect bind:picked={pyfile} label="computeFunction" options={["scipy", "sympy"]}  /> -->
                         <button class="button is-warning" 
                             on:click={()=>{
                                 if(!massOfReactants) return window.createToast("No data available", "danger")
@@ -330,7 +330,6 @@
         <button class="button is-link" on:click="{loadConfig}">loadConfig</button>
         <i class="material-icons" on:click="{()=> adjustConfig = true}">settings</i>
         <PyButton on:click={kineticSimulation} bind:pyProcesses showLoading={true}/>
-        
     </svelte:fragment>
 
 </SeparateWindow>
