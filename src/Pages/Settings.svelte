@@ -20,16 +20,12 @@
     let selected = db.get("settingsActiveTab") || "Update"
     const navigate = (e) => {selected = e.target.innerHTML; db.set("settingsActiveTab", selected);}
     let pythonpathCheck;
-    onMount(()=>{
-        setTimeout(async ()=>{
-            await tick()
-
-            const [data, error] = await exec(`${get(pythonpath)} -V`)
-            if(error) return pythonpathCheck.open(error)
-            
-            $pyVersion = data.stdout.trim(); console.log("Python path is valid")
-
-        } , 1000)
+    onMount(async ()=>{
+        const [data, error] = await exec(`${$pythonpath} -V`)
+        if(error) return pythonpathCheck.open(error)
+        
+        $pyVersion = data.stdout.trim()
+        console.log("Python path is valid")
     })
     
     const handlepythonPathCheck = () => { console.log("Python path checking done") }
