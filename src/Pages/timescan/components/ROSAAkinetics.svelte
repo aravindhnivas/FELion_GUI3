@@ -52,8 +52,6 @@
             ratekCID += `, kCID${index}`
             nameOfReactants += `, ${molecule}${tag}${index}`
         }
-
-        // computeKineticCode()
     }
 
     let masses;
@@ -180,7 +178,10 @@
 
         } catch (error) {window.handleError(error)}
     }
-    let pyfile = "sympy"
+
+    
+    let pyfile = "ROSAA/kineticsCode"
+    // let pyfile = "sympy"
 
     const kineticCodeFunction = {
         scipy: {fn: computeKineticCodeScipy, pyfile: "ROSAA/kineticsCode"}, 
@@ -206,28 +207,25 @@
                     data, selectedFile, temp, currentLocation, nameOfReactantsArray, ratek3, ratekCID, numberDensity, k3Guess, kCIDGuess, initialValues, kineticEditorLocation, kineticEditorFilename: kineticEditorFilename+".md"
                 })
             ]
+            await computePy_func({e, pyfile:pyfile+".py", args, general:true})
 
-            await computePy_func({e, pyfile:kineticCodeFunction[pyfile]?.pyfile+".py", args, general:true})
         } catch (error) {window.handleError(error);}
         
     }
 
     let pyProcesses=[];
-
-    
     let defaultInitialValues = true;
     let initialValues = ""
+
     let adjustConfig = false;
     let configArray = []
-    
     let configKeys = ["filename", "srgMode", "pbefore", "pafter", "calibrationFactor", "temp"]
+    
     let editor;
     let kineticEditorFiletype = "kinetics"
-
     let kineticEditorLocation = db.get(`${kineticEditorFiletype}-report-md`) || ""
     let kineticEditorFilename = "report"
-
-    $: computeKineticCode = kineticCodeFunction[pyfile]?.fn;
+    // $: computeKineticCode = kineticCodeFunction[pyfile]?.fn;
     
 </script>
 
@@ -306,8 +304,8 @@
                             on:click={()=>{
                                 if(!massOfReactants) return window.createToast("No data available", "danger")
                                 
-                                // const dataToSet = computeKineticCodeScipy({initialValues, nameOfReactants, ratek3, ratekCID})
-                                const dataToSet = computeKineticCode({initialValues, nameOfReactants, ratek3, ratekCID})
+                                const dataToSet = computeKineticCodeScipy({initialValues, nameOfReactants, ratek3, ratekCID})
+                                // const dataToSet = computeKineticCode({initialValues, nameOfReactants, ratek3, ratekCID})
                                 if(dataToSet) {editor?.setData(dataToSet)}
                             }}>compute</button>
                     </svelte:fragment> 
