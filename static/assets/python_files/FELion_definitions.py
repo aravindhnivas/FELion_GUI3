@@ -74,15 +74,12 @@ def read_dat_file(filename, norm_method):
     
     return xs, ys
 
+save_location = pt(os.getenv("TEMP")) / "FELion_GUI3"
+if not save_location.exists(): os.mkdir(save_location)
+
 def sendData(dataToSend):
-
     calling_file = pt(inspect.stack()[-1].filename).stem
-    
-    save_location = pt(os.getenv("TEMP")) / "FELion_GUI3"
-
-    if not save_location.exists(): os.mkdir(save_location)
     with open(save_location / f"{calling_file}_data.json", 'w+') as f:
-        
         data = json.dumps(dataToSend, sort_keys=True, indent=4, separators=(',', ': '))
         f.write(data)
 
@@ -122,7 +119,6 @@ def convert_intesities(felixlocation, output_filename, wn, inten, norm_method):
 
     return [relative_depletion.nominal_value, relative_depletion.std_dev], [log_intensity.nominal_value, log_intensity.std_dev], [log_hv_intensity.nominal_value, log_hv_intensity.std_dev]
 
-
 def readCodeFromFile(filename):
     info = []
     codeToRun = ""
@@ -142,17 +138,6 @@ def readCodeFromFile(filename):
             codeToRun += line
 
     return codeToRun
-
-def codeToRun(code):
-    exec(code)
-    return locals()
-    
-
-def runCodeFromMarkedDownFile(filename):
-    codeToRun = readCodeFromFile(filename)
-    finalCodeOutput = codeToRun(codeToRun)
-    return finalCodeOutput
-
 
 def profile_func(func):
 
@@ -187,6 +172,7 @@ def profile_func(func):
     return profiled_func
 
 try:
+
     from line_profiler import LineProfiler
     print("LineProfiler imported")
 
@@ -210,8 +196,11 @@ try:
                     frm = inspect.stack()[1]
                     mod = inspect.getmodule(frm[0])
                     filename = pt(mod.__file__)
-                    filelocation = filename.parent
-                    with open(filelocation/f"{filename.stem}_{func.__name__}.lprof", "w+") as f: f.write(output)
+                    # filelocation = filename.parent
+                    # with open(save_location / f"{calling_file}_data.json", 'w+') as f:
+                    print(f"{save_location=}")
+                    with open(save_location/f"{filename.stem}_{func.__name__}.lprof", "w+") as f:
+                        f.write(output)
 
         return profiled_line
 
