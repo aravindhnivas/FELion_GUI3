@@ -14,6 +14,7 @@ from scipy.integrate import solve_ivp
 main_module_loc = str(pt(__file__).joinpath("../../"))
 sys.path.insert(0, main_module_loc)
 from FELion_constants import pltColors
+from FELion_definitions import readCodeFromFile, profile_line
 
 from msgbox import MsgBox, MB_ICONERROR, MB_ICONINFORMATION
 
@@ -46,26 +47,6 @@ class Sliderlog(Slider):
             return
         for cid, func in self.observers.items():
                 func(10**val)
-
-def readCodeFromFile(filename):
-    info = []
-    codeToRun = ""
-    start = False
-
-    with open(filename, "r") as f:
-        info = f.readlines()
-
-    for line in info:
-        if "```plaintext" in line:
-            start = True
-            continue
-        if line == "```" or line == "```\n":
-            start = False
-            continue
-        if start:
-            codeToRun += line
-
-    return codeToRun
 
 def codeToRun(code):
     exec(code)
@@ -105,8 +86,10 @@ def KineticMain():
     if "kvalueLimits" in codeOutput:
         kvalueLimits = codeOutput["kvalueLimits"]
         print(f"{kvalueLimits=}", flush=True)
+    
+    # plot_exp_fn = profile_line(plot_exp)
+    # plot_exp_fn()
     plot_exp()
-
     return
 
 def formatArray(arr, precision=2):
@@ -318,30 +301,30 @@ def plot_exp():
 
     except Exception as error:
         log(error)
-    plt.show()
+    # plt.show()
     
 rateCoefficientArgs = ()
 
+def update(val=None):
 
-def updateFitData():
-
+    global rateCoefficientArgs
+    
+    rateCoefficientArgs=(
+    
+        [10**rate.val for rate in k3Sliders.values()], 
+        [10**rate.val for rate in kCIDSliders.values()]
+    )
+    
     dNdt = solve_ivp(compute_attachment_process, tspan, initialValues, dense_output=True)
 
     dNdtSol = dNdt.sol(simulateTime)
     for line, data in zip(fitPlot, dNdtSol):
         line.set_ydata(data)
+    
     fig.canvas.draw_idle()
 
-def update(val=None):
-    global rateCoefficientArgs
 
-    rateCoefficientArgs=(
-
-        [10**rate.val for rate in k3Sliders.values()], 
-        [10**rate.val for rate in kCIDSliders.values()]
-    )
-
-    updateFitData()
+# update = profile_line(fitData)
 
 k3Sliders = {}
 kCIDSliders = {}
@@ -475,10 +458,12 @@ if __name__ == "__main__":
                 keyFoundForRate = True
 
     if not keyFoundForRate:
-
         ratek3 = [float(args["k3Guess"]) for _ in k3Labels]
         ratekCID = [float(args["kCIDGuess"]) for _ in kCIDLabels]
-
     print(f"{keyFoundForRate=}\n{k3Labels=}", flush=True)
-    KineticMain()
+
     
+    # KineticMain = profile_line(KineticMain)
+    KineticMain()
+    # plt.show(block=False)
+    plt.show()

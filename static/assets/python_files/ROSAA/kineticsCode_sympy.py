@@ -9,37 +9,17 @@ from optimizePlot import optimizePlot
 from pathlib import Path as pt
 # from FELion_definitions import readCodeFromFile
 from symfit import variables, Parameter, ODEModel, D, Fit, parameters, Variable
-from FELion_constants import pltColors
 
-import scipy as scp
-print(scp.__version__)
-def codeToRun(code):
+
+main_module_loc = str(pt(__file__).joinpath("../../"))
+sys.path.insert(0, main_module_loc)
+from FELion_constants import pltColors
+from FELion_definitions import readCodeFromFile, profile_line
+def runCode(code):
     exec(code)
     return locals()
 
-
-
 def logmsg(msg): print(msg, flush=True)
-
-def readCodeFromFile(filename):
-    info = []
-    codeToRun = ""
-    start = False
-
-    with open(filename, "r") as f:
-        info = f.readlines()
-
-    for line in info:
-        if "```plaintext" in line:
-            start = True
-            continue
-        if line == "```" or line == "```\n":
-            start = False
-            continue
-        if start:
-            codeToRun += line
-
-    return codeToRun
 class Sliderlog(Slider):
 
     """Logarithmic slider.
@@ -81,15 +61,18 @@ def KineticMain():
     location = pt(args["kineticEditorLocation"])
     filename = pt(location) / args["kineticEditorFilename"]
     codeContents = readCodeFromFile(filename)
-    codeOutput = codeToRun(codeContents)
+    codeOutput = runCode(codeContents)
+    # codeOutput = runCodeFromMarkedDownFile(filename)
+    logmsg(f"{codeOutput=}")
     ode_model = codeOutput["ode_model"]
 
-
-    # print(codeOutput, flush=True)
     pp.pprint(f"{ode_model=}\n{type(ode_model)=}")
     pp.pprint(f"{ode_model.model_dict=}")
     
-    plot_exp()
+    plot_exp_fn = profile_line(plot_exp)
+    plot_exp_fn()
+    # plot_exp()
+
     return
 
 fig, ax = None, None
@@ -195,18 +178,9 @@ def plot_exp():
 
     # except Exception as error:
     #     logmsg(error)
-    plt.show()
-
+    # plt.show()
 
 rateCoefficientArgs = {}
-# def updateFitData():
-
-#     # dNdt = solve_ivp(compute_attachment_process, tspan, initialValues, dense_output=True)
-
-#     # dNdtSol = dNdt.sol(simulateTime)
-#     for line, data in zip(fitPlot, dNdtSol):
-#         line.set_ydata(data)
-#     fig.canvas.draw_idle()
 
 def update(val=None):
     global rateCoefficientArgs
@@ -223,10 +197,8 @@ def update(val=None):
     for line, data in zip(fitPlot, dNdtSol):
         line.set_ydata(data)
     fig.canvas.draw_idle()
-
-
-    # rateCoefficientArgs=()
-    # updateFitData()
+    
+# update = profile_line(fitData)
 
 k3Sliders = []
 kCIDSliders = []
@@ -316,14 +288,13 @@ if __name__ == "__main__":
         k3Labels = [i.strip() for i in args["ratek3"].split(",")]
         kCIDLabels = [i.strip() for i in args["ratekCID"].split(",")]
     else:
-    
         k3Labels = [args["ratek3"].strip()]
         kCIDLabels = [args["ratekCID"].strip()]
     
     ratek3 = [float(args["k3Guess"]) for _ in k3Labels]
     ratekCID = [float(args["kCIDGuess"]) for _ in kCIDLabels]
     
-    # totalAttachmentLevels = len(initialValues)-1
-    # logmsg(f"{k3Labels=}\n{totalAttachmentLevels=}")
-
+    # KineticMain = profile_line(KineticMain)
     KineticMain()
+    # plt.show(block=False)
+    plt.show()

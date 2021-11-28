@@ -9,7 +9,7 @@
     import PyButton from "$components/PyButton.svelte"
     import SeparateWindow from "$components/SeparateWindow.svelte"
     import Editor from "$components/Editor.svelte"
-    import computeKineticCode from "../functions/computeKineticCode"
+    import {computeKineticCodeScipy, computeKineticCodeSympy} from "../functions/computeKineticCode"
 
     export let fileChecked=[], currentLocation="", kineticMode=true, kineticData={};
     let fileCollections = []
@@ -180,18 +180,19 @@
 
         } catch (error) {window.handleError(error)}
     }
+    let pyfile = "sympy"
 
-    let pyfile = "ROSAA/kineticsCode.py"
-
-    
+    const kineticCodeFunction = {
+        scipy: {fn: computeKineticCodeScipy, pyfile: "ROSAA/kineticsCode"}, 
+        sympy: {fn: computeKineticCodeSympy, pyfile: "ROSAA/kineticsCode_sympy"}
+    }
     async function kineticSimulation(e) {
         try {
 
             if(!selectedFile) return createToast("Select a file", "danger")
             if(Object.keys(kineticData).length === 0) return createToast("No data available", "danger")
 
-            // const pyfile = "ROSAA/kineticsCode.py"
-            // const pyfile = "kineticCode.py"
+
             const nameOfReactantsArray = nameOfReactants.split(",").map(m=>m.trim())
             const data = {}
 
@@ -206,8 +207,9 @@
                 })
             ]
 
-            await computePy_func({e, pyfile, args, general:true})
+            await computePy_func({e, pyfile:kineticCodeFunction[pyfile]?.pyfile+".py", args, general:true})
         } catch (error) {window.handleError(error);}
+        
     }
 
     let pyProcesses=[];
@@ -219,12 +221,14 @@
     let configArray = []
     
     let configKeys = ["filename", "srgMode", "pbefore", "pafter", "calibrationFactor", "temp"]
-
     let editor;
-
     let kineticEditorFiletype = "kinetics"
+
     let kineticEditorLocation = db.get(`${kineticEditorFiletype}-report-md`) || ""
     let kineticEditorFilename = "report"
+
+    $: computeKineticCode = kineticCodeFunction[pyfile]?.fn;
+    
 </script>
 
 <style lang="scss">
@@ -297,10 +301,13 @@
                 >
 
                     <svelte:fragment slot="btn-row">
+                        <CustomSelect bind:picked={pyfile} label="computeFunction" options={["scipy", "sympy"]}  />
                         <button class="button is-warning" 
                             on:click={()=>{
                                 if(!massOfReactants) return window.createToast("No data available", "danger")
-                                const dataToSet = computeKineticCode({nameOfReactants, ratek3, ratekCID})
+                                
+                                // const dataToSet = computeKineticCodeScipy({initialValues, nameOfReactants, ratek3, ratekCID})
+                                const dataToSet = computeKineticCode({initialValues, nameOfReactants, ratek3, ratekCID})
                                 if(dataToSet) {editor?.setData(dataToSet)}
                             }}>compute</button>
                     </svelte:fragment> 
