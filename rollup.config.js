@@ -12,20 +12,24 @@ import alias from '@rollup/plugin-alias';
 import nodePolyfills from 'rollup-plugin-polyfill-node';
 
 import path from "path";
+
 const production = !process.env.ROLLUP_WATCH;
+const PKG_DIR = path.resolve("./packages/")
+const RENDERER_DIR = path.join(PKG_DIR, "renderer")
+
 
 export default {
 
-	input: 'src/App.js',
+	input: path.join(RENDERER_DIR, "src/App.js"),
+	output: [ { sourcemap: true, format: 'iife', name: 'app', file: path.join(RENDERER_DIR, 'static/bundle.js') } ],
 
-	output: [ { sourcemap: true, format: 'iife', name: 'app', file: 'static/bundle.js' } ],
 	plugins: [
 		nodePolyfills(),
 		alias({
 			entries: [
-				{ find: '$src', replacement: path.resolve('./src') },
-				{ find: '$static', replacement: path.resolve('./static') },
-				{ find: '$components', replacement: path.resolve('./src/components') }
+				{ find: '$src', replacement: path.join(RENDERER_DIR, "src") },
+				{ find: '$static', replacement: path.join(RENDERER_DIR, 'static') },
+				{ find: '$components', replacement: path.join(RENDERER_DIR, 'src/components') }
 			]
 		}),
 		svelte({
@@ -37,7 +41,7 @@ export default {
 
 		commonjs(),
 
-		!production && livereload('static'),
+		!production && livereload(path.join(RENDERER_DIR, 'static')),
 
 		production && terser(),
 		postcss({
@@ -45,12 +49,13 @@ export default {
 
 			minimize: true,
 			sourceMap: true,
-			use: [ ['sass', { includePaths: ['./src/theme', './node_modules'] }] ]
+			use: [ ['sass', { includePaths: ['./packages/renderer/src/theme', './node_modules'] }] ]
 		}),
 		json(), yaml()
 
 	],
 	watch: { clearScreen: false },
-	external: ['electron']
+
+	external: ['electron', 'electron-updater']
 
 };
