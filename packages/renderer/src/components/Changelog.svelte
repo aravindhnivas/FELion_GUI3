@@ -3,7 +3,7 @@
     import {windowLoaded, activateChangelog, updateAvailable, newVersion, updating} from "../js/functions";
     import Modal from "./Modal.svelte";
     import { beforeUpdate} from "svelte";
-    import marked from "marked";
+    // import marked from "marked";
     import { fade } from 'svelte/transition';
     let changelogContent = fs.readFileSync(pathJoin(ROOT_DIR, "CHANGELOG.md"))
     
@@ -65,9 +65,9 @@
         <div slot="content" transition:fade style="user-select:text;">
             {#if $updateAvailable && window.changelogNewContent}
 
-                {@html marked(window.changelogNewContent)}
+                {@html window.marked(window.changelogNewContent)}
             {:else}
-                {@html marked(changelogContent)}
+                {@html window.marked(changelogContent)}
             {/if}
         
         </div>
