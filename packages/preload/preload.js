@@ -11,19 +11,9 @@ window.ROOT_DIR = path.join(__dirname, "../../")
 window.PKG_DIR = path.join(ROOT_DIR, "packages")
 window.RENDERER_DIR = path.join(PKG_DIR, "renderer")
 
-window.staticDirectory = path.join(RENDERER_DIR, "static")
+window.publicDirectory = path.join(RENDERER_DIR, "public")
 
 console.log({ROOT_DIR})
-require('source-map-support').install({
-
-    environment: 'browser',
-    retrieveSourceMap: function() {
-        return {
-            url: path.join(staticDirectory, "bundle.js"),
-            map: fs.readFileSync(path.join(staticDirectory, "bundle.js.map"), 'utf8')
-        };
-    }
-});
 
 window.addEventListener('contextmenu', (e) => {
     e.preventDefault()
@@ -37,7 +27,7 @@ contextBridge.exposeInMainWorld("appInfo", appInfo)
 
 fs.ensureDirSync(path.join(appInfo.userData, "config"))
 
-contextBridge.exposeInMainWorld("__dirname", staticDirectory)
+contextBridge.exposeInMainWorld("__dirname", publicDirectory)
 contextBridge.exposeInMainWorld("ROOT_DIR", ROOT_DIR)
 
 ipcRenderer.on('update-log', (_, info) => console.info(info))

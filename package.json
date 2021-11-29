@@ -65,11 +65,11 @@
     ],
     "asarUnpack": [
       "./python3/",
-      "./static/assets/python_files"
+      "./public/assets/python_files"
     ],
     "win": {
       "target": "nsis",
-      "icon": "./static/assets/logo/win/icon.ico",
+      "icon": "./public/assets/logo/win/icon.ico",
       "asar": true
     },
     "nsis": {

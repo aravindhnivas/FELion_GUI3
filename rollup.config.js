@@ -21,14 +21,14 @@ const RENDERER_DIR = path.join(PKG_DIR, "renderer")
 export default {
 
 	input: path.join(RENDERER_DIR, "src/App.js"),
-	output: [ { sourcemap: true, format: 'iife', name: 'app', file: path.join(RENDERER_DIR, 'static/bundle.js') } ],
+	output: [ { sourcemap: true, format: 'iife', name: 'app', file: path.join(RENDERER_DIR, 'public/build/bundle.js') } ],
 
 	plugins: [
 		nodePolyfills(),
 		alias({
 			entries: [
 				{ find: '$src', replacement: path.join(RENDERER_DIR, "src") },
-				{ find: '$static', replacement: path.join(RENDERER_DIR, 'static') },
+				{ find: '$public', replacement: path.join(RENDERER_DIR, 'public') },
 				{ find: '$components', replacement: path.join(RENDERER_DIR, 'src/components') }
 			]
 		}),
@@ -41,7 +41,7 @@ export default {
 
 		commonjs(),
 
-		!production && livereload(path.join(RENDERER_DIR, 'static')),
+		!production && livereload(path.join(RENDERER_DIR, 'public')),
 
 		production && terser(),
 		postcss({

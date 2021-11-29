@@ -1,5 +1,5 @@
 <script>
-    import ClassicEditor from '$static/assets/js/ckeditor5';
+    import ClassicEditor from '$public/assets/js/ckeditor5';
     import {browse} from '$components/Layout.svelte';
     import Textfield from '@smui/textfield';
     import CustomSelect from "$components/CustomSelect.svelte"

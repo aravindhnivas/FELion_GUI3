@@ -7,21 +7,19 @@ const RENDERER_DIR = path.join(PKG_DIR, "renderer")
 console.log({__dirname, ROOT_DIR, PKG_DIR, RENDERER_DIR})
 
 function createWindow() {
-  let icon = path.join(RENDERER_DIR, "static/assets/logo/win/icon.ico")
+  let icon = path.join(RENDERER_DIR, "public/assets/logo/win/icon.ico")
   const mainWindow = new BrowserWindow({
     width: 1200, height: 700, frame: true, icon,
+
     webPreferences: { preload: path.join(PKG_DIR, 'preload/preload.js'), nodeIntegration: true }
   });
-
-  mainWindow.loadFile(path.join(RENDERER_DIR, 'static/index.html'));
-  
+  mainWindow.loadFile(path.join(RENDERER_DIR, 'index.html'));
 
   require("./Menu")
   require("./dialogs")
   require("./autoupdate")
   mainWindow.webContents.openDevTools(true)
 }
-
 
 app.whenReady().then(() => {
   createWindow()

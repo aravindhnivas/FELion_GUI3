@@ -1,7 +1,7 @@
 
 const { contextBridge, ipcRenderer } = require('electron')
 const path = require("path")
-const JSONdb = require(path.join(staticDirectory, "assets/js/JSONdb"))
+const JSONdb = require(path.join(publicDirectory, "assets/js/JSONdb"))
 
 const makeJSONdb = (file_location) => {
     const db = new JSONdb(file_location)
