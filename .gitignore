@@ -8,3 +8,4 @@ python3/
 **/output.log
 .env
 **/*.zip
+**/src/Pages/**/config.json
