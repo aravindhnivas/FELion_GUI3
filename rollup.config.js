@@ -49,7 +49,7 @@ export default {
 
 			minimize: true,
 			sourceMap: true,
-			use: [ ['sass', { includePaths: ['./packages/renderer/src/theme', './node_modules'] }] ]
+			use: [ ['sass', { includePaths: ['./node_modules'] }] ]
 		}),
 		json(), yaml()
 

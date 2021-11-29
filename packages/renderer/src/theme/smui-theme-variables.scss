@@ -1,0 +1,111 @@
+
+// Variables
+$white: #fafafa;
+$light: #f5f5f5b8;
+$dark: #333;
+$mainColor:#fafafa;
+$secondaryColor: #6a50ad;
+
+$hoverBackground: #634e96;
+:root {
+  --mdc-theme-primary: $mainColor;
+  --mdc-theme-secondary: $secondaryColor;
+  --mdc-theme-background: $light;
+
+}
+// Textfield
+.mdc-text-field:hover {
+  border-color: #fafafa;
+}
+.mdc-text-field--focused:not(.mdc-text-field--disabled),
+.mdc-text-field:not(.mdc-text-field--disabled) .mdc-floating-label {
+  color: $white;
+}
+
+span.mdc-floating-label.mdc-floating-label--float-above {
+
+  top: 27px;
+}
+
+.mdc-text-field--outlined {height: 40px;}
+
+label.mdc-text-field.mdc-text-field--outlined.mdc-text-field--textarea {
+  height: 100%;
+}
+
+.mdc-text-field--outlined:not(.mdc-text-field--disabled)  {
+  .mdc-notched-outline__leading, .mdc-notched-outline__notch, .mdc-notched-outline__trailing {
+    border-color: $white;
+  }
+}
+//  Hover
+.mdc-text-field--outlined:not(.mdc-text-field--disabled):not(.mdc-text-field--focused):hover .mdc-notched-outline {
+   .mdc-notched-outline__leading, .mdc-notched-outline__notch, .mdc-notched-outline__trailing {
+    border-color: $white;
+  }
+}
+
+.smui-text-field--standard:not(.mdc-text-field--disabled):hover .mdc-line-ripple:before {
+  border-bottom-color: $white;
+}
+
+
+//
+
+.smui-text-field--standard:not(.mdc-text-field--disabled) .mdc-line-ripple:before {
+  border-bottom-color: $white;
+}
+
+.mdc-list-item{height: 2em;}
+
+
+// Tab
+
+.mdc-tab .mdc-tab__text-label {
+
+  color: $white;
+}
+
+span.mdc-tab__ripple:hover {
+  background: $hoverBackground;
+}
+
+
+// Radio button
+.mdc-radio .mdc-radio__native-control:enabled:not(:checked)+.mdc-radio__background .mdc-radio__outer-circle {
+  border-color: white;
+
+}
+
+
+// Select option
+
+.mdc-select:not(.mdc-select--disabled).mdc-select--focused .mdc-floating-label,
+.mdc-select:not(.mdc-select--disabled) .mdc-floating-label {
+  color: white;
+}
+
+// arrow color
+.mdc-select:not(.mdc-select--disabled).mdc-select--focused .mdc-select__dropdown-icon, 
+.mdc-select:not(.mdc-select--disabled) .mdc-select__dropdown-icon {
+  fill: $white;
+
+}
+
+// border color
+.smui-select--standard:not(.mdc-select--disabled) .mdc-line-ripple:before,
+.smui-select--standard:not(.mdc-select--disabled):hover .mdc-line-ripple:before {
+  border-bottom-color: white;
+}
+
+// Options text color
+
+li.mdc-deprecated-list-item.mdc-ripple-upgraded {
+  color: black;
+
+}
+// Selected text
+.mdc-select:not(.mdc-select--disabled) .mdc-select__selected-text {
+
+  color: white;
+}

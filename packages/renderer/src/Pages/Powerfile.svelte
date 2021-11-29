@@ -2,7 +2,7 @@
 <script>
     // import {mainPreModal} from "../svelteWritable";
     import Textfield from '@smui/textfield'
-    import HelperText from '@smui/textfield/helper-text/index';
+    import HelperText from '@smui/textfield/helper-text';
     import Checkbox from '@smui/checkbox';
     import FormField from '@smui/form-field';
     import {browse} from "../components/Layout.svelte";
@@ -135,9 +135,20 @@
         </div>
 
         <div class="power_value__container">
-            <Textfield textarea bind:value={powerfileContent} label="Powerfile contents" input$aria-controls="powercontent_help" input$aria-describedby="powercontent_help"/>
 
-            <HelperText id="powercontent_help">Enter powerfile measured for {filename}.felix file (wavenumber power-in mJ)</HelperText>
+
+            <Textfield textarea 
+                bind:value={powerfileContent} 
+                label="Powerfile contents" input$aria-controls="powercontent_help"
+                input$aria-describedby="powercontent_help">
+
+                <HelperText id="powercontent_help" slot="helper">
+                    Enter powerfile measured for {filename}.felix file (wavenumber power-in mJ)
+                </HelperText>
+
+            </Textfield>
+
+            
             <button class="button is-success" style="width:12em;margin-left: auto;" on:click={savefile}>Save</button>
         </div>
         

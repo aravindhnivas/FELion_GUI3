@@ -5,14 +5,10 @@ $primaryColor-light: #6a50ad59;
 $white: #fafafa;
 $dark: #4a4a4ae6;
 
-
 // .button {margin: 0.4em;}
 .short-input { max-width: 7em; margin: 0 1em; }
-.mdc-text-field--outlined {height: 2.5em;}
 .plotSlot { width: 100%}
-
 option { color: black; }
-
 hr { width: 90%; margin: 1em 0; }
 
 .report { display: block; margin-bottom: 1em; }
@@ -23,50 +19,37 @@ table td:not([align]) {text-align: center; padding: 1em;}
 .tableContainer thead {background-color: #e1e1e1;}
 
 .align {
-    display: flex; align-items: baseline; 
-    justify-content: flex-start; flex-wrap: wrap; 
-    gap: 1em; width: 100%;
+    display: flex; 
+    // align-items: baseline; 
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap; 
+    gap: 1em; 
+    width: 100%;
 }
 
 .v-center {align-items: center;}
 .h-center {justify-content: center;}
 .h-end {justify-content: flex-end;}
 
-
-.mdc-list-item{height: 2em;}
-// .center {justify-content: center;}
 .gap {margin-right: 2em;}
-
 .cl {
     color: black!important;
-
     .cl-content {
-
         color: black!important;
-    
         padding: 1em 2em!important;
         * {color: black!important;}
     }
-
-
     .cl-actionbar {
-
         background-color: $primaryColor!important;
         .cl-button {
-
             svg { stroke: $white; fill: $white; }
             &:hover {background-color: $primaryColor-hover!important;}
             .active {background-color: $dark!important;}
-
         }
-
     }
     textarea {color: black!important;}
-
 }
 
-.interact {
-    touch-action: none;
-}
-
+.interact {touch-action: none;}
 .material-icons {align-self: center; }

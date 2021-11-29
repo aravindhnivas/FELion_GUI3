@@ -9,7 +9,7 @@ console.log({__dirname, ROOT_DIR, PKG_DIR, RENDERER_DIR})
 function createWindow() {
   let icon = path.join(RENDERER_DIR, "public/assets/logo/win/icon.ico")
   const mainWindow = new BrowserWindow({
-    width: 1200, height: 700, frame: true, icon,
+    width: 1200, height: 700, frame: true, icon, show: false,
 
     webPreferences: { preload: path.join(PKG_DIR, 'preload/preload.js'), nodeIntegration: true }
   });
@@ -19,10 +19,12 @@ function createWindow() {
   require("./dialogs")
   require("./autoupdate")
   mainWindow.webContents.openDevTools(true)
+  return mainWindow
 }
 
 app.whenReady().then(() => {
-  createWindow()
+  const mainWindow = createWindow()
+  mainWindow.show()
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow()
