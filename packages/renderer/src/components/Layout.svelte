@@ -80,7 +80,7 @@
 
 <style lang="scss">
     .box {
-        background-image: url(./assets/css/intro.svg); border-radius: 0;
+        background-image: url(../assets/css/intro.svg); border-radius: 0;
         margin: 0;
     
     }
