@@ -1,6 +1,7 @@
 <script>
     export let options = [], style="", label="", picked=""
     // $: console.log({picked})
+    picked ||= label
 </script>
 
 <div class="select" >
