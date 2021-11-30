@@ -15,7 +15,7 @@ const ROOT_DIR = path.join(__dirname, "../../../")
 const PKG_DIR = path.join(ROOT_DIR, "packages")
 const RENDERER_DIR = path.join(PKG_DIR, "renderer")
 
-console.log({__dirname, ROOT_DIR, PKG_DIR, RENDERER_DIR})
+console.log({__dirname, ROOT_DIR, PKG_DIR, RENDERER_DIR, MODE: env.MODE})
 
 async function createWindow() {
   try {
@@ -39,9 +39,13 @@ async function createWindow() {
     
     });
     
+    // const pageUrl = env.MODE === 'development'
+    //   ? env.VITE_DEV_SERVER_URL
+    //   : new URL('../renderer/dist/index.html', 'file://' + __dirname).toString();
+
     const pageUrl = env.MODE === 'development'
       ? env.VITE_DEV_SERVER_URL
-      : new URL('../renderer/dist/index.html', 'file://' + __dirname).toString();
+      : new URL('../renderer/build.html', 'file://' + __dirname).toString();
 
     await mainWindow.loadURL(pageUrl);
   // return mainWindow
