@@ -22,13 +22,13 @@
 	onMount(()=>{showpage("navbar");navigate()})
 </script>
 
-<style lang="scss">
-	#navbar { width: 100vw; margin-bottom: 0; padding: 0; }
-</style>
-
-
 <div class="box animated fadeInDown" id="navbar" style="display:none" on:click={navigate}>
 	<TabBar tabs={navItems} let:tab bind:active>
 		<Tab {tab}> <Label>{tab}</Label> </Tab>
 	</TabBar>
 </div>
+
+
+<style lang="scss">
+	#navbar { width: 100vw; margin-bottom: 0; padding: 0; }
+</style>

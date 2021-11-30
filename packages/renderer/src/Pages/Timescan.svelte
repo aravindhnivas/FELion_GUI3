@@ -106,7 +106,7 @@
             fileChecked.forEach(file => {
                 let tplot = file + "_tplot";
                 const id = document.getElementById(tplot)
-                if(id?.data) {Plotly.relayout(id, layout);}
+                if(id?.data) {window.Plotly.relayout(id, layout);}
             })
         }
     }

@@ -1,22 +1,10 @@
 
 <script>
-  // import {onMount} from "svelte";
   import { createEventDispatcher } from 'svelte';
   export let active =  false, title =  "Title", style="width:60vw", bodyBackground = "#634e96", bodyStyle="max-height: 30em; height: 30em", contentID="";
   export let headerBackground="#836ac05c";
   const dispatch = createEventDispatcher()
-
 </script>
-
-<style>
-  .modal-card-body {color: black; overflow-y: auto; height: 100%;}
-  
-  .delete {background-color: #fafafa;}
-  .delete:hover {background-color: #f14668;}
-  .modal-card-title {margin:0!important;}
-  
-</style>
-
 
 <svelte:window on:keydown="{(e)=> {if(e.keyCode===27) active=false}}"/>
 <div class="modal" class:is-active={active}>
@@ -43,3 +31,11 @@
     
   </div>
 </div>
+
+
+<style>
+  .modal-card-body {color: black; overflow-y: auto; height: 100%;}
+  .delete {background-color: #fafafa;}
+  .delete:hover {background-color: #f14668;}
+  .modal-card-title {margin:0!important;}
+</style>

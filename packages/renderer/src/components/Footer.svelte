@@ -1,7 +1,5 @@
 
-<style>
-    .navbar { background: #38236b; }
-</style>
+
 
 <nav class="navbar is-fixed-bottom animated fadeInUp" id="footer" >
   <div class="navbar-menu">
@@ -23,3 +21,7 @@
     </div>
   </div>
 </nav>
+
+<style>
+  .navbar { background: #38236b; }
+</style>

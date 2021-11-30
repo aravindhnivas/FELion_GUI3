@@ -87,31 +87,6 @@
 </script>
 
 
-<style>
-
-    .box { background-color: #6a50ad8a; overflow-y: auto; height: calc(100vh - 12em);}
-
-    .terminal {
-
-        margin-bottom: 1em;
-        background-color: #4a4a4ae6;
-
-        user-select: text;
-    
-    }
-
-    .contentBox {
-
-        max-height: 70vh;
-        overflow: auto;
-    
-        padding-bottom: 1em;
-        padding: 1em;
-        height: calc(100vh - 12em);
-
-    }
-</style>
-
 <div class="content contentBox terminalBox" >
 
     {#if commandInputDiv}
@@ -158,3 +133,29 @@
     </div>
     
 </div>
+
+
+<style>
+
+    .box { background-color: #6a50ad8a; overflow-y: auto; height: calc(100vh - 12em);}
+
+    .terminal {
+
+        margin-bottom: 1em;
+        background-color: #4a4a4ae6;
+
+        user-select: text;
+    
+    }
+
+    .contentBox {
+
+        max-height: 70vh;
+        overflow: auto;
+    
+        padding-bottom: 1em;
+        padding: 1em;
+        height: calc(100vh - 12em);
+
+    }
+</style>

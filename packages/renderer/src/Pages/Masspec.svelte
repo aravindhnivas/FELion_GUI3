@@ -60,16 +60,16 @@
                     if (filetype=="mass") {
                         if(!keepAnnotaions) {annotations=[]}
                         plot("Mass spectrum", "Mass [u]", "Counts", dataFromPython, "mplot", logScale ? "log" : "linear")
-                        if(keepAnnotaions) {Plotly.relayout("mplot" ,{annotations})}
+                        if(keepAnnotaions) {window.Plotly.relayout("mplot" ,{annotations})}
                         plotlyEventCreatedMass ? console.log("Plotly event ready for mass spectrum") : plotlyClick()
                     } else if (filetype =="find_peaks") {
 
-                        Plotly.relayout("mplot", { yaxis: { title: "Counts", type: "" } })
-                        Plotly.relayout("mplot", { annotations: [] })
+                        window.Plotly.relayout("mplot", { yaxis: { title: "Counts", type: "" } })
+                        window.Plotly.relayout("mplot", { annotations: [] })
                     
-                        Plotly.relayout("mplot", { annotations: dataFromPython["annotations"] })
+                        window.Plotly.relayout("mplot", { annotations: dataFromPython["annotations"] })
                         
-                        Plotly.relayout("mplot", { yaxis: { title: "Counts", type: "log" } })
+                        window.Plotly.relayout("mplot", { yaxis: { title: "Counts", type: "log" } })
 
                     }
 
@@ -84,7 +84,7 @@
 
     const linearlogCheck = () => {
         let layout = { yaxis: { title: "Counts", type: logScale ? "log" : null } }
-        if(graphPlotted) Plotly.relayout("mplot", layout)
+        if(graphPlotted) window.Plotly.relayout("mplot", layout)
     };
     let fullfileslist = [];
     let plotlyEventCreatedMass = false
@@ -116,7 +116,7 @@
                     annotations = [...annotations, annotate]
 
                 }
-                Plotly.relayout("mplot" ,{annotations})
+                window.Plotly.relayout("mplot" ,{annotations})
                 plotlyEventCreatedMass = true
             }
         })
@@ -143,7 +143,7 @@
             <Textfield type="number" {style} on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_width} label="Width" />
             <Textfield type="number" {style} on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_height} label="Height" />
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"find_peaks"})}">Get Peaks</button>
-            <button class="button is-danger" on:click="{()=> {if(graphPlotted) {Plotly.relayout("mplot", { annotations: [] })} }}">Clear</button>
+            <button class="button is-danger" on:click="{()=> {if(graphPlotted) {window.Plotly.relayout("mplot", { annotations: [] })} }}">Clear</button>
         </div>
 
     </svelte:fragment>
@@ -153,7 +153,7 @@
     <svelte:fragment slot="plotContainer_functions" >
         <div class="align" style="justify-content: flex-end;">
             <CustomSwitch style="margin: 0 1em;" bind:selected={keepAnnotaions} label="Keep Annotaions"/>
-            <button class="button is-danger" on:click="{()=> { annotations = []; Plotly.relayout("mplot" ,{annotations})}}">Clear</button>
+            <button class="button is-danger" on:click="{()=> { annotations = []; window.Plotly.relayout("mplot" ,{annotations})}}">Clear</button>
 
         </div>
 

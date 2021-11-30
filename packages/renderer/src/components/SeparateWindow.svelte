@@ -41,7 +41,7 @@
         await tick(); 
         if (ms>0) await sleep(ms);
         graphDivs.forEach(id=>{
-            if(id.data) {Plotly.relayout(id, {width:id.clientWidth})}
+            if(id.data) {window.Plotly.relayout(id, {width:id.clientWidth})}
         })
     }
 
@@ -52,6 +52,14 @@
         catch (error) {console.log("No graph in this window")}
     }
 </script>
+
+
+<div {id} class="main_content__div" class:hide={!active}>
+    <div class="header_content"><slot name="header_content__slot" /></div>
+    <div class="main_content" use:lookForGraph><slot name="main_content__slot" /></div>
+    <div class="footer_content" ><slot name="footer_content__slot"/> </div>
+</div>
+
 
 <style>
     .main_content { overflow: auto; }
@@ -77,9 +85,3 @@
     }
     
 </style>
-
-<div {id} class="main_content__div" class:hide={!active}>
-    <div class="header_content"><slot name="header_content__slot" /></div>
-    <div class="main_content" use:lookForGraph><slot name="main_content__slot" /></div>
-    <div class="footer_content" ><slot name="footer_content__slot"/> </div>
-</div>

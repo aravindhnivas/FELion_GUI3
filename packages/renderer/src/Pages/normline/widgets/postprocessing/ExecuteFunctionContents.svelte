@@ -35,9 +35,9 @@
         
         $felixPlotAnnotations = $felixIndex = $expfittedLines = $expfittedLinesCollectedData = []
 
-        Plotly.relayout($graphDiv, { annotations: [], shapes: [] })
+        window.Plotly.relayout($graphDiv, { annotations: [], shapes: [] })
         
-        for (let i=0; i<$fittedTraceCount; i++) {Plotly.deleteTraces($graphDiv, [-1])}
+        for (let i=0; i<$fittedTraceCount; i++) {window.Plotly.deleteTraces($graphDiv, [-1])}
         
         $fittedTraceCount = 0
     }
@@ -51,9 +51,9 @@
         $expfittedLines = _.dropRight($expfittedLines, 2)
         $felixPlotAnnotations = _.dropRight($felixPlotAnnotations, 1)
         $expfittedLinesCollectedData = _.dropRight($expfittedLinesCollectedData, 1)
-        Plotly.relayout($graphDiv, { annotations: $felixPlotAnnotations, shapes: $expfittedLines })
+        window.Plotly.relayout($graphDiv, { annotations: $felixPlotAnnotations, shapes: $expfittedLines })
 
-        Plotly.deleteTraces($graphDiv, [-1])
+        window.Plotly.deleteTraces($graphDiv, [-1])
         console.log("Last fitted peak removed")
         $fittedTraceCount--
 
@@ -89,7 +89,7 @@
         if(closeMainModal) {
             modalActivate = false, window.createToast("Initial guess adjusted for full spectrum fitting")
         }
-        Plotly.relayout($graphDiv, { annotations:$felixPlotAnnotations })
+        window.Plotly.relayout($graphDiv, { annotations:$felixPlotAnnotations })
         adjustPeakTrigger = false
         
     };
@@ -243,7 +243,7 @@
             <button class="button is-link" on:click="{()=>savefile({file:$felixPeakTable, name:savePeakfilename})}">Save peaks</button>
             <button class="button is-link" on:click="{loadpeakTable}">Load peaks</button>
 
-            <button class="button is-danger" on:click="{()=>{$felixPlotAnnotations=[]; $felixPeakTable=[];NGauss_fit_args={}; Plotly.relayout($graphDiv, { annotations: [] }); window.createToast("Cleared", "warning")}}">Clear</button>
+            <button class="button is-danger" on:click="{()=>{$felixPlotAnnotations=[]; $felixPeakTable=[];NGauss_fit_args={}; window.Plotly.relayout($graphDiv, { annotations: [] }); window.createToast("Cleared", "warning")}}">Clear</button>
 
         </div>
 

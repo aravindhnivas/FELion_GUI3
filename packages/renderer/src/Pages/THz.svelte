@@ -31,7 +31,7 @@
 
     let binData = false, saveInMHz = false;
 
-    const changePlotStyle = () => { Plotly.restyle("thzPlot", {mode:plotStyleSelected, fill: plotFill ? "tozeroy" : ""})}
+    const changePlotStyle = () => { window.Plotly.restyle("thzPlot", {mode:plotStyleSelected, fill: plotFill ? "tozeroy" : ""})}
 
     function plotData({e=null, filetype="thz", tkplot=false, justPlot=false, general={} }={}){
 
@@ -59,7 +59,7 @@
                         let lines = [];
                         for (let x in dataFromPython["shapes"]) { lines.push(dataFromPython["shapes"][x]) }
                         let layout_update = { shapes: lines }
-                        Plotly.relayout("thzPlot", layout_update)
+                        window.Plotly.relayout("thzPlot", layout_update)
                     }
                 }
                 window.createToast("Graph plotted", "success")

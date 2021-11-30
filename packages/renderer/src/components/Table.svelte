@@ -29,45 +29,14 @@
         const focusTargetID = `${id}-${keys[0]}`
         document.getElementById(focusTargetID).focus()
     }
-
 </script>
 
-<style>
-
-    * :global(th i) {color: black;}
-
-    .tableIcon {
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        
-        
-        color: black;
-    
-    }
-
-    
-    td {text-align: center!important;}
-    .tableContainer {
-
-        overflow-x: auto;
-        max-width: calc(100vw - 27em);
-    }
-    
-</style>
-
 <div {style}>
-
-
     {#if addextraOption}
         <div class="icon-holder" >
             <Icon class="material-icons"  on:click="{addRow}">add</Icon>
-
         </div>
-
     {/if}
-
 
     <div class="mdc-data-table tableContainer" >
 
@@ -118,3 +87,21 @@
         </table>
     </div>
 </div>
+
+<style>
+
+    * :global(th i) {color: black;}
+    
+    .tableIcon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: black;
+    }
+    
+    td {text-align: center!important;}
+    .tableContainer {
+        overflow-x: auto;
+        max-width: calc(100vw - 27em);
+    }
+</style>

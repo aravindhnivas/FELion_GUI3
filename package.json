@@ -8,72 +8,41 @@
     "url": "https://github.com/aravindhnivas/FELion_GUI3.git"
   },
   "description": "FELion Spectrum Analyser for FELIX data",
-  "main": "packages/main/main.js",
+  "main": "packages/main/dist/main.cjs",
   "devDependencies": {
-    "@rollup/plugin-alias": "^3.1.5",
-    "@rollup/plugin-commonjs": "^20.0.0",
-    "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^13.0.4",
-    "@rollup/plugin-yaml": "^3.1.0",
     "@sveltejs/svelte-virtual-list": "^3.0.1",
+    "@sveltejs/vite-plugin-svelte": "^1.0.0-next.11",
     "bulma": "^0.9.3",
+    "bulma-extensions": "^6.2.7",
     "concurrently": "^6.3.0",
+    "cross-env": "^7.0.3",
     "electron": "^16.0.1",
     "electron-builder": "^22.13.1",
     "ldbutton": "^1.0.2",
-    "postcss": "^8.3.6",
-    "rollup": "^2.55.1",
-    "rollup-plugin-livereload": "^2.0.5",
-    "rollup-plugin-polyfill-node": "^0.7.0",
-    "rollup-plugin-postcss": "^4.0.0",
-    "rollup-plugin-svelte": "^7.1.0",
-    "rollup-plugin-terser": "^7.0.2",
     "sass": "^1.35.1",
     "svelma": "^0.3.2",
     "svelte": "^3.44.2",
     "svelte-check": "^2.2.8",
+    "svelte-material-ui": "^6.0.0-beta.4",
     "svelte-preprocess": "^4.7.4",
-    "svelte-material-ui": "^6.0.0-beta.4"
+    "vite": "^2.6.14"
   },
   "scripts": {
-    "check-build": "npm run svelte-check && rollup -c",
-    "build": "rollup -c",
-    "autobuild": "rollup -c -w",
-    "dev": "concurrently \"npm run autobuild\" \"electron .\"",
     "start": "electron .",
+    "dev": "node scripts/watch.js",
     "svelte-check": "svelte-check",
     "publish": "electron-builder --win -p always",
     "pack": "electron-builder --win -p never",
-    "bpublish": "npm run build && electron-builder --win -p always"
+    "bpublish": "npm run build && electron-builder --win -p always",
+    "build": "node scripts/build.js",
+    "precompile": "cross-env MODE=production npm run build",
+    "compile": "electron-builder build --config electron-builder.config.js --dir "
   },
   "dependencies": {
-    "bulma-extensions": "^6.2.7",
     "cooltipz-css": "^1.6.8",
     "electron-log": "^4.4.1",
     "electron-updater": "^4.3.9",
     "fs-extra": "^10.0.0",
-    "source-map-support": "^0.5.20",
     "yaml": "2.0.0-6"
-  },
-  "build": {
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "aravindhnivas",
-        "repo": "FELion_GUI3"
-      }
-    ],
-    "asarUnpack": [
-      "./python3/",
-      "./public/assets/python_files"
-    ],
-    "win": {
-      "target": "nsis",
-      "icon": "./public/assets/logo/win/icon.ico",
-      "asar": true
-    },
-    "nsis": {
-      "oneClick": false
-    }
   }
 }

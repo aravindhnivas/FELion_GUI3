@@ -71,63 +71,12 @@
     let plotWidth;
     const changeGraphDivWidth = async () => {
         await tick();
-        graphDivs.forEach(id=>{if(id.data) {Plotly.relayout(id, {width:id.clientWidth})}})
+        graphDivs.forEach(id=>{if(id.data) {window.Plotly.relayout(id, {width:id.clientWidth})}})
     }
 
     $: if (plotWidth && mouseReleased) {changeGraphDivWidth()};
     let mouseReleased = true;
 </script>
-
-<style lang="scss">
-    .box {
-        background-image: url(../assets/css/intro.svg); border-radius: 0;
-        margin: 0;
-    
-    }
-    .main__layout__div {
-        display: grid;
-        grid-auto-flow: column;
-        width: 100%;
-        height: calc(100vh - 6rem);
-        grid-template-columns: auto 1fr;
-        column-gap: 3em;
-
-        .left_container__div { 
-            display: grid;
-            grid-template-rows: auto auto auto 1fr;
-            gap: 1em;
-            justify-items: center;
-        }
-
-        .left_container__div, .right_container__div {
-
-            max-height: calc(100vh - 6rem);
-        }
-        
-        .right_container__div {
-            
-            display: grid;
-            row-gap: 1em;
-            grid-template-rows: auto auto 1fr;
-            .location__div {
-                display:grid;
-                grid-template-columns: auto 1fr auto;
-                column-gap: 1em;
-                align-items: baseline;
-            }
-
-        }
-    }
-    .plot__div {
-        display: flex;
-        row-gap: 1em;
-        flex-direction: column;
-        overflow: auto;
-        padding-right: 1em;
-        padding-bottom: 12em;
-
-    }
-</style>
 
 <section {id} style="display:none" class="animated fadeIn">
 
@@ -191,3 +140,55 @@
     </div>
     
 </section>
+
+
+<style lang="scss">
+    .box {
+        background-image: url(../assets/css/intro.svg); border-radius: 0;
+        margin: 0;
+    
+    }
+    .main__layout__div {
+        display: grid;
+        grid-auto-flow: column;
+        width: 100%;
+        height: calc(100vh - 6rem);
+        grid-template-columns: auto 1fr;
+        column-gap: 3em;
+
+        .left_container__div { 
+            display: grid;
+            grid-template-rows: auto auto auto 1fr;
+            gap: 1em;
+            justify-items: center;
+        }
+
+        .left_container__div, .right_container__div {
+
+            max-height: calc(100vh - 6rem);
+        }
+        
+        .right_container__div {
+            
+            display: grid;
+            row-gap: 1em;
+            grid-template-rows: auto auto 1fr;
+            .location__div {
+                display:grid;
+                grid-template-columns: auto 1fr auto;
+                column-gap: 1em;
+                align-items: baseline;
+            }
+
+        }
+    }
+    .plot__div {
+        display: flex;
+        row-gap: 1em;
+        flex-direction: column;
+        overflow: auto;
+        padding-right: 1em;
+        padding-bottom: 12em;
+
+    }
+</style>

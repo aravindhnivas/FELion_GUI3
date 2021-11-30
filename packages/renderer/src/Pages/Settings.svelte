@@ -1,35 +1,33 @@
 <script>
-
-    import {pythonpath, pythonscript, pyVersion, developerMode, suppressInitialDeveloperWarning} from "./settings/svelteWritables";
-    // import {mainPreModal} from "../svelteWritable";
+    import {
+        pythonpath, pythonscript, pyVersion, developerMode, suppressInitialDeveloperWarning
+    } from "./settings/svelteWritables";
     import {activateChangelog} from "../js/functions"
     import Textfield from '@smui/textfield';
     import {onMount} from "svelte";
-
     import CustomDialog from "$components/CustomDialog.svelte"
-    // import CustomSelect from '$components/CustomSelect.svelte';
     import CustomSwitch from '$components/CustomSwitch.svelte';
     import Changelog from "$components/Changelog.svelte";
-    
-    import {resetPyConfig, updatePyConfig} from "./settings/checkPython";
-    import {tick} from "svelte";
     import Terminal from '$components/Terminal.svelte';
+    import {resetPyConfig, updatePyConfig} from "./settings/checkPython";
 
 
-
-    let selected = db.get("settingsActiveTab") || "Update"
-    const navigate = (e) => {selected = e.target.innerHTML; db.set("settingsActiveTab", selected);}
+    let selected = window.db.get("settingsActiveTab") || "Update"
+    const navigate = (e) => {selected = e.target.innerHTML; window.db.set("settingsActiveTab", selected);}
     let pythonpathCheck;
+
+
+
     onMount(async ()=>{
         const [data, error] = await exec(`${$pythonpath} -V`)
         if(error) return pythonpathCheck.open(error)
-        
         $pyVersion = data.stdout.trim()
         console.log("Python path is valid")
+
     })
     
     const handlepythonPathCheck = () => { console.log("Python path checking done") }
-    
+
     let commandToRun = "", commandArgsToRun = "";
 
     function updateCheck(event){
@@ -48,23 +46,21 @@
 </script>
 
 <style lang="scss">
+
     section { margin: 0; padding: 0; }
 
     .clicked {border-bottom: solid 1px; }
 
-    * :global(option) { color: black; }
     .main__div {
+
         display: grid;
         grid-template-columns: 1fr 4fr;
         column-gap: 3em;
         height: calc(100vh - 7rem);
         .box {
-
             margin-bottom: 0px;
             border-radius: 0;
-
             background-color: #6a50ad8a;
-
         }
         .title__div{
             letter-spacing: 0.1em;
@@ -73,11 +69,11 @@
             cursor: pointer;
             display: grid;
             row-gap: 2em;
-
             div {font-size: 22px; }
         } 
 
         #update-progress-container {
+
             progress {width: 100%;}
             display: grid;
             width: 100%;
@@ -85,11 +81,8 @@
             grid-template-columns: auto 1fr;
             align-items: center;
         }
-
     }
-
-
-
+    
 </style>
 
 
@@ -118,7 +111,7 @@
                     <div class="subtitle">{$pyVersion}</div>
 
                     <div class="align">
-                        <button class="button is-link" on:click="{()=> {$developerMode = !$developerMode; db.set("developerMode", $developerMode)}}">Developer mode: {$developerMode} </button>
+                        <button class="button is-link" on:click="{()=> {$developerMode = !$developerMode; window.db.set("developerMode", $developerMode)}}">Developer mode: {$developerMode} </button>
                         {#if $developerMode}
 
                             <div class="align">
@@ -128,7 +121,7 @@
                                 <button class="button is-link" on:click={updatePyConfig}>Save</button>
                             </div>
                             <div class="align">
-                                <CustomSwitch on:change={()=>db.set("suppressInitialDeveloperWarning", $suppressInitialDeveloperWarning)} bind:selected={$suppressInitialDeveloperWarning} label="suppressWarning"/>
+                                <CustomSwitch on:change={()=>window.db.set("suppressInitialDeveloperWarning", $suppressInitialDeveloperWarning)} bind:selected={$suppressInitialDeveloperWarning} label="suppressWarning"/>
                             </div>
                         {/if}
                     </div>

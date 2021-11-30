@@ -90,7 +90,7 @@ export function plotlyClick({graphDiv="avgplot", mode="felix"}={}){
                     let [freq, amp] = [parseFloat(d.x.toFixed(2)), parseFloat(d.y.toFixed(2))]
                     const annotation = { text: `(${freq}, ${amp})`, x: freq, y: amp, font:{color:line_color}, arrowcolor:line_color }
                     felixPlotAnnotations.update(annotate => _.uniqBy([...annotate, annotation], 'text'))
-                    Plotly.relayout(graphDiv,{annotations: get(felixPlotAnnotations)})
+                    window.Plotly.relayout(graphDiv,{annotations: get(felixPlotAnnotations)})
 
                     felixPeakTable.update(table => [...table, {freq, amp, sig:get(Ngauss_sigma), id:getID()}])
                     felixPeakTable.update(table => _.uniqBy(table, 'freq'))

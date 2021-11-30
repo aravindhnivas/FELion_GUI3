@@ -28,7 +28,7 @@
 
         computePy_func({e, pyfile, args})
         .then((dataFromPython)=>{
-            Plotly.addTraces($graphDiv, dataFromPython)
+            window.Plotly.addTraces($graphDiv, dataFromPython)
             extrafileAdded += addedfiles.length
             window.createToast("Graph Plotted", "success")
             active = false

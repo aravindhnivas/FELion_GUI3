@@ -56,7 +56,7 @@
         if (graphPlotted) {
             let {data, layout} = $normMethodDatas[$normMethod]
             try {
-                Plotly.react($graphDiv, data, layout, { editable: true })
+                window.Plotly.react($graphDiv, data, layout, { editable: true })
                 $expfittedLines = $felixPlotAnnotations = $expfittedLinesCollectedData = [], $fittedTraceCount = 0
             } catch (err) {
             }
@@ -78,7 +78,7 @@
     function removeExtraFile() {
         for(let i=0; i<extrafileAdded+1; i++) {
             try {
-                Plotly.deleteTraces($graphDiv, [-1])
+                window.Plotly.deleteTraces($graphDiv, [-1])
                 extrafileAdded--
                 addedfiles.pop()
             } catch (err) {console.log("The plot is empty")}

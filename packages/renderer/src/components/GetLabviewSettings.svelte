@@ -63,26 +63,6 @@
     let selected_file = "";
 </script>
 
-<style>
-
-
-    .row, .col {margin-bottom: 2em;}
-    .col {display: grid;}
-    .container {
-        display: grid;
-        margin: 1em 6em;
-        overflow-y: auto;
-        max-height: 30vh;
-        border: solid 1px;
-
-        padding: 1em;
-        border-radius: 1em;
-        justify-content: center;
-
-    }
-
-</style>
-
 <button class="button is-link" on:click="{()=>{active = true}}">GetLabviewSettings</button>
 
 {#if active}
@@ -159,5 +139,22 @@
         </div>
 
     </Modal>
-    
 {/if}
+
+
+<style>
+    .row, .col {margin-bottom: 2em;}
+    .col {display: grid;}
+    .container {
+        display: grid;
+        margin: 1em 6em;
+        overflow-y: auto;
+        max-height: 30vh;
+        border: solid 1px;
+        padding: 1em;
+        border-radius: 1em;
+        justify-content: center;
+
+    }
+    
+</style>

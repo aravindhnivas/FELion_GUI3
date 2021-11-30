@@ -14,6 +14,7 @@
 	import Misc from "./Pages/Misc.svelte"
 	import PreModal from "$components/PreModal.svelte";
 	import {onMount, tick} from "svelte";
+	// import "./App.scss";
 	let mounted=false;
 
 
@@ -25,9 +26,7 @@
 		mounted=true;
 	})
 	const navItems = ["Home", "Normline", "Masspec", "Timescan", "THz", "Powerfile", "Misc", "Settings"]
-
 </script>
-
 
 {#if $windowLoaded}
 	{#if mounted}
@@ -47,3 +46,16 @@
 	</div>
 	<Footer />
 {/if}
+
+<!-- <style global lang="scss">
+	// css
+	@import 'cooltipz-css';
+	@import 'ldbutton/dist/ldbtn.css';
+	@import 'svelte-material-ui/bare.css';
+
+	// scss
+	@import './scss/smui-theme-variables.scss';
+	@import "./scss/materialTheme.scss";
+	@import "./scss/bulma-style.scss";
+	@import "./scss/styles.scss";
+</style> -->

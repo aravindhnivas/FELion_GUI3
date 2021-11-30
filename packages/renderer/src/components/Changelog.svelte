@@ -28,6 +28,31 @@
 
 </script>
 
+
+{#if $activateChangelog && $windowLoaded}
+
+    <Modal title={changelogTitle} bind:active={$activateChangelog}>
+        <div slot="content" transition:fade style="user-select:text;">
+            {#if $updateAvailable && window.changelogNewContent}
+
+                {@html window.marked(window.changelogNewContent)}
+            {:else}
+                {@html window.marked(changelogContent)}
+            {/if}
+        
+        </div>
+
+        <div slot="footerbtn">
+            {#if $updateAvailable}
+                <button class="button is-warning" class:is-loading={$updating} on:click={updateNow}>Update Now</button>
+
+            {/if}
+        </div>
+
+    </Modal>
+
+{/if}
+
 {@html `<style>
 
     ul {padding-left: 1em;}
@@ -58,27 +83,3 @@
 
 
 </style>`}
-
-{#if $activateChangelog && $windowLoaded}
-
-    <Modal title={changelogTitle} bind:active={$activateChangelog}>
-        <div slot="content" transition:fade style="user-select:text;">
-            {#if $updateAvailable && window.changelogNewContent}
-
-                {@html window.marked(window.changelogNewContent)}
-            {:else}
-                {@html window.marked(changelogContent)}
-            {/if}
-        
-        </div>
-
-        <div slot="footerbtn">
-            {#if $updateAvailable}
-                <button class="button is-warning" class:is-loading={$updating} on:click={updateNow}>Update Now</button>
-
-            {/if}
-        </div>
-
-    </Modal>
-
-{/if}

@@ -3,17 +3,17 @@ import {dataTable, dataTable_avg, felixPlotAnnotations, felixOutputName, graphDi
 
 export function exp_fit_func({dataFromPython}={}) {
 
-    Plotly.addTraces(get(graphDiv), dataFromPython["fit"])
+    window.Plotly.addTraces(get(graphDiv), dataFromPython["fit"])
     fittedTraceCount.update(n=>n+1)
 
     expfittedLines.update(lines=>[...lines, ...dataFromPython["line"]])
-    Plotly.relayout(get(graphDiv), { shapes: get(expfittedLines) })
+    window.Plotly.relayout(get(graphDiv), { shapes: get(expfittedLines) })
     
     let annotations = dataFromPython["annotations"]
     
     felixPlotAnnotations.update(annotate => [...annotate, annotations])
 
-    Plotly.relayout(get(graphDiv), { annotations: get(felixPlotAnnotations) })
+    window.Plotly.relayout(get(graphDiv), { annotations: get(felixPlotAnnotations) })
     
     let [freq, amp, fwhm, sig] = dataFromPython["table"].split(", ")
     

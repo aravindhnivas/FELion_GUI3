@@ -37,7 +37,7 @@ export async function felix_func({ normMethod, dataFromPython, delta } = {}) {
         
         const width = document.getElementById(id).clientWidth
         
-        if(content){ Plotly.relayout(id, {width}) }
+        if(content){ window.Plotly.relayout(id, {width}) }
     })
 
 

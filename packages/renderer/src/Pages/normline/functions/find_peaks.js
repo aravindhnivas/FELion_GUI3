@@ -9,7 +9,7 @@ export function find_peaks_func({dataFromPython}={}){
 
     const color = annotations["arrowcolor"]
     felixAnnotationColor.set(color)
-    Plotly.relayout(get(graphDiv), { annotations  })
+    window.Plotly.relayout(get(graphDiv), { annotations  })
 
     const [peakX, peakY] = [dataFromPython[0]["data"].x, dataFromPython[0]["data"].y]
     for (let index = 0; index < peakX.length; index++) {

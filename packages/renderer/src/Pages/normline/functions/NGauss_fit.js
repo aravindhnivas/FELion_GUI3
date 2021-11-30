@@ -3,7 +3,7 @@ import {dataTable, dataTable_avg, graphDiv, felixOutputName, avgfittedLineCount,
 
 export function NGauss_fit_func({dataFromPython}={}) {
 
-    Plotly.addTraces(get(graphDiv), dataFromPython["fitted_data"])
+    window.Plotly.addTraces(get(graphDiv), dataFromPython["fitted_data"])
     fittedTraceCount.update(n=>n+1)
 
     const output_name = get(felixOutputName)

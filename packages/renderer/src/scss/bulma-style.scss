@@ -1,3 +1,4 @@
+$mainColor: #513a8a5c;
 $white: #fafafa;
 $text: $white;
 $text-strong: $white;
@@ -20,7 +21,8 @@ $modal-card-foot-radius: 0;
 $background: lighten($mainColor, 20);
 $modal-card-title-color: $white;
 $link:#634e96;
-@import '~bulma';
+
+// @import 'bulma';
 
 $link-color: #dbdbdb;
 $transparent: rgba(0,0,0,0);
@@ -28,6 +30,24 @@ $success-color: $success;
 $danger-color: #ff3860;
 
 $warning-color: #ffc402;
+
+@import "bulma/sass/base/animations.sass";
+
+@import "bulma/sass/components/modal.sass";
+@import "bulma/sass/components/navbar.sass";
+
+@import "bulma/sass/elements/button.sass";
+@import "bulma/sass/elements/tag.sass";
+@import "bulma/sass/elements/notification.sass";
+@import "bulma/sass/elements/content.sass";
+@import "bulma/sass/elements/box.sass";
+@import "bulma/sass/elements/other.sass";
+
+@import "bulma/sass/layout/section.sass";
+@import "bulma/sass/utilities/_all.sass";
+
+@import "bulma/sass/helpers/_all.sass";
+
 
 // General button background
 .button.is-link, .button.is-warning, .button.is-danger, .button.is-success {background-color: $transparent;}
@@ -54,8 +74,4 @@ $warning-color: #ffc402;
 
 // Static
 .button.is-static {background: transparent; color: $white;}
-
-
-@import "extensions/bulma-quickview.sass";
-// @import "extensions/tooltip/bulma-tooltip.sass";
-// @import "extensions/bulma-divider.sass";
+@import "bulma-extensions/bulma-quickview/dist/css/bulma-quickview.sass";
