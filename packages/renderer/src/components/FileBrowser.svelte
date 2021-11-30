@@ -89,7 +89,6 @@
             if (_from < _to) {fileChecked = fullfileslist.slice(_from, _to+1)}
             else {fileChecked = fullfileslist.slice(_to, _from+1)}
         }
-
 	}
 </script>
 
@@ -101,12 +100,20 @@
     <CustomIconSwitch bind:toggler={sortFile} icons={["trending_up", "trending_down"]}/>
 </div>
 
+
 <Textfield on:keyup={searchfile} bind:value={searchKey} label="Search {filetype} files" />
 <CustomSwitch  bind:selected={selectAll} label="Select All" 
-    on:change="{()=>selectAll ? fileChecked = fullfiles.map(file=>file=file.name) : fileChecked = []}" />
+    on:SMUISwitch:change="{
+        ()=>{
+            console.log("Changed")
+            selectAll ? fileChecked = fullfiles.map(file=>file=file.name) : fileChecked = []
+        }
+
+}" />
 
 <div id="{filetype}_filebrowser" style="width: 100%; overflow-y:auto;">
     <div class="align folderlist" >
+
         <i class="material-icons" >keyboard_arrow_right</i>
         <div>{parentFolder}</div>
     </div>

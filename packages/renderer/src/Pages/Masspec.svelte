@@ -132,7 +132,7 @@
             <GetLabviewSettings {currentLocation} {fullfileslist} {fileChecked} />
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"general"})}">Open in Matplotlib</button>
             <CustomIconSwitch style="padding:0;" bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
-            <CustomSwitch style="margin: 0 1em;" on:change={linearlogCheck} bind:selected={logScale} label="Log"/>
+            <CustomSwitch style="margin: 0 1em;" on:SMUISwitch:change={linearlogCheck} bind:selected={logScale} label="Log"/>
         </div>
 
         <div class="align animated fadeIn" class:hide={toggleRow1} >

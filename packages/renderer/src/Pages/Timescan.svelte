@@ -144,7 +144,7 @@
             
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"scan", tkplot:"plot"})}">Open in Matplotlib</button>
             <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
-            <CustomSwitch on:change={linearlogCheck} bind:selected={logScale} label="Log"/>
+            <CustomSwitch on:SMUISwitch:change={linearlogCheck} bind:selected={logScale} label="Log"/>
         </div>
 
         <div class="align animated fadeIn" class:hide={toggleRow} >

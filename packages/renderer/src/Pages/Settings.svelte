@@ -121,7 +121,7 @@
                                 <button class="button is-link" on:click={updatePyConfig}>Save</button>
                             </div>
                             <div class="align">
-                                <CustomSwitch on:change={()=>window.db.set("suppressInitialDeveloperWarning", $suppressInitialDeveloperWarning)} bind:selected={$suppressInitialDeveloperWarning} label="suppressWarning"/>
+                                <CustomSwitch on:SMUISwitch:change={()=>window.db.set("suppressInitialDeveloperWarning", $suppressInitialDeveloperWarning)} bind:selected={$suppressInitialDeveloperWarning} label="suppressWarning"/>
                             </div>
                         {/if}
                     </div>

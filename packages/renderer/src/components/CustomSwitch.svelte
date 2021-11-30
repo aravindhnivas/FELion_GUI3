@@ -7,6 +7,6 @@
 </script>
 
 <FormField {style}>
-    <Switch on:change bind:checked={selected} />
+    <Switch on:SMUISwitch:change bind:checked={selected} />
     <span slot="label">{label}</span>
 </FormField>
