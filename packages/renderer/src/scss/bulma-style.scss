@@ -1,3 +1,4 @@
+
 $mainColor: #513a8a5c;
 $white: #fafafa;
 $text: $white;
@@ -31,10 +32,10 @@ $danger-color: #ff3860;
 
 $warning-color: #ffc402;
 
+
+@import "bulma/sass/utilities/_all.sass";
 @import "bulma/sass/base/animations.sass";
 
-@import "bulma/sass/components/modal.sass";
-@import "bulma/sass/components/navbar.sass";
 
 @import "bulma/sass/elements/button.sass";
 @import "bulma/sass/elements/tag.sass";
@@ -43,11 +44,15 @@ $warning-color: #ffc402;
 @import "bulma/sass/elements/box.sass";
 @import "bulma/sass/elements/other.sass";
 
-@import "bulma/sass/layout/section.sass";
-@import "bulma/sass/utilities/_all.sass";
+@import "bulma/sass/form/shared.sass";
+@import "bulma/sass/form/select.sass";
+
+@import "bulma/sass/components/modal.sass";
+@import "bulma/sass/components/navbar.sass";
+
 
 @import "bulma/sass/helpers/_all.sass";
-
+@import "bulma/sass/layout/section.sass";
 
 // General button background
 .button.is-link, .button.is-warning, .button.is-danger, .button.is-success {background-color: $transparent;}

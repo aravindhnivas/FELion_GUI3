@@ -1,12 +1,21 @@
 <script>
-
-    import Select, {Option} from '@smui/select'
     export let options = [], style="", label="", picked=""
 </script>
 
-<Select bind:value={picked} {label} {style} on:change>
-
+<div class="select" >
+    <select bind:value={picked} {label} on:change >
     {#each options as option}
-        <Option value={option} selected={picked === option}>{option}</Option>
+        <option value={option} selected={picked === option}>{option}</option>
     {/each}
-</Select>
+</select>
+
+</div>
+
+<style lang="scss">
+    .select {
+        align-self: end;
+        select {
+            min-width: 12em;
+        }
+    }
+</style>
