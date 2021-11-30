@@ -13,7 +13,11 @@ const config = {
   
   },
   files: [
-    'packages/**/dist/**',
+    'packages/main',
+    'packages/preload',
+    'packages/renderer/dist',
+    'CHANGELOG.md',
+    'python3',
   ],
   
   
@@ -29,15 +33,14 @@ const config = {
     }
   ],
 
-  // asarUnpack: [
-  //   "./python3/",
-  //   "./public/assets/python_files"
-  // ],
+  asarUnpack: [
+    "python3/",
+    "packages/renderer/dist/assets/python_files"
+  ],
 
   win: {
     target: "nsis",
-    icon: "./public/assets/logo/win/icon.ico",
-    asar: false
+    asar: true
   },
 
   nsis: {

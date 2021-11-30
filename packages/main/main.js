@@ -1,31 +1,32 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require("path");
-const {URL} = require("url");
-const isSingleInstance = app.requestSingleInstanceLock();
 
+const isSingleInstance = app.requestSingleInstanceLock();
 if (!isSingleInstance) {
   app.quit();
   process.exit(0);
-}
 
-app.disableHardwareAcceleration();
+}
 const env = import.meta.env;
+// const devMode = env.MODE === 'development'
+
 
 const ROOT_DIR = path.join(__dirname, "../../../")
 const PKG_DIR = path.join(ROOT_DIR, "packages")
 const RENDERER_DIR = path.join(PKG_DIR, "renderer")
 
-console.log({__dirname, ROOT_DIR, PKG_DIR, RENDERER_DIR, MODE: env.MODE})
+console.log({__dirname, ROOT_DIR, PKG_DIR, RENDERER_DIR, env})
 
 async function createWindow() {
-  try {
-    const icon = path.join(RENDERER_DIR, "public/assets/logo/win/icon.ico")
+    const icon = path.join(RENDERER_DIR, env.DEV ? "public" : "dist", "assets/logo/icon.ico")
 
     const mainWindow = new BrowserWindow({
       width: 1200, height: 700, frame: true, icon, show: false,
-      webPreferences: { preload: path.join(PKG_DIR, 'preload/preload.js'), nodeIntegration: true }
+      webPreferences: { 
+        preload: path.join(PKG_DIR, 'preload/dist/preload.cjs'),
+        nodeIntegration: true
+       }
     });
-    // mainWindow.loadFile(path.join(RENDERER_DIR, 'index.html'));
 
     require("../Menu")
     require("../dialogs")
@@ -33,26 +34,14 @@ async function createWindow() {
 
     mainWindow.on('ready-to-show', () => {
       mainWindow?.show();
-      if (env.MODE === 'development') {
-        mainWindow?.webContents.openDevTools();
-      }
-    
+      if (env.DEV) {mainWindow?.webContents.openDevTools();}
     });
     
-    // const pageUrl = env.MODE === 'development'
-    //   ? env.VITE_DEV_SERVER_URL
-    //   : new URL('../renderer/dist/index.html', 'file://' + __dirname).toString();
 
-    const pageUrl = env.MODE === 'development'
-      ? env.VITE_DEV_SERVER_URL
-      : new URL('../renderer/build.html', 'file://' + __dirname).toString();
-
-    await mainWindow.loadURL(pageUrl);
-  // return mainWindow
-  } catch (error) {
-
-    console.error(error)
-  }
+    env.DEV 
+      ? await mainWindow.loadURL(env.VITE_DEV_SERVER_URL)
+      : await mainWindow.loadFile(path.join(RENDERER_DIR, 'dist/index.html'))
+    
 }
 
 app.whenReady().then(() => {

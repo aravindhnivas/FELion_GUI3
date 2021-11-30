@@ -21,7 +21,7 @@ const RENDERER_DIR = path.join(PKG_DIR, "renderer")
 export default {
 
 	input: path.join(RENDERER_DIR, "src/App.js"),
-	output: [ { sourcemap: true, format: 'iife', name: 'app', file: path.join(RENDERER_DIR, 'build/bundle.js') } ],
+	output: [ { sourcemap: true, format: 'iife', name: 'app', file: path.join(RENDERER_DIR, 'public/build/bundle.js') } ],
 
 	plugins: [
 		nodePolyfills(),

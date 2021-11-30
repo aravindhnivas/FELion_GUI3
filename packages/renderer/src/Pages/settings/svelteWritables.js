@@ -8,7 +8,7 @@ window.db = JSONdb(db_file_location)
 
 window.unpackedLocation = appInfo.isPackaged ? pathJoin(dirname(appInfo.module), "resources/app.asar.unpacked/") : ROOT_DIR
 const pyPath = pathJoin(unpackedLocation, "python3/python")
-const pyScriptPath = pathJoin(unpackedLocation, "packages/renderer/public/assets/python_files")
+const pyScriptPath = pathJoin(unpackedLocation, "packages/renderer/dist/assets/python_files")
 
 
 if(!db.get("pythonpath")) {db.set("pythonpath", pyPath)}

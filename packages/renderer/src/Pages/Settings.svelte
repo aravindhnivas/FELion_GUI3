@@ -45,47 +45,6 @@
     }
 </script>
 
-<style lang="scss">
-
-    section { margin: 0; padding: 0; }
-
-    .clicked {border-bottom: solid 1px; }
-
-    .main__div {
-
-        display: grid;
-        grid-template-columns: 1fr 4fr;
-        column-gap: 3em;
-        height: calc(100vh - 7rem);
-        .box {
-            margin-bottom: 0px;
-            border-radius: 0;
-            background-color: #6a50ad8a;
-        }
-        .title__div{
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            text-align: center;
-            cursor: pointer;
-            display: grid;
-            row-gap: 2em;
-            div {font-size: 22px; }
-        } 
-
-        #update-progress-container {
-
-            progress {width: 100%;}
-            display: grid;
-            width: 100%;
-            gap: 1em;
-            grid-template-columns: auto 1fr;
-            align-items: center;
-        }
-    }
-    
-</style>
-
-
 <CustomDialog id="pythonpath_Check" bind:dialog={pythonpathCheck} on:response={handlepythonPathCheck} title={"Python path is not valid"} content={"Change it in Settings --> Configuration"} label1="Okay" label2="Cancel" />
 <Changelog  />
 
@@ -172,3 +131,42 @@
         </div>
     </div>
 </section>
+
+
+<style lang="scss">
+    section { margin: 0; padding: 0; }
+    .clicked {border-bottom: solid 1px; }
+
+    .main__div {
+
+        display: grid;
+        grid-template-columns: 1fr 4fr;
+        column-gap: 3em;
+        height: calc(100vh - 7rem);
+        .box {
+            margin-bottom: 0px;
+            border-radius: 0;
+            background-color: #6a50ad8a;
+        }
+        .title__div{
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            text-align: center;
+            cursor: pointer;
+            display: grid;
+            row-gap: 2em;
+            div {font-size: 22px; }
+        } 
+
+        #update-progress-container {
+
+            progress {width: 100%;}
+            display: grid;
+            width: 100%;
+            gap: 1em;
+            grid-template-columns: auto 1fr;
+            align-items: center;
+        }
+    }
+</style>
+
