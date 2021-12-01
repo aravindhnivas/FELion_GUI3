@@ -78,7 +78,7 @@ def exp_theory(args, output_filename="averaged"):
     if tkplot: ax.plot(xs, ys, "k-", label="Experiment", alpha=0.9)
     else:
 
-        data = {"line_simulation":{}, "averaged": {
+        dataToSend = {"line_simulation":{}, "averaged": {
                     "x": list(xs), "y": list(ys),  "name": "Exp",
                     "mode": "lines", "marker": {"color": "black"},
             }}
@@ -107,19 +107,23 @@ def exp_theory(args, output_filename="averaged"):
         if tkplot: ax.fill(theory_x, theory_y, label=theoryfile.stem)
 
         else:
-            data["line_simulation"][f"{theoryfile.name}"] = {
+            dataToSend["line_simulation"][f"{theoryfile.name}"] = {
                     "x":list(theory_x), "y":list(theory_y),  "name":f"{theoryfile.stem}", "fill":"tozerox"
                 }
 
-    if not tkplot: sendData(data)
+    if not tkplot: sendData(dataToSend, calling_file=pt(__file__).stem)
     else:
         widget.plot_legend = ax.legend()
         widget.mainloop()
 
-if __name__ == "__main__":
+args = None
+def main(arguments):
 
-    args = sys.argv[1:][0].split(",")
-    args = json.loads(", ".join(args))
+    global args
+    args = arguments
+
+    # args = sys.argv[1:][0].split(",")
+    # args = json.loads(", ".join(args))
 
     print(f"Received args: {args}, {type(args)}\n")
     

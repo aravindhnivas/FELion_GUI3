@@ -63,7 +63,7 @@ def simulate(args):
         "collisionalBoltzmanPlotData" : {"collisionalData":{"x":energyKeys, "y":collisionalDistribution.tolist(), "name" : "collisional"}},
         "differenceFromBoltzman": {"data": {"x":energyKeys, "y":differenceFromBoltzman.tolist(), "name":"Difference"}}
     }
-    return sendData(dataToSend)
+    return sendData(dataToSend, calling_file=pt(__file__).stem)
 
 def plot(simulateTime, simulateCounts):
     fig, ax = plt.subplots(figsize=(7, 4), dpi=100)
@@ -76,10 +76,15 @@ def plot(simulateTime, simulateCounts):
 
     plt.show()
 
-if __name__ == "__main__":
+args = None
+rate_constants, nHe, boltzmanDistributionInitial, energyKeys = None, None, None, None
+def main(arguments):
 
-    args = sys.argv[1:][0].split(",")
-    args = json.loads(", ".join(args))
+    global args, rate_constants, nHe, boltzmanDistributionInitial, energyKeys
+    args = arguments
+
+    # args = sys.argv[1:][0].split(",")
+    # args = json.loads(", ".join(args))
     print(args, flush=True)
     rate_constants = {key:float(value) for key, value in args["collisionalRateConstantValues"].items()}
 

@@ -68,7 +68,7 @@ def exp_fit(tkplot=False, getvalue=False):
     #wn_fit = np.linspace(line_freq_fit-5*sigma, line_freq_fit+5*sigma, 1000)
     #inten_fit = gaussian(wn_fit, amplitude, sigma, line_freq_fit)
 
-    data = {
+    dataToSend = {
         "freq":f"{uline_freq.nominal_value:.2f}", "table": f"{uline_freq:.2uP}, {uamplitude:.2uP}, {ufwhm:.2uP}, {usigma:.2uP}", 
         "for_weighted_error":f"{uline_freq.nominal_value}, {uline_freq.std_dev}, {uamplitude.nominal_value}, {uamplitude.std_dev}, {ufwhm.nominal_value}, {ufwhm.std_dev}, {usigma.nominal_value}, {usigma.std_dev}",
         "fit": {"x":list(wn), "y":list(fit_data), "name":f"{uline_freq:.2uP}; A: {uamplitude:.2uP}, {_del}: {ufwhm:.2uP}", "mode": "lines", "line": {"color":line_color}},
@@ -85,7 +85,7 @@ def exp_fit(tkplot=False, getvalue=False):
         }
     }
     
-    if getvalue: return data, uline_freq, usigma, uamplitude, ufwhm, line_color
+    if getvalue: return dataToSend, uline_freq, usigma, uamplitude, ufwhm, line_color
     expfile = datfile_location/f"{filename.stem}_{norm_method}.expfit"
     fullfit_file = datfile_location/f"{filename.stem}_{norm_method}.fullfit"
     
@@ -131,11 +131,14 @@ def exp_fit(tkplot=False, getvalue=False):
 
                 
 
-    sendData(data)
+    sendData(dataToSend, calling_file=pt(__file__).stem)
+args = None
+def main(arguments):
 
-if __name__ == "__main__":
-    args = sys.argv[1:][0].split(",")
-    args = json.loads(", ".join(args))
+    global args
+    args = arguments
+    # args = sys.argv[1:][0].split(",")
+    # args = json.loads(", ".join(args))
     print(f"Received args: {args}, {type(args)}\n")
 
     exp_fit(args)

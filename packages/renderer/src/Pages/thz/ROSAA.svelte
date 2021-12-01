@@ -1,7 +1,6 @@
 
 <script>
-    // import {mainPreModal} from "../../svelteWritable";
-    // import { createEventDispatcher } from 'svelte';
+    
     import {browse} from "$components/Layout.svelte";
     import Textfield from '@smui/textfield';
     import {fade} from "svelte/transition";
@@ -10,44 +9,38 @@
     import CustomCheckbox from "$components/CustomCheckbox.svelte";
     import CustomSelect from "$components/CustomSelect.svelte";
     import BoltzmanDistribution from "./windows/BoltzmanDistribution.svelte";
-
     import { parse as Yml } from 'yaml';
+
     import EinsteinCoefficients from "./components/EinsteinCoefficients.svelte";
     import CollisionalCoefficients from "./components/CollisionalCoefficients.svelte";
-
     import AttachmentCoefficients from "./components/AttachmentCoefficients.svelte";
-
-
-    import {PlanksConstant, SpeedOfLight, boltzmanConstant, DebyeToCm, VaccumPermitivity, amuToKG} from "./functions/constants";
+    import {
+        PlanksConstant, SpeedOfLight, boltzmanConstant, DebyeToCm, VaccumPermitivity, amuToKG
+    } from "./functions/constants";
     import {findAndGetValue} from "./functions/misc";
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    
     export let active=false;
-    // const dispatch = createEventDispatcher();
 
     let electronSpin=false, zeemanSplit= false;
     let collisionalRateType = "excitation"
-    // let trapTemp = 5.7
     
     let [mainParameters, simulationParameters, dopplerLineshape, powerBroadening] = Array(4).fill([])
     let attachmentCoefficients=[], k3={constant:[], rate:[]}, kCID={constant:[], rate:[]};
+
     $: deexcitation = collisionalRateType==="deexcitation";
+
     let py, pyProcesses=[];
 
     const pyEventHandle = (e) => {
         statusReport = ""
-    
         const events = e.detail
-
         py = events.py;
         console.log(py);
-
         pyProcesses = [...pyProcesses, py]
     }
 
     let statusReport = "";
-
     let showreport = false
 
     const pyEventDataReceivedHandle = (e) => {
@@ -57,7 +50,7 @@
     }
 
     const pyEventClosedHandle = (e) => {
-        running=false; 
+        // running=false; 
         pyProcesses = _.difference(pyProcesses, [e.detail.py]);
         window.createToast("Terminated", "danger")
         statusReport += "\n######## TERMINATED ########"
@@ -65,9 +58,7 @@
 
     const pyKillProcess = () => {
         const lastInvokedPyProcess = _.last(pyProcesses);
-
         if(lastInvokedPyProcess) {
-
             lastInvokedPyProcess.kill(); pyProcesses.pop()
         }
     }
@@ -125,32 +116,24 @@
         
         }
         
-        // const pyfile = "ROSAA/ROSAA_simulation.py"
-        const pyfile = "ROSAA/ROSAA_simulation_newTest.py"
-        
+        const pyfile = "ROSAA_simulation.py"
         const args = [JSON.stringify(conditions)]
         
         computePy_func({e, pyfile, args, general:true}).catch(error=>{window.handleError(error)})
-        running=true
+        // running=true
     }
     let currentLocation = fs.existsSync(db.get("thz_modal_location")) ? db.get("thz_modal_location") : "";
 
-
-
     let savefilename = ""
-
     $: if(currentLocation&&fs.existsSync(currentLocation)) {db.set("thz_modal_location", currentLocation)}
     async function browse_folder() {
-
         const result = await browse({dir:true})
         if (result) { currentLocation = result[0];}
     }
 
     let writefile = true, includeCollision = true, includeSpontaneousEmission = true, includeAttachmentRate = true;
-
     let variable = "time", variableRange = "1e12, 1e16, 10";
     const variablesList = ["time", "He density(cm3)", "Power(W)"]
-
     let collisionalCoefficient=[], einsteinCoefficientA=[], einsteinCoefficientB=[];
 
     let energyUnit="cm-1", numberDensity = "2e14";
@@ -165,7 +148,6 @@
     let configLoaded = false;
 
     async function loadConfig() {
-    
         try {
             if(fs.existsSync(configFile)) return setConfig();
             const congFilePath = await browse({dir:false, multiple:false})
@@ -183,19 +165,19 @@
             const fileContent = fs.readFileSync(filename)
             const YMLcontent = Yml(fileContent)
             return Promise.resolve(YMLcontent)
+
         } else return Promise.reject(filename + " file doesn't exist")
     }
-
     
     const setID = (obj) => {
         obj.id = window.getID();
         return obj
+
     }
 
     const correctObjValue = (obj) => {
         obj.value = obj.value.toExponential(3)
         return obj
-
     }
 
     let trapArea;
@@ -212,14 +194,14 @@
     let lorrentz=0, power="2e-5", dipole=1
     let Cp=0; // power-broadening proportionality constant
     // $: console.log({Cg, Cp});
+
     $: {
-    
         if(energyLevels.length>1) {
+            console.log("energyLevels updated")
             const {value:lowerLevelEnergy} = _.find(energyLevels, (energy)=>energy.label==excitedFrom)
             const {value:upperLevelEnergy} = _.find(energyLevels, (energy)=>energy.label==excitedTo)
             transitionFrequency = upperLevelEnergy - lowerLevelEnergy;
             transitionFrequencyInHz = energyUnit=="cm-1" ? transitionFrequency*SpeedOfLight*1e2 : transitionFrequency*1e6;
-            // console.log({transitionFrequency, transitionFrequencyInHz})
         }
 
         if(dopplerLineshape.length) {
@@ -229,35 +211,35 @@
             const sqrtTerm = 8*boltzmanConstant*Math.log(2) / (ionMass*amuToKG*SpeedOfLight
             **2)
             Cg = transitionFrequencyInHz*Math.sqrt(sqrtTerm)
-            gaussian = Number(Cg*Math.sqrt(ionTemp)*1e-6).toFixed(3)
 
+            gaussian = Number(Cg*Math.sqrt(ionTemp)*1e-6).toFixed(3)
         };
         if(powerBroadening.length) {
             [dipole, power] = powerBroadening.map(f=>f.value);
             trapArea = findAndGetValue(mainParameters, "trap_area (sq-meter)")
-
             Cp = (2*dipole*DebyeToCm/PlanksConstant) * Math.sqrt( 1 / (trapArea*SpeedOfLight*VaccumPermitivity) );
-
             lorrentz = Number(Cp*Math.sqrt(power)*1e-6).toFixed(3)
-
         };
+
     }
 
     async function setConfig() {
 
         try {
 
+
             const configFileLocation = dirname(configFile);
             const CONFIG = Yml(fs.readFileSync(configFile));
             let attachmentRateConstants = {};
+            
             ({mainParameters, simulationParameters, dopplerLineshape, powerBroadening, attachmentCoefficients, attachmentRateConstants} = CONFIG);
+            
             mainParameters = mainParameters.map(setID);
             simulationParameters = simulationParameters.map(setID);
             dopplerLineshape = dopplerLineshape.map(setID);
             powerBroadening = powerBroadening.map(setID);
 
             attachmentCoefficients = attachmentCoefficients.map(setID);
-
             k3.constant = attachmentRateConstants.k3.map(setID).map(correctObjValue);
             kCID.constant = attachmentRateConstants.kCID.map(setID).map(correctObjValue);
             ({trapTemp, electronSpin, zeemanSplit, numberDensity} = CONFIG);
@@ -271,94 +253,22 @@
             collisionalFilename = window.pathJoin(configFileLocation, collisionalFilename);
             einsteinFilename = window.pathJoin(configFileLocation, einsteinFilename);
 
-
             ({levels:energyLevels, unit:energyUnit} = await getYMLFileContents(energyFilename));
+
             energyLevels = energyLevels.map(setID);
             numberOfLevels = energyLevels.length;
 
             ({rateConstants:einsteinCoefficientA} = await getYMLFileContents(einsteinFilename));
             einsteinCoefficientA = einsteinCoefficientA.map(setID).map(correctObjValue);
-            console.log(energyLevels, collisionalCoefficient, einsteinCoefficientA);
+
+            console.log({energyLevels, collisionalCoefficient, einsteinCoefficientA});
             window.createToast("CONFIG loaded");
             configLoaded = true;
 
         } catch (error) {window.handleError(error)}
     }
+
 </script>
-
-<style lang="scss">
-    .locationColumn {
-
-        display: grid;
-        grid-auto-flow: column;
-        grid-gap: 1em;
-        grid-template-columns: 1fr 4fr 2fr;
-        .button {
-            margin:0;
-            align-self: center;
-        }
-    }
-
-    hr {background-color: #fafafa; margin: 0;}
-    .writefileCheck {
-        display: grid;
-        grid-auto-flow: column;
-        border: solid 1px white;
-        border-radius: 20px;
-    }
-    .variableColumn {
-
-        display: grid;
-        .subtitle {margin: 0;}
-        .variableColumn__dropdown {
-
-
-            display: flex;
-            gap: 1em;
-            place-items: baseline;
-        }
-    }
-    .main_container__div {
-        display: grid;
-        grid-row-gap: 1em;
-        padding: 1em;
-        .subtitle {margin:0;}
-    }
-    .sub_container__div {
-        display: grid;
-
-        grid-row-gap: 1em;
-        .subtitle {place-self:center;}
-        .content__div {
-
-            max-height: 30rem;
-            overflow-y: auto;
-            display: flex;
-            flex-wrap: wrap;
-            justify-self: center; // grow from center (width is auto adjusted)
-
-            gap: 1em;
-            justify-content: center; // align items center
-
-        }
-        .control__div {
-
-            display: flex;
-            align-items: baseline;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1em;
-        }
-    }
-
-    .status_report__div {
-
-        white-space: pre-wrap; 
-        -webkit-user-select: text;
-        padding:1em;
-    }
-
-</style>
 
 {#if active}
 
@@ -517,3 +427,77 @@
     </SeparateWindow>
 
 {/if}
+
+<style lang="scss">
+    .locationColumn {
+
+        display: grid;
+        grid-auto-flow: column;
+        grid-gap: 1em;
+        grid-template-columns: 1fr 4fr 2fr;
+        .button {
+            margin:0;
+            align-self: center;
+        }
+    }
+
+    hr {background-color: #fafafa; margin: 0;}
+    .writefileCheck {
+        display: grid;
+        grid-auto-flow: column;
+        border: solid 1px white;
+        border-radius: 20px;
+    }
+    .variableColumn {
+
+        display: grid;
+        .subtitle {margin: 0;}
+        .variableColumn__dropdown {
+
+
+            display: flex;
+            gap: 1em;
+            place-items: baseline;
+        }
+    }
+    .main_container__div {
+        display: grid;
+        grid-row-gap: 1em;
+        padding: 1em;
+        .subtitle {margin:0;}
+    }
+    .sub_container__div {
+        display: grid;
+
+        grid-row-gap: 1em;
+        .subtitle {place-self:center;}
+        .content__div {
+
+            max-height: 30rem;
+            overflow-y: auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-self: center; // grow from center (width is auto adjusted)
+
+            gap: 1em;
+            justify-content: center; // align items center
+
+        }
+        .control__div {
+
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1em;
+        }
+    }
+
+    .status_report__div {
+
+        white-space: pre-wrap; 
+        -webkit-user-select: text;
+        padding:1em;
+    }
+
+</style>

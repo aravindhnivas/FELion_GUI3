@@ -134,7 +134,7 @@ def plot_thz(ax=None, save_dat=True, latex=False):
     binData = args["binData"]
     delta = args["delta"]*1e-6 # in kHz
     xs, ys = [], []
-    data = {"resOnOff_Counts":{}, "thz":{}}
+    dataToSend = {"resOnOff_Counts":{}, "thz":{}}
     c =  0
 
     for i, filename in enumerate(filenames):
@@ -152,14 +152,14 @@ def plot_thz(ax=None, save_dat=True, latex=False):
         lg = f"{filename.name} [{steps} KHz : {iteraton} cycles]"
         if justPlot:
 
-            data["thz"][f"{filename.name}"] = {"x": list(freq), "y": list(depletion_counts), "name": lg, 
+            dataToSend["thz"][f"{filename.name}"] = {"x": list(freq), "y": list(depletion_counts), "name": lg, 
                 "mode":'lines+markers',"type":'scatter', "fill":"tozeroy", "line":{"color":f"rgb{colors[i*2]}", "shape":"hvh"}
             }
 
-            data["resOnOff_Counts"][f"{filename.name}_On"] = {"x": list(freq), "y": resOnCounts.mean(axis=0).tolist(), "name": f"{filename.name}_On", 
+            dataToSend["resOnOff_Counts"][f"{filename.name}_On"] = {"x": list(freq), "y": resOnCounts.mean(axis=0).tolist(), "name": f"{filename.name}_On", 
                 "mode":'markers',"type":'scatter', "line":{"color":f"rgb{colors[i*2]}", "shape":"hvh"}
             }
-            data["resOnOff_Counts"][f"{filename.name}_Off"] = {"x": list(freq), "y": resOffCounts.mean(axis=0).tolist(), "name": f"Off: {freq_resOff}GHz: {iteraton}", 
+            dataToSend["resOnOff_Counts"][f"{filename.name}_Off"] = {"x": list(freq), "y": resOffCounts.mean(axis=0).tolist(), "name": f"Off: {freq_resOff}GHz: {iteraton}", 
 
                 "mode":'markers',"type":'scatter', "line":{"color":f"rgb{colors[i*2+1]}", "shape":"hvh"}
             }
@@ -181,16 +181,16 @@ def plot_thz(ax=None, save_dat=True, latex=False):
 
         else:
 
-            data["thz"][f"{filename.name}"] = {"x": list(freq), "y": list(depletion_counts), "name": lg, 
+            dataToSend["thz"][f"{filename.name}"] = {"x": list(freq), "y": list(depletion_counts), "name": lg, 
                 "mode":'lines+markers', "type":'scatter',"fill":"tozeroy", "line":{"color":f"rgb{colors[i*2]}", "shape":"hvh"}
             }
-            data["thz"][f"{filename.name}_fit"] = {"x": list(freq), "y": list(fit_data), "name": lg_fit, 
+            dataToSend["thz"][f"{filename.name}_fit"] = {"x": list(freq), "y": list(fit_data), "name": lg_fit, 
                 "mode":'lines',  "line":{"color":f"rgb{colors[i*2]}"}
             }
-            data["resOnOff_Counts"][f"{filename.name}_On"] = {"x": list(freq), "y": resOnCounts.tolist()[0], "name": f"{filename.name}_On", 
+            dataToSend["resOnOff_Counts"][f"{filename.name}_On"] = {"x": list(freq), "y": resOnCounts.tolist()[0], "name": f"{filename.name}_On", 
                 "mode":'markers', "line":{"color":f"rgb{colors[i*2]}"}
             }
-            data["resOnOff_Counts"][f"{filename.name}_Off"] = {"x": list(freq), "y": resOffCounts.tolist()[0], "name": f"Off: {freq_resOff}GHz: {iteraton}", 
+            dataToSend["resOnOff_Counts"][f"{filename.name}_Off"] = {"x": list(freq), "y": resOffCounts.tolist()[0], "name": f"Off: {freq_resOff}GHz: {iteraton}", 
                 "mode":'markers', "line":{"color":f"rgb{colors[i*2+1]}", }
             }
 
@@ -203,9 +203,9 @@ def plot_thz(ax=None, save_dat=True, latex=False):
     label = f"Binned (delta={delta*1e6:.2f} KHz)"
     if justPlot:
         
-        if binData: data["thz"]["Averaged_exp"] = { "x": list(binx), "y": list(biny),  
+        if binData: dataToSend["thz"]["Averaged_exp"] = { "x": list(binx), "y": list(biny),  
             "name":label, "mode":'lines+markers', "type":'scatter',"fill":"tozeroy", "line":{"color":"black", "shape":"hvh"} }
-        return data
+        return dataToSend
 
     model = gauss_fit(binx, biny)
 
@@ -238,14 +238,14 @@ def plot_thz(ax=None, save_dat=True, latex=False):
         return fit_data
 
     else:
-        data["thz"]["Averaged_exp"] = {
+        dataToSend["thz"]["Averaged_exp"] = {
             "x": list(binx), "y": list(biny),  "name":label, "mode":'markers', "marker":{"color":"black"}
         }
-        data["thz"]["Averaged_fit"] = {
+        dataToSend["thz"]["Averaged_fit"] = {
             "x": list(binx), "y": list(fit_data),  "name": f"Fitted: {line_freq_fit:.7f} ({freq_fit_err:.0f}) [{fwhm*1e6:.1f} KHz]", 
             "mode":'line',  "line":{"color":"black"}
         }
-        data["text"] = {
+        dataToSend["text"] = {
             "x":[line_freq_fit-9e-5, line_freq_fit],
             "y":[half_max*.7, -2],
             "text":[f"{fwhm*1e6:.1f} KHz", f"{line_freq_fit:.7f} GHz"],
@@ -253,7 +253,7 @@ def plot_thz(ax=None, save_dat=True, latex=False):
             "showlegend":False
         }
 
-        data["shapes"] = {
+        dataToSend["shapes"] = {
                 "center": {
                     "type":"line", "x0":line_freq_fit, "x1":line_freq_fit,
                     "y0": 0, "y1":amplitude,
@@ -264,7 +264,7 @@ def plot_thz(ax=None, save_dat=True, latex=False):
                 }
             }
 
-        return data
+        return dataToSend
 
 def save_fig():
 
@@ -333,7 +333,7 @@ def export_file(fname, freq, inten):
             f.write(f"#Frequency({unit})\t#DepletionCounts(%)\n")
             for i in range(len(freq)): f.write(f"{freq[i]}\t{inten[i]}\n")
 
-def main(args):
+def thz_function():
     
     global widget
     os.chdir(filenames[0].parent)
@@ -351,16 +351,24 @@ def main(args):
         fit_data = plot_thz(ax=ax)
         widget.plot_legend = ax.legend(title=f"Intensity: {fit_data.max():.2f} %")
         widget.mainloop()
+
+        
     else: 
-        data = plot_thz()
-        sendData(data)
 
+        dataToSend = plot_thz()
+        # sendData(data)
+        sendData(dataToSend, calling_file=pt(__file__).stem)
 
-if __name__ == "__main__":
-    args = sys.argv[1:][0].split(",")
-    args = json.loads(", ".join(args))
+args = None
+tkplot, filenames = None, None
+def main(arguments):
+
+    global args, tkplot, filenames
+    args = arguments
+    # args = sys.argv[1:][0].split(",")
+    # args = json.loads(sys.argv[1])
     print(args, flush=True)
 
     tkplot = args["tkplot"]
     filenames = [pt(i) for i in args["thzfiles"]]
-    main(args)
+    thz_function()

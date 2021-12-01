@@ -222,18 +222,22 @@ def opoplot(args):
         dataToSend["average_rel"]["average"] = makeDataToSend(binns_r, intens_r, avg_lg, update=defaultStyle)
         dataToSend["average_per_photon"]["average"] = makeDataToSend(binns, energyJ_norm, avg_lg, update=defaultStyle)
 
-        sendData(dataToSend)
+        sendData(dataToSend, calling_file=pt(__file__).stem)
 
     else:
         ax.plot(binns, intens, "k.-", label=f"Averaged: delta={delta}")
         widget.plot_legend = ax.legend()
         widget.mainloop()
     
-if __name__ == "__main__":
+args = None
+def main(arguments):
+
+    global args
+    args = arguments
 
 
-    args = sys.argv[1:][0].split(",")
-    args = json.loads(", ".join(args))
+    # args = sys.argv[1:][0].split(",")
+    # args = json.loads(", ".join(args))
     print(f"Received args: {args}, {type(args)}\n")
     
     opoplot(args)

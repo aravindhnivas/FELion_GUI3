@@ -38,15 +38,19 @@ def addTraceToPlot(args):
         }
 
         c +=2
-
         dataToSend.append(data)
         print(data)
-    sendData(dataToSend)
 
-if __name__ == "__main__":
+
+    sendData(dataToSend, calling_file=pt(__file__).stem)
+
+args = None
+def main(arguments):
+
+    global args
+    args = arguments
     
-    args = sys.argv[1:][0].split(",")
-    args = json.loads(", ".join(args))
+    # args = sys.argv[1:][0].split(",")
+    # args = json.loads(", ".join(args))
     print(f"Received args: {args}, {type(args)}\n")
-
     addTraceToPlot(args)

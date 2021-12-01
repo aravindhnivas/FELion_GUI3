@@ -222,16 +222,20 @@ def get_iterations(scanfile, location):
     return iterations
 
 
-if __name__ == "__main__":
-    args = sys.argv[1:][0].split(",")
-    filename = [pt(i) for i in args[:-1]]
-    tkplot = args[-1]
+# args = None
+def main(args):
 
-    if tkplot == "plot": timescanplot(filename[0], tkplot=True)
+    # global args
+    # args = arguments
+    # args = sys.argv[1:][0].split(",")
+    scanfiles = [pt(i) for i in args["scanfiles"]]
+    tkplot = args["tkplot"]
+
+    if tkplot == "plot": timescanplot(scanfiles[0], tkplot=True)
     else:
         dataToSend = {}
-        for i in filename:
+        for i in scanfiles:
             data = timescanplot(i)
             dataToSend[i.name] = data.get_plotly_data()
             # print(i.name)
-        sendData(dataToSend)
+        sendData(dataToSend, calling_file=pt(__file__).stem)

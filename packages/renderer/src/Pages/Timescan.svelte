@@ -66,7 +66,7 @@
         })]
         
         let pyfileInfo = {
-            scan: {pyfile:"timescan.py" , args:[...scanfiles, tkplot]},
+            scan: {pyfile:"timescan.py" , args:[[JSON.stringify({scanfiles, tkplot})]]},
 
             general: {pyfile:"depletionscan.py" , args: depletionArgs},
         }

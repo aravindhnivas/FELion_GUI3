@@ -3,20 +3,21 @@ import { pythonpath, pythonscript, get, pyVersion } from "../settings/svelteWrit
 
 const dispatchEvent = (e, detail, eventName) => {
     const pyEventClosed = new CustomEvent(eventName,  { bubbles: false, detail })
-
     e?.target.dispatchEvent(pyEventClosed)
     console.info(eventName + " dispatched")
+
 }
 
-window.computePy_func = async (
-        { 
-            e = null,
-            pyfile = "",
-            args = "",
-            general = false,
-            openShell = false 
-        } = {}
-    ) => {
+
+
+
+window.computePy_func = async ({
+        e = null,
+        pyfile = "",
+        args = "",
+        general = false,
+        openShell = false 
+    } = {}) => {
 
     if(!get(pyVersion)) {
         const error = "Python is not valid. Fix it in Settings --> Configuration"
@@ -35,7 +36,7 @@ window.computePy_func = async (
 
             const py = spawn(
                 get(pythonpath), 
-                [pathJoin(get(pythonscript), pyfile), args], 
+                [pathJoin(get(pythonscript), "main.py"), pyfile, args ], 
                 { detached: general, shell: openShell }
             )
 
@@ -60,6 +61,7 @@ window.computePy_func = async (
                         resolve(dataReceived)
                     } else {
                         const dataFromPython = fs.readJsonSync(outputFile)
+                        if(!fs.existsSync(outputFile)) return reject(`${outputFile} file doesn't exists`)
                         console.table(dataFromPython)
                         resolve(dataFromPython)
                     }

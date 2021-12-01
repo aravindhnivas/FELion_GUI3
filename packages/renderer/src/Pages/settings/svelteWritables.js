@@ -12,7 +12,7 @@ const pyScriptPath = pathJoin(unpackedLocation, "packages/renderer/dist/assets/p
 
 
 if(!db.get("pythonpath")) {db.set("pythonpath", pyPath)}
-db.set("pythonscript", pyScriptPath)
+if(!db.get("pythonscript")) {db.set("pythonscript", pyScriptPath)}
 
 export const pythonpath = writable(db.get("pythonpath"))
 export const pythonscript = writable(db.get("pythonscript"))

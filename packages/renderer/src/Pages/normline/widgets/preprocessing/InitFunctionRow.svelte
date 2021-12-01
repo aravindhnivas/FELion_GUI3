@@ -67,13 +67,13 @@
                 removeExtraFile()
                 graphPlotted = false, $felixOutputName = "averaged", $felixPlotAnnotations = [], $felixPeakTable = []
                 
-                pyfile="normline.py" , args=[...felixfiles, delta]
+                pyfile="normline.py" , args=[JSON.stringify({felixfiles, delta})]
 
                 computePy_func({e, pyfile, args})
                 .then((dataFromPython)=>{
                     $expfittedLines = [], $felixPlotAnnotations = [], $expfittedLinesCollectedData = [], $fittedTraceCount = 0
                     show_theoryplot = false
-                    felix_func({normMethod, dataFromPython, delta})
+                    felix_func({dataFromPython, delta})
                     window.createToast("Graph Plotted", "success")
 
                     graphPlotted = true

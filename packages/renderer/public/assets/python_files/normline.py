@@ -188,7 +188,7 @@ class normplot:
         
         # Exporting averaged.dat file
         self.export_file(f"averaged", binns, intens, intens_r, energyJ_norm)
-        sendData(dataToSend)
+        sendData(dataToSend, calling_file=pt(__file__).stem)
 
     def inten_per_photon(self, wn, inten): return (np.array(wn) * np.array(inten)) / 1e3
 
@@ -300,12 +300,7 @@ class normplot:
                         return int(line.split(" ")[1])
 
 
-if __name__ == "__main__":
-
-    print("Argument received for normline.py: \n", sys.argv[1:][0])
-    args = sys.argv[1:][0].split(",")
-    print("Argument procesed:\n", args)
-
-    filepaths = args[:-1]
-    delta = float(args[-1])
-    normplot(filepaths, delta)
+def main(args):
+    felixfiles = args["felixfiles"]
+    delta = float(args["delta"])
+    normplot(felixfiles, delta)

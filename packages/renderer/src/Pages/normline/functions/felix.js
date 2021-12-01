@@ -4,7 +4,7 @@ import { subplot } from "../../../js/functions.js";
 import { plotlySelection, plotlyClick } from "./misc";
 import beforePlot from "./beforePlot";
 
-export async function felix_func({ normMethod, dataFromPython, delta } = {}) {
+export async function felix_func({ dataFromPython, delta } = {}) {
 
     await beforePlot({ delta, dataFromPython, graphDiv: "avgplot", baseGraphDiv:"bplot" })
 

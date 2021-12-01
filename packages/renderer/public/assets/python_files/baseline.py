@@ -486,12 +486,16 @@ class Create_Baseline():
         except Exception as error: return showerror("Error", f"Following error has occured while saving {self.basefile} file\n{error}")
     def get_data(self): return np.asarray([self.data[0], self.data[1]]), np.asarray([self.line.get_data()])
 
-if __name__ == "__main__":
+args = None
+def main(arguments):
 
-    args = sys.argv[1:][0].split(",")
-    args = json.loads(", ".join(args))
-    print(f"Received args: {args}, {type(args)}\n")
+    global args
+    args = arguments
 
+    # args = sys.argv[1:][0].split(",")
+    # args = json.loads(", ".join(args))
+    # print(f"Received args: {args}, {type(args)}\n")
+    # print(f"{sys.argv=}", flush=True)
     # print(sys.argv[1:], flush=True)
     # args = sys.argv[1:][0].split(",")
     filename = pt(args["filename"])

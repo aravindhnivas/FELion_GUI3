@@ -180,13 +180,10 @@
     }
 
     
-    let pyfile = "ROSAA/kineticsCode"
+    let pyfile = "kineticsCode"
     // let pyfile = "sympy"
 
-    const kineticCodeFunction = {
-        scipy: {fn: computeKineticCodeScipy, pyfile: "ROSAA/kineticsCode"}, 
-        sympy: {fn: computeKineticCodeSympy, pyfile: "ROSAA/kineticsCode_sympy"}
-    }
+    
     async function kineticSimulation(e) {
         try {
 

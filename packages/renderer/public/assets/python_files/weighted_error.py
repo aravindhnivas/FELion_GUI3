@@ -57,6 +57,5 @@ if __name__ == "__main__":
             receiveData.append(calc_error([x, y]))
 
         dataToSend = {"freq":receiveData[0], "amp":receiveData[1], "fwhm":receiveData[2], "sig":receiveData[3]}
-        sendData(dataToSend)
-
+        sendData(dataToSend, calling_file=pt(__file__).stem)
     else: print("No lines available")

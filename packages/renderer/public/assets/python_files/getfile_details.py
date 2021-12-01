@@ -30,12 +30,16 @@ def get_details(args={}):
         wn = np.genfromtxt(f).T[0]
         _ = {"filename":f.stem, "res":round(res, 1), "b0":round(b0, 1), "trap":round(trap/1000, 1), "range": [int(wn.min()), int(wn.max())]}
         dataToSend["files"].append(_)
-    sendData(dataToSend)
+    sendData(dataToSend, calling_file=pt(__file__).stem)
 
-if __name__ == "__main__":
+args = None
+def main(arguments):
 
-    args = sys.argv[1:][0].split(",")
+    global args
+    args = arguments
 
-    args = json.loads(", ".join(args))
+    # args = sys.argv[1:][0].split(",")
+
+    # args = json.loads(", ".join(args))
     print(f"Received args: {args}, {type(args)}\n")
     get_details(args)

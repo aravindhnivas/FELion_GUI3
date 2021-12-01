@@ -77,8 +77,9 @@ def read_dat_file(filename, norm_method):
 save_location = pt(os.getenv("TEMP")) / "FELion_GUI3"
 if not save_location.exists(): os.mkdir(save_location)
 
-def sendData(dataToSend):
-    calling_file = pt(inspect.stack()[-1].filename).stem
+def sendData(dataToSend, calling_file=""):
+    if not calling_file:
+        calling_file = pt(inspect.stack()[-1].filename).stem
     with open(save_location / f"{calling_file}_data.json", 'w+') as f:
         data = json.dumps(dataToSend, sort_keys=True, indent=4, separators=(',', ': '))
         f.write(data)

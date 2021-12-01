@@ -94,13 +94,17 @@ def fit_all_peaks(args):
         
     ]
     dataToSend = [{"data": data["data"]}, {"extras":data["extras"]}, {"annotations":data["annotations"]}, {"filename":str(filename)}]
-    sendData(dataToSend)
+    sendData(dataToSend, calling_file=pt(__file__).stem)
     print("Data sent")
 
-if __name__ == "__main__":
+args = None
+def main(arguments):
 
-    args = sys.argv[1:][0].split(",")
-    args = json.loads(", ".join(args))
+    global args
+    args = arguments
+
+    # args = sys.argv[1:][0].split(",")
+    # args = json.loads(", ".join(args))
     
     print(f"Received args: {args}, {type(args)}\n")
     fit_all_peaks(args)

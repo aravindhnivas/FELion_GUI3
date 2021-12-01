@@ -66,7 +66,7 @@
         try {
     
             if (collisionalFilename) {
-                const pyfile = "ROSAA/collisionalFit.py"
+                const pyfile = "collisionalFit.py"
                 const args = [JSON.stringify({collisionalFilename, collisionalTemp, saveFilename, collisionalRateType})]
                 const dataFromPython = await computePy_func({e, pyfile, args});
                 const {rateConstants} = dataFromPython

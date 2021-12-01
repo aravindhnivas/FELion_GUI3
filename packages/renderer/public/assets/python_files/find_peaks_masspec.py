@@ -35,24 +35,18 @@ def find_mass_peaks(filename, prominence, width, height):
     ]
 
     dataToSend = {"annotations":annotations}
-    sendData(dataToSend)
+    sendData(dataToSend, calling_file=pt(__file__).stem)
 
-if __name__ == "__main__":
+args = None
+def main(arguments):
 
-    args = sys.argv[1:][0].split(",")
+    global args
+    args = arguments
+    # args = json.loads(sys.argv[1])
 
-    filename = pt(args[0])
-
-    prominence = args[1]
-    if prominence == "": prominence = None
-    else: prominence = float(prominence)
-
-    width = args[2]
-    if width == "": width = None
-    else: width = float(width)
-
-    height = args[3]
-    if height == "": height = None
-    else: height = float(height)
-    
+    filename = pt(args["filename"])
+    prominence = float(args["peak_prominance"])
+    width = float(args["peak_width"])
+    height = float(args["peak_height"])
     find_mass_peaks(filename, prominence, width, height)
+    

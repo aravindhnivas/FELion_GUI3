@@ -17,8 +17,12 @@ def delete_last_line(filename):
 
         print(f"Last line deleted")
 
-if __name__ == "__main__":
-    args = sys.argv[1:][0].split(",")
+args = None
+def main(arguments):
+
+    global args
+    args = arguments
+    # args = sys.argv[1:][0].split(",")
 
     normMethod = args[-1]
     filename = f"{args[0]}_{normMethod}.expfit"

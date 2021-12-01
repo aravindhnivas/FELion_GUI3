@@ -46,7 +46,7 @@
 
         const args = [JSON.stringify({lorrentz, gaussian})]
         console.log(args)
-        const pyfile = "ROSAA/voigt.py"
+        const pyfile = "voigt.py"
 
         try {
             const {linshape} = await computePy_func({e, pyfile, args})

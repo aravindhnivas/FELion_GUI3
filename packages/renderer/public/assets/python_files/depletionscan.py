@@ -460,9 +460,13 @@ class depletionplot:
 
             self.relativeFit_plot, = self.ax1.plot(self.fitX, self.relative_abundance)
 
-if __name__ == "__main__":
-    args = sys.argv[1:][0].split(",")
-    arguments = json.loads(", ".join(args))
+# args = None
+def main(arguments):
+
+    # global args
+    # args = arguments
+    # args = sys.argv[1:][0].split(",")
+    # arguments = json.loads(", ".join(args))
     print(f"{arguments=}", flush=True)
 
     location = arguments["currentLocation"]

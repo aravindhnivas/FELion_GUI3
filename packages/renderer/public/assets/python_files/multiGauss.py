@@ -175,7 +175,7 @@ def fitNGaussian(gauss_args):
                 for fit, err in zip(popt_Ngauss, perr_Ngauss)
             ]
             
-            sendData(dataTosend)
+            sendData(dataToSend, calling_file=pt(__file__).stem)
         
         # Writing fullfit and expfit files
         
@@ -222,10 +222,14 @@ def fitNGaussian(gauss_args):
                     with open(write, "w+") as f: f.writelines(fileread)
 
 
-if __name__ == "__main__":
+args = None
+def main(arguments):
 
-    args = sys.argv[1:][0].split(",")
-    args = json.loads(", ".join(args))
+    global args
+    args = arguments
+
+    # args = sys.argv[1:][0].split(",")
+    # args = json.loads(", ".join(args))
 
     print(f"Received args: {args}, {type(args)}\n")
     fitNGaussian(args)

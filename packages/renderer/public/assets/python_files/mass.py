@@ -1,9 +1,9 @@
 # System modules
 import sys
-import json
+# import json
 import os
 from pathlib import Path as pt
-import traceback
+# import traceback
 
 # Data analysis
 import numpy as np
@@ -36,13 +36,13 @@ def massplot(massfiles, tkplot):
         
         widget = FELion_Tk(title="Mass spectrum", location=massfiles[0].parent)
 
-        fig, canvas = widget.Figure()
+        _ = widget.Figure()
 
         if len(massfiles) == 1: savename=massfiles[0].stem
         else: savename = "combined_masspec"
         ax = widget.make_figure_layout(title="Mass Spectrum", xaxis="Mass [u]", yaxis="Counts", yscale="log", savename=savename)
 
-    else: data = {}
+    else: dataToSend = {}
     for massfile in massfiles:
 
         masses_temp, counts_temp = np.genfromtxt(massfile).T
@@ -52,21 +52,22 @@ def massplot(massfiles, tkplot):
 
         if tkplot: ax.plot(masses_temp, counts_temp, label=label)
         
-        else: data[massfile.stem] = {
+        else: dataToSend[massfile.stem] = {
             "x": list(masses_temp), "y": list(counts_temp), "name": label, "mode": "lines", "showlegend": True
         }
 
     if not tkplot:
-        dataJson = json.dumps(data)
-        sendData(data)
+        sendData(dataToSend, calling_file=pt(__file__).stem)
 
     else:
         widget.plot_legend = ax.legend()
         widget.mainloop()
 
 
-if __name__ == "__main__":
-    args = sys.argv[1:][0].split(",")
-    massfiles = [pt(i) for i in args[:-1]]
-    tkplot = (False, True)[args[-1] == "plot"]
+# args = None
+def main(args):
+    # global args
+    # args = arguments
+    massfiles = [pt(i) for i in args["massfiles"]]
+    tkplot = (False, True)[args["tkplot"] == "plot"]
     massplot(massfiles, tkplot)
