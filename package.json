@@ -34,7 +34,7 @@
     "svelte-check": "svelte-check",
     "precompile": "cross-env MODE=production npm run build",
     "compile": "electron-builder build --config electron-builder.config.js --dir",
-    "pack": "electron-builder --config electron-builder.config.js --win -p never",
+    "pack": "electron-builder build --config electron-builder.config.js --win -p never",
     "publish": "electron-builder build --config electron-builder.config.js --win -p always"
   },
   "dependencies": {
