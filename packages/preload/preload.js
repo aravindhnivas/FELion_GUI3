@@ -9,14 +9,18 @@ const env = import.meta.env;
 contextBridge.exposeInMainWorld("versions", versions)
 const appInfo = ipcRenderer.sendSync("appInfo", null)
 contextBridge.exposeInMainWorld("appInfo", appInfo)
+window.isPackaged = appInfo.isPackaged
 
-
-window.ROOT_DIR = path.join(__dirname, "../../../")
+if(appInfo.isPackaged) {
+    window.ROOT_DIR = path.dirname(appInfo.module)
+} else {
+    window.ROOT_DIR = path.join(__dirname, "../../../")
+}
 window.PKG_DIR = path.join(ROOT_DIR, "packages")
 window.RENDERER_DIR = path.join(PKG_DIR, "renderer")
 
 contextBridge.exposeInMainWorld("ROOT_DIR", ROOT_DIR)
-window.publicDirectory = path.join(RENDERER_DIR, "dist/")
+window.publicDirectory = path.join(RENDERER_DIR, appInfo.isPackaged ? "dist" : "public" )
 contextBridge.exposeInMainWorld("__dirname", publicDirectory)
 
 console.log({__dirname, ROOT_DIR, PKG_DIR, RENDERER_DIR, MODE: env})

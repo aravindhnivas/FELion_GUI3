@@ -16,10 +16,12 @@ const config = {
     'packages/main',
     'packages/preload',
     'packages/renderer/dist',
-    'CHANGELOG.md',
-    'python3',
+    
   ],
-  
+  extraFiles: [ // copy to ROOT_DIR (or Contents in mac)
+    'CHANGELOG.md',
+    'packages/renderer/dist/assets/python_files'
+  ],
   
   extraMetadata: {
     version: buildVersion,
@@ -31,11 +33,6 @@ const config = {
       owner: "aravindhnivas",
       repo: "FELion_GUI3"
     }
-  ],
-
-  asarUnpack: [
-    "python3/",
-    "packages/renderer/dist/assets/python_files"
   ],
 
   win: {

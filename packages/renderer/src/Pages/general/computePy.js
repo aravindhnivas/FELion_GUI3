@@ -1,5 +1,5 @@
 
-import { pythonpath, pythonscript, get, pyVersion } from "../settings/svelteWritables";
+import { pythonpath, pythonscript, get, pyVersion, developerMode } from "../settings/svelteWritables";
 
 const dispatchEvent = (e, detail, eventName) => {
     const pyEventClosed = new CustomEvent(eventName,  { bubbles: false, detail })
@@ -18,40 +18,46 @@ window.computePy_func = async ({
         general = false,
         openShell = false 
     } = {}) => {
+    
+    try {
+        if(!get(pyVersion)) {
+            const error = "Python is not valid. Fix it in Settings --> Configuration"
+            return Promise.reject(error)
+        }
 
-    if(!get(pyVersion)) {
-        const error = "Python is not valid. Fix it in Settings --> Configuration"
-        return Promise.reject(error)
-    }
+        console.info("Sending general arguments: ", args)
+        window.createToast("Process Started")
+        const pyProgram = get(developerMode) ? get(pythonpath) : pathJoin(__dirname, "assets/python_files/bin/main")
+        const pyArgs = get(developerMode) ? [pathJoin(get(pythonscript), "main.py"), pyfile, args ] : [pyfile, args]
+        const py = spawn( pyProgram, pyArgs, { detached: general, shell: openShell } )
 
-    let target;
-    if (!general) {
-        target = e.target
-        target.classList.toggle("is-loading")
-    }
-    return new Promise(async (resolve, reject) => {
-        try {
-            console.info("Sending general arguments: ", args)
-            window.createToast("Process Started")
+        let error = ""
+        let dataReceived=""
+        
+        const dataFile = basename(pyfile).split(".")[0]
+        const logFile = pathJoin(appInfo.temp, "FELion_GUI3", dataFile + "_data.log")
 
-            const py = spawn(
-                get(pythonpath), 
-                [pathJoin(get(pythonscript), "main.py"), pyfile, args ], 
-                { detached: general, shell: openShell }
-            )
+        const loginfo = fs.createWriteStream(logFile)
+        
+        py.on("error", (err) => {
+            error = err
+            return Promise.reject(err)
+        })
 
-            const dataFile = basename(pyfile).split(".")[0]
+        let target;
+        if (!general) {
+            target = e.target
+            target.classList.toggle("is-loading")
+        }
+        return new Promise(async (resolve, reject) => {
+        
+            
+            
             const outputFile = pathJoin(appInfo.temp, "FELion_GUI3", dataFile + "_data.json")
             if(fs.existsSync(outputFile)) fs.removeSync(outputFile)
 
-            const logFile = pathJoin(appInfo.temp, "FELion_GUI3", dataFile + "_data.log")
-            const loginfo = fs.createWriteStream(logFile)
-
             dispatchEvent(e, { py, pyfile }, "pyEvent")
             
-            let error = ""
-            let dataReceived=""
-
             py.on("close", () => {
                 dispatchEvent(e, { py, pyfile, dataReceived, error }, "pyEventClosed")
                 
@@ -67,7 +73,9 @@ window.computePy_func = async ({
                     }
                 } else { reject(error); loginfo.write(`\n\n[ERROR OCCURED]\n${error}\n`) }
                 loginfo.end()
-                target?.classList.toggle("is-loading")
+                if(target?.classList.contains("is-loading")) {
+                    target.classList.remove("is-loading")
+                }
                 console.info("Process closed")
             })
 
@@ -84,16 +92,18 @@ window.computePy_func = async ({
             })
 
             if(general) {
-
                 py.unref()
                 py.ref()
             }
-            
-        } catch (error) {
-            reject(error)
-            window.handleError(error)
-            target?.classList.toggle("is-loading")
+        })
+
+    } catch (error) {
+        window.handleError(error)
+        if(target?.classList.contains("is-loading")) {
+            target.classList.remove("is-loading")
         }
-    })
+        return Promise.reject(error)
+    }
 
 }
+

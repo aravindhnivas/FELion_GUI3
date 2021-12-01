@@ -64,6 +64,8 @@ ipcMain.on("appInfo", (event, arg) => {
   const appPathKeys = ["home" ,"appData" ,"userData" ,"cache" ,"temp" ,"exe" ,"module" ,"desktop" ,"documents" ,"downloads" ,"music" ,"pictures" ,"videos" ,"recent" ,"logs" ,"crashDumps"]
   const appInfo = {version: app.getVersion(), isPackaged: app.isPackaged}
   appPathKeys.forEach(key => appInfo[key] = app.getPath(key) )
+
+  appInfo.appPath = app.getAppPath()
   event.returnValue = appInfo
 })
 
