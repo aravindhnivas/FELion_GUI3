@@ -218,18 +218,16 @@ checkboxes = {
     "setbound": False
 }
 
-
 def checkboxesFunc(label):
     global checkboxes
     checkboxes[label] = not checkboxes[label]
     fig.canvas.draw_idle()
 
 def plot_exp():
-
-    global data, fig, ax, k3Sliders, kCIDSliders, rateCoefficientArgs
+    global data, fig, ax, k3Sliders, kCIDSliders, rateCoefficientArgs,\
+        numberDensityWidget, saveButton, checkbox, button, radio
 
     fig, ax = plt.subplots(figsize=(12, 6))
-
     plt.subplots_adjust(right=0.6, top=0.95, left=0.09, bottom=0.25)
     
     axcolor = 'lightgoldenrodyellow'
@@ -237,12 +235,14 @@ def plot_exp():
     left, bottom, width, height = 0.1, 0.05, 0.1, 0.05
     
     rax = plt.axes([left, bottom, width, height], facecolor=axcolor)
+
     radio = RadioButtons(rax, ('log', 'linear'), active=0)
     radio.on_clicked(ChangeYScale)
 
     left += width+0.01
     buttonAxes = plt.axes([left, bottom, width, height], facecolor=axcolor)
     button = Button(buttonAxes, 'Fit', color=axcolor, hovercolor='0.975')
+
     button.on_clicked(fitfunc)
 
     left += width+0.01
@@ -279,13 +279,10 @@ def plot_exp():
     log(f"{rateCoefficientArgs=}")
     log(f"{initialValues=}")
 
-    # return
-
     dNdt = solve_ivp(compute_attachment_process, tspan, initialValues, dense_output=True)
     log(f"{dNdt=}")
-    # return
-    dNdtSol = dNdt.sol(simulateTime)
 
+    dNdtSol = dNdt.sol(simulateTime)
     for counter, data in enumerate(dNdtSol):
         _fitPlot, = ax.plot(simulateTime*1e3, data, "-", c=pltColors[counter])
         fitPlot.append(_fitPlot)
@@ -298,7 +295,6 @@ def plot_exp():
         if numberDensity > 0 and not keyFoundForRate:
             fitfunc()
         plotted = True
-
     except Exception as error:
         log(error)
     # plt.show()
@@ -322,9 +318,6 @@ def update(val=None):
         line.set_ydata(data)
     
     fig.canvas.draw_idle()
-
-
-# update = profile_line(fitData)
 
 k3Sliders = {}
 kCIDSliders = {}
@@ -399,16 +392,18 @@ def make_slider(ax, axcolor):
         _kCIDSlider.on_changed(update)
         kCIDSliders[label] = _kCIDSlider
 
-
         bottom -= height*1.2
         # if keyFoundForRate:
         counter += 1
     return k3Sliders, kCIDSliders
 
-if __name__ == "__main__":
-
-    args = json.loads(sys.argv[1])
-    # log(f"{args=}")
+args = None
+def main(arguments):
+    global args, currentLocation, nameOfReactants, \
+        expTime, expData, expDataError, temp, \
+        numberDensity, totalAttachmentLevels, selectedFile, initialValues, \
+        k3Labels, kCIDLabels, ratek3, ratekCID, savedir, savefile, keyFoundForRate, data
+    args = arguments
 
     currentLocation = pt(args["currentLocation"])
     data = args["data"]
@@ -434,7 +429,6 @@ if __name__ == "__main__":
     else:
         k3Labels = [args["ratek3"].strip()]
         kCIDLabels = [args["ratekCID"].strip()]
-
 
     totalAttachmentLevels = len(initialValues)-1
     savedir = currentLocation/"OUT"
@@ -462,8 +456,5 @@ if __name__ == "__main__":
         ratekCID = [float(args["kCIDGuess"]) for _ in kCIDLabels]
     print(f"{keyFoundForRate=}\n{k3Labels=}", flush=True)
 
-    
-    # KineticMain = profile_line(KineticMain)
     KineticMain()
-    # plt.show(block=False)
     plt.show()
