@@ -224,8 +224,8 @@ def checkboxesFunc(label):
     fig.canvas.draw_idle()
 
 def plot_exp():
-    global data, fig, ax, k3Sliders, kCIDSliders, rateCoefficientArgs,\
-        numberDensityWidget, saveButton, checkbox, button, radio
+    global data, fig, ax, k3Sliders, kCIDSliders, rateCoefficientArgs, \
+        saveButton, radio
 
     fig, ax = plt.subplots(figsize=(12, 6))
     plt.subplots_adjust(right=0.6, top=0.95, left=0.09, bottom=0.25)
@@ -298,7 +298,7 @@ def plot_exp():
     except Exception as error:
         log(error)
     # plt.show()
-    
+    return numberDensityWidget, saveButton, checkbox, button, radio
 rateCoefficientArgs = ()
 
 def update(val=None):
@@ -429,31 +429,33 @@ def main(arguments):
     else:
         k3Labels = [args["ratek3"].strip()]
         kCIDLabels = [args["ratekCID"].strip()]
-
     totalAttachmentLevels = len(initialValues)-1
     savedir = currentLocation/"OUT"
     savefile = savedir/"k_fit.json"
     keyFoundForRate = False
 
     if savefile.exists():
+
         with open(savefile, "r") as f:
 
             k_fit_json = json.load(f)
             print(k_fit_json, flush=True)
 
             keyFound = selectedFile in k_fit_json
+        
             print(f"{keyFound=}", flush=True)
 
             if keyFound:
                 k_fit_values = k_fit_json[selectedFile]["k_fit"]
-
                 ratek3 = np.asarray(k_fit_values[0], dtype=float)
                 ratekCID = np.asarray(k_fit_values[1], dtype=float)
                 keyFoundForRate = True
 
-    if not keyFoundForRate:
-        ratek3 = [float(args["k3Guess"]) for _ in k3Labels]
-        ratekCID = [float(args["kCIDGuess"]) for _ in kCIDLabels]
+
+    # if not keyFoundForRate:
+    ratek3 = [float(args["k3Guess"]) for _ in k3Labels]
+    ratekCID = [float(args["kCIDGuess"]) for _ in kCIDLabels]
+
     print(f"{keyFoundForRate=}\n{k3Labels=}", flush=True)
 
     KineticMain()
