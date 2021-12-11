@@ -1,7 +1,7 @@
 <script>
-    import {browse} from '$components/Layout.svelte';
-    import Textfield from '@smui/textfield';
-    import CustomSelect from "$components/CustomSelect.svelte"
+    import { onMount }     from "svelte"
+    import {browse}     from '$components/Layout.svelte';
+    import Textfield    from '@smui/textfield';
 
     export let id = window.getID();
     export let location = ""
@@ -10,6 +10,7 @@
     export let mount=null;
     export let mainTitle="Report/Editor";
     export let savefilename="report";
+    export let reportSaved = false;
 
     async function mountEditor(node) {
         try {
@@ -23,7 +24,7 @@
         location = db.get(`${filetype}-report-md`)
     }
 
-    $: reportFile = window.pathJoin(location , savefilename+".md")
+    $: reportFile = window.pathJoin(location , savefilename.endsWith(".md") ? savefilename : `${savefilename}.md`)
     let reportFiles = []
 
     const updateFiles = (node=null) => {
@@ -48,12 +49,12 @@
             
         } catch (error) {window.handleError( error )}
     }
-
     const saveReport = () => {
         try {
             if(location) {
                 fs.writeFileSync( reportFile, editor.getData() )
-                window.createToast(savefilename+".md file saved", "link")
+                reportSaved = true
+                window.createToast(`${basename(reportFile)} file saved`, "link")
             }
         } catch (error) {window.handleError( error )}
     
@@ -86,6 +87,11 @@
     const readFromFile = () => {
         if(fs.existsSync(reportFile)) { editor?.setData(fs.readFileSync(reportFile)) }
     }
+
+    onMount(()=>{
+        return {destroy() {editor.destroy()}}
+    })
+
 </script>
 
 
@@ -99,33 +105,19 @@
     </div>
 
     <div class="report_controler__div box">
-
         <div class="report_location__div" >
         
             <button class="button is-link" on:click="{browse_folder}">Browse</button>
-            
             <Textfield bind:value={location} label="report location" />
-            <div use:window.clickOutside on:click_outside={()=>changeWidget=false}>
-
-                {#if changeWidget}
-        
-                    <CustomSelect bind:picked={savefilename} label="report name" style="min-width: 70%;"
-                        options={["", ...reportFiles]}
-                    />
-                    
-                {:else}
-                    <Textfield on:dblclick={()=>{changeWidget=true}} bind:value={savefilename} label="report name" style="min-width: 70%;"/>
-
-                {/if}
-            </div>
-
+            <Textfield on:dblclick={()=>{changeWidget=true}} 
+                bind:value={savefilename} label="report name" style="min-width: 70%;"/>
             <i class="material-icons animated faster" 
                 on:animationend={({target})=>target.classList.remove("rotateIn")} 
                 on:click="{updateFiles}">
                 refresh
             </i>
+
         </div>
-    
         <div class="btn-row">
             <slot name="btn-row"></slot>
             <button class="button is-warning" on:click={readFromFile}>read</button>

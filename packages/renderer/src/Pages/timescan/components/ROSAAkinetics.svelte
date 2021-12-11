@@ -1,26 +1,39 @@
 
 <script>
 
-    import { tick } from "svelte"
-    import Textfield from '@smui/textfield'
-    import CustomSwitch from "$components/CustomSwitch.svelte"
-    import CustomSelect from "$components/CustomSelect.svelte"
-    import ModalTable from '$components/ModalTable.svelte'
-    import PyButton from "$components/PyButton.svelte"
-    import SeparateWindow from "$components/SeparateWindow.svelte"
-    import Editor from "$components/Editor.svelte"
-    import {computeKineticCodeScipy, computeKineticCodeSympy} from "../functions/computeKineticCode"
+    import { tick }                     from "svelte"
+    import Textfield                    from '@smui/textfield'
+    import Editor                       from "$components/Editor.svelte"
+    import PyButton                     from "$components/PyButton.svelte"
+    import ModalTable                   from '$components/ModalTable.svelte'
+    import CustomSwitch                 from "$components/CustomSwitch.svelte"
+    import CustomSelect                 from "$components/CustomSelect.svelte"
+    import SeparateWindow               from "$components/SeparateWindow.svelte"
+    import {computeKineticCodeScipy}    from "../functions/computeKineticCode"
 
-    export let fileChecked=[], currentLocation="", kineticMode=true, kineticData={};
+    export let fileChecked=[]
+    export let kineticData={};
+    export let kineticMode=true
+    export let currentLocation=""
+
     let fileCollections = []
+    let srgMode=true
+    let pbefore=0
+    let pafter=0
+    let temp=5;
+    let molecule="CD"
+    let tag="He"
+    let massOfReactants=""
+    let nameOfReactants="";
+    let ratek3="k31"
+    let ratekCID="kCID1";
+    let selectedFile = ""
+    let totalMass = []
+    let k3Guess = "1e-30"
+    let kCIDGuess="1e-15";
+    let requiredLength=0;
 
-    let srgMode=true, pbefore=0, pafter=0, temp=5;
-    let molecule="CD", tag="He", massOfReactants="", nameOfReactants="";
-    let ratek3="k31", ratekCID="kCID1";
-    let selectedFile = "", totalMass = [], requiredLength=0;
-    let k3Guess = "1e-30", kCIDGuess="1e-15";
-
-
+    $: kineticEditorFilename = basename(selectedFile).split(".")[0]+"-kineticModel.md"
     let currentData = {}
     $: if(fileChecked && kineticData && kineticMode) {
         const keys = Object.keys(kineticData)
@@ -181,15 +194,13 @@
 
     
     let pyfile = "kineticsCode"
-    // let pyfile = "sympy"
 
-    
     async function kineticSimulation(e) {
         try {
 
             if(!selectedFile) return createToast("Select a file", "danger")
             if(Object.keys(kineticData).length === 0) return createToast("No data available", "danger")
-
+            if(!reportSaved) return createToast("Save the computed equation", "danger")
 
             const nameOfReactantsArray = nameOfReactants.split(",").map(m=>m.trim())
             const data = {}
@@ -201,13 +212,23 @@
 
             const args = [
                 JSON.stringify({
-                    data, selectedFile, temp, currentLocation, nameOfReactantsArray, ratek3, ratekCID, numberDensity, k3Guess, kCIDGuess, initialValues, kineticEditorLocation, kineticEditorFilename: kineticEditorFilename+".md"
+                    data,
+                    temp,
+                    ratek3,
+                    ratekCID,
+                    k3Guess,
+                    kCIDGuess,
+                    selectedFile,
+                    initialValues,
+                    numberDensity,
+                    currentLocation,
+                    nameOfReactantsArray,
+                    kineticEditorLocation,
+                    kineticEditorFilename
                 })
             ]
             await computePy_func({e, pyfile:pyfile+".py", args, general:true})
-
         } catch (error) {window.handleError(error);}
-        
     }
 
     let pyProcesses=[];
@@ -221,22 +242,8 @@
     let editor;
     let kineticEditorFiletype = "kinetics"
     let kineticEditorLocation = db.get(`${kineticEditorFiletype}-report-md`) || ""
-    let kineticEditorFilename = "report"
-    // $: computeKineticCode = kineticCodeFunction[pyfile]?.fn;
-    
+    let reportSaved = false;
 </script>
-
-<style lang="scss">
-    .main_content__div {
-        display: flex;
-        flex-direction: column;
-        gap: 1em;
-        padding: 1em;
-        
-        .box { margin: 0;}
-    }
-
-</style>
 
 <ModalTable 
     bind:active={adjustConfig} title="Config table" 
@@ -249,11 +256,7 @@
 
 </ModalTable>
 
-
-
 <SeparateWindow bind:active={kineticMode} title="Kinetics">
-
-
     <svelte:fragment slot="header_content__slot">
         <div class="notice__div">Kinetics</div>
     </svelte:fragment>
@@ -291,42 +294,57 @@
                 <Editor filetype={kineticEditorFiletype}
                     mount="#kinetics-editor__div" id="kinetics-editor"
                     mainTitle="Kinetic Code" bind:editor
-                    bind:savefilename={kineticEditorFilename}
+                    savefilename={kineticEditorFilename}
                     bind:location={kineticEditorLocation}
+                    bind:reportSaved
                 >
 
                     <svelte:fragment slot="btn-row">
-                        <!-- <CustomSelect bind:picked={pyfile} label="computeFunction" options={["scipy", "sympy"]}  /> -->
                         <button class="button is-warning" 
                             on:click={()=>{
                                 if(!massOfReactants) return window.createToast("No data available", "danger")
-                                
-                                const dataToSet = computeKineticCodeScipy({initialValues, nameOfReactants, ratek3, ratekCID})
-                                // const dataToSet = computeKineticCode({initialValues, nameOfReactants, ratek3, ratekCID})
-                                if(dataToSet) {editor?.setData(dataToSet)}
+                                const dataToSet = computeKineticCodeScipy({
+                                    ratek3,
+                                    ratekCID,
+                                    initialValues,
+                                    nameOfReactants
+                                })
+                                if(dataToSet) {reportSaved = false; editor?.setData(dataToSet)}
                             }}>compute</button>
                     </svelte:fragment> 
                 </Editor>
             </div>
         </div>
-
     </svelte:fragment>
 
     <svelte:fragment slot="footer_content__slot" >
 
         {#if pyProcesses.length}
+        
             <button class="button is-danger" 
                 on:click="{()=>{pyProcesses.at(-1).kill(); pyProcesses.pop()}}"
             >Stop</button>
-            <!-- <div>{pyProcesses.length} process running</div> -->
         {/if}
-
-        <Textfield bind:value={pyfile} label="pyfile" />
-        
+        <Textfield bind:value={pyfile} label="pyfile" disabled />
         <button class="button is-link" on:click="{computeParameters}" >Compute parameters</button>
         <button class="button is-link" on:click="{loadConfig}">loadConfig</button>
+
         <i class="material-icons" on:click="{()=> adjustConfig = true}">settings</i>
         <PyButton on:click={kineticSimulation} bind:pyProcesses showLoading={true}/>
+    
     </svelte:fragment>
 
 </SeparateWindow>
+
+
+
+<style lang="scss">
+    .main_content__div {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+        padding: 1em;
+        .box { margin: 0;}
+    }
+
+</style>
