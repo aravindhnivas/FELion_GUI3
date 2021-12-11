@@ -14,12 +14,11 @@ const env = import.meta.env;
 const ROOT_DIR = path.join(__dirname, "../../../")
 const PKG_DIR = path.join(ROOT_DIR, "packages")
 const RENDERER_DIR = path.join(PKG_DIR, "renderer")
-
-console.log({__dirname, ROOT_DIR, PKG_DIR, RENDERER_DIR, env})
+console.table({__dirname, ROOT_DIR, PKG_DIR, RENDERER_DIR, env})
 
 async function createWindow() {
-    const icon = path.join(RENDERER_DIR, env.DEV ? "public" : "dist", "assets/logo/icon.ico")
 
+    const icon = path.join(RENDERER_DIR, env.DEV ? "public" : "dist", "assets/logo/icon.ico")
     const mainWindow = new BrowserWindow({
       width: 1200, height: 700, frame: true, icon, show: false,
       webPreferences: { 
