@@ -4,7 +4,7 @@ import {pythonpath, pythonscript, pyVersion, get} from "./svelteWritables";
 export async function resetPyConfig() {
 
     const pyPath = pathJoin(ROOT_DIR, "python3/python")
-    const pyScriptPath = pathJoin(__dirname, "assets/python_files")
+    const pyScriptPath = pathJoin(ROOT_DIR, "resources/python_files")
 
     db.set("pythonscript", pyScriptPath)
     pythonscript.set(db.get("pythonscript"))

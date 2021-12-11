@@ -6,7 +6,7 @@ const db_file_location = pathResolve(appInfo.userData, appInfo.isPackaged ? "db.
 window.db = JSONdb(db_file_location)
 
 const pyPath = pathJoin(ROOT_DIR, "python3/python")
-const pyScriptPath = pathJoin(__dirname, "assets/python_files")
+const pyScriptPath = pathJoin(ROOT_DIR, "resources/python_files")
 
 if(!db.get("pythonpath")) {db.set("pythonpath", pyPath)}
 if(!db.get("pythonscript")) {db.set("pythonscript", pyScriptPath)}
