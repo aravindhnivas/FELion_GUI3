@@ -15,9 +15,6 @@ autoUpdater.logger.transports.file.level = 'info';
 if(app.isPackaged) { autoUpdater.checkForUpdates() }
 logger.info('App starting...');
 
-
-
-
 ipcMain.handle("checkupdate", () => {autoUpdater.checkForUpdates()})
 const updateLog = (info) => {logger.info(info); mainWindow.webContents.send("update-log", info)}
 

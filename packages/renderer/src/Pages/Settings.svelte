@@ -4,7 +4,7 @@
     } from "./settings/svelteWritables";
     import {activateChangelog} from "../js/functions"
     import Textfield from '@smui/textfield';
-    import {onMount} from "svelte";
+    import {onMount, onDestroy} from "svelte";
     import CustomDialog from "$components/CustomDialog.svelte"
     import CustomSwitch from '$components/CustomSwitch.svelte';
     import Changelog from "$components/Changelog.svelte";
@@ -18,29 +18,33 @@
 
 
 
+    let updateInterval;
     onMount(async ()=>{
-        const [data, error] = await exec(`${$pythonpath} -V`)
-        if(error) return pythonpathCheck.open(error)
-        $pyVersion = data.stdout.trim()
-        console.log("Python path is valid")
-
+        const [data] = await exec(`${$pythonpath} -V`)
+        if(data) {
+            $pyVersion = data.stdout.trim()
+            console.log("Python path is valid")
+        }
+        const interval = 15 //min
+        updateInterval = setInterval(() => {
+            updateCheck()
+        }, interval*60*1000);
     })
+    onDestroy(() => clearInterval(updateInterval));
     
     const handlepythonPathCheck = () => { console.log("Python path checking done") }
 
     let commandToRun = "", commandArgsToRun = "";
 
-    function updateCheck(event){
-        const {target} = event
-
+    function updateCheck(event=null){
         try {
-            target.classList.toggle("is-loading")
+            event?.target.classList.toggle("is-loading")
             if (!navigator.onLine) {if (info) {window.createToast("No Internet Connection!", "warning")}; return}
             checkupdate()
         } catch (error) {
-            window.handleError(error)
+            if(event) window.handleError(error)
         } finally {
-            target.classList.toggle("is-loading")
+            event?.target.classList.toggle("is-loading")
         }
     }
 </script>

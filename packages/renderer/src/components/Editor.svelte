@@ -1,8 +1,8 @@
 <script>
-    import { onMount }     from "svelte"
-    import {browse}     from '$components/Layout.svelte';
-    import Textfield    from '@smui/textfield';
-    import { Remarkable } from 'remarkable';
+    import { onMount, onDestroy}     from "svelte"
+    import Textfield                from '@smui/textfield';
+    import { Remarkable }           from 'remarkable';
+    import {browse}                 from '$components/Layout.svelte';
 
     export let id = window.getID();
     export let location = ""
@@ -17,11 +17,10 @@
     async function mountEditor(node) {
         try {
             editor = await ClassicEditor.create( node, {toolbar: {shouldNotGroupWhenFull: true}})
-            return {destroy() {editor.destroy().catch(window.handleError)} }
-    
         } catch (error) {window.handleError( error );}
     }
 
+    onDestroy(() => editor?.destroy())
     if(db.get(`${filetype}-report-md`)) {
         location = db.get(`${filetype}-report-md`)
     }

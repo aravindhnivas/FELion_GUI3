@@ -20,7 +20,8 @@ const config = {
     {
       provider: "github",
       owner: "aravindhnivas",
-      repo: "FELion_GUI3"
+      repo: "FELion_GUI3",
+      releaseType: "release"
     }
   ],
   win: {
