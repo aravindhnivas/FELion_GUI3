@@ -27,7 +27,7 @@ window.computePy_func = async ({
 
         console.info("Sending general arguments: ", args)
         window.createToast("Process Started")
-        const pyProgram = get(developerMode) ? get(pythonpath) : pathJoin(__dirname, "assets/python_files/bin/main")
+        const pyProgram = get(developerMode) ? get(pythonpath) : pathJoin(ROOT_DIR, "resources/felionpy/felionpy")
         const pyArgs = get(developerMode) ? [pathJoin(get(pythonscript), "main.py"), pyfile, args ] : [pyfile, args]
         const py = spawn( pyProgram, pyArgs, { detached: general, shell: openShell } )
 
