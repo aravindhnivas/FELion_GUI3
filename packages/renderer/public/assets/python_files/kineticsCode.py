@@ -1,5 +1,5 @@
 
-import sys, json, os
+import json, traceback
 from pathlib import Path as pt
 import numpy as np
 import matplotlib.pyplot as plt
@@ -11,8 +11,6 @@ from matplotlib.widgets import Slider, Button, RadioButtons, TextBox, CheckButto
 from scipy.optimize import curve_fit
 from scipy.integrate import solve_ivp
 
-main_module_loc = str(pt(__file__).joinpath("../../"))
-sys.path.insert(0, main_module_loc)
 from FELion_constants import pltColors
 from FELion_definitions import readCodeFromFile
 
@@ -20,7 +18,7 @@ from msgbox import MsgBox, MB_ICONERROR, MB_ICONINFORMATION
 
 
 # from functools import reduce
-def log(msg): print(msg, flush=True)
+def log(*msg): print(msg, flush=True)
 
 class Sliderlog(Slider):
 
@@ -96,10 +94,10 @@ def formatArray(arr, precision=2):
     return [np.format_float_scientific(value, precision=precision) for value in arr]
 
 k_err = []
-
+k_fit = []
 def fitfunc(event=None):
 
-    global k_err
+    global k_fit, k_err
 
     p0 = [*[10**rate.val for rate in k3Sliders.values()], *[10**rate.val for rate in kCIDSliders.values()]]
 
@@ -121,9 +119,7 @@ def fitfunc(event=None):
         bounds=([*[1e-33]*len(ratek3), *[1e-17]*len(ratekCID)], [*[1e-29]*len(ratek3), *[1e-14]*len(ratekCID)])
     
     log(f"{bounds=}")
-
     try:
-    
         k_fit, kcov = curve_fit(fitODE, expTime, expData.flatten(),
             p0=p0, sigma=expDataError.flatten(), absolute_sigma=True, bounds=bounds   
         )
@@ -136,64 +132,71 @@ def fitfunc(event=None):
             _k3.set_val(np.log10(k_fit[:len(ratek3)][counter0]))
         for counter1, _kCID in enumerate(kCIDSliders.values()):
             _kCID.set_val(np.log10(k_fit[len(ratek3):][counter1]))
-
-        
         # saveData(None, k_fit, k_err)
 
-    except Exception as error:
-        error = f"Error occured while fitting: \n{error}"
-        log(error)
-        # k_err = []
-        if plotted: MsgBox("Error", error, MB_ICONERROR)
-
-def saveData(event, k_fit=None):
-
-    try:
-        savedir = currentLocation/"OUT"
-
-        if not savedir.exists():
-            os.mkdir(savedir)
+    except Exception:
+        k_fit = []
         
+        k_err = []
+        if plotted:
+            MsgBox("Error", traceback.format_exc(), MB_ICONERROR)
+
+
+def saveData(event=None):
+    try:
+        
+        savedir = currentLocation/"OUT"
+        if not savedir.exists():
+            savedir.mkdir()
+
         savefile = savedir/"k_fit.json"
 
-        dataToSave = {}
-
-        if savefile.exists():
-        
-            data = []
-            with open(savefile, "r") as f:
-                data = f.read()
-                if data:
-                    dataToSave = json.loads(data)
-
-
+        k3Len = len(ratek3)
         with open(savefile, "w+") as f:
 
-            if event:
-                k_fit = [formatArray(rateCoefficientArgs[0]), formatArray(rateCoefficientArgs[1])]
-            else:
-                k_fit = [formatArray(k_fit[:len(ratek3)]), formatArray(k_fit[len(ratek3):])]
+            k3Values = (formatArray(rateCoefficientArgs[0]), formatArray(k_fit[:k3Len]) )[len(k_fit)>0]
+            k3Err = ([0]*len(k3Labels), formatArray(k_err[:k3Len]))[len(k_err)>0]
+            
+            kCIDValues = (formatArray(rateCoefficientArgs[1]), formatArray(k_fit[k3Len:]))[len(k_fit)>0]
+            kCIDErr = ([0]*len(kCIDLabels), formatArray(k_err[k3Len:]))[len(k_err)>0]
 
-            if len(k_err)>0:
-                k_err_format = [formatArray(k_err[:len(ratek3)]), formatArray(k_err[len(ratek3):])]
-            else: k_err_format = None
-
+            k3_fit = {
+                key: [value, err]
+                for key, value, err in zip( k3Labels, k3Values,  k3Err )
+            }
+            kCID_fit = {
+                key: [value, err]
+                for key, value, err in zip( kCIDLabels, kCIDValues, kCIDErr )
+            }
+            
+            dataToSave = {selectedFile : {}}
             dataToSave[selectedFile] = {
-                "k_fit": k_fit,
-                "k_err": k_err_format, 
-                "temp": f"{temp:.1f}", 
+                "k3_fit": k3_fit,
+                "kCID_fit": kCID_fit,
+                "temp": f"{temp:.1f}",
                 "numberDensity": f"{numberDensity:.2e}"
             }
-            data = json.dumps(dataToSave, sort_keys=True, indent=4, separators=(',', ': '))
-            f.write(data)
+            data = json.dumps({**rateConstantsFileData, **dataToSave}, sort_keys=True, indent=4, separators=(',', ': '))
 
+            f.write(data)
             log(f"file written: {savefile.name} in {currentLocation} folder")
             if plotted: 
-                MsgBox("Saved", f"Rate constants written in json format : '{savefile.name}'\nLocation: {currentLocation}", MB_ICONINFORMATION)
+                MsgBox(
+                    "Saved", 
+                    f"Rate constants written in json format : '{savefile.name}'\nLocation: {currentLocation}", MB_ICONINFORMATION
+                )
             fig.savefig(f"{savedir/selectedFile}_.png", dpi=200)
-    except Exception as error:
-        if plotted: MsgBox("Error occured: ", f"Error occured while saving the file\n{error}", MB_ICONERROR)
-        log(f"Error occured while saving the file\n{error}")
+
+    except Exception:
+        
+        error = traceback.format_exc()
+        if plotted: 
+            MsgBox(
+            "Error occured: ", 
+            f"Error occured while saving the file\n{error}", 
+            MB_ICONERROR
+        )
+        log(f"Error occured while saving the file\n{error}" )
 
 fig = None
 ax = None
@@ -293,37 +296,37 @@ def plot_exp():
     try:
         global plotted
         if numberDensity > 0 and not keyFoundForRate:
+            log("Fitting data")
             fitfunc()
+        else:
+            log("NOT fitting data since keyFoundForRate", keyFoundForRate)
+
         plotted = True
-    except Exception as error:
-        log(error)
-    # plt.show()
+
+    except Exception:
+        log(traceback.format_exc())
     return numberDensityWidget, saveButton, checkbox, button, radio
+
 rateCoefficientArgs = ()
-
 def update(val=None):
-
     global rateCoefficientArgs
     
     rateCoefficientArgs=(
-    
         [10**rate.val for rate in k3Sliders.values()], 
         [10**rate.val for rate in kCIDSliders.values()]
     )
-    
     dNdt = solve_ivp(compute_attachment_process, tspan, initialValues, dense_output=True)
 
     dNdtSol = dNdt.sol(simulateTime)
     for line, data in zip(fitPlot, dNdtSol):
         line.set_ydata(data)
-    
+
     fig.canvas.draw_idle()
 
 k3Sliders = {}
 kCIDSliders = {}
 
 def make_slider(ax, axcolor):
-
     global k3Sliders, kCIDSliders
 
     ax.margins(x=0)
@@ -332,11 +335,9 @@ def make_slider(ax, axcolor):
     width = 0.25
     bottom = 0.9
 
-
     counter = 0
 
     for label in k3Labels:
-
         k3SliderAxes = plt.axes([0.65, bottom, width, height])
         if counter+1 <= min(len(ratek3), len(ratekCID)):
             k3SliderAxes.patch.set_facecolor(f"C{counter+1}")
@@ -347,9 +348,11 @@ def make_slider(ax, axcolor):
         valmax = -25
         valstep = 1e-4
         
-        
         if label in kvalueLimits:
             valmin, valmax, valinit = kvalueLimits[label]
+            if keyFoundForRate:
+                valinit=np.log10(ratek3[counter])
+
         else:
             valinit=np.log10(ratek3[counter])
 
@@ -400,63 +403,65 @@ def make_slider(ax, axcolor):
 args = None
 def main(arguments):
     global args, currentLocation, nameOfReactants, \
-        expTime, expData, expDataError, temp, \
+        expTime, expData, expDataError, temp, rateConstantsFileData,\
         numberDensity, totalAttachmentLevels, selectedFile, initialValues, \
         k3Labels, kCIDLabels, ratek3, ratekCID, savedir, savefile, keyFoundForRate, data
-    args = arguments
 
+    args = arguments
     currentLocation = pt(args["currentLocation"])
     data = args["data"]
+
     nameOfReactants = args["nameOfReactantsArray"]
     expTime = np.array(data[nameOfReactants[0]]["x"], dtype=float)*1e-3 # ms --> s
     expData = np.array([data[name]["y"] for name in nameOfReactants], dtype=float)
     expDataError = np.array([data[name]["error_y"]["array"] for name in nameOfReactants], dtype=float)
-
-    log(f"{expTime.shape=}")
-    log(f"{expData.shape=}")
-    log(f"{expDataError.shape=}")
     
     temp = float(args["temp"])
-
     selectedFile = args["selectedFile"]
     numberDensity = float(args["numberDensity"])
     initialValues = [float(i) for i in args["initialValues"]]
-
-    if "," in args["ratek3"]:
-        k3Labels = [i.strip() for i in args["ratek3"].split(",")]
-        kCIDLabels = [i.strip() for i in args["ratekCID"].split(",")]
-
-    else:
-        k3Labels = [args["ratek3"].strip()]
-        kCIDLabels = [args["ratekCID"].strip()]
     totalAttachmentLevels = len(initialValues)-1
+
     savedir = currentLocation/"OUT"
     savefile = savedir/"k_fit.json"
+
     keyFoundForRate = False
+    rateConstantsFileData =  {}
+
 
     if savefile.exists():
 
         with open(savefile, "r") as f:
+            keyFound = False
 
-            k_fit_json = json.load(f)
-            print(k_fit_json, flush=True)
-
-            keyFound = selectedFile in k_fit_json
-        
-            print(f"{keyFound=}", flush=True)
+            rateConstantsFileContents = f.read()
+            if len(rateConstantsFileContents)>0:
+                rateConstantsFileData = json.loads(rateConstantsFileContents)
+                print(rateConstantsFileData, flush=True)
+                keyFound = selectedFile in rateConstantsFileData
+                print(f"{keyFound=}", flush=True)
 
             if keyFound:
-                k_fit_values = k_fit_json[selectedFile]["k_fit"]
-                ratek3 = np.asarray(k_fit_values[0], dtype=float)
-                ratekCID = np.asarray(k_fit_values[1], dtype=float)
+
+                k3_fit_keyvalues = rateConstantsFileData[selectedFile]["k3_fit"]
+                
+                k3Labels = [key.strip() for key in k3_fit_keyvalues.keys()]
+                ratek3 = np.array([float(value[0]) for value in k3_fit_keyvalues.values()])
+
+                kCID_fit_keyvalues = rateConstantsFileData[selectedFile]["kCID_fit"]
+                kCIDLabels = [key.strip() for key in kCID_fit_keyvalues.keys()]
+                ratekCID = np.array([float(value[0]) for value in kCID_fit_keyvalues.values()])
+
                 keyFoundForRate = True
 
+    if not keyFoundForRate:
 
-    # if not keyFoundForRate:
-    ratek3 = [float(args["k3Guess"]) for _ in k3Labels]
-    ratekCID = [float(args["kCIDGuess"]) for _ in kCIDLabels]
+        k3Labels = [i.strip() for i in args["ratek3"].split(",")]
+        kCIDLabels = [i.strip() for i in args["ratekCID"].split(",")]
+        ratek3 = [float(args["k3Guess"]) for _ in k3Labels]
+        ratekCID = [float(args["kCIDGuess"]) for _ in kCIDLabels]
 
     print(f"{keyFoundForRate=}\n{k3Labels=}", flush=True)
-
+    print(f"{ratek3=}", flush=True)
     KineticMain()
     plt.show()
