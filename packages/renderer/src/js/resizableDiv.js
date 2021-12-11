@@ -1,3 +1,6 @@
+
+import interact from 'interactjs'
+
 export function resizableDiv({ 
     div, 
     change = { width: true, height: true }, 

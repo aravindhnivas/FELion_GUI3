@@ -19,8 +19,7 @@ const config = {
     
   ],
   extraFiles: [ // copy to ROOT_DIR (or Contents in mac)
-    'CHANGELOG.md',
-    'packages/renderer/dist/assets/python_files'
+    'resources'
   ],
   
   extraMetadata: {

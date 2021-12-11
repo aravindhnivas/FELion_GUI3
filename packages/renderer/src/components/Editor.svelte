@@ -2,6 +2,7 @@
     import { onMount }     from "svelte"
     import {browse}     from '$components/Layout.svelte';
     import Textfield    from '@smui/textfield';
+    import { Remarkable } from 'remarkable';
 
     export let id = window.getID();
     export let location = ""
@@ -9,9 +10,10 @@
     export let editor="";
     export let mount=null;
     export let mainTitle="Report/Editor";
+    
     export let savefilename="report";
     export let reportSaved = false;
-
+    const md = new Remarkable();
     async function mountEditor(node) {
         try {
             editor = await ClassicEditor.create( node, {toolbar: {shouldNotGroupWhenFull: true}})
@@ -83,7 +85,6 @@
         }, 100);
     }
     
-    let changeWidget = false
     const readFromFile = () => {
         if(fs.existsSync(reportFile)) { editor?.setData(fs.readFileSync(reportFile)) }
     }
@@ -106,11 +107,10 @@
 
     <div class="report_controler__div box">
         <div class="report_location__div" >
-        
             <button class="button is-link" on:click="{browse_folder}">Browse</button>
             <Textfield bind:value={location} label="report location" />
-            <Textfield on:dblclick={()=>{changeWidget=true}} 
-                bind:value={savefilename} label="report name" style="min-width: 70%;"/>
+            <Textfield bind:value={savefilename} label="report name" style="min-width: 70%;"/>
+
             <i class="material-icons animated faster" 
                 on:animationend={({target})=>target.classList.remove("rotateIn")} 
                 on:click="{updateFiles}">
@@ -129,7 +129,7 @@
 <div class="ckeditor-svelte content" {id} use:mountEditor >
     
     {#if window.fs.existsSync(reportFile)}
-        {@html window.marked(window.fs.readFileSync(reportFile))}
+        {@html md.render(window.fs.readFileSync(reportFile))}
     {:else}
         <h1>{filetype.toUpperCase()} Report</h1>
 
