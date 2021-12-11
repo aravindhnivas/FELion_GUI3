@@ -72,7 +72,7 @@
         <div slot="content" transition:fade >
 
             <CustomSwitch style="margin: 0 1em;" bind:selected={showAllFiles} label="show all"/>
-            <CustomSelect style="width:12em; height:3.5em; margin-right:0.5em" bind:picked={selected_file} label="Filename" options={["", ...displayFiles]}/>
+            <CustomSelect style="width:12em; height:3.5em; margin-right:0.5em" bind:picked={selected_file} label="Filename" options={displayFiles}/>
 
 
             {#if settingsLoaded}

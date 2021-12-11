@@ -275,7 +275,7 @@
             </div>
 
             <div class="align box">
-                <CustomSelect bind:picked={selectedFile} label="Filename" options={["", ...fileCollections]} style="min-width: 7em; "/>
+                <CustomSelect bind:picked={selectedFile} label="Filename" options={fileCollections} style="min-width: 7em; "/>
                 <Textfield bind:value={molecule} label="Molecule" />
                 <Textfield bind:value={tag} label="tag" />
 
