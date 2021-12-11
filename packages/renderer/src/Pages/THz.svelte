@@ -40,7 +40,7 @@
     
         const thz_args = {thzfiles, binData, delta, tkplot, gamma, justPlot, saveInMHz}
         let pyfileInfo = {general,
-            thz: {pyfile:"thz_scan.py" , args:[JSON.stringify(thz_args)]},
+            thz: {pyfile:"thz_scan" , args:[JSON.stringify(thz_args)]},
         }
         let {pyfile, args} = pyfileInfo[filetype]
         if (tkplot) {filetype = "general"}

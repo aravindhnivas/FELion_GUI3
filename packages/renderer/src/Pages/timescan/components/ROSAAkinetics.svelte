@@ -227,7 +227,7 @@
                     kineticEditorFilename
                 })
             ]
-            await computePy_func({e, pyfile:pyfile+".py", args, general:true})
+            await computePy_func({e, pyfile, args, general:true})
         } catch (error) {window.handleError(error);}
     }
 

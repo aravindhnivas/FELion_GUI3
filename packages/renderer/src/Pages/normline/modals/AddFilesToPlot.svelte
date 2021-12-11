@@ -19,7 +19,7 @@
     function plotData({e=null}={}){
 
 
-        let pyfile="addTrace.py" , args;
+        let pyfile="addTrace" , args;
         if(addedFile.files < 1) return window.createToast("No files selected", "danger")
         addedFile["col"] = addedFileCol, addedFile["N"] = fileChecked.length + extrafileAdded
 

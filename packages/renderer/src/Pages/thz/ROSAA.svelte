@@ -116,7 +116,7 @@
         
         }
         
-        const pyfile = "ROSAA_simulation.py"
+        const pyfile = "ROSAA_simulation"
         const args = [JSON.stringify(conditions)]
         
         computePy_func({e, pyfile, args, general:true}).catch(error=>{window.handleError(error)})

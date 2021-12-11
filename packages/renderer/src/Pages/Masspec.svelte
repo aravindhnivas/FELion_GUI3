@@ -39,10 +39,10 @@
         // console.log("Running")
 
         let pyfileInfo = {
-            mass: {pyfile:"mass.py" , args:[JSON.stringify({massfiles, tkplot:"run"})]},
-            general: {pyfile:"mass.py" , args:[JSON.stringify({massfiles, tkplot:"plot"})]},
+            mass: {pyfile:"mass" , args:[JSON.stringify({massfiles, tkplot:"run"})]},
+            general: {pyfile:"mass" , args:[JSON.stringify({massfiles, tkplot:"plot"})]},
             find_peaks: {
-                pyfile:"find_peaks_masspec.py",
+                pyfile:"find_peaks_masspec",
                 args:[JSON.stringify({
                     filename: pathResolve(currentLocation, selected_file),
                     peak_prominance, peak_width, peak_height

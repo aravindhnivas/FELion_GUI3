@@ -31,7 +31,7 @@
     }
 
     function plotData({e=null, tkplot="run"}={}){
-        let pyfile="oposcan.py", args;
+        let pyfile="oposcan", args;
         
         removeExtraFile()
         if(opofiles.length<1) return window.createToast("No files selected", "danger")

@@ -15,7 +15,7 @@
     
     function plotData({e=null}={}){
         
-        let pyfile="getfile_details.py", args;
+        let pyfile="getfile_details", args;
         
         if(felixfiles.length<1) return window.createToast("No files selected", "danger")
         

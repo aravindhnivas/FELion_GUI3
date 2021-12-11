@@ -28,7 +28,7 @@
             const collisionalRateConstantValues = {}
             collisionalRateConstants.forEach(f=>collisionalRateConstantValues[f.label]=f.value)
 
-            const pyfile = "collisionalSimulation.py";
+            const pyfile = "collisionalSimulation";
 
             const boltzmanDistributionCold = boltzman_distribution({energyLevels, trapTemp:collisionalTemp, electronSpin, zeemanSplit, energyUnit})
             const boltzmanData = {x:boltzmanDistributionCold.map(f=>f.label), y:boltzmanDistributionCold.map(f=>f.value), name:"boltzman"}

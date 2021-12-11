@@ -67,7 +67,7 @@
                 removeExtraFile()
                 graphPlotted = false, $felixOutputName = "averaged", $felixPlotAnnotations = [], $felixPeakTable = []
                 
-                pyfile="normline.py" , args=[JSON.stringify({felixfiles, delta})]
+                pyfile="normline" , args=[JSON.stringify({felixfiles, delta})]
 
                 computePy_func({e, pyfile, args})
                 .then((dataFromPython)=>{
@@ -85,7 +85,7 @@
                     
                     return window.createToast("No files: ctrl + left-click to select file for baseline correction", "danger")
                 }
-                pyfile="baseline.py"
+                pyfile="baseline"
                 args=[JSON.stringify({filename: pathJoin($felixopoLocation, $baselineFile)})]
                 computePy_func({e, pyfile, args, general:true, openShell})
                 .catch(error=>{window.handleError(error)})
@@ -99,7 +99,7 @@
                 const booleanWidgets = felixPlotWidgets.boolean.map(n=>n.value)
                 const selectedWidgets = $felixPlotCheckboxes.map(n=>n.selected)
 
-                pyfile="felix_tkplot.py", args=[JSON.stringify({numberWidgets, textWidgets, booleanWidgets, selectedWidgets, location: $felixopoLocation, normMethod, theoryLocation})]
+                pyfile="felix_tkplot", args=[JSON.stringify({numberWidgets, textWidgets, booleanWidgets, selectedWidgets, location: $felixopoLocation, normMethod, theoryLocation})]
                 computePy_func({e, pyfile, args, general:true, openShell})
                     .catch(error=>{window.handleError(error)})
             default:

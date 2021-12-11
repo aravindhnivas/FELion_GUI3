@@ -1,0 +1,165 @@
+{
+ "version": "auto-py-to-exe-configuration_v1",
+ "pyinstallerOptions": [
+  {
+   "optionDest": "noconfirm",
+   "value": true
+  },
+  {
+   "optionDest": "filenames",
+   "value": "D:/FELion_GUI3/resources/python_files/main.py"
+  },
+  {
+   "optionDest": "onefile",
+   "value": false
+  },
+  {
+   "optionDest": "console",
+   "value": true
+  },
+  {
+   "optionDest": "icon_file",
+   "value": "D:/FELion_GUI3/packages/renderer/public/assets/logo/icon.ico"
+  },
+  {
+   "optionDest": "name",
+   "value": "felionpy"
+  },
+  {
+   "optionDest": "ascii",
+   "value": false
+  },
+  {
+   "optionDest": "clean_build",
+   "value": false
+  },
+  {
+   "optionDest": "debug",
+   "value": "noarchive"
+  },
+  {
+   "optionDest": "strip",
+   "value": false
+  },
+  {
+   "optionDest": "noupx",
+   "value": true
+  },
+  {
+   "optionDest": "disable_windowed_traceback",
+   "value": false
+  },
+  {
+   "optionDest": "embed_manifest",
+   "value": true
+  },
+  {
+   "optionDest": "uac_admin",
+   "value": false
+  },
+  {
+   "optionDest": "uac_uiaccess",
+   "value": false
+  },
+  {
+   "optionDest": "win_private_assemblies",
+   "value": false
+  },
+  {
+   "optionDest": "win_no_prefer_redirects",
+   "value": false
+  },
+  {
+   "optionDest": "bootloader_ignore_signals",
+   "value": false
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "weighted_error"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "kineticsCode"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "ROSAA_simulation"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "voigt"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "collisionalFit"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "timescan"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "thz_scan"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "theory"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "oposcan"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "normline"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "multiGauss"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "mass"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "getfile_details"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "fit_all"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "find_peaks_masspec"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "exp_gauss_fit"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "depletionscan"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "delete_fileLines"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "collisionalSimulation"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "baseline"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "addTrace"
+  }
+ ],
+ "nonPyinstallerOptions": {
+  "increaseRecursionLimit": true,
+  "manualArguments": ""
+ }
+}

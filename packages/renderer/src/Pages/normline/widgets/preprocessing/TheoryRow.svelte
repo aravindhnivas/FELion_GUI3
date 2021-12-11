@@ -26,7 +26,7 @@
     $: if(updateConfig) loadConfig()
 
     function plotData(e=null){
-        let pyfile="theory.py", args;
+        let pyfile="theory", args;
         
         if(theoryfiles.length < 1) return window.createToast("No files selected", "danger")
         

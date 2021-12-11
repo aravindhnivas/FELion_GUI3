@@ -46,7 +46,7 @@
         
         if ($fittedTraceCount === 0) {return window.createToast("No fitted lines found", "danger")}
 
-        plotData({filetype:"general", general:{args:[$felixOutputName, $felixopoLocation, normMethod], pyfile:"delete_fileLines.py"}})
+        plotData({filetype:"general", general:{args:[$felixOutputName, $felixopoLocation, normMethod], pyfile:"delete_fileLines"}})
         $dataTable = _.dropRight($dataTable, 1)
         $expfittedLines = _.dropRight($expfittedLines, 2)
         $felixPlotAnnotations = _.dropRight($felixPlotAnnotations, 1)
@@ -115,7 +115,7 @@
 
                 expfit_args = { addedFileScale, addedFileCol, output_name:$felixOutputName, overwrite_expfit, writeFile, writeFileName, normMethod, index:$felixIndex, fullfiles, location:$felixopoLocation }
 
-                pyfile="exp_gauss_fit.py" , args=[JSON.stringify(expfit_args)]
+                pyfile="exp_gauss_fit" , args=[JSON.stringify(expfit_args)]
                 computePy_func({e, pyfile, args})
                 .then((dataFromPython)=>{
                     exp_fit_func({dataFromPython})
@@ -147,7 +147,7 @@
                 })
 
                 NGauss_fit_args = {...NGauss_fit_args, location:$felixopoLocation, addedFileScale, addedFileCol, overwrite_expfit, writeFile, writeFileName, output_name:$felixOutputName, fullfiles, normMethod}
-                pyfile="multiGauss.py" , args=[JSON.stringify(NGauss_fit_args)]
+                pyfile="multiGauss" , args=[JSON.stringify(NGauss_fit_args)]
 
                 computePy_func({e, pyfile, args})
                 .then((dataFromPython)=>{
@@ -168,7 +168,7 @@
 
 
 
-                pyfile="fit_all.py" ,  args=[JSON.stringify(find_peaks_args)]
+                pyfile="fit_all" ,  args=[JSON.stringify(find_peaks_args)]
 
                 computePy_func({e, pyfile, args})
                 .then((dataFromPython)=>{
@@ -181,7 +181,7 @@
 
             case "get_err":
                 if ($expfittedLinesCollectedData.length<2) return window.createToast("Not sufficient lines collected!", "danger")
-                pyfile="weighted_error.py" , args=$expfittedLinesCollectedData
+                pyfile="weighted_error" , args=$expfittedLinesCollectedData
                 computePy_func({e, pyfile, args})
                 .then((dataFromPython)=>{
                     get_err_func({dataFromPython})
