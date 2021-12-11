@@ -20,7 +20,7 @@ window.computePy_func = async ({
     } = {}) => {
     
     try {
-        if(!get(pyVersion)) {
+        if(get(developerMode) && !get(pyVersion)) {
             const error = "Python is not valid. Fix it in Settings --> Configuration"
             return Promise.reject(error)
         }

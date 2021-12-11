@@ -1,31 +1,21 @@
-const now = new Date;
-const buildVersion = `3.5.1-beta1`;
-
 /**
  * @type {import('electron-builder').Configuration}
  * @see https://www.electron.build/configuration/configuration
  */
 const config = {
-
   directories: {
     output: 'dist',
     buildResources: 'buildResources',
-  
   },
   files: [
     'packages/main',
     'packages/preload',
+
     'packages/renderer/dist',
-    
   ],
   extraFiles: [ // copy to ROOT_DIR (or Contents in mac)
     'resources'
   ],
-  
-  extraMetadata: {
-    version: buildVersion,
-  },
-
   publish: [
     {
       provider: "github",
@@ -33,15 +23,13 @@ const config = {
       repo: "FELion_GUI3"
     }
   ],
-
   win: {
     target: "nsis",
     asar: true
   },
-
   nsis: {
-    oneClick: false
+    oneClick: true
   }
-
 };
 module.exports = config;
+
