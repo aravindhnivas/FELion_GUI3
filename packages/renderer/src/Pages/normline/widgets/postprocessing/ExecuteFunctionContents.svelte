@@ -12,7 +12,7 @@
     import {exp_fit_func} from '../../functions/exp_fit';
 
     import {get_err_func} from '../../functions/get_err';
-    import {relayout, deleteTraces} from 'plotly.js/dist/plotly';
+    import {relayout, deleteTraces} from 'plotly.js/dist/plotly-basic';
     import {dropRight, uniqBy, filter, sortBy} from "lodash-es"
     export let addedFileScale, addedFileCol, normMethod, writeFileName, writeFile, overwrite_expfit, fullfiles, modalActivate=false, adjustPeakTrigger=false;
     

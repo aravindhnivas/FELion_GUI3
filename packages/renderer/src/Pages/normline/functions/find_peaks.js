@@ -1,6 +1,6 @@
 
 import {felixPeakTable, Ngauss_sigma, felixPlotAnnotations, graphDiv, felixAnnotationColor, get} from "./svelteWritables";
-import {relayout} from 'plotly.js/dist/plotly';
+import {relayout} from 'plotly.js/dist/plotly-basic';
 export function find_peaks_func({dataFromPython}={}){
 
     const annotations = dataFromPython[2]["annotations"]

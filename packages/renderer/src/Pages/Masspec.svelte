@@ -6,7 +6,7 @@
     import Textfield from '@smui/textfield'
     import {plot} from "../js/functions.js"
     import GetLabviewSettings from "$components/GetLabviewSettings.svelte"
-    import {relayout} from 'plotly.js/dist/plotly';
+    import {relayout} from 'plotly.js/dist/plotly-basic';
     import {find, differenceBy} from "lodash-es"
     
     /////////////////////////////////////////////////////////////////////////

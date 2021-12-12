@@ -2,7 +2,7 @@
 // Importing modules
 
 import {felixopoLocation, felixPeakTable, felixIndex, felixOutputName, felixPlotAnnotations, opoMode, Ngauss_sigma, get} from "./svelteWritables";
-import {relayout} from 'plotly.js/dist/plotly';
+import {relayout} from 'plotly.js/dist/plotly-basic';
 import {uniqBy} from "lodash-es"
 export function savefile({file={}, name="", location=""}={}) {
 

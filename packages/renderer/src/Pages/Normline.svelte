@@ -21,7 +21,7 @@
     import ExecuteFunctionContents from './normline/widgets/postprocessing/ExecuteFunctionContents.svelte';
     import {init_tour_normline} from './normline/initTour';
     import Textfield from '@smui/textfield';
-    import {react, deleteTraces} from 'plotly.js/dist/plotly';
+    import {react, deleteTraces} from 'plotly.js/dist/plotly-basic';
     ///////////////////////////////////////////////////////////////////////
 
     const filetype="felix", id="Normline"

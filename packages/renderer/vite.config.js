@@ -40,6 +40,8 @@ export default defineConfig({
     },
   },
   build: {
+    reportCompressedSize: false,
+    chunkSizeWarningLimit: 2000,
     sourcemap: true,
     target: `chrome${chrome}`,
     outDir: 'dist',
@@ -52,8 +54,18 @@ export default defineConfig({
       safari10: false,
     },
     rollupOptions: {
+      output: {
+        manualChunks: {
+          winbox: ['winbox/src/js/winbox'],
+          interactjs: ['interactjs'],
+          yaml: ['yaml'],
+          remarkable: ['remarkable'],
+          'lodash-es': ['lodash-es'],
+          'plotly': ['plotly.js/dist/plotly-basic'],
+        }
+      },
       external: [
-        ...builtinModules,
+        ...builtinModules, "electron-updater", "electron-log"
       ],
     },
     emptyOutDir: true,

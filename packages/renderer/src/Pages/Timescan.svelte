@@ -7,7 +7,7 @@
     import ROSAAkinetics from "../Pages/timescan/components/ROSAAkinetics.svelte"
     import Textfield from '@smui/textfield'
     import {plot} from "../js/functions.js"
-    import {relayout} from 'plotly.js/dist/plotly';
+    import {relayout} from 'plotly.js/dist/plotly-basic';
     import {cloneDeep} from "lodash-es"
     /////////////////////////////////////////////////////////////////////////
 

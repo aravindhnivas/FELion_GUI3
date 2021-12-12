@@ -29,7 +29,7 @@
   },
   "scripts": {
     "start": "electron .",
-    "build": "node scripts/build.js",
+    "build": "node --max-old-space-size=4096 scripts/build.js",
     "dev": "node scripts/watch.js",
     "svelte-check": "svelte-check",
     "precompile": "cross-env MODE=production npm run build",

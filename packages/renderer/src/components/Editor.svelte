@@ -1,9 +1,10 @@
 <script>
-    import { onMount, onDestroy}     from "svelte"
+    import { onMount, onDestroy}    from "svelte"
     import Textfield                from '@smui/textfield';
     import { Remarkable }           from 'remarkable';
     import {browse}                 from '$components/Layout.svelte';
     import WinBox                   from "winbox/src/js/winbox.js";
+
     export let id = window.getID();
     export let location = ""
     export let filetype = ""

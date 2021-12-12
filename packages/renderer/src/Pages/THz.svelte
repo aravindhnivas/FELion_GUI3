@@ -6,7 +6,7 @@
     import Textfield from '@smui/textfield'
     import {plot} from "../js/functions.js"
     import ROSAA from "./thz/ROSAA.svelte"
-    import {relayout, restyle} from 'plotly.js/dist/plotly';
+    import {relayout, restyle} from 'plotly.js/dist/plotly-basic';
     /////////////////////////////////////////////////////////////////////////
 
     // Initialisation

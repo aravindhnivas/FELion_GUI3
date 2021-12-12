@@ -34,7 +34,7 @@
     import Editor from './Editor.svelte';
     
     import WinBox from "winbox/src/js/winbox.js";
-    import {relayout} from 'plotly.js/dist/plotly';
+    import {relayout} from 'plotly.js/dist/plotly-basic';
     ////////////////////////////////////////////////////////////////////////////
     export let id, fileChecked=[], filetype = "felix", toggleBrowser = false, fullfileslist = [];
     export let currentLocation = db.get(`${filetype}_location`) || "", graphPlotted=false;

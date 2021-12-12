@@ -1,6 +1,6 @@
 
 import {dataTable, dataTable_avg, graphDiv, felixOutputName, avgfittedLineCount, fittedTraceCount, get} from './svelteWritables';
-import {addTraces} from 'plotly.js/dist/plotly';
+import {addTraces} from 'plotly.js/dist/plotly-basic';
 import {uniqBy} from "lodash-es"
 export function NGauss_fit_func({dataFromPython}={}) {
 

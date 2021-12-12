@@ -1,7 +1,7 @@
 
 <script>
 
-    import {addTraces}  from 'plotly.js/dist/plotly';
+    import {addTraces}  from 'plotly.js/dist/plotly-basic';
     import Textfield    from '@smui/textfield';
     import Modal        from '$components/Modal.svelte';
     import {browse}     from "$components/Layout.svelte";

@@ -1,5 +1,5 @@
 
-import {react} from 'plotly.js/dist/plotly';
+import {react} from 'plotly.js/dist/plotly-basic';
 export function plot(mainTitle, xtitle, ytitle, data, plotArea, logScale=null) {
 
     let dataLayout = {
