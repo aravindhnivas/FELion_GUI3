@@ -1,4 +1,5 @@
 
+import {sumBy} from "lodash-es"
 export default function({energyLevels, trapTemp=5, electronSpin=false, zeemanSplit=false, energyUnit="cm-1"}={}){
     const boltzmanConstant = 1.38064852e-23 // in m2.kg.s-2.K-1
     const boltzmanConstantInWavenumber = boltzmanConstant/1.98630e-23 // in cm-1
@@ -48,7 +49,7 @@ export default function({energyLevels, trapTemp=5, electronSpin=false, zeemanSpl
 
 
         // console.log(distribution)
-        const partitionValue = _.sumBy(distribution, energy=>energy.value).toFixed(2)
+        const partitionValue = sumBy(distribution, energy=>energy.value).toFixed(2)
 
         distribution = distribution.map(({label, value})=>{
             value /= partitionValue

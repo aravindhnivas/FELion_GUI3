@@ -4,7 +4,7 @@ import {browse} from "$components/Layout.svelte";
 
 export async function readFromFile({bowseFile=true, energyFilename=null, electronSpin, zeemanSplit, energyUnit, twoLabel=true, collisionalFile=false}={}){
     if (!energyFilename || bowseFile) {
-        const energyDetailsFile = await browse({dir:false, multiple:false})
+        const energyDetailsFile = await browse({dir:false})
 
         if (energyDetailsFile) return Promise.reject("No files selected");
         energyFilename = energyDetailsFile[0]

@@ -4,7 +4,7 @@
     import Textfield from '@smui/textfield';
     import {PlanksConstant, SpeedOfLight} from "../functions/constants";
     import {computeStatisticalWeight} from "../functions/balance_distribution";
-
+    import {find} from "lodash-es"
 
     export let einsteinCoefficientA=[], einsteinCoefficientB=[], einsteinB_rateComputed=false;
     export let energyLevels, electronSpin, zeemanSplit, energyUnit;
@@ -19,8 +19,8 @@
 
         
             const [final, initial] = label.split("-->").map(l=>l.trim())
-            const {value:v0} = window._.find(energyLevels, (e)=>e.label==initial)
-            const {value:v1} = window._.find(energyLevels, (e)=>e.label==final)
+            const {value:v0} = find(energyLevels, (e)=>e.label==initial)
+            const {value:v1} = find(energyLevels, (e)=>e.label==final)
             let freq = parseFloat(v1) - parseFloat(v0) // in Hz or s-1
             energyUnit === "MHz" ? freq *= 1e6 : freq *= SpeedOfLight*100;
 
@@ -43,6 +43,8 @@
 
 
     async function computeEinsteinBRate(e) {
+
+        if(!lorrentz || !gaussian) return createToast("Compute gaussian and lorrentz parameters")
 
         const args = [JSON.stringify({lorrentz, gaussian})]
         console.log(args)

@@ -1,6 +1,6 @@
 
 import {felixPeakTable, Ngauss_sigma, felixPlotAnnotations, graphDiv, felixAnnotationColor, get} from "./svelteWritables";
-
+import {relayout} from 'plotly.js/dist/plotly';
 export function find_peaks_func({dataFromPython}={}){
 
     const annotations = dataFromPython[2]["annotations"]
@@ -9,7 +9,7 @@ export function find_peaks_func({dataFromPython}={}){
 
     const color = annotations["arrowcolor"]
     felixAnnotationColor.set(color)
-    window.Plotly.relayout(get(graphDiv), { annotations  })
+    relayout(get(graphDiv), { annotations  })
 
     const [peakX, peakY] = [dataFromPython[0]["data"].x, dataFromPython[0]["data"].y]
     for (let index = 0; index < peakX.length; index++) {

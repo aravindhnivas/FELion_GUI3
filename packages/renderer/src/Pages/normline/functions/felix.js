@@ -3,7 +3,7 @@ import { plotlyEventCreatedFELIX, get } from './svelteWritables';
 import { subplot } from "../../../js/functions.js";
 import { plotlySelection, plotlyClick } from "./misc";
 import beforePlot from "./beforePlot";
-
+import {relayout} from 'plotly.js/dist/plotly';
 export async function felix_func({ dataFromPython, delta } = {}) {
 
     await beforePlot({ delta, dataFromPython, graphDiv: "avgplot", baseGraphDiv:"bplot" })
@@ -37,7 +37,7 @@ export async function felix_func({ dataFromPython, delta } = {}) {
         
         const width = document.getElementById(id).clientWidth
         
-        if(content){ window.Plotly.relayout(id, {width}) }
+        if(content){ relayout(id, {width}) }
     })
 
 

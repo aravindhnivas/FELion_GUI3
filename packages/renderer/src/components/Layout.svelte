@@ -1,7 +1,7 @@
 <script context="module">
-    export async function browse({filetype="", dir=true, multiple=true}={}) {
-        let type;
-        dir ? type = "openDirectory" : type = "openFile"
+    export async function browse({filetype="", dir=true, multiple=false}={}) {
+
+        const type = dir ? "openDirectory" : "openFile"
         const options = {
             filters: [
                 { name: filetype, extensions: [`*${filetype}`] },
@@ -11,8 +11,13 @@
         }
         const {showOpenDialogSync} = dialogs
 
+        console.table(options)
+        console.log("Directory: ", dir)
+        console.log("multiSelections: ", multiple)
         const result = await showOpenDialogSync(options)
-        return result
+        const sendResult = dir ? result?.[0] : result
+        console.log(sendResult)
+        return sendResult
     }
 </script>
 
@@ -28,6 +33,8 @@
     import IconButton from '@smui/icon-button';
     import Editor from './Editor.svelte';
     
+    import WinBox from "winbox/src/js/winbox.js";
+    import {relayout} from 'plotly.js/dist/plotly';
     ////////////////////////////////////////////////////////////////////////////
     export let id, fileChecked=[], filetype = "felix", toggleBrowser = false, fullfileslist = [];
     export let currentLocation = db.get(`${filetype}_location`) || "", graphPlotted=false;
@@ -35,15 +42,16 @@
     export let activateConfigModal = false
 
     const dispatch = createEventDispatcher()
+
     async function browse_folder() {
-        const result = await browse({dir:true})
-        if (result) { 
-            currentLocation = result[0]
-            db.set(`${filetype}_location`, currentLocation)
-            console.log(result, currentLocation)                
-        }
-    }
     
+        const result = await browse()
+        if (!result) return
+    
+        currentLocation = result
+        db.set(`${filetype}_location`, currentLocation)
+        console.log(result, currentLocation)
+    }
 
     let graphDivs = []
     onMount(()=>{ toggleBrowser = true;})
@@ -71,7 +79,7 @@
     let plotWidth;
     const changeGraphDivWidth = async () => {
         await tick();
-        graphDivs.forEach(id=>{if(id.data) {window.Plotly.relayout(id, {width:id.clientWidth})}})
+        graphDivs.forEach(id=>{if(id.data) {relayout(id, {width:id.clientWidth})}})
     }
 
     $: if (plotWidth && mouseReleased) {changeGraphDivWidth()};

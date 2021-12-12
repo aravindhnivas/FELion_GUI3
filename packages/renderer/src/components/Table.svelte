@@ -1,5 +1,5 @@
 <script>
-
+    import {orderBy, filter} from "lodash-es"
     import { scale } from 'svelte/transition';
     import {Icon} from '@smui/icon-button';
     import {tick} from "svelte";
@@ -12,7 +12,7 @@
         if(sortOption) {
 
             sortTypeAscending = !sortTypeAscending
-            rows = _.orderBy(rows, [type], [sortTypeAscending ? "asc" : "desc"])
+            rows = orderBy(rows, [type], [sortTypeAscending ? "asc" : "desc"])
         }
 
      }
@@ -78,7 +78,7 @@
                     {/each}
                     {#if closeOption}
                         <td class="mdc-data-table__cell" style="background: #f14668; cursor: pointer; width: 2em;">
-                            <Icon id="{row.id}" class="material-icons" on:click="{(e)=> {rows = window._.filter(rows, (tb)=>tb.id != e.target.id)}}">close</Icon>
+                            <Icon id="{row.id}" class="material-icons" on:click="{(e)=> {rows = filter(rows, (tb)=>tb.id != e.target.id)}}">close</Icon>
                         </td>
                     {/if}
                     </tr>

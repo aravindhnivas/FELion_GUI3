@@ -1,14 +1,14 @@
 
 <script>
-    // import {mainPreModal} from "../svelteWritable";
     import Layout from "$components/Layout.svelte"
     import CustomIconSwitch from "$components/CustomIconSwitch.svelte"
     import CustomSelect from "$components/CustomSelect.svelte"
     import CustomSwitch from "$components/CustomSwitch.svelte"
-
     import ROSAAkinetics from "../Pages/timescan/components/ROSAAkinetics.svelte"
     import Textfield from '@smui/textfield'
     import {plot} from "../js/functions.js"
+    import {relayout} from 'plotly.js/dist/plotly';
+    import {cloneDeep} from "lodash-es"
     /////////////////////////////////////////////////////////////////////////
 
     // Initialisation
@@ -37,7 +37,7 @@
     let timescanData = {};
     let dataLength=1;
     function sliceData(modifyData) {
-        const reduceData = _.cloneDeep(modifyData)
+        const reduceData = cloneDeep(modifyData)
         Object.keys(reduceData).forEach(data=>{
             Object.keys(reduceData[data]).forEach(innerData=>{
                 const newData = reduceData[data][innerData]
@@ -49,7 +49,7 @@
 
         })
 
-        return _.cloneDeep(reduceData)
+        return cloneDeep(reduceData)
     }
 
     async function plotData({e=null, filetype="scan", tkplot="run"}={}){
@@ -106,7 +106,7 @@
             fileChecked.forEach(file => {
                 let tplot = file + "_tplot";
                 const id = document.getElementById(tplot)
-                if(id?.data) {window.Plotly.relayout(id, layout);}
+                if(id?.data) {relayout(id, layout);}
             })
         }
     }

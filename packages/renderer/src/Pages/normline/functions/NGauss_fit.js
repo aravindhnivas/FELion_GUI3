@@ -1,9 +1,10 @@
 
 import {dataTable, dataTable_avg, graphDiv, felixOutputName, avgfittedLineCount, fittedTraceCount, get} from './svelteWritables';
-
+import {addTraces} from 'plotly.js/dist/plotly';
+import {uniqBy} from "lodash-es"
 export function NGauss_fit_func({dataFromPython}={}) {
 
-    window.Plotly.addTraces(get(graphDiv), dataFromPython["fitted_data"])
+    addTraces(get(graphDiv), dataFromPython["fitted_data"])
     fittedTraceCount.update(n=>n+1)
 
     const output_name = get(felixOutputName)
@@ -17,7 +18,7 @@ export function NGauss_fit_func({dataFromPython}={}) {
     
     })
 
-    dataTable.set(_.uniqBy(newTable, "freq"))
+    dataTable.set(uniqBy(newTable, "freq"))
 
     // dataTable_avg
     if(output_name === "averaged") {
@@ -27,7 +28,7 @@ export function NGauss_fit_func({dataFromPython}={}) {
             return {name: `Line #${index}`, id:getID(), freq:freq, amp:amp, fwhm:fwhm, sig:sig, color:color}
 
         })
-        dataTable_avg.set(_.uniqBy(newTable, "freq"))
+        dataTable_avg.set(uniqBy(newTable, "freq"))
         avgfittedLineCount.set(get(dataTable_avg).length)
     }
 }

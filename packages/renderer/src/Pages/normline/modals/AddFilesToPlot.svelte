@@ -1,25 +1,33 @@
 
 <script>
-    // import {mainPreModal} from "../../../svelteWritable";
-    import {graphDiv} from '../functions/svelteWritables';
-    import Modal from '$components/Modal.svelte';
-    import Textfield from '@smui/textfield';
-    import {browse} from "$components/Layout.svelte";
-   
+
+    import {addTraces}  from 'plotly.js/dist/plotly';
+    import Textfield    from '@smui/textfield';
+    import Modal        from '$components/Modal.svelte';
+    import {browse}     from "$components/Layout.svelte";
+    import {graphDiv}   from '../functions/svelteWritables';
     
-    export let active=false, fileChecked=[], addedFileCol=1, addedFileScale=1000, addedfiles=[], addedFile={}, extrafileAdded=0;
+    export let active=false
+    export let fileChecked=[]
+    export let addedFileCol=1
 
+    export let addedFileScale=1000
+    export let addedfiles=[]
+    export let addedFile={}
+    export let extrafileAdded=0;
 
-    function addFileSelection() {
+    async function addFileSelection() {
 
-        browse({dir:false}).then(result=>{  if (result) {addedfiles = addedFile["files"] = result} })
-        
+        const result = await browse({dir:false, multiple:true})
+        if(!result) return
+        addedfiles = addedFile["files"] = result
+        window.createToast("Files added")
     }
 
     function plotData({e=null}={}){
 
-
-        let pyfile="addTrace" , args;
+        const pyfile="addTrace"
+        let args;
         if(addedFile.files < 1) return window.createToast("No files selected", "danger")
         addedFile["col"] = addedFileCol, addedFile["N"] = fileChecked.length + extrafileAdded
 
@@ -28,7 +36,7 @@
 
         computePy_func({e, pyfile, args})
         .then((dataFromPython)=>{
-            window.Plotly.addTraces($graphDiv, dataFromPython)
+            addTraces($graphDiv, dataFromPython)
             extrafileAdded += addedfiles.length
             window.createToast("Graph Plotted", "success")
             active = false

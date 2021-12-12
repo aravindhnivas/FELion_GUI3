@@ -4,7 +4,7 @@
     import { plot } from "../../../js/functions";
     import boltzmanDistribution from "../functions/boltzman_distribution";
     import Textfield from '@smui/textfield';
-    // import {onMount} from 'svelte';
+    import {sumBy} from "lodash-es"
 
     export let active;
     export let energyLevels, trapTemp, electronSpin, zeemanSplit, energyUnit;
@@ -21,7 +21,7 @@
         const distribution = boltzmanDistribution({energyLevels, trapTemp, electronSpin, zeemanSplit, energyUnit})
         // console.log(distribution)
         if(distribution) {
-            const totalSum = _.sumBy(distribution, e=>e.value).toFixed(2)
+            const totalSum = sumBy(distribution, e=>e.value).toFixed(2)
             const energyLevel = distribution.map(e=>e.label)
             const populations = distribution.map(e=>e.value)
             const data = {  x: energyLevel, y: populations, mode: "lines+markers", showlegend:true, name:`Temp: ${trapTemp}K, Total: ${totalSum}`}

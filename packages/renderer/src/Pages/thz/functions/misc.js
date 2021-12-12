@@ -1,9 +1,9 @@
-
+import {find} from "lodash-es"
 export const findAndGetValue = (arr, label) => {
     let values=[];
     if (typeof label === "object") {
         label.forEach(l=>{
-            const {value} = _.find(arr, (f)=>f.label==l)
+            const {value} = find(arr, (f)=>f.label==l)
             values = [...values, value]
 
         })
@@ -11,7 +11,7 @@ export const findAndGetValue = (arr, label) => {
 
     } else {
 
-        const {value} = _.find(arr, (f)=>f.label==label)
+        const {value} = find(arr, (f)=>f.label==label)
         return value
     }
     

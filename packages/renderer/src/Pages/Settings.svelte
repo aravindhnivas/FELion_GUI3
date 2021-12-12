@@ -25,27 +25,37 @@
             $pyVersion = data.stdout.trim()
             console.log("Python path is valid")
         }
+
+        // Update check
+        if(env.DEV) return
         const interval = 15 //min
         updateInterval = setInterval(() => {
             updateCheck()
         }, interval*60*1000);
     })
-    onDestroy(() => clearInterval(updateInterval));
+    onDestroy(() => env.DEV ? "" : clearInterval(updateInterval));
     
     const handlepythonPathCheck = () => { console.log("Python path checking done") }
 
     let commandToRun = "", commandArgsToRun = "";
 
     function updateCheck(event=null){
+
+        
+        if(env.DEV) return console.info("Cannot update in DEV mode")
+
         try {
             event?.target.classList.toggle("is-loading")
+        
             if (!navigator.onLine) {if (info) {window.createToast("No Internet Connection!", "warning")}; return}
             checkupdate()
         } catch (error) {
+        
             if(event) window.handleError(error)
         } finally {
             event?.target.classList.toggle("is-loading")
         }
+    
     }
 </script>
 

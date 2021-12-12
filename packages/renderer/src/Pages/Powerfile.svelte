@@ -24,19 +24,13 @@
         overwrite ? overwrite_dialog.open() : writePowfile()
     }
 
-    function openFolder({save=false}={}) {
-        browse({dir:true})
-            .then(result=>{
-                if (result) {
-                    location = result[0]
-                    db.set("powerfile_location", location)
-                    window.createToast("Location updated", "success")
-                    if (save) savefile()
-
-                }
-            
-            }).catch(error=>{window.handleError(error)})
-    
+    async function openFolder({save=false}={}) {
+        const result = await browse()
+        if(!result) return
+        location = result
+        db.set("powerfile_location", location)
+        window.createToast("Location updated", "success")
+        if (save) savefile()
     }
 
     let powerfileContent = '', felixHz = 10, felixShots = 16, convert = null;

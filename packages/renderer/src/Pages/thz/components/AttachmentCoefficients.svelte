@@ -1,6 +1,7 @@
 
 <script>
     import Textfield from '@smui/textfield';
+    import {cloneDeep} from "lodash-es"
     export let k3={constant:[], rate:[]}, kCID={constant:[], rate:[]}, attachmentCoefficients=[];
     export let numberDensity;
 
@@ -19,8 +20,8 @@
     
     
     const computeAttachmentRate = () => {
-        k3.rate = _.cloneDeep(k3.constant).map((rate) => {rate.value *= numberDensity**2; return rate }).map(setID).map(correctObjValue);
-        kCID.rate = _.cloneDeep(kCID.constant).map((rate) => {rate.value *= numberDensity; return rate }).map(setID).map(correctObjValue);
+        k3.rate = cloneDeep(k3.constant).map((rate) => {rate.value *= numberDensity**2; return rate }).map(setID).map(correctObjValue);
+        kCID.rate = cloneDeep(kCID.constant).map((rate) => {rate.value *= numberDensity; return rate }).map(setID).map(correctObjValue);
     }
     $: if(numberDensity) computeAttachmentRate()
 

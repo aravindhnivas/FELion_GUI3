@@ -5,7 +5,7 @@
     import CustomIconSwitch from '$components/CustomIconSwitch.svelte';
     import Table from '$components/Table.svelte';
     import { savefile,  loadfile } from '../../functions/misc';
-
+    import {uniqBy} from "lodash-es"
     // import {computePy_func} from '../../functions/computePy';
     
     import {get_details_func} from '../../functions/get_details';
@@ -28,7 +28,7 @@
 
     function loadfiledetails(){
         const loadedfile = loadfile({name:"filedetails"})
-        $filedetails = _.uniqBy([...loadedfile, ...$filedetails], "filename")
+        $filedetails = uniqBy([...loadedfile, ...$filedetails], "filename")
     }
 </script>
 

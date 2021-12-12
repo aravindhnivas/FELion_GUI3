@@ -1,11 +1,10 @@
 
 <script>
-    // import {mainPreModal} from "../../../svelteWritable";
     import CollisionalDistribution from "../windows/CollisionalDistribution.svelte";
     import {browse} from "$components/Layout.svelte";
     import Textfield from '@smui/textfield';
     import balance_distribution from "../functions/balance_distribution";
-
+    import {find, cloneDeep} from "lodash-es"
     export let collisionalCoefficient=[], collisionalCoefficient_balance=[], collisionalRateType="both", collisionalRates = [];
     export let energyLevels, electronSpin, zeemanSplit, energyUnit, numberDensity = "2e14", collisionalFilename, collisionalTemp;
 
@@ -22,7 +21,7 @@
             newValue = value*balance_distribution({...balanceArgs, label})
             newLabel = `${levelLabels[1]} --> ${levelLabels[0]}`
         
-            const alreadyComputed = _.find(collisionalCoefficient, (rate)=>rate.label==newLabel)
+            const alreadyComputed = find(collisionalCoefficient, (rate)=>rate.label==newLabel)
             if(!alreadyComputed)  {
                 collisionalCoefficient_balance = [...collisionalCoefficient_balance, {label:newLabel, value:newValue.toExponential(3), id:getID()}]
              }
@@ -37,12 +36,13 @@
     }
 
     $: if(collisionalRateConstants.length>0 && numberDensity) {
-        collisionalRates = _.cloneDeep(collisionalRateConstants).map(computeRate)
+        collisionalRates = cloneDeep(collisionalRateConstants).map(computeRate)
     }
 
     async function browse_collisional_file() {
         const result = await browse({dir:false})
-        if (result) { collisionalFilename = result[0] }
+        if (!result) return
+        collisionalFilename = result 
     }
 
     // let collisionlFile = ""

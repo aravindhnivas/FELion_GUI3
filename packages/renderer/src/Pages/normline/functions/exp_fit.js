@@ -1,19 +1,20 @@
 
 import {dataTable, dataTable_avg, felixPlotAnnotations, felixOutputName, graphDiv, expfittedLines, expfittedLinesCollectedData, collectData, avgfittedLineCount, fittedTraceCount, get} from './svelteWritables';
-
+import {relayout, addTraces} from 'plotly.js/dist/plotly';
+import {uniqBy} from "lodash-es"
 export function exp_fit_func({dataFromPython}={}) {
 
-    window.Plotly.addTraces(get(graphDiv), dataFromPython["fit"])
+    addTraces(get(graphDiv), dataFromPython["fit"])
     fittedTraceCount.update(n=>n+1)
 
     expfittedLines.update(lines=>[...lines, ...dataFromPython["line"]])
-    window.Plotly.relayout(get(graphDiv), { shapes: get(expfittedLines) })
+    relayout(get(graphDiv), { shapes: get(expfittedLines) })
     
     let annotations = dataFromPython["annotations"]
     
     felixPlotAnnotations.update(annotate => [...annotate, annotations])
 
-    window.Plotly.relayout(get(graphDiv), { annotations: get(felixPlotAnnotations) })
+    relayout(get(graphDiv), { annotations: get(felixPlotAnnotations) })
     
     let [freq, amp, fwhm, sig] = dataFromPython["table"].split(", ")
     
@@ -23,7 +24,7 @@ export function exp_fit_func({dataFromPython}={}) {
     if (output_name === "averaged") {
         color = "#836ac05c"
         dataTable_avg.update(table=>[...table, {name: `Line #${get(avgfittedLineCount)}`, id:getID(), freq, amp, fwhm, sig, color}])
-        dataTable_avg.update(table=>_.uniqBy(table, "freq"))
+        dataTable_avg.update(table=>uniqBy(table, "freq"))
         avgfittedLineCount.update(n=>n+1)
 
     } else {
@@ -33,7 +34,7 @@ export function exp_fit_func({dataFromPython}={}) {
         }
     }
     let newTable = {name: output_name, id:getID(), freq, amp, fwhm, sig, color}
-    dataTable.update(table=>_.uniqBy([...table, newTable], "freq"))
+    dataTable.update(table=>uniqBy([...table, newTable], "freq"))
 
     console.log("Line fitted")
 

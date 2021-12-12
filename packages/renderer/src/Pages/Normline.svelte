@@ -14,10 +14,6 @@
     import FrequencyTable from './normline/components/FrequencyTable.svelte';
     import InitFunctionRow from './normline/widgets/preprocessing/InitFunctionRow.svelte';
     import OPORow from './normline/widgets/preprocessing/OPORow.svelte';
-
-
-
-    
     import AdjustInitialGuess from './normline/modals/AdjustInitialGuess.svelte';
     import TheoryRow from './normline/widgets/preprocessing/TheoryRow.svelte';
     import GetFileInfoTable from './normline/widgets/preprocessing/GetFileInfoTable.svelte';
@@ -25,7 +21,7 @@
     import ExecuteFunctionContents from './normline/widgets/postprocessing/ExecuteFunctionContents.svelte';
     import {init_tour_normline} from './normline/initTour';
     import Textfield from '@smui/textfield';
-    
+    import {react, deleteTraces} from 'plotly.js/dist/plotly';
     ///////////////////////////////////////////////////////////////////////
 
     const filetype="felix", id="Normline"
@@ -56,7 +52,7 @@
         if (graphPlotted) {
             let {data, layout} = $normMethodDatas[$normMethod]
             try {
-                window.Plotly.react($graphDiv, data, layout, { editable: true })
+                react($graphDiv, data, layout, { editable: true })
                 $expfittedLines = $felixPlotAnnotations = $expfittedLinesCollectedData = [], $fittedTraceCount = 0
             } catch (err) {
             }
@@ -78,7 +74,7 @@
     function removeExtraFile() {
         for(let i=0; i<extrafileAdded+1; i++) {
             try {
-                window.Plotly.deleteTraces($graphDiv, [-1])
+                deleteTraces($graphDiv, [-1])
                 extrafileAdded--
                 addedfiles.pop()
             } catch (err) {console.log("The plot is empty")}

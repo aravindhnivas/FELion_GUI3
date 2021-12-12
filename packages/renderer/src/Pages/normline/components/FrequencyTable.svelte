@@ -2,17 +2,18 @@
 <script>
     import {dataTable_avg, dataTable, expfittedLinesCollectedData, avgfittedLineCount} from '../functions/svelteWritables';
     import DataTable, {Head, Body, Row, Cell} from '@smui/data-table';
-    import {Icon} from '@smui/icon-button';
+    import {filter} from "lodash-es"
     import CustomCheckbox from '$components/CustomCheckbox.svelte';
+    
     export let keepTable=true;
 
     const dataTableHead = ["Filename", "Frequency (cm-1)", "Amplitude", "FWHM", "Sigma"]
+    let show_dataTable_only_weighted_averaged = false
+    let show_dataTable_only_averaged = false
 
-    let show_dataTable_only_weighted_averaged = false, show_dataTable_only_averaged = false
     $: dataTable_weighted_avg = $dataTable_avg.filter(file=> file.name == "weighted_mean")
     $: console.log("dataTable", $dataTable)
     $: console.log("dataTable_avg", $dataTable_avg)
-
     $: console.log("dataTable_weighted_avg", dataTable_weighted_avg)
 
     function clearTable() {
@@ -22,11 +23,6 @@
         window.createToast("Table cleared", "warning")
     }
 </script>
-
-
-<style>
-    .dataTable { display: flex; justify-content: center; }
-</style>
 
 <div class="align v-center">
     <div class="notice__div">Frequency table</div>
@@ -61,8 +57,8 @@
                         <Cell>{table.fwhm}</Cell>
                         <Cell>{table.sig}</Cell>
                         <Cell style="background: #f14668; cursor: pointer;">
-                            <Icon id="{table.id}" class="material-icons" 
-                                on:click="{(e)=> {dataTable_weighted_avg = window._.filter(dataTable_weighted_avg, (tb)=>tb.id != e.target.id)}}">close</Icon>
+                            <i id="{table.id}" class="material-icons" 
+                                on:click="{(e)=> {dataTable_weighted_avg = filter(dataTable_weighted_avg, (tb)=>tb.id != e.target.id)}}">close</i>
                         </Cell>
                     </Row>
                 {/each}
@@ -76,8 +72,8 @@
                         <Cell>{table.fwhm}</Cell>
                         <Cell>{table.sig}</Cell>
                         <Cell style="background: #f14668; cursor: pointer; width: 2em;">
-                            <Icon id="{table.id}" class="material-icons" 
-                                on:click="{(e)=> {$dataTable_avg = window._.filter($dataTable_avg, (tb)=>tb.id != e.target.id)}}">close</Icon>
+                            <i id="{table.id}" class="material-icons" 
+                                on:click="{(e)=> {$dataTable_avg = filter($dataTable_avg, (tb)=>tb.id != e.target.id)}}">close</i>
                         </Cell>
                     </Row>
                 {/each}
@@ -92,8 +88,8 @@
                         <Cell>{table.fwhm}</Cell>
                         <Cell>{table.sig}</Cell>
                         <Cell style="background: #f14668; cursor: pointer;">
-                            <Icon id="{table.id}" class="material-icons" 
-                                on:click="{(e)=> {$dataTable = window._.filter($dataTable, (tb)=>tb.id != e.target.id)}}">close</Icon>
+                            <i id="{table.id}" class="material-icons" 
+                                on:click="{(e)=> {$dataTable = filter($dataTable, (tb)=>tb.id != e.target.id)}}">close</i>
                         </Cell>
                     </Row>
                 {/each}
@@ -102,3 +98,7 @@
 
     </DataTable>
 </div>
+
+<style>
+    .dataTable { display: flex; justify-content: center; }
+</style>

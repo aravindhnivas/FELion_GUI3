@@ -2,23 +2,18 @@
 <script>
 
     import { fittedTraceCount, felixPlotAnnotations, felixIndex, expfittedLines, expfittedLinesCollectedData , graphDiv, dataTable, Ngauss_sigma, felixOutputName, felixPeakTable, felixopoLocation, felixAnnotationColor} from "../../functions/svelteWritables";
-    // import {mainPreModal} from "../../../../svelteWritable";
     import Textfield from '@smui/textfield';
     import CustomSwitch from '$components/CustomSwitch.svelte';
-
     import {Icon} from '@smui/icon-button';
-
-    // import AdjustInitialGuess from "../../modals/AdjustInitialGuess.svelte";
     import {savefile, loadfile} from "../../functions/misc";
-    
     import { fade } from 'svelte/transition';
-    
     import {NGauss_fit_func} from '../../functions/NGauss_fit';
-    
     import {find_peaks_func} from '../../functions/find_peaks';
     import {exp_fit_func} from '../../functions/exp_fit';
+
     import {get_err_func} from '../../functions/get_err';
-    
+    import {relayout, deleteTraces} from 'plotly.js/dist/plotly';
+    import {dropRight, uniqBy, filter, sortBy} from "lodash-es"
     export let addedFileScale, addedFileCol, normMethod, writeFileName, writeFile, overwrite_expfit, fullfiles, modalActivate=false, adjustPeakTrigger=false;
     
     let boxSelected_peakfinder=false, NGauss_fit_args={}
@@ -35,9 +30,9 @@
         
         $felixPlotAnnotations = $felixIndex = $expfittedLines = $expfittedLinesCollectedData = []
 
-        window.Plotly.relayout($graphDiv, { annotations: [], shapes: [] })
+        relayout($graphDiv, { annotations: [], shapes: [] })
         
-        for (let i=0; i<$fittedTraceCount; i++) {window.Plotly.deleteTraces($graphDiv, [-1])}
+        for (let i=0; i<$fittedTraceCount; i++) {deleteTraces($graphDiv, [-1])}
         
         $fittedTraceCount = 0
     }
@@ -47,13 +42,13 @@
         if ($fittedTraceCount === 0) {return window.createToast("No fitted lines found", "danger")}
 
         plotData({filetype:"general", general:{args:[$felixOutputName, $felixopoLocation, normMethod], pyfile:"delete_fileLines"}})
-        $dataTable = _.dropRight($dataTable, 1)
-        $expfittedLines = _.dropRight($expfittedLines, 2)
-        $felixPlotAnnotations = _.dropRight($felixPlotAnnotations, 1)
-        $expfittedLinesCollectedData = _.dropRight($expfittedLinesCollectedData, 1)
-        window.Plotly.relayout($graphDiv, { annotations: $felixPlotAnnotations, shapes: $expfittedLines })
+        $dataTable = dropRight($dataTable, 1)
+        $expfittedLines = dropRight($expfittedLines, 2)
+        $felixPlotAnnotations = dropRight($felixPlotAnnotations, 1)
+        $expfittedLinesCollectedData = dropRight($expfittedLinesCollectedData, 1)
+        relayout($graphDiv, { annotations: $felixPlotAnnotations, shapes: $expfittedLines })
 
-        window.Plotly.deleteTraces($graphDiv, [-1])
+        deleteTraces($graphDiv, [-1])
         console.log("Last fitted peak removed")
         $fittedTraceCount--
 
@@ -61,14 +56,14 @@
 
     function loadpeakTable(){
         const loadedfile = loadfile({name:savePeakfilename})
-        $felixPeakTable = _.uniqBy([...loadedfile, ...$felixPeakTable], "freq")
+        $felixPeakTable = uniqBy([...loadedfile, ...$felixPeakTable], "freq")
         adjustPeak()
     }
 
     function adjustPeak({closeMainModal=true}={}) {
-        $felixPeakTable = _.filter($felixPeakTable, (tb)=>tb.sig != 0);
+        $felixPeakTable = filter($felixPeakTable, (tb)=>tb.sig != 0);
         
-        $felixPeakTable = _.sortBy($felixPeakTable, [(o)=>o["freq"]])
+        $felixPeakTable = sortBy($felixPeakTable, [(o)=>o["freq"]])
 
         let temp_annotate = {xref:"x", y:"y", "showarrow":true,  "arrowhead":2, "ax":-25, "ay":-40, font:{color:$felixAnnotationColor}, arrowcolor:$felixAnnotationColor}
 
@@ -89,7 +84,7 @@
         if(closeMainModal) {
             modalActivate = false, window.createToast("Initial guess adjusted for full spectrum fitting")
         }
-        window.Plotly.relayout($graphDiv, { annotations:$felixPlotAnnotations })
+        relayout($graphDiv, { annotations:$felixPlotAnnotations })
         adjustPeakTrigger = false
         
     };
@@ -137,7 +132,7 @@
                 if ($felixPeakTable.length === 0) {return window.createToast("No arguments initialised yet.", "danger") }
                 
                 NGauss_fit_args.fitNGauss_arguments = {}
-                $felixPeakTable = _.sortBy($felixPeakTable, [(o)=>o["freq"]])
+                $felixPeakTable = sortBy($felixPeakTable, [(o)=>o["freq"]])
 
                 $felixPeakTable.forEach((f, index)=>{
                     NGauss_fit_args.fitNGauss_arguments[`cen${index}`] = f.freq
@@ -243,7 +238,7 @@
             <button class="button is-link" on:click="{()=>savefile({file:$felixPeakTable, name:savePeakfilename})}">Save peaks</button>
             <button class="button is-link" on:click="{loadpeakTable}">Load peaks</button>
 
-            <button class="button is-danger" on:click="{()=>{$felixPlotAnnotations=[]; $felixPeakTable=[];NGauss_fit_args={}; window.Plotly.relayout($graphDiv, { annotations: [] }); window.createToast("Cleared", "warning")}}">Clear</button>
+            <button class="button is-danger" on:click="{()=>{$felixPlotAnnotations=[]; $felixPeakTable=[];NGauss_fit_args={}; relayout($graphDiv, { annotations: [] }); window.createToast("Cleared", "warning")}}">Clear</button>
 
         </div>
 

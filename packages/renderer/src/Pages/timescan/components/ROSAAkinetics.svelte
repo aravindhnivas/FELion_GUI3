@@ -1,6 +1,5 @@
 
 <script>
-
     import { tick }                     from "svelte"
     import Textfield                    from '@smui/textfield'
     import Editor                       from "$components/Editor.svelte"
@@ -10,6 +9,7 @@
     import CustomSelect                 from "$components/CustomSelect.svelte"
     import SeparateWindow               from "$components/SeparateWindow.svelte"
     import {computeKineticCodeScipy}    from "../functions/computeKineticCode"
+    import {difference}                 from "lodash-es"
 
     export let fileChecked=[]
     export let kineticData={};
@@ -132,7 +132,7 @@
             }
         )
         
-        const fileCheckedRemaining = _.difference(fileChecked, keys)
+        const fileCheckedRemaining = difference(fileChecked, keys)
 
         fileCheckedRemaining.forEach(filename=>{
             const id = window.getID()

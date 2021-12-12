@@ -1,35 +1,38 @@
 
 <script>
-    import {tick} from "svelte"
-    
-    export let id=window.getID(), title="Title", active=false;
-    export let top=50, bottom=50;
-    export let width="70%", height="70%";
-    export let x="center", y="center";
+    import {tick, onDestroy} from "svelte"
+    import WinBox from "winbox/src/js/winbox.js";
+    import {relayout} from 'plotly.js/dist/plotly';
+    export let id=window.getID()
+    export let title="Title"
+    export let active=false;
+    export let top=50
+    export let bottom=50;
+    export let width="70%"
+    export let height="70%";
 
+    export let x="center"
+    export let y="center";
     export let background="#634e96";
-    
-    export let graphWindow=null, windowReady=false, maximize=true;
-    let graphWindowClosed = true;
+    export let graphWindow=null
+    export let windowReady=false
+    export let maximize=true;
+
 
     async function openGraph(){
-        
         await tick()
-        if(!graphWindowClosed) {return graphWindow.show()}
-        graphWindowClosed = false
-
+        // if(graphWindow) {return graphWindow.show()}
 
         graphWindow = new WinBox({
             root:document.getElementById("pageContainer"),
             mount: document.getElementById(id), 
             title, x, y, width, height, top, bottom, background,
             onclose: function(){
-                graphWindowClosed = true
                 active = false
                 windowReady = false
                 return false
             },
-            onfocus: function(){windowReady = true;},
+            onfocus: function(){windowReady = true; },
             onresize: function(){changeGraphDivWidth()},
         });
         graphWindow.maximize(maximize);
@@ -37,11 +40,10 @@
     $: if(active) openGraph()
 
     const changeGraphDivWidth = async (ms=0) => {
-
         await tick(); 
         if (ms>0) await sleep(ms);
         graphDivs.forEach(id=>{
-            if(id.data) {window.Plotly.relayout(id, {width:id.clientWidth})}
+            if(id.data) {relayout(id, {width:id.clientWidth})}
         })
     }
 
@@ -51,8 +53,12 @@
         try {graphDivs = Array.from(document.querySelectorAll(`#${id} .graph__div`))} 
         catch (error) {console.log("No graph in this window")}
     }
-</script>
+    onDestroy(()=>{
+        console.log("Window closed")
 
+        graphWindow?.close()
+    })
+</script>
 
 <div {id} class="main_content__div" class:hide={!active}>
     <div class="header_content"><slot name="header_content__slot" /></div>
@@ -60,22 +66,19 @@
     <div class="footer_content" ><slot name="footer_content__slot"/> </div>
 </div>
 
-
 <style>
     .main_content { overflow: auto; }
-
     .main_content__div {
         display:grid;
         max-height: 100%;
         grid-template-rows: auto 1fr auto;
         height: 100%;
         gap: 1em;
+        
         padding: 1em;
     }
 
-
     .header_content { display:grid; grid-row-gap: 1em; }
-
     .footer_content {
         display: flex;
         gap: 1em;
@@ -83,5 +86,5 @@
         align-items: center;
 
     }
-    
+
 </style>

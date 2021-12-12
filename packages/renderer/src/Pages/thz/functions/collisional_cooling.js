@@ -1,4 +1,4 @@
-
+import {sum} from "lodash-es"
 export default function ({collisionalRateConstants, numberDensity, boltzmanDistribution}={}) {
     const energyKeys = boltzmanDistribution.map(f=>f.label)
     const ionCounts = {}
@@ -25,7 +25,7 @@ export default function ({collisionalRateConstants, numberDensity, boltzmanDistr
                 collections = [...collections, currentValue]
             }
         }
-        const currentCollection = {label:i, value:_.sum(collections), id:getID()}
+        const currentCollection = {label:i, value:sum(collections), id:getID()}
         collisionalCollection = [...collisionalCollection, currentCollection]
     }
 

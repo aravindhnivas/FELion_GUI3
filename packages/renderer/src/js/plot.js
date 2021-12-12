@@ -1,3 +1,5 @@
+
+import {react} from 'plotly.js/dist/plotly';
 export function plot(mainTitle, xtitle, ytitle, data, plotArea, logScale=null) {
 
     let dataLayout = {
@@ -16,7 +18,7 @@ export function plot(mainTitle, xtitle, ytitle, data, plotArea, logScale=null) {
 
     for (let x in data) { dataPlot.push(data[x]) }
 
-    try { window.Plotly.react(plotArea, dataPlot, dataLayout, { editable: true }) } catch (err) { console.log("Error occured while plotting\n", err) }
+    try { react(plotArea, dataPlot, dataLayout, { editable: true }) } catch (err) { console.log("Error occured while plotting\n", err) }
 }
 
 export function subplot(mainTitle, xtitle, ytitle, data, plotArea, x2, y2, data2) {
@@ -40,6 +42,6 @@ export function subplot(mainTitle, xtitle, ytitle, data, plotArea, x2, y2, data2
     let dataPlot2 = [];
     for (let x in data2) { dataPlot2.push(data2[x]) }
 
-    window.Plotly.react(plotArea, dataPlot1.concat(dataPlot2), dataLayout, { editable: true })
+    react(plotArea, dataPlot1.concat(dataPlot2), dataLayout, { editable: true })
 
 }

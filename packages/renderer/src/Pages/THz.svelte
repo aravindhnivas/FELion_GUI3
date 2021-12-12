@@ -1,17 +1,12 @@
 <script>
-    // import {mainPreModal} from "../svelteWritable";
-    //  Importing
     import Layout from "$components/Layout.svelte"
     import CustomIconSwitch from "$components/CustomIconSwitch.svelte"
     import CustomSelect from "$components/CustomSelect.svelte"
     import CustomCheckbox from "$components/CustomCheckbox.svelte"
-
-    // import ReportLayout from "$components/ReportLayout.svelte"
     import Textfield from '@smui/textfield'
     import {plot} from "../js/functions.js"
     import ROSAA from "./thz/ROSAA.svelte"
-
-    
+    import {relayout, restyle} from 'plotly.js/dist/plotly';
     /////////////////////////////////////////////////////////////////////////
 
     // Initialisation
@@ -31,7 +26,7 @@
 
     let binData = false, saveInMHz = false;
 
-    const changePlotStyle = () => { window.Plotly.restyle("thzPlot", {mode:plotStyleSelected, fill: plotFill ? "tozeroy" : ""})}
+    const changePlotStyle = () => { restyle("thzPlot", {mode:plotStyleSelected, fill: plotFill ? "tozeroy" : ""})}
 
     function plotData({e=null, filetype="thz", tkplot=false, justPlot=false, general={} }={}){
 
@@ -59,7 +54,7 @@
                         let lines = [];
                         for (let x in dataFromPython["shapes"]) { lines.push(dataFromPython["shapes"][x]) }
                         let layout_update = { shapes: lines }
-                        window.Plotly.relayout("thzPlot", layout_update)
+                        relayout("thzPlot", layout_update)
                     }
                 }
                 window.createToast("Graph plotted", "success")

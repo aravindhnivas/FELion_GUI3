@@ -1,14 +1,20 @@
 <script>
+  
   import {browse} from "./Layout.svelte";
   import { fade } from 'svelte/transition';
+  
+  export let style = ""
+  export let title="";
+  export let active = false
+  export let footer = true
+  export let currentLocation=""
+  
+  async function browse_folder() {
 
-  export let active = false, style = "", footer = true, currentLocation="", title="";
-  
-  function browse_folder() {
-  
-    browse({dir:true}).then(result=>{
-        if (result) { currentLocation = result[0]; window.createToast("Location updated") }
-    })
+    const result = await browse()
+	if(!result) return   
+	currentLocation = result
+    window.createToast("Location updated") 
   }
 
 </script>
@@ -35,7 +41,6 @@
     </footer>
   {/if}
 </div>
-
 
 <style>
   .quickview {margin: 5em 0;}
