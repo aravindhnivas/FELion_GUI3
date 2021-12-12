@@ -4,8 +4,8 @@ const path = require("path")
 const fs = require("fs-extra")
 
 const env = import.meta.env;
-
-
+const DEV = env.DEV
+contextBridge.exposeInMainWorld("env", env)
 contextBridge.exposeInMainWorld("versions", versions)
 const appInfo = ipcRenderer.sendSync("appInfo", null)
 contextBridge.exposeInMainWorld("appInfo", appInfo)
