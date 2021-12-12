@@ -3,7 +3,7 @@
     import Textfield                from '@smui/textfield';
     import { Remarkable }           from 'remarkable';
     import {browse}                 from '$components/Layout.svelte';
-
+    import WinBox                   from "winbox/src/js/winbox.js";
     export let id = window.getID();
     export let location = ""
     export let filetype = ""
@@ -29,27 +29,28 @@
     let reportFiles = []
 
     const updateFiles = (node=null) => {
-        if(node) {
-            const {target} = node
-            target.classList.add("rotateIn")
-
-        }
-        // console.log(target)
-        reportFiles =  fs.readdirSync(pathResolve(location))
-                        .filter(name=>name.endsWith(".md"))
-                        .map(name=>name.replace(extname(name), ""))
+        node?.target?.classList.add("rotateIn")
+        reportFiles = fs.readdirSync(pathResolve(location))
+            .filter(name=>name.endsWith(".md"))
+            .map(name=>name.replace(extname(name), ""))
     }
+
     $: if(fs.existsSync(location)) {
+    
         db.set(`${filetype}-report-md`, location)
         updateFiles()
     }
 
+    
     async function browse_folder() {
-        try {
-            [location] = await browse({dir:true})
-            
-        } catch (error) {window.handleError( error )}
+
+        const result = await browse()
+        if(!result) return   
+
+        location = result
+        window.createToast("Location updated") 
     }
+
     const saveReport = () => {
         try {
             if(location) {
@@ -62,7 +63,6 @@
     }
 
     let reportWindowClosed = true;
-
     function openReport() {
         
         const graphWindow = new WinBox({

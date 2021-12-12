@@ -1,6 +1,6 @@
 <script>
     export let options = [], label="", picked=""
-    picked ??= label
+    picked ||= label
 </script>
 
 <div class="select" >
