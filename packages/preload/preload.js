@@ -11,19 +11,15 @@ const appInfo = ipcRenderer.sendSync("appInfo", null)
 contextBridge.exposeInMainWorld("appInfo", appInfo)
 window.isPackaged = appInfo.isPackaged
 
-if(appInfo.isPackaged) {
-    window.ROOT_DIR = path.dirname(appInfo.module)
-} else {
-    window.ROOT_DIR = path.join(__dirname, "../../../")
-}
-window.PKG_DIR = path.join(ROOT_DIR, "packages")
-window.RENDERER_DIR = path.join(PKG_DIR, "renderer")
+const ROOT_DIR = isPackaged ? path.dirname(appInfo.module) : path.join(__dirname, "../../../")
+const PKG_DIR = path.join(ROOT_DIR, "packages")
+const RENDERER_DIR = path.join(PKG_DIR, "renderer")
 
 contextBridge.exposeInMainWorld("ROOT_DIR", ROOT_DIR)
-window.publicDirectory = path.join(RENDERER_DIR, appInfo.isPackaged ? "dist" : "public" )
+const publicDirectory = path.join(RENDERER_DIR, appInfo.isPackaged ? "dist" : "public" )
 contextBridge.exposeInMainWorld("__dirname", publicDirectory)
-
-console.log({__dirname, ROOT_DIR, PKG_DIR, RENDERER_DIR, MODE: env})
+console.table({ROOT_DIR, PKG_DIR, RENDERER_DIR, publicDirectory})
+console.table(env)
 
 window.addEventListener('contextmenu', (e) => {
     e.preventDefault()
