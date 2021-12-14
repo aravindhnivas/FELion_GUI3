@@ -63,7 +63,6 @@
             if(!keepAnnotaions) {annotations=[]}
             
             plot("Mass spectrum", "Mass [u]", "Counts", dataFromPython, "mplot", logScale ? "log" : "linear")
-
             if(keepAnnotaions) {relayout("mplot" ,{annotations})}
             
             plotlyEventCreatedMass ? console.log("Plotly event ready for mass spectrum") : plotlyClick()
