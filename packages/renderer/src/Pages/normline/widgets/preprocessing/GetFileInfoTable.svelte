@@ -20,7 +20,7 @@
         args=[JSON.stringify({files:$opoMode?opofiles : felixfiles, normMethod})]
         computePy_func({e, pyfile, args})
         .then((dataFromPython)=>{ get_details_func({dataFromPython}); toggleFileDetailsTable = true })
-        .catch(error=>{window.handleError(error)})
+        
         
     }
 

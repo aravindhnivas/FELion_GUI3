@@ -40,7 +40,7 @@
             extrafileAdded += addedfiles.length
             window.createToast("Graph Plotted", "success")
             active = false
-        }).catch(error=>{window.handleError(error)})
+        })
 
     }
 
@@ -51,9 +51,9 @@
 
     <Modal bind:active title="Add file to plot">
 
-        <div slot="content" >
-            <Textfield style="width:7em; margin:0 0.5em;" bind:value={addedFileCol} label="Columns"/>
-            <Textfield style="width:7em; margin:0 0.5em;" bind:value={addedFileScale} label="ScaleY"/>
+        <div class="align" slot="content" >
+            <Textfield bind:value={addedFileCol} label="Columns"/>
+            <Textfield bind:value={addedFileScale} label="ScaleY"/>
             <button on:click={addFileSelection} class="button is-link">Browse</button>
 
         </div>

@@ -24,7 +24,7 @@
             theory_func({dataFromPython, normMethod})
             window.createToast("Graph Plotted", "success")
             show_theoryplot = true, showTheoryFiles = false
-        }).catch(error=>{window.handleError(error)})
+        })
     }
 
     let onlyExpRange = false;

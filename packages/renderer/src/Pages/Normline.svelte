@@ -114,29 +114,47 @@
 
 
 <!-- Modals -->
-<AddFilesToPlot {fileChecked} bind:extrafileAdded bind:active={addFileModal} bind:addedFileCol bind:addedFileScale bind:addedfiles bind:addedFile  />
+<AddFilesToPlot
+    {fileChecked}
+    bind:addedfiles
+    bind:addedFile  
+    bind:addedFileCol
+    bind:addedFileScale
+    bind:extrafileAdded
+    bind:active={addFileModal}
+/>
+
 <AdjustInitialGuess bind:active={modalActivate} on:save="{()=>adjustPeakTrigger=true}" />
-<!-- Layout -->
-<Layout  {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked bind:toggleBrowser bind:activateConfigModal on:markedFile="{(e)=>$baselineFile = e.detail.markedFile}">
+
+<Layout
+    {id}
+    {filetype}
+    {graphPlotted}
+    bind:fileChecked
+    bind:toggleBrowser
+    bind:currentLocation
+    bind:activateConfigModal
+    on:markedFile="{(e)=>$baselineFile = e.detail.markedFile}"
+>
 
     <svelte:fragment slot="buttonContainer">
         <InitFunctionRow {removeExtraFile} {opofiles} {felixfiles} normMethod={$normMethod} {theoryLocation}  bind:graphPlotted bind:show_theoryplot />
-
         <OPORow {removeExtraFile} bind:OPOLocation bind:OPOfilesChecked bind:opofiles  bind:graphPlotted />
-        <TheoryRow bind:theoryLocation bind:show_theoryplot  normMethod={$normMethod}  />
-        <div class="align">
 
-            <CustomRadio on:change={replot} bind:selected={$normMethod} options={["Log", "Relative", "IntensityPerPhoton"]}/>
+        <TheoryRow bind:theoryLocation bind:show_theoryplot  normMethod={$normMethod}  />
+        
+        <div class="align">
+            <CustomRadio on:change={replot} bind:selected={$normMethod} options={["Log", "Relative", "IntensityPerPhoton"]} />
+
         </div>
+
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer" >
 
-        <!-- Get file info functions -->
         <GetFileInfoTable {felixfiles} normMethod={$normMethod} />
-        
-        <!-- Plots container -->
-        <div class="felixPlot" id="plot_container__div__{filetype}">
+        <div class="felixPlot" class:hide={!graphPlotted} id="plot_container__div__{filetype}">
+
             <div class="animated fadeIn graph__div" class:hide={!show_theoryplot} id="exp-theory-plot"></div>
             <div id="bplot" class="graph__div"></div>
             <div id="saPlot" class="graph__div"></div>

@@ -31,7 +31,7 @@
             window.createToast("Graph Plotted", "success")
             graphPlotted = true, $opoMode = true
             showOPOFiles=false
-        }).catch(error=>{window.handleError(error)})
+        })
 
     }
 

@@ -41,7 +41,7 @@
         if (tkplot) {filetype = "general"}
 
         if (filetype == "general") {
-            return computePy_func({e, pyfile, args, general:true, openShell}).catch(error=>{window.handleError(error)})
+            return computePy_func({e, pyfile, args, general:true, openShell})
 
         }
         computePy_func({e, pyfile, args})
@@ -59,7 +59,7 @@
                 }
                 window.createToast("Graph plotted", "success")
                 graphPlotted = true
-            }).catch(error=>{window.handleError(error)})
+            })
 
     }
 

@@ -118,7 +118,7 @@
         const pyfile = "ROSAA_simulation"
         const args = [JSON.stringify(conditions)]
         
-        computePy_func({e, pyfile, args, general:true}).catch(error=>{window.handleError(error)})
+        computePy_func({e, pyfile, args, general:true})
         // running=true
     }
     let currentLocation = fs.existsSync(db.get("thz_modal_location")) ? db.get("thz_modal_location") : "";

@@ -76,7 +76,7 @@
         if (filetype == "scan") {graphPlotted = false}
         if (filetype == "general") {
 
-            return computePy_func({e, pyfile, args, general:true, openShell}).catch(error=>{window.handleError(error)})
+            return computePy_func({e, pyfile, args, general:true, openShell})
         }
 
         try {

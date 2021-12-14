@@ -101,7 +101,7 @@
                 pyfile="baseline"
                 args=[JSON.stringify({filename: pathJoin($felixopoLocation, $baselineFile)})]
                 computePy_func({e, pyfile, args, general:true, openShell})
-                .catch(error=>{window.handleError(error)})
+                
                 
                 break;
 
@@ -114,7 +114,7 @@
 
                 pyfile="felix_tkplot", args=[JSON.stringify({numberWidgets, textWidgets, booleanWidgets, selectedWidgets, location: $felixopoLocation, normMethod, theoryLocation})]
                 computePy_func({e, pyfile, args, general:true, openShell})
-                    .catch(error=>{window.handleError(error)})
+                    
             default:
                 break;
                 
