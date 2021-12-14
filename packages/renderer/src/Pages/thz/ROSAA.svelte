@@ -170,7 +170,7 @@
     }
     
     const setID = (obj) => {
-        obj.id = window.getID();
+        obj.id = getID();
         return obj
 
     }

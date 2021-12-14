@@ -1,42 +1,47 @@
 <script>
-    import Layout from "$components/Layout.svelte"
-    import CustomIconSwitch from "$components/CustomIconSwitch.svelte"
-    import CustomSelect from "$components/CustomSelect.svelte"
-    import CustomSwitch from "$components/CustomSwitch.svelte"
-    import Textfield from '@smui/textfield'
-    import {plot} from "../js/functions.js"
-    import GetLabviewSettings from "$components/GetLabviewSettings.svelte"
-    import {relayout} from 'plotly.js/dist/plotly-basic';
+    import Layout               from "$components/Layout.svelte"
+    import CustomIconSwitch     from "$components/CustomIconSwitch.svelte"
+    import CustomSelect         from "$components/CustomSelect.svelte"
+    import CustomSwitch         from "$components/CustomSwitch.svelte"
+    import Textfield            from '@smui/textfield'
+    import {plot}               from "../js/functions.js"
+    import GetLabviewSettings   from "$components/GetLabviewSettings.svelte"
+    import {relayout}           from 'plotly.js/dist/plotly-basic';
     import {find, differenceBy} from "lodash-es"
-    
+    import {readMassFile}       from "./masspec/mass"
     /////////////////////////////////////////////////////////////////////////
 
     // Initialisation
-    const filetype = "mass", id = "Masspec"
+    const filetype = "mass"
+    const id = "Masspec"
     let fileChecked = [];
-
-
     let currentLocation = db.get(`${filetype}_location`) || ""
     $: massfiles = fs.existsSync(currentLocation) ? fileChecked.map(file=>pathResolve(currentLocation, file)) : []
+    $: if(massfiles.length) plotData()
     
-    let openShell = false, graphPlotted = false
-
-    // Find peaks
+    let openShell = false
+    let graphPlotted = false
     let toggleRow1 = true
-    let selected_file = "", peak_prominance = 3, peak_width = 2, peak_height = 40;
-    const style = "width:7em; height:3.5em; margin-right:0.5em"
     let logScale = true;
+    let selected_file = ""
+
+    let peak_width = 2
+    let peak_height = 40;
+    let peak_prominance = 3
     let keepAnnotaions = true;
-    // Functions
-    function plotData({e=null, filetype="mass"}={}){
+    
+    const style = "width:7em; height:3.5em; margin-right:0.5em"
+    
+    
+    async function plotData({e=null, filetype="mass"}={}){
 
         if (!fs.existsSync(currentLocation)) {return window.createToast("Location not defined", "danger")}
+
         if (fileChecked.length<1) {return window.createToast("No files selected", "danger")}
         if (filetype === "find_peaks") {if (selected_file === "") return window.createToast("No files selected", "danger")}
 
-        // console.log("Running")
 
-        let pyfileInfo = {
+        const pyfileInfo = {
             mass: {pyfile:"mass" , args:[JSON.stringify({massfiles, tkplot:"run"})]},
             general: {pyfile:"mass" , args:[JSON.stringify({massfiles, tkplot:"plot"})]},
             find_peaks: {
@@ -48,51 +53,45 @@
             },
 
         }
+        const {pyfile, args} = pyfileInfo[filetype]
         
-        let {pyfile, args} = pyfileInfo[filetype]
-        if (filetype == "general") {
+        if (filetype == "general") {await computePy_func({e, pyfile, args, general:true, openShell})}
 
-            return computePy_func({e, pyfile, args, general:true, openShell}).catch(error=>{window.handleError(error)})
+        if (filetype=="mass") {
             
+            const [dataFromPython] = await readMassFile(massfiles)
+            if(!keepAnnotaions) {annotations=[]}
+            
+            plot("Mass spectrum", "Mass [u]", "Counts", dataFromPython, "mplot", logScale ? "log" : "linear")
+
+            if(keepAnnotaions) {relayout("mplot" ,{annotations})}
+            
+            plotlyEventCreatedMass ? console.log("Plotly event ready for mass spectrum") : plotlyClick()
+            graphPlotted = true
+            
+            return
         }
-
-        if (filetype == "mass") {graphPlotted = false}
-
-        return computePy_func({e, pyfile, args})
-                .then((dataFromPython)=>{
-
-                    if (filetype=="mass") {
-                        if(!keepAnnotaions) {annotations=[]}
-                        plot("Mass spectrum", "Mass [u]", "Counts", dataFromPython, "mplot", logScale ? "log" : "linear")
-                        if(keepAnnotaions) {relayout("mplot" ,{annotations})}
-                        plotlyEventCreatedMass ? console.log("Plotly event ready for mass spectrum") : plotlyClick()
-                    } else if (filetype =="find_peaks") {
-
-                        relayout("mplot", { yaxis: { title: "Counts", type: "" } })
-                        relayout("mplot", { annotations: [] })
-                    
-                        relayout("mplot", { annotations: dataFromPython["annotations"] })
-                        
-                        relayout("mplot", { yaxis: { title: "Counts", type: "log" } })
-
-                    }
-
-                    window.createToast("Graph plotted", "success")
-                    graphPlotted = true
-
-                }).catch(error=>{window.handleError(error)})
         
+        if (filetype =="find_peaks") {
+            const dataFromPython = await computePy_func({e, pyfile, args})
+            
+            relayout("mplot", { yaxis: { title: "Counts", type: "" } })
+            relayout("mplot", { annotations: [] })
+            relayout("mplot", { annotations: dataFromPython["annotations"] })
+            relayout("mplot", { yaxis: { title: "Counts", type: "log" } })
+        }
     }
 
     // Linearlog check
 
     const linearlogCheck = () => {
-        let layout = { yaxis: { title: "Counts", type: logScale ? "log" : null } }
+        const layout = { yaxis: { title: "Counts", type: logScale ? "log" : null } }
         if(graphPlotted) relayout("mplot", layout)
     };
+
     let fullfileslist = [];
-    let plotlyEventCreatedMass = false
     let annotations = []
+    let plotlyEventCreatedMass = false
 
     function plotlyClick() {
 
@@ -156,9 +155,9 @@
 
     <svelte:fragment slot="plotContainer_functions" >
         <div class="align" style="justify-content: flex-end;">
+
             <CustomSwitch style="margin: 0 1em;" bind:selected={keepAnnotaions} label="Keep Annotaions"/>
             <button class="button is-danger" on:click="{()=> { annotations = []; relayout("mplot" ,{annotations})}}">Clear</button>
-
         </div>
 
     </svelte:fragment>

@@ -25,7 +25,7 @@
 
     <section class="modal-card-body" 
       style="background: {bodyBackground}; {bodyStyle}" 
-      id="{contentID||window.getID()}">
+      id="{contentID||getID()}">
       <slot name="content" style="white-space: pre-wrap;"/>
     </section>
 

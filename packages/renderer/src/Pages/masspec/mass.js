@@ -1,21 +1,17 @@
-import { path } from "@tauri-apps/api"
-import {getInfoContents} from "$computeCode/utils"
-
+import {getInfoContents} from "../computeCode/utils"
 
 export async function readMassFile(massfiles) {
-
-
     try {
-        console.log({massfiles})
+        
+        console.log(massfiles)
         const dataToSend = {}
 
         for  (const filename of massfiles) {
         
             console.log(filename)
-            const [fileContents, error] = await fs.readTextFile(filename)
-            if(error) return
+            const fileContents = fs.readFileSync(filename)
 
-            const name = await path.basename(filename)
+            const name = basename(filename)
             console.info("content read: ", name)
             const dataContents = fileContents.split("\n").filter(line => !line.includes("#"))
                 .map(line => line.trim().split("\t").map(data => parseFloat(data)))

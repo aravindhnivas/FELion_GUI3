@@ -24,39 +24,47 @@
 
 
 <script>
-    import { fly, fade } from 'svelte/transition';
-    import Textfield from '@smui/textfield';
-    import {onMount, tick} from "svelte";
-    import FileBrowser from "./FileBrowser.svelte"
-    import Modal from "./Modal.svelte"
-    import { createEventDispatcher } from 'svelte';
-    import IconButton from '@smui/icon-button';
-    import Editor from './Editor.svelte';
-    
-    import WinBox from "winbox/src/js/winbox.js";
-    import {relayout} from 'plotly.js/dist/plotly-basic';
+    import { createEventDispatcher, 
+        onMount, tick }                 from 'svelte';
+    import { fly, fade }                from 'svelte/transition';
+    import Textfield                    from '@smui/textfield';
+    import {relayout}                   from 'plotly.js/dist/plotly-basic';
+    import WinBox                       from "winbox/src/js/winbox.js";
+    import FileBrowser                  from "$components/FileBrowser.svelte"
+    import Modal                        from "$components/Modal.svelte"
+    import Editor                       from '$components/Editor.svelte';
+
     ////////////////////////////////////////////////////////////////////////////
-    export let id, fileChecked=[], filetype = "felix", toggleBrowser = false, fullfileslist = [];
-    export let currentLocation = db.get(`${filetype}_location`) || "", graphPlotted=false;
+    ////////////////////////////////////////////////////////////////////////////
+
+    export let id
+    export let filetype = "felix"
+    export let fileChecked=[]
+    export let fullfileslist = [];
+    export let currentLocation=""
+    export let graphPlotted = false;
     export let graphWindowClasses = ["no-full"]
     export let activateConfigModal = false
+
+
+    ////////////////////////////////////////////////////////////////////////////
 
     const dispatch = createEventDispatcher()
 
     async function browse_folder() {
-    
         const result = await browse()
         if (!result) return
-    
         currentLocation = result
         db.set(`${filetype}_location`, currentLocation)
         console.log(result, currentLocation)
     }
 
     let graphDivs = []
-    onMount(()=>{ toggleBrowser = true;})
-    // let graphContainer;
-   
+    onMount(()=>{ 
+        console.log(id, "mounted")
+        // currentLocation = db.get(`${filetype}_location`) || ""
+    })
+
 
     const lookForGraph = () => {
         try {graphDivs = Array.from(document.querySelectorAll(`#${filetype}-plotContainer .graph__div`)) } 
@@ -84,6 +92,7 @@
 
     $: if (plotWidth && mouseReleased) {changeGraphDivWidth()};
     let mouseReleased = true;
+
 </script>
 
 <section {id} style="display:none" class="animated fadeIn">
@@ -100,7 +109,7 @@
                 <button class="button is-link" id="{filetype}_filebrowser_btn" on:click={browse_folder}>Browse</button>
 
                 <Textfield bind:value={currentLocation} label="Current location" style="width:100%; "/>
-                <IconButton class="material-icons" on:click={() => activateConfigModal=true} >build</IconButton>
+                <i class="material-icons" on:click={() => activateConfigModal=true} >build</i>
             </div>
 
             <div class="button__div align" id="{filetype}-buttonContainer" >

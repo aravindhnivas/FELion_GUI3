@@ -3,10 +3,10 @@
     import { scale } from 'svelte/transition';
     import {Icon} from '@smui/icon-button';
     import {tick} from "svelte";
-    export let head, rows, keys, id=window.getID(), label="table", userSelect=true, style="width: 100%;";
+    export let head, rows, keys, id=getID(), label="table", userSelect=true, style="width: 100%;";
     export let sortOption = false, closeOption = true, addextraOption = true, animateRow = true;
 
-    const keyIDSets = keys.map(key=>{return {key, id:window.getID()}})
+    const keyIDSets = keys.map(key=>{return {key, id:getID()}})
     let sortTypeAscending = true;
     const sortTable = (type) => { 
         if(sortOption) {
@@ -22,7 +22,7 @@
     let emptyRow = {}
     keys.forEach(key=>emptyRow[key] = "")
     const addRow = async () => {
-        const id = window.getID()
+        const id = getID()
 
         rows = [...rows, {...emptyRow, id}]
         await tick()

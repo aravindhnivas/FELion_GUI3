@@ -29,7 +29,7 @@ export default defineConfig({
     alias: {
       '$src': join(PACKAGE_ROOT, 'src'),
       '$components': join(PACKAGE_ROOT, 'src/components'),
-      '$public': join(PACKAGE_ROOT, 'public'),
+      '$$computeCode': join(PACKAGE_ROOT, 'src/Pages/computeCode'),
     },
   },
   plugins: [svelte({preprocess: autoPreprocess()})],

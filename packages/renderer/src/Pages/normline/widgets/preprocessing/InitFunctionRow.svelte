@@ -1,25 +1,44 @@
 
 <script>
     import {
-        opoMode, toggleRow, felixOutputName, felixPlotAnnotations, felixPeakTable, expfittedLines, expfittedLinesCollectedData, fittedTraceCount, felixopoLocation, felixPlotCheckboxes, felixConfigDB, baselineFile
-    } from "../../functions/svelteWritables";
-    // import {mainPreModal} from "../../../../svelteWritable";
-    import Textfield from '@smui/textfield';
-    import CustomIconSwitch from '$components/CustomIconSwitch.svelte';
-    import FelixPlotting from '../../modals/FelixPlotting.svelte';
-    import {felix_func} from '../../functions/felix';
-    export let felixfiles, graphPlotted, normMethod, show_theoryplot, removeExtraFile, theoryLocation;
-    let active=false, openShell=false, delta=1;
+        opoMode,
+        toggleRow,
+        felixOutputName,
+        felixPlotAnnotations,
+        felixPeakTable,
+        expfittedLines,
+        expfittedLinesCollectedData,
+        fittedTraceCount,
+        felixopoLocation,
+        felixPlotCheckboxes,
+        baselineFile
+    }                           from "../../functions/svelteWritables";
+    import CustomTextSwitch     from '$components/CustomTextSwitch.svelte'
+    import CustomIconSwitch     from '$components/CustomIconSwitch.svelte';
+    import FelixPlotting        from '../../modals/FelixPlotting.svelte';
+    import {felix_func}         from '../../functions/felix';
 
-    export let updateConfig=false;
+    ///////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+
+    export let felixfiles
+    export let graphPlotted
+    export let normMethod
+    export let show_theoryplot
+    export let removeExtraFile
+    export let theoryLocation;
+
+    ///////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+    
+    let active=false
+    let openShell=false
+    let delta=1;
 
     let felixPlotWidgets = {
 
         text:[
-
             {label:"Fig. caption", value:"caption", id:getID()},
-
-            
             {label:"Fig. title", value:"Title", id:getID()},
             {label:"Exp. title", value:"Exp. title", id:getID()},
             {label:"Exp. legend", value:"legend", id:getID()},
@@ -38,16 +57,11 @@
             {label:"Tick Interval", value:200, step:50,  id:getID()},
         
         ],
-        
         boolean:[
-
             {label:"sameColor", value:true, id:getID()},
             {label:"Invert ax2", value:true, id:getID()},
             {label:"Only exp.", value:true, id:getID()},
-
-            
             {label:"hide ax2 axis.", value:true, id:getID()},
-
             {label:"hide_all_axis", value:false, id:getID()},
             {label:"legend_visible", value:true, id:getID()}
 
@@ -55,7 +69,6 @@
     }
 
     function plotData({e=null, filetype="felix"}={}){
-        
         
         let pyfile="", args;
         
@@ -106,18 +119,8 @@
                 break;
                 
         }
-
-    
     }
 
-
-
-    let fdelta=$felixConfigDB.get("fdelta");
-    function loadConfig() {
-        fdelta =  $felixConfigDB.get("fdelta")
-        console.log("fdelta updated", fdelta)
-    }
-    $: if(updateConfig) loadConfig()
 </script>
 
 <style>
@@ -131,7 +134,6 @@
 
 <FelixPlotting bind:active bind:felixPlotWidgets {theoryLocation} on:submit="{(e)=>plotData({e:e.detail.event, filetype:"matplotlib"})}" />
 
-
     
 <div class="align">
 
@@ -139,7 +141,7 @@
     </button>
     <button class="button is-link" id="felix_plotting_btn" on:click="{(e)=>plotData({e:e, filetype:"felix"})}">FELIX Plot</button>
 
-    <Textfield style="width:7em" variant="outlined" input$type="number" input$step={fdelta} input$min="0" bind:value={delta} label="Delta"/>
+    <CustomTextSwitch style="width:7em" variant="outlined" bind:value={delta} label="Delta" step="0.5" />
     
     <button class="button is-link" on:click="{()=>active = true}"> Open in Matplotlib</button>
     <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>

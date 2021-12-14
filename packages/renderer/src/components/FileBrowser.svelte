@@ -1,15 +1,23 @@
 
 <script>
-    import { slide } from 'svelte/transition';
-    import CustomSwitch from '$components/CustomSwitch.svelte';
-    import Textfield from '@smui/textfield';
-    import {tick} from "svelte";
-    import {onMount, afterUpdate} from "svelte"
+    import { 
+        createEventDispatcher, tick,
+        onMount, afterUpdate
+     }                      from 'svelte';
+    import { slide }        from 'svelte/transition';
+    import Textfield        from '@smui/textfield';
+    import CustomSwitch     from '$components/CustomSwitch.svelte';
     import CustomIconSwitch from '$components/CustomIconSwitch.svelte';
     import VirtualCheckList from '$components/VirtualCheckList.svelte';
-    import { createEventDispatcher } from 'svelte';
     ///////////////////////////////////////////////////////////////////////////
-    export let fileChecked = [],  currentLocation = "", filetype = "*.*", fullfileslist = [], markedFile = "";
+
+    export let filetype = "*.*"
+    export let markedFile = "";
+    export let fileChecked = []
+    export let fullfileslist = []
+    export let currentLocation = ""
+
+    ///////////////////////////////////////////////////////////////////////////
 
     const dispatch = createEventDispatcher();
 

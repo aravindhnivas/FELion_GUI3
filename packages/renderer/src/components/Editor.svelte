@@ -5,7 +5,7 @@
     import {browse}                 from '$components/Layout.svelte';
     import WinBox                   from "winbox/src/js/winbox.js";
 
-    export let id = window.getID();
+    export let id = getID();
     export let location = ""
     export let filetype = ""
     export let editor="";

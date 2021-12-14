@@ -42,7 +42,7 @@
     
     const widgetAdded =  () => {
 
-        extraWidget.id = window.getID()
+        extraWidget.id = getID()
         felixPlotWidgets[widgetType] = [...felixPlotWidgets[widgetType], extraWidget]
     
         console.log(felixPlotWidgets[widgetType])

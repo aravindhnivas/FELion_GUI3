@@ -78,7 +78,7 @@ export async function readFromFile({bowseFile=true, energyFilename=null, electro
 
                 }
 
-            energyLevels = [...energyLevels, {label, value, id:window.getID()}]
+            energyLevels = [...energyLevels, {label, value, id:getID()}]
             
             }
         }

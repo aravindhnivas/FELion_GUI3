@@ -11,17 +11,17 @@ export function getEnergyLabels({numberOfLevels=2, electronSpin=false, zeemanSpl
                     if (zeemanSplit) {
                         let mJ = []
                         for (let current_mJ=current_J; current_mJ >= -current_J; current_mJ--) {
-                            mJ = [...mJ, {label:`${i}_${current_J}__${current_mJ}`, value, id:window.getID()}]
+                            mJ = [...mJ, {label:`${i}_${current_J}__${current_mJ}`, value, id:getID()}]
                         } 
                         N = [...N, mJ]
-                    } else {N = [...N, {label:`${i}_${current_J}`, value, id:window.getID()}]}
+                    } else {N = [...N, {label:`${i}_${current_J}`, value, id:getID()}]}
                 }
 
             })
 
             return N
 
-        } else {return {label:i, value, id:window.getID()}}
+        } else {return {label:i, value, id:getID()}}
     })
 
     const energyLevels = energyLevelsInfo.flat(Infinity)

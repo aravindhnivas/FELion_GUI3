@@ -127,7 +127,7 @@
         configArray = keys.map(
             filename=>{
 
-                const id = window.getID()
+                const id = getID()
                 return {filename, id, ...obj[filename]}
             }
         )
@@ -135,7 +135,7 @@
         const fileCheckedRemaining = difference(fileChecked, keys)
 
         fileCheckedRemaining.forEach(filename=>{
-            const id = window.getID()
+            const id = getID()
 
             if (filename in obj) {
                 const currentValue = {filename, id}

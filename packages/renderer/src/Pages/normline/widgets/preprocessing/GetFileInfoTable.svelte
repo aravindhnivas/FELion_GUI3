@@ -1,12 +1,10 @@
 
 <script>
-    // import {mainPreModal} from "../../../../svelteWritable";
     import { filedetails, opoMode } from "../../functions/svelteWritables";
     import CustomIconSwitch from '$components/CustomIconSwitch.svelte';
     import Table from '$components/Table.svelte';
     import { savefile,  loadfile } from '../../functions/misc';
     import {uniqBy} from "lodash-es"
-    // import {computePy_func} from '../../functions/computePy';
     
     import {get_details_func} from '../../functions/get_details';
     export let felixfiles, normMethod;

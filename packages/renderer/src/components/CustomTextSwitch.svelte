@@ -1,18 +1,17 @@
 <script>
-
     import Textfield from '@smui/textfield';
 
     export let min=0;
-    export let value="";
-    export let label="";
+    export let value=""
+    export let label=""
     export let style=""
+    export let step=1
     export let variant="standard"
-    let step=1;
+
     let changeStepsize = false
 </script>
 
 {#if changeStepsize}
-    
     <Textfield
         bind:value={step} {style} {variant}
         label="enter stepSize"  
