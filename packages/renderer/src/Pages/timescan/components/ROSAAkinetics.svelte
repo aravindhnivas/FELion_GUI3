@@ -31,7 +31,7 @@
     let totalMass = []
     let k3Guess = "1e-30"
     let kCIDGuess="1e-15";
-    let requiredLength=0;
+    // let requiredLength=0;
 
     let kineticDataLocation = ""
     $: if (fs.existsSync(currentLocation)) {kineticDataLocation = pathJoin(currentLocation || "", "EXPORT")}
@@ -54,22 +54,27 @@
                 newData["error_y"]["array"] = newData["error_y"]["array"].slice(timestartIndexScan)
                 currentData[massKey] = newData
             })
-            computeOtherParameters()
-
         }
+
+        computeOtherParameters()
     }
+
+    let maxTimeIndex = 5
 
     function computeParameters() {
         const currentJSONfile = pathJoin(kineticDataLocation, selectedFile.replace('.scan', '_scan.json'))
         console.log(currentJSONfile)
+
         currentData = fs.readJsonSync(currentJSONfile)
         if(currentData) {
      
             totalMass = Object.keys(currentData)
             totalMass = totalMass.slice(0, totalMass.length-1)
+            maxTimeIndex = currentData[totalMass[0]].x.length - 5
             massOfReactants = totalMass.join(", ")
+            console.log({maxTimeIndex})
+
             sliceData()
-            // computeOtherParameters()
         }
         
     }
@@ -77,10 +82,10 @@
 
     function computeOtherParameters() {
         masses = massOfReactants.split(",").map(m=>m.trim())
-        requiredLength = masses.length
+        const requiredLength = masses.length
 
         if(defaultInitialValues && masses) { 
-            initialValues = [currentData?.[masses[0]]["y"][0].toFixed(0), ...Array(requiredLength-1).fill(1)]
+            initialValues = [currentData?.[masses[0]]["y"][0]?.toFixed(0), ...Array(requiredLength-1).fill(1)]
         
         }
         
@@ -310,7 +315,7 @@
 
             <div class="align box">
                 <CustomSelect bind:picked={selectedFile} label="Filename" options={fileCollections} />
-                <Textfield type="number" input$min=0 bind:value={timestartIndexScan} label="Time Index" on:change={sliceData} />
+                <Textfield type="number" input$min=0 input$max={maxTimeIndex} bind:value={timestartIndexScan} label="Time Index" on:change={sliceData} />
                 <Textfield bind:value={molecule} label="Molecule" />
                 <Textfield bind:value={tag} label="tag" />
                 <Textfield bind:value={massOfReactants} label="massOfReactants" />
