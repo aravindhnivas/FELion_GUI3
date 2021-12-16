@@ -166,11 +166,17 @@ def main(args):
     
         dataToSend = {}
         for i in scanfiles:
+            
             data = timescanplot(i)
             filename = i.name
             dataToSend[filename] = data.get_plotly_data()
-            with open(EXPORT_DIR / f"{i.stem}_scan.json", 'w+') as f:
-                data = json.dumps(dataToSend[filename], sort_keys=True, indent=4, separators=(',', ': '))
-                f.write(data)
+            
+            try:
+                
+                with open(EXPORT_DIR / f"{i.stem}_scan.json", 'w+') as f:
+                    data = json.dumps(dataToSend[filename], sort_keys=True, indent=4, separators=(',', ': '))
+                    f.write(data)
+            except:
+                print("Couldn't write file to EXPORT directory")
                 
         sendData(dataToSend, calling_file=pt(__file__).stem)
