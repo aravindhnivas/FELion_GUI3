@@ -1,5 +1,3 @@
-
-// MDC
 @import "@material/typography/mdc-typography";
 
 $white: #fafafa;
@@ -7,10 +5,8 @@ $mainColor: #513a8a5c;
 $light: #f5f5f5b8;
 
 // Linear progress line
-.mdc-linear-progress__buffer {background-color: $mainColor!important;}
-// .mdc-text-field  { width: 100%; margin-right: 0.5em;}
-// .mdc-text-field--textarea {height: 300px!important; width: 100%!important;}
 
+.mdc-linear-progress__buffer {background-color: $mainColor!important;}
 .mdc-text-field__input {padding-right: 1em!important;}
 .mdc-text-field:not(.mdc-text-field--disabled) .mdc-text-field__input {color: $white!important;}
 .mdc-text-field:not(.mdc-text-field--disabled)+.mdc-text-field-helper-line .mdc-text-field-helper-text {color: $white!important;}
@@ -28,13 +24,9 @@ $light: #f5f5f5b8;
 
 .mdc-data-table {min-width: 30em; background-color: $mainColor!important; max-height: 25em; overflow-y: auto}
 .mdc-data-table__content  {background-color: $white!important;}
-// label.mdc-text-field.mdc-text-field--outlined {height: 40px;}
 .mdc-switch.mdc-switch--checked .mdc-switch__thumb, .mdc-switch.mdc-switch--checked .mdc-switch__track{background-color: $white!important}
 .material-icons {margin-right:0.2em; cursor:pointer;}
 
-
 // Disabled input
-
 .mdc-text-field--disabled .mdc-text-field__input {color: #dbdbdb;}
-
 .mdc-text-field--disabled .mdc-floating-label {color: #dbdbdb;}
