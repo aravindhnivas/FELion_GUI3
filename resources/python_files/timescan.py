@@ -176,6 +176,7 @@ def main(args):
                 with open(EXPORT_DIR / f"{i.stem}_scan.json", 'w+') as f:
                     data = json.dumps(dataToSend[filename], sort_keys=True, indent=4, separators=(',', ': '))
                     f.write(data)
+                print("Files are saved", flush=True)
             except:
                 print("Couldn't write file to EXPORT directory")
                 
