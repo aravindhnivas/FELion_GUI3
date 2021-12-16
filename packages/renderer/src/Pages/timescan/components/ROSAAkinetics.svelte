@@ -35,52 +35,54 @@
 
     let kineticDataLocation = ""
     $: if (fs.existsSync(currentLocation)) {kineticDataLocation = pathJoin(currentLocation || "", "EXPORT")}
-    $: if (fs.existsSync(kineticDataLocation)) {
+    const updateFiles = (node=null) => {
+        node?.target.classList.add("rotateIn")
         fileCollections = fs.readdirSync(kineticDataLocation).filter(f=>f.endsWith('.json')).map(f=>f.split('.')[0].replace('_scan', '.scan'))
         console.table(fileCollections)
     }
+    $: if (fs.existsSync(kineticDataLocation)) {updateFiles()}
 
     $: kineticEditorFilename = basename(selectedFile).split(".")[0]+"-kineticModel.md"
 
     let currentData = {}
+    let currentDataBackup = {}
 
     const sliceData = () => {
-        if(timestartIndexScan>0 && selectedFile.endsWith(".scan")) {
-            
+        if(selectedFile.endsWith(".scan")) {
             totalMass.forEach(massKey=>{
-                const newData = cloneDeep(currentData)[massKey]
+                const newData = cloneDeep(currentDataBackup)[massKey]
                 newData.x = newData.x.slice(timestartIndexScan)
                 newData.y = newData.y.slice(timestartIndexScan)
                 newData["error_y"]["array"] = newData["error_y"]["array"].slice(timestartIndexScan)
                 currentData[massKey] = newData
+
             })
         }
-
         computeOtherParameters()
     }
 
     let maxTimeIndex = 5
 
     function computeParameters() {
+
         const currentJSONfile = pathJoin(kineticDataLocation, selectedFile.replace('.scan', '_scan.json'))
         console.log(currentJSONfile)
-
         currentData = fs.readJsonSync(currentJSONfile)
+        currentDataBackup = cloneDeep(currentData)
         if(currentData) {
      
             totalMass = Object.keys(currentData)
             totalMass = totalMass.slice(0, totalMass.length-1)
+
             maxTimeIndex = currentData[totalMass[0]].x.length - 5
             massOfReactants = totalMass.join(", ")
             console.log({maxTimeIndex})
-
             sliceData()
         }
-        
     }
 
-
     function computeOtherParameters() {
+
         masses = massOfReactants.split(",").map(m=>m.trim())
         const requiredLength = masses.length
 
@@ -214,7 +216,7 @@
 
             const config_file = pathJoin(currentLocation, config_file_ROSAAkinetics);
             if(fs.existsSync(config_file)) {
-                config_content = JSON.parse(fs.readFileSync(config_file, "utf8"))
+                config_content = fs.readJsonSync(config_file)
                 window.createToast("Config file loaded: "+config_file_ROSAAkinetics, "warning");
                 makeConfigArray(config_content)
                 config_loaded = true
@@ -301,7 +303,14 @@
 
             <div class="align box">
                 <Textfield bind:value={currentLocation} label="Timescan data location" style="width: 100%;" />
-                <Textfield bind:value={kineticDataLocation} label="Timescan EXPORT data location" style="width: 100%;" />
+                <div class="txt-icon-col">
+                    <Textfield bind:value={kineticDataLocation} label="Timescan EXPORT data location" />
+                    <i class="material-icons animated faster" 
+                        on:animationend={({target})=>target.classList.remove("rotateIn")} 
+                        on:click="{updateFiles}">
+                        refresh
+                    </i>
+                </div>
             </div>
 
             <div class="align box">
@@ -338,16 +347,22 @@
                 >
 
                     <svelte:fragment slot="btn-row">
+
                         <button class="button is-warning" 
                             on:click={()=>{
+                        
                                 if(!massOfReactants) return window.createToast("No data available", "danger")
+                                
                                 const dataToSet = computeKineticCodeScipy({
-                                    ratek3,
-                                    ratekCID,
-                                    initialValues,
-                                    nameOfReactants
+                                    ratek3, ratekCID,
+                                    initialValues, nameOfReactants
                                 })
-                                if(dataToSet) {reportSaved = false; editor?.setData(dataToSet)}
+                                
+                                if(dataToSet) {
+                                    reportSaved = false; editor?.setData(dataToSet);
+                                    console.info("data comupted")
+
+                                }
                             }}>compute</button>
                     </svelte:fragment> 
                 </Editor>
@@ -386,6 +401,13 @@
         gap: 1em;
         padding: 1em;
         .box { margin: 0;}
+    }
+
+    .txt-icon-col {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-auto-flow: column;
+        width: 100%;
     }
 
 </style>

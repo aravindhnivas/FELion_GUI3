@@ -19,23 +19,31 @@
     let fileChecked = [];
     let currentLocation = db.get(`${filetype}_location`) || ""
     $: scanfiles = fileChecked.map(file=>pathResolve(currentLocation, file))
-    let openShell = false, graphPlotted = false
-    let massIndex = 0, timestartIndex = 1, nshots = 10, power = "21, 21", resON_Files = "", resOFF_Files = "";
-    let timestartIndexScan = 0;
+
+    let nshots = 10
+    let power = "21, 21"
+    let openShell = false
+    let massIndex = 0
     let fullfiles = []
+    let resON_Files = ""
+    let graphPlotted = false
+    let resOFF_Files = "";
+    let timestartIndex = 1
+    let timestartIndexScan = 0;
+
     function dir_changed() {
         if (fs.existsSync(currentLocation)) {
-            fullfiles = ["", ...fs.readdirSync(currentLocation).filter(file=>file.endsWith(".scan"))]
+            fullfiles = fs.readdirSync(currentLocation).filter(file=>file.endsWith(".scan"))
         }
     }
+
     $: console.log(`ResOn: ${resON_Files}\nResOff: ${resOFF_Files}`)
 
     // Depletion Row
     let toggleRow = true;
-    let style = "width:7em; height:3.5em; margin-right:0.5em"
     let logScale = false;
-    let timescanData = {};
     let dataLength=1;
+    let timescanData = {};
 
     function sliceData(modifyData) {
  
@@ -78,7 +86,6 @@
 
         if (filetype == "scan") {graphPlotted = false}
         if (filetype == "general") {
-
             return computePy_func({e, pyfile, args, general:true, openShell})
         }
 
@@ -112,28 +119,25 @@
                 if(id?.data) {relayout(id, layout);}
             })
         }
+
     }
 
     let kineticMode = false;
-
     let kineticData = {}
+
     async function updateData(){
         kineticData = sliceData(timescanData)
-
         fileChecked.forEach(file=>{
-        
             plot(`Timescan Plot: ${file}`, "Time (in ms)", "Counts", kineticData[file], `${file}_tplot`, logScale ? "log" : null)
         })
     }
+
 
     let saveOutputDepletion = true;
 
 </script>
 
-
-<ROSAAkinetics {fileChecked} {currentLocation} bind:kineticMode {kineticData} />
-
-
+<ROSAAkinetics {fileChecked} {currentLocation} bind:kineticMode />
 
 <Layout {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked on:chdir={dir_changed}>
 
@@ -141,7 +145,7 @@
         <div class="align " style="align-items: center;">
             <button class="button is-link" on:click="{(e)=>plotData({e:e})}">Timescan Plot</button>
 
-            <Textfield type="number" input$min=0 input$max={dataLength} {style} bind:value={timestartIndexScan} label="Time Index" on:change={updateData}/>
+            <Textfield type="number" input$min=0 input$max={dataLength} bind:value={timestartIndexScan} label="Time Index" on:change={updateData}/>
             <button class="button is-link" on:click="{()=>{toggleRow = !toggleRow}}">Depletion Plot</button>
             <button class="button is-link" on:click="{()=>{kineticMode = !kineticMode}}">ROSAA Kinetics</button>
             
@@ -154,20 +158,31 @@
             <CustomSelect style="min-width: 7em;" bind:picked={resON_Files} label="ResOn" options={fullfiles}/>
             <CustomSelect style="min-width: 7em;" bind:picked={resOFF_Files} label="ResOFF" options={fullfiles}/>
             <Textfield bind:value={power} label="Power (ON, OFF) [mJ]" />
-            <Textfield type="number" {style} bind:value={nshots} label="FELIX Hz" />
-            <Textfield type="number" {style} bind:value={massIndex} label="Mass Index" />
+            <Textfield type="number" bind:value={nshots} label="FELIX Hz" />
+            <Textfield type="number" bind:value={massIndex} label="Mass Index" />
+            <Textfield type="number" bind:value={timestartIndex} label="Time Index" />
             <CustomSwitch bind:selected={saveOutputDepletion} label="save_output"/>
-            <Textfield type="number" {style} bind:value={timestartIndex} label="Time Index" />
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"general"})}">Submit</button>
         </div>
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer" let:lookForGraph>
-        {#each fileChecked as scanfile}
-            <div id="{scanfile}_tplot" class="graph__div" style="padding-bottom:1em" use:lookForGraph />
-        {/each}
+        <div class="graph__container" class:hide={!graphPlotted} >
+            {#each fileChecked as scanfile}
+                <div id="{scanfile}_tplot"  class="graph__div"  use:lookForGraph />
+            {/each}
+        </div>
 
     </svelte:fragment>
     
 </Layout>
 
+<style>
+
+    .graph__container {
+        display: flex;
+    
+        gap: 1em;
+        flex-direction: column;
+    }
+</style>
