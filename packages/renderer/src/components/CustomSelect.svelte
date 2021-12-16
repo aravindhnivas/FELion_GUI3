@@ -15,7 +15,7 @@
 
 <style lang="scss">
     .select {
-        align-self: end;
+        align-self: auto;
         select {
             min-width: 12em;
         }

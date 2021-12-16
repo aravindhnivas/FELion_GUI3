@@ -67,7 +67,10 @@
 
 
     const lookForGraph = () => {
-        try {graphDivs = Array.from(document.querySelectorAll(`#${filetype}-plotContainer .graph__div`)) } 
+        try {
+            graphDivs = Array.from(document.querySelectorAll(`#${filetype}-plotContainer .graph__div`))
+            console.info(graphDivs)
+         } 
         catch (error) {console.log(error)}
     }
 

@@ -18,11 +18,8 @@
     export let windowReady=false
     export let maximize=true;
 
-
     async function openGraph(){
         await tick()
-        // if(graphWindow) {return graphWindow.show()}
-
         graphWindow = new WinBox({
             root:document.getElementById("pageContainer"),
             mount: document.getElementById(id), 
@@ -55,7 +52,6 @@
     }
     onDestroy(()=>{
         console.log("Window closed")
-
         graphWindow?.close()
     })
 </script>
@@ -66,7 +62,9 @@
     <div class="footer_content" ><slot name="footer_content__slot"/> </div>
 </div>
 
+
 <style>
+
     .main_content { overflow: auto; }
     .main_content__div {
         display:grid;

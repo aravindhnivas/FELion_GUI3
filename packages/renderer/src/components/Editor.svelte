@@ -1,9 +1,10 @@
 <script>
-    import { onMount, onDestroy}    from "svelte"
-    import Textfield                from '@smui/textfield';
-    import { Remarkable }           from 'remarkable';
-    import {browse}                 from '$components/Layout.svelte';
-    import WinBox                   from "winbox/src/js/winbox.js";
+    import { onDestroy }    from "svelte"
+    import Textfield        from '@smui/textfield';
+    import { Remarkable }   from 'remarkable';
+    import {browse}         from '$components/Layout.svelte';
+    import WinBox           from "winbox/src/js/winbox.js";
+    import CustomSwitch     from "$components/CustomSwitch.svelte"
 
     export let id = getID();
     export let location = ""
@@ -21,7 +22,7 @@
         } catch (error) {window.handleError( error );}
     }
 
-    onDestroy(() => editor?.destroy())
+    onDestroy(() => {editor?.destroy(); console.info("editor destroyed")})
     if(db.get(`${filetype}-report-md`)) {
         location = db.get(`${filetype}-report-md`)
     }
@@ -64,6 +65,7 @@
     }
 
     let reportWindowClosed = true;
+
     function openReport() {
         
         const graphWindow = new WinBox({
@@ -86,13 +88,17 @@
     }
     
     const readFromFile = () => {
-        if(fs.existsSync(reportFile)) { editor?.setData(fs.readFileSync(reportFile)) }
+        if(fs.existsSync(reportFile)) { 
+            editor?.setData(fs.readFileSync(reportFile))
+            window.createToast("Report file read: "+basename(reportFile), "success")
+         }
+        else {window.createToast("No report file named "+basename(reportFile), "danger")}
     }
 
-    onMount(()=>{
-        return {destroy() {editor.destroy()}}
-    })
-
+    let autoRead = false
+    $: if(reportFile && autoRead) {
+        readFromFile()
+    }
 </script>
 
 
@@ -122,6 +128,7 @@
             <slot name="btn-row"></slot>
             <button class="button is-warning" on:click={readFromFile}>read</button>
             <button class="button is-link" on:click="{saveReport}">Save</button>
+            <CustomSwitch bind:selected={autoRead} label="autoRead"/>
         </div>
     </div>
 </div>
@@ -134,8 +141,8 @@
         <h1>{filetype.toUpperCase()} Report</h1>
 
     {/if}
-</div>
 
+</div>
 
 <style global lang="scss">
 
