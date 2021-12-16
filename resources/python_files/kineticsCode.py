@@ -202,6 +202,7 @@ fig = None
 ax = None
 
 fitPlot = []
+expPlot = []
 plotted=False
 def ChangeYScale(yscale):
     ax.set_yscale(yscale)
@@ -226,15 +227,33 @@ def checkboxesFunc(label):
     checkboxes[label] = not checkboxes[label]
     fig.canvas.draw_idle()
 
+def on_pick(event):
+    
+    legline = event.artist
+    
+    origlinefit, origlineexp = toggleLine[legline]
+
+    alpha = 1 if origlinefit.get_alpha() < 1 else 0.2
+    origlinefit.set_alpha(alpha)
+
+    for _line in origlineexp.get_children():
+        _line.set_alpha(alpha)
+    
+    legline.set_alpha(alpha)
+
+    fig.canvas.draw()
+
+toggleLine = {}
+
 def plot_exp():
     global data, fig, ax, k3Sliders, kCIDSliders, rateCoefficientArgs, \
-        saveButton, radio
+        saveButton, radio, toggleLine
 
     fig, ax = plt.subplots(figsize=(12, 6))
     plt.subplots_adjust(right=0.6, top=0.95, left=0.09, bottom=0.25)
     
     axcolor = 'lightgoldenrodyellow'
-    k3Sliders, kCIDSliders = make_slider(ax, axcolor)
+    k3Sliders, kCIDSliders = make_slider(ax)
     left, bottom, width, height = 0.1, 0.05, 0.1, 0.05
     
     rax = plt.axes([left, bottom, width, height], facecolor=axcolor)
@@ -266,10 +285,11 @@ def plot_exp():
 
     for counter, key in enumerate(data.keys()):
         time = data[key]["x"]
-
         counts = data[key]["y"]
         error = data[key]["error_y"]["array"]
-        ax.errorbar(time, counts, error, fmt=".", ms=10, label=key, c=pltColors[counter])
+        _expPlot = ax.errorbar(time, counts, error, fmt=".", ms=10, label=key, c=pltColors[counter], alpha=1)
+
+        expPlot.append(_expPlot)
 
     ax = optimizePlot(ax, xlabel="Time (ms)", ylabel="Counts", yscale="log")
     # if yscale == "log":
@@ -287,48 +307,57 @@ def plot_exp():
 
     dNdtSol = dNdt.sol(simulateTime)
     for counter, data in enumerate(dNdtSol):
-        _fitPlot, = ax.plot(simulateTime*1e3, data, "-", c=pltColors[counter])
+        _fitPlot, = ax.plot(simulateTime*1e3, data, "-", c=pltColors[counter], alpha=1)
         fitPlot.append(_fitPlot)
 
     legend = ax.legend([f"${_}$" for _ in nameOfReactants])
-    legend.set_draggable(True)
+    for legline, origlinefit, origlineexp in zip(legend.get_lines(), fitPlot, expPlot):
+        legline.set_picker(True)
+        toggleLine[legline] = [origlinefit, origlineexp]
+
+    fig.canvas.mpl_connect('pick_event', on_pick)
 
     try:
         global plotted
         if numberDensity > 0 and not keyFoundForRate:
+
             log("Fitting data")
             fitfunc()
         else:
             log("NOT fitting data since keyFoundForRate", keyFoundForRate)
-
         plotted = True
 
     except Exception:
         log(traceback.format_exc())
+
     return numberDensityWidget, saveButton, checkbox, button, radio
 
 rateCoefficientArgs = ()
+
+
 def update(val=None):
+
     global rateCoefficientArgs
-    
+
     rateCoefficientArgs=(
         [10**rate.val for rate in k3Sliders.values()], 
         [10**rate.val for rate in kCIDSliders.values()]
     )
-    dNdt = solve_ivp(compute_attachment_process, tspan, initialValues, dense_output=True)
 
+
+    dNdt = solve_ivp(compute_attachment_process, tspan, initialValues, dense_output=True)
     dNdtSol = dNdt.sol(simulateTime)
+
     for line, data in zip(fitPlot, dNdtSol):
         line.set_ydata(data)
-
     fig.canvas.draw_idle()
 
 k3Sliders = {}
 kCIDSliders = {}
 
-def make_slider(ax, axcolor):
-    global k3Sliders, kCIDSliders
+def make_slider(ax):
 
+    global k3Sliders, kCIDSliders
     ax.margins(x=0)
     
     height = 0.03
