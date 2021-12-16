@@ -9,13 +9,13 @@
     import CustomSelect                 from "$components/CustomSelect.svelte"
     import SeparateWindow               from "$components/SeparateWindow.svelte"
     import {computeKineticCodeScipy}    from "../functions/computeKineticCode"
-    import {difference}                 from "lodash-es"
+    import {difference, cloneDeep}                 from "lodash-es"
 
     export let fileChecked=[]
-    export let kineticData={};
     export let kineticMode=true
     export let currentLocation=""
-
+    
+    let timestartIndexScan=0
     let fileCollections = []
     let srgMode=true
     let pbefore=0
@@ -33,22 +33,47 @@
     let kCIDGuess="1e-15";
     let requiredLength=0;
 
+    let kineticDataLocation = ""
+    $: if (fs.existsSync(currentLocation)) {kineticDataLocation = pathJoin(currentLocation || "", "EXPORT")}
+    $: if (fs.existsSync(kineticDataLocation)) {
+        fileCollections = fs.readdirSync(kineticDataLocation).filter(f=>f.endsWith('.json')).map(f=>f.split('.')[0].replace('_scan', '.scan'))
+        console.table(fileCollections)
+    }
+
     $: kineticEditorFilename = basename(selectedFile).split(".")[0]+"-kineticModel.md"
+
     let currentData = {}
-    $: if(fileChecked && kineticData && kineticMode) {
-        const keys = Object.keys(kineticData)
-        fileCollections = fileChecked.filter(filename=>keys.includes(filename))
+
+    const sliceData = () => {
+        if(timestartIndexScan>0 && selectedFile.endsWith(".scan")) {
+            
+            totalMass.forEach(massKey=>{
+                const newData = cloneDeep(currentData)[massKey]
+                newData.x = newData.x.slice(timestartIndexScan)
+                newData.y = newData.y.slice(timestartIndexScan)
+                newData["error_y"]["array"] = newData["error_y"]["array"].slice(timestartIndexScan)
+                currentData[massKey] = newData
+            })
+            computeOtherParameters()
+
+        }
     }
 
     function computeParameters() {
-        currentData = kineticData[selectedFile];
+        const currentJSONfile = pathJoin(kineticDataLocation, selectedFile.replace('.scan', '_scan.json'))
+        console.log(currentJSONfile)
+        currentData = fs.readJsonSync(currentJSONfile)
         if(currentData) {
+     
             totalMass = Object.keys(currentData)
             totalMass = totalMass.slice(0, totalMass.length-1)
             massOfReactants = totalMass.join(", ")
-            computeOtherParameters()
+            sliceData()
+            // computeOtherParameters()
         }
+        
     }
+
 
     function computeOtherParameters() {
         masses = massOfReactants.split(",").map(m=>m.trim())
@@ -56,7 +81,9 @@
 
         if(defaultInitialValues && masses) { 
             initialValues = [currentData?.[masses[0]]["y"][0].toFixed(0), ...Array(requiredLength-1).fill(1)]
-         }
+        
+        }
+        
         nameOfReactants =`${molecule}, ${molecule}${tag}`
         ratek3="k31", ratekCID="kCID1";
 
@@ -65,6 +92,7 @@
             ratekCID += `, kCID${index}`
             nameOfReactants += `, ${molecule}${tag}${index}`
         }
+    
     }
 
     let masses;
@@ -94,13 +122,12 @@
     }
 
     $: if (pbefore || pafter || temp || calibrationFactor || config_content[selectedFile]) {computeNumberDensity()}
-    $: if(selectedFile || kineticData) {computeParameters()}
+    $: if(selectedFile.endsWith('.scan')) {computeParameters()}
 
     let config_file_ROSAAkinetics="config_file_ROSAAkinetics.json";
     let config_content = {}
 
     function saveConfig() {
-
         if(!fs.existsSync(currentLocation)) {return window.createToast("Invalid location or filename", "danger")}
 
         const keys = configKeys.slice(1, configKeys.length)
@@ -199,7 +226,7 @@
         try {
 
             if(!selectedFile) return createToast("Select a file", "danger")
-            if(Object.keys(kineticData).length === 0) return createToast("No data available", "danger")
+            if(!currentData) return createToast("No data available", "danger")
             if(!reportSaved) return createToast("Save the computed equation", "danger")
 
             const nameOfReactantsArray = nameOfReactants.split(",").map(m=>m.trim())
@@ -257,13 +284,20 @@
 </ModalTable>
 
 <SeparateWindow bind:active={kineticMode} title="Kinetics">
+
     <svelte:fragment slot="header_content__slot">
         <div class="notice__div">Kinetics</div>
     </svelte:fragment>
 
     <svelte:fragment slot="main_content__slot">
 
+
         <div class="main_content__div">
+
+            <div class="align box">
+                <Textfield bind:value={currentLocation} label="Timescan data location" style="width: 100%;" />
+                <Textfield bind:value={kineticDataLocation} label="Timescan EXPORT data location" style="width: 100%;" />
+            </div>
 
             <div class="align box">
                 <CustomSwitch bind:selected={srgMode} label="SRG"/>
@@ -275,17 +309,16 @@
             </div>
 
             <div class="align box">
-                <CustomSelect bind:picked={selectedFile} label="Filename" options={fileCollections} style="min-width: 7em; "/>
+                <CustomSelect bind:picked={selectedFile} label="Filename" options={fileCollections} />
+                <Textfield type="number" input$min=0 bind:value={timestartIndexScan} label="Time Index" on:change={sliceData} />
                 <Textfield bind:value={molecule} label="Molecule" />
                 <Textfield bind:value={tag} label="tag" />
-
                 <Textfield bind:value={massOfReactants} label="massOfReactants" />
                 <Textfield bind:value={nameOfReactants} label="nameOfReactants" />
                 <CustomSwitch bind:selected={defaultInitialValues} label="defaultInitialValues"/>
                 <Textfield bind:value={initialValues} label="initialValues" />
                 <Textfield bind:value={ratek3} label="ratek3" />
                 <Textfield bind:value={k3Guess} label="k3Guess" />
-
                 <Textfield bind:value={ratekCID} label="ratekCID" />
                 <Textfield bind:value={kCIDGuess} label="kCIDGuess" />
             </div>
@@ -315,27 +348,30 @@
                 </Editor>
             </div>
         </div>
+
     </svelte:fragment>
 
     <svelte:fragment slot="footer_content__slot" >
+        
 
         {#if pyProcesses.length}
-        
-            <button class="button is-danger" 
+
+        <button class="button is-danger" 
                 on:click="{()=>{pyProcesses.at(-1).kill(); pyProcesses.pop()}}"
             >Stop</button>
+        
         {/if}
+        
         <Textfield bind:value={pyfile} label="pyfile" disabled />
         <button class="button is-link" on:click="{computeParameters}" >Compute parameters</button>
-        <button class="button is-link" on:click="{loadConfig}">loadConfig</button>
 
+        <button class="button is-link" on:click="{loadConfig}">loadConfig</button>
         <i class="material-icons" on:click="{()=> adjustConfig = true}">settings</i>
         <PyButton on:click={kineticSimulation} bind:pyProcesses showLoading={true}/>
     
     </svelte:fragment>
 
 </SeparateWindow>
-
 
 
 <style lang="scss">

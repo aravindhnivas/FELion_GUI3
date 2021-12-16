@@ -1,33 +1,19 @@
-
-# FELion tkinter figure module
 from FELion_widgets import FELion_Tk
 from FELion_definitions import sendData
-from tkinter.messagebox import askokcancel, showerror
-
-# System modules
-
-import sys, json, os, traceback
-# from os.path import isdir, isfile
+import traceback
 from pathlib import Path as pt
 import warnings
+import numpy as np
+from uncertainties import unumpy as unp
+import json
 
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
-# Data analysis
-
-import numpy as np
-from uncertainties import unumpy as unp
-
-# from matplotlib import style
-import matplotlib.pyplot as plt
-
 class timescanplot:
+
     def __init__(self, scanfile, tkplot=False):
-
-        self.scanfile = scanfile = pt(scanfile)
-
-        self.location = location = scanfile.parent
-        os.chdir(location)
+        self.scanfile = pt(scanfile)
+        self.location = scanfile.parent
 
         if tkplot:
 
@@ -35,9 +21,9 @@ class timescanplot:
 
             self.fig, self.canvas = self.widget.Figure(default_save_widget=False)
             self.widget.save_fmt = self.widget.Entries("Entry", "png", 0.1, 0.05*9+0.02)
-            self.widget.save_btn = self.widget.Buttons("Save", 0.5, 0.05*9, self.savefig_timescan)
-            savename=scanfile.stem
-            ax = self.widget.make_figure_layout(title=f"Timescan: {scanfile.name}", xaxis="Time (ms)", yaxis="Counts", yscale="linear", savename=savename)
+            self.widget.save_btn = self.widget.Buttons("Save", 0.5, 0.05*9, self.widget.save_fig)
+            savename=self.scanfile.stem
+            ax = self.widget.make_figure_layout(title=f"Timescan: {self.scanfile.name}", xaxis="Time (ms)", yaxis="Counts", yscale="linear", savename=savename)
             
             self.widget.lines = {}
 
@@ -45,59 +31,12 @@ class timescanplot:
             self.widget.lines["SUM"] = ax.errorbar(self.time, self.mean.sum(axis=0), yerr=self.error.sum(axis=0), label="SUM", fmt="k.-")
             self.widget.plot_legend = ax.legend()
             self.widget.mainloop()
-
         else:
             self.read_timescan_file(tkplot=False)
+            
     def get_data(self): return self.time, self.mean, self.error, self.mass, self.t_res, self.t_b0
     def get_plotly_data(self): return self.m
-    def savefig_timescan(self):
-
-        save_fname = f"{self.widget.name.get()}.{self.widget.save_fmt.get()}"
-        print(f"Saving filename: {save_fname}")
-        save_filename = self.location / save_fname
-
-        if not self.widget.latex.get(): self.widget.save_fig()
-
-        else:
-            style_path = pt(__file__).parent / "matplolib_styles/styles/science.mplstyle"
-
-            with plt.style.context([f"{style_path}"]):
-
-                fig, ax = plt.subplots()
-
-                self.read_timescan_file(ax=ax)
-                ax.errorbar(self.time, self.mean.sum(axis=0), yerr=self.error.sum(axis=0), label="SUM", fmt="k.-")
-
-                ax.grid(self.widget.plotGrid.get())
-
-                legend = ax.legend(bbox_to_anchor=[1, 1], fontsize=self.widget.xlabelSz.get()/2)
-                legend.set_visible(self.widget.plotLegend.get())
-
-                # Setting title
-                ax.set_title(self.widget.plotTitle.get().replace("_", "\_"), fontsize=self.widget.titleSz.get())
-
-                # Setting X and Y label
-                if self.widget.plotYscale.get(): scale = "log"
-                else: scale = "linear"
-                ax.set(yscale=scale)
-                ax.set(
-                    ylabel=self.widget.plotYlabel.get().replace("%", "\%"), 
-                    xlabel=self.widget.plotXlabel.get()
-                )
-
-                # Xlabel and Ylabel fontsize
-                ax.xaxis.label.set_size(self.widget.xlabelSz.get())
-                ax.yaxis.label.set_size(self.widget.ylabelSz.get())
-                ax.tick_params(axis='x', which='major', labelsize=self.widget.xlabelSz.get())
-                ax.tick_params(axis='y', which='major', labelsize=self.widget.ylabelSz.get())
-
-                try:
-                    fig.savefig(save_filename, dpi=self.widget.dpi_value.get()*2)
-                    print(f"File saved:\n{save_filename}")
-                    if askokcancel('Open savedfile?', f'File: {save_fname}\nsaved in directory: {self.location}'):
-                        print("Opening file: ", save_filename)
-                        os.system(f"{save_filename}")
-                except: showerror("Error", traceback.format_exc(5))
+        
     def read_timescan_file(self, ax=None, tkplot=True):
 
         m={}
@@ -160,8 +99,6 @@ class timescanplot:
 def var_find(fname, location, time=False):
 
     if fname != '':
-        
-        os.chdir(location)
         if not time:
             var = {'res': 'm03_ao13_reso', 'b0': 'm03_ao09_width',
                    'trap': 'm04_ao04_sa_delay'}
@@ -184,58 +121,56 @@ def var_find(fname, location, time=False):
 
         if time:
             return res, b0
-
         return res, b0, trap
-    
     else:
         if time:
             return 0, 0
         return 0, 0, 0
+    
 
 def get_skip_line(scanfile, location):
-    ##print("\nGetting skip line\n")
-
-    os.chdir(location)
-    with open(scanfile, 'r') as f:
+    with open(location/scanfile, 'r') as f:
         skip = 0
         for line in f:
             if len(line) > 1:
                 line = line.strip()
                 if line == 'ALL:':
-                    #print(f'\n{line} found at line no. {skip+1}\n')
                     return skip + 1
             skip += 1
     return f'ALL: is not found in the file'
 
 def get_iterations(scanfile, location):
-
-    os.chdir(location)
+    
     iterations = np.array([])
-    with open(scanfile, 'r') as f:
+    
+    with open(location/scanfile, 'r') as f:
         for line in f:
+    
             if line.startswith('#mass'):
-                #print(line)
-                iterations = np.append(
-                    iterations, line.split(':')[-1]).astype(np.int64)
+                iterations = np.append(iterations, line.split(':')[-1]).astype(np.int64)
             else:
                 continue
     return iterations
 
-
-# args = None
 def main(args):
-
-    # global args
-    # args = arguments
-    # args = sys.argv[1:][0].split(",")
     scanfiles = [pt(i) for i in args["scanfiles"]]
-    tkplot = args["tkplot"]
 
-    if tkplot == "plot": timescanplot(scanfiles[0], tkplot=True)
+    location = scanfiles[0].parent
+    EXPORT_DIR = location / "EXPORT"
+    if not EXPORT_DIR.exists(): EXPORT_DIR.mkdir()
+    
+    tkplot = args["tkplot"]
+    if tkplot == "plot": 
+        timescanplot(scanfiles[0], tkplot=True)
     else:
+    
         dataToSend = {}
         for i in scanfiles:
             data = timescanplot(i)
-            dataToSend[i.name] = data.get_plotly_data()
-            # print(i.name)
+            filename = i.name
+            dataToSend[filename] = data.get_plotly_data()
+            with open(EXPORT_DIR / f"{i.stem}_scan.json", 'w+') as f:
+                data = json.dumps(dataToSend[filename], sort_keys=True, indent=4, separators=(',', ': '))
+                f.write(data)
+                
         sendData(dataToSend, calling_file=pt(__file__).stem)

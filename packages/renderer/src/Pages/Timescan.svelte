@@ -1,19 +1,20 @@
 
 <script>
-    import Layout from "$components/Layout.svelte"
+    import Textfield        from '@smui/textfield'
+    import Layout           from "$components/Layout.svelte"
     import CustomIconSwitch from "$components/CustomIconSwitch.svelte"
-    import CustomSelect from "$components/CustomSelect.svelte"
-    import CustomSwitch from "$components/CustomSwitch.svelte"
-    import ROSAAkinetics from "../Pages/timescan/components/ROSAAkinetics.svelte"
-    import Textfield from '@smui/textfield'
-    import {plot} from "../js/functions.js"
-    import {relayout} from 'plotly.js/dist/plotly-basic';
-    import {cloneDeep} from "lodash-es"
+    import CustomSelect     from "$components/CustomSelect.svelte"
+    import CustomSwitch     from "$components/CustomSwitch.svelte"
+    import ROSAAkinetics    from "../Pages/timescan/components/ROSAAkinetics.svelte"
+    import {plot}           from "../js/functions.js"
+    import {relayout}       from 'plotly.js/dist/plotly-basic';
+    import {cloneDeep}      from "lodash-es"
     /////////////////////////////////////////////////////////////////////////
 
     // Initialisation
 
-    const filetype = "scan", id = "Timescan"
+    const filetype = "scan"
+    const id = "Timescan"
 
     let fileChecked = [];
     let currentLocation = db.get(`${filetype}_location`) || ""
@@ -33,11 +34,13 @@
     let toggleRow = true;
     let style = "width:7em; height:3.5em; margin-right:0.5em"
     let logScale = false;
-
     let timescanData = {};
     let dataLength=1;
+
     function sliceData(modifyData) {
+ 
         const reduceData = cloneDeep(modifyData)
+
         Object.keys(reduceData).forEach(data=>{
             Object.keys(reduceData[data]).forEach(innerData=>{
                 const newData = reduceData[data][innerData]
@@ -128,7 +131,7 @@
 </script>
 
 
-<ROSAAkinetics {fileChecked} {currentLocation} bind:kineticMode {kineticData}/>
+<ROSAAkinetics {fileChecked} {currentLocation} bind:kineticMode {kineticData} />
 
 
 
