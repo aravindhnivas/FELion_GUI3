@@ -8,10 +8,6 @@ from functools import reduce
 
 from ROSAA_func import boltzman_distribution
 from optimizePlot import optimizePlot
-main_module_loc = str(pt(__file__).joinpath("../../"))
-sys.path.insert(0, main_module_loc)
-
-# from FELion_definitions import sendData
 from FELion_constants import pltColors
 def log(msg): return print(msg, flush=True)
 

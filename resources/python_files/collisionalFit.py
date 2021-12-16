@@ -6,8 +6,6 @@ from scipy.optimize import curve_fit
 import matplotlib.pyplot as plt
 np.seterr(invalid="ignore")
 
-main_module_loc = str(pt(__file__).joinpath("../../"))
-sys.path.insert(0, main_module_loc)
 from FELion_definitions import sendData
 from FELion_constants import pltColors
 
