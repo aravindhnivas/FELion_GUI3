@@ -29,8 +29,8 @@ class ROSAA:
             self.einsteinB_Rates = {key: float(value) for key, value in conditions["einstein_coefficient"]["B"].items()}
 
 
-        self.excitedFrom = conditions["excitedFrom"]
-        self.excitedTo = conditions["excitedTo"]
+        self.excitedFrom = str(conditions["excitedFrom"])
+        self.excitedTo = str(conditions["excitedTo"])
         self.transitionLevels = [self.excitedFrom, self.excitedTo]
 
         self.start_time = time.perf_counter()
@@ -160,15 +160,19 @@ class ROSAA:
 
         self.N = None
         def SimulateODEAttachment(t, N_He, ratio):
+
             if self.N is None:
                 self.N = ratio
+            
             self.N = (ratio/ratio.sum())*(1-np.sum(N_He))
             self.N_distribution = np.append(self.N_distribution, self.N)
             self.t_distribution = np.append(self.t_distribution, t)
+
             N = {key: value for key, value in zip(self.energyKeys, self.N)}
 
             attachmentRate0 = - self.k3[0] * nHe**2 * N[self.excitedFrom] + \
                 self.kCID[0] * nHe * N_He[0] * self.kCID_branch
+
             attachmentRate1 = - self.k31_excited * nHe**2 * N[self.excitedTo] + \
                 self.kCID[0] * nHe * N_He[0] * (1-self.kCID_branch)
 
@@ -546,9 +550,6 @@ conditions = None
 def main(arguments):
     global conditions
     conditions = arguments
-
-    # conditions = json.loads(sys.argv[1])
-    
     pp = pprint.PrettyPrinter(indent=4)
     
     pp.pprint(conditions)

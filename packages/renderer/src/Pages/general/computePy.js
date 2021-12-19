@@ -9,8 +9,9 @@ const dispatchEvent = (e, detail, eventName) => {
 window.computePy_func = async ({
     e = null, pyfile = "", args = "",
     general = false, openShell = false 
-} = {}) => {
+    } = {}) => {
     
+    let target;
     try {
 
         if(get(developerMode) && !get(pyVersion)) {
@@ -23,6 +24,7 @@ window.computePy_func = async ({
         
         const pyProgram = get(developerMode) ? get(pythonpath) : pathJoin(ROOT_DIR, "resources/felionpy/felionpy")
         const pyArgs = get(developerMode) ? [pathJoin(get(pythonscript), "main.py"), pyfile, args ] : [pyfile, args]
+        console.log({pyArgs})
         const py = spawn( pyProgram, pyArgs, { detached: general, shell: openShell } )
 
         py.on("error", (err) => {
@@ -30,9 +32,9 @@ window.computePy_func = async ({
             return
         })
 
-        let target;
+        
         if (!general) {
-            target = e.target
+            target = e?.target
             target.classList.toggle("is-loading")
         }
 
@@ -106,13 +108,10 @@ window.computePy_func = async ({
         })
 
     } catch (error) {
-
         window.handleError(error)
-
         if(target?.classList.contains("is-loading")) {
-
             target.classList.remove("is-loading")
         }
+
     }
 }
-

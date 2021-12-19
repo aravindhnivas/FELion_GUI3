@@ -45,6 +45,7 @@
     "interactjs": "^1.10.11",
     "lodash-es": "^4.17.21",
     "ml-levenberg-marquardt": "^3.1.1",
+    "ode45-cash-karp": "^1.1.0",
     "odex": "^2.0.4",
     "plotly.js": "^2.8.0",
     "regression": "^2.0.1",

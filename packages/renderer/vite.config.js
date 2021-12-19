@@ -16,20 +16,13 @@ const PACKAGE_ROOT = __dirname;
  */
 loadAndSetEnv(process.env.MODE, process.cwd());
 
-
-/**
- * @see https://vitejs.dev/config/
- */
-//  { find: '$src', replacement: path.join(RENDERER_DIR, "src") },
-//  { find: '$public', replacement: path.join(RENDERER_DIR, 'public') },
-//  { find: '$components', replacement: path.join(RENDERER_DIR, 'src/components') }
 export default defineConfig({
   root: PACKAGE_ROOT,
   resolve: {
     alias: {
       '$src': join(PACKAGE_ROOT, 'src'),
       '$components': join(PACKAGE_ROOT, 'src/components'),
-      '$$computeCode': join(PACKAGE_ROOT, 'src/Pages/computeCode'),
+      '$computeCode': join(PACKAGE_ROOT, 'src/Pages/computeCode'),
     },
   },
   plugins: [svelte({preprocess: autoPreprocess()})],

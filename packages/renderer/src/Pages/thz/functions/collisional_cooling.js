@@ -1,33 +1,82 @@
-import {sum} from "lodash-es"
-export default function ({collisionalRateConstants, numberDensity, boltzmanDistribution}={}) {
-    const energyKeys = boltzmanDistribution.map(f=>f.label)
-    const ionCounts = {}
-    boltzmanDistribution.forEach(f=>{ionCounts[f.label] = f.value})
-    const rateConstants = {}
-    collisionalRateConstants.forEach(f=>{rateConstants[f.label] = f.value})
+import { Solver } from 'odex';
 
-    let collisionalCollection = []
-    let collections = [];
-    for (i of energyKeys) {
-        for (j of energyKeys) {
+function computeODECollision({collisionalRateConstants, numberDensity, energyKeys}) {
+    return function (t, y) {
 
-            collections = [];
+        numberDensity = parseFloat(numberDensity)
+        
+        const ionCounts = {}
+        energyKeys.forEach((key, index)=>{ionCounts[key] = y[index]})
+        
+        const rateConstants = {}
+        collisionalRateConstants.forEach(f=>{rateConstants[f.label] = f.value})
+        
+        
+        const collisionalCollection = []
+        
+        for (const i of energyKeys) {
+            const collections = []
 
-            const key = `${j} --> ${i}`
-            const keyInverse = `${i} --> ${j}`
-            if (i !== j) {
-
+            for (const j of energyKeys) {
                 
-                numberDensity = parseFloat(numberDensity)
-                const forward = rateConstants[key]*numberDensity*ionCounts[j];
-                const reverse = rateConstants[keyInverse]*numberDensity*ionCounts[i]
-                const currentValue =  forward - reverse
-                collections = [...collections, currentValue]
+                const key = `${j} --> ${i}`
+                const keyInverse = `${i} --> ${j}`
+
+                if (i !== j) {
+                    const forward = rateConstants[key]*numberDensity*ionCounts[j];
+                    const reverse = rateConstants[keyInverse]*numberDensity*ionCounts[i]
+                    const currentValue =  forward - reverse
+                    collections.push(currentValue)
+                }
             }
+            collisionalCollection.push(collections)
         }
-        const currentCollection = {label:i, value:sum(collections), id:getID()}
-        collisionalCollection = [...collisionalCollection, currentCollection]
+        const dR_dT = collisionalCollection.map(collect=>collect.reduce((a, b)=>a+b))
+        return dR_dT
     }
 
-    return collisionalCollection
+}
+
+onmessage = function ({data: {collisionalRateConstants, numberDensity, boltzmanDistribution, t0=0, duration, totalSteps} }) {
+    console.log('Worker: Message received from main script');
+    console.log("Starting ODE solver...")
+
+
+    console.time("Collisional ODE solve")
+    try {
+        const initialValue = boltzmanDistribution.map(f=>f.value)
+        console.log(initialValue, initialValue.length, "solver length")
+
+        const energyKeys = boltzmanDistribution.map(f=>f.label)
+
+        duration *= 1e-3
+
+        const solutionValues = []
+        const simulationTime = []
+        const tsteps = (duration - t0)/totalSteps
+        console.log({totalSteps, tsteps})
+        const ODESolver = new Solver(initialValue.length)
+        ODESolver.denseOutput = true;
+        ODESolver.solve(
+            computeODECollision({collisionalRateConstants, numberDensity, energyKeys}),
+            t0, initialValue, duration,
+            ODESolver.grid(tsteps, function(x, y){
+                simulationTime.push(x)
+                solutionValues.push(y)
+        
+            })
+        )
+        console.log("ODE solved")
+        const solutionByMolecule = solutionValues[0].map((_, colIndex) => solutionValues.map(row => row[colIndex]))
+        const finalData = {}
+        energyKeys.forEach((key, index)=>{
+            finalData[key] = {x: simulationTime, y: solutionByMolecule[index], name: key}
+        })
+
+        console.timeEnd("Collisional ODE solve")
+        postMessage({finalData, error: null})
+
+    } catch (error) {
+        postMessage({finalData: null, error})
+    }
 }

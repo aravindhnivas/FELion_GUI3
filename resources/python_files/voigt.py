@@ -8,7 +8,7 @@ def main(args):
     fL = float(args["lorrentz"])*1e6
     sigma = fG/(2*np.sqrt(2*np.log(2)))
     gamma = fL/2
-    linshape = float(voigt_profile(0, sigma, gamma))
-    dataToSend = {"linshape" : linshape}
+    lineShape = float(voigt_profile(0, sigma, gamma))
+    dataToSend = {"lineShape" : lineShape}
     
     sendData(dataToSend, calling_file=pt(__file__).stem)
