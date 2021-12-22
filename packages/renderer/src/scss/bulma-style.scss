@@ -80,3 +80,5 @@ $warning-color: #ffc402;
 // Static
 .button.is-static {background: transparent; color: $white;}
 @import "bulma-extensions/bulma-quickview/dist/css/bulma-quickview.sass";
+
+.box:not(:last-child) {margin-bottom: 0;}

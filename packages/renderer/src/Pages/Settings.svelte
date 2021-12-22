@@ -20,12 +20,13 @@
 
     let updateInterval;
     onMount(async ()=>{
-        const [data] = await exec(`${$pythonpath} -V`)
-        if(data) {
-            $pyVersion = data.stdout.trim()
-            console.log("Python path is valid")
+        if($developerMode) {
+            const [data] = await exec(`${$pythonpath} -V`)
+            if(data) {
+                $pyVersion = data.stdout.trim()
+                console.log("Python path is valid")
+            }
         }
-
         // Update check
         if(env.DEV) return
         const interval = 15 //min
