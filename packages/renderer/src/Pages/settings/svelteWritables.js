@@ -15,5 +15,6 @@ export const pythonpath = writable(db.get("pythonpath"))
 export const pythonscript = writable(db.get("pythonscript"))
 
 export const pyVersion = writable("")
-export const developerMode = writable(db.get("developerMode") || appInfo.isPackaged)
+export const developerMode = writable(db.get("developerMode") ?? appInfo.isPackaged)
+console.log("developerMode: ", db.get("developerMode"), get(developerMode))
 export const suppressInitialDeveloperWarning = writable(db.get("suppressInitialDeveloperWarning") || false)
