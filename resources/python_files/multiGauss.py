@@ -175,7 +175,7 @@ def fitNGaussian(gauss_args):
                 for fit, err in zip(popt_Ngauss, perr_Ngauss)
             ]
             
-            sendData(dataToSend, calling_file=pt(__file__).stem)
+            sendData(dataTosend, calling_file=pt(__file__).stem)
         
         # Writing fullfit and expfit files
         

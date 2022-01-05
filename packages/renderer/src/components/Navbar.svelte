@@ -1,13 +1,9 @@
-<script context="module">
-  import {writable} from "svelte/store";
-  export const activePage = writable("")
 
-</script>
 <script>
 	import Tab, {Label} from '@smui/tab';
-	import TabBar from '@smui/tab-bar';
-	// import Button from '@smui/button';
-	import {onMount} from "svelte";
+	import TabBar       from '@smui/tab-bar';
+	import {onMount}    from "svelte";
+  import {activePage} from '$src/sveltewritable';
 	export let navItems;
 	
 	
@@ -18,8 +14,13 @@
 	$: db.set('active_tab', $activePage)
 
 
-	const navigate = () =>{navItems.forEach(item=> item == active ? showpage(item) : hidepage(item))}
-	onMount(()=>{showpage("navbar");navigate()})
+	const navigate = () =>{navItems.forEach(
+    item => item == active 
+      ? document.getElementById(item).style.display = "block" 
+      : document.getElementById(item).style.display = "none" 
+  )}
+  
+	onMount(()=>{document.getElementById("navbar").style.display = "block";navigate()})
 </script>
 
 <div class="box animated fadeInDown" id="navbar" style="display:none" on:click={navigate}>

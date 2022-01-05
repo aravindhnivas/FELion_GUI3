@@ -1,14 +1,21 @@
 <script>
-    import Layout               from "$components/Layout.svelte"
-    import CustomIconSwitch     from "$components/CustomIconSwitch.svelte"
-    import CustomSelect         from "$components/CustomSelect.svelte"
-    import CustomSwitch         from "$components/CustomSwitch.svelte"
-    import Textfield            from '@smui/textfield'
-    import {plot}               from "../js/functions.js"
-    import GetLabviewSettings   from "$components/GetLabviewSettings.svelte"
-    import {relayout}           from 'plotly.js/dist/plotly-basic';
-    import {find, differenceBy} from "lodash-es"
-    import {readMassFile}       from "./masspec/mass"
+    
+    import Textfield                        from '@smui/textfield'
+    import { onMount }                      from 'svelte';
+
+    import Layout                           from "$components/Layout.svelte"
+    import CustomSwitch                     from "$components/CustomSwitch.svelte"
+    import CustomSelect                     from "$components/CustomSelect.svelte"
+    import CustomIconSwitch                 from "$components/CustomIconSwitch.svelte"
+    import GetLabviewSettings               from "$components/GetLabviewSettings.svelte"
+    
+    import {activePage}                     from '$src/sveltewritable';
+
+    import {relayout}                       from 'plotly.js/dist/plotly-basic';
+    import {find, differenceBy, isEmpty}    from "lodash-es"
+    
+    import {plot}                           from "../js/functions.js"
+    import {readMassFile}                   from "./masspec/mass"
     /////////////////////////////////////////////////////////////////////////
 
     // Initialisation
@@ -17,7 +24,7 @@
     let fileChecked = [];
     let currentLocation = db.get(`${filetype}_location`) || ""
     $: massfiles = fs.existsSync(currentLocation) ? fileChecked.map(file=>pathResolve(currentLocation, file)) : []
-    $: if(massfiles.length) plotData()
+    $: if(massfiles.length > 0) plotData()
     
     let openShell = false
     let graphPlotted = false
@@ -26,12 +33,9 @@
     let selected_file = ""
 
     let peak_width = 2
-    let peak_height = 40;
+    let peak_height = 40
     let peak_prominance = 3
-    let keepAnnotaions = true;
-    
-    const style = "width:7em; height:3.5em; margin-right:0.5em"
-    
+    let keepAnnotaions = true
     
     async function plotData({e=null, filetype="mass"}={}){
 
@@ -60,6 +64,7 @@
         if (filetype=="mass") {
             
             const [dataFromPython] = await readMassFile(massfiles)
+            if(isEmpty(dataFromPython)) return
             if(!keepAnnotaions) {annotations=[]}
             
             plot("Mass spectrum", "Mass [u]", "Counts", dataFromPython, "mplot", logScale ? "log" : "linear")
@@ -80,8 +85,6 @@
             relayout("mplot", { yaxis: { title: "Counts", type: "log" } })
         }
     }
-
-    // Linearlog check
 
     const linearlogCheck = () => {
         const layout = { yaxis: { title: "Counts", type: logScale ? "log" : null } }
@@ -123,9 +126,10 @@
             }
         })
     }
+
 </script>
 
-<Layout  {filetype} bind:fullfileslist {id} bind:currentLocation bind:fileChecked {graphPlotted} >
+<Layout {filetype} bind:fullfileslist {id} bind:currentLocation bind:fileChecked {graphPlotted} >
 
     <svelte:fragment slot="buttonContainer">
         <div class="align " style="align-items: center;">
@@ -140,10 +144,10 @@
         <div class="align animated fadeIn" class:hide={toggleRow1} >
             <CustomSelect style="width:12em; height:3.5em; margin-right:0.5em" bind:picked={selected_file} label="Filename" options={fileChecked}/>
 
-            <Textfield type="number" {style} on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_prominance} label="Prominance" />
+            <Textfield type="number" on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_prominance} label="Prominance" />
 
-            <Textfield type="number" {style} on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_width} label="Width" />
-            <Textfield type="number" {style} on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_height} label="Height" />
+            <Textfield type="number" on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_width} label="Width" />
+            <Textfield type="number" on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_height} label="Height" />
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"find_peaks"})}">Get Peaks</button>
             <button class="button is-danger" on:click="{()=> {if(graphPlotted) {relayout("mplot", { annotations: [] })} }}">Clear</button>
         </div>

@@ -14,12 +14,25 @@
     import {get_err_func} from '../../functions/get_err';
     import {relayout, deleteTraces} from 'plotly.js/dist/plotly-basic';
     import {dropRight, uniqBy, filter, sortBy} from "lodash-es"
-    export let addedFileScale, addedFileCol, normMethod, writeFileName, writeFile, overwrite_expfit, fullfiles, modalActivate=false, adjustPeakTrigger=false;
-    
-    let boxSelected_peakfinder=false, NGauss_fit_args={}
 
-    let peak_height = 1, peak_width = 3, peak_prominence = 0;
-    let toggleFindPeaksRow = false, savePeakfilename = "peakTable";
+    export let writeFile
+    export let fullfiles
+    export let normMethod
+    export let addedFileCol
+    export let writeFileName
+    export let addedFileScale
+    export let overwrite_expfit
+    export let modalActivate=false
+    export let adjustPeakTrigger=false;
+    
+    let boxSelected_peakfinder=false
+    let NGauss_fit_args={}
+
+    let peak_height = 1
+    let peak_width = 3
+    let peak_prominence = 0;
+    let toggleFindPeaksRow = false
+    let savePeakfilename = "peakTable";
 
     const style = "width:7em; height:3.5em; margin-right:0.5em";
 

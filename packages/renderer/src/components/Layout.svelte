@@ -33,7 +33,6 @@
     import FileBrowser                  from "$components/FileBrowser.svelte"
     import Modal                        from "$components/Modal.svelte"
     import Editor                       from '$components/Editor.svelte';
-
     ////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////
 
@@ -60,9 +59,9 @@
     }
 
     let graphDivs = []
+    
     onMount(()=>{ 
         console.log(id, "mounted")
-        // currentLocation = db.get(`${filetype}_location`) || ""
     })
 
 

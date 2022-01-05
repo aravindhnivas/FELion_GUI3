@@ -48,8 +48,8 @@
     ///////////////////////////////////////////////////////////////////////
 
     let graphPlotted = false
-    let overwrite_expfit = false
-    let writeFile = false
+    let overwrite_expfit = true
+    let writeFile = true
     let OPOfilesChecked = []
 
     let writeFileName = ""
