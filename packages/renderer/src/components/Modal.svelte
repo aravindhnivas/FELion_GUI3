@@ -1,14 +1,16 @@
 
 <script>
-  import { createEventDispatcher } from 'svelte';
+  import { createEventDispatcher, onDestroy } from 'svelte'
   export let active = false
   export let title = "Title"
   export let style="width:60vw"
   export let contentID="";
-  export let bodyStyle="max-height: 30em; height: 30em"
   export let bodyBackground = "#634e96"
-  export let headerBackground="#836ac05c";
+  export let headerBackground="#836ac05c"
+  export let bodyStyle="max-height: 30em; height: 30em"
   const dispatch = createEventDispatcher()
+  onDestroy(()=>active=false)
+
 </script>
 
 <svelte:window on:keydown="{(e)=> {if(e.keyCode===27) active=false}}"/>
