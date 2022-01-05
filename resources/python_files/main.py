@@ -1,9 +1,11 @@
 import sys
 import json
+import warnings
 from time import perf_counter
 from importlib import import_module
 
 if __name__ == "__main__":
+
     startTime = perf_counter()
 
     pyfile = sys.argv[1]
@@ -11,6 +13,10 @@ if __name__ == "__main__":
 
     print(f"{pyfile=}\n{args=}", flush=True)
 
-    pyfunction = import_module(pyfile)
-    pyfunction.main(args)
+    with warnings.catch_warnings(record=True) as warn:
+        warnings.simplefilter("ignore")
+        pyfunction = import_module(pyfile)
+        pyfunction.main(args)
+        print(f"{warn=}", flush=True)
+
     print(f"function execution done in {(perf_counter() - startTime):.2f} s")
