@@ -3,13 +3,9 @@
 import numpy as np
 from scipy.signal import find_peaks as peak
 from pathlib import Path as pt
-import json, sys
 from FELion_definitions import read_dat_file, sendData
-
-from FELion_widgets import FELion_Tk
 from FELion_constants import colors 
 from exp_gauss_fit import exp_fit
-
 
 def fit_all_peaks(args):
 

@@ -1,13 +1,26 @@
-
 <script>
+    import {
+        opoMode,
+        baselineFile,
+        felixPlotAnnotations
+    }                       from "../../functions/svelteWritables";
+    import {opofile_func}   from '../../functions/opofile';
+    import { fade }         from 'svelte/transition';
+    
+    import CustomSelect     from '$components/CustomSelect.svelte';
+    import QuickBrowser     from '$components/QuickBrowser.svelte';
+    import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
 
-    import {opoMode, felixPlotAnnotations, baselineFile} from "../../functions/svelteWritables";
-    import CustomSelect from '$components/CustomSelect.svelte';
-    import QuickBrowser from '$components/QuickBrowser.svelte';
-    import { fade } from 'svelte/transition';
-    import {opofile_func} from '../../functions/opofile';
-    export let OPOLocation, opofiles, OPOfilesChecked, graphPlotted, removeExtraFile;
-    import CustomTextSwitch         from '$components/CustomTextSwitch.svelte'
+    import computePy_func   from "$src/Pages/general/computePy"
+
+    /////////////////////////////////////////////////////////////////////////
+
+
+    export let OPOLocation
+    export let opofiles
+    export let OPOfilesChecked
+    export let graphPlotted
+    export let removeExtraFile;
     let showOPOFiles =false, OPOcalibFiles = [];
     let deltaOPO = 0.3, calibFile = "", opoPower=1;
     
@@ -50,7 +63,7 @@
 {#if $opoMode}
     <div class="align" transition:fade >
         <span class="tag is-warning " >OPO Mode: </span>
-        <CustomSelect style="width:7em;" bind:picked={calibFile} label="Calib. file" options={OPOcalibFiles}/>
+        <CustomSelect bind:picked={calibFile} label="Calib. file" options={OPOcalibFiles}/>
         <CustomTextSwitch style="width:7em;" step="0.1" variant="outlined" bind:value={deltaOPO} label="Delta OPO"/>
         <CustomTextSwitch style="width:9em" step="0.1" variant="outlined" bind:value={opoPower} label="Power (mJ)"/>
         <button class="button is-link" on:click="{()=>{showOPOFiles = !showOPOFiles;}}"> Browse File</button>

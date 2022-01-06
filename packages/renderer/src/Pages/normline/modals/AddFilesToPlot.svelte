@@ -1,12 +1,12 @@
 
 <script>
 
-    import {addTraces}  from 'plotly.js/dist/plotly-basic';
-    import Textfield    from '@smui/textfield';
-    import Modal        from '$components/Modal.svelte';
-    import {browse}     from "$components/Layout.svelte";
-    import {graphDiv}   from '../functions/svelteWritables';
-    
+    import {addTraces}      from 'plotly.js/dist/plotly-basic';
+    import Textfield        from '@smui/textfield';
+    import Modal            from '$components/Modal.svelte';
+    import {browse}         from "$components/Layout.svelte";
+    import {graphDiv}       from '../functions/svelteWritables';
+    import computePy_func   from "$src/Pages/general/computePy"
     export let active=false
     export let fileChecked=[]
     export let addedFileCol=1
@@ -29,6 +29,7 @@
         const pyfile="addTrace"
         let args;
         if(addedFile.files < 1) return window.createToast("No files selected", "danger")
+        extrafileAdded += addedfiles.length
         addedFile["col"] = addedFileCol, addedFile["N"] = fileChecked.length + extrafileAdded
 
         addedFile["scale"] = addedFileScale
@@ -37,7 +38,6 @@
         computePy_func({e, pyfile, args})
         .then((dataFromPython)=>{
             addTraces($graphDiv, dataFromPython)
-            extrafileAdded += addedfiles.length
             window.createToast("Graph Plotted", "success")
             active = false
         })

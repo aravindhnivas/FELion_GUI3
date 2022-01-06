@@ -1,4 +1,4 @@
-const { BrowserWindow, ipcMain, Menu, MenuItem, app } = require('electron');
+import { BrowserWindow, ipcMain, Menu, MenuItem, app } from 'electron'
 
 const menu = new Menu()
 const mainWindow = BrowserWindow.getAllWindows()[0]

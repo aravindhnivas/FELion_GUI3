@@ -1,0 +1,1 @@
+signtool sign /f .\certificate\felion.pfx /p felion /fd SHA256 .\resources\felionpy\felionpy.exe

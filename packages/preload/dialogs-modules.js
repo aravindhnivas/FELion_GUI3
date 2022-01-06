@@ -1,5 +1,5 @@
 
-const { contextBridge, ipcRenderer } = require('electron')
+import { contextBridge, ipcRenderer } from 'electron'
 
 contextBridge.exposeInMainWorld("dialogs", {
     showMessageBoxSync: async (args) => await ipcRenderer.invoke("showMessageBoxSync", args),

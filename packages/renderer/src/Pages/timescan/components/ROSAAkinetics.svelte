@@ -9,7 +9,9 @@
     import CustomSelect                 from "$components/CustomSelect.svelte"
     import SeparateWindow               from "$components/SeparateWindow.svelte"
     import {computeKineticCodeScipy}    from "../functions/computeKineticCode"
-    import {difference, cloneDeep}                 from "lodash-es"
+    import {difference, cloneDeep}      from "lodash-es"
+
+    import computePy_func                   from "$src/Pages/general/computePy"
 
     export let fileChecked=[]
     export let kineticMode=true
@@ -387,7 +389,7 @@
 
         <button class="button is-link" on:click="{loadConfig}">loadConfig</button>
         <i class="material-icons" on:click="{()=> adjustConfig = true}">settings</i>
-        <PyButton on:click={kineticSimulation} bind:pyProcesses showLoading={true}/>
+        <PyButton on:click={kineticSimulation} bind:pyProcesses />
     
     </svelte:fragment>
 

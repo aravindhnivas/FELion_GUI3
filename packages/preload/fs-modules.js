@@ -1,7 +1,17 @@
 
-const { contextBridge } = require('electron')
-const fs = require("fs-extra")
+import { contextBridge } from 'electron'
+import fs from "fs-extra"
+import { promisify } from 'util'
 
+function tryCatcher(fn) {
+    try {
+        return fn.apply(this, arguments);
+    } catch (error) {
+        console.log(error)
+        return null
+    }
+
+}
 contextBridge.exposeInMainWorld("fs", {
     mkdirSync: (dir) => fs.mkdirSync(dir),
     emptyDirSync: (dir) => fs.emptyDirSync(dir),
@@ -19,6 +29,9 @@ contextBridge.exposeInMainWorld("fs", {
     outputJsonSync: (file, obj) => fs.outputJsonSync(file, obj),
 
     writeFile:  (filename, contents, callback)=>fs.writeFile(filename, contents, "utf8", callback),
+    readdir: promisify(fs.readdir),
+    exists:  promisify(fs.exists),
+    readFile:  promisify(fs.readFile),
     createWriteStream: (path) => {
         const writer = fs.createWriteStream(path)
         return {

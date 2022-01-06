@@ -17,7 +17,7 @@
     import CustomIconSwitch     from '$components/CustomIconSwitch.svelte';
     import FelixPlotting        from '../../modals/FelixPlotting.svelte';
     import {felix_func}         from '../../functions/felix';
-
+    import computePy_func       from "$src/Pages/general/computePy"
     ///////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
 
@@ -88,7 +88,6 @@
                     show_theoryplot = false
                     felix_func({dataFromPython, delta})
                     window.createToast("Graph Plotted", "success")
-
                     graphPlotted = true
                 }).catch(error=>{window.handleError(error); console.error("Error main: ", error.stack || error)})
                 break;

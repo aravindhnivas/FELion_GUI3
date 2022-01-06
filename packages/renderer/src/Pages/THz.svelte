@@ -1,19 +1,21 @@
 <script>
-    import Layout from "$components/Layout.svelte"
-    import CustomIconSwitch from "$components/CustomIconSwitch.svelte"
-    import CustomSelect from "$components/CustomSelect.svelte"
-    import CustomCheckbox from "$components/CustomCheckbox.svelte"
-    import Textfield from '@smui/textfield'
-    import {plot} from "../js/functions.js"
-    import ROSAA from "./thz/ROSAA.svelte"
-    import {relayout, restyle} from 'plotly.js/dist/plotly-basic';
+    import Textfield            from '@smui/textfield'
+    import Layout               from "$components/Layout.svelte"
+    import CustomSelect         from "$components/CustomSelect.svelte"
+    import CustomCheckbox       from "$components/CustomCheckbox.svelte"
+    import CustomIconSwitch     from "$components/CustomIconSwitch.svelte"
+    import {plot}               from "../js/functions.js"
+    import ROSAA                from "./thz/ROSAA.svelte"
+    import {relayout, restyle}  from 'plotly.js/dist/plotly-basic';
+    import computePy_func       from "$src/Pages/general/computePy"
+    
     /////////////////////////////////////////////////////////////////////////
 
     // Initialisation
 
     const filetype = "thz", id = "THz"
     let fileChecked = [];
-    let currentLocation = db.get(`${filetype}_location`) || ""
+    let currentLocation = ""
     $: thzfiles = fileChecked.map(file=>pathResolve(currentLocation, file))
     let openShell = false, graphPlotted = false
     let delta = 10, gamma = 0

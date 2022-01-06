@@ -14,7 +14,7 @@
     import {get_err_func} from '../../functions/get_err';
     import {relayout, deleteTraces} from 'plotly.js/dist/plotly-basic';
     import {dropRight, uniqBy, filter, sortBy} from "lodash-es"
-
+    import computePy_func                   from "$src/Pages/general/computePy"
     export let writeFile
     export let fullfiles
     export let normMethod

@@ -70,8 +70,8 @@ class normplot:
         color_size = len(colors)
 
         for filename in self.received_files:
-
             felixfile = filename.name
+            print(f"{felixfile=}", flush=True)
             res, b0, trap = var_find(filename)
 
             label = f"{felixfile}; Res:{res}; B0: {b0}ms; trap: {trap}ms"

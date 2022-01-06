@@ -19,9 +19,14 @@
 
     
     async function savefile() {
+        console.log("Saving powerfile: ", powfile)
         if (location.length == 0) { return openFolder({save:true}) }
         const overwrite = await fs.existsSync(powfile)
-        overwrite ? overwrite_dialog.open() : writePowfile()
+        if(overwrite) {
+            overwriteDialogOpen = true
+        } else {
+            writePowfile()
+        }
     }
 
     async function openFolder({save=false}={}) {
@@ -33,12 +38,12 @@
         if (save) savefile()
     }
 
-    let powerfileContent = '', felixHz = 10, felixShots = 16, convert = null;
-
+    let felixHz = 10
+    let convert = null;
+    let felixShots = 16
+    let powerfileContent = ''
 
     let location = db.get("powerfile_location") || "";
-    
-    let overwrite_dialog;
     let today = new Date();
 
     const dd = String(today.getDate()).padStart(2, '0')
@@ -46,6 +51,7 @@
     const yy = today.getFullYear().toString().substr(2)
 
     let filename = `${dd}_${mm}_${yy}-#`;
+
     $: powfile = pathResolve(location, `${filename}.pow`)
     $: conversion = "_no_"
     $: convert ? conversion = "_" : conversion = "_no_"
@@ -53,54 +59,29 @@
         `# ${felixHz} Hz FELIX\n` +
         `#SHOTS=${felixShots}\n` +
         `#INTERP=linear\n` +
-
         `#    IN${conversion}UM (if one deletes the no the firs number will be in \mu m\n` +
         `# wavelength/cm-1      energy/pulse/mJ\n`
 
-    
+        let overwriteResponse = ""
+        let overwriteDialogOpen = false
 
-    const handleOverwrite = (e) => {
-        let action = e.detail.action
-        if (action === "Cancel" || action === "close") window.createToast("Powerfile saving cancelled", "warning")
-        if (action === "Yes") writePowfile()
+    $: if(overwriteResponse === "Yes") {
+        overwriteResponse = ""
+        writePowfile()
     }
+
 
 </script>
 
-<style>
-    .section {max-height: 70vh;overflow-y: auto;}
-    
-    .main__container {
-        display: grid; 
-        height: 100%;
 
-        grid-row-gap: 1em;
-        margin: auto;
-        width: 90%;
-    }
-    .grid_column__container {
-        display: grid;
-        grid-auto-flow: column;
-        grid-column-gap: 1em;
-    }
+<CustomDialog
+    id="powerfile-overwrite"
+    title={"Overwrite?"} 
+    bind:open={overwriteDialogOpen}
+    bind:response={overwriteResponse}
+    content={`${filename} already exists. Do you want to overwrite it?`} 
+/>
 
-    .location__bar { display: flex; align-items: baseline; gap: 1em;}
-
-    .file__details__bar {
-        grid-template-columns: repeat(4, 1fr);
-    }
-
-    .power_value__container {
-        display: grid;
-        grid-template-rows: 12fr 1fr 2fr;
-    }
-
-</style>
-
-
-<CustomDialog id="powerfile-overwrite" bind:dialog={overwrite_dialog} on:response={handleOverwrite}
-    title={"Overwrite?"} content={`${filename} already exists. Do you want to overwrite it?`}/>
-    
 
 <section class="section" id="Powerfile" style="display:none">
     <div class="box main__container" id="powfileContainer">
@@ -143,9 +124,40 @@
             </Textfield>
 
             
-            <button class="button is-success" style="width:12em;margin-left: auto;" on:click={savefile}>Save</button>
+            <button class="button is-link" style="width: 12em; margin: auto;" on:click={savefile}>Save</button>
         </div>
         
     </div>
     
 </section>
+
+
+<style>
+    .section {max-height: 70vh;overflow-y: auto;}
+    
+    .main__container {
+        display: grid; 
+        height: 100%;
+
+        grid-row-gap: 1em;
+        margin: auto;
+        width: 90%;
+    }
+    .grid_column__container {
+        display: grid;
+        grid-auto-flow: column;
+        grid-column-gap: 1em;
+    }
+
+    .location__bar { display: flex; align-items: baseline; gap: 1em;}
+
+    .file__details__bar {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .power_value__container {
+        display: grid;
+        grid-template-rows: 12fr 1fr 2fr;
+    }
+
+</style>

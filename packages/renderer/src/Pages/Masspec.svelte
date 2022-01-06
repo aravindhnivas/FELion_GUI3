@@ -1,28 +1,23 @@
 <script>
-    
     import Textfield                        from '@smui/textfield'
-    import { onMount }                      from 'svelte';
-
     import Layout                           from "$components/Layout.svelte"
     import CustomSwitch                     from "$components/CustomSwitch.svelte"
     import CustomSelect                     from "$components/CustomSelect.svelte"
     import CustomIconSwitch                 from "$components/CustomIconSwitch.svelte"
     import GetLabviewSettings               from "$components/GetLabviewSettings.svelte"
-    
-    import {activePage}                     from '$src/sveltewritable';
-
     import {relayout}                       from 'plotly.js/dist/plotly-basic';
     import {find, differenceBy, isEmpty}    from "lodash-es"
-    
     import {plot}                           from "../js/functions.js"
     import {readMassFile}                   from "./masspec/mass"
+    import computePy_func                   from "$src/Pages/general/computePy"
+
     /////////////////////////////////////////////////////////////////////////
 
     // Initialisation
     const filetype = "mass"
     const id = "Masspec"
     let fileChecked = [];
-    let currentLocation = db.get(`${filetype}_location`) || ""
+    let currentLocation = ""
     $: massfiles = fs.existsSync(currentLocation) ? fileChecked.map(file=>pathResolve(currentLocation, file)) : []
     $: if(massfiles.length > 0) plotData()
     
@@ -142,7 +137,7 @@
         </div>
 
         <div class="align animated fadeIn" class:hide={toggleRow1} >
-            <CustomSelect style="width:12em; height:3.5em; margin-right:0.5em" bind:picked={selected_file} label="Filename" options={fileChecked}/>
+            <CustomSelect bind:picked={selected_file} label="Filename" options={fileChecked}/>
 
             <Textfield type="number" on:change="{(e)=>plotData({e:e, filetype:"find_peaks"})}" bind:value={peak_prominance} label="Prominance" />
 

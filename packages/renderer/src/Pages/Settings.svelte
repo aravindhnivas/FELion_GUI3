@@ -1,22 +1,27 @@
 <script>
     import {
-        pythonpath, pythonscript, pyVersion, developerMode, suppressInitialDeveloperWarning
-    } from "./settings/svelteWritables";
-    import {activateChangelog} from "../js/functions"
-    import Textfield from '@smui/textfield';
-    import {onMount, onDestroy} from "svelte";
-    import CustomDialog from "$components/CustomDialog.svelte"
-    import CustomSwitch from '$components/CustomSwitch.svelte';
-    import Changelog from "$components/Changelog.svelte";
-    import Terminal from '$components/Terminal.svelte';
-    import {resetPyConfig, updatePyConfig} from "./settings/checkPython";
+        pyVersion,
+        pythonpath,
+        pythonscript,
+        developerMode,
+        suppressInitialDeveloperWarning
+    }                               from "./settings/svelteWritables";
+    import {activateChangelog}      from "../js/functions"
+    import {
+        resetPyConfig, updatePyConfig
+    }                               from "./settings/checkPython";
 
 
+    import Textfield                from '@smui/textfield';
+    import {onMount, onDestroy}     from "svelte";
+    
+    import CustomSwitch             from '$components/CustomSwitch.svelte';
+    import Changelog                from "$components/Changelog.svelte";
+    import Terminal                 from '$components/Terminal.svelte';
+    import {mainPreModal}           from "$src/svelteWritable";
+    
     let selected = window.db.get("settingsActiveTab") || "Update"
     const navigate = (e) => {selected = e.target.innerHTML; window.db.set("settingsActiveTab", selected);}
-    let pythonpathCheck;
-
-
 
     let updateInterval;
     onMount(async ()=>{
@@ -36,7 +41,6 @@
     })
     onDestroy(() => env.DEV ? "" : clearInterval(updateInterval));
     
-    const handlepythonPathCheck = () => { console.log("Python path checking done") }
 
     let commandToRun = "", commandArgsToRun = "";
 
@@ -56,11 +60,9 @@
         } finally {
             event?.target.classList.toggle("is-loading")
         }
-    
     }
 </script>
 
-<CustomDialog id="pythonpath_Check" bind:dialog={pythonpathCheck} on:response={handlepythonPathCheck} title={"Python path is not valid"} content={"Change it in Settings --> Configuration"} label1="Okay" label2="Cancel" />
 <Changelog  />
 
 <section class="section animated fadeIn" id="Settings" style="display:none">
@@ -72,8 +74,8 @@
                 <div class="hvr-glow" class:clicked={selected==="Configuration"} on:click={navigate}>Configuration</div>
                 <div class="hvr-glow" class:clicked={selected==="Update"} on:click={navigate}>Update</div>
                 <div class="hvr-glow" class:clicked={selected==="Terminal"} on:click={navigate}>Terminal</div>
-
                 <div class="hvr-glow" class:clicked={selected==="About"} on:click={navigate}>About</div>
+
            </div>
         </div>
 
@@ -99,6 +101,15 @@
                             </div>
                         {/if}
                     </div>
+
+
+                    {#if window.env.DEV}
+                        <button class="button" on:click={()=>{
+                            const string = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque laboriosam vitae officia deleniti corporis aliquid quo id. Laboriosam officia hic nam nemo fuga eum. Veritatis voluptatem ipsa odit incidunt, velit quidem fuga! Minima provident officiis iste magnam at magni suscipit iusto vel fugiat aliquam explicabo ad qui, ipsum vero perspiciatis, facere est eius ullam omnis maiores? Fugit aut saepe accusantium deserunt eligendi corporis in et. Deleniti natus rerum voluptates fuga consequatur qui tempore omnis optio illum soluta odio perferendis doloribus repudiandae vero non, commodi recusandae reiciendis laboriosam neque et dolore quos reprehenderit consectetur laborum? Aperiam, laboriosam id! Culpa, iusto quisquam."
+                            mainPreModal.error(string+string)
+                        }}>Throw error</button>
+                    {/if}
+                    
                 </div>
 
                 <div class="content animated fadeIn" class:hide={selected!=="Update"}>
@@ -146,7 +157,6 @@
         </div>
     </div>
 </section>
-
 
 <style lang="scss">
     section { margin: 0; padding: 0; }

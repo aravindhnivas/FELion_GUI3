@@ -27,6 +27,8 @@
     }                               from "./functions/constants";
     
     import {findAndGetValue}        from "./functions/misc";
+    import computePy_func           from "$src/Pages/general/computePy"
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     export let active = false;
@@ -309,7 +311,7 @@
 
 </script>
 
-<BoltzmanDistribution {...boltzmanArgs} maximize={false}
+<BoltzmanDistribution {...boltzmanArgs}
     bind:active={openBoltzmanWindow} 
     bind:graphWindow={boltzmanWindow} 
 />
@@ -416,13 +418,11 @@
 
                         <CustomSelect options={energyLevels.map(f=>f.label)} bind:picked={excitedFrom}
                             label="excitedFrom"
-                            style="min-width: 7em;"
                             on:change={updateEnergyLevels}
                         />
                     
                         <CustomSelect options={energyLevels.map(f=>f.label)} bind:picked={excitedTo}
                             label="excitedTo"
-                            style="min-width: 7em;"
                             on:change={updateEnergyLevels}
                         />
                     
@@ -482,7 +482,6 @@
                     bind:numberDensity
                     bind:collisionalRates
                     bind:collisionalCoefficient
-                    bind:collisionalRateType
                     bind:collisionalCoefficient_balance
                     {energyUnit}
                     {zeemanSplit}

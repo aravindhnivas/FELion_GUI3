@@ -156,6 +156,10 @@
   {
    "optionDest": "hiddenimports",
    "value": "addTrace"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "felix_tkplot"
   }
  ],
  "nonPyinstallerOptions": {

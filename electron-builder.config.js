@@ -8,11 +8,9 @@ const config = {
     buildResources: 'buildResources',
   },
   files: [
-    'packages/main',
-    'packages/preload',
-
-    'packages/renderer/dist',
+    'packages/**/dist/**',
   ],
+  
   extraFiles: [ // copy to ROOT_DIR (or Contents in mac)
     'resources'
   ],

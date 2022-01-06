@@ -2,9 +2,6 @@
 import { writable, get } from "svelte/store";
 export { get };
 
-const db_file_location = pathResolve(appInfo.userData, appInfo.isPackaged ? "db.json" : "db-dev.json" )
-window.db = JSONdb(db_file_location)
-
 const pyPath = pathJoin(ROOT_DIR, "python3/python")
 const pyScriptPath = pathJoin(ROOT_DIR, "resources/python_files")
 

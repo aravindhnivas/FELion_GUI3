@@ -14,7 +14,8 @@
 	import Misc from "./Pages/Misc.svelte"
 	import PreModal from "$components/PreModal.svelte";
 	import {onMount, tick} from "svelte";
-	// import "./App.scss";
+	import { SvelteToast } from '@zerodevx/svelte-toast'
+
 	let mounted=false;
 
 
@@ -31,6 +32,8 @@
 {#if $windowLoaded}
 	{#if mounted}
 		<PreModal />
+		<SvelteToast />
+
 	{/if}
 
 	<Navbar {navItems} />

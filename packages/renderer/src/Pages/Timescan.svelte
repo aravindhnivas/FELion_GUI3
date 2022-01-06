@@ -9,6 +9,8 @@
     import {plot}           from "../js/functions.js"
     import {relayout}       from 'plotly.js/dist/plotly-basic';
     import {cloneDeep}      from "lodash-es"
+    import computePy_func   from "$src/Pages/general/computePy"
+
     /////////////////////////////////////////////////////////////////////////
 
     // Initialisation
@@ -17,7 +19,7 @@
     const id = "Timescan"
 
     let fileChecked = [];
-    let currentLocation = db.get(`${filetype}_location`) || ""
+    let currentLocation = ""
     $: scanfiles = fileChecked.map(file=>pathResolve(currentLocation, file))
 
     let nshots = 10
@@ -155,8 +157,8 @@
         </div>
 
         <div class="align animated fadeIn" class:hide={toggleRow} >
-            <CustomSelect style="min-width: 7em;" bind:picked={resON_Files} label="ResOn" options={fullfiles}/>
-            <CustomSelect style="min-width: 7em;" bind:picked={resOFF_Files} label="ResOFF" options={fullfiles}/>
+            <CustomSelect bind:picked={resON_Files} label="ResOn" options={fullfiles}/>
+            <CustomSelect bind:picked={resOFF_Files} label="ResOFF" options={fullfiles}/>
             <Textfield bind:value={power} label="Power (ON, OFF) [mJ]" />
             <Textfield type="number" bind:value={nshots} label="FELIX Hz" />
             <Textfield type="number" bind:value={massIndex} label="Mass Index" />

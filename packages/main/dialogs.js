@@ -1,5 +1,5 @@
 
-const { ipcMain, dialog, BrowserWindow, app } = require('electron');
+import { ipcMain, dialog, BrowserWindow, app } from 'electron'
 const {showMessageBoxSync, showOpenDialogSync} = dialog
 const mainWindow = BrowserWindow.getAllWindows()[0]
 ipcMain.handle('showOpenDialogSync', async (event, args) => {

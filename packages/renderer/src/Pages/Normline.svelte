@@ -35,7 +35,7 @@
     
     let fileChecked=[]
     let toggleBrowser = false;
-    let currentLocation = db.get(`${filetype}_location`) || ""
+    let currentLocation = ""
     
     $: felixfiles = fileChecked.map(file=>pathResolve(currentLocation, file))
     $: console.log(`${filetype} currentlocation: \n${currentLocation}`)
@@ -131,14 +131,13 @@
     {filetype}
     {graphPlotted}
     bind:fileChecked
-    bind:toggleBrowser
     bind:currentLocation
     bind:activateConfigModal
     on:markedFile="{(e)=>$baselineFile = e.detail.markedFile}"
 >
 
     <svelte:fragment slot="buttonContainer">
-        <InitFunctionRow {removeExtraFile} {opofiles} {felixfiles} normMethod={$normMethod} {theoryLocation}  bind:graphPlotted bind:show_theoryplot />
+        <InitFunctionRow {removeExtraFile} {felixfiles} normMethod={$normMethod} {theoryLocation}  bind:graphPlotted bind:show_theoryplot />
         <OPORow {removeExtraFile} bind:OPOLocation bind:OPOfilesChecked bind:opofiles  bind:graphPlotted />
 
         <TheoryRow bind:theoryLocation bind:show_theoryplot  normMethod={$normMethod}  />

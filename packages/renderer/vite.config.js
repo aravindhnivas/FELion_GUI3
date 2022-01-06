@@ -1,23 +1,20 @@
 /* eslint-env node */
 
-import {chrome} from '../../electron-vendors.config.json';
+import {chrome} from '../../.electron-vendors.cache.json';
 import {join} from 'path';
 import { builtinModules } from 'module';
-import {defineConfig} from 'vite';
 import { svelte } from '@sveltejs/vite-plugin-svelte'
-import {loadAndSetEnv} from '../../scripts/loadAndSetEnv.mjs';
 import autoPreprocess from 'svelte-preprocess';
+
 
 const PACKAGE_ROOT = __dirname;
 
-/**
- * Vite looks for `.env.[mode]` files only in `PACKAGE_ROOT` directory.
- * Therefore, you must manually load and set the environment variables from the root directory above
- */
-loadAndSetEnv(process.env.MODE, process.cwd());
 
-export default defineConfig({
+
+const config = {
+  mode: process.env.MODE,
   root: PACKAGE_ROOT,
+  // emptyOutDir: true,
   resolve: {
     alias: {
       '$src': join(PACKAGE_ROOT, 'src'),
@@ -27,11 +24,6 @@ export default defineConfig({
   },
   plugins: [svelte({preprocess: autoPreprocess()})],
   base: '',
-  server: {
-    fsServe: {
-      root: join(PACKAGE_ROOT, '../../'),
-    },
-  },
   build: {
     reportCompressedSize: false,
     chunkSizeWarningLimit: 2000,
@@ -39,13 +31,6 @@ export default defineConfig({
     target: `chrome${chrome}`,
     outDir: 'dist',
     assetsDir: '.',
-    terserOptions: {
-      ecma: 2020,
-      compress: {
-        passes: 2,
-      },
-      safari10: false,
-    },
     rollupOptions: {
       output: {
         manualChunks: {
@@ -62,6 +47,9 @@ export default defineConfig({
       ],
     },
     emptyOutDir: true,
+    brotliSize: false
   },
-});
+
+};
+export default config;
 

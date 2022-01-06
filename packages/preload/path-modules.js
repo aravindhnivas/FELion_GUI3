@@ -1,9 +1,9 @@
 
-const { contextBridge } = require('electron')
-const path = require("path")
+import { contextBridge } from 'electron'
+import path from "path"
 
-contextBridge.exposeInMainWorld("pathResolve", function() {return path.resolve(...arguments)})
-contextBridge.exposeInMainWorld("pathJoin", function() {return path.join(...arguments)})
-contextBridge.exposeInMainWorld("basename", function(file) {return path.basename(file)})
-contextBridge.exposeInMainWorld("extname", function(file) {return path.extname(file)})
-contextBridge.exposeInMainWorld("dirname", function(file) {return path.dirname(file)})
+contextBridge.exposeInMainWorld("pathResolve", path.resolve)
+contextBridge.exposeInMainWorld("pathJoin", path.join)
+contextBridge.exposeInMainWorld("basename", path.basename)
+contextBridge.exposeInMainWorld("extname", path.extname)
+contextBridge.exposeInMainWorld("dirname", path.dirname)

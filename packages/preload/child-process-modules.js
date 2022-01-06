@@ -1,7 +1,7 @@
 
-const { contextBridge } = require('electron')
-const {promisify} = require('util');
-const { spawn, exec } = require('child_process');
+import { contextBridge } from 'electron'
+import { promisify } from 'util'
+import { spawn, exec } from 'child_process'
 const execCommand = promisify(exec);
 
 contextBridge.exposeInMainWorld("spawn", (cmd, args=[], opts={})=>{

@@ -1,7 +1,7 @@
 
-const { BrowserWindow, dialog, app, ipcMain } = require('electron');
-const {autoUpdater} = require("electron-updater");
-const logger = require('electron-log');
+import { BrowserWindow, dialog, app, ipcMain } from 'electron'
+import {autoUpdater} from "electron-updater"
+import logger from 'electron-log'
 
 const mainWindow = BrowserWindow.getAllWindows()[0]
 

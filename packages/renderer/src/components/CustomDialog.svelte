@@ -1,24 +1,30 @@
 <script>
-    import Dialog, {Title, Content, Actions, InitialFocus} from '@smui/dialog';
+    
+	import Dialog, {Title, Content, Actions, InitialFocus} from '@smui/dialog';
     import Button, {Label} from '@smui/button';
-    import { createEventDispatcher } from 'svelte';
-    export let dialog="", id="dialog", label1="Yes", label2="Cancel", title="", content="";
-    const dispatch = createEventDispatcher();
-    function sendAction(e) { dispatch('response', { action: e.detail.action }); }
 
+	export let id="dialog"
+	export let title=""
+    export let open=false
+	export let content="";
+	export let label1="Yes"
+	export let label2="Cancel"
+	export let response="Yes"
+    
 </script>
 
 <Dialog
-  bind:this={dialog}
-
+  bind:open
   aria-labelledby="{id}-title"
   aria-describedby="{id}-content"
-  on:MDCDialog:closed={sendAction} >
+>
   
   <Title id="{id}-title">{title}</Title>
   <Content id="{id}-content"> {content} </Content>
+
   <Actions>
-    <Button action={label1}> <Label>{label1}</Label> </Button>
-    <Button action={label2} default use={[InitialFocus]}> <Label>{label2}</Label> </Button>
+    <Button action={label1} on:click={()=>(response=label1)}> <Label>{label1}</Label> </Button>
+    <Button action={label2} default use={[InitialFocus]} on:click={()=>(response=label2)}> <Label>{label2}</Label> </Button>
   </Actions>
+
 </Dialog>

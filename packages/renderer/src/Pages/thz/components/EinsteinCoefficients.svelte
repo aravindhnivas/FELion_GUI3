@@ -5,7 +5,7 @@
     import Textfield                        from '@smui/textfield';
     import {PlanksConstant, SpeedOfLight}   from "../functions/constants";
     import {computeStatisticalWeight}       from "../functions/balance_distribution";
-
+    import computePy_func                   from "$src/Pages/general/computePy"
     
     export let einsteinCoefficientA=[]
     export let einsteinCoefficientB=[]

@@ -1,36 +1,55 @@
 
 <script>
-  import {mainPreModal} from "../svelteWritable";
-  import { Snackbar } from 'svelma';
-  import Modal from './Modal.svelte';
-  
-  // export let $mainPreModal = {}
+	
+	import {onDestroy} from "svelte";
+	import {mainPreModal} from "../svelteWritable";
+	import FlatList from 'svelte-flatlist';
 
-  let active=false;
+	let active=false;
+	function openModal() {
+		active = true;
+		$mainPreModal.open = false;
+	}
 
-  function openModal() {
-    Snackbar.create({ 
+	$: if($mainPreModal.open) {openModal()}
+	$: console.log($mainPreModal)
+	let headerBackground="#836ac05c";
+	$: if(active) {
+		headerBackground = $mainPreModal.type === "danger" ? "#f14668" : "#836ac05c"
+	 }
 
-      message: $mainPreModal.message || "Error Occured", position:"is-top", type:`is-${$mainPreModal.type || "danger"}`, duration: 5000,
+	function handleKeydown(event) {
+		const key = event.key;
+		if(key === "Escape") {active=false; return }
+		const {ctrlKey, shiftKey} = event
+		if(ctrlKey && shiftKey) {
+			
+			if(key === "E") {
+				active = !active
+			}
+		}
+	}
 
-      actionText: $mainPreModal.actionText || "Show Details", onAction: ()=>{ active = true; }
-    
-    })
-
-    
-    $mainPreModal.open = false;
-    
-  }
-
-  $: if($mainPreModal.open) {openModal()}
-
-  $: console.log($mainPreModal)
-  let headerBackground="#836ac05c";
-  $: if(active) {headerBackground = $mainPreModal.type === "danger" ? "#f14668" : "#836ac05c" }
+	onDestroy(()=>active=false)
 </script>
 
+<svelte:window on:keydown={handleKeydown}/>
+
 {#if active}
-  <Modal bind:active title={$mainPreModal.modalTitle || "Error details"} bodyBackground="#634e96" {headerBackground} >
-    <div slot="content" style="color:#fafafa; white-space: pre-wrap; user-select:text;">{$mainPreModal.modalContent}</div>
-  </Modal>
+
+	<FlatList on:close={()=>{active=false}} bind:visible={active} 
+		style={{bgColor: '#eee', handle: {fgColor:'white', height: '2rem', bgColor: headerBackground}}}
+	>
+			<div class="contents">
+				<h1 style="text-align: center;">{$mainPreModal.type === "danger" ? "Error occured" : "Output"}</h1>
+				<hr>
+				<div style="user-select: text; white-space: pre;">{$mainPreModal.modalContent}</div>
+			</div>
+	</FlatList>
 {/if}
+
+<style lang="scss">
+	.contents {
+		* {color: black;}
+	}
+</style>

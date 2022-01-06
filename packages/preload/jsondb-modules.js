@@ -1,25 +1,20 @@
+import { contextBridge, ipcRenderer } from 'electron'
+import Store from 'electron-store'
 
-const { contextBridge, ipcRenderer } = require('electron')
-const path = require("path")
-
-const publicDirectory = path.join(
-    __dirname, "../renderer", 
-    isPackaged ? "dist" : "public"
-
-)
-
-const JSONdb = require(path.join(publicDirectory, "assets/js/JSONdb" ))
-
-
-const makeJSONdb = (file_location) => {
-    const db = new JSONdb(file_location)
-    return {
-        get(key){return db.get(key)},
-        set(key, value){return db.set(key, value)},
-        has(key){return db.has(key)},
-        delete(key){return db.delete(key)},
-        JSON: () => db.JSON()
-    }
-}
 contextBridge.exposeInMainWorld("appVersion", ipcRenderer.sendSync('appVersion', null))
-contextBridge.exposeInMainWorld("JSONdb", makeJSONdb)
+
+const store = new Store({name: "db"});
+contextBridge.exposeInMainWorld("db", {
+
+    get(key) { return store.get(key) },
+    set(key, value) { return store.set(key, value) },
+    delete(key) { return store.delete(key) },
+    store: store.store,
+
+    clear: store.clear,
+    reset: store.reset,
+    path: store.path,
+    onDidChange: (key, callback) => store.onDidChange(key, callback),
+    onDidAnyChange: (callback) => store.onDidAnyChange(callback),
+})
+

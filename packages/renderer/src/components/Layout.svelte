@@ -62,6 +62,7 @@
     
     onMount(()=>{ 
         console.log(id, "mounted")
+        currentLocation = db.get(`${filetype}_location`) || ""
     })
 
 

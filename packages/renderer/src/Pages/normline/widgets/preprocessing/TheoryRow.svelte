@@ -1,16 +1,31 @@
 
 <script>
-    import {toggleRow, felixopoLocation} from "../../functions/svelteWritables";
-    import CustomTextSwitch         from '$components/CustomTextSwitch.svelte'
-    import QuickBrowser from '$components/QuickBrowser.svelte';
-    import { fade } from 'svelte/transition';
-    import {theory_func} from '../../functions/theory';
-    import CustomSwitch from '$components/CustomSwitch.svelte';
-    export let theoryLocation, show_theoryplot, normMethod;
+    
+    import {toggleRow, felixopoLocation}    from "../../functions/svelteWritables";
+    import {theory_func}                    from '../../functions/theory';
+    import { fade }                         from 'svelte/transition';
+    import CustomTextSwitch                 from '$components/CustomTextSwitch.svelte'
+    import QuickBrowser                     from '$components/QuickBrowser.svelte';
+    import CustomSwitch                     from '$components/CustomSwitch.svelte';
+    import computePy_func                   from "$src/Pages/general/computePy"
+    
+    /////////////////////////////////////////////////////////////////////////
 
-    let sigma=7, scale=1, theoryfiles=[], tkplot=false;
-    let showTheoryFiles = false, theoryfilesChecked = []
-    $: if(fs.existsSync(theoryLocation)) { theoryfiles =theoryfilesChecked.map(file=>pathResolve(theoryLocation, file)) }
+    export let normMethod
+    export let theoryLocation
+    export let show_theoryplot
+
+
+    let sigma=7
+    let scale=1
+    let tkplot=false;
+    let theoryfiles=[]
+    let showTheoryFiles = false
+    let theoryfilesChecked = []
+
+    $: if(fs.existsSync(theoryLocation)) {
+        theoryfiles =theoryfilesChecked.map(file=>pathResolve(theoryLocation, file)) 
+    }
 
     function plotData(e=null){
         let pyfile="theory", args;
