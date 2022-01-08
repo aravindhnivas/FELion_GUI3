@@ -21,7 +21,7 @@ console.table(env)
 const ROOT_DIR = path.join(__dirname, "../../../")
 const PKG_DIR = path.join(ROOT_DIR, "packages")
 const RENDERER_DIR = path.join(PKG_DIR, "renderer")
-console.table({ __dirname, ROOT_DIR, PKG_DIR, RENDERER_DIR, env })
+console.table({ __dirname, ROOT_DIR, PKG_DIR, RENDERER_DIR })
 
 async function createWindow() {
 

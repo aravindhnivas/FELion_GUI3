@@ -63,7 +63,7 @@
                 dispatch_chdir_event()
 
                 if (filetype.length > 2) { db.set(`${filetype}_location`, currentLocation) }
-                if (toast) { window.createToast("Files updated"); }
+                // if (toast) { window.createToast("Files updated"); }
                 resolve(fullfiles)
             } catch (error) {
                 reject(error)

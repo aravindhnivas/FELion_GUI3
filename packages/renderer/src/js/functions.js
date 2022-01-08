@@ -34,7 +34,11 @@ window.createToast = (msg, type = "primary") => {
         }
     } else { theme = {} }
 
-    toast.push(msg, {theme})
+    const style = {
+        "--toastBarHeight": 0, 
+        "--toastBorderRadius":" 0.5rem"
+    }
+    toast.push(msg, {theme: {...theme, ...style}, duration: 1500, pausable: true})
 
 }
 window.sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));

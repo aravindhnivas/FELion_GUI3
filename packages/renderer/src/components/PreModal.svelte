@@ -19,12 +19,12 @@
 	 }
 
 	function handleKeydown(event) {
-		const key = event.key;
-		if(key === "Escape") {active=false; return }
+		const key = event.key.toLowerCase();
+		if(key === "escape") {active=false; return }
 		const {ctrlKey, shiftKey} = event
 		if(ctrlKey && shiftKey) {
 			
-			if(key === "E") {
+			if(key === "e") {
 				active = !active
 			}
 		}
