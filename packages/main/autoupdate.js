@@ -39,6 +39,6 @@ autoUpdater.on('update-downloaded', async (info) => {
      }
     const response = await showMessageBoxSync(mainWindow, restartArgs)
     if(response === 0) {
-        autoUpdater.quitAndInstall(isSilent=true, isForceRunAfter=true);
+        autoUpdater.quitAndInstall();
     }
 })
