@@ -15,27 +15,27 @@
     
     let extraWidgetModal = false, widgetType = ""
 
-    const widgetLocation = pathResolve(__dirname, "config")
+    // const widgetLocation = pathResolve(__dirname, "config")
 
 
     const widgetFile = "felixplotWidgets"
 
     function saveWidget(){ savefile({file:extraWidgetCollection, name:widgetFile, location:widgetLocation}) }
     
-    function loadExtraWidgets() { 
+    // function loadExtraWidgets() { 
 
-        const loadedContent = loadfile({name:widgetFile, location:widgetLocation})
+    //     const loadedContent = loadfile({name:widgetFile, location:widgetLocation})
 
-        if(!loadedContent) {
-            extraWidgetCollection = loadedContent
-            felixPlotWidgets.text = [...felixPlotWidgets.text, extraWidgetCollection.text]
-            felixPlotWidgets.number = [...felixPlotWidgets.number, extraWidgetCollection.number]
+    //     if(!loadedContent) {
+    //         extraWidgetCollection = loadedContent
+    //         felixPlotWidgets.text = [...felixPlotWidgets.text, extraWidgetCollection.text]
+    //         felixPlotWidgets.number = [...felixPlotWidgets.number, extraWidgetCollection.number]
 
-            felixPlotWidgets.boolean = [...felixPlotWidgets.boolean, extraWidgetCollection.boolean]
+    //         felixPlotWidgets.boolean = [...felixPlotWidgets.boolean, extraWidgetCollection.boolean]
         
-        }
+    //     }
     
-    }
+    // }
 
     const addExtraWidget = (event) => {  widgetType = event.detail.type; extraWidgetModal = true; }
 
@@ -58,7 +58,7 @@
 
     <Modal bind:active title="FELIX PLOTTING">
 
-        <div slot="content" style="height:40vh;" use:loadExtraWidgets>
+        <div slot="content" style="height:40vh;" >
 
             <FelixPlotWidgets bind:felixPlotWidgets on:addWidget={addExtraWidget} {theoryLocation}/>
 
