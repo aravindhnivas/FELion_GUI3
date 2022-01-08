@@ -4,7 +4,7 @@
     import Checkbox from '@smui/checkbox';
     import VirtualList from '@sveltejs/svelte-virtual-list';
 
-    export let items=[], fileChecked=[], height="500px", style="", markedFile="";
+    export let items=[], fileChecked=[], height="600px", style="", markedFile="";
 
 </script>
 
@@ -16,10 +16,6 @@
         <List checklist>
             <Item style="height:2.5em;">
                 <Label >
-
-
-
-
                     {#if markedFile == item.name}
                         <span class="tag is-warning">b</span>
                     {/if}

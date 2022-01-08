@@ -14,11 +14,9 @@
 	import Misc from "./Pages/Misc.svelte"
 	import PreModal from "$components/PreModal.svelte";
 	import {onMount, tick} from "svelte";
-	import { SvelteToast } from '@zerodevx/svelte-toast'
+	import {ToastContainer, FlatToast }  from "svelte-toasts";
 
 	let mounted=false;
-
-
 
 	onMount(async ()=>{
 		const allbuttons = Array.from(document.querySelectorAll(".button"))
@@ -32,8 +30,9 @@
 {#if $windowLoaded}
 	{#if mounted}
 		<PreModal />
-		<SvelteToast />
-
+		<ToastContainer placement="bottom-right" let:data={data}>
+			<FlatToast {data} />
+		</ToastContainer>
 	{/if}
 
 	<Navbar {navItems} />
@@ -47,18 +46,6 @@
 		<Misc />
 		<Settings />
 	</div>
+
 	<Footer />
 {/if}
-
-<!-- <style global lang="scss">
-	// css
-	@import 'cooltipz-css';
-	@import 'ldbutton/dist/ldbtn.css';
-	@import 'svelte-material-ui/bare.css';
-
-	// scss
-	@import './scss/smui-theme-variables.scss';
-	@import "./scss/materialTheme.scss";
-	@import "./scss/bulma-style.scss";
-	@import "./scss/styles.scss";
-</style> -->

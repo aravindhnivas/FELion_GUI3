@@ -172,19 +172,19 @@
         display: grid;
         grid-auto-flow: column;
         width: 100%;
+        
         height: calc(100vh - 6rem);
         grid-template-columns: auto 1fr;
-        column-gap: 3em;
+        column-gap: 2em;
 
         .left_container__div { 
             display: grid;
             grid-template-rows: auto auto auto 1fr;
-            gap: 1em;
-            justify-items: center;
+            width: 100%;
+            
         }
 
         .left_container__div, .right_container__div {
-
             max-height: calc(100vh - 6rem);
         }
         

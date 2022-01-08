@@ -75,7 +75,7 @@
     let opofiles = []
 
     $: $felixopoLocation = $opoMode ? OPOLocation : currentLocation
-    $: $opoMode ? window.createToast("OPO MODE", "warning") : window.createToast("FELIX MODE")
+    $: $opoMode ? window.createToast("OPO MODE") : window.createToast("FELIX MODE")
     $: $Ngauss_sigma = $opoMode ? 2 : 5
 
     let addFileModal=false
