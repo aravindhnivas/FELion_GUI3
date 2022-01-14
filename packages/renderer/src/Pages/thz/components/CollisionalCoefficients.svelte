@@ -2,6 +2,7 @@
 
     import Textfield                    from '@smui/textfield';
     import {find, cloneDeep}            from "lodash-es";
+    import { onMount }                  from 'svelte';
     import balance_distribution         from "../functions/balance_distribution";
     import CollisionalDistribution      from "../windows/CollisionalDistribution.svelte";
     import CollisionalRateConstantPlot  from "../windows/CollisionalRateConstantPlot.svelte";
@@ -72,8 +73,31 @@
     }
     
     $: if(collisionalFilename) updateFilename()
-    
     let OpenRateConstantsPlot = false;
+
+    const saveCollisionalRateConstants = () => {
+        fs.outputJsonSync(
+            collisionalCoefficientJSONFile, 
+            {collisionalCoefficient, collisionalCoefficient_balance}
+        
+        )
+        console.log("Saved: collisionalCoefficientJSONFile")
+    }
+
+    let collisionalCoefficientJSONFile = ""
+    onMount(()=> {
+
+        const configFile = db.get("ROSAA_config_file")
+        const configLocation = dirname(configFile)
+        console.log(configLocation)
+        collisionalCoefficientJSONFile = pathJoin(configLocation, "files", "collisionalCoefficients.json")
+        
+        if(fs.existsSync(collisionalCoefficientJSONFile)) {
+            console.log("loading collisionalCoefficientJSONFile");
+            ({collisionalCoefficient, collisionalCoefficient_balance} = fs.readJsonSync(collisionalCoefficientJSONFile));
+        }
+    })
+
 </script>
 
 <CollisionalDistribution {...collisionalArgs} bind:active={collisionalWindow} />
@@ -96,7 +120,8 @@
             <button class="button is-link"  on:click={browse_collisional_file}>Browse</button>
             <Textfield bind:value={collisionalFileBasename} label="collisionalFilename" disabled />
             <Textfield bind:value={collisionalTemp} label="collisionalTemp"/>
-            <button class="button is-link" on:click={()=>OpenRateConstantsPlot=true}>Compute</button>
+            <button class="button is-link" on:click={()=>OpenRateConstantsPlot=true}>Compute rate constants</button>
+            <button class="button is-link" on:click={saveCollisionalRateConstants}>Save</button>
         </div>
 
     </div>

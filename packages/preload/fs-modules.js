@@ -26,7 +26,7 @@ contextBridge.exposeInMainWorld("fs", {
     writeFileSync: (path, data) => fs.writeFileSync(path, data.toString("utf-8") ),
     removeSync: (remove) => fs.removeSync(remove),
     readJsonSync: (jsonFile) => fs.readJsonSync(jsonFile),
-    outputJsonSync: (file, obj) => fs.outputJsonSync(file, obj),
+    outputJsonSync: (file, obj, options={spaces: 2}) => fs.outputJsonSync(file, obj, options),
 
     writeFile:  (filename, contents, callback)=>fs.writeFile(filename, contents, "utf8", callback),
     readdir: promisify(fs.readdir),
