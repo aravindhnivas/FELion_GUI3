@@ -1,53 +1,29 @@
 
 <script>
+
     import Textfield from '@smui/textfield';
     import {cloneDeep} from "lodash-es"
-    export let k3={constant:[], rate:[]}, kCID={constant:[], rate:[]}, attachmentCoefficients=[];
+
     export let numberDensity;
+    export let attachmentCoefficients=[]
+    export let k3={constant:[], rate:[]}
+    export let kCID={constant:[], rate:[]}
 
-    const setID = (obj) => {
-
-        obj.id = getID();
-        return obj
-    }
-
-
-    const correctObjValue = (obj) => {
-        obj.value = obj.value.toFixed(3)
-        return obj
-
-    }
-    
-    
     const computeAttachmentRate = () => {
-        k3.rate = cloneDeep(k3.constant).map((rate) => {rate.value *= numberDensity**2; return rate }).map(setID).map(correctObjValue);
-        kCID.rate = cloneDeep(kCID.constant).map((rate) => {rate.value *= numberDensity; return rate }).map(setID).map(correctObjValue);
+
+        k3.rate = cloneDeep(k3.constant).map(
+            (rate) => ({...rate, value: Number(rate.value*numberDensity**2).toFixed(3), id:getID() })
+        );
+    
+        kCID.rate = cloneDeep(kCID.constant).map(
+            (rate) => ({...rate, value: Number(rate.value*numberDensity).toFixed(3), id:getID() })
+        );
     }
-    $: if(numberDensity) computeAttachmentRate()
+    $: if(numberDensity) {
+        computeAttachmentRate()
+    }
 
 </script>
-
-<style lang="scss">
-    .sub_container__div {
-        display: grid;
-        grid-row-gap: 1em;
-        .subtitle {place-self:center;}
-
-        .content__div {
-            max-height: 30rem;
-
-            overflow-y: auto;
-            display: flex;
-            flex-wrap: wrap;
-            justify-self: center; // grow from center (width is auto adjusted)
-            gap: 1em;
-            justify-content: center; // align items center
-        }
-        
-    }
-
-    hr {background-color: #fafafa; margin: 0;}
-</style>
 
 <div class="sub_container__div box">
 
@@ -103,3 +79,26 @@
     </div>
 
 </div>
+
+
+<style lang="scss">
+    .sub_container__div {
+        display: grid;
+        grid-row-gap: 1em;
+        .subtitle {place-self:center;}
+
+        .content__div {
+            max-height: 30rem;
+
+            overflow-y: auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-self: center; // grow from center (width is auto adjusted)
+            gap: 1em;
+            justify-content: center; // align items center
+        }
+        
+    }
+
+    hr {background-color: #fafafa; margin: 0;}
+</style>

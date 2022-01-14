@@ -156,10 +156,8 @@
         try {
             
             if(fs.existsSync(configFile)) return setConfig();
-        
             const congFilePath = await browse({dir:false, multiple:false})
             if (!congFilePath) return window.createToast("No files selected", "danger");
-
             configFile = congFilePath[0]
             db.set("ROSAA_config_file", configFile)
             setConfig()
@@ -209,11 +207,11 @@
         else { transitionFrequencyInHz     = transitionFrequency*1e6 }
         updateDoppler()
     }
+    
 
     const updateDoppler = () => {
 
         console.log("Changing doppler parameters");
-        
         [ionMass, RGmass, ionTemp, trapTemp] = dopplerLineshape.map(f=>f.value);
         collisionalTemp = Number((RGmass*ionTemp + ionMass*trapTemp)/(ionMass+RGmass)).toFixed(1);
         const sqrtTerm  = 8*boltzmanConstant*Math.log(2) / (ionMass*amuToKG*SpeedOfLight**2)
@@ -237,12 +235,12 @@
     }
 
     async function setConfig() {
+
         try {
 
             const configFileLocation = dirname(configFile);
-            
-            
             const CONFIG = Yml(fs.readFileSync(configFile));
+            
             console.table(CONFIG)
 
             let attachmentRateConstants = {};
@@ -264,6 +262,7 @@
             attachmentCoefficients  = attachmentCoefficients.map(setID);
             k3.constant             = attachmentRateConstants.k3.map(setID).map(correctObjValue);
             kCID.constant           = attachmentRateConstants.kCID.map(setID).map(correctObjValue);
+            
             ({
                 trapTemp,
                 zeemanSplit,
@@ -315,7 +314,6 @@
     bind:active={openBoltzmanWindow} 
     bind:graphWindow={boltzmanWindow} 
 />
-
 <SeparateWindow id="ROSAA__modal" title="ROSAA modal" bind:active>
 
     <svelte:fragment slot="header_content__slot" >
@@ -477,7 +475,7 @@
                 {energyLevels}
                 />
 
-            {#if includeCollision}
+            <!-- {#if includeCollision} -->
                 <CollisionalCoefficients
                     bind:numberDensity
                     bind:collisionalRates
@@ -491,7 +489,7 @@
                     {collisionalFilename}
                 />
                 
-            {/if}
+            <!-- {/if} -->
             
             {#if includeAttachmentRate}
                 <AttachmentCoefficients
@@ -530,7 +528,6 @@
     </svelte:fragment>
 
 </SeparateWindow>
-
 
 <style lang="scss">
 

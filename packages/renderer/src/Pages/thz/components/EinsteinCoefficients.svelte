@@ -61,7 +61,6 @@
         const lineshape = eta * computeLorrentz(x, gamma) + (1 - eta) * computeGaussian(x, sigma)
         return lineshape
     }
-
     $: voigtline = computePseudoVoigt(0, gaussian*1e6, lorrentz*1e6).toExponential(2)
     $: computeRates(voigtline)
 
@@ -89,6 +88,7 @@
     }
 
     $: if(einsteinCoefficientA) computeEinsteinB();
+    
 
 </script>
 

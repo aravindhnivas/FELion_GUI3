@@ -54,7 +54,6 @@
             const label = `${i} --> ${j}`
 
             const currentRequiredRateData = currentRate.slice(2, 2+givenTemperature.length).map(r =>parseFloat(r))
-
             const addData = {
                 x: givenTemperature,
                 y: currentRequiredRateData,
@@ -62,7 +61,6 @@
             }
             originalRateConstants = [...originalRateConstants, addData]
         });
-
         rescaleData()
         return
     }
@@ -91,6 +89,7 @@
             return {name, x, y: newY, mode: "markers", line: {color: `rgb${colors[i]}`}, legendgroup: `group${i}` }
         })
         react("rateConstantsPlot", dataToPlot, layout)
+
     }
 
     const fitDataFunction = () => {
@@ -134,7 +133,9 @@
         react("rateConstantsPlot", [...dataToPlot, ...fitData], layout)
 
     }
+
 </script>
+
 
 <SeparateWindow title="rateConstantsPlot" bind:active
     bind:windowReady
@@ -149,11 +150,11 @@
                 on:keyup = { ({key}) => {if(key=="Enter"){rescaleData()} } } />
             <Textfield bind:value={polyOrder} label="polyOrder" input$type="number" 
                 on:keyup = { ({key}) => {if(key=="Enter"){fitDataFunction()} } }/>
-
             <Textfield bind:value={tempIndex} label="Temperature Index"/>
         
             <button class="button is-link" on:click={readCollisionalDataFromFile} >Read data</button>
             <button class="button is-link" on:click={rescaleData} >Rescale Data</button>
+            
             <Textfield bind:value={collisionalTemp} label="collisionalTemp" />
             <button class="button is-link" on:click="{fitDataFunction}">Fit Data</button>
             
@@ -162,6 +163,7 @@
     </svelte:fragment>
 
     <svelte:fragment slot="main_content__slot">
+        
         <div id="rateConstantsPlot"></div>
     </svelte:fragment>
 </SeparateWindow>

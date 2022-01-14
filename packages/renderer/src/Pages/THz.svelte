@@ -70,24 +70,21 @@
     let ROSAA_modal_active = false;
 
 </script>
-<style>
 
-</style>
 <ROSAA bind:active={ROSAA_modal_active}  />
 <Layout  {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked>
 
     <svelte:fragment slot="buttonContainer">
         <div class="align v-center">
-            <button class="{btnClass}" on:click="{()=>{ROSAA_modal_active=true}}">ROSAA</button>
             <button class="{btnClass}" on:click="{(e)=>{plotData({e:e, justPlot:true})}}">Plot</button>
             <CustomCheckbox bind:selected={binData} label="Bin" />
             <CustomCheckbox bind:selected={saveInMHz} label="saveInMHz" />
-
             <button class="{btnClass}" on:click="{(e)=>{plotData({e:e})}}">Fit</button>
             <button class="{btnClass}" on:click="{(e)=>plotData({e:e, tkplot:true})}">Open in Matplotlib</button>
             <CustomIconSwitch style="padding:0;" bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
             <Textfield type="number" bind:value={delta} label="Delta" input$step="0.1" />
             <Textfield type="number" bind:value={gamma} label="Gamma" input$step="0.1" />
+            <button class="{btnClass}" on:click="{()=>{ROSAA_modal_active=true}}">ROSAA mode</button>
 
         </div>
 
