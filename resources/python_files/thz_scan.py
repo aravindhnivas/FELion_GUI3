@@ -219,7 +219,7 @@ def plot_thz(ax=None, save_dat=True, latex=False):
     freq_fit_err = uline_freq.std_dev*1e7
 
     if save_dat:
-        with open(f"./averaged_thz.dat", "w") as f:
+        with open(f"./OUT/averaged_thz_fit.dat", "w") as f:
             f.write("#Frequency(in MHz)\t#Intensity\n")
             for freq, inten in zip(binx, fit_data): f.write(f"{freq*1e3}\t{inten}\n")
 
@@ -340,6 +340,7 @@ def thz_function():
 
     if tkplot:
         widget = FELion_Tk(title="THz Scan", location=filenames[0].parent)
+
         fig, canvas = widget.Figure(default_save_widget=False)
         widget.save_fmt = widget.Entries("Entry", "png", 0.1, 0.05*9+0.02)
 
@@ -354,21 +355,18 @@ def thz_function():
 
         
     else: 
-
         dataToSend = plot_thz()
-        # sendData(data)
         sendData(dataToSend, calling_file=pt(__file__).stem)
+
 
 args = None
 tkplot, filenames = None, None
-def main(arguments):
 
+def main(arguments):
     global args, tkplot, filenames
     args = arguments
-    # args = sys.argv[1:][0].split(",")
-    # args = json.loads(sys.argv[1])
     print(args, flush=True)
-
     tkplot = args["tkplot"]
     filenames = [pt(i) for i in args["thzfiles"]]
     thz_function()
+    
