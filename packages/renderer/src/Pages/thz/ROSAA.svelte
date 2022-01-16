@@ -453,8 +453,8 @@
 
                 <div class="subtitle">Doppler lineshape</div>
                 <div class="content__div ">
-                    {#each dopplerLineshape as {label, value, step, id}(id)}
-                        <CustomTextSwitch style="width:9em" {step} bind:value {label} />
+                    {#each dopplerLineshape as {label, value, id}(id)}
+                        <CustomTextSwitch step={0.5} bind:value {label} />
                     {/each}
 
                     <Textfield bind:value={collisionalTemp} label="collisionalTemp(K)" />
