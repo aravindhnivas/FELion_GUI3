@@ -51,8 +51,11 @@
         catch (error) {console.log("No graph in this window")}
     }
     onDestroy(()=>{
-        console.log("Window closed")
-        graphWindow?.close()
+        try {
+            console.log("Window closed")
+            graphWindow?.close()
+        } catch (error) {console.warn("Couldn't close the window", error)}
+        
     })
 </script>
 
