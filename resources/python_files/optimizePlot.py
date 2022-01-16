@@ -1,8 +1,8 @@
 
 import matplotlib.ticker as plticker
 
-def optimizePlot(ax, xlabel, ylabel, yscale="linear", fmt=False, fmtString="{x:.1f}", Nlocator=5):
-    ax.set(yscale=yscale)
+def optimizePlot(ax, xlabel, ylabel, title="", yscale="linear", fmt=False, fmtString="{x:.1f}", Nlocator=5):
+    ax.set(yscale=yscale, title=title)
     ax.set_xlabel(xlabel, fontsize=16)
     ax.set_ylabel(ylabel, fontsize=16)
 

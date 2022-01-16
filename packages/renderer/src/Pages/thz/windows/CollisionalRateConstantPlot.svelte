@@ -1,14 +1,14 @@
 <script>
-
     import {polynomial}     from 'regression';
     import Textfield        from '@smui/textfield';
     import SeparateWindow   from "$components/SeparateWindow.svelte";
     import colors           from "$computeCode/colors";
     import {react}          from 'plotly.js/dist/plotly-basic';
+    import CustomCheckbox   from "$components/CustomCheckbox.svelte";
 
     export let active=false;
     export let collisionalTemp=7;
-    export let collisionalFilename=[];
+    export let collisionalFilename="";
     export let collisionalCoefficient=[];
 
     let graphWindow=null
@@ -134,6 +134,13 @@
 
     }
 
+    
+    let autoCompute = false;
+
+    $: if(collisionalTemp && autoCompute) {
+        readCollisionalDataFromFile(); fitDataFunction();
+    }
+
 </script>
 
 
@@ -151,13 +158,12 @@
             <Textfield bind:value={polyOrder} label="polyOrder" input$type="number" 
                 on:keyup = { ({key}) => {if(key=="Enter"){fitDataFunction()} } }/>
             <Textfield bind:value={tempIndex} label="Temperature Index"/>
-        
             <button class="button is-link" on:click={readCollisionalDataFromFile} >Read data</button>
             <button class="button is-link" on:click={rescaleData} >Rescale Data</button>
-            
             <Textfield bind:value={collisionalTemp} label="collisionalTemp" />
             <button class="button is-link" on:click="{fitDataFunction}">Fit Data</button>
-            
+            <CustomCheckbox bind:selected={autoCompute} label="autoCompute" />
+
         </div>
 
     </svelte:fragment>

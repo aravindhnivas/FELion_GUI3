@@ -280,19 +280,24 @@
                 collision:collisionalFilename
             }                           = CONFIG.filenames);
 
-            energyFilename      = window.pathJoin(configFileLocation, energyFilename);
-            einsteinFilename    = window.pathJoin(configFileLocation, einsteinFilename);
-            collisionalFilename = window.pathJoin(configFileLocation, collisionalFilename);
+            energyFilename      = energyFilename ? window.pathJoin(configFileLocation, energyFilename) : "";
+            einsteinFilename    = einsteinFilename ? window.pathJoin(configFileLocation, einsteinFilename): "";
+            collisionalFilename = collisionalFilename ? window.pathJoin(configFileLocation, collisionalFilename) : "";
 
-            ({levels:energyLevels, unit:energyUnit} = await getYMLFileContents(energyFilename));
+            if(energyFilename) {
+                ({levels:energyLevels, unit:energyUnit} = await getYMLFileContents(energyFilename));
+            }
 
             energyLevels        = energyLevels.map(setID);
             numberOfLevels      = energyLevels.length;
             excitedFrom = energyLevels?.[0].label;
             excitedTo = energyLevels?.[1].label;
 
-            ({rateConstants:einsteinCoefficientA}   = await getYMLFileContents(einsteinFilename));
-            einsteinCoefficientA                    = einsteinCoefficientA.map(setID).map(correctObjValue);
+            if(einsteinFilename) {
+                ({rateConstants:einsteinCoefficientA}   = await getYMLFileContents(einsteinFilename));
+                einsteinCoefficientA                    = einsteinCoefficientA.map(setID).map(correctObjValue);
+            }
+
 
             window.createToast("CONFIG loaded");
             console.log({energyLevels, collisionalCoefficient, einsteinCoefficientA});
@@ -313,7 +318,7 @@
 
 
     let simulationMethod = "Normal"
-    const simulationMethods = ["Normal", "FixedPopulation"]
+    const simulationMethods = ["Normal", "FixedPopulation", "withoutCollisionalConstants"]
 
 
 </script>
@@ -447,11 +452,11 @@
                 <div class="subtitle">Doppler lineshape</div>
                 <div class="content__div ">
                     {#each dopplerLineshape as {label, value, type, step, id}(id)}
-                        <Textfield bind:value {label} input$type={type} input$step={step}/>
+                        <Textfield bind:value {label} {type} input$step={step} />
                     {/each}
 
                     <Textfield bind:value={collisionalTemp} label="collisionalTemp(K)" />
-                    <Textfield bind:value={gaussian}        label="gaussian - FWHM (MHz)"      />
+                    <Textfield bind:value={gaussian}        label="gaussian - FWHM (MHz)" />
                 </div>
             </div>
             
@@ -512,7 +517,7 @@
     </svelte:fragment>
 
     <svelte:fragment slot="footer_content__slot">
-        <CustomSelect options={simulationMethods} bind:picked={simulationMethod} label="simulationMethod"/>
+        
         {#if pyProcesses.length>0}
 
             <div>Running: {pyProcesses.length} {pyProcesses.length>1 ? "simulations" : "simulation"}</div>
@@ -520,6 +525,9 @@
                 on:click="{()=>{pyProcesses.at(-1).kill(); pyProcesses.pop()}}" >Stop</button>
         
         {/if}
+
+        <CustomSelect options={simulationMethods} bind:picked={simulationMethod} label="simulationMethod"/>
+
 
         {#if showreport}
             <button  class="button is-warning" on:click="{()=>{statusReport = ""}}" >Clear</button>

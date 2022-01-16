@@ -1,26 +1,35 @@
 
-import json, pprint, time
+import json
+import time
 import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path as pt
 from scipy.integrate import solve_ivp
-from functools import reduce
-
 from ROSAA_func import boltzman_distribution
+
 from optimizePlot import optimizePlot
 from FELion_constants import pltColors
-def log(msg): return print(msg, flush=True)
 
-logCounter = 5
+
+def log(msg): 
+    return print(msg, flush=True)
+
+speedOfLight = 299792458
+speedOfLightIn_cm = speedOfLight*100
+
+
 class ROSAA:
 
     def __init__(self):
 
-        self.energyLevels = {key: float(value) for key, value in conditions["energy_levels"].items()}
+        self.energyUnit = conditions["energyUnit"]
+        convertNorm_to_wn = 1e6/speedOfLightIn_cm if self.energyUnit == "MHz" else 1
+        self.energyLevels = {key: float(value)*convertNorm_to_wn for key, value in conditions["energy_levels"].items()}
+            
         self.energyKeys = list(self.energyLevels.keys())
         self.lineshape_conditions = conditions["lineshape_conditions"]
         self.collisionalTemp = float(conditions["collisionalTemp"])
-        
+
         self.collisionalRateConstants = {key: float(value) for key, value in conditions["collisional_rates"].items()}
         self.includeSpontaneousEmission = conditions["includeSpontaneousEmission"]
         self.includeCollision = conditions["includeCollision"]
@@ -37,40 +46,36 @@ class ROSAA:
         variable = conditions["variable"]
         variableRange = conditions["variableRange"]
         self.writeFile = conditions["writefile"]
+
+        self.electronSpin = conditions["electronSpin"]
+        self.zeemanSplit = conditions["zeemanSplit"]
+
+        self.simulation_parameters = conditions["simulation_parameters"]
+        initialTemp = float(self.simulation_parameters["Initial temperature (K)"])
+
+        self.boltzmanDistribution = boltzman_distribution( self.energyLevels, initialTemp, self.electronSpin, self.zeemanSplit )
+        self.boltzmanDistributionCold = boltzman_distribution( self.energyLevels, self.collisionalTemp, self.electronSpin, self.zeemanSplit )
+        
         
         if variable == "time":
+        
             nHe = float(conditions["numberDensity"])
 
             self.molecule = conditions["main_parameters"]["molecule"]
             self.taggingPartner = conditions["main_parameters"]["tagging partner"]
             self.GetAttachmentRatesParameters()
+
             self.legends = [f"${self.molecule}$ ({key.strip()})" for key in self.energyKeys]
             if self.includeAttachmentRate:
                 self.legends += [f"${self.molecule}${self.taggingPartner}"]
                 self.legends += [f"${self.molecule}${self.taggingPartner}$_{i+1}$" for i in range(1, self.totalAttachmentLevels)]
 
             self.fixedPopulation = conditions["simulationMethod"] == "FixedPopulation"
-            # self.fixedPopulation = True
-            
-            if self.fixedPopulation:
-                self.includeAttachmentRate = False
-                t_limit = 0.001
 
-                self.Simulate(nHe, duration=t_limit )
-                ratio = self.lightON_distribution.T[-1]
-
-                self.includeCollision = False
-                self.includeAttachmentRate = True
-                self.Simulate(nHe, t0=t_limit, ratio=ratio)
-
-                
-                
-                ON_fixedPopulation_arr = np.array([ratio*(1-np.sum(NHE)) for NHE in self.lightON_distribution.T]).T
-                self.lightON_distribution = np.array(ON_fixedPopulation_arr.tolist()+self.lightON_distribution.tolist())
-
-                OFF_fixedPopulation_arr = np.array([self.boltzmanDistributionCold*(1-np.sum(NHE)) for NHE in self.lightOFF_distribution.T]).T
-                self.lightOFF_distribution = np.array(OFF_fixedPopulation_arr.tolist()+self.lightOFF_distribution.tolist())
-
+            self.withoutCollisionalConstants = conditions["simulationMethod"] == "withoutCollisionalConstants"
+            if self.fixedPopulation or self.withoutCollisionalConstants:
+                self.simulateFixedPopulation(nHe)
+                log(f"{self.boltzmanDistributionCold=}")
             else:
                 self.Simulate(nHe)
 
@@ -119,6 +124,48 @@ class ROSAA:
             ax = optimizePlot(ax, xlabel="number Density ($cm^{-3}$)", ylabel="Signal (%)")
             ax.set_xscale("log")
             plt.show()
+
+    def simulateFixedPopulation(self, nHe):
+        self.includeAttachmentRate = False
+        t_limit = 0.001
+
+        if self.withoutCollisionalConstants:
+            ratio = self.simulate_without_CollisionConstants()
+        else:
+            self.Simulate(nHe, duration=t_limit)
+            ratio = self.lightON_distribution.T[-1]
+
+        self.includeCollision = False
+        self.includeAttachmentRate = True
+        self.Simulate(nHe, t0=t_limit, ratio=ratio)
+        
+        ON_fixedPopulation_arr = np.array([ratio*(1-np.sum(NHE)) for NHE in self.lightON_distribution.T]).T
+        self.lightON_distribution = np.array(ON_fixedPopulation_arr.tolist()+self.lightON_distribution.tolist())
+
+        OFF_fixedPopulation_arr = np.array([self.boltzmanDistributionCold*(1-np.sum(NHE)) for NHE in self.lightOFF_distribution.T]).T
+        self.lightOFF_distribution = np.array(OFF_fixedPopulation_arr.tolist()+self.lightOFF_distribution.tolist())
+
+    def simulate_without_CollisionConstants(self):
+        N = {key: value for key, value in zip(self.energyKeys, self.boltzmanDistributionCold)}
+        if not self.zeemanSplit:
+            if self.electronSpin:
+                j0 = float(self.excitedFrom.split("_")[1])
+                j1 = float(self.excitedTo.split("_")[1])
+            else:
+                j0 = int(self.excitedFrom)
+                j1 = int(self.excitedTo)
+        
+            G0 = int(2*j0+1)
+            G1 = int(2*j1+1)
+        else:
+            G0 = G1 = 1
+        
+        twoLeveltotal = N[self.excitedFrom] + N[self.excitedTo]
+        norm = G0 + G1
+        N[self.excitedFrom] = (G0/norm)*twoLeveltotal
+        N[self.excitedTo] = (G1/norm)*twoLeveltotal
+
+        return np.array(list(N.values()), dtype=float)
 
     def SimulateODE(self, t, counts, nHe, lightON, ratio):
         global logCounter
@@ -209,6 +256,7 @@ class ROSAA:
         else:
             return dR_dt
 
+    
     def GetAttachmentRatesParameters(self):
 
         self.attachment_rate_coefficients = conditions["attachment_rate_coefficients"]
@@ -225,9 +273,8 @@ class ROSAA:
         self.totalAttachmentLevels = int(self.attachment_rate_coefficients["totalAttachmentLevels"])
         self.includeAttachmentRate = conditions["includeAttachmentRate"]
     
+    
     def Simulate(self, nHe, duration=None, t0=0, ratio=[]):
-
-        self.simulation_parameters = conditions["simulation_parameters"]
 
         if not duration:
             duration = self.simulation_parameters["Simulation time(ms)"]
@@ -237,13 +284,6 @@ class ROSAA:
         if duration <= t0:
             duration = t0*5
         tspan = [t0, duration]
-
-        self.electronSpin = conditions["electronSpin"]
-        self.zeemanSplit = conditions["zeemanSplit"]
-        initialTemp = float(self.simulation_parameters["Initial temperature (K)"])
-
-        self.boltzmanDistribution = boltzman_distribution( self.energyLevels, initialTemp, self.electronSpin, self.zeemanSplit )
-        self.boltzmanDistributionCold = boltzman_distribution( self.energyLevels, self.collisionalTemp, self.electronSpin, self.zeemanSplit )
 
         totalSteps = int(self.simulation_parameters["Total steps"])
         self.simulateTime = np.linspace(t0, duration, totalSteps)
@@ -281,10 +321,10 @@ class ROSAA:
         # plt.plot(ON_full_ratio)
 
         dataToSend = {
-            "legends":self.legends,
-            "time (in s)":self.simulateTime.tolist(),
-            "lightON_distribution":self.lightON_distribution.tolist(),
-            "lightOFF_distribution":self.lightOFF_distribution.tolist()
+            "legends": self.legends,
+            "time (in s)": self.simulateTime.tolist(),
+            "lightON_distribution": self.lightON_distribution.tolist(),
+            "lightOFF_distribution": self.lightOFF_distribution.tolist()
         }
         if self.writeFile:
             self.WriteData("full", dataToSend)
@@ -294,9 +334,10 @@ class ROSAA:
         log(f"Current simulation time {(end_time - start_time):.2f} s")
         log(f"Total simulation time {(end_time - self.start_time):.2f} s")
         
+    
     def Plot(self):
 
-        fig, ax = plt.subplots(figsize=(10, 6), dpi=100)
+        fig, ax = plt.subplots(figsize=(10, 6), dpi=150)
         simulationTime = self.simulateTime.T*1e3
 
         counter = 0
@@ -322,12 +363,14 @@ class ROSAA:
             signal = np.around(np.nan_to_num(signal).clip(min=0), 1)
             log(f"{signal=}")
 
-            fig1, ax1 = plt.subplots(figsize=(10, 6), dpi=100)
-            ax1.plot(simulationTime[1:], signal, label=f"Signal: {signal[-1]} (%)")
-            ax1 = optimizePlot(ax1, xlabel="Time (ms)", ylabel="Signal (%)")
+            fig1, ax1 = plt.subplots(figsize=(10, 6), dpi=150)
+            ax1.plot(simulationTime[1:], signal, label=f"Signal: {round(signal[-1])} (%)")
+            ax1 = optimizePlot(ax1, xlabel="Time (ms)", ylabel="Signal (%)", title=f"${self.molecule}$: {self.excitedFrom} - {self.excitedTo}")
+            ax1.set()
             ax1.legend()
         plt.show()
 
+    
     def WriteData(self, name, dataToSend):
         location = pt(conditions["currentLocation"])
         savefilename = conditions["savefilename"]
@@ -340,11 +383,9 @@ class ROSAA:
             f.write(data)
             log(f"{savefilename} file written in {location} folder.")
 
-
 conditions = None
 def main(arguments):
-
     global conditions
     conditions = arguments
-    ROSAA()
 
+    ROSAA()
