@@ -308,6 +308,9 @@
     let boltzmanWindow;
     let openBoltzmanWindow = false;
 
+    $: voigtFWHM = Number(0.5346 * lorrentz + Math.sqrt(0.2166*lorrentz**2 + gaussian**2)).toFixed(3)
+
+
 </script>
 
 <BoltzmanDistribution {...boltzmanArgs}
@@ -358,18 +361,19 @@
 
         <!-- Main Parameters -->
         <div class="main_container__div" class:hide={showreport}>
-            <div class="sub_container__div box">
 
+            <div class="sub_container__div box">
                 <div class="subtitle">Main Parameters</div>
+
                 <div class="content__div ">
                     {#each mainParameters as {label, value, id}(id)}
                         <Textfield bind:value {label}/>
                     {/each}
                 </div>
-
             </div>
 
             <!-- Energy levels -->
+
             <div class="sub_container__div box" >
                 <div class="subtitle">Energy levels</div>
                 <div class="control__div ">
@@ -432,6 +436,7 @@
             </div>
 
             <!-- Doppler lineshape -->
+            
             <div class="sub_container__div box">
 
                 <div class="subtitle">Doppler lineshape</div>
@@ -441,22 +446,19 @@
                     {/each}
 
                     <Textfield bind:value={collisionalTemp} label="collisionalTemp(K)" />
-                    <Textfield bind:value={gaussian}        label="gaussian(MHz)"      />
+                    <Textfield bind:value={gaussian}        label="gaussian - FWHM (MHz)"      />
                 </div>
             </div>
             
             <!-- Lorrentz lineshape -->
             <div class="sub_container__div box">
-
                 <div class="subtitle">Lorrentz lineshape</div>
-                
                 <div class="content__div ">
-                
                     {#each powerBroadening as {label, value, id}(id)}
                         <Textfield bind:value {label} />
                     {/each}
-                    <Textfield bind:value={lorrentz} label="lorrentz(MHz)" />
-                
+                    <Textfield bind:value={lorrentz} label="lorrentz - FWHM (MHz)" />
+                    <Textfield value={voigtFWHM} label="Voigt - FWHM (MHz)" disabled />
                 </div>
 
             </div>
@@ -491,14 +493,14 @@
                 
             <!-- {/if} -->
             
-            {#if includeAttachmentRate}
+            <!-- {#if includeAttachmentRate} -->
                 <AttachmentCoefficients
                     bind:k3
                     bind:kCID
                     bind:numberDensity 
                     bind:attachmentCoefficients
                 />
-            {/if}
+            <!-- {/if} -->
             
         </div>
 
