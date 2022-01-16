@@ -49,8 +49,33 @@ class ROSAA:
                 self.legends += [f"${self.molecule}${self.taggingPartner}"]
                 self.legends += [f"${self.molecule}${self.taggingPartner}$_{i+1}$" for i in range(1, self.totalAttachmentLevels)]
 
-            self.Simulate(nHe)
+            self.fixedPopulation = False
+            self.fixedPopulation = True
+            
+            if self.fixedPopulation:
 
+                self.includeAttachmentRate = False
+
+                t_limit = 0.001
+                self.Simulate(nHe, duration=t_limit )
+                ratio = self.lightON_distribution.T[-1]
+                log(f"{np.around(ratio, 4)=}")
+
+                self.includeCollision = False
+                self.includeAttachmentRate = True
+                self.Simulate(nHe, t0=t_limit, ratio=ratio)
+
+                # ON_ratio = ratio/ratio.sum()
+                ON_fixedPopulation_arr = np.array([ratio*(1-np.sum(NHE)) for NHE in self.lightON_distribution.T]).T
+                self.lightON_distribution = np.array(ON_fixedPopulation_arr.tolist()+self.lightON_distribution.tolist())
+
+                OFF_fixedPopulation_arr = np.array([self.boltzmanDistributionCold*(1-np.sum(NHE)) for NHE in self.lightOFF_distribution.T]).T
+                
+                self.lightOFF_distribution = np.array(OFF_fixedPopulation_arr.tolist()+self.lightOFF_distribution.tolist())
+                log(f"{OFF_fixedPopulation_arr.shape=}\n{self.lightOFF_distribution.shape=}")
+
+            else:
+                self.Simulate(nHe)
             self.Plot()
         
         elif variable == "He density(cm3)":
@@ -97,7 +122,7 @@ class ROSAA:
             ax.set_xscale("log")
             plt.show()
 
-    def SimulateODE(self, t, counts, nHe):
+    def SimulateODE(self, t, counts, nHe, lightON, ratio):
         global logCounter
         
         if self.includeAttachmentRate and self.includeCollision:
@@ -105,79 +130,84 @@ class ROSAA:
             N_He = counts[-self.totalAttachmentLevels:]
         elif self.includeCollision: N = counts
         else: 
-            N = self.N
+            # N = ratio
             N_He = counts
 
-        dR_dt = []
-        # if self.includeCollision:
+        if self.includeCollision: 
+            dR_dt = []
 
-        N = {key: value for key, value in zip(self.energyKeys, N)}
+            N = {key: value for key, value in zip(self.energyKeys, N)}
 
-        for i in self.energyKeys:
+            for i in self.energyKeys:
 
-            einstein = []
-            collisional = []
+                einstein = []
+                collisional = []
 
-            for j in self.energyKeys:
+                for j in self.energyKeys:
 
-                if i!= j:
+                    if i!= j:
 
-                    key = f"{j} --> {i}"
-                    keyInverse = f"{i} --> {j}"
+                        key = f"{j} --> {i}"
+                        keyInverse = f"{i} --> {j}"
 
-                    if self.includeCollision:
-                        if key in self.collisionalRateConstants and keyInverse in self.collisionalRateConstants:
-                            R_coll = (self.collisionalRateConstants[key]*N[j] - self.collisionalRateConstants[keyInverse]*N[i])*nHe
-                            collisional.append(R_coll)
+                        if self.includeCollision:
+                            if key in self.collisionalRateConstants and keyInverse in self.collisionalRateConstants:
+                                R_coll = (self.collisionalRateConstants[key]*N[j] - self.collisionalRateConstants[keyInverse]*N[i])*nHe
+                                collisional.append(R_coll)
 
-                        if self.includeSpontaneousEmission:
-                            if key in self.einsteinA_Rates:
-                                R_einsteinA = self.einsteinA_Rates[key]*N[j]
-                                einstein.append(R_einsteinA)
+                            if self.includeSpontaneousEmission:
+                                if key in self.einsteinA_Rates:
+                                    R_einsteinA = self.einsteinA_Rates[key]*N[j]
+                                    einstein.append(R_einsteinA)
 
-                            if keyInverse in self.einsteinA_Rates:
-                                R_einsteinA = -self.einsteinA_Rates[keyInverse]*N[i]
-                                einstein.append(R_einsteinA)
+                                if keyInverse in self.einsteinA_Rates:
+                                    R_einsteinA = -self.einsteinA_Rates[keyInverse]*N[i]
+                                    einstein.append(R_einsteinA)
 
-                    else:
+                            if lightON:
+                                if i in self.transitionLevels and j in self.transitionLevels:
+                                    R_einsteinB = self.einsteinB_Rates[key]*N[j] - self.einsteinB_Rates[keyInverse]*N[i]
+                                    einstein.append(R_einsteinB)
 
-                        ratio = np.copy(self.boltzmanDistributionCold)
-                        self.N = (ratio/ratio.sum())*(1-np.sum(N_He))
-                        self.N_distribution = np.append(self.N_distribution, self.N)
-                        self.t_distribution = np.append(self.t_distribution, t)
+                if self.includeCollision: collections = np.array(collisional + einstein).sum()
 
-                    if self.lightON:
-                        if i in self.transitionLevels and j in self.transitionLevels:
-                            R_einsteinB = self.einsteinB_Rates[key]*N[j] - self.einsteinB_Rates[keyInverse]*N[i]
-                            einstein.append(R_einsteinB)
+                if self.includeAttachmentRate:
+                    if i == self.excitedFrom:
+                        attachmentRate0 = -(self.k3[0] * nHe**2 * N[i]) + (self.kCID[0] * nHe * N_He[0] * self.kCID_branch)
+                        if self.includeCollision: collections += attachmentRate0
+                    
+                    elif i == self.excitedTo:
+                        attachmentRate1 =  -(self.k31_excited * nHe**2 *  N[j]) + (self.kCID[0] * nHe * N_He[0] * (1-self.kCID_branch))
+                        if self.includeCollision: collections += attachmentRate1
 
-            collections = np.array(collisional + einstein).sum()
-
-            if self.includeAttachmentRate:
-                if i == self.excitedFrom:
-                    attachmentRate0 = -(self.k3[0] * nHe**2 * N[i]) + (self.kCID[0] * nHe * N_He[0] * self.kCID_branch)
-                    collections += attachmentRate0
-                
-                elif i == self.excitedTo:
-                    attachmentRate1 =  -(self.k31_excited * nHe**2 *  N[j]) + (self.kCID[0] * nHe * N_He[0] * (1-self.kCID_branch))
-                    collections += attachmentRate1
-
-            dR_dt.append(collections)
+                if self.includeCollision: dR_dt.append(collections)
 
         dRdt_N_He = []
 
         if self.includeAttachmentRate:
+            
+            if not self.includeCollision:
+
+
+                N = (ratio/ratio.sum())*(1-np.sum(N_He))
+                # N = np.copy(ratio)
+        
+                _from = self.energyKeys.index(self.excitedFrom)
+                _to = self.energyKeys.index(self.excitedTo)
+
+                attachmentRate0 = -(self.k3[0] * nHe**2 * N[_from]) + (self.kCID[0] * nHe * N_He[0] * self.kCID_branch)
+
+                attachmentRate1 =  -(self.k31_excited * nHe**2 *  N[_to]) + (self.kCID[0] * nHe * N_He[0] * (1-self.kCID_branch))
+
             currentRate = -(attachmentRate0 + attachmentRate1)
 
             for i in range(len(N_He)-1):
-            
                 nextRate = -(self.k3[i+1] * nHe**2 *N_He[i]) + (self.kCID[i+1] * nHe * N_He[i+1])
 
                 attachmentRate = currentRate + nextRate
                 dRdt_N_He.append(attachmentRate)
 
-                if self.includeCollision: 
-                    dR_dt.append(attachmentRate)
+                if self.includeCollision: dR_dt.append(attachmentRate)
 
                 currentRate = -nextRate
 
@@ -205,13 +235,17 @@ class ROSAA:
         self.totalAttachmentLevels = int(self.attachment_rate_coefficients["totalAttachmentLevels"])
         self.includeAttachmentRate = conditions["includeAttachmentRate"]
     
-    def Simulate(self, nHe):
+    def Simulate(self, nHe, duration=None, t0=0, ratio=[]):
 
         self.simulation_parameters = conditions["simulation_parameters"]
+
+        if not duration:
+            duration = self.simulation_parameters["Simulation time(ms)"]
+            duration = float(duration)*1e-3 # converting ms ==> s
         
-        duration = self.simulation_parameters["Simulation time(ms)"]
-        duration = float(duration)*1e-3 # converting ms ==> s
-        t0 = 0
+        # t0 = 0.005 if self.fixedPopulation else 0
+        if duration <= t0:
+            duration = t0*5
         tspan = [t0, duration]
 
         self.electronSpin = conditions["electronSpin"]
@@ -220,61 +254,49 @@ class ROSAA:
 
         self.boltzmanDistribution = boltzman_distribution( self.energyLevels, initialTemp, self.electronSpin, self.zeemanSplit )
         self.boltzmanDistributionCold = boltzman_distribution( self.energyLevels, self.collisionalTemp, self.electronSpin, self.zeemanSplit )
-        
-        
-        N_He = []
-        if self.includeAttachmentRate:
-            N_He = self.totalAttachmentLevels*[0]
-        
+
         totalSteps = int(self.simulation_parameters["Total steps"])
         self.simulateTime = np.linspace(t0, duration, totalSteps)
-        
-        self.lightON=False
-        
+
+        # Simulation start
         start_time = time.perf_counter()
-        N = self.boltzmanDistribution if self.includeCollision else []
+        N = np.copy(self.boltzmanDistribution) if self.includeCollision else []
+        N_He = self.totalAttachmentLevels*[0] if self.includeAttachmentRate else []
         options = {
             "method": "Radau",
             "t_eval": self.simulateTime,
         }
-        
+
         y_init = [*N, *N_He]
-
-        # self.OFF_fixedPopulation = np.copy(self.boltzmanDistributionCold)
-        # self.OFF_fixedPopulation_arr = [np.copy(self.boltzmanDistributionCold)]
-        # self.OFF_fixedPopulation_arr_time = [0]
-        
-        # self.ON_fixedPopulation = np.copy(self.boltzmanDistributionCold)
-        # self.ON_fixedPopulation_arr = [np.copy(self.boltzmanDistributionCold)]
-
-        # self.ON_fixedPopulation_arr_time = [0]
-        self.N = np.copy(self.boltzmanDistribution)
-        self.N_distribution = np.array([])
-        self.t_distribution = np.array([])
-        N_OFF = solve_ivp(self.SimulateODE, tspan, y_init, args=(nHe, ), **options )
-
+        N_OFF = solve_ivp(self.SimulateODE, tspan, y_init, args=(nHe, False, self.boltzmanDistributionCold), **options )
         log(f'{N_OFF.nfev=} evaluations required.')
         self.lightOFF_distribution = N_OFF.y
-        N_OFF_distribution = {"t": self.t_distribution, "y": self.N_distribution}
 
-        self.lightON=True
-        self.N = np.copy(self.boltzmanDistribution)
-        self.N_distribution = np.array([])
-        self.t_distribution = np.array([])
-        N_ON = solve_ivp(self.SimulateODE, tspan, y_init, args=(nHe, ), **options )
+        # Boltzmann ratio check when lightOFF
+        # ratio = self.lightOFF_distribution.T[-1]
+        # differenceWithBoltzman = np.around(self.boltzmanDistributionCold-ratio[:-self.totalAttachmentLevels], 3)
+        # log(f"\n{ratio=}\n{self.boltzmanDistributionCold=}\n{differenceWithBoltzman=}\n")
+
+        N_ON = solve_ivp(self.SimulateODE, tspan, y_init, args=(nHe, True, ratio), **options )
         self.lightON_distribution = N_ON.y
+
         log(f'{N_ON.nfev=} evaluations required.')
-        N_ON_distribution = {"t": self.t_distribution, "y": self.N_distribution}
+
+        # Ratio check after equilibrium
+        OFF_full_ratio = np.array([r/r.sum() for r in self.lightOFF_distribution[:-self.totalAttachmentLevels].T])
+        ON_full_ratio = np.array([r/r.sum() for r in self.lightON_distribution[:-self.totalAttachmentLevels].T])
+        # log(f"{np.around(OFF_full_ratio[-1], 2)=}")
+        log(f"{np.around(ON_full_ratio[-1], 4)=}")
+        # plt.plot(OFF_full_ratio)
+        # plt.plot(ON_full_ratio)
 
         dataToSend = {
             "legends":self.legends,
-            "time (in s)":self.simulateTime.tolist(), 
+            "time (in s)":self.simulateTime.tolist(),
             "lightON_distribution":self.lightON_distribution.tolist(),
             "lightOFF_distribution":self.lightOFF_distribution.tolist()
-
         }
-
-        if self.writeFile: 
+        if self.writeFile:
             self.WriteData("full", dataToSend)
         
         end_time = time.perf_counter()
@@ -283,28 +305,13 @@ class ROSAA:
         log(f"Total simulation time {(end_time - self.start_time):.2f} s")
         
     def Plot(self):
+
         fig, ax = plt.subplots(figsize=(10, 6), dpi=100)
         simulationTime = self.simulateTime.T*1e3
 
         counter = 0
-        if not self.includeCollision:
-            
-
-            self.ON_fixedPopulation_arr = np.array(self.ON_fixedPopulation_arr).T
-            self.ON_fixedPopulation_arr_time = np.array(self.ON_fixedPopulation_arr_time)*1e3
-
-            log(f"{self.ON_fixedPopulation_arr.T[-1].sum()=}")
-
-            self.OFF_fixedPopulation_arr = np.array(self.OFF_fixedPopulation_arr).T
-            self.OFF_fixedPopulation_arr_time = np.array(self.OFF_fixedPopulation_arr_time)*1e3
-
-            for on, off in zip(self.ON_fixedPopulation_arr, self.OFF_fixedPopulation_arr):
-                ax.plot(self.ON_fixedPopulation_arr_time, on, ls="-", c=pltColors[counter], label=f"{self.legends[counter]}")
-                ax.plot(self.OFF_fixedPopulation_arr_time, off, ls="--", c=pltColors[counter])
-
-                counter += 1
-
         for on, off in zip(self.lightON_distribution, self.lightOFF_distribution):
+            
             ax.plot(simulationTime, on, ls="-", c=pltColors[counter], label=f"{self.legends[counter]}")
             ax.plot(simulationTime, off, ls="--", c=pltColors[counter])
             counter += 1
@@ -319,19 +326,15 @@ class ROSAA:
         ax = optimizePlot(ax, xlabel="Time (ms)", ylabel="Population")
 
         if self.includeAttachmentRate:
-
             signal_index = len(self.energyKeys)+1
             signal = (1 - (self.lightON_distribution[signal_index][1:] / self.lightOFF_distribution[signal_index][1:]))*100
 
             signal = np.around(np.nan_to_num(signal).clip(min=0), 1)
             log(f"{signal=}")
-            fig1, ax1 = plt.subplots(figsize=(10, 6), dpi=100)
 
+            fig1, ax1 = plt.subplots(figsize=(10, 6), dpi=100)
             ax1.plot(simulationTime[1:], signal, label=f"Signal: {signal[-1]} (%)")
-            # ax1.plot(self.simulateTime_attachment[1:]*1e3, self.directSignal, label=f"Signal: {self.directSignal[-1]} (%)")
             ax1 = optimizePlot(ax1, xlabel="Time (ms)", ylabel="Signal (%)")
-            # difference = signal[-1] - self.directSignal[-1]
-            # log(f"{difference=}")
             ax1.legend()
         plt.show()
 
@@ -352,4 +355,5 @@ conditions = None
 def main(arguments):
     global conditions
     conditions = arguments
+
     ROSAA()
