@@ -64,6 +64,7 @@
 
     let collisionalFileBasename = ""
     async function browse_collisional_file() {
+        
         collisionalFilename = await browse({dir:false}) || collisionalFilename
         collisionalFileBasename = basename(collisionalFilename)
     }
