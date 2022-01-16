@@ -273,10 +273,10 @@ class ROSAA:
         log(f'{N_ON.nfev=} evaluations required.')
 
         # Ratio check after equilibrium
-        OFF_full_ratio = np.array([r/r.sum() for r in self.lightOFF_distribution[:-self.totalAttachmentLevels].T])
-        ON_full_ratio = np.array([r/r.sum() for r in self.lightON_distribution[:-self.totalAttachmentLevels].T])
+        # OFF_full_ratio = np.array([r/r.sum() for r in self.lightOFF_distribution[:-self.totalAttachmentLevels].T])
+        # ON_full_ratio = np.array([r/r.sum() for r in self.lightON_distribution[:-self.totalAttachmentLevels].T])
         # log(f"{np.around(OFF_full_ratio[-1], 2)=}")
-        log(f"{np.around(ON_full_ratio[-1], 4)=}")
+        # log(f"{np.around(ON_full_ratio[-1], 4)=}")
         # plt.plot(OFF_full_ratio)
         # plt.plot(ON_full_ratio)
 
