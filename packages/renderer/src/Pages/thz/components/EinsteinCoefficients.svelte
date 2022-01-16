@@ -20,7 +20,6 @@
     export let energyLevels
     export let electronSpin
 
-    
     function computeEinsteinB() {
         einsteinB_rateComputed=false;
 
@@ -65,14 +64,12 @@
     $: computeRates(voigtline)
 
     function computeRates(lineShape) {
-        const constantTerm = power/(trapArea*SpeedOfLight)
-        const norm = constantTerm*lineShape
-        
-        computeEinsteinB();
 
+        const constantTerm = parseFloat(power)/(parseFloat(trapArea)*SpeedOfLight)
+        const norm = constantTerm*lineShape
+        computeEinsteinB();
         einsteinCoefficientB = einsteinCoefficientB.map(rateconstant=>{
             rateconstant.value *= norm;
-        
             rateconstant.value = rateconstant.value.toExponential(3)
             return rateconstant
         })
@@ -109,13 +106,14 @@
     <div class="control__div ">
         <button class="button is-link " on:click={computeEinsteinB}>Compute Einstein B</button>
     </div>
+
     
     {#if einsteinCoefficientB.length>0}
         <hr>
 
         <div class="subtitle">Einstein B Co-efficients</div>
         <div class="control__div ">
-            <Textfield bind:value={voigtline} label="voigt lineshape" />
+            <Textfield bind:value={voigtline} label="voigt lineshape (Hz)" />
             <button class="button is-link " on:click={computeEinsteinBRate}>Compute rate constants</button>
         </div>
 
