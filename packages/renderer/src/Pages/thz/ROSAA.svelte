@@ -102,7 +102,7 @@
             includeSpontaneousEmission, writefile, savefilename, currentLocation,  deexcitation, 
             collisional_rates, main_parameters, simulation_parameters, einstein_coefficient, 
             energy_levels, energyUnit, power_broadening, lineshape_conditions, attachment_rate_coefficients, 
-            electronSpin, zeemanSplit, excitedFrom, excitedTo, numberDensity, collisionalTemp
+            electronSpin, zeemanSplit, excitedFrom, excitedTo, numberDensity, collisionalTemp, simulationMethod
         
         }
         
@@ -311,6 +311,11 @@
     $: voigtFWHM = Number(0.5346 * lorrentz + Math.sqrt(0.2166*lorrentz**2 + gaussian**2)).toFixed(3)
 
 
+
+    let simulationMethod = "Normal"
+    const simulationMethods = ["Normal", "FixedPopulation"]
+
+
 </script>
 
 <BoltzmanDistribution {...boltzmanArgs}
@@ -507,7 +512,7 @@
     </svelte:fragment>
 
     <svelte:fragment slot="footer_content__slot">
-        
+        <CustomSelect options={simulationMethods} bind:picked={simulationMethod} label="simulationMethod"/>
         {#if pyProcesses.length>0}
 
             <div>Running: {pyProcesses.length} {pyProcesses.length>1 ? "simulations" : "simulation"}</div>
