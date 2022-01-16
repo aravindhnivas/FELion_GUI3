@@ -50,7 +50,7 @@ class ROSAA:
                 self.legends += [f"${self.molecule}${self.taggingPartner}$_{i+1}$" for i in range(1, self.totalAttachmentLevels)]
 
             self.fixedPopulation = False
-            self.fixedPopulation = True
+            # self.fixedPopulation = True
             
             if self.fixedPopulation:
                 self.includeAttachmentRate = False
