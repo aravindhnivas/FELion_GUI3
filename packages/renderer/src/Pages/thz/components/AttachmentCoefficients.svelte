@@ -1,9 +1,9 @@
 
 <script>
 
-    import Textfield from '@smui/textfield';
-    import {cloneDeep} from "lodash-es"
-
+    import Textfield        from '@smui/textfield';
+    import {cloneDeep}      from "lodash-es"
+    import CustomTextSwitch from "$components/CustomTextSwitch.svelte";
     export let numberDensity;
     export let attachmentCoefficients=[]
     export let k3={constant:[], rate:[]}
@@ -31,7 +31,7 @@
 
     <div class="content__div">
         {#each attachmentCoefficients as {label, value, id}(id)}
-            <Textfield bind:value {label}  />
+            <CustomTextSwitch bind:value {label} step={0.1} />
         {/each}
 
         <div class="align h-center">
