@@ -14,8 +14,6 @@
     import computePy_func   from "$src/Pages/general/computePy"
 
     /////////////////////////////////////////////////////////////////////////
-
-
     export let OPOLocation
     export let opofiles
     export let OPOfilesChecked
@@ -45,9 +43,7 @@
             graphPlotted = true, $opoMode = true
             showOPOFiles=false
         })
-
     }
-
 </script>
 
 <QuickBrowser
