@@ -9,6 +9,8 @@
     import CustomSelect             from "$components/CustomSelect.svelte";
     import SeparateWindow           from '$components/SeparateWindow.svelte';
     import CustomCheckbox           from "$components/CustomCheckbox.svelte";
+    import CustomTextSwitch           from "$components/CustomTextSwitch.svelte";
+
     import PyButton                 from "$components/PyButton.svelte"
     
     import BoltzmanDistribution     from "./windows/BoltzmanDistribution.svelte";
@@ -451,8 +453,8 @@
 
                 <div class="subtitle">Doppler lineshape</div>
                 <div class="content__div ">
-                    {#each dopplerLineshape as {label, value, type, step, id}(id)}
-                        <Textfield bind:value {label} {type} input$step={step} />
+                    {#each dopplerLineshape as {label, value, step, id}(id)}
+                        <CustomTextSwitch style="width:9em" {step} bind:value {label} />
                     {/each}
 
                     <Textfield bind:value={collisionalTemp} label="collisionalTemp(K)" />
@@ -592,7 +594,8 @@
             flex-wrap: wrap;
             justify-self: center; // grow from center (width is auto adjusted)
             gap: 1em;
-            justify-content: center; // align items center
+            justify-content: center;
+            align-items: center;
 
         }
         .control__div {
