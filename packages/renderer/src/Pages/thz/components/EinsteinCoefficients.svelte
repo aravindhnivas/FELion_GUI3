@@ -135,7 +135,6 @@
 
         .content__div {
             max-height: 30rem;
-
             overflow-y: auto;
             display: flex;
             flex-wrap: wrap;
@@ -144,7 +143,6 @@
             justify-content: center; // align items center
         }
         .control__div {
-
             display: flex;
             align-items: baseline;
             flex-wrap: wrap;
@@ -153,6 +151,5 @@
      
         }
     }
-
     hr {background-color: #fafafa; margin: 0;}
 </style>
