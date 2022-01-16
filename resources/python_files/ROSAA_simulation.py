@@ -53,29 +53,27 @@ class ROSAA:
             self.fixedPopulation = True
             
             if self.fixedPopulation:
-
                 self.includeAttachmentRate = False
-
                 t_limit = 0.001
+
                 self.Simulate(nHe, duration=t_limit )
                 ratio = self.lightON_distribution.T[-1]
-                log(f"{np.around(ratio, 4)=}")
 
                 self.includeCollision = False
                 self.includeAttachmentRate = True
                 self.Simulate(nHe, t0=t_limit, ratio=ratio)
 
-                # ON_ratio = ratio/ratio.sum()
+                
+                
                 ON_fixedPopulation_arr = np.array([ratio*(1-np.sum(NHE)) for NHE in self.lightON_distribution.T]).T
                 self.lightON_distribution = np.array(ON_fixedPopulation_arr.tolist()+self.lightON_distribution.tolist())
 
                 OFF_fixedPopulation_arr = np.array([self.boltzmanDistributionCold*(1-np.sum(NHE)) for NHE in self.lightOFF_distribution.T]).T
-                
                 self.lightOFF_distribution = np.array(OFF_fixedPopulation_arr.tolist()+self.lightOFF_distribution.tolist())
-                log(f"{OFF_fixedPopulation_arr.shape=}\n{self.lightOFF_distribution.shape=}")
 
             else:
                 self.Simulate(nHe)
+
             self.Plot()
         
         elif variable == "He density(cm3)":
@@ -129,9 +127,7 @@ class ROSAA:
             N = counts[:-self.totalAttachmentLevels]
             N_He = counts[-self.totalAttachmentLevels:]
         elif self.includeCollision: N = counts
-        else: 
-            # N = ratio
-            N_He = counts
+        else: N_He = counts
 
         if self.includeCollision: 
             dR_dt = []
@@ -187,26 +183,20 @@ class ROSAA:
         if self.includeAttachmentRate:
             
             if not self.includeCollision:
-
-
                 N = (ratio/ratio.sum())*(1-np.sum(N_He))
-                # N = np.copy(ratio)
-        
                 _from = self.energyKeys.index(self.excitedFrom)
                 _to = self.energyKeys.index(self.excitedTo)
 
                 attachmentRate0 = -(self.k3[0] * nHe**2 * N[_from]) + (self.kCID[0] * nHe * N_He[0] * self.kCID_branch)
-
                 attachmentRate1 =  -(self.k31_excited * nHe**2 *  N[_to]) + (self.kCID[0] * nHe * N_He[0] * (1-self.kCID_branch))
-
             currentRate = -(attachmentRate0 + attachmentRate1)
 
             for i in range(len(N_He)-1):
                 nextRate = -(self.k3[i+1] * nHe**2 *N_He[i]) + (self.kCID[i+1] * nHe * N_He[i+1])
 
                 attachmentRate = currentRate + nextRate
-                dRdt_N_He.append(attachmentRate)
 
+                dRdt_N_He.append(attachmentRate)
                 if self.includeCollision: dR_dt.append(attachmentRate)
 
                 currentRate = -nextRate
@@ -340,20 +330,21 @@ class ROSAA:
 
     def WriteData(self, name, dataToSend):
         location = pt(conditions["currentLocation"])
-
         savefilename = conditions["savefilename"]
-
         addText = ""
         if not self.includeAttachmentRate:
             addText = "_no-attachement"
+
         with open(location / f"OUT/{savefilename}{addText}_{name}_ROSAA_output.json", 'w+') as f:
             data = json.dumps(dataToSend, sort_keys=True, indent=4, separators=(',', ': '))
             f.write(data)
             log(f"{savefilename} file written in {location} folder.")
 
+
 conditions = None
 def main(arguments):
+
     global conditions
     conditions = arguments
-
     ROSAA()
+
