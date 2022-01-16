@@ -85,17 +85,19 @@
     }
 
     let collisionalCoefficientJSONFile = ""
-    onMount(()=> {
-
-        const configFile = db.get("ROSAA_config_file")
-        const configLocation = dirname(configFile)
-        console.log(configLocation)
-        collisionalCoefficientJSONFile = pathJoin(configLocation, "files", "collisionalCoefficients.json")
-        
+    const readcollisionalCoefficientJSONFile = () => {
         if(fs.existsSync(collisionalCoefficientJSONFile)) {
             console.log("loading collisionalCoefficientJSONFile");
             ({collisionalCoefficient, collisionalCoefficient_balance} = fs.readJsonSync(collisionalCoefficientJSONFile));
         }
+    }
+
+    onMount(()=> {
+        const configFile = db.get("ROSAA_config_file")
+        const configLocation = dirname(configFile)
+        console.log(configLocation)
+        collisionalCoefficientJSONFile = pathJoin(configLocation, "files", "collisionalCoefficients.json")
+        readcollisionalCoefficientJSONFile()
     })
 
 </script>
@@ -121,6 +123,7 @@
             <Textfield bind:value={collisionalFileBasename} label="collisionalFilename" disabled />
             <Textfield bind:value={collisionalTemp} label="collisionalTemp"/>
             <button class="button is-link" on:click={()=>OpenRateConstantsPlot=true}>Compute rate constants</button>
+            <button class="button is-link" on:click={readcollisionalCoefficientJSONFile}>Read</button>
             <button class="button is-link" on:click={saveCollisionalRateConstants}>Save</button>
         </div>
 
