@@ -49,7 +49,7 @@ class ROSAA:
                 self.legends += [f"${self.molecule}${self.taggingPartner}"]
                 self.legends += [f"${self.molecule}${self.taggingPartner}$_{i+1}$" for i in range(1, self.totalAttachmentLevels)]
 
-            self.fixedPopulation = False
+            self.fixedPopulation = conditions["simulationMethod"] == "FixedPopulation"
             # self.fixedPopulation = True
             
             if self.fixedPopulation:
@@ -131,13 +131,11 @@ class ROSAA:
 
         if self.includeCollision: 
             dR_dt = []
-
             N = {key: value for key, value in zip(self.energyKeys, N)}
-
             for i in self.energyKeys:
-
                 einstein = []
                 collisional = []
+                attachment = []
 
                 for j in self.energyKeys:
 
@@ -165,18 +163,20 @@ class ROSAA:
                                     R_einsteinB = self.einsteinB_Rates[key]*N[j] - self.einsteinB_Rates[keyInverse]*N[i]
                                     einstein.append(R_einsteinB)
 
-                if self.includeCollision: collections = np.array(collisional + einstein).sum()
 
                 if self.includeAttachmentRate:
                     if i == self.excitedFrom:
                         attachmentRate0 = -(self.k3[0] * nHe**2 * N[i]) + (self.kCID[0] * nHe * N_He[0] * self.kCID_branch)
-                        if self.includeCollision: collections += attachmentRate0
+                        attachment.append(attachmentRate0)
                     
                     elif i == self.excitedTo:
-                        attachmentRate1 =  -(self.k31_excited * nHe**2 *  N[j]) + (self.kCID[0] * nHe * N_He[0] * (1-self.kCID_branch))
-                        if self.includeCollision: collections += attachmentRate1
+                        attachmentRate1 =  -(self.k31_excited * nHe**2 *  N[i]) + (self.kCID[0] * nHe * N_He[0] * (1-self.kCID_branch))
 
-                if self.includeCollision: dR_dt.append(collections)
+                        attachment.append(attachmentRate1)
+
+                if self.includeCollision: 
+                    collections = np.array(collisional + einstein + attachment).sum()
+                    dR_dt.append(collections)
 
         dRdt_N_He = []
 
