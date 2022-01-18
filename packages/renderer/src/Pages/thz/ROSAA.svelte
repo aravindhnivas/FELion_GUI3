@@ -9,7 +9,7 @@
     import CustomSelect             from "$components/CustomSelect.svelte";
     import SeparateWindow           from '$components/SeparateWindow.svelte';
     import CustomCheckbox           from "$components/CustomCheckbox.svelte";
-    import CustomTextSwitch           from "$components/CustomTextSwitch.svelte";
+    import CustomTextSwitch         from "$components/CustomTextSwitch.svelte";
 
     import PyButton                 from "$components/PyButton.svelte"
     
