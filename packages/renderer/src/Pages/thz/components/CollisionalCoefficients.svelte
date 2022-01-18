@@ -95,6 +95,7 @@
 
     onMount(()=> {
         const configFile = db.get("ROSAA_config_file") || ""
+        if(!configFile) return
         const configLocation = dirname(configFile)
         console.log(configLocation)
         collisionalCoefficientJSONFile = pathJoin(configLocation, "files", "collisionalCoefficients.json")

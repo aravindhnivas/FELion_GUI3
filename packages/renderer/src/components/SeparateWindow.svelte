@@ -52,10 +52,12 @@
     }
     onDestroy(()=>{
         try {
-            console.log("Window closed")
-            graphWindow?.close()
+            if(active && graphWindow) {
+                console.warn("Window closed")
+                graphWindow.close()
+            
+            }
         } catch (error) {console.warn("Couldn't close the window", error)}
-        
     })
 </script>
 
