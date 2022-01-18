@@ -1,5 +1,5 @@
 # What's new
-## v3.5.1
+## v3.5.1-beta
 
 - Timescan
     - Kinetic model implementation
