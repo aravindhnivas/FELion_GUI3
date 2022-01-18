@@ -1,9 +1,16 @@
 # What's new
-
 ## v3.5.1
 
-- Full working THz-ROSAA kinetic model
+- Timescan
+    - Kinetic model implementation
+    - .scan file data analysed and exported in JSON format in EXPORT directory
+- THz:
+
+    - Full working THz-ROSAA kinetic model
+
+
 - Major changes in program features:
+
     - Update from github realease
     - using vite for development and production build (instant HMR)
     - Removed db.json for electron-store module
