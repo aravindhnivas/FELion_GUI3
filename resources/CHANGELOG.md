@@ -8,8 +8,8 @@
     - using vite for development and production build (instant HMR)
     - Removed db.json for electron-store module
     - Using executable python scripts instead of full python packages (safer and faster)
-
 - Several bug fixes
+---
 
 ## v3.5.0
 - Plotly bug fix (Plotly is not included in window object)
