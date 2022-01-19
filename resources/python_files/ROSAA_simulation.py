@@ -428,7 +428,6 @@ def main(arguments):
 
     global conditions, figure, savefilename, location, output_dir
     conditions = arguments
-
     savefilename = conditions["savefilename"]
 
     location = pt(conditions["currentLocation"])
