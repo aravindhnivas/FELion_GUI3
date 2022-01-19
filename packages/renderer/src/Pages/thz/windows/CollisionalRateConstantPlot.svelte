@@ -169,7 +169,6 @@
     </svelte:fragment>
 
     <svelte:fragment slot="main_content__slot">
-        
         <div id="rateConstantsPlot"></div>
     </svelte:fragment>
 </SeparateWindow>

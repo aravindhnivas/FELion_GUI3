@@ -1,5 +1,5 @@
 <script>
-
+    import {tick}                   from "svelte";
     import {fade}                   from "svelte/transition";
     import Textfield                from '@smui/textfield';
     import { parse as Yml }         from 'yaml';
@@ -104,7 +104,7 @@
             includeSpontaneousEmission, writefile, savefilename, currentLocation,  deexcitation, 
             collisional_rates, main_parameters, simulation_parameters, einstein_coefficient, 
             energy_levels, energyUnit, power_broadening, lineshape_conditions, attachment_rate_coefficients, 
-            electronSpin, zeemanSplit, excitedFrom, excitedTo, numberDensity, collisionalTemp, simulationMethod
+            electronSpin, zeemanSplit, excitedFrom, excitedTo, numberDensity, collisionalTemp, simulationMethod, figure
         
         }
         
@@ -156,8 +156,10 @@
     async function loadConfig() {
         
         try {
-            
-            if(fs.existsSync(configFile)) return setConfig();
+            if(fs.existsSync(configFile)) {
+                if(!fs.existsSync(currentLocation)) {currentLocation = dirname(configFile)};
+                return setConfig()
+            }
             const congFilePath = await browse({dir:false, multiple:false})
             if (!congFilePath) return window.createToast("No files selected", "danger");
             configFile = congFilePath[0]
@@ -272,7 +274,6 @@
                 numberDensity
             }                       = CONFIG);
             ({savefilename}         = CONFIG.saveFile);
-
             const {savelocation}    = CONFIG.saveFile;
             if(fs.existsSync(savelocation)) {currentLocation = savelocation};
 
@@ -280,11 +281,11 @@
                 energy:energyFilename,
                 einsteinA:einsteinFilename,
                 collision:collisionalFilename
-            }                           = CONFIG.filenames);
+            } = CONFIG.filenames);
 
-            energyFilename      = energyFilename ? window.pathJoin(configFileLocation, energyFilename) : "";
-            einsteinFilename    = einsteinFilename ? window.pathJoin(configFileLocation, einsteinFilename): "";
-            collisionalFilename = collisionalFilename ? window.pathJoin(configFileLocation, collisionalFilename) : "";
+            energyFilename      = energyFilename ? window.pathJoin(configFileLocation, "files", energyFilename) : "";
+            einsteinFilename    = einsteinFilename ? window.pathJoin(configFileLocation, "files", einsteinFilename): "";
+            collisionalFilename = collisionalFilename ? window.pathJoin(configFileLocation, "files", collisionalFilename) : "";
 
             if(energyFilename) {
                 ({levels:energyLevels, unit:energyUnit} = await getYMLFileContents(energyFilename));
@@ -306,22 +307,28 @@
             updatePower();
             updateDoppler();
             updateEnergyLevels();
-
             configLoaded = true;
-
         } catch (error) {window.handleError(error)}
     }
 
     let boltzmanWindow;
     let openBoltzmanWindow = false;
-
     $: voigtFWHM = Number(0.5346 * lorrentz + Math.sqrt(0.2166*lorrentz**2 + gaussian**2)).toFixed(3)
-
-
 
     let simulationMethod = "Normal"
     const simulationMethods = ["Normal", "FixedPopulation", "withoutCollisionalConstants"]
+    const figure = {dpi: 100, size: "10, 6", show: true} 
 
+    const scrollDiv = async (id) => {
+        const DIV = document.getElementById(id)
+        await tick()
+        const scrollTo = DIV.scrollHeight - DIV.clientHeight
+        DIV.scrollTo({top:scrollTo, behavior: 'smooth'})
+    }
+
+    $: if(statusReport) {
+        scrollDiv("status_report__ROSAA")
+    }
 
 </script>
 
@@ -342,6 +349,7 @@
         <div class="writefileCheck">
             <CustomCheckbox bind:selected={writefile}                   label="writefile" />
             <CustomCheckbox bind:selected={includeCollision}            label="includeCollision" />
+
             <CustomCheckbox bind:selected={includeAttachmentRate}       label="includeAttachmentRate" />
             <CustomCheckbox bind:selected={includeSpontaneousEmission}  label="includeSpontaneousEmission" />
             <CustomCheckbox bind:selected={electronSpin}                label="Electron Spin" />
@@ -353,36 +361,40 @@
             <div class="variableColumn__dropdown">
                 
                 <CustomSelect options={variablesList} bind:picked={variable} />
-            
                 {#if variable !== "time"}
                     <Textfield bind:value={variableRange} style="width: auto;" label="Range (min, max, totalsteps)" />
                 {/if}
-            
                 <button class="button is-link" on:click={loadConfig}>Load config</button>
-                <button class="button is-link" 
-                    on:click={()=>{configFile=""; window.createToast("Config file cleared", "warning")}}>
+                <button class="button is-link" on:click={()=>{configFile=""; window.createToast("Config file cleared", "warning")}}>
                     Reset Config
                 </button>
+
+                <Textfield value={window.basename(configFile)} style="width: auto;" label="CONFIG" disabled varient="outlined" />
+
             </div>
 
         </div>
     </svelte:fragment>
 
     <svelte:fragment slot="main_content__slot">
-        <div class="content status_report__div" class:hide={!showreport} ><hr>{statusReport || "Status report"}<hr></div>
+        
+        <div class="content status_report__div" id="status_report__ROSAA" class:hide={!showreport} ><hr>{statusReport || "Status report"}
+            <hr>
+        </div>
 
         <!-- Main Parameters -->
+        
         <div class="main_container__div" class:hide={showreport}>
-
             <div class="sub_container__div box">
+        
                 <div class="subtitle">Main Parameters</div>
-
                 <div class="content__div ">
                     {#each mainParameters as {label, value, id}(id)}
                         <Textfield bind:value {label}/>
                     {/each}
                 </div>
             </div>
+
 
             <!-- Energy levels -->
 
@@ -487,9 +499,9 @@
                 {zeemanSplit}
                 {electronSpin}
                 {energyLevels}
+                {configLoaded}
                 />
 
-            <!-- {#if includeCollision} -->
                 <CollisionalCoefficients
                     bind:numberDensity
                     bind:collisionalRates
@@ -503,16 +515,24 @@
                     {collisionalFilename}
                 />
                 
-            <!-- {/if} -->
-            
-            <!-- {#if includeAttachmentRate} -->
                 <AttachmentCoefficients
                     bind:k3
                     bind:kCID
                     bind:numberDensity 
                     bind:attachmentCoefficients
                 />
-            <!-- {/if} -->
+
+
+                <!-- Figure config -->
+                <div class="sub_container__div box">
+                    <div class="subtitle">Figure config</div>
+                    <div class="content__div ">
+                        <Textfield bind:value={figure.size} label="Dimention (width, height)" />
+                        <Textfield bind:value={figure.dpi} label="DPI" />
+                        <CustomCheckbox bind:selected={figure.show} label="show figure" />
+                    </div>
+    
+                </div>
             
         </div>
 

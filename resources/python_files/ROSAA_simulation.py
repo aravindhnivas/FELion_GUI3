@@ -289,11 +289,13 @@ class ROSAA:
         self.simulateTime = np.linspace(t0, duration, totalSteps)
 
         # Simulation start
+
         start_time = time.perf_counter()
         N = np.copy(self.boltzmanDistribution) if self.includeCollision else []
         N_He = self.totalAttachmentLevels*[0] if self.includeAttachmentRate else []
+        ode_method = "Radau"
         options = {
-            "method": "Radau",
+            "method": ode_method,
             "t_eval": self.simulateTime,
         }
 
@@ -308,8 +310,8 @@ class ROSAA:
         # log(f"\n{ratio=}\n{self.boltzmanDistributionCold=}\n{differenceWithBoltzman=}\n")
 
         N_ON = solve_ivp(self.SimulateODE, tspan, y_init, args=(nHe, True, ratio), **options )
+        
         self.lightON_distribution = N_ON.y
-
         log(f'{N_ON.nfev=} evaluations required.')
 
         # Ratio check after equilibrium
@@ -321,11 +323,25 @@ class ROSAA:
         # plt.plot(ON_full_ratio)
 
         dataToSend = {
+
+            "misc": {
+
+                "ode": {
+                    "method": ode_method
+                },
+                "molecule": self.molecule,
+                "tag": self.taggingPartner,
+                "duration": duration,
+                "number-density": f"{nHe:.2e}"
+            },
             "legends": self.legends,
+
             "time (in s)": self.simulateTime.tolist(),
             "lightON_distribution": self.lightON_distribution.tolist(),
             "lightOFF_distribution": self.lightOFF_distribution.tolist()
+
         }
+
         if self.writeFile:
             self.WriteData("full", dataToSend)
         
@@ -334,10 +350,8 @@ class ROSAA:
         log(f"Current simulation time {(end_time - start_time):.2f} s")
         log(f"Total simulation time {(end_time - self.start_time):.2f} s")
         
-    
     def Plot(self):
-
-        fig, ax = plt.subplots(figsize=(10, 6), dpi=150)
+        fig, ax = plt.subplots(figsize=figure["size"], dpi=int(figure["dpi"]))
         simulationTime = self.simulateTime.T*1e3
 
         counter = 0
@@ -361,31 +375,58 @@ class ROSAA:
             signal = (1 - (self.lightON_distribution[signal_index][1:] / self.lightOFF_distribution[signal_index][1:]))*100
 
             signal = np.around(np.nan_to_num(signal).clip(min=0), 1)
-            log(f"{signal=}")
+            fig1, ax1 = plt.subplots(figsize=figure["size"], dpi=int(figure["dpi"]))
 
-            fig1, ax1 = plt.subplots(figsize=(10, 6), dpi=150)
             ax1.plot(simulationTime[1:], signal, label=f"Signal: {round(signal[-1])} (%)")
             ax1 = optimizePlot(ax1, xlabel="Time (ms)", ylabel="Signal (%)", title=f"${self.molecule}$: {self.excitedFrom} - {self.excitedTo}")
+        
             ax1.set()
             ax1.legend()
-        plt.show()
 
+            log(f"Signal: {round(signal[-1])} (%)")
+
+        if figure["show"]:
+            plt.show()
+
+        figs_location = output_dir / "figs"
+        if not figs_location.exists(): figs_location.mkdir()
+        fig.savefig(f"{figs_location/savefilename}.rosaa.png", dpi=figure["dpi"])
+        if self.includeAttachmentRate:
+            fig1.savefig(f"{figs_location/savefilename}.rosaa.signal.png", dpi=figure["dpi"])
     
     def WriteData(self, name, dataToSend):
-        location = pt(conditions["currentLocation"])
-        savefilename = conditions["savefilename"]
+        
+        datas_location = output_dir / "datas"
+        if not datas_location.exists(): datas_location.mkdir()
         addText = ""
         if not self.includeAttachmentRate:
             addText = "_no-attachement"
 
-        with open(location / f"OUT/{savefilename}{addText}_{name}_ROSAA_output.json", 'w+') as f:
+        with open(datas_location / f"{savefilename}{addText}_{name}_output.json", 'w+') as f:
             data = json.dumps(dataToSend, sort_keys=True, indent=4, separators=(',', ': '))
             f.write(data)
             log(f"{savefilename} file written in {location} folder.")
 
 conditions = None
+figure = None
+figsize = None
+savefilename = None
+location = None
+output_dir = None
+
 def main(arguments):
-    global conditions
+
+    global conditions, figure, savefilename, location, output_dir
     conditions = arguments
 
+    savefilename = conditions["savefilename"]
+
+    location = pt(conditions["currentLocation"])
+    output_dir = location / "../output"
+    if not output_dir.exists(): output_dir.mkdir()
+
+    figure = conditions["figure"]
+    figure["size"] = [int(i) for i in figure["size"].split(",")]
+
+    log(f"{figure=}")
     ROSAA()

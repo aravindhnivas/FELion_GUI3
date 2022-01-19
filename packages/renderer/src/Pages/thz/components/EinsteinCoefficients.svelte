@@ -6,7 +6,7 @@
     import {PlanksConstant, SpeedOfLight}   from "../functions/constants";
     import {computeStatisticalWeight}       from "../functions/balance_distribution";
     import computePy_func                   from "$src/Pages/general/computePy"
-    
+    import {afterUpdate}                    from 'svelte';
     export let einsteinCoefficientA=[]
     export let einsteinCoefficientB=[]
     export let einsteinB_rateComputed=false;
@@ -19,10 +19,11 @@
     export let zeemanSplit
     export let energyLevels
     export let electronSpin
+    export let configLoaded = false;
 
     function computeEinsteinB() {
+        console.log("Computing Einstein B constants")
         einsteinB_rateComputed=false;
-
         const einsteinCoefficientB_emission = einsteinCoefficientA.map(({label, value})=>{
             const [final, initial] = label.split("-->").map(l=>l.trim())
             const {value:v0} = find(energyLevels, (e)=>e.label==initial)
@@ -60,6 +61,7 @@
         const lineshape = eta * computeLorrentz(x, gamma) + (1 - eta) * computeGaussian(x, sigma)
         return lineshape
     }
+    
     $: voigtline = computePseudoVoigt(0, gaussian*1e6, lorrentz*1e6).toExponential(2)
     $: computeRates(voigtline)
 

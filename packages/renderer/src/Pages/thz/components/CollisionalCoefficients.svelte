@@ -82,13 +82,13 @@
             {collisionalCoefficient, collisionalCoefficient_balance}
         
         )
-        console.log("Saved: collisionalCoefficientJSONFile")
+        console.log("Saved: ", collisionalCoefficientJSONFile)
     }
 
     let collisionalCoefficientJSONFile = ""
     const readcollisionalCoefficientJSONFile = () => {
         if(fs.existsSync(collisionalCoefficientJSONFile)) {
-            console.log("loading collisionalCoefficientJSONFile");
+            console.log("loading: ", collisionalCoefficientJSONFile);
             ({collisionalCoefficient, collisionalCoefficient_balance} = fs.readJsonSync(collisionalCoefficientJSONFile));
         }
     }
