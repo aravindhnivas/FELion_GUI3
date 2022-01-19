@@ -341,9 +341,9 @@
     <svelte:fragment slot="header_content__slot" >
     
         <div class="locationColumn" >
-            <button class="button is-link" id="thz_modal_filebrowser_btn" on:click={browse_folder}>Browse</button>
-            <Textfield bind:value={currentLocation} label="Current location" />
-            <Textfield bind:value={savefilename}    label="savefilename" />
+            <!-- <button class="button is-link" id="thz_modal_filebrowser_btn" on:click={browse_folder}>Browse</button> -->
+            <Textfield value={currentLocation}   variant="outlined" label="CONFIG location" disabled />
+            <Textfield bind:value={savefilename} variant="outlined" label="savefilename" />
         </div>
 
         <div class="writefileCheck">
@@ -369,7 +369,7 @@
                     Reset Config
                 </button>
 
-                <Textfield value={window.basename(configFile)} style="width: auto;" label="CONFIG" disabled varient="outlined" />
+                <Textfield value={window.basename(configFile)} style="width: auto;" label="CONFIG file" disabled variant="outlined" />
 
             </div>
 
@@ -482,7 +482,7 @@
                         <Textfield bind:value {label} />
                     {/each}
                     <Textfield bind:value={lorrentz} label="lorrentz - FWHM (MHz)" />
-                    <Textfield value={voigtFWHM} label="Voigt - FWHM (MHz)" disabled />
+                    <Textfield value={voigtFWHM} label="Voigt - FWHM (MHz)" disabled variant="outlined" />
                 </div>
 
             </div>
@@ -572,7 +572,7 @@
         display: grid;
         grid-auto-flow: column;
         grid-gap: 1em;
-        grid-template-columns: 1fr 4fr 2fr;
+        grid-template-columns: 4fr 1fr;
         .button {
             margin:0;
             align-self: center;

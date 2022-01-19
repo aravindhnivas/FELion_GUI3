@@ -38,6 +38,11 @@ label.mdc-text-field.mdc-text-field--outlined.mdc-text-field--textarea {
     border-color: $white;
   }
 }
+
+.mdc-text-field--disabled .mdc-notched-outline__leading, .mdc-text-field--disabled .mdc-notched-outline__notch, .mdc-text-field--disabled .mdc-notched-outline__trailing {
+  border-color: #9e9e9e;
+}
+
 //  Hover
 .mdc-text-field--outlined:not(.mdc-text-field--disabled):not(.mdc-text-field--focused):hover .mdc-notched-outline {
    .mdc-notched-outline__leading, .mdc-notched-outline__notch, .mdc-notched-outline__trailing {

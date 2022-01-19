@@ -372,7 +372,7 @@ class ROSAA:
         ax = optimizePlot(ax, xlabel="Time (ms)", ylabel="Population", title=title)
 
         if self.includeAttachmentRate:
-            
+
             signal_index = len(self.energyKeys)+1
         
             signal = (1 - (self.lightON_distribution[signal_index][1:] / self.lightOFF_distribution[signal_index][1:]))*100
@@ -392,10 +392,17 @@ class ROSAA:
             plt.show()
 
         figs_location = output_dir / "figs"
+        png_location = figs_location / "png"
+        pdf_location = figs_location / "pdf"
         if not figs_location.exists(): figs_location.mkdir()
-        fig.savefig(f"{figs_location/savefilename}.rosaa.png", dpi=figure["dpi"])
+        if not png_location.exists(): png_location.mkdir()
+        if not pdf_location.exists(): pdf_location.mkdir()
+
+        fig.savefig(f"{png_location/savefilename}.rosaa.png", dpi=figure["dpi"]*2)
+        fig.savefig(f"{pdf_location/savefilename}.rosaa.pdf", dpi=figure["dpi"]*2)
         if self.includeAttachmentRate:
-            fig1.savefig(f"{figs_location/savefilename}.rosaa.signal.png", dpi=figure["dpi"])
+            fig1.savefig(f"{png_location/savefilename}.rosaa.signal.png", dpi=figure["dpi"]*2)
+            fig1.savefig(f"{pdf_location/savefilename}.rosaa.signal.pdf", dpi=figure["dpi"]*2)
     
     def WriteData(self, name, dataToSend):
         

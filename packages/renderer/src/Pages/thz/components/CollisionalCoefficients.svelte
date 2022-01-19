@@ -122,7 +122,7 @@
         
         <div class="align h-center">
             <button class="button is-link"  on:click={browse_collisional_file}>Browse</button>
-            <Textfield bind:value={collisionalFileBasename} label="collisionalFilename" disabled />
+            <Textfield bind:value={collisionalFileBasename} label="collisionalFilename" disabled variant="outlined" />
             <Textfield bind:value={collisionalTemp} label="collisionalTemp"/>
             <button class="button is-link" on:click={()=>OpenRateConstantsPlot=true}>Compute rate constants</button>
             <button class="button is-link" on:click={readcollisionalCoefficientJSONFile}>Read</button>
