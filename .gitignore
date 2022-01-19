@@ -1,12 +1,11 @@
 node_modules
 .vscode
 dist
-python3/
+py*/
 **/__pycache__/
-**/output.log
 .env
 **/*.zip
 **/src/Pages/**/config.json
 *.exe
 resources/felionpy
-resources/**/*.pyo
+**/*.pyo
