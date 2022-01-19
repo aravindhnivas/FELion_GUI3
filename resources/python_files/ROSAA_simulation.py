@@ -368,17 +368,20 @@ class ROSAA:
 
         lg = ax.legend(title=f"--OFF, -ON", fontsize=14, title_fontsize=16)
         lg.set_draggable(True)
-        ax = optimizePlot(ax, xlabel="Time (ms)", ylabel="Population")
+        title=f"${self.molecule}$: {self.excitedFrom} - {self.excitedTo}"
+        ax = optimizePlot(ax, xlabel="Time (ms)", ylabel="Population", title=title)
 
         if self.includeAttachmentRate:
+            
             signal_index = len(self.energyKeys)+1
+        
             signal = (1 - (self.lightON_distribution[signal_index][1:] / self.lightOFF_distribution[signal_index][1:]))*100
 
             signal = np.around(np.nan_to_num(signal).clip(min=0), 1)
             fig1, ax1 = plt.subplots(figsize=figure["size"], dpi=int(figure["dpi"]))
 
             ax1.plot(simulationTime[1:], signal, label=f"Signal: {round(signal[-1])} (%)")
-            ax1 = optimizePlot(ax1, xlabel="Time (ms)", ylabel="Signal (%)", title=f"${self.molecule}$: {self.excitedFrom} - {self.excitedTo}")
+            ax1 = optimizePlot(ax1, xlabel="Time (ms)", ylabel="Signal (%)", title=title)
         
             ax1.set()
             ax1.legend()
