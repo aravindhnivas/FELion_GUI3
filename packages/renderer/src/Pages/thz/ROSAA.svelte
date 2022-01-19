@@ -573,10 +573,10 @@
         grid-auto-flow: column;
         grid-gap: 1em;
         grid-template-columns: 4fr 1fr;
-        .button {
-            margin:0;
-            align-self: center;
-        }
+        // .button {
+        //     margin:0;
+        //     align-self: center;
+        // }
     }
 
     hr {background-color: #fafafa; margin: 0;}
