@@ -2,16 +2,13 @@
     import {fade}                   from "svelte/transition";
     import Textfield                from '@smui/textfield';
     import { parse as Yml }         from 'yaml';
-    import {find, cloneDeep}        from "lodash-es"
-
+    import {find}                   from "lodash-es";
     import {browse}                 from "$components/Layout.svelte";
     import CustomSelect             from "$components/CustomSelect.svelte";
     import SeparateWindow           from '$components/SeparateWindow.svelte';
     import CustomCheckbox           from "$components/CustomCheckbox.svelte";
     import CustomTextSwitch         from "$components/CustomTextSwitch.svelte";
-
     import PyButton                 from "$components/PyButton.svelte"
-    
     import BoltzmanDistribution     from "./windows/BoltzmanDistribution.svelte";
 
     import EinsteinCoefficients     from "./components/EinsteinCoefficients.svelte";
@@ -27,7 +24,6 @@
         boltzmanConstant,
         VaccumPermitivity
     }                               from "./functions/constants";
-    
     import {findAndGetValue}        from "./functions/misc";
     import computePy_func           from "$src/Pages/general/computePy"
 
@@ -150,15 +146,11 @@
     let collisionalCoefficient=[]
 
     let energyUnit="cm-1"
-    let original_energyUnit="cm-1"
-    
-    let energyLevels = [];
-    
     let numberOfLevels = 3;
     let numberDensity = "2e14";
-
     let energyFilename
     let einsteinFilename;
+
     let collisionalFilename
     let configFile = db.get("ROSAA_config_file") || ""
     $: boltzmanArgs = {energyLevels, trapTemp, electronSpin, zeemanSplit, energyUnit}
@@ -251,14 +243,13 @@
         if(dopplerLineshape.length) { updateDoppler() }
         if(powerBroadening.length) { updatePower() }
     }
-    let original_energyLevels = []
+    const energyInfos = {"cm-1": [], "MHz": []}
     async function setConfig() {
 
         try {
 
             const configFileLocation = dirname(configFile);
             const CONFIG = Yml(fs.readFileSync(configFile));
-            
             console.table(CONFIG)
 
             let attachmentRateConstants = {};
@@ -300,16 +291,24 @@
             energyFilename      = energyFilename ? window.pathJoin(configFileLocation, "files", energyFilename) : "";
             einsteinFilename    = einsteinFilename ? window.pathJoin(configFileLocation, "files", einsteinFilename): "";
             collisionalFilename = collisionalFilename ? window.pathJoin(configFileLocation, "files", collisionalFilename) : "";
-
+            
+            let energyLevelsStore = []
+            
             if(energyFilename) {
-                ({levels:energyLevels, unit:original_energyUnit} = await getYMLFileContents(energyFilename));
+                ({levels:energyLevelsStore, unit:energyUnit} = await getYMLFileContents(energyFilename));
             }
-            energyUnit = original_energyUnit
-            energyLevels = energyLevels.map(setID);
-            original_energyLevels = cloneDeep(energyLevels)
-            numberOfLevels = energyLevels.length;
-            excitedFrom = energyLevels?.[0].label;
-            excitedTo = energyLevels?.[1].label;
+            
+            energyLevelsStore = energyLevelsStore.map(setID);
+            
+            energyInfos[`${energyUnit}`] = energyLevelsStore
+
+            if(energyUnit === "cm-1") {
+                energyInfos["MHz"] = energyLevelsStore.map(wavenumberToMHz)
+            } else {energyInfos["cm-1"] = energyLevelsStore.map(MHzToWavenumber)}
+            
+            numberOfLevels = energyLevelsStore.length;
+            excitedFrom = energyLevelsStore?.[0].label;
+            excitedTo = energyLevelsStore?.[1].label;
 
             if(einsteinFilename) {
                 ({rateConstants:einsteinCoefficientA}   = await getYMLFileContents(einsteinFilename));
@@ -325,28 +324,24 @@
             configLoaded = true;
 
         } catch (error) {window.handleError(error)}
-    
     }
 
     let boltzmanWindow;
     let openBoltzmanWindow = false;
+
     $: voigtFWHM = Number(0.5346 * lorrentz + Math.sqrt(0.2166*lorrentz**2 + gaussian**2)).toFixed(3)
 
     let simulationMethod = "Normal"
     const figure = {dpi: 100, size: "10, 6", show: true} 
     const simulationMethods = ["Normal", "FixedPopulation", "withoutCollisionalConstants"]
+    
     const wavenumberToMHz = (energy) => ({...energy, value: Number(energy.value*SpeedOfLight*1e2*1e-6).toFixed(3)}) 
     const MHzToWavenumber = (energy) => ({...energy, value: Number(energy.value/(SpeedOfLight*1e2*1e-6)).toFixed(3)}) 
-    $: if(energyUnit !== original_energyUnit) {
-        if(original_energyUnit == "cm-1") {energyLevels = original_energyLevels.map(wavenumberToMHz)}
-        else if(original_energyUnit == "MHz") {energyLevels = original_energyLevels.map(MHzToWavenumber)}
-    } else {energyLevels = cloneDeep(original_energyLevels) }
-
+    $: energyLevels = energyInfos[`${energyUnit}`]
+    
 </script>
 
-<BoltzmanDistribution {...boltzmanArgs}
-    bind:active={openBoltzmanWindow} 
-    bind:graphWindow={boltzmanWindow} />
+<BoltzmanDistribution {...boltzmanArgs} bind:active={openBoltzmanWindow} bind:graphWindow={boltzmanWindow} />
 
 
 <SeparateWindow id="ROSAA__modal" title="ROSAA modal" bind:active >
@@ -388,7 +383,8 @@
 
     <svelte:fragment slot="main_content__slot">
         
-        <div class="content status_report__div" id="status_report__ROSAA" class:hide={!showreport} ><hr>{statusReport || "Status report"}
+        <div class="content status_report__div" id="status_report__ROSAA" class:hide={!showreport} >
+            <hr>{statusReport || "Status report"}
             <hr>
         </div>
 
@@ -414,12 +410,12 @@
                         label="numberOfLevels (J levels)"
                     />
                     <CustomSelect options={["MHz", "cm-1"]} bind:picked={energyUnit} label="energyUnit" />
-
                     <button class="button is-link" 
                         on:click={()=>{openBoltzmanWindow=true; setTimeout(()=>boltzmanWindow?.focus(), 100); }}>
                         Show Boltzman distribution
                     </button>
                 </svelte:fragment>
+
                 {#each energyLevels as {label, value, id}(id)}
                     <Textfield bind:value {label} />
                 {/each}
@@ -428,7 +424,8 @@
             
             <!-- Simulation parameters -->
             
-            <BoxComponent title="Simulation parameters" loaded={simulationParameters.length > 0}>
+            <BoxComponent title="Simulation parameters" loaded={simulationParameters.length > 0} >
+
                 {#each simulationParameters as {label, value, id}(id)}
                     <Textfield bind:value {label} />
                 {/each}
@@ -485,9 +482,7 @@
                 {electronSpin}
                 {energyLevels}
                 {configLoaded}
-                />
-
-            
+            />
             
             <CollisionalCoefficients
                 bind:numberDensity
@@ -530,6 +525,7 @@
     <svelte:fragment slot="footer_content__slot">
 
         {#if pyProcesses.length>0}
+        
             <div>Running: {pyProcesses.length} {pyProcesses.length>1 ? "simulations" : "simulation"}</div>
             <button transition:fade class="button is-danger" 
                 on:click="{()=>{pyProcesses.at(-1).kill(); pyProcesses.pop()}}" >Stop</button>
@@ -537,14 +533,15 @@
 
         <CustomSelect options={simulationMethods} bind:picked={simulationMethod} label="simulationMethod"/>
         {#if showreport}
-            <button  class="button is-warning" 
-                on:click="{()=>{statusReport = ""}}" >Clear</button>
+            <button  class="button is-warning" on:click="{()=>{statusReport = ""}}" >Clear</button>
         {/if}
         <button  class="button is-link" on:click="{()=>{showreport = !showreport}}">
             {showreport ? "Go Back" : "Status report"}
         </button>
+        
         <PyButton on:click={simulation} bind:pyProcesses bind:stdOutput={statusReport} />
 
+    
     </svelte:fragment>
 
 </SeparateWindow>
@@ -553,18 +550,20 @@
     .locationColumn {
         display: grid;
         grid-auto-flow: column;
+    
         grid-gap: 1em;
         grid-template-columns: 0.5fr 4fr 1fr;
     }
+    
     .main_container__div {
         display: grid;
         grid-row-gap: 1em;
-        .subtitle {margin:0;}
     }
 
     .status_report__div {
         white-space: pre-wrap; 
         user-select: text;
     }
+
     .box {padding: 0.5em 1.25em;}
 </style>
