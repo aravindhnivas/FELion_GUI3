@@ -354,16 +354,16 @@
 <SeparateWindow id="ROSAA__modal" title="ROSAA modal" bind:active>
 
     <svelte:fragment slot="header_content__slot" >
-        <div class="locationColumn" >
+        <div class="locationColumn box v-center" style="border: solid 1px #fff9;" >
 
             <button class="button is-link" id="thz_modal_filebrowser_btn" on:click={browse_folder}>Browse</button>
-            <Textfield value={currentLocation} variant="outlined" label="CONFIG location" />
-            <Textfield value={window.basename(configFile)} label="CONFIG file" variant="outlined" />
+            <Textfield value={currentLocation} label="CONFIG location" />
+            <Textfield value={window.basename(configFile)} label="CONFIG file" />
             <!-- <Textfield bind:value={savefilename} variant="outlined" label="savefilename" /> -->
 
         </div>
 
-        <div class="writefileCheck">
+        <div class="align box" style="border: solid 1px #fff9;">
 
             <!-- <CustomCheckbox bind:selected={writefile}                   label="writefile" /> -->
             <CustomCheckbox bind:selected={includeCollision}            label="includeCollision" />
@@ -374,9 +374,9 @@
 
         </div>
 
-        <div class="variableColumn">
+        <div class="align box" style="border: solid 1px #fff9;">
             <div class="subtitle">Simulate signal(%) as a function of {variable}</div>
-            <div class="variableColumn__dropdown">
+            <div class="align">
                 
                 <CustomSelect options={variablesList} bind:picked={variable} />
                 {#if variable !== "time"}
@@ -492,6 +492,7 @@
                 />
 
             
+            
             <CollisionalCoefficients
                 bind:numberDensity
                 bind:collisionalRates
@@ -533,22 +534,21 @@
     <svelte:fragment slot="footer_content__slot">
 
         {#if pyProcesses.length>0}
-
             <div>Running: {pyProcesses.length} {pyProcesses.length>1 ? "simulations" : "simulation"}</div>
             <button transition:fade class="button is-danger" 
                 on:click="{()=>{pyProcesses.at(-1).kill(); pyProcesses.pop()}}" >Stop</button>
-        
         {/if}
 
         <CustomSelect options={simulationMethods} bind:picked={simulationMethod} label="simulationMethod"/>
         {#if showreport}
-            <button  class="button is-warning" on:click="{()=>{statusReport = ""}}" >Clear</button>
+            <button  class="button is-warning" 
+                on:click="{()=>{statusReport = ""}}" >Clear</button>
         {/if}
         <button  class="button is-link" on:click="{()=>{showreport = !showreport}}">
             {showreport ? "Go Back" : "Status report"}
         </button>
-    
         <PyButton on:click={simulation} bind:pyProcesses bind:stdOutput={statusReport} />
+
     </svelte:fragment>
 
 </SeparateWindow>
@@ -559,23 +559,6 @@
         grid-auto-flow: column;
         grid-gap: 1em;
         grid-template-columns: 0.5fr 4fr 1fr;
-    }
-
-    hr {background-color: #fafafa; margin: 0;}
-    .writefileCheck {
-        display: grid;
-        grid-auto-flow: column;
-        border: solid 1px white;
-        border-radius: 20px;
-    }
-    .variableColumn {
-        display: grid;
-        .subtitle {margin: 0;}
-        .variableColumn__dropdown {
-            display: flex;
-            gap: 1em;
-            place-items: baseline;
-        }
     }
     .main_container__div {
         display: grid;
