@@ -403,10 +403,14 @@ class ROSAA:
         if self.includeAttachmentRate:
             fig1.savefig(f"{png_location/savefilename}.rosaa.signal.png", dpi=figure["dpi"]*2)
             fig1.savefig(f"{pdf_location/savefilename}.rosaa.signal.pdf", dpi=figure["dpi"]*2)
-    
+
+        log(f"figures are saved in {figs_location}")
+
+
     def WriteData(self, name, dataToSend):
         
         datas_location = output_dir / "datas"
+        
         if not datas_location.exists(): datas_location.mkdir()
         addText = ""
         if not self.includeAttachmentRate:
@@ -417,16 +421,19 @@ class ROSAA:
             f.write(data)
             log(f"{savefilename} file written in {location} folder.")
 
+
 conditions = None
 figure = None
+
 figsize = None
 savefilename = None
 location = None
 output_dir = None
 
-def main(arguments):
 
+def main(arguments):
     global conditions, figure, savefilename, location, output_dir
+
     conditions = arguments
     savefilename = conditions["savefilename"]
 
@@ -435,7 +442,8 @@ def main(arguments):
     if not output_dir.exists(): output_dir.mkdir()
 
     figure = conditions["figure"]
-    figure["size"] = [int(i) for i in figure["size"].split(",")]
 
+    figure["size"] = [int(i) for i in figure["size"].split(",")]
+    figure["dpi"] = int(figure["dpi"])
     log(f"{figure=}")
     ROSAA()
