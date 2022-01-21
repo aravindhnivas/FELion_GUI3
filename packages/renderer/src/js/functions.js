@@ -15,12 +15,12 @@ import "./resizableDiv"
 import "./clickOutside"
 import "../Pages/general/computePy"
 
-window.createToast = (description, type = "info") => {
+window.createToast = (description, type = "info", placement = 'bottom-right') => {
     const theme = {
         // title: type == 'danger' ? 'ERROR' : type.toUpperCase(),
         description,
         duration: 3000,
-        placement: 'bottom-right',
+        placement,
 	    showProgress: false,
         type: type == 'danger' ? 'error' : type,
         theme: 'dark'

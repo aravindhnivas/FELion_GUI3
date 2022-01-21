@@ -18,6 +18,8 @@
         align-self: auto;
         select {
             min-width: 12em;
+            &:active, &:hover {border-color: white;}
+            &::after {border-color: grey;}
         }
     }
 </style>

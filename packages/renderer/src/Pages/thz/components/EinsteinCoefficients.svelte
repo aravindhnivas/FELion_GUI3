@@ -6,7 +6,7 @@
     import {PlanksConstant, SpeedOfLight}   from "../functions/constants";
     import {computeStatisticalWeight}       from "../functions/balance_distribution";
     import computePy_func                   from "$src/Pages/general/computePy"
-    import {afterUpdate}                    from 'svelte';
+    import BoxComponent                     from "./BoxComponent.svelte";
     export let einsteinCoefficientA=[]
     export let einsteinCoefficientB=[]
     export let einsteinB_rateComputed=false;
@@ -19,7 +19,7 @@
     export let zeemanSplit
     export let energyLevels
     export let electronSpin
-    export let configLoaded = false;
+    // export let configLoaded = false;
 
     function computeEinsteinB() {
         console.log("Computing Einstein B constants")
@@ -51,107 +51,88 @@
     const computeGaussian = (x, sigma) => Math.E**(-(x**2) / (2*sigma**2)) / (sigma*Math.sqrt(2*Math.PI))
     const computeLorrentz = (x, gamma) => gamma / (Math.PI*(x**2 + gamma**2))
 
-    const computePseudoVoigt = (x, sigma, gamma) => {
-        const fG = (2*Math.sqrt(2*Math.log(2))) * sigma
-        const fL = 2*gamma
+    const computePseudoVoigt = (x, fG, fL) => {
+        
         const f = (fG**5 + 2.69269*fG**4*fL + 2.42843*fG**3*fL**2 + 4.47163*fG**2*fL**3 + 0.07842*fG*fL**4 + fL**5)**(1/5)
         const eta = 1.36603*(fL/f) - 0.47719*(fL/f)**2 + 0.11116*(fL/f)**3
 
         console.log({fG, fL, f, eta})
+        const sigma = fG / (2*Math.sqrt(2*Math.log(2)))
+        const gamma = fL / 2
         const lineshape = eta * computeLorrentz(x, gamma) + (1 - eta) * computeGaussian(x, sigma)
         return lineshape
     }
-    
     $: voigtline = computePseudoVoigt(0, gaussian*1e6, lorrentz*1e6).toExponential(2)
-    $: computeRates(voigtline)
+    // $: computeRates(voigtline)
 
-    function computeRates(lineShape) {
-
+    function computeRates(lineShape, compute=true) {
+        if(compute) {computeEinsteinB()}
+        if(einsteinCoefficientB.length < 1) return
         const constantTerm = parseFloat(power)/(parseFloat(trapArea)*SpeedOfLight)
         const norm = constantTerm*lineShape
-        computeEinsteinB();
-        einsteinCoefficientB = einsteinCoefficientB.map(rateconstant=>{
-            rateconstant.value *= norm;
-            rateconstant.value = rateconstant.value.toExponential(3)
-            return rateconstant
-        })
-        
-        einsteinB_rateComputed=true;
+
+        einsteinCoefficientB = einsteinCoefficientB.map(rateconstant => ({...rateconstant, value: Number(rateconstant.value*norm).toExponential(3) }) )
+        einsteinB_rateComputed = einsteinCoefficientB.length > 0;
+    
     }
 
     async function computeEinsteinBRate(e=null) {
         if(!lorrentz || !gaussian) return createToast("Compute gaussian and lorrentz parameters")
         const {lineShape} = await computePy_func({e, pyfile: "voigt", args: [JSON.stringify({lorrentz, gaussian})]})
+        console.log(lineShape.toExponential(2))
         computeRates(lineShape)
+    }
+
+    $: if(einsteinCoefficientA.length) {
+        computeEinsteinB();
+        if(voigtline) {computeRates(voigtline, false)}
 
     }
 
-    $: if(einsteinCoefficientA) computeEinsteinB();
-    
-
 </script>
 
-<div class="sub_container__div box">
 
-    <div class="subtitle">Einstein Co-efficients</div>
-    <hr>
-    <div class="subtitle">Einstein A Co-efficients</div>
+<BoxComponent title="Einstein Co-efficients" loaded={einsteinCoefficientA.length > 0 && einsteinCoefficientB.length > 0 && einsteinB_rateComputed } >
+
+    <!-- <hr> -->
+    <div class="align h-center subtitle">Einstein A Co-efficients</div>
 
     {#if einsteinCoefficientA.length>0}
-        <div class="content__div ">
-            {#each einsteinCoefficientA as {label, value, id}(id)}
-                <Textfield bind:value {label} />
-            {/each}
-        </div>
+        {#each einsteinCoefficientA as {label, value, id}(id)}
+            <Textfield bind:value {label} />
+        {/each}
     {/if}
 
-    <div class="control__div ">
-        <button class="button is-link " on:click={computeEinsteinB}>Compute Einstein B</button>
+    <div class="align h-center ">
+        <button class="button is-link" on:click={computeEinsteinB}>
+
+            {#if einsteinCoefficientB.length<1}
+                <i class="material-icons">sync_problem</i>
+            {/if}
+            Compute Einstein B
+        </button>
     </div>
 
     
     {#if einsteinCoefficientB.length>0}
+    
         <hr>
 
-        <div class="subtitle">Einstein B Co-efficients</div>
-        <div class="control__div ">
+        <div class="align h-center subtitle">Einstein B Co-efficients</div>
+        <div class="align h-center">
             <Textfield bind:value={voigtline} label="voigt lineshape (Hz)" />
-            <button class="button is-link " on:click={computeEinsteinBRate}>Compute rate constants</button>
+            <button class="button is-link " on:click={computeEinsteinBRate}>
+                {#if !einsteinB_rateComputed}
+                    <i class="material-icons">sync_problem</i>
+                {/if}
+                Compute rate constants
+            </button>
         </div>
 
-        <div class="content__div ">
+        <div class="align h-center">
             {#each einsteinCoefficientB as {label, value, id}(id)}
                 <Textfield bind:value {label} />
             {/each}
         </div>
     {/if}
-
-</div>
-
-
-<style lang="scss">
-    .sub_container__div {
-        display: grid;
-        grid-row-gap: 1em;
-        .subtitle {place-self:center;}
-
-        .content__div {
-            max-height: 30rem;
-            overflow-y: auto;
-            display: flex;
-            flex-wrap: wrap;
-            justify-self: center; // grow from center (width is auto adjusted)
-            gap: 1em;
-            justify-content: center; // align items center
-        }
-        .control__div {
-            display: flex;
-            align-items: baseline;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1em;
-     
-        }
-    }
-    hr {background-color: #fafafa; margin: 0;}
-</style>
+</BoxComponent>

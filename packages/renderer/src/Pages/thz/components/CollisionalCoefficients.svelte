@@ -6,7 +6,7 @@
     import balance_distribution         from "../functions/balance_distribution";
     import CollisionalDistribution      from "../windows/CollisionalDistribution.svelte";
     import CollisionalRateConstantPlot  from "../windows/CollisionalRateConstantPlot.svelte";
-
+    import BoxComponent                 from "./BoxComponent.svelte";
     export let energyUnit
     export let zeemanSplit
     export let energyLevels
@@ -112,11 +112,9 @@
     bind:collisionalTemp
 />
 
-<div class="sub_container__div box">
-    <div class="subtitle">Collisional rate constants</div>
+<BoxComponent title="Collisional rate constants" loaded={collisionalCoefficient.length>0} >
 
-    <div class="control__div ">
-
+    <svelte:fragment slot="control">
         <button class="button is-link " on:click={compteCollisionalBalanceConstants}>Compute balance rate</button>
         <button class="button is-link " on:click={()=>collisionalWindow=true}>Compute Collisional Cooling</button>
         
@@ -128,11 +126,10 @@
             <button class="button is-link" on:click={readcollisionalCoefficientJSONFile}>Read</button>
             <button class="button is-link" on:click={saveCollisionalRateConstants}>Save</button>
         </div>
-
-    </div>
+    </svelte:fragment>
 
     {#if collisionalCoefficient.length>0}
-        <div class="content__div ">
+        <div class="align h-center">
             {#each collisionalCoefficient as {label, value, id}(id)}
                 <Textfield bind:value {label}/>
             {/each}
@@ -141,53 +138,23 @@
 
     {#if collisionalCoefficient_balance.length>0}
         <hr>
-        <div class="content__div ">
+        <div class="align h-center">
             {#each collisionalCoefficient_balance as {label, value, id}(id)}
                 <Textfield bind:value {label}/>
             {/each}
+
         </div>
     {/if}
     
     <hr>
-    <div class="subtitle">Collisional Rates (per sec) </div>
-    <div class="control__div">
+    <div class="align h-center subtitle">Collisional Rates (per sec) </div>
+    <div class="align h-center">
         <Textfield bind:value={numberDensity} label="numberDensity (cm-3)"/>
     </div>
-    <div class="content__div ">
+
+    <div class="align h-center">
         {#each collisionalRates as {label, value, id}(id)}
             <Textfield bind:value {label}/>
         {/each}
     </div>
-    
-</div>
-
-<style lang="scss">
-
-    .sub_container__div {
-        display: grid;
-        grid-row-gap: 1em;
-
-        .subtitle {place-self:center; margin-bottom: 0;}
-        .content__div {
-            max-height: 30rem;
-            overflow-y: auto;
-            
-            display: flex;
-            flex-wrap: wrap;
-            justify-self: center; // grow from center (width is auto adjusted)
-            gap: 1em;
-            justify-content: center; // align items center
-        }
-
-        .control__div {
-            display: flex;
-            align-items: baseline;
-            flex-wrap: wrap;
-
-            justify-content: center;
-            gap: 1em;
-        }
-    }
-
-    hr {background-color: #fafafa; margin: 0;}
-</style>
+</BoxComponent>

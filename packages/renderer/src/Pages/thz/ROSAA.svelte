@@ -18,6 +18,7 @@
     import EinsteinCoefficients     from "./components/EinsteinCoefficients.svelte";
     import CollisionalCoefficients  from "./components/CollisionalCoefficients.svelte";
     import AttachmentCoefficients   from "./components/AttachmentCoefficients.svelte";
+    import BoxComponent             from "./components/BoxComponent.svelte";
 
     import {
         amuToKG,
@@ -119,9 +120,20 @@
     $: if(fs.existsSync(currentLocation)) {db.set("thz_modal_location", currentLocation)}
 
     async function browse_folder() {
-        const result = await browse()
+        const result = await browse({filetype: "yml", dir: false})
         if(!result) return
-        currentLocation = result
+        configFile = result[0]
+        currentLocation = dirname(configFile)
+        loadConfig()
+    }
+
+    const resetConfig = () => {
+        // collisionalCoefficient = collisionalCoefficient_balance = collisionalRates = []
+        einsteinCoefficientA = einsteinCoefficientB = []
+        energyLevels = []
+        simulationParameters = mainParameters = dopplerLineshape = powerBroadening = []
+        attachmentCoefficients = [] 
+        window.createToast("Config file cleared", "warning")
     }
     
     let writefile = true
@@ -183,8 +195,9 @@
     let trapArea;
     let excitedTo=""
     let excitedFrom="";
+    let upperLevelEnergy;
+    let lowerLevelEnergy;
     let transitionFrequency=0
-    let transitionFrequencyInHz;
 
     // Doppler linewidth parameters
     let ionMass=14
@@ -201,14 +214,14 @@
     let lorrentz=0
     let Cp=0; // power-broadening proportionality constant
 
+    
     const updateEnergyLevels = () => {
         console.log("energyLevels updated")
+        lowerLevelEnergy = find(energyLevels, (energy)=>energy.label==excitedFrom).value || 0;
+        upperLevelEnergy = find(energyLevels, (energy)=>energy.label==excitedTo).value || 0;
 
-        const {value:lowerLevelEnergy}  = find(energyLevels, (energy)=>energy.label==excitedFrom) || 0
-        const {value:upperLevelEnergy}  = find(energyLevels, (energy)=>energy.label==excitedTo) || 0
-        transitionFrequency             = upperLevelEnergy - lowerLevelEnergy;
-        if(energyUnit=="cm-1" ) { transitionFrequencyInHz     = transitionFrequency*SpeedOfLight*1e2 } 
-        else { transitionFrequencyInHz     = transitionFrequency*1e6 }
+        transitionFrequency = upperLevelEnergy - lowerLevelEnergy;
+        if(energyUnit=="cm-1" ) { transitionFrequency *= SpeedOfLight*1e2 * 1e-6 }
         updateDoppler()
     }
     
@@ -217,13 +230,13 @@
 
         console.log("Changing doppler parameters");
         [ionMass, RGmass, ionTemp, trapTemp] = dopplerLineshape.map(f=>f.value);
+        
         collisionalTemp = Number((RGmass*ionTemp + ionMass*trapTemp)/(ionMass+RGmass)).toFixed(1);
-        const sqrtTerm  = 8*boltzmanConstant*Math.log(2) / (ionMass*amuToKG*SpeedOfLight**2)
-        Cg          = transitionFrequencyInHz*Math.sqrt(sqrtTerm)
-        gaussian    = Number(Cg*Math.sqrt(ionTemp)*1e-6).toFixed(3)
+        const sqrtTerm  = (8*boltzmanConstant*Math.log(2)*ionTemp) / (ionMass*amuToKG*SpeedOfLight**2)
+        Cg              = Math.sqrt(sqrtTerm)
+        gaussian        = Number(transitionFrequency*Cg).toFixed(3) // in MHz
     
     }
-
     const updatePower = () => {
     
         [dipole, power] = powerBroadening.map(f=>f.value);
@@ -308,6 +321,7 @@
             updateDoppler();
             updateEnergyLevels();
             configLoaded = true;
+
         } catch (error) {window.handleError(error)}
     }
 
@@ -336,24 +350,28 @@
     bind:active={openBoltzmanWindow} 
     bind:graphWindow={boltzmanWindow} 
 />
+
 <SeparateWindow id="ROSAA__modal" title="ROSAA modal" bind:active>
 
     <svelte:fragment slot="header_content__slot" >
-    
         <div class="locationColumn" >
-            <!-- <button class="button is-link" id="thz_modal_filebrowser_btn" on:click={browse_folder}>Browse</button> -->
-            <Textfield value={currentLocation}   variant="outlined" label="CONFIG location" disabled />
-            <Textfield bind:value={savefilename} variant="outlined" label="savefilename" />
+
+            <button class="button is-link" id="thz_modal_filebrowser_btn" on:click={browse_folder}>Browse</button>
+            <Textfield value={currentLocation} variant="outlined" label="CONFIG location" />
+            <Textfield value={window.basename(configFile)} label="CONFIG file" variant="outlined" />
+            <!-- <Textfield bind:value={savefilename} variant="outlined" label="savefilename" /> -->
+
         </div>
 
         <div class="writefileCheck">
-            <CustomCheckbox bind:selected={writefile}                   label="writefile" />
-            <CustomCheckbox bind:selected={includeCollision}            label="includeCollision" />
 
+            <!-- <CustomCheckbox bind:selected={writefile}                   label="writefile" /> -->
+            <CustomCheckbox bind:selected={includeCollision}            label="includeCollision" />
             <CustomCheckbox bind:selected={includeAttachmentRate}       label="includeAttachmentRate" />
             <CustomCheckbox bind:selected={includeSpontaneousEmission}  label="includeSpontaneousEmission" />
             <CustomCheckbox bind:selected={electronSpin}                label="Electron Spin" />
             <CustomCheckbox bind:selected={zeemanSplit}                 label="Zeeman" />
+
         </div>
 
         <div class="variableColumn">
@@ -365,11 +383,7 @@
                     <Textfield bind:value={variableRange} style="width: auto;" label="Range (min, max, totalsteps)" />
                 {/if}
                 <button class="button is-link" on:click={loadConfig}>Load config</button>
-                <button class="button is-link" on:click={()=>{configFile=""; window.createToast("Config file cleared", "warning")}}>
-                    Reset Config
-                </button>
-
-                <Textfield value={window.basename(configFile)} style="width: auto;" label="CONFIG file" disabled variant="outlined" />
+                <button class="button is-link" on:click={resetConfig}>Reset Config</button>
 
             </div>
 
@@ -382,26 +396,21 @@
             <hr>
         </div>
 
-        <!-- Main Parameters -->
-        
         <div class="main_container__div" class:hide={showreport}>
-            <div class="sub_container__div box">
-        
-                <div class="subtitle">Main Parameters</div>
-                <div class="content__div ">
-                    {#each mainParameters as {label, value, id}(id)}
-                        <Textfield bind:value {label}/>
-                    {/each}
-                </div>
-            </div>
 
+            <!-- Main Parameters -->
 
+            <BoxComponent title="Main Parameters" loaded={mainParameters.length > 0} >
+                {#each mainParameters as {label, value, id}(id)}
+                    <Textfield bind:value {label}/>
+                {/each}
+            </BoxComponent>
+            
             <!-- Energy levels -->
 
-            <div class="sub_container__div box" >
-                <div class="subtitle">Energy levels</div>
-                <div class="control__div ">
+            <BoxComponent title="Energy Levels" loaded={energyLevels.length > 0}>
 
+                <svelte:fragment slot="control">
                     <Textfield bind:value={numberOfLevels} 
                         input$step={1}
                         input$min={0}
@@ -414,79 +423,59 @@
                         on:click={()=>{openBoltzmanWindow=true; setTimeout(()=>boltzmanWindow?.focus(), 100); }}>
                         Show Boltzman distribution
                     </button>
+                </svelte:fragment>
+                {#each energyLevels as {label, value, id}(id)}
+                    <Textfield bind:value {label} />
+                {/each}
 
-                </div>
-
-                <div class="content__div ">
-                    {#each energyLevels as {label, value, id}(id)}
-                        <Textfield bind:value {label} />
-                    {/each}
-                </div>
-            </div>
-
+            </BoxComponent>
+            
             <!-- Simulation parameters -->
-            <div class="sub_container__div box">
+            
+            <BoxComponent title="Simulation parameters" loaded={simulationParameters.length > 0}>
+                {#each simulationParameters as {label, value, id}(id)}
+                    <Textfield bind:value {label} />
+                {/each}
 
-                <div class="subtitle">Simulation parameters</div>
-                <div class="content__div ">
-                    {#each simulationParameters as {label, value, id}(id)}
-                        <Textfield bind:value {label} />
-                    {/each}
-
-                    <hr>
-                        <div class="subtitle" style="width: 100%; display:grid; place-items: center;">
-                            Transition levels
-                        </div>
-                    <hr>
-
-
-                    <div class="align h-center">
-
-                        <CustomSelect options={energyLevels.map(f=>f.label)} bind:picked={excitedFrom}
-                            label="excitedFrom"
-                            on:change={updateEnergyLevels}
-                        />
-                    
-                        <CustomSelect options={energyLevels.map(f=>f.label)} bind:picked={excitedTo}
-                            label="excitedTo"
-                            on:change={updateEnergyLevels}
-                        />
-                    
-                        <Textfield bind:value={transitionFrequency} label="transitionFrequency ({energyUnit})" />
-                    
+                <hr>
+                    <div class="subtitle" style="width: 100%; display:grid; place-items: center;">
+                        Transition levels
                     </div>
-
+                <hr>
+                <div class="align h-center">
+                    <CustomSelect options={energyLevels.map(f=>f.label)} bind:picked={excitedFrom}
+                        label="excitedFrom"
+                        on:change={updateEnergyLevels}
+                    />
+                    <CustomSelect options={energyLevels.map(f=>f.label)} bind:picked={excitedTo}
+                        label="excitedTo"
+                        on:change={updateEnergyLevels}
+                    />
+                    <Textfield value={Number(upperLevelEnergy-lowerLevelEnergy) || 0} label="transitionFrequency ({energyUnit})" />
                 </div>
-            </div>
+            </BoxComponent>
 
             <!-- Doppler lineshape -->
             
-            <div class="sub_container__div box">
-
-                <div class="subtitle">Doppler lineshape</div>
-                <div class="content__div ">
-                    {#each dopplerLineshape as {label, value, id}(id)}
-                        <CustomTextSwitch step={0.5} bind:value {label} />
-                    {/each}
-
-                    <Textfield bind:value={collisionalTemp} label="collisionalTemp(K)" />
-                    <Textfield bind:value={gaussian}        label="gaussian - FWHM (MHz)" />
-                </div>
-            </div>
+            <BoxComponent title="Doppler lineshape" loaded={dopplerLineshape.length > 0}>
+                {#each dopplerLineshape as {label, value, id}(id)}
+                    <CustomTextSwitch step={0.5} bind:value {label} />
+                {/each}
+                <Textfield bind:value={collisionalTemp} label="collisionalTemp(K)" />
+                <Textfield bind:value={gaussian}        label="gaussian - FWHM (MHz)" />
+            </BoxComponent>
             
             <!-- Lorrentz lineshape -->
-            <div class="sub_container__div box">
-                <div class="subtitle">Lorrentz lineshape</div>
-                <div class="content__div ">
-                    {#each powerBroadening as {label, value, id}(id)}
-                        <Textfield bind:value {label} />
-                    {/each}
-                    <Textfield bind:value={lorrentz} label="lorrentz - FWHM (MHz)" />
-                    <Textfield value={voigtFWHM} label="Voigt - FWHM (MHz)" disabled variant="outlined" />
-                </div>
 
-            </div>
+            <BoxComponent title="Lorrentz lineshape" loaded={powerBroadening.length > 0}>
+                {#each powerBroadening as {label, value, id}(id)}
+                    <Textfield bind:value {label} />
+                {/each}
+                <Textfield bind:value={lorrentz} label="lorrentz - FWHM (MHz)" />
+                <Textfield value={voigtFWHM} label="Voigt - FWHM (MHz)" variant="outlined" />
+            </BoxComponent>
             
+
             <EinsteinCoefficients
                 bind:einsteinCoefficientA
                 bind:einsteinCoefficientB
@@ -502,44 +491,47 @@
                 {configLoaded}
                 />
 
-                <CollisionalCoefficients
-                    bind:numberDensity
-                    bind:collisionalRates
-                    bind:collisionalCoefficient
-                    bind:collisionalCoefficient_balance
-                    {energyUnit}
-                    {zeemanSplit}
-                    {electronSpin}
-                    {energyLevels}
-                    {collisionalTemp}
-                    {collisionalFilename}
-                />
-                
-                <AttachmentCoefficients
-                    bind:k3
-                    bind:kCID
-                    bind:numberDensity 
-                    bind:attachmentCoefficients
-                />
-
-
-                <!-- Figure config -->
-                <div class="sub_container__div box">
-                    <div class="subtitle">Figure config</div>
-                    <div class="content__div ">
-                        <Textfield bind:value={figure.size} label="Dimention (width, height)" />
-                        <Textfield bind:value={figure.dpi} label="DPI" />
-                        <CustomCheckbox bind:selected={figure.show} label="show figure" />
-                    </div>
-    
-                </div>
             
+            <CollisionalCoefficients
+                bind:numberDensity
+                bind:collisionalRates
+                bind:collisionalCoefficient
+                bind:collisionalCoefficient_balance
+                {energyUnit}
+                {zeemanSplit}
+                {electronSpin}
+                {energyLevels}
+                {collisionalTemp}
+                {collisionalFilename}
+            />
+            
+            <AttachmentCoefficients
+                bind:k3
+                bind:kCID
+                bind:numberDensity 
+                bind:attachmentCoefficients
+            />
+
+            <!-- Figure config -->
+
+            <BoxComponent title="Figure config" loaded={true} >
+                <Textfield bind:value={figure.size} label="Dimention (width, height)" />
+
+                <Textfield bind:value={figure.dpi} label="DPI" />
+                <CustomCheckbox bind:selected={figure.show} label="show figure" />
+            </BoxComponent>
+
         </div>
 
     </svelte:fragment>
 
+    <svelte:fragment slot="left_footer_content__slot">
+        <CustomCheckbox bind:selected={writefile} label="writefile" />
+        <Textfield bind:value={savefilename} label="savefilename" />
+    </svelte:fragment>
+
     <svelte:fragment slot="footer_content__slot">
-        
+
         {#if pyProcesses.length>0}
 
             <div>Running: {pyProcesses.length} {pyProcesses.length>1 ? "simulations" : "simulation"}</div>
@@ -549,34 +541,24 @@
         {/if}
 
         <CustomSelect options={simulationMethods} bind:picked={simulationMethod} label="simulationMethod"/>
-
-
         {#if showreport}
             <button  class="button is-warning" on:click="{()=>{statusReport = ""}}" >Clear</button>
         {/if}
-        
         <button  class="button is-link" on:click="{()=>{showreport = !showreport}}">
             {showreport ? "Go Back" : "Status report"}
-
         </button>
     
         <PyButton on:click={simulation} bind:pyProcesses bind:stdOutput={statusReport} />
-
     </svelte:fragment>
 
 </SeparateWindow>
 
 <style lang="scss">
-
     .locationColumn {
         display: grid;
         grid-auto-flow: column;
         grid-gap: 1em;
-        grid-template-columns: 4fr 1fr;
-        // .button {
-        //     margin:0;
-        //     align-self: center;
-        // }
+        grid-template-columns: 0.5fr 4fr 1fr;
     }
 
     hr {background-color: #fafafa; margin: 0;}
@@ -587,7 +569,6 @@
         border-radius: 20px;
     }
     .variableColumn {
-
         display: grid;
         .subtitle {margin: 0;}
         .variableColumn__dropdown {
@@ -599,37 +580,11 @@
     .main_container__div {
         display: grid;
         grid-row-gap: 1em;
-        padding: 1em;
         .subtitle {margin:0;}
-    }
-    .sub_container__div {
-        display: grid;
-
-        grid-row-gap: 1em;
-        .subtitle {place-self:center;}
-        .content__div {
-            max-height: 30rem;
-            overflow-y: auto;
-            display: flex;
-            flex-wrap: wrap;
-            justify-self: center; // grow from center (width is auto adjusted)
-            gap: 1em;
-            justify-content: center;
-            align-items: center;
-
-        }
-        .control__div {
-            display: flex;
-            align-items: baseline;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1em;
-        }
     }
 
     .status_report__div {
         white-space: pre-wrap; 
         user-select: text;
-        padding:1em;
     }
 </style>

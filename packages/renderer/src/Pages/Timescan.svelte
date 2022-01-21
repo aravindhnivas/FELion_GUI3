@@ -133,8 +133,6 @@
             plot(`Timescan Plot: ${file}`, "Time (in ms)", "Counts", kineticData[file], `${file}_tplot`, logScale ? "log" : null)
         })
     }
-
-
     let saveOutputDepletion = true;
 
 </script>
@@ -168,10 +166,10 @@
         </div>
     </svelte:fragment>
 
-    <svelte:fragment slot="plotContainer" let:lookForGraph>
-        <div class="graph__container" class:hide={!graphPlotted} >
+    <svelte:fragment slot="plotContainer" let:lookForGraph >
+        <div class="graph__container" >
             {#each fileChecked as scanfile}
-                <div id="{scanfile}_tplot"  class="graph__div"  use:lookForGraph />
+                <div id="{scanfile}_tplot"  class="graph__div" use:lookForGraph />
             {/each}
         </div>
 
