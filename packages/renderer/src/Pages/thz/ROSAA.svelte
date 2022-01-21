@@ -1,9 +1,8 @@
 <script>
-    import {tick}                   from "svelte";
     import {fade}                   from "svelte/transition";
     import Textfield                from '@smui/textfield';
     import { parse as Yml }         from 'yaml';
-    import {find}                   from "lodash-es"
+    import {find, cloneDeep}        from "lodash-es"
 
     import {browse}                 from "$components/Layout.svelte";
     import CustomSelect             from "$components/CustomSelect.svelte";
@@ -134,6 +133,7 @@
         simulationParameters = mainParameters = dopplerLineshape = powerBroadening = []
         attachmentCoefficients = [] 
         window.createToast("Config file cleared", "warning")
+    
     }
     
     let writefile = true
@@ -143,7 +143,6 @@
 
     let variable = "time"
     let variableRange = "1e12, 1e16, 10";
-    
     const variablesList = ["time", "He density(cm3)", "Power(W)"]
     
     let einsteinCoefficientA=[]
@@ -151,14 +150,16 @@
     let collisionalCoefficient=[]
 
     let energyUnit="cm-1"
+    let original_energyUnit="cm-1"
+    
     let energyLevels = [];
+    
     let numberOfLevels = 3;
     let numberDensity = "2e14";
 
     let energyFilename
     let einsteinFilename;
     let collisionalFilename
-
     let configFile = db.get("ROSAA_config_file") || ""
     $: boltzmanArgs = {energyLevels, trapTemp, electronSpin, zeemanSplit, energyUnit}
 
@@ -250,7 +251,7 @@
         if(dopplerLineshape.length) { updateDoppler() }
         if(powerBroadening.length) { updatePower() }
     }
-
+    let original_energyLevels = []
     async function setConfig() {
 
         try {
@@ -301,11 +302,12 @@
             collisionalFilename = collisionalFilename ? window.pathJoin(configFileLocation, "files", collisionalFilename) : "";
 
             if(energyFilename) {
-                ({levels:energyLevels, unit:energyUnit} = await getYMLFileContents(energyFilename));
+                ({levels:energyLevels, unit:original_energyUnit} = await getYMLFileContents(energyFilename));
             }
-
-            energyLevels        = energyLevels.map(setID);
-            numberOfLevels      = energyLevels.length;
+            energyUnit = original_energyUnit
+            energyLevels = energyLevels.map(setID);
+            original_energyLevels = cloneDeep(energyLevels)
+            numberOfLevels = energyLevels.length;
             excitedFrom = energyLevels?.[0].label;
             excitedTo = energyLevels?.[1].label;
 
@@ -323,6 +325,7 @@
             configLoaded = true;
 
         } catch (error) {window.handleError(error)}
+    
     }
 
     let boltzmanWindow;
@@ -330,42 +333,35 @@
     $: voigtFWHM = Number(0.5346 * lorrentz + Math.sqrt(0.2166*lorrentz**2 + gaussian**2)).toFixed(3)
 
     let simulationMethod = "Normal"
-    const simulationMethods = ["Normal", "FixedPopulation", "withoutCollisionalConstants"]
     const figure = {dpi: 100, size: "10, 6", show: true} 
-
-    const scrollDiv = async (id) => {
-        const DIV = document.getElementById(id)
-        await tick()
-        const scrollTo = DIV.scrollHeight - DIV.clientHeight
-        DIV.scrollTo({top:scrollTo, behavior: 'smooth'})
-    }
-
-    $: if(statusReport) {
-        scrollDiv("status_report__ROSAA")
-    }
+    const simulationMethods = ["Normal", "FixedPopulation", "withoutCollisionalConstants"]
+    const wavenumberToMHz = (energy) => ({...energy, value: Number(energy.value*SpeedOfLight*1e2*1e-6).toFixed(3)}) 
+    const MHzToWavenumber = (energy) => ({...energy, value: Number(energy.value/(SpeedOfLight*1e2*1e-6)).toFixed(3)}) 
+    $: if(energyUnit !== original_energyUnit) {
+        if(original_energyUnit == "cm-1") {energyLevels = original_energyLevels.map(wavenumberToMHz)}
+        else if(original_energyUnit == "MHz") {energyLevels = original_energyLevels.map(MHzToWavenumber)}
+    } else {energyLevels = cloneDeep(original_energyLevels) }
 
 </script>
 
 <BoltzmanDistribution {...boltzmanArgs}
     bind:active={openBoltzmanWindow} 
-    bind:graphWindow={boltzmanWindow} 
-/>
+    bind:graphWindow={boltzmanWindow} />
 
-<SeparateWindow id="ROSAA__modal" title="ROSAA modal" bind:active>
+
+<SeparateWindow id="ROSAA__modal" title="ROSAA modal" bind:active >
 
     <svelte:fragment slot="header_content__slot" >
-        <div class="locationColumn box v-center" style="border: solid 1px #fff9;" >
 
+        <div class="locationColumn box v-center" style="border: solid 1px #fff9;" >
             <button class="button is-link" id="thz_modal_filebrowser_btn" on:click={browse_folder}>Browse</button>
             <Textfield value={currentLocation} label="CONFIG location" />
             <Textfield value={window.basename(configFile)} label="CONFIG file" />
-            <!-- <Textfield bind:value={savefilename} variant="outlined" label="savefilename" /> -->
-
         </div>
+
 
         <div class="align box" style="border: solid 1px #fff9;">
 
-            <!-- <CustomCheckbox bind:selected={writefile}                   label="writefile" /> -->
             <CustomCheckbox bind:selected={includeCollision}            label="includeCollision" />
             <CustomCheckbox bind:selected={includeAttachmentRate}       label="includeAttachmentRate" />
             <CustomCheckbox bind:selected={includeSpontaneousEmission}  label="includeSpontaneousEmission" />
@@ -374,11 +370,11 @@
 
         </div>
 
-        <div class="align box" style="border: solid 1px #fff9;">
+        <div class="align box" style="border: solid 1px #fff9;" >
             <div class="subtitle">Simulate signal(%) as a function of {variable}</div>
-            <div class="align">
+            <div class="align v-center">
                 
-                <CustomSelect options={variablesList} bind:picked={variable} />
+                <CustomSelect options={variablesList} bind:picked={variable} label="variable" />
                 {#if variable !== "time"}
                     <Textfield bind:value={variableRange} style="width: auto;" label="Range (min, max, totalsteps)" />
                 {/if}
@@ -417,7 +413,7 @@
                         input$type={"number"} 
                         label="numberOfLevels (J levels)"
                     />
-                    <CustomSelect options={["MHz", "cm-1"]} bind:picked={energyUnit} />
+                    <CustomSelect options={["MHz", "cm-1"]} bind:picked={energyUnit} label="energyUnit" />
 
                     <button class="button is-link" 
                         on:click={()=>{openBoltzmanWindow=true; setTimeout(()=>boltzmanWindow?.focus(), 100); }}>
@@ -570,4 +566,5 @@
         white-space: pre-wrap; 
         user-select: text;
     }
+    .box {padding: 0.5em 1.25em;}
 </style>

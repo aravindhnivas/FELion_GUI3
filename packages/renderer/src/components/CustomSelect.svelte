@@ -5,10 +5,12 @@
 
 <div class="select" >
     <select bind:value={picked} {label} on:change >
-        <option >{label}</option>
-    {#each options as option}
-        <option value={option}>{option}</option>
-    {/each}
+        <optgroup {label} >
+            {#each options as option}
+            <option value={option}>{option}</option>
+            {/each}
+        </optgroup>
+
 </select>
 
 </div>
@@ -18,8 +20,12 @@
         align-self: auto;
         select {
             min-width: 12em;
-            &:active, &:hover {border-color: white;}
-            &::after {border-color: grey;}
+            &:active, &:hover, &:focus {border-color: white;}
+            &::after {border-color: rgb(104, 86, 86);}
+        }
+        optgroup {
+            color: black;
+            font-size: medium;
         }
     }
 </style>

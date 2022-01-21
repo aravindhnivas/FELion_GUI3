@@ -30,18 +30,18 @@
 
 <style lang="scss">
     .sub_container__div {
-        border: solid 1px dimgrey;
+        border: solid 1px #fff7;
         .content__div {
             max-height: 30rem;
             overflow-y: auto;
         }
         .toggle {
             margin-left: auto;
-            border: solid 1px;
+            border: solid 1px #fff7;
             border-radius: 8px;
             padding: 2px;
 
-            &:hover {background-color: #8863c9;}
+            &:hover {background-color: #8863c9; border: solid 1px;}
         
         }
     }
