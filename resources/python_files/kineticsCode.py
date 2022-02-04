@@ -13,7 +13,7 @@ from scipy.integrate import solve_ivp
 
 from FELion_constants import pltColors
 from FELion_definitions import readCodeFromFile
-
+from FELion_widgets import FELion_Tk
 from msgbox import MsgBox, MB_ICONERROR, MB_ICONINFORMATION
 
 
@@ -39,7 +39,7 @@ class Sliderlog(Slider):
         self.poly.xy = xy
         self.valtext.set_text(self.valfmt % 10**val)   # Modified to display 10**val instead of val
         if self.drawon:
-            self.ax.figure.canvas.draw_idle()
+            self.ax.figure.canvas.draw()
         self.val = val
         if not self.eventson:
             return
@@ -152,6 +152,7 @@ def saveData(event=None):
         savefile = savedir/"k_fit.json"
 
         k3Len = len(ratek3)
+
         with open(savefile, "w+") as f:
 
             k3Values = (formatArray(rateCoefficientArgs[0]), formatArray(k_fit[:k3Len]) )[len(k_fit)>0]
@@ -185,7 +186,28 @@ def saveData(event=None):
                     "Saved", 
                     f"Rate constants written in json format : '{savefile.name}'\nLocation: {currentLocation}", MB_ICONINFORMATION
                 )
+
             fig.savefig(f"{savedir/selectedFile}_.png", dpi=200)
+            fig.savefig(f"{savedir/selectedFile}_.pdf", dpi=200)
+
+
+        with open(currentLocation/f"EXPORT/{selectedFile}_fitted.json", "w+") as f:
+            dataToSaveFit = {"fit": {}, "exp": {}}
+            for name, fitLine, expLine in zip(nameOfReactants, fitPlot, expPlot):
+                xdata_f, ydata_f = fitLine.get_data()
+                xdata, ydata = expLine.get_children()[0].get_data()
+                dataToSaveFit["fit"][name] = {
+                    "xdata": xdata_f.tolist(),
+                    "ydata": ydata_f.tolist()
+                }
+                dataToSaveFit["exp"][name] = {
+                    "xdata": xdata,
+                    "ydata": ydata
+                }
+            
+            data = json.dumps(dataToSaveFit, sort_keys=True, indent=4, separators=(',', ': '))
+            f.write(data)
+            log(f"file written: {selectedFile}_fitted.json in EXPORT folder")
 
     except Exception:
         
@@ -200,15 +222,10 @@ def saveData(event=None):
 
 fig = None
 ax = None
-
+canvas = None
 fitPlot = []
 expPlot = []
 plotted=False
-def ChangeYScale(yscale):
-    ax.set_yscale(yscale)
-    if yscale == "log":
-        ax.set_ylim(ymin=0.1)
-    fig.canvas.draw_idle()
 
 def setNumberDensity(val):
     global numberDensity
@@ -225,7 +242,7 @@ checkboxes = {
 def checkboxesFunc(label):
     global checkboxes
     checkboxes[label] = not checkboxes[label]
-    fig.canvas.draw_idle()
+    canvas.draw()
 
 def on_pick(event):
     
@@ -241,45 +258,41 @@ def on_pick(event):
     
     legline.set_alpha(alpha)
 
-    fig.canvas.draw()
+    canvas.draw()
 
 toggleLine = {}
 
 def plot_exp():
-    global data, fig, ax, k3Sliders, kCIDSliders, rateCoefficientArgs, \
-        saveButton, radio, toggleLine
+    global data, fig, canvas, ax, k3Sliders, kCIDSliders, rateCoefficientArgs, \
+        saveButton, radio, toggleLine, widget
 
-    fig, ax = plt.subplots(figsize=(12, 6))
-    plt.subplots_adjust(right=0.6, top=0.95, left=0.09, bottom=0.25)
+    fig, canvas = widget.Figure()
+    ax = widget.make_figure_layout(title=f"{selectedFile}", xaxis="Time (ms)", yaxis="Counts", yscale="log", savename=selectedFile)
+    fig.subplots_adjust(right=0.6, top=0.95, left=0.09, bottom=0.25)
+
+    # print(fig, canvas)
     
     axcolor = 'lightgoldenrodyellow'
-    k3Sliders, kCIDSliders = make_slider(ax)
+    k3Sliders, kCIDSliders = make_slider()
     left, bottom, width, height = 0.1, 0.05, 0.1, 0.05
     
-    rax = plt.axes([left, bottom, width, height], facecolor=axcolor)
-
-    radio = RadioButtons(rax, ('log', 'linear'), active=0)
-    radio.on_clicked(ChangeYScale)
-
-    left += width+0.01
-    buttonAxes = plt.axes([left, bottom, width, height], facecolor=axcolor)
+    buttonAxes = fig.add_axes([left, bottom, width, height], facecolor=axcolor)
     button = Button(buttonAxes, 'Fit', color=axcolor, hovercolor='0.975')
 
     button.on_clicked(fitfunc)
 
     left += width+0.01
-    checkAxes = plt.axes([left, bottom, width, height], facecolor=axcolor)
+    checkAxes = fig.add_axes([left, bottom, width, height], facecolor=axcolor)
     checkbox = CheckButtons(checkAxes, ("setbound", ), list(checkboxes.values()))
-    
     checkbox.on_clicked(checkboxesFunc)
 
     left += width+0.01
 
-    saveButtonAxes = plt.axes([left, bottom, width, height], facecolor=axcolor)
+    saveButtonAxes = fig.add_axes([left, bottom, width, height], facecolor=axcolor)
     saveButton = Button(saveButtonAxes, 'saveData', color=axcolor, hovercolor='0.975')
     saveButton.on_clicked(saveData)
 
-    numberDensityWidgetAxes = plt.axes([0.9-width, bottom, width, height], facecolor=axcolor)
+    numberDensityWidgetAxes = fig.add_axes([0.9-width, bottom, width, height], facecolor=axcolor)
     numberDensityWidget = TextBox(numberDensityWidgetAxes, 'Number density', initial=f"{numberDensity:.2e}")
     numberDensityWidget.on_submit(setNumberDensity)
 
@@ -292,11 +305,8 @@ def plot_exp():
         expPlot.append(_expPlot)
 
     ax = optimizePlot(ax, xlabel="Time (ms)", ylabel="Counts", yscale="log")
-    # if yscale == "log":
     ax.set_ylim(ymin=0.1)
-    # log(f"{temp=}")
     ax.set_title(f"{selectedFile}: @{temp:.1f} K {numberDensity:.2e}"+"$cm^{-3}$")
-
     rateCoefficientArgs=(ratek3, ratekCID)
     
     log(f"{rateCoefficientArgs=}")
@@ -310,12 +320,12 @@ def plot_exp():
         _fitPlot, = ax.plot(simulateTime*1e3, data, "-", c=pltColors[counter], alpha=1)
         fitPlot.append(_fitPlot)
 
-    legend = ax.legend([f"${_}$" for _ in nameOfReactants])
+    widget.plot_legend = legend = ax.legend([f"${_}$" for _ in nameOfReactants])
     for legline, origlinefit, origlineexp in zip(legend.get_lines(), fitPlot, expPlot):
         legline.set_picker(True)
         toggleLine[legline] = [origlinefit, origlineexp]
 
-    fig.canvas.mpl_connect('pick_event', on_pick)
+    canvas.mpl_connect('pick_event', on_pick)
 
     try:
         global plotted
@@ -329,8 +339,8 @@ def plot_exp():
 
     except Exception:
         log(traceback.format_exc())
-
-    return numberDensityWidget, saveButton, checkbox, button, radio
+    canvas.draw()
+    return numberDensityWidget, saveButton, checkbox, button
 
 rateCoefficientArgs = ()
 
@@ -350,12 +360,13 @@ def update(val=None):
 
     for line, data in zip(fitPlot, dNdtSol):
         line.set_ydata(data)
-    fig.canvas.draw_idle()
+
+    canvas.draw()
 
 k3Sliders = {}
 kCIDSliders = {}
 
-def make_slider(ax):
+def make_slider():
 
     global k3Sliders, kCIDSliders
     ax.margins(x=0)
@@ -367,7 +378,7 @@ def make_slider(ax):
     counter = 0
 
     for label in k3Labels:
-        k3SliderAxes = plt.axes([0.65, bottom, width, height])
+        k3SliderAxes = fig.add_axes([0.65, bottom, width, height])
         if counter+1 <= min(len(ratek3), len(ratekCID)):
             k3SliderAxes.patch.set_facecolor(f"C{counter+1}")
             k3SliderAxes.patch.set_alpha(0.7)
@@ -402,7 +413,7 @@ def make_slider(ax):
 
     counter = 0
     for label in kCIDLabels:
-        kCIDSliderAxes = plt.axes([0.65, bottom, width, height])
+        kCIDSliderAxes = fig.add_axes([0.65, bottom, width, height])
         if counter+1 <= min(len(ratek3), len(ratekCID)):
             kCIDSliderAxes.patch.set_facecolor(f"C{counter+1}")
             kCIDSliderAxes.patch.set_alpha(0.7)
@@ -426,15 +437,20 @@ def make_slider(ax):
 
         bottom -= height*1.2
         # if keyFoundForRate:
+
         counter += 1
+    
     return k3Sliders, kCIDSliders
 
 args = None
+widget = None
+
 def main(arguments):
     global args, currentLocation, nameOfReactants, \
         expTime, expData, expDataError, temp, rateConstantsFileData,\
         numberDensity, totalAttachmentLevels, selectedFile, initialValues, \
-        k3Labels, kCIDLabels, ratek3, ratekCID, savedir, savefile, keyFoundForRate, data
+        k3Labels, kCIDLabels, ratek3, ratekCID, savedir, savefile, keyFoundForRate, data, widget
+        
 
     args = arguments
     currentLocation = pt(args["currentLocation"])
@@ -447,6 +463,7 @@ def main(arguments):
     
     temp = float(args["temp"])
     selectedFile = args["selectedFile"]
+    
     numberDensity = float(args["numberDensity"])
     initialValues = [float(i) for i in args["initialValues"]]
     totalAttachmentLevels = len(initialValues)-1
@@ -480,8 +497,14 @@ def main(arguments):
                 kCID_fit_keyvalues = rateConstantsFileData[selectedFile]["kCID_fit"]
                 kCIDLabels = [key.strip() for key in kCID_fit_keyvalues.keys()]
                 ratekCID = np.array([float(value[0]) for value in kCID_fit_keyvalues.values()])
-
-                keyFoundForRate = True
+                print(len(args["ratek3"].split(",")) == len(k3Labels), "here", flush=True)
+                print(len(args["ratekCID"].split(",")) == len(kCIDLabels), "here", flush=True)
+                
+                if len(args["ratek3"].split(",")) == len(k3Labels):
+                    if len(args["ratekCID"].split(",")) == len(kCIDLabels):
+                        keyFoundForRate = True
+                else:
+                    keyFoundForRate = False
 
     if not keyFoundForRate:
 
@@ -492,5 +515,10 @@ def main(arguments):
 
     print(f"{keyFoundForRate=}\n{k3Labels=}", flush=True)
     print(f"{ratek3=}", flush=True)
+
+    widget = FELion_Tk(title=f"Kinetics: {selectedFile}", location=savedir)
     KineticMain()
-    plt.show()
+    # plt.show()
+
+    # widget.plot_legend = ax.legend()
+    widget.mainloop()

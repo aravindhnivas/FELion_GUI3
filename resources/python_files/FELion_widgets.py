@@ -424,7 +424,7 @@ class FELion_Tk(Tk):
 
 
     def make_figure_layout(self, ax=None, savename=None,
-        title="Title", xaxis="X-axis", yaxis="Y-axis", fig_caption="Figure 1", 
+        title="Title", xaxis="X-axis", yaxis="Y-axis", fig_caption="", 
         xdata=None, ydata=None, label="", fmt=".-", yscale="linear", **kw):
 
         if savename is not None: self.name.set(savename)
