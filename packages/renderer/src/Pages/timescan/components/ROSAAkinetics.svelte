@@ -39,7 +39,7 @@
     $: if (fs.existsSync(currentLocation)) {kineticDataLocation = pathJoin(currentLocation || "", "EXPORT")}
     const updateFiles = (node=null) => {
         node?.target.classList.add("rotateIn")
-        fileCollections = fs.readdirSync(kineticDataLocation).filter(f=>f.endsWith('.json')).map(f=>f.split('.')[0].replace('_scan', '.scan'))
+        fileCollections = fs.readdirSync(kineticDataLocation).filter(f=>f.endsWith('_scan.json')).map(f=>f.split('.')[0].replace('_scan', '.scan'))
         console.table(fileCollections)
     }
     $: if (fs.existsSync(kineticDataLocation)) {updateFiles()}
