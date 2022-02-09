@@ -15,7 +15,7 @@ import "./resizableDiv"
 import "./clickOutside"
 import "../Pages/general/computePy"
 
-window.createToast = (description, type = "info", placement = 'bottom-right') => {
+window.createToast = (description, type = "info", placement = 'bottom-center') => {
     const theme = {
         // title: type == 'danger' ? 'ERROR' : type.toUpperCase(),
         description,
