@@ -22,7 +22,7 @@
     const dispatch = createEventDispatcher();
 
     let fullfiles = []
-    function dispatch_chdir_event() { dispatch('chdir', { action: "chdir", filetype, currentLocation }) }
+    // function dispatch_chdir_event() { dispatch('chdir', { action: "chdir", filetype, currentLocation }) }
 
     let selectAll=false
     let otherfolders = []
@@ -37,7 +37,7 @@
         if (!searchKey) {fullfiles = original_files}
         else {fullfiles = original_files.filter(file=>file.name.includes(searchKey))}
     }
-
+    let filesLoaded = false
     function getfiles(toast=false, keepfiles=false) {
         return new Promise(async (resolve, reject)=>{
             if (!locationStatus) {
@@ -49,7 +49,7 @@
             original_files = otherfolders = fullfiles = []
             if(!keepfiles){fileChecked = []}
             selectAll = false
-            
+            filesLoaded = false
             try {
                 
                 let folderfile = await fs.readdir(currentLocation)
@@ -63,10 +63,10 @@
                 console.log("Folder updated");
 
                 original_location = currentLocation
-                dispatch_chdir_event()
+                dispatch('chdir', { action: "chdir", filetype, currentLocation, fullfileslist })
 
                 if (filetype.length > 2) { db.set(`${filetype}_location`, currentLocation) }
-                // if (toast) { window.createToast("Files updated"); }
+                filesLoaded = true
                 resolve(fullfiles)
             } catch (error) {
                 reject(error)
@@ -84,14 +84,19 @@
     const changeDirectory = (goto) => { currentLocation = pathResolve(currentLocation, goto); }
 
     let original_location = currentLocation
-    onMount(async ()=> {
-        if(locationStatus) {getFilePromise = getfiles(); console.log("onMount Updating location for ", filetype)}
-    })
-    afterUpdate(async () => {
-        if (original_location !== currentLocation && locationStatus) {
-            getFilePromise = getfiles(); console.log("Updating location for ", filetype)
+    const updateFiles = async () => {
+        if(locationStatus) {
+            getFilePromise = await getfiles();
+            console.log("Updating files for ", filetype)
         }
+    }
 
+
+    let mounted = false
+    onMount(async () => {await updateFiles(); mounted =true; })
+    
+    afterUpdate(() => {
+        if (original_location !== currentLocation) { updateFiles() }
     });
 
     async function selectRange(event) {
@@ -124,37 +129,44 @@
         }
 }" />
 
-<div id="{filetype}_filebrowser" style="width: 100%; overflow-y:auto;">
+<div id="{filetype}_filebrowser" style="width: 100%; overflow-y:auto;" >
     <div class="align folderlist" >
         <i class="material-icons" >keyboard_arrow_right</i>
         <div>{parentFolder}</div>
     </div>
 
     {#await getFilePromise}
+    
         <div class="mdc-typography--subtitle1 align center">...loading</div>
     {:then value}
-        {#if fullfiles.length }
+        {#if (fullfiles.length && mounted) }
+    
             <div on:click={selectRange}>
-                <VirtualCheckList bind:fileChecked bind:items={fullfiles} {markedFile} on:click="{(e)=>{
+                <VirtualCheckList bind:fileChecked items={fullfiles} {markedFile} on:click="{(e)=>{
                     selectAll=false;
                     if(e.ctrlKey && filetype.includes("felix") ) { markedFile = e.target.value; dispatch('markedFile', {  markedFile })}
                 }}" on:select="{(e)=>console.log(e)}"/>
-
             </div>
-        {:else if fullfiles.length <= 0}
-            <div >No {filetype} here!</div>        
-        {/if}
+            
+        {:else if (fullfiles.length <= 0) }
 
+            <div >No {filetype} here! or try reload files</div>        
+        {/if}
+        
         <div style="cursor:pointer">
+
             {#each otherfolders as folder (folder.id)}
                 <div class="align" on:click="{()=>changeDirectory(folder.name)}" transition:slide|local >
                     <i class="material-icons">keyboard_arrow_right</i>
                     <div class="mdc-typography--subtitle1">{folder.name}</div>
                 </div>
             {/each}
+
         </div>
-        {:catch error}
-            <div >{error}</div>
+
+    {:catch error}
+        <div >{error}</div>
+
     {/await}
 
 </div>
