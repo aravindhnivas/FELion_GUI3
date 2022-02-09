@@ -33,7 +33,7 @@
     let keepAnnotaions = true
     
     async function plotData({e=null, filetype="mass"}={}){
-
+        
         if (!fs.existsSync(currentLocation)) {return window.createToast("Location not defined", "danger")}
 
         if (fileChecked.length<1) {return window.createToast("No files selected", "danger")}
@@ -56,8 +56,8 @@
         
         if (filetype == "general") {await computePy_func({e, pyfile, args, general:true, openShell})}
 
-        if (filetype=="mass") {
-            
+        if (filetype=="mass" && massfiles) {
+
             const [dataFromPython] = await readMassFile(massfiles)
             if(isEmpty(dataFromPython)) return
             if(!keepAnnotaions) {annotations=[]}
@@ -82,6 +82,7 @@
     }
 
     const linearlogCheck = () => {
+
         const layout = { yaxis: { title: "Counts", type: logScale ? "log" : null } }
         if(graphPlotted) relayout("mplot", layout)
     };
@@ -89,6 +90,7 @@
     let fullfileslist = [];
     let annotations = []
     let plotlyEventCreatedMass = false
+
 
     function plotlyClick() {
 
@@ -100,7 +102,6 @@
                 const {x: mass , y: counts } = currentDataPoint
                 if(data.event.shiftKey) {
                     const annotate = find(annotations, (m) => {
-
                         const massValue = m.text.split(", ")[0].split("(")[1]
                         return massValue >= mass-0.2 && massValue <= mass+0.2
                     } )
@@ -114,7 +115,6 @@
                         font: {color}, showarrow: true, arrowhead: 2, arrowcolor: color
                     }
                     annotations = [...annotations, annotate]
-
                 }
                 relayout("mplot" ,{annotations})
                 plotlyEventCreatedMass = true

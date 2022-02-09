@@ -2,8 +2,7 @@ import { getInfoContents } from "../computeCode/utils"
 
 export async function readMassFile(massfiles) {
     try {
-
-        console.log(massfiles)
+        
         const dataToSend = {}
 
         for (const filename of massfiles) {
