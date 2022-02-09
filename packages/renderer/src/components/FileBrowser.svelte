@@ -1,7 +1,7 @@
 
 <script>
     import { 
-        tick,
+        tick, onMount, afterUpdate,
         createEventDispatcher
      }                      from 'svelte';
     import { slide }        from 'svelte/transition';
@@ -59,7 +59,10 @@
 
                 fullfileslist = fullfiles.map(file=>file=file.name)
                 otherfolders = folderfile.filter(file=>fs.lstatSync(pathJoin(currentLocation, file)).isDirectory()).map(file=>file={name:file, id:getID()}).sort((a,b)=>a.name>b.name?1:-1)
+                
                 console.log("Folder updated");
+
+                original_location = currentLocation
                 dispatch_chdir_event()
 
                 if (filetype.length > 2) { db.set(`${filetype}_location`, currentLocation) }
@@ -78,20 +81,22 @@
     let sortFile = false
     $: sortFile ? fullfiles = fullfiles.sort((a,b)=>a.name>b.name?1:-1) : fullfiles = fullfiles.sort((a,b)=>a.name<b.name?1:-1)
     let getFilePromise;
-
     const changeDirectory = (goto) => { currentLocation = pathResolve(currentLocation, goto); }
 
-    $: if(currentLocation) {
+    let original_location = currentLocation
+    onMount(async ()=> {
+        if(locationStatus) {getFilePromise = getfiles(); console.log("onMount Updating location for ", filetype)}
+    })
+    afterUpdate(async () => {
+        if (original_location !== currentLocation && locationStatus) {
+            getFilePromise = getfiles(); console.log("Updating location for ", filetype)
+        }
 
-        console.log("Current location: ", currentLocation)
-        console.log("Updating location for ", filetype)
-        getFilePromise = getfiles();
-    }
+    });
 
     async function selectRange(event) {
 
         await tick();
-
         if (event.shiftKey && fileChecked.length) {
             const _from = fullfileslist.indexOf(fileChecked.at(0))
             const _to = fullfileslist.indexOf(fileChecked.at(-1))
