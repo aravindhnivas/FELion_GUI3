@@ -136,26 +136,29 @@
     let config_file_ROSAAkinetics="config_file_ROSAAkinetics.json";
     let config_content = {}
 
+
     function saveConfig() {
+    
         if(!fs.existsSync(currentLocation)) {return window.createToast("Invalid location or filename", "danger")}
 
         const keys = configKeys.slice(1, configKeys.length)
 
         configArray.forEach(content => {
             const filename = content["filename"]
-        
             const newKeyValue = {}
             keys.forEach(key=>{newKeyValue[key]=content[key]})
             config_content[filename] = newKeyValue
         })
 
-        const save_config_content = JSON.stringify(config_content, null, 4)
+        // const save_config_content = JSON.stringify(config_content, null, 4)
         const config_file = pathJoin(currentLocation, config_file_ROSAAkinetics);
+        
+        fs.outputJsonSync(config_file, config_content)
 
-        fs.writeFile(config_file, save_config_content, function (err) {
-            if (err) return window.createToast("Error occured while saving file", "danger");
-            window.createToast("Config file saved"+config_file_ROSAAkinetics, "warning")
-        });
+        // fs.writeFile(config_file, save_config_content, function (err) {
+        //     if (err) return window.createToast("Error occured while saving file", "danger");
+        //     window.createToast("Config file saved"+config_file_ROSAAkinetics, "warning")
+        // });
     }
 
     function makeConfigArray(obj) {
@@ -222,21 +225,16 @@
                 window.createToast("Config file loaded: "+config_file_ROSAAkinetics, "warning");
                 makeConfigArray(config_content)
                 config_loaded = true
-
             } else {return window.createToast("config file not available", "danger")}
 
         } catch (error) {window.handleError(error)}
     }
-
-    
-    let pyfile = "kineticsCode"
-
     async function kineticSimulation(e) {
-        try {
 
+        try {
             if(!selectedFile) return createToast("Select a file", "danger")
             if(!currentData) return createToast("No data available", "danger")
-            if(!reportSaved) return createToast("Save the computed equation", "danger")
+            if(!reportSaved) {if(!reportRead) return createToast("Save the computed equation", "danger")}
 
             const nameOfReactantsArray = nameOfReactants.split(",").map(m=>m.trim())
             const data = {}
@@ -263,7 +261,7 @@
                     kineticEditorFilename
                 })
             ]
-            await computePy_func({e, pyfile, args, general:true})
+            await computePy_func({e, pyfile: "kineticsCode", args, general:true})
         } catch (error) {window.handleError(error);}
     }
 
@@ -275,7 +273,7 @@
     let configArray = []
     let configKeys = ["filename", "srgMode", "pbefore", "pafter", "calibrationFactor", "temp"]
     
-    let editor;
+    let editor, reportRead=false;
     let kineticEditorFiletype = "kinetics"
     let kineticEditorLocation = db.get(`${kineticEditorFiletype}-report-md`) || ""
     let reportSaved = false;
@@ -299,8 +297,6 @@
     </svelte:fragment>
 
     <svelte:fragment slot="main_content__slot">
-
-
         <div class="main_content__div">
 
             <div class="align box">
@@ -345,7 +341,7 @@
                     mainTitle="Kinetic Code" bind:editor
                     savefilename={kineticEditorFilename}
                     bind:location={kineticEditorLocation}
-                    bind:reportSaved
+                    bind:reportSaved bind:reportRead
                 >
 
                     <svelte:fragment slot="btn-row">
@@ -384,7 +380,7 @@
         
         {/if}
         
-        <Textfield bind:value={pyfile} label="pyfile" disabled />
+        <!-- <Textfield bind:value={pyfile} label="pyfile" disabled /> -->
         <button class="button is-link" on:click="{computeParameters}" >Compute parameters</button>
 
         <button class="button is-link" on:click="{loadConfig}">loadConfig</button>

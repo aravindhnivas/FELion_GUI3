@@ -10,11 +10,13 @@
     export let location = ""
     export let filetype = ""
     export let editor="";
+
     export let mount=null;
     export let mainTitle="Report/Editor";
-    
+    export let reportRead=false;
     export let savefilename="report";
     export let reportSaved = false;
+
     const md = new Remarkable();
     async function mountEditor(node) {
         try {
@@ -88,8 +90,11 @@
     }
     
     const readFromFile = () => {
-        if(fs.existsSync(reportFile)) { 
+        if(fs.existsSync(reportFile)) {
+
             editor?.setData(fs.readFileSync(reportFile))
+            
+            reportRead = true;
             window.createToast("Report file read: "+basename(reportFile), "success")
          }
         else {window.createToast("No report file named "+basename(reportFile), "danger")}
