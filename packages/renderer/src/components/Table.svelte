@@ -1,34 +1,46 @@
 <script>
-    import {orderBy, filter} from "lodash-es"
+
+    import {orderBy} from "lodash-es"
     import { scale } from 'svelte/transition';
     import {Icon} from '@smui/icon-button';
     import {tick} from "svelte";
-    export let head, rows, keys, id=getID(), label="table", userSelect=true, style="width: 100%;";
-    export let sortOption = false, closeOption = true, addextraOption = true, animateRow = true;
 
-    const keyIDSets = keys.map(key=>{return {key, id:getID()}})
+    export let head=[]
+    export let rows=[]
+    export let keys=[]
+    export let id=getID()
+    export let label="table"
+    
+    export let userSelect=true
+    export let style="width: 100%;";
+    export let sortOption = false
+    export let closeOption = true
+    export let addextraOption = true
+    export let animateRow = true;
+
+    const keyIDSets = keys.map(key=>({key, id:getID()}))
+    $: console.log({rows, keyIDSets})
     let sortTypeAscending = true;
     const sortTable = (type) => { 
         if(sortOption) {
-
             sortTypeAscending = !sortTypeAscending
             rows = orderBy(rows, [type], [sortTypeAscending ? "asc" : "desc"])
         }
-
-     }
-
+    }
 
     $: animate = animateRow ? scale : ()=>{}
-    let emptyRow = {}
+
+    const emptyRow = {}
     keys.forEach(key=>emptyRow[key] = "")
+
     const addRow = async () => {
         const id = getID()
-
         rows = [...rows, {...emptyRow, id}]
         await tick()
         const focusTargetID = `${id}-${keys[0]}`
         document.getElementById(focusTargetID).focus()
     }
+
 </script>
 
 <div {style}>
@@ -71,14 +83,15 @@
 
                     <tr class="mdc-data-table__row" style="background-color: #fafafa;" transition:animate> 
                     <td class="mdc-data-table__cell" style="width: 2em;" >{index}</td>
-                    {#each keyIDSets as {key, id} (id)}
+                    {#each keys as key (key)}
                         <td class="mdc-data-table__cell  mdc-data-table__cell--numeric" id="{row.id}-{key}">
                             <input type="text" bind:value={row[key]} style="color: black; width: 100%;">
                         </td>
                     {/each}
                     {#if closeOption}
                         <td class="mdc-data-table__cell" style="background: #f14668; cursor: pointer; width: 2em;">
-                            <Icon id="{row.id}" class="material-icons" on:click="{(e)=> {rows = filter(rows, (tb)=>tb.id != e.target.id)}}">close</Icon>
+                            <Icon id="{row.id}" class="material-icons" on:click="{(e)=> {rows = rows.filter((tb)=>tb.id != e.target.id)}}">close</Icon>
+
                         </td>
                     {/if}
                     </tr>
