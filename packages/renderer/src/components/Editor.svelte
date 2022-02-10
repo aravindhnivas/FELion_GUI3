@@ -144,7 +144,6 @@
         {@html md.render(window.fs.readFileSync(reportFile))}
     {:else}
         <h1>{filetype.toUpperCase()} Report</h1>
-
     {/if}
 
 </div>

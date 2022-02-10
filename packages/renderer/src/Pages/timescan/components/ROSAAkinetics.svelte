@@ -2,18 +2,15 @@
 <script>
     import { tick }                     from "svelte"
     import Textfield                    from '@smui/textfield'
-    import Editor                       from "$components/Editor.svelte"
     import PyButton                     from "$components/PyButton.svelte"
-    import ModalTable                   from '$components/ModalTable.svelte'
     import CustomSwitch                 from "$components/CustomSwitch.svelte"
     import CustomSelect                 from "$components/CustomSelect.svelte"
     import SeparateWindow               from "$components/SeparateWindow.svelte"
-    import {computeKineticCodeScipy}    from "../functions/computeKineticCode"
-    import {difference, cloneDeep}      from "lodash-es"
+    import {cloneDeep}                  from "lodash-es"
+    import computePy_func               from "$src/Pages/general/computePy"
+    import KineticConfigTable           from './KineticConfigTable.svelte'
+    import KineticEditor                from './KineticEditor.svelte'
 
-    import computePy_func                   from "$src/Pages/general/computePy"
-
-    // export let fileChecked=[]
     export let kineticMode=true
     export let currentLocation=""
     
@@ -33,25 +30,19 @@
     let totalMass = []
     let k3Guess = "1e-30"
     let kCIDGuess="1e-15";
-    // let requiredLength=0;
 
     let kineticDataLocation = ""
-    $: if (fs.existsSync(currentLocation)) {kineticDataLocation = pathJoin(currentLocation || "", "EXPORT")}
+    
     const updateFiles = (node=null) => {
 
         node?.target.classList.add("rotateIn")
-        
-        fileCollections = fs.readdirSync(kineticDataLocation)
-                                .filter(f=>f.endsWith('_scan.json'))
-                                .map(f=>f.split('.')[0]
-                                .replace('_scan', '.scan'))
-        console.table(fileCollections)
-    
-    }
-    
-    $: if (fs.existsSync(kineticDataLocation)) {updateFiles()}
+        fileCollections = fs.readdirSync(kineticDataLocation).filter(f=>f.endsWith('_scan.json'))
+                                .map(f=>f.split('.')[0].replace('_scan', '.scan'))
 
-    $: kineticEditorFilename = basename(selectedFile).split(".")[0]+"-kineticModel.md"
+    }
+
+    $: if (fs.existsSync(kineticDataLocation)) {updateFiles()}
+    $: if (fs.existsSync(currentLocation)) {kineticDataLocation = pathJoin(currentLocation || "", "EXPORT")}
 
     let currentData = {}
     let currentDataBackup = {}
@@ -64,7 +55,6 @@
                 newData.y = newData.y.slice(timestartIndexScan)
                 newData["error_y"]["array"] = newData["error_y"]["array"].slice(timestartIndexScan)
                 currentData[massKey] = newData
-
             })
         }
         computeOtherParameters()
@@ -155,24 +145,6 @@
 
     }
 
-    function saveConfig() {
-        if(!fs.existsSync(currentLocation)) {return window.createToast("Invalid location or filename", "danger")}
-
-        const keys = configKeys.slice(1, configKeys.length)
-
-        configArray.forEach(content => {
-            const filename = content["filename"]
-            const newKeyValue = {}
-            keys.forEach(key=>{newKeyValue[key]=content[key]})
-            config_content[filename] = newKeyValue
-        })
-
-        const config_file = pathJoin(currentLocation, config_file_ROSAAkinetics);
-        fs.outputJsonSync(config_file, config_content)
-        window.createToast("Config file saved"+config_file_ROSAAkinetics, "warning")
-
-    }
-
     function updateConfig() {
         update_pbefore = false;
         try {
@@ -244,27 +216,16 @@
     let initialValues = ""
     let adjustConfig = false;
 
-    let configKeys = ["filename", "srgMode", "pbefore", "pafter", "calibrationFactor", "temp"]
-
     $: currentConfig = {srgMode, pbefore, pafter, calibrationFactor, temp}
     $: console.log({configArray, config_content})
-    let editor, reportRead=false;
+    let reportRead=false;
     let kineticEditorFiletype = "kinetics"
     let kineticEditorLocation = db.get(`${kineticEditorFiletype}-report-md`) || ""
     let reportSaved = false;
+    $: kineticEditorFilename = basename(selectedFile).split(".")[0]+"-kineticModel.md"
 </script>
 
-<ModalTable 
-    bind:active={adjustConfig} title="Config table" 
-    bind:rows={configArray} keys={configKeys} userSelect={false} sortOption={true} >
-    
-    <svelte:fragment slot="footer">
-        <button class="button is-link" on:click="{saveConfig}" >Save</button>
-        <button class="button is-danger" on:click="{()=>adjustConfig=false}" >Close</button>
-    </svelte:fragment>
-
-</ModalTable>
-
+<KineticConfigTable {configArray} {currentLocation} bind:active={adjustConfig} />
 <SeparateWindow bind:active={kineticMode} title="Kinetics">
 
     <svelte:fragment slot="header_content__slot">
@@ -310,38 +271,10 @@
                 <Textfield bind:value={kCIDGuess} label="kCIDGuess" />
             </div>
 
-            <div class="report-editor-div" id="kinetics-editor__div">
-                <Editor filetype={kineticEditorFiletype}
-                    mount="#kinetics-editor__div" id="kinetics-editor"
-                    mainTitle="Kinetic Code" bind:editor
-                    savefilename={kineticEditorFilename}
-                    bind:location={kineticEditorLocation}
-                    bind:reportSaved bind:reportRead
-                    >
-
-                    <svelte:fragment slot="btn-row">
-
-                        <button class="button is-warning" 
-                            on:click={()=>{
-                    
-                                if(!massOfReactants) return window.createToast("No data available", "danger")
-                                
-                                const dataToSet = computeKineticCodeScipy({
-                                    ratek3, ratekCID,
-                                    initialValues, nameOfReactants
-                                })
-                                
-                                if(dataToSet) {
-                                    reportSaved = false; editor?.setData(dataToSet);
-                                    console.info("data comupted")
-
-                                }
-                            }}>compute</button>
-                    </svelte:fragment> 
-            
-                </Editor>
-
-            </div>
+            <KineticEditor  {massOfReactants} {ratek3} {ratekCID} {nameOfReactants}
+                bind:kineticEditorLocation bind:kineticEditorFilename
+                bind:reportSaved bind:reportRead
+            />
         </div>
 
     </svelte:fragment>
@@ -359,25 +292,29 @@
         <i class="material-icons" on:click="{()=> adjustConfig = true}">settings</i>
 
         <PyButton on:click={kineticSimulation} bind:pyProcesses />
-        
+
     </svelte:fragment>
 
 </SeparateWindow>
 
 <style lang="scss">
     .main_content__div {
+        
         display: flex;
         flex-direction: column;
         gap: 1em;
         padding: 1em;
         .box { margin: 0;}
+
     }
 
     .txt-icon-col {
         display: grid;
+        
         grid-template-columns: 1fr auto;
         grid-auto-flow: column;
         width: 100%;
     }
+
 
 </style>
