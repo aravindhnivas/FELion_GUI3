@@ -38,7 +38,6 @@
         node?.target.classList.add("rotateIn")
         fileCollections = fs.readdirSync(kineticDataLocation).filter(f=>f.endsWith('_scan.json'))
                                 .map(f=>f.split('.')[0].replace('_scan', '.scan'))
-
     }
 
     $: if (fs.existsSync(kineticDataLocation)) {updateFiles()}
@@ -63,19 +62,18 @@
     let maxTimeIndex = 5
 
     function computeParameters() {
-
         const currentJSONfile = pathJoin(kineticDataLocation, selectedFile.replace('.scan', '_scan.json'))
         console.log(currentJSONfile)
+
         currentData = fs.readJsonSync(currentJSONfile)
         currentDataBackup = cloneDeep(currentData)
         if(currentData) {
-     
             totalMass = Object.keys(currentData)
             totalMass = totalMass.slice(0, totalMass.length-1)
-
             maxTimeIndex = currentData[totalMass[0]].x.length - 5
             massOfReactants = totalMass.join(", ")
             console.log({maxTimeIndex})
+
             sliceData()
         }
     }
@@ -87,9 +85,10 @@
 
         if(defaultInitialValues && masses) { 
             initialValues = [currentData?.[masses[0]]["y"][0]?.toFixed(0), ...Array(requiredLength-1).fill(1)]
-        
+
         }
-        
+
+
         nameOfReactants =`${molecule}, ${molecule}${tag}`
         ratek3="k31", ratekCID="kCID1";
 
@@ -98,20 +97,20 @@
             ratekCID += `, kCID${index}`
             nameOfReactants += `, ${molecule}${tag}${index}`
         }
-    
     }
 
     let masses;
-    $: if(massOfReactants) {computeOtherParameters()}
-    
+
     let calibrationFactor = 1;
     let update_pbefore = true;
-    
+
+    $: if(massOfReactants) {computeOtherParameters()}
     $: if(srgMode) {
         calibrationFactor = 1
         if(update_pbefore) pbefore = Number(7e-5).toExponential(0)
     } else {
         calibrationFactor = 200
+
         if(update_pbefore) pbefore = Number(1e-8).toExponential(0)
     }
 
@@ -130,12 +129,11 @@
     $: if (pbefore || pafter || temp || calibrationFactor || config_content[selectedFile]) {computeNumberDensity()}
     $: if(selectedFile.endsWith('.scan')) {computeParameters()}
 
-
     const config_file_ROSAAkinetics="config_file_ROSAAkinetics.json";
+
     let config_content = {}
 
     function saveCurrentConfig() {
-
         if(!fs.existsSync(currentLocation)) {return window.createToast("Invalid location or filename", "danger")}
         config_content[selectedFile] = currentConfig
 
@@ -147,6 +145,7 @@
 
     function updateConfig() {
         update_pbefore = false;
+
         try {
             if(!config_content[selectedFile]) {
                 return window.createToast("config file not available for selected file: "+selectedFile, "danger")
@@ -154,16 +153,17 @@
             ({srgMode, pbefore, pafter, calibrationFactor, temp} = config_content[selectedFile]);
             srgMode = JSON.parse(srgMode);
         } catch (error) {
-            console.error(error.stack)
             window.createToast("Error while reading the values: Check config file", "danger");
+
         }
     }
 
     $: if(config_content[selectedFile]) {updateConfig()}
     let configArray = []
+
     async function loadConfig() {
-    
         try {
+
             const config_file = pathJoin(currentLocation, config_file_ROSAAkinetics);
             if(fs.existsSync(config_file)) {
                 config_content = fs.readJsonSync(config_file)
@@ -217,12 +217,11 @@
     let adjustConfig = false;
 
     $: currentConfig = {srgMode, pbefore, pafter, calibrationFactor, temp}
-    $: console.log({configArray, config_content})
+    $: kineticEditorFilename = basename(selectedFile).split(".")[0]+"-kineticModel.md"
     let reportRead=false;
     let kineticEditorFiletype = "kinetics"
     let kineticEditorLocation = db.get(`${kineticEditorFiletype}-report-md`) || ""
     let reportSaved = false;
-    $: kineticEditorFilename = basename(selectedFile).split(".")[0]+"-kineticModel.md"
 </script>
 
 <KineticConfigTable {configArray} {currentLocation} bind:active={adjustConfig} />
@@ -233,9 +232,10 @@
     </svelte:fragment>
 
     <svelte:fragment slot="main_content__slot">
-        <div class="main_content__div">
 
+        <div class="main_content__div">
             <div class="align box">
+
                 <Textfield bind:value={currentLocation} label="Timescan data location" style="width: 100%;" />
                 <div class="txt-icon-col">
                     <Textfield bind:value={kineticDataLocation} label="Timescan EXPORT data location" />
@@ -244,6 +244,7 @@
                         on:click="{updateFiles}">
                         refresh
                     </i>
+
                 </div>
             </div>
 
@@ -299,22 +300,18 @@
 
 <style lang="scss">
     .main_content__div {
-        
         display: flex;
         flex-direction: column;
         gap: 1em;
         padding: 1em;
         .box { margin: 0;}
-
     }
 
     .txt-icon-col {
         display: grid;
-        
         grid-template-columns: 1fr auto;
+
         grid-auto-flow: column;
         width: 100%;
     }
-
-
 </style>
