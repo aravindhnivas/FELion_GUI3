@@ -117,9 +117,9 @@
                     annotations = [...annotations, annotate]
                 }
                 relayout("mplot" ,{annotations})
-                plotlyEventCreatedMass = true
             }
         })
+        plotlyEventCreatedMass = true
     }
 
 </script>
