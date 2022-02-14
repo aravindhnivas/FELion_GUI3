@@ -2,7 +2,7 @@
 ## v3.5.1-beta
 
 - Timescan
-    - Kinetic model implementation
+    - Kinetic model implementation (TkFigure widget, save fit data, etc)
     - .scan file data analysed and exported in JSON format in EXPORT directory
 - THz:
 
