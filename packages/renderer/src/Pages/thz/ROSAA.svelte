@@ -117,8 +117,10 @@
     async function browse_folder() {
         const result = await browse({filetype: "yml", dir: false})
         if(!result) return
-        configFile = result[0]
-        currentLocation = dirname(configFile)
+        configFilename = basename(result[0])
+        currentLocation = dirname(result[0])
+        db.set("thz_modal_location", currentLocation)
+        db.set("ROSAA_config_file", configFilename)
         loadConfig()
     }
 
@@ -152,23 +154,27 @@
     let einsteinFilename;
 
     let collisionalFilename
-    let configFile = db.get("ROSAA_config_file") || ""
+    $: configFile = window.pathJoin(currentLocation, configFilename)
     $: boltzmanArgs = {energyLevels, trapTemp, electronSpin, zeemanSplit, energyUnit}
 
     let configLoaded    = false;
     let collisionalCoefficient_balance = [];
-
+    let configFilename = db.get("ROSAA_config_file")
     async function loadConfig() {
         
         try {
+            // if(fs.existsSync(configFile)) {
+            //     if(!fs.existsSync(currentLocation)) {currentLocation = dirname(configFile)};
+            //     return setConfig()
+            // }
+            // configFile = window.pathJoin(currentLocation, configFilename)
             if(fs.existsSync(configFile)) {
-                if(!fs.existsSync(currentLocation)) {currentLocation = dirname(configFile)};
                 return setConfig()
-            }
+            }   
             const congFilePath = await browse({dir:false, multiple:false})
             if (!congFilePath) return window.createToast("No files selected", "danger");
-            configFile = congFilePath[0]
-            db.set("ROSAA_config_file", configFile)
+            configFilename = congFilePath[0]
+            db.set("ROSAA_config_file", configFilename)
             setConfig()
         } catch (error) {window.handleError(error)}
     }
@@ -210,8 +216,10 @@
     
     const updateEnergyLevels = () => {
         console.log("energyLevels updated")
-        lowerLevelEnergy = find(energyLevels, (energy)=>energy.label==excitedFrom).value || 0;
-        upperLevelEnergy = find(energyLevels, (energy)=>energy.label==excitedTo).value || 0;
+
+        console.log(energyLevels)
+        lowerLevelEnergy = find(energyLevels, (energy)=>energy.label==excitedFrom)?.value || 0;
+        upperLevelEnergy = find(energyLevels, (energy)=>energy.label==excitedTo)?.value || 0;
 
         transitionFrequency = upperLevelEnergy - lowerLevelEnergy;
         if(energyUnit=="cm-1" ) { transitionFrequency *= SpeedOfLight*1e2 * 1e-6 }
@@ -351,7 +359,7 @@
         <div class="locationColumn box v-center" style="border: solid 1px #fff9;" >
             <button class="button is-link" id="thz_modal_filebrowser_btn" on:click={browse_folder}>Browse</button>
             <Textfield value={currentLocation} label="CONFIG location" />
-            <Textfield value={window.basename(configFile)} label="CONFIG file" />
+            <Textfield value={configFilename} label="CONFIG file" />
         </div>
 
 
@@ -494,7 +502,7 @@
                 {electronSpin}
                 {energyLevels}
                 {collisionalTemp}
-                {collisionalFilename}
+                {collisionalFilename} {numberOfLevels}
             />
             
             <AttachmentCoefficients

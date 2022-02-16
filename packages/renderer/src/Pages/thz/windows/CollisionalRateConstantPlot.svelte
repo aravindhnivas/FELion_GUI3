@@ -127,9 +127,12 @@
                 }).reduce((a, b)=>a+b)
             })
             const {name, line, legendgroup} = dataObj
-            return {x: fittedTemp, y: fittedRateConstant, mode: "lines", name, line, legendgroup}
+            
+            return {name, line, legendgroup, x: fittedTemp, y: fittedRateConstant, mode: "lines"}
         })
         console.log({collisionalCoefficient})
+
+        console.log({fitData, dataToPlot})
         react("rateConstantsPlot", [...dataToPlot, ...fitData], layout)
 
     }

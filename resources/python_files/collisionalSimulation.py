@@ -12,16 +12,20 @@ from functools import reduce
 def collisionalRateDistribution(t, N):
 
     rateCollection = []
-    N = {key:value for key, value in zip(energyKeys, N)}
+    N = {key: value for key, value in zip(energyKeys, N)}
     rateCollection = []
-    
+    # print(f"{N=}", flush=True)
     for i in energyKeys:
         collisional = []
 
         for j in energyKeys:
-            if i!= j: 
+            if i!= j and i.split("_")[0] != j.split("_")[0]: 
+                
                 key = f"{j} --> {i}"
                 keyInverse = f"{i} --> {j}"
+
+                # print(f"{key}\n{keyInverse}", flush=True)
+
                 k = rate_constants[key]*nHe*N[j] - rate_constants[keyInverse]*nHe*N[i]
                 collisional.append(k)
         rateCollection.append(collisional)
@@ -57,12 +61,19 @@ def simulate(args):
         colorIndex += 2
 
     collisionalDistribution = simulateCounts.T[-1]
+    
     differenceFromBoltzman = np.around(collisionalDistribution - boltzmanDistributionCold, decimals=2)
+    
+    
     dataToSend = {
         "data" : dataWithLabel, 
-        "collisionalBoltzmanPlotData" : {"collisionalData":{"x":energyKeys, "y":collisionalDistribution.tolist(), "name" : "collisional"}},
+        "collisionalBoltzmanPlotData" : {
+            "collisionalData":{"x":energyKeys, "y":collisionalDistribution.tolist(), "name" : "collisional"},
+            "boltzmanData":{"x":energyKeys, "y":boltzmanDistributionCold.tolist(), "name" : "boltzman"}
+        },
         "differenceFromBoltzman": {"data": {"x":energyKeys, "y":differenceFromBoltzman.tolist(), "name":"Difference"}}
     }
+
     return sendData(dataToSend, calling_file=pt(__file__).stem)
 
 def plot(simulateTime, simulateCounts):
@@ -73,28 +84,31 @@ def plot(simulateTime, simulateCounts):
     sourceTemp = 300
     trapTemp = 10
     ax.set(xlabel="Time (ms)", ylabel="Population (%)", title="Simulation: Thermal stabilisation by collision with $^4$He atoms "+f"({sourceTemp}K => {trapTemp}K)")
-
     plt.show()
 
-args = None
-rate_constants, nHe, boltzmanDistributionInitial, energyKeys = None, None, None, None
-def main(arguments):
+rate_constants = None
+nHe = None
+boltzmanDistributionInitial = None
+boltzmanDistributionCold = None
+energyKeys = None
 
-    global args, rate_constants, nHe, boltzmanDistributionInitial, energyKeys
-    args = arguments
 
-    # args = sys.argv[1:][0].split(",")
-    # args = json.loads(", ".join(args))
-    print(args, flush=True)
-    rate_constants = {key:float(value) for key, value in args["collisionalRateConstantValues"].items()}
+def main(args):
 
+    global rate_constants, nHe, boltzmanDistributionInitial, energyKeys, boltzmanDistributionCold
+    numberOfLevels = int(args["numberOfLevels"])
+    print(f"{numberOfLevels=}", flush=True)
+    rate_constants = {key: float(value) for key, value in args["collisionalRateConstantValues"].items()}
     nHe = float(args["numberDensity"])
-    
-    boltzmanDistributionValues = args["boltzmanDistributionValues"]
-    boltzmanDistributionInitial = list(boltzmanDistributionValues.values())
-    boltzmanDistributionCold = args["boltzmanDistributionCold"]
-    energyKeys = boltzmanDistributionCold["x"]
-    boltzmanDistributionCold = np.array(boltzmanDistributionCold["y"], dtype=float)
-    print(f"Received args: {args}, {type(args)}\n")
 
+    boltzmanDistribution = args["boltzmanDistributionValues"].values()
+    
+    boltzmanDistributionInitial = np.array(list(boltzmanDistribution)[:numberOfLevels], dtype=float)
+
+    boltzmanDistributionCold = args["boltzmanDistributionColdValues"].values()
+    boltzmanDistributionCold = np.array(list(boltzmanDistributionCold)[:numberOfLevels], dtype=float)
+    energyKeys = args["energyKeys"][:numberOfLevels]
+    print(f"{energyKeys=}", flush=True)
     simulate(args)
+
+    

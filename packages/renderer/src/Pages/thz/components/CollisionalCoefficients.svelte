@@ -7,10 +7,15 @@
     import CollisionalDistribution      from "../windows/CollisionalDistribution.svelte";
     import CollisionalRateConstantPlot  from "../windows/CollisionalRateConstantPlot.svelte";
     import BoxComponent                 from "./BoxComponent.svelte";
+    import {browse}                     from "$components/Layout.svelte";
+
+
+
     export let energyUnit
     export let zeemanSplit
     export let energyLevels
     export let electronSpin
+    export let numberOfLevels
 
     export let numberDensity = "2e14"
     export let collisionalRates = [];
@@ -26,6 +31,7 @@
         zeemanSplit,
         energyLevels,
         electronSpin,
+        numberOfLevels,
         collisionalTemp,
         collisionalRateConstants,
     }
@@ -65,7 +71,7 @@
     let collisionalFileBasename = ""
     async function browse_collisional_file() {
         
-        collisionalFilename = await browse({dir:false}) || collisionalFilename
+        [collisionalFilename] = await browse({dir:false}) || collisionalFilename
         collisionalFileBasename = basename(collisionalFilename)
     }
     
