@@ -70,7 +70,6 @@
 
     let collisionalFileBasename = ""
     async function browse_collisional_file() {
-        
         [collisionalFilename] = await browse({dir:false}) || collisionalFilename
         collisionalFileBasename = basename(collisionalFilename)
     }
@@ -86,25 +85,26 @@
         fs.outputJsonSync(
             collisionalCoefficientJSONFile, 
             {collisionalCoefficient, collisionalCoefficient_balance}
-        
         )
-        console.log("Saved: ", collisionalCoefficientJSONFile)
+        window.createToast("Saved: "+collisionalCoefficientJSONFile)
     }
 
+    
     let collisionalCoefficientJSONFile = ""
+    
     const readcollisionalCoefficientJSONFile = () => {
         if(fs.existsSync(collisionalCoefficientJSONFile)) {
             console.log("loading: ", collisionalCoefficientJSONFile);
             ({collisionalCoefficient, collisionalCoefficient_balance} = fs.readJsonSync(collisionalCoefficientJSONFile));
+            window.createToast("loaded: "+basename(collisionalCoefficientJSONFile), "warning")
         }
     }
 
     onMount(()=> {
-        const configFile = db.get("ROSAA_config_file") || ""
         const configLocation = db.get("ROSAA_config_location") || ""
         if(!configLocation) return
         console.log(configLocation)
-        collisionalCoefficientJSONFile = pathJoin(configLocation, configFile, "files", "collisionalCoefficients.json")
+        collisionalCoefficientJSONFile = pathJoin(configLocation, "files", "collisionalCoefficients.json")
         readcollisionalCoefficientJSONFile()
     })
 
