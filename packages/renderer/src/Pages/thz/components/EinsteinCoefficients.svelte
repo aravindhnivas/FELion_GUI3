@@ -26,8 +26,8 @@
         einsteinB_rateComputed=false;
         const einsteinCoefficientB_emission = einsteinCoefficientA.map(({label, value})=>{
             const [final, initial] = label.split("-->").map(l=>l.trim())
-            const {value:v0} = find(energyLevels, (e)=>e.label==initial)
-            const {value:v1} = find(energyLevels, (e)=>e.label==final)
+            const {value:v0} = find(energyLevels, (e)=>e?.label==initial)
+            const {value:v1} = find(energyLevels, (e)=>e?.label==final)
             let freq = parseFloat(v1) - parseFloat(v0) // in Hz or s-1
             energyUnit === "MHz" ? freq *= 1e6 : freq *= SpeedOfLight*100;
 

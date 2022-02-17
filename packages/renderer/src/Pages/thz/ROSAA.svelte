@@ -168,6 +168,7 @@
             //     return setConfig()
             // }
             // configFile = window.pathJoin(currentLocation, configFilename)
+            console.log({configFile})
             if(fs.existsSync(configFile)) {
                 return setConfig()
             }   
@@ -304,7 +305,7 @@
             
             if(energyFilename) {
                 ({levels:energyLevelsStore, unit:energyUnit} = await getYMLFileContents(energyFilename));
-            }
+            } else {energyLevelsStore = []}
             
             energyLevelsStore = energyLevelsStore.map(setID);
             
@@ -321,7 +322,7 @@
             if(einsteinFilename) {
                 ({rateConstants:einsteinCoefficientA}   = await getYMLFileContents(einsteinFilename));
                 einsteinCoefficientA                    = einsteinCoefficientA.map(setID).map(correctObjValue);
-            }
+            } else {einsteinCoefficientA = []}
 
 
             window.createToast("CONFIG loaded");
@@ -355,11 +356,10 @@
 <SeparateWindow id="ROSAA__modal" title="ROSAA modal" bind:active >
 
     <svelte:fragment slot="header_content__slot" >
-
         <div class="locationColumn box v-center" style="border: solid 1px #fff9;" >
             <button class="button is-link" id="thz_modal_filebrowser_btn" on:click={browse_folder}>Browse</button>
-            <Textfield value={currentLocation} label="CONFIG location" />
-            <Textfield value={configFilename} label="CONFIG file" />
+            <Textfield bind:value={currentLocation} label="CONFIG location" />
+            <Textfield bind:value={configFilename} label="CONFIG file" />
         </div>
 
 

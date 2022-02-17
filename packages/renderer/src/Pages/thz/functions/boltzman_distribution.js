@@ -1,42 +1,33 @@
 
 import {sumBy} from "lodash-es"
+import {boltzmanConstantInMHz, boltzmanConstantInWavenumber} from "./constants";
 export default function({energyLevels=[], trapTemp=5, electronSpin=false, zeemanSplit=false, energyUnit="cm-1"}={}){
-    const boltzmanConstant = 1.38064852e-23 // in m2.kg.s-2.K-1
-    const boltzmanConstantInWavenumber = boltzmanConstant/1.98630e-23 // in cm-1
-    const KT = boltzmanConstantInWavenumber*trapTemp
-    const speedOfLight = 299792458 // in m/s
-    const speedOfLightIn_cm = speedOfLight*100 // in cm/s
+    const kB = {
+        "MHz": boltzmanConstantInMHz,
+        "cm-1": boltzmanConstantInWavenumber
+    }
+
+    const KT = kB[energyUnit]*trapTemp
 
     try {
 
-        console.log(energyLevels)
-        
-        
+      
+        //  Checking if value is in "00_00_00" number format
         energyLevels = energyLevels.map(({label, value})=> {
             if ( typeof value === "string") {
                 if (value.includes("_")) {value = parseFloat(value.replaceAll("_", ""))}
                 else {value = parseFloat(value)}
             }
-            
-            
             return {label, value}
         })
 
-
-        if (energyUnit==="MHz") {
-            energyLevels = energyLevels.map(({label, value})=>{
-                value = (value*1e6)/speedOfLightIn_cm
-                return {label, value}
-            })
-
-        }
         
         let distribution = energyLevels.map(({label, value:currentEnergy})=>{
             let Gj;
             if (electronSpin) {
                 if (zeemanSplit) {Gj = 1}
                 else {
-                    const j = label.split("_")[1]
+                    const j = parseFloat(label.split("_")[1])
                     Gj = parseInt( 2*+j + 1 )
                 }
             } else {
