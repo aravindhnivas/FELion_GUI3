@@ -1,6 +1,6 @@
 
 <script>
-
+    import {tick}                           from "svelte";
     import {find}                           from "lodash-es"
     import Textfield                        from '@smui/textfield';
     import {PlanksConstant, SpeedOfLight}   from "../functions/constants";
@@ -19,33 +19,35 @@
     export let zeemanSplit
     export let energyLevels
     export let electronSpin
-    // export let configLoaded = false;
 
     function computeEinsteinB() {
-        console.log("Computing Einstein B constants")
-        einsteinB_rateComputed=false;
-        const einsteinCoefficientB_emission = einsteinCoefficientA.map(({label, value})=>{
-            const [final, initial] = label.split("-->").map(l=>l.trim())
-            const {value:v0} = find(energyLevels, (e)=>e?.label==initial)
-            const {value:v1} = find(energyLevels, (e)=>e?.label==final)
-            let freq = parseFloat(v1) - parseFloat(v0) // in Hz or s-1
-            energyUnit === "MHz" ? freq *= 1e6 : freq *= SpeedOfLight*100;
+        try {
+            // await tick()
+            console.log("Computing Einstein B constants", {einsteinCoefficientA, energyLevels})
+            einsteinB_rateComputed=false;
+            const einsteinCoefficientB_emission = einsteinCoefficientA.map(({label, value})=>{
+                const [final, initial] = label.split("-->").map(l=>l.trim())
+                const v0 = find(energyLevels, (e)=>e?.label==initial)?.value
+                const v1 = find(energyLevels, (e)=>e?.label==final)?.value
+                const freq = parseFloat(v1) - parseFloat(v0)
+                const freqInHz = energyUnit === "MHz" ? freq * 1e6 : freq * SpeedOfLight*100;
 
-            const constTerm = SpeedOfLight**3/(8*Math.PI*PlanksConstant*freq**3)
-            const B = constTerm*value
-            return {label, value:B.toExponential(3), id:getID()}
-        })
+                const constTerm = SpeedOfLight**3/(8*Math.PI*PlanksConstant*freqInHz**3)
+                const B = constTerm*value
+                return {label, value:B.toExponential(3), id:getID()}
+            })
 
-        const einsteinCoefficientB_absorption = einsteinCoefficientB_emission.map(({label, value})=>{
-            const [final, initial] = label.split("-->").map(l=>l.trim())
-            const {Gi, Gf} = computeStatisticalWeight({electronSpin, zeemanSplit, final, initial});
-            const weight = Gf/Gi
-            const B = weight*parseFloat(value)
-            const newLabel = `${initial} --> ${final}`
-            return {label:newLabel, value:B.toExponential(3), id:getID()}
+            const einsteinCoefficientB_absorption = einsteinCoefficientB_emission.map(({label, value})=>{
+                const [final, initial] = label.split("-->").map(l=>l.trim())
+                const {Gi, Gf} = computeStatisticalWeight({electronSpin, zeemanSplit, final, initial});
+                const weight = Gf/Gi
+                const B = weight*parseFloat(value)
+                const newLabel = `${initial} --> ${final}`
+                return {label:newLabel, value:B.toExponential(3), id:getID()}
 
-        })
-        einsteinCoefficientB = [...einsteinCoefficientB_emission, ...einsteinCoefficientB_absorption]
+            })
+            einsteinCoefficientB = [...einsteinCoefficientB_emission, ...einsteinCoefficientB_absorption]
+        } catch (error) {window.handleError(error)}
     }
 
     const computeGaussian = (x, sigma) => Math.E**(-(x**2) / (2*sigma**2)) / (sigma*Math.sqrt(2*Math.PI))
@@ -62,6 +64,7 @@
         const lineshape = eta * computeLorrentz(x, gamma) + (1 - eta) * computeGaussian(x, sigma)
         return lineshape
     }
+
     $: voigtline = computePseudoVoigt(0, gaussian*1e6, lorrentz*1e6).toExponential(2)
     // $: computeRates(voigtline)
 

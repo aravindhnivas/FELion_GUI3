@@ -65,7 +65,15 @@ class ROSAA:
             self.taggingPartner = conditions["main_parameters"]["tagging partner"]
             self.GetAttachmentRatesParameters()
 
-            self.legends = [f"${self.molecule}$ ({key.strip()})" for key in self.energyKeys]
+            self.legends = []
+            for key in self.energyKeys:
+                key = key.strip()
+                if "_" in key:
+                    key = key.split("_")
+                    key = key[0] + "_{" + key[1] + "}"
+                label = f"${self.molecule}({key})$"
+                self.legends.append(label)
+
             if self.includeAttachmentRate:
                 self.legends += [f"${self.molecule}${self.taggingPartner}"]
                 self.legends += [f"${self.molecule}${self.taggingPartner}$_{i+1}$" for i in range(1, self.totalAttachmentLevels)]

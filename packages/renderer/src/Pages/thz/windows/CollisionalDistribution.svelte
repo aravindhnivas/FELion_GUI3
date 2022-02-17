@@ -34,7 +34,6 @@
 
         try {
             
-            // Getting intial boltzman distribution @ initial temperature 300K ?
             const boltzmanDistribution = boltzman_distribution({
                 trapTemp: initialTemp,
                 energyUnit,
@@ -47,10 +46,9 @@
 
             const collisionalRateConstantValues = {}
             collisionalRateConstants.forEach(f=>collisionalRateConstantValues[f.label]=f.value)
-            // const {target} = e
-            // target?.classList.add("is-loading")
+            const {target} = e
+            target?.classList.add("is-loading")
 
-            
             const boltzmanDistributionCold = boltzman_distribution({
                     trapTemp: collisionalTemp,
                     energyUnit,
@@ -68,7 +66,6 @@
                 numberDensity, collisionalRateConstantValues, duration, energyKeys, numberOfLevels
             })]
 
-            // console.log(boltzmanDistribution)
             const dataFromPython = await computePy_func({e, pyfile, args})
             const {data, collisionalBoltzmanPlotData, differenceFromBoltzman} = dataFromPython
             plot( 
@@ -77,7 +74,6 @@
                 plotID, 
             )
 
-            
             plot(
                 ` Distribution: ${collisionalTemp}K`, 
                 "Energy Levels", "Population", collisionalBoltzmanPlotData, 
@@ -91,71 +87,71 @@
                 `${plotID}_collisionalBoltzman_difference`,
             )
 
-            return
+            // return
             
-            const ODEWorker = new collisionCoolingODESolver()
-            ODEWorker.postMessage({
-                duration,
-                totalSteps,
-                numberDensity,
-                boltzmanDistribution,
-                collisionalRateConstants
-            });
+            // const ODEWorker = new collisionCoolingODESolver()
+            // ODEWorker.postMessage({
+            //     duration,
+            //     totalSteps,
+            //     numberDensity,
+            //     boltzmanDistribution,
+            //     collisionalRateConstants
+            // });
         
-            ODEWorker.onmessage = ({data: {finalData, error}}) => {
-                if(error) return window.handleError(error)
-                target.classList.remove("is-loading")
-                if(!finalData) return
+            // ODEWorker.onmessage = ({data: {finalData, error}}) => {
+            //     if(error) return window.handleError(error)
+            //     target.classList.remove("is-loading")
+            //     if(!finalData) return
                 
-                console.log(finalData)
+            //     console.log(finalData)
 
-                plot( 
-                    ` Distribution: ${collisionalTemp}K`, 
-                    "Time (s)", "Population", finalData, 
-                    plotID, 
-                )
-                const boltzmanDistributionCold = boltzman_distribution({
-                    trapTemp: collisionalTemp,
-                    energyUnit,
-                    zeemanSplit,
-                    energyLevels,
-                    electronSpin,
-                })
+            //     plot( 
+            //         ` Distribution: ${collisionalTemp}K`, 
+            //         "Time (s)", "Population", finalData, 
+            //         plotID, 
+            //     )
+            //     const boltzmanDistributionCold = boltzman_distribution({
+            //         trapTemp: collisionalTemp,
+            //         energyUnit,
+            //         zeemanSplit,
+            //         energyLevels,
+            //         electronSpin,
+            //     })
 
-                const boltzmanDataCold = boltzmanDistributionCold.map(f=>f.value)
-                const boltzmanData = {x: energyKeys, y: boltzmanDataCold, name:"boltzman"}
+            //     const boltzmanDataCold = boltzmanDistributionCold.map(f=>f.value)
+            //     const boltzmanData = {x: energyKeys, y: boltzmanDataCold, name:"boltzman"}
 
-                const collisionalDataCold = []
+            //     const collisionalDataCold = []
 
-                for (const key in finalData) {
-                    const coldValue = finalData[key].y.at(-1)
-                    collisionalDataCold.push(coldValue)
-                }
+            //     for (const key in finalData) {
+            //         const coldValue = finalData[key].y.at(-1)
+            //         collisionalDataCold.push(coldValue)
+            //     }
 
-                const collisionalData = {
-                    x: energyKeys, y: collisionalDataCold, name: "collisional"
-                }
-                const combinedData = {collisionalData, boltzmanData}
-                console.log({finalData})
-                plot(
-                ` Distribution: ${collisionalTemp}K`, 
-                "Energy Levels", "Population", combinedData, 
-                `${plotID}_collisionalBoltzman`, 
-                )
+            //     const collisionalData = {
+            //         x: energyKeys, y: collisionalDataCold, name: "collisional"
+            //     }
+            //     const combinedData = {collisionalData, boltzmanData}
+            //     console.log({finalData})
+            //     plot(
+            //     ` Distribution: ${collisionalTemp}K`, 
+            //     "Energy Levels", "Population", combinedData, 
+            //     `${plotID}_collisionalBoltzman`, 
+            //     )
 
-                const differenceFromBoltzman = []
-                for (let i=0; i<boltzmanDataCold.length; i++) {
-                    const computeDifference = (boltzmanDataCold[i] - collisionalDataCold[i]).toFixed(2)
-                    differenceFromBoltzman.push(computeDifference)
-                }
+            //     const differenceFromBoltzman = []
+            //     for (let i=0; i<boltzmanDataCold.length; i++) {
+            //         const computeDifference = (boltzmanDataCold[i] - collisionalDataCold[i]).toFixed(2)
+            //         differenceFromBoltzman.push(computeDifference)
+            //     }
 
-                plot(
-                    `Difference: Collisional - Boltzmann`, 
-                    "Energy Levels", "Difference", 
-                    {data: {x: energyKeys, y: differenceFromBoltzman, name:"Difference"}},
-                    `${plotID}_collisionalBoltzman_difference`,
-                )
-            }
+            //     plot(
+            //         `Difference: Collisional - Boltzmann`, 
+            //         "Energy Levels", "Difference", 
+            //         {data: {x: energyKeys, y: differenceFromBoltzman, name:"Difference"}},
+            //         `${plotID}_collisionalBoltzman_difference`,
+            //     )
+            // }
 
         } catch (error) { window.handleError(error) }
     }

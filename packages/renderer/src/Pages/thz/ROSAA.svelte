@@ -109,19 +109,19 @@
         
         computePy_func({e, pyfile, args, general:true})
     }
-    let currentLocation = fs.existsSync(db.get("thz_modal_location")) ? db.get("thz_modal_location") : "";
+    let currentLocation = fs.existsSync(db.get("ROSAA_config_location")) ? db.get("ROSAA_config_location") : "";
 
     let savefilename = ""
-    $: if(fs.existsSync(currentLocation)) {db.set("thz_modal_location", currentLocation)}
+    $: if(fs.existsSync(currentLocation)) {db.set("ROSAA_config_location", currentLocation)}
 
     async function browse_folder() {
         const result = await browse({filetype: "yml", dir: false})
         if(!result) return
         configFilename = basename(result[0])
         currentLocation = dirname(result[0])
-        db.set("thz_modal_location", currentLocation)
+        db.set("ROSAA_config_location", currentLocation)
         db.set("ROSAA_config_file", configFilename)
-        loadConfig()
+        // loadConfig()
     }
 
     const resetConfig = () => {
@@ -172,11 +172,8 @@
             if(fs.existsSync(configFile)) {
                 return setConfig()
             }   
-            const congFilePath = await browse({dir:false, multiple:false})
-            if (!congFilePath) return window.createToast("No files selected", "danger");
-            configFilename = congFilePath[0]
-            db.set("ROSAA_config_file", configFilename)
-            setConfig()
+            browse_folder()
+            // setConfig()
         } catch (error) {window.handleError(error)}
     }
 
