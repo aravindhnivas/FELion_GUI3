@@ -373,7 +373,7 @@
 
         <div class="align box" style="border: solid 1px #fff9;" >
             <div class="subtitle">Simulate signal(%) as a function of {variable}</div>
-            <div class="align v-center">
+            <div class="align v-center" style="width: auto; margin-left: auto;">
                 
                 <CustomSelect options={variablesList} bind:picked={variable} label="variable" />
                 {#if variable !== "time"}
