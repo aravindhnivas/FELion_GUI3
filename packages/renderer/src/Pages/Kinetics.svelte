@@ -35,13 +35,17 @@
     }
 
     .main_div {
+
+
         display: grid;
         gap: 1em;
-
+        grid-template-columns: 1fr 10fr;
         .nav {
             display: flex;
             gap: 1em;
-            justify-content: center;
+            // justify-content: center;
+            flex-direction: column;
+            
             padding: 0.5em;
 
             div {
@@ -57,7 +61,7 @@
         .content .subcontent {
             display: grid;
             overflow: hidden;
-            max-height: calc(100vh - 15rem);
+            max-height: calc(100vh - 10rem);
             height: 100%;
 
         }

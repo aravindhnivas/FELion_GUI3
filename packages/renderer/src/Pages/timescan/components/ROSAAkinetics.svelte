@@ -250,15 +250,17 @@
     <svelte:fragment slot="main_content__slot">
 
         <div class="main_container__div">
-            
 
+            
             <div class="align box">
+            
                 <CustomSwitch bind:selected={srgMode} label="SRG"/>
                 <Textfield bind:value={pbefore} label="pbefore" />
                 <Textfield bind:value={pafter} label="pafter" />
                 <Textfield input$type="number" input$step="0.5" bind:value={calibrationFactor} label="calibrationFactor" />
                 <Textfield input$type="number" input$step="0.1" bind:value={temp} label="temp(K)" />
                 <Textfield bind:value={numberDensity} label="numberDensity" disabled />
+
             </div>
 
             <div class="align box">
@@ -317,7 +319,7 @@
         display: grid;
         grid-row-gap: 1em;
         padding-right: 1em;
-        .box { margin: 0;}
+        .box { margin: 0; padding: 0.5em;}
     }
 
 </style>
