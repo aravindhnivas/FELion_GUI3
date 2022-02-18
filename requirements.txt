@@ -2,3 +2,4 @@ numpy
 scipy
 uncertainties
 matplotlib==3.3.1
+auto-py-to-exe
