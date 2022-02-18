@@ -62,7 +62,7 @@
             display: grid;
             overflow: hidden;
             max-height: calc(100vh - 10rem);
-            height: 100%;
+            height: calc(100vh - 10rem);
 
         }
     }
