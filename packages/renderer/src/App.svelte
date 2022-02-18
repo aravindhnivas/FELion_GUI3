@@ -12,6 +12,7 @@
 	import Settings from "./Pages/Settings.svelte"
 
 	import Misc from "./Pages/Misc.svelte"
+	import Kinetics from "./Pages/Kinetics.svelte"
 	import PreModal from "$components/PreModal.svelte";
 	import {onMount, tick} from "svelte";
 	import {ToastContainer, FlatToast }  from "svelte-toasts";
@@ -24,10 +25,11 @@
 		await tick()
 		mounted=true;
 	})
-	const navItems = ["Home", "Normline", "Masspec", "Timescan", "THz", "Powerfile", "Misc", "Settings"]
+	const navItems = ["Home", "Normline", "Masspec", "Timescan", "THz", "Kinetics", "Powerfile", "Misc", "Settings"]
 </script>
 
 {#if $windowLoaded}
+
 	{#if mounted}
 		<PreModal />
 		<ToastContainer placement="bottom-right" let:data={data}>
@@ -42,6 +44,7 @@
 		<Masspec />
 		<Timescan />
 		<THz />
+		<Kinetics />
 		<Powerfile />
 		<Misc />
 		<Settings />

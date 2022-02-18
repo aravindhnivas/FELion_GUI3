@@ -2,12 +2,12 @@
 import json, traceback
 from pathlib import Path as pt
 import numpy as np
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import warnings
 warnings.filterwarnings('ignore')
 
 from optimizePlot import optimizePlot
-from matplotlib.widgets import Slider, Button, RadioButtons, TextBox, CheckButtons
+from matplotlib.widgets import Slider, Button, TextBox, CheckButtons
 from scipy.optimize import curve_fit
 from scipy.integrate import solve_ivp
 
@@ -453,7 +453,7 @@ def main(arguments):
         
 
     args = arguments
-    currentLocation = pt(args["currentLocation"])
+    currentLocation = pt(args["currentLocation"]).parent
     data = args["data"]
 
     nameOfReactants = args["nameOfReactantsArray"]

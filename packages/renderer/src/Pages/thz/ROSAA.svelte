@@ -5,7 +5,7 @@
     import {find}                   from "lodash-es";
     import {browse}                 from "$components/Layout.svelte";
     import CustomSelect             from "$components/CustomSelect.svelte";
-    import SeparateWindow           from '$components/SeparateWindow.svelte';
+    import LayoutDiv           from '$components/LayoutDiv.svelte';
     import CustomCheckbox           from "$components/CustomCheckbox.svelte";
     import CustomTextSwitch         from "$components/CustomTextSwitch.svelte";
     import PyButton                 from "$components/PyButton.svelte"
@@ -29,7 +29,7 @@
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    export let active = false;
+    // export let active = false;
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -342,7 +342,8 @@
     const simulationMethods = ["Normal", "FixedPopulation", "withoutCollisionalConstants"]
     
     const wavenumberToMHz = (energy) => ({...energy, value: Number(energy.value*SpeedOfLight*1e2*1e-6).toFixed(3)}) 
-    const MHzToWavenumber = (energy) => ({...energy, value: Number(energy.value/(SpeedOfLight*1e2*1e-6)).toFixed(3)}) 
+    const MHzToWavenumber = (energy) => ({...energy, value: Number(energy.value/(SpeedOfLight*1e2*1e-6)).toFixed(3)})
+
     $: energyLevels = energyInfos[`${energyUnit}`]
     
 </script>
@@ -350,7 +351,7 @@
 <BoltzmanDistribution {...boltzmanArgs} bind:active={openBoltzmanWindow} bind:graphWindow={boltzmanWindow} />
 
 
-<SeparateWindow id="ROSAA__modal" title="ROSAA modal" bind:active >
+<LayoutDiv id="ROSAA__modal" >
 
     <svelte:fragment slot="header_content__slot" >
         <div class="locationColumn box v-center" style="border: solid 1px #fff9;" >
@@ -549,7 +550,7 @@
     
     </svelte:fragment>
 
-</SeparateWindow>
+</LayoutDiv>
 
 <style lang="scss">
     .locationColumn {
@@ -563,6 +564,7 @@
     .main_container__div {
         display: grid;
         grid-row-gap: 1em;
+        padding-right: 1em;
     }
 
     .status_report__div {

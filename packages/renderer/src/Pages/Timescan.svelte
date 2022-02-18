@@ -5,7 +5,7 @@
     import CustomIconSwitch from "$components/CustomIconSwitch.svelte"
     import CustomSelect     from "$components/CustomSelect.svelte"
     import CustomSwitch     from "$components/CustomSwitch.svelte"
-    import ROSAAkinetics    from "../Pages/timescan/components/ROSAAkinetics.svelte"
+    // import ROSAAkinetics    from "../Pages/timescan/components/ROSAAkinetics.svelte"
     import {plot}           from "../js/functions.js"
     import {relayout}       from 'plotly.js/dist/plotly-basic';
     import {cloneDeep}      from "lodash-es"
@@ -137,7 +137,7 @@
 
 </script>
 
-<ROSAAkinetics {fileChecked} {currentLocation} bind:kineticMode />
+<!-- <ROSAAkinetics {fileChecked} {currentLocation} bind:kineticMode /> -->
 
 <Layout {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked on:chdir={dir_changed}>
 
@@ -147,7 +147,7 @@
 
             <Textfield type="number" input$min=0 input$max={dataLength} bind:value={timestartIndexScan} label="Time Index" on:change={updateData}/>
             <button class="button is-link" on:click="{()=>{toggleRow = !toggleRow}}">Depletion Plot</button>
-            <button class="button is-link" on:click="{()=>{kineticMode = !kineticMode}}">ROSAA Kinetics</button>
+            <!-- <button class="button is-link" on:click="{()=>{kineticMode = !kineticMode}}">ROSAA Kinetics</button> -->
             
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"scan", tkplot:"plot"})}">Open in Matplotlib</button>
             <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>

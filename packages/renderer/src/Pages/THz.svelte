@@ -5,7 +5,7 @@
     import CustomCheckbox       from "$components/CustomCheckbox.svelte"
     import CustomIconSwitch     from "$components/CustomIconSwitch.svelte"
     import {plot}               from "../js/functions.js"
-    import ROSAA                from "./thz/ROSAA.svelte"
+    // import ROSAA                from "./thz/ROSAA.svelte"
     import {relayout, restyle}  from 'plotly.js/dist/plotly-basic';
     import computePy_func       from "$src/Pages/general/computePy"
     
@@ -71,7 +71,7 @@
 
 </script>
 
-<ROSAA bind:active={ROSAA_modal_active}  />
+<!-- <ROSAA bind:active={ROSAA_modal_active}  /> -->
 <Layout  {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked>
 
     <svelte:fragment slot="buttonContainer">
@@ -84,7 +84,7 @@
             <CustomIconSwitch style="padding:0;" bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
             <Textfield type="number" bind:value={delta} label="Delta" input$step="0.1" />
             <Textfield type="number" bind:value={gamma} label="Gamma" input$step="0.1" />
-            <button class="{btnClass}" on:click="{()=>{ROSAA_modal_active=true}}">ROSAA mode</button>
+            <!-- <button class="{btnClass}" on:click="{()=>{ROSAA_modal_active=true}}">ROSAA mode</button> -->
 
         </div>
 

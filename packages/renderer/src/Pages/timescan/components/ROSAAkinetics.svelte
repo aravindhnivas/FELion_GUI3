@@ -5,15 +5,15 @@
     import PyButton                     from "$components/PyButton.svelte"
     import CustomSwitch                 from "$components/CustomSwitch.svelte"
     import CustomSelect                 from "$components/CustomSelect.svelte"
-    import SeparateWindow               from "$components/SeparateWindow.svelte"
+    import LayoutDiv                    from "$components/LayoutDiv.svelte"
     import {cloneDeep}                  from "lodash-es"
     import computePy_func               from "$src/Pages/general/computePy"
     import KineticConfigTable           from './KineticConfigTable.svelte'
     import KineticEditor                from './KineticEditor.svelte'
 
-    export let kineticMode=true
-    export let currentLocation=""
-    
+    import {browse}                     from "$components/Layout.svelte";
+
+    let currentLocation=db.get("kinetics_location") || ""
     let timestartIndexScan=0
     let fileCollections = []
     let srgMode=true
@@ -31,17 +31,25 @@
     let k3Guess = "1e-30"
     let kCIDGuess="1e-15";
 
-    let kineticDataLocation = ""
+    async function browse_folder() {
+        const result = await browse({dir: true})
+        if (!result) return
+        currentLocation = result
+        db.set("kinetics_location", currentLocation)
+        console.log(result, currentLocation)
+    }
+
+    // let kineticDataLocation = ""
     
     const updateFiles = (node=null) => {
 
         node?.target.classList.add("rotateIn")
-        fileCollections = fs.readdirSync(kineticDataLocation).filter(f=>f.endsWith('_scan.json'))
+        fileCollections = fs.readdirSync(currentLocation).filter(f=>f.endsWith('_scan.json'))
                                 .map(f=>f.split('.')[0].replace('_scan', '.scan'))
     }
 
-    $: if (fs.existsSync(kineticDataLocation)) {updateFiles()}
-    $: if (fs.existsSync(currentLocation)) {kineticDataLocation = pathJoin(currentLocation || "", "EXPORT")}
+    $: if (fs.existsSync(currentLocation)) {updateFiles()}
+    // $: if (fs.existsSync(currentLocation)) {kineticDataLocation = pathJoin(currentLocation || "", "EXPORT")}
 
     let currentData = {}
     let currentDataBackup = {}
@@ -62,7 +70,7 @@
     let maxTimeIndex = 5
 
     function computeParameters() {
-        const currentJSONfile = pathJoin(kineticDataLocation, selectedFile.replace('.scan', '_scan.json'))
+        const currentJSONfile = pathJoin(currentLocation, selectedFile.replace('.scan', '_scan.json'))
         console.log(currentJSONfile)
 
         currentData = fs.readJsonSync(currentJSONfile)
@@ -137,7 +145,7 @@
         if(!fs.existsSync(currentLocation)) {return window.createToast("Invalid location or filename", "danger")}
         config_content[selectedFile] = currentConfig
 
-        const config_file = pathJoin(currentLocation, config_file_ROSAAkinetics);
+        const config_file = pathJoin(currentLocation, "../OUT", config_file_ROSAAkinetics);
         fs.outputJsonSync(config_file, config_content)
         window.createToast("Config file saved"+config_file_ROSAAkinetics, "warning")
 
@@ -164,7 +172,7 @@
     async function loadConfig() {
         try {
 
-            const config_file = pathJoin(currentLocation, config_file_ROSAAkinetics);
+            const config_file = pathJoin(currentLocation, "../OUT", config_file_ROSAAkinetics);
             if(fs.existsSync(config_file)) {
                 config_content = fs.readJsonSync(config_file)
                 configArray = Object.keys(config_content).map(filename=>({filename, ...config_content[filename], id: getID()}))
@@ -222,31 +230,27 @@
     let kineticEditorFiletype = "kinetics"
     let kineticEditorLocation = db.get(`${kineticEditorFiletype}-report-md`) || ""
     let reportSaved = false;
+
 </script>
 
 <KineticConfigTable {configArray} {currentLocation} bind:active={adjustConfig} />
-<SeparateWindow bind:active={kineticMode} title="Kinetics">
+
+
+<LayoutDiv id="Kinetics">
 
     <svelte:fragment slot="header_content__slot">
-        <div class="notice__div">Kinetics</div>
+        <div class="location__div box">
+            <button class="button is-link" on:click={browse_folder}>Browse</button>
+            <Textfield bind:value={currentLocation} label="Timescan EXPORT data location" />
+            <i class="material-icons animated faster" on:animationend={({target})=>target?.classList.remove("rotateIn")} on:click="{updateFiles}"> refresh </i>
+        </div>
+
     </svelte:fragment>
 
     <svelte:fragment slot="main_content__slot">
 
-        <div class="main_content__div">
-            <div class="align box">
-
-                <Textfield bind:value={currentLocation} label="Timescan data location" style="width: 100%;" />
-                <div class="txt-icon-col">
-                    <Textfield bind:value={kineticDataLocation} label="Timescan EXPORT data location" />
-                    <i class="material-icons animated faster" 
-                        on:animationend={({target})=>target.classList.remove("rotateIn")} 
-                        on:click="{updateFiles}">
-                        refresh
-                    </i>
-
-                </div>
-            </div>
+        <div class="main_container__div">
+            
 
             <div class="align box">
                 <CustomSwitch bind:selected={srgMode} label="SRG"/>
@@ -296,22 +300,24 @@
 
     </svelte:fragment>
 
-</SeparateWindow>
+</LayoutDiv>
 
-<style lang="scss">
-    .main_content__div {
-        display: flex;
-        flex-direction: column;
+<style lang="scss" >
+
+    .location__div {
+        display: grid;
+        grid-auto-flow: column;
+        grid-template-columns: auto 1fr auto;
+        align-items: baseline;
         gap: 1em;
-        padding: 1em;
+        padding: 0.5em;
+    }
+
+    .main_container__div {
+        display: grid;
+        grid-row-gap: 1em;
+        padding-right: 1em;
         .box { margin: 0;}
     }
 
-    .txt-icon-col {
-        display: grid;
-        grid-template-columns: 1fr auto;
-
-        grid-auto-flow: column;
-        width: 100%;
-    }
 </style>

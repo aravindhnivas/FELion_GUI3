@@ -9,7 +9,7 @@ from ROSAA_func import boltzman_distribution
 
 from optimizePlot import optimizePlot
 from FELion_constants import pltColors
-
+from FELion_widgets import FELion_Tk
 
 def log(msg): 
     return print(msg, flush=True)
@@ -359,7 +359,14 @@ class ROSAA:
         log(f"Total simulation time {(end_time - self.start_time):.2f} s")
         
     def Plot(self):
-        fig, ax = plt.subplots(figsize=figure["size"], dpi=int(figure["dpi"]))
+        figs_location = output_dir / "figs"
+        if not figs_location.exists(): figs_location.mkdir()
+
+        widget = FELion_Tk(title=f"Population ratio", location=figs_location)
+        widget.Figure()
+
+        ax = widget.make_figure_layout(xaxis="Time (ms)", yaxis="Population", savename=savefilename)
+        # fig, ax = plt.subplots(figsize=figure["size"], dpi=int(figure["dpi"]))
         simulationTime = self.simulateTime.T*1e3
 
         counter = 0
@@ -373,11 +380,11 @@ class ROSAA:
         ax.plot(simulationTime, self.lightOFF_distribution.sum(axis=0), "--k")
         
         ax.hlines(1, 0, simulationTime[-1]+simulationTime[-1]*0.2, colors='k', linestyles="dashdot")
-
-        lg = ax.legend(title=f"--OFF, -ON", fontsize=14, title_fontsize=16)
-        lg.set_draggable(True)
-        title=f"${self.molecule}$: {self.excitedFrom} - {self.excitedTo}"
-        ax = optimizePlot(ax, xlabel="Time (ms)", ylabel="Population", title=title)
+        widget.plot_legend = ax.legend(title=f"--OFF, -ON", fontsize=14, title_fontsize=16)
+        widget.plot_legend.set_draggable(True)
+        
+        ax = optimizePlot(ax, xlabel="Time (ms)", ylabel="Population")
+        
 
         if self.includeAttachmentRate:
 
@@ -386,34 +393,43 @@ class ROSAA:
             signal = (1 - (self.lightON_distribution[signal_index][1:] / self.lightOFF_distribution[signal_index][1:]))*100
 
             signal = np.around(np.nan_to_num(signal).clip(min=0), 1)
+            # widget1 = FELion_Tk(title=f"Signal", location=figs_location)
+            # widget1.Figure()
+            # ax1 = widget1.make_figure_layout(xaxis="Time (ms)", yaxis="Signal (%)", savename=savefilename)
             fig1, ax1 = plt.subplots(figsize=figure["size"], dpi=int(figure["dpi"]))
 
             ax1.plot(simulationTime[1:], signal, label=f"Signal: {round(signal[-1])} (%)")
+            title=f"${self.molecule}$: {self.excitedFrom} - {self.excitedTo}"
+
             ax1 = optimizePlot(ax1, xlabel="Time (ms)", ylabel="Signal (%)", title=title)
-        
-            ax1.set()
+            # widget1.plot_legend = ax1.legend()
             ax1.legend()
-
+            
+            ax.set_title(title, fontsize=16)
             log(f"Signal: {round(signal[-1])} (%)")
+            if figure["show"]:
+                plt.show()
+            # widget1.mainloop()
 
-        if figure["show"]:
-            plt.show()
+        widget.mainloop()
+        
+        
 
-        figs_location = output_dir / "figs"
-        png_location = figs_location / "png"
-        pdf_location = figs_location / "pdf"
-        if not figs_location.exists(): figs_location.mkdir()
-        if not png_location.exists(): png_location.mkdir()
-        if not pdf_location.exists(): pdf_location.mkdir()
+        # figs_location = output_dir / "figs"
+        # png_location = figs_location / "png"
+        # pdf_location = figs_location / "pdf"
+        # if not figs_location.exists(): figs_location.mkdir()
+        # if not png_location.exists(): png_location.mkdir()
+        # if not pdf_location.exists(): pdf_location.mkdir()
+        # fig.savefig(f"{png_location/savefilename}.rosaa.png", dpi=figure["dpi"]*2)
+        # fig.savefig(f"{pdf_location/savefilename}.rosaa.pdf", dpi=figure["dpi"]*2)
+        # if self.includeAttachmentRate:
+        #     fig1.savefig(f"{png_location/savefilename}.rosaa.signal.png", dpi=figure["dpi"]*2)
+        #     fig1.savefig(f"{pdf_location/savefilename}.rosaa.signal.pdf", dpi=figure["dpi"]*2)
 
-        fig.savefig(f"{png_location/savefilename}.rosaa.png", dpi=figure["dpi"]*2)
-        fig.savefig(f"{pdf_location/savefilename}.rosaa.pdf", dpi=figure["dpi"]*2)
-        if self.includeAttachmentRate:
-            fig1.savefig(f"{png_location/savefilename}.rosaa.signal.png", dpi=figure["dpi"]*2)
-            fig1.savefig(f"{pdf_location/savefilename}.rosaa.signal.pdf", dpi=figure["dpi"]*2)
-
-        log(f"figures are saved in {figs_location}")
-
+        # log(f"figures are saved in {figs_location}")
+        
+        
 
     def WriteData(self, name, dataToSend):
         

@@ -21,6 +21,8 @@
 
     function plotGraph() {
         const {distribution, partitionValue} = boltzman_distribution({energyLevels, trapTemp, electronSpin, zeemanSplit, energyUnit})
+        // console.log()
+        console.log("Computing", distribution)
         if(distribution) {
             const totalSum = sumBy(distribution, e=>e.value).toFixed(2)
             const energyLevel = distribution.map(e=>e.label)
@@ -28,6 +30,7 @@
             const data = {  x: energyLevel, y: populations, mode: "lines+markers", showlegend:true, name:`Temp: ${trapTemp}K, Z: ${partitionValue}, Total: ${totalSum}`}
             const dataToPlot = {data}
             plot( `${title}: ${trapTemp}K`, "Energy Levels", "Population", dataToPlot, plotID)
+            console.log("Plotted")
         }
     }
     $: if (windowReady) {setTimeout(()=>graphWindow.focus(), 100);}

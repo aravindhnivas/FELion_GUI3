@@ -7,18 +7,14 @@ export function plot(mainTitle, xtitle, ytitle, data, plotArea, logScale=null) {
         xaxis: { title: xtitle },
         yaxis: { title: ytitle , type: logScale},
         hovermode: 'closest',
-
         autosize: true,
         height: 450,
     }
 
-    // if (filetype == 'mass') { dataLayout.yaxis.type = "log" }
-
     let dataPlot = [];
-
     for (let x in data) { dataPlot.push(data[x]) }
-
-    try { react(plotArea, dataPlot, dataLayout, { editable: true }) } catch (err) { console.log("Error occured while plotting\n", err) }
+    try { react(plotArea, dataPlot, dataLayout, { editable: true }); console.log(plotArea, ": plotted") } 
+    catch (err) { console.log("Error occured while plotting\n", err) }
 }
 
 export function subplot(mainTitle, xtitle, ytitle, data, plotArea, x2, y2, data2) {
