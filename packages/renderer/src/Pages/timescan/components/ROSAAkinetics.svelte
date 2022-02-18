@@ -277,17 +277,14 @@
                 <Textfield bind:value={ratekCID} label="ratekCID" />
                 <Textfield bind:value={kCIDGuess} label="kCIDGuess" />
             </div>
-
             <KineticEditor  {massOfReactants} {ratek3} {ratekCID} {nameOfReactants}
                 bind:kineticEditorLocation bind:kineticEditorFilename
                 bind:reportSaved bind:reportRead
             />
         </div>
-
     </svelte:fragment>
 
     <svelte:fragment slot="footer_content__slot" >
-
         {#if pyProcesses.length}
             <button class="button is-danger" 
                 on:click="{()=>{pyProcesses.at(-1).kill(); pyProcesses.pop()}}">Stop</button>
@@ -299,13 +296,11 @@
         <i class="material-icons" on:click="{()=> adjustConfig = true}">settings</i>
 
         <PyButton on:click={kineticSimulation} bind:pyProcesses />
-
     </svelte:fragment>
 
 </LayoutDiv>
 
 <style lang="scss" >
-
     .location__div {
         display: grid;
         grid-auto-flow: column;
