@@ -1,33 +1,33 @@
 
 <script>
-    import SeparateWindow from "$components/SeparateWindow.svelte";
-    import { plot } from "../../../js/functions";
-    import boltzmanDistribution from "../functions/boltzman_distribution";
-    import Textfield from '@smui/textfield';
-    import {sumBy} from "lodash-es"
+
+    import SeparateWindow           from "$components/SeparateWindow.svelte";
+    import CustomTextSwitch         from "$components/CustomTextSwitch.svelte";
+    import { plot }                 from "../../../js/functions";
+    import boltzman_distribution    from "../functions/boltzman_distribution";
+    import {sumBy}                  from "lodash-es"
 
     export let active;
-    export let energyLevels, trapTemp, electronSpin, zeemanSplit, energyUnit;
+    export let trapTemp
+    export let energyLevels
+    
+    export let zeemanSplit
+    export let energyUnit;
+    export let electronSpin
+    
     const title="Boltzman Distribution"
     const plotID = "boltzmanDistributionPlot"
-
     let graphWindow=null, windowReady=false;
-    
-    let stepSize=0.1;
 
     function plotGraph() {
-    
-    
-        const distribution = boltzmanDistribution({energyLevels, trapTemp, electronSpin, zeemanSplit, energyUnit})
-        // console.log(distribution)
+        const {distribution, partitionValue} = boltzman_distribution({energyLevels, trapTemp, electronSpin, zeemanSplit, energyUnit})
         if(distribution) {
             const totalSum = sumBy(distribution, e=>e.value).toFixed(2)
             const energyLevel = distribution.map(e=>e.label)
             const populations = distribution.map(e=>e.value)
-            const data = {  x: energyLevel, y: populations, mode: "lines+markers", showlegend:true, name:`Temp: ${trapTemp}K, Total: ${totalSum}`}
+            const data = {  x: energyLevel, y: populations, mode: "lines+markers", showlegend:true, name:`Temp: ${trapTemp}K, Z: ${partitionValue}, Total: ${totalSum}`}
             const dataToPlot = {data}
             plot( `${title}: ${trapTemp}K`, "Energy Levels", "Population", dataToPlot, plotID)
-            // setTimeout(()=>graphWindow.focus(), 100)
         }
     }
     $: if (windowReady) {setTimeout(()=>graphWindow.focus(), 100);}
@@ -35,20 +35,11 @@
     
 </script>
 
-<style>
-    .header {
-        display: flex;
-        gap: 1em;
-        margin-bottom: 1em;
-    
-    }
-</style>
-
 <SeparateWindow {title} bind:active bind:windowReady bind:graphWindow maximize={false}>
     <svelte:fragment slot="header_content__slot" >
-        <div class="header">
-            <Textfield bind:value={stepSize} label="stepSize" style="width:auto;"/>
-            <Textfield bind:value={trapTemp} label="temperature" input$type="number" input$step={stepSize} input$min=0 style="width:auto;"/>
+
+        <div class="align">
+            <CustomTextSwitch bind:value={trapTemp} label="Temperature (K)" />
             <button class="button is-link" on:click={plotGraph}>Compute</button>
         </div>
     </svelte:fragment>

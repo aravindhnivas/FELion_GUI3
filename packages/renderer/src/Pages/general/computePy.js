@@ -25,7 +25,7 @@ export default async function({ e = null, pyfile = "", args = "", general = fals
             const pyArgs = get(developerMode) ? [pathJoin(get(pythonscript), "main.py"), pyfile, args ] : [pyfile, args]
             console.log({pyArgs})
             const py = spawn( pyProgram, pyArgs, { detached: general, shell: openShell } )
-    
+            
             py.on("error", (err) => {
                 window.handleError(err)
                 return
@@ -58,7 +58,6 @@ export default async function({ e = null, pyfile = "", args = "", general = fals
                             window.handleError(`${outputFile} file doesn't exists`)
                             return resolve(null)
                         }
-
                         const dataFromPython = fs.readJsonSync(outputFile)
                         console.table(dataFromPython)
                         resolve(dataFromPython)
@@ -67,10 +66,11 @@ export default async function({ e = null, pyfile = "", args = "", general = fals
                 } else { 
 
                     resolve(null)
-                    window.handleError(error)
                     loginfo.write(`\n\n[ERROR OCCURED]\n${error}\n`)
+                    loginfo.end()
+                    window.handleError(error)
                 }
-                loginfo.end()
+                
                 if(target?.classList.contains("is-loading")) {
                     target.classList.remove("is-loading")
                 }

@@ -81,7 +81,10 @@
 
     async function computeEinsteinBRate(e=null) {
         if(!lorrentz || !gaussian) return createToast("Compute gaussian and lorrentz parameters")
-        const {lineShape} = await computePy_func({e, pyfile: "voigt", args: [JSON.stringify({lorrentz, gaussian})]})
+        const dataFromPython = await computePy_func({e, pyfile: "voigt", args: [JSON.stringify({lorrentz, gaussian})]})
+
+        if(!dataFromPython) return
+        const lineShape = dataFromPython?.lineShape
         console.log(lineShape.toExponential(2))
         computeRates(lineShape)
     }

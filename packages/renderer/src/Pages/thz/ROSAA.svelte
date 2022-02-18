@@ -159,7 +159,7 @@
 
     let configLoaded    = false;
     let collisionalCoefficient_balance = [];
-    let configFilename = db.get("ROSAA_config_file")
+    let configFilename = db.get("ROSAA_config_file") || ""
     async function loadConfig() {
         
         try {
