@@ -1,6 +1,6 @@
 # What's new
 ## v3.5.1-beta
-
+- Kinetics (New page added)
 - Timescan
     - Kinetic model implementation (TkFigure widget, save fit data, etc)
     - .scan file data analysed and exported in JSON format in EXPORT directory

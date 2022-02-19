@@ -116,7 +116,7 @@
         {/if}
     </div>
 
-    <div class="report_controler__div box">
+    <div class="report_controler__div box" style="border: solid 1px #fff7;">
         <div class="report_location__div" >
             <button class="button is-link" on:click="{browse_folder}">Browse</button>
             <Textfield bind:value={location} label="report location" />
