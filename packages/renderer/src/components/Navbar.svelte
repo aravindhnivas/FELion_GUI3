@@ -3,7 +3,7 @@
 	import Tab, {Label} from '@smui/tab';
 	import TabBar       from '@smui/tab-bar';
 	import {onMount}    from "svelte";
-  import {activePage} from '$src/sveltewritable';
+  	import {activePage} from '$src/sveltewritable';
 	export let navItems;
 	
 	
@@ -15,12 +15,12 @@
 
 
 	const navigate = () =>{navItems.forEach(
-    item => item == active 
-      ? document.getElementById(item).style.display = "block" 
-      : document.getElementById(item).style.display = "none" 
-  )}
+		item => item == active 
+		? document.getElementById(item).style.display = "block" 
+		: document.getElementById(item).style.display = "none" 
+	)}
   
-	onMount(()=>{document.getElementById("navbar").style.display = "block";navigate()})
+	onMount(()=>{document.getElementById("navbar").style.display = "block"; navigate()})
 </script>
 
 <div class="box animated fadeInDown" id="navbar" style="display:none" on:click={navigate}>

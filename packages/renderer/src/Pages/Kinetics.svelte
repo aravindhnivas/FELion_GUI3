@@ -29,7 +29,6 @@
 </section>
 
 <style lang="scss">
-
     #Kinetics {
         padding: 1em;
     }
@@ -41,11 +40,10 @@
         gap: 1em;
         grid-template-columns: 1fr 10fr;
         .nav {
+
             display: flex;
             gap: 1em;
-            // justify-content: center;
             flex-direction: column;
-            
             padding: 0.5em;
 
             div {
@@ -63,7 +61,6 @@
             overflow: hidden;
             max-height: calc(100vh - 10rem);
             height: calc(100vh - 10rem);
-
         }
     }
 
