@@ -150,34 +150,36 @@ def get_iterations(scanfile, location):
                 iterations = np.append(iterations, line.split(':')[-1]).astype(np.int64)
             else:
                 continue
+    
     return iterations
 
 def main(args):
+    
     scanfiles = [pt(i) for i in args["scanfiles"]]
-
     location = scanfiles[0].parent
+    
     EXPORT_DIR = location / "EXPORT"
     if not EXPORT_DIR.exists(): EXPORT_DIR.mkdir()
     
+
     tkplot = args["tkplot"]
+
     if tkplot == "plot": 
         timescanplot(scanfiles[0], tkplot=True)
     else:
-    
         dataToSend = {}
         for i in scanfiles:
-            
             data = timescanplot(i)
             filename = i.name
             dataToSend[filename] = data.get_plotly_data()
             
             try:
-                
                 with open(EXPORT_DIR / f"{i.stem}_scan.json", 'w+') as f:
                     data = json.dumps(dataToSend[filename], sort_keys=True, indent=4, separators=(',', ': '))
                     f.write(data)
                 print("Files are saved", flush=True)
             except:
                 print("Couldn't write file to EXPORT directory")
-                
         sendData(dataToSend, calling_file=pt(__file__).stem)
+
+        

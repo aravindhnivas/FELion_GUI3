@@ -4,13 +4,14 @@
     import Textfield                    from '@smui/textfield'
     import PyButton                     from "$components/PyButton.svelte"
     import CustomSwitch                 from "$components/CustomSwitch.svelte"
+    import CustomTextSwitch             from "$components/CustomTextSwitch.svelte"
     import CustomSelect                 from "$components/CustomSelect.svelte"
     import LayoutDiv                    from "$components/LayoutDiv.svelte"
     import {cloneDeep}                  from "lodash-es"
     import computePy_func               from "$src/Pages/general/computePy"
     import KineticConfigTable           from './KineticConfigTable.svelte'
-    import KineticEditor                from './KineticEditor.svelte'
 
+    import KineticEditor                from './KineticEditor.svelte'
     import {browse}                     from "$components/Layout.svelte";
 
     let currentLocation=db.get("kinetics_location") || ""
@@ -63,8 +64,9 @@
                 newData["error_y"]["array"] = newData["error_y"]["array"].slice(timestartIndexScan)
                 currentData[massKey] = newData
             })
+
+            computeOtherParameters()
         }
-        computeOtherParameters()
     }
 
     let maxTimeIndex = 5
@@ -139,13 +141,13 @@
 
     const config_file_ROSAAkinetics="config_file_ROSAAkinetics.json";
 
+    $: config_file = pathJoin(currentLocation, config_file_ROSAAkinetics);
     let config_content = {}
 
     function saveCurrentConfig() {
-        if(!fs.existsSync(currentLocation)) {return window.createToast("Invalid location or filename", "danger")}
+    
+        if(!selectedFile || !fs.existsSync(currentLocation)) {return window.createToast("Invalid location or filename", "danger")}
         config_content[selectedFile] = currentConfig
-
-        const config_file = pathJoin(currentLocation, "../OUT", config_file_ROSAAkinetics);
         fs.outputJsonSync(config_file, config_content)
         window.createToast("Config file saved"+config_file_ROSAAkinetics, "warning")
 
@@ -170,9 +172,9 @@
     let configArray = []
 
     async function loadConfig() {
+
         try {
 
-            const config_file = pathJoin(currentLocation, "../OUT", config_file_ROSAAkinetics);
             if(fs.existsSync(config_file)) {
                 config_content = fs.readJsonSync(config_file)
                 configArray = Object.keys(config_content).map(filename=>({filename, ...config_content[filename], id: getID()}))
@@ -226,6 +228,7 @@
 
     $: currentConfig = {srgMode, pbefore, pafter, calibrationFactor, temp}
     $: kineticEditorFilename = basename(selectedFile).split(".")[0]+"-kineticModel.md"
+
     let reportRead=false;
     let kineticEditorFiletype = "kinetics"
     let kineticEditorLocation = db.get(`${kineticEditorFiletype}-report-md`) || ""
@@ -233,18 +236,17 @@
 
 </script>
 
-<KineticConfigTable {configArray} {currentLocation} bind:active={adjustConfig} />
-
+<KineticConfigTable {configArray} {config_file} bind:active={adjustConfig} />
 
 <LayoutDiv id="Kinetics">
 
     <svelte:fragment slot="header_content__slot">
-        <div class="location__div box">
+        <div class="location__div box" >
             <button class="button is-link" on:click={browse_folder}>Browse</button>
             <Textfield bind:value={currentLocation} label="Timescan EXPORT data location" />
+            
             <i class="material-icons animated faster" on:animationend={({target})=>target?.classList.remove("rotateIn")} on:click="{updateFiles}"> refresh </i>
         </div>
-
     </svelte:fragment>
 
     <svelte:fragment slot="main_content__slot">
@@ -257,15 +259,15 @@
                 <CustomSwitch bind:selected={srgMode} label="SRG"/>
                 <Textfield bind:value={pbefore} label="pbefore" />
                 <Textfield bind:value={pafter} label="pafter" />
-                <Textfield input$type="number" input$step="0.5" bind:value={calibrationFactor} label="calibrationFactor" />
-                <Textfield input$type="number" input$step="0.1" bind:value={temp} label="temp(K)" />
+                <CustomTextSwitch step="0.5" bind:value={calibrationFactor} label="calibrationFactor"/>
+                <CustomTextSwitch step="0.1" bind:value={temp} label="temp(K)" />
                 <Textfield bind:value={numberDensity} label="numberDensity" disabled />
 
             </div>
 
-            <div class="align box">
+            <div class="align box" >
                 <CustomSelect bind:picked={selectedFile} label="Filename" options={fileCollections} />
-                <Textfield type="number" input$min=0 input$max={maxTimeIndex} bind:value={timestartIndexScan} label="Time Index" on:change={sliceData} />
+                <CustomTextSwitch max={maxTimeIndex} bind:value={timestartIndexScan} label="Time Index" on:change={sliceData} />
                 <Textfield bind:value={molecule} label="Molecule" />
                 <Textfield bind:value={tag} label="tag" />
                 <Textfield bind:value={massOfReactants} label="massOfReactants" />
@@ -314,7 +316,7 @@
         display: grid;
         grid-row-gap: 1em;
         padding-right: 1em;
-        .box { margin: 0; padding: 0.5em;}
     }
+    .box { margin: 0; padding: 0.5em; border: solid 1px #fff7;}
 
 </style>

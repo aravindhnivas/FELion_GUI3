@@ -144,13 +144,6 @@ def fitfunc(event=None):
 
 def saveData(event=None):
     try:
-        
-        savedir = currentLocation/"OUT"
-        if not savedir.exists():
-            savedir.mkdir()
-
-        savefile = savedir/"k_fit.json"
-
         k3Len = len(ratek3)
 
         with open(savefile, "w+") as f:
@@ -444,7 +437,7 @@ def make_slider():
 
 args = None
 widget = None
-
+savefile = None
 def main(arguments):
     global args, currentLocation, nameOfReactants, \
         expTime, expData, expDataError, temp, rateConstantsFileData,\
@@ -467,7 +460,6 @@ def main(arguments):
     numberDensity = float(args["numberDensity"])
     initialValues = [float(i) for i in args["initialValues"]]
     totalAttachmentLevels = len(initialValues)-1
-
     savedir = currentLocation/"OUT"
     savefile = savedir/"k_fit.json"
 
