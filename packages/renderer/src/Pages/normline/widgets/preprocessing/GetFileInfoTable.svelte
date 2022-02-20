@@ -12,29 +12,24 @@
     let toggleFileDetailsTable = false
     
     function plotData({e=null}={}){
-        
         let pyfile="getfile_details", args;
-        
         if(felixfiles.length<1) return window.createToast("No files selected", "danger")
-        
         args=[JSON.stringify({files:$opoMode?opofiles : felixfiles, normMethod})]
         computePy_func({e, pyfile, args})
         .then((dataFromPython)=>{ get_details_func({dataFromPython}); toggleFileDetailsTable = true })
-        
-        
     }
 
     function loadfiledetails(){
         const loadedfile = loadfile({name:"filedetails"})
         $filedetails = uniqBy([...loadedfile, ...$filedetails], "filename")
     }
+
 </script>
 
 <div class="align"> 
     <button class="button is-link" on:click="{(e)=>plotData({e:e})}">Get details</button>
     <CustomIconSwitch bind:toggler={toggleFileDetailsTable} icons={["arrow_drop_down", "arrow_drop_up"]}/>
     <button class="button is-link" on:click="{()=>savefile({file:$filedetails, name:"filedetails"})}">Save</button>
-
     <button class="button is-link" on:click="{loadfiledetails}">Load</button>
     
     {#if toggleFileDetailsTable}

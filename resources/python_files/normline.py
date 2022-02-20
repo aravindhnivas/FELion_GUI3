@@ -92,7 +92,8 @@ class normplot:
             except: self.felix_hz = 10
 
 
-            if trap > 50:
+            print(f"read: {trap=}", flush=True)
+            if trap/1000 > 5:
                 with open(f"./DATA/{powerfile}") as f:
                     try:
                         for line in f:

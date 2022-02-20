@@ -34,7 +34,7 @@
     const id="Normline"
     
     let fileChecked=[]
-    let toggleBrowser = false;
+    // let toggleBrowser = false;
     let currentLocation = ""
     
     $: felixfiles = fileChecked.map(file=>pathResolve(currentLocation, file))

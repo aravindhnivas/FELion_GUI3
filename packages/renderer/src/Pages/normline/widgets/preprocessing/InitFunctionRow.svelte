@@ -68,7 +68,7 @@
         ]
     }
 
-    function plotData({e=null, filetype="felix"}={}){
+    async function plotData({e=null, filetype="felix"}={}){
         
         let pyfile="", args;
         
@@ -79,17 +79,19 @@
 
                 removeExtraFile()
                 graphPlotted = false, $felixOutputName = "averaged", $felixPlotAnnotations = [], $felixPeakTable = []
-                
                 pyfile="normline" , args=[JSON.stringify({felixfiles, delta})]
+                const dataFromPython = await computePy_func({e, pyfile, args})
+                if(!dataFromPython) return
 
-                computePy_func({e, pyfile, args})
-                .then((dataFromPython)=>{
-                    $expfittedLines = [], $felixPlotAnnotations = [], $expfittedLinesCollectedData = [], $fittedTraceCount = 0
-                    show_theoryplot = false
-                    felix_func({dataFromPython, delta})
-                    window.createToast("Graph Plotted", "success")
-                    graphPlotted = true
-                }).catch(error=>{window.handleError(error); console.error("Error main: ", error.stack || error)})
+                $expfittedLines = []
+                $fittedTraceCount = 0
+                $felixPlotAnnotations = []
+                $expfittedLinesCollectedData = []
+                show_theoryplot = false
+                felix_func({dataFromPython, delta})
+                window.createToast("Graph Plotted", "success")
+                graphPlotted = true
+                // }).catch(error=>{window.handleError(error); console.error("Error main: ", error.stack || error)})
                 break;
             
             case "baseline":

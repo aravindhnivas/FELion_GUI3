@@ -15,11 +15,7 @@ from scipy.interpolate import interp1d
 
 from uncertainties import ufloat as uf, unumpy as unp
 
-
-
-
 def gaussian(x, amp, sig, cen): return amp*np.exp(-0.5*((x-cen)/sig)**2)
-
 def move(pathdir, x): return (shutil.move(join(pathdir, x), join(pathdir, "DATA", x)), print("%s moved to DATA folder" % x))
 
 class gauss_fit:
@@ -62,27 +58,27 @@ def var_find(filename, var=None, get_defaults=True):
     else: return var
 
 def read_dat_file(filename, norm_method):
-
     read_data = np.genfromtxt(filename).T
-    
     xs = read_data[0]
-
-    
     if norm_method == "Log": ys = read_data[1]
     elif norm_method == "Relative": ys = read_data[2]
     else: ys = read_data[3]
-    
     return xs, ys
 
 save_location = pt(os.getenv("TEMP")) / "FELion_GUI3"
 if not save_location.exists(): os.mkdir(save_location)
 
+
 def sendData(dataToSend, calling_file=""):
+    print(f"Writing computed file: {calling_file}_data.json", flush=True)
     if not calling_file:
         calling_file = pt(inspect.stack()[-1].filename).stem
-    with open(save_location / f"{calling_file}_data.json", 'w+') as f:
+
+    filename = save_location / f"{calling_file}_data.json"
+    with open(filename, 'w+') as f:
         data = json.dumps(dataToSend, sort_keys=True, indent=4, separators=(',', ': '))
         f.write(data)
+        print(f"{filename} written", flush=True)
 
 
 def convert_intesities(felixlocation, output_filename, wn, inten, norm_method):
