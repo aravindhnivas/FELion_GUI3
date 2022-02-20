@@ -29,7 +29,7 @@ window.addEventListener('contextmenu', (e) => {
 
 fs.ensureDirSync(path.join(appInfo.userData, "config"))
 
-ipcRenderer.on('update-log', (_, info) => console.warning(JSON.stringify(info)))
+ipcRenderer.on('update-log', (_, info) => console.warn(info))
 ipcRenderer.on('update-progress', (_, progressObj) => {
     const progressContainer = document.getElementById("update-progress-container")
     progressContainer.style.display = "grid"
@@ -38,8 +38,13 @@ ipcRenderer.on('update-progress', (_, progressObj) => {
     console.info(progressObj)
 })
 
-ipcRenderer.on('update-log-error', (_, error) => console.error(error))
-contextBridge.exposeInMainWorld("checkupdate", () => ipcRenderer.invoke("checkupdate", null))
+localStorage.setItem("update-error", "")
+ipcRenderer.on('update-log-error', (_, error) => {console.error(error); localStorage.setItem("update-error", error)})
+
+contextBridge.exposeInMainWorld("checkupdate", () => {
+    ipcRenderer.invoke("checkupdate", null);
+    localStorage.setItem("update-error", "")
+})
 
 import "./fs-modules"
 import "./path-modules"

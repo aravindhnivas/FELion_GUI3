@@ -29,11 +29,12 @@
         const interval = 15 //min
         updateInterval = setInterval(() => {
             updateCheck()
+            updateError = localStorage.getItem("update-error")
         }, interval*60*1000);
     })
     onDestroy(() => env.DEV ? "" : clearInterval(updateInterval));
     
-    let pyError = ""
+    let pyError = "", updateError=""
     const getPyVersion = async (e) => {
         e?.target?.classList.toggle("is-loading")
         const pyfile = "getVersion"
@@ -91,11 +92,13 @@
 
                     <h1>Configuration</h1>
                     <div class="align">
+
                         <div class="tag is-warning">{$pyVersion || "Python undefined"}</div>
+                        
                         <div class="align">
+
                             <button class="button is-link" on:click="{()=> {$developerMode = !$developerMode; window.db.set("developerMode", $developerMode)}}">Developer mode: {$developerMode} </button>
                             <button class="button is-link" on:click="{getPyVersion}">getPyVersion </button>
-                            
                             {#if $developerMode}
 
                                 <div class="align">
@@ -108,6 +111,7 @@
                                     <CustomSwitch on:SMUISwitch:change={()=>window.db.set("suppressInitialDeveloperWarning", $suppressInitialDeveloperWarning)} bind:selected={$suppressInitialDeveloperWarning} label="suppressWarning"/>
                                 </div>
                             {/if}
+
                             {#if pyError}
                                 <div class="tag is-danger errorbox">{pyError}</div>
                             {/if}
@@ -141,6 +145,12 @@
                             <label for="file">Download progress:</label>
                             <progress id="update-progress" max="100" value="0"> 0%</progress>
                         </div>
+
+
+                        {#if updateError}
+                            <div class="tag is-danger errorbox">{updateError}</div>
+                        {/if}
+
                     </div>
                 </div>
 
