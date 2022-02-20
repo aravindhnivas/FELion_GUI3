@@ -38,7 +38,7 @@
 
     let active = db.get("MISC_active_tab") || "Unit Conversion"
     $: if(active) {db.set("MISC_active_tab", active)}
-    const navItems = ["Unit Conversion", "Configs", "Terminal"]
+    const navItems = ["Unit Conversion", "Configs"]
     let CONFIGS = db.data()
     const unsubscribe = db.onDidAnyChange((newValue, oldValue)=>{CONFIGS = newValue})
     

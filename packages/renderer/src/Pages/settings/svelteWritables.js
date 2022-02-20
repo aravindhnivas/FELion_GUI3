@@ -1,5 +1,5 @@
 
-import { writable, get } from "svelte/store";
+import { writable, get, derived } from "svelte/store";
 export { get };
 
 const pyPath = pathJoin(ROOT_DIR, "python3/python")
@@ -11,7 +11,11 @@ if(!db.get("pythonscript")) {db.set("pythonscript", pyScriptPath)}
 export const pythonpath = writable(db.get("pythonpath"))
 export const pythonscript = writable(db.get("pythonscript"))
 
-export const pyVersion = writable("")
 export const developerMode = writable(db.get("developerMode") ?? appInfo.isPackaged)
 console.log("developerMode: ", db.get("developerMode"), get(developerMode))
+export const pyProgram = derived([developerMode, pythonpath], ([$developerMode, $pythonpath]) => {
+    return $developerMode ? $pythonpath : pathJoin(ROOT_DIR, "resources/felionpy/felionpy")
+});
+
+export const pyVersion = writable("")
 export const suppressInitialDeveloperWarning = writable(db.get("suppressInitialDeveloperWarning") || false)

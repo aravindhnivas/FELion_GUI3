@@ -18,19 +18,23 @@ contextBridge.exposeInMainWorld("spawn", (cmd, args=[], opts={})=>{
     }
 })
 
-contextBridge.exposeInMainWorld("exec", async (cmd)=>{
+const computeExecCommand = async (cmd) => {
     console.log(`Executing command: ${cmd}`)
-    let data, error;
+    let error;
+    let stdout, stderr;
     try {
-        data = await execCommand(cmd)
-        console.log(`Execution completed: \n${cmd}\n --> `, data)
+
+        ({stdout, stderr} = await execCommand(cmd));
     } catch (err) {
         console.error(err)
         error = err
         console.log(`Erro occured while executing command: ${cmd}`)
     }
+    const data = {stdout, stderr}
+    console.log(`Execution completed: \n${cmd}\n --> `, data)
+
     return [data, error]
-})
+}
 
+contextBridge.exposeInMainWorld("exec", computeExecCommand)
 contextBridge.exposeInMainWorld("promisify", (fn) => promisify(fn))
-

@@ -7,7 +7,7 @@ from importlib import import_module
 if __name__ == "__main__":
 
     startTime = perf_counter()
-
+    print(f"{sys.argv=}")
     pyfile = sys.argv[1]
     args = json.loads(sys.argv[2])
 

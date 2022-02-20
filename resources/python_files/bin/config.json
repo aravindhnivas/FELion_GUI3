@@ -160,6 +160,10 @@
   {
    "optionDest": "hiddenimports",
    "value": "felix_tkplot"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "getVersion"
   }
  ],
  "nonPyinstallerOptions": {

@@ -3,7 +3,7 @@
         pyVersion,
         pythonpath,
         pythonscript,
-        developerMode,
+        developerMode, pyProgram,
         suppressInitialDeveloperWarning
     }                               from "./settings/svelteWritables";
     import {activateChangelog}      from "../js/functions"
@@ -11,10 +11,8 @@
         resetPyConfig, updatePyConfig
     }                               from "./settings/checkPython";
 
-
     import Textfield                from '@smui/textfield';
     import {onMount, onDestroy}     from "svelte";
-    
     import CustomSwitch             from '$components/CustomSwitch.svelte';
     import Changelog                from "$components/Changelog.svelte";
     import Terminal                 from '$components/Terminal.svelte';
@@ -25,13 +23,7 @@
 
     let updateInterval;
     onMount(async ()=>{
-        if($developerMode) {
-            const [data] = await exec(`${$pythonpath} -V`)
-            if(data) {
-                $pyVersion = data.stdout.trim()
-                console.log("Python path is valid")
-            }
-        }
+        await getPyVersion()
         // Update check
         if(env.DEV) return
         const interval = 15 //min
@@ -41,6 +33,20 @@
     })
     onDestroy(() => env.DEV ? "" : clearInterval(updateInterval));
     
+    let pyError = ""
+    const getPyVersion = async (e) => {
+        e?.target?.classList.toggle("is-loading")
+        const pyfile = "getVersion"
+        const pyArgs = $developerMode ? pathJoin($pythonscript, "main.py") : ""
+        const command = `${$pyProgram} ${pyArgs} ${pyfile} {} `
+        const [{stdout}, error] = await exec(command)
+        const [version] = stdout?.split("\n").filter?.(line => line.includes("Python")) || [""]
+
+        $pyVersion = version?.trim() || ""
+        console.log({stdout, version})
+        pyError = error;
+        e?.target?.classList.toggle("is-loading")
+    }
 
     let commandToRun = "", commandArgsToRun = "";
 
@@ -83,33 +89,39 @@
             <div class="container right" id="Settings_right_column">
                 <div class="align animated fadeIn" class:hide={selected!=="Configuration"}>
 
-                    <h1 class="title">Configuration</h1>
-
-                    <div class="subtitle" style="width: 100%;" >{$pyVersion}</div>
-
+                    <h1>Configuration</h1>
                     <div class="align">
-                        <button class="button is-link" on:click="{()=> {$developerMode = !$developerMode; window.db.set("developerMode", $developerMode)}}">Developer mode: {$developerMode} </button>
-                        {#if $developerMode}
+                        <div class="tag is-warning">{$pyVersion || "Python undefined"}</div>
+                        <div class="align">
+                            <button class="button is-link" on:click="{()=> {$developerMode = !$developerMode; window.db.set("developerMode", $developerMode)}}">Developer mode: {$developerMode} </button>
+                            <button class="button is-link" on:click="{getPyVersion}">getPyVersion </button>
+                            
+                            {#if $developerMode}
 
-                            <div class="align">
-                                <Textfield bind:value={$pythonpath} label="Python path" style="width: 100%; "/>
-                                <Textfield bind:value={$pythonscript} label="Python script path" style="width: 100%; " />
-                                <button class="button is-link" on:click={resetPyConfig}>Reset</button>
-                                <button class="button is-link" on:click={updatePyConfig}>Save</button>
-                            </div>
-                            <div class="align">
-                                <CustomSwitch on:SMUISwitch:change={()=>window.db.set("suppressInitialDeveloperWarning", $suppressInitialDeveloperWarning)} bind:selected={$suppressInitialDeveloperWarning} label="suppressWarning"/>
-                            </div>
+                                <div class="align">
+                                    <Textfield bind:value={$pythonpath} label="Python path" style="width: 100%; "/>
+                                    <Textfield bind:value={$pythonscript} label="Python script path" style="width: 100%; " />
+                                    <button class="button is-link" on:click={resetPyConfig}>Reset</button>
+                                    <button class="button is-link" on:click={updatePyConfig}>Save</button>
+                                </div>
+                                <div class="align">
+                                    <CustomSwitch on:SMUISwitch:change={()=>window.db.set("suppressInitialDeveloperWarning", $suppressInitialDeveloperWarning)} bind:selected={$suppressInitialDeveloperWarning} label="suppressWarning"/>
+                                </div>
+                            {/if}
+                            {#if pyError}
+                                <div class="tag is-danger errorbox">{pyError}</div>
+                            {/if}
+
+                        </div>
+
+
+                        {#if window.env.DEV}
+                            <button class="button is-link" style="margin: 1em;" on:click={()=>{
+                                const string = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque laboriosam vitae officia deleniti corporis aliquid quo id. Laboriosam officia hic nam nemo fuga eum. Veritatis voluptatem ipsa odit incidunt, velit quidem fuga! Minima provident officiis iste magnam at magni suscipit iusto vel fugiat aliquam explicabo ad qui, ipsum vero perspiciatis, facere est eius ullam omnis maiores? Fugit aut saepe accusantium deserunt eligendi corporis in et. Deleniti natus rerum voluptates fuga consequatur qui tempore omnis optio illum soluta odio perferendis doloribus repudiandae vero non, commodi recusandae reiciendis laboriosam neque et dolore quos reprehenderit consectetur laborum? Aperiam, laboriosam id! Culpa, iusto quisquam."
+                                mainPreModal.error(string+string)
+                            }}>Throw error</button>
                         {/if}
                     </div>
-
-
-                    {#if window.env.DEV}
-                        <button class="button is-link" style="margin: 1em;" on:click={()=>{
-                            const string = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque laboriosam vitae officia deleniti corporis aliquid quo id. Laboriosam officia hic nam nemo fuga eum. Veritatis voluptatem ipsa odit incidunt, velit quidem fuga! Minima provident officiis iste magnam at magni suscipit iusto vel fugiat aliquam explicabo ad qui, ipsum vero perspiciatis, facere est eius ullam omnis maiores? Fugit aut saepe accusantium deserunt eligendi corporis in et. Deleniti natus rerum voluptates fuga consequatur qui tempore omnis optio illum soluta odio perferendis doloribus repudiandae vero non, commodi recusandae reiciendis laboriosam neque et dolore quos reprehenderit consectetur laborum? Aperiam, laboriosam id! Culpa, iusto quisquam."
-                            mainPreModal.error(string+string)
-                        }}>Throw error</button>
-                    {/if}
                     
                 </div>
 
@@ -194,5 +206,22 @@
             align-items: center;
         }
     }
+
+    h1, h2 {
+        margin: 0;
+        width: 100%;
+    }
+
+
+
+    .errorbox {
+        white-space: pre-line;
+        height: 100%;
+        width: fit-content;
+        font-size: medium;
+        margin-left: auto;
+        border: solid 1px;
+    }
+    
 </style>
 

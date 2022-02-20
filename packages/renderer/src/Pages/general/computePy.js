@@ -1,4 +1,4 @@
-import { pythonpath, pythonscript, get, pyVersion, developerMode } from "../settings/svelteWritables";
+import { pyProgram, pythonscript, get, pyVersion, developerMode } from "../settings/svelteWritables";
 
 export const dispatchEvent = (e, detail, eventName) => {
     const pyEventClosed = new CustomEvent(eventName,  { bubbles: false, detail })
@@ -12,8 +12,8 @@ export default async function({ e = null, pyfile = "", args = "", general = fals
     try {
     
         return new Promise(async (resolve) => {
-
-            if(get(developerMode) && !get(pyVersion)) {
+            
+            if(!get(pyVersion)) {
                 window.handleError("Python is not valid. Fix it in Settings --> Configuration")
                 return
             }
@@ -21,10 +21,9 @@ export default async function({ e = null, pyfile = "", args = "", general = fals
             console.info("Sending general arguments: ", args)
             window.createToast("Process Started")
             
-            const pyProgram = get(developerMode) ? get(pythonpath) : pathJoin(ROOT_DIR, "resources/felionpy/felionpy")
             const pyArgs = get(developerMode) ? [pathJoin(get(pythonscript), "main.py"), pyfile, args ] : [pyfile, args]
             console.log({pyArgs})
-            const py = spawn( pyProgram, pyArgs, { detached: general, shell: openShell } )
+            const py = spawn( get(pyProgram), pyArgs, { detached: general, shell: openShell } )
             
             py.on("error", (err) => {
                 window.handleError(err)
@@ -54,13 +53,23 @@ export default async function({ e = null, pyfile = "", args = "", general = fals
                 
                     if(general) {resolve(dataReceived)}
                     else {
+
                         if(!fs.existsSync(outputFile)) {
+                            console.warn(`${outputFile} file doesn't exists`)
                             window.handleError(`${outputFile} file doesn't exists`)
-                            return resolve(null)
+                            resolve(null)
                         }
-                        const dataFromPython = fs.readJsonSync(outputFile)
-                        console.table(dataFromPython)
-                        resolve(dataFromPython)
+                        
+                        try {
+                            const dataFromPython = fs.readJsonSync(outputFile)
+                            console.table(dataFromPython)
+                            resolve(dataFromPython)
+
+                        } catch (error) {
+                            console.warn(error)
+                            window.handleError(error)
+                            resolve(null)
+                        }
                     }
 
                 } else { 
