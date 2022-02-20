@@ -43,7 +43,7 @@
 			<div class="contents">
 				<h1 style="text-align: center;">{$mainPreModal.type === "danger" ? "Error occured" : "Output"}</h1>
 				<hr>
-				<div style="user-select: text; white-space: pre;">{$mainPreModal.modalContent}</div>
+				<div style="user-select: text; white-space: pre-wrap;">{$mainPreModal.modalContent}</div>
 			</div>
 	</FlatList>
 {/if}

@@ -81,10 +81,11 @@
 
         <div class="box">
             <div class="container right" id="Settings_right_column">
-                <div class="content animated fadeIn" class:hide={selected!=="Configuration"}>
+                <div class="align animated fadeIn" class:hide={selected!=="Configuration"}>
+
                     <h1 class="title">Configuration</h1>
 
-                    <div class="subtitle">{$pyVersion}</div>
+                    <div class="subtitle" style="width: 100%;" >{$pyVersion}</div>
 
                     <div class="align">
                         <button class="button is-link" on:click="{()=> {$developerMode = !$developerMode; window.db.set("developerMode", $developerMode)}}">Developer mode: {$developerMode} </button>
@@ -104,7 +105,7 @@
 
 
                     {#if window.env.DEV}
-                        <button class="button" on:click={()=>{
+                        <button class="button is-link" style="margin: 1em;" on:click={()=>{
                             const string = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque laboriosam vitae officia deleniti corporis aliquid quo id. Laboriosam officia hic nam nemo fuga eum. Veritatis voluptatem ipsa odit incidunt, velit quidem fuga! Minima provident officiis iste magnam at magni suscipit iusto vel fugiat aliquam explicabo ad qui, ipsum vero perspiciatis, facere est eius ullam omnis maiores? Fugit aut saepe accusantium deserunt eligendi corporis in et. Deleniti natus rerum voluptates fuga consequatur qui tempore omnis optio illum soluta odio perferendis doloribus repudiandae vero non, commodi recusandae reiciendis laboriosam neque et dolore quos reprehenderit consectetur laborum? Aperiam, laboriosam id! Culpa, iusto quisquam."
                             mainPreModal.error(string+string)
                         }}>Throw error</button>
@@ -112,10 +113,10 @@
                     
                 </div>
 
-                <div class="content animated fadeIn" class:hide={selected!=="Update"}>
+                <div class="align animated fadeIn" class:hide={selected!=="Update"}>
                     <h1 class="title">Update</h1>
 
-                    <div class="subtitle">App Version {window.appVersion}</div>
+                    <div class="subtitle" style="width: 100%;"  >App Version {window.appVersion}</div>
                     <div class="align">
                     
                         <div class="align">

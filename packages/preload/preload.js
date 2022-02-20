@@ -29,7 +29,7 @@ window.addEventListener('contextmenu', (e) => {
 
 fs.ensureDirSync(path.join(appInfo.userData, "config"))
 
-ipcRenderer.on('update-log', (_, info) => console.info(info))
+ipcRenderer.on('update-log', (_, info) => console.warning(JSON.stringify(info)))
 ipcRenderer.on('update-progress', (_, progressObj) => {
     const progressContainer = document.getElementById("update-progress-container")
     progressContainer.style.display = "grid"
