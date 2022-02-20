@@ -109,6 +109,8 @@
             else {fileChecked = fullfileslist.slice(_to, _from+1)}
         }
 	}
+    $: if(currentLocation) {fileChecked = []}
+
 </script>
 
 <div class="align h-center">
