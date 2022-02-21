@@ -110,6 +110,7 @@ class FELion_Tk(Tk):
         return self.widget_frame.value
 
     def Buttons(self, btn_txt, x, y, *args, **kw):
+
         kw = var_check(kw)
 
         if len(args) == 1:
@@ -266,80 +267,86 @@ class FELion_Tk(Tk):
     def make_figure_widgets(self):
 
         # Position
-        x0, x_diff = 0.1, 0.4
-        y, y_diff = 0, 0.05
+        x0, self.x_diff = 0.1, 0.4
+        y, self.y_diff = 0, 0.05
 
         # Row 1
-        y += y_diff
+        y += self.y_diff
         self.label_dpi = self.Labels("DPI", x0, y)
-        self.dpi_value = self.Entries("Entry", 120, x0+x_diff, y, bind_return=True, bind_func=self.set_figureLabel)
+        self.dpi_value = self.Entries("Entry", 120, x0+self.x_diff, y, bind_return=True, bind_func=self.set_figureLabel)
 
         # Row 2
-        y += y_diff
+        y += self.y_diff
         self.name = self.Entries("Entry", "savefile_name", x0, y, bind_return=True, bind_func=self.save_fig, relwidth=0.7)
-
+        self.last_y = y
 
         if self.default_widget:
 
             # Row 3
-            y += y_diff
+            y += self.y_diff
             self.plotTitle = self.Entries("Entry", "Title", x0, y, bind_key=True, bind_func=self.set_figureLabel, relwidth=0.5)
-            self.titleSz = self.Entries("Entry", 12, x0+x_diff+0.1, y, bind_return=True, bind_func=self.set_figureLabel, relwidth=0.2)
+            self.titleSz = self.Entries("Entry", 12, x0+self.x_diff+0.1, y, bind_return=True, bind_func=self.set_figureLabel, relwidth=0.2)
 
             # Row 4
-            y += y_diff
+            y += self.y_diff
             self.plotXlabel = self.Entries("Entry", "X-axis", x0, y, bind_key=True, bind_func=self.set_figureLabel, relwidth=0.5)
-            self.xlabelSz = self.Entries("Entry", 10, x0+x_diff+0.1, y, bind_return=True, bind_func=self.set_figureLabel, relwidth=0.2)
+            self.xlabelSz = self.Entries("Entry", 10, x0+self.x_diff+0.1, y, bind_return=True, bind_func=self.set_figureLabel, relwidth=0.2)
 
             # Row 5
-            y += y_diff
+            y += self.y_diff
             self.plotYlabel = self.Entries("Entry", "Y-axis", x0, y, bind_key=True, bind_func=self.set_figureLabel, relwidth=0.5)
-            self.ylabelSz = self.Entries("Entry", 10, x0+x_diff+0.1, y, bind_return=True, bind_func=self.set_figureLabel, relwidth=0.2)
+            self.ylabelSz = self.Entries("Entry", 10, x0+self.x_diff+0.1, y, bind_return=True, bind_func=self.set_figureLabel, relwidth=0.2)
 
             # Row 6
-            y += y_diff
+            y += self.y_diff
             self.plotFigText = self.Entries("Entry", "Figure 1", x0, y, bind_key=True, bind_func=self.set_figureLabel, relwidth=0.5)
-            self.figtextFont = self.Entries("Entry", 12, x0+x_diff+0.1, y, bind_return=True, bind_func=self.set_figureLabel, relwidth=0.2)
+            self.figtextFont = self.Entries("Entry", 12, x0+self.x_diff+0.1, y, bind_return=True, bind_func=self.set_figureLabel, relwidth=0.2)
 
             # Row 7
-            y += y_diff
+            y += self.y_diff
             self.plotGrid = self.Entries("Check", "Grid", x0, y, default=True, bind_btn=True, bind_func=self.set_figureLabel)
-            self.plotLegend = self.Entries("Check", "Lg", x0+x_diff, y, default=True, bind_btn=True, bind_func=self.set_figureLabel)
+            self.plotLegend = self.Entries("Check", "Lg", x0+self.x_diff, y, default=True, bind_btn=True, bind_func=self.set_figureLabel)
 
             # Row 8
-            y += y_diff
-            self.plotYscale = self.Entries("Check", "Ylog", x0+x_diff, y, default=False, bind_btn=True, bind_func=self.set_figureLabel)
+            y += self.y_diff
+            self.plotYscale = self.Entries("Check", "Ylog", x0+self.x_diff, y, default=False, bind_btn=True, bind_func=self.set_figureLabel)
             # self.latex = self.Entries("Check", "LaTex", x0, y, default=False)
 
+            self.last_y = y
+
         if self.default_save_widget:
+
             # Row 9
-            y += y_diff
+            
+            y += self.y_diff
             self.save_fmt = self.Entries("Entry", "png", x0, y+0.02)
-            self.save_btn = self.Buttons("Save", x0+x_diff, y, self.save_fig)
+            self.save_btn = self.Buttons("Save", x0+self.x_diff, y, self.save_fig)
 
             # Row 10
-            # y += y_diff
+            # y += self.y_diff
             # self.onlyAvg = self.Entries("Check", "only avg.", x0, y+0.02)
-
+            self.last_y = y
         
         if self.executeCodeWidget:
+
             #  Row 11
             y = 0.7
             txt = "Write valid any python expression"
             self.code = self.TextBox(txt, 0.8, y, w=0.7, h=0.1, bind_func=self.python_exp) 
 
             #  Row 12
-            y += y_diff
+
+            y += self.y_diff
             self.runCode = self.Buttons("RunCode", x0, y, self.python_exp)
-            self.codeResult = self.TextBox("Result", 0.8, y+y_diff+0.04, w=0.7, h=0.09) 
+            self.codeResult = self.TextBox("Result", 0.8, y+self.y_diff+0.04, w=0.7, h=0.09)
+            self.x0 = x0
+
 
     def python_exp(self, event=None):
-
         with stdoutIO() as result:
+
             try:
-
                 self.codeResult.delete('1.0', END)
-
                 expr = self.code.get('1.0', END).split("\n")
                 for i in expr[:-1]:
                     

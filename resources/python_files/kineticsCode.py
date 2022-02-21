@@ -1,5 +1,6 @@
 
 import json, traceback
+from tkinter.messagebox import NO
 from pathlib import Path as pt
 import numpy as np
 # import matplotlib.pyplot as plt
@@ -288,6 +289,7 @@ def plot_exp():
     numberDensityWidgetAxes = fig.add_axes([0.9-width, bottom, width, height], facecolor=axcolor)
     numberDensityWidget = TextBox(numberDensityWidgetAxes, 'Number density', initial=f"{numberDensity:.2e}")
     numberDensityWidget.on_submit(setNumberDensity)
+    widget.bottomWidgets = [buttonAxes, checkAxes, saveButtonAxes, numberDensityWidgetAxes]
 
     for counter, key in enumerate(data.keys()):
         time = data[key]["x"]
@@ -297,7 +299,7 @@ def plot_exp():
 
         expPlot.append(_expPlot)
 
-    ax = optimizePlot(ax, xlabel="Time (ms)", ylabel="Counts", yscale="log")
+    # ax = optimizePlot(ax, xlabel="Time (ms)", ylabel="Counts", yscale="log")
     ax.set_ylim(ymin=0.1)
     ax.set_title(f"{selectedFile}: @{temp:.1f} K {numberDensity:.2e}"+"$cm^{-3}$")
     rateCoefficientArgs=(ratek3, ratekCID)
@@ -333,10 +335,21 @@ def plot_exp():
     except Exception:
         log(traceback.format_exc())
     canvas.draw()
+    widget.Buttons("Toggle-Widgets", widget.x0, widget.last_y+widget.y_diff, hideOtherWidgets, relwidth=0.7)
+
     return numberDensityWidget, saveButton, checkbox, button
 
 rateCoefficientArgs = ()
 
+otherWidgetsToggle = False
+def hideOtherWidgets(event=None):
+
+    global otherWidgetsToggle
+    for otherWidget in widget.sliderWidgets: otherWidget.set_visible(otherWidgetsToggle)
+    for otherWidget in widget.bottomWidgets: otherWidget.set_visible(otherWidgetsToggle)
+    canvas.draw()
+    otherWidgetsToggle = not otherWidgetsToggle
+    print(f"widgets removed", flush=True)
 
 def update(val=None):
 
@@ -370,11 +383,13 @@ def make_slider():
 
     counter = 0
 
+    k3SliderAxes = []
+
     for label in k3Labels:
-        k3SliderAxes = fig.add_axes([0.65, bottom, width, height])
+        current_k3SliderAxes = fig.add_axes([0.65, bottom, width, height])
         if counter+1 <= min(len(ratek3), len(ratekCID)):
-            k3SliderAxes.patch.set_facecolor(f"C{counter+1}")
-            k3SliderAxes.patch.set_alpha(0.7)
+            current_k3SliderAxes.patch.set_facecolor(f"C{counter+1}")
+            current_k3SliderAxes.patch.set_alpha(0.7)
 
 
         valmin = -33
@@ -391,7 +406,7 @@ def make_slider():
 
         print(valmin, valmax, valinit, flush=True)
         _k3Slider = Sliderlog( 
-            ax=k3SliderAxes, label=label, 
+            ax=current_k3SliderAxes, label=label, 
             valmin=valmin, valmax=valmax, valinit=valinit, valstep=valstep, valfmt="%.2e",
         )
 
@@ -402,14 +417,16 @@ def make_slider():
 
         # if keyFoundForRate:
         counter += 1
+        k3SliderAxes.append(current_k3SliderAxes)
     bottom -= height*2
 
     counter = 0
+    kCIDSliderAxes = []
     for label in kCIDLabels:
-        kCIDSliderAxes = fig.add_axes([0.65, bottom, width, height])
+        current_kCIDSliderAxes = fig.add_axes([0.65, bottom, width, height])
         if counter+1 <= min(len(ratek3), len(ratekCID)):
-            kCIDSliderAxes.patch.set_facecolor(f"C{counter+1}")
-            kCIDSliderAxes.patch.set_alpha(0.7)
+            current_kCIDSliderAxes.patch.set_facecolor(f"C{counter+1}")
+            current_kCIDSliderAxes.patch.set_alpha(0.7)
 
         valmin = -20
         valmax = -10
@@ -421,7 +438,7 @@ def make_slider():
             valinit=np.log10(ratekCID[counter])
 
         _kCIDSlider = Sliderlog(
-            ax=kCIDSliderAxes, label=label, 
+            ax=current_kCIDSliderAxes, label=label, 
             valmin=valmin, valmax=valmax, valinit=valinit, valstep=valstep, valfmt="%.2e",
         )
 
@@ -430,9 +447,10 @@ def make_slider():
 
         bottom -= height*1.2
         # if keyFoundForRate:
-
         counter += 1
+        kCIDSliderAxes.append(current_kCIDSliderAxes)
     
+    widget.sliderWidgets = k3SliderAxes+kCIDSliderAxes
     return k3Sliders, kCIDSliders
 
 args = None
@@ -509,8 +527,6 @@ def main(arguments):
     print(f"{ratek3=}", flush=True)
 
     widget = FELion_Tk(title=f"Kinetics: {selectedFile}", location=savedir)
+    
     KineticMain()
-    # plt.show()
-
-    # widget.plot_legend = ax.legend()
     widget.mainloop()
