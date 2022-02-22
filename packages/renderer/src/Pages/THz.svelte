@@ -1,6 +1,7 @@
 <script>
     import Textfield            from '@smui/textfield'
     import Layout               from "$components/Layout.svelte"
+    import CustomTextSwitch     from "$components/CustomTextSwitch.svelte"
     import CustomSelect         from "$components/CustomSelect.svelte"
     import CustomCheckbox       from "$components/CustomCheckbox.svelte"
     import CustomIconSwitch     from "$components/CustomIconSwitch.svelte"
@@ -18,7 +19,7 @@
     let currentLocation = ""
     $: thzfiles = fileChecked.map(file=>pathResolve(currentLocation, file))
     let openShell = false, graphPlotted = false
-    let delta = 10, gamma = 0
+    let binSize=10, fG = 0, fL = 1
 
     const btnClass = "button is-link"
 
@@ -35,7 +36,7 @@
         if (fileChecked.length === 0 && filetype === "thz") {return window.createToast("No files selected", "danger")}
 
     
-        const thz_args = {thzfiles, binData, delta, tkplot, gamma, justPlot, saveInMHz}
+        const thz_args = {thzfiles, binData, tkplot, fG, fL, binSize, justPlot, saveInMHz}
         let pyfileInfo = {general,
             thz: {pyfile:"thz_scan" , args:[JSON.stringify(thz_args)]},
         }
@@ -62,16 +63,10 @@
                 window.createToast("Graph plotted", "success")
                 graphPlotted = true
             })
-
     }
-
-    // let includePlotsInReport = [{id:"resOnOffPlot", include:false, label:"THz Res-ON/OFF"}, {id:"thzPlot", include:true, label:"Normalised THz Spectrum"}, {id:"boltzman_plot", include:false, label:"Boltzman plot"}]
-
-    let ROSAA_modal_active = false;
 
 </script>
 
-<!-- <ROSAA bind:active={ROSAA_modal_active}  /> -->
 <Layout  {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked>
 
     <svelte:fragment slot="buttonContainer">
@@ -82,8 +77,9 @@
             <button class="{btnClass}" on:click="{(e)=>{plotData({e:e})}}">Fit</button>
             <button class="{btnClass}" on:click="{(e)=>plotData({e:e, tkplot:true})}">Open in Matplotlib</button>
             <CustomIconSwitch style="padding:0;" bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
-            <Textfield type="number" bind:value={delta} label="Delta" input$step="0.1" />
-            <Textfield type="number" bind:value={gamma} label="Gamma" input$step="0.1" />
+            <CustomTextSwitch bind:value={binSize} label="binSize (kHz)" step="0.1" />
+            <CustomTextSwitch bind:value={fG} label="fG (MHz)" step="0.1" />
+            <CustomTextSwitch bind:value={fL} label="fL (MHz)" step="0.1" />
             <!-- <button class="{btnClass}" on:click="{()=>{ROSAA_modal_active=true}}">ROSAA mode</button> -->
 
         </div>

@@ -7,10 +7,8 @@ from pstats import SortKey
 import inspect, contextlib, sys
 
 # DATA Analysis
-from uncertainties import ufloat as uf, unumpy as unp
 import numpy as np
 from scipy.optimize import curve_fit
-
 from scipy.interpolate import interp1d
 
 from uncertainties import ufloat as uf, unumpy as unp

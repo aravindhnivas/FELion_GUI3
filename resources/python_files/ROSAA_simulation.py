@@ -71,12 +71,12 @@ class ROSAA:
                 if "_" in key:
                     key = key.split("_")
                     key = key[0] + "_{" + key[1] + "}"
-                label = f"${self.molecule}({key})$"
+                label = f"{self.molecule}(${key}$)"
                 self.legends.append(label)
 
             if self.includeAttachmentRate:
-                self.legends += [f"${self.molecule}${self.taggingPartner}"]
-                self.legends += [f"${self.molecule}${self.taggingPartner}$_{i+1}$" for i in range(1, self.totalAttachmentLevels)]
+                self.legends += [f"{self.molecule}{self.taggingPartner}"]
+                self.legends += [f"{self.molecule}{self.taggingPartner}$_{i+1}$" for i in range(1, self.totalAttachmentLevels)]
 
             self.fixedPopulation = conditions["simulationMethod"] == "FixedPopulation"
 
@@ -364,11 +364,19 @@ class ROSAA:
 
         widget = FELion_Tk(title=f"Population ratio", location=figs_location)
         widget.Figure()
+        
+        transitionTitleLabel = f"${self.excitedFrom}-{self.excitedFrom}$"
+        if "_" in self.excitedFrom:
+            lgfrom = self.excitedFrom.split("_")
+            lgto = self.excitedTo.split("_")
+            transitionTitleLabel = f"{self.molecule}: ${lgfrom[0]}_"+ "{"+f"{lgfrom[1]}"+"} - "+f"{lgto[0]}_"+ "{"+f"{lgto[1]}"+"}$"
 
-        ax = widget.make_figure_layout(xaxis="Time (ms)", yaxis="Population", savename=savefilename)
-        # fig, ax = plt.subplots(figsize=figure["size"], dpi=int(figure["dpi"]))
+        ax = widget.make_figure_layout(
+            title=transitionTitleLabel, 
+            xaxis="Time (ms)", yaxis="Population", savename=savefilename
+        )
+
         simulationTime = self.simulateTime.T*1e3
-
         counter = 0
         for on, off in zip(self.lightON_distribution, self.lightOFF_distribution):
             
@@ -383,8 +391,7 @@ class ROSAA:
         widget.plot_legend = ax.legend(title=f"--OFF, -ON", fontsize=14, title_fontsize=16)
         widget.plot_legend.set_draggable(True)
         
-        ax = optimizePlot(ax, xlabel="Time (ms)", ylabel="Population")
-        
+        ax = optimizePlot(ax, xlabel="Time (ms)", ylabel="Population", title=transitionTitleLabel)
 
         if self.includeAttachmentRate:
 
@@ -395,17 +402,15 @@ class ROSAA:
             signal = np.around(np.nan_to_num(signal).clip(min=0), 1)
             # widget1 = FELion_Tk(title=f"Signal", location=figs_location)
             # widget1.Figure()
-            # ax1 = widget1.make_figure_layout(xaxis="Time (ms)", yaxis="Signal (%)", savename=savefilename)
-            fig1, ax1 = plt.subplots(figsize=figure["size"], dpi=int(figure["dpi"]))
+            # ax1 = widget1.make_figure_layout(xaxis="Time (ms)", yaxis="Signal (%)", title=transitionTitleLabel, savename=savefilename)
+            _, ax1 = plt.subplots(figsize=figure["size"], dpi=int(figure["dpi"]))
 
             ax1.plot(simulationTime[1:], signal, label=f"Signal: {round(signal[-1])} (%)")
-            title=f"${self.molecule}$: {self.excitedFrom} - {self.excitedTo}"
 
-            ax1 = optimizePlot(ax1, xlabel="Time (ms)", ylabel="Signal (%)", title=title)
+            ax1 = optimizePlot(ax1, xlabel="Time (ms)", ylabel="Signal (%)", title=transitionTitleLabel)
             # widget1.plot_legend = ax1.legend()
             ax1.legend()
             
-            ax.set_title(title, fontsize=16)
             log(f"Signal: {round(signal[-1])} (%)")
             if figure["show"]:
                 plt.show()
@@ -414,12 +419,16 @@ class ROSAA:
         widget.mainloop()
 
     def WriteData(self, name, dataToSend):
+
         datas_location = output_dir / "datas"
         
-        if not datas_location.exists(): datas_location.mkdir()
+        if not datas_location.exists():
+            datas_location.mkdir()
+        
         addText = ""
         if not self.includeAttachmentRate:
             addText = "_no-attachement"
+
         with open(datas_location / f"{savefilename}{addText}_{name}_output.json", 'w+') as f:
             data = json.dumps(dataToSend, sort_keys=True, indent=4, separators=(',', ': '))
             f.write(data)
@@ -431,7 +440,9 @@ figsize = None
 savefilename = None
 location = None
 output_dir = None
+
 def main(arguments):
+
     global conditions, figure, savefilename, location, output_dir
 
     conditions = arguments
@@ -442,8 +453,7 @@ def main(arguments):
     if not output_dir.exists(): output_dir.mkdir()
 
     figure = conditions["figure"]
-
     figure["size"] = [int(i) for i in figure["size"].split(",")]
     figure["dpi"] = int(figure["dpi"])
-    log(f"{figure=}")
     ROSAA()
+    
