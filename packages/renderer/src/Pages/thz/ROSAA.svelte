@@ -2,10 +2,10 @@
     import {fade}                   from "svelte/transition";
     import Textfield                from '@smui/textfield';
     import { parse as Yml }         from 'yaml';
-    import {find}                   from "lodash-es";
+    // import {find}                   from "lodash-es";
     import {browse}                 from "$components/Layout.svelte";
     import CustomSelect             from "$components/CustomSelect.svelte";
-    import LayoutDiv           from '$components/LayoutDiv.svelte';
+    import LayoutDiv                from '$components/LayoutDiv.svelte';
     import CustomCheckbox           from "$components/CustomCheckbox.svelte";
     import CustomTextSwitch         from "$components/CustomTextSwitch.svelte";
     import PyButton                 from "$components/PyButton.svelte"
@@ -24,7 +24,7 @@
         boltzmanConstant,
         VaccumPermitivity
     }                               from "./functions/constants";
-    import {findAndGetValue}        from "./functions/misc";
+    // import {findAndGetValue}        from "./functions/misc";
     import computePy_func           from "$src/Pages/general/computePy"
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -211,25 +211,26 @@
     let lorrentz=0
     let Cp=0; // power-broadening proportionality constant
 
-    
+    $: console.log(mainParameters)
     const updateEnergyLevels = () => {
         console.log("energyLevels updated")
-
+        if(!energyLevels) return console.warn("No energyLevels defined", energyLevels)
         console.log(energyLevels)
-        lowerLevelEnergy = find(energyLevels, (energy)=>energy.label==excitedFrom)?.value || 0;
-        upperLevelEnergy = find(energyLevels, (energy)=>energy.label==excitedTo)?.value || 0;
-
-        transitionFrequency = upperLevelEnergy - lowerLevelEnergy;
+        lowerLevelEnergy = energyLevels?.filter(energy => energy.label==excitedFrom)?.[0]?.value || 0
+        upperLevelEnergy = energyLevels?.filter(energy => energy.label==excitedTo)?.[0]?.value || 0
+        
+        transitionFrequency = upperLevelEnergy - lowerLevelEnergy
         if(energyUnit=="cm-1" ) { transitionFrequency *= SpeedOfLight*1e2 * 1e-6 }
+        const moleculeName = mainParameters.filter(params => params.label=="molecule")?.[0]?.value || ""
+        const tagName = mainParameters?.filter(params => params.label=="tagging partner")?.[0]?.value || ""
+        savefilename = `${moleculeName}_${tagName}_${excitedFrom} - ${excitedTo}`
         updateDoppler()
     }
     
-
     const updateDoppler = () => {
-
         console.log("Changing doppler parameters");
         [ionMass, RGmass, ionTemp, trapTemp] = dopplerLineshape.map(f=>f.value);
-        
+
         collisionalTemp = Number((RGmass*ionTemp + ionMass*trapTemp)/(ionMass+RGmass)).toFixed(1);
         const sqrtTerm  = (8*boltzmanConstant*Math.log(2)*ionTemp) / (ionMass*amuToKG*SpeedOfLight**2)
         Cg              = Math.sqrt(sqrtTerm)
@@ -237,9 +238,8 @@
     
     }
     const updatePower = () => {
-    
         [dipole, power] = powerBroadening.map(f=>f.value);
-        trapArea        = findAndGetValue(mainParameters, "trap_area (sq-meter)")
+        trapArea        = mainParameters?.filter(params => params.label==="trap_area (sq-meter)")?.[0]?.value || ""
         Cp = (2*dipole*DebyeToCm/PlanksConstant) * Math.sqrt( 1 / (trapArea*SpeedOfLight*VaccumPermitivity) );
         lorrentz = Number(Cp*Math.sqrt(power)*1e-6).toFixed(3)
     }

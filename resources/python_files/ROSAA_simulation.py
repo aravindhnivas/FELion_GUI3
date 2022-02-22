@@ -412,49 +412,25 @@ class ROSAA:
             # widget1.mainloop()
 
         widget.mainloop()
-        
-        
-
-        # figs_location = output_dir / "figs"
-        # png_location = figs_location / "png"
-        # pdf_location = figs_location / "pdf"
-        # if not figs_location.exists(): figs_location.mkdir()
-        # if not png_location.exists(): png_location.mkdir()
-        # if not pdf_location.exists(): pdf_location.mkdir()
-        # fig.savefig(f"{png_location/savefilename}.rosaa.png", dpi=figure["dpi"]*2)
-        # fig.savefig(f"{pdf_location/savefilename}.rosaa.pdf", dpi=figure["dpi"]*2)
-        # if self.includeAttachmentRate:
-        #     fig1.savefig(f"{png_location/savefilename}.rosaa.signal.png", dpi=figure["dpi"]*2)
-        #     fig1.savefig(f"{pdf_location/savefilename}.rosaa.signal.pdf", dpi=figure["dpi"]*2)
-
-        # log(f"figures are saved in {figs_location}")
-        
-        
 
     def WriteData(self, name, dataToSend):
-        
         datas_location = output_dir / "datas"
         
         if not datas_location.exists(): datas_location.mkdir()
         addText = ""
         if not self.includeAttachmentRate:
             addText = "_no-attachement"
-
         with open(datas_location / f"{savefilename}{addText}_{name}_output.json", 'w+') as f:
             data = json.dumps(dataToSend, sort_keys=True, indent=4, separators=(',', ': '))
             f.write(data)
             log(f"{savefilename} file written in {location} folder.")
 
-
 conditions = None
 figure = None
-
 figsize = None
 savefilename = None
 location = None
 output_dir = None
-
-
 def main(arguments):
     global conditions, figure, savefilename, location, output_dir
 
