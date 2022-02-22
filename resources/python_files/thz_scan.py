@@ -208,10 +208,14 @@ def plot_thz(ax=None, save_dat=True):
     line_freq_fit = uline_freq.nominal_value
 
     if save_dat:
-        with open(f"./OUT/averaged_thz_fit.dat", "w") as f:
+        saveDir = location / "OUT"
+        if not saveDir.exists(): saveDir.mkdir()
+
+        with open(saveDir / "averaged_thz_fit.dat", "w") as f:
             f.write("#Frequency(in MHz)\t#Intensity\n")
             for freq, inten in zip(binx, fit_data): f.write(f"{freq*1e3}\t{inten}\n")
 
+            print(f"averaged_thz_fit.dat file saved in {saveDir}")
     if tkplot:
 
         ax.plot(binx, biny, "k.", label=label, ms=ms)
@@ -260,7 +264,7 @@ def export_file(fname, freq, inten):
         inten = np.array(inten, dtype=float)
         EXPORT_DIR = location / "EXPORT"
         if not EXPORT_DIR.exists(): 
-            EXPORT_DIR.mkdir("./EXPORT")
+            EXPORT_DIR.mkdir()
 
         if args["saveInMHz"]: 
             unit = "MHz"
