@@ -238,7 +238,7 @@
     
     }
     const updatePower = () => {
-        
+
         [dipole, power] = powerBroadening.map(f=>f.value);
         trapArea        = mainParameters?.filter(params => params.label==="trap_area (sq-meter)")?.[0]?.value || ""
         Cp = (2*dipole*DebyeToCm/PlanksConstant) * Math.sqrt( 1 / (trapArea*SpeedOfLight*VaccumPermitivity) );
@@ -350,7 +350,6 @@
 </script>
 
 <BoltzmanDistribution {...boltzmanArgs} bind:active={openBoltzmanWindow} bind:graphWindow={boltzmanWindow} />
-
 
 <LayoutDiv id="ROSAA__modal" >
 
