@@ -6,10 +6,7 @@ from FELion_widgets import FELion_Tk
 from FELion_definitions import sendData
 from FELion_constants import colors
 
-from uncertainties import unumpy as unp
-from scipy.optimize import curve_fit
-from scipy.special import voigt_profile
-
+from lineProfileFit import fitData
 
 def thz_plot(filename):
 
@@ -143,17 +140,17 @@ def plot_thz(ax=None, save_dat=True):
             continue
 
 
-        _, fit_data, params = fitData(freq, depletion_counts)
-        uline_freq, uamplitude, *fwhmParameter = params
+        _, fit_data, params = fitData(freq, depletion_counts, fwhmParameter, gaussianFit, voigtFit)
+        uline_freq, uamplitude, *getfwhm = params
         
         if voigtFit:
-            fG = fwhmParameter[0]*(2*np.sqrt(2*np.log(2)))
-            fL = 2*fwhmParameter[1]
+            fG = getfwhm[0]*(2*np.sqrt(2*np.log(2)))
+            fL = 2*getfwhm[1]
             ufwhm = 0.5346 * fL + (0.2166*fL**2 + fG**2)**0.5
             lg_fit = f"{uline_freq*1000:.3fP} [fV:{ufwhm*1000:.3fP} (fG:{fG*1000:.3fP}, fL:{fL*1000:.3fP})] MHz"
         else:
-            ufwhm = fwhmParameter[0]*(2*np.sqrt(2*np.log(2))) if gaussianFit else 2*fwhmParameter[0]
-            lg_fit = f"{uline_freq*1000:.3fP} [{('fG:', 'fL:')[lorrentFit]}{ufwhm*1000:.3fP}] MHz"
+            ufwhm = getfwhm[0]*(2*np.sqrt(2*np.log(2))) if gaussianFit else 2*getfwhm[0]
+            lg_fit = f"{uline_freq*1000:.3fP} [{('fL:', 'fG:')[gaussianFit]}{ufwhm*1000:.3fP}] MHz"
 
         ms = 7
         if tkplot:
@@ -188,19 +185,19 @@ def plot_thz(ax=None, save_dat=True):
             "name":label, "mode":'lines+markers', "type":"scattergl","fill":"tozeroy", "line":{"color":"black", "shape":"hvh"} }
         return dataToSend
 
-    _, fit_data, params = fitData(binx, biny)
-    uline_freq, uamplitude, *fwhmParameter = params
+    _, fit_data, params = fitData(binx, biny, fwhmParameter, gaussianFit, voigtFit)
+    uline_freq, uamplitude, *getfwhm = params
 
-    ufwhm = fwhmParameter[0]*(2*np.sqrt(2*np.log(2))) if gaussianFit else 2*fwhmParameter[0]
+    ufwhm = getfwhm[0]*(2*np.sqrt(2*np.log(2))) if gaussianFit else 2*getfwhm[0]
 
     if voigtFit:
-        fG = fwhmParameter[0]*(2*np.sqrt(2*np.log(2)))
-        fL = 2*fwhmParameter[1]
+        fG = getfwhm[0]*(2*np.sqrt(2*np.log(2)))
+        fL = 2*getfwhm[1]
         ufwhm = 0.5346 * fL + (0.2166*fL**2 + fG**2)**0.5
         lg_fit = f"{uline_freq*1000:.3fP} [fV:{ufwhm*1000:.3fP} (fG:{fG*1000:.3fP}, fL:{fL*1000:.3fP})] MHz"
     else:
-        ufwhm = fwhmParameter[0]*(2*np.sqrt(2*np.log(2))) if gaussianFit else 2*fwhmParameter[0]
-        lg_fit = f"{uline_freq*1000:.3fP} [{('fG:', 'fL:')[lorrentFit]}{ufwhm*1000:.3fP}] MHz"
+        ufwhm = getfwhm[0]*(2*np.sqrt(2*np.log(2))) if gaussianFit else 2*getfwhm[0]
+        lg_fit = f"{uline_freq*1000:.3fP} [{('fL:', 'fG:')[gaussianFit]}{ufwhm*1000:.3fP}] MHz"
 
     fwhm = ufwhm.nominal_value
     amplitude = uamplitude.nominal_value
@@ -294,90 +291,34 @@ def thz_function():
         dataToSend = plot_thz()
         sendData(dataToSend, calling_file=pt(__file__).stem)
 
-def fitData(freq, inten):
-    
-    global gaussianFit, lorrentFit, voigtFit
-    
-    # fG and fL are FWHM in MHz 
-    fL = float(args["fL"])
-    gamma = fL/2
-    
-    fG = float(args["fG"])
-    sigma = fG/(2*np.sqrt(2*np.log(2)))
-    
-    if fL == 0:
-        gaussianFit = True
-        fwhmParameter = [sigma]
-    
-    elif fG == 0:
-        lorrentFit = True
-        fwhmParameter = [gamma]
-    
-    elif fG > 0 and fL > 0:
-        voigtFit = True
-        fwhmParameter = [sigma, gamma]
-
-
-    def fitProfile(x, x0, A, *args):
-
-        if gaussianFit:
-            sig = args
-            gam = 0
-        elif lorrentFit:
-            gam = args
-            sig = 0
-        elif voigtFit:
-            sig, gam = args
-
-        profile = voigt_profile(x-x0, sig, gam)
-        norm = profile/profile.max()
-        normalisedProfile = A*norm
-
-        return normalisedProfile
-    
-    freq *= 1000  # GHz --> MHz
-    maxIntenInd = inten.argmax()
-    amplitude = inten[maxIntenInd]
-    cen = freq[maxIntenInd]
-
-    p0=[cen, amplitude, *fwhmParameter]
-    pop, pcov = curve_fit(fitProfile, freq, inten, p0=p0)
-    perr = np.sqrt(np.diag(pcov))
-    print(f"{pop=}\n{perr=}", flush=True)
-
-    fittedY = fitProfile(freq, *pop)
-
-    # MHz --> GHz
-    freq /= 1000 
-
-    pop[0] /= 1000
-    perr[0] /= 1000
-    
-    pop[2] /= 1000
-    perr[2] /= 1000
-    
-    if voigtFit:
-        pop[3] /= 1000
-        perr[3] /= 1000
-    params = unp.uarray(pop, perr)
-    return freq, fittedY, params
-
-
 args = None
 widget = None
-
 voigtFit = False
-lorrentFit = False
 gaussianFit = False
 tkplot, filenames, location = None, None, None
-
+fwhmParameter = 0
 
 def main(arguments):
-    global args, tkplot, filenames, location
-
+    
+    global args, tkplot, filenames, location,\
+        gaussianFit, voigtFit, \
+        fwhmParameter
+    
     args = arguments
     tkplot = args["tkplot"]
+
     filenames = [pt(i) for i in args["thzfiles"]]
     location = pt(filenames[0].parent)
 
+    fL = float(args["fL"])
+    fG = float(args["fG"])
+    
+    gamma = fL/2
+    sigma = fG/(2*np.sqrt(2*np.log(2)))
+
+    gaussianFit = fL==0
+    voigtFit = fL > 0 and fG > 0
+
+    fwhmParameter = [sigma, gamma] if voigtFit else ([gamma], [sigma])[gaussianFit]
+    
     thz_function()
