@@ -1,15 +1,17 @@
 <script>
-    import Textfield                        from '@smui/textfield'
-    import Layout                           from "$components/Layout.svelte"
-    import CustomSwitch                     from "$components/CustomSwitch.svelte"
-    import CustomSelect                     from "$components/CustomSelect.svelte"
-    import CustomIconSwitch                 from "$components/CustomIconSwitch.svelte"
-    import GetLabviewSettings               from "$components/GetLabviewSettings.svelte"
-    import {relayout}                       from 'plotly.js/dist/plotly-basic';
-    import {find, differenceBy, isEmpty}    from "lodash-es"
-    import {plot}                           from "../js/functions.js"
-    import {readMassFile}                   from "./masspec/mass"
-    import computePy_func                   from "$src/Pages/general/computePy"
+    import Textfield                    from '@smui/textfield'
+    import Layout                       from "$components/Layout.svelte"
+    import CustomSwitch                 from "$components/CustomSwitch.svelte"
+    import CustomSelect                 from "$components/CustomSelect.svelte"
+    import CustomIconSwitch             from "$components/CustomIconSwitch.svelte"
+    import GetLabviewSettings           from "$components/GetLabviewSettings.svelte"
+    import {relayout}                   from 'plotly.js/dist/plotly-basic';
+    import {isEmpty}                    from "lodash-es"
+    import {plot, plotlyEventsInfo}     from "$src/js/functions"
+    import {readMassFile}               from "./masspec/mass"
+    import computePy_func               from "$src/Pages/general/computePy"
+
+    import {onDestroy}                  from "svelte";
 
     /////////////////////////////////////////////////////////////////////////
 
@@ -60,12 +62,11 @@
 
             const [dataFromPython] = await readMassFile(massfiles)
             if(isEmpty(dataFromPython)) return
-            if(!keepAnnotaions) {annotations=[]}
+            if(!keepAnnotaions) {$plotlyEventsInfo["mplot"].annotations=[]}
             
-            plot("Mass spectrum", "Mass [u]", "Counts", dataFromPython, "mplot", logScale ? "log" : "linear")
-            if(keepAnnotaions) {relayout("mplot" ,{annotations})}
+            plot("Mass spectrum", "Mass [u]", "Counts", dataFromPython, "mplot", logScale ? "log" : "linear", true)
+            if(keepAnnotaions) {relayout("mplot" ,{annotations: $plotlyEventsInfo["mplot"].annotations})}
             
-            plotlyEventCreatedMass ? console.log("Plotly event ready for mass spectrum") : plotlyClick()
             graphPlotted = true
             
             return
@@ -80,48 +81,15 @@
             relayout("mplot", { yaxis: { title: "Counts", type: "log" } })
         }
     }
-
     const linearlogCheck = () => {
-
         const layout = { yaxis: { title: "Counts", type: logScale ? "log" : null } }
         if(graphPlotted) relayout("mplot", layout)
     };
 
     let fullfileslist = [];
-    let annotations = []
-    let plotlyEventCreatedMass = false
-
-
-    function plotlyClick() {
-
-        const mplot = document.getElementById("mplot")
-        mplot.on('plotly_click', data => {
-            if(data.event.ctrlKey) {
-                const {points} = data
-                const currentDataPoint = points[0]
-                const {x: mass , y: counts } = currentDataPoint
-                if(data.event.shiftKey) {
-                    const annotate = find(annotations, (m) => {
-                        const massValue = m.text.split(", ")[0].split("(")[1]
-                        return massValue >= mass-0.2 && massValue <= mass+0.2
-                    } )
-                    annotations = differenceBy(annotations, [annotate], 'x')
-                    console.log(annotations, annotate)
-                } else {
-                    const {color} = currentDataPoint.fullData.line
-                    const annotate = { 
-                        text: `(${mass}, ${counts})`, 
-                        x: mass, y: logScale ? Math.log10(counts): counts, xref: 'x', yref: 'y', 
-                        font: {color}, showarrow: true, arrowhead: 2, arrowcolor: color
-                    }
-                    annotations = [...annotations, annotate]
-                }
-                relayout("mplot" ,{annotations})
-            }
-        })
-        plotlyEventCreatedMass = true
-    }
-
+    onDestroy(()=>{
+        if($plotlyEventsInfo.mplot) {$plotlyEventsInfo.mplot.eventCreated = false; $plotlyEventsInfo.mplot.annotations = []}
+    })
 </script>
 
 <Layout {filetype} bind:fullfileslist {id} bind:currentLocation bind:fileChecked {graphPlotted} >
@@ -155,7 +123,7 @@
         <div class="align" style="justify-content: flex-end;">
 
             <CustomSwitch style="margin: 0 1em;" bind:selected={keepAnnotaions} label="Keep Annotaions"/>
-            <button class="button is-danger" on:click="{()=> { annotations = []; relayout("mplot" ,{annotations})}}">Clear</button>
+            <button class="button is-danger" on:click="{()=> { $plotlyEventsInfo["mplot"].annotations = []; relayout("mplot" ,{annotations: []})}}">Clear</button>
         </div>
 
     </svelte:fragment>

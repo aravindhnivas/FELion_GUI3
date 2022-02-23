@@ -1,39 +1,31 @@
 <script>
-    import Textfield            from '@smui/textfield'
+    import {relayout}           from 'plotly.js/dist/plotly-basic';
+    import {plot, plotlyEventsInfo}               from "$src/js/functions"
     import Layout               from "$components/Layout.svelte"
-    import CustomTextSwitch     from "$components/CustomTextSwitch.svelte"
-    import CustomSelect         from "$components/CustomSelect.svelte"
     import CustomCheckbox       from "$components/CustomCheckbox.svelte"
-    import CustomIconSwitch     from "$components/CustomIconSwitch.svelte"
-    import {plot}               from "../js/functions.js"
-    import {relayout, restyle}  from 'plotly.js/dist/plotly-basic';
+    import CustomTextSwitch     from "$components/CustomTextSwitch.svelte"
+    import THzFitParamsTable     from "./thz/components/THzFitParamsTable.svelte"
     import computePy_func       from "$src/Pages/general/computePy"
-    // import Dygraph              from 'dygraphs';
+    import {onDestroy}                  from "svelte";
     /////////////////////////////////////////////////////////////////////////
 
-    // Initialisation
-
     const filetype = "thz", id = "THz"
+
     let fileChecked = [];
     let currentLocation = ""
     $: thzfiles = fileChecked.map(file=>pathResolve(currentLocation, file))
-    let openShell = false, graphPlotted = false
-    let binSize=10, fG = 0, fL = 1
-
-    const btnClass = "button is-link"
-
-    const plotStyle = ["", "lines", "markers", "lines+markers"]
-
-    let plotStyleSelected = plotStyle[3], plotFill = true;
-
+    
+    let fG = 0
+    let fL = 1
+    let binSize=10
+    let openShell = false
+    let graphPlotted = false
     let binData = false, saveInMHz = false;
-
-    const changePlotStyle = () => { restyle("thzPlot", {mode:plotStyleSelected, fill: plotFill ? "tozeroy" : ""})}
 
     async function plotData({e=null, filetype="thz", tkplot=false, justPlot=false, general={} }={}){
 
         if (fileChecked.length === 0 && filetype === "thz") {return window.createToast("No files selected", "danger")}
-        const thz_args = {thzfiles, binData, tkplot, fG, fL, binSize, justPlot, saveInMHz}
+        const thz_args = {thzfiles, binData, tkplot, fG, fL, binSize, justPlot, saveInMHz, paramsTable}
         let pyfileInfo = {general,
             thz: {pyfile:"thz_scan" , args:[JSON.stringify(thz_args)]},
         }
@@ -47,8 +39,8 @@
         const dataFromPython = await computePy_func({e, pyfile, args})
         if (filetype=="thz") {
 
-            plot(`THz Scan: Depletion (%)`, "Frequency (GHz)", "Depletion (%)", dataFromPython["thz"], "thzPlot")
-            plot(`THz Scan`, "Frequency (GHz)", "Counts", dataFromPython["resOnOff_Counts"], "resOnOffPlot")
+            plot(`THz Scan: Depletion (%)`, "Frequency (GHz)", "Depletion (%)", dataFromPython["thz"], "thzPlot", null, true)
+            plot(`THz Scan`, "Frequency (GHz)", "Counts", dataFromPython["resOnOff_Counts"], "resOnOffPlot", null, true)
             if (!justPlot) {
                 let lines = [];
                 for (let x in dataFromPython["shapes"]) { lines.push(dataFromPython["shapes"][x]) }
@@ -61,19 +53,34 @@
         graphPlotted = true
     }
 
+    let openTable = false;
+    let paramsTable = []
+
+    const graphIDs = ["thzPlot", "resOnOffPlot"]
+    onDestroy(()=>{
+        graphIDs.forEach(graphID=>{
+            if($plotlyEventsInfo[graphID]) {$plotlyEventsInfo[graphID].eventCreated = false; $plotlyEventsInfo[graphID].annotations = []}
+        })
+    })
+
 </script>
 
-<Layout  {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked >
+<THzFitParamsTable bind:active={openTable} bind:paramsTable {currentLocation} {fG} {fL} />
 
+<Layout  {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked >
     <svelte:fragment slot="buttonContainer">
+
         <div class="align v-center">
-            <button class="{btnClass}" on:click="{(e)=>{plotData({e:e, justPlot:true})}}">Plot</button>
+            <button class="button is-link" style="min-width: 7em;" on:click="{(e)=>{plotData({e:e, justPlot:true})}}">Plot</button>
             <CustomCheckbox bind:selected={binData} label="Bin" />
             <CustomCheckbox bind:selected={saveInMHz} label="saveInMHz" />
-            <button class="{btnClass}" on:click="{(e)=>{plotData({e:e})}}">Fit</button>
-            <button class="{btnClass}" on:click="{(e)=>plotData({e:e, tkplot:true})}">Open in Matplotlib</button>
-            <CustomIconSwitch style="padding:0;" bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
+            <button class="button is-link" on:click="{(e)=>plotData({e:e, tkplot:true})}">Open in Matplotlib</button>
             <CustomTextSwitch bind:value={binSize} label="binSize (kHz)" step="0.1" />
+        </div>
+
+        <div class="align" style="justify-content: flex-end;">
+            <i class="material-icons" on:click="{()=>openTable=true}">settings</i>
+            <button class="button is-link" style="min-width: 7em;" on:click="{(e)=>{plotData({e:e})}}">Fit</button>
             <CustomTextSwitch bind:value={fG} label="fG (MHz)" step="0.1" />
             <CustomTextSwitch bind:value={fL} label="fL (MHz)" step="0.1" />
         </div>
@@ -81,15 +88,13 @@
 
     <svelte:fragment slot="plotContainer">
         <div id="resOnOffPlot" class="graph__div" ></div>
-        {#if graphPlotted}
-            <div class="animated fadeIn align h-end v-center" on:change={changePlotStyle}>
-                <CustomSelect options={plotStyle} bind:picked={plotStyleSelected} label="Plot Style"/>
-                <CustomCheckbox bind:selected={plotFill} label="Fill area"/>
-            </div>
-            {/if}
-        
         <div id="thzPlot" class="graph__div" ></div>
-    
     </svelte:fragment>
+    <svelte:fragment slot="plotContainer_functions">
 
+        <div class="align">
+            <button class="button is-warning" on:click="{()=>{$plotlyEventsInfo['thzPlot'].annotations=[]; relayout('thzPlot', {annotations: []})}}">Clear Annotations</button>
+        </div>
+
+    </svelte:fragment>
 </Layout>

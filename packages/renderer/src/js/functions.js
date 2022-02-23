@@ -9,7 +9,7 @@ export const windowLoaded = writable(false);
 export const updateAvailable = writable(false);
 export const newVersion = writable("");
 export const updating = writable(false);
-export {plot, subplot} from "./plot"
+export {plot, subplot, plotlyClick, plotlyEventsInfo} from "./plot"
 
 import "./resizableDiv"
 import "./clickOutside"
