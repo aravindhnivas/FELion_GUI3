@@ -1,14 +1,16 @@
 
 <script>
-    import {tick}                           from "svelte";
-    import {find}                           from "lodash-es"
+    import {cloneDeep, find}                           from "lodash-es"
     import Textfield                        from '@smui/textfield';
-    import {PlanksConstant, SpeedOfLight}   from "../functions/constants";
-    import {computeStatisticalWeight}       from "../functions/balance_distribution";
     import computePy_func                   from "$src/Pages/general/computePy"
     import BoxComponent                     from "./BoxComponent.svelte";
+    import {PlanksConstant, SpeedOfLight}   from "../functions/constants";
+    import {computeStatisticalWeight}       from "../functions/balance_distribution";
+
     export let einsteinCoefficientA=[]
     export let einsteinCoefficientB=[]
+    export let einsteinCoefficientB_rateConstant=[]
+
     export let einsteinB_rateComputed=false;
     
     export let lorrentz=0.320
@@ -47,6 +49,7 @@
 
             })
             einsteinCoefficientB = [...einsteinCoefficientB_emission, ...einsteinCoefficientB_absorption]
+            einsteinCoefficientB_rateConstant = cloneDeep(einsteinCoefficientB)
         } catch (error) {window.handleError(error)}
     }
 

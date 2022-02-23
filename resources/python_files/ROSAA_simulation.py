@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from pathlib import Path as pt
 from scipy.integrate import solve_ivp
 from ROSAA_func import boltzman_distribution
-
+from voigt import main as getLineShape
 from optimizePlot import optimizePlot
 from FELion_constants import pltColors
 from FELion_widgets import FELion_Tk
@@ -20,7 +20,7 @@ speedOfLightIn_cm = speedOfLight*100
 
 class ROSAA:
 
-    def __init__(self):
+    def __init__(self, nHe=None, power=None, plotGraph=True, writefile=None):
 
         self.energyUnit = conditions["energyUnit"]
         convertNorm_to_wn = 1e6/speedOfLightIn_cm if self.energyUnit == "MHz" else 1
@@ -33,20 +33,28 @@ class ROSAA:
         self.collisionalRateConstants = {key: float(value) for key, value in conditions["collisional_rates"].items()}
         self.includeSpontaneousEmission = conditions["includeSpontaneousEmission"]
         self.includeCollision = conditions["includeCollision"]
+        
         if self.includeSpontaneousEmission:
             self.einsteinA_Rates = {key: float(value) for key, value in conditions["einstein_coefficient"]["A"].items()}
-            self.einsteinB_Rates = {key: float(value) for key, value in conditions["einstein_coefficient"]["B"].items()}
 
+            self.power = power
+            if self.power is None:
+                self.power = float(conditions['power_broadening']['power(W)'])
+
+            self.computeEinsteinBRates()
+
+            print(f"{self.power=}", flush=True)
 
         self.excitedFrom = str(conditions["excitedFrom"])
         self.excitedTo = str(conditions["excitedTo"])
         self.transitionLevels = [self.excitedFrom, self.excitedTo]
 
         self.start_time = time.perf_counter()
-        variable = conditions["variable"]
-        variableRange = conditions["variableRange"]
-        self.writeFile = conditions["writefile"]
-
+        
+        self.writefile = writefile
+        if self.writefile is None:
+            self.writefile = conditions["writefile"]
+        
         self.electronSpin = conditions["electronSpin"]
         self.zeemanSplit = conditions["zeemanSplit"]
 
@@ -57,82 +65,56 @@ class ROSAA:
         self.boltzmanDistributionCold = boltzman_distribution( self.energyLevels, self.collisionalTemp, self.electronSpin, self.zeemanSplit )
         
         
-        if variable == "time":
-        
+        self.molecule = conditions["main_parameters"]["molecule"]
+        self.taggingPartner = conditions["main_parameters"]["tagging partner"]
+        self.GetAttachmentRatesParameters()
+
+        self.legends = []
+        for key in self.energyKeys:
+            key = key.strip()
+            if "_" in key:
+                key = key.split("_")
+                key = key[0] + "_{" + key[1] + "}"
+            label = f"{self.molecule}(${key}$)"
+            self.legends.append(label)
+
+        if self.includeAttachmentRate:
+            self.legends += [f"{self.molecule}{self.taggingPartner}"]
+            self.legends += [f"{self.molecule}{self.taggingPartner}$_{i+1}$" for i in range(1, self.totalAttachmentLevels)]
+
+        self.fixedPopulation = conditions["simulationMethod"] == "FixedPopulation"
+
+        self.transitionTitleLabel = f"${self.excitedFrom}-{self.excitedTo}$"
+        if "_" in self.excitedFrom:
+            lgfrom = self.excitedFrom.split("_")
+            lgto = self.excitedTo.split("_")
+            self.transitionTitleLabel = f"{self.molecule}: ${lgfrom[0]}_"+ "{"+f"{lgfrom[1]}"+"} - "+f"{lgto[0]}_"+ "{"+f"{lgto[1]}"+"}$"
+
+        if nHe is None:
             nHe = float(conditions["numberDensity"])
 
-            self.molecule = conditions["main_parameters"]["molecule"]
-            self.taggingPartner = conditions["main_parameters"]["tagging partner"]
-            self.GetAttachmentRatesParameters()
+        self.withoutCollisionalConstants = conditions["simulationMethod"] == "withoutCollisionalConstants"
+        if self.fixedPopulation or self.withoutCollisionalConstants:
+            self.simulateFixedPopulation(nHe)
+            log(f"{self.boltzmanDistributionCold=}")
+        else:
+            self.Simulate(nHe)
 
-            self.legends = []
-            for key in self.energyKeys:
-                key = key.strip()
-                if "_" in key:
-                    key = key.split("_")
-                    key = key[0] + "_{" + key[1] + "}"
-                label = f"{self.molecule}(${key}$)"
-                self.legends.append(label)
+        if plotGraph: self.Plot()
 
-            if self.includeAttachmentRate:
-                self.legends += [f"{self.molecule}{self.taggingPartner}"]
-                self.legends += [f"{self.molecule}{self.taggingPartner}$_{i+1}$" for i in range(1, self.totalAttachmentLevels)]
+    def computeEinsteinBRates(self):
+        trapArea = float(conditions['main_parameters']['trap_area (sq-meter)'])
+        constantTerm = self.power/(float(trapArea)*speedOfLight)
 
-            self.fixedPopulation = conditions["simulationMethod"] == "FixedPopulation"
-
-            self.withoutCollisionalConstants = conditions["simulationMethod"] == "withoutCollisionalConstants"
-            if self.fixedPopulation or self.withoutCollisionalConstants:
-                self.simulateFixedPopulation(nHe)
-                log(f"{self.boltzmanDistributionCold=}")
-            else:
-                self.Simulate(nHe)
-
-            self.Plot()
+        gaussian = float(conditions["gaussian"])
+        lorrentz = float(conditions["lorrentz"])
+        lineShape = getLineShape({"gaussian": gaussian, "lorrentz": lorrentz})
         
-        elif variable == "He density(cm3)":
-
-            signalList = []
-            _start, _end, _steps = variableRange.split(",")
-
-            dataList = np.linspace(float(_start), float(_end), int(_steps))
-            for counter, _nHe in enumerate(dataList):
-                log(f"{counter+1}/{int(_steps)}: {_nHe=:.2e}")
-
-                self.Simulate(_nHe)
-
-                if self.includeAttachmentRate:
-
-                    signal_index = len(self.energyKeys)+1
-                
-                    signal = (1 - (self.lightON_distribution[signal_index][1:] / self.lightOFF_distribution[signal_index][1:]))*100
-
-                    signal = round(signal[-1], 1)
-                    signalList.append(signal)
-            
-            signalList = np.nan_to_num(signalList).clip(min=0)
-            
-            log(signalList)
-
-            location = pt(conditions["currentLocation"])/"OUT"
-            if not location.exists():
-                location.mkdir()
-
-            savefilename = conditions["savefilename"]
-            with open(location / f"{savefilename}_ROSAA_output_nHe_{_start}_{_end}_{int(_steps)}.dat", 'w+') as f:
-
-                f.write("# nHe(cm-3)\tSignal(%)\n")
-
-                for x, y in zip(dataList, signalList):
-                    f.write(f"{x:.2e}\t{y:.2f}\n")
-                log(f"{savefilename} file written in {location} folder.")
-
-            
-            fig, ax = plt.subplots(figsize=(10, 6), dpi=100)
-            ax.plot(dataList, signalList, ".-")
-            ax = optimizePlot(ax, xlabel="number Density ($cm^{-3}$)", ylabel="Signal (%)")
-            ax.set_xscale("log")
-            plt.show()
-
+        norm = constantTerm*lineShape
+        einsteinB_RateConstants = conditions["einstein_coefficient"]["B_rateConstant"]
+        self.einsteinB_Rates = {key: float(value)*norm for key, value in einsteinB_RateConstants.items()}
+        print(f"{self.einsteinB_Rates=}", flush=True)
+        
     def simulateFixedPopulation(self, nHe):
         self.includeAttachmentRate = False
         t_limit = 0.001
@@ -154,7 +136,9 @@ class ROSAA:
         self.lightOFF_distribution = np.array(OFF_fixedPopulation_arr.tolist()+self.lightOFF_distribution.tolist())
 
     def simulate_without_CollisionConstants(self):
+
         N = {key: value for key, value in zip(self.energyKeys, self.boltzmanDistributionCold)}
+        
         if not self.zeemanSplit:
             if self.electronSpin:
                 j0 = float(self.excitedFrom.split("_")[1])
@@ -176,8 +160,8 @@ class ROSAA:
         return np.array(list(N.values()), dtype=float)
 
     def SimulateODE(self, t, counts, nHe, lightON, ratio):
-        global logCounter
         
+        global logCounter
         if self.includeAttachmentRate and self.includeCollision:
             N = counts[:-self.totalAttachmentLevels]
             N_He = counts[-self.totalAttachmentLevels:]
@@ -264,7 +248,7 @@ class ROSAA:
         else:
             return dR_dt
 
-    
+
     def GetAttachmentRatesParameters(self):
 
         self.attachment_rate_coefficients = conditions["attachment_rate_coefficients"]
@@ -280,7 +264,6 @@ class ROSAA:
 
         self.totalAttachmentLevels = int(self.attachment_rate_coefficients["totalAttachmentLevels"])
         self.includeAttachmentRate = conditions["includeAttachmentRate"]
-    
     
     def Simulate(self, nHe, duration=None, t0=0, ratio=[]):
 
@@ -330,130 +313,212 @@ class ROSAA:
         # plt.plot(OFF_full_ratio)
         # plt.plot(ON_full_ratio)
 
+
         dataToSend = {
-
             "misc": {
-
-                "ode": {
-                    "method": ode_method
-                },
+                "ode": {"method": ode_method},
                 "molecule": self.molecule,
                 "tag": self.taggingPartner,
                 "duration": duration,
                 "number-density": f"{nHe:.2e}"
             },
             "legends": self.legends,
-
             "time (in s)": self.simulateTime.tolist(),
             "lightON_distribution": self.lightON_distribution.tolist(),
             "lightOFF_distribution": self.lightOFF_distribution.tolist()
-
+        
         }
 
-        if self.writeFile:
-            self.WriteData("full", dataToSend)
+        if self.writefile:
+            fmtFloatFn = np.format_float_scientific
+            name_append = f"full_output_{fmtFloatFn(nHe, 3)}_{fmtFloatFn(self.power, 3)}"
+            WriteData(name_append, dataToSend)
         
         end_time = time.perf_counter()
         
         log(f"Current simulation time {(end_time - start_time):.2f} s")
         log(f"Total simulation time {(end_time - self.start_time):.2f} s")
-        
-    def Plot(self):
-        figs_location = output_dir / "figs"
-        if not figs_location.exists(): figs_location.mkdir()
 
-        widget = FELion_Tk(title=f"Population ratio", location=figs_location)
+
+    def Plot(self):
+
+        self.figs_location = output_dir / "figs"
+        if not self.figs_location.exists(): self.figs_location.mkdir()
+
+        widget = FELion_Tk(title=f"Population ratio", location=self.figs_location)
         widget.Figure()
         
-        transitionTitleLabel = f"${self.excitedFrom}-{self.excitedFrom}$"
-        if "_" in self.excitedFrom:
-            lgfrom = self.excitedFrom.split("_")
-            lgto = self.excitedTo.split("_")
-            transitionTitleLabel = f"{self.molecule}: ${lgfrom[0]}_"+ "{"+f"{lgfrom[1]}"+"} - "+f"{lgto[0]}_"+ "{"+f"{lgto[1]}"+"}$"
-
         ax = widget.make_figure_layout(
-            title=transitionTitleLabel, 
+            title=self.transitionTitleLabel, 
             xaxis="Time (ms)", yaxis="Population", savename=savefilename
         )
 
-        simulationTime = self.simulateTime.T*1e3
+        plotSimulationTime_milliSecond = self.simulateTime*1e3
         counter = 0
         for on, off in zip(self.lightON_distribution, self.lightOFF_distribution):
             
-            ax.plot(simulationTime, on, ls="-", c=pltColors[counter], label=f"{self.legends[counter]}")
-            ax.plot(simulationTime, off, ls="--", c=pltColors[counter])
+            ax.plot(plotSimulationTime_milliSecond, on, ls="-", c=pltColors[counter], label=f"{self.legends[counter]}")
+            ax.plot(plotSimulationTime_milliSecond, off, ls="--", c=pltColors[counter])
             counter += 1
 
-        ax.plot(simulationTime, self.lightON_distribution.sum(axis=0), "-k", alpha=0.5)
-        ax.plot(simulationTime, self.lightOFF_distribution.sum(axis=0), "--k")
+        ax.plot(plotSimulationTime_milliSecond, self.lightON_distribution.sum(axis=0), "-k", alpha=0.5)
+        ax.plot(plotSimulationTime_milliSecond, self.lightOFF_distribution.sum(axis=0), "--k")
         
-        ax.hlines(1, 0, simulationTime[-1]+simulationTime[-1]*0.2, colors='k', linestyles="dashdot")
+        ax.hlines(1, 0, plotSimulationTime_milliSecond[-1]+plotSimulationTime_milliSecond[-1]*0.2, colors='k', linestyles="dashdot")
         widget.plot_legend = ax.legend(title=f"--OFF, -ON", fontsize=14, title_fontsize=16)
         widget.plot_legend.set_draggable(True)
-        
-        ax = optimizePlot(ax, xlabel="Time (ms)", ylabel="Population", title=transitionTitleLabel)
+        ax = optimizePlot(ax, xlabel="Time (ms)", ylabel="Population", title=self.transitionTitleLabel)
 
         if self.includeAttachmentRate:
-
             signal_index = len(self.energyKeys)+1
-        
             signal = (1 - (self.lightON_distribution[signal_index][1:] / self.lightOFF_distribution[signal_index][1:]))*100
 
             signal = np.around(np.nan_to_num(signal).clip(min=0), 1)
-            # widget1 = FELion_Tk(title=f"Signal", location=figs_location)
-            # widget1.Figure()
-            # ax1 = widget1.make_figure_layout(xaxis="Time (ms)", yaxis="Signal (%)", title=transitionTitleLabel, savename=savefilename)
             _, ax1 = plt.subplots(figsize=figure["size"], dpi=int(figure["dpi"]))
+            ax1.plot(plotSimulationTime_milliSecond[1:], signal, label=f"Signal: {round(signal[-1])} (%)")
+            ax1 = optimizePlot(ax1, xlabel="Time (ms)", ylabel="Signal (%)", title=self.transitionTitleLabel)
 
-            ax1.plot(simulationTime[1:], signal, label=f"Signal: {round(signal[-1])} (%)")
-
-            ax1 = optimizePlot(ax1, xlabel="Time (ms)", ylabel="Signal (%)", title=transitionTitleLabel)
-            # widget1.plot_legend = ax1.legend()
             ax1.legend()
             
             log(f"Signal: {round(signal[-1])} (%)")
+
             if figure["show"]:
                 plt.show()
-            # widget1.mainloop()
 
         widget.mainloop()
 
-    def WriteData(self, name, dataToSend):
+def WriteData(name, dataToSend):
 
-        datas_location = output_dir / "datas"
-        
-        if not datas_location.exists():
-            datas_location.mkdir()
-        
-        addText = ""
-        if not self.includeAttachmentRate:
-            addText = "_no-attachement"
+    datas_location = output_dir / "datas"
+    
+    if not datas_location.exists():
+        datas_location.mkdir()
+    
+    addText = ""
+    if not includeAttachmentRate:
+        addText = "_no-attachement"
 
-        with open(datas_location / f"{savefilename}{addText}_{name}_output.json", 'w+') as f:
-            data = json.dumps(dataToSend, sort_keys=True, indent=4, separators=(',', ': '))
-            f.write(data)
-            log(f"{savefilename} file written in {location} folder.")
+    with open(datas_location / f"{savefilename}{addText}_{name}.json", 'w+') as f:
+        data = json.dumps(dataToSend, sort_keys=True, indent=4, separators=(',', ': '))
+        f.write(data)
+        log(f"{savefilename} file written in {location} folder.")
 
-conditions = None
 figure = None
 figsize = None
-savefilename = None
 location = None
 output_dir = None
+conditions = None
+savefilename = None
+
+includeAttachmentRate=False
 
 def main(arguments):
 
-    global conditions, figure, savefilename, location, output_dir
+    global conditions, figure, savefilename, location, output_dir, includeAttachmentRate
 
     conditions = arguments
     savefilename = conditions["savefilename"]
 
     location = pt(conditions["currentLocation"])
     output_dir = location / "../output"
-    if not output_dir.exists(): output_dir.mkdir()
-
+    if not output_dir.exists():
+         output_dir.mkdir()
+    
     figure = conditions["figure"]
     figure["size"] = [int(i) for i in figure["size"].split(",")]
     figure["dpi"] = int(figure["dpi"])
-    ROSAA()
+
+    includeAttachmentRate = conditions["includeAttachmentRate"]
+
+    nHe = float(conditions["numberDensity"])
+    variable = conditions["variable"]
+
+    if variable == "time":
+
+        ROSAA(nHe, plotGraph=figure["show"])
+
+    elif variable == "He density(cm3)":
+        functionOfVariable("numberDensity")
+
+    elif variable == "Power(W)":
+        functionOfVariable("power")
+
+
+def functionOfVariable(changeVariable="numberDensity"):
+
+    currentnHe = np.format_float_scientific(float(conditions["numberDensity"]), 3)
+    currentnPower = np.format_float_scientific(float(conditions['power_broadening']['power(W)']), 3)
     
+    variableRange = conditions["variableRange"]
+    _start, _end, _steps = [float(_) for _ in variableRange.split(",")]
+    dataList = np.linspace(_start, _end, int(_steps))
+    excitedFrom = str(conditions["excitedFrom"])
+    excitedTo = str(conditions["excitedTo"])
+    
+    energyKeys = list(conditions["energy_levels"].keys())
+
+    excitedToIndex = energyKeys.index(excitedTo)
+    excitedFromIndex = energyKeys.index(excitedFrom)
+    
+    populationChange = []
+    signalChange = []
+    for variable in dataList:
+
+
+        if changeVariable=="numberDensity":
+            currentData = ROSAA(nHe=variable, plotGraph=False, writefile=conditions["writeall"])
+        elif changeVariable=="power":
+            currentData = ROSAA(power=variable, plotGraph=False, writefile=conditions["writeall"])
+
+        on = currentData.lightON_distribution
+        
+        changeInPopulationRatioOn =  on[excitedToIndex][-1] / on[excitedFromIndex][-1]
+        populationChange.append(changeInPopulationRatioOn)
+
+        if includeAttachmentRate:
+            off = currentData.lightOFF_distribution
+            signal_index = len(energyKeys)+1
+            chnageInSignal = (1 - (on[signal_index][-1] / off[signal_index][-1]))*100
+            chnageInSignal = np.around(np.nan_to_num(chnageInSignal).clip(min=0), 1)
+            signalChange.append(chnageInSignal)
+
+    widget = FELion_Tk(title=f"Population ratio", location=output_dir/"figs")
+    widget.Figure()
+    if changeVariable=="numberDensity":
+        xlabel=f"{currentData.taggingPartner} number density (cm$^{-3})$"
+    else:
+        xlabel="Power (W)"
+    
+    ylabel="Population ratio: (up/down)"
+    title=currentData.transitionTitleLabel
+
+    ax = widget.make_figure_layout(xaxis=xlabel, yaxis=ylabel, title=title, savename=savefilename)
+    ax.plot(dataList, populationChange, ".-k")
+    ax = optimizePlot(ax, xlabel=xlabel, ylabel=ylabel, title=title)
+    ax.set(xscale="log")
+    widget.fig.tight_layout()
+
+    dataToSend = {
+        f"variable ({changeVariable})": list(map(lambda num: np.format_float_scientific(num, 3), dataList)),
+        "populationChange": np.around(populationChange, 3).tolist(),
+        f"constant ({('power', 'numberDensity')[changeVariable=='numberDensity']})": (currentnPower, currentnHe)[changeVariable=='numberDensity']
+    }
+    name_append = f"variable{dataList[0]:.0e}-{dataList[-1]:.0e}.output"
+
+    if includeAttachmentRate:
+
+        fig, ax1 = plt.subplots(figsize=figure["size"], dpi=int(figure["dpi"]))
+        ax1.plot(dataList, signalChange, ".-k")
+        ax1 = optimizePlot(ax1, xlabel=xlabel, ylabel="Signal (%)", title=title)
+
+        ax1.set(xscale="log")
+        fig.tight_layout()
+        dataToSend["signalChange"] = np.around(signalChange, 3).tolist(),
+
+    if conditions["writefile"]:
+        WriteData(name_append, dataToSend)
+
+    if includeAttachmentRate and figure["show"]:
+        plt.show()
+
+    widget.mainloop()

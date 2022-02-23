@@ -17,7 +17,7 @@
     export let electronSpin
     export let numberOfLevels
 
-    export let numberDensity = "2e14"
+    export let numberDensity = "4e14"
     export let collisionalRates = [];
     export let collisionalTemp;
     export let collisionalFilename=""
@@ -60,13 +60,10 @@
         rate.value = rate.value.toExponential(3);
         return rate
     }
-
+    
     $: if(collisionalRateConstants.length>0 && numberDensity) {
         collisionalRates = cloneDeep(collisionalRateConstants).map(computeRate)
-    
     }
-
-    // $: if (collisionalCoefficient.length) compteCollisionalBalanceConstants()
 
     let collisionalFileBasename = ""
     async function browse_collisional_file() {

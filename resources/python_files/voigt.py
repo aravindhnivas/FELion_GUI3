@@ -4,7 +4,7 @@ from scipy.special import voigt_profile
 from FELion_definitions import sendData
 
 def main(args):
-    fG = float(args["gaussian"])*1e6
+    fG = float(args["gaussian"])*1e6 # MHz --> Hz
     fL = float(args["lorrentz"])*1e6
     sigma = fG/(2*np.sqrt(2*np.log(2)))
     gamma = fL/2
@@ -12,3 +12,4 @@ def main(args):
     dataToSend = {"lineShape" : lineShape}
     
     sendData(dataToSend, calling_file=pt(__file__).stem)
+    return lineShape

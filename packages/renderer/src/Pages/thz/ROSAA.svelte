@@ -86,9 +86,10 @@
         const power_broadening = {}
         powerBroadening.forEach(f=>power_broadening[f.label]=f.value)
 
-        const einstein_coefficient = {A:{}, B:{}};
+        const einstein_coefficient = {A:{}, B:{}, B_rateConstant: {}};
         einsteinCoefficientA.forEach(f=>einstein_coefficient.A[f.label]=f.value)
         einsteinCoefficientB.forEach(f=>einstein_coefficient.B[f.label]=f.value)
+        einsteinCoefficientB_rateConstant.forEach(f=>einstein_coefficient.B_rateConstant[f.label]=f.value)
 
         const attachment_rate_coefficients = {rateConstants:{k3:k3.constant.map(rate=>rate.value), kCID:kCID.constant.map(rate=>rate.value)}}
         
@@ -96,8 +97,7 @@
         const energy_levels = {}
         energyLevels.forEach(f=>energy_levels[f.label]=f.value)
         const conditions = { 
-            trapTemp, variable, variableRange, numberOfLevels, includeCollision, includeAttachmentRate, 
-            includeSpontaneousEmission, writefile, savefilename, currentLocation,  deexcitation, 
+            trapTemp, variable, variableRange, numberOfLevels, includeCollision, includeAttachmentRate, gaussian, lorrentz, includeSpontaneousEmission, writefile, writeall, savefilename, currentLocation,  deexcitation, 
             collisional_rates, main_parameters, simulation_parameters, einstein_coefficient, 
             energy_levels, energyUnit, power_broadening, lineshape_conditions, attachment_rate_coefficients, 
             electronSpin, zeemanSplit, excitedFrom, excitedTo, numberDensity, collisionalTemp, simulationMethod, figure
@@ -111,7 +111,9 @@
     }
     let currentLocation = fs.existsSync(db.get("ROSAA_config_location")) ? db.get("ROSAA_config_location") : "";
 
-    let savefilename = ""
+    // let savefilename = ""
+    let moleculeName="", tagName="He";
+    $: savefilename = `${moleculeName}_${tagName}_${variable.split("(")[0]}_${excitedFrom} - ${excitedTo}`.replaceAll("$", "")
     $: if(fs.existsSync(currentLocation)) {db.set("ROSAA_config_location", currentLocation)}
 
     async function browse_folder() {
@@ -131,20 +133,30 @@
         simulationParameters = mainParameters = dopplerLineshape = powerBroadening = []
         attachmentCoefficients = [] 
         window.createToast("Config file cleared", "warning")
-    
     }
     
     let writefile = true
     let includeCollision = true
+
     let includeAttachmentRate = true;
     let includeSpontaneousEmission = true
 
+
     let variable = "time"
     let variableRange = "1e12, 1e16, 10";
+    let writeall = true
+
+    $: if(variable) {
+        if(variable==="time") variableRange = "1e12, 1e16, 10"
+        if(variable==="He density(cm3)") variableRange = "1e12, 5e16, 10"
+        if(variable==="Power(W)") variableRange = "1e-7, 1e-4, 10"
+    }
     const variablesList = ["time", "He density(cm3)", "Power(W)"]
-    
+
     let einsteinCoefficientA=[]
     let einsteinCoefficientB=[];
+    let einsteinCoefficientB_rateConstant=[];
+
     let collisionalCoefficient=[]
 
     let energyUnit="cm-1"
@@ -152,8 +164,8 @@
     let numberDensity = "2e14";
     let energyFilename
     let einsteinFilename;
-
     let collisionalFilename
+
     $: configFile = window.pathJoin(currentLocation, configFilename)
     $: boltzmanArgs = {energyLevels, trapTemp, electronSpin, zeemanSplit, energyUnit}
 
@@ -221,9 +233,6 @@
         
         transitionFrequency = upperLevelEnergy - lowerLevelEnergy
         if(energyUnit=="cm-1" ) { transitionFrequency *= SpeedOfLight*1e2 * 1e-6 }
-        const moleculeName = mainParameters.filter(params => params.label=="molecule")?.[0]?.value || ""
-        const tagName = mainParameters?.filter(params => params.label=="tagging partner")?.[0]?.value || ""
-        savefilename = `${moleculeName}_${tagName}_${excitedFrom} - ${excitedTo}`
         updateDoppler()
     }
     
@@ -285,7 +294,9 @@
                 electronSpin,
                 numberDensity
             }                       = CONFIG);
-            ({savefilename}         = CONFIG.saveFile);
+            // ({savefilename}         = CONFIG.saveFile);
+            moleculeName = mainParameters.filter(params => params.label=="molecule")?.[0]?.value || ""
+            tagName = mainParameters?.filter(params => params.label=="tagging partner")?.[0]?.value || ""
             const {savelocation}    = CONFIG.saveFile;
             if(fs.existsSync(savelocation)) {currentLocation = savelocation};
 
@@ -371,14 +382,14 @@
 
         </div>
 
-        <div class="align box" style="border: solid 1px #fff9;" >
+        <div class="align box" style="border: solid 1px #fff9; min-height: 5em;" >
             <div class="subtitle">Simulate signal(%) as a function of {variable}</div>
             <div class="align v-center" style="width: auto; margin-left: auto;">
                 
-                <CustomSelect options={variablesList} bind:picked={variable} label="variable" />
                 {#if variable !== "time"}
                     <Textfield bind:value={variableRange} style="width: auto;" label="Range (min, max, totalsteps)" />
                 {/if}
+                <CustomSelect options={variablesList} bind:picked={variable} label="variable" />
                 <button class="button is-link" on:click={loadConfig}>Load config</button>
                 <button class="button is-link" on:click={resetConfig}>Reset Config</button>
 
@@ -479,6 +490,7 @@
                 bind:einsteinCoefficientA
                 bind:einsteinCoefficientB
                 bind:einsteinB_rateComputed
+                bind:einsteinCoefficientB_rateConstant
                 {power} 
                 {gaussian}
                 {trapArea}
@@ -525,6 +537,7 @@
 
     <svelte:fragment slot="left_footer_content__slot">
         <CustomCheckbox bind:selected={writefile} label="writefile" />
+        <CustomCheckbox bind:selected={writeall} label="writeall" />
         <Textfield bind:value={savefilename} label="savefilename" />
     </svelte:fragment>
 
