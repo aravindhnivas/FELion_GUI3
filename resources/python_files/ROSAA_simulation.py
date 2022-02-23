@@ -501,7 +501,7 @@ def functionOfVariable(changeVariable="numberDensity"):
     dataToSend = {
         f"variable ({changeVariable})": list(map(lambda num: np.format_float_scientific(num, 3), dataList)),
         "populationChange": np.around(populationChange, 3).tolist(),
-        f"constant ({('power', 'numberDensity')[changeVariable=='numberDensity']})": (currentnPower, currentnHe)[changeVariable=='numberDensity']
+        f"constant ({('power', 'numberDensity')[changeVariable=='numberDensity']})": (currentnHe, currentnPower)[changeVariable=='numberDensity']
     }
     name_append = f"variable{dataList[0]:.0e}-{dataList[-1]:.0e}.output"
 
