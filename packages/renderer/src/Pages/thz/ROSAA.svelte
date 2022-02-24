@@ -97,7 +97,7 @@
         const energy_levels = {}
         energyLevels.forEach(f=>energy_levels[f.label]=f.value)
         const conditions = { 
-            trapTemp, variable, variableRange, numberOfLevels, includeCollision, includeAttachmentRate, gaussian, lorrentz, includeSpontaneousEmission, writefile, writeall, savefilename, currentLocation,  deexcitation, 
+            trapTemp, variable, variableRange, numberOfLevels, includeCollision, includeAttachmentRate, gaussian, lorrentz, includeSpontaneousEmission, writefile, writeall, appendFiles, savefilename, currentLocation,  deexcitation, 
             collisional_rates, main_parameters, simulation_parameters, einstein_coefficient, 
             energy_levels, energyUnit, power_broadening, lineshape_conditions, attachment_rate_coefficients, 
             electronSpin, zeemanSplit, excitedFrom, excitedTo, numberDensity, collisionalTemp, simulationMethod, figure
@@ -144,7 +144,7 @@
 
     let variable = "time"
     let variableRange = "1e12, 1e16, 10";
-    let writeall = true
+    let writeall = true, appendFiles=false;
 
     $: if(variable) {
         if(variable==="time") variableRange = "1e12, 1e16, 10"
@@ -387,7 +387,7 @@
             <div class="align v-center" style="width: auto; margin-left: auto;">
                 
                 {#if variable !== "time"}
-                    <Textfield bind:value={variableRange} style="width: auto;" label="Range (min, max, totalsteps)" />
+                    <Textfield bind:value={variableRange} style="width: auto;" label="min, max, rangesteps:[1e1 format]" />
                 {/if}
                 <CustomSelect options={variablesList} bind:picked={variable} label="variable" />
                 <button class="button is-link" on:click={loadConfig}>Load config</button>
@@ -538,6 +538,7 @@
     <svelte:fragment slot="left_footer_content__slot">
         <CustomCheckbox bind:selected={writefile} label="writefile" />
         <CustomCheckbox bind:selected={writeall} label="writeall" />
+        <CustomCheckbox bind:selected={appendFiles} label="appendFiles" />
         <Textfield bind:value={savefilename} label="savefilename" />
     </svelte:fragment>
 
@@ -545,7 +546,7 @@
 
         {#if pyProcesses.length>0}
         
-            <div>Running: {pyProcesses.length} {pyProcesses.length>1 ? "simulations" : "simulation"}</div>
+            <!-- <div>{'Running:'+ pyProcesses.length}</div> -->
             <button transition:fade class="button is-danger" 
                 on:click="{()=>{pyProcesses.at(-1).kill(); pyProcesses.pop()}}" >Stop</button>
         {/if}
