@@ -2,7 +2,6 @@
 
     import {orderBy} from "lodash-es"
     import { scale } from 'svelte/transition';
-    // import {Icon} from '@smui/icon-button';
     import {tick} from "svelte";
 
     export let head=[]
@@ -10,17 +9,18 @@
     export let keys=[]
     export let id=getID()
     export let label="table"
-    
     export let userSelect=true
+
     export let style="width: 100%;";
     export let sortOption = false
+    export let animateRow = true;
+    export let disableInput = false;
     export let closeOption = true
     export let addextraOption = true
-    export let animateRow = true;
 
-    const keyIDSets = keys.map(key=>({key, id:getID()}))
-    $: console.log({rows, keyIDSets})
     let sortTypeAscending = true;
+
+    if(head.length<1) {head=keys}
     const sortTable = (type) => { 
         if(sortOption) {
             sortTypeAscending = !sortTypeAscending
@@ -65,7 +65,7 @@
                     <th class="mdc-data-table__header-cell" style="width: 2em;" role="columnheader" scope="col">#</th>
 
 
-                    {#each head as item, index }
+                    {#each head as item, index (item) }
 
                         <th style="cursor: pointer;" class="mdc-data-table__header-cell" role="columnheader" scope="col" >
 
@@ -73,24 +73,23 @@
                                 {#if sortOption}
                                     <i class="material-icons" >{sortTypeAscending ? "arrow_upward": "arrow_downward"}</i>
                                 {/if}
-
                                 {item}
                             </div>
-                        </th>
 
+                        </th>
                     {/each}
-                    
                 </tr>
             </thead>
 
             <tbody class="mdc-data-table__content">
-                {#each rows as row, index (row.id)}
+
+                {#each rows as row, index (index)}
 
                     <tr class="mdc-data-table__row" style="background-color: #fafafa;" transition:animate> 
                         <td class="mdc-data-table__cell" style="width: 2em;" >{index}</td>
                         {#each keys as key (key)}
                             <td class="mdc-data-table__cell  mdc-data-table__cell--numeric" id="{row.id}-{key}">
-                                <input type="text" bind:value={row[key]} style="color: black; width: 100%;">
+                                <input type="text" bind:value={row[key]} style="color: black; width: 100%;" disabled={disableInput}>
                             </td>
                         {/each}
                         {#if closeOption}

@@ -1,7 +1,21 @@
 
-import {dataTable, dataTable_avg, felixPlotAnnotations, felixOutputName, graphDiv, expfittedLines, expfittedLinesCollectedData, collectData, avgfittedLineCount, fittedTraceCount, get} from './svelteWritables';
-import {relayout, addTraces} from 'plotly.js/dist/plotly-basic';
-import {uniqBy} from "lodash-es"
+import {
+    get,
+    graphDiv,
+    dataTable,
+    collectData,
+    dataTable_avg,
+    expfittedLines,
+    felixOutputName,
+    fittedTraceCount,
+    avgfittedLineCount,
+    felixPlotAnnotations,
+
+    expfittedLinesCollectedData,
+}                                   from './svelteWritables';
+import {relayout, addTraces}        from 'plotly.js/dist/plotly-basic';
+import {uniqBy}                     from "lodash-es"
+
 export function exp_fit_func({dataFromPython}={}) {
 
     addTraces(get(graphDiv), dataFromPython["fit"])

@@ -1,20 +1,34 @@
 
 <script>
+    import { 
+        felixIndex,
+        graphDiv,
+        dataTable,
+        Ngauss_sigma,
+        expfittedLines,
+        felixPeakTable,
+        felixOutputName,
+        fittedTraceCount,
+        felixopoLocation,
+        felixPlotAnnotations,
+        felixAnnotationColor,
+        expfittedLinesCollectedData ,
+    }                                   from "../../functions/svelteWritables";
+    import Textfield                    from '@smui/textfield';
+    import CustomSwitch                 from '$components/CustomSwitch.svelte';
+    import {savefile, loadfile}         from "../../functions/misc";
+    import { fade }                     from 'svelte/transition';
+    import {NGauss_fit_func}            from '../../functions/NGauss_fit';
+    import {find_peaks_func}            from '../../functions/find_peaks';
+    import {exp_fit_func}               from '../../functions/exp_fit';
+    import {get_err_func}               from '../../functions/get_err';
+    import {relayout, deleteTraces}     from 'plotly.js/dist/plotly-basic';
+    import {
+        dropRight, uniqBy, 
+        filter, sortBy
+    }                                   from "lodash-es"
+    import computePy_func               from "$src/Pages/general/computePy"
 
-    import { fittedTraceCount, felixPlotAnnotations, felixIndex, expfittedLines, expfittedLinesCollectedData , graphDiv, dataTable, Ngauss_sigma, felixOutputName, felixPeakTable, felixopoLocation, felixAnnotationColor} from "../../functions/svelteWritables";
-    import Textfield from '@smui/textfield';
-    import CustomSwitch from '$components/CustomSwitch.svelte';
-    import {Icon} from '@smui/icon-button';
-    import {savefile, loadfile} from "../../functions/misc";
-    import { fade } from 'svelte/transition';
-    import {NGauss_fit_func} from '../../functions/NGauss_fit';
-    import {find_peaks_func} from '../../functions/find_peaks';
-    import {exp_fit_func} from '../../functions/exp_fit';
-
-    import {get_err_func} from '../../functions/get_err';
-    import {relayout, deleteTraces} from 'plotly.js/dist/plotly-basic';
-    import {dropRight, uniqBy, filter, sortBy} from "lodash-es"
-    import computePy_func                   from "$src/Pages/general/computePy"
     export let writeFile
     export let fullfiles
     export let normMethod
@@ -38,11 +52,9 @@
 
     const clearAllPeak = () => {
         if ($fittedTraceCount === 0) {return window.createToast("No fitted lines found", "danger")}
-
         console.log("Removing all found peak values")
         
         $felixPlotAnnotations = $felixIndex = $expfittedLines = $expfittedLinesCollectedData = []
-
         relayout($graphDiv, { annotations: [], shapes: [] })
         
         for (let i=0; i<$fittedTraceCount; i++) {deleteTraces($graphDiv, [-1])}
@@ -245,7 +257,7 @@
         </div>
         
         <div class="align" >
-            <Icon class="material-icons" on:click="{()=> modalActivate = true}">settings</Icon>
+            <i class="material-icons" on:click="{()=> modalActivate = true}">settings</i>
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"NGauss_fit"})}">Fit</button>
             <Textfield style="{style}; margin-bottom: 0.5em; margin-left: 1em; margin-right: 1em;" bind:value={savePeakfilename} label="savefile"/>
             <button class="button is-link" on:click="{()=>savefile({file:$felixPeakTable, name:savePeakfilename})}">Save peaks</button>

@@ -2,19 +2,19 @@
 <script>
     import Textfield            from '@smui/textfield'
     import ModalTable           from "$components/ModalTable.svelte"
+    import CustomCheckbox       from "$components/CustomCheckbox.svelte"
     import {plotlyEventsInfo}   from "$src/js/functions"
 
-    export let fG = "";
-    export let fL = "";
+    export let varyAll = false;
     export let active = [];
     export let paramsTable = [];
+    export let fitMethod = "";
     export let currentLocation = "";
 
 
     const keys = ["freq", "amp", "fG", "fL"]
     let savefilename = "thz_fit_params.json"
     $: saveParamsToFile = pathJoin(currentLocation, "OUT", savefilename)
-
     const saveConfig = () => {
         const dataToSave = {units: {freq: "GHz", fG: "MHz", fL: "MHz"}}
         paramsTable.forEach(params => {
@@ -45,6 +45,8 @@
         const annotations = $plotlyEventsInfo.thzPlot.annotations
         annotations.forEach(annotation => {
             const {x, y} = annotation
+            const fG = fitMethod==="gaussian" || fitMethod==="voigt" ? 1 : 0
+            const fL = fitMethod==="lorentz" || fitMethod==="voigt" ? 1 : 0
             const newParams = {freq: x.toFixed(6), amp: y.toFixed(2), fG, fL, id: getID()}
             console.log(newParams)
             paramsTable = [...paramsTable, newParams]
@@ -58,10 +60,13 @@
     </svelte:fragment>
 
     <svelte:fragment slot="footer">
-        <button class="button is-link" on:click="{getValuesFromAnnotations}" >getValuesFromAnnotations</button>
-        <button class="button is-link" on:click="{saveConfig}" >Save</button>
-        <button class="button is-link" on:click="{loadConfig}" >Load</button>
-        <button class="button is-danger" on:click="{()=>paramsTable=[]}" >Clear ALL</button>
+        <div class="align">
+            <CustomCheckbox bind:selected={varyAll} label="varyAll" />
+            <button class="button is-link" on:click="{getValuesFromAnnotations}" >getValuesFromAnnotations</button>
+            <button class="button is-link" on:click="{saveConfig}" >Save</button>
+            <button class="button is-link" on:click="{loadConfig}" >Load</button>
+            <button class="button is-danger" on:click="{()=>paramsTable=[]}" >Clear ALL</button>
+        </div>
     
     </svelte:fragment>
 

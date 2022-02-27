@@ -7,7 +7,7 @@ from io import StringIO
 import contextlib
 
 # Tkinter
-from tkinter import StringVar, BooleanVar, DoubleVar, Tk, END, Text, MULTIPLE, Listbox, Canvas, Frame
+from tkinter import StringVar, BooleanVar, DoubleVar, Toplevel, END, Text, MULTIPLE, Listbox, Canvas, Frame
 from tkinter.ttk import Button, Checkbutton, Label, Entry, Scale, Scrollbar, OptionMenu
 from tkinter.messagebox import showerror, showinfo, showwarning, askokcancel
 
@@ -42,9 +42,9 @@ def var_check(kw):
     return kw
 
 
-class FELion_Tk(Tk):
+class FELion_TkToplevel(Toplevel):
 
-    def __init__(self, title="FELion GUI2", location=".", *args, **kwargs):
+    def __init__(self, title="Figure widget", location=".", *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.location = pt(location)
@@ -563,12 +563,3 @@ class FELion_Tk(Tk):
             print(f'Filename saved: {save_fname}\nLocation: {self.location}\n')
     
         except: showerror("Error", traceback.format_exc(5))
-
-if __name__ == "__main__":
-
-    widget = FELion_Tk("Filename")
-    widget.Figure()
-    
-    _ = widget.make_figure_layout(xdata=[1, 2, 3], ydata=[1, 2, 3], title="CD")
-    widget.mainloop()
-    

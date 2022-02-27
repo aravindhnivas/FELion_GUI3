@@ -43,7 +43,7 @@ def getInitialParams(paramsTable=[]):
     print(f"{FREQ=}\n{AMPS=}\n{SIG=}\n{GAM=}", flush=True)
     return FREQ, AMPS, SIG, GAM
 
-def fitData(freq, inten, fwhmParameter=[0.1], method="lorentz", paramsTable=[], varyAll=False):
+def fitData(freq, inten, method="lorentz", fitfile="", paramsTable=[], varyAll=False):
 
     '''
     Description:\n
@@ -59,8 +59,6 @@ def fitData(freq, inten, fwhmParameter=[0.1], method="lorentz", paramsTable=[], 
     FREQ, AMPS, SIG, GAM = getInitialParams(paramsTable)
     N = len(FREQ)
 
-    # generateNShapedProfile(1, method=method, varyAll=True, verbose=True)
-    # generateNShapedProfile(1, method=method, varyAll=False, verbose=True)
     lineProfileFn = generateNShapedProfile(
         N, method=method, varyAll=varyAll, verbose=True
     )
@@ -71,12 +69,14 @@ def fitData(freq, inten, fwhmParameter=[0.1], method="lorentz", paramsTable=[], 
         p0=[*[_/1000 for _ in FWHMParams], *AMPS, *FREQ]
     else:
         FWHMParams = [SIG[0], GAM[0]] if method=="voigt" else ([GAM[0]], [SIG[0]])[method=="gaussian"]
-        # amplitude = inten[inten.argmax()]
         p0=[*[_/1000 for _ in FWHMParams], *AMPS, *FREQ]
 
+    print(f"{p0=}", flush=True)
     pop, pcov = curve_fit(lineProfileFn, freq, inten, p0=p0)
+
     perr = np.sqrt(np.diag(pcov))
     upop = unp.uarray(pop, perr)
+    
     print(f"{upop=}", flush=True)
 
     fittedY = lineProfileFn(freq, *pop)
@@ -99,14 +99,14 @@ def fitData(freq, inten, fwhmParameter=[0.1], method="lorentz", paramsTable=[], 
     else:
         fittedParams["SIG" if method=="gaussian" else "GAM"] = upop[:N]
 
-    # print(fittedInfos, flush=True)
-
     print(f"{fittedParams=}", flush=True)
-    # print(f"{fittedParams['FREQ']/1000:.3fP}", flush=True)
+
     fittedParamsTable = []
     counter = 0
+
     for frequency, amp in zip(fittedParams["FREQ"], fittedParams["AMPS"]):
         fitparams = {
+            "filename": fitfile,
             "freq": f"{frequency*1000:.3f}",
             "amp": f"{amp:.2f}"
         }
@@ -121,20 +121,5 @@ def fitData(freq, inten, fwhmParameter=[0.1], method="lorentz", paramsTable=[], 
 
         fittedParamsTable.append(fitparams)
         counter += 1
-    
-    maxIntenInd = inten.argmax()
-    amplitude = inten[maxIntenInd]
-    cen = freq[maxIntenInd]
 
-    p0=[amplitude, *[_/1000 for _ in fwhmParameter], cen]
-    print(f"{p0=}", flush=True)
-    
-    pop, pcov = curve_fit(fitProfile, freq, inten, p0=p0)
-    perr = np.sqrt(np.diag(pcov))
-    
-    print(f"{pop=}\n{perr=}", flush=True)
-    
-    fittedY = fitProfile(freq, *pop)
-    params = unp.uarray(pop, perr)
-
-    return freq, fittedY, params, fittedParamsTable, fittedInfos
+    return fittedParamsTable, fittedInfos

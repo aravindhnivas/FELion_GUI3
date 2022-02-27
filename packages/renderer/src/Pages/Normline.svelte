@@ -168,10 +168,7 @@
 
     <svelte:fragment slot="plotContainer_functions" >
 
-        <!-- Write function buttons -->
-
         <WriteFunctionContents on:addfile="{()=>{addFileModal=true}}" on:removefile={removeExtraFile} {output_namelists} bind:writeFileName bind:writeFile bind:overwrite_expfit />
-        <!-- Execute function buttons -->
         <ExecuteFunctionContents {addedFileScale} {addedFileCol} normMethod={$normMethod} {writeFileName} {writeFile} {overwrite_expfit} {fullfiles}  bind:modalActivate bind:adjustPeakTrigger />
 
     </svelte:fragment>

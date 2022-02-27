@@ -9,7 +9,10 @@ from ROSAA_func import boltzman_distribution
 from voigt import main as getLineShape
 from optimizePlot import optimizePlot
 from FELion_constants import pltColors
+
+
 from FELion_widgets import FELion_Tk
+from FELion_widgetsToplevel import FELion_TkToplevel
 
 def log(msg): 
     return print(msg, flush=True)
@@ -168,16 +171,18 @@ class ROSAA:
         elif self.includeCollision: N = counts
         else: N_He = counts
 
-        if self.includeCollision: 
+        if self.includeCollision:
+
             dR_dt = []
+            
             N = {key: value for key, value in zip(self.energyKeys, N)}
+            
             for i in self.energyKeys:
                 einstein = []
                 collisional = []
                 attachment = []
 
                 for j in self.energyKeys:
-
                     if i!= j:
 
                         key = f"{j} --> {i}"
@@ -202,7 +207,6 @@ class ROSAA:
                                     R_einsteinB = self.einsteinB_Rates[key]*N[j] - self.einsteinB_Rates[keyInverse]*N[i]
                                     einstein.append(R_einsteinB)
 
-
                 if self.includeAttachmentRate:
                     if i == self.excitedFrom:
                         attachmentRate0 = -(self.k3[0] * nHe**2 * N[i]) + (self.kCID[0] * nHe * N_He[0] * self.kCID_branch)
@@ -222,29 +226,34 @@ class ROSAA:
         if self.includeAttachmentRate:
             
             if not self.includeCollision:
+
                 N = (ratio/ratio.sum())*(1-np.sum(N_He))
                 _from = self.energyKeys.index(self.excitedFrom)
                 _to = self.energyKeys.index(self.excitedTo)
 
                 attachmentRate0 = -(self.k3[0] * nHe**2 * N[_from]) + (self.kCID[0] * nHe * N_He[0] * self.kCID_branch)
                 attachmentRate1 =  -(self.k31_excited * nHe**2 *  N[_to]) + (self.kCID[0] * nHe * N_He[0] * (1-self.kCID_branch))
+
             currentRate = -(attachmentRate0 + attachmentRate1)
 
             for i in range(len(N_He)-1):
-                nextRate = -(self.k3[i+1] * nHe**2 *N_He[i]) + (self.kCID[i+1] * nHe * N_He[i+1])
 
+                nextRate = -(self.k3[i+1] * nHe**2 *N_He[i]) + (self.kCID[i+1] * nHe * N_He[i+1])
                 attachmentRate = currentRate + nextRate
 
                 dRdt_N_He.append(attachmentRate)
-                if self.includeCollision: dR_dt.append(attachmentRate)
+                if self.includeCollision:
+                    dR_dt.append(attachmentRate)
 
                 currentRate = -nextRate
 
             dRdt_N_He.append(currentRate)
-            if self.includeCollision: dR_dt.append(currentRate)
+            if self.includeCollision:
+                dR_dt.append(currentRate)
 
         if not self.includeCollision:
             return dRdt_N_He
+
         else:
             return dR_dt
 
@@ -451,9 +460,7 @@ def functionOfVariable(changeVariable="numberDensity"):
     currentConstant = (currentnHe, currentnPower)[changeVariable=='numberDensity']
     currentConstantUnit = ("cm$^3$", "(W)")[changeVariable=='numberDensity']
     variableRange = conditions["variableRange"]
-    # _start, _end, _steps = [float(_) for _ in variableRange.split(",")]
-    # dataList = np.linspace(_start, _end, int(_steps))
-    
+
     _start, _end, _steps = variableRange.split(",")
     _start = int(_start.split("e")[-1])
     _end = int(_end.split("e")[-1])
@@ -467,7 +474,6 @@ def functionOfVariable(changeVariable="numberDensity"):
         dataList = np.append(dataList, appendDataList)
         counter += 1
     
-    
     excitedFrom = str(conditions["excitedFrom"])
     excitedTo = str(conditions["excitedTo"])
     
@@ -479,7 +485,6 @@ def functionOfVariable(changeVariable="numberDensity"):
     populationChange = []
     signalChange = []
     for variable in dataList:
-
 
         if changeVariable=="numberDensity":
             currentData = ROSAA(nHe=variable, plotGraph=False, writefile=conditions["writeall"])
@@ -511,7 +516,8 @@ def functionOfVariable(changeVariable="numberDensity"):
     title=currentData.transitionTitleLabel
     
     ylabel = title.split(":")[-1].replace("$", "")
-    ylabel = f"$N{'_J' if currentData.electronSpin else ''}$ ratio (up/down): ${ylabel.split('-')[0]}$ / ${ylabel.split('-')[1]}$"
+    quantumState = f"$N{'_J' if currentData.electronSpin else ''}$"
+    ylabel = f"{quantumState}(${ylabel.split('-')[1]}$) / {quantumState}(${ylabel.split('-')[0]}$)"
 
     saveimageFilename = f"functionOf{changeVariable}"
     saveimageFilename += f"_{savefilename}_{currentConstant}"
@@ -523,6 +529,7 @@ def functionOfVariable(changeVariable="numberDensity"):
     widget.plot_legend = ax.legend()
     widget.fig.tight_layout()
 
+
     dataToSend = {
         f"variable ({changeVariable})": list(map(lambda num: np.format_float_scientific(num, 3), dataList)),
         "populationChange": np.around(populationChange, 3).tolist(),
@@ -530,23 +537,25 @@ def functionOfVariable(changeVariable="numberDensity"):
     }
 
     if includeAttachmentRate:
-        fig, ax1 = plt.subplots(figsize=figure["size"], dpi=int(figure["dpi"]))
+
+        widget1 = FELion_TkToplevel(title=f"Signal", location=output_dir/"figs")
+        widget1.Figure()
+        ax1 = widget1.make_figure_layout(xaxis=xlabel, yaxis="Signal (%)", title="", savename=f"{saveimageFilename}.signal")
         ax1.plot(dataList, signalChange, "-k")
-        ax1 = optimizePlot(ax1, xlabel=xlabel, ylabel="Signal (%)", title=title)
+        ax1 = optimizePlot(ax1, xlabel=xlabel, ylabel="Signal (%)", title="")
         ax1.set(xscale="log")
-        fig.tight_layout()
-        dataToSend["signalChange"] = np.around(signalChange, 3).tolist(),
+
+        dataToSend["signalChange"] = np.around(signalChange, 3).tolist()
 
     if conditions["writefile"]:
+
         datas_location = output_dir / "datas"
         
         if not datas_location.exists():
             datas_location.mkdir()
-        addText = ""
-        if not includeAttachmentRate:
-            addText = "_no-attachement"
-
         
+        addText = "_no-attachement" if includeAttachmentRate else ""
+
         combinedFilename = f"functionOf{changeVariable}"
         combinedFilename += f"_{currentData.molecule.replace('$', '').replace('^', '')}_"
         combinedFilename += f"{excitedFrom.replace('$', '')}-{excitedTo.replace('$', '')}_"
@@ -580,4 +589,5 @@ def functionOfVariable(changeVariable="numberDensity"):
 
     if includeAttachmentRate and figure["show"]:
         plt.show()
+
     widget.mainloop()

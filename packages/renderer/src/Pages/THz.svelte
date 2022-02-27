@@ -1,5 +1,7 @@
 <script>
-    import {relayout}               from 'plotly.js/dist/plotly-basic';
+    import {
+        relayout, addTraces, deleteTraces, restyle
+    }    from 'plotly.js/dist/plotly-basic';
     import {plot, plotlyEventsInfo} from "$src/js/functions"
     import computePy_func           from "$src/Pages/general/computePy"
     import Layout                   from "$components/Layout.svelte"
@@ -17,70 +19,153 @@
     let currentLocation = ""
     $: thzfiles = fileChecked.map(file=>pathResolve(currentLocation, file))
     
-    let fG = 0
-    let fL = 1
     let binSize=10
-    let openShell = false
+    let binData = true
+    let showall = false;
+    let saveInMHz = false
+    let showRawData = false
     let graphPlotted = false
-    let binData = false, saveInMHz = false;
 
     let fittedParamsTable = []
+    const freqTableKeys = ["filename", "freq", "amp", "fG", "fL"]
+    let rawDataProcessed = {data: null}
+    let dataProcessed = {}
+    let numOfFittedLines = 0
     async function plotData({e=null, filetype="thz", tkplot=false, justPlot=false, general={} }={}){
 
         if (fileChecked.length === 0 && filetype === "thz") {return window.createToast("No files selected", "danger")}
-        const thz_args = {thzfiles, binData, tkplot, fG, fL, binSize, justPlot, saveInMHz, paramsTable, fitfile, fitMethod}
+        const thz_args = {
+            thzfiles, binData, tkplot, binSize, justPlot, saveInMHz,
+            paramsTable, fitfile, fitMethod, varyAll, plotIndex
+        }
         let pyfileInfo = {general,
             thz: {pyfile:"thz_scan" , args:[JSON.stringify(thz_args)]},
         }
         let {pyfile, args} = pyfileInfo[filetype]
         if (tkplot) {filetype = "general"}
 
+        if(!justPlot && paramsTable.length<1) return window.createToast("No initial guesses were given", "danger")
+
         if (filetype == "general") {
-            return computePy_func({e, pyfile, args, general:true, openShell})
-
-        }
-        const dataFromPython = await computePy_func({e, pyfile, args})
-        if (filetype=="thz") {
-
-            fittedParamsTable = dataFromPython?.fittedParamsTable || []
-            console.table(fittedParamsTable)
-            plot(`THz Scan: Depletion (%)`, "Frequency (GHz)", "Depletion (%)", dataFromPython["thz"], "thzPlot", null, true)
-            plot(`THz Scan`, "Frequency (GHz)", "Counts", dataFromPython["resOnOff_Counts"], "resOnOffPlot", null, true)
-            if (!justPlot) {
-                let lines = [];
-                for (let x in dataFromPython["shapes"]) { lines.push(dataFromPython["shapes"][x]) }
-                let layout_update = { shapes: lines }
-                relayout("thzPlot", layout_update)
-            }
+            return computePy_func({e, pyfile, args, general:true })
         
         }
-        window.createToast("Graph plotted", "success")
-        graphPlotted = true
+        
+        const dataFromPython = await computePy_func({e, pyfile, args})
+        
+        if (filetype=="thz") {
+            graphPlotted = false
+            const {averaged, individual} = dataFromPython["thz"]
+            dataProcessed = {...individual, ...averaged}
+
+            if(!justPlot) {
+                const receivedPramsTable = dataFromPython?.fittedParamsTable || []
+                fittedParamsTable = [...fittedParamsTable, ...receivedPramsTable].map(row=>({...row, id:getID()}))
+                console.table(fittedParamsTable)
+
+                addTraces("thzPlot", dataProcessed[fitfile+"_fit"])
+                
+                const opacity = 0.5
+                const marker = thzPlot?.data?.[0]?.marker
+                const line = thzPlot?.data?.[0]?.line
+                restyle("thzPlot", {opacity, marker: {...marker, opacity}, line: {...line, opacity}}, 0)
+
+                numOfFittedLines++;
+                return
+            }
+
+            numOfFittedLines = 0
+            rawDataProcessed.data = dataFromPython["resOnOff_Counts"]
+            window.createToast("Graph plotted", "success")
+
+            graphPlotted = true
+        }
     }
+
     let openTable = false;
     let paramsTable = []
+    let fitfile = "averaged", fitMethod="lorentz"
 
-    let fitfile = "", fitMethod="lorentz"
-    $: console.log({fitfile})
     const graphIDs = ["thzPlot", "resOnOffPlot"]
     onDestroy(()=>{
         graphIDs.forEach(graphID=>{
-            if($plotlyEventsInfo[graphID]) {$plotlyEventsInfo[graphID].eventCreated = false; $plotlyEventsInfo[graphID].annotations = []}
+            if($plotlyEventsInfo[graphID]) {
+                $plotlyEventsInfo[graphID].eventCreated = false; $plotlyEventsInfo[graphID].annotations = []
+            }
         })
     })
 
+    let varyAll = false;
+    
+    const [title, xlabel, ylabel] = ["THz Scan: Depletion (%)", "Frequency (GHz)", "Depletion (%)"]
+    
+    $: if(showall && dataProcessed) {
+    
+        plot(title, xlabel, ylabel, dataProcessed, "thzPlot", null, true)
+        if(!plotlySelectCreated) {makePlotlySelect()}
+    
+    } else if(plotfile && dataProcessed?.[plotfile] && graphPlotted) {
+    
+        console.log(plotfile, dataProcessed[plotfile])
+        const dataToPlot = {data: dataProcessed[plotfile]}
+        plot(title, xlabel, ylabel, dataToPlot, "thzPlot", null, true)
+        if(!plotlySelectCreated) {makePlotlySelect()}
+    }
+
+    $: if(rawDataProcessed?.data && showRawData) {
+        console.log(rawDataProcessed.data)
+        const dataToPlot = {}
+        
+        dataToPlot[`${plotfile}_On`] = rawDataProcessed.data[`${plotfile}_On`]
+        
+        if(dataToPlot[`${plotfile}_On`]) {
+        
+            dataToPlot[`${plotfile}_Off`] = rawDataProcessed.data[`${plotfile}_Off`]
+            plot("THz Scan", "Frequency (GHz)", "Counts", showall ? rawDataProcessed.data : dataToPlot, "resOnOffPlot", null, true)
+        
+        }
+        
+    }
+
+    let plotfile = "averaged"
+    let plotIndex = []
+    let plotlySelectCreated = false
+    const makePlotlySelect = () => {
+        const graphDIV = document.getElementById("thzPlot")
+        graphDIV.on("plotly_selected", (data) => {
+            try {
+                if(!data) return
+                console.log(data)
+                const { range } = data
+                plotIndex = range.x
+                console.log(range, plotIndex)
+            } catch (error) { 
+                window.handleError(error)
+            }
+        })
+
+        console.log("plotlySelectCreated", plotlySelectCreated)
+        plotlySelectCreated = true
+    }    
+
 </script>
 
-<THzFitParamsTable bind:active={openTable} bind:paramsTable {currentLocation} {fG} {fL} />
+
+<THzFitParamsTable bind:active={openTable} bind:paramsTable bind:varyAll {currentLocation} {fitMethod}/>
 
 <Layout  {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked >
 
     <svelte:fragment slot="buttonContainer">
         <div class="align v-center">
 
-            <button class="button is-link" style="min-width: 7em;" on:click="{(e)=>{plotData({e:e, justPlot:true})}}">Plot</button>
+            <button class="button is-link" style="min-width: 7em;" 
+                on:click="{(e)=>{plotData({e:e, justPlot:true})}}">
+                Plot</button>
             <CustomCheckbox bind:selected={binData} label="Bin" />
             <CustomCheckbox bind:selected={saveInMHz} label="saveInMHz" />
+            <CustomCheckbox bind:selected={showRawData} label="showRawData" />
+            <CustomCheckbox bind:selected={showall} label="show all" />
+            <CustomSelect bind:picked={plotfile} label="plotfile" options={[...fileChecked, "averaged"]} />
             <button class="button is-link" on:click="{(e)=>plotData({e:e, tkplot:true})}">Open in Matplotlib</button>
             <CustomTextSwitch bind:value={binSize} label="binSize (kHz)" step="0.1" />
         </div>
@@ -91,31 +176,38 @@
             <CustomSelect bind:picked={fitfile} label="fitfile" options={[...fileChecked, "averaged"]} />
             <CustomSelect bind:picked={fitMethod} label="fit method" options={["gaussian", "lorentz", "voigt"]} />
             <button class="button is-link" style="min-width: 7em;" on:click="{(e)=>{plotData({e:e})}}">Fit</button>
-            <CustomTextSwitch bind:value={fG} label="fG (MHz)" step="0.1" />
-            <CustomTextSwitch bind:value={fL} label="fL (MHz)" step="0.1" />
         
         </div>
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer">
-        <div id="resOnOffPlot" class="graph__div" ></div>
+        <div id="resOnOffPlot" class="graph__div" class:hide={!showRawData} ></div>
         <div id="thzPlot" class="graph__div" ></div>
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer_functions">
-        <button class="button is-warning" 
-            style="width: 10em; margin-left: auto;"
-            on:click="{()=>{$plotlyEventsInfo['thzPlot'].annotations=[]; relayout('thzPlot', {annotations: []})}}">
-            Clear Annotations
-        </button>
+        <div class="align">
+            <button class="button is-warning" 
+                on:click="{()=>{if(numOfFittedLines>0) {deleteTraces("thzPlot", -1); numOfFittedLines--;}}}">
+                Clear last fit
+            </button>
+            <button class="button is-warning" 
+                on:click="{
+                    ()=>{$plotlyEventsInfo['thzPlot'].annotations=[]; relayout('thzPlot', {annotations: []})}
+                }">
+                Clear Annotations
+            </button>
+
+        </div>
     </svelte:fragment>
 
 
     <svelte:fragment slot="plotContainer_reports">
+        <button class="button is-danger" style="margin-left: auto; width: 7em;" on:click="{()=>fittedParamsTable=[]}">Clear Table</button>
         {#if fittedParamsTable.length>0}
-             <Table head={Object.keys(fittedParamsTable[0])} keys={Object.keys(fittedParamsTable[0])} rows={fittedParamsTable} >
-            </Table>
+            <Table keys={freqTableKeys} bind:rows={fittedParamsTable} disableInput={true} addextraOption={false} />
         {/if}
     </svelte:fragment>
 
 </Layout>
+
