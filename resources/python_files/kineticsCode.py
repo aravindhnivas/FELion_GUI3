@@ -315,7 +315,14 @@ def plot_exp():
         _fitPlot, = ax.plot(simulateTime*1e3, data, "-", c=pltColors[counter], alpha=1)
         fitPlot.append(_fitPlot)
 
-    widget.plot_legend = legend = ax.legend([f"${_}$" for _ in nameOfReactants])
+    molecule = args["molecule"]
+    tag = args["tag"]
+    print(f"{molecule=}\n{tag=}", flush=True)
+    legends = [f"{molecule}$^+$", f"{molecule}$^+${tag}"]
+    legends += [f"{molecule}$^+${tag}$_{i}$" for i in range(2, len(nameOfReactants))]
+    print(f"{legends=}", flush=True)
+    widget.plot_legend = legend = ax.legend(legends)
+    # widget.plot_legend = legend = ax.legend([f"${_}$" for _ in nameOfReactants])
     for legline, origlinefit, origlineexp in zip(legend.get_lines(), fitPlot, expPlot):
         legline.set_picker(True)
         toggleLine[legline] = [origlinefit, origlineexp]

@@ -202,11 +202,13 @@
 
             const args = [
                 JSON.stringify({
+                    tag,
                     data,
                     temp,
                     ratek3,
-                    ratekCID,
                     k3Guess,
+                    molecule,
+                    ratekCID,
                     kCIDGuess,
                     selectedFile,
                     initialValues,
