@@ -418,14 +418,10 @@ class FELion_TkToplevel(Toplevel):
                 if self.plotYscale.get(): scale = "linear"
                 else: scale = "log"
                 self.ax.set(yscale=scale)
-            
-            # if widget_name == "checkbutton4":  # only averaged
-            #     if self.onlyAvg.get(): scale = "linear"
-            #     else: scale = "log"
-            #     self.ax.set(yscale=scale)
-            
-        # self.focus_set()
-
+     
+        
+        self.canvas.draw()
+        self.fig.tight_layout()
         self.canvas.draw()
 
 

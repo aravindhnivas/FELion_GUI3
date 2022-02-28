@@ -454,7 +454,8 @@ def main(arguments):
 
 
 def functionOfVariable(changeVariable="numberDensity"):
-
+    # functionVariables = ("numberDensity", "power")
+    constantFactorLabel = "power" if changeVariable=="numberDensity" else "numberDensity" 
     currentnHe = np.format_float_scientific(float(conditions["numberDensity"]), 3)
     currentnPower = np.format_float_scientific(float(conditions['power_broadening']['power(W)']), 3)
     currentConstant = (currentnHe, currentnPower)[changeVariable=='numberDensity']
@@ -465,15 +466,20 @@ def functionOfVariable(changeVariable="numberDensity"):
     _start = int(_start.split("e")[-1])
     _end = int(_end.split("e")[-1])
 
+    electronSpin = conditions["electronSpin"]
+
     counter = _start
     dataList = []
 
-    while counter<=_end:
+    while counter<_end:
     
         appendDataList = np.linspace(float(f"1e{counter}"), float(f"1e{counter+1}"), int(_steps))
         dataList = np.append(dataList, appendDataList)
         counter += 1
     
+    molecule = conditions["main_parameters"]["molecule"]
+    taggingPartner = conditions["main_parameters"]["tagging partner"]
+
     excitedFrom = str(conditions["excitedFrom"])
     excitedTo = str(conditions["excitedTo"])
     
@@ -484,6 +490,7 @@ def functionOfVariable(changeVariable="numberDensity"):
     
     populationChange = []
     signalChange = []
+
     for variable in dataList:
 
         if changeVariable=="numberDensity":
@@ -503,6 +510,7 @@ def functionOfVariable(changeVariable="numberDensity"):
             chnageInSignal = np.around(np.nan_to_num(chnageInSignal).clip(min=0), 1)
             signalChange.append(chnageInSignal)
 
+
     widget = FELion_Tk(title=f"Population ratio", location=output_dir/"figs")
     widget.Figure()
     
@@ -510,25 +518,24 @@ def functionOfVariable(changeVariable="numberDensity"):
         xlabel=f"{currentData.taggingPartner} number density (cm$^{-3})$"
     else:
         xlabel="Power (W)"
-    name_append = f"variable.{dataList[0]:.0e}-{dataList[-1]:.0e}.output."
-    name_append += f"{currentConstant}"
-    
+
+    outputFileName = f"{molecule}-{taggingPartner}__{excitedFrom}-{excitedTo}__"
+    outputFileName += f"{changeVariable}.{dataList[0]:.0e}-{dataList[-1]:.0e}.{constantFactorLabel}.{currentConstant}"
+    outputFileName = outputFileName.replace("$", "")
+
+
     title=currentData.transitionTitleLabel
-    
     ylabel = title.split(":")[-1].replace("$", "")
-    quantumState = f"$N{'_J' if currentData.electronSpin else ''}$"
-    ylabel = f"{quantumState}(${ylabel.split('-')[1]}$) / {quantumState}(${ylabel.split('-')[0]}$)"
+    # quantumState = f"$N{'_J' if electronSpin else ''}$"
+    ylabel = f"${ylabel.split('-')[1]}$ / ${ylabel.split('-')[0]}$"
 
-    saveimageFilename = f"functionOf{changeVariable}"
-    saveimageFilename += f"_{savefilename}_{currentConstant}"
-    ax = widget.make_figure_layout(xaxis=xlabel, yaxis=ylabel, title="", savename=saveimageFilename)
-
+    ax = widget.make_figure_layout(xaxis=xlabel, yaxis=ylabel, title="", savename=outputFileName)
     ax.plot(dataList, populationChange, "-k", label=f"{currentConstant}{currentConstantUnit}")
     ax = optimizePlot(ax, xlabel=xlabel, ylabel=ylabel, title="")
+
     ax.set(xscale="log")
     widget.plot_legend = ax.legend()
     widget.fig.tight_layout()
-
 
     dataToSend = {
         f"variable ({changeVariable})": list(map(lambda num: np.format_float_scientific(num, 3), dataList)),
@@ -540,7 +547,7 @@ def functionOfVariable(changeVariable="numberDensity"):
 
         widget1 = FELion_TkToplevel(title=f"Signal", location=output_dir/"figs")
         widget1.Figure()
-        ax1 = widget1.make_figure_layout(xaxis=xlabel, yaxis="Signal (%)", title="", savename=f"{saveimageFilename}.signal")
+        ax1 = widget1.make_figure_layout(xaxis=xlabel, yaxis="Signal (%)", title="", savename=f"{outputFileName}.signal")
         ax1.plot(dataList, signalChange, "-k")
         ax1 = optimizePlot(ax1, xlabel=xlabel, ylabel="Signal (%)", title="")
         ax1.set(xscale="log")
@@ -550,44 +557,20 @@ def functionOfVariable(changeVariable="numberDensity"):
     if conditions["writefile"]:
 
         datas_location = output_dir / "datas"
-        
         if not datas_location.exists():
             datas_location.mkdir()
-        
-        addText = "_no-attachement" if includeAttachmentRate else ""
 
-        combinedFilename = f"functionOf{changeVariable}"
-        combinedFilename += f"_{currentData.molecule.replace('$', '').replace('^', '')}_"
-        combinedFilename += f"{excitedFrom.replace('$', '')}-{excitedTo.replace('$', '')}_"
-        combinedFilename += f"{currentConstant}"
-        combinedFilename += ".txt"
-        f_combined = None
-
-        if conditions['appendFiles']:
-            f_combined = open(datas_location / combinedFilename, 'a+')
-
-        with open(datas_location / f"{savefilename}{addText}.{name_append}.txt", 'w+') as f:
-
+        with open(datas_location / f"{outputFileName}.txt", 'w+') as f:
             f.write(f"# constant ({('numberDensity', 'power')[changeVariable=='numberDensity']}): ")
             f.write(f"{currentConstant}\n")
             f.write(f"# variable ({changeVariable})\tpopulationChange\n")
         
             counter = 0
-            
             for x, y in zip(dataList, populationChange):
                 f.write(f"{x:.3e}\t{y:.3f}")
                 f.write(f"\t{signalChange[counter]}\n") if includeAttachmentRate else f.write("\n")
-
-                if f_combined:
-                    f_combined.write(f"{x:.3e}\t{y:.3f}")
-                    f_combined.write(f"\t{signalChange[counter]}\n") if includeAttachmentRate else f_combined.write("\n")
                 counter += 1
-            
-            if f_combined:
-                f_combined.close()
             log(f"{savefilename} file written in {location} folder.")
 
-    if includeAttachmentRate and figure["show"]:
-        plt.show()
-
     widget.mainloop()
+    

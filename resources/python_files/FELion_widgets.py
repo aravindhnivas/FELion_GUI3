@@ -1,7 +1,7 @@
 
 # Built-In modules
-import os, sys, time, traceback
-from os.path import isfile
+
+import os, sys, traceback
 from pathlib import Path as pt
 from io import StringIO
 import contextlib
@@ -12,8 +12,6 @@ from tkinter.ttk import Button, Checkbutton, Label, Entry, Scale, Scrollbar, Opt
 from tkinter.messagebox import showerror, showinfo, showwarning, askokcancel
 
 # Matplotlib
-from matplotlib import style
-import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from matplotlib.backend_bases import key_press_handler
 from matplotlib.figure import Figure
@@ -40,7 +38,6 @@ def var_check(kw):
     for i in constants:
         if not i in kw: kw[i] = constants[i]
     return kw
-
 
 class FELion_Tk(Tk):
 
@@ -121,13 +118,13 @@ class FELion_Tk(Tk):
             func = args[0]
             func_parameters = args[1:]
 
-            print(func, func_parameters)
+            print(func, func_parameters, flush=True)
             self.widget_frame.btn_txt = Button(
                 self.widget_frame, text=btn_txt, command=lambda: func(*func_parameters))
 
         else:
             self.widget_frame.btn_txt = Button(
-                self.widget_frame, text=btn_txt, command=lambda: print("No function set"))
+                self.widget_frame, text=btn_txt, command=lambda: print("No function set", flush=True))
 
         self.widget_frame.btn_txt.place(
             relx=x, rely=y, relwidth=kw['relwidth'], relheight=kw['relheight'])
@@ -234,33 +231,33 @@ class FELion_Tk(Tk):
     def Figure(self, connect=True, dpi=None, default_widget=True, default_save_widget=True, executeCodeWidget = True, **kw):
 
         self.default_widget = default_widget
-
         self.default_save_widget = default_save_widget
 
         self.executeCodeWidget = executeCodeWidget
-
         self.make_figure_widgets()
-        if dpi is not None: self.dpi_value.set(dpi)
 
+        if dpi is not None: self.dpi_value.set(dpi)
+        
         self.fig = Figure(dpi=self.dpi_value.get())
-        self.fig.subplots_adjust(top=0.95, bottom=0.2, left=0.1, right=0.9)
+        # self.fig.subplots_adjust(top=0.95, bottom=0.2, left=0.1, right=0.9)
         self.canvas = FigureCanvasTkAgg(self.fig, master=self.canvas_frame)
 
         self.fig_tkcanvas = self.canvas.get_tk_widget()
         self.fig_tkcanvas.place(relx=0, rely=0, relwidth=1, relheight=1)
         self.toolbar = NavigationToolbar2Tk(self.canvas, self)
         self.toolbar.update()
-
+        
         def on_key_press(event): 
             key_press_handler(event, self.canvas, self.toolbar)
-
             self.canvas._tkcanvas.focus_set()
 
         if connect: 
-            
             self.canvas.mpl_connect("key_press_event", on_key_press)
             self.canvas.mpl_connect("button_release_event", lambda event: self.canvas._tkcanvas.focus_set())
-
+        
+        # self.canvas.draw()
+        # self.fig.tight_layout()
+        # self.canvas.draw()
         return self.fig, self.canvas
     
     def make_figure_widgets(self):
@@ -308,8 +305,16 @@ class FELion_Tk(Tk):
 
             # Row 8
             y += self.y_diff
+            self.plotXscale = self.Entries("Check", "Xlog", x0, y, default=False, bind_btn=True, bind_func=self.set_figureLabel)
             self.plotYscale = self.Entries("Check", "Ylog", x0+self.x_diff, y, default=False, bind_btn=True, bind_func=self.set_figureLabel)
-            # self.latex = self.Entries("Check", "LaTex", x0, y, default=False)
+
+            # Row 8
+            y += self.y_diff
+            self.tight_layout = self.Buttons(
+                "tight_layout", x0, y, lambda : (self.fig.tight_layout(), self.canvas.draw()),
+                relwidth=0.7
+            )
+
 
             self.last_y = y
 
@@ -320,10 +325,6 @@ class FELion_Tk(Tk):
             y += self.y_diff
             self.save_fmt = self.Entries("Entry", "png", x0, y+0.02)
             self.save_btn = self.Buttons("Save", x0+self.x_diff, y, self.save_fig)
-
-            # Row 10
-            # y += self.y_diff
-            # self.onlyAvg = self.Entries("Check", "only avg.", x0, y+0.02)
             self.last_y = y
         
         if self.executeCodeWidget:
@@ -339,7 +340,6 @@ class FELion_Tk(Tk):
             self.runCode = self.Buttons("RunCode", x0, y, self.python_exp)
             self.codeResult = self.TextBox("Result", 0.8, y+self.y_diff+0.04, w=0.7, h=0.09)
             self.x0 = x0
-
 
     def python_exp(self, event=None):
         with stdoutIO() as result:
@@ -362,7 +362,7 @@ class FELion_Tk(Tk):
             except Exception as error:
                 self.codeResult.delete('1.0', END)
                 self.codeResult.insert(END, f"Error Occured:\n{error}")
-                print(f"Error occured while evaluating above code:\n{error}")
+                print(f"Error occured while evaluating above code:\n{error}", flush=True)
 
     def set_figureLabel(self, event=None):
 
@@ -370,15 +370,15 @@ class FELion_Tk(Tk):
 
             widget_name = str(event.widget).split("!")[-1]
 
-            print(widget_name)
+            print(widget_name, flush=True)
 
             if widget_name == "entry":  # DPI
 
                 self.fig.set_dpi(self.dpi_value.get())
-
                 width = self.canvas_frame.winfo_width()/self.dpi_value.get()
                 height = self.canvas_frame.winfo_height()/self.dpi_value.get()
                 self.fig.set_size_inches(width, height)
+                # self.fig.tight_layout()
 
             if widget_name == "entry3":  # Title
                 self.entry_value = self.plotTitle.get() + event.char
@@ -414,24 +414,21 @@ class FELion_Tk(Tk):
             if widget_name == "checkbutton2":  # Legend
                 self.plot_legend.set_visible(not self.plotLegend.get())
             
-            if widget_name == "checkbutton3":  # Yscale
+            if widget_name == "checkbutton3":  # Xscale
+                if self.plotXscale.get(): scale = "linear"
+                else: scale = "log"
+                self.ax.set(xscale=scale)
+            
+            if widget_name == "checkbutton4":  # Yscale
                 if self.plotYscale.get(): scale = "linear"
                 else: scale = "log"
                 self.ax.set(yscale=scale)
-            
-            # if widget_name == "checkbutton4":  # only averaged
-            #     if self.onlyAvg.get(): scale = "linear"
-            #     else: scale = "log"
-            #     self.ax.set(yscale=scale)
-            
-        # self.focus_set()
-
+        
         self.canvas.draw()
-
-
+        
     def make_figure_layout(self, ax=None, savename=None,
         title="Title", xaxis="X-axis", yaxis="Y-axis", fig_caption="", 
-        xdata=None, ydata=None, label="", fmt=".-", yscale="linear", **kw):
+        xdata=None, ydata=None, label="", fmt=".-", yscale="linear", xscale="linear", **kw):
 
         if savename is not None: self.name.set(savename)
 
@@ -451,6 +448,7 @@ class FELion_Tk(Tk):
         # Yscale
         self.ax.set(yscale=yscale)
         if yscale == "log": self.plotYscale.set(True)
+        if xscale == "log": self.plotXscale.set(True)
 
         # Setting title
         self.ax.set_title(title, fontsize=self.titleSz.get())
@@ -483,92 +481,31 @@ class FELion_Tk(Tk):
         # Figure caption
         self.figtext = self.fig.text(0.5, 0.07, self.plotFigText.get(), ha="center", wrap=True, fontsize=self.figtextFont.get())
 
-        if xdata is not None: 
-            print("Returning created plot for ax")
-            self.plot_legend = self.ax.legend()
+        self.canvas.draw()
+        # self.fig.tight_layout()
+        # self.canvas.draw()
 
+        if xdata is not None: 
+            print("Returning created plot for ax", flush=True)
+            self.plot_legend = self.ax.legend()
             return plot
         else:
-            print("Returning created ax")
-
+            print("Returning created ax", flush=True)
             return self.ax 
         
     def save_fig(self, event=None):
-        save_fname = f"{self.name.get()}.{self.save_fmt.get()}"
 
-        print(f"Saving filename: {save_fname}")
-        save_filename = self.location / save_fname
-        print(f"Saving file: {save_filename}")
-
-        def savefig_latex():
-            style_path = pt(__file__).parent / "matplolib_styles/styles/science.mplstyle"
-            with style.context([f"{style_path}"]):
-                self.fig2, self.ax2 = plt.subplots()
-                for i, line in enumerate(self.ax.lines):
-                    
-                    x = line.get_xdata()
-                    y = line.get_ydata()
-                    lg = line.get_label().replace("_", "\_")
-                    
-                    if lg.endswith("felix"): ls = f"C{i}."
-                    elif lg.startswith("Binned"): ls="k."
-                    else: ls = f"C{i}-"
-
-                    if lg.startswith("Averaged") or lg.startswith("Fitted"): self.ax2.plot(x, y, "k-", label=lg, zorder=100)
-                    elif not self.onlyAvg.get(): self.ax2.plot(x, y, ls, ms=2, label=lg)
-                
-                self.ax2.grid()
-                # self.ax2.set(xlim=[0, 40])
-                legend = self.ax2.legend(bbox_to_anchor=[1, 1], fontsize=self.xlabelSz.get()/2)
-                legend.set_visible(self.plotLegend.get())
-
-                # Setting title
-                self.ax2.set_title(self.plotTitle.get().replace("_", "\_"), fontsize=self.titleSz.get())
-
-                # Setting X and Y label
-                if self.plotYscale.get(): scale = "log"
-                else: scale = "linear"
-                self.ax2.set(yscale=scale)
-                self.ax2.set(
-                    ylabel=self.plotYlabel.get().replace("%", "\%"), 
-                    xlabel=self.plotXlabel.get(),
-                    xlim=self.ax.get_xlim(),
-                    ylim=self.ax.get_ylim()
-                )
-
-                # Xlabel and Ylabel fontsize
-                self.ax2.xaxis.label.set_size(self.xlabelSz.get())
-                self.ax2.yaxis.label.set_size(self.ylabelSz.get())
-                self.ax2.tick_params(axis='x', which='major', labelsize=self.xlabelSz.get())
-                self.ax2.tick_params(axis='y', which='major', labelsize=self.ylabelSz.get())
-
-                self.fig2.savefig(save_filename, dpi=self.dpi_value.get()*2)
-
-        def saved():
-            # if self.latex.get(): savefig_latex()
-            # else: self.fig.savefig(save_filename)
-
-            self.fig.savefig(save_filename)
-            time.sleep(0.01)
-            if askokcancel('Open savedfile?', f'File: {save_fname}\nsaved in directory: {self.location}'):
-                print("Opening file: ", save_filename)
-                # os.system(f"{save_filename}")
-        
+        savefilename = f"{self.name.get()}.{self.save_fmt.get()}"
+        savefile = self.location / savefilename
+        print(f"Saving file: {savefile}", flush=True)
         try:
-            print(f"Figure saving in {self.location}")
-            if isfile(save_filename):
-                if askokcancel('Overwrite?', f'File: {save_fname} already present. \nDo you want to Overwrite the file?'):
-                    saved()
-            else: saved()
-            print(f'Filename saved: {save_fname}\nLocation: {self.location}\n')
-    
+            if savefile.exists():
+                overwriteMessage = f'File: {savefilename} already present. \nDo you want to Overwrite the file?'
+                if askokcancel('Overwrite?', overwriteMessage):
+                   self.fig.savefig(savefile)
+            else: self.fig.savefig(savefile)
+            saveInfo = f'Filename saved: {savefile.name}\nLocation: {savefile.parent}\n'
+
+            showinfo("Saved", saveInfo)
+            print(saveInfo, flush=True)
         except: showerror("Error", traceback.format_exc(5))
-
-if __name__ == "__main__":
-
-    widget = FELion_Tk("Filename")
-    widget.Figure()
-    
-    _ = widget.make_figure_layout(xdata=[1, 2, 3], ydata=[1, 2, 3], title="CD")
-    widget.mainloop()
-    
