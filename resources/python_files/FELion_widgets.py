@@ -426,9 +426,11 @@ class FELion_Tk(Tk):
         
         self.canvas.draw()
         
-    def make_figure_layout(self, ax=None, savename=None,
-        title="Title", xaxis="X-axis", yaxis="Y-axis", fig_caption="", 
-        xdata=None, ydata=None, label="", fmt=".-", yscale="linear", xscale="linear", **kw):
+    def make_figure_layout(
+        self, ax=None, savename=None,
+        title="", xaxis="X-axis", yaxis="Y-axis", fig_caption="", 
+        xdata=None, ydata=None, label="", fmt=".-", yscale="linear", xscale="linear", **kw
+    ):
 
         if savename is not None: self.name.set(savename)
 
@@ -482,8 +484,8 @@ class FELion_Tk(Tk):
         self.figtext = self.fig.text(0.5, 0.07, self.plotFigText.get(), ha="center", wrap=True, fontsize=self.figtextFont.get())
 
         self.canvas.draw()
-        # self.fig.tight_layout()
-        # self.canvas.draw()
+        self.fig.tight_layout()
+        self.canvas.draw()
 
         if xdata is not None: 
             print("Returning created plot for ax", flush=True)
