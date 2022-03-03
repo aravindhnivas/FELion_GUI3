@@ -12,7 +12,7 @@ from FELion_constants import pltColors
 
 
 from FELion_widgets import FELion_Tk
-from FELion_widgetsToplevel import FELion_TkToplevel
+# from FELion_widgetsToplevel import FELion_TkToplevel
 
 def log(msg): 
     return print(msg, flush=True)
@@ -379,20 +379,29 @@ class ROSAA:
         ax = optimizePlot(ax, xlabel="Time (ms)", ylabel="Population", title=self.transitionTitleLabel)
 
         if self.includeAttachmentRate:
+
             signal_index = len(self.energyKeys)+1
             signal = (1 - (self.lightON_distribution[signal_index][1:] / self.lightOFF_distribution[signal_index][1:]))*100
 
             signal = np.around(np.nan_to_num(signal).clip(min=0), 1)
-            _, ax1 = plt.subplots(figsize=figure["size"], dpi=int(figure["dpi"]))
+            widget1 = FELion_Tk("Toplevel", title=f"Signal", location=self.figs_location)
+            widget1.Figure()
+
+            # _, ax1 = plt.subplots(figsize=figure["size"], dpi=int(figure["dpi"]))
+            
+            ax1 = widget1.make_figure_layout(
+                title=self.transitionTitleLabel, 
+                xaxis="Time (ms)", yaxis="Signal (%)", savename=savefilename
+            )
             ax1.plot(plotSimulationTime_milliSecond[1:], signal, label=f"Signal: {round(signal[-1])} (%)")
             ax1 = optimizePlot(ax1, xlabel="Time (ms)", ylabel="Signal (%)", title=self.transitionTitleLabel)
 
-            ax1.legend()
+            widget1.plot_legend = ax1.legend()
             
             log(f"Signal: {round(signal[-1])} (%)")
 
-            if figure["show"]:
-                plt.show()
+            # if figure["show"]:
+            #     plt.show()
 
         widget.mainloop()
 
@@ -545,7 +554,7 @@ def functionOfVariable(changeVariable="numberDensity"):
 
     if includeAttachmentRate:
 
-        widget1 = FELion_TkToplevel(title=f"Signal", location=output_dir/"figs")
+        widget1 = FELion_Tk("Toplevel", title=f"Signal", location=output_dir/"figs")
         widget1.Figure()
         ax1 = widget1.make_figure_layout(xaxis=xlabel, yaxis="Signal (%)", title="", savename=f"{outputFileName}.signal")
         ax1.plot(dataList, signalChange, "-k")

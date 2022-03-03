@@ -68,8 +68,8 @@ def main(plotArgs):
         xlabel="Wavenumber (cm$^{-1}$)"
         ylabel=("Norm. Intensity ~($m^2/photon$)", "Relative Depletion (%)")[normMethod=="Relative"]
         
-        ax = widget.make_figure_layout(ax, xaxis=xlabel, yaxis=ylabel)
-        ax = optimizePlot(ax, xlabel, ylabel)
+        ax = widget.make_figure_layout(ax, xaxis=xlabel, yaxis=ylabel, optimize=True)
+        # ax = optimizePlot(ax, xlabel, ylabel)
         # ax.minorticks_on()
         widget.mainloop()
         return
