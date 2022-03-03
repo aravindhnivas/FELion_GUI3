@@ -58,14 +58,10 @@
         console.log(result, currentLocation)
     }
 
-    let graphDivs = []
-    
     onMount(()=>{ 
         console.log(id, "mounted")
         currentLocation = db.get(`${filetype}_location`) || ""
     })
-
-
     const lookForGraph = () => {
         try {
             graphDivs = Array.from(document.querySelectorAll(`#${filetype}-plotContainer .graph__div`))
@@ -88,9 +84,12 @@
     }
 
     let plotWidth;
+    let graphDivs = []
+    $: console.log({graphDivs})
     const changeGraphDivWidth = async () => {
+        console.log("Updating graphDivs width")
         await tick();
-        graphDivs.forEach(id=>{if(id.data) {relayout(id, {width:id.clientWidth})}})
+        graphDivs.forEach(id=>{if(id.data) {relayout(id, {width: id.clientWidth})}})
     }
 
     $: if (plotWidth && mouseReleased) {changeGraphDivWidth()};

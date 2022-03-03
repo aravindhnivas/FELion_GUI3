@@ -2,18 +2,33 @@
     export let options = []
     export let label=""
     export let picked=""
+    export let multiple=false
 </script>
 
-<div class="select" >
+<div class="select" class:is-multiple={multiple}>
 
-    <select bind:value={picked} {label} on:change >
-        <optgroup {label} >
-            {#each options as option}
+    {#if multiple}
+
+        <select multiple bind:value={picked} {label} size="{options.length}" on:change >
+
+                {#each options as option}
+                    <option value={option}>{option}</option>
+                {/each}
+
+        </select>
+
+    {:else}
+        
+        <select bind:value={picked} {label} on:change >
+            <optgroup {label} >
+                {#each options as option}
                 <option value={option}>{option}</option>
-    
-            {/each}
-        </optgroup>
-</select>
+                
+                {/each}
+            </optgroup>
+        </select>
+
+    {/if}
 
 </div>
 
@@ -29,5 +44,19 @@
             color: black;
             font-size: medium;
         }
+        select[multiple] {
+
+            height: 4em;
+            overflow-x: auto;
+            overflow-y: auto;
+            option {
+                color: white;
+                &:checked, &:focus {
+                    background: #5669d3;
+                }
+            }
+            
+        }
     }
+    
 </style>

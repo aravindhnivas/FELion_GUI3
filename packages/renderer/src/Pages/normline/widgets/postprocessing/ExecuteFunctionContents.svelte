@@ -1,18 +1,18 @@
 
 <script>
     import { 
-        felixIndex,
+        felixIndex, 
+        normMethod,
         graphDiv,
         dataTable,
         Ngauss_sigma,
         expfittedLines,
         felixPeakTable,
         felixOutputName,
-        fittedTraceCount,
         felixopoLocation,
         felixPlotAnnotations,
         felixAnnotationColor,
-        expfittedLinesCollectedData ,
+        expfittedLinesCollectedData,
     }                                   from "../../functions/svelteWritables";
     import Textfield                    from '@smui/textfield';
     import CustomSwitch                 from '$components/CustomSwitch.svelte';
@@ -31,7 +31,7 @@
 
     export let writeFile
     export let fullfiles
-    export let normMethod
+    // export let normMethod
     export let addedFileCol
     export let writeFileName
     export let addedFileScale
@@ -48,25 +48,32 @@
     let toggleFindPeaksRow = false
     let savePeakfilename = "peakTable";
 
-    const style = "width:7em; height:3.5em; margin-right:0.5em";
-
     const clearAllPeak = () => {
-        if ($fittedTraceCount === 0) {return window.createToast("No fitted lines found", "danger")}
+
+        const graphElement = document.getElementById($graphDiv)
+        const noOfFittedData = graphElement.data?.length - fullfiles.length
+        if (noOfFittedData === 0) {return window.createToast("No fitted lines found", "danger")}
+
         console.log("Removing all found peak values")
-        
-        $felixPlotAnnotations = $felixIndex = $expfittedLines = $expfittedLinesCollectedData = []
+        console.log({noOfFittedData}, fullfiles.length, graphElement.data?.length)
+        $felixIndex = []
+        $expfittedLines = []
+        $felixPlotAnnotations = []
+        $expfittedLinesCollectedData = []
         relayout($graphDiv, { annotations: [], shapes: [] })
-        
-        for (let i=0; i<$fittedTraceCount; i++) {deleteTraces($graphDiv, [-1])}
-        
-        $fittedTraceCount = 0
+        for (let i=0; i<noOfFittedData; i++) {deleteTraces($graphDiv, [-1])}
+
     }
 
     const clearLastPeak = () => {
         
-        if ($fittedTraceCount === 0) {return window.createToast("No fitted lines found", "danger")}
+        const graphElement = document.getElementById($graphDiv)
+        const noOfFittedData = graphElement.data?.length - fullfiles.length
+        if (noOfFittedData === 0) {return window.createToast("No fitted lines found", "danger")}
+        
+        
+        plotData({filetype:"general", general:{args:[$felixOutputName, $felixopoLocation, $normMethod], pyfile:"delete_fileLines"}})
 
-        plotData({filetype:"general", general:{args:[$felixOutputName, $felixopoLocation, normMethod], pyfile:"delete_fileLines"}})
         $dataTable = dropRight($dataTable, 1)
         $expfittedLines = dropRight($expfittedLines, 2)
         $felixPlotAnnotations = dropRight($felixPlotAnnotations, 1)
@@ -75,43 +82,35 @@
 
         deleteTraces($graphDiv, [-1])
         console.log("Last fitted peak removed")
-        $fittedTraceCount--
 
     }
 
     function loadpeakTable(){
-        const loadedfile = loadfile({name:savePeakfilename})
-        $felixPeakTable = uniqBy([...loadedfile, ...$felixPeakTable], "freq")
+        const loadedfile = loadfile(savePeakfilename)
+        if(!loadedfile) return
+        $felixPeakTable = sortBy(loadedfile, [(o)=>o["freq"]])
         adjustPeak()
     }
 
-    function adjustPeak({closeMainModal=true}={}) {
-        $felixPeakTable = filter($felixPeakTable, (tb)=>tb.sig != 0);
-        
-        $felixPeakTable = sortBy($felixPeakTable, [(o)=>o["freq"]])
-
-        let temp_annotate = {xref:"x", y:"y", "showarrow":true,  "arrowhead":2, "ax":-25, "ay":-40, font:{color:$felixAnnotationColor}, arrowcolor:$felixAnnotationColor}
-
+    function adjustPeak() {
+        const annotationDefaults = {
+            xref:"x", y:"y", "showarrow":true,
+            arrowhead: 2, ax: -25, ay: -40,
+            font: {color: $felixAnnotationColor},
+            arrowcolor: $felixAnnotationColor
+        }
         
         $felixPlotAnnotations = $felixPeakTable.map((f)=>{
-        
             const {freq, amp} = f
-
             const x = parseFloat(freq)
-
             const y = parseFloat(amp)
-            let _annotate = {x, y, text:`(${x.toFixed(2)}, ${y.toFixed(2)})`}
-            
-            return {...temp_annotate, ..._annotate}
-        
+            const annotate = {x, y, text:`(${x.toFixed(2)}, ${y.toFixed(2)})`}
+            return {...annotationDefaults, ...annotate}
         })
 
-        if(closeMainModal) {
-            modalActivate = false, window.createToast("Initial guess adjusted for full spectrum fitting")
-        }
-        relayout($graphDiv, { annotations:$felixPlotAnnotations })
+        modalActivate = false
+        relayout($graphDiv, { annotations: $felixPlotAnnotations })
         adjustPeakTrigger = false
-        
     };
 
     function plotData({e=null, filetype="exp_fit", general={}}={}){
@@ -133,7 +132,7 @@
             case "exp_fit":
                 if ($felixIndex.length<2) { return window.createToast("Range not found!!. Select a range using Box-select", "danger") }
 
-                expfit_args = { addedFileScale, addedFileCol, output_name:$felixOutputName, overwrite_expfit, writeFile, writeFileName, normMethod, index:$felixIndex, fullfiles, location:$felixopoLocation }
+                expfit_args = { addedFileScale, addedFileCol, output_name:$felixOutputName, overwrite_expfit, writeFile, writeFileName, normMethod: $normMethod, index:$felixIndex, fullfiles, location:$felixopoLocation }
 
                 pyfile="exp_gauss_fit" , args=[JSON.stringify(expfit_args)]
                 computePy_func({e, pyfile, args})
@@ -157,16 +156,13 @@
                 if ($felixPeakTable.length === 0) {return window.createToast("No arguments initialised yet.", "danger") }
                 
                 NGauss_fit_args.fitNGauss_arguments = {}
-                $felixPeakTable = sortBy($felixPeakTable, [(o)=>o["freq"]])
-
                 $felixPeakTable.forEach((f, index)=>{
                     NGauss_fit_args.fitNGauss_arguments[`cen${index}`] = f.freq
                     NGauss_fit_args.fitNGauss_arguments[`A${index}`] = f.amp
-
                     NGauss_fit_args.fitNGauss_arguments[`sigma${index}`] = f.sig
                 })
 
-                NGauss_fit_args = {...NGauss_fit_args, location:$felixopoLocation, addedFileScale, addedFileCol, overwrite_expfit, writeFile, writeFileName, output_name:$felixOutputName, fullfiles, normMethod}
+                NGauss_fit_args = {...NGauss_fit_args, location:$felixopoLocation, addedFileScale, addedFileCol, overwrite_expfit, writeFile, writeFileName, output_name:$felixOutputName, fullfiles, normMethod: $normMethod}
                 pyfile="multiGauss" , args=[JSON.stringify(NGauss_fit_args)]
 
                 computePy_func({e, pyfile, args})
@@ -183,8 +179,8 @@
 
                 if ($felixIndex.length<2 && boxSelected_peakfinder) { return window.createToast("Box selection is turned ON so please select a wn. range to fit", "danger") }
                 
-                let selectedIndex = boxSelected_peakfinder ? $felixIndex : [0, 0]
-                find_peaks_args = { addedFileScale, addedFileCol, output_name:$felixOutputName, normMethod, peak_prominence, peak_width, peak_height, selectedIndex, fullfiles, location:$felixopoLocation }
+                const selectedIndex = boxSelected_peakfinder ? $felixIndex : [0, 0]
+                find_peaks_args = { addedFileScale, addedFileCol, output_name:$felixOutputName, normMethod: $normMethod, peak_prominence, peak_width, peak_height, selectedIndex, fullfiles, location:$felixopoLocation }
 
 
 
@@ -213,22 +209,9 @@
             default:
                 break;
         }
-
     }
-
-    $: $felixPeakTable = $felixPeakTable.map((f)=>{
-        
-            let {freq, amp, sig, id} = f
-            freq = parseFloat(freq)
-            amp = parseFloat(amp)
-            sig = parseFloat(sig)
-            return {freq, amp, sig, id}
-    })
     $: if(adjustPeakTrigger) adjustPeak()
 </script>
-
-<!-- <AdjustInitialGuess bind:active={modalActivate} on:save={adjustPeak}/> -->
-
 
 <div class="align">
     <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"exp_fit"})}">Exp Fit.</button>
@@ -237,34 +220,29 @@
     <button class="button is-danger" on:click={clearAllPeak}>Clear All</button>
     <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"get_err"})}">Weighted Mean</button>
     <button class="button is-warning" on:click="{()=>{$expfittedLinesCollectedData = []; window.createToast("Line collection restted", "warning")}}">Reset</button>
-
 </div>
 
-<!-- Fit peaks functions -->
-
 {#if toggleFindPeaksRow}
+    <div class="align" transition:fade>
 
-    <div transition:fade>
         <div class="align">
         
-            <CustomSwitch style="margin: 0 1em;" bind:selected={boxSelected_peakfinder} label="BoxSelected"/>
-            <Textfield type="number" {style} step="0.5" bind:value={peak_prominence} label="Prominance" />
-            <Textfield type="number" {style} step="0.5" bind:value={peak_width} label="Width" />
-
-            <Textfield type="number" {style} step="0.1" bind:value={peak_height} label="Height" />
-            <Textfield style="width:9em" bind:value={$Ngauss_sigma} label="Sigma"/>
+            <CustomSwitch bind:selected={boxSelected_peakfinder} label="BoxSelected"/>
+            <Textfield style="width: 7em;" type="number" step="0.5" bind:value={peak_prominence} label="Prominance" />
+            <Textfield style="width: 7em;" type="number" step="0.5" bind:value={peak_width} label="Width" />
+            <Textfield style="width: 7em;" type="number" step="0.1" bind:value={peak_height} label="Height" />
+            <Textfield style="width: 7em;" bind:value={$Ngauss_sigma} label="Sigma"/>
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"find_peaks"})}">Get Peaks</button>
+        
         </div>
         
-        <div class="align" >
+        <div class="align" style="align-items: baseline;">
             <i class="material-icons" on:click="{()=> modalActivate = true}">settings</i>
-            <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"NGauss_fit"})}">Fit</button>
-            <Textfield style="{style}; margin-bottom: 0.5em; margin-left: 1em; margin-right: 1em;" bind:value={savePeakfilename} label="savefile"/>
+            <button style="width:7em" class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"NGauss_fit"})}">Fit</button>
+            <Textfield bind:value={savePeakfilename} label="savefile"/>
             <button class="button is-link" on:click="{()=>savefile({file:$felixPeakTable, name:savePeakfilename})}">Save peaks</button>
             <button class="button is-link" on:click="{loadpeakTable}">Load peaks</button>
-
             <button class="button is-danger" on:click="{()=>{$felixPlotAnnotations=[]; $felixPeakTable=[];NGauss_fit_args={}; relayout($graphDiv, { annotations: [] }); window.createToast("Cleared", "warning")}}">Clear</button>
-
         </div>
 
     </div>

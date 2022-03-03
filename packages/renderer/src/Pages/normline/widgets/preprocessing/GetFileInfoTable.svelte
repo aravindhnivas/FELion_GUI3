@@ -1,20 +1,20 @@
 
 <script>
-    import { filedetails, opoMode } from "../../functions/svelteWritables";
-    import CustomIconSwitch from '$components/CustomIconSwitch.svelte';
-    import Table from '$components/Table.svelte';
-    import { savefile,  loadfile } from '../../functions/misc';
-    import {uniqBy} from "lodash-es"
+    import { filedetails, opoMode, normMethod }         from "../../functions/svelteWritables";
+    import CustomIconSwitch                 from '$components/CustomIconSwitch.svelte';
+    import Table                            from '$components/Table.svelte';
+    import { savefile,  loadfile }          from '../../functions/misc';
+    import {uniqBy}                         from "lodash-es"
     import computePy_func                   from "$src/Pages/general/computePy"
-    import {get_details_func} from '../../functions/get_details';
-    export let felixfiles, normMethod;
+    import {get_details_func}               from '../../functions/get_details';
 
+    export let felixfiles
     let toggleFileDetailsTable = false
     
     function plotData({e=null}={}){
         let pyfile="getfile_details", args;
         if(felixfiles.length<1) return window.createToast("No files selected", "danger")
-        args=[JSON.stringify({files:$opoMode?opofiles : felixfiles, normMethod})]
+        args=[JSON.stringify({files:$opoMode?opofiles : felixfiles, normMethod: $normMethod})]
         computePy_func({e, pyfile, args})
         .then((dataFromPython)=>{ get_details_func({dataFromPython}); toggleFileDetailsTable = true })
     }

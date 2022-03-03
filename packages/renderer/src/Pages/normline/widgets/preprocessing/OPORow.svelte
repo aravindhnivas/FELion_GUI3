@@ -1,49 +1,86 @@
 <script>
     import {
+        showall,
         opoMode,
+        normMethod,
         baselineFile,
+        OPOGraphPlotted,
+        normMethodDatas,
         felixPlotAnnotations
     }                       from "../../functions/svelteWritables";
     import {opofile_func}   from '../../functions/opofile';
-    import { fade }         from 'svelte/transition';
+
+    import plotIndividualDataIntoGraph,
+        {get_data, mapNormMethodKeys}   from '../../functions/plotIndividualDataIntoGraph';
     
-    import CustomSelect     from '$components/CustomSelect.svelte';
+        import CustomSelect     from '$components/CustomSelect.svelte';
     import QuickBrowser     from '$components/QuickBrowser.svelte';
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
-
+    import { plot }         from "$src/js/functions.js";
     import computePy_func   from "$src/Pages/general/computePy"
+    import {react}              from "plotly.js/dist/plotly-basic"
 
     /////////////////////////////////////////////////////////////////////////
-    export let OPOLocation
-    export let opofiles
-    export let OPOfilesChecked
-    export let graphPlotted
-    export let removeExtraFile;
-    let showOPOFiles =false, OPOcalibFiles = [];
-    let deltaOPO = 0.3, calibFile = "", opoPower=1;
     
+    export let plotfile
+    export let opofiles
+    export let OPOLocation
+    export let removeExtraFile
+    export let OPOfilesChecked
+
+    /////////////////////////////////////////////////////////////////////////
+
+    let opoPower=1;
+    let deltaOPO = 0.3
+    let calibFile = ""
+    let showOPOFiles =false
+    let OPOcalibFiles = [];
+
     $: if(fs.existsSync(OPOLocation)) {
         OPOcalibFiles = fs.readdirSync(OPOLocation).filter(file=> file.endsWith(".calibOPO"))
         opofiles = OPOfilesChecked.map(file=>pathResolve(OPOLocation, file))
     }
 
+    let dataReady = false
+    const fullData = {}
+    
     function plotData({e=null, tkplot="run"}={}){
-        let pyfile="oposcan", args;
+    
         removeExtraFile()
+    
         if(opofiles.length<1) return window.createToast("No files selected", "danger")
         $opoMode = true, $felixPlotAnnotations = []
-        
-        let opo_args = {opofiles, tkplot, deltaOPO, calibFile, opoPower}
+        const args=[JSON.stringify({opofiles, tkplot, deltaOPO, calibFile, opoPower})]
 
-        args=[JSON.stringify(opo_args)]
-        computePy_func({e, pyfile, args})
+        dataReady = false
+        computePy_func({e, pyfile: "oposcan", args})
         .then((dataFromPython)=>{
-            opofile_func({dataFromPython, delta:deltaOPO})
-            window.createToast("Graph Plotted", "success")
-            graphPlotted = true, $opoMode = true
+            fullData.data = dataFromPython
+            dataReady = true
+            $opoMode = true
             showOPOFiles=false
         })
     }
+
+    $: updateplot = dataReady && plotfile && $normMethod && fullData.data && $opoMode
+    $: if(updateplot && $showall) {
+    
+        if($OPOGraphPlotted) {
+            const currentKey = mapNormMethodKeys[$normMethod]
+            const currentData = get_data(fullData.data[currentKey])
+            const {layout} = $normMethodDatas[$normMethod]
+            react("opoRelPlot", currentData, layout)
+            plot( "Baseline Corrected", "Wavelength (cm-1)", "Counts", fullData.data["base"], "opoplot" )
+            plot("OPO Calibration", "Set Wavenumber (cm-1)", "Measured Wavenumber (cm-1)", fullData.data["SA"], "opoSA")
+        } else {
+    
+            opofile_func({dataFromPython: fullData.data, delta: deltaOPO})
+            $OPOGraphPlotted = true
+        }
+    } else if(updateplot) {
+        console.log({$showall, plotfile})
+        plotIndividualDataIntoGraph({fullData, plotfile, graphPlotted: $OPOGraphPlotted, delta: deltaOPO})
+    } 
 </script>
 
 <QuickBrowser
@@ -57,13 +94,12 @@
 />
 
 {#if $opoMode}
-    <div class="align" transition:fade >
+    <div class="align">
         <span class="tag is-warning " >OPO Mode: </span>
         <CustomSelect bind:picked={calibFile} label="Calib. file" options={OPOcalibFiles}/>
         <CustomTextSwitch style="width:7em;" step="0.1" variant="outlined" bind:value={deltaOPO} label="Delta OPO"/>
         <CustomTextSwitch style="width:9em" step="0.1" variant="outlined" bind:value={opoPower} label="Power (mJ)"/>
         <button class="button is-link" on:click="{()=>{showOPOFiles = !showOPOFiles;}}"> Browse File</button>
         <button class="button is-link" on:click="{(e)=>plotData({e:e})}">Replot</button>
-    
     </div>
 {/if}

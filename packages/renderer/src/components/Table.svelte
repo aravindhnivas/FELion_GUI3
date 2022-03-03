@@ -41,6 +41,10 @@
         document.getElementById(focusTargetID).focus()
     }
 
+    // $: rowKeys = keys.map(key=>({key, id: getID()}))
+    // let keyedRows = rows.map(row=>({...row, id: getID()}))
+    // console.log({keyedRows})
+
 </script>
 
 <div {style}>
@@ -83,8 +87,7 @@
 
             <tbody class="mdc-data-table__content">
 
-                {#each rows as row, index (index)}
-
+                {#each rows as row, index (row.id)}
                     <tr class="mdc-data-table__row" style="background-color: #fafafa;" transition:animate> 
                         <td class="mdc-data-table__cell" style="width: 2em;" >{index}</td>
                         {#each keys as key (key)}

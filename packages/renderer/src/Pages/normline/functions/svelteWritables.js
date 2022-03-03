@@ -39,3 +39,9 @@ export const felixAnnotationColor = writable("black")
 export const normMethod = writable("Relative")
 
 export const felixPlotCheckboxes = writable([])
+
+export const showall = writable(true)
+export const showRawData = writable(true)
+export const showPowerData = writable(true)
+export const felixGraphPlotted = writable(false)
+export const OPOGraphPlotted = writable(false)

@@ -1,7 +1,7 @@
 
 <script>
     
-    import {toggleRow, felixopoLocation}    from "../../functions/svelteWritables";
+    import {toggleRow, felixopoLocation, normMethod}    from "../../functions/svelteWritables";
     import {theory_func}                    from '../../functions/theory';
     import { fade }                         from 'svelte/transition';
     import CustomTextSwitch                 from '$components/CustomTextSwitch.svelte'
@@ -11,9 +11,9 @@
     
     /////////////////////////////////////////////////////////////////////////
 
-    export let normMethod
+    // export let normMethod
     export let theoryLocation
-    export let show_theoryplot
+    // export let show_theoryplot
 
 
     let sigma=7
@@ -32,13 +32,13 @@
         
         if(theoryfiles.length < 1) return window.createToast("No files selected", "danger")
         
-        args={theoryfiles, normMethod, sigma, scale, currentLocation:$felixopoLocation, tkplot, onlyExpRange}
+        args={theoryfiles, normMethod: $normMethod, sigma, scale, currentLocation:$felixopoLocation, tkplot, onlyExpRange}
         args=[JSON.stringify(args)]
         computePy_func({e, pyfile, args})
         .then((dataFromPython)=>{
             theory_func({dataFromPython, normMethod})
             window.createToast("Graph Plotted", "success")
-            show_theoryplot = true, showTheoryFiles = false
+            showTheoryFiles = false
         })
     }
 

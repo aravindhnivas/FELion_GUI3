@@ -1,16 +1,21 @@
 
 <script>
     import {
+        showall,
+        showRawData,
+        showPowerData,
         opoMode,
         graphDiv,
         normMethod,
         Ngauss_sigma,
         baselineFile,
         expfittedLines,
+
         normMethodDatas,
         felixopoLocation,
         fittedTraceCount,
-        
+        OPOGraphPlotted,
+        felixGraphPlotted,
         felixPlotAnnotations,
         expfittedLinesCollectedData,
     }                               from './normline/functions/svelteWritables';
@@ -25,9 +30,13 @@
     import WriteFunctionContents    from './normline/widgets/postprocessing/WriteFunctionContents.svelte';
     import ExecuteFunctionContents  from './normline/widgets/postprocessing/ExecuteFunctionContents.svelte';
 
+    import CustomSelect             from '$components/CustomSelect.svelte'
+    import CustomSwitch             from '$components/CustomSwitch.svelte'
+    import IconButton               from '$components/IconButton.svelte'
     import Layout                   from "$components/Layout.svelte"
     import CustomRadio              from '$components/CustomRadio.svelte';
     import {react, deleteTraces}    from 'plotly.js/dist/plotly-basic';
+    import { onDestroy }            from 'svelte';
     ///////////////////////////////////////////////////////////////////////
 
     const filetype="felix"
@@ -43,34 +52,35 @@
     ///////////////////////////////////////////////////////////////////////
     // Theory file
 
-    let show_theoryplot = false
+    let showTheory = true
     let theoryLocation = db.get("theoryLocation") || currentLocation
+
     ///////////////////////////////////////////////////////////////////////
 
-    let graphPlotted = false
+    $: graphPlotted = $felixGraphPlotted || $OPOGraphPlotted
     let overwrite_expfit = true
     let writeFile = true
     let OPOfilesChecked = []
-
     let writeFileName = ""
     let keepTable = true;
 
     $: plottedFiles = $opoMode ? OPOfilesChecked.map(file=>file.split(".")[0]) || [] : fileChecked.map(file=>file.split(".")[0]) || []
     $: output_namelists = ["averaged", ...plottedFiles, ...addedfiles.map(file=>basename(file)).map(file=>file.split(".")[0])]
 
-    //////// OPO Plot ///////////
-    const replot = () => {
-        if (graphPlotted) {
-            let {data, layout} = $normMethodDatas[$normMethod]
-            try {
-                react($graphDiv, data, layout, { editable: true })
 
-                $expfittedLines = $felixPlotAnnotations = $expfittedLinesCollectedData = [], $fittedTraceCount = 0
-            } catch (err) { console.info(err) }
-        }
-    }
+    // const replot = () => {
+    //     if ($graphPlotted) {
+    //         const {data, layout} = $normMethodDatas[$normMethod]
+    //         try {
+    //             react($graphDiv, data, layout, { editable: true })
+    //             $expfittedLines = $felixPlotAnnotations = $expfittedLinesCollectedData = []
+    //             $fittedTraceCount = 0
+    //         } catch (err) { window.handleError(err) }
+
+    //     }
+    // }
+
     // OPO
-    
     let OPOLocation = db.get("ofelix_location") || currentLocation
     let opofiles = []
 
@@ -106,12 +116,18 @@
     let modalActivate = false
     let adjustPeakTrigger=false;
 
+    let plotfile = "average"
+    let showFELIX = true
+    let showOPO = true
+    let showMoreOptions = false
+    $: plotfileOptions = $opoMode ? [...OPOfilesChecked, "average"] : [...fileChecked, "average"]
+
+    onDestroy(()=>{
+        $felixGraphPlotted = false
+        $OPOGraphPlotted = false
+    })
+    
 </script>
-
-<style>
-    .felixPlot > div {margin-bottom: 1em;}
-</style>
-
 
 <!-- Modals -->
 <AddFilesToPlot
@@ -137,31 +153,46 @@
 >
 
     <svelte:fragment slot="buttonContainer">
-        <InitFunctionRow {removeExtraFile} {felixfiles} normMethod={$normMethod} {theoryLocation}  bind:graphPlotted bind:show_theoryplot />
-        <OPORow {removeExtraFile} bind:OPOLocation bind:OPOfilesChecked bind:opofiles  bind:graphPlotted />
 
-        <TheoryRow bind:theoryLocation bind:show_theoryplot  normMethod={$normMethod}  />
+        <InitFunctionRow {removeExtraFile} {felixfiles} {theoryLocation} {plotfile} />
+        <OPORow {removeExtraFile} bind:OPOLocation bind:OPOfilesChecked bind:opofiles  {plotfile} />
+        <TheoryRow bind:theoryLocation />
         
         <div class="align">
-            <CustomRadio on:change={replot} bind:selected={$normMethod} options={["Log", "Relative", "IntensityPerPhoton"]} />
+            <CustomRadio bind:selected={$normMethod} options={["Log", "Relative", "IntensityPerPhoton"]} />
+            <IconButton style="margin-left: auto;" label="More options" icons={['arrow_drop_up', 'arrow_drop_down']} bind:value={showMoreOptions} />
+        </div>
+        
+        <div class="align" class:hide={!showMoreOptions}>
+            <CustomSelect bind:picked={plotfile} label="plotfile" options={plotfileOptions} />
+            <CustomSwitch bind:selected={showFELIX} label="showFELIX" />
+            <CustomSwitch bind:selected={showOPO} label="showOPO" />
+            <CustomSwitch bind:selected={showTheory} label="showTheory" />
+            <CustomSwitch bind:selected={$showall} label="showall" />
+            <CustomSwitch bind:selected={$showRawData} label="showRawData" />
+            <CustomSwitch bind:selected={$showPowerData} label="showPowerData" />
 
         </div>
 
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer" >
+        <GetFileInfoTable {felixfiles} />
 
-        <GetFileInfoTable {felixfiles} normMethod={$normMethod} />
-        <div class="felixPlot" class:hide={!graphPlotted} id="plot_container__div__{filetype}">
+        <div class="graph_container"  id="plot_container__div__{filetype}">
 
-            <div class="animated fadeIn graph__div" class:hide={!show_theoryplot} id="exp-theory-plot"></div>
-            <div id="bplot" class="graph__div"></div>
-            <div id="saPlot" class="graph__div"></div>
-            <div id="avgplot" class="graph__div"></div>
-            <div class="animated fadeIn graph__div" class:hide={!$opoMode} id="opoplot"></div>
-            <div class="animated fadeIn graph__div" class:hide={!$opoMode} id="opoSA"></div>
+            <div class="animated fadeIn graph__div" class:hide={!showTheory} id="exp-theory-plot"></div>
+            <div id="felix_graphs" class:hide={!showFELIX}>
+                <div id="bplot" class="graph__div" class:hide={!$showRawData} ></div>
+                <div id="saPlot" class="graph__div" class:hide={!$showPowerData} ></div>
+                <div id="avgplot" class="graph__div"></div>
+            </div>
 
-            <div class="animated fadeIn graph__div" class:hide={!$opoMode} id="opoRelPlot"></div>
+            <div id="opo_graphs" class:hide={!showOPO} >
+                <div class="animated fadeIn graph__div" class:hide={!$showRawData} id="opoplot"></div>
+                <div class="animated fadeIn graph__div" class:hide={!$showRawData} id="opoSA"></div>
+                <div class="animated fadeIn graph__div" id="opoRelPlot"></div>
+            </div>
         
         </div>
     </svelte:fragment>
@@ -169,7 +200,7 @@
     <svelte:fragment slot="plotContainer_functions" >
 
         <WriteFunctionContents on:addfile="{()=>{addFileModal=true}}" on:removefile={removeExtraFile} {output_namelists} bind:writeFileName bind:writeFile bind:overwrite_expfit />
-        <ExecuteFunctionContents {addedFileScale} {addedFileCol} normMethod={$normMethod} {writeFileName} {writeFile} {overwrite_expfit} {fullfiles}  bind:modalActivate bind:adjustPeakTrigger />
+        <ExecuteFunctionContents {addedFileScale} {addedFileCol} {writeFileName} {writeFile} {overwrite_expfit} {fullfiles} bind:modalActivate bind:adjustPeakTrigger />
 
     </svelte:fragment>
 
@@ -179,3 +210,8 @@
 
 
 </Layout>
+
+<style>
+    .graph__div {margin-bottom: 1em;}
+</style>
+
