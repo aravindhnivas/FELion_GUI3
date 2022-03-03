@@ -70,9 +70,10 @@ export default function ({fullData, plotfile, graphPlotted, delta}) {
 
     for (const key of ["average", "average_rel", "average_per_photon"]) {
         const addData = {}
-        addData[plotfile] = data[key][plotfile]
+        addData[plotfile] = {...data[key][plotfile], showlegend: true}
         dataToPlot[key] = addData
     }
+
     if(graphPlotted) {
         const currentKey = mapNormMethodKeys[get(normMethod)]
         const currentData = get_data(dataToPlot[currentKey])
