@@ -1,6 +1,7 @@
 
 <script>
-    import { 
+    import {
+        showall,
         felixIndex, 
         normMethod,
         graphDiv,
@@ -23,10 +24,7 @@
     import {exp_fit_func}               from '../../functions/exp_fit';
     import {get_err_func}               from '../../functions/get_err';
     import {relayout, deleteTraces}     from 'plotly.js/dist/plotly-basic';
-    import {
-        dropRight, uniqBy, 
-        filter, sortBy
-    }                                   from "lodash-es"
+    import {dropRight, sortBy}          from "lodash-es"
     import computePy_func               from "$src/Pages/general/computePy"
 
     export let writeFile
@@ -51,11 +49,13 @@
     const clearAllPeak = () => {
 
         const graphElement = document.getElementById($graphDiv)
-        const noOfFittedData = graphElement.data?.length - fullfiles.length
+        const defaultLength = $showall ? fullfiles.length : 1
+        const noOfFittedData = graphElement.data?.length - defaultLength
         if (noOfFittedData === 0) {return window.createToast("No fitted lines found", "danger")}
 
         console.log("Removing all found peak values")
         console.log({noOfFittedData}, fullfiles.length, graphElement.data?.length)
+
         $felixIndex = []
         $expfittedLines = []
         $felixPlotAnnotations = []
@@ -68,9 +68,9 @@
     const clearLastPeak = () => {
         
         const graphElement = document.getElementById($graphDiv)
-        const noOfFittedData = graphElement.data?.length - fullfiles.length
+        const defaultLength = $showall ? fullfiles.length : 1
+        const noOfFittedData = graphElement.data?.length - defaultLength
         if (noOfFittedData === 0) {return window.createToast("No fitted lines found", "danger")}
-        
         
         plotData({filetype:"general", general:{args:[$felixOutputName, $felixopoLocation, $normMethod], pyfile:"delete_fileLines"}})
 

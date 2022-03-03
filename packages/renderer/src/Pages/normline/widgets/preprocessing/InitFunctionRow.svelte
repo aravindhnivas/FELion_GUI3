@@ -133,6 +133,7 @@
     }
 
     $: updateplot = dataReady && plotfile && $normMethod && fullData.data && !$opoMode
+    $: console.log({updateplot})
     $: if(updateplot && $showall) {
         if($felixGraphPlotted) {
             const currentKey = mapNormMethodKeys[$normMethod]
