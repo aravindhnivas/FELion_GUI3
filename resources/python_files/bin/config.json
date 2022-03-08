@@ -168,6 +168,10 @@
   {
    "optionDest": "hiddenimports",
    "value": "lineProfileFit"
+  },
+  {
+   "optionDest": "hiddenimports",
+   "value": "generateNShapedProfile"
   }
  ],
  "nonPyinstallerOptions": {
