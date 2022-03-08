@@ -4,7 +4,7 @@
         pythonpath,
         pythonscript,
         developerMode, pyProgram,
-        suppressInitialDeveloperWarning
+        // suppressInitialDeveloperWarning
     }                               from "./settings/svelteWritables";
     import {activateChangelog}      from "../js/functions"
     import {
@@ -13,10 +13,10 @@
 
     import Textfield                from '@smui/textfield';
     import {onMount, onDestroy}     from "svelte";
-    import CustomSwitch             from '$components/CustomSwitch.svelte';
+    // import CustomSwitch             from '$components/CustomSwitch.svelte';
     import Changelog                from "$components/Changelog.svelte";
-    import Terminal                 from '$components/Terminal.svelte';
-    import {mainPreModal}           from "$src/svelteWritable";
+    // import Terminal                 from '$components/Terminal.svelte';
+    // import {mainPreModal}           from "$src/svelteWritable";
     
     let selected = window.db.get("settingsActiveTab") || "Update"
     const navigate = (e) => {selected = e.target.innerHTML; window.db.set("settingsActiveTab", selected);}
@@ -52,22 +52,19 @@
     let commandToRun = "", commandArgsToRun = "";
 
     function updateCheck(event=null){
-
-        
         if(env.DEV) return console.info("Cannot update in DEV mode")
 
         try {
             event?.target.classList.toggle("is-loading")
-        
-            if (!navigator.onLine) {if (info) {window.createToast("No Internet Connection!", "warning")}; return}
+            if (!navigator.onLine) {if (event) {return window.createToast("No Internet Connection!", "warning")}}
             checkupdate()
-        } catch (error) {
-        
-            if(event) window.handleError(error)
+        } catch (error) { if(event) window.handleError(error)
         } finally {
             event?.target.classList.toggle("is-loading")
         }
     }
+
+
 </script>
 
 <Changelog  />
@@ -80,7 +77,7 @@
            <div class="title__div">
                 <div class="hvr-glow" class:clicked={selected==="Configuration"} on:click={navigate}>Configuration</div>
                 <div class="hvr-glow" class:clicked={selected==="Update"} on:click={navigate}>Update</div>
-                <div class="hvr-glow" class:clicked={selected==="Terminal"} on:click={navigate}>Terminal</div>
+                <!-- <div class="hvr-glow" class:clicked={selected==="Terminal"} on:click={navigate}>Terminal</div> -->
                 <div class="hvr-glow" class:clicked={selected==="About"} on:click={navigate}>About</div>
 
            </div>
@@ -107,23 +104,15 @@
                                     <button class="button is-link" on:click={resetPyConfig}>Reset</button>
                                     <button class="button is-link" on:click={updatePyConfig}>Save</button>
                                 </div>
-                                <div class="align">
+                                <!-- <div class="align">
                                     <CustomSwitch on:SMUISwitch:change={()=>window.db.set("suppressInitialDeveloperWarning", $suppressInitialDeveloperWarning)} bind:selected={$suppressInitialDeveloperWarning} label="suppressWarning"/>
-                                </div>
-                            {/if}
+                                </div> -->
 
-                            {#if pyError}
-                                <div class="tag is-danger errorbox">{pyError}</div>
                             {/if}
-
                         </div>
 
-
-                        {#if window.env.DEV}
-                            <button class="button is-link" style="margin: 1em;" on:click={()=>{
-                                const string = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque laboriosam vitae officia deleniti corporis aliquid quo id. Laboriosam officia hic nam nemo fuga eum. Veritatis voluptatem ipsa odit incidunt, velit quidem fuga! Minima provident officiis iste magnam at magni suscipit iusto vel fugiat aliquam explicabo ad qui, ipsum vero perspiciatis, facere est eius ullam omnis maiores? Fugit aut saepe accusantium deserunt eligendi corporis in et. Deleniti natus rerum voluptates fuga consequatur qui tempore omnis optio illum soluta odio perferendis doloribus repudiandae vero non, commodi recusandae reiciendis laboriosam neque et dolore quos reprehenderit consectetur laborum? Aperiam, laboriosam id! Culpa, iusto quisquam."
-                                mainPreModal.error(string+string)
-                            }}>Throw error</button>
+                        {#if pyError}
+                            <div class="align tag is-danger errorbox">{pyError}</div>
                         {/if}
                     </div>
                     
@@ -154,13 +143,12 @@
                     </div>
                 </div>
 
-                <div class="animated fadeIn" class:hide={selected!=="Terminal"}>
+                <!-- <div class="animated fadeIn" class:hide={selected!=="Terminal"}>
                     <h1 class="title">Terminal</h1>
                     <Terminal bind:commandToRun bind:commandArgsToRun id="Terminal-settings"/>
-                </div>
+                </div> -->
                 
                 <div class="animated fadeIn" class:hide={selected!=="About"}>
-
                     <h1 class="title">About</h1>
                     <div class="content">
                     
@@ -179,23 +167,27 @@
             </div>
         </div>
     </div>
+
 </section>
 
 <style lang="scss">
+    
     section { margin: 0; padding: 0; }
     .clicked {border-bottom: solid 1px; }
-
+    
     .main__div {
-
         display: grid;
         grid-template-columns: 1fr 4fr;
+
         column-gap: 3em;
         height: calc(100vh - 7rem);
+
         .box {
             margin-bottom: 0px;
             border-radius: 0;
             background-color: #6a50ad8a;
         }
+
         .title__div{
             letter-spacing: 0.1em;
             text-transform: uppercase;
@@ -203,11 +195,11 @@
             cursor: pointer;
             display: grid;
             row-gap: 2em;
+
             div {font-size: 22px; }
         } 
 
         #update-progress-container {
-
             progress {width: 100%;}
             display: grid;
             width: 100%;
@@ -217,12 +209,11 @@
         }
     }
 
-    h1, h2 {
+
+    h1 {
         margin: 0;
         width: 100%;
     }
-
-
 
     .errorbox {
         white-space: pre-line;
@@ -234,4 +225,3 @@
     }
     
 </style>
-

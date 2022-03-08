@@ -147,13 +147,11 @@
                 "Wavelength set (cm-1)", "SA (cm-1)", fullData.data["SA"], "saPlot",
                 "Wavelength (cm-1)", `Total Power (mJ)`, fullData.data["pow"]
             );
-
         } else {
             felix_func({dataFromPython: fullData.data, delta})
             $felixGraphPlotted = true
         }
     } else if(updateplot) {
-        console.log({$showall, plotfile})
         plotIndividualDataIntoGraph({fullData, plotfile, graphPlotted: $felixGraphPlotted, delta})
     } 
 

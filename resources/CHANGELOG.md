@@ -1,5 +1,17 @@
 # What's new
-## v3.5.1-beta
+
+## v3.5.3
+
+- Normline: Individula plot selection
+- THz: 
+    - Different fit profile
+    - Individual plot selection
+
+---
+## v3.5.2
+- Update bug fixes
+---
+## v3.5.1
 - Kinetics (New page added)
 - Timescan
     - Kinetic model implementation (TkFigure widget, save fit data, etc)

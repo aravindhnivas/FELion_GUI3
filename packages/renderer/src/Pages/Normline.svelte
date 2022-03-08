@@ -9,15 +9,9 @@
         normMethod,
         Ngauss_sigma,
         baselineFile,
-        expfittedLines,
-
-        normMethodDatas,
         felixopoLocation,
-        fittedTraceCount,
         OPOGraphPlotted,
         felixGraphPlotted,
-        felixPlotAnnotations,
-        expfittedLinesCollectedData,
     }                               from './normline/functions/svelteWritables';
     
     import AddFilesToPlot           from './normline/modals/AddFilesToPlot.svelte';
@@ -35,7 +29,7 @@
     import IconButton               from '$components/IconButton.svelte'
     import Layout                   from "$components/Layout.svelte"
     import CustomRadio              from '$components/CustomRadio.svelte';
-    import {react, deleteTraces}    from 'plotly.js/dist/plotly-basic';
+    import {deleteTraces}    from 'plotly.js/dist/plotly-basic';
     import { onDestroy }            from 'svelte';
     ///////////////////////////////////////////////////////////////////////
 
@@ -67,18 +61,6 @@
     $: plottedFiles = $opoMode ? OPOfilesChecked.map(file=>file.split(".")[0]) || [] : fileChecked.map(file=>file.split(".")[0]) || []
     $: output_namelists = ["averaged", ...plottedFiles, ...addedfiles.map(file=>basename(file)).map(file=>file.split(".")[0])]
 
-
-    // const replot = () => {
-    //     if ($graphPlotted) {
-    //         const {data, layout} = $normMethodDatas[$normMethod]
-    //         try {
-    //             react($graphDiv, data, layout, { editable: true })
-    //             $expfittedLines = $felixPlotAnnotations = $expfittedLinesCollectedData = []
-    //             $fittedTraceCount = 0
-    //         } catch (err) { window.handleError(err) }
-
-    //     }
-    // }
 
     // OPO
     let OPOLocation = db.get("ofelix_location") || currentLocation

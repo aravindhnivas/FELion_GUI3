@@ -72,7 +72,7 @@
         const noOfFittedData = graphElement.data?.length - defaultLength
         if (noOfFittedData === 0) {return window.createToast("No fitted lines found", "danger")}
         
-        plotData({filetype:"general", general:{args:[$felixOutputName, $felixopoLocation, $normMethod], pyfile:"delete_fileLines"}})
+        // plotData({filetype:"general", general:{args:[$felixOutputName, $felixopoLocation, $normMethod], pyfile:"delete_fileLines"}})
 
         $dataTable = dropRight($dataTable, 1)
         $expfittedLines = dropRight($expfittedLines, 2)
@@ -81,7 +81,7 @@
         relayout($graphDiv, { annotations: $felixPlotAnnotations, shapes: $expfittedLines })
 
         deleteTraces($graphDiv, [-1])
-        console.log("Last fitted peak removed")
+        window.createToast("Last fitted peak removed", "warning")
 
     }
 
