@@ -54,7 +54,7 @@ def fitNGauss(init_guess, wn, inten):
     perr_Ngauss = np.sqrt(np.diag(pcov_Ngauss))
     return popt_Ngauss, perr_Ngauss, gfn
     
-def fitNGaussian(gauss_args):
+def main(gauss_args):
 
     # Collected parameters
     # readfile = pt(gauss_args["peakFilename"])
@@ -208,19 +208,8 @@ def fitNGaussian(gauss_args):
                 writeFileName_expfile = readfile.parent/f"{writeFileName}_{method}.expfit"
                 writeFileName_fitfile = readfile.parent/f"{writeFileName}_{method}.fullFit"
                 writeFileName_datfile = readfile.parent/f"{writeFileName}.dat"
+
                 for read, write in zip([expfile, fitfile, datfile], [writeFileName_expfile, writeFileName_fitfile, writeFileName_datfile]):
+                
                     with open(read, "r") as f: fileread = f.readlines()
                     with open(write, "w+") as f: f.writelines(fileread)
-
-
-args = None
-def main(arguments):
-
-    global args
-    args = arguments
-
-    # args = sys.argv[1:][0].split(",")
-    # args = json.loads(", ".join(args))
-
-    print(f"Received args: {args}, {type(args)}\n")
-    fitNGaussian(args)

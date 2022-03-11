@@ -74,104 +74,12 @@
    "value": false
   },
   {
-   "optionDest": "hiddenimports",
-   "value": "weighted_error"
+   "optionDest": "hookspath",
+   "value": "D:/FELion_GUI3/resources/python_files/hooks"
   },
   {
    "optionDest": "hiddenimports",
-   "value": "kineticsCode"
-  },
-  {
-   "optionDest": "hiddenimports",
-   "value": "ROSAA_simulation"
-  },
-  {
-   "optionDest": "hiddenimports",
-   "value": "voigt"
-  },
-  {
-   "optionDest": "hiddenimports",
-   "value": "collisionalFit"
-  },
-  {
-   "optionDest": "hiddenimports",
-   "value": "timescan"
-  },
-  {
-   "optionDest": "hiddenimports",
-   "value": "thz_scan"
-  },
-  {
-   "optionDest": "hiddenimports",
-   "value": "theory"
-  },
-  {
-   "optionDest": "hiddenimports",
-   "value": "oposcan"
-  },
-  {
-   "optionDest": "hiddenimports",
-   "value": "normline"
-  },
-  {
-   "optionDest": "hiddenimports",
-   "value": "multiGauss"
-  },
-  {
-   "optionDest": "hiddenimports",
-   "value": "mass"
-  },
-  {
-   "optionDest": "hiddenimports",
-   "value": "getfile_details"
-  },
-  {
-   "optionDest": "hiddenimports",
-   "value": "fit_all"
-  },
-  {
-   "optionDest": "hiddenimports",
-   "value": "find_peaks_masspec"
-  },
-  {
-   "optionDest": "hiddenimports",
-   "value": "exp_gauss_fit"
-  },
-  {
-   "optionDest": "hiddenimports",
-   "value": "depletionscan"
-  },
-  {
-   "optionDest": "hiddenimports",
-   "value": "delete_fileLines"
-  },
-  {
-   "optionDest": "hiddenimports",
-   "value": "collisionalSimulation"
-  },
-  {
-   "optionDest": "hiddenimports",
-   "value": "baseline"
-  },
-  {
-   "optionDest": "hiddenimports",
-   "value": "addTrace"
-  },
-  {
-   "optionDest": "hiddenimports",
-   "value": "felix_tkplot"
-  },
-  {
-   "optionDest": "hiddenimports",
-   "value": "getVersion"
-  },
-  {
-   "optionDest": "hiddenimports",
-   "value": "lineProfileFit"
-  },
-  {
-   "optionDest": "hiddenimports",
-   "value": "generateNShapedProfile"
+   "value": "felionlib"
   }
  ],
  "nonPyinstallerOptions": {

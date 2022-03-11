@@ -3,15 +3,14 @@
 import numpy as np
 from pathlib import Path as pt
 from scipy.signal import find_peaks as peak
-
 from felionlib.utils.FELion_constants import colors
 from felionlib.utils.FELion_definitions import read_dat_file, sendData
 
-def fit_all_peaks(args):
+def main(args):
 
     norm_method = args["normMethod"]
-
     prominence = args["peak_prominence"]
+
     width = args["peak_width"]
     height = args["peak_height"]
     start_wn, end_wn = args["selectedIndex"]
@@ -64,8 +63,9 @@ def fit_all_peaks(args):
     inten_ = [round(i, 2) for i in inten[indices]]
 
     data = {"data": {}, "extras": _, "annotations":{}}
-    data["data"] = {
 
+
+    data["data"] = {
         "x":wn_, "y":inten_, "name":"peaks", "mode":"markers",
         "marker":{
             "color":"blue", "symbol": "star-triangle-up", "size": 12
@@ -73,8 +73,8 @@ def fit_all_peaks(args):
     }
 
     data["annotations"] = [
-            {
 
+        {
             "x": x,
             "y": y,
             "xref": 'x',
@@ -89,18 +89,7 @@ def fit_all_peaks(args):
         for x, y in zip(wn_, inten_)
         
     ]
+
     dataToSend = [{"data": data["data"]}, {"extras":data["extras"]}, {"annotations":data["annotations"]}, {"filename":str(filename)}]
+
     sendData(dataToSend, calling_file=pt(__file__).stem)
-    print("Data sent")
-
-args = None
-def main(arguments):
-
-    global args
-    args = arguments
-
-    # args = sys.argv[1:][0].split(",")
-    # args = json.loads(", ".join(args))
-    
-    print(f"Received args: {args}, {type(args)}\n")
-    fit_all_peaks(args)

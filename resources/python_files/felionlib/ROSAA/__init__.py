@@ -10,8 +10,10 @@ from felionlib.utils.optimizePlot import optimizePlot
 from felionlib.utils.FELion_constants import pltColors
 from felionlib.utils.FELion_widgets import FELion_Tk
 
+
 def log(msg): 
     return print(msg, flush=True)
+
 
 speedOfLight = 299792458
 speedOfLightIn_cm = speedOfLight*100
