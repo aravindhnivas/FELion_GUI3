@@ -106,62 +106,74 @@
         modalActivate = false
         relayout($graphDiv, { annotations: $felixPlotAnnotations })
         adjustPeakTrigger = false
+
     };
 
     function plotData({e=null, filetype="exp_fit", general={}}={}){
-
+        
         if (filetype == "general") {
             const {pyfile, args} = general
-
             computePy_func({pyfile, args, general:true})
-            
             return;
-        
         }
 
-        let pyfile="", args;
-        let expfit_args = []
-        
         switch (filetype) {
 
             case "exp_fit":
                 if ($felixIndex.length<2) { return window.createToast("Range not found!!. Select a range using Box-select", "danger") }
 
-                expfit_args = { addedFileScale, addedFileCol, output_name:$felixOutputName, overwrite_expfit, writeFile, writeFileName, normMethod: $normMethod, index:$felixIndex, fullfiles, location:$felixopoLocation }
-
-                pyfile="normline.exp_gauss_fit" , args=[JSON.stringify(expfit_args)]
-                computePy_func({e, pyfile, args})
+                const expfit_args = { 
+                    fullfiles,
+                    writeFile,
+                    addedFileCol,
+                    writeFileName,
+                    addedFileScale,
+                    overwrite_expfit,
+                    normMethod: $normMethod,
+                    index: $felixIndex,
+                    location: $felixopoLocation,
+                    output_name:$felixOutputName,
+                }
+                computePy_func({e, pyfile: "normline.exp_gauss_fit", args: JSON.stringify(expfit_args)})
                 .then((dataFromPython)=>{
                     exp_fit_func({dataFromPython})
                     window.createToast("Line fitted with gaussian function", "success")
                 })
-
+                
                 break;
 
             case "NGauss_fit":
 
                 if (boxSelected_peakfinder) {
-                    if ($felixIndex.length<2) { return window.createToast("Box selection is turned ON so please select a wn. range to fit", "danger") }
+                    if ($felixIndex.length<2) { 
+                        window.createToast(
+                            "Box selection is turned ON so please select a wn. range to fit", 
+                            "danger"
+                        )
+                        return
+                    }
                     NGauss_fit_args.index = $felixIndex
-
                 } else {NGauss_fit_args.index = []}
 
+                if ($felixPeakTable.length === 0) {
+                    return window.createToast("No arguments initialised yet.", "danger") 
 
+                }
                 
-                if ($felixPeakTable.length === 0) {return window.createToast("No arguments initialised yet.", "danger") }
                 
                 NGauss_fit_args.fitNGauss_arguments = {}
+
+
                 $felixPeakTable.forEach((f, index)=>{
                     NGauss_fit_args.fitNGauss_arguments[`cen${index}`] = f.freq
                     NGauss_fit_args.fitNGauss_arguments[`A${index}`] = f.amp
                     NGauss_fit_args.fitNGauss_arguments[`sigma${index}`] = f.sig
                 })
+                NGauss_fit_args = {
+                    ...NGauss_fit_args, location: $felixopoLocation, addedFileScale, addedFileCol, overwrite_expfit, writeFile, writeFileName, output_name: $felixOutputName, fullfiles, normMethod: $normMethod
+                }
 
-                NGauss_fit_args = {...NGauss_fit_args, location:$felixopoLocation, addedFileScale, addedFileCol, overwrite_expfit, writeFile, writeFileName, output_name:$felixOutputName, fullfiles, normMethod: $normMethod}
-
-                pyfile="normline.multiGauss" , args=[JSON.stringify(NGauss_fit_args)]
-
-                computePy_func({e, pyfile, args})
+                computePy_func({e, pyfile: "normline.multiGauss" , args: JSON.stringify(NGauss_fit_args)})
                 .then((dataFromPython)=>{
                     NGauss_fit_func({dataFromPython})
                     console.log("Line fitted")
