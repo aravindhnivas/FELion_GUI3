@@ -54,8 +54,7 @@
             boltzmanDistribution.forEach(f=>boltzmanDistributionValues[f.label]=f.value)
             const boltzmanDistributionColdValues = {}
             boltzmanDistributionCold.forEach(f=>boltzmanDistributionColdValues[f.label]=f.value)
-
-            const pyfile = "collisionalSimulation"
+            const pyfile = "ROSAA.collisionalSimulation"
             
             const args = [JSON.stringify({boltzmanDistributionValues, boltzmanDistributionColdValues,
                 numberDensity, collisionalRateConstantValues, duration, energyKeys, numberOfLevels

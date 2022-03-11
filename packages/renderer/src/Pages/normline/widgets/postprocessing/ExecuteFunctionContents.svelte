@@ -71,11 +71,9 @@
         const defaultLength = $showall ? fullfiles.length : 1
         const noOfFittedData = graphElement.data?.length - defaultLength
         if (noOfFittedData === 0) {return window.createToast("No fitted lines found", "danger")}
-        
-        // plotData({filetype:"general", general:{args:[$felixOutputName, $felixopoLocation, $normMethod], pyfile:"delete_fileLines"}})
-
         $dataTable = dropRight($dataTable, 1)
         $expfittedLines = dropRight($expfittedLines, 2)
+        
         $felixPlotAnnotations = dropRight($felixPlotAnnotations, 1)
         $expfittedLinesCollectedData = dropRight($expfittedLinesCollectedData, 1)
         relayout($graphDiv, { annotations: $felixPlotAnnotations, shapes: $expfittedLines })
@@ -125,7 +123,7 @@
         }
 
         let pyfile="", args;
-        let expfit_args = [], find_peaks_args = {}
+        let expfit_args = []
         
         switch (filetype) {
 
@@ -134,7 +132,7 @@
 
                 expfit_args = { addedFileScale, addedFileCol, output_name:$felixOutputName, overwrite_expfit, writeFile, writeFileName, normMethod: $normMethod, index:$felixIndex, fullfiles, location:$felixopoLocation }
 
-                pyfile="exp_gauss_fit" , args=[JSON.stringify(expfit_args)]
+                pyfile="normline.exp_gauss_fit" , args=[JSON.stringify(expfit_args)]
                 computePy_func({e, pyfile, args})
                 .then((dataFromPython)=>{
                     exp_fit_func({dataFromPython})
@@ -163,7 +161,8 @@
                 })
 
                 NGauss_fit_args = {...NGauss_fit_args, location:$felixopoLocation, addedFileScale, addedFileCol, overwrite_expfit, writeFile, writeFileName, output_name:$felixOutputName, fullfiles, normMethod: $normMethod}
-                pyfile="multiGauss" , args=[JSON.stringify(NGauss_fit_args)]
+
+                pyfile="normline.multiGauss" , args=[JSON.stringify(NGauss_fit_args)]
 
                 computePy_func({e, pyfile, args})
                 .then((dataFromPython)=>{
@@ -171,41 +170,9 @@
                     console.log("Line fitted")
                     window.createToast(`Line fitted with ${dataFromPython["fitted_parameter"].length} gaussian function`, "success")
                 })
+
                 break;
             
-            case "find_peaks":
-                
-                $felixPeakTable = []
-
-                if ($felixIndex.length<2 && boxSelected_peakfinder) { return window.createToast("Box selection is turned ON so please select a wn. range to fit", "danger") }
-                
-                const selectedIndex = boxSelected_peakfinder ? $felixIndex : [0, 0]
-                find_peaks_args = { addedFileScale, addedFileCol, output_name:$felixOutputName, normMethod: $normMethod, peak_prominence, peak_width, peak_height, selectedIndex, fullfiles, location:$felixopoLocation }
-
-
-
-                pyfile="fit_all" ,  args=[JSON.stringify(find_peaks_args)]
-
-                computePy_func({e, pyfile, args})
-                .then((dataFromPython)=>{
-                    find_peaks_func({dataFromPython})
-                    console.log(`felixPeakTable:`, $felixPeakTable)
-                    window.createToast("Peaks found", "success")
-                })
-
-                break;
-
-            case "get_err":
-                if ($expfittedLinesCollectedData.length<2) return window.createToast("Not sufficient lines collected!", "danger")
-                pyfile="weighted_error" , args=$expfittedLinesCollectedData
-                computePy_func({e, pyfile, args})
-                .then((dataFromPython)=>{
-                    get_err_func({dataFromPython})
-                    window.createToast("Weighted fit. done", "success")
-                })
-                break;
-
-         
             default:
                 break;
         }
@@ -218,24 +185,12 @@
     <button class="button is-link" on:click="{()=>toggleFindPeaksRow = !toggleFindPeaksRow}">Fit NGauss.</button>
     <button class="button is-warning" on:click={clearLastPeak}>Clear Last</button>
     <button class="button is-danger" on:click={clearAllPeak}>Clear All</button>
-    <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"get_err"})}">Weighted Mean</button>
     <button class="button is-warning" on:click="{()=>{$expfittedLinesCollectedData = []; window.createToast("Line collection restted", "warning")}}">Reset</button>
 </div>
 
 {#if toggleFindPeaksRow}
     <div class="align" transition:fade>
 
-        <div class="align">
-        
-            <CustomSwitch bind:selected={boxSelected_peakfinder} label="BoxSelected"/>
-            <Textfield style="width: 7em;" type="number" step="0.5" bind:value={peak_prominence} label="Prominance" />
-            <Textfield style="width: 7em;" type="number" step="0.5" bind:value={peak_width} label="Width" />
-            <Textfield style="width: 7em;" type="number" step="0.1" bind:value={peak_height} label="Height" />
-            <Textfield style="width: 7em;" bind:value={$Ngauss_sigma} label="Sigma"/>
-            <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"find_peaks"})}">Get Peaks</button>
-        
-        </div>
-        
         <div class="align" style="align-items: baseline;">
             <i class="material-icons" on:click="{()=> modalActivate = true}">settings</i>
             <button style="width:7em" class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"NGauss_fit"})}">Fit</button>

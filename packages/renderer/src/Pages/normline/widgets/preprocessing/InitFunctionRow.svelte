@@ -83,7 +83,7 @@
                 removeExtraFile()
                 dataReady = false
 
-                pyfile="normline" 
+                pyfile="normline.felix" 
                 args=[JSON.stringify({felixfiles, delta})]
 
                 $felixPeakTable = []
@@ -108,7 +108,7 @@
                 if(!$baselineFile) {
                     return window.createToast("No files: ctrl + left-click to select file for baseline correction", "danger")
                 }
-                pyfile="baseline"
+                pyfile="normline.baseline"
                 args=[JSON.stringify({filename: pathJoin($felixopoLocation, $baselineFile)})]
                 computePy_func({e, pyfile, args, general:true, openShell})
                 break;
@@ -119,7 +119,7 @@
                 const booleanWidgets = felixPlotWidgets.boolean.map(n=>n.value)
                 const selectedWidgets = $felixPlotCheckboxes.map(n=>n.selected)
 
-                pyfile="felix_tkplot"
+                pyfile="normline.felix_tkplot"
                 args=[JSON.stringify({
                     numberWidgets, textWidgets, booleanWidgets, 
                     selectedWidgets, location: $felixopoLocation, 

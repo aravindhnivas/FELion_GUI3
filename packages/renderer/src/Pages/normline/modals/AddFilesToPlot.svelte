@@ -26,7 +26,7 @@
 
     function plotData({e=null}={}){
 
-        const pyfile="addTrace"
+        const pyfile="normline.addTrace"
         let args;
         if(addedFile.files < 1) return window.createToast("No files selected", "danger")
         extrafileAdded += addedfiles.length

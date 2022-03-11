@@ -22,7 +22,7 @@ export default async function({ e = null, pyfile = "", args = "", general = fals
             window.createToast("Process Started")
             
             const pyArgs = get(developerMode) ? [pathJoin(get(pythonscript), "main.py"), pyfile, args ] : [pyfile, args]
-            console.log({pyArgs})
+            console.log(get(pyProgram), {pyArgs})
             const py = spawn( get(pyProgram), pyArgs, { detached: general, shell: openShell } )
             
             py.on("error", (err) => {
@@ -41,7 +41,7 @@ export default async function({ e = null, pyfile = "", args = "", general = fals
             let error = ""
             let dataReceived = ""
             
-            const outputFile = pathJoin(appInfo.temp, "FELion_GUI3", pyfile + "_data.json")
+            const outputFile = pathJoin(appInfo.temp, "FELion_GUI3", pyfile.split(".").at(-1) + "_data.json")
             if(fs.existsSync(outputFile)) fs.removeSync(outputFile)
 
             dispatchEvent(e, { py, pyfile }, "pyEvent")

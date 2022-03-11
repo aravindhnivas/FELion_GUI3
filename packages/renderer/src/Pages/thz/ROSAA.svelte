@@ -104,7 +104,7 @@
         
         }
         
-        const pyfile = "ROSAA_simulation"
+        const pyfile = "ROSAA"
         const args = [JSON.stringify(conditions)]
         
         computePy_func({e, pyfile, args, general:true})

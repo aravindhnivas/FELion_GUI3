@@ -12,7 +12,7 @@
     let toggleFileDetailsTable = false
     
     function plotData({e=null}={}){
-        let pyfile="getfile_details", args;
+        let pyfile="normline.getfile_details", args;
         if(felixfiles.length<1) return window.createToast("No files selected", "danger")
         args=[JSON.stringify({files:$opoMode?opofiles : felixfiles, normMethod: $normMethod})]
         computePy_func({e, pyfile, args})

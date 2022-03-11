@@ -28,7 +28,7 @@
     }
 
     function plotData(e=null){
-        let pyfile="theory", args;
+        let pyfile="normline.theory", args;
         
         if(theoryfiles.length < 1) return window.createToast("No files selected", "danger")
         

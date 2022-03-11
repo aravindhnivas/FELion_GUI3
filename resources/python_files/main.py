@@ -15,7 +15,7 @@ if __name__ == "__main__":
 
     with warnings.catch_warnings(record=True) as warn:
         warnings.simplefilter("ignore")
-        pyfunction = import_module(pyfile)
+        pyfunction = import_module(f"felionlib.{pyfile}")
         pyfunction.main(args)
         print(f"{warn=}", flush=True)
 

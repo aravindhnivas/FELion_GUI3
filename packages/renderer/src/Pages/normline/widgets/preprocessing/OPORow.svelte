@@ -53,7 +53,7 @@
         const args=[JSON.stringify({opofiles, tkplot, deltaOPO, calibFile, opoPower})]
 
         dataReady = false
-        computePy_func({e, pyfile: "oposcan", args})
+        computePy_func({e, pyfile: "normline.oposcan", args})
         .then((dataFromPython)=>{
             fullData.data = dataFromPython
             dataReady = true
