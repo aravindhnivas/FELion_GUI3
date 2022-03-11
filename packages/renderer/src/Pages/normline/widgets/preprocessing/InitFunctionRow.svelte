@@ -24,7 +24,7 @@
     import CustomTextSwitch     from '$components/CustomTextSwitch.svelte'
     import { subplot, plot }    from "$src/js/functions.js";
     import computePy_func       from "$src/Pages/general/computePy"
-    import {react}              from "plotly.js/dist/plotly-basic"
+    import {react, relayout}    from "plotly.js/dist/plotly-basic"
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -80,11 +80,16 @@
 
             case "felix":
                 if(felixfiles.length<1) return window.createToast("No files selected", "danger")
+                
                 removeExtraFile()
+
+                if(document.getElementById("avgplot")?.data) {
+                    relayout("avgplot", { annotations: [], shapes: [], line: [] })
+                }
                 dataReady = false
 
                 pyfile="normline.felix" 
-                args=[JSON.stringify({felixfiles, delta})]
+                args=JSON.stringify({felixfiles, delta})
 
                 $felixPeakTable = []
                 $felixPlotAnnotations = []
@@ -109,7 +114,7 @@
                     return window.createToast("No files: ctrl + left-click to select file for baseline correction", "danger")
                 }
                 pyfile="normline.baseline"
-                args=[JSON.stringify({filename: pathJoin($felixopoLocation, $baselineFile)})]
+                args=JSON.stringify({filename: pathJoin($felixopoLocation, $baselineFile)})
                 computePy_func({e, pyfile, args, general:true, openShell})
                 break;
 

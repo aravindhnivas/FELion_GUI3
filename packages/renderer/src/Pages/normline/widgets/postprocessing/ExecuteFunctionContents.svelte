@@ -6,7 +6,6 @@
         normMethod,
         graphDiv,
         dataTable,
-        Ngauss_sigma,
         expfittedLines,
         felixPeakTable,
         felixOutputName,
@@ -16,13 +15,10 @@
         expfittedLinesCollectedData,
     }                                   from "../../functions/svelteWritables";
     import Textfield                    from '@smui/textfield';
-    import CustomSwitch                 from '$components/CustomSwitch.svelte';
     import {savefile, loadfile}         from "../../functions/misc";
     import { fade }                     from 'svelte/transition';
     import {NGauss_fit_func}            from '../../functions/NGauss_fit';
-    import {find_peaks_func}            from '../../functions/find_peaks';
     import {exp_fit_func}               from '../../functions/exp_fit';
-    import {get_err_func}               from '../../functions/get_err';
     import {relayout, deleteTraces}     from 'plotly.js/dist/plotly-basic';
     import {dropRight, sortBy}          from "lodash-es"
     import computePy_func               from "$src/Pages/general/computePy"
@@ -49,6 +45,7 @@
     const clearAllPeak = () => {
 
         const graphElement = document.getElementById($graphDiv)
+        relayout($graphDiv, { annotations: [], shapes: [], line: [] })
         const defaultLength = $showall ? fullfiles.length : 1
         const noOfFittedData = graphElement.data?.length - defaultLength
         if (noOfFittedData === 0) {return window.createToast("No fitted lines found", "danger")}
@@ -147,7 +144,7 @@
                     if ($felixIndex.length<2) { return window.createToast("Box selection is turned ON so please select a wn. range to fit", "danger") }
                     NGauss_fit_args.index = $felixIndex
 
-                } else {delete NGauss_fit_args.index}
+                } else {NGauss_fit_args.index = []}
 
 
                 
@@ -177,7 +174,9 @@
                 break;
         }
     }
+    
     $: if(adjustPeakTrigger) adjustPeak()
+
 </script>
 
 <div class="align">
@@ -185,11 +184,10 @@
     <button class="button is-link" on:click="{()=>toggleFindPeaksRow = !toggleFindPeaksRow}">Fit NGauss.</button>
     <button class="button is-warning" on:click={clearLastPeak}>Clear Last</button>
     <button class="button is-danger" on:click={clearAllPeak}>Clear All</button>
-    <button class="button is-warning" on:click="{()=>{$expfittedLinesCollectedData = []; window.createToast("Line collection restted", "warning")}}">Reset</button>
 </div>
 
 {#if toggleFindPeaksRow}
-    <div class="align" transition:fade>
+    <div class="align v-baseline">
 
         <div class="align" style="align-items: baseline;">
             <i class="material-icons" on:click="{()=> modalActivate = true}">settings</i>
