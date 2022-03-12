@@ -42,7 +42,7 @@
             paramsTable, fitfile, fitMethod, varyAll, plotIndex
         }
         let pyfileInfo = {general,
-            thz: {pyfile:"thz_scan" , args:[JSON.stringify(thz_args)]},
+            thz: {pyfile: "thz_scan" , args: thz_args},
         }
         let {pyfile, args} = pyfileInfo[filetype]
         if (tkplot) {filetype = "general"}

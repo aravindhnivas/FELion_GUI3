@@ -89,7 +89,7 @@
                 dataReady = false
 
                 pyfile="normline.felix" 
-                args=JSON.stringify({felixfiles, delta})
+                args={felixfiles, delta}
 
                 $felixPeakTable = []
                 $felixPlotAnnotations = []
@@ -114,7 +114,7 @@
                     return window.createToast("No files: ctrl + left-click to select file for baseline correction", "danger")
                 }
                 pyfile="normline.baseline"
-                args=JSON.stringify({filename: pathJoin($felixopoLocation, $baselineFile)})
+                args={filename: pathJoin($felixopoLocation, $baselineFile)}
                 computePy_func({e, pyfile, args, general:true, openShell})
                 break;
 
@@ -125,11 +125,11 @@
                 const selectedWidgets = $felixPlotCheckboxes.map(n=>n.selected)
 
                 pyfile="normline.felix_tkplot"
-                args=[JSON.stringify({
+                args={
                     numberWidgets, textWidgets, booleanWidgets, 
                     selectedWidgets, location: $felixopoLocation, 
                     normMethod: $normMethod, theoryLocation
-                })]
+                }
 
                 computePy_func({e, pyfile, args, general:true, openShell})
             default:

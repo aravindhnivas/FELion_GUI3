@@ -50,7 +50,7 @@
     
         if(opofiles.length<1) return window.createToast("No files selected", "danger")
         $opoMode = true, $felixPlotAnnotations = []
-        const args=[JSON.stringify({opofiles, tkplot, deltaOPO, calibFile, opoPower})]
+        const args={opofiles, tkplot, deltaOPO, calibFile, opoPower}
 
         dataReady = false
         computePy_func({e, pyfile: "normline.oposcan", args})

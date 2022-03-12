@@ -200,8 +200,7 @@
 
             if(typeof initialValues === "string") { initialValues = initialValues.split(",") }
 
-            const args = [
-                JSON.stringify({
+            const args = {
                     tag,
                     data,
                     temp,
@@ -217,8 +216,7 @@
                     nameOfReactantsArray,
                     kineticEditorLocation,
                     kineticEditorFilename
-                })
-            ]
+            }
             await computePy_func({e, pyfile: "kineticsCode", args, general:true})
         } catch (error) {window.handleError(error);}
     }

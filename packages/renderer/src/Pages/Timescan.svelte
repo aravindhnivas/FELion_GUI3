@@ -73,15 +73,14 @@
         }
 
 
-        const depletionArgs = [JSON.stringify({
+        const depletionArgs = {
             currentLocation, resON_Files, resOFF_Files, 
             power, nshots, massIndex, timestartIndex, saveOutputDepletion
-        })]
+        }
         
         let pyfileInfo = {
-            scan: {pyfile:"timescan" , args:[[JSON.stringify({scanfiles, tkplot})]]},
-
-            general: {pyfile:"depletionscan" , args: depletionArgs},
+            scan: {pyfile:"timescan" , args: {scanfiles, tkplot}},
+            general: {pyfile:"depletionscan", args: depletionArgs},
         }
 
         let {pyfile, args} = pyfileInfo[filetype]

@@ -1,16 +1,12 @@
 <script>
-    import Textfield                    from '@smui/textfield'
     import Layout                       from "$components/Layout.svelte"
     import CustomSwitch                 from "$components/CustomSwitch.svelte"
-    import CustomSelect                 from "$components/CustomSelect.svelte"
     import CustomIconSwitch             from "$components/CustomIconSwitch.svelte"
     import GetLabviewSettings           from "$components/GetLabviewSettings.svelte"
     import {relayout}                   from 'plotly.js/dist/plotly-basic';
-    import {isEmpty}                    from "lodash-es"
     import {plot, plotlyEventsInfo}     from "$src/js/functions"
     import {readMassFile}               from "./masspec/mass"
     import computePy_func               from "$src/Pages/general/computePy"
-
     import {onDestroy}                  from "svelte";
 
     /////////////////////////////////////////////////////////////////////////
@@ -43,41 +39,41 @@
 
 
         const pyfileInfo = {
-            mass: {pyfile:"mass" , args:[JSON.stringify({massfiles, tkplot:"run"})]},
-            general: {pyfile:"mass" , args:[JSON.stringify({massfiles, tkplot:"plot"})]},
-            find_peaks: {
-                pyfile:"find_peaks_masspec",
-                args:[JSON.stringify({
-                    filename: pathResolve(currentLocation, selected_file),
-                    peak_prominance, peak_width, peak_height
-                })]
-            },
-
+            mass: {pyfile:"mass" , args: {massfiles, tkplot:"run"}},
+            general: {pyfile:"mass" , args: {massfiles, tkplot:"plot"} },
         }
+
         const {pyfile, args} = pyfileInfo[filetype]
         
         if (filetype == "general") {await computePy_func({e, pyfile, args, general:true, openShell})}
 
         if (filetype=="mass" && massfiles) {
+        
             const [dataFromPython] = await readMassFile(massfiles)
-            if(isEmpty(dataFromPython)) return
+        
+            if(!dataFromPython) return
             if(!keepAnnotaions) {$plotlyEventsInfo["mplot"].annotations=[]}
+        
             plot("Mass spectrum", "Mass [u]", "Counts", dataFromPython, "mplot", logScale ? "log" : "linear", true)
             if(keepAnnotaions) {relayout("mplot" ,{annotations: $plotlyEventsInfo["mplot"].annotations})}
             
             graphPlotted = true
             return
+        
         }
+
     }
+
 
     const linearlogCheck = () => {
         const layout = { yaxis: { title: "Counts", type: logScale ? "log" : null } }
         if(graphPlotted) relayout("mplot", layout)
-
     };
 
     let fullfileslist = [];
+
     onDestroy(()=>{
+    
         if($plotlyEventsInfo.mplot) {
             $plotlyEventsInfo.mplot.eventCreated = false; 
             $plotlyEventsInfo.mplot.annotations = []

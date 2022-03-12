@@ -134,7 +134,7 @@
                     location: $felixopoLocation,
                     output_name:$felixOutputName,
                 }
-                computePy_func({e, pyfile: "normline.exp_gauss_fit", args: JSON.stringify(expfit_args)})
+                computePy_func({e, pyfile: "normline.exp_gauss_fit", args: expfit_args})
                 .then((dataFromPython)=>{
                     exp_fit_func({dataFromPython})
                     window.createToast("Line fitted with gaussian function", "success")
@@ -173,7 +173,7 @@
                     ...NGauss_fit_args, location: $felixopoLocation, addedFileScale, addedFileCol, overwrite_expfit, writeFile, writeFileName, output_name: $felixOutputName, fullfiles, normMethod: $normMethod
                 }
 
-                computePy_func({e, pyfile: "normline.multiGauss" , args: JSON.stringify(NGauss_fit_args)})
+                computePy_func({e, pyfile: "normline.multiGauss" , args: NGauss_fit_args })
                 .then((dataFromPython)=>{
                     NGauss_fit_func({dataFromPython})
                     console.log("Line fitted")

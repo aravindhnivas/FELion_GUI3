@@ -96,18 +96,14 @@
         attachmentCoefficients.forEach(f=>attachment_rate_coefficients[f.label]=f.value)
         const energy_levels = {}
         energyLevels.forEach(f=>energy_levels[f.label]=f.value)
-        const conditions = { 
+        const args = { 
             trapTemp, variable, variableRange, numberOfLevels, includeCollision, includeAttachmentRate, gaussian, lorrentz, includeSpontaneousEmission, writefile, writeall, appendFiles, savefilename, currentLocation,  deexcitation, 
             collisional_rates, main_parameters, simulation_parameters, einstein_coefficient, 
             energy_levels, energyUnit, power_broadening, lineshape_conditions, attachment_rate_coefficients, 
             electronSpin, zeemanSplit, excitedFrom, excitedTo, numberDensity, collisionalTemp, simulationMethod, figure
         
         }
-        
-        const pyfile = "ROSAA"
-        const args = [JSON.stringify(conditions)]
-        
-        computePy_func({e, pyfile, args, general:true})
+        computePy_func({e, pyfile: "ROSAA", args, general:true})
     }
     let currentLocation = fs.existsSync(db.get("ROSAA_config_location")) ? db.get("ROSAA_config_location") : "";
 

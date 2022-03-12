@@ -27,19 +27,19 @@
         theoryfiles =theoryfilesChecked.map(file=>pathResolve(theoryLocation, file)) 
     }
 
-    function plotData(e=null){
-        let pyfile="normline.theory", args;
+    async function plotData(e=null){
+        const pyfile="normline.theory"
         
         if(theoryfiles.length < 1) return window.createToast("No files selected", "danger")
         
-        args={theoryfiles, normMethod: $normMethod, sigma, scale, currentLocation:$felixopoLocation, tkplot, onlyExpRange}
-        args=[JSON.stringify(args)]
-        computePy_func({e, pyfile, args})
-        .then((dataFromPython)=>{
+        const args={theoryfiles, normMethod: $normMethod, sigma, scale, currentLocation:$felixopoLocation, tkplot, onlyExpRange}
+
+        const dataFromPython = await computePy_func({e, pyfile, args})
+        if(dataFromPython){
             theory_func({dataFromPython, normMethod})
             window.createToast("Graph Plotted", "success")
             showTheoryFiles = false
-        })
+        }
     }
 
     let onlyExpRange = false;

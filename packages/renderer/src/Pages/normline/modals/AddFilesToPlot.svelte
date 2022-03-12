@@ -33,7 +33,7 @@
         addedFile["col"] = addedFileCol, addedFile["N"] = fileChecked.length + extrafileAdded
 
         addedFile["scale"] = addedFileScale
-        args=[JSON.stringify(addedFile)]
+        args=addedFile
 
         computePy_func({e, pyfile, args})
         .then((dataFromPython)=>{

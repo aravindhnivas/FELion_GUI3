@@ -303,6 +303,7 @@ class normplot:
 
 
 def main(args):
+    print(f"felix: {args=}")
     felixfiles = args["felixfiles"]
     delta = float(args["delta"])
     normplot(felixfiles, delta)

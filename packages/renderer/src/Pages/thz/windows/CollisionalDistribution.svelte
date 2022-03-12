@@ -56,9 +56,9 @@
             boltzmanDistributionCold.forEach(f=>boltzmanDistributionColdValues[f.label]=f.value)
             const pyfile = "ROSAA.collisionalSimulation"
             
-            const args = [JSON.stringify({boltzmanDistributionValues, boltzmanDistributionColdValues,
+            const args = {boltzmanDistributionValues, boltzmanDistributionColdValues,
                 numberDensity, collisionalRateConstantValues, duration, energyKeys, numberOfLevels
-            })]
+            }
 
             const dataFromPython = await computePy_func({e, pyfile, args})
             if(!dataFromPython) return
