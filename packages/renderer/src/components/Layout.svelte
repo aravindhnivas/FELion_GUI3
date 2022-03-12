@@ -1,6 +1,7 @@
 <script context="module">
-    export async function browse({filetype="", dir=true, multiple=false}={}) {
 
+    export async function browse({filetype="", dir=true, multiple=false}={}) {
+    
         const type = dir ? "openDirectory" : "openFile"
         const options = {
             filters: [
@@ -9,23 +10,28 @@
             ],
             properties: [type, multiple ? "multiSelections" : ""],
         }
+
         const {showOpenDialogSync} = dialogs
 
         console.table(options)
         console.log("Directory: ", dir)
         console.log("multiSelections: ", multiple)
+
         const result = await showOpenDialogSync(options)
         const sendResult = dir ? result?.[0] : result
         console.log(sendResult)
+
         return sendResult
     }
+
 </script>
 
-
-
 <script>
-    import { createEventDispatcher, 
-        onMount, tick }                 from 'svelte';
+
+    import { 
+        onMount, tick, 
+        createEventDispatcher 
+    }                                   from 'svelte';
     import { fly, fade }                from 'svelte/transition';
     import Textfield                    from '@smui/textfield';
     import {relayout}                   from 'plotly.js/dist/plotly-basic';
@@ -33,6 +39,7 @@
     import FileBrowser                  from "$components/FileBrowser.svelte"
     import Modal                        from "$components/Modal.svelte"
     import Editor                       from '$components/Editor.svelte';
+
     ////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////
 
@@ -62,18 +69,20 @@
         console.log(id, "mounted")
         currentLocation = db.get(`${filetype}_location`) || ""
     })
+
     const lookForGraph = () => {
-        try {
-            graphDivs = Array.from(document.querySelectorAll(`#${filetype}-plotContainer .graph__div`))
-            console.info(graphDivs)
-         } 
+        try { graphDivs = Array.from(document.querySelectorAll(`#${filetype}-plotContainer .graph__div`))} 
         catch (error) {console.log(error)}
+
     }
 
     function openGraph(){
+        
         const mount = document.getElementById(`${filetype}-plotContainer`)
+        
         const graphWindow = new WinBox({ class: graphWindowClasses,
             root:document.getElementById("pageContainer"),
+        
             mount,  title: `Modal: ${filetype}`,
             x: "center", y: "center",
             width: "70%", height: "70%",
@@ -87,15 +96,13 @@
     let graphDivs = []
 
     const changeGraphDivWidth = async () => {
-
         console.log("Updating graphDivs width")
         await tick();
         graphDivs.forEach(id=>{if(id.data) {relayout(id, {width: id.clientWidth})}})
-
         originalWidth = plotWidth
 
     }
-
+    
     let widthChange = false
     let originalWidth = plotWidth
     $: if (widthChange) {changeGraphDivWidth()};
