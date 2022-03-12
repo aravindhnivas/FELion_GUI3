@@ -85,34 +85,30 @@
 
     let plotWidth;
     let graphDivs = []
-    $: console.log({graphDivs})
-    // let changeWidth = false
-    const changeGraphDivWidth = async () => {
-        
-        console.log("Updating graphDivs width")
-        // changeWidth = false
 
+    const changeGraphDivWidth = async () => {
+
+        console.log("Updating graphDivs width")
         await tick();
         graphDivs.forEach(id=>{if(id.data) {relayout(id, {width: id.clientWidth})}})
 
-        // changeWidth = true
-        // newWidth = plotWidth
+        originalWidth = plotWidth
+
     }
 
-    // let newWidth = plotWidth
-
-    $: if (plotWidth) {changeGraphDivWidth()};
-
-    // $: console.log({mouseReleased})
-    let mouseReleased = true;
+    let widthChange = false
+    let originalWidth = plotWidth
+    $: if (widthChange) {changeGraphDivWidth()};
 
 </script>
 
 <section {id} style="display:none" class="animated fadeIn">
 
     <div class="main__layout__div">
-        <div class="interact left_container__div box " transition:fly="{{ x: -100, duration: 500 }}" on:mouseup={()=>mouseReleased=true} on:mousedown={()=>mouseReleased=false} >
-
+        <div class="interact left_container__div box " transition:fly="{{ x: -100, duration: 500 }}" 
+            on:mouseup={()=>{if(originalWidth !== plotWidth) widthChange=true}}
+            on:mousedown={()=>widthChange=false} 
+        >
             <FileBrowser bind:currentLocation {filetype} bind:fileChecked on:chdir bind:fullfileslist on:markedFile/>
         </div>
 
