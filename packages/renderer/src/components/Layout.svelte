@@ -86,13 +86,24 @@
     let plotWidth;
     let graphDivs = []
     $: console.log({graphDivs})
+    // let changeWidth = false
     const changeGraphDivWidth = async () => {
+        
         console.log("Updating graphDivs width")
+        // changeWidth = false
+
         await tick();
         graphDivs.forEach(id=>{if(id.data) {relayout(id, {width: id.clientWidth})}})
+
+        // changeWidth = true
+        // newWidth = plotWidth
     }
 
-    $: if (plotWidth && mouseReleased) {changeGraphDivWidth()};
+    // let newWidth = plotWidth
+
+    $: if (plotWidth) {changeGraphDivWidth()};
+
+    // $: console.log({mouseReleased})
     let mouseReleased = true;
 
 </script>
@@ -124,7 +135,8 @@
 
             </div>
 
-            <div class="plot__div" id="{filetype}-plotContainer" transition:fade use:lookForGraph bind:clientWidth={plotWidth} > 
+            <div class="plot__div" id="{filetype}-plotContainer" transition:fade 
+                use:lookForGraph bind:clientWidth={plotWidth} > 
 
                 <slot name="plotContainer" {lookForGraph} />
                 {#if graphPlotted}

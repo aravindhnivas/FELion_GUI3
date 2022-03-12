@@ -6,11 +6,47 @@ export const dispatchEvent = (e, detail, eventName) => {
     console.info(eventName + " dispatched")
 }
 
-export default async function({ e = null, pyfile = "", args = "", general = false, openShell = false } = {}) {
+export default async function({ e = null, pyfile = "", args = {}, general = false, openShell = false } = {}) {
+    
     let target;
+    let dataFromPython = null;
+
+    const outputFile = pathJoin(appInfo.temp, "FELion_GUI3", pyfile.split(".").at(-1) + "_data.json")
+    if(fs.existsSync(outputFile)) fs.removeSync(outputFile)
 
     try {
+
+        // if (!general) {
+        //     target = e?.target
+        //     target.classList.toggle("is-loading")
+        // }
     
+        // const PORT = 5050
+        // const URL = `http://127.0.0.1:${PORT}/felionpy/compute`
+        // const method =  'POST'
+        // const headers =  {
+        //     'Content-type': 'application/json',
+        //     'Accept': 'application/json'
+        // }
+
+        // const body =  JSON.stringify({pyfile, args})
+        // const response = await fetch(URL, {method, headers, body})
+        
+        // if(!response.ok) return Promise.resolve(null)
+
+        // const {timeConsumed} = await response.json()
+        // console.warn(timeConsumed)
+
+        // if(!general) {
+        //     if(!fs.existsSync(outputFile)) {
+        //         console.warn(`${outputFile} file doesn't exists`)
+        //         window.handleError(`${outputFile} file doesn't exists`)
+        //     }
+        //     dataFromPython = fs.readJsonSync(outputFile) || null
+        //     console.table(dataFromPython)
+        // }
+
+
         return new Promise(async (resolve) => {
             
             if(!get(pyVersion)) {
@@ -21,8 +57,12 @@ export default async function({ e = null, pyfile = "", args = "", general = fals
             console.info("Sending general arguments: ", args)
             window.createToast("Process Started")
             
-            const pyArgs = get(developerMode) ? [pathJoin(get(pythonscript), "main.py"), pyfile, args ] : [pyfile, args]
+            const sendArgs = [pyfile, JSON.stringify(args)]
+            const mainPyFile = pathJoin(get(pythonscript), "main.py")
+
+            const pyArgs = get(developerMode) ? [mainPyFile, ...sendArgs ] : sendArgs
             console.log(get(pyProgram), {pyArgs})
+            
             const py = spawn( get(pyProgram), pyArgs, { detached: general, shell: openShell } )
             
             py.on("error", (err) => {
@@ -110,7 +150,13 @@ export default async function({ e = null, pyfile = "", args = "", general = fals
         window.handleError(error)
         if(target?.classList.contains("is-loading")) {
             target.classList.remove("is-loading")
-
         }
-    }
+    } 
+    // finally {
+    //     if(target?.classList.contains("is-loading")) {
+    //         target.classList.remove("is-loading")
+    //     }
+    //     return Promise.resolve(dataFromPython)
+    // }
+
 }
