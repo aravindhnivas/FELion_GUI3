@@ -16,16 +16,18 @@
     }                                   from "../../functions/svelteWritables";
     import Textfield                    from '@smui/textfield';
     import {savefile, loadfile}         from "../../functions/misc";
-    import { fade }                     from 'svelte/transition';
     import {NGauss_fit_func}            from '../../functions/NGauss_fit';
     import {exp_fit_func}               from '../../functions/exp_fit';
     import {relayout, deleteTraces}     from 'plotly.js/dist/plotly-basic';
     import {dropRight, sortBy}          from "lodash-es"
     import computePy_func               from "$src/Pages/general/computePy"
+    import CustomSwitch                 from "$components/CustomSwitch.svelte";
+
+    // //////////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////////////
 
     export let writeFile
     export let fullfiles
-    // export let normMethod
     export let addedFileCol
     export let writeFileName
     export let addedFileScale
@@ -33,19 +35,20 @@
     export let modalActivate=false
     export let adjustPeakTrigger=false;
     
-    let boxSelected_peakfinder=false
-    let NGauss_fit_args={}
+    // //////////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////////////
 
-    let peak_height = 1
-    let peak_width = 3
-    let peak_prominence = 0;
-    let toggleFindPeaksRow = false
+    let NGauss_fit_args={}
     let savePeakfilename = "peakTable";
+    let toggleFindPeaksRow = false
+    let boxSelected_peakfinder=false
 
     const clearAllPeak = () => {
 
         const graphElement = document.getElementById($graphDiv)
+
         relayout($graphDiv, { annotations: [], shapes: [], line: [] })
+        
         const defaultLength = $showall ? fullfiles.length : 1
         const noOfFittedData = graphElement.data?.length - defaultLength
         if (noOfFittedData === 0) {return window.createToast("No fitted lines found", "danger")}
@@ -139,7 +142,6 @@
                     exp_fit_func({dataFromPython})
                     window.createToast("Line fitted with gaussian function", "success")
                 })
-                
                 break;
 
             case "NGauss_fit":
@@ -152,17 +154,15 @@
                         )
                         return
                     }
+                  
                     NGauss_fit_args.index = $felixIndex
                 } else {NGauss_fit_args.index = []}
 
                 if ($felixPeakTable.length === 0) {
                     return window.createToast("No arguments initialised yet.", "danger") 
-
                 }
                 
-                
                 NGauss_fit_args.fitNGauss_arguments = {}
-
 
                 $felixPeakTable.forEach((f, index)=>{
                     NGauss_fit_args.fitNGauss_arguments[`cen${index}`] = f.freq
@@ -199,17 +199,35 @@
 </div>
 
 {#if toggleFindPeaksRow}
+
     <div class="align v-baseline">
-
         <div class="align" style="align-items: baseline;">
-            <i class="material-icons" on:click="{()=> modalActivate = true}">settings</i>
-            <button style="width:7em" class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"NGauss_fit"})}">Fit</button>
-            <Textfield bind:value={savePeakfilename} label="savefile"/>
-            <button class="button is-link" on:click="{()=>savefile({file:$felixPeakTable, name:savePeakfilename})}">Save peaks</button>
-            <button class="button is-link" on:click="{loadpeakTable}">Load peaks</button>
-            <button class="button is-danger" on:click="{()=>{$felixPlotAnnotations=[]; $felixPeakTable=[];NGauss_fit_args={}; relayout($graphDiv, { annotations: [] }); window.createToast("Cleared", "warning")}}">Clear</button>
-        </div>
 
+            <i class="material-icons" on:click="{()=> modalActivate = true}">settings</i>
+            <CustomSwitch bind:selected={boxSelected_peakfinder} label="limited range" />
+            <button style="width:7em" class="button is-link" 
+                on:click="{(e)=>plotData({e:e, filetype:"NGauss_fit"})}">
+                Fit
+            </button>
+            <Textfield bind:value={savePeakfilename} label="savefile"/>
+
+            <button class="button is-link" 
+                on:click="{()=>savefile({file:$felixPeakTable, name:savePeakfilename})}">
+                Save peaks
+            </button>
+            <button class="button is-link" on:click="{loadpeakTable}">Load peaks</button>
+            <button class="button is-danger" 
+                on:click="{()=>{
+                    $felixPlotAnnotations=[]; 
+                    $felixPeakTable=[];
+                    NGauss_fit_args={};
+                    relayout($graphDiv, { annotations: [] }); 
+                    window.createToast("Cleared", "warning")
+                }}" >
+                Clear
+            </button>
+
+        </div>
     </div>
-    
 {/if}
+

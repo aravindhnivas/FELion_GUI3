@@ -1,5 +1,5 @@
 
-import { plotlyEventCreatedFELIX, get } from './svelteWritables';
+import { plotlyEventCreatedFELIX, felixGraphPlotted, get } from './svelteWritables';
 import { subplot }                      from "../../../js/functions.js";
 import { plotlySelection, plotlyClick } from "./misc";
 import beforePlot                       from "./beforePlot";
@@ -33,6 +33,8 @@ export async function felix_func({ dataFromPython, delta } = {}) {
         const width = document.getElementById(id).clientWidth
         if(content){ relayout(id, {width}) }
     })
-    console.log("Graph Plotted")
 
+    console.log("Graph Plotted")
+    felixGraphPlotted.set(true)
+    
 }

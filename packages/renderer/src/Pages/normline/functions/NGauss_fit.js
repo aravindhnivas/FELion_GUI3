@@ -14,7 +14,7 @@ export function NGauss_fit_func({dataFromPython}) {
 
     let newTable = dataFromPython["fitted_parameter"].map((data)=>{
         let {freq, amp, fwhm, sig} = data
-        return {name: output_name, id:getID(), freq:freq, amp:amp, fwhm:fwhm, sig:sig, color:color}
+        return {name: output_name, id: getID(), freq:freq, amp:amp, fwhm:fwhm, sig:sig, color:color}
     
     })
 

@@ -18,4 +18,6 @@ export const pyProgram = derived([developerMode, pythonpath], ([$developerMode, 
 });
 
 export const pyVersion = writable("")
+export const pyServerPORT = writable(db.get("pyServerPORT") || "5050")
+export const pyServerReady = writable(false)
 export const suppressInitialDeveloperWarning = writable(db.get("suppressInitialDeveloperWarning") || false)

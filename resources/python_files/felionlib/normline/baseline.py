@@ -42,20 +42,32 @@ def var_find(openfile):
 
     return res, b0, trap
 
+
 class Create_Baseline():
 
     epsilon = 5
 
     def __init__(self, felixfile, location, plotIt=True, checkdir=True, verbose=True):
-
         attributes = {
-            'felixfile': felixfile, 'fname': felixfile.split(".")[0],
-            'baseline': None, 'data': None, 'undo_counter': 0, 'redo_counter': 0, 
-            'removed_datas': np.array([[], [], []]), 'redo_datas': np.array([[], [], []]), 'removed_index': [], 'redo_index': [],
-            'felix_corrected': False, "baseline_corrected": False, 'plotIt':plotIt, "verbose": verbose
+            'data': None,
+            'fname': felixfile.split(".")[0],
+            'plotIt': plotIt,
+            "verbose": verbose,
+            'baseline': None, 
+            'felixfile': felixfile, 
+            'redo_index': [],
+            'undo_counter': 0,
+            'redo_counter': 0, 
+            'removed_index': [],
+            'felix_corrected': False,
+            "baseline_corrected": False,
+            'redo_datas': np.array([[], [], []]),
+            'removed_datas': np.array([[], [], []]),
         }
 
-        for keys, values in attributes.items(): setattr(self, keys, values)
+        for keys, values in attributes.items(): 
+            setattr(self, keys, values)
+
         if felixfile.endswith("ofelix"):
             self.opo = True
             self.basefile = f'{self.fname}.obase'
@@ -487,12 +499,13 @@ class Create_Baseline():
     def get_data(self): return np.asarray([self.data[0], self.data[1]]), np.asarray([self.line.get_data()])
 
 args = None
+
 def main(arguments):
 
     global args
+    
     args = arguments
     filename = pt(args["filename"])
     felixfile = filename.name
     location = filename.parent
     Create_Baseline(felixfile, location)
-   

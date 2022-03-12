@@ -34,10 +34,15 @@ def simulate(args):
     time = float(args["duration"])*1e-3
 
     tspan = [0, time]
-    N_collisional = solve_ivp(collisionalRateDistribution, tspan, boltzmanDistributionInitial, dense_output=True)
     simulateTime = np.linspace(0, time, 100)
-
-    simulateCounts = N_collisional.sol(simulateTime)
+    
+    N_collisional = solve_ivp(
+        collisionalRateDistribution, tspan, boltzmanDistributionInitial,
+        method="Radau", t_eval=simulateTime
+    )
+    
+    print(f'{N_collisional.nfev=} evaluations required.', flush=True)
+    simulateCounts = N_collisional.y
     data = simulateCounts.tolist()
     defaultStyle={"mode": "lines+markers", "fill": 'tozeroy', "marker": {"size":1}}
     
@@ -54,10 +59,10 @@ def simulate(args):
     dataToSend = {
         "data" : dataWithLabel, 
         "collisionalBoltzmanPlotData" : {
-            "collisionalData":{"x":energyKeys, "y":collisionalDistribution.tolist(), "name" : "collisional"},
-            "boltzmanData":{"x":energyKeys, "y":boltzmanDistributionCold.tolist(), "name" : "boltzman"}
+            "collisionalData": {"x": energyKeys, "y": collisionalDistribution.tolist(), "name" : "collisional"},
+            "boltzmanData": {"x": energyKeys, "y": boltzmanDistributionCold.tolist(), "name" : "boltzman"}
         },
-        "differenceFromBoltzman": {"data": {"x":energyKeys, "y":differenceFromBoltzman.tolist(), "name":"Difference"}}
+        "differenceFromBoltzman": {"data": {"x": energyKeys, "y": differenceFromBoltzman.tolist(), "name":"Difference"}}
     }
 
     return sendData(dataToSend, calling_file=pt(__file__).stem)

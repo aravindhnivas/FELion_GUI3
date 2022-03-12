@@ -4,14 +4,17 @@ import fs from "fs-extra"
 import { promisify } from 'util'
 
 function tryCatcher(fn) {
-    try {
-        return fn.apply(this, arguments);
-    } catch (error) {
-        console.log(error)
-        return null
-    }
+    return function() {
+        try {
+            return fn.apply(this, arguments);
+        } catch (error) {
+            console.log(error)
+            return null
 
+        }
+    }
 }
+
 contextBridge.exposeInMainWorld("fs", {
     mkdirSync: (dir) => fs.mkdirSync(dir),
     emptyDirSync: (dir) => fs.emptyDirSync(dir),
@@ -25,8 +28,8 @@ contextBridge.exposeInMainWorld("fs", {
     copySync: (src, dest) => fs.copySync(src, dest),
     writeFileSync: (path, data) => fs.writeFileSync(path, data.toString("utf-8") ),
     removeSync: (remove) => fs.removeSync(remove),
-    readJsonSync: (jsonFile) => fs.readJsonSync(jsonFile),
-    outputJsonSync: (file, obj, options={spaces: 2}) => fs.outputJsonSync(file, obj, options),
+    readJsonSync: (jsonFile) => tryCatcher(fs.readJsonSync)(jsonFile),
+    outputJsonSync: (file, obj, options={spaces: 2}) => tryCatcher(fs.outputJsonSync)(file, obj, options),
 
     writeFile:  (filename, contents, callback)=>fs.writeFile(filename, contents, "utf8", callback),
     readdir: promisify(fs.readdir),

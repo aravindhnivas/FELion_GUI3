@@ -3,16 +3,21 @@ import path from "path"
 import './security-restrictions.ts';
 import unhandled from 'electron-unhandled';
 import Store from 'electron-store'
-
+import { execSync } from 'child_process'
+const db = new Store({name: "db"})
 Store.initRenderer();
+
 const isSingleInstance = app.requestSingleInstanceLock();
+
 if (!isSingleInstance) {
+
 	app.quit();
 	process.exit(0);
 }
 
 const env = import.meta.env;
 console.table(env)
+
 
 const ROOT_DIR = path.join(__dirname, "../../../")
 const PKG_DIR = path.join(ROOT_DIR, "packages")
@@ -57,9 +62,29 @@ app.whenReady().then(() => {
 }).catch(err => console.error(err))
 
 app.on('window-all-closed', () => {
-	if (process.platform !== 'darwin') {
-		app.quit()
+	
+	if (process.platform === "win32") {
+	
+		try {
+			
+			const pyServerPORT = db.get("pyServerPORT")
+			const command = "netstat -ano | findstr " + pyServerPORT
+			
+			const output = execSync(command)
+			const outputString = String.fromCharCode.apply(null, output)
+
+			
+			const PID = outputString.split("\n")[0].split("LISTENING").at(-1).trim()
+			const processEnded = execSync("taskkill /F /PID "+PID)
+			const portClosedOutput = String.fromCharCode.apply(null, processEnded)
+
+			console.log(PID, outputString, portClosedOutput)
+			console.log("Application closed")
+
+		} catch (error) { console.error(error) }
 	}
+	if (process.platform !== 'darwin') { app.quit() }
+
 })
 
 ipcMain.on("appInfo", (event, arg) => {

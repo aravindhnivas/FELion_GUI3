@@ -287,9 +287,12 @@
     </svelte:fragment>
 
     <svelte:fragment slot="footer_content__slot" >
-        {#if pyProcesses.length}
+
+        {#if pyProcesses.length > 0}
+        
             <button class="button is-danger" 
                 on:click="{()=>{pyProcesses.at(-1).kill(); pyProcesses.pop()}}">Stop</button>
+        
         {/if}
         
         <button class="button is-link" on:click="{computeParameters}" >Compute parameters</button>

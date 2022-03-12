@@ -95,7 +95,7 @@ def main(gauss_args):
             
             break
     index = False
-    if "index" in gauss_args: 
+    if len(gauss_args["index"])>1: 
         index = start_wn, end_wn = gauss_args["index"]
         print(f"Selecting data from {start_wn} - {end_wn}\n")
         ind = np.logical_and(wn > start_wn, wn < end_wn)

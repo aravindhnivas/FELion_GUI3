@@ -35,7 +35,7 @@ class Sliderlog(Slider):
         self.poly.xy = xy
         self.valtext.set_text(self.valfmt % 10**val)   # Modified to display 10**val instead of val
         if self.drawon:
-            self.ax.figure.canvas.draw()
+            self.ax.figure.canvas.draw_idle()
         self.val = val
         if not self.eventson:
             return
@@ -231,7 +231,7 @@ checkboxes = {
 def checkboxesFunc(label):
     global checkboxes
     checkboxes[label] = not checkboxes[label]
-    canvas.draw()
+    canvas.draw_idle()
 
 def on_pick(event):
     
@@ -247,11 +247,13 @@ def on_pick(event):
     
     legline.set_alpha(alpha)
 
-    canvas.draw()
+    canvas.draw_idle()
 
 toggleLine = {}
 
 def plot_exp():
+
+
     global data, fig, canvas, ax, k3Sliders, kCIDSliders, rateCoefficientArgs, \
         saveButton, radio, toggleLine, widget
 
@@ -336,7 +338,7 @@ def plot_exp():
 
     except Exception:
         log(traceback.format_exc())
-    canvas.draw()
+    canvas.draw_idle()
     widget.Buttons("Toggle-Widgets", widget.x0, widget.last_y+widget.y_diff, hideOtherWidgets, relwidth=0.7)
 
     return numberDensityWidget, saveButton, checkbox, button
@@ -349,7 +351,7 @@ def hideOtherWidgets(event=None):
     global otherWidgetsToggle
     for otherWidget in widget.sliderWidgets: otherWidget.set_visible(otherWidgetsToggle)
     for otherWidget in widget.bottomWidgets: otherWidget.set_visible(otherWidgetsToggle)
-    canvas.draw()
+    canvas.draw_idle()
     otherWidgetsToggle = not otherWidgetsToggle
     print(f"widgets removed", flush=True)
 
@@ -369,7 +371,7 @@ def update(val=None):
     for line, data in zip(fitPlot, dNdtSol):
         line.set_ydata(data)
 
-    canvas.draw()
+    canvas.draw_idle()
 
 k3Sliders = {}
 kCIDSliders = {}
@@ -458,15 +460,18 @@ def make_slider():
 args = None
 widget = None
 savefile = None
+
 def main(arguments):
+
     global args, currentLocation, nameOfReactants, \
         expTime, expData, expDataError, temp, rateConstantsFileData,\
         numberDensity, totalAttachmentLevels, selectedFile, initialValues, \
         k3Labels, kCIDLabels, ratek3, ratekCID, savedir, savefile, keyFoundForRate, data, widget
-        
 
     args = arguments
+    
     currentLocation = pt(args["currentLocation"]).parent
+    
     data = args["data"]
 
     nameOfReactants = args["nameOfReactantsArray"]
@@ -519,9 +524,9 @@ def main(arguments):
                     keyFoundForRate = False
 
     if not keyFoundForRate:
-
         k3Labels = [i.strip() for i in args["ratek3"].split(",")]
         kCIDLabels = [i.strip() for i in args["ratekCID"].split(",")]
+
         ratek3 = [float(args["k3Guess"]) for _ in k3Labels]
         ratekCID = [float(args["kCIDGuess"]) for _ in kCIDLabels]
 
@@ -529,6 +534,7 @@ def main(arguments):
     print(f"{ratek3=}", flush=True)
 
     widget = FELion_Tk(title=f"Kinetics: {selectedFile}", location=savedir)
-    
     KineticMain()
     widget.mainloop()
+
+    

@@ -138,29 +138,29 @@
     }
 
     $: updateplot = dataReady && plotfile && $normMethod && fullData.data && !$opoMode
-    $: console.log({updateplot})
+    
     $: if(updateplot && $showall) {
+
         if($felixGraphPlotted) {
+
             const currentKey = mapNormMethodKeys[$normMethod]
             const currentData = get_data(fullData.data[currentKey])
+
             const {layout} = $normMethodDatas[$normMethod]
             react("avgplot", currentData, layout)
-
             plot( "Baseline Corrected", "Wavelength (cm-1)", "Counts", fullData.data["base"], "bplot" )
             subplot(
                 "Spectrum and Power Analyser", 
                 "Wavelength set (cm-1)", "SA (cm-1)", fullData.data["SA"], "saPlot",
                 "Wavelength (cm-1)", `Total Power (mJ)`, fullData.data["pow"]
             );
+
         } else {
             felix_func({dataFromPython: fullData.data, delta})
-            $felixGraphPlotted = true
         }
     } else if(updateplot) {
         plotIndividualDataIntoGraph({fullData, plotfile, graphPlotted: $felixGraphPlotted, delta})
-    } 
-
-
+    }
 
 </script>
 
