@@ -88,14 +88,18 @@ export default async function({
             }
 
             console.info("Process closed")
-
+        
         })
 
+        
         py.stderr.on("data", (err) => {
+        
             if(pyfile === "server") {
                 error = String.fromCharCode.apply(null, err)
             } else {error += String.fromCharCode.apply(null, err)}
+        
             dispatchEvent(target, { py, pyfile, error }, "pyEventStderr")
+
 
         })
 
@@ -112,5 +116,7 @@ export default async function({
         })
 
         if(pyfile === "server") {pyServerReady.set(true)}
+ 
     })
+
 }

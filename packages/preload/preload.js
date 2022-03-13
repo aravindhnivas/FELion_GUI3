@@ -44,8 +44,10 @@ ipcRenderer.on('update-log-error', (_, error) => {console.error(error); localSto
 contextBridge.exposeInMainWorld("checkupdate", () => {
     ipcRenderer.invoke("checkupdate", null);
     localStorage.setItem("update-error", "")
+
 })
 
+import "./mangeServer"
 import "./fs-modules"
 import "./path-modules"
 import "./child-process-modules"

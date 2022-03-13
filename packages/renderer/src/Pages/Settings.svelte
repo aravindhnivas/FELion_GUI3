@@ -26,9 +26,7 @@
     
     import {
         checkTCP,
-        isportOpen,
         isItfelionpy,
-        closeConnection,
         fetchServerROOT,
     } from "./settings/serverConnections"
 
@@ -42,6 +40,7 @@
     
     onMount(async ()=>{
         try {
+
             await getPyVersion()
         } 
         catch (error) {pyError = error;}
@@ -59,86 +58,111 @@
     })
 
     function updateCheck(event=null){
+
         if(env.DEV) return console.info("Cannot update in DEV mode")
+
         try {
             event?.target.classList.toggle("is-loading")
             if (!navigator.onLine) {if (event) {return window.createToast("No Internet Connection!", "warning")}}
+
             checkupdate()
 
         } catch (error) { if(event) window.handleError(error)
         } finally {event?.target.classList.toggle("is-loading")}
     }
-    let serverDebug = false;
-    let pythonServer = [];
 
+    let pythonServer = [];
     let serverInfo = ""
+
     let executeCommand = ""
 
-    const closeOpenPort = async () => {
-        const PID = await isportOpen()
-        if(PID) {
+    const checkWhetherServerIsOpenAndCloseIt = async () => {
+        serverInfo += ">> Checking whether the felionpy server is already opened \n"
+        const {tcp: pid} = await getpids($pyServerPORT)
+        serverInfo += `>> Server is opened at ${$pyServerPORT} (PID: ${pid}) \n`
+
+        if(pid.length > 0) {
 
             if(await isItfelionpy()) {
-                const infoMessage = `felionpy connection already opened on port ${$pyServerPORT}`
-                serverInfo += ">> Info: "+infoMessage+"\n"
-                serverInfo += `>> pid: ${PID} closing felionpy previous connection\n`
-
-                const status = await closeConnection(PID)
-                serverInfo += `>> ${status}\n`
-                
-                return Promise.resolve()
-            } else {
-                const warnningMessage = `port: ${$pyServerPORT} is not free and already in use by other program`
-                serverInfo += ">> Warning: "+warnningMessage+"\n"
-                return Promise.reject(warnningMessage)
-
+                serverInfo += `>> felionpy server is already opened port:${$pyServerPORT} (PID: ${pid})\n`
+                serverInfo += `>> closing PID: ${pid} \n`
+                const output = await killByPid(pid)
+                serverInfo += `>> CLOSED: ${output} \n`
+                serverInfo += `>> CLOSED PID: ${pid} \n`
             }
-
         }
-    }
 
+    }
+    
     const startpythonServer = async (e) => {
         try {
-            await closeOpenPort()
-            serverInfo += ">> Establishing python server connection \n"
+
+            serverInfo += ">> INITIALISING: felionpy server connection \n"
+            await checkWhetherServerIsOpenAndCloseIt()
+
+            serverInfo += `>> STARTING: felionpy server at port ${$pyServerPORT}\n`
+
             const pythonServerButton = document.getElementById("pythonServerButton")
+            
             await computefromSubprocess({
                 button: e?.target || pythonServerButton,
                 general: true, 
                 pyfile: "server",
-                args: {
-                    port: $pyServerPORT,
-                    debug: serverDebug
-                }
-
+                args: {port: $pyServerPORT}
             })
+
             await updateTCPInfo()
+
+            serverInfo += `>> CLOSED: felionpy server\n`
+
         } catch (error) {window.handleError(error)}
+
     }
 
-    $: if($pyServerReady) {
-        updateServerInfo()
-        updateTCPInfo()
+
+    const serverOpenedInfo = async () => {
+        
+        await updateTCPInfo()
+        await updateServerInfo()
+    
     }
+
+    $: if($pyServerReady) {serverOpenedInfo()}
 
     $: if($pyServerPORT) {db.set("pyServerPORT", $pyServerPORT)}
 
-    const updateServerInfo = async ()=>{
-        const rootpage = await fetchServerROOT()
+    const updateServerInfo = async (e=null)=>{
+
+        serverInfo += `>> checking whether python server is opened\n`
+        const rootpage = await fetchServerROOT({target: e?.target})
         if(rootpage) { serverInfo += `>> ${rootpage}\n` }
+        else {serverInfo += `>> server could NOT be opened. try again.\n`}
     }
 
-    const updateTCPInfo = async ()=>{
-        const [{stdout}] = await checkTCP()
+    const updateTCPInfo = async (e=null)=>{
+
+        serverInfo += `>> checking TCP connection on port:${$pyServerPORT}\n`
+        
+        const [{stdout}] = await checkTCP({target: e?.target})
         if(stdout) { serverInfo += `>> ${stdout}\n` }
+        else {serverInfo += `>> ERROR occured while checking TCP connection on port:${$pyServerPORT}\n`}
+
+        if(stdout.includes("LISTENING")) {
+            serverInfo += `>> WORKING - TCP connection on port:${$pyServerPORT}\n`
+        }
     }
 
-    onDestroy(() => {
-        $pyServerReady = false
+    
+    onDestroy(async () => {
+
         if(updateInterval) {
             console.warn("Clearing update interval")
             clearInterval(updateInterval)
         }
+
+        await checkWhetherServerIsOpenAndCloseIt()
+        console.warn("felionpy server closed")
+
     });
 
 </script>
@@ -159,7 +183,7 @@
            </div>
         </div>
 
-        <div class="box">
+        <div class="mainContainer box">
 
             <div class="container right" id="Settings_right_column">
 
@@ -196,18 +220,16 @@
                         <div class="align">
 
                             <Textfield bind:value={$pyServerPORT} label="serverPORT" />
-                            <CustomSwitch bind:selected={serverDebug} label="serverDebug" />
+                            <!-- <CustomSwitch bind:selected={serverDebug} label="serverDebug" /> -->
 
                             <PyButton id="pythonServerButton" on:click={startpythonServer} 
                                     bind:pyProcesses={pythonServer}
-                                    disabled={pythonServer.length>0}
+                                    disabled={pythonServer.length>0 || $pyServerReady}
                                     btnName={"startpythonServer"}
                             />
-                            {#if pythonServer.length>0}
-                                <button class="button is-danger" on:click="{()=>{
-                                    const currentServer = pythonServer[0]
-                                    currentServer.kill()
-                                    console.log(currentServer)
+                            {#if pythonServer.length>0 || $pyServerReady }
+                                <button class="button is-danger" on:click="{async ()=>{
+                                    pythonServer[0]?.kill() || await killByPid(await getpids($pyServerPORT))
                                 }}">
                                     STOP
                                 </button>
@@ -229,7 +251,7 @@
 
                         </div>
 
-                        <div class="align box" style="white-space: pre-wrap; user-select: text;">
+                        <div class="serverContainer align box">
                             {serverInfo}
                         </div>
 
@@ -262,7 +284,6 @@
                     </div>
                 </div>
 
-                
                 <div class="animated fadeIn" class:hide={selected!=="About"}>
                     <h1 class="title">About</h1>
                     <div class="content">
@@ -292,7 +313,6 @@
     .main__div {
         display: grid;
         grid-template-columns: 1fr 4fr;
-
         column-gap: 3em;
         height: calc(100vh - 7rem);
 
@@ -309,11 +329,11 @@
             cursor: pointer;
             display: grid;
             row-gap: 2em;
-
             div {font-size: 22px; }
         } 
 
         #update-progress-container {
+
             progress {width: 100%;}
             display: grid;
             width: 100%;
@@ -323,7 +343,6 @@
         }
     }
 
-
     h1 {
         margin: 0;
         width: 100%;
@@ -332,18 +351,23 @@
     .errorbox {
         white-space: pre-line;
         height: 100%;
+
         width: fit-content;
         font-size: medium;
         margin-left: auto;
+
         border: solid 1px;
     }
 
-    .right {
-        div {
-            overflow-y: auto;
-            max-height: calc(84vh - 2rem);
-            padding-right: 1em;
-        }
+    .mainContainer {overflow: auto;}
+
+    .serverContainer {
+        overflow: auto;
+        user-select: text;
+        white-space: pre-wrap;
+        align-items: baseline;
+        height: calc(42vh - 5rem);
+        max-height: calc(42vh - 5rem);
     }
-    
+
 </style>

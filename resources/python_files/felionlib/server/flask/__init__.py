@@ -11,7 +11,7 @@ cors = CORS(app)
 def home():
     return "Server running: felionpy"
 
-@app.route('/felionpy/compute', methods=["POST"])
+@app.route('/', methods=["POST"])
 def compute():
     
     startTime = perf_counter()

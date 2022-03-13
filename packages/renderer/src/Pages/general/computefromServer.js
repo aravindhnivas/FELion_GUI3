@@ -9,10 +9,10 @@ export default async function({target=null, general=false, pyfile, args}) {
         const outputFile = pathJoin(appInfo.temp, "FELion_GUI3", pyfile.split(".").at(-1) + "_data.json")
         if(fs.existsSync(outputFile)) fs.removeSync(outputFile)
     
-        const URL = `http://localhost:${get(pyServerPORT)}/felionpy/compute`
+        const URL = `http://localhost:${get(pyServerPORT)}/`
     
-        const method =  'POST'
-        const headers =  {
+        const method = 'POST'
+        const headers = {
             'Content-type': 'application/json',
             'Accept': 'application/json'
         }
