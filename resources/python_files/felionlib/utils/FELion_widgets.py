@@ -444,11 +444,6 @@ def FELion_Tk(inheritClass="Tk", *args, **kwargs):
             self.plotXlabel.set(xaxis)
             self.plotFigText.set(fig_caption)
 
-            # Yscale
-            self.ax.set(yscale=yscale)
-            if yscale == "log": self.plotYscale.set(True)
-            if xscale == "log": self.plotXscale.set(True)
-
             # Setting title
             self.ax.set_title(title, fontsize=self.titleSz.get())
 
@@ -484,6 +479,11 @@ def FELion_Tk(inheritClass="Tk", *args, **kwargs):
 
             if optimize:
                 self.ax = optimizePlot(self.ax, xaxis, yaxis, title)
+            
+            # X-Y scale
+            self.ax.set(yscale=yscale, xscale=xscale)
+            if yscale == "log": self.plotYscale.set(True)
+            if xscale == "log": self.plotXscale.set(True)
 
             self.fig.tight_layout()
             self.canvas.draw()
