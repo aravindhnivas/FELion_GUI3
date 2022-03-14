@@ -251,9 +251,9 @@ def FELion_Tk(inheritClass="Tk", *args, **kwargs):
                 self.canvas.mpl_connect("key_press_event", on_key_press)
                 self.canvas.mpl_connect("button_release_event", lambda event: self.canvas._tkcanvas.focus_set())
             
-            # self.canvas.draw()
+            # self.canvas.draw_idle()
             # self.fig.tight_layout()
-            # self.canvas.draw()
+            # self.canvas.draw_idle()
             return self.fig, self.canvas
         
         def make_figure_widgets(self):
@@ -307,7 +307,7 @@ def FELion_Tk(inheritClass="Tk", *args, **kwargs):
                 # Row 8
                 y += self.y_diff
                 self.tight_layout = self.Buttons(
-                    "tight_layout", x0, y, lambda : (self.fig.tight_layout(), self.canvas.draw()),
+                    "tight_layout", x0, y, lambda : (self.fig.tight_layout(), self.canvas.draw_idle()),
                     relwidth=0.7
                 )
 
@@ -353,7 +353,7 @@ def FELion_Tk(inheritClass="Tk", *args, **kwargs):
 
                         if not len(output)<1: self.codeResult.insert(END, f"Result: {output[-1]}\n")
                     
-                    self.canvas.draw()
+                    self.canvas.draw_idle()
 
                 except Exception as error:
                     self.codeResult.delete('1.0', END)
@@ -421,7 +421,7 @@ def FELion_Tk(inheritClass="Tk", *args, **kwargs):
                     else: scale = "log"
                     self.ax.set(yscale=scale)
             
-            self.canvas.draw()
+            self.canvas.draw_idle()
             
         def make_figure_layout(
             self, ax=None, savename=None, optimize=False,
@@ -475,7 +475,7 @@ def FELion_Tk(inheritClass="Tk", *args, **kwargs):
             # Figure caption
             self.figtext = self.fig.text(0.5, 0.07, self.plotFigText.get(), ha="center", wrap=True, fontsize=self.figtextFont.get())
 
-            self.canvas.draw()
+            self.canvas.draw_idle()
 
             if optimize:
                 self.ax = optimizePlot(self.ax, xaxis, yaxis, title)
@@ -486,7 +486,7 @@ def FELion_Tk(inheritClass="Tk", *args, **kwargs):
             if xscale == "log": self.plotXscale.set(True)
 
             self.fig.tight_layout()
-            self.canvas.draw()
+            self.canvas.draw_idle()
 
             self.plot_legend = None
             if xdata is not None: 
