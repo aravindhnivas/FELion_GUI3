@@ -23,7 +23,8 @@ contextBridge.exposeInMainWorld("spawn", (cmd, args=[], opts={})=>{
     }
 })
 
-const computeExecCommand = async (cmd) => {
+
+export const computeExecCommand = async (cmd) => {
     console.log(`Executing command: ${cmd}`)
     let error;
     let stdout, stderr;

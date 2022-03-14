@@ -17,6 +17,7 @@ const config = {
   // emptyOutDir: true,
   resolve: {
     alias: {
+      '$preload': join(PACKAGE_ROOT, '..', 'preload'),
       '$src': join(PACKAGE_ROOT, 'src'),
       '$components': join(PACKAGE_ROOT, 'src/components'),
       '$computeCode': join(PACKAGE_ROOT, 'src/Pages/computeCode'),

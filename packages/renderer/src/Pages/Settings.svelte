@@ -26,30 +26,45 @@
     
     import {
         checkTCP,
-        isItfelionpy,
         fetchServerROOT,
     } from "./settings/serverConnections"
-
     
     const navigate = (e) => {selected = e.target.innerHTML; window.db.set("settingsActiveTab", selected);}
     let selected = window.db.get("settingsActiveTab") || "Update"
     let mounted = false
-
     let updateInterval;
     let pyError = "", updateError=""
+
+    db.onDidChange("pyServerReady", async (value)=>{
+        $pyServerReady = value
+        console.log("pyServerReady", value)
+    })
     
     onMount(async ()=>{
 
         try {
-            await getPyVersion()
+            if(!pyVersion) {
+                console.warn("python is invalid. computing again")
+                await getPyVersion()
+                console.warn($pyVersion)
+            }
+            $pyServerReady = db.get("pyServerReady")
         } 
-
         catch (error) {pyError = error;}
-
         finally {
-            startpythonServer()
+
             mounted = true
+            serverInfo += `>> pyServerReady: ${$pyServerReady}\n`
+            serverInfo += `>> pyVersion: ${$pyVersion}\n`
+
+            
+            if($pyServerReady) {
+                await updateTCPInfo()
+                await updateServerInfo()
+            }
+
             if(env.DEV) return
+            
             const interval = 15 //min
             updateInterval = setInterval(() => {
                 updateCheck()
@@ -73,76 +88,25 @@
 
     let pythonServer = [];
     let serverInfo = ""
-    
     let executeCommand = ""
 
     const closeServerIfOpen = async () => {
 
-        serverInfo += ">> Checking whether the felionpy server is already opened \n"
         const pid = await portToPid($pyServerPORT)
-        
-        if(pid?.length > 0) {
-
+        if(pid) {
             $pyServerReady = true    
-            
-            serverInfo += `>> Server is opened at ${$pyServerPORT} (PID: ${pid}) \n`
-            serverInfo += `>> felionpy server is already opened port:${$pyServerPORT} (PID: ${pid})\n`
-            serverInfo += `>> closing PID: ${pid} \n`
-            
+            serverInfo += `>> closing server at ${$pyServerPORT} (PID: ${pid}) \n`
             await killByPid(pid)
             serverInfo += `>> CLOSED PID: ${pid} \n`
-            
             $pyServerReady = false
-
         }
-
-        serverInfo += ">> server is yet to open \n"
         return Promise.resolve(true)
-        
     }
-    
-    const startpythonServer = async (e) => {
-        
-        try {
-
-            serverInfo += ">> INITIALISING: felionpy server connection \n"
-            const closed = await closeServerIfOpen()
-            if(!closed) return serverInfo += ">> could not close felionpy server connection \n"
-
-            $pyServerReady = false
-            serverInfo += `>> STARTING: felionpy server at port ${$pyServerPORT}\n`
-
-            const pythonServerButton = document.getElementById("pythonServerButton")
-            
-            await computefromSubprocess({
-                button: e?.target || pythonServerButton,
-                general: true, 
-                pyfile: "server",
-                args: {port: $pyServerPORT, debug: serverDebug}
-            })
-
-            await updateTCPInfo()
-            serverInfo += `>> CLOSED: felionpy server\n`
-
-        } catch (error) {window.handleError(error)}
-
-    }
-    $: console.log({$pyServerReady})
-    $: if(pythonServer.length==0 && $pyServerReady) {
-        closeServerIfOpen().then(closed=>console.warn({closed}))
-    }
-
-    // const serverOpenedInfo = async () => {
-    //     await updateTCPInfo()
-    //     await updateServerInfo()
-    // }
-    // $: if($pyServerReady) {serverOpenedInfo()}
 
     $: if($pyServerPORT) {db.set("pyServerPORT", $pyServerPORT)}
 
     const updateServerInfo = async (e=null)=>{
 
-        serverInfo += `>> checking whether python server is opened\n`
         const rootpage = await fetchServerROOT({target: e?.target})
         if(rootpage) { 
             serverInfo += `>> ${rootpage}\n`; 
@@ -150,30 +114,28 @@
             return
         }
         $pyServerReady = false;
-        serverInfo += `>> server could NOT be opened. try again.\n`
     }
+
     let serverDebug = false
+
     const updateTCPInfo = async (e=null)=>{
 
-        serverInfo += `>> checking TCP connection on port:${$pyServerPORT}\n`
-        
         const [{stdout}] = await checkTCP({target: e?.target})
         if(stdout) { serverInfo += `>> ${stdout}\n` }
         else {serverInfo += `>> ERROR occured while checking TCP connection on port:${$pyServerPORT}\n`}
 
         if(stdout.includes("LISTENING")) {
-            serverInfo += `>> WORKING - TCP connection on port:${$pyServerPORT}\n`
             $pyServerReady = true
             return
         }
         $pyServerReady = false;
     }
 
+    let showServerControls = false
+
     onDestroy(async () => {
         if(updateInterval) { clearInterval(updateInterval) }
-        await closeServerIfOpen()
     });
-
 </script>
 
 <Changelog  />
@@ -203,11 +165,16 @@
                     <div class="align">
                     
                         <div class="tag is-warning">{$pyVersion || "Python undefined"}</div>
+                        <div class="tag" 
+                            class:is-danger={!$pyServerReady}
+                            class:is-success={$pyServerReady}
+                        >{$pyServerReady ? `server running (port: ${$pyServerPORT})` : "felionpy server closed"}</div>
 
                         <div class="align">
 
                             <button class="button is-link" on:click="{()=> {$developerMode = !$developerMode; window.db.set("developerMode", $developerMode)}}">Developer mode: {$developerMode} </button>
                             <button class="button is-link" on:click="{getPyVersion}">getPyVersion </button>
+                            <button class="button is-link" on:click="{()=>showServerControls=!showServerControls}">Show server controls</button>
                             {#if $developerMode}
 
                                 <div class="align">
@@ -226,46 +193,38 @@
                         {/if}
 
                         
-                        <div class="align">
+                        <div class="align server-control" class:hide={!showServerControls}>
+                            <div class="align">
 
-                            <Textfield type="number" bind:value={$pyServerPORT} label="serverPORT" />
-                            <CustomSwitch bind:selected={serverDebug} label="serverDebug" />
-
-                            <PyButton id="pythonServerButton" on:click={startpythonServer} 
-                                    bind:pyProcesses={pythonServer}
-                                    disabled={pythonServer.length>0 || $pyServerReady}
-                                    btnName={"startpythonServer"}
-                            />
-                            {#if pythonServer.length>0 || $pyServerReady }
-                                <button class="button is-danger" on:click="{async ()=>{
-                                    if(pythonServer.length==0) {
-                                        
-                                        console.warn("closing felionpy server")
-                                        const pid = await killByPid(await portToPid($pyServerPORT))
-                                        
-                                        if(pid) {
-                                            $pyServerReady = false    
-                                            console.warn("CLOSED: felionpy server")
-                                        }
-                                    } else {pythonServer[0]?.kill()}
-                                }}">
-                                    STOP
-                                </button>
-                            {/if}
-
-                            <button class="button is-warning" on:click="{updateTCPInfo}">Check TCP</button>
-
-                        </div>
-
-
-                        <div class="align">
-                            <Textfield bind:value={executeCommand} label="executeCommands" />
-                            <button class="button is-link" on:click="{async ()=>{
-                                const [{stdout}] = await exec(executeCommand)
-                                serverInfo += `>> ${stdout}\n`
-                            }}">executeCommand</button>
-                            <button id="fetchServerROOT" class="button is-link" on:click="{updateServerInfo}">fetchServerROOT</button>
-                            <button class="button is-danger" on:click="{()=>{serverInfo = ""}}">Clear</button>
+                                <Textfield type="number" bind:value={$pyServerPORT} label="serverPORT" />
+                                <CustomSwitch bind:selected={serverDebug} label="serverDebug" />
+    
+                                <PyButton id="pythonServerButton" on:click={startServer} 
+                                        bind:pyProcesses={pythonServer}
+                                        disabled={$pyServerReady}
+                                        btnName={"startpythonServer"}
+                                />
+                                {#if $pyServerReady}
+                                    <button class="button is-danger" on:click="{closeServerIfOpen}">
+                                        STOP
+                                    </button>
+                                {/if}
+    
+                                <button class="button is-warning" on:click="{updateTCPInfo}">Check TCP</button>
+    
+                            </div>
+    
+    
+                            <div class="align">
+                                <Textfield bind:value={executeCommand} label="executeCommands" />
+                                <button class="button is-link" on:click="{async ()=>{
+                                    const [{stdout}] = await exec(executeCommand)
+                                    serverInfo += `>> ${stdout}\n`
+                                }}">executeCommand</button>
+                                <button id="fetchServerROOT" class="button is-link" on:click="{updateServerInfo}">fetchServerROOT</button>
+                                <button class="button is-danger" on:click="{()=>{serverInfo = ""}}">Clear</button>
+    
+                            </div>
 
                         </div>
 

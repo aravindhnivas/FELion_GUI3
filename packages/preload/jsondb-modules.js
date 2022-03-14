@@ -1,20 +1,17 @@
-import { contextBridge, ipcRenderer } from 'electron'
+import { contextBridge } from 'electron'
 import Store from 'electron-store'
 
-contextBridge.exposeInMainWorld("appVersion", ipcRenderer.sendSync('appVersion', null))
-const store = new Store({name: "db"});
+export const db = new Store({name: "db"});
 
 contextBridge.exposeInMainWorld("db", {
+    get(key) { return db.get(key) },
+    set(key, value) { return db.set(key, value) },
+    delete(key) { return db.delete(key) },
+    data: ()=>db.db,
+    clear: ()=>db.clear(),
+    reset: ()=>db.reset(),
 
-    get(key) { return store.get(key) },
-    set(key, value) { return store.set(key, value) },
-    delete(key) { return store.delete(key) },
-    data: ()=>store.store,
-
-    clear: ()=>store.clear(),
-    reset: ()=>store.reset(),
-    path: store.path,
-    onDidChange: (key, callback) => store.onDidChange(key, callback),
-    onDidAnyChange: (callback) => store.onDidAnyChange(callback),
-
+    path: db.path,
+    onDidChange: (key, callback) => db.onDidChange(key, callback),
+    onDidAnyChange: (callback) => db.onDidAnyChange(callback),
 })
