@@ -41,12 +41,10 @@ class depletionplot:
             self.startPlotting()
             if saveOutputDepletion and self.depletion_exp is not None: 
                 self.saveFile(show=False)
-            
+            self.widget.mainloop()
         except:
             showerror("Error occured", traceback.format_exc(5))
-        finally:
-            self.widget.mainloop()
-        
+            self.widget.destroy()
 
     def create_figure(self):
         

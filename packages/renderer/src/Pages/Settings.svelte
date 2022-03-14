@@ -118,8 +118,8 @@
         $pyServerReady = false;
     }
 
-    let serverDebug = false
-
+    let serverDebug = db.get("serverDebug") || false
+    
     const updateTCPInfo = async (e=null)=>{
 
         const [{stdout}] = await checkTCP({target: e?.target})
@@ -184,7 +184,7 @@
                             
                             </button>
 
-                            <button class="button is-link" on:click="{getPyVersion}">getPyVersion </button>
+                            <button class="button is-link" on:click="{getPyVersion}">getPyVersion</button>
                             
                             <button class="button is-link" 
                                 on:click="{()=>showServerControls=!showServerControls}"
@@ -214,9 +214,14 @@
                             <div class="align">
 
                                 <Textfield type="number" bind:value={$pyServerPORT} label="serverPORT" />
-                                <CustomSwitch bind:selected={serverDebug} label="serverDebug" />
+                                <CustomSwitch bind:selected={serverDebug} label="serverDebug" 
+                                    on:SMUISwitch:change="{()=>{
+                                        db.set("serverDebug", serverDebug);
+                                        console.log({serverDebug}, db.get("serverDebug"))
+                                    }}"
+                                />
     
-                                <PyButton id="pythonServerButton" on:click={startServer} 
+                                <PyButton id="pythonServerButton" on:click={window.startServer} 
                                         bind:pyProcesses={pythonServer}
                                         disabled={$pyServerReady}
                                         btnName={"startpythonServer"}

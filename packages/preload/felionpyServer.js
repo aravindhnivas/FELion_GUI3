@@ -2,9 +2,10 @@
 import path from "path"
 import {db} from "./jsondb-modules"
 import { spawn } from 'child_process'
+import { killer } from 'cross-port-killer';
+import { getPortId } from './mangeServer';
 import { computeExecCommand as exec } from './child-process-modules'
 import {pyVersion, developerMode, pythonscript, pyProgram, get} from "./stores"
-
 export async function getPyVersion() {
     
     db.set("pyVersion", "")
@@ -24,6 +25,15 @@ export async function getPyVersion() {
 }
 
 export async function startServer() {
+
+    if(!db.has("serverDebug")) db.set("serverDebug", false)
+        
+    const port = db.get("pyServerPORT")
+    const debug = db.get("serverDebug")
+
+    const pids = await getPortId(port)
+    if(pids) {await killer.killByPid(pids)}
+
     return new Promise(async (resolve, reject)=>{
 
         db.set("pyServerReady", false)
@@ -37,7 +47,9 @@ export async function startServer() {
         console.log(get(pyVersion))
         const pyfile = "server"
 
-        const sendArgs = [pyfile, JSON.stringify({port: db.get("pyServerPORT"), debug: false})]
+        
+        
+        const sendArgs = [pyfile, JSON.stringify({port, debug})]
         const mainPyFile = path.join(get(pythonscript), "main.py")
 
         const pyArgs = get(developerMode) ? [mainPyFile, ...sendArgs ] : sendArgs

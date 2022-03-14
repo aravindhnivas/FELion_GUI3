@@ -7,7 +7,7 @@ import {db} from "./jsondb-modules"
 import {startServer} from "./felionpyServer"
 import {pyServerPORT, get} from "./stores"
 
-const getPortId = async (port) => {
+export const getPortId = async (port) => {
 
     try {
 
