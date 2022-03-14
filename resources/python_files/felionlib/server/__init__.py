@@ -1,6 +1,5 @@
 
 from .flask import app
-from importlib import reload
 from gevent.pywsgi import WSGIServer
 
 def main(args):
