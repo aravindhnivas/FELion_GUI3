@@ -1,14 +1,15 @@
 import json
 import traceback
 from pathlib import Path as pt
-from felionlib.utils.msgbox import MsgBox, MB_ICONERROR, MB_ICONINFORMATION
 from felionlib.kineticsCode.utils.definitions import log, formatArray
+from felionlib.utils.msgbox import MsgBox, MB_ICONERROR, MB_ICONINFORMATION
+
 
 def saveData(
-    event, widget, args, 
+    event, widget, args,
     ratek3, k3Labels, kCIDLabels,
     k_fit, k_err, rateCoefficientArgs,
-    fitPlot, expPlot, plotted, rateConstantsFileData
+    fitPlot, expPlot, rateConstantsFileData
 ):
 
     currentLocation = pt(args["currentLocation"]).parent
@@ -27,18 +28,20 @@ def saveData(
         with open(savefile, "w+") as f:
 
             k3Values = (
-                formatArray(rateCoefficientArgs[0]), 
+                formatArray(rateCoefficientArgs[0]),
                 formatArray(k_fit[:k3Len])
-            )[len(k_fit)>0]
+            )[len(k_fit) > 0]
 
-            k3Err = ([0]*len(k3Labels), formatArray(k_err[:k3Len]))[len(k_err)>0]
-            
+            k3Err = ([0]*len(k3Labels),
+                     formatArray(k_err[:k3Len]))[len(k_err) > 0]
+
             kCIDValues = (
-                formatArray(rateCoefficientArgs[1]), 
+                formatArray(rateCoefficientArgs[1]),
                 formatArray(k_fit[k3Len:])
-            )[len(k_fit)>0]
+            )[len(k_fit) > 0]
 
-            kCIDErr = ([0]*len(kCIDLabels), formatArray(k_err[k3Len:]))[len(k_err)>0]
+            kCIDErr = ([0]*len(kCIDLabels),
+                       formatArray(k_err[k3Len:]))[len(k_err) > 0]
 
             k3_fit = {
                 key: [value, err]
@@ -48,7 +51,7 @@ def saveData(
                 key: [value, err]
                 for key, value, err in zip(kCIDLabels, kCIDValues, kCIDErr)
             }
-            
+
             dataToSave = {selectedFile: {}}
             dataToSave[selectedFile] = {
                 "k3_fit": k3_fit,
@@ -64,44 +67,51 @@ def saveData(
 
             f.write(data)
             log(f"file written: {savefile.name} in {currentLocation} folder")
-            
+
             MsgBox(
-                "Saved", 
+                "Saved",
                 f"Rate constants written in json format : '{savefile.name}'\nLocation: {currentLocation}", MB_ICONINFORMATION
             )
 
-            widget.fig.savefig(f"{savedir/selectedFile}_.png", dpi=200)
-            widget.fig.savefig(f"{savedir/selectedFile}_.pdf", dpi=200)
+            
+        savefilename = currentLocation/f"EXPORT/{selectedFile}_fitted.json"
+        with open(savefilename, "w+") as f:
+            dataToSaveFit = {
+                "fit": {},
+                "exp": {}
+            }
 
-
-        with open(currentLocation/f"EXPORT/{selectedFile}_fitted.json", "w+") as f:
-            dataToSaveFit = {"fit": {}, "exp": {}}
             for name, fitLine, expLine in zip(nameOfReactants, fitPlot, expPlot):
+
                 xdata_f, ydata_f = fitLine.get_data()
                 xdata, ydata = expLine.get_children()[0].get_data()
+
                 dataToSaveFit["fit"][name] = {
                     "xdata": xdata_f.tolist(),
                     "ydata": ydata_f.tolist()
                 }
+
                 dataToSaveFit["exp"][name] = {
                     "xdata": xdata,
                     "ydata": ydata
                 }
-            
+
             data = json.dumps(
                 dataToSaveFit, sort_keys=True,
                 indent=4, separators=(',', ': ')
             )
 
             f.write(data)
-            
+
             log(f"file written: {selectedFile}_fitted.json in EXPORT folder")
 
     except Exception:
-        error = traceback.format_exc()
+        error = traceback.format_exc(5)
         MsgBox(
-            "Error occured: ", 
-            f"Error occured while saving the file\n{error}", 
+            "Error occured: ",
+
+            f"Error occured while saving the file\n{error}",
             MB_ICONERROR
         )
+
         log(f"Error occured while saving the file\n{error}")

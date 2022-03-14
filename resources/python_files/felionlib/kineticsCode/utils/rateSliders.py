@@ -91,4 +91,5 @@ def make_slider(
         kCIDSliderAxes.append(current_kCIDSliderAxes)
     
     widget.sliderWidgets = k3SliderAxes+kCIDSliderAxes
+
     return k3Sliders, kCIDSliders
