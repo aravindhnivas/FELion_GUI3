@@ -45,6 +45,7 @@ def compute():
 
     except Exception:
         error = traceback.format_exc(5)
+        print("catching the error occured in python", error, flush=True)
         abort(404, description=error)
 
     finally:

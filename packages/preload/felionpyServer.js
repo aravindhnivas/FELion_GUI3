@@ -6,13 +6,12 @@ import { computeExecCommand as exec } from './child-process-modules'
 import {pyVersion, developerMode, pythonscript, pyProgram, get} from "./stores"
 
 export async function getPyVersion() {
+    
     db.set("pyVersion", "")
     const pyfile = "getVersion"
-    const pyArgs = get(developerMode) ? pathJoin(get(pythonscript), "main.py") : ""
-
+    const pyArgs = get(developerMode) ? path.join(get(pythonscript), "main.py") : ""
 
     const command = `${get(pyProgram)} ${pyArgs} ${pyfile} {} `
-
     const [{stdout}, error] = await exec(command)
     if(error) return Promise.reject(error)
 
@@ -42,8 +41,8 @@ export async function startServer() {
         const mainPyFile = path.join(get(pythonscript), "main.py")
 
         const pyArgs = get(developerMode) ? [mainPyFile, ...sendArgs ] : sendArgs
-        console.log(get(pyProgram), {pyArgs})
-        
+        console.warn(get(pyProgram), pyArgs)
+
         const opts = {}
         
         try {

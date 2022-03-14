@@ -13,26 +13,41 @@ np.seterr(all="ignore")
 
 class depletionplot:
     
-    def __init__(self, location, resOnFile=None, resOffFile=None, power=None, nshots=10, massIndex=0, timestartIndex=1, saveOutputDepletion=True):
-        self.location = pt(location)
-        self.scanfiles = list(self.location.glob("*.scan"))
-        self.resOnFile = resOnFile
+    def __init__(
+        self, location,
+        resOnFile=None, resOffFile=None,
+        power=None, nshots=10, massIndex=0, timestartIndex=1,
+        saveOutputDepletion=True
+    
+    ):
 
-        self.resOffFile = resOffFile
+        try:
+            self.location = pt(location)
+            self.scanfiles = list(self.location.glob("*.scan"))
+            self.resOnFile = resOnFile
 
-        self.power = {"resOn": power[0]/1000, "resOff": power[1]/1000} # mJ to J
-        self.powerStr = f"{power[0]}, {power[1]}"
-        self.nshots = nshots
-        self.massIndex = massIndex
-        self.timestartIndex = timestartIndex
+            self.resOffFile = resOffFile
 
-        self.widget = FELion_Tk(title="Depletion Plot", location=self.location)
-        self.create_figure()
+            self.power = {"resOn": power[0]/1000, "resOff": power[1]/1000} # mJ to J
+            self.powerStr = f"{power[0]}, {power[1]}"
+            self.nshots = nshots
+            self.massIndex = massIndex
+            self.timestartIndex = timestartIndex
 
-        self.startPlotting()
-        if saveOutputDepletion: self.saveFile(show=False)
-        self.widget.mainloop()
+            self.widget = FELion_Tk(title="Depletion Plot", location=self.location)
+            self.create_figure()
+
+            self.depletion_exp = None            
+            self.startPlotting()
+            if saveOutputDepletion and self.depletion_exp is not None: 
+                self.saveFile(show=False)
+            
+        except:
+            showerror("Error occured", traceback.format_exc(5))
+        finally:
+            self.widget.mainloop()
         
+
     def create_figure(self):
         
         self.fig, self.canvas = self.widget.Figure(default_widget=False, default_save_widget=False, executeCodeWidget=False, dpi=200)
@@ -135,9 +150,8 @@ class depletionplot:
         # Row 10
         y += y_diff
         self.grid = self.widget.Entries("Check", "Grid", x0, y, default=True, bind_btn=True, bind_func = self.change_grid)
-        
+
         # Row 11
-        
         y += y_diff
         self.latex = self.widget.Entries("Check", "Latex", x0, y)
         self.save_fig = self.widget.Buttons("Save", x0+x_diff, y, self.savefig)
@@ -162,22 +176,40 @@ class depletionplot:
         self.startPlotting(make_slider_widget=False)
         self.canvas.draw()
 
+
     def saveFile(self, event=None, show=True):
 
         depletion_dir = self.location / "depletion_output"
 
-        if not depletion_dir.exists(): depletion_dir.mkdir()
+        if not depletion_dir.exists():
+            depletion_dir.mkdir()
+        
         timescanfile_reduced = depletion_dir / f"{self.resOnFile.stem}__{self.resOffFile.stem}.rscan"
         timescanfile_fitted = depletion_dir / f"{self.resOnFile.stem}__{self.resOffFile.stem}.fscan"
 
+
         with open(timescanfile_reduced, "w+") as f:
+            f.write(
+                "# time(s)\tpowerOn(J)\tcountsOn\terrOn\t\
+                powerOff(J)\tcountsOff\terroff\tDep_exp\tDep_exp_err\t\n"
+            )
 
-            f.write("# time(s)\tpowerOn(J)\tcountsOn\terrOn\tpowerOff(J)\tcountsOff\terroff\tDep_exp\tDep_exp_err\t\n")
+            for time, powerOn, powerOff, countsOn, countsOff, \
+                errOn, errOff, dep_exp, dep_exp_err \
+                    in zip(
+                        self.time["resOn"], self.power["resOn"],
+                        self.power["resOff"], self.counts["resOn"], 
+                        self.counts["resOff"], self.error["resOn"], 
+                        self.error["resOff"], self.depletion_exp, 
+                        self.depletion_exp_err
+                    ):
 
-            for time, powerOn, powerOff, countsOn, countsOff, errOn, errOff, dep_exp, dep_exp_err, in zip(self.time["resOn"], self.power["resOn"], self.power["resOff"], self.counts["resOn"], self.counts["resOff"], self.error["resOn"], self.error["resOff"], self.depletion_exp, self.depletion_exp_err):
+                f.write(
+                    f"{time:.4f}\t{powerOn:.4f}\t{countsOn:.4f}\t\
+                        {errOn:.4f}\t{powerOff:.4f}\t{countsOff:.4f}\t\
+                            {errOff:.4f}\t{dep_exp:.4f}\t{dep_exp_err:.4f}\n"
+                )
 
-                f.write(f"{time:.4f}\t{powerOn:.4f}\t{countsOn:.4f}\t{errOn:.4f}\t{powerOff:.4f}\t{countsOff:.4f}\t{errOff:.4f}\t{dep_exp:.4f}\t{dep_exp_err:.4f}\n")
-            #if show: showinfo("File saved", f"File saved: {timescanfile_reduced.name} in {self.location}")
             print(f"File saved: {f.name} in {self.location}")
 
         with open(timescanfile_fitted, "w+") as f:
@@ -196,32 +228,41 @@ class depletionplot:
             if show: showinfo("File saved", f"File saved: {f.name} in {self.location}")
             print(f"File saved: {f.name} in {self.location}")
             
+    
     def startPlotting(self, make_slider_widget=True):
 
-        try:
+    
+        self.ax0.set(
+            xlabel="n*t*E (J)", ylabel="Counts",
+            title=f"ON:{self.resOnFile.name}\nOFF:{self.resOffFile.name}"
+        )
 
-            self.ax0.set(xlabel="n*t*E (J)", ylabel="Counts", title=f"ON:{self.resOnFile.name}\nOFF:{self.resOffFile.name}")
-            self.ax1.set(xlabel="n*t*E (J)", ylabel="Relative abundace of active isomer", title="$D(t)=A*(1-e^{-K_{ON}*(ntE)})$")
-            for ax in (self.ax0, self.ax1): ax.grid()
-            
-            # Get timescan details
-            self.get_timescan_data()
+        self.ax1.set(
+            xlabel="n*t*E (J)", 
+            title="$D(t)=A*(1-e^{-K_{ON}*(ntE)})$",
+            ylabel="Relative abundace of active isomer",
+        )
 
-            # Fitt resOff and resOn
-            Koff, N = self.resOff_fit()
-            Na0, Nn0, Kon = self.resOn_fit(Koff, N)
+        for ax in (self.ax0, self.ax1): 
+            ax.grid()
+        
+        # Get timescan details
+        self.get_timescan_data()
+        # Fitt resOff and resOn
+        Koff, N = self.resOff_fit()
+        Na0, Nn0, Kon = self.resOn_fit(Koff, N)
 
-            if make_slider_widget: self.depletion_widgets(Koff, Kon, N, Na0, Nn0)
-            else:
-                self.widget.koff_slider.set(Koff)
-                self.widget.n_slider.set(N)
-                self.widget.kon_slider.set(Kon)
-                self.widget.na_slider.set(Na0)
-                self.widget.nn_slider.set(Nn0)
-            self.runFit(Koff, Kon, N, Na0, Nn0)
+        if make_slider_widget: 
+            self.depletion_widgets(Koff, Kon, N, Na0, Nn0)
+        else:
+            self.widget.koff_slider.set(Koff)
+            self.widget.n_slider.set(N)
+            self.widget.kon_slider.set(Kon)
+            self.widget.na_slider.set(Na0)
+            self.widget.nn_slider.set(Nn0)
 
-        except:
-            showerror("Error occured", traceback.format_exc(5))
+        self.runFit(Koff, Kon, N, Na0, Nn0)
+
 
     def runFit(self, Koff, Kon, N, Na0, Nn0, plot=True):
         
@@ -231,14 +272,15 @@ class depletionplot:
         uNa0 = uf(Na0, self.Na0_err)
         uNn0 = uf(Nn0, self.Nn0_err)
         uKon = uf(Kon, self.Kon_err)
+        
         # self.lg1 = f"Kon: {uKon:.3uP}, Na: {uNa0:.2uP}, Nn: {uNn0:.2uP}"
 
-        self.lg1 = self.writelg1 = f"Kon: {Kon:.2f}({self.Kon_err:.2f}), Na: {Na0:.2f}({self.Na0_err:.2f}), Nn: {Nn0:.2f}({self.Nn0_err:.2f})"
+        self.lg1 = self.writelg1 = f"Kon: {Kon:.2f}({self.Kon_err:.2f}), \
+            Na: {Na0:.2f}({self.Na0_err:.2f}), Nn: {Nn0:.2f}({self.Nn0_err:.2f})"
 
         # self.lg2 = f"Koff: {uKoff:.2uP}, N: {uN:.2uP}"
 
         self.lg2 = self.writelg2 = f"Koff: {Koff:.2f}({self.Koff_err:.2f}), N: {N:.2f}({self.N_err:.2f})"
-        print("Legend: ", self.lg1, self.lg2)
 
         self.ax0.legend(labels=[self.lg1, self.lg2], title=f"Mass: {self.mass[0]}u, Res: {self.t_res}V, B0: {self.t_b0}ms", fontsize=5, title_fontsize=7)
         self.get_depletion_fit(Koff, N, uKoff, uN, Na0, Nn0, Kon, uNa0, uNn0, uKon, plot)
@@ -304,6 +346,7 @@ class depletionplot:
         
         K_OFF_init = 0
         N_init = self.counts["resOff"].max()
+
         try:
             pop_off, popc_off = curve_fit( self.N_OFF, self.power["resOff"], self.counts["resOff"],
                 sigma=self.error["resOff"], absolute_sigma=True,
@@ -315,10 +358,11 @@ class depletionplot:
 
             pop_off, popc_off = curve_fit( self.N_OFF, self.power["resOff"], self.counts["resOff"], p0=[K_OFF_init, N_init], bounds=[(-np.inf, 0), (np.inf, N_init*2)])
 
-        perr_off = np.sqrt(np.diag(popc_off))
 
+        perr_off = np.sqrt(np.diag(popc_off))
         Koff, N= pop_off
-        self.Koff_err, self.N_err= perr_off     
+
+        self.Koff_err, self.N_err = perr_off
         if auto_plot: return Koff, N
     
     def N_ON(self, x, Na0, Nn0, K_ON):
@@ -330,19 +374,23 @@ class depletionplot:
         self.Koff = Koff
 
         Na0_init, Nn0_init, K_ON_init = N, N/2, 0
+        
         try:
+        
             pop_on, popc_on = curve_fit( self.N_ON, self.power["resOn"], self.counts["resOn"],
                 sigma=self.error["resOn"], absolute_sigma=True,
                 p0=[Na0_init, Nn0_init, K_ON_init], bounds=[(0, 0, -np.inf), (N , N*2, np.inf)]
             )
+        
         except Exception as error:
+        
             print("Error occured in N_ON fit with sigma error", error)
+        
             pop_on, popc_on = curve_fit( self.N_ON, self.power["resOn"], self.counts["resOn"],
                 p0=[Na0_init, Nn0_init, K_ON_init], bounds=[(0, 0, -np.inf), (N , N*2, np.inf)]
             )
 
         perr_on = np.sqrt(np.diag(popc_on))
-
         Na0, Nn0, Kon = pop_on
         self.Na0_err, self.Nn0_err, self.Kon_err = perr_on
         
@@ -372,10 +420,10 @@ class depletionplot:
         print(len(self.fitX), len(self.fitOn))
         
         self.fitted_counts_error = {"resOn": unp.std_devs(self.fitOn_with_err), "resOff": unp.std_devs(self.fitOff_with_err)}
-        print(f"Exp counts error: {self.error}\nFitted counts error: {self.fitted_counts_error}\n")
+        # print(f"Exp counts error: {self.error}\nFitted counts error: {self.fitted_counts_error}\n")
 
         self.fitted_counts = {"resOn":np.array(self.fitOn), "resOff": np.array(self.fitOff)}
-        print(f"Counts: {self.counts}\nFitted: {self.fitted_counts}\n")
+        # print(f"Counts: {self.counts}\nFitted: {self.fitted_counts}\n")
 
         if plot:
             for index, fitY, i in zip(["resOn", "resOff"], [self.fitOn, self.fitOff], [0, 1]):
@@ -385,17 +433,26 @@ class depletionplot:
             K_ON = self.Kon
             return A*(1-np.exp(-K_ON*x))
 
+
     def get_relative_abundance_fit(self, plot=True):
 
-        self.depletion_fitted = 1 - (self.fitted_counts["resOn"]/self.fitted_counts["resOff"])
-        depletion_fitted_with_err = 1 - (unp.uarray(self.fitted_counts["resOn"], self.fitted_counts_error["resOn"])/unp.uarray(self.fitted_counts["resOff"], self.fitted_counts_error["resOff"]))
+        self.depletion_fitted = 1 - (self.fitted_counts["resOn"] / self.fitted_counts["resOff"])
+        
+        fitted_on_data = unp.uarray(self.fitted_counts["resOn"], self.fitted_counts_error["resOn"])
+        fitted_off_data = unp.uarray(self.fitted_counts["resOff"], self.fitted_counts_error["resOff"])
+        depletion_fitted_with_err = 1 - (fitted_on_data / fitted_off_data)
         self.depletion_fitted_err = unp.std_devs(depletion_fitted_with_err)
 
         self.depletion_exp = 1 - (self.counts["resOn"]/self.counts["resOff"])
-        depletion_exp_with_err = 1 - (unp.uarray(self.counts["resOn"], self.error["resOn"])/unp.uarray(self.counts["resOff"], self.error["resOff"]))
+
+        on_data = unp.uarray(self.counts["resOn"], self.error["resOn"])
+        off_data = unp.uarray(self.counts["resOff"], self.error["resOff"])
+        depletion_exp_with_err = 1 - (on_data/off_data)
+
         self.depletion_exp_err = unp.std_devs(depletion_exp_with_err)
         
         A_init = 0.5
+
         pop_depletion, popc_depletion = curve_fit(
             self.Depletion, self.fitX, self.depletion_fitted,
             sigma=self.depletion_fitted_err,
@@ -414,14 +471,17 @@ class depletionplot:
         self.relative_abundance = self.Depletion(self.fitX, A)
 
         if plot:
-            self.ax1.errorbar(self.power["resOn"], self.depletion_exp, yerr=self.depletion_exp_err, fmt="k.")
-            self.fit_plot, = self.ax1.plot(self.fitX, self.depletion_fitted)
+            self.ax1.errorbar(
+                self.power["resOn"], self.depletion_exp, 
+                fmt="k.",
+                yerr=self.depletion_exp_err
+            )
 
+            self.fit_plot, = self.ax1.plot(self.fitX, self.depletion_fitted)
             self.relativeFit_plot, = self.ax1.plot(self.fitX, self.relative_abundance)
 
-def main(arguments):
 
-    print(f"{arguments=}", flush=True)
+def main(arguments):
     location = arguments["currentLocation"]
     resOnFile = pt(location)/arguments["resON_Files"]
     resOffFile = pt(location)/arguments["resOFF_Files"]

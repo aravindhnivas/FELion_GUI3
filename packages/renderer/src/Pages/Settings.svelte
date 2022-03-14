@@ -16,34 +16,38 @@
         resetPyConfig, 
         updatePyConfig,
     }                               from "./settings/checkPython";
-    
     import Textfield                from '@smui/textfield';
     import {onMount, onDestroy}     from "svelte";
     import Changelog                from "$components/Changelog.svelte";
     import PyButton                 from "$components/PyButton.svelte"
     import computefromSubprocess    from "$src/Pages/general/computefromSubprocess"
     import CustomSwitch             from '$components/CustomSwitch.svelte';
-    
     import {
         checkTCP,
         fetchServerROOT,
     } from "./settings/serverConnections"
     
-    const navigate = (e) => {selected = e.target.innerHTML; window.db.set("settingsActiveTab", selected);}
-    let selected = window.db.get("settingsActiveTab") || "Update"
+    let pyError = ""
     let mounted = false
+    let updateError=""
     let updateInterval;
-    let pyError = "", updateError=""
+    let selected = window.db.get("settingsActiveTab") || "Configuration"
+    
+    const navigate = (e) => {selected = e.target.innerHTML; window.db.set("settingsActiveTab", selected);}
 
     db.onDidChange("pyServerReady", async (value)=>{
+
+        serverInfo += `>> pyServerReady: ${$pyServerReady}\n`
         $pyServerReady = value
-        console.log("pyServerReady", value)
+        if($pyServerReady) {
+            await updateTCPInfo()
+            await updateServerInfo()
+        }
     })
     
     onMount(async ()=>{
-
         try {
-            if(!pyVersion) {
+            if(!$pyVersion) {
                 console.warn("python is invalid. computing again")
                 await getPyVersion()
                 console.warn($pyVersion)
@@ -52,11 +56,9 @@
         } 
         catch (error) {pyError = error;}
         finally {
-
             mounted = true
             serverInfo += `>> pyServerReady: ${$pyServerReady}\n`
             serverInfo += `>> pyVersion: ${$pyVersion}\n`
-
             
             if($pyServerReady) {
                 await updateTCPInfo()
@@ -172,9 +174,24 @@
 
                         <div class="align">
 
-                            <button class="button is-link" on:click="{()=> {$developerMode = !$developerMode; window.db.set("developerMode", $developerMode)}}">Developer mode: {$developerMode} </button>
+                            <button class="button is-link" on:click="{
+                                    ()=> {
+                                        $developerMode = !$developerMode;
+                                        window.db.set("developerMode", $developerMode)
+                                    }
+                                }">
+                                Developer mode: {$developerMode}
+                            
+                            </button>
+
                             <button class="button is-link" on:click="{getPyVersion}">getPyVersion </button>
-                            <button class="button is-link" on:click="{()=>showServerControls=!showServerControls}">Show server controls</button>
+                            
+                            <button class="button is-link" 
+                                on:click="{()=>showServerControls=!showServerControls}"
+                                >
+                                Show server controls
+                            </button>
+                            
                             {#if $developerMode}
 
                                 <div class="align">

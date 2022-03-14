@@ -26,8 +26,8 @@ export default async function({target=null, general=false, pyfile, args}) {
 
         console.warn(response)
         if(!response.ok) {
-            const {error} = await response.json()
-            return Promise.reject(error)
+            const jsonErrorInfo = await response.json()
+            return Promise.reject(jsonErrorInfo?.error || jsonErrorInfo)
         }
 
         const {timeConsumed} = await response.json()
