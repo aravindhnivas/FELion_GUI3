@@ -14,7 +14,7 @@ export default async function({target=null, general=false, pyfile, args}) {
         const method = 'POST'
         const headers = {
             'Content-type': 'application/json',
-            'Accept': 'application/json'
+            // 'Accept': 'application/json'
         }
 
         const body =  JSON.stringify({pyfile, args})
@@ -24,27 +24,38 @@ export default async function({target=null, general=false, pyfile, args}) {
             target.classList.remove("is-loading")
         }
 
-        if(!response.ok) return Promise.reject(`Response status: ${response.statusText}`)
+        console.warn(response)
+        if(!response.ok) {
+            const {error} = await response.json()
+            return Promise.reject(error)
+        }
 
         const {timeConsumed} = await response.json()
-        console.warn(timeConsumed)
+        console.warn({timeConsumed})
 
         if(general) { return Promise.resolve() }
 
         if(!fs.existsSync(outputFile)) {
-            console.warn(`${outputFile} file doesn't exists`)
-            window.handleError(`${outputFile} file doesn't exists`)
+            return Promise.reject(`${outputFile} file doesn't exists`)
         }
-
         
         const dataFromPython = fs.readJsonSync(outputFile)
+        if(!dataFromPython) {
+            return Promise.reject("received invalid output data from python. check the output json file")
+        }
+
         return Promise.resolve(dataFromPython)
     
     } catch (error) { 
         if(target?.classList.contains("is-loading")) {
             target.classList.remove("is-loading")
         }
-        return Promise.reject(error)
+        const msg = error.message
+        const details = error.stack || error
+        console.error(error)
+        return Promise.reject(
+            `Error after receiving data from python \n${msg} \n${details}`
+        )
     }
     
 }

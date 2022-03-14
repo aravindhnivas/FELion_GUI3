@@ -163,6 +163,7 @@ class depletionplot:
         self.canvas.draw()
 
     def saveFile(self, event=None, show=True):
+
         depletion_dir = self.location / "depletion_output"
 
         if not depletion_dir.exists(): depletion_dir.mkdir()
@@ -178,6 +179,7 @@ class depletionplot:
                 f.write(f"{time:.4f}\t{powerOn:.4f}\t{countsOn:.4f}\t{errOn:.4f}\t{powerOff:.4f}\t{countsOff:.4f}\t{errOff:.4f}\t{dep_exp:.4f}\t{dep_exp_err:.4f}\n")
             #if show: showinfo("File saved", f"File saved: {timescanfile_reduced.name} in {self.location}")
             print(f"File saved: {f.name} in {self.location}")
+
         with open(timescanfile_fitted, "w+") as f:
             
             self.uA = self.uA*100
@@ -195,6 +197,7 @@ class depletionplot:
             print(f"File saved: {f.name} in {self.location}")
             
     def startPlotting(self, make_slider_widget=True):
+
         try:
 
             self.ax0.set(xlabel="n*t*E (J)", ylabel="Counts", title=f"ON:{self.resOnFile.name}\nOFF:{self.resOffFile.name}")
@@ -208,7 +211,6 @@ class depletionplot:
             Koff, N = self.resOff_fit()
             Na0, Nn0, Kon = self.resOn_fit(Koff, N)
 
-            # if make_slider_widget: self.make_slider(Koff, Kon, N, Na0, Nn0)
             if make_slider_widget: self.depletion_widgets(Koff, Kon, N, Na0, Nn0)
             else:
                 self.widget.koff_slider.set(Koff)
@@ -217,7 +219,9 @@ class depletionplot:
                 self.widget.na_slider.set(Na0)
                 self.widget.nn_slider.set(Nn0)
             self.runFit(Koff, Kon, N, Na0, Nn0)
-        except: showerror("Error occured", traceback.format_exc(5))
+
+        except:
+            showerror("Error occured", traceback.format_exc(5))
 
     def runFit(self, Koff, Kon, N, Na0, Nn0, plot=True):
         
@@ -416,6 +420,7 @@ class depletionplot:
             self.relativeFit_plot, = self.ax1.plot(self.fitX, self.relative_abundance)
 
 def main(arguments):
+
     print(f"{arguments=}", flush=True)
     location = arguments["currentLocation"]
     resOnFile = pt(location)/arguments["resON_Files"]

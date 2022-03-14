@@ -3,21 +3,20 @@ import {pyServerPORT, get} from "./svelteWritables"
 
 export const checkTCP = async ({target=null, portNumber=get(pyServerPORT)})=>{
     
-    target?.classList.toggle("is-loading")
-
-    console.warn(`cheking TCP connection on port ${portNumber}`)
-    
-    const results = await exec("netstat -ano | findstr " + portNumber)
-    console.log(results)
-    
-
-    if(target?.classList.contains("is-loading")){
+    try {
         target?.classList.toggle("is-loading")
+        console.warn(`cheking TCP connection on port ${portNumber}`)
+        const results = await exec("netstat -ano | findstr " + portNumber)
+        return Promise.resolve(results)
+    } catch (error) {return Promise.resolve(`>> ERROR: ${error.message}`)}
+    finally {
+
+        if(target?.classList.contains("is-loading")){
+            target?.classList.toggle("is-loading")
+        }
+
     }
-
-    return results
 }
-
 
 export const fetchServerROOT = async ({target=null, portNumber=get(pyServerPORT)})=>{
 

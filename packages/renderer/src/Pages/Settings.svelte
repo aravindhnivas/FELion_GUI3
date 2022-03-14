@@ -39,13 +39,14 @@
     let pyError = "", updateError=""
     
     onMount(async ()=>{
-        try {
 
+        try {
             await getPyVersion()
         } 
-        catch (error) {pyError = error;}
-        finally {
 
+        catch (error) {pyError = error;}
+
+        finally {
             startpythonServer()
             mounted = true
             if(env.DEV) return
@@ -60,7 +61,6 @@
     function updateCheck(event=null){
 
         if(env.DEV) return console.info("Cannot update in DEV mode")
-
         try {
             event?.target.classList.toggle("is-loading")
             if (!navigator.onLine) {if (event) {return window.createToast("No Internet Connection!", "warning")}}
@@ -73,33 +73,43 @@
 
     let pythonServer = [];
     let serverInfo = ""
-
+    
     let executeCommand = ""
 
-    const checkWhetherServerIsOpenAndCloseIt = async () => {
+    const closeServerIfOpen = async () => {
+
         serverInfo += ">> Checking whether the felionpy server is already opened \n"
-        const {tcp: pid} = await getpids($pyServerPORT)
-        serverInfo += `>> Server is opened at ${$pyServerPORT} (PID: ${pid}) \n`
+        const pid = await portToPid($pyServerPORT)
+        
+        if(pid?.length > 0) {
 
-        if(pid.length > 0) {
+            $pyServerReady = true    
+            
+            serverInfo += `>> Server is opened at ${$pyServerPORT} (PID: ${pid}) \n`
+            serverInfo += `>> felionpy server is already opened port:${$pyServerPORT} (PID: ${pid})\n`
+            serverInfo += `>> closing PID: ${pid} \n`
+            
+            await killByPid(pid)
+            serverInfo += `>> CLOSED PID: ${pid} \n`
+            
+            $pyServerReady = false
 
-            if(await isItfelionpy()) {
-                serverInfo += `>> felionpy server is already opened port:${$pyServerPORT} (PID: ${pid})\n`
-                serverInfo += `>> closing PID: ${pid} \n`
-                const output = await killByPid(pid)
-                serverInfo += `>> CLOSED: ${output} \n`
-                serverInfo += `>> CLOSED PID: ${pid} \n`
-            }
         }
 
+        serverInfo += ">> server is yet to open \n"
+        return Promise.resolve(true)
+        
     }
     
     const startpythonServer = async (e) => {
+        
         try {
 
             serverInfo += ">> INITIALISING: felionpy server connection \n"
-            await checkWhetherServerIsOpenAndCloseIt()
+            const closed = await closeServerIfOpen()
+            if(!closed) return serverInfo += ">> could not close felionpy server connection \n"
 
+            $pyServerReady = false
             serverInfo += `>> STARTING: felionpy server at port ${$pyServerPORT}\n`
 
             const pythonServerButton = document.getElementById("pythonServerButton")
@@ -108,26 +118,25 @@
                 button: e?.target || pythonServerButton,
                 general: true, 
                 pyfile: "server",
-                args: {port: $pyServerPORT}
+                args: {port: $pyServerPORT, debug: serverDebug}
             })
 
             await updateTCPInfo()
-
             serverInfo += `>> CLOSED: felionpy server\n`
 
         } catch (error) {window.handleError(error)}
 
     }
-
-
-    const serverOpenedInfo = async () => {
-        
-        await updateTCPInfo()
-        await updateServerInfo()
-    
+    $: console.log({$pyServerReady})
+    $: if(pythonServer.length==0 && $pyServerReady) {
+        closeServerIfOpen().then(closed=>console.warn({closed}))
     }
 
-    $: if($pyServerReady) {serverOpenedInfo()}
+    // const serverOpenedInfo = async () => {
+    //     await updateTCPInfo()
+    //     await updateServerInfo()
+    // }
+    // $: if($pyServerReady) {serverOpenedInfo()}
 
     $: if($pyServerPORT) {db.set("pyServerPORT", $pyServerPORT)}
 
@@ -135,10 +144,15 @@
 
         serverInfo += `>> checking whether python server is opened\n`
         const rootpage = await fetchServerROOT({target: e?.target})
-        if(rootpage) { serverInfo += `>> ${rootpage}\n` }
-        else {serverInfo += `>> server could NOT be opened. try again.\n`}
+        if(rootpage) { 
+            serverInfo += `>> ${rootpage}\n`; 
+            $pyServerReady = true;
+            return
+        }
+        $pyServerReady = false;
+        serverInfo += `>> server could NOT be opened. try again.\n`
     }
-
+    let serverDebug = false
     const updateTCPInfo = async (e=null)=>{
 
         serverInfo += `>> checking TCP connection on port:${$pyServerPORT}\n`
@@ -149,20 +163,15 @@
 
         if(stdout.includes("LISTENING")) {
             serverInfo += `>> WORKING - TCP connection on port:${$pyServerPORT}\n`
+            $pyServerReady = true
+            return
         }
+        $pyServerReady = false;
     }
 
-    
     onDestroy(async () => {
-
-        if(updateInterval) {
-            console.warn("Clearing update interval")
-            clearInterval(updateInterval)
-        }
-
-        await checkWhetherServerIsOpenAndCloseIt()
-        console.warn("felionpy server closed")
-
+        if(updateInterval) { clearInterval(updateInterval) }
+        await closeServerIfOpen()
     });
 
 </script>
@@ -219,8 +228,8 @@
                         
                         <div class="align">
 
-                            <Textfield bind:value={$pyServerPORT} label="serverPORT" />
-                            <!-- <CustomSwitch bind:selected={serverDebug} label="serverDebug" /> -->
+                            <Textfield type="number" bind:value={$pyServerPORT} label="serverPORT" />
+                            <CustomSwitch bind:selected={serverDebug} label="serverDebug" />
 
                             <PyButton id="pythonServerButton" on:click={startpythonServer} 
                                     bind:pyProcesses={pythonServer}
@@ -229,7 +238,16 @@
                             />
                             {#if pythonServer.length>0 || $pyServerReady }
                                 <button class="button is-danger" on:click="{async ()=>{
-                                    pythonServer[0]?.kill() || await killByPid(await getpids($pyServerPORT))
+                                    if(pythonServer.length==0) {
+                                        
+                                        console.warn("closing felionpy server")
+                                        const pid = await killByPid(await portToPid($pyServerPORT))
+                                        
+                                        if(pid) {
+                                            $pyServerReady = false    
+                                            console.warn("CLOSED: felionpy server")
+                                        }
+                                    } else {pythonServer[0]?.kill()}
                                 }}">
                                     STOP
                                 </button>
