@@ -93,7 +93,7 @@ ipcMain.on("appInfo", (event, arg) => {
 		"logs",
 		"crashDumps"
 	]
-	const appInfo = { version: app.getVersion(), isPackaged: app.isPackaged }
+	const appInfo = { version: app.getVersion(), isPackaged: app.isPackaged, platform: process.platform}
 	appPathKeys.forEach(key => appInfo[key] = app.getPath(key))
 	appInfo.appPath = app.getAppPath()
 	event.returnValue = appInfo

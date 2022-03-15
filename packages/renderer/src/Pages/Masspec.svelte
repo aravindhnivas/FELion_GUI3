@@ -80,16 +80,15 @@
         }
 
     })
-
+    let display = db.get("active_tab") === id ? 'block' : 'none'
 </script>
 
-<Layout {filetype} bind:fullfileslist {id} bind:currentLocation bind:fileChecked {graphPlotted} >
+<Layout {filetype} {display} bind:fullfileslist {id} bind:currentLocation bind:fileChecked {graphPlotted} >
 
     <svelte:fragment slot="buttonContainer">
 
-
         <div class="align " style="align-items: center;">
-            <button class="button is-link" 
+            <button class="button is-link"
                 on:click="{(e)=>plotData({e:e})}">
             Masspec Plot</button>
             

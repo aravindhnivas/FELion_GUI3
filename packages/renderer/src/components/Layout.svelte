@@ -44,6 +44,7 @@
     ////////////////////////////////////////////////////////////////////////////
 
     export let id
+    export let display='none'
     export let filetype = "felix"
     export let fileChecked=[]
     export let fullfileslist = [];
@@ -106,10 +107,10 @@
     let widthChange = false
     let originalWidth = plotWidth
     $: if (widthChange) {changeGraphDivWidth()};
-
+    
 </script>
 
-<section {id} style="display:none" class="animated fadeIn">
+<section {id} style:display class="animated fadeIn">
 
     <div class="main__layout__div">
         <div class="interact left_container__div box " transition:fly="{{ x: -100, duration: 500 }}" 

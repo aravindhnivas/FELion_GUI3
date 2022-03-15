@@ -72,7 +72,7 @@
 
     const fullData = {}
     let dataReady = false
-    async function plotData({e=null, filetype="felix"}={}){
+    async function plotData({e=null, filetype="felix", target=null}={}){
         
         let pyfile="", args;
         
@@ -95,7 +95,7 @@
                 $felixPlotAnnotations = []
                 $felixOutputName = "averaged"
 
-                const dataFromPython = await computePy_func({e, pyfile, args})
+                const dataFromPython = await computePy_func({e, target, pyfile, args})
                 if(!dataFromPython) return
                 
                 $expfittedLines = []
@@ -138,7 +138,6 @@
     }
 
     $: updateplot = dataReady && plotfile && $normMethod && fullData.data && !$opoMode
-    
     $: if(updateplot && $showall) {
 
         if($felixGraphPlotted) {
@@ -161,18 +160,19 @@
     } else if(updateplot) {
         plotIndividualDataIntoGraph({fullData, plotfile, graphPlotted: $felixGraphPlotted, delta})
     }
+    
 
 </script>
 
 <FelixPlotting bind:active bind:felixPlotWidgets {theoryLocation} 
-    on:submit="{(e)=>plotData({e:e.detail.event, filetype:"matplotlib"})}"
-/>
+    on:submit="{(e)=>plotData({e:e.detail.event, filetype:"matplotlib"})}" />
 
 <div class="align">
     <button class="button is-link" id="create_baseline_btn" on:click="{(e)=>plotData({e:e, filetype:"baseline"})}">
         Create Baseline
         <span class="tag is-warning " aria-label="ctrl + left-click to select file for baseline correction" data-cooltipz-dir="bottom" >b</span>
     </button>
+
     <button class="button is-link" id="felix_plotting_btn" on:click="{(e)=>plotData({e:e, filetype:"felix"})}">
         FELIX Plot
     </button>
@@ -183,8 +183,6 @@
     <button class="button is-link" on:click="{()=>{$opoMode = !$opoMode}}">OPO</button>
 
 </div>
-
-
 
 <style>
     .tag {

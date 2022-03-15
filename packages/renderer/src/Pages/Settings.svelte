@@ -20,7 +20,6 @@
     import {onMount, onDestroy}     from "svelte";
     import Changelog                from "$components/Changelog.svelte";
     import PyButton                 from "$components/PyButton.svelte"
-    import computefromSubprocess    from "$src/Pages/general/computefromSubprocess"
     import CustomSwitch             from '$components/CustomSwitch.svelte';
     import {
         checkTCP,
@@ -40,7 +39,7 @@
         serverInfo += `>> pyServerReady: ${$pyServerReady}\n`
         $pyServerReady = value
         if($pyServerReady) {
-            await updateTCPInfo()
+            // await updateTCPInfo()
             await updateServerInfo()
         }
     })
@@ -61,7 +60,7 @@
             serverInfo += `>> pyVersion: ${$pyVersion}\n`
             
             if($pyServerReady) {
-                await updateTCPInfo()
+                // await updateTCPInfo()
                 await updateServerInfo()
             }
 
@@ -96,11 +95,9 @@
 
         const pid = await portToPid($pyServerPORT)
         if(pid) {
-            $pyServerReady = true    
             serverInfo += `>> closing server at ${$pyServerPORT} (PID: ${pid}) \n`
             await killByPid(pid)
             serverInfo += `>> CLOSED PID: ${pid} \n`
-            $pyServerReady = false
         }
         return Promise.resolve(true)
     }
@@ -108,29 +105,19 @@
     $: if($pyServerPORT) {db.set("pyServerPORT", $pyServerPORT)}
 
     const updateServerInfo = async (e=null)=>{
-
         const rootpage = await fetchServerROOT({target: e?.target})
         if(rootpage) { 
             serverInfo += `>> ${rootpage}\n`; 
-            $pyServerReady = true;
             return
         }
-        $pyServerReady = false;
     }
 
     let serverDebug = db.get("serverDebug") || false
     
     const updateTCPInfo = async (e=null)=>{
-
         const [{stdout}] = await checkTCP({target: e?.target})
         if(stdout) { serverInfo += `>> ${stdout}\n` }
         else {serverInfo += `>> ERROR occured while checking TCP connection on port:${$pyServerPORT}\n`}
-
-        if(stdout.includes("LISTENING")) {
-            $pyServerReady = true
-            return
-        }
-        $pyServerReady = false;
     }
 
     let showServerControls = false
@@ -138,11 +125,13 @@
     onDestroy(async () => {
         if(updateInterval) { clearInterval(updateInterval) }
     });
+    const id="Settings"
+    let display = db.get("active_tab") === id ? 'block' : 'none'
 </script>
 
 <Changelog  />
 
-<section class="section animated fadeIn" id="Settings" style="display:none">
+<section class="section animated fadeIn" {id} style="display:{display}">
 
     <div class="main__div">
         

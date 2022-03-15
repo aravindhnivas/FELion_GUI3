@@ -150,12 +150,12 @@
         console.log("plotlySelectCreated", plotlySelectCreated)
         plotlySelectCreated = true
     }    
-
+    let display = db.get("active_tab") === id ? 'block' : 'none'
 </script>
 
 <THzFitParamsTable bind:active={openTable} bind:paramsTable bind:varyAll {currentLocation} {fitMethod}/>
 
-<Layout  {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked >
+<Layout {filetype} {graphPlotted} {id} {display} bind:currentLocation bind:fileChecked >
 
     <svelte:fragment slot="buttonContainer">
         <div class="align v-center">

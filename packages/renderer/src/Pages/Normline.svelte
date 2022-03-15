@@ -2,13 +2,13 @@
 <script>
     import {
         showall,
-        showRawData,
-        showPowerData,
         opoMode,
         graphDiv,
         normMethod,
-        Ngauss_sigma,
+        showRawData,
         baselineFile,
+        Ngauss_sigma,
+        showPowerData,
         felixopoLocation,
         OPOGraphPlotted,
         felixGraphPlotted,
@@ -109,6 +109,8 @@
         $OPOGraphPlotted = false
     })
     
+    let display = db.get("active_tab") === id ? 'block' : 'none'
+
 </script>
 
 <!-- Modals -->
@@ -126,6 +128,7 @@
 
 <Layout
     {id}
+    {display}
     {filetype}
     {graphPlotted}
     bind:fileChecked
@@ -151,6 +154,7 @@
             <CustomSwitch bind:selected={showOPO} label="showOPO" />
             <CustomSwitch bind:selected={showTheory} label="showTheory" />
             <CustomSwitch bind:selected={$showall} label="showall" />
+
             <CustomSwitch bind:selected={$showRawData} label="showRawData" />
             <CustomSwitch bind:selected={$showPowerData} label="showPowerData" />
 
@@ -158,8 +162,9 @@
 
     </svelte:fragment>
 
-    <svelte:fragment slot="plotContainer" >
-        <GetFileInfoTable {felixfiles} />
+    <svelte:fragment slot="plotContainer">
+    
+    <GetFileInfoTable {felixfiles} />
 
         <div class="graph_container"  id="plot_container__div__{filetype}">
 
@@ -175,14 +180,30 @@
                 <div class="animated fadeIn graph__div" class:hide={!$showRawData} id="opoSA"></div>
                 <div class="animated fadeIn graph__div" id="opoRelPlot"></div>
             </div>
-        
         </div>
+
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer_functions" >
 
-        <WriteFunctionContents on:addfile="{()=>{addFileModal=true}}" on:removefile={removeExtraFile} {output_namelists} bind:writeFileName bind:writeFile bind:overwrite_expfit />
-        <ExecuteFunctionContents {addedFileScale} {addedFileCol} {writeFileName} {writeFile} {overwrite_expfit} {fullfiles} bind:modalActivate bind:adjustPeakTrigger />
+        <WriteFunctionContents 
+            on:addfile="{()=>{addFileModal=true}}" 
+            on:removefile={removeExtraFile} {output_namelists} 
+            bind:writeFileName bind:writeFile bind:overwrite_expfit 
+        />
+        
+        <ExecuteFunctionContents bind:modalActivate bind:adjustPeakTrigger
+            {
+                ...{
+                    fullfiles, 
+                    writeFile, 
+                    addedFileCol, 
+                    writeFileName,
+                    addedFileScale, 
+                    overwrite_expfit, 
+                } 
+            }
+        />
 
     </svelte:fragment>
 
@@ -190,10 +211,8 @@
         <FrequencyTable bind:keepTable/>
     </svelte:fragment>
 
-
 </Layout>
 
 <style>
     .graph__div {margin-bottom: 1em;}
 </style>
-

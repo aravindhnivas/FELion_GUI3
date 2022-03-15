@@ -6,8 +6,11 @@ export const checkTCP = async ({target=null, portNumber=get(pyServerPORT)})=>{
     try {
         target?.classList.toggle("is-loading")
         console.warn(`cheking TCP connection on port ${portNumber}`)
-        const results = await exec("netstat -ano | findstr " + portNumber)
+        if(!window.appInfo.platform === "win32") return Promise.resolve("")
+        const command = `netstat -ano | findstr ${portNumber}`
+        const results = await exec(command)
         return Promise.resolve(results)
+
     } catch (error) {return Promise.resolve(`>> ERROR: ${error.message}`)}
     finally {
 

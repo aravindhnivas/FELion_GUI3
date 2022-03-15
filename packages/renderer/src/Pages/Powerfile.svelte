@@ -69,7 +69,8 @@
         overwriteResponse = ""
         writePowfile()
     }
-
+    const id="Powerfile"
+    let display = db.get("active_tab") === id ? 'block' : 'none'
 
 </script>
 
@@ -83,7 +84,7 @@
 />
 
 
-<section class="section" id="Powerfile" style="display:none">
+<section class="section animated fadeIn" {id} style="display:{display}">
     <div class="box main__container" id="powfileContainer">
 
         <div class="location__bar">

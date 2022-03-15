@@ -133,12 +133,12 @@
         })
     }
     let saveOutputDepletion = true;
-
+    let display = db.get("active_tab") === id ? 'block' : 'none'
 </script>
 
 <!-- <ROSAAkinetics {fileChecked} {currentLocation} bind:kineticMode /> -->
 
-<Layout {filetype} {graphPlotted} {id} bind:currentLocation bind:fileChecked on:chdir={dir_changed}>
+<Layout {filetype} {graphPlotted} {id} {display} bind:currentLocation bind:fileChecked on:chdir={dir_changed}>
 
     <svelte:fragment slot="buttonContainer">
         <div class="align " style="align-items: center;">

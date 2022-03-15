@@ -2,11 +2,11 @@ import computefromServer from "./computefromServer"
 import {pyVersion, pyServerReady, get} from "../settings/svelteWritables"
 
 export default async function({
-        e = null, pyfile = "",
+        e = null, target=null, pyfile = "",
         args = {}, general = false, 
     } = {}) {
 
-    const target = e?.target;
+    target ||= e?.target
     let dataFromPython = null;
     
     try {
