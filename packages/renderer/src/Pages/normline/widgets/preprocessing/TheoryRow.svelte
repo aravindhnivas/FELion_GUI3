@@ -35,11 +35,10 @@
         const args={theoryfiles, normMethod: $normMethod, sigma, scale, currentLocation:$felixopoLocation, tkplot, onlyExpRange}
 
         const dataFromPython = await computePy_func({e, pyfile, args})
-        if(dataFromPython){
-            theory_func({dataFromPython, normMethod})
-            window.createToast("Graph Plotted", "success")
-            showTheoryFiles = false
-        }
+        if(!dataFromPython) return
+        theory_func({dataFromPython, normMethod})
+        window.createToast("Graph Plotted", "success")
+        showTheoryFiles = false
     }
 
     let onlyExpRange = false;

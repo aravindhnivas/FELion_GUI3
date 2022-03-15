@@ -22,80 +22,84 @@
     export let energyLevels
     export let electronSpin
 
-    function computeEinsteinB() {
+    async function computeEinsteinB() {
         try {
-            // await tick()
             console.log("Computing Einstein B constants", {einsteinCoefficientA, energyLevels})
             einsteinB_rateComputed=false;
             const einsteinCoefficientB_emission = einsteinCoefficientA.map(({label, value})=>{
+
                 const [final, initial] = label.split("-->").map(l=>l.trim())
+                
                 const v0 = find(energyLevels, (e)=>e?.label==initial)?.value
                 const v1 = find(energyLevels, (e)=>e?.label==final)?.value
+
                 const freq = parseFloat(v1) - parseFloat(v0)
                 const freqInHz = energyUnit === "MHz" ? freq * 1e6 : freq * SpeedOfLight*100;
 
                 const constTerm = SpeedOfLight**3/(8*Math.PI*PlanksConstant*freqInHz**3)
                 const B = constTerm*value
+
                 return {label, value:B.toExponential(3), id:getID()}
+
             })
 
             const einsteinCoefficientB_absorption = einsteinCoefficientB_emission.map(({label, value})=>{
+
                 const [final, initial] = label.split("-->").map(l=>l.trim())
+                
                 const {Gi, Gf} = computeStatisticalWeight({electronSpin, zeemanSplit, final, initial});
                 const weight = Gf/Gi
+                
                 const B = weight*parseFloat(value)
                 const newLabel = `${initial} --> ${final}`
                 return {label:newLabel, value:B.toExponential(3), id:getID()}
 
             })
+
             einsteinCoefficientB = [...einsteinCoefficientB_emission, ...einsteinCoefficientB_absorption]
             einsteinCoefficientB_rateConstant = cloneDeep(einsteinCoefficientB)
+
+            await computeRates()
+
         } catch (error) {window.handleError(error)}
     }
 
-    const computeGaussian = (x, sigma) => Math.E**(-(x**2) / (2*sigma**2)) / (sigma*Math.sqrt(2*Math.PI))
-    const computeLorrentz = (x, gamma) => gamma / (Math.PI*(x**2 + gamma**2))
 
-    const computePseudoVoigt = (x, fG, fL) => {
-        
-        const f = (fG**5 + 2.69269*fG**4*fL + 2.42843*fG**3*fL**2 + 4.47163*fG**2*fL**3 + 0.07842*fG*fL**4 + fL**5)**(1/5)
-        const eta = 1.36603*(fL/f) - 0.47719*(fL/f)**2 + 0.11116*(fL/f)**3
+    let voigtline = ""
 
-        console.log({fG, fL, f, eta})
-        const sigma = fG / (2*Math.sqrt(2*Math.log(2)))
-        const gamma = fL / 2
-        const lineshape = eta * computeLorrentz(x, gamma) + (1 - eta) * computeGaussian(x, sigma)
-        return lineshape
-    }
+    async function computeRates(e) {
 
-    $: voigtline = computePseudoVoigt(0, gaussian*1e6, lorrentz*1e6).toExponential(2)
-    // $: computeRates(voigtline)
-
-    function computeRates(lineShape, compute=true) {
-        if(compute) {computeEinsteinB()}
         if(einsteinCoefficientB.length < 1) return
-        const constantTerm = parseFloat(power)/(parseFloat(trapArea)*SpeedOfLight)
-        const norm = constantTerm*lineShape
+        const lineshape = await computeLineshape(e)
+        if(!lineshape) return
+        voigtline = lineshape
 
-        einsteinCoefficientB = einsteinCoefficientB.map(rateconstant => ({...rateconstant, value: Number(rateconstant.value*norm).toExponential(3) }) )
+        const constantTerm = parseFloat(power)/(parseFloat(trapArea)*SpeedOfLight)
+        const norm = constantTerm*parseFloat(voigtline)
+
+        einsteinCoefficientB = einsteinCoefficientB_rateConstant.map(rateconstant => (
+            {
+                ...rateconstant,
+                value: Number(rateconstant.value*norm).toExponential(3)
+            }
+        ) )
         einsteinB_rateComputed = einsteinCoefficientB.length > 0;
     
     }
 
-    async function computeEinsteinBRate(e=null) {
+    async function computeLineshape(e=null) {
+        
         if(!lorrentz || !gaussian) return createToast("Compute gaussian and lorrentz parameters")
         const dataFromPython = await computePy_func({e, pyfile: "ROSAA.voigt", args: {lorrentz, gaussian} })
-
         if(!dataFromPython) return
-        const lineShape = dataFromPython?.lineShape
-        console.log(lineShape.toExponential(2))
-        computeRates(lineShape)
+
+        const lineshape = dataFromPython?.lineShape?.toExponential(2)
+        return lineshape
     }
+
 
     $: if(einsteinCoefficientA.length) {
         computeEinsteinB();
-        if(voigtline) {computeRates(voigtline, false)}
-
     }
 
 </script>
@@ -130,7 +134,7 @@
         <div class="align h-center subtitle">Einstein B Co-efficients</div>
         <div class="align h-center">
             <Textfield bind:value={voigtline} label="voigt lineshape (Hz)" />
-            <button class="button is-link " on:click={computeEinsteinBRate}>
+            <button class="button is-link " on:click={computeRates}>
                 {#if !einsteinB_rateComputed}
                     <i class="material-icons">sync_problem</i>
                 {/if}

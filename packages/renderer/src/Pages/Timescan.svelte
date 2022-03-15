@@ -5,16 +5,13 @@
     import CustomIconSwitch from "$components/CustomIconSwitch.svelte"
     import CustomSelect     from "$components/CustomSelect.svelte"
     import CustomSwitch     from "$components/CustomSwitch.svelte"
-    // import ROSAAkinetics    from "../Pages/timescan/components/ROSAAkinetics.svelte"
     import {plot}           from "../js/functions.js"
     import {relayout}       from 'plotly.js/dist/plotly-basic';
     import {cloneDeep}      from "lodash-es"
     import computePy_func   from "$src/Pages/general/computePy"
-
     /////////////////////////////////////////////////////////////////////////
 
     // Initialisation
-
     const filetype = "scan"
     const id = "Timescan"
 
@@ -48,7 +45,6 @@
     let timescanData = {};
 
     function sliceData(modifyData) {
- 
         const reduceData = cloneDeep(modifyData)
 
         Object.keys(reduceData).forEach(data=>{
@@ -59,20 +55,20 @@
                 newData["error_y"]["array"] = newData["error_y"]["array"].slice(timestartIndexScan, dataLength)
                 reduceData[data][innerData] = newData
             })
-
         })
-
         return cloneDeep(reduceData)
     }
 
     async function plotData({e=null, filetype="scan", tkplot="run"}={}){
 
         if (fileChecked.length === 0 && filetype === "scan") {return window.createToast("No files selected", "danger")}
+        
         if (filetype === "general") {
-            if (resOFF_Files === "" || resON_Files === "") {return window.createToast("No files selected", "danger")}
+        
+            if (resOFF_Files === "" || resON_Files === "") {
+                return window.createToast("No files selected", "danger")
+            }
         }
-
-
         const depletionArgs = {
             currentLocation, resON_Files, resOFF_Files, 
             power, nshots, massIndex, timestartIndex, saveOutputDepletion
@@ -86,12 +82,15 @@
         let {pyfile, args} = pyfileInfo[filetype]
 
         if (filetype == "scan") {graphPlotted = false}
+        
         if (filetype == "general") {
             return computePy_func({e, pyfile, args, general:true, openShell})
         }
 
         try {
+
             const dataFromPython = await computePy_func({e, pyfile, args})
+            if(!dataFromPython) return
 
             if (filetype=="scan") {
                 Object.keys(dataFromPython).forEach(data=>{

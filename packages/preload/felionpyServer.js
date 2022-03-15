@@ -1,11 +1,14 @@
 
 import path from "path"
+import logger from "electron-log"
 import {db} from "./jsondb-modules"
 import { spawn } from 'child_process'
 import { killer } from 'cross-port-killer';
 import { getPortId } from './mangeServer';
 import { computeExecCommand as exec } from './child-process-modules'
+
 import {pyVersion, developerMode, pythonscript, pyProgram, get} from "./stores"
+
 export async function getPyVersion() {
     
     db.set("pyVersion", "")
@@ -34,6 +37,7 @@ export async function startServer() {
     const pids = await getPortId(port)
     if(pids) {await killer.killByPid(pids)}
 
+    logger.info("starting delionpy server")
     return new Promise(async (resolve, reject)=>{
 
         db.set("pyServerReady", false)
@@ -59,18 +63,29 @@ export async function startServer() {
         
         try {
             const py = spawn(get(pyProgram), pyArgs, opts)
-            py.on("error", (err) => {
-                db.set("pyServerReady", false); 
-                console.error(err)
+            py.on("error", (error) => {
+                db.set("pyServerReady", false);
+                logger.errror(error)
                 reject(error)
             })
             py.on("close", () => db.set("pyServerReady", false))
-            py.stderr.on("data", (err) => console.warn(String.fromCharCode.apply(null, err)))
-            py.stdout.on("data", (data) => console.log(`Output from python: ${String.fromCharCode.apply(null, data)}`))
+            py.stderr.on("data", (err) => {
+                const stderr = String.fromCharCode.apply(null, err)
+                logger.warn(stderr)
+
+            })
+            py.stdout.on("data", (data) => {
+                const stdout = String.fromCharCode.apply(null, data)
+                logger.info(stdout)
+
+            })
 
             db.set("pyServerReady", true)
             resolve("server ready")
 
-        } catch (error) {reject(error); db.set("pyServerReady", false)}
+        } catch (error) {
+            logger.errror(error)
+            reject(error); db.set("pyServerReady", false)
+        }
     })
 }

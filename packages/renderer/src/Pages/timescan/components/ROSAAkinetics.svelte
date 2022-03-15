@@ -217,7 +217,7 @@
                     kineticEditorLocation,
                     kineticEditorFilename
             }
-            await computePy_func({e, pyfile: "kineticsCode", args, general:true})
+            computePy_func({e, pyfile: "kineticsCode", args, general:true})
         } catch (error) {window.handleError(error);}
     }
 

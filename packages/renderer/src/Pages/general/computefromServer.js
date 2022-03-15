@@ -11,14 +11,11 @@ export default async function({target=null, general=false, pyfile, args}) {
     
         const URL = `http://localhost:${get(pyServerPORT)}/`
     
-        const method = 'POST'
-        const headers = {
-            'Content-type': 'application/json',
-            // 'Accept': 'application/json'
-        }
-
-        const body =  JSON.stringify({pyfile, args})
-        const response = await fetch(URL, {method, headers, body})
+        const response = await fetch(URL, {
+            method: 'POST',
+            headers: {'Content-type': 'application/json'},
+            body: JSON.stringify({pyfile, args: {...args, general}})
+        })
 
         if(target?.classList.contains("is-loading")) {
             target.classList.remove("is-loading")
@@ -27,25 +24,22 @@ export default async function({target=null, general=false, pyfile, args}) {
         console.warn(response)
         if(!response.ok) {
             const jsonErrorInfo = await response.json()
+            console.log({jsonErrorInfo})
             return Promise.reject(jsonErrorInfo?.error || jsonErrorInfo)
         }
 
-        const {timeConsumed} = await response.json()
-        console.warn({timeConsumed})
+        const dataFromPython = await response.json()
+        if(!dataFromPython) return Promise.reject("could not get file from python. check the output json file")
+        console.warn(dataFromPython)
 
-        if(general) { return Promise.resolve() }
-
-        if(!fs.existsSync(outputFile)) {
-            return Promise.reject(`${outputFile} file doesn't exists`)
+        if(general) {
+            const {done} = dataFromPython
+            if(!done) Promise.reject(done)
+            return Promise.resolve(done)
         }
         
-        const dataFromPython = fs.readJsonSync(outputFile)
-        if(!dataFromPython) {
-            return Promise.reject("received invalid output data from python. check the output json file")
-        }
-
         return Promise.resolve(dataFromPython)
-    
+
     } catch (error) { 
         if(target?.classList.contains("is-loading")) {
             target.classList.remove("is-loading")

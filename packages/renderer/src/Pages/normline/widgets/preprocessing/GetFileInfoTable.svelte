@@ -19,10 +19,9 @@
         const args = {files:$opoMode?opofiles : felixfiles, normMethod: $normMethod}
         
         const dataFromPython = await computePy_func({e, pyfile, args})
-        if(dataFromPython) {
-            get_details_func({dataFromPython})
-            toggleFileDetailsTable = true
-        }
+        if(!dataFromPython) return
+        get_details_func({dataFromPython})
+        toggleFileDetailsTable = true
     }
 
     function loadfiledetails(){

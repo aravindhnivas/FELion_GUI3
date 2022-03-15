@@ -1,28 +1,31 @@
-# Importing Modules
 
-# FELion Module
-from felionlib.utils.FELion_widgets import FELion_Tk
-from tkinter.messagebox import askyesno, showinfo, showwarning, showerror
+import os
+import shutil
 
-# DATA analysis modules
-from scipy.interpolate import interp1d
-import numpy as np
-
-# Matplotlib modules
-import matplotlib
-
-matplotlib.use('TkAgg')
-from matplotlib.lines import Line2D
-# import matplotlib.pyplot as plt
-
-# System modules
-import os, shutil
 from os.path import dirname, isdir, isfile, join
 from pathlib import Path as pt
 
+from felionlib.utils.FELion_widgets import FELion_Tk
+from tkinter.messagebox import askyesno, showinfo, showwarning, showerror
+
+import matplotlib
+matplotlib.use('TkAgg')
+
+from matplotlib.lines import Line2D
+
+from scipy.interpolate import interp1d
+import numpy as np
+
 ###################################################################################################
 
-def move(pathdir, x): return (shutil.move(join(pathdir, x), join(pathdir, "DATA", x)), print(f"{x} moved to DATA folder"))
+
+def move(pathdir, x):
+
+    shutil.move(join(pathdir, x), join(pathdir, "DATA", x))
+    print(f"{x} moved to DATA folder")
+
+    return
+
 
 def var_find(openfile):
 
@@ -46,15 +49,19 @@ def var_find(openfile):
 class Create_Baseline():
 
     epsilon = 5
+    
+    def __init__(
+        self, filename,
+        checkdir=True,
+    ):
 
-    def __init__(self, felixfile, location, plotIt=True, checkdir=True, verbose=True):
+        self.fname = filename.stem
+        self.felixfile = filename.name
+        location = filename.parent
+
         attributes = {
             'data': None,
-            'fname': felixfile.split(".")[0],
-            'plotIt': plotIt,
-            "verbose": verbose,
             'baseline': None, 
-            'felixfile': felixfile, 
             'redo_index': [],
             'undo_counter': 0,
             'redo_counter': 0, 
@@ -68,7 +75,7 @@ class Create_Baseline():
         for keys, values in attributes.items(): 
             setattr(self, keys, values)
 
-        if felixfile.endswith("ofelix"):
+        if self.felixfile.endswith("ofelix"):
             self.opo = True
             self.basefile = f'{self.fname}.obase'
 
@@ -92,7 +99,7 @@ class Create_Baseline():
             self.location = location
             os.chdir(location)
 
-        if verbose: print(f"Current location: {self.location}")
+        print(f"Current location: {self.location}")
         for dirs in folders: 
             if not isdir(dirs): os.mkdir(dirs)
             if isfile(self.felixfile): move(self.location, self.felixfile)
@@ -105,17 +112,17 @@ class Create_Baseline():
         self.NUM_POINTS = 10
 
         if isfile(f'./DATA/{self.basefile}'): 
-            if verbose: print(f"Basefile EXISTS: Opening existing basefile for baseline points")
+            print(f"Basefile EXISTS: Opening existing basefile for baseline points")
             self.ReadBase() # Read baseline file if exist else guess it
         else: 
-            if verbose: print(f"Basefile doesn't EXISTS: Guessing baseline points")
+            print(f"Basefile doesn't EXISTS: Guessing baseline points")
             self.GuessBaseLine()
         self.line = Line2D(self.xs, self.ys)
-        if plotIt: self.InteractivePlots() # Plot
+        self.InteractivePlots() # Plot
 
     def checkInf(self):
 
-        if self.verbose: print(f"Checking for error in {self.felixfile}")
+        print(f"Checking for error in {self.felixfile}")
 
         Inf = False
         with open(f'{self.location}/DATA/{self.felixfile}', 'r') as f: info = f.readlines()
@@ -128,19 +135,19 @@ class Create_Baseline():
                 Inf = True
         
         if not Inf: 
-            if self.verbose: print(f"No error found in {self.felixfile}")
+            print(f"No error found in {self.felixfile}")
 
         if Inf:
-            if self.verbose: print(f"Error found and correcting the error in {self.felixfile}")
+            print(f"Error found and correcting the error in {self.felixfile}")
             with open(f'./DATA/{self.felixfile}', 'w') as f:
                 for i in range(len(info)): f.write(info[i])
-            if self.verbose: print(f"Error corrected in {self.felixfile}")
+            print(f"Error corrected in {self.felixfile}")
 
-        if self.verbose: print(f"Completed error checking process for {self.felixfile}")
+        print(f"Completed error checking process for {self.felixfile}")
   
     def felix_read_file(self):
 
-        if self.verbose: print(f"Reading {self.felixfile}")
+        print(f"Reading {self.felixfile}")
   
         file = np.genfromtxt(f'./DATA/{self.felixfile}')
         if self.felixfile.endswith('.felix'): data = file[:,0], file[:,2], file[:, 3]
@@ -149,7 +156,7 @@ class Create_Baseline():
         with open(f'./DATA/{self.felixfile}') as f: self.info = f.readlines()[-50:]
         self.data = np.take(data, data[0].argsort(), 1)
 
-        if self.verbose: print(f"{self.felixfile} read and data is taken for further processing")
+        print(f"{self.felixfile} read and data is taken for further processing")
 
     def ReadBase(self):
 
@@ -157,7 +164,7 @@ class Create_Baseline():
         self.xs, self.ys = file[:,0], file[:,1]
         with open(f'./DATA/{self.basefile}', 'r') as f:
             self.interpol = f.readlines()[1].strip().split('=')[-1]
-        if self.verbose: print(f"{self.basefile} has been read for baseline points")
+        print(f"{self.basefile} has been read for baseline points")
 
     def GuessBaseLine(self):
         PPS, NUM_POINTS = self.PPS, self.NUM_POINTS
@@ -177,7 +184,7 @@ class Create_Baseline():
 
         self.xs, self.ys = Bx, By
 
-        if self.verbose: print(f"Baseline points are guessed.")
+        print(f"Baseline points are guessed.")
 
     def InteractivePlots(self):
 
@@ -255,7 +262,6 @@ class Create_Baseline():
 
 
         self.canvas._tkcanvas.focus_set()
-
 
     def key_press_callback(self, event):
         'whenever a key is pressed'
@@ -496,16 +502,9 @@ class Create_Baseline():
                 return showinfo('Info', f'{self.basefile} file is saved in /DATA directory')
         
         except Exception as error: return showerror("Error", f"Following error has occured while saving {self.basefile} file\n{error}")
+    
     def get_data(self): return np.asarray([self.data[0], self.data[1]]), np.asarray([self.line.get_data()])
 
-args = None
-
-def main(arguments):
-
-    global args
-    
-    args = arguments
+def main(args):
     filename = pt(args["filename"])
-    felixfile = filename.name
-    location = filename.parent
-    Create_Baseline(felixfile, location)
+    Create_Baseline(filename)
