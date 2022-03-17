@@ -1,16 +1,19 @@
-import { contextBridge } from 'electron'
+import { ipcRenderer, contextBridge } from 'electron'
 import Store from 'electron-store'
-
 export const db = new Store({name: "db"});
 
+ipcRenderer.on('db:update', (_event, {key, value}) => {
+    db.set(key, value)
+    console.info("db:update", {key, value}, db.get(key))
+})
 contextBridge.exposeInMainWorld("db", {
 
     get(key) { return db.get(key) },
     has(key) { return db.has(key) },
     set(key, value) { return db.set(key, value) },
+    
     delete(key) { return db.delete(key) },
     data: ()=>db.store,
-    
     clear: ()=>db.clear(),
     reset: ()=>db.reset(),
     path: db.path,

@@ -16,8 +16,13 @@ console.log("developerMode: ", db.get("developerMode"), get(developerMode))
 export const pyProgram = derived([developerMode, pythonpath], ([$developerMode, $pythonpath]) => {
     return $developerMode ? $pythonpath : pathJoin(ROOT_DIR, "resources/felionpy/felionpy")
 });
+export const mainpyfile = derived([developerMode, pythonscript], ([$developerMode, $pythonscript]) => {
+    return $developerMode ? pathJoin($pythonscript, "main.py") : ""
+});
 
 export const pyVersion = writable(db.get("pyVersion") || "")
 export const pyServerPORT = writable(db.get("pyServerPORT") || 5050)
+db.onDidChange("pyServerPORT", value => pyServerPORT.set(value) )
+
 export const pyServerReady = writable(false)
 export const suppressInitialDeveloperWarning = writable(db.get("suppressInitialDeveloperWarning") || false)

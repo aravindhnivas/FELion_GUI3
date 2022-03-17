@@ -7,6 +7,8 @@
         pyServerPORT,
         developerMode,
         pyServerReady,
+        // mainpyfile,
+        // pyProgram,
     }                               from "./settings/svelteWritables";
 
     import {activateChangelog}      from "../js/functions"
@@ -33,12 +35,11 @@
     let selected = window.db.get("settingsActiveTab") || "Configuration"
     
     const navigate = (e) => {selected = e.target.innerHTML; window.db.set("settingsActiveTab", selected);}
-
     db.onDidChange("pyServerReady", async (value)=>{
 
-        serverInfo += `>> pyServerReady: ${$pyServerReady}\n`
         $pyServerReady = value
         if($pyServerReady) {
+            serverInfo += `>> fetching server status\n`
             // await updateTCPInfo()
             await updateServerInfo()
         }
@@ -56,7 +57,7 @@
         catch (error) {pyError = error;}
         finally {
             mounted = true
-            serverInfo += `>> pyServerReady: ${$pyServerReady}\n`
+            // serverInfo += `>> pyServerReady: ${$pyServerReady}\n`
             serverInfo += `>> pyVersion: ${$pyVersion}\n`
             
             if($pyServerReady) {
@@ -87,26 +88,15 @@
         } finally {event?.target.classList.toggle("is-loading")}
     }
 
-    let pythonServer = [];
     let serverInfo = ""
     let executeCommand = ""
 
-    const closeServerIfOpen = async () => {
-
-        const pid = await portToPid($pyServerPORT)
-        if(pid) {
-            serverInfo += `>> closing server at ${$pyServerPORT} (PID: ${pid}) \n`
-            await killByPid(pid)
-            serverInfo += `>> CLOSED PID: ${pid} \n`
-        }
-        return Promise.resolve(true)
-    }
-
-    $: if($pyServerPORT) {db.set("pyServerPORT", $pyServerPORT)}
 
     const updateServerInfo = async (e=null)=>{
+
         const rootpage = await fetchServerROOT({target: e?.target})
-        if(rootpage) { 
+        if(!rootpage.includes("ERROR")) { 
+            $pyServerReady = true
             serverInfo += `>> ${rootpage}\n`; 
             return
         }
@@ -202,15 +192,19 @@
                         <div class="align server-control" class:hide={!showServerControls}>
                             <div class="align">
 
-                                <Textfield type="number" bind:value={$pyServerPORT} label="serverPORT" />
+                                <Textfield disabled type="number" bind:value={$pyServerPORT} label="serverPORT" />
+                                
                                 <CustomSwitch bind:selected={serverDebug} label="serverDebug" 
                                     on:SMUISwitch:change="{()=>{
                                         db.set("serverDebug", serverDebug);
                                         console.log({serverDebug}, db.get("serverDebug"))
                                     }}"
                                 />
-    
-                                <PyButton id="pythonServerButton" on:click={window.startServer} 
+
+                                <button class="button is-warning" on:click="{window.restartServer}">
+                                    restartServer
+                                </button>
+                                <!-- <PyButton id="pythonServerButton" on:click={window.startServer} 
                                         bind:pyProcesses={pythonServer}
                                         disabled={$pyServerReady}
                                         btnName={"startpythonServer"}
@@ -219,7 +213,7 @@
                                     <button class="button is-danger" on:click="{closeServerIfOpen}">
                                         STOP
                                     </button>
-                                {/if}
+                                {/if} -->
     
                                 <button class="button is-warning" on:click="{updateTCPInfo}">Check TCP</button>
     

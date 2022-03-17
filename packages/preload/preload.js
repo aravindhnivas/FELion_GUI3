@@ -3,7 +3,10 @@ import { ipcRenderer } from 'electron'
 window.addEventListener('contextmenu', (e) => {
     e.preventDefault()
     const rightClickPosition = { x: e.x, y: e.y }
-    ipcRenderer.invoke("contextmenu", rightClickPosition)
+    // console.log({rightClickPosition})
+    // Renderer to main (one-way)
+    ipcRenderer.send("contextmenu", rightClickPosition)
+
 }, false);
 
 import "./definedENV"

@@ -1,27 +1,24 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
+// import Store from 'electron-store'
 import path from "path"
 import './security-restrictions.ts';
 import unhandled from 'electron-unhandled';
-import Store from 'electron-store'
-import { kill as killPort } from 'cross-port-killer';
-const db = new Store({name: "db"})
-Store.initRenderer();
+import {ROOT_DIR, RENDERER_DIR, PKG_DIR} from "./definedEnv";
+import {startServer} from "./felionpyServer";
+
+
 
 const isSingleInstance = app.requestSingleInstanceLock();
-
 if (!isSingleInstance) {
 
 	app.quit();
 	process.exit(0);
 }
 
+
+let controller = new AbortController()
 const env = import.meta.env;
 console.table(env)
-
-
-const ROOT_DIR = path.join(__dirname, "../../../")
-const PKG_DIR = path.join(ROOT_DIR, "packages")
-const RENDERER_DIR = path.join(PKG_DIR, "renderer")
 console.table({ __dirname, ROOT_DIR, PKG_DIR, RENDERER_DIR })
 
 async function createWindow() {
@@ -38,6 +35,11 @@ async function createWindow() {
 	import("./dialogs")
 	import("./autoupdate")
 
+	const {signal} = controller
+
+	const webContents = mainWindow?.webContents
+	startServer(signal, webContents)
+
 	mainWindow.on('ready-to-show', () => {
 		mainWindow?.show();
 		if (env.DEV) { mainWindow?.webContents.openDevTools(); }
@@ -46,30 +48,26 @@ async function createWindow() {
 	const pageUrl = env.DEV
 		? env.VITE_DEV_SERVER_URL
 		: new URL(path.join(RENDERER_DIR, 'dist/index.html'), 'file://' + __dirname).toString();
+
 	await mainWindow.loadURL(pageUrl);
+
 }
 
+
 app.whenReady().then(() => {
+
 	createWindow()
 	
 	app.on('activate', () => {
 		if (BrowserWindow.getAllWindows().length === 0) {
 			createWindow()
-
 			unhandled({showDialog: true})
+
 		}
 	})
 }).catch(err => console.error(err))
 
 app.on('window-all-closed', async () => {
-
-	const pyServerPORT = parseInt(db.get("pyServerPORT"))
-	
-	if(pyServerPORT) {
-		const output = await killPort(pyServerPORT)
-		if(output.length>0) {console.log(`port ${pyServerPORT} closed (PID: ${output})`)}
-	}
-	
 	if (process.platform !== 'darwin') { app.quit() }
 	console.log("Application closed")
 })
@@ -97,5 +95,26 @@ ipcMain.on("appInfo", (event, arg) => {
 	appPathKeys.forEach(key => appInfo[key] = app.getPath(key))
 	appInfo.appPath = app.getAppPath()
 	event.returnValue = appInfo
+
 })
+
 ipcMain.on("appVersion", (event, arg) => { event.returnValue = app.getVersion() })
+
+ipcMain.on("restartServer", (event, args) => {
+
+	try {
+		console.log("restarting server")
+		controller?.abort()
+		controller = new AbortController()
+		const {signal} = controller
+		const webContents = event.sender
+		startServer(signal, webContents)
+		console.log("new server started")
+		
+		console.log("server started")
+
+	} catch (error) {
+		console.error(error)
+	}
+
+})
