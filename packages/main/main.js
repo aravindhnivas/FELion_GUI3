@@ -16,7 +16,7 @@ if (!isSingleInstance) {
 }
 
 
-let controller = new AbortController()
+// let controller = new AbortController()
 const env = import.meta.env;
 console.table(env)
 console.table({ __dirname, ROOT_DIR, PKG_DIR, RENDERER_DIR })
@@ -35,10 +35,10 @@ async function createWindow() {
 	import("./dialogs")
 	import("./autoupdate")
 
-	const {signal} = controller
+	// const {signal} = controller
 
 	const webContents = mainWindow?.webContents
-	startServer(signal, webContents)
+	startServer(webContents)
 
 	mainWindow.on('ready-to-show', () => {
 		mainWindow?.show();
@@ -100,18 +100,18 @@ ipcMain.on("appInfo", (event, arg) => {
 
 ipcMain.on("appVersion", (event, arg) => { event.returnValue = app.getVersion() })
 
-ipcMain.on("restartServer", (event, args) => {
 
+ipcMain.on("startServer", (event, args) => {
 	try {
-		console.log("restarting server")
-		controller?.abort()
-		controller = new AbortController()
-		const {signal} = controller
+		console.log("starting server")
+		// controller?.abort()
+		// controller = new AbortController()
+		// const {signal} = controller
 		const webContents = event.sender
-		startServer(signal, webContents)
+		startServer(webContents)
 		console.log("new server started")
 		
-		console.log("server started")
+		// console.log("server started")
 
 	} catch (error) {
 		console.error(error)

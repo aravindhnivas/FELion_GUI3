@@ -1,5 +1,8 @@
 
 import { contextBridge, ipcRenderer } from 'electron'
-contextBridge.exposeInMainWorld("restartServer", () => {
-    ipcRenderer.send('restartServer')
+contextBridge.exposeInMainWorld("startServer", () => {
+    ipcRenderer.send('startServer')
+})
+contextBridge.exposeInMainWorld("stopServer", () => {
+    ipcRenderer.send('stopServer')
 })

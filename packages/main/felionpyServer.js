@@ -1,15 +1,21 @@
-
+import { ipcMain } from 'electron'
 import path from "path"
 import { promisify } from 'util'
 import { spawn, exec  } from 'child_process'
 import {ROOT_DIR} from "./definedEnv"
 import getPort from 'get-port';
 import Store from 'electron-store'
+
+const env = import.meta.env;
 const execCommand = promisify(exec);
 
 const getCurrentDevStatus = () => {
+
     const db = new Store({name: "db"})
     
+    if(!db.has("developerMode")) {
+        db.set("developerMode", env.DEV)
+    }
     const developerMode = db.get("developerMode")
     const pythonscript = db.get("pythonscript") || path.join(ROOT_DIR, "resources/python_files")
     const pythonpath = db.get("pythonpath") || path.join(ROOT_DIR, "resources/python_files")
@@ -43,11 +49,13 @@ export async function getPyVersion() {
         console.error(error)
 
         return Promise.resolve(false)
-    
     }
 }
 
-export async function startServer(signal, webContents) {
+
+let py;
+let controller;
+export async function startServer(webContents) {
 
     const {db, developerMode, pyProgram, mainpyfile} = getCurrentDevStatus()
     const serverDebug = db.get("serverDebug") ?? false
@@ -63,7 +71,6 @@ export async function startServer(signal, webContents) {
 
     
         webContents?.send('db:update', {key: "pyServerReady", value: false})
-    
         pyVersion ||= db.get("pyVersion")
         
         if(!pyVersion) {
@@ -76,18 +83,20 @@ export async function startServer(signal, webContents) {
             }
             webContents?.send('db:update', {key: "pyVersion", value: pyVersion})
         }
+
         console.log(pyVersion)
+
         const pyfile = "server"
         const sendArgs = [pyfile, JSON.stringify({port: availablePORT, debug: serverDebug})]
         
         const pyArgs = developerMode ? [mainpyfile, ...sendArgs] : sendArgs
         console.warn({pyProgram, pyArgs})
 
-        const opts = {signal}
+        const opts = {}
         
         try {
             
-            const py = spawn(pyProgram, pyArgs, opts)
+            py = spawn(pyProgram, pyArgs, opts)
 
             py.on("error", (error) => {
 
@@ -96,28 +105,31 @@ export async function startServer(signal, webContents) {
                 reject(error)
             })
 
-            py.on("close", () => {
+            py.on("spawn", () => {
+                db.set("pyServerReady", true)
+                webContents?.send('db:update', {key: "pyServerReady", value: true})
+                console.info("pyServerReady", db.get("pyServerReady"))
+
+                console.log("server ready")
+            })
+
+            py.on("exit", () => {
+
                 db.set("pyServerReady", false)
                 webContents?.send('db:update', {key: "pyServerReady", value: false})
+                console.log("server closed")
+            
             })
             
             py.stderr.on("data", (err) => {
-
                 const stderr = String.fromCharCode.apply(null, err)
                 console.warn(stderr)
-
             })
 
             py.stdout.on("data", (data) => {
-
                 const stdout = String.fromCharCode.apply(null, data)
                 console.info(stdout)
-
             })
-
-            webContents?.send('db:update', {key: "pyServerReady", value: true})
-            console.info("pyServerReady", db.get("pyServerReady"))
-            resolve("server ready")
 
         } catch (error) {
 
@@ -126,7 +138,7 @@ export async function startServer(signal, webContents) {
             reject(error); 
 
         }
-
     })
-
 }
+
+ipcMain.on("stopServer", (event, args) => py?.kill?.())

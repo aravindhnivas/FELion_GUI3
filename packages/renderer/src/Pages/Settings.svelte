@@ -47,11 +47,11 @@
     
     onMount(async ()=>{
         try {
-            if(!$pyVersion) {
-                console.warn("python is invalid. computing again")
-                await getPyVersion()
-                console.warn($pyVersion)
-            }
+            // if(!$pyVersion) {
+            //     console.warn("python is invalid. computing again")
+            //     await getPyVersion()
+            //     console.warn($pyVersion)
+            // }
             $pyServerReady = db.get("pyServerReady")
         } 
         catch (error) {pyError = error;}
@@ -201,19 +201,17 @@
                                     }}"
                                 />
 
-                                <button class="button is-warning" on:click="{window.restartServer}">
-                                    restartServer
+                                <button class="button is-link" on:click="{window.startServer}" 
+                                    disabled={$pyServerReady}
+                                    >
+                                    STARTserver
                                 </button>
-                                <!-- <PyButton id="pythonServerButton" on:click={window.startServer} 
-                                        bind:pyProcesses={pythonServer}
-                                        disabled={$pyServerReady}
-                                        btnName={"startpythonServer"}
-                                />
+                                
                                 {#if $pyServerReady}
-                                    <button class="button is-danger" on:click="{closeServerIfOpen}">
-                                        STOP
+                                    <button class="button is-danger" on:click="{window.stopServer}">
+                                        STOPserver
                                     </button>
-                                {/if} -->
+                                {/if}
     
                                 <button class="button is-warning" on:click="{updateTCPInfo}">Check TCP</button>
     
