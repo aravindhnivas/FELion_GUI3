@@ -6,13 +6,10 @@ from time import perf_counter
 from importlib import import_module, reload
 from flask import Flask, request, jsonify, abort
 from flask_cors import CORS
-
 from pathlib import Path as pt
 import os
 app = Flask(__name__)
 CORS(app)
-
-
 
 @app.route('/')
 def home():
@@ -22,9 +19,7 @@ def home():
 def pyError(error):
     return jsonify(error=str(error)), 404
 
-
 save_location = pt(os.getenv("TEMP")) / "FELion_GUI3"
-
 
 @app.route('/', methods=["POST"])
 def compute():
@@ -39,8 +34,8 @@ def compute():
         print(f"{pyfile=}\n{args=}", flush=True)
 
         with warnings.catch_warnings(record=True) as warn:
-            
             warnings.simplefilter("ignore")
+
             pyfunction = reload(import_module(f"felionlib.{pyfile}"))
             pyfunction.main(args)
             print(f"{warn=}", flush=True)

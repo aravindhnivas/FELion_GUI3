@@ -2,22 +2,19 @@
 import traceback
 import numpy as np
 from .rateSliders import make_slider
-from .plotWidgets import make_widgets
+# from .plotWidgets import make_widgets
 from felionlib.utils.FELion_constants import pltColors
 from scipy.integrate import solve_ivp
 
 widget = None
 otherWidgetsToggle = False
-# k3Sliders, kCIDSliders, toggleLine = [None]*3
+# plotted = False
 
 
 def hideOtherWidgets(event=None):
     global otherWidgetsToggle
 
     for otherWidget in widget.sliderWidgets:
-        otherWidget.set_visible(otherWidgetsToggle)
-
-    for otherWidget in widget.bottomWidgets:
         otherWidget.set_visible(otherWidgetsToggle)
 
     widget.canvas.draw_idle()
@@ -49,15 +46,12 @@ def on_pick(event):
 def plot_exp(
     compute_attachment_process, _widget, k3Labels, kCIDLabels, ratek3,
     ratekCID, kvalueLimits, keyFoundForRate, update, expPlot, fitPlot, args,
-    _fitfunc, k_fit, k_err, rateCoefficientArgs, rateConstantsFileData
+    fitfunc
 ):
 
-    global toggleLine, widget, fitfunc
-    global k3Sliders, kCIDSliders, toggleLine
-    # global numberDensityWidget, saveButton, checkbox, button
+    global toggleLine, widget
 
     widget = _widget
-    fitfunc = _fitfunc
 
     data = args["data"]
     temp = float(args["temp"])
@@ -79,6 +73,7 @@ def plot_exp(
     widget.Figure()
 
     title = f"{selectedFile}: @{temp:.1f} K {numberDensity:.2e}"+"$cm^{-3}$"
+    
     ax = widget.make_figure_layout(
         xaxis="Time (ms)", yaxis="Counts",
 
@@ -88,9 +83,14 @@ def plot_exp(
 
     widget.fig.subplots_adjust(right=0.6, top=0.95, left=0.09, bottom=0.25)
 
-    make_widgets(
-        widget=widget, fitfunc=fitfunc, numberDensity=numberDensity
-    )
+    # saveDataArgs = (
+    #     args, ratek3, k3Labels, kCIDLabels, k_fit, k_err, rateCoefficientArgs,
+    #     fitPlot, expPlot, rateConstantsFileData
+    # )
+    # make_widgets(
+    #     widget=widget, fitfunc=fitfunc, 
+    #     numberDensity=numberDensity, saveDataArgs=saveDataArgs
+    # )
 
     k3Sliders, kCIDSliders = make_slider(
         widget, k3Labels, kCIDLabels,
@@ -158,11 +158,13 @@ def plot_exp(
         print(traceback.format_exc(), flush=True)
 
     widget.canvas.draw_idle()
-
+    widget.last_y = widget.last_y + widget.y_diff
     widget.Buttons(
-        "Toggle-Widgets", widget.x0,
-        widget.last_y+widget.y_diff,
+        "Toggle-Widgets", widget.x0, widget.last_y,
         hideOtherWidgets, relwidth=0.7
     )
 
-    return k3Sliders, kCIDSliders, toggleLine
+    plotted = True
+    print(f"{plotted=}", flush=True)
+
+    return plotted, k3Sliders, kCIDSliders

@@ -6,8 +6,7 @@ from felionlib.utils.msgbox import MsgBox, MB_ICONERROR, MB_ICONINFORMATION
 
 
 def saveData(
-    event, widget, args,
-    ratek3, k3Labels, kCIDLabels,
+    args, ratek3, k3Labels, kCIDLabels,
     k_fit, k_err, rateCoefficientArgs,
     fitPlot, expPlot, rateConstantsFileData
 ):

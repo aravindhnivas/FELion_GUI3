@@ -149,7 +149,9 @@ def FELion_Tk(inheritClass="Tk", *args, **kwargs):
                     self.widget_frame.entry.bind("<Key>", kw["bind_func"])
 
                 self.widget_frame.entry.place(
-                    relx=x, rely=y, anchor=kw['anchor'], relwidth=kw['relwidth'], relheight=kw['relheight'])
+                    relx=x, rely=y, anchor=kw['anchor'], 
+                    relwidth=kw['relwidth'], relheight=kw['relheight']
+                )
 
                 return self.widget_frame.txt
 
@@ -163,12 +165,18 @@ def FELion_Tk(inheritClass="Tk", *args, **kwargs):
                     self.widget_frame.txt.set(False)
 
                 self.widget_frame.Check = Checkbutton(
-                    self.widget_frame, text=txt, variable=self.widget_frame.txt)
+                    self.widget_frame, text=txt, variable=self.widget_frame.txt
+                )
+
                 if bind_btn:
                     self.widget_frame.Check.bind(
-                        "<ButtonRelease-1>", kw["bind_func"])
+                        "<ButtonRelease-1>", kw["bind_func"]
+                    )
+                    
                 self.widget_frame.Check.place(
-                    relx=x, rely=y, relwidth=kw['relwidth'], relheight=kw['relheight'])
+                    relx=x, rely=y,
+                    relwidth=kw['relwidth'], relheight=kw['relheight']
+                )
 
                 return self.widget_frame.txt
 

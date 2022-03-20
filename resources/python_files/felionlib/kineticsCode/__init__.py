@@ -5,14 +5,16 @@ from pathlib import Path as pt
 import numpy as np
 from .utils.definitions import log
 from .utils.plot import plot_exp
+
 from scipy.optimize import curve_fit
 from scipy.integrate import solve_ivp
 from felionlib.utils.FELion_widgets import FELion_Tk
 from felionlib.utils.msgbox import MsgBox, MB_ICONERROR
+
 from felionlib.utils.FELion_definitions import readCodeFromFile
-
 from tkinter.messagebox import showerror
-
+from .utils.plotWidgets import make_widgets
+from .utils.savedata import saveData
 
 def fitODE(t, *args):
 
@@ -32,6 +34,8 @@ tspan = None
 simulateTime = None
 kvalueLimits = {}
 compute_attachment_process = None
+k3Sliders = {}
+kCIDSliders = {}
 
 
 def codeToRun(code):
@@ -55,15 +59,25 @@ def update(val=None):
 
     for line, data in zip(fitPlot, dNdtSol):
         line.set_ydata(data)
-
+        
     widget.canvas.draw_idle()
+
+
+k_fit, k_err = [], []
+
+
+def saveDataFull():
+
+    saveData(
+        args, ratek3, k3Labels, kCIDLabels, k_fit, k_err, rateCoefficientArgs,
+        fitPlot, expPlot, rateConstantsFileData
+    )
 
 
 def KineticMain():
 
-    global initialValues, tspan, simulateTime,\
-        compute_attachment_process, kvalueLimits, \
-        k3Sliders, kCIDSliders, toggleLine, rateCoefficientArgs
+    global initialValues, tspan, simulateTime, compute_attachment_process, checkboxes
+    global kvalueLimits, rateCoefficientArgs, plotted, k3Sliders, kCIDSliders
 
     duration = expTime.max()*1.2
     tspan = [0, duration]
@@ -71,6 +85,7 @@ def KineticMain():
 
     location = pt(args["kineticEditorLocation"])
     filename = pt(location) / args["kineticEditorFilename"]
+
     codeContents = readCodeFromFile(filename)
     codeOutput = codeToRun(codeContents)
 
@@ -80,24 +95,29 @@ def KineticMain():
     if "kvalueLimits" in codeOutput:
         kvalueLimits = codeOutput["kvalueLimits"]
         print(f"{kvalueLimits=}", flush=True)
+        
 
-    k3Sliders, kCIDSliders, toggleLine = plot_exp(
+    plotted = False
+
+    plotted, k3Sliders, kCIDSliders = plot_exp(
         compute_attachment_process, widget,
         k3Labels, kCIDLabels, ratek3, ratekCID, kvalueLimits,
-        keyFoundForRate, update, expPlot, fitPlot, args,
-        fitfunc, k_fit, k_err, rateCoefficientArgs, rateConstantsFileData
+        keyFoundForRate, update, expPlot, fitPlot, args, fitfunc
     )
-
+    checkboxes = make_widgets(
+        widget=widget, fitfunc=fitfunc, checkboxes=checkboxes,
+        saveData=saveDataFull
+    )
     return
 
 
-k_err = []
-k_fit = []
+checkboxes = {"setbound": False}
 
 
 def fitfunc(event=None):
-
     global k_fit, k_err
+    k_err = []
+    k_fit = []
 
     p0 = [
         *[10**rate.val for rate in k3Sliders.values()],
@@ -146,16 +166,15 @@ def fitfunc(event=None):
         )
 
     log(f"{bounds=}")
-
     try:
+
         k_fit, kcov = curve_fit(
             fitODE, expTime, expData.flatten(),
-            p0=p0, sigma=expDataError.flatten(),
-            absolute_sigma=True, bounds=bounds
+            p0=p0, bounds=bounds
+            # sigma=expDataError.flatten(), absolute_sigma=True, 
         )
 
         k_err = np.sqrt(np.diag(kcov))
-
         log(f"{k_fit=}\n{k_err=}")
         log("fitted")
 
@@ -164,28 +183,24 @@ def fitfunc(event=None):
 
         for counter1, _kCID in enumerate(kCIDSliders.values()):
             _kCID.set_val(np.log10(k_fit[len(ratek3):][counter1]))
-
+        print(f"{rateCoefficientArgs=}", flush=True)
     except Exception:
 
         k_fit = []
         k_err = []
+
+        error = traceback.format_exc(5)
+        print(f"{plotted=}\nerror while fitting data: \n{error=}", flush=True)
+
         if plotted:
-            MsgBox("Error", traceback.format_exc(), MB_ICONERROR)
+            MsgBox("Error", error, MB_ICONERROR)
 
 
 fitPlot = []
 expPlot = []
-plotted = False
-checkboxes = {
-    "setbound": False
-}
-toggleLine = {}
-
 args = None
 widget = None
 savefile = None
-k3Sliders = {}
-kCIDSliders = {}
 rateCoefficientArgs = ()
 
 
@@ -277,13 +292,12 @@ def main(arguments):
         ratek3 = [float(args["k3Guess"]) for _ in k3Labels]
         ratekCID = [float(args["kCIDGuess"]) for _ in kCIDLabels]
 
-    
     try:
         widget = FELion_Tk(title=f"Kinetics: {selectedFile}", location=savedir)
-        
         KineticMain()
         widget.mainloop()
 
-    except:
+    except Exception:
+
         showerror("ERROR", traceback.format_exc(5))
         widget.destroy()

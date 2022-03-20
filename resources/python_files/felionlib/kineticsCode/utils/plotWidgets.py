@@ -1,84 +1,50 @@
-from matplotlib.widgets import Button, TextBox, CheckButtons
-from .savedata import saveData
+# from .savedata import saveData
 
 widget = None
-numberDensity = None
-# numberDensityWidget, saveButton, checkbox, button = [None]*4
-checkboxes = {
-    "setbound": False
-}
+# numberDensity = None
+# checkboxes = {
+#     "setbound": False
+# }
+
+def checkboxesFunc(event=None):
+    global setbound
+    print(f"{setbound.get()=}", flush=True)
+    checkboxes["setbound"] = not setbound.get()
 
 
-def checkboxesFunc(label):
-    global checkboxes
-    checkboxes[label] = not checkboxes[label]
-    widget.canvas.draw_idle()
-
-
-def setNumberDensity(val):
-    global numberDensity
-    numberDensity = float(val)
-    print(f"{numberDensity=}", flush=True)
-    # widget.ax.set_title(f"{selectedFile}: {temp:.1f} K {numberDensity:.2e}"+"$cm^{-3}$")
-
-    fitfunc()
+# def setNumberDensity(val):
+#     global numberDensity
+#     numberDensity = float(val)
+#     print(f"{numberDensity=}", flush=True)
+#     fitfunc()
 
 
 def make_widgets(**kwargs):
 
-    global widget, fitfunc, numberDensity
-    # global numberDensityWidget, saveButton, checkbox, button
+    global widget, fitfunc, setbound, checkboxes
 
     widget = kwargs["widget"]
     fitfunc = kwargs["fitfunc"]
-    numberDensity = kwargs["numberDensity"]
+    checkboxes = kwargs["checkboxes"]
+    # saveDataArgs = kwargs["saveDataArgs"]
+    saveData = kwargs["saveData"]
 
-    left, bottom, width, height = 0.1, 0.05, 0.1, 0.05
-
-    axcolor = 'lightgoldenrodyellow'
-
-    buttonAxes = widget.fig.add_axes(
-        [left, bottom, width, height],
-        facecolor=axcolor
+    widget.last_y = widget.last_y + widget.y_diff
+    setbound = widget.Entries(
+        "Check", "setbound", widget.x0, widget.last_y, 
+        default=checkboxes["setbound"], bind_btn=True, 
+        bind_func=checkboxesFunc
     )
 
-    button = Button(buttonAxes, 'Fit', color=axcolor, hovercolor='0.975')
-    button.on_clicked(fitfunc)
-
-    left += width+0.01
-    checkAxes = widget.fig.add_axes(
-        [left, bottom, width, height],
-        facecolor=axcolor
+    widget.Buttons(
+        "Fit", widget.x0+widget.x_diff, widget.last_y,
+        fitfunc, relwidth=0.4
+    )
+    
+    widget.last_y = widget.last_y + widget.y_diff
+    widget.Buttons(
+        "saveData", widget.x0, widget.last_y,
+        saveData, relwidth=0.4
     )
 
-    checkbox = CheckButtons(checkAxes, ("setbound", ),
-                            list(checkboxes.values()))
-    checkbox.on_clicked(checkboxesFunc)
-
-    left += width+0.01
-
-    saveButtonAxes = widget.fig.add_axes(
-        [left, bottom, width, height],
-        facecolor=axcolor
-    )
-
-    saveButton = Button(saveButtonAxes, 'saveData',
-                        color=axcolor, hovercolor='0.975')
-    saveButton.on_clicked(saveData)
-
-    numberDensityWidgetAxes = widget.fig.add_axes(
-        [0.9-width, bottom, width, height],
-        facecolor=axcolor
-    )
-
-    numberDensityWidget = TextBox(
-        numberDensityWidgetAxes, 'Number density',
-        initial=f"{numberDensity:.2e}"
-    )
-
-    numberDensityWidget.on_submit(setNumberDensity)
-    widget.bottomWidgets = [
-        buttonAxes, checkAxes,
-        saveButtonAxes, numberDensityWidgetAxes
-    ]
-    # return numberDensityWidget, saveButton, checkbox, button
+    return checkboxes
