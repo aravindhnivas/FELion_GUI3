@@ -54,7 +54,8 @@ export async function getPyVersion() {
 
 
 let py;
-let controller;
+// let controller;
+
 export async function startServer(webContents) {
 
     const {db, developerMode, pyProgram, mainpyfile} = getCurrentDevStatus()
@@ -63,16 +64,17 @@ export async function startServer(webContents) {
     const availablePORT = await getPort({port: [5050, 5353, 3000, dbPORT]})
 
     console.log({dbPORT, availablePORT})
-
     webContents?.send('db:update', {key: "pyServerPORT", value: availablePORT})
+
     console.info("starting felionpy server at port: ", availablePORT)
     
     return new Promise(async (resolve, reject)=>{
 
     
         webContents?.send('db:update', {key: "pyServerReady", value: false})
-        pyVersion ||= db.get("pyVersion")
-        
+        // pyVersion ||= db.get("pyVersion")
+        webContents?.send('db:update', {key: "pyVersion", value: pyVersion})
+
         if(!pyVersion) {
 
             pyVersion = await getPyVersion()
@@ -81,10 +83,10 @@ export async function startServer(webContents) {
                 reject("Python is not valid. Fix it in Settings --> Configuration")
                 return
             }
-            webContents?.send('db:update', {key: "pyVersion", value: pyVersion})
-        }
 
+        }
         console.log(pyVersion)
+        webContents?.send('db:update', {key: "pyVersion", value: pyVersion})
 
         const pyfile = "server"
         const sendArgs = [pyfile, JSON.stringify({port: availablePORT, debug: serverDebug})]

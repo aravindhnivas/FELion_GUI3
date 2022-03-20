@@ -16,10 +16,10 @@ export default async function({
             return Promise.resolve(null)
         }
     
-        if(!get(pyVersion)) {
-            window.handleError("Python could not be loaded. Check in Settings --> Configuration")
-            return Promise.resolve(null)
-        }
+        // if(!get(pyVersion)) {
+        //     window.handleError("Python could not be loaded. Check in Settings --> Configuration")
+        //     return Promise.resolve(null)
+        // }
         
         dataFromPython = await computefromServer({target, general, pyfile, args})
     } 
