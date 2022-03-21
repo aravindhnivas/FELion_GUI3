@@ -1,5 +1,10 @@
 # What's new
 
+## v3.6.0
+- Major improvements and bug fixes
+- using flask python server to communiate transfer (JSON) from python
+
+---
 ## v3.5.3
 
 - Normline: Individula plot selection
