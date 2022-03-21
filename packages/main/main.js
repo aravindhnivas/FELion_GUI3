@@ -5,12 +5,13 @@ import './security-restrictions.ts';
 import unhandled from 'electron-unhandled';
 import {ROOT_DIR, RENDERER_DIR, PKG_DIR} from "./definedEnv";
 import {startServer} from "./felionpyServer";
-
+// import logger from 'electron-log'
 
 
 const isSingleInstance = app.requestSingleInstanceLock();
-if (!isSingleInstance) {
 
+
+if (!isSingleInstance) {
 	app.quit();
 	process.exit(0);
 }
@@ -42,6 +43,7 @@ async function createWindow() {
 
 	mainWindow.on('ready-to-show', () => {
 		mainWindow?.show();
+		// mainWindow?.webContents.openDevTools()
 		if (env.DEV) { mainWindow?.webContents.openDevTools(); }
 	});
 
@@ -50,19 +52,15 @@ async function createWindow() {
 		: new URL(path.join(RENDERER_DIR, 'dist/index.html'), 'file://' + __dirname).toString();
 
 	await mainWindow.loadURL(pageUrl);
-
 }
-
 
 app.whenReady().then(() => {
 
 	createWindow()
-	
 	app.on('activate', () => {
 		if (BrowserWindow.getAllWindows().length === 0) {
 			createWindow()
 			unhandled({showDialog: true})
-
 		}
 	})
 }).catch(err => console.error(err))
@@ -104,15 +102,9 @@ ipcMain.on("appVersion", (event, arg) => { event.returnValue = app.getVersion() 
 ipcMain.on("startServer", (event, args) => {
 	try {
 		console.log("starting server")
-		// controller?.abort()
-		// controller = new AbortController()
-		// const {signal} = controller
 		const webContents = event.sender
 		startServer(webContents)
 		console.log("new server started")
-		
-		// console.log("server started")
-
 	} catch (error) {
 		console.error(error)
 	}
