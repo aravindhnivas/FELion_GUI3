@@ -23,6 +23,3 @@ contextBridge.exposeInMainWorld("__dirname", publicDirectory)
 
 contextBridge.exposeInMainWorld("appVersion", ipcRenderer.sendSync('appVersion', null))
 fs.ensureDirSync(path.join(appInfo.userData, "config"))
-
-console.table({ ROOT_DIR, PKG_DIR, RENDERER_DIR, publicDirectory })
-console.table(env)
