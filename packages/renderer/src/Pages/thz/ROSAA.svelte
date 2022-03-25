@@ -1,5 +1,5 @@
 <script>
-    import {fade}                   from "svelte/transition";
+    // import {fade}                   from "svelte/transition";
     import Textfield                from '@smui/textfield';
     import { parse as Yml }         from 'yaml';
     // import {find}                   from "lodash-es";
@@ -8,7 +8,7 @@
     import LayoutDiv                from '$components/LayoutDiv.svelte';
     import CustomCheckbox           from "$components/CustomCheckbox.svelte";
     import CustomTextSwitch         from "$components/CustomTextSwitch.svelte";
-    import PyButton                 from "$components/PyButton.svelte"
+    // import PyButton                 from "$components/PyButton.svelte"
     import BoltzmanDistribution     from "./windows/BoltzmanDistribution.svelte";
 
     import EinsteinCoefficients     from "./components/EinsteinCoefficients.svelte";
@@ -540,22 +540,23 @@
 
     <svelte:fragment slot="footer_content__slot">
 
-        {#if pyProcesses.length>0}
+        <!-- {#if pyProcesses.length>0}
         
-            <!-- <div>{'Running:'+ pyProcesses.length}</div> -->
+            <div>{'Running:'+ pyProcesses.length}</div>
             <button transition:fade class="button is-danger" 
                 on:click="{()=>{pyProcesses.at(-1).kill(); pyProcesses.pop()}}" >Stop</button>
-        {/if}
+        {/if} -->
 
         <CustomSelect options={simulationMethods} bind:picked={simulationMethod} label="simulationMethod"/>
         {#if showreport}
-            <button  class="button is-warning" on:click="{()=>{statusReport = ""}}" >Clear</button>
+            <button class="button is-warning" on:click="{()=>{statusReport = ""}}" >Clear</button>
         {/if}
-        <button  class="button is-link" on:click="{()=>{showreport = !showreport}}">
+        <button class="button is-link" on:click="{()=>{showreport = !showreport}}">
             {showreport ? "Go Back" : "Status report"}
         </button>
         
-        <PyButton on:click={simulation} bind:pyProcesses bind:stdOutput={statusReport} />
+        <!-- <PyButton on:click={simulation} bind:pyProcesses bind:stdOutput={statusReport} /> -->
+        <button class="button is-link" on:click="{simulation}" >Submit</button>
 
     
     </svelte:fragment>

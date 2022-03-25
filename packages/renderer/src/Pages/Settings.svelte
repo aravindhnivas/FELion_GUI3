@@ -46,22 +46,22 @@
     })
     
     onMount(async ()=>{
+        
         try {
-            // if(!$pyVersion) {
-            //     console.warn("python is invalid. computing again")
-            //     await getPyVersion()
-            //     console.warn($pyVersion)
-            // }
+            if(!$pyVersion) {
+                console.warn("python is invalid. computing again")
+                await getPyVersion()
+                console.warn($pyVersion)
+            }
+        
             $pyServerReady = db.get("pyServerReady")
-        } 
-        catch (error) {pyError = error;}
+        
+        }
+        catch (error) {pyError = error}
         finally {
             mounted = true
-            // serverInfo += `>> pyServerReady: ${$pyServerReady}\n`
             serverInfo += `>> pyVersion: ${$pyVersion}\n`
-            
             if($pyServerReady) {
-                // await updateTCPInfo()
                 await updateServerInfo()
             }
 
@@ -73,6 +73,7 @@
                 updateError = localStorage.getItem("update-error")
             }, interval*60*1000);
         }
+        
     })
 
     function updateCheck(event=null){

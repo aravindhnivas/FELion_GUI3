@@ -2,7 +2,7 @@
 <script>
     import { tick }                     from "svelte"
     import Textfield                    from '@smui/textfield'
-    import PyButton                     from "$components/PyButton.svelte"
+    // import PyButton                     from "$components/PyButton.svelte"
     import CustomSwitch                 from "$components/CustomSwitch.svelte"
     import CustomTextSwitch             from "$components/CustomTextSwitch.svelte"
     import CustomSelect                 from "$components/CustomSelect.svelte"
@@ -300,7 +300,8 @@
         <button class="button is-link" on:click="{saveCurrentConfig}">saveCurrentConfig</button>
         <i class="material-icons" on:click="{()=> adjustConfig = true}">settings</i>
 
-        <PyButton on:click={kineticSimulation} bind:pyProcesses />
+        <!-- <PyButton on:click={kineticSimulation} bind:pyProcesses /> -->
+        <button class="button is-link" on:click="{kineticSimulation}" >Submit</button>
     </svelte:fragment>
 
 </LayoutDiv>

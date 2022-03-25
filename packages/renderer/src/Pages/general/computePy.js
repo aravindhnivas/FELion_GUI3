@@ -1,5 +1,6 @@
 import computefromServer from "./computefromServer"
-import {pyVersion, pyServerReady, get} from "../settings/svelteWritables"
+import computefromSubprocess from "./computefromSubprocess"
+import {pyServerReady, get} from "../settings/svelteWritables"
 
 export default async function({
         e = null, target=null, pyfile = "",
@@ -8,23 +9,76 @@ export default async function({
 
     target ||= e?.target
     let dataFromPython = null;
-    
+    let processDivGeneral;
+    let processDivGeneralNum = 0;
+
     try {
 
         if(!get(pyServerReady)) {
             window.handleError("Python server is not ready. Fix it in Settings --> Configuration")
             return Promise.resolve(null)
         }
-    
-        // if(!get(pyVersion)) {
-        //     window.handleError("Python could not be loaded. Check in Settings --> Configuration")
-        //     return Promise.resolve(null)
-        // }
+
         
+        if(general) {
+            console.info(target)
+            if(target) {
+                // if(!target.classList.contains("ld-ext-right")) {
+                //     target.classList.add("ld-ext-right")
+                // }
+                processDivGeneral = target.getElementsByClassName("tag")
+                if(processDivGeneral.length === 0) {
+                    processDivGeneral = document.createElement("span")
+                    processDivGeneral.className  = "tag__span tag is-warning hide"
+                    processDivGeneral.textContent = "1"
+                    target.appendChild(processDivGeneral)
+                } else {
+                    processDivGeneral = processDivGeneral[0]
+                    const num = processDivGeneral.textContent
+                    processDivGeneralNum = isNaN(parseInt(num)) ? 0 : parseInt(num)
+                    processDivGeneral.textContent = `${processDivGeneralNum + 1}`
+                
+                }
+                if(processDivGeneral.classList.contains("hide")){
+                    processDivGeneral.classList.remove("hide")
+                }
+                console.log(processDivGeneral)
+            }
+            dataFromPython = await computefromSubprocess({target, general, pyfile, args})
+            return
+        }
+
         dataFromPython = await computefromServer({target, general, pyfile, args})
+
     } 
     catch (error) {window.handleError(error)} 
+    
     finally {
+
+        if(processDivGeneral) {
+
+            const num = processDivGeneral.textContent
+            processDivGeneralNum = isNaN(parseInt(num)) ? 0 : parseInt(num)
+            
+            const currentNum = processDivGeneralNum - 1
+
+            if(currentNum > 0) {
+                processDivGeneral.textContent = `${currentNum}`
+            
+            } else {
+                
+                if(pyfile.includes("baseline")) {
+            
+                    processDivGeneral.textContent = "b"
+                } else {
+
+                    processDivGeneral.textContent = ""
+                    processDivGeneral.classList.add("hide")
+                }
+
+            }
+            
+        }
         console.log("COMPLETED")
         return Promise.resolve(dataFromPython)
     }

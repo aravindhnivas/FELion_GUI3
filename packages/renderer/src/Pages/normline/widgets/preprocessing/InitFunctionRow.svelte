@@ -170,7 +170,7 @@
 <div class="align">
     <button class="button is-link" id="create_baseline_btn" on:click="{(e)=>plotData({e:e, filetype:"baseline"})}">
         Create Baseline
-        <span class="tag is-warning " aria-label="ctrl + left-click to select file for baseline correction" data-cooltipz-dir="bottom" >b</span>
+        <span class="tag__span tag is-warning " aria-label="ctrl + left-click to select file for baseline correction" data-cooltipz-dir="bottom" >b</span>
     </button>
 
     <button class="button is-link" id="felix_plotting_btn" on:click="{(e)=>plotData({e:e, filetype:"felix"})}">
@@ -185,7 +185,7 @@
 </div>
 
 <style>
-    .tag {
+    :global(.tag__span) {
         border-radius: 2em;
         margin: 0 1em;
     }    

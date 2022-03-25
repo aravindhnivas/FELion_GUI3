@@ -57,11 +57,10 @@
 
     const saveReport = () => {
         try {
-            if(location) {
-                fs.writeFileSync( reportFile, editor.getData() )
-                reportSaved = true
-                window.createToast(`${basename(reportFile)} file saved`, "link")
-            }
+            if(!location) return window.createToast("UNDEFINED location", "danger") 
+            fs.writeFileSync( reportFile, editor.getData() )
+            reportSaved = true
+            window.createToast(`${basename(reportFile)} file saved`, "link")
         } catch (error) {window.handleError( error )}
     
     }

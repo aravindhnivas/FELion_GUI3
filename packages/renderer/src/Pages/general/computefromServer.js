@@ -4,11 +4,11 @@ export default async function({target=null, general=false, pyfile, args}) {
     
     try {
         
-        if(!general) target?.classList.add("is-loading")
+        console.time("Process Started")
+        window.createToast("Process Started", "warning")
 
-        const outputFile = pathJoin(appInfo.temp, "FELion_GUI3", pyfile.split(".").at(-1) + "_data.json")
-        if(fs.existsSync(outputFile)) fs.removeSync(outputFile)
-    
+        if(!general) target?.classList.add("is-loading")
+        
         const URL = `http://localhost:${get(pyServerPORT)}/`
     
         const response = await fetch(URL, {
@@ -20,7 +20,9 @@ export default async function({target=null, general=false, pyfile, args}) {
         if(target?.classList.contains("is-loading")) {
             target.classList.remove("is-loading")
         }
-
+        console.timeEnd("Process Started")
+        window.createToast("Process completed")
+        // const response = await responsePromise
         console.warn(response)
         if(!response.ok) {
             const jsonErrorInfo = await response.json()

@@ -74,17 +74,22 @@
             power, nshots, massIndex, timestartIndex, saveOutputDepletion
         }
         
-        let pyfileInfo = {
+        const pyfileInfo = {
             scan: {pyfile:"timescan" , args: {scanfiles, tkplot}},
             general: {pyfile:"depletionscan", args: depletionArgs},
         }
+        const {pyfile, args} = pyfileInfo[filetype]
 
-        let {pyfile, args} = pyfileInfo[filetype]
+        if (filetype == "scan") {
 
-        if (filetype == "scan") {graphPlotted = false}
-        
+            graphPlotted = false
+            if(tkplot = "plot") {
+                return computePy_func({e, pyfile, args, general:true})
+            }
+        }
+
         if (filetype == "general") {
-            return computePy_func({e, pyfile, args, general:true, openShell})
+            return computePy_func({e, pyfile, args, general:true})
         }
 
         try {

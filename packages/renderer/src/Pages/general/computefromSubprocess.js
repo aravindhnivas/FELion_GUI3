@@ -8,13 +8,13 @@ export const dispatchEvent = (target, detail, eventName) => {
 }
 
 export default async function({
-        e=null, button=null, general=false, pyfile, args,
+        e=null, target=null, button=null, general=false, pyfile, args,
         computepyfile="main", shell = false, detached = null
 
     })  {
     
     let outputFile;
-    const target = button || e?.target;
+    target ||= button || e?.target;
     if(pyfile === "server") {pyServerReady.set(false)}
 
     if(!general) {
