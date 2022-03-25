@@ -1,18 +1,13 @@
 
 import os
 import shutil
-
+import sys
 from os.path import dirname, isdir, isfile, join
 from pathlib import Path as pt
-
-from felionlib.utils.FELion_widgets import FELion_Tk
-from tkinter.messagebox import askyesno, showinfo, showwarning, showerror
-
-import matplotlib
-matplotlib.use('TkAgg')
-
-from matplotlib.lines import Line2D
-
+from felionlib.utils.felionQt.utils.blit import BlitManager
+from felionlib.utils.felionQt.utils.widgets import ShowDialog
+from felionlib.utils.felionQt import felionQtWindow
+from PyQt6.QtWidgets import QApplication
 from scipy.interpolate import interp1d
 import numpy as np
 
@@ -49,11 +44,8 @@ def var_find(openfile):
 class Create_Baseline():
 
     epsilon = 5
-    
-    def __init__(
-        self, filename,
-        checkdir=True,
-    ):
+
+    def __init__(self, filename,checkdir=True):
 
         self.fname = filename.stem
         self.felixfile = filename.name
@@ -75,14 +67,10 @@ class Create_Baseline():
         for keys, values in attributes.items(): 
             setattr(self, keys, values)
 
-        if self.felixfile.endswith("ofelix"):
-            self.opo = True
+        self.opo = self.felixfile.endswith("ofelix")
+        self.basefile = f'{self.fname}.base'
+        if self.opo:
             self.basefile = f'{self.fname}.obase'
-
-        else:
-            
-            self.opo = False
-            self.basefile = f'{self.fname}.base'
         
         self.powerfile = f'{self.fname}.pow'
         self.cfelix = f'{self.fname}.cfelix'
@@ -117,8 +105,8 @@ class Create_Baseline():
         else: 
             print(f"Basefile doesn't EXISTS: Guessing baseline points")
             self.GuessBaseLine()
-        self.line = Line2D(self.xs, self.ys)
-        self.InteractivePlots() # Plot
+        # self.line = Line2D(self.xs, self.ys)
+        # self.InteractivePlots() # Plot
 
     def checkInf(self):
 
@@ -164,6 +152,7 @@ class Create_Baseline():
         self.xs, self.ys = file[:,0], file[:,1]
         with open(f'./DATA/{self.basefile}', 'r') as f:
             self.interpol = f.readlines()[1].strip().split('=')[-1]
+            print(f"{self.interpol=}", flush=True)
         print(f"{self.basefile} has been read for baseline points")
 
     def GuessBaseLine(self):
@@ -181,87 +170,61 @@ class Create_Baseline():
             By.append(y)
         Bx.append(self.data[0][-1]+0.1)
         By.append(self.data[1][-1])
-
+        self.interpol = "cubic"
         self.xs, self.ys = Bx, By
 
         print(f"Baseline points are guessed.")
 
-    def InteractivePlots(self):
-
-        widget = FELion_Tk(title=self.felixfile, location=self.location/"OUT")
-        self.fig, self.canvas = widget.Figure(dpi=120)
-        self.ax = self.fig.add_subplot(111)
-
-        self.line = Line2D(self.xs, self.ys, marker='s', ls='', ms=6, c=('b', "C1")[self.opo], markeredgecolor=('b', "C1")[self.opo], animated=True)
-        self.ax.add_line(self.line)        
+    def InteractivePlots(self, widget: felionQtWindow) -> None:
         
-        self.inter_xs = np.arange(self.xs[0], self.xs[-1])
-        self.funcLine = Line2D([], [], marker='', ls='-', c=('b', "C1")[self.opo], animated=True)
-        self.ax.add_line(self.funcLine)
+        self.widget = widget
+        (self.line,) = self.widget.ax.plot(
+            self.xs, self.ys, zorder=2.5, marker='s', ls='', ms=6, c=('b', "C1")[self.opo], 
+            markeredgecolor=('b', "C1")[self.opo], animated=True
+        )
 
-        self.redraw_f_line()
-        self._ind = None
-
-        self.canvas.mpl_connect('draw_event', self.draw_callback)
-        self.canvas.mpl_connect('button_press_event', self.button_press_callback)
-        self.canvas.mpl_connect('key_press_event', self.key_press_callback)
-        self.canvas.mpl_connect('button_release_event', self.button_release_callback)
-        self.canvas.mpl_connect('motion_notify_event', self.motion_notify_callback)
+        (self.funcLine,) = self.widget.ax.plot([], [], c=('b', "C1")[self.opo], animated=True)
 
         if not self.opo:
+
             res, b0, trap = var_find(f"{self.location}/DATA/{self.felixfile}")
             label = f"{self.felixfile}: Res:{res}; B0: {b0}ms; trap: {trap}ms"
-        else: label = f"{self.felixfile}"
+        else:
+            label = f"{self.felixfile}"
 
+        (self.baseline_data,) = self.widget.ax.step(
+            self.data[0], self.data[1], c="r", where="pre", 
+            ms=7, markeredgecolor="black", label=label, animated=True
+        )
 
-        baselinePlot_title = ("FELIX Spectrum: Create Baseline", "OPO Spectrum: Create Baseline")[self.opo]
+        self.widget.canvas.mpl_connect('button_press_event', self.button_press_callback)
+        self.widget.canvas.mpl_connect('key_press_event', self.key_press_callback)
+        self.widget.canvas.mpl_connect('button_release_event', self.button_release_callback)
+        self.widget.canvas.mpl_connect('motion_notify_event', self.motion_notify_callback)
 
-        self.ax = widget.make_figure_layout(ax=self.ax, label=label, savename=self.felixfile, title=baselinePlot_title, xaxis="Wavenumber (cm-1)", yaxis="Counts")
-        self.baseline_data, = self.ax.step(self.data[0], self.data[1], "r", where="pre", ms=7, markeredgecolor="black", label=label)
-        widget.plot_legend = self.ax.legend()
-
-        def on_closing():
-            def ask(check, change, txt=""):
-                if check:
-                    yes = askyesno(f"Save corrected as {self.fname}{txt} file?", f"You haven't saved the corrected file\nPress 'Yes' to save the {txt} file and quit OR 'No' to just quit.")
-                    if yes: return change()
-                    else: return print(f"[{txt}] Changes haven't saved")
-                else: return print(f"[{txt}] No changes have made")
-
-            
-            ask(self.felix_corrected, self.save_cfelix, ".cfelix")
-            ask(self.baseline_corrected, self.SaveBase, ".base")
-            widget.destroy()
-
-        widget.protocol("WM_DELETE_WINDOW", on_closing)
-        widget.mainloop()
+        animated_artists = (self.baseline_data, self.line, self.funcLine)
+        self.blit = BlitManager(self.widget.canvas, animated_artists)
+        self.redraw_f_line()
+        self._ind = None
+        self.widget.fig.tight_layout()
+        # self.widget.legend_handler = {label: animated_artists}
 
     def redraw_f_line(self):
                 
         try:
             Bx, By = np.array(self.line.get_data())
             self.inter_xs = np.arange(Bx.min(), Bx.max())
-            f = interp1d(Bx, By, kind='cubic')
+            f = interp1d(Bx, By, kind=self.interpol)
             self.funcLine.set_data((self.inter_xs, f(self.inter_xs)))
+            self.blit.update()
         except Exception as err: return print(f"Error occured while redrawing baseline, {err}")
-
-    def draw_callback(self, event):
-        self.background = self.canvas.copy_from_bbox(self.ax.bbox)
-        self.ax.draw_artist(self.line)
-        self.ax.draw_artist(self.funcLine)
-
-        self.canvas.blit(self.ax.bbox)
 
     def button_press_callback(self, event):
         'whenever a mouse button is pressed'
-        
         if event.inaxes is None: return
         if event.button != 1: return
         self._ind = self.get_ind_under_point(event)
-
-
-
-        self.canvas._tkcanvas.focus_set()
+        self.widget.canvas.setFocus()
 
     def key_press_callback(self, event):
         'whenever a key is pressed'
@@ -307,7 +270,7 @@ class Create_Baseline():
 
                 self.removed_index = np.append(self.removed_index, index).astype(np.int64)
 
-                self.redraw_baseline()
+                # self.redraw_baseline()
 
                 self.felix_corrected = True
                 if self.opo: self.cfelix = f'{self.fname}.cofelix'
@@ -320,7 +283,7 @@ class Create_Baseline():
             
             if self.undo_counter == 0: 
                 self.felix_corrected = False
-                return showinfo('NOTE', 'You have reached the end of UNDO')
+                return self.widget.showdialog('INFO', 'You have reached the end of UNDO')
             else:
                 print('\n########## UNDO ##########\n')
                 print('Before UNDO')
@@ -338,7 +301,7 @@ class Create_Baseline():
                 self.undo_counter -= 1
                 self.redo_counter += 1
 
-                self.redraw_baseline()
+                # self.redraw_baseline()
 
 
                 print('After UNDO')
@@ -349,7 +312,7 @@ class Create_Baseline():
         elif event.key == 'r':
             'To REDO'
 
-            if self.redo_counter == 0: return showinfo('NOTE', 'You have reached the end of REDO')
+            if self.redo_counter == 0: return self.widget.showdialog('INFO', 'You have reached the end of REDO')
             
             else:
                 print('\n########## REDO ##########\n')
@@ -367,7 +330,7 @@ class Create_Baseline():
 
                 self.undo_counter += 1
                 self.redo_counter -= 1
-                self.redraw_baseline()
+                # self.redraw_baseline()
 
                 self.felix_corrected = True
 
@@ -377,19 +340,24 @@ class Create_Baseline():
                 print('\n########## END REDO ##########\n')
         
         elif event.key == 'c':
-
             'To save cfelix file'
+            if not self.felix_corrected:
+                self.widget.showdialog('No change', 'You have not made any corrected to .felix file.', "warning")
+                return
 
-            if not self.felix_corrected: return showwarning('No change', 'You have not made any corrected to .felix file.')
             else: self.save_cfelix()
-                
 
         elif event.key == 'b':
             'To save baseline file'
             self.SaveBase()
-        
-        self.redraw_f_line()
-        self.canvas.draw()
+
+        if event.key in ("w", "a", "d"):
+            return self.redraw_f_line()
+
+        if event.key in ("x", "z", "r"):
+            return self.redraw_baseline()
+
+        # self.widget.draw()
     
     def button_release_callback(self, event):
         'whenever a mouse button is released'
@@ -410,14 +378,8 @@ class Create_Baseline():
         xy = np.asarray(self.line.get_data())
         xy[0][self._ind], xy[1][self._ind] = x, y
         self.line.set_data((xy[0], xy[1]))
-
         self.baseline_corrected = True
         self.redraw_f_line()
-
-        self.canvas.restore_region(self.background)
-        self.ax.draw_artist(self.line)
-        self.ax.draw_artist(self.funcLine)
-        self.canvas.blit(self.ax.bbox)
 
     def get_ind_under_point(self, event):
         'get the index of the vertex under point if within epsilon tolerance'
@@ -435,25 +397,23 @@ class Create_Baseline():
         return ind
     
     def get_index_under_basepoint(self, new_data, x, y):
-
         xy = np.asarray(new_data).T
         xyt = self.line.get_transform().transform(xy)
         xt, yt = xyt[:, 0], xyt[:, 1]
         d = np.sqrt((xt - x)**2 + (yt - y)**2)
+
         indseq = np.nonzero(np.equal(d, np.amin(d)))[0]
         index = indseq[0]
-
         if d[index] >= self.epsilon:
             index = None
-        
         return index
 
     def redraw_baseline(self):
         self.baseline_data.set_data(self.data[0], self.data[1])
-        self.canvas.draw()
+        self.blit.update()
 
     def save_cfelix(self):
-        # if self.opo: self.data[2] = self.data[1]
+
         print(f"Saving corrected felix file as {self.cfelix}")
         try:
             cfelixfile = self.location / f"DATA/{self.cfelix}"
@@ -475,9 +435,14 @@ class Create_Baseline():
             if isfile(cfelixfile): 
                 print(f'Corrected felix file: {self.cfelix}')
                 self.felix_corrected = False
-                return showinfo('Info', f'{self.cfelix} file is saved in /DATA directory')
 
-        except Exception as error: return showerror("Error", f"Following error has occured while saving {self.cfelix} file\n{error}")
+                return self.widget.showdialog('INFO', f'{self.cfelix} file is saved in /DATA directory')
+
+        except Exception as error: 
+            self.widget.showdialog(
+                "Error", f"Following error has occured while saving {self.cfelix} file\n{error}", "critical"
+            )
+            return 
 
     def SaveBase(self):
 
@@ -497,14 +462,60 @@ class Create_Baseline():
 
             if isfile(basefile):
                 print(f'{self.basefile} is SAVED')
-                self.fig.savefig(f'{self.location}/OUT/{self.fname}.png')
+                self.widget.fig.savefig(f'{self.location}/OUT/{self.fname}.png')
                 self.baseline_corrected = False
-                return showinfo('Info', f'{self.basefile} file is saved in /DATA directory')
+                return self.widget.showdialog('INFO', f'{self.basefile} file is saved in /DATA directory')
         
-        except Exception as error: return showerror("Error", f"Following error has occured while saving {self.basefile} file\n{error}")
+        except Exception as error: 
+            self.widget.showdialog(
+                "Error", f"Following error has occured while saving {self.basefile} file\n{error}", "critical"
+            )
+            return
     
-    def get_data(self): return np.asarray([self.data[0], self.data[1]]), np.asarray([self.line.get_data()])
+    def get_data(self):
+        return np.asarray([self.data[0], self.data[1]]), np.asarray([self.line.get_data()])
+
+
+def on_closing(event, dialog, cls):
+    def ask(check, change, txt=""):
+        if not check: return print(f"[{txt}] No changes have made")
+        ok = dialog(
+            f"Save corrected as {cls.fname}{txt} file?", 
+            f"You haven't saved the corrected file\nPress 'Yes' to save the {txt} file and quit OR 'No' to just quit."
+        )
+        if not ok: 
+            return print(f"[{txt}] Changes haven't saved")
+        change()
+            
+    ask(cls.felix_corrected, cls.save_cfelix, ".cfelix")
+    ask(cls.baseline_corrected, cls.SaveBase, ".base")
+    event.accept()
+
 
 def main(args):
+
     filename = pt(args["filename"])
-    Create_Baseline(filename)
+    felixfile = filename.name
+    
+    location = filename.parent
+    opoMode = felixfile.endswith("ofelix")
+    figTitle = ("FELIX Spectrum: Create Baseline", "OPO Spectrum: Create Baseline")[opoMode]
+
+    qapp = QApplication.instance()
+    if not qapp:
+        qapp = QApplication(sys.argv)
+
+    widget = felionQtWindow(title=f"{felixfile}",
+        figTitle=figTitle, 
+        location=location/"../OUT",
+        savefilename=felixfile
+    )
+    
+    baselineClass = Create_Baseline(filename)
+    baselineClass.InteractivePlots(widget)
+    widget.legend = widget.ax.legend()
+
+    widget.legendToggleCheckWidget.setChecked(True)
+    widget.closeEvent = lambda event: on_closing(event, widget.showYesorNo, baselineClass)
+    qapp.exec()
+

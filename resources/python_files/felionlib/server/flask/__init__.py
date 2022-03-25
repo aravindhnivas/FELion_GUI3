@@ -8,22 +8,31 @@ from flask import Flask, request, jsonify, abort
 from flask_cors import CORS
 from pathlib import Path as pt
 import os
+from multiprocessing import Process
+
+
+
 app = Flask(__name__)
 CORS(app)
+
 
 @app.route('/')
 def home():
     return "Server running: felionpy"
 
+
 @app.errorhandler(404)
 def pyError(error):
     return jsonify(error=str(error)), 404
 
+
 save_location = pt(os.getenv("TEMP")) / "FELion_GUI3"
+
 
 @app.route('/', methods=["POST"])
 def compute():
     
+    print("fetching request", flush=True)
     try:
         startTime = perf_counter()
         data = request.get_json()
@@ -34,10 +43,18 @@ def compute():
         print(f"{pyfile=}\n{args=}", flush=True)
 
         with warnings.catch_warnings(record=True) as warn:
-            warnings.simplefilter("ignore")
+            # warnings.simplefilter("ignore")
+            pyfunction = import_module(f"felionlib.{pyfile}")
+            pyfunction = reload(pyfunction)
 
-            pyfunction = reload(import_module(f"felionlib.{pyfile}"))
+            if general:
+                p = Process(target=pyfunction.main, args=(args,), daemon=True)
+                p.start()
+                p.join()
+                return jsonify({"done": True})
+
             pyfunction.main(args)
+
             print(f"{warn=}", flush=True)
 
         timeConsumed = perf_counter() - startTime
@@ -51,7 +68,6 @@ def compute():
 
         with open(filename, "r") as f:
             data = json.load(f)
-
         return jsonify(data)
 
     except Exception:
