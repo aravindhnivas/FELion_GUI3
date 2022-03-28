@@ -3,8 +3,9 @@ import traceback
 from pathlib import Path as pt
 from types import TracebackType
 
+# from importlib import import_module, reload
 from typing import Any, Callable, Iterable, Literal, Optional, Type, Union
-from PyQt6.QtCore import Qt, QThreadPool, QUrl
+from PyQt6.QtCore import Qt, QThreadPool
 import PyQt6.QtWidgets as QtWidgets
 from PyQt6.QtGui import QIcon
 import matplotlib as mpl
@@ -20,19 +21,21 @@ import matplotlib.ticker as plticker
 from .utils.widgets import ShowDialog, iconfile
 from .utils.workers import Worker
 
+mpl.use("QtAgg")
+import matplotlib.pyplot as plt
 
-def excepthook(exc_type, exc_value, exc_tb):
-    tb = "".join(traceback.format_exception(exc_type, exc_value, exc_tb, limit=5))
+
+def excepthook(etype, value, tb):
+    tb = "".join(traceback.format_exception(etype, value, tb, limit=5))
     print("error catched!:", flush=True)
     print("error message:\n", tb, flush=True)
-    ShowDialog("Error Occured", tb, "critical")
+    ShowDialog(etype.__name__, tb, "critical")
 
 
 sys.excepthook = excepthook
 
 
 class felionQtWindow(QtWidgets.QMainWindow):
-
     def __init__(
         self,
         location: str = "",
@@ -41,19 +44,25 @@ class felionQtWindow(QtWidgets.QMainWindow):
         figYlabel: str = "",
         figXlabel: str = "",
         savefilename: str = "",
-        makeControlLayout: bool = True,
-        defaultEvents: bool = True,
+        saveformat: str = "pdf",
         figDPI: int = 100,
-        windowGeometry: tuple[int, int] = (1200, 700),
+        defaultEvents: bool = True,
+        makeControlLayout: bool = True,
         includeCloseEvent: bool = False,
+        windowGeometry: tuple[int, int] = (1200, 700),
+        useTex: bool = False,
+        style: str = "default",
         **kwargs: dict[str, Any],
     ) -> None:
 
         super().__init__()
+
         self._main = QtWidgets.QWidget()
-
-        mpl.rcParams.update({'text.usetex': False})
-
+        self.useTex = useTex
+        mpl.rcParams["text.usetex"] = useTex
+        if style:
+            plt.style.use(style)
+        self.saveformat = saveformat
         self.setCentralWidget(self._main)
         self.setWindowTitle(title)
         self.resize(*windowGeometry)
@@ -61,31 +70,27 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
         self.location = pt(location).resolve()
         self.savefilename = savefilename
-        
         self.figTitle = figTitle
         self.figYlabel = figYlabel
         self.figXlabel = figXlabel
         self.mainLayout = QtWidgets.QHBoxLayout(self._main)
 
         self.threadpool = QThreadPool()
-        print("Multithreading with maximum %d threads" % self.threadpool.maxThreadCount())
 
         if includeCloseEvent:
             self.closeEvent = lambda event: closeEvent(self, event)
-            
+
         figureArgs = {"dpi": figDPI}
         if "figureArgs" in kwargs:
             figureArgs = figureArgs | self.kwargs["figureArgs"]
-        
+
         self.init_attributes()
 
         self.makeFigureLayout(figureArgs=figureArgs, defaultEvents=defaultEvents)
-        self.makeControlLayout = makeControlLayout
-        if self.makeControlLayout:
+        if makeControlLayout:
             self.createControlLayout(optimize=True)
 
     def init_attributes(self):
-        
         self.titleWidget = QtWidgets.QLineEdit("")
         self.xlabelWidget = QtWidgets.QLineEdit("")
         self.ylabelWidget = QtWidgets.QLineEdit("")
@@ -126,7 +131,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
             self.draw()
             self.updateFigsizeDetails()
-        
+
         dpiwidget = self.createSpinBox(int(self.fig.dpi), prefix="DPI: ", _min=70, _step=5, callback=changefigDPI)
         self.controlLayout.addWidget(dpiwidget)
 
@@ -142,7 +147,6 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
         widgetGroup = QtWidgets.QHBoxLayout()
         labelwidget = QtWidgets.QLineEdit(str(label))
-        
 
         def update_func():
             if labelType == "title":
@@ -199,13 +203,19 @@ class felionQtWindow(QtWidgets.QMainWindow):
     def update_tick_params(self, _val=0, ax=None, **kwargs):
         ax = ax or self.ax
         ax.tick_params(
-            which="major", width=self.tick_major_width_widget.value(), length=self.tick_major_length_widget.value(), **kwargs
+            which="major",
+            width=self.tick_major_width_widget.value(),
+            length=self.tick_major_length_widget.value(),
+            **kwargs,
         )
         ax.tick_params(
-            which="minor", width=self.tick_minor_width_widget.value(), length=self.tick_minor_length_widget.value(), **kwargs
+            which="minor",
+            width=self.tick_minor_width_widget.value(),
+            length=self.tick_minor_length_widget.value(),
+            **kwargs,
         )
         self.draw()
-    
+
     def major_minor_ticksize_controllers(self):
 
         major_tick_controller_layout = QtWidgets.QHBoxLayout()
@@ -234,12 +244,12 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
     def figure_ticks_controllers(self):
         self.getaxisUpdateFunction()
-        
+
         tickAndFormatterLayout = QtWidgets.QFormLayout()
         self.tickLocatorWidget = self.createSpinBox(5, _min=2, width=50, callback=self.updateTicksAndFormatter)
 
         formatterLayout = QtWidgets.QHBoxLayout()
-        
+
         self.fomartTickCheck = QtWidgets.QCheckBox()
 
         self.fomartTickCheck.setFixedHeight(25)
@@ -261,7 +271,8 @@ class felionQtWindow(QtWidgets.QMainWindow):
         def makeTickAndFormatterFunction(_val):
             self.axisType = self.axistypeWidget.currentText()
             self.tickType = self.ticktypeWidget.currentText()
-            if self.axisType == "both" or self.tickType == "both": return
+            if self.axisType == "both" or self.tickType == "both":
+                return
 
             self.ticklocatorfn = self.updatefn["ticklocator"][self.tickType][self.axisType]
             self.formatterfn = self.updatefn["formatter"][self.tickType][self.axisType]
@@ -288,7 +299,10 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
         formLayout = QtWidgets.QFormLayout()
         savefilenameWidget = QtWidgets.QLineEdit(self.savefilename)
-        def updateSavefilename(val): self.savefilename = val
+
+        def updateSavefilename(val):
+            self.savefilename = val
+
         savefilenameWidget.textChanged.connect(updateSavefilename)
 
         # formLayout.addRow("savefile", savefilenameWidget)
@@ -308,23 +322,22 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
     def update_figure_label_widgets_values(self, ax=None):
         ax = ax or self.ax
-
         self.titleWidget.setText(ax.get_title())
         self.xlabelWidget.setText(ax.get_xlabel())
         self.ylabelWidget.setText(ax.get_ylabel())
 
-    def updateFigsizeDetails(self):
+    def updateFigsizeDetails(self, event=None):
         self.figsize = (self.fig.get_figwidth(), self.fig.get_figheight())
         self.figsizeWidthWidget.setValue(self.figsize[0])
         self.figsizeHeightWidget.setValue(self.figsize[1])
 
     def resizeEvent(self, event):
+
         self.updateFigsizeDetails()
 
     def makefigsizeControlWidgets(self):
-
         def updateFigureSize(_val):
-            self.figsize = [self.figsizeWidthWidget.value(), self.figsizeHeightWidget.value()]
+            self.figsize = (self.figsizeWidthWidget.value(), self.figsizeHeightWidget.value())
             self.fig.set_size_inches(self.figsize)
             self.draw()
             canvas_width = self.figsize[0] * self.fig.dpi
@@ -333,9 +346,9 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
         layout = QtWidgets.QHBoxLayout()
 
-        fig_kw = dict(_min=5, prefix="width: ", suffix=" in", _step=0.1, callback=updateFigureSize)
-        self.figsizeWidthWidget = self.createSpinBox(6.4, **fig_kw)
-        self.figsizeHeightWidget = self.createSpinBox(6.4, **fig_kw)
+        fig_kw = dict(_min=5, suffix=" in", _step=0.1, callback=updateFigureSize)
+        self.figsizeWidthWidget = self.createSpinBox(6.4, prefix="width: ", **fig_kw)
+        self.figsizeHeightWidget = self.createSpinBox(6.4, prefix="height: ", **fig_kw)
 
         layout.addWidget(self.figsizeWidthWidget)
         layout.addWidget(self.figsizeHeightWidget)
@@ -345,6 +358,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
             if resize:
                 self.figsizeWidthWidget.setValue(self.fig.get_figwidth())
                 self.figsizeHeightWidget.setValue(self.fig.get_figheight())
+
         autoResizeCanvas = QtWidgets.QCheckBox("auto-resize")
         autoResizeCanvas.setChecked(True)
         autoResizeCanvas.stateChanged.connect(canvasAutoResize)
@@ -383,6 +397,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         finalFigureLayout = QtWidgets.QVBoxLayout()
         finalFigureLayout.addLayout(navbarLayoutWidget)
         finalFigureLayout.addWidget(self.canvas_scroll)
+
         self.mainLayout.addLayout(finalFigureLayout, 4)
 
         if defaultEvents:
@@ -391,33 +406,38 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
     def save_file_worker(self, filename):
 
+        if self.saveformat == "pgf":
+            mpl_kw = {"pgf.texsystem": "pdflatex", "text.usetex": True, "pgf.rcfonts": False, 'font.family': 'serif'}
+        else:
+            mpl_kw = {"text.usetex": self.useTex, 'font.family': 'serif'}
+
+        @mpl.rc_context(mpl_kw)
         def savefileFunc(filename, *args, **kwargs):
             self.save_figure_status_widget.setText("Saving...")
-            self.fig.savefig(filename, *args, format=self.savefilefmt, **kwargs)
+            self.fig.savefig(filename, *args, format=self.saveformat, **kwargs)
 
-        worker = Worker(savefileFunc, filename) # fn, args, kwargs
+        worker = Worker(savefileFunc, filename)  # fn, args, kwargs
         worker.signals.result.connect(lambda s: print(s))
 
         def on_complete():
             nonlocal error_occured
-            if not error_occured: 
+            if not error_occured:
                 self.save_figure_status_widget.setText("figure saved.")
                 self.showdialog("Saved", f"Saved to {filename.name}")
             else:
                 self.save_figure_status_widget.setText("Error saving figure.")
-        worker.signals.finished.connect(on_complete)
 
+        worker.signals.finished.connect(on_complete)
         error_occured = False
 
         def error_while_saving_figure(err: tuple[Type[BaseException], BaseException, TracebackType]) -> None:
-
             nonlocal error_occured
-            exctype, value, tb = err
             error_occured = True
-            ShowDialog(exctype.__name__, f"{value}\n\n{tb}", "critical")
+            excepthook(*err)
 
         worker.signals.error.connect(error_while_saving_figure)
         # worker.signals.progress.connect(self.progress_fn)
+
         self.threadpool.start(worker)
 
     def savefig(self):
@@ -425,22 +445,18 @@ class felionQtWindow(QtWidgets.QMainWindow):
         if not self.location.exists():
             self.showdialog("Error", f"Invalid location: {self.location}")
             return
-        
+
         if not self.savefilename:
             return self.showdialog("Warning", f"Please enter a filename to save", "warning")
 
-        filename = self.location / f"{self.savefilename}.{self.savefilefmt}"
+        filename = self.location / f"{self.savefilename}.{self.saveformat}"
 
         if filename.exists():
             ok = self.showYesorNo("Overwrite ?", f"Filename {filename.name} already exists in {self.location}")
-            if not ok: return
-        
-        if self.savefilefmt == "pgf":
-            mpl.rcParams.update({"pgf.texsystem": "pdflatex", 'text.usetex': True, 'pgf.rcfonts': False})
-        
+            if not ok:
+                return
+
         self.save_file_worker(filename)
-        # Execute
-        # self.threadpool.start(worker)
 
     def createSpinBox(
         self,
@@ -452,7 +468,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         suffix: str = None,
         setkey: str = None,
         width: int = None,
-        callback: Callable = None
+        callback: Callable = None,
     ) -> Union[QtWidgets.QSpinBox, QtWidgets.QDoubleSpinBox]:
 
         spinbox = QtWidgets.QDoubleSpinBox() if isinstance(value, float) else QtWidgets.QSpinBox()
@@ -461,42 +477,44 @@ class felionQtWindow(QtWidgets.QMainWindow):
         spinbox.setMaximum(_max)
         spinbox.setSingleStep(_step)
         spinbox.setKeyboardTracking(False)
-        if prefix: spinbox.setPrefix(prefix)
-        if suffix: spinbox.setSuffix(suffix)
+        if prefix:
+            spinbox.setPrefix(prefix)
+        if suffix:
+            spinbox.setSuffix(suffix)
 
         if setkey:
             setattr(self, setkey, value)
             spinbox.valueChanged.connect(lambda value: setattr(self, setkey, value))
-        
+
         if width:
             spinbox.setFixedWidth(width)
         if callback:
             spinbox.valueChanged.connect(callback)
-        
+
         return spinbox
 
     def update_axes_visible_status(self):
-            
+
         self.tickToggleState = not self.tickToggleState
         self.ax.spines[self.spineWidget.currentText()].set_visible(self.tickToggleState)
 
         tickLabelStatus = {}
-        
+
         if self.ticklabelToggleWidget.isChecked():
             tickLabelStatus[f"label{self.spineWidget.currentText()}"] = self.tickToggleState
         if self.tickToggleWidget.isChecked():
             tickLabelStatus[self.spineWidget.currentText()] = self.tickToggleState
         if tickLabelStatus:
             self.ax.tick_params(which="both", **tickLabelStatus, direction=self.ticks_direction)
-        
+
         self.draw()
 
-    def updateTickLabelSz(self, labelsize: int, ax: Axes=None, type: str=None):
-        
+    def updateTickLabelSz(self, labelsize: int, ax: Axes = None, type: str = None):
+
         if not ax:
             ax = self.ax
         legend = ax.get_legend()
-        
+
         self.update_tick_params(ax=ax)
 
         if not type:
@@ -505,33 +523,46 @@ class felionQtWindow(QtWidgets.QMainWindow):
         if type == "ticks":
 
             self.update_tick_params(labelsize=labelsize)
-            
+
             ax.xaxis.get_offset_text().set_fontsize(labelsize - 2)
             ax.yaxis.get_offset_text().set_fontsize(labelsize - 2)
 
         elif type == "legend" and legend:
             for legend_text in legend.get_texts():
                 legend_text.set_fontsize(labelsize)
-                
+
         elif type == "legendTitle" and legend:
             legend.get_title().set_fontsize(labelsize)
 
         self.draw()
 
-    def update_minorticks(self, on: bool, ax: Axes=None):
+    def update_minorticks(self, on: bool, ax: Axes = None):
 
-        if not ax: ax=self.ax
+        if not ax:
+            ax = self.ax
 
         if on:
             ax.minorticks_on()
             self.update_tick_params()
         else:
             ax.minorticks_off()
+
         self.draw()
+
+    # def update_style(self, style: str):
+
+    #     plt.style.use(style)
+    #     self.draw()
 
     def figure_draw_controllers(self):
 
         controllerLayout = QtWidgets.QHBoxLayout()
+        # self.style_controller_widget = QtWidgets.QComboBox()
+        # self.style_controller_widget.addItems(["default"] + plt.style.available)
+
+        # self.style_controller_widget.setCurrentText("default")
+        # self.style_controller_widget.currentTextChanged.connect(self.update_style)
+        # controllerLayout.addWidget(self.style_controller_widget)
 
         axesOptionsWidget = QtWidgets.QComboBox()
         axesOptionsWidget.addItems(self.getAxes.keys())
@@ -554,7 +585,6 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.controlLayout.addWidget(self.minorticks_controller_widget)
 
     def figure_legend_controllers(self):
-
         def updateLegendState(state, type="toggle"):
             self.legend = self.ax.get_legend()
             if self.legend:
@@ -573,7 +603,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.legendDraggableCheckWidget = QtWidgets.QCheckBox("dragg")
         self.legendDraggableCheckWidget.stateChanged.connect(lambda state: updateLegendState(state, "dragg"))
         self.legendalpha: float = 0.5
-        
+
         toggleLegendAlphaWidget = self.createSpinBox(0.5, _step=0.1, _max=1, prefix="alpha: ", setkey="legendalpha")
 
         controllerLayout.addWidget(self.legendToggleCheckWidget)
@@ -584,9 +614,10 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.controlLayout.addLayout(controllerLayout)
 
     def figure_axes_scaling_controller(self):
-        
+
         controllerLayout = QtWidgets.QHBoxLayout()
         self.XlogScaleWidget = QtWidgets.QCheckBox("Xlog")
+
         def updateAxisScale(fn, scale):
             fn("log" if scale else "linear")
             self.draw()
@@ -598,7 +629,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         controllerLayout.addWidget(self.XlogScaleWidget)
         controllerLayout.addWidget(self.YlogScaleWidget)
         controllerLayout.setAlignment(Qt.AlignmentFlag.AlignLeft)
-        
+
         self.controlLayout.addLayout(controllerLayout)
 
     def figure_tick_format_controllers(self):
@@ -608,7 +639,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.tick_label_fontsize_controller_widget = self.createSpinBox(
             16, _min=5, width=50, callback=self.updateTickLabelSz
         )
-        
+
         self.tickFormatStyleWidget = QtWidgets.QComboBox()
         self.tickFormatStyleWidget.addItems(["plain", "sci"])
 
@@ -638,7 +669,8 @@ class felionQtWindow(QtWidgets.QMainWindow):
         ticks_direction_widget = QtWidgets.QComboBox()
 
         ticks_direction_widget.addItems(["in", "out", "inout"])
-        def update_ticks_direction(val: str) -> None: 
+
+        def update_ticks_direction(val: str) -> None:
             self.ticks_direction = val
             self.ax.tick_params(axis=self.axisType, which=self.tickType, direction=val)
             self.draw()
@@ -655,7 +687,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         ticks_control_layout.addWidget(toggleTickButton)
 
         controllerLayout = QtWidgets.QHBoxLayout()
-        
+
         directionCollections = ["bottom", "top", "left", "right"]
 
         self.spineWidget = QtWidgets.QComboBox()
@@ -663,14 +695,14 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
         self.tickToggleWidget = QtWidgets.QCheckBox("tick")
         self.ticklabelToggleWidget = QtWidgets.QCheckBox("labels")
-        
+
         controllerLayout.addWidget(self.spineWidget)
         controllerLayout.addWidget(self.tickToggleWidget)
         controllerLayout.addWidget(self.ticklabelToggleWidget)
 
         self.controlLayout.addLayout(ticks_control_layout)
         # self.controlLayout.addWidget(toggleTickButton)
-        
+
         self.controlLayout.addLayout(controllerLayout)
 
     def browse_save_location(self):
@@ -682,21 +714,25 @@ class felionQtWindow(QtWidgets.QMainWindow):
     def figure_save_controllers(self):
 
         savefilenameWidget = QtWidgets.QLineEdit(self.savefilename)
-        def updateSavefilename(val): self.savefilename = val
+
+        def updateSavefilename(val):
+            self.savefilename = val
+
         savefilenameWidget.textChanged.connect(updateSavefilename)
         savefilenameWidget.setToolTip("save filename")
         savefilenameWidget.returnPressed.connect(self.savefig)
 
-
         controllerLayout = QtWidgets.QHBoxLayout()
-        self.savefilefmt = "pdf"
+        # self.saveformat = "pdf"
 
         savefmtOptionsWidget = QtWidgets.QComboBox()
 
         savefmtOptionsWidget.addItems(self.canvas.filetypes.keys())
-        savefmtOptionsWidget.setCurrentText(self.savefilefmt)
-        
-        def changeSaveFmt(fmt): self.savefilefmt = fmt
+        savefmtOptionsWidget.setCurrentText(self.saveformat)
+
+        def changeSaveFmt(fmt):
+            self.saveformat = fmt
+
         savefmtOptionsWidget.currentTextChanged.connect(changeSaveFmt)
 
         saveButtonWidget = QtWidgets.QPushButton("Save figure")
@@ -710,12 +746,12 @@ class felionQtWindow(QtWidgets.QMainWindow):
         save_location_control_widget = QtWidgets.QHBoxLayout()
 
         self.location_line_edit = QtWidgets.QLineEdit(self.location.__str__())
-        
+
         self.location_line_edit.setReadOnly(True)
         self.location_line_edit.setToolTip("save location")
-        
+
         browse_save_location_button = QtWidgets.QPushButton("Browse")
-        
+
         browse_save_location_button.clicked.connect(self.browse_save_location)
 
         save_location_control_widget.addWidget(self.location_line_edit)
@@ -737,7 +773,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.figure_DPI_controller()
         self.figure_labels_controller()
         self.figure_draw_controllers()
-        
+
         self.figure_legend_controllers()
         self.figure_axes_scaling_controller()
         self.figure_ticks_controllers()
@@ -745,17 +781,18 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.figure_axes_spine_and_tick_toggle_controllers()
         # self.figure_save_controllers()
 
-        if optimize: self.optimize_figure()
+        if optimize:
+            self.optimize_figure()
 
     def optimize_figure(self):
-        
+
         labelsize = self.tick_label_fontsize_controller_widget.value()
         for ax in self.axes:
-            
+
             self.updateTickLabelSz(labelsize, ax=ax, type="ticks")
             self.update_tick_params(labelsize=labelsize)
             ax.tick_params(which="both", bottom=True, top=False, left=True, right=False, direction=self.ticks_direction)
-            self.updateTickLabelSz(labelsize=labelsize-2, ax=ax, type="legend")
+            self.updateTickLabelSz(labelsize=labelsize - 2, ax=ax, type="legend")
             self.updateTickLabelSz(labelsize, ax=ax, type="legendTitle")
             self.update_minorticks(True, ax)
 
@@ -788,7 +825,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         if attachControlLayout:
             self.showWidget()
 
-    def showdialog(self, title="Info", msg="", type: Literal["info", "warning", "critical"]="info"):
+    def showdialog(self, title="Info", msg="", type: Literal["info", "warning", "critical"] = "info"):
 
         dialogBox = QtWidgets.QMessageBox(self)
 
@@ -857,7 +894,7 @@ def closeEvent(self, event):
 
 
 def toggle_this_artist(artist: Union[Container, Artist], alpha: float) -> float:
-    
+
     if not (isinstance(artist, Artist) or isinstance(artist, Container)):
         return print(f"unknown toggle method for this artist type\n{type(artist)}")
     set_this_alpha = alpha
@@ -875,13 +912,15 @@ def toggle_this_artist(artist: Union[Container, Artist], alpha: float) -> float:
 def on_pick(
     event,
     line_handler: dict[str, Union[Union[Container, Artist], Iterable[Union[Container, Artist]]]],
-    widget: felionQtWindow
+    widget: felionQtWindow,
 ) -> None:
 
     picked_legend = event.artist
 
-    if widget.legendDraggableCheckWidget.isChecked(): return
-    if not isinstance(picked_legend, Text): return
+    if widget.legendDraggableCheckWidget.isChecked():
+        return
+    if not isinstance(picked_legend, Text):
+        return
 
     picked_line_handler = picked_legend.get_text()
     toggle_artist = line_handler[picked_line_handler]

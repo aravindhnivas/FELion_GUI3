@@ -4,12 +4,47 @@ from matplotlib.container import Container
 import numpy as np
 from .. import felionQtWindow
 from importlib import import_module, reload
+import matplotlib as mpl
+
+styles = [
+    "Solarize_Light2",
+    "_classic_test_patch",
+    "_mpl-gallery",
+    "_mpl-gallery-nogrid",
+    "bmh",
+    "classic",
+    "dark_background",
+    "fast",
+    "fivethirtyeight",
+    "ggplot",
+    "grayscale",
+    "seaborn",
+    "seaborn-bright",
+    "seaborn-colorblind",
+    "seaborn-dark",
+    "seaborn-dark-palette",
+    "seaborn-darkgrid",
+    "seaborn-deep",
+    "seaborn-muted",
+    "seaborn-notebook",
+    "seaborn-paper",
+    "seaborn-pastel",
+    "seaborn-poster",
+    "seaborn-talk",
+    "seaborn-ticks",
+    "seaborn-white",
+    "seaborn-whitegrid",
+    "tableau-colorblind10",
+]
 
 
 def main():
 
     felionQt = import_module("felionQt")
-    widget: felionQtWindow = reload(felionQt).felionQtWindow(title="Demo")
+
+    widget: felionQtWindow = reload(felionQt).felionQtWindow(
+        title="Demo", useTex=False, location="D:/FELion_GUI3/misc", savefilename="test", saveformat="pgf", style=""
+    )
 
     x = np.arange(0.1, 4, 0.1)
     y1 = np.exp(-1.0 * x)
@@ -25,6 +60,9 @@ def main():
     (line_handler["plot_legend_line_dashed"],) = widget.ax.plot(x, y2 + 0.5, "--", label="plot_legend_line_dashed")
     (line_handler["plot_legend_line_dot"],) = widget.ax.plot(x, y2 + 1, ".-", label="plot_legend_line_dot")
     (line_handler["plot_legend_dot"],) = widget.ax.plot(x, y2 - 1, ".", label="plot_legend_dot")
-
+    widget.ax.legend()
+    widget.ax.set(xlabel="Xlabel", ylabel="Ylabel", title="Title")
+    widget.optimize_figure()
     widget.updatecanvas()
+    
     widget.makeLegendToggler(line_handler)
