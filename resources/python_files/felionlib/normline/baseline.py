@@ -179,11 +179,11 @@ class Create_Baseline():
         
         self.widget = widget
         (self.line,) = self.widget.ax.plot(
-            self.xs, self.ys, zorder=2.5, marker='s', ls='', ms=6, c=('b', "C1")[self.opo], 
+            self.xs, self.ys, marker='s',zorder=3, ls='', c=('b', "C1")[self.opo], 
             markeredgecolor=('b', "C1")[self.opo], animated=True
         )
 
-        (self.funcLine,) = self.widget.ax.plot([], [], c=('b', "C1")[self.opo], animated=True)
+        (self.funcLine,) = self.widget.ax.plot([], [], c=('b', "C1")[self.opo], zorder=3, animated=True)
 
         if not self.opo:
 
@@ -193,7 +193,7 @@ class Create_Baseline():
             label = f"{self.felixfile}"
 
         (self.baseline_data,) = self.widget.ax.step(
-            self.data[0], self.data[1], c="r", where="pre", 
+            self.data[0], self.data[1], c="r", where="pre", zorder=2.5,
             ms=7, markeredgecolor="black", label=label, animated=True
         )
 
@@ -206,7 +206,8 @@ class Create_Baseline():
         self.blit = BlitManager(self.widget.canvas, animated_artists)
         self.redraw_f_line()
         self._ind = None
-        self.widget.fig.tight_layout()
+        # self.widget.optimize_figure()
+        # self.widget.fig.tight_layout()
         # self.widget.legend_handler = {label: animated_artists}
 
     def redraw_f_line(self):
@@ -499,24 +500,25 @@ def main(args):
     
     location = filename.parent
     opoMode = felixfile.endswith("ofelix")
-    figTitle = ("FELIX Spectrum: Create Baseline", "OPO Spectrum: Create Baseline")[opoMode]
+    # figTitle = ("FELIX Spectrum: Create Baseline", "OPO Spectrum: Create Baseline")[opoMode]
 
     qapp = QApplication.instance()
     if not qapp:
         qapp = QApplication(sys.argv)
 
     widget = felionQtWindow(title=f"{felixfile}",
-        figTitle=figTitle, figXlabel="Wavenumber (cm$^{-1}$)", figYlabel="Counts",
+        figXlabel="Wavenumber (cm$^{-1}$)", figYlabel="Counts",
         location=location/"../OUT",
         savefilename=felixfile
     )
     
     baselineClass = Create_Baseline(filename)
     baselineClass.InteractivePlots(widget)
-    widget.legend = widget.ax.legend()
 
+    widget.legend = widget.ax.legend()
     widget.legendToggleCheckWidget.setChecked(True)
     widget.closeEvent = lambda event: on_closing(event, widget.showYesorNo, baselineClass)
     widget.optimize_figure()
+    widget.fig.tight_layout()
     qapp.exec()
 
