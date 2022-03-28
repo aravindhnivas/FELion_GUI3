@@ -2,7 +2,8 @@ from matplotlib.artist import Artist
 from typing import Union, Iterable
 from matplotlib.container import Container
 import numpy as np
-from .. import felionQtWindow
+# from .. import felionQtWindow
+import felionQt
 from importlib import import_module, reload
 import matplotlib as mpl
 
@@ -40,10 +41,12 @@ styles = [
 
 def main():
 
-    felionQt = import_module("felionQt")
-
-    widget: felionQtWindow = reload(felionQt).felionQtWindow(
-        title="Demo", useTex=False, location="D:/FELion_GUI3/misc", savefilename="test", saveformat="pgf", style=""
+    # felionQt = import_module("felionQt")
+    fontsize = 8
+    widget: felionQt.felionQtWindow = reload(felionQt).felionQtWindow(
+        title="Demo", useTex=False, location="D:/FELion_GUI3/misc", savefilename="test", saveformat="pdf",
+        # style="fivethirtyeight", 
+        # fontsize=fontsize, figDPI=200
     )
 
     x = np.arange(0.1, 4, 0.1)
@@ -53,16 +56,17 @@ def main():
     y2err = 0.1 + 0.1 * np.sqrt(x / 2)
 
     line_handler: dict[str, Union[Union[Container, Artist], Iterable[Union[Container, Artist]]]] = {}
-    errorbarHandler1 = widget.ax.errorbar(x, y1, yerr=y1err, label="plot_legend_errorbar")
-    errorbarHandler2 = widget.ax.errorbar(x, y2, yerr=y2err)
-    line_handler["plot_legend_errorbar"] = [errorbarHandler1, errorbarHandler2]
+    # errorbarHandler1 = widget.ax.errorbar(x, y1, yerr=y1err, label="plot_legend_errorbar")
+    # errorbarHandler2 = widget.ax.errorbar(x, y2, yerr=y2err)
+    # line_handler["plot_legend_errorbar"] = [errorbarHandler1, errorbarHandler2]
     (line_handler["plot_legend_line"],) = widget.ax.plot(x, y2 - 0.5, label="plot_legend_line")
-    (line_handler["plot_legend_line_dashed"],) = widget.ax.plot(x, y2 + 0.5, "--", label="plot_legend_line_dashed")
+    # (line_handler["plot_legend_line_dashed"],) = widget.ax.plot(x, y2 + 0.5, "--", label="plot_legend_line_dashed")
     (line_handler["plot_legend_line_dot"],) = widget.ax.plot(x, y2 + 1, ".-", label="plot_legend_line_dot")
     (line_handler["plot_legend_dot"],) = widget.ax.plot(x, y2 - 1, ".", label="plot_legend_dot")
-    widget.ax.legend()
-    widget.ax.set(xlabel="Xlabel", ylabel="Ylabel", title="Title")
+    
+    widget.ax.set(xlabel="Xlabel", ylabel="Ylabel")
+
+    # widget.ax.legend(title="legendTitle", labelspacing=0.1)
     widget.optimize_figure()
     widget.updatecanvas()
-    
     widget.makeLegendToggler(line_handler)
