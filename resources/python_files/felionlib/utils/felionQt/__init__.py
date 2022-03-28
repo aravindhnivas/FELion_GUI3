@@ -389,6 +389,37 @@ class felionQtWindow(QtWidgets.QMainWindow):
             self.canvas.mpl_connect("button_release_event", lambda e: self.canvas.setFocus())
             self.canvas.mpl_connect("key_press_event", lambda e: key_press_handler(e, self.canvas))
 
+    def save_file_worker(self):
+
+        def savefileFunc(filename, *args, **kwargs):
+            self.save_figure_status_widget.setText("Saving...")
+            self.fig.savefig(filename, *args, format=self.savefilefmt, **kwargs)
+
+        worker = Worker(savefileFunc, filename) # fn, args, kwargs
+        worker.signals.result.connect(lambda s: print(s))
+
+        def on_complete():
+            nonlocal error_occured
+            if not error_occured: 
+                self.save_figure_status_widget.setText("figure saved.")
+                self.showdialog("Saved", f"Saved to {filename.name}")
+            else:
+                self.save_figure_status_widget.setText("Error saving figure.")
+        worker.signals.finished.connect(on_complete)
+
+        error_occured = False
+
+        def error_while_saving_figure(err: tuple[Type[BaseException], BaseException, TracebackType]) -> None:
+
+            nonlocal error_occured
+            exctype, value, tb = err
+            error_occured = True
+            ShowDialog(exctype.__name__, f"{value}\n\n{tb}", "critical")
+
+        worker.signals.error.connect(error_while_saving_figure)
+        # worker.signals.progress.connect(self.progress_fn)
+        self.threadpool.start(worker)
+
     def savefig(self):
 
         if not self.location.exists():
@@ -407,37 +438,9 @@ class felionQtWindow(QtWidgets.QMainWindow):
         if self.savefilefmt == "pgf":
             mpl.rcParams.update({"pgf.texsystem": "pdflatex", 'text.usetex': True, 'pgf.rcfonts': False})
         
-        def savefileFunc(filename, *args, **kwargs):
-            self.save_figure_status_widget.setText("Saving...")
-            self.fig.savefig(filename, *args, format=self.savefilefmt, **kwargs)
-
-        worker = Worker(savefileFunc, filename) # fn, args, kwargs
-        worker.signals.result.connect(lambda s: print(s))
-
-        def on_complete():
-
-            nonlocal error_occured
-            if not error_occured: 
-                self.save_figure_status_widget.setText("figure saved.")
-                self.showdialog("Saved", f"Saved to {filename.name}")
-            else:
-                self.save_figure_status_widget.setText("Error saving figure.")
-        worker.signals.finished.connect(on_complete)
-
-        error_occured = False
-
-        def error_while_saving_figure(err: tuple[Type[BaseException], BaseException, TracebackType]) -> None:
-            nonlocal error_occured
-            exctype, value, tb = err
-            error_occured = True
-            ShowDialog(exctype.__name__, f"{value}\n\n{tb}", "critical")
-
-        worker.signals.error.connect(error_while_saving_figure)
-        # worker.signals.progress.connect(self.progress_fn)
-
+        self.save_file_worker()
         # Execute
-        self.threadpool.start(worker)
-        # self.draw()
+        # self.threadpool.start(worker)
 
     def createSpinBox(
         self,
@@ -893,4 +896,3 @@ def on_pick(
     picked_legend.set_alpha(0.5 if set_this_alpha < 1 else 1)
 
     widget.draw()
-    
