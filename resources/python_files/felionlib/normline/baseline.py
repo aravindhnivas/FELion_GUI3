@@ -5,7 +5,7 @@ import sys
 from os.path import dirname, isdir, isfile, join
 from pathlib import Path as pt
 from felionlib.utils.felionQt.utils.blit import BlitManager
-from felionlib.utils.felionQt.utils.widgets import ShowDialog
+# from felionlib.utils.felionQt.utils.widgets import ShowDialog
 from felionlib.utils.felionQt import felionQtWindow
 from PyQt6.QtWidgets import QApplication
 from scipy.interpolate import interp1d
@@ -499,13 +499,9 @@ def main(args):
     felixfile = filename.name
     
     location = filename.parent
-    opoMode = felixfile.endswith("ofelix")
+    # opoMode = felixfile.endswith("ofelix")
     # figTitle = ("FELIX Spectrum: Create Baseline", "OPO Spectrum: Create Baseline")[opoMode]
-
-    qapp = QApplication.instance()
-    if not qapp:
-        qapp = QApplication(sys.argv)
-
+    qapp = QApplication([])
     widget = felionQtWindow(title=f"{felixfile}",
         figXlabel="Wavenumber (cm$^{-1}$)", figYlabel="Counts",
         location=location/"../OUT",
@@ -518,7 +514,7 @@ def main(args):
     widget.legend = widget.ax.legend()
     widget.legendToggleCheckWidget.setChecked(True)
     widget.closeEvent = lambda event: on_closing(event, widget.showYesorNo, baselineClass)
+
     widget.optimize_figure()
     widget.fig.tight_layout()
     qapp.exec()
-

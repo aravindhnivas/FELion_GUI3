@@ -1,11 +1,12 @@
 import numpy as np
 from pathlib import Path as pt
 from io import StringIO
-
-from felionlib.utils.FELion_widgets import FELion_Tk
+# from felionlib.utils.FELion_widgets import FELion_Tk
 from felionlib.utils.FELion_definitions import sendData
 from felionlib.utils.FELion_constants import colors
 from felionlib.utils.fit_profile.lineProfileFit import fitData
+from felionlib.utils.felionQt import felionQtWindow
+from PyQt6.QtWidgets import QApplication
 
 def thz_plot(filename):
 
@@ -232,25 +233,33 @@ def thz_function():
     global widget
     
     if tkplot:
-        widget = FELion_Tk(title="THz Scan", location=filenames[0].parent)
-        widget.Figure()
-        if len(filenames) == 1: savename=filenames[0].stem
-        else: savename = "averaged_thzScan"
-        ax = widget.make_figure_layout(title="THz scan", xaxis="Frequency (GHz)", yaxis="Depletion (%)", savename=savename)
-        fit_data = plot_thz(ax=ax)
-        widget.plot_legend = ax.legend(title=f"Intensity: {fit_data.max():.2f} %")
-        widget.plot_legend.set_draggable(True)
-        widget.mainloop()
+        
+        qapp = QApplication([])
+        
+        if len(filenames) == 1: savefilename=filenames[0].stem
+        else: savefilename = "averaged_thzScan"
+        widget = felionQtWindow(
+            figXlabel="Time (ms)", figYlabel="Counts",
+            location=location/"OUT", savefilename=savefilename
+        )
+        plot_thz(ax=widget.ax)
+        widget.optimize_figure()
+
+        widget.fig.tight_layout()
+        qapp.exec()
     else: 
         dataToSend = plot_thz()
         sendData(dataToSend, calling_file=pt(__file__).stem)
 
+
 args = None
+
 widget = None
 fitfile = None
 fitMethod = "lorentz"
 paramsTable = []
 varyAll = False
+
 tkplot, filenames, location = None, None, None
 plotIndex = []
 
@@ -270,3 +279,4 @@ def main(arguments):
     varyAll = args["varyAll"]
     plotIndex = args["plotIndex"]
     thz_function()
+    

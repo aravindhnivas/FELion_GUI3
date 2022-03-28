@@ -53,12 +53,18 @@ class felionQtWindow(QtWidgets.QMainWindow):
         useTex: bool = False,
         style: str = "default",
         fontsize: int = 8,
+        
         optimize: bool = False,
+        
+        ticks_direction: str = "in",
+        yscale: str = "linear",
+        xscale: str = "linear",
         **kwargs: dict[str, Any],
     
     ) -> None:
 
         super().__init__()
+
         self._main = QtWidgets.QWidget()
         self.useTex = useTex
 
@@ -79,6 +85,10 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.saveformat = saveformat
         self.figDPI = round(figDPI)
         self.fontsize = int(fontsize)
+
+        self.ticks_direction = ticks_direction
+        self.yscale = yscale
+        self.xscale = xscale
 
         self.setCentralWidget(self._main)
         self.setWindowTitle(title)
@@ -453,15 +463,19 @@ class felionQtWindow(QtWidgets.QMainWindow):
             excepthook(*err)
 
         worker.signals.error.connect(error_while_saving_figure)
-
         # worker.signals.progress.connect(self.progress_fn)
         self.threadpool.start(worker)
 
     def savefig(self):
 
         if not self.location.exists():
-            self.showdialog("Error", f"Invalid location: {self.location}")
-            return
+
+            # self.showdialog("Error", f"Invalid location: {self.location}")
+            create_directory = self.showYesorNo("location does not exist", "Do you want to create it?")
+            if create_directory:
+                self.location.mkdir()
+            else:
+                return
 
         if not self.savefilename:
             return self.showdialog("Warning", f"Please enter a filename to save", "warning")
@@ -646,6 +660,11 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.XlogScaleWidget.stateChanged.connect(lambda scale: updateAxisScale(self.ax.set_xscale, scale))
         self.YlogScaleWidget = QtWidgets.QCheckBox("Ylog")
         self.YlogScaleWidget.stateChanged.connect(lambda scale: updateAxisScale(self.ax.set_yscale, scale))
+        if self.yscale == "log":
+            self.YlogScaleWidget.setChecked(True)
+        
+        if self.xscale == "log":
+            self.XlogScaleWidget.setChecked(True)
 
         controllerLayout.addWidget(self.XlogScaleWidget)
         controllerLayout.addWidget(self.YlogScaleWidget)
@@ -686,25 +705,25 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
         ticks_control_layout = QtWidgets.QHBoxLayout()
 
-        self.ticks_direction: str = "in"
-        ticks_direction_widget = QtWidgets.QComboBox()
+        # self.ticks_direction: str = "in"
+        self.ticks_direction_widget = QtWidgets.QComboBox()
 
-        ticks_direction_widget.addItems(["in", "out", "inout"])
+        self.ticks_direction_widget.addItems(["in", "out", "inout"])
 
         def update_ticks_direction(val: str) -> None:
             self.ticks_direction = val
             self.ax.tick_params(axis=self.axisType, which=self.tickType, direction=val)
             self.draw()
 
-        ticks_direction_widget.currentTextChanged.connect(update_ticks_direction)
-        # ticks_direction_widget.textChanged.connect(update_ticks_direction)
+        self.ticks_direction_widget.currentTextChanged.connect(update_ticks_direction)
+        self.ticks_direction_widget.setCurrentText(self.ticks_direction)
 
         toggleTickButton = QtWidgets.QPushButton("toggle")
         self.tickToggleState = True
         toggleTickButton.clicked.connect(self.update_axes_visible_status)
 
         ticks_control_layout.addWidget(QtWidgets.QLabel("Ticks: "))
-        ticks_control_layout.addWidget(ticks_direction_widget)
+        ticks_control_layout.addWidget(self.ticks_direction_widget)
         ticks_control_layout.addWidget(toggleTickButton)
 
         controllerLayout = QtWidgets.QHBoxLayout()
@@ -907,7 +926,10 @@ class felionQtWindow(QtWidgets.QMainWindow):
     ) -> None:
 
         self.legend = self.ax.get_legend()
-        if not self.legend: return
+        
+        if not self.legend: 
+            self.legend = self.ax.legend()
+
         self.legendToggleCheckWidget.setChecked(True)
         for legline in self.legend.get_texts():
             legline.set_picker(True)
@@ -931,7 +953,7 @@ def closeEvent(self, event):
 def toggle_this_artist(artist: Union[Container, Artist], alpha: float) -> float:
 
     if not (isinstance(artist, Artist) or isinstance(artist, Container)):
-        return print(f"unknown toggle method for this artist type\n{type(artist)}")
+        return print(f"unknown toggle method for this artist type\n{type(artist)=}\{artist=}", flush=True)
     set_this_alpha = alpha
     if isinstance(artist, Artist):
         set_this_alpha: float = alpha if artist.get_alpha() is None or artist.get_alpha() == 1 else 1
@@ -959,9 +981,10 @@ def on_pick(
 
     picked_line_handler = picked_legend.get_text()
     toggle_artist = line_handler[picked_line_handler]
-
+    
     set_this_alpha = widget.legendalpha
-    if isinstance(toggle_artist, Iterable):
+
+    if isinstance(toggle_artist, Iterable) and not isinstance(toggle_artist, Container):
         for artist in toggle_artist:
             set_this_alpha = toggle_this_artist(artist, widget.legendalpha)
     else:

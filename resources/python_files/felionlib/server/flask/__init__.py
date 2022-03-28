@@ -40,7 +40,7 @@ def compute():
         args = data["args"]
         general = args["general"]
 
-        print(f"{pyfile=}\n{args=}", flush=True)
+        print(f"{pyfile=}\n{args=}\{general=}", flush=True)
 
         with warnings.catch_warnings(record=True) as warn:
             # warnings.simplefilter("ignore")

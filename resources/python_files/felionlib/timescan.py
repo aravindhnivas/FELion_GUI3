@@ -3,11 +3,11 @@ import json
 import warnings
 from pathlib import Path as pt
 import numpy as np
-
-from felionlib.utils.FELion_widgets import FELion_Tk
 from felionlib.utils.FELion_definitions import sendData
-
 warnings.simplefilter(action='ignore', category=FutureWarning)
+from felionlib.utils.felionQt import felionQtWindow
+from PyQt6.QtWidgets import QApplication
+
 
 class timescanplot:
 
@@ -18,27 +18,33 @@ class timescanplot:
 
         if tkplot:
 
-            self.widget = FELion_Tk(title=scanfile, location=scanfile.parent)
+            qapp = QApplication([])
 
-            self.fig, self.canvas = self.widget.Figure(default_save_widget=False)
-            self.widget.save_fmt = self.widget.Entries("Entry", "png", 0.1, 0.05*9+0.02)
-            self.widget.save_btn = self.widget.Buttons("Save", 0.5, 0.05*9, self.widget.save_fig)
-            savename=self.scanfile.stem
-            ax = self.widget.make_figure_layout(title=f"Timescan: {self.scanfile.name}", xaxis="Time (ms)", yaxis="Counts", yscale="linear", savename=savename)
+            self.widget = felionQtWindow(
+                figXlabel="Time (ms)", figYlabel="Counts",
+                location=self.location/"OUT", savefilename=self.scanfile.stem
+            )
+            self.legend_handler = {}
+
+            self.read_timescan_file()
             
-            self.widget.lines = {}
+            self.legend_handler["SUM"] = self.widget.ax.errorbar(
+                self.time, self.mean.sum(axis=0), 
+                yerr=self.error.sum(axis=0), label="SUM", fmt="k.-"
+            )
 
-            self.read_timescan_file(ax=ax)
-            self.widget.lines["SUM"] = ax.errorbar(self.time, self.mean.sum(axis=0), yerr=self.error.sum(axis=0), label="SUM", fmt="k.-")
-            self.widget.plot_legend = ax.legend()
-            self.widget.mainloop()
+            self.widget.optimize_figure()
+            self.widget.fig.tight_layout()
+            self.widget.makeLegendToggler(self.legend_handler)
+            qapp.exec()
+
         else:
             self.read_timescan_file(tkplot=False)
             
     def get_data(self): return self.time, self.mean, self.error, self.mass, self.t_res, self.t_b0
     def get_plotly_data(self): return self.m
         
-    def read_timescan_file(self, ax=None, tkplot=True):
+    def read_timescan_file(self, tkplot=True):
 
         m={}
         location = self.scanfile.parent
@@ -57,7 +63,8 @@ class timescanplot:
         j, mass_count = 0, 0
         mean, error, mass = [], [], []
 
-        t_res, t_b0 = var_find(self.scanfile, location, time=True)
+        t_res, t_b0 = var_find(self.scanfile, time=True)
+        
         self.t_res, self.t_b0 = t_res, t_b0
         self.timedata = {"mass_value":[], "time":[], "Counts":[], "error":[], "SUM":[], "SUM_error":[]}
 
@@ -79,7 +86,9 @@ class timescanplot:
 
             if tkplot: 
                 print(f"{mass_value}: error value:\n{error_sort}")
-                self.widget.lines[f"{mass_value}"] = ax.errorbar(time, mass_sort, yerr=error_sort, label=label, fmt=".-")
+                self.legend_handler[label] = self.widget.ax.errorbar(
+                    time, mass_sort, yerr=error_sort, label=label, fmt=".-"
+                )
 
             else:
                 m[f"{mass_value}u"] = {"x":time.tolist(), "y":mass_sort.tolist(), 
@@ -97,7 +106,7 @@ class timescanplot:
 
         self.m = m
 
-def var_find(fname, location, time=False):
+def var_find(fname, time=False):
 
     if fname != '':
         if not time:
@@ -161,7 +170,6 @@ def main(args):
     
     EXPORT_DIR = location / "EXPORT"
     if not EXPORT_DIR.exists(): EXPORT_DIR.mkdir()
-    
 
     tkplot = args["tkplot"]
 
@@ -182,5 +190,3 @@ def main(args):
             except:
                 print("Couldn't write file to EXPORT directory")
         sendData(dataToSend, calling_file=pt(__file__).stem)
-
-        
