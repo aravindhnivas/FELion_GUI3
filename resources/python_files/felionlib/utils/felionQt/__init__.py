@@ -389,7 +389,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
             self.canvas.mpl_connect("button_release_event", lambda e: self.canvas.setFocus())
             self.canvas.mpl_connect("key_press_event", lambda e: key_press_handler(e, self.canvas))
 
-    def save_file_worker(self):
+    def save_file_worker(self, filename):
 
         def savefileFunc(filename, *args, **kwargs):
             self.save_figure_status_widget.setText("Saving...")
@@ -438,7 +438,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         if self.savefilefmt == "pgf":
             mpl.rcParams.update({"pgf.texsystem": "pdflatex", 'text.usetex': True, 'pgf.rcfonts': False})
         
-        self.save_file_worker()
+        self.save_file_worker(filename)
         # Execute
         # self.threadpool.start(worker)
 
