@@ -3,10 +3,14 @@ from typing import Union, Iterable
 from matplotlib.container import Container
 import numpy as np
 from .. import felionQtWindow
+from importlib import import_module, reload
+
 
 def main():
 
-    widget = felionQtWindow(title="legend_play", includeCloseEvent=False)
+    felionQt = import_module("felionQt")
+    widget: felionQtWindow = reload(felionQt).felionQtWindow(title="Demo")
+
     x = np.arange(0.1, 4, 0.1)
     y1 = np.exp(-1.0 * x)
     y2 = np.exp(-0.5 * x)

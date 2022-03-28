@@ -506,7 +506,7 @@ def main(args):
         qapp = QApplication(sys.argv)
 
     widget = felionQtWindow(title=f"{felixfile}",
-        figTitle=figTitle, 
+        figTitle=figTitle, figXlabel="Wavenumber (cm$^{-1}$)", figYlabel="Counts",
         location=location/"../OUT",
         savefilename=felixfile
     )
@@ -517,5 +517,6 @@ def main(args):
 
     widget.legendToggleCheckWidget.setChecked(True)
     widget.closeEvent = lambda event: on_closing(event, widget.showYesorNo, baselineClass)
+    widget.optimize_figure()
     qapp.exec()
 

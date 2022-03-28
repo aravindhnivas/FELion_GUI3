@@ -1,14 +1,14 @@
 
 from importlib import reload, import_module
 import numpy as np
-# from .. import felionQtWindow
+from .. import felionQtWindow
 
 def main():
     felionQt = import_module("felionQt")
-    widget = reload(felionQt).felionQtWindow(title="Demo", makeControlLayout=False)
+    widget: felionQtWindow = reload(felionQt).felionQtWindow(title="Demo", makeControlLayout=False)
     widget.fig.subplots_adjust(hspace=0.5)
     axes = widget.fig.subplots(2, 1)
-    widget.makeControlLayout(axes)
+    widget.createControlLayout(axes, optimize=True)
     (ax1, ax2) = axes
 
     dt = 0.01
@@ -37,10 +37,13 @@ def main():
 
     cxy, f = ax2.csd(s1, s2, 256, 1. / dt, label=2)
     ax2.set_ylabel('CSD (db)')
-    print(ax1, ax2)
-    widget.update_figure_label_widgets_values()
-    ax1.legend()
+    # print(ax1, ax2)
+    ax1.legend(title="Title1")
+    ax2.legend(title="Title2")
 
-    ax2.legend()
+    
+    widget.optimize_figure()
+    # widget.update_figure_label_widgets_values(ax1)
+    # widget.update_figure_label_widgets_values(ax2)
 
     widget.updatecanvas()
