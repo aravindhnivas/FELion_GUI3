@@ -1,9 +1,10 @@
 import sys
 import traceback
 from pathlib import Path as pt
+from types import TracebackType
 
-from typing import Any, Callable, Iterable, Optional, Union
-from PyQt6.QtCore import Qt
+from typing import Any, Callable, Iterable, Literal, Optional, Type, Union
+from PyQt6.QtCore import Qt, QThreadPool, QUrl
 import PyQt6.QtWidgets as QtWidgets
 from PyQt6.QtGui import QIcon
 import matplotlib as mpl
@@ -17,6 +18,7 @@ from matplotlib.backend_bases import key_press_handler
 from matplotlib.text import Text
 import matplotlib.ticker as plticker
 from .utils.widgets import ShowDialog, iconfile
+from .utils.workers import Worker
 
 
 def excepthook(exc_type, exc_value, exc_tb):
@@ -48,8 +50,9 @@ class felionQtWindow(QtWidgets.QMainWindow):
     ) -> None:
 
         super().__init__()
-
         self._main = QtWidgets.QWidget()
+
+        mpl.rcParams.update({'text.usetex': False})
 
         self.setCentralWidget(self._main)
         self.setWindowTitle(title)
@@ -62,8 +65,10 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.figTitle = figTitle
         self.figYlabel = figYlabel
         self.figXlabel = figXlabel
-
         self.mainLayout = QtWidgets.QHBoxLayout(self._main)
+
+        self.threadpool = QThreadPool()
+        print("Multithreading with maximum %d threads" % self.threadpool.maxThreadCount())
 
         if includeCloseEvent:
             self.closeEvent = lambda event: closeEvent(self, event)
@@ -352,15 +357,11 @@ class felionQtWindow(QtWidgets.QMainWindow):
         fig: Optional[Figure] = None,
         canvas: Optional[FigureCanvasQTAgg] = None,
         figureArgs: Optional[dict[str, Any]] = {},
-
         defaultEvents: bool = True,
     ) -> None:
 
-        # mpl.rcParams.update({'text.usetex': True, 'font.family': 'DejaVu Sans'})
         self.fig = fig if fig else Figure(**figureArgs)
         self.canvas = canvas if canvas else FigureCanvasQTAgg(self.fig)
-
-        self.renderer = self.canvas.get_renderer()
 
         navbarLayoutWidget = QtWidgets.QHBoxLayout()
         figsizeControlWidgetsLayout = self.makefigsizeControlWidgets()
@@ -389,25 +390,54 @@ class felionQtWindow(QtWidgets.QMainWindow):
             self.canvas.mpl_connect("key_press_event", lambda e: key_press_handler(e, self.canvas))
 
     def savefig(self):
+
         if not self.location.exists():
             self.showdialog("Error", f"Invalid location: {self.location}")
             return
+        
         if not self.savefilename:
             return self.showdialog("Warning", f"Please enter a filename to save", "warning")
 
         filename = self.location / f"{self.savefilename}.{self.savefilefmt}"
+
         if filename.exists():
             ok = self.showYesorNo("Overwrite ?", f"Filename {filename.name} already exists in {self.location}")
             if not ok: return
         
         if self.savefilefmt == "pgf":
+            mpl.rcParams.update({"pgf.texsystem": "pdflatex", 'text.usetex': True, 'pgf.rcfonts': False})
+        
+        def savefileFunc(filename, *args, **kwargs):
+            self.save_figure_status_widget.setText("Saving...")
+            self.fig.savefig(filename, *args, format=self.savefilefmt, **kwargs)
 
-            mpl.rcParams.update({
-                "pgf.texsystem": "pdflatex", 'font.family': 'DejaVu Sans',
-                'text.usetex': True, 'pgf.rcfonts': False
-            })
-        self.fig.savefig(filename)
-        self.showdialog("SAVED", f"{filename.name} saved in {self.location}")
+        worker = Worker(savefileFunc, filename) # fn, args, kwargs
+        worker.signals.result.connect(lambda s: print(s))
+
+        def on_complete():
+
+            nonlocal error_occured
+            if not error_occured: 
+                self.save_figure_status_widget.setText("figure saved.")
+                self.showdialog("Saved", f"Saved to {filename.name}")
+            else:
+                self.save_figure_status_widget.setText("Error saving figure.")
+        worker.signals.finished.connect(on_complete)
+
+        error_occured = False
+
+        def error_while_saving_figure(err: tuple[Type[BaseException], BaseException, TracebackType]) -> None:
+            nonlocal error_occured
+            exctype, value, tb = err
+            error_occured = True
+            ShowDialog(exctype.__name__, f"{value}\n\n{tb}", "critical")
+
+        worker.signals.error.connect(error_while_saving_figure)
+        # worker.signals.progress.connect(self.progress_fn)
+
+        # Execute
+        self.threadpool.start(worker)
+        # self.draw()
 
     def createSpinBox(
         self,
@@ -640,12 +670,18 @@ class felionQtWindow(QtWidgets.QMainWindow):
         
         self.controlLayout.addLayout(controllerLayout)
 
+    def browse_save_location(self):
+        directory = QtWidgets.QFileDialog.getExistingDirectory(self, 'Browse save location"', self.location.__str__())
+        if directory:
+            self.location = pt(directory).resolve()
+            self.location_line_edit.setText(self.location.__str__())
+
     def figure_save_controllers(self):
 
         savefilenameWidget = QtWidgets.QLineEdit(self.savefilename)
         def updateSavefilename(val): self.savefilename = val
         savefilenameWidget.textChanged.connect(updateSavefilename)
-
+        savefilenameWidget.setToolTip("save filename")
         savefilenameWidget.returnPressed.connect(self.savefig)
 
 
@@ -667,9 +703,28 @@ class felionQtWindow(QtWidgets.QMainWindow):
         controllerLayout.addWidget(saveButtonWidget)
 
         save_wdigets_final_layout = QtWidgets.QVBoxLayout()
-        save_wdigets_final_layout.addWidget(QtWidgets.QLabel("Savefilename"))
+
+        save_location_control_widget = QtWidgets.QHBoxLayout()
+
+        self.location_line_edit = QtWidgets.QLineEdit(self.location.__str__())
+        
+        self.location_line_edit.setReadOnly(True)
+        self.location_line_edit.setToolTip("save location")
+        
+        browse_save_location_button = QtWidgets.QPushButton("Browse")
+        
+        browse_save_location_button.clicked.connect(self.browse_save_location)
+
+        save_location_control_widget.addWidget(self.location_line_edit)
+        save_location_control_widget.addWidget(browse_save_location_button)
+
+        save_wdigets_final_layout.addLayout(save_location_control_widget)
         save_wdigets_final_layout.addWidget(savefilenameWidget)
         save_wdigets_final_layout.addLayout(controllerLayout)
+
+        self.save_figure_status_widget = QtWidgets.QLabel("")
+        save_wdigets_final_layout.addWidget(self.save_figure_status_widget)
+
         controlGroup = QtWidgets.QGroupBox()
         controlGroup.setLayout(save_wdigets_final_layout)
         self.controlLayout.addWidget(controlGroup)
@@ -690,14 +745,13 @@ class felionQtWindow(QtWidgets.QMainWindow):
         if optimize: self.optimize_figure()
 
     def optimize_figure(self):
-
-        labelsize = self.tick_label_fontsize_controller_widget.value()
         
+        labelsize = self.tick_label_fontsize_controller_widget.value()
         for ax in self.axes:
             
             self.updateTickLabelSz(labelsize, ax=ax, type="ticks")
             self.update_tick_params(labelsize=labelsize)
-            ax.tick_params(which="both", bottom=True, top=True, left=True, right=True, direction=self.ticks_direction)
+            ax.tick_params(which="both", bottom=True, top=False, left=True, right=False, direction=self.ticks_direction)
             self.updateTickLabelSz(labelsize=labelsize-2, ax=ax, type="legend")
             self.updateTickLabelSz(labelsize, ax=ax, type="legendTitle")
             self.update_minorticks(True, ax)
@@ -731,7 +785,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         if attachControlLayout:
             self.showWidget()
 
-    def showdialog(self, title="Info", msg="", type="info"):
+    def showdialog(self, title="Info", msg="", type: Literal["info", "warning", "critical"]="info"):
 
         dialogBox = QtWidgets.QMessageBox(self)
 
@@ -837,4 +891,6 @@ def on_pick(
         set_this_alpha = toggle_this_artist(toggle_artist, widget.legendalpha)
 
     picked_legend.set_alpha(0.5 if set_this_alpha < 1 else 1)
+
     widget.draw()
+    
