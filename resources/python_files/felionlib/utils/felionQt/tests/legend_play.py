@@ -63,10 +63,9 @@ def main():
     # (line_handler["plot_legend_line_dashed"],) = widget.ax.plot(x, y2 + 0.5, "--", label="plot_legend_line_dashed")
     (line_handler["plot_legend_line_dot"],) = widget.ax.plot(x, y2 + 1, ".-", label="plot_legend_line_dot")
     (line_handler["plot_legend_dot"],) = widget.ax.plot(x, y2 - 1, ".", label="plot_legend_dot")
-    
     widget.ax.set(xlabel="Xlabel", ylabel="Ylabel")
 
-    # widget.ax.legend(title="legendTitle", labelspacing=0.1)
+    widget.ax.legend(title="legendTitle", labelspacing=0.1)
     widget.optimize_figure()
     widget.updatecanvas()
     widget.makeLegendToggler(line_handler)

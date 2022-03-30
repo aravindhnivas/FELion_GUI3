@@ -3,12 +3,10 @@ import traceback
 from pathlib import Path as pt
 from types import TracebackType
 
-# from importlib import import_module, reload
 from typing import Any, Callable, Iterable, Literal, Optional, Type, Union
 from PyQt6.QtCore import Qt, QThreadPool
 import PyQt6.QtWidgets as QtWidgets
 from PyQt6.QtGui import QIcon
-import matplotlib as mpl
 from matplotlib.artist import Artist
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg, NavigationToolbar2QT
 from matplotlib.container import Container
@@ -18,12 +16,14 @@ from matplotlib.axes import Axes
 from matplotlib.backend_bases import key_press_handler
 from matplotlib.text import Text
 import matplotlib.ticker as plticker
-from .utils.widgets import ShowDialog, iconfile
+from .utils.widgets import ShowDialog, iconfile, toggle_this_artist, AnotherWindow, closeEvent
 from .utils.workers import Worker
-
+import matplotlib as mpl
 mpl.use("QtAgg")
 import matplotlib.pyplot as plt
-print(mpl.get_backend())
+
+
+QApplication = QtWidgets.QApplication
 
 def excepthook(etype, value, tb):
     tb = "".join(traceback.format_exception(etype, value, tb, limit=5))
@@ -49,50 +49,44 @@ class felionQtWindow(QtWidgets.QMainWindow):
         defaultEvents: bool = True,
         makeControlLayout: bool = True,
         includeCloseEvent: bool = False,
-        windowGeometry: tuple[int, int] = (1200, 700),
+        windowGeometry: tuple[int, int] = (1000, 600),
         useTex: bool = False,
         style: str = "default",
-        fontsize: int = 8,
-        
+        fontsize: int = 9,
         optimize: bool = False,
-        
         ticks_direction: str = "in",
+
         yscale: str = "linear",
         xscale: str = "linear",
         **kwargs: dict[str, Any],
-    
     ) -> None:
 
         super().__init__()
-
         self._main = QtWidgets.QWidget()
         self.useTex = useTex
 
-        if style:
+        if style and style != "default":
             plt.style.use(style)
 
-        # print(mpl.rcParams["legend.handletextpad"])
         mpl.rcParams.update({
             'text.usetex': useTex,
             'lines.markersize': 4,
-            'legend.frameon': False,
-            'legend.labelspacing': 0.1,
-            'legend.handletextpad': 0.5,
+            'legend.frameon': False, 'legend.labelspacing': 0.1, 'legend.handletextpad': 0.5,
         })
 
-        if "mpl_kw" in kwargs: mpl.rcParams.update(kwargs["mpl_kw"])
+        if "mpl_kw" in kwargs:
+            mpl.rcParams.update(kwargs["mpl_kw"])
 
         self.saveformat = saveformat
         self.figDPI = round(figDPI)
         self.fontsize = int(fontsize)
-
         self.ticks_direction = ticks_direction
         self.yscale = yscale
         self.xscale = xscale
-
         self.setCentralWidget(self._main)
         self.setWindowTitle(title)
         self.resize(*windowGeometry)
+
         self.setWindowIcon(QIcon(iconfile.resolve().__str__()))
 
         self.location = pt(location).resolve()
@@ -118,28 +112,48 @@ class felionQtWindow(QtWidgets.QMainWindow):
             self.createControlLayout(optimize=optimize)
 
     def init_attributes(self):
+
         self.titleWidget = QtWidgets.QLineEdit("")
         self.xlabelWidget = QtWidgets.QLineEdit("")
         self.ylabelWidget = QtWidgets.QLineEdit("")
+        self.fixedControllerWidth = 270
+
+        self.legend_picker_set = False
+        self.line_handler = None
+        self.picked_legend = None
+        self.ctrl_pressed = False
+        self.legend_edit_window = None
+
+    def toggle_controller_layout(self):
+
+        hidden_state = self.finalControlWidget.isHidden()
+        self.finalControlWidget.setHidden(not hidden_state)
+        button_txt = "Hide controllers" if hidden_state else "Show more controllers" 
+        self.toggle_controller_button.setText(button_txt)
 
     def showWidget(self):
 
-        self.figure_save_controllers()
         self.controlLayout.addStretch()
-
         controlGroupBox = QtWidgets.QGroupBox()
         controlGroupBox.setLayout(self.controlLayout)
 
         scroll = QtWidgets.QScrollArea()
-        scroll.setWidget(controlGroupBox)
         scroll.setWidgetResizable(True)
-        scroll.setFixedWidth(250)
-        scroll.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        scroll.setWidget(controlGroupBox)
+
+        savecontrolGroup = self.figure_save_controllers()
+
+        self.finalControlWidget = QtWidgets.QWidget()
 
         finalControlLayout = QtWidgets.QVBoxLayout()
         finalControlLayout.addWidget(scroll)
+        finalControlLayout.addWidget(savecontrolGroup)
 
-        self.mainLayout.addLayout(finalControlLayout, 1)
+        self.finalControlWidget.setLayout(finalControlLayout)
+        self.finalControlWidget.setFixedWidth(self.fixedControllerWidth)
+        self.mainLayout.addWidget(self.finalControlWidget, 1)
+        
+        self.toggle_controller_layout()
 
         self.show()
         self.activateWindow()
@@ -149,7 +163,9 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.canvas.setFocus()
 
     def figure_DPI_controller(self):
+
         def changefigDPI(updateDPI):
+
             self.fig.set_dpi(updateDPI)
             self.fig.set_size_inches(
                 self.canvas.width() / updateDPI,
@@ -159,9 +175,10 @@ class felionQtWindow(QtWidgets.QMainWindow):
             self.draw()
             self.updateFigsizeDetails()
 
-        self.dpiwidget = self.createSpinBox(value=self.figDPI, prefix="DPI: ", _min=100, _step=1, callback=changefigDPI)
-        self.dpiwidget.setValue(self.figDPI)
-        self.controlLayout.addWidget(self.dpiwidget)
+        dpiwidget = self.createSpinBox(value=self.figDPI, prefix="DPI: ", _min=100, _step=1, callback=changefigDPI)
+        dpiwidget.setValue(self.figDPI)
+        # self.controlLayout.addWidget(dpiwidget)
+        return dpiwidget
 
     def draw(self):
         self.canvas.draw_idle()
@@ -196,7 +213,6 @@ class felionQtWindow(QtWidgets.QMainWindow):
         return widgetGroup
 
     def getaxisUpdateFunction(self):
-
         self.updatefn = {
             "formatter": {
                 "major": {"x": self.ax.xaxis.set_major_formatter, "y": self.ax.yaxis.set_major_formatter},
@@ -211,20 +227,35 @@ class felionQtWindow(QtWidgets.QMainWindow):
     def updateTicksAndFormatter(self):
 
         Nlocator = self.tickLocatorWidget.value()
+        
+        if self.axisType == "both" or self.tickType == "both":
+            # self.ax.locator_params(tight=True, nbins=Nlocator)
+            return
+
+        if self.tickType == "minor":
+            
+            if self.axisType == "x":
+                Nlocator = Nlocator*len(self.ax.get_xticks())
+            elif self.axisType == "y":
+                Nlocator = Nlocator*len(self.ax.get_yticks())
 
         if self.axisType == "x" and self.XlogScaleWidget.isChecked():
             locator = plticker.LogLocator(numticks=Nlocator)
+
         elif self.axisType == "y" and self.YlogScaleWidget.isChecked():
             locator = plticker.LogLocator(numticks=Nlocator)
         else:
             locator = plticker.MaxNLocator(Nlocator)
+        
         self.ticklocatorfn(locator)
 
         if self.tickType == "major":
+
             minortickfn = self.updatefn["ticklocator"]["minor"][self.axisType]
             minortickfn(plticker.AutoMinorLocator())
-
+        
         if self.fomartTickCheck.isChecked():
+
             fmtString = self.tickFormatterWidget.text()
             self.formatterfn(plticker.StrMethodFormatter(fmtString))
         self.draw()
@@ -344,17 +375,18 @@ class felionQtWindow(QtWidgets.QMainWindow):
         formLayout.addRow("title", titleWidgetGroup)
         formLayout.addRow("xlabel", xlabelWidgetGroup)
         formLayout.addRow("ylabel", ylabelWidgetGroup)
-        self.draw()
+        # self.draw()
+
         self.controlLayout.addLayout(formLayout)
 
     def update_figure_label_widgets_values(self, ax=None):
+
         ax = ax or self.ax
         self.titleWidget.setText(ax.get_title())
         self.xlabelWidget.setText(ax.get_xlabel())
         self.ylabelWidget.setText(ax.get_ylabel())
 
     def updateFigsizeDetails(self, event=None):
-
         self.figsize = (self.fig.get_figwidth(), self.fig.get_figheight())
         self.figsizeWidthWidget.setValue(self.figsize[0])
         self.figsizeHeightWidget.setValue(self.figsize[1])
@@ -389,11 +421,53 @@ class felionQtWindow(QtWidgets.QMainWindow):
         autoResizeCanvas = QtWidgets.QCheckBox("auto-resize")
         autoResizeCanvas.setChecked(True)
         autoResizeCanvas.stateChanged.connect(canvasAutoResize)
-
         layout.addWidget(autoResizeCanvas)
+
         return layout
 
+    def create_navbar_layout(self):
+
+        self.navbar_layout = QtWidgets.QVBoxLayout()
+        navbar_controller_layout = QtWidgets.QHBoxLayout()
+
+        navbar_figure_tight_layout_button = QtWidgets.QPushButton("tight layout")
+        navbar_figure_tight_layout_button.clicked.connect(lambda: (self.fig.tight_layout(), self.draw()))
+
+        get_figsize_button = QtWidgets.QPushButton("Get figsize")
+        get_figsize_button.clicked.connect(self.updateFigsizeDetails)
+
+        figsize_adjust_layout = self.makefigsizeControlWidgets()
+        dpiwidget = self.figure_DPI_controller()
+        self.toggle_controller_button = QtWidgets.QPushButton("Controller")
+        self.toggle_controller_button.clicked.connect(self.toggle_controller_layout)
+        
+        navbar_controller_layout.addWidget(get_figsize_button)
+
+        navbar_controller_layout.addLayout(figsize_adjust_layout)
+        navbar_controller_layout.addWidget(dpiwidget)
+        navbar_controller_layout.addWidget(navbar_figure_tight_layout_button)
+        navbar_controller_layout.addWidget(self.toggle_controller_button)
+
+        self.navbar_layout.addWidget(NavigationToolbar2QT(self.canvas, self))
+        self.navbar_layout.addLayout(navbar_controller_layout)
+        self.navbar_layout.setAlignment(navbar_controller_layout, Qt.AlignmentFlag.AlignRight)
+
+    def create_figure_canvas_layout(self):
+        canvasLayout = QtWidgets.QVBoxLayout()
+        canvasLayout.addWidget(self.canvas)
+
+        self.canvasWidget = QtWidgets.QWidget()
+        self.canvasWidget.setLayout(canvasLayout)
+
+        self.canvas_scroll = QtWidgets.QScrollArea()
+
+        self.canvas_scroll.setWidgetResizable(True)
+        self.canvas_scroll.setWidget(self.canvasWidget)
+        self.canvas_scroll.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        self.canvas_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+
     def makeFigureLayout(
+
         self,
         fig: Optional[Figure] = None,
         canvas: Optional[FigureCanvasQTAgg] = None,
@@ -402,28 +476,18 @@ class felionQtWindow(QtWidgets.QMainWindow):
     ) -> None:
 
         self.fig = fig if fig else Figure(**figureArgs)
+
         self.canvas = canvas if canvas else FigureCanvasQTAgg(self.fig)
 
-        navbarLayoutWidget = QtWidgets.QHBoxLayout()
-        figsizeControlWidgetsLayout = self.makefigsizeControlWidgets()
-        navbarLayoutWidget.addWidget(NavigationToolbar2QT(self.canvas, self))
-        navbarLayoutWidget.addLayout(figsizeControlWidgetsLayout)
-        canvasLayout = QtWidgets.QVBoxLayout()
-        canvasLayout.addWidget(self.canvas)
+        self.create_figure_canvas_layout()
+        self.create_navbar_layout()
 
-        self.canvasWidget = QtWidgets.QWidget()
-        self.canvasWidget.setLayout(canvasLayout)
+        final_figure_layout = QtWidgets.QVBoxLayout()
+        final_figure_layout.addLayout(self.navbar_layout)
+        final_figure_layout.addWidget(self.canvas_scroll)
 
-        self.canvas_scroll = QtWidgets.QScrollArea()
-        self.canvas_scroll.setWidgetResizable(True)
-        self.canvas_scroll.setWidget(self.canvasWidget)
-        self.canvas_scroll.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
-        self.canvas_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
-
-        finalFigureLayout = QtWidgets.QVBoxLayout()
-        finalFigureLayout.addLayout(navbarLayoutWidget)
-        finalFigureLayout.addWidget(self.canvas_scroll)
-        self.mainLayout.addLayout(finalFigureLayout, 4)
+        self.mainLayout.addLayout(final_figure_layout, 4)
+        
         if defaultEvents:
             self.canvas.mpl_connect("button_release_event", lambda e: self.canvas.setFocus())
             self.canvas.mpl_connect("key_press_event", lambda e: key_press_handler(e, self.canvas))
@@ -546,7 +610,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         if not ax:
             ax = self.ax
         legend = ax.get_legend()
-
+        self.ax.add_callback(lambda artist: print(artist, flush=True))
         # print("updating")
         self.update_tick_params(ax=ax)
 
@@ -584,40 +648,31 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
         self.draw()
 
-    # def update_style(self, style: str):
-
-    #     plt.style.use(style)
-    #     self.draw()
-
     def figure_draw_controllers(self):
 
         controllerLayout = QtWidgets.QHBoxLayout()
-        # self.style_controller_widget = QtWidgets.QComboBox()
-        # self.style_controller_widget.addItems(["default"] + plt.style.available)
-
-        # self.style_controller_widget.setCurrentText("default")
-        # self.style_controller_widget.currentTextChanged.connect(self.update_style)
-        # controllerLayout.addWidget(self.style_controller_widget)
 
         axesOptionsWidget = QtWidgets.QComboBox()
         axesOptionsWidget.addItems(self.getAxes.keys())
 
         def changeCurrentAxes(ax):
             self.ax = self.getAxes[ax]
+        
             self.legend = self.ax.get_legend()
             self.update_figure_label_widgets_values()
 
         axesOptionsWidget.currentTextChanged.connect(changeCurrentAxes)
+        
         updateFigureButton = QtWidgets.QPushButton("tight layout")
         updateFigureButton.clicked.connect(self.updatecanvas)
 
-        self.minorticks_controller_widget = QtWidgets.QCheckBox("minorticks")
-        self.minorticks_controller_widget.stateChanged.connect(self.update_minorticks)
+        # self.minorticks_controller_widget = QtWidgets.QCheckBox("minorticks")
+        # self.minorticks_controller_widget.stateChanged.connect(self.update_minorticks)
 
         controllerLayout.addWidget(axesOptionsWidget)
         controllerLayout.addWidget(updateFigureButton)
         self.controlLayout.addLayout(controllerLayout)
-        self.controlLayout.addWidget(self.minorticks_controller_widget)
+        # self.controlLayout.addWidget(self.minorticks_controller_widget)
 
     def figure_legend_controllers(self):
         def updateLegendState(state, type="toggle"):
@@ -645,7 +700,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         controllerLayout.addWidget(self.legendDraggableCheckWidget)
         controllerLayout.addWidget(toggleLegendAlphaWidget)
 
-        controllerLayout.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        # controllerLayout.setAlignment(Qt.AlignmentFlag.AlignLeft)
         self.controlLayout.addLayout(controllerLayout)
 
     def figure_axes_scaling_controller(self):
@@ -654,6 +709,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.XlogScaleWidget = QtWidgets.QCheckBox("Xlog")
 
         def updateAxisScale(fn, scale):
+
             fn("log" if scale else "linear")
             self.draw()
 
@@ -666,11 +722,110 @@ class felionQtWindow(QtWidgets.QMainWindow):
         if self.xscale == "log":
             self.XlogScaleWidget.setChecked(True)
 
+        self.minorticks_controller_widget = QtWidgets.QCheckBox("minorticks")
+        self.minorticks_controller_widget.stateChanged.connect(self.update_minorticks)
+
         controllerLayout.addWidget(self.XlogScaleWidget)
+        
         controllerLayout.addWidget(self.YlogScaleWidget)
-        controllerLayout.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        
+        controllerLayout.addWidget(self.minorticks_controller_widget)
+        # controllerLayout.setAlignment(Qt.AlignmentFlag.AlignLeft)
 
         self.controlLayout.addLayout(controllerLayout)
+
+    def set_bound_controller_values(self):
+
+        def set_min_max_val(widget: QtWidgets.QDoubleSpinBox, val: float):
+            if val<0: return
+            factor = 10 if val==0 else val*10
+            _min = val-factor
+            _max = val+factor
+            widget.setMinimum(_min)
+            widget.setMaximum(_max)
+            widget.setValue(val)
+            print(f"{_min=}\t{_max=}\n{val=}", flush=True)
+        xbound: tuple[float, float] = self.ax.get_xbound()
+        ybound: tuple[float, float] = self.ax.get_ybound()
+        print(f"{xbound=}\n{ybound=}", flush=True)
+        set_min_max_val(self.xbound_lower_widget, xbound[0])
+        set_min_max_val(self.xbound_upper_widget, xbound[1])
+        set_min_max_val(self.ybound_lower_widget, ybound[0])
+        set_min_max_val(self.ybound_upper_widget, ybound[1])
+
+    def create_minmax_controller(self, calltype: str, callback: Callable, draw=True):
+
+        main_widget = QtWidgets.QDoubleSpinBox()
+        # main_widget.setPrefix(f"{calltype}: ")
+        main_widget.setKeyboardTracking(False)
+        if not callback: raise Exception("Invalid callback for xy bound controller")
+        
+        def updated_callback(val: float):
+            kwargs = {f"{calltype}": val}
+        
+            callback(**kwargs)
+            if draw:
+                self.draw()
+                # self.ax.draw_artist()
+        main_widget.valueChanged.connect(updated_callback)
+        return main_widget
+
+    def layout_of_control_this_widget(self, this_widget: QtWidgets.QDoubleSpinBox):
+
+        layout = QtWidgets.QHBoxLayout()
+        lower_limit_widget = QtWidgets.QLineEdit("")
+        lower_limit_widget.textChanged.connect(lambda val: this_widget.setMinimum(float(val)))
+        upper_limit_widget = QtWidgets.QLineEdit("")
+        lower_limit_widget.textChanged.connect(lambda val: this_widget.setMaximum(float(val)))
+        stepsize_widget = QtWidgets.QLineEdit("")
+        lower_limit_widget.textChanged.connect(lambda val: this_widget.setSingleStep(float(val)))
+
+        layout.addWidget(lower_limit_widget)
+        layout.addWidget(upper_limit_widget)
+        layout.addWidget(stepsize_widget)
+
+        return layout
+
+    def figure_invert_axes(self):
+        controlLayout = QtWidgets.QHBoxLayout()
+        xaxis_invert_button_widget = QtWidgets.QPushButton("Invert X-axis")
+        xaxis_invert_button_widget.clicked.connect(lambda: (self.ax.invert_xaxis(), self.draw()))
+        yaxis_invert_button_widget = QtWidgets.QPushButton("Invert Y-axis")
+        yaxis_invert_button_widget.clicked.connect(lambda: (self.ax.invert_yaxis(), self.draw()))
+
+        controlLayout.addWidget(xaxis_invert_button_widget)
+        controlLayout.addWidget(yaxis_invert_button_widget)
+        self.controlLayout.addLayout(controlLayout)
+
+    def figure_axes_bound_controller(self):
+        
+        # bound_group = QtWidgets.QGroupBox()
+        bound_layout = QtWidgets.QVBoxLayout()
+        update_bound_values = QtWidgets.QPushButton("GET XY bound")
+        update_bound_values.clicked.connect(self.set_bound_controller_values)
+        bound_layout.addWidget(update_bound_values)
+        xbound_layout = QtWidgets.QHBoxLayout()
+        xbound_layout.addWidget(QtWidgets.QLabel("xbound"))
+
+        ybound_layout = QtWidgets.QHBoxLayout()
+        ybound_layout.addWidget(QtWidgets.QLabel("ybound"))
+        
+        self.xbound_lower_widget = self.create_minmax_controller("lower", self.ax.set_xbound)
+        self.xbound_upper_widget = self.create_minmax_controller("upper", self.ax.set_xbound)
+        
+        self.ybound_lower_widget = self.create_minmax_controller("lower", self.ax.set_ybound)
+        self.ybound_upper_widget = self.create_minmax_controller("upper", self.ax.set_ybound)
+
+        xbound_layout.addWidget(self.xbound_lower_widget)
+        xbound_layout.addWidget(self.xbound_upper_widget)
+
+        ybound_layout.addWidget(self.ybound_lower_widget)
+        ybound_layout.addWidget(self.ybound_upper_widget)
+
+        bound_layout.addLayout(xbound_layout)
+        bound_layout.addLayout(ybound_layout)
+
+        self.controlLayout.addLayout(bound_layout)
 
     def figure_tick_format_controllers(self):
 
@@ -754,25 +909,19 @@ class felionQtWindow(QtWidgets.QMainWindow):
     def figure_save_controllers(self):
 
         savefilenameWidget = QtWidgets.QLineEdit(self.savefilename)
-
-        def updateSavefilename(val):
-            self.savefilename = val
-
+        savefilenameWidget.setPlaceholderText("Enter filename to save...")
+        def updateSavefilename(val): self.savefilename = val
         savefilenameWidget.textChanged.connect(updateSavefilename)
         savefilenameWidget.setToolTip("save filename")
         savefilenameWidget.returnPressed.connect(self.savefig)
 
         controllerLayout = QtWidgets.QHBoxLayout()
-        # self.saveformat = "pdf"
 
         savefmtOptionsWidget = QtWidgets.QComboBox()
-
         savefmtOptionsWidget.addItems(self.canvas.filetypes.keys())
         savefmtOptionsWidget.setCurrentText(self.saveformat)
 
-        def changeSaveFmt(fmt):
-            self.saveformat = fmt
-
+        def changeSaveFmt(fmt): self.saveformat = fmt
         savefmtOptionsWidget.currentTextChanged.connect(changeSaveFmt)
 
         saveButtonWidget = QtWidgets.QPushButton("Save figure")
@@ -781,58 +930,48 @@ class felionQtWindow(QtWidgets.QMainWindow):
         controllerLayout.addWidget(savefmtOptionsWidget)
         controllerLayout.addWidget(saveButtonWidget)
 
-        save_wdigets_final_layout = QtWidgets.QVBoxLayout()
-
         save_location_control_widget = QtWidgets.QHBoxLayout()
 
         self.location_line_edit = QtWidgets.QLineEdit(self.location.__str__())
-
         self.location_line_edit.setReadOnly(True)
         self.location_line_edit.setToolTip("save location")
 
         browse_save_location_button = QtWidgets.QPushButton("Browse")
-
         browse_save_location_button.clicked.connect(self.browse_save_location)
 
         save_location_control_widget.addWidget(self.location_line_edit)
         save_location_control_widget.addWidget(browse_save_location_button)
-
+        
+        save_wdigets_final_layout = QtWidgets.QVBoxLayout()
         save_wdigets_final_layout.addLayout(save_location_control_widget)
         save_wdigets_final_layout.addWidget(savefilenameWidget)
         save_wdigets_final_layout.addLayout(controllerLayout)
-
         self.save_figure_status_widget = QtWidgets.QLabel("")
         save_wdigets_final_layout.addWidget(self.save_figure_status_widget)
+        savecontrolGroup = QtWidgets.QGroupBox()
+        savecontrolGroup.setLayout(save_wdigets_final_layout)
+        # self.controlLayout.addWidget(savecontrolGroup)
+        return savecontrolGroup
 
-        controlGroup = QtWidgets.QGroupBox()
-        controlGroup.setLayout(save_wdigets_final_layout)
-        self.controlLayout.addWidget(controlGroup)
 
     def align_full_layout(self, optimize):
-        # pass
-        self.figure_DPI_controller()
+        
+        # self.figure_DPI_controller()
         self.figure_labels_controller()
         self.figure_draw_controllers()
-
         self.figure_legend_controllers()
         self.figure_axes_scaling_controller()
+        self.figure_invert_axes()
+        self.figure_axes_bound_controller()
         self.figure_ticks_controllers()
         self.figure_tick_format_controllers()
         self.figure_axes_spine_and_tick_toggle_controllers()
-        # self.figure_save_controllers()
-
         if optimize:
             self.optimize_figure()
 
     def optimize_figure(self):
 
-        # default_tick_kw = dict(
-        #     bottom=True, top=True, left=True, right=True, 
-        #     labelbottom=True, labeltop=False, labelleft=True, labelright=False
-        # )
-
         labelsize = self.tick_label_fontsize_controller_widget.value()
-        
         for ax in self.axes:
         
             self.update_tick_params(labelsize=labelsize)
@@ -852,9 +991,12 @@ class felionQtWindow(QtWidgets.QMainWindow):
             legend_title.set_fontsize(labelsize)
             for legend_txt in legend.get_texts():
                 legend_txt.set_fontsize(labelsize-1)
+                # legend_txt.set_zorder(10)
 
         self.minorticks_controller_widget.setChecked(True)
         self.update_figure_label_widgets_values()
+        self.set_bound_controller_values()
+        self.updateFigsizeDetails()
 
     def createControlLayout(self, axes: Iterable[Axes] = [], attachControlLayout=True, optimize=False) -> None:
 
@@ -918,78 +1060,108 @@ class felionQtWindow(QtWidgets.QMainWindow):
         response = QtWidgets.QMessageBox.question(
             self, title, info, QtWidgets.QMessageBox.StandardButton.Yes, QtWidgets.QMessageBox.StandardButton.No
         )
-
         return response == QtWidgets.QMessageBox.StandardButton.Yes
 
-    def makeLegendToggler(
-        self, line_handler: dict[str, Union[Union[Container, Artist], Iterable[Union[Container, Artist]]]]
-    ) -> None:
+    def on_pick(self, event) -> None:
+
+        self.picked_legend = event.artist
+
+        if self.ctrl_pressed:
+            if isinstance(self.picked_legend, Text):
+                return self.show_legend_edit_window()
+
+        if self.legendDraggableCheckWidget.isChecked():
+            return
+        
+        if not isinstance(self.picked_legend, Text):
+            return
+        
+        if not self.line_handler:
+            return
+
+        picked_line_handler = self.picked_legend.get_text()
+        toggle_artist = self.line_handler[picked_line_handler]
+        
+        set_this_alpha = self.legendalpha
+
+        if isinstance(toggle_artist, Iterable) and not isinstance(toggle_artist, Container):
+            for artist in toggle_artist:
+                set_this_alpha = toggle_this_artist(artist, self.legendalpha)
+        else:
+            set_this_alpha = toggle_this_artist(toggle_artist, self.legendalpha)
+
+        self.picked_legend.set_alpha(0.5 if set_this_alpha < 1 else 1)
+
+        self.draw()
+
+    def show_legend_edit_window(self):
+        current_text: Text = self.picked_legend.get_text()
+        if isinstance(self.legend_edit_window, AnotherWindow):
+            self.legend_edit_window.edit_box_widget.setText(current_text)
+            self.legend_edit_window.show()
+            self.legend_edit_window.activateWindow()
+            self.legend_edit_window.raise_()
+
+    def edit_legend(self):
+
+        if self.picked_legend is not None:
+            current_text: Text = self.picked_legend.get_text()
+            new_text = self.legend_edit_window.edit_box_widget.text()
+            new_text = new_text.strip()
+            
+            if new_text and new_text != current_text:
+                self.picked_legend.set_text(new_text)
+                self.draw()
+                
+                if self.line_handler:
+                    self.line_handler[new_text] = self.line_handler[current_text]
+                    del self.line_handler[current_text]
+                # print(f"legend edited: {new_text}\n{self.line_handler}", flush=True)
+
+        self.ctrl_pressed = False
+        self.legend_edit_window.close()
+
+    def make_legend_editor(self):
+
+        self.ctrl_pressed = False
+
+        def register_ctrl_press_button(e):
+            if e.key == 'control':
+                self.ctrl_pressed = True
+            # print(f"{self.ctrl_pressed=}", flush=True)
+            return
+
+        self.canvas.mpl_connect('key_press_event', register_ctrl_press_button)
+
+        def deregister_ctrl_press_button(e):
+            self.ctrl_pressed = False
+            # print(f"{self.ctrl_pressed=}", flush=True)
+            return
+
+        self.canvas.mpl_connect('key_release_event', deregister_ctrl_press_button)
+
+        if self.legend_edit_window is None:
+            print("creating edit legend window", flush=True)
+            self.legend_edit_window = AnotherWindow()
+
+        self.legend_edit_window.save_button_widget.clicked.connect(self.edit_legend)
+        self.legend_edit_window.edit_box_widget.returnPressed.connect(self.edit_legend)
+        
+    def makeLegendToggler(self, line_handler: dict[str, Union[Container, Artist]]=None, edit_legend=True) -> None:
+
+        self.line_handler = line_handler
 
         self.legend = self.ax.get_legend()
-        
         if not self.legend: 
             self.legend = self.ax.legend()
-
+            # self.legend.set_zorder(10)
         self.legendToggleCheckWidget.setChecked(True)
         for legline in self.legend.get_texts():
             legline.set_picker(True)
 
-        self.canvas.mpl_connect("pick_event", lambda e: on_pick(e, line_handler, self))
+        self.picked_legend = None
+        self.canvas.mpl_connect("pick_event", self.on_pick)
+        self.legend_picker_set = True
 
-
-def closeEvent(self, event):
-
-    reply = QtWidgets.QMessageBox.question(
-        self,
-        "Window Close",
-        "Are you sure you want to close the window?",
-        QtWidgets.QMessageBox.StandardButton.Yes,
-        QtWidgets.QMessageBox.StandardButton.No,
-    )
-    close = reply == QtWidgets.QMessageBox.StandardButton.Yes
-    event.accept() if close else event.ignore()
-
-
-def toggle_this_artist(artist: Union[Container, Artist], alpha: float) -> float:
-
-    if not (isinstance(artist, Artist) or isinstance(artist, Container)):
-        return print(f"unknown toggle method for this artist type\n{type(artist)=}\{artist=}", flush=True)
-    set_this_alpha = alpha
-    if isinstance(artist, Artist):
-        set_this_alpha: float = alpha if artist.get_alpha() is None or artist.get_alpha() == 1 else 1
-        artist.set_alpha(set_this_alpha)
-    elif isinstance(artist, Container):
-        for child in artist.get_children():
-            set_this_alpha: float = alpha if child.get_alpha() is None or child.get_alpha() == 1 else 1
-            child.set_alpha(set_this_alpha)
-
-    return set_this_alpha
-
-
-def on_pick(
-    event,
-    line_handler: dict[str, Union[Union[Container, Artist], Iterable[Union[Container, Artist]]]],
-    widget: felionQtWindow,
-) -> None:
-
-    picked_legend = event.artist
-
-    if widget.legendDraggableCheckWidget.isChecked():
-        return
-    if not isinstance(picked_legend, Text):
-        return
-
-    picked_line_handler = picked_legend.get_text()
-    toggle_artist = line_handler[picked_line_handler]
-    
-    set_this_alpha = widget.legendalpha
-
-    if isinstance(toggle_artist, Iterable) and not isinstance(toggle_artist, Container):
-        for artist in toggle_artist:
-            set_this_alpha = toggle_this_artist(artist, widget.legendalpha)
-    else:
-        set_this_alpha = toggle_this_artist(toggle_artist, widget.legendalpha)
-
-    picked_legend.set_alpha(0.5 if set_this_alpha < 1 else 1)
-
-    widget.draw()
+        if edit_legend:
+            self.make_legend_editor()
