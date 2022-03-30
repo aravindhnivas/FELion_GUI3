@@ -7,5 +7,5 @@ def run():
     if not qapp:
         qapp = QApplication([])
     reload(import_module("felionQt.tests.legend_play")).main()
-    # testFunc()
+    # reload(import_module("felionQt.tests.sliders_play")).main()
     qapp.exec()
