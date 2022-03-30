@@ -49,7 +49,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         defaultEvents: bool = True,
         makeControlLayout: bool = True,
         includeCloseEvent: bool = False,
-        windowGeometry: tuple[int, int] = (1000, 600),
+        windowGeometry: tuple[int, int] = (900, 700),
         useTex: bool = False,
         style: str = "default",
         fontsize: int = 9,
@@ -109,7 +109,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
         self.makeFigureLayout(figureArgs=figureArgs, defaultEvents=defaultEvents)
         if makeControlLayout:
-            self.createControlLayout(optimize=optimize)
+            self.createControlLayout(attachControlLayout=True, optimize=optimize)
 
     def init_attributes(self):
 
@@ -388,6 +388,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
     def updateFigsizeDetails(self, event=None):
         self.figsize = (self.fig.get_figwidth(), self.fig.get_figheight())
+
         self.figsizeWidthWidget.setValue(self.figsize[0])
         self.figsizeHeightWidget.setValue(self.figsize[1])
 
@@ -998,7 +999,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.set_bound_controller_values()
         self.updateFigsizeDetails()
 
-    def createControlLayout(self, axes: Iterable[Axes] = [], attachControlLayout=True, optimize=False) -> None:
+    def createControlLayout(self, axes: Iterable[Axes] = [], attachControlLayout=False, optimize=False) -> None:
 
         self.controlLayout = QtWidgets.QVBoxLayout()
         self.legend = None
@@ -1038,23 +1039,26 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
         response = dialogBox.exec()
 
-    def makeSlider(self, label="", ticks=True, bind_func: Callable[[int], None] = None):
+    def makeSlider(self, label="", ticks=True, callback: Callable[[int], None] = None):
+
         """Sliders range from 0-99"""
 
         slider = QtWidgets.QSlider(Qt.Orientation.Horizontal)
+        slider.setObjectName("label")
         slider.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
 
         if ticks:
             slider.setTickPosition(QtWidgets.QSlider.TickPosition.TicksBelow)
             slider.setTickInterval(10)
 
-        slider.valueChanged[int].connect(bind_func)
+        if callback: slider.valueChanged.connect(callback)
         label = QtWidgets.QLabel(label)
         widget = QtWidgets.QHBoxLayout()
+
         widget.addWidget(label)
         widget.addWidget(slider)
-
-        return widget
+        
+        return widget, slider
 
     def showYesorNo(self, title="Info", info=""):
         response = QtWidgets.QMessageBox.question(
@@ -1065,7 +1069,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
     def on_pick(self, event) -> None:
 
         self.picked_legend = event.artist
-
+        # print(self.legend_edit_window.isActiveWindow())
         if self.ctrl_pressed:
             if isinstance(self.picked_legend, Text):
                 return self.show_legend_edit_window()
@@ -1116,9 +1120,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
                 if self.line_handler:
                     self.line_handler[new_text] = self.line_handler[current_text]
                     del self.line_handler[current_text]
-                # print(f"legend edited: {new_text}\n{self.line_handler}", flush=True)
 
-        self.ctrl_pressed = False
         self.legend_edit_window.close()
 
     def make_legend_editor(self):
@@ -1143,7 +1145,8 @@ class felionQtWindow(QtWidgets.QMainWindow):
         if self.legend_edit_window is None:
             print("creating edit legend window", flush=True)
             self.legend_edit_window = AnotherWindow()
-
+            def edit_window_closeEvent(event): self.ctrl_pressed = False 
+            self.legend_edit_window.closeEvent = edit_window_closeEvent
         self.legend_edit_window.save_button_widget.clicked.connect(self.edit_legend)
         self.legend_edit_window.edit_box_widget.returnPressed.connect(self.edit_legend)
         
