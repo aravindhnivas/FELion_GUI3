@@ -5,8 +5,8 @@ from io import StringIO
 from felionlib.utils.FELion_definitions import sendData
 from felionlib.utils.FELion_constants import colors
 from felionlib.utils.fit_profile.lineProfileFit import fitData
-from felionlib.utils.felionQt import felionQtWindow
-from PyQt6.QtWidgets import QApplication
+from felionlib.utils.felionQt import felionQtWindow, QApplication
+# from PyQt6.QtWidgets import QApplication
 
 def thz_plot(filename):
 

@@ -5,8 +5,8 @@ from pathlib import Path as pt
 import numpy as np
 from felionlib.utils.FELion_definitions import sendData
 warnings.simplefilter(action='ignore', category=FutureWarning)
-from felionlib.utils.felionQt import felionQtWindow
-from PyQt6.QtWidgets import QApplication
+from felionlib.utils.felionQt import felionQtWindow, QApplication
+# from PyQt6.QtWidgets import QApplication
 
 
 class timescanplot:

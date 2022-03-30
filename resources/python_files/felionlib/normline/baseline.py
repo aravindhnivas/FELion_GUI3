@@ -6,8 +6,8 @@ from os.path import dirname, isdir, isfile, join
 from pathlib import Path as pt
 from felionlib.utils.felionQt.utils.blit import BlitManager
 # from felionlib.utils.felionQt.utils.widgets import ShowDialog
-from felionlib.utils.felionQt import felionQtWindow
-from PyQt6.QtWidgets import QApplication
+from felionlib.utils.felionQt import felionQtWindow, QApplication
+# from PyQt6.QtWidgets import QApplication
 from scipy.interpolate import interp1d
 import numpy as np
 
@@ -515,6 +515,7 @@ def main(args):
     widget.legendToggleCheckWidget.setChecked(True)
     widget.closeEvent = lambda event: on_closing(event, widget.showYesorNo, baselineClass)
 
+    # widget.make_legend_editor()
     widget.optimize_figure()
     widget.fig.tight_layout()
     qapp.exec()
