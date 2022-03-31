@@ -1,15 +1,15 @@
 
 from importlib import reload, import_module
 import numpy as np
-from .. import felionQtWindow
+import felionQt
 
 def main():
-    felionQt = import_module("felionQt")
-    widget: felionQtWindow = reload(felionQt).felionQtWindow(title="Demo", makeControlLayout=False)
-    widget.fig.subplots_adjust(hspace=0.5)
-    axes = widget.fig.subplots(2, 1)
-    widget.createControlLayout(axes, optimize=True)
-    (ax1, ax2) = axes
+    # felionQt = import_module("felionQt")
+    widget: felionQt.felionQtWindow = reload(felionQt).felionQtWindow(title="Demo", createControlLayout=False)
+    # widget.fig.subplots_adjust(hspace=0.5)
+    (ax1, ax2) = widget.fig.subplots(1, 2)
+    widget.createControlLayout(axes=(ax1, ax2))
+    # (ax1, ax2) = axes
 
     dt = 0.01
     t = np.arange(0, 30, dt)
@@ -41,9 +41,8 @@ def main():
     ax1.legend(title="Title1")
     ax2.legend(title="Title2")
 
-    
+    widget.attachControlLayout()
     widget.optimize_figure()
     # widget.update_figure_label_widgets_values(ax1)
     # widget.update_figure_label_widgets_values(ax2)
-
     widget.updatecanvas()
