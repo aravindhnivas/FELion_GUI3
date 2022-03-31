@@ -1,4 +1,5 @@
 from pathlib import Path as pt
+from matplotlib.axes import Axes
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -13,7 +14,7 @@ def generateNGaussian(N):
     
     return locals()["gfn_"]
 
-def computeNGaussian(wn, inten, sigma=5):
+def computeNGaussian(wn: np.ndarray, inten: np.ndarray, sigma=5):
     
     _args = {}
     N = len(wn)
@@ -27,9 +28,8 @@ def computeNGaussian(wn, inten, sigma=5):
 
         i += 1
     
-    full_wn = np.linspace(wn.min()-100, wn.max()+100, 5000)
-    
-    full_inten = gfn(full_wn, **_args)
+    full_wn: np.ndarray = np.linspace(wn.min()-100, wn.max()+100, 5000)
+    full_inten: np.ndarray = gfn(full_wn, **_args)
 
     return full_wn, full_inten
 
@@ -46,7 +46,7 @@ def read_dat_file(filename, normMethod):
     return xs, ys
 
 
-def theoryplot(theoryfile, ax, freqScale=1, colorIndex=1, theorysigma=5):
+def theoryplot(theoryfile: pt, ax: Axes, freqScale=1, colorIndex=1, theorysigma=5) -> Axes:
 
     try:
     
@@ -69,11 +69,9 @@ def theoryplot(theoryfile, ax, freqScale=1, colorIndex=1, theorysigma=5):
     # theory plotting
     freq_tsim, inten_tsim = computeNGaussian(freq_t, inten_t, theorysigma)
     theory_lines = ax.plot(freq_tsim, inten_tsim, f"C{colorIndex}", label=legendName)
-    
     return ax
 
-
-def felix_plot(filename, ax, lg, normMethod="IntensityPerPhoton", sameColor=True, color=0,):
+def felix_plot(filename: str, ax: Axes, lg: str, normMethod: str="IntensityPerPhoton", sameColor=True, color=0) -> Axes:
     
     for i, f in enumerate(filename):
         

@@ -32,10 +32,10 @@
         }
 
         $felixPlotCheckboxes = [
-                {label:"DAT file", options:datfiles, selected:[], id:getID()},
-                {label:"Fundamentals", options:calcfiles, selected:[], id:getID()},
-                {label:"Overtones", options:calcfiles, selected:[], id:getID()},
-                {label:"Combinations", options:calcfiles, selected:[], id:getID()},
+                {label: "DAT_file", options: datfiles, value: [], id: getID()},
+                {label: "Fundamentals", options: calcfiles, value: [], id: getID()},
+                {label: "Overtones", options: calcfiles, value: [], id: getID()},
+                {label: "Combinations", options: calcfiles, value: [], id: getID()},
         ]
         reload != reload
     }
@@ -49,11 +49,11 @@
         {#key reload}
 
             <div class="files__div">
-                {#each $felixPlotCheckboxes as {label, options, selected, id}(id)}
+                {#each $felixPlotCheckboxes as {label, options, value, id}(id)}
 
                     <div class="felix_tkplot_filelist_div" transition:fade>
                         <div class="subtitle felix_tkplot_filelist_header">{label}</div>
-                        <CustomCheckList style="background: #836ac05c; border-radius: 20px; margin:1em 0;  height:20em; overflow:auto;" bind:fileChecked={selected} bind:items={options} />
+                        <CustomCheckList style="background: #836ac05c; border-radius: 20px; margin:1em 0;  height:20em; overflow:auto;" bind:fileChecked={value} bind:items={options} />
                     </div>
                 {/each}
             </div>
@@ -127,8 +127,8 @@
         padding: 1em;
         display: flex;
         flex-wrap: wrap;
-
-        justify-content: center;
+        flex-direction: column;
+        align-items: center;
         margin: 1em 0;
     }
 

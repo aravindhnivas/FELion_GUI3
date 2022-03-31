@@ -1,200 +1,157 @@
-
+from dataclasses import dataclass
 from pathlib import Path as pt
+from typing import Any, Literal
+from matplotlib.axes import Axes
 import numpy as np
-from matplotlib.ticker import AutoMinorLocator, MultipleLocator
-from .definitions import felix_plot, theoryplot, Marker
-from felionlib.utils.FELion_widgets import FELion_Tk
-import matplotlib.gridspec as gridspec
+from felionlib.utils.felionQt import felionQtWindow, QApplication
+from .definitions import computeNGaussian
 
-marker_theory = None
-widget = None
+logger = lambda *args, **kwargs: print(*args, **kwargs, flush=True)
 
-def main(plotArgs):
 
-    global marker_theory, widget
+# 
 
-    figwidth, figheight, dpi, freqScale, gridalpha, theorysigma, majorTick = plotArgs["numberWidgets"]
+@dataclass
+class PlotData:
+    args: dict[str, Any]
+    widget: felionQtWindow
+    data_location: pt
 
-    NPlots = 1
+    def plot(self):
+        logger(self.args["booleanWidgets"])
+        Only_exp = self.args["booleanWidgets"]["Only_exp"]
 
-    ratio = "1"
+        if Only_exp:
+            self.ax_exp = self.widget.fig.subplots(1)
+            axes: tuple[Axes] = (self.ax_exp, )
+            self.ax_theory = None
+        else:
+            axes: tuple[Axes, Axes] = self.widget.fig.subplots(2, 1, sharex=True)
+            self.ax_exp, self.ax_theory = axes
+        
+        self.widget.createControlLayout(axes, attachControlLayout=True)
+
+        if not Only_exp: self.toggle_axes()
+        
+        self.plot_exp()
+        self.plot_make_labels()
+        if not Only_exp: self.plot_theory()
+
+    def toggle_axes(self):
+
+        self.ax_exp.tick_params("x", which="both", bottom=False, labelbottom=False, top=True, labeltop=True,)
+        self.ax_exp.tick_params("y", which="both", right=True)
+        self.ax_exp.spines["bottom"].set_visible(False)
+
+        if self.ax_theory:
+            self.ax_theory.tick_params("x", which="both", top=False, labeltop=False)
+            self.ax_theory.spines["top"].set_visible(False)
+            self.ax_theory.tick_params("y", which="both", right=True)
+            self.ax_theory.invert_yaxis()
+
+    def plot_this_exp_file(self, filename: str, color="C0"):
+
+        self.exp_legend_title = self.args["textWidgets"]["Exp_title"]
+        self.exp_legend = self.args["textWidgets"]["Exp_legend"]
+        self.theory_legend_title = self.args["textWidgets"]["Cal_title"]
+        
+        fullfile = self.export_location / filename
+        fullfitfile = self.export_location / f"{fullfile.stem}_{self.normMethod}.fullfit"
+
+        if fullfile.exists():
+            
+            data: np.ndarray = np.genfromtxt(fullfile).T
+            wn = data[0]
+            inten = data[self.yind+1]
+
+            self.ax_exp.fill_between(
+                wn, inten,
+                alpha=0.3 if fullfitfile.exists() else 1,
+                color=color, ec="none", step="pre"
+            )
+
+            if fullfitfile.exists():
+                simulate_exp_data = np.genfromtxt(fullfitfile).T
+
+                similated_freq, simulated_inten = simulate_exp_data
+                self.ax_exp.plot(similated_freq, simulated_inten, "-", c=color, lw=1.1, label=self.exp_legend)
+
+            self.ax_exp.legend(title=self.exp_legend_title)
     
-    figcaption, figtitle, exptitle, legend_labels, calcTitle, marker = plotArgs["textWidgets"]
-    print(plotArgs["textWidgets"], type(plotArgs["textWidgets"]), figcaption, figtitle, exptitle, legend_labels, calcTitle, marker)
+    def plot_make_labels(self):
 
-    normMethod = plotArgs["normMethod"]
-    
-    sameColor, invert_ax2, onlyExp, hide_axis, hide_all_axis, legend_visible = plotArgs["booleanWidgets"]
-    hspace = 0.05
-    wspace = 0.05
-
-    datlocation = pt(plotArgs["location"]) / "../EXPORT"
-    print(plotArgs["selectedWidgets"], flush=True)
-    datfiles, fundamentalsfiles, overtonefiles, combinationfiles = plotArgs["selectedWidgets"]
-    datfiles = [datlocation/i for i in datfiles]
-    
-    grid_ratio = np.array(ratio.split(","), dtype=float)
-    grid = {"hspace": hspace, "wspace": wspace, "width_ratios": grid_ratio}
-    
-    nrows = (2, 1)[onlyExp]
-    figheight = (figheight, figheight/2)[onlyExp]
-    
-
-
-    widget = FELion_Tk(title="Felix Averaged plot", location=datlocation/"../OUT")
-    
-    widget.Figure(dpi=dpi)
-    
-    axs = []
-    gs = gridspec.GridSpec(nrows, NPlots, figure=widget.fig)
-
-    for _i in gs:
-        temp = widget.fig.add_subplot(_i)
-        axs.append(temp)
-
-    # print(axs)
-
-    lg = [i.strip() for i in legend_labels.split(",")]
-
-    if onlyExp:
-        ax = only_exp_plot(
-            axs, datfiles, NPlots, exptitle, lg, 
-            normMethod, majorTick, legend_visible, 
-            hide_all_axis, legend_labels, sameColor
+        if self.ax_theory:
+            self.ax_theory.set(
+                xlabel="Wavenumber (cm$^{-1}$)",
+                ylabel="Intensity (Km/mol)"
+            )
+        self.ax_exp.set(
+            ylabel=("Norm. Intensity ~(m$^2$/photon)", "Relative Depletion (%)")[self.normMethod=="Relative"],
         )
 
-        xlabel="Wavenumber (cm$^{-1}$)"
-        ylabel=("Norm. Intensity ~($m^2/photon$)", "Relative Depletion (%)")[normMethod=="Relative"]
+    def plot_exp(self):
         
-        ax = widget.make_figure_layout(ax, xaxis=xlabel, yaxis=ylabel, optimize=True)
-        widget.mainloop()
-        return
+        methods_available: list[str] = ["Log", "Relative", "IntensityPerPhoton"]
+        self.normMethod: Literal["Log", "Relative", "IntensityPerPhoton"] = self.args["normMethod"]
+        self.yind: Literal[0, 1, 2] = methods_available.index(self.normMethod)
+        self.export_location = self.data_location / "../EXPORT"
 
-    theoryLocation = pt(plotArgs["theoryLocation"])
-    theoryfiles = [pt(theoryLocation)/i for i in fundamentalsfiles]
-    overtonefiles = [pt(theoryLocation)/i for i in overtonefiles]
-    combinationfiles = [pt(theoryLocation)/i for i in combinationfiles]
+        self.exp_files: list[str] = self.args["selectedWidgets"]["DAT_file"]
 
-    theoryfiles1_overt_comb = []
-    theoryfiles2_overt_comb = []
-    
-
-    if len(combinationfiles) + len(overtonefiles) > 0: 
-        theoryfiles1_overt_comb = np.append(overtonefiles[0], combinationfiles[0])
-    if len(combinationfiles) + len(overtonefiles) > 1: 
-        theoryfiles2_overt_comb = np.append(overtonefiles[1], combinationfiles[1])
-
-    theory_color = (len(datfiles), 1)[sameColor]
-    for i in range(NPlots):
-        if NPlots > 1: 
-            ax_exp = axs[0, i]
-            ax_theory = axs[1, i]
+        if len(self.exp_files) == 1:
+            filename = self.exp_files[0]
+            self.plot_this_exp_file(filename)
         else:
-            ax_exp = axs[i]
-            ax_theory = axs[i+1]
-        
+            for index, filename in enumerate(self.exp_files):
+                self.plot_this_exp_file(filename, color=f"C{index}")
 
-        ax_exp = felix_plot(datfiles, ax_exp, lg, normMethod, sameColor)
-        linestyle = ["--", ":"]
+    def plot_this_fundamental_theory_file(self, filename, color):
 
-        for tColorIndex, theoryfile in enumerate(theoryfiles):
-            ax_theory = theoryplot(theoryfile, ax_theory, freqScale, theory_color+tColorIndex, theorysigma)
-        for tfile1, ls in zip(theoryfiles1_overt_comb, linestyle):
-            ax_theory = theoryplot(tfile1, ax_theory, freqScale, f"{theory_color}{ls}", theorysigma)
-        for tfile2, ls in zip(theoryfiles2_overt_comb, linestyle):
-            ax_theory = theoryplot(tfile2, ax_theory, freqScale, f"{theory_color+1}{ls}", theorysigma)
-        
-        if invert_ax2: ax_theory.invert_yaxis()
-        
-        #ax_theory.minorticks_on()
-        
-        if hide_axis:
-            ax_theory.spines["top"].set_visible(False)
-            ax_exp.spines["bottom"].set_visible(False)
-            
-        ax_exp.tick_params(labelbottom=False, bottom=False, labeltop=True, top=True) # removing x-ticks label
-        
-        #ax_exp.minorticks_on()
+        fullfile = self.theoryLocation / filename
+        fileData: list[str] = None
 
-        ax_exp.xaxis.set_tick_params(which='minor', bottom=False, top=True)
+        with open(fullfile, "r") as fp:
+            fileData = fp.readlines()
         
-        ax_exp.xaxis.set_minor_locator(AutoMinorLocator(5))
-        ax_exp.yaxis.set_minor_locator(AutoMinorLocator(5))
-        ax_exp.xaxis.set_major_locator(MultipleLocator(majorTick))
-        ax_theory.xaxis.set_minor_locator(AutoMinorLocator(5))
-        ax_theory.yaxis.set_minor_locator(AutoMinorLocator(5))
-        ax_theory.xaxis.set_major_locator(MultipleLocator(majorTick))
-        ax_theory.get_shared_x_axes().join(ax_theory, ax_exp)
+        theory_level = fileData[0].split("#")[-1].strip()
+        molecule_name = fileData[1].split("#")[-1].strip()
+        wn, inten = np.genfromtxt(fullfile).T
+        wn *= self.freqScale
+        simulatedData = computeNGaussian(wn, inten, sigma=self.theorySigma)
+        self.ax_theory.plot(*simulatedData, f"-{color}")
+        self.ax_theory.legend([theory_level], title=self.theory_legend_title)
+
+    def plot_theory(self):
         
-        # Labels
-        if i<1:
-            ylabel="Norm. Intensity ~(m$^2$/photon)"
-            ax_exp.set_ylabel((ylabel, "Relative Depletion (%)")[normMethod=="Relative"], fontsize=12)
-            ax_theory.set_ylabel("Intensity (km/mol)", fontsize=12)
+        self.theoryLocation = pt(self.args["theoryLocation"])
+        self.freqScale = self.args["numberWidgets"]["freqScale"]
+        self.theorySigma = self.args["numberWidgets"]["theorySigma"]
 
-            if legend_visible:
-                if legend_labels == "": ax_exp.legend([], title=exptitle.strip()).set_draggable(True)
-                else: ax_exp.legend(title=exptitle.strip()).set_draggable(True)
-                ax_theory.legend(title=calcTitle.strip()).set_draggable(True)
-
-            marker_theory = Marker(widget.fig, widget.canvas, ax_theory, ax_exp, txt_value=marker.split(","))
-            
-        elif i==NPlots-1:
-
-            ax_exp.yaxis.tick_right()
-            ax_theory.yaxis.tick_right()
+        fundamental_theory_file: list[str] = self.args["selectedWidgets"]["Fundamentals"]
+        if len(fundamental_theory_file) == 1:
+            filename = fundamental_theory_file[0]
+            self.plot_this_fundamental_theory_file(filename, color=f"C{len(self.exp_files) + 1}")
         else:
+            for index, filename in enumerate(fundamental_theory_file):
+                self.plot_this_fundamental_theory_file(filename, color=f"C{len(self.exp_files) + index}")
 
-            ax_exp.tick_params(labelbottom=False, bottom=False, labelleft=False, left=False, labeltop=True, top=True)
-            ax_exp.yaxis.set_tick_params(which='minor', left=False, right=False, top=True)
-            ax_theory.tick_params(labelleft=False, left=False)
-            ax_theory.yaxis.set_tick_params(which='minor', left=False)
 
-    widget.fig.text(0.5, 0.09, "Wavenumber (cm$^{-1}$)", wrap=True, horizontalalignment='center', fontsize=12)
-    widget.fig.text(0.5, 0.01, figcaption, wrap=True, horizontalalignment='center', fontsize=12)
+def main(args):
+    # return
+    qapp = QApplication([])
+
+    data_location = pt(args["location"])
+    out_location = data_location / "../OUT"
     
-    widget.canvas.draw()
-    widget.mainloop()
+    widget = felionQtWindow(title="FELIX Spectrum",
+        location=out_location, ticks_direction="in", createControlLayout=False,
+        windowGeometry=(1000, 700), fontsize=8
+    )
 
+    plotData = PlotData(args, widget, data_location)
+    plotData.plot()
 
-def only_exp_plot(
-    axs, datfiles, NPlots, exptitle, lg, 
-    normMethod, majorTick, legend_visible,
-    hide_all_axis, legend_labels, sameColor
-    ):
-
-
-    for i in range(NPlots):
+    widget.optimize_figure()
+    widget.fig.tight_layout()
     
-        ax = axs[i]
-
-        ax = felix_plot(datfiles, ax, lg, normMethod, sameColor)
-
-        # ax.xaxis.set_tick_params(which='minor', bottom=True)
-        # ax.xaxis.set_minor_locator(AutoMinorLocator(5))
-        # ax.yaxis.set_minor_locator(AutoMinorLocator(5))
-        # ax.xaxis.set_major_locator(MultipleLocator(majorTick))
-
-        # ylabel="Norm. Intensity ~($m^2/photon$)"
-        # ax.set_ylabel((ylabel, "Relative Depletion (%)")[normMethod=="Relative"], fontsize=12)
-        # ax.set_xlabel("Wavenumber ($cm^{-1}$)", fontsize=12)
-
-        if legend_visible and i<2:
-
-            if legend_labels == "": ax.legend([], title=exptitle.strip).set_draggable(True)
-            else: ax.legend(title=exptitle.strip()).set_draggable(True)
-
-        if hide_all_axis:
-            ax.spines["top"].set_visible(False)
-            ax.spines["bottom"].set_visible(False)
-            ax.spines["left"].set_visible(False)
-            ax.spines["right"].set_visible(False)
-
-            ax.xaxis.set_tick_params(which='minor', bottom=False)
-            ax.yaxis.set_tick_params(which='minor', left=False)
-
-            ax.tick_params(labelbottom=False, bottom=False, labelleft=False, left=False)
-
-            ax.set(xlabel="", ylabel="")
-
-    return ax
+    qapp.exec()
