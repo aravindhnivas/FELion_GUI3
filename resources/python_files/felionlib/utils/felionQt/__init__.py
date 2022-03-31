@@ -47,7 +47,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         saveformat: str = "pdf",
         figDPI: int = 200,
         defaultEvents: bool = True,
-        makeControlLayout: bool = True,
+        createControlLayout: bool = True,
         includeCloseEvent: bool = False,
         windowGeometry: tuple[int, int] = (900, 700),
         useTex: bool = False,
@@ -108,7 +108,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.init_attributes()
 
         self.makeFigureLayout(figureArgs=figureArgs, defaultEvents=defaultEvents)
-        if makeControlLayout:
+        if createControlLayout:
             self.createControlLayout(attachControlLayout=True, optimize=optimize)
 
     def init_attributes(self):
@@ -131,7 +131,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         button_txt = "Hide controllers" if hidden_state else "Show more controllers" 
         self.toggle_controller_button.setText(button_txt)
 
-    def showWidget(self):
+    def attachControlLayout(self):
 
         self.controlLayout.addStretch()
         controlGroupBox = QtWidgets.QGroupBox()
@@ -745,7 +745,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
             widget.setMinimum(_min)
             widget.setMaximum(_max)
             widget.setValue(val)
-            print(f"{_min=}\t{_max=}\n{val=}", flush=True)
+            # print(f"{_min=}\t{_max=}\n{val=}", flush=True)
         xbound: tuple[float, float] = self.ax.get_xbound()
         ybound: tuple[float, float] = self.ax.get_ybound()
         print(f"{xbound=}\n{ybound=}", flush=True)
@@ -754,20 +754,17 @@ class felionQtWindow(QtWidgets.QMainWindow):
         set_min_max_val(self.ybound_lower_widget, ybound[0])
         set_min_max_val(self.ybound_upper_widget, ybound[1])
 
-    def create_minmax_controller(self, calltype: str, callback: Callable, draw=True):
+    def create_minmax_controller(self, calltype: str, axis: str = "x", draw=True):
 
         main_widget = QtWidgets.QDoubleSpinBox()
-        # main_widget.setPrefix(f"{calltype}: ")
+
         main_widget.setKeyboardTracking(False)
-        if not callback: raise Exception("Invalid callback for xy bound controller")
-        
         def updated_callback(val: float):
             kwargs = {f"{calltype}": val}
-        
-            callback(**kwargs)
+            fn = self.ax.set_xbound if axis == "x" else self.ax.set_ybound
+            fn(**kwargs)
             if draw:
                 self.draw()
-                # self.ax.draw_artist()
         main_widget.valueChanged.connect(updated_callback)
         return main_widget
 
@@ -800,22 +797,26 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
     def figure_axes_bound_controller(self):
         
-        # bound_group = QtWidgets.QGroupBox()
         bound_layout = QtWidgets.QVBoxLayout()
+
         update_bound_values = QtWidgets.QPushButton("GET XY bound")
         update_bound_values.clicked.connect(self.set_bound_controller_values)
+
         bound_layout.addWidget(update_bound_values)
+
         xbound_layout = QtWidgets.QHBoxLayout()
         xbound_layout.addWidget(QtWidgets.QLabel("xbound"))
+
+
 
         ybound_layout = QtWidgets.QHBoxLayout()
         ybound_layout.addWidget(QtWidgets.QLabel("ybound"))
         
-        self.xbound_lower_widget = self.create_minmax_controller("lower", self.ax.set_xbound)
-        self.xbound_upper_widget = self.create_minmax_controller("upper", self.ax.set_xbound)
+        self.xbound_lower_widget = self.create_minmax_controller("lower", axis="x")
+        self.xbound_upper_widget = self.create_minmax_controller("upper", axis="x")
         
-        self.ybound_lower_widget = self.create_minmax_controller("lower", self.ax.set_ybound)
-        self.ybound_upper_widget = self.create_minmax_controller("upper", self.ax.set_ybound)
+        self.ybound_lower_widget = self.create_minmax_controller("lower", axis="y")
+        self.ybound_upper_widget = self.create_minmax_controller("upper", axis="y")
 
         xbound_layout.addWidget(self.xbound_lower_widget)
         xbound_layout.addWidget(self.xbound_upper_widget)
@@ -975,9 +976,9 @@ class felionQtWindow(QtWidgets.QMainWindow):
         labelsize = self.tick_label_fontsize_controller_widget.value()
         for ax in self.axes:
         
-            self.update_tick_params(labelsize=labelsize)
+            self.update_tick_params(ax=ax)
             ax.tick_params(which="both", direction=self.ticks_direction)
-            self.update_minorticks(True, ax)
+            self.update_minorticks(on=True, ax=ax)
 
             ax.set_title(ax.get_title(), fontsize=labelsize)
             ax.set_xlabel(ax.get_xlabel(), fontsize=labelsize)
@@ -998,8 +999,9 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.update_figure_label_widgets_values()
         self.set_bound_controller_values()
         self.updateFigsizeDetails()
+        # self.draw()
 
-    def createControlLayout(self, axes: Iterable[Axes] = [], attachControlLayout=False, optimize=False) -> None:
+    def createControlLayout(self, axes: Iterable[Axes] = (), attachControlLayout=False, optimize=False) -> None:
 
         self.controlLayout = QtWidgets.QVBoxLayout()
         self.legend = None
@@ -1019,7 +1021,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.legend = self.ax.get_legend()
         self.align_full_layout(optimize)
         if attachControlLayout:
-            self.showWidget()
+            self.attachControlLayout()
 
     def showdialog(self, title="Info", msg="", type: Literal["info", "warning", "critical"] = "info"):
 
