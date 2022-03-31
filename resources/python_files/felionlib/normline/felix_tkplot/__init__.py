@@ -19,9 +19,9 @@ class PlotData:
 
     def plot(self):
         logger(self.args["booleanWidgets"])
-        Only_exp = self.args["booleanWidgets"]["Only_exp"]
+        self.Only_exp = self.args["booleanWidgets"]["Only_exp"]
 
-        if Only_exp:
+        if self.Only_exp:
             self.ax_exp = self.widget.fig.subplots(1)
             axes: tuple[Axes] = (self.ax_exp, )
             self.ax_theory = None
@@ -31,11 +31,11 @@ class PlotData:
         
         self.widget.createControlLayout(axes, attachControlLayout=True)
 
-        if not Only_exp: self.toggle_axes()
+        if not self.Only_exp: self.toggle_axes()
         
         self.plot_exp()
         self.plot_make_labels()
-        if not Only_exp: self.plot_theory()
+        if not self.Only_exp: self.plot_theory()
 
     def toggle_axes(self):
 
@@ -86,6 +86,7 @@ class PlotData:
                 ylabel="Intensity (Km/mol)"
             )
         self.ax_exp.set(
+            xlabel="Wavenumber (cm$^{-1}$)" if self.Only_exp else "",
             ylabel=("Norm. Intensity ~(m$^2$/photon)", "Relative Depletion (%)")[self.normMethod=="Relative"],
         )
 
@@ -137,21 +138,18 @@ class PlotData:
 
 
 def main(args):
-    # return
+
     qapp = QApplication([])
 
     data_location = pt(args["location"])
     out_location = data_location / "../OUT"
-    
-    widget = felionQtWindow(title="FELIX Spectrum",
-        location=out_location, ticks_direction="in", createControlLayout=False,
-        windowGeometry=(1000, 700), fontsize=8
-    )
+
+    widget = felionQtWindow(title="FELIX Spectrum", location=out_location, ticks_direction="in", createControlLayout=False, windowGeometry=(1000, 700), fontsize=8)
 
     plotData = PlotData(args, widget, data_location)
     plotData.plot()
 
     widget.optimize_figure()
-    widget.fig.tight_layout()
-    
+    widget.updatecanvas()
+
     qapp.exec()
