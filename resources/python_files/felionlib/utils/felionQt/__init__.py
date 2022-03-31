@@ -16,7 +16,10 @@ from matplotlib.axes import Axes
 from matplotlib.backend_bases import key_press_handler
 from matplotlib.text import Text
 import matplotlib.ticker as plticker
-from .utils.widgets import ShowDialog, iconfile, toggle_this_artist, AnotherWindow, closeEvent
+from .utils.widgets import (
+    ShowDialog, AnotherWindow, DoubleSlider, 
+    iconfile, toggle_this_artist, closeEvent
+)
 from .utils.workers import Worker
 import matplotlib as mpl
 mpl.use("QtAgg")
@@ -49,16 +52,17 @@ class felionQtWindow(QtWidgets.QMainWindow):
         defaultEvents: bool = True,
         createControlLayout: bool = True,
         includeCloseEvent: bool = False,
-        windowGeometry: tuple[int, int] = (900, 700),
+        windowGeometry: tuple[int, int] = (900, 500),
         useTex: bool = False,
         style: str = "default",
+
         fontsize: int = 9,
         optimize: bool = False,
         ticks_direction: str = "in",
-
         yscale: str = "linear",
         xscale: str = "linear",
         **kwargs: dict[str, Any],
+    
     ) -> None:
 
         super().__init__()
@@ -260,7 +264,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
             self.formatterfn(plticker.StrMethodFormatter(fmtString))
         self.draw()
 
-    def update_tick_params(self, _val=0, ax=None, **kwargs):
+    def update_tick_params(self, _val=0, ax=None, draw=True, **kwargs):
         ax = ax or self.ax
         ax.tick_params(
             which="major",
@@ -274,7 +278,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
             length=self.tick_minor_length_widget.value(),
             **kwargs,
         )
-        self.draw()
+        if draw: self.draw()
 
     def major_minor_ticksize_controllers(self):
 
@@ -434,6 +438,9 @@ class felionQtWindow(QtWidgets.QMainWindow):
         navbar_figure_tight_layout_button = QtWidgets.QPushButton("tight layout")
         navbar_figure_tight_layout_button.clicked.connect(lambda: (self.fig.tight_layout(), self.draw()))
 
+        canvas_draw_button = QtWidgets.QPushButton("Re-draw")
+        canvas_draw_button.clicked.connect(self.draw)
+
         get_figsize_button = QtWidgets.QPushButton("Get figsize")
         get_figsize_button.clicked.connect(self.updateFigsizeDetails)
 
@@ -446,6 +453,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
         navbar_controller_layout.addLayout(figsize_adjust_layout)
         navbar_controller_layout.addWidget(dpiwidget)
+        navbar_controller_layout.addWidget(canvas_draw_button)
         navbar_controller_layout.addWidget(navbar_figure_tight_layout_button)
         navbar_controller_layout.addWidget(self.toggle_controller_button)
 
@@ -658,20 +666,19 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
         def changeCurrentAxes(ax):
             self.ax = self.getAxes[ax]
-        
             self.legend = self.ax.get_legend()
             self.update_figure_label_widgets_values()
-
+            
         axesOptionsWidget.currentTextChanged.connect(changeCurrentAxes)
+        tight_layout_button = QtWidgets.QPushButton("tight layout")
+        tight_layout_button.clicked.connect(self.updatecanvas)
         
-        updateFigureButton = QtWidgets.QPushButton("tight layout")
-        updateFigureButton.clicked.connect(self.updatecanvas)
-
-        # self.minorticks_controller_widget = QtWidgets.QCheckBox("minorticks")
-        # self.minorticks_controller_widget.stateChanged.connect(self.update_minorticks)
+        # canvas_draw_button = QtWidgets.QPushButton("Re-draw")
+        # canvas_draw_button.clicked.connect(self.draw)
 
         controllerLayout.addWidget(axesOptionsWidget)
-        controllerLayout.addWidget(updateFigureButton)
+        controllerLayout.addWidget(tight_layout_button)
+        # controllerLayout.addWidget(canvas_draw_button)
         self.controlLayout.addLayout(controllerLayout)
         # self.controlLayout.addWidget(self.minorticks_controller_widget)
 
@@ -841,8 +848,10 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.tickFormatStyleWidget.addItems(["plain", "sci"])
 
         def updateTickFormatStyle(style):
+            # print(f"{self.ax=}, {style=}, {self.axisType=}", flush=True)
             self.formatterfn(plticker.ScalarFormatter())
-            self.ax.ticklabel_format(axis=self.axisType, style=style)
+            self.ax.ticklabel_format(axis=self.axisType, style=style, scilimits=(0,0))
+            # self.ax.ticklabel_format(axis='y', style='sci', scilimits=(0,0))
 
             self.draw()
 
@@ -978,8 +987,9 @@ class felionQtWindow(QtWidgets.QMainWindow):
         
             self.update_tick_params(ax=ax)
             ax.tick_params(which="both", direction=self.ticks_direction)
-            self.update_minorticks(on=True, ax=ax)
-
+            # self.update_minorticks(on=True, ax=ax)
+            ax.minorticks_on()
+            self.update_tick_params(ax=ax)
             ax.set_title(ax.get_title(), fontsize=labelsize)
             ax.set_xlabel(ax.get_xlabel(), fontsize=labelsize)
             ax.set_ylabel(ax.get_ylabel(), fontsize=labelsize)
@@ -993,7 +1003,8 @@ class felionQtWindow(QtWidgets.QMainWindow):
             legend_title.set_fontsize(labelsize)
             for legend_txt in legend.get_texts():
                 legend_txt.set_fontsize(labelsize-1)
-                # legend_txt.set_zorder(10)
+            
+            self.draw()
 
         self.minorticks_controller_widget.setChecked(True)
         self.update_figure_label_widgets_values()
@@ -1026,41 +1037,78 @@ class felionQtWindow(QtWidgets.QMainWindow):
     def showdialog(self, title="Info", msg="", type: Literal["info", "warning", "critical"] = "info"):
 
         dialogBox = QtWidgets.QMessageBox(self)
-
         dialogBox.setWindowTitle(title)
         dialogBox.setText(msg)
 
         if type == "info":
             dialogBox.setIcon(QtWidgets.QMessageBox.Icon.Information)
-
         elif type == "warning":
             dialogBox.setIcon(QtWidgets.QMessageBox.Icon.Warning)
-
+        
         elif type == "critical":
             dialogBox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
-
         response = dialogBox.exec()
 
-    def makeSlider(self, label="", ticks=True, callback: Callable[[int], None] = None):
+    def makeSlider(
+        self, 
+        label: str="", 
+        value: Union[float, int]=0, 
+    
+        _min: Union[float, int]=0,
+        _max: Union[float, int]=None,
+        # _step: Union[float, int]=1,
+        decimals: int=2,
+        ticks: bool=False,
+        # noOfTicks: int = 10,
+        callback: Callable = None
+    ):
 
-        """Sliders range from 0-99"""
-
-        slider = QtWidgets.QSlider(Qt.Orientation.Horizontal)
-        slider.setObjectName("label")
+        if isinstance(value, float):
+            slider = DoubleSlider(decimals, orientation=Qt.Orientation.Horizontal)
+        elif isinstance(value, int):
+            slider = QtWidgets.QSlider(orientation=Qt.Orientation.Horizontal)
+        else:
+            raise ValueError("Given invalid slider value, ", value)
+        
+        print(f"creating slider {label} {value} of {type(value)=}")
+        
+        # if _min > value:
+        #     raise Exception(f"{_min=} value is greater than {value=}")
+        # if _max < value:
+        #     _max = value + value*5
+        #     raise Exception(f"{_max=} value is lesser than {value=}")
+        
+        slider.setMinimum(_min)
+        slider.setMaximum(_max or value*5)
+        
+        slider.setValue(value)
+        # slider.setSingleStep(_step)
+        slider.setObjectName(f"slider_{label}")
         slider.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
-
         if ticks:
             slider.setTickPosition(QtWidgets.QSlider.TickPosition.TicksBelow)
-            slider.setTickInterval(10)
+            # slider.setTickInterval(int( (_max - _min) / noOfTicks))
+            # slider.setTickInterval(50)
 
-        if callback: slider.valueChanged.connect(callback)
-        label = QtWidgets.QLabel(label)
-        widget = QtWidgets.QHBoxLayout()
-
-        widget.addWidget(label)
-        widget.addWidget(slider)
+        trailing_label = QtWidgets.QLabel(str(value) if isinstance(value, int) else f"{round(value, decimals)}")
         
-        return widget, slider
+        def updated_callback(val):
+            if callback: callback(val)
+            trailing_label.setText(str(val) if isinstance(val, int) else f"{round(val, decimals)}")
+        
+        if isinstance(value, float):
+            slider.doubleValueChanged.connect(updated_callback)
+        else:
+            slider.valueChanged.connect(updated_callback)
+
+        layout = QtWidgets.QHBoxLayout()
+        label = QtWidgets.QLabel(label)
+
+        layout.addWidget(label)
+        layout.addWidget(slider)
+        layout.addWidget(trailing_label)
+        
+        return layout, slider
 
     def showYesorNo(self, title="Info", info=""):
         response = QtWidgets.QMessageBox.question(
