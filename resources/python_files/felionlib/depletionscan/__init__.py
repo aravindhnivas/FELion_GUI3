@@ -176,7 +176,7 @@ class depletionplot:
         self.ax1.set(
             xlabel="Total energy (J)", 
             # title="$D(t)=A*(1-e^{-K_{ON}*(ntE)})$",
-            ylabel="A: Relative abundace of active isomer",
+            ylabel="A: Active isomer",
         )
 
         Koff, N = self.resOff_fit()
@@ -208,8 +208,8 @@ class depletionplot:
         self.get_depletion_fit(Koff, N, uKoff, uN, Na0, Nn0, Kon, uNa0, uNn0, uKon, plot)
         self.get_relative_abundance_fit(plot)
 
-        self.ax0.legend([self.lg0, self.lg1])
-        self.ax1.legend([f"A: {self.uA:.1uP}", "Experiment"], title="$D(t)=A*(1-e^{-K_{ON}*(E)})$")
+        self.ax0.legend([self.lg0, self.lg1], fontsize=7)
+        self.ax1.legend([f"A: {self.uA:.1uP}", "Experiment"], title="$D(t)=A*(1-e^{-K_{ON}*E})$", fontsize=7, title_fontsize=8)
         
         if plot:
             self.ax0.ticklabel_format(axis='y', style='sci', scilimits=(0,0))
