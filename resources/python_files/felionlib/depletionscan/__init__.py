@@ -8,7 +8,7 @@ import numpy as np
 from scipy.optimize import curve_fit
 from uncertainties import ufloat as uf, unumpy as unp
 from felionlib.utils.felionQt import felionQtWindow, QApplication, QtWidgets
-from .timescan import timescanplot
+from felionlib.timescan import timescanplot
 from felionlib.utils.felionQt.utils.blit import BlitManager
 
 

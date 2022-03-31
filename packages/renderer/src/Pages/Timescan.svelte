@@ -76,7 +76,7 @@
         
         const pyfileInfo = {
             scan: {pyfile:"timescan" , args: {scanfiles, tkplot}},
-            general: {pyfile:"depletionscan Qtcopy", args: depletionArgs},
+            general: {pyfile:"depletionscan", args: depletionArgs},
         }
         const {pyfile, args} = pyfileInfo[filetype]
         // console.log({filetype, pyfile, args})
