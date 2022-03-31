@@ -56,7 +56,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         useTex: bool = False,
         style: str = "default",
 
-        fontsize: int = 9,
+        fontsize: int = 10,
         optimize: bool = False,
         ticks_direction: str = "in",
         yscale: str = "linear",
@@ -990,9 +990,9 @@ class felionQtWindow(QtWidgets.QMainWindow):
             # self.update_minorticks(on=True, ax=ax)
             ax.minorticks_on()
             self.update_tick_params(ax=ax)
-            ax.set_title(ax.get_title(), fontsize=labelsize)
-            ax.set_xlabel(ax.get_xlabel(), fontsize=labelsize)
-            ax.set_ylabel(ax.get_ylabel(), fontsize=labelsize)
+            ax.set_title(ax.get_title(), fontsize=labelsize+1)
+            ax.set_xlabel(ax.get_xlabel(), fontsize=labelsize+1)
+            ax.set_ylabel(ax.get_ylabel(), fontsize=labelsize+1)
 
             legend = ax.get_legend()
 
