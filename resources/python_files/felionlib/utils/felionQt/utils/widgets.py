@@ -4,7 +4,7 @@ from PyQt6.QtCore import Qt, pyqtSignal
 from pathlib import Path as pt
 from matplotlib.artist import Artist
 from matplotlib.container import Container
-from typing import Union
+from typing import Iterable, Union
 
 
 filepath = pt(__file__).parent.resolve()
@@ -72,20 +72,22 @@ def closeEvent(self, event):
     event.accept() if close else event.ignore()
 
 
-def toggle_this_artist(artist: Union[Container, Artist], alpha: float) -> float:
+def toggle_this_artist(artist: Union[Iterable, Artist], alpha: float) -> float:
 
-    if not (isinstance(artist, Artist) or isinstance(artist, Container)):
+    if not (isinstance(artist, Artist) or isinstance(artist, Iterable)):
         return print(f"unknown toggle method for this artist type\n{type(artist)=}\{artist=}", flush=True)
+
     set_this_alpha = alpha
     if isinstance(artist, Artist):
         set_this_alpha: float = alpha if artist.get_alpha() is None or artist.get_alpha() == 1 else 1
         artist.set_alpha(set_this_alpha)
-    elif isinstance(artist, Container):
-        for child in artist.get_children():
+    elif isinstance(artist, Iterable):
+
+        children = artist.get_children() if isinstance(artist, Container) else artist
+        for child in children:
             set_this_alpha: float = alpha if child.get_alpha() is None or child.get_alpha() == 1 else 1
             child.set_alpha(set_this_alpha)
     return set_this_alpha
-
 
 class DoubleSlider(QtWidgets.QSlider):
 
