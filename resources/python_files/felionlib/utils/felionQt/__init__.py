@@ -14,6 +14,7 @@ from matplotlib.container import Container
 from matplotlib.figure import Figure
 from matplotlib.axes import Axes
 from matplotlib.backend_bases import key_press_handler
+from matplotlib.legend import Legend
 from matplotlib.text import Text
 import matplotlib.ticker as plticker
 from .utils.widgets import (
@@ -310,8 +311,18 @@ class felionQtWindow(QtWidgets.QMainWindow):
         tickAndFormatterLayout = QtWidgets.QFormLayout()
         self.tickLocatorWidget = self.createSpinBox(5, _min=2, width=50, callback=self.updateTicksAndFormatter)
 
-        formatterLayout = QtWidgets.QHBoxLayout()
+        self.tickIntervalWidget = QtWidgets.QLineEdit("")
+        self.tickIntervalWidget.setPlaceholderText("Enter ticks to be set btw each interval")
 
+        def update_tick_interval():
+            tick_interval = self.tickIntervalWidget.text()
+
+            update_tick_function = self.updatefn["ticklocator"][self.tickType][self.axisType]
+            update_tick_function(plticker.MultipleLocator(int(tick_interval)))
+            self.draw()
+            
+        self.tickIntervalWidget.returnPressed.connect(update_tick_interval)
+        formatterLayout = QtWidgets.QHBoxLayout()
         self.fomartTickCheck = QtWidgets.QCheckBox()
 
         self.fomartTickCheck.setFixedHeight(25)
@@ -323,6 +334,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         formatterLayout.addWidget(self.fomartTickCheck)
 
         tickAndFormatterLayout.addRow("tickLocator", self.tickLocatorWidget)
+        tickAndFormatterLayout.addRow("tickInterval", self.tickIntervalWidget)
         tickAndFormatterLayout.addRow("tickFormatter", formatterLayout)
 
         axisControlLayout = QtWidgets.QHBoxLayout()
@@ -616,45 +628,35 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
     def updateTickLabelSz(self, labelsize: int, ax: Axes = None, type: str = None):
 
-        if not ax:
-            ax = self.ax
-        legend = ax.get_legend()
+        ax = ax or self.ax
+        legend: Legend = ax.get_legend()
+
         self.ax.add_callback(lambda artist: print(artist, flush=True))
-        # print("updating")
         self.update_tick_params(ax=ax)
 
-        if not type:
-            type = self.label_size_controller_widget.currentText()
-
+        type = type or self.label_size_controller_widget.currentText()
         if type == "ticks":
             print(f"updating ticks labelsize: {labelsize}")
             self.update_tick_params(labelsize=labelsize)
             ax.xaxis.get_offset_text().set_fontsize(labelsize - 2)
             ax.yaxis.get_offset_text().set_fontsize(labelsize - 2)
-            
         elif type == "legend" and legend:
-
             print(f"updating labelsize: {labelsize}")
             for legend_text in legend.get_texts():
                 legend_text.set_fontsize(labelsize)
-
         elif type == "legendTitle" and legend:
             print(f"updating legendTitle labelsize: {labelsize}")
             legend.get_title().set_fontsize(labelsize)
-
         self.draw()
 
     def update_minorticks(self, on: bool, ax: Axes = None):
-
-        if not ax:
-            ax = self.ax
+        ax = ax or self.ax
 
         if on:
             ax.minorticks_on()
             self.update_tick_params()
         else:
             ax.minorticks_off()
-
         self.draw()
 
     def figure_draw_controllers(self):
@@ -673,16 +675,12 @@ class felionQtWindow(QtWidgets.QMainWindow):
         tight_layout_button = QtWidgets.QPushButton("tight layout")
         tight_layout_button.clicked.connect(self.updatecanvas)
         
-        # canvas_draw_button = QtWidgets.QPushButton("Re-draw")
-        # canvas_draw_button.clicked.connect(self.draw)
-
         controllerLayout.addWidget(axesOptionsWidget)
         controllerLayout.addWidget(tight_layout_button)
-        # controllerLayout.addWidget(canvas_draw_button)
         self.controlLayout.addLayout(controllerLayout)
-        # self.controlLayout.addWidget(self.minorticks_controller_widget)
 
     def figure_legend_controllers(self):
+
         def updateLegendState(state, type="toggle"):
             self.legend = self.ax.get_legend()
             if self.legend:
@@ -690,7 +688,6 @@ class felionQtWindow(QtWidgets.QMainWindow):
                     self.legend.set_visible(state)
                 elif type == "dragg":
                     self.legend.set_draggable(state, use_blit=True)
-
                 self.draw()
 
         controllerLayout = QtWidgets.QHBoxLayout()
@@ -743,16 +740,18 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.controlLayout.addLayout(controllerLayout)
 
     def set_bound_controller_values(self):
-
         def set_min_max_val(widget: QtWidgets.QDoubleSpinBox, val: float):
+
             if val<0: return
             factor = 10 if val==0 else val*10
             _min = val-factor
             _max = val+factor
+
             widget.setMinimum(_min)
             widget.setMaximum(_max)
             widget.setValue(val)
-            # print(f"{_min=}\t{_max=}\n{val=}", flush=True)
+
+
         xbound: tuple[float, float] = self.ax.get_xbound()
         ybound: tuple[float, float] = self.ax.get_ybound()
         print(f"{xbound=}\n{ybound=}", flush=True)
@@ -815,7 +814,6 @@ class felionQtWindow(QtWidgets.QMainWindow):
         xbound_layout.addWidget(QtWidgets.QLabel("xbound"))
 
 
-
         ybound_layout = QtWidgets.QHBoxLayout()
         ybound_layout.addWidget(QtWidgets.QLabel("ybound"))
         
@@ -848,11 +846,8 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.tickFormatStyleWidget.addItems(["plain", "sci"])
 
         def updateTickFormatStyle(style):
-            # print(f"{self.ax=}, {style=}, {self.axisType=}", flush=True)
             self.formatterfn(plticker.ScalarFormatter())
             self.ax.ticklabel_format(axis=self.axisType, style=style, scilimits=(0,0))
-            # self.ax.ticklabel_format(axis='y', style='sci', scilimits=(0,0))
-
             self.draw()
 
         self.tickFormatStyleWidget.currentTextChanged.connect(updateTickFormatStyle)
@@ -870,8 +865,6 @@ class felionQtWindow(QtWidgets.QMainWindow):
     def figure_axes_spine_and_tick_toggle_controllers(self):
 
         ticks_control_layout = QtWidgets.QHBoxLayout()
-
-        # self.ticks_direction: str = "in"
         self.ticks_direction_widget = QtWidgets.QComboBox()
 
         self.ticks_direction_widget.addItems(["in", "out", "inout"])
@@ -967,7 +960,6 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
     def align_full_layout(self, optimize):
         
-        # self.figure_DPI_controller()
         self.figure_labels_controller()
         self.figure_draw_controllers()
         self.figure_legend_controllers()
@@ -983,16 +975,16 @@ class felionQtWindow(QtWidgets.QMainWindow):
     def optimize_figure(self):
 
         labelsize = self.tick_label_fontsize_controller_widget.value()
+        fontsize: int = self.titleFontWidget.value()
         for ax in self.axes:
         
             self.update_tick_params(ax=ax)
-            ax.tick_params(which="both", direction=self.ticks_direction)
-            # self.update_minorticks(on=True, ax=ax)
+            ax.tick_params(which="both", direction=self.ticks_direction, labelsize=labelsize-1)
             ax.minorticks_on()
             self.update_tick_params(ax=ax)
-            ax.set_title(ax.get_title(), fontsize=labelsize+1)
-            ax.set_xlabel(ax.get_xlabel(), fontsize=labelsize+1)
-            ax.set_ylabel(ax.get_ylabel(), fontsize=labelsize+1)
+            ax.set_title(ax.get_title(), fontsize=fontsize)
+            ax.set_xlabel(ax.get_xlabel(), fontsize=fontsize)
+            ax.set_ylabel(ax.get_ylabel(), fontsize=fontsize)
 
             legend = ax.get_legend()
 
@@ -1010,7 +1002,6 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.update_figure_label_widgets_values()
         self.set_bound_controller_values()
         self.updateFigsizeDetails()
-        # self.draw()
 
     def createControlLayout(self, axes: Iterable[Axes] = (), attachControlLayout=False, optimize=False) -> None:
 
@@ -1018,7 +1009,6 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.legend = None
         if len(axes):
             self.axes = axes
-
         else:
             ax: Axes = self.fig.subplots()
             self.axes = [ax]
@@ -1047,7 +1037,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         
         elif type == "critical":
             dialogBox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
-        response = dialogBox.exec()
+        dialogBox.exec()
 
     def makeSlider(
         self, 
@@ -1071,7 +1061,6 @@ class felionQtWindow(QtWidgets.QMainWindow):
             raise ValueError("Given invalid slider value, ", value)
         
         print(f"creating slider {label} {value} of {type(value)=}")
-        
         # if _min > value:
         #     raise Exception(f"{_min=} value is greater than {value=}")
         # if _max < value:
@@ -1085,7 +1074,9 @@ class felionQtWindow(QtWidgets.QMainWindow):
         # slider.setSingleStep(_step)
         slider.setObjectName(f"slider_{label}")
         slider.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+
         if ticks:
+        
             slider.setTickPosition(QtWidgets.QSlider.TickPosition.TicksBelow)
             # slider.setTickInterval(int( (_max - _min) / noOfTicks))
             # slider.setTickInterval(50)
@@ -1093,6 +1084,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         trailing_label = QtWidgets.QLabel(str(value) if isinstance(value, int) else f"{round(value, decimals)}")
         
         def updated_callback(val):
+
             if callback: callback(val)
             trailing_label.setText(str(val) if isinstance(val, int) else f"{round(val, decimals)}")
         
@@ -1119,7 +1111,6 @@ class felionQtWindow(QtWidgets.QMainWindow):
     def on_pick(self, event) -> None:
 
         self.picked_legend = event.artist
-        # print(self.legend_edit_window.isActiveWindow())
         if self.ctrl_pressed:
             if isinstance(self.picked_legend, Text):
                 return self.show_legend_edit_window()
@@ -1180,20 +1171,13 @@ class felionQtWindow(QtWidgets.QMainWindow):
         def register_ctrl_press_button(e):
             if e.key == 'control':
                 self.ctrl_pressed = True
-            # print(f"{self.ctrl_pressed=}", flush=True)
-            return
 
         self.canvas.mpl_connect('key_press_event', register_ctrl_press_button)
 
-        def deregister_ctrl_press_button(e):
-            self.ctrl_pressed = False
-            # print(f"{self.ctrl_pressed=}", flush=True)
-            return
-
+        def deregister_ctrl_press_button(e): self.ctrl_pressed = False
         self.canvas.mpl_connect('key_release_event', deregister_ctrl_press_button)
 
         if self.legend_edit_window is None:
-            print("creating edit legend window", flush=True)
             self.legend_edit_window = AnotherWindow()
             def edit_window_closeEvent(event): self.ctrl_pressed = False 
             self.legend_edit_window.closeEvent = edit_window_closeEvent
@@ -1201,13 +1185,11 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.legend_edit_window.edit_box_widget.returnPressed.connect(self.edit_legend)
         
     def makeLegendToggler(self, line_handler: dict[str, Union[Container, Artist]]=None, edit_legend=True) -> None:
-
         self.line_handler = line_handler
-
         self.legend = self.ax.get_legend()
         if not self.legend: 
             self.legend = self.ax.legend()
-            # self.legend.set_zorder(10)
+
         self.legendToggleCheckWidget.setChecked(True)
         for legline in self.legend.get_texts():
             legline.set_picker(True)
@@ -1215,6 +1197,5 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.picked_legend = None
         self.canvas.mpl_connect("pick_event", self.on_pick)
         self.legend_picker_set = True
-
         if edit_legend:
             self.make_legend_editor()
