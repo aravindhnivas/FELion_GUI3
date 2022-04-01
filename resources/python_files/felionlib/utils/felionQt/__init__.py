@@ -312,11 +312,12 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.tickLocatorWidget = self.createSpinBox(5, _min=2, width=50, callback=self.updateTicksAndFormatter)
 
         self.tickIntervalWidget = QtWidgets.QLineEdit("")
-        self.tickIntervalWidget.setPlaceholderText("Enter ticks to be set btw each interval")
+        self.tickIntervalWidget.setPlaceholderText("Enter ticks interval")
 
         def update_tick_interval():
             tick_interval = self.tickIntervalWidget.text()
 
+            if not tick_interval: return
             update_tick_function = self.updatefn["ticklocator"][self.tickType][self.axisType]
             update_tick_function(plticker.MultipleLocator(int(tick_interval)))
             self.draw()
@@ -333,8 +334,8 @@ class felionQtWindow(QtWidgets.QMainWindow):
         formatterLayout.addWidget(self.tickFormatterWidget)
         formatterLayout.addWidget(self.fomartTickCheck)
 
-        tickAndFormatterLayout.addRow("tickLocator", self.tickLocatorWidget)
         tickAndFormatterLayout.addRow("tickInterval", self.tickIntervalWidget)
+        tickAndFormatterLayout.addRow("tickLocator", self.tickLocatorWidget)
         tickAndFormatterLayout.addRow("tickFormatter", formatterLayout)
 
         axisControlLayout = QtWidgets.QHBoxLayout()
