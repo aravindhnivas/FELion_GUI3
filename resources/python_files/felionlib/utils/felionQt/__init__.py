@@ -48,7 +48,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         figXlabel: str = "",
         savefilename: str = "",
         saveformat: str = "pdf",
-        figDPI: int = 200,
+        figDPI: int = 150,
         defaultEvents: bool = True,
         createControlLayout: bool = True,
         includeCloseEvent: bool = False,
@@ -56,7 +56,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         useTex: bool = False,
         style: str = "default",
 
-        fontsize: int = 10,
+        fontsize: int = 12,
         optimize: bool = False,
         ticks_direction: str = "in",
         yscale: str = "linear",
@@ -841,7 +841,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         controllerLayout = QtWidgets.QFormLayout()
 
         self.tick_label_fontsize_controller_widget = self.createSpinBox(
-            self.fontsize-1, _min=5, width=50, callback=self.updateTickLabelSz
+            self.fontsize, _min=5, width=50, callback=self.updateTickLabelSz
         )
 
         self.tickFormatStyleWidget = QtWidgets.QComboBox()
