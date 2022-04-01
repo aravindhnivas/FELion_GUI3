@@ -144,7 +144,7 @@ def main(args):
     data_location = pt(args["location"])
     out_location = data_location / "../OUT"
 
-    widget = felionQtWindow(title="FELIX Spectrum", location=out_location, ticks_direction="in", createControlLayout=False, windowGeometry=(1000, 700), fontsize=8)
+    widget = felionQtWindow(title="FELIX Spectrum", location=out_location, ticks_direction="in", createControlLayout=False, windowGeometry=(1000, 700))
 
     plotData = PlotData(args, widget, data_location)
     plotData.plot()

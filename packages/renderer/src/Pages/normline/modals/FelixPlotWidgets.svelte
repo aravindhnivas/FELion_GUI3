@@ -1,22 +1,18 @@
 
-
 <script>
     import {felixopoLocation, felixPlotCheckboxes}  from '../functions/svelteWritables';
-    import { createEventDispatcher }                from 'svelte';
     import { fade }                                 from 'svelte/transition';
     import Textfield                                from '@smui/textfield';
     import CustomCheckList                          from '$components/CustomCheckList.svelte';
     import CustomCheckbox                           from '$components/CustomCheckbox.svelte';
     
     export let felixPlotWidgets, theoryLocation;
-    const dispatch = createEventDispatcher();
 
     let reload = true
-
     function refreshFunction() {
-        let datlocation = pathResolve($felixopoLocation, "../EXPORT")
-        
-        let datfiles = fs.existsSync(datlocation) ? fs.readdirSync(datlocation).filter(f=>f.endsWith(".dat")).map(f=>f={name:f, id:getID()}) : [{name:"", id:getID()}]
+
+        const datlocation = pathResolve($felixopoLocation, "../EXPORT")
+        const datfiles = fs.existsSync(datlocation) ? fs.readdirSync(datlocation).filter(f=>f.endsWith(".dat")).map(f=>f={name:f, id:getID()}) : [{name:"", id:getID()}]
 
         let calcfiles = [];
         
@@ -27,9 +23,7 @@
                     calcfiles = [...calcfiles, {name:file, id:getID()}]
                 }
             })
-        } else {
-            calcfiles = [{name:"", id:getID()}]
-        }
+        } else {calcfiles = [{name:"", id:getID()}]}
 
         $felixPlotCheckboxes = [
                 {label: "DAT_file", options: datfiles, value: [], id: getID()},
@@ -47,10 +41,8 @@
         <button class="button is-link" on:click={refreshFunction}>load files</button>
 
         {#key reload}
-
             <div class="files__div">
                 {#each $felixPlotCheckboxes as {label, options, value, id}(id)}
-
                     <div class="felix_tkplot_filelist_div" transition:fade>
                         <div class="subtitle felix_tkplot_filelist_header">{label}</div>
                         <CustomCheckList style="background: #836ac05c; border-radius: 20px; margin:1em 0;  height:20em; overflow:auto;" bind:fileChecked={value} bind:items={options} />
@@ -63,29 +55,22 @@
 
     <div class="felix_plotting_div">
         <h1 class="subtitle">Text Widgets</h1>
+
         <div class="widgets">
-
             {#each felixPlotWidgets.text as {label, value, id}(id)}
-
                 <Textfield variant="outlined" type="text" bind:value {label}/>
-
             {/each}
-
         </div>
-        <button class="button is-link" on:click="{()=>{dispatch("addWidget", {type:"text"})}}">Add widget</button>
 
     </div>
-
     <div class="felix_plotting_div">
 
         <h1 class="subtitle">Number Widgets</h1>
         <div class="widgets">
             {#each felixPlotWidgets.number as {label, value, step, id}(id)}
                 <Textfield type="number" {step} bind:value {label}/>
-
             {/each}
         </div>
-        <button class="button is-link" on:click="{()=>{dispatch("addWidget", {type:"number"})}}">Add widget</button>
 
     </div>
 
@@ -97,31 +82,27 @@
                 <CustomCheckbox bind:selected={value} {label} />
             {/each}
         </div>
-        <button class="button is-link" on:click="{()=>{dispatch("addWidget", {type:"boolean"})}}">Add widget</button>
     </div>
 
 </div>
 
 
 <style>
-
     .felix_tkplot_filelist_header {
         border: solid 1px white;
         width: 10em;
+
         padding: 0.2em;
         display: flex;
         justify-content: center;
         border-radius: 20px;
         margin: auto;
-
     }
     .felix_tkplot_filelist_div {
         margin-bottom:1em;
     }
 
-
     .felix_plotting_div {
-    
         border: solid 1px white;
         border-radius: 20px;
         padding: 1em;
@@ -141,10 +122,10 @@
     }
     .files__div {
         display: flex;
-
         gap: 1em;
         margin: 1em;
         flex-wrap: wrap;
     
     }
+
 </style>
