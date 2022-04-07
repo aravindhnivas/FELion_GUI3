@@ -53,7 +53,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         defaultEvents: bool = True,
         createControlLayout: bool = True,
         includeCloseEvent: bool = False,
-        windowGeometry: tuple[int, int] = (900, 500),
+        windowGeometry: tuple[int, int] = (900, 700),
         useTex: bool = False,
         style: str = "default",
 
