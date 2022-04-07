@@ -33,40 +33,47 @@
     let kCIDGuess="1e-15";
 
     async function browse_folder() {
+
         const result = await browse({dir: true})
         if (!result) return
+        
         currentLocation = result
         db.set("kinetics_location", currentLocation)
         console.log(result, currentLocation)
     }
 
-    // let kineticDataLocation = ""
-    
     const updateFiles = (node=null) => {
-
+        if(!fs.existsSync(currentLocation)) return window.createToast("Invalid location", "danger")
+        db.set("kinetics_location", currentLocation)
         node?.target.classList.add("rotateIn")
-        fileCollections = fs.readdirSync(currentLocation).filter(f=>f.endsWith('_scan.json'))
-                                .map(f=>f.split('.')[0].replace('_scan', '.scan'))
+        fileCollections = fs.readdirSync(currentLocation)
+            .filter(f=>f.endsWith('_scan.json'))
+            .map(f=>f.split('.')[0].replace('_scan', '.scan'));
+
+        window.createToast("Updated", "success")
     }
 
-    $: if (fs.existsSync(currentLocation)) {updateFiles()}
+    $: if (currentLocation) {updateFiles()}
     // $: if (fs.existsSync(currentLocation)) {kineticDataLocation = pathJoin(currentLocation || "", "EXPORT")}
 
     let currentData = {}
     let currentDataBackup = {}
 
     const sliceData = () => {
+
         if(selectedFile.endsWith(".scan")) {
+        
             totalMass.forEach(massKey=>{
+        
                 const newData = cloneDeep(currentDataBackup)[massKey]
                 newData.x = newData.x.slice(timestartIndexScan)
                 newData.y = newData.y.slice(timestartIndexScan)
                 newData["error_y"]["array"] = newData["error_y"]["array"].slice(timestartIndexScan)
                 currentData[massKey] = newData
             })
-
             computeOtherParameters()
         }
+
     }
 
     let maxTimeIndex = 5
