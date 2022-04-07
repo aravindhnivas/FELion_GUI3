@@ -31,6 +31,7 @@ const config  = {
         'electron',
         'electron-updater',
         ...builtinModules,
+        // 'get-port'
       ],
       output: {
         entryFileNames: '[name].cjs',
