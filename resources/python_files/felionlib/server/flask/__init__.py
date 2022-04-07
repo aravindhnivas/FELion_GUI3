@@ -1,4 +1,3 @@
-
 import json
 import warnings
 import traceback
@@ -9,14 +8,15 @@ from flask_cors import CORS
 from pathlib import Path as pt
 import os
 from multiprocessing import Process
-
-
-
 app = Flask(__name__)
 CORS(app)
 
 
-@app.route('/')
+def logger(*args, **kwargs):
+    print(*args, **kwargs)
+
+
+@app.route("/")
 def home():
     return "Server running: felionpy"
 
@@ -29,39 +29,38 @@ def pyError(error):
 save_location = pt(os.getenv("TEMP")) / "FELion_GUI3"
 
 
-@app.route('/', methods=["POST"])
+@app.route("/", methods=["POST"])
 def compute():
-    
-    print("fetching request", flush=True)
+
+    logger("fetching request")
     try:
         startTime = perf_counter()
         data = request.get_json()
         pyfile = data["pyfile"]
         args = data["args"]
         general = args["general"]
-
-        print(f"{pyfile=}\n{args=}\{general=}", flush=True)
+        logger(f"{pyfile=}\n{args=}\{general=}")
 
         with warnings.catch_warnings(record=True) as warn:
             # warnings.simplefilter("ignore")
             pyfunction = import_module(f"felionlib.{pyfile}")
             pyfunction = reload(pyfunction)
 
-            if general:
-                p = Process(target=pyfunction.main, args=(args,), daemon=True)
-                p.start()
-                p.join()
-                return jsonify({"done": True})
+            # if general:
+            #     p = Process(target=pyfunction.main, args=(args,), daemon=True)
+            #     p.start()
+            #     p.join()
+            #     return jsonify({"done": True})
 
             pyfunction.main(args)
 
-            print(f"{warn=}", flush=True)
+            logger(f"{warn=}")
 
         timeConsumed = perf_counter() - startTime
-        print(f"function execution done in {timeConsumed:.2f} s")
+        logger(f"function execution done in {timeConsumed:.2f} s")
 
-        if general:
-            return jsonify({"done": True})
+        # if general:
+        #     return jsonify({"done": True})
 
         calling_file = pyfile.split(".")[-1]
         filename = save_location / f"{calling_file}_data.json"
@@ -72,8 +71,10 @@ def compute():
 
     except Exception:
         error = traceback.format_exc(5)
-        print("catching the error occured in python", error, flush=True)
+        logger("catching the error occured in python", error)
+
         abort(404, description=error)
 
     finally:
-        print("python process closed", flush=True)
+
+        logger("python process closed")

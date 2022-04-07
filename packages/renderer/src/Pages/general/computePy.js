@@ -19,7 +19,7 @@ export default async function({
             return Promise.resolve(null)
         }
 
-        console.log({general})
+        console.log({pyfile, args, general})
         if(general) {
             console.info(target)
             if(target) {
