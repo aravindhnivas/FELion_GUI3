@@ -79,12 +79,11 @@
             general: {pyfile:"depletionscan", args: depletionArgs},
         }
         const {pyfile, args} = pyfileInfo[filetype]
-        // console.log({filetype, pyfile, args})
+        console.log({filetype, pyfile, args})
         if (filetype == "scan") {
-            // console.log(`Plotting ${tkplot} scan`)
+            console.log(`Plotting ${tkplot} scan`)
             graphPlotted = false
             if(tkplot == "plot") {
-                // console.log("Plotting" + tkplot)
                 return computePy_func({e, pyfile, args, general:true})
             }
         }
