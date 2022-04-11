@@ -1,4 +1,3 @@
-
 import json
 import time
 import numpy as np
@@ -6,13 +5,10 @@ from pathlib import Path as pt
 from scipy.integrate import solve_ivp
 from .definitions import boltzman_distribution
 from .voigt import main as getLineShape
-from felionlib.utils.optimizePlot import optimizePlot
+
 from felionlib.utils.FELion_constants import pltColors
-from felionlib.utils.FELion_widgets import FELion_Tk
-
-
-def log(msg): 
-    return print(msg, flush=True)
+from felionlib.utils import logger
+from felionlib.utils.felionQt import felionQtWindow, QApplication
 
 
 speedOfLight = 299792458
@@ -20,7 +16,6 @@ speedOfLightIn_cm = speedOfLight*100
 
 
 class ROSAA:
-
     def __init__(self, nHe=None, power=None, plotGraph=True, writefile=None):
 
         self.energyUnit = conditions["energyUnit"]
@@ -44,7 +39,7 @@ class ROSAA:
 
             self.computeEinsteinBRates()
 
-            print(f"{self.power=}", flush=True)
+            logger(f"{self.power=}")
 
         self.excitedFrom = str(conditions["excitedFrom"])
         self.excitedTo = str(conditions["excitedTo"])
@@ -97,7 +92,7 @@ class ROSAA:
         self.withoutCollisionalConstants = conditions["simulationMethod"] == "withoutCollisionalConstants"
         if self.fixedPopulation or self.withoutCollisionalConstants:
             self.simulateFixedPopulation(nHe)
-            log(f"{self.boltzmanDistributionCold=}")
+            logger(f"{self.boltzmanDistributionCold=}")
         else:
             self.Simulate(nHe)
 
@@ -114,7 +109,7 @@ class ROSAA:
         norm = constantTerm*lineShape
         einsteinB_RateConstants = conditions["einstein_coefficient"]["B_rateConstant"]
         self.einsteinB_Rates = {key: float(value)*norm for key, value in einsteinB_RateConstants.items()}
-        print(f"{self.einsteinB_Rates=}", flush=True)
+        logger(f"{self.einsteinB_Rates=}")
         
     def simulateFixedPopulation(self, nHe):
         self.includeAttachmentRate = False
@@ -299,24 +294,24 @@ class ROSAA:
 
         y_init = [*N, *N_He]
         N_OFF = solve_ivp(self.SimulateODE, tspan, y_init, args=(nHe, False, self.boltzmanDistributionCold), **options )
-        log(f'{N_OFF.nfev=} evaluations required.')
+        logger(f'{N_OFF.nfev=} evaluations required.')
         self.lightOFF_distribution = N_OFF.y
 
         # Boltzmann ratio check when lightOFF
         # ratio = self.lightOFF_distribution.T[-1]
         # differenceWithBoltzman = np.around(self.boltzmanDistributionCold-ratio[:-self.totalAttachmentLevels], 3)
-        # log(f"\n{ratio=}\n{self.boltzmanDistributionCold=}\n{differenceWithBoltzman=}\n")
+        # logger(f"\n{ratio=}\n{self.boltzmanDistributionCold=}\n{differenceWithBoltzman=}\n")
 
         N_ON = solve_ivp(self.SimulateODE, tspan, y_init, args=(nHe, True, ratio), **options )
         
         self.lightON_distribution = N_ON.y
-        log(f'{N_ON.nfev=} evaluations required.')
+        logger(f'{N_ON.nfev=} evaluations required.')
 
         # Ratio check after equilibrium
         # OFF_full_ratio = np.array([r/r.sum() for r in self.lightOFF_distribution[:-self.totalAttachmentLevels].T])
         # ON_full_ratio = np.array([r/r.sum() for r in self.lightON_distribution[:-self.totalAttachmentLevels].T])
-        # log(f"{np.around(OFF_full_ratio[-1], 2)=}")
-        # log(f"{np.around(ON_full_ratio[-1], 4)=}")
+        # logger(f"{np.around(OFF_full_ratio[-1], 2)=}")
+        # logger(f"{np.around(ON_full_ratio[-1], 4)=}")
         # plt.plot(OFF_full_ratio)
         # plt.plot(ON_full_ratio)
 
@@ -343,38 +338,41 @@ class ROSAA:
         
         end_time = time.perf_counter()
         
-        log(f"Current simulation time {(end_time - start_time):.2f} s")
-        log(f"Total simulation time {(end_time - self.start_time):.2f} s")
+        logger(f"Current simulation time {(end_time - start_time):.2f} s")
+        logger(f"Total simulation time {(end_time - self.start_time):.2f} s")
 
 
     def Plot(self):
 
-        self.figs_location = output_dir / "figs"
-        if not self.figs_location.exists(): self.figs_location.mkdir()
+        self.figs_location: pt = output_dir / "figs"
 
-        widget = FELion_Tk(title=f"Population ratio", location=self.figs_location)
-        widget.Figure()
+        if not self.figs_location.exists():
+            self.figs_location.mkdir()
         
-        ax = widget.make_figure_layout(
-            title=self.transitionTitleLabel, 
-            xaxis="Time (ms)", yaxis="Population", savename=savefilename
+        widget = felionQtWindow(title=f"Population ratio", figDPI=200,
+            figTitle=self.transitionTitleLabel, figXlabel="Time (ms)", figYlabel="Population", 
+            location=self.figs_location
         )
-
-        plotSimulationTime_milliSecond = self.simulateTime*1e3
+        
+        plotSimulationTime_milliSecond: np.ndarray = self.simulateTime*1e3
         counter = 0
         for on, off in zip(self.lightON_distribution, self.lightOFF_distribution):
             
-            ax.plot(plotSimulationTime_milliSecond, on, ls="-", c=pltColors[counter], label=f"{self.legends[counter]}")
-            ax.plot(plotSimulationTime_milliSecond, off, ls="--", c=pltColors[counter])
+            widget.ax.plot(plotSimulationTime_milliSecond, on, ls="-", c=pltColors[counter], label=f"{self.legends[counter]}")
+            widget.ax.plot(plotSimulationTime_milliSecond, off, ls="--", c=pltColors[counter])
             counter += 1
 
-        ax.plot(plotSimulationTime_milliSecond, self.lightON_distribution.sum(axis=0), "-k", alpha=0.5)
-        ax.plot(plotSimulationTime_milliSecond, self.lightOFF_distribution.sum(axis=0), "--k")
+        widget.ax.plot(plotSimulationTime_milliSecond, self.lightON_distribution.sum(axis=0), "-k", alpha=0.5)
+        widget.ax.plot(plotSimulationTime_milliSecond, self.lightOFF_distribution.sum(axis=0), "--k")
         
-        ax.hlines(1, 0, plotSimulationTime_milliSecond[-1]+plotSimulationTime_milliSecond[-1]*0.2, colors='k', linestyles="dashdot")
-        widget.plot_legend = ax.legend(title=f"--OFF, -ON", fontsize=14, title_fontsize=16)
-        widget.plot_legend.set_draggable(True)
-        ax = optimizePlot(ax, xlabel="Time (ms)", ylabel="Population", title=self.transitionTitleLabel)
+        widget.ax.hlines(
+            1, 0,
+            plotSimulationTime_milliSecond[-1]+plotSimulationTime_milliSecond[-1]*0.2,
+            colors='k', linestyles="dashdot"
+        )
+        
+        widget.optimize_figure()
+        widget.fig.tight_layout()
 
         if self.includeAttachmentRate:
 
@@ -382,34 +380,23 @@ class ROSAA:
             signal = (1 - (self.lightON_distribution[signal_index][1:] / self.lightOFF_distribution[signal_index][1:]))*100
 
             signal = np.around(np.nan_to_num(signal).clip(min=0), 1)
-            widget1 = FELion_Tk("Toplevel", title=f"Signal", location=self.figs_location)
-            widget1.Figure()
-
-            # _, ax1 = plt.subplots(figsize=figure["size"], dpi=int(figure["dpi"]))
-            
-            ax1 = widget1.make_figure_layout(
-                title=self.transitionTitleLabel, 
-                xaxis="Time (ms)", yaxis="Signal (%)", savename=savefilename
+            widget1 = felionQtWindow(title=f"Signal", figDPI=200,
+                figTitle=self.transitionTitleLabel, figXlabel="Time (ms)", figYlabel="Signal (%)", 
+                location=self.figs_location, savefilename=savefilename
             )
-            ax1.plot(plotSimulationTime_milliSecond[1:], signal, label=f"Signal: {round(signal[-1])} (%)")
-            ax1 = optimizePlot(ax1, xlabel="Time (ms)", ylabel="Signal (%)", title=self.transitionTitleLabel)
-
-            widget1.plot_legend = ax1.legend()
+            widget1.ax.plot(plotSimulationTime_milliSecond[1:], signal, label=f"Signal: {round(signal[-1])} (%)")
             
-            log(f"Signal: {round(signal[-1])} (%)")
+            logger(f"Signal: {round(signal[-1])} (%)")
+            widget1.optimize_figure()
+            widget1.fig.tight_layout()
+    
 
-            # if figure["show"]:
-            #     plt.show()
+def WriteData(name: str, dataToSend: dict):
 
-        widget.mainloop()
-
-def WriteData(name, dataToSend):
-
-    datas_location = output_dir / "datas"
+    datas_location: pt = output_dir / "datas"
     
     if not datas_location.exists():
         datas_location.mkdir()
-    
     addText = ""
     if not includeAttachmentRate:
         addText = "_no-attachement"
@@ -417,16 +404,17 @@ def WriteData(name, dataToSend):
     with open(datas_location / f"{savefilename}{addText}_{name}.json", 'w+') as f:
         data = json.dumps(dataToSend, sort_keys=True, indent=4, separators=(',', ': '))
         f.write(data)
-        log(f"{savefilename} file written in {location} folder.")
+        logger(f"{savefilename} file written in {location} folder.")
 
 figure = None
 figsize = None
 location = None
 output_dir = None
+
 conditions = None
 savefilename = None
-
 includeAttachmentRate=False
+
 
 def main(arguments):
 
@@ -449,6 +437,8 @@ def main(arguments):
     nHe = float(conditions["numberDensity"])
     variable = conditions["variable"]
 
+    qapp = QApplication([])
+    
     if variable == "time":
 
         ROSAA(nHe, plotGraph=figure["show"])
@@ -458,9 +448,10 @@ def main(arguments):
 
     elif variable == "Power(W)":
         functionOfVariable("power")
-
+    qapp.exec()
 
 def functionOfVariable(changeVariable="numberDensity"):
+    
     # functionVariables = ("numberDensity", "power")
     constantFactorLabel = "power" if changeVariable=="numberDensity" else "numberDensity" 
     currentnHe = np.format_float_scientific(float(conditions["numberDensity"]), 3)
@@ -473,7 +464,7 @@ def functionOfVariable(changeVariable="numberDensity"):
     _start = int(_start.split("e")[-1])
     _end = int(_end.split("e")[-1])
 
-    electronSpin = conditions["electronSpin"]
+    # electronSpin = conditions["electronSpin"]
 
     counter = _start
     dataList = []
@@ -516,13 +507,10 @@ def functionOfVariable(changeVariable="numberDensity"):
             chnageInSignal = (1 - (on[signal_index][-1] / off[signal_index][-1]))*100
             chnageInSignal = np.around(np.nan_to_num(chnageInSignal).clip(min=0), 1)
             signalChange.append(chnageInSignal)
-
-
-    widget = FELion_Tk(title=f"Population ratio", location=output_dir/"figs")
-    widget.Figure()
     
     if changeVariable=="numberDensity":
         xlabel=f"{currentData.taggingPartner} number density (cm$^{-3})$"
+        
     else:
         xlabel="Power (W)"
 
@@ -535,13 +523,12 @@ def functionOfVariable(changeVariable="numberDensity"):
     ylabel = title.split(":")[-1].replace("$", "")
     # quantumState = f"$N{'_J' if electronSpin else ''}$"
     ylabel = f"${ylabel.split('-')[1]}$ / ${ylabel.split('-')[0]}$"
-
-    ax = widget.make_figure_layout(xaxis=xlabel, yaxis=ylabel, title="", savename=outputFileName)
-    ax.plot(dataList, populationChange, "-k", label=f"{currentConstant}{currentConstantUnit}")
-    ax = optimizePlot(ax, xlabel=xlabel, ylabel=ylabel, title="")
-
-    ax.set(xscale="log")
-    widget.plot_legend = ax.legend()
+    widget = felionQtWindow(title=f"Population ratio", figDPI=200,
+        figXlabel=xlabel, figYlabel=ylabel, location=output_dir/"figs", xscale="log"
+    )
+    
+    widget.ax.plot(dataList, populationChange, "-k", label=f"{currentConstant}{currentConstantUnit}")
+    widget.optimize_figure()
     widget.fig.tight_layout()
 
     dataToSend = {
@@ -551,14 +538,13 @@ def functionOfVariable(changeVariable="numberDensity"):
     }
 
     if includeAttachmentRate:
-
-        widget1 = FELion_Tk("Toplevel", title=f"Signal", location=output_dir/"figs")
-        widget1.Figure()
-        ax1 = widget1.make_figure_layout(xaxis=xlabel, yaxis="Signal (%)", title="", savename=f"{outputFileName}.signal")
-        ax1.plot(dataList, signalChange, "-k")
-        ax1 = optimizePlot(ax1, xlabel=xlabel, ylabel="Signal (%)", title="")
-        ax1.set(xscale="log")
-
+        widget1 = felionQtWindow(title=f"Signal", figDPI=200,
+            figXlabel=xlabel, figYlabel="Signal (%)",
+            location=output_dir/"figs", xscale="log", savefilename=f"{outputFileName}.signal"
+        )
+        widget1.ax.plot(dataList, signalChange, "-k")
+        widget1.optimize_figure()
+        widget1.fig.tight_layout()
         dataToSend["signalChange"] = np.around(signalChange, 3).tolist()
 
     if conditions["writefile"]:
@@ -569,15 +555,16 @@ def functionOfVariable(changeVariable="numberDensity"):
 
         with open(datas_location / f"{outputFileName}.txt", 'w+') as f:
             f.write(f"# constant ({('numberDensity', 'power')[changeVariable=='numberDensity']}): ")
+            
             f.write(f"{currentConstant}\n")
             f.write(f"# variable ({changeVariable})\tpopulationChange\n")
-        
+            
             counter = 0
+            
             for x, y in zip(dataList, populationChange):
                 f.write(f"{x:.3e}\t{y:.3f}")
                 f.write(f"\t{signalChange[counter]}\n") if includeAttachmentRate else f.write("\n")
                 counter += 1
-            log(f"{savefilename} file written in {location} folder.")
-
-    widget.mainloop()
-    
+                
+            logger(f"{savefilename} file written in {location} folder.")
+            
