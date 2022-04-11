@@ -1,4 +1,3 @@
-
 import numpy as np
 from .sliderlog import Sliderlog
 
@@ -7,11 +6,7 @@ from .sliderlog import Sliderlog
 # kCIDSliders = {}
 
 
-def make_slider(
-    widget, k3Labels, kCIDLabels, ratek3, ratekCID,
-    kvalueLimits, keyFoundForRate, update
-
-):
+def make_slider(widget, k3Labels, kCIDLabels, ratek3, ratekCID, kvalueLimits, keyFoundForRate, update):
 
     # global k3Sliders, kCIDSliders
 
@@ -33,7 +28,7 @@ def make_slider(
         axes = [0.65, bottom, width, height]
         current_k3SliderAxes = widget.fig.add_axes(axes)
 
-        if counter+1 <= min(len(ratek3), len(ratekCID)):
+        if counter + 1 <= min(len(ratek3), len(ratekCID)):
             current_k3SliderAxes.patch.set_facecolor(f"C{counter+1}")
             current_k3SliderAxes.patch.set_alpha(0.7)
 
@@ -53,27 +48,30 @@ def make_slider(
         print(valmin, valmax, valinit, flush=True)
 
         _k3Slider = Sliderlog(
-            ax=current_k3SliderAxes, label=label,
-            valstep=valstep, valfmt="%.2e",
-            valmin=valmin, valmax=valmax, valinit=valinit,
-
+            ax=current_k3SliderAxes,
+            label=label,
+            valstep=valstep,
+            valfmt="%.2e",
+            valmin=valmin,
+            valmax=valmax,
+            valinit=valinit,
         )
 
         _k3Slider.on_changed(update)
         k3Sliders[label] = _k3Slider
-        bottom -= height*1.2
+        bottom -= height * 1.2
 
         counter += 1
         k3SliderAxes.append(current_k3SliderAxes)
 
-    bottom -= height*2
+    bottom -= height * 2
 
     counter = 0
     kCIDSliderAxes = []
     for label in kCIDLabels:
         axes = [0.65, bottom, width, height]
         current_kCIDSliderAxes = widget.fig.add_axes(axes)
-        if counter+1 <= min(len(ratek3), len(ratekCID)):
+        if counter + 1 <= min(len(ratek3), len(ratekCID)):
             current_kCIDSliderAxes.patch.set_facecolor(f"C{counter+1}")
             current_kCIDSliderAxes.patch.set_alpha(0.7)
 
@@ -88,17 +86,21 @@ def make_slider(
 
         _kCIDSlider = Sliderlog(
             ax=current_kCIDSliderAxes,
-            label=label, valstep=valstep, valfmt="%.2e",
-            valmin=valmin, valmax=valmax, valinit=valinit,
+            label=label,
+            valstep=valstep,
+            valfmt="%.2e",
+            valmin=valmin,
+            valmax=valmax,
+            valinit=valinit,
         )
 
         _kCIDSlider.on_changed(update)
         kCIDSliders[label] = _kCIDSlider
 
-        bottom -= height*1.2
+        bottom -= height * 1.2
         counter += 1
         kCIDSliderAxes.append(current_kCIDSliderAxes)
 
-    widget.sliderWidgets = k3SliderAxes+kCIDSliderAxes
+    widget.sliderWidgets = k3SliderAxes + kCIDSliderAxes
 
     return k3Sliders, kCIDSliders

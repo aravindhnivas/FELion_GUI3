@@ -1,3 +1,6 @@
+
+from felionlib.utils import logger
+
 def fitfunc(event=None):
 
     global k_fit, k_err
@@ -19,15 +22,15 @@ def fitfunc(event=None):
     else:
         bounds=([*[1e-33]*len(ratek3), *[1e-17]*len(ratekCID)], [*[1e-29]*len(ratek3), *[1e-14]*len(ratekCID)])
     
-    log(f"{bounds=}")
+    logger(f"{bounds=}")
     try:
         k_fit, kcov = curve_fit(fitODE, expTime, expData.flatten(),
             p0=p0, sigma=expDataError.flatten(), absolute_sigma=True, bounds=bounds   
         )
 
         k_err = np.sqrt(np.diag(kcov))
-        log(f"{k_fit=}\n{k_err=}")
-        log("fitted")
+        logger(f"{k_fit=}\n{k_err=}")
+        logger("fitted")
         
         for counter0, _k3 in enumerate(k3Sliders.values()):
             _k3.set_val(np.log10(k_fit[:len(ratek3)][counter0]))

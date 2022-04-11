@@ -1,46 +1,50 @@
 import json
 import traceback
 from pathlib import Path as pt
+from typing import Callable, Iterable
+from matplotlib.axes import Axes
 import numpy as np
-from .utils.definitions import log
+from felionlib.utils import logger
 from .utils.plot import plot_exp
 
 from scipy.optimize import curve_fit
 from scipy.integrate import solve_ivp
-from felionlib.utils.FELion_widgets import FELion_Tk
+# from felionlib.utils.FELion_widgets import FELion_Tk
 from felionlib.utils.msgbox import MsgBox, MB_ICONERROR
 
 from felionlib.utils.FELion_definitions import readCodeFromFile
-from tkinter.messagebox import showerror
-from .utils.plotWidgets import make_widgets
+# from tkinter.messagebox import showerror
+# from .utils.plotWidgets import make_widgets
 from .utils.savedata import saveData
+from .utils.sliderlog import Sliderlog
 
+from felionlib.utils.felionQt import felionQtWindow, QApplication
 
-def fitODE(t, *args):
+def fitODE(t: np.ndarray, *args):
 
     global rateCoefficientArgs
 
     tspan = [0, t.max() * 1.2]
-    rateCoefficientArgs = (args[: len(ratek3)], args[len(ratek3) :])
+    rateCoefficientArgs= (args[: len(ratek3)], args[len(ratek3) :])
 
-    dNdtSol = solve_ivp(compute_attachment_process, tspan, initialValues, method="Radau", t_eval=t).y
+    dNdtSol: np.ndarray = solve_ivp(compute_attachment_process, tspan, initialValues, method="Radau", t_eval=t).y
     return dNdtSol.flatten()
 
 
-tspan = None
-simulateTime = None
-kvalueLimits = {}
-compute_attachment_process = None
-k3Sliders = {}
-kCIDSliders = {}
+tspan: Iterable = None
+simulateTime: np.ndarray = None
+kvalueLimits: dict[str, float] = {}
+compute_attachment_process: bool = None
+k3Sliders: dict[str, Sliderlog] = {}
+kCIDSliders: dict[str, Sliderlog] = {}
 
 
-def codeToRun(code):
+def codeToRun(code: str) -> Callable:
     exec(code)
     return locals()
 
 
-def update(val=None):
+def update(val: float = None):
 
     global rateCoefficientArgs
 
@@ -54,7 +58,7 @@ def update(val=None):
     for line, data in zip(fitPlot, dNdtSol):
         line.set_ydata(data)
 
-    widget.canvas.draw_idle()
+    widget.draw()
 
 
 k_fit, k_err = [], []
@@ -106,7 +110,8 @@ def KineticMain():
         args,
         fitfunc,
     )
-    checkboxes = make_widgets(widget=widget, fitfunc=fitfunc, checkboxes=checkboxes, saveData=saveDataFull)
+    
+    # checkboxes = make_widgets(widget=widget, fitfunc=fitfunc, checkboxes=checkboxes, saveData=saveDataFull)
     return
 
 
@@ -141,7 +146,7 @@ def fitfunc(event=None):
             [*[1e-29] * len(ratek3), *[1e-14] * len(ratekCID)],
         )
 
-    log(f"{bounds=}")
+    logger(f"{bounds=}")
     try:
 
         k_fit, kcov = curve_fit(
@@ -154,8 +159,8 @@ def fitfunc(event=None):
         )
 
         k_err = np.sqrt(np.diag(kcov))
-        log(f"{k_fit=}\n{k_err=}")
-        log("fitted")
+        logger(f"{k_fit=}\n{k_err=}")
+        logger("fitted")
 
         for counter0, _k3 in enumerate(k3Sliders.values()):
             _k3.set_val(np.log10(k_fit[: len(ratek3)][counter0]))
@@ -175,12 +180,12 @@ def fitfunc(event=None):
             MsgBox("Error", error, MB_ICONERROR)
 
 
-fitPlot = []
-expPlot = []
+fitPlot: list[Axes] = []
+expPlot: list[Axes] = []
 args = None
 widget = None
 savefile = None
-rateCoefficientArgs = ()
+rateCoefficientArgs: tuple[np.ndarray, np.ndarray]  = ()
 
 
 def main(arguments):
@@ -251,12 +256,8 @@ def main(arguments):
         ratek3 = [float(args["k3Guess"]) for _ in k3Labels]
         ratekCID = [float(args["kCIDGuess"]) for _ in kCIDLabels]
 
-    try:
-        widget = FELion_Tk(title=f"Kinetics: {selectedFile}", location=savedir)
-        KineticMain()
-        widget.mainloop()
-
-    except Exception:
-
-        showerror("ERROR", traceback.format_exc(5))
-        widget.destroy()
+    qapp = QApplication([])
+    widget = felionQtWindow(title=f"Population ratio", location=savedir)
+    KineticMain()
+    qapp.exec()
+    

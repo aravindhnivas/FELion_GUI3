@@ -6,6 +6,7 @@ widget = None
 #     "setbound": False
 # }
 
+
 def checkboxesFunc(event=None):
     global setbound
     print(f"{setbound.get()=}", flush=True)
@@ -31,20 +32,18 @@ def make_widgets(**kwargs):
 
     widget.last_y = widget.last_y + widget.y_diff
     setbound = widget.Entries(
-        "Check", "setbound", widget.x0, widget.last_y, 
-        default=checkboxes["setbound"], bind_btn=True, 
-        bind_func=checkboxesFunc
+        "Check",
+        "setbound",
+        widget.x0,
+        widget.last_y,
+        default=checkboxes["setbound"],
+        bind_btn=True,
+        bind_func=checkboxesFunc,
     )
 
-    widget.Buttons(
-        "Fit", widget.x0+widget.x_diff, widget.last_y,
-        fitfunc, relwidth=0.4
-    )
-    
+    widget.Buttons("Fit", widget.x0 + widget.x_diff, widget.last_y, fitfunc, relwidth=0.4)
+
     widget.last_y = widget.last_y + widget.y_diff
-    widget.Buttons(
-        "saveData", widget.x0, widget.last_y,
-        saveData, relwidth=0.4
-    )
+    widget.Buttons("saveData", widget.x0, widget.last_y, saveData, relwidth=0.4)
 
     return checkboxes

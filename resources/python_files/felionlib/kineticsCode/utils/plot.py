@@ -1,4 +1,5 @@
 import traceback
+from matplotlib.axes import Axes
 import numpy as np
 from .rateSliders import make_slider
 
@@ -17,7 +18,7 @@ def hideOtherWidgets(event=None):
     for otherWidget in widget.sliderWidgets:
         otherWidget.set_visible(otherWidgetsToggle)
 
-    widget.canvas.draw_idle()
+    widget.draw()
     otherWidgetsToggle = not otherWidgetsToggle
     print(f"widgets removed", flush=True)
 
@@ -38,7 +39,7 @@ def on_pick(event):
         _line.set_alpha(alpha)
 
     legline.set_alpha(alpha)
-    widget.canvas.draw_idle()
+    widget.draw()
 
 
 def plot_exp(
@@ -77,18 +78,21 @@ def plot_exp(
     tspan = [0, duration]
     simulateTime = np.linspace(0, duration, 1000)
 
-    widget.Figure(executeCodeWidget=False)
+    # widget.Figure(executeCodeWidget=False)
 
     title = f"{selectedFile}: @{temp:.1f} K {numberDensity:.2e}" + "$cm^{-3}$"
+    ax: Axes = widget.ax
+    
+    ax.set(xlabel="Time (ms)", ylabel="Counts", yscale="log", title=title)
 
-    ax = widget.make_figure_layout(
-        xaxis="Time (ms)",
-        yaxis="Counts",
-        yscale="log",
-        optimize=True,
-        title=title,
-        savename=selectedFile,
-    )
+    # ax = widget.make_figure_layout(
+    #     xaxis="Time (ms)",
+    #     yaxis="Counts",
+    #     yscale="log",
+    #     optimize=True,
+    #     title=title,
+    #     savename=selectedFile,
+    # )
 
     widget.fig.subplots_adjust(right=0.6, top=0.95, left=0.09, bottom=0.25)
 
@@ -142,23 +146,21 @@ def plot_exp(
 
     for counter, data in enumerate(dNdtSol):
 
-        (_fitPlot,) = ax.plot(
-            simulateTime * 1e3, data, "-", c=pltColors[counter], alpha=1
-        )
+        (_fitPlot,) = ax.plot(simulateTime * 1e3, data, "-", c=pltColors[counter], alpha=1)
 
         fitPlot.append(_fitPlot)
 
     legends = [f"{molecule}$^+$", f"{molecule}$^+${tag}"]
     legends += [f"{molecule}$^+${tag}$_{i}$" for i in range(2, len(nameOfReactants))]
 
-    widget.plot_legend = legend = ax.legend(legends)
+    legend = ax.legend(legends)
 
-    for legline, origlinefit, origlineexp in zip(legend.get_lines(), fitPlot, expPlot):
-        
-        legline.set_picker(True)
-        toggleLine[legline] = [origlinefit, origlineexp]
+    # for legline, origlinefit, origlineexp in zip(legend.get_lines(), fitPlot, expPlot):
 
-    widget.canvas.mpl_connect("pick_event", on_pick)
+    #     legline.set_picker(True)
+    #     toggleLine[legline] = [origlinefit, origlineexp]
+
+    # widget.canvas.mpl_connect("pick_event", on_pick)
 
     try:
         if numberDensity > 0 and not keyFoundForRate:
@@ -171,12 +173,10 @@ def plot_exp(
     except Exception:
         print(traceback.format_exc(), flush=True)
 
-    widget.canvas.draw_idle()
-    widget.last_y = widget.last_y + widget.y_diff
+    widget.draw()
+    # widget.last_y = widget.last_y + widget.y_diff
 
-    widget.Buttons(
-        "Toggle-Widgets", widget.x0, widget.last_y, hideOtherWidgets, relwidth=0.7
-    )
+    # widget.Buttons("Toggle-Widgets", widget.x0, widget.last_y, hideOtherWidgets, relwidth=0.7)
     plotted = True
     print(f"{plotted=}", flush=True)
 

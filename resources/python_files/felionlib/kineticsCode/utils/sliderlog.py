@@ -1,5 +1,6 @@
-
 from matplotlib.widgets import Slider
+import matplotlib
+matplotlib.use(backend="TkAgg")
 
 class Sliderlog(Slider):
 
@@ -11,18 +12,25 @@ class Sliderlog(Slider):
     def set_val(self, val):
 
         xy = self.poly.xy
-        if self.orientation == 'vertical':
+        if self.orientation == "vertical":
             xy[1] = 0, val
             xy[2] = 1, val
+            self._handle.set_ydata([val])
         else:
             xy[2] = val, 1
             xy[3] = val, 0
+            self._handle.set_xdata([val])
         self.poly.xy = xy
-        self.valtext.set_text(self.valfmt % 10**val)   # Modified to display 10**val instead of val
+        self.valtext.set_text(self.valfmt % 10**val)  # Modified to display 10**val instead of val
         if self.drawon:
             self.ax.figure.canvas.draw_idle()
         self.val = val
+        
         if not self.eventson:
             return
-        for cid, func in self.observers.items():
-                func(10**val)
+        
+        self._observers.process('changed', val)
+        # for cid, func in self.observers.items():
+        #     func(10**val)
+    
+    
