@@ -43,7 +43,6 @@
   },
   "dependencies": {
     "cooltipz-css": "^1.6.8",
-    "cross-port-killer": "^1.4.0",
     "electron-log": "^4.4.6",
     "electron-store": "^8.0.1",
     "electron-unhandled": "^3.0.2",
@@ -52,10 +51,6 @@
     "get-port": "^6.1.2",
     "interactjs": "^1.10.11",
     "lodash-es": "^4.17.21",
-    "ml-levenberg-marquardt": "^3.1.1",
-    "ode45-cash-karp": "^1.1.0",
-    "odex": "^2.0.4",
-    "pid-port": "^0.2.0",
     "plotly.js": "^2.8.0",
     "regression": "^2.0.1",
     "remarkable": "^2.0.1",
