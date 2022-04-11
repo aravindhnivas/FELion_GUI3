@@ -44,16 +44,21 @@
     let dataReady = false
     const fullData = {}
     
-    function plotData({e=null, tkplot="run"}={}){
+    function plotData({e=null, tkplot="run", general=false}={}){
     
         removeExtraFile()
     
         if(opofiles.length<1) return window.createToast("No files selected", "danger")
         $opoMode = true, $felixPlotAnnotations = []
+
+        // const general = tkplot==="plot"
+        
         const args={opofiles, tkplot, deltaOPO, calibFile, opoPower}
+        if (general) return computePy_func({e, pyfile: "normline.oposcan", args, general})
 
         dataReady = false
-        computePy_func({e, pyfile: "normline.oposcan", args})
+
+        computePy_func({e, pyfile: "normline.oposcan", args, general})
         .then((dataFromPython)=>{
             fullData.data = dataFromPython
             dataReady = true
@@ -96,10 +101,11 @@
 {#if $opoMode}
     <div class="align">
         <span class="tag is-warning " >OPO Mode: </span>
+        <button class="button is-link" on:click="{()=>{showOPOFiles = !showOPOFiles;}}"> Browse File</button>
         <CustomSelect bind:picked={calibFile} label="Calib. file" options={OPOcalibFiles}/>
         <CustomTextSwitch style="width:7em;" step="0.1" variant="outlined" bind:value={deltaOPO} label="Delta OPO"/>
         <CustomTextSwitch style="width:9em" step="0.1" variant="outlined" bind:value={opoPower} label="Power (mJ)"/>
-        <button class="button is-link" on:click="{()=>{showOPOFiles = !showOPOFiles;}}"> Browse File</button>
-        <button class="button is-link" on:click="{(e)=>plotData({e:e})}">Replot</button>
+        <button class="button is-link" on:click="{(e)=>plotData({e})}">Replot</button>
+        <button class="button is-link" on:click="{(e)=>plotData({e, tkplot: "plot", general: true})}">Open in Matplotlib</button>
     </div>
 {/if}

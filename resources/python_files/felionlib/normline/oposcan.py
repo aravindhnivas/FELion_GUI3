@@ -8,6 +8,8 @@ from felionlib.utils.FELion_widgets import FELion_Tk
 from felionlib.utils.FELion_constants import colors
 from felionlib.utils.FELion_definitions import sendData
 from .utils.FELion_sa import SpectrumAnalyserCalibrator
+from felionlib.utils.felionQt import felionQtWindow, QApplication
+
 
 def ReadBase(basefile):
 
@@ -15,6 +17,7 @@ def ReadBase(basefile):
     xs, ys = data[:,0], data[:,1]
     with open(basefile, 'r') as f: interpol = f.readlines()[1].strip().split('=')[-1]
     return xs, ys, interpol
+
 
 class BaselineCalibrator(object):
     def __init__(self, basefile, ms=None):
@@ -24,22 +27,25 @@ class BaselineCalibrator(object):
 
     def val(self, x): return self.f(x)
 
+
 def export_file(fname, wn, inten, relative_depletion, energyPerPhoton):
+
     fileInfo = None
     if fname=="averaged":
         fileInfo = [_.name for _ in opofiles]
         fileInfo = f"# {fileInfo}\n#########################################\n\n"
     unitInfo = f"# cm-1\tNorm. Int./J\t%\tNorm. Int./photon\n"
     filename = f"EXPORT/{fname}.dat"
+
     with open(filename, 'w+') as f:
-        
         f.write("#NormalisedWavelength(cm-1)\t#NormalisedIntensity\t#RelativeDepletion(%)\t#IntensityPerPhoton\n")
         f.write(unitInfo)
-        if fileInfo is not None: f.write(fileInfo)
 
+        if fileInfo is not None: f.write(fileInfo)
 
         for i in range(len(wn)):
             f.write(f"{wn[i]}\t{inten[i]}\t{relative_depletion[i]}\t{energyPerPhoton[i]}\n")
+
                 
 def binning(xs, ys, delta=0.2):
 
@@ -86,20 +92,25 @@ def binning(xs, ys, delta=0.2):
 
         return binsx, data_binned
 
-def makeDataToSend(x, y, name, update={}):
 
+def makeDataToSend(x, y, name, update={}):
     return { **update, "x": list(x), "y": list(y), "name": name}
 
 opofiles = []
-def opoplot(args):
+
+
+def main(args):
 
     global opofiles
+
     opofiles = args["opofiles"]
     opofiles = [pt(f) for f in opofiles]
 
     tkplot = args["tkplot"]
+    
     if tkplot == "run": tkplot = False
     else: tkplot = True
+    
     delta = args["deltaOPO"]
     opoPower = float(args["opoPower"])
     calibFile = args["calibFile"]
@@ -108,16 +119,16 @@ def opoplot(args):
     os.chdir(location)
 
     dataToSend = {"base": {}, "SA": {}, "average": {}, "average_rel": {}, "average_per_photon": {}}
-
     blackColor = {"color": "black"}
-    
     nolegend = {"showlegend": False}
 
     if tkplot:
-        widget = FELion_Tk(title="OPO Spectrum", location=location/"OUT")
-        fig, canvas = widget.Figure()
-        ax = widget.make_figure_layout(title="OPO Spectrum", xaxis="Wavenumber (cm-1)", yaxis="Intensity", savename="OPOspectrum")
-    data = {"real":{}, "relative":{}, "SA":{}}
+        qapp = QApplication([])
+        widget = felionQtWindow(title=f"OPO Spectrum", figDPI=200,
+            figTitle="OPO Spectrum", figXlabel="Wavenumber (cm-1)", figYlabel="Intensity",
+            location=location/"OUT", savefilename="OPOSpectrum"
+        )
+        legend_handler = {}
     xs, ys = [], []
     ys_r = [], []
 
@@ -129,14 +140,9 @@ def opoplot(args):
     
     if calibFile.exists():
         calibdata = np.genfromtxt(calibFile).T
-        # wavemeterCalib_air = 9396.929143696187
         wavemeterCalib_vaccum = 9394.356278462961
         calibdata -= wavemeterCalib_vaccum
-
-        
-        
         saCal = SpectrumAnalyserCalibrator(data=calibdata, manual=True)
-        
         setwn, getwn = calibdata
         X = np.arange(setwn.min(), setwn.max(), 1)
 
@@ -162,18 +168,17 @@ def opoplot(args):
         label = f"{opofile.name}"
 
         if calibFile.exists(): wn = saCal.sa_cm(wn)
-
-
         xs = np.append(xs, wn)
         ys = np.append(ys, inten)
         ys_r = np.append(ys_r, relative_depletion)
 
         export_file(opofile.stem, wn, inten, relative_depletion, energyPerPhoton)
 
-        if tkplot: ax.plot(wn, relative_depletion, label=label)
+        if tkplot: 
+            (legend_handler[label],) = widget.ax.plot(wn, relative_depletion, label=label)
+        
         else: 
 
-            
             lineColor = {"color": f"rgb{colors[c]}", "shape":"hv"}
             groupItem = {"legendgroup": f'group{group}'}
 
@@ -196,39 +201,27 @@ def opoplot(args):
 
             if c >= len(colors): c = 1
 
-
     binns, intens = binning(xs, ys, delta)
     energyJ_norm = (np.array(binns) * np.array(intens)) / 1e3
-
     binns_r, intens_r = binning(xs, ys_r, delta)
-    
-    # export_file(binns, intens, "averaged")
-    
     export_file("averaged", binns, intens, intens_r, energyJ_norm)
 
+    if tkplot:
 
-    if not tkplot: 
+        (legend_handler[f"Averaged: delta={delta}"],) = widget.ax.plot(binns, intens, "k.-", label=f"Averaged: delta={delta}")
+        widget.optimize_figure()
 
-
+        widget.makeLegendToggler(legend_handler, edit_legend=True)
+        widget.fig.tight_layout()
+        qapp.exec()
+        
+    else:
         _del = "\u0394"
         defaultStyle={"mode": "lines+markers", "marker": {"size":1}, "line":{"color": "black", "shape":"hv"}}
         avg_lg = f"averaged({_del}:{round(np.diff(binns).mean(), 1)})"
         dataToSend["average"]["average"] = makeDataToSend(binns, intens, avg_lg, update=defaultStyle)
-
         dataToSend["average_rel"]["average"] = makeDataToSend(binns_r, intens_r, avg_lg, update=defaultStyle)
         dataToSend["average_per_photon"]["average"] = makeDataToSend(binns, energyJ_norm, avg_lg, update=defaultStyle)
 
         sendData(dataToSend, calling_file=pt(__file__).stem)
-
-    else:
-        ax.plot(binns, intens, "k.-", label=f"Averaged: delta={delta}")
-        widget.plot_legend = ax.legend()
-        widget.mainloop()
-    
-args = None
-
-def main(arguments):
-    global args
-    args = arguments
-    print(f"Received args: {args}, {type(args)}\n")
-    opoplot(args)
+        
