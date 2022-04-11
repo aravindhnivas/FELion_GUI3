@@ -246,9 +246,7 @@ class depletionplot:
         # )
 
         if plot:
-        
             self.ax0.ticklabel_format(axis="y", style="sci", scilimits=(0, 0))
-            
             animated_artist = (
                 self.ax0_plot["resOn"],
                 self.ax0_plot["resOff"],

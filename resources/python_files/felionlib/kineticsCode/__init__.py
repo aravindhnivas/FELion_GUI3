@@ -45,7 +45,6 @@ def codeToRun(code: str) -> Callable:
 
 
 def update(val: float = None):
-
     global rateCoefficientArgs
 
     rateCoefficientArgs = (
@@ -57,8 +56,7 @@ def update(val: float = None):
 
     for line, data in zip(fitPlot, dNdtSol):
         line.set_ydata(data)
-
-    widget.draw()
+    widget.blit.update()
 
 
 k_fit, k_err = [], []
@@ -257,7 +255,7 @@ def main(arguments):
         ratekCID = [float(args["kCIDGuess"]) for _ in kCIDLabels]
 
     qapp = QApplication([])
-    widget = felionQtWindow(title=f"Population ratio", location=savedir)
+    widget = felionQtWindow(title=f"Population ratio", windowGeometry=(1200, 600), location=savedir)
     KineticMain()
     qapp.exec()
     

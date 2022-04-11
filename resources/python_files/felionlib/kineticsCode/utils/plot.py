@@ -6,7 +6,7 @@ from .rateSliders import make_slider
 # from .plotWidgets import make_widgets
 from felionlib.utils.FELion_constants import pltColors
 from scipy.integrate import solve_ivp
-
+from felionlib.utils.felionQt.utils.blit import BlitManager
 widget = None
 otherWidgetsToggle = False
 # plotted = False
@@ -85,21 +85,13 @@ def plot_exp(
     
     ax.set(xlabel="Time (ms)", ylabel="Counts", yscale="log", title=title)
 
-    # ax = widget.make_figure_layout(
-    #     xaxis="Time (ms)",
-    #     yaxis="Counts",
-    #     yscale="log",
-    #     optimize=True,
-    #     title=title,
-    #     savename=selectedFile,
-    # )
-
-    widget.fig.subplots_adjust(right=0.6, top=0.95, left=0.09, bottom=0.25)
+    widget.fig.subplots_adjust(right=0.570, top=0.925, left=0.120, bottom=0.145)
 
     # saveDataArgs = (
     #     args, ratek3, k3Labels, kCIDLabels, k_fit, k_err, rateCoefficientArgs,
     #     fitPlot, expPlot, rateConstantsFileData
     # )
+    
     # make_widgets(
     #     widget=widget, fitfunc=fitfunc,
     #     numberDensity=numberDensity, saveDataArgs=saveDataArgs
@@ -146,21 +138,23 @@ def plot_exp(
 
     for counter, data in enumerate(dNdtSol):
 
-        (_fitPlot,) = ax.plot(simulateTime * 1e3, data, "-", c=pltColors[counter], alpha=1)
+        (_fitPlot,) = ax.plot(simulateTime * 1e3, data, "-", c=pltColors[counter], alpha=1, animated=True)
 
         fitPlot.append(_fitPlot)
+    
+    widget.blit = BlitManager(widget.canvas, fitPlot)
 
     legends = [f"{molecule}$^+$", f"{molecule}$^+${tag}"]
     legends += [f"{molecule}$^+${tag}$_{i}$" for i in range(2, len(nameOfReactants))]
 
     legend = ax.legend(legends)
 
-    # for legline, origlinefit, origlineexp in zip(legend.get_lines(), fitPlot, expPlot):
+    for legline, origlinefit, origlineexp in zip(legend.get_lines(), fitPlot, expPlot):
 
-    #     legline.set_picker(True)
-    #     toggleLine[legline] = [origlinefit, origlineexp]
-
-    # widget.canvas.mpl_connect("pick_event", on_pick)
+        legline.set_picker(True)
+        toggleLine[legline] = [origlinefit, origlineexp]
+    # widget.makeLegendToggler(toggleLine, edit_legend=False)
+    widget.canvas.mpl_connect("pick_event", on_pick)
 
     try:
         if numberDensity > 0 and not keyFoundForRate:
