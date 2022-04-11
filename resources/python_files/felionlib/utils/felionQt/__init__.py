@@ -55,15 +55,14 @@ class felionQtWindow(QtWidgets.QMainWindow):
         includeCloseEvent: bool = False,
         windowGeometry: tuple[int, int] = (900, 700),
         useTex: bool = False,
+        
         style: str = "default",
-
         fontsize: int = 12,
         optimize: bool = False,
-        ticks_direction: str = "in",
-        yscale: str = "linear",
-        xscale: str = "linear",
+        ticks_direction: Literal["in", "out", "inout"] = "in",
+        yscale: Literal["linear", "log"] = "linear",
+        xscale: Literal["linear", "log"] = "linear",
         **kwargs: dict[str, Any],
-    
     ) -> None:
 
         super().__init__()
