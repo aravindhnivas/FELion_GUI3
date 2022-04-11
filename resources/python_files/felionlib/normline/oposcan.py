@@ -4,7 +4,7 @@ from pathlib import Path as pt
 import numpy as np
 from scipy.interpolate import interp1d
 
-from felionlib.utils.FELion_widgets import FELion_Tk
+# from felionlib.utils.FELion_widgets import FELion_Tk
 from felionlib.utils.FELion_constants import colors
 from felionlib.utils.FELion_definitions import sendData
 from .utils.FELion_sa import SpectrumAnalyserCalibrator
