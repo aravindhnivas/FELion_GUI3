@@ -59,8 +59,7 @@ def make_slider(widget, k3Labels, kCIDLabels, ratek3, ratekCID, kvalueLimits, ke
 
         _k3Slider.on_changed(update)
         k3Sliders[label] = _k3Slider
-        bottom -= height * 1.2
-
+        bottom -= height * 1.6
         counter += 1
         k3SliderAxes.append(current_k3SliderAxes)
 
@@ -97,7 +96,7 @@ def make_slider(widget, k3Labels, kCIDLabels, ratek3, ratekCID, kvalueLimits, ke
         _kCIDSlider.on_changed(update)
         kCIDSliders[label] = _kCIDSlider
 
-        bottom -= height * 1.2
+        bottom -= height * 1.6
         counter += 1
         kCIDSliderAxes.append(current_kCIDSliderAxes)
 

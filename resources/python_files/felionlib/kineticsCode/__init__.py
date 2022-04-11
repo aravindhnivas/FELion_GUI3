@@ -14,7 +14,7 @@ from felionlib.utils.msgbox import MsgBox, MB_ICONERROR
 
 from felionlib.utils.FELion_definitions import readCodeFromFile
 # from tkinter.messagebox import showerror
-# from .utils.plotWidgets import make_widgets
+from .utils.plotWidgets import make_widgets
 from .utils.savedata import saveData
 from .utils.sliderlog import Sliderlog
 
@@ -108,8 +108,7 @@ def KineticMain():
         args,
         fitfunc,
     )
-    
-    # checkboxes = make_widgets(widget=widget, fitfunc=fitfunc, checkboxes=checkboxes, saveData=saveDataFull)
+    checkboxes = make_widgets(widget=widget, fitfunc=fitfunc, checkboxes=checkboxes, saveData=saveDataFull)
     return
 
 

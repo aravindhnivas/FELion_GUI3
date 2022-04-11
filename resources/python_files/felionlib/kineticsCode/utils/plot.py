@@ -153,25 +153,20 @@ def plot_exp(
 
         legline.set_picker(True)
         toggleLine[legline] = [origlinefit, origlineexp]
-    # widget.makeLegendToggler(toggleLine, edit_legend=False)
     widget.canvas.mpl_connect("pick_event", on_pick)
 
     try:
         if numberDensity > 0 and not keyFoundForRate:
             print("Fitting data", flush=True)
             fitfunc()
-
         else:
             print("NOT fitting data since keyFoundForRate", keyFoundForRate, flush=True)
-
     except Exception:
         print(traceback.format_exc(), flush=True)
 
     widget.draw()
     # widget.last_y = widget.last_y + widget.y_diff
-
     # widget.Buttons("Toggle-Widgets", widget.x0, widget.last_y, hideOtherWidgets, relwidth=0.7)
     plotted = True
-    print(f"{plotted=}", flush=True)
-
+    
     return plotted, k3Sliders, kCIDSliders
