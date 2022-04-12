@@ -62,7 +62,9 @@ class felionQtWindow(QtWidgets.QMainWindow):
         ticks_direction: Literal["in", "out", "inout"] = "in",
         yscale: Literal["linear", "log"] = "linear",
         xscale: Literal["linear", "log"] = "linear",
+        attachControlLayout = True,
         **kwargs: dict[str, Any],
+        
     ) -> None:
 
         super().__init__()
@@ -113,15 +115,15 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
         self.makeFigureLayout(figureArgs=figureArgs, defaultEvents=defaultEvents)
         if createControlLayout:
-            self.createControlLayout(attachControlLayout=True, optimize=optimize)
+            self.createControlLayout(attachControlLayout=attachControlLayout, optimize=optimize)
 
     def init_attributes(self):
 
         self.titleWidget = QtWidgets.QLineEdit("")
         self.xlabelWidget = QtWidgets.QLineEdit("")
         self.ylabelWidget = QtWidgets.QLineEdit("")
+        self.finalControlLayout = QtWidgets.QVBoxLayout() 
         self.fixedControllerWidth = 270
-
         self.legend_picker_set = False
         self.line_handler = None
         self.picked_legend = None
@@ -144,16 +146,15 @@ class felionQtWindow(QtWidgets.QMainWindow):
         scroll = QtWidgets.QScrollArea()
         scroll.setWidgetResizable(True)
         scroll.setWidget(controlGroupBox)
-
         savecontrolGroup = self.figure_save_controllers()
 
         self.finalControlWidget = QtWidgets.QWidget()
 
-        finalControlLayout = QtWidgets.QVBoxLayout()
-        finalControlLayout.addWidget(scroll)
-        finalControlLayout.addWidget(savecontrolGroup)
+        # self.finalControlLayout = QtWidgets.QVBoxLayout()
+        self.finalControlLayout.addWidget(scroll)
+        self.finalControlLayout.addWidget(savecontrolGroup)
 
-        self.finalControlWidget.setLayout(finalControlLayout)
+        self.finalControlWidget.setLayout(self.finalControlLayout)
         self.finalControlWidget.setFixedWidth(self.fixedControllerWidth)
         self.mainLayout.addWidget(self.finalControlWidget, 1)
         

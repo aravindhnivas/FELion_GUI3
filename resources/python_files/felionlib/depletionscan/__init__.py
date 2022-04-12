@@ -55,7 +55,7 @@ class depletionplot:
             if saveOutputDepletion and self.depletion_exp is not None:
                 self.saveFile(show=False)
             self.widget.attachControlLayout()
-            # self.widget.toggle_controller_layout()
+            
             self.widget.optimize_figure()
             self.widget.updatecanvas()
             qapp.exec()
@@ -121,10 +121,19 @@ class depletionplot:
 
         write_file_layout.addWidget(self.write_filename_input)
         write_file_layout.addWidget(write_file_button)
+        
+        additional_widgets_group = QtWidgets.QGroupBox()
+        additional_widgets_layout = QtWidgets.QVBoxLayout()
+        additional_widgets_layout.addLayout(slider_layout_vbox)
+        additional_widgets_layout.addLayout(update_buttons_layout)
+        additional_widgets_layout.addLayout(write_file_layout)
+        additional_widgets_group.setLayout(additional_widgets_layout)
 
-        self.widget.controlLayout.addLayout(slider_layout_vbox)
-        self.widget.controlLayout.addLayout(update_buttons_layout)
-        self.widget.controlLayout.addLayout(write_file_layout)
+        self.widget.finalControlLayout.addWidget(additional_widgets_group)
+        # self.widget.controlLayout.addWidget(additional_widgets_group)
+        # self.widget.controlLayout.addLayout(slider_layout_vbox)
+        # self.widget.controlLayout.addLayout(update_buttons_layout)
+        # self.widget.controlLayout.addLayout(write_file_layout)
 
     def saveFile(self, event=None, show=True):
 

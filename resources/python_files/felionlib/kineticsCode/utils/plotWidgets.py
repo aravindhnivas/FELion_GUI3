@@ -1,48 +1,64 @@
-# from .savedata import saveData
+from typing import Callable
+from felionlib.utils.felionQt import felionQtWindow, QtWidgets
+from felionlib.utils import logger
 
-widget = None
-# numberDensity = None
-# checkboxes = {
-#     "setbound": False
-# }
-
-
-def checkboxesFunc(event=None):
-    global setbound
-    print(f"{setbound.get()=}", flush=True)
-    checkboxes["setbound"] = not setbound.get()
+# widget: felionQtWindow = None
+checkboxes = {
+    "setbound": False
+}
 
 
-# def setNumberDensity(val):
-#     global numberDensity
-#     numberDensity = float(val)
-#     print(f"{numberDensity=}", flush=True)
-#     fitfunc()
+def make_widgets(
+    widget: felionQtWindow, fitfunc: Callable, saveData: Callable, checkboxes: dict[str, bool]
+) -> dict[str, bool]:
+    
+    additional_widgets_group = QtWidgets.QGroupBox()
+    additional_widgets_layout = QtWidgets.QVBoxLayout()
+    
+    buttons_layout0 = QtWidgets.QHBoxLayout()
+    
+    toggle_slider_widgets = QtWidgets.QPushButton("Toggle sliders visibility")
+    
+    def hideSliderWidgets():
+        state = widget.sliderWidgets[0].get_visible()
+        logger(f"{state}")
+        for slider_widget in widget.sliderWidgets:
+            slider_widget.set_visible(not state)
+        widget.draw()
+        
+    toggle_slider_widgets.clicked.connect(hideSliderWidgets)
+    
+    subplot_adjust_button = QtWidgets.QPushButton("Restore subplots")
+    subplot_adjust_button.clicked.connect(
+        lambda: (widget.fig.subplots_adjust(right=0.570, top=0.900, left=0.120, bottom=0.160), widget.draw())
+    )
+    
+    buttons_layout0.addWidget(toggle_slider_widgets)
+    buttons_layout0.addWidget(subplot_adjust_button)
+    
+    setbound_checkbox_widget = QtWidgets.QCheckBox("setbound")
+    
+    def checkbox_func(state): checkboxes["setbound"] = state
+    setbound_checkbox_widget.stateChanged.connect(checkbox_func)
+    
+    fit_button = QtWidgets.QPushButton("Fit")
+    fit_button.clicked.connect(fitfunc)
+    
+    saveData_button = QtWidgets.QPushButton("saveData")
+    saveData_button.clicked.connect(saveData)
 
-
-def make_widgets(**kwargs):
-
-    global widget, fitfunc, setbound, checkboxes
-
-    widget = kwargs["widget"]
-    fitfunc = kwargs["fitfunc"]
-    checkboxes = kwargs["checkboxes"]
-    # saveDataArgs = kwargs["saveDataArgs"]
-    saveData = kwargs["saveData"]
-
-    # widget.last_y = widget.last_y + widget.y_diff
-    # setbound = widget.Entries(
-    #     "Check",
-    #     "setbound",
-    #     widget.x0,
-    #     widget.last_y,
-    #     default=checkboxes["setbound"],
-    #     bind_btn=True,
-    #     bind_func=checkboxesFunc,
-    # )
-
-    # widget.Buttons("Fit", widget.x0 + widget.x_diff, widget.last_y, fitfunc, relwidth=0.4)
-
-    # widget.last_y = widget.last_y + widget.y_diff
-    # widget.Buttons("saveData", widget.x0, widget.last_y, saveData, relwidth=0.4)
+    buttons1_layout =QtWidgets.QHBoxLayout()
+    buttons1_layout.addWidget(fit_button)
+    buttons1_layout.addWidget(saveData_button)
+    
+    additional_widgets_layout.addLayout(buttons_layout0)
+    additional_widgets_layout.addLayout(buttons1_layout)
+    additional_widgets_layout.addWidget(setbound_checkbox_widget)
+    additional_widgets_group.setLayout(additional_widgets_layout)
+    
+    widget.finalControlLayout.addWidget(additional_widgets_group)
+    widget.attachControlLayout()
+    
+    
+    
     return checkboxes

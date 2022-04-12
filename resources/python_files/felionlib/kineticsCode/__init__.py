@@ -9,15 +9,12 @@ from .utils.plot import plot_exp
 
 from scipy.optimize import curve_fit
 from scipy.integrate import solve_ivp
-# from felionlib.utils.FELion_widgets import FELion_Tk
-from felionlib.utils.msgbox import MsgBox, MB_ICONERROR
+# from felionlib.utils.msgbox import MsgBox, MB_ICONERROR
 
 from felionlib.utils.FELion_definitions import readCodeFromFile
-# from tkinter.messagebox import showerror
 from .utils.plotWidgets import make_widgets
 from .utils.savedata import saveData
 from .utils.sliderlog import Sliderlog
-
 from felionlib.utils.felionQt import felionQtWindow, QApplication
 
 def fitODE(t: np.ndarray, *args):
@@ -25,7 +22,7 @@ def fitODE(t: np.ndarray, *args):
     global rateCoefficientArgs
 
     tspan = [0, t.max() * 1.2]
-    rateCoefficientArgs= (args[: len(ratek3)], args[len(ratek3) :])
+    rateCoefficientArgs = (args[: len(ratek3)], args[len(ratek3) :])
 
     dNdtSol: np.ndarray = solve_ivp(compute_attachment_process, tspan, initialValues, method="Radau", t_eval=t).y
     return dNdtSol.flatten()
@@ -51,9 +48,7 @@ def update(val: float = None):
         [10**rate.val for rate in k3Sliders.values()],
         [10**rate.val for rate in kCIDSliders.values()],
     )
-
     dNdtSol = solve_ivp(compute_attachment_process, tspan, initialValues, method="Radau", t_eval=simulateTime).y
-
     for line, data in zip(fitPlot, dNdtSol):
         line.set_ydata(data)
     widget.blit.update()
@@ -63,7 +58,6 @@ k_fit, k_err = [], []
 
 
 def saveDataFull():
-
     saveData(
         args, ratek3, k3Labels, kCIDLabels, k_fit, k_err, rateCoefficientArgs, fitPlot, expPlot, rateConstantsFileData
     )
@@ -77,7 +71,6 @@ def KineticMain():
     duration = expTime.max() * 1.2
     tspan = [0, duration]
     simulateTime = np.linspace(0, duration, 1000)
-
     location = pt(args["kineticEditorLocation"])
     filename = pt(location) / args["kineticEditorFilename"]
 
@@ -108,14 +101,15 @@ def KineticMain():
         args,
         fitfunc,
     )
-    checkboxes = make_widgets(widget=widget, fitfunc=fitfunc, checkboxes=checkboxes, saveData=saveDataFull)
+    checkboxes = make_widgets(widget, fitfunc, saveDataFull, checkboxes)
     return
 
 
 checkboxes = {"setbound": False}
 
 
-def fitfunc(event=None):
+def fitfunc() -> None:
+    
     global k_fit, k_err
     k_err = []
     k_fit = []
@@ -154,7 +148,6 @@ def fitfunc(event=None):
             bounds=bounds
             # sigma=expDataError.flatten(), absolute_sigma=True,
         )
-
         k_err = np.sqrt(np.diag(kcov))
         logger(f"{k_fit=}\n{k_err=}")
         logger("fitted")
@@ -165,28 +158,28 @@ def fitfunc(event=None):
         for counter1, _kCID in enumerate(kCIDSliders.values()):
             _kCID.set_val(np.log10(k_fit[len(ratek3) :][counter1]))
         print(f"{rateCoefficientArgs=}", flush=True)
+    
     except Exception:
-
         k_fit = []
         k_err = []
-
         error = traceback.format_exc(5)
+        
         print(f"{plotted=}\nerror while fitting data: \n{error=}", flush=True)
 
         if plotted:
-            MsgBox("Error", error, MB_ICONERROR)
+            widget.showdialog("Error", error, type="critical")
 
 
 fitPlot: list[Axes] = []
 expPlot: list[Axes] = []
+
 args = None
-widget = None
-savefile = None
+widget: felionQtWindow = None
+savefile: pt = None
 rateCoefficientArgs: tuple[np.ndarray, np.ndarray]  = ()
 
 
 def main(arguments):
-
     global args, currentLocation, nameOfReactants, expTime, expData, expDataError, temp, rateConstantsFileData, numberDensity, totalAttachmentLevels, selectedFile, initialValues, k3Labels, kCIDLabels, ratek3, ratekCID, savedir, savefile, keyFoundForRate, data, widget
 
     args = arguments
@@ -229,7 +222,6 @@ def main(arguments):
                 print(f"{keyFound=}", flush=True)
 
             if keyFound:
-
                 k3_fit_keyvalues = rateConstantsFileData[selectedFile]["k3_fit"]
                 k3Labels = [key.strip() for key in k3_fit_keyvalues.keys()]
                 ratek3 = np.array([float(value[0]) for value in k3_fit_keyvalues.values()])
@@ -238,9 +230,7 @@ def main(arguments):
                 kCIDLabels = [key.strip() for key in kCID_fit_keyvalues.keys()]
 
                 ratekCID = np.array([float(value[0]) for value in kCID_fit_keyvalues.values()])
-
                 if len(args["ratek3"].split(",")) == len(k3Labels):
-
                     if len(args["ratekCID"].split(",")) == len(kCIDLabels):
                         keyFoundForRate = True
                 else:
@@ -254,7 +244,16 @@ def main(arguments):
         ratekCID = [float(args["kCIDGuess"]) for _ in kCIDLabels]
 
     qapp = QApplication([])
-    widget = felionQtWindow(title=f"Population ratio", windowGeometry=(1200, 600), location=savedir)
+    
+    widget = felionQtWindow(title=f"Population ratio",
+        windowGeometry=(1200, 600), location=savedir, attachControlLayout=False
+    )
+    
     KineticMain()
+    
+    widget.ax.set_xbound(lower=-0.5)
+    widget.ax.set_ybound(lower=1)
+    
+    widget.optimize_figure()
     qapp.exec()
     

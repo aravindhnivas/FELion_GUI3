@@ -9,12 +9,10 @@ from scipy.integrate import solve_ivp
 from felionlib.utils.felionQt.utils.blit import BlitManager
 widget = None
 otherWidgetsToggle = False
-# plotted = False
 
 
 def hideOtherWidgets(event=None):
     global otherWidgetsToggle
-
     for otherWidget in widget.sliderWidgets:
         otherWidget.set_visible(otherWidgetsToggle)
 
@@ -61,7 +59,6 @@ def plot_exp(
     global toggleLine, widget
 
     widget = _widget
-
     data = args["data"]
     temp = float(args["temp"])
     molecule = args["molecule"]
@@ -78,24 +75,11 @@ def plot_exp(
     tspan = [0, duration]
     simulateTime = np.linspace(0, duration, 1000)
 
-    # widget.Figure(executeCodeWidget=False)
-
-    title = f"{selectedFile}: @{temp:.1f} K {numberDensity:.2e}" + "$cm^{-3}$"
+    title = f"{selectedFile}: @{temp:.1f}K {numberDensity:.2e} " + "cm$^{-3}$"
     ax: Axes = widget.ax
-    
-    ax.set(xlabel="Time (ms)", ylabel="Counts", yscale="log", title=title)
+    ax.set(xlabel="Time (s)", ylabel="Counts", yscale="log", title=title)
 
-    widget.fig.subplots_adjust(right=0.570, top=0.925, left=0.120, bottom=0.145)
-
-    # saveDataArgs = (
-    #     args, ratek3, k3Labels, kCIDLabels, k_fit, k_err, rateCoefficientArgs,
-    #     fitPlot, expPlot, rateConstantsFileData
-    # )
-    
-    # make_widgets(
-    #     widget=widget, fitfunc=fitfunc,
-    #     numberDensity=numberDensity, saveDataArgs=saveDataArgs
-    # )
+    widget.fig.subplots_adjust(right=0.570, top=0.900, left=0.120, bottom=0.160)
 
     k3Sliders, kCIDSliders = make_slider(
         widget,
@@ -110,7 +94,8 @@ def plot_exp(
 
     for counter, key in enumerate(data.keys()):
 
-        time = data[key]["x"]
+        time = np.array(data[key]["x"], dtype=float) * 1e-3 # ms -> s
+        
         counts = data[key]["y"]
         error = data[key]["error_y"]["array"]
         _expPlot = ax.errorbar(
@@ -118,10 +103,10 @@ def plot_exp(
             counts,
             error,
             fmt=".",
-            ms=10,
+            ms=7,
             label=key,
             c=pltColors[counter],
-            alpha=1,
+            alpha=1
         )
 
         expPlot.append(_expPlot)
@@ -138,8 +123,7 @@ def plot_exp(
 
     for counter, data in enumerate(dNdtSol):
 
-        (_fitPlot,) = ax.plot(simulateTime * 1e3, data, "-", c=pltColors[counter], alpha=1, animated=True)
-
+        (_fitPlot,) = ax.plot(simulateTime, data, "-", c=pltColors[counter], alpha=1, animated=True)
         fitPlot.append(_fitPlot)
     
     widget.blit = BlitManager(widget.canvas, fitPlot)
@@ -150,9 +134,9 @@ def plot_exp(
     legend = ax.legend(legends)
 
     for legline, origlinefit, origlineexp in zip(legend.get_lines(), fitPlot, expPlot):
-
         legline.set_picker(True)
         toggleLine[legline] = [origlinefit, origlineexp]
+        
     widget.canvas.mpl_connect("pick_event", on_pick)
 
     try:
@@ -165,8 +149,6 @@ def plot_exp(
         print(traceback.format_exc(), flush=True)
 
     widget.draw()
-    # widget.last_y = widget.last_y + widget.y_diff
-    # widget.Buttons("Toggle-Widgets", widget.x0, widget.last_y, hideOtherWidgets, relwidth=0.7)
     plotted = True
     
     return plotted, k3Sliders, kCIDSliders
