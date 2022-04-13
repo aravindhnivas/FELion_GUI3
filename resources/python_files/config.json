@@ -82,8 +82,8 @@
    "value": "felionlib"
   },
   {
-   "optionDest": "datas",
-   "value": "D:/FELion_GUI3/buildResources/icon.ico;."
+   "optionDest": "pathex",
+   "value": "D:/FELion_GUI3/resources/python_files"
   },
   {
    "optionDest": "collect_data",
