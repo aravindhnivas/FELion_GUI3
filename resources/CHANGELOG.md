@@ -1,13 +1,19 @@
 # What's new
 
 ## v3.6.0
+
 - Major improvements and bug fixes
-- using flask python server to communiate transfer (JSON) from python
+- using flask python server to communiate transfer (JSON) from python (Need local network port access so give it when prompted)
+- Replacing FELion_Tk (Tkinter3) with felionQt (PyQt6)
+- Updated packages (check about page)
 
 ---
+
 ## v3.5.3
 
-- Normline: Individula plot selection
+- Normline
+    - Individula plot selection
+
 - THz: 
     - Different fit profile
     - Individual plot selection
