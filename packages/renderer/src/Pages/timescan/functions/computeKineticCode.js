@@ -4,14 +4,23 @@ function computeKineticCodeScipy({nameOfReactants, ratek3, ratekCID}) {
     const nameOfReactantsArr = nameOfReactants.split(",").map(name => name.trim())
     const rateForwardArr = ratek3.split(",").map(name => name.trim())
     const rateReverseArr = ratekCID.split(",").map(name => name.trim())
-
     let dataToSet = "# Kinetics code\n"
 
     /////////////////////////////////////////////////////////////////////////
+    if (
+        rateForwardArr.length !== nameOfReactantsArr.length-1 || rateReverseArr.length !== nameOfReactantsArr.length-1
+    ) {
 
-    if (rateForwardArr.length !== rateReverseArr.length) {
         dataToSet += "## Defining min-max-value for new slider\n"
-        dataToSet += "```plaintext\nkvalueLimits = {\n\t'label': (min, max, value)\n}\n"
+        dataToSet += "```plaintext\n# min, max and value are integers let's say 'c', which will be converter to 10^c\n"
+        dataToSet += "\nkvalueLimits = {\n"
+        rateForwardArr.slice(nameOfReactantsArr.length-1, rateForwardArr.length).forEach((value) => {
+            dataToSet += `\t'${value}': (min, max, value),\n`
+        })
+        rateReverseArr.slice(nameOfReactantsArr.length-1, rateReverseArr.length).forEach((value) => {
+            dataToSet += `\t'${value}': (min, max, value)\n`
+        })
+        dataToSet += "}\n"
         dataToSet += "```\n"
 
     }

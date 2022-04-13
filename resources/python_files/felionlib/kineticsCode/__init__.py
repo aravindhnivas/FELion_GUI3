@@ -245,7 +245,7 @@ def main(arguments):
 
     qapp = QApplication([])
     
-    widget = felionQtWindow(title=f"Population ratio",
+    widget = felionQtWindow(title=f"kinetics : {selectedFile}",
         windowGeometry=(1200, 600), location=savedir, attachControlLayout=False
     )
     
