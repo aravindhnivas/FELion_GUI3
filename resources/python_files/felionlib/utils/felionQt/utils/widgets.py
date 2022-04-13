@@ -87,6 +87,7 @@ def toggle_this_artist(artist: Union[Iterable, Artist], alpha: float) -> float:
         for child in children:
             set_this_alpha: float = alpha if child.get_alpha() is None or child.get_alpha() == 1 else 1
             child.set_alpha(set_this_alpha)
+            
     return set_this_alpha
 
 class DoubleSlider(QtWidgets.QSlider):
@@ -111,7 +112,7 @@ class DoubleSlider(QtWidgets.QSlider):
         return super(DoubleSlider, self).setMinimum(value * self._multi)
 
     def setMaximum(self, value):
-        return super(DoubleSlider, self).setMaximum(value * self._multi)
+        return super(DoubleSlider, self).setMaximum(int(value * self._multi))
 
     def setSingleStep(self, value):
         return super(DoubleSlider, self).setSingleStep(value * self._multi)
