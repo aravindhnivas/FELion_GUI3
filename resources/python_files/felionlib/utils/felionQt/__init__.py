@@ -260,9 +260,9 @@ class felionQtWindow(QtWidgets.QMainWindow):
             minortickfn(plticker.AutoMinorLocator())
         
         if self.fomartTickCheck.isChecked():
-
             fmtString = self.tickFormatterWidget.text()
             self.formatterfn(plticker.StrMethodFormatter(fmtString))
+            
         self.draw()
 
     def update_tick_params(self, _val=0, ax=None, draw=True, **kwargs):

@@ -21,7 +21,7 @@ class timescanplot:
 
         qapp = QApplication([])
 
-        self.widget = felionQtWindow(
+        self.widget = felionQtWindow(title=self.scanfile.name,
             figXlabel="Time (ms)", figYlabel="Counts", location=self.location / "OUT", savefilename=self.scanfile.stem
         )
         self.legend_handler = {}
