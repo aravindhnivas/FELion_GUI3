@@ -80,6 +80,14 @@
   {
    "optionDest": "hiddenimports",
    "value": "felionlib"
+  },
+  {
+   "optionDest": "datas",
+   "value": "D:/FELion_GUI3/buildResources/icon.ico;."
+  },
+  {
+   "optionDest": "collect_data",
+   "value": "felionlib.utils.felionQt"
   }
  ],
  "nonPyinstallerOptions": {
