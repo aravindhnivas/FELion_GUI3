@@ -47,12 +47,12 @@
         let {pyfile, args} = pyfileInfo[filetype]
         if (tkplot) {filetype = "general"}
 
-        if(!justPlot && paramsTable.length<1) return window.createToast("No initial guesses were given", "danger")
-
+        
         if (filetype == "general") {
             return computePy_func({e, pyfile, args, general:true })
         }
-
+        
+        if(!justPlot && paramsTable.length<1) return window.createToast("No initial guesses were given", "danger")
         dataReady = false
 
 
