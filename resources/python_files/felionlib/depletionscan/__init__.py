@@ -74,9 +74,9 @@ class depletionplot:
 
         slider_layout_vbox = QtWidgets.QVBoxLayout()
 
-        slider_layout_Koff, self.Koff_slider = self.widget.makeSlider("Koff", Koff, callback=self.update)
+        slider_layout_Koff, self.Koff_slider = self.widget.makeSlider("Koff", float(Koff), callback=self.update)
         slider_layout_N, self.N_slider = self.widget.makeSlider("N", int(N), callback=self.update)
-        slider_layout_Kon, self.Kon_slider = self.widget.makeSlider("Kon", Kon, callback=self.update)
+        slider_layout_Kon, self.Kon_slider = self.widget.makeSlider("Kon", float(Kon), callback=self.update)
         slider_layout_Na, self.Na_slider = self.widget.makeSlider("Na", int(Na0), callback=self.update)
         slider_layout_Nn, self.Nn_slider = self.widget.makeSlider("Nn", int(Nn0), callback=self.update)
 
@@ -130,11 +130,7 @@ class depletionplot:
         additional_widgets_group.setLayout(additional_widgets_layout)
 
         self.widget.finalControlLayout.addWidget(additional_widgets_group)
-        # self.widget.controlLayout.addWidget(additional_widgets_group)
-        # self.widget.controlLayout.addLayout(slider_layout_vbox)
-        # self.widget.controlLayout.addLayout(update_buttons_layout)
-        # self.widget.controlLayout.addLayout(write_file_layout)
-
+        
     def saveFile(self, event=None, show=True):
 
         depletion_dir = self.location / self.write_filename_input.text()
@@ -198,11 +194,11 @@ class depletionplot:
         Koff, N = off or self.resOff_fit()
         Na0, Nn0, Kon = on or self.resOn_fit(Koff, N)
 
-        self.Koff_slider.setValue(Koff)
-        self.N_slider.setValue(N)
-        self.Kon_slider.setValue(Kon)
-        self.Na_slider.setValue(Na0)
-        self.Nn_slider.setValue(Nn0)
+        self.Koff_slider.setValue(float(Koff))
+        self.N_slider.setValue(int(N))
+        self.Kon_slider.setValue(float(Kon))
+        self.Na_slider.setValue(int(Na0))
+        self.Nn_slider.setValue(int(Nn0))
 
     def startPlotting(self, make_slider_widget=True):
 
@@ -228,33 +224,37 @@ class depletionplot:
             self.depletion_widgets(Koff, Kon, N, Na0, Nn0)
         else:
             self.set_slider_values(on=(Na0, Nn0, Kon), off=(Koff, N))
-
+        
         self.runFit(Koff, Kon, N, Na0, Nn0)
 
     def runFit(self, Koff, Kon, N, Na0, Nn0, plot=True):
 
         uKoff = uf(Koff, self.Koff_err)
         uN = uf(N, self.N_err)
+        
         uNa0 = uf(Na0, self.Na0_err)
         uNn0 = uf(Nn0, self.Nn0_err)
         uKon = uf(Kon, self.Kon_err)
 
         self.lg0 = "Laser ON"
+        
         self.write_lg0 = "K$_{ON}$: " + f"{uKon:.2uP}"
         self.write_lg0 += f"\nNn: {Nn0:.0f}({self.Nn0_err:.0f})"
         self.write_lg0 += f"\nNa: {Na0:.0f}({self.Na0_err:.0f})"
+        
         self.lg1 = "Laser OFF"
+        
         self.write_lg1 = "K$_{OFF}$: " + f"{uKoff:.1uP}"
         self.write_lg1 = f"\nN: {N:.0f}({self.N_err:.0f})"
+        
         self.get_depletion_fit(Koff, N, uKoff, uN, Na0, Nn0, Kon, uNa0, uNn0, uKon, plot)
         self.get_relative_abundance_fit(plot)
         
-        # self.ax0.legend([self.lg0, self.lg1])
-        # self.ax1.legend(
-        #     [f"A: {self.uA:.1uP}", "Experiment"], title="$D(t)=A*(1-e^{-K_{ON}*E})$"
-        # )
-
         if plot:
+            self.ax0.legend([self.lg0, self.lg1])
+            self.ax1.legend(
+                [f"A: {self.uA:.1uP}", "Experiment"], title="$D(t)=A*(1-e^{-K_{ON}*E})$"
+            )
             self.ax0.ticklabel_format(axis="y", style="sci", scilimits=(0, 0))
             animated_artist = (
                 self.ax0_plot["resOn"],
@@ -264,7 +264,7 @@ class depletionplot:
             self.blit = BlitManager(self.widget.canvas, animated_artist)
 
     def update(self, event=None):
-
+        if self.N_slider.value() == 0: return
         Koff = self.Koff_slider.value()
         Kon = self.Kon_slider.value()
         N = self.N_slider.value()
@@ -483,4 +483,3 @@ def main(arguments):
     saveOutputDepletion = arguments["saveOutputDepletion"]
 
     depletionplot(location, resOnFile, resOffFile, power, nshots, massIndex, timestartIndex, saveOutputDepletion)
-
