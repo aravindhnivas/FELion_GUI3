@@ -413,13 +413,17 @@ class felionQtWindow(QtWidgets.QMainWindow):
     #     self.updateFigsizeDetails()
 
     def makefigsizeControlWidgets(self):
+        
         def updateFigureSize(_val):
+        
             self.figsize = (self.figsizeWidthWidget.value(), self.figsizeHeightWidget.value())
             self.fig.set_size_inches(self.figsize)
             self.draw()
+            
             canvas_width = self.figsize[0] * self.fig.dpi
             canvas_height = self.figsize[1] * self.fig.dpi
-            self.canvasWidget.resize(canvas_width, canvas_height)
+            
+            self.canvasWidget.resize(int(canvas_width), int(canvas_height))
 
         layout = QtWidgets.QHBoxLayout()
 
@@ -1030,78 +1034,72 @@ class felionQtWindow(QtWidgets.QMainWindow):
         dialogBox = QtWidgets.QMessageBox(self)
         dialogBox.setWindowTitle(title)
         dialogBox.setText(msg)
-
         if type == "info":
             dialogBox.setIcon(QtWidgets.QMessageBox.Icon.Information)
         elif type == "warning":
             dialogBox.setIcon(QtWidgets.QMessageBox.Icon.Warning)
-        
         elif type == "critical":
             dialogBox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
+        
         dialogBox.exec()
 
     def makeSlider(
-        self, 
+        self,
+        
         label: str="", 
         value: Union[float, int]=0, 
-    
         _min: Union[float, int]=0,
         _max: Union[float, int]=None,
-        # _step: Union[float, int]=1,
         decimals: int=2,
         ticks: bool=False,
-        # noOfTicks: int = 10,
         callback: Callable = None
-    ):
-
-        if isinstance(value, float):
-            slider = DoubleSlider(decimals, orientation=Qt.Orientation.Horizontal)
-        elif isinstance(value, int):
-            slider = QtWidgets.QSlider(orientation=Qt.Orientation.Horizontal)
-        else:
-            raise ValueError("Given invalid slider value, ", value)
+    ) -> tuple[QtWidgets.QHBoxLayout, Union[QtWidgets.QSpinBox, QtWidgets.QDoubleSpinBox]]:
         
-        print(f"creating slider {label} {value} of {type(value)=}")
-        # if _min > value:
-        #     raise Exception(f"{_min=} value is greater than {value=}")
-        # if _max < value:
-        #     _max = value + value*5
-        #     raise Exception(f"{_max=} value is lesser than {value=}")
+        _max = _max or value * 5
+        factor = 10**decimals
+        slider = QtWidgets.QSlider(
+            orientation=Qt.Orientation.Horizontal,
+            singleStep=1,
+            maximum=int(_max * factor),
+            minimum=int(_min * factor)
+        )
         
-        slider.setMinimum(_min)
-        slider.setMaximum(_max or value*5)
-        
-        slider.setValue(value)
-        # slider.setSingleStep(_step)
-        slider.setObjectName(f"slider_{label}")
-        slider.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
-
         if ticks:
-        
             slider.setTickPosition(QtWidgets.QSlider.TickPosition.TicksBelow)
-            # slider.setTickInterval(int( (_max - _min) / noOfTicks))
-            # slider.setTickInterval(50)
 
-        trailing_label = QtWidgets.QLabel(str(value) if isinstance(value, int) else f"{round(value, decimals)}")
+        if isinstance(value, int):
+            spinbox = QtWidgets.QSpinBox(minimum=int(_min), maximum=int(_max))
+            slider.valueChanged.connect(lambda val: spinbox.setValue(int(val / factor)))
         
-        def updated_callback(val):
-
-            if callback: callback(val)
-            trailing_label.setText(str(val) if isinstance(val, int) else f"{round(val, decimals)}")
-        
-        if isinstance(value, float):
-            slider.doubleValueChanged.connect(updated_callback)
         else:
-            slider.valueChanged.connect(updated_callback)
-
+            
+            spinbox = QtWidgets.QDoubleSpinBox(
+                maximum=_max,
+                minimum=_min,
+                decimals=decimals,
+                singleStep=0.025*_max, 
+            )
+            
+            slider.valueChanged.connect(lambda val: spinbox.setValue(val / factor))
+            
+        def updated_callback(val):
+            slider.setValue(int(val * factor))
+            if callback: callback(val)
+        
+        spinbox.setValue(value)
+        slider.setValue(int(value * factor))
+        
+        spinbox.valueChanged.connect(updated_callback)
+        
         layout = QtWidgets.QHBoxLayout()
         label = QtWidgets.QLabel(label)
 
-        layout.addWidget(label)
-        layout.addWidget(slider)
-        layout.addWidget(trailing_label)
+        layout.addWidget(label, 1)
+        layout.addWidget(slider, 5)
+        layout.addWidget(spinbox, 2)
+        # layout.setAlignment(spinbox, Qt.AlignmentFlag.AlignLeft)
         
-        return layout, slider
+        return layout, spinbox
 
     def showYesorNo(self, title="Info", info=""):
         response = QtWidgets.QMessageBox.question(
