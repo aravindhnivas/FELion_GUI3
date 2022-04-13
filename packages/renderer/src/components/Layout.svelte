@@ -29,8 +29,8 @@
 <script>
 
     import { 
-        onMount, tick, 
-        createEventDispatcher 
+        onMount, tick, onDestroy,
+        createEventDispatcher, 
     }                                   from 'svelte';
     import { fly, fade }                from 'svelte/transition';
     import Textfield                    from '@smui/textfield';
@@ -57,7 +57,6 @@
     ////////////////////////////////////////////////////////////////////////////
 
     const dispatch = createEventDispatcher()
-
     async function browse_folder() {
         const result = await browse()
         if (!result) return
@@ -66,25 +65,28 @@
         console.log(result, currentLocation)
     }
 
-    onMount(()=>{ 
+    onMount(()=>{
         console.log(id, "mounted")
         currentLocation = db.get(`${filetype}_location`) || ""
     })
 
-    const lookForGraph = () => {
-        try { graphDivs = Array.from(document.querySelectorAll(`#${filetype}-plotContainer .graph__div`))} 
-        catch (error) {console.log(error)}
+    let graphDivContainer;
+    
+    const lookForGraph = (node) => {
 
+        try { 
+            graphDivs = Array.from(
+                document.querySelectorAll(
+                    `#${filetype}-plotContainer .graph__div`
+                )
+            )
+        } catch (error) {console.log(error)}
     }
 
     function openGraph(){
-        
-        const mount = document.getElementById(`${filetype}-plotContainer`)
-        
         const graphWindow = new WinBox({ class: graphWindowClasses,
             root:document.getElementById("pageContainer"),
-        
-            mount,  title: `Modal: ${filetype}`,
+            mount: graphDivContainer,  title: `Modal: ${filetype}`,
             x: "center", y: "center",
             width: "70%", height: "70%",
             background:"#634e96",
@@ -100,13 +102,7 @@
         console.log("Updating graphDivs width")
         await tick();
         graphDivs.forEach(id=>{if(id.data) {relayout(id, {width: id.clientWidth})}})
-        originalWidth = plotWidth
-
     }
-    
-    let widthChange = false
-    let originalWidth = plotWidth
-    $: if (widthChange) {changeGraphDivWidth()};
     
 </script>
 
@@ -114,8 +110,7 @@
 
     <div class="main__layout__div">
         <div class="interact left_container__div box " transition:fly="{{ x: -100, duration: 500 }}" 
-            on:mouseup={()=>{if(originalWidth !== plotWidth) widthChange=true}}
-            on:mousedown={()=>widthChange=false} 
+            on:mouseup={changeGraphDivWidth}
         >
             <FileBrowser bind:currentLocation {filetype} bind:fileChecked on:chdir bind:fullfileslist on:markedFile/>
         </div>
@@ -140,7 +135,7 @@
             </div>
 
             <div class="plot__div" id="{filetype}-plotContainer" transition:fade 
-                use:lookForGraph bind:clientWidth={plotWidth} > 
+                use:lookForGraph bind:clientWidth={plotWidth} bind:this={graphDivContainer} > 
 
                 <slot name="plotContainer" {lookForGraph} />
                 {#if graphPlotted}
