@@ -23,7 +23,7 @@ mpl.use("QtAgg")
 import matplotlib.pyplot as plt
 
 
-QApplication: QtWidgets.QApplication = QtWidgets.QApplication
+QApplication = QtWidgets.QApplication
 
 
 def excepthook(etype, value, tb):
