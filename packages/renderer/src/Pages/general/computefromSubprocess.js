@@ -1,10 +1,14 @@
 
 import { pyProgram, pythonscript, get, pyVersion, pyServerReady, developerMode } from "../settings/svelteWritables";
+import { running_processes } from "$src/svelteWritable";
+// import {difference} from "lodash-es"
 
 export const dispatchEvent = (target, detail, eventName) => {
+
     const pyEventClosed = new CustomEvent(eventName,  { bubbles: false, detail })
     target?.dispatchEvent(pyEventClosed)
     console.info(eventName + " dispatched")
+
 }
 
 export default async function({
@@ -40,10 +44,13 @@ export default async function({
         console.log(get(pyProgram), {pyArgs})
         
         const opts = {detached: detached !== null ? detached : general, shell}
+
         const py = spawn(get(pyProgram), pyArgs, opts)
-        
+
+        if(pyfile !== "server") {running_processes.update(p => [...p, {...py, pyfile}])}
         py.on("error", (err) => {
             window.handleError(err)
+            if(pyfile !== "server") {running_processes.update(p => p.filter(p => p.pid !== py.pid))}
             return
         })
         
@@ -55,14 +62,11 @@ export default async function({
         
         dispatchEvent(target, { py, pyfile }, "pyEvent")
 
-
         py.on("close", () => {
-
-            if(pyfile === "server") {
-                pyServerReady.set(false)
-            }
+            if(pyfile === "server") {pyServerReady.set(false)}
             
             dispatchEvent(target, { py, pyfile, dataReceived, error }, "pyEventClosed")
+            if(pyfile !== "server") {running_processes.update(p => p.filter(p => p.pid !== py.pid))}
 
             if(error) {
                 resolve(null)
@@ -86,12 +90,9 @@ export default async function({
             if(target?.classList.contains("is-loading")) {
                 target.classList.remove("is-loading")
             }
-
             console.info("Process closed")
-        
         })
 
-        
         py.stderr.on("data", (err) => {
         
             if(pyfile === "server") {

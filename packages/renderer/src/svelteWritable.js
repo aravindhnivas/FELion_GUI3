@@ -25,3 +25,4 @@ function openModalStore() {
 export const mainPreModal = openModalStore()
 
 export const activePage = writable("")
+export const running_processes = writable([])

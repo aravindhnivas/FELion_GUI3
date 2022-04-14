@@ -38,8 +38,8 @@ def var_find(openfile):
 class Create_Baseline:
 
     epsilon = 5
-
-    def __init__(self, filename, checkdir=True):
+    # __slots__ = ["filename", "checkdir"]
+    def __init__(self, filename: pt, checkdir=True):
 
         self.fname = filename.stem
         self.felixfile = filename.name

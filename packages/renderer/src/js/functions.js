@@ -1,7 +1,8 @@
 
 import {mainPreModal} from "../svelteWritable";
 import { writable } from 'svelte/store';
-import { toasts }  from "svelte-toasts";
+// import { toasts }  from "svelte-toasts";
+import { toast } from '@zerodevx/svelte-toast'
 import {bulmaQuickview} from 'bulma-extensions';
 
 export const activateChangelog = writable(false)
@@ -15,17 +16,33 @@ import "./resizableDiv"
 import "./clickOutside"
 import "../Pages/general/computePy"
 
-window.createToast = (description, type = "info", placement = 'bottom-center') => {
-    const theme = {
-        // title: type == 'danger' ? 'ERROR' : type.toUpperCase(),
-        description,
-        duration: 3000,
-        placement,
-	    showProgress: false,
-        type: type == 'danger' ? 'error' : type,
-        theme: 'dark'
-    };
-    toasts.add(theme)
+const toastTheme = {
+    info: {},
+    success: {
+        '--toastBackground': '#48BB78',
+        '--toastBarBackground': '#2F855A'
+    },
+    danger: {
+        '--toastBackground': '#F56565',
+        '--toastBarBackground': '#C53030'
+    },
+    warning: {
+        '--toastBackground': '#FFB84D',
+        '--toastBarBackground': '#C28B00'
+    }
+}
+window.createToast = (description, type = "info", opts={}) => {
+    // const theme = {
+    //     // title: type == 'danger' ? 'ERROR' : type.toUpperCase(),
+    //     description,
+    //     duration: 3000,
+    //     placement,
+	//     showProgress: false,
+    //     type: type == 'danger' ? 'error' : type,
+    //     theme: 'dark'
+    // };
+    // toasts.add(theme)
+    toast.push(description, {theme: toastTheme[type], pausable: true, ...opts})
 }
 window.sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 

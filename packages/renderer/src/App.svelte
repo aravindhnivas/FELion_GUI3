@@ -15,9 +15,9 @@
 	import Kinetics from "./Pages/Kinetics.svelte"
 	import PreModal from "$components/PreModal.svelte";
 	import {onMount, tick} from "svelte";
-	import {ToastContainer, FlatToast }  from "svelte-toasts";
-
-	let mounted=false;
+	// import {ToastContainer, FlatToast }  from "svelte-toasts";
+	import { SvelteToast } from '@zerodevx/svelte-toast'
+	let mounted=false;	
 
 	onMount(async ()=>{
 		const allbuttons = Array.from(document.querySelectorAll(".button"))
@@ -26,19 +26,28 @@
 		mounted=true;
 	})
 	const navItems = ["Home", "Normline", "Masspec", "Timescan", "THz", "Kinetics", "Powerfile", "Misc", "Settings"]
+
+	const toastOpts = {
+		reversed: true, 
+		intro: { y: 100 },
+		target: document.getElementById("pageContainer")
+	}
 </script>
 
 {#if $windowLoaded}
 
 	{#if mounted}
 		<PreModal />
-		<ToastContainer placement="bottom-right" let:data={data}>
+		<!-- <ToastContainer placement="bottom-right" let:data={data}>
 			<FlatToast {data} />
-		</ToastContainer>
+		</ToastContainer> -->
+
+		<SvelteToast options={toastOpts} />
 	{/if}
 
 	<Navbar {navItems} />
 	<Home />
+
 	<div id="pageContainer" style="overflow: hidden;display: {mounted ? 'block': 'none'}">
 		<Normline />
 		<Masspec />
@@ -49,6 +58,17 @@
 		<Misc />
 		<Settings />
 	</div>
-
 	<Footer />
+
 {/if}
+
+<style global>
+	:root {
+
+		--toastContainerTop: auto;
+		--toastContainerRight: auto;
+		--toastContainerBottom: 3rem;
+		--toastContainerLeft: calc(50vw - 8rem);
+	}
+
+</style>

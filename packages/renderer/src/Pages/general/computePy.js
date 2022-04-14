@@ -23,9 +23,7 @@ export default async function({
         if(general) {
             console.info(target)
             if(target) {
-                // if(!target.classList.contains("ld-ext-right")) {
-                //     target.classList.add("ld-ext-right")
-                // }
+                
                 processDivGeneral = target.getElementsByClassName("tag")
                 if(processDivGeneral.length === 0) {
                     processDivGeneral = document.createElement("span")
