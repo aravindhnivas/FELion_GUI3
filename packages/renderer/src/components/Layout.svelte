@@ -97,13 +97,16 @@
 
     let plotWidth;
     let graphDivs = []
-
+    let original_plot_width = plotWidth;
+    $: update_plot_width = original_plot_width !== plotWidth
     const changeGraphDivWidth = async () => {
+
+        if(!update_plot_width) return
         console.log("Updating graphDivs width")
+        original_plot_width = plotWidth;
         await tick();
         graphDivs.forEach(id=>{if(id.data) {relayout(id, {width: id.clientWidth})}})
     }
-    
 </script>
 
 <section {id} style:display class="animated fadeIn">
