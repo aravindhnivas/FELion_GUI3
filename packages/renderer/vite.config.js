@@ -1,5 +1,3 @@
-/* eslint-env node */
-
 import {chrome} from '../../.electron-vendors.cache.json';
 import {join} from 'path';
 import { builtinModules } from 'module';
@@ -10,11 +8,10 @@ import autoPreprocess from 'svelte-preprocess';
 const PACKAGE_ROOT = __dirname;
 
 
-
 const config = {
   mode: process.env.MODE,
+
   root: PACKAGE_ROOT,
-  // emptyOutDir: true,
   resolve: {
     alias: {
       '$preload': join(PACKAGE_ROOT, '..', 'preload'),
@@ -22,6 +19,7 @@ const config = {
       '$components': join(PACKAGE_ROOT, 'src/components'),
       '$computeCode': join(PACKAGE_ROOT, 'src/Pages/computeCode'),
     },
+    dedupe: ['svelte'],
   },
   plugins: [svelte({preprocess: autoPreprocess()})],
   base: '',
