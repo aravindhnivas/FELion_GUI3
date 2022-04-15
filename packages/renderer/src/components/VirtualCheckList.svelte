@@ -17,7 +17,7 @@
         {@const highlight = markedFile == item.name}
         <List checklist>
             <Item
-                style="border-radius: 1em; border: {highlight ? 'solid 1px #ffc107': ''}" >
+                style="border-radius: 1em; border: {highlight ? 'solid 1px #ffc107': ''};" >
                 <Label>{item.name}</Label>
                 <Meta><Checkbox bind:group={fileChecked} value={item.name} on:click/></Meta>
             </Item>
@@ -25,3 +25,9 @@
     </VirtualList>
 
 </div>
+
+<style global>
+    .mdc-deprecated-list {
+        padding-right: 1em;
+    }
+</style>
