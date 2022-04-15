@@ -22,8 +22,12 @@ export function savefile({file={}, name="", location=""}={}) {
 export function loadfile(name) {
 
     try {
+        console.log(name)
         const filename = pathJoin(get(felixopoLocation), `${name}.json`)
-        if(!fs.existsSync(filename)) return {}
+        if(!fs.existsSync(filename)) {
+            window.createToast(`Invalid file: ${name}.json .`, "danger")
+            return {}
+        }
 
         const loadedfile = fs.readJsonSync(filename)?.file?.map(arr=>({...arr, id:getID()})) || []
         console.log({loadedfile})
