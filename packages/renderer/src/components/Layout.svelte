@@ -155,25 +155,25 @@
                 </div>
             </div>
 
-            
-
         </div>
 
         {#if activateConfigModal}
             <Modal title="{filetype.toUpperCase()} Settings" bind:active={activateConfigModal} >
+
                 <svelte:fragment slot="content">
                     <slot name="config"></slot>
                 </svelte:fragment>
+
                 <svelte:fragment slot="footerbtn">
                     <button class="button is-link" on:click={()=>{dispatch('configSave', {filetype})}}>Save</button>
                 </svelte:fragment>
-
+            
             </Modal>
         {/if}
+
     </div>
     
 </section>
-
 
 <style lang="scss">
     .box {
