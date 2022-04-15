@@ -15,7 +15,7 @@
 </script>
 
 <div class="report-editor-div" id="kinetics-editor__div">
-    <Editor filetype="kinetics"
+    <Editor filetype="kinetics" showReport={true}
         mount="#kinetics-editor__div" id="kinetics-editor"
         mainTitle="Kinetic Code" bind:editor
         savefilename={kineticEditorFilename}

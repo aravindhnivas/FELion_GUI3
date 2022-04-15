@@ -16,6 +16,7 @@
     export let reportRead=false;
     export let savefilename="report";
     export let reportSaved = false;
+    export let showReport = false;
 
     const md = new Remarkable();
     async function mountEditor(node) {
@@ -24,7 +25,11 @@
         } catch (error) {window.handleError( error );}
     }
 
-    onDestroy(() => {editor?.destroy(); console.info("editor destroyed")})
+    onDestroy(() => {editor?.destroy?.(); console.info("editor destroyed")})
+    $: if(!showReport && editor) {
+        editor.destroy();
+        console.info("editor destroyed")
+    }
     if(db.get(`${filetype}-report-md`)) {
         location = db.get(`${filetype}-report-md`)
     }
@@ -110,42 +115,52 @@
 
     <div class="notice__div">
         {mainTitle}
+
+        <div 
+            style="display: flex; font-size: large; font-weight: 400; padding-right: 1em;" 
+            on:click="{()=>showReport=!showReport}">
+            {showReport ? 'hideReport' : 'showReport'}
+        </div>
         {#if reportWindowClosed}
             <i class="material-icons" on:click="{openReport}">zoom_out_map</i>
         {/if}
     </div>
 
-    <div class="report_controler__div box" style="border: solid 1px #fff7;">
-        <div class="report_location__div" >
-            <button class="button is-link" on:click="{browse_folder}">Browse</button>
-            <Textfield bind:value={location} label="report location" />
-            <Textfield bind:value={savefilename} label="report name" style="min-width: 70%;"/>
+    {#if showReport}
+        <div class="report_controler__div box" style="border: solid 1px #fff7;">
+            <div class="report_location__div" >
+                <button class="button is-link" on:click="{browse_folder}">Browse</button>
+                <Textfield bind:value={location} label="report location" />
+                <Textfield bind:value={savefilename} label="report name" style="min-width: 70%;"/>
 
-            <i class="material-icons animated faster" 
-                on:animationend={({target})=>target.classList.remove("rotateIn")} 
-                on:click="{updateFiles}">
-                refresh
-            </i>
+                <i class="material-icons animated faster" 
+                    on:animationend={({target})=>target.classList.remove("rotateIn")} 
+                    on:click="{updateFiles}">
+                    refresh
+                </i>
 
+            </div>
+            <div class="btn-row">
+                <slot name="btn-row"></slot>
+                <button class="button is-warning" on:click={readFromFile}>read</button>
+                <button class="button is-link" on:click="{saveReport}">Save</button>
+                <CustomSwitch bind:selected={autoRead} label="autoRead"/>
+            </div>
         </div>
-        <div class="btn-row">
-            <slot name="btn-row"></slot>
-            <button class="button is-warning" on:click={readFromFile}>read</button>
-            <button class="button is-link" on:click="{saveReport}">Save</button>
-            <CustomSwitch bind:selected={autoRead} label="autoRead"/>
-        </div>
-    </div>
-</div>
-
-<div class="ckeditor-svelte content" {id} use:mountEditor >
-    
-    {#if window.fs.existsSync(reportFile)}
-        {@html md.render(window.fs.readFileSync(reportFile))}
-    {:else}
-        <h1>{filetype.toUpperCase()} Report</h1>
     {/if}
-
 </div>
+
+{#if showReport}
+    <div class="ckeditor-svelte content" {id} use:mountEditor style:display={showReport ? '' : 'none'}>
+        
+        {#if window.fs.existsSync(reportFile)}
+            {@html md.render(window.fs.readFileSync(reportFile))}
+        {:else}
+            <h1>{filetype.toUpperCase()} Report</h1>
+        {/if}
+
+    </div>
+{/if}
 
 <style global lang="scss">
 
