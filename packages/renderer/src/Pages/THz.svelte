@@ -79,10 +79,8 @@
                 rawDataProcessed.data = dataFromPython["resOnOff_Counts"]
                 dataReady = true
                 numOfFittedLines = 0
-
             }
-
-            window.createToast("Graph plotted", "success")
+            // window.createToast("Graph plotted", "success")
             graphPlotted = true
         
         }
@@ -212,8 +210,18 @@
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer_reports">
-        <button class="button is-danger" style="margin-left: auto; width: 7em;" on:click="{()=>fittedParamsTable=[]}">Clear Table</button>
-        <Table keys={freqTableKeys} head={tableHeader} bind:rows={fittedParamsTable} disableInput={true} addextraOption={false} />
+        
+        <button class="button is-danger" 
+            style="margin-left: auto; width: 7em;" 
+            on:click="{()=>fittedParamsTable=[]}">
+            Clear Table
+        </button>
+        <Table 
+            keys={freqTableKeys}
+            head={tableHeader}
+            disableInput={true}
+            addextraOption={false}
+            bind:rows={fittedParamsTable}
+        />
     </svelte:fragment>
-
 </Layout>

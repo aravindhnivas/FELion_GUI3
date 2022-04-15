@@ -599,7 +599,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         suffix: str = None,
         setkey: str = None,
         width: int = None,
-        callback: Callable = None,
+        callback: Callable[[Union[int, float]], Any] = None,
     ) -> Union[QtWidgets.QSpinBox, QtWidgets.QDoubleSpinBox]:
 
         spinbox = QtWidgets.QDoubleSpinBox() if isinstance(value, float) else QtWidgets.QSpinBox()
@@ -712,7 +712,6 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.legendDraggableCheckWidget = QtWidgets.QCheckBox("dragg")
         self.legendDraggableCheckWidget.stateChanged.connect(lambda state: updateLegendState(state, "dragg"))
         self.legendalpha: float = 0.5
-
         toggleLegendAlphaWidget = self.createSpinBox(0.5, _step=0.1, _max=1, prefix="alpha: ", setkey="legendalpha")
 
         controllerLayout.addWidget(self.legendToggleCheckWidget)
@@ -854,7 +853,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         controllerLayout = QtWidgets.QFormLayout()
 
         self.tick_label_fontsize_controller_widget = self.createSpinBox(
-            self.fontsize, _min=5, width=50, callback=self.updateTickLabelSz
+            value=int(self.fontsize), _min=5, width=50, callback=self.updateTickLabelSz
         )
 
         self.tickFormatStyleWidget = QtWidgets.QComboBox()
@@ -1044,17 +1043,17 @@ class felionQtWindow(QtWidgets.QMainWindow):
             self.attachControlLayout()
 
     def showdialog(self, title="Info", msg="", type: Literal["info", "warning", "critical"] = "info"):
-
         dialogBox = QtWidgets.QMessageBox(self)
         dialogBox.setWindowTitle(title)
         dialogBox.setText(msg)
+        
         if type == "info":
             dialogBox.setIcon(QtWidgets.QMessageBox.Icon.Information)
         elif type == "warning":
             dialogBox.setIcon(QtWidgets.QMessageBox.Icon.Warning)
         elif type == "critical":
             dialogBox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
-
+            
         dialogBox.exec()
 
     def makeSlider(
@@ -1065,7 +1064,8 @@ class felionQtWindow(QtWidgets.QMainWindow):
         _max: Union[float, int] = None,
         decimals: int = 2,
         ticks: bool = False,
-        callback: Callable = None,
+        
+        callback: Callable[[Union[int, float]], Any] = None,
     ) -> tuple[QtWidgets.QHBoxLayout, Union[QtWidgets.QSpinBox, QtWidgets.QDoubleSpinBox]]:
 
         _max = _max or value * 5

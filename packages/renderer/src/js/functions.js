@@ -32,16 +32,6 @@ const toastTheme = {
     }
 }
 window.createToast = (description, type = "info", opts={}) => {
-    // const theme = {
-    //     // title: type == 'danger' ? 'ERROR' : type.toUpperCase(),
-    //     description,
-    //     duration: 3000,
-    //     placement,
-	//     showProgress: false,
-    //     type: type == 'danger' ? 'error' : type,
-    //     theme: 'dark'
-    // };
-    // toasts.add(theme)
     toast.push(description, {theme: toastTheme[type], pausable: true, ...opts})
 }
 window.sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -65,6 +55,7 @@ window.togglepage = (id) => {
     getPageStatus(id) ? targetElement(id).style.display = "none" : targetElement(id).style.display = "block"
 }
 
+
 window.asyncForEach = async (array, callback) => {
     for (let index = 0; index < array.length; index++) {await callback(array[index], index, array);}
 }
@@ -73,5 +64,5 @@ window.addEventListener('DOMContentLoaded', (event) => {
     console.log('DOM fully loaded and parsed');
     windowLoaded.set(true)
     bulmaQuickview.attach()
-});
 
+});

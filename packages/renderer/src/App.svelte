@@ -14,8 +14,7 @@
 	import Misc from "./Pages/Misc.svelte"
 	import Kinetics from "./Pages/Kinetics.svelte"
 	import PreModal from "$components/PreModal.svelte";
-	import {onMount, tick} from "svelte";
-	// import {ToastContainer, FlatToast }  from "svelte-toasts";
+	import { onMount, tick} from "svelte";
 	import { SvelteToast } from '@zerodevx/svelte-toast'
 	let mounted=false;	
 
@@ -25,29 +24,22 @@
 		await tick()
 		mounted=true;
 	})
-	const navItems = ["Home", "Normline", "Masspec", "Timescan", "THz", "Kinetics", "Powerfile", "Misc", "Settings"]
 
-	const toastOpts = {
-		reversed: true, 
-		intro: { y: 100 },
-		target: document.getElementById("pageContainer")
-	}
+	const navItems = ["Home", "Normline", "Masspec", "Timescan", "THz", "Kinetics", "Powerfile", "Misc", "Settings"]
+	const toastOpts = {reversed: true, intro: { y: 100 }}
+
 </script>
 
 {#if $windowLoaded}
 
 	{#if mounted}
 		<PreModal />
-		<!-- <ToastContainer placement="bottom-right" let:data={data}>
-			<FlatToast {data} />
-		</ToastContainer> -->
-
 		<SvelteToast options={toastOpts} />
 	{/if}
 
 	<Navbar {navItems} />
 	<Home />
-
+	
 	<div id="pageContainer" style="overflow: hidden;display: {mounted ? 'block': 'none'}">
 		<Normline />
 		<Masspec />
@@ -60,15 +52,14 @@
 	</div>
 	<Footer />
 
-{/if}
+	{/if}
 
 <style global>
-	:root {
 
+	:root {
 		--toastContainerTop: auto;
 		--toastContainerRight: auto;
 		--toastContainerBottom: 3rem;
 		--toastContainerLeft: calc(50vw - 8rem);
 	}
-
 </style>

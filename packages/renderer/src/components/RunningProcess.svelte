@@ -1,11 +1,15 @@
 <script>
-	import {running_processes} from "../svelteWritable";
+	import {running_processes, running_processes_opened} from "../svelteWritable";
 	import DataTable, { Head, Body, Row, Cell } from '@smui/data-table';
 	import { toast } from '@zerodevx/svelte-toast'
+	import { onDestroy, onMount } from "svelte";
 	export let toastId=""
+	onMount(()=>{$running_processes_opened=true})
+	onDestroy(()=>{$running_processes_opened=false})
 </script>
 
 <DataTable table$aria-label="current processes list" style="width: 100%;">
+
 	<Head>
 		<Row>
 			<Cell>PID</Cell>
@@ -14,7 +18,9 @@
 		</Row>
 
 	</Head>
+	
 	<Body>
+	
 		{#each $running_processes as process}
 			<Row>
 				<Cell>{process.pid}</Cell>
@@ -24,6 +30,12 @@
 		{/each}
 		
 	</Body>
+
 </DataTable>
+
 <br>
-<button class="button is-link" on:click={()=>{toast.pop(toastId)}} style="background: #ff3860; float: right;" >Close</button>
+<button class="button is-link" 
+	on:click={()=>{toast.pop(toastId)}}
+	style="background: #ff3860; float: right;" >
+	Close
+</button>

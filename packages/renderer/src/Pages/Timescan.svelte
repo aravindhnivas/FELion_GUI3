@@ -110,7 +110,8 @@
                     plot(`Timescan Plot: ${file}`, "Time (in ms)", "Counts", timescanData[file], `${file}_tplot`, logScale ? "log" : null)
                 })
             } 
-            window.createToast("Graph plotted", "success")
+            
+            // window.createToast("Graph plotted", "success")
             graphPlotted = true
         } catch (error) {window.handleError(error)}
     }

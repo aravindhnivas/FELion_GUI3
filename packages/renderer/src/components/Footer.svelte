@@ -1,13 +1,13 @@
 <script>
-	import {running_processes} from "../svelteWritable";
+	import {running_processes, running_processes_opened} from "../svelteWritable";
 	import RunningProcess from "./RunningProcess.svelte";
-	import { toast } from '@zerodevx/svelte-toast'
+	import { SvelteToast, toast } from '@zerodevx/svelte-toast'
 	const show_process = () => {
-
+		if($running_processes_opened) return
 		toast.push({
 			component: {
 				src: RunningProcess, // where `src` is a Svelte component
-				// props: {},
+				// props: {toast_active},
 				sendIdTo: 'toastId' // send toast id to `toastId` prop
 			},
 
@@ -16,10 +16,11 @@
 			theme: {
 				'--toastPadding': '0',
 				'--toastMsgPadding': '0',
-				'--toastWidth': '40rem',
-				'--toastContainerLeft': 'auto',
-				'--toastContainerRight': '1rem',
-			}
+				// '--toastWidth': '40rem',
+				// '--toastBackground': '#5e469e',
+			},
+			classes: ['_toastContainer-footer'],
+			target: '_toastFooter',
 		})
 	}
 
@@ -44,5 +45,31 @@
 
 		</div>
 	</div>
-
 </nav>
+
+<div id="toastFooter">
+	<SvelteToast target="_toastFooter" options={{ initial: 0, intro: { y: 100 } }} />
+</div>
+
+<style global lang="scss">
+
+	#toastFooter {
+		._toastContainer {
+	
+			// background: #806bb8;
+			width: 30rem;
+			padding: 0;
+			right: 3rem;
+			left: auto;
+			overflow-x: auto;
+
+			._toastItem {
+				width: 100%;
+				background: #5e469e;
+			}
+
+		}
+	}
+
+</style>
+  

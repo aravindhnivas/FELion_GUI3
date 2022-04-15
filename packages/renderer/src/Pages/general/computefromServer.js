@@ -5,7 +5,7 @@ export default async function({target=null, general=false, pyfile, args}) {
     try {
         
         console.time("Process Started")
-        window.createToast("Process Started", "warning")
+        // window.createToast("Process Started", "warning")
 
         if(!general) target?.classList.add("is-loading")
         
@@ -21,7 +21,7 @@ export default async function({target=null, general=false, pyfile, args}) {
             target.classList.remove("is-loading")
         }
         console.timeEnd("Process Started")
-        window.createToast("Process completed", "success")
+        // window.createToast("Process completed", "success")
         // const response = await responsePromise
         console.warn(response)
         if(!response.ok) {

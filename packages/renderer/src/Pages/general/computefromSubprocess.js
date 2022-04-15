@@ -17,17 +17,17 @@ export default async function({
 
     })  {
     
-    let outputFile;
-    target ||= button || e?.target;
-    if(pyfile === "server") {pyServerReady.set(false)}
-
-    if(!general) {
-        outputFile = pathJoin(appInfo.temp, "FELion_GUI3", pyfile.split(".").at(-1) + "_data.json")
-        if(fs.existsSync(outputFile)) {fs.removeSync(outputFile)}
-        target?.classList.toggle("is-loading")
-    } 
-
     return new Promise(async (resolve) => {
+
+        let outputFile;
+        target ||= button || e?.target;
+        if(pyfile === "server") {pyServerReady.set(false)}
+
+        if(!general) {
+            outputFile = pathJoin(appInfo.temp, "FELion_GUI3", pyfile.split(".").at(-1) + "_data.json")
+            if(fs.existsSync(outputFile)) {fs.removeSync(outputFile)}
+            target?.classList.toggle("is-loading")
+        } 
             
         if(!get(pyVersion)) {
             window.handleError("Python is not valid. Fix it in Settings --> Configuration")
