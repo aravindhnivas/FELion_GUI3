@@ -166,7 +166,7 @@
     
     <GetFileInfoTable {felixfiles} />
 
-        <div class="graph_container"  id="plot_container__div__{filetype}" bind:this={graph_container}>
+        <div class="graph_container"  id="plot_container__div__{filetype}" >
 
             <div class="animated fadeIn graph__div" class:hide={!showTheory} id="exp-theory-plot"></div>
             <div id="felix_graphs" class:hide={!showFELIX}>
