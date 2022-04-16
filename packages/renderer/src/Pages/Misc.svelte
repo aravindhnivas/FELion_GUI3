@@ -5,16 +5,16 @@
     import CustomSwitch from '$components/CustomSwitch.svelte';
     import Tab, {Label} from '@smui/tab';
     import TabBar from '@smui/tab-bar';
-    import { onDestroy } from 'svelte';
+    import { onDestroy, onMount } from 'svelte';
 
     let fixedDigit = 3
 
     // Fundamental constants
 
-    $: c = 299792458 // m/s
-    $: plank_constant = 6.62607004e-34 // Js
-    $: boltzman_constant = 1.380649e-23 // J/K
-    $: electron_charge = 1.602176565e-19 // C or eV = J
+    let c = 299792458 // m/s
+    let plank_constant = 6.62607004e-34 // Js
+    let boltzman_constant = 1.380649e-23 // J/K
+    let electron_charge = 1.602176565e-19 // C or eV = J
     $: hz = 1e12.toExponential(fixedDigit);
     $: eV = Number((plank_constant/electron_charge) * hz).toFixed(fixedDigit);
     $: kelvin = Number((plank_constant/boltzman_constant) * hz).toFixed(fixedDigit);
@@ -23,31 +23,36 @@
     $: ghz = Number(hz*1e-9).toFixed(fixedDigit)
     $: nm = Number((c/hz)*1e+9).toFixed(fixedDigit)
     $: J = Number(plank_constant * hz).toExponential(fixedDigit);
-    $: edit_constants = false
-    $: edit_numberDensity_constants = false
 
-    // Number density
-    $: rt = 300
-    $: temperature = 5
-    $: pq1_after = 1e-5
-    $: pq1_before = 1e-8
-    $: calibration_factor = 205.54
-    $: ndensity_temp = calibration_factor/(boltzman_constant*1e4*rt**0.5) * ((pq1_after - pq1_before) / temperature**0.5)
+    let edit_constants = false
+    let edit_numberDensity_constants = false
+
+    let rt = db.get("RT") || 300
+    $: if(rt) {db.set("RT", rt)}
     
-    $: ndensity = ndensity_temp.toExponential(4)
-
+    let temperature = 5
+    let pq1_after = 1e-5
+    let pq1_before = 1e-8
+    
+    let calibration_factor = db.get("calibration_factor") || 200
+    $: if(calibration_factor) {db.set("calibration_factor", calibration_factor)}
+    
+    $: ndensity = calibration_factor/(boltzman_constant*1e4*rt**0.5) * ((pq1_after - pq1_before) / temperature**0.5)
     let active = db.get("MISC_active_tab") || "Unit Conversion"
     $: if(active) {db.set("MISC_active_tab", active)}
+    
     const navItems = ["Unit Conversion", "Configs"]
     let CONFIGS = db?.data() || {}
     const unsubscribe = db.onDidAnyChange((newValue, oldValue)=>{CONFIGS = newValue})
     
     onDestroy(unsubscribe)
 
+    let display = "none"
+    onMount(()=>{display = db.get("active_tab") === "Misc" ? "block" : "none"})
 </script>
 
 
-<section class="animated fadeIn section" id="Misc" style="display:none">
+<section class="animated fadeIn section" id="Misc" style:display >
 
     <div class="misc-nav box animated fadeInDown" id="navbar" >
 
@@ -79,17 +84,17 @@
                     </div>
 
                     <hr>
-                    <Textfield bind:value={fixedDigit} label="fixedDigit" />
+                    <Textfield bind:value={fixedDigit} label="decimal significant digit(s)" />
                     <div class="align">
                         <div class="subtitle is-pulled-left">Fundamental constants</div>
 
                         <CustomSwitch style="margin: 0 1em;" bind:selected={edit_constants} label="Edit"/>
                     </div>
                     <div class="align">
-                        <Textfield disabled={!edit_constants} bind:value={c} label="Speed of light in vaccum" />
-                        <Textfield disabled={!edit_constants} bind:value={boltzman_constant} label="Boltzman constant" />
-                        <Textfield disabled={!edit_constants} bind:value={plank_constant} label="Plank's constant" />
-                        <Textfield disabled={!edit_constants} bind:value={electron_charge} label="Electric charge" />
+                        <Textfield disabled={!edit_constants} bind:value={c} label="Speed of light in vaccum (cm/s)" />
+                        <Textfield disabled={!edit_constants} bind:value={boltzman_constant} label="Boltzman constant (J/K)" />
+                        <Textfield disabled={!edit_constants} bind:value={plank_constant} label="Plank's constant (J.s)" />
+                        <Textfield disabled={!edit_constants} bind:value={electron_charge} label="Electric charge (C)" />
                     </div>
 
                 </div>
@@ -107,7 +112,7 @@
                     <Textfield style="width:90%; margin-right:0.5em;" bind:value={pq1_before} label="Before letting in gas" />
                     <Textfield style="width:90%; margin-right:0.5em;" bind:value={pq1_after} label="After letting in gas" />
                     <Textfield style="width:90%; margin-right:0.5em;" bind:value={temperature} label="Temperature" />
-                    <Textfield style="width:90%; margin-right:0.5em;" disabled={true} bind:value={ndensity} label="Number density" />
+                    <Textfield style="width:90%; margin-right:0.5em;" disabled={true} value={ndensity.toExponential(4)} label="Number density" />
                     <hr>
                     <CustomSwitch style="margin: 0 1em;" bind:selected={edit_numberDensity_constants} label="Edit"/>
 

@@ -140,7 +140,7 @@
                 computePy_func({e, pyfile: "normline.exp_gauss_fit", args: expfit_args})
                 .then((dataFromPython)=>{
                     exp_fit_func({dataFromPython})
-                    window.createToast("Line fitted with gaussian function", "success")
+                    // window.createToast("Line fitted with gaussian function", "success")
                 })
                 break;
 

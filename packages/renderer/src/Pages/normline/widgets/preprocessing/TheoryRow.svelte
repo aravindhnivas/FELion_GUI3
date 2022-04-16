@@ -37,7 +37,7 @@
         const dataFromPython = await computePy_func({e, pyfile, args})
         if(!dataFromPython) return
         theory_func({dataFromPython, normMethod})
-        window.createToast("Graph Plotted", "success")
+        // window.createToast("Graph Plotted", "success")
         showTheoryFiles = false
     }
 

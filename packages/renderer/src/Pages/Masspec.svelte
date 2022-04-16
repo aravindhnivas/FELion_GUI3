@@ -21,13 +21,13 @@
     
     let openShell = false
     let graphPlotted = false
-    let toggleRow1 = true
+    // let toggleRow1 = true
     let logScale = true;
     let selected_file = ""
 
-    let peak_width = 2
-    let peak_height = 40
-    let peak_prominance = 3
+    // let peak_width = 2
+    // let peak_height = 40
+    // let peak_prominance = 3
     let keepAnnotaions = true
     
     async function plotData({e=null, filetype="mass"}={}){
