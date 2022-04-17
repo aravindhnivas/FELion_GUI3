@@ -60,11 +60,10 @@ export default async function({
             dataFromPython = await computefromSubprocess({target, general, pyfile, args})
             return
         }
-
+        
         dataFromPython = await computefromServer({target, general, pyfile, args})
 
-    } 
-    catch (error) {window.handleError(error)} 
+    } catch (error) {window.handleError(error)} 
     
     finally {
 
