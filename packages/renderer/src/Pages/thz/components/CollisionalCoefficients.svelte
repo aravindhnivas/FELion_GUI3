@@ -91,9 +91,12 @@
     
     const readcollisionalCoefficientJSONFile = () => {
         if(fs.existsSync(collisionalCoefficientJSONFile)) {
+
             console.log("loading: ", collisionalCoefficientJSONFile);
             ({collisionalCoefficient, collisionalCoefficient_balance} = fs.readJsonSync(collisionalCoefficientJSONFile));
-            window.createToast("loaded: "+basename(collisionalCoefficientJSONFile), "warning")
+            if(db.get("active_tab")=="Kinetics") {
+                window.createToast("loaded: "+basename(collisionalCoefficientJSONFile), "warning")
+            }
         }
     }
 
