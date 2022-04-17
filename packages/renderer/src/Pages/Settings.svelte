@@ -21,7 +21,7 @@
     import Textfield                from '@smui/textfield';
     import {onMount, onDestroy}     from "svelte";
     import Changelog                from "$components/Changelog.svelte";
-    import PyButton                 from "$components/PyButton.svelte"
+    // import PyButton                 from "$components/PyButton.svelte"
     import CustomSwitch             from '$components/CustomSwitch.svelte';
     import {
         checkTCP,
@@ -90,7 +90,7 @@
     }
 
     let serverInfo = ""
-    let executeCommand = ""
+    // let executeCommand = ""
 
 
     const updateServerInfo = async (e=null)=>{
@@ -220,11 +220,11 @@
     
     
                             <div class="align">
-                                <Textfield bind:value={executeCommand} label="executeCommands" />
-                                <button class="button is-link" on:click="{async ()=>{
+                                <!-- <Textfield bind:value={executeCommand} label="executeCommands" /> -->
+                                <!-- <button class="button is-link" on:click="{async ()=>{
                                     const [{stdout}] = await exec(executeCommand)
                                     serverInfo += `>> ${stdout}\n`
-                                }}">executeCommand</button>
+                                }}">executeCommand</button> -->
                                 <button id="fetchServerROOT" class="button is-link" on:click="{updateServerInfo}">fetchServerROOT</button>
                                 <button class="button is-danger" on:click="{()=>{serverInfo = ""}}">Clear</button>
     
@@ -283,8 +283,9 @@
 
             </div>
         </div>
-
+    
     </div>
+
 </section>
 
 <style lang="scss">
@@ -314,7 +315,6 @@
         } 
 
         #update-progress-container {
-
             progress {width: 100%;}
             display: grid;
             width: 100%;
@@ -325,6 +325,7 @@
     }
 
     h1 {
+
         margin: 0;
         width: 100%;
     }
@@ -332,13 +333,14 @@
     .errorbox {
         white-space: pre-line;
         height: 100%;
-
         width: fit-content;
+
         font-size: medium;
         margin-left: auto;
-
         border: solid 1px;
+
     }
+    
 
     .mainContainer {overflow: auto;}
 
