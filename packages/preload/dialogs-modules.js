@@ -2,15 +2,8 @@
 import { contextBridge, ipcRenderer } from 'electron'
 
 contextBridge.exposeInMainWorld("dialogs", {
-    showMessageBoxSync: async (args) => await ipcRenderer.invoke("showMessageBoxSync", args),
-    showOpenDialogSync: async (args) => {
-        console.log(args)
-
-        const result = await ipcRenderer.invoke("showOpenDialogSync", args)
-        console.log(result)
-        return result
-    }
-
+    showOpenDialogSync: (args) => ipcRenderer.sendSync("showOpenDialogSync", args),
+    showMessageBox: async (args) => ipcRenderer.invoke("showMessageBox", args) 
 })
 contextBridge.exposeInMainWorld("reload", ()=>ipcRenderer.invoke('reload'))
 contextBridge.exposeInMainWorld("relaunch", ()=>ipcRenderer.invoke('relaunch'))
