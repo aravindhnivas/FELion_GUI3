@@ -63,10 +63,11 @@ export async function getPyVersion() {
 
 
 let py;
-// let controller;
+let serverStarting = false;
 
 export async function startServer(webContents) {
 
+    if(serverStarting) return
     const {db, developerMode, pyProgram, mainpyfile} = getCurrentDevStatus()
     const serverDebug = db.get("serverDebug") ?? false
     const dbPORT = db.get("pyServerPORT")
@@ -84,7 +85,6 @@ export async function startServer(webContents) {
         webContents?.send('db:update', {key: "pyVersion", value: pyVersion})
 
         if(!pyVersion) {
-
             pyVersion = await getPyVersion()
             if(!pyVersion) {
                 console.error("Python is not valid. Fix it in Settings --> Configuration")
@@ -105,10 +105,11 @@ export async function startServer(webContents) {
         const opts = {}
         
         try {
-            
+            serverStarting = true;
             py = spawn(pyProgram, pyArgs, opts)
 
             py.on("error", (error) => {
+                serverStarting = false
 
                 webContents?.send('db:update', {key: "pyServerReady", value: false})
                 console.error(error)
@@ -119,12 +120,13 @@ export async function startServer(webContents) {
                 db.set("pyServerReady", true)
                 webContents?.send('db:update', {key: "pyServerReady", value: true})
                 console.info("pyServerReady", db.get("pyServerReady"))
-
+                serverStarting = false;
+                resolve(true)
                 console.log("server ready")
             })
 
             py.on("exit", () => {
-
+                
                 db.set("pyServerReady", false)
                 webContents?.send('db:update', {key: "pyServerReady", value: false})
                 console.log("server closed")

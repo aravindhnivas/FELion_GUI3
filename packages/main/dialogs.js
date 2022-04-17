@@ -1,13 +1,13 @@
 
 import { ipcMain, dialog, BrowserWindow, app } from 'electron'
-const {showMessageBoxSync, showOpenDialogSync} = dialog
+// const {showMessageBoxSync, showOpenDialogSync} = dialog
 const mainWindow = BrowserWindow.getAllWindows()[0]
-ipcMain.handle('showOpenDialogSync', async (event, args) => {
-    const result = await showOpenDialogSync(mainWindow, args)
-    return result
+ipcMain.on('showOpenDialogSync', (event, args) => {
+    event.returnValue = dialog.showOpenDialogSync(mainWindow, args)
+    // return result
 })
-ipcMain.handle('showMessageBoxSync', async (event, args) => {
-    const result = await showMessageBoxSync(mainWindow, args)
+ipcMain.handle('showMessageBox', async (event, args) => {
+    const result = await dialog.showMessageBox(mainWindow, args)
     return result
 })
 

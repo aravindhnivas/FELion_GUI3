@@ -99,14 +99,15 @@ ipcMain.on("appInfo", (event, arg) => {
 ipcMain.on("appVersion", (event, arg) => { event.returnValue = app.getVersion() })
 
 
-ipcMain.on("startServer", (event, args) => {
+ipcMain.handle("startServer", async (event, args) => {
 	try {
 		console.log("starting server")
 		const webContents = event.sender
-		startServer(webContents)
-		console.log("new server started")
+		const response = await startServer(webContents)
+		return response
 	} catch (error) {
 		console.error(error)
+		return error
 	}
 
 })

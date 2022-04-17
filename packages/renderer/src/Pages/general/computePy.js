@@ -6,7 +6,6 @@ export default async function({
         e = null, target=null, pyfile = "",
         args = {}, general = false, 
     } = {}) {
-
     target ||= e?.target
     let dataFromPython = null;
     let processDivGeneral;
@@ -15,8 +14,24 @@ export default async function({
     try {
 
         if(!get(pyServerReady)) {
-            window.handleError("Python server is not ready. Fix it in Settings --> Configuration")
-            return Promise.resolve(null)
+
+            const restartPyServer = await dialogs.showMessageBox({
+                message: "Restart Python server?", 
+                title: "Python server is not ready", 
+                type: "warning",
+                buttons:["Ok", "Cancel"]
+            })
+
+            if(restartPyServer.response==1) return Promise.resolve(null)
+
+            const serverSpawned = await window.startServer()
+            if(!serverSpawned){
+                window.handleError("Python server is not ready. Fix it in Settings --> Configuration")
+                return Promise.resolve(null)
+            }
+            
+            window.createToast("Python server is ready")
+            
         }
 
         console.log({pyfile, args, general})
@@ -57,25 +72,19 @@ export default async function({
 
             const num = processDivGeneral.textContent
             processDivGeneralNum = isNaN(parseInt(num)) ? 0 : parseInt(num)
-            
             const currentNum = processDivGeneralNum - 1
 
             if(currentNum > 0) {
                 processDivGeneral.textContent = `${currentNum}`
-            
             } else {
-                
                 if(pyfile.includes("baseline")) {
-            
                     processDivGeneral.textContent = "b"
                 } else {
-
                     processDivGeneral.textContent = ""
                     processDivGeneral.classList.add("hide")
-                }
 
+                }
             }
-            
         }
         console.log("COMPLETED")
         return Promise.resolve(dataFromPython)
