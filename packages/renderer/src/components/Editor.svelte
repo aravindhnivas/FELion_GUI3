@@ -1,7 +1,7 @@
 <script>
     import { onDestroy }    from "svelte"
     import Textfield        from '@smui/textfield';
-    import { Remarkable }   from 'remarkable';
+    // import { Remarkable }   from 'remarkable';
     import {browse}         from '$components/Layout.svelte';
     import WinBox           from "winbox/src/js/winbox.js";
     import CustomSwitch     from "$components/CustomSwitch.svelte"
@@ -18,14 +18,21 @@
     export let reportSaved = false;
     export let showReport = false;
 
-    const md = new Remarkable();
+    // const md = new Remarkable();
     async function mountEditor(node) {
         try {
             editor = await ClassicEditor.create( node, {toolbar: {shouldNotGroupWhenFull: true}})
+            readFromFile(false)
         } catch (error) {window.handleError( error );}
     }
 
-    onDestroy(() => {editor?.destroy?.(); console.info("editor destroyed")})
+    onDestroy(() => {
+        if(editor) {
+            editor.destroy();
+            console.info("editor destroyed")
+        }
+    })
+    
     $: if(!showReport && editor) {
         editor.destroy();
         console.info("editor destroyed")
@@ -45,29 +52,33 @@
     }
 
     $: if(fs.existsSync(location)) {
-    
         db.set(`${filetype}-report-md`, location)
         updateFiles()
     }
 
-    
     async function browse_folder() {
-
         const result = await browse()
         if(!result) return   
-
         location = result
         window.createToast("Location updated") 
     }
 
     const saveReport = () => {
+
         try {
+        
             if(!location) return window.createToast("UNDEFINED location", "danger") 
+            if(fs.existsSync(reportFile)) {
+                const response = confirm(`File ${basename(reportFile)} already exists. Overwrite?`)
+                if(!response) return
+            }
             fs.writeFileSync( reportFile, editor.getData() )
+
             reportSaved = true
-            window.createToast(`${basename(reportFile)} file saved`, "link")
+            window.createToast(`${basename(reportFile)} file saved`, "success")
+
         } catch (error) {window.handleError( error )}
-    
+
     }
 
     let reportWindowClosed = true;
@@ -79,29 +90,24 @@
             mount: document.querySelector(mount),
             title: `Report ${filetype} `,
             x: "center", y: "center",
-            width: "70%", height: "70%",
+            width: "70%", height: "70%"
+            ,
             background:"#634e96",
             top: 50, bottom:50,
-            onclose: function(){
-                reportWindowClosed = true
-            },
+            onclose: function(){reportWindowClosed = true},
         });
         
         reportWindowClosed = false;
-        setTimeout(() => {
-            graphWindow.focus()
-        }, 100);
+        setTimeout(() => {graphWindow.focus()}, 100);
     }
     
-    const readFromFile = () => {
+    const readFromFile = (showInfo=true) => {
         if(fs.existsSync(reportFile)) {
-
             editor?.setData(fs.readFileSync(reportFile))
-            
             reportRead = true;
-            window.createToast("Report file read: "+basename(reportFile), "success")
-         }
-        else {window.createToast("No report file named "+basename(reportFile), "danger")}
+            if(showInfo) window.createToast(`${basename(reportFile)} file read`)
+        }
+        else {if(showInfo) window.createToast("No report file named "+basename(reportFile), "danger")}
     }
 
     let autoRead = false
@@ -151,15 +157,7 @@
 </div>
 
 {#if showReport}
-    <div class="ckeditor-svelte content" {id} use:mountEditor style:display={showReport ? '' : 'none'}>
-        
-        {#if window.fs.existsSync(reportFile)}
-            {@html md.render(window.fs.readFileSync(reportFile))}
-        {:else}
-            <h1>{filetype.toUpperCase()} Report</h1>
-        {/if}
-
-    </div>
+    <div class="ckeditor-svelte content" {id} use:mountEditor style:display={showReport ? '' : 'none'} />
 {/if}
 
 <style global lang="scss">
