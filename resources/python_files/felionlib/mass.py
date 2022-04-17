@@ -31,7 +31,7 @@ def main(args):
     widget.makeLegendToggler(legend_handler, edit_legend=True)
 
     widget.ax.set_ybound(lower=5)
-    widget.ax.set_xbound(lower=0)
+    # widget.ax.set_xbound(lower=0)
     widget.optimize_figure()
     widget.fig.tight_layout()
     qapp.exec()

@@ -114,7 +114,7 @@ class depletionplot:
         write_file_layout = QtWidgets.QHBoxLayout()
 
         self.write_filename_input = QtWidgets.QLineEdit("depletion_output")
-        self.write_filename_input.setToolTip("save data filename")
+        self.write_filename_input.setToolTip("save directory")
 
         write_file_button = QtWidgets.QPushButton("Write")
         write_file_button.clicked.connect(self.saveFile)
