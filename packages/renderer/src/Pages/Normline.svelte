@@ -164,8 +164,6 @@
 
     <svelte:fragment slot="plotContainer">
     
-    <GetFileInfoTable {felixfiles} />
-
         <div class="graph_container"  id="plot_container__div__{filetype}" >
 
             <div class="animated fadeIn graph__div" class:hide={!showTheory} id="exp-theory-plot"></div>
@@ -182,6 +180,10 @@
             </div>
         </div>
 
+    </svelte:fragment>
+
+    <svelte:fragment slot="config">
+        <GetFileInfoTable {felixfiles} />
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer_functions" >
