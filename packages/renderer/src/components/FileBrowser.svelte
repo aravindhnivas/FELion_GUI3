@@ -40,6 +40,7 @@
     let filesLoaded = false
     function getfiles(toast=false, keepfiles=false) {
         return new Promise(async (resolve, reject)=>{
+
             if (!locationStatus) {
                 reject("Location doesn't exist: Browse files again")
                 if(!toast) return
@@ -71,7 +72,6 @@
             } catch (error) {
                 reject(error)
                 window.handleError(error)
-                return 
             }
 
         })
