@@ -8,8 +8,8 @@ ipcRenderer.on('update-progress', (_, progressObj) => {
     progressDiv.value = progressObj.percent
     console.info(progressObj)
 })
-localStorage.setItem("update-error", "")
-ipcRenderer.on('update-log-error', (_, error) => {console.error(error); localStorage.setItem("update-error", error)})
+// localStorage.setItem("update-error", "")
+// ipcRenderer.on('update-log-error', (_, error) => {console.error(error); localStorage.setItem("update-error", error)})
 
 contextBridge.exposeInMainWorld("checkupdate", () => {
     ipcRenderer.invoke("checkupdate", null);

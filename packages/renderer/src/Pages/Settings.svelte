@@ -7,10 +7,8 @@
         pyServerPORT,
         developerMode,
         pyServerReady,
-        // mainpyfile,
-        // pyProgram,
     }                               from "./settings/svelteWritables";
-
+    import {updateInterval}         from "$src/svelteWritable";
     import {activateChangelog}      from "../js/functions"
 
     import {
@@ -21,7 +19,7 @@
     import Textfield                from '@smui/textfield';
     import {onMount, onDestroy}     from "svelte";
     import Changelog                from "$components/Changelog.svelte";
-    // import PyButton                 from "$components/PyButton.svelte"
+
     import CustomSwitch             from '$components/CustomSwitch.svelte';
     import {
         checkTCP,
@@ -30,71 +28,71 @@
     
     let pyError = ""
     let mounted = false
-    let updateError=""
-    let updateInterval;
+    let updateError=db.get("updateError") || ""
+    let updateIntervalCycle;
     let selected = window.db.get("settingsActiveTab") || "Configuration"
     
     const navigate = (e) => {selected = e.target.innerHTML; window.db.set("settingsActiveTab", selected);}
     db.onDidChange("pyServerReady", async (value)=>{
-
         $pyServerReady = value
         if($pyServerReady) {
             serverInfo += `>> fetching server status\n`
-            // await updateTCPInfo()
             await updateServerInfo()
         }
     })
+
+    db.onDidChange("updateError", (err)=>{updateError = err})
+
+    db.onDidChange("delayupdate", (delay)=>{
+        if(delay) {
+            if(updateIntervalCycle) {clearInterval(updateIntervalCycle)}
+
+            setTimeout(()=>{
+                updateCheck()
+                updateIntervalCycle = setInterval(updateCheck, $updateInterval*60*1000);
+
+            }, 60*60*1000)
+        }
+
+    })
     
     onMount(async ()=>{
-        
+
         try {
             if(!$pyVersion) {
                 console.warn("python is invalid. computing again")
                 await getPyVersion()
                 console.warn($pyVersion)
             }
-        
+
             $pyServerReady = db.get("pyServerReady")
-        
-        }
+        } 
         catch (error) {pyError = error}
         finally {
             mounted = true
             serverInfo += `>> pyVersion: ${$pyVersion}\n`
-            if($pyServerReady) {
-                await updateServerInfo()
-            }
-
+            if($pyServerReady) {await updateServerInfo()}
             if(env.DEV) return
-            
-            const interval = 15 //min
-            updateInterval = setInterval(() => {
-                updateCheck()
-                updateError = localStorage.getItem("update-error")
-            }, interval*60*1000);
-        }
         
+            updateIntervalCycle = setInterval(updateCheck, $updateInterval*60*1000);
+        }
+
     })
 
     function updateCheck(event=null){
-
         if(env.DEV) return console.info("Cannot update in DEV mode")
+
         try {
             event?.target.classList.toggle("is-loading")
             if (!navigator.onLine) {if (event) {return window.createToast("No Internet Connection!", "warning")}}
-
             checkupdate()
-
         } catch (error) { if(event) window.handleError(error)
         } finally {event?.target.classList.toggle("is-loading")}
     }
 
     let serverInfo = ""
-    // let executeCommand = ""
-
 
     const updateServerInfo = async (e=null)=>{
-
         const rootpage = await fetchServerROOT({target: e?.target})
         if(!rootpage.includes("ERROR")) { 
             $pyServerReady = true
@@ -104,20 +102,18 @@
     }
 
     let serverDebug = db.get("serverDebug") || false
-    
     const updateTCPInfo = async (e=null)=>{
         const [{stdout}] = await checkTCP({target: e?.target})
         if(stdout) { serverInfo += `>> ${stdout}\n` }
         else {serverInfo += `>> ERROR occured while checking TCP connection on port:${$pyServerPORT}\n`}
     }
-
+    
     let showServerControls = false
+    onDestroy(() => {if(updateIntervalCycle) { clearInterval(updateIntervalCycle) }})
 
-    onDestroy(async () => {
-        if(updateInterval) { clearInterval(updateInterval) }
-    });
     const id="Settings"
     let display = db.get("active_tab") === id ? 'block' : 'none'
+
 </script>
 
 <Changelog  />
@@ -128,11 +124,9 @@
         
         <div class="box interact left_container__div">
            <div class="title__div">
-
                 <div class="hvr-glow" class:clicked={selected==="Configuration"} on:click={navigate}>Configuration</div>
                 <div class="hvr-glow" class:clicked={selected==="Update"} on:click={navigate}>Update</div>
                 <div class="hvr-glow" class:clicked={selected==="About"} on:click={navigate}>About</div>
-
            </div>
         </div>
 
@@ -220,14 +214,8 @@
     
     
                             <div class="align">
-                                <!-- <Textfield bind:value={executeCommand} label="executeCommands" /> -->
-                                <!-- <button class="button is-link" on:click="{async ()=>{
-                                    const [{stdout}] = await exec(executeCommand)
-                                    serverInfo += `>> ${stdout}\n`
-                                }}">executeCommand</button> -->
                                 <button id="fetchServerROOT" class="button is-link" on:click="{updateServerInfo}">fetchServerROOT</button>
                                 <button class="button is-danger" on:click="{()=>{serverInfo = ""}}">Clear</button>
-    
                             </div>
 
                         </div>
