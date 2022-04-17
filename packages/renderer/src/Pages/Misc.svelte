@@ -129,7 +129,8 @@
             <div class="config__div ">
                 {#each Object.keys(CONFIGS) as label}
                     <div class="config_content">
-                        <Textfield value={CONFIGS[label]} {label} />
+                        <Textfield bind:value={CONFIGS[label]} {label} />
+                        <button class="button is-success" on:click="{()=>window.db.set(label, CONFIGS[label])}">Save</button>
                         <button class="button is-warning" on:click="{()=>window.db.delete(label)}">Clear</button>
                     </div>
                 {:else}
