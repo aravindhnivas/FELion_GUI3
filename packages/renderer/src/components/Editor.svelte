@@ -1,8 +1,8 @@
 <script>
     import { onDestroy }    from "svelte"
     import Textfield        from '@smui/textfield';
-    // import { Remarkable }   from 'remarkable';
     import {browse}         from '$components/Layout.svelte';
+    import CustomDialog     from '$components/CustomDialog.svelte';
     import WinBox           from "winbox/src/js/winbox.js";
     import CustomSwitch     from "$components/CustomSwitch.svelte"
 
@@ -63,14 +63,14 @@
         window.createToast("Location updated") 
     }
 
-    const saveReport = () => {
+    const saveReport = ({overwrite=false}) => {
 
         try {
         
             if(!location) return window.createToast("UNDEFINED location", "danger") 
-            if(fs.existsSync(reportFile)) {
-                const response = confirm(`File ${basename(reportFile)} already exists. Overwrite?`)
-                if(!response) return
+            if(fs.existsSync(reportFile) && !overwrite) {
+                overwriteDialogOpen = true
+                return
             }
             fs.writeFileSync( reportFile, editor.getData() )
 
@@ -114,8 +114,23 @@
     $: if(reportFile && autoRead) {
         readFromFile()
     }
+    let overwriteResponse="";
+    $: if(overwriteResponse) {
+        console.log(overwriteResponse)
+        const overwrite = overwriteResponse.toLowerCase() === "yes"
+        saveReport({overwrite})
+        overwriteResponse = ""
+    }
+    let overwriteDialogOpen = false
 </script>
 
+<CustomDialog
+    id="report-overwrite"
+    title={"Overwrite?"} 
+    bind:open={overwriteDialogOpen}
+    bind:response={overwriteResponse}
+    content={`${basename(reportFile)} already exists. Do you want to overwrite it?`} 
+/>
 
 <div class="report_main__div align">
 
