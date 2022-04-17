@@ -4,7 +4,7 @@ export const db = new Store({name: "db"});
 
 ipcRenderer.on('db:update', (_event, {key, value}) => {
     db.set(key, value)
-    console.info("db:update", {key, value}, db.get(key))
+    console.info("db:update", {key, value})
 })
 contextBridge.exposeInMainWorld("db", {
 
