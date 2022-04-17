@@ -49,8 +49,8 @@
         fileCollections = fs.readdirSync(currentLocation)
             .filter(f=>f.endsWith('_scan.json'))
             .map(f=>f.split('.')[0].replace('_scan', '.scan'));
-
-        window.createToast("Updated", "success")
+        // window.createToast("Updated", "success")
+        
     }
 
     $: if (currentLocation) {updateFiles()}
