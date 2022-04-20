@@ -38,7 +38,6 @@ def var_find(openfile):
 class Create_Baseline:
 
     epsilon = 5
-    # __slots__ = ["filename", "checkdir"]
     def __init__(self, filename: pt, checkdir=True):
 
         self.fname = filename.stem
@@ -153,7 +152,9 @@ class Create_Baseline:
     def ReadBase(self):
 
         file = np.genfromtxt(f"./DATA/{self.basefile}")
+         
         self.xs, self.ys = file[:, 0], file[:, 1]
+        
         with open(f"./DATA/{self.basefile}", "r") as f:
             self.interpol = f.readlines()[1].strip().split("=")[-1]
             print(f"{self.interpol=}", flush=True)
@@ -177,7 +178,8 @@ class Create_Baseline:
         By.append(self.data[1][-1])
         self.interpol = "cubic"
         self.xs, self.ys = Bx, By
-        
+        self.xs = np.array(self.xs, dtype=float)
+        self.ys = np.array(self.xs, dtype=float)
         print(f"Baseline points are guessed.")
 
     def InteractivePlots(self, widget: felionQtWindow) -> None:
