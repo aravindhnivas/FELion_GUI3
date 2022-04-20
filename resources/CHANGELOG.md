@@ -1,4 +1,11 @@
 # What's new
+
+## v3.6.2
+- Timescan Kinetics feature added:
+    - toggle masses to include in the model
+
+---
+
 ## v3.6.1
 - BUG FIX: baseline list min method attribute error 
 
