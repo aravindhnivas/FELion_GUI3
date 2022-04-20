@@ -1,5 +1,8 @@
 # What's new
+## v3.6.1
+- BUG FIX: baseline list min method attribute error 
 
+---
 ## v3.6.0
 
 - Major improvements and bug fixes
