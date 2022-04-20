@@ -31,7 +31,7 @@
                     })
                     if(dataToSet) {
                         reportSaved = false; editor?.setData(dataToSet);
-                        console.info("data comupted")
+                        window.createToast("data comupted")
                     }
                 }}>compute</button>
         </svelte:fragment>
