@@ -1,6 +1,6 @@
 # What's new
 
-## v3.6.2
+## UNRELEASED
 - Timescan Kinetics feature added:
     - toggle masses to include in the model
 
