@@ -41,7 +41,7 @@
         }
     })
 
-    db.onDidChange("updateError", (err)=>{updateError = err})
+    db.onDidChange("updateError", (err)=>{updateError = JSON.stringify(err)})
 
     db.onDidChange("delayupdate", (delay)=>{
         if(delay) {
