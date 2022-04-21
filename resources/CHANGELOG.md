@@ -3,6 +3,8 @@
 ## UNRELEASED
 - Timescan Kinetics feature added:
     - toggle masses to include in the model
+- BUG FIXES:
+    - baseline ydata corrections
 
 ---
 
