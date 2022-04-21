@@ -4,35 +4,17 @@ from os.path import dirname, isdir, isfile, join
 from pathlib import Path as pt
 from felionlib.utils.felionQt.utils.blit import BlitManager
 from felionlib.utils.felionQt import felionQtWindow, QApplication
+from felionlib.utils.FELion_definitions import var_find
+
 from scipy.interpolate import interp1d
 import numpy as np
 
 ###################################################################################################
 
-
 def move(pathdir, x):
-
     shutil.move(join(pathdir, x), join(pathdir, "DATA", x))
-    print(f"{x} moved to DATA folder")
-
+    print(f"{x} moved to DATA folder", flush=True)
     return
-
-
-def var_find(openfile):
-
-    var = {"res": "m03_ao13_reso", "b0": "m03_ao09_width", "trap": "m04_ao04_sa_delay"}
-    with open(openfile, "r") as mfile:
-        mfile = np.array(mfile.readlines())
-
-    for line in mfile:
-        if not len(line.strip()) == 0 and line.split()[0] == "#":
-            for j in var:
-                if var[j] in line.split():
-                    var[j] = float(line.split()[-3])
-
-    res, b0, trap = round(var["res"], 2), int(var["b0"] / 1000), int(var["trap"] / 1000)
-
-    return res, b0, trap
 
 
 class Create_Baseline:
@@ -187,23 +169,11 @@ class Create_Baseline:
         self.widget = widget
         
         (self.line,) = self.widget.ax.plot(
-            self.xs,
-            self.ys,
-            marker="s",
-            zorder=3,
-            ls="",
-            c=("b", "C1")[self.opo],
-            markeredgecolor=("b", "C1")[self.opo],
-            animated=True,
+            self.xs, self.ys, marker="s", zorder=3, ls="", c=("b", "C1")[self.opo],
+            markeredgecolor=("b", "C1")[self.opo], animated=True,
         )
 
-        Bx, By = np.array(self.line.get_data())
-        self.inter_xs = np.arange(Bx.min(), Bx.max())
-        f = interp1d(Bx, By, kind=self.interpol)
-
-        (self.funcLine,) = self.widget.ax.plot(
-            self.inter_xs, f(self.inter_xs), c=("b", "C1")[self.opo], zorder=3, animated=True
-        )
+        (self.funcLine,) = self.widget.ax.plot([], [], c=("b", "C1")[self.opo], zorder=3, animated=True)
 
         if not self.opo:
             res, b0, trap = var_find(f"{self.location}/DATA/{self.felixfile}")
@@ -212,25 +182,18 @@ class Create_Baseline:
             label = f"{self.felixfile}"
 
         (self.baseline_data,) = self.widget.ax.step(
-            self.data[0],
-            self.data[1],
-            c="r",
-            where="pre",
-            zorder=2.5,
-            ms=7,
-            markeredgecolor="black",
-            label=label,
-            animated=True,
+            self.data[0], self.data[1], c="r", where="pre", zorder=2.5, ms=7,
+            markeredgecolor="black", label=label, animated=True,
         )
-
+        
         self.widget.canvas.mpl_connect("button_press_event", self.button_press_callback)
         self.widget.canvas.mpl_connect("key_press_event", self.key_press_callback)
         self.widget.canvas.mpl_connect("button_release_event", self.button_release_callback)
         self.widget.canvas.mpl_connect("motion_notify_event", self.motion_notify_callback)
-
         animated_artists = (self.baseline_data, self.line, self.funcLine)
         self.blit = BlitManager(self.widget.canvas, animated_artists)
 
+        self.redraw_f_line()
         self._ind = None
 
     def redraw_f_line(self):
@@ -383,8 +346,6 @@ class Create_Baseline:
         if event.key in ("x", "z", "r"):
             return self.redraw_baseline()
 
-        # self.widget.draw()
-
     def button_release_callback(self, event):
         "whenever a mouse button is released"
         if event.button != 1:
@@ -505,7 +466,7 @@ class Create_Baseline:
         return np.asarray([self.data[0], self.data[1]]), np.asarray([self.line.get_data()])
 
 
-def on_closing(event, dialog: felionQtWindow.showdialog, cls: Create_Baseline):
+def on_closing(event, dialog: felionQtWindow.showYesorNo, cls: Create_Baseline):
     
     def ask(check, change, txt=""):
     
@@ -542,10 +503,11 @@ def main(args):
 
     baselineClass = Create_Baseline(filename)
     baselineClass.InteractivePlots(widget)
-    
     widget.legend = widget.ax.legend()
     widget.legendToggleCheckWidget.setChecked(True)
+    
     widget.closeEvent = lambda event: on_closing(event, widget.showYesorNo, baselineClass)
+    
     widget.optimize_figure()
     widget.fig.tight_layout()
     
