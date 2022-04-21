@@ -2,7 +2,7 @@
 <script>
     import Textfield        from '@smui/textfield'
     import Layout           from "$components/Layout.svelte"
-    import CustomIconSwitch from "$components/CustomIconSwitch.svelte"
+    // import CustomIconSwitch from "$components/CustomIconSwitch.svelte"
     import CustomSelect     from "$components/CustomSelect.svelte"
     import CustomSwitch     from "$components/CustomSwitch.svelte"
     import {plot}           from "../js/functions.js"
@@ -21,7 +21,7 @@
 
     let nshots = 10
     let power = "21, 21"
-    let openShell = false
+    // let openShell = false
     let massIndex = 0
     let fullfiles = []
     let resON_Files = ""
@@ -125,10 +125,9 @@
                 if(id?.data) {relayout(id, layout);}
             })
         }
-
     }
 
-    let kineticMode = false;
+    // let kineticMode = false;
     let kineticData = {}
 
     async function updateData(){
@@ -137,24 +136,20 @@
             plot(`Timescan Plot: ${file}`, "Time (in ms)", "Counts", kineticData[file], `${file}_tplot`, logScale ? "log" : null)
         })
     }
+
     let saveOutputDepletion = true;
     let display = db.get("active_tab") === id ? 'block' : 'none'
 </script>
-
-<!-- <ROSAAkinetics {fileChecked} {currentLocation} bind:kineticMode /> -->
 
 <Layout {filetype} {graphPlotted} {id} {display} bind:currentLocation bind:fileChecked on:chdir={dir_changed}>
 
     <svelte:fragment slot="buttonContainer">
         <div class="align " style="align-items: center;">
-            <button class="button is-link" on:click="{(e)=>plotData({e:e})}">Timescan Plot</button>
 
+            <button class="button is-link" on:click="{(e)=>plotData({e:e})}">Timescan Plot</button>
             <Textfield type="number" input$min=0 input$max={dataLength} bind:value={timestartIndexScan} label="Time Index" on:change={updateData}/>
             <button class="button is-link" on:click="{()=>{toggleRow = !toggleRow}}">Depletion Plot</button>
-            <!-- <button class="button is-link" on:click="{()=>{kineticMode = !kineticMode}}">ROSAA Kinetics</button> -->
-            
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"scan", tkplot:"plot"})}">Open in Matplotlib</button>
-            <CustomIconSwitch bind:toggler={openShell} icons={["settings_ethernet", "code"]}/>
             <CustomSwitch on:SMUISwitch:change={linearlogCheck} bind:selected={logScale} label="Log"/>
         </div>
 
@@ -168,25 +163,16 @@
             <CustomSwitch bind:selected={saveOutputDepletion} label="save_output"/>
             <button class="button is-link" on:click="{(e)=>plotData({e:e, filetype:"general"})}">Submit</button>
         </div>
+
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer" let:lookForGraph >
-        <div class="graph__container" >
+        <div class="graph__container" style="display: flex; gap: 1em; flex-direction: column;">
             {#each fileChecked as scanfile}
-                <div id="{scanfile}_tplot"  class="graph__div" use:lookForGraph />
+                <div id="{scanfile}_tplot" class="graph__div" use:lookForGraph />
             {/each}
         </div>
-
+        
     </svelte:fragment>
     
 </Layout>
-
-<style>
-
-    .graph__container {
-        display: flex;
-    
-        gap: 1em;
-        flex-direction: column;
-    }
-</style>
