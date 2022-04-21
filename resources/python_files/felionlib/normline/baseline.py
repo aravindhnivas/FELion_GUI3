@@ -179,7 +179,7 @@ class Create_Baseline:
         self.interpol = "cubic"
         self.xs, self.ys = Bx, By
         self.xs = np.array(self.xs, dtype=float)
-        self.ys = np.array(self.xs, dtype=float)
+        self.ys = np.array(self.ys, dtype=float)
         print(f"Baseline points are guessed.")
 
     def InteractivePlots(self, widget: felionQtWindow) -> None:
@@ -197,19 +197,17 @@ class Create_Baseline:
             animated=True,
         )
 
-        self.inter_xs = np.arange(self.xs.min(), self.xs.max())
-        
-        f = interp1d(self.xs, self.ys, kind=self.interpol)
+        Bx, By = np.array(self.line.get_data())
+        self.inter_xs = np.arange(Bx.min(), Bx.max())
+        f = interp1d(Bx, By, kind=self.interpol)
 
         (self.funcLine,) = self.widget.ax.plot(
             self.inter_xs, f(self.inter_xs), c=("b", "C1")[self.opo], zorder=3, animated=True
         )
 
         if not self.opo:
-            
             res, b0, trap = var_find(f"{self.location}/DATA/{self.felixfile}")
             label = f"{self.felixfile}: Res:{res}; B0: {b0}ms; trap: {trap}ms"
-        
         else:
             label = f"{self.felixfile}"
 
@@ -507,14 +505,19 @@ class Create_Baseline:
         return np.asarray([self.data[0], self.data[1]]), np.asarray([self.line.get_data()])
 
 
-def on_closing(event, dialog, cls):
+def on_closing(event, dialog: felionQtWindow.showdialog, cls: Create_Baseline):
+    
     def ask(check, change, txt=""):
+    
         if not check:
-            return print(f"[{txt}] No changes have made")
+            print(f"[{txt}] No changes have made")
+            return
+    
         ok = dialog(
             f"Save corrected as {cls.fname}{txt} file?",
             f"You haven't saved the corrected file\nPress 'Yes' to save the {txt} file and quit OR 'No' to just quit.",
         )
+        
         if not ok:
             return print(f"[{txt}] Changes haven't saved")
         change()
@@ -525,24 +528,20 @@ def on_closing(event, dialog, cls):
 
 
 def main(args):
-
     filename = pt(args["filename"])
     felixfile = filename.name
-
+    
+    opomode = felixfile.endswith("ofelix")
     location = filename.parent
     qapp = QApplication([])
-    
     widget = felionQtWindow(
-        title=f"{felixfile}",
-        figXlabel="Wavenumber (cm$^{-1}$)",
-        figYlabel="Counts",
-        location=location / "../OUT",
-        savefilename=felixfile,
+        title=f"{'OPO-mode' if opomode else 'FELIX-mode'}: {felixfile}",
+        figXlabel="Wavenumber (cm$^{-1}$)", figYlabel="Counts",
+        location=location / "../OUT", savefilename=felixfile,
     )
 
     baselineClass = Create_Baseline(filename)
     baselineClass.InteractivePlots(widget)
-
     
     widget.legend = widget.ax.legend()
     widget.legendToggleCheckWidget.setChecked(True)
