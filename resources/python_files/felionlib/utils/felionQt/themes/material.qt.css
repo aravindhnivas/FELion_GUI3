@@ -967,26 +967,26 @@ QFrame[frameShape="5"] {
 
 QToolBar {
   background: {{secondaryDarkColor}};
-  border: 0px solid;
+  border: 1px solid white;
 }
 
-QToolBar:horizontal {
+/* QToolBar:horizontal {
   border-bottom: 1px solid {{secondaryLightColor}};
 }
 
 QToolBar:vertical {
   border-right: 1px solid {{secondaryLightColor}};
-}
+} */
 
-QToolBar::handle:horizontal {
+/* QToolBar::handle:horizontal {
   image: url(icon:/primary/toolbar-handle-horizontal.svg);
 }
 
 QToolBar::handle:vertical {
   image: url(icon:/primary/toolbar-handle-vertical.svg);
-}
+} */
 
-QToolBar::separator:horizontal {
+/* QToolBar::separator:horizontal {
   border-right: 1px solid {{secondaryLightColor}};
   border-left: 1px solid {{secondaryLightColor}};
   width: 1px;
@@ -996,7 +996,7 @@ QToolBar::separator:vertical {
   border-top: 1px solid {{secondaryLightColor}};
   border-bottom: 1px solid {{secondaryLightColor}};
   height: 1px;
-}
+} */
 
 
 /*  ------------------------------------------------------------------------  */
@@ -1004,21 +1004,23 @@ QToolBar::separator:vertical {
 
 QToolButton {
   background: {{secondaryDarkColor}};
-  border: 0px;
-  height: {{36|density(density_scale)}}px;
-  margin: 3px;
-  padding: 3px;
-  border-right: 12px solid {{secondaryDarkColor}};
-  border-left: 12px solid {{secondaryDarkColor}};
+  /* border: 0px; */
+  /* height: {{36|density(density_scale)}}px; */
+  /* margin: 3px; */
+  padding: 2px;
+  cursor: pointer;
+  /* border-right: 12px solid {{secondaryDarkColor}}; */
+  /* border-left: 12px solid {{secondaryDarkColor}}; */
 }
 
 QToolButton:hover {
-  background: {{primaryLightColor}};
-  border-right: 12px solid {{secondaryLightColor}};
-  border-left: 12px solid {{secondaryLightColor}};
+  background: {{secondaryLightColor}};
+  /* background: {{primaryLightColor}}; */
+  /* border-right: 12px solid {{secondaryLightColor}};
+  border-left: 12px solid {{secondaryLightColor}}; */
 }
 
-QToolButton:pressed {
+/* QToolButton:pressed {
   background: {{secondaryColor}};
   border-right: 12px solid {{secondaryColor}};
   border-left: 12px solid {{secondaryColor}};
@@ -1028,7 +1030,7 @@ QToolButton:checked {
   background: {{secondaryLightColor}};
   border-left: 12px solid {{secondaryLightColor}};
   border-right: 12px solid {{primaryColor}};
-}
+} */
 
 /*  ------------------------------------------------------------------------  */
 /*  General viewers  */
@@ -1155,7 +1157,9 @@ QPushButton.warning:pressed {
 
 QPushButton.success {
   border-color: {{success}};
-  color: {{success}};
+  background-color: {{success}};
+  /* color: {{success}}; */
+  color: #ffffff;
 }
 
 QPushButton.success:checked,
