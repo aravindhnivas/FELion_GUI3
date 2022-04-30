@@ -8,7 +8,7 @@ from scipy.interpolate import interp1d
 from felionlib.utils.FELion_constants import colors
 from felionlib.utils.FELion_definitions import sendData
 from .utils.FELion_sa import SpectrumAnalyserCalibrator
-from felionlib.utils.felionQt import felionQtWindow, QApplication
+from felionlib.utils.felionQt import felionQtWindow
 
 
 def ReadBase(basefile):
@@ -123,7 +123,7 @@ def main(args):
     nolegend = {"showlegend": False}
 
     if tkplot:
-        qapp = QApplication([])
+        
         widget = felionQtWindow(title=f"OPO Spectrum", figDPI=200,
             figTitle="OPO Spectrum", figXlabel="Wavenumber (cm-1)", figYlabel="Intensity",
             location=location/"OUT", savefilename="OPOSpectrum"
@@ -213,7 +213,7 @@ def main(args):
 
         widget.makeLegendToggler(legend_handler, edit_legend=True)
         widget.fig.tight_layout()
-        qapp.exec()
+        widget.qapp.exec()
         
     else:
         _del = "\u0394"

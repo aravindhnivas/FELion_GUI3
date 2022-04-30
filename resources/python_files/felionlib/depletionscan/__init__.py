@@ -6,7 +6,7 @@ from matplotlib.lines import Line2D
 import numpy as np
 from scipy.optimize import curve_fit
 from uncertainties import ufloat as uf, unumpy as unp
-from felionlib.utils.felionQt import felionQtWindow, QApplication, QtWidgets, Qt
+from felionlib.utils.felionQt import felionQtWindow, QtWidgets, Qt
 from felionlib.timescan import timescanplot
 from felionlib.utils.felionQt.utils.blit import BlitManager
 
@@ -36,11 +36,11 @@ class depletionplot:
 
             self.power: dict[str, float] = {"resOn": power[0] / 1000, "resOff": power[1] / 1000}  # mJ to J
             self.powerStr = f"{power[0]}, {power[1]}"
+
             self.nshots = nshots
             self.massIndex = massIndex
             self.timestartIndex = timestartIndex
 
-            qapp = QApplication([])
             self.widget = felionQtWindow(
                 title=f"Depletion Plot: ON ({self.resOnFile.name}), OFF ({self.resOffFile.name})",
                 location=self.location,
@@ -58,7 +58,7 @@ class depletionplot:
             
             self.widget.optimize_figure()
             self.widget.updatecanvas()
-            qapp.exec()
+            self.widget.qapp.exec()
 
         except Exception:
             self.widget.showdialog("Error", traceback.format_exc(5), "critical")

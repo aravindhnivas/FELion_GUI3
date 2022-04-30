@@ -15,7 +15,7 @@ from felionlib.utils.FELion_definitions import readCodeFromFile
 from .utils.plotWidgets import make_widgets
 from .utils.savedata import saveData
 from .utils.sliderlog import Sliderlog
-from felionlib.utils.felionQt import felionQtWindow, QApplication
+from felionlib.utils.felionQt import felionQtWindow
 
 def fitODE(t: np.ndarray, *args):
 
@@ -237,17 +237,13 @@ def main(arguments):
                     keyFoundForRate = False
 
     if not keyFoundForRate:
-
         k3Labels = [i.strip() for i in args["ratek3"].split(",")]
         kCIDLabels = [i.strip() for i in args["ratekCID"].split(",")]
         ratek3 = [float(args["k3Guess"]) for _ in k3Labels]
         ratekCID = [float(args["kCIDGuess"]) for _ in kCIDLabels]
 
-    qapp = QApplication([])
-    
     widget = felionQtWindow(title=f"kinetics : {selectedFile}",
-        windowGeometry=(1200, 600), location=savedir, attachControlLayout=False
-    )
+                windowGeometry=(1200, 600), location=savedir, attachControlLayout=False)
     
     KineticMain()
     
@@ -255,5 +251,5 @@ def main(arguments):
     widget.ax.set_ybound(lower=1)
     
     widget.optimize_figure()
-    qapp.exec()
+    widget.qapp.exec()
     

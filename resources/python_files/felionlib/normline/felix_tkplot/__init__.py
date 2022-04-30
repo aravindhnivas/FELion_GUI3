@@ -3,7 +3,7 @@ from pathlib import Path as pt
 from typing import Any, Literal
 from matplotlib.axes import Axes
 import numpy as np
-from felionlib.utils.felionQt import felionQtWindow, QApplication
+from felionlib.utils.felionQt import felionQtWindow
 from .definitions import computeNGaussian
 
 logger = lambda *args, **kwargs: print(*args, **kwargs, flush=True)
@@ -139,17 +139,15 @@ class PlotData:
 
 def main(args):
 
-    qapp = QApplication([])
-
     data_location = pt(args["location"])
+    
     out_location = data_location / "../OUT"
-
     widget = felionQtWindow(title="FELIX Spectrum", location=out_location, ticks_direction="in", createControlLayout=False, windowGeometry=(1000, 700))
-
     plotData = PlotData(args, widget, data_location)
     plotData.plot()
 
     widget.optimize_figure()
     widget.updatecanvas()
 
-    qapp.exec()
+    widget.qapp.exec()
+    

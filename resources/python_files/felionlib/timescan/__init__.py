@@ -7,7 +7,7 @@ from felionlib.utils.FELion_definitions import sendData
 
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
-from felionlib.utils.felionQt import felionQtWindow, QApplication
+from felionlib.utils.felionQt import felionQtWindow
 from .utils import var_find, get_iterations, get_skip_line
 
 
@@ -18,8 +18,6 @@ class timescanplot:
         self.location: pt = scanfile.parent
 
     def create_QtFigure(self):
-
-        qapp = QApplication([])
 
         self.widget = felionQtWindow(title=self.scanfile.name,
             figXlabel="Time (ms)", figYlabel="Counts", location=self.location / "OUT", savefilename=self.scanfile.stem
@@ -35,8 +33,7 @@ class timescanplot:
         self.widget.optimize_figure()
         self.widget.fig.tight_layout()
         self.widget.makeLegendToggler(self.legend_handler)
-
-        qapp.exec()
+        self.widget.qapp.exec()
 
     # def get_data(self): return self.time, self.mean, self.error, self.mass, self.t_res, self.t_b0
     # def get_plotly_data(self): return self.m

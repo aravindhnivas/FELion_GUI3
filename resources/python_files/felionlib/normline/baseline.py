@@ -3,7 +3,7 @@ import shutil
 from os.path import dirname, isdir, isfile, join
 from pathlib import Path as pt
 from felionlib.utils.felionQt.utils.blit import BlitManager
-from felionlib.utils.felionQt import felionQtWindow, QApplication
+from felionlib.utils.felionQt import felionQtWindow
 from felionlib.utils.FELion_definitions import var_find
 
 from scipy.interpolate import interp1d
@@ -491,25 +491,21 @@ def on_closing(event, dialog: felionQtWindow.showYesorNo, cls: Create_Baseline):
 def main(args):
     filename = pt(args["filename"])
     felixfile = filename.name
-    
     opomode = felixfile.endswith("ofelix")
     location = filename.parent
-    qapp = QApplication([])
+    
     widget = felionQtWindow(
         title=f"{'OPO-mode' if opomode else 'FELIX-mode'}: {felixfile}",
         figXlabel="Wavenumber (cm$^{-1}$)", figYlabel="Counts",
         location=location / "../OUT", savefilename=felixfile,
     )
-
     baselineClass = Create_Baseline(filename)
     baselineClass.InteractivePlots(widget)
     widget.legend = widget.ax.legend()
     widget.legendToggleCheckWidget.setChecked(True)
-    
     widget.closeEvent = lambda event: on_closing(event, widget.showYesorNo, baselineClass)
-    
     widget.optimize_figure()
-    widget.fig.tight_layout()
     
-    qapp.exec()
+    widget.fig.tight_layout()
+    widget.qapp.exec()
     

@@ -3,9 +3,14 @@ import traceback
 from pathlib import Path as pt
 from types import TracebackType
 from typing import Any, Callable, Iterable, Literal, Optional, Type, Union
+
 from PyQt6.QtCore import Qt, QThreadPool
 import PyQt6.QtWidgets as QtWidgets
 from PyQt6.QtGui import QIcon
+
+import matplotlib as mpl
+mpl.use("QtAgg")
+
 from matplotlib.artist import Artist
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg, NavigationToolbar2QT
 from matplotlib.container import Container
@@ -18,25 +23,25 @@ from matplotlib.text import Text
 import matplotlib.ticker as plticker
 from .utils.widgets import ShowDialog, AnotherWindow, iconfile, toggle_this_artist, closeEvent
 from .utils.workers import Worker
-import matplotlib as mpl
-mpl.use("QtAgg")
+
 import matplotlib.pyplot as plt
+from .qt_material import QtStyleTools, list_themes
 
 
 QApplication = QtWidgets.QApplication
-
+qapp = QtWidgets.QApplication([])
 
 def excepthook(etype, value, tb):
     tb = "".join(traceback.format_exception(etype, value, tb, limit=5))
     print("error catched!:", value, flush=True)
     print("error message:\n", tb, flush=True)
-    ShowDialog(f"{etype.__name__}: {value}", tb, "critical")
+    ShowDialog(f"{etype.__name__}", tb, "critical")
 
 
 sys.excepthook = excepthook
 
 
-class felionQtWindow(QtWidgets.QMainWindow):
+class felionQtWindow(QtWidgets.QMainWindow, QtStyleTools):
     def __init__(
         self,
         location: str = "",
@@ -67,7 +72,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         
         self._main = QtWidgets.QWidget()
         self.useTex = useTex
-        
+        self.qapp = qapp
         if style and style != "default":
             plt.style.use(style)
 
@@ -153,17 +158,14 @@ class felionQtWindow(QtWidgets.QMainWindow):
         scroll.setWidgetResizable(True)
         scroll.setWidget(controlGroupBox)
         savecontrolGroup = self.figure_save_controllers()
-
         self.finalControlWidget = QtWidgets.QWidget()
 
-        # self.finalControlLayout = QtWidgets.QVBoxLayout()
         self.finalControlLayout.addWidget(scroll)
         self.finalControlLayout.addWidget(savecontrolGroup)
 
         self.finalControlWidget.setLayout(self.finalControlLayout)
-        self.finalControlWidget.setFixedWidth(self.fixedControllerWidth)
+        # self.finalControlWidget.setFixedWidth(self.fixedControllerWidth)
         self.mainLayout.addWidget(self.finalControlWidget, 1)
-
         self.toggle_controller_layout()
 
         self.show()
@@ -371,7 +373,6 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.ticktypeWidget = QtWidgets.QComboBox()
         self.ticktypeWidget.addItems(["major", "minor", "both"])
         self.ticktypeWidget.currentTextChanged.connect(makeTickAndFormatterFunction)
-
         self.major_minor_ticksize_controllers()
 
         axisControlLayout.addWidget(self.axistypeWidget)
@@ -417,7 +418,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
         self.figsizeWidthWidget.setValue(self.figsize[0])
         self.figsizeHeightWidget.setValue(self.figsize[1])
-
+        
     # def resizeEvent(self, event):
     #     self.updateFigsizeDetails()
 
@@ -458,6 +459,8 @@ class felionQtWindow(QtWidgets.QMainWindow):
     def create_navbar_layout(self):
 
         self.navbar_layout = QtWidgets.QVBoxLayout()
+        self.navbar_layout.addWidget(NavigationToolbar2QT(self.canvas, self))
+        
         navbar_controller_layout = QtWidgets.QHBoxLayout()
 
         navbar_figure_tight_layout_button = QtWidgets.QPushButton("tight layout")
@@ -466,25 +469,51 @@ class felionQtWindow(QtWidgets.QMainWindow):
         canvas_draw_button = QtWidgets.QPushButton("Re-draw")
         canvas_draw_button.clicked.connect(self.draw)
 
+        # choose_theme_widget = QtWidgets.QComboBox()
+        # choose_theme_widget.addItems(list_themes())
+        # choose_theme_widget.addItems(["default", "theme"])
+        
+        
+        current_theme = pt(__file__).parent / "themes/theme.xml"
+        current_theme = current_theme.resolve().__str__()
+        
+        # choose_theme_widget.setCurrentText(current_theme)
+        template = pt(__file__).parent / "themes/material.qt.css"
+        self.apply_stylesheet(self, current_theme, template=template)
+        # choose_theme_widget.currentTextChanged.connect(lambda theme: self.apply_stylesheet(self, theme, template=template))
+        
+        # self.apply_stylesheet
         get_figsize_button = QtWidgets.QPushButton("Get figsize")
         get_figsize_button.clicked.connect(self.updateFigsizeDetails)
 
         figsize_adjust_layout = self.makefigsizeControlWidgets()
         dpiwidget = self.figure_DPI_controller()
+        
         self.toggle_controller_button = QtWidgets.QPushButton("Controller")
         self.toggle_controller_button.clicked.connect(self.toggle_controller_layout)
 
+        # navbar_controller_layout.addWidget(choose_theme_widget)
         navbar_controller_layout.addWidget(get_figsize_button)
-
         navbar_controller_layout.addLayout(figsize_adjust_layout)
         navbar_controller_layout.addWidget(dpiwidget)
         navbar_controller_layout.addWidget(canvas_draw_button)
         navbar_controller_layout.addWidget(navbar_figure_tight_layout_button)
         navbar_controller_layout.addWidget(self.toggle_controller_button)
-
-        self.navbar_layout.addWidget(NavigationToolbar2QT(self.canvas, self))
-        self.navbar_layout.addLayout(navbar_controller_layout)
-        self.navbar_layout.setAlignment(navbar_controller_layout, Qt.AlignmentFlag.AlignRight)
+        
+        navbar_controller_layout.setAlignment(Qt.AlignmentFlag.AlignRight)
+        
+        navbar_controller_widget = QtWidgets.QWidget()
+        navbar_controller_widget.setLayout(navbar_controller_layout)
+        navbar_controller_scroll = QtWidgets.QScrollArea()
+        navbar_controller_scroll.setWidgetResizable(True)
+        navbar_controller_scroll.setWidget(navbar_controller_widget)
+        navbar_controller_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        navbar_controller_scroll.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        navbar_controller_scroll.setFixedHeight(60)
+        
+        self.navbar_layout.addWidget(navbar_controller_scroll)
+        
+        # self.navbar_layout.addLayout(navbar_controller_layout)
 
     def create_figure_canvas_layout(self):
         canvasLayout = QtWidgets.QVBoxLayout()
@@ -494,16 +523,18 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.canvasWidget.setLayout(canvasLayout)
 
         self.canvas_scroll = QtWidgets.QScrollArea()
-
         self.canvas_scroll.setWidgetResizable(True)
         self.canvas_scroll.setWidget(self.canvasWidget)
+        
         self.canvas_scroll.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
         self.canvas_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
 
     def makeFigureLayout(
+        
         self,
         fig: Optional[Figure] = None,
         canvas: Optional[FigureCanvasQTAgg] = None,
+        
         figureArgs: Optional[dict[str, Any]] = {},
         defaultEvents: bool = True,
     ) -> None:
@@ -518,8 +549,12 @@ class felionQtWindow(QtWidgets.QMainWindow):
         final_figure_layout = QtWidgets.QVBoxLayout()
         final_figure_layout.addLayout(self.navbar_layout)
         final_figure_layout.addWidget(self.canvas_scroll)
-
-        self.mainLayout.addLayout(final_figure_layout, 4)
+        self.final_figure_widget = QtWidgets.QWidget()
+        self.final_figure_widget.setLayout(final_figure_layout)
+        self.final_figure_widget.setMinimumWidth(500)
+        self.final_figure_widget.setMinimumHeight(500)
+        # self.mainLayout.addLayout(final_figure_layout, 4)
+        self.mainLayout.addWidget(self.final_figure_widget, 3)
 
         if defaultEvents:
             self.canvas.mpl_connect("button_release_event", lambda e: self.canvas.setFocus())
@@ -695,6 +730,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.controlLayout.addLayout(controllerLayout)
 
     def figure_legend_controllers(self):
+        
         def updateLegendState(state, type="toggle"):
             self.legend = self.ax.get_legend()
             if self.legend:

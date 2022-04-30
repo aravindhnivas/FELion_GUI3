@@ -4,7 +4,7 @@ from pathlib import Path as pt
 # from felionlib.utils.FELion_widgets import FELion_Tk
 from felionlib.utils.FELion_definitions import read_dat_file
 from felionlib.utils.FELion_definitions import sendData
-from felionlib.utils.felionQt import felionQtWindow, QApplication
+from felionlib.utils.felionQt import felionQtWindow
 
 
 def gaussian(x, A, sig, center):
@@ -65,7 +65,6 @@ def main(args):
         else:
             ylabel = "Norm. Intensity"
 
-        qapp = QApplication([])
         widget = felionQtWindow(
             title="Experimental vs Theory",
             figXlabel="Wavenumber $(cm^{-1})$",
@@ -133,4 +132,4 @@ def main(args):
     if not tkplot:
         sendData(dataToSend, calling_file=pt(__file__).stem)
     else:
-        qapp.exec()
+        widget.qapp.exec()

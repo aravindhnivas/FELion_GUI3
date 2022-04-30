@@ -8,12 +8,12 @@ from .voigt import main as getLineShape
 
 from felionlib.utils.FELion_constants import pltColors
 from felionlib.utils import logger
-from felionlib.utils.felionQt import felionQtWindow, QApplication
+from felionlib.utils.felionQt import felionQtWindow
 
 
 speedOfLight = 299792458
 speedOfLightIn_cm = speedOfLight*100
-
+qapp = None
 
 class ROSAA:
     def __init__(self, nHe=None, power=None, plotGraph=True, writefile=None):
@@ -344,15 +344,17 @@ class ROSAA:
 
     def Plot(self):
 
+        global qapp
         self.figs_location: pt = output_dir / "figs"
-
         if not self.figs_location.exists():
             self.figs_location.mkdir()
-        
         widget = felionQtWindow(title=f"Population ratio", figDPI=200,
             figTitle=self.transitionTitleLabel, figXlabel="Time (ms)", figYlabel="Population", 
             location=self.figs_location
         )
+        
+        if qapp is None:
+            qapp = widget.qapp
         
         plotSimulationTime_milliSecond: np.ndarray = self.simulateTime*1e3
         counter = 0
@@ -437,8 +439,6 @@ def main(arguments):
     nHe = float(conditions["numberDensity"])
     variable = conditions["variable"]
 
-    qapp = QApplication([])
-    
     if variable == "time":
 
         ROSAA(nHe, plotGraph=figure["show"])

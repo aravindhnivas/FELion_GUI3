@@ -5,7 +5,7 @@ from io import StringIO
 from felionlib.utils.FELion_definitions import sendData
 from felionlib.utils.FELion_constants import colors
 from felionlib.utils.fit_profile.lineProfileFit import fitData
-from felionlib.utils.felionQt import felionQtWindow, QApplication
+from felionlib.utils.felionQt import felionQtWindow
 import matplotlib.ticker as plticker
 
 
@@ -250,12 +250,10 @@ def export_file(fname, freq, inten):
 def thz_function():
 
     global widget
-    
     if tkplot:
-        
-        qapp = QApplication([])
         if len(filenames) == 1: 
             savefilename=filenames[0].stem
+            
         else:
             savefilename = "averaged_thzScan"
         
@@ -270,8 +268,7 @@ def thz_function():
         
         widget.optimize_figure()
         widget.fig.tight_layout()
-        
-        qapp.exec()
+        widget.qapp.exec()
 
     else: 
         dataToSend = plot_thz()
