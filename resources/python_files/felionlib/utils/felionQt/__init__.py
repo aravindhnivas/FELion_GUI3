@@ -984,6 +984,7 @@ class felionQtWindow(QtWidgets.QMainWindow, QtStyleTools):
         savefmtOptionsWidget.currentTextChanged.connect(changeSaveFmt)
 
         saveButtonWidget = QtWidgets.QPushButton("Save figure")
+        saveButtonWidget.setProperty('class', 'success')
         saveButtonWidget.clicked.connect(self.savefig)
 
         controllerLayout.addWidget(savefmtOptionsWidget)
