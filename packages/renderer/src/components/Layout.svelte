@@ -28,7 +28,7 @@
 </script>
 
 <script>
-    import { onMount, tick, onDestroy, createEventDispatcher } from 'svelte'
+    import { onMount, tick, createEventDispatcher } from 'svelte'
     import { fly, fade } from 'svelte/transition'
     import Textfield from '@smui/textfield'
     import { relayout } from 'plotly.js/dist/plotly-basic'

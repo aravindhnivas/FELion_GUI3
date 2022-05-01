@@ -1,4 +1,3 @@
-
 ## UNRELEASED
 
 - Code formatted with prettier
@@ -7,12 +6,10 @@
     - Kinetics mass toggler
 ---
 ## v3.6.2
-
 - Timescan Kinetics feature added:
     - toggle masses to include in the model
 - BUG FIXES:
     - baseline ydata corrections
-
 
 ## v3.6.1
 

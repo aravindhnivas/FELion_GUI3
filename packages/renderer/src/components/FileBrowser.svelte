@@ -5,7 +5,6 @@
     import CustomSwitch from '$components/CustomSwitch.svelte'
     import CustomIconSwitch from '$components/CustomIconSwitch.svelte'
     import VirtualCheckList from '$components/VirtualCheckList.svelte'
-    ///////////////////////////////////////////////////////////////////////////
 
     export let filetype = '*.*'
     export let markedFile = ''
@@ -165,6 +164,7 @@
     <i class="material-icons" on:click={() => changeDirectory('..')}
         >arrow_back</i
     >
+
     <i
         class="material-icons animated faster"
         on:animationend={({ target }) => target.classList.remove('rotateIn')}

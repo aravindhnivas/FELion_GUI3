@@ -41,31 +41,16 @@
 
     let felixPlotWidgets = {
         text: [
-            // {label:"Fig. caption", value:"caption", id:getID()},
-            // {label:"Fig. title", value:"Title", id:getID()},
             { label: 'Exp_title', value: 'FELIX-Experiment', id: getID() },
             { label: 'Exp_legend', value: 'legend', id: getID() },
             { label: 'Cal_title', value: 'calc_title', id: getID() },
-            // {label:"markers", value:":1", id:getID()},
         ],
 
         number: [
-            // {label:"Fig. Width", value:7, step:1, id:getID()},
-            // {label:"Fig. Height", value:7, step:1,  id:getID()},
-            // {label:"Fig. DPI", value:120, step:5,  id:getID()},
             { label: 'freqScale', value: 1, step: 0.01, id: getID() },
-            // {label:"gridAlpha", value:0, step:0.1,  id:getID()},
             { label: 'theorySigma', value: 5, step: 1, id: getID() },
-            // {label:"Tick Interval", value:200, step:50,  id:getID()},
         ],
-        boolean: [
-            // {label:"sameColor", value:true, id:getID()},
-            // {label:"Invert ax2", value:true, id:getID()},
-            { label: 'Only_exp', value: true, id: getID() },
-            // {label:"hide ax2 axis.", value:true, id:getID()},
-            // {label:"hide_all_axis", value:false, id:getID()},
-            // {label:"legend_visible", value:true, id:getID()}
-        ],
+        boolean: [{ label: 'Only_exp', value: true, id: getID() }],
     }
 
     const fullData = {}
@@ -114,7 +99,6 @@
                 $felixPlotAnnotations = []
                 $expfittedLinesCollectedData = []
 
-                // show_theoryplot = false
                 fullData.data = dataFromPython
                 dataReady = true
 
@@ -151,11 +135,6 @@
                     (n) => (selectedWidgets[n.label] = n.value)
                 )
 
-                // const numberWidgets = felixPlotWidgets.number.map(n=>n.value)
-                // const booleanWidgets = felixPlotWidgets.boolean.map(n=>n.value)
-                // const textWidgets = felixPlotWidgets.text.map(n=>n.value)
-                // const selectedWidgets = $felixPlotCheckboxes.map(n=>n.selected)
-
                 pyfile = 'normline.felix_tkplot'
                 args = {
                     numberWidgets,
@@ -167,7 +146,7 @@
                     theoryLocation,
                 }
 
-                computePy_func({ e, pyfile, args, general: true, openShell })
+                computePy_func({ e, pyfile, args, general: true })
             default:
                 break
         }
