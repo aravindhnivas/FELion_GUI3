@@ -2,8 +2,8 @@ import { filedetails } from './svelteWritables'
 
 export function get_details_func({ dataFromPython } = {}) {
     const info = dataFromPython.files.map((data) => {
-        let { filename, trap, res, b0, range } = data
-        let [min, max] = range
+        const { filename, trap, res, b0, range } = data
+        const [min, max] = range
         return {
             filename,
             min,

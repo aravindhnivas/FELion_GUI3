@@ -123,7 +123,7 @@ export default async function ({
                 return resolve(null)
             }
 
-            const dataFromPython = fs.readJsonSync(outputFile)
+            const [dataFromPython] = fs.readJsonSync(outputFile)
             resolve(dataFromPython)
 
             if (target?.classList.contains('is-loading')) {

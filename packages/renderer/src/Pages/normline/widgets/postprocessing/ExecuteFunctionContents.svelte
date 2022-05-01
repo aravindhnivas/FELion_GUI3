@@ -96,7 +96,7 @@
 
     function loadpeakTable() {
         const loadedfile = loadfile(savePeakfilename)
-        if (!loadedfile) return
+        if (loadedfile.length < 1) return
         $felixPeakTable = sortBy(loadedfile, [(o) => o['freq']])
         adjustPeak()
     }

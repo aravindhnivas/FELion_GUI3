@@ -30,7 +30,10 @@
             config_content[filename] = newKeyValue
         })
         // const config_file = pathJoin(config_file, config_file_ROSAAkinetics);
-        fs.outputJsonSync(config_file, config_content)
+        const [, error] = fs.outputJsonSync(config_file, config_content)
+        if (error) {
+            return window.handleError(error)
+        }
         window.createToast(
             'Config file saved' + config_file_ROSAAkinetics,
             'warning'

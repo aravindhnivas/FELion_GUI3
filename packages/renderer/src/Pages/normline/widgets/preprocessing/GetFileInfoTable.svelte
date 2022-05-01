@@ -7,9 +7,9 @@
     import CustomIconSwitch from '$components/CustomIconSwitch.svelte'
     import Table from '$components/Table.svelte'
     import { savefile, loadfile } from '../../functions/misc'
-    import { uniqBy } from 'lodash-es'
     import computePy_func from '$src/Pages/general/computePy'
     import { get_details_func } from '../../functions/get_details'
+    import { onMount } from 'svelte'
 
     export let felixfiles
 
@@ -28,12 +28,19 @@
 
         get_details_func({ dataFromPython })
         toggleFileDetailsTable = true
+        console.log({ $filedetails })
     }
 
     function loadfiledetails() {
         const loadedfile = loadfile('filedetails')
-        $filedetails = uniqBy([...loadedfile, ...$filedetails], 'filename')
+        if (loadedfile.length < 1) return
+        toggleFileDetailsTable = true
+        $filedetails = loadedfile
+        console.log({ loadedfile, $filedetails })
     }
+    onMount(() => {
+        loadfiledetails()
+    })
 </script>
 
 <div class="align">

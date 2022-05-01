@@ -13,37 +13,33 @@ import { relayout } from 'plotly.js/dist/plotly-basic'
 import { uniqBy } from 'lodash-es'
 
 export function savefile({ file = {}, name = '', location = '' } = {}) {
-    try {
-        const filename = pathJoin(
-            location || get(felixopoLocation),
-            `${name}.json`
-        )
-        fs.outputJsonSync(filename, { file })
-        return window.createToast(`${name}.json has been saved.`, 'success')
-    } catch (error) {
-        window.handleError(error)
+    const filename = pathJoin(location || get(felixopoLocation), `${name}.json`)
+    const [, error] = fs.outputJsonSync(filename, { file })
+    if (error) {
+        return window.handleError(error)
     }
+    window.createToast(`${name}.json has been saved.`, 'success')
 }
 
 export function loadfile(name) {
-    try {
-        console.log(name)
-        const filename = pathJoin(get(felixopoLocation), `${name}.json`)
-        if (!fs.existsSync(filename)) {
-            window.createToast(`Invalid file: ${name}.json .`, 'danger')
-            return {}
-        }
-
-        const loadedfile =
-            fs
-                .readJsonSync(filename)
-                ?.file?.map((arr) => ({ ...arr, id: getID() })) || []
-        console.log({ loadedfile })
-        window.createToast(`${name}.json has been loaded.`, 'success')
-        return loadedfile
-    } catch (error) {
-        window.handleError(error)
+    const filename = pathJoin(get(felixopoLocation), `${name}.json`)
+    if (!fs.existsSync(filename)) {
+        window.createToast(`Invalid file: ${name}.json .`, 'danger')
+        return []
     }
+
+    const [getdata, error] = fs.readJsonSync(filename)
+    if (error) {
+        window.handleError(error)
+        return []
+    }
+
+    const loadedfile =
+        getdata?.file?.map((arr) => ({ ...arr, id: getID() })) || []
+    // console.log({ loadedfile })
+    window.createToast(`${name}.json has been loaded.`, 'success')
+
+    return loadedfile
 }
 
 export function plotlySelection({ graphDiv = 'avgplot', mode = 'felix' } = {}) {

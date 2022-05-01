@@ -53,8 +53,13 @@
             }
             selectAll = false
             filesLoaded = false
+
             try {
-                let folderfile = await fs.readdir(currentLocation)
+                const [folderfile, filereadErr] = await fs.readdir(
+                    currentLocation
+                )
+                if (filereadErr) throw filereadErr
+
                 const fileIncludePattern = new RegExp(`.+\\.[^fr]?${filetype}`) // f or r keyword is to avoid getting fscan and rscan files
 
                 original_files = fullfiles = folderfile

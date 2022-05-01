@@ -1,5 +1,4 @@
 <script>
-    // import {mainPreModal} from "../svelteWritable";
     import Textfield from '@smui/textfield'
     import HelperText from '@smui/textfield/helper-text'
     import Checkbox from '@smui/checkbox'
@@ -7,18 +6,14 @@
     import { browse } from '../components/Layout.svelte'
     import CustomDialog from '../components/CustomDialog.svelte'
 
-    const writePowfile = () => {
-        const contents = `${initContent}\n${powerfileContent}`
+    const writePowfile = async () => {
+        const contents = `${initContent.trim()}\n${powerfileContent}`.trim()
 
-        fs.writeFile(powfile, contents, function (err) {
-            if (err) {
-                return window.createToast(
-                    "Power file couldn't be saved.",
-                    'danger'
-                )
-            }
-            window.createToast('Power file saved', 'success')
-        })
+        const [, error] = await fs.writeFile(powfile, contents, 'utf8')
+        if (error) {
+            return window.createToast("Power file couldn't be saved.", 'danger')
+        }
+        window.createToast('Power file saved', 'success')
     }
 
     async function savefile() {

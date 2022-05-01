@@ -28,6 +28,7 @@
     let ratekCID = 'kCID1'
     let selectedFile = ''
     let totalMass = []
+    let totalMassKey = []
     let k3Guess = '1e-30'
     let kCIDGuess = '1e-15'
 
@@ -80,20 +81,22 @@
             currentLocation,
             selectedFile.replace('.scan', '_scan.json')
         )
-        console.log(currentJSONfile)
 
-        currentData = fs.readJsonSync(currentJSONfile)
+        console.log(currentJSONfile)
+        ;[currentData] = fs.readJsonSync(currentJSONfile)
+
         currentDataBackup = cloneDeep(currentData)
 
         if (currentData) {
             totalMass = Object.keys(currentData)
             totalMass = totalMass.slice(0, totalMass.length - 1)
+
             totalMass.forEach((m) => {
                 modifiedTotalMass[m] = { included: true }
             })
+            totalMassKey = totalMass.map((m) => ({ mass: m, id: getID() }))
 
             maxTimeIndex = currentData[totalMass[0]].x.length - 5
-
             massOfReactants = totalMass.join(', ')
             sliceData()
             console.log({ maxTimeIndex })
@@ -127,6 +130,7 @@
     $: if (massOfReactants) {
         computeOtherParameters()
     }
+
     $: if (srgMode) {
         calibrationFactor = 1
         if (update_pbefore) pbefore = Number(7e-5).toExponential(0)
@@ -170,7 +174,11 @@
             return window.createToast('Invalid location or filename', 'danger')
         }
         config_content[selectedFile] = currentConfig
-        fs.outputJsonSync(config_file, config_content)
+        const [, error] = fs.outputJsonSync(config_file, config_content)
+        if (error) {
+            return window.handleError(error)
+        }
+
         window.createToast(
             'Config file saved' + config_file_ROSAAkinetics,
             'warning'
@@ -207,7 +215,7 @@
     async function loadConfig() {
         try {
             if (fs.existsSync(config_file)) {
-                config_content = fs.readJsonSync(config_file)
+                ;[config_content] = fs.readJsonSync(config_file)
 
                 configArray = Object.keys(config_content).map((filename) => ({
                     filename,
@@ -280,7 +288,6 @@
                 tag,
                 data,
                 temp,
-
                 ratek3,
                 k3Guess,
                 molecule,
@@ -412,7 +419,7 @@
                 />
 
                 <div class="align h-center">
-                    {#each totalMass as mass (mass)}
+                    {#each totalMassKey as { mass, id } (id)}
                         <span class="tag is-warning">
                             {mass}
                             <button

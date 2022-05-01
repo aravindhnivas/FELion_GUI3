@@ -774,13 +774,6 @@
     </svelte:fragment>
 
     <svelte:fragment slot="footer_content__slot">
-        <!-- {#if pyProcesses.length>0}
-        
-            <div>{'Running:'+ pyProcesses.length}</div>
-            <button transition:fade class="button is-danger" 
-                on:click="{()=>{pyProcesses.at(-1).kill(); pyProcesses.pop()}}" >Stop</button>
-        {/if} -->
-
         <CustomSelect
             options={simulationMethods}
             bind:picked={simulationMethod}
@@ -803,7 +796,6 @@
             {showreport ? 'Go Back' : 'Status report'}
         </button>
 
-        <!-- <PyButton on:click={simulation} bind:pyProcesses bind:stdOutput={statusReport} /> -->
         <button class="button is-link" on:click={simulation}>Submit</button>
     </svelte:fragment>
 </LayoutDiv>
