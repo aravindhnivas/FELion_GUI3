@@ -1,63 +1,59 @@
-
 <script>
+    import { addTraces } from 'plotly.js/dist/plotly-basic'
+    import Textfield from '@smui/textfield'
+    import Modal from '$components/Modal.svelte'
+    import { browse } from '$components/Layout.svelte'
+    import { graphDiv } from '../functions/svelteWritables'
+    import computePy_func from '$src/Pages/general/computePy'
+    export let active = false
+    export let fileChecked = []
+    export let addedFileCol = 1
 
-    import {addTraces}      from 'plotly.js/dist/plotly-basic';
-    import Textfield        from '@smui/textfield';
-    import Modal            from '$components/Modal.svelte';
-    import {browse}         from "$components/Layout.svelte";
-    import {graphDiv}       from '../functions/svelteWritables';
-    import computePy_func   from "$src/Pages/general/computePy"
-    export let active=false
-    export let fileChecked=[]
-    export let addedFileCol=1
-
-    export let addedFileScale=1000
-    export let addedfiles=[]
-    export let addedFile={}
-    export let extrafileAdded=0;
+    export let addedFileScale = 1000
+    export let addedfiles = []
+    export let addedFile = {}
+    export let extrafileAdded = 0
 
     async function addFileSelection() {
-
-        const result = await browse({dir:false, multiple:true})
-        if(!result) return
-        addedfiles = addedFile["files"] = result
-        window.createToast("Files added")
+        const result = await browse({ dir: false, multiple: true })
+        if (!result) return
+        addedfiles = addedFile['files'] = result
+        window.createToast('Files added')
     }
 
-    function plotData({e=null}={}){
-
-        const pyfile="normline.addTrace"
-        let args;
-        if(addedFile.files < 1) return window.createToast("No files selected", "danger")
+    function plotData({ e = null } = {}) {
+        const pyfile = 'normline.addTrace'
+        let args
+        if (addedFile.files < 1)
+            return window.createToast('No files selected', 'danger')
         extrafileAdded += addedfiles.length
-        addedFile["col"] = addedFileCol, addedFile["N"] = fileChecked.length + extrafileAdded
+        ;(addedFile['col'] = addedFileCol),
+            (addedFile['N'] = fileChecked.length + extrafileAdded)
 
-        addedFile["scale"] = addedFileScale
-        args=addedFile
+        addedFile['scale'] = addedFileScale
+        args = addedFile
 
-        computePy_func({e, pyfile, args})
-        .then((dataFromPython)=>{
+        computePy_func({ e, pyfile, args }).then((dataFromPython) => {
             addTraces($graphDiv, dataFromPython)
-            window.createToast("Graph Plotted", "success")
+            window.createToast('Graph Plotted', 'success')
             active = false
         })
-
     }
-
 </script>
 
-
 {#if active}
-
     <Modal bind:active title="Add file to plot">
-
-        <div class="align" slot="content" >
-            <Textfield bind:value={addedFileCol} label="Columns"/>
-            <Textfield bind:value={addedFileScale} label="ScaleY"/>
-            <button on:click={addFileSelection} class="button is-link">Browse</button>
-
+        <div class="align" slot="content">
+            <Textfield bind:value={addedFileCol} label="Columns" />
+            <Textfield bind:value={addedFileScale} label="ScaleY" />
+            <button on:click={addFileSelection} class="button is-link"
+                >Browse</button
+            >
         </div>
-        <button slot="footerbtn" class="button is-link" on:click="{(e)=>plotData({e:e})}" >Add</button>
+        <button
+            slot="footerbtn"
+            class="button is-link"
+            on:click={(e) => plotData({ e: e })}>Add</button
+        >
     </Modal>
-    
 {/if}

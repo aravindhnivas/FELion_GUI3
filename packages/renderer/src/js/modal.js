@@ -1,4 +1,3 @@
-
 // import * as PNotify from '@pnotify/core';
 // import * as PNotifyMobile from '@pnotify/mobile';
 // import * as PNotifyFontAwesome5Fix from '@pnotify/font-awesome5-fix';
@@ -10,7 +9,7 @@
 
 // window.showStackContext = ({title="Info", text, type="Info"}={}) => {
 //     try {
-        
+
 //         if (typeof window.stackContext === 'undefined') {
 
 //             window.stackContext = new PNotify.Stack({
@@ -18,21 +17,20 @@
 //                 dir2: 'left',
 //                 firstpos1: 70,
 //                 firstpos2: 25,
-    
-    
+
 //                 hide: false,
 //                 context: document.getElementById('pageContainer')
 //             });
 //         }
 //         const opts = {
-    
+
 //             title, text, type,
-    
+
 //             stack: window.stackContext
 //         };
 //         PNotify.notice(opts);
 //     } catch (error) {
-        
+
 //         console.log(error)
 //     }
 // }

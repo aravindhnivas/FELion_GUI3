@@ -1,7 +1,7 @@
 <script>
-    import IconButton, {Icon} from '@smui/icon-button'
-    export let toggler=""
-    export let style=""
+    import IconButton, { Icon } from '@smui/icon-button'
+    export let toggler = ''
+    export let style = ''
     export let icons = []
 </script>
 

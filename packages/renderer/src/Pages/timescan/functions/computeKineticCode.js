@@ -1,52 +1,58 @@
-
-function computeKineticCodeScipy({nameOfReactants, ratek3, ratekCID}) {
-
-    const nameOfReactantsArr = nameOfReactants.split(",").map(name => name.trim())
-    const rateForwardArr = ratek3.split(",").map(name => name.trim())
-    const rateReverseArr = ratekCID.split(",").map(name => name.trim())
-    let dataToSet = "# Kinetics code\n"
+function computeKineticCodeScipy({ nameOfReactants, ratek3, ratekCID }) {
+    const nameOfReactantsArr = nameOfReactants
+        .split(',')
+        .map((name) => name.trim())
+    const rateForwardArr = ratek3.split(',').map((name) => name.trim())
+    const rateReverseArr = ratekCID.split(',').map((name) => name.trim())
+    let dataToSet = '# Kinetics code\n'
 
     /////////////////////////////////////////////////////////////////////////
     if (
-        rateForwardArr.length !== nameOfReactantsArr.length-1 || rateReverseArr.length !== nameOfReactantsArr.length-1
+        rateForwardArr.length !== nameOfReactantsArr.length - 1 ||
+        rateReverseArr.length !== nameOfReactantsArr.length - 1
     ) {
-
-        dataToSet += "## Defining min-max-value for new slider\n"
-        dataToSet += "```plaintext\n# min, max and value are integers let's say 'c', which will be converter to 10^c\n"
-        dataToSet += "\nkvalueLimits = {\n"
-        rateForwardArr.slice(nameOfReactantsArr.length-1, rateForwardArr.length).forEach((value) => {
-            dataToSet += `\t'${value}': (min, max, value),\n`
-        })
-        rateReverseArr.slice(nameOfReactantsArr.length-1, rateReverseArr.length).forEach((value) => {
-            dataToSet += `\t'${value}': (min, max, value)\n`
-        })
-        dataToSet += "}\n"
-        dataToSet += "```\n"
-
+        dataToSet += '## Defining min-max-value for new slider\n'
+        dataToSet +=
+            "```plaintext\n# min, max and value are integers let's say 'c', which will be converter to 10^c\n"
+        dataToSet += '\nkvalueLimits = {\n'
+        rateForwardArr
+            .slice(nameOfReactantsArr.length - 1, rateForwardArr.length)
+            .forEach((value) => {
+                dataToSet += `\t'${value}': (min, max, value),\n`
+            })
+        rateReverseArr
+            .slice(nameOfReactantsArr.length - 1, rateReverseArr.length)
+            .forEach((value) => {
+                dataToSet += `\t'${value}': (min, max, value)\n`
+            })
+        dataToSet += '}\n'
+        dataToSet += '```\n'
     }
-    dataToSet += "## Defining ODE model\n"
-    dataToSet += "```plaintext\n"
+    dataToSet += '## Defining ODE model\n'
+    dataToSet += '```plaintext\n'
 
-    dataToSet += "def compute_attachment_process(t, N):\n\n"
-    dataToSet += "\tk3, kCID = rateCoefficientArgs\n\n"
-    dataToSet += `\t${rateForwardArr.join(", ")}${rateForwardArr.length == 1 ? "," : ""} = k3\n`
-    dataToSet += `\t${rateReverseArr.join(", ")}${rateReverseArr.length == 1 ? "," : ""} = kCID\n\n`
+    dataToSet += 'def compute_attachment_process(t, N):\n\n'
+    dataToSet += '\tk3, kCID = rateCoefficientArgs\n\n'
+    dataToSet += `\t${rateForwardArr.join(', ')}${
+        rateForwardArr.length == 1 ? ',' : ''
+    } = k3\n`
+    dataToSet += `\t${rateReverseArr.join(', ')}${
+        rateReverseArr.length == 1 ? ',' : ''
+    } = kCID\n\n`
 
-    dataToSet += `\t${nameOfReactantsArr.join(", ")} = N\n\n`
-    
-    for (let index = 0; index < nameOfReactantsArr.length-1; index++) {
-    
+    dataToSet += `\t${nameOfReactantsArr.join(', ')} = N\n\n`
+
+    for (let index = 0; index < nameOfReactantsArr.length - 1; index++) {
         const currentMolecule = nameOfReactantsArr[index]
-        const nextMolecule = nameOfReactantsArr[index+1]
+        const nextMolecule = nameOfReactantsArr[index + 1]
         dataToSet += `\t${currentMolecule}_f = -(${rateForwardArr[index]} * numberDensity**2 * ${currentMolecule})`
         dataToSet += `+ (${rateReverseArr[index]} * numberDensity * ${nextMolecule})\n`
-    
     }
 
     dataToSet += `\n\tdNdT = [\n\t\t${nameOfReactantsArr.at(0)}_f,\n`
     for (let index = 1; index < nameOfReactantsArr.length - 1; index++) {
         const currentMolecule = nameOfReactantsArr[index]
-        const prevMolecule = nameOfReactantsArr[index-1]
+        const prevMolecule = nameOfReactantsArr[index - 1]
         dataToSet += `\t\t${currentMolecule}_f - ${prevMolecule}_f,\n`
     }
 
@@ -54,85 +60,92 @@ function computeKineticCodeScipy({nameOfReactants, ratek3, ratekCID}) {
 
     dataToSet += `\treturn dNdT\n`
 
-    dataToSet += "```\n---\n"
+    dataToSet += '```\n---\n'
 
     /////////////////////////////////////////////////////////////////////////
-    dataToSet += "\n\n"
+    dataToSet += '\n\n'
     return dataToSet
-
 }
 
-function computeKineticCodeSympy({initialValues, nameOfReactants, ratek3, ratekCID}) {
-
-    
-    const nameOfReactantsArr = nameOfReactants.split(",").map(name => name.trim())
-    const rateForwardArr = ratek3.split(",").map(name => name.trim())
-    const rateReverseArr = ratekCID.split(",").map(name => name.trim())
+function computeKineticCodeSympy({
+    initialValues,
+    nameOfReactants,
+    ratek3,
+    ratekCID,
+}) {
+    const nameOfReactantsArr = nameOfReactants
+        .split(',')
+        .map((name) => name.trim())
+    const rateForwardArr = ratek3.split(',').map((name) => name.trim())
+    const rateReverseArr = ratekCID.split(',').map((name) => name.trim())
 
     let dataToSave = []
-    let dataToSet = ""
+    let dataToSet = ''
 
     ///////////////////////////////////////////////////////////////////////
-    
-    dataToSet += "## Defining initial variables and parameters\n"
-    dataToSet += "```plaintext\n"
 
-    dataToSet += `${nameOfReactantsArr.join(", ")}, t = variables("${nameOfReactantsArr.join(", ")}, t")\n`
+    dataToSet += '## Defining initial variables and parameters\n'
+    dataToSet += '```plaintext\n'
+
+    dataToSet += `${nameOfReactantsArr.join(
+        ', '
+    )}, t = variables("${nameOfReactantsArr.join(', ')}, t")\n`
     dataToSet += `${ratek3} = parameters("${ratek3}")\n`
     dataToSet += `${ratekCID} = parameters("${ratekCID}")\n`
-    dataToSet += "```\n---\n"
+    dataToSet += '```\n---\n'
     /////////////////////////////////////////////////////////////////////////
-    
-    
+
     /////////////////////////////////////////////////////////////////////////
-    dataToSet += "## Initial Condition\n"
-    dataToSet += "```plaintext\n"
-    dataToSet += "initial_condition = {\n\tt: 0,\n\t"
+    dataToSet += '## Initial Condition\n'
+    dataToSet += '```plaintext\n'
+    dataToSet += 'initial_condition = {\n\tt: 0,\n\t'
 
     dataToSave = initialValues.map((value, index) => {
         return `${nameOfReactantsArr[index]} : ${value},`
-
     })
 
-    dataToSet += `${dataToSave.join("\n\t")}`
+    dataToSet += `${dataToSave.join('\n\t')}`
 
-    dataToSet += "\n}\n"
-    dataToSet += "```\n---\n"
+    dataToSet += '\n}\n'
+    dataToSet += '```\n---\n'
     /////////////////////////////////////////////////////////////////////////
 
     /////////////////////////////////////////////////////////////////////////
-    dataToSet += "## Defining formation rate equations\n"
-    dataToSet += "```plaintext\n"
-    
-    for (let index = 0; index < nameOfReactantsArr.length-1; index++) {
+    dataToSet += '## Defining formation rate equations\n'
+    dataToSet += '```plaintext\n'
+
+    for (let index = 0; index < nameOfReactantsArr.length - 1; index++) {
         const currentMolecule = nameOfReactantsArr[index]
-        const nextMolecule = nameOfReactantsArr[index+1]
+        const nextMolecule = nameOfReactantsArr[index + 1]
         dataToSet += `${currentMolecule}_f = -(${rateForwardArr[index]} * ${currentMolecule})`
         dataToSet += `+ (${rateReverseArr[index]} * ${nextMolecule})\n`
     }
 
-    dataToSet += "```\n---\n"
+    dataToSet += '```\n---\n'
     /////////////////////////////////////////////////////////////////////////
 
     /////////////////////////////////////////////////////////////////////////
-    dataToSet += "## Defining rate model\n"
-    dataToSet += "```plaintext\n"
+    dataToSet += '## Defining rate model\n'
+    dataToSet += '```plaintext\n'
 
-    dataToSet += `rate_model = {\n\tD(${nameOfReactantsArr.at(0)}, t): ${nameOfReactantsArr.at(0)}_f,\n`
+    dataToSet += `rate_model = {\n\tD(${nameOfReactantsArr.at(
+        0
+    )}, t): ${nameOfReactantsArr.at(0)}_f,\n`
 
     for (let index = 1; index < nameOfReactantsArr.length - 1; index++) {
         const currentMolecule = nameOfReactantsArr[index]
-        const prevMolecule = nameOfReactantsArr[index-1]
+        const prevMolecule = nameOfReactantsArr[index - 1]
         dataToSet += `\tD(${currentMolecule}, t): ${currentMolecule}_f - ${prevMolecule}_f,\n`
     }
 
-    dataToSet += `\tD(${nameOfReactantsArr.at(-1)}, t): - ${nameOfReactantsArr.at(-2)}_f\n}\n`
-    
+    dataToSet += `\tD(${nameOfReactantsArr.at(
+        -1
+    )}, t): - ${nameOfReactantsArr.at(-2)}_f\n}\n`
 
-    dataToSet += "ode_model = ODEModel(rate_model, initial=initial_condition)\n"
-    dataToSet += "```\n---\n"
+    dataToSet += 'ode_model = ODEModel(rate_model, initial=initial_condition)\n'
+    dataToSet += '```\n---\n'
     ///////////////////////////////////////////////////////////////////////
 
     return dataToSet
 }
-export {computeKineticCodeScipy, computeKineticCodeSympy}
+export { computeKineticCodeScipy, computeKineticCodeSympy }

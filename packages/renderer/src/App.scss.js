@@ -1,10 +1,9 @@
-
 // css
-import 'cooltipz-css';
-import 'ldbutton/dist/ldbtn.css';
-import 'winbox/src/css/winbox.css';
+import 'cooltipz-css'
+import 'ldbutton/dist/ldbtn.css'
+import 'winbox/src/css/winbox.css'
 // scss
-import './scss/smui-theme-variables.scss';
-import "./scss/materialTheme.scss";
-import "./scss/bulma-style.scss";
-import "./scss/styles.scss";
+import './scss/smui-theme-variables.scss'
+import './scss/materialTheme.scss'
+import './scss/bulma-style.scss'
+import './scss/styles.scss'

@@ -1,87 +1,69 @@
-
 <script>
-    import {windowLoaded, activateChangelog, updateAvailable, newVersion, updating} from "../js/functions";
-    import Modal from "./Modal.svelte";
-    import { beforeUpdate} from "svelte";
-    import { Remarkable } from 'remarkable';
-    import { fade } from 'svelte/transition';
-
-    const changelogFile = pathJoin(ROOT_DIR, "resources/CHANGELOG.md")
+    import { activateChangelog } from '../js/functions'
+    import { Remarkable } from 'remarkable'
+    import Dialog, { Title, Content, Actions } from '@smui/dialog'
+    import Button, { Label } from '@smui/button'
+    const changelogFile = pathJoin(ROOT_DIR, 'resources/CHANGELOG.md')
     let changelogContent = fs.readFileSync(changelogFile)
-    const md = new Remarkable();
-    beforeUpdate(()=>{changelogContent = fs.readFileSync(changelogFile)})
-    
-    const updateEvent = new CustomEvent('update', { bubbles: false });
-
-
-    const updateNow = () => {
-        
-        let target = document.getElementById("updateCheckBtn")
-
-        target.dispatchEvent(updateEvent)
+    const md = new Remarkable('default', {})
+    const changelogTitle = 'FELion GUI Changelog'
+    $: if ($activateChangelog) {
+        changelogContent = fs.readFileSync(changelogFile)
     }
-
-    let changelogTitle = "FELion GUI Changelog"
-    $: if($updateAvailable) {
-        $activateChangelog = true;
-        changelogTitle = "New update available: "+ $newVersion
-    
-    } else {changelogTitle = "FELion GUI Changelog"}
-
 </script>
 
+<Dialog
+    bind:open={$activateChangelog}
+    aria-labelledby="changelog-title"
+    aria-describedby="changelog-content"
+    surface$class="changelog__container"
+    surface$style="max-width:50vw; max-height: 70vh;"
+>
+    <Title id="changelog-title">{changelogTitle}</Title>
+    <Content id="changelog-content">
+        {@html md.render(changelogContent)}
+    </Content>
+    <Actions>
+        <Button action="accept">
+            <Label>Close</Label>
+        </Button>
+    </Actions>
+</Dialog>
 
-{#if $activateChangelog && $windowLoaded}
+<style lang="scss" global>
+    .changelog__container {
+        * {
+            color: black;
+        }
+        ul {
+            padding-left: 1em;
+        }
+        li {
+            list-style: disc;
+        }
 
-    <Modal title={changelogTitle} bind:active={$activateChangelog}>
-        <div slot="content" transition:fade style="user-select:text;">
-            {#if $updateAvailable && window.changelogNewContent}
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            line-height: 1.125;
+        }
 
-                {@html md.render(window.changelogNewContent)}
-            {:else}
-                {@html md.render(changelogContent)}
-            {/if}
-        
-        </div>
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 400;
+            line-height: 1.25;
+        }
 
-        <div slot="footerbtn">
-            {#if $updateAvailable}
-                <button class="button is-warning" class:is-loading={$updating} on:click={updateNow}>Update Now</button>
-
-            {/if}
-        </div>
-
-    </Modal>
-
-{/if}
-
-{@html `<style>
-
-    ul {padding-left: 1em;}
-
-    li {list-style: disc;}
-
-    h1 {
-        color: #fafafa;
-        font-size: 2rem;
-        font-weight: 600;
-        line-height: 1.125;
+        h1,
+        h2 {
+            word-break: break-word;
+            margin: 1em 0;
+        }
     }
-
-    h2 {
-
-        color: #fafafa;
-        font-size: 1.25rem;
-        font-weight: 400;
-        line-height: 1.25;
+    .mdc-button .mdc-button__label {
+        color: #fff;
     }
-
-
-    h1, h2 {
-
-        word-break: break-word;
-        margin-bottom: 0.5em;
+    .mdc-dialog__content::-webkit-scrollbar {
+        background: #673ab7;
     }
-
-
-</style>`}
+</style>

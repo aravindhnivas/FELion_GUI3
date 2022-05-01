@@ -1,4 +1,4 @@
-// return        
+// return
 // const ODEWorker = new collisionCoolingODESolver()
 // ODEWorker.postMessage({
 //     duration,
@@ -12,13 +12,13 @@
 //     if(error) return window.handleError(error)
 //     target.classList.remove("is-loading")
 //     if(!finalData) return
-    
+
 //     console.log(finalData)
 
-//     plot( 
-//         ` Distribution: ${collisionalTemp}K`, 
-//         "Time (s)", "Population", finalData, 
-//         plotID, 
+//     plot(
+//         ` Distribution: ${collisionalTemp}K`,
+//         "Time (s)", "Population", finalData,
+//         plotID,
 //     )
 //     const boltzmanDistributionCold = boltzman_distribution({
 //         trapTemp: collisionalTemp,
@@ -44,9 +44,9 @@
 //     const combinedData = {collisionalData, boltzmanData}
 //     console.log({finalData})
 //     plot(
-//     ` Distribution: ${collisionalTemp}K`, 
-//     "Energy Levels", "Population", combinedData, 
-//     `${plotID}_collisionalBoltzman`, 
+//     ` Distribution: ${collisionalTemp}K`,
+//     "Energy Levels", "Population", combinedData,
+//     `${plotID}_collisionalBoltzman`,
 //     )
 
 //     const differenceFromBoltzman = []
@@ -56,8 +56,8 @@
 //     }
 
 //     plot(
-//         `Difference: Collisional - Boltzmann`, 
-//         "Energy Levels", "Difference", 
+//         `Difference: Collisional - Boltzmann`,
+//         "Energy Levels", "Difference",
 //         {data: {x: energyKeys, y: differenceFromBoltzman, name:"Difference"}},
 //         `${plotID}_collisionalBoltzman_difference`,
 //     )

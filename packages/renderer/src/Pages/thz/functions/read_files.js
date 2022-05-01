@@ -1,95 +1,100 @@
+import { tick } from 'svelte'
+import { browse } from '$components/Layout.svelte'
 
-import {tick} from "svelte";
-import {browse} from "$components/Layout.svelte";
-
-export async function readFromFile({bowseFile=true, energyFilename=null, electronSpin, zeemanSplit, energyUnit, twoLabel=true, collisionalFile=false}={}){
+export async function readFromFile({
+    bowseFile = true,
+    energyFilename = null,
+    electronSpin,
+    zeemanSplit,
+    energyUnit,
+    twoLabel = true,
+    collisionalFile = false,
+} = {}) {
     if (!energyFilename || bowseFile) {
-        const energyDetailsFile = await browse({dir:false})
+        const energyDetailsFile = await browse({ dir: false })
 
-        if (energyDetailsFile) return Promise.reject("No files selected");
+        if (energyDetailsFile) return Promise.reject('No files selected')
         energyFilename = energyDetailsFile[0]
-    
     }
 
     const noSplittings = !electronSpin && !zeemanSplit
-    const splittings = electronSpin||zeemanSplit
-    const fileContents = fs.readFileSync(energyFilename).split("\n")
+    const splittings = electronSpin || zeemanSplit
+    const fileContents = fs.readFileSync(energyFilename).split('\n')
     let energyLevels = []
 
-    let preLabel;
-    let value, label;
+    let preLabel
+    let value, label
     let numberOfLevels = 0
-    let multilineComment=false;
-    let ground, excited;
-    let collisionalRateType;
-    fileContents.forEach(line=>{
-        if (line.length>1){
-            
-            if (line.includes("//")){
-                if (line.includes("units")) {energyUnit=line.split("=")[1].trim()}
-                else if (line.includes("twoLabel")) {twoLabel=Boolean(`${line.split("=")[1].trim()}`)}
-                else if (collisionalFile&&line.includes("mode")) {
-                    collisionalRateType=line.split("=")[1].trim(); 
+    let multilineComment = false
+    let ground, excited
+    let collisionalRateType
+    fileContents.forEach((line) => {
+        if (line.length > 1) {
+            if (line.includes('//')) {
+                if (line.includes('units')) {
+                    energyUnit = line.split('=')[1].trim()
+                } else if (line.includes('twoLabel')) {
+                    twoLabel = Boolean(`${line.split('=')[1].trim()}`)
+                } else if (collisionalFile && line.includes('mode')) {
+                    collisionalRateType = line.split('=')[1].trim()
                     console.log(collisionalRateType)
                 }
-            } else if (line.includes("#") && splittings) {
-            let currentLineLabel = line.split("#")[1]
+            } else if (line.includes('#') && splittings) {
+                let currentLineLabel = line.split('#')[1]
 
-            if (twoLabel) { preLabel  = currentLineLabel.split("\t").map(f=>f.trim()) }
-            else {
-                preLabel = currentLineLabel.trim()
-                numberOfLevels++
-            }
-            } else if (line.includes("{")) {multilineComment=true} 
-            else if (line.includes("}")) {multilineComment=false} 
-            else if (!multilineComment) {
+                if (twoLabel) {
+                    preLabel = currentLineLabel.split('\t').map((f) => f.trim())
+                } else {
+                    preLabel = currentLineLabel.trim()
+                    numberOfLevels++
+                }
+            } else if (line.includes('{')) {
+                multilineComment = true
+            } else if (line.includes('}')) {
+                multilineComment = false
+            } else if (!multilineComment) {
                 if (noSplittings) {
-
-                    const lineSplitted = line.split("\t").map(f=>f.trim())
+                    const lineSplitted = line.split('\t').map((f) => f.trim())
                     console.log(lineSplitted)
-                    if(collisionalFile) {
+                    if (collisionalFile) {
+                        label = `${lineSplitted[0]} --> ${lineSplitted[1]}`
 
-                        label = `${lineSplitted[0]} --> ${lineSplitted[1]}`;
-                    
-                        value = lineSplitted[2];
+                        value = lineSplitted[2]
                     } else {
-
-                        label = twoLabel ? `${numberOfLevels+1} --> ${numberOfLevels}` : numberOfLevels
+                        label = twoLabel
+                            ? `${numberOfLevels + 1} --> ${numberOfLevels}`
+                            : numberOfLevels
                         value = lineSplitted[0]
                         numberOfLevels++
-
                     }
-
                 } else {
+                    line = line.split('\t').map((f) => f.trim())
+                    const separator = electronSpin && zeemanSplit ? '__' : '_'
 
-                    line = line.split("\t").map(f=>f.trim())
-                    const separator = electronSpin&&zeemanSplit ? "__" : "_"
-                    
                     if (twoLabel) {
-                        [ground, excited] = preLabel
+                        ;[ground, excited] = preLabel
                         label = `${excited}${separator}${line[1]} --> ${ground}${separator}${line[0]}`
-
                     } else {
-
                         value = line[1]
-                        label = preLabel+separator+line[0]
-
+                        label = preLabel + separator + line[0]
                     }
-
                 }
 
-            energyLevels = [...energyLevels, {label, value, id:getID()}]
-            
+                energyLevels = [...energyLevels, { label, value, id: getID() }]
             }
         }
-
     })
 
     await tick()
 
-    window.createToast("Energy file read: "+basename(energyFilename))
-    
-    console.log(energyLevels)
-    return Promise.resolve({energyLevels, numberOfLevels, energyFilename, energyUnit, collisionalRateType})
+    window.createToast('Energy file read: ' + basename(energyFilename))
 
+    console.log(energyLevels)
+    return Promise.resolve({
+        energyLevels,
+        numberOfLevels,
+        energyFilename,
+        energyUnit,
+        collisionalRateType,
+    })
 }

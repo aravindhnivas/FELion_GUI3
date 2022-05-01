@@ -1,0 +1,6 @@
+py3*/**
+misc
+python*/**
+resources
+packages/renderer/public
+**/dist/**

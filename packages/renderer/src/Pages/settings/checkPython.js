@@ -1,50 +1,57 @@
-
-import {pythonpath, pythonscript, pyVersion, developerMode, pyProgram, get} from "./svelteWritables";
+import {
+    pythonpath,
+    pythonscript,
+    pyVersion,
+    developerMode,
+    pyProgram,
+    get,
+} from './svelteWritables'
 
 export async function resetPyConfig() {
-    const pyPath = pathJoin(ROOT_DIR, "python3/python")
-    const pyScriptPath = pathJoin(ROOT_DIR, "resources/python_files")
+    const pyPath = pathJoin(ROOT_DIR, 'python3/python')
+    const pyScriptPath = pathJoin(ROOT_DIR, 'resources/python_files')
 
-    db.set("pythonscript", pyScriptPath)
-    pythonscript.set(db.get("pythonscript"))
+    db.set('pythonscript', pyScriptPath)
+    pythonscript.set(db.get('pythonscript'))
 
     const [data, error] = await exec(`${pyPath} -V`)
-    if(error) return window.handleError(error)
-    
-    pyVersion.set(data.stdout.trim())
-    db.set("pythonpath", pyPath)
-    pythonpath.set(pyPath); 
-    window.createToast("Location resetted", "warning")
+    if (error) return window.handleError(error)
 
+    pyVersion.set(data.stdout.trim())
+    db.set('pythonpath', pyPath)
+    pythonpath.set(pyPath)
+    window.createToast('Location resetted', 'warning')
 }
 
-export async function updatePyConfig(){
-
+export async function updatePyConfig() {
     const [data, error] = await exec(`${get(pythonpath)} -V`)
-    if(error) return window.handleError(error)
-    
-    pyVersion.set(data.stdout.trim());
-    window.createToast("Location updated", "success")
+    if (error) return window.handleError(error)
 
-    db.set("pythonpath", get(pythonpath))
-    db.set("pythonscript", get(pythonscript))
+    pyVersion.set(data.stdout.trim())
+    window.createToast('Location updated', 'success')
+
+    db.set('pythonpath', get(pythonpath))
+    db.set('pythonscript', get(pythonscript))
 }
 
 export async function getPyVersion(e) {
-    
-    e?.target?.classList.toggle("is-loading")
+    e?.target?.classList.toggle('is-loading')
 
-    const pyfile = "getVersion"
-    const pyArgs = get(developerMode) ? pathJoin(get(pythonscript), "main.py") : ""
-    
+    const pyfile = 'getVersion'
+    const pyArgs = get(developerMode)
+        ? pathJoin(get(pythonscript), 'main.py')
+        : ''
+
     const command = `${get(pyProgram)} ${pyArgs} ${pyfile} {} `
-    const [{stdout}, error] = await exec(command)
-    if(error) return Promise.reject(error)
+    const [{ stdout }, error] = await exec(command)
+    if (error) return Promise.reject(error)
 
-    const [version] = stdout?.split("\n").filter?.(line => line.includes("Python")) || [""]
-    pyVersion.set(version?.trim() || "")
-    console.log({stdout, version})
+    const [version] = stdout
+        ?.split('\n')
+        .filter?.((line) => line.includes('Python')) || ['']
+    pyVersion.set(version?.trim() || '')
+    console.log({ stdout, version })
 
-    e?.target?.classList.toggle("is-loading")
-    if(get(pyVersion)) return Promise.resolve(get(pyVersion))
+    e?.target?.classList.toggle('is-loading')
+    if (get(pyVersion)) return Promise.resolve(get(pyVersion))
 }

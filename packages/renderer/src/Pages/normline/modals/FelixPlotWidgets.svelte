@@ -1,91 +1,111 @@
-
 <script>
-    import {felixopoLocation, felixPlotCheckboxes}  from '../functions/svelteWritables';
-    import { fade }                                 from 'svelte/transition';
-    import Textfield                                from '@smui/textfield';
-    import CustomCheckList                          from '$components/CustomCheckList.svelte';
-    import CustomCheckbox                           from '$components/CustomCheckbox.svelte';
-    
-    export let felixPlotWidgets, theoryLocation;
+    import {
+        felixopoLocation,
+        felixPlotCheckboxes,
+    } from '../functions/svelteWritables'
+    import { fade } from 'svelte/transition'
+    import Textfield from '@smui/textfield'
+    import CustomCheckList from '$components/CustomCheckList.svelte'
+    import CustomCheckbox from '$components/CustomCheckbox.svelte'
+
+    export let felixPlotWidgets, theoryLocation
 
     let reload = true
     function refreshFunction() {
+        const datlocation = pathResolve($felixopoLocation, '../EXPORT')
+        const datfiles = fs.existsSync(datlocation)
+            ? fs
+                  .readdirSync(datlocation)
+                  .filter((f) => f.endsWith('.dat'))
+                  .map((f) => (f = { name: f, id: getID() }))
+            : [{ name: '', id: getID() }]
 
-        const datlocation = pathResolve($felixopoLocation, "../EXPORT")
-        const datfiles = fs.existsSync(datlocation) ? fs.readdirSync(datlocation).filter(f=>f.endsWith(".dat")).map(f=>f={name:f, id:getID()}) : [{name:"", id:getID()}]
+        let calcfiles = []
 
-        let calcfiles = [];
-        
-        if(fs.existsSync(theoryLocation)) {
-            fs.readdirSync(theoryLocation).forEach(file=>{
-                const isfile = fs.lstatSync(pathJoin(theoryLocation, file)).isFile()
-                if(isfile) {
-                    calcfiles = [...calcfiles, {name:file, id:getID()}]
+        if (fs.existsSync(theoryLocation)) {
+            fs.readdirSync(theoryLocation).forEach((file) => {
+                const isfile = fs
+                    .lstatSync(pathJoin(theoryLocation, file))
+                    .isFile()
+                if (isfile) {
+                    calcfiles = [...calcfiles, { name: file, id: getID() }]
                 }
             })
-        } else {calcfiles = [{name:"", id:getID()}]}
+        } else {
+            calcfiles = [{ name: '', id: getID() }]
+        }
 
         $felixPlotCheckboxes = [
-                {label: "DAT_file", options: datfiles, value: [], id: getID()},
-                {label: "Fundamentals", options: calcfiles, value: [], id: getID()},
-                {label: "Overtones", options: calcfiles, value: [], id: getID()},
-                {label: "Combinations", options: calcfiles, value: [], id: getID()},
+            { label: 'DAT_file', options: datfiles, value: [], id: getID() },
+            {
+                label: 'Fundamentals',
+                options: calcfiles,
+                value: [],
+                id: getID(),
+            },
+            { label: 'Overtones', options: calcfiles, value: [], id: getID() },
+            {
+                label: 'Combinations',
+                options: calcfiles,
+                value: [],
+                id: getID(),
+            },
         ]
         reload != reload
     }
 </script>
 
 <div style="padding-bottom: 1em;">
-
-    <div >
-        <button class="button is-link" on:click={refreshFunction}>load files</button>
+    <div>
+        <button class="button is-link" on:click={refreshFunction}
+            >load files</button
+        >
 
         {#key reload}
             <div class="files__div">
-                {#each $felixPlotCheckboxes as {label, options, value, id}(id)}
+                {#each $felixPlotCheckboxes as { label, options, value, id } (id)}
                     <div class="felix_tkplot_filelist_div" transition:fade>
-                        <div class="subtitle felix_tkplot_filelist_header">{label}</div>
-                        <CustomCheckList style="background: #836ac05c; border-radius: 20px; margin:1em 0;  height:20em; overflow:auto;" bind:fileChecked={value} bind:items={options} />
+                        <div class="subtitle felix_tkplot_filelist_header">
+                            {label}
+                        </div>
+                        <CustomCheckList
+                            style="background: #836ac05c; border-radius: 20px; margin:1em 0;  height:20em; overflow:auto;"
+                            bind:fileChecked={value}
+                            bind:items={options}
+                        />
                     </div>
                 {/each}
             </div>
         {/key}
-
     </div>
 
     <div class="felix_plotting_div">
         <h1 class="subtitle">Text Widgets</h1>
 
         <div class="widgets">
-            {#each felixPlotWidgets.text as {label, value, id}(id)}
-                <Textfield variant="outlined" type="text" bind:value {label}/>
+            {#each felixPlotWidgets.text as { label, value, id } (id)}
+                <Textfield variant="outlined" type="text" bind:value {label} />
             {/each}
         </div>
-
     </div>
     <div class="felix_plotting_div">
-
         <h1 class="subtitle">Number Widgets</h1>
         <div class="widgets">
-            {#each felixPlotWidgets.number as {label, value, step, id}(id)}
-                <Textfield type="number" {step} bind:value {label}/>
+            {#each felixPlotWidgets.number as { label, value, step, id } (id)}
+                <Textfield type="number" {step} bind:value {label} />
             {/each}
         </div>
-
     </div>
 
     <div class="felix_plotting_div">
-    
         <h1 class="subtitle">Boolean Widgets</h1>
         <div class="widgets">
-            {#each felixPlotWidgets.boolean as {label, value, id}(id)}
+            {#each felixPlotWidgets.boolean as { label, value, id } (id)}
                 <CustomCheckbox bind:selected={value} {label} />
             {/each}
         </div>
     </div>
-
 </div>
-
 
 <style>
     .felix_tkplot_filelist_header {
@@ -99,7 +119,7 @@
         margin: auto;
     }
     .felix_tkplot_filelist_div {
-        margin-bottom:1em;
+        margin-bottom: 1em;
     }
 
     .felix_plotting_div {
@@ -125,7 +145,5 @@
         gap: 1em;
         margin: 1em;
         flex-wrap: wrap;
-    
     }
-
 </style>

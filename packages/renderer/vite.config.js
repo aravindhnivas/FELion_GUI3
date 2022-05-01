@@ -1,54 +1,48 @@
-import {chrome} from '../../.electron-vendors.cache.json';
-import {join} from 'path';
-import { builtinModules } from 'module';
+import { chrome } from '../../.electron-vendors.cache.json'
+import { join } from 'path'
+import { builtinModules } from 'module'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
-import autoPreprocess from 'svelte-preprocess';
+import autoPreprocess from 'svelte-preprocess'
 
-
-const PACKAGE_ROOT = __dirname;
-
+const PACKAGE_ROOT = __dirname
 
 const config = {
-  mode: process.env.MODE,
+    mode: process.env.MODE,
 
-  root: PACKAGE_ROOT,
-  resolve: {
-    alias: {
-      '$preload': join(PACKAGE_ROOT, '..', 'preload'),
-      '$src': join(PACKAGE_ROOT, 'src'),
-      '$components': join(PACKAGE_ROOT, 'src/components'),
-      '$computeCode': join(PACKAGE_ROOT, 'src/Pages/computeCode'),
+    root: PACKAGE_ROOT,
+    resolve: {
+        alias: {
+            $preload: join(PACKAGE_ROOT, '..', 'preload'),
+            $src: join(PACKAGE_ROOT, 'src'),
+            $components: join(PACKAGE_ROOT, 'src/components'),
+            $computeCode: join(PACKAGE_ROOT, 'src/Pages/computeCode'),
+        },
+        dedupe: ['svelte'],
     },
-    dedupe: ['svelte'],
-  },
-  plugins: [svelte({preprocess: autoPreprocess()})],
-  base: '',
-  build: {
-    reportCompressedSize: false,
-    chunkSizeWarningLimit: 2000,
-    sourcemap: true,
-    target: `chrome${chrome}`,
-    outDir: 'dist',
-    assetsDir: '.',
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          winbox: ['winbox/src/js/winbox'],
-          interactjs: ['interactjs'],
-          yaml: ['yaml'],
-          remarkable: ['remarkable'],
-          'lodash-es': ['lodash-es'],
-          'plotly': ['plotly.js/dist/plotly-basic'],
-        }
-      },
-      external: [
-        ...builtinModules, "electron-updater", "electron-log"
-      ],
+    plugins: [svelte({ preprocess: autoPreprocess() })],
+    base: '',
+    build: {
+        reportCompressedSize: false,
+        chunkSizeWarningLimit: 2000,
+        sourcemap: true,
+        target: `chrome${chrome}`,
+        outDir: 'dist',
+        assetsDir: '.',
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    winbox: ['winbox/src/js/winbox'],
+                    interactjs: ['interactjs'],
+                    yaml: ['yaml'],
+                    remarkable: ['remarkable'],
+                    'lodash-es': ['lodash-es'],
+                    plotly: ['plotly.js/dist/plotly-basic'],
+                },
+            },
+            external: [...builtinModules, 'electron-updater', 'electron-log'],
+        },
+        emptyOutDir: true,
+        brotliSize: false,
     },
-    emptyOutDir: true,
-    brotliSize: false
-  },
-
-};
-export default config;
-
+}
+export default config

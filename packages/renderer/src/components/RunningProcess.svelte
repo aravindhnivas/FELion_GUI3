@@ -1,35 +1,37 @@
 <script>
+    import { running_processes } from '../svelteWritable'
+    import DataTable, { Head, Body, Row, Cell } from '@smui/data-table'
+    import { toast } from '@zerodevx/svelte-toast'
 
-	import {running_processes} from "../svelteWritable";
-	import DataTable, { Head, Body, Row, Cell } from '@smui/data-table';
-	import { toast } from '@zerodevx/svelte-toast'
-	
-	export let toastId=""
-	$: if($running_processes.length<1) toast.pop(toastId)
-
+    export let toastId = ''
+    $: if ($running_processes.length < 1) toast.pop(toastId)
 </script>
 
 <DataTable table$aria-label="current processes list" style="width: 100%;">
+    <Head>
+        <Row>
+            <Cell>PID</Cell>
+            <Cell>pyfile</Cell>
+            <Cell />
+        </Row>
+    </Head>
 
-	<Head>
-		<Row>
-			<Cell>PID</Cell>
-			<Cell>pyfile</Cell>
-			<Cell></Cell>
-		</Row>
-	</Head>
-	
-	<Body>
-		{#each $running_processes as process}
-			<Row>
-				<Cell>{process.pid}</Cell>
-				<Cell>{process.pyfile}</Cell>
-				<Cell><button class="button is-danger" style:background="#ff3860" on:click="{()=>process.kill()}">X</button></Cell>
-			</Row>
-		{/each}
-	</Body>
-
+    <Body>
+        {#each $running_processes as process}
+            <Row>
+                <Cell>{process.pid}</Cell>
+                <Cell>{process.pyfile}</Cell>
+                <Cell
+                    ><button
+                        class="button is-danger"
+                        style:background="#ff3860"
+                        on:click={() => process.kill()}>X</button
+                    ></Cell
+                >
+            </Row>
+        {/each}
+    </Body>
 </DataTable>
 
-<br>
-<div style="height: 1rem;"></div>
+<br />
+<div style="height: 1rem;" />

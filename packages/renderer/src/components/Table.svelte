@@ -1,41 +1,42 @@
 <script>
+    import { orderBy } from 'lodash-es'
+    import { scale } from 'svelte/transition'
+    import { tick } from 'svelte'
 
-    import {orderBy} from "lodash-es"
-    import { scale } from 'svelte/transition';
-    import {tick} from "svelte";
+    export let head = []
+    export let rows = []
+    export let keys = []
+    export let id = getID()
+    export let label = 'table'
+    export let userSelect = true
 
-    export let head=[]
-    export let rows=[]
-    export let keys=[]
-    export let id=getID()
-    export let label="table"
-    export let userSelect=true
-
-    export let style="width: 100%;";
+    export let style = 'width: 100%;'
     export let sortOption = false
-    export let animateRow = true;
-    export let disableInput = false;
+    export let animateRow = true
+    export let disableInput = false
     export let closeOption = true
     export let addextraOption = true
 
-    let sortTypeAscending = true;
+    let sortTypeAscending = true
 
-    if(head.length<1) {head=keys}
-    const sortTable = (type) => { 
-        if(sortOption) {
+    if (head.length < 1) {
+        head = keys
+    }
+    const sortTable = (type) => {
+        if (sortOption) {
             sortTypeAscending = !sortTypeAscending
-            rows = orderBy(rows, [type], [sortTypeAscending ? "asc" : "desc"])
+            rows = orderBy(rows, [type], [sortTypeAscending ? 'asc' : 'desc'])
         }
     }
 
-    $: animate = animateRow ? scale : ()=>{}
+    $: animate = animateRow ? scale : () => {}
 
     const emptyRow = {}
-    keys.forEach(key=>emptyRow[key] = "")
+    keys.forEach((key) => (emptyRow[key] = ''))
 
     const addRow = async () => {
         const id = getID()
-        rows = [...rows, {...emptyRow, id}]
+        rows = [...rows, { ...emptyRow, id }]
         await tick()
         const focusTargetID = `${id}-${keys[0]}`
         document.getElementById(focusTargetID).focus()
@@ -44,61 +45,99 @@
     // $: rowKeys = keys.map(key=>({key, id: getID()}))
     // let keyedRows = rows.map(row=>({...row, id: getID()}))
     // console.log({keyedRows})
-
 </script>
 
 <div {style}>
-
     {#if $$slots.header}
-
-        <slot name="header"></slot>
-
+        <slot name="header" />
     {/if}
-    
+
     {#if addextraOption}
-        <i class="material-icons" style="float: right; padding: 0.5em;" on:click="{addRow}">add</i>
+        <i
+            class="material-icons"
+            style="float: right; padding: 0.5em;"
+            on:click={addRow}>add</i
+        >
     {/if}
 
-    <div class="mdc-data-table tableContainer" >
-
-        <table class="mdc-data-table__table" aria-label={label} {id} style="user-select: {userSelect ? 'text' : 'none'} ;">
+    <div class="mdc-data-table tableContainer">
+        <table
+            class="mdc-data-table__table"
+            aria-label={label}
+            {id}
+            style="user-select: {userSelect ? 'text' : 'none'} ;"
+        >
             <thead>
-
                 <tr class="mdc-data-table__header-row">
+                    <th
+                        class="mdc-data-table__header-cell"
+                        style="width: 2em;"
+                        role="columnheader"
+                        scope="col">#</th
+                    >
 
-                    <th class="mdc-data-table__header-cell" style="width: 2em;" role="columnheader" scope="col">#</th>
-
-
-                    {#each head as item, index (item) }
-
-                        <th style="cursor: pointer;" class="mdc-data-table__header-cell" role="columnheader" scope="col" >
-
-                            <div class="tableIcon" on:click="{()=>sortTable(keys[index])}">
+                    {#each head as item, index (item)}
+                        <th
+                            style="cursor: pointer;"
+                            class="mdc-data-table__header-cell"
+                            role="columnheader"
+                            scope="col"
+                        >
+                            <div
+                                class="tableIcon"
+                                on:click={() => sortTable(keys[index])}
+                            >
                                 {#if sortOption}
-                                    <i class="material-icons" >{sortTypeAscending ? "arrow_upward": "arrow_downward"}</i>
+                                    <i class="material-icons"
+                                        >{sortTypeAscending
+                                            ? 'arrow_upward'
+                                            : 'arrow_downward'}</i
+                                    >
                                 {/if}
                                 {item}
                             </div>
-
                         </th>
                     {/each}
                 </tr>
             </thead>
 
             <tbody class="mdc-data-table__content">
-
                 {#each rows as row, index (row.id)}
-                    <tr class="mdc-data-table__row" style="background-color: #fafafa;" transition:animate> 
-                        <td class="mdc-data-table__cell" style="width: 2em;" >{index}</td>
+                    <tr
+                        class="mdc-data-table__row"
+                        style="background-color: #fafafa;"
+                        transition:animate
+                    >
+                        <td class="mdc-data-table__cell" style="width: 2em;"
+                            >{index}</td
+                        >
                         {#each keys as key (key)}
-                            <td class="mdc-data-table__cell  mdc-data-table__cell--numeric" id="{row.id}-{key}">
-                                <input type="text" bind:value={row[key]} style="color: black; width: 100%;" disabled={disableInput}>
+                            <td
+                                class="mdc-data-table__cell  mdc-data-table__cell--numeric"
+                                id="{row.id}-{key}"
+                            >
+                                <input
+                                    type="text"
+                                    bind:value={row[key]}
+                                    style="color: black; width: 100%;"
+                                    disabled={disableInput}
+                                />
                             </td>
                         {/each}
                         {#if closeOption}
-                            <td class="mdc-data-table__cell" style="background: #f14668; cursor: pointer; width: 2em;">
-                                <i id="{row.id}" class="material-icons" on:click="{(e)=> {rows = rows.filter((tb)=>tb.id != e.target.id)}}">close</i>
-
+                            <td
+                                class="mdc-data-table__cell"
+                                style="background: #f14668; cursor: pointer; width: 2em;"
+                            >
+                                <i
+                                    id={row.id}
+                                    class="material-icons"
+                                    on:click={(e) => {
+                                        rows = rows.filter(
+                                            (tb) => tb.id != e.target.id
+                                        )
+                                    }}>close</i
+                                >
                             </td>
                         {/if}
                     </tr>
@@ -109,17 +148,20 @@
 </div>
 
 <style>
+    * :global(th i) {
+        color: black;
+    }
 
-    * :global(th i) {color: black;}
-    
     .tableIcon {
         display: flex;
         justify-content: center;
         align-items: center;
         color: black;
     }
-    
-    td {text-align: center!important;}
+
+    td {
+        text-align: center !important;
+    }
     .tableContainer {
         overflow-x: auto;
         /* max-width: calc(100vw - 27em); */

@@ -1,143 +1,158 @@
-
 <script>
     // import {mainPreModal} from "../svelteWritable";
     import Textfield from '@smui/textfield'
-    import HelperText from '@smui/textfield/helper-text';
-    import Checkbox from '@smui/checkbox';
-    import FormField from '@smui/form-field';
-    import {browse} from "../components/Layout.svelte";
-    import CustomDialog from "../components/CustomDialog.svelte";
+    import HelperText from '@smui/textfield/helper-text'
+    import Checkbox from '@smui/checkbox'
+    import FormField from '@smui/form-field'
+    import { browse } from '../components/Layout.svelte'
+    import CustomDialog from '../components/CustomDialog.svelte'
 
     const writePowfile = () => {
-        let contents = `${initContent}\n${powerfileContent}`
+        const contents = `${initContent}\n${powerfileContent}`
 
-        fs.writeFile(powfile, contents , function(err) {
-            if(err) { return window.createToast("Power file couldn't be saved.", "danger") }
-            window.createToast("Power file saved", "success")
+        fs.writeFile(powfile, contents, function (err) {
+            if (err) {
+                return window.createToast(
+                    "Power file couldn't be saved.",
+                    'danger'
+                )
+            }
+            window.createToast('Power file saved', 'success')
         })
     }
 
-    
     async function savefile() {
-        console.log("Saving powerfile: ", powfile)
-        if (location.length == 0) { return openFolder({save:true}) }
+        console.log('Saving powerfile: ', powfile)
+        if (location.length == 0) {
+            return openFolder({ save: true })
+        }
         const overwrite = await fs.existsSync(powfile)
-        if(overwrite) {
+        if (overwrite) {
             overwriteDialogOpen = true
         } else {
             writePowfile()
         }
     }
 
-    async function openFolder({save=false}={}) {
+    async function openFolder({ save = false } = {}) {
         const result = await browse()
-        if(!result) return
+        if (!result) return
         location = result
-        db.set("powerfile_location", location)
-        window.createToast("Location updated", "success")
+        db.set('powerfile_location', location)
+        window.createToast('Location updated', 'success')
         if (save) savefile()
     }
 
     let felixHz = 10
-    let convert = null;
+    let convert = null
     let felixShots = 16
     let powerfileContent = ''
 
-    let location = db.get("powerfile_location") || "";
-    let today = new Date();
+    let location = db.get('powerfile_location') || ''
+    let today = new Date()
 
     const dd = String(today.getDate()).padStart(2, '0')
     const mm = String(today.getMonth() + 1).padStart(2, '0')
     const yy = today.getFullYear().toString().substr(2)
 
-    let filename = `${dd}_${mm}_${yy}-#`;
+    let filename = `${dd}_${mm}_${yy}-#`
 
     $: powfile = pathResolve(location, `${filename}.pow`)
-    $: conversion = "_no_"
-    $: convert ? conversion = "_" : conversion = "_no_"
-    $: initContent = `#POWER file\n` +
+    $: conversion = '_no_'
+    $: convert ? (conversion = '_') : (conversion = '_no_')
+    $: initContent =
+        `#POWER file\n` +
         `# ${felixHz} Hz FELIX\n` +
         `#SHOTS=${felixShots}\n` +
         `#INTERP=linear\n` +
         `#    IN${conversion}UM (if one deletes the no the firs number will be in \mu m\n` +
         `# wavelength/cm-1      energy/pulse/mJ\n`
 
-        let overwriteResponse = ""
-        let overwriteDialogOpen = false
+    let overwriteResponse = ''
+    let overwriteDialogOpen = false
 
-    $: if(overwriteResponse === "Yes") {
-        overwriteResponse = ""
+    $: if (overwriteResponse === 'Yes') {
+        overwriteResponse = ''
         writePowfile()
     }
-    const id="Powerfile"
-    let display = db.get("active_tab") === id ? 'block' : 'none'
-
+    const id = 'Powerfile'
+    let display = db.get('active_tab') === id ? 'block' : 'none'
 </script>
-
 
 <CustomDialog
     id="powerfile-overwrite"
-    title={"Overwrite?"} 
+    title={'Overwrite?'}
     bind:open={overwriteDialogOpen}
     bind:response={overwriteResponse}
-    content={`${filename} already exists. Do you want to overwrite it?`} 
+    content={`${filename} already exists. Do you want to overwrite it?`}
 />
-
 
 <section class="section animated fadeIn" {id} style="display:{display}">
     <div class="box main__container" id="powfileContainer">
-
         <div class="location__bar">
             <button class="button is-link" on:click={openFolder}>Browse</button>
 
-            <Textfield  bind:value={location} label="Current Location" style="flex-grow:1;"/>
-        
+            <Textfield
+                bind:value={location}
+                label="Current Location"
+                style="flex-grow:1;"
+            />
         </div>
 
         <div class="grid_column__container file__details__bar">
             <Textfield bind:value={filename} label="Filename" />
 
-            <Textfield bind:value={felixShots} label="FELIX Shots" on:change={()=>{console.log(felixShots)}}/>
+            <Textfield
+                bind:value={felixShots}
+                label="FELIX Shots"
+                on:change={() => {
+                    console.log(felixShots)
+                }}
+            />
 
-                <Textfield bind:value={felixHz} label="FELIX Hz" />
+            <Textfield bind:value={felixHz} label="FELIX Hz" />
 
             <FormField>
-                <Checkbox bind:checked={convert} indeterminate={convert === null} />
+                <Checkbox
+                    bind:checked={convert}
+                    indeterminate={convert === null}
+                />
 
                 <span slot="label">Convert to &micro;m</span>
             </FormField>
-
-
         </div>
 
         <div class="power_value__container">
-
-
-            <Textfield textarea 
-                bind:value={powerfileContent} 
-                label="Powerfile contents" input$aria-controls="powercontent_help"
-                input$aria-describedby="powercontent_help">
-
+            <Textfield
+                textarea
+                bind:value={powerfileContent}
+                label="Powerfile contents"
+                input$aria-controls="powercontent_help"
+                input$aria-describedby="powercontent_help"
+            >
                 <HelperText id="powercontent_help" slot="helper">
-                    Enter powerfile measured for {filename}.felix file (wavenumber power-in mJ)
+                    Enter powerfile measured for {filename}.felix file
+                    (wavenumber power-in mJ)
                 </HelperText>
-
             </Textfield>
 
-            
-            <button class="button is-link" style="width: 12em; margin: auto;" on:click={savefile}>Save</button>
+            <button
+                class="button is-link"
+                style="width: 12em; margin: auto;"
+                on:click={savefile}>Save</button
+            >
         </div>
-        
     </div>
-    
 </section>
 
-
 <style>
-    .section {max-height: 70vh;overflow-y: auto;}
-    
+    .section {
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+
     .main__container {
-        display: grid; 
+        display: grid;
         height: 100%;
 
         grid-row-gap: 1em;
@@ -150,7 +165,11 @@
         grid-column-gap: 1em;
     }
 
-    .location__bar { display: flex; align-items: baseline; gap: 1em;}
+    .location__bar {
+        display: flex;
+        align-items: baseline;
+        gap: 1em;
+    }
 
     .file__details__bar {
         grid-template-columns: repeat(4, 1fr);
@@ -160,5 +179,4 @@
         display: grid;
         grid-template-rows: 12fr 1fr 2fr;
     }
-
 </style>
