@@ -3,6 +3,8 @@
 
 - Code formatted with prettier
 - felionQt with qt_material design implemented for better visualising widgets of figures
+- BUG FIXES:
+    - Kinetics mass toggler
 ---
 ## v3.6.2
 
