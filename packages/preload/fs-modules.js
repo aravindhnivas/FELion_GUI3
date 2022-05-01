@@ -51,4 +51,12 @@ contextBridge.exposeInMainWorld('fs', {
             isDirectory: () => info.isDirectory(),
         }
     },
+    createWriteStream: (path) => {
+        const writer = fs.createWriteStream(path)
+        return {
+            write: (data) => writer.write(data),
+            end: () => writer.end(),
+            on: (key, callback) => writer.on(key, callback),
+        }
+    },
 })
