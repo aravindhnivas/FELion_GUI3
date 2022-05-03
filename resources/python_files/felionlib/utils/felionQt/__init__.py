@@ -26,7 +26,7 @@ from .utils.widgets import ShowDialog, AnotherWindow, iconfile, toggle_this_arti
 from .utils.workers import Worker
 
 import matplotlib.pyplot as plt
-from .qt_material import QtStyleTools, list_themes
+# from .qt_material import QtStyleTools, list_themes
 
 
 QApplication = QtWidgets.QApplication
@@ -43,7 +43,7 @@ def excepthook(etype, value, tb):
 sys.excepthook = excepthook
 
 
-class felionQtWindow(QtWidgets.QMainWindow, QtStyleTools):
+class felionQtWindow(QtWidgets.QMainWindow):
     def __init__(
         self,
         location: str = "",
