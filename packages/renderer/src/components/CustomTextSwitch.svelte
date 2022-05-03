@@ -1,14 +1,15 @@
-<script>
+<script lang="ts">
     import Textfield from '@smui/textfield'
 
-    export let min = 0
-    export let value = ''
-    export let label = ''
-    export let style = ''
-    export let step = 1
-    export let variant = 'standard'
+    export let min: number | string = 0
+    export let max: number | string
+    export let value: number | string = ''
+    export let label: string = ''
+    export let style: string = ''
+    export let step: number | string = 1
+    export let variant: string = 'standard'
 
-    let changeStepsize = false
+    let changeStepsize: boolean = false
 </script>
 
 {#if changeStepsize}
@@ -42,7 +43,8 @@
             }
         }}
         input$min={min}
+        input$max={max}
         input$step={step}
-        input$type="number"
+        type="number"
     />
 {/if}
