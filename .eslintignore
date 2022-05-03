@@ -1,6 +1,5 @@
 vite.config.js
 jsconfig.config.js
-rollup.config.js
 svelte.config.js
 electron-builder.config.js
 py3*/**
@@ -8,4 +7,6 @@ misc
 python*/**
 resources
 packages/renderer/public
+packages/main
+packages/preload
 **/dist/**
