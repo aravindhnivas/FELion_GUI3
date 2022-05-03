@@ -110,15 +110,18 @@
                 )?.textContent
 
                 if (!baseline_markedfile) {
-                
                     return window.createToast(
-                        `No ${$opoMode ? 'OPO' : 'FELIX'} files: ctrl + left-click to select file for baseline correction`,
+                        `No ${
+                            $opoMode ? 'OPO' : 'FELIX'
+                        } files: ctrl + left-click to select file for baseline correction`,
                         'danger'
                     )
                 }
-                
+
                 pyfile = 'normline.baseline'
-                args = { filename: pathJoin($felixopoLocation, baseline_markedfile) }
+                args = {
+                    filename: pathJoin($felixopoLocation, baseline_markedfile),
+                }
                 computePy_func({ e, pyfile, args, general: true })
                 break
 

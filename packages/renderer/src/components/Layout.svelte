@@ -28,7 +28,6 @@
 </script>
 
 <script>
-    
     import { onMount, tick, createEventDispatcher, onDestroy } from 'svelte'
     import { fly, fade } from 'svelte/transition'
     import Textfield from '@smui/textfield'
@@ -37,7 +36,7 @@
     import FileBrowser from '$components/FileBrowser.svelte'
     import Modal from '$components/Modal.svelte'
     import Editor from '$components/Editor.svelte'
-    import {resizableDiv} from '$src/js/resizableDiv.js'
+    import { resizableDiv } from '$src/js/resizableDiv.js'
     ////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////
 
@@ -55,7 +54,6 @@
 
     const dispatch = createEventDispatcher()
     async function browse_folder() {
-
         const result = await browse()
         if (!result) return
         currentLocation = result
@@ -64,10 +62,8 @@
     }
 
     onMount(() => {
-
         console.log(id, 'mounted')
         currentLocation = db.get(`${filetype}_location`) || ''
-
     })
     let graphDivContainer
 
@@ -114,8 +110,8 @@
 
 <section {id} style:display class="animated fadeIn">
     <div class="main__layout__div">
-        <div 
-            use:resizableDiv 
+        <div
+            use:resizableDiv
             on:resizeend={changeGraphDivWidth}
             style:touch-action="none"
             class="left_container__div box"

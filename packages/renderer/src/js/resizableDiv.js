@@ -4,12 +4,11 @@ const dispatchInteractEvent = (element, eventName, detail) => {
     const event = new CustomEvent(eventName, {
         bubbles: false,
         cancelable: true,
-        detail
-    });
+        detail,
+    })
 
-    element.dispatchEvent(event);
-};
-
+    element.dispatchEvent(event)
+}
 
 // Draggable: dragstart, dragmove, draginertiastart, dragend
 // Resizable: resizestart, resizemove, resizeinertiastart, resizeend
@@ -18,9 +17,8 @@ const dispatchInteractEvent = (element, eventName, detail) => {
 export function resizableDiv(
     target,
     change = { width: true, height: false },
-    edges = { left: false, right: true, bottom: false, top: false },
+    edges = { left: false, right: true, bottom: false, top: false }
 ) {
-
     interact(target)
         .resizable({
             edges,
@@ -36,7 +34,6 @@ export function resizableDiv(
             inertia: true,
         })
         .on('resizemove', function (event) {
-
             const target = event.target
             dispatchInteractEvent(target, 'resizemove', event)
             let x = parseFloat(target.getAttribute('data-x')) || 0
@@ -58,6 +55,10 @@ export function resizableDiv(
             target.setAttribute('data-x', x)
             target.setAttribute('data-y', y)
         })
-        .on('resizeend', function (event) {dispatchInteractEvent(event.target, 'resizeend', event)})
-        .on('resizestart', function (event) {dispatchInteractEvent(event.target, 'resizestart', event)})
+        .on('resizeend', function (event) {
+            dispatchInteractEvent(event.target, 'resizeend', event)
+        })
+        .on('resizestart', function (event) {
+            dispatchInteractEvent(event.target, 'resizestart', event)
+        })
 }
