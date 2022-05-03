@@ -28,7 +28,8 @@
 </script>
 
 <script>
-    import { onMount, tick, createEventDispatcher } from 'svelte'
+    
+    import { onMount, tick, createEventDispatcher, onDestroy } from 'svelte'
     import { fly, fade } from 'svelte/transition'
     import Textfield from '@smui/textfield'
     import { relayout } from 'plotly.js/dist/plotly-basic'
@@ -36,7 +37,7 @@
     import FileBrowser from '$components/FileBrowser.svelte'
     import Modal from '$components/Modal.svelte'
     import Editor from '$components/Editor.svelte'
-
+    import {resizableDiv} from '$src/js/resizableDiv.js'
     ////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////
 
@@ -54,6 +55,7 @@
 
     const dispatch = createEventDispatcher()
     async function browse_folder() {
+
         const result = await browse()
         if (!result) return
         currentLocation = result
@@ -62,10 +64,11 @@
     }
 
     onMount(() => {
+
         console.log(id, 'mounted')
         currentLocation = db.get(`${filetype}_location`) || ''
-    })
 
+    })
     let graphDivContainer
 
     const lookForGraph = (node) => {
@@ -97,14 +100,9 @@
         graphWindow.maximize(true)
     }
 
-    let plotWidth
     let graphDivs = []
-    let original_plot_width = plotWidth
-    $: update_plot_width = original_plot_width !== plotWidth
-    const changeGraphDivWidth = async () => {
-        if (!update_plot_width) return
+    const changeGraphDivWidth = async (e) => {
         console.log('Updating graphDivs width')
-        original_plot_width = plotWidth
         await tick()
         graphDivs.forEach((id) => {
             if (id.data) {
@@ -116,10 +114,12 @@
 
 <section {id} style:display class="animated fadeIn">
     <div class="main__layout__div">
-        <div
-            class="interact left_container__div box "
+        <div 
+            use:resizableDiv 
+            on:resizeend={changeGraphDivWidth}
+            style:touch-action="none"
+            class="left_container__div box"
             transition:fly={{ x: -100, duration: 500 }}
-            on:mouseup={changeGraphDivWidth}
         >
             <FileBrowser
                 bind:currentLocation
@@ -169,7 +169,6 @@
                 id="{filetype}-plotContainer"
                 transition:fade
                 use:lookForGraph
-                bind:clientWidth={plotWidth}
                 bind:this={graphDivContainer}
             >
                 <slot name="plotContainer" {lookForGraph} />

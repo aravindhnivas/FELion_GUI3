@@ -7,7 +7,6 @@ import {
     developerMode,
 } from '../settings/svelteWritables'
 import { running_processes } from '$src/svelteWritable'
-// import {difference} from "lodash-es"
 
 export const dispatchEvent = (target, detail, eventName) => {
     const pyEventClosed = new CustomEvent(eventName, { bubbles: false, detail })
