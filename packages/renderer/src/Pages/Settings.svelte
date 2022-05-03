@@ -41,7 +41,8 @@
     })
 
     db.onDidChange('updateError', (err) => {
-        updateError = JSON.stringify(err)
+        // console.log({updateError: err})
+        updateError = err
     })
 
     db.onDidChange('delayupdate', (delay) => {
@@ -349,10 +350,11 @@
                             <progress id="update-progress" max="100" value="0">
                                 0%</progress
                             >
+                            
                         </div>
 
                         {#if updateError}
-                            <div class="tag is-danger errorbox">
+                            <div class="tag is-danger errorbox animated fadeIn">
                                 {updateError}
                             </div>
                         {/if}
