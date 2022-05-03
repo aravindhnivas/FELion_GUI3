@@ -31,7 +31,7 @@ const config = {
                 'electron',
                 'electron-updater',
                 'electron-unhandled',
-                'electron-store',
+                'electron-log',
                 'fs-extra',
                 ...builtinModules,
             ],

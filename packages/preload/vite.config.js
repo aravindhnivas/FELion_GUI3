@@ -30,7 +30,9 @@ const config = {
         rollupOptions: {
             external: [
                 'electron',
-                'electron-store',
+                'electron-updater',
+                'electron-unhandled',
+                'electron-log',
                 'fs-extra',
                 ...builtinModules,
             ],

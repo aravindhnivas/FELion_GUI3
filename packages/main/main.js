@@ -1,12 +1,9 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
-// import Store from 'electron-store'
 import path from 'path'
 import './security-restrictions.ts'
 import unhandled from 'electron-unhandled'
 import { ROOT_DIR, RENDERER_DIR, PKG_DIR } from './definedEnv'
 import { startServer } from './felionpyServer'
-// import logger from 'electron-log'
-
 const isSingleInstance = app.requestSingleInstanceLock()
 
 if (!isSingleInstance) {
@@ -41,14 +38,11 @@ async function createWindow() {
     import('./dialogs')
     import('./autoupdate')
 
-    // const {signal} = controller
-
     const webContents = mainWindow?.webContents
     startServer(webContents)
 
     mainWindow.on('ready-to-show', () => {
         mainWindow?.show()
-        // mainWindow?.webContents.openDevTools()
         if (env.DEV) {
             mainWindow?.webContents.openDevTools()
         }
