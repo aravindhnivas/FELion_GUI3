@@ -5,10 +5,10 @@ from pathlib import Path as pt
 from matplotlib.artist import Artist
 from matplotlib.container import Container
 from typing import Iterable, Union
-
-
-filepath = pt(__file__).parent.resolve()
-iconfile = filepath / "../icons/icon.ico"
+# from ... import felionQt
+import felionlib
+# filepath = pt(felionQt.__file__).parent.resolve()
+iconfile = pt(felionlib.__file__).parent / "../icons/icon.ico"
 
 
 class ShowDialog(QtWidgets.QDialog):
