@@ -1,9 +1,9 @@
 ## UNRELEASED
 
-- Code formatted with prettier
-- felionQt with qt_material design implemented for better visualising widgets of figures
 - BUG FIXES:
     - Kinetics mass toggler
+    - file browser multiple resizable event trigger
+    - baseline marked file selection (when switching btw OPO and FELIX)
 ---
 ## v3.6.2
 - Timescan Kinetics feature added:
