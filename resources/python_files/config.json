@@ -84,10 +84,6 @@
   {
    "optionDest": "pathex",
    "value": "D:/FELion_GUI3/resources/python_files"
-  },
-  {
-   "optionDest": "collect_data",
-   "value": "felionlib.utils.felionQt"
   }
  ],
  "nonPyinstallerOptions": {
