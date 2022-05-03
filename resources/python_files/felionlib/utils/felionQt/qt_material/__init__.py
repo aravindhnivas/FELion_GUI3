@@ -4,8 +4,7 @@ import logging
 from pathlib import Path
 import platform
 from xml.dom.minidom import parse
-
-from qt_material.resources import ResourseGenerator, RESOURCES_PATH
+from .resources import ResourseGenerator, RESOURCES_PATH
 
 GUI = True
 
