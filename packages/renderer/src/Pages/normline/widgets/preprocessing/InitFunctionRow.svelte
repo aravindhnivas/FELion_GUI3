@@ -105,15 +105,21 @@
                 break
 
             case 'baseline':
-                if (!$baselineFile) {
+                const baseline_markedfile = document.querySelector(
+                    `#${$opoMode ? 'o' : ''}felix_filebrowser .marked-file`
+                )?.textContent
+
+                if (!baseline_markedfile) {
+                
                     return window.createToast(
-                        'No files: ctrl + left-click to select file for baseline correction',
+                        `No ${$opoMode ? 'OPO' : 'FELIX'} files: ctrl + left-click to select file for baseline correction`,
                         'danger'
                     )
                 }
+                
                 pyfile = 'normline.baseline'
-                args = { filename: pathJoin($felixopoLocation, $baselineFile) }
-                computePy_func({ e, pyfile, args, general: true, openShell })
+                args = { filename: pathJoin($felixopoLocation, baseline_markedfile) }
+                computePy_func({ e, pyfile, args, general: true })
                 break
 
             case 'matplotlib':

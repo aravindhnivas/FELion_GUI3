@@ -8,18 +8,19 @@
     export let height = '600px'
     export let markedFile = ''
     export let fileChecked = []
+
 </script>
 
 <div {style}>
     <VirtualList {items} let:item {height}>
         {@const highlight = markedFile == item.name}
         <List checklist>
-            <Item
+            <Item 
                 style="border-radius: 1em; border: {highlight
                     ? 'solid 1px #ffc107'
                     : ''};"
             >
-                <Label>{item.name}</Label>
+                <Label class={ highlight ? "marked-file" : ""} >{item.name}</Label>
                 <Meta
                     ><Checkbox
                         bind:group={fileChecked}
