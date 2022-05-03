@@ -30,8 +30,10 @@ const config = {
             external: [
                 'electron',
                 'electron-updater',
+                'electron-unhandled',
+                'electron-store',
+                'fs-extra',
                 ...builtinModules,
-                // 'get-port'
             ],
             output: {
                 entryFileNames: '[name].cjs',

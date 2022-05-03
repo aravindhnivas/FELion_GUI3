@@ -28,6 +28,7 @@ const config = {
         target: `chrome${chrome}`,
         outDir: 'dist',
         assetsDir: '.',
+        minify: process.env.MODE !== 'development',
         rollupOptions: {
             output: {
                 manualChunks: {
@@ -39,7 +40,7 @@ const config = {
                     plotly: ['plotly.js/dist/plotly-basic'],
                 },
             },
-            external: [...builtinModules, 'electron-updater', 'electron-log'],
+            external: [...builtinModules],
         },
         emptyOutDir: true,
         brotliSize: false,

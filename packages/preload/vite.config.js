@@ -28,7 +28,12 @@ const config = {
             formats: ['cjs'],
         },
         rollupOptions: {
-            external: ['electron', ...builtinModules],
+            external: [
+                'electron',
+                'electron-store',
+                'fs-extra',
+                ...builtinModules,
+            ],
             output: {
                 entryFileNames: '[name].cjs',
             },
