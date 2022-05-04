@@ -30,7 +30,7 @@ const config = {
         asar: true,
         certificateFile: certificateFile,
         certificatePassword: 'felion',
-        publisherName: ['A.N.Marimuthu'],
+        publisherName: ['A.N.Marimuthu', 'CN=felion, O=FELION, L=Nijmegen, C=NL'],
         signingHashAlgorithms: ['sha256'],
     },
     nsis: {
