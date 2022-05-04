@@ -510,7 +510,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         navbar_controller_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
 
         navbar_controller_scroll.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
-        navbar_controller_scroll.setFixedHeight(45)
+        navbar_controller_scroll.setFixedHeight(60)
         # navbar_controller_scroll.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         self.navbar_layout.addWidget(navbar_controller_scroll)
