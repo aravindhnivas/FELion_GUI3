@@ -24,7 +24,7 @@
 
     let pyError = ''
     let mounted = false
-    let updateError = db.get('updateError') || ''
+    let updateError = window.db.get('updateError') || ''
     let updateIntervalCycle
     let selected = window.db.get('settingsActiveTab') || 'Configuration'
 
@@ -32,7 +32,7 @@
         selected = e.target.innerHTML
         window.db.set('settingsActiveTab', selected)
     }
-    db.onDidChange('pyServerReady', async (value) => {
+    window.db.onDidChange('pyServerReady', async (value) => {
         $pyServerReady = value
         if ($pyServerReady) {
             serverInfo += `>> fetching server status\n`
@@ -40,11 +40,11 @@
         }
     })
 
-    db.onDidChange('updateError', (err) => {
+    window.db.onDidChange('updateError', (err) => {
         updateError = err
     })
 
-    db.onDidChange('delayupdate', (delay) => {
+    window.db.onDidChange('delayupdate', (delay) => {
         if (delay) {
             if (updateIntervalCycle) {
                 clearInterval(updateIntervalCycle)
@@ -68,7 +68,7 @@
                 console.warn($pyVersion)
             }
 
-            $pyServerReady = db.get('pyServerReady')
+            $pyServerReady = window.db.get('pyServerReady')
         } catch (error) {
             pyError = error
         } finally {
@@ -88,7 +88,7 @@
 
     let updating = false
 
-    db.onDidChange('update-status', (status) => {
+    window.db.onDidChange('update-status', (status) => {
         console.log(status)
         switch (status) {
             case 'checking-for-update':
@@ -141,7 +141,7 @@
         }
     }
 
-    let serverDebug = db.get('serverDebug') || false
+    let serverDebug = window.db.get('serverDebug') || false
     const updateTCPInfo = async (e = null) => {
         const [{ stdout }] = await checkTCP({ target: e?.target })
         if (stdout) {
@@ -159,7 +159,7 @@
     })
 
     const id = 'Settings'
-    let display = db.get('active_tab') === id ? 'block' : 'none'
+    let display = window.db.get('active_tab') === id ? 'block' : 'none'
 </script>
 
 <Changelog />
@@ -287,10 +287,10 @@
                                     bind:selected={serverDebug}
                                     label="serverDebug"
                                     on:SMUISwitch:change={() => {
-                                        db.set('serverDebug', serverDebug)
+                                        window.db.set('serverDebug', serverDebug)
                                         console.log(
                                             { serverDebug },
-                                            db.get('serverDebug')
+                                            window.db.get('serverDebug')
                                         )
                                     }}
                                 />

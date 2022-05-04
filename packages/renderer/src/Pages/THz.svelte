@@ -191,7 +191,7 @@
         console.log('plotlySelectCreated', plotlySelectCreated)
         plotlySelectCreated = true
     }
-    let display = db.get('active_tab') === id ? 'block' : 'none'
+    let display = window.db.get('active_tab') === id ? 'block' : 'none'
 </script>
 
 <THzFitParamsTable

@@ -113,7 +113,7 @@
             console.log('loading: ', collisionalCoefficientJSONFile)
             ;[{ collisionalCoefficient, collisionalCoefficient_balance }] =
                 fs.readJsonSync(collisionalCoefficientJSONFile)
-            if (db.get('active_tab') == 'Kinetics') {
+            if (window.db.get('active_tab') == 'Kinetics') {
                 window.createToast(
                     'loaded: ' + basename(collisionalCoefficientJSONFile),
                     'warning'
@@ -123,7 +123,7 @@
     }
 
     onMount(() => {
-        const configLocation = db.get('ROSAA_config_location') || ''
+        const configLocation = window.db.get('ROSAA_config_location') || ''
         if (!configLocation) return
         console.log(configLocation)
         collisionalCoefficientJSONFile = pathJoin(

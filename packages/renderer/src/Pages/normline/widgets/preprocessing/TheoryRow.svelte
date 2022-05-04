@@ -55,7 +55,7 @@
 
     let onlyExpRange = false
     $: if (theoryLocation) {
-        db.set('theoryLocation', theoryLocation)
+        window.db.set('theoryLocation', theoryLocation)
     }
 </script>
 

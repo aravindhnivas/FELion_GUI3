@@ -12,7 +12,7 @@
 
     import { browse } from '$components/Layout.svelte'
 
-    let currentLocation = db.get('kinetics_location') || ''
+    let currentLocation = window.db.get('kinetics_location') || ''
 
     let timestartIndexScan = 0
     let fileCollections = []
@@ -35,14 +35,14 @@
         if (!result) return
 
         currentLocation = result
-        db.set('kinetics_location', currentLocation)
+        window.db.set('kinetics_location', currentLocation)
         console.log(result, currentLocation)
     }
 
     const updateFiles = (node = null) => {
         if (!fs.existsSync(currentLocation))
             return window.createToast('Invalid location', 'danger')
-        db.set('kinetics_location', currentLocation)
+        window.db.set('kinetics_location', currentLocation)
         node?.target.classList.add('rotateIn')
         fileCollections = fs
             .readdirSync(currentLocation)
@@ -220,7 +220,7 @@
                     id: getID(),
                 }))
 
-                if (db.get('active_tab')?.toLowerCase() === 'kinetics') {
+                if (window.db.get('active_tab')?.toLowerCase() === 'kinetics') {
                     window.createToast(
                         'Config file loaded: ' + config_file_ROSAAkinetics,
                         'warning'
@@ -298,7 +298,7 @@
 
     let kineticEditorFiletype = 'kinetics'
     let kineticEditorLocation =
-        db.get(`${kineticEditorFiletype}-report-md`) || currentLocation
+        window.db.get(`${kineticEditorFiletype}-report-md`) || currentLocation
 
     $: kineticfile = pathJoin(kineticEditorLocation, kineticEditorFilename)
     let reportRead = false

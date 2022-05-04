@@ -99,7 +99,7 @@
             $plotlyEventsInfo.mplot.annotations = []
         }
     })
-    let display = db.get('active_tab') === id ? 'block' : 'none'
+    let display = window.db.get('active_tab') === id ? 'block' : 'none'
 </script>
 
 <Layout

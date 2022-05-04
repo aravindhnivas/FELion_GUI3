@@ -27,31 +27,31 @@
     let edit_constants = false
     let edit_numberDensity_constants = false
 
-    let rt = db.get('RT') || 300
+    let rt = window.db.get('RT') || 300
     $: if (rt) {
-        db.set('RT', rt)
+        window.db.set('RT', rt)
     }
 
     let temperature = 5
     let pq1_after = 1e-5
     let pq1_before = 1e-8
 
-    let calibration_factor = db.get('calibration_factor') || 200
+    let calibration_factor = window.db.get('calibration_factor') || 200
     $: if (calibration_factor) {
-        db.set('calibration_factor', calibration_factor)
+        window.db.set('calibration_factor', calibration_factor)
     }
 
     $: ndensity =
         (calibration_factor / (boltzman_constant * 1e4 * rt ** 0.5)) *
         ((pq1_after - pq1_before) / temperature ** 0.5)
-    let active = db.get('MISC_active_tab') || 'Unit Conversion'
+    let active = window.db.get('MISC_active_tab') || 'Unit Conversion'
     $: if (active) {
-        db.set('MISC_active_tab', active)
+        window.db.set('MISC_active_tab', active)
     }
 
     const navItems = ['Unit Conversion', 'Configs']
     let CONFIGS = db?.data() || {}
-    const unsubscribe = db.onDidAnyChange((newValue, oldValue) => {
+    const unsubscribe = window.db.onDidAnyChange((newValue, oldValue) => {
         CONFIGS = newValue
     })
 
@@ -59,7 +59,7 @@
 
     let display = 'none'
     onMount(() => {
-        display = db.get('active_tab') === 'Misc' ? 'block' : 'none'
+        display = window.db.get('active_tab') === 'Misc' ? 'block' : 'none'
     })
 </script>
 

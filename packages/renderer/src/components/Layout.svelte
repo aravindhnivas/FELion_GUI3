@@ -57,13 +57,13 @@
         const result = await browse()
         if (!result) return
         currentLocation = result
-        db.set(`${filetype}_location`, currentLocation)
+        window.db.set(`${filetype}_location`, currentLocation)
         console.log(result, currentLocation)
     }
 
     onMount(() => {
         console.log(id, 'mounted')
-        currentLocation = db.get(`${filetype}_location`) || ''
+        currentLocation = window.db.get(`${filetype}_location`) || ''
     })
     let graphDivContainer
 

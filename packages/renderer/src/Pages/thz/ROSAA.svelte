@@ -175,8 +175,8 @@
         }
         computePy_func({ e, pyfile: 'ROSAA', args, general: true })
     }
-    let currentLocation = fs.existsSync(db.get('ROSAA_config_location'))
-        ? db.get('ROSAA_config_location')
+    let currentLocation = fs.existsSync(window.db.get('ROSAA_config_location'))
+        ? window.db.get('ROSAA_config_location')
         : ''
 
     // let savefilename = ""
@@ -186,7 +186,7 @@
         variable.split('(')[0]
     }_${excitedFrom} - ${excitedTo}`.replaceAll('$', '')
     $: if (fs.existsSync(currentLocation)) {
-        db.set('ROSAA_config_location', currentLocation)
+        window.db.set('ROSAA_config_location', currentLocation)
     }
 
     async function browse_folder() {
@@ -194,8 +194,8 @@
         if (!result) return
         configFilename = basename(result[0])
         currentLocation = dirname(result[0])
-        db.set('ROSAA_config_location', currentLocation)
-        db.set('ROSAA_config_file', configFilename)
+        window.db.set('ROSAA_config_location', currentLocation)
+        window.db.set('ROSAA_config_file', configFilename)
         // loadConfig()
     }
 
@@ -254,7 +254,7 @@
 
     let configLoaded = false
     let collisionalCoefficient_balance = []
-    let configFilename = db.get('ROSAA_config_file') || ''
+    let configFilename = window.db.get('ROSAA_config_file') || ''
     async function loadConfig() {
         try {
             // if(fs.existsSync(configFile)) {

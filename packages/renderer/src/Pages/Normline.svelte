@@ -48,7 +48,7 @@
     // Theory file
 
     let showTheory = true
-    let theoryLocation = db.get('theoryLocation') || currentLocation
+    let theoryLocation = window.db.get('theoryLocation') || currentLocation
 
     ///////////////////////////////////////////////////////////////////////
 
@@ -71,7 +71,7 @@
     ]
 
     // OPO
-    let OPOLocation = db.get('ofelix_location') || currentLocation
+    let OPOLocation = window.db.get('ofelix_location') || currentLocation
     let opofiles = []
 
     $: $felixopoLocation = $opoMode ? OPOLocation : currentLocation
@@ -131,7 +131,7 @@
         $OPOGraphPlotted = false
     })
 
-    let display = db.get('active_tab') === id ? 'block' : 'none'
+    let display = window.db.get('active_tab') === id ? 'block' : 'none'
 </script>
 
 <!-- Modals -->

@@ -93,7 +93,7 @@
                 })
 
                 if (filetype.length > 2) {
-                    db.set(`${filetype}_location`, currentLocation)
+                    window.db.set(`${filetype}_location`, currentLocation)
                 }
                 filesLoaded = true
                 resolve(fullfiles)

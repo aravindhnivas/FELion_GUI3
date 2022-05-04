@@ -3,10 +3,10 @@
     export let active = false
     export let title = 'Title'
     export let style = 'width:60vw'
-    export let contentID = ''
+    export let contentID = getID()
     export let bodyBackground = '#634e96'
     export let headerBackground = '#836ac05c'
-    export let bodyStyle = 'max-height: 30em; height: 30em'
+    // export let bodyStyle = 'max-height: 30em; height: 30em'
     let className
     export { className as class }
     const dispatch = createEventDispatcher()
@@ -44,7 +44,7 @@
         <section
             class="modal-card-body"
             style="background: {bodyBackground};"
-            id={contentID || getID()}
+            id={contentID}
         >
             <slot name="content" style="white-space: pre-wrap;" />
         </section>

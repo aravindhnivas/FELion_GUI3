@@ -6,11 +6,11 @@
 
     export let navItems
 
-    let active = db.get('active_tab') || 'Home'
+    let active = window.db.get('active_tab') || 'Home'
     $: $activePage = active
     $: console.log(`Current page: ${$activePage}`)
 
-    $: db.set('active_tab', $activePage)
+    $: window.db.set('active_tab', $activePage)
     const navigate = () => {
         navItems.forEach((item) =>
             item == active

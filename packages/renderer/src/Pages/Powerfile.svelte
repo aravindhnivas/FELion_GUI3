@@ -33,7 +33,7 @@
         const result = await browse()
         if (!result) return
         location = result
-        db.set('powerfile_location', location)
+        window.db.set('powerfile_location', location)
         window.createToast('Location updated', 'success')
         if (save) savefile()
     }
@@ -43,7 +43,7 @@
     let felixShots = 16
     let powerfileContent = ''
 
-    let location = db.get('powerfile_location') || ''
+    let location = window.db.get('powerfile_location') || ''
     let today = new Date()
 
     const dd = String(today.getDate()).padStart(2, '0')
@@ -71,7 +71,7 @@
         writePowfile()
     }
     const id = 'Powerfile'
-    let display = db.get('active_tab') === id ? 'block' : 'none'
+    let display = window.db.get('active_tab') === id ? 'block' : 'none'
 </script>
 
 <CustomDialog

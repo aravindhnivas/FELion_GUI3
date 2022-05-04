@@ -16,7 +16,7 @@
         success: '#20f996',
     }
 
-    export let commandToRun = db.get('pythonpath') || '',
+    export let commandToRun = window.db.get('pythonpath') || '',
         commandArgsToRun = '-m pip',
         commandResults = [{ color: colorSets.normal, results: '>> ' }],
         teminalFontSize = 20
@@ -115,7 +115,7 @@
         packagesName = ''
 
     const installPythonPackages = () => {
-        commandToRun = db.get('pythonpath')
+        commandToRun = window.db.get('pythonpath')
 
         commandArgsToRun = '-m pip install'
 

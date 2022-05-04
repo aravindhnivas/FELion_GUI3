@@ -41,8 +41,8 @@
         editor.destroy()
         console.info('editor destroyed')
     }
-    if (db.get(`${filetype}-report-md`)) {
-        location = db.get(`${filetype}-report-md`)
+    if (window.db.get(`${filetype}-report-md`)) {
+        location = window.db.get(`${filetype}-report-md`)
     }
 
     $: reportFile = window.pathJoin(
@@ -60,7 +60,7 @@
     }
 
     $: if (fs.existsSync(location)) {
-        db.set(`${filetype}-report-md`, location)
+        window.db.set(`${filetype}-report-md`, location)
         updateFiles()
     }
 
@@ -147,7 +147,7 @@
     title={'Overwrite?'}
     bind:open={overwriteDialogOpen}
     bind:response={overwriteResponse}
-    content={`${basename(
+    content={`${window.basename(
         reportFile
     )} already exists. Do you want to overwrite it?`}
 />
