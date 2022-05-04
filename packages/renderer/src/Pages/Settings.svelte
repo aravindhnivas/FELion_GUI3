@@ -41,7 +41,6 @@
     })
 
     db.onDidChange('updateError', (err) => {
-        // console.log({updateError: err})
         updateError = err
     })
 
@@ -87,11 +86,34 @@
         }
     })
 
+    let updating = false
+    db.onDidChange('update-status', (status) => {
+        switch (status) {
+            case 'update-available':
+                updating = true
+                break
+
+            case 'update-not-available':
+                updating = false
+                break
+
+            case 'download-error':
+                updating = false
+                break
+
+            case 'update-downloaded':
+                updating = false
+                break
+
+            default:
+                break
+        }
+    })
+
     function updateCheck(event = null) {
         if (env.DEV) return console.info('Cannot update in DEV mode')
 
         try {
-
             if (!navigator.onLine) {
                 if (event) {
                     return window.createToast(
@@ -100,9 +122,6 @@
                     )
                 }
             }
-
-            const updateCheckBtn = document.getElementById('updateCheckBtn')
-            updateCheckBtn.classList.toggle('is-loading')
             checkupdate()
         } catch (error) {
             if (event) window.handleError(error)
@@ -332,6 +351,7 @@
                         <div class="align">
                             <button
                                 class="button is-link"
+                                class:is-loading={updating}
                                 id="updateCheckBtn"
                                 on:click={updateCheck}>Check update</button
                             >

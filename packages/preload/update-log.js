@@ -8,17 +8,8 @@ ipcRenderer.on('update-progress', (_, progressObj) => {
     progressContainer.style.display = 'grid'
     const progressDiv = document.getElementById('update-progress')
     progressDiv.value = progressObj.percent
-    
-    console.info(progressObj)
-    
-    if(progressObj.percent === 100) {
-        const updateCheckBtn = document.getElementById('updateCheckBtn')
-        if(updateCheckBtn?.classList.contains('is-loading')) {
-            updateCheckBtn.classList.toggle('is-loading')
-        }
-        
-    }
 
+    console.info(progressObj)
 })
 
 contextBridge.exposeInMainWorld('checkupdate', () => {

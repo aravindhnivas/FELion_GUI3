@@ -4,9 +4,12 @@ import Store from 'electron-store'
 export const db = new Store({ name: 'db' })
 
 db.set('updateError', '')
+
 if (!db.has('delayupdate')) {
     db.set('delayupdate', false)
 }
+
+db.set('update-status', '')
 
 ipcRenderer.on('db:update', (_event, { key, value }) => {
     db.set(key, value)

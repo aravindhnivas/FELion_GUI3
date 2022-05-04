@@ -30,10 +30,18 @@ autoUpdater.on('checking-for-update', () =>
 )
 
 autoUpdater.on('update-available', (info) => {
+    mainWindow.webContents.send('db:update', {
+        key: 'update-status',
+        value: 'update-available',
+    })
     updateLog('update-available: \n' + JSON.stringify(info) + '\n-----------\n')
 })
 
 autoUpdater.on('update-not-available', (info) => {
+    mainWindow.webContents.send('db:update', {
+        key: 'update-status',
+        value: 'update-not-available',
+    })
     updateLog(
         'update-not-available ' + JSON.stringify(info) + '\n-----------\n'
     )
@@ -41,6 +49,10 @@ autoUpdater.on('update-not-available', (info) => {
 
 autoUpdater.on('error', (err) => {
     logger.error(err)
+    mainWindow.webContents.send('db:update', {
+        key: 'update-status',
+        value: 'download-error',
+    })
     mainWindow.webContents.send('db:update', {
         key: 'updateError',
         value: err?.stack,
@@ -62,8 +74,12 @@ autoUpdater.on('download-progress', (progressObj) => {
 })
 
 autoUpdater.on('update-downloaded', async (info) => {
-    
     logger.info('update-downloaded' + info)
+
+    mainWindow.webContents.send('db:update', {
+        key: 'update-status',
+        value: 'update-downloaded',
+    })
 
     const restartArgs = {
         title: 'FELion_GUI3',
