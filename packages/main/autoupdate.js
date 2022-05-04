@@ -25,7 +25,7 @@ const updateLog = (info) => {
     mainWindow.webContents.send('update-log', info)
 }
 
-autoUpdater.on('checking-for-update', () =>{
+autoUpdater.on('checking-for-update', () => {
     mainWindow.webContents.send('db:update', {
         key: 'update-status',
         value: 'checking-for-update',
