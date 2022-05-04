@@ -91,7 +91,7 @@
         if (env.DEV) return console.info('Cannot update in DEV mode')
 
         try {
-            event?.target.classList.toggle('is-loading')
+
             if (!navigator.onLine) {
                 if (event) {
                     return window.createToast(
@@ -100,11 +100,12 @@
                     )
                 }
             }
+
+            const updateCheckBtn = document.getElementById('updateCheckBtn')
+            updateCheckBtn.classList.toggle('is-loading')
             checkupdate()
         } catch (error) {
             if (event) window.handleError(error)
-        } finally {
-            event?.target.classList.toggle('is-loading')
         }
     }
 

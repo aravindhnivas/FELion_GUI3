@@ -62,6 +62,7 @@ autoUpdater.on('download-progress', (progressObj) => {
 })
 
 autoUpdater.on('update-downloaded', async (info) => {
+    
     logger.info('update-downloaded' + info)
 
     const restartArgs = {
