@@ -87,12 +87,15 @@
     })
 
     let updating = false
+
     db.onDidChange('update-status', (status) => {
+        console.log(status)
         switch (status) {
-            case 'update-available':
+    
+            case 'checking-for-update':
                 updating = true
                 break
-
+            
             case 'update-not-available':
                 updating = false
                 break
