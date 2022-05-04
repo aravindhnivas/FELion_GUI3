@@ -1,17 +1,14 @@
-## v3.6.3
+## v3.6.2
+
+- Timescan Kinetics feature added:
+    - toggle masses to include in the model
 
 - BUG FIXES:
     - Kinetics mass toggler
     - file browser multiple resizable event trigger
     - baseline marked file selection (when switching btw OPO and FELIX)
     - update error display
-
-## v3.6.2
-- Timescan Kinetics feature added:
-    - toggle masses to include in the model
-- BUG FIXES:
     - baseline ydata corrections
-
 ## v3.6.1
 
 - BUG FIX: baseline list min method attribute error 
