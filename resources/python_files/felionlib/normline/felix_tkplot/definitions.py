@@ -1,6 +1,5 @@
 from pathlib import Path as pt
 from matplotlib.axes import Axes
-import matplotlib.pyplot as plt
 import numpy as np
 
 def generateNGaussian(N):
