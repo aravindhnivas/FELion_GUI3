@@ -26,8 +26,6 @@ from .utils.widgets import ShowDialog, AnotherWindow, iconfile, toggle_this_arti
 from .utils.workers import Worker
 
 import matplotlib.pyplot as plt
-# from .qt_material import QtStyleTools, list_themes
-
 
 QApplication = QtWidgets.QApplication
 qapp = QtWidgets.QApplication([])
