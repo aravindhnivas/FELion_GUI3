@@ -1,6 +1,6 @@
 from matplotlib.widgets import Slider
-import matplotlib
-matplotlib.use(backend="TkAgg")
+# import matplotlib
+# matplotlib.use(backend="TkAgg")
 
 class Sliderlog(Slider):
 
