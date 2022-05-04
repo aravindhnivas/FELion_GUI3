@@ -22,12 +22,10 @@
     let temp = 5
     let molecule = 'CD'
     let tag = 'He'
-    let massOfReactants = ''
     let nameOfReactants = ''
     let ratek3 = 'k31'
     let ratekCID = 'kCID1'
     let selectedFile = ''
-    let totalMass = []
     let totalMassKey = []
     let k3Guess = '1e-30'
     let kCIDGuess = '1e-15'
@@ -61,13 +59,13 @@
 
     const sliceData = () => {
         if (selectedFile.endsWith('.scan')) {
-            totalMass.forEach((massKey) => {
-                const newData = cloneDeep(currentDataBackup)[massKey]
+            totalMassKey.forEach(({ mass }) => {
+                const newData = cloneDeep(currentDataBackup)[mass]
                 newData.x = newData.x.slice(timestartIndexScan)
                 newData.y = newData.y.slice(timestartIndexScan)
                 newData['error_y']['array'] =
                     newData['error_y']['array'].slice(timestartIndexScan)
-                currentData[massKey] = newData
+                currentData[mass] = newData
             })
 
             computeOtherParameters()
@@ -82,61 +80,61 @@
             selectedFile.replace('.scan', '_scan.json')
         )
 
-        console.log(currentJSONfile)
         ;[currentData] = fs.readJsonSync(currentJSONfile)
 
         currentDataBackup = cloneDeep(currentData)
 
         if (currentData) {
-            totalMass = Object.keys(currentData)
-            totalMass = totalMass.slice(0, totalMass.length - 1)
-
-            totalMass.forEach((m) => {
-                modifiedTotalMass[m] = { included: true }
-            })
-            totalMassKey = totalMass.map((m) => ({ mass: m, id: getID() }))
-
+            const totalMass = Object.keys(currentData).filter(
+                (m) => m !== 'SUM'
+            )
+            totalMassKey = totalMass.map((m) => ({
+                mass: m,
+                id: getID(),
+                included: true,
+            }))
             maxTimeIndex = currentData[totalMass[0]].x.length - 5
-            massOfReactants = totalMass.join(', ')
             sliceData()
-            console.log({ maxTimeIndex })
         }
     }
 
     function computeOtherParameters() {
-        masses = massOfReactants.split(',').map((m) => m.trim())
+        const masses = totalMassKey
+            .filter((m) => m.included)
+            .map(({ mass }) => mass.trim())
+        if (masses.length < 2) return
+        const parentCounts = currentData?.[masses[0]]?.['y']?.[0]?.toFixed(0)
 
-        const requiredLength = masses.length
-        if (defaultInitialValues && masses) {
+        if (defaultInitialValues) {
             initialValues = [
-                currentData?.[masses[0]]['y'][0]?.toFixed(0),
-                ...Array(requiredLength - 1).fill(1),
-            ]
+                parentCounts,
+                ...Array(masses.length - 1).fill(1),
+            ].join(', ')
         }
+
         nameOfReactants = `${molecule}, ${molecule}${tag}`
         ;(ratek3 = 'k31'), (ratekCID = 'kCID1')
 
-        for (let index = 2; index < requiredLength; index++) {
+        for (let index = 2; index < masses.length; index++) {
             ratek3 += `, k3${index}`
             ratekCID += `, kCID${index}`
             nameOfReactants += `, ${molecule}${tag}${index}`
         }
     }
 
-    let masses
     let calibrationFactor = 1
     let update_pbefore = true
 
-    $: if (massOfReactants) {
-        computeOtherParameters()
-    }
-
     $: if (srgMode) {
         calibrationFactor = 1
-        if (update_pbefore) pbefore = Number(7e-5).toExponential(0)
+        if (update_pbefore) {
+            pbefore = Number(7e-5).toExponential(0)
+        }
     } else {
         calibrationFactor = 200
-        if (update_pbefore) pbefore = Number(1e-8).toExponential(0)
+        if (update_pbefore) {
+            pbefore = Number(1e-8).toExponential(0)
+        }
     }
 
     let numberDensity = 0
@@ -165,7 +163,6 @@
     }
 
     const config_file_ROSAAkinetics = 'config_file_ROSAAkinetics.json'
-
     $: config_file = pathJoin(currentLocation, config_file_ROSAAkinetics)
     let config_content = {}
 
@@ -239,51 +236,33 @@
 
     async function kineticSimulation(e) {
         try {
-            let error = false
             if (!selectedFile) {
-                createToast('Select a file', 'danger')
-                error = true
+                return window.handleError('Select a file')
             }
             if (!currentData) {
-                createToast('No data available', 'danger')
-                error = true
+                return window.handleError('No data available')
             }
             if (!fs.existsSync(kineticfile)) {
-                createToast('Compute and save kinetic equation', 'danger')
-                error = true
+                return window.handleError('Compute and save kinetic equation')
             }
-
-            if (error) {
-                const submitbtn = document.getElementById(
-                    'kinetic-submit-button'
+            const masses = totalMassKey
+                .filter((m) => m.included)
+                .map(({ mass }) => mass.trim())
+            if (masses.length < 2) {
+                return window.handleError(
+                    'atleast two reactants are required for kinetics'
                 )
-                const backgroundColor = submitbtn.style.backgroundColor
-                submitbtn.style.backgroundColor = '#f14668'
-                submitbtn.disabled = true
-                setTimeout(() => {
-                    submitbtn.style.backgroundColor = backgroundColor
-                    submitbtn.disabled = false
-                }, 2000)
-
-                return
             }
 
             const nameOfReactantsArray = nameOfReactants
                 .split(',')
                 .map((m) => m.trim())
+
             const data = {}
+            masses.forEach((mass, index) => {
+                data[nameOfReactantsArray[index]] = currentData[mass]
+            })
 
-            massOfReactants
-                .split(',')
-                .map((mass) => mass.trim())
-                .forEach(
-                    (mass, i) =>
-                        (data[nameOfReactantsArray[i]] = currentData[mass])
-                )
-
-            if (typeof initialValues === 'string') {
-                initialValues = initialValues.split(',')
-            }
             const args = {
                 tag,
                 data,
@@ -294,7 +273,7 @@
                 ratekCID,
                 kCIDGuess,
                 selectedFile,
-                initialValues,
+                initialValues: initialValues.split(','),
                 numberDensity,
                 currentLocation,
                 nameOfReactantsArray,
@@ -324,26 +303,12 @@
     $: kineticfile = pathJoin(kineticEditorLocation, kineticEditorFilename)
     let reportRead = false
     let reportSaved = false
-    let modifiedTotalMass = {}
     onMount(() => {
         loadConfig()
         if (fileCollections.length > 0) {
             selectedFile = fileCollections[0]
         }
     })
-
-    const update_included_masses = ({ node, mass }) => {
-        modifiedTotalMass[mass].included = !modifiedTotalMass[mass].included
-        node?.classList?.toggle('is-danger')
-        let newTotalMass = []
-
-        for (const mass in modifiedTotalMass) {
-            if (modifiedTotalMass[mass].included) {
-                newTotalMass = [...newTotalMass, mass]
-            }
-        }
-        massOfReactants = newTotalMass.join(', ')
-    }
 </script>
 
 <KineticConfigTable {configArray} {config_file} bind:active={adjustConfig} />
@@ -408,32 +373,37 @@
                 <Textfield bind:value={tag} label="tag" />
             </div>
 
-            <div class="align box h-center">
-                <Textfield
-                    bind:value={massOfReactants}
-                    label="massOfReactants"
-                />
+            <div class="align box h-center" style:flex-direction="column">
                 <Textfield
                     bind:value={nameOfReactants}
+                    style="width:50%"
                     label="nameOfReactants"
                 />
 
                 <div class="align h-center">
-                    {#each totalMassKey as { mass, id } (id)}
-                        <span class="tag is-warning">
+                    {#each totalMassKey as { mass, id, included } (id)}
+                        <span
+                            class="tag is-warning"
+                            class:is-danger={!included}
+                        >
                             {mass}
+
                             <button
                                 class="delete is-small"
-                                on:click={({ target }) => {
-                                    update_included_masses({
-                                        node: target?.parentNode,
-                                        mass,
-                                    })
+                                on:click={() => {
+                                    included = !included
+                                    computeOtherParameters()
                                 }}
                             />
                         </span>
                     {/each}
                 </div>
+
+                {#if totalMassKey.filter((m) => m.included).length < 2}
+                    <span class="tag is-danger">
+                        atleast two reactants are required for kinetics
+                    </span>
+                {/if}
             </div>
 
             <div class="align box h-center">
@@ -449,7 +419,6 @@
             </div>
 
             <KineticEditor
-                {massOfReactants}
                 {ratek3}
                 {ratekCID}
                 {nameOfReactants}

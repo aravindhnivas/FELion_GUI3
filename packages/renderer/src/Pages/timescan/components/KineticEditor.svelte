@@ -6,8 +6,8 @@
     export let ratekCID
     export let reportRead = false
     export let reportSaved = false
-    export let massOfReactants
-    export let nameOfReactants
+    // export let massOfReactants
+    export let nameOfReactants = ''
     export let kineticEditorFilename
     export let kineticEditorLocation
 
@@ -31,7 +31,7 @@
             <button
                 class="button is-warning"
                 on:click={() => {
-                    if (!massOfReactants)
+                    if (!nameOfReactants)
                         return window.createToast('No data available', 'danger')
                     const dataToSet = computeKineticCodeScipy({
                         ratek3,

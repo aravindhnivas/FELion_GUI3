@@ -350,7 +350,6 @@
                             <progress id="update-progress" max="100" value="0">
                                 0%</progress
                             >
-                            
                         </div>
 
                         {#if updateError}

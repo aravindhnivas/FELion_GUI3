@@ -41,7 +41,10 @@ autoUpdater.on('update-not-available', (info) => {
 
 autoUpdater.on('error', (err) => {
     logger.error(err)
-    mainWindow.webContents.send('db:update', { key: 'updateError', value: err?.stack })
+    mainWindow.webContents.send('db:update', {
+        key: 'updateError',
+        value: err?.stack,
+    })
 })
 
 autoUpdater.on('download-progress', (progressObj) => {
