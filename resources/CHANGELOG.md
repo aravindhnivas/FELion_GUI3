@@ -3,6 +3,9 @@
     - Kinetics subplot adjust
     - Kinetics configs in configs folder
 
+- BUG FIX:
+    - Timescan saveData (fitted_values) from slider
+
 ## v3.6.2
 
 - Timescan Kinetics feature added:
