@@ -2,6 +2,7 @@ import json
 import traceback
 from pathlib import Path as pt
 from felionlib.kineticsCode.utils.definitions import formatArray
+
 from felionlib.utils import logger
 from felionlib.utils.msgbox import MsgBox, MB_ICONERROR, MB_ICONINFORMATION
 
@@ -18,16 +19,18 @@ def saveData(
     selectedFile = args["selectedFile"]
 
     try:
+        
+        logger(f"{formatArray(rateCoefficientArgs[0])=}")
+        logger(f"{formatArray(rateCoefficientArgs[1])=}")
 
         k3Len = len(ratek3)
-
         with open(savefile, "w+") as f:
 
-            k3Values = (formatArray(rateCoefficientArgs[0]), formatArray(k_fit[:k3Len]))[len(k_fit) > 0]
-            k3Err = ([0] * len(k3Labels), formatArray(k_err[:k3Len]))[len(k_err) > 0]
+            k3Values = formatArray(rateCoefficientArgs[0])
+            k3Err = formatArray(k_err[:k3Len]) if k_err else [0] * len(k3Labels)
 
-            kCIDValues = (formatArray(rateCoefficientArgs[1]), formatArray(k_fit[k3Len:]))[len(k_fit) > 0]
-            kCIDErr = ([0] * len(kCIDLabels), formatArray(k_err[k3Len:]))[len(k_err) > 0]
+            kCIDValues = formatArray(rateCoefficientArgs[1])
+            kCIDErr = formatArray(k_err[k3Len:]) if k_err else [0] * len(kCIDLabels)
 
             k3_fit = {key: [value, err] for key, value, err in zip(k3Labels, k3Values, k3Err)}
             kCID_fit = {key: [value, err] for key, value, err in zip(kCIDLabels, kCIDValues, kCIDErr)}
@@ -39,7 +42,7 @@ def saveData(
                 "temp": f"{temp:.1f}",
                 "numberDensity": f"{numberDensity:.2e}",
             }
-
+            logger(f"{dataToSave[selectedFile]=}")
             data = json.dumps({**rateConstantsFileData, **dataToSave}, sort_keys=True, indent=4, separators=(",", ": "))
 
             f.write(data)
@@ -57,14 +60,12 @@ def saveData(
             dataToSaveFit = {"fit": {}, "exp": {}}
 
             for name, fitLine, expLine in zip(nameOfReactants, fitPlot, expPlot):
-
                 xdata_f, ydata_f = fitLine.get_data()
                 xdata, ydata = expLine.get_children()[0].get_data()
                 dataToSaveFit["fit"][name] = {"xdata": xdata_f.tolist(), "ydata": ydata_f.tolist()}
                 dataToSaveFit["exp"][name] = {"xdata": xdata.tolist(), "ydata": ydata.tolist()}
 
             data = json.dumps(dataToSaveFit, sort_keys=True, indent=4, separators=(",", ": "))
-            
             f.write(data)
             logger(f"file written: {selectedFile}_fitted.json in EXPORT folder")
 
