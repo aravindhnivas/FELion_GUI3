@@ -1,6 +1,5 @@
 <script>
-
-    import { persistentWritable } from "$src/js/persistentStore";
+    import { persistentWritable } from '$src/js/persistentStore'
     import { onMount, tick } from 'svelte'
     import { cloneDeep } from 'lodash-es'
     import Textfield from '@smui/textfield'
@@ -10,11 +9,11 @@
     import LayoutDiv from '$components/LayoutDiv.svelte'
     import computePy_func from '$src/Pages/general/computePy'
     import KineticConfigTable from './KineticConfigTable.svelte'
-    
+
     import KineticEditor from './KineticEditor.svelte'
     import MatplotlibDialog from './MatplotlibDialog.svelte'
     import { browse } from '$components/Layout.svelte'
-    
+
     let currentLocation = window.db.get('kinetics_location') || ''
 
     let timestartIndexScan = 0
@@ -167,14 +166,15 @@
     // const config_file_kinetics = 'config_file_kinetics.json'
     // $: config_file = pathJoin(currentLocation, "../configs", config_file_kinetics)
 
-    // let config_filename = 'config_file_kinetics.json' 
+    // let config_filename = 'config_file_kinetics.json'
     // $: config_location = window.pathJoin(currentLocation, "../configs")
     // $: config_file = pathJoin(config_location, config_filename)
-    let config_file = '';
+    let config_file = ''
     let config_content = {}
 
     function saveCurrentConfig() {
-        if(!config_file) return window.createToast('Invalid config file', 'danger')
+        if (!config_file)
+            return window.createToast('Invalid config file', 'danger')
 
         if (!selectedFile || !fs.existsSync(currentLocation)) {
             return window.createToast('Invalid location or filename', 'danger')
@@ -222,7 +222,10 @@
         try {
             if (!fs.existsSync(config_file)) {
                 console.log(config_file)
-                return window.createToast(`Config file not available: ${basename(config_file)}`, 'danger')
+                return window.createToast(
+                    `Config file not available: ${basename(config_file)}`,
+                    'danger'
+                )
             }
             ;[config_content] = fs.readJsonSync(config_file)
 
@@ -277,12 +280,17 @@
                 kinetic_plot_adjust_configs_obj = $kinetic_plot_adjust_configs
                     .replaceAll('=', ':')
                     .split(',')
-                    .map(_v0=>
-                        _v0.trim().split(':')
-                        .map(_v1=>`"${_v1}"`)
-                        .join(':')
-                    ).join()
-                kinetic_plot_adjust_configs_obj = JSON.parse(`{${kinetic_plot_adjust_configs_obj}}`)
+                    .map((_v0) =>
+                        _v0
+                            .trim()
+                            .split(':')
+                            .map((_v1) => `"${_v1}"`)
+                            .join(':')
+                    )
+                    .join()
+                kinetic_plot_adjust_configs_obj = JSON.parse(
+                    `{${kinetic_plot_adjust_configs_obj}}`
+                )
             } catch (error) {
                 kinetic_plot_adjust_configs_obj = {}
                 console.error(error)
@@ -325,28 +333,37 @@
     $: kineticfile = pathJoin(currentLocation, kineticEditorFilename)
     let reportRead = false
     let reportSaved = false
-    let fit_config_filename = persistentWritable('kinetics_fitted_values', 'kinetics_fitted_values.json')
+    let fit_config_filename = persistentWritable(
+        'kinetics_fitted_values',
+        'kinetics_fitted_values.json'
+    )
 
     onMount(() => {
         loadConfig()
         if (fileCollections.length > 0) {
             selectedFile = fileCollections[0]
         }
-    
     })
 
     let kinetic_plot_adjust_dialog_active = false
     // let kinetic_plot_adjust_configs = "top=0.905,\nbottom=0.135,\nleft=0.075,\nright=0.59,\nhspace=0.2,\nwspace=0.2"
     const kinetic_plot_adjust_configs = persistentWritable(
-        'kinetic_plot_adjust_configs', 
-        "top=0.905,\nbottom=0.135,\nleft=0.075,\nright=0.59,\nhspace=0.2,\nwspace=0.2"
+        'kinetic_plot_adjust_configs',
+        'top=0.905,\nbottom=0.135,\nleft=0.075,\nright=0.59,\nhspace=0.2,\nwspace=0.2'
     )
-
 </script>
 
-
-<KineticConfigTable {configArray} {currentLocation} {loadConfig} bind:config_file bind:active={adjustConfig} />
-<MatplotlibDialog bind:open={kinetic_plot_adjust_dialog_active} bind:value={$kinetic_plot_adjust_configs} />
+<KineticConfigTable
+    {configArray}
+    {currentLocation}
+    {loadConfig}
+    bind:config_file
+    bind:active={adjustConfig}
+/>
+<MatplotlibDialog
+    bind:open={kinetic_plot_adjust_dialog_active}
+    bind:value={$kinetic_plot_adjust_configs}
+/>
 
 <LayoutDiv id="Kinetics">
     <svelte:fragment slot="header_content__slot">
@@ -451,7 +468,10 @@
                 <Textfield bind:value={k3Guess} label="k3Guess" />
                 <Textfield bind:value={ratekCID} label="ratekCID" />
                 <Textfield bind:value={kCIDGuess} label="kCIDGuess" />
-                <Textfield bind:value={$fit_config_filename} label="fit_config_filename" />
+                <Textfield
+                    bind:value={$fit_config_filename}
+                    label="fit_config_filename"
+                />
             </div>
 
             <KineticEditor
@@ -477,13 +497,18 @@
             >
         {/if}
 
-        <button class="button is-link" on:click={()=>{kinetic_plot_adjust_dialog_active = true}}
-            >Adjust plot</button
+        <button
+            class="button is-link"
+            on:click={() => {
+                kinetic_plot_adjust_dialog_active = true
+            }}>Adjust plot</button
         >
         <button class="button is-link" on:click={computeParameters}
             >Compute parameters</button
         >
-        <button class="button is-warning" on:click={loadConfig}>loadConfig</button>
+        <button class="button is-warning" on:click={loadConfig}
+            >loadConfig</button
+        >
         <button class="button is-link" on:click={saveCurrentConfig}
             >saveCurrentConfig</button
         >

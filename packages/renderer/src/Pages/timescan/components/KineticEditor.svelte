@@ -10,7 +10,6 @@
     export let reportSaved = false
     export let nameOfReactants = ''
     let editor
-
 </script>
 
 <div class="report-editor-div" id="kinetics-editor__div">

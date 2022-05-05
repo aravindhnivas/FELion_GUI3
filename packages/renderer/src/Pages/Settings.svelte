@@ -287,7 +287,10 @@
                                     bind:selected={serverDebug}
                                     label="serverDebug"
                                     on:SMUISwitch:change={() => {
-                                        window.db.set('serverDebug', serverDebug)
+                                        window.db.set(
+                                            'serverDebug',
+                                            serverDebug
+                                        )
                                         console.log(
                                             { serverDebug },
                                             window.db.get('serverDebug')

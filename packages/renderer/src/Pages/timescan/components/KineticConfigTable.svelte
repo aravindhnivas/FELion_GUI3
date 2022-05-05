@@ -1,9 +1,9 @@
 <script>
-    import { persistentWritable } from "$src/js/persistentStore";
+    import { persistentWritable } from '$src/js/persistentStore'
     import ModalTable from '$components/ModalTable.svelte'
     import Textfield from '@smui/textfield'
-    
-    export let loadConfig;
+
+    export let loadConfig
     export let currentLocation = ''
     export let config_file = ''
     export let configArray = []
@@ -18,10 +18,12 @@
         'temp',
     ]
 
-    
-    const config_filename = persistentWritable('kinetics_config_filename', 'config_filename_kinetic.json')
+    const config_filename = persistentWritable(
+        'kinetics_config_filename',
+        'config_filename_kinetic.json'
+    )
     $: {
-        config_file = pathJoin(currentLocation, "../configs", $config_filename)
+        config_file = pathJoin(currentLocation, '../configs', $config_filename)
     }
     let config_content = {}
 
@@ -50,7 +52,6 @@
             'warning'
         )
     }
-
 </script>
 
 <ModalTable
@@ -68,14 +69,10 @@
                 label="config location"
                 disabled
             />
-            <Textfield
-                bind:value={$config_filename}
-                label="config filename"
-            />
+            <Textfield bind:value={$config_filename} label="config filename" />
         </div>
-
     </svelte:fragment>
-    
+
     <svelte:fragment slot="footer">
         <button class="button is-link" on:click={saveConfig}>Save</button>
         <button class="button is-warning" on:click={loadConfig}>Load</button>
@@ -83,12 +80,13 @@
             >Close</button
         >
     </svelte:fragment>
-
 </ModalTable>
 
 <style>
     .header {
-        display:grid; gap: 1em;
-        grid-auto-flow: column; grid-template-columns: 3fr 1fr;
+        display: grid;
+        gap: 1em;
+        grid-auto-flow: column;
+        grid-template-columns: 3fr 1fr;
     }
 </style>
