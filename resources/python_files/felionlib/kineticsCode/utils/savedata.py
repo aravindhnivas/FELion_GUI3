@@ -8,9 +8,18 @@ from felionlib.utils.msgbox import MsgBox, MB_ICONERROR, MB_ICONINFORMATION
 
 
 def saveData(
-    args, ratek3, k3Labels, kCIDLabels, k_fit, k_err, rateCoefficientArgs, fitPlot, expPlot, rateConstantsFileData, savefile: pt
+    args,
+    ratek3,
+    k3Labels,
+    kCIDLabels,
+    k_fit,
+    k_err,
+    rateCoefficientArgs,
+    fitPlot,
+    expPlot,
+    rateConstantsFileData,
+    savefile: pt,
 ):
-    
 
     # kinetic_file_location = pt(args["kinetic_file_location"])
     numberDensity = float(args["numberDensity"])
@@ -19,7 +28,7 @@ def saveData(
     selectedFile = args["selectedFile"]
 
     try:
-        
+
         logger(f"{formatArray(rateCoefficientArgs[0])=}")
         logger(f"{formatArray(rateCoefficientArgs[1])=}")
 

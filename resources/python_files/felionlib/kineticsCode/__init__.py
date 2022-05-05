@@ -61,7 +61,17 @@ k_fit, k_err = [], []
 
 def saveDataFull():
     saveData(
-        args, ratek3, k3Labels, kCIDLabels, k_fit, k_err, rateCoefficientArgs, fitPlot, expPlot, rateConstantsFileData, savefile=fit_config_file
+        args,
+        ratek3,
+        k3Labels,
+        kCIDLabels,
+        k_fit,
+        k_err,
+        rateCoefficientArgs,
+        fitPlot,
+        expPlot,
+        rateConstantsFileData,
+        savefile=fit_config_file,
     )
 
 
@@ -73,7 +83,7 @@ def KineticMain():
     duration = expTime.max() * 1.2
     tspan = [0, duration]
     simulateTime = np.linspace(0, duration, 1000)
-    
+
     # location = pt(args["kineticEditorLocation"])
     filename = kinetic_file_location / args["kineticEditorFilename"]
 
@@ -103,7 +113,7 @@ def KineticMain():
         fitPlot,
         args,
         fitfunc,
-        kinetic_plot_adjust_configs_obj
+        kinetic_plot_adjust_configs_obj,
     )
     checkboxes = make_widgets(widget, fitfunc, saveDataFull, checkboxes, kinetic_plot_adjust_configs_obj)
     return
@@ -161,11 +171,11 @@ def fitfunc() -> None:
 
         for counter1, _kCID in enumerate(kCIDSliders.values()):
             _kCID.set_val(np.log10(k_fit[len(ratek3) :][counter1]))
-        
+
         print(f"{rateCoefficientArgs=}", flush=True)
 
     except Exception:
-        
+
         k_fit = []
         k_err = []
         error = traceback.format_exc(5)
@@ -185,6 +195,7 @@ fit_config_file: pt = None
 
 kinetic_plot_adjust_configs_obj: dict[str, float] = {}
 
+
 def main(arguments):
     global args, kinetic_file_location, nameOfReactants, expTime, expData, kinetic_plot_adjust_configs_obj
     global expDataError, temp, rateConstantsFileData, numberDensity
@@ -194,11 +205,11 @@ def main(arguments):
 
     args = arguments
     kinetic_file_location = pt(args["kinetic_file_location"])
-    config_files_location = kinetic_file_location.parent / 'configs'
-    
+    config_files_location = kinetic_file_location.parent / "configs"
+
     if not config_files_location.exists():
         config_files_location.mkdir()
-    
+
     data = args["data"]
     nameOfReactants = args["nameOfReactantsArray"]
 
@@ -216,7 +227,7 @@ def main(arguments):
 
     totalAttachmentLevels = len(initialValues) - 1
     outdir = kinetic_file_location.parent / "OUT"
-    
+
     fit_config_file = config_files_location / args["$fit_config_filename"]
     keyFoundForRate = False
     rateConstantsFileData = {}
@@ -237,7 +248,7 @@ def main(arguments):
                 print(f"{keyFound=}", flush=True)
 
             if keyFound:
-                
+
                 k3_fit_keyvalues: dict[str, float] = rateConstantsFileData[selectedFile]["k3_fit"]
                 k3Labels = [key.strip() for key in k3_fit_keyvalues.keys()]
                 ratek3 = np.array([float(value[0]) for value in k3_fit_keyvalues.values()])
@@ -261,16 +272,12 @@ def main(arguments):
         key: float(value) for key, value in args["kinetic_plot_adjust_configs_obj"].items()
     }
     if not kinetic_plot_adjust_configs_obj:
-        kinetic_plot_adjust_configs_obj = {
-            "right": 0.570, "top": 0.900,
-            "left": 0.120, "bottom": 0.160
-       }
-    
-        
+        kinetic_plot_adjust_configs_obj = {"right": 0.570, "top": 0.900, "left": 0.120, "bottom": 0.160}
+
     widget = felionQtWindow(
         title=f"kinetics : {selectedFile}", windowGeometry=(1200, 600), location=outdir, attachControlLayout=False
     )
-    
+
     KineticMain()
 
     widget.ax.set_xbound(lower=-0.5)
@@ -278,5 +285,5 @@ def main(arguments):
 
     widget.optimize_figure()
     widget.toggle_controller_layout()
-    
+
     widget.qapp.exec()
