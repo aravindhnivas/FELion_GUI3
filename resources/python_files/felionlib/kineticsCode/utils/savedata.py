@@ -7,13 +7,11 @@ from felionlib.utils.msgbox import MsgBox, MB_ICONERROR, MB_ICONINFORMATION
 
 
 def saveData(
-    args, ratek3, k3Labels, kCIDLabels, k_fit, k_err, rateCoefficientArgs, fitPlot, expPlot, rateConstantsFileData
+    args, ratek3, k3Labels, kCIDLabels, k_fit, k_err, rateCoefficientArgs, fitPlot, expPlot, rateConstantsFileData, savefile: pt
 ):
+    
 
-    currentLocation = pt(args["currentLocation"]).parent
-    savedir = currentLocation / "OUT"
-    savefile = savedir / "k_fit.json"
-
+    # kinetic_file_location = pt(args["kinetic_file_location"])
     numberDensity = float(args["numberDensity"])
     nameOfReactants = args["nameOfReactantsArray"]
     temp = float(args["temp"])
@@ -45,19 +43,19 @@ def saveData(
             data = json.dumps({**rateConstantsFileData, **dataToSave}, sort_keys=True, indent=4, separators=(",", ": "))
 
             f.write(data)
-            logger(f"file written: {savefile.name} in {currentLocation} folder")
+            logger(f"file written: {savefile.name} in {savefile.parent} folder")
 
             MsgBox(
                 "Saved",
-                f"Rate constants written in json format : '{savefile.name}'\nLocation: {currentLocation}",
+                f"Rate constants written: '{savefile.name}'\nLocation: {savefile.parent}",
                 MB_ICONINFORMATION,
             )
 
-        savefilename = currentLocation / f"EXPORT/{selectedFile}_fitted.json"
+        savefilename = savefile.parent / f"../EXPORT/{selectedFile}_fitted.json"
         with open(savefilename, "w+") as f:
-            
+
             dataToSaveFit = {"fit": {}, "exp": {}}
-            
+
             for name, fitLine, expLine in zip(nameOfReactants, fitPlot, expPlot):
 
                 xdata_f, ydata_f = fitLine.get_data()
@@ -66,10 +64,10 @@ def saveData(
                 dataToSaveFit["exp"][name] = {"xdata": xdata.tolist(), "ydata": ydata.tolist()}
 
             data = json.dumps(dataToSaveFit, sort_keys=True, indent=4, separators=(",", ": "))
+            
             f.write(data)
             logger(f"file written: {selectedFile}_fitted.json in EXPORT folder")
 
     except Exception:
         error = traceback.format_exc(5)
         MsgBox("Error occured: ", f"Error occured while saving the file\n{error}", MB_ICONERROR)
-        

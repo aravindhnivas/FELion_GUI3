@@ -9,7 +9,7 @@
     export let id = getID()
     export let location = ''
     export let filetype = ''
-    export let editor = ''
+    export let editor=null;
 
     export let mount = null
     export let mainTitle = 'Report/Editor'
@@ -17,8 +17,8 @@
     export let savefilename = 'report'
     export let reportSaved = false
     export let showReport = false
+    export let enable_location_browser = true
 
-    // const md = new Remarkable();
     async function mountEditor(node) {
         try {
             editor = await ClassicEditor.create(node, {
@@ -170,10 +170,11 @@
     {#if showReport}
         <div class="report_controler__div box" style="border: solid 1px #fff7;">
             <div class="report_location__div">
-                <button class="button is-link" on:click={browse_folder}
+
+                <button class="button is-link" on:click={browse_folder} disabled={!enable_location_browser}
                     >Browse</button
                 >
-                <Textfield bind:value={location} label="report location" />
+                <Textfield bind:value={location} label="report location" disabled={!enable_location_browser} />
                 <Textfield
                     bind:value={savefilename}
                     label="report name"

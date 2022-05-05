@@ -4,7 +4,6 @@
     - toggle masses to include in the model
 
 - BUG FIXES:
-    - Kinetics mass toggler
     - file browser multiple resizable event trigger
     - baseline marked file selection (when switching btw OPO and FELIX)
     - update error display

@@ -2,16 +2,15 @@
     import Editor from '$components/Editor.svelte'
     import { computeKineticCodeScipy } from '../functions/computeKineticCode'
 
-    export let ratek3
-    export let ratekCID
+    export let ratek3 = ''
+    export let ratekCID = ''
+    export let location = ''
+    export let savefilename = ''
     export let reportRead = false
     export let reportSaved = false
-    // export let massOfReactants
     export let nameOfReactants = ''
-    export let kineticEditorFilename
-    export let kineticEditorLocation
-
     let editor
+
 </script>
 
 <div class="report-editor-div" id="kinetics-editor__div">
@@ -21,11 +20,12 @@
         mount="#kinetics-editor__div"
         id="kinetics-editor"
         mainTitle="Kinetic Code"
+        {savefilename}
+        {location}
+        enable_location_browser={false}
         bind:editor
-        savefilename={kineticEditorFilename}
-        bind:location={kineticEditorLocation}
-        bind:reportSaved
         bind:reportRead
+        bind:reportSaved
     >
         <svelte:fragment slot="btn-row">
             <button

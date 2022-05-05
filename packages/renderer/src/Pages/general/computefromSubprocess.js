@@ -106,9 +106,14 @@ export default async function ({
             }
 
             if (error) {
+                
                 resolve(null)
                 loginfo.write(`\n\n[ERROR OCCURED]\n${error}\n`)
                 loginfo.end()
+                
+                if(error.includes('Traceback')){
+                    return window.handleError(error)
+                }
                 return console.error(error)
             }
 

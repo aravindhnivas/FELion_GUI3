@@ -2,11 +2,11 @@ import traceback
 from matplotlib.axes import Axes
 import numpy as np
 from .rateSliders import make_slider
-
-# from .plotWidgets import make_widgets
 from felionlib.utils.FELion_constants import pltColors
 from scipy.integrate import solve_ivp
 from felionlib.utils.felionQt.utils.blit import BlitManager
+import json
+
 widget = None
 otherWidgetsToggle = False
 
@@ -15,22 +15,18 @@ def hideOtherWidgets(event=None):
     global otherWidgetsToggle
     for otherWidget in widget.sliderWidgets:
         otherWidget.set_visible(otherWidgetsToggle)
-
     widget.draw()
     otherWidgetsToggle = not otherWidgetsToggle
     print(f"widgets removed", flush=True)
 
 
 checkboxes = {"setbound": False}
-
-
 toggleLine = {}
 
 
 def on_pick(event):
     legline = event.artist
     origlinefit, origlineexp = toggleLine[legline]
-
     alpha = 1 if origlinefit.get_alpha() < 1 else 0.2
     origlinefit.set_alpha(alpha)
     for _line in origlineexp.get_children():
@@ -54,14 +50,21 @@ def plot_exp(
     fitPlot,
     args,
     fitfunc,
+    kinetic_plot_adjust_configs_obj
 ):
 
     global toggleLine, widget
 
     widget = _widget
+
     data = args["data"]
     temp = float(args["temp"])
     molecule = args["molecule"]
+
+    # kinetic_plot_adjust_configs_obj = {
+    #     key: float(value) for key, value in args["kinetic_plot_adjust_configs_obj"].items()
+    # }
+    # print(f"{kinetic_plot_adjust_configs_obj=}", flush=True)
 
     tag = args["tag"]
     selectedFile = args["selectedFile"]
@@ -78,8 +81,10 @@ def plot_exp(
     title = f"{selectedFile}: @{temp:.1f}K {numberDensity:.2e} " + "cm$^{-3}$"
     ax: Axes = widget.ax
     ax.set(xlabel="Time (s)", ylabel="Counts", yscale="log", title=title)
-
-    widget.fig.subplots_adjust(right=0.570, top=0.900, left=0.120, bottom=0.160)
+    widget.fig.subplots_adjust(**kinetic_plot_adjust_configs_obj)
+    # if kinetic_plot_adjust_configs_obj:
+    # else:
+    #     widget.fig.subplots_adjust(right=0.570, top=0.900, left=0.120, bottom=0.160)
 
     k3Sliders, kCIDSliders = make_slider(
         widget,
@@ -94,20 +99,11 @@ def plot_exp(
 
     for counter, key in enumerate(data.keys()):
 
-        time = np.array(data[key]["x"], dtype=float) * 1e-3 # ms -> s
-        
+        time = np.array(data[key]["x"], dtype=float) * 1e-3  # ms -> s
+
         counts = data[key]["y"]
         error = data[key]["error_y"]["array"]
-        _expPlot = ax.errorbar(
-            time,
-            counts,
-            error,
-            fmt=".",
-            ms=7,
-            label=key,
-            c=pltColors[counter],
-            alpha=1
-        )
+        _expPlot = ax.errorbar(time, counts, error, fmt=".", ms=7, label=key, c=pltColors[counter], alpha=1)
 
         expPlot.append(_expPlot)
 
@@ -125,7 +121,7 @@ def plot_exp(
 
         (_fitPlot,) = ax.plot(simulateTime, data, "-", c=pltColors[counter], alpha=1, animated=True)
         fitPlot.append(_fitPlot)
-    
+
     widget.blit = BlitManager(widget.canvas, fitPlot)
 
     legends = [f"{molecule}$^+$", f"{molecule}$^+${tag}"]
@@ -136,7 +132,7 @@ def plot_exp(
     for legline, origlinefit, origlineexp in zip(legend.get_lines(), fitPlot, expPlot):
         legline.set_picker(True)
         toggleLine[legline] = [origlinefit, origlineexp]
-        
+
     widget.canvas.mpl_connect("pick_event", on_pick)
 
     try:
@@ -150,5 +146,5 @@ def plot_exp(
 
     widget.draw()
     plotted = True
-    
+
     return plotted, k3Sliders, kCIDSliders

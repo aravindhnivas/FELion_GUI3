@@ -9,7 +9,7 @@ checkboxes = {
 
 
 def make_widgets(
-    widget: felionQtWindow, fitfunc: Callable, saveData: Callable, checkboxes: dict[str, bool]
+    widget: felionQtWindow, fitfunc: Callable, saveData: Callable, checkboxes: dict[str, bool], kinetic_plot_adjust_configs_obj: dict[str, float]
 ) -> dict[str, bool]:
     
     additional_widgets_group = QtWidgets.QGroupBox()
@@ -30,7 +30,7 @@ def make_widgets(
     
     subplot_adjust_button = QtWidgets.QPushButton("Restore subplots")
     subplot_adjust_button.clicked.connect(
-        lambda: (widget.fig.subplots_adjust(right=0.570, top=0.900, left=0.120, bottom=0.160), widget.draw())
+        lambda: (widget.fig.subplots_adjust(**kinetic_plot_adjust_configs_obj), widget.draw())
     )
     
     buttons_layout0.addWidget(toggle_slider_widgets)

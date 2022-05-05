@@ -1,17 +1,20 @@
 <script>
+
+    import { persistentWritable } from "$src/js/persistentStore";
     import { onMount, tick } from 'svelte'
+    import { cloneDeep } from 'lodash-es'
     import Textfield from '@smui/textfield'
     import CustomSwitch from '$components/CustomSwitch.svelte'
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
     import CustomSelect from '$components/CustomSelect.svelte'
     import LayoutDiv from '$components/LayoutDiv.svelte'
-    import { cloneDeep } from 'lodash-es'
     import computePy_func from '$src/Pages/general/computePy'
     import KineticConfigTable from './KineticConfigTable.svelte'
+    
     import KineticEditor from './KineticEditor.svelte'
-
+    import MatplotlibDialog from './MatplotlibDialog.svelte'
     import { browse } from '$components/Layout.svelte'
-
+    
     let currentLocation = window.db.get('kinetics_location') || ''
 
     let timestartIndexScan = 0
@@ -161,12 +164,18 @@
     $: if (selectedFile.endsWith('.scan')) {
         computeParameters()
     }
+    // const config_file_kinetics = 'config_file_kinetics.json'
+    // $: config_file = pathJoin(currentLocation, "../configs", config_file_kinetics)
 
-    const config_file_ROSAAkinetics = 'config_file_ROSAAkinetics.json'
-    $: config_file = pathJoin(currentLocation, config_file_ROSAAkinetics)
+    // let config_filename = 'config_file_kinetics.json' 
+    // $: config_location = window.pathJoin(currentLocation, "../configs")
+    // $: config_file = pathJoin(config_location, config_filename)
+    let config_file = '';
     let config_content = {}
 
     function saveCurrentConfig() {
+        if(!config_file) return window.createToast('Invalid config file', 'danger')
+
         if (!selectedFile || !fs.existsSync(currentLocation)) {
             return window.createToast('Invalid location or filename', 'danger')
         }
@@ -177,7 +186,7 @@
         }
 
         window.createToast(
-            'Config file saved' + config_file_ROSAAkinetics,
+            'Config file saved' + basename(config_file),
             'warning'
         )
     }
@@ -211,23 +220,23 @@
 
     async function loadConfig() {
         try {
-            if (fs.existsSync(config_file)) {
-                ;[config_content] = fs.readJsonSync(config_file)
+            if (!fs.existsSync(config_file)) {
+                console.log(config_file)
+                return window.createToast(`Config file not available: ${basename(config_file)}`, 'danger')
+            }
+            ;[config_content] = fs.readJsonSync(config_file)
 
-                configArray = Object.keys(config_content).map((filename) => ({
-                    filename,
-                    ...config_content[filename],
-                    id: getID(),
-                }))
+            configArray = Object.keys(config_content).map((filename) => ({
+                filename,
+                ...config_content[filename],
+                id: getID(),
+            }))
 
-                if (window.db.get('active_tab')?.toLowerCase() === 'kinetics') {
-                    window.createToast(
-                        'Config file loaded: ' + config_file_ROSAAkinetics,
-                        'warning'
-                    )
-                }
-            } else {
-                window.createToast('config file not available', 'danger')
+            if (window.db.get('active_tab')?.toLowerCase() === 'kinetics') {
+                window.createToast(
+                    `Config file loaded: ${basename(config_file)}`,
+                    'warning'
+                )
             }
         } catch (error) {
             window.handleError(error)
@@ -263,6 +272,22 @@
                 data[nameOfReactantsArray[index]] = currentData[mass]
             })
 
+            let kinetic_plot_adjust_configs_obj = {}
+            try {
+                kinetic_plot_adjust_configs_obj = $kinetic_plot_adjust_configs
+                    .replaceAll('=', ':')
+                    .split(',')
+                    .map(_v0=>
+                        _v0.trim().split(':')
+                        .map(_v1=>`"${_v1}"`)
+                        .join(':')
+                    ).join()
+                kinetic_plot_adjust_configs_obj = JSON.parse(`{${kinetic_plot_adjust_configs_obj}}`)
+            } catch (error) {
+                kinetic_plot_adjust_configs_obj = {}
+                console.error(error)
+            }
+
             const args = {
                 tag,
                 data,
@@ -273,12 +298,13 @@
                 ratekCID,
                 kCIDGuess,
                 selectedFile,
-                initialValues: initialValues.split(','),
                 numberDensity,
-                currentLocation,
+                $fit_config_filename,
                 nameOfReactantsArray,
-                kineticEditorLocation,
                 kineticEditorFilename,
+                kinetic_plot_adjust_configs_obj,
+                kinetic_file_location: currentLocation,
+                initialValues: initialValues.split(','),
             }
             computePy_func({ e, pyfile: 'kineticsCode', args, general: true })
         } catch (error) {
@@ -296,22 +322,31 @@
     $: kineticEditorFilename =
         basename(selectedFile).split('.')[0] + '-kineticModel.md'
 
-    let kineticEditorFiletype = 'kinetics'
-    let kineticEditorLocation =
-        window.db.get(`${kineticEditorFiletype}-report-md`) || currentLocation
-
-    $: kineticfile = pathJoin(kineticEditorLocation, kineticEditorFilename)
+    $: kineticfile = pathJoin(currentLocation, kineticEditorFilename)
     let reportRead = false
     let reportSaved = false
+    let fit_config_filename = persistentWritable('kinetics_fitted_values', 'kinetics_fitted_values.json')
+
     onMount(() => {
         loadConfig()
         if (fileCollections.length > 0) {
             selectedFile = fileCollections[0]
         }
+    
     })
+
+    let kinetic_plot_adjust_dialog_active = false
+    // let kinetic_plot_adjust_configs = "top=0.905,\nbottom=0.135,\nleft=0.075,\nright=0.59,\nhspace=0.2,\nwspace=0.2"
+    const kinetic_plot_adjust_configs = persistentWritable(
+        'kinetic_plot_adjust_configs', 
+        "top=0.905,\nbottom=0.135,\nleft=0.075,\nright=0.59,\nhspace=0.2,\nwspace=0.2"
+    )
+
 </script>
 
-<KineticConfigTable {configArray} {config_file} bind:active={adjustConfig} />
+
+<KineticConfigTable {configArray} {currentLocation} {loadConfig} bind:config_file bind:active={adjustConfig} />
+<MatplotlibDialog bind:open={kinetic_plot_adjust_dialog_active} bind:value={$kinetic_plot_adjust_configs} />
 
 <LayoutDiv id="Kinetics">
     <svelte:fragment slot="header_content__slot">
@@ -416,14 +451,15 @@
                 <Textfield bind:value={k3Guess} label="k3Guess" />
                 <Textfield bind:value={ratekCID} label="ratekCID" />
                 <Textfield bind:value={kCIDGuess} label="kCIDGuess" />
+                <Textfield bind:value={$fit_config_filename} label="fit_config_filename" />
             </div>
 
             <KineticEditor
                 {ratek3}
                 {ratekCID}
                 {nameOfReactants}
-                bind:kineticEditorLocation
-                bind:kineticEditorFilename
+                bind:location={currentLocation}
+                bind:savefilename={kineticEditorFilename}
                 bind:reportSaved
                 bind:reportRead
             />
@@ -441,10 +477,13 @@
             >
         {/if}
 
+        <button class="button is-link" on:click={()=>{kinetic_plot_adjust_dialog_active = true}}
+            >Adjust plot</button
+        >
         <button class="button is-link" on:click={computeParameters}
             >Compute parameters</button
         >
-        <button class="button is-link" on:click={loadConfig}>loadConfig</button>
+        <button class="button is-warning" on:click={loadConfig}>loadConfig</button>
         <button class="button is-link" on:click={saveCurrentConfig}
             >saveCurrentConfig</button
         >
