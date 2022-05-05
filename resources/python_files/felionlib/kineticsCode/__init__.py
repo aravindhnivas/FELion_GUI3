@@ -65,7 +65,6 @@ def saveDataFull():
         ratek3,
         k3Labels,
         kCIDLabels,
-        k_fit,
         k_err,
         rateCoefficientArgs,
         fitPlot,
