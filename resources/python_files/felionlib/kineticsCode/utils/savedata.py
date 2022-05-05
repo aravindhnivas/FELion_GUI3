@@ -44,15 +44,15 @@ def saveData(
             k3_fit = {key: [value, err] for key, value, err in zip(k3Labels, k3Values, k3Err)}
             kCID_fit = {key: [value, err] for key, value, err in zip(kCIDLabels, kCIDValues, kCIDErr)}
 
-            dataToSave = {selectedFile: {}}
-            dataToSave[selectedFile] = {
+            rateConstantsFileData[selectedFile] = {
                 "k3_fit": k3_fit,
                 "kCID_fit": kCID_fit,
                 "temp": f"{temp:.1f}",
                 "numberDensity": f"{numberDensity:.2e}",
             }
-            logger(f"{dataToSave[selectedFile]=}")
-            data = json.dumps({**rateConstantsFileData, **dataToSave}, sort_keys=True, indent=4, separators=(",", ": "))
+            
+            logger(f"{rateConstantsFileData[selectedFile]=}")
+            data = json.dumps(rateConstantsFileData, sort_keys=True, indent=4, separators=(",", ": "))
 
             f.write(data)
             logger(f"file written: {savefile.name} in {savefile.parent} folder")
