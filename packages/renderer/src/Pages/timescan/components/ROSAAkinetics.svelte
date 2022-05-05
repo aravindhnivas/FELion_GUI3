@@ -333,11 +333,10 @@
     $: kineticfile = pathJoin(currentLocation, kineticEditorFilename)
     let reportRead = false
     let reportSaved = false
-    let fit_config_filename = persistentWritable(
+    const fit_config_filename = persistentWritable(
         'kinetics_fitted_values',
         'kinetics_fitted_values.json'
     )
-
     onMount(() => {
         loadConfig()
         if (fileCollections.length > 0) {
@@ -346,7 +345,6 @@
     })
 
     let kinetic_plot_adjust_dialog_active = false
-    // let kinetic_plot_adjust_configs = "top=0.905,\nbottom=0.135,\nleft=0.075,\nright=0.59,\nhspace=0.2,\nwspace=0.2"
     const kinetic_plot_adjust_configs = persistentWritable(
         'kinetic_plot_adjust_configs',
         'top=0.905,\nbottom=0.135,\nleft=0.075,\nright=0.59,\nhspace=0.2,\nwspace=0.2'
