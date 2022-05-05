@@ -1,3 +1,8 @@
+## UNRELEASED
+- Added features
+    - Kinetics subplot adjust
+    - Kinetics configs in configs folder
+
 ## v3.6.2
 
 - Timescan Kinetics feature added:
