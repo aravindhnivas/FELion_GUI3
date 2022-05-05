@@ -20,7 +20,7 @@
 
     const config_filename = persistentWritable(
         'kinetics_config_filename',
-        'config_filename_kinetic.json'
+        'kinetics_file_configs.json'
     )
     $: {
         config_file = pathJoin(currentLocation, '../configs', $config_filename)
