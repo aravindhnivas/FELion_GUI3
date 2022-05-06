@@ -1,25 +1,23 @@
 export function syncTryCatcher(fn) {
-    let output, error
     return function () {
         try {
-            output = fn.apply(this, arguments)
+            const output = fn.apply(this, arguments)
+            return [output, null]
         } catch (err) {
-            error = err
-            // console.error(err?.stack || err)
+            const error = err
+            return [null, error]
         }
-        return [output, error]
     }
 }
 
 export function asyncTryCatcher(fn) {
-    let output, error
     return async function () {
         try {
-            output = await fn.apply(this, arguments)
+            const output = await fn.apply(this, arguments)
+            return [output, null]
         } catch (err) {
-            error = err
-            // console.error(err?.stack || err)
+            const error = err
+            return [null, error]
         }
-        return [output, error]
     }
 }
