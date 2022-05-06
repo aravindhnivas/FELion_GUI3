@@ -120,13 +120,13 @@ def KineticMain():
 
 
 checkboxes = {"setbound": True}
-
+# includeErrorInFit = True
 
 def fitfunc() -> None:
-
     global k_fit, k_err
-    k_err = []
-    k_fit = []
+    
+    # k_err = []
+    # k_fit = []
 
     p0 = [*[10**rate.val for rate in k3Sliders.values()], *[10**rate.val for rate in kCIDSliders.values()]]
 
@@ -152,18 +152,19 @@ def fitfunc() -> None:
         )
 
     logger(f"{bounds=}")
+    
     try:
 
+        from felionlib.kineticsCode.utils.plotWidgets import includeErrorInFit
+        
         k_fit, kcov = curve_fit(
-            fitODE,
-            expTime,
-            expData.flatten(),
-            p0=p0,
-            bounds=bounds
-            # sigma=expDataError.flatten(), absolute_sigma=True,
+            fitODE, expTime, expData.flatten(),
+            p0=p0, bounds=bounds,
+            sigma= expDataError.flatten() if includeErrorInFit else None, absolute_sigma=includeErrorInFit,
         )
         k_err = np.sqrt(np.diag(kcov))
-        logger(f"{k_fit=}\n{k_err=}")
+        
+        logger(f"{k_fit=}\n{kcov=}\n{k_err=}")
         logger("fitted")
 
         for counter0, _k3 in enumerate(k3Sliders.values()):
@@ -171,17 +172,15 @@ def fitfunc() -> None:
 
         for counter1, _kCID in enumerate(kCIDSliders.values()):
             _kCID.set_val(np.log10(k_fit[len(ratek3) :][counter1]))
-
+            
         print(f"{rateCoefficientArgs=}", flush=True)
 
     except Exception:
 
-        k_fit = []
-        k_err = []
+        # k_fit = []
+        # k_err = []
         error = traceback.format_exc(5)
-
         print(f"{plotted=}\nerror while fitting data: \n{error=}", flush=True)
-
         if plotted:
             widget.showdialog("Error", error, type="critical")
 
