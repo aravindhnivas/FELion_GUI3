@@ -30,9 +30,9 @@ def make_slider(
             current_k3SliderAxes.patch.set_facecolor(f"C{counter+1}")
             current_k3SliderAxes.patch.set_alpha(0.7)
 
-        valmin = -33
-        valmax = -25
-        valstep = 1e-4
+        valmin = -31
+        valmax = -28
+        valstep = 1e-6
 
         if label in kvalueLimits:
             valmin, valmax, valinit = kvalueLimits[label]
@@ -43,7 +43,7 @@ def make_slider(
         else:
             valinit = np.log10(ratek3[counter])
 
-        print(valmin, valmax, valinit, flush=True)
+        # print(valmin, valmax, valinit, flush=True)
 
         _k3Slider = Sliderlog(
             ax=current_k3SliderAxes,
@@ -75,9 +75,9 @@ def make_slider(
             current_kCIDSliderAxes.patch.set_facecolor(f"C{counter+1}")
             current_kCIDSliderAxes.patch.set_alpha(0.7)
 
-        valmin = -20
-        valmax = -10
-        valstep = 1e-4
+        valmin = -18
+        valmax = -12
+        valstep = 1e-6
 
         if label in kvalueLimits:
 

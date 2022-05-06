@@ -199,7 +199,7 @@ def main(arguments):
     global args, kinetic_file_location, nameOfReactants, expTime, expData, kinetic_plot_adjust_configs_obj
     global expDataError, temp, rateConstantsFileData, numberDensity
     global totalAttachmentLevels, selectedFile, initialValues
-    global k3Labels, kCIDLabels, ratek3, ratekCID
+    global k3Labels, kCIDLabels, ratek3, ratekCID, k_err
     global keyFoundForRate, data, widget, fit_config_file
 
     args = arguments
@@ -251,11 +251,18 @@ def main(arguments):
                 k3_fit_keyvalues: dict[str, float] = rateConstantsFileData[selectedFile]["k3_fit"]
                 k3Labels = [key.strip() for key in k3_fit_keyvalues.keys()]
                 ratek3 = np.array([float(value[0]) for value in k3_fit_keyvalues.values()])
-
+                k3_err = np.array([float(value[1]) for value in k3_fit_keyvalues.values()])
+                # print(f"{ratek3=}", flush=True)
+                
                 kCID_fit_keyvalues: dict[str, float] = rateConstantsFileData[selectedFile]["kCID_fit"]
                 kCIDLabels = [key.strip() for key in kCID_fit_keyvalues.keys()]
-
                 ratekCID = np.array([float(value[0]) for value in kCID_fit_keyvalues.values()])
+                kCID_err = np.array([float(value[1]) for value in kCID_fit_keyvalues.values()])
+                
+                k_err = np.concatenate((k3_err, kCID_err))
+                print(f"{k_err=}", flush=True)
+                
+                
                 if len(args["ratek3"].split(",")) == len(k3Labels):
                     if len(args["ratekCID"].split(",")) == len(kCIDLabels):
                         keyFoundForRate = True
