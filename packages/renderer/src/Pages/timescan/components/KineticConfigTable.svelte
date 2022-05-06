@@ -76,7 +76,7 @@
 
             <CustomSelect
                 bind:picked={$config_filename}
-                label="fit_config_filename"
+                label="config file (*.config.json)"
                 options={config_filelists.filter((file) =>
                     file.endsWith('.config.json')
                 )}
