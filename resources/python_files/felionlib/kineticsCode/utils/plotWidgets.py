@@ -3,7 +3,7 @@ from felionlib.utils.felionQt import felionQtWindow, QtWidgets
 from felionlib.utils import logger
 
 # widget: felionQtWindow = None
-checkboxes = {"setbound": False}
+checkboxes = {"setbound": True}
 
 
 def make_widgets(
@@ -39,7 +39,7 @@ def make_widgets(
     buttons_layout0.addWidget(subplot_adjust_button)
 
     setbound_checkbox_widget = QtWidgets.QCheckBox("setbound")
-
+    setbound_checkbox_widget.setChecked(checkboxes["setbound"])
     def checkbox_func(state):
         checkboxes["setbound"] = state
 

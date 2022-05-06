@@ -110,6 +110,7 @@ def KineticMain():
         update,
         expPlot,
         fitPlot,
+        
         args,
         fitfunc,
         kinetic_plot_adjust_configs_obj,
@@ -118,7 +119,7 @@ def KineticMain():
     return
 
 
-checkboxes = {"setbound": False}
+checkboxes = {"setbound": True}
 
 
 def fitfunc() -> None:
@@ -232,7 +233,16 @@ def main(arguments):
     rateConstantsFileData = {}
 
     # print(f"{fit_config_file=}", flush=True)
+    k3Labels = [i.strip() for i in args["ratek3"].split(",")]
+    kCIDLabels = [i.strip() for i in args["ratekCID"].split(",")]
+    
+    ratek3 = [float(args["k3Guess"]) for _ in k3Labels]
+    ratekCID = [float(args["kCIDGuess"]) for _ in kCIDLabels]
+    k3_err = [0]*len(ratek3)
+    kCID_err = [0]*len(ratekCID)
+    
     if fit_config_file.exists():
+    
         with open(fit_config_file, "r") as f:
 
             keyFound = False
@@ -249,31 +259,28 @@ def main(arguments):
             if keyFound:
 
                 k3_fit_keyvalues: dict[str, float] = rateConstantsFileData[selectedFile]["k3_fit"]
-                k3Labels = [key.strip() for key in k3_fit_keyvalues.keys()]
-                ratek3 = np.array([float(value[0]) for value in k3_fit_keyvalues.values()])
-                k3_err = np.array([float(value[1]) for value in k3_fit_keyvalues.values()])
-                # print(f"{ratek3=}", flush=True)
-                
                 kCID_fit_keyvalues: dict[str, float] = rateConstantsFileData[selectedFile]["kCID_fit"]
-                kCIDLabels = [key.strip() for key in kCID_fit_keyvalues.keys()]
-                ratekCID = np.array([float(value[0]) for value in kCID_fit_keyvalues.values()])
-                kCID_err = np.array([float(value[1]) for value in kCID_fit_keyvalues.values()])
                 
-                k_err = np.concatenate((k3_err, kCID_err))
-                print(f"{k_err=}", flush=True)
-                
-                
-                if len(args["ratek3"].split(",")) == len(k3Labels):
-                    if len(args["ratekCID"].split(",")) == len(kCIDLabels):
+                for k3_key in k3_fit_keyvalues.keys():
+                    
+                    if k3_key in k3Labels:
+                        k3_found_index = k3Labels.index(k3_key)
+                        ratek3[k3_found_index] = float(k3_fit_keyvalues[k3_key][0])
+                        k3_err[k3_found_index] = float(k3_fit_keyvalues[k3_key][1])
+                        
                         keyFoundForRate = True
-                else:
-                    keyFoundForRate = False
-    if not keyFoundForRate:
-        k3Labels = [i.strip() for i in args["ratek3"].split(",")]
-        kCIDLabels = [i.strip() for i in args["ratekCID"].split(",")]
-        ratek3 = [float(args["k3Guess"]) for _ in k3Labels]
-        ratekCID = [float(args["kCIDGuess"]) for _ in kCIDLabels]
-
+                        
+                for kCID_key in kCID_fit_keyvalues.keys():
+                    
+                    if kCID_key in kCIDLabels:
+                        kCID_found_index = kCIDLabels.index(kCID_key)
+                        ratekCID[kCID_found_index] = float(kCID_fit_keyvalues[kCID_key][0])
+                        kCID_err[kCID_found_index] = float(kCID_fit_keyvalues[kCID_key][1])
+                        keyFoundForRate = True
+                
+    k_err = np.concatenate((k3_err, kCID_err))
+    print(f"{k_err=}", flush=True)
+    
     kinetic_plot_adjust_configs_obj = {
         key: float(value) for key, value in args["kinetic_plot_adjust_configs_obj"].items()
     }

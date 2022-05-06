@@ -5,9 +5,9 @@ from .rateSliders import make_slider
 from felionlib.utils.FELion_constants import pltColors
 from scipy.integrate import solve_ivp
 from felionlib.utils.felionQt.utils.blit import BlitManager
-import json
+from felionlib.utils.felionQt import felionQtWindow
 
-widget = None
+widget: felionQtWindow = None
 otherWidgetsToggle = False
 
 
@@ -20,12 +20,19 @@ def hideOtherWidgets(event=None):
     print(f"widgets removed", flush=True)
 
 
-checkboxes = {"setbound": False}
+# checkboxes = {"setbound": True}
 toggleLine = {}
 
 
 def on_pick(event):
+    
+    if widget.legendDraggableCheckWidget.isChecked():
+        return
+
     legline = event.artist
+    if not legline in toggleLine:
+        return
+    
     origlinefit, origlineexp = toggleLine[legline]
     alpha = 1 if origlinefit.get_alpha() < 1 else 0.2
     origlinefit.set_alpha(alpha)
@@ -50,23 +57,15 @@ def plot_exp(
     fitPlot,
     args,
     fitfunc,
-    kinetic_plot_adjust_configs_obj
+    kinetic_plot_adjust_configs_obj,
 ):
 
     global toggleLine, widget
-
     widget = _widget
 
     data = args["data"]
     temp = float(args["temp"])
-    molecule = args["molecule"]
 
-    # kinetic_plot_adjust_configs_obj = {
-    #     key: float(value) for key, value in args["kinetic_plot_adjust_configs_obj"].items()
-    # }
-    # print(f"{kinetic_plot_adjust_configs_obj=}", flush=True)
-
-    tag = args["tag"]
     selectedFile = args["selectedFile"]
     numberDensity = float(args["numberDensity"])
     nameOfReactants = args["nameOfReactantsArray"]
@@ -81,10 +80,8 @@ def plot_exp(
     title = f"{selectedFile}: @{temp:.1f}K {numberDensity:.2e} " + "cm$^{-3}$"
     ax: Axes = widget.ax
     ax.set(xlabel="Time (s)", ylabel="Counts", yscale="log", title=title)
+
     widget.fig.subplots_adjust(**kinetic_plot_adjust_configs_obj)
-    # if kinetic_plot_adjust_configs_obj:
-    # else:
-    #     widget.fig.subplots_adjust(right=0.570, top=0.900, left=0.120, bottom=0.160)
 
     k3Sliders, kCIDSliders = make_slider(
         widget,
@@ -124,12 +121,10 @@ def plot_exp(
 
     widget.blit = BlitManager(widget.canvas, fitPlot)
 
-    legends = [f"{molecule}$^+$", f"{molecule}$^+${tag}"]
-    legends += [f"{molecule}$^+${tag}$_{i}$" for i in range(2, len(nameOfReactants))]
-
+    legends = [lg.strip() for lg in args["legends"].split(",")]
     legend = ax.legend(legends)
 
-    for legline, origlinefit, origlineexp in zip(legend.get_lines(), fitPlot, expPlot):
+    for legline, origlinefit, origlineexp in zip(legend.get_texts(), fitPlot, expPlot):
         legline.set_picker(True)
         toggleLine[legline] = [origlinefit, origlineexp]
 

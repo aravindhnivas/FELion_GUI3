@@ -35,10 +35,10 @@ def saveData(
         with open(savefile, "w+") as f:
 
             k3Values = formatArray(rateCoefficientArgs[0])
-            k3Err = formatArray(k_err[:k3Len]) if len(k_err)>0 else [0] * len(k3Labels)
+            k3Err = formatArray(k_err[:k3Len])
 
             kCIDValues = formatArray(rateCoefficientArgs[1])
-            kCIDErr = formatArray(k_err[k3Len:]) if len(k_err)>0 else [0] * len(kCIDLabels)
+            kCIDErr = formatArray(k_err[k3Len:])
 
             k3_fit = {key: [value, err] for key, value, err in zip(k3Labels, k3Values, k3Err)}
             kCID_fit = {key: [value, err] for key, value, err in zip(kCIDLabels, kCIDValues, kCIDErr)}

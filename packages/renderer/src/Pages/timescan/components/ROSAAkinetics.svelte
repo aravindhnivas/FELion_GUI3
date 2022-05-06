@@ -60,45 +60,57 @@
     let currentData = {}
     let currentDataBackup = {}
 
-    const sliceData = () => {
-        if (selectedFile.endsWith('.scan')) {
-            totalMassKey.forEach(({ mass }) => {
-                const newData = cloneDeep(currentDataBackup)[mass]
-                newData.x = newData.x.slice(timestartIndexScan)
-                newData.y = newData.y.slice(timestartIndexScan)
-                newData['error_y']['array'] =
-                    newData['error_y']['array'].slice(timestartIndexScan)
-                currentData[mass] = newData
-            })
+    const sliceData = (compute=true) => {
+        
+        console.log('slicing data')
+        if (!selectedFile.endsWith('.scan')) return
 
-            computeOtherParameters()
+        totalMassKey.forEach(({ mass }) => {
+            const newData = cloneDeep(currentDataBackup)[mass]
+            newData.x = newData.x.slice(timestartIndexScan)
+            newData.y = newData.y.slice(timestartIndexScan)
+            newData['error_y']['array'] =
+                newData['error_y']['array'].slice(timestartIndexScan)
+            currentData[mass] = newData
+        })
+
+        if(useParamsFile) {
+            const masses = totalMassKey.filter((m) => m.included).map(({ mass }) => mass.trim())
+            const parentCounts = currentData?.[masses[0]]?.['y']?.[0]?.toFixed(0)
+            if(!defaultInitialValues) return
+            initialValues = [
+                parentCounts,
+                ...Array(masses.length - 1).fill(1),
+            ].join(', ')
+
+            return
         }
-    }
 
+        if(compute) {computeOtherParameters()}
+    
+    }
+    
     let maxTimeIndex = 5
 
     function computeParameters() {
+
+        timestartIndexScan = 0
+
         const currentJSONfile = pathJoin(
             currentLocation,
             selectedFile.replace('.scan', '_scan.json')
         )
 
         ;[currentData] = fs.readJsonSync(currentJSONfile)
-
+        if(!currentData) return
         currentDataBackup = cloneDeep(currentData)
 
-        if (currentData) {
-            const totalMass = Object.keys(currentData).filter(
-                (m) => m !== 'SUM'
-            )
-            totalMassKey = totalMass.map((m) => ({
-                mass: m,
-                id: getID(),
-                included: true,
-            }))
-            maxTimeIndex = currentData[totalMass[0]].x.length - 5
-            sliceData()
-        }
+        const totalMass = Object.keys(currentData).filter((m) => m !== 'SUM')
+        totalMassKey = totalMass.map((m) => ({mass: m, id: getID(), included: true}))
+        maxTimeIndex = currentData[totalMass[0]].x.length - 5
+        sliceData(false)
+        computeOtherParameters()
+
     }
 
     let useParamsFile = false
@@ -115,37 +127,48 @@
         if(fs.existsSync(paramsFile)) {
             [contents, ] = fs.readJsonSync(paramsFile)
         }
-        console.log(contents, selectedFile)
         contents[selectedFile] = {
-            initialValues, ratek3, ratekCID, nameOfReactants, totalMassKey, timestartIndexScan, $fit_config_filename
+            ratek3,
+            ratekCID,
+            legends,
+            totalMassKey,
+            initialValues,
+            nameOfReactants,
+            timestartIndexScan,
+            $fit_config_filename,
+            kineticEditorFilename
         }
+
         fs.outputJsonSync(paramsFile, contents)
         window.createToast(`saved: ${basename(paramsFile)}`, 'success')
         params_found = true
     }
 
     let params_found = false
-    const readFromParamsFile = () => {
+
+    const readFromParamsFile = (event) => {
+
         params_found = false
         if (!(useParamsFile && fs.existsSync(paramsFile))) return
         
         const [data, ] = fs.readJsonSync(paramsFile)
         const contents = data?.[selectedFile]
-        if(!contents) return
+        console.log('no data available')
 
-        ;({initialValues, ratek3, ratekCID, nameOfReactants, totalMassKey, timestartIndexScan} = contents)
-        if(contents['$fit_config_filename']) {
-            $fit_config_filename = contents['$fit_config_filename']
-        }
+        if(!contents) return
+        ;({initialValues, ratek3, ratekCID, nameOfReactants, totalMassKey, timestartIndexScan, legends, kineticEditorFilename} = contents)
+
+        if(contents['$fit_config_filename']) {$fit_config_filename = contents['$fit_config_filename']}
+        
         console.log('read from file', contents)
         params_found = true
-        return true
-
     }
 
+    let legends = ''
+
     function computeOtherParameters() {
+
         readFromParamsFile()
-        
         if(params_found) return
 
         const masses = totalMassKey
@@ -161,13 +184,16 @@
             ].join(', ')
         }
 
+        
         nameOfReactants = `${molecule}, ${molecule}${tag}`
+        legends = `${molecule}$^+$, ${molecule}$^+$${tag}`
         ;(ratek3 = 'k31'), (ratekCID = 'kCID1')
 
         for (let index = 2; index < masses.length; index++) {
             ratek3 += `, k3${index}`
             ratekCID += `, kCID${index}`
             nameOfReactants += `, ${molecule}${tag}${index}`
+            legends += `, ${molecule}$^+$${tag}$_${index}$`
         }
     }
 
@@ -197,6 +223,7 @@
             (constantValue * calibrationFactor * pDiff) / temp ** 0.5
         ).toExponential(3)
     }
+
     $: if (
         pbefore ||
         pafter ||
@@ -206,8 +233,11 @@
     ) {
         computeNumberDensity()
     }
+
     $: if (selectedFile.endsWith('.scan')) {
+
         computeParameters()
+        kineticEditorFilename = basename(selectedFile).split('.')[0] + '-kineticModel.md'
     }
 
     $: configDir = pathJoin(currentLocation, '../configs')
@@ -248,8 +278,8 @@
     }
 
     function updateConfig() {
-        update_pbefore = false
 
+        update_pbefore = false
         try {
             if (!config_content[selectedFile]) {
                 return window.createToast(
@@ -313,18 +343,21 @@
             if (!fs.existsSync(kineticfile)) {
                 return window.handleError('Compute and save kinetic equation')
             }
+
             const masses = totalMassKey
                 .filter((m) => m.included)
                 .map(({ mass }) => mass.trim())
+
             if (masses.length < 2) {
                 return window.handleError(
                     'atleast two reactants are required for kinetics'
                 )
             }
-
             const nameOfReactantsArray = nameOfReactants
                 .split(',')
                 .map((m) => m.trim())
+
+            sliceData(false)
 
             const data = {}
             masses.forEach((mass, index) => {
@@ -360,6 +393,7 @@
                 k3Guess,
                 molecule,
                 ratekCID,
+                legends,
                 kCIDGuess,
                 selectedFile,
                 numberDensity,
@@ -375,16 +409,18 @@
             window.handleError(error)
         }
     }
-
-    let pyProcesses = []
     let defaultInitialValues = true
 
     let initialValues = ''
     let adjustConfig = false
 
     $: currentConfig = { srgMode, pbefore, pafter, calibrationFactor, temp }
-    $: kineticEditorFilename =
-        basename(selectedFile).split('.')[0] + '-kineticModel.md'
+
+    let kineticEditorFilename = ''
+    // $: if(selectedFile) {
+    //     kineticEditorFilename = basename(selectedFile).split('.')[0] + '-kineticModel.md'
+    // }
+    // $: console.log(kineticEditorFilename)
 
     $: kineticfile = pathJoin(currentLocation, kineticEditorFilename)
     let reportRead = false
@@ -405,6 +441,8 @@
         'kinetic_plot_adjust_configs',
         'top=0.905,\nbottom=0.135,\nleft=0.075,\nright=0.59,\nhspace=0.2,\nwspace=0.2'
     )
+
+    let auto_compute_params = true
 </script>
 
 <KineticConfigTable
@@ -475,18 +513,27 @@
                     max={maxTimeIndex}
                     bind:value={timestartIndexScan}
                     label="Time Index"
-                    on:change={sliceData}
+                    on:change={()=>sliceData(false)}
                 />
                 <Textfield bind:value={molecule} label="Molecule" />
                 <Textfield bind:value={tag} label="tag" />
             </div>
 
             <div class="align box h-center" style:flex-direction="column">
-                <Textfield
-                    bind:value={nameOfReactants}
-                    style="width:50%"
-                    label="nameOfReactants"
-                />
+                <div class="align h-center">
+
+                    <Textfield
+                        bind:value={nameOfReactants}
+                        label="nameOfReactants"
+                        style="width:30%"
+                    />
+
+                    <Textfield
+                        bind:value={legends}
+                        label="legends"
+                        style="width:30%"
+                    />
+                </div>
 
                 <div class="align h-center">
                     {#each totalMassKey as { mass, id, included } (id)}
@@ -528,7 +575,7 @@
                     <button class="button is-link" on:click="{computeOtherParameters}">read</button>
                     <button class="button is-link" on:click="{updateParamsFile}">update</button>
                     {#if useParamsFile && !params_found}
-                        <span class="tag is-danger" transition:fade>params file not found</span>
+                        <span class="tag is-danger" transition:fade>params not found</span>
                     {/if}
                 </div>
             </div>
@@ -567,15 +614,8 @@
     </svelte:fragment>
 
     <svelte:fragment slot="footer_content__slot">
-        {#if pyProcesses.length > 0}
-            <button
-                class="button is-danger"
-                on:click={() => {
-                    pyProcesses.at(-1).kill()
-                    pyProcesses.pop()
-                }}>Stop</button
-            >
-        {/if}
+
+        <!-- <CustomSwitch bind:selected={auto_compute_params} label="auto-compute" /> -->
 
         <button
             class="button is-link"
