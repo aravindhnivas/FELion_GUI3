@@ -1,11 +1,11 @@
 <script>
     import { persistentWritable } from '$src/js/persistentStore'
     import { onMount, tick } from 'svelte'
+    import {fade} from 'svelte/transition'
     import { cloneDeep } from 'lodash-es'
     import Textfield from '@smui/textfield'
     import CustomSwitch from '$components/CustomSwitch.svelte'
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
-    // import TextfieldAndSelect from '$components/TextfieldAndSelect.svelte'
     import CustomSelect from '$components/CustomSelect.svelte'
     import LayoutDiv from '$components/LayoutDiv.svelte'
     import computePy_func from '$src/Pages/general/computePy'
@@ -117,29 +117,36 @@
         }
         console.log(contents, selectedFile)
         contents[selectedFile] = {
-            initialValues, ratek3, ratekCID, nameOfReactants, totalMassKey, timestartIndexScan
+            initialValues, ratek3, ratekCID, nameOfReactants, totalMassKey, timestartIndexScan, $fit_config_filename
         }
         fs.outputJsonSync(paramsFile, contents)
         window.createToast(`saved: ${basename(paramsFile)}`, 'success')
+        params_found = true
     }
 
+    let params_found = false
     const readFromParamsFile = () => {
-        
-        if (!(useParamsFile && fs.existsSync(paramsFile))) return false
+        params_found = false
+        if (!(useParamsFile && fs.existsSync(paramsFile))) return
         
         const [data, ] = fs.readJsonSync(paramsFile)
         const contents = data?.[selectedFile]
-        if(!contents) return false
+        if(!contents) return
 
         ;({initialValues, ratek3, ratekCID, nameOfReactants, totalMassKey, timestartIndexScan} = contents)
+        if(contents['$fit_config_filename']) {
+            $fit_config_filename = contents['$fit_config_filename']
+        }
         console.log('read from file', contents)
+        params_found = true
         return true
+
     }
-    // $: if(useParamsFile) {readFromParamsFile()}
 
     function computeOtherParameters() {
+        readFromParamsFile()
         
-        if(readFromParamsFile()) return
+        if(params_found) return
 
         const masses = totalMassKey
             .filter((m) => m.included)
@@ -518,8 +525,11 @@
                         update={readConfigDir}
                     />
 
-                    <button class="button is-link" on:click="{readFromParamsFile}">read</button>
+                    <button class="button is-link" on:click="{computeOtherParameters}">read</button>
                     <button class="button is-link" on:click="{updateParamsFile}">update</button>
+                    {#if useParamsFile && !params_found}
+                        <span class="tag is-danger" transition:fade>params file not found</span>
+                    {/if}
                 </div>
             </div>
 
