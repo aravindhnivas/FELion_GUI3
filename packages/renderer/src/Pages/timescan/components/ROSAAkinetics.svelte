@@ -5,6 +5,7 @@
     import Textfield from '@smui/textfield'
     import CustomSwitch from '$components/CustomSwitch.svelte'
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
+    // import TextfieldAndSelect from '$components/TextfieldAndSelect.svelte'
     import CustomSelect from '$components/CustomSelect.svelte'
     import LayoutDiv from '$components/LayoutDiv.svelte'
     import computePy_func from '$src/Pages/general/computePy'
@@ -150,7 +151,6 @@
             (constantValue * calibrationFactor * pDiff) / temp ** 0.5
         ).toExponential(3)
     }
-
     $: if (
         pbefore ||
         pafter ||
@@ -163,13 +163,23 @@
     $: if (selectedFile.endsWith('.scan')) {
         computeParameters()
     }
-    // const config_file_kinetics = 'config_file_kinetics.json'
-    // $: config_file = pathJoin(currentLocation, "../configs", config_file_kinetics)
 
-    // let config_filename = 'config_file_kinetics.json'
-    // $: config_location = window.pathJoin(currentLocation, "../configs")
-    // $: config_file = pathJoin(config_location, config_filename)
+    $: configDir = pathJoin(currentLocation, '../configs')
     let config_file = ''
+    let config_filelists = []
+    const readConfigDir = async () => {
+        if (!fs.existsSync(configDir))
+            return window.createToast('Invalid location', 'danger')
+        const [files, error] = await fs.readdir(configDir)
+        if (error) return window.handleError(error)
+
+        config_filelists = files.filter((file) => file.endsWith('.json'))
+    }
+
+    $: if (configDir) {
+        readConfigDir()
+    }
+
     let config_content = {}
 
     function saveCurrentConfig() {
@@ -335,7 +345,7 @@
     let reportSaved = false
     const fit_config_filename = persistentWritable(
         'kinetics_fitted_values',
-        'kinetics_fitted_values.json'
+        'kinetics.fit.json'
     )
     onMount(() => {
         loadConfig()
@@ -355,6 +365,8 @@
     {configArray}
     {currentLocation}
     {loadConfig}
+    {readConfigDir}
+    {config_filelists}
     bind:config_file
     bind:active={adjustConfig}
 />
@@ -466,9 +478,14 @@
                 <Textfield bind:value={k3Guess} label="k3Guess" />
                 <Textfield bind:value={ratekCID} label="ratekCID" />
                 <Textfield bind:value={kCIDGuess} label="kCIDGuess" />
-                <Textfield
-                    bind:value={$fit_config_filename}
+
+                <CustomSelect
+                    bind:picked={$fit_config_filename}
                     label="fit_config_filename"
+                    options={config_filelists.filter((file) =>
+                        file.endsWith('.fit.json')
+                    )}
+                    update={readConfigDir}
                 />
             </div>
 

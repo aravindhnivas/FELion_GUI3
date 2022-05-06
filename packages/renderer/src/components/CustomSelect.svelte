@@ -3,33 +3,56 @@
     export let label = ''
     export let picked = ''
     export let multiple = false
+    export let update = null
 </script>
 
-<div class="select" class:is-multiple={multiple}>
-    {#if multiple}
-        <select
-            multiple
-            bind:value={picked}
-            {label}
-            size={options.length}
-            on:change
-        >
-            {#each options as option}
-                <option value={option}>{option}</option>
-            {/each}
-        </select>
-    {:else}
-        <select bind:value={picked} {label} on:change>
-            <optgroup {label}>
+<div class:main_container={update}>
+    <div class="select" class:is-multiple={multiple}>
+        {#if multiple}
+            <select
+                multiple
+                bind:value={picked}
+                {label}
+                size={options.length}
+                on:change
+                on:click
+            >
                 {#each options as option}
                     <option value={option}>{option}</option>
                 {/each}
-            </optgroup>
-        </select>
+            </select>
+        {:else}
+            <select bind:value={picked} {label} on:change on:click>
+                <optgroup {label}>
+                    {#each options as option}
+                        <option value={option}>{option}</option>
+                    {/each}
+                </optgroup>
+            </select>
+        {/if}
+    </div>
+
+    {#if update}
+        <i
+            class="material-icons animated faster"
+            on:animationend={(event) =>
+                event?.target?.classList.remove('rotateIn')}
+            on:click={(event) => {
+                event?.target?.classList.add('rotateIn')
+                update()
+            }}
+        >
+            refresh
+        </i>
     {/if}
 </div>
 
 <style lang="scss">
+    .main_container {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
     .select {
         align-self: auto;
         select {

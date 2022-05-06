@@ -2,10 +2,12 @@
     import { persistentWritable } from '$src/js/persistentStore'
     import ModalTable from '$components/ModalTable.svelte'
     import Textfield from '@smui/textfield'
-
+    import CustomSelect from '$components/CustomSelect.svelte'
     export let loadConfig
+    export let readConfigDir
     export let currentLocation = ''
     export let config_file = ''
+    export let config_filelists = []
     export let configArray = []
     export let active = false
 
@@ -20,8 +22,10 @@
 
     const config_filename = persistentWritable(
         'kinetics_config_filename',
-        'kinetics_file_configs.json'
+        'kinetics.config.json'
     )
+
+    // let config_filelists = []
     $: {
         config_file = pathJoin(currentLocation, '../configs', $config_filename)
     }
@@ -69,7 +73,15 @@
                 label="config location"
                 disabled
             />
-            <Textfield bind:value={$config_filename} label="config filename" />
+
+            <CustomSelect
+                bind:picked={$config_filename}
+                label="fit_config_filename"
+                options={config_filelists.filter((file) =>
+                    file.endsWith('.config.json')
+                )}
+                update={readConfigDir}
+            />
         </div>
     </svelte:fragment>
 
@@ -87,6 +99,7 @@
         display: grid;
         gap: 1em;
         grid-auto-flow: column;
-        grid-template-columns: 3fr 1fr;
+        grid-template-columns: 1fr auto;
+        align-items: center;
     }
 </style>
