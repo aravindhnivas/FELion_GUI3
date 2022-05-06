@@ -1,7 +1,7 @@
 <script>
     import { persistentWritable } from '$src/js/persistentStore'
     import { onMount, tick } from 'svelte'
-    import {fade} from 'svelte/transition'
+    import { fade } from 'svelte/transition'
     import { cloneDeep } from 'lodash-es'
     import Textfield from '@smui/textfield'
     import CustomSwitch from '$components/CustomSwitch.svelte'
@@ -60,8 +60,7 @@
     let currentData = {}
     let currentDataBackup = {}
 
-    const sliceData = (compute=true) => {
-        
+    const sliceData = (compute = true) => {
         console.log('slicing data')
         if (!selectedFile.endsWith('.scan')) return
 
@@ -74,10 +73,13 @@
             currentData[mass] = newData
         })
 
-        if(useParamsFile) {
-            const masses = totalMassKey.filter((m) => m.included).map(({ mass }) => mass.trim())
-            const parentCounts = currentData?.[masses[0]]?.['y']?.[0]?.toFixed(0)
-            if(!defaultInitialValues) return
+        if (useParamsFile) {
+            const masses = totalMassKey
+                .filter((m) => m.included)
+                .map(({ mass }) => mass.trim())
+            const parentCounts =
+                currentData?.[masses[0]]?.['y']?.[0]?.toFixed(0)
+            if (!defaultInitialValues) return
             initialValues = [
                 parentCounts,
                 ...Array(masses.length - 1).fill(1),
@@ -86,14 +88,14 @@
             return
         }
 
-        if(compute) {computeOtherParameters()}
-    
+        if (compute) {
+            computeOtherParameters()
+        }
     }
-    
+
     let maxTimeIndex = 5
 
     function computeParameters() {
-
         timestartIndexScan = 0
 
         const currentJSONfile = pathJoin(
@@ -102,15 +104,18 @@
         )
 
         ;[currentData] = fs.readJsonSync(currentJSONfile)
-        if(!currentData) return
+        if (!currentData) return
         currentDataBackup = cloneDeep(currentData)
 
         const totalMass = Object.keys(currentData).filter((m) => m !== 'SUM')
-        totalMassKey = totalMass.map((m) => ({mass: m, id: getID(), included: true}))
+        totalMassKey = totalMass.map((m) => ({
+            mass: m,
+            id: getID(),
+            included: true,
+        }))
         maxTimeIndex = currentData[totalMass[0]].x.length - 5
         sliceData(false)
         computeOtherParameters()
-
     }
 
     let useParamsFile = false
@@ -120,12 +125,11 @@
     )
 
     $: paramsFile = pathJoin(configDir, $kinetics_params_file)
-    
-    const updateParamsFile = () => {
 
+    const updateParamsFile = () => {
         let contents = {}
-        if(fs.existsSync(paramsFile)) {
-            [contents, ] = fs.readJsonSync(paramsFile)
+        if (fs.existsSync(paramsFile)) {
+            ;[contents] = fs.readJsonSync(paramsFile)
         }
         contents[selectedFile] = {
             ratek3,
@@ -136,7 +140,7 @@
             nameOfReactants,
             timestartIndexScan,
             $fit_config_filename,
-            kineticEditorFilename
+            kineticEditorFilename,
         }
 
         fs.outputJsonSync(paramsFile, contents)
@@ -147,19 +151,29 @@
     let params_found = false
 
     const readFromParamsFile = (event) => {
-
         params_found = false
         if (!(useParamsFile && fs.existsSync(paramsFile))) return
-        
-        const [data, ] = fs.readJsonSync(paramsFile)
+
+        const [data] = fs.readJsonSync(paramsFile)
         const contents = data?.[selectedFile]
         console.log('no data available')
 
-        if(!contents) return
-        ;({initialValues, ratek3, ratekCID, nameOfReactants, totalMassKey, timestartIndexScan, legends, kineticEditorFilename} = contents)
+        if (!contents) return
+        ;({
+            initialValues,
+            ratek3,
+            ratekCID,
+            nameOfReactants,
+            totalMassKey,
+            timestartIndexScan,
+            legends,
+            kineticEditorFilename,
+        } = contents)
 
-        if(contents['$fit_config_filename']) {$fit_config_filename = contents['$fit_config_filename']}
-        
+        if (contents['$fit_config_filename']) {
+            $fit_config_filename = contents['$fit_config_filename']
+        }
+
         console.log('read from file', contents)
         params_found = true
     }
@@ -167,9 +181,8 @@
     let legends = ''
 
     function computeOtherParameters() {
-
         readFromParamsFile()
-        if(params_found) return
+        if (params_found) return
 
         const masses = totalMassKey
             .filter((m) => m.included)
@@ -184,7 +197,6 @@
             ].join(', ')
         }
 
-        
         nameOfReactants = `${molecule}, ${molecule}${tag}`
         legends = `${molecule}$^+$, ${molecule}$^+$${tag}`
         ;(ratek3 = 'k31'), (ratekCID = 'kCID1')
@@ -235,9 +247,9 @@
     }
 
     $: if (selectedFile.endsWith('.scan')) {
-
         computeParameters()
-        kineticEditorFilename = basename(selectedFile).split('.')[0] + '-kineticModel.md'
+        kineticEditorFilename =
+            basename(selectedFile).split('.')[0] + '-kineticModel.md'
     }
 
     $: configDir = pathJoin(currentLocation, '../configs')
@@ -278,7 +290,6 @@
     }
 
     function updateConfig() {
-
         update_pbefore = false
         try {
             if (!config_content[selectedFile]) {
@@ -513,7 +524,7 @@
                     max={maxTimeIndex}
                     bind:value={timestartIndexScan}
                     label="Time Index"
-                    on:change={()=>sliceData(false)}
+                    on:change={() => sliceData(true)}
                 />
                 <Textfield bind:value={molecule} label="Molecule" />
                 <Textfield bind:value={tag} label="tag" />
@@ -521,7 +532,6 @@
 
             <div class="align box h-center" style:flex-direction="column">
                 <div class="align h-center">
-
                     <Textfield
                         bind:value={nameOfReactants}
                         label="nameOfReactants"
@@ -538,20 +548,20 @@
                 <div class="align h-center">
                     {#each totalMassKey as { mass, id, included } (id)}
                         <span
-                                class="tag is-warning"
-                                class:is-danger={!included}
-                            >
-                                {mass}
+                            class="tag is-warning"
+                            class:is-danger={!included}
+                        >
+                            {mass}
 
-                                <button
-                                    class="delete is-small"
-                                    on:click={() => {
-                                        useParamsFile = false
-                                        included = !included
-                                        computeOtherParameters()
-                                    }}
-                                />
-                            </span>
+                            <button
+                                class="delete is-small"
+                                on:click={() => {
+                                    useParamsFile = false
+                                    included = !included
+                                    computeOtherParameters()
+                                }}
+                            />
+                        </span>
                     {/each}
                 </div>
 
@@ -562,7 +572,11 @@
                 {/if}
 
                 <div class="align h-center">
-                    <CustomSwitch on:SMUISwitch:change={computeOtherParameters} bind:selected={useParamsFile} label="use params file" />
+                    <CustomSwitch
+                        on:SMUISwitch:change={computeOtherParameters}
+                        bind:selected={useParamsFile}
+                        label="use params file"
+                    />
                     <CustomSelect
                         bind:picked={$kinetics_params_file}
                         label="save-params file (*.params.json)"
@@ -572,10 +586,17 @@
                         update={readConfigDir}
                     />
 
-                    <button class="button is-link" on:click="{computeOtherParameters}">read</button>
-                    <button class="button is-link" on:click="{updateParamsFile}">update</button>
+                    <button
+                        class="button is-link"
+                        on:click={computeOtherParameters}>read</button
+                    >
+                    <button class="button is-link" on:click={updateParamsFile}
+                        >update</button
+                    >
                     {#if useParamsFile && !params_found}
-                        <span class="tag is-danger" transition:fade>params not found</span>
+                        <span class="tag is-danger" transition:fade
+                            >params not found</span
+                        >
                     {/if}
                 </div>
             </div>
@@ -614,7 +635,6 @@
     </svelte:fragment>
 
     <svelte:fragment slot="footer_content__slot">
-
         <!-- <CustomSwitch bind:selected={auto_compute_params} label="auto-compute" /> -->
 
         <button
