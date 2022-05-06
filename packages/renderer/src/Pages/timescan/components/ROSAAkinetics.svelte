@@ -101,7 +101,46 @@
         }
     }
 
+    let useParamsFile = false
+    const kinetics_params_file = persistentWritable(
+        'kinetics_params_file',
+        'kinetics.params.json'
+    )
+
+    $: paramsFile = pathJoin(configDir, $kinetics_params_file)
+    
+    const updateParamsFile = () => {
+
+        let contents = {}
+        if(fs.existsSync(paramsFile)) {
+            [contents, ] = fs.readJsonSync(paramsFile)
+        }
+        console.log(contents, selectedFile)
+        contents[selectedFile] = {
+            initialValues, ratek3, ratekCID, nameOfReactants, totalMassKey, timestartIndexScan
+        }
+        fs.outputJsonSync(paramsFile, contents)
+        window.createToast(`saved: ${basename(paramsFile)}`, 'success')
+    }
+
+    const readFromParamsFile = () => {
+        
+        if (!(useParamsFile && fs.existsSync(paramsFile))) return false
+        
+        const [data, ] = fs.readJsonSync(paramsFile)
+        const contents = data?.[selectedFile]
+        if(!contents) return false
+
+        ;({initialValues, ratek3, ratekCID, nameOfReactants, totalMassKey, timestartIndexScan} = contents)
+        console.log('read from file', contents)
+        return true
+    }
+    // $: if(useParamsFile) {readFromParamsFile()}
+
     function computeOtherParameters() {
+        
+        if(readFromParamsFile()) return
+
         const masses = totalMassKey
             .filter((m) => m.included)
             .map(({ mass }) => mass.trim())
@@ -445,19 +484,20 @@
                 <div class="align h-center">
                     {#each totalMassKey as { mass, id, included } (id)}
                         <span
-                            class="tag is-warning"
-                            class:is-danger={!included}
-                        >
-                            {mass}
+                                class="tag is-warning"
+                                class:is-danger={!included}
+                            >
+                                {mass}
 
-                            <button
-                                class="delete is-small"
-                                on:click={() => {
-                                    included = !included
-                                    computeOtherParameters()
-                                }}
-                            />
-                        </span>
+                                <button
+                                    class="delete is-small"
+                                    on:click={() => {
+                                        useParamsFile = false
+                                        included = !included
+                                        computeOtherParameters()
+                                    }}
+                                />
+                            </span>
                     {/each}
                 </div>
 
@@ -466,6 +506,21 @@
                         atleast two reactants are required for kinetics
                     </span>
                 {/if}
+
+                <div class="align h-center">
+                    <CustomSwitch on:SMUISwitch:change={computeOtherParameters} bind:selected={useParamsFile} label="use params file" />
+                    <CustomSelect
+                        bind:picked={$kinetics_params_file}
+                        label="save-params file (*.params.json)"
+                        options={config_filelists.filter((file) =>
+                            file.endsWith('.params.json')
+                        )}
+                        update={readConfigDir}
+                    />
+
+                    <button class="button is-link" on:click="{readFromParamsFile}">read</button>
+                    <button class="button is-link" on:click="{updateParamsFile}">update</button>
+                </div>
             </div>
 
             <div class="align box h-center">
