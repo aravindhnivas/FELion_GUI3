@@ -135,7 +135,9 @@ def fit_kinetic_data() -> None:
         
         if not np.all(np.isfinite(k_err)):
             widget.showdialog("Warning", "Non-finite error values\nTry fitting with higher different timeStartIndex", "warning")
-        fitStatus_label_widget.setText('Non-finite error values')
+            fitStatus_label_widget.setText('Non-finite error values')
+            
+        fitStatus_label_widget.setText('Fitted')
         
     except Exception as err:
         print(f"error: {err}")
