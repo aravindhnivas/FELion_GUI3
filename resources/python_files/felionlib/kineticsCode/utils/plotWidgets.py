@@ -1,13 +1,15 @@
+from typing import Literal
 from felionlib.utils.felionQt import QtWidgets
 from .widgets.checkboxes import attach_checkboxes
 
+fitStatus_label_widget = QtWidgets.QLabel('')
+fit_methods_widget = QtWidgets.QComboBox()
+solve_ivp_methods_widget = QtWidgets.QComboBox()
 
 def make_widgets():
-    
     from felionlib.kineticsCode import (
         widget, kinetic_plot_adjust_configs_obj
     )
-    
     from felionlib.kineticsCode.utils.fit import fit_kinetic_data
     from .savedata import saveData
     
@@ -32,30 +34,41 @@ def make_widgets():
 
     buttons_layout0.addWidget(toggle_slider_widgets)
     buttons_layout0.addWidget(subplot_adjust_button)
-
+    
+    buttons1_layout = QtWidgets.QHBoxLayout()
+    
+    fit_methods_widget.addItems(["lm", "trf", "dogbox"])
+    fit_methods_widget.setCurrentText("lm")
+    fit_methods_widget.setToolTip("Choose fitting method")
+    
+    solve_ivp_methods_widget.addItems(["Radau", "BDF", "RK45", "RK23", "RK12", "DOP853"])
+    solve_ivp_methods_widget.setCurrentText("Radau")
+    solve_ivp_methods_widget.setToolTip("Choose solve_ivp method")
+    
+    buttons1_layout.addWidget(solve_ivp_methods_widget)
+    buttons1_layout.addWidget(fit_methods_widget)
+    
+    buttons2_layout = QtWidgets.QHBoxLayout()
+    
     fit_button = QtWidgets.QPushButton("Fit")
-    # fit_button.clicked.connect(fitfunc)
     fit_button.clicked.connect(fit_kinetic_data)
 
     saveData_button = QtWidgets.QPushButton("saveData")
     saveData_button.clicked.connect(saveData)
+    
+    buttons2_layout.addWidget(fit_button)
+    buttons2_layout.addWidget(saveData_button)
 
-    buttons1_layout = QtWidgets.QHBoxLayout()
-    buttons1_layout.addWidget(fit_button)
-    buttons1_layout.addWidget(saveData_button)
-    
-    buttons1_layout = QtWidgets.QHBoxLayout()
-    buttons1_layout.addWidget(fit_button)
-    buttons1_layout.addWidget(saveData_button)
-    
     additional_widgets_layout.addLayout(buttons_layout0)
     additional_widgets_layout.addLayout(buttons1_layout)
+    additional_widgets_layout.addLayout(buttons2_layout)
     
     checkboxes_layout = attach_checkboxes()
     additional_widgets_layout.addLayout(checkboxes_layout)
+    additional_widgets_layout.addWidget(fitStatus_label_widget)
     
     additional_widgets_group.setLayout(additional_widgets_layout)
     widget.finalControlLayout.addWidget(additional_widgets_group)
-    
     widget.attachControlLayout()
+    
     

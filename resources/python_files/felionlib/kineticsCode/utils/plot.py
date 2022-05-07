@@ -58,7 +58,7 @@ def on_pick(event):
 
 def plot_exp():
 
-    from felionlib.kineticsCode.utils.fit import fit_kinetic_data, intialize_fit_plot
+    from felionlib.kineticsCode.utils.fit import intialize_fit_plot
 
     global toggleLine, widget, fitPlot, expPlot, data
 
@@ -94,16 +94,5 @@ def plot_exp():
         toggleLine[legline] = [origlinefit, origlineexp]
 
     widget.canvas.mpl_connect("pick_event", on_pick)
-
-    try:
-        if numberDensity > 0 and not keyFoundForRate:
-            print(f"{keyFoundForRate=}", flush=True)
-            print("Fitting data", flush=True)
-            fit_kinetic_data()
-
-        else:
-            print(f"NOT fitting data since {keyFoundForRate=}", flush=True)
-
-    except Exception:
-        print(traceback.format_exc(), flush=True)
     widget.draw()
+    

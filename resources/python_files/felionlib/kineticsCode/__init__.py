@@ -1,19 +1,15 @@
 from pathlib import Path as pt
-from typing import Callable, Iterable
 import numpy as np
 from felionlib.utils.felionQt import felionQtWindow
-from felionlib.utils.FELion_definitions import readCodeFromFile
 from .utils.configfile import read_config
+
 
 tspan: list[float, float] = None
 simulateTime: np.ndarray = None
-
 plotted = False
 
-
 def KineticMain():
-
-    global initialValues, tspan, simulateTime, plotted
+    global tspan, simulateTime, plotted
 
     duration = expTime.max() * 1.2
     tspan = [0, duration]
@@ -23,7 +19,6 @@ def KineticMain():
     from .utils.plotWidgets import make_widgets
     
     plotted = False
-    
     plot_exp()
     make_widgets()
     plotted = True
@@ -89,11 +84,9 @@ def main(args):
     widget = felionQtWindow(
         title=f"kinetics : {selectedFile}", windowGeometry=(1200, 600), location=outdir, attachControlLayout=False
     )
-    
     KineticMain()
     widget.ax.set_xbound(lower=-0.5)
     widget.ax.set_ybound(lower=1)
-
     widget.optimize_figure()
     widget.toggle_controller_layout()
     widget.qapp.exec()

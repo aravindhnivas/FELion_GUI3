@@ -593,9 +593,9 @@
                     <button class="button is-link" on:click={updateParamsFile}
                         >update</button
                     >
-                    {#if useParamsFile && !params_found}
-                        <span class="tag is-danger" transition:fade
-                            >params not found</span
+                    {#if useParamsFile && selectedFile}
+                        <span class="tag is-warning" class:is-danger={!params_found} transition:fade
+                            >{params_found ? `params updated: ${basename(selectedFile)}` : 'params not found'}</span
                         >
                     {/if}
                 </div>
