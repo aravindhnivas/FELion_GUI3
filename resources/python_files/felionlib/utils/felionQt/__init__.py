@@ -1087,8 +1087,13 @@ class felionQtWindow(QtWidgets.QMainWindow):
             dialogBox.setIcon(QtWidgets.QMessageBox.Icon.Warning)
         elif type == "critical":
             dialogBox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
-
         dialogBox.exec()
+    
+    def showErrorDialog(self, limit=5, **kwargs):
+        
+        etype, value, tb = sys.exc_info()
+        tb = "".join(traceback.format_exception(etype, value, tb, limit=limit, **kwargs))
+        self.showdialog(etype.__name__, tb, type="critical")       
 
     def makeSlider(
         self,

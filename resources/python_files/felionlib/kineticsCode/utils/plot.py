@@ -6,7 +6,7 @@ from felionlib.utils.FELion_constants import pltColors
 from scipy.integrate import solve_ivp
 from felionlib.utils.felionQt.utils.blit import BlitManager
 from felionlib.utils.felionQt import felionQtWindow
-
+# from .plotWidgets import checkboxes
 widget: felionQtWindow = None
 otherWidgetsToggle = False
 
