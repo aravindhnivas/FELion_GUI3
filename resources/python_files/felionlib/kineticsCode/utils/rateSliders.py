@@ -1,29 +1,33 @@
 import numpy as np
-
+# import traceback
 from .sliderlog import Sliderlog
 from .configfile import ratek3, ratekCID, keyFoundForRate
-from felionlib.kineticsCode import widget, k3Labels, kCIDLabels
+from felionlib.kineticsCode import widget, k3Labels, kCIDLabels, widget
 
 
-k3Sliders = {}
-kCIDSliders = {}
+k3Sliders: dict[str, Sliderlog] = {}
+kCIDSliders: dict[str, Sliderlog] = {}
+k3_min_max_step = (-33, -25, 1e-6)
+kCID_min_max_step = (-20, -10, 1e-6)
 
 
-def update_sliders(k3_fit: list[float], kCID_fit: list[float]):
-
-    global k3Sliders, kCIDSliders
-
+def safe_update_sliders(Sliders: dict[str, Sliderlog], values: list[float], min_max_step: list[float]):
+    
     try:
-        for counter0, _k3 in enumerate(k3Sliders.values()):
-            _k3.set_val(np.log10(k3_fit[counter0]))
-
-        for counter1, _kCID in enumerate(kCIDSliders.values()):
-            _kCID.set_val(np.log10(kCID_fit[counter1]))
-
-        print("sliders updated", flush=True)
-    except Exception as err:
-        print(f"error updating sliders: {err}", flush=True)
-
+        for slider, received_val in zip(Sliders.values(), values):
+            converted_val = np.log10(received_val)
+            if np.isnan(converted_val):
+                converted_val = min_max_step[0]
+            slider.set_val(converted_val)
+    
+    except Exception:
+        # tb = traceback.format_exc(limit=5)
+        widget.showErrorDialog(title="Error while updating sliders")
+        
+def update_sliders(k3_fit: list[float], kCID_fit: list[float]):
+    safe_update_sliders(k3Sliders, k3_fit, k3_min_max_step)
+    safe_update_sliders(kCIDSliders, kCID_fit, kCID_min_max_step)
+    print("sliders updated", flush=True)
 
 def make_slider():
 
@@ -49,10 +53,10 @@ def make_slider():
             current_k3SliderAxes.patch.set_facecolor(f"C{counter+1}")
             current_k3SliderAxes.patch.set_alpha(0.7)
 
-        valmin = -33
-        valmax = -25
-        valstep = 1e-6
-
+        # valmin = -33
+        # valmax = -25
+        # valstep = 1e-6
+        valmin, valmax, valstep = k3_min_max_step
         if label in kvalueLimits:
             valmin, valmax, valinit = kvalueLimits[label]
 
@@ -94,10 +98,10 @@ def make_slider():
             current_kCIDSliderAxes.patch.set_facecolor(f"C{counter+1}")
             current_kCIDSliderAxes.patch.set_alpha(0.7)
 
-        valmin = -20
-        valmax = -10
-        valstep = 1e-6
-
+        # valmin = -20
+        # valmax = -10
+        # valstep = 1e-6
+        valmin, valmax, valstep = kCID_min_max_step
         if label in kvalueLimits:
 
             valmin, valmax, valinit = kvalueLimits[label]
