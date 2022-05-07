@@ -1,15 +1,34 @@
-from typing import Callable
 import numpy as np
+
 from .sliderlog import Sliderlog
-from felionlib.utils.felionQt import felionQtWindow
+from .configfile import ratek3, ratekCID, keyFoundForRate
+from felionlib.kineticsCode import widget, k3Labels, kCIDLabels
 
 
-def make_slider(
-    widget: felionQtWindow, k3Labels: list, kCIDLabels: list, ratek3: list, ratekCID: list, kvalueLimits: dict[str, float], keyFoundForRate: bool, update: Callable
-):
+k3Sliders = {}
+kCIDSliders = {}
 
-    k3Sliders = {}
-    kCIDSliders = {}
+
+def update_sliders(k3_fit: list[float], kCID_fit: list[float]):
+
+    global k3Sliders, kCIDSliders
+
+    try:
+        for counter0, _k3 in enumerate(k3Sliders.values()):
+            _k3.set_val(np.log10(k3_fit[counter0]))
+
+        for counter1, _kCID in enumerate(kCIDSliders.values()):
+            _kCID.set_val(np.log10(kCID_fit[counter1]))
+
+        print("sliders updated", flush=True)
+    except Exception as err:
+        print(f"error updating sliders: {err}", flush=True)
+
+
+def make_slider():
+
+    global k3Sliders, kCIDSliders
+    from .fit import update, kvalueLimits
 
     widget.ax.margins(x=0)
 
@@ -65,13 +84,13 @@ def make_slider(
 
     counter = 0
     kCIDSliderAxes = []
-    
+
     for label in kCIDLabels:
         axes = [0.65, bottom, width, height]
         current_kCIDSliderAxes = widget.fig.add_axes(axes)
-    
+
         if counter + 1 <= min(len(ratek3), len(ratekCID)):
-    
+
             current_kCIDSliderAxes.patch.set_facecolor(f"C{counter+1}")
             current_kCIDSliderAxes.patch.set_alpha(0.7)
 
@@ -89,7 +108,6 @@ def make_slider(
             ax=current_kCIDSliderAxes,
             label=label,
             valstep=valstep,
-            
             valfmt="%.2e",
             valmin=valmin,
             valmax=valmax,

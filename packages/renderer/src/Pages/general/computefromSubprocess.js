@@ -136,25 +136,29 @@ export default async function ({
         })
 
         py.stderr.on('data', (err) => {
-            if (pyfile === 'server') {
-                error = String.fromCharCode.apply(null, err)
-            } else {
-                error += String.fromCharCode.apply(null, err)
-            }
 
+            const errorString = `${String.fromCharCode.apply(null, err)}\n`
+            if (pyfile === 'server') {
+                error = errorString
+            } else {
+                error += errorString
+            }
             dispatchEvent(target, { py, pyfile, error }, 'pyEventStderr')
-        })
+            console.log(`Output from python: ${errorString}`)
+
+    })
 
         py.stdout.on('data', (data) => {
             loginfo.write(data)
-
+            const dataString = `${String.fromCharCode.apply(null, data)}\n`
             if (pyfile === 'server') {
-                dataReceived = `${String.fromCharCode.apply(null, data)}\n`
+                dataReceived = dataString
             } else {
-                dataReceived += `${String.fromCharCode.apply(null, data)}\n`
+                dataReceived += dataString
             }
 
-            console.log(`Output from python: ${dataReceived}`)
+            // console.log(`Output from python: ${dataReceived}`)
+            console.log(dataString.trim())
             dispatchEvent(target, { py, pyfile, dataReceived }, 'pyEventData')
         })
 

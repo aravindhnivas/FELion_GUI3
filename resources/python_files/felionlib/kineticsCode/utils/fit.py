@@ -1,45 +1,118 @@
-
+import numpy as np
+from scipy.optimize import curve_fit
+from scipy.integrate import solve_ivp
 from felionlib.utils import logger
 
-def fitfunc(event=None):
+from felionlib.kineticsCode.utils.plot import fitPlot
+from felionlib.kineticsCode import (
+    expTime, expData, expDataError, widget, initialValues, tspan, 
+    simulateTime, kinetics_equation_file, numberDensity # numberDensity is important for the fit
+)
+from felionlib.kineticsCode.utils.widgets.checkboxes import checkboxes
+from .configfile import ratek3, ratekCID, k_err as k_err_config
 
+from felionlib.utils.FELion_definitions import readCodeFromFile
+from felionlib.kineticsCode.utils.rateSliders import k3Sliders, kCIDSliders, update_sliders
+
+
+k_fit = []
+k_err = k_err_config
+rateCoefficientArgs: tuple[np.ndarray, np.ndarray] = (ratek3, ratekCID)
+
+
+def codeToRun(code: str):
+    exec(code)
+    return locals()
+
+codeContents = readCodeFromFile(kinetics_equation_file)
+codeOutput = codeToRun(codeContents)
+compute_attachment_process = codeOutput["compute_attachment_process"]
+print(f"{compute_attachment_process=}", flush=True)
+
+
+if "kvalueLimits" in codeOutput:
+    kvalueLimits = codeOutput["kvalueLimits"]
+    print(f"{kvalueLimits=}", flush=True)
+    
+
+def intialize_fit_plot() -> None:
+    dNdtSol: np.ndarray = solve_ivp(
+        compute_attachment_process,
+        tspan,
+        initialValues,
+        method="Radau",
+        t_eval=simulateTime,
+    ).y
+    return dNdtSol
+
+def update(val: float = None):
+    
+    global rateCoefficientArgs
+    
+    try:
+        rateCoefficientArgs = (
+            [10**rate.val for rate in k3Sliders.values()],
+            [10**rate.val for rate in kCIDSliders.values()],
+        )
+        dNdtSol = solve_ivp(compute_attachment_process, tspan, initialValues, method="Radau", t_eval=simulateTime).y
+        for line, data in zip(fitPlot, dNdtSol):
+            line.set_ydata(data)
+        widget.blit.update()
+    except Exception:
+        widget.showErrorDialog()
+        
+
+def fitODE(t: np.ndarray, *args):
+    global rateCoefficientArgs
+    tspan = [0, t.max() * 1.2]
+    rateCoefficientArgs = (args[: len(ratek3)], args[len(ratek3) :])
+    dNdtSol: np.ndarray = solve_ivp(compute_attachment_process, tspan, initialValues, method="Radau", t_eval=t).y
+    return dNdtSol.flatten()
+
+
+
+def fit_kinetic_data() -> None:
+    
     global k_fit, k_err
 
+    setbound = checkboxes['set_bound']
+    includeError = checkboxes['include_error']
+    logger(f"{checkboxes=}")
+    
     p0 = [*[10**rate.val for rate in k3Sliders.values()], *[10**rate.val for rate in kCIDSliders.values()]]
-
-    if checkboxes["setbound"]:
+    bounds = (-np.inf, np.inf)
+    
+    if setbound:
         ratio = 0.1
-        bounds=(
+        bounds = (
             [
-                *[np.format_float_scientific(10**(rate.val-ratio), precision=2) for rate in k3Sliders.values()], 
-                *[np.format_float_scientific(10**(rate.val-ratio), precision=2) for rate in kCIDSliders.values()]
+                *[np.format_float_scientific(10 ** (rate.val - ratio), precision=2) for rate in k3Sliders.values()],
+                *[np.format_float_scientific(10 ** (rate.val - ratio), precision=2) for rate in kCIDSliders.values()],
             ],
             [
-                *[np.format_float_scientific(10**(rate.val+ratio), precision=2) for rate in k3Sliders.values()],
-                *[np.format_float_scientific(10**(rate.val+ratio), precision=2) for rate in kCIDSliders.values()]
-            ]
+                *[np.format_float_scientific(10 ** (rate.val + ratio), precision=2) for rate in k3Sliders.values()],
+                *[np.format_float_scientific(10 ** (rate.val + ratio), precision=2) for rate in kCIDSliders.values()],
+            ],
         )
-    else:
-        bounds=([*[1e-33]*len(ratek3), *[1e-17]*len(ratekCID)], [*[1e-29]*len(ratek3), *[1e-14]*len(ratekCID)])
-    
     logger(f"{bounds=}")
     try:
-        k_fit, kcov = curve_fit(fitODE, expTime, expData.flatten(),
-            p0=p0, sigma=expDataError.flatten(), absolute_sigma=True, bounds=bounds   
+        
+        k_fit, kcov = curve_fit(
+            fitODE, expTime, expData.flatten(), p0=p0, bounds=bounds,
+            sigma= expDataError.flatten() if includeError else None, absolute_sigma=includeError,
         )
-
+        
         k_err = np.sqrt(np.diag(kcov))
-        logger(f"{k_fit=}\n{k_err=}")
+        # if not np.all(np.isfinite(k_err)):
+        #     raise Exception("Error: Non-finite error values")
+        
+        logger(f"{k_fit=}\n{kcov=}\n{k_err=}")
         logger("fitted")
         
-        for counter0, _k3 in enumerate(k3Sliders.values()):
-            _k3.set_val(np.log10(k_fit[:len(ratek3)][counter0]))
-        for counter1, _kCID in enumerate(kCIDSliders.values()):
-            _kCID.set_val(np.log10(k_fit[len(ratek3):][counter1]))
-    except Exception:
-        k_fit = []
-        
-        k_err = []
-        if plotted:
-            MsgBox("Error", traceback.format_exc(), MB_ICONERROR)
+        update_sliders(k_fit[: len(ratek3)], k_fit[len(ratek3) :])
 
+    except Exception as err:
+        from felionlib.kineticsCode import plotted
+        if plotted:
+            widget.showErrorDialog()
+            

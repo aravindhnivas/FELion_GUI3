@@ -1,32 +1,18 @@
 import json
 import traceback
-from pathlib import Path as pt
-from felionlib.kineticsCode.utils.definitions import formatArray
 
+from felionlib.kineticsCode.utils.definitions import formatArray
 from felionlib.utils import logger
 from felionlib.utils.msgbox import MsgBox, MB_ICONERROR, MB_ICONINFORMATION
+from felionlib.kineticsCode import k3Labels, kCIDLabels, selectedFile, temp, nameOfReactants, numberDensity
 
 
-def saveData(
-    args,
-    ratek3,
-    k3Labels,
-    kCIDLabels,
-    k_err,
-    rateCoefficientArgs,
-    fitPlot,
-    expPlot,
-    rateConstantsFileData,
-    savefile: pt,
-):
-
-    # kinetic_file_location = pt(args["kinetic_file_location"])
-    numberDensity = float(args["numberDensity"])
-    nameOfReactants = args["nameOfReactantsArray"]
-    temp = float(args["temp"])
-    selectedFile = args["selectedFile"]
+def saveData():
 
     try:
+        from .fit import rateCoefficientArgs
+        from .plot import fitPlot, expPlot
+        from .configfile import k_err, ratek3, rateConstantsFileData, k_err, savefile
 
         logger(f"{formatArray(rateCoefficientArgs[0])=}")
         logger(f"{formatArray(rateCoefficientArgs[1])=}")
@@ -49,7 +35,7 @@ def saveData(
                 "temp": f"{temp:.1f}",
                 "numberDensity": f"{numberDensity:.2e}",
             }
-            
+
             logger(f"{rateConstantsFileData[selectedFile]=}")
             data = json.dumps(rateConstantsFileData, sort_keys=True, indent=4, separators=(",", ": "))
 

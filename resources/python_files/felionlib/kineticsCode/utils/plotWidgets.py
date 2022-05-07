@@ -5,8 +5,11 @@ from .widgets.checkboxes import attach_checkboxes
 def make_widgets():
     
     from felionlib.kineticsCode import (
-        widget, fitfunc, saveDataFull, kinetic_plot_adjust_configs_obj
+        widget, kinetic_plot_adjust_configs_obj
     )
+    
+    from felionlib.kineticsCode.utils.fit import fit_kinetic_data
+    from .savedata import saveData
     
     additional_widgets_group = QtWidgets.QGroupBox()
     additional_widgets_layout = QtWidgets.QVBoxLayout()
@@ -31,10 +34,11 @@ def make_widgets():
     buttons_layout0.addWidget(subplot_adjust_button)
 
     fit_button = QtWidgets.QPushButton("Fit")
-    fit_button.clicked.connect(fitfunc)
+    # fit_button.clicked.connect(fitfunc)
+    fit_button.clicked.connect(fit_kinetic_data)
 
     saveData_button = QtWidgets.QPushButton("saveData")
-    saveData_button.clicked.connect(saveDataFull)
+    saveData_button.clicked.connect(saveData)
 
     buttons1_layout = QtWidgets.QHBoxLayout()
     buttons1_layout.addWidget(fit_button)
