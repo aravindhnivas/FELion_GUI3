@@ -10,9 +10,9 @@ from felionlib.kineticsCode import k3Labels, kCIDLabels, selectedFile, temp, nam
 def saveData():
 
     try:
-        from .fit import rateCoefficientArgs
+        from .fit import rateCoefficientArgs, k_err
         from .plot import fitPlot, expPlot
-        from .configfile import k_err, ratek3, rateConstantsFileData, k_err, savefile
+        from .configfile import ratek3, rateConstantsFileData, savefile
 
         logger(f"{formatArray(rateCoefficientArgs[0])=}")
         logger(f"{formatArray(rateCoefficientArgs[1])=}")
