@@ -452,7 +452,8 @@ def main(arguments):
 
 def functionOfVariable(changeVariable="numberDensity"):
     
-    # functionVariables = ("numberDensity", "power")
+    global qapp
+    
     constantFactorLabel = "power" if changeVariable=="numberDensity" else "numberDensity" 
     currentnHe = np.format_float_scientific(float(conditions["numberDensity"]), 3)
     currentnPower = np.format_float_scientific(float(conditions['power_broadening']['power(W)']), 3)
@@ -530,7 +531,9 @@ def functionOfVariable(changeVariable="numberDensity"):
     widget.ax.plot(dataList, populationChange, "-k", label=f"{currentConstant}{currentConstantUnit}")
     widget.optimize_figure()
     widget.fig.tight_layout()
-
+    if qapp is None:
+        qapp = widget.qapp
+            
     dataToSend = {
         f"variable ({changeVariable})": list(map(lambda num: np.format_float_scientific(num, 3), dataList)),
         "populationChange": np.around(populationChange, 3).tolist(),
