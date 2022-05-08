@@ -54,18 +54,15 @@ def main(args):
         config_files_location.mkdir()
 
     data = args["data"]
-
     nameOfReactants = args["nameOfReactantsArray"]
     
     expTime = np.array(data[nameOfReactants[0]]["x"], dtype=float) * 1e-3  # ms --> s
-    
-    expData = np.array([np.nan_to_num(data[name]["y"]).clip(min=1) for name in nameOfReactants], dtype=float)
+    expData = np.array([data[name]["y"] for name in nameOfReactants], dtype=float)
     expDataError = np.array(
-        [np.nan_to_num(data[name]["error_y"]["array"]).clip(min=0.1) for name in nameOfReactants], dtype=float
+        [data[name]["error_y"]["array"] for name in nameOfReactants], dtype=float
     )
-    # expDataError = np.array(
-    #     [data[name]["error_y"]["array"] for name in nameOfReactants], dtype=float
-    # )
+    
+    print(f"{expDataError=}", flush=True)
     
     temp = float(args["temp"])
     selectedFile = args["selectedFile"]

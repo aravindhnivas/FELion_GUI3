@@ -76,7 +76,7 @@ class timescanplot:
             
             error_sort: np.ndarray = data[:, 2][j : k + j]
             error_sort = error_sort.reshape(iteration, cycle).std(axis=0)
-            error_sort = np.nan_to_num(mass_sort).clip(min=0.1)
+            error_sort = np.nan_to_num(error_sort).clip(min=0.1)
             
             self.mass.append(mass_value)
             self.mean: np.ndarray = np.append(self.mean, mass_sort)
