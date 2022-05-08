@@ -465,8 +465,6 @@ def functionOfVariable(changeVariable="numberDensity"):
     _start = int(_start.split("e")[-1])
     _end = int(_end.split("e")[-1])
 
-    # electronSpin = conditions["electronSpin"]
-
     counter = _start
     dataList = []
 
@@ -505,15 +503,17 @@ def functionOfVariable(changeVariable="numberDensity"):
         if includeAttachmentRate:
             off = currentData.lightOFF_distribution
             signal_index = len(energyKeys)+1
-            chnageInSignal = (1 - (on[signal_index][-1] / off[signal_index][-1]))*100
-            chnageInSignal = np.around(np.nan_to_num(chnageInSignal).clip(min=0), 1)
-            signalChange.append(chnageInSignal)
+            
+            changeInSignal = (1 - (on[signal_index][-1] / off[signal_index][-1]))*100
+            changeInSignal = np.around(np.nan_to_num(changeInSignal).clip(min=0), 1)
+            signalChange.append(changeInSignal)
+    
     
     if changeVariable=="numberDensity":
-        xlabel=f"{currentData.taggingPartner} number density (cm$^{-3})$"
-        
+    
+        xlabel = currentData.taggingPartner+"number density (cm$^{-3})$"
     else:
-        xlabel="Power (W)"
+        xlabel = "Power (W)"
 
     outputFileName = f"{molecule}-{taggingPartner}__{excitedFrom}-{excitedTo}__"
     outputFileName += f"{changeVariable}.{dataList[0]:.0e}-{dataList[-1]:.0e}.{constantFactorLabel}.{currentConstant}"
