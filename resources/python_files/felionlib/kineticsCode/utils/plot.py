@@ -59,7 +59,6 @@ def on_pick(event):
 def plot_exp():
 
     from felionlib.kineticsCode.utils.fit import intialize_fit_plot
-
     global toggleLine, widget, fitPlot, expPlot, data
 
     title = f"{selectedFile}: @{temp:.1f}K {numberDensity:.2e} " + "cm$^{-3}$"
