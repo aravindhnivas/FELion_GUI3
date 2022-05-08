@@ -45,6 +45,9 @@ def main(args):
 
     kinetic_file_location = pt(args["kinetic_file_location"])
     kinetics_equation_file = kinetic_file_location / args["kineticEditorFilename"]
+    # print(f"{args['kineticEditorFilename']=}\n{kinetics_equation_file=}", flush=True)
+    
+    # return
     config_files_location = kinetic_file_location.parent / "configs"
 
     if not config_files_location.exists():
@@ -53,15 +56,23 @@ def main(args):
     data = args["data"]
 
     nameOfReactants = args["nameOfReactantsArray"]
+    
     expTime = np.array(data[nameOfReactants[0]]["x"], dtype=float) * 1e-3  # ms --> s
-    expData = np.array([data[name]["y"] for name in nameOfReactants], dtype=float)
-    expDataError = np.array([data[name]["error_y"]["array"] for name in nameOfReactants], dtype=float)
+    
+    expData = np.array([np.nan_to_num(data[name]["y"]).clip(min=1) for name in nameOfReactants], dtype=float)
+    expDataError = np.array(
+        [np.nan_to_num(data[name]["error_y"]["array"]).clip(min=0.1) for name in nameOfReactants], dtype=float
+    )
+    # expDataError = np.array(
+    #     [data[name]["error_y"]["array"] for name in nameOfReactants], dtype=float
+    # )
+    
     temp = float(args["temp"])
     selectedFile = args["selectedFile"]
     numberDensity = float(args["numberDensity"])
     initialValues = [float(i) for i in args["initialValues"]]
-
     totalAttachmentLevels = len(initialValues) - 1
+    
     outdir = kinetic_file_location.parent / "OUT"
     fit_config_file = config_files_location / args["$fit_config_filename"]
 

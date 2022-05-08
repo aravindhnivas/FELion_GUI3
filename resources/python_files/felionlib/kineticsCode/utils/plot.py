@@ -1,10 +1,10 @@
-import traceback
+# import traceback
 import numpy as np
 
 from matplotlib.axes import Axes
 
 from .rateSliders import make_slider
-from .configfile import keyFoundForRate
+# from .configfile import keyFoundForRate
 from felionlib.kineticsCode import (
     kinetic_plot_adjust_configs_obj,
     legends,

@@ -19,7 +19,7 @@
         mount="#kinetics-editor__div"
         id="kinetics-editor"
         mainTitle="Kinetic Code"
-        {savefilename}
+        bind:savefilename
         {location}
         enable_location_browser={false}
         bind:editor

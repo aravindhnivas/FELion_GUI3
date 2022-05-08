@@ -247,6 +247,7 @@
     }
 
     $: if (selectedFile.endsWith('.scan')) {
+        console.log("updating paramaeters")
         computeParameters()
         kineticEditorFilename =
             basename(selectedFile).split('.')[0] + '-kineticModel.md'
@@ -431,7 +432,7 @@
     // $: if(selectedFile) {
     //     kineticEditorFilename = basename(selectedFile).split('.')[0] + '-kineticModel.md'
     // }
-    // $: console.log(kineticEditorFilename)
+    $: console.log(kineticEditorFilename)
 
     $: kineticfile = pathJoin(currentLocation, kineticEditorFilename)
     let reportRead = false
@@ -594,8 +595,8 @@
                         >update</button
                     >
                     {#if useParamsFile && selectedFile}
-                        <span class="tag is-warning" class:is-danger={!params_found} transition:fade
-                            >{params_found ? `params updated: ${basename(selectedFile)}` : 'params not found'}</span
+                        <span class="tag is-success" class:is-danger={!params_found} transition:fade
+                            >{params_found ? `params updated: ${window.basename(selectedFile)}` : 'params not found'}</span
                         >
                     {/if}
                 </div>
