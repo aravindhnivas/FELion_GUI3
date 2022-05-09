@@ -81,5 +81,7 @@
     }
     .modal-card {
         min-height: 60%;
+        max-height: 60%;
+
     }
 </style>
