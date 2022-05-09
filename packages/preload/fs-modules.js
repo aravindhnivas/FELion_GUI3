@@ -44,6 +44,9 @@ contextBridge.exposeInMainWorld('fs', {
         })
     },
 
+    isfile: (path) => fs.lstatSync(path).isFile(),
+    isDirectory: (path) => fs.lstatSync(path).isDirectory(),
+
     lstatSync: (location) => {
         const info = fs.lstatSync(location)
         return {
