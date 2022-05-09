@@ -1,11 +1,18 @@
 ## UNRELEASED
 - Added features
-    - Kinetics subplot adjust
-    - Kinetics configs in configs folder
+    - Kinetics: subplot adjust
+    - Kinetics: configs in configs folder
+    - kinetics: *.config.json, *.params.json, *.fit.json added feature
+    - kinetics: choosing solve_ivp and curve_fit methods in the widget
 
 - BUG FIX:
     - Timescan saveData (fitted_values) from slider
+    - Timescan error-value now exports with min value=0.1 (to avoid sigma error in curve_fit);
+    - kinetics-timescan: kinetic editor filename two-way binding fix
+    - kinetics: bounds is not constrained when it is set to False
 
+    - ROSAA: qapp.exec is None error while in variable plot mode
+    
 ## v3.6.2
 
 - Timescan Kinetics feature added:
