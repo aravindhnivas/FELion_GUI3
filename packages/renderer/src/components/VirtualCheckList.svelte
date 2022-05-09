@@ -1,19 +1,29 @@
 <script>
+    import { createEventDispatcher } from 'svelte'
     import List, { Item, Meta, Label } from '@smui/list'
     import Checkbox from '@smui/checkbox'
     import VirtualList from '@sveltejs/svelte-virtual-list'
-
     export let style = ''
     export let items = []
     export let height = '600px'
     export let markedFile = ''
     export let fileChecked = []
+    export let fileSelected = []
+    $: console.warn({fileChecked})
+
+    const dispatch = createEventDispatcher()
+    const dispatch_fileselect_event = (event) => {
+        fileChecked = fileSelected
+        dispatch('fileselect', { event, fileChecked })
+        // console.log('fileselect event dispatched')
+    }
+
 </script>
 
 <div {style}>
-    <VirtualList {items} let:item {height}>
-        {@const highlight = markedFile == item.name}
-        <List checklist>
+    <List checklist>
+        <VirtualList {items} let:item {height}>
+            {@const highlight = markedFile == item.name}
             <Item
                 style="border-radius: 1em; border: {highlight
                     ? 'solid 1px #ffc107'
@@ -23,14 +33,15 @@
                 >
                 <Meta
                     ><Checkbox
-                        bind:group={fileChecked}
+                        bind:group={fileSelected}
                         value={item.name}
                         on:click
+                        on:change="{dispatch_fileselect_event}"
                     /></Meta
                 >
             </Item>
-        </List>
-    </VirtualList>
+        </VirtualList>
+    </List>
 </div>
 
 <style global>

@@ -28,7 +28,7 @@
 </script>
 
 <script>
-    import { onMount, tick, createEventDispatcher, onDestroy } from 'svelte'
+    import { onMount, tick, createEventDispatcher } from 'svelte'
     import { fly, fade } from 'svelte/transition'
     import Textfield from '@smui/textfield'
     import { relayout } from 'plotly.js/dist/plotly-basic'
@@ -124,6 +124,7 @@
                 on:chdir
                 bind:fullfileslist
                 on:markedFile
+                on:fileselect
             />
         </div>
 

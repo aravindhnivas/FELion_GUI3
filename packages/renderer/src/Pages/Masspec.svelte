@@ -7,7 +7,7 @@
     import { plot, plotlyEventsInfo } from '$src/js/functions'
     import { readMassFile } from './masspec/mass'
     import computePy_func from '$src/Pages/general/computePy'
-    import { onDestroy } from 'svelte'
+    import { onDestroy, tick } from 'svelte'
 
     /////////////////////////////////////////////////////////////////////////
 
@@ -15,24 +15,24 @@
     const filetype = 'mass'
     const id = 'Masspec'
     let fileChecked = []
+    // let massfiles = []
     let currentLocation = ''
     $: massfiles = fs.existsSync(currentLocation)
         ? fileChecked.map((file) => pathResolve(currentLocation, file))
         : []
     $: if (massfiles.length > 0) plotData()
-
+    // $: console.log(massfiles)
+    // $: console.log(fileChecked)
     let openShell = false
     let graphPlotted = false
-    // let toggleRow1 = true
     let logScale = true
     let selected_file = ''
 
-    // let peak_width = 2
-    // let peak_height = 40
-    // let peak_prominance = 3
     let keepAnnotaions = true
 
     async function plotData({ e = null, filetype = 'mass' } = {}) {
+
+        // const massfiles = fileChecked.map((file) => pathResolve(currentLocation, file))
         if (!fs.existsSync(currentLocation)) {
             return window.createToast('Location not defined', 'danger')
         }
@@ -53,7 +53,7 @@
         const { pyfile, args } = pyfileInfo[filetype]
 
         if (filetype == 'general') {
-            return computePy_func({ e, pyfile, args, general: true, openShell })
+            return computePy_func({ e, pyfile, args, general: true })
         }
 
         if (filetype == 'mass' && massfiles) {
@@ -108,12 +108,17 @@
     bind:fullfileslist
     {id}
     bind:currentLocation
-    bind:fileChecked
     {graphPlotted}
+    bind:fileChecked
+
+    on:fileselect="{(e)=>{
+        // fileChecked = e.detail.fileChecked
+        // if(fileChecked.length > 0) plotData()
+    }}"
 >
     <svelte:fragment slot="buttonContainer">
         <div class="align " style="align-items: center;">
-            <button class="button is-link" on:click={(e) => plotData({ e: e })}>
+            <button class="button is-link" id="masspec-plot-btn" on:click={(e) => plotData({ e: e })}>
                 Masspec Plot</button
             >
 

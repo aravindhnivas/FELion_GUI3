@@ -145,19 +145,23 @@
             }
         }
     }
+
     $: if (currentLocation) {
         fileChecked = []
     }
 
     const get_marked_file = (e) => {
+    
         selectAll = false
         if (!(e.ctrlKey && filetype.includes('felix'))) return
-
+    
         const filename = e.target.value
         markedFile = markedFile === filename ? '' : filename
 
         dispatch('markedFile', { markedFile })
     }
+    // let fileSelected = []
+    $: fileSelected = fileChecked
 </script>
 
 <div class="align h-center">
@@ -189,7 +193,7 @@
     bind:selected={selectAll}
     label="Select All"
     on:SMUISwitch:change={() => {
-        console.log('Changed')
+        console.log('selected all files')
         selectAll
             ? (fileChecked = fullfiles.map((file) => (file = file.name)))
             : (fileChecked = [])
@@ -207,10 +211,12 @@
     {:then value}
         {#if fullfiles.length && mounted}
             <div on:click={selectRange}>
-                <VirtualCheckList
+                <VirtualCheckList on:fileselect
                     bind:fileChecked
+                    {fileSelected}
                     items={fullfiles}
                     {markedFile}
+                    {selectAll}
                     on:click={get_marked_file}
                 />
             </div>

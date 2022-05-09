@@ -1,14 +1,24 @@
-// import { getInfoContents } from '../computeCode/utils'
 import get_files_settings_values from '$src/js/get_files_settings_values'
+
+
 export async function readMassFile(massfiles) {
+
     const loadbtn = document.getElementById('masspec-plot-btn')
+    if(loadbtn.classList.contains("is-loading")){
+
+        const warnmsg = "Wait untill the previous file is plotted"
+        console.warn(warnmsg)
+        return [null, warnmsg]
+    }
+
     loadbtn.classList.toggle('is-loading')
+
     try {
         const dataToSend = {}
 
         for (const filename of massfiles) {
+
             if (!fs.existsSync(filename)) return
-            console.log(filename)
             const [fileContents] = await fs.readFile(filename)
 
             const name = basename(filename)
@@ -31,9 +41,7 @@ export async function readMassFile(massfiles) {
             const showlegend = true
             console.info(name, 'done\n')
 
-            // const fileVariableComputedValues = getInfoContents(fileContents)
             const fileVariableComputedValues = await get_files_settings_values(filename)
-            // console.info(fileVariableComputedValues, 'computed')
             const res = fileVariableComputedValues['m03_ao13_reso']
             const b0 = fileVariableComputedValues['m03_ao09_width'] / 1000
             const trap = fileVariableComputedValues['m04_ao04_sa_delay'] / 1000
@@ -46,7 +54,6 @@ export async function readMassFile(massfiles) {
 
         console.info('File read completed')
         console.info(dataToSend)
-
         return [dataToSend, null]
 
     } catch (error) {
@@ -55,5 +62,4 @@ export async function readMassFile(massfiles) {
     } finally {
         loadbtn.classList.toggle('is-loading')
     }
-
 }
