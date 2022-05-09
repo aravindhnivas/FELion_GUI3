@@ -1,0 +1,12 @@
+{        
+    "B0": ["m03_ao09_bl0", "m03_ao09_high", "m03_ao09_width"],
+    "Quad float": ["m03_ao15_qd1_float", "m04_ao09_qd2_float"],
+    "Source float": ["m03_ao14_src_float"],
+    "trap float": ["m04_ao05_trap_float"],
+    "RES": ["m03_ao13_reso"],
+    "bq lenses": [ "m03_ao01_bq0", "m03_ao08_bq1", "m03_ao07_bq2", "m03_ao06_bq3", "m03_ao05_bq4", "m03_ao03_bq5"],
+    "bender lenses": [ "m04_ao01_b_in", "m04_ao00_b_outer", "m04_ao02_b_inner"],
+    "SE": [ "m04_ao03_se_trap_in", "m04_ao03_se_delay", "m04_ao03_se_high", "m04_ao03_se_width"],
+    "SA": [ "m04_ao04_sa_trap_out", "m04_ao04_sa_delay", "m04_ao04_sa_high", "m04_ao04_sa_width" ],
+    "bl lenses": ["m04_ao07_bl4", "m04_ao08_bl5"]
+}
