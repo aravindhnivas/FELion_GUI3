@@ -1,19 +1,24 @@
 <script>
-    import { createEventDispatcher, onDestroy } from 'svelte'
+    import { createEventDispatcher } from 'svelte'
     export let active = false
     export let title = 'Title'
     export let style = 'width:60vw'
     export let contentID = getID()
     export let bodyBackground = '#634e96'
     export let headerBackground = '#836ac05c'
-    // export let bodyStyle = 'max-height: 30em; height: 30em'
     let className
     export { className as class }
-    const dispatch = createEventDispatcher()
 
-    onDestroy(() => (active = false))
+    const dispatch = createEventDispatcher()
+    
     const modalMounted = (node) => {
         dispatch('mount', { mounted: true })
+        return {
+            destroy: () => {
+                active = false
+                console.log("modal destroyed")
+            }
+        }
     }
 </script>
 
@@ -73,5 +78,8 @@
     }
     .modal-card-title {
         margin: 0 !important;
+    }
+    .modal-card {
+        min-height: 60%;
     }
 </style>
