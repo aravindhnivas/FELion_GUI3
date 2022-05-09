@@ -1,11 +1,10 @@
-
 const validate_line = (line) => {
     const valid =
         line.trim().length > 0 && line.startsWith('# Sect01 Ion Source')
     return valid
 }
 
-export default function(loadfile) {
+export default function (loadfile) {
     return new Promise(async (resolve, reject) => {
         if (!fs.isfile(loadfile)) return reject('Invalid file')
 

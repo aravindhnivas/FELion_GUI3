@@ -151,10 +151,9 @@
     }
 
     const get_marked_file = (e) => {
-    
         selectAll = false
         if (!(e.ctrlKey && filetype.includes('felix'))) return
-    
+
         const filename = e.target.value
         markedFile = markedFile === filename ? '' : filename
 
@@ -211,7 +210,8 @@
     {:then value}
         {#if fullfiles.length && mounted}
             <div on:click={selectRange}>
-                <VirtualCheckList on:fileselect
+                <VirtualCheckList
+                    on:fileselect
                     bind:fileChecked
                     {fileSelected}
                     items={fullfiles}

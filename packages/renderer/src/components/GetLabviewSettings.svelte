@@ -4,7 +4,7 @@
     import CustomSelect from './CustomSelect.svelte'
     import CustomSwitch from './CustomSwitch.svelte'
     import settings_key_value_infos from '$src/settings_key_value_infos.json'
-    import get_files_settings_values from '$src/js/get_files_settings_values';
+    import get_files_settings_values from '$src/js/get_files_settings_values'
 
     export let currentLocation = ''
     export let fullfileslist = []
@@ -46,14 +46,14 @@
                 <div class="container">
                     {#each Object.keys(settings_key_value_infos) as id (id)}
                         <div style:margin-bottom="2rem">
-
                             <h1>{id}</h1>
                             <div>
                                 {#each settings_key_value_infos[id] as key}
                                     <Textfield
                                         {style}
                                         value={variableValues[key] ?? ''}
-                                        label={key} type="number"
+                                        label={key}
+                                        type="number"
                                         disabled
                                     />
                                 {/each}
@@ -62,12 +62,12 @@
                     {/each}
                 </div>
             {:catch error}
-                <div class="info-box error" style:background="#f14668">{error}</div>
+                <div class="info-box error" style:background="#f14668">
+                    {error}
+                </div>
             {/await}
         </svelte:fragment>
-
     </Modal>
-
 {/if}
 
 <style>
@@ -77,7 +77,6 @@
 
         padding: 1em;
         justify-content: center;
-
     }
     .controller {
         display: flex;
@@ -89,5 +88,4 @@
         height: 90%;
         overflow-y: auto;
     }
-
 </style>

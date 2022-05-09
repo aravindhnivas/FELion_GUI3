@@ -9,7 +9,7 @@
     export let markedFile = ''
     export let fileChecked = []
     export let fileSelected = []
-    $: console.warn({fileChecked})
+    $: console.warn({ fileChecked })
 
     const dispatch = createEventDispatcher()
     const dispatch_fileselect_event = (event) => {
@@ -17,7 +17,6 @@
         dispatch('fileselect', { event, fileChecked })
         // console.log('fileselect event dispatched')
     }
-
 </script>
 
 <div {style}>
@@ -36,7 +35,7 @@
                         bind:group={fileSelected}
                         value={item.name}
                         on:click
-                        on:change="{dispatch_fileselect_event}"
+                        on:change={dispatch_fileselect_event}
                     /></Meta
                 >
             </Item>

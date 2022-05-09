@@ -31,7 +31,6 @@
     let keepAnnotaions = true
 
     async function plotData({ e = null, filetype = 'mass' } = {}) {
-
         // const massfiles = fileChecked.map((file) => pathResolve(currentLocation, file))
         if (!fs.existsSync(currentLocation)) {
             return window.createToast('Location not defined', 'danger')
@@ -110,15 +109,18 @@
     bind:currentLocation
     {graphPlotted}
     bind:fileChecked
-
-    on:fileselect="{(e)=>{
+    on:fileselect={(e) => {
         // fileChecked = e.detail.fileChecked
         // if(fileChecked.length > 0) plotData()
-    }}"
+    }}
 >
     <svelte:fragment slot="buttonContainer">
         <div class="align " style="align-items: center;">
-            <button class="button is-link" id="masspec-plot-btn" on:click={(e) => plotData({ e: e })}>
+            <button
+                class="button is-link"
+                id="masspec-plot-btn"
+                on:click={(e) => plotData({ e: e })}
+            >
                 Masspec Plot</button
             >
 
