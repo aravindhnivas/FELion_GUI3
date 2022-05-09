@@ -1,7 +1,7 @@
 <script>
     import Modal from './Modal.svelte'
     import { fade } from 'svelte/transition'
-    import { afterUpdate } from 'svelte'
+    import { onMount, afterUpdate } from 'svelte'
     import Textfield from '@smui/textfield'
     import CustomSelect from './CustomSelect.svelte'
 
@@ -9,36 +9,69 @@
     export let currentLocation, fullfileslist, fileChecked
     export let active = false
 
-    const settingsVariable = {
+    // const settingsVariable = {
 
-        b0: ['m03_ao09_bl0', 'm03_ao09_high', 'm03_ao09_width'],
-        bq0: 'm03_ao01_bq0',
-        bq5: 'm03_ao03_bq5',
-        q1float: 'm03_ao15_qd1_float',
-        q2float: 'm04_ao09_qd2_float',
-        res: 'm03_ao13_reso',
-        bqLenses: [
+    //     b0: ['m03_ao09_bl0', 'm03_ao09_high', 'm03_ao09_width'],
+    //     bq0: ['m03_ao01_bq0'],
+    //     bq5: ['m03_ao03_bq5'],
+    //     q1float: ['m03_ao15_qd1_float'],
+    //     q2float: ['m04_ao09_qd2_float'],
+    //     res: ['m03_ao13_reso'],
+    //     bqLenses: [
+    //         'm03_ao08_bq1',
+    //         'm03_ao07_bq2',
+    //         'm03_ao06_bq3',
+    //         'm03_ao05_bq4',
+    //     ],
+    //     benderLenses: ['m04_ao01_b_in', 'm04_ao00_b_outer', 'm04_ao02_b_inner'],
+    //     se: [
+    //         'm04_ao03_se_trap_in',
+    //         'm04_ao03_se_delay',
+    //         'm04_ao03_se_high',
+    //         'm04_ao03_se_width',
+    //     ],
+    //     sa: [
+    //         'm04_ao04_sa_trap_out',
+    //         'm04_ao04_sa_delay',
+    //         'm04_ao04_sa_high',
+    //         'm04_ao04_sa_width',
+    //     ],
+    //     trapfloat: ['m04_ao05_trap_float'],
+    //     bl4: ['m04_ao07_bl4'],
+    //     bl5: ['m04_ao08_bl5'],
+    // }
+
+    const settingsVariable = {
+        "B0": ['m03_ao09_bl0', 'm03_ao09_high', 'm03_ao09_width'],
+        "Quad float": ['m03_ao15_qd1_float', 'm04_ao09_qd2_float'],
+        "RES": ['m03_ao13_reso'],
+        "bq lenses": [
+            'm03_ao01_bq0',
             'm03_ao08_bq1',
             'm03_ao07_bq2',
             'm03_ao06_bq3',
             'm03_ao05_bq4',
+            'm03_ao03_bq5'
         ],
-        benderLenses: ['m04_ao01_b_in', 'm04_ao00_b_outer', 'm04_ao02_b_inner'],
-        se: [
+        "bender lenses": [
+            'm04_ao01_b_in',
+            'm04_ao00_b_outer',
+            'm04_ao02_b_inner'
+        ],
+        "SE": [
             'm04_ao03_se_trap_in',
             'm04_ao03_se_delay',
             'm04_ao03_se_high',
             'm04_ao03_se_width',
         ],
-        sa: [
+        "SA": [
             'm04_ao04_sa_trap_out',
             'm04_ao04_sa_delay',
             'm04_ao04_sa_high',
             'm04_ao04_sa_width',
         ],
-        trapfloat: 'm04_ao05_trap_float',
-        bl4: 'm04_ao07_bl4',
-        bl5: 'm04_ao08_bl5',
+        "trap float": ['m04_ao05_trap_float'],
+        "bl lenses": ['m04_ao07_bl4', 'm04_ao08_bl5'],
     }
 
     const style = 'width:14em; height:3.5em; margin-right:0.5em'
@@ -46,7 +79,8 @@
 
     let variableValues = {}
     let settingsLoaded = false
-    afterUpdate(() => {
+
+    const update_settings_values = () => {
         const fullFilename = pathJoin(currentLocation, selected_file)
         console.log(fullFilename)
         settingsLoaded = false
@@ -65,19 +99,28 @@
             }
             settingsLoaded = true
         }
-    })
+    }
+    // afterUpdate()
     let showAllFiles = true
 
     $: displayFiles = showAllFiles ? fullfileslist : fileChecked
 
-    const labelRowB0 = ['B0 Low', 'B0 high', 'B0 Width']
+    // const labelRowB0 = ['B0 Low', 'B0 high', 'B0 Width']
 
-    const labelRowSE = ['Trap-in', 'SE delay', 'SE high', 'SE Width']
-    const labelRowSA = ['Trap-out', 'Trap time (ms)', 'SA high', 'SA Width']
+    // const labelRowSE = ['Trap-in', 'SE delay', 'SE high', 'SE Width']
+    // const labelRowSA = ['Trap-out', 'Trap time (ms)', 'SA high', 'SA Width']
 
-    const bqlensLabel = ['bq1', 'bq2', 'bq3', 'bq4']
-    const benderLabel = ['Bender in', 'Bender outer', 'Bender inner']
+    // const bqlensLabel = ['bq1', 'bq2', 'bq3', 'bq4']
+    // const benderLabel = ['Bender in', 'Bender outer', 'Bender inner']
     let selected_file = ''
+    $: if(selected_file) {update_settings_values()}
+    onMount(()=>{
+
+        if(displayFiles.length > 0) {
+            selected_file = displayFiles[0]
+        }
+    })
+
 </script>
 
 <button
@@ -102,7 +145,7 @@
             />
 
             {#if settingsLoaded}
-                <div class="container">
+                <!-- <div class="container">
                     <div class="b0 col">
                         {#each settingsVariable.b0 as item, index (item)}
                             <Textfield
@@ -205,7 +248,29 @@
                             label="Quad 2 float ({settingsVariable.q2float})"
                         />
                     </div>
-                </div>
+                </div> -->
+
+
+                {#if variableValues}
+                    <div class="container">
+                        {#each Object.keys(settingsVariable) as key (key)}
+                            <div class="row">
+                                <h1>{key}</h1>
+                                <div class="row-contents">
+                                    {#each settingsVariable[key] as label}
+                                        <Textfield
+                                            {style}
+                                            value={variableValues[label] ?? ''}
+                                            {label}
+                                        />
+                                    {/each}
+                                </div>
+                            </div>
+                        {/each}
+                    </div>
+
+                {/if}
+
             {/if}
         </div>
     </Modal>
