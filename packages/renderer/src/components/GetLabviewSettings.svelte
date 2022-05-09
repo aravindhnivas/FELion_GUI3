@@ -7,10 +7,10 @@
 
     import CustomSwitch from './CustomSwitch.svelte'
     export let currentLocation, fullfileslist, fileChecked
-
     export let active = false
 
     const settingsVariable = {
+
         b0: ['m03_ao09_bl0', 'm03_ao09_high', 'm03_ao09_width'],
         bq0: 'm03_ao01_bq0',
         bq5: 'm03_ao03_bq5',
@@ -23,7 +23,6 @@
             'm03_ao06_bq3',
             'm03_ao05_bq4',
         ],
-
         benderLenses: ['m04_ao01_b_in', 'm04_ao00_b_outer', 'm04_ao02_b_inner'],
         se: [
             'm04_ao03_se_trap_in',
@@ -42,7 +41,7 @@
         bl5: 'm04_ao08_bl5',
     }
 
-    const style = 'width:7em; height:3.5em; margin-right:0.5em'
+    const style = 'width:14em; height:3.5em; margin-right:0.5em'
     let fileContents = ''
 
     let variableValues = {}
@@ -109,7 +108,7 @@
                             <Textfield
                                 {style}
                                 value={variableValues[item]}
-                                label={labelRowB0[index]}
+                                label={`${labelRowB0[index]} (${item})`}
                             />
                         {/each}
                     </div>
@@ -118,12 +117,12 @@
                         <Textfield
                             {style}
                             value={variableValues[settingsVariable.q1float]}
-                            label="Quad 1 float"
+                            label="Quad 1 float ({settingsVariable.q1float})"
                         />
                         <Textfield
                             {style}
                             value={variableValues[settingsVariable.bq0]}
-                            label="bq0"
+                            label="bq0 ({settingsVariable.bq0})"
                         />
                     </div>
                     <div class="bqLenses col">
@@ -131,7 +130,7 @@
                             <Textfield
                                 {style}
                                 value={variableValues[item]}
-                                label={bqlensLabel[index]}
+                                label={`${bqlensLabel[index]} (${item})`}
                             />
                         {/each}
                     </div>
@@ -140,7 +139,7 @@
                         <Textfield
                             {style}
                             value={variableValues[settingsVariable.bq5]}
-                            label="bq5"
+                            label="bq5 ({settingsVariable.bq5})"
                         />
                     </div>
                     <div class="benderLenses col">
@@ -148,7 +147,7 @@
                             <Textfield
                                 {style}
                                 value={variableValues[item]}
-                                label={benderLabel[index]}
+                                label={`${benderLabel[index]} (${item})`}
                             />
                         {/each}
                     </div>
@@ -157,7 +156,7 @@
                         <Textfield
                             {style}
                             value={variableValues[settingsVariable.bl4]}
-                            label="bl4"
+                            label="bl4 ({settingsVariable.bl4})"
                         />
                     </div>
                     <div class="se row">
@@ -165,7 +164,7 @@
                             <Textfield
                                 {style}
                                 value={variableValues[item]}
-                                label={labelRowSE[index]}
+                                label={`${labelRowSE[index]} (${item})`}
                             />
                         {/each}
                     </div>
@@ -174,7 +173,7 @@
                         <Textfield
                             {style}
                             value={variableValues[settingsVariable.trapfloat]}
-                            label="trapfloat"
+                            label="trapfloat ({settingsVariable.trapfloat})"
                         />
                     </div>
 
@@ -183,7 +182,7 @@
                             <Textfield
                                 {style}
                                 value={variableValues[item]}
-                                label={labelRowSA[index]}
+                                label={`${labelRowSA[index]} (${item})`}
                             />
                         {/each}
                     </div>
@@ -192,18 +191,18 @@
                         <Textfield
                             {style}
                             value={variableValues[settingsVariable.bl5]}
-                            label="bl5"
+                            label="bl5 ({settingsVariable.bl5})"
                         />
                         <Textfield
                             {style}
                             value={variableValues[settingsVariable.res]}
-                            label="Resolution"
+                            label="Resolution ({settingsVariable.res})"
                         />
 
                         <Textfield
                             {style}
                             value={variableValues[settingsVariable.q2float]}
-                            label="Quad 2 float"
+                            label="Quad 2 float ({settingsVariable.q2float})"
                         />
                     </div>
                 </div>
@@ -213,6 +212,11 @@
 {/if}
 
 <style>
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
     .row,
     .col {
         margin-bottom: 2em;
@@ -222,12 +226,13 @@
     }
     .container {
         display: grid;
-        margin: 1em 6em;
-        overflow-y: auto;
-        max-height: 30vh;
-        border: solid 1px;
+        place-items: center;
+        /* margin: 1em 6em; */
+        /* overflow-y: auto; */
+        /* max-height: 30vh; */
         padding: 1em;
-        border-radius: 1em;
-        justify-content: center;
+        /* border: solid 1px; */
+        /* border-radius: 1em; */
+        /* justify-content: center; */
     }
 </style>
