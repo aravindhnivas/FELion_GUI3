@@ -138,6 +138,7 @@
         flex-wrap: wrap;
         gap: 1em;
         margin-bottom: 1em;
+        margin-top: 1em;
         justify-content: center;
     }
     .files__div {

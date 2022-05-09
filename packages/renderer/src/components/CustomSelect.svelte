@@ -4,6 +4,11 @@
     export let picked = ''
     export let multiple = false
     export let update = null
+    export let auto_init = false
+
+    $: if (!picked && auto_init && options.length > 0) {
+        picked = options[0]
+    }
 </script>
 
 <div class:main_container={update}>

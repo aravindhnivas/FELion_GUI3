@@ -136,7 +136,6 @@ export default async function ({
         })
 
         py.stderr.on('data', (err) => {
-
             const errorString = `${String.fromCharCode.apply(null, err)}\n`
             if (pyfile === 'server') {
                 error = errorString
@@ -145,8 +144,7 @@ export default async function ({
             }
             dispatchEvent(target, { py, pyfile, error }, 'pyEventStderr')
             console.log(`Output from python: ${errorString}`)
-
-    })
+        })
 
         py.stdout.on('data', (data) => {
             loginfo.write(data)

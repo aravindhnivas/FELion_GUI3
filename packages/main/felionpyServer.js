@@ -64,16 +64,14 @@ export async function getPyVersion() {
 let py
 let serverStarting = false
 
-
 export async function startServer(webContents) {
-
     if (serverStarting) {
         console.log('server already starting')
         return
     }
 
     const { db, developerMode, pyProgram, mainpyfile } = getCurrentDevStatus()
-    
+
     const serverDebug = db.get('serverDebug') ?? false
     const dbPORT = db.get('pyServerPORT')
     const availablePORT = await getPort({ port: [5050, 5353, 3000, dbPORT] })

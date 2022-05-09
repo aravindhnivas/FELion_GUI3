@@ -11,14 +11,14 @@
 
 {#if active}
     <Modal bind:active title="Adjust initial guess">
-        <div slot="content">
+        <svelte:fragment slot="content">
             <Table
                 head={['Frequency', 'Amplitude', 'Sigma']}
                 keys={['freq', 'amp', 'sig']}
                 bind:rows={$felixPeakTable}
                 sortOption={true}
             />
-        </div>
+        </svelte:fragment>
         <button
             slot="footerbtn"
             class="button is-link"

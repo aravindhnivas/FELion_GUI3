@@ -1,25 +1,24 @@
 <script>
-    import { createEventDispatcher } from 'svelte'
+    import { onDestroy, createEventDispatcher } from 'svelte'
     export let active = false
     export let title = 'Title'
-    export let style = 'width:60vw'
-    export let contentID = getID()
-    export let bodyBackground = '#634e96'
-    export let headerBackground = '#836ac05c'
-    let className
-    export { className as class }
+    export let height = '70%'
+    export let width = '70%'
 
     const dispatch = createEventDispatcher()
-    
     const modalMounted = (node) => {
         dispatch('mount', { mounted: true })
         return {
             destroy: () => {
                 active = false
-                console.log("modal destroyed")
-            }
+                console.log('modal destroyed')
+            },
         }
     }
+    onDestroy(() => {
+        active = false
+        console.log('modal destroyed')
+    })
 </script>
 
 <svelte:window
@@ -28,14 +27,11 @@
     }}
 />
 
-<div class="modal {className}" class:is-active={active} use:modalMounted>
+<div class="modal" class:is-active={active} use:modalMounted>
     <div class="modal-background" />
 
-    <div class="modal-card animated fadeIn faster" {style}>
-        <header
-            class="modal-card-head"
-            style="background-color: {headerBackground};"
-        >
+    <div class="modal-card animated fadeIn faster" style:height style:width>
+        <header class="modal-card-head">
             <p class="modal-card-title">{title}</p>
             <span
                 class="delete is-pulled-right"
@@ -48,19 +44,20 @@
 
         <section
             class="modal-card-body"
-            style="background: {bodyBackground};"
-            id={contentID}
+            style="overflow-y: {$$slots.body_scrollable__div
+                ? 'hidden'
+                : 'auto'} "
         >
             <slot name="content" style="white-space: pre-wrap;" />
+            <slot name="body_header__div" />
+            <slot name="body_scrollable__div" />
         </section>
 
-        <!-- {#if $$slots.footerbtn} -->
         <footer class="modal-card-foot">
             <div style="margin-left:auto; display:flex;">
                 <slot name="footerbtn" />
             </div>
         </footer>
-        <!-- {/if} -->
     </div>
 </div>
 
@@ -69,6 +66,10 @@
         color: black;
         overflow-y: auto;
         height: 100%;
+        background-color: #634e96;
+    }
+    .modal-card-head {
+        background-color: #836ac05c;
     }
     .delete {
         background-color: #fafafa;
@@ -79,9 +80,9 @@
     .modal-card-title {
         margin: 0 !important;
     }
-    .modal-card {
+    /* .modal-card {
         min-height: 60%;
         max-height: 60%;
-
-    }
+        width: 50%;
+    } */
 </style>

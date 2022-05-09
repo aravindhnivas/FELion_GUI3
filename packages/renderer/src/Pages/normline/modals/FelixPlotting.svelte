@@ -13,9 +13,9 @@
 
 {#if active}
     <Modal bind:active title="FELIX PLOTTING">
-        <div slot="content" style="height:40vh;">
+        <svelte:fragment slot="content">
             <FelixPlotWidgets bind:felixPlotWidgets {theoryLocation} />
-        </div>
+        </svelte:fragment>
         <button
             slot="footerbtn"
             class="button is-link"
