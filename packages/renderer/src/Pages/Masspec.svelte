@@ -8,7 +8,7 @@
     import { plot, plotlyEventsInfo } from '$src/js/functions'
     import { readMassFile } from './masspec/mass'
     import computePy_func from '$src/Pages/general/computePy'
-    import { onDestroy, tick } from 'svelte'
+    import { onDestroy } from 'svelte'
 
     /////////////////////////////////////////////////////////////////////////
 
@@ -22,8 +22,7 @@
         ? fileChecked.map((file) => pathResolve(currentLocation, file))
         : []
     $: if (massfiles.length > 0) plotData()
-    // $: console.log(massfiles)
-    // $: console.log(fileChecked)
+
     let openShell = false
     let graphPlotted = false
     let logScale = true
@@ -38,7 +37,6 @@
     } = {}) {
         if (!overwride_file_limit_warning && fileChecked.length > 25) {
             showConfirm.push({
-                open: true,
                 title: 'Too many files: allowed is 25',
                 content:
                     'Do you want to plot ' + fileChecked.length + ' files?',
@@ -133,10 +131,6 @@
     bind:currentLocation
     {graphPlotted}
     bind:fileChecked
-    on:fileselect={(e) => {
-        // fileChecked = e.detail.fileChecked
-        // if(fileChecked.length > 0) plotData()
-    }}
 >
     <svelte:fragment slot="buttonContainer">
         <div class="align " style="align-items: center;">

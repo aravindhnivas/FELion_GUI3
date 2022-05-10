@@ -9,6 +9,7 @@
             reset: () => set(initial),
             push(obj) {
                 update((n) => {
+                    console.log('push', n, obj)
                     return { ...n, ...obj, open: true }
                 })
             },
@@ -25,14 +26,7 @@
 <script>
     import CustomDialog from './CustomDialog.svelte'
     const labels = { label1: 'Yes', label2: 'Cancel' }
-
-    // $: console.log($showConfirm)
-    // const closeHandler = (response) => {
-    //     // const response = e.detail.response
-    //     console.log(response)
-    //     $showConfirm.callback?.(response)
-    //     showConfirm.reset()
-    // }
+    $: console.log($showConfirm)
 </script>
 
 <CustomDialog

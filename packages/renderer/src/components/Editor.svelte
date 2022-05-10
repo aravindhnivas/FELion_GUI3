@@ -1,8 +1,8 @@
 <script>
+    import { showConfirm } from '$src/components/ConfirmAlert.svelte'
     import { onDestroy } from 'svelte'
     import Textfield from '@smui/textfield'
     import { browse } from '$components/Layout.svelte'
-    import CustomDialog from '$components/CustomDialog.svelte'
     import WinBox from 'winbox/src/js/winbox.js'
     import CustomSwitch from '$components/CustomSwitch.svelte'
 
@@ -71,21 +71,30 @@
         window.createToast('Location updated')
     }
 
-    const saveReport = ({ overwrite = false }) => {
-        try {
-            if (!location)
-                return window.createToast('UNDEFINED location', 'danger')
-            if (fs.existsSync(reportFile) && !overwrite) {
-                overwriteDialogOpen = true
-                return
-            }
-            fs.writeFileSync(reportFile, editor.getData())
-
-            reportSaved = true
-            window.createToast(`${basename(reportFile)} file saved`, 'success')
-        } catch (error) {
-            window.handleError(error)
+    const writeReport = async () => {
+        const contents = editor.getData()
+        const [, error] = await fs.writeFile(reportFile, contents, 'utf8')
+        if (error) {
+            return window.createToast("Report couldn't be saved.", 'danger')
         }
+        window.createToast('Report saved', 'success')
+        console.log('report writted: ', basename(reportFile))
+        reportSaved = true
+    }
+
+    const saveReport = () => {
+        if (!location) {
+            return window.createToast('Invalid location', 'danger')
+        }
+        if (!fs.existsSync(reportFile)) return writeReport()
+        return showConfirm.push({
+            title: 'Overwrite?',
+            content: `Do you want to overwrite ${basename(reportFile)}?`,
+            callback: (response) => {
+                if (response?.toLowerCase() === 'cancel') return
+                writeReport()
+            },
+        })
     }
 
     let reportWindowClosed = true
@@ -132,25 +141,7 @@
     $: if (reportFile && autoRead) {
         readFromFile()
     }
-    let overwriteResponse = ''
-    $: if (overwriteResponse) {
-        console.log(overwriteResponse)
-        const overwrite = overwriteResponse.toLowerCase() === 'yes'
-        saveReport({ overwrite })
-        overwriteResponse = ''
-    }
-    let overwriteDialogOpen = false
 </script>
-
-<CustomDialog
-    id="report-overwrite"
-    title={'Overwrite?'}
-    bind:open={overwriteDialogOpen}
-    bind:response={overwriteResponse}
-    content={`${window.basename(
-        reportFile
-    )} already exists. Do you want to overwrite it?`}
-/>
 
 <div class="report_main__div align">
     <div class="notice__div">

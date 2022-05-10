@@ -1,10 +1,10 @@
 <script>
+    import { showConfirm } from '$src/components/ConfirmAlert.svelte'
     import Textfield from '@smui/textfield'
     import HelperText from '@smui/textfield/helper-text'
     import Checkbox from '@smui/checkbox'
     import FormField from '@smui/form-field'
     import { browse } from '../components/Layout.svelte'
-    import CustomDialog from '../components/CustomDialog.svelte'
 
     const writePowfile = async () => {
         const contents = `${initContent.trim()}\n${powerfileContent}`.trim()
@@ -14,19 +14,25 @@
             return window.createToast("Power file couldn't be saved.", 'danger')
         }
         window.createToast('Power file saved', 'success')
+        console.log('powerfile writted: ', powfile)
     }
 
-    async function savefile() {
-        console.log('Saving powerfile: ', powfile)
+    function savefile() {
         if (location.length == 0) {
             return openFolder({ save: true })
         }
-        const overwrite = await fs.existsSync(powfile)
-        if (overwrite) {
-            overwriteDialogOpen = true
-        } else {
-            writePowfile()
-        }
+        console.log(fs.existsSync(powfile))
+        if (!fs.existsSync(powfile)) return writePowfile()
+        return showConfirm.push({
+            // open: true,
+            title: 'Overwrite powerfile?',
+            content: 'Do you want to overwrite the powerfile?',
+            callback: (response) => {
+                console.log(response)
+                if (response?.toLowerCase() === 'cancel') return
+                writePowfile()
+            },
+        })
     }
 
     async function openFolder({ save = false } = {}) {
@@ -63,24 +69,9 @@
         `#    IN${conversion}UM (if one deletes the no the firs number will be in \mu m\n` +
         `# wavelength/cm-1      energy/pulse/mJ\n`
 
-    let overwriteResponse = ''
-    let overwriteDialogOpen = false
-
-    $: if (overwriteResponse === 'Yes') {
-        overwriteResponse = ''
-        writePowfile()
-    }
     const id = 'Powerfile'
     let display = window.db.get('active_tab') === id ? 'block' : 'none'
 </script>
-
-<CustomDialog
-    id="powerfile-overwrite"
-    title={'Overwrite?'}
-    bind:open={overwriteDialogOpen}
-    bind:response={overwriteResponse}
-    content={`${filename} already exists. Do you want to overwrite it?`}
-/>
 
 <section class="section animated fadeIn" {id} style="display:{display}">
     <div class="box main__container" id="powfileContainer">
