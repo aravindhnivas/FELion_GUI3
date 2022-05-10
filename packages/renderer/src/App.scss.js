@@ -1,5 +1,6 @@
 // css
 import 'cooltipz-css'
+import './scss/variables.css'
 // import 'ldbutton/dist/ldbtn.css'
 import 'svelte-material-ui/bare.css'
 import 'winbox/src/css/winbox.css'
