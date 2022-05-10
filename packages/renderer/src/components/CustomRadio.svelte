@@ -2,9 +2,9 @@
     import Radio from '@smui/radio'
     import FormField from '@smui/form-field'
 
-    export let options = [],
-        selected = '',
-        style = ''
+    export let options = []
+    export let selected = ''
+    export let style = ''
 </script>
 
 {#each options as option}
