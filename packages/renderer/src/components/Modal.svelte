@@ -1,24 +1,23 @@
 <script>
-    import { onDestroy, createEventDispatcher } from 'svelte'
+    import { createEventDispatcher } from 'svelte'
+
     export let active = false
     export let title = 'Title'
     export let height = '70%'
     export let width = '70%'
 
     const dispatch = createEventDispatcher()
-    const modalMounted = (node) => {
-        dispatch('mount', { mounted: true })
+
+    const mount = (node) => {
+        dispatch('mount', { node })
+
         return {
             destroy: () => {
-                active = false
+                dispatch('close')
                 console.log('modal destroyed')
             },
         }
     }
-    onDestroy(() => {
-        active = false
-        console.log('modal destroyed')
-    })
 </script>
 
 <svelte:window
@@ -27,7 +26,7 @@
     }}
 />
 
-<div class="modal" class:is-active={active} use:modalMounted>
+<div class="modal" class:is-active={active} use:mount>
     <div class="modal-background" />
 
     <div class="modal-card animated fadeIn faster" style:height style:width>
