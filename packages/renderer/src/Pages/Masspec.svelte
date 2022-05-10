@@ -1,5 +1,5 @@
 <script>
-    import { confirmbox } from '$src/svelteWritable'
+    import { showConfirm } from '$src/components/ConfirmAlert.svelte'
     import Layout from '$components/Layout.svelte'
     import CustomSwitch from '$components/CustomSwitch.svelte'
     import CustomIconSwitch from '$components/CustomIconSwitch.svelte'
@@ -36,14 +36,16 @@
         filetype = 'mass',
         overwride_file_limit_warning = false,
     } = {}) {
-        if (!overwride_file_limit_warning && fileChecked.length > 30) {
-            confirmbox.show({
-                title: 'Too many files',
+        if (!overwride_file_limit_warning && fileChecked.length > 25) {
+            showConfirm.push({
+                open: true,
+                title: 'Too many files: allowed is 25',
                 content:
                     'Do you want to plot ' + fileChecked.length + ' files?',
                 callback: (response) => {
+                    if (!response) return console.warn('response: ', response)
                     console.log(response)
-                    if (response.toLowerCase() === 'cancel') return
+                    if (response?.toLowerCase() === 'cancel') return
                     plotData({
                         e,
                         filetype,

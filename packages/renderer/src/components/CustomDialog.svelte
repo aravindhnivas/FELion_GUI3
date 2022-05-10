@@ -2,7 +2,6 @@
     import { createEventDispatcher } from 'svelte'
     import Dialog, { Title, Content, Actions, InitialFocus } from '@smui/dialog'
     import Button, { Label } from '@smui/button'
-
     export let id = getID()
     export let title = ''
     export let open = false
@@ -10,17 +9,24 @@
     export let label1 = 'Yes'
     export let label2 = 'Cancel'
     export let response = 'Yes'
+    export let callback = null
 
     const dispatch = createEventDispatcher()
+
+    const closeHandler = (event) => {
+        const response = event.detail.action
+        callback?.(response)
+        dispatch('response', { event, response })
+    }
 </script>
 
 <Dialog
     bind:open
     aria-labelledby="{id}-title"
     aria-describedby="{id}-content"
-    on:SMUIDialog:closed={(event) => {
-        dispatch('closed', { event, response: event.detail.action })
-    }}
+    scrimClickAction=""
+    escapeKeyAction=""
+    on:SMUIDialog:closed={closeHandler}
 >
     <Title id="{id}-title">{title}</Title>
     <Content id="{id}-content">{content}</Content>
