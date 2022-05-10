@@ -1,11 +1,10 @@
 <script>
-    import { tick, onMount, afterUpdate, createEventDispatcher } from 'svelte'
+    import { onMount, afterUpdate, createEventDispatcher } from 'svelte'
     import { slide } from 'svelte/transition'
     import Textfield from '@smui/textfield'
     import CustomSwitch from '$components/CustomSwitch.svelte'
     import CustomIconSwitch from '$components/CustomIconSwitch.svelte'
     import VirtualCheckList from '$components/VirtualCheckList.svelte'
-
     export let filetype = '*.*'
     export let markedFile = ''
     export let fileChecked = []
