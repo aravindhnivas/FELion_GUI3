@@ -65,9 +65,7 @@
                     .filter(
                         (file) =>
                             fileIncludePattern.test(file) &&
-                            fs
-                                .lstatSync(pathJoin(currentLocation, file))
-                                .isFile()
+                            fs.isFile(pathJoin(currentLocation, file))
                     )
                     .map((file) => (file = { name: file, id: getID() }))
                     .sort((a, b) => (a.name < b.name ? 1 : -1))
@@ -75,9 +73,7 @@
                 fullfileslist = fullfiles.map((file) => (file = file.name))
                 otherfolders = folderfile
                     .filter((file) =>
-                        fs
-                            .lstatSync(pathJoin(currentLocation, file))
-                            .isDirectory()
+                        fs.isDirectory(pathJoin(currentLocation, file))
                     )
                     .map((file) => (file = { name: file, id: getID() }))
                     .sort((a, b) => (a.name > b.name ? 1 : -1))
@@ -132,19 +128,6 @@
             updateFiles()
         }
     })
-
-    async function selectRange(event) {
-        await tick()
-        if (event.shiftKey && fileChecked.length) {
-            const _from = fullfileslist.indexOf(fileChecked.at(0))
-            const _to = fullfileslist.indexOf(fileChecked.at(-1))
-            if (_from < _to) {
-                fileChecked = fullfileslist.slice(_from, _to + 1)
-            } else {
-                fileChecked = fullfileslist.slice(_to, _from + 1)
-            }
-        }
-    }
 
     $: if (currentLocation) {
         fileChecked = []
@@ -209,17 +192,14 @@
         <div class="mdc-typography--subtitle1 align center">...loading</div>
     {:then value}
         {#if fullfiles.length && mounted}
-            <div on:click={selectRange}>
-                <VirtualCheckList
-                    on:fileselect
-                    bind:fileChecked
-                    {fileSelected}
-                    items={fullfiles}
-                    {markedFile}
-                    {selectAll}
-                    on:click={get_marked_file}
-                />
-            </div>
+            <VirtualCheckList
+                on:fileselect
+                bind:fileChecked
+                {fileSelected}
+                items={fullfiles}
+                {markedFile}
+                on:click={get_marked_file}
+            />
         {:else if fullfiles.length <= 0}
             <div>No {filetype} here! or try reload files</div>
         {/if}

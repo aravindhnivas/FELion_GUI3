@@ -39,11 +39,29 @@ function openModalStore() {
     }
 }
 
+const makeStore = (initial) => {
+
+    const { subscribe, set, update } = writable(initial)
+    return {
+        subscribe,
+        set,
+        update,
+        reset: () => set(initial),
+        show: (value) => {
+            update((n) => {
+                return { ...n, ...value, open: true }
+            })
+        }
+    }
+
+}
+
 export const mainPreModal = openModalStore()
 export const activePage = writable('')
 export const running_processes = writable([])
+export const updateInterval = writable(db.get('updateInterval'))
 
+export const confirmbox = makeStore({title: 'Confirm', content: '', open: false, response: 'Cancel', callback: () => {}})
 if (!db.has('updateInterval')) {
     db.set('updateInterval', 15)
 }
-export const updateInterval = writable(db.get('updateInterval'))

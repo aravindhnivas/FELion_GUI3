@@ -1,5 +1,6 @@
 <script>
-    import { windowLoaded } from './js/functions'
+    // import { windowLoaded } from './js/functions'
+    // import { confirmbox } from '$src/svelteWritable'
     import Navbar from '$components/Navbar.svelte'
     import Footer from '$components/Footer.svelte'
     import Home from './Pages/Home.svelte'
@@ -13,6 +14,7 @@
     import Misc from './Pages/Misc.svelte'
     import Kinetics from './Pages/Kinetics.svelte'
     import PreModal from '$components/PreModal.svelte'
+    import ConfirmAlert from '$components/ConfirmAlert.svelte'
     import { onMount, tick } from 'svelte'
     import { SvelteToast } from '@zerodevx/svelte-toast'
     let mounted = false
@@ -23,7 +25,7 @@
         await tick()
         mounted = true
     })
-
+    // const distpatcher = createEventDispatcher()
     const navItems = [
         'Home',
         'Normline',
@@ -38,31 +40,31 @@
     const toastOpts = { reversed: true, intro: { y: 100 } }
 </script>
 
-{#if $windowLoaded}
-    {#if mounted}
-        <PreModal />
-        <SvelteToast options={toastOpts} />
-    {/if}
+<!-- {#if $windowLoaded} -->
+<!-- {#if mounted} -->
+<PreModal />
+<SvelteToast options={toastOpts} />
+<!-- {/if} -->
+<ConfirmAlert />
+<Navbar {navItems} />
+<Home />
 
-    <Navbar {navItems} />
-    <Home />
+<div
+    id="pageContainer"
+    style="overflow: hidden;display: {mounted ? 'block' : 'none'}"
+>
+    <Normline />
+    <Masspec />
+    <Timescan />
+    <THz />
+    <Kinetics />
+    <Powerfile />
+    <Misc />
+    <Settings />
+</div>
+<Footer />
 
-    <div
-        id="pageContainer"
-        style="overflow: hidden;display: {mounted ? 'block' : 'none'}"
-    >
-        <Normline />
-        <Masspec />
-        <Timescan />
-        <THz />
-        <Kinetics />
-        <Powerfile />
-        <Misc />
-        <Settings />
-    </div>
-    <Footer />
-{/if}
-
+<!-- {/if} -->
 <style global>
     :root {
         --toastContainerTop: auto;

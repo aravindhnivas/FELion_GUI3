@@ -1,10 +1,11 @@
 import get_files_settings_values from '$src/js/get_files_settings_values'
 
 export async function readMassFile(massfiles) {
+    
     const loadbtn = document.getElementById('masspec-plot-btn')
     if (loadbtn.classList.contains('is-loading')) {
-        const warnmsg = 'Wait untill the previous file is plotted'
-        console.warn(warnmsg)
+        const warnmsg = 'Wait untill the previous file(s) are plotted'
+        window.createToast(warnmsg, 'warning')
         return [null, warnmsg]
     }
 

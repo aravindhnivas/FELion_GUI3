@@ -24,10 +24,10 @@
 
         if (fs.existsSync(theoryLocation)) {
             fs.readdirSync(theoryLocation).forEach((file) => {
-                const isfile = fs
+                const isFile = fs
                     .lstatSync(pathJoin(theoryLocation, file))
                     .isFile()
-                if (isfile) {
+                if (isFile) {
                     calcfiles = [...calcfiles, { name: file, id: getID() }]
                 }
             })

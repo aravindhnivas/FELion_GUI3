@@ -1,4 +1,5 @@
 <script>
+    import { confirmbox } from '$src/svelteWritable'
     import Layout from '$components/Layout.svelte'
     import CustomSwitch from '$components/CustomSwitch.svelte'
     import CustomIconSwitch from '$components/CustomIconSwitch.svelte'
@@ -30,8 +31,29 @@
 
     let keepAnnotaions = true
 
-    async function plotData({ e = null, filetype = 'mass' } = {}) {
-        // const massfiles = fileChecked.map((file) => pathResolve(currentLocation, file))
+    async function plotData({
+        e = null,
+        filetype = 'mass',
+        overwride_file_limit_warning = false,
+    } = {}) {
+        if (!overwride_file_limit_warning && fileChecked.length > 30) {
+            confirmbox.show({
+                title: 'Too many files',
+                content:
+                    'Do you want to plot ' + fileChecked.length + ' files?',
+                callback: (response) => {
+                    console.log(response)
+                    if (response.toLowerCase() === 'cancel') return
+                    plotData({
+                        e,
+                        filetype,
+                        overwride_file_limit_warning: true,
+                    })
+                },
+            })
+            return
+        }
+
         if (!fs.existsSync(currentLocation)) {
             return window.createToast('Location not defined', 'danger')
         }
