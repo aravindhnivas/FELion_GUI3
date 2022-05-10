@@ -1,28 +1,32 @@
 <script>
+    import { onMount } from 'svelte'
+    import { SvelteToast } from '@zerodevx/svelte-toast'
+
     import Navbar from '$components/Navbar.svelte'
     import Footer from '$components/Footer.svelte'
+    import PreModal from '$components/PreModal.svelte'
+    import ConfirmAlert from '$src/components/alert/ConfirmAlert.svelte'
+
     import Home from './Pages/Home.svelte'
+
     import Powerfile from './Pages/Powerfile.svelte'
+
     import Normline from './Pages/Normline.svelte'
     import Masspec from './Pages/Masspec.svelte'
     import Timescan from './Pages/Timescan.svelte'
     import THz from './Pages/THz.svelte'
+    import Kinetics from './Pages/Kinetics.svelte'
+    import Misc from './Pages/Misc.svelte'
     import Settings from './Pages/Settings.svelte'
 
-    import Misc from './Pages/Misc.svelte'
-    import Kinetics from './Pages/Kinetics.svelte'
-    import PreModal from '$components/PreModal.svelte'
-    import ConfirmAlert from '$src/components/alert/ConfirmAlert.svelte'
-    import { onMount, tick } from 'svelte'
-    import { SvelteToast } from '@zerodevx/svelte-toast'
     let mounted = false
 
-    onMount(async () => {
+    onMount(() => {
         const allbuttons = Array.from(document.querySelectorAll('.button'))
         allbuttons.forEach((button) => button.classList.add('hvr-glow'))
-        await tick()
         mounted = true
     })
+
     const navItems = [
         'Home',
         'Normline',
@@ -58,12 +62,3 @@
     <Settings />
 </div>
 <Footer />
-
-<style global>
-    :root {
-        --toastContainerTop: auto;
-        --toastContainerRight: auto;
-        --toastContainerBottom: 3rem;
-        --toastContainerLeft: calc(50vw - 8rem);
-    }
-</style>
