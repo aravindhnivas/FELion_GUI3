@@ -1,0 +1,6 @@
+{
+    "max_files_to_plot": {
+        "value": 25,
+        "component": "Textfield"
+    }
+}

@@ -2,32 +2,30 @@
     import { showConfirm } from '$src/components/alert/store'
     import Layout from '$components/Layout.svelte'
     import CustomSwitch from '$components/CustomSwitch.svelte'
-    import CustomIconSwitch from '$components/CustomIconSwitch.svelte'
     import GetLabviewSettings from '$components/GetLabviewSettings.svelte'
+    import Configs, { configs } from '$src/Pages/masspec/configs/Configs.svelte'
     import { relayout } from 'plotly.js/dist/plotly-basic'
     import { plot, plotlyEventsInfo } from '$src/js/functions'
     import { readMassFile } from './masspec/mass'
     import computePy_func from '$src/Pages/general/computePy'
     import { onDestroy } from 'svelte'
-
     /////////////////////////////////////////////////////////////////////////
 
-    // Initialisation
     const filetype = 'mass'
     const id = 'Masspec'
+
     let fileChecked = []
-    // let massfiles = []
     let currentLocation = ''
+
     $: massfiles = fs.existsSync(currentLocation)
         ? fileChecked.map((file) => pathResolve(currentLocation, file))
         : []
     $: if (massfiles.length > 0) plotData()
+    // $: console.log($configs.max_files_to_plot.value)
 
-    let openShell = false
     let graphPlotted = false
     let logScale = true
     let selected_file = ''
-
     let keepAnnotaions = true
 
     async function plotData({
@@ -35,9 +33,14 @@
         filetype = 'mass',
         overwride_file_limit_warning = false,
     } = {}) {
-        if (!overwride_file_limit_warning && fileChecked.length > 25) {
+        if (
+            !overwride_file_limit_warning &&
+            fileChecked.length > $configs['max_files_to_plot'].value
+        ) {
             showConfirm.push({
-                title: 'Too many files: allowed is 25',
+                title:
+                    'Too many files: allowed is' +
+                    $configs['max_files_to_plot'].value,
                 content:
                     'Do you want to plot ' + fileChecked.length + ' files?',
                 callback: (response) => {
@@ -147,7 +150,6 @@
                 {fullfileslist}
                 {fileChecked}
             />
-
             <button
                 class="button is-link"
                 on:click={(e) => plotData({ e: e, filetype: 'general' })}
@@ -155,11 +157,6 @@
                 Open in Matplotlib</button
             >
 
-            <CustomIconSwitch
-                style="padding:0;"
-                bind:toggler={openShell}
-                icons={['settings_ethernet', 'code']}
-            />
             <CustomSwitch
                 style="margin: 0 1em;"
                 on:SMUISwitch:change={linearlogCheck}
@@ -187,6 +184,12 @@
                     relayout('mplot', { annotations: [] })
                 }}>Clear</button
             >
+        </div>
+    </svelte:fragment>
+
+    <svelte:fragment slot="config">
+        <div class="align">
+            <Configs />
         </div>
     </svelte:fragment>
 </Layout>
