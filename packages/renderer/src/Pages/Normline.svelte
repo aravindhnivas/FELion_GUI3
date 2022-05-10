@@ -178,7 +178,7 @@
 
         <div class="align">
             <CustomRadio
-                bind:selected={$normMethod}
+                bind:value={$normMethod}
                 options={['Log', 'Relative', 'IntensityPerPhoton']}
             />
             <IconButton
