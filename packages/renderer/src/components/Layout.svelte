@@ -28,7 +28,7 @@
 </script>
 
 <script>
-    import { onMount, tick, createEventDispatcher } from 'svelte'
+    import { onMount, createEventDispatcher, tick, onDestroy } from 'svelte'
     import { fly, fade } from 'svelte/transition'
     import Textfield from '@smui/textfield'
     import { relayout } from 'plotly.js/dist/plotly-basic'
@@ -47,7 +47,7 @@
     export let fullfileslist = []
     export let currentLocation = ''
     export let graphPlotted = false
-    export let graphWindowClasses = ['no-full']
+    // export let graphWindowClasses = ['no-full']
     export let activateConfigModal = false
 
     ////////////////////////////////////////////////////////////////////////////
@@ -60,13 +60,14 @@
         window.db.set(`${filetype}_location`, currentLocation)
         console.log(result, currentLocation)
     }
-
     onMount(() => {
+        graphPlotted = false
         console.log(id, 'mounted')
         currentLocation = window.db.get(`${filetype}_location`) || ''
     })
-    let graphDivContainer
 
+    let graphDivContainer
+    let graphDivs = []
     const lookForGraph = (node) => {
         try {
             graphDivs = Array.from(
@@ -79,9 +80,12 @@
         }
     }
 
+    let graphWindow
+    let graphwindowClosed = false
     function openGraph() {
-        const graphWindow = new WinBox({
-            class: graphWindowClasses,
+        graphwindowClosed = false
+        graphWindow = new WinBox({
+            class: ['no-full'],
             root: document.getElementById('pageContainer'),
             mount: graphDivContainer,
             title: `Modal: ${filetype}`,
@@ -92,20 +96,33 @@
             background: '#634e96',
             top: 50,
             bottom: 50,
+            onclose: () => {
+                graphwindowClosed = true
+            },
         })
-        graphWindow.maximize(true)
+        graphWindow?.maximize(true)
+        changeGraphDivWidth()
     }
 
-    let graphDivs = []
-    const changeGraphDivWidth = async (e) => {
+    $: if (graphwindowClosed) {
+        console.log('graphwindowClosed')
+        changeGraphDivWidth()
+    }
+
+    const changeGraphDivWidth = async () => {
         console.log('Updating graphDivs width')
         await tick()
-        graphDivs.forEach((id) => {
-            if (id.data) {
+        graphDivs?.forEach((id) => {
+            if (id?.data) {
                 relayout(id, { width: id.clientWidth })
             }
         })
     }
+
+    onDestroy(() => {
+        graphWindow?.close()
+        console.log(id, 'destroyed')
+    })
 </script>
 
 <section {id} style:display class="animated fadeIn">
@@ -229,6 +246,7 @@
             display: grid;
             grid-template-rows: auto auto auto 1fr;
             width: 100%;
+            min-width: 300px;
         }
 
         .left_container__div,
