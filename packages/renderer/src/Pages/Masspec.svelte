@@ -1,5 +1,5 @@
 <script>
-    import { showConfirm } from '$src/components/ConfirmAlert.svelte'
+    import { showConfirm } from '$src/components/alert/store'
     import Layout from '$components/Layout.svelte'
     import CustomSwitch from '$components/CustomSwitch.svelte'
     import CustomIconSwitch from '$components/CustomIconSwitch.svelte'

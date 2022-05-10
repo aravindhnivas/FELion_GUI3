@@ -1,5 +1,5 @@
 <script>
-    import { showConfirm } from '$src/components/ConfirmAlert.svelte'
+    import { showConfirm } from '$src/components/alert/store'
     import Textfield from '@smui/textfield'
     import HelperText from '@smui/textfield/helper-text'
     import Checkbox from '@smui/checkbox'
@@ -21,10 +21,8 @@
         if (location.length == 0) {
             return openFolder({ save: true })
         }
-        console.log(fs.existsSync(powfile))
         if (!fs.existsSync(powfile)) return writePowfile()
         return showConfirm.push({
-            // open: true,
             title: 'Overwrite powerfile?',
             content: 'Do you want to overwrite the powerfile?',
             callback: (response) => {

@@ -1,5 +1,5 @@
 <script>
-    import { showConfirm } from '$src/components/ConfirmAlert.svelte'
+    import { showConfirm } from '$src/components/alert/store'
     import { onDestroy } from 'svelte'
     import Textfield from '@smui/textfield'
     import { browse } from '$components/Layout.svelte'

@@ -12,7 +12,7 @@
     import Misc from './Pages/Misc.svelte'
     import Kinetics from './Pages/Kinetics.svelte'
     import PreModal from '$components/PreModal.svelte'
-    import ConfirmAlert from '$src/components/ConfirmAlert.svelte'
+    import ConfirmAlert from '$src/components/alert/ConfirmAlert.svelte'
     import { onMount, tick } from 'svelte'
     import { SvelteToast } from '@zerodevx/svelte-toast'
     let mounted = false
