@@ -191,7 +191,7 @@
 
         <div class="align" class:hide={!showMoreOptions}>
             <CustomSelect
-                bind:picked={plotfile}
+                bind:value={plotfile}
                 label="plotfile"
                 options={plotfileOptions}
             />

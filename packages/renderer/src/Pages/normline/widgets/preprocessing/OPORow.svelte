@@ -139,7 +139,7 @@
             Browse File</button
         >
         <CustomSelect
-            bind:picked={calibFile}
+            bind:value={calibFile}
             label="Calib. file"
             options={OPOcalibFiles}
         />

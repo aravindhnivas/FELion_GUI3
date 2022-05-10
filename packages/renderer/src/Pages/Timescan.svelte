@@ -217,12 +217,12 @@
 
         <div class="align animated fadeIn" class:hide={toggleRow}>
             <CustomSelect
-                bind:picked={resON_Files}
+                bind:value={resON_Files}
                 label="ResOn"
                 options={fullfiles}
             />
             <CustomSelect
-                bind:picked={resOFF_Files}
+                bind:value={resOFF_Files}
                 label="ResOFF"
                 options={fullfiles}
             />

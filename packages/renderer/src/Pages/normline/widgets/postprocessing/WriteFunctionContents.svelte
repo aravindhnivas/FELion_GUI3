@@ -11,7 +11,7 @@
 
 <div class="align">
     <CustomSelect
-        bind:picked={$felixOutputName}
+        bind:value={$felixOutputName}
         label="Output filename"
         options={output_namelists}
     />

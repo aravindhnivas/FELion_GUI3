@@ -517,7 +517,7 @@
 
             <div class="align box h-center">
                 <CustomSelect
-                    bind:picked={selectedFile}
+                    bind:value={selectedFile}
                     label="Filename"
                     options={fileCollections}
                 />
@@ -579,7 +579,7 @@
                         label="use params file"
                     />
                     <CustomSelect
-                        bind:picked={$kinetics_params_file}
+                        bind:value={$kinetics_params_file}
                         label="save-params file (*.params.json)"
                         options={config_filelists.filter((file) =>
                             file.endsWith('.params.json')
@@ -621,7 +621,7 @@
                 <Textfield bind:value={kCIDGuess} label="kCIDGuess" />
 
                 <CustomSelect
-                    bind:picked={$fit_config_filename}
+                    bind:value={$fit_config_filename}
                     label="fit-config file (*.fit.json)"
                     options={config_filelists.filter((file) =>
                         file.endsWith('.fit.json')

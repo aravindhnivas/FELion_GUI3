@@ -1,13 +1,13 @@
 <script>
     export let options = []
     export let label = ''
-    export let picked = ''
+    export let value = ''
     export let multiple = false
     export let update = null
     export let auto_init = false
 
-    $: if (!picked && auto_init && options.length > 0) {
-        picked = options[0]
+    $: if (!value && auto_init && options.length > 0) {
+        value = options[0]
     }
 </script>
 
@@ -16,7 +16,7 @@
         {#if multiple}
             <select
                 multiple
-                bind:value={picked}
+                bind:value
                 {label}
                 size={options.length}
                 on:change
@@ -27,7 +27,7 @@
                 {/each}
             </select>
         {:else}
-            <select bind:value={picked} {label} on:change on:click>
+            <select bind:value {label} on:change on:click>
                 <optgroup {label}>
                     {#each options as option}
                         <option value={option}>{option}</option>

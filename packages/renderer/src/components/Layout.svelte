@@ -189,6 +189,7 @@
 
         {#if activateConfigModal}
             <Modal
+                on:close={() => console.log('modal closed')}
                 title="{filetype.toUpperCase()} Settings"
                 bind:active={activateConfigModal}
             >
@@ -200,7 +201,7 @@
                     <button
                         class="button is-link"
                         on:click={() => {
-                            dispatch('configSave', { filetype })
+                            dispatch('configsaved', { filetype })
                         }}>Save</button
                     >
                 </svelte:fragment>

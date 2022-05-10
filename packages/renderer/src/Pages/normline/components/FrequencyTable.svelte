@@ -39,15 +39,15 @@
 <div class="align v-center">
     <div class="notice__div">Frequency table</div>
     <CustomCheckbox
-        bind:selected={show_dataTable_only_averaged}
+        bind:value={show_dataTable_only_averaged}
         label="Only Averaged"
     />
 
     <CustomCheckbox
-        bind:selected={show_dataTable_only_weighted_averaged}
+        bind:value={show_dataTable_only_weighted_averaged}
         label="Only weighted Averaged"
     />
-    <CustomCheckbox bind:selected={keepTable} label="Keep table" />
+    <CustomCheckbox bind:value={keepTable} label="Keep table" />
 
     <button
         class="button is-danger"

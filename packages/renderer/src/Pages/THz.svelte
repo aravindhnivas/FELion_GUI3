@@ -222,13 +222,13 @@
                 Plot
             </button>
 
-            <CustomCheckbox bind:selected={binData} label="Bin" />
-            <CustomCheckbox bind:selected={saveInMHz} label="saveInMHz" />
-            <CustomCheckbox bind:selected={showRawData} label="showRawData" />
+            <CustomCheckbox bind:value={binData} label="Bin" />
+            <CustomCheckbox bind:value={saveInMHz} label="saveInMHz" />
+            <CustomCheckbox bind:value={showRawData} label="showRawData" />
 
-            <CustomCheckbox bind:selected={showall} label="show all" />
+            <CustomCheckbox bind:value={showall} label="show all" />
             <CustomSelect
-                bind:picked={plotfile}
+                bind:value={plotfile}
                 label="plotfile"
                 options={[...fileChecked, 'averaged']}
             />
@@ -251,12 +251,12 @@
                 >settings</i
             >
             <CustomSelect
-                bind:picked={fitfile}
+                bind:value={fitfile}
                 label="fitfile"
                 options={[...fileChecked, 'averaged']}
             />
             <CustomSelect
-                bind:picked={fitMethod}
+                bind:value={fitMethod}
                 label="fit method"
                 options={['gaussian', 'lorentz', 'voigt']}
             />

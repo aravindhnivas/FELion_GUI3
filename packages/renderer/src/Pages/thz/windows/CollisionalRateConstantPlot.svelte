@@ -222,7 +222,7 @@
             <button class="button is-link" on:click={fitDataFunction}
                 >Fit Data</button
             >
-            <CustomCheckbox bind:selected={autoCompute} label="autoCompute" />
+            <CustomCheckbox bind:value={autoCompute} label="autoCompute" />
         </div>
     </svelte:fragment>
 

@@ -101,7 +101,7 @@
         <h1 class="subtitle">Boolean Widgets</h1>
         <div class="widgets">
             {#each felixPlotWidgets.boolean as { label, value, id } (id)}
-                <CustomCheckbox bind:selected={value} {label} />
+                <CustomCheckbox bind:value {label} />
             {/each}
         </div>
     </div>

@@ -79,7 +79,7 @@
 
     <svelte:fragment slot="footer">
         <div class="align">
-            <CustomCheckbox bind:selected={varyAll} label="varyAll" />
+            <CustomCheckbox bind:value={varyAll} label="varyAll" />
             <button class="button is-link" on:click={getValuesFromAnnotations}
                 >getValuesFromAnnotations</button
             >

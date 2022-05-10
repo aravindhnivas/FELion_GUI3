@@ -75,7 +75,7 @@
             />
 
             <CustomSelect
-                bind:picked={$config_filename}
+                bind:value={$config_filename}
                 label="config file (*.config.json)"
                 options={config_filelists.filter((file) =>
                     file.endsWith('.config.json')

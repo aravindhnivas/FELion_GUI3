@@ -529,22 +529,19 @@
 
         <div class="align box" style="border: solid 1px #fff9;">
             <CustomCheckbox
-                bind:selected={includeCollision}
+                bind:value={includeCollision}
                 label="includeCollision"
             />
             <CustomCheckbox
-                bind:selected={includeAttachmentRate}
+                bind:value={includeAttachmentRate}
                 label="includeAttachmentRate"
             />
             <CustomCheckbox
-                bind:selected={includeSpontaneousEmission}
+                bind:value={includeSpontaneousEmission}
                 label="includeSpontaneousEmission"
             />
-            <CustomCheckbox
-                bind:selected={electronSpin}
-                label="Electron Spin"
-            />
-            <CustomCheckbox bind:selected={zeemanSplit} label="Zeeman" />
+            <CustomCheckbox bind:value={electronSpin} label="Electron Spin" />
+            <CustomCheckbox bind:value={zeemanSplit} label="Zeeman" />
         </div>
 
         <div
@@ -564,7 +561,7 @@
                 {/if}
                 <CustomSelect
                     options={variablesList}
-                    bind:picked={variable}
+                    bind:value={variable}
                     label="variable"
                 />
                 <button class="button is-link" on:click={loadConfig}
@@ -616,7 +613,7 @@
                     />
                     <CustomSelect
                         options={['MHz', 'cm-1']}
-                        bind:picked={energyUnit}
+                        bind:value={energyUnit}
                         label="energyUnit"
                     />
                     <button
@@ -656,13 +653,13 @@
                 <div class="align h-center">
                     <CustomSelect
                         options={energyLevels.map((f) => f.label)}
-                        bind:picked={excitedFrom}
+                        bind:value={excitedFrom}
                         label="excitedFrom"
                         on:change={updateEnergyLevels}
                     />
                     <CustomSelect
                         options={energyLevels.map((f) => f.label)}
-                        bind:picked={excitedTo}
+                        bind:value={excitedTo}
                         label="excitedTo"
                         on:change={updateEnergyLevels}
                     />
@@ -758,25 +755,22 @@
                 />
 
                 <Textfield bind:value={figure.dpi} label="DPI" />
-                <CustomCheckbox
-                    bind:selected={figure.show}
-                    label="show figure"
-                />
+                <CustomCheckbox bind:value={figure.show} label="show figure" />
             </BoxComponent>
         </div>
     </svelte:fragment>
 
     <svelte:fragment slot="left_footer_content__slot">
-        <CustomCheckbox bind:selected={writefile} label="writefile" />
-        <CustomCheckbox bind:selected={writeall} label="writeall" />
-        <CustomCheckbox bind:selected={appendFiles} label="appendFiles" />
+        <CustomCheckbox bind:value={writefile} label="writefile" />
+        <CustomCheckbox bind:value={writeall} label="writeall" />
+        <CustomCheckbox bind:value={appendFiles} label="appendFiles" />
         <Textfield bind:value={savefilename} label="savefilename" />
     </svelte:fragment>
 
     <svelte:fragment slot="footer_content__slot">
         <CustomSelect
             options={simulationMethods}
-            bind:picked={simulationMethod}
+            bind:value={simulationMethod}
             label="simulationMethod"
         />
         {#if showreport}

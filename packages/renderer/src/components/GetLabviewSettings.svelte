@@ -32,7 +32,7 @@
                 <CustomSwitch bind:selected={showAllFiles} label="show all" />
                 <CustomSelect
                     auto_init={true}
-                    bind:picked={selected_file}
+                    bind:value={selected_file}
                     label="Filename"
                     options={displayFiles}
                 />
