@@ -38,7 +38,7 @@
     }
 </script>
 
-<List checklist>
+<List checklist style="padding: 0.5em;">
     <VirtualList {items} let:item {height}>
         {@const highlight = markedFile == item.name}
         <Item
