@@ -21,13 +21,14 @@
                 size={options.length}
                 on:change
                 on:click
+                on:dblclick
             >
                 {#each options as option}
                     <option value={option}>{option}</option>
                 {/each}
             </select>
         {:else}
-            <select bind:value {label} on:change on:click>
+            <select bind:value {label} on:change on:click on:dblclick>
                 <optgroup {label}>
                     {#each options as option}
                         <option value={option}>{option}</option>
