@@ -1,8 +1,10 @@
 <script>
     import Editor from '$components/Editor.svelte'
     import { computeKineticCodeScipy } from '../functions/computeKineticCode'
-
-    export let ratek3 = ''
+    // import { resizableDiv } from '$src/js/resizableDiv.js'
+    export let ratek3
+    export let k3Guess
+    export let kCIDGuess
     export let ratekCID = ''
     export let location = ''
     export let savefilename = ''
@@ -10,6 +12,9 @@
     export let reportSaved = false
     export let nameOfReactants = ''
     let editor
+
+    // const change = { width: false, height: true }
+    // const edges = { bottom: true, top: false, left: false, right: false }
 </script>
 
 <div class="report-editor-div" id="kinetics-editor__div">
@@ -36,6 +41,8 @@
                         ratek3,
                         ratekCID,
                         nameOfReactants,
+                        k3Guess,
+                        kCIDGuess,
                     })
                     if (dataToSet) {
                         reportSaved = false

@@ -1,4 +1,4 @@
-function computeKineticCodeScipy({ nameOfReactants, ratek3, ratekCID }) {
+function computeKineticCodeScipy({ nameOfReactants, ratek3, ratekCID, k3Guess, kCIDGuess }) {
     const nameOfReactantsArr = nameOfReactants
         .split(',')
         .map((name) => name.trim())
@@ -7,27 +7,47 @@ function computeKineticCodeScipy({ nameOfReactants, ratek3, ratekCID }) {
     let dataToSet = '# Kinetics code\n'
 
     /////////////////////////////////////////////////////////////////////////
-    if (
-        rateForwardArr.length !== nameOfReactantsArr.length - 1 ||
-        rateReverseArr.length !== nameOfReactantsArr.length - 1
-    ) {
-        dataToSet += '## Defining min-max-value for new slider\n'
-        dataToSet +=
-            "```plaintext\n# min, max and value are integers let's say 'c', which will be converter to 10^c\n"
-        dataToSet += '\nkvalueLimits = {\n'
-        rateForwardArr
-            .slice(nameOfReactantsArr.length - 1, rateForwardArr.length)
-            .forEach((value) => {
-                dataToSet += `\t'${value}': (min, max, value),\n`
-            })
-        rateReverseArr
-            .slice(nameOfReactantsArr.length - 1, rateReverseArr.length)
-            .forEach((value) => {
-                dataToSet += `\t'${value}': (min, max, value)\n`
-            })
-        dataToSet += '}\n'
-        dataToSet += '```\n'
-    }
+    // if (
+    //     rateForwardArr.length !== nameOfReactantsArr.length - 1 ||
+    //     rateReverseArr.length !== nameOfReactantsArr.length - 1
+    // ) {
+    //     dataToSet += '## Defining min-max-value for new slider\n'
+    //     dataToSet +=
+    //         "```plaintext\n# min, max and value are integers let's say 'c', which will be converter to 10^c\n"
+    //     dataToSet += '\nkvalueLimits = {\n'
+    //     rateForwardArr
+    //         .slice(nameOfReactantsArr.length - 1, rateForwardArr.length)
+    //         .forEach((value) => {
+    //             dataToSet += `\t'${value}': (min, max, value),\n`
+    //         })
+    //     rateReverseArr
+    //         .slice(nameOfReactantsArr.length - 1, rateReverseArr.length)
+    //         .forEach((value) => {
+    //             dataToSet += `\t'${value}': (min, max, value)\n`
+    //         })
+    //     dataToSet += '}\n'
+    //     dataToSet += '```\n'
+    // }
+    /////////////////////////////////////////////////////////////////////////
+    dataToSet += '## Defining min-max-value for sliders\n'
+    dataToSet += '```plaintext\n'
+    dataToSet += '\nmin_max_step_controller = {}\n'
+    dataToSet += '\nmin_max_step_controller["forwards"] = {\n'
+    rateForwardArr.forEach((value) => {
+        dataToSet += `\t'${value}': (${k3Guess}, 1e-3),\n`
+    })
+    
+    dataToSet += '}\n'
+    
+    dataToSet += '\nmin_max_step_controller["backwards"] = {\n'
+    rateReverseArr.forEach((value) => {
+        dataToSet += `\t'${value}': (${kCIDGuess}, 1e-3),\n`
+    })
+    dataToSet += '}\n'
+    dataToSet += '```\n'
+
+    /////////////////////////////////////////////////////////////////////////
+
     dataToSet += '## Defining ODE model\n'
     dataToSet += '```plaintext\n'
 
@@ -45,8 +65,8 @@ function computeKineticCodeScipy({ nameOfReactants, ratek3, ratekCID }) {
     for (let index = 0; index < nameOfReactantsArr.length - 1; index++) {
         const currentMolecule = nameOfReactantsArr[index]
         const nextMolecule = nameOfReactantsArr[index + 1]
-        dataToSet += `\t${currentMolecule}_f = -(${rateForwardArr[index]} * numberDensity**2 * ${currentMolecule})`
-        dataToSet += `+ (${rateReverseArr[index]} * numberDensity * ${nextMolecule})\n`
+        dataToSet += `\t${currentMolecule}_f = -(${rateForwardArr[index]} * ${currentMolecule})`
+        dataToSet += `+ (${rateReverseArr[index]} * ${nextMolecule})\n`
     }
 
     dataToSet += `\n\tdNdT = [\n\t\t${nameOfReactantsArr.at(0)}_f,\n`

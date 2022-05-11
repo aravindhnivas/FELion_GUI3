@@ -1,39 +1,38 @@
 import numpy as np
-# import traceback
-from .sliderlog import Sliderlog
-from .configfile import ratek3, ratekCID, keyFoundForRate
-from felionlib.kineticsCode import widget, k3Labels, kCIDLabels, widget
+from matplotlib.widgets import Slider
+
+from felionlib.kineticsCode import widget
 
 
-k3Sliders: dict[str, Sliderlog] = {}
-kCIDSliders: dict[str, Sliderlog] = {}
-k3_min_max_step = (-33, -25, 1e-6)
-kCID_min_max_step = (-20, -10, 1e-6)
+k3Sliders: dict[str, Slider] = {}
+kCIDSliders: dict[str, Slider] = {}
 
 
-def safe_update_sliders(Sliders: dict[str, Sliderlog], values: list[float], min_max_step: list[float]):
-    
+def safe_update_sliders(Sliders: dict[str, Slider], values: list[float]):
+
     try:
-        for slider, received_val in zip(Sliders.values(), values):
-            converted_val = np.log10(received_val)
-            if np.isnan(converted_val):
-                converted_val = min_max_step[0]
-            slider.set_val(converted_val)
-    
+        for slider, value in zip(Sliders.values(), values):
+            if np.isnan(value):
+                value = 0
+            slider.set_val(value)
     except Exception:
-        # tb = traceback.format_exc(limit=5)
         widget.showErrorDialog(title="Error while updating sliders")
-        
+
+
 def update_sliders(k3_fit: list[float], kCID_fit: list[float]):
-    safe_update_sliders(k3Sliders, k3_fit, k3_min_max_step)
-    safe_update_sliders(kCIDSliders, kCID_fit, kCID_min_max_step)
+    safe_update_sliders(k3Sliders, k3_fit)
+    safe_update_sliders(kCIDSliders, kCID_fit)
     print("sliders updated", flush=True)
+
 
 def make_slider():
 
     global k3Sliders, kCIDSliders
-    from .fit import update, kvalueLimits
 
+    from .fit import update, min_max_step_controller
+    from .configfile import ratek3, ratekCID
+
+    # print(f"{ratek3=}\n{ratekCID=}", flush=True)
     widget.ax.margins(x=0)
 
     height = 0.03
@@ -44,35 +43,21 @@ def make_slider():
 
     k3SliderAxes = []
 
-    for label in k3Labels:
+    k3Labels = min_max_step_controller["forwards"]
+    kCIDLabels = min_max_step_controller["backwards"]
+    # return print(f"{k3Labels.values()=}")
+
+    for label, controller in k3Labels.items():
 
         axes = [0.65, bottom, width, height]
         current_k3SliderAxes = widget.fig.add_axes(axes)
-
-        if counter + 1 <= min(len(ratek3), len(ratekCID)):
-            current_k3SliderAxes.patch.set_facecolor(f"C{counter+1}")
-            current_k3SliderAxes.patch.set_alpha(0.7)
-
-        # valmin = -33
-        # valmax = -25
-        # valstep = 1e-6
-        valmin, valmax, valstep = k3_min_max_step
-        if label in kvalueLimits:
-            valmin, valmax, valinit = kvalueLimits[label]
-
-            if keyFoundForRate:
-                valinit = np.log10(ratek3[counter])
-
-        else:
-            valinit = np.log10(ratek3[counter])
-
-        # print(valmin, valmax, valinit, flush=True)
-
-        _k3Slider = Sliderlog(
+        valmin, valmax, valstep = controller
+        valinit = ratek3[counter]
+        _k3Slider = Slider(
             ax=current_k3SliderAxes,
             label=label,
             valstep=valstep,
-            valfmt="%.2e",
+            valfmt="%.4f",
             valmin=valmin,
             valmax=valmax,
             valinit=valinit,
@@ -89,7 +74,7 @@ def make_slider():
     counter = 0
     kCIDSliderAxes = []
 
-    for label in kCIDLabels:
+    for label, controller in kCIDLabels.items():
         axes = [0.65, bottom, width, height]
         current_kCIDSliderAxes = widget.fig.add_axes(axes)
 
@@ -98,21 +83,13 @@ def make_slider():
             current_kCIDSliderAxes.patch.set_facecolor(f"C{counter+1}")
             current_kCIDSliderAxes.patch.set_alpha(0.7)
 
-        # valmin = -20
-        # valmax = -10
-        # valstep = 1e-6
-        valmin, valmax, valstep = kCID_min_max_step
-        if label in kvalueLimits:
-
-            valmin, valmax, valinit = kvalueLimits[label]
-        else:
-            valinit = np.log10(ratekCID[counter])
-
-        _kCIDSlider = Sliderlog(
+        valmin, valmax, valstep = controller
+        valinit = ratekCID[counter]
+        _kCIDSlider = Slider(
             ax=current_kCIDSliderAxes,
             label=label,
             valstep=valstep,
-            valfmt="%.2e",
+            valfmt="%.4f",
             valmin=valmin,
             valmax=valmax,
             valinit=valinit,
@@ -126,4 +103,5 @@ def make_slider():
         kCIDSliderAxes.append(current_kCIDSliderAxes)
 
     widget.sliderWidgets = k3SliderAxes + kCIDSliderAxes
+
     return k3Sliders, kCIDSliders

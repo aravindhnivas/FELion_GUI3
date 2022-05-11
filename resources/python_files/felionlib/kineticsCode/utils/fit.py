@@ -1,3 +1,4 @@
+from typing import Literal
 import numpy as np
 from scipy.optimize import curve_fit
 from scipy.integrate import solve_ivp
@@ -13,7 +14,7 @@ from felionlib.kineticsCode import (
     tspan,
     simulateTime,
     kinetics_equation_file,
-    numberDensity,  # numberDensity is important for the fit
+    # numberDensity,  # numberDensity is important for the fit
 )
 from felionlib.kineticsCode.utils.widgets.checkboxes import checkboxes
 from .configfile import ratek3, ratekCID, k_err as k_err_config
@@ -24,7 +25,7 @@ from .plotWidgets import fitStatus_label_widget, fit_methods_widget, solve_ivp_m
 
 k_fit = []
 k_err = k_err_config
-rateCoefficientArgs: tuple[np.ndarray, np.ndarray] = (ratek3, ratekCID)
+rateCoefficientArgs: tuple[list[float], list[float]] = (ratek3, ratekCID)
 
 
 fit_method = "lm"
@@ -58,11 +59,13 @@ codeContents = readCodeFromFile(kinetics_equation_file)
 codeOutput = codeToRun(codeContents)
 compute_attachment_process = codeOutput["compute_attachment_process"]
 print(f"{compute_attachment_process=}", flush=True)
-
-kvalueLimits = {}
-if "kvalueLimits" in codeOutput:
-    kvalueLimits = codeOutput["kvalueLimits"]
-    print(f"{kvalueLimits=}", flush=True)
+min_max_step_controller: dict[Literal["forwards", "backwards"], dict[str, tuple[float, float, float]]] = codeOutput[
+    "min_max_step_controller"
+]
+# kvalueLimits = {}
+# if "kvalueLimits" in codeOutput:
+#     kvalueLimits = codeOutput["kvalueLimits"]
+#     print(f"{kvalueLimits=}", flush=True)
 
 
 def intialize_fit_plot() -> None:
@@ -73,21 +76,27 @@ def intialize_fit_plot() -> None:
         method=solve_ivp_method,
         t_eval=simulateTime,
     ).y
+
     return dNdtSol
 
 
 def update(val: float = None):
+
     global rateCoefficientArgs
+
     try:
         rateCoefficientArgs = (
-            [10**rate.val for rate in k3Sliders.values()],
-            [10**rate.val for rate in kCIDSliders.values()],
+            [rate.val for rate in k3Sliders.values()],
+            [rate.val for rate in kCIDSliders.values()],
         )
         dNdtSol = solve_ivp(
             compute_attachment_process, tspan, initialValues, method=solve_ivp_method, t_eval=simulateTime
         ).y
-        for line, data in zip(fitPlot, dNdtSol):
-            line.set_ydata(data)
+
+        for line, fitted_data in zip(fitPlot, dNdtSol):
+            line.set_ydata(fitted_data)
+        fitted_sum = dNdtSol.sum(axis=0)
+        fitPlot[-1].set_ydata(fitted_sum)
         widget.blit.update()
 
     except Exception:
@@ -100,7 +109,7 @@ def fitODE(t: np.ndarray, *args):
 
     tspan = [0, t.max() * 1.2]
     rateCoefficientArgs = (args[: len(ratek3)], args[len(ratek3) :])
-    
+
     if not np.all(np.isfinite(args)):
         raise ValueError("NaN or Inf in rateCoefficientArgs")
     dNdtSol: np.ndarray = solve_ivp(
@@ -114,17 +123,15 @@ def fit_kinetic_data() -> None:
 
     fitStatus_label_widget.setText("Fitting...")
 
-    if numberDensity < 0:
-        fitStatus_label_widget.setText("Number density must be positive.")
-        raise ValueError("Number density must be greater than 0")
+    # if numberDensity < 0:
+    #     fitStatus_label_widget.setText("Number density must be positive.")
+    #     raise ValueError("Number density must be greater than 0")
 
     setbound = checkboxes["set_bound"]
     includeError = checkboxes["include_error"]
     logger(f"{checkboxes=}")
 
-    p0 = np.array(
-        [*[10**rate.val for rate in k3Sliders.values()], *[10**rate.val for rate in kCIDSliders.values()]]
-    )
+    p0 = np.array([*[rate.val for rate in k3Sliders.values()], *[rate.val for rate in kCIDSliders.values()]])
     p0 = np.nan_to_num(p0).clip(min=0)
     bounds = (-np.inf, np.inf)
 
@@ -132,12 +139,12 @@ def fit_kinetic_data() -> None:
         ratio = 0.1
         bounds = (
             [
-                *[np.format_float_scientific(10 ** (rate.val - ratio), precision=2) for rate in k3Sliders.values()],
-                *[np.format_float_scientific(10 ** (rate.val - ratio), precision=2) for rate in kCIDSliders.values()],
+                *[np.format_float_scientific((rate.val - ratio), precision=2) for rate in k3Sliders.values()],
+                *[np.format_float_scientific((rate.val - ratio), precision=2) for rate in kCIDSliders.values()],
             ],
             [
-                *[np.format_float_scientific(10 ** (rate.val + ratio), precision=2) for rate in k3Sliders.values()],
-                *[np.format_float_scientific(10 ** (rate.val + ratio), precision=2) for rate in kCIDSliders.values()],
+                *[np.format_float_scientific((rate.val + ratio), precision=2) for rate in k3Sliders.values()],
+                *[np.format_float_scientific((rate.val + ratio), precision=2) for rate in kCIDSliders.values()],
             ],
         )
     logger(f"{bounds=}")
@@ -163,7 +170,7 @@ def fit_kinetic_data() -> None:
 
         if not np.all(np.isfinite(k_fit)):
             raise ValueError("Fitted values are not finite")
-            
+
         if not np.all(np.isfinite(k_err)):
             widget.showdialog(
                 "Warning", "Non-finite error values\nTry fitting with higher different timeStartIndex", "warning"
@@ -176,4 +183,3 @@ def fit_kinetic_data() -> None:
         print(f"error: {err}")
         widget.showErrorDialog()
         fitStatus_label_widget.setText("Failed")
-        

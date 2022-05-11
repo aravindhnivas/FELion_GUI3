@@ -30,8 +30,8 @@
     let ratekCID = 'kCID1'
     let selectedFile = ''
     let totalMassKey = []
-    let k3Guess = '1e-30'
-    let kCIDGuess = '1e-15'
+    let k3Guess = '0, 0.5'
+    let kCIDGuess = '0, 2'
 
     async function browse_folder() {
         const result = await browse({ dir: true })
@@ -59,7 +59,16 @@
 
     let currentData = {}
     let currentDataBackup = {}
+    // $: console.log(currentData?.['SUM']?.x)
 
+    const sliceSUM = () => {
+        const newData = cloneDeep(currentDataBackup).SUM
+
+        currentData.SUM.x = newData.x.slice(timestartIndexScan)
+        currentData.SUM.y = newData.y.slice(timestartIndexScan)
+        currentData['SUM']['error_y']['array'] =
+            newData['error_y']['array'].slice(timestartIndexScan)
+    }
     const sliceData = (compute = true) => {
         console.log('slicing data')
         if (!selectedFile.endsWith('.scan')) return
@@ -71,7 +80,10 @@
             newData['error_y']['array'] =
                 newData['error_y']['array'].slice(timestartIndexScan)
             currentData[mass] = newData
+            // console.log(newData.x)
         })
+
+        sliceSUM()
 
         if (useParamsFile) {
             const masses = totalMassKey
@@ -106,7 +118,7 @@
         ;[currentData] = fs.readJsonSync(currentJSONfile)
         if (!currentData) return
         currentDataBackup = cloneDeep(currentData)
-
+        console.log({ currentData })
         const totalMass = Object.keys(currentData).filter((m) => m !== 'SUM')
         totalMassKey = totalMass.map((m) => ({
             mass: m,
@@ -375,7 +387,7 @@
             masses.forEach((mass, index) => {
                 data[nameOfReactantsArray[index]] = currentData[mass]
             })
-
+            data['SUM'] = currentData['SUM']
             let kinetic_plot_adjust_configs_obj = {}
             try {
                 kinetic_plot_adjust_configs_obj = $kinetic_plot_adjust_configs
@@ -616,9 +628,15 @@
                 />
                 <Textfield bind:value={initialValues} label="initialValues" />
                 <Textfield bind:value={ratek3} label="ratek3" />
-                <Textfield bind:value={k3Guess} label="k3Guess" />
+                <Textfield
+                    bind:value={k3Guess}
+                    label="k3Guess (min, max) [/s]"
+                />
                 <Textfield bind:value={ratekCID} label="ratekCID" />
-                <Textfield bind:value={kCIDGuess} label="kCIDGuess" />
+                <Textfield
+                    bind:value={kCIDGuess}
+                    label="kCIDGuess (min, max) [/s]"
+                />
 
                 <CustomSelect
                     bind:value={$fit_config_filename}
@@ -631,9 +649,7 @@
             </div>
 
             <KineticEditor
-                {ratek3}
-                {ratekCID}
-                {nameOfReactants}
+                {...{ ratek3, k3Guess, ratekCID, kCIDGuess, nameOfReactants }}
                 bind:location={currentLocation}
                 bind:savefilename={kineticEditorFilename}
                 bind:reportSaved
