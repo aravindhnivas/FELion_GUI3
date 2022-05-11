@@ -268,14 +268,16 @@
     }
 
     $: configDir = pathJoin(currentLocation, '../configs')
+
     let config_file = ''
     let config_filelists = []
+
     const readConfigDir = async () => {
+        console.log('reading config dir')
         if (!fs.existsSync(configDir))
             return window.createToast('Invalid location', 'danger')
         const [files, error] = await fs.readdir(configDir)
         if (error) return window.handleError(error)
-
         config_filelists = files.filter((file) => file.endsWith('.json'))
     }
 
@@ -547,14 +549,15 @@
                 {readConfigDir}
                 {computeOtherParameters}
                 {selectedFile}
+                {params_found}
+                {totalMassKey}
                 bind:useParamsFile
                 bind:kinetics_params_file={$kinetics_params_file}
-                {params_found}
                 bind:nameOfReactants
                 bind:legends
-                {totalMassKey}
             />
             <RateConstants
+                {readConfigDir}
                 {config_filelists}
                 bind:defaultInitialValues
                 bind:initialValues
