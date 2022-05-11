@@ -16,9 +16,20 @@ const dispatchInteractEvent = (element, eventName, detail) => {
 
 export function resizableDiv(
     target,
-    change = { width: true, height: false },
-    edges = { left: false, right: true, bottom: false, top: false }
+    // width=true, height=true,
+    // left=true, top=false,
+    // right=false, bottom=false,
+    // change = { width: true, height: false },
+    // edges = { left: false, right: true, bottom: false, top: false }
+    params = {
+        change: { width: true, height: false },
+        edges: { left: false, right: true, bottom: false, top: false }
+    }
 ) {
+    // const change = { width, height }
+    // const edges = { left, right, bottom, top }
+    const {change, edges} = params
+
     interact(target)
         .resizable({
             edges,
