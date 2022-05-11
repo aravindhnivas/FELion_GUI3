@@ -74,7 +74,7 @@ min_max_step_controller: dict[Literal["forwards", "backwards"], dict[str, tuple[
 
 
 def intialize_fit_plot() -> None:
-    print("intialize solve_ivp_plot", flush=True)
+    # print("intialize solve_ivp_plot", flush=True)
 
     results = solve_ivp(
         compute_attachment_process,
@@ -83,7 +83,7 @@ def intialize_fit_plot() -> None:
         method=solve_ivp_method,
         t_eval=simulateTime,
     )
-    print(f"{results=}", flush=True)
+    # print(f"{results=}", flush=True)
 
     dNdtSol = results.y
     return dNdtSol
