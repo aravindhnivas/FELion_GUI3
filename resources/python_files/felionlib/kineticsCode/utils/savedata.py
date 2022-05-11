@@ -10,24 +10,32 @@ from felionlib.kineticsCode import k3Labels, kCIDLabels, selectedFile, temp, nam
 def saveData():
 
     try:
+
         from .fit import rateCoefficientArgs, k_err
         from .plot import fitPlot, expPlot
         from .configfile import ratek3, rateConstantsFileData, savefile
 
-        logger(f"{formatArray(rateCoefficientArgs[0])=}")
-        logger(f"{formatArray(rateCoefficientArgs[1])=}")
+        logger(f"{rateCoefficientArgs[0]=}")
+        logger(f"{rateCoefficientArgs[1]=}")
 
         k3Len = len(ratek3)
         with open(savefile, "w+") as f:
 
-            k3Values = formatArray(rateCoefficientArgs[0])
-            k3Err = formatArray(k_err[:k3Len])
+            k3Values = rateCoefficientArgs[0]
+            k3Err = k_err[:k3Len]
 
-            kCIDValues = formatArray(rateCoefficientArgs[1])
-            kCIDErr = formatArray(k_err[k3Len:])
+            kCIDValues = rateCoefficientArgs[1]
+            kCIDErr = k_err[k3Len:]
 
-            k3_fit = {key: [value, err] for key, value, err in zip(k3Labels, k3Values, k3Err)}
-            kCID_fit = {key: [value, err] for key, value, err in zip(kCIDLabels, kCIDValues, kCIDErr)}
+            precession = 4
+            k3_fit = {
+                key: [round(value, precession), round(err, precession)]
+                for key, value, err in zip(k3Labels, k3Values, k3Err)
+            }
+            kCID_fit = {
+                key: [round(value, precession), round(err, precession)]
+                for key, value, err in zip(kCIDLabels, kCIDValues, kCIDErr)
+            }
 
             rateConstantsFileData[selectedFile] = {
                 "k3_fit": k3_fit,

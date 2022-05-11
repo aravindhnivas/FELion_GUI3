@@ -1,7 +1,7 @@
 <script>
     import { persistentWritable } from '$src/js/persistentStore'
     import { onMount, tick } from 'svelte'
-    import { fade } from 'svelte/transition'
+    // import { fade } from 'svelte/transition'
     import { cloneDeep } from 'lodash-es'
     import Textfield from '@smui/textfield'
     import CustomSwitch from '$components/CustomSwitch.svelte'
@@ -14,6 +14,8 @@
     import KineticEditor from './KineticEditor.svelte'
     import MatplotlibDialog from './MatplotlibDialog.svelte'
     import { browse } from '$components/Layout.svelte'
+    import RateConstants from './controllers/RateConstants.svelte'
+    import RateInitialise from './controllers/RateInitialise.svelte'
 
     let currentLocation = window.db.get('kinetics_location') || ''
 
@@ -437,15 +439,11 @@
 
     let initialValues = ''
     let adjustConfig = false
+    let include_loss_channel = false
 
     $: currentConfig = { srgMode, pbefore, pafter, calibrationFactor, temp }
 
     let kineticEditorFilename = ''
-    // $: if(selectedFile) {
-    //     kineticEditorFilename = basename(selectedFile).split('.')[0] + '-kineticModel.md'
-    // }
-    $: console.log(kineticEditorFilename)
-
     $: kineticfile = pathJoin(currentLocation, kineticEditorFilename)
     let reportRead = false
     let reportSaved = false
@@ -453,6 +451,7 @@
         'kinetics_fitted_values',
         'kinetics.fit.json'
     )
+
     onMount(() => {
         loadConfig()
         if (fileCollections.length > 0) {
@@ -461,12 +460,11 @@
     })
 
     let kinetic_plot_adjust_dialog_active = false
+
     const kinetic_plot_adjust_configs = persistentWritable(
         'kinetic_plot_adjust_configs',
         'top=0.905,\nbottom=0.135,\nleft=0.075,\nright=0.59,\nhspace=0.2,\nwspace=0.2'
     )
-
-    let auto_compute_params = true
 </script>
 
 <KineticConfigTable
@@ -543,110 +541,30 @@
                 <Textfield bind:value={tag} label="tag" />
             </div>
 
-            <div class="align box h-center" style:flex-direction="column">
-                <div class="align h-center">
-                    <Textfield
-                        bind:value={nameOfReactants}
-                        label="nameOfReactants"
-                        style="width:30%"
-                    />
-
-                    <Textfield
-                        bind:value={legends}
-                        label="legends"
-                        style="width:30%"
-                    />
-                </div>
-
-                <div class="align h-center">
-                    {#each totalMassKey as { mass, id, included } (id)}
-                        <span
-                            class="tag is-warning"
-                            class:is-danger={!included}
-                        >
-                            {mass}
-
-                            <button
-                                class="delete is-small"
-                                on:click={() => {
-                                    useParamsFile = false
-                                    included = !included
-                                    computeOtherParameters()
-                                }}
-                            />
-                        </span>
-                    {/each}
-                </div>
-
-                {#if totalMassKey.filter((m) => m.included).length < 2}
-                    <span class="tag is-danger">
-                        atleast two reactants are required for kinetics
-                    </span>
-                {/if}
-
-                <div class="align h-center">
-                    <CustomSwitch
-                        on:SMUISwitch:change={computeOtherParameters}
-                        bind:selected={useParamsFile}
-                        label="use params file"
-                    />
-                    <CustomSelect
-                        bind:value={$kinetics_params_file}
-                        label="save-params file (*.params.json)"
-                        options={config_filelists.filter((file) =>
-                            file.endsWith('.params.json')
-                        )}
-                        update={readConfigDir}
-                    />
-
-                    <button
-                        class="button is-link"
-                        on:click={computeOtherParameters}>read</button
-                    >
-                    <button class="button is-link" on:click={updateParamsFile}
-                        >update</button
-                    >
-                    {#if useParamsFile && selectedFile}
-                        <span
-                            class="tag is-success"
-                            class:is-danger={!params_found}
-                            transition:fade
-                            >{params_found
-                                ? `params updated: ${window.basename(
-                                      selectedFile
-                                  )}`
-                                : 'params not found'}</span
-                        >
-                    {/if}
-                </div>
-            </div>
-
-            <div class="align box h-center">
-                <CustomSwitch
-                    bind:selected={defaultInitialValues}
-                    label="defaultInitialValues"
-                />
-                <Textfield bind:value={initialValues} label="initialValues" />
-                <Textfield bind:value={ratek3} label="ratek3" />
-                <Textfield
-                    bind:value={k3Guess}
-                    label="k3Guess (min, max) [/s]"
-                />
-                <Textfield bind:value={ratekCID} label="ratekCID" />
-                <Textfield
-                    bind:value={kCIDGuess}
-                    label="kCIDGuess (min, max) [/s]"
-                />
-
-                <CustomSelect
-                    bind:value={$fit_config_filename}
-                    label="fit-config file (*.fit.json)"
-                    options={config_filelists.filter((file) =>
-                        file.endsWith('.fit.json')
-                    )}
-                    update={readConfigDir}
-                />
-            </div>
+            <RateInitialise
+                {config_filelists}
+                {updateParamsFile}
+                {readConfigDir}
+                {computeOtherParameters}
+                {selectedFile}
+                bind:useParamsFile
+                bind:kinetics_params_file={$kinetics_params_file}
+                {params_found}
+                bind:nameOfReactants
+                bind:legends
+                {totalMassKey}
+            />
+            <RateConstants
+                {config_filelists}
+                bind:defaultInitialValues
+                bind:initialValues
+                bind:include_loss_channel
+                bind:kinetics_fitfile={$fit_config_filename}
+                bind:ratek3
+                bind:k3Guess
+                bind:ratekCID
+                bind:kCIDGuess
+            />
 
             <KineticEditor
                 {...{ ratek3, k3Guess, ratekCID, kCIDGuess, nameOfReactants }}
