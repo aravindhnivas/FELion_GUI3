@@ -1,0 +1,11 @@
+#toastFooter {
+    ._toastContainer {
+        width: 30rem; padding: 0;
+        right: 3rem; left: auto;
+        overflow-x: auto;
+        ._toastItem {
+            width: 100%;
+            background: #5e469e;
+        }
+    }
+}

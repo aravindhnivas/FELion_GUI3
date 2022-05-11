@@ -2,8 +2,8 @@
     import { running_processes } from '../svelteWritable'
     import RunningProcess from './RunningProcess.svelte'
     import { SvelteToast, toast } from '@zerodevx/svelte-toast'
-
     let toastId = null
+
     const show_process = () => {
         if (toastId) {
             toast.pop(toastId)
@@ -63,19 +63,3 @@
         options={{ initial: 0, intro: { y: 100 } }}
     />
 </div>
-
-<style global lang="scss">
-    #toastFooter {
-        ._toastContainer {
-            width: 30rem;
-            padding: 0;
-            right: 3rem;
-            left: auto;
-            overflow-x: auto;
-            ._toastItem {
-                width: 100%;
-                background: #5e469e;
-            }
-        }
-    }
-</style>
