@@ -14,14 +14,14 @@ from felionlib.kineticsCode import (
     tspan,
     simulateTime,
     kinetics_equation_file,
-    # numberDensity,  # numberDensity is important for the fit
+    # numberDensity
 )
 from felionlib.kineticsCode.utils.widgets.checkboxes import checkboxes
 from .configfile import ratek3, ratekCID, k_err as k_err_config
 
 from felionlib.utils.FELion_definitions import readCodeFromFile
 from felionlib.kineticsCode.utils.rateSliders import k3Sliders, kCIDSliders, update_sliders
-from .plotWidgets import fitStatus_label_widget, fit_methods_widget, solve_ivp_methods_widget
+from .plotWidgets import fitStatus_label_widget, fit_methods_widget, solve_ivp_methods_widget, bounds_percent_widget
 
 k_fit = []
 k_err = k_err_config
@@ -49,6 +49,16 @@ def update_solve_ivp_method(val: str = None):
 
 solve_ivp_methods_widget.currentTextChanged.connect(update_solve_ivp_method)
 
+bounds_percent = 10
+
+
+def update_bounds_percent(val: int = None):
+    global bounds_percent
+    bounds_percent = val
+
+
+bounds_percent_widget.valueChanged.connect(update_bounds_percent)
+
 
 def codeToRun(code: str):
     exec(code)
@@ -58,25 +68,24 @@ def codeToRun(code: str):
 codeContents = readCodeFromFile(kinetics_equation_file)
 codeOutput = codeToRun(codeContents)
 compute_attachment_process = codeOutput["compute_attachment_process"]
-print(f"{compute_attachment_process=}", flush=True)
 min_max_step_controller: dict[Literal["forwards", "backwards"], dict[str, tuple[float, float, float]]] = codeOutput[
     "min_max_step_controller"
 ]
-# kvalueLimits = {}
-# if "kvalueLimits" in codeOutput:
-#     kvalueLimits = codeOutput["kvalueLimits"]
-#     print(f"{kvalueLimits=}", flush=True)
 
 
 def intialize_fit_plot() -> None:
-    dNdtSol: np.ndarray = solve_ivp(
+    print("intialize solve_ivp_plot", flush=True)
+
+    results = solve_ivp(
         compute_attachment_process,
         tspan,
         initialValues,
         method=solve_ivp_method,
         t_eval=simulateTime,
-    ).y
+    )
+    print(f"{results=}", flush=True)
 
+    dNdtSol = results.y
     return dNdtSol
 
 
@@ -122,11 +131,6 @@ def fit_kinetic_data() -> None:
     global k_fit, k_err
 
     fitStatus_label_widget.setText("Fitting...")
-
-    # if numberDensity < 0:
-    #     fitStatus_label_widget.setText("Number density must be positive.")
-    #     raise ValueError("Number density must be greater than 0")
-
     setbound = checkboxes["set_bound"]
     includeError = checkboxes["include_error"]
     logger(f"{checkboxes=}")
@@ -136,15 +140,15 @@ def fit_kinetic_data() -> None:
     bounds = (-np.inf, np.inf)
 
     if setbound:
-        ratio = 0.1
+        # percent = 10
         bounds = (
             [
-                *[np.format_float_scientific((rate.val - ratio), precision=2) for rate in k3Sliders.values()],
-                *[np.format_float_scientific((rate.val - ratio), precision=2) for rate in kCIDSliders.values()],
+                *[rate.val - (bounds_percent / 100) * rate.val for rate in k3Sliders.values()],
+                *[rate.val - (bounds_percent / 100) * rate.val for rate in kCIDSliders.values()],
             ],
             [
-                *[np.format_float_scientific((rate.val + ratio), precision=2) for rate in k3Sliders.values()],
-                *[np.format_float_scientific((rate.val + ratio), precision=2) for rate in kCIDSliders.values()],
+                *[rate.val + (bounds_percent / 100) * rate.val for rate in k3Sliders.values()],
+                *[rate.val + (bounds_percent / 100) * rate.val for rate in kCIDSliders.values()],
             ],
         )
     logger(f"{bounds=}")
