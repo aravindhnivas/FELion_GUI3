@@ -1,7 +1,9 @@
 <script>
     import Textfield from '@smui/textfield'
     import CustomSelect from '$src/components/CustomSelect.svelte'
+    import TextAndSwitchToggler from '$src/components/TextAndSwitchToggler.svelte'
     import CustomSwitch from '$src/components/CustomSwitch.svelte'
+    // import { toast } from '@zerodevx/svelte-toast'
 
     export let defaultInitialValues = true
     export let initialValues = ''
@@ -15,7 +17,6 @@
 
     export let config_filelists = []
     export let kinetics_fitfile = ''
-
     export let readConfigDir = () => {}
 
     const update_loss_channel = () => {
@@ -24,6 +25,7 @@
         if (ratek3.trim().endsWith(',')) ratek3 += 'k_loss'
         else ratek3 += ', k_loss'
     }
+    let toggle_fitfile_components = true
 </script>
 
 <div class="box column">
@@ -49,12 +51,10 @@
     </div>
 
     <div>
-        <CustomSelect
+        <TextAndSwitchToggler
             bind:value={kinetics_fitfile}
             label="fit-config file (*.fit.json)"
-            options={config_filelists.filter((file) =>
-                file.endsWith('.fit.json')
-            )}
+            options={config_filelists.filter((f) => f.endsWith('.fit.json'))}
             update={readConfigDir}
         />
     </div>
