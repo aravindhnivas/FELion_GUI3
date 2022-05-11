@@ -161,14 +161,12 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.finalControlLayout.addWidget(savecontrolGroup)
 
         self.finalControlWidget.setLayout(self.finalControlLayout)
-        # self.finalControlWidget.setFixedWidth(self.fixedControllerWidth)
         self.mainLayout.addWidget(self.finalControlWidget, 1)
         self.toggle_controller_layout()
 
         self.show()
         self.activateWindow()
         self.raise_()
-
         self.updateFigsizeDetails()
         self.canvas.setFocus()
 
@@ -411,8 +409,10 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.ylabelWidget.setText(ax.get_ylabel())
 
     def updateFigsizeDetails(self, event=None):
-        self.figsize = (self.fig.get_figwidth(), self.fig.get_figheight())
+        if not self.autoResizeCanvas.isChecked():
+            return
 
+        self.figsize = (self.fig.get_figwidth(), self.fig.get_figheight())
         self.figsizeWidthWidget.setValue(self.figsize[0])
         self.figsizeHeightWidget.setValue(self.figsize[1])
 
@@ -421,19 +421,21 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
     def makefigsizeControlWidgets(self):
         def updateFigureSize(_val):
+            # nonlocal autoResizeCanvas
 
             self.figsize = (self.figsizeWidthWidget.value(), self.figsizeHeightWidget.value())
             self.fig.set_size_inches(self.figsize)
             self.draw()
 
+            # if autoResizeCanvas.isChecked():
             canvas_width = self.figsize[0] * self.fig.dpi
             canvas_height = self.figsize[1] * self.fig.dpi
-
             self.canvasWidget.resize(int(canvas_width), int(canvas_height))
 
         layout = QtWidgets.QHBoxLayout()
 
         fig_kw = dict(_min=2, suffix=" in", _step=0.1, callback=updateFigureSize)
+
         self.figsizeWidthWidget = self.createSpinBox(6.4, prefix="width: ", **fig_kw)
         self.figsizeHeightWidget = self.createSpinBox(6.4, prefix="height: ", **fig_kw)
 
@@ -446,10 +448,10 @@ class felionQtWindow(QtWidgets.QMainWindow):
                 self.figsizeWidthWidget.setValue(self.fig.get_figwidth())
                 self.figsizeHeightWidget.setValue(self.fig.get_figheight())
 
-        autoResizeCanvas = QtWidgets.QCheckBox("auto-resize")
-        autoResizeCanvas.setChecked(True)
-        autoResizeCanvas.stateChanged.connect(canvasAutoResize)
-        layout.addWidget(autoResizeCanvas)
+        self.autoResizeCanvas = QtWidgets.QCheckBox("auto-resize")
+        self.autoResizeCanvas.setChecked(True)
+        self.autoResizeCanvas.stateChanged.connect(canvasAutoResize)
+        layout.addWidget(self.autoResizeCanvas)
 
         return layout
 
@@ -466,19 +468,9 @@ class felionQtWindow(QtWidgets.QMainWindow):
         canvas_draw_button = QtWidgets.QPushButton("Re-draw")
         canvas_draw_button.clicked.connect(self.draw)
 
-        # choose_theme_widget = QtWidgets.QComboBox()
-        # choose_theme_widget.addItems(list_themes())
-        # choose_theme_widget.addItems(["default", "theme"])
-
         current_theme = pt(__file__).parent / "themes/theme.xml"
         current_theme = current_theme.resolve().__str__()
 
-        # choose_theme_widget.setCurrentText(current_theme)
-        # template = pt(__file__).parent / "themes/material.qt.css"
-        # self.apply_stylesheet(self, current_theme, template=template)
-        # choose_theme_widget.currentTextChanged.connect(lambda theme: self.apply_stylesheet(self, theme, template=template))
-
-        # self.apply_stylesheet
         get_figsize_button = QtWidgets.QPushButton("Get figsize")
         get_figsize_button.clicked.connect(self.updateFigsizeDetails)
 
@@ -487,8 +479,6 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
         self.toggle_controller_button = QtWidgets.QPushButton("Controller")
         self.toggle_controller_button.clicked.connect(self.toggle_controller_layout)
-
-        # navbar_controller_layout.addWidget(choose_theme_widget)
 
         navbar_controller_layout.addWidget(get_figsize_button)
         navbar_controller_layout.addLayout(figsize_adjust_layout)
@@ -512,8 +502,6 @@ class felionQtWindow(QtWidgets.QMainWindow):
         # navbar_controller_scroll.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         self.navbar_layout.addWidget(navbar_controller_scroll)
-
-        # self.navbar_layout.addLayout(navbar_controller_layout)
 
     def create_figure_canvas_layout(self):
         canvasLayout = QtWidgets.QVBoxLayout()
@@ -1088,12 +1076,12 @@ class felionQtWindow(QtWidgets.QMainWindow):
         elif type == "critical":
             dialogBox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
         dialogBox.exec()
-    
+
     def showErrorDialog(self, title=None, limit=5, **kwargs):
-        
+
         etype, value, tb = sys.exc_info()
         tb = "".join(traceback.format_exception(etype, value, tb, limit=limit, **kwargs))
-        self.showdialog(title or etype.__name__, tb, type="critical")       
+        self.showdialog(title or etype.__name__, tb, type="critical")
 
     def makeSlider(
         self,
