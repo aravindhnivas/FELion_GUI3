@@ -1,10 +1,11 @@
 <script>
     import { showConfirm } from '$src/components/alert/store'
-    import { onDestroy } from 'svelte'
+    import { onDestroy, onMount } from 'svelte'
     import Textfield from '@smui/textfield'
     import { browse } from '$components/Layout.svelte'
     import WinBox from 'winbox/src/js/winbox.js'
     import CustomSwitch from '$components/CustomSwitch.svelte'
+    // import { resizableDiv } from '$src/js/resizableDiv.js'
 
     export let id = getID()
     export let location = ''
@@ -19,7 +20,7 @@
     export let showReport = false
     export let enable_location_browser = true
 
-    async function mountEditor(node) {
+    async function mountEditorFn(node) {
         try {
             editor = await ClassicEditor.create(node, {
                 toolbar: { shouldNotGroupWhenFull: true },
@@ -29,6 +30,13 @@
             window.handleError(error)
         }
     }
+
+    const mountEditor = (node) => {
+        mountEditorFn(node)
+    }
+    // onMount(()=>{
+    //     mountEditor(document.getElementById(`${filetype}-editor`))
+    // })
 
     onDestroy(() => {
         if (editor) {
@@ -115,7 +123,6 @@
                 reportWindowClosed = true
             },
         })
-
         reportWindowClosed = false
         setTimeout(() => {
             graphWindow.focus()
@@ -123,21 +130,22 @@
     }
 
     const readFromFile = (showInfo = true) => {
-        if (fs.existsSync(reportFile)) {
-            editor?.setData(fs.readFileSync(reportFile))
-            reportRead = true
-            if (showInfo)
-                window.createToast(`${basename(reportFile)} file read`)
-        } else {
-            if (showInfo)
-                window.createToast(
-                    'No report file named ' + basename(reportFile),
-                    'danger'
-                )
+        if (!fs.existsSync(reportFile)) {
+            if (!showInfo) return
+            return window.createToast(
+                'No report file named ' + basename(reportFile),
+                'danger'
+            )
         }
+        editor?.setData(fs.readFileSync(reportFile))
+        reportRead = true
+        if (!showInfo) return
+
+        window.createToast(`${basename(reportFile)} file read`)
     }
 
     let autoRead = false
+
     $: if (reportFile && autoRead) {
         readFromFile()
     }
@@ -202,88 +210,9 @@
 
 {#if showReport}
     <div
+        use:mountEditor
         class="ckeditor-svelte content"
         {id}
-        use:mountEditor
         style:display={showReport ? '' : 'none'}
     />
 {/if}
-
-<style global lang="scss">
-    .report-editor-div {
-        display: grid;
-        gap: 1em;
-    }
-
-    .ck.ck-content * {
-        color: black;
-    }
-    .ck-editor {
-        min-height: 10em;
-        width: 100%;
-    }
-
-    .ck-editor__main {
-        overflow: auto;
-
-        max-height: 25em;
-    }
-    .ck-content .table table {
-        border: 2px double black;
-        background: white;
-    }
-    .notice__div {
-        width: 100%;
-        background: #634e96;
-        border: 1px solid;
-        border-radius: 0.2em;
-        padding: 0.2em;
-        font-size: 25px;
-        font-weight: bold;
-        display: grid;
-        grid-auto-flow: column;
-        grid-template-columns: 1fr auto;
-        align-items: center;
-    }
-    .editor-div * {
-        color: black;
-    }
-    .wb-body {
-        .report-editor-div {
-            padding: 1em;
-            display: grid;
-            gap: 1em;
-            height: 100%;
-            grid-template-rows: auto 1fr;
-
-            .ck-editor__main {
-                max-height: calc(100% - 5em);
-            }
-        }
-    }
-
-    .report_location__div {
-        display: grid;
-
-        grid-template-columns: auto 3fr 1fr auto;
-        width: 100%;
-        gap: 1em;
-
-        align-items: center;
-    }
-
-    .btn-row {
-        display: flex;
-        gap: 1em;
-    }
-
-    .report_main__div {
-        .report_controler__div {
-            display: grid;
-            gap: 1em;
-
-            width: 100%;
-            margin: 0;
-        }
-    }
-</style>
