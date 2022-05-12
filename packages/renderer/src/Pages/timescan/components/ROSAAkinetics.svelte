@@ -146,22 +146,26 @@
         if (updatefile) {
             contents[selectedFile] = {
                 ratek3,
+                k3Guess,
                 ratekCID,
+                kCIDGuess,
                 legends,
                 totalMassKey,
                 initialValues,
                 nameOfReactants,
                 timestartIndexScan,
-
                 $fit_config_filename,
                 kineticEditorFilename,
                 loss_channels,
             }
             return contents
         }
+
         ;({
             ratek3,
+            k3Guess,
             ratekCID,
+            kCIDGuess,
             legends,
             totalMassKey,
             initialValues,
