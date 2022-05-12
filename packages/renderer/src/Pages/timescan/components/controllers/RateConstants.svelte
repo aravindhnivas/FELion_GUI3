@@ -1,14 +1,13 @@
 <script>
     import Textfield from '@smui/textfield'
-    import CustomSelect from '$src/components/CustomSelect.svelte'
     import TextAndSwitchToggler from '$src/components/TextAndSwitchToggler.svelte'
     import CustomSwitch from '$src/components/CustomSwitch.svelte'
-    // import { toast } from '@zerodevx/svelte-toast'
 
     export let defaultInitialValues = true
     export let initialValues = ''
 
     export let include_loss_channel = false
+
     export let ratek3 = ''
     export let k3Guess = ''
 
@@ -20,12 +19,15 @@
     export let readConfigDir = () => {}
 
     const update_loss_channel = () => {
-        console.log('update_loss_channel')
-        if (!include_loss_channel || ratek3.includes('k_loss')) return
-        if (ratek3.trim().endsWith(',')) ratek3 += 'k_loss'
-        else ratek3 += ', k_loss'
+        if (ratek3.includes('k_loss')) {
+            return (loss_channel_status = 'already included')
+        }
+        if (!include_loss_channel) return
+        ratek3 += ratek3.trim().endsWith(',') ? 'k_loss' : ', k_loss'
+        loss_channel_status = 'added'
     }
-    let toggle_fitfile_components = true
+
+    let loss_channel_status = ''
 </script>
 
 <div class="box column">
@@ -42,22 +44,37 @@
             label="loss channel"
             on:SMUISwitch:change={update_loss_channel}
         />
-        <Textfield bind:value={ratek3} label="ratek3" />
+        {#if loss_channel_status}
+            <span class="tag">{loss_channel_status}</span>
+        {/if}
+
+        <Textfield
+            bind:value={ratek3}
+            label="ratek3"
+            on:change={() => {
+                if (ratek3.includes('k_loss')) {
+                    loss_channel_status = 'loss channel added'
+                    include_loss_channel = true
+                } else {
+                    include_loss_channel = false
+                    loss_channel_status = 'loss channel removed'
+                }
+            }}
+        />
         <Textfield bind:value={k3Guess} label="k3Guess (min, max) [/s]" />
     </div>
+
     <div>
         <Textfield bind:value={ratekCID} label="ratekCID" />
         <Textfield bind:value={kCIDGuess} label="kCIDGuess (min, max) [/s]" />
     </div>
 
-    <div>
-        <TextAndSwitchToggler
-            bind:value={kinetics_fitfile}
-            label="fit-config file (*.fit.json)"
-            options={config_filelists.filter((f) => f.endsWith('.fit.json'))}
-            update={readConfigDir}
-        />
-    </div>
+    <TextAndSwitchToggler
+        bind:value={kinetics_fitfile}
+        label="fit-config file (*.fit.json)"
+        options={config_filelists.filter((f) => f.endsWith('.fit.json'))}
+        update={readConfigDir}
+    />
 </div>
 
 <style lang="scss">
