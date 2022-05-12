@@ -1,32 +1,26 @@
 <script>
     import Textfield from '@smui/textfield'
     import CustomSelect from '$components/CustomSelect.svelte'
-    import { createEventDispatcher } from 'svelte'
+
     export let loss_channels = []
     export let nameOfReactants = ''
+
+    let channelCounter = 0
     const addChannel = () => {
         loss_channels = [
             ...loss_channels,
-            { type: 'forwards', name: 'k_loss', attachTo: 'none', id: getID() },
+            {
+                type: 'forwards',
+                name:
+                    channelCounter > 0 ? `k_loss_${channelCounter}` : 'k_loss',
+                attachTo: 'none',
+                id: getID(),
+            },
         ]
+        channelCounter += 1
     }
-
-    // const dispatch = createEventDispatcher()
-    const channelAdded = (e, channel) => {
-        console.log(channel)
-        const add_or_update = e.target.textContent
-        if (add_or_update.toLowerCase() === 'add') {
-            e.target.textContent = 'Added'
-            // dispatch('add', { channel })
-        } else {
-            e.target.textContent = 'updated'
-            // dispatch('update', { channel })
-        }
-        e.target.disabled = true
-        setTimeout(() => {
-            e.target.textContent = 'update'
-            e.target.disabled = false
-        }, 500)
+    $: if (loss_channels.length === 0) {
+        channelCounter = 0
     }
 </script>
 
@@ -54,16 +48,14 @@
                                 .map((name) => name.trim()),
                         ]}
                     />
-                    <button
-                        class="button is-link"
-                        on:click={(e) => channelAdded(e, channel)}>ADD</button
-                    >
+
                     <button
                         class="button is-danger"
                         on:click={() => {
                             loss_channels = loss_channels.filter(
                                 (c) => c.id !== channel.id
                             )
+                            channelCounter--
                         }}>X</button
                     >
                 </div>
@@ -80,8 +72,8 @@
         justify-content: center;
     }
     .channels_div {
-        min-height: 150px;
-        max-height: 60%;
+        min-height: 180px;
+        max-height: 180px;
         overflow: auto;
         padding: 0 1em;
     }
