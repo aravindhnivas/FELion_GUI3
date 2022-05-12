@@ -29,8 +29,8 @@ def make_slider():
 
     global k3Sliders, kCIDSliders
 
-    from .fit import update, min_max_step_controller
-    from .configfile import ratek3, ratekCID
+    from .fit import update
+    from .configfile import ratek3, ratekCID, forwards_labels_and_bounds, backwards_labels_and_bounds
 
     # print(f"{ratek3=}\n{ratekCID=}", flush=True)
     widget.ax.margins(x=0)
@@ -43,11 +43,11 @@ def make_slider():
 
     k3SliderAxes = []
 
-    k3Labels = min_max_step_controller["forwards"]
-    kCIDLabels = min_max_step_controller["backwards"]
+    # k3Labels = min_max_step_controller["forwards"]
+    # kCIDLabels = min_max_step_controller["backwards"]
     # return print(f"{k3Labels.values()=}")
 
-    for label, controller in k3Labels.items():
+    for label, controller in forwards_labels_and_bounds.items():
 
         axes = [0.65, bottom, width, height]
         current_k3SliderAxes = widget.fig.add_axes(axes)
@@ -74,7 +74,7 @@ def make_slider():
     counter = 0
     kCIDSliderAxes = []
 
-    for label, controller in kCIDLabels.items():
+    for label, controller in backwards_labels_and_bounds.items():
         axes = [0.65, bottom, width, height]
         current_kCIDSliderAxes = widget.fig.add_axes(axes)
 

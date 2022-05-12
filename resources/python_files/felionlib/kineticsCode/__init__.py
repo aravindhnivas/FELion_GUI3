@@ -33,13 +33,13 @@ widget: felionQtWindow = None
 nameOfReactantsArray: list[str] = None
 kinetic_plot_adjust_configs_obj: dict[str, float] = {}
 legends: list[str] = []
-kinetics_equation_file: str = None
+kinetics_equation_file: pt = None
 data: dict[str, dict] = {}
 
 
 def main(args):
 
-    global k3Labels, kCIDLabels
+    # global k3Labels, kCIDLabels
     global data, widget, legends
     global kinetic_plot_adjust_configs_obj
     global temp, numberDensity, kinetics_equation_file
@@ -74,8 +74,8 @@ def main(args):
     outdir = kinetic_file_location.parent / "OUT"
     fit_config_file = config_files_location / args["$fit_config_filename"]
 
-    k3Labels = [i.strip() for i in args["ratek3"].split(",")]
-    kCIDLabels = [i.strip() for i in args["ratekCID"].split(",")]
+    # k3Labels = [i.strip() for i in args["ratek3"].split(",")]
+    # kCIDLabels = [i.strip() for i in args["ratekCID"].split(",")]
     # k3Guess = float(args["k3Guess"])
     # k3Guess = float(args["k3Guess"])
 
@@ -83,7 +83,7 @@ def main(args):
     kCIDGuess: list[float, float] = [float(i) for i in args["kCIDGuess"].split(",")]
     print(f"{k3Guess=}\n{kCIDGuess=}", flush=True)
     legends = [lg.strip() for lg in args["legends"].split(",")]
-    read_config(fit_config_file, selectedFile, k3Guess, kCIDGuess, k3Labels, kCIDLabels)
+    read_config(fit_config_file, selectedFile, kinetics_equation_file)
 
     kinetic_plot_adjust_configs_obj = {
         key: float(value) for key, value in args["kinetic_plot_adjust_configs_obj"].items()

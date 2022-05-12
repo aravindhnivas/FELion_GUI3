@@ -4,7 +4,7 @@ import traceback
 from felionlib.kineticsCode.utils.definitions import formatArray
 from felionlib.utils import logger
 from felionlib.utils.msgbox import MsgBox, MB_ICONERROR, MB_ICONINFORMATION
-from felionlib.kineticsCode import k3Labels, kCIDLabels, selectedFile, temp, nameOfReactants, numberDensity
+from felionlib.kineticsCode import selectedFile, temp, nameOfReactants, numberDensity
 
 
 def saveData():
@@ -13,7 +13,7 @@ def saveData():
 
         from .fit import rateCoefficientArgs, k_err
         from .plot import fitPlot, expPlot
-        from .configfile import ratek3, rateConstantsFileData, savefile
+        from .configfile import ratek3, rateConstantsFileData, savefile, k3Labels, kCIDLabels
 
         logger(f"{rateCoefficientArgs[0]=}")
         logger(f"{rateCoefficientArgs[1]=}")
@@ -37,14 +37,15 @@ def saveData():
                 for key, value, err in zip(kCIDLabels, kCIDValues, kCIDErr)
             }
 
+            print(f"{rateConstantsFileData=}", flush=True)
             rateConstantsFileData[selectedFile] = {
                 "k3_fit": k3_fit,
                 "kCID_fit": kCID_fit,
-                "temp": f"{temp:.1f}",
+                "temp": float(f"{temp:.1f}"),
                 "numberDensity": f"{numberDensity:.2e}",
             }
 
-            logger(f"{rateConstantsFileData[selectedFile]=}")
+            print(f"{rateConstantsFileData=}", flush=True)
             data = json.dumps(rateConstantsFileData, sort_keys=True, indent=4, separators=(",", ": "))
 
             f.write(data)

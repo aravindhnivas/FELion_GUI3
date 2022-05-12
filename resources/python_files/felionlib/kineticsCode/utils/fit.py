@@ -23,9 +23,9 @@ from felionlib.utils.FELion_definitions import readCodeFromFile
 from felionlib.kineticsCode.utils.rateSliders import k3Sliders, kCIDSliders, update_sliders
 from .plotWidgets import fitStatus_label_widget, fit_methods_widget, solve_ivp_methods_widget, bounds_percent_widget
 
-k_fit = []
 k_err = k_err_config
 rateCoefficientArgs: tuple[list[float], list[float]] = (ratek3, ratekCID)
+k_fit: np.ndarray = None
 
 
 fit_method = "lm"
@@ -68,14 +68,9 @@ def codeToRun(code: str):
 codeContents = readCodeFromFile(kinetics_equation_file)
 codeOutput = codeToRun(codeContents)
 compute_attachment_process = codeOutput["compute_attachment_process"]
-min_max_step_controller: dict[Literal["forwards", "backwards"], dict[str, tuple[float, float, float]]] = codeOutput[
-    "min_max_step_controller"
-]
 
 
 def intialize_fit_plot() -> None:
-    # print("intialize solve_ivp_plot", flush=True)
-
     results = solve_ivp(
         compute_attachment_process,
         tspan,
@@ -83,7 +78,6 @@ def intialize_fit_plot() -> None:
         method=solve_ivp_method,
         t_eval=simulateTime,
     )
-    # print(f"{results=}", flush=True)
 
     dNdtSol = results.y
     return dNdtSol
@@ -128,13 +122,11 @@ def fitODE(t: np.ndarray, *args):
 
 
 def fit_kinetic_data() -> None:
-    global k_fit, k_err
+    global k_fit, k_err, rateCoefficientArgs
 
     fitStatus_label_widget.setText("Fitting...")
     setbound = checkboxes["set_bound"]
     includeError = checkboxes["include_error"]
-    logger(f"{checkboxes=}")
-
     p0 = np.array([*[rate.val for rate in k3Sliders.values()], *[rate.val for rate in kCIDSliders.values()]])
     p0 = np.nan_to_num(p0).clip(min=0)
     bounds = (-np.inf, np.inf)
@@ -166,11 +158,13 @@ def fit_kinetic_data() -> None:
             method=fit_method,
         )
         k_err = np.sqrt(np.diag(kcov))
-
         logger(f"{k_fit=}\n{k_err=}")
-
         logger("fitted")
-        update_sliders(k_fit[: len(ratek3)], k_fit[len(ratek3) :])
+        k3_fit = k_fit[: len(ratek3)]
+        kCID_fit = k_fit[len(ratek3) :]
+        update_sliders(k3_fit, kCID_fit)
+
+        # rateCoefficientArgs = (k3_fit, kCID_fit)
 
         if not np.all(np.isfinite(k_fit)):
             raise ValueError("Fitted values are not finite")
