@@ -14,6 +14,10 @@ def safe_update_sliders(Sliders: dict[str, Slider], values: list[float]):
         for slider, value in zip(Sliders.values(), values):
             if np.isnan(value):
                 value = 0
+            if slider.valmax < value:
+                label = slider.label.get_text()
+                warningMsg = f"{label} fitted {value=:.4f} is greater than {slider.valmax=}\nReset the max value to atleast {(value+0.1*value):.1f}"
+                widget.showdialog(msg=warningMsg, type="warning")
             slider.set_val(value)
     except Exception:
         widget.showErrorDialog(title="Error while updating sliders")
