@@ -16,7 +16,7 @@
     import { browse } from '$components/Layout.svelte'
     import RateConstants from './controllers/RateConstants.svelte'
     import RateInitialise from './controllers/RateInitialise.svelte'
-
+    import KlossChannels from './controllers/KlossChannels.svelte'
     let currentLocation = window.db.get('kinetics_location') || ''
 
     let timestartIndexScan = 0
@@ -111,7 +111,7 @@
 
     function computeParameters() {
         timestartIndexScan = 0
-
+        loss_channels = []
         const currentJSONfile = pathJoin(
             currentLocation,
             selectedFile.replace('.scan', '_scan.json')
@@ -139,13 +139,27 @@
     )
 
     $: paramsFile = pathJoin(configDir, $kinetics_params_file)
+    const params_updatefile_or_getfromfile = ({
+        updatefile = true,
+        contents,
+    }) => {
+        if (updatefile) {
+            contents[selectedFile] = {
+                ratek3,
+                ratekCID,
+                legends,
+                totalMassKey,
+                initialValues,
+                nameOfReactants,
+                timestartIndexScan,
 
-    const updateParamsFile = () => {
-        let contents = {}
-        if (fs.existsSync(paramsFile)) {
-            ;[contents] = fs.readJsonSync(paramsFile)
+                $fit_config_filename,
+                kineticEditorFilename,
+                loss_channels,
+            }
+            return contents
         }
-        contents[selectedFile] = {
+        ;({
             ratek3,
             ratekCID,
             legends,
@@ -153,10 +167,25 @@
             initialValues,
             nameOfReactants,
             timestartIndexScan,
-            $fit_config_filename,
             kineticEditorFilename,
+            loss_channels,
+        } = contents)
+        if (contents['$fit_config_filename']) {
+            $fit_config_filename = contents['$fit_config_filename']
         }
+        console.log('read from file', contents)
+        params_found = true
+    }
 
+    const updateParamsFile = () => {
+        let contents = {}
+        if (fs.existsSync(paramsFile)) {
+            ;[contents] = fs.readJsonSync(paramsFile)
+        }
+        contents = params_updatefile_or_getfromfile({
+            updatefile: true,
+            contents,
+        })
         fs.outputJsonSync(paramsFile, contents)
         window.createToast(`saved: ${basename(paramsFile)}`, 'success')
         params_found = true
@@ -173,23 +202,7 @@
         console.log('no data available')
 
         if (!contents) return
-        ;({
-            initialValues,
-            ratek3,
-            ratekCID,
-            nameOfReactants,
-            totalMassKey,
-            timestartIndexScan,
-            legends,
-            kineticEditorFilename,
-        } = contents)
-
-        if (contents['$fit_config_filename']) {
-            $fit_config_filename = contents['$fit_config_filename']
-        }
-
-        console.log('read from file', contents)
-        params_found = true
+        params_updatefile_or_getfromfile({ updatefile: false, contents })
     }
 
     let legends = ''
@@ -330,6 +343,7 @@
     $: if (config_content[selectedFile]) {
         updateConfig()
     }
+
     let configArray = []
 
     async function loadConfig() {
@@ -393,6 +407,7 @@
             })
             data['SUM'] = currentData['SUM']
             let kinetic_plot_adjust_configs_obj = {}
+
             try {
                 kinetic_plot_adjust_configs_obj = $kinetic_plot_adjust_configs
                     .replaceAll('=', ':')
@@ -408,19 +423,27 @@
                 kinetic_plot_adjust_configs_obj = JSON.parse(
                     `{${kinetic_plot_adjust_configs_obj}}`
                 )
+
+                console.log(kinetic_plot_adjust_configs_obj)
             } catch (error) {
                 kinetic_plot_adjust_configs_obj = {}
-                console.error(error)
             }
+
+            let modified_rate_constants = [ratek3, ratekCID]
+            loss_channels.forEach(({ type, name }) => {
+                if (type === 'forwards')
+                    return (modified_rate_constants[0] += `, ${name}`)
+                modified_rate_constants[1] += `, ${name}`
+            })
 
             const args = {
                 tag,
                 data,
                 temp,
-                ratek3,
+                ratek3: modified_rate_constants[0],
                 k3Guess,
                 molecule,
-                ratekCID,
+                ratekCID: modified_rate_constants[1],
                 legends,
                 kCIDGuess,
                 selectedFile,
@@ -431,6 +454,7 @@
                 kinetic_plot_adjust_configs_obj,
                 kinetic_file_location: currentLocation,
                 initialValues: initialValues.split(','),
+                conditions: currentConfig,
             }
             computePy_func({ e, pyfile: 'kineticsCode', args, general: true })
         } catch (error) {
@@ -441,7 +465,6 @@
 
     let initialValues = ''
     let adjustConfig = false
-    let include_loss_channel = false
 
     $: currentConfig = { srgMode, pbefore, pafter, calibrationFactor, temp }
 
@@ -453,6 +476,7 @@
         'kinetics_fitted_values',
         'kinetics.fit.json'
     )
+    let loss_channels = []
 
     onMount(() => {
         loadConfig()
@@ -561,7 +585,6 @@
                 {config_filelists}
                 bind:defaultInitialValues
                 bind:initialValues
-                bind:include_loss_channel
                 bind:kinetics_fitfile={$fit_config_filename}
                 bind:ratek3
                 bind:k3Guess
@@ -569,8 +592,16 @@
                 bind:kCIDGuess
             />
 
+            <KlossChannels bind:loss_channels {nameOfReactants} />
             <KineticEditor
-                {...{ ratek3, k3Guess, ratekCID, kCIDGuess, nameOfReactants }}
+                {...{
+                    ratek3,
+                    k3Guess,
+                    ratekCID,
+                    kCIDGuess,
+                    nameOfReactants,
+                    loss_channels,
+                }}
                 bind:location={currentLocation}
                 bind:savefilename={kineticEditorFilename}
                 bind:reportSaved

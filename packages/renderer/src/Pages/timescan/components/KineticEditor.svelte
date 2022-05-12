@@ -1,20 +1,23 @@
 <script>
     import Editor from '$components/Editor.svelte'
     import { computeKineticCodeScipy } from '../functions/computeKineticCode'
-    // import { resizableDiv } from '$src/js/resizableDiv.js'
+
     export let ratek3
     export let k3Guess
+
     export let kCIDGuess
     export let ratekCID = ''
+
     export let location = ''
     export let savefilename = ''
+
     export let reportRead = false
     export let reportSaved = false
-    export let nameOfReactants = ''
-    let editor
 
-    // const change = { width: false, height: true }
-    // const edges = { bottom: true, top: false, left: false, right: false }
+    export let nameOfReactants = ''
+    export let loss_channels = []
+
+    let editor
 </script>
 
 <div class="report-editor-div" id="kinetics-editor__div">
@@ -35,14 +38,16 @@
             <button
                 class="button is-warning"
                 on:click={() => {
-                    if (!nameOfReactants)
+                    if (!nameOfReactants) {
                         return window.createToast('No data available', 'danger')
+                    }
                     const dataToSet = computeKineticCodeScipy({
                         ratek3,
                         ratekCID,
                         nameOfReactants,
                         k3Guess,
                         kCIDGuess,
+                        loss_channels,
                     })
                     if (dataToSet) {
                         reportSaved = false

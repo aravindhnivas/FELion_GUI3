@@ -6,28 +6,15 @@
     export let defaultInitialValues = true
     export let initialValues = ''
 
-    export let include_loss_channel = false
-
     export let ratek3 = ''
     export let k3Guess = ''
-
     export let ratekCID = ''
     export let kCIDGuess = ''
 
     export let config_filelists = []
     export let kinetics_fitfile = ''
+
     export let readConfigDir = () => {}
-
-    const update_loss_channel = () => {
-        if (ratek3.includes('k_loss')) {
-            return (loss_channel_status = 'already included')
-        }
-        if (!include_loss_channel) return
-        ratek3 += ratek3.trim().endsWith(',') ? 'k_loss' : ', k_loss'
-        loss_channel_status = 'added'
-    }
-
-    let loss_channel_status = ''
 </script>
 
 <div class="box column">
@@ -39,28 +26,7 @@
         <Textfield bind:value={initialValues} label="initialValues" />
     </div>
     <div>
-        <CustomSwitch
-            bind:selected={include_loss_channel}
-            label="loss channel"
-            on:SMUISwitch:change={update_loss_channel}
-        />
-        {#if loss_channel_status}
-            <span class="tag">{loss_channel_status}</span>
-        {/if}
-
-        <Textfield
-            bind:value={ratek3}
-            label="ratek3"
-            on:change={() => {
-                if (ratek3.includes('k_loss')) {
-                    loss_channel_status = 'loss channel added'
-                    include_loss_channel = true
-                } else {
-                    include_loss_channel = false
-                    loss_channel_status = 'loss channel removed'
-                }
-            }}
-        />
+        <Textfield bind:value={ratek3} label="ratek3" />
         <Textfield bind:value={k3Guess} label="k3Guess (min, max) [/s]" />
     </div>
 
