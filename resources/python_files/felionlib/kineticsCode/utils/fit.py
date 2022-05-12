@@ -21,7 +21,7 @@ from .configfile import ratek3, ratekCID, k_err as k_err_config
 
 from felionlib.utils.FELion_definitions import readCodeFromFile
 from felionlib.kineticsCode.utils.rateSliders import k3Sliders, kCIDSliders, update_sliders
-from .plotWidgets import fitStatus_label_widget, fit_methods_widget, solve_ivp_methods_widget, bounds_percent_widget
+from .plotWidgets import fitStatus_label_widget, fit_methods_widget, solve_ivp_methods_widget
 
 k_err = k_err_config
 rateCoefficientArgs: tuple[list[float], list[float]] = (ratek3, ratekCID)
@@ -52,12 +52,12 @@ solve_ivp_methods_widget.currentTextChanged.connect(update_solve_ivp_method)
 bounds_percent = 10
 
 
-def update_bounds_percent(val: int = None):
-    global bounds_percent
-    bounds_percent = val
+# def update_bounds_percent(val: int = None):
+#     global bounds_percent
+#     bounds_percent = val
 
 
-bounds_percent_widget.valueChanged.connect(update_bounds_percent)
+# bounds_percent_widget.valueChanged.connect(update_bounds_percent)
 
 
 def codeToRun(code: str):
@@ -132,15 +132,14 @@ def fit_kinetic_data() -> None:
     bounds = (-np.inf, np.inf)
 
     if setbound:
-        # percent = 10
         bounds = (
             [
-                *[rate.val - (bounds_percent / 100) * rate.val for rate in k3Sliders.values()],
-                *[rate.val - (bounds_percent / 100) * rate.val for rate in kCIDSliders.values()],
+                *[rate.valmin for rate in k3Sliders.values()],
+                *[rate.valmin for rate in kCIDSliders.values()],
             ],
             [
-                *[rate.val + (bounds_percent / 100) * rate.val for rate in k3Sliders.values()],
-                *[rate.val + (bounds_percent / 100) * rate.val for rate in kCIDSliders.values()],
+                *[rate.valmax for rate in k3Sliders.values()],
+                *[rate.valmax for rate in kCIDSliders.values()],
             ],
         )
     logger(f"{bounds=}")

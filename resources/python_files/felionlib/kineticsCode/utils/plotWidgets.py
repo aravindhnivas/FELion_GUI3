@@ -6,7 +6,7 @@ from felionlib.kineticsCode import widget
 fitStatus_label_widget = QtWidgets.QLabel("")
 fit_methods_widget = QtWidgets.QComboBox()
 solve_ivp_methods_widget = QtWidgets.QComboBox()
-bounds_percent_layout, bounds_percent_widget = widget.makeSlider("bounds(%)", 10, 1, 500)
+# bounds_percent_layout, bounds_percent_widget = widget.makeSlider("bounds(%)", 10, 1, 500)
 
 
 def make_widgets():
@@ -66,7 +66,7 @@ def make_widgets():
     additional_widgets_layout.addLayout(buttons1_layout)
     additional_widgets_layout.addLayout(buttons2_layout)
 
-    additional_widgets_layout.addLayout(bounds_percent_layout)
+    # additional_widgets_layout.addLayout(bounds_percent_layout)
     checkboxes_layout = attach_checkboxes()
     additional_widgets_layout.addLayout(checkboxes_layout)
     additional_widgets_layout.addWidget(fitStatus_label_widget)
