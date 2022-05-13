@@ -24,7 +24,6 @@ from matplotlib.text import Text
 import matplotlib.ticker as plticker
 from .utils.widgets import ShowDialog, AnotherWindow, iconfile, toggle_this_artist, closeEvent
 from .utils.workers import Worker
-
 import matplotlib.pyplot as plt
 
 QApplication = QtWidgets.QApplication
@@ -131,6 +130,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.xlabelWidget = QtWidgets.QLineEdit("")
         self.ylabelWidget = QtWidgets.QLineEdit("")
         self.finalControlLayout = QtWidgets.QVBoxLayout()
+        self.controlDock = QtWidgets.QDockWidget("Controllers", self)
         self.fixedControllerWidth = 270
         self.legend_picker_set = False
         self.line_handler = None
@@ -139,11 +139,12 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.legend_edit_window = None
 
     def toggle_controller_layout(self):
+        if not self.controlDock.isHidden():
+            return
 
-        hidden_state = self.finalControlWidget.isHidden()
-        self.finalControlWidget.setHidden(not hidden_state)
-        button_txt = "Hide controllers" if hidden_state else "Show more controllers"
-        self.toggle_controller_button.setText(button_txt)
+        self.controlDock.show()
+        # button_txt = "Hide controllers" if hidden_state else "Show more controllers"
+        # self.toggle_controller_button.setText(button_txt)
 
     def attachControlLayout(self):
 
@@ -154,19 +155,24 @@ class felionQtWindow(QtWidgets.QMainWindow):
         scroll = QtWidgets.QScrollArea()
         scroll.setWidgetResizable(True)
         scroll.setWidget(controlGroupBox)
+
         savecontrolGroup = self.figure_save_controllers()
         self.finalControlWidget = QtWidgets.QWidget()
 
         self.finalControlLayout.addWidget(scroll)
         self.finalControlLayout.addWidget(savecontrolGroup)
-
         self.finalControlWidget.setLayout(self.finalControlLayout)
-        self.mainLayout.addWidget(self.finalControlWidget, 1)
-        self.toggle_controller_layout()
+        self.controlDock.setWidget(self.finalControlWidget)
 
+        self.controlDock.setMinimumWidth(500)
+        self.controlDock.setFloating(True)
+        self.controlDock.hide()
+
+        self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.controlDock)
         self.show()
         self.activateWindow()
         self.raise_()
+
         self.updateFigsizeDetails()
         self.canvas.setFocus()
 
@@ -477,7 +483,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         figsize_adjust_layout = self.makefigsizeControlWidgets()
         dpiwidget = self.figure_DPI_controller()
 
-        self.toggle_controller_button = QtWidgets.QPushButton("Controller")
+        self.toggle_controller_button = QtWidgets.QPushButton("Open controller")
         self.toggle_controller_button.clicked.connect(self.toggle_controller_layout)
 
         navbar_controller_layout.addWidget(get_figsize_button)
@@ -540,7 +546,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.final_figure_widget.setMinimumWidth(500)
         self.final_figure_widget.setMinimumHeight(500)
         # self.mainLayout.addLayout(final_figure_layout, 4)
-        self.mainLayout.addWidget(self.final_figure_widget, 3)
+        self.mainLayout.addWidget(self.final_figure_widget)
 
         if defaultEvents:
             self.canvas.mpl_connect("button_release_event", lambda e: self.canvas.setFocus())
@@ -1043,7 +1049,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.set_bound_controller_values()
         self.updateFigsizeDetails()
 
-    def createControlLayout(self, axes: Iterable[Axes] = (), attachControlLayout=False, optimize=False) -> None:
+    def createControlLayout(self, axes: Iterable[Axes] = (), attachControlLayout=True, optimize=False) -> None:
 
         self.controlLayout = QtWidgets.QVBoxLayout()
         self.legend = None
@@ -1144,8 +1150,8 @@ class felionQtWindow(QtWidgets.QMainWindow):
         )
         return response == QtWidgets.QMessageBox.StandardButton.Yes
 
-    def on_pick(self, event) -> None:
-
+    def on_pick(self, event, callback: Callable=None) -> None:
+        callback(event)
         self.picked_legend = event.artist
         if self.ctrl_pressed:
             if isinstance(self.picked_legend, Text):
@@ -1200,13 +1206,14 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
         self.legend_edit_window.close()
 
-    def make_legend_editor(self):
-
+    def make_legend_editor(self, on_pick_callback: Callable[[], None] = None):
+        print("make_legend_editor", flush=True)
         self.ctrl_pressed = False
 
         def register_ctrl_press_button(e):
             if e.key == "control":
                 self.ctrl_pressed = True
+                print("ctrl_pressed", flush=True)
 
         self.canvas.mpl_connect("key_press_event", register_ctrl_press_button)
 
@@ -1224,6 +1231,9 @@ class felionQtWindow(QtWidgets.QMainWindow):
             self.legend_edit_window.closeEvent = edit_window_closeEvent
         self.legend_edit_window.save_button_widget.clicked.connect(self.edit_legend)
         self.legend_edit_window.edit_box_widget.returnPressed.connect(self.edit_legend)
+        if on_pick_callback is not None:
+            self.canvas.mpl_connect("pick_event", lambda e: self.on_pick(e, on_pick_callback))
+        print("legend editor made", flush=True)
 
     def makeLegendToggler(self, line_handler: dict[str, Union[Container, Artist]] = None, edit_legend=True) -> None:
         self.line_handler = line_handler

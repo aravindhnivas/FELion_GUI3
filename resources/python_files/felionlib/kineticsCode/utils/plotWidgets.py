@@ -1,6 +1,7 @@
-from felionlib.utils.felionQt import QtWidgets
+from felionlib.utils.felionQt import QtWidgets, Qt
 from .widgets.checkboxes import attach_checkboxes
-from felionlib.kineticsCode import widget
+
+# from felionlib.kineticsCode import widget
 
 
 fitStatus_label_widget = QtWidgets.QLabel("")
@@ -70,8 +71,13 @@ def make_widgets():
     checkboxes_layout = attach_checkboxes()
     additional_widgets_layout.addLayout(checkboxes_layout)
     additional_widgets_layout.addWidget(fitStatus_label_widget)
+    additional_widgets_layout.addStretch()
+    # additional_widgets_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+
     additional_widgets_group.setLayout(additional_widgets_layout)
-
-    widget.finalControlLayout.addWidget(additional_widgets_group)
-
-    widget.attachControlLayout()
+    controllerDock = QtWidgets.QDockWidget("Fitting controller", widget)
+    controllerDock.setWidget(additional_widgets_group)
+    controllerDock.setMaximumHeight(200)
+    # controllerDock.setFloating(True)
+    controllerDock.setFeatures(QtWidgets.QDockWidget.DockWidgetFeature.NoDockWidgetFeatures)
+    widget.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, controllerDock)

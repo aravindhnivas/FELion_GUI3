@@ -91,12 +91,10 @@ def main(args):
     if not kinetic_plot_adjust_configs_obj:
         kinetic_plot_adjust_configs_obj = {"right": 0.570, "top": 0.900, "left": 0.120, "bottom": 0.160}
 
-    widget = felionQtWindow(
-        title=f"kinetics : {selectedFile}", windowGeometry=(1200, 600), location=outdir, attachControlLayout=False
-    )
+    widget = felionQtWindow(title=f"kinetics : {selectedFile}", windowGeometry=(1200, 600), location=outdir)
     KineticMain()
     widget.ax.set_xbound(lower=-0.5)
     widget.ax.set_ybound(lower=1)
     widget.optimize_figure()
-    widget.toggle_controller_layout()
+    # widget.toggle_controller_layout()
     widget.qapp.exec()

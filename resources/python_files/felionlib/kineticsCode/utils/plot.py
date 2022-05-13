@@ -97,5 +97,6 @@ def plot_exp():
     for legline, origlinefit, origlineexp in zip(legend.get_texts(), fitPlot, expPlot):
         legline.set_picker(True)
         toggleLine[legline] = [origlinefit, origlineexp]
-    widget.canvas.mpl_connect("pick_event", on_pick)
+    # widget.canvas.mpl_connect("pick_event", on_pick)
+    widget.make_legend_editor(on_pick_callback=on_pick)
     widget.draw()

@@ -54,8 +54,8 @@ class depletionplot:
             self.startPlotting()
             if saveOutputDepletion and self.depletion_exp is not None:
                 self.saveFile(show=False)
-            self.widget.attachControlLayout()
-            
+            # self.widget.attachControlLayout()
+
             self.widget.optimize_figure()
             self.widget.updatecanvas()
             self.widget.qapp.exec()
@@ -88,29 +88,28 @@ class depletionplot:
         slider_layout_vbox.addLayout(slider_layout_Kon)
         slider_layout_vbox.addLayout(slider_layout_Na)
         slider_layout_vbox.addLayout(slider_layout_Nn)
-        
+
         self.depletion_output_label = QtWidgets.QLabel("")
         slider_layout_vbox.addWidget(self.depletion_output_label)
-        
+
         slider_layout_vbox.setAlignment(self.depletion_output_label, Qt.AlignmentFlag.AlignCenter)
-        
+
         update_buttons_layout = QtWidgets.QHBoxLayout()
-        
+
         update_legend_button = QtWidgets.QPushButton("Update label")
+
         def update_legend_ax0():
-            self.ax1.legend(
-                [f"A: {self.uA:.1uP}", "Experiment"], title="$D(t)=A*(1-e^{-K_{ON}*E})$"
-            )
+            self.ax1.legend([f"A: {self.uA:.1uP}", "Experiment"], title="$D(t)=A*(1-e^{-K_{ON}*E})$")
             self.widget.draw()
-            
+
         update_legend_button.clicked.connect(update_legend_ax0)
-        
+
         refit_button = QtWidgets.QPushButton("Re-fit")
         refit_button.clicked.connect(self.set_slider_values)
 
         update_buttons_layout.addWidget(update_legend_button)
         update_buttons_layout.addWidget(refit_button)
-        
+
         write_file_layout = QtWidgets.QHBoxLayout()
 
         self.write_filename_input = QtWidgets.QLineEdit("depletion_output")
@@ -121,16 +120,23 @@ class depletionplot:
 
         write_file_layout.addWidget(self.write_filename_input)
         write_file_layout.addWidget(write_file_button)
-        
+
         additional_widgets_group = QtWidgets.QGroupBox()
         additional_widgets_layout = QtWidgets.QVBoxLayout()
         additional_widgets_layout.addLayout(slider_layout_vbox)
         additional_widgets_layout.addLayout(update_buttons_layout)
         additional_widgets_layout.addLayout(write_file_layout)
+        additional_widgets_layout.addStretch()
         additional_widgets_group.setLayout(additional_widgets_layout)
 
-        self.widget.finalControlLayout.addWidget(additional_widgets_group)
-        
+        controllerDock = QtWidgets.QDockWidget("Fitting controller", self.widget)
+        controllerDock.setWidget(additional_widgets_group)
+        controllerDock.setMaximumHeight(500)
+        controllerDock.setFloating(True)
+        # make controllerDock not closable
+        controllerDock.setFeatures(QtWidgets.QDockWidget.DockWidgetFeature.NoDockWidgetFeatures)
+        self.widget.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, controllerDock)
+
     def saveFile(self, event=None, show=True):
 
         depletion_dir = self.location / self.write_filename_input.text()
@@ -224,37 +230,35 @@ class depletionplot:
             self.depletion_widgets(Koff, Kon, N, Na0, Nn0)
         else:
             self.set_slider_values(on=(Na0, Nn0, Kon), off=(Koff, N))
-        
+
         self.runFit(Koff, Kon, N, Na0, Nn0)
 
     def runFit(self, Koff, Kon, N, Na0, Nn0, plot=True):
 
         uKoff = uf(Koff, self.Koff_err)
         uN = uf(N, self.N_err)
-        
+
         uNa0 = uf(Na0, self.Na0_err)
         uNn0 = uf(Nn0, self.Nn0_err)
         uKon = uf(Kon, self.Kon_err)
 
         self.lg0 = "Laser ON"
-        
+
         self.write_lg0 = "K$_{ON}$: " + f"{uKon:.2uP}"
         self.write_lg0 += f"\nNn: {Nn0:.0f}({self.Nn0_err:.0f})"
         self.write_lg0 += f"\nNa: {Na0:.0f}({self.Na0_err:.0f})"
-        
+
         self.lg1 = "Laser OFF"
-        
+
         self.write_lg1 = "K$_{OFF}$: " + f"{uKoff:.1uP}"
         self.write_lg1 = f"\nN: {N:.0f}({self.N_err:.0f})"
-        
+
         self.get_depletion_fit(Koff, N, uKoff, uN, Na0, Nn0, Kon, uNa0, uNn0, uKon, plot)
         self.get_relative_abundance_fit(plot)
-        
+
         if plot:
             self.ax0.legend([self.lg0, self.lg1])
-            self.ax1.legend(
-                [f"A: {self.uA:.1uP}", "Experiment"], title="$D(t)=A*(1-e^{-K_{ON}*E})$"
-            )
+            self.ax1.legend([f"A: {self.uA:.1uP}", "Experiment"], title="$D(t)=A*(1-e^{-K_{ON}*E})$")
             self.ax0.ticklabel_format(axis="y", style="sci", scilimits=(0, 0))
             animated_artist = (
                 self.ax0_plot["resOn"],
@@ -264,7 +268,8 @@ class depletionplot:
             self.blit = BlitManager(self.widget.canvas, animated_artist)
 
     def update(self, event=None):
-        if self.N_slider.value() == 0: return
+        if self.N_slider.value() == 0:
+            return
         Koff = self.Koff_slider.value()
         Kon = self.Kon_slider.value()
         N = self.N_slider.value()
