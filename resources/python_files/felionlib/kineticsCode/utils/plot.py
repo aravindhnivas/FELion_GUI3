@@ -93,7 +93,7 @@ def plot_exp():
     fitPlot.append(fitted_sum_plot)
 
     widget.blit = BlitManager(widget.canvas, fitPlot)
-    legend = ax.legend([*legends, "SUM"])
+    legend = ax.legend([*legends, "SUM"], ncol=round(len(legends) / 3))
     for legline, origlinefit, origlineexp in zip(legend.get_texts(), fitPlot, expPlot):
         legline.set_picker(True)
         toggleLine[legline] = [origlinefit, origlineexp]
