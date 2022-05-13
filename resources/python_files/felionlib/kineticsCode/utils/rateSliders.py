@@ -58,11 +58,11 @@ def make_slider():
             valmax=valmax,
             valinit=valinit,
         )
-
         _k3Slider.on_changed(update)
         k3Sliders[label] = _k3Slider
         bottom -= height * 1.6
         counter += 1
+        print(f"setting slider value: {label}: {valinit}\n{k3Sliders[label].val}", flush=True)
         k3SliderAxes.append(current_k3SliderAxes)
 
     bottom -= height * 2
@@ -94,6 +94,7 @@ def make_slider():
 
         bottom -= height * 1.6
         counter += 1
+        print(f"setting slider value: {label}: {valinit}\n{kCIDSliders[label].val}", flush=True)
         kCIDSliderAxes.append(current_kCIDSliderAxes)
 
     widget.sliderWidgets = k3SliderAxes + kCIDSliderAxes
