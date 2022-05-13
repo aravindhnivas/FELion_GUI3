@@ -122,6 +122,8 @@ def fitODE(t: np.ndarray, *args):
 
 
 def fit_kinetic_data() -> None:
+    print(f"fitting data", flush=True)
+
     global k_fit, k_err, rateCoefficientArgs
 
     fitStatus_label_widget.setText("Fitting...")
