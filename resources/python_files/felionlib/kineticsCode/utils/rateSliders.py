@@ -1,6 +1,5 @@
 import numpy as np
 from matplotlib.widgets import Slider
-
 from felionlib.kineticsCode import widget
 
 
@@ -11,6 +10,7 @@ kCIDSliders: dict[str, Slider] = {}
 def safe_update_sliders(Sliders: dict[str, Slider], values: list[float]):
 
     try:
+
         for slider, value in zip(Sliders.values(), values):
             if np.isnan(value):
                 value = 0
@@ -19,6 +19,7 @@ def safe_update_sliders(Sliders: dict[str, Slider], values: list[float]):
                 warningMsg = f"{label} fitted {value=:.4f} is greater than {slider.valmax=}\nReset the max value to atleast {(value+0.1*value):.1f}"
                 widget.showdialog(msg=warningMsg, type="warning")
             slider.set_val(value)
+
     except Exception:
         widget.showErrorDialog(title="Error while updating sliders")
 
@@ -26,7 +27,6 @@ def safe_update_sliders(Sliders: dict[str, Slider], values: list[float]):
 def update_sliders(k3_fit: list[float], kCID_fit: list[float]):
     safe_update_sliders(k3Sliders, k3_fit)
     safe_update_sliders(kCIDSliders, kCID_fit)
-    print("sliders updated", flush=True)
 
 
 def make_slider():
@@ -36,20 +36,12 @@ def make_slider():
     from .fit import update
     from .configfile import ratek3, ratekCID, forwards_labels_and_bounds, backwards_labels_and_bounds
 
-    # print(f"{ratek3=}\n{ratekCID=}", flush=True)
     widget.ax.margins(x=0)
-
     height = 0.03
     width = 0.25
     bottom = 0.9
-
     counter = 0
-
     k3SliderAxes = []
-
-    # k3Labels = min_max_step_controller["forwards"]
-    # kCIDLabels = min_max_step_controller["backwards"]
-    # return print(f"{k3Labels.values()=}")
 
     for label, controller in forwards_labels_and_bounds.items():
 
@@ -83,7 +75,6 @@ def make_slider():
         current_kCIDSliderAxes = widget.fig.add_axes(axes)
 
         if counter + 1 <= min(len(ratek3), len(ratekCID)):
-
             current_kCIDSliderAxes.patch.set_facecolor(f"C{counter+1}")
             current_kCIDSliderAxes.patch.set_alpha(0.7)
 
@@ -98,7 +89,6 @@ def make_slider():
             valmax=valmax,
             valinit=valinit,
         )
-
         _kCIDSlider.on_changed(update)
         kCIDSliders[label] = _kCIDSlider
 
