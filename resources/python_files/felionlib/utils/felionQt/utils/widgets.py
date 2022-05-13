@@ -5,59 +5,56 @@ from pathlib import Path as pt
 from matplotlib.artist import Artist
 from matplotlib.container import Container
 from typing import Iterable, Union
+
 # from ... import felionQt
 import felionlib
+
 # filepath = pt(felionQt.__file__).parent.resolve()
 iconfile = pt(felionlib.__file__).parent / "../icons/icon.ico"
 
 
 class ShowDialog(QtWidgets.QDialog):
-
     def __init__(self, title="Info", info="", type="info", parent=None):
 
         super().__init__(parent)
         dialogBox = QtWidgets.QMessageBox(self)
         self.setWindowIcon(QIcon(iconfile.resolve().__str__()))
-        
+
         dialogBox.setWindowTitle(title)
         dialogBox.setText(info)
-        
+
         if type == "info":
             dialogBox.setIcon(QtWidgets.QMessageBox.Icon.Information)
 
         elif type == "warning":
             dialogBox.setIcon(QtWidgets.QMessageBox.Icon.Warning)
-        
+
         elif type == "critical":
             dialogBox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
 
         dialogBox.exec()
 
+
 class AnotherWindow(QtWidgets.QWidget):
-    """
-    This "window" is a QWidget. If it has no parent, it
-    will appear as a free-floating window as we want.
-    """
     def __init__(self, title="EDIT legend"):
-        
         super().__init__()
         self.setWindowTitle(title)
+
         self.setWindowIcon(QIcon(iconfile.resolve().__str__()))
         self.resize(300, 100)
         self.layout = QtWidgets.QVBoxLayout()
-
         self.edit_box_widget = QtWidgets.QLineEdit()
         self.save_button_widget = QtWidgets.QPushButton("Save")
 
         self.layout.addWidget(self.edit_box_widget)
         self.layout.addWidget(self.save_button_widget)
-
         self.layout.setAlignment(self.save_button_widget, Qt.AlignmentFlag.AlignRight)
         self.layout.addStretch()
-        
         self.setLayout(self.layout)
 
-        
+        self.setMaximumHeight(100)
+        self.setMaximumWidth(500)
+
 
 def closeEvent(self, event):
 
@@ -87,8 +84,9 @@ def toggle_this_artist(artist: Union[Iterable, Artist], alpha: float) -> float:
         for child in children:
             set_this_alpha: float = alpha if child.get_alpha() is None or child.get_alpha() == 1 else 1
             child.set_alpha(set_this_alpha)
-            
+
     return set_this_alpha
+
 
 class DoubleSlider(QtWidgets.QSlider):
 
@@ -96,13 +94,13 @@ class DoubleSlider(QtWidgets.QSlider):
     doubleValueChanged = pyqtSignal(float)
 
     def __init__(self, decimals=2, *args, **kargs):
-        super(DoubleSlider, self).__init__( *args, **kargs)
-        self._multi = 10 ** decimals
+        super(DoubleSlider, self).__init__(*args, **kargs)
+        self._multi = 10**decimals
 
         self.valueChanged.connect(self.emitDoubleValueChanged)
 
     def emitDoubleValueChanged(self):
-        value = float(super(DoubleSlider, self).value())/self._multi
+        value = float(super(DoubleSlider, self).value()) / self._multi
         self.doubleValueChanged.emit(value)
 
     def value(self):
