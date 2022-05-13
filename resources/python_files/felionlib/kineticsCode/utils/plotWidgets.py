@@ -1,17 +1,12 @@
 from felionlib.utils.felionQt import QtWidgets, Qt
 from .widgets.checkboxes import attach_checkboxes
 
-# from felionlib.kineticsCode import widget
-
-
 fitStatus_label_widget = QtWidgets.QLabel("")
 fit_methods_widget = QtWidgets.QComboBox()
 solve_ivp_methods_widget = QtWidgets.QComboBox()
-# bounds_percent_layout, bounds_percent_widget = widget.makeSlider("bounds(%)", 10, 1, 500)
 
 
 def make_widgets():
-
     from felionlib.kineticsCode import widget, kinetic_plot_adjust_configs_obj
     from felionlib.kineticsCode.utils.fit import fit_kinetic_data
     from .savedata import saveData
