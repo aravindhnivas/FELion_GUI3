@@ -29,11 +29,11 @@ def saveData():
 
             precession = 4
             k3_fit = {
-                key: [round(value, precession), round(err, precession)]
+                key: [value, err]
                 for key, value, err in zip(k3Labels, k3Values, k3Err)
             }
             kCID_fit = {
-                key: [round(value, precession), round(err, precession)]
+                key: [value, err]
                 for key, value, err in zip(kCIDLabels, kCIDValues, kCIDErr)
             }
 
