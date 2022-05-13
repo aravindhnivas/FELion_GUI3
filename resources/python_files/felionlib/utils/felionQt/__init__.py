@@ -1150,8 +1150,8 @@ class felionQtWindow(QtWidgets.QMainWindow):
         )
         return response == QtWidgets.QMessageBox.StandardButton.Yes
 
-    def on_pick(self, event, callback: Callable=None) -> None:
-        callback(event)
+    def on_pick(self, event, callback: Callable = None) -> None:
+
         self.picked_legend = event.artist
         if self.ctrl_pressed:
             if isinstance(self.picked_legend, Text):
@@ -1159,7 +1159,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
         if self.legendDraggableCheckWidget.isChecked():
             return
-
+        callback(event)
         if not isinstance(self.picked_legend, Text):
             return
 
