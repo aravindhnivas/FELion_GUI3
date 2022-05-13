@@ -131,11 +131,14 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.ylabelWidget = QtWidgets.QLineEdit("")
         self.finalControlLayout = QtWidgets.QVBoxLayout()
         self.controlDock = QtWidgets.QDockWidget("Controllers", self)
+
         self.fixedControllerWidth = 270
         self.legend_picker_set = False
         self.line_handler = None
         self.picked_legend = None
+
         self.ctrl_pressed = False
+        self.shift_pressed = False
         self.legend_edit_window = None
 
     def toggle_controller_layout(self):
@@ -724,11 +727,14 @@ class felionQtWindow(QtWidgets.QMainWindow):
     def figure_legend_controllers(self):
         def updateLegendState(state, type="toggle"):
             self.legend = self.ax.get_legend()
+
             if self.legend:
+
                 if type == "toggle":
                     self.legend.set_visible(state)
                 elif type == "dragg":
                     self.legend.set_draggable(state, use_blit=True)
+
                 self.draw()
 
         controllerLayout = QtWidgets.QHBoxLayout()
@@ -1151,15 +1157,18 @@ class felionQtWindow(QtWidgets.QMainWindow):
         return response == QtWidgets.QMessageBox.StandardButton.Yes
 
     def on_pick(self, event, callback: Callable = None) -> None:
-
         self.picked_legend = event.artist
+        if self.shift_pressed:
+            return
+        else:
+            self.legendDraggableCheckWidget.setChecked(False)
+
         if self.ctrl_pressed:
             if isinstance(self.picked_legend, Text):
                 return self.show_legend_edit_window()
 
-        if self.legendDraggableCheckWidget.isChecked():
-            return
-        callback(event)
+        if callback:
+            callback(event)
         if not isinstance(self.picked_legend, Text):
             return
 
@@ -1207,20 +1216,30 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.legend_edit_window.close()
 
     def make_legend_editor(self, on_pick_callback: Callable[[], None] = None):
-        print("make_legend_editor", flush=True)
         self.ctrl_pressed = False
+        self.shift_pressed = False
 
         def register_ctrl_press_button(e):
-            if e.key == "control":
-                self.ctrl_pressed = True
-                print("ctrl_pressed", flush=True)
+            self.ctrl_pressed = e.key == "control"
+            self.shift_pressed = e.key == "shift"
 
         self.canvas.mpl_connect("key_press_event", register_ctrl_press_button)
 
         def deregister_ctrl_press_button(e):
             self.ctrl_pressed = False
+            self.shift_pressed = False
+            # self.legendDraggableCheckWidget.setChecked(False)
 
         self.canvas.mpl_connect("key_release_event", deregister_ctrl_press_button)
+
+        # self.canvas.mpl_connect("button_press_event", on_pick_callback)
+        # self.canvas.mpl_connect("button_release_event", lambda e: self.legendDraggableCheckWidget.setChecked(False))
+
+        def enable_legend_drag(e):
+            if self.shift_pressed:
+                self.legendDraggableCheckWidget.setChecked(True)
+
+        self.canvas.mpl_connect("motion_notify_event", enable_legend_drag)
 
         if self.legend_edit_window is None:
             self.legend_edit_window = AnotherWindow()
