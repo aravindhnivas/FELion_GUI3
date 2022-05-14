@@ -8,7 +8,7 @@
     let conditions = {
         temperature: {value: [5, 5], unit: "K"},
         background_pressure: {value: ["1e-8", 0], unit: "mbar"},
-        added_pressure: {value: ["7e-4", 5], unit: "mbar"},
+        added_pressure: {value: ["5e-6", 5], unit: "mbar"},
     }
 
     let calibration_factor = window.db.get('calibration_factor') || 200
@@ -43,7 +43,7 @@
 
     <!-- <h2>{ndensity.toExponential(4)} cm-3</h2> -->
     {#if datafromPython}
-        <h2 class="align h-center" style="user-select: text; color: #ffeb3b;">{includeTranspiration ? datafromPython["nHe_transpiration"] : datafromPython["nHe"]} cm-3</h2>
+        <h2 class="align h-center" style="user-select: text;">{includeTranspiration ? datafromPython["nHe_transpiration"] : datafromPython["nHe"]} cm-3</h2>
     {/if}
     <hr />
 
