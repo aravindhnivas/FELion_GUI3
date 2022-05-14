@@ -4,7 +4,7 @@
 
     export let loss_channels = []
     export let nameOfReactants = ''
-
+    $: ions_lists = nameOfReactants.split(',').map((name) => name.trim())
     let channelCounter = 0
     const addChannel = () => {
         loss_channels = [
@@ -13,6 +13,7 @@
                 type: 'forwards',
                 name:
                     channelCounter > 0 ? `k_loss_${channelCounter}` : 'k_loss',
+                lossFrom: ions_lists[0],
                 attachTo: 'none',
                 id: getID(),
             },
@@ -39,14 +40,14 @@
                     />
                     <Textfield bind:value={channel.name} label="name" />
                     <CustomSelect
+                        bind:value={channel.lossFrom}
+                        label="lossFrom"
+                        options={ions_lists}
+                    />
+                    <CustomSelect
                         bind:value={channel.attachTo}
                         label="attachTo"
-                        options={[
-                            'none',
-                            ...nameOfReactants
-                                .split(',')
-                                .map((name) => name.trim()),
-                        ]}
+                        options={['none', ...ions_lists]}
                     />
 
                     <button
