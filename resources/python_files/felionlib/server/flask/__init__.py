@@ -7,7 +7,8 @@ from flask import Flask, request, jsonify, abort
 from flask_cors import CORS
 from pathlib import Path as pt
 import os
-from multiprocessing import Process
+
+# from multiprocessing import Process
 app = Flask(__name__)
 CORS(app)
 
@@ -33,48 +34,38 @@ save_location = pt(os.getenv("TEMP")) / "FELion_GUI3"
 def compute():
 
     logger("fetching request")
+
     try:
+
         startTime = perf_counter()
         data = request.get_json()
         pyfile = data["pyfile"]
+
+        calling_file = pyfile.split(".")[-1]
+        filename = save_location / f"{calling_file}_data.json"
         args = data["args"]
-        general = args["general"]
-        logger(f"{pyfile=}\n{args=}\{general=}")
+
+        logger(f"{pyfile=}\n{args=}")
 
         with warnings.catch_warnings(record=True) as warn:
-            # warnings.simplefilter("ignore")
             pyfunction = import_module(f"felionlib.{pyfile}")
             pyfunction = reload(pyfunction)
-
-            # if general:
-            #     p = Process(target=pyfunction.main, args=(args,), daemon=True)
-            #     p.start()
-            #     p.join()
-            #     return jsonify({"done": True})
-
-            pyfunction.main(args)
-
+            output = pyfunction.main(args)
             logger(f"{warn=}")
 
         timeConsumed = perf_counter() - startTime
         logger(f"function execution done in {timeConsumed:.2f} s")
-
-        # if general:
-        #     return jsonify({"done": True})
-
-        calling_file = pyfile.split(".")[-1]
-        filename = save_location / f"{calling_file}_data.json"
+        
+        if isinstance(output, dict):
+            return jsonify(output)
 
         with open(filename, "r") as f:
             data = json.load(f)
         return jsonify(data)
 
     except Exception:
+        
         error = traceback.format_exc(5)
         logger("catching the error occured in python", error)
-
         abort(404, description=error)
-
-    finally:
-
-        logger("python process closed")
+        
