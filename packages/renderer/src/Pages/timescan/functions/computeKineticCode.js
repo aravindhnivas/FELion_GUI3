@@ -59,7 +59,7 @@ export class computeKineticCodeScipy {
             const currentMolecule = this.nameOfReactantsArr[index]
             const nextMolecule = this.nameOfReactantsArr[index + 1]
             data += `\t${currentMolecule}_f = -(${this.rateForwardArr[index]} * ${currentMolecule})`
-            data += `+ (${this.rateReverseArr[index]} * ${nextMolecule})\n`
+            data += ` + (${this.rateReverseArr[index]} * ${nextMolecule})\n`
         }
         data += `\n\tdNdT = [\n`
         data += this.make_final_list()
@@ -83,15 +83,21 @@ export class computeKineticCodeScipy {
         if(this.loss_channels.length === 0) return data.join('')
     
         const trim_this_line = (line) => line.trimEnd().replace(',', '')
-        data[0] = trim_this_line(data[0])
-        this.loss_channels.forEach(({name, attachTo}) => {
-            const loss_reaction = `(${name} * ${parentMolecule})`
-            data[0] += ` - ${loss_reaction}`
+
+        this.loss_channels.forEach(({name, lossFrom, attachTo}) => {
+        
+            const loss_reaction = `(${name} * ${lossFrom}),\n`
+
+            const lossIndex = this.nameOfReactantsArr.indexOf(lossFrom)
+            data[lossIndex] = trim_this_line(data[lossIndex]) + ` - ${loss_reaction}`
+
             if(attachTo === 'none') return
+
             const attachIndex = this.nameOfReactantsArr.indexOf(attachTo)
-            data[attachIndex] = trim_this_line(data[attachIndex]) + ` + ${loss_reaction},\n`
+            data[attachIndex] = trim_this_line(data[attachIndex]) + ` + ${loss_reaction}`
+        
         })
-        data[0] += ',\n'
+
         return data.join('')
     }
 
