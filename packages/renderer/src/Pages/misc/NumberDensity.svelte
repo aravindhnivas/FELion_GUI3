@@ -1,33 +1,50 @@
 <script>
     import Textfield from '@smui/textfield';
     import CustomSwitch from '$components/CustomSwitch.svelte'
-    import {boltzmanConstant} from '$src/js/constants';
+    import computePy_func from '$src/Pages/general/computePy'
 
     let rt = window.db.get('RT') || 300
     $: if (rt) {window.db.set('RT', rt)}
     let conditions = {
         temperature: {value: [5, 5], unit: "K"},
         background_pressure: {value: ["1e-8", 0], unit: "mbar"},
-        added_pressure: {value: ["1e-5", 5], unit: "mbar"},
+        added_pressure: {value: ["7e-4", 5], unit: "mbar"},
     }
 
     let calibration_factor = window.db.get('calibration_factor') || 200
     $: if (calibration_factor) {
         window.db.set('calibration_factor', calibration_factor)
     }
-    const Kb_in_cm = boltzmanConstant * 1e4
-    $: changeInPressure = Number(conditions.added_pressure.value[0]) - Number(conditions.background_pressure.value[0])
-    $: CONSTANT = calibration_factor / ( Kb_in_cm * rt ** 0.5)
-    $: ndensity = (CONSTANT * changeInPressure) / (conditions.temperature.value[0] ** 0.5)
 
     let TakasuiSensuiConstants = {A: 6.11, B: 4.26, C: 0.52}
     let includeTranspiration = false
-    let srgMode = false
+    let tube_diameter = 3
+    let calibration_factor_std_dev = 10
+    let rt_std_dev = 0.5
+    let datafromPython;
+    const computeNumberDensity = async (e) => {
+        datafromPython = await computePy_func(
+            {e, pyfile: 'numberDensity', args: {
+                conditions,
+                TakasuiSensuiConstants,
+                calibration_factor: [calibration_factor, calibration_factor_std_dev],
+                room_temperature: [rt, rt_std_dev],
+                tube_diameter
+            }}
+        )
+    }
+
+    // onMount(computeNumberDensity)
+
 </script>
 
 <div class="box">
     <h2>Number Density</h2>
-    <h2 class="flex is-right">{ndensity.toExponential(4)} cm-3</h2>
+
+    <!-- <h2>{ndensity.toExponential(4)} cm-3</h2> -->
+    {#if datafromPython}
+        <h2 class="align h-center" style="user-select: text; color: #ffeb3b;">{includeTranspiration ? datafromPython["nHe_transpiration"] : datafromPython["nHe"]} cm-3</h2>
+    {/if}
     <hr />
 
     <div class="scroll">
@@ -35,17 +52,16 @@
             
             <div class="align">
                 {#each Object.keys(conditions) as key (key)}
-
-                    {@const label = `${key} (${conditions[key].unit})`}
-                    <div>
+                {@const label = `${key} (${conditions[key].unit})`}
+                    <div class="border__div">
                         <Textfield
-                        bind:value={conditions[key].value[0]}
-                        {label}
-                    />
-                    <Textfield
-                        bind:value={conditions[key].value[1]}
-                        label="std. dev. (%)"
-                    />
+                            bind:value={conditions[key].value[0]}
+                            {label}
+                        />
+                        <Textfield
+                            bind:value={conditions[key].value[1]}
+                            label="std. dev. (%)"
+                        />
                     </div>
                 {/each}
             </div>
@@ -53,48 +69,78 @@
             <div class="align">
                 <CustomSwitch
                     bind:selected={includeTranspiration}
-                    label="transpiration"
+                    label="thermotranspiration effects"
                 />
 
-                <button class="button is-warning m-5">Compute</button>
+                <button class="button is-warning m-5" on:click={computeNumberDensity}>Compute</button>
             </div>
             
         </div>
         <!-- <hr /> -->
         <div style="display: flex; flex-direction: column; padding: 0 1em;">
             
-            <div style="align">
+            <div class="align">
     
-                <Textfield
-                    bind:value={calibration_factor}
-                    label="Calibration Factor"
+                <div class="border__div">
+                    <Textfield
+                        bind:value={calibration_factor}
+                        label="Calibration Factor"
+                    />
+
+                    <Textfield
+                        bind:value={calibration_factor_std_dev}
+                        label="std.dev"
+                    />
+                </div>
+                <div class="border__div">
+
+                    <Textfield
+                        bind:value={rt}
+                        label="Room temperature (K)"
+                    />
+                    <Textfield
+                        bind:value={rt_std_dev}
+                        label="std.dev"
+                    />
+                </div>
+            </div>
+            <div class="align constants">
+                <h1 class="subtitle mt-5" style:width='100%' >Takasui-Sensui constants</h1>
+                <Textfield style="width: 100%;"
+                    bind:value={tube_diameter}
+                    label="diameter of the connectingtube (mm)"
                 />
 
-                <Textfield
-                    bind:value={rt}
-                    label="Room temperature (K)"
-                />
+                <div class="border__div">
 
-                <div class="align constants">
-                    
-                    <h1 class="subtitle mt-5" style:width='100%' >Takasui-Sensui constants</h1>
                     {#each Object.keys(TakasuiSensuiConstants) as key (key)}
                         <Textfield
                             bind:value={TakasuiSensuiConstants[key]}
                             label={key}
                         />
                     {/each}
-                   
                 </div>
+               
             </div>
         </div>
     </div>
+
 </div>
 
-<style lang="scss">
+<style>
+
     .box {max-height: calc(100vh - 15rem);}
     .scroll {
         overflow-y: auto;
-        height: 70%;
+        height: 80%;
+    }
+    .border__div {
+        gap: 1em;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        border: solid 1px white;
+        border-radius: 1em;
+        padding: 1em;
     }
 </style>
