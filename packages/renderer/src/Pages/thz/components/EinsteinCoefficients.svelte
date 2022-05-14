@@ -3,7 +3,7 @@
     import Textfield from '@smui/textfield'
     import computePy_func from '$src/Pages/general/computePy'
     import BoxComponent from './BoxComponent.svelte'
-    import { PlanksConstant, SpeedOfLight } from '../functions/constants'
+    import { PlanksConstant, SpeedOfLight } from '$src/js/constants'
     import { computeStatisticalWeight } from '../functions/balance_distribution'
 
     export let einsteinCoefficientA = []
