@@ -56,10 +56,6 @@
                     label="transpiration"
                 />
 
-                <CustomSwitch on:SMUISwitch:change={(state)=> calibration_factor = state ? 1 : 200}
-                    bind:selected={srgMode}
-                    label="SRG mode"
-                />
                 <button class="button is-warning m-5">Compute</button>
             </div>
             
