@@ -108,9 +108,8 @@ export async function startServer(webContents) {
             pyfile,
             JSON.stringify({ port: availablePORT, debug: serverDebug }),
         ]
-
         const pyArgs = developerMode ? [mainpyfile, ...sendArgs] : sendArgs
-        console.warn({ pyProgram, pyArgs })
+        // console.warn({ pyProgram, pyArgs })
 
         const opts = {}
 
