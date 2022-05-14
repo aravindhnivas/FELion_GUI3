@@ -23,7 +23,7 @@
         PlanksConstant,
         boltzmanConstant,
         VaccumPermitivity,
-    } from './functions/constants'
+    } from '$src/js/constants'
     // import {findAndGetValue}        from "./functions/misc";
     import computePy_func from '$src/Pages/general/computePy'
 
