@@ -118,7 +118,7 @@ export async function startServer(webContents) {
             py = spawn(pyProgram, pyArgs, opts)
 
             py.on('error', (error) => {
-                serverStarting = false
+                // serverStarting = false
 
                 webContents?.send('db:update', {
                     key: 'pyServerReady',
@@ -158,8 +158,12 @@ export async function startServer(webContents) {
                 const stdout = String.fromCharCode.apply(null, data)
                 console.info(stdout)
             })
+        
         } catch (error) {
+            
             console.error(error)
+            serverStarting = false
+
             webContents?.send('db:update', {
                 key: 'pyServerReady',
                 value: false,
