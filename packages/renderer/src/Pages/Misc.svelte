@@ -5,7 +5,7 @@
     import Tab, { Label } from '@smui/tab'
     import TabBar from '@smui/tab-bar'
     import { onMount } from 'svelte'
-
+    import { activePage } from '$src/svelteWritable'
     let active = window.db.get('MISC_active_tab') || 'Unit Conversion'
     $: if (active) {
         window.db.set('MISC_active_tab', active)
@@ -14,7 +14,7 @@
     const navItems = ['Unit Conversion', 'Configs']
     let display = 'none'
     onMount(() => {
-        display = window.db.get('active_tab') === 'Misc' ? 'block' : 'none'
+        display = $activePage === 'Misc' ? 'block' : 'none'
     })
 </script>
 
