@@ -6,7 +6,7 @@
     let rt = window.db.get('RT') || 300
     $: if (rt) {window.db.set('RT', rt)}
     let conditions = {
-        temperature: {value: [5, 5], unit: "K"},
+        trap_temperature: {value: [5, 5], unit: "K"},
         background_pressure: {value: ["1e-8", 0], unit: "mbar"},
         added_pressure: {value: ["5e-6", 5], unit: "mbar"},
     }
@@ -17,40 +17,60 @@
     }
 
     let TakasuiSensuiConstants = {A: 6.11, B: 4.26, C: 0.52}
-    let includeTranspiration = false
+    let includeTranspiration = true
     let tube_diameter = 3
     let calibration_factor_std_dev = 10
     let rt_std_dev = 0.5
     let datafromPython;
+    let srgMode = false;
+
     const computeNumberDensity = async (e) => {
+        const {trap_temperature, background_pressure, added_pressure} = conditions
         datafromPython = await computePy_func(
             {e, pyfile: 'numberDensity', args: {
-                conditions,
+                trap_temperature: trap_temperature.value,
+                background_pressure: background_pressure.value,
+                added_pressure: added_pressure.value,
                 TakasuiSensuiConstants,
                 calibration_factor: [calibration_factor, calibration_factor_std_dev],
                 room_temperature: [rt, rt_std_dev],
-                tube_diameter
+                tube_diameter, srgMode
             }}
         )
     }
 
-    // onMount(computeNumberDensity)
 
 </script>
 
 <div class="box">
     <h2>Number Density</h2>
-
-    <!-- <h2>{ndensity.toExponential(4)} cm-3</h2> -->
     {#if datafromPython}
         <h2 class="align h-center" style="user-select: text;">{includeTranspiration ? datafromPython["nHe_transpiration"] : datafromPython["nHe"]} cm-3</h2>
     {/if}
     <hr />
 
-    <div class="scroll">
+    <div class="align h-center">
+        <CustomSwitch
+            tooltip="Spinning Rotor Gauge"
+            bind:selected={srgMode}
+            label="SRG"
+            />
+            
+            <CustomSwitch
+            tooltip="correct for thermal-transpiration"
+            bind:selected={includeTranspiration}
+            label="TT"
+            />
+        
+        <button class="button is-link" on:click={computeNumberDensity}>Compute</button>
+    </div>
+
+    <div class="align scroll mt-2 pb-5">
+
         <div style="display: flex; flex-direction: column; padding: 0 1em;">
             
             <div class="align">
+
                 {#each Object.keys(conditions) as key (key)}
                 {@const label = `${key} (${conditions[key].unit})`}
                     <div class="border__div">
@@ -64,19 +84,11 @@
                         />
                     </div>
                 {/each}
-            </div>
 
-            <div class="align">
-                <CustomSwitch
-                    bind:selected={includeTranspiration}
-                    label="thermotranspiration effects"
-                />
-
-                <button class="button is-warning m-5" on:click={computeNumberDensity}>Compute</button>
             </div>
             
         </div>
-        <!-- <hr /> -->
+
         <div style="display: flex; flex-direction: column; padding: 0 1em;">
             
             <div class="align">
@@ -89,7 +101,7 @@
 
                     <Textfield
                         bind:value={calibration_factor_std_dev}
-                        label="std.dev"
+                        label="std.dev. (absolute)"
                     />
                 </div>
                 <div class="border__div">
@@ -100,7 +112,7 @@
                     />
                     <Textfield
                         bind:value={rt_std_dev}
-                        label="std.dev"
+                        label="std.dev. (absolute)"
                     />
                 </div>
             </div>
@@ -123,16 +135,15 @@
                
             </div>
         </div>
-    </div>
 
+    </div>
 </div>
 
 <style>
-
     .box {max-height: calc(100vh - 15rem);}
     .scroll {
         overflow-y: auto;
-        height: 80%;
+        height: 70%;
     }
     .border__div {
         gap: 1em;

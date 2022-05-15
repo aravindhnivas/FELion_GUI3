@@ -2,32 +2,28 @@ from uncertainties import ufloat
 from scipy.constants import Boltzmann as kB
 
 
-conditions = None
-
-
-def get_data_with_uncertainties(key):
-    value, err_percent = [float(i) for i in conditions[key]["value"]]
-    err_percent = err_percent / 100 * value
-    return ufloat(value, err_percent)
-
-
 def main(args):
-    global conditions
+    def get_data_with_uncertainties(key, percentage=False):
+        value, err = [float(i) for i in args[key]]
 
-    conditions = args["conditions"]
+        if not percentage:
+            return ufloat(value, err)
+        err_percent = err / 100 * value
+        return ufloat(value, err_percent)
 
-    trap_temperature = get_data_with_uncertainties("temperature")
-    background_pressure = get_data_with_uncertainties("background_pressure")
-    added_pressure = get_data_with_uncertainties("added_pressure")
+    trap_temperature = get_data_with_uncertainties("trap_temperature", percentage=True)
+    background_pressure = get_data_with_uncertainties("background_pressure", percentage=True)
+    added_pressure = get_data_with_uncertainties("added_pressure", percentage=True)
+
+    srgMode = bool(args["srgMode"])
+    if srgMode:
+        calibration_factor = 1
+    else:
+        calibration_factor = get_data_with_uncertainties("calibration_factor")
+    room_temperature = get_data_with_uncertainties("room_temperature")
 
     pressure_chamber = added_pressure - background_pressure
-
-    calibration_factor, calibration_factor_err = [float(i) for i in args["calibration_factor"]]
-    calibration_factor = ufloat(calibration_factor, calibration_factor_err)
     pressure_srg = calibration_factor * pressure_chamber
-
-    room_temperature, room_temperature_err = [float(i) for i in args["room_temperature"]]
-    room_temperature = ufloat(room_temperature, room_temperature_err)
 
     kB_in_cm = kB * 1e4
 
