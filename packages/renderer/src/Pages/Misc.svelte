@@ -16,6 +16,8 @@
     onMount(() => {
         display = $activePage === 'Misc' ? 'block' : 'none'
     })
+
+    let nHe
 </script>
 
 <section
@@ -31,17 +33,28 @@
         </div>
 
         <div class="misc_container">
-            <!-- {#if active == 'Unit Conversion'} -->
             <div
                 class="unit_conversion__container"
                 style:display={active == 'Unit Conversion' ? 'grid' : 'none'}
             >
                 <EnergyConversion />
-                <NumberDensity />
+
+                <div class="box number_density__container">
+                    <h2>Number Density</h2>
+                    {#if nHe}
+                        <h2 class="align h-center" style="user-select: text;">
+                            {nHe} cm-3
+                        </h2>
+                    {/if}
+                    <hr />
+                    <NumberDensity
+                        on:getValue={(e) => {
+                            nHe = e.detail.nHe
+                        }}
+                    />
+                </div>
             </div>
-            <!-- {:else if active == 'Configs'} -->
             <Configs {active} />
-            <!-- {/if} -->
         </div>
     </div>
 </section>
@@ -68,7 +81,9 @@
                 gap: 1em;
                 grid-template-columns: 3fr 2fr;
 
-                // max-height: calc(100vh - 15rem);
+                .number_density__container {
+                    max-height: calc(100vh - 10rem);
+                }
             }
         }
     }

@@ -17,6 +17,8 @@
     import RateConstants from './controllers/RateConstants.svelte'
     import RateInitialise from './controllers/RateInitialise.svelte'
     import KlossChannels from './controllers/KlossChannels.svelte'
+    import KineticsNumberDensity from './controllers/KineticsNumberDensity.svelte'
+
     let currentLocation = window.db.get('kinetics_location') || ''
 
     let timestartIndexScan = 0
@@ -519,6 +521,8 @@
         'kinetic_plot_adjust_configs',
         'top=0.905,\nbottom=0.135,\nleft=0.075,\nright=0.59,\nhspace=0.2,\nwspace=0.2'
     )
+
+    let show_numberDensity = false
 </script>
 
 <KineticConfigTable
@@ -530,10 +534,12 @@
     bind:config_file
     bind:active={adjustConfig}
 />
+
 <MatplotlibDialog
     bind:open={kinetic_plot_adjust_dialog_active}
     bind:value={$kinetic_plot_adjust_configs}
 />
+<KineticsNumberDensity bind:open={show_numberDensity} {currentConfig} />
 
 <LayoutDiv id="Kinetics">
     <svelte:fragment slot="header_content__slot">
@@ -647,8 +653,12 @@
     </svelte:fragment>
 
     <svelte:fragment slot="footer_content__slot">
-        <!-- <CustomSwitch bind:selected={auto_compute_params} label="auto-compute" /> -->
-
+        <button
+            class="button is-link"
+            on:click={() => {
+                show_numberDensity = true
+            }}>Number density</button
+        >
         <button
             class="button is-link"
             on:click={() => {
