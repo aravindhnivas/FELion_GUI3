@@ -119,6 +119,7 @@
             <div class="align constants">
                 <h1 class="subtitle mt-5" style:width='100%' >Takasui-Sensui constants</h1>
                 <Textfield style="width: 100%;"
+                    type="number"
                     bind:value={tube_diameter}
                     label="diameter of the connectingtube (mm)"
                 />
