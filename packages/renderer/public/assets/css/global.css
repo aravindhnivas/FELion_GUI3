@@ -24,7 +24,7 @@ body {
   width: 100vw;
   height: 100vh;
 }
-.modal-card-body {background-image: url(intro.svg)!important;}
+.background-body {background-image: url(intro.svg)!important;}
 body::-webkit-scrollbar {width: 0 !important;}
 hr {background-color: #dbdbdb;}
 
