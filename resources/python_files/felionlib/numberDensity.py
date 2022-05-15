@@ -22,8 +22,8 @@ def main(args):
         calibration_factor = get_data_with_uncertainties("calibration_factor")
     room_temperature = get_data_with_uncertainties("room_temperature")
 
-    pressure_chamber = added_pressure - background_pressure
-    pressure_srg = calibration_factor * pressure_chamber
+    changeInPressure = added_pressure - background_pressure
+    pressure_srg = calibration_factor * changeInPressure
 
     kB_in_cm = kB * 1e4
 
@@ -34,7 +34,7 @@ def main(args):
 
     # Takaishi-Sensui equation
     TakasuiSensuiConstants = args["TakasuiSensuiConstants"]
-    tube_diameter = ufloat(float(args["tube_diameter"]), 0)
+    tube_diameter = float(args["tube_diameter"])
     X = (2 * pressure_srg * tube_diameter) / (trap_temperature + room_temperature)
     A = float(TakasuiSensuiConstants["A"])
     B = float(TakasuiSensuiConstants["B"])
@@ -47,5 +47,8 @@ def main(args):
     nHe_transpiration = pressure_trap / (kB_in_cm * trap_temperature)
     print(f"{nHe_transpiration=:.2e}", flush=True)
 
-    send_data = {"nHe": f"{nHe:.2e}", "nHe_transpiration": f"{nHe_transpiration:.2e}"}
+    print(f"{calibration_factor=}\n{changeInPressure=}\n{pressure_srg=}", flush=True)
+    print(f"{numerator=}\n{denomiator=}\n{pressure_trap=}\n{X=:.3e}", flush=True)
+
+    send_data = {"nHe": f"{nHe:.3e}", "nHe_transpiration": f"{nHe_transpiration:.3e}"}
     return send_data
