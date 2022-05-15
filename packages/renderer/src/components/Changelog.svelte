@@ -4,10 +4,10 @@
     import Button, { Label } from '@smui/button'
     import SvelteMarkdown from 'svelte-markdown'
     const changelogFile = pathJoin(ROOT_DIR, 'resources/CHANGELOG.md')
-    let changelogContent = fs.readFileSync(changelogFile)
+    let source = fs.readFileSync(changelogFile)
     $: if (env.DEV && $activateChangelog) {
         console.log('reading changelog')
-        changelogContent = fs.readFileSync(changelogFile)
+        source = fs.readFileSync(changelogFile)
     }
 </script>
 
@@ -20,7 +20,7 @@
 >
     <Title id="changelog-title">FELion GUI Changelog</Title>
     <Content id="changelog-content" style="user-select:text;">
-        <SvelteMarkdown source={changelogContent} />
+        <SvelteMarkdown {source} />
     </Content>
     <Actions>
         <Button action="accept">
