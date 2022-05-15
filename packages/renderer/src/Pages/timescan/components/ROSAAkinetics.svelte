@@ -539,7 +539,12 @@
     bind:open={kinetic_plot_adjust_dialog_active}
     bind:value={$kinetic_plot_adjust_configs}
 />
-<KineticsNumberDensity bind:open={show_numberDensity} {currentConfig} />
+<KineticsNumberDensity
+    bind:open={show_numberDensity}
+    {currentConfig}
+    {selectedFile}
+    {config_file}
+/>
 
 <LayoutDiv id="Kinetics">
     <svelte:fragment slot="header_content__slot">

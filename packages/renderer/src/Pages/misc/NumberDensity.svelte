@@ -5,11 +5,11 @@
     import { createEventDispatcher } from 'svelte';
 
     export let currentConfig = {srgMode: false, temp: 5, pbefore: "1e-8", pafter: "5e-6", calibrationFactor: 200};
-    export let args = {};
+    let args = {};
     
 
     let includeTranspiration = true
-    let datafromPython;
+    let datafromPython = {}
 
     let rt = window.db.get('RT') || 300
     let trap_temperature = [currentConfig?.temp ?? 4.8, 5]
@@ -22,20 +22,21 @@
     let calibration_factor_std_dev = 10
     let rt_std_dev = 0.5
     let srgMode = currentConfig?.srgMode ?? false;
-
-    $: if(currentConfig) {
-        srgMode = currentConfig?.srgMode ?? srgMode
-        trap_temperature[0] = currentConfig?.temp ?? trap_temperature[0]
-        background_pressure[0] = currentConfig?.pbefore ?? background_pressure[0]
-        added_pressure[0] = currentConfig?.pafter ?? added_pressure[0]
-    }
+    
 
     $: if (rt) {window.db.set('RT', rt)}
     $: if (calibration_factor) {
         window.db.set('calibration_factor', calibration_factor)
     }
-    const computeNumberDensity = async (e) => {
+    export const computeNumberDensity = async (e) => {
         const room_temperature = [rt, rt_std_dev]
+
+        console.log(trap_temperature[0])
+        if(trap_temperature[0] < 0) return window.createToast("Invalid temperature", "danger")
+        
+        const changeInPressure = Number(added_pressure[0]) - Number(background_pressure[0])
+        if(!changeInPressure) return window.createToast("Invalid pressures", "danger")
+
         args = {
             srgMode,
             tube_diameter, 
@@ -46,16 +47,28 @@
             TakasuiSensuiConstants,
             calibration_factor: [calibration_factor, calibration_factor_std_dev],
         }
+
         datafromPython = await computePy_func(
             {e, pyfile: 'numberDensity', args}
         )
-        dispatch_current_numberdensity()
+
+        const nHe = dispatch_current_numberdensity()
+        return Promise.resolve(nHe)
     }
 
+
+    export const get_datas = () => {
+        console.log({...args, ...datafromPython })
+        return {
+            ...args, ...datafromPython 
+        }
+    }
     const dispatch = createEventDispatcher();
     const dispatch_current_numberdensity = () => {
+    
         const nHe = includeTranspiration ? datafromPython['nHe_transpiration'] : datafromPython['nHe']
         dispatch('getValue', {nHe})
+        return nHe
     }
 </script>
 
@@ -82,6 +95,8 @@
 
             <div class="border__div">
                 <Textfield
+                    input$step="0.1"
+                    type="number"
                     bind:value={trap_temperature[0]}
                     label={'trap_temperature (K)'}
                 />

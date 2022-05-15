@@ -34,10 +34,18 @@
         <slot name="content" />
     </Content>
     <Actions style="background: #836ac05c;">
-        <slot name="footer">
+        <div class="action-btns">
+            <slot name="footer" />
             <button class="button is-danger" on:click={() => (open = false)}
                 >Close</button
             >
-        </slot>
+        </div>
     </Actions>
 </Dialog>
+
+<style>
+    .action-btns {
+        display: flex;
+        gap: 1em;
+    }
+</style>
