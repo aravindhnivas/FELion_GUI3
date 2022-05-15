@@ -1,7 +1,7 @@
 <script>
     import Textfield from '@smui/textfield';
     import { onDestroy } from 'svelte';
-
+    export let active = ''
     let CONFIGS = db?.data() || {}
 
     const unsubscribe = window.db.onDidAnyChange((newValue, oldValue) => {
@@ -11,7 +11,7 @@
     
 </script>
 
-<div class="config_main__div box">
+<div class="config_main__div box" style:display={active == 'Configs' ? 'grid' : 'none'}>
     <Textfield
     style="border: solid 1px #fff7;"
         value={window.db.path}

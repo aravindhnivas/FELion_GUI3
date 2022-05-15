@@ -31,14 +31,17 @@
         </div>
 
         <div class="misc_container">
-            {#if active == 'Unit Conversion'}
-                <div class="unit_conversion__container">
-                    <EnergyConversion />
-                    <NumberDensity />
-                </div>
-            {:else if active == 'Configs'}
-                <Configs />
-            {/if}
+            <!-- {#if active == 'Unit Conversion'} -->
+            <div
+                class="unit_conversion__container"
+                style:display={active == 'Unit Conversion' ? 'grid' : 'none'}
+            >
+                <EnergyConversion />
+                <NumberDensity />
+            </div>
+            <!-- {:else if active == 'Configs'} -->
+            <Configs {active} />
+            <!-- {/if} -->
         </div>
     </div>
 </section>
