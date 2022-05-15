@@ -1,13 +1,12 @@
 <script>
     import { activateChangelog } from '../js/functions'
-    import { Remarkable } from 'remarkable'
     import Dialog, { Title, Content, Actions } from '@smui/dialog'
     import Button, { Label } from '@smui/button'
+    import SvelteMarkdown from 'svelte-markdown'
     const changelogFile = pathJoin(ROOT_DIR, 'resources/CHANGELOG.md')
     let changelogContent = fs.readFileSync(changelogFile)
-    const md = new Remarkable('default', {})
-    const changelogTitle = 'FELion GUI Changelog'
-    $: if ($activateChangelog) {
+    $: if (env.DEV && $activateChangelog) {
+        console.log('reading changelog')
         changelogContent = fs.readFileSync(changelogFile)
     }
 </script>
@@ -19,9 +18,9 @@
     surface$class="changelog__container"
     surface$style="max-width:50vw; max-height: 70vh;"
 >
-    <Title id="changelog-title">{changelogTitle}</Title>
-    <Content id="changelog-content">
-        {@html md.render(changelogContent)}
+    <Title id="changelog-title">FELion GUI Changelog</Title>
+    <Content id="changelog-content" style="user-select:text;">
+        <SvelteMarkdown source={changelogContent} />
     </Content>
     <Actions>
         <Button action="accept">

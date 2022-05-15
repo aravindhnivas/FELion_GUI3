@@ -35,7 +35,6 @@ const config = {
                     winbox: ['winbox/src/js/winbox'],
                     interactjs: ['interactjs'],
                     yaml: ['yaml'],
-                    remarkable: ['remarkable'],
                     'lodash-es': ['lodash-es'],
                     plotly: ['plotly.js/dist/plotly-basic'],
                 },
