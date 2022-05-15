@@ -47,8 +47,8 @@ def main(args):
     nHe_transpiration = pressure_trap / (kB_in_cm * trap_temperature)
     print(f"{nHe_transpiration=:.2e}", flush=True)
 
-    print(f"{calibration_factor=}\n{changeInPressure=}\n{pressure_srg=}", flush=True)
-    print(f"{numerator=}\n{denomiator=}\n{pressure_trap=}\n{X=:.3e}", flush=True)
+    # print(f"{calibration_factor=}\n{changeInPressure=}\n{pressure_srg=}", flush=True)
+    # print(f"{numerator=}\n{denomiator=}\n{pressure_trap=}\n{X=:.3e}", flush=True)
 
     send_data = {"nHe": f"{nHe:.3e}", "nHe_transpiration": f"{nHe_transpiration:.3e}"}
     return send_data
