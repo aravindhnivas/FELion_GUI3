@@ -46,7 +46,7 @@
         </header>
 
         <section
-            class="modal-card-body"
+            class="modal-card-body background-body"
             style="overflow-y: {$$slots.body_scrollable__div
                 ? 'hidden'
                 : 'auto'} "
@@ -83,9 +83,4 @@
     .modal-card-title {
         margin: 0 !important;
     }
-    /* .modal-card {
-        min-height: 60%;
-        max-height: 60%;
-        width: 50%;
-    } */
 </style>
