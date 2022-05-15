@@ -38,7 +38,7 @@ def main(args):
 
     # Takaishi-Sensui equation
     TakasuiSensuiConstants = args["TakasuiSensuiConstants"]
-    tube_diameter = float(args["tube_diameter"])
+    tube_diameter = ufloat(float(args["tube_diameter"]), 0)
     X = (2 * pressure_srg * tube_diameter) / (trap_temperature + room_temperature)
     A = float(TakasuiSensuiConstants["A"])
     B = float(TakasuiSensuiConstants["B"])
