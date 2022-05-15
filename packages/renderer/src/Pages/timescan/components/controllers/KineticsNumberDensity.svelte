@@ -1,15 +1,15 @@
 <script>
     import Modal from '$components/modal/Modal.svelte'
     import NumberDensity from '$src/Pages/misc/NumberDensity.svelte'
-    import { createEventDispatcher } from 'svelte'
+    // import { createEventDispatcher } from 'svelte'
 
     export let nHe = ''
     export let selectedFile = ''
     export let open = false
     export let currentConfig = {}
     export let config_file = ''
-    let args = {}
-    const dispatch = createEventDispatcher()
+    // let args = {}
+    // const dispatch = createEventDispatcher()
 
     let computeNumberDensity
     let get_datas
@@ -51,10 +51,7 @@
         title="{selectedFile}: Number density: {nHe} cm-3"
         id="kinetis-number-density"
         on:mounted={async () => {
-            // nHe = ''
             nHe = await computeNumberDensity()
-            console.log(nHe)
-            console.log(config_file)
         }}
     >
         <svelte:fragment slot="content">
