@@ -28,7 +28,7 @@
 <div
     class="box animate__animated animate__fadeInDown"
     id="navbar"
-    style="display:none"
+    style="display:none; background: #5a419b;"
     on:click={navigate}
 >
     <TabBar tabs={navItems} let:tab bind:active>

@@ -50,6 +50,10 @@
         .misc_main__div {
             display: grid;
             gap: 1em;
+
+            .misc_nav {
+                padding: 0;
+            }
             .unit_conversion__container {
                 display: grid;
                 grid-template-columns: 3fr 2fr;

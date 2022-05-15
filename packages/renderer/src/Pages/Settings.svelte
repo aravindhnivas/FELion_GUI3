@@ -290,7 +290,7 @@
                                 <CustomSwitch
                                     bind:selected={serverDebug}
                                     label="serverDebug"
-                                    on:SMUISwitch:change={() => {
+                                    on:change={() => {
                                         window.db.set(
                                             'serverDebug',
                                             serverDebug

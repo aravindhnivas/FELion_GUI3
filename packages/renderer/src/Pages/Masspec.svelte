@@ -159,7 +159,7 @@
 
             <CustomSwitch
                 style="margin: 0 1em;"
-                on:SMUISwitch:change={linearlogCheck}
+                on:change={linearlogCheck}
                 bind:selected={logScale}
                 label="Log"
             />

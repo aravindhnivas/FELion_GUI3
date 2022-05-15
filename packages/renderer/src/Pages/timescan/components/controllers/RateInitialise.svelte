@@ -52,7 +52,7 @@
 
     <div class="align h-center">
         <CustomSwitch
-            on:SMUISwitch:change={computeOtherParameters}
+            on:change={computeOtherParameters}
             bind:selected={useParamsFile}
             label="use params file"
         />

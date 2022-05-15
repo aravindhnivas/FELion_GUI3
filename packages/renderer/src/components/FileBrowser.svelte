@@ -174,7 +174,7 @@
 <CustomSwitch
     bind:selected={selectAll}
     label="Select All"
-    on:SMUISwitch:change={() => {
+    on:change={() => {
         console.log('selected all files')
         selectAll
             ? (fileChecked = fullfiles.map((file) => (file = file.name)))

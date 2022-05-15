@@ -209,7 +209,7 @@
                 >Open in Matplotlib</button
             >
             <CustomSwitch
-                on:SMUISwitch:change={linearlogCheck}
+                on:change={linearlogCheck}
                 bind:selected={logScale}
                 label="Log"
             />
