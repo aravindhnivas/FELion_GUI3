@@ -10,7 +10,11 @@
     }
 </script>
 
-<section id="Kinetics" style="display:block" class="animated fadeIn">
+<section
+    id="Kinetics"
+    style="display:block"
+    class="animate__animated animate__fadeIn"
+>
     <div class="main_div">
         <div class="nav box">
             <div

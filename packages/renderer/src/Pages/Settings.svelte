@@ -164,7 +164,11 @@
 
 <Changelog />
 
-<section class="section animated fadeIn" {id} style="display:{display}">
+<section
+    class="section animate__animated animate__fadeIn"
+    {id}
+    style="display:{display}"
+>
     <div class="main__div">
         <div class="box interact left_container__div">
             <div class="title__div">
@@ -195,7 +199,7 @@
         <div class="mainContainer box">
             <div class="container right" id="Settings_right_column">
                 <div
-                    class="align animated fadeIn"
+                    class="align animate__animated animate__fadeIn"
                     class:hide={selected !== 'Configuration'}
                 >
                     <h1>Configuration</h1>
@@ -344,7 +348,7 @@
                 </div>
 
                 <div
-                    class="align animated fadeIn"
+                    class="align animate__animated animate__fadeIn"
                     class:hide={selected !== 'Update'}
                 >
                     <h1 class="title">Update</h1>
@@ -379,14 +383,19 @@
                         </div>
 
                         {#if updateError}
-                            <div class="tag is-danger errorbox animated fadeIn">
+                            <div
+                                class="tag is-danger errorbox animate__animated animate__fadeIn"
+                            >
                                 {updateError}
                             </div>
                         {/if}
                     </div>
                 </div>
 
-                <div class="animated fadeIn" class:hide={selected !== 'About'}>
+                <div
+                    class="animate__animated animate__fadeIn"
+                    class:hide={selected !== 'About'}
+                >
                     <h1 class="title">About</h1>
                     <div class="content">
                         <ul style="user-select: text;">

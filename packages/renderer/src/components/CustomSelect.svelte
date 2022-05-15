@@ -40,11 +40,11 @@
 
     {#if update}
         <i
-            class="material-icons animated faster"
+            class="material-icons animate__animated animate__faster"
             on:animationend={(event) =>
-                event?.target?.classList.remove('rotateIn')}
+                event?.target?.classList.remove('animate__rotateIn')}
             on:click={(event) => {
-                event?.target?.classList.add('rotateIn')
+                event?.target?.classList.add('animate__rotateIn')
                 update()
             }}
         >

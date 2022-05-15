@@ -26,7 +26,7 @@
 </script>
 
 <div
-    class="box animated fadeInDown"
+    class="box animate__animated animate__fadeInDown"
     id="navbar"
     style="display:none"
     on:click={navigate}

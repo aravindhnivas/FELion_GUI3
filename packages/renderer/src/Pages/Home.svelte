@@ -3,7 +3,11 @@
     import { windowLoaded } from '../js/functions'
 </script>
 
-<section class="section animated fadeIn" id="Home" style="display:none">
+<section
+    class="section animate__animated animate__fadeIn"
+    id="Home"
+    style="display:none"
+>
     {#if $windowLoaded}
         {#await window.sleep(500) then _}
             <Simplewave>

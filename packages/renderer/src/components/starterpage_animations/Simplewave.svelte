@@ -1,4 +1,4 @@
-<div class="animated fadeIn slower home-container">
+<div class="animate__animated animate__fadeIn animate__slower home-container">
     <div class="home-header">
         <div class="inner-header">
             <slot name="header" />

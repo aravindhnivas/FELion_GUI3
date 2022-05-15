@@ -27,7 +27,10 @@
     }
 </script>
 
-<nav class="navbar is-fixed-bottom animated fadeInUp" id="footer">
+<nav
+    class="navbar is-fixed-bottom animate__animated animate__fadeInUp"
+    id="footer"
+>
     <div class="navbar-menu">
         <div class="navbar-start">
             <div class="navbar-item">

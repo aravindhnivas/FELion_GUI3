@@ -18,9 +18,13 @@
     })
 </script>
 
-<section class="animated fadeIn section" id="Misc" style:display>
+<section
+    class="animate__animated animate__fadeIn section"
+    id="Misc"
+    style:display
+>
     <div class="misc_main__div">
-        <div class="box animated fadeInDown misc_nav">
+        <div class="box animate__animated animate__fadeInDown misc_nav">
             <TabBar tabs={navItems} let:tab bind:active>
                 <Tab {tab}><Label>{tab}</Label></Tab>
             </TabBar>

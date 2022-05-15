@@ -1,4 +1,4 @@
-// css
+import 'animate.css';
 import 'cooltipz-css'
 import './scss/variables.css'
 import 'svelte-material-ui/bare.css'

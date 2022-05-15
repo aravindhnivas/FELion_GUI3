@@ -60,7 +60,7 @@
     let reportFiles = []
 
     const updateFiles = (node = null) => {
-        node?.target?.classList.add('rotateIn')
+        node?.target?.classList.add('animate__rotateIn')
         reportFiles = fs
             .readdirSync(pathResolve(location))
             .filter((name) => name.endsWith('.md'))
@@ -186,9 +186,9 @@
                 />
 
                 <i
-                    class="material-icons animated faster"
+                    class="material-icons animate__animated animate__faster"
                     on:animationend={({ target }) =>
-                        target.classList.remove('rotateIn')}
+                        target.classList.remove('animate__rotateIn')}
                     on:click={updateFiles}
                 >
                     refresh

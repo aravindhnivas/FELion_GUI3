@@ -151,10 +151,11 @@
     >
 
     <i
-        class="material-icons animated faster"
-        on:animationend={({ target }) => target.classList.remove('rotateIn')}
+        class="material-icons animate__animated animate__faster"
+        on:animationend={({ target }) =>
+            target.classList.remove('animate__rotateIn')}
         on:click={({ target }) => {
-            target.classList.add('rotateIn')
+            target.classList.add('animate__rotateIn')
             getFilePromise = getfiles(true, true)
         }}>refresh</i
     >

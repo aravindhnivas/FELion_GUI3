@@ -249,10 +249,3 @@
         }}>OPO</button
     >
 </div>
-
-<style>
-    :global(.tag__span) {
-        border-radius: 2em;
-        margin: 0 1em;
-    }
-</style>

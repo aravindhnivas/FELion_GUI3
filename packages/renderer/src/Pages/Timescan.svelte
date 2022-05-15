@@ -215,7 +215,10 @@
             />
         </div>
 
-        <div class="align animated fadeIn" class:hide={toggleRow}>
+        <div
+            class="align animate__animated animate__fadeIn"
+            class:hide={toggleRow}
+        >
             <CustomSelect
                 bind:value={resON_Files}
                 label="ResOn"

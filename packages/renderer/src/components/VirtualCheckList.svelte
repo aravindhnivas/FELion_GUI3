@@ -61,9 +61,3 @@
         </Item>
     </VirtualList>
 </List>
-
-<style global>
-    .mdc-deprecated-list {
-        padding-right: 1em;
-    }
-</style>

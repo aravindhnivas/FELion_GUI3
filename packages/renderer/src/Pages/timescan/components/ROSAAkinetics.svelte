@@ -48,7 +48,7 @@
         if (!fs.existsSync(currentLocation))
             return window.createToast('Invalid location', 'danger')
         window.db.set('kinetics_location', currentLocation)
-        node?.target.classList.add('rotateIn')
+        node?.target.classList.add('animate__rotateIn')
         fileCollections = fs
             .readdirSync(currentLocation)
             .filter((f) => f.endsWith('_scan.json'))
@@ -522,9 +522,9 @@
                 label="Timescan EXPORT data location"
             />
             <i
-                class="material-icons animated faster"
+                class="material-icons animate__animated animate__faster"
                 on:animationend={({ target }) =>
-                    target?.classList.remove('rotateIn')}
+                    target?.classList.remove('animate__rotateIn')}
                 on:click={updateFiles}
             >
                 refresh

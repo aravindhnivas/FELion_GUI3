@@ -71,7 +71,11 @@
     let display = window.db.get('active_tab') === id ? 'block' : 'none'
 </script>
 
-<section class="section animated fadeIn" {id} style="display:{display}">
+<section
+    class="section animate__animated animate__fadeIn"
+    {id}
+    style="display:{display}"
+>
     <div class="box main__container" id="powfileContainer">
         <div class="location__bar">
             <button class="button is-link" on:click={openFolder}>Browse</button>

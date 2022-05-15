@@ -125,7 +125,7 @@
     })
 </script>
 
-<section {id} style:display class="animated fadeIn">
+<section {id} style:display class="animate__animated animate__fadeIn">
     <div class="main__layout__div">
         <div
             use:resizableDiv
@@ -172,7 +172,7 @@
 
                 {#if graphPlotted}
                     <button
-                        class="button is-warning animated fadeIn"
+                        class="button is-warning animate__animated animate__fadeIn"
                         on:click={openGraph}>Graph:Open separately</button
                     >
                 {/if}
