@@ -45,19 +45,26 @@
 
 <style lang="scss">
     section {
-        // overflow: hidden;
-        padding: 2em;
+        padding: 1em;
+
+        height: calc(100vh - 7rem);
         .misc_main__div {
             display: grid;
             gap: 1em;
+            height: 100%;
+            grid-template-rows: auto 1fr;
+            .misc_container {
+                height: 100%;
+            }
 
             .misc_nav {
                 padding: 0;
             }
             .unit_conversion__container {
                 display: grid;
-                grid-template-columns: 3fr 2fr;
                 gap: 1em;
+                grid-template-columns: 3fr 2fr;
+
                 // max-height: calc(100vh - 15rem);
             }
         }

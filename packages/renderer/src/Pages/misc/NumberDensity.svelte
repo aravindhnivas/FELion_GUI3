@@ -140,10 +140,11 @@
 </div>
 
 <style>
-    .box {max-height: calc(100vh - 15rem);}
+
+    .box {max-height: calc(100vh - 10rem);}
     .scroll {
         overflow-y: auto;
-        height: 70%;
+        height: 80%;
     }
     .border__div {
         gap: 1em;
