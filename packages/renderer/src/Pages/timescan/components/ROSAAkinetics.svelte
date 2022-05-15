@@ -1,7 +1,7 @@
 <script>
     import { persistentWritable } from '$src/js/persistentStore'
     import { onMount, tick } from 'svelte'
-    // import { fade } from 'svelte/transition'
+    import { boltzmanConstant } from '$src/js/constants'
     import { cloneDeep } from 'lodash-es'
     import Textfield from '@smui/textfield'
     import CustomSwitch from '$components/CustomSwitch.svelte'
@@ -22,6 +22,7 @@
     let timestartIndexScan = 0
     let fileCollections = []
     let srgMode = true
+    let includeTranspiration = true
     let pbefore = 0
     let pafter = 0
     let temp = 5
@@ -139,6 +140,7 @@
     )
 
     $: paramsFile = pathJoin(configDir, $kinetics_params_file)
+
     const params_updatefile_or_getfromfile = ({
         updatefile = true,
         contents,
@@ -246,25 +248,46 @@
     $: if (srgMode) {
         calibrationFactor = 1
         if (update_pbefore) {
-            pbefore = Number(7e-5).toExponential(0)
+            pbefore = '7e-5'
         }
     } else {
         calibrationFactor = 200
         if (update_pbefore) {
-            pbefore = Number(1e-8).toExponential(0)
+            pbefore = '1e-8'
         }
     }
 
     let numberDensity = 0
+    const TakasuiSensuiConstants = { A: 6.11, B: 4.26, C: 0.52 }
+    const { A, B, C } = TakasuiSensuiConstants
+    const tube_diameter = 3 // connecting tube diameter in mm
+    const room_temperature = 300
+    const kB_in_cm = boltzmanConstant * 1e4
+
+    const constant = 1 / (kB_in_cm * Math.sqrt(room_temperature))
+
     const computeNumberDensity = async () => {
         await tick()
-        const constantValue = 4.2e17
-        const pDiff = Number(pafter) - Number(pbefore)
-        calibrationFactor = Number(calibrationFactor)
-        temp = Number(temp)
-        numberDensity = Number(
-            (constantValue * calibrationFactor * pDiff) / temp ** 0.5
-        ).toExponential(3)
+
+        const changeInPressure = Number(pafter) - Number(pbefore)
+        if (!changeInPressure) return
+
+        const pressure = calibrationFactor * changeInPressure
+        const trap_temperature = Number(temp)
+        if (!includeTranspiration) {
+            numberDensity = (constant * pressure) / Math.sqrt(trap_temperature)
+            return
+        }
+        const mean_temperature = (trap_temperature + room_temperature) / 2
+        const X = (pressure * tube_diameter) / mean_temperature
+
+        const numerator = Math.sqrt(trap_temperature / room_temperature) - 1
+        const denomiator = A * X ** 2 + B * X + C * X ** 0.5 + 1
+        const pressure_trap = pressure * (1 + numerator / denomiator)
+
+        console.log({ pressure, numerator, denomiator, pressure_trap, X })
+        // console.log(X.toExponential(3))
+        numberDensity = pressure_trap / (kB_in_cm * temp)
     }
 
     $: if (
@@ -272,7 +295,8 @@
         pafter ||
         temp ||
         calibrationFactor ||
-        config_content[selectedFile]
+        config_content[selectedFile] ||
+        includeTranspiration
     ) {
         computeNumberDensity()
     }
@@ -536,20 +560,28 @@
         <div class="main_container__div">
             <div class="align box h-center">
                 <CustomSwitch bind:selected={srgMode} label="SRG" />
+                <CustomSwitch
+                    bind:selected={includeTranspiration}
+                    label="TT"
+                    tooltip="correct for thermal-transpiration"
+                />
                 <Textfield bind:value={pbefore} label="pbefore" />
                 <Textfield bind:value={pafter} label="pafter" />
-                <CustomTextSwitch
+                <Textfield
                     step="0.5"
+                    type="number"
                     bind:value={calibrationFactor}
                     label="calibrationFactor"
                 />
-                <CustomTextSwitch
-                    step="0.1"
+                <Textfield
+                    input$step="0.1"
+                    type="number"
                     bind:value={temp}
-                    label="temp(K)"
+                    label="trap_temperature (K)"
                 />
                 <Textfield
-                    value={numberDensity}
+                    type="number"
+                    value={numberDensity?.toExponential(3) || 0}
                     label="numberDensity"
                     disabled
                 />
