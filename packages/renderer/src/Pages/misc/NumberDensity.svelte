@@ -22,7 +22,6 @@
     $: if (calibration_factor) {
         window.db.set('calibration_factor', calibration_factor)
     }
-
     const computeNumberDensity = async (e) => {
         const room_temperature = [rt, rt_std_dev]
         args = {
@@ -151,7 +150,6 @@
                         />
                     {/each}
                 </div>
-               
             </div>
         </div>
     </div>
