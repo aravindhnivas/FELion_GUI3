@@ -3,39 +3,40 @@
     import CustomSwitch from '$components/CustomSwitch.svelte'
     import computePy_func from '$src/Pages/general/computePy'
 
-    let rt = window.db.get('RT') || 300
-    $: if (rt) {window.db.set('RT', rt)}
-    let conditions = {
-        trap_temperature: {value: [5, 5], unit: "K"},
-        background_pressure: {value: ["1e-8", 0], unit: "mbar"},
-        added_pressure: {value: ["5e-6", 5], unit: "mbar"},
-    }
+    export let rt = window.db.get('RT') || 300
+    export let trap_temperature = [5, 5]
+    export let background_pressure = ["1e-8", 0]
+    export let added_pressure = ["5e-6", 5]
+    export let calibration_factor = window.db.get('calibration_factor') || 200
+    export let TakasuiSensuiConstants = {A: 6.11, B: 4.26, C: 0.52}
+    export let includeTranspiration = true
 
-    let calibration_factor = window.db.get('calibration_factor') || 200
+    export let tube_diameter = 3
+    export let calibration_factor_std_dev = 10
+    export let rt_std_dev = 0.5
+    export let datafromPython;
+    export let srgMode = false;
+    export let args = {}
+
+    $: if (rt) {window.db.set('RT', rt)}
     $: if (calibration_factor) {
         window.db.set('calibration_factor', calibration_factor)
     }
 
-    let TakasuiSensuiConstants = {A: 6.11, B: 4.26, C: 0.52}
-    let includeTranspiration = true
-    let tube_diameter = 3
-    let calibration_factor_std_dev = 10
-    let rt_std_dev = 0.5
-    let datafromPython;
-    let srgMode = false;
-
     const computeNumberDensity = async (e) => {
-        const {trap_temperature, background_pressure, added_pressure} = conditions
+        const room_temperature = [rt, rt_std_dev]
+        args = {
+            srgMode,
+            tube_diameter, 
+            added_pressure,
+            room_temperature,
+            trap_temperature,
+            background_pressure,
+            TakasuiSensuiConstants,
+            calibration_factor: [calibration_factor, calibration_factor_std_dev],
+        }
         datafromPython = await computePy_func(
-            {e, pyfile: 'numberDensity', args: {
-                trap_temperature: trap_temperature.value,
-                background_pressure: background_pressure.value,
-                added_pressure: added_pressure.value,
-                TakasuiSensuiConstants,
-                calibration_factor: [calibration_factor, calibration_factor_std_dev],
-                room_temperature: [rt, rt_std_dev],
-                tube_diameter, srgMode
-            }}
+            {e, pyfile: 'numberDensity', args}
         )
     }
 
@@ -71,19 +72,36 @@
             
             <div class="align">
 
-                {#each Object.keys(conditions) as key (key)}
-                {@const label = `${key} (${conditions[key].unit})`}
-                    <div class="border__div">
-                        <Textfield
-                            bind:value={conditions[key].value[0]}
-                            {label}
-                        />
-                        <Textfield
-                            bind:value={conditions[key].value[1]}
-                            label="std. dev. (%)"
-                        />
-                    </div>
-                {/each}
+                <div class="border__div">
+                    <Textfield
+                        bind:value={trap_temperature[0]}
+                        label={'trap_temperature (K)'}
+                    />
+                    <Textfield
+                        bind:value={trap_temperature[1]}
+                        label="std. dev. (%)"
+                    />
+                </div>
+                <div class="border__div">
+                    <Textfield
+                        bind:value={background_pressure[0]}
+                        label={'background_pressure (mbar)'}
+                    />
+                    <Textfield
+                        bind:value={background_pressure[1]}
+                        label="std. dev. (%)"
+                    />
+                </div>
+                <div class="border__div">
+                    <Textfield
+                        bind:value={added_pressure[0]}
+                        label={'added_pressure (mbar)'}
+                    />
+                    <Textfield
+                        bind:value={added_pressure[1]}
+                        label="std. dev. (%)"
+                    />
+                </div>
 
             </div>
             
@@ -136,12 +154,10 @@
                
             </div>
         </div>
-
     </div>
 </div>
 
 <style>
-
     .box {max-height: calc(100vh - 10rem);}
     .scroll {
         overflow-y: auto;
