@@ -34,7 +34,7 @@ def main(args):
 
     # Takaishi-Sensui equation
     TakasuiSensuiConstants = args["TakasuiSensuiConstants"]
-    tube_diameter = float(args["tube_diameter"])
+    tube_diameter = float(args["tube_diameter"]) * 100
     X = (2 * pressure_srg * tube_diameter) / (trap_temperature + room_temperature)
     A = float(TakasuiSensuiConstants["A"])
     B = float(TakasuiSensuiConstants["B"])
@@ -42,13 +42,15 @@ def main(args):
 
     numerator = (trap_temperature / room_temperature) ** 0.5 - 1
     denomiator = A * X**2 + B * X + C * X**0.5 + 1
-    pressure_trap = pressure_srg * (1 + (numerator / denomiator))
+    pressure_trap_by_srg = 1 + (numerator / denomiator)
+    pressure_trap = pressure_srg * pressure_trap_by_srg
+    # pressure_trap = pressure_srg * (1 + (numerator / denomiator))
 
     nHe_transpiration = pressure_trap / (kB_in_cm * trap_temperature)
     print(f"{nHe_transpiration=:.2e}", flush=True)
 
-    # print(f"{calibration_factor=}\n{changeInPressure=}\n{pressure_srg=}", flush=True)
-    # print(f"{numerator=}\n{denomiator=}\n{pressure_trap=}\n{X=:.3e}", flush=True)
+    print(f"{calibration_factor=}\n{changeInPressure=}\n{pressure_srg=}", flush=True)
+    print(f"{numerator=}\n{denomiator=}\n{pressure_trap_by_srg=:.3e}\n{pressure_trap=:.3e}\n{X=:.2e}", flush=True)
 
     send_data = {"nHe": f"{nHe:.3e}", "nHe_transpiration": f"{nHe_transpiration:.3e}"}
     return send_data
