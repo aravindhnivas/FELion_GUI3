@@ -13,7 +13,7 @@
 
 {#if $activateChangelog}
     <Modal
-        bind:open={$activateChangelog}
+        bind:active={$activateChangelog}
         id="changelog"
         class="changelog__container"
         title="FELion GUI Changelog"

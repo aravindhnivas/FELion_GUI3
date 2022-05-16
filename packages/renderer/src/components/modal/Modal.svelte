@@ -3,7 +3,7 @@
     import { createEventDispatcher, onMount } from 'svelte'
 
     export let id = getID()
-    export let open = false
+    export let active = false
     export let title = ''
     let className = ''
     export { className as class }
@@ -18,7 +18,7 @@
 </script>
 
 <Dialog
-    bind:open
+    bind:open={active}
     scrimClickAction=""
     surface$class="background-body {className}"
     aria-labelledby="{id}-title"
@@ -31,12 +31,18 @@
         >{title}</Title
     >
     <Content id="{id}-content">
+        <!-- <div class="container">
+            <h2 class="header">Header</h2>
+            <div class="content">
+                <slot name="content" />
+            </div>
+        </div> -->
         <slot name="content" />
     </Content>
     <Actions style="background: #836ac05c;">
         <div class="action-btns">
             <slot name="footer" />
-            <button class="button is-danger" on:click={() => (open = false)}
+            <button class="button is-danger" on:click={() => (active = false)}
                 >Close</button
             >
         </div>
