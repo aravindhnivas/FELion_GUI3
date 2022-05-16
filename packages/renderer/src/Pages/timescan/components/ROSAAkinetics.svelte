@@ -281,7 +281,7 @@
             return
         }
         const mean_temperature = (trap_temperature + room_temperature) / 2
-        const X = (pressure * tube_diameter) / mean_temperature
+        const X = (pressure * 100 * tube_diameter) / mean_temperature
 
         const numerator = Math.sqrt(trap_temperature / room_temperature) - 1
         const denomiator = A * X ** 2 + B * X + C * X ** 0.5 + 1
@@ -540,7 +540,7 @@
     bind:value={$kinetic_plot_adjust_configs}
 />
 <KineticsNumberDensity
-    bind:open={show_numberDensity}
+    bind:active={show_numberDensity}
     {currentConfig}
     {selectedFile}
     {config_file}

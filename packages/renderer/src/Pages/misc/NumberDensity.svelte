@@ -4,7 +4,7 @@
     import computePy_func from '$src/Pages/general/computePy'
     import { createEventDispatcher } from 'svelte';
 
-    export let currentConfig = {srgMode: false, temp: 5, pbefore: "1e-8", pafter: "5e-6", calibrationFactor: 200};
+    export let currentConfig = {srgMode: false, temp: 4, pbefore: "1e-8", pafter: "5e-6", calibrationFactor: 200};
     let args = {};
     
 
@@ -12,22 +12,21 @@
     let datafromPython = {}
 
     let rt = window.db.get('RT') || 300
-    let trap_temperature = [currentConfig?.temp ?? 4.8, 5]
+    let trap_temperature = [currentConfig?.temp ?? 4, 0.3]
     let background_pressure = [currentConfig?.pbefore ?? "1e-8", 0]
     let added_pressure = [currentConfig?.pafter ?? "5e-6", 5]
     
-    let calibration_factor = currentConfig?.calibrationFactor || window.db.get('calibration_factor') || 200
     let TakasuiSensuiConstants = {
-        A: {value: 6.11, unit: "(Kelvin / Pa.mm)^2"},
-        B: {value: 4.26, unit: "Kelvin / Pa.mm"},
-        C: {value: 0.52, unit: "(Kelvin / Pa.mm)^0.5"}
+        A: {value: 6.11, unit: "(K / mm.Pa)^2"},
+        B: {value: 4.26, unit: "K / mm.Pa"},
+        C: {value: 0.52, unit: "(K / mm.Pa)^0.5"}
     }
     let tube_diameter = 3
-    let calibration_factor_std_dev = 10
-    let rt_std_dev = 0.5
     let srgMode = currentConfig?.srgMode ?? false;
+    let calibration_factor = currentConfig?.calibrationFactor || window.db.get('calibration_factor') || 200
+    let calibration_factor_std_dev = srgMode ? 0 : 10
+    let rt_std_dev = 1
     
-
     $: if (rt) {window.db.set('RT', rt)}
     $: if (calibration_factor) {
         window.db.set('calibration_factor', calibration_factor)
@@ -108,17 +107,17 @@
                     input$step="0.1"
                     type="number"
                     bind:value={trap_temperature[0]}
-                    label={'trap_temperature (K)'}
+                    label={'trap_temperature [K]'}
                 />
                 <Textfield
                     bind:value={trap_temperature[1]}
-                    label="std. dev. (%)"
+                    label="std. dev. (absolute)"
                 />
             </div>
             <div class="border__div">
                 <Textfield
                     bind:value={background_pressure[0]}
-                    label={'background_pressure (mbar)'}
+                    label={'background_pressure [mbar]'}
                 />
                 <Textfield
                     bind:value={background_pressure[1]}
@@ -128,14 +127,13 @@
             <div class="border__div">
                 <Textfield
                     bind:value={added_pressure[0]}
-                    label={'added_pressure (mbar)'}
+                    label={'added_pressure [mbar]'}
                 />
                 <Textfield
                     bind:value={added_pressure[1]}
                     label="std. dev. (%)"
                 />
             </div>
-
         </div>
         
     </div>
@@ -145,22 +143,24 @@
         <div class="align">
 
             <div class="border__div">
-                <Textfield
+                <Textfield disabled={srgMode}
                     bind:value={calibration_factor}
                     label="Calibration Factor"
                 />
 
-                <Textfield
+                <Textfield disabled={srgMode}
                     bind:value={calibration_factor_std_dev}
                     label="std.dev. (absolute)"
                 />
             </div>
+
             <div class="border__div">
 
                 <Textfield
                     bind:value={rt}
                     label="Room temperature (K)"
                 />
+
                 <Textfield
                     bind:value={rt_std_dev}
                     label="std.dev. (absolute)"
@@ -168,15 +168,10 @@
             </div>
         </div>
         <div class="align constants">
-
-            <h1 class="subtitle mt-5" style:width='100%' >Takasui-Sensui constants</h1>
+            <h2 class="m-0 mt-5" style:width='100%' >Modified Takaishi-Sensui constants (for He gas at 4.3 K)</h2>
+            <div>(Reference: J. Chem. Phys. 113, 1738 (2000); https://doi.org/10.1063/1.481976)</div>
+            <br>
             
-            <Textfield style="width: 100%;"
-                type="number"
-                bind:value={tube_diameter}
-                label="diameter of the connectingtube (mm)"
-            />
-
             <div class="border__div">
                 {#each Object.keys(TakasuiSensuiConstants) as key (key)}
                     <Textfield
@@ -184,6 +179,28 @@
                         label={`${key} [${TakasuiSensuiConstants[key].unit}]`}
                     />
                 {/each}
+            </div>
+
+            <div class="border__div">
+                <Textfield
+                    type="number"
+                    bind:value={tube_diameter}
+                    label="connecting tube diameter [mm]"
+                />
+            
+            </div>
+
+            <div class="border__div">
+                <Textfield
+                    disabled
+                    value={datafromPython?.X || ''}
+                    label="X [mm.Pa / K]"
+                />
+                <Textfield
+                    disabled
+                    value={datafromPython?.F || ''}
+                    label="F (Degree of thermal transpiration)"
+                />
             </div>
 
         </div>
