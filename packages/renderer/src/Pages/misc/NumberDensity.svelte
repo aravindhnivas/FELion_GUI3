@@ -17,7 +17,11 @@
     let added_pressure = [currentConfig?.pafter ?? "5e-6", 5]
     
     let calibration_factor = currentConfig?.calibrationFactor || window.db.get('calibration_factor') || 200
-    let TakasuiSensuiConstants = {A: 6.11, B: 4.26, C: 0.52}
+    let TakasuiSensuiConstants = {
+        A: {value: 6.11, unit: "(Kelvin / Pa.mm)^2"},
+        B: {value: 4.26, unit: "Kelvin / Pa.mm"},
+        C: {value: 0.52, unit: "(Kelvin / Pa.mm)^0.5"}
+    }
     let tube_diameter = 3
     let calibration_factor_std_dev = 10
     let rt_std_dev = 0.5
@@ -37,6 +41,11 @@
         const changeInPressure = Number(added_pressure[0]) - Number(background_pressure[0])
         if(!changeInPressure) return window.createToast("Invalid pressures", "danger")
 
+        const TkConstants = {
+            A: TakasuiSensuiConstants.A.value,
+            B: TakasuiSensuiConstants.B.value,
+            C: TakasuiSensuiConstants.C.value,
+        }
         args = {
             srgMode,
             tube_diameter, 
@@ -44,7 +53,7 @@
             room_temperature,
             trap_temperature,
             background_pressure,
-            TakasuiSensuiConstants,
+            TakasuiSensuiConstants: TkConstants,
             calibration_factor: [calibration_factor, calibration_factor_std_dev],
         }
 
@@ -64,8 +73,9 @@
         }
     }
     const dispatch = createEventDispatcher();
+
     const dispatch_current_numberdensity = () => {
-    
+        console.log(datafromPython)
         const nHe = includeTranspiration ? datafromPython['nHe_transpiration'] : datafromPython['nHe']
         dispatch('getValue', {nHe})
         return nHe
@@ -170,8 +180,8 @@
             <div class="border__div">
                 {#each Object.keys(TakasuiSensuiConstants) as key (key)}
                     <Textfield
-                        bind:value={TakasuiSensuiConstants[key]}
-                        label={key}
+                        bind:value={TakasuiSensuiConstants[key].value}
+                        label={`${key} [${TakasuiSensuiConstants[key].unit}]`}
                     />
                 {/each}
             </div>
