@@ -541,9 +541,12 @@
 />
 <KineticsNumberDensity
     bind:active={show_numberDensity}
-    {currentConfig}
+    {config_content}
     {selectedFile}
     {config_file}
+    {fileCollections}
+    {config_filelists}
+    {readConfigDir}
 />
 
 <LayoutDiv id="Kinetics">

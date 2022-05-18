@@ -11,8 +11,8 @@ def main(args):
         err_percent = err / 100 * value
         return ufloat(value, err_percent)
 
-    background_pressure = get_data_with_uncertainties("background_pressure", percentage=True)
-    added_pressure = get_data_with_uncertainties("added_pressure", percentage=True)
+    background_pressure = get_data_with_uncertainties("background_pressure")
+    added_pressure = get_data_with_uncertainties("added_pressure")
     trap_temperature = get_data_with_uncertainties("trap_temperature")
 
     srgMode = bool(args["srgMode"])
@@ -24,6 +24,11 @@ def main(args):
 
     changeInPressure = added_pressure - background_pressure
     pressure_srg = calibration_factor * changeInPressure
+
+    print(f"{background_pressure=:.2e}", flush=True)
+    print(f"{added_pressure=:.2e}", flush=True)
+    print(f"{changeInPressure=:.2e}", flush=True)
+    print(f"{trap_temperature=:.2e}", flush=True)
 
     kB_in_cm = kB * 1e4
 
@@ -43,15 +48,13 @@ def main(args):
     numerator = (trap_temperature / room_temperature) ** 0.5 - 1
     denomiator = A * X**2 + B * X + C * X**0.5 + 1
     pressure_trap_by_srg = 1 + (numerator / denomiator)
-    
+
     F = (1 - pressure_trap_by_srg) / (1 - (trap_temperature / room_temperature) ** 0.5)
     pressure_trap = pressure_srg * pressure_trap_by_srg
 
     nHe_transpiration = pressure_trap / (kB_in_cm * trap_temperature)
     print(f"{nHe_transpiration=:.2e}", flush=True)
-
-    print(f"{calibration_factor=}\n{changeInPressure=}\n{pressure_srg=}", flush=True)
-    print(f"{numerator=}\n{denomiator=}\n{pressure_trap_by_srg=:.3e}\n{pressure_trap=:.3e}\n{X=:.2e}", flush=True)
+    print(f"{X=:.3e}\t{F=:.3e}", flush=True)
 
     send_data = {"nHe": f"{nHe:.3e}", "nHe_transpiration": f"{nHe_transpiration:.3e}", "X": f"{X:.3e}", "F": f"{F:.3e}"}
     return send_data

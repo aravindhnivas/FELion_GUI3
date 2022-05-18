@@ -4,17 +4,32 @@
     import computePy_func from '$src/Pages/general/computePy'
     import { createEventDispatcher } from 'svelte';
 
-    export let currentConfig = {srgMode: false, temp: 4, pbefore: "1e-8", pafter: "5e-6", calibrationFactor: 200};
+    export let currentConfig = {};
+    const defaultConfig = {srgMode: false, temp: 4, pbefore: "1e-8", pafter: "5e-6", calibrationFactor: 200}
+    if(!currentConfig || Object.keys(currentConfig).length === 0) {
+        currentConfig = defaultConfig
+    }
     let args = {};
     
+    const updateCurrentConfig = (config) => {
+        
+        if(!config) return
+        const {srgMode: srg, temp, pbefore, pafter, calibrationFactor} = config
+
+        trap_temperature[0] = temp
+        background_pressure[0] = pbefore
+        added_pressure[0] = pafter
+        srgMode = srg
+        calibration_factor = calibrationFactor
+        computeNumberDensity()
+    }
 
     let includeTranspiration = true
     let datafromPython = {}
-
     let rt = window.db.get('RT') || 300
     let trap_temperature = [currentConfig?.temp ?? 4, 0.3]
     let background_pressure = [currentConfig?.pbefore ?? "1e-8", 0]
-    let added_pressure = [currentConfig?.pafter ?? "5e-6", 5]
+    let added_pressure = [currentConfig?.pafter ?? "5e-6", 0]
     
     let TakasuiSensuiConstants = {
         A: {value: 6.11, unit: "(K / mm.Pa)^2"},
@@ -32,9 +47,9 @@
         window.db.set('calibration_factor', calibration_factor)
     }
     export const computeNumberDensity = async (e) => {
-        const room_temperature = [rt, rt_std_dev]
+        compute = true
 
-        console.log(trap_temperature[0])
+        const room_temperature = [rt, rt_std_dev]
         if(trap_temperature[0] < 0) return window.createToast("Invalid temperature", "danger")
         
         const changeInPressure = Number(added_pressure[0]) - Number(background_pressure[0])
@@ -55,22 +70,23 @@
             TakasuiSensuiConstants: TkConstants,
             calibration_factor: [calibration_factor, calibration_factor_std_dev],
         }
-
         datafromPython = await computePy_func(
             {e, pyfile: 'numberDensity', args}
         )
-
+        compute = false
         const nHe = dispatch_current_numberdensity()
+
         return Promise.resolve(nHe)
+
     }
-
-
+    
     export const get_datas = () => {
         console.log({...args, ...datafromPython })
         return {
             ...args, ...datafromPython 
         }
     }
+
     const dispatch = createEventDispatcher();
 
     const dispatch_current_numberdensity = () => {
@@ -79,9 +95,12 @@
         dispatch('getValue', {nHe})
         return nHe
     }
+
+    let compute = false
 </script>
 
 <div class="align h-center">
+    <slot name="header" {updateCurrentConfig} />
     <CustomSwitch
         tooltip="Spinning Rotor Gauge"
         bind:selected={srgMode}
@@ -111,7 +130,7 @@
                 />
                 <Textfield
                     bind:value={trap_temperature[1]}
-                    label="std. dev. (absolute)"
+                    label="std. dev."
                 />
             </div>
             <div class="border__div">
@@ -121,7 +140,7 @@
                 />
                 <Textfield
                     bind:value={background_pressure[1]}
-                    label="std. dev. (%)"
+                    label="std. dev."
                 />
             </div>
             <div class="border__div">
@@ -131,7 +150,7 @@
                 />
                 <Textfield
                     bind:value={added_pressure[1]}
-                    label="std. dev. (%)"
+                    label="std. dev."
                 />
             </div>
         </div>
@@ -150,7 +169,7 @@
 
                 <Textfield disabled={srgMode}
                     bind:value={calibration_factor_std_dev}
-                    label="std.dev. (absolute)"
+                    label="std.dev."
                 />
             </div>
 
@@ -163,7 +182,7 @@
 
                 <Textfield
                     bind:value={rt_std_dev}
-                    label="std.dev. (absolute)"
+                    label="std.dev."
                 />
             </div>
         </div>
