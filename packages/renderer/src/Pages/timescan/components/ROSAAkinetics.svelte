@@ -521,7 +521,6 @@
         'kinetic_plot_adjust_configs',
         'top=0.905,\nbottom=0.135,\nleft=0.075,\nright=0.59,\nhspace=0.2,\nwspace=0.2'
     )
-
     let show_numberDensity = false
 </script>
 
