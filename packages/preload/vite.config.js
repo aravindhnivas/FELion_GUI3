@@ -34,7 +34,7 @@ const config = {
                 'electron-unhandled',
                 'electron-log',
                 'fs-extra',
-                ...builtinModules,
+                ...builtinModules.flatMap((p) => [p, `node:${p}`]),
             ],
             output: {
                 entryFileNames: '[name].cjs',
