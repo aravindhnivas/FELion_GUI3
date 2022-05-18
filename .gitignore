@@ -9,3 +9,4 @@ resources/felionpy
 **/src/Pages/**/config.json
 misc/*
 py3*/
+**/*.tmp
