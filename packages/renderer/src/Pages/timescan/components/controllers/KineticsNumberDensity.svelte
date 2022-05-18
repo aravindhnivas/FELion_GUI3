@@ -18,10 +18,17 @@
     $: savefilename = pathJoin(config_location, filename)
 
     let contents = {}
-    onMount(() => {
+    const readConfigFile = () => {
         if (fs.isFile(savefilename)) {
             ;[contents] = fs.readJsonSync(savefilename)
+            if (active) compute()
         }
+    }
+
+    // let mounted = false
+    onMount(() => {
+        // mounted = true
+        readConfigFile()
     })
 
     let updateCurrentConfig
@@ -40,7 +47,13 @@
     }
 
     const compute = () => {
-        const currentConfig = contents[selectedFile]
+        const currentConfig = contents?.[selectedFile]
+        if (active && !currentConfig) {
+            return window.createToast(
+                `config not found for selected file: ${selectedFile}`,
+                'danger'
+            )
+        }
         updateCurrentConfig(currentConfig)
     }
 </script>
@@ -55,9 +68,10 @@
 {#if active}
     <Modal
         bind:active
-        title="{selectedFile}: Number density: {nHe} cm-3"
+        title="{selectedFile}: {nHe} cm-3"
         id="kinetis-number-density"
         on:mounted={compute}
+        content$style={'overflow: hidden; height: 100%; display: grid; grid-auto-rows: auto 1fr;'}
     >
         <svelte:fragment slot="content">
             <NumberDensity
@@ -68,21 +82,35 @@
                 }}
             >
                 <svelte:fragment slot="header">
-                    <TextAndSwitchToggler
-                        bind:value={filename}
-                        label="config file (*.conditions.json)"
-                        options={config_filelists.filter((f) =>
-                            f.endsWith('.conditions.json')
-                        )}
-                        update={readConfigDir}
-                    />
+                    <div class="align h-center">
+                        <TextAndSwitchToggler
+                            bind:value={filename}
+                            label="config file (*.conditions.json)"
+                            options={config_filelists.filter((f) =>
+                                f.endsWith('.conditions.json')
+                            )}
+                            update={readConfigDir}
+                        />
 
-                    <CustomSelect
-                        on:change={compute}
-                        bind:value={selectedFile}
-                        label="Filename"
-                        options={fileCollections}
-                    />
+                        <button class="button is-link" on:click={readConfigFile}
+                            >Read file</button
+                        >
+
+                        <CustomSelect
+                            on:change={compute}
+                            bind:value={selectedFile}
+                            label="Filename"
+                            options={fileCollections}
+                        />
+                        <span
+                            class="tag is-success"
+                            class:is-danger={!contents?.[selectedFile]}
+                        >
+                            config {contents?.[selectedFile]
+                                ? 'found'
+                                : 'not found'}
+                        </span>
+                    </div>
                 </svelte:fragment>
             </NumberDensity>
         </svelte:fragment>
