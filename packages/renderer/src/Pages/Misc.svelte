@@ -40,21 +40,31 @@
                 <EnergyConversion />
 
                 <div class="box number_density__container">
-                    <h2>Number Density</h2>
-                    {#if nHe}
-                        <h2 class="align h-center" style="user-select: text;">
-                            {nHe} cm-3
-                        </h2>
-                    {/if}
-                    <hr />
                     <NumberDensity
                         on:getValue={(e) => {
                             nHe = e.detail.nHe
                         }}
-                    />
+                    >
+                        <svelte:fragment slot="header">
+                            <div class="align">
+                                <h2>Number Density</h2>
+                                {#if nHe}
+                                    <h2
+                                        class="align h-center"
+                                        style="user-select: text;"
+                                    >
+                                        {nHe} cm-3
+                                    </h2>
+                                {/if}
+                                <hr />
+                            </div>
+                        </svelte:fragment>
+                    </NumberDensity>
                 </div>
             </div>
-            <Configs {active} />
+            {#if active == 'Configs'}
+                <Configs {active} />
+            {/if}
         </div>
     </div>
 </section>
@@ -62,7 +72,7 @@
 <style lang="scss">
     section {
         padding: 1em;
-
+        overflow: hidden;
         height: calc(100vh - 7rem);
         .misc_main__div {
             display: grid;
@@ -70,19 +80,27 @@
             height: 100%;
             grid-template-rows: auto 1fr;
             .misc_container {
+                display: grid;
+                overflow: hidden;
                 height: 100%;
             }
-
             .misc_nav {
                 padding: 0;
             }
             .unit_conversion__container {
                 display: grid;
+                height: 100%;
+                overflow: hidden;
+
                 gap: 1em;
                 grid-template-columns: 3fr 2fr;
 
                 .number_density__container {
-                    max-height: calc(100vh - 10rem);
+                    overflow: hidden;
+                    height: 100%;
+                    display: grid;
+                    grid-auto-rows: auto 1fr;
+                    // max-height: calc(100vh - 10rem);
                 }
             }
         }

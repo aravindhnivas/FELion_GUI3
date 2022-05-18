@@ -29,7 +29,7 @@
     <Title style="color: white; background: #836ac05c;" id="{id}-title"
         >{title}</Title
     >
-    <Content id="{id}-content" style={content$style}>
+    <Content id="{id}-content" style="display: grid; {content$style}">
         <slot name="content" />
     </Content>
     <Actions style="background: #836ac05c;">

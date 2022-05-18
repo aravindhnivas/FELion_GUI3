@@ -20,9 +20,10 @@
 </script>
 
 <div class="box">
-    <h2>Energy Conversion</h2>
-
-    <hr />
+    <div class="align">
+        <h2>Energy Conversion</h2>
+        <hr />
+    </div>
     <div class="scroll">
         <div class="align">
             <Textfield bind:value={hz} label="Hz" />
@@ -103,9 +104,14 @@
 </div>
 
 <style lang="scss">
-    .box {max-height: calc(100vh - 10rem);}
+    .box {
+        display: grid;
+        height: 100%;
+        grid-template-rows: auto 1fr;
+        overflow: hidden;
+    }
     .scroll {
         overflow-y: auto;
-        height: 80%;
+        height: 100%;
     }
 </style>

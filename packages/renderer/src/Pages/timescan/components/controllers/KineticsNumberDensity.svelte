@@ -21,13 +21,16 @@
     const readConfigFile = () => {
         if (fs.isFile(savefilename)) {
             ;[contents] = fs.readJsonSync(savefilename)
-            if (active) compute()
+            if (active) {
+                window.createToast('file read: ' + basename(savefilename))
+                compute()
+            }
         }
     }
 
-    // let mounted = false
+    let mounted = false
     onMount(() => {
-        // mounted = true
+        mounted = true
         readConfigFile()
     })
 
@@ -71,7 +74,6 @@
         title="{selectedFile}: {nHe} cm-3"
         id="kinetis-number-density"
         on:mounted={compute}
-        content$style={'overflow: hidden; height: 100%; display: grid; grid-auto-rows: auto 1fr;'}
     >
         <svelte:fragment slot="content">
             <NumberDensity

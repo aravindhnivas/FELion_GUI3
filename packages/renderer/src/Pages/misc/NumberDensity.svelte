@@ -40,21 +40,19 @@
     }
     let tube_diameter = [3, 0.1]
     let srgMode = false;
-    let calibration_factor = window.db.get('calibration_factor') || 200
-    let calibration_factor_std_dev = srgMode ? 0 : 10
+    let calibration_factor = srgMode ? [1, 0] : [200, 10]
+    // let calibration_factor_std_dev = srgMode ? 0 : 10
     let rt_std_dev = 1
-    
-    $: if (rt) {window.db.set('RT', rt)}
-    $: if (calibration_factor) {
-        window.db.set('calibration_factor', calibration_factor)
-    }
+    // $: if(!srgMode) {calibration_factor = srgMode ? [1, 0] : [200, 10]}
+    // $: if (rt) {window.db.set('RT', rt)}
+    // $: if (calibration_factor) {
+    //     window.db.set('calibration_factor', calibration_factor)
+    // }
 
     export const computeNumberDensity = async (e) => {
     
-        // compute = true
         const room_temperature = [rt, rt_std_dev]
         if(trap_temperature[0] < 0) return window.createToast("Invalid temperature", "danger")
-        
         const changeInPressure = Number(added_pressure[0]) - Number(background_pressure[0])
         if(!changeInPressure) return window.createToast("Invalid pressures", "danger")
 
@@ -63,6 +61,7 @@
             B: TakaishiSensuiConstants.B.value,
             C: TakaishiSensuiConstants.C.value,
         }
+        // console.log(calibration_factor)
         args = {
             srgMode,
             tube_diameter, 
@@ -71,16 +70,15 @@
             trap_temperature,
             background_pressure,
             TakaishiSensuiConstants: TkConstants,
-            calibration_factor: [calibration_factor, calibration_factor_std_dev],
+            calibration_factor,
         }
+        // console.log(args)
+
         datafromPython = await computePy_func(
             {e, pyfile: 'numberDensity', args}
         )
-        // compute = false
         const nHe = dispatch_current_numberdensity()
-
         return Promise.resolve(nHe)
-
     }
     
     export const get_datas = () => {
@@ -105,7 +103,10 @@
 
     <slot name="header" />
     
-    <CustomSwitch
+    <CustomSwitch on:change={({detail: {selected}})=>{
+        calibration_factor = selected ? [1, 0] : [200, 10]
+        computeNumberDensity()
+    }}
         tooltip="Spinning Rotor Gauge"
         bind:selected={srgMode}
         label="SRG"
@@ -167,12 +168,12 @@
 
             <div class="border__div">
                 <Textfield disabled={srgMode}
-                    bind:value={calibration_factor}
+                    bind:value={calibration_factor[0]}
                     label="Calibration Factor"
                 />
 
                 <Textfield disabled={srgMode}
-                    bind:value={calibration_factor_std_dev}
+                    bind:value={calibration_factor[1]}
                     label="std.dev."
                 />
             </div>
@@ -247,7 +248,7 @@
 <style>
     .scroll {
         overflow-y: auto;
-        height: 70%;
+        height: 100%;
     }
     .border__div {
         gap: 1em;
