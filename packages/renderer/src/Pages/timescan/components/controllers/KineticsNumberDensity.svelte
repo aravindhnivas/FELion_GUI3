@@ -1,5 +1,5 @@
 <script>
-    import { onMount, tick } from 'svelte'
+    import { onMount } from 'svelte'
     import Modal from '$components/modal/Modal.svelte'
     import CustomSelect from '$components/CustomSelect.svelte'
     import NumberDensity from '$src/Pages/misc/NumberDensity.svelte'
@@ -19,10 +19,8 @@
 
     let contents = {}
     onMount(() => {
-        console.log(savefilename, fs.isFile(savefilename))
         if (fs.isFile(savefilename)) {
             ;[contents] = fs.readJsonSync(savefilename)
-            console.log({ contents })
         }
     })
 
@@ -41,8 +39,7 @@
         }
     }
 
-    const compute = async () => {
-        await tick()
+    const compute = () => {
         const currentConfig = contents[selectedFile]
         updateCurrentConfig(currentConfig)
     }
@@ -55,7 +52,6 @@
         }
     }}
 />
-
 {#if active}
     <Modal
         bind:active
@@ -90,7 +86,6 @@
                 </svelte:fragment>
             </NumberDensity>
         </svelte:fragment>
-
         <svelte:fragment slot="footer">
             <button class="button is-link" on:click={save_datas}>Save</button>
         </svelte:fragment>
