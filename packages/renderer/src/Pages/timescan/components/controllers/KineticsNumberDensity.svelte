@@ -19,12 +19,16 @@
 
     let contents = {}
     const readConfigFile = () => {
-        if (fs.isFile(savefilename)) {
-            ;[contents] = fs.readJsonSync(savefilename)
-            if (active) {
-                window.createToast('file read: ' + basename(savefilename))
-                compute()
-            }
+        if (!fs.isFile(savefilename)) {
+            return window.createToast(
+                'No config file found. Just compute and press save to create one',
+                'danger'
+            )
+        }
+        ;[contents] = fs.readJsonSync(savefilename)
+        if (active) {
+            window.createToast('file read: ' + basename(savefilename))
+            compute()
         }
     }
 
