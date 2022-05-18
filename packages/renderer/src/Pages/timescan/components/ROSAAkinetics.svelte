@@ -540,7 +540,6 @@
 />
 <KineticsNumberDensity
     bind:active={show_numberDensity}
-    {config_content}
     {selectedFile}
     {config_location}
     {fileCollections}

@@ -4,41 +4,43 @@
     import computePy_func from '$src/Pages/general/computePy'
     import { createEventDispatcher } from 'svelte';
 
-    export let currentConfig = {};
-    const defaultConfig = {srgMode: false, temp: 4, pbefore: "1e-8", pafter: "5e-6", calibrationFactor: 200}
-    if(!currentConfig || Object.keys(currentConfig).length === 0) {
-        currentConfig = defaultConfig
-    }
+    // export let currentConfig = {};
+    // const defaultConfig = {srgMode: false, temp: 4, pbefore: "1e-8", pafter: "5e-6", calibrationFactor: 200}
+    // if(!currentConfig || Object.keys(currentConfig).length === 0) {
+    //     currentConfig = defaultConfig
+    // }
     let args = {};
     
-    const updateCurrentConfig = (config) => {
-        
+    const set_config = (config) => {
+        ;({trap_temperature, background_pressure, added_pressure, calibration_factor, srgMode, tube_diameter} = config)
+        ;([rt, rt_std_dev] = config["room_temperature"])
+        const {A, B, C} = config.TakaishiSensuiConstants
+        TakaishiSensuiConstants.A.value = A
+        TakaishiSensuiConstants.B.value = B
+        TakaishiSensuiConstants.C.value = C
+    }
+    
+    export const updateCurrentConfig = (config) => {
         if(!config|| Object.keys(config).length === 0) return
-        const {srgMode: srg, temp, pbefore, pafter, calibrationFactor} = config
-
-        trap_temperature[0] = temp
-        background_pressure[0] = pbefore
-        added_pressure[0] = pafter
-        srgMode = srg
-        calibration_factor = calibrationFactor
+        set_config(config)
         computeNumberDensity()
     }
 
     let includeTranspiration = true
     let datafromPython = {}
     let rt = window.db.get('RT') || 300
-    let trap_temperature = [currentConfig?.temp ?? 4, 0.3]
-    let background_pressure = [currentConfig?.pbefore ?? "1e-8", 0]
-    let added_pressure = [currentConfig?.pafter ?? "5e-6", 0]
+    let trap_temperature = [4, 0.3]
+    let background_pressure = ["1e-8", 0]
+    let added_pressure = ["5e-6", 0]
     
     let TakaishiSensuiConstants = {
         A: {value: [6.11, 0], unit: "(K / mm.Pa)^2"},
         B: {value: [4.26, 0], unit: "K / mm.Pa"},
         C: {value: [0.52, 0], unit: "(K / mm.Pa)^0.5"}
     }
-    let tube_diameter = [3, 0]
-    let srgMode = currentConfig?.srgMode ?? false;
-    let calibration_factor = currentConfig?.calibrationFactor || window.db.get('calibration_factor') || 200
+    let tube_diameter = [3, 0.1]
+    let srgMode = false;
+    let calibration_factor = window.db.get('calibration_factor') || 200
     let calibration_factor_std_dev = srgMode ? 0 : 10
     let rt_std_dev = 1
     
@@ -46,9 +48,10 @@
     $: if (calibration_factor) {
         window.db.set('calibration_factor', calibration_factor)
     }
-    export const computeNumberDensity = async (e) => {
-        compute = true
 
+    export const computeNumberDensity = async (e) => {
+    
+        // compute = true
         const room_temperature = [rt, rt_std_dev]
         if(trap_temperature[0] < 0) return window.createToast("Invalid temperature", "danger")
         
@@ -73,7 +76,7 @@
         datafromPython = await computePy_func(
             {e, pyfile: 'numberDensity', args}
         )
-        compute = false
+        // compute = false
         const nHe = dispatch_current_numberdensity()
 
         return Promise.resolve(nHe)
@@ -90,18 +93,17 @@
     const dispatch = createEventDispatcher();
 
     const dispatch_current_numberdensity = () => {
-        console.log(datafromPython)
+        // console.log(datafromPython)
         const nHe = includeTranspiration ? datafromPython['nHe_transpiration'] : datafromPython['nHe']
         dispatch('getValue', {nHe})
         return nHe
     }
 
-    let compute = false
 </script>
 
 <div class="align h-center">
 
-    <slot name="header" {updateCurrentConfig} />
+    <slot name="header" />
     
     <CustomSwitch
         tooltip="Spinning Rotor Gauge"
@@ -110,14 +112,11 @@
     />
     
     <CustomSwitch on:change={dispatch_current_numberdensity}
-
         tooltip="correct for thermal-transpiration"
         bind:selected={includeTranspiration}
         label="TT"
     />
-    
     <button class="button is-link" on:click={computeNumberDensity}>Compute</button>
-
 </div>
 
 <div class="align scroll mt-2 pb-5" on:keypress="{(e)=>{if(e.key==="Enter") {computeNumberDensity()}}}">

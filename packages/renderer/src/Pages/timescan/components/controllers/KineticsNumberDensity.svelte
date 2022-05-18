@@ -1,44 +1,50 @@
 <script>
-    import { tick } from 'svelte'
+    import { onMount, tick } from 'svelte'
     import Modal from '$components/modal/Modal.svelte'
     import CustomSelect from '$components/CustomSelect.svelte'
-    import TextAndSwitchToggler from '$components/TextAndSwitchToggler.svelte'
     import NumberDensity from '$src/Pages/misc/NumberDensity.svelte'
+    import TextAndSwitchToggler from '$components/TextAndSwitchToggler.svelte'
 
     export let nHe = ''
     export let selectedFile = ''
     export let active = false
-    export let config_content = {}
     export let config_location = ''
-
     export let fileCollections = []
+
     export let config_filelists = []
     export let readConfigDir = () => {}
 
-    let currentConfig = {}
-    $: if (selectedFile) {
-        currentConfig = config_content[selectedFile]
-    }
     let filename = 'kinetics.conditions.json'
     $: savefilename = pathJoin(config_location, filename)
-    let computeNumberDensity
+
+    let contents = {}
+    onMount(() => {
+        console.log(savefilename, fs.isFile(savefilename))
+        if (fs.isFile(savefilename)) {
+            ;[contents] = fs.readJsonSync(savefilename)
+            console.log({ contents })
+        }
+    })
+
+    let updateCurrentConfig
     let get_datas
     const save_datas = () => {
         try {
             const datas = get_datas()
             if (Object.keys(datas).length === 0) return
-
-            let contents = {}
-            if (window.fs.isFile(savefilename)) {
-                ;[contents] = window.fs.readJsonSync(savefilename)
-            }
             contents[selectedFile] = datas
             console.log(contents[selectedFile])
-            window.fs.outputJsonSync(savefilename, contents)
+            fs.outputJsonSync(savefilename, contents)
             window.createToast('file saved: ' + basename(savefilename))
         } catch (error) {
             window.handleError(error)
         }
+    }
+
+    const compute = async () => {
+        await tick()
+        const currentConfig = contents[selectedFile]
+        updateCurrentConfig(currentConfig)
     }
 </script>
 
@@ -55,20 +61,17 @@
         bind:active
         title="{selectedFile}: Number density: {nHe} cm-3"
         id="kinetis-number-density"
-        on:mounted={async () => {
-            nHe = await computeNumberDensity()
-        }}
+        on:mounted={compute}
     >
         <svelte:fragment slot="content">
             <NumberDensity
-                bind:computeNumberDensity
+                bind:updateCurrentConfig
                 bind:get_datas
-                {currentConfig}
                 on:getValue={(e) => {
                     nHe = e.detail.nHe
                 }}
             >
-                <svelte:fragment slot="header" let:updateCurrentConfig>
+                <svelte:fragment slot="header">
                     <TextAndSwitchToggler
                         bind:value={filename}
                         label="config file (*.conditions.json)"
@@ -77,11 +80,9 @@
                         )}
                         update={readConfigDir}
                     />
+
                     <CustomSelect
-                        on:change={async () => {
-                            await tick()
-                            updateCurrentConfig(currentConfig)
-                        }}
+                        on:change={compute}
                         bind:value={selectedFile}
                         label="Filename"
                         options={fileCollections}
@@ -89,6 +90,7 @@
                 </svelte:fragment>
             </NumberDensity>
         </svelte:fragment>
+
         <svelte:fragment slot="footer">
             <button class="button is-link" on:click={save_datas}>Save</button>
         </svelte:fragment>
