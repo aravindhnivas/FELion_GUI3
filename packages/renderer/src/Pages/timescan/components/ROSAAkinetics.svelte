@@ -20,7 +20,7 @@
     import KineticsNumberDensity from './controllers/KineticsNumberDensity.svelte'
 
     let currentLocation = window.db.get('kinetics_location') || ''
-
+    $: config_location = pathJoin(currentLocation, '../configs')
     let timestartIndexScan = 0
     let fileCollections = []
     let srgMode = true
@@ -526,7 +526,7 @@
 
 <KineticConfigTable
     {configArray}
-    {currentLocation}
+    {config_location}
     {loadConfig}
     {readConfigDir}
     {config_filelists}
@@ -542,7 +542,7 @@
     bind:active={show_numberDensity}
     {config_content}
     {selectedFile}
-    {config_file}
+    {config_location}
     {fileCollections}
     {config_filelists}
     {readConfigDir}

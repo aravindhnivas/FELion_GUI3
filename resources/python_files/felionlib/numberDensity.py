@@ -38,12 +38,13 @@ def main(args):
     print(f"{nHe=:.2e}", flush=True)
 
     # Takaishi-Sensui equation
-    TakasuiSensuiConstants = args["TakasuiSensuiConstants"]
-    tube_diameter = float(args["tube_diameter"])
+    TakaishiSensuiConstants = args["TakaishiSensuiConstants"]
+    tube_diameter = get_data_with_uncertainties("tube_diameter")
     X = (2 * pressure_srg * 100 * tube_diameter) / (trap_temperature + room_temperature)  # mm. Pa. / K
-    A = float(TakasuiSensuiConstants["A"])
-    B = float(TakasuiSensuiConstants["B"])
-    C = float(TakasuiSensuiConstants["C"])
+
+    A = ufloat(*[float(i) for i in TakaishiSensuiConstants["A"]])
+    B = ufloat(*[float(i) for i in TakaishiSensuiConstants["B"]])
+    C = ufloat(*[float(i) for i in TakaishiSensuiConstants["C"]])
 
     numerator = (trap_temperature / room_temperature) ** 0.5 - 1
     denomiator = A * X**2 + B * X + C * X**0.5 + 1

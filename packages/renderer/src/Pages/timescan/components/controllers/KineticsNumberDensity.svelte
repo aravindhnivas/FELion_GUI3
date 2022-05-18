@@ -9,7 +9,7 @@
     export let selectedFile = ''
     export let active = false
     export let config_content = {}
-    export let config_file = ''
+    export let config_location = ''
 
     export let fileCollections = []
     export let config_filelists = []
@@ -19,7 +19,8 @@
     $: if (selectedFile) {
         currentConfig = config_content[selectedFile]
     }
-    let savefilename = ''
+    let filename = 'kinetics.conditions.json'
+    $: savefilename = pathJoin(config_location, filename)
     let computeNumberDensity
     let get_datas
     const save_datas = () => {
@@ -27,24 +28,14 @@
             const datas = get_datas()
             if (Object.keys(datas).length === 0) return
 
-            const location = window.dirname(config_file)
-            const filename = window.basename(config_file).split('.')[0]
-
-            // let savefilename = ''
-            if (window.fs.isDirectory(location)) {
-                savefilename = window.pathJoin(
-                    location,
-                    `${filename}.conditions.json`
-                )
-                let contents = {}
-                if (window.fs.isFile(savefilename)) {
-                    ;[contents] = window.fs.readJsonSync(savefilename)
-                }
-                contents[selectedFile] = datas
-                console.log(contents[selectedFile])
-                window.fs.outputJsonSync(savefilename, contents)
-                window.createToast('file saved: ' + basename(savefilename))
+            let contents = {}
+            if (window.fs.isFile(savefilename)) {
+                ;[contents] = window.fs.readJsonSync(savefilename)
             }
+            contents[selectedFile] = datas
+            console.log(contents[selectedFile])
+            window.fs.outputJsonSync(savefilename, contents)
+            window.createToast('file saved: ' + basename(savefilename))
         } catch (error) {
             window.handleError(error)
         }
@@ -79,7 +70,7 @@
             >
                 <svelte:fragment slot="header" let:updateCurrentConfig>
                     <TextAndSwitchToggler
-                        bind:value={savefilename}
+                        bind:value={filename}
                         label="config file (*.conditions.json)"
                         options={config_filelists.filter((f) =>
                             f.endsWith('.conditions.json')

@@ -31,12 +31,12 @@
     let background_pressure = [currentConfig?.pbefore ?? "1e-8", 0]
     let added_pressure = [currentConfig?.pafter ?? "5e-6", 0]
     
-    let TakasuiSensuiConstants = {
-        A: {value: 6.11, unit: "(K / mm.Pa)^2"},
-        B: {value: 4.26, unit: "K / mm.Pa"},
-        C: {value: 0.52, unit: "(K / mm.Pa)^0.5"}
+    let TakaishiSensuiConstants = {
+        A: {value: [6.11, 0], unit: "(K / mm.Pa)^2"},
+        B: {value: [4.26, 0], unit: "K / mm.Pa"},
+        C: {value: [0.52, 0], unit: "(K / mm.Pa)^0.5"}
     }
-    let tube_diameter = 3
+    let tube_diameter = [3, 0]
     let srgMode = currentConfig?.srgMode ?? false;
     let calibration_factor = currentConfig?.calibrationFactor || window.db.get('calibration_factor') || 200
     let calibration_factor_std_dev = srgMode ? 0 : 10
@@ -56,9 +56,9 @@
         if(!changeInPressure) return window.createToast("Invalid pressures", "danger")
 
         const TkConstants = {
-            A: TakasuiSensuiConstants.A.value,
-            B: TakasuiSensuiConstants.B.value,
-            C: TakasuiSensuiConstants.C.value,
+            A: TakaishiSensuiConstants.A.value,
+            B: TakaishiSensuiConstants.B.value,
+            C: TakaishiSensuiConstants.C.value,
         }
         args = {
             srgMode,
@@ -67,7 +67,7 @@
             room_temperature,
             trap_temperature,
             background_pressure,
-            TakasuiSensuiConstants: TkConstants,
+            TakaishiSensuiConstants: TkConstants,
             calibration_factor: [calibration_factor, calibration_factor_std_dev],
         }
         datafromPython = await computePy_func(
@@ -119,7 +119,7 @@
 
     <div style="display: flex; flex-direction: column; padding: 0 1em;">
         
-        <div class="align">
+        <div class="align h-center">
 
             <div class="border__div">
                 <Textfield
@@ -159,7 +159,7 @@
 
     <div style="display: flex; flex-direction: column; padding: 0 1em;">
         
-        <div class="align">
+        <div class="align h-center">
 
             <div class="border__div">
                 <Textfield disabled={srgMode}
@@ -186,25 +186,39 @@
                 />
             </div>
         </div>
-        <div class="align constants">
+        <div class="align h-center constants">
             <h2 class="m-0 mt-5" style:width='100%' >Modified Takaishi-Sensui constants (for He gas at 4.3 K)</h2>
             <div>(Reference: J. Chem. Phys. 113, 1738 (2000); https://doi.org/10.1063/1.481976)</div>
             <br>
             
             <div class="border__div">
-                {#each Object.keys(TakasuiSensuiConstants) as key (key)}
+                {#each Object.keys(TakaishiSensuiConstants) as key (key)}
+                    
+                <div class="border__div">
+
                     <Textfield
-                        bind:value={TakasuiSensuiConstants[key].value}
-                        label={`${key} [${TakasuiSensuiConstants[key].unit}]`}
-                    />
+                        bind:value={TakaishiSensuiConstants[key].value[0]}
+                        label={`${key} [${TakaishiSensuiConstants[key].unit}]`}
+                        />
+                    <Textfield
+                        bind:value={TakaishiSensuiConstants[key].value[1]}
+                        label="std. dev."
+                        />
+                </div>
                 {/each}
             </div>
 
             <div class="border__div">
                 <Textfield
+                    input$min="0"
+                    input$step="0.1"
                     type="number"
-                    bind:value={tube_diameter}
+                    bind:value={tube_diameter[0]}
                     label="connecting tube diameter [mm]"
+                />
+                <Textfield
+                    bind:value={tube_diameter[1]}
+                    label="std. dev."
                 />
             
             </div>
@@ -235,9 +249,10 @@
         gap: 1em;
         display: flex;
         justify-content: center;
-        width: 100%;
+
         border: solid 1px white;
         border-radius: 1em;
         padding: 1em;
+        flex-wrap: wrap;
     }
 </style>

@@ -5,7 +5,7 @@
     import CustomSelect from '$components/CustomSelect.svelte'
     export let loadConfig
     export let readConfigDir
-    export let currentLocation = ''
+    export let config_location = ''
     export let config_file = ''
     export let config_filelists = []
     export let configArray = []
@@ -27,7 +27,7 @@
 
     // let config_filelists = []
     $: {
-        config_file = pathJoin(currentLocation, '../configs', $config_filename)
+        config_file = pathJoin(config_location, $config_filename)
     }
     let config_content = {}
 
