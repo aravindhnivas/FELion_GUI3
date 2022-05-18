@@ -18,7 +18,7 @@ const config = {
         },
     },
     build: {
-        sourcemap: 'inline',
+        sourcemap: process.env.MODE === 'development',
         target: `chrome${chrome}`,
         outDir: 'dist',
         assetsDir: '.',

@@ -17,7 +17,7 @@ const config = {
         },
     },
     build: {
-        sourcemap: 'inline',
+        sourcemap: process.env.MODE === 'development',
         target: `node${node}`,
         outDir: 'dist',
         assetsDir: '.',
