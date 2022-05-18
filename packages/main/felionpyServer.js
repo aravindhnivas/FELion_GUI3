@@ -158,9 +158,7 @@ export async function startServer(webContents) {
                 const stdout = String.fromCharCode.apply(null, data)
                 console.info(stdout)
             })
-        
         } catch (error) {
-            
             console.error(error)
             serverStarting = false
 

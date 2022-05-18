@@ -1,7 +1,7 @@
 import {
     boltzmanConstantInMHz,
     boltzmanConstantInWavenumber,
-} from '$src/js/constants';
+} from '$src/js/constants'
 
 export default function ({
     label,

@@ -23,12 +23,12 @@ export function resizableDiv(
     // edges = { left: false, right: true, bottom: false, top: false }
     params = {
         change: { width: true, height: false },
-        edges: { left: false, right: true, bottom: false, top: false }
+        edges: { left: false, right: true, bottom: false, top: false },
     }
 ) {
     // const change = { width, height }
     // const edges = { left, right, bottom, top }
-    const {change, edges} = params
+    const { change, edges } = params
 
     interact(target)
         .resizable({

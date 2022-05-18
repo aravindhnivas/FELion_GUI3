@@ -2,7 +2,7 @@ import { sumBy } from 'lodash-es'
 import {
     boltzmanConstantInMHz,
     boltzmanConstantInWavenumber,
-} from '$src/js/constants';
+} from '$src/js/constants'
 export default function ({
     energyLevels = [],
     trapTemp = 5,

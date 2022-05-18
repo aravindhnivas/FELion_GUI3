@@ -6,7 +6,7 @@ const makeStore = (initial = {}) => {
         set,
         update,
         reset: () => set(initial),
-        push(obj={}) {
+        push(obj = {}) {
             update((n) => {
                 return { ...n, ...obj, open: true }
             })
