@@ -13,7 +13,7 @@
     
     const updateCurrentConfig = (config) => {
         
-        if(!config) return
+        if(!config|| Object.keys(config).length === 0) return
         const {srgMode: srg, temp, pbefore, pafter, calibrationFactor} = config
 
         trap_temperature[0] = temp
@@ -100,22 +100,27 @@
 </script>
 
 <div class="align h-center">
+
     <slot name="header" {updateCurrentConfig} />
+    
     <CustomSwitch
         tooltip="Spinning Rotor Gauge"
         bind:selected={srgMode}
         label="SRG"
-        />
-        <CustomSwitch on:change={dispatch_current_numberdensity}
+    />
+    
+    <CustomSwitch on:change={dispatch_current_numberdensity}
+
         tooltip="correct for thermal-transpiration"
         bind:selected={includeTranspiration}
         label="TT"
-        />
+    />
     
     <button class="button is-link" on:click={computeNumberDensity}>Compute</button>
+
 </div>
 
-<div class="align scroll mt-2 pb-5">
+<div class="align scroll mt-2 pb-5" on:keypress="{(e)=>{if(e.key==="Enter") {computeNumberDensity()}}}">
 
     <div style="display: flex; flex-direction: column; padding: 0 1em;">
         
@@ -248,8 +253,8 @@
     .border__div {
         gap: 1em;
         display: flex;
-        justify-content: center;
 
+        justify-content: center;
         border: solid 1px white;
         border-radius: 1em;
         padding: 1em;
