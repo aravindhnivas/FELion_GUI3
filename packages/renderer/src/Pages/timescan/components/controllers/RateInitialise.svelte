@@ -2,11 +2,17 @@
     import Textfield from '@smui/textfield'
     import TextAndSelectOptsToggler from '$src/components/TextAndSelectOptsToggler.svelte'
     import CustomSwitch from '$src/components/CustomSwitch.svelte'
+    // import CustomSelect from '$src/components/CustomSelect.svelte'
     import { fade } from 'svelte/transition'
+
     export let totalMassKey = []
     export let nameOfReactants = ''
     export let legends = ''
     export let useParamsFile = false
+    export let useTaggedFile = false
+
+    export let tagFile = ''
+    export let tagOptions = []
     export let params_found = false
     export let updateParamsFile = () => {}
     export let kinetics_params_file = ''
@@ -14,6 +20,11 @@
     export let selectedFile = ''
     export let computeOtherParameters = () => {}
     export let readConfigDir = () => {}
+
+    // $: if (tagOptions.length > 0 && !tagFile) {
+    //     tagFile = tagOptions[0]
+    //     computeOtherParameters()
+    // }
 </script>
 
 <div class="align box h-center" style:flex-direction="column">
@@ -57,6 +68,18 @@
             label="use params file"
         />
 
+        <CustomSwitch bind:selected={useTaggedFile} label="use tagged File" />
+
+        {#if useTaggedFile}
+            <TextAndSelectOptsToggler
+                bind:value={tagFile}
+                options={tagOptions}
+                label="tag files"
+                update={computeOtherParameters}
+                on:change={computeOtherParameters}
+            />
+        {/if}
+
         <TextAndSelectOptsToggler
             bind:value={kinetics_params_file}
             label="fit-config file (*.params.json)"
@@ -65,7 +88,7 @@
         />
 
         <button class="button is-link" on:click={computeOtherParameters}
-            >read</button
+            >load</button
         >
         <button class="button is-link" on:click={updateParamsFile}
             >update</button

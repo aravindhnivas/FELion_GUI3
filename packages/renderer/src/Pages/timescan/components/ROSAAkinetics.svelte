@@ -115,6 +115,7 @@
     let maxTimeIndex = 5
 
     function computeParameters() {
+        tagFile = ''
         timestartIndexScan = 0
         loss_channels = []
         const currentJSONfile = pathJoin(
@@ -150,7 +151,7 @@
         contents,
     }) => {
         if (updatefile) {
-            contents[selectedFile] = {
+            return {
                 ratek3,
                 k3Guess,
                 ratekCID,
@@ -164,7 +165,7 @@
                 kineticEditorFilename,
                 loss_channels,
             }
-            return contents
+            // return contents
         }
 
         ;({
@@ -192,29 +193,92 @@
         if (fs.existsSync(paramsFile)) {
             ;[contents] = fs.readJsonSync(paramsFile)
         }
-        contents = params_updatefile_or_getfromfile({
+        const contents_infos = params_updatefile_or_getfromfile({
             updatefile: true,
             contents,
         })
+
+        if (
+            contents[selectedFile] &&
+            Object.keys(contents[selectedFile]).length > 0
+        ) {
+            if (useTaggedFile && tagFile.length > 0) {
+                if (contents[selectedFile]?.tag) {
+                    contents[selectedFile].tag[tagFile] = contents_infos
+                } else {
+                    contents[selectedFile].tag = {}
+                    contents[selectedFile].tag[tagFile] = contents_infos
+                }
+            } else {
+                if (!contents[selectedFile]?.tag) {
+                    contents[selectedFile]['tag'] = {}
+                }
+
+                contents[selectedFile] = {
+                    ...contents[selectedFile],
+                    ...contents_infos,
+                }
+            }
+        } else {
+            contents[selectedFile] = { tag: {} }
+
+            if (useTaggedFile && tagFile.length > 0) {
+                contents[selectedFile].tag[tagFile] = contents_infos
+            } else {
+                contents[selectedFile] = {
+                    ...contents[selectedFile],
+                    ...contents_infos,
+                }
+            }
+        }
         fs.outputJsonSync(paramsFile, contents)
+        tagOptions = Object.keys(contents[selectedFile].tag)
         window.createToast(`saved: ${basename(paramsFile)}`, 'success', {
             target: 'left',
         })
+
         params_found = true
     }
 
     let params_found = false
+    let useTaggedFile = false
+
+    let tagFile = ''
+    let tagOptions = []
 
     const readFromParamsFile = (event) => {
         params_found = false
+        tagOptions = []
+        // tagFile = ''
         if (!(useParamsFile && fs.existsSync(paramsFile))) return
-
         const [data] = fs.readJsonSync(paramsFile)
         const contents = data?.[selectedFile]
         console.log('no data available')
 
         if (!contents) return
-        params_updatefile_or_getfromfile({ updatefile: false, contents })
+        if (contents?.tag) {
+            tagOptions = Object.keys(contents.tag)
+            if (tagOptions.length > 0 && !tagFile) {
+                tagFile = tagOptions[0]
+            }
+        }
+        let setContents = {}
+        if (useTaggedFile) {
+            if (!contents?.tag?.[tagFile]) {
+                params_found = false
+                return
+            }
+            setContents = contents.tag[tagFile]
+        } else {
+            setContents = contents
+        }
+
+        console.log(setContents.timestartIndexScan)
+        params_updatefile_or_getfromfile({
+            updatefile: false,
+            contents: setContents,
+        })
+        window.createToast('config loaded', 'success', { target: 'left' })
     }
 
     let legends = ''
@@ -640,7 +704,10 @@
                 {selectedFile}
                 {params_found}
                 {totalMassKey}
+                {tagOptions}
+                bind:tagFile
                 bind:useParamsFile
+                bind:useTaggedFile
                 bind:kinetics_params_file={$kinetics_params_file}
                 bind:nameOfReactants
                 bind:legends

@@ -16,8 +16,13 @@
     on:click={(e) => {
         if (e.ctrlKey) toggle = !toggle
     }}
+    on:change
     bind:value
     {label}
     {update}
-    options={options.includes(value) ? options : [value, ...options]}
+    options={options.includes(value)
+        ? options
+        : value
+        ? [value, ...options]
+        : options}
 />
