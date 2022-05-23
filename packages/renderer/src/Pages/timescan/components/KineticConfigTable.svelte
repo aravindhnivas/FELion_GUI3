@@ -53,7 +53,8 @@
         }
         window.createToast(
             'Config file saved' + basename(config_file),
-            'warning'
+            'warning',
+            { target: 'left' }
         )
     }
 </script>
