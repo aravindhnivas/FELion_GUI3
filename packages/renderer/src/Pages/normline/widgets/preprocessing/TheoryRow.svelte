@@ -5,7 +5,7 @@
         normMethod,
     } from '../../functions/svelteWritables'
     import { theory_func } from '../../functions/theory'
-    import { fade } from 'svelte/transition'
+    // import { fade } from 'svelte/transition'
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
     import QuickBrowser from '$components/QuickBrowser.svelte'
     import CustomSwitch from '$components/CustomSwitch.svelte'
@@ -70,7 +70,7 @@
 />
 
 {#if $toggleRow}
-    <div class="align" transition:fade>
+    <div class="align">
         <button
             class="button is-link"
             on:click={() => {

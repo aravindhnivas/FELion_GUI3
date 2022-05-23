@@ -33,7 +33,7 @@
     #Home {
         padding: 0;
         margin: 0;
-        height: calc(100% - 6rem);
+        height: 100%;
     }
 
     h1 {

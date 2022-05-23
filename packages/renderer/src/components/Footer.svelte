@@ -27,10 +27,7 @@
     }
 </script>
 
-<nav
-    class="navbar is-fixed-bottom animate__animated animate__fadeInUp"
-    id="footer"
->
+<div class="animate__animated animate__fadeInUp" id="footer">
     <div class="navbar-menu">
         <div class="navbar-start">
             <div class="navbar-item">
@@ -58,11 +55,10 @@
             </div>
         </div>
     </div>
-</nav>
-
-<div id="toastFooter">
-    <SvelteToast
-        target="_toastFooter"
-        options={{ initial: 0, intro: { y: 100 } }}
-    />
+    <div id="toastFooter">
+        <SvelteToast
+            target="_toastFooter"
+            options={{ initial: 0, intro: { y: 100 } }}
+        />
+    </div>
 </div>

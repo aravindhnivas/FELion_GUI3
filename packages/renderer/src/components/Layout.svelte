@@ -228,6 +228,9 @@
 </section>
 
 <style lang="scss">
+    section {
+        height: 100%;
+    }
     .box {
         background-image: url(/assets/css/intro.svg);
         border-radius: 0;
@@ -238,7 +241,7 @@
         grid-auto-flow: column;
         width: 100%;
 
-        height: calc(100vh - 6rem);
+        height: 100%;
         grid-template-columns: auto 1fr;
         column-gap: 2em;
 
@@ -252,6 +255,7 @@
         .left_container__div,
         .right_container__div {
             max-height: calc(100vh - 6rem);
+            // height: 100%;
         }
 
         .right_container__div {

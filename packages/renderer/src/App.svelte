@@ -44,21 +44,30 @@
 <PreModal />
 <SvelteToast options={toastOpts} />
 <ConfirmAlert />
+<div class="layout">
+    <Navbar {navItems} />
 
-<Navbar {navItems} />
-<Home />
-
-<div
-    id="pageContainer"
-    style="overflow: hidden;display: {mounted ? 'block' : 'none'}"
->
-    <Normline />
-    <Masspec />
-    <Timescan />
-    <THz />
-    <Kinetics />
-    <Powerfile />
-    <Misc />
-    <Settings />
+    <div
+        id="pageContainer"
+        style="overflow: hidden;display: {mounted ? 'block' : 'none'}"
+    >
+        <Home />
+        <Normline />
+        <Masspec />
+        <Timescan />
+        <THz />
+        <Kinetics />
+        <Powerfile />
+        <Misc />
+        <Settings />
+    </div>
+    <Footer />
 </div>
-<Footer />
+
+<style>
+    .layout {
+        display: grid;
+        height: 100vh;
+        grid-template-rows: auto 1fr auto;
+    }
+</style>

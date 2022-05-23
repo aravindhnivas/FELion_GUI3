@@ -117,6 +117,8 @@
                 label="Powerfile contents"
                 input$aria-controls="powercontent_help"
                 input$aria-describedby="powercontent_help"
+                style="overflow: hidden; padding: 1em;"
+                outline$style="padding: 1em;"
             >
                 <HelperText id="powercontent_help" slot="helper">
                     Enter powerfile measured for {filename}.felix file
@@ -135,17 +137,18 @@
 
 <style>
     .section {
-        max-height: 70vh;
         overflow-y: auto;
+        height: calc(100vh - 6rem);
+        padding: 1em;
     }
 
     .main__container {
         display: grid;
         height: 100%;
-
         grid-row-gap: 1em;
         margin: auto;
-        width: 90%;
+        width: 100%;
+        grid-template-rows: auto auto 1fr;
     }
     .grid_column__container {
         display: grid;
@@ -164,7 +167,10 @@
     }
 
     .power_value__container {
+        /* padding: 1em; */
         display: grid;
-        grid-template-rows: 12fr 1fr 2fr;
+        height: 100%;
+        grid-template-rows: 1fr auto auto;
+        overflow: hidden;
     }
 </style>
