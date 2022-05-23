@@ -1,6 +1,6 @@
 <script>
     import Textfield from '@smui/textfield'
-    import TextAndSwitchToggler from '$src/components/TextAndSwitchToggler.svelte'
+    import TextAndSelectOptsToggler from '$src/components/TextAndSelectOptsToggler.svelte'
     import CustomSwitch from '$src/components/CustomSwitch.svelte'
 
     export let defaultInitialValues = true
@@ -35,7 +35,7 @@
         <Textfield bind:value={kCIDGuess} label="kCIDGuess (min, max) [/s]" />
     </div>
 
-    <TextAndSwitchToggler
+    <TextAndSelectOptsToggler
         bind:value={kinetics_fitfile}
         label="fit-config file (*.fit.json)"
         options={config_filelists.filter((f) => f.endsWith('.fit.json'))}

@@ -1,6 +1,6 @@
 <script>
     import Textfield from '@smui/textfield'
-    import TextAndSwitchToggler from '$src/components/TextAndSwitchToggler.svelte'
+    import TextAndSelectOptsToggler from '$src/components/TextAndSelectOptsToggler.svelte'
     import CustomSwitch from '$src/components/CustomSwitch.svelte'
     import { fade } from 'svelte/transition'
     export let totalMassKey = []
@@ -57,7 +57,7 @@
             label="use params file"
         />
 
-        <TextAndSwitchToggler
+        <TextAndSelectOptsToggler
             bind:value={kinetics_params_file}
             label="fit-config file (*.params.json)"
             options={config_filelists.filter((f) => f.endsWith('.params.json'))}

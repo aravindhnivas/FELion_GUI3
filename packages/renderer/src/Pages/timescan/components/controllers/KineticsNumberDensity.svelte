@@ -3,7 +3,7 @@
     import Modal from '$components/modal/Modal.svelte'
     import CustomSelect from '$components/CustomSelect.svelte'
     import NumberDensity from '$src/Pages/misc/NumberDensity.svelte'
-    import TextAndSwitchToggler from '$components/TextAndSwitchToggler.svelte'
+    import TextAndSelectOptsToggler from '$src/components/TextAndSelectOptsToggler.svelte'
 
     export let nHe = ''
     export let selectedFile = ''
@@ -89,7 +89,7 @@
             >
                 <svelte:fragment slot="header">
                     <div class="align h-center">
-                        <TextAndSwitchToggler
+                        <TextAndSelectOptsToggler
                             bind:value={filename}
                             label="config file (*.conditions.json)"
                             options={config_filelists.filter((f) =>
