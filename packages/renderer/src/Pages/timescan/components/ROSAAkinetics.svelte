@@ -666,6 +666,7 @@
                     kCIDGuess,
                     nameOfReactants,
                     loss_channels,
+                    selectedFile,
                 }}
                 bind:location={currentLocation}
                 bind:savefilename={kineticEditorFilename}

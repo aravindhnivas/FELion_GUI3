@@ -1,11 +1,11 @@
 <script>
     import { showConfirm } from '$src/components/alert/store'
-    import { onDestroy, onMount } from 'svelte'
+    import { onDestroy } from 'svelte'
     import Textfield from '@smui/textfield'
     import { browse } from '$components/Layout.svelte'
     import WinBox from 'winbox/src/js/winbox.js'
     import CustomSwitch from '$components/CustomSwitch.svelte'
-    // import { resizableDiv } from '$src/js/resizableDiv.js'
+    import TextAndSelectOptsToggler from '$components/TextAndSelectOptsToggler.svelte'
 
     export let id = getID()
     export let location = ''
@@ -19,6 +19,8 @@
     export let reportSaved = false
     export let showReport = false
     export let enable_location_browser = true
+    export let filenameOpts = []
+    export let filenameUpdate = () => {}
 
     async function mountEditorFn(node) {
         try {
@@ -57,19 +59,19 @@
         location,
         savefilename.endsWith('.md') ? savefilename : `${savefilename}.md`
     )
-    let reportFiles = []
+    // let reportFiles = []
 
-    const updateFiles = (node = null) => {
-        node?.target?.classList.add('animate__rotateIn')
-        reportFiles = fs
-            .readdirSync(pathResolve(location))
-            .filter((name) => name.endsWith('.md'))
-            .map((name) => name.replace(extname(name), ''))
-    }
+    // const updateFiles = (node = null) => {
+    //     // node?.target?.classList.add('animate__rotateIn')
+    //     reportFiles = fs
+    //         .readdirSync(pathResolve(location))
+    //         .filter((name) => name.endsWith('.md'))
+    //         .map((name) => name.replace(extname(name), ''))
+    // }
 
     $: if (fs.existsSync(location)) {
         window.db.set(`${filetype}-report-md`, location)
-        updateFiles()
+        // updateFiles()
     }
 
     async function browse_folder() {
@@ -179,20 +181,21 @@
                     label="report location"
                     disabled={!enable_location_browser}
                 />
-                <Textfield
+                <TextAndSelectOptsToggler
                     bind:value={savefilename}
                     label="report name"
-                    style="min-width: 70%;"
+                    update={filenameUpdate}
+                    options={filenameOpts}
                 />
 
-                <i
+                <!-- <i
                     class="material-icons animate__animated animate__faster"
                     on:animationend={({ target }) =>
                         target.classList.remove('animate__rotateIn')}
                     on:click={updateFiles}
                 >
                     refresh
-                </i>
+                </i> -->
             </div>
             <div class="btn-row">
                 <slot name="btn-row" />

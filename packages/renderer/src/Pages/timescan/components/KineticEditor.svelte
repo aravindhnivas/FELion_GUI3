@@ -13,6 +13,7 @@
 
     export let nameOfReactants = ''
     export let loss_channels = []
+    export let selectedFile = ''
 
     let editor
     let computedCode
@@ -32,7 +33,6 @@
 
     const update_editor = (data) => {
         reportSaved = false
-
         const setData = `# Kinetics code\n${data}\n\n`
         editor?.setData(setData)
         window.createToast('data comupted')
@@ -51,6 +51,18 @@
         })
         update_editor(computedCode.fullEquation)
     }
+
+    let filenameOpts = []
+    const filenameUpdate = async () => {
+        const [files] = await fs.readdir(location)
+        if (!files) return console.log('No files')
+        filenameOpts = files
+            .filter((f) => f.startsWith(selectedFile.split('.')[0]))
+            .filter((f) => f.endsWith('.md'))
+    }
+    $: if (selectedFile) {
+        filenameUpdate()
+    }
 </script>
 
 <div class="report-editor-div" id="kinetics-editor__div">
@@ -60,12 +72,14 @@
         mount="#kinetics-editor__div"
         id="kinetics-editor"
         mainTitle="Kinetic Code"
-        bind:savefilename
         {location}
         enable_location_browser={false}
+        bind:savefilename
         bind:editor
         bind:reportRead
         bind:reportSaved
+        {filenameOpts}
+        {filenameUpdate}
     >
         <svelte:fragment slot="btn-row">
             <div class="align">
