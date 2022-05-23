@@ -19,5 +19,5 @@
     bind:value
     {label}
     {update}
-    options={[value, ...options.filter((file) => file !== value)]}
+    options={options.includes(value) ? options : [value, ...options]}
 />
