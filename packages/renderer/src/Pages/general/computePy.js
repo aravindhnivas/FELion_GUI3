@@ -38,7 +38,7 @@ export default async function ({
 
         console.log({ pyfile, args, general })
         if (general) {
-            console.info(target)
+            // console.info(target)
             if (target) {
                 processDivGeneral = target.getElementsByClassName('tag')
                 if (processDivGeneral.length === 0) {
@@ -60,7 +60,7 @@ export default async function ({
                 if (processDivGeneral.classList.contains('hide')) {
                     processDivGeneral.classList.remove('hide')
                 }
-                console.log(processDivGeneral)
+                // console.log(processDivGeneral)
             }
             dataFromPython = await computefromSubprocess({
                 target,

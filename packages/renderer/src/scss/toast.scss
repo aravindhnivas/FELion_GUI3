@@ -1,11 +1,20 @@
-#toastFooter {
+#leftToaster {
     ._toastContainer {
-        width: 30rem; padding: 0;
+        padding: 0;
         right: 3rem; left: auto;
         overflow-x: auto;
         ._toastItem {
             width: 100%;
             background: #5e469e;
         }
+    }
+}
+#rightToaster {
+    ._toastContainer {
+        padding: 0;
+        right: auto; left: 3rem;
+        overflow-x: auto;
+        overflow-y: hidden;
+        max-height: 50vh;
     }
 }

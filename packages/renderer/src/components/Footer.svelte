@@ -22,7 +22,7 @@
                 '--toastPadding': '0',
                 '--toastMsgPadding': '0',
             },
-            target: '_toastFooter',
+            target: 'right',
         })
     }
 </script>
@@ -54,11 +54,5 @@
                 <p>2019-{new Date().getFullYear()} &copy; AN Marimuthu</p>
             </div>
         </div>
-    </div>
-    <div id="toastFooter">
-        <SvelteToast
-            target="_toastFooter"
-            options={{ initial: 0, intro: { y: 100 } }}
-        />
     </div>
 </div>

@@ -49,7 +49,9 @@
 
     const updateFiles = (node = null) => {
         if (!fs.existsSync(currentLocation))
-            return window.createToast('Invalid location', 'danger')
+            return window.createToast('Invalid location', 'danger', {
+                target: 'left',
+            })
         window.db.set('kinetics_location', currentLocation)
         node?.target.classList.add('animate__rotateIn')
         fileCollections = fs
@@ -195,7 +197,9 @@
             contents,
         })
         fs.outputJsonSync(paramsFile, contents)
-        window.createToast(`saved: ${basename(paramsFile)}`, 'success')
+        window.createToast(`saved: ${basename(paramsFile)}`, 'success', {
+            target: 'left',
+        })
         params_found = true
     }
 
@@ -318,7 +322,9 @@
     const readConfigDir = async () => {
         console.log('reading config dir')
         if (!fs.existsSync(configDir))
-            return window.createToast('Invalid location', 'danger')
+            return window.createToast('Invalid location', 'danger', {
+                target: 'left',
+            })
         const [files, error] = await fs.readdir(configDir)
         if (error) return window.handleError(error)
         config_filelists = files.filter((file) => file.endsWith('.json'))
@@ -332,10 +338,16 @@
 
     function saveCurrentConfig() {
         if (!config_file)
-            return window.createToast('Invalid config file', 'danger')
+            return window.createToast('Invalid config file', 'danger', {
+                target: 'left',
+            })
 
         if (!selectedFile || !fs.existsSync(currentLocation)) {
-            return window.createToast('Invalid location or filename', 'danger')
+            return window.createToast(
+                'Invalid location or filename',
+                'danger',
+                { target: 'left' }
+            )
         }
         config_content[selectedFile] = currentConfig
         const [, error] = fs.outputJsonSync(config_file, config_content)
@@ -345,7 +357,8 @@
 
         window.createToast(
             'Config file saved' + basename(config_file),
-            'warning'
+            'success',
+            { target: 'left' }
         )
     }
 
@@ -356,7 +369,8 @@
                 return window.createToast(
                     'config file not available for selected file: ' +
                         selectedFile,
-                    'danger'
+                    'danger',
+                    { target: 'left' }
                 )
             }
             ;({ srgMode, pbefore, pafter, calibrationFactor, temp } =
@@ -365,7 +379,8 @@
         } catch (error) {
             window.createToast(
                 'Error while reading the values: Check config file',
-                'danger'
+                'danger',
+                { target: 'left' }
             )
         }
     }
@@ -382,7 +397,8 @@
                 console.log(config_file)
                 return window.createToast(
                     `Config file not available: ${basename(config_file)}`,
-                    'danger'
+                    'danger',
+                    { target: 'left' }
                 )
             }
             ;[config_content] = fs.readJsonSync(config_file)
@@ -396,7 +412,8 @@
             if (window.db.get('active_tab')?.toLowerCase() === 'kinetics') {
                 window.createToast(
                     `Config file loaded: ${basename(config_file)}`,
-                    'warning'
+                    'warning',
+                    { target: 'left' }
                 )
             }
         } catch (error) {
