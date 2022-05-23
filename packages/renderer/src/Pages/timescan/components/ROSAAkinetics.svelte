@@ -262,6 +262,7 @@
                 tagFile = tagOptions[0]
             }
         }
+
         let setContents = {}
         if (useTaggedFile) {
             if (!contents?.tag?.[tagFile]) {
@@ -272,8 +273,6 @@
         } else {
             setContents = contents
         }
-
-        console.log(setContents.timestartIndexScan)
         params_updatefile_or_getfromfile({
             updatefile: false,
             contents: setContents,
