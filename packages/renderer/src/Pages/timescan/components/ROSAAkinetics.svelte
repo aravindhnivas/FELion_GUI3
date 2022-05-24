@@ -249,7 +249,6 @@
     const readFromParamsFile = (event) => {
         params_found = false
         tagOptions = []
-        // tagFile = ''
         if (!(useParamsFile && fs.existsSync(paramsFile))) return
         const [data] = fs.readJsonSync(paramsFile)
         const contents = data?.[selectedFile]
