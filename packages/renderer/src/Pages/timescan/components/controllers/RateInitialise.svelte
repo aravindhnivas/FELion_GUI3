@@ -68,7 +68,11 @@
             label="use params file"
         />
 
-        <CustomSwitch bind:selected={useTaggedFile} label="use tagged File" />
+        <CustomSwitch
+            on:change={computeOtherParameters}
+            bind:selected={useTaggedFile}
+            label="use tagged File"
+        />
 
         {#if useTaggedFile}
             <TextAndSelectOptsToggler

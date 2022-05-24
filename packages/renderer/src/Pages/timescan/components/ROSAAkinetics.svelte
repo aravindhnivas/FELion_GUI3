@@ -564,6 +564,8 @@
                 kinetic_file_location: currentLocation,
                 initialValues: initialValues.split(','),
                 conditions: currentConfig,
+                useTaggedFile,
+                tagFile,
             }
             computePy_func({ e, pyfile: 'kineticsCode', args, general: true })
         } catch (error) {

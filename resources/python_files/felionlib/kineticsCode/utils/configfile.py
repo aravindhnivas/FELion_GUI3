@@ -24,7 +24,9 @@ def codeToRun(code: str):
     return locals()
 
 
-def read_config(fit_config_file: pt, selectedFile: str, kinetics_equation_file: pt) -> None:
+def read_config(
+    fit_config_file: pt, selectedFile: str, kinetics_equation_file: pt, useTaggedFile: bool, tagFile: str
+) -> None:
 
     global keyFoundForRate, k_err
     global ratek3, ratekCID
@@ -62,15 +64,24 @@ def read_config(fit_config_file: pt, selectedFile: str, kinetics_equation_file: 
             rateConstantsFileContents = f.read()
 
             if len(rateConstantsFileContents) > 0:
+
                 rateConstantsFileData = json.loads(rateConstantsFileContents)
                 print(f"{fit_config_file.name} read: {rateConstantsFileData}", flush=True)
 
-                keyFound = selectedFile in rateConstantsFileData
+                if useTaggedFile:
+                    if selectedFile in rateConstantsFileData:
+                        if "tag" in rateConstantsFileData[selectedFile]:
+                            if tagFile in rateConstantsFileData[selectedFile]["tag"]:
+                                searchContent = rateConstantsFileData[selectedFile]["tag"][tagFile]
+                                keyFound = True
+                else:
+                    keyFound = selectedFile in rateConstantsFileData
+                    searchContent = rateConstantsFileData[selectedFile]
                 print(f"{keyFound=}", flush=True)
 
             if keyFound:
-                k3_fit_keyvalues: dict[str, float] = rateConstantsFileData[selectedFile]["k3_fit"]
-                kCID_fit_keyvalues: dict[str, float] = rateConstantsFileData[selectedFile]["kCID_fit"]
+                k3_fit_keyvalues: dict[str, float] = searchContent["k3_fit"]
+                kCID_fit_keyvalues: dict[str, float] = searchContent["kCID_fit"]
                 print(f"{k3_fit_keyvalues=}", flush=True)
                 print(f"{kCID_fit_keyvalues=}", flush=True)
 

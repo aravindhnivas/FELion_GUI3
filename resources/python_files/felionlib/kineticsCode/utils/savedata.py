@@ -1,10 +1,10 @@
 import json
 import traceback
 
-from felionlib.kineticsCode.utils.definitions import formatArray
+# from felionlib.kineticsCode.utils.definitions import formatArray
 from felionlib.utils import logger
 from felionlib.utils.msgbox import MsgBox, MB_ICONERROR, MB_ICONINFORMATION
-from felionlib.kineticsCode import selectedFile, temp, nameOfReactants, numberDensity
+from felionlib.kineticsCode import selectedFile, nameOfReactants, useTaggedFile, tagFile
 
 
 def saveData():
@@ -27,24 +27,33 @@ def saveData():
             kCIDValues = rateCoefficientArgs[1]
             kCIDErr = k_err[k3Len:]
 
-            precession = 4
-            k3_fit = {
-                key: [value, err]
-                for key, value, err in zip(k3Labels, k3Values, k3Err)
-            }
-            kCID_fit = {
-                key: [value, err]
-                for key, value, err in zip(kCIDLabels, kCIDValues, kCIDErr)
-            }
+            # precession = 4
+            k3_fit = {key: [value, err] for key, value, err in zip(k3Labels, k3Values, k3Err)}
+            kCID_fit = {key: [value, err] for key, value, err in zip(kCIDLabels, kCIDValues, kCIDErr)}
 
             print(f"{rateConstantsFileData=}", flush=True)
-            rateConstantsFileData[selectedFile] = {
+
+            save_data = {
                 "k3_fit": k3_fit,
                 "kCID_fit": kCID_fit,
-                "temp": float(f"{temp:.1f}"),
-                "numberDensity": f"{numberDensity:.2e}",
             }
 
+            # tag_data = {}
+            current_data = {"tag": {}}
+
+            if selectedFile in rateConstantsFileData:
+                current_data = rateConstantsFileData[selectedFile]
+                if "tag" not in current_data:
+                    current_data["tag"] = {}
+
+            if useTaggedFile:
+                current_data["tag"][tagFile] = save_data
+            else:
+                if "tag" in current_data:
+                    save_data = save_data | {"tag": current_data["tag"]}
+                current_data = save_data
+
+            rateConstantsFileData[selectedFile] = current_data
             print(f"{rateConstantsFileData=}", flush=True)
             data = json.dumps(rateConstantsFileData, sort_keys=True, indent=4, separators=(",", ": "))
 

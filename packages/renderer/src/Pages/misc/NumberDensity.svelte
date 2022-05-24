@@ -51,7 +51,6 @@
             B: TakaishiSensuiConstants.B.value,
             C: TakaishiSensuiConstants.C.value,
         }
-
         args = {
             srgMode,
             tube_diameter, 
@@ -62,19 +61,15 @@
             TakaishiSensuiConstants: TkConstants,
             calibration_factor,
         }
-
         datafromPython = await computePy_func(
             {e, pyfile: 'numberDensity', args}
         )
+
         const nHe = dispatch_current_numberdensity()
         return Promise.resolve(nHe)
     }
-    
     export const get_datas = () => {
-        console.log({...args, ...datafromPython })
-        return {
-            ...args, ...datafromPython 
-        }
+        return {...args, ...datafromPython }
     }
 
     const dispatch = createEventDispatcher();
