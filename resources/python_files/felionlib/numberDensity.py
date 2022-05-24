@@ -11,8 +11,8 @@ def main(args):
         err_percent = err / 100 * value
         return ufloat(value, err_percent)
 
-    background_pressure = get_data_with_uncertainties("background_pressure")
-    added_pressure = get_data_with_uncertainties("added_pressure")
+    background_pressure = get_data_with_uncertainties("background_pressure", percentage=True)
+    added_pressure = get_data_with_uncertainties("added_pressure", percentage=True)
     trap_temperature = get_data_with_uncertainties("trap_temperature")
 
     srgMode = bool(args["srgMode"])

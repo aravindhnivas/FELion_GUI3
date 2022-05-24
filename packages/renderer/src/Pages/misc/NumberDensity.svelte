@@ -4,17 +4,13 @@
     import computePy_func from '$src/Pages/general/computePy'
     import { createEventDispatcher } from 'svelte';
 
-    // export let currentConfig = {};
-    // const defaultConfig = {srgMode: false, temp: 4, pbefore: "1e-8", pafter: "5e-6", calibrationFactor: 200}
-    // if(!currentConfig || Object.keys(currentConfig).length === 0) {
-    //     currentConfig = defaultConfig
-    // }
     let args = {};
     
     const set_config = (config) => {
         ;({trap_temperature, background_pressure, added_pressure, calibration_factor, srgMode, tube_diameter} = config)
         ;([rt, rt_std_dev] = config["room_temperature"])
         const {A, B, C} = config.TakaishiSensuiConstants
+
         TakaishiSensuiConstants.A.value = A
         TakaishiSensuiConstants.B.value = B
         TakaishiSensuiConstants.C.value = C
@@ -31,7 +27,7 @@
     let rt = window.db.get('RT') || 300
     let trap_temperature = [4, 0.3]
     let background_pressure = ["1e-8", 0]
-    let added_pressure = ["5e-6", 0]
+    let added_pressure = ["5e-6", 10]
     
     let TakaishiSensuiConstants = {
         A: {value: [6.11, 0], unit: "(K / mm.Pa)^2"},
@@ -41,13 +37,7 @@
     let tube_diameter = [3, 0.1]
     let srgMode = false;
     let calibration_factor = srgMode ? [1, 0] : [200, 10]
-    // let calibration_factor_std_dev = srgMode ? 0 : 10
     let rt_std_dev = 1
-    // $: if(!srgMode) {calibration_factor = srgMode ? [1, 0] : [200, 10]}
-    // $: if (rt) {window.db.set('RT', rt)}
-    // $: if (calibration_factor) {
-    //     window.db.set('calibration_factor', calibration_factor)
-    // }
 
     export const computeNumberDensity = async (e) => {
     
@@ -61,7 +51,7 @@
             B: TakaishiSensuiConstants.B.value,
             C: TakaishiSensuiConstants.C.value,
         }
-        // console.log(calibration_factor)
+
         args = {
             srgMode,
             tube_diameter, 
@@ -72,7 +62,6 @@
             TakaishiSensuiConstants: TkConstants,
             calibration_factor,
         }
-        // console.log(args)
 
         datafromPython = await computePy_func(
             {e, pyfile: 'numberDensity', args}
@@ -91,7 +80,6 @@
     const dispatch = createEventDispatcher();
 
     const dispatch_current_numberdensity = () => {
-        // console.log(datafromPython)
         const nHe = includeTranspiration ? datafromPython['nHe_transpiration'] : datafromPython['nHe']
         dispatch('getValue', {nHe})
         return nHe
@@ -145,7 +133,7 @@
                 />
                 <Textfield
                     bind:value={background_pressure[1]}
-                    label="std. dev."
+                    label="std. dev. (%)"
                 />
             </div>
             <div class="border__div">
@@ -155,7 +143,7 @@
                 />
                 <Textfield
                     bind:value={added_pressure[1]}
-                    label="std. dev."
+                    label="std. dev. (%)"
                 />
             </div>
         </div>
