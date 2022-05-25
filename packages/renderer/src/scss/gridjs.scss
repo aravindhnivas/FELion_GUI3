@@ -1,0 +1,12 @@
+@import 'gridjs/dist/theme/mermaid.min.css';
+.gridjs-container {
+    * {
+        color: black;
+    }
+    table {
+        width: 100%;
+        td {
+            user-select: text;
+        }
+    }
+}

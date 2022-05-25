@@ -25,6 +25,8 @@
     "eslint": "^8.16.0",
     "eslint-plugin-svelte3": "^4.0.0",
     "get-port": "^6.1.2",
+    "gridjs": "^5.0.2",
+    "gridjs-svelte": "^2.1.1",
     "interactjs": "^1.10.11",
     "lodash-es": "^4.17.21",
     "plotly.js": "^2.12.1",
@@ -60,8 +62,8 @@
   "dependencies": {
     "electron-log": "^4.4.7",
     "electron-store": "^8.0.1",
-    "electron-updater": "^5.0.4",
     "electron-unhandled": "^4.0.1",
+    "electron-updater": "^5.0.4",
     "fs-extra": "^10.1.0"
   }
 }
