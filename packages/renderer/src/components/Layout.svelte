@@ -1,16 +1,26 @@
-<script context="module">
+<script lang="ts" context="module">
+    import type { OpenDialogSyncOptions } from 'electron'
+
     export async function browse({
         filetype = '',
         dir = true,
         multiple = false,
     } = {}) {
+        const properties = []
         const type = dir ? 'openDirectory' : 'openFile'
-        const options = {
+
+        properties.push(type)
+
+        if (multiple) {
+            properties.push('multiSelections')
+        }
+
+        const options: OpenDialogSyncOptions = {
             filters: [
                 { name: filetype, extensions: [`*${filetype}`] },
                 { name: 'All Files', extensions: ['*'] },
             ],
-            properties: [type, multiple ? 'multiSelections' : ''],
+            properties,
         }
 
         const { showOpenDialogSync } = window.dialogs
