@@ -120,7 +120,8 @@
                 window.createToast(
                     'loaded: ' +
                         window.path.basename(collisionalCoefficientJSONFile),
-                    'warning'
+                    'warning',
+                    { target: 'left' }
                 )
             }
         }
