@@ -1,4 +1,4 @@
-## UNRELEASED
+## v3.7.0
 - Added features
     - Kinetics: subplot adjust
     - Kinetics: configs in configs folder
