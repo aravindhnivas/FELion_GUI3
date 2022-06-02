@@ -6,6 +6,6 @@ auto-py-to-exe
 flask==2.1.1
 PyQt6
 flask_cors==3.0.10
-waitress==2.1.1
+waitress==2.1.2
 flake8
 black
