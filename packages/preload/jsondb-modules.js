@@ -1,4 +1,5 @@
-import { ipcRenderer, contextBridge } from 'electron'
+import { ipcRenderer } from 'electron'
+import { exposeInMainWorld } from './exposeInMainWorld'
 import Store from 'electron-store'
 
 export const db = new Store({ name: 'db' })
@@ -16,7 +17,7 @@ ipcRenderer.on('db:update', (_event, { key, value }) => {
     console.info('db:update', { key, value })
 })
 
-contextBridge.exposeInMainWorld('db', {
+export const dbObject = {
     get(key) {
         return db.get(key)
     },
@@ -35,4 +36,6 @@ contextBridge.exposeInMainWorld('db', {
     path: db.path,
     onDidChange: (key, callback) => db.onDidChange(key, callback),
     onDidAnyChange: (callback) => db.onDidAnyChange(callback),
-})
+}
+
+exposeInMainWorld('db', dbObject)
