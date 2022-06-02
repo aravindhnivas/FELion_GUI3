@@ -26,7 +26,7 @@ export function getEnergyLabels({
                                     {
                                         label: `${i}_${current_J}__${current_mJ}`,
                                         value,
-                                        id: getID(),
+                                        id: window.getID(),
                                     },
                                 ]
                             }
@@ -37,7 +37,7 @@ export function getEnergyLabels({
                                 {
                                     label: `${i}_${current_J}`,
                                     value,
-                                    id: getID(),
+                                    id: window.getID(),
                                 },
                             ]
                         }
@@ -46,7 +46,7 @@ export function getEnergyLabels({
 
                 return N
             } else {
-                return { label: i, value, id: getID() }
+                return { label: i, value, id: window.getID() }
             }
         })
 

@@ -80,7 +80,7 @@ export async function readFromFile({
                     }
                 }
 
-                energyLevels = [...energyLevels, { label, value, id: getID() }]
+                energyLevels = [...energyLevels, { label, value, id: window.getID() }]
             }
         }
     })

@@ -4,7 +4,7 @@ export function get_err_func({ dataFromPython } = {}) {
     let { freq, amp, fwhm, sig } = dataFromPython
     let data1 = {
         name: 'unweighted_mean',
-        id: getID(),
+        id: window.getID(),
         freq: freq.mean,
         amp: amp.mean,
         fwhm: fwhm.mean,
@@ -14,7 +14,7 @@ export function get_err_func({ dataFromPython } = {}) {
 
     let data2 = {
         name: 'weighted_mean',
-        id: getID(),
+        id: window.getID(),
         freq: freq.wmean,
         amp: amp.wmean,
         fwhm: fwhm.wmean,

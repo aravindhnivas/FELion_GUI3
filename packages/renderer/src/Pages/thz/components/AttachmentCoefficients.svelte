@@ -12,13 +12,13 @@
         k3.rate = cloneDeep(k3.constant).map((rate) => ({
             ...rate,
             value: Number(rate.value * numberDensity ** 2).toFixed(3),
-            id: getID(),
+            id: window.getID(),
         }))
 
         kCID.rate = cloneDeep(kCID.constant).map((rate) => ({
             ...rate,
             value: Number(rate.value * numberDensity).toFixed(3),
-            id: getID(),
+            id: window.getID(),
         }))
     }
     $: if (numberDensity) {

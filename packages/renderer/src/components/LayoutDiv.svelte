@@ -1,5 +1,5 @@
 <script>
-    export let id = getID()
+    export let id = window.getID()
     // export let active=false;
 </script>
 

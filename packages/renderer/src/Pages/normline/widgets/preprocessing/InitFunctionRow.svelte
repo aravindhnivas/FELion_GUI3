@@ -41,16 +41,20 @@
 
     let felixPlotWidgets = {
         text: [
-            { label: 'Exp_title', value: 'FELIX-Experiment', id: getID() },
-            { label: 'Exp_legend', value: 'legend', id: getID() },
-            { label: 'Cal_title', value: 'calc_title', id: getID() },
+            {
+                label: 'Exp_title',
+                value: 'FELIX-Experiment',
+                id: window.getID(),
+            },
+            { label: 'Exp_legend', value: 'legend', id: window.getID() },
+            { label: 'Cal_title', value: 'calc_title', id: window.getID() },
         ],
 
         number: [
-            { label: 'freqScale', value: 1, step: 0.01, id: getID() },
-            { label: 'theorySigma', value: 5, step: 1, id: getID() },
+            { label: 'freqScale', value: 1, step: 0.01, id: window.getID() },
+            { label: 'theorySigma', value: 5, step: 1, id: window.getID() },
         ],
-        boolean: [{ label: 'Only_exp', value: true, id: getID() }],
+        boolean: [{ label: 'Only_exp', value: true, id: window.getID() }],
     }
 
     const fullData = {}

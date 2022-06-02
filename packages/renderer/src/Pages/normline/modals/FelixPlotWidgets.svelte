@@ -17,8 +17,8 @@
             ? fs
                   .readdirSync(datlocation)
                   .filter((f) => f.endsWith('.dat'))
-                  .map((f) => (f = { name: f, id: getID() }))
-            : [{ name: '', id: getID() }]
+                  .map((f) => (f = { name: f, id: window.getID() }))
+            : [{ name: '', id: window.getID() }]
 
         let calcfiles = []
 
@@ -28,27 +28,40 @@
                     .lstatSync(window.path.join(theoryLocation, file))
                     .isFile()
                 if (isFile) {
-                    calcfiles = [...calcfiles, { name: file, id: getID() }]
+                    calcfiles = [
+                        ...calcfiles,
+                        { name: file, id: window.getID() },
+                    ]
                 }
             })
         } else {
-            calcfiles = [{ name: '', id: getID() }]
+            calcfiles = [{ name: '', id: window.getID() }]
         }
 
         $felixPlotCheckboxes = [
-            { label: 'DAT_file', options: datfiles, value: [], id: getID() },
+            {
+                label: 'DAT_file',
+                options: datfiles,
+                value: [],
+                id: window.getID(),
+            },
             {
                 label: 'Fundamentals',
                 options: calcfiles,
                 value: [],
-                id: getID(),
+                id: window.getID(),
             },
-            { label: 'Overtones', options: calcfiles, value: [], id: getID() },
+            {
+                label: 'Overtones',
+                options: calcfiles,
+                value: [],
+                id: window.getID(),
+            },
             {
                 label: 'Combinations',
                 options: calcfiles,
                 value: [],
-                id: getID(),
+                id: window.getID(),
             },
         ]
         reload != reload

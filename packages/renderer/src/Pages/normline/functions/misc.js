@@ -35,7 +35,7 @@ export function loadfile(name) {
     }
 
     const loadedfile =
-        getdata?.file?.map((arr) => ({ ...arr, id: getID() })) || []
+        getdata?.file?.map((arr) => ({ ...arr, id: window.getID() })) || []
     // console.log({ loadedfile })
     window.createToast(`${name}.json has been loaded.`, 'success')
 
@@ -106,7 +106,7 @@ export function plotlyClick({ graphDiv = 'avgplot', mode = 'felix' } = {}) {
 
                     felixPeakTable.update((table) => [
                         ...table,
-                        { freq, amp, sig: get(Ngauss_sigma), id: getID() },
+                        { freq, amp, sig: get(Ngauss_sigma), id: window.getID() },
                     ])
                     felixPeakTable.update((table) => uniqBy(table, 'freq'))
                 }

@@ -14,7 +14,7 @@ export function get_details_func({ dataFromPython } = {}) {
             precursor: '',
             ie: '',
             temp: '',
-            id: getID(),
+            id: window.getID(),
         }
     })
     filedetails.set(info)

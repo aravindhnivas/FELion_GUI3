@@ -25,7 +25,7 @@ export function find_peaks_func({ dataFromPython } = {}) {
 
         felixPeakTable.update((table) => [
             ...table,
-            { freq, amp, sig, id: getID() },
+            { freq, amp, sig, id: window.getID() },
         ])
     }
     console.log(`Found peaks:\nX: ${peakX}\nY: ${peakY}`)

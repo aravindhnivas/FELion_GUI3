@@ -38,7 +38,7 @@ export function exp_fit_func({ dataFromPython } = {}) {
             ...table,
             {
                 name: `Line #${get(avgfittedLineCount)}`,
-                id: getID(),
+                id: window.getID(),
                 freq,
                 amp,
                 fwhm,
@@ -59,7 +59,7 @@ export function exp_fit_func({ dataFromPython } = {}) {
     }
     let newTable = {
         name: output_name,
-        id: getID(),
+        id: window.getID(),
         freq,
         amp,
         fwhm,

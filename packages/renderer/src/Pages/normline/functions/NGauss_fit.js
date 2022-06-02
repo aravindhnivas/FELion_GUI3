@@ -22,7 +22,7 @@ export function NGauss_fit_func({ dataFromPython }) {
         let { freq, amp, fwhm, sig } = data
         return {
             name: output_name,
-            id: getID(),
+            id: window.getID(),
             freq: freq,
             amp: amp,
             fwhm: fwhm,
@@ -40,7 +40,7 @@ export function NGauss_fit_func({ dataFromPython }) {
 
             return {
                 name: `Line #${index}`,
-                id: getID(),
+                id: window.getID(),
                 freq: freq,
                 amp: amp,
                 fwhm: fwhm,

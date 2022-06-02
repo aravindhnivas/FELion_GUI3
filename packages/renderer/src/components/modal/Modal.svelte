@@ -2,7 +2,7 @@
     import Dialog, { Title, Content, Actions } from '@smui/dialog'
     import { createEventDispatcher, onMount } from 'svelte'
 
-    export let id = getID()
+    export let id = window.getID()
     export let active = false
     export let title = ''
     let className = ''

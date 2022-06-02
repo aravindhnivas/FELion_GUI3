@@ -36,7 +36,7 @@
         )
         paramsTable = frequencies.map((freq) => {
             const { amp, fG, fL } = readParams[freq]
-            const id = getID()
+            const id = window.getID()
             return { freq, amp, fG, fL, id }
         })
         window.createToast('Config loaded', 'warning')
@@ -54,7 +54,7 @@
                 amp: y.toFixed(2),
                 fG,
                 fL,
-                id: getID(),
+                id: window.getID(),
             }
             console.log(newParams)
             paramsTable = [...paramsTable, newParams]

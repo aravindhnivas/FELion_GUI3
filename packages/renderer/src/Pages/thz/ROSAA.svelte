@@ -283,7 +283,7 @@
         } else return Promise.reject(filename + " file doesn't exist")
     }
 
-    const setID = (obj) => ({ ...obj, id: getID() })
+    const setID = (obj) => ({ ...obj, id: window.getID() })
     const correctObjValue = (obj) => ({
         ...obj,
         value: obj.value.toExponential(3),

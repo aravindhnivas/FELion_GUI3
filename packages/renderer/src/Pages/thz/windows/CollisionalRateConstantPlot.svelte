@@ -145,7 +145,7 @@
                         currentCollisionalRateConstant /
                         parseFloat(scaleRateConstant)
                     ).toExponential(2),
-                    id: getID(),
+                    id: window.getID(),
                 },
             ]
 

@@ -63,7 +63,7 @@
                     {
                         label: newLabel,
                         value: newValue.toExponential(3),
-                        id: getID(),
+                        id: window.getID(),
                     },
                 ]
             }

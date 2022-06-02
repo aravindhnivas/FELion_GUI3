@@ -51,7 +51,10 @@ window.addEventListener('DOMContentLoaded', (event) => {
     console.log('DOM fully loaded and parsed')
     windowLoaded.set(true)
     bulmaQuickview.attach()
+
 })
+
+window.getID = () => Math.random().toString(32).substring(2)
 
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 interface Exposed {
@@ -59,7 +62,9 @@ interface Exposed {
     createToast: (description: string, type?: 'info' | 'danger' | 'warning' | 'success', opts?: SvelteToastOptions) => void; 
     sleep: (ms: number) => Promise<typeof setTimeout>;
     handleError: (error: Error) => void;
+    getID: () => string;
 }
+
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 declare global {
     interface Window extends Exposed {}

@@ -15,7 +15,7 @@
                     channelCounter > 0 ? `k_loss_${channelCounter}` : 'k_loss',
                 lossFrom: ions_lists[0],
                 attachTo: 'none',
-                id: getID(),
+                id: window.getID(),
             },
         ]
         channelCounter += 1

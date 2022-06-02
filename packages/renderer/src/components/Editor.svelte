@@ -6,7 +6,7 @@
     import WinBox from 'winbox/src/js/winbox.js'
     import CustomSwitch from '$components/CustomSwitch.svelte'
     import TextAndSelectOptsToggler from '$components/TextAndSelectOptsToggler.svelte'
-    export let id = getID()
+    export let id = window.getID()
     export let location = ''
     export let filetype = ''
     export let editor = null

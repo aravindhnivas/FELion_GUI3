@@ -6,7 +6,7 @@
     export let stdOutput = ''
     export let stderr = ''
     export let disabled = false
-    export let id = getID()
+    export let id = window.getID()
 </script>
 
 <button

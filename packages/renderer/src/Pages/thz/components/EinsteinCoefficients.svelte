@@ -54,7 +54,11 @@
                         (8 * Math.PI * PlanksConstant * freqInHz ** 3)
                     const B = constTerm * value
 
-                    return { label, value: B.toExponential(3), id: getID() }
+                    return {
+                        label,
+                        value: B.toExponential(3),
+                        id: window.getID(),
+                    }
                 }
             )
 
@@ -77,7 +81,7 @@
                     return {
                         label: newLabel,
                         value: B.toExponential(3),
-                        id: getID(),
+                        id: window.getID(),
                     }
                 })
 

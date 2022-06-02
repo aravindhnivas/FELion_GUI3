@@ -70,7 +70,7 @@
                                 window.path.join(currentLocation, file)
                             )
                     )
-                    .map((file) => (file = { name: file, id: getID() }))
+                    .map((file) => (file = { name: file, id: window.getID() }))
                     .sort((a, b) => (a.name < b.name ? 1 : -1))
 
                 fullfileslist = fullfiles.map((file) => (file = file.name))
@@ -80,7 +80,7 @@
                             window.path.join(currentLocation, file)
                         )
                     )
-                    .map((file) => (file = { name: file, id: getID() }))
+                    .map((file) => (file = { name: file, id: window.getID() }))
                     .sort((a, b) => (a.name > b.name ? 1 : -1))
 
                 console.log('Folder updated')

@@ -102,7 +102,7 @@
                 fittedParamsTable = [
                     ...fittedParamsTable,
                     ...receivedPramsTable,
-                ].map((row) => ({ ...row, id: getID() }))
+                ].map((row) => ({ ...row, id: window.getID() }))
             } else {
                 const { averaged, individual } = dataFromPython['thz']
                 dataProcessed = { ...individual, ...averaged }

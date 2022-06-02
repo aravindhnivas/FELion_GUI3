@@ -130,7 +130,7 @@
         const totalMass = Object.keys(currentData).filter((m) => m !== 'SUM')
         totalMassKey = totalMass.map((m) => ({
             mass: m,
-            id: getID(),
+            id: window.getID(),
             included: true,
         }))
         maxTimeIndex = currentData[totalMass[0]].x.length - 5
@@ -475,7 +475,7 @@
             configArray = Object.keys(config_content).map((filename) => ({
                 filename,
                 ...config_content[filename],
-                id: getID(),
+                id: window.getID(),
             }))
 
             if (window.db.get('active_tab')?.toLowerCase() === 'kinetics') {

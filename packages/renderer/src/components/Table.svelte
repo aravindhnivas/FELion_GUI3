@@ -6,7 +6,7 @@
     export let head = []
     export let rows = []
     export let keys = []
-    export let id = getID()
+    export let id = window.getID()
     export let label = 'table'
     export let userSelect = true
 
@@ -35,15 +35,15 @@
     keys.forEach((key) => (emptyRow[key] = ''))
 
     const addRow = async () => {
-        const id = getID()
+        const id = window.getID()
         rows = [...rows, { ...emptyRow, id }]
         await tick()
         const focusTargetID = `${id}-${keys[0]}`
         document.getElementById(focusTargetID).focus()
     }
 
-    // $: rowKeys = keys.map(key=>({key, id: getID()}))
-    // let keyedRows = rows.map(row=>({...row, id: getID()}))
+    // $: rowKeys = keys.map(key=>({key, id: window.getID()}))
+    // let keyedRows = rows.map(row=>({...row, id: window.getID()}))
     // console.log({keyedRows})
 </script>
 
