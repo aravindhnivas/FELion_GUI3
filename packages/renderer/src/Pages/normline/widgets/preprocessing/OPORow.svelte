@@ -18,7 +18,7 @@
     import CustomSelect from '$components/CustomSelect.svelte'
     import QuickBrowser from '$components/QuickBrowser.svelte'
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
-    import { plot } from '$src/js/functions.js'
+    import { plot } from '$src/js/functions'
     import computePy_func from '$src/Pages/general/computePy'
     import { react } from 'plotly.js/dist/plotly-basic'
 

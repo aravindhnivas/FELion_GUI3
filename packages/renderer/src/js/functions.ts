@@ -1,8 +1,8 @@
 import { mainPreModal } from '../svelteWritable'
 import { writable } from 'svelte/store'
-// import { toasts }  from "svelte-toasts";
 import { toast } from '@zerodevx/svelte-toast'
-import { bulmaQuickview } from 'bulma-extensions'
+import type { SvelteToastOptions } from '@zerodevx/svelte-toast'
+import bulmaQuickview from 'bulma-extensions/bulma-quickview/src/js/index.js'
 
 export const activateChangelog = writable(false)
 export const windowLoaded = writable(false)
@@ -30,6 +30,7 @@ const toastTheme = {
         '--toastBarBackground': '#C28B00',
     },
 }
+
 window.createToast = (description, type = 'info', opts = {}) => {
     toast.push(description, {
         theme: toastTheme[type],
@@ -37,41 +38,24 @@ window.createToast = (description, type = 'info', opts = {}) => {
         ...opts,
     })
 }
-window.sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+
+window.sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 window.handleError = (error) => {
     console.error(error)
-    mainPreModal.error(error.stack || error)
-    return
+    mainPreModal.error(error.stack)
 }
+declare global {
 
-// window.onerror = function (message, source, lineno, colno, error) {
-//     // console.log(message, source, lineno, colno, error)
-//     // const modalContent = `${error.name}: ${message}\nsource: ${source}\nlineno: ${lineno}\tcolno: ${colno}`
-//     // window.handleError(modalContent)
-// }
-
-window.targetElement = (id) => document.getElementById(id)
-window.getPageStatus = (id) => targetElement(id).style.display !== 'none'
-window.showpage = (id) => {
-    targetElement(id).style.display = 'block'
-}
-window.hidepage = (id) => {
-    targetElement(id).style.display = 'none'
-}
-window.togglepage = (id) => {
-    getPageStatus(id)
-        ? (targetElement(id).style.display = 'none')
-        : (targetElement(id).style.display = 'block')
-}
-
-window.asyncForEach = async (array, callback) => {
-    for (let index = 0; index < array.length; index++) {
-        await callback(array[index], index, array)
+    interface Window { 
+        createToast: (description: string, type?: 'info' | 'danger' | 'warning' | 'success', opts?: SvelteToastOptions) => void; 
+        sleep: (ms: number) => Promise<typeof setTimeout>;
+        handleError: (error: Error) => void;
     }
 }
 
 window.addEventListener('DOMContentLoaded', (event) => {
+    
     console.log('DOM fully loaded and parsed')
     windowLoaded.set(true)
     bulmaQuickview.attach()

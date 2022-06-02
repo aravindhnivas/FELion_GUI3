@@ -1,4 +1,4 @@
-import { plot } from '../../../js/functions.js'
+import { plot } from '../../../js/functions'
 
 export function theory_func({ dataFromPython, normMethod } = {}) {
     let ylabel

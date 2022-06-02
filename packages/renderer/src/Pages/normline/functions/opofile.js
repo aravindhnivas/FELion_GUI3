@@ -1,5 +1,5 @@
 import { plotlyEventCreatedOPO, get } from './svelteWritables'
-import { plot } from '../../../js/functions.js'
+import { plot } from '../../../js/functions'
 import { plotlySelection, plotlyClick } from './misc'
 import beforePlot from './beforePlot'
 

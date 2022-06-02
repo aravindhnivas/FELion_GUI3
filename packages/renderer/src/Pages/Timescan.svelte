@@ -4,7 +4,7 @@
     // import CustomIconSwitch from "$components/CustomIconSwitch.svelte"
     import CustomSelect from '$components/CustomSelect.svelte'
     import CustomSwitch from '$components/CustomSwitch.svelte'
-    import { plot } from '../js/functions.js'
+    import { plot } from '../js/functions'
     import { relayout } from 'plotly.js/dist/plotly-basic'
     import { cloneDeep } from 'lodash-es'
     import computePy_func from '$src/Pages/general/computePy'

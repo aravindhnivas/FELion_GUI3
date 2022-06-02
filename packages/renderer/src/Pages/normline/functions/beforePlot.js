@@ -7,7 +7,7 @@ import {
     opoData,
     get,
 } from './svelteWritables'
-import { plot } from '../../../js/functions.js'
+import { plot } from '../../../js/functions'
 
 const get_data = (data) => {
     let dataPlot = []

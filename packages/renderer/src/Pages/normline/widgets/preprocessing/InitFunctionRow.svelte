@@ -23,7 +23,7 @@
         mapNormMethodKeys,
     } from '../../functions/plotIndividualDataIntoGraph'
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
-    import { subplot, plot } from '$src/js/functions.js'
+    import { subplot, plot } from '$src/js/functions'
     import computePy_func from '$src/Pages/general/computePy'
     import { react, relayout } from 'plotly.js/dist/plotly-basic'
 
@@ -120,7 +120,10 @@
 
                 pyfile = 'normline.baseline'
                 args = {
-                    filename: pathJoin($felixopoLocation, baseline_markedfile),
+                    filename: window.path.join(
+                        $felixopoLocation,
+                        baseline_markedfile
+                    ),
                 }
                 computePy_func({ e, pyfile, args, general: true })
                 break

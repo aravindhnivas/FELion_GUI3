@@ -3,7 +3,7 @@ import {
     felixGraphPlotted,
     get,
 } from './svelteWritables'
-import { subplot } from '../../../js/functions.js'
+import { subplot } from '../../../js/functions'
 import { plotlySelection, plotlyClick } from './misc'
 import beforePlot from './beforePlot'
 import { relayout } from 'plotly.js/dist/plotly-basic'
