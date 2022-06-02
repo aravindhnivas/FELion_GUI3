@@ -2,7 +2,7 @@
 
 interface Exposed {
     readonly fs: Readonly<typeof import('./fs-modules').fsUtils>;
-    // readonly versions: Readonly<typeof import('./src/versions').versions>;
+    readonly path: Readonly<typeof import('./path-modules').path>;
 }
 
 
