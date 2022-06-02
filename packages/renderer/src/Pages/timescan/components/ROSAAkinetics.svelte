@@ -233,9 +233,13 @@
         }
         window.fs.outputJsonSync(paramsFile, contents)
         tagOptions = Object.keys(contents[selectedFile].tag)
-        window.createToast(`saved: ${basename(paramsFile)}`, 'success', {
-            target: 'left',
-        })
+        window.createToast(
+            `saved: ${window.path.basename(paramsFile)}`,
+            'success',
+            {
+                target: 'left',
+            }
+        )
 
         params_found = true
     }
@@ -373,7 +377,8 @@
         console.log('updating paramaeters')
         computeParameters()
         kineticEditorFilename =
-            basename(selectedFile).split('.')[0] + '-kineticModel.md'
+            window.path.basename(selectedFile).split('.')[0] +
+            '-kineticModel.md'
     }
 
     $: configDir = window.path.join(currentLocation, '../configs')
@@ -418,7 +423,7 @@
         }
 
         window.createToast(
-            'Config file saved' + basename(config_file),
+            'Config file saved' + window.path.basename(config_file),
             'success',
             { target: 'left' }
         )
@@ -458,7 +463,9 @@
             if (!window.fs.existsSync(config_file)) {
                 console.log(config_file)
                 return window.createToast(
-                    `Config file not available: ${basename(config_file)}`,
+                    `Config file not available: ${window.path.basename(
+                        config_file
+                    )}`,
                     'danger',
                     { target: 'left' }
                 )
@@ -473,7 +480,7 @@
 
             if (window.db.get('active_tab')?.toLowerCase() === 'kinetics') {
                 window.createToast(
-                    `Config file loaded: ${basename(config_file)}`,
+                    `Config file loaded: ${window.path.basename(config_file)}`,
                     'warning',
                     { target: 'left' }
                 )

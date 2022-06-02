@@ -103,7 +103,7 @@
                 class:is-danger={!params_found}
                 transition:fade
                 >{params_found
-                    ? `params updated: ${window.basename(selectedFile)}`
+                    ? `params updated: ${window.path.basename(selectedFile)}`
                     : 'params not found'}</span
             >
         {/if}

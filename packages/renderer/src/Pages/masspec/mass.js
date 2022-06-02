@@ -17,7 +17,7 @@ export async function readMassFile(massfiles) {
             if (!window.fs.existsSync(filename)) return
             const [fileContents] = await window.fs.readFile(filename)
 
-            const name = basename(filename)
+            const name = window.path.basename(filename)
             console.info('content read: ', name)
             const dataContents = fileContents
                 .split('\n')

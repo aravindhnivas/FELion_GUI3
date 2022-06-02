@@ -80,7 +80,7 @@
         }
 
         window.createToast('Report saved', 'success')
-        console.log('report writted: ', basename(reportFile))
+        console.log('report writted: ', window.path.basename(reportFile))
         reportSaved = true
     }
 
@@ -91,7 +91,9 @@
         if (!window.fs.existsSync(reportFile)) return writeReport()
         return showConfirm.push({
             title: 'Overwrite?',
-            content: `Do you want to overwrite ${basename(reportFile)}?`,
+            content: `Do you want to overwrite ${window.path.basename(
+                reportFile
+            )}?`,
             callback: (response) => {
                 if (response?.toLowerCase() === 'cancel') return
                 writeReport()
@@ -127,7 +129,7 @@
         if (!window.fs.existsSync(reportFile)) {
             if (!showInfo) return
             return window.createToast(
-                'No report file named ' + basename(reportFile),
+                'No report file named ' + window.path.basename(reportFile),
                 'danger'
             )
         }
@@ -135,7 +137,7 @@
         reportRead = true
         if (!showInfo) return
 
-        window.createToast(`${basename(reportFile)} file read`)
+        window.createToast(`${window.path.basename(reportFile)} file read`)
     }
 
     let autoRead = false

@@ -87,7 +87,7 @@ export async function readFromFile({
 
     await tick()
 
-    window.createToast('Energy file read: ' + basename(energyFilename))
+    window.createToast('Energy file read: ' + window.path.basename(energyFilename))
 
     console.log(energyLevels)
     return Promise.resolve({

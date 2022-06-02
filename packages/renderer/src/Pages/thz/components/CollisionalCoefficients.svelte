@@ -84,11 +84,11 @@
     async function browse_collisional_file() {
         ;[collisionalFilename] =
             (await browse({ dir: false })) || collisionalFilename
-        collisionalFileBasename = basename(collisionalFilename)
+        collisionalFileBasename = window.path.basename(collisionalFilename)
     }
 
     const updateFilename = async () => {
-        collisionalFileBasename = basename(collisionalFilename)
+        collisionalFileBasename = window.path.basename(collisionalFilename)
     }
 
     $: if (collisionalFilename) updateFilename()
@@ -118,7 +118,8 @@
                 window.fs.readJsonSync(collisionalCoefficientJSONFile)
             if (window.db.get('active_tab') == 'Kinetics') {
                 window.createToast(
-                    'loaded: ' + basename(collisionalCoefficientJSONFile),
+                    'loaded: ' +
+                        window.path.basename(collisionalCoefficientJSONFile),
                     'warning'
                 )
             }

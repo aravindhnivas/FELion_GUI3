@@ -194,7 +194,7 @@
     async function browse_folder() {
         const result = await browse({ filetype: 'yml', dir: false })
         if (!result) return
-        configFilename = basename(result[0])
+        configFilename = window.path.basename(result[0])
         currentLocation = dirname(result[0])
         window.db.set('ROSAA_config_location', currentLocation)
         window.db.set('ROSAA_config_file', configFilename)

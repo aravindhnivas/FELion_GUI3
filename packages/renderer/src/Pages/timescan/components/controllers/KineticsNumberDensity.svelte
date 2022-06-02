@@ -27,7 +27,9 @@
         }
         ;[contents] = window.fs.readJsonSync(savefilename)
         if (active) {
-            window.createToast('file read: ' + basename(savefilename))
+            window.createToast(
+                'file read: ' + window.path.basename(savefilename)
+            )
             compute()
         }
     }
@@ -47,7 +49,9 @@
             contents[selectedFile] = datas
             console.log(contents[selectedFile])
             window.fs.outputJsonSync(savefilename, contents)
-            window.createToast('file saved: ' + basename(savefilename))
+            window.createToast(
+                'file saved: ' + window.path.basename(savefilename)
+            )
         } catch (error) {
             window.handleError(error)
         }

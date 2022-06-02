@@ -55,7 +55,7 @@
             return window.handleError(error)
         }
         window.createToast(
-            'Config file saved' + basename(config_file),
+            'Config file saved' + window.path.basename(config_file),
             'warning',
             { target: 'left' }
         )

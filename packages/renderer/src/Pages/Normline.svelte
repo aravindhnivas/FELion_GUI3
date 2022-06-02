@@ -66,7 +66,7 @@
         'averaged',
         ...plottedFiles,
         ...addedfiles
-            .map((file) => basename(file))
+            .map((file) => window.path.basename(file))
             .map((file) => file.split('.')[0]),
     ]
 

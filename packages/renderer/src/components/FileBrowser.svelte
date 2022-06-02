@@ -23,7 +23,9 @@
     let original_files = []
 
     $: locationStatus = window.fs.existsSync(currentLocation)
-    $: parentFolder = locationStatus ? basename(currentLocation) : 'Undefined'
+    $: parentFolder = locationStatus
+        ? window.path.basename(currentLocation)
+        : 'Undefined'
 
     let searchKey = ''
     const searchfile = () => {
