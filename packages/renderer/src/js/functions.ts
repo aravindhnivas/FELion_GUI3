@@ -12,7 +12,7 @@ export const updating = writable(false)
 export { plot, subplot, plotlyClick, plotlyEventsInfo } from './plot'
 
 import './resizableDiv'
-import './clickOutside'
+// import './clickOutside'
 import '../Pages/general/computePy'
 
 const toastTheme = {
@@ -56,6 +56,26 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
 window.getID = () => Math.random().toString(32).substring(2)
 
+window.clickOutside = (node) => {
+    
+    console.log(node)
+
+    const handleClick = (event) => {
+        if (node && !node.contains(event.target) && !event.defaultPrevented) {
+            node.dispatchEvent(new CustomEvent('click_outside', {detail: event}))
+        }
+    }
+
+    document.addEventListener('click', handleClick, true)
+
+    return {
+        destroy() {
+            document.removeEventListener('click', handleClick, true)
+        },
+    }
+}
+
+
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 interface Exposed {
 
@@ -63,6 +83,7 @@ interface Exposed {
     sleep: (ms: number) => Promise<typeof setTimeout>;
     handleError: (error: Error) => void;
     getID: () => string;
+    clickOutside: (node: HTMLElement) => { destroy: () => void };
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
