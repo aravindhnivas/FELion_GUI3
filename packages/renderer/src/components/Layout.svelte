@@ -13,7 +13,7 @@
             properties: [type, multiple ? 'multiSelections' : ''],
         }
 
-        const { showOpenDialogSync } = dialogs
+        const { showOpenDialogSync } = window.dialogs
 
         console.table(options)
         console.log('Directory: ', dir)
