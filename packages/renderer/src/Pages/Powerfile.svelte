@@ -56,7 +56,7 @@
 
     let filename = `${dd}_${mm}_${yy}-#`
 
-    $: powfile = pathResolve(location, `${filename}.pow`)
+    $: powfile = window.path.resolve(location, `${filename}.pow`)
     $: conversion = '_no_'
     $: convert ? (conversion = '_') : (conversion = '_no_')
     $: initContent =

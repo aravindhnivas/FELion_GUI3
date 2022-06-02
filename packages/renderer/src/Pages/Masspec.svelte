@@ -18,7 +18,7 @@
     let currentLocation = ''
 
     $: massfiles = window.fs.existsSync(currentLocation)
-        ? fileChecked.map((file) => pathResolve(currentLocation, file))
+        ? fileChecked.map((file) => window.path.resolve(currentLocation, file))
         : []
     $: if (massfiles.length > 0) plotData()
     // $: console.log($configs.max_files_to_plot.value)

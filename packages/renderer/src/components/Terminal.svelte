@@ -101,7 +101,7 @@
 
             try {
                 window.fs.writeFileSync(
-                    pathResolve(appInfo.temp, 'FELion_GUI3/output.log'),
+                    window.path.resolve(appInfo.temp, 'FELion_GUI3/output.log'),
                     outputLog
                 )
             } catch (error) {

@@ -42,7 +42,9 @@
         OPOcalibFiles = fs
             .readdirSync(OPOLocation)
             .filter((file) => file.endsWith('.calibOPO'))
-        opofiles = OPOfilesChecked.map((file) => pathResolve(OPOLocation, file))
+        opofiles = OPOfilesChecked.map((file) =>
+            window.path.resolve(OPOLocation, file)
+        )
     }
 
     let dataReady = false

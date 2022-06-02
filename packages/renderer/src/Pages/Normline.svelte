@@ -40,7 +40,7 @@
     let currentLocation = ''
 
     $: felixfiles = fileChecked.map((file) =>
-        pathResolve(currentLocation, file)
+        window.path.resolve(currentLocation, file)
     )
     $: console.log(`${filetype} currentlocation: \n${currentLocation}`)
 
@@ -107,12 +107,12 @@
         ? (fullfiles = [
               ...opofiles,
               ...addedfiles,
-              pathResolve(currentLocation, 'averaged.felix'),
+              window.path.resolve(currentLocation, 'averaged.felix'),
           ])
         : (fullfiles = [
               ...felixfiles,
               ...addedfiles,
-              pathResolve(currentLocation, 'averaged.felix'),
+              window.path.resolve(currentLocation, 'averaged.felix'),
           ])
 
     let modalActivate = false

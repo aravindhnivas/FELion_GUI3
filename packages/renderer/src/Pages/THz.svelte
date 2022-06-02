@@ -21,7 +21,9 @@
 
     let fileChecked = []
     let currentLocation = ''
-    $: thzfiles = fileChecked.map((file) => pathResolve(currentLocation, file))
+    $: thzfiles = fileChecked.map((file) =>
+        window.path.resolve(currentLocation, file)
+    )
 
     let binSize = 10
     let binData = true

@@ -16,7 +16,9 @@
 
     let fileChecked = []
     let currentLocation = ''
-    $: scanfiles = fileChecked.map((file) => pathResolve(currentLocation, file))
+    $: scanfiles = fileChecked.map((file) =>
+        window.path.resolve(currentLocation, file)
+    )
 
     let nshots = 10
     let power = '21, 21'

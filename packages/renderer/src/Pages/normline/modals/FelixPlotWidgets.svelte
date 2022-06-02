@@ -12,7 +12,7 @@
 
     let reload = true
     function refreshFunction() {
-        const datlocation = pathResolve($felixopoLocation, '../EXPORT')
+        const datlocation = window.path.resolve($felixopoLocation, '../EXPORT')
         const datfiles = window.fs.existsSync(datlocation)
             ? fs
                   .readdirSync(datlocation)

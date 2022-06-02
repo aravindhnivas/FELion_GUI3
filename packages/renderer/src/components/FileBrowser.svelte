@@ -111,7 +111,7 @@
         : (fullfiles = fullfiles.sort((a, b) => (a.name < b.name ? 1 : -1)))
     let getFilePromise
     const changeDirectory = (goto) => {
-        currentLocation = pathResolve(currentLocation, goto)
+        currentLocation = window.path.resolve(currentLocation, goto)
     }
 
     let original_location = currentLocation

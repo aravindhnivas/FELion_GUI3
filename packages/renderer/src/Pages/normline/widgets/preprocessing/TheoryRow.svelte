@@ -26,7 +26,7 @@
 
     $: if (window.fs.existsSync(theoryLocation)) {
         theoryfiles = theoryfilesChecked.map((file) =>
-            pathResolve(theoryLocation, file)
+            window.path.resolve(theoryLocation, file)
         )
     }
 
