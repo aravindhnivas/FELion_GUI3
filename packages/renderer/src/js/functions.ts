@@ -45,18 +45,22 @@ window.handleError = (error) => {
     console.error(error)
     mainPreModal.error(error.stack)
 }
-declare global {
 
-    interface Window { 
-        createToast: (description: string, type?: 'info' | 'danger' | 'warning' | 'success', opts?: SvelteToastOptions) => void; 
-        sleep: (ms: number) => Promise<typeof setTimeout>;
-        handleError: (error: Error) => void;
-    }
-}
 
 window.addEventListener('DOMContentLoaded', (event) => {
-    
     console.log('DOM fully loaded and parsed')
     windowLoaded.set(true)
     bulmaQuickview.attach()
 })
+
+/* eslint-disable @typescript-eslint/consistent-type-imports */
+interface Exposed {
+
+    createToast: (description: string, type?: 'info' | 'danger' | 'warning' | 'success', opts?: SvelteToastOptions) => void; 
+    sleep: (ms: number) => Promise<typeof setTimeout>;
+    handleError: (error: Error) => void;
+}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+declare global {
+    interface Window extends Exposed {}
+}
