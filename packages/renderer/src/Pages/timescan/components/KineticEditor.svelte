@@ -54,7 +54,7 @@
 
     let filenameOpts = []
     const filenameUpdate = async () => {
-        const [files] = await fs.readdir(location)
+        const [files] = await window.fs.readdir(location)
         if (!files) return console.log('No files')
         filenameOpts = files
             .filter((f) => f.startsWith(selectedFile.split('.')[0]))

@@ -69,7 +69,7 @@
     //         .map((name) => name.replace(extname(name), ''))
     // }
 
-    $: if (fs.existsSync(location)) {
+    $: if (window.fs.existsSync(location)) {
         window.db.set(`${filetype}-report-md`, location)
         // updateFiles()
     }
@@ -83,7 +83,11 @@
 
     const writeReport = async () => {
         const contents = editor.getData()
-        const [, error] = await fs.writeFile(reportFile, contents, 'utf8')
+        const [, error] = await window.fs.writeFile(
+            reportFile,
+            contents,
+            'utf8'
+        )
         if (error) {
             return window.createToast("Report couldn't be saved.", 'danger')
         }
@@ -96,7 +100,7 @@
         if (!location) {
             return window.createToast('Invalid location', 'danger')
         }
-        if (!fs.existsSync(reportFile)) return writeReport()
+        if (!window.fs.existsSync(reportFile)) return writeReport()
         return showConfirm.push({
             title: 'Overwrite?',
             content: `Do you want to overwrite ${basename(reportFile)}?`,
@@ -132,14 +136,14 @@
     }
 
     const readFromFile = (showInfo = true) => {
-        if (!fs.existsSync(reportFile)) {
+        if (!window.fs.existsSync(reportFile)) {
             if (!showInfo) return
             return window.createToast(
                 'No report file named ' + basename(reportFile),
                 'danger'
             )
         }
-        editor?.setData(fs.readFileSync(reportFile))
+        editor?.setData(window.fs.readFileSync(reportFile))
         reportRead = true
         if (!showInfo) return
 

@@ -32,8 +32,11 @@
     let config_content = {}
 
     function saveConfig() {
-        if (!fs.existsSync(config_file)) {
-            const [, error] = fs.outputJsonSync(config_file, config_content)
+        if (!window.fs.existsSync(config_file)) {
+            const [, error] = window.fs.outputJsonSync(
+                config_file,
+                config_content
+            )
             if (error) {
                 return window.handleError(error)
             }
@@ -47,7 +50,7 @@
             })
             config_content[filename] = newKeyValue
         })
-        const [, error] = fs.outputJsonSync(config_file, config_content)
+        const [, error] = window.fs.outputJsonSync(config_file, config_content)
         if (error) {
             return window.handleError(error)
         }

@@ -13,7 +13,7 @@
     let reload = true
     function refreshFunction() {
         const datlocation = pathResolve($felixopoLocation, '../EXPORT')
-        const datfiles = fs.existsSync(datlocation)
+        const datfiles = window.fs.existsSync(datlocation)
             ? fs
                   .readdirSync(datlocation)
                   .filter((f) => f.endsWith('.dat'))
@@ -22,8 +22,8 @@
 
         let calcfiles = []
 
-        if (fs.existsSync(theoryLocation)) {
-            fs.readdirSync(theoryLocation).forEach((file) => {
+        if (window.fs.existsSync(theoryLocation)) {
+            window.fs.readdirSync(theoryLocation).forEach((file) => {
                 const isFile = fs
                     .lstatSync(pathJoin(theoryLocation, file))
                     .isFile()

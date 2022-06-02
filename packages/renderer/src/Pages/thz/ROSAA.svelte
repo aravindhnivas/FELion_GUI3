@@ -60,7 +60,7 @@
     let einsteinB_rateComputed = false
 
     const simulation = (e) => {
-        if (!fs.existsSync(currentLocation))
+        if (!window.fs.existsSync(currentLocation))
             return window.createToast("Location doesn't exist", 'danger')
         if (!configLoaded)
             return window.createToast('Config file not loaded', 'danger')
@@ -175,7 +175,9 @@
         }
         computePy_func({ e, pyfile: 'ROSAA', args, general: true })
     }
-    let currentLocation = fs.existsSync(window.db.get('ROSAA_config_location'))
+    let currentLocation = window.fs.existsSync(
+        window.db.get('ROSAA_config_location')
+    )
         ? window.db.get('ROSAA_config_location')
         : ''
 
@@ -185,7 +187,7 @@
     $: savefilename = `${moleculeName}_${tagName}_${
         variable.split('(')[0]
     }_${excitedFrom} - ${excitedTo}`.replaceAll('$', '')
-    $: if (fs.existsSync(currentLocation)) {
+    $: if (window.fs.existsSync(currentLocation)) {
         window.db.set('ROSAA_config_location', currentLocation)
     }
 
@@ -257,13 +259,13 @@
     let configFilename = window.db.get('ROSAA_config_file') || ''
     async function loadConfig() {
         try {
-            // if(fs.existsSync(configFile)) {
-            //     if(!fs.existsSync(currentLocation)) {currentLocation = dirname(configFile)};
+            // if(window.fs.existsSync(configFile)) {
+            //     if(!window.fs.existsSync(currentLocation)) {currentLocation = dirname(configFile)};
             //     return setConfig()
             // }
             // configFile = window.pathJoin(currentLocation, configFilename)
             console.log({ configFile })
-            if (fs.existsSync(configFile)) {
+            if (window.fs.existsSync(configFile)) {
                 return setConfig()
             }
             browse_folder()
@@ -274,8 +276,8 @@
     }
 
     const getYMLFileContents = (filename) => {
-        if (fs.existsSync(filename)) {
-            const fileContent = fs.readFileSync(filename)
+        if (window.fs.existsSync(filename)) {
+            const fileContent = window.fs.readFileSync(filename)
             const YMLcontent = Yml(fileContent)
             return Promise.resolve(YMLcontent)
         } else return Promise.reject(filename + " file doesn't exist")
@@ -371,7 +373,7 @@
     async function setConfig() {
         try {
             const configFileLocation = dirname(configFile)
-            const CONFIG = Yml(fs.readFileSync(configFile))
+            const CONFIG = Yml(window.fs.readFileSync(configFile))
             console.table(CONFIG)
 
             let attachmentRateConstants = {}
@@ -408,7 +410,7 @@
                     (params) => params.label == 'tagging partner'
                 )?.[0]?.value || ''
             const { savelocation } = CONFIG.saveFile
-            if (fs.existsSync(savelocation)) {
+            if (window.fs.existsSync(savelocation)) {
                 currentLocation = savelocation
             }
 

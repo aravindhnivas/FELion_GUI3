@@ -22,7 +22,7 @@
     let otherfolders = []
     let original_files = []
 
-    $: locationStatus = fs.existsSync(currentLocation)
+    $: locationStatus = window.fs.existsSync(currentLocation)
     $: parentFolder = locationStatus ? basename(currentLocation) : 'Undefined'
 
     let searchKey = ''
@@ -53,7 +53,7 @@
             filesLoaded = false
 
             try {
-                const [folderfile, filereadErr] = await fs.readdir(
+                const [folderfile, filereadErr] = await window.fs.readdir(
                     currentLocation
                 )
                 if (filereadErr) throw filereadErr
@@ -64,7 +64,7 @@
                     .filter(
                         (file) =>
                             fileIncludePattern.test(file) &&
-                            fs.isFile(pathJoin(currentLocation, file))
+                            window.fs.isFile(pathJoin(currentLocation, file))
                     )
                     .map((file) => (file = { name: file, id: getID() }))
                     .sort((a, b) => (a.name < b.name ? 1 : -1))
@@ -72,7 +72,7 @@
                 fullfileslist = fullfiles.map((file) => (file = file.name))
                 otherfolders = folderfile
                     .filter((file) =>
-                        fs.isDirectory(pathJoin(currentLocation, file))
+                        window.fs.isDirectory(pathJoin(currentLocation, file))
                     )
                     .map((file) => (file = { name: file, id: getID() }))
                     .sort((a, b) => (a.name > b.name ? 1 : -1))

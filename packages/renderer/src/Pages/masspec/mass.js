@@ -14,8 +14,8 @@ export async function readMassFile(massfiles) {
         const dataToSend = {}
 
         for (const filename of massfiles) {
-            if (!fs.existsSync(filename)) return
-            const [fileContents] = await fs.readFile(filename)
+            if (!window.fs.existsSync(filename)) return
+            const [fileContents] = await window.fs.readFile(filename)
 
             const name = basename(filename)
             console.info('content read: ', name)

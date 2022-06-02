@@ -1,7 +1,7 @@
 export default function downloadFromGit(zipFile) {
     return new Promise((resolve, reject) => {
         console.log('Downloading file')
-        const writer = fs.createWriteStream(zipFile)
+        const writer = window.fs.createWriteStream(zipFile)
         writer.on('finish', () => {
             resolve()
             console.log('Download completed')

@@ -38,7 +38,7 @@
     let showOPOFiles = false
     let OPOcalibFiles = []
 
-    $: if (fs.existsSync(OPOLocation)) {
+    $: if (window.fs.existsSync(OPOLocation)) {
         OPOcalibFiles = fs
             .readdirSync(OPOLocation)
             .filter((file) => file.endsWith('.calibOPO'))

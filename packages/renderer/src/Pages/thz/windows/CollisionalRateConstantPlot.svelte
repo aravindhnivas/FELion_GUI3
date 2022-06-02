@@ -31,7 +31,7 @@
         console.info(collisionalFilename)
         if (!collisionalFilename) return
 
-        const fileContents = fs.readFileSync(collisionalFilename)
+        const fileContents = window.fs.readFileSync(collisionalFilename)
         if (!fileContents) return null
 
         const data = fileContents

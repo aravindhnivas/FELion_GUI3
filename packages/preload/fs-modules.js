@@ -1,9 +1,11 @@
-import { contextBridge } from 'electron'
+// import { contextBridge } from 'electron'
+import { exposeInMainWorld } from './exposeInMainWorld'
 import fs from 'fs-extra'
 import { promisify } from 'util'
 import { syncTryCatcher, asyncTryCatcher } from './utils/trycatcher'
 
-contextBridge.exposeInMainWorld('fs', {
+// Export for types in contracts.d.ts
+export const fsUtils = {
     mkdirSync: (dir) => fs.mkdirSync(dir),
     emptyDirSync: (dir) => fs.emptyDirSync(dir),
     ensureDirSync: (dir) => fs.ensureDirSync(dir),
@@ -74,4 +76,7 @@ contextBridge.exposeInMainWorld('fs', {
             on: (key, callback) => writer.on(key, callback),
         }
     },
-})
+}
+
+// contextBridge.exposeInMainWorld('fs', fsUtils)
+exposeInMainWorld('fs', fsUtils)

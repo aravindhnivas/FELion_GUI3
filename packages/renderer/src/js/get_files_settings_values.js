@@ -6,14 +6,14 @@ const validate_line = (line) => {
 
 export default function (loadfile) {
     return new Promise(async (resolve, reject) => {
-        if (!fs.isFile(loadfile)) return reject('Invalid file')
+        if (!window.fs.isFile(loadfile)) return reject('Invalid file')
 
         // const loadfile = pathJoin(location, filename)
 
-        if (!fs.existsSync(loadfile))
+        if (!window.fs.existsSync(loadfile))
             return reject(`${loadfile} does not exist`)
 
-        const [fileContents, error] = await fs.readFile(loadfile)
+        const [fileContents, error] = await window.fs.readFile(loadfile)
         if (error) return reject(error)
 
         const variableValues = {}

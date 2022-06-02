@@ -19,7 +19,7 @@
             const { freq, amp, fG, fL } = params
             dataToSave[freq] = { amp, fG, fL }
         })
-        const [, error] = fs.outputJsonSync(saveParamsToFile, dataToSave)
+        const [, error] = window.fs.outputJsonSync(saveParamsToFile, dataToSave)
         if (error) {
             return window.handleError(error)
         }
@@ -28,9 +28,9 @@
     }
 
     const loadConfig = () => {
-        if (!fs.existsSync(saveParamsToFile))
+        if (!window.fs.existsSync(saveParamsToFile))
             return window.createToast('No files saved yet', 'danger')
-        const [readParams] = fs.readJsonSync(saveParamsToFile)
+        const [readParams] = window.fs.readJsonSync(saveParamsToFile)
         const frequencies = Object.keys(readParams).filter(
             (key) => key !== 'units'
         )

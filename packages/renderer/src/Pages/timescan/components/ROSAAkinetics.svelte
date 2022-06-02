@@ -48,7 +48,7 @@
     }
 
     const updateFiles = (node = null) => {
-        if (!fs.existsSync(currentLocation))
+        if (!window.fs.existsSync(currentLocation))
             return window.createToast('Invalid location', 'danger', {
                 target: 'left',
             })
@@ -123,7 +123,7 @@
             selectedFile.replace('.scan', '_scan.json')
         )
 
-        ;[currentData] = fs.readJsonSync(currentJSONfile)
+        ;[currentData] = window.fs.readJsonSync(currentJSONfile)
         if (!currentData) return
         currentDataBackup = cloneDeep(currentData)
         console.log({ currentData })
@@ -190,8 +190,8 @@
 
     const updateParamsFile = () => {
         let contents = {}
-        if (fs.existsSync(paramsFile)) {
-            ;[contents] = fs.readJsonSync(paramsFile)
+        if (window.fs.existsSync(paramsFile)) {
+            ;[contents] = window.fs.readJsonSync(paramsFile)
         }
         const contents_infos = params_updatefile_or_getfromfile({
             updatefile: true,
@@ -231,7 +231,7 @@
                 }
             }
         }
-        fs.outputJsonSync(paramsFile, contents)
+        window.fs.outputJsonSync(paramsFile, contents)
         tagOptions = Object.keys(contents[selectedFile].tag)
         window.createToast(`saved: ${basename(paramsFile)}`, 'success', {
             target: 'left',
@@ -249,8 +249,8 @@
     const readFromParamsFile = (event) => {
         params_found = false
         tagOptions = []
-        if (!(useParamsFile && fs.existsSync(paramsFile))) return
-        const [data] = fs.readJsonSync(paramsFile)
+        if (!(useParamsFile && window.fs.existsSync(paramsFile))) return
+        const [data] = window.fs.readJsonSync(paramsFile)
         const contents = data?.[selectedFile]
         console.log('no data available')
 
@@ -383,11 +383,11 @@
 
     const readConfigDir = async () => {
         console.log('reading config dir')
-        if (!fs.existsSync(configDir))
+        if (!window.fs.existsSync(configDir))
             return window.createToast('Invalid location', 'danger', {
                 target: 'left',
             })
-        const [files, error] = await fs.readdir(configDir)
+        const [files, error] = await window.fs.readdir(configDir)
         if (error) return window.handleError(error)
         config_filelists = files.filter((file) => file.endsWith('.json'))
     }
@@ -404,7 +404,7 @@
                 target: 'left',
             })
 
-        if (!selectedFile || !fs.existsSync(currentLocation)) {
+        if (!selectedFile || !window.fs.existsSync(currentLocation)) {
             return window.createToast(
                 'Invalid location or filename',
                 'danger',
@@ -412,7 +412,7 @@
             )
         }
         config_content[selectedFile] = currentConfig
-        const [, error] = fs.outputJsonSync(config_file, config_content)
+        const [, error] = window.fs.outputJsonSync(config_file, config_content)
         if (error) {
             return window.handleError(error)
         }
@@ -455,7 +455,7 @@
 
     async function loadConfig() {
         try {
-            if (!fs.existsSync(config_file)) {
+            if (!window.fs.existsSync(config_file)) {
                 console.log(config_file)
                 return window.createToast(
                     `Config file not available: ${basename(config_file)}`,
@@ -463,7 +463,7 @@
                     { target: 'left' }
                 )
             }
-            ;[config_content] = fs.readJsonSync(config_file)
+            ;[config_content] = window.fs.readJsonSync(config_file)
 
             configArray = Object.keys(config_content).map((filename) => ({
                 filename,
@@ -491,7 +491,7 @@
             if (!currentData) {
                 return window.handleError('No data available')
             }
-            if (!fs.existsSync(kineticfile)) {
+            if (!window.fs.existsSync(kineticfile)) {
                 return window.handleError('Compute and save kinetic equation')
             }
 

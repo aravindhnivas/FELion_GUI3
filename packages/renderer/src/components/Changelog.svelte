@@ -4,10 +4,10 @@
     import SvelteMarkdown from 'svelte-markdown'
 
     const changelogFile = pathJoin(ROOT_DIR, 'resources/CHANGELOG.md')
-    let source = fs.readFileSync(changelogFile)
+    let source = window.fs.readFileSync(changelogFile)
     $: if (env.DEV && $activateChangelog) {
         console.log('reading changelog')
-        source = fs.readFileSync(changelogFile)
+        source = window.fs.readFileSync(changelogFile)
     }
 </script>
 

@@ -100,7 +100,7 @@
                 .join('')}\n-----------------------------------------\n`
 
             try {
-                fs.writeFileSync(
+                window.fs.writeFileSync(
                     pathResolve(appInfo.temp, 'FELion_GUI3/output.log'),
                     outputLog
                 )

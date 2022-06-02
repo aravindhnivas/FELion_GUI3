@@ -95,10 +95,13 @@
     let OpenRateConstantsPlot = false
 
     const saveCollisionalRateConstants = () => {
-        const [, error] = fs.outputJsonSync(collisionalCoefficientJSONFile, {
-            collisionalCoefficient,
-            collisionalCoefficient_balance,
-        })
+        const [, error] = window.fs.outputJsonSync(
+            collisionalCoefficientJSONFile,
+            {
+                collisionalCoefficient,
+                collisionalCoefficient_balance,
+            }
+        )
         if (error) {
             return window.handleError(error)
         }
@@ -109,10 +112,10 @@
     let collisionalCoefficientJSONFile = ''
 
     const readcollisionalCoefficientJSONFile = () => {
-        if (fs.existsSync(collisionalCoefficientJSONFile)) {
+        if (window.fs.existsSync(collisionalCoefficientJSONFile)) {
             console.log('loading: ', collisionalCoefficientJSONFile)
             ;[{ collisionalCoefficient, collisionalCoefficient_balance }] =
-                fs.readJsonSync(collisionalCoefficientJSONFile)
+                window.fs.readJsonSync(collisionalCoefficientJSONFile)
             if (window.db.get('active_tab') == 'Kinetics') {
                 window.createToast(
                     'loaded: ' + basename(collisionalCoefficientJSONFile),

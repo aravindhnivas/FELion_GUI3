@@ -9,7 +9,7 @@
     const writePowfile = async () => {
         const contents = `${initContent.trim()}\n${powerfileContent}`.trim()
 
-        const [, error] = await fs.writeFile(powfile, contents, 'utf8')
+        const [, error] = await window.fs.writeFile(powfile, contents, 'utf8')
         if (error) {
             return window.createToast("Power file couldn't be saved.", 'danger')
         }
@@ -21,7 +21,7 @@
         if (location.length == 0) {
             return openFolder({ save: true })
         }
-        if (!fs.existsSync(powfile)) return writePowfile()
+        if (!window.fs.existsSync(powfile)) return writePowfile()
         return showConfirm.push({
             title: 'Overwrite powerfile?',
             content: 'Do you want to overwrite the powerfile?',

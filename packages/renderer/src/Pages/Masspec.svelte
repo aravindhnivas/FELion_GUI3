@@ -17,7 +17,7 @@
     let fileChecked = []
     let currentLocation = ''
 
-    $: massfiles = fs.existsSync(currentLocation)
+    $: massfiles = window.fs.existsSync(currentLocation)
         ? fileChecked.map((file) => pathResolve(currentLocation, file))
         : []
     $: if (massfiles.length > 0) plotData()
@@ -57,7 +57,7 @@
             return
         }
 
-        if (!fs.existsSync(currentLocation)) {
+        if (!window.fs.existsSync(currentLocation)) {
             return window.createToast('Location not defined', 'danger')
         }
 

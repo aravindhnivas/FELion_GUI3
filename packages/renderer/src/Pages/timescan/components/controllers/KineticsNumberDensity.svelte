@@ -19,13 +19,13 @@
 
     let contents = {}
     const readConfigFile = () => {
-        if (!fs.isFile(savefilename)) {
+        if (!window.fs.isFile(savefilename)) {
             return window.createToast(
                 'No config file found. Just compute and press save to create one',
                 'danger'
             )
         }
-        ;[contents] = fs.readJsonSync(savefilename)
+        ;[contents] = window.fs.readJsonSync(savefilename)
         if (active) {
             window.createToast('file read: ' + basename(savefilename))
             compute()
@@ -46,7 +46,7 @@
             if (Object.keys(datas).length === 0) return
             contents[selectedFile] = datas
             console.log(contents[selectedFile])
-            fs.outputJsonSync(savefilename, contents)
+            window.fs.outputJsonSync(savefilename, contents)
             window.createToast('file saved: ' + basename(savefilename))
         } catch (error) {
             window.handleError(error)

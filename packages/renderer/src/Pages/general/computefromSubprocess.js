@@ -38,8 +38,8 @@ export default async function ({
                 'FELion_GUI3',
                 pyfile.split('.').at(-1) + '_data.json'
             )
-            if (fs.existsSync(outputFile)) {
-                fs.removeSync(outputFile)
+            if (window.fs.existsSync(outputFile)) {
+                window.fs.removeSync(outputFile)
             }
             target?.classList.toggle('is-loading')
         }
@@ -82,7 +82,7 @@ export default async function ({
             'FELion_GUI3',
             pyfile + '_data.log'
         )
-        const loginfo = fs.createWriteStream(logFile)
+        const loginfo = window.fs.createWriteStream(logFile)
 
         let error = ''
         let dataReceived = ''
@@ -120,13 +120,13 @@ export default async function ({
                 return resolve(dataReceived)
             }
 
-            if (!fs.existsSync(outputFile)) {
+            if (!window.fs.existsSync(outputFile)) {
                 console.warn(`${outputFile} file doesn't exists`)
                 window.handleError(`${outputFile} file doesn't exists`)
                 return resolve(null)
             }
 
-            const [dataFromPython] = fs.readJsonSync(outputFile)
+            const [dataFromPython] = window.fs.readJsonSync(outputFile)
             resolve(dataFromPython)
 
             if (target?.classList.contains('is-loading')) {

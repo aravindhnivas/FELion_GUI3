@@ -19,7 +19,7 @@ export async function readFromFile({
 
     const noSplittings = !electronSpin && !zeemanSplit
     const splittings = electronSpin || zeemanSplit
-    const fileContents = fs.readFileSync(energyFilename).split('\n')
+    const fileContents = window.fs.readFileSync(energyFilename).split('\n')
     let energyLevels = []
 
     let preLabel
