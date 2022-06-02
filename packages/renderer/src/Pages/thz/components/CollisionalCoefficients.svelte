@@ -129,7 +129,7 @@
         const configLocation = window.db.get('ROSAA_config_location') || ''
         if (!configLocation) return
         console.log(configLocation)
-        collisionalCoefficientJSONFile = pathJoin(
+        collisionalCoefficientJSONFile = window.path.join(
             configLocation,
             'files',
             'collisionalCoefficients.json'

@@ -15,7 +15,7 @@
     let showAllFiles = true
     let selected_file = ''
     $: displayFiles = showAllFiles ? fullfileslist : fileChecked
-    $: loadfilename = pathJoin(currentLocation, selected_file)
+    $: loadfilename = window.path.join(currentLocation, selected_file)
 </script>
 
 <button

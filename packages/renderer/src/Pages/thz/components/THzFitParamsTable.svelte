@@ -12,7 +12,7 @@
 
     const keys = ['freq', 'amp', 'fG', 'fL']
     let savefilename = 'thz_fit_params.json'
-    $: saveParamsToFile = pathJoin(currentLocation, 'OUT', savefilename)
+    $: saveParamsToFile = window.path.join(currentLocation, 'OUT', savefilename)
     const saveConfig = () => {
         const dataToSave = { units: { freq: 'GHz', fG: 'MHz', fL: 'MHz' } }
         paramsTable.forEach((params) => {

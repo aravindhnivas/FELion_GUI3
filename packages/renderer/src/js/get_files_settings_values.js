@@ -8,7 +8,7 @@ export default function (loadfile) {
     return new Promise(async (resolve, reject) => {
         if (!window.fs.isFile(loadfile)) return reject('Invalid file')
 
-        // const loadfile = pathJoin(location, filename)
+        // const loadfile = window.path.join(location, filename)
 
         if (!window.fs.existsSync(loadfile))
             return reject(`${loadfile} does not exist`)

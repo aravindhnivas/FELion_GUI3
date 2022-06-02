@@ -33,7 +33,7 @@ export default async function ({
         }
 
         if (!general) {
-            outputFile = pathJoin(
+            outputFile = window.path.join(
                 appInfo.temp,
                 'FELion_GUI3',
                 pyfile.split('.').at(-1) + '_data.json'
@@ -55,7 +55,7 @@ export default async function ({
         window.createToast('Process Started')
 
         const sendArgs = [pyfile, JSON.stringify(args)]
-        const mainPyFile = pathJoin(get(pythonscript), computepyfile + '.py')
+        const mainPyFile = window.path.join(get(pythonscript), computepyfile + '.py')
 
         const pyArgs = get(developerMode) ? [mainPyFile, ...sendArgs] : sendArgs
         console.log(get(pyProgram), { pyArgs })
@@ -77,7 +77,7 @@ export default async function ({
             return
         })
 
-        const logFile = pathJoin(
+        const logFile = window.path.join(
             appInfo.temp,
             'FELion_GUI3',
             pyfile + '_data.log'

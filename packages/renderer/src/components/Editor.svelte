@@ -6,7 +6,6 @@
     import WinBox from 'winbox/src/js/winbox.js'
     import CustomSwitch from '$components/CustomSwitch.svelte'
     import TextAndSelectOptsToggler from '$components/TextAndSelectOptsToggler.svelte'
-
     export let id = getID()
     export let location = ''
     export let filetype = ''
@@ -36,9 +35,6 @@
     const mountEditor = (node) => {
         mountEditorFn(node)
     }
-    // onMount(()=>{
-    //     mountEditor(document.getElementById(`${filetype}-editor`))
-    // })
 
     onDestroy(() => {
         if (editor) {
@@ -51,27 +47,18 @@
         editor.destroy()
         console.info('editor destroyed')
     }
+
     if (window.db.get(`${filetype}-report-md`)) {
         location = window.db.get(`${filetype}-report-md`)
     }
 
-    $: reportFile = window.pathJoin(
+    $: reportFile = window.path.join(
         location,
         savefilename.endsWith('.md') ? savefilename : `${savefilename}.md`
     )
-    // let reportFiles = []
-
-    // const updateFiles = (node = null) => {
-    //     // node?.target?.classList.add('animate__rotateIn')
-    //     reportFiles = fs
-    //         .readdirSync(pathResolve(location))
-    //         .filter((name) => name.endsWith('.md'))
-    //         .map((name) => name.replace(extname(name), ''))
-    // }
 
     $: if (window.fs.existsSync(location)) {
         window.db.set(`${filetype}-report-md`, location)
-        // updateFiles()
     }
 
     async function browse_folder() {
@@ -91,6 +78,7 @@
         if (error) {
             return window.createToast("Report couldn't be saved.", 'danger')
         }
+
         window.createToast('Report saved', 'success')
         console.log('report writted: ', basename(reportFile))
         reportSaved = true
@@ -191,15 +179,6 @@
                     update={filenameUpdate}
                     options={filenameOpts}
                 />
-
-                <!-- <i
-                    class="material-icons animate__animated animate__faster"
-                    on:animationend={({ target }) =>
-                        target.classList.remove('animate__rotateIn')}
-                    on:click={updateFiles}
-                >
-                    refresh
-                </i> -->
             </div>
             <div class="btn-row">
                 <slot name="btn-row" />

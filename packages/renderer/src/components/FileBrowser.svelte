@@ -64,7 +64,9 @@
                     .filter(
                         (file) =>
                             fileIncludePattern.test(file) &&
-                            window.fs.isFile(pathJoin(currentLocation, file))
+                            window.fs.isFile(
+                                window.path.join(currentLocation, file)
+                            )
                     )
                     .map((file) => (file = { name: file, id: getID() }))
                     .sort((a, b) => (a.name < b.name ? 1 : -1))
@@ -72,7 +74,9 @@
                 fullfileslist = fullfiles.map((file) => (file = file.name))
                 otherfolders = folderfile
                     .filter((file) =>
-                        window.fs.isDirectory(pathJoin(currentLocation, file))
+                        window.fs.isDirectory(
+                            window.path.join(currentLocation, file)
+                        )
                     )
                     .map((file) => (file = { name: file, id: getID() }))
                     .sort((a, b) => (a.name > b.name ? 1 : -1))

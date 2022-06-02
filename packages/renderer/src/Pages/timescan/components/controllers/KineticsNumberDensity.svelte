@@ -15,7 +15,7 @@
     export let readConfigDir = () => {}
 
     let filename = 'kinetics.conditions.json'
-    $: savefilename = pathJoin(config_location, filename)
+    $: savefilename = window.path.join(config_location, filename)
 
     let contents = {}
     const readConfigFile = () => {

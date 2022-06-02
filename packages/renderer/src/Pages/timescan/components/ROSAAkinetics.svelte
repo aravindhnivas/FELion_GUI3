@@ -20,7 +20,7 @@
     import KineticsNumberDensity from './controllers/KineticsNumberDensity.svelte'
 
     let currentLocation = window.db.get('kinetics_location') || ''
-    $: config_location = pathJoin(currentLocation, '../configs')
+    $: config_location = window.path.join(currentLocation, '../configs')
     let timestartIndexScan = 0
     let fileCollections = []
     let srgMode = true
@@ -118,7 +118,7 @@
         tagFile = ''
         timestartIndexScan = 0
         loss_channels = []
-        const currentJSONfile = pathJoin(
+        const currentJSONfile = window.path.join(
             currentLocation,
             selectedFile.replace('.scan', '_scan.json')
         )
@@ -144,7 +144,7 @@
         'kinetics.params.json'
     )
 
-    $: paramsFile = pathJoin(configDir, $kinetics_params_file)
+    $: paramsFile = window.path.join(configDir, $kinetics_params_file)
 
     const params_updatefile_or_getfromfile = ({
         updatefile = true,
@@ -376,7 +376,7 @@
             basename(selectedFile).split('.')[0] + '-kineticModel.md'
     }
 
-    $: configDir = pathJoin(currentLocation, '../configs')
+    $: configDir = window.path.join(currentLocation, '../configs')
 
     let config_file = ''
     let config_filelists = []
@@ -580,7 +580,7 @@
     $: currentConfig = { srgMode, pbefore, pafter, calibrationFactor, temp }
 
     let kineticEditorFilename = ''
-    $: kineticfile = pathJoin(currentLocation, kineticEditorFilename)
+    $: kineticfile = window.path.join(currentLocation, kineticEditorFilename)
     let reportRead = false
     let reportSaved = false
     const fit_config_filename = persistentWritable(

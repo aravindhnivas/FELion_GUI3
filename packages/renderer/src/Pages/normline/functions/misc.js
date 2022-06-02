@@ -13,7 +13,7 @@ import { relayout } from 'plotly.js/dist/plotly-basic'
 import { uniqBy } from 'lodash-es'
 
 export function savefile({ file = {}, name = '', location = '' } = {}) {
-    const filename = pathJoin(location || get(felixopoLocation), `${name}.json`)
+    const filename = window.path.join(location || get(felixopoLocation), `${name}.json`)
     const [, error] = window.fs.outputJsonSync(filename, { file })
     if (error) {
         return window.handleError(error)
@@ -22,7 +22,7 @@ export function savefile({ file = {}, name = '', location = '' } = {}) {
 }
 
 export function loadfile(name) {
-    const filename = pathJoin(get(felixopoLocation), `${name}.json`)
+    const filename = window.path.join(get(felixopoLocation), `${name}.json`)
     if (!window.fs.existsSync(filename)) {
         window.createToast(`Invalid file: ${name}.json .`, 'danger')
         return []

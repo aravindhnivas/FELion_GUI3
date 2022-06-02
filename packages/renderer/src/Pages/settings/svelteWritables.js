@@ -1,8 +1,8 @@
 import { writable, get, derived } from 'svelte/store'
 export { get }
 
-const pyPath = pathJoin(ROOT_DIR, 'python3/python')
-const pyScriptPath = pathJoin(ROOT_DIR, 'resources/python_files')
+const pyPath = window.path.join(ROOT_DIR, 'python3/python')
+const pyScriptPath = window.path.join(ROOT_DIR, 'resources/python_files')
 
 if (!db.get('pythonpath')) {
     db.set('pythonpath', pyPath)
@@ -23,13 +23,13 @@ export const pyProgram = derived(
     ([$developerMode, $pythonpath]) => {
         return $developerMode
             ? $pythonpath
-            : pathJoin(ROOT_DIR, 'resources/felionpy/felionpy')
+            : window.path.join(ROOT_DIR, 'resources/felionpy/felionpy')
     }
 )
 export const mainpyfile = derived(
     [developerMode, pythonscript],
     ([$developerMode, $pythonscript]) => {
-        return $developerMode ? pathJoin($pythonscript, 'main.py') : ''
+        return $developerMode ? window.path.join($pythonscript, 'main.py') : ''
     }
 )
 

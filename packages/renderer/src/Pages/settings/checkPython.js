@@ -8,8 +8,8 @@ import {
 } from './svelteWritables'
 
 export async function resetPyConfig() {
-    const pyPath = pathJoin(ROOT_DIR, 'python3/python')
-    const pyScriptPath = pathJoin(ROOT_DIR, 'resources/python_files')
+    const pyPath = window.path.join(ROOT_DIR, 'python3/python')
+    const pyScriptPath = window.path.join(ROOT_DIR, 'resources/python_files')
 
     db.set('pythonscript', pyScriptPath)
     pythonscript.set(db.get('pythonscript'))
@@ -39,7 +39,7 @@ export async function getPyVersion(e) {
 
     const pyfile = 'getVersion'
     const pyArgs = get(developerMode)
-        ? pathJoin(get(pythonscript), 'main.py')
+        ? window.path.join(get(pythonscript), 'main.py')
         : ''
 
     const command = `${get(pyProgram)} ${pyArgs} ${pyfile} {} `

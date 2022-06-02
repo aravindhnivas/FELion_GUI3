@@ -27,7 +27,7 @@
 
     // let config_filelists = []
     $: {
-        config_file = pathJoin(config_location, $config_filename)
+        config_file = window.path.join(config_location, $config_filename)
     }
     let config_content = {}
 

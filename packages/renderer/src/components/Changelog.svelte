@@ -3,7 +3,7 @@
     import Modal from '$components/modal/Modal.svelte'
     import SvelteMarkdown from 'svelte-markdown'
 
-    const changelogFile = pathJoin(ROOT_DIR, 'resources/CHANGELOG.md')
+    const changelogFile = window.path.join(ROOT_DIR, 'resources/CHANGELOG.md')
     let source = window.fs.readFileSync(changelogFile)
     $: if (env.DEV && $activateChangelog) {
         console.log('reading changelog')

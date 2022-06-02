@@ -245,7 +245,7 @@
     let einsteinFilename
     let collisionalFilename
 
-    $: configFile = window.pathJoin(currentLocation, configFilename)
+    $: configFile = window.path.join(currentLocation, configFilename)
     $: boltzmanArgs = {
         energyLevels,
         trapTemp,
@@ -263,7 +263,7 @@
             //     if(!window.fs.existsSync(currentLocation)) {currentLocation = dirname(configFile)};
             //     return setConfig()
             // }
-            // configFile = window.pathJoin(currentLocation, configFilename)
+            // configFile = window.path.join(currentLocation, configFilename)
             console.log({ configFile })
             if (window.fs.existsSync(configFile)) {
                 return setConfig()
@@ -420,13 +420,17 @@
                 collision: collisionalFilename,
             } = CONFIG.filenames)
             energyFilename = energyFilename
-                ? window.pathJoin(configFileLocation, 'files', energyFilename)
+                ? window.path.join(configFileLocation, 'files', energyFilename)
                 : ''
             einsteinFilename = einsteinFilename
-                ? window.pathJoin(configFileLocation, 'files', einsteinFilename)
+                ? window.path.join(
+                      configFileLocation,
+                      'files',
+                      einsteinFilename
+                  )
                 : ''
             collisionalFilename = collisionalFilename
-                ? window.pathJoin(
+                ? window.path.join(
                       configFileLocation,
                       'files',
                       collisionalFilename
