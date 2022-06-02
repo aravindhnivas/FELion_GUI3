@@ -9,7 +9,7 @@ export const checkTCP = async ({
         console.warn(`cheking TCP connection on port ${portNumber}`)
         if (!window.appInfo.platform === 'win32') return Promise.resolve('')
         const command = `netstat -ano | findstr ${portNumber}`
-        const results = await exec(command)
+        const results = await window.exec(command)
         return Promise.resolve(results)
     } catch (error) {
         return Promise.resolve(`>> ERROR: ${error.message}`)

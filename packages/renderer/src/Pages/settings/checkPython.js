@@ -14,7 +14,7 @@ export async function resetPyConfig() {
     db.set('pythonscript', pyScriptPath)
     pythonscript.set(db.get('pythonscript'))
 
-    const [data, error] = await exec(`${pyPath} -V`)
+    const [data, error] = await window.exec(`${pyPath} -V`)
     if (error) return window.handleError(error)
 
     pyVersion.set(data.stdout.trim())
@@ -24,7 +24,7 @@ export async function resetPyConfig() {
 }
 
 export async function updatePyConfig() {
-    const [data, error] = await exec(`${get(pythonpath)} -V`)
+    const [data, error] = await window.exec(`${get(pythonpath)} -V`)
     if (error) return window.handleError(error)
 
     pyVersion.set(data.stdout.trim())
@@ -43,7 +43,7 @@ export async function getPyVersion(e) {
         : ''
 
     const command = `${get(pyProgram)} ${pyArgs} ${pyfile} {} `
-    const [{ stdout }, error] = await exec(command)
+    const [{ stdout }, error] = await window.exec(command)
     if (error) return Promise.reject(error)
 
     const [version] = stdout

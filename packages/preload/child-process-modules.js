@@ -1,12 +1,12 @@
-import { contextBridge } from 'electron'
+import { exposeInMainWorld } from './exposeInMainWorld'
 import { promisify } from 'util'
 import { spawn, exec, execSync } from 'child_process'
+
 const execCommand = promisify(exec)
 
-contextBridge.exposeInMainWorld('spawn', (cmd, args = [], opts = {}) => {
+export const spawnFn = (cmd, args = [], opts = {}) => {
     const process = spawn(cmd, args, opts)
     console.log(`Spawned child pid: ${process.pid}`)
-
     return {
         pid: process.pid,
         killed: process.killed,
@@ -23,7 +23,9 @@ contextBridge.exposeInMainWorld('spawn', (cmd, args = [], opts = {}) => {
         stdout: { on: (key, callback) => process.stdout.on(key, callback) },
         stderr: { on: (key, callback) => process.stderr.on(key, callback) },
     }
-})
+}
+
+
 
 export const computeExecCommand = async (cmd) => {
     console.log(`Executing command: ${cmd}`)
@@ -42,6 +44,6 @@ export const computeExecCommand = async (cmd) => {
     return [data, error]
 }
 
-contextBridge.exposeInMainWorld('exec', computeExecCommand)
-contextBridge.exposeInMainWorld('promisify', (fn) => promisify(fn))
-contextBridge.exposeInMainWorld('execSync', execSync)
+exposeInMainWorld('spawn', spawnFn)
+exposeInMainWorld('exec', computeExecCommand)
+exposeInMainWorld('execSync', execSync)

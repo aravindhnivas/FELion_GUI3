@@ -1,9 +1,15 @@
-import { contextBridge, ipcRenderer } from 'electron'
-contextBridge.exposeInMainWorld('startServer', async () => {
+import { ipcRenderer } from 'electron'
+import { exposeInMainWorld } from './exposeInMainWorld'
+
+export const startServer = async () => {
     console.warn('starting server')
     return ipcRenderer.invoke('startServer')
-})
-contextBridge.exposeInMainWorld('stopServer', () => {
+}
+
+export const stopServer = () => {
     console.warn('invoking stopServer')
     ipcRenderer.send('stopServer')
-})
+}
+
+exposeInMainWorld('startServer', startServer)
+exposeInMainWorld('stopServer', stopServer)

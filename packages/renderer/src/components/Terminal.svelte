@@ -57,7 +57,7 @@
 
         try {
             commandArgsToRun += ` ${packagesName}`
-            ls = spawn(
+            ls = window.spawn(
                 commandToRun,
                 commandArgsToRun.split(' ').map((arg) => arg.trim()),
                 { detached: true, stdio: 'pipe', shell: openShellTerminal }

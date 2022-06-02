@@ -62,7 +62,7 @@ export default async function ({
 
         const opts = { detached: detached !== null ? detached : general, shell }
 
-        const py = spawn(get(pyProgram), pyArgs, opts)
+        const py = window.spawn(get(pyProgram), pyArgs, opts)
 
         if (pyfile !== 'server') {
             running_processes.update((p) => [...p, { ...py, pyfile }])
