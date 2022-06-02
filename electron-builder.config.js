@@ -1,6 +1,6 @@
 const path = require('path')
-const certificate = path.join(__dirname, 'certificate') // path to the certificate
-const certificateFile = path.resolve(certificate, 'felion.pfx') // path to the private key
+// const certificate = path.join(__dirname, 'certificate') // path to the certificate
+// const certificateFile = path.resolve(certificate, 'felion.pfx') // path to the private key
 
 /**
  * @type {import('electron-builder').Configuration}
@@ -28,10 +28,6 @@ const config = {
     win: {
         target: 'nsis',
         asar: true,
-        // certificateFile: certificateFile,
-        // certificatePassword: 'felion',
-        // publisherName: ['A.N.Marimuthu', 'CN=felion, O=FELION, L=Nijmegen, C=NL'],
-        // signingHashAlgorithms: ['sha256'],
     },
     nsis: {
         oneClick: true,
