@@ -73,7 +73,7 @@
     <svelte:fragment slot="header">
         <div class="header">
             <Textfield
-                value={window.dirname(config_file)}
+                value={window.path.dirname(config_file)}
                 label="config location"
                 disabled
             />

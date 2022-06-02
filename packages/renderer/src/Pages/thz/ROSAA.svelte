@@ -195,7 +195,7 @@
         const result = await browse({ filetype: 'yml', dir: false })
         if (!result) return
         configFilename = window.path.basename(result[0])
-        currentLocation = dirname(result[0])
+        currentLocation = window.path.dirname(result[0])
         window.db.set('ROSAA_config_location', currentLocation)
         window.db.set('ROSAA_config_file', configFilename)
         // loadConfig()
@@ -260,7 +260,7 @@
     async function loadConfig() {
         try {
             // if(window.fs.existsSync(configFile)) {
-            //     if(!window.fs.existsSync(currentLocation)) {currentLocation = dirname(configFile)};
+            //     if(!window.fs.existsSync(currentLocation)) {currentLocation = window.path.dirname(configFile)};
             //     return setConfig()
             // }
             // configFile = window.path.join(currentLocation, configFilename)
@@ -372,7 +372,7 @@
     const energyInfos = { 'cm-1': [], MHz: [] }
     async function setConfig() {
         try {
-            const configFileLocation = dirname(configFile)
+            const configFileLocation = window.path.dirname(configFile)
             const CONFIG = Yml(window.fs.readFileSync(configFile))
             console.table(CONFIG)
 
