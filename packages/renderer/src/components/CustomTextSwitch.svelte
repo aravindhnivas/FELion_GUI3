@@ -2,7 +2,7 @@
     import Textfield from '@smui/textfield'
 
     export let min: number | string = 0
-    export let max: number | string
+    export let max: number | string = null
     export let value: number | string = ''
     export let label: string = ''
     export let style: string = ''
