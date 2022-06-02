@@ -45,10 +45,11 @@ window.handleError = (error) => {
     return
 }
 
-window.onerror = function (message, source, lineno, colno, error) {
-    const modalContent = `${error.name}: ${message}\nsource: ${source}\nlineno: ${lineno}\tcolno: ${colno}`
-    window.handleError(modalContent)
-}
+// window.onerror = function (message, source, lineno, colno, error) {
+//     // console.log(message, source, lineno, colno, error)
+//     // const modalContent = `${error.name}: ${message}\nsource: ${source}\nlineno: ${lineno}\tcolno: ${colno}`
+//     // window.handleError(modalContent)
+// }
 
 window.targetElement = (id) => document.getElementById(id)
 window.getPageStatus = (id) => targetElement(id).style.display !== 'none'

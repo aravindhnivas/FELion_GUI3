@@ -3,7 +3,7 @@ import { db } from './jsondb-modules'
 import { writable, derived, get } from 'svelte/store'
 import { ROOT_DIR, appInfo } from './definedENV'
 export { get }
-
+// console.log(import.meta.url)
 const pyPath = path.join(ROOT_DIR, 'python3/python')
 const pyScriptPath = path.join(ROOT_DIR, 'resources/python_files')
 
