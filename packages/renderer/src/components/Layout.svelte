@@ -29,11 +29,8 @@
         console.log('Directory: ', dir)
         console.log('multiSelections: ', multiple)
 
-        const result = await showOpenDialogSync(options)
-        const sendResult = dir ? result?.[0] : result
-        console.log(sendResult)
-
-        return sendResult
+        const result = (await showOpenDialogSync(options)) || ['']
+        return result
     }
 </script>
 
@@ -64,7 +61,7 @@
 
     const dispatch = createEventDispatcher()
     async function browse_folder() {
-        const result = await browse()
+        const [result] = await browse()
         if (!result) return
         currentLocation = result
         window.db.set(`${filetype}_location`, currentLocation)

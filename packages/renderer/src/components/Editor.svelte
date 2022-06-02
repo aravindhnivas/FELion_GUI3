@@ -62,7 +62,7 @@
     }
 
     async function browse_folder() {
-        const result = await browse()
+        const [result] = await browse()
         if (!result) return
         location = result
         window.createToast('Location updated')

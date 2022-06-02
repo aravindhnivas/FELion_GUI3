@@ -18,9 +18,11 @@
     import RateInitialise from './controllers/RateInitialise.svelte'
     import KlossChannels from './controllers/KlossChannels.svelte'
     import KineticsNumberDensity from './controllers/KineticsNumberDensity.svelte'
+    import { activePage } from '$src/sveltewritable'
 
     let currentLocation = window.db.get('kinetics_location') || ''
     $: config_location = window.path.join(currentLocation, '../configs')
+
     let timestartIndexScan = 0
     let fileCollections = []
     let srgMode = true
@@ -39,7 +41,7 @@
     let kCIDGuess = '0, 2'
 
     async function browse_folder() {
-        const result = await browse({ dir: true })
+        const [result] = await browse()
         if (!result) return
 
         currentLocation = result
@@ -54,7 +56,7 @@
             })
         window.db.set('kinetics_location', currentLocation)
         node?.target.classList.add('animate__rotateIn')
-        fileCollections = fs
+        fileCollections = window.fs
             .readdirSync(currentLocation)
             .filter((f) => f.endsWith('_scan.json'))
             .map((f) => f.split('.')[0].replace('_scan', '.scan'))
@@ -388,10 +390,15 @@
 
     const readConfigDir = async () => {
         console.log('reading config dir')
-        if (!window.fs.existsSync(configDir))
-            return window.createToast('Invalid location', 'danger', {
-                target: 'left',
-            })
+        if (!window.fs.existsSync(configDir)) {
+            if ($activePage === 'Kinetics') {
+                return window.createToast('Invalid location', 'danger', {
+                    target: 'left',
+                })
+            }
+            return
+        }
+
         const [files, error] = await window.fs.readdir(configDir)
         if (error) return window.handleError(error)
         config_filelists = files.filter((file) => file.endsWith('.json'))
@@ -431,6 +438,7 @@
 
     function updateConfig() {
         update_pbefore = false
+
         try {
             if (!config_content[selectedFile]) {
                 return window.createToast(
@@ -462,13 +470,16 @@
         try {
             if (!window.fs.existsSync(config_file)) {
                 console.log(config_file)
-                return window.createToast(
-                    `Config file not available: ${window.path.basename(
-                        config_file
-                    )}`,
-                    'danger',
-                    { target: 'left' }
-                )
+                if ($activePage === 'Kinetics') {
+                    return window.createToast(
+                        `Config file not available: ${window.path.basename(
+                            config_file
+                        )}`,
+                        'danger',
+                        { target: 'left' }
+                    )
+                }
+                return
             }
             ;[config_content] = window.fs.readJsonSync(config_file)
 

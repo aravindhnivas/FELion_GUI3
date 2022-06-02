@@ -4,7 +4,7 @@
     import CustomSelect from '$components/CustomSelect.svelte'
     import NumberDensity from '$src/Pages/misc/NumberDensity.svelte'
     import TextAndSelectOptsToggler from '$src/components/TextAndSelectOptsToggler.svelte'
-
+    import { activePage } from '$src/sveltewritable'
     export let nHe = ''
     export let selectedFile = ''
     export let active = false
@@ -20,10 +20,13 @@
     let contents = {}
     const readConfigFile = () => {
         if (!window.fs.isFile(savefilename)) {
-            return window.createToast(
-                'No config file found. Just compute and press save to create one',
-                'danger'
-            )
+            if ($activePage === 'Kinetics') {
+                return window.createToast(
+                    'No config file found. Just compute and press save to create one',
+                    'danger'
+                )
+            }
+            return
         }
         ;[contents] = window.fs.readJsonSync(savefilename)
         if (active) {

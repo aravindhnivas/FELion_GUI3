@@ -9,7 +9,7 @@
     export let currentLocation = ''
 
     async function browse_folder() {
-        const result = await browse()
+        const [result] = await browse()
         if (!result) return
         currentLocation = result
         window.createToast('Location updated')

@@ -13,7 +13,7 @@
         if (error) {
             return window.createToast("Power file couldn't be saved.", 'danger')
         }
-        window.createToast('Power file saved', 'success')
+        window.createToast('Power file saved', 'success', { target: 'left' })
         console.log('powerfile writted: ', powfile)
     }
 
@@ -34,7 +34,7 @@
     }
 
     async function openFolder({ save = false } = {}) {
-        const result = await browse()
+        const [result] = await browse()
         if (!result) return
         location = result
         window.db.set('powerfile_location', location)

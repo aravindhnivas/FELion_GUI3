@@ -1,16 +1,17 @@
-<script>
+<script lang="ts">
     import { addTraces } from 'plotly.js/dist/plotly-basic'
     import Textfield from '@smui/textfield'
     import Modal from '$components/Modal.svelte'
     import { browse } from '$components/Layout.svelte'
     import { graphDiv } from '../functions/svelteWritables'
     import computePy_func from '$src/Pages/general/computePy'
+
     export let active = false
     export let fileChecked = []
     export let addedFileCol = 1
 
     export let addedFileScale = 1000
-    export let addedfiles = []
+    export let addedfiles: string[] = []
     export let addedFile = {}
     export let extrafileAdded = 0
 
