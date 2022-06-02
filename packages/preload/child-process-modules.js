@@ -1,7 +1,7 @@
 import { exposeInMainWorld } from './exposeInMainWorld'
 import { promisify } from 'util'
 import { spawn, exec, execSync } from 'child_process'
-
+export {execSync}
 const execCommand = promisify(exec)
 
 export const spawnFn = (cmd, args = [], opts = {}) => {
