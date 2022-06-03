@@ -43,7 +43,11 @@ window.sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 window.handleError = (error) => {
     console.error(error)
-    mainPreModal.error(error.stack)
+    if(typeof error === 'string') {
+        mainPreModal.error(error)
+    } else {
+        mainPreModal.error(error.stack)
+    }
 }
 
 
@@ -81,7 +85,7 @@ interface Exposed {
 
     createToast: (description: string, type?: 'info' | 'danger' | 'warning' | 'success', opts?: SvelteToastOptions) => void; 
     sleep: (ms: number) => Promise<typeof setTimeout>;
-    handleError: (error: Error) => void;
+    handleError: (error: Error | string) => void;
     getID: () => string;
     clickOutside: (node: HTMLElement) => { destroy: () => void };
 }
