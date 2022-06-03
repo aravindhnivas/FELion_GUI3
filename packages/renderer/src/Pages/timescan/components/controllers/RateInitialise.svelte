@@ -1,11 +1,11 @@
-<script>
+<script lang="ts">
     import Textfield from '@smui/textfield'
     import TextAndSelectOptsToggler from '$src/components/TextAndSelectOptsToggler.svelte'
     import CustomSwitch from '$src/components/CustomSwitch.svelte'
-    // import CustomSelect from '$src/components/CustomSelect.svelte'
+    import type { totalMassKeyType } from '$src/Pages/timescan/types/types'
     import { fade } from 'svelte/transition'
 
-    export let totalMassKey = []
+    export let totalMassKey: totalMassKeyType = []
     export let nameOfReactants = ''
     export let legends = ''
     export let useParamsFile = false

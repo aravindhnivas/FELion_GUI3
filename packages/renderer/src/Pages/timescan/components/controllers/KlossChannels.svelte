@@ -1,6 +1,7 @@
 <script>
     import Textfield from '@smui/textfield'
     import CustomSelect from '$components/CustomSelect.svelte'
+    import CustomSwitch from '$components/CustomSwitch.svelte'
 
     export let loss_channels = []
     export let nameOfReactants = ''
@@ -23,12 +24,18 @@
     $: if (loss_channels.length === 0) {
         channelCounter = 0
     }
+    let includeTrapLoss = false
 </script>
 
 <div class="box channel_main__div">
-    <button class="button is-link" on:click={addChannel}
-        >Add new loss channel</button
-    >
+    <div class="align h-center">
+        <button class="button is-link" on:click={addChannel}>Add channel</button
+        >
+        <CustomSwitch
+            bind:selected={includeTrapLoss}
+            label="include trap losses"
+        />
+    </div>
     {#if loss_channels.length}
         <div class="channels_div">
             {#each loss_channels as channel (channel.id)}

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { persistentWritable } from '$src/js/persistentStore'
     import { onMount, tick } from 'svelte'
     import { boltzmanConstant } from '$src/js/constants'
@@ -19,24 +19,25 @@
     import KlossChannels from './controllers/KlossChannels.svelte'
     import KineticsNumberDensity from './controllers/KineticsNumberDensity.svelte'
     import { activePage } from '$src/sveltewritable'
+    import type { mainDataType, dataType, totalMassKeyType } from '$src/Pages/timescan/types/types'
 
-    let currentLocation = window.db.get('kinetics_location') || ''
+    let currentLocation = window.db.get('kinetics_location') as string
     $: config_location = window.path.join(currentLocation, '../configs')
 
     let timestartIndexScan = 0
-    let fileCollections = []
-    let srgMode = true
+    let fileCollections: string[] = []
+    let srgMode: boolean = true
     let includeTranspiration = true
-    let pbefore = 0
-    let pafter = 0
-    let temp = 5
+    let pbefore: string | number = 0
+    let pafter: string | number = 0
+    let temp: string | number = 5
     let molecule = 'CD'
     let tag = 'He'
     let nameOfReactants = ''
     let ratek3 = 'k31'
     let ratekCID = 'kCID1'
     let selectedFile = ''
-    let totalMassKey = []
+    let totalMassKey: totalMassKeyType = []
     let k3Guess = '0, 0.5'
     let kCIDGuess = '0, 2'
 
@@ -61,50 +62,39 @@
             .filter((f) => f.endsWith('_scan.json'))
             .map((f) => f.split('.')[0].replace('_scan', '.scan'))
     }
-
     $: if (currentLocation) {
         updateFiles()
     }
 
-    let currentData = {}
-    let currentDataBackup = {}
-    // $: console.log(currentData?.['SUM']?.x)
+    let currentData: mainDataType
+    let currentDataBackup: mainDataType
 
     const sliceSUM = () => {
-        const newData = cloneDeep(currentDataBackup).SUM
-
+        const newData: dataType = cloneDeep(currentDataBackup).SUM
         currentData.SUM.x = newData.x.slice(timestartIndexScan)
         currentData.SUM.y = newData.y.slice(timestartIndexScan)
-        currentData['SUM']['error_y']['array'] =
-            newData['error_y']['array'].slice(timestartIndexScan)
+        currentData['SUM']['error_y']['array'] = newData['error_y']['array'].slice(timestartIndexScan)
     }
+
     const sliceData = (compute = true) => {
         console.log('slicing data')
         if (!selectedFile.endsWith('.scan')) return
 
         totalMassKey.forEach(({ mass }) => {
-            const newData = cloneDeep(currentDataBackup)[mass]
+            const newData: dataType = cloneDeep(currentDataBackup)[mass]
             newData.x = newData.x.slice(timestartIndexScan)
             newData.y = newData.y.slice(timestartIndexScan)
-            newData['error_y']['array'] =
-                newData['error_y']['array'].slice(timestartIndexScan)
+            newData['error_y']['array'] = newData['error_y']['array'].slice(timestartIndexScan)
             currentData[mass] = newData
-            // console.log(newData.x)
         })
 
         sliceSUM()
 
         if (useParamsFile) {
-            const masses = totalMassKey
-                .filter((m) => m.included)
-                .map(({ mass }) => mass.trim())
-            const parentCounts =
-                currentData?.[masses[0]]?.['y']?.[0]?.toFixed(0)
+            const masses = totalMassKey.filter((m) => m.included).map(({ mass }) => mass.trim())
+            const parentCounts = currentData?.[masses[0]]?.['y']?.[0]?.toFixed(0)
             if (!defaultInitialValues) return
-            initialValues = [
-                parentCounts,
-                ...Array(masses.length - 1).fill(1),
-            ].join(', ')
+            initialValues = [parentCounts, ...Array(masses.length - 1).fill(1)].join(', ')
 
             return
         }
@@ -120,10 +110,7 @@
         tagFile = ''
         timestartIndexScan = 0
         loss_channels = []
-        const currentJSONfile = window.path.join(
-            currentLocation,
-            selectedFile.replace('.scan', '_scan.json')
-        )
+        const currentJSONfile = window.path.join(currentLocation, selectedFile.replace('.scan', '_scan.json'))
 
         ;[currentData] = window.fs.readJsonSync(currentJSONfile)
         if (!currentData) return
@@ -141,17 +128,11 @@
     }
 
     let useParamsFile = false
-    const kinetics_params_file = persistentWritable(
-        'kinetics_params_file',
-        'kinetics.params.json'
-    )
+    const kinetics_params_file = persistentWritable('kinetics_params_file', 'kinetics.params.json')
 
     $: paramsFile = window.path.join(configDir, $kinetics_params_file)
 
-    const params_updatefile_or_getfromfile = ({
-        updatefile = true,
-        contents,
-    }) => {
+    const params_updatefile_or_getfromfile = ({ updatefile = true, contents }) => {
         if (updatefile) {
             return {
                 ratek3,
@@ -200,10 +181,7 @@
             contents,
         })
 
-        if (
-            contents[selectedFile] &&
-            Object.keys(contents[selectedFile]).length > 0
-        ) {
+        if (contents[selectedFile] && Object.keys(contents[selectedFile]).length > 0) {
             if (useTaggedFile && tagFile.length > 0) {
                 if (contents[selectedFile]?.tag) {
                     contents[selectedFile].tag[tagFile] = contents_infos
@@ -235,13 +213,9 @@
         }
         window.fs.outputJsonSync(paramsFile, contents)
         tagOptions = Object.keys(contents[selectedFile].tag)
-        window.createToast(
-            `saved: ${window.path.basename(paramsFile)}`,
-            'success',
-            {
-                target: 'left',
-            }
-        )
+        window.createToast(`saved: ${window.path.basename(paramsFile)}`, 'success', {
+            target: 'left',
+        })
 
         params_found = true
     }
@@ -252,7 +226,7 @@
     let tagFile = ''
     let tagOptions = []
 
-    const readFromParamsFile = (event) => {
+    const readFromParamsFile = (event?: Event) => {
         params_found = false
         tagOptions = []
         if (!(useParamsFile && window.fs.existsSync(paramsFile))) return
@@ -291,17 +265,12 @@
         readFromParamsFile()
         if (params_found) return
 
-        const masses = totalMassKey
-            .filter((m) => m.included)
-            .map(({ mass }) => mass.trim())
+        const masses = totalMassKey.filter((m) => m.included).map(({ mass }) => mass.trim())
         if (masses.length < 2) return
         const parentCounts = currentData?.[masses[0]]?.['y']?.[0]?.toFixed(0)
 
         if (defaultInitialValues) {
-            initialValues = [
-                parentCounts,
-                ...Array(masses.length - 1).fill(1),
-            ].join(', ')
+            initialValues = [parentCounts, ...Array(masses.length - 1).fill(1)].join(', ')
         }
 
         nameOfReactants = `${molecule}, ${molecule}${tag}`
@@ -361,26 +330,17 @@
 
         console.log({ pressure, numerator, denomiator, pressure_trap, X })
         // console.log(X.toExponential(3))
-        numberDensity = pressure_trap / (kB_in_cm * temp)
+        numberDensity = pressure_trap / (kB_in_cm * trap_temperature)
     }
 
-    $: if (
-        pbefore ||
-        pafter ||
-        temp ||
-        calibrationFactor ||
-        config_content[selectedFile] ||
-        includeTranspiration
-    ) {
+    $: if (pbefore || pafter || temp || calibrationFactor || config_content[selectedFile] || includeTranspiration) {
         computeNumberDensity()
     }
 
     $: if (selectedFile.endsWith('.scan')) {
         console.log('updating paramaeters')
         computeParameters()
-        kineticEditorFilename =
-            window.path.basename(selectedFile).split('.')[0] +
-            '-kineticModel.md'
+        kineticEditorFilename = window.path.basename(selectedFile).split('.')[0] + '-kineticModel.md'
     }
 
     $: configDir = window.path.join(currentLocation, '../configs')
@@ -407,7 +367,6 @@
     $: if (configDir) {
         readConfigDir()
     }
-
     let config_content = {}
 
     function saveCurrentConfig() {
@@ -417,11 +376,7 @@
             })
 
         if (!selectedFile || !window.fs.existsSync(currentLocation)) {
-            return window.createToast(
-                'Invalid location or filename',
-                'danger',
-                { target: 'left' }
-            )
+            return window.createToast('Invalid location or filename', 'danger', { target: 'left' })
         }
         config_content[selectedFile] = currentConfig
         const [, error] = window.fs.outputJsonSync(config_file, config_content)
@@ -429,34 +384,19 @@
             return window.handleError(error)
         }
 
-        window.createToast(
-            'Config file saved' + window.path.basename(config_file),
-            'success',
-            { target: 'left' }
-        )
+        window.createToast('Config file saved' + window.path.basename(config_file), 'success', { target: 'left' })
     }
 
     function updateConfig() {
         update_pbefore = false
-
         try {
             if (!config_content[selectedFile]) {
-                return window.createToast(
-                    'config file not available for selected file: ' +
-                        selectedFile,
-                    'danger',
-                    { target: 'left' }
-                )
+                return window.createToast('config file not available for selected file: ' + selectedFile, 'danger', { target: 'left' })
             }
-            ;({ srgMode, pbefore, pafter, calibrationFactor, temp } =
-                config_content[selectedFile])
-            srgMode = JSON.parse(srgMode)
+            ;({ pbefore, pafter, calibrationFactor, temp } = config_content[selectedFile])
+            srgMode = JSON.parse(config_content[selectedFile].srgMode)
         } catch (error) {
-            window.createToast(
-                'Error while reading the values: Check config file',
-                'danger',
-                { target: 'left' }
-            )
+            window.createToast('Error while reading the values: Check config file', 'danger', { target: 'left' })
         }
     }
 
@@ -471,13 +411,7 @@
             if (!window.fs.existsSync(config_file)) {
                 console.log(config_file)
                 if ($activePage === 'Kinetics') {
-                    return window.createToast(
-                        `Config file not available: ${window.path.basename(
-                            config_file
-                        )}`,
-                        'danger',
-                        { target: 'left' }
-                    )
+                    return window.createToast(`Config file not available: ${window.path.basename(config_file)}`, 'danger', { target: 'left' })
                 }
                 return
             }
@@ -489,12 +423,8 @@
                 id: window.getID(),
             }))
 
-            if (window.db.get('active_tab')?.toLowerCase() === 'kinetics') {
-                window.createToast(
-                    `Config file loaded: ${window.path.basename(config_file)}`,
-                    'warning',
-                    { target: 'left' }
-                )
+            if ($activePage?.toLowerCase() === 'kinetics') {
+                window.createToast(`Config file loaded: ${window.path.basename(config_file)}`, 'warning', { target: 'left' })
             }
         } catch (error) {
             window.handleError(error)
@@ -513,18 +443,12 @@
                 return window.handleError('Compute and save kinetic equation')
             }
 
-            const masses = totalMassKey
-                .filter((m) => m.included)
-                .map(({ mass }) => mass.trim())
+            const masses = totalMassKey.filter((m) => m.included).map(({ mass }) => mass.trim())
 
             if (masses.length < 2) {
-                return window.handleError(
-                    'atleast two reactants are required for kinetics'
-                )
+                return window.handleError('atleast two reactants are required for kinetics')
             }
-            const nameOfReactantsArray = nameOfReactants
-                .split(',')
-                .map((m) => m.trim())
+            const nameOfReactantsArray = nameOfReactants.split(',').map((m) => m.trim())
 
             sliceData(false)
 
@@ -547,9 +471,7 @@
                             .join(':')
                     )
                     .join()
-                kinetic_plot_adjust_configs_obj = JSON.parse(
-                    `{${kinetic_plot_adjust_configs_obj}}`
-                )
+                kinetic_plot_adjust_configs_obj = JSON.parse(`{${kinetic_plot_adjust_configs_obj}}`)
 
                 console.log(kinetic_plot_adjust_configs_obj)
             } catch (error) {
@@ -558,8 +480,7 @@
 
             let modified_rate_constants = [ratek3, ratekCID]
             loss_channels.forEach(({ type, name }) => {
-                if (type === 'forwards')
-                    return (modified_rate_constants[0] += `, ${name}`)
+                if (type === 'forwards') return (modified_rate_constants[0] += `, ${name}`)
                 modified_rate_constants[1] += `, ${name}`
             })
 
@@ -601,10 +522,7 @@
     $: kineticfile = window.path.join(currentLocation, kineticEditorFilename)
     let reportRead = false
     let reportSaved = false
-    const fit_config_filename = persistentWritable(
-        'kinetics_fitted_values',
-        'kinetics.fit.json'
-    )
+    const fit_config_filename = persistentWritable('kinetics_fitted_values', 'kinetics.fit.json')
     let loss_channels = []
 
     onMount(() => {
@@ -623,43 +541,24 @@
     let show_numberDensity = false
 </script>
 
-<KineticConfigTable
-    {configArray}
-    {config_location}
-    {loadConfig}
-    {readConfigDir}
-    {config_filelists}
-    bind:config_file
-    bind:active={adjustConfig}
-/>
+<KineticConfigTable {configArray} {config_location} {loadConfig} {readConfigDir} {config_filelists} bind:config_file bind:active={adjustConfig} />
 
-<MatplotlibDialog
-    bind:open={kinetic_plot_adjust_dialog_active}
-    bind:value={$kinetic_plot_adjust_configs}
-/>
-<KineticsNumberDensity
-    bind:active={show_numberDensity}
-    {selectedFile}
-    {config_location}
-    {fileCollections}
-    {config_filelists}
-    {readConfigDir}
-/>
+<MatplotlibDialog bind:open={kinetic_plot_adjust_dialog_active} bind:value={$kinetic_plot_adjust_configs} />
+
+<KineticsNumberDensity bind:active={show_numberDensity} {selectedFile} {config_location} {fileCollections} {config_filelists} {readConfigDir} />
 
 <LayoutDiv id="Kinetics">
     <svelte:fragment slot="header_content__slot">
         <div class="location__div box">
-            <button class="button is-link" on:click={browse_folder}
-                >Browse</button
-            >
-            <Textfield
-                bind:value={currentLocation}
-                label="Timescan EXPORT data location"
-            />
+            <button class="button is-link" on:click={browse_folder}>Browse</button>
+            <Textfield bind:value={currentLocation} label="Timescan EXPORT data location" />
+
             <i
                 class="material-icons animate__animated animate__faster"
-                on:animationend={({ target }) =>
-                    target?.classList.remove('animate__rotateIn')}
+                on:animationend={({ target }) => {
+                    // @ts-ignore
+                    target.classList.remove('animate__rotateIn')
+                }}
                 on:click={updateFiles}
             >
                 refresh
@@ -671,45 +570,17 @@
         <div class="main_container__div">
             <div class="align box h-center">
                 <CustomSwitch bind:selected={srgMode} label="SRG" />
-                <CustomSwitch
-                    bind:selected={includeTranspiration}
-                    label="TT"
-                    tooltip="correct for thermal-transpiration"
-                />
+                <CustomSwitch bind:selected={includeTranspiration} label="TT" tooltip="correct for thermal-transpiration" />
                 <Textfield bind:value={pbefore} label="pbefore" />
                 <Textfield bind:value={pafter} label="pafter" />
-                <Textfield
-                    step="0.5"
-                    type="number"
-                    bind:value={calibrationFactor}
-                    label="calibrationFactor"
-                />
-                <Textfield
-                    input$step="0.1"
-                    type="number"
-                    bind:value={temp}
-                    label="trap_temperature (K)"
-                />
-                <Textfield
-                    type="number"
-                    value={numberDensity?.toExponential(3) || 0}
-                    label="numberDensity"
-                    disabled
-                />
+                <Textfield step="0.5" type="number" bind:value={calibrationFactor} label="calibrationFactor" />
+                <Textfield input$step="0.1" type="number" bind:value={temp} label="trap_temperature (K)" />
+                <Textfield type="number" value={numberDensity?.toExponential(3) || 0} label="numberDensity" disabled />
             </div>
 
             <div class="align box h-center">
-                <CustomSelect
-                    bind:value={selectedFile}
-                    label="Filename"
-                    options={fileCollections}
-                />
-                <CustomTextSwitch
-                    max={maxTimeIndex}
-                    bind:value={timestartIndexScan}
-                    label="Time Index"
-                    on:change={() => sliceData(true)}
-                />
+                <CustomSelect bind:value={selectedFile} label="Filename" options={fileCollections} />
+                <CustomTextSwitch max={maxTimeIndex} bind:value={timestartIndexScan} label="Time Index" on:change={() => sliceData(true)} />
                 <Textfield bind:value={molecule} label="Molecule" />
                 <Textfield bind:value={tag} label="tag" />
             </div>
@@ -774,24 +645,12 @@
                 kinetic_plot_adjust_dialog_active = true
             }}>Adjust plot</button
         >
-        <button class="button is-link" on:click={computeParameters}
-            >Compute parameters</button
-        >
-        <button class="button is-warning" on:click={loadConfig}
-            >loadConfig</button
-        >
-        <button class="button is-link" on:click={saveCurrentConfig}
-            >saveCurrentConfig</button
-        >
+        <button class="button is-link" on:click={computeParameters}>Compute parameters</button>
+        <button class="button is-warning" on:click={loadConfig}>loadConfig</button>
+        <button class="button is-link" on:click={saveCurrentConfig}>saveCurrentConfig</button>
 
-        <i class="material-icons" on:click={() => (adjustConfig = true)}
-            >settings</i
-        >
-        <button
-            class="button is-link"
-            id="kinetic-submit-button"
-            on:click={kineticSimulation}>Submit</button
-        >
+        <i class="material-icons" on:click={() => (adjustConfig = true)}>settings</i>
+        <button class="button is-link" id="kinetic-submit-button" on:click={kineticSimulation}>Submit</button>
     </svelte:fragment>
 </LayoutDiv>
 
@@ -810,6 +669,7 @@
         grid-row-gap: 1em;
         padding-right: 1em;
     }
+
     .box {
         margin: 0;
         padding: 0.5em;
