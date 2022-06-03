@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import Tab, { Label } from '@smui/tab'
     import TabBar from '@smui/tab-bar'
     import { onMount } from 'svelte'
@@ -6,11 +6,11 @@
 
     export let navItems
 
-    let active = window.db.get('active_tab') || 'Home'
+    let active = <string>window.db.get('active_tab') || 'Home'
     $: $activePage = active
     $: console.log(`Current page: ${$activePage}`)
-
     $: window.db.set('active_tab', $activePage)
+
     const navigate = () => {
         navItems.forEach((item) =>
             item == active

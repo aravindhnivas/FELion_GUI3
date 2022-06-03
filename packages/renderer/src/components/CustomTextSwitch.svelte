@@ -7,7 +7,7 @@
     export let label: string = ''
     export let style: string = ''
     export let step: number | string = 1
-    export let variant: string = 'standard'
+    export let variant: 'standard' | 'filled' | 'outlined' = 'standard'
 
     let changeStepsize: boolean = false
 </script>

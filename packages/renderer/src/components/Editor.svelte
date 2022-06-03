@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { showConfirm } from '$src/components/alert/store'
     import { onDestroy } from 'svelte'
     import Textfield from '@smui/textfield'
@@ -49,7 +49,7 @@
     }
 
     if (window.db.get(`${filetype}-report-md`)) {
-        location = window.db.get(`${filetype}-report-md`)
+        location = window.db.get(`${filetype}-report-md`) as string
     }
 
     $: reportFile = window.path.join(location, savefilename.endsWith('.md') ? savefilename : `${savefilename}.md`)
@@ -166,7 +166,7 @@
             </div>
             <div class="btn-row">
                 <slot name="btn-row" />
-                <button class="button is-warning" on:click={readFromFile}>read</button>
+                <button class="button is-warning" on:click={() => readFromFile()}>read</button>
                 <button class="button is-link" on:click={saveReport}>Save</button>
                 <CustomSwitch bind:selected={autoRead} label="autoRead" />
             </div>

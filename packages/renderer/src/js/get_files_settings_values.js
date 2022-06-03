@@ -1,4 +1,4 @@
-const validate_line = (line) => {
+function validate_line(line) {
     const valid = line.trim().length > 0 && line.startsWith('# Sect01 Ion Source')
     return valid
 }

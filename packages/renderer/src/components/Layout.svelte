@@ -30,7 +30,7 @@
     }
 </script>
 
-<script>
+<script lang="ts">
     import { onMount, createEventDispatcher, tick, onDestroy } from 'svelte'
     import { fly, fade } from 'svelte/transition'
     import Textfield from '@smui/textfield'
@@ -50,7 +50,6 @@
     export let fullfileslist = []
     export let currentLocation = ''
     export let graphPlotted = false
-    // export let graphWindowClasses = ['no-full']
     export let activateConfigModal = false
 
     ////////////////////////////////////////////////////////////////////////////
@@ -66,7 +65,7 @@
     onMount(() => {
         graphPlotted = false
         console.log(id, 'mounted')
-        currentLocation = window.db.get(`${filetype}_location`) || ''
+        currentLocation = <string>window.db.get(`${filetype}_location`) || ''
     })
 
     let graphDivContainer
@@ -108,8 +107,9 @@
         changeGraphDivWidth()
     }
 
-    const changeGraphDivWidth = async () => {
+    const changeGraphDivWidth = async (event?: CustomEvent) => {
         console.log('Updating graphDivs width')
+
         await tick()
         graphDivs?.forEach((id) => {
             if (id?.data) {
@@ -122,6 +122,7 @@
         graphWindow?.close()
         console.log(id, 'destroyed')
     })
+    let location = (window.db.get(`${filetype}_location`) as string) || ''
 </script>
 
 <section {id} style:display class="animate__animated animate__fadeIn">
@@ -176,7 +177,7 @@
                 {/if}
                 <div class="report-editor-div" id="{filetype}-plotContainer-report-editor-div">
                     <Editor
-                        location={window.db.get(`${filetype}_location`)}
+                        {location}
                         {filetype}
                         id="{filetype}-report-editor"
                         mount="#{filetype}-plotContainer-report-editor-div"

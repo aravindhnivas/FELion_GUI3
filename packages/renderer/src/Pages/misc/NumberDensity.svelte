@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import Textfield from '@smui/textfield';
     import CustomSwitch from '$components/CustomSwitch.svelte'
     import computePy_func from '$src/Pages/general/computePy'
@@ -23,8 +23,15 @@
     }
 
     let includeTranspiration = true
-    let datafromPython = {}
-    let rt = window.db.get('RT') || 300
+
+    interface DataFromPython {
+        F: string
+        X: string
+        nHe: string
+        nHe_transpiration: string
+    }
+    let datafromPython: DataFromPython
+    let rt = <number>window.db.get('RT') || 300
     let trap_temperature = [4, 0.3]
     let background_pressure = ["1e-8", 0]
     let added_pressure = ["5e-6", 10]
@@ -36,10 +43,10 @@
     }
     let tube_diameter = [3, 0.1]
     let srgMode = false;
-    let calibration_factor = srgMode ? [1, 0] : [200, 10]
+    let calibration_factor = srgMode ? [1, 0] : [<number>window.db.get('calibration_factor') ?? 200, 10]
     let rt_std_dev = 1
 
-    export const computeNumberDensity = async (e) => {
+    export const computeNumberDensity = async (e?: Event) => {
     
         const room_temperature = [rt, rt_std_dev]
         if(trap_temperature[0] < 0) return window.createToast("Invalid temperature", "danger")
@@ -152,6 +159,12 @@
             <div class="border__div">
                 <Textfield disabled={srgMode}
                     bind:value={calibration_factor[0]}
+                    on:keyup={(e)=>{
+                        if(srgMode) return
+                        const {value} = e.target
+                        window.db.set('calibration_factor', Number(value))
+
+                    }}
                     label="Calibration Factor"
                 />
 

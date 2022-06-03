@@ -10,7 +10,7 @@ export default async function ({ e = null, target = null, pyfile = '', args = {}
 
     try {
         if (!get(pyServerReady)) {
-            const restartPyServer = await dialogs.showMessageBox({
+            const restartPyServer = await window.dialogs.showMessageBox({
                 message: 'Restart Python server?',
                 title: 'Python server is not ready',
                 type: 'warning',

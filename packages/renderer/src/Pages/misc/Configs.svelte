@@ -1,9 +1,9 @@
-<script>
+<script lang="ts">
     import Textfield from '@smui/textfield';
     import { onDestroy } from 'svelte';
     export let active = ''
-    let CONFIGS = db?.data() || {}
-
+    let CONFIGS = window.db.store()
+    // type ValueType = string | number | boolean
     const unsubscribe = window.db.onDidAnyChange((newValue, oldValue) => {
         CONFIGS = newValue
     })
@@ -20,24 +20,27 @@
         />
         <div class="config__div ">
             {#each Object.keys(CONFIGS) as label}
-            <div class="config_content">
-                <Textfield bind:value={CONFIGS[label]} {label} />
-                <button
-                class="button is-success"
-                on:click={() =>
-                        window.db.set(label, CONFIGS[label])}
-                    >Save</button
-                >
-                <button
-                class="button is-warning"
-                on:click={() => window.db.delete(label)}
-                >Clear</button
-                >
-            </div>
-            {:else}
-            <h1>No data</h1>
-        {/each}
-    </div>
+                <div class="config_content">
+                    <Textfield bind:value={CONFIGS[label]} {label} />
+                    <button
+                        class="button is-success"
+                        on:click={()=>{
+                            window.db.set(label, CONFIGS[label])
+                            window.createToast('Saved', 'success')
+                        }}
+                            >Save</button>
+                    <button
+                        class="button is-warning"
+                        on:click={() => {
+                            window.db.delete(label)
+                            window.createToast(`${label} deleted`, 'danger')
+                        }}
+                        >Clear</button>
+                </div>
+                {:else}
+                <h1>No data</h1>
+            {/each}
+        </div>
     
     <div class="config_footer" style="margin-left: auto;">
         <button
