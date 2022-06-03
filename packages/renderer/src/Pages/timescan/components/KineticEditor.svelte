@@ -15,7 +15,7 @@
     export let loss_channels = []
     export let selectedFile = ''
     export let includeTrapLoss = false
-    $: console.log(includeTrapLoss)
+    // $: console.log(includeTrapLoss)
     let editor
     let computedCode
 
@@ -35,7 +35,7 @@
 
     const update_editor = (data) => {
         reportSaved = false
-        const setData = `# Kinetics code\n${data}\n\n`
+        const setData = `# Kinetics code: ${savefilename}\n${data}\n\n`
         editor?.setData(setData)
         window.createToast('data comupted')
     }
