@@ -1,5 +1,5 @@
 import { pyProgram, pythonscript, get, pyVersion, pyServerReady, developerMode } from '../settings/svelteWritables'
-import { running_processes } from '$src/svelteWritable'
+import { running_processes } from '$src/sveltewritables'
 
 export const dispatchEvent = (target, detail, eventName) => {
     const pyEventClosed = new CustomEvent(eventName, { bubbles: false, detail })

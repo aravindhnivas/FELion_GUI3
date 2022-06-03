@@ -1,5 +1,5 @@
 <script>
-    // import {mainPreModal} from "../svelteWritable";
+    // import {mainPreModal} from "$src/svelteWritable";
     import IconButton from '@smui/icon-button'
     import { tick } from 'svelte'
     import Textfield from '@smui/textfield'

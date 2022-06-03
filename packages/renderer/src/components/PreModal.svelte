@@ -1,6 +1,6 @@
 <script>
     import { onDestroy } from 'svelte'
-    import { mainPreModal } from '../svelteWritable'
+    import { mainPreModal } from '$src/sveltewritables'
     import FlatList from 'svelte-flatlist'
 
     let active = false

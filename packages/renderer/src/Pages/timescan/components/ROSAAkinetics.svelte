@@ -18,7 +18,7 @@
     import RateInitialise from './controllers/RateInitialise.svelte'
     import KlossChannels from './controllers/KlossChannels.svelte'
     import KineticsNumberDensity from './controllers/KineticsNumberDensity.svelte'
-    import { activePage } from '$src/sveltewritable'
+    import { activePage } from '$src/sveltewritables'
     import type { mainDataType, dataType, totalMassKeyType, loss_channelsType } from '$src/Pages/timescan/types/types'
 
     let currentLocation = (window.db.get('kinetics_location') as string) || ''

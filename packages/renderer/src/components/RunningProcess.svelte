@@ -1,5 +1,5 @@
 <script>
-    import { running_processes } from '../svelteWritable'
+    import { running_processes } from '$src/sveltewritables'
     import DataTable, { Head, Body, Row, Cell } from '@smui/data-table'
     import { toast } from '@zerodevx/svelte-toast'
 

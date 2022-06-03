@@ -2,7 +2,7 @@
     import Tab, { Label } from '@smui/tab'
     import TabBar from '@smui/tab-bar'
     import { onMount } from 'svelte'
-    import { activePage } from '$src/sveltewritable'
+    import { activePage } from '$src/sveltewritables'
 
     export let navItems
 

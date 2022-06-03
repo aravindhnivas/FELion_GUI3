@@ -7,7 +7,7 @@
         developerMode,
         pyServerReady,
     } from './settings/svelteWritables'
-    import { updateInterval } from '$src/svelteWritable'
+    import { updateInterval } from '$src/sveltewritables'
     import { activateChangelog } from '../js/functions'
 
     import { getPyVersion, resetPyConfig, updatePyConfig } from './settings/checkPython'

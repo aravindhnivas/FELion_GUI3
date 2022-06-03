@@ -1,4 +1,4 @@
-import { mainPreModal } from '../svelteWritable'
+import { mainPreModal } from '$src/sveltewritables'
 import { writable } from 'svelte/store'
 import { toast } from '@zerodevx/svelte-toast'
 import type { SvelteToastOptions } from '@zerodevx/svelte-toast'

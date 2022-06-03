@@ -39,7 +39,7 @@ export function resizableDiv(
                 interact.modifiers.restrictEdges({ outer: 'parent' }),
                 interact.modifiers.restrictSize({
                     min: { width: 50, height: 50 },
-                    max: { width: 500 },
+                    max: { width: 500, height: 500 },
                 }),
             ],
             inertia: true,

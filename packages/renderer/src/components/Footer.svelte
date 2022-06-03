@@ -1,7 +1,7 @@
 <script>
-    import { running_processes } from '../svelteWritable'
+    import { running_processes } from '$src/sveltewritables'
     import RunningProcess from './RunningProcess.svelte'
-    import { SvelteToast, toast } from '@zerodevx/svelte-toast'
+    import { toast } from '@zerodevx/svelte-toast'
     let toastId = null
 
     const show_process = () => {

@@ -4,7 +4,7 @@
     import CustomSelect from '$components/CustomSelect.svelte'
     import NumberDensity from '$src/Pages/misc/NumberDensity.svelte'
     import TextAndSelectOptsToggler from '$src/components/TextAndSelectOptsToggler.svelte'
-    import { activePage } from '$src/sveltewritable'
+    import { activePage } from '$src/sveltewritables'
     export let nHe = ''
     export let selectedFile = ''
     export let active = false
