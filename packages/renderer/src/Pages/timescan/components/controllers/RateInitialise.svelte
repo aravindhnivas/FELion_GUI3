@@ -20,11 +20,6 @@
     export let selectedFile = ''
     export let computeOtherParameters = () => {}
     export let readConfigDir = () => {}
-
-    // $: if (tagOptions.length > 0 && !tagFile) {
-    //     tagFile = tagOptions[0]
-    //     computeOtherParameters()
-    // }
 </script>
 
 <div class="align box h-center" style:flex-direction="column">

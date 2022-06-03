@@ -1,11 +1,12 @@
 export class computeKineticCodeScipy {
-    constructor({ nameOfReactants, ratek3, ratekCID, k3Guess, kCIDGuess, loss_channels }) {
+    constructor({ nameOfReactants, ratek3, ratekCID, k3Guess, kCIDGuess, loss_channels, includeTrapLoss }) {
         this.nameOfReactants = nameOfReactants
         this.ratek3 = ratek3
         this.ratekCID = ratekCID
         this.k3Guess = k3Guess
         this.kCIDGuess = kCIDGuess
         this.loss_channels = loss_channels
+        this.includeTrapLoss = includeTrapLoss
         this.nameOfReactantsArr = nameOfReactants.split(',').map((name) => name.trim())
 
         const rateForwardArr_keys = ratek3.split(',').map((name) => name.trim())
@@ -29,6 +30,11 @@ export class computeKineticCodeScipy {
         this.rateForwardArr.forEach((value) => {
             data += `\t'${value}': (${this.k3Guess}, 1e-3),\n`
         })
+        
+        if(this.includeTrapLoss) {
+            data += `\t'ktrap_loss': (${this.k3Guess}, 1e-3),\n`
+        }
+        
         data += '}\n'
 
         data += '\nmin_max_step_controller["backwards"] = {\n'
@@ -47,7 +53,11 @@ export class computeKineticCodeScipy {
         data += '```plaintext\n'
         data += 'def compute_attachment_process(t, N):\n\n'
         data += '\tk3, kCID = rateCoefficientArgs\n\n'
-        data += `\t${this.rateForwardArr.join(', ')}${this.rateForwardArr.length == 1 ? ',' : ''} = k3\n`
+        data += `\t${this.rateForwardArr.join(', ')}${this.rateForwardArr.length == 1 ? ',' : ''}`
+        if(this.includeTrapLoss) {
+            data += `, ktrap_loss`
+        }
+        data += ' = k3\n'
         data += `\t${this.rateReverseArr.join(', ')}${this.rateReverseArr.length == 1 ? ',' : ''} = kCID\n\n`
 
         data += `\t${this.nameOfReactantsArr.join(', ')} = N\n\n`
@@ -67,16 +77,22 @@ export class computeKineticCodeScipy {
     }
     make_final_list() {
         const parentMolecule = this.nameOfReactantsArr.at(0)
-        let data = [`\t\t${parentMolecule}_f,\n`]
+        let data = [`\t\t${parentMolecule}_f`]
 
         for (let index = 1; index < this.nameOfReactantsArr.length - 1; index++) {
             const currentMolecule = this.nameOfReactantsArr[index]
             const prevMolecule = this.nameOfReactantsArr[index - 1]
-            data.push(`\t\t${currentMolecule}_f - ${prevMolecule}_f,\n`)
+            const currentRate = `\t\t${currentMolecule}_f - ${prevMolecule}_f`
+            data.push(currentRate)
         }
-        data.push(`\t\t- ${this.nameOfReactantsArr.at(-2)}_f\n`)
-        if (this.loss_channels.length === 0) return data.join('')
+        data.push(`\t\t- ${this.nameOfReactantsArr.at(-2)}_f`)
+        data = data.map((line, index) => {
+            if(this.includeTrapLoss) {line += ` - (ktrap_loss * ${this.nameOfReactantsArr[index]})`}
+            line += ',\n'
+            return line
+        })
 
+        if (this.loss_channels.length === 0) return data.join('')
         const trim_this_line = (line) => line.trimEnd().replace(',', '')
 
         this.loss_channels.forEach(({ name, lossFrom, attachTo }) => {

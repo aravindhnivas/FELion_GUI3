@@ -19,9 +19,9 @@
     import KlossChannels from './controllers/KlossChannels.svelte'
     import KineticsNumberDensity from './controllers/KineticsNumberDensity.svelte'
     import { activePage } from '$src/sveltewritable'
-    import type { mainDataType, dataType, totalMassKeyType } from '$src/Pages/timescan/types/types'
+    import type { mainDataType, dataType, totalMassKeyType, loss_channelsType } from '$src/Pages/timescan/types/types'
 
-    let currentLocation = window.db.get('kinetics_location') as string
+    let currentLocation = (window.db.get('kinetics_location') as string) || ''
     $: config_location = window.path.join(currentLocation, '../configs')
 
     let timestartIndexScan = 0
@@ -147,10 +147,9 @@
                 $fit_config_filename,
                 kineticEditorFilename,
                 loss_channels,
+                includeTrapLoss,
             }
-            // return contents
         }
-
         ;({
             ratek3,
             k3Guess,
@@ -164,10 +163,13 @@
             kineticEditorFilename,
             loss_channels,
         } = contents)
+
         if (contents['$fit_config_filename']) {
             $fit_config_filename = contents['$fit_config_filename']
         }
-        console.log('read from file', contents)
+        if (contents['includeTrapLoss']) {
+            includeTrapLoss = contents['includeTrapLoss']
+        }
         params_found = true
     }
 
@@ -530,8 +532,11 @@
     $: kineticfile = window.path.join(currentLocation, kineticEditorFilename)
     let reportRead = false
     let reportSaved = false
+
     const fit_config_filename = persistentWritable('kinetics_fitted_values', 'kinetics.fit.json')
-    let loss_channels = []
+
+    let loss_channels: loss_channelsType = []
+    let includeTrapLoss = false
 
     onMount(() => {
         loadConfig()
@@ -645,7 +650,7 @@
                 bind:kCIDGuess
             />
 
-            <KlossChannels bind:loss_channels {nameOfReactants} />
+            <KlossChannels bind:loss_channels {nameOfReactants} bind:includeTrapLoss />
             <KineticEditor
                 {...{
                     ratek3,
@@ -655,6 +660,7 @@
                     nameOfReactants,
                     loss_channels,
                     selectedFile,
+                    includeTrapLoss,
                 }}
                 bind:location={currentLocation}
                 bind:savefilename={kineticEditorFilename}

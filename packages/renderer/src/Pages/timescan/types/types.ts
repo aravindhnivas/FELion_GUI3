@@ -9,3 +9,12 @@ export type totalMassKeyType = {
     id: string
     included: boolean
 }[]
+
+
+export type loss_channelsType = {
+    type: string
+    name: string
+    lossFrom: string
+    attachTo: string
+    id: string
+}[]

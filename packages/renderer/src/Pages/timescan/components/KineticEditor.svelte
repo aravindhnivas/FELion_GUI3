@@ -14,7 +14,8 @@
     export let nameOfReactants = ''
     export let loss_channels = []
     export let selectedFile = ''
-
+    export let includeTrapLoss = false
+    $: console.log(includeTrapLoss)
     let editor
     let computedCode
 
@@ -26,6 +27,7 @@
             k3Guess,
             kCIDGuess,
             loss_channels,
+            includeTrapLoss,
         })
         const data = computedCode_new.sliders + computedCode?.model
         update_editor(data)
@@ -48,6 +50,7 @@
             k3Guess,
             kCIDGuess,
             loss_channels,
+            includeTrapLoss,
         })
         update_editor(computedCode.fullEquation)
     }

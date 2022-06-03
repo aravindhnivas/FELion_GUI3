@@ -1,10 +1,12 @@
-<script>
+<script lang="ts">
     import Textfield from '@smui/textfield'
     import CustomSelect from '$components/CustomSelect.svelte'
     import CustomSwitch from '$components/CustomSwitch.svelte'
-
-    export let loss_channels = []
+    import type { loss_channelsType } from '$src/Pages/timescan/types/types'
+    export let loss_channels: loss_channelsType = []
     export let nameOfReactants = ''
+    export let includeTrapLoss = false
+
     $: ions_lists = nameOfReactants.split(',').map((name) => name.trim())
     let channelCounter = 0
     const addChannel = () => {
@@ -23,13 +25,12 @@
     $: if (loss_channels.length === 0) {
         channelCounter = 0
     }
-    let includeTrapLoss = false
 </script>
 
 <div class="box channel_main__div">
     <div class="align h-center">
         <button class="button is-link" on:click={addChannel}>Add channel</button>
-        <CustomSwitch bind:selected={includeTrapLoss} label="include trap losses" />
+        <CustomSwitch bind:selected={includeTrapLoss} label="include trap losses (on all masses)" />
     </div>
     {#if loss_channels.length}
         <div class="channels_div">
