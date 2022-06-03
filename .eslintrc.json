@@ -6,7 +6,8 @@
     "parser": "@babel/eslint-parser",
     "parserOptions": {
         "ecmaVersion": 2019,
-        "sourceType": "module"
+        "sourceType": "module",
+        "requireConfigFile": false
     },
     "plugins": ["svelte3"],
     "extends": ["eslint:recommended"],
