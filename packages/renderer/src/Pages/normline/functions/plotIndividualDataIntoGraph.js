@@ -1,10 +1,4 @@
-import {
-    graphDiv,
-    normMethod,
-    normMethodDatas,
-    opoMode,
-    get,
-} from './svelteWritables'
+import { graphDiv, normMethod, normMethodDatas, opoMode, get } from './svelteWritables'
 import { subplot, plot } from '$src/js/functions'
 import { react } from 'plotly.js/dist/plotly-basic'
 import { felix_func } from './felix'
@@ -31,8 +25,7 @@ export default function ({ fullData, plotfile, graphPlotted, delta }) {
 
     const data = fullData.data || null
     if (!data) return window.createToast('No data for ' + plotfile, 'danger')
-    if (!data.average?.[plotfile])
-        return console.warn(plotfile, 'data is not available', data)
+    if (!data.average?.[plotfile]) return console.warn(plotfile, 'data is not available', data)
 
     const SA = {}
     const base = {}
@@ -43,13 +36,7 @@ export default function ({ fullData, plotfile, graphPlotted, delta }) {
         base[plotfile + '_line'] = data['base'][plotfile + '_line']
 
         const baseGraphDiv = get(opoMode) ? 'opoplot' : 'bplot'
-        plot(
-            'Baseline Corrected',
-            'Wavelength (cm-1)',
-            'Counts',
-            base,
-            baseGraphDiv
-        )
+        plot('Baseline Corrected', 'Wavelength (cm-1)', 'Counts', base, baseGraphDiv)
 
         if (get(opoMode)) {
             console.log('Updating OPO plots')
@@ -57,13 +44,7 @@ export default function ({ fullData, plotfile, graphPlotted, delta }) {
                 SA['Calibration'] = data['SA']['Calibration']
                 SA['Calibration_fit'] = data['SA']['Calibration_fit']
 
-                plot(
-                    'OPO Calibration',
-                    'Set Wavenumber (cm-1)',
-                    'Measured Wavenumber (cm-1)',
-                    SA,
-                    'opoSA'
-                )
+                plot('OPO Calibration', 'Set Wavenumber (cm-1)', 'Measured Wavenumber (cm-1)', SA, 'opoSA')
             }
         } else {
             console.log('Updating FELIX plots')

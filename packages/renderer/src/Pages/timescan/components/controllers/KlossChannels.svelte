@@ -12,8 +12,7 @@
             ...loss_channels,
             {
                 type: 'forwards',
-                name:
-                    channelCounter > 0 ? `k_loss_${channelCounter}` : 'k_loss',
+                name: channelCounter > 0 ? `k_loss_${channelCounter}` : 'k_loss',
                 lossFrom: ions_lists[0],
                 attachTo: 'none',
                 id: window.getID(),
@@ -29,40 +28,22 @@
 
 <div class="box channel_main__div">
     <div class="align h-center">
-        <button class="button is-link" on:click={addChannel}>Add channel</button
-        >
-        <CustomSwitch
-            bind:selected={includeTrapLoss}
-            label="include trap losses"
-        />
+        <button class="button is-link" on:click={addChannel}>Add channel</button>
+        <CustomSwitch bind:selected={includeTrapLoss} label="include trap losses" />
     </div>
     {#if loss_channels.length}
         <div class="channels_div">
             {#each loss_channels as channel (channel.id)}
                 <div class="channel_div">
-                    <CustomSelect
-                        bind:value={channel.type}
-                        label="type"
-                        options={['forwards', 'backwards']}
-                    />
+                    <CustomSelect bind:value={channel.type} label="type" options={['forwards', 'backwards']} />
                     <Textfield bind:value={channel.name} label="name" />
-                    <CustomSelect
-                        bind:value={channel.lossFrom}
-                        label="lossFrom"
-                        options={ions_lists}
-                    />
-                    <CustomSelect
-                        bind:value={channel.attachTo}
-                        label="attachTo"
-                        options={['none', ...ions_lists]}
-                    />
+                    <CustomSelect bind:value={channel.lossFrom} label="lossFrom" options={ions_lists} />
+                    <CustomSelect bind:value={channel.attachTo} label="attachTo" options={['none', ...ions_lists]} />
 
                     <button
                         class="button is-danger"
                         on:click={() => {
-                            loss_channels = loss_channels.filter(
-                                (c) => c.id !== channel.id
-                            )
+                            loss_channels = loss_channels.filter((c) => c.id !== channel.id)
                             channelCounter--
                         }}>X</button
                     >

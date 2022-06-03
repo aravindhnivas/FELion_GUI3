@@ -48,9 +48,7 @@
             ...commandResults,
             {
                 color: colorSets.normal,
-                results: `>> ${commandToRun} ${commandArgsToRun
-                    .split(',')
-                    .join(' ')}`,
+                results: `>> ${commandToRun} ${commandArgsToRun.split(',').join(' ')}`,
             },
         ]
         let ls
@@ -68,19 +66,13 @@
 
         ls.stdout.on('data', (data) => {
             const writeData = String.fromCharCode.apply(null, data)
-            commandResults = [
-                ...commandResults,
-                { color: colorSets.info, results: `>> ${writeData || ''}` },
-            ]
+            commandResults = [...commandResults, { color: colorSets.info, results: `>> ${writeData || ''}` }]
             srollTerminalDiv()
         })
 
         ls.stderr.on('data', (data) => {
             const errorData = String.fromCharCode.apply(null, data)
-            commandResults = [
-                ...commandResults,
-                { color: colorSets.danger, results: `>> ${errorData || ''}` },
-            ]
+            commandResults = [...commandResults, { color: colorSets.danger, results: `>> ${errorData || ''}` }]
 
             srollTerminalDiv()
         })
@@ -100,10 +92,7 @@
                 .join('')}\n-----------------------------------------\n`
 
             try {
-                window.fs.writeFileSync(
-                    window.path.resolve(appInfo.temp, 'FELion_GUI3/output.log'),
-                    outputLog
-                )
+                window.fs.writeFileSync(window.path.resolve(appInfo.temp, 'FELion_GUI3/output.log'), outputLog)
             } catch (error) {
                 window.handleError(error)
             }
@@ -126,37 +115,20 @@
 <div class="content contentBox terminalBox">
     {#if commandInputDiv}
         <div class="align" style="margin-bottom: 1em;">
-            <button class="button is-link" on:click={installPythonPackages}
-                >Python package installation</button
-            >
+            <button class="button is-link" on:click={installPythonPackages}>Python package installation</button>
 
             <div class="align">
                 {#if installPythonPackagesMode}
-                    <Textfield
-                        bind:value={packagesName}
-                        label="Enter packages name(s)"
-                    />
+                    <Textfield bind:value={packagesName} label="Enter packages name(s)" />
                 {:else}
-                    <Textfield
-                        bind:value={commandToRun}
-                        label="Enter command to run"
-                    />
-                    <Textfield
-                        bind:value={commandArgsToRun}
-                        label="Enter command-arg"
-                    />
+                    <Textfield bind:value={commandToRun} label="Enter command to run" />
+                    <Textfield bind:value={commandArgsToRun} label="Enter command-arg" />
                 {/if}
             </div>
 
             <div class="align v-center">
-                <IconButton class="material-icons" on:click={terminalShell}
-                    >play_arrow</IconButton
-                >
-                <CustomSwitch
-                    style="margin: 0 1em;"
-                    bind:selected={openShellTerminal}
-                    label="Shell"
-                />
+                <IconButton class="material-icons" on:click={terminalShell}>play_arrow</IconButton>
+                <CustomSwitch style="margin: 0 1em;" bind:selected={openShellTerminal} label="Shell" />
                 <Textfield
                     type="number"
                     step="1"
@@ -170,25 +142,16 @@
                 <IconButton
                     class="material-icons is-pulled-right"
                     style="background: #f14668; border-radius: 2em;"
-                    on:click={() =>
-                        (commandResults = [
-                            { color: colorSets.normal, results: `>> cleared` },
-                        ])}>clear</IconButton
+                    on:click={() => (commandResults = [{ color: colorSets.normal, results: `>> cleared` }])}
+                    >clear</IconButton
                 >
             </div>
         </div>
     {/if}
 
-    <div
-        class="box terminal"
-        {id}
-        style="height: {commandInputDiv ? 75 : 90}%;"
-    >
+    <div class="box terminal" {id} style="height: {commandInputDiv ? 75 : 90}%;">
         {#each commandResults as { color, results }}
-            <h1
-                class="subtitle"
-                style="color:{color}; font-size:{teminalFontSize}px; white-space: pre-wrap; "
-            >
+            <h1 class="subtitle" style="color:{color}; font-size:{teminalFontSize}px; white-space: pre-wrap; ">
                 {results}
             </h1>
         {/each}

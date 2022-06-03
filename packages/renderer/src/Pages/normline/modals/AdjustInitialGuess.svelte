@@ -19,10 +19,6 @@
                 sortOption={true}
             />
         </svelte:fragment>
-        <button
-            slot="footerbtn"
-            class="button is-link"
-            on:click={() => dispatch('save')}>Save</button
-        >
+        <button slot="footerbtn" class="button is-link" on:click={() => dispatch('save')}>Save</button>
     </Modal>
 {/if}

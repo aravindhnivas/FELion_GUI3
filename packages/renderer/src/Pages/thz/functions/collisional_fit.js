@@ -1,8 +1,6 @@
 import DLSFit from 'ml-levenberg-marquardt'
 
-onmessage = async function ({
-    data: { fileContents = '', collisionalTemp = 5 },
-}) {
+onmessage = async function ({ data: { fileContents = '', collisionalTemp = 5 } }) {
     console.log('Running worker')
     const data = fileContents
         .split('\n')
@@ -28,9 +26,7 @@ onmessage = async function ({
         const [i, j] = [currentRate[0], currentRate[1]]
         const label = `${i} --> ${j}`
 
-        const currentRequiredRateData = currentRate
-            .slice(2, 2 + temperature.length)
-            .map((r) => parseFloat(r))
+        const currentRequiredRateData = currentRate.slice(2, 2 + temperature.length).map((r) => parseFloat(r))
 
         const dataToFit = {
             x: temperature,

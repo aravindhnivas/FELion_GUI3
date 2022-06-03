@@ -51,10 +51,7 @@ export function exp_fit_func({ dataFromPython } = {}) {
     } else {
         if (get(collectData)) {
             console.log('Collecting lines')
-            expfittedLinesCollectedData.update((data) => [
-                ...data,
-                dataFromPython['for_weighted_error'],
-            ])
+            expfittedLinesCollectedData.update((data) => [...data, dataFromPython['for_weighted_error']])
         }
     }
     let newTable = {

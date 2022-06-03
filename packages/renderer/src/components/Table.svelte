@@ -53,11 +53,7 @@
     {/if}
 
     {#if addextraOption}
-        <i
-            class="material-icons"
-            style="float: right; padding: 0.5em;"
-            on:click={addRow}>add</i
-        >
+        <i class="material-icons" style="float: right; padding: 0.5em;" on:click={addRow}>add</i>
     {/if}
 
     <div class="mdc-data-table tableContainer">
@@ -69,12 +65,7 @@
         >
             <thead>
                 <tr class="mdc-data-table__header-row">
-                    <th
-                        class="mdc-data-table__header-cell"
-                        style="width: 2em;"
-                        role="columnheader"
-                        scope="col">#</th
-                    >
+                    <th class="mdc-data-table__header-cell" style="width: 2em;" role="columnheader" scope="col">#</th>
 
                     {#each head as item, index (item)}
                         <th
@@ -83,15 +74,9 @@
                             role="columnheader"
                             scope="col"
                         >
-                            <div
-                                class="tableIcon"
-                                on:click={() => sortTable(keys[index])}
-                            >
+                            <div class="tableIcon" on:click={() => sortTable(keys[index])}>
                                 {#if sortOption}
-                                    <i class="material-icons"
-                                        >{sortTypeAscending
-                                            ? 'arrow_upward'
-                                            : 'arrow_downward'}</i
+                                    <i class="material-icons">{sortTypeAscending ? 'arrow_upward' : 'arrow_downward'}</i
                                     >
                                 {/if}
                                 {item}
@@ -103,19 +88,10 @@
 
             <tbody class="mdc-data-table__content">
                 {#each rows as row, index (row.id)}
-                    <tr
-                        class="mdc-data-table__row"
-                        style="background-color: #fafafa;"
-                        transition:animate
-                    >
-                        <td class="mdc-data-table__cell" style="width: 2em;"
-                            >{index}</td
-                        >
+                    <tr class="mdc-data-table__row" style="background-color: #fafafa;" transition:animate>
+                        <td class="mdc-data-table__cell" style="width: 2em;">{index}</td>
                         {#each keys as key (key)}
-                            <td
-                                class="mdc-data-table__cell  mdc-data-table__cell--numeric"
-                                id="{row.id}-{key}"
-                            >
+                            <td class="mdc-data-table__cell  mdc-data-table__cell--numeric" id="{row.id}-{key}">
                                 <input
                                     type="text"
                                     bind:value={row[key]}
@@ -125,17 +101,12 @@
                             </td>
                         {/each}
                         {#if closeOption}
-                            <td
-                                class="mdc-data-table__cell"
-                                style="background: #f14668; cursor: pointer; width: 2em;"
-                            >
+                            <td class="mdc-data-table__cell" style="background: #f14668; cursor: pointer; width: 2em;">
                                 <i
                                     id={row.id}
                                     class="material-icons"
                                     on:click={(e) => {
-                                        rows = rows.filter(
-                                            (tb) => tb.id != e.target.id
-                                        )
+                                        rows = rows.filter((tb) => tb.id != e.target.id)
                                     }}>close</i
                                 >
                             </td>

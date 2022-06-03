@@ -1,10 +1,5 @@
 <script>
-    import {
-        relayout,
-        addTraces,
-        deleteTraces,
-        restyle,
-    } from 'plotly.js/dist/plotly-basic'
+    import { relayout, addTraces, deleteTraces, restyle } from 'plotly.js/dist/plotly-basic'
     import { plot, plotlyEventsInfo } from '$src/js/functions'
     import computePy_func from '$src/Pages/general/computePy'
     import Layout from '$components/Layout.svelte'
@@ -21,9 +16,7 @@
 
     let fileChecked = []
     let currentLocation = ''
-    $: thzfiles = fileChecked.map((file) =>
-        window.path.resolve(currentLocation, file)
-    )
+    $: thzfiles = fileChecked.map((file) => window.path.resolve(currentLocation, file))
 
     let binSize = 10
     let binData = true
@@ -34,25 +27,13 @@
 
     let fittedParamsTable = []
     const freqTableKeys = ['filename', 'freq', 'amp', 'fG', 'fL']
-    const tableHeader = [
-        'Filename',
-        'freq (MHz)',
-        'amp',
-        'fG (MHz)',
-        'fL (MHz)',
-    ]
+    const tableHeader = ['Filename', 'freq (MHz)', 'amp', 'fG (MHz)', 'fL (MHz)']
     let rawDataProcessed = { data: null }
     let dataProcessed = {}
     let numOfFittedLines = 0
     let dataReady = false
 
-    async function plotData({
-        e = null,
-        filetype = 'thz',
-        tkplot = false,
-        justPlot = false,
-        general = {},
-    } = {}) {
+    async function plotData({ e = null, filetype = 'thz', tkplot = false, justPlot = false, general = {} } = {}) {
         if (fileChecked.length === 0 && filetype === 'thz') {
             return window.createToast('No files selected', 'danger')
         }
@@ -82,8 +63,7 @@
             return computePy_func({ e, pyfile, args, general: true })
         }
 
-        if (!justPlot && paramsTable.length < 1)
-            return window.createToast('No initial guesses were given', 'danger')
+        if (!justPlot && paramsTable.length < 1) return window.createToast('No initial guesses were given', 'danger')
         dataReady = false
 
         const dataFromPython = await computePy_func({ e, pyfile, args })
@@ -97,12 +77,11 @@
                 const fitDataProcessed = { ...individual, ...averaged }
                 addTraces('thzPlot', fitDataProcessed[fitfile + '_fit'])
                 numOfFittedLines++
-                const receivedPramsTable =
-                    dataFromPython?.fittedParamsTable || []
-                fittedParamsTable = [
-                    ...fittedParamsTable,
-                    ...receivedPramsTable,
-                ].map((row) => ({ ...row, id: window.getID() }))
+                const receivedPramsTable = dataFromPython?.fittedParamsTable || []
+                fittedParamsTable = [...fittedParamsTable, ...receivedPramsTable].map((row) => ({
+                    ...row,
+                    id: window.getID(),
+                }))
             } else {
                 const { averaged, individual } = dataFromPython['thz']
                 dataProcessed = { ...individual, ...averaged }
@@ -132,11 +111,7 @@
     })
 
     let varyAll = true
-    const [title, xlabel, ylabel] = [
-        'THz Scan: Depletion (%)',
-        'Frequency (GHz)',
-        'Depletion (%)',
-    ]
+    const [title, xlabel, ylabel] = ['THz Scan: Depletion (%)', 'Frequency (GHz)', 'Depletion (%)']
 
     $: if (showall && dataProcessed) {
         plot(title, xlabel, ylabel, dataProcessed, 'thzPlot', null, true)
@@ -152,24 +127,12 @@
     }
 
     $: if (showall && rawDataProcessed?.data) {
-        plot(
-            'THz Scan',
-            'Frequency (GHz)',
-            'Counts',
-            rawDataProcessed.data,
-            'resOnOffPlot'
-        )
+        plot('THz Scan', 'Frequency (GHz)', 'Counts', rawDataProcessed.data, 'resOnOffPlot')
     } else if (plotfile !== 'averaged' && rawDataProcessed?.data) {
         const dataToPlot = {}
         dataToPlot[`${plotfile}_On`] = rawDataProcessed.data[`${plotfile}_On`]
         dataToPlot[`${plotfile}_Off`] = rawDataProcessed.data[`${plotfile}_Off`]
-        plot(
-            'THz Scan',
-            'Frequency (GHz)',
-            'Counts',
-            dataToPlot,
-            'resOnOffPlot'
-        )
+        plot('THz Scan', 'Frequency (GHz)', 'Counts', dataToPlot, 'resOnOffPlot')
     }
 
     let plotfile = 'averaged'
@@ -196,22 +159,9 @@
     let display = window.db.get('active_tab') === id ? 'block' : 'none'
 </script>
 
-<THzFitParamsTable
-    bind:active={openTable}
-    bind:paramsTable
-    bind:varyAll
-    {currentLocation}
-    {fitMethod}
-/>
+<THzFitParamsTable bind:active={openTable} bind:paramsTable bind:varyAll {currentLocation} {fitMethod} />
 
-<Layout
-    {filetype}
-    {graphPlotted}
-    {id}
-    {display}
-    bind:currentLocation
-    bind:fileChecked
->
+<Layout {filetype} {graphPlotted} {id} {display} bind:currentLocation bind:fileChecked>
     <svelte:fragment slot="buttonContainer">
         <div class="align v-center">
             <button
@@ -229,39 +179,18 @@
             <CustomCheckbox bind:value={showRawData} label="showRawData" />
 
             <CustomCheckbox bind:value={showall} label="show all" />
-            <CustomSelect
-                bind:value={plotfile}
-                label="plotfile"
-                options={[...fileChecked, 'averaged']}
-            />
+            <CustomSelect bind:value={plotfile} label="plotfile" options={[...fileChecked, 'averaged']} />
 
-            <button
-                class="button is-link"
-                on:click={(e) => plotData({ e: e, tkplot: true })}
-                >Open in Matplotlib</button
+            <button class="button is-link" on:click={(e) => plotData({ e: e, tkplot: true })}>Open in Matplotlib</button
             >
 
-            <CustomTextSwitch
-                bind:value={binSize}
-                label="binSize (kHz)"
-                step="0.1"
-            />
+            <CustomTextSwitch bind:value={binSize} label="binSize (kHz)" step="0.1" />
         </div>
 
         <div class="align" style="justify-content: flex-end;">
-            <i class="material-icons" on:click={() => (openTable = true)}
-                >settings</i
-            >
-            <CustomSelect
-                bind:value={fitfile}
-                label="fitfile"
-                options={[...fileChecked, 'averaged']}
-            />
-            <CustomSelect
-                bind:value={fitMethod}
-                label="fit method"
-                options={['gaussian', 'lorentz', 'voigt']}
-            />
+            <i class="material-icons" on:click={() => (openTable = true)}>settings</i>
+            <CustomSelect bind:value={fitfile} label="fitfile" options={[...fileChecked, 'averaged']} />
+            <CustomSelect bind:value={fitMethod} label="fit method" options={['gaussian', 'lorentz', 'voigt']} />
             <button
                 class="button is-link"
                 style="min-width: 7em;"

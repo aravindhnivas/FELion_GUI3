@@ -1,7 +1,7 @@
 import { exposeInMainWorld } from './exposeInMainWorld'
 import { promisify } from 'util'
 import { spawn, exec, execSync } from 'child_process'
-export {execSync}
+export { execSync }
 const execCommand = promisify(exec)
 
 export const spawnFn = (cmd, args = [], opts = {}) => {
@@ -24,8 +24,6 @@ export const spawnFn = (cmd, args = [], opts = {}) => {
         stderr: { on: (key, callback) => process.stderr.on(key, callback) },
     }
 }
-
-
 
 export const computeExecCommand = async (cmd) => {
     console.log(`Executing command: ${cmd}`)

@@ -20,11 +20,7 @@
     <header class="quickview-header">
         <button class="button is-link" on:click={browse_folder}>Browse</button>
         <div class="subtitle" style="margin:0;">{title}</div>
-        <span
-            class="delete is-pulled-right"
-            data-dismiss="quickview"
-            on:click={() => (active = false)}
-        />
+        <span class="delete is-pulled-right" data-dismiss="quickview" on:click={() => (active = false)} />
     </header>
 
     <div class="quickview-body">

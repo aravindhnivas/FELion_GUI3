@@ -30,23 +30,17 @@ export async function readMassFile(massfiles) {
                 )
 
             console.info(name, 'filtered')
-            const [x, y] = dataContents[0].map((_, colIndex) =>
-                dataContents.map((row) => row[colIndex])
-            )
+            const [x, y] = dataContents[0].map((_, colIndex) => dataContents.map((row) => row[colIndex]))
             const mode = 'lines'
             const showlegend = true
             console.info(name, 'done\n')
 
-            const fileVariableComputedValues = await get_files_settings_values(
-                filename
-            )
+            const fileVariableComputedValues = await get_files_settings_values(filename)
             const res = fileVariableComputedValues['m03_ao13_reso']
             const b0 = fileVariableComputedValues['m03_ao09_width'] / 1000
             const trap = fileVariableComputedValues['m04_ao04_sa_delay'] / 1000
 
-            const label = `${name}: Res:${res?.toFixed(1)} V; B0: ${b0?.toFixed(
-                0
-            )} ms; trap: ${trap?.toFixed(0)} ms`
+            const label = `${name}: Res:${res?.toFixed(1)} V; B0: ${b0?.toFixed(0)} ms; trap: ${trap?.toFixed(0)} ms`
             dataToSend[name] = { x, y, name: label, mode, showlegend }
         }
 

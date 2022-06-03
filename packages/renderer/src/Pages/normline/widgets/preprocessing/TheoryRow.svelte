@@ -1,9 +1,5 @@
 <script>
-    import {
-        toggleRow,
-        felixopoLocation,
-        normMethod,
-    } from '../../functions/svelteWritables'
+    import { toggleRow, felixopoLocation, normMethod } from '../../functions/svelteWritables'
     import { theory_func } from '../../functions/theory'
     // import { fade } from 'svelte/transition'
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
@@ -25,16 +21,13 @@
     let theoryfilesChecked = []
 
     $: if (window.fs.existsSync(theoryLocation)) {
-        theoryfiles = theoryfilesChecked.map((file) =>
-            window.path.resolve(theoryLocation, file)
-        )
+        theoryfiles = theoryfilesChecked.map((file) => window.path.resolve(theoryLocation, file))
     }
 
     async function plotData(e = null) {
         const pyfile = 'normline.theory'
 
-        if (theoryfiles.length < 1)
-            return window.createToast('No files selected', 'danger')
+        if (theoryfiles.length < 1) return window.createToast('No files selected', 'danger')
 
         const args = {
             theoryfiles,
@@ -79,31 +72,10 @@
         >
             Browse File</button
         >
-        <CustomTextSwitch
-            style="width:7em;"
-            variant="outlined"
-            bind:value={sigma}
-            label="Sigma"
-            step="0.5"
-        />
-        <CustomTextSwitch
-            style="width:7em"
-            variant="outlined"
-            bind:value={scale}
-            label="Scale"
-            step="0.001"
-            max="1"
-        />
-        <CustomSwitch
-            style="margin: 0 1em;"
-            bind:selected={onlyExpRange}
-            label="Only Exp. Range"
-        />
-        <CustomSwitch
-            style="margin: 0 1em;"
-            bind:selected={tkplot}
-            label="Matplotlib"
-        />
+        <CustomTextSwitch style="width:7em;" variant="outlined" bind:value={sigma} label="Sigma" step="0.5" />
+        <CustomTextSwitch style="width:7em" variant="outlined" bind:value={scale} label="Scale" step="0.001" max="1" />
+        <CustomSwitch style="margin: 0 1em;" bind:selected={onlyExpRange} label="Only Exp. Range" />
+        <CustomSwitch style="margin: 0 1em;" bind:selected={tkplot} label="Matplotlib" />
         <button class="button is-link" on:click={plotData}>Replot</button>
     </div>
 {/if}

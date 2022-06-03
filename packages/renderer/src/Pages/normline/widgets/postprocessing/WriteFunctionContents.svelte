@@ -10,31 +10,11 @@
 </script>
 
 <div class="align">
-    <CustomSelect
-        bind:value={$felixOutputName}
-        label="Output filename"
-        options={output_namelists}
-    />
+    <CustomSelect bind:value={$felixOutputName} label="Output filename" options={output_namelists} />
 
-    <Textfield
-        style="width:7em; margin:0 0.5em;"
-        bind:value={writeFileName}
-        label="writeFileName"
-    />
-    <CustomSwitch
-        style="margin: 0 1em;"
-        bind:selected={writeFile}
-        label="Write"
-    />
-    <CustomSwitch
-        style="margin: 0 1em;"
-        bind:selected={overwrite_expfit}
-        label="Overwrite"
-    />
-    <button class="button is-link" on:click={() => dispatch('addfile')}
-        >Add files</button
-    >
-    <button class="button is-link" on:click={() => dispatch('removefile')}
-        >Remove files</button
-    >
+    <Textfield style="width:7em; margin:0 0.5em;" bind:value={writeFileName} label="writeFileName" />
+    <CustomSwitch style="margin: 0 1em;" bind:selected={writeFile} label="Write" />
+    <CustomSwitch style="margin: 0 1em;" bind:selected={overwrite_expfit} label="Overwrite" />
+    <button class="button is-link" on:click={() => dispatch('addfile')}>Add files</button>
+    <button class="button is-link" on:click={() => dispatch('removefile')}>Remove files</button>
 </div>

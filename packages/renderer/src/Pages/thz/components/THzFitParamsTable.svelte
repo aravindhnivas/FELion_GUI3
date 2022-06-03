@@ -28,12 +28,9 @@
     }
 
     const loadConfig = () => {
-        if (!window.fs.existsSync(saveParamsToFile))
-            return window.createToast('No files saved yet', 'danger')
+        if (!window.fs.existsSync(saveParamsToFile)) return window.createToast('No files saved yet', 'danger')
         const [readParams] = window.fs.readJsonSync(saveParamsToFile)
-        const frequencies = Object.keys(readParams).filter(
-            (key) => key !== 'units'
-        )
+        const frequencies = Object.keys(readParams).filter((key) => key !== 'units')
         paramsTable = frequencies.map((freq) => {
             const { amp, fG, fL } = readParams[freq]
             const id = window.getID()
@@ -62,32 +59,18 @@
     }
 </script>
 
-<ModalTable
-    bind:active
-    title="Config table"
-    bind:rows={paramsTable}
-    {keys}
-    sortOption={true}
->
+<ModalTable bind:active title="Config table" bind:rows={paramsTable} {keys} sortOption={true}>
     <svelte:fragment slot="header">
-        <Textfield
-            bind:value={savefilename}
-            label="savefilename"
-            style="width: 100%;"
-        />
+        <Textfield bind:value={savefilename} label="savefilename" style="width: 100%;" />
     </svelte:fragment>
 
     <svelte:fragment slot="footer">
         <div class="align">
             <CustomCheckbox bind:value={varyAll} label="varyAll" />
-            <button class="button is-link" on:click={getValuesFromAnnotations}
-                >getValuesFromAnnotations</button
-            >
+            <button class="button is-link" on:click={getValuesFromAnnotations}>getValuesFromAnnotations</button>
             <button class="button is-link" on:click={saveConfig}>Save</button>
             <button class="button is-link" on:click={loadConfig}>Load</button>
-            <button class="button is-danger" on:click={() => (paramsTable = [])}
-                >Clear ALL</button
-            >
+            <button class="button is-danger" on:click={() => (paramsTable = [])}>Clear ALL</button>
         </div>
     </svelte:fragment>
 </ModalTable>

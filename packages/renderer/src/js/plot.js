@@ -4,15 +4,7 @@ import { writable, get } from 'svelte/store'
 
 export const plotlyEventsInfo = writable({})
 
-export function plot(
-    mainTitle,
-    xtitle,
-    ytitle,
-    data,
-    graphDiv,
-    logScale = null,
-    createPlotlyClickEvent = false
-) {
+export function plot(mainTitle, xtitle, ytitle, data, graphDiv, logScale = null, createPlotlyClickEvent = false) {
     let dataLayout = {
         title: mainTitle,
         xaxis: { title: xtitle },
@@ -32,15 +24,8 @@ export function plot(
         if (!get(plotlyEventsInfo)[graphDiv]) {
             get(plotlyEventsInfo)[graphDiv] = {}
         }
-        console.log(
-            graphDiv,
-            ': plotted',
-            get(plotlyEventsInfo)[graphDiv].eventCreated
-        )
-        if (
-            !get(plotlyEventsInfo)[graphDiv].eventCreated &&
-            createPlotlyClickEvent
-        ) {
+        console.log(graphDiv, ': plotted', get(plotlyEventsInfo)[graphDiv].eventCreated)
+        if (!get(plotlyEventsInfo)[graphDiv].eventCreated && createPlotlyClickEvent) {
             console.log('Creating plotly event for ', graphDiv)
             plotlyClick(graphDiv)
         }
@@ -50,16 +35,7 @@ export function plot(
     }
 }
 
-export function subplot(
-    mainTitle,
-    xtitle,
-    ytitle,
-    data,
-    graphDiv,
-    x2,
-    y2,
-    data2
-) {
+export function subplot(mainTitle, xtitle, ytitle, data, graphDiv, x2, y2, data2) {
     let dataLayout = {
         title: mainTitle,
         xaxis: { domain: [0, 0.4], title: xtitle },
@@ -105,37 +81,22 @@ export function plotlyClick(graphDiv) {
             const currentDataPoint = points[0]
             const { x: mass, y: counts } = currentDataPoint
             if (data.event.shiftKey) {
-                const annotate = find(
-                    get(plotlyEventsInfo)[graphDiv].annotations,
-                    (m) => {
-                        const massValue = m.text.split(', ')[0].split('(')[1]
-                        return (
-                            massValue >= mass - 0.2 && massValue <= mass + 0.2
-                        )
-                    }
-                )
+                const annotate = find(get(plotlyEventsInfo)[graphDiv].annotations, (m) => {
+                    const massValue = m.text.split(', ')[0].split('(')[1]
+                    return massValue >= mass - 0.2 && massValue <= mass + 0.2
+                })
 
-                const annotations = differenceBy(
-                    get(plotlyEventsInfo)[graphDiv].annotations,
-                    [annotate],
-                    'x'
-                )
+                const annotations = differenceBy(get(plotlyEventsInfo)[graphDiv].annotations, [annotate], 'x')
                 plotlyEventsInfo.update((info) => {
                     const contents = info[graphDiv]
                     contents.annotations = annotations
                     return { ...info, contents }
                 })
 
-                console.log(
-                    get(plotlyEventsInfo)[graphDiv].annotations,
-                    annotate
-                )
+                console.log(get(plotlyEventsInfo)[graphDiv].annotations, annotate)
             } else {
                 let logScale = graph?.layout.yaxis.type === 'log'
-                const { color } =
-                    currentDataPoint.fullData.line ||
-                    currentDataPoint.fullData.marker ||
-                    ''
+                const { color } = currentDataPoint.fullData.line || currentDataPoint.fullData.marker || ''
 
                 const annotate = {
                     text: `(${mass.toFixed(1)}, ${counts.toFixed(1)})`,

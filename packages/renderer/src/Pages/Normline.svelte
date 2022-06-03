@@ -39,9 +39,7 @@
     // let toggleBrowser = false;
     let currentLocation = ''
 
-    $: felixfiles = fileChecked.map((file) =>
-        window.path.resolve(currentLocation, file)
-    )
+    $: felixfiles = fileChecked.map((file) => window.path.resolve(currentLocation, file))
     $: console.log(`${filetype} currentlocation: \n${currentLocation}`)
 
     ///////////////////////////////////////////////////////////////////////
@@ -65,9 +63,7 @@
     $: output_namelists = [
         'averaged',
         ...plottedFiles,
-        ...addedfiles
-            .map((file) => window.path.basename(file))
-            .map((file) => file.split('.')[0]),
+        ...addedfiles.map((file) => window.path.basename(file)).map((file) => file.split('.')[0]),
     ]
 
     // OPO
@@ -104,16 +100,8 @@
     let activateConfigModal = false
 
     $: $opoMode
-        ? (fullfiles = [
-              ...opofiles,
-              ...addedfiles,
-              window.path.resolve(currentLocation, 'averaged.felix'),
-          ])
-        : (fullfiles = [
-              ...felixfiles,
-              ...addedfiles,
-              window.path.resolve(currentLocation, 'averaged.felix'),
-          ])
+        ? (fullfiles = [...opofiles, ...addedfiles, window.path.resolve(currentLocation, 'averaged.felix')])
+        : (fullfiles = [...felixfiles, ...addedfiles, window.path.resolve(currentLocation, 'averaged.felix')])
 
     let modalActivate = false
     let adjustPeakTrigger = false
@@ -122,9 +110,7 @@
     let showFELIX = true
     let showOPO = true
     let showMoreOptions = false
-    $: plotfileOptions = $opoMode
-        ? [...OPOfilesChecked, 'average']
-        : [...fileChecked, 'average']
+    $: plotfileOptions = $opoMode ? [...OPOfilesChecked, 'average'] : [...fileChecked, 'average']
 
     onDestroy(() => {
         $felixGraphPlotted = false
@@ -145,10 +131,7 @@
     bind:active={addFileModal}
 />
 
-<AdjustInitialGuess
-    bind:active={modalActivate}
-    on:save={() => (adjustPeakTrigger = true)}
-/>
+<AdjustInitialGuess bind:active={modalActivate} on:save={() => (adjustPeakTrigger = true)} />
 
 <Layout
     {id}
@@ -161,26 +144,12 @@
     on:markedFile={(e) => ($baselineFile = e.detail.markedFile)}
 >
     <svelte:fragment slot="buttonContainer">
-        <InitFunctionRow
-            {removeExtraFile}
-            {felixfiles}
-            {theoryLocation}
-            {plotfile}
-        />
-        <OPORow
-            {removeExtraFile}
-            bind:OPOLocation
-            bind:OPOfilesChecked
-            bind:opofiles
-            {plotfile}
-        />
+        <InitFunctionRow {removeExtraFile} {felixfiles} {theoryLocation} {plotfile} />
+        <OPORow {removeExtraFile} bind:OPOLocation bind:OPOfilesChecked bind:opofiles {plotfile} />
         <TheoryRow bind:theoryLocation />
 
         <div class="align">
-            <CustomRadio
-                bind:value={$normMethod}
-                options={['Log', 'Relative', 'IntensityPerPhoton']}
-            />
+            <CustomRadio bind:value={$normMethod} options={['Log', 'Relative', 'IntensityPerPhoton']} />
             <IconButton
                 style="margin-left: auto;"
                 label="More options"
@@ -190,56 +159,30 @@
         </div>
 
         <div class="align" class:hide={!showMoreOptions}>
-            <CustomSelect
-                bind:value={plotfile}
-                label="plotfile"
-                options={plotfileOptions}
-            />
+            <CustomSelect bind:value={plotfile} label="plotfile" options={plotfileOptions} />
             <CustomSwitch bind:selected={showFELIX} label="showFELIX" />
             <CustomSwitch bind:selected={showOPO} label="showOPO" />
             <CustomSwitch bind:selected={showTheory} label="showTheory" />
             <CustomSwitch bind:selected={$showall} label="showall" />
 
             <CustomSwitch bind:selected={$showRawData} label="showRawData" />
-            <CustomSwitch
-                bind:selected={$showPowerData}
-                label="showPowerData"
-            />
+            <CustomSwitch bind:selected={$showPowerData} label="showPowerData" />
         </div>
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer">
         <div class="graph_container" id="plot_container__div__{filetype}">
-            <div
-                class="animate__animated animate__fadeIn graph__div"
-                class:hide={!showTheory}
-                id="exp-theory-plot"
-            />
+            <div class="animate__animated animate__fadeIn graph__div" class:hide={!showTheory} id="exp-theory-plot" />
             <div id="felix_graphs" class:hide={!showFELIX}>
                 <div id="bplot" class="graph__div" class:hide={!$showRawData} />
-                <div
-                    id="saPlot"
-                    class="graph__div"
-                    class:hide={!$showPowerData}
-                />
+                <div id="saPlot" class="graph__div" class:hide={!$showPowerData} />
                 <div id="avgplot" class="graph__div" />
             </div>
 
             <div id="opo_graphs" class:hide={!showOPO}>
-                <div
-                    class="animate__animated animate__fadeIn graph__div"
-                    class:hide={!$showRawData}
-                    id="opoplot"
-                />
-                <div
-                    class="animate__animated animate__fadeIn graph__div"
-                    class:hide={!$showRawData}
-                    id="opoSA"
-                />
-                <div
-                    class="animate__animated animate__fadeIn graph__div"
-                    id="opoRelPlot"
-                />
+                <div class="animate__animated animate__fadeIn graph__div" class:hide={!$showRawData} id="opoplot" />
+                <div class="animate__animated animate__fadeIn graph__div" class:hide={!$showRawData} id="opoSA" />
+                <div class="animate__animated animate__fadeIn graph__div" id="opoRelPlot" />
             </div>
         </div>
     </svelte:fragment>

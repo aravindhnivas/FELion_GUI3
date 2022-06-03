@@ -35,10 +35,7 @@ function removeSourceMaps(startPath) {
             removeSourceMaps(filename) //recurse
         } else if (filename.endsWith('.js')) {
             let fileContent = fs.readFileSync(filename).toString()
-            let result = fileContent.replace(
-                /^\/\/# sourceMappingURL=.+$/gm,
-                ''
-            )
+            let result = fileContent.replace(/^\/\/# sourceMappingURL=.+$/gm, '')
             if (result !== fileContent) {
                 console.log('-- removing SourceMap link: ', filename)
                 fs.writeFileSync(filename, result)

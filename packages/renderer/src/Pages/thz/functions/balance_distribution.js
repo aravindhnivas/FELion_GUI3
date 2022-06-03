@@ -1,7 +1,4 @@
-import {
-    boltzmanConstantInMHz,
-    boltzmanConstantInWavenumber,
-} from '$src/js/constants'
+import { boltzmanConstantInMHz, boltzmanConstantInWavenumber } from '$src/js/constants'
 
 export default function ({
     label,
@@ -41,12 +38,7 @@ export default function ({
     }
 }
 
-export function computeStatisticalWeight({
-    electronSpin = false,
-    zeemanSplit = false,
-    final,
-    initial,
-} = {}) {
+export function computeStatisticalWeight({ electronSpin = false, zeemanSplit = false, final, initial } = {}) {
     let Gi, Gf
 
     if (!zeemanSplit) {

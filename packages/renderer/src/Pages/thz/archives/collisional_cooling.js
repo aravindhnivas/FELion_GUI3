@@ -1,10 +1,6 @@
 import { Solver } from 'odex'
 
-function computeODECollision({
-    collisionalRateConstants,
-    numberDensity,
-    energyKeys,
-}) {
+function computeODECollision({ collisionalRateConstants, numberDensity, energyKeys }) {
     return function (t, y) {
         numberDensity = parseFloat(numberDensity)
 
@@ -28,32 +24,21 @@ function computeODECollision({
                 const keyInverse = `${i} --> ${j}`
 
                 if (i !== j) {
-                    const forward =
-                        rateConstants[key] * numberDensity * ionCounts[j]
-                    const reverse =
-                        rateConstants[keyInverse] * numberDensity * ionCounts[i]
+                    const forward = rateConstants[key] * numberDensity * ionCounts[j]
+                    const reverse = rateConstants[keyInverse] * numberDensity * ionCounts[i]
                     const currentValue = forward - reverse
                     collections.push(currentValue)
                 }
             }
             collisionalCollection.push(collections)
         }
-        const dR_dT = collisionalCollection.map((collect) =>
-            collect.reduce((a, b) => a + b)
-        )
+        const dR_dT = collisionalCollection.map((collect) => collect.reduce((a, b) => a + b))
         return dR_dT
     }
 }
 
 onmessage = function ({
-    data: {
-        collisionalRateConstants,
-        numberDensity,
-        boltzmanDistribution,
-        t0 = 0,
-        duration,
-        totalSteps,
-    },
+    data: { collisionalRateConstants, numberDensity, boltzmanDistribution, t0 = 0, duration, totalSteps },
 }) {
     console.log('Worker: Message received from main script')
     console.log('Starting ODE solver...')
@@ -88,9 +73,7 @@ onmessage = function ({
             })
         )
         console.log('ODE solved')
-        const solutionByMolecule = solutionValues[0].map((_, colIndex) =>
-            solutionValues.map((row) => row[colIndex])
-        )
+        const solutionByMolecule = solutionValues[0].map((_, colIndex) => solutionValues.map((row) => row[colIndex]))
         const finalData = {}
         energyKeys.forEach((key, index) => {
             finalData[key] = {

@@ -1,9 +1,6 @@
 import { pyServerPORT, get } from './svelteWritables'
 
-export const checkTCP = async ({
-    target = null,
-    portNumber = get(pyServerPORT),
-}) => {
+export const checkTCP = async ({ target = null, portNumber = get(pyServerPORT) }) => {
     try {
         target?.classList.toggle('is-loading')
         console.warn(`cheking TCP connection on port ${portNumber}`)
@@ -20,10 +17,7 @@ export const checkTCP = async ({
     }
 }
 
-export const fetchServerROOT = async ({
-    target = null,
-    portNumber = get(pyServerPORT),
-}) => {
+export const fetchServerROOT = async ({ target = null, portNumber = get(pyServerPORT) }) => {
     try {
         console.warn('fetching python server root')
         target?.classList.toggle('is-loading')

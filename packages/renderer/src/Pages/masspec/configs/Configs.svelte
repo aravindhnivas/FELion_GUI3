@@ -7,9 +7,5 @@
 
 {#each Object.keys($configs) as key (key)}
     {@const component = components[$configs[key].component]}
-    <svelte:component
-        this={component}
-        label={key}
-        bind:value={$configs[key].value}
-    />
+    <svelte:component this={component} label={key} bind:value={$configs[key].value} />
 {/each}

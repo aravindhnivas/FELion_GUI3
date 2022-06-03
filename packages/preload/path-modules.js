@@ -1,5 +1,5 @@
 import { exposeInMainWorld } from './exposeInMainWorld'
-import {resolve, join, dirname, basename, } from 'path'
+import { resolve, join, dirname, basename } from 'path'
 export const path = {
     resolve,
     join,

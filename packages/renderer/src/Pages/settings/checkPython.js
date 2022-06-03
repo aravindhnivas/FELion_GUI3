@@ -1,11 +1,4 @@
-import {
-    pythonpath,
-    pythonscript,
-    pyVersion,
-    developerMode,
-    pyProgram,
-    get,
-} from './svelteWritables'
+import { pythonpath, pythonscript, pyVersion, developerMode, pyProgram, get } from './svelteWritables'
 
 export async function resetPyConfig() {
     const pyPath = window.path.join(ROOT_DIR, 'python3/python')
@@ -38,17 +31,13 @@ export async function getPyVersion(e) {
     e?.target?.classList.toggle('is-loading')
 
     const pyfile = 'getVersion'
-    const pyArgs = get(developerMode)
-        ? window.path.join(get(pythonscript), 'main.py')
-        : ''
+    const pyArgs = get(developerMode) ? window.path.join(get(pythonscript), 'main.py') : ''
 
     const command = `${get(pyProgram)} ${pyArgs} ${pyfile} {} `
     const [{ stdout }, error] = await window.exec(command)
     if (error) return Promise.reject(error)
 
-    const [version] = stdout
-        ?.split('\n')
-        .filter?.((line) => line.includes('Python')) || ['']
+    const [version] = stdout?.split('\n').filter?.((line) => line.includes('Python')) || ['']
     pyVersion.set(version?.trim() || '')
     console.log({ stdout, version })
 

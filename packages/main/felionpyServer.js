@@ -17,17 +17,13 @@ const getCurrentDevStatus = () => {
     }
 
     const developerMode = db.get('developerMode')
-    const pythonscript =
-        db.get('pythonscript') || path.join(ROOT_DIR, 'resources/python_files')
-    const pythonpath =
-        db.get('pythonpath') || path.join(ROOT_DIR, 'resources/python_files')
+    const pythonscript = db.get('pythonscript') || path.join(ROOT_DIR, 'resources/python_files')
+    const pythonpath = db.get('pythonpath') || path.join(ROOT_DIR, 'resources/python_files')
     let pyProgram
     if (app.isPackaged) {
         pyProgram = path.join(ROOT_DIR, '../../resources/felionpy/felionpy')
     } else {
-        pyProgram = developerMode
-            ? pythonpath
-            : path.join(ROOT_DIR, 'resources/felionpy/felionpy')
+        pyProgram = developerMode ? pythonpath : path.join(ROOT_DIR, 'resources/felionpy/felionpy')
     }
 
     const mainpyfile = developerMode ? path.join(pythonscript, 'main.py') : ''
@@ -46,9 +42,7 @@ export async function getPyVersion() {
         console.info(command)
         const { stdout } = await execCommand(command)
 
-        const [version] = stdout
-            ?.split('\n')
-            ?.filter?.((line) => line.includes('Python')) || ['']
+        const [version] = stdout?.split('\n')?.filter?.((line) => line.includes('Python')) || ['']
         pyVersion = version?.trim() || ''
         console.log({ stdout, version })
         // webContents?.send('db:update', {key: "pyVersion", value: pyVersion})
@@ -91,12 +85,8 @@ export async function startServer(webContents) {
         if (!pyVersion) {
             pyVersion = await getPyVersion()
             if (!pyVersion) {
-                console.error(
-                    'Python is not valid. Fix it in Settings --> Configuration'
-                )
-                reject(
-                    'Python is not valid. Fix it in Settings --> Configuration'
-                )
+                console.error('Python is not valid. Fix it in Settings --> Configuration')
+                reject('Python is not valid. Fix it in Settings --> Configuration')
                 return
             }
         }
@@ -104,10 +94,7 @@ export async function startServer(webContents) {
         webContents?.send('db:update', { key: 'pyVersion', value: pyVersion })
 
         const pyfile = 'server'
-        const sendArgs = [
-            pyfile,
-            JSON.stringify({ port: availablePORT, debug: serverDebug }),
-        ]
+        const sendArgs = [pyfile, JSON.stringify({ port: availablePORT, debug: serverDebug })]
         const pyArgs = developerMode ? [mainpyfile, ...sendArgs] : sendArgs
         // console.warn({ pyProgram, pyArgs })
 

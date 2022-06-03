@@ -15,22 +15,12 @@ function openModalStore() {
         subscribe,
         set,
         update,
-        error(
-            modalContent = '',
-            modalTitle = 'Error Details',
-            type = 'danger',
-            message = 'Error Ocurred'
-        ) {
+        error(modalContent = '', modalTitle = 'Error Details', type = 'danger', message = 'Error Ocurred') {
             update((n) => {
                 return { modalTitle, type, modalContent, message, open: true }
             })
         },
-        info(
-            modalContent = '',
-            modalTitle = 'Output',
-            type = 'warning',
-            message = 'Output'
-        ) {
+        info(modalContent = '', modalTitle = 'Output', type = 'warning', message = 'Output') {
             update((n) => {
                 return { modalTitle, type, modalContent, message, open: true }
             })

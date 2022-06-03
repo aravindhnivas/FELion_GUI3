@@ -19,10 +19,7 @@
 
 <div class="box column">
     <div>
-        <CustomSwitch
-            bind:selected={defaultInitialValues}
-            label="defaultInitialValues"
-        />
+        <CustomSwitch bind:selected={defaultInitialValues} label="defaultInitialValues" />
         <Textfield bind:value={initialValues} label="initialValues" />
     </div>
     <div>

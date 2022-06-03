@@ -21,18 +21,13 @@
     const readConfigFile = () => {
         if (!window.fs.isFile(savefilename)) {
             if ($activePage === 'Kinetics') {
-                return window.createToast(
-                    'No config file found. Just compute and press save to create one',
-                    'danger'
-                )
+                return window.createToast('No config file found. Just compute and press save to create one', 'danger')
             }
             return
         }
         ;[contents] = window.fs.readJsonSync(savefilename)
         if (active) {
-            window.createToast(
-                'file read: ' + window.path.basename(savefilename)
-            )
+            window.createToast('file read: ' + window.path.basename(savefilename))
             compute()
         }
     }
@@ -52,9 +47,7 @@
             contents[selectedFile] = datas
             console.log(contents[selectedFile])
             window.fs.outputJsonSync(savefilename, contents)
-            window.createToast(
-                'file saved: ' + window.path.basename(savefilename)
-            )
+            window.createToast('file saved: ' + window.path.basename(savefilename))
         } catch (error) {
             window.handleError(error)
         }
@@ -63,10 +56,7 @@
     const compute = () => {
         const currentConfig = contents?.[selectedFile]
         if (active && !currentConfig) {
-            return window.createToast(
-                `config not found for selected file: ${selectedFile}`,
-                'danger'
-            )
+            return window.createToast(`config not found for selected file: ${selectedFile}`, 'danger')
         }
         updateCurrentConfig(currentConfig)
     }
@@ -80,12 +70,7 @@
     }}
 />
 {#if active}
-    <Modal
-        bind:active
-        title="{selectedFile}: {nHe} cm-3"
-        id="kinetis-number-density"
-        on:mounted={compute}
-    >
+    <Modal bind:active title="{selectedFile}: {nHe} cm-3" id="kinetis-number-density" on:mounted={compute}>
         <svelte:fragment slot="content">
             <NumberDensity
                 bind:updateCurrentConfig
@@ -99,15 +84,11 @@
                         <TextAndSelectOptsToggler
                             bind:value={filename}
                             label="config file (*.conditions.json)"
-                            options={config_filelists.filter((f) =>
-                                f.endsWith('.conditions.json')
-                            )}
+                            options={config_filelists.filter((f) => f.endsWith('.conditions.json'))}
                             update={readConfigDir}
                         />
 
-                        <button class="button is-link" on:click={readConfigFile}
-                            >Read file</button
-                        >
+                        <button class="button is-link" on:click={readConfigFile}>Read file</button>
 
                         <CustomSelect
                             on:change={compute}
@@ -115,13 +96,8 @@
                             label="Filename"
                             options={fileCollections}
                         />
-                        <span
-                            class="tag is-success"
-                            class:is-danger={!contents?.[selectedFile]}
-                        >
-                            config {contents?.[selectedFile]
-                                ? 'found'
-                                : 'not found'}
+                        <span class="tag is-success" class:is-danger={!contents?.[selectedFile]}>
+                            config {contents?.[selectedFile] ? 'found' : 'not found'}
                         </span>
                     </div>
                 </svelte:fragment>

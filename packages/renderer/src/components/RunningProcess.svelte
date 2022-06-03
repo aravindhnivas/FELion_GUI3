@@ -22,10 +22,8 @@
                 <Cell>{process.pid}</Cell>
                 <Cell>{process.pyfile}</Cell>
                 <Cell
-                    ><button
-                        class="button is-danger"
-                        style:background="#ff3860"
-                        on:click={() => process.kill()}>X</button
+                    ><button class="button is-danger" style:background="#ff3860" on:click={() => process.kill()}
+                        >X</button
                     ></Cell
                 >
             </Row>

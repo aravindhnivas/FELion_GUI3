@@ -34,12 +34,7 @@
         <Button action={label1} on:click={() => (response = label1)}>
             <Label>{label1}</Label>
         </Button>
-        <Button
-            action={label2}
-            default
-            use={[InitialFocus]}
-            on:click={() => (response = label2)}
-        >
+        <Button action={label2} default use={[InitialFocus]} on:click={() => (response = label2)}>
             <Label>{label2}</Label>
         </Button>
     </Actions>

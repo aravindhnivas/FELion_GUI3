@@ -29,11 +29,7 @@
 <div class="modal" class:is-active={active} use:mount>
     <div class="modal-background" />
 
-    <div
-        class="modal-card animate__animated animate__fadeIn animate__faster"
-        style:height
-        style:width
-    >
+    <div class="modal-card animate__animated animate__fadeIn animate__faster" style:height style:width>
         <header class="modal-card-head">
             <p class="modal-card-title">{title}</p>
             <span
@@ -47,9 +43,7 @@
 
         <section
             class="modal-card-body background-body"
-            style="overflow-y: {$$slots.body_scrollable__div
-                ? 'hidden'
-                : 'auto'} "
+            style="overflow-y: {$$slots.body_scrollable__div ? 'hidden' : 'auto'} "
         >
             <slot name="content" style="white-space: pre-wrap;" />
             <slot name="body_header__div" />

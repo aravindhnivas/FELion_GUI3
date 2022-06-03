@@ -37,16 +37,10 @@
 
         <div class="navbar-end">
             {#if $running_processes.length > 0}
-                <div
-                    class="navbar-item"
-                    on:click={show_process}
-                    style="cursor: pointer;"
-                >
+                <div class="navbar-item" on:click={show_process} style="cursor: pointer;">
                     <p>
                         Running {$running_processes.length}
-                        {$running_processes.length > 1
-                            ? 'processes'
-                            : 'process'}
+                        {$running_processes.length > 1 ? 'processes' : 'process'}
                     </p>
                 </div>
             {/if}

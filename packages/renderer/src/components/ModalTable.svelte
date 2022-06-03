@@ -17,28 +17,14 @@
 {#if active}
     <Modal bind:active {title}>
         <svelte:fragment slot="content">
-            <Table
-                head={keys}
-                {keys}
-                bind:rows
-                {sortOption}
-                {closeOption}
-                {addextraOption}
-                {animateRow}
-                {userSelect}
-            >
+            <Table head={keys} {keys} bind:rows {sortOption} {closeOption} {addextraOption} {animateRow} {userSelect}>
                 <svelte:fragment slot="header">
                     <slot name="header" />
                 </svelte:fragment>
             </Table>
         </svelte:fragment>
         <svelte:fragment slot="footerbtn">
-            <slot name="footer"
-                ><button
-                    class="button is-link"
-                    on:click={() => (active = false)}>Close</button
-                ></slot
-            >
+            <slot name="footer"><button class="button is-link" on:click={() => (active = false)}>Close</button></slot>
         </svelte:fragment>
     </Modal>
 {/if}

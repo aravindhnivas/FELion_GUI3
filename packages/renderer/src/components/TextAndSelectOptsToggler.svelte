@@ -20,9 +20,5 @@
     bind:value
     {label}
     {update}
-    options={options.includes(value)
-        ? options
-        : value
-        ? [value, ...options]
-        : options}
+    options={options.includes(value) ? options : value ? [value, ...options] : options}
 />

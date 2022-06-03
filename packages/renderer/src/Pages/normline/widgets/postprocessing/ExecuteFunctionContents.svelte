@@ -54,11 +54,7 @@
         }
 
         console.log('Removing all found peak values')
-        console.log(
-            { noOfFittedData },
-            fullfiles.length,
-            graphElement.data?.length
-        )
+        console.log({ noOfFittedData }, fullfiles.length, graphElement.data?.length)
 
         $felixIndex = []
         $expfittedLines = []
@@ -81,10 +77,7 @@
         $expfittedLines = dropRight($expfittedLines, 2)
 
         $felixPlotAnnotations = dropRight($felixPlotAnnotations, 1)
-        $expfittedLinesCollectedData = dropRight(
-            $expfittedLinesCollectedData,
-            1
-        )
+        $expfittedLinesCollectedData = dropRight($expfittedLinesCollectedData, 1)
         relayout($graphDiv, {
             annotations: $felixPlotAnnotations,
             shapes: $expfittedLines,
@@ -140,10 +133,7 @@
         switch (filetype) {
             case 'exp_fit':
                 if ($felixIndex.length < 2) {
-                    return window.createToast(
-                        'Range not found!!. Select a range using Box-select',
-                        'danger'
-                    )
+                    return window.createToast('Range not found!!. Select a range using Box-select', 'danger')
                 }
 
                 const expfit_args = {
@@ -171,10 +161,7 @@
             case 'NGauss_fit':
                 if (boxSelected_peakfinder) {
                     if ($felixIndex.length < 2) {
-                        window.createToast(
-                            'Box selection is turned ON so please select a wn. range to fit',
-                            'danger'
-                        )
+                        window.createToast('Box selection is turned ON so please select a wn. range to fit', 'danger')
                         return
                     }
 
@@ -184,10 +171,7 @@
                 }
 
                 if ($felixPeakTable.length === 0) {
-                    return window.createToast(
-                        'No arguments initialised yet.',
-                        'danger'
-                    )
+                    return window.createToast('No arguments initialised yet.', 'danger')
                 }
 
                 NGauss_fit_args.fitNGauss_arguments = {}
@@ -234,32 +218,17 @@
 </script>
 
 <div class="align">
-    <button
-        class="button is-link"
-        on:click={(e) => plotData({ e: e, filetype: 'exp_fit' })}
-        >Exp Fit.</button
-    >
-    <button
-        class="button is-link"
-        on:click={() => (toggleFindPeaksRow = !toggleFindPeaksRow)}
-        >Fit NGauss.</button
-    >
-    <button class="button is-warning" on:click={clearLastPeak}
-        >Clear Last</button
-    >
+    <button class="button is-link" on:click={(e) => plotData({ e: e, filetype: 'exp_fit' })}>Exp Fit.</button>
+    <button class="button is-link" on:click={() => (toggleFindPeaksRow = !toggleFindPeaksRow)}>Fit NGauss.</button>
+    <button class="button is-warning" on:click={clearLastPeak}>Clear Last</button>
     <button class="button is-danger" on:click={clearAllPeak}>Clear All</button>
 </div>
 
 {#if toggleFindPeaksRow}
     <div class="align v-baseline">
         <div class="align" style="align-items: baseline;">
-            <i class="material-icons" on:click={() => (modalActivate = true)}
-                >settings</i
-            >
-            <CustomSwitch
-                bind:selected={boxSelected_peakfinder}
-                label="limited range"
-            />
+            <i class="material-icons" on:click={() => (modalActivate = true)}>settings</i>
+            <CustomSwitch bind:selected={boxSelected_peakfinder} label="limited range" />
             <button
                 style="width:7em"
                 class="button is-link"
@@ -269,16 +238,10 @@
             </button>
             <Textfield bind:value={savePeakfilename} label="savefile" />
 
-            <button
-                class="button is-link"
-                on:click={() =>
-                    savefile({ file: $felixPeakTable, name: savePeakfilename })}
-            >
+            <button class="button is-link" on:click={() => savefile({ file: $felixPeakTable, name: savePeakfilename })}>
                 Save peaks
             </button>
-            <button class="button is-link" on:click={loadpeakTable}
-                >Load peaks</button
-            >
+            <button class="button is-link" on:click={loadpeakTable}>Load peaks</button>
             <button
                 class="button is-danger"
                 on:click={() => {

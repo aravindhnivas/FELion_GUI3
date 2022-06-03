@@ -23,9 +23,7 @@
     let original_files = []
 
     $: locationStatus = window.fs.existsSync(currentLocation)
-    $: parentFolder = locationStatus
-        ? window.path.basename(currentLocation)
-        : 'Undefined'
+    $: parentFolder = locationStatus ? window.path.basename(currentLocation) : 'Undefined'
 
     let searchKey = ''
     const searchfile = () => {
@@ -33,9 +31,7 @@
         if (!searchKey) {
             fullfiles = original_files
         } else {
-            fullfiles = original_files.filter((file) =>
-                file.name.includes(searchKey)
-            )
+            fullfiles = original_files.filter((file) => file.name.includes(searchKey))
         }
     }
     let filesLoaded = false
@@ -55,9 +51,7 @@
             filesLoaded = false
 
             try {
-                const [folderfile, filereadErr] = await window.fs.readdir(
-                    currentLocation
-                )
+                const [folderfile, filereadErr] = await window.fs.readdir(currentLocation)
                 if (filereadErr) throw filereadErr
 
                 const fileIncludePattern = new RegExp(`.+\\.[^fr]?${filetype}`) // f or r keyword is to avoid getting fscan and rscan files
@@ -65,21 +59,14 @@
                 original_files = fullfiles = folderfile
                     .filter(
                         (file) =>
-                            fileIncludePattern.test(file) &&
-                            window.fs.isFile(
-                                window.path.join(currentLocation, file)
-                            )
+                            fileIncludePattern.test(file) && window.fs.isFile(window.path.join(currentLocation, file))
                     )
                     .map((file) => (file = { name: file, id: window.getID() }))
                     .sort((a, b) => (a.name < b.name ? 1 : -1))
 
                 fullfileslist = fullfiles.map((file) => (file = file.name))
                 otherfolders = folderfile
-                    .filter((file) =>
-                        window.fs.isDirectory(
-                            window.path.join(currentLocation, file)
-                        )
-                    )
+                    .filter((file) => window.fs.isDirectory(window.path.join(currentLocation, file)))
                     .map((file) => (file = { name: file, id: window.getID() }))
                     .sort((a, b) => (a.name > b.name ? 1 : -1))
 
@@ -152,39 +139,27 @@
 </script>
 
 <div class="align h-center">
-    <i class="material-icons" on:click={() => changeDirectory('..')}
-        >arrow_back</i
-    >
+    <i class="material-icons" on:click={() => changeDirectory('..')}>arrow_back</i>
 
     <i
         class="material-icons animate__animated animate__faster"
-        on:animationend={({ target }) =>
-            target.classList.remove('animate__rotateIn')}
+        on:animationend={({ target }) => target.classList.remove('animate__rotateIn')}
         on:click={({ target }) => {
             target.classList.add('animate__rotateIn')
             getFilePromise = getfiles(true, true)
         }}>refresh</i
     >
-    <CustomIconSwitch
-        bind:toggler={sortFile}
-        icons={['trending_up', 'trending_down']}
-    />
+    <CustomIconSwitch bind:toggler={sortFile} icons={['trending_up', 'trending_down']} />
 </div>
 
-<Textfield
-    on:keyup={searchfile}
-    bind:value={searchKey}
-    label="Search {filetype} files"
-/>
+<Textfield on:keyup={searchfile} bind:value={searchKey} label="Search {filetype} files" />
 
 <CustomSwitch
     bind:selected={selectAll}
     label="Select All"
     on:change={() => {
         console.log('selected all files')
-        selectAll
-            ? (fileChecked = fullfiles.map((file) => (file = file.name)))
-            : (fileChecked = [])
+        selectAll ? (fileChecked = fullfiles.map((file) => (file = file.name))) : (fileChecked = [])
     }}
 />
 
@@ -211,11 +186,7 @@
         {/if}
         <div style="cursor:pointer">
             {#each otherfolders as folder (folder.id)}
-                <div
-                    class="align"
-                    on:click={() => changeDirectory(folder.name)}
-                    transition:slide|local
-                >
+                <div class="align" on:click={() => changeDirectory(folder.name)} transition:slide|local>
                     <i class="material-icons">keyboard_arrow_right</i>
                     <div class="mdc-typography--subtitle1">{folder.name}</div>
                 </div>

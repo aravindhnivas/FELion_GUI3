@@ -58,9 +58,7 @@
             const [i, j] = [currentRate[0], currentRate[1]]
             const label = `${i} --> ${j}`
 
-            const currentRequiredRateData = currentRate
-                .slice(2, 2 + givenTemperature.length)
-                .map((r) => parseFloat(r))
+            const currentRequiredRateData = currentRate.slice(2, 2 + givenTemperature.length).map((r) => parseFloat(r))
             const addData = {
                 x: givenTemperature,
                 y: currentRequiredRateData,
@@ -92,9 +90,7 @@
         dataToPlot = []
         dataToPlot = originalRateConstants.map((rateObj, i) => {
             const { name, x, y } = rateObj
-            const newY = y.map(
-                (value) => (value *= parseFloat(scaleRateConstant))
-            )
+            const newY = y.map((value) => (value *= parseFloat(scaleRateConstant)))
             return {
                 name,
                 x,
@@ -110,17 +106,11 @@
     const fitDataFunction = () => {
         collisionalCoefficient = []
 
-        const fittedTemp = linspace(
-            givenTemperature[0],
-            givenTemperature.at(-1),
-            100
-        )
+        const fittedTemp = linspace(givenTemperature[0], givenTemperature.at(-1), 100)
 
         const fitData = dataToPlot.map((dataObj) => {
             const arr = [dataObj.x, dataObj.y]
-            const tranposedArr = arr[0].map((_, colIndex) =>
-                arr.map((row) => row[colIndex])
-            )
+            const tranposedArr = arr[0].map((_, colIndex) => arr.map((row) => row[colIndex]))
 
             const { equation } = polynomial(tranposedArr, {
                 order: parseInt(polyOrder),
@@ -141,10 +131,7 @@
                 ...collisionalCoefficient,
                 {
                     label: dataObj.name,
-                    value: (
-                        currentCollisionalRateConstant /
-                        parseFloat(scaleRateConstant)
-                    ).toExponential(2),
+                    value: (currentCollisionalRateConstant / parseFloat(scaleRateConstant)).toExponential(2),
                     id: window.getID(),
                 },
             ]
@@ -182,13 +169,7 @@
     }
 </script>
 
-<SeparateWindow
-    title="rateConstantsPlot"
-    bind:active
-    bind:windowReady
-    bind:graphWindow
-    maximize={false}
->
+<SeparateWindow title="rateConstantsPlot" bind:active bind:windowReady bind:graphWindow maximize={false}>
     <svelte:fragment slot="header_content__slot">
         <div class="header">
             <Textfield
@@ -211,17 +192,10 @@
                 }}
             />
             <Textfield bind:value={tempIndex} label="Temperature Index" />
-            <button
-                class="button is-link"
-                on:click={readCollisionalDataFromFile}>Read data</button
-            >
-            <button class="button is-link" on:click={rescaleData}
-                >Rescale Data</button
-            >
+            <button class="button is-link" on:click={readCollisionalDataFromFile}>Read data</button>
+            <button class="button is-link" on:click={rescaleData}>Rescale Data</button>
             <Textfield bind:value={collisionalTemp} label="collisionalTemp" />
-            <button class="button is-link" on:click={fitDataFunction}
-                >Fit Data</button
-            >
+            <button class="button is-link" on:click={fitDataFunction}>Fit Data</button>
             <CustomCheckbox bind:value={autoCompute} label="autoCompute" />
         </div>
     </svelte:fragment>

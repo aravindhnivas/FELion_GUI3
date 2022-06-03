@@ -36,9 +36,7 @@
 
     <div class="align h-center">
         <Textfield bind:value={numberDensity} label="numberDensity (cm-3)" />
-        <button class="button is-link" on:click={computeAttachmentRate}
-            >Compute rate constants</button
-        >
+        <button class="button is-link" on:click={computeAttachmentRate}>Compute rate constants</button>
 
         <div class="align h-center">
             <div class="">k3 (cm6/s):</div>

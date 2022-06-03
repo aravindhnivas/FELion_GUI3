@@ -391,7 +391,9 @@
         update_pbefore = false
         try {
             if (!config_content[selectedFile]) {
-                return window.createToast('config file not available for selected file: ' + selectedFile, 'danger', { target: 'left' })
+                return window.createToast('config file not available for selected file: ' + selectedFile, 'danger', {
+                    target: 'left',
+                })
             }
             ;({ pbefore, pafter, calibrationFactor, temp } = config_content[selectedFile])
             srgMode = JSON.parse(config_content[selectedFile].srgMode)
@@ -411,7 +413,11 @@
             if (!window.fs.existsSync(config_file)) {
                 console.log(config_file)
                 if ($activePage === 'Kinetics') {
-                    return window.createToast(`Config file not available: ${window.path.basename(config_file)}`, 'danger', { target: 'left' })
+                    return window.createToast(
+                        `Config file not available: ${window.path.basename(config_file)}`,
+                        'danger',
+                        { target: 'left' }
+                    )
                 }
                 return
             }
@@ -424,7 +430,9 @@
             }))
 
             if ($activePage?.toLowerCase() === 'kinetics') {
-                window.createToast(`Config file loaded: ${window.path.basename(config_file)}`, 'warning', { target: 'left' })
+                window.createToast(`Config file loaded: ${window.path.basename(config_file)}`, 'warning', {
+                    target: 'left',
+                })
             }
         } catch (error) {
             window.handleError(error)
@@ -541,11 +549,26 @@
     let show_numberDensity = false
 </script>
 
-<KineticConfigTable {configArray} {config_location} {loadConfig} {readConfigDir} {config_filelists} bind:config_file bind:active={adjustConfig} />
+<KineticConfigTable
+    {configArray}
+    {config_location}
+    {loadConfig}
+    {readConfigDir}
+    {config_filelists}
+    bind:config_file
+    bind:active={adjustConfig}
+/>
 
 <MatplotlibDialog bind:open={kinetic_plot_adjust_dialog_active} bind:value={$kinetic_plot_adjust_configs} />
 
-<KineticsNumberDensity bind:active={show_numberDensity} {selectedFile} {config_location} {fileCollections} {config_filelists} {readConfigDir} />
+<KineticsNumberDensity
+    bind:active={show_numberDensity}
+    {selectedFile}
+    {config_location}
+    {fileCollections}
+    {config_filelists}
+    {readConfigDir}
+/>
 
 <LayoutDiv id="Kinetics">
     <svelte:fragment slot="header_content__slot">
@@ -570,7 +593,11 @@
         <div class="main_container__div">
             <div class="align box h-center">
                 <CustomSwitch bind:selected={srgMode} label="SRG" />
-                <CustomSwitch bind:selected={includeTranspiration} label="TT" tooltip="correct for thermal-transpiration" />
+                <CustomSwitch
+                    bind:selected={includeTranspiration}
+                    label="TT"
+                    tooltip="correct for thermal-transpiration"
+                />
                 <Textfield bind:value={pbefore} label="pbefore" />
                 <Textfield bind:value={pafter} label="pafter" />
                 <Textfield step="0.5" type="number" bind:value={calibrationFactor} label="calibrationFactor" />
@@ -580,7 +607,12 @@
 
             <div class="align box h-center">
                 <CustomSelect bind:value={selectedFile} label="Filename" options={fileCollections} />
-                <CustomTextSwitch max={maxTimeIndex} bind:value={timestartIndexScan} label="Time Index" on:change={() => sliceData(true)} />
+                <CustomTextSwitch
+                    max={maxTimeIndex}
+                    bind:value={timestartIndexScan}
+                    label="Time Index"
+                    on:change={() => sliceData(true)}
+                />
                 <Textfield bind:value={molecule} label="Molecule" />
                 <Textfield bind:value={tag} label="tag" />
             </div>

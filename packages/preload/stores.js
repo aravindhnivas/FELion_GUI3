@@ -17,22 +17,15 @@ if (!db.get('pythonscript')) {
 export const pythonpath = writable(db.get('pythonpath'))
 db.onDidChange('pythonpath', (value) => pythonpath.set(value))
 
-export const developerMode = writable(
-    db.get('developerMode') ?? appInfo.isPackaged
-)
+export const developerMode = writable(db.get('developerMode') ?? appInfo.isPackaged)
 db.onDidChange('developerMode', (value) => developerMode.set(value))
 
 export const pythonscript = writable(db.get('pythonscript'))
 db.onDidChange('pythonscript', (value) => pythonscript.set(value))
 
-export const pyProgram = derived(
-    [developerMode, pythonpath],
-    ([$developerMode, $pythonpath]) => {
-        return $developerMode
-            ? $pythonpath
-            : path.join(ROOT_DIR, 'resources/felionpy/felionpy')
-    }
-)
+export const pyProgram = derived([developerMode, pythonpath], ([$developerMode, $pythonpath]) => {
+    return $developerMode ? $pythonpath : path.join(ROOT_DIR, 'resources/felionpy/felionpy')
+})
 
 export const pyServerReady = writable(false)
 export const pyVersion = writable('')

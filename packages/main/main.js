@@ -17,11 +17,7 @@ console.table(env)
 console.table({ __dirname, ROOT_DIR, PKG_DIR, RENDERER_DIR })
 
 async function createWindow() {
-    const icon = path.join(
-        RENDERER_DIR,
-        env.DEV ? 'public' : 'dist',
-        'assets/logo/icon.ico'
-    )
+    const icon = path.join(RENDERER_DIR, env.DEV ? 'public' : 'dist', 'assets/logo/icon.ico')
     const mainWindow = new BrowserWindow({
         width: 1200,
         height: 700,
@@ -50,10 +46,7 @@ async function createWindow() {
 
     const pageUrl = env.DEV
         ? env.VITE_DEV_SERVER_URL
-        : new URL(
-              path.join(RENDERER_DIR, 'dist/index.html'),
-              'file://' + __dirname
-          ).toString()
+        : new URL(path.join(RENDERER_DIR, 'dist/index.html'), 'file://' + __dirname).toString()
 
     await mainWindow.loadURL(pageUrl)
 }

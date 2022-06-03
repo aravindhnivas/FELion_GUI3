@@ -25,11 +25,9 @@
     function plotData({ e = null } = {}) {
         const pyfile = 'normline.addTrace'
         let args
-        if (addedFile.files < 1)
-            return window.createToast('No files selected', 'danger')
+        if (addedFile.files < 1) return window.createToast('No files selected', 'danger')
         extrafileAdded += addedfiles.length
-        ;(addedFile['col'] = addedFileCol),
-            (addedFile['N'] = fileChecked.length + extrafileAdded)
+        ;(addedFile['col'] = addedFileCol), (addedFile['N'] = fileChecked.length + extrafileAdded)
 
         addedFile['scale'] = addedFileScale
         args = addedFile
@@ -47,14 +45,8 @@
         <div class="align" slot="content">
             <Textfield bind:value={addedFileCol} label="Columns" />
             <Textfield bind:value={addedFileScale} label="ScaleY" />
-            <button on:click={addFileSelection} class="button is-link"
-                >Browse</button
-            >
+            <button on:click={addFileSelection} class="button is-link">Browse</button>
         </div>
-        <button
-            slot="footerbtn"
-            class="button is-link"
-            on:click={(e) => plotData({ e: e })}>Add</button
-        >
+        <button slot="footerbtn" class="button is-link" on:click={(e) => plotData({ e: e })}>Add</button>
     </Modal>
 {/if}

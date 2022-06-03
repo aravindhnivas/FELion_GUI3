@@ -15,8 +15,7 @@
     $: console.log($mainPreModal)
     let headerBackground = '#836ac05c'
     $: if (active) {
-        headerBackground =
-            $mainPreModal.type === 'danger' ? '#f14668' : '#836ac05c'
+        headerBackground = $mainPreModal.type === 'danger' ? '#f14668' : '#836ac05c'
     }
 
     function handleKeydown(event) {

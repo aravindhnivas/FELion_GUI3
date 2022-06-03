@@ -56,9 +56,7 @@
     const filenameUpdate = async () => {
         const [files] = await window.fs.readdir(location)
         if (!files) return console.log('No files')
-        filenameOpts = files
-            .filter((f) => f.startsWith(selectedFile.split('.')[0]))
-            .filter((f) => f.endsWith('.md'))
+        filenameOpts = files.filter((f) => f.startsWith(selectedFile.split('.')[0])).filter((f) => f.endsWith('.md'))
     }
     $: if (selectedFile) {
         filenameUpdate()
@@ -83,12 +81,8 @@
     >
         <svelte:fragment slot="btn-row">
             <div class="align">
-                <button class="button is-link" on:click={computeSliders}
-                    >update sliders</button
-                >
-                <button class="button is-link" on:click={compute}
-                    >compute full equations</button
-                >
+                <button class="button is-link" on:click={computeSliders}>update sliders</button>
+                <button class="button is-link" on:click={compute}>compute full equations</button>
             </div>
         </svelte:fragment>
     </Editor>

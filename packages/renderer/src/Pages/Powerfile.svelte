@@ -71,20 +71,12 @@
     let display = window.db.get('active_tab') === id ? 'block' : 'none'
 </script>
 
-<section
-    class="section animate__animated animate__fadeIn"
-    {id}
-    style="display:{display}"
->
+<section class="section animate__animated animate__fadeIn" {id} style="display:{display}">
     <div class="box main__container" id="powfileContainer">
         <div class="location__bar">
             <button class="button is-link" on:click={openFolder}>Browse</button>
 
-            <Textfield
-                bind:value={location}
-                label="Current Location"
-                style="flex-grow:1;"
-            />
+            <Textfield bind:value={location} label="Current Location" style="flex-grow:1;" />
         </div>
 
         <div class="grid_column__container file__details__bar">
@@ -101,10 +93,7 @@
             <Textfield bind:value={felixHz} label="FELIX Hz" />
 
             <FormField>
-                <Checkbox
-                    bind:checked={convert}
-                    indeterminate={convert === null}
-                />
+                <Checkbox bind:checked={convert} indeterminate={convert === null} />
 
                 <span slot="label">Convert to &micro;m</span>
             </FormField>
@@ -121,16 +110,11 @@
                 outline$style="padding: 1em;"
             >
                 <HelperText id="powercontent_help" slot="helper">
-                    Enter powerfile measured for {filename}.felix file
-                    (wavenumber power-in mJ)
+                    Enter powerfile measured for {filename}.felix file (wavenumber power-in mJ)
                 </HelperText>
             </Textfield>
 
-            <button
-                class="button is-link"
-                style="width: 12em; margin: auto;"
-                on:click={savefile}>Save</button
-            >
+            <button class="button is-link" style="width: 12em; margin: auto;" on:click={savefile}>Save</button>
         </div>
     </div>
 </section>

@@ -16,9 +16,7 @@
 
     let fileChecked = []
     let currentLocation = ''
-    $: scanfiles = fileChecked.map((file) =>
-        window.path.resolve(currentLocation, file)
-    )
+    $: scanfiles = fileChecked.map((file) => window.path.resolve(currentLocation, file))
 
     let nshots = 10
     let power = '21, 21'
@@ -33,9 +31,7 @@
 
     function dir_changed() {
         if (window.fs.existsSync(currentLocation)) {
-            fullfiles = fs
-                .readdirSync(currentLocation)
-                .filter((file) => file.endsWith('.scan'))
+            fullfiles = fs.readdirSync(currentLocation).filter((file) => file.endsWith('.scan'))
         }
     }
 
@@ -55,21 +51,14 @@
                 const newData = reduceData[data][innerData]
                 newData.x = newData.x.slice(timestartIndexScan, dataLength)
                 newData.y = newData.y.slice(timestartIndexScan, dataLength)
-                newData['error_y']['array'] = newData['error_y']['array'].slice(
-                    timestartIndexScan,
-                    dataLength
-                )
+                newData['error_y']['array'] = newData['error_y']['array'].slice(timestartIndexScan, dataLength)
                 reduceData[data][innerData] = newData
             })
         })
         return cloneDeep(reduceData)
     }
 
-    async function plotData({
-        e = null,
-        filetype = 'scan',
-        tkplot = 'run',
-    } = {}) {
+    async function plotData({ e = null, filetype = 'scan', tkplot = 'run' } = {}) {
         if (fileChecked.length === 0 && filetype === 'scan') {
             return window.createToast('No files selected', 'danger')
         }
@@ -176,20 +165,10 @@
     let display = window.db.get('active_tab') === id ? 'block' : 'none'
 </script>
 
-<Layout
-    {filetype}
-    {graphPlotted}
-    {id}
-    {display}
-    bind:currentLocation
-    bind:fileChecked
-    on:chdir={dir_changed}
->
+<Layout {filetype} {graphPlotted} {id} {display} bind:currentLocation bind:fileChecked on:chdir={dir_changed}>
     <svelte:fragment slot="buttonContainer">
         <div class="align " style="align-items: center;">
-            <button class="button is-link" on:click={(e) => plotData({ e: e })}
-                >Timescan Plot</button
-            >
+            <button class="button is-link" on:click={(e) => plotData({ e: e })}>Timescan Plot</button>
             <Textfield
                 type="number"
                 input$min="0"
@@ -204,68 +183,28 @@
                     toggleRow = !toggleRow
                 }}>Depletion Plot</button
             >
-            <button
-                class="button is-link"
-                on:click={(e) =>
-                    plotData({ e: e, filetype: 'scan', tkplot: 'plot' })}
+            <button class="button is-link" on:click={(e) => plotData({ e: e, filetype: 'scan', tkplot: 'plot' })}
                 >Open in Matplotlib</button
             >
-            <CustomSwitch
-                on:change={linearlogCheck}
-                bind:selected={logScale}
-                label="Log"
-            />
+            <CustomSwitch on:change={linearlogCheck} bind:selected={logScale} label="Log" />
         </div>
 
-        <div
-            class="align animate__animated animate__fadeIn"
-            class:hide={toggleRow}
-        >
-            <CustomSelect
-                bind:value={resON_Files}
-                label="ResOn"
-                options={fullfiles}
-            />
-            <CustomSelect
-                bind:value={resOFF_Files}
-                label="ResOFF"
-                options={fullfiles}
-            />
+        <div class="align animate__animated animate__fadeIn" class:hide={toggleRow}>
+            <CustomSelect bind:value={resON_Files} label="ResOn" options={fullfiles} />
+            <CustomSelect bind:value={resOFF_Files} label="ResOFF" options={fullfiles} />
             <Textfield bind:value={power} label="Power (ON, OFF) [mJ]" />
             <Textfield type="number" bind:value={nshots} label="FELIX Hz" />
-            <Textfield
-                type="number"
-                bind:value={massIndex}
-                label="Mass Index"
-            />
-            <Textfield
-                type="number"
-                bind:value={timestartIndex}
-                label="Time Index"
-            />
-            <CustomSwitch
-                bind:selected={saveOutputDepletion}
-                label="save_output"
-            />
-            <button
-                class="button is-link"
-                on:click={(e) => plotData({ e: e, filetype: 'general' })}
-                >Submit</button
-            >
+            <Textfield type="number" bind:value={massIndex} label="Mass Index" />
+            <Textfield type="number" bind:value={timestartIndex} label="Time Index" />
+            <CustomSwitch bind:selected={saveOutputDepletion} label="save_output" />
+            <button class="button is-link" on:click={(e) => plotData({ e: e, filetype: 'general' })}>Submit</button>
         </div>
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer" let:lookForGraph>
-        <div
-            class="graph__container"
-            style="display: flex; gap: 1em; flex-direction: column;"
-        >
+        <div class="graph__container" style="display: flex; gap: 1em; flex-direction: column;">
             {#each fileChecked as scanfile}
-                <div
-                    id="{scanfile}_tplot"
-                    class="graph__div"
-                    use:lookForGraph
-                />
+                <div id="{scanfile}_tplot" class="graph__div" use:lookForGraph />
             {/each}
         </div>
     </svelte:fragment>

@@ -1,9 +1,5 @@
 import { fill } from 'lodash-es'
-export function getEnergyLabels({
-    numberOfLevels = 2,
-    electronSpin = false,
-    zeemanSplit = false,
-} = {}) {
+export function getEnergyLabels({ numberOfLevels = 2, electronSpin = false, zeemanSplit = false } = {}) {
     const value = 0
     const energyLevelsInfo = fill(Array(numberOfLevels))
         .map((_, i) => i)
@@ -16,11 +12,7 @@ export function getEnergyLabels({
                     if (current_J > 0) {
                         if (zeemanSplit) {
                             let mJ = []
-                            for (
-                                let current_mJ = current_J;
-                                current_mJ >= -current_J;
-                                current_mJ--
-                            ) {
+                            for (let current_mJ = current_J; current_mJ >= -current_J; current_mJ--) {
                                 mJ = [
                                     ...mJ,
                                     {

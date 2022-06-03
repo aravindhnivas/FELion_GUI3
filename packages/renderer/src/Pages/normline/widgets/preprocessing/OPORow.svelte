@@ -39,12 +39,8 @@
     let OPOcalibFiles = []
 
     $: if (window.fs.existsSync(OPOLocation)) {
-        OPOcalibFiles = window.fs
-            .readdirSync(OPOLocation)
-            .filter((file) => file.endsWith('.calibOPO'))
-        opofiles = OPOfilesChecked.map((file) =>
-            window.path.resolve(OPOLocation, file)
-        )
+        OPOcalibFiles = window.fs.readdirSync(OPOLocation).filter((file) => file.endsWith('.calibOPO'))
+        opofiles = OPOfilesChecked.map((file) => window.path.resolve(OPOLocation, file))
     }
 
     let dataReady = false
@@ -53,8 +49,7 @@
     function plotData({ e = null, tkplot = 'run', general = false } = {}) {
         removeExtraFile()
 
-        if (opofiles.length < 1)
-            return window.createToast('No files selected', 'danger')
+        if (opofiles.length < 1) return window.createToast('No files selected', 'danger')
         ;($opoMode = true), ($felixPlotAnnotations = [])
 
         // const general = tkplot==="plot"
@@ -70,38 +65,23 @@
 
         dataReady = false
 
-        computePy_func({ e, pyfile: 'normline.oposcan', args, general }).then(
-            (dataFromPython) => {
-                fullData.data = dataFromPython
-                dataReady = true
-                $opoMode = true
-                showOPOFiles = false
-            }
-        )
+        computePy_func({ e, pyfile: 'normline.oposcan', args, general }).then((dataFromPython) => {
+            fullData.data = dataFromPython
+            dataReady = true
+            $opoMode = true
+            showOPOFiles = false
+        })
     }
 
-    $: updateplot =
-        dataReady && plotfile && $normMethod && fullData.data && $opoMode
+    $: updateplot = dataReady && plotfile && $normMethod && fullData.data && $opoMode
     $: if (updateplot && $showall) {
         if ($OPOGraphPlotted) {
             const currentKey = mapNormMethodKeys[$normMethod]
             const currentData = get_data(fullData.data[currentKey])
             const { layout } = $normMethodDatas[$normMethod]
             react('opoRelPlot', currentData, layout)
-            plot(
-                'Baseline Corrected',
-                'Wavelength (cm-1)',
-                'Counts',
-                fullData.data['base'],
-                'opoplot'
-            )
-            plot(
-                'OPO Calibration',
-                'Set Wavenumber (cm-1)',
-                'Measured Wavenumber (cm-1)',
-                fullData.data['SA'],
-                'opoSA'
-            )
+            plot('Baseline Corrected', 'Wavelength (cm-1)', 'Counts', fullData.data['base'], 'opoplot')
+            plot('OPO Calibration', 'Set Wavenumber (cm-1)', 'Measured Wavenumber (cm-1)', fullData.data['SA'], 'opoSA')
         } else {
             opofile_func({ dataFromPython: fullData.data, delta: deltaOPO })
             $OPOGraphPlotted = true
@@ -140,31 +120,11 @@
         >
             Browse File</button
         >
-        <CustomSelect
-            bind:value={calibFile}
-            label="Calib. file"
-            options={OPOcalibFiles}
-        />
-        <CustomTextSwitch
-            style="width:7em;"
-            step="0.1"
-            variant="outlined"
-            bind:value={deltaOPO}
-            label="Delta OPO"
-        />
-        <CustomTextSwitch
-            style="width:9em"
-            step="0.1"
-            variant="outlined"
-            bind:value={opoPower}
-            label="Power (mJ)"
-        />
-        <button class="button is-link" on:click={(e) => plotData({ e })}
-            >Replot</button
-        >
-        <button
-            class="button is-link"
-            on:click={(e) => plotData({ e, tkplot: 'plot', general: true })}
+        <CustomSelect bind:value={calibFile} label="Calib. file" options={OPOcalibFiles} />
+        <CustomTextSwitch style="width:7em;" step="0.1" variant="outlined" bind:value={deltaOPO} label="Delta OPO" />
+        <CustomTextSwitch style="width:9em" step="0.1" variant="outlined" bind:value={opoPower} label="Power (mJ)" />
+        <button class="button is-link" on:click={(e) => plotData({ e })}>Replot</button>
+        <button class="button is-link" on:click={(e) => plotData({ e, tkplot: 'plot', general: true })}
             >Open in Matplotlib</button
         >
     </div>

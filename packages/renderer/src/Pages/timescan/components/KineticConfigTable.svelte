@@ -11,19 +11,9 @@
     export let configArray = []
     export let active = false
 
-    let configKeys = [
-        'filename',
-        'srgMode',
-        'pbefore',
-        'pafter',
-        'calibrationFactor',
-        'temp',
-    ]
+    let configKeys = ['filename', 'srgMode', 'pbefore', 'pafter', 'calibrationFactor', 'temp']
 
-    const config_filename = persistentWritable(
-        'kinetics_config_filename',
-        'kinetics.config.json'
-    )
+    const config_filename = persistentWritable('kinetics_config_filename', 'kinetics.config.json')
 
     // let config_filelists = []
     $: {
@@ -33,10 +23,7 @@
 
     function saveConfig() {
         if (!window.fs.existsSync(config_file)) {
-            const [, error] = window.fs.outputJsonSync(
-                config_file,
-                config_content
-            )
+            const [, error] = window.fs.outputJsonSync(config_file, config_content)
             if (error) {
                 return window.handleError(error)
             }
@@ -54,11 +41,7 @@
         if (error) {
             return window.handleError(error)
         }
-        window.createToast(
-            'Config file saved' + window.path.basename(config_file),
-            'warning',
-            { target: 'left' }
-        )
+        window.createToast('Config file saved' + window.path.basename(config_file), 'warning', { target: 'left' })
     }
 </script>
 
@@ -72,18 +55,12 @@
 >
     <svelte:fragment slot="header">
         <div class="header">
-            <Textfield
-                value={window.path.dirname(config_file)}
-                label="config location"
-                disabled
-            />
+            <Textfield value={window.path.dirname(config_file)} label="config location" disabled />
 
             <CustomSelect
                 bind:value={$config_filename}
                 label="config file (*.config.json)"
-                options={config_filelists.filter((file) =>
-                    file.endsWith('.config.json')
-                )}
+                options={config_filelists.filter((file) => file.endsWith('.config.json'))}
                 update={readConfigDir}
             />
         </div>
@@ -92,9 +69,7 @@
     <svelte:fragment slot="footer">
         <button class="button is-link" on:click={saveConfig}>Save</button>
         <button class="button is-warning" on:click={loadConfig}>Load</button>
-        <button class="button is-danger" on:click={() => (active = false)}
-            >Close</button
-        >
+        <button class="button is-danger" on:click={() => (active = false)}>Close</button>
     </svelte:fragment>
 </ModalTable>
 

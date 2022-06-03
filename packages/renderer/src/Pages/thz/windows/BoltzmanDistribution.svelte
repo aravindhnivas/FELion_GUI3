@@ -40,13 +40,7 @@
                 name: `Temp: ${trapTemp}K, Z: ${partitionValue}, Total: ${totalSum}`,
             }
             const dataToPlot = { data }
-            plot(
-                `${title}: ${trapTemp}K`,
-                'Energy Levels',
-                'Population',
-                dataToPlot,
-                plotID
-            )
+            plot(`${title}: ${trapTemp}K`, 'Energy Levels', 'Population', dataToPlot, plotID)
             console.log('Plotted')
         }
     }
@@ -58,13 +52,7 @@
     }
 </script>
 
-<SeparateWindow
-    {title}
-    bind:active
-    bind:windowReady
-    bind:graphWindow
-    maximize={false}
->
+<SeparateWindow {title} bind:active bind:windowReady bind:graphWindow maximize={false}>
     <svelte:fragment slot="header_content__slot">
         <div class="align">
             <CustomTextSwitch bind:value={trapTemp} label="Temperature (K)" />

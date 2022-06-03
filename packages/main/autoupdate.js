@@ -46,9 +46,7 @@ autoUpdater.on('update-not-available', (info) => {
         key: 'update-status',
         value: 'update-not-available',
     })
-    updateLog(
-        'update-not-available ' + JSON.stringify(info) + '\n-----------\n'
-    )
+    updateLog('update-not-available ' + JSON.stringify(info) + '\n-----------\n')
 })
 
 autoUpdater.on('error', (err) => {
@@ -66,13 +64,7 @@ autoUpdater.on('error', (err) => {
 autoUpdater.on('download-progress', (progressObj) => {
     let log_message = 'Download speed: ' + progressObj.bytesPerSecond
     log_message = log_message + ' - Downloaded ' + progressObj.percent + '%'
-    log_message =
-        log_message +
-        ' (' +
-        progressObj.transferred +
-        '/' +
-        progressObj.total +
-        ')'
+    log_message = log_message + ' (' + progressObj.transferred + '/' + progressObj.total + ')'
     updateLog('download-progress: ' + log_message + '\n-----------\n')
     mainWindow.webContents.send('update-progress', progressObj)
 })

@@ -61,9 +61,7 @@ export async function readFromFile({
 
                         value = lineSplitted[2]
                     } else {
-                        label = twoLabel
-                            ? `${numberOfLevels + 1} --> ${numberOfLevels}`
-                            : numberOfLevels
+                        label = twoLabel ? `${numberOfLevels + 1} --> ${numberOfLevels}` : numberOfLevels
                         value = lineSplitted[0]
                         numberOfLevels++
                     }

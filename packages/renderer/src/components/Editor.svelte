@@ -52,10 +52,7 @@
         location = window.db.get(`${filetype}-report-md`)
     }
 
-    $: reportFile = window.path.join(
-        location,
-        savefilename.endsWith('.md') ? savefilename : `${savefilename}.md`
-    )
+    $: reportFile = window.path.join(location, savefilename.endsWith('.md') ? savefilename : `${savefilename}.md`)
 
     $: if (window.fs.existsSync(location)) {
         window.db.set(`${filetype}-report-md`, location)
@@ -70,11 +67,7 @@
 
     const writeReport = async () => {
         const contents = editor.getData()
-        const [, error] = await window.fs.writeFile(
-            reportFile,
-            contents,
-            'utf8'
-        )
+        const [, error] = await window.fs.writeFile(reportFile, contents, 'utf8')
         if (error) {
             return window.createToast("Report couldn't be saved.", 'danger')
         }
@@ -91,9 +84,7 @@
         if (!window.fs.existsSync(reportFile)) return writeReport()
         return showConfirm.push({
             title: 'Overwrite?',
-            content: `Do you want to overwrite ${window.path.basename(
-                reportFile
-            )}?`,
+            content: `Do you want to overwrite ${window.path.basename(reportFile)}?`,
             callback: (response) => {
                 if (response?.toLowerCase() === 'cancel') return
                 writeReport()
@@ -128,10 +119,7 @@
     const readFromFile = (showInfo = true) => {
         if (!window.fs.existsSync(reportFile)) {
             if (!showInfo) return
-            return window.createToast(
-                'No report file named ' + window.path.basename(reportFile),
-                'danger'
-            )
+            return window.createToast('No report file named ' + window.path.basename(reportFile), 'danger')
         }
         editor?.setData(window.fs.readFileSync(reportFile))
         reportRead = true
@@ -165,16 +153,10 @@
     {#if showReport}
         <div class="report_controler__div box" style="border: solid 1px #fff7;">
             <div class="report_location__div">
-                <button
-                    class="button is-link"
-                    on:click={browse_folder}
-                    disabled={!enable_location_browser}>Browse</button
+                <button class="button is-link" on:click={browse_folder} disabled={!enable_location_browser}
+                    >Browse</button
                 >
-                <Textfield
-                    bind:value={location}
-                    label="report location"
-                    disabled={!enable_location_browser}
-                />
+                <Textfield bind:value={location} label="report location" disabled={!enable_location_browser} />
                 <TextAndSelectOptsToggler
                     bind:value={savefilename}
                     label="report name"
@@ -184,12 +166,8 @@
             </div>
             <div class="btn-row">
                 <slot name="btn-row" />
-                <button class="button is-warning" on:click={readFromFile}
-                    >read</button
-                >
-                <button class="button is-link" on:click={saveReport}
-                    >Save</button
-                >
+                <button class="button is-warning" on:click={readFromFile}>read</button>
+                <button class="button is-link" on:click={saveReport}>Save</button>
                 <CustomSwitch bind:selected={autoRead} label="autoRead" />
             </div>
         </div>
@@ -197,10 +175,5 @@
 </div>
 
 {#if showReport}
-    <div
-        use:mountEditor
-        class="ckeditor-svelte content"
-        {id}
-        style:display={showReport ? '' : 'none'}
-    />
+    <div use:mountEditor class="ckeditor-svelte content" {id} style:display={showReport ? '' : 'none'} />
 {/if}

@@ -60,9 +60,7 @@
     let graphDivs = []
     function lookForGraph() {
         try {
-            graphDivs = Array.from(
-                document.querySelectorAll(`#${id} .graph__div`)
-            )
+            graphDivs = Array.from(document.querySelectorAll(`#${id} .graph__div`))
         } catch (error) {
             console.log('No graph in this window')
         }

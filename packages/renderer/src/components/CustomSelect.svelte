@@ -14,15 +14,7 @@
 <div class:main_container={update}>
     <div class="select" class:is-multiple={multiple}>
         {#if multiple}
-            <select
-                multiple
-                bind:value
-                {label}
-                size={options.length}
-                on:change
-                on:click
-                on:dblclick
-            >
+            <select multiple bind:value {label} size={options.length} on:change on:click on:dblclick>
                 {#each options as option}
                     <option value={option}>{option}</option>
                 {/each}
@@ -41,8 +33,7 @@
     {#if update}
         <i
             class="material-icons animate__animated animate__faster"
-            on:animationend={(event) =>
-                event?.target?.classList.remove('animate__rotateIn')}
+            on:animationend={(event) => event?.target?.classList.remove('animate__rotateIn')}
             on:click={(event) => {
                 event?.target?.classList.add('animate__rotateIn')
                 update()

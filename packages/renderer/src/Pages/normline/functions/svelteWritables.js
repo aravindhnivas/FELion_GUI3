@@ -17,12 +17,9 @@ export const opoData = writable({})
 
 export const felixData = writable({})
 
-export const normMethodDatas = derived(
-    [opoMode, felixData, opoData],
-    ([$opoMode, $felixData, $opoData]) => {
-        return $opoMode ? $opoData : $felixData
-    }
-)
+export const normMethodDatas = derived([opoMode, felixData, opoData], ([$opoMode, $felixData, $opoData]) => {
+    return $opoMode ? $opoData : $felixData
+})
 export const felixopoLocation = writable('')
 export const baselineFile = writable('')
 

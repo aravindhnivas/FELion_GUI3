@@ -11,19 +11,11 @@
 
     export let keepTable = true
 
-    const dataTableHead = [
-        'Filename',
-        'Frequency (cm-1)',
-        'Amplitude',
-        'FWHM',
-        'Sigma',
-    ]
+    const dataTableHead = ['Filename', 'Frequency (cm-1)', 'Amplitude', 'FWHM', 'Sigma']
     let show_dataTable_only_weighted_averaged = false
     let show_dataTable_only_averaged = false
 
-    $: dataTable_weighted_avg = $dataTable_avg.filter(
-        (file) => file.name == 'weighted_mean'
-    )
+    $: dataTable_weighted_avg = $dataTable_avg.filter((file) => file.name == 'weighted_mean')
     $: console.log('dataTable', $dataTable)
     $: console.log('dataTable_avg', $dataTable_avg)
     $: console.log('dataTable_weighted_avg', dataTable_weighted_avg)
@@ -38,22 +30,12 @@
 
 <div class="align v-center">
     <div class="notice__div">Frequency table</div>
-    <CustomCheckbox
-        bind:value={show_dataTable_only_averaged}
-        label="Only Averaged"
-    />
+    <CustomCheckbox bind:value={show_dataTable_only_averaged} label="Only Averaged" />
 
-    <CustomCheckbox
-        bind:value={show_dataTable_only_weighted_averaged}
-        label="Only weighted Averaged"
-    />
+    <CustomCheckbox bind:value={show_dataTable_only_weighted_averaged} label="Only weighted Averaged" />
     <CustomCheckbox bind:value={keepTable} label="Keep table" />
 
-    <button
-        class="button is-danger"
-        style="margin-left: auto;"
-        on:click={clearTable}>Clear Table</button
-    >
+    <button class="button is-danger" style="margin-left: auto;" on:click={clearTable}>Clear Table</button>
 </div>
 
 <div class="dataTable">
@@ -105,17 +87,12 @@
                         <Cell>{table.amp}</Cell>
                         <Cell>{table.fwhm}</Cell>
                         <Cell>{table.sig}</Cell>
-                        <Cell
-                            style="background: #f14668; cursor: pointer; width: 2em;"
-                        >
+                        <Cell style="background: #f14668; cursor: pointer; width: 2em;">
                             <i
                                 id={table.id}
                                 class="material-icons"
                                 on:click={(e) => {
-                                    $dataTable_avg = filter(
-                                        $dataTable_avg,
-                                        (tb) => tb.id != e.target.id
-                                    )
+                                    $dataTable_avg = filter($dataTable_avg, (tb) => tb.id != e.target.id)
                                 }}>close</i
                             >
                         </Cell>
@@ -123,10 +100,7 @@
                 {/each}
             {:else}
                 {#each $dataTable as table, index (table.id)}
-                    <Row
-                        style="background-color: {table.color};"
-                        class={table.className}
-                    >
+                    <Row style="background-color: {table.color};" class={table.className}>
                         <Cell style="width: 2em;">{index}</Cell>
                         <Cell>{table.name}</Cell>
                         <Cell>{table.freq}</Cell>
@@ -138,10 +112,7 @@
                                 id={table.id}
                                 class="material-icons"
                                 on:click={(e) => {
-                                    $dataTable = filter(
-                                        $dataTable,
-                                        (tb) => tb.id != e.target.id
-                                    )
+                                    $dataTable = filter($dataTable, (tb) => tb.id != e.target.id)
                                 }}>close</i
                             >
                         </Cell>

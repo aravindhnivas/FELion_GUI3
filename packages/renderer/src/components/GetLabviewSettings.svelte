@@ -30,12 +30,7 @@
         <svelte:fragment slot="body_header__div">
             <div class="controller">
                 <CustomSwitch bind:selected={showAllFiles} label="show all" />
-                <CustomSelect
-                    auto_init={true}
-                    bind:value={selected_file}
-                    label="Filename"
-                    options={displayFiles}
-                />
+                <CustomSelect auto_init={true} bind:value={selected_file} label="Filename" options={displayFiles} />
             </div>
         </svelte:fragment>
 

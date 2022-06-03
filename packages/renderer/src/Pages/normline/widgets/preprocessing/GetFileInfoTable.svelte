@@ -1,9 +1,5 @@
 <script>
-    import {
-        filedetails,
-        opoMode,
-        normMethod,
-    } from '../../functions/svelteWritables'
+    import { filedetails, opoMode, normMethod } from '../../functions/svelteWritables'
     import CustomIconSwitch from '$components/CustomIconSwitch.svelte'
     import Table from '$components/Table.svelte'
     import { savefile, loadfile } from '../../functions/misc'
@@ -16,8 +12,7 @@
     let toggleFileDetailsTable = false
 
     async function plotData({ e = null } = {}) {
-        if (felixfiles.length < 1)
-            return window.createToast('No files selected', 'danger')
+        if (felixfiles.length < 1) return window.createToast('No files selected', 'danger')
 
         const pyfile = 'normline.getfile_details'
         const files = $opoMode ? opofiles : felixfiles
@@ -44,18 +39,9 @@
 </script>
 
 <div class="align">
-    <button class="button is-link" on:click={(e) => plotData({ e: e })}
-        >Get details</button
-    >
-    <CustomIconSwitch
-        bind:toggler={toggleFileDetailsTable}
-        icons={['arrow_drop_down', 'arrow_drop_up']}
-    />
-    <button
-        class="button is-link"
-        on:click={() => savefile({ file: $filedetails, name: 'filedetails' })}
-        >Save</button
-    >
+    <button class="button is-link" on:click={(e) => plotData({ e: e })}>Get details</button>
+    <CustomIconSwitch bind:toggler={toggleFileDetailsTable} icons={['arrow_drop_down', 'arrow_drop_up']} />
+    <button class="button is-link" on:click={() => savefile({ file: $filedetails, name: 'filedetails' })}>Save</button>
     <button class="button is-link" on:click={loadfiledetails}>Load</button>
 
     {#if toggleFileDetailsTable}
@@ -76,17 +62,7 @@
                 'Temp(K)',
                 'Precursor',
             ]}
-            keys={[
-                'filename',
-                'min',
-                'max',
-                'trap',
-                'b0',
-                'res',
-                'ie',
-                'temp',
-                'precursor',
-            ]}
+            keys={['filename', 'min', 'max', 'trap', 'b0', 'res', 'ie', 'temp', 'precursor']}
         />
     {/if}
 </div>

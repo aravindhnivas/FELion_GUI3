@@ -20,8 +20,7 @@
     const plotID = 'collisionalDistributionPlot'
 
     let duration = 600
-    let initialTemp =
-        Number(localStorage.getItem('collisional-Init-Temp')) || 300
+    let initialTemp = Number(localStorage.getItem('collisional-Init-Temp')) || 300
     let graphWindow = null
     let windowReady = false
     let numberDensity = '2e14'
@@ -29,37 +28,29 @@
     async function computeCollisionalProcess(e) {
         try {
             localStorage.setItem('collisional-Init-Temp', String(initialTemp))
-            const { distribution: boltzmanDistribution } =
-                boltzman_distribution({
-                    trapTemp: initialTemp,
-                    energyUnit,
-                    zeemanSplit,
-                    energyLevels,
-                    electronSpin,
-                })
+            const { distribution: boltzmanDistribution } = boltzman_distribution({
+                trapTemp: initialTemp,
+                energyUnit,
+                zeemanSplit,
+                energyLevels,
+                electronSpin,
+            })
             const energyKeys = boltzmanDistribution.map((f) => f.label)
             const collisionalRateConstantValues = {}
 
-            collisionalRateConstants.forEach(
-                (f) => (collisionalRateConstantValues[f.label] = f.value)
-            )
-            const { distribution: boltzmanDistributionCold } =
-                boltzman_distribution({
-                    trapTemp: collisionalTemp,
-                    energyUnit,
-                    zeemanSplit,
-                    energyLevels,
-                    electronSpin,
-                })
+            collisionalRateConstants.forEach((f) => (collisionalRateConstantValues[f.label] = f.value))
+            const { distribution: boltzmanDistributionCold } = boltzman_distribution({
+                trapTemp: collisionalTemp,
+                energyUnit,
+                zeemanSplit,
+                energyLevels,
+                electronSpin,
+            })
 
             const boltzmanDistributionValues = {}
-            boltzmanDistribution.forEach(
-                (f) => (boltzmanDistributionValues[f.label] = f.value)
-            )
+            boltzmanDistribution.forEach((f) => (boltzmanDistributionValues[f.label] = f.value))
             const boltzmanDistributionColdValues = {}
-            boltzmanDistributionCold.forEach(
-                (f) => (boltzmanDistributionColdValues[f.label] = f.value)
-            )
+            boltzmanDistributionCold.forEach((f) => (boltzmanDistributionColdValues[f.label] = f.value))
             const pyfile = 'ROSAA.collisionalSimulation'
 
             const args = {
@@ -75,19 +66,9 @@
             const dataFromPython = await computePy_func({ e, pyfile, args })
             if (!dataFromPython) return
 
-            const {
-                data,
-                collisionalBoltzmanPlotData,
-                differenceFromBoltzman,
-            } = dataFromPython
+            const { data, collisionalBoltzmanPlotData, differenceFromBoltzman } = dataFromPython
 
-            plot(
-                ` Distribution: ${collisionalTemp}K`,
-                'Time (s)',
-                'Population',
-                data,
-                plotID
-            )
+            plot(` Distribution: ${collisionalTemp}K`, 'Time (s)', 'Population', data, plotID)
 
             plot(
                 ` Distribution: ${collisionalTemp}K`,
@@ -114,32 +95,15 @@
     }
 </script>
 
-<SeparateWindow
-    {title}
-    bind:active
-    bind:windowReady
-    bind:graphWindow
-    maximize={false}
->
+<SeparateWindow {title} bind:active bind:windowReady bind:graphWindow maximize={false}>
     <svelte:fragment slot="header_content__slot">
         <div class="header">
-            <CustomTextSwitch
-                bind:value={initialTemp}
-                label="Initial temp (K)"
-            />
-            <CustomTextSwitch
-                bind:value={collisionalTemp}
-                label="Coll. temp (K)"
-            />
+            <CustomTextSwitch bind:value={initialTemp} label="Initial temp (K)" />
+            <CustomTextSwitch bind:value={collisionalTemp} label="Coll. temp (K)" />
             <CustomTextSwitch bind:value={duration} label="duration (in ms)" />
             <Textfield bind:value={totalSteps} label="totalSteps" />
-            <Textfield
-                bind:value={numberDensity}
-                label="Number density (cm-3)"
-            />
-            <button class="button is-link" on:click={computeCollisionalProcess}
-                >Compute</button
-            >
+            <Textfield bind:value={numberDensity} label="Number density (cm-3)" />
+            <button class="button is-link" on:click={computeCollisionalProcess}>Compute</button>
         </div>
     </svelte:fragment>
 
@@ -147,10 +111,7 @@
         <div class="graph__container">
             <div id={plotID} class="graph__div" />
             <div id="{plotID}_collisionalBoltzman" class="graph__div" />
-            <div
-                id="{plotID}_collisionalBoltzman_difference"
-                class="graph__div"
-            />
+            <div id="{plotID}_collisionalBoltzman_difference" class="graph__div" />
         </div>
     </svelte:fragment>
 </SeparateWindow>

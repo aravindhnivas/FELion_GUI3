@@ -1,10 +1,5 @@
 import { pyServerPORT, get } from '../settings/svelteWritables'
-export default async function ({
-    target = null,
-    general = false,
-    pyfile,
-    args,
-}) {
+export default async function ({ target = null, general = false, pyfile, args }) {
     try {
         console.time('Process Started')
         // window.createToast("Process Started", "warning")
@@ -33,10 +28,7 @@ export default async function ({
         }
 
         const dataFromPython = await response.json()
-        if (!dataFromPython)
-            return Promise.reject(
-                'could not get file from python. check the output json file'
-            )
+        if (!dataFromPython) return Promise.reject('could not get file from python. check the output json file')
         console.warn(dataFromPython)
 
         if (general) {
@@ -53,8 +45,6 @@ export default async function ({
         const msg = error.message
         const details = error.stack || error
         console.error(error)
-        return Promise.reject(
-            `Error after receiving data from python \n${msg} \n${details}`
-        )
+        return Promise.reject(`Error after receiving data from python \n${msg} \n${details}`)
     }
 }

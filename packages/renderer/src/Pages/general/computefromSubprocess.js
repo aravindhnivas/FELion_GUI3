@@ -1,11 +1,4 @@
-import {
-    pyProgram,
-    pythonscript,
-    get,
-    pyVersion,
-    pyServerReady,
-    developerMode,
-} from '../settings/svelteWritables'
+import { pyProgram, pythonscript, get, pyVersion, pyServerReady, developerMode } from '../settings/svelteWritables'
 import { running_processes } from '$src/svelteWritable'
 
 export const dispatchEvent = (target, detail, eventName) => {
@@ -33,11 +26,7 @@ export default async function ({
         }
 
         if (!general) {
-            outputFile = window.path.join(
-                appInfo.temp,
-                'FELion_GUI3',
-                pyfile.split('.').at(-1) + '_data.json'
-            )
+            outputFile = window.path.join(appInfo.temp, 'FELion_GUI3', pyfile.split('.').at(-1) + '_data.json')
             if (window.fs.existsSync(outputFile)) {
                 window.fs.removeSync(outputFile)
             }
@@ -45,9 +34,7 @@ export default async function ({
         }
 
         if (!get(pyVersion)) {
-            window.handleError(
-                'Python is not valid. Fix it in Settings --> Configuration'
-            )
+            window.handleError('Python is not valid. Fix it in Settings --> Configuration')
             return
         }
 
@@ -70,18 +57,12 @@ export default async function ({
         py.on('error', (err) => {
             window.handleError(err)
             if (pyfile !== 'server') {
-                running_processes.update((p) =>
-                    p.filter((p) => p.pid !== py.pid)
-                )
+                running_processes.update((p) => p.filter((p) => p.pid !== py.pid))
             }
             return
         })
 
-        const logFile = window.path.join(
-            appInfo.temp,
-            'FELion_GUI3',
-            pyfile + '_data.log'
-        )
+        const logFile = window.path.join(appInfo.temp, 'FELion_GUI3', pyfile + '_data.log')
         const loginfo = window.fs.createWriteStream(logFile)
 
         let error = ''
@@ -94,15 +75,9 @@ export default async function ({
                 pyServerReady.set(false)
             }
 
-            dispatchEvent(
-                target,
-                { py, pyfile, dataReceived, error },
-                'pyEventClosed'
-            )
+            dispatchEvent(target, { py, pyfile, dataReceived, error }, 'pyEventClosed')
             if (pyfile !== 'server') {
-                running_processes.update((p) =>
-                    p.filter((p) => p.pid !== py.pid)
-                )
+                running_processes.update((p) => p.filter((p) => p.pid !== py.pid))
             }
 
             if (error) {

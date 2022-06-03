@@ -34,8 +34,7 @@ export function loadfile(name) {
         return []
     }
 
-    const loadedfile =
-        getdata?.file?.map((arr) => ({ ...arr, id: window.getID() })) || []
+    const loadedfile = getdata?.file?.map((arr) => ({ ...arr, id: window.getID() })) || []
     // console.log({ loadedfile })
     window.createToast(`${name}.json has been loaded.`, 'success')
 
@@ -85,10 +84,7 @@ export function plotlyClick({ graphDiv = 'avgplot', mode = 'felix' } = {}) {
 
                 if (name.includes(outputName)) {
                     const { color } = d.data?.line
-                    const [freq, amp] = [
-                        parseFloat(d.x.toFixed(2)),
-                        parseFloat(d.y.toFixed(2)),
-                    ]
+                    const [freq, amp] = [parseFloat(d.x.toFixed(2)), parseFloat(d.y.toFixed(2))]
                     const annotation = {
                         text: `(${freq}, ${amp})`,
                         x: freq,
@@ -97,9 +93,7 @@ export function plotlyClick({ graphDiv = 'avgplot', mode = 'felix' } = {}) {
                         arrowcolor: color,
                     }
 
-                    felixPlotAnnotations.update((annotate) =>
-                        uniqBy([...annotate, annotation], 'text')
-                    )
+                    felixPlotAnnotations.update((annotate) => uniqBy([...annotate, annotation], 'text'))
                     relayout(graphDiv, {
                         annotations: get(felixPlotAnnotations),
                     })

@@ -1,12 +1,4 @@
-import {
-    felixIndex,
-    felixOutputName,
-    normMethod,
-    opoMode,
-    felixData,
-    opoData,
-    get,
-} from './svelteWritables'
+import { felixIndex, felixOutputName, normMethod, opoMode, felixData, opoData, get } from './svelteWritables'
 import { plot } from '../../../js/functions'
 
 const get_data = (data) => {
@@ -24,12 +16,7 @@ const signal = {
     hv: 'Signal = -ln(C/B)/#Photons',
 }
 
-export default async function beforePlot({
-    delta,
-    dataFromPython,
-    graphDiv,
-    baseGraphDiv,
-} = {}) {
+export default async function beforePlot({ delta, dataFromPython, graphDiv, baseGraphDiv } = {}) {
     felixOutputName.set('averaged'), felixIndex.set([])
     let avgdataToPlot, signal_formula, ylabel
 
@@ -84,13 +71,7 @@ export default async function beforePlot({
         }
     }
 
-    plot(
-        'Baseline Corrected',
-        'Wavelength (cm-1)',
-        'Counts',
-        dataFromPython['base'],
-        baseGraphDiv
-    )
+    plot('Baseline Corrected', 'Wavelength (cm-1)', 'Counts', dataFromPython['base'], baseGraphDiv)
 
     plot(
         `Normalised and Averaged Spectrum (delta=${delta})<br>${signal_formula}; {C=Measured Count, B=Baseline Count}`,

@@ -10,28 +10,14 @@
     }
 </script>
 
-<section
-    id="Kinetics"
-    style="display:block"
-    class="animate__animated animate__fadeIn"
->
+<section id="Kinetics" style="display:block" class="animate__animated animate__fadeIn">
     <div class="main_div">
         <div class="nav box">
-            <div
-                class="hvr-glow"
-                class:active={kineticMode}
-                on:click={() => (activeItem = 'ROSAAkinetics')}
-            >
+            <div class="hvr-glow" class:active={kineticMode} on:click={() => (activeItem = 'ROSAAkinetics')}>
                 Timescan Kinetics
             </div>
 
-            <div
-                class="hvr-glow"
-                class:active={thzKinetics}
-                on:click={() => (activeItem = 'ROSAA')}
-            >
-                THz Kinetics
-            </div>
+            <div class="hvr-glow" class:active={thzKinetics} on:click={() => (activeItem = 'ROSAA')}>THz Kinetics</div>
         </div>
 
         <div class="content box">

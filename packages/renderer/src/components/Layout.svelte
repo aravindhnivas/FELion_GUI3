@@ -1,11 +1,7 @@
 <script lang="ts" context="module">
     import type { OpenDialogSyncOptions } from 'electron'
 
-    export async function browse({
-        filetype = '',
-        dir = true,
-        multiple = false,
-    } = {}) {
+    export async function browse({ filetype = '', dir = true, multiple = false } = {}) {
         const properties = []
         const type = dir ? 'openDirectory' : 'openFile'
 
@@ -77,11 +73,7 @@
     let graphDivs = []
     const lookForGraph = (node) => {
         try {
-            graphDivs = Array.from(
-                document.querySelectorAll(
-                    `#${filetype}-plotContainer .graph__div`
-                )
-            )
+            graphDivs = Array.from(document.querySelectorAll(`#${filetype}-plotContainer .graph__div`))
         } catch (error) {
             console.log(error)
         }
@@ -152,35 +144,20 @@
             />
         </div>
 
-        <div
-            class="right_container__div box "
-            id="{filetype}__mainContainer__div"
-        >
+        <div class="right_container__div box " id="{filetype}__mainContainer__div">
             <div class="location__div">
-                <button
-                    class="button is-link"
-                    id="{filetype}_filebrowser_btn"
-                    on:click={browse_folder}>Browse</button
-                >
+                <button class="button is-link" id="{filetype}_filebrowser_btn" on:click={browse_folder}>Browse</button>
 
-                <Textfield
-                    bind:value={currentLocation}
-                    label="Current location"
-                    style="width:100%; "
-                />
-                <i
-                    class="material-icons"
-                    on:click={() => (activateConfigModal = true)}>build</i
-                >
+                <Textfield bind:value={currentLocation} label="Current location" style="width:100%; " />
+                <i class="material-icons" on:click={() => (activateConfigModal = true)}>build</i>
             </div>
 
             <div class="button__div align" id="{filetype}-buttonContainer">
                 <slot name="buttonContainer" />
 
                 {#if graphPlotted}
-                    <button
-                        class="button is-warning animate__animated animate__fadeIn"
-                        on:click={openGraph}>Graph:Open separately</button
+                    <button class="button is-warning animate__animated animate__fadeIn" on:click={openGraph}
+                        >Graph:Open separately</button
                     >
                 {/if}
             </div>
@@ -197,10 +174,7 @@
                     <slot name="plotContainer_functions" />
                     <slot name="plotContainer_reports" />
                 {/if}
-                <div
-                    class="report-editor-div"
-                    id="{filetype}-plotContainer-report-editor-div"
-                >
+                <div class="report-editor-div" id="{filetype}-plotContainer-report-editor-div">
                     <Editor
                         location={window.db.get(`${filetype}_location`)}
                         {filetype}

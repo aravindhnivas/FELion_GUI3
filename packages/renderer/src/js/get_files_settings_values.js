@@ -1,6 +1,5 @@
 const validate_line = (line) => {
-    const valid =
-        line.trim().length > 0 && line.startsWith('# Sect01 Ion Source')
+    const valid = line.trim().length > 0 && line.startsWith('# Sect01 Ion Source')
     return valid
 }
 
@@ -10,8 +9,7 @@ export default function (loadfile) {
 
         // const loadfile = window.path.join(location, filename)
 
-        if (!window.fs.existsSync(loadfile))
-            return reject(`${loadfile} does not exist`)
+        if (!window.fs.existsSync(loadfile)) return reject(`${loadfile} does not exist`)
 
         const [fileContents, error] = await window.fs.readFile(loadfile)
         if (error) return reject(error)

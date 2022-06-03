@@ -1,8 +1,5 @@
 <script>
-    import {
-        felixopoLocation,
-        felixPlotCheckboxes,
-    } from '../functions/svelteWritables'
+    import { felixopoLocation, felixPlotCheckboxes } from '../functions/svelteWritables'
     import { fade } from 'svelte/transition'
     import Textfield from '@smui/textfield'
     import CustomCheckList from '$components/CustomCheckList.svelte'
@@ -24,14 +21,9 @@
 
         if (window.fs.existsSync(theoryLocation)) {
             window.fs.readdirSync(theoryLocation).forEach((file) => {
-                const isFile = fs
-                    .lstatSync(window.path.join(theoryLocation, file))
-                    .isFile()
+                const isFile = fs.lstatSync(window.path.join(theoryLocation, file)).isFile()
                 if (isFile) {
-                    calcfiles = [
-                        ...calcfiles,
-                        { name: file, id: window.getID() },
-                    ]
+                    calcfiles = [...calcfiles, { name: file, id: window.getID() }]
                 }
             })
         } else {
@@ -70,9 +62,7 @@
 
 <div style="padding-bottom: 1em;">
     <div>
-        <button class="button is-link" on:click={refreshFunction}
-            >load files</button
-        >
+        <button class="button is-link" on:click={refreshFunction}>load files</button>
 
         {#key reload}
             <div class="files__div">

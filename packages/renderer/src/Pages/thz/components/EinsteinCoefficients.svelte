@@ -28,67 +28,46 @@
                 energyLevels,
             })
             einsteinB_rateComputed = false
-            const einsteinCoefficientB_emission = einsteinCoefficientA.map(
-                ({ label, value }) => {
-                    const [final, initial] = label
-                        .split('-->')
-                        .map((l) => l.trim())
+            const einsteinCoefficientB_emission = einsteinCoefficientA.map(({ label, value }) => {
+                const [final, initial] = label.split('-->').map((l) => l.trim())
 
-                    const v0 = find(
-                        energyLevels,
-                        (e) => e?.label == initial
-                    )?.value
-                    const v1 = find(
-                        energyLevels,
-                        (e) => e?.label == final
-                    )?.value
+                const v0 = find(energyLevels, (e) => e?.label == initial)?.value
+                const v1 = find(energyLevels, (e) => e?.label == final)?.value
 
-                    const freq = parseFloat(v1) - parseFloat(v0)
-                    const freqInHz =
-                        energyUnit === 'MHz'
-                            ? freq * 1e6
-                            : freq * SpeedOfLight * 100
+                const freq = parseFloat(v1) - parseFloat(v0)
+                const freqInHz = energyUnit === 'MHz' ? freq * 1e6 : freq * SpeedOfLight * 100
 
-                    const constTerm =
-                        SpeedOfLight ** 3 /
-                        (8 * Math.PI * PlanksConstant * freqInHz ** 3)
-                    const B = constTerm * value
+                const constTerm = SpeedOfLight ** 3 / (8 * Math.PI * PlanksConstant * freqInHz ** 3)
+                const B = constTerm * value
 
-                    return {
-                        label,
-                        value: B.toExponential(3),
-                        id: window.getID(),
-                    }
+                return {
+                    label,
+                    value: B.toExponential(3),
+                    id: window.getID(),
                 }
-            )
+            })
 
-            const einsteinCoefficientB_absorption =
-                einsteinCoefficientB_emission.map(({ label, value }) => {
-                    const [final, initial] = label
-                        .split('-->')
-                        .map((l) => l.trim())
+            const einsteinCoefficientB_absorption = einsteinCoefficientB_emission.map(({ label, value }) => {
+                const [final, initial] = label.split('-->').map((l) => l.trim())
 
-                    const { Gi, Gf } = computeStatisticalWeight({
-                        electronSpin,
-                        zeemanSplit,
-                        final,
-                        initial,
-                    })
-                    const weight = Gf / Gi
-
-                    const B = weight * parseFloat(value)
-                    const newLabel = `${initial} --> ${final}`
-                    return {
-                        label: newLabel,
-                        value: B.toExponential(3),
-                        id: window.getID(),
-                    }
+                const { Gi, Gf } = computeStatisticalWeight({
+                    electronSpin,
+                    zeemanSplit,
+                    final,
+                    initial,
                 })
+                const weight = Gf / Gi
 
-            einsteinCoefficientB = [
-                ...einsteinCoefficientB_emission,
-                ...einsteinCoefficientB_absorption,
-            ]
+                const B = weight * parseFloat(value)
+                const newLabel = `${initial} --> ${final}`
+                return {
+                    label: newLabel,
+                    value: B.toExponential(3),
+                    id: window.getID(),
+                }
+            })
+
+            einsteinCoefficientB = [...einsteinCoefficientB_emission, ...einsteinCoefficientB_absorption]
             einsteinCoefficientB_rateConstant = cloneDeep(einsteinCoefficientB)
 
             await computeRates()
@@ -105,22 +84,18 @@
         if (!lineshape) return
         voigtline = lineshape
 
-        const constantTerm =
-            parseFloat(power) / (parseFloat(trapArea) * SpeedOfLight)
+        const constantTerm = parseFloat(power) / (parseFloat(trapArea) * SpeedOfLight)
         const norm = constantTerm * parseFloat(voigtline)
 
-        einsteinCoefficientB = einsteinCoefficientB_rateConstant.map(
-            (rateconstant) => ({
-                ...rateconstant,
-                value: Number(rateconstant.value * norm).toExponential(3),
-            })
-        )
+        einsteinCoefficientB = einsteinCoefficientB_rateConstant.map((rateconstant) => ({
+            ...rateconstant,
+            value: Number(rateconstant.value * norm).toExponential(3),
+        }))
         einsteinB_rateComputed = einsteinCoefficientB.length > 0
     }
 
     async function computeLineshape(e = null) {
-        if (!lorrentz || !gaussian)
-            return createToast('Compute gaussian and lorrentz parameters')
+        if (!lorrentz || !gaussian) return createToast('Compute gaussian and lorrentz parameters')
         const dataFromPython = await computePy_func({
             e,
             pyfile: 'ROSAA.voigt',
@@ -139,9 +114,7 @@
 
 <BoxComponent
     title="Einstein Co-efficients"
-    loaded={einsteinCoefficientA.length > 0 &&
-        einsteinCoefficientB.length > 0 &&
-        einsteinB_rateComputed}
+    loaded={einsteinCoefficientA.length > 0 && einsteinCoefficientB.length > 0 && einsteinB_rateComputed}
 >
     <!-- <hr> -->
     <div class="align h-center subtitle">Einstein A Co-efficients</div>

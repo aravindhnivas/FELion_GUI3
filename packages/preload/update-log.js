@@ -2,9 +2,7 @@ import { contextBridge, ipcRenderer } from 'electron'
 
 ipcRenderer.on('update-log', (_, info) => console.warn(info))
 ipcRenderer.on('update-progress', (_, progressObj) => {
-    const progressContainer = document.getElementById(
-        'update-progress-container'
-    )
+    const progressContainer = document.getElementById('update-progress-container')
 
     progressContainer.style.display = 'grid'
 

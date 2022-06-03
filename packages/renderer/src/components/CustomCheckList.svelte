@@ -13,13 +13,7 @@
         {#each items as item (item.name)}
             <Item style="height:2.5em; {item$style}">
                 <Label>{item.name}</Label>
-                <Meta
-                    ><Checkbox
-                        bind:group={fileChecked}
-                        value={item.name}
-                        on:click
-                    /></Meta
-                >
+                <Meta><Checkbox bind:group={fileChecked} value={item.name} on:click /></Meta>
             </Item>
         {/each}
     </List>

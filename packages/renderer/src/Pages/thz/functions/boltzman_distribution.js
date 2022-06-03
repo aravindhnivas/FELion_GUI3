@@ -1,8 +1,5 @@
 import { sumBy } from 'lodash-es'
-import {
-    boltzmanConstantInMHz,
-    boltzmanConstantInWavenumber,
-} from '$src/js/constants'
+import { boltzmanConstantInMHz, boltzmanConstantInWavenumber } from '$src/js/constants'
 export default function ({
     energyLevels = [],
     trapTemp = 5,
@@ -30,25 +27,21 @@ export default function ({
             return { label, value }
         })
 
-        const distribution = energyLevels.map(
-            ({ label, value: currentEnergy }) => {
-                let Gj
-                if (zeemanSplit) {
-                    Gj = 1
-                } else if (electronSpin) {
-                    const j = parseFloat(label.split('_')[1])
-                    Gj = parseInt(2 * +j + 1)
-                } else {
-                    Gj = parseInt(2 * +label + 1)
-                }
-                const value = Gj * Math.exp(-currentEnergy / KT)
-                return { label, value }
+        const distribution = energyLevels.map(({ label, value: currentEnergy }) => {
+            let Gj
+            if (zeemanSplit) {
+                Gj = 1
+            } else if (electronSpin) {
+                const j = parseFloat(label.split('_')[1])
+                Gj = parseInt(2 * +j + 1)
+            } else {
+                Gj = parseInt(2 * +label + 1)
             }
-        )
+            const value = Gj * Math.exp(-currentEnergy / KT)
+            return { label, value }
+        })
 
-        const partitionValue = Number(
-            sumBy(distribution, (energy) => energy.value)
-        ).toFixed(2)
+        const partitionValue = Number(sumBy(distribution, (energy) => energy.value)).toFixed(2)
         const boltzmanDistribution = distribution.map(({ label, value }) => {
             value /= partitionValue
             return { label, value }

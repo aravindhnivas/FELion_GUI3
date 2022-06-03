@@ -36,12 +36,7 @@
     let electronSpin = false
     let zeemanSplit = false
 
-    let [
-        mainParameters,
-        simulationParameters,
-        dopplerLineshape,
-        powerBroadening,
-    ] = Array(4).fill([])
+    let [mainParameters, simulationParameters, dopplerLineshape, powerBroadening] = Array(4).fill([])
 
     let k3 = { constant: [], rate: [] }
     let kCID = { constant: [], rate: [] }
@@ -60,72 +55,40 @@
     let einsteinB_rateComputed = false
 
     const simulation = (e) => {
-        if (!window.fs.existsSync(currentLocation))
-            return window.createToast("Location doesn't exist", 'danger')
-        if (!configLoaded)
-            return window.createToast('Config file not loaded', 'danger')
-        if (!transitionFrequency)
-            return window.createToast(
-                'Transition frequency is not defined',
-                'danger'
-            )
-        if (!einsteinB_rateComputed)
-            return window.createToast(
-                'Compute einsteinB rate constants',
-                'danger'
-            )
+        if (!window.fs.existsSync(currentLocation)) return window.createToast("Location doesn't exist", 'danger')
+        if (!configLoaded) return window.createToast('Config file not loaded', 'danger')
+        if (!transitionFrequency) return window.createToast('Transition frequency is not defined', 'danger')
+        if (!einsteinB_rateComputed) return window.createToast('Compute einsteinB rate constants', 'danger')
 
         if (includeCollision) {
-            collisionalRateConstants = [
-                ...collisionalCoefficient,
-                ...collisionalCoefficient_balance,
-            ]
+            collisionalRateConstants = [...collisionalCoefficient, ...collisionalCoefficient_balance]
             if (collisionalRateConstants.length < 1)
-                return window.createToast(
-                    'Compute collisional rate constants',
-                    'danger'
-                )
+                return window.createToast('Compute collisional rate constants', 'danger')
         }
 
         if (includeAttachmentRate) {
-            if (k3.constant.length < 1)
-                return window.createToast(
-                    'Compute attachment rate constants',
-                    'danger'
-                )
+            if (k3.constant.length < 1) return window.createToast('Compute attachment rate constants', 'danger')
         }
 
         const collisional_rates = {}
-        collisionalRateConstants.forEach(
-            (f) => (collisional_rates[f.label] = f.value)
-        )
+        collisionalRateConstants.forEach((f) => (collisional_rates[f.label] = f.value))
 
         const main_parameters = {}
         mainParameters.forEach((f) => (main_parameters[f.label] = f.value))
 
         const simulation_parameters = {}
-        simulationParameters.forEach(
-            (f) => (simulation_parameters[f.label] = f.value)
-        )
+        simulationParameters.forEach((f) => (simulation_parameters[f.label] = f.value))
 
         const lineshape_conditions = {}
-        dopplerLineshape.forEach(
-            (f) => (lineshape_conditions[f.label] = f.value)
-        )
+        dopplerLineshape.forEach((f) => (lineshape_conditions[f.label] = f.value))
 
         const power_broadening = {}
         powerBroadening.forEach((f) => (power_broadening[f.label] = f.value))
 
         const einstein_coefficient = { A: {}, B: {}, B_rateConstant: {} }
-        einsteinCoefficientA.forEach(
-            (f) => (einstein_coefficient.A[f.label] = f.value)
-        )
-        einsteinCoefficientB.forEach(
-            (f) => (einstein_coefficient.B[f.label] = f.value)
-        )
-        einsteinCoefficientB_rateConstant.forEach(
-            (f) => (einstein_coefficient.B_rateConstant[f.label] = f.value)
-        )
+        einsteinCoefficientA.forEach((f) => (einstein_coefficient.A[f.label] = f.value))
+        einsteinCoefficientB.forEach((f) => (einstein_coefficient.B[f.label] = f.value))
+        einsteinCoefficientB_rateConstant.forEach((f) => (einstein_coefficient.B_rateConstant[f.label] = f.value))
 
         const attachment_rate_coefficients = {
             rateConstants: {
@@ -134,9 +97,7 @@
             },
         }
 
-        attachmentCoefficients.forEach(
-            (f) => (attachment_rate_coefficients[f.label] = f.value)
-        )
+        attachmentCoefficients.forEach((f) => (attachment_rate_coefficients[f.label] = f.value))
         const energy_levels = {}
         energyLevels.forEach((f) => (energy_levels[f.label] = f.value))
         const args = {
@@ -175,18 +136,17 @@
         }
         computePy_func({ e, pyfile: 'ROSAA', args, general: true })
     }
-    let currentLocation = window.fs.existsSync(
-        window.db.get('ROSAA_config_location')
-    )
+    let currentLocation = window.fs.existsSync(window.db.get('ROSAA_config_location'))
         ? window.db.get('ROSAA_config_location')
         : ''
 
     // let savefilename = ""
     let moleculeName = '',
         tagName = 'He'
-    $: savefilename = `${moleculeName}_${tagName}_${
-        variable.split('(')[0]
-    }_${excitedFrom} - ${excitedTo}`.replaceAll('$', '')
+    $: savefilename = `${moleculeName}_${tagName}_${variable.split('(')[0]}_${excitedFrom} - ${excitedTo}`.replaceAll(
+        '$',
+        ''
+    )
     $: if (window.fs.existsSync(currentLocation)) {
         window.db.set('ROSAA_config_location', currentLocation)
     }
@@ -206,11 +166,7 @@
         // collisionalCoefficient = collisionalCoefficient_balance = collisionalRates = []
         einsteinCoefficientA = einsteinCoefficientB = []
         energyLevels = []
-        simulationParameters =
-            mainParameters =
-            dopplerLineshape =
-            powerBroadening =
-                []
+        simulationParameters = mainParameters = dopplerLineshape = powerBroadening = []
         attachmentCoefficients = []
         window.createToast('Config file cleared', 'warning')
     }
@@ -315,15 +271,10 @@
     $: console.log(mainParameters)
     const updateEnergyLevels = () => {
         console.log('energyLevels updated')
-        if (!energyLevels)
-            return console.warn('No energyLevels defined', energyLevels)
+        if (!energyLevels) return console.warn('No energyLevels defined', energyLevels)
         console.log(energyLevels)
-        lowerLevelEnergy =
-            energyLevels?.filter((energy) => energy.label == excitedFrom)?.[0]
-                ?.value || 0
-        upperLevelEnergy =
-            energyLevels?.filter((energy) => energy.label == excitedTo)?.[0]
-                ?.value || 0
+        lowerLevelEnergy = energyLevels?.filter((energy) => energy.label == excitedFrom)?.[0]?.value || 0
+        upperLevelEnergy = energyLevels?.filter((energy) => energy.label == excitedTo)?.[0]?.value || 0
 
         transitionFrequency = upperLevelEnergy - lowerLevelEnergy
         if (energyUnit == 'cm-1') {
@@ -334,28 +285,17 @@
 
     const updateDoppler = () => {
         console.log('Changing doppler parameters')
-        ;[ionMass, RGmass, ionTemp, trapTemp] = dopplerLineshape.map(
-            (f) => f.value
-        )
+        ;[ionMass, RGmass, ionTemp, trapTemp] = dopplerLineshape.map((f) => f.value)
 
-        collisionalTemp = Number(
-            (RGmass * ionTemp + ionMass * trapTemp) / (ionMass + RGmass)
-        ).toFixed(1)
-        const sqrtTerm =
-            (8 * boltzmanConstant * Math.log(2) * ionTemp) /
-            (ionMass * amuToKG * SpeedOfLight ** 2)
+        collisionalTemp = Number((RGmass * ionTemp + ionMass * trapTemp) / (ionMass + RGmass)).toFixed(1)
+        const sqrtTerm = (8 * boltzmanConstant * Math.log(2) * ionTemp) / (ionMass * amuToKG * SpeedOfLight ** 2)
         Cg = Math.sqrt(sqrtTerm)
         gaussian = Number(transitionFrequency * Cg).toFixed(3) // in MHz
     }
     const updatePower = () => {
         ;[dipole, power] = powerBroadening.map((f) => f.value)
-        trapArea =
-            mainParameters?.filter(
-                (params) => params.label === 'trap_area (sq-meter)'
-            )?.[0]?.value || ''
-        Cp =
-            ((2 * dipole * DebyeToCm) / PlanksConstant) *
-            Math.sqrt(1 / (trapArea * SpeedOfLight * VaccumPermitivity))
+        trapArea = mainParameters?.filter((params) => params.label === 'trap_area (sq-meter)')?.[0]?.value || ''
+        Cp = ((2 * dipole * DebyeToCm) / PlanksConstant) * Math.sqrt(1 / (trapArea * SpeedOfLight * VaccumPermitivity))
         lorrentz = Number(Cp * Math.sqrt(power) * 1e-6).toFixed(3)
     }
 
@@ -394,22 +334,12 @@
             simulationParameters = simulationParameters.map(setID)
 
             attachmentCoefficients = attachmentCoefficients.map(setID)
-            k3.constant = attachmentRateConstants.k3
-                .map(setID)
-                .map(correctObjValue)
-            kCID.constant = attachmentRateConstants.kCID
-                .map(setID)
-                .map(correctObjValue)
+            k3.constant = attachmentRateConstants.k3.map(setID).map(correctObjValue)
+            kCID.constant = attachmentRateConstants.kCID.map(setID).map(correctObjValue)
             ;({ trapTemp, zeemanSplit, electronSpin, numberDensity } = CONFIG)
             // ({savefilename}         = CONFIG.saveFile);
-            moleculeName =
-                mainParameters.filter(
-                    (params) => params.label == 'molecule'
-                )?.[0]?.value || ''
-            tagName =
-                mainParameters?.filter(
-                    (params) => params.label == 'tagging partner'
-                )?.[0]?.value || ''
+            moleculeName = mainParameters.filter((params) => params.label == 'molecule')?.[0]?.value || ''
+            tagName = mainParameters?.filter((params) => params.label == 'tagging partner')?.[0]?.value || ''
             const { savelocation } = CONFIG.saveFile
             if (window.fs.existsSync(savelocation)) {
                 currentLocation = savelocation
@@ -420,29 +350,16 @@
                 einsteinA: einsteinFilename,
                 collision: collisionalFilename,
             } = CONFIG.filenames)
-            energyFilename = energyFilename
-                ? window.path.join(configFileLocation, 'files', energyFilename)
-                : ''
-            einsteinFilename = einsteinFilename
-                ? window.path.join(
-                      configFileLocation,
-                      'files',
-                      einsteinFilename
-                  )
-                : ''
+            energyFilename = energyFilename ? window.path.join(configFileLocation, 'files', energyFilename) : ''
+            einsteinFilename = einsteinFilename ? window.path.join(configFileLocation, 'files', einsteinFilename) : ''
             collisionalFilename = collisionalFilename
-                ? window.path.join(
-                      configFileLocation,
-                      'files',
-                      collisionalFilename
-                  )
+                ? window.path.join(configFileLocation, 'files', collisionalFilename)
                 : ''
 
             let energyLevelsStore = []
 
             if (energyFilename) {
-                ;({ levels: energyLevelsStore, unit: energyUnit } =
-                    await getYMLFileContents(energyFilename))
+                ;({ levels: energyLevelsStore, unit: energyUnit } = await getYMLFileContents(energyFilename))
             } else {
                 energyLevelsStore = []
             }
@@ -462,11 +379,8 @@
             excitedTo = energyLevelsStore?.[1].label
 
             if (einsteinFilename) {
-                ;({ rateConstants: einsteinCoefficientA } =
-                    await getYMLFileContents(einsteinFilename))
-                einsteinCoefficientA = einsteinCoefficientA
-                    .map(setID)
-                    .map(correctObjValue)
+                ;({ rateConstants: einsteinCoefficientA } = await getYMLFileContents(einsteinFilename))
+                einsteinCoefficientA = einsteinCoefficientA.map(setID).map(correctObjValue)
             } else {
                 einsteinCoefficientA = []
             }
@@ -489,17 +403,11 @@
     let boltzmanWindow
     let openBoltzmanWindow = false
 
-    $: voigtFWHM = Number(
-        0.5346 * lorrentz + Math.sqrt(0.2166 * lorrentz ** 2 + gaussian ** 2)
-    ).toFixed(3)
+    $: voigtFWHM = Number(0.5346 * lorrentz + Math.sqrt(0.2166 * lorrentz ** 2 + gaussian ** 2)).toFixed(3)
 
     let simulationMethod = 'Normal'
     const figure = { dpi: 100, size: '10, 6', show: true }
-    const simulationMethods = [
-        'Normal',
-        'FixedPopulation',
-        'withoutCollisionalConstants',
-    ]
+    const simulationMethods = ['Normal', 'FixedPopulation', 'withoutCollisionalConstants']
 
     const wavenumberToMHz = (energy) => ({
         ...energy,
@@ -513,48 +421,25 @@
     $: energyLevels = energyInfos[`${energyUnit}`]
 </script>
 
-<BoltzmanDistribution
-    {...boltzmanArgs}
-    bind:active={openBoltzmanWindow}
-    bind:graphWindow={boltzmanWindow}
-/>
+<BoltzmanDistribution {...boltzmanArgs} bind:active={openBoltzmanWindow} bind:graphWindow={boltzmanWindow} />
 
 <LayoutDiv id="ROSAA__modal">
     <svelte:fragment slot="header_content__slot">
-        <div
-            class="locationColumn box v-center"
-            style="border: solid 1px #fff9;"
-        >
-            <button
-                class="button is-link"
-                id="thz_modal_filebrowser_btn"
-                on:click={browse_folder}>Browse</button
-            >
+        <div class="locationColumn box v-center" style="border: solid 1px #fff9;">
+            <button class="button is-link" id="thz_modal_filebrowser_btn" on:click={browse_folder}>Browse</button>
             <Textfield bind:value={currentLocation} label="CONFIG location" />
             <Textfield bind:value={configFilename} label="CONFIG file" />
         </div>
 
         <div class="align box" style="border: solid 1px #fff9;">
-            <CustomCheckbox
-                bind:value={includeCollision}
-                label="includeCollision"
-            />
-            <CustomCheckbox
-                bind:value={includeAttachmentRate}
-                label="includeAttachmentRate"
-            />
-            <CustomCheckbox
-                bind:value={includeSpontaneousEmission}
-                label="includeSpontaneousEmission"
-            />
+            <CustomCheckbox bind:value={includeCollision} label="includeCollision" />
+            <CustomCheckbox bind:value={includeAttachmentRate} label="includeAttachmentRate" />
+            <CustomCheckbox bind:value={includeSpontaneousEmission} label="includeSpontaneousEmission" />
             <CustomCheckbox bind:value={electronSpin} label="Electron Spin" />
             <CustomCheckbox bind:value={zeemanSplit} label="Zeeman" />
         </div>
 
-        <div
-            class="align box"
-            style="border: solid 1px #fff9; min-height: 5em;"
-        >
+        <div class="align box" style="border: solid 1px #fff9; min-height: 5em;">
             <div class="subtitle">
                 Simulate signal(%) as a function of {variable}
             </div>
@@ -566,27 +451,15 @@
                         label="min, max, rangesteps:[1e1 format]"
                     />
                 {/if}
-                <CustomSelect
-                    options={variablesList}
-                    bind:value={variable}
-                    label="variable"
-                />
-                <button class="button is-link" on:click={loadConfig}
-                    >Load config</button
-                >
-                <button class="button is-link" on:click={resetConfig}
-                    >Reset Config</button
-                >
+                <CustomSelect options={variablesList} bind:value={variable} label="variable" />
+                <button class="button is-link" on:click={loadConfig}>Load config</button>
+                <button class="button is-link" on:click={resetConfig}>Reset Config</button>
             </div>
         </div>
     </svelte:fragment>
 
     <svelte:fragment slot="main_content__slot">
-        <div
-            class="content status_report__div"
-            id="status_report__ROSAA"
-            class:hide={!showreport}
-        >
+        <div class="content status_report__div" id="status_report__ROSAA" class:hide={!showreport}>
             <hr />
             {statusReport || 'Status report'}
             <hr />
@@ -595,10 +468,7 @@
         <div class="main_container__div" class:hide={showreport}>
             <!-- Main Parameters -->
 
-            <BoxComponent
-                title="Main Parameters"
-                loaded={mainParameters.length > 0}
-            >
+            <BoxComponent title="Main Parameters" loaded={mainParameters.length > 0}>
                 {#each mainParameters as { label, value, id } (id)}
                     <Textfield bind:value {label} />
                 {/each}
@@ -606,10 +476,7 @@
 
             <!-- Energy levels -->
 
-            <BoxComponent
-                title="Energy Levels"
-                loaded={energyLevels.length > 0}
-            >
+            <BoxComponent title="Energy Levels" loaded={energyLevels.length > 0}>
                 <svelte:fragment slot="control">
                     <Textfield
                         bind:value={numberOfLevels}
@@ -618,11 +485,7 @@
                         input$type={'number'}
                         label="numberOfLevels (J levels)"
                     />
-                    <CustomSelect
-                        options={['MHz', 'cm-1']}
-                        bind:value={energyUnit}
-                        label="energyUnit"
-                    />
+                    <CustomSelect options={['MHz', 'cm-1']} bind:value={energyUnit} label="energyUnit" />
                     <button
                         class="button is-link"
                         on:click={() => {
@@ -641,21 +504,13 @@
 
             <!-- Simulation parameters -->
 
-            <BoxComponent
-                title="Simulation parameters"
-                loaded={simulationParameters.length > 0}
-            >
+            <BoxComponent title="Simulation parameters" loaded={simulationParameters.length > 0}>
                 {#each simulationParameters as { label, value, id } (id)}
                     <Textfield bind:value {label} />
                 {/each}
 
                 <hr />
-                <div
-                    class="subtitle"
-                    style="width: 100%; display:grid; place-items: center;"
-                >
-                    Transition levels
-                </div>
+                <div class="subtitle" style="width: 100%; display:grid; place-items: center;">Transition levels</div>
                 <hr />
                 <div class="align h-center">
                     <CustomSelect
@@ -679,41 +534,22 @@
 
             <!-- Doppler lineshape -->
 
-            <BoxComponent
-                title="Doppler lineshape"
-                loaded={dopplerLineshape.length > 0}
-            >
+            <BoxComponent title="Doppler lineshape" loaded={dopplerLineshape.length > 0}>
                 {#each dopplerLineshape as { label, value, id } (id)}
                     <CustomTextSwitch step={0.5} bind:value {label} />
                 {/each}
-                <Textfield
-                    bind:value={collisionalTemp}
-                    label="collisionalTemp(K)"
-                />
-                <Textfield
-                    bind:value={gaussian}
-                    label="gaussian - FWHM (MHz)"
-                />
+                <Textfield bind:value={collisionalTemp} label="collisionalTemp(K)" />
+                <Textfield bind:value={gaussian} label="gaussian - FWHM (MHz)" />
             </BoxComponent>
 
             <!-- Lorrentz lineshape -->
 
-            <BoxComponent
-                title="Lorrentz lineshape"
-                loaded={powerBroadening.length > 0}
-            >
+            <BoxComponent title="Lorrentz lineshape" loaded={powerBroadening.length > 0}>
                 {#each powerBroadening as { label, value, id } (id)}
                     <Textfield bind:value {label} />
                 {/each}
-                <Textfield
-                    bind:value={lorrentz}
-                    label="lorrentz - FWHM (MHz)"
-                />
-                <Textfield
-                    value={voigtFWHM}
-                    label="Voigt - FWHM (MHz)"
-                    variant="outlined"
-                />
+                <Textfield bind:value={lorrentz} label="lorrentz - FWHM (MHz)" />
+                <Textfield value={voigtFWHM} label="Voigt - FWHM (MHz)" variant="outlined" />
             </BoxComponent>
 
             <EinsteinCoefficients
@@ -746,20 +582,12 @@
                 {numberOfLevels}
             />
 
-            <AttachmentCoefficients
-                bind:k3
-                bind:kCID
-                bind:numberDensity
-                bind:attachmentCoefficients
-            />
+            <AttachmentCoefficients bind:k3 bind:kCID bind:numberDensity bind:attachmentCoefficients />
 
             <!-- Figure config -->
 
             <BoxComponent title="Figure config" loaded={true}>
-                <Textfield
-                    bind:value={figure.size}
-                    label="Dimention (width, height)"
-                />
+                <Textfield bind:value={figure.size} label="Dimention (width, height)" />
 
                 <Textfield bind:value={figure.dpi} label="DPI" />
                 <CustomCheckbox bind:value={figure.show} label="show figure" />
@@ -775,11 +603,7 @@
     </svelte:fragment>
 
     <svelte:fragment slot="footer_content__slot">
-        <CustomSelect
-            options={simulationMethods}
-            bind:value={simulationMethod}
-            label="simulationMethod"
-        />
+        <CustomSelect options={simulationMethods} bind:value={simulationMethod} label="simulationMethod" />
         {#if showreport}
             <button
                 class="button is-warning"

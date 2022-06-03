@@ -59,18 +59,13 @@
 
     const fullData = {}
     let dataReady = false
-    async function plotData({
-        e = null,
-        filetype = 'felix',
-        target = null,
-    } = {}) {
+    async function plotData({ e = null, filetype = 'felix', target = null } = {}) {
         let pyfile = '',
             args
 
         switch (filetype) {
             case 'felix':
-                if (felixfiles.length < 1)
-                    return window.createToast('No files selected', 'danger')
+                if (felixfiles.length < 1) return window.createToast('No files selected', 'danger')
 
                 removeExtraFile()
 
@@ -124,32 +119,21 @@
 
                 pyfile = 'normline.baseline'
                 args = {
-                    filename: window.path.join(
-                        $felixopoLocation,
-                        baseline_markedfile
-                    ),
+                    filename: window.path.join($felixopoLocation, baseline_markedfile),
                 }
                 computePy_func({ e, pyfile, args, general: true })
                 break
 
             case 'matplotlib':
                 const numberWidgets = {}
-                felixPlotWidgets.number.forEach(
-                    (n) => (numberWidgets[n.label] = n.value)
-                )
+                felixPlotWidgets.number.forEach((n) => (numberWidgets[n.label] = n.value))
 
                 const textWidgets = {}
-                felixPlotWidgets.text.forEach(
-                    (n) => (textWidgets[n.label] = n.value)
-                )
+                felixPlotWidgets.text.forEach((n) => (textWidgets[n.label] = n.value))
                 const booleanWidgets = {}
-                felixPlotWidgets.boolean.forEach(
-                    (n) => (booleanWidgets[n.label] = n.value)
-                )
+                felixPlotWidgets.boolean.forEach((n) => (booleanWidgets[n.label] = n.value))
                 const selectedWidgets = {}
-                $felixPlotCheckboxes.forEach(
-                    (n) => (selectedWidgets[n.label] = n.value)
-                )
+                $felixPlotCheckboxes.forEach((n) => (selectedWidgets[n.label] = n.value))
 
                 pyfile = 'normline.felix_tkplot'
                 args = {
@@ -168,8 +152,7 @@
         }
     }
 
-    $: updateplot =
-        dataReady && plotfile && $normMethod && fullData.data && !$opoMode
+    $: updateplot = dataReady && plotfile && $normMethod && fullData.data && !$opoMode
     $: if (updateplot && $showall) {
         if ($felixGraphPlotted) {
             const currentKey = mapNormMethodKeys[$normMethod]
@@ -177,13 +160,7 @@
 
             const { layout } = $normMethodDatas[$normMethod]
             react('avgplot', currentData, layout)
-            plot(
-                'Baseline Corrected',
-                'Wavelength (cm-1)',
-                'Counts',
-                fullData.data['base'],
-                'bplot'
-            )
+            plot('Baseline Corrected', 'Wavelength (cm-1)', 'Counts', fullData.data['base'], 'bplot')
             subplot(
                 'Spectrum and Power Analyser',
                 'Wavelength set (cm-1)',
@@ -215,11 +192,7 @@
 />
 
 <div class="align">
-    <button
-        class="button is-link"
-        id="create_baseline_btn"
-        on:click={(e) => plotData({ e: e, filetype: 'baseline' })}
-    >
+    <button class="button is-link" id="create_baseline_btn" on:click={(e) => plotData({ e: e, filetype: 'baseline' })}>
         Create Baseline
         <span
             class="tag__span tag is-warning "
@@ -228,27 +201,13 @@
         >
     </button>
 
-    <button
-        class="button is-link"
-        id="felix_plotting_btn"
-        on:click={(e) => plotData({ e: e, filetype: 'felix' })}
-    >
+    <button class="button is-link" id="felix_plotting_btn" on:click={(e) => plotData({ e: e, filetype: 'felix' })}>
         FELIX Plot
     </button>
 
-    <CustomTextSwitch
-        style="width:7em"
-        variant="outlined"
-        bind:value={delta}
-        label="Delta"
-        step="0.5"
-    />
-    <button class="button is-link" on:click={() => (active = true)}>
-        Open in Matplotlib</button
-    >
-    <button class="button is-link" on:click={() => ($toggleRow = !$toggleRow)}
-        >Add Theory</button
-    >
+    <CustomTextSwitch style="width:7em" variant="outlined" bind:value={delta} label="Delta" step="0.5" />
+    <button class="button is-link" on:click={() => (active = true)}> Open in Matplotlib</button>
+    <button class="button is-link" on:click={() => ($toggleRow = !$toggleRow)}>Add Theory</button>
     <button
         class="button is-link"
         on:click={() => {

@@ -23,10 +23,7 @@ menu.append(
     new MenuItem({
         label: 'Inspect Element',
         click() {
-            currentWindow.inspectElement(
-                rightClickPosition.x,
-                rightClickPosition.y
-            )
+            currentWindow.inspectElement(rightClickPosition.x, rightClickPosition.y)
         },
     })
 )

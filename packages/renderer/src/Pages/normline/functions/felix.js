@@ -1,8 +1,4 @@
-import {
-    plotlyEventCreatedFELIX,
-    felixGraphPlotted,
-    get,
-} from './svelteWritables'
+import { plotlyEventCreatedFELIX, felixGraphPlotted, get } from './svelteWritables'
 import { subplot } from '../../../js/functions'
 import { plotlySelection, plotlyClick } from './misc'
 import beforePlot from './beforePlot'
@@ -34,15 +30,7 @@ export async function felix_func({ dataFromPython, delta } = {}) {
         plotlyEventCreatedFELIX.set(true)
     }
 
-    const graphDivIds = [
-        'exp-theory-plot',
-        'bplot',
-        'saPlot',
-        'avgplot',
-        'opoplot',
-        'opoSA',
-        'opoRelPlot',
-    ]
+    const graphDivIds = ['exp-theory-plot', 'bplot', 'saPlot', 'avgplot', 'opoplot', 'opoSA', 'opoRelPlot']
     graphDivIds.forEach((id) => {
         const content = document.getElementById(id).innerHTML
         const width = document.getElementById(id).clientWidth

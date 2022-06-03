@@ -15,17 +15,7 @@
     import Misc from './Pages/Misc.svelte'
     import Settings from './Pages/Settings.svelte'
 
-    const navItems = [
-        'Home',
-        'Normline',
-        'Masspec',
-        'Timescan',
-        'THz',
-        'Kinetics',
-        'Powerfile',
-        'Misc',
-        'Settings',
-    ]
+    const navItems = ['Home', 'Normline', 'Masspec', 'Timescan', 'THz', 'Kinetics', 'Powerfile', 'Misc', 'Settings']
     const toastOpts = { reversed: true, intro: { y: 100 } }
 </script>
 
@@ -33,10 +23,7 @@
 <div class="toast_container">
     <SvelteToast options={toastOpts} />
     <div id="leftToaster">
-        <SvelteToast
-            target="right"
-            options={{ initial: 0, intro: { y: 100 } }}
-        />
+        <SvelteToast target="right" options={{ initial: 0, intro: { y: 100 } }} />
     </div>
     <div id="rightToaster">
         <SvelteToast target="left" options={{ intro: { y: 100 } }} />

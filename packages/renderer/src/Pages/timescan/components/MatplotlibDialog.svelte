@@ -13,9 +13,7 @@
     aria-describedby="kinetics_plot_adjust_content"
     surface$style="background: #8361bf; padding: 0.5rem;"
 >
-    <Title style="color: #fff;" id="kinetics_plot_adjust_title"
-        >matplotlib</Title
-    >
+    <Title style="color: #fff;" id="kinetics_plot_adjust_title">matplotlib</Title>
     <Content style="padding: 1rem;" id="kinetics_plot_adjust_content">
         <Textfield
             style="min-height: 200px; width: 100%; max-height: 300px; max-width: 300px;"
@@ -23,9 +21,7 @@
             bind:value
             label="Adjust plot"
         >
-            <HelperText slot="helper"
-                >matplotlib subplot_adjust configs</HelperText
-            >
+            <HelperText slot="helper">matplotlib subplot_adjust configs</HelperText>
         </Textfield>
         <Actions>
             <Button action="close">

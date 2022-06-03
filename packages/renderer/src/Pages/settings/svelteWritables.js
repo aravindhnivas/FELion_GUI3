@@ -14,30 +14,18 @@ if (!db.get('pythonscript')) {
 export const pythonpath = writable(db.get('pythonpath'))
 export const pythonscript = writable(db.get('pythonscript'))
 
-export const developerMode = writable(
-    db.get('developerMode') ?? appInfo.isPackaged
-)
+export const developerMode = writable(db.get('developerMode') ?? appInfo.isPackaged)
 console.log('developerMode: ', db.get('developerMode'), get(developerMode))
-export const pyProgram = derived(
-    [developerMode, pythonpath],
-    ([$developerMode, $pythonpath]) => {
-        return $developerMode
-            ? $pythonpath
-            : window.path.join(ROOT_DIR, 'resources/felionpy/felionpy')
-    }
-)
-export const mainpyfile = derived(
-    [developerMode, pythonscript],
-    ([$developerMode, $pythonscript]) => {
-        return $developerMode ? window.path.join($pythonscript, 'main.py') : ''
-    }
-)
+export const pyProgram = derived([developerMode, pythonpath], ([$developerMode, $pythonpath]) => {
+    return $developerMode ? $pythonpath : window.path.join(ROOT_DIR, 'resources/felionpy/felionpy')
+})
+export const mainpyfile = derived([developerMode, pythonscript], ([$developerMode, $pythonscript]) => {
+    return $developerMode ? window.path.join($pythonscript, 'main.py') : ''
+})
 
 export const pyVersion = writable(db.get('pyVersion') || '')
 export const pyServerPORT = writable(db.get('pyServerPORT') || 5050)
 db.onDidChange('pyServerPORT', (value) => pyServerPORT.set(value))
 
 export const pyServerReady = writable(false)
-export const suppressInitialDeveloperWarning = writable(
-    db.get('suppressInitialDeveloperWarning') || false
-)
+export const suppressInitialDeveloperWarning = writable(db.get('suppressInitialDeveloperWarning') || false)

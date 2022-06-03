@@ -12,13 +12,10 @@ const path = require('path')
  */
 
 function getVendors() {
-    const output = execSync(
-        `${electron} -p "JSON.stringify(process.versions)"`,
-        {
-            env: { ELECTRON_RUN_AS_NODE: '1' },
-            encoding: 'utf-8',
-        }
-    )
+    const output = execSync(`${electron} -p "JSON.stringify(process.versions)"`, {
+        env: { ELECTRON_RUN_AS_NODE: '1' },
+        encoding: 'utf-8',
+    })
     return JSON.parse(output)
 }
 
@@ -26,8 +23,7 @@ function updateVendors() {
     const electronRelease = getVendors()
 
     const nodeMajorVersion = electronRelease.node.split('.')[0]
-    const chromeMajorVersion =
-        electronRelease.v8.split('.')[0] + electronRelease.v8.split('.')[1]
+    const chromeMajorVersion = electronRelease.v8.split('.')[0] + electronRelease.v8.split('.')[1]
 
     const browserslistrcPath = path.resolve(process.cwd(), '.browserslistrc')
 

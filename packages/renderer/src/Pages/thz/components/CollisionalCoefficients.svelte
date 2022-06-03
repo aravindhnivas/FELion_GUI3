@@ -22,10 +22,7 @@
     export let collisionalCoefficient_balance = []
 
     let collisionalWindow = false
-    $: collisionalRateConstants = [
-        ...collisionalCoefficient,
-        ...collisionalCoefficient_balance,
-    ]
+    $: collisionalRateConstants = [...collisionalCoefficient, ...collisionalCoefficient_balance]
     $: collisionalArgs = {
         energyUnit,
         zeemanSplit,
@@ -53,10 +50,7 @@
             newValue = value * balance_distribution({ ...balanceArgs, label })
             newLabel = `${levelLabels[1]} --> ${levelLabels[0]}`
 
-            const alreadyComputed = find(
-                collisionalCoefficient,
-                (rate) => rate.label == newLabel
-            )
+            const alreadyComputed = find(collisionalCoefficient, (rate) => rate.label == newLabel)
             if (!alreadyComputed) {
                 collisionalCoefficient_balance = [
                     ...collisionalCoefficient_balance,
@@ -82,8 +76,7 @@
 
     let collisionalFileBasename = ''
     async function browse_collisional_file() {
-        ;[collisionalFilename] =
-            (await browse({ dir: false })) || collisionalFilename
+        ;[collisionalFilename] = (await browse({ dir: false })) || collisionalFilename
         collisionalFileBasename = window.path.basename(collisionalFilename)
     }
 
@@ -95,13 +88,10 @@
     let OpenRateConstantsPlot = false
 
     const saveCollisionalRateConstants = () => {
-        const [, error] = window.fs.outputJsonSync(
-            collisionalCoefficientJSONFile,
-            {
-                collisionalCoefficient,
-                collisionalCoefficient_balance,
-            }
-        )
+        const [, error] = window.fs.outputJsonSync(collisionalCoefficientJSONFile, {
+            collisionalCoefficient,
+            collisionalCoefficient_balance,
+        })
         if (error) {
             return window.handleError(error)
         }
@@ -117,12 +107,9 @@
             ;[{ collisionalCoefficient, collisionalCoefficient_balance }] =
                 window.fs.readJsonSync(collisionalCoefficientJSONFile)
             if (window.db.get('active_tab') == 'Kinetics') {
-                window.createToast(
-                    'loaded: ' +
-                        window.path.basename(collisionalCoefficientJSONFile),
-                    'warning',
-                    { target: 'left' }
-                )
+                window.createToast('loaded: ' + window.path.basename(collisionalCoefficientJSONFile), 'warning', {
+                    target: 'left',
+                })
             }
         }
     }
@@ -131,11 +118,7 @@
         const configLocation = window.db.get('ROSAA_config_location') || ''
         if (!configLocation) return
         console.log(configLocation)
-        collisionalCoefficientJSONFile = window.path.join(
-            configLocation,
-            'files',
-            'collisionalCoefficients.json'
-        )
+        collisionalCoefficientJSONFile = window.path.join(configLocation, 'files', 'collisionalCoefficients.json')
         readcollisionalCoefficientJSONFile()
     })
 </script>
@@ -148,46 +131,20 @@
     bind:collisionalTemp
 />
 
-<BoxComponent
-    title="Collisional rate constants"
-    loaded={collisionalCoefficient.length > 0}
->
+<BoxComponent title="Collisional rate constants" loaded={collisionalCoefficient.length > 0}>
     <svelte:fragment slot="control">
-        <button
-            class="button is-link "
-            on:click={compteCollisionalBalanceConstants}
-            >Compute balance rate</button
-        >
-        <button
-            class="button is-link "
-            on:click={() => (collisionalWindow = true)}
-            >Compute Collisional Cooling</button
-        >
+        <button class="button is-link " on:click={compteCollisionalBalanceConstants}>Compute balance rate</button>
+        <button class="button is-link " on:click={() => (collisionalWindow = true)}>Compute Collisional Cooling</button>
 
         <div class="align h-center">
-            <button class="button is-link" on:click={browse_collisional_file}
-                >Browse</button
-            >
-            <Textfield
-                bind:value={collisionalFileBasename}
-                label="collisionalFilename"
-                disabled
-                variant="outlined"
-            />
+            <button class="button is-link" on:click={browse_collisional_file}>Browse</button>
+            <Textfield bind:value={collisionalFileBasename} label="collisionalFilename" disabled variant="outlined" />
             <Textfield bind:value={collisionalTemp} label="collisionalTemp" />
-            <button
-                class="button is-link"
-                on:click={() => (OpenRateConstantsPlot = true)}
+            <button class="button is-link" on:click={() => (OpenRateConstantsPlot = true)}
                 >Compute rate constants</button
             >
-            <button
-                class="button is-link"
-                on:click={readcollisionalCoefficientJSONFile}>Read</button
-            >
-            <button
-                class="button is-link"
-                on:click={saveCollisionalRateConstants}>Save</button
-            >
+            <button class="button is-link" on:click={readcollisionalCoefficientJSONFile}>Read</button>
+            <button class="button is-link" on:click={saveCollisionalRateConstants}>Save</button>
         </div>
     </svelte:fragment>
 

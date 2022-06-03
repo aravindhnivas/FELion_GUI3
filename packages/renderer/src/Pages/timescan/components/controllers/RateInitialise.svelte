@@ -29,11 +29,7 @@
 
 <div class="align box h-center" style:flex-direction="column">
     <div class="align h-center">
-        <Textfield
-            bind:value={nameOfReactants}
-            label="nameOfReactants"
-            style="width:30%"
-        />
+        <Textfield bind:value={nameOfReactants} label="nameOfReactants" style="width:30%" />
 
         <Textfield bind:value={legends} label="legends" style="width:30%" />
     </div>
@@ -56,23 +52,13 @@
     </div>
 
     {#if totalMassKey.filter((m) => m.included).length < 2}
-        <span class="tag is-danger">
-            atleast two reactants are required for kinetics
-        </span>
+        <span class="tag is-danger"> atleast two reactants are required for kinetics </span>
     {/if}
 
     <div class="align h-center">
-        <CustomSwitch
-            on:change={computeOtherParameters}
-            bind:selected={useParamsFile}
-            label="use params file"
-        />
+        <CustomSwitch on:change={computeOtherParameters} bind:selected={useParamsFile} label="use params file" />
 
-        <CustomSwitch
-            on:change={computeOtherParameters}
-            bind:selected={useTaggedFile}
-            label="use tagged File"
-        />
+        <CustomSwitch on:change={computeOtherParameters} bind:selected={useTaggedFile} label="use tagged File" />
 
         {#if useTaggedFile}
             <TextAndSelectOptsToggler
@@ -91,20 +77,11 @@
             update={readConfigDir}
         />
 
-        <button class="button is-link" on:click={computeOtherParameters}
-            >load</button
-        >
-        <button class="button is-link" on:click={updateParamsFile}
-            >update</button
-        >
+        <button class="button is-link" on:click={computeOtherParameters}>load</button>
+        <button class="button is-link" on:click={updateParamsFile}>update</button>
         {#if useParamsFile && selectedFile}
-            <span
-                class="tag is-success"
-                class:is-danger={!params_found}
-                transition:fade
-                >{params_found
-                    ? `params updated: ${window.path.basename(selectedFile)}`
-                    : 'params not found'}</span
+            <span class="tag is-success" class:is-danger={!params_found} transition:fade
+                >{params_found ? `params updated: ${window.path.basename(selectedFile)}` : 'params not found'}</span
             >
         {/if}
     </div>

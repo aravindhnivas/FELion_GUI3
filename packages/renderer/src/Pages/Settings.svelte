@@ -10,11 +10,7 @@
     import { updateInterval } from '$src/svelteWritable'
     import { activateChangelog } from '../js/functions'
 
-    import {
-        getPyVersion,
-        resetPyConfig,
-        updatePyConfig,
-    } from './settings/checkPython'
+    import { getPyVersion, resetPyConfig, updatePyConfig } from './settings/checkPython'
     import Textfield from '@smui/textfield'
     import { onMount, onDestroy } from 'svelte'
     import Changelog from '$components/Changelog.svelte'
@@ -52,10 +48,7 @@
 
             setTimeout(() => {
                 updateCheck()
-                updateIntervalCycle = setInterval(
-                    updateCheck,
-                    $updateInterval * 60 * 1000
-                )
+                updateIntervalCycle = setInterval(updateCheck, $updateInterval * 60 * 1000)
             }, 60 * 60 * 1000)
         }
     })
@@ -79,10 +72,7 @@
             }
             if (env.DEV) return
 
-            updateIntervalCycle = setInterval(
-                updateCheck,
-                $updateInterval * 60 * 1000
-            )
+            updateIntervalCycle = setInterval(updateCheck, $updateInterval * 60 * 1000)
         }
     })
 
@@ -118,10 +108,7 @@
         try {
             if (!navigator.onLine) {
                 if (event) {
-                    return window.createToast(
-                        'No Internet Connection!',
-                        'warning'
-                    )
+                    return window.createToast('No Internet Connection!', 'warning')
                 }
             }
             checkupdate()
@@ -164,58 +151,29 @@
 
 <Changelog />
 
-<section
-    class="section animate__animated animate__fadeIn"
-    {id}
-    style="display:{display}"
->
+<section class="section animate__animated animate__fadeIn" {id} style="display:{display}">
     <div class="main__div">
         <div class="box interact left_container__div">
             <div class="title__div">
-                <div
-                    class="hvr-glow"
-                    class:clicked={selected === 'Configuration'}
-                    on:click={navigate}
-                >
+                <div class="hvr-glow" class:clicked={selected === 'Configuration'} on:click={navigate}>
                     Configuration
                 </div>
-                <div
-                    class="hvr-glow"
-                    class:clicked={selected === 'Update'}
-                    on:click={navigate}
-                >
-                    Update
-                </div>
-                <div
-                    class="hvr-glow"
-                    class:clicked={selected === 'About'}
-                    on:click={navigate}
-                >
-                    About
-                </div>
+                <div class="hvr-glow" class:clicked={selected === 'Update'} on:click={navigate}>Update</div>
+                <div class="hvr-glow" class:clicked={selected === 'About'} on:click={navigate}>About</div>
             </div>
         </div>
 
         <div class="mainContainer box">
             <div class="container right" id="Settings_right_column">
-                <div
-                    class="align animate__animated animate__fadeIn"
-                    class:hide={selected !== 'Configuration'}
-                >
+                <div class="align animate__animated animate__fadeIn" class:hide={selected !== 'Configuration'}>
                     <h1>Configuration</h1>
 
                     <div class="align">
                         <div class="tag is-warning">
                             {$pyVersion || 'Python undefined'}
                         </div>
-                        <div
-                            class="tag"
-                            class:is-danger={!$pyServerReady}
-                            class:is-success={$pyServerReady}
-                        >
-                            {$pyServerReady
-                                ? `server running (port: ${$pyServerPORT})`
-                                : 'felionpy server closed'}
+                        <div class="tag" class:is-danger={!$pyServerReady} class:is-success={$pyServerReady}>
+                            {$pyServerReady ? `server running (port: ${$pyServerPORT})` : 'felionpy server closed'}
                         </div>
 
                         <div class="align">
@@ -223,48 +181,28 @@
                                 class="button is-link"
                                 on:click={() => {
                                     $developerMode = !$developerMode
-                                    window.db.set(
-                                        'developerMode',
-                                        $developerMode
-                                    )
+                                    window.db.set('developerMode', $developerMode)
                                 }}
                             >
                                 Developer mode: {$developerMode}
                             </button>
 
-                            <button
-                                class="button is-link"
-                                on:click={getPyVersion}>getPyVersion</button
-                            >
+                            <button class="button is-link" on:click={getPyVersion}>getPyVersion</button>
 
-                            <button
-                                class="button is-link"
-                                on:click={() =>
-                                    (showServerControls = !showServerControls)}
-                            >
+                            <button class="button is-link" on:click={() => (showServerControls = !showServerControls)}>
                                 Show server controls
                             </button>
 
                             {#if $developerMode}
                                 <div class="align">
-                                    <Textfield
-                                        bind:value={$pythonpath}
-                                        label="Python path"
-                                        style="width: 100%; "
-                                    />
+                                    <Textfield bind:value={$pythonpath} label="Python path" style="width: 100%; " />
                                     <Textfield
                                         bind:value={$pythonscript}
                                         label="Python script path"
                                         style="width: 100%; "
                                     />
-                                    <button
-                                        class="button is-link"
-                                        on:click={resetPyConfig}>Reset</button
-                                    >
-                                    <button
-                                        class="button is-link"
-                                        on:click={updatePyConfig}>Save</button
-                                    >
+                                    <button class="button is-link" on:click={resetPyConfig}>Reset</button>
+                                    <button class="button is-link" on:click={updatePyConfig}>Save</button>
                                 </div>
                             {/if}
                         </div>
@@ -275,61 +213,32 @@
                             </div>
                         {/if}
 
-                        <div
-                            class="align server-control"
-                            class:hide={!showServerControls}
-                        >
+                        <div class="align server-control" class:hide={!showServerControls}>
                             <div class="align">
-                                <Textfield
-                                    disabled
-                                    type="number"
-                                    bind:value={$pyServerPORT}
-                                    label="serverPORT"
-                                />
+                                <Textfield disabled type="number" bind:value={$pyServerPORT} label="serverPORT" />
 
                                 <CustomSwitch
                                     bind:selected={serverDebug}
                                     label="serverDebug"
                                     on:change={() => {
-                                        window.db.set(
-                                            'serverDebug',
-                                            serverDebug
-                                        )
-                                        console.log(
-                                            { serverDebug },
-                                            window.db.get('serverDebug')
-                                        )
+                                        window.db.set('serverDebug', serverDebug)
+                                        console.log({ serverDebug }, window.db.get('serverDebug'))
                                     }}
                                 />
 
-                                <button
-                                    class="button is-link"
-                                    on:click={window.startServer}
-                                    disabled={$pyServerReady}
-                                >
+                                <button class="button is-link" on:click={window.startServer} disabled={$pyServerReady}>
                                     STARTserver
                                 </button>
 
                                 {#if $pyServerReady}
-                                    <button
-                                        class="button is-danger"
-                                        on:click={window.stopServer}
-                                    >
-                                        STOPserver
-                                    </button>
+                                    <button class="button is-danger" on:click={window.stopServer}> STOPserver </button>
                                 {/if}
 
-                                <button
-                                    class="button is-warning"
-                                    on:click={updateTCPInfo}>Check TCP</button
-                                >
+                                <button class="button is-warning" on:click={updateTCPInfo}>Check TCP</button>
                             </div>
 
                             <div class="align">
-                                <button
-                                    id="fetchServerROOT"
-                                    class="button is-link"
-                                    on:click={updateServerInfo}
+                                <button id="fetchServerROOT" class="button is-link" on:click={updateServerInfo}
                                     >fetchServerROOT</button
                                 >
                                 <button
@@ -347,10 +256,7 @@
                     </div>
                 </div>
 
-                <div
-                    class="align animate__animated animate__fadeIn"
-                    class:hide={selected !== 'Update'}
-                >
+                <div class="align animate__animated animate__fadeIn" class:hide={selected !== 'Update'}>
                     <h1 class="title">Update</h1>
 
                     <div class="subtitle" style="width: 100%;">
@@ -372,30 +278,20 @@
                             >
                         </div>
 
-                        <div
-                            id="update-progress-container"
-                            style="display: none;"
-                        >
+                        <div id="update-progress-container" style="display: none;">
                             <label for="file">Download progress:</label>
-                            <progress id="update-progress" max="100" value="0">
-                                0%</progress
-                            >
+                            <progress id="update-progress" max="100" value="0"> 0%</progress>
                         </div>
 
                         {#if updateError}
-                            <div
-                                class="tag is-danger errorbox animate__animated animate__fadeIn"
-                            >
+                            <div class="tag is-danger errorbox animate__animated animate__fadeIn">
                                 {updateError}
                             </div>
                         {/if}
                     </div>
                 </div>
 
-                <div
-                    class="animate__animated animate__fadeIn"
-                    class:hide={selected !== 'About'}
-                >
+                <div class="animate__animated animate__fadeIn" class:hide={selected !== 'About'}>
                     <h1 class="title">About</h1>
                     <div class="content">
                         <ul style="user-select: text;">
