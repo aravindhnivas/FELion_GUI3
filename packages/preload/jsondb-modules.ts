@@ -19,7 +19,7 @@ ipcRenderer.on('db:update', (_event, { key, value }) => {
 
 export const dbObject: typeof db = {
     get(key) {
-        return db.get(key)
+        return db.get(key) ?? ''
     },
     has(key) {
         return db.has(key)
