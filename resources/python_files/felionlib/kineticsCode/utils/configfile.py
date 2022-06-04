@@ -88,27 +88,25 @@ def read_config(
                 print(f"{kCID_fit_keyvalues=}", flush=True)
 
                 for k3_key in k3_fit_keyvalues.keys():
-
                     if k3_key in k3Labels:
-
                         k3_found_index = k3Labels.index(k3_key)
                         ratek3[k3_found_index] = float(k3_fit_keyvalues[k3_key][0])
                         k3_err[k3_found_index] = float(k3_fit_keyvalues[k3_key][1])
                         keyFoundForRate = True
-
                         print(f"setting found value for {k3_key}", flush=True)
                         print(f"{k3_found_index=}\t{float(k3_fit_keyvalues[k3_key][0])=}", flush=True)
                         print(f"{ratek3=}", flush=True)
 
                 for kCID_key in kCID_fit_keyvalues.keys():
+
                     if kCID_key in kCIDLabels:
                         print(f"setting found value for {kCID_key}", flush=True)
                         kCID_found_index = kCIDLabels.index(kCID_key)
                         ratekCID[kCID_found_index] = float(kCID_fit_keyvalues[kCID_key][0])
                         kCID_err[kCID_found_index] = float(kCID_fit_keyvalues[kCID_key][1])
-
                         keyFoundForRate = True
-
+                        
     k_err = np.concatenate((k3_err, kCID_err))
     print(f"{k_err=}\n{ratek3=}\n{ratekCID=}", flush=True)
     print(f"{keyFoundForRate=}", flush=True)
+    
