@@ -3,14 +3,15 @@
     import { onDestroy } from 'svelte'
     import Textfield from '@smui/textfield'
     import { browse } from '$components/Layout.svelte'
-    import WinBox from 'winbox/src/js/winbox.js'
     import CustomSwitch from '$components/CustomSwitch.svelte'
+    import WinBox from 'winbox/src/js/winbox.js'
     import TextAndSelectOptsToggler from '$components/TextAndSelectOptsToggler.svelte'
+
     export let id = window.getID()
     export let location = ''
+
     export let filetype = ''
     export let editor = null
-
     export let mount = null
     export let mainTitle = 'Report/Editor'
     export let reportRead = false
@@ -32,7 +33,7 @@
         }
     }
 
-    const mountEditor = (node) => {
+    const mountEditor = (node: HTMLElement) => {
         mountEditorFn(node)
     }
 
