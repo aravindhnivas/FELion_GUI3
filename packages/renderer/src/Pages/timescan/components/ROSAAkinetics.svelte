@@ -224,7 +224,6 @@
 
     let params_found = false
     let useTaggedFile = false
-
     let tagFile = ''
     let tagOptions = []
 
@@ -303,6 +302,7 @@
     }
 
     let numberDensity = 0
+
     const TakasuiSensuiConstants = { A: 6.11, B: 4.26, C: 0.52 }
     const { A, B, C } = TakasuiSensuiConstants
     const tube_diameter = 3 // connecting tube diameter in mm
@@ -313,7 +313,6 @@
 
     const computeNumberDensity = async () => {
         await tick()
-
         const changeInPressure = Number(pafter) - Number(pbefore)
         if (!changeInPressure) return
 
@@ -329,9 +328,6 @@
         const numerator = Math.sqrt(trap_temperature / room_temperature) - 1
         const denomiator = A * X ** 2 + B * X + C * X ** 0.5 + 1
         const pressure_trap = pressure * (1 + numerator / denomiator)
-
-        console.log({ pressure, numerator, denomiator, pressure_trap, X })
-        // console.log(X.toExponential(3))
         numberDensity = pressure_trap / (kB_in_cm * trap_temperature)
     }
 
@@ -339,10 +335,17 @@
         computeNumberDensity()
     }
 
+    const update_kinetic_filename = (appendName: string) => {
+        kineticEditorFilename = window.path.basename(selectedFile).split('.')[0] + appendName
+    }
+
     $: if (selectedFile.endsWith('.scan')) {
-        console.log('updating paramaeters')
         computeParameters()
-        kineticEditorFilename = window.path.basename(selectedFile).split('.')[0] + '-kineticModel.md'
+        update_kinetic_filename('-kineticModel.md')
+    }
+
+    $: if (tagFile) {
+        update_kinetic_filename(`-${tagFile}-kineticModel.md`)
     }
 
     $: configDir = window.path.join(currentLocation, '../configs')
