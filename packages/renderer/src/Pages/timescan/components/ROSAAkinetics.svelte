@@ -20,7 +20,6 @@
     import KineticsNumberDensity from './controllers/KineticsNumberDensity.svelte'
     import { activePage } from '$src/sveltewritables'
     import type { mainDataType, dataType, totalMassKeyType, loss_channelsType } from '$src/Pages/timescan/types/types'
-    import type { MouseInputEvent } from 'electron/renderer'
 
     let currentLocation = (window.db.get('kinetics_location') as string) || ''
     $: config_location = window.path.join(currentLocation, '../configs')
