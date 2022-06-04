@@ -1,39 +1,42 @@
-<script>
+<script lang="ts">
     import Editor from '$components/Editor.svelte'
     import { computeKineticCodeScipy } from '../functions/computeKineticCode'
+    import type { loss_channelsType } from '$src/Pages/timescan/types/types'
 
-    export let ratek3
-    export let k3Guess
-    export let kCIDGuess
+    export let ratek3: string
+    export let k3Guess: string
+    export let kCIDGuess: string
     export let ratekCID = ''
+
     export let location = ''
     export let savefilename = ''
+
     export let reportRead = false
     export let reportSaved = false
-
     export let nameOfReactants = ''
-    export let loss_channels = []
+    export let loss_channels: loss_channelsType = []
     export let selectedFile = ''
     export let includeTrapLoss = false
-    // $: console.log(includeTrapLoss)
-    let editor
-    let computedCode
 
+    let editor
+    let computedCode: computeKineticCodeScipy
+
+    $: maindata = {
+        ratek3,
+        ratekCID,
+        nameOfReactants,
+        k3Guess,
+        kCIDGuess,
+        loss_channels,
+        includeTrapLoss,
+    }
     const computeSliders = () => {
-        const computedCode_new = new computeKineticCodeScipy({
-            ratek3,
-            ratekCID,
-            nameOfReactants,
-            k3Guess,
-            kCIDGuess,
-            loss_channels,
-            includeTrapLoss,
-        })
+        const computedCode_new = new computeKineticCodeScipy(maindata)
         const data = computedCode_new.sliders + computedCode?.model
         update_editor(data)
     }
 
-    const update_editor = (data) => {
+    const update_editor = (data: string): void => {
         reportSaved = false
         const setData = `# Kinetics code: ${savefilename}\n${data}\n\n`
         editor?.setData(setData)
@@ -43,24 +46,18 @@
         if (!nameOfReactants) {
             return window.createToast('No data available', 'danger')
         }
-        computedCode = new computeKineticCodeScipy({
-            ratek3,
-            ratekCID,
-            nameOfReactants,
-            k3Guess,
-            kCIDGuess,
-            loss_channels,
-            includeTrapLoss,
-        })
+        computedCode = new computeKineticCodeScipy(maindata)
         update_editor(computedCode.fullEquation)
     }
 
     let filenameOpts = []
+
     const filenameUpdate = async () => {
         const [files] = await window.fs.readdir(location)
         if (!files) return console.log('No files')
         filenameOpts = files.filter((f) => f.startsWith(selectedFile.split('.')[0])).filter((f) => f.endsWith('.md'))
     }
+
     $: if (selectedFile) {
         filenameUpdate()
     }

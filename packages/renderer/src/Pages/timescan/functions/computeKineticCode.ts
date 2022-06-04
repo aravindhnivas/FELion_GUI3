@@ -1,26 +1,56 @@
-export class computeKineticCodeScipy {
-    constructor({ nameOfReactants, ratek3, ratekCID, k3Guess, kCIDGuess, loss_channels, includeTrapLoss }) {
-        this.nameOfReactants = nameOfReactants
-        this.ratek3 = ratek3
-        this.ratekCID = ratekCID
-        this.k3Guess = k3Guess
-        this.kCIDGuess = kCIDGuess
-        this.loss_channels = loss_channels
-        this.includeTrapLoss = includeTrapLoss
-        this.nameOfReactantsArr = nameOfReactants.split(',').map((name) => name.trim())
 
-        const rateForwardArr_keys = ratek3.split(',').map((name) => name.trim())
-        const forwards_loss_channels_keys = loss_channels
+import type { loss_channelsType } from '$src/Pages/timescan/types/types'
+
+export interface ComputeKineticCodeType {
+    nameOfReactants: string;
+    ratek3: string;
+    ratekCID: string;
+    k3Guess: string;
+    kCIDGuess: string;
+    loss_channels: loss_channelsType;
+    includeTrapLoss: boolean;
+}
+
+export class computeKineticCodeScipy {
+
+    nameOfReactants: string
+    ratek3: string
+    ratekCID: string
+    k3Guess: string
+    kCIDGuess: string
+    loss_channels: loss_channelsType
+    includeTrapLoss: boolean
+    nameOfReactantsArr: string[]
+    rateForwardArr: string[]
+    rateReverseArr: string[]
+
+    constructor(maindata: ComputeKineticCodeType) {
+        
+        this.nameOfReactants = maindata.nameOfReactants
+        this.ratek3 = maindata.ratek3
+        this.ratekCID = maindata.ratekCID
+        this.k3Guess = maindata.k3Guess
+        this.kCIDGuess = maindata.kCIDGuess
+        this.loss_channels = maindata.loss_channels
+        this.includeTrapLoss = maindata.includeTrapLoss
+
+        this.nameOfReactantsArr = this.nameOfReactants.split(',').map((name) => name.trim())
+
+        const rateForwardArr_keys = this.ratek3.split(',').map((name) => name.trim())
+        const forwards_loss_channels_keys = this.loss_channels
             .filter(({ type }) => type === 'forwards')
             .map(({ name }) => name)
-        this.rateForwardArr = [...rateForwardArr_keys, ...forwards_loss_channels_keys]
+        
+            this.rateForwardArr = [...rateForwardArr_keys, ...forwards_loss_channels_keys]
 
-        const rateReverseArr_keys = ratekCID.split(',').map((name) => name.trim())
-        const backwards_loss_channels_keys = loss_channels
+        const rateReverseArr_keys = this.ratekCID.split(',').map((name) => name.trim())
+        const backwards_loss_channels_keys = this.loss_channels
             .filter(({ type }) => type === 'backwards')
             .map(({ name }) => name)
         this.rateReverseArr = [...rateReverseArr_keys, ...backwards_loss_channels_keys]
+
     }
+
     get sliders() {
         let data = ''
         data += '## Defining min-max-value for sliders\n'
