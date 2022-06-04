@@ -20,6 +20,7 @@
     import KineticsNumberDensity from './controllers/KineticsNumberDensity.svelte'
     import { activePage } from '$src/sveltewritables'
     import type { mainDataType, dataType, totalMassKeyType, loss_channelsType } from '$src/Pages/timescan/types/types'
+    import type { MouseInputEvent } from 'electron/renderer'
 
     let currentLocation = (window.db.get('kinetics_location') as string) || ''
     $: config_location = window.path.join(currentLocation, '../configs')
@@ -44,24 +45,26 @@
     async function browse_folder() {
         const [result] = await browse()
         if (!result) return
-
         currentLocation = result
         window.db.set('kinetics_location', currentLocation)
         console.log(result, currentLocation)
     }
 
-    const updateFiles = (node = null) => {
-        if (!window.fs.existsSync(currentLocation))
-            return window.createToast('Invalid location', 'danger', {
-                target: 'left',
-            })
+    const updateFiles = (node?: ButtonClickEvent) => {
+        if (!window.fs.existsSync(currentLocation)) {
+            return window.createToast('Invalid location', 'danger', { target: 'left' })
+        }
         window.db.set('kinetics_location', currentLocation)
+
         node?.target.classList.add('animate__rotateIn')
+
         fileCollections = window.fs
             .readdirSync(currentLocation)
             .filter((f) => f.endsWith('_scan.json'))
             .map((f) => f.split('.')[0].replace('_scan', '.scan'))
+        console.log(fileCollections)
     }
+
     $: if (currentLocation) {
         updateFiles()
     }
@@ -554,13 +557,12 @@
             selectedFile = fileCollections[0]
         }
     })
-
     let kinetic_plot_adjust_dialog_active = false
-
     const kinetic_plot_adjust_configs = persistentWritable(
         'kinetic_plot_adjust_configs',
         'top=0.905,\nbottom=0.135,\nleft=0.075,\nright=0.59,\nhspace=0.2,\nwspace=0.2'
     )
+
     let show_numberDensity = false
 </script>
 
@@ -590,7 +592,6 @@
         <div class="location__div box">
             <button class="button is-link" on:click={browse_folder}>Browse</button>
             <Textfield bind:value={currentLocation} label="Timescan EXPORT data location" />
-
             <i
                 class="material-icons animate__animated animate__faster"
                 on:animationend={({ target }) => {
