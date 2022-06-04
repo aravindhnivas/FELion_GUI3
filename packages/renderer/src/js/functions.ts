@@ -1,19 +1,15 @@
 import { mainPreModal } from '$src/sveltewritables'
 import { writable } from 'svelte/store'
 import { toast } from '@zerodevx/svelte-toast'
-import type { SvelteToastOptions } from '@zerodevx/svelte-toast'
 import bulmaQuickview from 'bulma-extensions/bulma-quickview/src/js/index.js'
-
+import './resizableDiv'
+import '../Pages/general/computePy'
 export const activateChangelog = writable(false)
 export const windowLoaded = writable(false)
 export const updateAvailable = writable(false)
 export const newVersion = writable('')
 export const updating = writable(false)
 export { plot, subplot, plotlyClick, plotlyEventsInfo } from './plot'
-
-import './resizableDiv'
-// import './clickOutside'
-import '../Pages/general/computePy'
 
 const toastTheme = {
     info: {},
@@ -61,7 +57,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
 window.getID = () => Math.random().toString(32).substring(2)
 
 window.clickOutside = (node) => {
-    
     console.log(node)
 
     const handleClick = (event) => {
@@ -71,26 +66,9 @@ window.clickOutside = (node) => {
     }
 
     document.addEventListener('click', handleClick, true)
-
     return {
         destroy() {
             document.removeEventListener('click', handleClick, true)
         },
     }
-}
-
-
-/* eslint-disable @typescript-eslint/consistent-type-imports */
-interface Exposed {
-
-    createToast: (description: string, type?: 'info' | 'danger' | 'warning' | 'success', opts?: SvelteToastOptions) => void; 
-    sleep: (ms: number) => Promise<typeof setTimeout>;
-    handleError: (error: Error | string) => void;
-    getID: () => string;
-    clickOutside: (node: HTMLElement) => { destroy: () => void };
-}
-
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-declare global {
-    interface Window extends Exposed {}
 }

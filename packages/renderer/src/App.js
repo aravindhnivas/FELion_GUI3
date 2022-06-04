@@ -1,3 +1,4 @@
+// @ts-ignore
 import App from './App.svelte'
 import './js/functions'
 import './App.scss'
