@@ -85,7 +85,10 @@ export class computeKineticCodeScipy {
         data += '\tk3, kCID = rateCoefficientArgs\n\n'
         data += `\t${this.rateForwardArr.join(', ')}${this.rateForwardArr.length == 1 ? ',' : ''}`
         if(this.includeTrapLoss) {
-            data += `, ktrap_loss`
+            if(!data.trim().endsWith(',')) {
+                data += ', '
+            }
+            data += `ktrap_loss`
         }
         data += ' = k3\n'
         data += `\t${this.rateReverseArr.join(', ')}${this.rateReverseArr.length == 1 ? ',' : ''} = kCID\n\n`

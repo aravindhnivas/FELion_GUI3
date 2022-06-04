@@ -107,9 +107,12 @@
     let maxTimeIndex = 5
 
     function computeParameters() {
+        includeTrapLoss = false
         tagFile = ''
+
         timestartIndexScan = 0
         loss_channels = []
+
         const currentJSONfile = window.path.join(currentLocation, selectedFile.replace('.scan', '_scan.json'))
 
         ;[currentData] = window.fs.readJsonSync(currentJSONfile)
@@ -302,31 +305,31 @@
     }
 
     let numberDensity = 0
-
     const TakasuiSensuiConstants = { A: 6.11, B: 4.26, C: 0.52 }
     const { A, B, C } = TakasuiSensuiConstants
     const tube_diameter = 3 // connecting tube diameter in mm
     const room_temperature = 300
-    const kB_in_cm = boltzmanConstant * 1e4
 
+    const kB_in_cm = boltzmanConstant * 1e4
     const constant = 1 / (kB_in_cm * Math.sqrt(room_temperature))
 
     const computeNumberDensity = async () => {
         await tick()
+
         const changeInPressure = Number(pafter) - Number(pbefore)
         if (!changeInPressure) return
-
         const pressure = calibrationFactor * changeInPressure
         const trap_temperature = Number(temp)
         if (!includeTranspiration) {
             numberDensity = (constant * pressure) / Math.sqrt(trap_temperature)
             return
         }
+
         const mean_temperature = (trap_temperature + room_temperature) / 2
         const X = (pressure * 100 * tube_diameter) / mean_temperature
-
         const numerator = Math.sqrt(trap_temperature / room_temperature) - 1
         const denomiator = A * X ** 2 + B * X + C * X ** 0.5 + 1
+
         const pressure_trap = pressure * (1 + numerator / denomiator)
         numberDensity = pressure_trap / (kB_in_cm * trap_temperature)
     }
@@ -338,9 +341,9 @@
     const update_kinetic_filename = (appendName: string) => {
         kineticEditorFilename = window.path.basename(selectedFile).split('.')[0] + appendName
     }
-
     $: if (selectedFile.endsWith('.scan')) {
         computeParameters()
+
         update_kinetic_filename('-kineticModel.md')
     }
 
@@ -496,7 +499,6 @@
                 if (type === 'forwards') return (modified_rate_constants[0] += `, ${name}`)
                 modified_rate_constants[1] += `, ${name}`
             })
-
             const args = {
                 tag,
                 data,
@@ -524,8 +526,8 @@
             window.handleError(error)
         }
     }
-    let defaultInitialValues = true
 
+    let defaultInitialValues = true
     let initialValues = ''
     let adjustConfig = false
 
@@ -533,6 +535,7 @@
 
     let kineticEditorFilename = ''
     $: kineticfile = window.path.join(currentLocation, kineticEditorFilename)
+
     let reportRead = false
     let reportSaved = false
 
@@ -541,6 +544,10 @@
     let loss_channels: loss_channelsType = []
     let includeTrapLoss = false
 
+    $: if (includeTrapLoss) {
+        useTaggedFile = true
+        tagFile = 'ktrap_loss_all'
+    }
     onMount(() => {
         loadConfig()
         if (fileCollections.length > 0) {
