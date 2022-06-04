@@ -68,18 +68,20 @@ def read_config(
                 rateConstantsFileData = json.loads(rateConstantsFileContents)
                 print(f"{fit_config_file.name} read: {rateConstantsFileData}", flush=True)
 
-                if useTaggedFile:
-                    if selectedFile in rateConstantsFileData:
+                if selectedFile in rateConstantsFileData:
+                    if useTaggedFile:
                         if "tag" in rateConstantsFileData[selectedFile]:
                             if tagFile in rateConstantsFileData[selectedFile]["tag"]:
                                 searchContent = rateConstantsFileData[selectedFile]["tag"][tagFile]
                                 keyFound = True
-                else:
-                    keyFound = selectedFile in rateConstantsFileData
-                    searchContent = rateConstantsFileData[selectedFile]
+                    else:
+                        keyFound = True
+                        searchContent = rateConstantsFileData[selectedFile]
+
                 print(f"{keyFound=}", flush=True)
 
             if keyFound:
+
                 k3_fit_keyvalues: dict[str, float] = searchContent["k3_fit"]
                 kCID_fit_keyvalues: dict[str, float] = searchContent["kCID_fit"]
                 print(f"{k3_fit_keyvalues=}", flush=True)

@@ -154,6 +154,7 @@
                 kineticEditorFilename,
                 loss_channels,
                 includeTrapLoss,
+                tagFile,
             }
         }
         ;({
@@ -169,13 +170,19 @@
             kineticEditorFilename,
             loss_channels,
         } = contents)
-
         if (contents['$fit_config_filename']) {
             $fit_config_filename = contents['$fit_config_filename']
         }
+
         if (contents['includeTrapLoss']) {
             includeTrapLoss = contents['includeTrapLoss']
         }
+
+        if (contents['tagFile']) {
+            tagFile = contents['tagFile']
+        }
+
+        console.log(tagFile)
         params_found = true
     }
 
@@ -268,14 +275,15 @@
 
     let legends = ''
 
-    function computeOtherParameters() {
+    function computeOtherParameters(forTagged = false) {
         readFromParamsFile()
         if (params_found) return
 
         const masses = totalMassKey.filter((m) => m.included).map(({ mass }) => mass.trim())
         if (masses.length < 2) return
-        const parentCounts = currentData?.[masses[0]]?.['y']?.[0]?.toFixed(0)
 
+        const parentCounts = currentData?.[masses[0]]?.['y']?.[0]?.toFixed(0)
+        if (forTagged) return
         if (defaultInitialValues) {
             initialValues = [parentCounts, ...Array(masses.length - 1).fill(1)].join(', ')
         }
@@ -346,11 +354,9 @@
     }
     $: if (selectedFile.endsWith('.scan')) {
         computeParameters()
-
         update_kinetic_filename('-kineticModel.md')
     }
-
-    $: if (tagFile) {
+    $: if (tagFile || includeTrapLoss) {
         update_kinetic_filename(`-${tagFile}-kineticModel.md`)
     }
 

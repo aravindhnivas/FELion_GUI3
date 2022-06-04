@@ -37,6 +37,7 @@
     }
 
     const update_editor = (data: string): void => {
+        if (!data) return window.createToast('Could not generate the equation', 'danger')
         reportSaved = false
         const setData = `# Kinetics code: ${savefilename}\n${data}\n\n`
         editor?.setData(setData)

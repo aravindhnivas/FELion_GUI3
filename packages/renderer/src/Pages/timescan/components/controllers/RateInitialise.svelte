@@ -53,7 +53,13 @@
     <div class="align h-center">
         <CustomSwitch on:change={computeOtherParameters} bind:selected={useParamsFile} label="use params file" />
 
-        <CustomSwitch on:change={computeOtherParameters} bind:selected={useTaggedFile} label="use tagged File" />
+        <CustomSwitch
+            on:change={() => {
+                computeOtherParameters(true)
+            }}
+            bind:selected={useTaggedFile}
+            label="use tagged File"
+        />
 
         {#if useTaggedFile}
             <TextAndSelectOptsToggler

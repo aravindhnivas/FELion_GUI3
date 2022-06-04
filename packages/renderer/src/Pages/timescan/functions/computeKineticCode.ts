@@ -144,6 +144,12 @@ export class computeKineticCodeScipy {
     }
 
     get fullEquation() {
-        return this.sliders + this.model
+        try {
+            
+            return this.sliders + this.model
+        } catch (error) {
+            window.handleError(error)
+            return null
+        }
     }
 }
