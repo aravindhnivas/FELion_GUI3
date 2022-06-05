@@ -1,4 +1,5 @@
-<script>
+<script lang="ts">
+    import HelperText from '@smui/textfield/helper-text'
     export let options = []
     export let label = ''
     export let value = ''
@@ -11,41 +12,50 @@
     }
 </script>
 
-<div class:main_container={update}>
-    <div class="select" class:is-multiple={multiple}>
-        {#if multiple}
-            <select multiple bind:value {label} size={options.length} on:change on:click on:dblclick>
-                {#each options as option}
-                    <option value={option}>{option}</option>
-                {/each}
-            </select>
-        {:else}
-            <select bind:value {label} on:change on:click on:dblclick>
-                <optgroup {label}>
+<div class="container">
+    <span style="font-size: small;">{label}</span>
+    <!-- <HelperText>{label}</HelperText> -->
+    <div class:contanier-with-icon={update}>
+        <div class="select" class:is-multiple={multiple}>
+            {#if multiple}
+                <select multiple bind:value {label} size={options.length} on:change on:click on:dblclick>
                     {#each options as option}
                         <option value={option}>{option}</option>
                     {/each}
-                </optgroup>
-            </select>
+                </select>
+            {:else}
+                <select bind:value {label} on:change on:click on:dblclick>
+                    <!-- <optgroup {label}> -->
+                    {#each options as option}
+                        <option value={option}>{option}</option>
+                    {/each}
+                    <!-- </optgroup> -->
+                </select>
+            {/if}
+        </div>
+
+        {#if update}
+            <i
+                class="material-icons animate__animated animate__faster"
+                on:animationend={(event) => event?.target?.classList.remove('animate__rotateIn')}
+                on:click={(event) => {
+                    event?.target?.classList.add('animate__rotateIn')
+                    update()
+                }}
+            >
+                refresh
+            </i>
         {/if}
     </div>
-
-    {#if update}
-        <i
-            class="material-icons animate__animated animate__faster"
-            on:animationend={(event) => event?.target?.classList.remove('animate__rotateIn')}
-            on:click={(event) => {
-                event?.target?.classList.add('animate__rotateIn')
-                update()
-            }}
-        >
-            refresh
-        </i>
-    {/if}
 </div>
 
 <style lang="scss">
-    .main_container {
+    .container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .contanier-with-icon {
         display: flex;
         gap: 0.5rem;
         align-items: center;
@@ -54,17 +64,32 @@
         align-self: auto;
         select {
             min-width: 12em;
+
+            // background: #6249a5;
             &:active,
             &:hover,
             &:focus {
-                border-color: white;
+                border-bottom: solid 2px white;
             }
-            &::after {
-                border-color: rgb(104, 86, 86);
-            }
+            border: none;
+            border-bottom: solid 2px #c5c3c3;
+
+            // option {
+            //     color: white;
+            // }
+        }
+
+        select::-webkit-scrollbar {
+            width: 0.5rem;
+            height: 8px;
+            background-color: white;
+        }
+
+        select::-webkit-scrollbar-thumb {
+            background-color: #5669d3;
         }
         optgroup {
-            color: black;
+            // color: black;
             font-size: medium;
         }
         select[multiple] {

@@ -22,7 +22,7 @@
     export let readConfigDir = () => {}
 </script>
 
-<div class="align box h-center" style:flex-direction="column">
+<div class="align box h-center" style="flex-direction: column;">
     <div class="align h-center">
         <Textfield bind:value={nameOfReactants} label="nameOfReactants" style="width:30%" />
 
@@ -50,7 +50,7 @@
         <span class="tag is-danger"> atleast two reactants are required for kinetics </span>
     {/if}
 
-    <div class="align h-center">
+    <div class="align h-center" style="align-items: flex-end;">
         <CustomSwitch on:change={computeOtherParameters} bind:selected={useParamsFile} label="use params file" />
 
         <CustomSwitch

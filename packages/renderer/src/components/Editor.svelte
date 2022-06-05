@@ -53,7 +53,10 @@
         location = window.db.get(`${filetype}-report-md`) as string
     }
 
-    $: reportFile = window.path.join(location, savefilename.endsWith('.md') ? savefilename : `${savefilename}.md`)
+    $: reportFile = window.path.join(
+        location,
+        savefilename ? (savefilename.endsWith('.md') ? savefilename : `${savefilename}.md`) : ''
+    )
 
     $: if (window.fs.existsSync(location)) {
         window.db.set(`${filetype}-report-md`, location)
