@@ -21,6 +21,7 @@
     "concurrently": "^7.2.1",
     "cooltipz-css": "^2.1.0",
     "cross-env": "^7.0.3",
+    "dygraphs": "^2.1.0",
     "electron": "^19.0.2",
     "electron-builder": "^23.1.0",
     "eslint": "^8.16.0",

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { showConfirm } from '$src/components/alert/store'
     import Layout from '$components/Layout.svelte'
     import CustomSwitch from '$components/CustomSwitch.svelte'
@@ -11,6 +11,7 @@
     import { onDestroy } from 'svelte'
     /////////////////////////////////////////////////////////////////////////
 
+    // import DygraphComponent from '$src/Pages/masspec/DygraphComponent.svelte'
     const filetype = 'mass'
     const id = 'Masspec'
 
@@ -71,8 +72,8 @@
 
         if (filetype == 'mass' && massfiles) {
             const [dataFromPython] = await readMassFile(massfiles)
-
             if (!dataFromPython) return
+
             if (!keepAnnotaions) {
                 $plotlyEventsInfo['mplot'].annotations = []
             }
@@ -113,17 +114,17 @@
             <button class="button is-link" id="masspec-plot-btn" on:click={(e) => plotData({ e: e })}>
                 Masspec Plot</button
             >
-
             <GetLabviewSettings {currentLocation} {fullfileslist} {fileChecked} />
             <button class="button is-link" on:click={(e) => plotData({ e: e, filetype: 'general' })}>
                 Open in Matplotlib</button
             >
-
             <CustomSwitch style="margin: 0 1em;" on:change={linearlogCheck} bind:selected={logScale} label="Log" />
         </div>
     </svelte:fragment>
-
-    <svelte:fragment slot="plotContainer"><div id="mplot" class="graph__div" /></svelte:fragment>
+    <svelte:fragment slot="plotContainer">
+        <div id="mplot" class="graph__div" />
+        <!-- <DygraphComponent id="dygraph-mplot" /> -->
+    </svelte:fragment>
 
     <svelte:fragment slot="plotContainer_functions">
         <div class="align" style="justify-content: flex-end;">
@@ -137,7 +138,6 @@
             >
         </div>
     </svelte:fragment>
-
     <svelte:fragment slot="config">
         <div class="align">
             <Configs />

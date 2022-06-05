@@ -9,9 +9,15 @@ type PlotlyEventsInfo = {
         annotations: Plotly.Annotations[]
     }
 }
+
+
 export const plotlyEventsInfo: Writable<PlotlyEventsInfo> = writable({})
 
-export function plot(mainTitle: string, xtitle: string, ytitle: string, data: {[name: string]: Plotly.PlotData}, graphDiv: string, logScale:boolean = null, createPlotlyClickEvent = false) {
+export function plot(
+    mainTitle: string, xtitle: string, ytitle: string,
+    data: {[name: string]: Plotly.PlotData}, graphDiv: string,
+    logScale:boolean = null, createPlotlyClickEvent = false
+) {
     let dataLayout = {
         title: mainTitle,
         xaxis: { title: xtitle },
