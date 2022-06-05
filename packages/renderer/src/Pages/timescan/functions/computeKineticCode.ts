@@ -36,18 +36,20 @@ export class computeKineticCodeScipy {
 
         this.nameOfReactantsArr = this.nameOfReactants.split(',').map((name) => name.trim())
 
-        const rateForwardArr_keys = this.ratek3.split(',').map((name) => name.trim())
+        // const rateForwardArr_keys = this.ratek3.split(',').map((name) => name.trim())
         const forwards_loss_channels_keys = this.loss_channels
             .filter(({ type }) => type === 'forwards')
             .map(({ name }) => name)
         
-            this.rateForwardArr = [...rateForwardArr_keys, ...forwards_loss_channels_keys]
+            // this.rateForwardArr = [...rateForwardArr_keys, ...forwards_loss_channels_keys]
+            this.rateForwardArr = [...forwards_loss_channels_keys]
 
-        const rateReverseArr_keys = this.ratekCID.split(',').map((name) => name.trim())
+        // const rateReverseArr_keys = this.ratekCID.split(',').map((name) => name.trim())
         const backwards_loss_channels_keys = this.loss_channels
             .filter(({ type }) => type === 'backwards')
             .map(({ name }) => name)
-        this.rateReverseArr = [...rateReverseArr_keys, ...backwards_loss_channels_keys]
+        // this.rateReverseArr = [...rateReverseArr_keys, ...backwards_loss_channels_keys]
+        this.rateReverseArr = [...backwards_loss_channels_keys]
 
     }
 
@@ -93,14 +95,15 @@ export class computeKineticCodeScipy {
         data += ' = k3\n'
         data += `\t${this.rateReverseArr.join(', ')}${this.rateReverseArr.length == 1 ? ',' : ''} = kCID\n\n`
 
-        data += `\t${this.nameOfReactantsArr.join(', ')} = N\n\n`
+        // data += `\t${this.nameOfReactantsArr.join(', ')} = N\n\n`
+        data += `\t${this.nameOfReactantsArr.join(', ')} = N\n`
 
-        for (let index = 0; index < this.nameOfReactantsArr.length - 1; index++) {
-            const currentMolecule = this.nameOfReactantsArr[index]
-            const nextMolecule = this.nameOfReactantsArr[index + 1]
-            data += `\t${currentMolecule}_f = -(${this.rateForwardArr[index]} * ${currentMolecule})`
-            data += ` + (${this.rateReverseArr[index]} * ${nextMolecule})\n`
-        }
+        // for (let index = 0; index < this.nameOfReactantsArr.length - 1; index++) {
+        //     const currentMolecule = this.nameOfReactantsArr[index]
+        //     const nextMolecule = this.nameOfReactantsArr[index + 1]
+        //     data += `\t${currentMolecule}_f = -(${this.rateForwardArr[index]} * ${currentMolecule})`
+        //     data += ` + (${this.rateReverseArr[index]} * ${nextMolecule})\n`
+        // }
         data += `\n\tdNdT = [\n`
         data += this.make_final_list()
         data += `\t]\n\n`
@@ -108,36 +111,35 @@ export class computeKineticCodeScipy {
         data += '```\n---\n'
         return data
     }
-    make_final_list() {
-        const parentMolecule = this.nameOfReactantsArr.at(0)
-        let data = [`\t\t${parentMolecule}_f`]
 
-        for (let index = 1; index < this.nameOfReactantsArr.length - 1; index++) {
-            const currentMolecule = this.nameOfReactantsArr[index]
-            const prevMolecule = this.nameOfReactantsArr[index - 1]
-            const currentRate = `\t\t${currentMolecule}_f - ${prevMolecule}_f`
-            data.push(currentRate)
+    make_final_list() {
+
+        const trim_this_line = (line) => line.trimEnd().replace(',', '')
+
+        let data: string[] = []
+        const modify_reaction = (name, reaction) => {
+            const index = this.nameOfReactantsArr.indexOf(name)
+            if(data[index]) {
+                data[index] = trim_this_line(data[index]) + `${reaction}`
+            } else {
+                data[index] = `\t\t${reaction}`
+            }
+            data[index] += ',\n'
         }
-        data.push(`\t\t- ${this.nameOfReactantsArr.at(-2)}_f`)
-        data = data.map((line, index) => {
+        this.loss_channels.forEach(({ name, lossFrom, attachTo }) => {
+            
+            const loss_reaction = `(${name} * ${lossFrom})`
+            modify_reaction(lossFrom, ` - ${loss_reaction}`)
+            
+            if (attachTo === 'none') return
+            modify_reaction(attachTo, ` + ${loss_reaction}`)
+        })
+
+        data = data.map(trim_this_line).map((line, index) => {
+
             if(this.includeTrapLoss) {line += ` - (ktrap_loss * ${this.nameOfReactantsArr[index]})`}
             line += ',\n'
             return line
-        })
-
-        if (this.loss_channels.length === 0) return data.join('')
-        const trim_this_line = (line) => line.trimEnd().replace(',', '')
-
-        this.loss_channels.forEach(({ name, lossFrom, attachTo }) => {
-            const loss_reaction = `(${name} * ${lossFrom}),\n`
-
-            const lossIndex = this.nameOfReactantsArr.indexOf(lossFrom)
-            data[lossIndex] = trim_this_line(data[lossIndex]) + ` - ${loss_reaction}`
-
-            if (attachTo === 'none') return
-
-            const attachIndex = this.nameOfReactantsArr.indexOf(attachTo)
-            data[attachIndex] = trim_this_line(data[attachIndex]) + ` + ${loss_reaction}`
         })
 
         return data.join('')

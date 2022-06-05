@@ -3,12 +3,17 @@
     import CustomSelect from '$components/CustomSelect.svelte'
     import CustomSwitch from '$components/CustomSwitch.svelte'
     import type { loss_channelsType } from '$src/Pages/timescan/types/types'
+    import { persistentWritable } from '$src/js/persistentStore'
+    import { onMount } from 'svelte'
+    import { differenceBy } from 'lodash-es'
+    import { resizableDiv } from '$src/js/resizableDiv.js'
     export let loss_channels: loss_channelsType = []
     export let nameOfReactants = ''
     export let includeTrapLoss = false
 
     $: ions_lists = nameOfReactants.split(',').map((name) => name.trim())
     let channelCounter = 0
+
     const addChannel = () => {
         loss_channels = [
             ...loss_channels,
@@ -25,12 +30,64 @@
     $: if (loss_channels.length === 0) {
         channelCounter = 0
     }
+    let defaultMode = persistentWritable('kinetics:defaultLossChannels', false)
+
+    $: nameOfReactantsArr = nameOfReactants.split(',').map((n) => n.trim())
+    let defaultChannels: loss_channelsType
+
+    const make_default_channels = (event?: CustomEvent) => {
+        if (!$defaultMode) {
+            loss_channels = differenceBy(loss_channels, defaultChannels, 'id')
+            return
+        }
+
+        console.log('making default channels')
+        defaultChannels = []
+        for (let i = 1; i < nameOfReactantsArr.length; i++) {
+            const currention = nameOfReactantsArr[i - 1]
+            const nextion = nameOfReactantsArr[i]
+
+            const currentChannelForwards = {
+                type: 'forwards',
+                name: `k3${i}`,
+                lossFrom: currention,
+                attachTo: nextion,
+                id: window.getID(),
+            }
+
+            const currentChannelBackwards = {
+                type: 'backwards',
+                name: `kCID${i}`,
+                lossFrom: nextion,
+                attachTo: currention,
+                id: window.getID(),
+            }
+            defaultChannels = [...defaultChannels, currentChannelForwards, currentChannelBackwards]
+        }
+        loss_channels = [...loss_channels, ...defaultChannels]
+    }
+
+    onMount(() => {
+        loss_channels = []
+        make_default_channels()
+        console.log($defaultMode)
+        // if ($defaultMode) {
+        //     make_default_channels(null)
+        // }
+    })
 </script>
 
-<div class="box channel_main__div">
+<div
+    class="box channel_main__div"
+    use:resizableDiv={{
+        change: { width: false, height: true },
+        edges: { left: false, right: false, bottom: true, top: false },
+    }}
+>
     <div class="align h-center">
         <button class="button is-link" on:click={addChannel}>Add channel</button>
         <CustomSwitch bind:selected={includeTrapLoss} label="include trap losses (on all masses)" />
+        <CustomSwitch bind:selected={$defaultMode} label="He-attachment mode" on:change={make_default_channels} />
     </div>
     {#if loss_channels.length}
         <div class="channels_div">
@@ -62,8 +119,8 @@
         justify-content: center;
     }
     .channels_div {
-        min-height: 180px;
-        max-height: 180px;
+        /* min-height: 180px; */
+        /* max-height: 180px; */
         overflow: auto;
         padding: 0 1em;
     }

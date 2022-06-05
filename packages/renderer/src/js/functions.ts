@@ -2,8 +2,8 @@ import { mainPreModal } from '$src/sveltewritables'
 import { writable } from 'svelte/store'
 import { toast } from '@zerodevx/svelte-toast'
 import bulmaQuickview from 'bulma-extensions/bulma-quickview/src/js/index.js'
-import './resizableDiv'
-import '../Pages/general/computePy'
+// import './resizableDiv'
+// import '../Pages/general/computePy'
 export const activateChangelog = writable(false)
 export const windowLoaded = writable(false)
 export const updateAvailable = writable(false)

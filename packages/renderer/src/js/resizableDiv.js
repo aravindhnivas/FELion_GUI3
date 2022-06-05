@@ -29,7 +29,7 @@ export function resizableDiv(
     // const change = { width, height }
     // const edges = { left, right, bottom, top }
     const { change, edges } = params
-
+    console.log('resizableDiv', target, params)
     interact(target)
         .resizable({
             edges,

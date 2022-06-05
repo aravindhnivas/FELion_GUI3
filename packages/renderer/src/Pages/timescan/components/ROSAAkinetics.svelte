@@ -20,7 +20,7 @@
     import KineticsNumberDensity from './controllers/KineticsNumberDensity.svelte'
     import { activePage } from '$src/sveltewritables'
     import type { mainDataType, dataType, totalMassKeyType, loss_channelsType } from '$src/Pages/timescan/types/types'
-
+    // import { resizableDiv } from '$src/js/resizableDiv.js'
     let currentLocation = (window.db.get('kinetics_location') as string) || ''
     $: config_location = window.path.join(currentLocation, '../configs')
 
@@ -558,10 +558,21 @@
     }
     onMount(() => {
         loadConfig()
+
         if (fileCollections.length > 0) {
             selectedFile = fileCollections[0]
         }
+        // const boxesNodeList = document.querySelectorAll('#ROSAA-kinetics .main_container__div > .box')
+        // const params = {
+        //     change: { width: false, height: true },
+        //     edges: { left: false, right: false, bottom: true, top: false },
+        // }
+
+        // for (const box of boxesNodeList) {
+        //     resizableDiv(box, params)
+        // }
     })
+
     let kinetic_plot_adjust_dialog_active = false
     let show_numberDensity = false
     const kinetic_plot_adjust_configs = persistentWritable(
@@ -591,7 +602,7 @@
     {readConfigDir}
 />
 
-<LayoutDiv id="Kinetics">
+<LayoutDiv id="ROSAA-kinetics">
     <svelte:fragment slot="header_content__slot">
         <div class="location__div box">
             <button class="button is-link" on:click={browse_folder}>Browse</button>
