@@ -1,3 +1,7 @@
+## v3.7.1-beta1-UNRELEASED
+- BUG FIX:
+    - Kinetics scan keyFound error
+
 ## v3.7.0
 - Added features
     - Kinetics: subplot adjust
@@ -12,7 +16,8 @@
     - kinetics: bounds is not constrained when it is set to False
 
     - ROSAA: qapp.exec is None error while in variable plot mode
-    
+
+---
 ## v3.6.2
 
 - Timescan Kinetics feature added:
