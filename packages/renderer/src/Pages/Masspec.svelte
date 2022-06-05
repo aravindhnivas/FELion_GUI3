@@ -32,7 +32,7 @@
     async function plotData({ e = null, filetype = 'mass', overwride_file_limit_warning = false } = {}) {
         if (!overwride_file_limit_warning && fileChecked.length > $configs['max_files_to_plot'].value) {
             showConfirm.push({
-                title: 'Too many files: allowed is' + $configs['max_files_to_plot'].value,
+                title: 'Too many files: safe limit is' + $configs['max_files_to_plot'].value,
                 content: 'Do you want to plot ' + fileChecked.length + ' files?',
                 callback: (response) => {
                     if (!response) return console.warn('response: ', response)
