@@ -119,8 +119,6 @@
         justify-content: center;
     }
     .channels_div {
-        /* min-height: 180px; */
-        /* max-height: 180px; */
         overflow: auto;
         padding: 0 1em;
     }
