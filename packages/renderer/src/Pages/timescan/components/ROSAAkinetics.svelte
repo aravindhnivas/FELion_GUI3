@@ -16,7 +16,7 @@
     import { browse } from '$components/Layout.svelte'
     import RateConstants from './controllers/RateConstants.svelte'
     import RateInitialise from './controllers/RateInitialise.svelte'
-    import KlossChannels from './controllers/KlossChannels.svelte'
+    import KlossChannels from './controllers/channels/KlossChannels.svelte'
     import KineticsNumberDensity from './controllers/KineticsNumberDensity.svelte'
     import { activePage } from '$src/sveltewritables'
     import type { mainDataType, dataType, totalMassKeyType, loss_channelsType } from '$src/Pages/timescan/types/types'
@@ -549,7 +549,7 @@
 
     const fit_config_filename = persistentWritable('kinetics_fitted_values', 'kinetics.fit.json')
 
-    let loss_channels: loss_channelsType = []
+    let loss_channels: loss_channelsType[] = []
     let includeTrapLoss = false
 
     $: if (includeTrapLoss) {

@@ -17,4 +17,4 @@ export type loss_channelsType = {
     lossFrom: string
     attachTo: string
     id: string
-}[]
+}

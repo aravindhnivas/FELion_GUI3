@@ -7,7 +7,7 @@ export interface ComputeKineticCodeType {
     ratekCID: string;
     k3Guess: string;
     kCIDGuess: string;
-    loss_channels: loss_channelsType;
+    loss_channels: loss_channelsType[];
     includeTrapLoss: boolean;
 }
 
@@ -18,7 +18,7 @@ export class computeKineticCodeScipy {
     ratekCID: string
     k3Guess: string
     kCIDGuess: string
-    loss_channels: loss_channelsType
+    loss_channels: loss_channelsType[]
     includeTrapLoss: boolean
     nameOfReactantsArr: string[]
     rateForwardArr: string[]

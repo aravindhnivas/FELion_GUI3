@@ -14,7 +14,7 @@
     export let reportRead = false
     export let reportSaved = false
     export let nameOfReactants = ''
-    export let loss_channels: loss_channelsType = []
+    export let loss_channels: loss_channelsType[] = []
     export let selectedFile = ''
     export let includeTrapLoss = false
 
