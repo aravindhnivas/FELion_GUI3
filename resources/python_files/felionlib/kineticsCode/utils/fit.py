@@ -1,9 +1,7 @@
-from typing import Literal
 import numpy as np
 from scipy.optimize import curve_fit
 from scipy.integrate import solve_ivp
 from felionlib.utils import logger
-
 from felionlib.kineticsCode.utils.plot import fitPlot
 from felionlib.kineticsCode import (
     expTime,
@@ -14,7 +12,7 @@ from felionlib.kineticsCode import (
     tspan,
     simulateTime,
     kinetics_equation_file,
-    # numberDensity
+    numberDensity as He
 )
 from felionlib.kineticsCode.utils.widgets.checkboxes import checkboxes
 from .configfile import ratek3, ratekCID, k_err as k_err_config
@@ -51,32 +49,20 @@ solve_ivp_methods_widget.currentTextChanged.connect(update_solve_ivp_method)
 
 bounds_percent = 10
 
-
-# def update_bounds_percent(val: int = None):
-#     global bounds_percent
-#     bounds_percent = val
-
-
-# bounds_percent_widget.valueChanged.connect(update_bounds_percent)
-
-
 def codeToRun(code: str):
     exec(code)
     return locals()
 
 
 codeContents = readCodeFromFile(kinetics_equation_file)
+
 codeOutput = codeToRun(codeContents)
 compute_attachment_process = codeOutput["compute_attachment_process"]
 
 
 def intialize_fit_plot() -> None:
     results = solve_ivp(
-        compute_attachment_process,
-        tspan,
-        initialValues,
-        method=solve_ivp_method,
-        t_eval=simulateTime,
+        compute_attachment_process, tspan, initialValues, method=solve_ivp_method, t_eval=simulateTime,
     )
 
     dNdtSol = results.y
@@ -160,25 +146,25 @@ def fit_kinetic_data() -> None:
         )
         k_err = np.sqrt(np.diag(kcov))
         logger(f"{k_fit=}\n{k_err=}")
-        logger("fitted")
         k3_fit = k_fit[: len(ratek3)]
         kCID_fit = k_fit[len(ratek3) :]
         update_sliders(k3_fit, kCID_fit)
-
-        # rateCoefficientArgs = (k3_fit, kCID_fit)
 
         if not np.all(np.isfinite(k_fit)):
             raise ValueError("Fitted values are not finite")
 
         if not np.all(np.isfinite(k_err)):
+            
             widget.showdialog(
                 "Warning", "Non-finite error values\nTry fitting with higher different timeStartIndex", "warning"
             )
             fitStatus_label_widget.setText("Non-finite error values")
-
+        
         fitStatus_label_widget.setText("Fitted")
 
     except Exception as err:
+        
         print(f"error: {err}")
         widget.showErrorDialog()
         fitStatus_label_widget.setText("Failed")
+        

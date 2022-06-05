@@ -2,10 +2,10 @@
     import { createEventDispatcher } from 'svelte'
     import CustomSelect from '$components/CustomSelect.svelte'
     import Textfield from '@smui/textfield'
-
     import type { loss_channelsType } from '$src/Pages/timescan/types/types'
 
     export let item: loss_channelsType
+    export let rateConstantMode = false
     export let ions_lists: string[] = []
 
     const dispatch = createEventDispatcher()
@@ -16,7 +16,14 @@
     <CustomSelect bind:value={item.type} label="type" options={['forwards', 'backwards']} />
     <Textfield bind:value={item.name} label="name" />
     <CustomSelect bind:value={item.lossFrom} label="lossFrom" options={ions_lists} />
-    <CustomSelect bind:value={item.attachTo} label="attachTo" options={['none', ...ions_lists]} />
+    <CustomSelect
+        bind:value={item.attachTo}
+        label="attachTo"
+        options={['none', 'all', ...ions_lists.filter((n) => n !== item.lossFrom)]}
+    />
+    {#if rateConstantMode && item.numberDensity}
+        <Textfield bind:value={item.numberDensity} label="He^n" />
+    {/if}
     <button
         class="button is-danger"
         on:click={() => {

@@ -17,6 +17,7 @@
     export let loss_channels: loss_channelsType[] = []
     export let selectedFile = ''
     export let includeTrapLoss = false
+    export let rateConstantMode = false
 
     let editor
     let computedCode: computeKineticCodeScipy
@@ -29,6 +30,7 @@
         kCIDGuess,
         loss_channels,
         includeTrapLoss,
+        rateConstantMode,
     }
     const computeSliders = () => {
         const computedCode_new = new computeKineticCodeScipy(maindata)

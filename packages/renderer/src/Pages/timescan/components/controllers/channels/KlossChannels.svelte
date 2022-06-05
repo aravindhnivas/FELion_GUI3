@@ -2,18 +2,19 @@
     // import Textfield from '@smui/textfield'
     // import CustomSelect from '$components/CustomSelect.svelte'
     import CustomSwitch from '$components/CustomSwitch.svelte'
-    import { persistentWritable } from '$src/js/persistentStore'
+    // import { persistentWritable } from '$src/js/persistentStore'
     import ChannelComponent from './ChannelComponent.svelte'
     import { onMount } from 'svelte'
     import { differenceBy } from 'lodash-es'
     import { resizableDiv } from '$src/js/resizableDiv.js'
-    import SortableList from 'svelte-sortable-list'
+    // import SortableList from 'svelte-sortable-list'
     import default_channels from './default_channels'
     import type { loss_channelsType } from '$src/Pages/timescan/types/types'
 
     export let loss_channels: loss_channelsType[] = []
     export let nameOfReactants = ''
     export let includeTrapLoss = false
+    export let rateConstantMode = false
 
     $: ions_lists = nameOfReactants.split(',').map((name) => name.trim())
     let channelCounter = 0
@@ -27,6 +28,7 @@
                 lossFrom: ions_lists[0],
                 attachTo: 'none',
                 id: window.getID(),
+                numberDensity: 'He^1',
             },
         ]
         channelCounter += 1
@@ -34,13 +36,13 @@
     $: if (loss_channels.length === 0) {
         channelCounter = 0
     }
-    let defaultMode = persistentWritable('kinetics:defaultChannels', false)
+    let defaultMode = false
 
     $: nameOfReactantsArr = nameOfReactants.split(',').map((n) => n.trim())
     let defaultChannelsArr: loss_channelsType[]
 
     const make_default_channels = (event?: CustomEvent) => {
-        if (!$defaultMode) {
+        if (!defaultMode) {
             loss_channels = differenceBy(loss_channels, defaultChannelsArr, 'id')
             return
         }
@@ -51,7 +53,6 @@
         loss_channels = []
         make_default_channels()
     })
-    // $: console.log(loss_channels)
 </script>
 
 <div
@@ -64,19 +65,14 @@
     <div class="align h-center">
         <button class="button is-link" on:click={addChannel}>Add channel</button>
         <CustomSwitch bind:selected={includeTrapLoss} label="include trap losses (on all masses)" />
-        <CustomSwitch bind:selected={$defaultMode} label="He-attachment mode" on:change={make_default_channels} />
+        <CustomSwitch bind:selected={defaultMode} label="He-attachment mode" on:change={make_default_channels} />
+        <CustomSwitch bind:selected={rateConstantMode} label="rateConstant mode" />
     </div>
     <div class="channels_div">
-        <SortableList
-            list={loss_channels}
-            key="id"
-            on:sort={(ev) => {
-                loss_channels = ev.detail
-            }}
-            let:item
-        >
+        {#each loss_channels as item}
             <ChannelComponent
                 {item}
+                {rateConstantMode}
                 {ions_lists}
                 on:remove={(e) => {
                     const { id } = e.detail
@@ -84,7 +80,7 @@
                     channelCounter--
                 }}
             />
-        </SortableList>
+        {/each}
     </div>
 </div>
 

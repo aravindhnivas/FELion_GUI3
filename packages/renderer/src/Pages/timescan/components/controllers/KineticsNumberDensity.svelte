@@ -32,9 +32,9 @@
         }
     }
 
-    let mounted = false
+    // let mounted = false
     onMount(() => {
-        mounted = true
+        // mounted = true
         readConfigFile()
     })
 

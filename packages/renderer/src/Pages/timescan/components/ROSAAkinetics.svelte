@@ -550,7 +550,9 @@
     const fit_config_filename = persistentWritable('kinetics_fitted_values', 'kinetics.fit.json')
 
     let loss_channels: loss_channelsType[] = []
+
     let includeTrapLoss = false
+    let rateConstantMode = false
 
     $: if (includeTrapLoss) {
         useTaggedFile = true
@@ -676,7 +678,7 @@
                 bind:kCIDGuess
             />
 
-            <KlossChannels bind:loss_channels {nameOfReactants} bind:includeTrapLoss />
+            <KlossChannels bind:loss_channels {nameOfReactants} bind:includeTrapLoss bind:rateConstantMode />
             <KineticEditor
                 {...{
                     ratek3,
@@ -687,6 +689,7 @@
                     loss_channels,
                     selectedFile,
                     includeTrapLoss,
+                    rateConstantMode,
                 }}
                 bind:location={currentLocation}
                 bind:savefilename={kineticEditorFilename}

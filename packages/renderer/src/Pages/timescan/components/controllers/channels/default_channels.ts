@@ -12,6 +12,7 @@ export default function(nameOfReactantsArr: string[] = []): loss_channelsType[] 
             lossFrom: currention,
             attachTo: nextion,
             id: window.getID(),
+            numberDensity: 'He^2',
         }
 
         const currentChannelBackwards = {
@@ -20,6 +21,7 @@ export default function(nameOfReactantsArr: string[] = []): loss_channelsType[] 
             lossFrom: nextion,
             attachTo: currention,
             id: window.getID(),
+            numberDensity: 'He^1',
         }
         defaultChannels = [...defaultChannels, currentChannelForwards, currentChannelBackwards]
 
