@@ -99,6 +99,17 @@
 </script>
 
 <div class="box channel_main__div">
+    <FileReadAndLoad
+        bind:filename={channels_file}
+        bind:dataToSave={loss_channels}
+        options_filter=".channels.json"
+        {...{
+            configDir,
+            selectedFile,
+            tagFile,
+            useTaggedFile,
+        }}
+    />
     <div class="align h-center m-2">
         <button class="button is-link" on:click={addChannel}>Add channel</button>
         <button class="button is-warning" on:click={updateTrapLossChannel}>Add trap loss channel</button>
@@ -111,17 +122,6 @@
     </div>
 
     <div class="align h-center mb-5">
-        <FileReadAndLoad
-            bind:filename={channels_file}
-            bind:dataToSave={loss_channels}
-            options_filter=".channels.json"
-            {...{
-                configDir,
-                selectedFile,
-                tagFile,
-                useTaggedFile,
-            }}
-        />
         {#if !rateConstantMode}
             <Textfield bind:value={maxGuess} label="max-guess-value" />
             <i class="material-icons" on:click={updateGuessMaxValues}>refresh</i>
@@ -162,8 +162,8 @@
 
     .box {
         max-height: 500px;
-
         margin: 0;
+
         padding: 0.5em;
         border: solid 1px #fff7;
     }
