@@ -20,5 +20,6 @@
     bind:value
     {label}
     {update}
+    {...$$restProps}
     options={options.includes(value) ? options : value ? [value, ...options] : options}
 />
