@@ -1,23 +1,16 @@
 <script lang="ts">
     import Textfield from '@smui/textfield'
     import TextAndSelectOptsToggler from '$src/components/TextAndSelectOptsToggler.svelte'
-    import CustomSwitch from '$src/components/CustomSwitch.svelte'
     import type { totalMassKeyType } from '$src/Pages/timescan/types/types'
-    import { fade } from 'svelte/transition'
 
-    export let totalMassKey: totalMassKeyType = []
-    export let nameOfReactants = ''
     export let legends = ''
     export let useParamsFile = false
-    export let useTaggedFile = false
-
-    export let tagFile = ''
-    export let tagOptions = []
-    export let params_found = false
-    export let updateParamsFile = () => {}
-    export let kinetics_params_file = ''
+    export let nameOfReactants = ''
     export let config_filelists = []
-    export let selectedFile = ''
+    export let kinetics_params_file = ''
+    export let totalMassKey: totalMassKeyType = []
+
+    export let updateParamsFile = () => {}
     export let computeOtherParameters = (forTagged?: boolean): void => {}
     export let readConfigDir
 </script>
@@ -25,7 +18,6 @@
 <div class="align box h-center" style="flex-direction: column;">
     <div class="align h-center">
         <Textfield bind:value={nameOfReactants} label="nameOfReactants" style="width:30%" />
-
         <Textfield bind:value={legends} label="legends" style="width:30%" />
     </div>
 
@@ -33,7 +25,6 @@
         {#each totalMassKey as { mass, id, included } (id)}
             <span class="tag is-warning" class:is-danger={!included}>
                 {mass}
-
                 <button
                     class="delete is-small"
                     on:click={() => {
@@ -51,30 +42,6 @@
     {/if}
 
     <div class="align h-center" style="align-items: flex-end;">
-        <!-- <CustomSwitch
-            on:change={() => computeOtherParameters()}
-            bind:selected={useParamsFile}
-            label="use params file"
-        />
-
-        <CustomSwitch
-            on:change={() => {
-                computeOtherParameters(true)
-            }}
-            bind:selected={useTaggedFile}
-            label="use tagged File"
-        />
-
-        {#if useTaggedFile}
-            <TextAndSelectOptsToggler
-                bind:value={tagFile}
-                options={tagOptions}
-                label="tag files"
-                update={() => computeOtherParameters()}
-                on:change={computeOtherParameters}
-            />
-        {/if} -->
-
         <TextAndSelectOptsToggler
             bind:value={kinetics_params_file}
             label="fit-config file (*.params.json)"
@@ -82,13 +49,7 @@
             update={readConfigDir}
         />
         <button class="button is-link" on:click={() => computeOtherParameters()}>load</button>
-
         <button class="button is-link" on:click={updateParamsFile}>update</button>
-        <!-- {#if useParamsFile && selectedFile}
-            <span class="tag is-success" class:is-danger={!params_found} transition:fade
-                >{params_found ? `params updated: ${window.path.basename(selectedFile)}` : 'params not found'}</span
-            >
-        {/if} -->
     </div>
 </div>
 
