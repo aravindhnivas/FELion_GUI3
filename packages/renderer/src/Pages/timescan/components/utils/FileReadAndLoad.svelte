@@ -11,14 +11,14 @@
     export let filename = ''
 
     export let dataToSave
-
+    const toastOpts = {
+        target: 'left',
+    }
     const readConfigDir = async () => {
         console.log('reading config dir')
         if (!window.fs.isDirectory(configDir)) {
             if ($activePage === 'Kinetics') {
-                return window.createToast('Invalid location', 'danger', {
-                    target: 'left',
-                })
+                return window.createToast('Invalid location', 'danger', toastOpts)
             }
             return
         }
@@ -33,7 +33,7 @@
 
     const save_data = () => {
         if (isEmpty(dataToSave)) {
-            window.createToast('No data to save', 'danger')
+            window.createToast('No data to save', 'danger', toastOpts)
             return
         }
         let data, error
@@ -44,42 +44,55 @@
         }
 
         data ??= {}
-        if (!selectedFile) return window.createToast('No file selected', 'danger')
+        if (!selectedFile) return window.createToast('No file selected', 'danger', toastOpts)
         data[selectedFile] ??= { tags: {}, default: {} }
 
         if (useTaggedFile) {
-            if (!tagFile) return window.createToast('No tag file selected', 'danger')
+            if (!tagFile) return window.createToast('No tag file selected', 'danger', toastOpts)
             data[selectedFile]['tags'][tagFile] = dataToSave
         } else {
             data[selectedFile]['default'] = dataToSave
         }
         ;[, error] = window.fs.outputJsonSync(fullfilename, data)
         if (error) return window.handleError(`Error writing ${filename}\n${error}`)
+
         return notify()
     }
+    let data_loaded = false
+    const notify = (info: string = 'saved') => {
+        data_loaded = true
+        window.createToast(`${filename} ${info} for ${selectedFile}`, 'success', toastOpts)
+    }
 
-    const notify = (info: string = 'saved') => window.createToast(`${filename} ${info} for ${selectedFile}`, 'success')
     const load_data = () => {
         if (!window.fs.isFile(fullfilename)) {
-            return window.createToast(`File does not exists`, 'danger')
+            return window.createToast(`File does not exists`, 'danger', toastOpts)
         }
         const [data, error] = window.fs.readJsonSync(fullfilename)
+
         if (error) return window.handleError(`Error reading ${filename}\n${error}`)
-        if (!data?.[selectedFile]) return window.createToast(`No data found for ${selectedFile} file`, 'danger')
+        if (!data?.[selectedFile])
+            return window.createToast(`No data found for ${selectedFile} file`, 'danger', toastOpts)
 
         if (useTaggedFile) {
-            if (!tagFile) return window.createToast('No data found for tagged file', 'danger')
+            if (!tagFile) return window.createToast('No data found for tagged file', 'danger', toastOpts)
             dataToSave = data[selectedFile]['tags'][tagFile]
             return notify('loaded')
         }
+
         dataToSave = data[selectedFile]['default']
+        data_loaded = true
         return notify('loaded')
     }
 
     $: fullfilename = window.path.join(configDir, filename)
+    $: if (selectedFile) {
+        data_loaded = false
+    }
 </script>
 
-<div class="align box mr-auto" style="width: auto;">
+<div class="container box ml-auto mb-5">
+    <i class="material-icons mr-auto">{data_loaded ? 'done' : 'sync_problem'}</i>
     <button class="button is-warning" on:click={load_data}>Load</button>
     <TextAndSelectOptsToggler
         bind:value={filename}
@@ -91,6 +104,13 @@
 </div>
 
 <style>
+    .container {
+        align-items: center;
+        display: flex;
+        gap: 1em;
+        width: 100%;
+        justify-content: flex-end;
+    }
     .box {
         max-height: 400px;
         margin: 0;
