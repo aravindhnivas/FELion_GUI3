@@ -1,8 +1,17 @@
 import type { loss_channelsType } from '$src/Pages/timescan/types/types'
-export default function(nameOfReactantsArr: string[] = [], rateConstantMode: boolean = false): loss_channelsType[] {
-    console.log('making default channels')
+
+const baseRateConstant = -15
+export const base_slider_values_str = (max='0.5') => `0, ${max}, 1e-3`
+export const get_slider_controller = (n) => {
+    const val = baseRateConstant*n
+    return `1e${val - 3}, 1e${val + 3}, 1e${val - 4}`
+}
+
+export default function(nameOfReactantsArr: string[] = [], rateConstantMode: boolean = false, maxGuess:string): loss_channelsType[] {
+
     let defaultChannels: loss_channelsType[] = []
     for (let i = 1; i < nameOfReactantsArr.length; i++) {
+
         const currention = nameOfReactantsArr[i - 1]
         const nextion = nameOfReactantsArr[i]
 
@@ -13,7 +22,7 @@ export default function(nameOfReactantsArr: string[] = [], rateConstantMode: boo
             attachTo: nextion,
             id: window.getID(),
             numberDensity: 'He^2',
-            sliderController: rateConstantMode ? '1e-33, 1e-28, 1e-34' : '0, 0.5, 1e-3',
+            sliderController: rateConstantMode ? get_slider_controller(2) : base_slider_values_str(maxGuess),
         }
 
         const currentChannelBackwards = {
@@ -23,7 +32,7 @@ export default function(nameOfReactantsArr: string[] = [], rateConstantMode: boo
             attachTo: currention,
             id: window.getID(),
             numberDensity: 'He^1',
-            sliderController: rateConstantMode ? '1e-17, 1e-14, 1e-18' : '0, 0.5, 1e-3',
+            sliderController: rateConstantMode ? get_slider_controller(2) : base_slider_values_str(maxGuess),
         }
         defaultChannels = [...defaultChannels, currentChannelForwards, currentChannelBackwards]
 

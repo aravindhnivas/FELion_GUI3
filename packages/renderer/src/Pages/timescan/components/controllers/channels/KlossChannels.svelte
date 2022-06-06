@@ -4,16 +4,16 @@
     import { onMount } from 'svelte'
     import { differenceBy, find } from 'lodash-es'
     import { resizableDiv } from '$src/js/resizableDiv.js'
-    import default_channels from './default_channels'
+    import Textfield from '@smui/textfield'
+    import default_channels, { get_slider_controller, base_slider_values_str } from './default_channels'
     import type { loss_channelsType } from '$src/Pages/timescan/types/types'
     export let loss_channels: loss_channelsType[] = []
     export let nameOfReactants = ''
-    // export let includeTrapLoss = false
     export let rateConstantMode = false
 
     $: ions_lists = nameOfReactants.split(',').map((name) => name.trim())
     let channelCounter = 0
-
+    let maxGuess = '0.5'
     const addChannel = () => {
         loss_channels = [
             {
@@ -22,8 +22,8 @@
                 lossFrom: ions_lists[0],
                 attachTo: 'none',
                 id: window.getID(),
-                numberDensity: 'He^1',
-                sliderController: '0, 0.5, 1e-3',
+                numberDensity: '',
+                sliderController: base_slider_values_str(maxGuess),
             },
             ...loss_channels,
         ]
@@ -36,7 +36,7 @@
         attachTo: 'none',
         id: window.getID(),
         numberDensity: '',
-        sliderController: '0, 0.5, 1e-3',
+        sliderController: base_slider_values_str(maxGuess),
     }
 
     const updateTrapLossChannel = () => {
@@ -61,15 +61,35 @@
             loss_channels = differenceBy(loss_channels, defaultChannelsArr, 'id')
             return
         }
-        defaultChannelsArr = default_channels(nameOfReactantsArr, rateConstantMode)
+        defaultChannelsArr = default_channels(nameOfReactantsArr, rateConstantMode, maxGuess)
         loss_channels = [...loss_channels, ...defaultChannelsArr]
     }
 
     onMount(() => {
         loss_channels = []
         make_default_channels()
-        console.log('channel updated')
     })
+    const trigger_rateConstantMode_change = () => {
+        // const baseRateConstant = -15
+        loss_channels = loss_channels.map((channel) => {
+            const number_density_exponent = parseInt(channel?.numberDensity?.split('^')[1])
+
+            if (!isNaN(number_density_exponent)) {
+                if (rateConstantMode) {
+                    channel.sliderController = get_slider_controller(number_density_exponent)
+                } else {
+                    channel.sliderController = base_slider_values_str(maxGuess)
+                }
+            }
+            return channel
+        })
+    }
+    const updateGuessMaxValues = () => {
+        loss_channels = loss_channels.map((channel) => {
+            channel.sliderController = base_slider_values_str(maxGuess)
+            return channel
+        })
+    }
 </script>
 
 <div
@@ -83,8 +103,21 @@
         <button class="button is-link" on:click={addChannel}>Add channel</button>
         <button class="button is-warning" on:click={updateTrapLossChannel}>Add trap loss channel</button>
         <CustomSwitch bind:selected={defaultMode} label="He-attachment mode" on:change={make_default_channels} />
-        <CustomSwitch bind:selected={rateConstantMode} label="rateConstant mode" />
+
+        <CustomSwitch
+            bind:selected={rateConstantMode}
+            label="rateConstant mode"
+            on:change={trigger_rateConstantMode_change}
+        />
+
+        <!-- {#if !rateConstantMode} -->
+        <div class="">
+            <Textfield bind:value={maxGuess} label="max-guess-value" />
+            <i class="material-icons" on:click={updateGuessMaxValues}>refresh</i>
+        </div>
+        <!-- {/if} -->
     </div>
+
     <div class="channels_div mb-5">
         {#each loss_channels as item}
             <ChannelComponent
