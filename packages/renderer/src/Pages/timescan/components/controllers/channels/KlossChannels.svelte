@@ -16,9 +16,9 @@
     export let tagFile: string = ''
     export let selectedFile: string = ''
 
-    $: ions_lists = nameOfReactants.split(',').map((name) => name.trim())
     let channelCounter = 0
     let maxGuess = '0.5'
+    $: ions_lists = nameOfReactants.split(',').map((name) => name.trim())
     const addChannel = () => {
         loss_channels = [
             {
@@ -49,6 +49,7 @@
         if (channelFound) return window.createToast('channel already added', 'warning')
         loss_channels = [ktrap_loss_channel, ...loss_channels]
     }
+
     $: if (loss_channels.length === 0) {
         channelCounter = 0
     }
@@ -69,6 +70,7 @@
 
     onMount(() => {
         loss_channels = []
+
         make_default_channels()
     })
 
@@ -149,11 +151,18 @@
         align-items: center;
     }
     .channels_div {
+        display: flex;
+        flex-direction: column;
+        row-gap: 1rem;
+
         overflow: auto;
         padding: 0 1em;
+        width: 100%;
     }
+
     .box {
-        max-height: 400px;
+        max-height: 500px;
+
         margin: 0;
         padding: 0.5em;
         border: solid 1px #fff7;
