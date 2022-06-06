@@ -14,7 +14,7 @@
 
     const readConfigDir = async () => {
         console.log('reading config dir')
-        if (!window.fs.existsSync(configDir)) {
+        if (!window.fs.isDirectory(configDir)) {
             if ($activePage === 'Kinetics') {
                 return window.createToast('Invalid location', 'danger', {
                     target: 'left',
@@ -26,6 +26,7 @@
         const [files, error] = await window.fs.readdir(configDir)
         if (error) return window.handleError(error)
         config_filelists = files.filter((file) => file.endsWith(options_filter))
+        console.log(config_filelists, files, options_filter)
     }
 
     let config_filelists: string[] = []
@@ -82,7 +83,7 @@
     <button class="button is-warning" on:click={load_data}>Load</button>
     <TextAndSelectOptsToggler
         bind:value={filename}
-        label={`config file (${options_filter})`}
+        label={`config file (*${options_filter})`}
         options={config_filelists}
         update={readConfigDir}
     />

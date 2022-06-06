@@ -112,7 +112,7 @@
         <FileReadAndLoad
             bind:filename={channels_file}
             bind:dataToSave={loss_channels}
-            options_filter="*.channels.json"
+            options_filter=".channels.json"
             {...{
                 configDir,
                 selectedFile,
