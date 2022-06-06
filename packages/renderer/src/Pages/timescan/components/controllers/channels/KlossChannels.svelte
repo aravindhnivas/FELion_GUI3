@@ -103,19 +103,16 @@
         <button class="button is-link" on:click={addChannel}>Add channel</button>
         <button class="button is-warning" on:click={updateTrapLossChannel}>Add trap loss channel</button>
         <CustomSwitch bind:selected={defaultMode} label="He-attachment mode" on:change={make_default_channels} />
-
         <CustomSwitch
             bind:selected={rateConstantMode}
             label="rateConstant mode"
             on:change={trigger_rateConstantMode_change}
         />
-
-        <!-- {#if !rateConstantMode} -->
-        <div class="">
+        {#if !rateConstantMode}
             <Textfield bind:value={maxGuess} label="max-guess-value" />
+
             <i class="material-icons" on:click={updateGuessMaxValues}>refresh</i>
-        </div>
-        <!-- {/if} -->
+        {/if}
     </div>
 
     <div class="channels_div mb-5">
