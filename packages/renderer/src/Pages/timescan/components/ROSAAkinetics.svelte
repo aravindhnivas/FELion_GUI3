@@ -4,9 +4,13 @@
     import { boltzmanConstant } from '$src/js/constants'
     import { cloneDeep } from 'lodash-es'
     import Textfield from '@smui/textfield'
+
     import CustomSwitch from '$components/CustomSwitch.svelte'
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
     import CustomSelect from '$components/CustomSelect.svelte'
+    import CustomCheckbox from '$components/CustomCheckbox.svelte'
+    import TextAndSelectOptsToggler from '$components/TextAndSelectOptsToggler.svelte'
+
     import LayoutDiv from '$components/LayoutDiv.svelte'
     import computePy_func from '$src/Pages/general/computePy'
     import KineticConfigTable from './KineticConfigTable.svelte'
@@ -14,6 +18,8 @@
     import KineticEditor from './KineticEditor.svelte'
     import MatplotlibDialog from './MatplotlibDialog.svelte'
     import { browse } from '$components/Layout.svelte'
+
+    // import { fade } from 'svelte/transition'
     import RateConstants from './controllers/RateConstants.svelte'
     import RateInitialise from './controllers/RateInitialise.svelte'
     import KlossChannels from './controllers/channels/KlossChannels.svelte'
@@ -26,11 +32,6 @@
 
     let timestartIndexScan = 0
     let fileCollections: string[] = []
-    let srgMode: boolean = true
-    let includeTranspiration = true
-    let pbefore: string | number = 0
-    let pafter: string | number = 0
-    let temp: string | number = 5
     let molecule = 'CD'
     let tag = 'He'
     let nameOfReactants = ''
@@ -269,7 +270,7 @@
             updatefile: false,
             contents: setContents,
         })
-        window.createToast('config loaded', 'success', { target: 'left' })
+        // window.createToast('config loaded', 'success', { target: 'left' })
     }
 
     let legends = ''
@@ -299,54 +300,7 @@
         }
     }
 
-    let calibrationFactor = 1
-    let update_pbefore = true
-
-    $: if (srgMode) {
-        calibrationFactor = 1
-        if (update_pbefore) {
-            pbefore = '7e-5'
-        }
-    } else {
-        calibrationFactor = 200
-        if (update_pbefore) {
-            pbefore = '1e-8'
-        }
-    }
-
     let numberDensity = 0
-    const TakasuiSensuiConstants = { A: 6.11, B: 4.26, C: 0.52 }
-    const { A, B, C } = TakasuiSensuiConstants
-    const tube_diameter = 3 // connecting tube diameter in mm
-    const room_temperature = 300
-
-    const kB_in_cm = boltzmanConstant * 1e4
-    const constant = 1 / (kB_in_cm * Math.sqrt(room_temperature))
-
-    const computeNumberDensity = async () => {
-        await tick()
-
-        const changeInPressure = Number(pafter) - Number(pbefore)
-        if (!changeInPressure) return
-        const pressure = calibrationFactor * changeInPressure
-        const trap_temperature = Number(temp)
-        if (!includeTranspiration) {
-            numberDensity = (constant * pressure) / Math.sqrt(trap_temperature)
-            return
-        }
-
-        const mean_temperature = (trap_temperature + room_temperature) / 2
-        const X = (pressure * 100 * tube_diameter) / mean_temperature
-        const numerator = Math.sqrt(trap_temperature / room_temperature) - 1
-        const denomiator = A * X ** 2 + B * X + C * X ** 0.5 + 1
-
-        const pressure_trap = pressure * (1 + numerator / denomiator)
-        numberDensity = pressure_trap / (kB_in_cm * trap_temperature)
-    }
-
-    $: if (pbefore || pafter || temp || calibrationFactor || config_content[selectedFile] || includeTranspiration) {
-        computeNumberDensity()
-    }
 
     const update_kinetic_filename = (appendName: string) => {
         kineticEditorFilename = window.path.basename(selectedFile).split('.')[0] + appendName
@@ -384,43 +338,6 @@
         readConfigDir()
     }
     let config_content = {}
-
-    function saveCurrentConfig() {
-        if (!config_file)
-            return window.createToast('Invalid config file', 'danger', {
-                target: 'left',
-            })
-
-        if (!selectedFile || !window.fs.existsSync(currentLocation)) {
-            return window.createToast('Invalid location or filename', 'danger', { target: 'left' })
-        }
-        config_content[selectedFile] = currentConfig
-        const [, error] = window.fs.outputJsonSync(config_file, config_content)
-        if (error) {
-            return window.handleError(error)
-        }
-
-        window.createToast('Config file saved' + window.path.basename(config_file), 'success', { target: 'left' })
-    }
-
-    function updateConfig() {
-        update_pbefore = false
-        try {
-            if (!config_content[selectedFile]) {
-                return window.createToast('config file not available for selected file: ' + selectedFile, 'danger', {
-                    target: 'left',
-                })
-            }
-            ;({ pbefore, pafter, calibrationFactor, temp } = config_content[selectedFile])
-            srgMode = JSON.parse(config_content[selectedFile].srgMode)
-        } catch (error) {
-            window.createToast('Error while reading the values: Check config file', 'danger', { target: 'left' })
-        }
-    }
-
-    $: if (config_content[selectedFile]) {
-        updateConfig()
-    }
 
     let configArray = []
 
@@ -510,7 +427,6 @@
             const args = {
                 tag,
                 data,
-                temp,
                 ratek3: modified_rate_constants[0],
                 k3Guess,
                 molecule,
@@ -525,7 +441,6 @@
                 kinetic_plot_adjust_configs_obj,
                 kinetic_file_location: currentLocation,
                 initialValues: initialValues.split(','),
-                conditions: currentConfig,
                 useTaggedFile,
                 tagFile,
             }
@@ -538,9 +453,6 @@
     let defaultInitialValues = true
     let initialValues = ''
     let adjustConfig = false
-
-    $: currentConfig = { srgMode, pbefore, pafter, calibrationFactor, temp }
-
     let kineticEditorFilename = ''
     $: kineticfile = window.path.join(currentLocation, kineticEditorFilename)
 
@@ -548,13 +460,8 @@
     let reportSaved = false
     const fit_config_filename = persistentWritable('kinetics_fitted_values', 'kinetics.fit.json')
     let loss_channels: loss_channelsType[] = []
-    // let includeTrapLoss = false
     let rateConstantMode = false
 
-    // $: if (includeTrapLoss) {
-    //     useTaggedFile = true
-    //     tagFile = 'ktrap_loss_all'
-    // }
     onMount(() => {
         loadConfig()
         selectedFile = fileCollections[0] || ''
@@ -562,7 +469,7 @@
 
     let kinetic_plot_adjust_dialog_active = false
     let show_numberDensity = false
-
+    let nHe = ''
     const kinetic_plot_adjust_configs = persistentWritable(
         'kinetic_plot_adjust_configs',
         'top=0.905,\nbottom=0.135,\nleft=0.075,\nright=0.59,\nhspace=0.2,\nwspace=0.2'
@@ -582,6 +489,7 @@
 <MatplotlibDialog bind:open={kinetic_plot_adjust_dialog_active} bind:value={$kinetic_plot_adjust_configs} />
 
 <KineticsNumberDensity
+    bind:nHe
     bind:active={show_numberDensity}
     {selectedFile}
     {config_location}
@@ -598,7 +506,6 @@
             <i
                 class="material-icons animate__animated animate__faster"
                 on:animationend={({ target }) => {
-                    // @ts-ignore
                     target.classList.remove('animate__rotateIn')
                 }}
                 on:click={updateFiles}
@@ -611,21 +518,16 @@
     <svelte:fragment slot="main_content__slot">
         <div class="main_container__div">
             <div class="align box h-center">
-                <CustomSwitch bind:selected={srgMode} label="SRG" />
-                <CustomSwitch
-                    bind:selected={includeTranspiration}
-                    label="TT"
-                    tooltip="correct for thermal-transpiration"
-                />
-                <Textfield bind:value={pbefore} label="pbefore" />
-                <Textfield bind:value={pafter} label="pafter" />
-                <Textfield step="0.5" type="number" bind:value={calibrationFactor} label="calibrationFactor" />
-                <Textfield input$step="0.1" type="number" bind:value={temp} label="trap_temperature (K)" />
-                <Textfield type="number" value={numberDensity?.toExponential(3) || 0} label="numberDensity" disabled />
+                <Textfield value={nHe || ''} label="numberDensity" disabled />
+                <button
+                    class="button is-link"
+                    on:click={() => {
+                        show_numberDensity = true
+                    }}>Open number density modal</button
+                >
             </div>
 
             <div class="align box h-center">
-                <CustomSelect bind:value={selectedFile} label="Filename" options={fileCollections} />
                 <CustomTextSwitch
                     max={maxTimeIndex}
                     bind:value={timestartIndexScan}
@@ -652,6 +554,7 @@
                 bind:nameOfReactants
                 bind:legends
             />
+
             <RateConstants
                 {readConfigDir}
                 {config_filelists}
@@ -675,6 +578,7 @@
                     configDir,
                 }}
             />
+
             <KineticEditor
                 {...{
                     ratek3,
@@ -694,24 +598,22 @@
         </div>
     </svelte:fragment>
 
-    <svelte:fragment slot="footer_content__slot">
-        <button
-            class="button is-link"
-            on:click={() => {
-                show_numberDensity = true
-            }}>Number density</button
-        >
-        <button
-            class="button is-link"
-            on:click={() => {
-                kinetic_plot_adjust_dialog_active = true
-            }}>Adjust plot</button
-        >
-        <button class="button is-link" on:click={computeParameters}>Compute parameters</button>
-        <button class="button is-warning" on:click={loadConfig}>loadConfig</button>
-        <button class="button is-link" on:click={saveCurrentConfig}>saveCurrentConfig</button>
+    <svelte:fragment slot="left_footer_content__slot">
+        <CustomCheckbox on:change={() => computeOtherParameters()} bind:value={useParamsFile} label="load" />
+        <CustomCheckbox bind:value={useTaggedFile} />
+        <TextAndSelectOptsToggler
+            bind:value={tagFile}
+            options={tagOptions}
+            label="tag files"
+            update={() => computeOtherParameters()}
+            on:change={computeOtherParameters}
+        />
+    </svelte:fragment>
 
-        <i class="material-icons" on:click={() => (adjustConfig = true)}>settings</i>
+    <svelte:fragment slot="footer_content__slot">
+        <CustomSelect bind:value={selectedFile} label="Filename" options={fileCollections} />
+        <button class="button is-link" on:click={computeParameters}>compute</button>
+        <i class="material-icons" on:click={() => (kinetic_plot_adjust_dialog_active = true)}>settings</i>
         <button class="button is-link" id="kinetic-submit-button" on:click={kineticSimulation}>Submit</button>
     </svelte:fragment>
 </LayoutDiv>

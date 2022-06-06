@@ -51,7 +51,7 @@
     {/if}
 
     <div class="align h-center" style="align-items: flex-end;">
-        <CustomSwitch
+        <!-- <CustomSwitch
             on:change={() => computeOtherParameters()}
             bind:selected={useParamsFile}
             label="use params file"
@@ -73,7 +73,7 @@
                 update={() => computeOtherParameters()}
                 on:change={computeOtherParameters}
             />
-        {/if}
+        {/if} -->
 
         <TextAndSelectOptsToggler
             bind:value={kinetics_params_file}
@@ -84,11 +84,11 @@
         <button class="button is-link" on:click={() => computeOtherParameters()}>load</button>
 
         <button class="button is-link" on:click={updateParamsFile}>update</button>
-        {#if useParamsFile && selectedFile}
+        <!-- {#if useParamsFile && selectedFile}
             <span class="tag is-success" class:is-danger={!params_found} transition:fade
                 >{params_found ? `params updated: ${window.path.basename(selectedFile)}` : 'params not found'}</span
             >
-        {/if}
+        {/if} -->
     </div>
 </div>
 
