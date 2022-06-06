@@ -92,13 +92,7 @@
     }
 </script>
 
-<div
-    class="box channel_main__div"
-    use:resizableDiv={{
-        change: { width: false, height: true },
-        edges: { left: false, right: false, bottom: true, top: false },
-    }}
->
+<div class="box channel_main__div">
     <div class="align h-center mb-5">
         <button class="button is-link" on:click={addChannel}>Add channel</button>
         <button class="button is-warning" on:click={updateTrapLossChannel}>Add trap loss channel</button>
@@ -115,7 +109,7 @@
         {/if}
     </div>
 
-    <div class="channels_div mb-5">
+    <div class="channels_div mb-5 pb-5">
         {#each loss_channels as item}
             <ChannelComponent
                 {item}
