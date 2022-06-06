@@ -19,7 +19,7 @@
     export let config_filelists = []
     export let selectedFile = ''
     export let computeOtherParameters = (forTagged?: boolean): void => {}
-    export let readConfigDir = () => {}
+    export let readConfigDir
 </script>
 
 <div class="align box h-center" style="flex-direction: column;">
@@ -70,7 +70,7 @@
                 bind:value={tagFile}
                 options={tagOptions}
                 label="tag files"
-                update={computeOtherParameters}
+                update={() => computeOtherParameters()}
                 on:change={computeOtherParameters}
             />
         {/if}
@@ -81,8 +81,8 @@
             options={config_filelists.filter((f) => f.endsWith('.params.json'))}
             update={readConfigDir}
         />
-
         <button class="button is-link" on:click={() => computeOtherParameters()}>load</button>
+
         <button class="button is-link" on:click={updateParamsFile}>update</button>
         {#if useParamsFile && selectedFile}
             <span class="tag is-success" class:is-danger={!params_found} transition:fade
