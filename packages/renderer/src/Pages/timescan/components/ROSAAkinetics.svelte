@@ -664,7 +664,17 @@
                 bind:kCIDGuess
             />
 
-            <KlossChannels bind:loss_channels {nameOfReactants} bind:rateConstantMode />
+            <KlossChannels
+                bind:loss_channels
+                {nameOfReactants}
+                bind:rateConstantMode
+                {...{
+                    selectedFile,
+                    useTaggedFile,
+                    tagFile,
+                    configDir,
+                }}
+            />
             <KineticEditor
                 {...{
                     ratek3,

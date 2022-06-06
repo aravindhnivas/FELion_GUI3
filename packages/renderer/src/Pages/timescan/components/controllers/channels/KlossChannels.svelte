@@ -1,15 +1,20 @@
 <script lang="ts">
     import CustomSwitch from '$components/CustomSwitch.svelte'
+    import FileReadAndLoad from '../../utils/FileReadAndLoad.svelte'
     import ChannelComponent from './ChannelComponent.svelte'
     import { onMount } from 'svelte'
     import { differenceBy, find } from 'lodash-es'
-    import { resizableDiv } from '$src/js/resizableDiv.js'
     import Textfield from '@smui/textfield'
     import default_channels, { get_slider_controller, base_slider_values_str } from './default_channels'
     import type { loss_channelsType } from '$src/Pages/timescan/types/types'
     export let loss_channels: loss_channelsType[] = []
     export let nameOfReactants = ''
     export let rateConstantMode = false
+
+    export let configDir: string = ''
+    export let useTaggedFile: boolean = false
+    export let tagFile: string = ''
+    export let selectedFile: string = ''
 
     $: ions_lists = nameOfReactants.split(',').map((name) => name.trim())
     let channelCounter = 0
@@ -38,15 +43,12 @@
         numberDensity: '',
         sliderController: base_slider_values_str(maxGuess),
     }
-
     const updateTrapLossChannel = () => {
         const channelFound = find(loss_channels, ktrap_loss_channel)
         console.log(find(loss_channels, ktrap_loss_channel))
-
         if (channelFound) return window.createToast('channel already added', 'warning')
         loss_channels = [ktrap_loss_channel, ...loss_channels]
     }
-
     $: if (loss_channels.length === 0) {
         channelCounter = 0
     }
@@ -69,11 +71,10 @@
         loss_channels = []
         make_default_channels()
     })
+
     const trigger_rateConstantMode_change = () => {
-        // const baseRateConstant = -15
         loss_channels = loss_channels.map((channel) => {
             const number_density_exponent = parseInt(channel?.numberDensity?.split('^')[1])
-
             if (!isNaN(number_density_exponent)) {
                 if (rateConstantMode) {
                     channel.sliderController = get_slider_controller(number_density_exponent)
@@ -84,6 +85,9 @@
             return channel
         })
     }
+
+    let channels_file = 'kinetics.channels.json'
+
     const updateGuessMaxValues = () => {
         loss_channels = loss_channels.map((channel) => {
             channel.sliderController = base_slider_values_str(maxGuess)
@@ -93,7 +97,7 @@
 </script>
 
 <div class="box channel_main__div">
-    <div class="align h-center mb-5">
+    <div class="align h-center m-2">
         <button class="button is-link" on:click={addChannel}>Add channel</button>
         <button class="button is-warning" on:click={updateTrapLossChannel}>Add trap loss channel</button>
         <CustomSwitch bind:selected={defaultMode} label="He-attachment mode" on:change={make_default_channels} />
@@ -102,9 +106,22 @@
             label="rateConstant mode"
             on:change={trigger_rateConstantMode_change}
         />
+    </div>
+
+    <div class="align h-center mb-5">
+        <FileReadAndLoad
+            bind:filename={channels_file}
+            bind:dataToSave={loss_channels}
+            options_filter="*.channels.json"
+            {...{
+                configDir,
+                selectedFile,
+                tagFile,
+                useTaggedFile,
+            }}
+        />
         {#if !rateConstantMode}
             <Textfield bind:value={maxGuess} label="max-guess-value" />
-
             <i class="material-icons" on:click={updateGuessMaxValues}>refresh</i>
         {/if}
     </div>
