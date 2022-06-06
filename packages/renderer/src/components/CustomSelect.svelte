@@ -1,5 +1,4 @@
 <script lang="ts">
-    import HelperText from '@smui/textfield/helper-text'
     export let options = []
     export let label = ''
     export let value = ''
