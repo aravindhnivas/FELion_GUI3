@@ -1,19 +1,14 @@
 <script lang="ts">
-    // import Textfield from '@smui/textfield'
-    // import CustomSelect from '$components/CustomSelect.svelte'
     import CustomSwitch from '$components/CustomSwitch.svelte'
-    // import { persistentWritable } from '$src/js/persistentStore'
     import ChannelComponent from './ChannelComponent.svelte'
     import { onMount } from 'svelte'
-    import { differenceBy } from 'lodash-es'
+    import { differenceBy, find } from 'lodash-es'
     import { resizableDiv } from '$src/js/resizableDiv.js'
-    // import SortableList from 'svelte-sortable-list'
     import default_channels from './default_channels'
     import type { loss_channelsType } from '$src/Pages/timescan/types/types'
-
     export let loss_channels: loss_channelsType[] = []
     export let nameOfReactants = ''
-    export let includeTrapLoss = false
+    // export let includeTrapLoss = false
     export let rateConstantMode = false
 
     $: ions_lists = nameOfReactants.split(',').map((name) => name.trim())
@@ -21,7 +16,6 @@
 
     const addChannel = () => {
         loss_channels = [
-            ...loss_channels,
             {
                 type: 'forwards',
                 name: channelCounter > 0 ? `k_loss_${channelCounter}` : 'k_loss',
@@ -29,13 +23,34 @@
                 attachTo: 'none',
                 id: window.getID(),
                 numberDensity: 'He^1',
+                sliderController: '0, 0.5, 1e-3',
             },
+            ...loss_channels,
         ]
         channelCounter += 1
     }
+    const ktrap_loss_channel = {
+        type: 'forwards',
+        name: 'ktrap_loss',
+        lossFrom: '<resp. ion>',
+        attachTo: 'none',
+        id: window.getID(),
+        numberDensity: '',
+        sliderController: '0, 0.5, 1e-3',
+    }
+
+    const updateTrapLossChannel = () => {
+        const channelFound = find(loss_channels, ktrap_loss_channel)
+        console.log(find(loss_channels, ktrap_loss_channel))
+
+        if (channelFound) return window.createToast('channel already added', 'warning')
+        loss_channels = [ktrap_loss_channel, ...loss_channels]
+    }
+
     $: if (loss_channels.length === 0) {
         channelCounter = 0
     }
+
     let defaultMode = false
 
     $: nameOfReactantsArr = nameOfReactants.split(',').map((n) => n.trim())
@@ -46,12 +61,14 @@
             loss_channels = differenceBy(loss_channels, defaultChannelsArr, 'id')
             return
         }
-        defaultChannelsArr = default_channels(nameOfReactantsArr)
+        defaultChannelsArr = default_channels(nameOfReactantsArr, rateConstantMode)
         loss_channels = [...loss_channels, ...defaultChannelsArr]
     }
+
     onMount(() => {
         loss_channels = []
         make_default_channels()
+        console.log('channel updated')
     })
 </script>
 
@@ -62,13 +79,13 @@
         edges: { left: false, right: false, bottom: true, top: false },
     }}
 >
-    <div class="align h-center">
+    <div class="align h-center mb-5">
         <button class="button is-link" on:click={addChannel}>Add channel</button>
-        <CustomSwitch bind:selected={includeTrapLoss} label="include trap losses (on all masses)" />
+        <button class="button is-warning" on:click={updateTrapLossChannel}>Add trap loss channel</button>
         <CustomSwitch bind:selected={defaultMode} label="He-attachment mode" on:change={make_default_channels} />
         <CustomSwitch bind:selected={rateConstantMode} label="rateConstant mode" />
     </div>
-    <div class="channels_div">
+    <div class="channels_div mb-5">
         {#each loss_channels as item}
             <ChannelComponent
                 {item}
@@ -89,7 +106,6 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
     }
     .channels_div {
         overflow: auto;

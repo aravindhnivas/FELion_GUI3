@@ -49,11 +49,15 @@ def make_slider():
         current_k3SliderAxes = widget.fig.add_axes(axes)
         valmin, valmax, valstep = controller
         valinit = ratek3[counter]
+        valfmt = "%.4f" if valmax >= 1e-4 else "%.2e"
+
+        print(f"{valfmt=}", flush=True)
+
         _k3Slider = Slider(
             ax=current_k3SliderAxes,
             label=label,
             valstep=valstep,
-            valfmt="%.4f",
+            valfmt=valfmt,
             valmin=valmin,
             valmax=valmax,
             valinit=valinit,
@@ -80,11 +84,13 @@ def make_slider():
 
         valmin, valmax, valstep = controller
         valinit = ratekCID[counter]
+        valfmt = "%.4f" if valmax >= 1e-4 else "%.2e"
+
         _kCIDSlider = Slider(
             ax=current_kCIDSliderAxes,
             label=label,
             valstep=valstep,
-            valfmt="%.4f",
+            valfmt=valfmt,
             valmin=valmin,
             valmax=valmax,
             valinit=valinit,

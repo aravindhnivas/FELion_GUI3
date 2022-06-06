@@ -26,11 +26,10 @@ class Sliderlog(Slider):
             self.ax.figure.canvas.draw_idle()
         self.val = val
         
-        if not self.eventson:
-            return
-        
-        self._observers.process('changed', val)
-        # for cid, func in self.observers.items():
-        #     func(10**val)
+        if self.eventson:
+            self._observers.process('changed', val)
     
+    @property
+    def value(self):
+        return 10**self.val
     

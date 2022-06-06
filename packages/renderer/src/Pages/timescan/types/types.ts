@@ -18,4 +18,5 @@ export type loss_channelsType = {
     attachTo: string
     id: string
     numberDensity?: string
+    sliderController?: string
 }

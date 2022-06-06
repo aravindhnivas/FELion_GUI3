@@ -38,8 +38,8 @@
     let ratekCID = 'kCID1'
     let selectedFile = ''
     let totalMassKey: totalMassKeyType = []
-    let k3Guess = '0, 0.5'
-    let kCIDGuess = '0, 2'
+    let k3Guess = '0, 0.5, 1e-3'
+    let kCIDGuess = '0, 2, 1e-3'
 
     async function browse_folder() {
         const [result] = await browse()
@@ -109,7 +109,7 @@
     let maxTimeIndex = 5
 
     function computeParameters() {
-        includeTrapLoss = false
+        // includeTrapLoss = false
         tagFile = ''
 
         timestartIndexScan = 0
@@ -152,7 +152,7 @@
                 $fit_config_filename,
                 kineticEditorFilename,
                 loss_channels,
-                includeTrapLoss,
+                // includeTrapLoss,
                 tagFile,
             }
         }
@@ -173,9 +173,9 @@
             $fit_config_filename = contents['$fit_config_filename']
         }
 
-        if (contents['includeTrapLoss']) {
-            includeTrapLoss = contents['includeTrapLoss']
-        }
+        // if (contents['includeTrapLoss']) {
+        //     includeTrapLoss = contents['includeTrapLoss']
+        // }
 
         if (contents['tagFile']) {
             tagFile = contents['tagFile']
@@ -355,7 +355,7 @@
         computeParameters()
         update_kinetic_filename('-kineticModel.md')
     }
-    $: if (tagFile || includeTrapLoss) {
+    $: if (tagFile) {
         update_kinetic_filename(`-${tagFile}-kineticModel.md`)
     }
 
@@ -548,13 +548,13 @@
     let reportSaved = false
     const fit_config_filename = persistentWritable('kinetics_fitted_values', 'kinetics.fit.json')
     let loss_channels: loss_channelsType[] = []
-    let includeTrapLoss = false
+    // let includeTrapLoss = false
     let rateConstantMode = false
 
-    $: if (includeTrapLoss) {
-        useTaggedFile = true
-        tagFile = 'ktrap_loss_all'
-    }
+    // $: if (includeTrapLoss) {
+    //     useTaggedFile = true
+    //     tagFile = 'ktrap_loss_all'
+    // }
     onMount(() => {
         loadConfig()
         selectedFile = fileCollections[0] || ''
@@ -664,7 +664,7 @@
                 bind:kCIDGuess
             />
 
-            <KlossChannels bind:loss_channels {nameOfReactants} bind:includeTrapLoss bind:rateConstantMode />
+            <KlossChannels bind:loss_channels {nameOfReactants} bind:rateConstantMode />
             <KineticEditor
                 {...{
                     ratek3,
@@ -674,7 +674,6 @@
                     nameOfReactants,
                     loss_channels,
                     selectedFile,
-                    includeTrapLoss,
                     rateConstantMode,
                 }}
                 bind:location={currentLocation}

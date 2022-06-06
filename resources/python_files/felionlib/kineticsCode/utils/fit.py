@@ -47,7 +47,7 @@ def update_solve_ivp_method(val: str = None):
 
 solve_ivp_methods_widget.currentTextChanged.connect(update_solve_ivp_method)
 
-bounds_percent = 10
+# bounds_percent = 10
 
 def codeToRun(code: str):
     exec(code)

@@ -16,7 +16,7 @@
     export let nameOfReactants = ''
     export let loss_channels: loss_channelsType[] = []
     export let selectedFile = ''
-    export let includeTrapLoss = false
+    // export let includeTrapLoss = false
     export let rateConstantMode = false
 
     let editor
@@ -29,7 +29,7 @@
         k3Guess,
         kCIDGuess,
         loss_channels,
-        includeTrapLoss,
+        // includeTrapLoss,
         rateConstantMode,
     }
     const computeSliders = () => {

@@ -7,7 +7,7 @@ export interface ComputeKineticCodeType {
     k3Guess: string;
     kCIDGuess: string;
     loss_channels: loss_channelsType[];
-    includeTrapLoss: boolean;
+    // includeTrapLoss: boolean;
     rateConstantMode: boolean
 }
 
@@ -19,7 +19,7 @@ export class computeKineticCodeScipy {
     k3Guess: string
     kCIDGuess: string
     loss_channels: loss_channelsType[]
-    includeTrapLoss: boolean
+    sliderControlls: {forwards: string[], backwards: string[]} = {forwards: [], backwards: []}
     nameOfReactantsArr: string[]
     rateForwardArr: string[]
     rateReverseArr: string[]
@@ -33,20 +33,19 @@ export class computeKineticCodeScipy {
         this.k3Guess = maindata.k3Guess
         this.kCIDGuess = maindata.kCIDGuess
         this.loss_channels = maindata.loss_channels
-        this.includeTrapLoss = maindata.includeTrapLoss
+        // this.includeTrapLoss = maindata.includeTrapLoss
         this.rateConstantMode = maindata.rateConstantMode
 
         this.nameOfReactantsArr = this.nameOfReactants.split(',').map((name) => name.trim())
 
-        const forwards_loss_channels_keys = this.loss_channels
-            .filter(({ type }) => type === 'forwards')
-            .map(({ name }) => name)
-        this.rateForwardArr = [...forwards_loss_channels_keys]
+        const forwardChannels = this.loss_channels.filter(({ type }) => type === 'forwards')
+        const backwardChannels = this.loss_channels.filter(({ type }) => type === 'backwards')
 
-        const backwards_loss_channels_keys = this.loss_channels
-            .filter(({ type }) => type === 'backwards')
-            .map(({ name }) => name)
-        this.rateReverseArr = [...backwards_loss_channels_keys]
+        this.sliderControlls.forwards = forwardChannels.map(({ sliderController }) => sliderController)
+        this.rateForwardArr = [...forwardChannels.map(({ name }) => name)]
+        
+        this.sliderControlls.backwards = backwardChannels.map(({ sliderController }) => sliderController)
+        this.rateReverseArr = [...backwardChannels.map(({ name }) => name)]
 
     }
 
@@ -56,19 +55,17 @@ export class computeKineticCodeScipy {
         data += '```plaintext\n'
         data += '\nmin_max_step_controller = {}\n'
         data += '\nmin_max_step_controller["forwards"] = {\n'
-        this.rateForwardArr.forEach((value) => {
-            data += `\t'${value}': (${this.k3Guess}, 1e-3),\n`
+        this.rateForwardArr.forEach((value, index) => {
+            // data += `\t'${value}': (${this.k3Guess}),\n`
+            data += `\t'${value}': (${this.sliderControlls.forwards[index]}),\n`
         })
-
-        if (this.includeTrapLoss) {
-            data += `\t'ktrap_loss': (${this.k3Guess}, 1e-3),\n`
-        }
-
+        
         data += '}\n'
         data += '\nmin_max_step_controller["backwards"] = {\n'
 
-        this.rateReverseArr.forEach((value) => {
-            data += `\t'${value}': (${this.kCIDGuess}, 1e-3),\n`
+        this.rateReverseArr.forEach((value, index) => {
+            // data += `\t'${value}': (${this.kCIDGuess}),\n`
+            data += `\t'${value}': (${this.sliderControlls.backwards[index]}),\n`
         })
         data += '}\n'
         data += '```\n'
@@ -76,6 +73,7 @@ export class computeKineticCodeScipy {
     }
 
     get model() {
+
         let data = ''
 
         data += '## Defining ODE model\n'
@@ -85,12 +83,6 @@ export class computeKineticCodeScipy {
 
         data += '\tk3, kCID = rateCoefficientArgs\n\n'
         data += `\t${this.rateForwardArr.join(', ')}${this.rateForwardArr.length == 1 ? ',' : ''}`
-        if (this.includeTrapLoss) {
-            if (!data.trim().endsWith(',')) {
-                data += ', '
-            }
-            data += `ktrap_loss`
-        }
 
         data += ' = k3\n'
         data += `\t${this.rateReverseArr.join(', ')}${this.rateReverseArr.length == 1 ? ',' : ''} = kCID\n\n`
@@ -122,6 +114,11 @@ export class computeKineticCodeScipy {
         let attach_to_all_lists = []
         this.loss_channels.forEach((channel) => {
             const { name, lossFrom, attachTo, numberDensity } = channel
+            
+            if (lossFrom === '<resp. ion>') {
+                return
+            }
+            
             let loss_reaction;
             if(this.rateConstantMode && numberDensity) {
                 loss_reaction = `(${name} * ${numberDensity.replace('^1', '').replace('^', '**')} * ${lossFrom})`
@@ -148,23 +145,22 @@ export class computeKineticCodeScipy {
 
         console.log(data)
 
-        data = data.map(trim_this_line).map((line, index) => {
-
-            if (this.includeTrapLoss) { line += ` - (ktrap_loss * ${this.nameOfReactantsArr[index]})` }
-            line += ',\n'
-            return line
+        const channels_to_add_in_all_ions = this.loss_channels.filter(channel=>channel.lossFrom === '<resp. ion>')
+        channels_to_add_in_all_ions.forEach((channel) => {
+            data = data.map(trim_this_line).map((line, index) => {
+                line += ` - (${channel.name}  * ${this.nameOfReactantsArr[index]}),\n`
+                return line
+            })
         })
-
         return data.join('')
     }
 
     get fullEquation() {
-        try {
 
+        try {
             return this.sliders + this.model
         } catch (error) {
-            window.handleError(error)
-            return null
+            return window.handleError(error)
         }
     }
 }

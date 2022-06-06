@@ -24,12 +24,12 @@
     </div>
     <div>
         <Textfield bind:value={ratek3} label="ratek3" />
-        <Textfield bind:value={k3Guess} label="k3Guess (min, max) [/s]" />
+        <Textfield bind:value={k3Guess} label="k3Guess (min, max, step)" />
     </div>
 
     <div>
         <Textfield bind:value={ratekCID} label="ratekCID" />
-        <Textfield bind:value={kCIDGuess} label="kCIDGuess (min, max) [/s]" />
+        <Textfield bind:value={kCIDGuess} label="kCIDGuess (min, max, step)" />
     </div>
 
     <TextAndSelectOptsToggler

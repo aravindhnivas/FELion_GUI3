@@ -63,7 +63,7 @@
     .select {
         align-self: auto;
         select {
-            min-width: 12em;
+            // min-width: 12em;
 
             // background: #6249a5;
             &:active,

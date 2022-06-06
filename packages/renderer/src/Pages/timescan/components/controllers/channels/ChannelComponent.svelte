@@ -3,6 +3,7 @@
     import CustomSelect from '$components/CustomSelect.svelte'
     import Textfield from '@smui/textfield'
     import type { loss_channelsType } from '$src/Pages/timescan/types/types'
+    import { isUndefined } from 'lodash-es'
 
     export let item: loss_channelsType
     export let rateConstantMode = false
@@ -15,14 +16,17 @@
     <i class="material-icons">menu</i>
     <CustomSelect bind:value={item.type} label="type" options={['forwards', 'backwards']} />
     <Textfield bind:value={item.name} label="name" />
-    <CustomSelect bind:value={item.lossFrom} label="lossFrom" options={ions_lists} />
+    <CustomSelect bind:value={item.lossFrom} label="lossFrom" options={['<resp. ion>', ...ions_lists]} />
     <CustomSelect
         bind:value={item.attachTo}
         label="attachTo"
         options={['none', 'all', ...ions_lists.filter((n) => n !== item.lossFrom)]}
     />
-    {#if rateConstantMode && item.numberDensity}
-        <Textfield bind:value={item.numberDensity} label="He^n" />
+    {#if item.sliderController}
+        <Textfield bind:value={item.sliderController} label="(min, max, step)" style="width: 10em;" />
+    {/if}
+    {#if rateConstantMode && !isUndefined(item.numberDensity)}
+        <Textfield bind:value={item.numberDensity} label="He^n" style="width: 7em;" />
     {/if}
     <button
         class="button is-danger"
@@ -35,8 +39,8 @@
 <style>
     .channel_div {
         display: flex;
-        justify-content: center;
-        align-items: center;
+        justify-content: space-evenly;
+        align-items: flex-end;
         gap: 1em;
     }
     i {
