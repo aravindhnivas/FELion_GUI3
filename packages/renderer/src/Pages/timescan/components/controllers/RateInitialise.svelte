@@ -18,7 +18,7 @@
     export let kinetics_params_file = ''
     export let config_filelists = []
     export let selectedFile = ''
-    export let computeOtherParameters = () => {}
+    export let computeOtherParameters = (forTagged?: boolean): void => {}
     export let readConfigDir = () => {}
 </script>
 
@@ -51,7 +51,11 @@
     {/if}
 
     <div class="align h-center" style="align-items: flex-end;">
-        <CustomSwitch on:change={computeOtherParameters} bind:selected={useParamsFile} label="use params file" />
+        <CustomSwitch
+            on:change={() => computeOtherParameters()}
+            bind:selected={useParamsFile}
+            label="use params file"
+        />
 
         <CustomSwitch
             on:change={() => {
@@ -78,7 +82,7 @@
             update={readConfigDir}
         />
 
-        <button class="button is-link" on:click={computeOtherParameters}>load</button>
+        <button class="button is-link" on:click={() => computeOtherParameters()}>load</button>
         <button class="button is-link" on:click={updateParamsFile}>update</button>
         {#if useParamsFile && selectedFile}
             <span class="tag is-success" class:is-danger={!params_found} transition:fade
