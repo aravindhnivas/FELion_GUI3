@@ -49,6 +49,12 @@
         if (!nameOfReactants) {
             return window.createToast('No data available', 'danger')
         }
+
+        const forwardChannels = loss_channels.filter(({ type }) => type === 'forwards')
+        if (forwardChannels.length === 0) {
+            return window.createToast('ERROR: Make atleast one rate equation', 'danger')
+        }
+
         computedCode = new computeKineticCodeScipy(maindata)
         update_editor(computedCode.fullEquation)
     }

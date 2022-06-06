@@ -82,10 +82,14 @@ export class computeKineticCodeScipy {
         data += 'def compute_attachment_process(t, N):\n\n'
 
         data += '\tk3, kCID = rateCoefficientArgs\n\n'
-        data += `\t${this.rateForwardArr.join(', ')}${this.rateForwardArr.length == 1 ? ',' : ''}`
+        
+        if(this.rateForwardArr.length > 0) {
+            data += `\t${this.rateForwardArr.join(', ')}${this.rateForwardArr.length == 1 ? ',' : ''}  = k3\n`
+        }
 
-        data += ' = k3\n'
-        data += `\t${this.rateReverseArr.join(', ')}${this.rateReverseArr.length == 1 ? ',' : ''} = kCID\n\n`
+        if(this.rateReverseArr.length > 0) {
+            data += `\t${this.rateReverseArr.join(', ')}${this.rateReverseArr.length == 1 ? ',' : ''} = kCID\n\n`
+        }
         data += `\t${this.nameOfReactantsArr.join(', ')} = N\n`
         data += `\n\tdNdT = [\n`
         data += this.make_final_list()
@@ -155,12 +159,14 @@ export class computeKineticCodeScipy {
         return data.join('')
     }
 
-    get fullEquation() {
+    get fullEquation(): string {
 
         try {
             return this.sliders + this.model
+            
         } catch (error) {
-            return window.handleError(error)
+            window.handleError(error)
+            return ''
         }
     }
 }
