@@ -60,6 +60,9 @@
         }
         updateCurrentConfig(currentConfig)
     }
+    $: if (updateCurrentConfig && selectedFile) {
+        compute()
+    }
 </script>
 
 <svelte:window
@@ -69,42 +72,42 @@
         }
     }}
 />
-{#if active}
-    <Modal bind:active title="{selectedFile}: {nHe} cm-3" id="kinetis-number-density" on:mounted={compute}>
-        <svelte:fragment slot="content">
-            <NumberDensity
-                bind:updateCurrentConfig
-                bind:get_datas
-                on:getValue={(e) => {
-                    nHe = e.detail.nHe
-                }}
-            >
-                <svelte:fragment slot="header">
-                    <div class="align h-center">
-                        <TextAndSelectOptsToggler
-                            bind:value={filename}
-                            label="config file (*.conditions.json)"
-                            options={config_filelists.filter((f) => f.endsWith('.conditions.json'))}
-                            update={readConfigDir}
-                        />
+<!-- {#if active} -->
+<Modal bind:active title="{selectedFile}: {nHe} cm-3" id="kinetis-number-density" on:mounted={compute}>
+    <svelte:fragment slot="content">
+        <NumberDensity
+            bind:updateCurrentConfig
+            bind:get_datas
+            on:getValue={(e) => {
+                nHe = e.detail.nHe
+            }}
+        >
+            <svelte:fragment slot="header">
+                <div class="align h-center">
+                    <TextAndSelectOptsToggler
+                        bind:value={filename}
+                        label="config file (*.conditions.json)"
+                        options={config_filelists.filter((f) => f.endsWith('.conditions.json'))}
+                        update={readConfigDir}
+                    />
 
-                        <button class="button is-link" on:click={readConfigFile}>Read file</button>
+                    <button class="button is-link" on:click={readConfigFile}>Read file</button>
 
-                        <CustomSelect
-                            on:change={compute}
-                            bind:value={selectedFile}
-                            label="Filename"
-                            options={fileCollections}
-                        />
-                        <span class="tag is-success" class:is-danger={!contents?.[selectedFile]}>
-                            config {contents?.[selectedFile] ? 'found' : 'not found'}
-                        </span>
-                    </div>
-                </svelte:fragment>
-            </NumberDensity>
-        </svelte:fragment>
-        <svelte:fragment slot="footer">
-            <button class="button is-link" on:click={save_datas}>Save</button>
-        </svelte:fragment>
-    </Modal>
-{/if}
+                    <CustomSelect
+                        on:change={compute}
+                        bind:value={selectedFile}
+                        label="Filename"
+                        options={fileCollections}
+                    />
+                    <span class="tag is-success" class:is-danger={!contents?.[selectedFile]}>
+                        config {contents?.[selectedFile] ? 'found' : 'not found'}
+                    </span>
+                </div>
+            </svelte:fragment>
+        </NumberDensity>
+    </svelte:fragment>
+    <svelte:fragment slot="footer">
+        <button class="button is-link" on:click={save_datas}>Save</button>
+    </svelte:fragment>
+</Modal>
+<!-- {/if} -->
