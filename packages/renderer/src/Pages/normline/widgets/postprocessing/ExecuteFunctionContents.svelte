@@ -123,7 +123,7 @@
         adjustPeakTrigger = false
     }
 
-    function plotData({ e = null, filetype = 'exp_fit', general = {} } = {}) {
+    function plotData({ e = null, filetype = 'exp_fit', general = {pyfile: '', args: ''} } = {}) {
         if (filetype == 'general') {
             const { pyfile, args } = general
             computePy_func({ pyfile, args, general: true })

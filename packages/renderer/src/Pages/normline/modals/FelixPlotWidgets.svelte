@@ -19,7 +19,7 @@
 
         let calcfiles = []
 
-        if (window.fs.existsSync(theoryLocation)) {
+        if (window.fs.isDirectory(theoryLocation)) {
             window.fs.readdirSync(theoryLocation).forEach((file) => {
                 const isFile = fs.lstatSync(window.path.join(theoryLocation, file)).isFile()
                 if (isFile) {
@@ -39,6 +39,12 @@
             },
             {
                 label: 'Fundamentals',
+                options: calcfiles,
+                value: [],
+                id: window.getID(),
+            },
+            {
+                label: 'Combinations + Overtones',
                 options: calcfiles,
                 value: [],
                 id: window.getID(),

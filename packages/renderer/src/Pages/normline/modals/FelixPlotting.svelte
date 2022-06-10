@@ -3,12 +3,12 @@
     import FelixPlotWidgets from './FelixPlotWidgets.svelte'
     import { createEventDispatcher } from 'svelte'
     import FelixPlotExtraWidgets from './FelixPlotExtraWidgets.svelte'
-    export let active = false,
-        felixPlotWidgets = {},
-        theoryLocation
+    export let active = false
+    export let felixPlotWidgets = {}
+    export let theoryLocation = ''
     const dispatch = createEventDispatcher()
-    let extraWidgetModal = false,
-        widgetType = ''
+    let extraWidgetModal = false
+    let widgetType = ''
 </script>
 
 {#if active}

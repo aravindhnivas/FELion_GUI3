@@ -1,35 +1,68 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path as pt
-from typing import Any, Literal
+from typing import Any, Literal, Optional
 from matplotlib.axes import Axes
 import numpy as np
 from felionlib.utils.felionQt import felionQtWindow
 from .definitions import computeNGaussian
 
 logger = lambda *args, **kwargs: print(*args, **kwargs, flush=True)
-
+methods_available: list[str] = ["Log", "Relative", "IntensityPerPhoton"]
 
 # 
 
-@dataclass
+@dataclass(slots=True)
 class PlotData:
     args: dict[str, Any]
     widget: felionQtWindow
     data_location: pt
-
-    def plot(self):
-        logger(self.args["booleanWidgets"])
+    axes: list[Axes] = field(default_factory=list)
+    Only_exp: bool = field(init=False)
+    export_location: pt = field(init=False)
+    ax_exp: Axes = field(init=False)
+    ax_theory: Axes = field(init=False)
+    exp_legend_title: str = field(init=False)
+    theory_legend_title: str = field(init=False)
+    exp_legend: str = field(init=False)
+    exp_files: list[str] = field(init=False)
+    yind: Literal[0, 1, 2] = field(init=False)
+    normMethod: Literal["Log", "Relative", "IntensityPerPhoton"] = field(init=False)
+    theoryLocation: pt =  field(init=False)
+    freqScale: float = field(init=False)
+    theorySigma: float = field(init=False)
+    fundamental_theory_file: list[str] = field(init=False)
+    combination_overtons_files: list[str] =  field(init=False)
+    
+    
+    def __post_init__(self):
         self.Only_exp = self.args["booleanWidgets"]["Only_exp"]
-
         if self.Only_exp:
             self.ax_exp = self.widget.fig.subplots(1)
-            axes: tuple[Axes] = (self.ax_exp, )
+            self.axes = (self.ax_exp, )
             self.ax_theory = None
         else:
-            axes: tuple[Axes, Axes] = self.widget.fig.subplots(2, 1, sharex=True)
-            self.ax_exp, self.ax_theory = axes
+            self.ax_exp, self.ax_theory = self.widget.fig.subplots(2, 1, sharex=True)
+            self.axes = self.ax_exp, self.ax_theory
         
-        self.widget.createControlLayout(axes, attachControlLayout=True)
+        self.exp_legend_title = self.args["textWidgets"]["Exp_title"]
+        self.exp_legend = self.args["textWidgets"]["Exp_legend"]
+        self.theory_legend_title = self.args["textWidgets"]["Cal_title"]
+        self.export_location = self.data_location / "../EXPORT"
+        
+        self.normMethod = self.args["normMethod"]
+        self.yind = methods_available.index(self.normMethod)
+        self.exp_files = self.args["selectedWidgets"]["DAT_file"]
+        
+        if self.ax_theory:
+            self.theoryLocation = pt(self.args["theoryLocation"])
+            self.freqScale = float(self.args["numberWidgets"]["freqScale"])
+            self.theorySigma = float(self.args["numberWidgets"]["theorySigma"])
+            self.fundamental_theory_file: list[str] = self.args["selectedWidgets"]["Fundamentals"]
+            self.combination_overtons_files: list[str] = self.args["selectedWidgets"]["Combinations + Overtones"]
+        
+    def plot(self):
+        logger(self.args["booleanWidgets"])
+        self.widget.createControlLayout(self.axes, attachControlLayout=True)
 
         if not self.Only_exp: self.toggle_axes()
         
@@ -42,7 +75,6 @@ class PlotData:
         self.ax_exp.tick_params("x", which="both", bottom=False, labelbottom=False, top=True, labeltop=True,)
         self.ax_exp.tick_params("y", which="both", right=True)
         self.ax_exp.spines["bottom"].set_visible(False)
-
         if self.ax_theory:
             self.ax_theory.tick_params("x", which="both", top=False, labeltop=False)
             self.ax_theory.spines["top"].set_visible(False)
@@ -50,10 +82,6 @@ class PlotData:
             self.ax_theory.invert_yaxis()
 
     def plot_this_exp_file(self, filename: str, color="C0"):
-
-        self.exp_legend_title = self.args["textWidgets"]["Exp_title"]
-        self.exp_legend = self.args["textWidgets"]["Exp_legend"]
-        self.theory_legend_title = self.args["textWidgets"]["Cal_title"]
         
         fullfile = self.export_location / filename
         fullfitfile = self.export_location / f"{fullfile.stem}_{self.normMethod}.fullfit"
@@ -92,13 +120,6 @@ class PlotData:
 
     def plot_exp(self):
         
-        methods_available: list[str] = ["Log", "Relative", "IntensityPerPhoton"]
-        self.normMethod: Literal["Log", "Relative", "IntensityPerPhoton"] = self.args["normMethod"]
-        self.yind: Literal[0, 1, 2] = methods_available.index(self.normMethod)
-        self.export_location = self.data_location / "../EXPORT"
-
-        self.exp_files: list[str] = self.args["selectedWidgets"]["DAT_file"]
-
         if len(self.exp_files) == 1:
             filename = self.exp_files[0]
             self.plot_this_exp_file(filename)
@@ -106,48 +127,45 @@ class PlotData:
             for index, filename in enumerate(self.exp_files):
                 self.plot_this_exp_file(filename, color=f"C{index}")
 
-    def plot_this_fundamental_theory_file(self, filename, color):
-
+    def plot_this_theory_file(self, filename, color, ls='-'):
         fullfile = self.theoryLocation / filename
         fileData: list[str] = None
 
         with open(fullfile, "r") as fp:
             fileData = fp.readlines()
         
-        theory_level = fileData[0].split("#")[-1].strip()
-        molecule_name = fileData[1].split("#")[-1].strip()
+        label = fileData[0].split("#")[-1].strip()
+        # self.theory_legends.append(theory_level)
+        # molecule_name = fileData[1].split("#")[-1].strip()
         wn, inten = np.genfromtxt(fullfile).T
         wn *= self.freqScale
         simulatedData = computeNGaussian(wn, inten, sigma=self.theorySigma)
-        self.ax_theory.plot(*simulatedData, f"-{color}")
-        self.ax_theory.legend([theory_level], title=self.theory_legend_title)
-
+        (local_ax,) = self.ax_theory.plot(*simulatedData, f"{ls}{color}", label=label)
+        # self.ax_theory.legend(self.theory_legends, title=self.theory_legend_title)
+        
+        return local_ax
+    
     def plot_theory(self):
         
-        self.theoryLocation = pt(self.args["theoryLocation"])
-        self.freqScale = self.args["numberWidgets"]["freqScale"]
-        self.theorySigma = self.args["numberWidgets"]["theorySigma"]
-
-        fundamental_theory_file: list[str] = self.args["selectedWidgets"]["Fundamentals"]
-        if len(fundamental_theory_file) == 1:
-            filename = fundamental_theory_file[0]
-            self.plot_this_fundamental_theory_file(filename, color=f"C{len(self.exp_files) + 1}")
-        else:
-            for index, filename in enumerate(fundamental_theory_file):
-                self.plot_this_fundamental_theory_file(filename, color=f"C{len(self.exp_files) + index}")
-
+        for index, filename in enumerate(self.fundamental_theory_file):
+            self.plot_this_theory_file(filename, color=f"C{len(self.exp_files) + index}")
+        
+        for index, filename in enumerate(self.combination_overtons_files):
+            self.plot_this_theory_file(filename, color=f"C{len(self.exp_files) + index}", ls='--')
+        
+        
+        self.ax_theory.legend(title=self.theory_legend_title)
 
 def main(args):
-
     data_location = pt(args["location"])
     
     out_location = data_location / "../OUT"
     widget = felionQtWindow(title="FELIX Spectrum", location=out_location, ticks_direction="in", createControlLayout=False, windowGeometry=(1000, 700))
+    
     plotData = PlotData(args, widget, data_location)
     plotData.plot()
 
     widget.optimize_figure()
     widget.updatecanvas()
-
     widget.qapp.exec()
-    
+        

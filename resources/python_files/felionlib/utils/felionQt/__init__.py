@@ -191,7 +191,9 @@ class felionQtWindow(QtWidgets.QMainWindow):
             self.draw()
             self.updateFigsizeDetails()
 
-        dpiwidget = self.createSpinBox(value=self.figDPI, prefix="DPI: ", _min=100, _step=1, callback=changefigDPI)
+        dpiwidget = self.createSpinBox(
+            value=self.figDPI, prefix="DPI: ", _min=100, _max=10000, _step=1, callback=changefigDPI
+        )
         dpiwidget.setValue(self.figDPI)
         # self.controlLayout.addWidget(dpiwidget)
         return dpiwidget
@@ -229,6 +231,8 @@ class felionQtWindow(QtWidgets.QMainWindow):
         return widgetGroup
 
     def getaxisUpdateFunction(self):
+        if not self.ax:
+            return
         self.updatefn = {
             "formatter": {
                 "major": {"x": self.ax.xaxis.set_major_formatter, "y": self.ax.yaxis.set_major_formatter},
@@ -705,7 +709,6 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.draw()
 
     def figure_draw_controllers(self):
-
         controllerLayout = QtWidgets.QHBoxLayout()
 
         axesOptionsWidget = QtWidgets.QComboBox()
@@ -713,6 +716,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
         def changeCurrentAxes(ax):
             self.ax = self.getAxes[ax]
+            self.getaxisUpdateFunction()
             self.legend = self.ax.get_legend()
             self.update_figure_label_widgets_values()
 
@@ -1051,6 +1055,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
             self.draw()
 
         self.minorticks_controller_widget.setChecked(True)
+
         self.update_figure_label_widgets_values()
         self.set_bound_controller_values()
         self.updateFigsizeDetails()
@@ -1059,6 +1064,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
         self.controlLayout = QtWidgets.QVBoxLayout()
         self.legend = None
+
         if len(axes):
             self.axes = axes
         else:
