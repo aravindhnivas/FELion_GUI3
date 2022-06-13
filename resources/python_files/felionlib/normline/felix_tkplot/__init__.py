@@ -1,10 +1,12 @@
 from dataclasses import dataclass, field
 from pathlib import Path as pt
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 from matplotlib.axes import Axes
 import numpy as np
 from felionlib.utils.felionQt import felionQtWindow
 from .definitions import computeNGaussian
+from matplotlib.container import Container
+from matplotlib.artist import Artist
 
 logger = lambda *args, **kwargs: print(*args, **kwargs, flush=True)
 methods_available: list[str] = ["Log", "Relative", "IntensityPerPhoton"]
@@ -32,7 +34,9 @@ class PlotData:
     theorySigma: float = field(init=False)
     fundamental_theory_file: list[str] = field(init=False)
     combination_overtons_files: list[str] =  field(init=False)
-    
+    combination_files: list[str] =  field(init=False)
+    overtons_files: list[str] =  field(init=False)
+    line_handler: dict[str, Container | Artist] = field(default_factory=dict)
     
     def __post_init__(self):
         self.Only_exp = self.args["booleanWidgets"]["Only_exp"]
@@ -59,13 +63,13 @@ class PlotData:
             self.theorySigma = float(self.args["numberWidgets"]["theorySigma"])
             self.fundamental_theory_file: list[str] = self.args["selectedWidgets"]["Fundamentals"]
             self.combination_overtons_files: list[str] = self.args["selectedWidgets"]["Combinations + Overtones"]
+            self.combination_files: list[str] = self.args["selectedWidgets"]["Combinations"]
+            self.overtons_files: list[str] = self.args["selectedWidgets"]["Overtones"]
         
     def plot(self):
         logger(self.args["booleanWidgets"])
         self.widget.createControlLayout(self.axes, attachControlLayout=True)
-
         if not self.Only_exp: self.toggle_axes()
-        
         self.plot_exp()
         self.plot_make_labels()
         if not self.Only_exp: self.plot_theory()
@@ -103,57 +107,61 @@ class PlotData:
 
                 similated_freq, simulated_inten = simulate_exp_data
                 self.ax_exp.plot(similated_freq, simulated_inten, "-", c=color, lw=1.1, label=self.exp_legend)
-
             self.ax_exp.legend(title=self.exp_legend_title)
     
     def plot_make_labels(self):
-
+        
+        xlabel="Wavenumber [cm$^{-1}$]"
         if self.ax_theory:
             self.ax_theory.set(
-                xlabel="Wavenumber (cm$^{-1}$)",
-                ylabel="Intensity (Km/mol)"
+                xlabel=xlabel,
+                ylabel="Intensity [Km/mol]"
             )
         self.ax_exp.set(
-            xlabel="Wavenumber (cm$^{-1}$)" if self.Only_exp else "",
-            ylabel=("Norm. Intensity ~(m$^2$/photon)", "Relative Depletion (%)")[self.normMethod=="Relative"],
+            xlabel=xlabel if self.Only_exp else "",
+            ylabel=("Norm. Intensity ~[m$^2$/photon]", "Relative Depletion [%]")[self.normMethod=="Relative"],
         )
 
     def plot_exp(self):
         
-        if len(self.exp_files) == 1:
-            filename = self.exp_files[0]
-            self.plot_this_exp_file(filename)
-        else:
-            for index, filename in enumerate(self.exp_files):
-                self.plot_this_exp_file(filename, color=f"C{index}")
+        # if len(self.exp_files) == 1:
+        #     filename = self.exp_files[0]
+        #     self.plot_this_exp_file(filename)
+        # else:
+        for index, filename in enumerate(self.exp_files):
+            self.plot_this_exp_file(filename, color=f"C{index}")
 
-    def plot_this_theory_file(self, filename, color, ls='-'):
+    def plot_this_theory_file(self, filename: str | list[str] | tuple[str], color=None, **kwargs):
+        if not filename: return
+        if isinstance(filename, list | tuple):
+            for i, f in enumerate(filename):
+                color = f"C{len(self.exp_files) + i}"
+                self.plot_this_theory_file(f, color, **kwargs)
+            return
+        
+        if not color: color = f"C{len(self.exp_files) + 1}"
         fullfile = self.theoryLocation / filename
         fileData: list[str] = None
 
         with open(fullfile, "r") as fp:
             fileData = fp.readlines()
         
-        label = fileData[0].split("#")[-1].strip()
+        label = fileData[1].split("#")[-1].strip()
         # self.theory_legends.append(theory_level)
         # molecule_name = fileData[1].split("#")[-1].strip()
         wn, inten = np.genfromtxt(fullfile).T
         wn *= self.freqScale
         simulatedData = computeNGaussian(wn, inten, sigma=self.theorySigma)
-        (local_ax,) = self.ax_theory.plot(*simulatedData, f"{ls}{color}", label=label)
-        # self.ax_theory.legend(self.theory_legends, title=self.theory_legend_title)
+        (local_ax,) = self.ax_theory.plot(*simulatedData, f"{color}", label=label, **kwargs)
         
-        return local_ax
+        # return local_ax
     
     def plot_theory(self):
-        
-        for index, filename in enumerate(self.fundamental_theory_file):
-            self.plot_this_theory_file(filename, color=f"C{len(self.exp_files) + index}")
-        
-        for index, filename in enumerate(self.combination_overtons_files):
-            self.plot_this_theory_file(filename, color=f"C{len(self.exp_files) + index}", ls='--')
-        
-        
+        self.plot_this_theory_file(self.fundamental_theory_file, ls='solid')
+        self.plot_this_theory_file(self.combination_overtons_files, ls='dashed')
+        self.plot_this_theory_file(self.combination_files, ls='dashdot')
+        self.plot_this_theory_file(self.overtons_files, ls='dotted')
+            
         self.ax_theory.legend(title=self.theory_legend_title)
 
 def main(args):
@@ -167,5 +175,6 @@ def main(args):
 
     widget.optimize_figure()
     widget.updatecanvas()
+    # widget.make_legend_editor()
     widget.qapp.exec()
         

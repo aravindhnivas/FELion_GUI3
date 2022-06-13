@@ -708,19 +708,21 @@ class felionQtWindow(QtWidgets.QMainWindow):
             ax.minorticks_off()
         self.draw()
 
+    def changeCurrentAxes(self, ax):
+        self.ax = self.getAxes[ax]
+
+        self.getaxisUpdateFunction()
+
+        self.legend = self.ax.get_legend()
+        self.update_figure_label_widgets_values()
+        self.set_bound_controller_values()
+
     def figure_draw_controllers(self):
         controllerLayout = QtWidgets.QHBoxLayout()
-
         axesOptionsWidget = QtWidgets.QComboBox()
         axesOptionsWidget.addItems(self.getAxes.keys())
 
-        def changeCurrentAxes(ax):
-            self.ax = self.getAxes[ax]
-            self.getaxisUpdateFunction()
-            self.legend = self.ax.get_legend()
-            self.update_figure_label_widgets_values()
-
-        axesOptionsWidget.currentTextChanged.connect(changeCurrentAxes)
+        axesOptionsWidget.currentTextChanged.connect(self.changeCurrentAxes)
         tight_layout_button = QtWidgets.QPushButton("tight layout")
         tight_layout_button.clicked.connect(self.updatecanvas)
 
@@ -792,9 +794,9 @@ class felionQtWindow(QtWidgets.QMainWindow):
     def set_bound_controller_values(self):
         def set_min_max_val(widget: QtWidgets.QDoubleSpinBox, val: float):
 
-            if val < 0:
-                return
-            factor = 10 if val == 0 else val * 10
+            # if val < 0:
+            #     return
+            factor = 10 if val <= 0 else val * 10
             _min = val - factor
             _max = val + factor
 
@@ -822,8 +824,10 @@ class felionQtWindow(QtWidgets.QMainWindow):
             fn(**kwargs)
             if draw:
                 self.draw()
+            print("bound updated", flush=True)
 
         main_widget.valueChanged.connect(updated_callback)
+        # main_widget.change
         return main_widget
 
     def layout_of_control_this_widget(self, this_widget: QtWidgets.QDoubleSpinBox):
@@ -1204,24 +1208,28 @@ class felionQtWindow(QtWidgets.QMainWindow):
             self.legend_edit_window.activateWindow()
             self.legend_edit_window.raise_()
 
-    def edit_legend(self):
+    def save_editted_legend(self):
+        if not self.picked_legend:
+            return
 
-        if self.picked_legend is not None:
-            current_text: Text = self.picked_legend.get_text()
-            new_text = self.legend_edit_window.edit_box_widget.text()
-            new_text = new_text.strip()
+        current_text: Text = self.picked_legend.get_text()
+        new_text = self.legend_edit_window.edit_box_widget.text()
+        new_text = new_text.strip()
 
-            if new_text and new_text != current_text:
-                self.picked_legend.set_text(new_text)
-                self.draw()
+        if new_text == current_text:
+            return
 
-                if self.line_handler:
-                    self.line_handler[new_text] = self.line_handler[current_text]
-                    del self.line_handler[current_text]
+        self.picked_legend.set_text(new_text)
+        self.draw()
+
+        if isinstance(self.line_handler, dict) and current_text in self.line_handler:
+            self.line_handler[new_text] = self.line_handler[current_text]
+            del self.line_handler[current_text]
 
         self.legend_edit_window.close()
 
     def make_legend_editor(self, on_pick_callback: Callable[[], None] = None):
+
         self.ctrl_pressed = False
         self.shift_pressed = False
 
@@ -1254,8 +1262,8 @@ class felionQtWindow(QtWidgets.QMainWindow):
                 self.ctrl_pressed = False
 
             self.legend_edit_window.closeEvent = edit_window_closeEvent
-        self.legend_edit_window.save_button_widget.clicked.connect(self.edit_legend)
-        self.legend_edit_window.edit_box_widget.returnPressed.connect(self.edit_legend)
+        self.legend_edit_window.save_button_widget.clicked.connect(self.save_editted_legend)
+        self.legend_edit_window.edit_box_widget.returnPressed.connect(self.save_editted_legend)
         if on_pick_callback is not None:
             self.canvas.mpl_connect("pick_event", lambda e: self.on_pick(e, on_pick_callback))
         print("legend editor made", flush=True)
