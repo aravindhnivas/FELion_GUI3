@@ -1064,7 +1064,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.set_bound_controller_values()
         self.updateFigsizeDetails()
 
-    def createControlLayout(self, axes: Iterable[Axes] = (), attachControlLayout=True, optimize=False) -> None:
+    def createControlLayout(self, axes: tuple[Axes, ...] = (), attachControlLayout=True, optimize=False) -> None:
 
         self.controlLayout = QtWidgets.QVBoxLayout()
         self.legend = None
@@ -1188,16 +1188,21 @@ class felionQtWindow(QtWidgets.QMainWindow):
         picked_line_handler = self.picked_legend.get_text()
         toggle_artist = self.line_handler[picked_line_handler]
 
-        set_this_alpha = self.legendalpha
+        # set_this_alpha = self.legendalpha
 
-        if isinstance(toggle_artist, Iterable) and not isinstance(toggle_artist, Container):
-            for artist in toggle_artist:
-                set_this_alpha = toggle_this_artist(artist, self.legendalpha)
-        else:
-            set_this_alpha = toggle_this_artist(toggle_artist, self.legendalpha)
-
-        self.picked_legend.set_alpha(0.5 if set_this_alpha < 1 else 1)
-
+        # print(f"{self.legendalpha=}", flush=True)
+        toggle_this_artist(toggle_artist, self.legendalpha, self.picked_legend)
+        # if isinstance(toggle_artist, list) or isinstance(toggle_artist, tuple):
+        #     for artist in toggle_artist:
+        #         set_this_alpha = toggle_this_artist(artist, self.legendalpha)
+        # else:
+        #     set_this_alpha = toggle_this_artist(toggle_artist, self.legendalpha)
+        # if isinstance(set_this_alpha, float):
+        #     self.picked_legend.set_alpha(0.5 if set_this_alpha < 1 else 1)
+        # else:
+        #     raise Exception(
+        #         f"Could not toggle the legends alpha for {picked_line_handler}\n{self.line_handler[picked_line_handler]}"
+        #     )
         self.draw()
 
     def show_legend_edit_window(self):
@@ -1268,16 +1273,23 @@ class felionQtWindow(QtWidgets.QMainWindow):
             self.canvas.mpl_connect("pick_event", lambda e: self.on_pick(e, on_pick_callback))
         print("legend editor made", flush=True)
 
-    def makeLegendToggler(self, line_handler: dict[str, Union[Container, Artist]] = None, edit_legend=True) -> None:
+    def makeLegendToggler(self, line_handler: dict[str, Union[Artist, Iterable]] = None, edit_legend=True) -> None:
         self.line_handler = line_handler
         self.legend = self.ax.get_legend()
         if not self.legend:
             self.legend = self.ax.legend()
 
         self.legendToggleCheckWidget.setChecked(True)
-        for legline in self.legend.get_texts():
-            legline.set_picker(True)
-
+        # for legline in self.legend.get_texts():
+        #     legline.set_picker(True)
+        
+        for _ax in self.axes:
+            _legend = _ax.get_legend()
+            if not self.legend:
+                _legend = _ax.legend()
+            for legline in _legend.get_texts():
+                legline.set_picker(True)
+                
         self.picked_legend = None
         self.canvas.mpl_connect("pick_event", self.on_pick)
         self.legend_picker_set = True

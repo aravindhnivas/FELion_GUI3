@@ -4,6 +4,7 @@ from typing import Any, Literal
 from matplotlib.axes import Axes
 import numpy as np
 from felionlib.utils.felionQt import felionQtWindow
+from typing import Iterable
 from .definitions import computeNGaussian
 from matplotlib.container import Container
 from matplotlib.artist import Artist
@@ -36,7 +37,7 @@ class PlotData:
     combination_overtons_files: list[str] =  field(init=False)
     combination_files: list[str] =  field(init=False)
     overtons_files: list[str] =  field(init=False)
-    line_handler: dict[str, Container | Artist] = field(default_factory=dict)
+    line_handler: dict[str, Artist | Iterable] = field(default_factory=dict)
     
     def __post_init__(self):
         self.Only_exp = self.args["booleanWidgets"]["Only_exp"]
@@ -72,8 +73,10 @@ class PlotData:
         if not self.Only_exp: self.toggle_axes()
         self.plot_exp()
         self.plot_make_labels()
+        
         if not self.Only_exp: self.plot_theory()
-
+        
+        
     def toggle_axes(self):
 
         self.ax_exp.tick_params("x", which="both", bottom=False, labelbottom=False, top=True, labeltop=True,)
@@ -96,18 +99,24 @@ class PlotData:
             wn = data[0]
             inten = data[self.yind+1]
 
-            self.ax_exp.fill_between(
+            current_plot_handle_exp_fill = self.ax_exp.fill_between(
                 wn, inten,
-                alpha=0.3 if fullfitfile.exists() else 1,
-                color=color, ec="none", step="pre"
+                alpha=0.5 if fullfitfile.exists() else 1,
+                color=color, ec="none", step="pre",
+                label=None if fullfitfile.exists() else self.exp_legend
             )
 
             if fullfitfile.exists():
+                
                 simulate_exp_data = np.genfromtxt(fullfitfile).T
-
                 similated_freq, simulated_inten = simulate_exp_data
-                self.ax_exp.plot(similated_freq, simulated_inten, "-", c=color, lw=1.1, label=self.exp_legend)
+                
+                (current_plot_handle_fit,) = self.ax_exp.plot(
+                    similated_freq, simulated_inten, "-", c=color, lw=1.1, label=self.exp_legend
+                )
+            
             self.ax_exp.legend(title=self.exp_legend_title)
+            self.line_handler[self.exp_legend] = (current_plot_handle_fit, current_plot_handle_exp_fill)
     
     def plot_make_labels(self):
         
@@ -152,8 +161,8 @@ class PlotData:
         wn, inten = np.genfromtxt(fullfile).T
         wn *= self.freqScale
         simulatedData = computeNGaussian(wn, inten, sigma=self.theorySigma)
-        (local_ax,) = self.ax_theory.plot(*simulatedData, f"{color}", label=label, **kwargs)
-        
+        (current_plot_theory,) = self.ax_theory.plot(*simulatedData, f"{color}", label=label, **kwargs)
+        self.line_handler[label] = current_plot_theory
         # return local_ax
     
     def plot_theory(self):
@@ -172,9 +181,12 @@ def main(args):
     
     plotData = PlotData(args, widget, data_location)
     plotData.plot()
-
+    widget.makeLegendToggler(plotData.line_handler, edit_legend=True)
+    plotData.ax_exp.set_ybound(lower=-5)
+    plotData.ax_theory.set_ybound(lower=-5)
+    
     widget.optimize_figure()
     widget.updatecanvas()
-    # widget.make_legend_editor()
+    # print(widget.axes[0].get_lines())
     widget.qapp.exec()
-        
+    

@@ -3,10 +3,12 @@ from PyQt6.QtGui import QIcon
 from PyQt6.QtCore import Qt, pyqtSignal
 from pathlib import Path as pt
 from matplotlib.artist import Artist
-from matplotlib.container import Container
-from typing import Iterable, Union
+from matplotlib.text import Text
 
-# from ... import felionQt
+# from matplotlib.lines import Line2D
+from matplotlib.collections import PolyCollection, Collection
+from matplotlib.container import ErrorbarContainer, Container
+from typing import Union
 import felionlib
 
 # filepath = pt(felionQt.__file__).parent.resolve()
@@ -69,23 +71,30 @@ def closeEvent(self, event):
     event.accept() if close else event.ignore()
 
 
-def toggle_this_artist(artist: Union[Iterable, Artist], alpha: float) -> float:
+def toggle_this_artist(artist: Union[Artist, list, tuple], alpha: float, legend: Text = None) -> float:
+    # set_this_alpha = alpha
 
-    if not (isinstance(artist, Artist) or isinstance(artist, Iterable)):
-        return print(f"unknown toggle method for this artist type\n{type(artist)=}\{artist=}", flush=True)
+    if isinstance(artist, list) or isinstance(artist, tuple):
+        for child in artist:
+            toggle_this_artist(child, alpha, legend)
+        return
 
-    set_this_alpha = alpha
-    if isinstance(artist, Artist):
-        set_this_alpha: float = alpha if artist.get_alpha() is None or artist.get_alpha() == 1 else 1
-        artist.set_alpha(set_this_alpha)
-    elif isinstance(artist, Iterable):
+    set_this_alpha: float = alpha if artist.get_alpha() is None or artist.get_alpha() == 1 else 1
+    artist.set_alpha(set_this_alpha)
 
-        children = artist.get_children() if isinstance(artist, Container) else artist
-        for child in children:
-            set_this_alpha: float = alpha if child.get_alpha() is None or child.get_alpha() == 1 else 1
-            child.set_alpha(set_this_alpha)
+    if legend is not None:
+        # print(f"{legend=}", flush=True)
+        legend.set_alpha(0.5 if set_this_alpha < 1 else 1)
+    # if isinstance(artist, Artist) or isinstance(artist, PolyCollection):
+    #     set_this_alpha: float = alpha if artist.get_alpha() is None or artist.get_alpha() == 1 else 1
+    #     artist.set_alpha(set_this_alpha)
 
-    return set_this_alpha
+    # elif isinstance(artist, ErrorbarContainer):
+    #     children = artist.get_children()
+    #     for child in children:
+    #         set_this_alpha: float = alpha if child.get_alpha() is None or child.get_alpha() == 1 else 1
+    #         child.set_alpha(set_this_alpha)
+    # return set_this_alpha
 
 
 class DoubleSlider(QtWidgets.QSlider):
