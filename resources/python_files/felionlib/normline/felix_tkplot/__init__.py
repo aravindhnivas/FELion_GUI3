@@ -181,12 +181,12 @@ def main(args):
     
     plotData = PlotData(args, widget, data_location)
     plotData.plot()
+    
     widget.makeLegendToggler(plotData.line_handler, edit_legend=True)
     plotData.ax_exp.set_ybound(lower=-5)
     plotData.ax_theory.set_ybound(lower=-5)
     
     widget.optimize_figure()
     widget.updatecanvas()
-    # print(widget.axes[0].get_lines())
     widget.qapp.exec()
     
