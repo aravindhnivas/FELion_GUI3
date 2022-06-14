@@ -225,7 +225,6 @@ try:
             finally:
                 with stdoutIO() as result:
                     profiler.print_stats()
-
                     output = result.getvalue()
 
                     # Save profile
