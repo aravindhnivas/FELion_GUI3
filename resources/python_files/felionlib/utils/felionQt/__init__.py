@@ -287,6 +287,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
             for _ax in self.axes:
                 self.update_tick_params(ax=_ax, tickType="major", draw=False)
                 self.update_tick_params(ax=_ax, tickType="minor", draw=draw)
+
             return
 
         if tickType is None:
@@ -294,13 +295,8 @@ class felionQtWindow(QtWidgets.QMainWindow):
             self.update_tick_params(ax=self.ax, tickType="minor", draw=draw)
             return
 
-        # ax = ax or self.ax
-        # tickType = tickType or "both"
-
         width = self.tick_major_width_widget.value() if tickType == "major" else self.tick_minor_width_widget.value()
         length = self.tick_major_length_widget.value() if tickType == "major" else self.tick_minor_length_widget.value()
-
-        # print(f"{length=}\n{width=}", flush=True)
 
         ax.tick_params(
             axis="both",
@@ -308,12 +304,6 @@ class felionQtWindow(QtWidgets.QMainWindow):
             width=width,
             length=length,
         )
-        # ax.tick_params(
-        #     which="minor",
-        #     width=self.tick_minor_width_widget.value(),
-        #     length=self.tick_minor_length_widget.value(),
-        #     **kwargs,
-        # )
         if draw:
             self.draw()
             # print("ticks updated", flush=True)
@@ -1210,22 +1200,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
         picked_line_handler = self.picked_legend.get_text()
         toggle_artist = self.line_handler[picked_line_handler]
-
-        # set_this_alpha = self.legendalpha
-
-        # print(f"{self.legendalpha=}", flush=True)
         toggle_this_artist(toggle_artist, self.legendalpha, self.picked_legend)
-        # if isinstance(toggle_artist, list) or isinstance(toggle_artist, tuple):
-        #     for artist in toggle_artist:
-        #         set_this_alpha = toggle_this_artist(artist, self.legendalpha)
-        # else:
-        #     set_this_alpha = toggle_this_artist(toggle_artist, self.legendalpha)
-        # if isinstance(set_this_alpha, float):
-        #     self.picked_legend.set_alpha(0.5 if set_this_alpha < 1 else 1)
-        # else:
-        #     raise Exception(
-        #         f"Could not toggle the legends alpha for {picked_line_handler}\n{self.line_handler[picked_line_handler]}"
-        #     )
         self.draw()
 
     def show_legend_edit_window(self):
@@ -1270,12 +1245,8 @@ class felionQtWindow(QtWidgets.QMainWindow):
         def deregister_ctrl_press_button(e):
             self.ctrl_pressed = False
             self.shift_pressed = False
-            # self.legendDraggableCheckWidget.setChecked(False)
 
         self.canvas.mpl_connect("key_release_event", deregister_ctrl_press_button)
-
-        # self.canvas.mpl_connect("button_press_event", on_pick_callback)
-        # self.canvas.mpl_connect("button_release_event", lambda e: self.legendDraggableCheckWidget.setChecked(False))
 
         def enable_legend_drag(e):
             if self.shift_pressed:
@@ -1303,8 +1274,6 @@ class felionQtWindow(QtWidgets.QMainWindow):
             self.legend = self.ax.legend()
 
         self.legendToggleCheckWidget.setChecked(True)
-        # for legline in self.legend.get_texts():
-        #     legline.set_picker(True)
 
         for _ax in self.axes:
             _legend = _ax.get_legend()
@@ -1312,7 +1281,6 @@ class felionQtWindow(QtWidgets.QMainWindow):
                 _legend = _ax.legend()
             for legline in _legend.get_texts():
                 legline.set_picker(True)
-
         self.picked_legend = None
         self.canvas.mpl_connect("pick_event", self.on_pick)
         self.legend_picker_set = True
