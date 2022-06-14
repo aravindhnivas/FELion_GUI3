@@ -281,35 +281,32 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
         self.draw()
 
-    def update_tick_params(self, _val=0, ax: Axes = None, tickType: str = None, draw=True, **kwargs):
+    def update_tick_params(self, ax: Axes = None, tickType: str = None, draw=True):
 
-        print(f"{kwargs=}", flush=True)
-        if not kwargs:
-            if ax is None:
-                for _ax in self.axes:
-                    self.update_tick_params(ax=_ax, tickType="major", draw=draw, **kwargs)
-                    self.update_tick_params(ax=_ax, tickType="minor", draw=draw, **kwargs)
-                return
+        if ax is None:
+            for _ax in self.axes:
+                self.update_tick_params(ax=_ax, tickType="major", draw=False)
+                self.update_tick_params(ax=_ax, tickType="minor", draw=draw)
+            return
 
-            if tickType is None:
-                self.update_tick_params(ax=self.ax, tickType="major", draw=draw, **kwargs)
-                self.update_tick_params(ax=self.ax, tickType="minor", draw=draw, **kwargs)
-                return
+        if tickType is None:
+            self.update_tick_params(ax=self.ax, tickType="major", draw=False)
+            self.update_tick_params(ax=self.ax, tickType="minor", draw=draw)
+            return
 
-        ax = ax or self.ax
-        tickType = tickType or "both"
+        # ax = ax or self.ax
+        # tickType = tickType or "both"
 
         width = self.tick_major_width_widget.value() if tickType == "major" else self.tick_minor_width_widget.value()
         length = self.tick_major_length_widget.value() if tickType == "major" else self.tick_minor_length_widget.value()
 
-        print(f"{length=}\n{width=}", flush=True)
+        # print(f"{length=}\n{width=}", flush=True)
 
         ax.tick_params(
             axis="both",
-            which=tickType or "both",
+            which=tickType,
             width=width,
             length=length,
-            **kwargs,
         )
         # ax.tick_params(
         #     which="minor",
@@ -319,7 +316,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         # )
         if draw:
             self.draw()
-            print("ticks updated", flush=True)
+            # print("ticks updated", flush=True)
 
     def major_minor_ticksize_controllers(self):
 
@@ -707,23 +704,19 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
         ax = ax or self.ax
         legend: Legend = ax.get_legend()
-
-        # self.ax.add_callback(lambda artist: print(artist, flush=True))
-        # self.update_tick_params(ax=ax)
-
         type = type or self.label_size_controller_widget.currentText()
+
         if type == "ticks":
-            print(f"updating ticks labelsize: {labelsize}")
+
             ax.tick_params(axis=self.axisType, which=self.tickType, labelsize=labelsize)
             ax.xaxis.get_offset_text().set_fontsize(labelsize - 2)
             ax.yaxis.get_offset_text().set_fontsize(labelsize - 2)
         elif type == "legend" and legend:
-            print(f"updating labelsize: {labelsize}")
             for legend_text in legend.get_texts():
                 legend_text.set_fontsize(labelsize)
         elif type == "legendTitle" and legend:
-            print(f"updating legendTitle labelsize: {labelsize}")
             legend.get_title().set_fontsize(labelsize)
+
         self.draw()
 
     def update_minorticks(self, on: bool, ax: Axes = None):
@@ -731,7 +724,6 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
         if on:
             ax.minorticks_on()
-            # self.update_tick_params()
         else:
             ax.minorticks_off()
         self.draw()
@@ -1072,7 +1064,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
             # self.update_tick_params(ax=ax)
             ax.tick_params(which="both", direction=self.ticks_direction, labelsize=labelsize - 1)
             ax.minorticks_on()
-            # self.update_tick_params(ax=ax)
+
             ax.set_title(ax.get_title(), fontsize=fontsize)
             ax.set_xlabel(ax.get_xlabel(), fontsize=fontsize)
             ax.set_ylabel(ax.get_ylabel(), fontsize=fontsize)
