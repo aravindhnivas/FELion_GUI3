@@ -87,10 +87,11 @@
         select::-webkit-scrollbar-thumb {
             background-color: #5669d3;
         }
-        optgroup {
-            // color: black;
-            font-size: medium;
-        }
+        // optgroup {
+        //     // color: black;
+        //     font-size: medium;
+        // }
+
         select[multiple] {
             height: 4em;
             overflow-x: auto;
