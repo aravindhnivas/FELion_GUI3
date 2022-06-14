@@ -14,7 +14,8 @@ mpl.use("QtAgg")
 
 from matplotlib.artist import Artist
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg, NavigationToolbar2QT
-from matplotlib.container import Container
+
+# from matplotlib.container import Container
 from matplotlib.figure import Figure
 
 from matplotlib.axes import Axes
@@ -280,30 +281,55 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
         self.draw()
 
-    def update_tick_params(self, _val=0, ax=None, draw=True, **kwargs):
+    def update_tick_params(self, _val=0, ax: Axes = None, tickType: str = None, draw=True, **kwargs):
+
+        print(f"{kwargs=}", flush=True)
+        if not kwargs:
+            if ax is None:
+                for _ax in self.axes:
+                    self.update_tick_params(ax=_ax, tickType="major", draw=draw, **kwargs)
+                    self.update_tick_params(ax=_ax, tickType="minor", draw=draw, **kwargs)
+                return
+
+            if tickType is None:
+                self.update_tick_params(ax=self.ax, tickType="major", draw=draw, **kwargs)
+                self.update_tick_params(ax=self.ax, tickType="minor", draw=draw, **kwargs)
+                return
+
         ax = ax or self.ax
+        tickType = tickType or "both"
+
+        width = self.tick_major_width_widget.value() if tickType == "major" else self.tick_minor_width_widget.value()
+        length = self.tick_major_length_widget.value() if tickType == "major" else self.tick_minor_length_widget.value()
+
+        print(f"{length=}\n{width=}", flush=True)
+
         ax.tick_params(
-            which="major",
-            width=self.tick_major_width_widget.value(),
-            length=self.tick_major_length_widget.value(),
+            axis="both",
+            which=tickType or "both",
+            width=width,
+            length=length,
             **kwargs,
         )
-        ax.tick_params(
-            which="minor",
-            width=self.tick_minor_width_widget.value(),
-            length=self.tick_minor_length_widget.value(),
-            **kwargs,
-        )
+        # ax.tick_params(
+        #     which="minor",
+        #     width=self.tick_minor_width_widget.value(),
+        #     length=self.tick_minor_length_widget.value(),
+        #     **kwargs,
+        # )
         if draw:
             self.draw()
+            print("ticks updated", flush=True)
 
     def major_minor_ticksize_controllers(self):
 
         major_tick_controller_layout = QtWidgets.QHBoxLayout()
 
-        self.tick_major_width_widget = self.createSpinBox(2, _min=1, prefix="width: ", callback=self.update_tick_params)
+        self.tick_major_width_widget = self.createSpinBox(
+            2, _min=1, prefix="width: ", callback=lambda: self.update_tick_params(ax=self.ax, tickType="major")
+        )
         self.tick_major_length_widget = self.createSpinBox(
-            5, _min=1, prefix="length: ", callback=self.update_tick_params
+            5, _min=1, prefix="length: ", callback=lambda: self.update_tick_params(ax=self.ax, tickType="major")
         )
         major_tick_controller_layout.addWidget(QtWidgets.QLabel("major"))
 
@@ -312,9 +338,11 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
         minor_tick_controller_layout = QtWidgets.QHBoxLayout()
 
-        self.tick_minor_width_widget = self.createSpinBox(1, _min=1, prefix="width: ", callback=self.update_tick_params)
+        self.tick_minor_width_widget = self.createSpinBox(
+            1, _min=1, prefix="width: ", callback=lambda: self.update_tick_params(ax=self.ax, tickType="minor")
+        )
         self.tick_minor_length_widget = self.createSpinBox(
-            3, _min=1, prefix="length: ", callback=self.update_tick_params
+            3, _min=1, prefix="length: ", callback=lambda: self.update_tick_params(ax=self.ax, tickType="minor")
         )
 
         minor_tick_controller_layout.addWidget(QtWidgets.QLabel("minor"))
@@ -338,7 +366,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
             if not tick_interval:
                 return
             update_tick_function = self.updatefn["ticklocator"][self.tickType][self.axisType]
-            update_tick_function(plticker.MultipleLocator(int(tick_interval)))
+            update_tick_function(plticker.MultipleLocator(float(tick_interval)))
             self.draw()
 
         self.tickIntervalWidget.returnPressed.connect(update_tick_interval)
@@ -680,13 +708,13 @@ class felionQtWindow(QtWidgets.QMainWindow):
         ax = ax or self.ax
         legend: Legend = ax.get_legend()
 
-        self.ax.add_callback(lambda artist: print(artist, flush=True))
-        self.update_tick_params(ax=ax)
+        # self.ax.add_callback(lambda artist: print(artist, flush=True))
+        # self.update_tick_params(ax=ax)
 
         type = type or self.label_size_controller_widget.currentText()
         if type == "ticks":
             print(f"updating ticks labelsize: {labelsize}")
-            self.update_tick_params(labelsize=labelsize)
+            ax.tick_params(axis=self.axisType, which=self.tickType, labelsize=labelsize)
             ax.xaxis.get_offset_text().set_fontsize(labelsize - 2)
             ax.yaxis.get_offset_text().set_fontsize(labelsize - 2)
         elif type == "legend" and legend:
@@ -703,7 +731,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
         if on:
             ax.minorticks_on()
-            self.update_tick_params()
+            # self.update_tick_params()
         else:
             ax.minorticks_off()
         self.draw()
@@ -750,8 +778,10 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
         self.legendDraggableCheckWidget = QtWidgets.QCheckBox("dragg")
         self.legendDraggableCheckWidget.stateChanged.connect(lambda state: updateLegendState(state, "dragg"))
-        self.legendalpha: float = 0.5
-        toggleLegendAlphaWidget = self.createSpinBox(0.5, _step=0.1, _max=1, prefix="alpha: ", setkey="legendalpha")
+        self.legendalpha: float = float(0)
+        toggleLegendAlphaWidget = self.createSpinBox(
+            self.legendalpha, _step=0.1, _max=1, prefix="alpha: ", setkey="legendalpha"
+        )
 
         controllerLayout.addWidget(self.legendToggleCheckWidget)
         controllerLayout.addWidget(self.legendDraggableCheckWidget)
@@ -1033,15 +1063,16 @@ class felionQtWindow(QtWidgets.QMainWindow):
             self.optimize_figure()
 
     def optimize_figure(self):
-
         labelsize = self.tick_label_fontsize_controller_widget.value()
         fontsize: int = self.titleFontWidget.value()
+        self.update_tick_params()
+
         for ax in self.axes:
 
-            self.update_tick_params(ax=ax)
+            # self.update_tick_params(ax=ax)
             ax.tick_params(which="both", direction=self.ticks_direction, labelsize=labelsize - 1)
             ax.minorticks_on()
-            self.update_tick_params(ax=ax)
+            # self.update_tick_params(ax=ax)
             ax.set_title(ax.get_title(), fontsize=fontsize)
             ax.set_xlabel(ax.get_xlabel(), fontsize=fontsize)
             ax.set_ylabel(ax.get_ylabel(), fontsize=fontsize)
@@ -1282,14 +1313,14 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.legendToggleCheckWidget.setChecked(True)
         # for legline in self.legend.get_texts():
         #     legline.set_picker(True)
-        
+
         for _ax in self.axes:
             _legend = _ax.get_legend()
             if not self.legend:
                 _legend = _ax.legend()
             for legline in _legend.get_texts():
                 legline.set_picker(True)
-                
+
         self.picked_legend = None
         self.canvas.mpl_connect("pick_event", self.on_pick)
         self.legend_picker_set = True

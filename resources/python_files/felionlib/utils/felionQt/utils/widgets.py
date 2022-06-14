@@ -4,14 +4,10 @@ from PyQt6.QtCore import Qt, pyqtSignal
 from pathlib import Path as pt
 from matplotlib.artist import Artist
 from matplotlib.text import Text
-
-# from matplotlib.lines import Line2D
-from matplotlib.collections import PolyCollection, Collection
-from matplotlib.container import ErrorbarContainer, Container
 from typing import Union
+
 import felionlib
 
-# filepath = pt(felionQt.__file__).parent.resolve()
 iconfile = pt(felionlib.__file__).parent / "../icons/icon.ico"
 
 
@@ -27,10 +23,8 @@ class ShowDialog(QtWidgets.QDialog):
 
         if type == "info":
             dialogBox.setIcon(QtWidgets.QMessageBox.Icon.Information)
-
         elif type == "warning":
             dialogBox.setIcon(QtWidgets.QMessageBox.Icon.Warning)
-
         elif type == "critical":
             dialogBox.setIcon(QtWidgets.QMessageBox.Icon.Critical)
 
@@ -53,13 +47,11 @@ class AnotherWindow(QtWidgets.QWidget):
         self.layout.setAlignment(self.save_button_widget, Qt.AlignmentFlag.AlignRight)
         self.layout.addStretch()
         self.setLayout(self.layout)
-
         self.setMaximumHeight(100)
         self.setMaximumWidth(500)
 
 
 def closeEvent(self, event):
-
     reply = QtWidgets.QMessageBox.question(
         self,
         "Window Close",
@@ -67,6 +59,7 @@ def closeEvent(self, event):
         QtWidgets.QMessageBox.StandardButton.Yes,
         QtWidgets.QMessageBox.StandardButton.No,
     )
+
     close = reply == QtWidgets.QtWidgets.QMessageBox.StandardButton.Yes
     event.accept() if close else event.ignore()
 
@@ -78,34 +71,30 @@ def toggle_this_artist(artist: Union[Artist, list, tuple], alpha: float, legend:
         for child in artist:
             toggle_this_artist(child, alpha, legend)
         return
+    # set_this_alpha: float = 1 if artist.get_alpha() is None and artist.get_alpha() == alpha else alpha
+    # print(f"{artist.get_alpha()=}", flush=True)
+    
+    set_this_alpha: float = 0
+    if artist.get_alpha() is None or artist.get_alpha() == 1:
+        set_this_alpha = alpha
+    elif artist.get_alpha() == alpha:
+        set_this_alpha = 1
+    # print(f"{set_this_alpha=}\n{alpha=}", flush=True)
+    # set_this_alpha: float = alpha if artist.get_alpha() is None or artist.get_alpha() == 1 else 1
+    # set_this_alpha: float = 0 if artist.get_alpha() is None or artist.get_alpha() > 0 else 1
 
-    set_this_alpha: float = alpha if artist.get_alpha() is None or artist.get_alpha() == 1 else 1
     artist.set_alpha(set_this_alpha)
 
     if legend is not None:
-        # print(f"{legend=}", flush=True)
         legend.set_alpha(0.5 if set_this_alpha < 1 else 1)
-    # if isinstance(artist, Artist) or isinstance(artist, PolyCollection):
-    #     set_this_alpha: float = alpha if artist.get_alpha() is None or artist.get_alpha() == 1 else 1
-    #     artist.set_alpha(set_this_alpha)
-
-    # elif isinstance(artist, ErrorbarContainer):
-    #     children = artist.get_children()
-    #     for child in children:
-    #         set_this_alpha: float = alpha if child.get_alpha() is None or child.get_alpha() == 1 else 1
-    #         child.set_alpha(set_this_alpha)
-    # return set_this_alpha
 
 
 class DoubleSlider(QtWidgets.QSlider):
-
-    # create our our signal that we can connect to if necessary
     doubleValueChanged = pyqtSignal(float)
 
     def __init__(self, decimals=2, *args, **kargs):
         super(DoubleSlider, self).__init__(*args, **kargs)
         self._multi = 10**decimals
-
         self.valueChanged.connect(self.emitDoubleValueChanged)
 
     def emitDoubleValueChanged(self):
@@ -129,3 +118,4 @@ class DoubleSlider(QtWidgets.QSlider):
 
     def setValue(self, value):
         super(DoubleSlider, self).setValue(int(value * self._multi))
+        
