@@ -11,20 +11,20 @@
     let widgetType = ''
 </script>
 
-{#if active}
-    <Modal bind:active title="FELIX PLOTTING">
-        <svelte:fragment slot="content">
-            <FelixPlotWidgets bind:felixPlotWidgets {theoryLocation} />
-        </svelte:fragment>
-        <button
-            slot="footerbtn"
-            class="button is-link"
-            on:click={(e) => {
-                dispatch('submit', { event: e })
-            }}
-        >
-            Submit
-        </button>
-    </Modal>
-{/if}
+<!-- {#if active} -->
+<Modal bind:active title="FELIX PLOTTING">
+    <svelte:fragment slot="content">
+        <FelixPlotWidgets bind:felixPlotWidgets {theoryLocation} />
+    </svelte:fragment>
+    <button
+        slot="footerbtn"
+        class="button is-link"
+        on:click={(e) => {
+            dispatch('submit', { event: e })
+        }}
+    >
+        Submit
+    </button>
+</Modal>
+<!-- {/if} -->
 <FelixPlotExtraWidgets bind:active={extraWidgetModal} {widgetType} />

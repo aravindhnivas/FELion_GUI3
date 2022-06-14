@@ -1,39 +1,32 @@
-<script>
-    import { felixopoLocation, felixPlotCheckboxes } from '../functions/svelteWritables'
+<script lang="ts">
+    import { felixOpoDatfiles, felixPlotCheckboxes } from '../functions/svelteWritables'
     import { fade } from 'svelte/transition'
     import Textfield from '@smui/textfield'
     import CustomCheckList from '$components/CustomCheckList.svelte'
     import CustomCheckbox from '$components/CustomCheckbox.svelte'
+    import { onMount } from 'svelte'
 
-    export let felixPlotWidgets, theoryLocation
+    export let felixPlotWidgets
+    export let theoryLocation: string
 
-    let reload = true
-    function refreshFunction() {
-        const datlocation = window.path.resolve($felixopoLocation, '../EXPORT')
-        const datfiles = window.fs.existsSync(datlocation)
-            ? fs
-                  .readdirSync(datlocation)
-                  .filter((f) => f.endsWith('.dat'))
-                  .map((f) => (f = { name: f, id: window.getID() }))
-            : [{ name: '', id: window.getID() }]
+    let files_loaded = false
 
+    function loadFiles() {
+        files_loaded = false
         let calcfiles = []
-
         if (window.fs.isDirectory(theoryLocation)) {
             window.fs.readdirSync(theoryLocation).forEach((file) => {
-                const isFile = fs.lstatSync(window.path.join(theoryLocation, file)).isFile()
-                if (isFile) {
+                if (window.fs.isFile(window.path.join(theoryLocation, file))) {
                     calcfiles = [...calcfiles, { name: file, id: window.getID() }]
                 }
             })
         } else {
             calcfiles = [{ name: '', id: window.getID() }]
         }
-
         $felixPlotCheckboxes = [
             {
                 label: 'DAT_file',
-                options: datfiles,
+                options: $felixOpoDatfiles,
                 value: [],
                 id: window.getID(),
             },
@@ -44,7 +37,7 @@
                 id: window.getID(),
             },
             {
-                label: 'Combinations + Overtones',
+                label: 'Others',
                 options: calcfiles,
                 value: [],
                 id: window.getID(),
@@ -62,30 +55,35 @@
                 id: window.getID(),
             },
         ]
-        reload != reload
+
+        console.log(`files loaded`)
     }
+    $: if ($felixOpoDatfiles.length > 0 || theoryLocation) {
+        loadFiles()
+    }
+    onMount(loadFiles)
 </script>
 
 <div style="padding-bottom: 1em;">
     <div>
-        <button class="button is-link" on:click={refreshFunction}>load files</button>
+        <button class="button is-link" on:click={loadFiles}>load files</button>
 
-        {#key reload}
-            <div class="files__div">
-                {#each $felixPlotCheckboxes as { label, options, value, id } (id)}
-                    <div class="felix_tkplot_filelist_div" transition:fade>
-                        <div class="subtitle felix_tkplot_filelist_header">
-                            {label}
-                        </div>
-                        <CustomCheckList
-                            style="background: #836ac05c; border-radius: 20px; margin:1em 0;  height:20em; overflow:auto;"
-                            bind:fileChecked={value}
-                            bind:items={options}
-                        />
+        <!-- {#key reload} -->
+        <div class="files__div">
+            {#each $felixPlotCheckboxes as { label, options, value, id } (id)}
+                <div class="felix_tkplot_filelist_div" transition:fade>
+                    <div class="subtitle felix_tkplot_filelist_header">
+                        {label}
                     </div>
-                {/each}
-            </div>
-        {/key}
+                    <CustomCheckList
+                        style="background: #836ac05c; border-radius: 20px; margin:1em 0;  height:20em; overflow:auto;"
+                        bind:fileChecked={value}
+                        bind:items={options}
+                    />
+                </div>
+            {/each}
+        </div>
+        <!-- {/key} -->
     </div>
 
     <div class="felix_plotting_div">

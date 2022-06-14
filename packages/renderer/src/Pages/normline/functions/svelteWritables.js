@@ -21,6 +21,19 @@ export const normMethodDatas = derived([opoMode, felixData, opoData], ([$opoMode
     return $opoMode ? $opoData : $felixData
 })
 export const felixopoLocation = writable('')
+export const felixOpoDatLocation = derived([felixopoLocation], ([$felixopoLocation]) => {
+    const data_location = window.path.resolve($felixopoLocation, '../EXPORT')
+    if(!window.fs.isDirectory(data_location)) return ''
+    return data_location
+})
+export const felixOpoDatfiles = derived([felixOpoDatLocation], ([$felixOpoDatLocation]) => {
+    if(!$felixOpoDatLocation) return []
+    const datfiles = window.fs
+            .readdirSync($felixOpoDatLocation)
+            .filter((f) => f.endsWith('.dat'))
+            .map((f) => ({ name: f, id: window.getID() }))
+    return datfiles
+})
 export const baselineFile = writable('')
 
 export const filedetails = writable([])
@@ -35,7 +48,6 @@ export const graphDiv = derived(opoMode, ($opoMode) => {
 export const baseGraphDiv = derived(opoMode, ($opoMode) => {
     return $opoMode ? 'opoplot' : 'bplot'
 })
-
 export const expfittedLines = writable([])
 export const expfittedLinesCollectedData = writable([])
 export const collectData = writable(false)
