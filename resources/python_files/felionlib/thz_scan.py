@@ -7,9 +7,9 @@ from felionlib.utils.FELion_constants import colors
 from felionlib.utils.fit_profile.lineProfileFit import fitData
 from felionlib.utils.felionQt import felionQtWindow
 import matplotlib.ticker as plticker
+import numpy.typing as npt
 
-
-def thz_plot(filename):
+def thz_plot(filename: pt):
 
     with open(filename, "r") as fileContents:
         file = fileContents.readlines()
@@ -37,14 +37,14 @@ def thz_plot(filename):
     resOFFDataContents = "".join(file[currentInd:2*(currentInd+1)])
     resOff = np.genfromtxt(StringIO(resOFFDataContents))[1:]
 
-    freq = resOn.T[0]
-    freq_resOff = resOff.T[0][0]
+    freq: npt.NDArray[np.float64] = resOn.T[0]
+    freq_resOff: float = resOff.T[0][0]
 
     resOnCounts = resOn.T[1:iteraton+1]
     resOffCounts = resOff.T[1:iteraton+1]
     
     depletion = (resOffCounts - resOnCounts)/resOffCounts
-    depletion_counts = depletion.T.mean(axis=1)
+    depletion_counts: npt.NDArray[np.float64] = depletion.T.mean(axis=1)
 
     depletion_counts = depletion_counts*100
     steps = int(round((freq[1]-freq[0])*1e6, 0))
@@ -104,9 +104,9 @@ def binning(xs, ys, delta=1e-5):
 
 def plot_thz(widget: felionQtWindow=None, save_dat=True, tkplot=False):
 
-    justPlot = args["justPlot"]
-    binData = args["binData"]
-    delta = args["binSize"]*1e-6 # in kHz
+    justPlot: bool = args["justPlot"]
+    binData: bool = args["binData"]
+    delta: float = args["binSize"]*1e-6 # in kHz
     
     xs, ys = [], []
     line_handler = {}
@@ -147,28 +147,25 @@ def plot_thz(widget: felionQtWindow=None, save_dat=True, tkplot=False):
         }
         print(f"Current: {fitfile=}\n{filename.name=}\n", flush=True)
 
-        
         if filename.name != fitfile or justPlot or tkplot: 
             continue
 
-        
         if len(plotIndex)>0:
-            
             ind = np.logical_and(freq>=plotIndex[0], freq<=plotIndex[-1])
-            freq = freq[ind]
-            depletion_counts = depletion_counts[ind]
+            freq: npt.NDArray[np.float64] = freq[ind]
+            depletion_counts: npt.NDArray[np.float64] = depletion_counts[ind]
             
         fittedParamsTable, fittedInfos = fitData(
             freq, depletion_counts, varyAll=varyAll,
             method=fitMethod, paramsTable=paramsTable, fitfile=fitfile
         )
         
-        fittedY = fittedInfos["fittedY"]
+        fittedY: npt.NDArray[np.float64] = fittedInfos["fittedY"]
         dataToSend["fittedParamsTable"] = fittedParamsTable
         dataToSend["fittedInfos"] = {"freq": fittedInfos["freq"].tolist(), "fittedY": fittedInfos["fittedY"].tolist()}
         
         dataToSend["thz"]["individual"][f"{filename.name}_fit"] = {
-            "x": list(freq), "y": list(fittedY), "name": fitMethod, 
+            "x": freq.tolist(), "y": fittedY.tolist(), "name": fitMethod, 
             "mode": 'lines', "type": "scattergl", "line": {"color": f"rgb{colors[i*2]}"}
         }
 
@@ -200,10 +197,10 @@ def plot_thz(widget: felionQtWindow=None, save_dat=True, tkplot=False):
     
     if len(plotIndex)>0:
 
-        ind = np.logical_and(binx>=plotIndex[0], binx<=plotIndex[-1])
-        binx = binx[ind]
-        biny = biny[ind]
-    
+        ind: npt.NDArray = np.logical_and(binx>=plotIndex[0], binx<=plotIndex[-1])
+        binx: npt.NDArray[np.float64] = binx[ind]
+        biny: npt.NDArray = biny[ind]
+        
     fittedParamsTable, fittedInfos = fitData(
         binx, biny, varyAll=varyAll, fitfile=fitfile,
         method=fitMethod, paramsTable=paramsTable
@@ -213,18 +210,26 @@ def plot_thz(widget: felionQtWindow=None, save_dat=True, tkplot=False):
     dataToSend["fittedInfos"] = {"freq": fittedInfos["freq"].tolist(), "fittedY": fittedInfos["fittedY"].tolist()}
 
     if save_dat:
-        saveDir = location / "OUT"
+        saveDir: pt = location / "OUT"
         if not saveDir.exists(): saveDir.mkdir()
+    
         with open(saveDir / "averaged_thz_fit.dat", "w") as f:
             f.write("#Frequency(in MHz)\t#Intensity\n")
             for freq, inten in zip(binx, fittedY): f.write(f"{freq*1e3}\t{inten}\n")
             print(f"averaged_thz_fit.dat file saved in {saveDir}")
 
     
+    style = {"mode": 'lines'}
+    
+    # if fitMethod == 'gaussian':
+    #     style = {"mode": 'lines+markers'}
+    
+    # elif fitMethod == 'lorentz':
+    #     style = {"mode": 'markers'}
+        
     dataToSend["thz"]["averaged"]["averaged_fit"] = {
-        "x": list(binx), "y": list(fittedY), "name": fitMethod, 
-        "mode": 'line',  "line": {"color": "black"}
-    }
+        "x": binx.tolist(), "y": list(fittedY), "name": fitMethod, "type": "scattergl", "line": {"color": "black"}
+    } | style
 
     return dataToSend
 
@@ -281,20 +286,21 @@ fitfile = None
 fitMethod = "lorentz"
 paramsTable = []
 varyAll = False
-tkplot, filenames, location = None, None, None
 
+tkplot: bool = False
+filenames: list[pt] = []
+location: pt = None
 plotIndex = []
 
 
 def main(arguments):
 
-    global args, tkplot, filenames, location,\
-        fitfile, fitMethod, paramsTable, varyAll, plotIndex
+    global args, tkplot, filenames, location
+    global fitfile, fitMethod, paramsTable, varyAll, plotIndex
     
     args = arguments
     tkplot = args["tkplot"]
     filenames = [pt(i) for i in args["thzfiles"]]
-
     location = pt(filenames[0].parent)
     fitfile = args["fitfile"]
     fitMethod = args["fitMethod"]

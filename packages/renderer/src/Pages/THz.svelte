@@ -211,9 +211,13 @@
             <button
                 class="button is-warning"
                 on:click={() => {
-                    if (numOfFittedLines > 0) {
-                        deleteTraces('thzPlot', -1)
-                        numOfFittedLines--
+                    try {
+                        if (numOfFittedLines > 0) {
+                            deleteTraces('thzPlot', -1)
+                            numOfFittedLines--
+                        }
+                    } catch (error) {
+                        window.handleError(error)
                     }
                 }}
             >
