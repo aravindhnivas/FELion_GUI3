@@ -48,11 +48,11 @@ def thz_plot(filename):
 
     depletion_counts = depletion_counts*100
     steps = int(round((freq[1]-freq[0])*1e6, 0))
-
-    removeNanInd = np.isnan(depletion_counts)
-    depletion_counts = depletion_counts[np.logical_not(removeNanInd)]
-    freq = freq[np.logical_not(removeNanInd)]
     
+    finiteInd = np.isfinite(depletion_counts)
+    depletion_counts = depletion_counts[finiteInd]
+    freq = freq[finiteInd]
+    # print(f"{depletion_counts=}", flush=True)
     return freq, depletion_counts, steps, iteraton, resOffCounts, resOnCounts, freq_resOff
 
 def binning(xs, ys, delta=1e-5):
