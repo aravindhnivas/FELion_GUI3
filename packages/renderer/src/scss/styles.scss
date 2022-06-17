@@ -59,3 +59,7 @@ table td:not([align]) {text-align: center; padding: 1em;}
 ul {
     list-style: none!important;
 }
+
+.tag:empty {
+    display: none;
+}

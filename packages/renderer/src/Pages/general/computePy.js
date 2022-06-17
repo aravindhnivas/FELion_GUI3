@@ -32,21 +32,28 @@ export default async function ({ e = null, target = null, pyfile = '', args = {}
         if (general) {
             // console.info(target)
             if (target) {
-                processDivGeneral = target.getElementsByClassName('tag')
-                if (processDivGeneral.length === 0) {
-                    processDivGeneral = document.createElement('span')
-                    processDivGeneral.className = 'tag__span tag is-warning hide'
-                    processDivGeneral.textContent = '1'
-                    target.appendChild(processDivGeneral)
-                } else {
-                    processDivGeneral = processDivGeneral[0]
+                processDivGeneral = target.getElementsByClassName('tag')?.[0]
+                console.log(processDivGeneral)
+                if(processDivGeneral) {
+                    // processDivGeneral = processDivGeneral[0]
                     const num = processDivGeneral.textContent
                     processDivGeneralNum = isNaN(parseInt(num)) ? 0 : parseInt(num)
                     processDivGeneral.textContent = `${processDivGeneralNum + 1}`
                 }
-                if (processDivGeneral.classList.contains('hide')) {
-                    processDivGeneral.classList.remove('hide')
-                }
+                // if (processDivGeneral.length === 0) {
+                //     processDivGeneral = document.createElement('span')
+                //     processDivGeneral.className = 'tag__span tag is-warning hide'
+                //     processDivGeneral.textContent = '1'
+                //     target.appendChild(processDivGeneral)
+                // } else {
+                //     processDivGeneral = processDivGeneral[0]
+                //     const num = processDivGeneral.textContent
+                //     processDivGeneralNum = isNaN(parseInt(num)) ? 0 : parseInt(num)
+                //     processDivGeneral.textContent = `${processDivGeneralNum + 1}`
+                // }
+                // if (processDivGeneral.classList.contains('hide')) {
+                //     processDivGeneral.classList.remove('hide')
+                // }
                 // console.log(processDivGeneral)
             }
             dataFromPython = await computefromSubprocess({
@@ -75,12 +82,14 @@ export default async function ({ e = null, target = null, pyfile = '', args = {}
             if (currentNum > 0) {
                 processDivGeneral.textContent = `${currentNum}`
             } else {
-                if (pyfile.includes('baseline')) {
-                    processDivGeneral.textContent = 'b'
-                } else {
-                    processDivGeneral.textContent = ''
-                    processDivGeneral.classList.add('hide')
-                }
+
+                processDivGeneral.textContent = ''
+                // if (pyfile.includes('baseline')) {
+                //     processDivGeneral.textContent = 'b'
+                // } else {
+                //     processDivGeneral.textContent = ''
+                //     processDivGeneral.classList.add('hide')
+                // }
             }
         }
         console.log('COMPLETED')
