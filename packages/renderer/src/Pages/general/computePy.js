@@ -30,31 +30,15 @@ export default async function ({ e = null, target = null, pyfile = '', args = {}
 
         console.log({ pyfile, args, general })
         if (general) {
-            // console.info(target)
             if (target) {
                 processDivGeneral = target.getElementsByClassName('tag')?.[0]
                 console.log(processDivGeneral)
                 if(processDivGeneral) {
-                    // processDivGeneral = processDivGeneral[0]
                     const num = processDivGeneral.textContent
                     processDivGeneralNum = isNaN(parseInt(num)) ? 0 : parseInt(num)
                     processDivGeneral.textContent = `${processDivGeneralNum + 1}`
                 }
-                // if (processDivGeneral.length === 0) {
-                //     processDivGeneral = document.createElement('span')
-                //     processDivGeneral.className = 'tag__span tag is-warning hide'
-                //     processDivGeneral.textContent = '1'
-                //     target.appendChild(processDivGeneral)
-                // } else {
-                //     processDivGeneral = processDivGeneral[0]
-                //     const num = processDivGeneral.textContent
-                //     processDivGeneralNum = isNaN(parseInt(num)) ? 0 : parseInt(num)
-                //     processDivGeneral.textContent = `${processDivGeneralNum + 1}`
-                // }
-                // if (processDivGeneral.classList.contains('hide')) {
-                //     processDivGeneral.classList.remove('hide')
-                // }
-                // console.log(processDivGeneral)
+                
             }
             dataFromPython = await computefromSubprocess({
                 target,
@@ -62,15 +46,17 @@ export default async function ({ e = null, target = null, pyfile = '', args = {}
                 pyfile,
                 args,
             })
-            return
+            
+        } else {
+            dataFromPython = await computefromServer({
+                target,
+                general,
+                pyfile,
+                args,
+            })
         }
 
-        dataFromPython = await computefromServer({
-            target,
-            general,
-            pyfile,
-            args,
-        })
+        return Promise.resolve(dataFromPython)
     } catch (error) {
         window.handleError(error)
     } finally {
@@ -82,17 +68,11 @@ export default async function ({ e = null, target = null, pyfile = '', args = {}
             if (currentNum > 0) {
                 processDivGeneral.textContent = `${currentNum}`
             } else {
-
                 processDivGeneral.textContent = ''
-                // if (pyfile.includes('baseline')) {
-                //     processDivGeneral.textContent = 'b'
-                // } else {
-                //     processDivGeneral.textContent = ''
-                //     processDivGeneral.classList.add('hide')
-                // }
             }
         }
         console.log('COMPLETED')
-        return Promise.resolve(dataFromPython)
+        // return Promise.resolve(dataFromPython)
+
     }
 }

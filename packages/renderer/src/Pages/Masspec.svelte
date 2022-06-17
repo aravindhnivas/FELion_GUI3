@@ -9,8 +9,9 @@
     import { readMassFile } from './masspec/mass'
     import computePy_func from '$src/Pages/general/computePy'
     import { onDestroy } from 'svelte'
-    /////////////////////////////////////////////////////////////////////////
+    // import Badge from '@smui-extra/badge'
 
+    import ButtonBadge from '$components/ButtonBadge.svelte'
     // import DygraphComponent from '$src/Pages/masspec/DygraphComponent.svelte'
     const filetype = 'mass'
     const id = 'Masspec'
@@ -115,9 +116,7 @@
                 Masspec Plot</button
             >
             <GetLabviewSettings {currentLocation} {fullfileslist} {fileChecked} />
-            <button class="button is-link" on:click={(e) => plotData({ e: e, filetype: 'general' })}>
-                Open in Matplotlib</button
-            >
+            <ButtonBadge on:click={(e) => plotData({ e: e, filetype: 'general' })}>Open in Matplotlib</ButtonBadge>
             <CustomSwitch style="margin: 0 1em;" on:change={linearlogCheck} bind:selected={logScale} label="Log" />
         </div>
     </svelte:fragment>

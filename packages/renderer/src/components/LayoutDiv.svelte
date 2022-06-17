@@ -1,12 +1,10 @@
 <script>
     export let id = window.getID()
-    // export let active=false;
 </script>
 
 <div {id} class="main_content__div">
     <div class="header_content"><slot name="header_content__slot" /></div>
     <div class="main_content"><slot name="main_content__slot" /></div>
-
     <div class="footer_content">
         <div class="left align"><slot name="left_footer_content__slot" /></div>
         <div class="right align"><slot name="footer_content__slot" /></div>
@@ -42,6 +40,7 @@
             .right {
                 justify-content: flex-end;
                 flex-wrap: nowrap;
+                margin-right: 1rem;
             }
         }
     }

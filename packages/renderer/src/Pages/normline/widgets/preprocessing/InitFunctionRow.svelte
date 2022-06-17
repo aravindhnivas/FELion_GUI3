@@ -25,7 +25,8 @@
     import { subplot, plot } from '$src/js/functions'
     import computePy_func from '$src/Pages/general/computePy'
     import { react, relayout } from 'plotly.js/dist/plotly-basic'
-    import Badge from '@smui-extra/badge'
+    // import Badge from '@smui-extra/badge'
+    import ButtonBadge from '$components/ButtonBadge.svelte'
     ///////////////////////////////////////////////////////////////////////////
 
     export let plotfile = 'average'
@@ -191,21 +192,12 @@
 />
 
 <div class="align">
-    <button class="button is-link" id="create_baseline_btn" on:click={(e) => plotData({ e: e, filetype: 'baseline' })}>
+    <ButtonBadge id="create_baseline_btn" on:click={(e) => plotData({ e: e, filetype: 'baseline' })}>
         Create Baseline
-        <!-- <span
-            class="tag__span tag is-warning "
-            aria-label="ctrl + left-click to select file for baseline correction"
-            data-cooltipz-dir="bottom">b</span
-        > -->
-        <Badge><div class="tag is-warning is-rounded mr-2" /></Badge>
-    </button>
+    </ButtonBadge>
 
     <button class="button is-link" id="felix_plotting_btn" on:click={(e) => plotData({ e: e, filetype: 'felix' })}>
         FELIX Plot
-        <!-- <Badge><span class="tag is-warning is-rounded mr-2"> 12 </span></Badge> -->
-        <!-- <Badge><div class="tag is-danger is-rounded mr-2" /></Badge> -->
-        <!-- <Badge /> -->
     </button>
 
     <CustomTextSwitch style="width:7em" variant="outlined" bind:value={delta} label="Delta" step="0.5" />

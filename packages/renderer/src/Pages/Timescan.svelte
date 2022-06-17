@@ -1,7 +1,7 @@
 <script>
     import Textfield from '@smui/textfield'
     import Layout from '$components/Layout.svelte'
-    // import CustomIconSwitch from "$components/CustomIconSwitch.svelte"
+    import ButtonBadge from '$components/ButtonBadge.svelte'
     import CustomSelect from '$components/CustomSelect.svelte'
     import CustomSwitch from '$components/CustomSwitch.svelte'
     import { plot } from '../js/functions'
@@ -183,8 +183,8 @@
                     toggleRow = !toggleRow
                 }}>Depletion Plot</button
             >
-            <button class="button is-link" on:click={(e) => plotData({ e: e, filetype: 'scan', tkplot: 'plot' })}
-                >Open in Matplotlib</button
+            <ButtonBadge on:click={(e) => plotData({ e: e, filetype: 'scan', tkplot: 'plot' })}
+                >Open in Matplotlib</ButtonBadge
             >
             <CustomSwitch on:change={linearlogCheck} bind:selected={logScale} label="Log" />
         </div>
@@ -197,7 +197,7 @@
             <Textfield type="number" bind:value={massIndex} label="Mass Index" />
             <Textfield type="number" bind:value={timestartIndex} label="Time Index" />
             <CustomSwitch bind:selected={saveOutputDepletion} label="save_output" />
-            <button class="button is-link" on:click={(e) => plotData({ e: e, filetype: 'general' })}>Submit</button>
+            <ButtonBadge on:click={(e) => plotData({ e: e, filetype: 'general' })}>Submit</ButtonBadge>
         </div>
     </svelte:fragment>
 

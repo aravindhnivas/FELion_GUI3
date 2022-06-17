@@ -19,7 +19,7 @@
     import MatplotlibDialog from './MatplotlibDialog.svelte'
     import { browse } from '$components/Layout.svelte'
 
-    // import { fade } from 'svelte/transition'
+    import ButtonBadge from '$components/ButtonBadge.svelte'
     import RateConstants from './controllers/RateConstants.svelte'
     import RateInitialise from './controllers/RateInitialise.svelte'
     import KlossChannels from './controllers/channels/KlossChannels.svelte'
@@ -614,7 +614,7 @@
         <CustomSelect bind:value={selectedFile} label="Filename" options={fileCollections} />
         <button class="button is-link" on:click={computeParameters}>compute</button>
         <i class="material-icons" on:click={() => (kinetic_plot_adjust_dialog_active = true)}>settings</i>
-        <button class="button is-link" id="kinetic-submit-button" on:click={kineticSimulation}>Submit</button>
+        <ButtonBadge id="kinetic-submit-button" on:click={kineticSimulation}>Submit</ButtonBadge>
     </svelte:fragment>
 </LayoutDiv>
 

@@ -8,7 +8,7 @@
     import LayoutDiv from '$components/LayoutDiv.svelte'
     import CustomCheckbox from '$components/CustomCheckbox.svelte'
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
-    // import PyButton                 from "$components/PyButton.svelte"
+    import ButtonBadge from '$components/ButtonBadge.svelte'
     import BoltzmanDistribution from './windows/BoltzmanDistribution.svelte'
 
     import EinsteinCoefficients from './components/EinsteinCoefficients.svelte'
@@ -419,6 +419,8 @@
     })
 
     $: energyLevels = energyInfos[`${energyUnit}`]
+
+    $: console.log({ energyLevels })
 </script>
 
 <BoltzmanDistribution {...boltzmanArgs} bind:active={openBoltzmanWindow} bind:graphWindow={boltzmanWindow} />
@@ -585,7 +587,6 @@
             <AttachmentCoefficients bind:k3 bind:kCID bind:numberDensity bind:attachmentCoefficients />
 
             <!-- Figure config -->
-
             <BoxComponent title="Figure config" loaded={true}>
                 <Textfield bind:value={figure.size} label="Dimention (width, height)" />
 
@@ -612,6 +613,7 @@
                 }}>Clear</button
             >
         {/if}
+
         <button
             class="button is-link"
             on:click={() => {
@@ -621,7 +623,7 @@
             {showreport ? 'Go Back' : 'Status report'}
         </button>
 
-        <button class="button is-link" on:click={simulation}>Submit</button>
+        <ButtonBadge on:click={simulation}>Submit</ButtonBadge>
     </svelte:fragment>
 </LayoutDiv>
 

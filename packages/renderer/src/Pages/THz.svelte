@@ -9,10 +9,10 @@
     import Table from '$components/Table.svelte'
     import THzFitParamsTable from './thz/components/THzFitParamsTable.svelte'
     import { onDestroy } from 'svelte'
-    /////////////////////////////////////////////////////////////////////////
+    import ButtonBadge from '$components/ButtonBadge.svelte'
 
-    const filetype = 'thz',
-        id = 'THz'
+    const filetype = 'thz'
+    const id = 'THz'
 
     let fileChecked = []
     let currentLocation = ''
@@ -180,9 +180,7 @@
 
             <CustomCheckbox bind:value={showall} label="show all" />
             <CustomSelect bind:value={plotfile} label="plotfile" options={[...fileChecked, 'averaged']} />
-
-            <button class="button is-link" on:click={(e) => plotData({ e: e, tkplot: true })}>Open in Matplotlib</button
-            >
+            <ButtonBadge on:click={(e) => plotData({ e: e, tkplot: true })}>Open in Matplotlib</ButtonBadge>
 
             <CustomTextSwitch bind:value={binSize} label="binSize (kHz)" step="0.1" />
         </div>
