@@ -2,7 +2,7 @@
     import { Panel, Header, Content } from '@smui-extra/accordion'
     import IconButton, { Icon } from '@smui/icon-button'
 
-    export let open = true
+    export let open = false
     export let label: string = 'label'
     export let style: string = ''
     export let loaded: boolean = true
