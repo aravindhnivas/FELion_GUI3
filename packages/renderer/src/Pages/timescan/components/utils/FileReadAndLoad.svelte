@@ -9,6 +9,7 @@
     export let useTaggedFile: boolean = false
     export let tagFile: string = ''
     export let filename = ''
+    export let data_loaded = false
 
     export let dataToSave
     const toastOpts = {
@@ -45,6 +46,7 @@
 
         data ??= {}
         if (!selectedFile) return window.createToast('No file selected', 'danger', toastOpts)
+
         data[selectedFile] ??= { tags: {}, default: {} }
 
         if (useTaggedFile) {
@@ -53,14 +55,14 @@
         } else {
             data[selectedFile]['default'] = dataToSave
         }
+
         ;[, error] = window.fs.outputJsonSync(fullfilename, data)
         if (error) return window.handleError(`Error writing ${filename}\n${error}`)
-
         return notify()
     }
-    let data_loaded = false
     const notify = (info: string = 'saved') => {
         data_loaded = true
+        console.log({ dataToSave })
         window.createToast(`${filename} ${info} for ${selectedFile}`, 'success', toastOpts)
     }
 
@@ -68,31 +70,39 @@
         if (!window.fs.isFile(fullfilename)) {
             return window.createToast(`File does not exists`, 'danger', toastOpts)
         }
+
         const [data, error] = window.fs.readJsonSync(fullfilename)
 
         if (error) return window.handleError(`Error reading ${filename}\n${error}`)
-        if (!data?.[selectedFile])
+        if (!data?.[selectedFile]) {
             return window.createToast(`No data found for ${selectedFile} file`, 'danger', toastOpts)
-
+        }
         if (useTaggedFile) {
-            if (!tagFile) return window.createToast('No data found for tagged file', 'danger', toastOpts)
+            if (!tagFile) return window.createToast(`Invalid tagFile name`, 'danger', toastOpts)
+            if (!data[selectedFile]?.['tags'])
+                return window.createToast('No tag column created for this file', 'danger', toastOpts)
+            if (!data[selectedFile]['tags'][tagFile])
+                return window.createToast(`tag-mode: No data found for ${selectedFile} file`, 'danger', toastOpts)
+
             dataToSave = data[selectedFile]['tags'][tagFile]
             return notify('loaded')
         }
-
+        if (!data[selectedFile]['default'])
+            return window.createToast(`default-mode: No data found for ${selectedFile} file`, 'danger', toastOpts)
         dataToSave = data[selectedFile]['default']
         data_loaded = true
+
         return notify('loaded')
     }
 
     $: fullfilename = window.path.join(configDir, filename)
+
     $: if (selectedFile) {
         data_loaded = false
     }
 </script>
 
-<div class="container box ml-auto mb-5">
-    <i class="material-icons mr-auto">{data_loaded ? 'done' : 'sync_problem'}</i>
+<div class="container mb-5">
     <button class="button is-warning" on:click={load_data}>Load</button>
     <TextAndSelectOptsToggler
         bind:value={filename}
@@ -110,11 +120,5 @@
         gap: 1em;
         width: 100%;
         justify-content: flex-end;
-    }
-    .box {
-        max-height: 400px;
-        margin: 0;
-        padding: 0.5em;
-        border: solid 1px #fff7;
     }
 </style>

@@ -54,9 +54,9 @@
         loss_channels = [ktrap_loss_channel, ...loss_channels]
     }
 
-    $: if (loss_channels.length === 0) {
-        channelCounter = 0
-    }
+    // $: if (loss_channels?.length === 0) {
+    //     channelCounter = 0
+    // }
 
     let defaultMode = false
 
@@ -100,13 +100,15 @@
             return channel
         })
     }
+
+    let data_loaded = false
 </script>
 
-<CustomPanel label="Channels" style="display: flex; flex-direction: column; gap: 1em;">
-    <!-- <div class="box channel_main__div"> -->
+<CustomPanel loaded={data_loaded} label="Channels" style="display: flex; flex-direction: column;">
     <FileReadAndLoad
         bind:filename={channels_file}
         bind:dataToSave={loss_channels}
+        bind:data_loaded
         options_filter=".channels.json"
         {...{
             configDir,
@@ -115,7 +117,7 @@
             useTaggedFile,
         }}
     />
-    <div class="align h-center m-2">
+    <div class="align h-center">
         <button class="button is-link" on:click={addChannel}>Add channel</button>
         <button class="button is-warning" on:click={updateTrapLossChannel}>Add trap loss channel</button>
         <CustomSwitch bind:selected={defaultMode} label="He-attachment mode" on:change={make_default_channels} />
@@ -133,8 +135,8 @@
         {/if}
     </div>
 
-    <div class="channels_div mb-5 pb-5">
-        {#each loss_channels as item}
+    <div class="channels_div mb-5">
+        {#each loss_channels as item (item.id)}
             <ChannelComponent
                 {item}
                 {rateConstantMode}
@@ -147,7 +149,6 @@
             />
         {/each}
     </div>
-    <!-- </div> -->
 </CustomPanel>
 
 <style langs="scss">
@@ -155,8 +156,8 @@
         display: flex;
         flex-direction: column;
         row-gap: 1rem;
-
         overflow: auto;
+
         padding: 0 1em;
         width: 100%;
     }
