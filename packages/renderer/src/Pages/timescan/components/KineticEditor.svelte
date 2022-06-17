@@ -3,10 +3,10 @@
     import { computeKineticCodeScipy } from '../functions/computeKineticCode'
     import type { loss_channelsType } from '$src/Pages/timescan/types/types'
 
-    export let ratek3: string
-    export let k3Guess: string
-    export let kCIDGuess: string
-    export let ratekCID = ''
+    // export let ratek3: string
+    // export let k3Guess: string
+    // export let kCIDGuess: string
+    // export let ratekCID = ''
 
     export let location = ''
     export let savefilename = ''
@@ -23,11 +23,11 @@
     let computedCode: computeKineticCodeScipy
 
     $: maindata = {
-        ratek3,
-        ratekCID,
+        // ratek3,
+        // ratekCID,
         nameOfReactants,
-        k3Guess,
-        kCIDGuess,
+        // k3Guess,
+        // kCIDGuess,
         loss_channels,
         // includeTrapLoss,
         rateConstantMode,

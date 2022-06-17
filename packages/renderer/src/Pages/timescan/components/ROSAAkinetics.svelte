@@ -581,10 +581,6 @@
             </Accordion>
             <KineticEditor
                 {...{
-                    ratek3,
-                    k3Guess,
-                    ratekCID,
-                    kCIDGuess,
                     nameOfReactants,
                     loss_channels,
                     selectedFile,

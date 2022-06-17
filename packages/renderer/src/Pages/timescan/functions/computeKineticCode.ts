@@ -2,10 +2,10 @@
 import type { loss_channelsType } from '$src/Pages/timescan/types/types'
 export interface ComputeKineticCodeType {
     nameOfReactants: string;
-    ratek3: string;
-    ratekCID: string;
-    k3Guess: string;
-    kCIDGuess: string;
+    // ratek3: string;
+    // ratekCID: string;
+    // k3Guess: string;
+    // kCIDGuess: string;
     loss_channels: loss_channelsType[];
     // includeTrapLoss: boolean;
     rateConstantMode: boolean
@@ -14,10 +14,10 @@ export interface ComputeKineticCodeType {
 export class computeKineticCodeScipy {
 
     nameOfReactants: string
-    ratek3: string
-    ratekCID: string
-    k3Guess: string
-    kCIDGuess: string
+    // ratek3: string
+    // ratekCID: string
+    // k3Guess: string
+    // kCIDGuess: string
     loss_channels: loss_channelsType[]
     sliderControlls: {forwards: string[], backwards: string[]} = {forwards: [], backwards: []}
     nameOfReactantsArr: string[]
@@ -28,10 +28,10 @@ export class computeKineticCodeScipy {
     constructor(maindata: ComputeKineticCodeType) {
 
         this.nameOfReactants = maindata.nameOfReactants
-        this.ratek3 = maindata.ratek3
-        this.ratekCID = maindata.ratekCID
-        this.k3Guess = maindata.k3Guess
-        this.kCIDGuess = maindata.kCIDGuess
+        // this.ratek3 = maindata.ratek3
+        // this.ratekCID = maindata.ratekCID
+        // this.k3Guess = maindata.k3Guess
+        // this.kCIDGuess = maindata.kCIDGuess
         this.loss_channels = maindata.loss_channels
         // this.includeTrapLoss = maindata.includeTrapLoss
         this.rateConstantMode = maindata.rateConstantMode
