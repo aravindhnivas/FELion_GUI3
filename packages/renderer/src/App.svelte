@@ -14,8 +14,12 @@
     import Kinetics from './Pages/Kinetics.svelte'
     import Misc from './Pages/Misc.svelte'
     import Settings from './Pages/Settings.svelte'
+    import Test from './Pages/Test.svelte'
 
     const navItems = ['Home', 'Normline', 'Masspec', 'Timescan', 'THz', 'Kinetics', 'Powerfile', 'Misc', 'Settings']
+    if (window.env.MODE === 'development') {
+        navItems.push('Test')
+    }
     const toastOpts = { reversed: true, intro: { y: 100 } }
 </script>
 
@@ -38,6 +42,9 @@
         <Masspec />
         <Timescan />
         <THz />
+        {#if window.env.MODE === 'development'}
+            <Test />
+        {/if}
         <Kinetics />
         <Powerfile />
         <Misc />
