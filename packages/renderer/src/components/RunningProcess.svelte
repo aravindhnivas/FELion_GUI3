@@ -1,10 +1,7 @@
 <script>
     import { running_processes } from '$src/sveltewritables'
     import DataTable, { Head, Body, Row, Cell } from '@smui/data-table'
-    import { toast } from '@zerodevx/svelte-toast'
-
-    export let toastId = ''
-    $: if ($running_processes.length < 1) toast.pop(toastId)
+    $: console.log($running_processes)
 </script>
 
 <DataTable table$aria-label="current processes list" style="width: 100%;">
@@ -17,12 +14,12 @@
     </Head>
 
     <Body>
-        {#each $running_processes as process}
+        {#each $running_processes as { pid, pyfile, kill: killProcess } (pid)}
             <Row>
-                <Cell>{process.pid}</Cell>
-                <Cell>{process.pyfile}</Cell>
+                <Cell>{pid}</Cell>
+                <Cell>{pyfile}</Cell>
                 <Cell
-                    ><button class="button is-danger" style:background="#ff3860" on:click={() => process.kill()}
+                    ><button class="button is-danger" style:background="var(--color-danger)" on:click={killProcess}
                         >X</button
                     ></Cell
                 >

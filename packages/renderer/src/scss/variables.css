@@ -3,4 +3,8 @@
     --toastContainerRight: auto;
     --toastContainerBottom: 3rem;
     --toastContainerLeft: calc(50vw - 8rem);
+    --background-color: #5a419b;
+    --color-primary: #5a419b;
+    --color-danger: #ff3860;
+    --color-white: #fff;
 }

@@ -14,6 +14,10 @@ interface Exposed {
     readonly dialogs: Readonly<typeof import('./dialogs-modules').dialogs>;
     readonly reload: Readonly<typeof import('./dialogs-modules').reload>;
     readonly relaunch: Readonly<typeof import('./dialogs-modules').relaunch>;
+    readonly appInfo: Readonly<typeof import('./definedENV').appInfo>;
+    readonly __dirname: Readonly<typeof import('./definedENV').__dirname>;
+    readonly ROOT_DIR: Readonly<typeof import('./definedENV').ROOT_DIR>;
+    readonly appVersion: Readonly<typeof import('./definedENV').appVersion>;
 
 }
 

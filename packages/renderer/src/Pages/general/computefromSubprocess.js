@@ -48,21 +48,33 @@ export default async function ({
         console.log(get(pyProgram), { pyArgs })
 
         const opts = { detached: detached !== null ? detached : general, shell }
-
         const py = window.spawn(get(pyProgram), pyArgs, opts)
-
         if (pyfile !== 'server') {
-            running_processes.update((p) => [...p, { ...py, pyfile }])
+            // running_processes.update((p) => [...p, { pid: py.pid, pyfile, kill: () => py.kill() }])
+            running_processes.update((p) => [
+                ...p,
+                {
+                    pid: py.pid,
+                    pyfile, 
+                    close: {
+                        name: 'X', 
+                        cb: () => py.kill(),
+                        style: 'background: var(--color-danger); cursor: pointer; color: var(--color-white);',
+                    } 
+                }
+            ])
         }
+
         py.on('error', (err) => {
             window.handleError(err)
+
             if (pyfile !== 'server') {
                 running_processes.update((p) => p.filter((p) => p.pid !== py.pid))
             }
             return
         })
 
-        const logFile = window.path.join(appInfo.temp, 'FELion_GUI3', pyfile + '_data.log')
+        const logFile = window.path.join(window.appInfo.temp, 'FELion_GUI3', pyfile + '_data.log')
         const loginfo = window.fs.createWriteStream(logFile)
 
         let error = ''

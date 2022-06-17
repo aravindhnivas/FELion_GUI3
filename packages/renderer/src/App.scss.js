@@ -16,3 +16,5 @@ import './scss/toast.scss'
 import './scss/gridjs.scss'
 import 'dygraphs/dist/dygraph.css'
 import './scss/dygraph.scss'
+
+import '@material/typography/_typography.scss'
