@@ -28,6 +28,8 @@
         const result = (await showOpenDialogSync(options)) || ['']
         return result
     }
+
+    export const graph_detached: { [name: string]: boolean } = {}
 </script>
 
 <script lang="ts">
@@ -40,10 +42,8 @@
     import Modal from '$components/Modal.svelte'
     import Editor from '$components/Editor.svelte'
     import { resizableDiv } from '$src/js/resizableDiv.js'
-    ////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////
 
-    export let id
+    export let id: string
     export let display = 'none'
     export let filetype = 'felix'
     export let fileChecked = []
@@ -53,19 +53,20 @@
     export let activateConfigModal = false
 
     ////////////////////////////////////////////////////////////////////////////
-
     const dispatch = createEventDispatcher()
     async function browse_folder() {
         const [result] = await browse()
         if (!result) return
+
         currentLocation = result
         window.db.set(`${filetype}_location`, currentLocation)
-        console.log(result, currentLocation)
     }
     onMount(() => {
         graphPlotted = false
         console.log(id, 'mounted')
+
         currentLocation = <string>window.db.get(`${filetype}_location`) || ''
+        graph_detached[id] = false
     })
 
     let graphDivContainer
@@ -96,10 +97,12 @@
             bottom: 50,
             onclose: () => {
                 graphwindowClosed = true
+                graph_detached[id] = false
             },
         })
         graphWindow?.maximize(true)
         changeGraphDivWidth()
+        graph_detached[id] = true
     }
 
     $: if (graphwindowClosed) {
@@ -109,12 +112,11 @@
 
     const changeGraphDivWidth = async (event?: CustomEvent) => {
         console.log('Updating graphDivs width')
-
         await tick()
+
         graphDivs?.forEach((id) => {
-            if (id?.data) {
-                relayout(id, { width: id.clientWidth })
-            }
+            if (!id?.data) return
+            relayout(id, { width: id.clientWidth })
         })
     }
 
@@ -135,34 +137,31 @@
             transition:fly={{ x: -100, duration: 500 }}
         >
             <FileBrowser
+                on:markedFile
+                on:fileselect
                 bind:currentLocation
                 {filetype}
                 bind:fileChecked
                 on:chdir
                 bind:fullfileslist
-                on:markedFile
-                on:fileselect
             />
         </div>
 
         <div class="right_container__div box " id="{filetype}__mainContainer__div">
             <div class="location__div">
                 <button class="button is-link" id="{filetype}_filebrowser_btn" on:click={browse_folder}>Browse</button>
-
                 <Textfield bind:value={currentLocation} label="Current location" style="width:100%; " />
                 <i class="material-icons" on:click={() => (activateConfigModal = true)}>build</i>
             </div>
 
             <div class="button__div align" id="{filetype}-buttonContainer">
                 <slot name="buttonContainer" />
-
                 {#if graphPlotted}
                     <button class="button is-warning animate__animated animate__fadeIn" on:click={openGraph}
                         >Graph:Open separately</button
                     >
                 {/if}
             </div>
-
             <div
                 class="plot__div"
                 id="{filetype}-plotContainer"

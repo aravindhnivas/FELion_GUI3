@@ -171,20 +171,20 @@
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer">
-        <div class="graph_container" id="plot_container__div__{filetype}">
-            <div class="animate__animated animate__fadeIn graph__div" class:hide={!showTheory} id="exp-theory-plot" />
-            <div id="felix_graphs" class:hide={!showFELIX}>
-                <div id="bplot" class="graph__div" class:hide={!$showRawData} />
-                <div id="saPlot" class="graph__div" class:hide={!$showPowerData} />
-                <div id="avgplot" class="graph__div" />
-            </div>
-
-            <div id="opo_graphs" class:hide={!showOPO}>
-                <div class="animate__animated animate__fadeIn graph__div" class:hide={!$showRawData} id="opoplot" />
-                <div class="animate__animated animate__fadeIn graph__div" class:hide={!$showRawData} id="opoSA" />
-                <div class="animate__animated animate__fadeIn graph__div" id="opoRelPlot" />
-            </div>
+        <!-- <div class="graph__container" id="plot_container__div__{filetype}"> -->
+        <div class="animate__animated animate__fadeIn graph__div" class:hide={!showTheory} id="exp-theory-plot" />
+        <div id="felix_graphs" class:hide={!showFELIX}>
+            <div id="bplot" class="graph__div" class:hide={!$showRawData} />
+            <div id="saPlot" class="graph__div" class:hide={!$showPowerData} />
+            <div id="avgplot" class="graph__div" />
         </div>
+
+        <div id="opo_graphs" class:hide={!showOPO}>
+            <div class="animate__animated animate__fadeIn graph__div" class:hide={!$showRawData} id="opoplot" />
+            <div class="animate__animated animate__fadeIn graph__div" class:hide={!$showRawData} id="opoSA" />
+            <div class="animate__animated animate__fadeIn graph__div" id="opoRelPlot" />
+        </div>
+        <!-- </div> -->
     </svelte:fragment>
 
     <svelte:fragment slot="config">

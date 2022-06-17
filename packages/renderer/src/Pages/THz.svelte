@@ -202,8 +202,10 @@
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer">
+        <!-- <div class="graph__container"> -->
         <div id="resOnOffPlot" class="graph__div" class:hide={!showRawData} />
         <div id="thzPlot" class="graph__div" />
+        <!-- </div> -->
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer_functions">

@@ -60,6 +60,6 @@ ul {
     list-style: none!important;
 }
 
-.tag:empty {
+.tag:empty, .graph__div:empty {
     display: none;
 }

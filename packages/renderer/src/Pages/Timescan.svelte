@@ -31,7 +31,7 @@
 
     function dir_changed() {
         if (window.fs.existsSync(currentLocation)) {
-            fullfiles = fs.readdirSync(currentLocation).filter((file) => file.endsWith('.scan'))
+            fullfiles = window.fs.readdirSync(currentLocation).filter((file) => file.endsWith('.scan'))
         }
     }
 
@@ -202,10 +202,8 @@
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer" let:lookForGraph>
-        <div class="graph__container" style="display: flex; gap: 1em; flex-direction: column;">
-            {#each fileChecked as scanfile}
-                <div id="{scanfile}_tplot" class="graph__div" use:lookForGraph />
-            {/each}
-        </div>
+        {#each fileChecked as scanfile}
+            <div id="{scanfile}_tplot" class="graph__div" use:lookForGraph />
+        {/each}
     </svelte:fragment>
 </Layout>

@@ -1,3 +1,5 @@
+import { activePage } from '$src/sveltewritables'
+import { graph_detached } from '$components/Layout.svelte'
 import { react, relayout } from 'plotly.js/dist/plotly-basic'
 import { find, differenceBy } from 'lodash-es'
 import { writable, get } from 'svelte/store'
@@ -10,14 +12,33 @@ type PlotlyEventsInfo = {
     }
 }
 
+export const graphPlottedLists: {
+    [key: string]: boolean
+} = {}
 
 export const plotlyEventsInfo: Writable<PlotlyEventsInfo> = writable({})
 
 export function plot(
     mainTitle: string, xtitle: string, ytitle: string,
-    data: {[name: string]: Plotly.PlotData}, graphDiv: string,
-    logScale:boolean = null, createPlotlyClickEvent = false
+    data: { [name: string]: Plotly.PlotData }, graphDiv: string,
+    logScale: boolean = null, createPlotlyClickEvent = false
 ) {
+    
+    // const graph_div = document.getElementById(graphDiv)
+    const current_graph_detached = graph_detached[get(activePage)]
+
+    const graph_container = document.querySelector(
+        current_graph_detached 
+            ? `#${graphDiv}` 
+            : `#${get(activePage)} .plot__div`
+    ) as HTMLDivElement
+    
+    const pad = graphPlottedLists[get(activePage)] ? 16 : 32
+    const width = graph_container?.clientWidth - (current_graph_detached ? 0 : pad)
+    
+    console.log(graph_container, width)
+    console.log({ graph_detached })
+
     let dataLayout = {
         title: mainTitle,
         xaxis: { title: xtitle },
@@ -25,6 +46,8 @@ export function plot(
         hovermode: 'closest',
         autosize: true,
         height: 450,
+        width: width,
+        // width: graph_div.clientWidth,
     }
 
     let dataPlot: Plotly.PlotData[] = []
@@ -45,6 +68,10 @@ export function plot(
             console.log('Creating plotly event for ', graphDiv)
             plotlyClick(graphDiv)
         }
+        if (graphPlottedLists[get(activePage)]) return
+
+        graphPlottedLists[get(activePage)] = true
+
     } catch (err) {
         console.error('Error occured while plotting\n', err)
         window.handleError(err)
