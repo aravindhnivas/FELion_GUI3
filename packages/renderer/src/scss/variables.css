@@ -5,6 +5,7 @@
     --toastContainerLeft: calc(50vw - 8rem);
     --background-color: #5a419b;
     --color-primary: #5a419b;
+    --color-primary-light: #6249a5;
     --color-danger: #ff3860;
     --color-white: #fff;
 }

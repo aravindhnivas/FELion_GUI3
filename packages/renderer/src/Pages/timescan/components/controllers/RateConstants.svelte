@@ -1,7 +1,8 @@
 <script>
     import Textfield from '@smui/textfield'
-    import TextAndSelectOptsToggler from '$src/components/TextAndSelectOptsToggler.svelte'
-    import CustomSwitch from '$src/components/CustomSwitch.svelte'
+    import TextAndSelectOptsToggler from '$components/TextAndSelectOptsToggler.svelte'
+    import CustomSwitch from '$components/CustomSwitch.svelte'
+    import CustomPanel from '$components/CustomPanel.svelte'
 
     export let defaultInitialValues = true
     export let initialValues = ''
@@ -17,7 +18,7 @@
     export let readConfigDir = () => {}
 </script>
 
-<div class="box column">
+<CustomPanel label="Initial values" style="display: flex; gap: 1em;">
     <div>
         <CustomSwitch bind:selected={defaultInitialValues} label="defaultInitialValues" />
         <Textfield bind:value={initialValues} label="initialValues" />
@@ -38,7 +39,7 @@
         options={config_filelists.filter((f) => f.endsWith('.fit.json'))}
         update={readConfigDir}
     />
-</div>
+</CustomPanel>
 
 <style lang="scss">
     .column {
@@ -51,11 +52,5 @@
             align-items: center;
             justify-content: center;
         }
-    }
-
-    .box {
-        margin: 0;
-        padding: 0.5em;
-        border: solid 1px #fff7;
     }
 </style>

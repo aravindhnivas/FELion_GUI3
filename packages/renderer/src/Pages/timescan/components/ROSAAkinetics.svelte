@@ -27,6 +27,9 @@
     import { activePage } from '$src/sveltewritables'
     import type { mainDataType, dataType, totalMassKeyType, loss_channelsType } from '$src/Pages/timescan/types/types'
 
+    import Accordion from '@smui-extra/accordion'
+    import CustomPanel from '$components/CustomPanel.svelte'
+    //
     let currentLocation = (window.db.get('kinetics_location') as string) || ''
     $: config_location = window.path.join(currentLocation, '../configs')
 
@@ -474,6 +477,8 @@
         'kinetic_plot_adjust_configs',
         'top=0.905,\nbottom=0.135,\nleft=0.075,\nright=0.59,\nhspace=0.2,\nwspace=0.2'
     )
+    let panel1Open = false,
+        panel2Open = false
 </script>
 
 <KineticConfigTable
@@ -517,68 +522,68 @@
 
     <svelte:fragment slot="main_content__slot">
         <div class="main_container__div">
-            <div class="align box h-center">
-                <Textfield value={nHe || ''} label="numberDensity" disabled />
-                <button
-                    class="button is-link"
-                    on:click={() => {
-                        show_numberDensity = true
-                    }}>Open number density modal</button
-                >
-            </div>
+            <Accordion multiple style="width: 100%;">
+                <CustomPanel loaded={nHe.length > 0} label="Number density">
+                    <Textfield value={nHe || ''} label="numberDensity" disabled />
+                    <button
+                        class="button is-link"
+                        on:click={() => {
+                            show_numberDensity = true
+                        }}>Open number density modal</button
+                    >
+                </CustomPanel>
 
-            <div class="align box h-center">
-                <CustomTextSwitch
-                    max={maxTimeIndex}
-                    bind:value={timestartIndexScan}
-                    label="Time Index"
-                    on:change={() => sliceData(true)}
+                <CustomPanel label="Basic infos">
+                    <CustomTextSwitch
+                        max={maxTimeIndex}
+                        bind:value={timestartIndexScan}
+                        label="Time Index"
+                        on:change={() => sliceData(true)}
+                    />
+                    <Textfield bind:value={molecule} label="Molecule" />
+                    <Textfield bind:value={tag} label="tag" />
+                </CustomPanel>
+
+                <RateInitialise
+                    {config_filelists}
+                    {updateParamsFile}
+                    {readConfigDir}
+                    {computeOtherParameters}
+                    {selectedFile}
+                    {params_found}
+                    {totalMassKey}
+                    {tagOptions}
+                    bind:tagFile
+                    bind:useParamsFile
+                    bind:useTaggedFile
+                    bind:kinetics_params_file={$kinetics_params_file}
+                    bind:nameOfReactants
+                    bind:legends
                 />
-                <Textfield bind:value={molecule} label="Molecule" />
-                <Textfield bind:value={tag} label="tag" />
-            </div>
+                <RateConstants
+                    {readConfigDir}
+                    {config_filelists}
+                    bind:defaultInitialValues
+                    bind:initialValues
+                    bind:kinetics_fitfile={$fit_config_filename}
+                    bind:ratek3
+                    bind:k3Guess
+                    bind:ratekCID
+                    bind:kCIDGuess
+                />
 
-            <RateInitialise
-                {config_filelists}
-                {updateParamsFile}
-                {readConfigDir}
-                {computeOtherParameters}
-                {selectedFile}
-                {params_found}
-                {totalMassKey}
-                {tagOptions}
-                bind:tagFile
-                bind:useParamsFile
-                bind:useTaggedFile
-                bind:kinetics_params_file={$kinetics_params_file}
-                bind:nameOfReactants
-                bind:legends
-            />
-
-            <RateConstants
-                {readConfigDir}
-                {config_filelists}
-                bind:defaultInitialValues
-                bind:initialValues
-                bind:kinetics_fitfile={$fit_config_filename}
-                bind:ratek3
-                bind:k3Guess
-                bind:ratekCID
-                bind:kCIDGuess
-            />
-
-            <KlossChannels
-                bind:loss_channels
-                {nameOfReactants}
-                bind:rateConstantMode
-                {...{
-                    selectedFile,
-                    useTaggedFile,
-                    tagFile,
-                    configDir,
-                }}
-            />
-
+                <KlossChannels
+                    bind:loss_channels
+                    {nameOfReactants}
+                    bind:rateConstantMode
+                    {...{
+                        selectedFile,
+                        useTaggedFile,
+                        tagFile,
+                        configDir,
+                    }}
+                />
+            </Accordion>
             <KineticEditor
                 {...{
                     ratek3,
@@ -595,6 +600,7 @@
                 bind:reportSaved
                 bind:reportRead
             />
+            <!-- </Accordion> -->
         </div>
     </svelte:fragment>
 

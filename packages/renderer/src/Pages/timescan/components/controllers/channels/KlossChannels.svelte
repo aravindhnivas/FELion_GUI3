@@ -6,7 +6,11 @@
     import { differenceBy, find } from 'lodash-es'
     import Textfield from '@smui/textfield'
     import default_channels, { get_slider_controller, base_slider_values_str } from './default_channels'
+
     import type { loss_channelsType } from '$src/Pages/timescan/types/types'
+
+    import CustomPanel from '$components/CustomPanel.svelte'
+
     export let loss_channels: loss_channelsType[] = []
     export let nameOfReactants = ''
     export let rateConstantMode = false
@@ -98,7 +102,8 @@
     }
 </script>
 
-<div class="box channel_main__div">
+<CustomPanel label="Channels" style="display: flex; flex-direction: column; gap: 1em;">
+    <!-- <div class="box channel_main__div"> -->
     <FileReadAndLoad
         bind:filename={channels_file}
         bind:dataToSave={loss_channels}
@@ -142,14 +147,10 @@
             />
         {/each}
     </div>
-</div>
+    <!-- </div> -->
+</CustomPanel>
 
 <style langs="scss">
-    .channel_main__div {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
     .channels_div {
         display: flex;
         flex-direction: column;
@@ -158,13 +159,5 @@
         overflow: auto;
         padding: 0 1em;
         width: 100%;
-    }
-
-    .box {
-        max-height: 500px;
-        margin: 0;
-
-        padding: 0.5em;
-        border: solid 1px #fff7;
     }
 </style>

@@ -1,6 +1,7 @@
 <script lang="ts">
     import Textfield from '@smui/textfield'
-    import TextAndSelectOptsToggler from '$src/components/TextAndSelectOptsToggler.svelte'
+    import TextAndSelectOptsToggler from '$components/TextAndSelectOptsToggler.svelte'
+    import CustomPanel from '$components/CustomPanel.svelte'
     import type { totalMassKeyType } from '$src/Pages/timescan/types/types'
 
     export let legends = ''
@@ -15,7 +16,7 @@
     export let readConfigDir
 </script>
 
-<div class="align box h-center" style="flex-direction: column;">
+<CustomPanel label="Labels" style="display: flex; flex-direction: column; gap: 1em;">
     <div class="align h-center">
         <Textfield bind:value={nameOfReactants} label="nameOfReactants" style="width:30%" />
         <Textfield bind:value={legends} label="legends" style="width:30%" />
@@ -51,12 +52,4 @@
         <button class="button is-link" on:click={() => computeOtherParameters()}>load</button>
         <button class="button is-link" on:click={updateParamsFile}>update</button>
     </div>
-</div>
-
-<style>
-    .box {
-        margin: 0;
-        padding: 0.5em;
-        border: solid 1px #fff7;
-    }
-</style>
+</CustomPanel>
