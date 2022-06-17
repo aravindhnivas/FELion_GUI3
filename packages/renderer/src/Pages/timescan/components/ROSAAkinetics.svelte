@@ -303,7 +303,7 @@
         }
     }
 
-    let numberDensity = 0
+    // let numberDensity = 0
 
     const update_kinetic_filename = (appendName: string) => {
         kineticEditorFilename = window.path.basename(selectedFile).split('.')[0] + appendName
@@ -437,7 +437,7 @@
                 legends,
                 kCIDGuess,
                 selectedFile,
-                numberDensity,
+                numberDensity: nHe,
                 $fit_config_filename,
                 nameOfReactantsArray,
                 kineticEditorFilename,
@@ -477,8 +477,8 @@
         'kinetic_plot_adjust_configs',
         'top=0.905,\nbottom=0.135,\nleft=0.075,\nright=0.59,\nhspace=0.2,\nwspace=0.2'
     )
-    let panel1Open = false,
-        panel2Open = false
+    // let panel1Open = false,
+    //     panel2Open = false
 </script>
 
 <KineticConfigTable
@@ -549,13 +549,8 @@
                     {updateParamsFile}
                     {readConfigDir}
                     {computeOtherParameters}
-                    {selectedFile}
-                    {params_found}
                     {totalMassKey}
-                    {tagOptions}
-                    bind:tagFile
                     bind:useParamsFile
-                    bind:useTaggedFile
                     bind:kinetics_params_file={$kinetics_params_file}
                     bind:nameOfReactants
                     bind:legends

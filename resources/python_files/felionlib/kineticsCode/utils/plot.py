@@ -6,8 +6,8 @@ from felionlib.kineticsCode import (
     legends,
     simulateTime,
     selectedFile,
-    temp,
-    numberDensity,
+    # temp,
+    # numberDensity,
     widget,
     data,
 )
@@ -60,8 +60,8 @@ def plot_exp():
     from felionlib.kineticsCode.utils.fit import intialize_fit_plot
 
     global toggleLine, widget, fitPlot, expPlot
-
-    title = f"{selectedFile}: @{temp:.1f}K {numberDensity:.2e} " + "cm$^{-3}$"
+    # title = f"{selectedFile}: @{temp:.1f}K {numberDensity:.2e} " + "cm$^{-3}$"
+    title = f"{selectedFile}"
     ax: Axes = widget.ax
     ax.set(xlabel="Time (s)", ylabel="Counts", yscale="log", title=title)
 

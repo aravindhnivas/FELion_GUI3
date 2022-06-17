@@ -2,7 +2,7 @@ from pathlib import Path as pt
 import numpy as np
 from felionlib.utils.felionQt import felionQtWindow
 from .utils.configfile import read_config
-
+from uncertainties import ufloat_fromstr
 
 tspan: list[float, float] = None
 simulateTime: np.ndarray = None
@@ -69,9 +69,9 @@ def main(args):
 
     print(f"{expDataError.shape=}", flush=True)
 
-    temp = float(args["temp"])
     selectedFile = args["selectedFile"]
-    numberDensity = float(args["numberDensity"])
+    numberDensity = ufloat_fromstr(args["numberDensity"])
+    print(f"{numberDensity=}", flush=True)
     initialValues = [float(i) for i in args["initialValues"]]
     totalAttachmentLevels = len(initialValues) - 1
 

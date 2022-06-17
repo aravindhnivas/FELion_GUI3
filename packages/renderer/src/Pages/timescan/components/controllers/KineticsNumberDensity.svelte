@@ -90,7 +90,6 @@
                         options={config_filelists.filter((f) => f.endsWith('.conditions.json'))}
                         update={readConfigDir}
                     />
-
                     <button class="button is-link" on:click={readConfigFile}>Read file</button>
 
                     <CustomSelect
@@ -110,4 +109,3 @@
         <button class="button is-link" on:click={save_datas}>Save</button>
     </svelte:fragment>
 </Modal>
-<!-- {/if} -->
