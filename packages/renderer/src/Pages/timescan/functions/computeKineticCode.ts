@@ -2,22 +2,13 @@
 import type { loss_channelsType } from '$src/Pages/timescan/types/types'
 export interface ComputeKineticCodeType {
     nameOfReactants: string;
-    // ratek3: string;
-    // ratekCID: string;
-    // k3Guess: string;
-    // kCIDGuess: string;
     loss_channels: loss_channelsType[];
-    // includeTrapLoss: boolean;
     rateConstantMode: boolean
 }
 
 export class computeKineticCodeScipy {
 
     nameOfReactants: string
-    // ratek3: string
-    // ratekCID: string
-    // k3Guess: string
-    // kCIDGuess: string
     loss_channels: loss_channelsType[]
     sliderControlls: {forwards: string[], backwards: string[]} = {forwards: [], backwards: []}
     nameOfReactantsArr: string[]
@@ -28,14 +19,8 @@ export class computeKineticCodeScipy {
     constructor(maindata: ComputeKineticCodeType) {
 
         this.nameOfReactants = maindata.nameOfReactants
-        // this.ratek3 = maindata.ratek3
-        // this.ratekCID = maindata.ratekCID
-        // this.k3Guess = maindata.k3Guess
-        // this.kCIDGuess = maindata.kCIDGuess
         this.loss_channels = maindata.loss_channels
-        // this.includeTrapLoss = maindata.includeTrapLoss
         this.rateConstantMode = maindata.rateConstantMode
-
         this.nameOfReactantsArr = this.nameOfReactants.split(',').map((name) => name.trim())
 
         const forwardChannels = this.loss_channels.filter(({ type }) => type === 'forwards')
@@ -49,25 +34,26 @@ export class computeKineticCodeScipy {
 
     }
 
+    make_slider_labels(type: string, array: string[]): string {
+        let data = `\nmin_max_step_controller["${type}"] = {\n`
+        array.forEach((value, index) => {
+            const rateLabel = this.sliderControlls[type][index]
+            if(!(rateLabel && value)) {
+                throw new Error(`No slider label found for ${value}`)
+            }
+            data += `\t'${value}': (${rateLabel}),\n`
+        })
+        data += '}\n'
+        return data
+    }
+
     get sliders() {
         let data = ''
         data += '## Defining min-max-value for sliders\n'
         data += '```plaintext\n'
         data += '\nmin_max_step_controller = {}\n'
-        data += '\nmin_max_step_controller["forwards"] = {\n'
-        this.rateForwardArr.forEach((value, index) => {
-            // data += `\t'${value}': (${this.k3Guess}),\n`
-            data += `\t'${value}': (${this.sliderControlls.forwards[index]}),\n`
-        })
-        
-        data += '}\n'
-        data += '\nmin_max_step_controller["backwards"] = {\n'
-
-        this.rateReverseArr.forEach((value, index) => {
-            // data += `\t'${value}': (${this.kCIDGuess}),\n`
-            data += `\t'${value}': (${this.sliderControlls.backwards[index]}),\n`
-        })
-        data += '}\n'
+        data += this.make_slider_labels('forwards', this.rateForwardArr)
+        data += this.make_slider_labels('backwards', this.rateReverseArr)
         data += '```\n'
         return data
     }
@@ -157,6 +143,7 @@ export class computeKineticCodeScipy {
             })
         })
         return data.join('')
+
     }
 
     get fullEquation(): string {
