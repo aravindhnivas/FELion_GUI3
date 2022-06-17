@@ -533,7 +533,7 @@
                     >
                 </CustomPanel>
 
-                <CustomPanel label="Basic infos">
+                <CustomPanel label="Basic infos" class="align">
                     <CustomTextSwitch
                         max={maxTimeIndex}
                         bind:value={timestartIndexScan}
