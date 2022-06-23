@@ -28,8 +28,8 @@
     - baseline marked file selection (when switching btw OPO and FELIX)
     - update error display
     - baseline ydata corrections
-## v3.6.1
 
+## v3.6.1
 - BUG FIX: baseline list min method attribute error 
 
 ## v3.6.0
@@ -52,6 +52,7 @@
 ## v3.5.2
 
 - Update bug fixes
+
 ## v3.5.1
 
 - Kinetics (New page added)
