@@ -153,7 +153,8 @@ def convert_intesities(felixlocation, output_filename, wn, inten, norm_method):
     )
 
 
-def readCodeFromFile(filename):
+def readCodeFromFile(filename: str | pt):
+
     info = []
     codeToRun = ""
     start = False
@@ -162,6 +163,7 @@ def readCodeFromFile(filename):
         info = f.readlines()
 
     for line in info:
+
         if "```plaintext" in line:
             start = True
             continue
@@ -171,6 +173,7 @@ def readCodeFromFile(filename):
         if start:
             codeToRun += line
 
+    # print(f"{codeToRun=}", flush=True)
     return codeToRun
 
 
@@ -231,9 +234,8 @@ try:
                     frm = inspect.stack()[1]
                     mod = inspect.getmodule(frm[0])
                     filename = pt(mod.__file__)
-                    # filelocation = filename.parent
-                    # with open(save_location / f"{calling_file}_data.json", 'w+') as f:
                     print(f"{save_location=}")
+
                     with open(save_location / f"{filename.stem}_{func.__name__}.lprof", "w+") as f:
                         f.write(output)
 

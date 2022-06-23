@@ -6,7 +6,7 @@
 
     export let defaultInitialValues = true
     export let initialValues = ''
-
+    export let loaded = false
     export let ratek3 = ''
     export let k3Guess = ''
     export let ratekCID = ''
@@ -18,7 +18,7 @@
     export let readConfigDir = () => {}
 </script>
 
-<CustomPanel label="Initial values" style="display: flex; gap: 1em;">
+<CustomPanel label="Initial values" style="display: flex; gap: 1em;" {loaded}>
     <div>
         <CustomSwitch bind:selected={defaultInitialValues} label="defaultInitialValues" />
         <Textfield bind:value={initialValues} label="initialValues" />
@@ -40,17 +40,3 @@
         update={readConfigDir}
     />
 </CustomPanel>
-
-<style lang="scss">
-    .column {
-        display: flex;
-        gap: 1rem;
-        justify-content: center;
-        div {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-    }
-</style>

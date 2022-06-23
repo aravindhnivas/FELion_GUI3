@@ -234,7 +234,6 @@
         window.createToast(`saved: ${window.path.basename(paramsFile)}`, 'success', {
             target: 'left',
         })
-
         params_found = true
     }
 
@@ -246,7 +245,7 @@
     const readFromParamsFile = (event?: Event) => {
         params_found = false
         tagOptions = []
-        if (!(useParamsFile && window.fs.existsSync(paramsFile))) return
+        if (!(useParamsFile && window.fs.isFile(paramsFile))) return
         const [data] = window.fs.readJsonSync(paramsFile)
         const contents = data?.[selectedFile]
         console.log('no data available')
@@ -273,7 +272,6 @@
             updatefile: false,
             contents: setContents,
         })
-        // window.createToast('config loaded', 'success', { target: 'left' })
     }
 
     let legends = ''
@@ -533,7 +531,7 @@
                     >
                 </CustomPanel>
 
-                <CustomPanel label="Basic infos" class="align">
+                <CustomPanel label="Basic info" loaded={params_found} class="align">
                     <CustomTextSwitch
                         max={maxTimeIndex}
                         bind:value={timestartIndexScan}
@@ -545,6 +543,7 @@
                 </CustomPanel>
 
                 <RateInitialise
+                    loaded={params_found}
                     {config_filelists}
                     {updateParamsFile}
                     {readConfigDir}
@@ -556,6 +555,7 @@
                     bind:legends
                 />
                 <RateConstants
+                    loaded={params_found}
                     {readConfigDir}
                     {config_filelists}
                     bind:defaultInitialValues
@@ -591,13 +591,12 @@
                 bind:reportSaved
                 bind:reportRead
             />
-            <!-- </Accordion> -->
         </div>
     </svelte:fragment>
 
     <svelte:fragment slot="left_footer_content__slot">
-        <CustomCheckbox on:change={() => computeOtherParameters()} bind:value={useParamsFile} label="load" />
-        <CustomCheckbox bind:value={useTaggedFile} />
+        <CustomCheckbox on:change={() => computeOtherParameters()} bind:value={useParamsFile} label="useParams" />
+        <CustomCheckbox bind:value={useTaggedFile} label="useTag" />
         <TextAndSelectOptsToggler
             bind:value={tagFile}
             options={tagOptions}

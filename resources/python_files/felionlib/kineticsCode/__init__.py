@@ -3,6 +3,7 @@ import numpy as np
 from felionlib.utils.felionQt import felionQtWindow
 from .utils.configfile import read_config
 from uncertainties import ufloat_fromstr
+from felionlib.utils.FELion_definitions import readCodeFromFile
 
 tspan: list[float, float] = None
 simulateTime: np.ndarray = None
@@ -37,19 +38,21 @@ kinetics_equation_file: pt = None
 data: dict[str, dict] = {}
 useTaggedFile: bool = None
 tagFile: str = None
+kineticCodeContents: str = None
 
 
 def main(args):
 
     global data, widget, legends
     global useTaggedFile, tagFile
-    global kinetic_plot_adjust_configs_obj
+    global kinetic_plot_adjust_configs_obj, kineticCodeContents
     global temp, numberDensity, kinetics_equation_file
     global totalAttachmentLevels, selectedFile, initialValues
     global kinetic_file_location, nameOfReactants, expTime, expData, expDataError
 
     kinetic_file_location = pt(args["kinetic_file_location"])
     kinetics_equation_file = kinetic_file_location / args["kineticEditorFilename"]
+    kineticCodeContents = readCodeFromFile(kinetics_equation_file)
     # print(f"{args['kineticEditorFilename']=}\n{kinetics_equation_file=}", flush=True)
 
     # return
@@ -82,7 +85,7 @@ def main(args):
     kCIDGuess: list[float, float] = [float(i) for i in args["kCIDGuess"].split(",")]
     print(f"{k3Guess=}\n{kCIDGuess=}", flush=True)
     legends = [lg.strip() for lg in args["legends"].split(",")]
-    read_config(fit_config_file, selectedFile, kinetics_equation_file, useTaggedFile, tagFile)
+    read_config(fit_config_file, selectedFile, kineticCodeContents, useTaggedFile, tagFile)
 
     kinetic_plot_adjust_configs_obj = {
         key: float(value) for key, value in args["kinetic_plot_adjust_configs_obj"].items()

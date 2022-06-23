@@ -25,7 +25,7 @@ def codeToRun(code: str):
 
 
 def read_config(
-    fit_config_file: pt, selectedFile: str, kinetics_equation_file: pt, useTaggedFile: bool, tagFile: str
+    fit_config_file: pt, selectedFile: str, kineticCodeContents: str, useTaggedFile: bool, tagFile: str
 ) -> None:
 
     global keyFoundForRate, k_err
@@ -36,8 +36,8 @@ def read_config(
 
     savefile = fit_config_file
 
-    codeContents = readCodeFromFile(kinetics_equation_file)
-    codeOutput = codeToRun(codeContents)
+    # codeContents = readCodeFromFile(kinetics_equation_file)
+    codeOutput = codeToRun(kineticCodeContents)
 
     min_max_step_controller = codeOutput["min_max_step_controller"]
 

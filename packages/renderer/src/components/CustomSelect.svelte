@@ -62,9 +62,7 @@
     .select {
         align-self: auto;
         select {
-            // min-width: 12em;
-
-            // background: #6249a5;
+            min-width: 5rem;
             &:active,
             &:hover,
             &:focus {
@@ -72,10 +70,6 @@
             }
             border: none;
             border-bottom: solid 2px #c5c3c3;
-
-            // option {
-            //     color: white;
-            // }
         }
 
         select::-webkit-scrollbar {
@@ -87,10 +81,6 @@
         select::-webkit-scrollbar-thumb {
             background-color: #5669d3;
         }
-        // optgroup {
-        //     // color: black;
-        //     font-size: medium;
-        // }
 
         select[multiple] {
             height: 4em;

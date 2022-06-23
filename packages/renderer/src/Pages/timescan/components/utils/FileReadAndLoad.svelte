@@ -115,7 +115,7 @@
 
 <style>
     .container {
-        align-items: center;
+        align-items: flex-end;
         display: flex;
         gap: 1em;
         width: 100%;
