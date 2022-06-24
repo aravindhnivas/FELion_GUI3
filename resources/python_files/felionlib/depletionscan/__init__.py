@@ -83,6 +83,21 @@ class depletionplot:
         # self.Koff_slider.mouseReleaseEvent = lambda e: self.widget.draw()
         # self.Kon_slider.mouseReleaseEvent = lambda e: self.widget.draw()
 
+        self.params = {
+            "Koff": slider_layout_Koff,
+            "N": slider_layout_N,
+            "Kon": slider_layout_Kon,
+            "Na": slider_layout_Na,
+            "Nn": slider_layout_Nn,
+        }
+        # self.slider_koff_err_label = QtWidgets.QLabel()
+
+        self.error_labels_widgets: list[QtWidgets.QLabel] = []
+
+        for param in self.params.values():
+            self.error_labels_widgets.append(QtWidgets.QLabel())
+            param.addWidget(self.error_labels_widgets[-1])
+
         slider_layout_vbox.addLayout(slider_layout_Koff)
         slider_layout_vbox.addLayout(slider_layout_N)
         slider_layout_vbox.addLayout(slider_layout_Kon)
@@ -99,7 +114,7 @@ class depletionplot:
         update_legend_button = QtWidgets.QPushButton("Update label")
 
         def update_legend_ax0():
-            self.ax1.legend([f"A: {self.uA:.1uP}", "Experiment"], title="$D(t)=A*(1-e^{-K_{ON}*E})$")
+            self.ax1.legend([self.depletion_output_label.text(), "Experiment"], title="$D(t)=A*(1-e^{-K_{ON}*E})$")
             self.widget.draw()
 
         update_legend_button.clicked.connect(update_legend_ax0)
@@ -112,13 +127,13 @@ class depletionplot:
 
         write_file_layout = QtWidgets.QHBoxLayout()
 
-        self.write_filename_input = QtWidgets.QLineEdit("depletion_output")
-        self.write_filename_input.setToolTip("save directory")
+        # self.write_filename_input = QtWidgets.QLineEdit("depletion_output")
+        # self.write_filename_input.setToolTip("save directory")
 
-        write_file_button = QtWidgets.QPushButton("Write")
+        write_file_button = QtWidgets.QPushButton("Write to file")
         write_file_button.clicked.connect(self.saveFile)
 
-        write_file_layout.addWidget(self.write_filename_input)
+        # write_file_layout.addWidget(self.write_filename_input)
         write_file_layout.addWidget(write_file_button)
 
         additional_widgets_group = QtWidgets.QGroupBox()
@@ -130,8 +145,11 @@ class depletionplot:
         additional_widgets_group.setLayout(additional_widgets_layout)
 
         controllerDock = QtWidgets.QDockWidget("Fitting controller", self.widget)
+
         controllerDock.setWidget(additional_widgets_group)
         controllerDock.setMaximumHeight(500)
+        controllerDock.setMinimumWidth(300)
+        controllerDock.setMaximumWidth(500)
         controllerDock.setFloating(True)
         # make controllerDock not closable
         controllerDock.setFeatures(QtWidgets.QDockWidget.DockWidgetFeature.NoDockWidgetFeatures)
@@ -139,7 +157,7 @@ class depletionplot:
 
     def saveFile(self, event=None, show=True):
 
-        depletion_dir = self.location / self.write_filename_input.text()
+        depletion_dir = self.location / "depletion_output"
 
         if not depletion_dir.exists():
             depletion_dir.mkdir()
@@ -192,19 +210,28 @@ class depletionplot:
                 self.fitX, self.fitOn, self.fitOff, self.depletion_fitted, self.relative_abundance
             ):
                 f.write(f"{fitX:.4f}\t{fitOn:.4f}\t{fitOff:.4f}\t{dep_fit:.4f}\t{rel_abun:.4f}\n")
+
             if show:
-                self.widget.showdialog("File saved", f"File saved: {f.name} in {self.location}")
+                self.widget.showdialog("File saved", f"{timescanfile_fitted.name} file saved\nin {self.location}")
             print(f"File saved: {f.name} in {self.location}")
+
+    def set_slider_err_values(self):
+        self.error_labels_widgets[0].setText(f"({self.Koff_err:.2f})")
+        self.error_labels_widgets[1].setText(f"({self.N_err:.2f})")
+        self.error_labels_widgets[2].setText(f"({self.Kon_err:.2f})")
+        self.error_labels_widgets[3].setText(f"({self.Na0_err:.2f})")
+        self.error_labels_widgets[4].setText(f"({self.Nn0_err:.2f})")
 
     def set_slider_values(self, on=None, off=None):
         Koff, N = off or self.resOff_fit()
         Na0, Nn0, Kon = on or self.resOn_fit(Koff, N)
-
         self.Koff_slider.setValue(float(Koff))
         self.N_slider.setValue(int(N))
         self.Kon_slider.setValue(float(Kon))
         self.Na_slider.setValue(int(Na0))
         self.Nn_slider.setValue(int(Nn0))
+
+        self.set_slider_err_values()
 
     def startPlotting(self, make_slider_widget=True):
 
@@ -215,14 +242,13 @@ class depletionplot:
         title = f"ON:{self.resOnFile.name}. OFF:{self.resOffFile.name}"
         title += self.fileInfo
         # self.widget.fig.suptitle(title, fontsize=7)
-        self.ax0.set(xlabel="Total energy (J)", ylabel="Counts")
+        self.ax0.set(ylabel="Counts")
 
         self.ax1.set(
-            xlabel="Total energy (J)",
-            # title="$D(t)=A*(1-e^{-K_{ON}*(ntE)})$",
+            title="$D(t)=A*(1-e^{-K_{ON}*(ntE)})$",
             ylabel="A: Active isomer",
         )
-
+        self.widget.fig.supxlabel("Total energy (J)", y=0.02)
         Koff, N = self.resOff_fit()
         Na0, Nn0, Kon = self.resOn_fit(Koff, N)
 
@@ -230,6 +256,7 @@ class depletionplot:
             self.depletion_widgets(Koff, Kon, N, Na0, Nn0)
         else:
             self.set_slider_values(on=(Na0, Nn0, Kon), off=(Koff, N))
+        self.set_slider_err_values()
 
         self.runFit(Koff, Kon, N, Na0, Nn0)
 
@@ -258,7 +285,7 @@ class depletionplot:
 
         if plot:
             self.ax0.legend([self.lg0, self.lg1])
-            self.ax1.legend([f"A: {self.uA:.1uP}", "Experiment"], title="$D(t)=A*(1-e^{-K_{ON}*E})$")
+            self.ax1.legend([self.depletion_output_label.text(), "Experiment"], title="$D(t)=A*(1-e^{-K_{ON}*E})$")
             self.ax0.ticklabel_format(axis="y", style="sci", scilimits=(0, 0))
             animated_artist = (
                 self.ax0_plot["resOn"],
@@ -275,29 +302,23 @@ class depletionplot:
         N = self.N_slider.value()
         Na0 = self.Na_slider.value()
         Nn0 = self.Nn_slider.value()
-
         self.runFit(Koff, Kon, N, Na0, Nn0, plot=False)
         self.ax0_plot["resOn"].set_ydata(self.fitOn)
         self.ax0_plot["resOff"].set_ydata(self.fitOff)
-        # self.fit_plot.set_ydata(self.depletion_fitted)
         self.relativeFit_plot.set_ydata(self.relative_abundance)
         self.blit.update()
-        # self.saveFile(show=False)
 
     def get_timescan_data(self):
 
         self.time = {"resOn": [], "resOff": []}
         self.counts = {"resOn": [], "resOff": []}
-
         self.error = {"resOn": [], "resOff": []}
-
         self.ax0_plot: dict[str, Line2D] = {}
 
         for index, scanfile, i in zip(["resOn", "resOff"], [self.resOnFile, self.resOffFile], [0, 1]):
 
             self.timescan_data = timescanplot(scanfile)
             self.timescan_data.compute_data()
-
             time = self.timescan_data.time / 1000  # ms to s
             ind = np.where(self.timescan_data.error == 0)
             self.timescan_data.error[ind] = 1e-5
@@ -328,9 +349,7 @@ class depletionplot:
                 bounds=[(-np.inf, 0), (np.inf, N_init * 2)],
             )
         except Exception as error:
-
-            print("Error occured in N_OFF fit with sigma error", error)
-
+            print("Error occured in N_OFF fit with sigma error", error, flush=True)
             pop_off, popc_off = curve_fit(
                 self.N_OFF,
                 self.power["resOff"],
@@ -341,8 +360,8 @@ class depletionplot:
 
         perr_off = np.sqrt(np.diag(popc_off))
         Koff, N = pop_off
-
         self.Koff_err, self.N_err = perr_off
+
         if auto_plot:
             return Koff, N
 
@@ -366,7 +385,7 @@ class depletionplot:
                 bounds=[(0, 0, -np.inf), (N, N * 2, np.inf)],
             )
         except Exception as error:
-            print("Error occured in N_ON fit with sigma error", error)
+            print("Error occured in N_ON fit with sigma error", error, flush=True)
             pop_on, popc_on = curve_fit(
                 self.N_ON,
                 self.power["resOn"],
@@ -455,24 +474,22 @@ class depletionplot:
         )
 
         perr_depletion = np.sqrt(np.diag(popc_depletion))
-
-        A = pop_depletion
-        A_err = perr_depletion
+        A = pop_depletion[0]
+        A_err = perr_depletion[0]
         self.uA = uf(A, A_err)
-        self.depletion_output_label.setText(f"A: {self.uA:.2uP}")
-        # print(f"A: {self.uA:.3uP}")
-
+        self.depletion_output_label.setText(f"A = {self.uA:.2f}")
         self.relative_abundance = self.Depletion(self.fitX, A)
 
         if plot:
-            # (["Fitted", f"A: {self.uA:.1uP}", "Experiment"])
             self.ax1.errorbar(
                 self.power["resOn"], self.depletion_exp, fmt="k.", yerr=self.depletion_exp_err, label="Experiment"
             )
-
-            # self.fit_plot, = self.ax1.plot(self.fitX, self.depletion_fitted, animated=True, label="Fitted")
             (self.relativeFit_plot,) = self.ax1.plot(
-                self.fitX, self.relative_abundance, "-k", animated=True, label=f"A: {self.uA:.1uP}"
+                self.fitX,
+                self.relative_abundance,
+                "-k",
+                animated=True,
+                label=self.depletion_output_label.text(),
             )
 
 
