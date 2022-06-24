@@ -799,18 +799,16 @@ class felionQtWindow(QtWidgets.QMainWindow):
         controllerLayout.addWidget(self.YlogScaleWidget)
 
         controllerLayout.addWidget(self.minorticks_controller_widget)
-        # controllerLayout.setAlignment(Qt.AlignmentFlag.AlignLeft)
-
         self.controlLayout.addLayout(controllerLayout)
 
     def set_bound_controller_values(self):
         def set_min_max_val(widget: QtWidgets.QDoubleSpinBox, val: float):
 
-            # if val < 0:
-            #     return
             factor = 10 if val <= 0 else val * 10
+
             _min = val - factor
             _max = val + factor
+            print(f"{_min=}, {_max=}, {val=}, {factor=}", flush=True)
 
             widget.setMinimum(_min)
             widget.setMaximum(_max)
@@ -1044,7 +1042,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         if optimize:
             self.optimize_figure()
 
-    def optimize_figure(self):
+    def optimize_figure(self, setBound=True):
         labelsize = self.tick_label_fontsize_controller_widget.value()
         fontsize: int = self.titleFontWidget.value()
         self.update_tick_params()
@@ -1066,15 +1064,16 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
             legend_title = legend.get_title()
             legend_title.set_fontsize(labelsize)
+
             for legend_txt in legend.get_texts():
                 legend_txt.set_fontsize(labelsize - 1)
 
             self.draw()
 
         self.minorticks_controller_widget.setChecked(True)
-
         self.update_figure_label_widgets_values()
-        self.set_bound_controller_values()
+        if setBound:
+            self.set_bound_controller_values()
         self.updateFigsizeDetails()
 
     def createControlLayout(self, axes: tuple[Axes, ...] = (), attachControlLayout=True, optimize=False) -> None:

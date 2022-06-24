@@ -119,6 +119,11 @@ def plot_thz(widget: felionQtWindow=None, save_dat=True, tkplot=False):
         filename = pt(filename)
         freq, depletion_counts, steps, iteraton, resOffCounts, resOnCounts, freq_resOff = thz_plot(filename)
         
+        print(f"{freq.min()=}", flush=True)
+        lg = f"{filename.name} [{steps} KHz : {iteraton} cycles]"
+        if tkplot:
+            (line_handler[lg], ) = widget.ax.plot(freq, depletion_counts, label=lg)
+            
         xs = np.append(xs, freq)
         ys = np.append(ys, depletion_counts)
         
@@ -126,10 +131,6 @@ def plot_thz(widget: felionQtWindow=None, save_dat=True, tkplot=False):
         if i >= int(len(colors)/2):
             i = c
             c += 1
-        lg = f"{filename.name} [{steps} KHz : {iteraton} cycles]"
-
-        # if tkplot:
-        #     (line_handler[lg], ) = widget.ax.plot(freq, depletion_counts, label=lg)
         
         dataToSend["thz"]["individual"][f"{filename.name}"] = {
             "x": list(freq), "y": list(depletion_counts), "name": lg, 
@@ -271,7 +272,7 @@ def thz_function():
         
         widget.ax.xaxis.set_major_formatter(plticker.StrMethodFormatter("{x:.3f}"))
         
-        widget.optimize_figure()
+        widget.optimize_figure(setBound=False)
         widget.fig.tight_layout()
         widget.qapp.exec()
 
