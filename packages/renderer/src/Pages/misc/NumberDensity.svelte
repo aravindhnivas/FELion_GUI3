@@ -71,9 +71,9 @@
         datafromPython = await computePy_func(
             {e, pyfile: 'numberDensity', args}
         )
-
         const nHe = dispatch_current_numberdensity()
         return Promise.resolve(nHe)
+
     }
     export const get_datas = () => {
         return {...args, ...datafromPython }
@@ -82,11 +82,14 @@
     const dispatch = createEventDispatcher();
 
     const dispatch_current_numberdensity = () => {
-        const nHe = includeTranspiration ? datafromPython['nHe_transpiration'] : datafromPython['nHe']
+
+        if(!datafromPython) return
+        const nHe = includeTranspiration ? datafromPython?.['nHe_transpiration'] : datafromPython?.['nHe']
         dispatch('getValue', {nHe})
         return nHe
     }
 
+    $: window.db.set('calibration_factor', Number(calibration_factor[0]))
 </script>
 
 <div class="align h-center">
@@ -159,12 +162,6 @@
             <div class="border__div">
                 <Textfield disabled={srgMode}
                     bind:value={calibration_factor[0]}
-                    on:keyup={(e)=>{
-                        if(srgMode) return
-                        const {value} = e.target
-                        window.db.set('calibration_factor', Number(value))
-
-                    }}
                     label="Calibration Factor"
                 />
 
@@ -236,15 +233,13 @@
                     label="F (Degree of thermal transpiration)"
                 />
             </div>
-
         </div>
     </div>
-</div>
 
+</div>
 <style>
     .scroll {
-        overflow-y: auto;
-        height: 100%;
+        overflow-y: auto; height: 100%;
     }
     .border__div {
         gap: 1em;
