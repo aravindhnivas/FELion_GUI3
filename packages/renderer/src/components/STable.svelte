@@ -1,24 +1,23 @@
-<script context="module">
+<!-- <script context="module">
     export let fullTableData = []
-</script>
-
+</script> -->
 <script lang="ts">
     import DataTable, { Head, Body, Row, Cell } from '@smui/data-table'
     import { uniqBy } from 'lodash-es'
-    import { onMount } from 'svelte'
+    import { createEventDispatcher, onMount } from 'svelte'
     export let idKey: string = 'id'
     export let rowKeys: string[] = null
     export let rows = []
     export let headKeys: string[] = null
 
     export let closeableRows = false
-    export let preserveData = false
+    // export let preserveData = false
     export let includeIndex = true
 
-    $: if (preserveData) {
-        fullTableData = uniqBy([...fullTableData, ...rows], 'freq')
-        rows = [...fullTableData]
-    }
+    // $: if (preserveData) {
+    //     fullTableData = uniqBy([...fullTableData, ...rows], 'freq')
+    //     rows = [...fullTableData]
+    // }
 
     let mounted = false
     onMount(() => {
@@ -31,6 +30,8 @@
         }
         mounted = true
     })
+
+    const dispatch = createEventDispatcher()
 </script>
 
 {#if mounted}
@@ -50,8 +51,9 @@
                             style="background-color: var(--color-danger);"
                             on:click={() => {
                                 if (rows.length === 0) return window.createToast('Table is empty', 'warning')
-                                rows = fullTableData = []
+                                rows = []
                                 window.createToast('Table cleared', 'danger')
+                                dispatch('tableCleared')
                             }}>Clear Table</button
                         ></Cell
                     >
