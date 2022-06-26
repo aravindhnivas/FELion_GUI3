@@ -48,13 +48,12 @@
     let showTheory = true
     let theoryLocation = window.db.get('theoryLocation') || currentLocation
 
-    ///////////////////////////////////////////////////////////////////////
-
     $: graphPlotted = $felixGraphPlotted || $OPOGraphPlotted
+    $: console.log({ graphPlotted, $OPOGraphPlotted, $felixGraphPlotted })
     let overwrite_expfit = true
     let writeFile = true
     let OPOfilesChecked = []
-    let writeFileName = ''
+    let writeFileName = 'average_normline.dat'
     let keepTable = true
 
     $: plottedFiles = $opoMode

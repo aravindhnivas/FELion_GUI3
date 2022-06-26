@@ -1,19 +1,40 @@
 <script lang="ts">
+    import { onMount } from 'svelte'
+
     export let options = []
     export let label = ''
     export let value = ''
     export let multiple = false
+
     export let update = null
     export let auto_init = false
+    export let lookIn: string = ''
+    export let lookFor: string = '*'
 
     $: if (!value && auto_init && options.length > 0) {
         value = options[0]
     }
+
+    onMount(() => {
+        if (lookIn) {
+            update = () => {
+                console.log(lookIn, lookFor)
+                if (!window.fs.isDirectory(lookIn)) return window.createToast('Invalid path', 'danger')
+                options = window.fs.readdirSync(lookIn).filter((n) => n.endsWith(lookFor))
+                console.log(options)
+            }
+            update()
+            value = options[0] || ''
+        }
+    })
+
+    // $: {
+    //     options = options.includes(value) ? options : value ? [value, ...options] : options
+    // }
 </script>
 
 <div class="container">
     <span style="font-size: small;">{label}</span>
-    <!-- <HelperText>{label}</HelperText> -->
     <div class:contanier-with-icon={update}>
         <div class="select" class:is-multiple={multiple}>
             {#if multiple}
@@ -24,16 +45,14 @@
                 </select>
             {:else}
                 <select bind:value {label} on:change on:click on:dblclick>
-                    <!-- <optgroup {label}> -->
                     {#each options as option}
                         <option value={option}>{option}</option>
                     {/each}
-                    <!-- </optgroup> -->
                 </select>
             {/if}
         </div>
 
-        {#if update}
+        {#if update || lookIn}
             <i
                 class="material-icons animate__animated animate__faster"
                 on:animationend={(event) => event?.target?.classList.remove('animate__rotateIn')}

@@ -87,13 +87,13 @@
             $OPOGraphPlotted = true
         }
     } else if (updateplot) {
-        console.log({ $showall, plotfile })
         plotIndividualDataIntoGraph({
             fullData,
             plotfile,
             graphPlotted: $OPOGraphPlotted,
             delta: deltaOPO,
         })
+        $OPOGraphPlotted = true
     }
 </script>
 

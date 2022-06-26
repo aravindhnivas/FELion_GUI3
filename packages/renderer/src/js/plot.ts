@@ -36,8 +36,8 @@ export function plot(
     const pad = graphPlottedLists[get(activePage)] ? 16 : 32
     const width = graph_container?.clientWidth - (current_graph_detached ? 0 : pad)
     
-    console.log(graph_container, width)
-    console.log({ graph_detached })
+    // console.log(graph_container, width)
+    // console.log({ graph_detached })
 
     let dataLayout = {
         title: mainTitle,

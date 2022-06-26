@@ -13,7 +13,7 @@
         felixAnnotationColor,
         expfittedLinesCollectedData,
     } from '../../functions/svelteWritables'
-    import Textfield from '@smui/textfield'
+    // import Textfield from '@smui/textfield'
     import { savefile, loadfile } from '../../functions/misc'
     import { NGauss_fit_func } from '../../functions/NGauss_fit'
     import { exp_fit_func } from '../../functions/exp_fit'
@@ -21,8 +21,7 @@
     import { dropRight, sortBy } from 'lodash-es'
     import computePy_func from '$src/Pages/general/computePy'
     import CustomSwitch from '$components/CustomSwitch.svelte'
-
-    // //////////////////////////////////////////////////////////////////////
+    import TextAndSelectOptsToggler from '$components/TextAndSelectOptsToggler.svelte'
     // //////////////////////////////////////////////////////////////////////
 
     export let writeFile
@@ -123,7 +122,7 @@
         adjustPeakTrigger = false
     }
 
-    function plotData({ e = null, filetype = 'exp_fit', general = {pyfile: '', args: ''} } = {}) {
+    function plotData({ e = null, filetype = 'exp_fit', general = { pyfile: '', args: '' } } = {}) {
         if (filetype == 'general') {
             const { pyfile, args } = general
             computePy_func({ pyfile, args, general: true })
@@ -226,7 +225,7 @@
 
 {#if toggleFindPeaksRow}
     <div class="align v-baseline">
-        <div class="align" style="align-items: baseline;">
+        <div class="align">
             <i class="material-icons" on:click={() => (modalActivate = true)}>settings</i>
             <CustomSwitch bind:selected={boxSelected_peakfinder} label="limited range" />
             <button
@@ -236,7 +235,15 @@
             >
                 Fit
             </button>
-            <Textfield bind:value={savePeakfilename} label="savefile" />
+
+            <TextAndSelectOptsToggler
+                bind:value={savePeakfilename}
+                label="savefile"
+                lookIn={$felixopoLocation}
+                lookFor=".json"
+                autoUpdate={true}
+                auto_init={true}
+            />
 
             <button class="button is-link" on:click={() => savefile({ file: $felixPeakTable, name: savePeakfilename })}>
                 Save peaks

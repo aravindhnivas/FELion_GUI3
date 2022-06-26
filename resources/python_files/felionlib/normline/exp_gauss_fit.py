@@ -112,7 +112,7 @@ def main(args, getvalue=False):
         with open(fullfit_file, ("a+", "w+")[overwrite]) as f:
             for _wn, _inten in zip(wn, fit_data): f.write(f"{_wn:.4f}\t{_inten:.4f}\n")
         
-        writeFileName = args["writeFileName"]
+        writeFileName = pt(args["writeFileName"]).stem
         
         if writeFileName != "":
             print(f"Writing custom file {writeFileName}")
@@ -132,7 +132,6 @@ def main(args, getvalue=False):
                 f.writelines(fileread)
 
             if felix:
-                writeFileName_datfile = datfile_location/f"{writeFileName}.dat"
                 writeFileName_datfile = datfile_location/f"{writeFileName}.dat"
                 datfile = datfile_location/f"{filename.stem}.dat"
 

@@ -52,25 +52,24 @@
     export let graphPlotted = false
     export let activateConfigModal = false
 
-    ////////////////////////////////////////////////////////////////////////////
     const dispatch = createEventDispatcher()
     async function browse_folder() {
         const [result] = await browse()
         if (!result) return
-
         currentLocation = result
         window.db.set(`${filetype}_location`, currentLocation)
     }
+
     onMount(() => {
         graphPlotted = false
         console.log(id, 'mounted')
-
         currentLocation = <string>window.db.get(`${filetype}_location`) || ''
         graph_detached[id] = false
     })
 
     let graphDivContainer
     let graphDivs = []
+
     const lookForGraph = (node) => {
         try {
             graphDivs = Array.from(document.querySelectorAll(`#${filetype}-plotContainer .graph__div`))
@@ -81,6 +80,7 @@
 
     let graphWindow
     let graphwindowClosed = false
+
     function openGraph() {
         graphwindowClosed = false
         graphWindow = new WinBox({
@@ -100,20 +100,19 @@
                 graph_detached[id] = false
             },
         })
+
         graphWindow?.maximize(true)
         changeGraphDivWidth()
+
         graph_detached[id] = true
     }
 
     $: if (graphwindowClosed) {
-        console.log('graphwindowClosed')
         changeGraphDivWidth()
     }
 
     const changeGraphDivWidth = async (event?: CustomEvent) => {
-        console.log('Updating graphDivs width')
         await tick()
-
         graphDivs?.forEach((id) => {
             if (!id?.data) return
             relayout(id, { width: id.clientWidth })
@@ -125,6 +124,7 @@
         console.log(id, 'destroyed')
     })
     let location = (window.db.get(`${filetype}_location`) as string) || ''
+    $: console.log({ graphPlotted })
 </script>
 
 <section {id} style:display class="animate__animated animate__fadeIn">

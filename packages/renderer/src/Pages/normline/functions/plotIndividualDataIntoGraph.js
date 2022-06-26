@@ -19,10 +19,6 @@ export const mapNormMethodKeys = {
 }
 
 export default function ({ fullData, plotfile, graphPlotted, delta }) {
-    // dataFromPython --> {SA, base, pow, average, average_rel, average_per_photon}
-    // SA -> {filename, filename_fit}; base -> {filename_base, filename_line}; pow -> {filename.stem.pow}
-    // average, average_rel, average_per_photon -> {filename}
-
     const data = fullData.data || null
     if (!data) return window.createToast('No data for ' + plotfile, 'danger')
     if (!data.average?.[plotfile]) return console.warn(plotfile, 'data is not available', data)
@@ -65,22 +61,20 @@ export default function ({ fullData, plotfile, graphPlotted, delta }) {
             )
         }
     }
-    const dataToPlot = {}
 
+    const dataToPlot = {}
     for (const key of ['average', 'average_rel', 'average_per_photon']) {
         const addData = {}
         addData[plotfile] = { ...data[key][plotfile], showlegend: true }
         dataToPlot[key] = addData
     }
-
     if (graphPlotted) {
         const currentKey = mapNormMethodKeys[get(normMethod)]
         const currentData = get_data(dataToPlot[currentKey])
         const { layout } = get(normMethodDatas)[get(normMethod)]
         react(get(graphDiv), currentData, layout)
-        console.log({ dataToPlot })
+
     } else {
-        console.log('New graph: ')
         const fn = get(opoMode) ? opofile_func : felix_func
         fn({ dataFromPython: dataToPlot, delta })
         graphPlotted = true
