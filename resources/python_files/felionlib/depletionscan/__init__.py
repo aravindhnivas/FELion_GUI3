@@ -1,4 +1,5 @@
 # Built-In modules
+from dataclasses import dataclass, field
 import traceback
 from pathlib import Path as pt
 from matplotlib.axes import Axes
@@ -14,32 +15,40 @@ from felionlib.utils.felionQt.utils.blit import BlitManager
 np.seterr(all="ignore")
 
 
+@dataclass
 class depletionplot:
-    def __init__(
-        self,
-        location: str,
-        resOnFile: pt,
-        resOffFile: pt,
-        power: np.ndarray,
-        nshots: int = 10,
-        massIndex: int = 0,
-        timestartIndex: int = 1,
-        saveOutputDepletion: bool = True,
-    ):
+    # def __init__(
+    # self,
+    location: str
+    resOnFile: pt
+    resOffFile: pt
+    power: np.ndarray
+    nshots: int = 10
+    massIndex: int = 0
+    timestartIndex: int = 1
+    saveOutputDepletion: bool = True
+    depletionplot_figure_kwargs: dict = field(default=dict)
+    depletion_exp = None
+    widget = felionQtWindow
+    # ):
+
+    def __post_init__(self):
+
         try:
 
-            self.location = pt(location).resolve()
+            self.location = pt(self.location).resolve()
             self.scanfiles = list(self.location.glob("*.scan"))
 
-            self.resOnFile = resOnFile
-            self.resOffFile = resOffFile
+            # self.resOnFile = resOnFile
+            # self.resOffFile = resOffFile
 
-            self.power: dict[str, float] = {"resOn": power[0] / 1000, "resOff": power[1] / 1000}  # mJ to J
-            self.powerStr = f"{power[0]}, {power[1]}"
+            print(self.depletionplot_figure_kwargs, flush=True)
+            self.power = {"resOn": self.power[0] / 1000, "resOff": self.power[1] / 1000}  # mJ to J
+            self.powerStr = f"{self.power['resOn']}, {self.power['resOn']}"
 
-            self.nshots = nshots
-            self.massIndex = massIndex
-            self.timestartIndex = timestartIndex
+            # self.nshots = nshots
+            # self.massIndex = massIndex
+            # self.timestartIndex = timestartIndex
 
             self.widget = felionQtWindow(
                 title=f"Depletion Plot: ON ({self.resOnFile.name}), OFF ({self.resOffFile.name})",
@@ -49,10 +58,10 @@ class depletionplot:
             )
 
             self.create_figure()
-            self.depletion_exp = None
+            # self.depletion_exp = None
 
             self.startPlotting()
-            if saveOutputDepletion and self.depletion_exp is not None:
+            if self.saveOutputDepletion and self.depletion_exp is not None:
                 self.saveFile(show=False)
             # self.widget.attachControlLayout()
 
@@ -65,8 +74,8 @@ class depletionplot:
 
     def create_figure(self):
 
-        # self.widget.fig.suptitle("Depletion Scan")
-        axes: tuple[Axes, Axes] = self.widget.fig.subplots(1, 2)
+        rows, cols = self.depletionplot_figure_kwargs["rows_cols"].split(",")
+        axes: tuple[Axes, Axes] = self.widget.fig.subplots(int(rows), int(cols), sharex=True)
         self.widget.createControlLayout(axes)
         self.ax0, self.ax1 = axes
 
@@ -114,7 +123,7 @@ class depletionplot:
         update_legend_button = QtWidgets.QPushButton("Update label")
 
         def update_legend_ax0():
-            self.ax1.legend([self.depletion_output_label.text(), "Experiment"], title="$D(t)=A*(1-e^{-K_{ON}*E})$")
+            self.ax1.legend([self.depletion_output_label.text(), "Experiment"])
             self.widget.draw()
 
         update_legend_button.clicked.connect(update_legend_ax0)
@@ -239,16 +248,17 @@ class depletionplot:
         self.fileInfo = (
             f"\nMass: {self.timescan_data.mass[0]}u, Res: {self.timescan_data.t_res}V, B0: {self.timescan_data.t_b0}ms"
         )
+
         title = f"ON:{self.resOnFile.name}. OFF:{self.resOffFile.name}"
         title += self.fileInfo
         # self.widget.fig.suptitle(title, fontsize=7)
         self.ax0.set(ylabel="Counts")
 
         self.ax1.set(
-            title="$D(t)=A*(1-e^{-K_{ON}*(ntE)})$",
+            # title="$D(t)=A \cdot (1-e^{-K_{ON} \cdot E})$",
             ylabel="A: Active isomer",
         )
-        self.widget.fig.supxlabel("Total energy (J)", y=0.02)
+        self.widget.fig.supxlabel("Total energy E (J)", y=0.02)
         Koff, N = self.resOff_fit()
         Na0, Nn0, Kon = self.resOn_fit(Koff, N)
 
@@ -269,13 +279,13 @@ class depletionplot:
         uNn0 = uf(Nn0, self.Nn0_err)
         uKon = uf(Kon, self.Kon_err)
 
-        self.lg0 = "Laser ON"
+        self.lg0 = "Radiation ON"
 
         self.write_lg0 = "K$_{ON}$: " + f"{uKon:.2uP}"
         self.write_lg0 += f"\nNn: {Nn0:.0f}({self.Nn0_err:.0f})"
         self.write_lg0 += f"\nNa: {Na0:.0f}({self.Na0_err:.0f})"
 
-        self.lg1 = "Laser OFF"
+        self.lg1 = "Radiation OFF"
 
         self.write_lg1 = "K$_{OFF}$: " + f"{uKoff:.1uP}"
         self.write_lg1 = f"\nN: {N:.0f}({self.N_err:.0f})"
@@ -285,8 +295,8 @@ class depletionplot:
 
         if plot:
             self.ax0.legend([self.lg0, self.lg1])
-            self.ax1.legend([self.depletion_output_label.text(), "Experiment"], title="$D(t)=A*(1-e^{-K_{ON}*E})$")
-            self.ax0.ticklabel_format(axis="y", style="sci", scilimits=(0, 0))
+            self.ax1.legend([self.depletion_output_label.text(), "Experiment"])
+            # self.ax0.ticklabel_format(axis="y", style="sci", scilimits=(0, 0))
             animated_artist = (
                 self.ax0_plot["resOn"],
                 self.ax0_plot["resOff"],
@@ -306,6 +316,7 @@ class depletionplot:
         self.ax0_plot["resOn"].set_ydata(self.fitOn)
         self.ax0_plot["resOff"].set_ydata(self.fitOff)
         self.relativeFit_plot.set_ydata(self.relative_abundance)
+
         self.blit.update()
 
     def get_timescan_data(self):
@@ -313,6 +324,7 @@ class depletionplot:
         self.time = {"resOn": [], "resOff": []}
         self.counts = {"resOn": [], "resOff": []}
         self.error = {"resOn": [], "resOff": []}
+
         self.ax0_plot: dict[str, Line2D] = {}
 
         for index, scanfile, i in zip(["resOn", "resOff"], [self.resOnFile, self.resOffFile], [0, 1]):
@@ -320,13 +332,16 @@ class depletionplot:
             self.timescan_data = timescanplot(scanfile)
             self.timescan_data.compute_data()
             time = self.timescan_data.time / 1000  # ms to s
+
             ind = np.where(self.timescan_data.error == 0)
             self.timescan_data.error[ind] = 1e-5
+
             self.time[index] = np.array(time[self.timestartIndex :])
             self.counts[index] = np.array(self.timescan_data.mean[self.massIndex][self.timestartIndex :])
             self.error[index] = np.array(self.timescan_data.error[self.massIndex][self.timestartIndex :])
             self.power[index] = np.array((self.power[index] * self.nshots * self.time[index]))
-            self.ax0.errorbar(self.power[index], self.counts[index], yerr=self.error[index], fmt=f".k")
+
+            self.ax0.errorbar(self.power[index], self.counts[index], yerr=self.error[index], fmt=f".")
 
         self.size = len(self.time["resOn"]) * 3
 
@@ -436,8 +451,8 @@ class depletionplot:
 
         if plot:
             # for index, fitY, i in zip(["resOn", "resOff"], [self.fitOn, self.fitOff], [0, 1]):
-            (self.ax0_plot["resOn"],) = self.ax0.plot(self.fitX, self.fitOn, f"-k", animated=True, label=self.lg0)
-            (self.ax0_plot["resOff"],) = self.ax0.plot(self.fitX, self.fitOff, f"--k", animated=True, label=self.lg1)
+            (self.ax0_plot["resOn"],) = self.ax0.plot(self.fitX, self.fitOn, f"C0", animated=True, label=self.lg0)
+            (self.ax0_plot["resOff"],) = self.ax0.plot(self.fitX, self.fitOff, f"C1", animated=True, label=self.lg1)
 
     def Depletion(self, x, A):
 
@@ -494,7 +509,6 @@ class depletionplot:
 
 
 def main(arguments):
-
     location: str = arguments["currentLocation"]
     resOnFile: pt = pt(location) / arguments["resON_Files"]
     resOffFile: pt = pt(location) / arguments["resOFF_Files"]
@@ -503,5 +517,16 @@ def main(arguments):
     massIndex = int(arguments["massIndex"])
     timestartIndex = int(arguments["timestartIndex"])
     saveOutputDepletion = arguments["saveOutputDepletion"]
+    depletionplot_figure_kwargs = arguments["$depletionplot_figure_kwargs"]
 
-    depletionplot(location, resOnFile, resOffFile, power, nshots, massIndex, timestartIndex, saveOutputDepletion)
+    depletionplot(
+        location,
+        resOnFile,
+        resOffFile,
+        power,
+        nshots,
+        massIndex,
+        timestartIndex,
+        saveOutputDepletion,
+        depletionplot_figure_kwargs,
+    )

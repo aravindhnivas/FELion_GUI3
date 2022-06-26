@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import Textfield from '@smui/textfield'
     import Layout from '$components/Layout.svelte'
     import ButtonBadge from '$components/ButtonBadge.svelte'
@@ -8,7 +8,13 @@
     import { relayout } from 'plotly.js/dist/plotly-basic'
     import { cloneDeep } from 'lodash-es'
     import computePy_func from '$src/Pages/general/computePy'
+    import MenuSurface from '@smui/menu-surface'
+
+    import type { MenuSurfaceComponentDev } from '@smui/menu-surface'
+    import { persistentWritable } from '$src/js/persistentStore'
+
     /////////////////////////////////////////////////////////////////////////
+    let surface: MenuSurfaceComponentDev
 
     // Initialisation
     const filetype = 'scan'
@@ -55,6 +61,7 @@
                 reduceData[data][innerData] = newData
             })
         })
+
         return cloneDeep(reduceData)
     }
 
@@ -68,6 +75,7 @@
                 return window.createToast('No files selected', 'danger')
             }
         }
+
         const depletionArgs = {
             currentLocation,
             resON_Files,
@@ -77,6 +85,7 @@
             massIndex,
             timestartIndex,
             saveOutputDepletion,
+            $depletionplot_figure_kwargs,
         }
 
         const pyfileInfo = {
@@ -144,11 +153,11 @@
         }
     }
 
-    // let kineticMode = false;
     let kineticData = {}
 
     async function updateData() {
         kineticData = sliceData(timescanData)
+
         fileChecked.forEach((file) => {
             plot(
                 `Timescan Plot: ${file}`,
@@ -163,6 +172,8 @@
 
     let saveOutputDepletion = true
     let display = window.db.get('active_tab') === id ? 'block' : 'none'
+
+    const depletionplot_figure_kwargs = persistentWritable('depletionplot_figure_kwargs', { rows_cols: '1, 2' })
 </script>
 
 <Layout {filetype} {graphPlotted} {id} {display} bind:currentLocation bind:fileChecked on:chdir={dir_changed}>
@@ -192,11 +203,26 @@
         <div class="align animate__animated animate__fadeIn" class:hide={toggleRow}>
             <CustomSelect bind:value={resON_Files} label="ResOn" options={fullfiles} />
             <CustomSelect bind:value={resOFF_Files} label="ResOFF" options={fullfiles} />
+
             <Textfield bind:value={power} label="Power (ON, OFF) [mJ]" />
+
             <Textfield type="number" bind:value={nshots} label="FELIX Hz" />
             <Textfield type="number" bind:value={massIndex} label="Mass Index" />
             <Textfield type="number" bind:value={timestartIndex} label="Time Index" />
             <CustomSwitch bind:selected={saveOutputDepletion} label="save_output" />
+
+            <div class="figure_controller__div">
+                <MenuSurface
+                    class="p-3"
+                    style="background: var(--background-color); min-width: 200px;"
+                    bind:this={surface}
+                    anchorCorner="BOTTOM_START"
+                >
+                    <Textfield bind:value={$depletionplot_figure_kwargs['rows_cols']} label="subplot (rows, cols)" />
+                </MenuSurface>
+
+                <i class="material-icons" on:click={() => surface.setOpen(true)}>settings</i>
+            </div>
             <ButtonBadge on:click={(e) => plotData({ e: e, filetype: 'general' })}>Submit</ButtonBadge>
         </div>
     </svelte:fragment>
