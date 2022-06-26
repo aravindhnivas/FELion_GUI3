@@ -1,3 +1,5 @@
 # FELionGUI v3
+
 ----------------------
-- FELION Spectrum analyser for FELIX DATA
+
+- FELion Spectrum analyser for FELIX DATA
