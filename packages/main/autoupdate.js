@@ -2,6 +2,7 @@ import { BrowserWindow, dialog, app, ipcMain } from 'electron'
 import { autoUpdater } from 'electron-updater'
 import logger from 'electron-log'
 
+
 const mainWindow = BrowserWindow.getAllWindows()[0]
 autoUpdater.logger = logger
 autoUpdater.logger.transports.file.level = 'info'

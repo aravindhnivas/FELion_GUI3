@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import {
         pyVersion,
         pythonpath,
@@ -9,7 +9,7 @@
     } from './settings/svelteWritables'
     import { updateInterval } from '$src/sveltewritables'
     import { activateChangelog } from '../js/functions'
-    import { getPyVersion, resetPyConfig, updatePyConfig } from './settings/checkPython'
+    import { getPyVersion, resetPyConfig } from './settings/checkPython'
 
     import Textfield from '@smui/textfield'
     import { onMount, onDestroy } from 'svelte'
@@ -19,8 +19,8 @@
     import { checkTCP, fetchServerROOT } from './settings/serverConnections'
 
     let pyError = ''
-    let mounted = false
-    let updateError = window.db.get('updateError') || ''
+    // let mounted = false
+    let updateError = <string>window.db.get('updateError') || ''
     let updateIntervalCycle
     let selected = window.db.get('settingsActiveTab') || 'Configuration'
     let unsubscribers = []
@@ -38,11 +38,11 @@
         }
     })
 
-    unsubscribers[1] = window.db.onDidChange('updateError', (err) => {
+    unsubscribers[1] = window.db.onDidChange('updateError', (err: string) => {
         updateError = err
     })
 
-    unsubscribers[2] = window.db.onDidChange('delayupdate', (delay) => {
+    unsubscribers[2] = window.db.onDidChange('delayupdate', (delay: number) => {
         if (delay) {
             if (updateIntervalCycle) {
                 clearInterval(updateIntervalCycle)
@@ -63,22 +63,19 @@
                 await getPyVersion()
                 console.warn($pyVersion)
             }
-
-            $pyServerReady = window.db.get('pyServerReady')
+            $pyServerReady = <boolean>window.db.get('pyServerReady')
         } catch (error) {
             pyError = error
         } finally {
-            mounted = true
             serverInfo += `>> pyVersion: ${$pyVersion}\n`
             if ($pyServerReady) {
                 await updateServerInfo()
             }
-            if (env.DEV) return
-
+            if (import.meta.env.DEV) return
             updateIntervalCycle = setInterval(updateCheck, $updateInterval * 60 * 1000)
         }
     })
-
+    // console.log('meta', import.meta.env)
     let updating = false
 
     unsubscribers[3] = window.db.onDidChange('update-status', (status) => {
@@ -106,7 +103,7 @@
     })
 
     function updateCheck(event = null) {
-        if (env.DEV) return console.info('Cannot update in DEV mode')
+        if (import.meta.env.DEV) return console.info('Cannot update in DEV mode')
 
         try {
             if (!navigator.onLine) {
@@ -114,7 +111,7 @@
                     return window.createToast('No Internet Connection!', 'warning')
                 }
             }
-            checkupdate()
+            window.checkupdate()
         } catch (error) {
             if (event) window.handleError(error)
         }

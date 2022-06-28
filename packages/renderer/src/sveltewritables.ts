@@ -31,7 +31,7 @@ function openModalStore() {
 export const mainPreModal = openModalStore()
 export const activePage = writable('')
 export const running_processes = writable([])
-export const updateInterval = writable(window.db.get('updateInterval'))
+export const updateInterval = writable(<number>window.db.get('updateInterval'))
 if (!window.db.has('updateInterval')) {
     window.db.set('updateInterval', 15)
 }

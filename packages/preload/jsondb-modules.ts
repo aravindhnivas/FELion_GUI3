@@ -17,27 +17,27 @@ ipcRenderer.on('db:update', (_event, { key, value }) => {
     console.info('db:update', { key, value })
 })
 
-type ValueType = string | number | boolean
+// type ValueType = string | number | boolean
 
 export const dbObject = {
     get(key: string)  {
-        const output = <ValueType>db.get(key) ?? ''
+        const output = db.get(key) ?? ''
         return output
     },
     has(key: string) {
         return db.has(key)
     },
-    set(key: string, value: ValueType) {
+    set(key: string, value) {
         return db.set(key, value)
     },
     delete(key: string) {
         return db.delete(key)
     },
-    store: () => {return db.store as {[name: string]: ValueType} || {}},
+    store: () => {return db.store || {}},
     clear: () => db.clear(),
     reset: () => db.reset(),
     path: db.path,
-    onDidChange: (key: string, callback: (value: ValueType)=> {}) => db.onDidChange(key, callback),
+    onDidChange: (key: string, callback: (value) => void ) => db.onDidChange(key, callback),
     onDidAnyChange: (callback) => db.onDidAnyChange(callback),
 }
 

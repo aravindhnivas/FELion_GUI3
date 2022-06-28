@@ -17,7 +17,7 @@
     import Test from './Pages/Test.svelte'
 
     const navItems = ['Home', 'Normline', 'Masspec', 'Timescan', 'THz', 'Kinetics', 'Powerfile', 'Misc', 'Settings']
-    if (window.env.MODE === 'development') {
+    if (import.meta.env.MODE === 'development') {
         navItems.push('Test')
     }
     const toastOpts = { reversed: true, intro: { y: 100 } }
@@ -42,7 +42,7 @@
         <Masspec />
         <Timescan />
         <THz />
-        {#if window.env.MODE === 'development'}
+        {#if import.meta.env.MODE === 'development'}
             <Test />
         {/if}
         <Kinetics />
