@@ -12,6 +12,8 @@
     export let data_loaded = false
 
     export let dataToSave
+
+    console.log({ filename, configDir })
     const toastOpts = {
         target: 'left',
     }
@@ -107,8 +109,8 @@
     <TextAndSelectOptsToggler
         bind:value={filename}
         label={`config file (*${options_filter})`}
-        options={config_filelists}
-        update={readConfigDir}
+        lookFor={'.channels.json'}
+        lookIn={configDir}
     />
     <button class="button is-link" on:click={save_data}>Save</button>
 </div>

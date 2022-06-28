@@ -16,15 +16,18 @@
     }
 
     onMount(() => {
+        // console.log({ value })
         if (lookIn) {
-            update = () => {
+            update = (toast = true) => {
                 console.log(lookIn, lookFor)
                 if (!window.fs.isDirectory(lookIn)) return window.createToast('Invalid path', 'danger')
                 options = window.fs.readdirSync(lookIn).filter((n) => n.endsWith(lookFor))
+                if (toast) window.createToast(`Found ${options.length} files`, 'success')
                 console.log(options)
             }
-            update()
-            value = options[0] || ''
+            update(false)
+            value ||= options[0]
+            // console.log({ value })
         }
     })
 
