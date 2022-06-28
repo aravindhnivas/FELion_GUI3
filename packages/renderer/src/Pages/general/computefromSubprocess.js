@@ -16,9 +16,9 @@ export default async function ({
     args,
     computepyfile = 'main',
     shell = false,
-    detached = null,
+    detached = false,
 }) {
-    return new Promise(async (resolve) => {
+    return new Promise((resolve) => {
         let outputFile
         target ||= button || e?.target
         if (pyfile === 'server') {
@@ -26,7 +26,7 @@ export default async function ({
         }
 
         if (!general) {
-            outputFile = window.path.join(appInfo.temp, 'FELion_GUI3', pyfile.split('.').at(-1) + '_data.json')
+            outputFile = window.path.join(window.appInfo.temp, 'FELion_GUI3', pyfile.split('.').at(-1) + '_data.json')
             if (window.fs.existsSync(outputFile)) {
                 window.fs.removeSync(outputFile)
             }
@@ -44,13 +44,14 @@ export default async function ({
         const sendArgs = [pyfile, JSON.stringify(args)]
         const mainPyFile = window.path.join(get(pythonscript), computepyfile + '.py')
 
+        const finalProgram = get(pyProgram).split(' ')
         const pyArgs = get(developerMode) ? [mainPyFile, ...sendArgs] : sendArgs
+
         console.log(get(pyProgram), { pyArgs })
 
-        const opts = { detached: detached !== null ? detached : general, shell }
-        const py = window.spawn(get(pyProgram), pyArgs, opts)
+        const opts = { detached, shell }
+        const py = window.spawn(finalProgram[0], [...finalProgram.slice(1, ), ...pyArgs], opts)
         if (pyfile !== 'server') {
-            // running_processes.update((p) => [...p, { pid: py.pid, pyfile, kill: () => py.kill() }])
             running_processes.update((p) => [
                 ...p,
                 {
@@ -142,7 +143,6 @@ export default async function ({
                 dataReceived += dataString
             }
 
-            // console.log(`Output from python: ${dataReceived}`)
             console.log(dataString.trim())
             dispatchEvent(target, { py, pyfile, dataReceived }, 'pyEventData')
         })

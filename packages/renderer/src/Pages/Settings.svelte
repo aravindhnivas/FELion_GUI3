@@ -9,8 +9,8 @@
     } from './settings/svelteWritables'
     import { updateInterval } from '$src/sveltewritables'
     import { activateChangelog } from '../js/functions'
-
     import { getPyVersion, resetPyConfig, updatePyConfig } from './settings/checkPython'
+
     import Textfield from '@smui/textfield'
     import { onMount, onDestroy } from 'svelte'
     import Changelog from '$components/Changelog.svelte'
@@ -23,12 +23,14 @@
     let updateError = window.db.get('updateError') || ''
     let updateIntervalCycle
     let selected = window.db.get('settingsActiveTab') || 'Configuration'
+    let unsubscribers = []
 
     const navigate = (e) => {
         selected = e.target.innerHTML
         window.db.set('settingsActiveTab', selected)
     }
-    window.db.onDidChange('pyServerReady', async (value) => {
+
+    unsubscribers[0] = window.db.onDidChange('pyServerReady', async (value) => {
         $pyServerReady = value
         if ($pyServerReady) {
             serverInfo += `>> fetching server status\n`
@@ -36,11 +38,11 @@
         }
     })
 
-    window.db.onDidChange('updateError', (err) => {
+    unsubscribers[1] = window.db.onDidChange('updateError', (err) => {
         updateError = err
     })
 
-    window.db.onDidChange('delayupdate', (delay) => {
+    unsubscribers[2] = window.db.onDidChange('delayupdate', (delay) => {
         if (delay) {
             if (updateIntervalCycle) {
                 clearInterval(updateIntervalCycle)
@@ -52,6 +54,7 @@
             }, 60 * 60 * 1000)
         }
     })
+    $: window.db.set('pyVersion', $pyVersion)
 
     onMount(async () => {
         try {
@@ -78,7 +81,7 @@
 
     let updating = false
 
-    window.db.onDidChange('update-status', (status) => {
+    unsubscribers[3] = window.db.onDidChange('update-status', (status) => {
         console.log(status)
         switch (status) {
             case 'checking-for-update':
@@ -140,6 +143,7 @@
 
     let showServerControls = false
     onDestroy(() => {
+        unsubscribers.forEach((unsubscribe) => unsubscribe())
         if (updateIntervalCycle) {
             clearInterval(updateIntervalCycle)
         }
@@ -202,7 +206,7 @@
                                         style="width: 100%; "
                                     />
                                     <button class="button is-link" on:click={resetPyConfig}>Reset</button>
-                                    <button class="button is-link" on:click={updatePyConfig}>Save</button>
+                                    <button class="button is-link" on:click={getPyVersion}>Save</button>
                                 </div>
                             {/if}
                         </div>

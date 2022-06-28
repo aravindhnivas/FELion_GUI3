@@ -3,8 +3,8 @@
     import { onDestroy } from 'svelte';
     export let active = ''
     let CONFIGS = window.db.store()
-    // type ValueType = string | number | boolean
     const unsubscribe = window.db.onDidAnyChange((newValue, oldValue) => {
+        console.log({newValue, oldValue})
         CONFIGS = newValue
     })
     onDestroy(unsubscribe)

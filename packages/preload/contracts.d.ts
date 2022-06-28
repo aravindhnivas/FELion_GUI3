@@ -4,11 +4,11 @@ interface Exposed {
     readonly path: Readonly<typeof import('./path-modules').path>;
     readonly db: Readonly<typeof import('./jsondb-modules').dbObject>;
 
-    readonly stopServer: Readonly<typeof import('./mangeServer').stopServer>;
-    readonly startServer: Readonly<typeof import('./mangeServer').startServer>;
+    readonly stopServer: typeof import('./mangeServer').stopServer;
+    readonly startServer: typeof import('./mangeServer').startServer;
 
-    readonly execSync: Readonly<typeof import('./child-process-modules').execSync>;
-    readonly spawn: Readonly<typeof import('./child-process-modules').spawnFn>;
+    readonly execSync: typeof import('./child-process-modules').execSync;
+    readonly spawn: typeof import('./child-process-modules').spawnFn;
     readonly exec: Readonly<typeof import('./child-process-modules').computeExecCommand>;
 
     readonly dialogs: Readonly<typeof import('./dialogs-modules').dialogs>;
