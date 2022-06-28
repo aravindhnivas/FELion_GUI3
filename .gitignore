@@ -9,3 +9,4 @@ misc/*
 py3*/
 **/*.tmp
 *.egg-info*/
+resources/build

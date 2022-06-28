@@ -148,6 +148,21 @@
 
     const id = 'Settings'
     let display = window.db.get('active_tab') === id ? 'block' : 'none'
+
+    const buildPy = async () => {
+        window.stopServer()
+        const resources = window.path.resolve(window.ROOT_DIR, 'resources')
+        const config = window.path.resolve(resources, 'python_files/config.json')
+        const cmd = `conda run -n felionpy auto-py-to-exe -c ${config} -o ${resources}`
+
+        const [output, error] = await window.exec(cmd)
+        if (error) {
+            console.error(error)
+            return
+        }
+        console.log(output)
+        window.startServer()
+    }
 </script>
 
 <Changelog />
@@ -193,7 +208,7 @@
                             <button class="button is-link" on:click={() => (showServerControls = !showServerControls)}>
                                 Show server controls
                             </button>
-
+                            <button class="button is-warning" on:click={buildPy}>build</button>
                             {#if $developerMode}
                                 <div class="align">
                                     <Textfield bind:value={$pythonpath} label="Python path" style="width: 100%; " />

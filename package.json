@@ -60,7 +60,9 @@
     "pack": "electron-builder build --config electron-builder.config.js --win -p never",
     "publish": "electron-builder build --config electron-builder.config.js --win -p always",
     "fix": "npx eslint --fix \"{,!(node_modules|public)/**/}*.{js,svelte}\"",
-    "format": "npx prettier --write \"{,!(node_modules|public)/**/}*.{js,svelte}\""
+    "format": "npx prettier --write \"{,!(node_modules|public)/**/}*.{js,svelte}\"",
+    "py": "node scripts/build.py.js",
+    "buildall": "npm run py && npm run compile"
   },
   "dependencies": {
     "electron-log": "^4.4.8",

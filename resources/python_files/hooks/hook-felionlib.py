@@ -15,4 +15,5 @@ hiddenimports = [
     "felionlib.numberDensity",
 ]
 icons_path = pt(felionlib.__file__).parent / "../icons/*"
-datas = [(icons_path.resolve().__str__(), "icons")]
+icons_path = icons_path.resolve().__str__()
+datas = [(icons_path, "icons")]

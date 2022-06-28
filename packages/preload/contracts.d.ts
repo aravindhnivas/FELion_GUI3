@@ -9,7 +9,7 @@ interface Exposed {
 
     readonly execSync: typeof import('./child-process-modules').execSync;
     readonly spawn: typeof import('./child-process-modules').spawnFn;
-    readonly exec: Readonly<typeof import('./child-process-modules').computeExecCommand>;
+    readonly exec: typeof import('./child-process-modules').computeExecCommand;
 
     readonly dialogs: Readonly<typeof import('./dialogs-modules').dialogs>;
     readonly reload: Readonly<typeof import('./dialogs-modules').reload>;
