@@ -31,7 +31,7 @@
     import CustomPanel from '$components/CustomPanel.svelte'
     //
     let currentLocation = (window.db.get('kinetics_location') as string) || ''
-    $: config_location = window.path.join(currentLocation, '../configs')
+    // $: config_location = window.path.join(currentLocation, '../configs')
 
     let timestartIndexScan = 0
     let fileCollections: string[] = []
@@ -316,63 +316,6 @@
 
     $: configDir = window.path.join(currentLocation, '../configs')
 
-    let config_file = ''
-    let config_filelists = []
-
-    const readConfigDir = async () => {
-        console.log('reading config dir')
-        if (!window.fs.existsSync(configDir)) {
-            if ($activePage === 'Kinetics') {
-                return window.createToast('Invalid location', 'danger', {
-                    target: 'left',
-                })
-            }
-            return
-        }
-
-        const [files, error] = await window.fs.readdir(configDir)
-        if (error) return window.handleError(error)
-        config_filelists = files.filter((file) => file.endsWith('.json'))
-    }
-
-    $: if (configDir) {
-        readConfigDir()
-    }
-    let config_content = {}
-
-    let configArray = []
-
-    async function loadConfig() {
-        try {
-            if (!window.fs.existsSync(config_file)) {
-                console.log(config_file)
-                if ($activePage === 'Kinetics') {
-                    return window.createToast(
-                        `Config file not available: ${window.path.basename(config_file)}`,
-                        'danger',
-                        { target: 'left' }
-                    )
-                }
-                return
-            }
-            ;[config_content] = window.fs.readJsonSync(config_file)
-
-            configArray = Object.keys(config_content).map((filename) => ({
-                filename,
-                ...config_content[filename],
-                id: window.getID(),
-            }))
-
-            if ($activePage?.toLowerCase() === 'kinetics') {
-                window.createToast(`Config file loaded: ${window.path.basename(config_file)}`, 'warning', {
-                    target: 'left',
-                })
-            }
-        } catch (error) {
-            window.handleError(error)
-        }
-    }
-
     async function kineticSimulation(e) {
         try {
             if (!selectedFile) {
@@ -453,7 +396,7 @@
 
     let defaultInitialValues = true
     let initialValues = ''
-    let adjustConfig = false
+    // let adjustConfig = false
     let kineticEditorFilename = ''
     $: kineticfile = window.path.join(currentLocation, kineticEditorFilename)
 
@@ -464,7 +407,7 @@
     let rateConstantMode = false
 
     onMount(() => {
-        loadConfig()
+        // loadConfig()
         selectedFile = fileCollections[0] || ''
     })
 
@@ -475,31 +418,11 @@
         'kinetic_plot_adjust_configs',
         'top=0.905,\nbottom=0.135,\nleft=0.075,\nright=0.59,\nhspace=0.2,\nwspace=0.2'
     )
-    // let panel1Open = false,
-    //     panel2Open = false
 </script>
-
-<KineticConfigTable
-    {configArray}
-    {config_location}
-    {loadConfig}
-    {readConfigDir}
-    {config_filelists}
-    bind:config_file
-    bind:active={adjustConfig}
-/>
 
 <MatplotlibDialog bind:open={kinetic_plot_adjust_dialog_active} bind:value={$kinetic_plot_adjust_configs} />
 
-<KineticsNumberDensity
-    bind:nHe
-    bind:active={show_numberDensity}
-    {selectedFile}
-    {config_location}
-    {fileCollections}
-    {config_filelists}
-    {readConfigDir}
-/>
+<KineticsNumberDensity bind:active={show_numberDensity} bind:nHe {selectedFile} {fileCollections} {configDir} />
 
 <LayoutDiv id="ROSAA-kinetics">
     <svelte:fragment slot="header_content__slot">
@@ -544,9 +467,8 @@
 
                 <RateInitialise
                     loaded={params_found}
-                    {config_filelists}
                     {updateParamsFile}
-                    {readConfigDir}
+                    {configDir}
                     {computeOtherParameters}
                     {totalMassKey}
                     bind:useParamsFile
@@ -556,8 +478,7 @@
                 />
                 <RateConstants
                     loaded={params_found}
-                    {readConfigDir}
-                    {config_filelists}
+                    {configDir}
                     bind:defaultInitialValues
                     bind:initialValues
                     bind:kinetics_fitfile={$fit_config_filename}

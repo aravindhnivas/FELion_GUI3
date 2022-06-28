@@ -12,10 +12,10 @@
     export let ratekCID = ''
     export let kCIDGuess = ''
 
-    export let config_filelists = []
+    // export let config_filelists = []
     export let kinetics_fitfile = ''
 
-    export let readConfigDir = () => {}
+    export let configDir = ''
 </script>
 
 <CustomPanel label="Initial values" style="display: flex; gap: 1em;" {loaded}>
@@ -36,7 +36,7 @@
     <TextAndSelectOptsToggler
         bind:value={kinetics_fitfile}
         label="fit-config file (*.fit.json)"
-        options={config_filelists.filter((f) => f.endsWith('.fit.json'))}
-        update={readConfigDir}
+        lookFor=".fit.json"
+        lookIn={configDir}
     />
 </CustomPanel>

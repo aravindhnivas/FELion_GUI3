@@ -7,13 +7,13 @@
     export let useParamsFile = false
     export let loaded = false
     export let nameOfReactants = ''
-    export let config_filelists = []
+    // export let config_filelists = []
     export let kinetics_params_file = ''
     export let totalMassKey: totalMassKeyType = []
 
     export let updateParamsFile = () => {}
     export let computeOtherParameters = (_?: boolean): void => {}
-    export let readConfigDir
+    export let configDir
 </script>
 
 <CustomPanel label="Labels" style="display: flex; flex-direction: column; gap: 1em;" {loaded}>
@@ -22,8 +22,8 @@
         <TextAndSelectOptsToggler
             bind:value={kinetics_params_file}
             label="fit-config file (*.params.json)"
-            options={config_filelists.filter((f) => f.endsWith('.params.json'))}
-            update={readConfigDir}
+            lookFor=".params.json"
+            lookIn={configDir}
         />
         <button class="button is-link" on:click={updateParamsFile}>update</button>
     </div>

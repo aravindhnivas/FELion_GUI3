@@ -8,14 +8,11 @@
     export let nHe = ''
     export let selectedFile = ''
     export let active = false
-    export let config_location = ''
+    export let configDir = ''
     export let fileCollections = []
 
-    export let config_filelists = []
-    export let readConfigDir = () => {}
-
     let filename = 'kinetics.conditions.json'
-    $: savefilename = window.path.join(config_location, filename)
+    $: savefilename = window.path.join(configDir, filename)
 
     let contents = {}
     const readConfigFile = () => {
@@ -87,8 +84,8 @@
                     <TextAndSelectOptsToggler
                         bind:value={filename}
                         label="config file (*.conditions.json)"
-                        options={config_filelists.filter((f) => f.endsWith('.conditions.json'))}
-                        update={readConfigDir}
+                        lookFor=".conditions.json"
+                        lookIn={configDir}
                     />
                     <button class="button is-link" on:click={readConfigFile}>Read file</button>
 

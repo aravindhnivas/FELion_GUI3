@@ -4,10 +4,10 @@
     import Textfield from '@smui/textfield'
     import CustomSelect from '$components/CustomSelect.svelte'
     export let loadConfig
-    export let readConfigDir
-    export let config_location = ''
+    export let configDir = ''
+    // export let config_location = ''
     export let config_file = ''
-    export let config_filelists = []
+    // export let config_filelists = []
     export let configArray = []
     export let active = false
 
@@ -16,9 +16,7 @@
     const config_filename = persistentWritable('kinetics_config_filename', 'kinetics.config.json')
 
     // let config_filelists = []
-    $: {
-        config_file = window.path.join(config_location, $config_filename)
-    }
+    $: config_file = window.path.join(configDir, $config_filename)
     let config_content = {}
 
     function saveConfig() {
@@ -55,13 +53,13 @@
 >
     <svelte:fragment slot="header">
         <div class="header">
-            <Textfield value={window.path.dirname(config_file)} label="config location" disabled />
+            <Textfield value={configDir} label="config location" disabled />
 
             <CustomSelect
                 bind:value={$config_filename}
                 label="config file (*.config.json)"
-                options={config_filelists.filter((file) => file.endsWith('.config.json'))}
-                update={readConfigDir}
+                lookFor=".config.json"
+                lookIn={configDir}
             />
         </div>
     </svelte:fragment>
