@@ -10,3 +10,4 @@ resources/felionpy
 misc/*
 py3*/
 **/*.tmp
+*.egg-info*/
