@@ -39,19 +39,21 @@ def saveData():
             }
 
             # tag_data = {}
-            current_data = {"tag": {}}
+            current_data = {}
 
             if selectedFile in rateConstantsFileData:
                 current_data = rateConstantsFileData[selectedFile]
+
+            if useTaggedFile and tagFile:
                 if "tag" not in current_data:
                     current_data["tag"] = {}
 
-            if useTaggedFile:
                 current_data["tag"][tagFile] = save_data
             else:
-                if "tag" in current_data:
-                    save_data = save_data | {"tag": current_data["tag"]}
-                current_data = save_data
+                current_data["default"] = save_data
+                # if "tag" in current_data:
+                #     save_data = save_data | {"tag": current_data["tag"]}
+                # current_data = save_data
 
             rateConstantsFileData[selectedFile] = current_data
             print(f"{rateConstantsFileData=}", flush=True)

@@ -62,11 +62,11 @@ def read_config(
         with open(fit_config_file, "r") as f:
             keyFound = False
             rateConstantsFileContents = f.read()
-
+            # print(f"{rateConstantsFileContents=}", flush=True)
             if len(rateConstantsFileContents) > 0:
 
                 rateConstantsFileData = json.loads(rateConstantsFileContents)
-                print(f"{fit_config_file.name} read: {rateConstantsFileData}", flush=True)
+                print(f"{fit_config_file.name} read", flush=True)
 
                 if selectedFile in rateConstantsFileData:
                     if useTaggedFile:
@@ -76,9 +76,9 @@ def read_config(
                                 keyFound = True
                     else:
                         keyFound = True
-                        searchContent = rateConstantsFileData[selectedFile]
+                        searchContent = rateConstantsFileData[selectedFile]['default']
 
-                print(f"{keyFound=}", flush=True)
+                print(f"{keyFound=}\n{searchContent=}", flush=True)
 
             if keyFound:
 
