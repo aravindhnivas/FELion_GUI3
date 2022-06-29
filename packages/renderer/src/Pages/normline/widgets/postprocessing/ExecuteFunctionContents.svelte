@@ -176,9 +176,9 @@
                 NGauss_fit_args.fitNGauss_arguments = {}
 
                 $felixPeakTable.forEach((f, index) => {
-                    NGauss_fit_args.fitNGauss_arguments[`cen${index}`] = f.freq
-                    NGauss_fit_args.fitNGauss_arguments[`A${index}`] = f.amp
-                    NGauss_fit_args.fitNGauss_arguments[`sigma${index}`] = f.sig
+                    NGauss_fit_args.fitNGauss_arguments[`cen${index}`] = parseFloat(f.freq)
+                    NGauss_fit_args.fitNGauss_arguments[`A${index}`] = parseFloat(f.amp)
+                    NGauss_fit_args.fitNGauss_arguments[`sigma${index}`] = parseFloat(f.sig)
                 })
                 NGauss_fit_args = {
                     ...NGauss_fit_args,
