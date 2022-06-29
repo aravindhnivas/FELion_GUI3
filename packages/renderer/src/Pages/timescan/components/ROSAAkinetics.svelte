@@ -228,10 +228,10 @@
         if (!(useParamsFile && window.fs.isFile(paramsFile))) return
 
         const [data] = window.fs.readJsonSync(paramsFile)
-        if (!data) return window.createToast('no data found', 'danger', { target: 'left' })
+        if (!data) return window.createToast('no data found while reading file', 'danger', { target: 'left' })
 
         const contents = data[selectedFile]
-        if (!contents) return window.createToast('no data available', 'danger', { target: 'left' })
+        if (!contents) return window.createToast('no contents in the data', 'danger', { target: 'left' })
 
         if (contents.tag) {
             tagOptions = Object.keys(contents.tag)
@@ -241,16 +241,13 @@
         let setContents = {}
         if (useTaggedFile) {
             if (!contents.tag?.[tagFile]) {
-                params_found = false
-                return
+                return window.createToast('no data available for this tag', 'danger', { target: 'left' })
             }
-
             setContents = contents.tag[tagFile]
         } else {
             setContents = contents.default
         }
-        if (!setContents) return window.createToast('no data available', 'danger', { target: 'left' })
-        console.log({ setContents })
+        if (!setContents) return window.createToast('no contents available while reading', 'danger', { target: 'left' })
         params_updatefile_or_getfromfile({
             updatefile: false,
             contents: setContents,
