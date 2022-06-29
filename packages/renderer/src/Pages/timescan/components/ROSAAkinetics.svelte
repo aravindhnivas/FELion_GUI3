@@ -138,28 +138,24 @@
 
     let useParamsFile = false
     const kinetics_params_file = persistentWritable('kinetics_params_file', 'kinetics.params.json')
-
     $: paramsFile = window.path.join(configDir, $kinetics_params_file)
+    $: paramsData = {
+        ratek3,
+        k3Guess,
+        ratekCID,
+        kCIDGuess,
+        legends,
+        totalMassKey,
+        initialValues,
+        nameOfReactants,
+        timestartIndexScan,
+        $fit_config_filename,
+        kineticEditorFilename,
+        loss_channels,
+        tagFile,
+    }
 
-    const params_updatefile_or_getfromfile = ({ updatefile = true, contents = null } = {}) => {
-        if (updatefile) {
-            return {
-                ratek3,
-                k3Guess,
-                ratekCID,
-                kCIDGuess,
-                legends,
-                totalMassKey,
-                initialValues,
-                nameOfReactants,
-                timestartIndexScan,
-                $fit_config_filename,
-                kineticEditorFilename,
-                loss_channels,
-                // includeTrapLoss,
-                tagFile,
-            }
-        }
+    const params_load = (data) => {
         ;({
             ratek3,
             k3Guess,
@@ -172,20 +168,14 @@
             timestartIndexScan,
             kineticEditorFilename,
             loss_channels,
-        } = contents)
-        if (contents['$fit_config_filename']) {
-            $fit_config_filename = contents['$fit_config_filename']
+        } = data)
+        if (data['$fit_config_filename']) {
+            $fit_config_filename = data['$fit_config_filename']
         }
 
-        // if (contents['includeTrapLoss']) {
-        //     includeTrapLoss = contents['includeTrapLoss']
-        // }
-
-        if (contents['tagFile']) {
-            tagFile = contents['tagFile']
+        if (data['tagFile']) {
+            tagFile = data['tagFile']
         }
-
-        console.log(tagFile)
         params_found = true
     }
 
@@ -194,7 +184,6 @@
         if (window.fs.existsSync(paramsFile)) {
             ;[contents] = window.fs.readJsonSync(paramsFile)
         }
-        const contents_infos = params_updatefile_or_getfromfile()
 
         contents[selectedFile] ??= { tag: {}, default: {} }
         contents[selectedFile].tag ??= {}
@@ -204,9 +193,9 @@
             if (tagFile.length === 0) {
                 return window.createToast('Please select/write a tag name', 'danger', { target: 'left' })
             }
-            contents[selectedFile].tag[tagFile] = contents_infos
+            contents[selectedFile].tag[tagFile] = paramsData
         } else {
-            contents[selectedFile].default = contents_infos
+            contents[selectedFile].default = paramsData
         }
 
         window.fs.outputJsonSync(paramsFile, contents)
@@ -237,7 +226,6 @@
             tagOptions = Object.keys(contents.tag)
 
             tagFile ||= tagOptions[0] || ''
-            console.log({ tagFile, tagOptions })
         }
         let setContents = {}
         if (useTaggedFile) {
@@ -249,10 +237,7 @@
             setContents = contents.default
         }
         if (!setContents) return window.createToast('no contents available while reading', 'danger', { target: 'left' })
-        params_updatefile_or_getfromfile({
-            updatefile: false,
-            contents: setContents,
-        })
+        params_load(setContents)
     }
 
     let legends = ''
