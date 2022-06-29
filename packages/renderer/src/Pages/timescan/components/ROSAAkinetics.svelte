@@ -141,7 +141,7 @@
 
     $: paramsFile = window.path.join(configDir, $kinetics_params_file)
 
-    const params_updatefile_or_getfromfile = ({ updatefile = true, contents }) => {
+    const params_updatefile_or_getfromfile = ({ updatefile = true, contents = null } = {}) => {
         if (updatefile) {
             return {
                 ratek3,
@@ -194,41 +194,21 @@
         if (window.fs.existsSync(paramsFile)) {
             ;[contents] = window.fs.readJsonSync(paramsFile)
         }
-        const contents_infos = params_updatefile_or_getfromfile({
-            updatefile: true,
-            contents,
-        })
+        const contents_infos = params_updatefile_or_getfromfile()
 
-        if (contents[selectedFile] && Object.keys(contents[selectedFile]).length > 0) {
-            if (useTaggedFile && tagFile.length > 0) {
-                if (contents[selectedFile]?.tag) {
-                    contents[selectedFile].tag[tagFile] = contents_infos
-                } else {
-                    contents[selectedFile].tag = {}
-                    contents[selectedFile].tag[tagFile] = contents_infos
-                }
-            } else {
-                if (!contents[selectedFile]?.tag) {
-                    contents[selectedFile]['tag'] = {}
-                }
+        contents[selectedFile] ??= { tag: {}, default: {} }
+        contents[selectedFile].tag ??= {}
+        contents[selectedFile].default ??= {}
 
-                contents[selectedFile] = {
-                    ...contents[selectedFile],
-                    ...contents_infos,
-                }
+        if (useTaggedFile) {
+            if (tagFile.length === 0) {
+                return window.createToast('Please select/write a tag name', 'danger', { target: 'left' })
             }
+            contents[selectedFile].tag[tagFile] = contents_infos
         } else {
-            contents[selectedFile] = { tag: {} }
-
-            if (useTaggedFile && tagFile.length > 0) {
-                contents[selectedFile].tag[tagFile] = contents_infos
-            } else {
-                contents[selectedFile] = {
-                    ...contents[selectedFile],
-                    ...contents_infos,
-                }
-            }
+            contents[selectedFile].default = contents_infos
         }
+
         window.fs.outputJsonSync(paramsFile, contents)
         tagOptions = Object.keys(contents[selectedFile].tag)
         window.createToast(`saved: ${window.path.basename(paramsFile)}`, 'success', {
@@ -240,34 +220,37 @@
     let params_found = false
     let useTaggedFile = false
     let tagFile = ''
-    let tagOptions = []
+    let tagOptions: string[] = []
 
     const readFromParamsFile = (event?: Event) => {
         params_found = false
         tagOptions = []
         if (!(useParamsFile && window.fs.isFile(paramsFile))) return
+
         const [data] = window.fs.readJsonSync(paramsFile)
-        const contents = data?.[selectedFile]
-        console.log('no data available')
+        if (!data) return window.createToast('no data found', 'danger', { target: 'left' })
 
-        if (!contents) return
-        if (contents?.tag) {
+        const contents = data[selectedFile]
+        if (!contents) return window.createToast('no data available', 'danger', { target: 'left' })
+
+        if (contents.tag) {
             tagOptions = Object.keys(contents.tag)
-            if (tagOptions.length > 0 && !tagFile) {
-                tagFile = tagOptions[0]
-            }
-        }
 
+            tagFile ??= tagOptions[0] || ''
+        }
         let setContents = {}
         if (useTaggedFile) {
-            if (!contents?.tag?.[tagFile]) {
+            if (!contents.tag?.[tagFile]) {
                 params_found = false
                 return
             }
+
             setContents = contents.tag[tagFile]
         } else {
-            setContents = contents
+            setContents = contents.default
         }
+        if (!setContents) return window.createToast('no data available', 'danger', { target: 'left' })
+        console.log({ setContents })
         params_updatefile_or_getfromfile({
             updatefile: false,
             contents: setContents,
