@@ -241,7 +241,6 @@
                 label="savefile"
                 lookIn={$felixopoLocation}
                 lookFor=".json"
-                autoUpdate={true}
                 auto_init={true}
             />
 
