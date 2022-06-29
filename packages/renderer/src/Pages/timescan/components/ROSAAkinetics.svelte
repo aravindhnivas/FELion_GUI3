@@ -236,7 +236,8 @@
         if (contents.tag) {
             tagOptions = Object.keys(contents.tag)
 
-            tagFile ??= tagOptions[0] || ''
+            tagFile ||= tagOptions[0] || ''
+            console.log({ tagFile, tagOptions })
         }
         let setContents = {}
         if (useTaggedFile) {
