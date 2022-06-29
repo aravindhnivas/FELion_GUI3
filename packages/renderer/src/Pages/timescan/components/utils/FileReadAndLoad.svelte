@@ -1,6 +1,6 @@
 <script lang="ts">
     import TextAndSelectOptsToggler from '$components/TextAndSelectOptsToggler.svelte'
-    import { activePage } from '$src/sveltewritables'
+    // import { activePage } from '$src/sveltewritables'
     import { isEmpty } from 'lodash-es'
 
     export let configDir: string = ''
@@ -17,22 +17,6 @@
     const toastOpts = {
         target: 'left',
     }
-    // const readConfigDir = async () => {
-    //     console.log('reading config dir')
-    //     if (!window.fs.isDirectory(configDir)) {
-    //         if ($activePage === 'Kinetics') {
-    //             return window.createToast('Invalid location', 'danger', toastOpts)
-    //         }
-    //         return
-    //     }
-
-    //     const [files, error] = await window.fs.readdir(configDir)
-    //     if (error) return window.handleError(error)
-    //     config_filelists = files.filter((file) => file.endsWith(options_filter))
-    //     console.log(config_filelists, files, options_filter)
-    // }
-
-    let config_filelists: string[] = []
 
     const save_data = () => {
         if (isEmpty(dataToSave)) {
