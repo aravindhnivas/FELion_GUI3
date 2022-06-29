@@ -103,7 +103,9 @@ export async function startServer(webContents) {
         try {
             serverStarting = true
             const finalProgram = pyProgram.split(' ')
-            py = spawn(finalProgram[0], [...finalProgram.slice(1, ), ...pyArgs], opts)
+            const finalArgs = [...finalProgram.slice(1, ), ...pyArgs]
+            console.warn(finalProgram[0], { finalArgs })
+            py = spawn(finalProgram[0], finalArgs, opts)
 
             py.on('error', (error) => {
                 // serverStarting = false

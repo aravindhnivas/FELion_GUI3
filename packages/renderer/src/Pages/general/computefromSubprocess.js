@@ -47,10 +47,11 @@ export default async function ({
         const finalProgram = get(pyProgram).split(' ')
         const pyArgs = get(developerMode) ? [mainPyFile, ...sendArgs] : sendArgs
 
-        console.log(get(pyProgram), { pyArgs })
+        const finalArgs = [...finalProgram.slice(1, ), ...pyArgs]
+        console.warn(finalProgram[0], { finalArgs })
 
         const opts = { detached, shell }
-        const py = window.spawn(finalProgram[0], [...finalProgram.slice(1, ), ...pyArgs], opts)
+        const py = window.spawn(finalProgram[0], finalArgs, opts)
         if (pyfile !== 'server') {
             running_processes.update((p) => [
                 ...p,
