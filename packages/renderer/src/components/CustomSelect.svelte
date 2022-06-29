@@ -11,12 +11,11 @@
     export let lookIn: string = ''
     export let lookFor: string = '*'
 
-    $: if (!value && auto_init && options.length > 0) {
+    $: if (auto_init && !value && options.length > 0) {
         value = options[0]
     }
 
     onMount(() => {
-        // console.log({ value })
         if (lookIn) {
             update = (toast = true) => {
                 console.log(lookIn, lookFor)
@@ -26,14 +25,9 @@
                 console.log(options)
             }
             update(false)
-            value ||= options[0]
-            // console.log({ value })
+            value ||= options[0] || ''
         }
     })
-
-    // $: {
-    //     options = options.includes(value) ? options : value ? [value, ...options] : options
-    // }
 </script>
 
 <div class="container">
@@ -55,7 +49,7 @@
             {/if}
         </div>
 
-        {#if update || lookIn}
+        {#if update}
             <i
                 class="material-icons animate__animated animate__faster"
                 on:animationend={(event) => event?.target?.classList.remove('animate__rotateIn')}
