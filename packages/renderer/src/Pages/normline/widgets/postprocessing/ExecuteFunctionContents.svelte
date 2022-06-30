@@ -200,11 +200,13 @@
                     args: NGauss_fit_args,
                 }).then((dataFromPython) => {
                     NGauss_fit_func({ dataFromPython })
-                    console.log('Line fitted')
-                    window.createToast(
-                        `Line fitted with ${dataFromPython[$normMethod]['fitted_parameter'].length} gaussian function`,
-                        'success'
-                    )
+                    if (dataFromPython[$normMethod]) {
+                        console.log('Line fitted')
+                        window.createToast(
+                            `Line fitted with ${dataFromPython[$normMethod]['fitted_parameter'].length} gaussian function`,
+                            'success'
+                        )
+                    }
                 })
 
                 break

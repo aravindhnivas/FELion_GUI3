@@ -26,19 +26,19 @@ export const fitted_data = writable({})
 
 export function NGauss_fit_func({ dataFromPython }) {
     
+    console.log({dataFromPython})
+
     addTraces(get(graphDiv), dataFromPython[get(normMethod)]['fitted_data'])
     fittedTraceCount.update((n) => n + 1)
     const output_name = get(felixOutputName)
     const color = output_name === 'averaged' ? '#836ac05c' : '#fafafa'
     
-    // const newTable = getTable(dataFromPython, get(normMethod), output_name, color)
-    // const data = dataFromPython[get(normMethod)]['fitted_parameter']
-    // dataTable.set(getTable(data, output_name, color))
-    
     fitted_data.set({})
     
     normMethods.forEach((method) => {
-        const data = dataFromPython[method]['fitted_parameter']
+        const methodData = dataFromPython[method]
+        if(!methodData) return
+        const data = methodData['fitted_parameter']
         const table = getTable(data, output_name, color)
         if(method === get(normMethod)) {
             dataTable.set(table)
