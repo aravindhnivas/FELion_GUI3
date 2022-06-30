@@ -115,7 +115,11 @@
         await tick()
         graphDivs?.forEach((id) => {
             if (!id?.data) return
-            relayout(id, { width: id.clientWidth })
+            try {
+                relayout(id, { width: id.clientWidth })
+            } catch (error) {
+                console.log('could not relayout', error)
+            }
         })
     }
 

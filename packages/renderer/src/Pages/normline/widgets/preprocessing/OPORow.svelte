@@ -124,8 +124,8 @@
         <CustomTextSwitch style="width:7em;" step="0.1" variant="outlined" bind:value={deltaOPO} label="Delta OPO" />
         <CustomTextSwitch style="width:9em" step="0.1" variant="outlined" bind:value={opoPower} label="Power (mJ)" />
         <button class="button is-link" on:click={(e) => plotData({ e })}>Replot</button>
-        <button class="button is-link" on:click={(e) => plotData({ e, tkplot: 'plot', general: true })}
+        <!-- <button class="button is-link" on:click={(e) => plotData({ e, tkplot: 'plot', general: true })}
             >Open in Matplotlib</button
-        >
+        > -->
     </div>
 {/if}

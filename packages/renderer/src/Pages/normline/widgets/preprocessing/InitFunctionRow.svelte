@@ -173,6 +173,7 @@
             )
         } else {
             felix_func({ dataFromPython: fullData.data, delta })
+            $felixGraphPlotted = true
         }
     } else if (updateplot) {
         plotIndividualDataIntoGraph({
@@ -181,6 +182,7 @@
             graphPlotted: $felixGraphPlotted,
             delta,
         })
+        $felixGraphPlotted = true
     }
 </script>
 

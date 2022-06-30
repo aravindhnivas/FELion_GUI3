@@ -19,7 +19,6 @@
         label="writeFileName"
         lookIn={window.path.resolve($felixopoLocation, '../EXPORT')}
         lookFor=".dat"
-        autoUpdate={true}
         auto_init={true}
     />
     <CustomSwitch style="margin: 0 1em;" bind:selected={writeFile} label="Write" />

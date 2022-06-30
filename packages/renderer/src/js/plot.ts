@@ -64,6 +64,7 @@ export function plot(
             }
         }
         console.log(graphDiv, ': plotted', get(plotlyEventsInfo)[graphDiv].eventCreated)
+        
         if (!get(plotlyEventsInfo)[graphDiv].eventCreated && createPlotlyClickEvent) {
             console.log('Creating plotly event for ', graphDiv)
             plotlyClick(graphDiv)
