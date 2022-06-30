@@ -1,5 +1,6 @@
 # Importing Modules
 from pathlib import Path as pt
+from typing import Callable
 import numpy as np
 from scipy.optimize import curve_fit
 from uncertainties import ufloat as uf
@@ -7,9 +8,9 @@ from felionlib.utils.FELion_constants import colors
 from felionlib.utils.FELion_definitions import sendData, read_dat_file
 
 
-def generateNGaussian(N):
-
+def generateNGaussian(N: int) -> Callable:
     gaussfn = lambda n: f"A{n}*(np.exp((-1.0/2.0)*(((x-cen{n})/sigma{n})**2)))+"
+
     _gfn, _args = "", "x, "
     for i in range(int(N)):
         _gfn += gaussfn(i)
@@ -55,9 +56,12 @@ def fitNGauss(init_guess, wn, inten):
 
     N = int(len(init_guess) / 3)
     print(f"NGaussian: {N}\nInitialGuess: {init_guess}\n\n")
-    gfn = generateNGaussian(N)
-    popt_Ngauss, pcov_Ngauss = curve_fit(gfn, wn, inten, p0=init_guess)
 
+    gfn = generateNGaussian(N)
+    init_guess = np.array(init_guess, dtype=float)
+    wn = np.array(wn, dtype=float)
+    inten = np.array(inten, dtype=float)
+    popt_Ngauss, pcov_Ngauss = curve_fit(gfn, wn, inten, p0=init_guess)
     perr_Ngauss = np.sqrt(np.diag(pcov_Ngauss))
     return popt_Ngauss, perr_Ngauss, gfn
 
@@ -128,17 +132,22 @@ def main(gauss_args):
     datfile = readfile.parent / f"{output_filename}.dat"
 
     overwrite = gauss_args["overwrite_expfit"]
-
+    fitall = gauss_args["fitall"]
+    
     if felix:
-        normMethods = ["Relative", "Log", "IntensityPerPhoton"]
+        normMethods = ["Relative", "Log", "IntensityPerPhoton"] if fitall else [norm_method]
     else:
         normMethods = ["addedFile"]
-    # Fitting for all norm intensity methods
+
     for method in normMethods:
-
+        
+        if method == "addedFile":
+            dataTosend[norm_method] = {}
+        else:
+            dataTosend[method] = {}
+            
+        
         print(f"Fitting for method: {method}\n")
-
-        # Reading datfile
         if felix:
             _wn, _inten = filterWn(datfile, method, index)
         else:
@@ -168,32 +177,32 @@ def main(gauss_args):
 
         # Send json data to program
 
-        if norm_method == method or method == "addedFile":
+        # if norm_method == method or method == "addedFile":
 
-            dataTosend["fitted_data"] = {
-                "x": list(_wn),
-                "y": list(sim_inten),
-                "mode": "lines",
-                "name": f"{N} Gaussian",
-                "line": {"color": line_color},
+        dataTosend[method]["fitted_data"] = {
+            "x": list(_wn),
+            "y": list(sim_inten),
+            "mode": "lines",
+            "name": f"{N} Gaussian",
+            "line": {"color": line_color},
+        }
+        dataTosend[method]["fitted_parameter"] = [
+            {
+                "freq": f"{uf(fit[0], err[0]):.2uP}",
+                "amp": f"{uf(fit[1], err[1]):.2uP}",
+                "sig": f"{uf(fit[2], err[2]):.2uP}",
+                "fwhm": f"{fwhm(uf(fit[2], err[2])):.2uP}",
             }
-            dataTosend["fitted_parameter"] = [
-                {
-                    "freq": f"{uf(fit[0], err[0]):.2uP}",
-                    "amp": f"{uf(fit[1], err[1]):.2uP}",
-                    "sig": f"{uf(fit[2], err[2]):.2uP}",
-                    "fwhm": f"{fwhm(uf(fit[2], err[2])):.2uP}",
-                }
-                for fit, err in zip(popt_Ngauss, perr_Ngauss)
-            ]
+            for fit, err in zip(popt_Ngauss, perr_Ngauss)
+        ]
 
-            dataTosend["for_weighted_error"] = [
-                f"{fit[0]}, {err[0]}, {fit[1]}, {err[1]}, {fwhm(uf(fit[2], err[2])).nominal_value}, {fwhm(uf(fit[2], err[2])).std_dev}, {fit[2]}, {err[2]}"
-                for fit, err in zip(popt_Ngauss, perr_Ngauss)
-            ]
+        dataTosend[method]["for_weighted_error"] = [
+            f"{fit[0]}, {err[0]}, {fit[1]}, {err[1]}, {fwhm(uf(fit[2], err[2])).nominal_value}, {fwhm(uf(fit[2], err[2])).std_dev}, {fit[2]}, {err[2]}"
+            for fit, err in zip(popt_Ngauss, perr_Ngauss)
+        ]
 
-            sendData(dataTosend, calling_file=pt(__file__).stem)
-
+        sendData(dataTosend, calling_file=pt(__file__).stem)
+        # sendData(dataTosend, calling_file=pt(__file__).stem)
         # Writing fullfit and expfit files
 
         _fitted_freq = np.array([popt_Ngauss, perr_Ngauss]).T[0]

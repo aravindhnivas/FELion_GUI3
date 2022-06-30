@@ -1,8 +1,6 @@
 import { ipcRenderer } from 'electron'
-import logger from 'electron-log'
 
-logger.info('preload: loading...')
-
+console.info('preload: loading...')
 window.addEventListener(
     'contextmenu',
     (e) => {
@@ -23,7 +21,7 @@ import './dialogs-modules'
 import './jsondb-modules'
 import './utils/logger'
 
-logger.info('preload: loaded')
+console.info('preload: loaded')
 window.addEventListener('DOMContentLoaded', () => {
-    logger.info('Preload: DOM fully loaded and parsed')
+    console.info('Preload: DOM fully loaded and parsed')
 })

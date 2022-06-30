@@ -34,12 +34,12 @@
     export let adjustPeakTrigger = false
 
     // //////////////////////////////////////////////////////////////////////
-    // //////////////////////////////////////////////////////////////////////
 
     let NGauss_fit_args = {}
     let savePeakfilename = 'peakTable'
     let toggleFindPeaksRow = false
     let boxSelected_peakfinder = false
+    let fitall = true
 
     const clearAllPeak = () => {
         const graphElement = document.getElementById($graphDiv)
@@ -190,6 +190,7 @@
                     writeFileName,
                     output_name: $felixOutputName,
                     fullfiles,
+                    fitall,
                     normMethod: $normMethod,
                 }
 
@@ -201,7 +202,7 @@
                     NGauss_fit_func({ dataFromPython })
                     console.log('Line fitted')
                     window.createToast(
-                        `Line fitted with ${dataFromPython['fitted_parameter'].length} gaussian function`,
+                        `Line fitted with ${dataFromPython[$normMethod]['fitted_parameter'].length} gaussian function`,
                         'success'
                     )
                 })
@@ -228,6 +229,7 @@
         <div class="align">
             <i class="material-icons" on:click={() => (modalActivate = true)}>settings</i>
             <CustomSwitch bind:selected={boxSelected_peakfinder} label="limited range" />
+            <CustomSwitch bind:selected={fitall} label="fit all methods" />
             <button
                 style="width:7em"
                 class="button is-link"

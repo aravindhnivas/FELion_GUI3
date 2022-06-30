@@ -1,54 +1,70 @@
 import {
     dataTable,
-    dataTable_avg,
     graphDiv,
     felixOutputName,
-    avgfittedLineCount,
     fittedTraceCount,
+    normMethod,
+    normMethods,
     get,
 } from './svelteWritables'
 import { addTraces } from 'plotly.js/dist/plotly-basic'
 import { uniqBy } from 'lodash-es'
-export function NGauss_fit_func({ dataFromPython }) {
-    addTraces(get(graphDiv), dataFromPython['fitted_data'])
-    fittedTraceCount.update((n) => n + 1)
+import { writable } from 'svelte/store'
 
-    const output_name = get(felixOutputName)
-    const color = output_name === 'averaged' ? '#836ac05c' : '#fafafa'
-
-    // dataTable
-
-    let newTable = dataFromPython['fitted_parameter'].map((data) => {
-        let { freq, amp, fwhm, sig } = data
+function getTable(data, name, color) {
+    const table = data.map((d) => {
+        const { freq, amp, fwhm, sig } = d
         return {
-            name: output_name,
             id: window.getID(),
-            freq: freq,
-            amp: amp,
-            fwhm: fwhm,
-            sig: sig,
-            color: color,
+            name, freq, amp, fwhm, sig, color,
         }
     })
+    return uniqBy(table, 'freq')
+}
 
-    dataTable.set(uniqBy(newTable, 'freq'))
+export const fitted_data = writable({})
 
-    // dataTable_avg
-    if (output_name === 'averaged') {
-        let newTable = dataFromPython['fitted_parameter'].map((data, index) => {
-            let { freq, amp, fwhm, sig } = data
+export function NGauss_fit_func({ dataFromPython }) {
+    
+    addTraces(get(graphDiv), dataFromPython[get(normMethod)]['fitted_data'])
+    fittedTraceCount.update((n) => n + 1)
+    const output_name = get(felixOutputName)
+    const color = output_name === 'averaged' ? '#836ac05c' : '#fafafa'
+    
+    // const newTable = getTable(dataFromPython, get(normMethod), output_name, color)
+    // const data = dataFromPython[get(normMethod)]['fitted_parameter']
+    // dataTable.set(getTable(data, output_name, color))
+    
+    fitted_data.set({})
+    
+    normMethods.forEach((method) => {
+        const data = dataFromPython[method]['fitted_parameter']
+        const table = getTable(data, output_name, color)
+        if(method === get(normMethod)) {
+            dataTable.set(table)
+        }
+        fitted_data.update((d) => ({
+            ...d,
+            [method]: table,
+        }))
+    })
 
-            return {
-                name: `Line #${index}`,
-                id: window.getID(),
-                freq: freq,
-                amp: amp,
-                fwhm: fwhm,
-                sig: sig,
-                color: color,
-            }
-        })
-        dataTable_avg.set(uniqBy(newTable, 'freq'))
-        avgfittedLineCount.set(get(dataTable_avg).length)
-    }
+    // // dataTable_avg
+    // if (output_name === 'averaged') {
+    //     let newTable = dataFromPython[get(normMethod)]['fitted_parameter'].map((data, index) => {
+    //         let { freq, amp, fwhm, sig } = data
+
+    //         return {
+    //             name: `Line #${index}`,
+    //             id: window.getID(),
+    //             freq: freq,
+    //             amp: amp,
+    //             fwhm: fwhm,
+    //             sig: sig,
+    //             color: color,
+    //         }
+    //     })
+    //     dataTable_avg.set(uniqBy(newTable, 'freq'))
+    //     avgfittedLineCount.set(get(dataTable_avg).length)
+    // }
 }

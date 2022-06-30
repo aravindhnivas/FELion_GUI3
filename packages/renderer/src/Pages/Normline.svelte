@@ -4,6 +4,7 @@
         opoMode,
         graphDiv,
         normMethod,
+        normMethods,
         showRawData,
         baselineFile,
         Ngauss_sigma,
@@ -148,7 +149,7 @@
         <TheoryRow bind:theoryLocation />
 
         <div class="align">
-            <CustomRadio bind:value={$normMethod} options={['Log', 'Relative', 'IntensityPerPhoton']} />
+            <CustomRadio bind:value={$normMethod} options={normMethods} />
             <IconButton
                 style="margin-left: auto;"
                 label="More options"

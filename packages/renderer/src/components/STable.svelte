@@ -1,25 +1,21 @@
-<!-- <script context="module">
-    export let fullTableData = []
-</script> -->
 <script lang="ts">
     import DataTable, { Head, Body, Row, Cell } from '@smui/data-table'
-    import { uniqBy } from 'lodash-es'
+    import { orderBy, uniqBy } from 'lodash-es'
     import { createEventDispatcher, onMount } from 'svelte'
+    import IconButton, { Icon } from '@smui/icon-button'
+
     export let idKey: string = 'id'
     export let rowKeys: string[] = null
     export let rows = []
     export let headKeys: string[] = null
-
     export let closeableRows = false
-    // export let preserveData = false
     export let includeIndex = true
 
-    // $: if (preserveData) {
-    //     fullTableData = uniqBy([...fullTableData, ...rows], 'freq')
-    //     rows = [...fullTableData]
-    // }
+    export let editable = false
+    export let sortable = false
 
     let mounted = false
+    // $: console.log(rows)
     onMount(() => {
         rows = uniqBy(rows, idKey)
         if (rowKeys === null) {
@@ -31,18 +27,35 @@
         mounted = true
     })
 
+    let sortToggle = {}
+    rowKeys.forEach((key) => (sortToggle[key] = false))
+    const sortTable = (key) => {
+        console.log({ key })
+        rows = orderBy(rows, key, sortToggle[key] ? 'asc' : 'desc')
+    }
+
     const dispatch = createEventDispatcher()
 </script>
 
 {#if mounted}
-    <DataTable style="width: 100%; user-select:text; ">
+    <DataTable style="width: 100%; user-select:text;">
         <Head>
             <Row>
                 {#if includeIndex}
                     <Cell># {rows.length}</Cell>
                 {/if}
-                {#each headKeys as key (key)}
-                    <Cell>{key}</Cell>
+                {#each headKeys as key, i (key)}
+                    <Cell on:click={() => sortTable(rowKeys[i])}>
+                        <div class="header_cell has-background-link">
+                            <span>{key}</span>
+                            {#if sortable}
+                                <IconButton toggle bind:pressed={sortToggle[rowKeys[i]]}>
+                                    <Icon class="material-icons">arrow_downward</Icon>
+                                    <Icon class="material-icons" on>arrow_upward</Icon>
+                                </IconButton>
+                            {/if}
+                        </div>
+                    </Cell>
                 {/each}
                 {#if closeableRows}
                     <Cell
@@ -68,10 +81,16 @@
                         <Cell>{index + 1}</Cell>
                     {/if}
                     {#each rowKeys as key (key)}
-                        {#if typeof row[key] !== 'object'}
-                            <Cell>{row[key]}</Cell>
-                        {:else}
+                        {#if typeof row[key] === 'object'}
                             <Cell style={row[key]?.style} on:click={row[key]?.cb}>{row[key]?.name}</Cell>
+                        {:else}
+                            <Cell>
+                                {#if editable}
+                                    <input type="text" bind:value={row[key]} style="color: black; width: 100%;" />
+                                {:else}
+                                    {row[key]}
+                                {/if}
+                            </Cell>
                         {/if}
                     {/each}
                     {#if closeableRows}
@@ -92,3 +111,12 @@
         </Body>
     </DataTable>
 {/if}
+
+<style>
+    .header_cell {
+        display: flex;
+        border-radius: 1em;
+        align-items: center;
+        justify-content: center;
+    }
+</style>

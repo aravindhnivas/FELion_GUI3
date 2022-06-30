@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { felixOpoDatfiles, felixPlotCheckboxes } from '../functions/svelteWritables'
+    import { felixOpoDatLocation, felixPlotCheckboxes } from '../functions/svelteWritables'
     import { fade } from 'svelte/transition'
     import Textfield from '@smui/textfield'
     import CustomCheckList from '$components/CustomCheckList.svelte'
@@ -11,6 +11,7 @@
 
     let files_loaded = false
 
+    let felixOpoDatfiles = []
     function loadFiles() {
         files_loaded = false
         let calcfiles = []
@@ -23,10 +24,18 @@
         } else {
             calcfiles = [{ name: '', id: window.getID() }]
         }
+        console.log({ $felixOpoDatLocation })
+        if (window.fs.isDirectory($felixOpoDatLocation)) {
+            felixOpoDatfiles = window.fs
+                .readdirSync($felixOpoDatLocation)
+                .filter((f) => f.endsWith('.dat'))
+                .map((f) => ({ name: f, id: window.getID() }))
+        }
+
         $felixPlotCheckboxes = [
             {
                 label: 'DAT_file',
-                options: $felixOpoDatfiles,
+                options: felixOpoDatfiles,
                 value: [],
                 id: window.getID(),
             },
@@ -55,10 +64,10 @@
                 id: window.getID(),
             },
         ]
-
         console.log(`files loaded`)
     }
-    $: if ($felixOpoDatfiles.length > 0 || theoryLocation) {
+
+    $: if ($felixOpoDatLocation || theoryLocation) {
         loadFiles()
     }
     onMount(loadFiles)
@@ -66,7 +75,7 @@
 
 <div style="padding-bottom: 1em;">
     <div>
-        <button class="button is-link" on:click={loadFiles}>load files</button>
+        <button class="button is-link" on:click={loadFiles}>reload files</button>
 
         <!-- {#key reload} -->
         <div class="files__div">

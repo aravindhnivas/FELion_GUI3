@@ -4,6 +4,7 @@ import {
     dataTable,
     collectData,
     dataTable_avg,
+    frequencyDatas,
     expfittedLines,
     felixOutputName,
     fittedTraceCount,
@@ -63,7 +64,8 @@ export function exp_fit_func({ dataFromPython } = {}) {
         sig,
         color,
     }
-    dataTable.update((table) => uniqBy([...table, newTable], 'freq'))
 
-    console.log('Line fitted')
+    dataTable.update((table) => uniqBy([...table, newTable], 'freq'))
+    frequencyDatas.update(table=>uniqBy([...table, newTable], 'freq'))
+    console.log('Line fitted', get(frequencyDatas))
 }

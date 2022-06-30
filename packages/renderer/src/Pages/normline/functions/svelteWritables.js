@@ -53,13 +53,18 @@ export const expfittedLinesCollectedData = writable([])
 export const collectData = writable(false)
 export const avgfittedLineCount = writable(0)
 export const fittedTraceCount = writable(0)
+
 export const felixAnnotationColor = writable('black')
+
+export const normMethods = ['Log', 'Relative', 'IntensityPerPhoton']
 export const normMethod = writable('Relative')
 
-export const felixPlotCheckboxes = writable([])
+export const frequencyDatas = writable([])
 
+export const felixPlotCheckboxes = writable([])
 export const showall = writable(true)
 export const showRawData = writable(true)
+
 export const showPowerData = writable(true)
 export const felixGraphPlotted = writable(false)
 export const OPOGraphPlotted = writable(false)
