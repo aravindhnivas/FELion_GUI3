@@ -29,16 +29,6 @@ export async function felix_func({ dataFromPython, delta } = {}) {
         plotlySelection(plot), plotlyClick(plot)
         plotlyEventCreatedFELIX.set(true)
     }
-
-    // const graphDivIds = ['exp-theory-plot', 'bplot', 'saPlot', 'avgplot', 'opoplot', 'opoSA', 'opoRelPlot']
-    // graphDivIds.forEach((id) => {
-    //     const content = document.getElementById(id).innerHTML
-    //     const width = document.getElementById(id).clientWidth
-    //     if (content) {
-    //         relayout(id, { width })
-    //     }
-    // })
-
     console.log('Graph Plotted')
     felixGraphPlotted.set(true)
 }
