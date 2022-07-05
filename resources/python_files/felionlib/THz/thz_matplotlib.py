@@ -43,8 +43,6 @@ def main(args):
             fitfile = thzfile.parent / (thzfile.stem + ".fit.dat")
             fit_label = label + " (fit)"
             
-            print(f"{fitfile=}", flush=True)
-
             if includeFit and fitfile.exists():
                 freq_fit, depletion_fit = np.genfromtxt(fitfile).T
                 
@@ -58,7 +56,6 @@ def main(args):
                 )
                 
                 if 'average' in thzfile.stem:
-                    # legend_handler[label].set_zorder(zorder_max - 1)
                     legend_handler[fit_label].set_zorder(zorder_max)
             else:
                 (legend_handler[label],) = widget.ax.plot(
