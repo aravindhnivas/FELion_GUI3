@@ -2,7 +2,6 @@ node_modules
 .vscode
 dist
 **/*.pyo
-.env
 **/__pycache__/
 resources/felionpy
 misc/*
@@ -10,3 +9,4 @@ py3*/
 **/*.tmp
 *.egg-info*/
 resources/build
+python3/
