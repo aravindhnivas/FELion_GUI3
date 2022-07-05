@@ -1,6 +1,5 @@
 <script lang="ts">
     import TextAndSelectOptsToggler from '$components/TextAndSelectOptsToggler.svelte'
-    // import { activePage } from '$src/sveltewritables'
     import { isEmpty } from 'lodash-es'
 
     export let configDir: string = ''
@@ -10,7 +9,6 @@
     export let tagFile: string = ''
     export let filename = ''
     export let data_loaded = false
-
     export let dataToSave
 
     console.log({ filename, configDir })

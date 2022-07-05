@@ -169,7 +169,7 @@ def plot_thz(widget: felionQtWindow=None, save_dat=True, tkplot=False):
             "x": freq.tolist(), "y": fittedY.tolist(), "name": fitMethod, 
             "mode": 'lines', "type": "scattergl", "line": {"color": f"rgb{colors[i*2]}"}
         }
-
+        save_fitted_data(filename.stem, freq, fittedY)
 
     # if tkplot:
     #     widget.makeLegendToggler(line_handler)
@@ -206,40 +206,42 @@ def plot_thz(widget: felionQtWindow=None, save_dat=True, tkplot=False):
         binx, biny, varyAll=varyAll, fitfile=fitfile,
         method=fitMethod, paramsTable=paramsTable
     )
+    
     fittedY = fittedInfos["fittedY"]
     dataToSend["fittedParamsTable"] = fittedParamsTable
     dataToSend["fittedInfos"] = {"freq": fittedInfos["freq"].tolist(), "fittedY": fittedInfos["fittedY"].tolist()}
 
-    if save_dat:
-        saveDir: pt = location / "OUT"
-        if not saveDir.exists(): saveDir.mkdir()
+    save_fitted_data('averaged', binx, fittedY)
+    # if save_dat:
+    #     saveDir: pt = location / "OUT"
+    #     if not saveDir.exists(): saveDir.mkdir()
     
-        with open(saveDir / "averaged_thz_fit.dat", "w") as f:
-            f.write("#Frequency(in MHz)\t#Intensity\n")
-            for freq, inten in zip(binx, fittedY): f.write(f"{freq*1e3}\t{inten}\n")
-            print(f"averaged_thz_fit.dat file saved in {saveDir}")
+    #     with open(saveDir / "averaged.thz.fit.dat", "w") as f:
+    #         f.write("#Frequency(in MHz)\t#Intensity\n")
+    #         for freq, inten in zip(binx, fittedY): f.write(f"{freq*1e3}\t{inten}\n")
+    #         print(f"averaged_thz_fit.dat file saved in {saveDir}")
 
     
     style = {"mode": 'lines'}
     
-    # if fitMethod == 'gaussian':
-    #     style = {"mode": 'lines+markers'}
-    
-    # elif fitMethod == 'lorentz':
-    #     style = {"mode": 'markers'}
-        
     dataToSend["thz"]["averaged"]["averaged_fit"] = {
         "x": binx.tolist(), "y": list(fittedY), "name": fitMethod, "type": "scattergl", "line": {"color": "black"}
     } | style
 
     return dataToSend
 
-      
+def save_fitted_data(filename, x, y):
+    filename = f"{filename}.thz.fit.dat"
+    with open(EXPORT_DIR / filename, "w") as f:
+        f.write("#Frequency(in MHz)\t#Intensity\n")
+        for freq, inten in zip(x, y): f.write(f"{freq*1e3}\t{inten}\n")
+        print(f"{filename} file saved in {EXPORT_DIR}")
+
 def export_file(fname, freq, inten):
 
         freq = np.array(freq, dtype=float)
         inten = np.array(inten, dtype=float)
-        EXPORT_DIR = location / "EXPORT"
+        
         if not EXPORT_DIR.exists(): 
             EXPORT_DIR.mkdir()
 
@@ -269,7 +271,6 @@ def thz_function():
         )
         
         plot_thz(widget, tkplot=True)
-        
         widget.ax.xaxis.set_major_formatter(plticker.StrMethodFormatter("{x:.3f}"))
         
         widget.optimize_figure(setBound=False)
@@ -291,23 +292,22 @@ varyAll = False
 tkplot: bool = False
 filenames: list[pt] = []
 location: pt = None
+EXPORT_DIR: pt = None
 plotIndex = []
 
-
 def main(arguments):
-
-    global args, tkplot, filenames, location
+    global args, tkplot, filenames, location, EXPORT_DIR
     global fitfile, fitMethod, paramsTable, varyAll, plotIndex
     
     args = arguments
     tkplot = args["tkplot"]
     filenames = [pt(i) for i in args["thzfiles"]]
     location = pt(filenames[0].parent)
+    EXPORT_DIR = location / "EXPORT"
     fitfile = args["fitfile"]
     fitMethod = args["fitMethod"]
     paramsTable = args["paramsTable"]
     varyAll = args["varyAll"]
     plotIndex = args["plotIndex"]
-    
     thz_function()
     

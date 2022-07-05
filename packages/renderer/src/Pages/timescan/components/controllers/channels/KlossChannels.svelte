@@ -1,6 +1,6 @@
 <script lang="ts">
     import CustomSwitch from '$components/CustomSwitch.svelte'
-    import FileReadAndLoad from '../../utils/FileReadAndLoad.svelte'
+    import FileReadAndLoad from '$components/FileReadAndLoad.svelte'
     import ChannelComponent from './ChannelComponent.svelte'
     import { onMount } from 'svelte'
     import { differenceBy, find } from 'lodash-es'

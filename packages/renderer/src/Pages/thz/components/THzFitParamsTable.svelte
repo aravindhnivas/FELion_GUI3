@@ -2,18 +2,24 @@
     import Textfield from '@smui/textfield'
     import ModalTable from '$components/ModalTable.svelte'
     import CustomCheckbox from '$components/CustomCheckbox.svelte'
+    // import FileReadAndLoad from '$components/FileReadAndLoad.svelte'
     import { plotlyEventsInfo } from '$src/js/functions'
 
     export let varyAll = false
-    export let active = []
+    export let active = false
     export let paramsTable = []
-    export let fitMethod = ''
+    export let fitMethod = 'gaussian'
     export let currentLocation = ''
 
     const keys = ['freq', 'amp', 'fG', 'fL']
     let savefilename = 'thz_fit_params.json'
-    $: saveParamsToFile = window.path.join(currentLocation, 'OUT', savefilename)
+    $: configDir = window.path.resolve(currentLocation, 'CONFIGS')
+    $: saveParamsToFile = window.path.join(configDir, savefilename)
+
     const saveConfig = () => {
+        if (!window.fs.isDirectory(configDir)) {
+            window.fs.mkdirSync(configDir)
+        }
         const dataToSave = { units: { freq: 'GHz', fG: 'MHz', fL: 'MHz' } }
         paramsTable.forEach((params) => {
             const { freq, amp, fG, fL } = params
@@ -23,12 +29,11 @@
         if (error) {
             return window.handleError(error)
         }
-        console.warn('file saved: ', saveParamsToFile)
         window.createToast('file saved')
     }
 
     const loadConfig = () => {
-        if (!window.fs.existsSync(saveParamsToFile)) return window.createToast('No files saved yet', 'danger')
+        if (!window.fs.isFile(saveParamsToFile)) return window.createToast('No files saved yet', 'danger')
         const [readParams] = window.fs.readJsonSync(saveParamsToFile)
         const frequencies = Object.keys(readParams).filter((key) => key !== 'units')
         paramsTable = frequencies.map((freq) => {
@@ -47,13 +52,12 @@
             const fG = fitMethod === 'gaussian' || fitMethod === 'voigt' ? 1 : 0
             const fL = fitMethod === 'lorentz' || fitMethod === 'voigt' ? 1 : 0
             const newParams = {
-                freq: x.toFixed(6),
-                amp: y.toFixed(2),
+                freq: Number(x).toFixed(6),
+                amp: Number(y).toFixed(2),
                 fG,
                 fL,
                 id: window.getID(),
             }
-            console.log(newParams)
             paramsTable = [...paramsTable, newParams]
         })
     }
@@ -62,6 +66,7 @@
 <ModalTable bind:active title="Config table" bind:rows={paramsTable} {keys} sortOption={true}>
     <svelte:fragment slot="header">
         <Textfield bind:value={savefilename} label="savefilename" style="width: 100%;" />
+        <!-- <FileReadAndLoad {configDir} selectedFile={savefilename} bind:dataToSave={paramsTable} /> -->
     </svelte:fragment>
 
     <svelte:fragment slot="footer">

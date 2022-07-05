@@ -1,12 +1,12 @@
 <script>
-    import { relayout, addTraces, deleteTraces, restyle } from 'plotly.js/dist/plotly-basic'
+    import { relayout, addTraces, deleteTraces } from 'plotly.js/dist/plotly-basic'
     import { plot, plotlyEventsInfo } from '$src/js/functions'
     import computePy_func from '$src/Pages/general/computePy'
     import Layout from '$components/Layout.svelte'
     import CustomCheckbox from '$components/CustomCheckbox.svelte'
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
     import CustomSelect from '$components/CustomSelect.svelte'
-    import Table from '$components/Table.svelte'
+    import STable from '$components/STable.svelte'
     import THzFitParamsTable from './thz/components/THzFitParamsTable.svelte'
     import { onDestroy } from 'svelte'
     import ButtonBadge from '$components/ButtonBadge.svelte'
@@ -26,12 +26,11 @@
     let graphPlotted = false
 
     let fittedParamsTable = []
-    const freqTableKeys = ['filename', 'freq', 'amp', 'fG', 'fL']
-    const tableHeader = ['Filename', 'freq (MHz)', 'amp', 'fG (MHz)', 'fL (MHz)']
+    const rowKeys = ['filename', 'freq', 'amp', 'fG', 'fL']
+    const headKeys = ['Filename', 'freq (MHz)', 'amp', 'fG (MHz)', 'fL (MHz)']
     let rawDataProcessed = { data: null }
     let dataProcessed = {}
     let numOfFittedLines = 0
-    let dataReady = false
 
     async function plotData({ e = null, filetype = 'thz', tkplot = false, justPlot = false, general = {} } = {}) {
         if (fileChecked.length === 0 && filetype === 'thz') {
@@ -50,11 +49,11 @@
             varyAll,
             plotIndex,
         }
-        let pyfileInfo = {
+        const pyfileInfo = {
             general,
             thz: { pyfile: 'thz_scan', args: thz_args },
         }
-        let { pyfile, args } = pyfileInfo[filetype]
+        const { pyfile, args } = pyfileInfo[filetype]
         if (tkplot) {
             filetype = 'general'
         }
@@ -62,10 +61,7 @@
         if (filetype == 'general') {
             return computePy_func({ e, pyfile, args, general: true })
         }
-
         if (!justPlot && paramsTable.length < 1) return window.createToast('No initial guesses were given', 'danger')
-        dataReady = false
-
         const dataFromPython = await computePy_func({ e, pyfile, args })
         if (!dataFromPython) return
 
@@ -86,10 +82,8 @@
                 const { averaged, individual } = dataFromPython['thz']
                 dataProcessed = { ...individual, ...averaged }
                 rawDataProcessed.data = dataFromPython['resOnOff_Counts']
-                dataReady = true
                 numOfFittedLines = 0
             }
-            // window.createToast("Graph plotted", "success")
             graphPlotted = true
         }
     }
@@ -200,10 +194,8 @@
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer">
-        <!-- <div class="graph__container"> -->
         <div id="resOnOffPlot" class="graph__div" class:hide={!showRawData} />
         <div id="thzPlot" class="graph__div" />
-        <!-- </div> -->
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer_functions">
@@ -236,19 +228,6 @@
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer_reports">
-        <button
-            class="button is-danger"
-            style="margin-left: auto; width: 7em;"
-            on:click={() => (fittedParamsTable = [])}
-        >
-            Clear Table
-        </button>
-        <Table
-            keys={freqTableKeys}
-            head={tableHeader}
-            disableInput={true}
-            addextraOption={false}
-            bind:rows={fittedParamsTable}
-        />
+        <STable {rowKeys} {headKeys} bind:rows={fittedParamsTable} closeableRows={true} sortable={true} />
     </svelte:fragment>
 </Layout>

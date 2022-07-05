@@ -35,20 +35,20 @@
     <CustomCheckbox bind:value={keepTable} label="Keep table" />
 </div> -->
 
-<div class="dataTable">
-    <STable
-        rows={$frequencyDatas}
-        {rowKeys}
-        {headKeys}
-        closeableRows={true}
-        on:tableCleared={tableCleanup}
-        sortable={true}
-    />
-</div>
-
+<!-- <div class="dataTable"> -->
+<STable
+    rows={$frequencyDatas}
+    {rowKeys}
+    {headKeys}
+    closeableRows={true}
+    on:tableCleared={tableCleanup}
+    sortable={true}
+/>
+<!-- </div> -->
+<!-- 
 <style>
     .dataTable {
         display: flex;
         justify-content: center;
     }
-</style>
+</style> -->

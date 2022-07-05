@@ -38,78 +38,80 @@
 </script>
 
 {#if mounted}
-    <DataTable style="width: 100%; user-select:text;">
-        <Head>
-            <Row>
-                {#if includeIndex}
-                    <Cell># {rows.length}</Cell>
-                {/if}
-                {#each headKeys as key, i (key)}
-                    <Cell on:click={() => sortTable(rowKeys[i])}>
-                        <div class="header_cell has-background-link">
-                            <span>{key}</span>
-                            {#if sortable}
-                                <IconButton toggle bind:pressed={sortToggle[rowKeys[i]]}>
-                                    <Icon class="material-icons">arrow_downward</Icon>
-                                    <Icon class="material-icons" on>arrow_upward</Icon>
-                                </IconButton>
-                            {/if}
-                        </div>
-                    </Cell>
-                {/each}
-                {#if closeableRows}
-                    <Cell
-                        ><button
-                            class="button is-link"
-                            style="background-color: var(--color-danger);"
-                            on:click={() => {
-                                if (rows.length === 0) return window.createToast('Table is empty', 'warning')
-                                rows = []
-                                window.createToast('Table cleared', 'danger')
-                                dispatch('tableCleared')
-                            }}>Clear Table</button
-                        ></Cell
-                    >
-                {/if}
-            </Row>
-        </Head>
-
-        <Body>
-            {#each rows as row, index (row[idKey])}
+    <div class="align">
+        <DataTable style="width: 100%; user-select:text;">
+            <Head>
                 <Row>
                     {#if includeIndex}
-                        <Cell>{index + 1}</Cell>
+                        <Cell># {rows.length}</Cell>
                     {/if}
-                    {#each rowKeys as key (key)}
-                        {#if typeof row[key] === 'object'}
-                            <Cell style={row[key]?.style} on:click={row[key]?.cb}>{row[key]?.name}</Cell>
-                        {:else}
-                            <Cell>
-                                {#if editable}
-                                    <input type="text" bind:value={row[key]} style="color: black; width: 100%;" />
-                                {:else}
-                                    {row[key]}
+                    {#each headKeys as key, i (key)}
+                        <Cell on:click={() => sortTable(rowKeys[i])}>
+                            <div class="header_cell has-background-link">
+                                <span>{key}</span>
+                                {#if sortable}
+                                    <IconButton toggle bind:pressed={sortToggle[rowKeys[i]]}>
+                                        <Icon class="material-icons">arrow_downward</Icon>
+                                        <Icon class="material-icons" on>arrow_upward</Icon>
+                                    </IconButton>
                                 {/if}
-                            </Cell>
-                        {/if}
+                            </div>
+                        </Cell>
                     {/each}
                     {#if closeableRows}
-                        <Cell style="width: 5em;">
-                            <button
+                        <Cell
+                            ><button
+                                class="button is-link"
                                 style="background-color: var(--color-danger);"
-                                class="button is-danger"
                                 on:click={() => {
-                                    rows = rows.filter((r) => r[idKey] !== row[idKey])
-                                }}
-                            >
-                                X
-                            </button>
-                        </Cell>
+                                    if (rows.length === 0) return window.createToast('Table is empty', 'warning')
+                                    rows = []
+                                    window.createToast('Table cleared', 'danger')
+                                    dispatch('tableCleared')
+                                }}>Clear Table</button
+                            ></Cell
+                        >
                     {/if}
                 </Row>
-            {/each}
-        </Body>
-    </DataTable>
+            </Head>
+
+            <Body>
+                {#each rows as row, index (row[idKey])}
+                    <Row>
+                        {#if includeIndex}
+                            <Cell>{index + 1}</Cell>
+                        {/if}
+                        {#each rowKeys as key (key)}
+                            {#if typeof row[key] === 'object'}
+                                <Cell style={row[key]?.style} on:click={row[key]?.cb}>{row[key]?.name}</Cell>
+                            {:else}
+                                <Cell>
+                                    {#if editable}
+                                        <input type="text" bind:value={row[key]} style="color: black; width: 100%;" />
+                                    {:else}
+                                        {row[key]}
+                                    {/if}
+                                </Cell>
+                            {/if}
+                        {/each}
+                        {#if closeableRows}
+                            <Cell style="width: 5em;">
+                                <button
+                                    style="background-color: var(--color-danger);"
+                                    class="button is-danger"
+                                    on:click={() => {
+                                        rows = rows.filter((r) => r[idKey] !== row[idKey])
+                                    }}
+                                >
+                                    X
+                                </button>
+                            </Cell>
+                        {/if}
+                    </Row>
+                {/each}
+            </Body>
+        </DataTable>
+    </div>
 {/if}
 
 <style>
