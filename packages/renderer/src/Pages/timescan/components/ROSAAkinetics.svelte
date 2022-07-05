@@ -497,7 +497,7 @@
         <CustomSelect bind:value={selectedFile} label="Filename" options={fileCollections} />
         <button class="button is-link" on:click={computeParameters}>compute</button>
         <i class="material-icons" on:click={() => (kinetic_plot_adjust_dialog_active = true)}>settings</i>
-        <ButtonBadge id="kinetic-submit-button" on:click={kineticSimulation}>Submit</ButtonBadge>
+        <ButtonBadge id="kinetic-submit-button" on:click={kineticSimulation} />
     </svelte:fragment>
 </LayoutDiv>
 

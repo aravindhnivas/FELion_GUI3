@@ -116,7 +116,7 @@
                 Masspec Plot</button
             >
             <GetLabviewSettings {currentLocation} {fullfileslist} {fileChecked} />
-            <ButtonBadge on:click={(e) => plotData({ e: e, filetype: 'general' })}>Open in Matplotlib</ButtonBadge>
+            <ButtonBadge on:click={(e) => plotData({ e: e, filetype: 'general' })} label="Open in Matplotlib" />
             <CustomSwitch style="margin: 0 1em;" on:change={linearlogCheck} bind:selected={logScale} label="Log" />
         </div>
     </svelte:fragment>

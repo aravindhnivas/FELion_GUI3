@@ -18,7 +18,8 @@
         try {
             loadStatus = { name: 'loading', type: 'warning' }
             const [files] = await window.fs.readdir(data_location)
-            console.log(files)
+            if (!files) return
+            // console.log(files)
             items = files?.filter((file) => file.endsWith('.thz.dat')).map((name) => ({ name, id: window.getID() }))
             loadStatus = { name: 'loaded', type: 'success' }
         } catch (error) {
@@ -51,9 +52,6 @@
             on:click={(e) => {
                 dispatch('submit', { e, args: { thzfiles, includeFit, location: data_location } })
             }}
-        >
-            Submit
-            <span class="material-icons"> double_arrow </span>
-        </ButtonBadge>
+        />
     </svelte:fragment>
 </Modal>

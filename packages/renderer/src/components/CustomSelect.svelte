@@ -19,7 +19,13 @@
         if (lookIn) {
             update = (toast = true) => {
                 console.log(lookIn, lookFor)
-                if (!window.fs.isDirectory(lookIn)) return window.createToast('Invalid path', 'danger')
+                if (!window.fs.isDirectory(lookIn)) {
+                    if (toast) {
+                        console.error(`looking in ${lookIn} is not a directory`)
+                        window.createToast('Invalid path', 'danger')
+                    }
+                    return
+                }
                 options = window.fs.readdirSync(lookIn).filter((n) => n.endsWith(lookFor))
                 if (toast) window.createToast(`Found ${options.length} files`, 'success')
                 console.log(options)

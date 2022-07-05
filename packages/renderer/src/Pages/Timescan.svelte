@@ -194,9 +194,10 @@
                     toggleRow = !toggleRow
                 }}>Depletion Plot</button
             >
-            <ButtonBadge on:click={(e) => plotData({ e: e, filetype: 'scan', tkplot: 'plot' })}
-                >Open in Matplotlib</ButtonBadge
-            >
+            <ButtonBadge
+                on:click={(e) => plotData({ e: e, filetype: 'scan', tkplot: 'plot' })}
+                label="Open in Matplotlib"
+            />
             <CustomSwitch on:change={linearlogCheck} bind:selected={logScale} label="Log" />
         </div>
 

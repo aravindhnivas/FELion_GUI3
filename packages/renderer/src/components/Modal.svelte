@@ -1,14 +1,13 @@
 <script>
-    import ButtonBadge from './ButtonBadge.svelte'
     import { createEventDispatcher } from 'svelte'
 
     export let active = false
     export let title = 'Title'
     export let height = '70%'
     export let width = '70%'
-    export let makeSubmit = false
 
     const dispatch = createEventDispatcher()
+
     const mount = (node) => {
         dispatch('mount', { node })
 
@@ -54,13 +53,6 @@
         <footer class="modal-card-foot">
             <div style="margin-left:auto; display:flex; gap: 1em;">
                 <slot name="footerbtn" />
-
-                {#if makeSubmit}
-                    <ButtonBadge on:click>
-                        Submit
-                        <span class="material-icons"> double_arrow </span>
-                    </ButtonBadge>
-                {/if}
             </div>
         </footer>
     </div>

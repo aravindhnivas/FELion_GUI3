@@ -623,7 +623,7 @@
             {showreport ? 'Go Back' : 'Status report'}
         </button>
 
-        <ButtonBadge on:click={simulation}>Submit</ButtonBadge>
+        <ButtonBadge on:click={simulation} />
     </svelte:fragment>
 </LayoutDiv>
 

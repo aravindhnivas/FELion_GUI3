@@ -194,9 +194,11 @@
 />
 
 <div class="align">
-    <ButtonBadge id="create_baseline_btn" on:click={(e) => plotData({ e: e, filetype: 'baseline' })}>
-        Create Baseline
-    </ButtonBadge>
+    <ButtonBadge
+        id="create_baseline_btn"
+        on:click={(e) => plotData({ e: e, filetype: 'baseline' })}
+        label="Create Baseline"
+    />
 
     <button class="button is-link" id="felix_plotting_btn" on:click={(e) => plotData({ e: e, filetype: 'felix' })}>
         FELIX Plot

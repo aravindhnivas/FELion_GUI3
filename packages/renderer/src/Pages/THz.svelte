@@ -10,8 +10,9 @@
     import THzFitParamsTable from './thz/components/THzFitParamsTable.svelte'
     import Matplotlib from './thz/Matplotlib.svelte'
     import { onDestroy } from 'svelte'
-    import ButtonBadge from '$components/ButtonBadge.svelte'
+
     import Textfield from '@smui/textfield'
+
     const filetype = 'thz'
     const id = 'THz'
 
@@ -203,7 +204,7 @@
             <CustomCheckbox bind:value={saveInMHz} label="saveInMHz" />
             <CustomCheckbox bind:value={showRawData} label="showRawData" />
             <CustomCheckbox bind:value={showall} label="show all" />
-            <ButtonBadge on:click={(e) => (open_matplotlib = true)}>Open in Matplotlib</ButtonBadge>
+            <button class="button is-link" on:click={(e) => (open_matplotlib = true)}>Open in Matplotlib</button>
         </div>
     </svelte:fragment>
 
