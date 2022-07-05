@@ -179,8 +179,11 @@ def plot_thz(widget: felionQtWindow=None, save_dat=True, tkplot=False):
 
     binx, biny = binning(xs, ys, delta)
     binDatalabel = f"Binned (delta={delta*1e6:.2f} KHz)"
+    
     export_file('averaged', binx, biny, lg=binDatalabel)
-    export_file(avgfilename, binx, biny, lg=binDatalabel)
+    
+    if avgfilename != 'averaged':
+        export_file(avgfilename, binx, biny, lg=binDatalabel)
     
     if tkplot:
         (line_handler[binDatalabel],) = widget.ax.plot(binx, biny, "k", label=f"{binDatalabel}\n#binned_{binx.min():.3f}_{binx.max():.3f}GHz_{int(delta*1e6)}kHz")
@@ -212,7 +215,8 @@ def plot_thz(widget: felionQtWindow=None, save_dat=True, tkplot=False):
     dataToSend["fittedInfos"] = {"freq": fittedInfos["freq"].tolist(), "fittedY": fittedInfos["fittedY"].tolist()}
 
     save_fitted_data('averaged', binx, fittedY)
-    save_fitted_data(avgfilename, binx, fittedY)
+    if avgfilename != 'averaged':
+        save_fitted_data(avgfilename, binx, fittedY)
     
     style = {"mode": 'lines'}
     
@@ -275,7 +279,8 @@ def main(arguments):
     
     args = arguments
     tkplot = args["tkplot"]
-    avgfilename = args["avgfilename"]
+    avgfilename = args["avgfilename"].strip()
+    
     filenames = [pt(i) for i in args["thzfiles"]]
     location = pt(filenames[0].parent)
     EXPORT_DIR = location / "EXPORT"
