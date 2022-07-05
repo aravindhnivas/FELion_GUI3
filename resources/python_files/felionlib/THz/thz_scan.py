@@ -127,7 +127,7 @@ def plot_thz(widget: felionQtWindow=None, save_dat=True, tkplot=False):
         xs = np.append(xs, freq)
         ys = np.append(ys, depletion_counts)
         
-        export_file(filename.stem, freq, depletion_counts)
+        export_file(filename.stem, freq, depletion_counts, lg=lg)
         if i >= int(len(colors)/2):
             i = c
             c += 1
@@ -178,12 +178,12 @@ def plot_thz(widget: felionQtWindow=None, save_dat=True, tkplot=False):
         return dataToSend
 
     binx, biny = binning(xs, ys, delta)
-    export_file(f"binned_{binx.min():.3f}_{binx.max():.3f}GHz_{int(delta*1e6)}kHz", binx, biny)
-    
-
     binDatalabel = f"Binned (delta={delta*1e6:.2f} KHz)"
+    export_file('averaged', binx, biny, lg=binDatalabel)
+    export_file(avgfilename, binx, biny, lg=binDatalabel)
+    
     if tkplot:
-        (line_handler[binDatalabel],) = widget.ax.plot(binx, biny, "k", label=binDatalabel)
+        (line_handler[binDatalabel],) = widget.ax.plot(binx, biny, "k", label=f"{binDatalabel}\n#binned_{binx.min():.3f}_{binx.max():.3f}GHz_{int(delta*1e6)}kHz")
         widget.makeLegendToggler(line_handler)
         return
     
@@ -212,15 +212,7 @@ def plot_thz(widget: felionQtWindow=None, save_dat=True, tkplot=False):
     dataToSend["fittedInfos"] = {"freq": fittedInfos["freq"].tolist(), "fittedY": fittedInfos["fittedY"].tolist()}
 
     save_fitted_data('averaged', binx, fittedY)
-    # if save_dat:
-    #     saveDir: pt = location / "OUT"
-    #     if not saveDir.exists(): saveDir.mkdir()
-    
-    #     with open(saveDir / "averaged.thz.fit.dat", "w") as f:
-    #         f.write("#Frequency(in MHz)\t#Intensity\n")
-    #         for freq, inten in zip(binx, fittedY): f.write(f"{freq*1e3}\t{inten}\n")
-    #         print(f"averaged_thz_fit.dat file saved in {saveDir}")
-
+    save_fitted_data(avgfilename, binx, fittedY)
     
     style = {"mode": 'lines'}
     
@@ -232,12 +224,17 @@ def plot_thz(widget: felionQtWindow=None, save_dat=True, tkplot=False):
 
 def save_fitted_data(filename, x, y):
     filename = f"{filename}.thz.fit.dat"
+    unit = "MHz" if args["saveInMHz"] else 'GHz'
+    
+    if unit == "MHz":
+        x = x*1e3
+        
     with open(EXPORT_DIR / filename, "w") as f:
-        f.write("#Frequency(in MHz)\t#Intensity\n")
-        for freq, inten in zip(x, y): f.write(f"{freq*1e3}\t{inten}\n")
+        f.write(f"#Frequency [{unit}]\t#Intensity\n")
+        for freq, inten in zip(x, y): f.write(f"{freq}\t{inten}\n")
         print(f"{filename} file saved in {EXPORT_DIR}")
 
-def export_file(fname, freq, inten):
+def export_file(fname, freq, inten, lg=None):
 
         freq = np.array(freq, dtype=float)
         inten = np.array(inten, dtype=float)
@@ -251,35 +248,11 @@ def export_file(fname, freq, inten):
         else:
             unit = "GHz"
 
-        with open(EXPORT_DIR/f"{fname}.dat", 'w+') as f:
-            f.write(f"#Frequency({unit})\t#DepletionCounts(%)\n")
+        with open(EXPORT_DIR/f"{fname}.thz.dat", 'w+') as f:
+            if lg is not None:
+                f.write(f"# {lg}\n")
+            f.write(f"#Frequency [{unit}]\t#DepletionCounts(%)\n")
             for i in range(len(freq)): f.write(f"{freq[i]}\t{inten[i]}\n")
-
-def thz_function():
-
-    global widget
-    if tkplot:
-        if len(filenames) == 1: 
-            savefilename=filenames[0].stem
-            
-        else:
-            savefilename = "averaged_thzScan"
-        
-        widget = felionQtWindow(title=savefilename,
-            figXlabel="Frequency (GHz)", figYlabel="Counts",
-            location=location/"OUT", savefilename=savefilename
-        )
-        
-        plot_thz(widget, tkplot=True)
-        widget.ax.xaxis.set_major_formatter(plticker.StrMethodFormatter("{x:.3f}"))
-        
-        widget.optimize_figure(setBound=False)
-        widget.fig.tight_layout()
-        widget.qapp.exec()
-
-    else: 
-        dataToSend = plot_thz()
-        sendData(dataToSend, calling_file=pt(__file__).stem)
 
 
 args = None
@@ -294,13 +267,15 @@ filenames: list[pt] = []
 location: pt = None
 EXPORT_DIR: pt = None
 plotIndex = []
+avgfilename = 'averaged'
 
 def main(arguments):
-    global args, tkplot, filenames, location, EXPORT_DIR
+    global args, tkplot, filenames, location, EXPORT_DIR, avgfilename
     global fitfile, fitMethod, paramsTable, varyAll, plotIndex
     
     args = arguments
     tkplot = args["tkplot"]
+    avgfilename = args["avgfilename"]
     filenames = [pt(i) for i in args["thzfiles"]]
     location = pt(filenames[0].parent)
     EXPORT_DIR = location / "EXPORT"
@@ -309,5 +284,7 @@ def main(arguments):
     paramsTable = args["paramsTable"]
     varyAll = args["varyAll"]
     plotIndex = args["plotIndex"]
-    thz_function()
+    
+    dataToSend = plot_thz()
+    sendData(dataToSend, calling_file=pt(__file__).stem)
     

@@ -8,9 +8,10 @@
     import CustomSelect from '$components/CustomSelect.svelte'
     import STable from '$components/STable.svelte'
     import THzFitParamsTable from './thz/components/THzFitParamsTable.svelte'
+    import Matplotlib from './thz/Matplotlib.svelte'
     import { onDestroy } from 'svelte'
     import ButtonBadge from '$components/ButtonBadge.svelte'
-
+    import Textfield from '@smui/textfield'
     const filetype = 'thz'
     const id = 'THz'
 
@@ -48,10 +49,11 @@
             fitMethod,
             varyAll,
             plotIndex,
+            avgfilename,
         }
         const pyfileInfo = {
             general,
-            thz: { pyfile: 'thz_scan', args: thz_args },
+            thz: { pyfile: 'THz.thz_scan', args: thz_args },
         }
         const { pyfile, args } = pyfileInfo[filetype]
         if (tkplot) {
@@ -130,6 +132,7 @@
     }
 
     let plotfile = 'averaged'
+    let avgfilename = 'averaged'
     let plotIndex = []
     let plotlySelectCreated = false
 
@@ -147,49 +150,60 @@
                 window.handleError(error)
             }
         })
+
         console.log('plotlySelectCreated', plotlySelectCreated)
         plotlySelectCreated = true
     }
+
     let display = window.db.get('active_tab') === id ? 'block' : 'none'
+
+    let toggle_options = false
+    let fit_options_div = false
+    let open_matplotlib = false
+    const matplotlib_plot = async (event) => {
+        const { e, args } = event.detail
+        return computePy_func({ e, pyfile: 'THz.thz_matplotlib', args, general: true })
+    }
 </script>
 
 <THzFitParamsTable bind:active={openTable} bind:paramsTable bind:varyAll {currentLocation} {fitMethod} />
-
+<Matplotlib bind:active={open_matplotlib} {currentLocation} on:submit={matplotlib_plot} />
 <Layout {filetype} {graphPlotted} {id} {display} bind:currentLocation bind:fileChecked>
     <svelte:fragment slot="buttonContainer">
         <div class="align v-center">
             <button
                 class="button is-link"
-                style="min-width: 7em;"
                 on:click={(e) => {
                     plotData({ e: e, justPlot: true })
                 }}
             >
                 Plot
             </button>
-
             <CustomCheckbox bind:value={binData} label="Bin" />
-            <CustomCheckbox bind:value={saveInMHz} label="saveInMHz" />
-            <CustomCheckbox bind:value={showRawData} label="showRawData" />
-
-            <CustomCheckbox bind:value={showall} label="show all" />
-            <CustomSelect bind:value={plotfile} label="plotfile" options={[...fileChecked, 'averaged']} />
-            <ButtonBadge on:click={(e) => plotData({ e: e, tkplot: true })}>Open in Matplotlib</ButtonBadge>
-
             <CustomTextSwitch bind:value={binSize} label="binSize (kHz)" step="0.1" />
+            <button class="button is-link" on:click={() => (fit_options_div = !fit_options_div)}>Fit options</button>
+            <button class="button is-link" on:click={() => (toggle_options = !toggle_options)}>More options</button>
         </div>
 
-        <div class="align" style="justify-content: flex-end;">
+        <div class="align" style="justify-content: flex-end;" class:hide={!fit_options_div}>
             <i class="material-icons" on:click={() => (openTable = true)}>settings</i>
             <CustomSelect bind:value={fitfile} label="fitfile" options={[...fileChecked, 'averaged']} />
             <CustomSelect bind:value={fitMethod} label="fit method" options={['gaussian', 'lorentz', 'voigt']} />
             <button
                 class="button is-link"
-                style="min-width: 7em;"
                 on:click={(e) => {
                     plotData({ e: e })
                 }}>Fit</button
             >
+        </div>
+
+        <div class="align" class:hide={!toggle_options}>
+            <CustomSelect bind:value={plotfile} label="plotfile" options={[...fileChecked, 'averaged']} />
+            <Textfield bind:value={avgfilename} label="saveAs (binned)" />
+            <CustomCheckbox bind:value={saveInMHz} label="saveInMHz" />
+            <CustomCheckbox bind:value={showRawData} label="showRawData" />
+            <CustomCheckbox bind:value={showall} label="show all" />
+            <ButtonBadge on:click={(e) => (open_matplotlib = true)}>Open in Matplotlib</ButtonBadge>
         </div>
     </svelte:fragment>
 

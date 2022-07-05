@@ -1,17 +1,17 @@
-// import { contextBridge } from 'electron'
 import { exposeInMainWorld } from './exposeInMainWorld'
 import fs from 'fs-extra'
 import { promisify } from 'util'
 import { syncTryCatcher, asyncTryCatcher } from './utils/trycatcher'
-
-// Export for types in contracts.d.ts
 export const fsUtils = {
     mkdirSync: (dir) => fs.mkdirSync(dir),
     emptyDirSync: (dir) => fs.emptyDirSync(dir),
     ensureDirSync: (dir) => fs.ensureDirSync(dir),
-    readdirSync: (dir = './', options = null) => fs.readdirSync(dir, options),
+    readdirSync: (dir = null, options = null) => {
+        if(!(dir && fs.existsSync(dir))) return []
+        return fs.readdirSync(dir, options)
+    },
+    
     ensureFileSync: (file) => fs.ensureFileSync(file),
-
     appendFileSync: (path, data) => fs.appendFileSync(path, data),
     rename: (oldPath, newPath, callback) => {
         return fs.rename(oldPath, newPath, callback)

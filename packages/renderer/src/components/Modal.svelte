@@ -1,13 +1,14 @@
 <script>
+    import ButtonBadge from './ButtonBadge.svelte'
     import { createEventDispatcher } from 'svelte'
 
     export let active = false
     export let title = 'Title'
     export let height = '70%'
     export let width = '70%'
+    export let makeSubmit = false
 
     const dispatch = createEventDispatcher()
-
     const mount = (node) => {
         dispatch('mount', { node })
 
@@ -43,7 +44,7 @@
 
         <section
             class="modal-card-body background-body"
-            style="overflow-y: {$$slots.body_scrollable__div ? 'hidden' : 'auto'} "
+            style={$$slots.body_scrollable__div ? 'overflow-y: hidden; height: 70%' : 'overflow-y: auto; height: 100%'}
         >
             <slot name="content" style="white-space: pre-wrap;" />
             <slot name="body_header__div" />
@@ -51,8 +52,15 @@
         </section>
 
         <footer class="modal-card-foot">
-            <div style="margin-left:auto; display:flex;">
+            <div style="margin-left:auto; display:flex; gap: 1em;">
                 <slot name="footerbtn" />
+
+                {#if makeSubmit}
+                    <ButtonBadge on:click>
+                        Submit
+                        <span class="material-icons"> double_arrow </span>
+                    </ButtonBadge>
+                {/if}
             </div>
         </footer>
     </div>
@@ -61,8 +69,8 @@
 <style>
     .modal-card-body {
         color: black;
-        overflow-y: auto;
-        height: 100%;
+        /* overflow-y: auto;
+        height: 100%; */
         background-color: #634e96;
     }
     .modal-card-head {
