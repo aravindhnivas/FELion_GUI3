@@ -18,7 +18,6 @@
     export let maxHeight: string = '25em'
 
     let mounted = false
-    // $: console.log(rows)
     onMount(() => {
         rows = uniqBy(rows, idKey)
         if (rowKeys === null) {
@@ -33,7 +32,6 @@
     let sortToggle = {}
     rowKeys.forEach((key) => (sortToggle[key] = false))
     const sortTable = (key) => {
-        // console.log({ key })
         rows = orderBy(rows, key, sortToggle[key] ? 'asc' : 'desc')
     }
 
