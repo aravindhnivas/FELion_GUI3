@@ -18,7 +18,7 @@
     }}
 />
 
-<QuickView style="padding:1em; display: grid; justify-items: center;" bind:active bind:currentLocation {title}>
+<QuickView bind:active bind:currentLocation {title}>
     <FileBrowser bind:currentLocation bind:fileChecked {filetype} on:markedFile />
     <div slot="footer" style="margin:auto">
         <button

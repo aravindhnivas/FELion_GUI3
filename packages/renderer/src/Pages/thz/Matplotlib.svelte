@@ -54,7 +54,7 @@
     </svelte:fragment>
 
     <svelte:fragment slot="body_scrollable__div">
-        <VirtualCheckList {items} bind:fileChecked={thzfiles} {fileSelected} height="calc(60vh - 4rem)" />
+        <VirtualCheckList {items} bind:fileChecked={thzfiles} {fileSelected} ul$style={'overflow-y: auto;'} />
     </svelte:fragment>
 
     <svelte:fragment slot="footerbtn">

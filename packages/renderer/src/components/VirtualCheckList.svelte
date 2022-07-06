@@ -1,15 +1,18 @@
 <script>
-    import { createEventDispatcher } from 'svelte'
+    import { createEventDispatcher, onMount } from 'svelte'
     import List, { Item, Meta, Label } from '@smui/list'
     import Checkbox from '@smui/checkbox'
     import VirtualList from '@sveltejs/svelte-virtual-list'
     import { difference } from 'lodash-es'
 
+    let className = ''
+    export { className as class }
     export let items = []
-    export let height = 'calc(65vh - 4rem)'
+    // export let height = 'calc(65vh - 4rem)'
     export let markedFile = ''
     export let fileChecked = []
     export let fileSelected = []
+    export let ul$style = ''
 
     const dispatch = createEventDispatcher()
     const dispatch_fileselect_event = (event) => {
@@ -36,10 +39,14 @@
         }
         fileChecked = fileSelected
     }
+
+    onMount(() => {
+        dispatch('mount', {})
+    })
 </script>
 
-<List checklist style="padding: 0.5em;">
-    <VirtualList {items} let:item {height}>
+<List checklist style="display:contents; padding: 0.5em; {ul$style}" class={className}>
+    <VirtualList {items} let:item>
         {@const highlight = markedFile == item.name}
         <Item
             on:click={(e) => {

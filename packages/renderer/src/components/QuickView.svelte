@@ -37,6 +37,18 @@
 </div>
 
 <style>
+    .quickview-body {
+        display: contents;
+    }
+    .quickview-block {
+        display: grid;
+        padding: 2em;
+        gap: 1em;
+        overflow: hidden;
+        height: 100%;
+
+        grid-template-rows: auto 1fr;
+    }
     .quickview {
         margin: 5em 0;
     }

@@ -134,37 +134,48 @@
 
         dispatch('markedFile', { markedFile })
     }
-    // let fileSelected = []
     $: fileSelected = fileChecked
 </script>
 
-<div class="align h-center">
-    <i class="material-icons" on:click={() => changeDirectory('..')}>arrow_back</i>
+<div class="filebrowser-header">
+    <div class="align h-center">
+        <i class="material-icons" on:click={() => changeDirectory('..')}>arrow_back</i>
 
-    <i
-        class="material-icons animate__animated animate__faster"
-        on:animationend={({ target }) => target.classList.remove('animate__rotateIn')}
-        on:click={({ target }) => {
-            target.classList.add('animate__rotateIn')
-            getFilePromise = getfiles(true, true)
-        }}>refresh</i
-    >
-    <CustomIconSwitch bind:toggler={sortFile} icons={['trending_up', 'trending_down']} />
+        <i
+            class="material-icons animate__animated animate__faster"
+            on:animationend={({ target }) => target.classList.remove('animate__rotateIn')}
+            on:click={({ target }) => {
+                target.classList.add('animate__rotateIn')
+                getFilePromise = getfiles(true, true)
+            }}>refresh</i
+        >
+
+        <CustomIconSwitch bind:toggler={sortFile} icons={['trending_up', 'trending_down']} />
+    </div>
+
+    <Textfield on:keyup={searchfile} bind:value={searchKey} label="Search {filetype} files" />
+    <CustomSwitch
+        bind:selected={selectAll}
+        label="Select All"
+        on:change={() => {
+            console.log('selected all files')
+            selectAll ? (fileChecked = fullfiles.map((file) => (file = file.name))) : (fileChecked = [])
+        }}
+    />
 </div>
 
-<Textfield on:keyup={searchfile} bind:value={searchKey} label="Search {filetype} files" />
-
-<CustomSwitch
-    bind:selected={selectAll}
-    label="Select All"
-    on:change={() => {
-        console.log('selected all files')
-        selectAll ? (fileChecked = fullfiles.map((file) => (file = file.name))) : (fileChecked = [])
-    }}
-/>
-
-<div id="{filetype}_filebrowser" style="width: 100%; overflow-y:auto;">
-    <div class="align folderlist">
+<div
+    class="main__container"
+    id="{filetype}_filebrowser"
+    style:grid-template-rows={fullfiles.length
+        ? otherfolders.length
+            ? 'auto 4fr 0.5fr'
+            : 'auto 1fr'
+        : otherfolders.length
+        ? 'auto auto 1fr'
+        : 'auto 1fr'}
+>
+    <div class="align file-dir">
         <i class="material-icons">keyboard_arrow_right</i>
         <div>{parentFolder}</div>
     </div>
@@ -174,6 +185,7 @@
     {:then value}
         {#if fullfiles.length && mounted}
             <VirtualCheckList
+                class="files"
                 on:fileselect
                 bind:fileChecked
                 {fileSelected}
@@ -184,15 +196,39 @@
         {:else if fullfiles.length <= 0}
             <div>No {filetype} here! or try reload files</div>
         {/if}
-        <div style="cursor:pointer">
-            {#each otherfolders as folder (folder.id)}
-                <div class="align" on:click={() => changeDirectory(folder.name)} transition:slide|local>
-                    <i class="material-icons">keyboard_arrow_right</i>
-                    <div class="mdc-typography--subtitle1">{folder.name}</div>
-                </div>
-            {/each}
-        </div>
+        {#if otherfolders.length}
+            <div class="folders">
+                {#each otherfolders as folder (folder.id)}
+                    <div class="align" on:click={() => changeDirectory(folder.name)} transition:slide|local>
+                        <i class="material-icons">keyboard_arrow_right</i>
+                        <div class="folder mdc-typography--subtitle1">{folder.name}</div>
+                    </div>
+                {/each}
+            </div>
+        {/if}
     {:catch error}
         <div>{error}</div>
     {/await}
 </div>
+
+<style>
+    .filebrowser-header {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5em;
+    }
+    .main__container {
+        width: 100%;
+        display: grid;
+        grid-auto-flow: row;
+        overflow-y: hidden;
+        gap: 1em;
+    }
+
+    .folder {
+        cursor: pointer;
+    }
+    .folders {
+        overflow-y: auto;
+    }
+</style>

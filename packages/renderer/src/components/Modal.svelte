@@ -41,12 +41,9 @@
             />
         </header>
 
-        <section
-            class="modal-card-body background-body"
-            style={$$slots.body_scrollable__div ? 'overflow-y: hidden; height: 70%' : 'overflow-y: auto; height: 100%'}
-        >
-            <slot name="content" style="white-space: pre-wrap;" />
+        <section class="modal-card-body background-body" class:scrollable-body={$$slots.body_scrollable__div}>
             <slot name="body_header__div" />
+            <slot name="content" style="white-space: pre-wrap;" />
             <slot name="body_scrollable__div" />
         </section>
 
@@ -59,10 +56,14 @@
 </div>
 
 <style>
+    .scrollable-body {
+        display: grid;
+        grid-auto-flow: row;
+        grid-template-rows: auto 1fr;
+        overflow-y: hidden;
+    }
     .modal-card-body {
         color: black;
-        /* overflow-y: auto;
-        height: 100%; */
         background-color: #634e96;
     }
     .modal-card-head {
