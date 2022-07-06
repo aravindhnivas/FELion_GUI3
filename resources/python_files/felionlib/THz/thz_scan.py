@@ -194,7 +194,7 @@ def plot_thz():
 
     export_file("averaged.bin", binx, biny, lg=binDatalabel)
     if avgfilename != "averaged":
-        export_file(avgfilename, binx, biny, lg=binDatalabel)
+        export_file(f"{avgfilename}.bin", binx, biny, lg=binDatalabel)
 
     dataToSend["thz"]["averaged"]["averaged"] = {
         "x": list(binx),
@@ -225,7 +225,7 @@ def plot_thz():
 
     save_fitted_data("averaged.bin", binx, fittedY, fittedParamsTable)
     if avgfilename != "averaged":
-        save_fitted_data(avgfilename, binx, fittedY, fittedParamsTable)
+        save_fitted_data(f"{avgfilename}.bin", binx, fittedY, fittedParamsTable)
 
     style = {"mode": "lines"}
     dataToSend["thz"]["averaged"]["averaged_fit"] = {
@@ -253,7 +253,7 @@ def save_fitted_data(filename, x, y, fittedParamsTable):
                 f.write(f"# {key} = {value}\n")
             f.write(f"#####\n")
         f.write(f"#Frequency [{unit}]\t#Intensity\n")
-        
+
         for freq, inten in zip(x, y):
             f.write(f"{freq}\t{inten}\n")
         print(f"{filename} file saved in {EXPORT_DIR}")
