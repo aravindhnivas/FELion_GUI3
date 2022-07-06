@@ -32,7 +32,7 @@
     let sortToggle = {}
     rowKeys.forEach((key) => (sortToggle[key] = false))
     const sortTable = (key) => {
-        console.log({ key })
+        // console.log({ key })
         rows = orderBy(rows, key, sortToggle[key] ? 'asc' : 'desc')
     }
 
