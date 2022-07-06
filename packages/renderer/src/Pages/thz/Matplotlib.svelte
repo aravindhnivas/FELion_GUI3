@@ -12,6 +12,9 @@
     const dispatch = createEventDispatcher()
 
     $: data_location = window.path.resolve(currentLocation, 'EXPORT')
+    $: if (data_location) {
+        loadfiles()
+    }
     // $: fileSelected = thzfiles
     let fileSelected = []
     let items = []
@@ -20,6 +23,7 @@
         try {
             items = []
             fileSelected = []
+            thzfiles = []
             loadStatus = { name: 'loading', type: 'warning' }
             const [files] = await window.fs.readdir(data_location)
             if (!files) {
