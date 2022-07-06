@@ -15,6 +15,7 @@
     <Modal bind:active title="Adjust initial guess">
         <svelte:fragment slot="content">
             <STable
+                maxHeight="100%"
                 headKeys={['Frequency', 'Intensity', 'Sigma']}
                 rowKeys={['freq', 'amp', 'sig']}
                 bind:rows={$felixPeakTable}

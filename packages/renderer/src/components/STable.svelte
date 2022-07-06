@@ -15,6 +15,7 @@
     export let sortable = false
     export let configDir: string = null
     export let options_filter: string = '.json'
+    export let maxHeight: string = '25em'
 
     let mounted = false
     // $: console.log(rows)
@@ -44,7 +45,7 @@
         {#if configDir}
             <FileReadAndLoad bind:dataToSave={rows} {configDir} singleFilemode={true} {options_filter} />
         {/if}
-        <DataTable style="width: 100%; user-select:text;">
+        <DataTable style="width: 100%; user-select:text; max-height: {maxHeight}">
             <Head>
                 <Row>
                     {#if includeIndex}

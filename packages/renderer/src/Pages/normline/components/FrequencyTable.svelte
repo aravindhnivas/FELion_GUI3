@@ -6,17 +6,15 @@
         frequencyDatas,
         avgfittedLineCount,
         expfittedLinesCollectedData,
+        felixOpoDatLocation,
     } from '../functions/svelteWritables'
-    import STable from '$components/STable.svelte'
-    // import CustomCheckbox from '$components/CustomCheckbox.svelte'
-    import { fitted_data } from '../functions/NGauss_fit'
 
-    // export let keepTable = true
+    import STable from '$components/STable.svelte'
+    import { fitted_data } from '../functions/NGauss_fit'
 
     $: if ($fitted_data?.[$normMethod]) {
         $frequencyDatas = $fitted_data?.[$normMethod]
     }
-    // let averageMode = false
     function tableCleanup() {
         $fitted_data = null
         $frequencyDatas = []
@@ -29,13 +27,6 @@
 </script>
 
 <div class="notice__div">Frequency table</div>
-<!-- <div class="align v-center">
-    <div class="notice__div">Frequency table</div>
-    <CustomCheckbox bind:value={averageMode} label="Only Averaged" />
-    <CustomCheckbox bind:value={keepTable} label="Keep table" />
-</div> -->
-
-<!-- <div class="dataTable"> -->
 <STable
     rows={$frequencyDatas}
     {rowKeys}
@@ -43,12 +34,6 @@
     closeableRows={true}
     on:tableCleared={tableCleanup}
     sortable={true}
+    configDir={$felixOpoDatLocation}
+    options_filter=".felix.table.json"
 />
-<!-- </div> -->
-<!-- 
-<style>
-    .dataTable {
-        display: flex;
-        justify-content: center;
-    }
-</style> -->
