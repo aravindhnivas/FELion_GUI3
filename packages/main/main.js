@@ -4,6 +4,7 @@ import './security-restrictions.ts'
 import unhandled from 'electron-unhandled'
 import { ROOT_DIR, RENDERER_DIR, PKG_DIR } from './definedEnv'
 import { startServer } from './felionpyServer'
+import fs from 'fs-extra'
 const isSingleInstance = app.requestSingleInstanceLock()
 
 if (!isSingleInstance) {
@@ -11,7 +12,6 @@ if (!isSingleInstance) {
     process.exit(0)
 }
 
-// let controller = new AbortController()
 const env = import.meta.env
 console.table(env)
 console.table({ __dirname, ROOT_DIR, PKG_DIR, RENDERER_DIR })
@@ -53,7 +53,9 @@ async function createWindow() {
 
 app.whenReady()
     .then(() => {
+        fs.emptyDirSync(app.getPath('logs'))
         createWindow()
+
         app.on('activate', () => {
             if (BrowserWindow.getAllWindows().length === 0) {
                 createWindow()
