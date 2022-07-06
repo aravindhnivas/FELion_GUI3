@@ -28,8 +28,8 @@
     let graphPlotted = false
 
     let fittedParamsTable = []
-    const rowKeys = ['filename', 'freq', 'amp', 'fG', 'fL']
-    const headKeys = ['Filename', 'freq (MHz)', 'amp', 'fG (MHz)', 'fL (MHz)']
+    const rowKeys = ['filename', 'freq', 'amp', 'sigma', 'gamma', 'fwhm']
+    const headKeys = ['Filename', 'freq (MHz)', 'amp', 'sigma', 'gamma', 'FWHM']
     let rawDataProcessed = { data: null }
     let dataProcessed = {}
     let numOfFittedLines = 0
@@ -94,8 +94,8 @@
     let openTable = false
     let paramsTable = []
 
-    let fitfile = 'averaged',
-        fitMethod = 'lorentz'
+    let fitfile = 'averaged'
+    let fitMethod = 'lorentz'
     const graphIDs = ['thzPlot', 'resOnOffPlot']
 
     onDestroy(() => {
