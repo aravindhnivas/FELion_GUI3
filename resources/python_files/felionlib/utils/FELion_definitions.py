@@ -9,7 +9,6 @@ import pstats
 from pstats import SortKey
 import inspect
 import contextlib
-
 import sys
 
 import numpy as np
@@ -95,13 +94,16 @@ if not save_location.exists():
     os.mkdir(save_location)
 
 
-def sendData(dataToSend, calling_file=""):
-    print(f"Writing computed file: {calling_file}_data.json", flush=True)
-    if not calling_file:
-        calling_file = pt(inspect.stack()[-1].filename).stem
+def sendData(dataToSend: dict, calling_file: str = "", filename: pt = None):
 
-    filename = save_location / f"{calling_file}_data.json"
-    os.remove(filename) if filename.exists() else None
+    if filename is None:
+        if not calling_file:
+            calling_file = pt(inspect.stack()[-1].filename).stem
+
+        print(f"Writing computed file: {calling_file}_data.json", flush=True)
+
+        filename = save_location / f"{calling_file}_data.json"
+        os.remove(filename) if filename.exists() else None
 
     with open(filename, "w+") as f:
         data = json.dumps(dataToSend, sort_keys=True, indent=4, separators=(",", ": "))

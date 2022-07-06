@@ -1,6 +1,9 @@
 <script lang="ts">
     import TextAndSelectOptsToggler from '$components/TextAndSelectOptsToggler.svelte'
     import { isEmpty } from 'lodash-es'
+    import Textfield from '@smui/textfield'
+    import MenuSurface from '@smui/menu-surface'
+    import type { MenuSurfaceComponentDev } from '@smui/menu-surface'
 
     export let configDir: string = ''
     export let selectedFile: string = ''
@@ -10,6 +13,9 @@
     export let filename = ''
     export let data_loaded = false
     export let dataToSave
+    export let singleFilemode = false
+
+    let surface: MenuSurfaceComponentDev
 
     console.log({ filename, configDir })
     const toastOpts = {
@@ -21,9 +27,22 @@
             window.createToast('No data to save', 'danger', toastOpts)
             return
         }
+
+        if (!filename.endsWith(options_filter)) {
+            filename = `${filename}${options_filter}`
+        }
+        const savefilename = window.path.join(configDir, filename)
+
+        if (singleFilemode) {
+            const data = { default: dataToSave }
+            const [, error] = window.fs.outputJsonSync(savefilename, data)
+            if (error) return window.handleError(`Error writing ${filename}\n${error}`)
+            return notify()
+        }
+
         let data, error
-        if (window.fs.isFile(fullfilename)) {
-            ;[data, error] = window.fs.readJsonSync(fullfilename)
+        if (window.fs.isFile(savefilename)) {
+            ;[data, error] = window.fs.readJsonSync(savefilename)
             console.log('file read', data, error)
             if (error) return window.handleError(error)
         }
@@ -40,10 +59,12 @@
             data[selectedFile]['default'] = dataToSave
         }
 
-        ;[, error] = window.fs.outputJsonSync(fullfilename, data)
+        ;[, error] = window.fs.outputJsonSync(savefilename, data)
         if (error) return window.handleError(`Error writing ${filename}\n${error}`)
+
         return notify()
     }
+
     const notify = (info: string = 'saved') => {
         data_loaded = true
         console.log({ dataToSave })
@@ -51,13 +72,21 @@
     }
 
     const load_data = () => {
-        if (!window.fs.isFile(fullfilename)) {
+        const loadfilename = window.path.join(configDir, filename)
+        if (!window.fs.isFile(loadfilename)) {
             return window.createToast(`File does not exists`, 'danger', toastOpts)
         }
 
-        const [data, error] = window.fs.readJsonSync(fullfilename)
-
+        const [data, error] = window.fs.readJsonSync(loadfilename)
         if (error) return window.handleError(`Error reading ${filename}\n${error}`)
+
+        if (singleFilemode) {
+            if (!data.default) return window.createToast(`default-mode: No data found`, 'danger', toastOpts)
+            dataToSave = data.default
+            data_loaded = true
+            return notify('loaded')
+        }
+
         if (!data?.[selectedFile]) {
             return window.createToast(`No data found for ${selectedFile} file`, 'danger', toastOpts)
         }
@@ -75,13 +104,10 @@
             return window.createToast(`default-mode: No data found for ${selectedFile} file`, 'danger', toastOpts)
         dataToSave = data[selectedFile]['default']
         data_loaded = true
-
         return notify('loaded')
     }
 
-    $: fullfilename = window.path.join(configDir, filename)
-
-    $: if (selectedFile) {
+    $: if (!singleFilemode && selectedFile) {
         data_loaded = false
     }
 </script>
@@ -95,14 +121,24 @@
         lookIn={configDir}
     />
     <button class="button is-link" on:click={save_data}>Save</button>
+    <MenuSurface
+        style="background: #9666db;"
+        bind:this={surface}
+        anchorCorner="BOTTOM_START"
+        anchorMargin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+    >
+        <div class="align p-5">
+            <Textfield bind:value={configDir} label="save location" />
+        </div>
+    </MenuSurface>
+    <span class="material-icons" on:click={() => surface.setOpen(true)}> help </span>
 </div>
 
 <style>
     .container {
-        align-items: flex-end;
+        align-items: center;
         display: flex;
         gap: 1em;
-        width: 100%;
-        justify-content: flex-end;
+        margin-left: auto;
     }
 </style>

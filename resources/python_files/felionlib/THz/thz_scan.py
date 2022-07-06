@@ -1,16 +1,13 @@
-from matplotlib.axes import Axes
 import numpy as np
 from pathlib import Path as pt
 from io import StringIO
 from felionlib.utils.FELion_definitions import sendData
 from felionlib.utils.FELion_constants import colors
 from felionlib.utils.fit_profile.lineProfileFit import fitData
-from felionlib.utils.felionQt import felionQtWindow
-import matplotlib.ticker as plticker
 import numpy.typing as npt
 
-def thz_plot(filename: pt):
 
+def thz_plot(filename: pt):
     with open(filename, "r") as fileContents:
         file = fileContents.readlines()
 
@@ -52,7 +49,6 @@ def thz_plot(filename: pt):
     finiteInd = np.isfinite(depletion_counts)
     depletion_counts = depletion_counts[finiteInd]
     freq = freq[finiteInd]
-    # print(f"{depletion_counts=}", flush=True)
     return freq, depletion_counts, steps, iteraton, resOffCounts, resOnCounts, freq_resOff
 
 def binning(xs, ys, delta=1e-5):
@@ -102,7 +98,7 @@ def binning(xs, ys, delta=1e-5):
     data_binned = np.array(data_binned, dtype=float)
     return binsx, data_binned
 
-def plot_thz(widget: felionQtWindow=None, save_dat=True, tkplot=False):
+def plot_thz():
 
     justPlot: bool = args["justPlot"]
     binData: bool = args["binData"]
@@ -121,8 +117,6 @@ def plot_thz(widget: felionQtWindow=None, save_dat=True, tkplot=False):
         
         print(f"{freq.min()=}", flush=True)
         lg = f"{filename.name} [{steps} KHz : {iteraton} cycles]"
-        if tkplot:
-            (line_handler[lg], ) = widget.ax.plot(freq, depletion_counts, label=lg)
             
         xs = np.append(xs, freq)
         ys = np.append(ys, depletion_counts)
@@ -136,6 +130,7 @@ def plot_thz(widget: felionQtWindow=None, save_dat=True, tkplot=False):
             "x": list(freq), "y": list(depletion_counts), "name": lg, 
             "mode":'lines+markers',"type": "scattergl", "fill":"tozeroy", "line":{"color":f"rgb{colors[i*2]}", "shape":"hvh"}
         }
+        
         dataToSend["resOnOff_Counts"][f"{filename.name}_On"] = {
             "x": list(freq), "y": resOnCounts.mean(axis=0).tolist(), "name": f"{filename.name}_On", 
             "mode": 'markers',"type": "scattergl", "line": {"color": f"rgb{colors[i*2]}", "shape":"hvh"}
@@ -148,7 +143,7 @@ def plot_thz(widget: felionQtWindow=None, save_dat=True, tkplot=False):
         }
         print(f"Current: {fitfile=}\n{filename.name=}\n", flush=True)
 
-        if filename.name != fitfile or justPlot or tkplot: 
+        if filename.name != fitfile or justPlot: 
             continue
 
         if len(plotIndex)>0:
@@ -160,7 +155,6 @@ def plot_thz(widget: felionQtWindow=None, save_dat=True, tkplot=False):
             freq, depletion_counts, varyAll=varyAll,
             method=fitMethod, paramsTable=paramsTable, fitfile=fitfile
         )
-        
         fittedY: npt.NDArray[np.float64] = fittedInfos["fittedY"]
         dataToSend["fittedParamsTable"] = fittedParamsTable
         dataToSend["fittedInfos"] = {"freq": fittedInfos["freq"].tolist(), "fittedY": fittedInfos["fittedY"].tolist()}
@@ -169,26 +163,20 @@ def plot_thz(widget: felionQtWindow=None, save_dat=True, tkplot=False):
             "x": freq.tolist(), "y": fittedY.tolist(), "name": fitMethod, 
             "mode": 'lines', "type": "scattergl", "line": {"color": f"rgb{colors[i*2]}"}
         }
-        save_fitted_data(filename.stem, freq, fittedY)
-
-    # if tkplot:
-    #     widget.makeLegendToggler(line_handler)
+        
+        save_fitted_data(filename.stem, freq, fittedY, fittedParamsTable)
         
     if not binData:
         return dataToSend
 
     binx, biny = binning(xs, ys, delta)
+    
     binDatalabel = f"Binned (delta={delta*1e6:.2f} KHz)"
     
-    export_file('averaged', binx, biny, lg=binDatalabel)
-    
+    export_file('averaged.bin', binx, biny, lg=binDatalabel)
     if avgfilename != 'averaged':
         export_file(avgfilename, binx, biny, lg=binDatalabel)
-    
-    if tkplot:
-        (line_handler[binDatalabel],) = widget.ax.plot(binx, biny, "k", label=f"{binDatalabel}\n#binned_{binx.min():.3f}_{binx.max():.3f}GHz_{int(delta*1e6)}kHz")
-        widget.makeLegendToggler(line_handler)
-        return
+   
     
     dataToSend["thz"]["averaged"]["averaged"] = {
         "x": list(binx), "y": list(biny), "name": binDatalabel, 
@@ -196,7 +184,7 @@ def plot_thz(widget: felionQtWindow=None, save_dat=True, tkplot=False):
         "line": {"color": "black", "shape": "hvh"}
     }
     
-    if not fitfile == "averaged" or justPlot or tkplot:
+    if not fitfile == "averaged" or justPlot:
         return dataToSend
     
     if len(plotIndex)>0:
@@ -214,9 +202,9 @@ def plot_thz(widget: felionQtWindow=None, save_dat=True, tkplot=False):
     dataToSend["fittedParamsTable"] = fittedParamsTable
     dataToSend["fittedInfos"] = {"freq": fittedInfos["freq"].tolist(), "fittedY": fittedInfos["fittedY"].tolist()}
 
-    save_fitted_data('averaged', binx, fittedY)
+    save_fitted_data('averaged.bin', binx, fittedY, fittedParamsTable)
     if avgfilename != 'averaged':
-        save_fitted_data(avgfilename, binx, fittedY)
+        save_fitted_data(avgfilename, binx, fittedY, fittedParamsTable)
     
     style = {"mode": 'lines'}
     
@@ -226,17 +214,32 @@ def plot_thz(widget: felionQtWindow=None, save_dat=True, tkplot=False):
 
     return dataToSend
 
-def save_fitted_data(filename, x, y):
+def save_fitted_data(filename, x, y, fittedParamsTable):
+    
     filename = f"{filename}.thz.fit.dat"
     unit = "MHz" if args["saveInMHz"] else 'GHz'
-    
     if unit == "MHz":
         x = x*1e3
-        
+    
+    fwhmKey = {
+        'gaussian': 'fG',
+        'lorentz': 'fL',
+        # 'voigt': 'fG',
+    }
+    
     with open(EXPORT_DIR / filename, "w") as f:
+        f.write(f"# {fitMethod=}\n")
+        for param in fittedParamsTable:
+            for key , value in param.items():
+                if key == fwhmKey[fitMethod]:
+                    f.write(f"# fwhm = {value}\n")
+                else:
+                    f.write(f"# {key} = {value}\n")
+            
         f.write(f"#Frequency [{unit}]\t#Intensity\n")
         for freq, inten in zip(x, y): f.write(f"{freq}\t{inten}\n")
         print(f"{filename} file saved in {EXPORT_DIR}")
+        
 
 def export_file(fname, freq, inten, lg=None):
 
@@ -260,25 +263,22 @@ def export_file(fname, freq, inten, lg=None):
 
 
 args = None
-widget: felionQtWindow = None
 fitfile = None
 fitMethod = "lorentz"
 paramsTable = []
 varyAll = False
-
-tkplot: bool = False
 filenames: list[pt] = []
+
 location: pt = None
 EXPORT_DIR: pt = None
 plotIndex = []
 avgfilename = 'averaged'
 
 def main(arguments):
-    global args, tkplot, filenames, location, EXPORT_DIR, avgfilename
+    global args, filenames, location, EXPORT_DIR, avgfilename
     global fitfile, fitMethod, paramsTable, varyAll, plotIndex
     
     args = arguments
-    tkplot = args["tkplot"]
     avgfilename = args["avgfilename"].strip()
     
     filenames = [pt(i) for i in args["thzfiles"]]
@@ -292,4 +292,5 @@ def main(arguments):
     
     dataToSend = plot_thz()
     sendData(dataToSend, calling_file=pt(__file__).stem)
+    sendData(dataToSend, filename=EXPORT_DIR / f"{avgfilename}.thz.json")
     

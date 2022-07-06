@@ -22,7 +22,7 @@
     // $: console.info({ fileChecked })
     function selectRange(event, lastfile) {
         if (!(event.shiftKey && fileSelected.length > 0)) return
-
+        // console.log('range select', fullfileslist)
         // console.log(event.shiftKey, event.target)
         const _from = fullfileslist.indexOf(fileSelected.at(-1))
         const _to = fullfileslist.indexOf(lastfile)

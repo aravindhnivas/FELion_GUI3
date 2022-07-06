@@ -3,7 +3,7 @@
     import { orderBy, uniqBy } from 'lodash-es'
     import { createEventDispatcher, onMount } from 'svelte'
     import IconButton, { Icon } from '@smui/icon-button'
-
+    import FileReadAndLoad from '$components/FileReadAndLoad.svelte'
     export let idKey: string = 'id'
     export let rowKeys: string[] = null
     export let rows = []
@@ -13,6 +13,8 @@
 
     export let editable = false
     export let sortable = false
+    export let configDir: string = null
+    export let options_filter: string = '.json'
 
     let mounted = false
     // $: console.log(rows)
@@ -39,6 +41,9 @@
 
 {#if mounted}
     <div class="align">
+        {#if configDir}
+            <FileReadAndLoad bind:dataToSave={rows} {configDir} singleFilemode={true} {options_filter} />
+        {/if}
         <DataTable style="width: 100%; user-select:text;">
             <Head>
                 <Row>

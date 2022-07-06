@@ -151,7 +151,6 @@
                 window.handleError(error)
             }
         })
-
         console.log('plotlySelectCreated', plotlySelectCreated)
         plotlySelectCreated = true
     }
@@ -161,14 +160,21 @@
     let toggle_options = false
     let fit_options_div = false
     let open_matplotlib = false
+
     const matplotlib_plot = async (event) => {
         const { e, args } = event.detail
+
+        if (args.thzfiles.length === 0) {
+            return window.createToast('No files selected', 'danger')
+        }
         return computePy_func({ e, pyfile: 'THz.thz_matplotlib', args, general: true })
     }
 </script>
 
 <THzFitParamsTable bind:active={openTable} bind:paramsTable bind:varyAll {currentLocation} {fitMethod} />
+
 <Matplotlib bind:active={open_matplotlib} {currentLocation} on:submit={matplotlib_plot} />
+
 <Layout {filetype} {graphPlotted} {id} {display} bind:currentLocation bind:fileChecked>
     <svelte:fragment slot="buttonContainer">
         <div class="align v-center">
@@ -243,6 +249,14 @@
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer_reports">
-        <STable {rowKeys} {headKeys} bind:rows={fittedParamsTable} closeableRows={true} sortable={true} />
+        <STable
+            {rowKeys}
+            {headKeys}
+            bind:rows={fittedParamsTable}
+            closeableRows={true}
+            sortable={true}
+            configDir={window.path.join(currentLocation, 'EXPORT')}
+            options_filter={'.thz.table.json'}
+        />
     </svelte:fragment>
 </Layout>

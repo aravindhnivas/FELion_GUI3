@@ -12,13 +12,20 @@
     const dispatch = createEventDispatcher()
 
     $: data_location = window.path.resolve(currentLocation, 'EXPORT')
+    // $: fileSelected = thzfiles
+    let fileSelected = []
     let items = []
     let loadStatus = { name: 'loading', type: 'warning' }
     const loadfiles = async () => {
         try {
+            items = []
+            fileSelected = []
             loadStatus = { name: 'loading', type: 'warning' }
             const [files] = await window.fs.readdir(data_location)
-            if (!files) return
+            if (!files) {
+                loadStatus = { name: 'loaded: empty', type: 'warning' }
+                return
+            }
             // console.log(files)
             items = files?.filter((file) => file.endsWith('.thz.dat')).map((name) => ({ name, id: window.getID() }))
             loadStatus = { name: 'loaded', type: 'success' }
@@ -28,8 +35,8 @@
         }
     }
 
-    onMount(() => {
-        loadfiles()
+    onMount(async () => {
+        await loadfiles()
     })
     let includeFit = false
 </script>
@@ -43,7 +50,7 @@
     </svelte:fragment>
 
     <svelte:fragment slot="body_scrollable__div">
-        <VirtualCheckList {items} bind:fileChecked={thzfiles} height="calc(60vh - 4rem)" />
+        <VirtualCheckList {items} bind:fileChecked={thzfiles} {fileSelected} height="calc(60vh - 4rem)" />
     </svelte:fragment>
 
     <svelte:fragment slot="footerbtn">
