@@ -13,6 +13,7 @@ hiddenimports = [
     "felionlib.normline",
     "felionlib.ROSAA",
     "felionlib.numberDensity",
+    "felionlib.THz",
 ]
 icons_path = pt(felionlib.__file__).parent / "../icons/*"
 icons_path = icons_path.resolve().__str__()
