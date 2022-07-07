@@ -53,7 +53,7 @@
                 </div>
             </div>
             {#if active == 'Configs'}
-                <Configs {active} />
+                <Configs />
             {/if}
         </div>
     </div>

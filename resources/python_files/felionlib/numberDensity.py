@@ -47,6 +47,7 @@ def main(args):
     C = ufloat(*[float(i) for i in TakaishiSensuiConstants["C"]])
 
     numerator = (trap_temperature / room_temperature) ** 0.5 - 1
+    print(f"{numerator=}", flush=True)
     denomiator = A * X**2 + B * X + C * X**0.5 + 1
     pressure_trap_by_srg = 1 + (numerator / denomiator)
 
@@ -55,7 +56,7 @@ def main(args):
 
     nHe_transpiration = pressure_trap / (kB_in_cm * trap_temperature)
     print(f"{nHe_transpiration=:.2e}", flush=True)
-    print(f"{X=:.3e}\t{F=:.3e}", flush=True)
+    # print(f"{X=:.3e}\t{F=:.3e}", flush=True)
 
     send_data = {"nHe": f"{nHe:.3e}", "nHe_transpiration": f"{nHe_transpiration:.3e}", "X": f"{X:.3e}", "F": f"{F:.3e}"}
     return send_data

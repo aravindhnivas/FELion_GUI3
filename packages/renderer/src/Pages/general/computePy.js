@@ -1,14 +1,19 @@
 import computefromServer from './computefromServer'
 import computefromSubprocess from './computefromSubprocess'
-import { pyServerReady, get } from '../settings/svelteWritables'
+import { pyServerReady, get, developerMode, pyProgram } from '../settings/svelteWritables'
 
 export default async function ({ e = null, target = null, pyfile = '', args = {}, general = false } = {}) {
+    
     target ||= e?.target
     let dataFromPython = null
     let processDivGeneral
     let processDivGeneralNum = 0
 
     try {
+
+        console.log(`Running python in ${general ? 'subprocess' : 'server'} mode`)
+        console.warn(`Running python in ${get(developerMode) ? 'developer' : 'production'} mode \n ${get(pyProgram)}`)
+
         if (!get(pyServerReady)) {
             const restartPyServer = await window.dialogs.showMessageBox({
                 message: 'Restart Python server?',
@@ -28,7 +33,7 @@ export default async function ({ e = null, target = null, pyfile = '', args = {}
             window.createToast('Python server is ready')
         }
 
-        console.log({ pyfile, args, general })
+        console.warn({ pyfile, args, general })
         if (general) {
             if (target) {
                 processDivGeneral = target.getElementsByClassName('tag')?.[0]

@@ -17,7 +17,7 @@
     }
     
     export const updateCurrentConfig = (config) => {
-        if(!config|| Object.keys(config).length === 0) return
+        if(!config || Object.keys(config).length === 0) return
         set_config(config)
         computeNumberDensity()
     }
@@ -43,30 +43,33 @@
     }
     let tube_diameter = [3, 0.1]
     let srgMode = false;
-    let calibration_factor = srgMode ? [1, 0] : [<number>window.db.get('calibration_factor') ?? 200, 10]
+    let calibration_factor = [<number>window.db.get('calibration_factor') ?? 200, 10]
     let rt_std_dev = 1
-
+    $: window.db.set('calibration_factor', Number(calibration_factor[0]))
+    
     export const computeNumberDensity = async (e?: Event) => {
     
         const room_temperature = [rt, rt_std_dev]
-        if(trap_temperature[0] < 0) return window.createToast("Invalid temperature", "danger")
+        if(Number(trap_temperature[0]) <= 0) return window.createToast("Invalid temperature", "danger")
         const changeInPressure = Number(added_pressure[0]) - Number(background_pressure[0])
+        if(changeInPressure < 0) return window.createToast("Negative pressure! correct background pressure!!", "danger")
         if(!changeInPressure) return window.createToast("Invalid pressures", "danger")
 
         const TkConstants = {
-            A: TakaishiSensuiConstants.A.value,
-            B: TakaishiSensuiConstants.B.value,
-            C: TakaishiSensuiConstants.C.value,
+            A: TakaishiSensuiConstants.A.value.map(Number),
+            B: TakaishiSensuiConstants.B.value.map(Number),
+            C: TakaishiSensuiConstants.C.value.map(Number),
         }
+
         args = {
             srgMode,
-            tube_diameter, 
-            added_pressure,
-            room_temperature,
-            trap_temperature,
-            background_pressure,
+            tube_diameter: tube_diameter.map(Number), 
+            added_pressure: added_pressure.map(Number),
+            room_temperature: room_temperature.map(Number),
+            trap_temperature: trap_temperature.map(Number),
+            background_pressure: background_pressure.map(Number),
             TakaishiSensuiConstants: TkConstants,
-            calibration_factor,
+            calibration_factor: calibration_factor.map(Number),
         }
         datafromPython = await computePy_func(
             {e, pyfile: 'numberDensity', args}
@@ -75,6 +78,7 @@
         return Promise.resolve(nHe)
 
     }
+
     export const get_datas = () => {
         return {...args, ...datafromPython }
     }
@@ -89,7 +93,6 @@
         return nHe
     }
 
-    $: window.db.set('calibration_factor', Number(calibration_factor[0]))
 </script>
 
 <div class="align h-center">
@@ -121,8 +124,6 @@
 
             <div class="border__div">
                 <Textfield
-                    input$step="0.1"
-                    type="number"
                     bind:value={trap_temperature[0]}
                     label={'trap_temperature [K]'}
                 />
@@ -218,7 +219,6 @@
                     bind:value={tube_diameter[1]}
                     label="std. dev."
                 />
-            
             </div>
 
             <div class="border__div">
