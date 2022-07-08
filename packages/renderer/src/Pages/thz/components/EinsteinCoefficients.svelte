@@ -2,16 +2,16 @@
     import { cloneDeep, find } from 'lodash-es'
     import Textfield from '@smui/textfield'
     import computePy_func from '$src/Pages/general/computePy'
-    import BoxComponent from './BoxComponent.svelte'
+    // import BoxComponent from './BoxComponent.svelte'
     import { PlanksConstant, SpeedOfLight } from '$src/js/constants'
     import { computeStatisticalWeight } from '../functions/balance_distribution'
+    // import CustomPanel from '$components/CustomPanel.svelte'
 
     export let einsteinCoefficientA = []
     export let einsteinCoefficientB = []
     export let einsteinCoefficientB_rateConstant = []
 
     export let einsteinB_rateComputed = false
-
     export let lorrentz = 0.32
     export let gaussian = 0.21
     export let power = '2e-5'
@@ -112,46 +112,48 @@
     }
 </script>
 
-<BoxComponent
-    title="Einstein Co-efficients"
+<!-- <CustomPanel
+    label="Einstein Co-efficients"
     loaded={einsteinCoefficientA.length > 0 && einsteinCoefficientB.length > 0 && einsteinB_rateComputed}
->
-    <!-- <hr> -->
-    <div class="align h-center subtitle">Einstein A Co-efficients</div>
+> -->
+<!-- <hr> -->
+<div class="align h-center subtitle">Einstein A Co-efficients</div>
 
+<div class="align h-center mb-5">
     {#if einsteinCoefficientA.length > 0}
         {#each einsteinCoefficientA as { label, value, id } (id)}
             <Textfield bind:value {label} />
         {/each}
     {/if}
+</div>
 
-    <div class="align h-center ">
-        <button class="button is-link" on:click={computeEinsteinB}>
-            {#if einsteinCoefficientB.length < 1}
+<div class="align h-center ">
+    <button class="button is-link" on:click={computeEinsteinB}>
+        {#if einsteinCoefficientB.length < 1}
+            <i class="material-icons">sync_problem</i>
+        {/if}
+        Compute Einstein B
+    </button>
+</div>
+
+{#if einsteinCoefficientB.length > 0}
+    <hr />
+
+    <div class="align h-center subtitle">Einstein B Co-efficients</div>
+    <div class="align h-center">
+        <Textfield bind:value={voigtline} label="voigt lineshape (Hz)" />
+        <button class="button is-link " on:click={computeRates}>
+            {#if !einsteinB_rateComputed}
                 <i class="material-icons">sync_problem</i>
             {/if}
-            Compute Einstein B
+            Compute rate constants
         </button>
     </div>
 
-    {#if einsteinCoefficientB.length > 0}
-        <hr />
-
-        <div class="align h-center subtitle">Einstein B Co-efficients</div>
-        <div class="align h-center">
-            <Textfield bind:value={voigtline} label="voigt lineshape (Hz)" />
-            <button class="button is-link " on:click={computeRates}>
-                {#if !einsteinB_rateComputed}
-                    <i class="material-icons">sync_problem</i>
-                {/if}
-                Compute rate constants
-            </button>
-        </div>
-
-        <div class="align h-center">
-            {#each einsteinCoefficientB as { label, value, id } (id)}
-                <Textfield bind:value {label} />
-            {/each}
-        </div>
-    {/if}
-</BoxComponent>
+    <div class="align h-center">
+        {#each einsteinCoefficientB as { label, value, id } (id)}
+            <Textfield bind:value {label} />
+        {/each}
+    </div>
+{/if}
+<!-- </CustomPanel> -->

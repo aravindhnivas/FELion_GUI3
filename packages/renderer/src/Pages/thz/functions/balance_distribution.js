@@ -1,8 +1,8 @@
 import { boltzmanConstantInMHz, boltzmanConstantInWavenumber } from '$src/js/constants'
 
 export default function ({
-    label,
-    energyLevels,
+    label='',
+    energyLevels=[],
     collisionalTemp = 5,
     electronSpin = false,
     zeemanSplit = false,

@@ -8,7 +8,7 @@
     let className: string = ''
     export { className as class }
     export let loaded: boolean = true
-    $: console.log(`loaded ${label}`)
+    $: console.log(`loaded ${loaded}: ${label}`)
 </script>
 
 <Panel bind:open style="background: var(--color-primary-light);">

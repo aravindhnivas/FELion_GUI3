@@ -1,12 +1,13 @@
-<script>
+<script lang="ts">
     import Textfield from '@smui/textfield'
     import { find, cloneDeep } from 'lodash-es'
     import { onMount } from 'svelte'
     import balance_distribution from '../functions/balance_distribution'
     import CollisionalDistribution from '../windows/CollisionalDistribution.svelte'
     import CollisionalRateConstantPlot from '../windows/CollisionalRateConstantPlot.svelte'
-    import BoxComponent from './BoxComponent.svelte'
+    // import BoxComponent from './BoxComponent.svelte'
     import { browse } from '$components/Layout.svelte'
+    // import CustomPanel from '$components/CustomPanel.svelte'
 
     export let energyUnit
     export let zeemanSplit
@@ -65,7 +66,7 @@
     }
 
     const computeRate = (rate) => {
-        rate.value *= numberDensity
+        rate.value *= Number(numberDensity)
         rate.value = rate.value.toExponential(3)
         return rate
     }
@@ -113,9 +114,9 @@
             }
         }
     }
-
+    $: console.log(collisionalCoefficient.length)
     onMount(() => {
-        const configLocation = window.db.get('ROSAA_config_location') || ''
+        const configLocation = <string>window.db.get('ROSAA_config_location') || ''
         if (!configLocation) return
         console.log(configLocation)
         collisionalCoefficientJSONFile = window.path.join(configLocation, 'files', 'collisionalCoefficients.json')
@@ -131,49 +132,46 @@
     bind:collisionalTemp
 />
 
-<BoxComponent title="Collisional rate constants" loaded={collisionalCoefficient.length > 0}>
-    <svelte:fragment slot="control">
-        <button class="button is-link " on:click={compteCollisionalBalanceConstants}>Compute balance rate</button>
-        <button class="button is-link " on:click={() => (collisionalWindow = true)}>Compute Collisional Cooling</button>
-
-        <div class="align h-center">
-            <button class="button is-link" on:click={browse_collisional_file}>Browse</button>
-            <Textfield bind:value={collisionalFileBasename} label="collisionalFilename" disabled variant="outlined" />
-            <Textfield bind:value={collisionalTemp} label="collisionalTemp" />
-            <button class="button is-link" on:click={() => (OpenRateConstantsPlot = true)}
-                >Compute rate constants</button
-            >
-            <button class="button is-link" on:click={readcollisionalCoefficientJSONFile}>Read</button>
-            <button class="button is-link" on:click={saveCollisionalRateConstants}>Save</button>
-        </div>
-    </svelte:fragment>
-
-    {#if collisionalCoefficient.length > 0}
-        <div class="align h-center">
-            {#each collisionalCoefficient as { label, value, id } (id)}
-                <Textfield bind:value {label} />
-            {/each}
-        </div>
-    {/if}
-
-    {#if collisionalCoefficient_balance.length > 0}
-        <hr />
-        <div class="align h-center">
-            {#each collisionalCoefficient_balance as { label, value, id } (id)}
-                <Textfield bind:value {label} />
-            {/each}
-        </div>
-    {/if}
-
-    <hr />
-    <div class="align h-center subtitle">Collisional Rates (per sec)</div>
+<!-- <CustomPanel label="Collisional rate constants" loaded={collisionalCoefficient.length > 0}> -->
+<div class="align h-center">
+    <button class="button is-link " on:click={compteCollisionalBalanceConstants}>Compute balance rate</button>
+    <button class="button is-link " on:click={() => (collisionalWindow = true)}>Compute Collisional Cooling</button>
     <div class="align h-center">
-        <Textfield bind:value={numberDensity} label="numberDensity (cm-3)" />
+        <button class="button is-link" on:click={browse_collisional_file}>Browse</button>
+        <Textfield bind:value={collisionalFileBasename} label="collisionalFilename" disabled variant="outlined" />
+        <Textfield bind:value={collisionalTemp} label="collisionalTemp" />
+        <button class="button is-link" on:click={() => (OpenRateConstantsPlot = true)}>Compute rate constants</button>
+        <button class="button is-link" on:click={readcollisionalCoefficientJSONFile}>Read</button>
+        <button class="button is-link" on:click={saveCollisionalRateConstants}>Save</button>
     </div>
+</div>
 
+{#if collisionalCoefficient.length > 0}
     <div class="align h-center">
-        {#each collisionalRates as { label, value, id } (id)}
+        {#each collisionalCoefficient as { label, value, id } (id)}
             <Textfield bind:value {label} />
         {/each}
     </div>
-</BoxComponent>
+{/if}
+
+{#if collisionalCoefficient_balance.length > 0}
+    <hr />
+    <div class="align h-center">
+        {#each collisionalCoefficient_balance as { label, value, id } (id)}
+            <Textfield bind:value {label} />
+        {/each}
+    </div>
+{/if}
+
+<hr />
+<div class="align h-center subtitle">Collisional Rates (per sec)</div>
+<div class="align h-center">
+    <Textfield bind:value={numberDensity} label="numberDensity (cm-3)" />
+</div>
+
+<div class="align h-center">
+    {#each collisionalRates as { label, value, id } (id)}
+        <Textfield bind:value {label} />
+    {/each}
+</div>
+<!-- </CustomPanel> -->

@@ -5,18 +5,18 @@
     import boltzman_distribution from '../functions/boltzman_distribution'
     import { sumBy } from 'lodash-es'
 
-    export let active
+    export let active = false
     export let trapTemp
     export let energyLevels
-
     export let zeemanSplit
     export let energyUnit
     export let electronSpin
+    export let graphWindow = null
 
     const title = 'Boltzman Distribution'
     const plotID = 'boltzmanDistributionPlot'
-    let graphWindow = null,
-        windowReady = false
+    // let graphWindow = null
+    let windowReady = false
 
     function plotGraph() {
         const { distribution, partitionValue } = boltzman_distribution({

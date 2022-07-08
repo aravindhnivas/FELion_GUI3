@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     // import {fade}                   from "svelte/transition";
     import Textfield from '@smui/textfield'
     import { parse as Yml } from 'yaml'
@@ -14,7 +14,10 @@
     import EinsteinCoefficients from './components/EinsteinCoefficients.svelte'
     import CollisionalCoefficients from './components/CollisionalCoefficients.svelte'
     import AttachmentCoefficients from './components/AttachmentCoefficients.svelte'
-    import BoxComponent from './components/BoxComponent.svelte'
+    // import BoxComponent from './components/BoxComponent.svelte'
+    import Accordion from '@smui-extra/accordion'
+    import CustomPanel from '$components/CustomPanel.svelte'
+    import SeparateWindow from '$components/SeparateWindow.svelte'
 
     import {
         amuToKG,
@@ -137,7 +140,7 @@
         computePy_func({ e, pyfile: 'ROSAA', args, general: true })
     }
     let currentLocation = window.fs.existsSync(window.db.get('ROSAA_config_location'))
-        ? window.db.get('ROSAA_config_location')
+        ? <string>window.db.get('ROSAA_config_location')
         : ''
 
     // let savefilename = ""
@@ -213,7 +216,7 @@
 
     let configLoaded = false
     let collisionalCoefficient_balance = []
-    let configFilename = window.db.get('ROSAA_config_file') || ''
+    let configFilename = <string>window.db.get('ROSAA_config_file') || ''
     async function loadConfig() {
         try {
             // if(window.fs.existsSync(configFile)) {
@@ -419,8 +422,7 @@
     })
 
     $: energyLevels = energyInfos[`${energyUnit}`]
-
-    $: console.log({ energyLevels })
+    let toggle_modal = false
 </script>
 
 <BoltzmanDistribution {...boltzmanArgs} bind:active={openBoltzmanWindow} bind:graphWindow={boltzmanWindow} />
@@ -453,6 +455,9 @@
                         label="min, max, rangesteps:[1e1 format]"
                     />
                 {/if}
+                <button class="button is-warning" on:click={() => (toggle_modal = !toggle_modal)}
+                    >Open separately</button
+                >
                 <CustomSelect options={variablesList} bind:value={variable} label="variable" />
                 <button class="button is-link" on:click={loadConfig}>Load config</button>
                 <button class="button is-link" on:click={resetConfig}>Reset Config</button>
@@ -461,139 +466,171 @@
     </svelte:fragment>
 
     <svelte:fragment slot="main_content__slot">
-        <div class="content status_report__div" id="status_report__ROSAA" class:hide={!showreport}>
+        <!-- <div class="content status_report__div" id="status_report__ROSAA" class:hide={!showreport}>
             <hr />
             {statusReport || 'Status report'}
             <hr />
-        </div>
+        </div> -->
 
-        <div class="main_container__div" class:hide={showreport}>
-            <!-- Main Parameters -->
+        <!-- <div id="ROSAA_controller" class="main_container__div" class:hide={showreport}> -->
+        <SeparateWindow
+            bind:active={toggle_modal}
+            title="ROSAA controller"
+            graphMode={false}
+            autoHide={false}
+            mainContent$style=""
+        >
+            <svelte:fragment slot="main_content__slot">
+                <div class="main_container__div" class:hide={showreport}>
+                    <!-- Main Parameters -->
 
-            <BoxComponent title="Main Parameters" loaded={mainParameters.length > 0}>
-                {#each mainParameters as { label, value, id } (id)}
-                    <Textfield bind:value {label} />
-                {/each}
-            </BoxComponent>
+                    <Accordion multiple style="width: 100%;">
+                        <CustomPanel label="Main Parameters" loaded={mainParameters.length > 0}>
+                            <div class="align h-center">
+                                {#each mainParameters as { label, value, id } (id)}
+                                    <Textfield bind:value {label} />
+                                {/each}
+                            </div>
+                        </CustomPanel>
 
-            <!-- Energy levels -->
+                        <!-- Energy levels -->
 
-            <BoxComponent title="Energy Levels" loaded={energyLevels.length > 0}>
-                <svelte:fragment slot="control">
-                    <Textfield
-                        bind:value={numberOfLevels}
-                        input$step={1}
-                        input$min={0}
-                        input$type={'number'}
-                        label="numberOfLevels (J levels)"
-                    />
-                    <CustomSelect options={['MHz', 'cm-1']} bind:value={energyUnit} label="energyUnit" />
-                    <button
-                        class="button is-link"
-                        on:click={() => {
-                            openBoltzmanWindow = true
-                            setTimeout(() => boltzmanWindow?.focus(), 100)
-                        }}
-                    >
-                        Show Boltzman distribution
-                    </button>
-                </svelte:fragment>
+                        <CustomPanel label="Energy Levels" loaded={energyLevels.length > 0}>
+                            <div class="align h-center">
+                                <Textfield
+                                    bind:value={numberOfLevels}
+                                    input$step={1}
+                                    input$min={0}
+                                    type={'number'}
+                                    label="numberOfLevels (J levels)"
+                                />
+                                <CustomSelect options={['MHz', 'cm-1']} bind:value={energyUnit} label="energyUnit" />
+                                <button
+                                    class="button is-link"
+                                    on:click={() => {
+                                        openBoltzmanWindow = true
+                                        setTimeout(() => boltzmanWindow?.focus(), 100)
+                                    }}
+                                >
+                                    Show Boltzman distribution
+                                </button>
+                            </div>
 
-                {#each energyLevels as { label, value, id } (id)}
-                    <Textfield bind:value {label} />
-                {/each}
-            </BoxComponent>
+                            <div class="align h-center">
+                                {#each energyLevels as { label, value, id } (id)}
+                                    <Textfield bind:value {label} />
+                                {/each}
+                            </div>
+                        </CustomPanel>
 
-            <!-- Simulation parameters -->
+                        <!-- Simulation parameters -->
+                        <CustomPanel label="Simulation parameters" loaded={simulationParameters.length > 0}>
+                            <div class="align h-center mb-5">
+                                {#each simulationParameters as { label, value, id } (id)}
+                                    <Textfield bind:value {label} />
+                                {/each}
+                            </div>
 
-            <BoxComponent title="Simulation parameters" loaded={simulationParameters.length > 0}>
-                {#each simulationParameters as { label, value, id } (id)}
-                    <Textfield bind:value {label} />
-                {/each}
+                            <!-- <hr />
+                            <div class="subtitle" style="width: 100%; display:grid; place-items: center;">
+                                Transition levels
+                            </div>
+                            <hr /> -->
+                            <div class="align h-center">
+                                <CustomSelect
+                                    options={energyLevels.map((f) => f.label)}
+                                    bind:value={excitedFrom}
+                                    label="excitedFrom"
+                                    on:change={updateEnergyLevels}
+                                />
+                                <CustomSelect
+                                    options={energyLevels.map((f) => f.label)}
+                                    bind:value={excitedTo}
+                                    label="excitedTo"
+                                    on:change={updateEnergyLevels}
+                                />
+                                <Textfield
+                                    value={Number(upperLevelEnergy - lowerLevelEnergy) || 0}
+                                    label="transitionFrequency ({energyUnit})"
+                                />
+                            </div>
+                        </CustomPanel>
 
-                <hr />
-                <div class="subtitle" style="width: 100%; display:grid; place-items: center;">Transition levels</div>
-                <hr />
-                <div class="align h-center">
-                    <CustomSelect
-                        options={energyLevels.map((f) => f.label)}
-                        bind:value={excitedFrom}
-                        label="excitedFrom"
-                        on:change={updateEnergyLevels}
-                    />
-                    <CustomSelect
-                        options={energyLevels.map((f) => f.label)}
-                        bind:value={excitedTo}
-                        label="excitedTo"
-                        on:change={updateEnergyLevels}
-                    />
-                    <Textfield
-                        value={Number(upperLevelEnergy - lowerLevelEnergy) || 0}
-                        label="transitionFrequency ({energyUnit})"
-                    />
+                        <!-- Doppler lineshape -->
+
+                        <CustomPanel label="Doppler lineshape" loaded={dopplerLineshape.length > 0}>
+                            {#each dopplerLineshape as { label, value, id } (id)}
+                                <CustomTextSwitch step={0.5} bind:value {label} />
+                            {/each}
+                            <Textfield bind:value={collisionalTemp} label="collisionalTemp(K)" />
+                            <Textfield bind:value={gaussian} label="gaussian - FWHM (MHz)" />
+                        </CustomPanel>
+
+                        <!-- Lorrentz lineshape -->
+
+                        <CustomPanel label="Lorrentz lineshape" loaded={powerBroadening.length > 0}>
+                            {#each powerBroadening as { label, value, id } (id)}
+                                <Textfield bind:value {label} />
+                            {/each}
+                            <Textfield bind:value={lorrentz} label="lorrentz - FWHM (MHz)" />
+                            <Textfield value={voigtFWHM} label="Voigt - FWHM (MHz)" variant="outlined" />
+                        </CustomPanel>
+
+                        <CustomPanel
+                            label="Einstein Co-efficients"
+                            loaded={einsteinCoefficientA.length > 0 &&
+                                einsteinCoefficientB.length > 0 &&
+                                einsteinB_rateComputed}
+                        >
+                            <EinsteinCoefficients
+                                bind:einsteinCoefficientA
+                                bind:einsteinCoefficientB
+                                bind:einsteinB_rateComputed
+                                bind:einsteinCoefficientB_rateConstant
+                                {power}
+                                {gaussian}
+                                {trapArea}
+                                {lorrentz}
+                                {energyUnit}
+                                {zeemanSplit}
+                                {electronSpin}
+                                {energyLevels}
+                            />
+                        </CustomPanel>
+
+                        <CustomPanel label="Collisional rate constants" loaded={collisionalCoefficient.length > 0}>
+                            <CollisionalCoefficients
+                                bind:numberDensity
+                                bind:collisionalRates
+                                bind:collisionalCoefficient
+                                bind:collisionalCoefficient_balance
+                                {energyUnit}
+                                {zeemanSplit}
+                                {electronSpin}
+                                {energyLevels}
+                                {collisionalTemp}
+                                {collisionalFilename}
+                                {numberOfLevels}
+                            />
+                        </CustomPanel>
+
+                        <CustomPanel
+                            label="Rare-gas attachment (K3) and dissociation (kCID) constants"
+                            loaded={attachmentCoefficients.length > 0}
+                        >
+                            <AttachmentCoefficients bind:k3 bind:kCID bind:numberDensity bind:attachmentCoefficients />
+                        </CustomPanel>
+
+                        <!-- Figure config -->
+                        <CustomPanel label="Figure config" loaded={true}>
+                            <Textfield bind:value={figure.size} label="Dimention (width, height)" />
+                            <Textfield bind:value={figure.dpi} label="DPI" />
+                            <CustomCheckbox bind:value={figure.show} label="show figure" />
+                        </CustomPanel>
+                    </Accordion>
                 </div>
-            </BoxComponent>
-
-            <!-- Doppler lineshape -->
-
-            <BoxComponent title="Doppler lineshape" loaded={dopplerLineshape.length > 0}>
-                {#each dopplerLineshape as { label, value, id } (id)}
-                    <CustomTextSwitch step={0.5} bind:value {label} />
-                {/each}
-                <Textfield bind:value={collisionalTemp} label="collisionalTemp(K)" />
-                <Textfield bind:value={gaussian} label="gaussian - FWHM (MHz)" />
-            </BoxComponent>
-
-            <!-- Lorrentz lineshape -->
-
-            <BoxComponent title="Lorrentz lineshape" loaded={powerBroadening.length > 0}>
-                {#each powerBroadening as { label, value, id } (id)}
-                    <Textfield bind:value {label} />
-                {/each}
-                <Textfield bind:value={lorrentz} label="lorrentz - FWHM (MHz)" />
-                <Textfield value={voigtFWHM} label="Voigt - FWHM (MHz)" variant="outlined" />
-            </BoxComponent>
-
-            <EinsteinCoefficients
-                bind:einsteinCoefficientA
-                bind:einsteinCoefficientB
-                bind:einsteinB_rateComputed
-                bind:einsteinCoefficientB_rateConstant
-                {power}
-                {gaussian}
-                {trapArea}
-                {lorrentz}
-                {energyUnit}
-                {zeemanSplit}
-                {electronSpin}
-                {energyLevels}
-                {configLoaded}
-            />
-
-            <CollisionalCoefficients
-                bind:numberDensity
-                bind:collisionalRates
-                bind:collisionalCoefficient
-                bind:collisionalCoefficient_balance
-                {energyUnit}
-                {zeemanSplit}
-                {electronSpin}
-                {energyLevels}
-                {collisionalTemp}
-                {collisionalFilename}
-                {numberOfLevels}
-            />
-
-            <AttachmentCoefficients bind:k3 bind:kCID bind:numberDensity bind:attachmentCoefficients />
-
-            <!-- Figure config -->
-            <BoxComponent title="Figure config" loaded={true}>
-                <Textfield bind:value={figure.size} label="Dimention (width, height)" />
-
-                <Textfield bind:value={figure.dpi} label="DPI" />
-                <CustomCheckbox bind:value={figure.show} label="show figure" />
-            </BoxComponent>
-        </div>
+            </svelte:fragment>
+        </SeparateWindow>
     </svelte:fragment>
 
     <svelte:fragment slot="left_footer_content__slot">
@@ -605,25 +642,25 @@
 
     <svelte:fragment slot="footer_content__slot">
         <CustomSelect options={simulationMethods} bind:value={simulationMethod} label="simulationMethod" />
-        {#if showreport}
+        <!-- {#if showreport}
             <button
                 class="button is-warning"
                 on:click={() => {
                     statusReport = ''
                 }}>Clear</button
             >
-        {/if}
+        {/if} -->
 
-        <button
+        <!-- <button
             class="button is-link"
             on:click={() => {
                 showreport = !showreport
             }}
         >
             {showreport ? 'Go Back' : 'Status report'}
-        </button>
+        </button> -->
 
-        <ButtonBadge on:click={simulation} />
+        <ButtonBadge on:click={simulation} style="align-self:end;" />
     </svelte:fragment>
 </LayoutDiv>
 

@@ -17,6 +17,9 @@
     export let graphWindow = null
     export let windowReady = false
     export let maximize = true
+    export let graphMode = true
+    export let autoHide = true
+    export let mainContent$style = 'overflow: auto; padding: 0 1em 1em 1em;'
 
     async function openGraph() {
         await tick()
@@ -40,6 +43,7 @@
                 windowReady = true
             },
             onresize: function () {
+                if (!graphMode) return
                 changeGraphDivWidth()
             },
         })
@@ -58,7 +62,8 @@
     }
 
     let graphDivs = []
-    function lookForGraph() {
+    function lookForGraph(node) {
+        if (!graphMode) return
         try {
             graphDivs = Array.from(document.querySelectorAll(`#${id} .graph__div`))
         } catch (error) {
@@ -78,15 +83,17 @@
     })
 </script>
 
-<div {id} class="main_content__div" class:hide={!active}>
+<div {id} class="main_content__div" class:hide={autoHide && !active}>
     <div class="header_content"><slot name="header_content__slot" /></div>
-    <div class="main_content" use:lookForGraph>
+    <div class="main_content" style={mainContent$style} use:lookForGraph>
         <slot name="main_content__slot" />
     </div>
-    <div class="footer_content">
-        <div class="left align"><slot name="left_footer_content__slot" /></div>
-        <div class="right align"><slot name="footer_content__slot" /></div>
-    </div>
+    {#if autoHide && !$$slots.footer_content__slot}
+        <div class="footer_content">
+            <div class="container left align"><slot name="left_footer_content__slot" /></div>
+            <div class="container right align"><slot name="footer_content__slot" /></div>
+        </div>
+    {/if}
 </div>
 
 <style lang="scss">
@@ -102,11 +109,9 @@
             display: grid;
             grid-row-gap: 1em;
             padding: 1em;
-        }
-
-        .main_content {
-            overflow: auto;
-            padding: 0 1em 1em 1em;
+            &:empty {
+                display: none;
+            }
         }
 
         .footer_content {
@@ -114,13 +119,15 @@
             gap: 1em;
             justify-content: flex-end;
             align-items: center;
-
             border-top: solid 1px;
             padding: 0.5rem;
             background-color: #8965c982;
             .right {
                 justify-content: flex-end;
                 flex-wrap: nowrap;
+            }
+            .container:empty {
+                display: none;
             }
         }
     }
