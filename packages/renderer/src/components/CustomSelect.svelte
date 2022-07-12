@@ -83,7 +83,9 @@
     }
     .select {
         align-self: auto;
+        width: 100%;
         select {
+            width: 100%;
             min-width: 5rem;
             &:active,
             &:hover,
