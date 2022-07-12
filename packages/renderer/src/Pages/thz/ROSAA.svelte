@@ -679,10 +679,10 @@
         padding-right: 1em;
     }
 
-    .status_report__div {
-        white-space: pre-wrap;
-        user-select: text;
-    }
+    // .status_report__div {
+    //     white-space: pre-wrap;
+    //     user-select: text;
+    // }
 
     .box {
         padding: 0.5em 1.25em;
