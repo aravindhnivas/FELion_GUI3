@@ -18,7 +18,7 @@
     export let configDir = ''
 </script>
 
-<CustomPanel label="Initial values" style="display: flex; gap: 1em;" {loaded}>
+<CustomPanel label="Initial values" style="display: flex; gap: 1em; justify-content: center;" {loaded}>
     <div>
         <CustomSwitch bind:selected={defaultInitialValues} label="defaultInitialValues" />
         <Textfield bind:value={initialValues} label="initialValues" />
@@ -40,3 +40,11 @@
         lookIn={configDir}
     />
 </CustomPanel>
+
+<style>
+    div {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+    }
+</style>
