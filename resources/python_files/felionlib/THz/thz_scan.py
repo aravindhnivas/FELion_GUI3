@@ -5,7 +5,8 @@ from felionlib.utils.FELion_definitions import sendData
 from felionlib.utils.FELion_constants import colors
 from felionlib.utils.fit_profile.lineProfileFit import fitData
 import numpy.typing as npt
-from uncertainties import umath as um
+
+# from uncertainties import umath as um
 
 
 def thz_plot(filename: pt):
@@ -240,7 +241,7 @@ def plot_thz():
 
 
 def save_fitted_data(filename, x, y, fittedParamsTable):
-    filename = f"{filename}.thz.fit.dat"
+    filename = f"{filename}.thz.fit.{fitMethod}.dat"
     unit = "MHz" if args["saveInMHz"] else "GHz"
     if unit == "MHz":
         x = x * 1e3
