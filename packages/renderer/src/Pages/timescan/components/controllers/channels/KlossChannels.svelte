@@ -23,6 +23,9 @@
     let channelCounter = 0
     let maxGuess = '0.5'
     $: ions_lists = nameOfReactants.split(',').map((name) => name.trim())
+    $: if (selectedFile) {
+        defaultMode = false
+    }
     const addChannel = () => {
         loss_channels = [
             {
