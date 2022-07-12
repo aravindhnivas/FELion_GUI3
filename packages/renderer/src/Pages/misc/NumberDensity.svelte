@@ -61,16 +61,29 @@
             C: TakaishiSensuiConstants.C.value.map(Number),
         }
 
+        // args = {
+        //     srgMode,
+        //     tube_diameter: tube_diameter.map(Number), 
+        //     added_pressure: added_pressure.map(Number),
+        //     room_temperature: room_temperature.map(Number),
+        //     trap_temperature: trap_temperature.map(Number),
+        //     background_pressure: background_pressure.map(Number),
+        //     TakaishiSensuiConstants: TkConstants,
+        //     calibration_factor: calibration_factor.map(Number),
+        // }
+
         args = {
             srgMode,
-            tube_diameter: tube_diameter.map(Number), 
-            added_pressure: added_pressure.map(Number),
-            room_temperature: room_temperature.map(Number),
-            trap_temperature: trap_temperature.map(Number),
-            background_pressure: background_pressure.map(Number),
+            tube_diameter, 
+            added_pressure,
+            room_temperature,
+            trap_temperature,
+            background_pressure,
             TakaishiSensuiConstants: TkConstants,
-            calibration_factor: calibration_factor.map(Number),
+            calibration_factor,
         }
+
+
         datafromPython = await computePy_func(
             {e, pyfile: 'numberDensity', args}
         )
