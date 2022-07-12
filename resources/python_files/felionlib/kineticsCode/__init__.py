@@ -95,7 +95,7 @@ def main(args):
 
     widget = felionQtWindow(title=f"kinetics : {selectedFile}", windowGeometry=(1200, 600), location=outdir)
     KineticMain()
-    widget.ax.set_xbound(lower=-0.5)
+    # widget.ax.set_xbound(lower=-0.1)
     widget.ax.set_ybound(lower=1)
     widget.optimize_figure()
     widget.qapp.exec()

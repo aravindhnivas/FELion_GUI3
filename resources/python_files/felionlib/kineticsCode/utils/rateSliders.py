@@ -36,7 +36,7 @@ def make_slider():
     from .fit import update
     from .configfile import ratek3, ratekCID, forwards_labels_and_bounds, backwards_labels_and_bounds
 
-    widget.ax.margins(x=0)
+    # widget.ax.margins(0)
     height = 0.03
     width = 0.25
     bottom = 0.9

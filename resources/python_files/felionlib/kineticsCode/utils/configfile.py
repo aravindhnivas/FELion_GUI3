@@ -78,10 +78,11 @@ def read_config(
                         keyFound = True
                         searchContent = rateConstantsFileData[selectedFile]['default']
 
-                print(f"{keyFound=}\n{searchContent=}", flush=True)
-
+            print(f"{keyFound=}\n", flush=True)
+            
             if keyFound:
-
+                print(f"{searchContent=}", flush=True)
+            
                 k3_fit_keyvalues: dict[str, float] = searchContent["k3_fit"]
                 kCID_fit_keyvalues: dict[str, float] = searchContent["kCID_fit"]
                 print(f"{k3_fit_keyvalues=}", flush=True)
