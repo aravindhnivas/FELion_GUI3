@@ -85,7 +85,7 @@
         if (!location) {
             return window.createToast('Invalid location', 'danger')
         }
-        if (!window.fs.existsSync(reportFile)) return writeReport()
+        if (!window.fs.existsSync(reportFile) || overwrite) return writeReport()
         return showConfirm.push({
             title: 'Overwrite?',
             content: `Do you want to overwrite ${window.path.basename(reportFile)}?`,
@@ -133,7 +133,7 @@
     }
 
     let autoRead = false
-
+    let overwrite = false
     $: if (reportFile && autoRead) {
         readFromFile()
     }
@@ -142,7 +142,6 @@
 <div class="report_main__div align">
     <div class="notice__div">
         {mainTitle}
-
         <div
             style="display: flex; font-size: large; font-weight: 400; padding-right: 1em;"
             on:click={() => (showReport = !showReport)}
@@ -153,7 +152,6 @@
             <i class="material-icons" on:click={openReport}>zoom_out_map</i>
         {/if}
     </div>
-
     {#if showReport}
         <div class="report_controler__div box" style="border: solid 1px #fff7;">
             <div class="report_location__div">
@@ -173,6 +171,7 @@
                 <button class="button is-warning" on:click={() => readFromFile()}>read</button>
                 <button class="button is-link" on:click={saveReport}>Save</button>
                 <CustomSwitch bind:selected={autoRead} label="autoRead" />
+                <CustomSwitch bind:selected={overwrite} label="overwrite" />
             </div>
         </div>
     {/if}
