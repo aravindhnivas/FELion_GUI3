@@ -138,7 +138,7 @@
 
     let useParamsFile = false
     const kinetics_params_file = persistentWritable('kinetics_params_file', 'kinetics.params.json')
-    $: paramsFile = window.path.join(configDir, $kinetics_params_file)
+    $: paramsFile = window.path.join(configDir, $kinetics_params_file || '')
     $: paramsData = {
         ratek3,
         k3Guess,
@@ -429,18 +429,25 @@
                     />
                     <Textfield bind:value={molecule} label="Molecule" />
                     <Textfield bind:value={tag} label="tag" />
+                    <div class="parm_save__div">
+                        <button class="button is-warning" on:click={() => computeOtherParameters()}>load</button>
+                        <TextAndSelectOptsToggler
+                            bind:value={$kinetics_params_file}
+                            label="fit-config file (*.params.json)"
+                            lookFor=".params.json"
+                            lookIn={configDir}
+                        />
+                        <button class="button is-link" on:click={updateParamsFile}>update</button>
+                    </div>
                 </CustomPanel>
 
                 <RateInitialise
                     loaded={params_found}
-                    {updateParamsFile}
-                    {configDir}
-                    {computeOtherParameters}
                     {totalMassKey}
                     bind:useParamsFile
-                    bind:kinetics_params_file={$kinetics_params_file}
                     bind:nameOfReactants
                     bind:legends
+                    {computeOtherParameters}
                 />
                 <RateConstants
                     loaded={params_found}
@@ -521,5 +528,13 @@
         margin: 0;
         padding: 0.5em;
         border: solid 1px #fff7;
+    }
+
+    .parm_save__div {
+        align-items: flex-end;
+        justify-content: flex-end;
+        display: flex;
+        gap: 1em;
+        margin-left: auto;
     }
 </style>
