@@ -157,7 +157,7 @@ class ROSAA:
 
     def SimulateODE(self, t, counts, nHe, lightON, ratio):
         
-        global logCounter
+        # global logCounter
         if self.includeAttachmentRate and self.includeCollision:
             N = counts[:-self.totalAttachmentLevels]
             N_He = counts[-self.totalAttachmentLevels:]
