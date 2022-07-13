@@ -19,6 +19,7 @@ class ROSAA:
     def __init__(self, nHe=None, power=None, plotGraph=True, writefile=None):
 
         self.energyUnit = conditions["energyUnit"]
+        self.numberOfLevels = int(conditions["numberOfLevels"])
         convertNorm_to_wn = 1e6/speedOfLightIn_cm if self.energyUnit == "MHz" else 1
         self.energyLevels = {key: float(value)*convertNorm_to_wn for key, value in conditions["energy_levels"].items()}
             
@@ -358,10 +359,18 @@ class ROSAA:
         
         plotSimulationTime_milliSecond: np.ndarray = self.simulateTime*1e3
         counter = 0
+        legend_handler = {}
+        
         for on, off in zip(self.lightON_distribution, self.lightOFF_distribution):
             
-            widget.ax.plot(plotSimulationTime_milliSecond, on, ls="-", c=pltColors[counter], label=f"{self.legends[counter]}")
-            widget.ax.plot(plotSimulationTime_milliSecond, off, ls="--", c=pltColors[counter])
+            lg = f"{self.legends[counter]}"
+            
+            _on_plot, = widget.ax.plot(plotSimulationTime_milliSecond, on, ls="-", c=pltColors[counter], label=lg)
+            _off_plot, = widget.ax.plot(plotSimulationTime_milliSecond, off, ls="--", c=pltColors[counter])
+        
+            legend_handler[lg] = _on_plot
+            # legend_handler[lg] = [_on_plot, _off_plot]
+            
             counter += 1
 
         widget.ax.plot(plotSimulationTime_milliSecond, self.lightON_distribution.sum(axis=0), "-k", alpha=0.5)
@@ -373,6 +382,9 @@ class ROSAA:
             colors='k', linestyles="dashdot"
         )
         
+        # widget.makeLegendToggler(legend_handler, edit_legend=True)
+        
+        widget.ax.legend(title='- ON -- OFF')
         widget.optimize_figure()
         widget.fig.tight_layout()
 

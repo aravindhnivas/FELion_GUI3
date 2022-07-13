@@ -102,7 +102,7 @@
 
         attachmentCoefficients.forEach((f) => (attachment_rate_coefficients[f.label] = f.value))
         const energy_levels = {}
-        energyLevels.forEach((f) => (energy_levels[f.label] = f.value))
+        energyLevels.slice(0, numberOfLevels).forEach((f) => (energy_levels[f.label] = f.value))
         const args = {
             trapTemp,
             variable,
@@ -425,7 +425,12 @@
     let toggle_modal = false
 </script>
 
-<BoltzmanDistribution {...boltzmanArgs} bind:active={openBoltzmanWindow} bind:graphWindow={boltzmanWindow} />
+<BoltzmanDistribution
+    {...boltzmanArgs}
+    bind:active={openBoltzmanWindow}
+    bind:graphWindow={boltzmanWindow}
+    {currentLocation}
+/>
 
 <LayoutDiv id="ROSAA__modal">
     <svelte:fragment slot="header_content__slot">
