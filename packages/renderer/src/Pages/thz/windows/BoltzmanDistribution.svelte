@@ -4,6 +4,8 @@
     import { plot } from '../../../js/functions'
     import boltzman_distribution from '../functions/boltzman_distribution'
     import { sumBy } from 'lodash-es'
+    import computePy_func from '$src/Pages/general/computePy'
+    import ButtonBadge from '$src/components/ButtonBadge.svelte'
 
     export let active = false
     export let trapTemp
@@ -12,11 +14,14 @@
     export let energyUnit
     export let electronSpin
     export let graphWindow = null
+    export let currentLocation = ''
 
     const title = 'Boltzman Distribution'
     const plotID = 'boltzmanDistributionPlot'
-    // let graphWindow = null
+
     let windowReady = false
+
+    let plotData = [[], []]
 
     function plotGraph() {
         const { distribution, partitionValue } = boltzman_distribution({
@@ -32,6 +37,7 @@
             const totalSum = sumBy(distribution, (e) => e.value).toFixed(2)
             const energyLevel = distribution.map((e) => e.label)
             const populations = distribution.map((e) => e.value)
+            plotData = [energyLevel, populations]
             const data = {
                 x: energyLevel,
                 y: populations,
@@ -44,11 +50,57 @@
             console.log('Plotted')
         }
     }
+
     $: if (windowReady) {
         setTimeout(() => graphWindow.focus(), 100)
     }
     $: if (windowReady && trapTemp > 0) {
         plotGraph()
+    }
+
+    const saveInfo = { msg: '', error: '' }
+    $: outputFile = window.path.join(currentLocation, '../output/datas', `boltzman_distribution${trapTemp}K.dat`)
+
+    const saveData = async () => {
+        console.log({ currentLocation, plotData })
+        window.fs.ensureDirSync(window.path.dirname(outputFile))
+
+        const length = plotData[0].length
+
+        let writeContent = '# Energy Levels\t Population \n'
+        for (let i = 0; i < length; i++) {
+            writeContent += `${plotData[0][i]}\t${plotData[1][i]}\n`
+        }
+
+        const [, error] = await window.fs.writeFile(outputFile, writeContent)
+
+        if (error) {
+            saveInfo.error = error
+            window.handleError(error)
+        } else {
+            saveInfo.msg = `Saved to ${outputFile}`
+            window.createToast(`Data saved`)
+        }
+    }
+
+    const openFigure = (e) => {
+        if (!window.fs.isFile(outputFile)) {
+            window.createToast('No data to open', 'danger')
+            return
+        }
+
+        const figsDir = window.path.join(currentLocation, '../output/figs')
+        window.fs.ensureDirSync(figsDir)
+
+        const args = {
+            figArgs: {
+                figXlabel: 'J',
+                figYlabel: 'Population ratio',
+                location: figsDir,
+            },
+            files: [outputFile],
+        }
+        computePy_func({ e, pyfile: 'utils.plotXY', args, general: true })
     }
 </script>
 
@@ -57,7 +109,24 @@
         <div class="align">
             <CustomTextSwitch bind:value={trapTemp} label="Temperature (K)" />
             <button class="button is-link" on:click={plotGraph}>Compute</button>
+            <button class="button is-link" on:click={saveData}>Save data</button>
+            <ButtonBadge label="Produce figure" on:click={openFigure} />
         </div>
+
+        {#if saveInfo.error || saveInfo.msg}
+            <div class="block">
+                <span class="notification  is-success" class:is-danger={saveInfo.error}>
+                    {saveInfo.error || saveInfo.msg}
+                    <button
+                        class="delete is-danger"
+                        on:click={() => {
+                            saveInfo.error = ''
+                            saveInfo.msg = ''
+                        }}
+                    />
+                </span>
+            </div>
+        {/if}
     </svelte:fragment>
 
     <svelte:fragment slot="main_content__slot">
