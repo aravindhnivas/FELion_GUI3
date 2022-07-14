@@ -4,30 +4,34 @@ from felionlib.utils.felionQt import felionQtWindow
 
 
 def main(args):
-    files = [pt(i) for i in args["files"]]
-    location = files[0].parent
-    figArgs = args["figArgs"]
-    # title = args["title"]
-    # xlabel = args["xlabel"]
-    # ylabel = args["ylabel"]
-    
-    widget = felionQtWindow(**figArgs)
-        # title=title,
-        # figXlabel=xlabel,
-        # figYlabel=ylabel,
-        # ticks_direction="out",
-        # location=location / "OUT",
-        # savefilename="savefigure",
-        # yscale="log",
-    # )
 
+    files = [pt(i) for i in args["files"]]
+    figArgs = args["figArgs"]
+
+    widget = felionQtWindow(**figArgs)
     legend_handler = {}
+
     for file in files:
-        masses_temp, counts_temp = np.genfromtxt(file).T
-        (legend_handler[file.stem],) = widget.ax.plot(masses_temp, counts_temp, label=file.stem)
+        x, y = [], []
+        with open(file, "r") as f:
+            for line in f.readlines():
+                if line.startswith("#"):
+                    continue
+                data = line.split()
+
+                if "x_type" in figArgs and figArgs["x_type"] == "float":
+                    x.append(float(data[0]))
+                else:
+                    x.append(data[0])
+
+                if "y_type" in figArgs and figArgs["y_type"] == "float":
+                    y.append(float(data[1]))
+                else:
+                    y.append(data[1])
+
+        (legend_handler[file.stem],) = widget.ax.plot(x, y, label=file.stem)
 
     widget.makeLegendToggler(legend_handler, edit_legend=True)
     widget.optimize_figure()
     widget.fig.tight_layout()
     widget.qapp.exec()
-    

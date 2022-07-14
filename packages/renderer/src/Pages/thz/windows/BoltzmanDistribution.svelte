@@ -97,6 +97,8 @@
                 figXlabel: 'J',
                 figYlabel: 'Population ratio',
                 location: figsDir,
+                x_type: 'string',
+                y_type: 'float',
             },
             files: [outputFile],
         }
@@ -114,7 +116,7 @@
         </div>
 
         {#if saveInfo.error || saveInfo.msg}
-            <div class="block">
+            <div class="block mt-5">
                 <span class="notification  is-success" class:is-danger={saveInfo.error}>
                     {saveInfo.error || saveInfo.msg}
                     <button
