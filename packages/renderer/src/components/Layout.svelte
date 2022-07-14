@@ -232,14 +232,15 @@
 
         .left_container__div {
             display: grid;
-            grid-template-rows: auto auto auto 1fr;
+            grid-template-rows: auto 1fr;
             width: 100%;
             min-width: 300px;
         }
 
         .left_container__div,
         .right_container__div {
-            max-height: calc(100vh - 6rem);
+            overflow: hidden;
+            // max-height: calc(100vh - 6rem);
             // height: 100%;
         }
 
