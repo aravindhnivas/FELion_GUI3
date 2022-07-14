@@ -1,17 +1,17 @@
 import { pythonpath, pythonscript, pyVersion, developerMode, pyProgram, get } from './svelteWritables'
 
 export async function resetPyConfig() {
-    const pyPath = window.path.join(ROOT_DIR, 'python3/python')
-    const pyScriptPath = window.path.join(ROOT_DIR, 'resources/python_files')
+    const pyPath = window.path.join(window.ROOT_DIR, 'python3/python')
+    const pyScriptPath = window.path.join(window.ROOT_DIR, 'resources/python_files')
 
-    db.set('pythonscript', pyScriptPath)
-    pythonscript.set(db.get('pythonscript'))
+    window.db.set('pythonscript', pyScriptPath)
+    pythonscript.set(window.db.get('pythonscript'))
 
     const [data, error] = await window.exec(`${pyPath} -V`)
     if (error) return window.handleError(error)
 
     pyVersion.set(data.stdout.trim())
-    db.set('pythonpath', pyPath)
+    window.db.set('pythonpath', pyPath)
     pythonpath.set(pyPath)
     window.createToast('Location resetted', 'warning')
 }
@@ -23,8 +23,8 @@ export async function updatePyConfig() {
     pyVersion.set(data.stdout.trim())
     window.createToast('Location updated', 'success')
 
-    db.set('pythonpath', get(pythonpath))
-    db.set('pythonscript', get(pythonscript))
+    window.db.set('pythonpath', get(pythonpath))
+    window.db.set('pythonscript', get(pythonscript))
 }
 
 export async function getPyVersion(e) {
@@ -42,5 +42,12 @@ export async function getPyVersion(e) {
     console.log({ stdout, version })
 
     e?.target?.classList.toggle('is-loading')
+    // await updatePyConfig()
+    window.db.set('pythonpath', get(pythonpath))
+    window.db.set('pythonscript', get(pythonscript))
+    window.db.set('pyVersion', get(pyVersion))
+
+    window.createToast('Location updated', 'success')
+
     if (get(pyVersion)) return Promise.resolve(get(pyVersion))
 }
