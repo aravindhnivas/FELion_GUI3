@@ -29,11 +29,7 @@
         }
     }
 
-    // let mounted = false
-    onMount(() => {
-        // mounted = true
-        readConfigFile()
-    })
+    onMount(readConfigFile)
 
     let updateCurrentConfig
     let get_datas
@@ -51,14 +47,10 @@
     }
 
     const compute = () => {
+        if (!updateCurrentConfig) return
         const currentConfig = contents?.[selectedFile]
-        if (active && !currentConfig) {
-            return window.createToast(`config not found for selected file: ${selectedFile}`, 'danger')
-        }
+        if (active && !currentConfig) return
         updateCurrentConfig(currentConfig)
-    }
-    $: if (updateCurrentConfig && selectedFile) {
-        compute()
     }
 </script>
 
