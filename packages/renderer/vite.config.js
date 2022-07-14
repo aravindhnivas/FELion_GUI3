@@ -42,7 +42,6 @@ const config = {
             external: [...builtinModules],
         },
         emptyOutDir: true,
-        brotliSize: false,
     },
 }
 export default config

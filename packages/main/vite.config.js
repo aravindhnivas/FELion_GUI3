@@ -17,6 +17,7 @@ const config = {
         },
     },
     build: {
+        reportCompressedSize: false,
         sourcemap: process.env.MODE === 'development',
         target: `node${node}`,
         outDir: 'dist',
@@ -40,7 +41,6 @@ const config = {
             },
         },
         emptyOutDir: true,
-        brotliSize: false,
     },
 }
 

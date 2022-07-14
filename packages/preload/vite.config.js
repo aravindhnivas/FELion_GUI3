@@ -18,6 +18,7 @@ const config = {
         },
     },
     build: {
+        reportCompressedSize: false,
         sourcemap: process.env.MODE === 'development',
         target: `chrome${chrome}`,
         outDir: 'dist',
@@ -41,7 +42,6 @@ const config = {
             },
         },
         emptyOutDir: true,
-        brotliSize: false,
     },
 }
 
