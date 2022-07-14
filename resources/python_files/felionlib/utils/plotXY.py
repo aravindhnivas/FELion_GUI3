@@ -29,7 +29,12 @@ def main(args):
                 else:
                     y.append(data[1])
 
-        (legend_handler[file.stem],) = widget.ax.plot(x, y, label=file.stem)
+        if "labels" in figArgs and figArgs["labels"][file.name]:
+            label = figArgs["labels"][file.name]
+        else:
+            label = file.stem
+
+        (legend_handler[label],) = widget.ax.plot(x, y, label=label)
 
     widget.makeLegendToggler(legend_handler, edit_legend=True)
     widget.optimize_figure()
