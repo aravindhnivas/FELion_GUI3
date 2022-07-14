@@ -3,6 +3,7 @@
     import TextAndSelectOptsToggler from '$components/TextAndSelectOptsToggler.svelte'
     import CustomPanel from '$components/CustomPanel.svelte'
     import type { totalMassKeyType } from '$src/Pages/timescan/types/types'
+    import { tick } from 'svelte'
     export let legends = ''
     export let useParamsFile = false
     export let loaded = false
@@ -39,10 +40,12 @@
                 {mass}
                 <button
                     class="delete is-small"
-                    on:click={() => {
+                    on:click={async () => {
                         useParamsFile = false
                         included = !included
+                        await tick()
                         computeOtherParameters()
+                        await tick()
                     }}
                 />
             </span>
