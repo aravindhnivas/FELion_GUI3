@@ -476,11 +476,11 @@ def WriteData(name: str, dataToSend: dict):
 
     if not datas_location.exists():
         datas_location.mkdir()
-        
-    fulloutput_location = datas_location / 'full_output'
+
+    fulloutput_location = datas_location / "full_output"
     if not fulloutput_location.exists():
         fulloutput_location.mkdir()
-        
+
     addText = ""
     if not includeAttachmentRate:
         addText = "_no-attachement"
@@ -597,7 +597,20 @@ def functionOfVariable(
     taggingPartner = conditions["main_parameters"]["tagging partner"]
     excitedFrom = str(conditions["excitedFrom"])
     excitedTo = str(conditions["excitedTo"])
+
+    outputFileName = f"{molecule}-{taggingPartner}__{excitedFrom}-{excitedTo}__"
+    appendOutputFileName = f"{changeVariable}_{dataList[0]:.0e}-{dataList[-1]:.0e}"
+
+    if isinstance(currentConstants, dict):
+        for key, value in currentConstants.items():
+            appendOutputFileName += f"_{key}_{value[0]}{value[1]}"
+
+    outputFileName += appendOutputFileName
+    outputFileName = outputFileName.replace("$", "").replace("^", "")
+    logger(f"Output file name: {outputFileName}")
+
     energyKeys = list(conditions["energy_levels"].keys())
+
     excitedToIndex = energyKeys.index(excitedTo)
     excitedFromIndex = energyKeys.index(excitedFrom)
 
@@ -627,15 +640,6 @@ def functionOfVariable(
             changeInSignal = np.around(np.nan_to_num(changeInSignal).clip(min=0), 1)
 
             signalChange.append(changeInSignal)
-
-    outputFileName = f"{molecule}-{taggingPartner}__{excitedFrom}-{excitedTo}__"
-    outputFileName += f"{changeVariable}_{dataList[0]:.0e}-{dataList[-1]:.0e}"
-
-    if isinstance(currentConstants, dict):
-        for key, value in currentConstants.items():
-            outputFileName += f"_{key}_{value[0]}{value[1]}"
-
-    outputFileName = outputFileName.replace("$", "").replace("^", "")
 
     if plot:
         if changeVariable == "numberDensity":
