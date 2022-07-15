@@ -29,7 +29,7 @@
     let tempIndex = 0
     async function readCollisionalDataFromFile() {
         console.info(collisionalFilename)
-        if (!collisionalFilename) return
+        if (!window.fs.isFile(collisionalFilename)) return window.handleError(`File not found : ${collisionalFilename}`)
 
         const fileContents = window.fs.readFileSync(collisionalFilename)
         if (!fileContents) return null

@@ -28,6 +28,7 @@ export async function updatePyConfig() {
 }
 
 export async function getPyVersion(e) {
+
     e?.target?.classList.toggle('is-loading')
 
     const pyfile = 'getVersion'
@@ -35,19 +36,22 @@ export async function getPyVersion(e) {
 
     const command = `${get(pyProgram)} ${pyArgs} ${pyfile} {} `
     const [{ stdout }, error] = await window.exec(command)
-    if (error) return Promise.reject(error)
+    
+    if (error) {
+        e?.target?.classList.toggle('is-loading')
+        return Promise.reject(error)
+    }
 
     const [version] = stdout?.split('\n').filter?.((line) => line.includes('Python')) || ['']
     pyVersion.set(version?.trim() || '')
     console.log({ stdout, version })
 
-    e?.target?.classList.toggle('is-loading')
-    // await updatePyConfig()
     window.db.set('pythonpath', get(pythonpath))
     window.db.set('pythonscript', get(pythonscript))
     window.db.set('pyVersion', get(pyVersion))
 
-    window.createToast('Location updated', 'success')
+    window.createToast("python location updated", 'success')
+    e?.target?.classList.toggle('is-loading')
 
     if (get(pyVersion)) return Promise.resolve(get(pyVersion))
 }

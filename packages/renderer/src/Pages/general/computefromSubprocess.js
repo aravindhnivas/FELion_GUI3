@@ -76,12 +76,11 @@ export default async function ({
             return
         })
 
-        const logFile = window.path.join(window.appInfo.temp, 'FELion_GUI3', pyfile + '_data.log')
+        const logFile = window.path.join(window.appInfo.temp, 'FELion_GUI3/logs', pyfile + '_data.log')
         const loginfo = window.fs.createWriteStream(logFile)
 
         let error = ''
         let dataReceived = ''
-
         dispatchEvent(target, { py, pyfile }, 'pyEvent')
 
         py.on('close', () => {
@@ -143,7 +142,6 @@ export default async function ({
             } else {
                 dataReceived += dataString
             }
-
             console.log(dataString.trim())
             dispatchEvent(target, { py, pyfile, dataReceived }, 'pyEventData')
         })

@@ -1,19 +1,35 @@
 import json
 import time
+from typing import Literal
 import numpy as np
 from pathlib import Path as pt
 from scipy.integrate import solve_ivp
 from .definitions import boltzman_distribution
 from .voigt import main as getLineShape
-
-from felionlib.utils.FELion_constants import pltColors
 from felionlib.utils import logger
+from felionlib.utils.FELion_constants import pltColors
 from felionlib.utils.felionQt import felionQtWindow
+from scipy.constants import speed_of_light
 
 
-speedOfLight = 299792458
-speedOfLightIn_cm = speedOfLight * 100
+speedOfLightIn_cm = speed_of_light * 100
 qapp = None
+
+# log_location = pt(os.getenv("TEMP")) / "FELion_GUI3/logs"
+# if not log_location.exists():
+#     log_location.mkdir()
+
+# print(f"{log_location=}", flush=True)
+# logging.basicConfig(
+#     filename=log_location / "THz_simulation.log",
+#     filemode="w+",
+#     # format="%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s",
+#     format="%(asctime)s,%(msecs)d %(message)s",
+#     datefmt="%H:%M:%S",
+#     level=logging.INFO,
+# )
+
+# logger("ROSAA module loaded.")
 
 
 class ROSAA:
@@ -126,7 +142,7 @@ class ROSAA:
 
     def computeEinsteinBRates(self):
         trapArea = float(conditions["main_parameters"]["trap_area (sq-meter)"])
-        constantTerm = self.power / (float(trapArea) * speedOfLight)
+        constantTerm = self.power / (float(trapArea) * speed_of_light)
 
         gaussian = float(conditions["gaussian"])
         lorrentz = float(conditions["lorrentz"])
@@ -460,11 +476,16 @@ def WriteData(name: str, dataToSend: dict):
 
     if not datas_location.exists():
         datas_location.mkdir()
+        
+    fulloutput_location = datas_location / 'full_output'
+    if not fulloutput_location.exists():
+        fulloutput_location.mkdir()
+        
     addText = ""
     if not includeAttachmentRate:
         addText = "_no-attachement"
 
-    with open(datas_location / f"{savefilename}{addText}_{name}.json", "w+") as f:
+    with open(fulloutput_location / f"{savefilename}{addText}_{name}.json", "w+") as f:
         data = json.dumps(dataToSend, sort_keys=True, indent=4, separators=(",", ": "))
         f.write(data)
         logger(f"{savefilename} file written in {location} folder.")
@@ -486,65 +507,91 @@ def main(arguments):
 
     conditions = arguments
     savefilename = conditions["savefilename"]
-
     location = pt(conditions["currentLocation"])
-    output_dir = location / "../output"
+    output_dir = location / "output"
     if not output_dir.exists():
         output_dir.mkdir()
 
     figure = conditions["figure"]
     figure["size"] = [int(i) for i in figure["size"].split(",")]
-    figure["dpi"] = int(figure["dpi"])
-
     includeAttachmentRate = conditions["includeAttachmentRate"]
-    nHe = float(conditions["numberDensity"])
     variable = conditions["variable"]
+
+    current_nHe = np.format_float_scientific(float(conditions["numberDensity"]), 3)
+    current_Power = np.format_float_scientific(float(conditions["power_broadening"]["power(W)"]), 3)
+    current_k3_branch = float(conditions["attachment_rate_coefficients"]["a(k31)"])
 
     if variable == "time":
 
-        ROSAA(nHe, plotGraph=figure["show"])
+        ROSAA(plotGraph=figure["show"])
 
     elif variable == "He density(cm3)":
-        functionOfVariable("numberDensity")
+
+        currentConstants = {"a": [current_k3_branch, ""], "power": [current_Power, "W"]}
+        functionOfVariable("numberDensity", currentConstants)
+
     elif variable == "Power(W)":
-        functionOfVariable("power")
+
+        currentConstants = {"a": [current_k3_branch, ""], "numberDensity": [current_nHe, "cm$^3$"]}
+        functionOfVariable("power", currentConstants)
+
     elif variable == "a(kon/koff)":
-        functionOfVariable("a")
+        currentConstants = {"power": [current_Power, "W"], "numberDensity": [current_nHe, "cm$^3$"]}
+        functionOfVariable("a", currentConstants)
+
+    elif variable == "all":
+        functionOfVariable("all")
 
     if qapp is not None:
         qapp.exec()
 
 
-def functionOfVariable(changeVariable="numberDensity"):
+def make_stepsizes_equally_spaced(changeVariable: Literal["numberDensity", "power"] = "numberDensity"):
 
+    variableRange: str = conditions["variableRange"][changeVariable]
+    _start, _end, _steps = variableRange.split(",")
+    _start = int(_start.split("e")[-1])
+    _end = int(_end.split("e")[-1])
+
+    counter = _start
+    dataList = []
+
+    while counter < _end:
+
+        appendDataList = np.linspace(float(f"1e{counter}"), float(f"1e{counter+1}"), int(_steps))
+        dataList = np.append(dataList, appendDataList)
+        counter += 1
+
+    return dataList
+
+
+def functionOfVariable(
+    changeVariable: Literal["numberDensity", "power", "a", "all"] = "numberDensity", currentConstants=None, plot=True
+):
     global qapp
 
-    constantFactorLabel = "power" if changeVariable == "numberDensity" else "numberDensity"
-    currentnHe = np.format_float_scientific(float(conditions["numberDensity"]), 3)
-    currentnPower = np.format_float_scientific(float(conditions["power_broadening"]["power(W)"]), 3)
-    currentConstant = (currentnHe, currentnPower)[changeVariable == "numberDensity"]
-    currentConstantUnit = ("cm$^3$", "(W)")[changeVariable == "numberDensity"]
     variableRange: str = conditions["variableRange"][changeVariable]
 
     if changeVariable == "a" or changeVariable == "all":
         _start, _end, _steps = variableRange.split(",")
         dataList = np.arange(float(_start), float(_end) + float(_steps), float(_steps))
-        # print(dataList)
-        # raise NotImplementedError
-
     else:
-        _start, _end, _steps = variableRange.split(",")
-        _start = int(_start.split("e")[-1])
-        _end = int(_end.split("e")[-1])
+        dataList = make_stepsizes_equally_spaced(changeVariable)
 
-        counter = _start
-        dataList = []
+    if changeVariable == "all":
+        for _a in dataList:
+            power_values = make_stepsizes_equally_spaced("power")
+            for _power in power_values:
+                functionOfVariable(
+                    "numberDensity", currentConstants={"a": [_a, ""], "power": [_power, "W"]}, plot=False
+                )
 
-        while counter < _end:
-
-            appendDataList = np.linspace(float(f"1e{counter}"), float(f"1e{counter+1}"), int(_steps))
-            dataList = np.append(dataList, appendDataList)
-            counter += 1
+            numberDensity_values = make_stepsizes_equally_spaced("numberDensity")
+            for _nHe in numberDensity_values:
+                functionOfVariable(
+                    "power", currentConstants={"a": [_a, ""], "numberDensity": [_nHe, "cm$^3$"]}, plot=False
+                )
+        return
 
     molecule = conditions["main_parameters"]["molecule"]
     taggingPartner = conditions["main_parameters"]["tagging partner"]
@@ -558,7 +605,6 @@ def functionOfVariable(changeVariable="numberDensity"):
     signalChange = []
 
     for variable in dataList:
-
         if changeVariable == "numberDensity":
             currentData = ROSAA(nHe=variable, plotGraph=False)
 
@@ -579,57 +625,72 @@ def functionOfVariable(changeVariable="numberDensity"):
 
             changeInSignal = (1 - (on[signal_index][-1] / off[signal_index][-1])) * 100
             changeInSignal = np.around(np.nan_to_num(changeInSignal).clip(min=0), 1)
+
             signalChange.append(changeInSignal)
 
-    if changeVariable == "numberDensity":
-        xlabel = currentData.taggingPartner + "number density (cm$^{-3})$"
-    elif changeVariable == "power":
-        xlabel = "Power (W)"
-    elif changeVariable == "a":
-        xlabel = "a (kon/koff)"
-
     outputFileName = f"{molecule}-{taggingPartner}__{excitedFrom}-{excitedTo}__"
-    outputFileName += f"{changeVariable}.{dataList[0]:.0e}-{dataList[-1]:.0e}.{constantFactorLabel}.{currentConstant}"
-    outputFileName = outputFileName.replace("$", "")
+    outputFileName += f"{changeVariable}_{dataList[0]:.0e}-{dataList[-1]:.0e}"
 
-    title = currentData.transitionTitleLabel
-    ylabel = title.split(":")[-1].replace("$", "")
-    # quantumState = f"$N{'_J' if electronSpin else ''}$"
-    ylabel = f"${ylabel.split('-')[1]}$ / ${ylabel.split('-')[0]}$"
-    widget = felionQtWindow(
-        title=f"Population ratio",
-        figDPI=200,
-        figXlabel=xlabel,
-        figYlabel=ylabel,
-        location=output_dir / "figs",
-        xscale="linear" if changeVariable == "a" else "log",
-    )
+    if isinstance(currentConstants, dict):
+        for key, value in currentConstants.items():
+            outputFileName += f"_{key}_{value[0]}{value[1]}"
 
-    widget.ax.plot(dataList, populationChange, "-k", label=f"{currentConstant}{currentConstantUnit}")
-    widget.optimize_figure()
-    widget.fig.tight_layout()
-    if qapp is None:
-        qapp = widget.qapp
+    outputFileName = outputFileName.replace("$", "").replace("^", "")
+
+    if plot:
+        if changeVariable == "numberDensity":
+            xlabel = currentData.taggingPartner + "number density (cm$^{-3})$"
+        elif changeVariable == "power":
+            xlabel = "Power (W)"
+        elif changeVariable == "a":
+            xlabel = "a (kon/koff)"
+
+        title = currentData.transitionTitleLabel
+        ylabel = title.split(":")[-1].replace("$", "")
+        # quantumState = f"$N{'_J' if electronSpin else ''}$"
+        ylabel = f"${ylabel.split('-')[1]}$ / ${ylabel.split('-')[0]}$"
+        widget = felionQtWindow(
+            title=f"Population ratio",
+            figDPI=200,
+            figXlabel=xlabel,
+            figYlabel=ylabel,
+            location=output_dir / "figs",
+            xscale="linear" if changeVariable == "a" else "log",
+        )
+
+        constantLabel = ""
+        if isinstance(currentConstants, dict):
+            for key, value in currentConstants.items():
+                constantLabel += f"{key} = {value[0]} {value[1]}\n"
+
+        widget.ax.plot(dataList, populationChange, "-k", label=constantLabel)
+        widget.optimize_figure()
+        widget.fig.tight_layout()
+        if qapp is None:
+            qapp = widget.qapp
 
     dataToSend = {
         f"variable ({changeVariable})": list(map(lambda num: np.format_float_scientific(num, 3), dataList)),
         "populationChange": np.around(populationChange, 3).tolist(),
-        f"constant ({('power', 'numberDensity')[changeVariable=='numberDensity']})": currentConstant,
+        "constant": currentConstants,
     }
 
     if includeAttachmentRate:
-        widget1 = felionQtWindow(
-            title=f"Signal",
-            figDPI=200,
-            figXlabel=xlabel,
-            figYlabel="Signal (%)",
-            location=output_dir / "figs",
-            xscale="linear" if changeVariable == "a" else "log",
-            savefilename=f"{outputFileName}.signal",
-        )
-        widget1.ax.plot(dataList, signalChange, "-k")
-        widget1.optimize_figure()
-        widget1.fig.tight_layout()
+        if plot:
+            widget1 = felionQtWindow(
+                title=f"Signal",
+                figDPI=200,
+                figXlabel=xlabel,
+                figYlabel="Signal (%)",
+                location=output_dir / "figs",
+                xscale="linear" if changeVariable == "a" else "log",
+                savefilename=f"{outputFileName}.signal",
+            )
+
+            widget1.ax.plot(dataList, signalChange, "-k", label=constantLabel)
+            widget1.optimize_figure()
+            widget1.fig.tight_layout()
+
         dataToSend["signalChange"] = np.around(signalChange, 3).tolist()
 
     if conditions["writefile"]:
@@ -639,16 +700,13 @@ def functionOfVariable(changeVariable="numberDensity"):
             datas_location.mkdir()
 
         with open(datas_location / f"{outputFileName}.txt", "w+") as f:
-            f.write(f"# constant ({('numberDensity', 'power')[changeVariable=='numberDensity']}): ")
-
-            f.write(f"{currentConstant}\n")
             f.write(f"# variable ({changeVariable})\tpopulationChange\n")
-
             counter = 0
-
             for x, y in zip(dataList, populationChange):
                 f.write(f"{x:.3e}\t{y:.3f}")
                 f.write(f"\t{signalChange[counter]}\n") if includeAttachmentRate else f.write("\n")
                 counter += 1
 
-            logger(f"{savefilename} file written in {location} folder.")
+            logger(f"{savefilename} file written in {location}")
+
+        json.dump(dataToSend, fp=open(datas_location / f"{outputFileName}.json", "w+"), indent=4)

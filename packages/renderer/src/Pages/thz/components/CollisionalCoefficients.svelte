@@ -96,8 +96,8 @@
         if (error) {
             return window.handleError(error)
         }
-
-        window.createToast('Saved: ' + collisionalCoefficientJSONFile)
+        console.log(`${collisionalCoefficientJSONFile} saved`)
+        window.createToast('Saved: ' + window.path.basename(collisionalCoefficientJSONFile))
     }
 
     let collisionalCoefficientJSONFile = ''
@@ -114,7 +114,7 @@
             }
         }
     }
-    $: console.log(collisionalCoefficient.length)
+    // $: console.log(collisionalCoefficient.length)
     onMount(() => {
         const configLocation = <string>window.db.get('ROSAA_config_location') || ''
         if (!configLocation) return

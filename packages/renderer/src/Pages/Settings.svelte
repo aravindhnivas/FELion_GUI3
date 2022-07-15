@@ -128,7 +128,7 @@
         }
     }
 
-    let serverDebug = window.db.get('serverDebug') || false
+    let serverDebug = <boolean>window.db.get('serverDebug') || false
     const updateTCPInfo = async (e = null) => {
         const [{ stdout }] = await checkTCP({ target: e?.target })
         if (stdout) {
@@ -202,7 +202,7 @@
                                 Developer mode: {$developerMode}
                             </button>
 
-                            <button class="button is-link" on:click={getPyVersion}>getPyVersion</button>
+                            <!-- <button class="button is-link" on:click={getPyVersion}>getPyVersion</button> -->
 
                             <button class="button is-link" on:click={() => (showServerControls = !showServerControls)}>
                                 Show server controls
@@ -217,7 +217,16 @@
                                         style="width: 100%; "
                                     />
                                     <button class="button is-link" on:click={resetPyConfig}>Reset</button>
-                                    <button class="button is-link" on:click={getPyVersion}>Save</button>
+                                    <button
+                                        class="button is-link"
+                                        on:click={async () => {
+                                            try {
+                                                await getPyVersion()
+                                            } catch (error) {
+                                                window.handleError(error)
+                                            }
+                                        }}>Save</button
+                                    >
                                 </div>
                             {/if}
                         </div>

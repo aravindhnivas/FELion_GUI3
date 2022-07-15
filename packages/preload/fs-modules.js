@@ -76,7 +76,15 @@ export const fsUtils = {
             on: (key, callback) => writer.on(key, callback),
         }
     },
+    createReadStream: (path) => {
+        const reader = fs.createReadStream(path)    
+        return {
+            on: (key, callback) => reader.on(key, callback),
+            pipe: (dest) => reader.pipe(dest),
+        }
+    },
+    watch: (path, options, callback) => {
+        return fs.watch(path, options, callback)
+    }
 }
-
-// contextBridge.exposeInMainWorld('fs', fsUtils)
 exposeInMainWorld('fs', fsUtils)

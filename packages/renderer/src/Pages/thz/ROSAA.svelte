@@ -1,8 +1,6 @@
 <script lang="ts">
-    // import {fade}                   from "svelte/transition";
     import Textfield from '@smui/textfield'
     import { parse as Yml } from 'yaml'
-    // import {find}                   from "lodash-es";
     import { browse } from '$components/Layout.svelte'
     import CustomSelect from '$components/CustomSelect.svelte'
     import LayoutDiv from '$components/LayoutDiv.svelte'
@@ -10,15 +8,12 @@
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
     import ButtonBadge from '$components/ButtonBadge.svelte'
     import BoltzmanDistribution from './windows/BoltzmanDistribution.svelte'
-
     import EinsteinCoefficients from './components/EinsteinCoefficients.svelte'
     import CollisionalCoefficients from './components/CollisionalCoefficients.svelte'
     import AttachmentCoefficients from './components/AttachmentCoefficients.svelte'
-    // import BoxComponent from './components/BoxComponent.svelte'
     import Accordion from '@smui-extra/accordion'
     import CustomPanel from '$components/CustomPanel.svelte'
     import SeparateWindow from '$components/SeparateWindow.svelte'
-
     import {
         amuToKG,
         DebyeToCm,
@@ -27,13 +22,7 @@
         boltzmanConstant,
         VaccumPermitivity,
     } from '$src/js/constants'
-    // import {findAndGetValue}        from "./functions/misc";
     import computePy_func from '$src/Pages/general/computePy'
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    // export let active = false;
-
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     let electronSpin = false
@@ -49,15 +38,14 @@
     $: deexcitation = collisionalRateType === 'deexcitation'
 
     let showreport = false
-
-    let pyProcesses = []
+    // let pyProcesses = []
     let statusReport = ''
 
     let collisionalRates = []
     let collisionalRateConstants = []
     let einsteinB_rateComputed = false
 
-    const simulation = (e) => {
+    const simulation = async (e) => {
         if (!window.fs.existsSync(currentLocation)) return window.createToast("Location doesn't exist", 'danger')
         if (!configLoaded) return window.createToast('Config file not loaded', 'danger')
         if (!transitionFrequency) return window.createToast('Transition frequency is not defined', 'danger')
@@ -99,7 +87,6 @@
                 kCID: kCID.constant.map((rate) => rate.value),
             },
         }
-
         attachmentCoefficients.forEach((f) => (attachment_rate_coefficients[f.label] = f.value))
         const energy_levels = {}
         energyLevels.slice(0, numberOfLevels).forEach((f) => (energy_levels[f.label] = f.value))
@@ -114,8 +101,6 @@
             lorrentz,
             includeSpontaneousEmission,
             writefile,
-            // writeall,
-            // appendFiles,
             savefilename,
             currentLocation,
             deexcitation,
@@ -137,20 +122,22 @@
             simulationMethod,
             figure,
         }
-        computePy_func({ e, pyfile: 'ROSAA', args, general: true })
+        await computePy_func({ e, pyfile: 'ROSAA', args, general: true })
     }
+
     let currentLocation = window.fs.existsSync(window.db.get('ROSAA_config_location'))
         ? <string>window.db.get('ROSAA_config_location')
         : ''
 
-    // let savefilename = ""
-    let moleculeName = '',
-        tagName = 'He'
+    let moleculeName = ''
+    let tagName = 'He'
+
     $: savefilename = `${moleculeName}_${tagName}_${variable.split('(')[0]}_${excitedFrom} - ${excitedTo}`.replaceAll(
         '$',
         ''
     )
-    $: if (window.fs.existsSync(currentLocation)) {
+
+    $: if (window.fs.isDirectory(currentLocation)) {
         window.db.set('ROSAA_config_location', currentLocation)
     }
 
@@ -166,7 +153,6 @@
     }
 
     const resetConfig = () => {
-        // collisionalCoefficient = collisionalCoefficient_balance = collisionalRates = []
         einsteinCoefficientA = einsteinCoefficientB = []
         energyLevels = []
         simulationParameters = mainParameters = dopplerLineshape = powerBroadening = []
@@ -182,18 +168,11 @@
 
     let variable = 'time'
     let variableRange = {
-        power: '1e12, 1e16, 10',
-        numberDensity: '1e12, 5e16, 10',
+        power: '1e-7, 1e-2, 10',
+        numberDensity: '1e12, 1e16, 10',
         a: '0, 1, 0.1',
     }
-    // let writeall = true
-    // let appendFiles = false
 
-    // $: if (variable) {
-    //     if (variable === 'time') variableRange = '1e12, 1e16, 10'
-    //     if (variable === 'He density(cm3)') variableRange = '1e12, 5e16, 10'
-    //     if (variable === 'Power(W)') variableRange = '1e-7, 1e-4, 10'
-    // }
     const variablesList = ['time', 'He density(cm3)', 'Power(W)', 'a(kon/koff)', 'all']
 
     let einsteinCoefficientA = []
@@ -223,17 +202,11 @@
     let configFilename = <string>window.db.get('ROSAA_config_file') || ''
     async function loadConfig() {
         try {
-            // if(window.fs.existsSync(configFile)) {
-            //     if(!window.fs.existsSync(currentLocation)) {currentLocation = window.path.dirname(configFile)};
-            //     return setConfig()
-            // }
-            // configFile = window.path.join(currentLocation, configFilename)
             console.log({ configFile })
             if (window.fs.existsSync(configFile)) {
                 return setConfig()
             }
             browse_folder()
-            // setConfig()
         } catch (error) {
             window.handleError(error)
         }
@@ -409,13 +382,10 @@
 
     let boltzmanWindow
     let openBoltzmanWindow = false
-
     $: voigtFWHM = Number(0.5346 * lorrentz + Math.sqrt(0.2166 * lorrentz ** 2 + gaussian ** 2)).toFixed(3)
-
     let simulationMethod = 'Normal'
     const figure = { dpi: 100, size: '10, 6', show: true }
     const simulationMethods = ['Normal', 'FixedPopulation', 'withoutCollisionalConstants']
-
     const wavenumberToMHz = (energy) => ({
         ...energy,
         value: Number(energy.value * SpeedOfLight * 1e2 * 1e-6).toFixed(3),
@@ -488,13 +458,6 @@
     </svelte:fragment>
 
     <svelte:fragment slot="main_content__slot">
-        <!-- <div class="content status_report__div" id="status_report__ROSAA" class:hide={!showreport}>
-            <hr />
-            {statusReport || 'Status report'}
-            <hr />
-        </div> -->
-
-        <!-- <div id="ROSAA_controller" class="main_container__div" class:hide={showreport}> -->
         <SeparateWindow
             bind:active={toggle_modal}
             title="ROSAA controller"
@@ -503,6 +466,9 @@
             mainContent$style=""
         >
             <svelte:fragment slot="main_content__slot">
+                <div class="align status_report__div p-5" style="user-select: text;" class:hide={!showreport}>
+                    {statusReport}
+                </div>
                 <div class="main_container__div" class:hide={showreport}>
                     <!-- Main Parameters -->
 
@@ -553,11 +519,6 @@
                                 {/each}
                             </div>
 
-                            <!-- <hr />
-                            <div class="subtitle" style="width: 100%; display:grid; place-items: center;">
-                                Transition levels
-                            </div>
-                            <hr /> -->
                             <div class="align h-center">
                                 <CustomSelect
                                     options={energyLevels.map((f) => f.label)}
@@ -620,7 +581,7 @@
                             />
                         </CustomPanel>
 
-                        <CustomPanel label="Collisional rate constants" loaded={collisionalCoefficient.length > 0}>
+                        <CustomPanel label="Collisional rate constants" loaded={collisionalFilename?.length > 0}>
                             <CollisionalCoefficients
                                 bind:numberDensity
                                 bind:collisionalRates
@@ -657,32 +618,35 @@
 
     <svelte:fragment slot="left_footer_content__slot">
         <CustomCheckbox bind:value={writefile} label="writefile" />
-        <!-- <CustomCheckbox bind:value={writeall} label="writeall" />
-        <CustomCheckbox bind:value={appendFiles} label="appendFiles" /> -->
         <Textfield bind:value={savefilename} label="savefilename" />
     </svelte:fragment>
 
     <svelte:fragment slot="footer_content__slot">
-        <CustomSelect options={simulationMethods} bind:value={simulationMethod} label="simulationMethod" />
-        <!-- {#if showreport}
-            <button
-                class="button is-warning"
-                on:click={() => {
-                    statusReport = ''
-                }}>Clear</button
-            >
-        {/if} -->
+        <button
+            style="align-self:end;"
+            class="button is-danger"
+            class:hide={!showreport}
+            on:click={() => {
+                statusReport = ''
+            }}>clear</button
+        >
 
-        <!-- <button
-            class="button is-link"
+        <button
+            style="align-self:end;"
+            class="button is-warning"
             on:click={() => {
                 showreport = !showreport
-            }}
+            }}>{showreport ? 'Go back' : 'Show report'}</button
         >
-            {showreport ? 'Go Back' : 'Status report'}
-        </button> -->
 
-        <ButtonBadge on:click={simulation} style="align-self:end;" />
+        <div style="display: flex; gap: 1em;" class:hide={showreport}>
+            <CustomSelect options={simulationMethods} bind:value={simulationMethod} label="simulationMethod" />
+            <ButtonBadge
+                on:pyEventData={(e) => (statusReport += e.detail.dataReceived)}
+                on:click={simulation}
+                style="align-self:end;"
+            />
+        </div>
     </svelte:fragment>
 </LayoutDiv>
 
@@ -690,23 +654,18 @@
     .locationColumn {
         display: grid;
         grid-auto-flow: column;
-
         grid-gap: 1em;
         grid-template-columns: 0.5fr 4fr 1fr;
     }
-
     .main_container__div {
         display: grid;
         grid-row-gap: 1em;
         padding-right: 1em;
     }
-
-    // .status_report__div {
-    //     white-space: pre-wrap;
-    //     user-select: text;
-    // }
-
     .box {
         padding: 0.5em 1.25em;
+    }
+    .status_report__div {
+        white-space: pre-wrap;
     }
 </style>
