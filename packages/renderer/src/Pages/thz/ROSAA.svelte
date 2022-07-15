@@ -114,8 +114,8 @@
             lorrentz,
             includeSpontaneousEmission,
             writefile,
-            writeall,
-            appendFiles,
+            // writeall,
+            // appendFiles,
             savefilename,
             currentLocation,
             deexcitation,
@@ -181,16 +181,20 @@
     let includeSpontaneousEmission = true
 
     let variable = 'time'
-    let variableRange = '1e12, 1e16, 10'
-    let writeall = true,
-        appendFiles = false
-
-    $: if (variable) {
-        if (variable === 'time') variableRange = '1e12, 1e16, 10'
-        if (variable === 'He density(cm3)') variableRange = '1e12, 5e16, 10'
-        if (variable === 'Power(W)') variableRange = '1e-7, 1e-4, 10'
+    let variableRange = {
+        power: '1e12, 1e16, 10',
+        numberDensity: '1e12, 5e16, 10',
+        a: '0, 1, 0.1',
     }
-    const variablesList = ['time', 'He density(cm3)', 'Power(W)']
+    // let writeall = true
+    // let appendFiles = false
+
+    // $: if (variable) {
+    //     if (variable === 'time') variableRange = '1e12, 1e16, 10'
+    //     if (variable === 'He density(cm3)') variableRange = '1e12, 5e16, 10'
+    //     if (variable === 'Power(W)') variableRange = '1e-7, 1e-4, 10'
+    // }
+    const variablesList = ['time', 'He density(cm3)', 'Power(W)', 'a(kon/koff)', 'all']
 
     let einsteinCoefficientA = []
     let einsteinCoefficientB = []
@@ -449,23 +453,36 @@
         </div>
 
         <div class="align box" style="border: solid 1px #fff9; min-height: 5em;">
-            <div class="subtitle">
+            <div class="align subtitle">
                 Simulate signal(%) as a function of {variable}
             </div>
             <div class="align v-center" style="width: auto; margin-left: auto;">
                 {#if variable !== 'time'}
                     <Textfield
-                        bind:value={variableRange}
+                        class={variable === 'all' || variable === 'a(kon/koff)' ? '' : 'hide'}
+                        bind:value={variableRange.a}
                         style="width: auto;"
-                        label="min, max, rangesteps:[1e1 format]"
+                        label="a: (min, max, steps)"
+                    />
+                    <Textfield
+                        class={variable === 'all' || variable === 'Power(W)' ? '' : 'hide'}
+                        bind:value={variableRange.power}
+                        style="width: auto;"
+                        label="P: (min, max, steps)"
+                    />
+                    <Textfield
+                        class={variable === 'all' || variable === 'He density(cm3)' ? '' : 'hide'}
+                        bind:value={variableRange.numberDensity}
+                        style="width: auto;"
+                        label="nHe: (min, max, steps)"
                     />
                 {/if}
-                <button class="button is-warning" on:click={() => (toggle_modal = !toggle_modal)}
-                    >Open separately</button
-                >
                 <CustomSelect options={variablesList} bind:value={variable} label="variable" />
                 <button class="button is-link" on:click={loadConfig}>Load config</button>
                 <button class="button is-link" on:click={resetConfig}>Reset Config</button>
+                <button class="button is-warning" on:click={() => (toggle_modal = !toggle_modal)}
+                    >Open separately</button
+                >
             </div>
         </div>
     </svelte:fragment>
@@ -640,8 +657,8 @@
 
     <svelte:fragment slot="left_footer_content__slot">
         <CustomCheckbox bind:value={writefile} label="writefile" />
-        <CustomCheckbox bind:value={writeall} label="writeall" />
-        <CustomCheckbox bind:value={appendFiles} label="appendFiles" />
+        <!-- <CustomCheckbox bind:value={writeall} label="writeall" />
+        <CustomCheckbox bind:value={appendFiles} label="appendFiles" /> -->
         <Textfield bind:value={savefilename} label="savefilename" />
     </svelte:fragment>
 
