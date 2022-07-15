@@ -39,7 +39,7 @@ export function plot(
     // console.log(graph_container, width)
     // console.log({ graph_detached })
 
-    let dataLayout = {
+    const dataLayout = {
         title: mainTitle,
         xaxis: { title: xtitle },
         yaxis: { title: ytitle, type: logScale },
@@ -80,13 +80,24 @@ export function plot(
 }
 
 export function subplot(mainTitle, xtitle, ytitle, data, graphDiv, x2, y2, data2) {
-    let dataLayout = {
+
+    const current_graph_detached = graph_detached[get(activePage)]
+
+    const graph_container = document.querySelector(
+        current_graph_detached 
+            ? `#${graphDiv}` 
+            : `#${get(activePage)} .plot__div`
+    ) as HTMLDivElement
+    
+    const pad = graphPlottedLists[get(activePage)] ? 16 : 32
+    const width = graph_container?.clientWidth - (current_graph_detached ? 0 : pad)
+
+    const dataLayout = {
         title: mainTitle,
         xaxis: { domain: [0, 0.4], title: xtitle },
         yaxis: { title: ytitle },
         xaxis2: { domain: [0.5, 1], title: x2 },
         yaxis2: { anchor: 'x2', title: y2, overlaying: 'y' },
-
         yaxis3: {
             anchor: 'free',
             overlaying: 'y',
@@ -96,6 +107,7 @@ export function subplot(mainTitle, xtitle, ytitle, data, graphDiv, x2, y2, data2
         },
         autosize: true,
         height: 450,
+        width: width
     }
     let dataPlot1 = []
 
