@@ -23,6 +23,7 @@
         VaccumPermitivity,
     } from '$src/js/constants'
     import computePy_func from '$src/Pages/general/computePy'
+    import { persistentWritable } from '$src/js/persistentStore'
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     let electronSpin = false
@@ -93,7 +94,7 @@
         const args = {
             trapTemp,
             variable,
-            variableRange,
+            $variableRange,
             numberOfLevels,
             includeCollision,
             includeAttachmentRate,
@@ -150,7 +151,6 @@
         currentLocation = window.path.dirname(result)
         window.db.set('ROSAA_config_location', currentLocation)
         window.db.set('ROSAA_config_file', configFilename)
-        // loadConfig()
     }
 
     const resetConfig = () => {
@@ -160,21 +160,20 @@
         attachmentCoefficients = []
         window.createToast('Config file cleared', 'warning')
     }
-
     let writefile = true
     let includeCollision = true
-
     let includeAttachmentRate = true
-    let includeSpontaneousEmission = true
 
+    let includeSpontaneousEmission = true
     let variable = 'time'
-    let variableRange = {
+
+    const variableRange = persistentWritable('THz_simulation_variables_range', {
         power: '1e-7, 1e-2, 10',
         numberDensity: '1e12, 1e16, 10',
-        a: '0, 1, 0.1',
-    }
+        k3_branch: '0.1, 1, 0.1',
+    })
 
-    const variablesList = ['time', 'He density(cm3)', 'Power(W)', 'a(kon/koff)', 'all']
+    const variablesList = ['time', 'He density(cm3)', 'Power(W)', 'a(k_up/k_down)', 'all']
 
     let einsteinCoefficientA = []
     let einsteinCoefficientB = []
@@ -430,20 +429,20 @@
             <div class="align v-center" style="width: auto; margin-left: auto;">
                 {#if variable !== 'time'}
                     <Textfield
-                        class={variable === 'all' || variable === 'a(kon/koff)' ? '' : 'hide'}
-                        bind:value={variableRange.a}
+                        class={variable === 'all' || variable === 'a(k_up/k_down)' ? '' : 'hide'}
+                        bind:value={$variableRange.k3_branch}
                         style="width: auto;"
                         label="a: (min, max, steps)"
                     />
                     <Textfield
                         class={variable === 'all' || variable === 'Power(W)' ? '' : 'hide'}
-                        bind:value={variableRange.power}
+                        bind:value={$variableRange.power}
                         style="width: auto;"
                         label="P: (min, max, steps)"
                     />
                     <Textfield
                         class={variable === 'all' || variable === 'He density(cm3)' ? '' : 'hide'}
-                        bind:value={variableRange.numberDensity}
+                        bind:value={$variableRange.numberDensity}
                         style="width: auto;"
                         label="nHe: (min, max, steps)"
                     />

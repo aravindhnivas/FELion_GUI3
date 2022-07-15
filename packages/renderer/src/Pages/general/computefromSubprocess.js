@@ -77,6 +77,7 @@ export default async function ({
         })
 
         const logFile = window.path.join(window.appInfo.temp, 'FELion_GUI3/logs', pyfile + '_data.log')
+        window.fs.ensureDirSync(window.path.dirname(logFile))
         const loginfo = window.fs.createWriteStream(logFile)
 
         let error = ''

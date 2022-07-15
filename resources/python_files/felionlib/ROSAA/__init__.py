@@ -15,25 +15,11 @@ from scipy.constants import speed_of_light
 speedOfLightIn_cm = speed_of_light * 100
 qapp = None
 
-# log_location = pt(os.getenv("TEMP")) / "FELion_GUI3/logs"
-# if not log_location.exists():
-#     log_location.mkdir()
-
-# print(f"{log_location=}", flush=True)
-# logging.basicConfig(
-#     filename=log_location / "THz_simulation.log",
-#     filemode="w+",
-#     # format="%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s",
-#     format="%(asctime)s,%(msecs)d %(message)s",
-#     datefmt="%H:%M:%S",
-#     level=logging.INFO,
-# )
-
-# logger("ROSAA module loaded.")
-
 
 class ROSAA:
-    def __init__(self, nHe=None, power=None, k3_branch=None, plotGraph=True, writefile=None):
+    def __init__(self, nHe: float, power: float, k3_branch: float, plotGraph=False, writefile=None, verbose=False):
+
+        self.verbose = verbose
 
         self.energyUnit = conditions["energyUnit"]
         self.numberOfLevels = int(conditions["numberOfLevels"])
@@ -53,13 +39,14 @@ class ROSAA:
         if self.includeSpontaneousEmission:
             self.einsteinA_Rates = {key: float(value) for key, value in conditions["einstein_coefficient"]["A"].items()}
 
-            self.power = power
-            if self.power is None:
-                self.power = float(conditions["power_broadening"]["power(W)"])
+            self.power = float(power)
+            # if self.power is None:
+            #     self.power = float(conditions["power_broadening"]["power(W)"])
 
             self.computeEinsteinBRates()
 
-            logger(f"{self.power=}")
+            if self.verbose:
+                logger(f"{self.power=}")
 
         self.excitedFrom = str(conditions["excitedFrom"])
         self.excitedTo = str(conditions["excitedTo"])
@@ -88,12 +75,12 @@ class ROSAA:
         self.taggingPartner = conditions["main_parameters"]["tagging partner"]
 
         self.attachment_rate_coefficients = conditions["attachment_rate_coefficients"]
-        k3_branch = k3_branch or float(self.attachment_rate_coefficients["a(k31)"])
+        self.k3_branch = float(k3_branch)
 
-        if not k3_branch:
+        if not self.k3_branch:
             raise ValueError("k3_branch is not defined")
 
-        self.GetAttachmentRatesParameters(k3_branch)
+        self.GetAttachmentRatesParameters()
 
         self.legends = []
         for key in self.energyKeys:
@@ -127,13 +114,15 @@ class ROSAA:
                 + "}$"
             )
 
-        if nHe is None:
-            nHe = float(conditions["numberDensity"])
+        # nHe = float(nHe) or float(conditions["nHe"])
+        # if nHe is None:
+        #     nHe = float(conditions["numberDensity"])
 
         self.withoutCollisionalConstants = conditions["simulationMethod"] == "withoutCollisionalConstants"
         if self.fixedPopulation or self.withoutCollisionalConstants:
             self.simulateFixedPopulation(nHe)
-            logger(f"{self.boltzmanDistributionCold=}")
+            if self.verbose:
+                logger(f"{self.boltzmanDistributionCold=}")
         else:
             self.Simulate(nHe)
 
@@ -146,12 +135,13 @@ class ROSAA:
 
         gaussian = float(conditions["gaussian"])
         lorrentz = float(conditions["lorrentz"])
-        lineShape = getLineShape({"gaussian": gaussian, "lorrentz": lorrentz})
+        lineShape = getLineShape({"gaussian": gaussian, "lorrentz": lorrentz}, saveData=False)
 
         norm = constantTerm * lineShape
         einsteinB_RateConstants = conditions["einstein_coefficient"]["B_rateConstant"]
         self.einsteinB_Rates = {key: float(value) * norm for key, value in einsteinB_RateConstants.items()}
-        logger(f"{self.einsteinB_Rates=}")
+        if self.verbose:
+            logger(f"{self.einsteinB_Rates=}")
 
     def simulateFixedPopulation(self, nHe):
         self.includeAttachmentRate = False
@@ -309,13 +299,13 @@ class ROSAA:
         else:
             return dR_dt
 
-    def GetAttachmentRatesParameters(self, k3_branch: float):
+    def GetAttachmentRatesParameters(self):
         # self.attachment_rate_coefficients = conditions["attachment_rate_coefficients"]
         self.rateConstants = self.attachment_rate_coefficients["rateConstants"]
         self.k3 = [float(_) for _ in self.rateConstants["k3"]]
         # self.k3_branch = float(self.attachment_rate_coefficients["a(k31)"])
 
-        self.k31_excited = k3_branch * self.k3[0]
+        self.k31_excited = self.k3_branch * self.k3[0]
 
         self.kCID = [float(_) for _ in self.rateConstants["kCID"]]
         self.kCID_branch = float(self.attachment_rate_coefficients["branching-ratio(kCID)"])
@@ -350,24 +340,26 @@ class ROSAA:
 
         y_init = [*N, *N_He]
         N_OFF = solve_ivp(self.SimulateODE, tspan, y_init, args=(nHe, False, self.boltzmanDistributionCold), **options)
-        logger(f"{N_OFF.nfev=} evaluations required.")
+        if self.verbose:
+            logger(f"{N_OFF.nfev=} evaluations required.")
         self.lightOFF_distribution = N_OFF.y
 
         # Boltzmann ratio check when lightOFF
         # ratio = self.lightOFF_distribution.T[-1]
         # differenceWithBoltzman = np.around(self.boltzmanDistributionCold-ratio[:-self.totalAttachmentLevels], 3)
-        # logger(f"\n{ratio=}\n{self.boltzmanDistributionCold=}\n{differenceWithBoltzman=}\n")
+        # if self.verbose: logger(f"\n{ratio=}\n{self.boltzmanDistributionCold=}\n{differenceWithBoltzman=}\n")
 
         N_ON = solve_ivp(self.SimulateODE, tspan, y_init, args=(nHe, True, ratio), **options)
 
         self.lightON_distribution = N_ON.y
-        logger(f"{N_ON.nfev=} evaluations required.")
+        if self.verbose:
+            logger(f"{N_ON.nfev=} evaluations required.")
 
         # Ratio check after equilibrium
         # OFF_full_ratio = np.array([r/r.sum() for r in self.lightOFF_distribution[:-self.totalAttachmentLevels].T])
         # ON_full_ratio = np.array([r/r.sum() for r in self.lightON_distribution[:-self.totalAttachmentLevels].T])
-        # logger(f"{np.around(OFF_full_ratio[-1], 2)=}")
-        # logger(f"{np.around(ON_full_ratio[-1], 4)=}")
+        # if self.verbose: logger(f"{np.around(OFF_full_ratio[-1], 2)=}")
+        # if self.verbose: logger(f"{np.around(ON_full_ratio[-1], 4)=}")
         # plt.plot(OFF_full_ratio)
         # plt.plot(ON_full_ratio)
 
@@ -377,7 +369,7 @@ class ROSAA:
                 "molecule": self.molecule,
                 "tag": self.taggingPartner,
                 "duration": duration,
-                "number-density": f"{nHe:.2e}",
+                "numberDensity": f"{nHe:.2e}",
             },
             "legends": self.legends,
             "time (in s)": self.simulateTime.tolist(),
@@ -386,14 +378,16 @@ class ROSAA:
         }
 
         if self.writefile:
-            fmtFloatFn = np.format_float_scientific
-            name_append = f"full_output_{fmtFloatFn(nHe, 3)}_{fmtFloatFn(self.power, 3)}"
+            # fmtFloatFn = np.format_float_scientific
+            name_append = f"__k3_branch_{self.k3_branch:.1f}__numberDensity_{nHe:.1e}__power_{self.power:.1e}"
             WriteData(name_append, dataToSend)
 
         end_time = time.perf_counter()
 
-        logger(f"Current simulation time {(end_time - start_time):.2f} s")
-        logger(f"Total simulation time {(end_time - self.start_time):.2f} s")
+        if self.verbose:
+            logger(f"Current simulation time {(end_time - start_time):.2f} s")
+        if self.verbose:
+            logger(f"Total simulation time {(end_time - self.start_time):.2f} s")
 
     def Plot(self):
 
@@ -465,19 +459,18 @@ class ROSAA:
             )
             widget1.ax.plot(plotSimulationTime_milliSecond[1:], signal, label=f"Signal: {round(signal[-1])} (%)")
 
-            logger(f"Signal: {round(signal[-1])} (%)")
+            if self.verbose:
+                logger(f"Signal: {round(signal[-1])} (%)")
             widget1.optimize_figure()
             widget1.fig.tight_layout()
 
 
 def WriteData(name: str, dataToSend: dict):
-
-    datas_location: pt = output_dir / "datas"
-
-    if not datas_location.exists():
-        datas_location.mkdir()
-
     fulloutput_location = datas_location / "full_output"
+
+    if isinstance(fOf_appendOutputFileName, str):
+        fulloutput_location = datas_location / fOf_appendOutputFileName / "full_output"
+        
     if not fulloutput_location.exists():
         fulloutput_location.mkdir()
 
@@ -485,7 +478,7 @@ def WriteData(name: str, dataToSend: dict):
     if not includeAttachmentRate:
         addText = "_no-attachement"
 
-    with open(fulloutput_location / f"{savefilename}{addText}_{name}.json", "w+") as f:
+    with open(fulloutput_location / f"{savefilename}{addText}__{name}.json", "w+") as f:
         data = json.dumps(dataToSend, sort_keys=True, indent=4, separators=(",", ": "))
         f.write(data)
         logger(f"{savefilename} file written in {location} folder.")
@@ -494,50 +487,63 @@ def WriteData(name: str, dataToSend: dict):
 figure = None
 figsize = None
 location = None
-output_dir = None
-
+output_dir: pt = None
+datas_location: pt = None
 conditions = None
 savefilename = None
 includeAttachmentRate = False
-
+fOf_appendOutputFileName = None
 
 def main(arguments):
 
-    global conditions, figure, savefilename, location, output_dir, includeAttachmentRate
+    global conditions, figure, savefilename, location, output_dir, datas_location, includeAttachmentRate
 
     conditions = arguments
+    
     savefilename = conditions["savefilename"]
     location = pt(conditions["currentLocation"])
+    
     output_dir = location / "output"
     if not output_dir.exists():
         output_dir.mkdir()
+        
+    datas_location = output_dir / "datas"
+    
+    if not datas_location.exists():
+        datas_location.mkdir()
 
     figure = conditions["figure"]
     figure["size"] = [int(i) for i in figure["size"].split(",")]
+    
     includeAttachmentRate = conditions["includeAttachmentRate"]
     variable = conditions["variable"]
 
-    current_nHe = np.format_float_scientific(float(conditions["numberDensity"]), 3)
-    current_Power = np.format_float_scientific(float(conditions["power_broadening"]["power(W)"]), 3)
+    current_nHe = float(conditions["numberDensity"])
+    current_Power = float(conditions["power_broadening"]["power(W)"])
     current_k3_branch = float(conditions["attachment_rate_coefficients"]["a(k31)"])
 
     if variable == "time":
 
-        ROSAA(plotGraph=figure["show"])
+        ROSAA(
+            nHe=current_nHe, 
+            power=current_Power, 
+            k3_branch=current_k3_branch,
+            plotGraph=figure["show"], verbose=True
+        )
 
     elif variable == "He density(cm3)":
 
-        currentConstants = {"a": [current_k3_branch, ""], "power": [current_Power, "W"]}
+        currentConstants = {"k3_branch": [current_k3_branch, ""], "power": [current_Power, "W"]}
         functionOfVariable("numberDensity", currentConstants)
 
     elif variable == "Power(W)":
 
-        currentConstants = {"a": [current_k3_branch, ""], "numberDensity": [current_nHe, "cm$^3$"]}
+        currentConstants = {"k3_branch": [current_k3_branch, ""], "numberDensity": [current_nHe, "cm$^3$"]}
         functionOfVariable("power", currentConstants)
 
-    elif variable == "a(kon/koff)":
+    elif variable == "a(k_up/k_down)":
         currentConstants = {"power": [current_Power, "W"], "numberDensity": [current_nHe, "cm$^3$"]}
-        functionOfVariable("a", currentConstants)
+        functionOfVariable("k3_branch", currentConstants)
 
     elif variable == "all":
         functionOfVariable("all")
@@ -546,67 +552,89 @@ def main(arguments):
         qapp.exec()
 
 
-def make_stepsizes_equally_spaced(changeVariable: Literal["numberDensity", "power"] = "numberDensity"):
+def make_stepsizes_equally_spaced(changeVariable: Literal["numberDensity", "power"]):
 
-    variableRange: str = conditions["variableRange"][changeVariable]
+    variableRange: str = conditions["$variableRange"][changeVariable]
     _start, _end, _steps = variableRange.split(",")
     _start = int(_start.split("e")[-1])
     _end = int(_end.split("e")[-1])
-
     counter = _start
     dataList = []
-
     while counter < _end:
-
         appendDataList = np.linspace(float(f"1e{counter}"), float(f"1e{counter+1}"), int(_steps))
         dataList = np.append(dataList, appendDataList)
         counter += 1
-
     return dataList
 
 
 def functionOfVariable(
-    changeVariable: Literal["numberDensity", "power", "a", "all"] = "numberDensity", currentConstants=None, plot=True
+    changeVariable: Literal["numberDensity", "power", "k3_branch", "all"] = "numberDensity", 
+    currentConstants=None, 
+    plot=True
 ):
-    global qapp
+    global qapp, fOf_appendOutputFileName
 
-    variableRange: str = conditions["variableRange"][changeVariable]
-
-    if changeVariable == "a" or changeVariable == "all":
+    if changeVariable == "k3_branch" or changeVariable == "all":
+        variableRange: str = conditions["$variableRange"]["k3_branch"]
         _start, _end, _steps = variableRange.split(",")
-        dataList = np.arange(float(_start), float(_end) + float(_steps), float(_steps))
+        dataList = np.arange(float(_start), float(_end), float(_steps))
     else:
         dataList = make_stepsizes_equally_spaced(changeVariable)
+        variableRange: str = conditions["$variableRange"][changeVariable]
 
     if changeVariable == "all":
-        for _a in dataList:
+        for _k3_branch in dataList:
+            logger(f"k3_branch: {_k3_branch}")
             power_values = make_stepsizes_equally_spaced("power")
             for _power in power_values:
+                logger(f"Current power: {_power}")
                 functionOfVariable(
-                    "numberDensity", currentConstants={"a": [_a, ""], "power": [_power, "W"]}, plot=False
+                    "numberDensity", currentConstants={"k3_branch": [_k3_branch, ""], "power": [_power, "W"]}, plot=False
                 )
+                logger(f"Completed current {_power} power value")
+
+            logger(f"Completed k3_branch: {_k3_branch} with {len(power_values)} power values")
 
             numberDensity_values = make_stepsizes_equally_spaced("numberDensity")
             for _nHe in numberDensity_values:
+                logger(f"Current nHe: {_nHe}")
                 functionOfVariable(
-                    "power", currentConstants={"a": [_a, ""], "numberDensity": [_nHe, "cm$^3$"]}, plot=False
+                    "power", currentConstants={"k3_branch": [_k3_branch, ""], "numberDensity": [_nHe, "cm$^3$"]}, plot=False
                 )
+                logger(f"Completed current {_nHe} number density value")
+
+            logger(f"Completed k3_branch: {_k3_branch} with {len(numberDensity_values)} number density values")
+
+        logger("Process COMPLETED")
         return
 
     molecule = conditions["main_parameters"]["molecule"]
     taggingPartner = conditions["main_parameters"]["tagging partner"]
+    
     excitedFrom = str(conditions["excitedFrom"])
     excitedTo = str(conditions["excitedTo"])
 
-    outputFileName = f"{molecule}-{taggingPartner}__{excitedFrom}-{excitedTo}__"
-    appendOutputFileName = f"{changeVariable}_{dataList[0]:.0e}-{dataList[-1]:.0e}"
-
+    outputFileName = f"{molecule}-{taggingPartner}__{excitedFrom}-{excitedTo}"
+    if changeVariable == "k3_branch":
+        fOf_appendOutputFileName = f"f-{changeVariable}_{dataList[0]:.2f}-{dataList[-1]:.2f}"
+    else:
+        fOf_appendOutputFileName = f"f-{changeVariable}_{dataList[0]:.0e}-{dataList[-1]:.0e}"
+    
+    final_output_location = datas_location / fOf_appendOutputFileName
+    if not final_output_location.exists():
+        final_output_location.mkdir()
+            
+    variable_appendFileName = ""
     if isinstance(currentConstants, dict):
         for key, value in currentConstants.items():
-            appendOutputFileName += f"_{key}_{value[0]}{value[1]}"
+            if key == "numberDensity" or key == "power":
+                variable_appendFileName += f"_{key}_{float(value[0]):.1e}{value[1]}"
+            elif key == "k3_branch":
+                variable_appendFileName += f"_{key}_{float(value[0]):.2f}{value[1]}"
 
-    outputFileName += appendOutputFileName
+    outputFileName += "__at_constant__"+ variable_appendFileName
     outputFileName = outputFileName.replace("$", "").replace("^", "")
+
     logger(f"Output file name: {outputFileName}")
 
     energyKeys = list(conditions["energy_levels"].keys())
@@ -618,54 +646,72 @@ def functionOfVariable(
     signalChange = []
 
     for variable in dataList:
+        
         if changeVariable == "numberDensity":
-            currentData = ROSAA(nHe=variable, plotGraph=False)
-
+            currentData = ROSAA(
+                nHe=variable, 
+                power=currentConstants["power"][0], 
+                k3_branch=currentConstants["k3_branch"][0]
+            )
+            
         elif changeVariable == "power":
-            currentData = ROSAA(power=variable, plotGraph=False)
+            
+            currentData = ROSAA(
+                nHe=currentConstants["numberDensity"][0], 
+                power=variable, 
+                k3_branch=currentConstants["k3_branch"][0]
+            )
 
-        elif changeVariable == "a":
-            currentData = ROSAA(k3_branch=variable, plotGraph=False)
+        elif changeVariable == "k3_branch":
+            
+            currentData = ROSAA(
+                nHe=currentConstants["numberDensity"][0],
+                power=currentConstants["power"][0], 
+                k3_branch=variable
+            )
 
         on = currentData.lightON_distribution
-
         changeInPopulationRatioOn = on[excitedToIndex][-1] / on[excitedFromIndex][-1]
         populationChange.append(changeInPopulationRatioOn)
 
         if includeAttachmentRate:
             off = currentData.lightOFF_distribution
             signal_index = len(energyKeys) + 1
-
             changeInSignal = (1 - (on[signal_index][-1] / off[signal_index][-1])) * 100
             changeInSignal = np.around(np.nan_to_num(changeInSignal).clip(min=0), 1)
-
             signalChange.append(changeInSignal)
 
     if plot:
+        
         if changeVariable == "numberDensity":
             xlabel = currentData.taggingPartner + "number density (cm$^{-3})$"
+        
         elif changeVariable == "power":
             xlabel = "Power (W)"
-        elif changeVariable == "a":
-            xlabel = "a (kon/koff)"
+        
+        elif changeVariable == "k3_branch":
+            xlabel = "a (k_up / k_down)"
 
         title = currentData.transitionTitleLabel
         ylabel = title.split(":")[-1].replace("$", "")
-        # quantumState = f"$N{'_J' if electronSpin else ''}$"
         ylabel = f"${ylabel.split('-')[1]}$ / ${ylabel.split('-')[0]}$"
+        
         widget = felionQtWindow(
             title=f"Population ratio",
             figDPI=200,
             figXlabel=xlabel,
             figYlabel=ylabel,
             location=output_dir / "figs",
-            xscale="linear" if changeVariable == "a" else "log",
+            xscale="linear" if changeVariable == "k3_branch" else "log",
         )
 
         constantLabel = ""
         if isinstance(currentConstants, dict):
             for key, value in currentConstants.items():
-                constantLabel += f"{key} = {value[0]} {value[1]}\n"
+                if key == "numberDensity" or key == "power":
+                    constantLabel += f"{key}={value[0]:.1e} {value[1]}\n"
+                elif key == "k3_branch":
+                    constantLabel += f"a={value[0]:.2f} {value[1]}\n"
 
         widget.ax.plot(dataList, populationChange, "-k", label=constantLabel)
         widget.optimize_figure()
@@ -687,7 +733,7 @@ def functionOfVariable(
                 figXlabel=xlabel,
                 figYlabel="Signal (%)",
                 location=output_dir / "figs",
-                xscale="linear" if changeVariable == "a" else "log",
+                xscale="linear" if changeVariable == "k3_branch" else "log",
                 savefilename=f"{outputFileName}.signal",
             )
 
@@ -698,19 +744,8 @@ def functionOfVariable(
         dataToSend["signalChange"] = np.around(signalChange, 3).tolist()
 
     if conditions["writefile"]:
-
-        datas_location: pt = output_dir / "datas"
-        if not datas_location.exists():
-            datas_location.mkdir()
-
-        with open(datas_location / f"{outputFileName}.txt", "w+") as f:
-            f.write(f"# variable ({changeVariable})\tpopulationChange\n")
-            counter = 0
-            for x, y in zip(dataList, populationChange):
-                f.write(f"{x:.3e}\t{y:.3f}")
-                f.write(f"\t{signalChange[counter]}\n") if includeAttachmentRate else f.write("\n")
-                counter += 1
-
-            logger(f"{savefilename} file written in {location}")
-
-        json.dump(dataToSend, fp=open(datas_location / f"{outputFileName}.json", "w+"), indent=4)
+        savefileJSON = final_output_location / f"{outputFileName}.json"
+        with open(savefileJSON, "w+") as f:
+            json.dump(dataToSend, f, indent=4)
+            logger(f"{savefileJSON} file written in {location}")
+        
