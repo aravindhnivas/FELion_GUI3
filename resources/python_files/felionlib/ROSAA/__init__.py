@@ -1,8 +1,7 @@
 import json
-from multiprocessing import current_process
 import time
-from typing import Literal
 import numpy as np
+from typing import Literal
 from pathlib import Path as pt
 from scipy.integrate import solve_ivp
 from .definitions import boltzman_distribution
@@ -11,6 +10,8 @@ from felionlib.utils import logger
 from felionlib.utils.FELion_constants import pltColors
 from felionlib.utils.felionQt import felionQtWindow
 from scipy.constants import speed_of_light
+
+from .plot import main as ROSAA3D_plot
 
 
 speedOfLightIn_cm = speed_of_light * 100
@@ -599,31 +600,30 @@ def functionOfVariable(
         process_completed = 0
         power_values = make_stepsizes_equally_spaced("power")
         numberDensity_values = make_stepsizes_equally_spaced("numberDensity")
-        total_processes_count = len(dataList) * (len(power_values) + len(numberDensity_values))
+        total_processes_count = len(dataList) * len(numberDensity_values)
         current_process_count = 0
-        for mainCounter, _k3_branch in enumerate(dataList):
 
+        for _k3_branch in dataList:
             current_save_dir = save_folder / f"k3_branch_{_k3_branch:.2f}"
             if not current_save_dir.exists():
                 current_save_dir.mkdir()
 
             logger(f"k3_branch: {_k3_branch:.2f}")
+            # for counter, _power in enumerate(power_values):
 
-            for counter, _power in enumerate(power_values):
-
-                current_process_count += 1
-                functionOfVariable(
-                    "numberDensity",
-                    currentConstants={"k3_branch": [_k3_branch, ""], "power": [_power, "W"]},
-                    plot=False,
-                    save_location=current_save_dir,
-                    dataList=numberDensity_values,
-                    verbose=False,
-                )
-                current_variableRange = f"{numberDensity_values[0]:.2e} to {numberDensity_values[-1]:.2e}"
-                logger(
-                    f"{current_process_count / total_processes_count :.1%}: [a={_k3_branch:.2f}] completed {counter+1} out of {len(power_values)} cycles for numberDensity - {current_variableRange} at {_power:.2e} W"
-                )
+            #     current_process_count += 1
+            #     functionOfVariable(
+            #         "numberDensity",
+            #         currentConstants={"k3_branch": [_k3_branch, ""], "power": [_power, "W"]},
+            #         plot=False,
+            #         save_location=current_save_dir,
+            #         dataList=numberDensity_values,
+            #         verbose=False,
+            #     )
+            #     current_variableRange = f"{numberDensity_values[0]:.2e} to {numberDensity_values[-1]:.2e}"
+            #     logger(
+            #         f"{current_process_count / total_processes_count :.1%}: [a={_k3_branch:.2f}] completed {counter+1} out of {len(power_values)} cycles for numberDensity => {current_variableRange} at {_power:.2e} W"
+            #     )
 
             for counter, _nHe in enumerate(numberDensity_values):
                 current_process_count += 1
@@ -636,15 +636,20 @@ def functionOfVariable(
                     verbose=False,
                 )
 
-                current_variableRange = f"{numberDensity_values[0]:.2e} to {numberDensity_values[-1]:.2e}"
+                current_variableRange = f"{power_values[0]:.2e} to {power_values[-1]:.2e}"
                 logger(
-                    f"{current_process_count / total_processes_count :.1%}: [a={_k3_branch:.2f}] completed {counter+1} out of {len(numberDensity_values)} cycles for power - {current_variableRange} at {_nHe:.2e} cm3"
+                    f"{current_process_count / total_processes_count :.1%}: [a={_k3_branch:.2f}] completed {counter+1} out of {len(numberDensity_values)} cycles for power => {current_variableRange} at {_nHe:.2e} cm3"
                 )
+
             process_completed += 1
 
         simulation_time_end = time.perf_counter()
         logger(f"Total time {simulation_time_end - simulation_time_start:.2f} seconds")
         logger("Process COMPLETED")
+        # final_appendOutputFileName = f"f-power_{power_values[0]:.0e}-{power_values[-1]:.0e}"
+        # final_all_directory = current_save_dir / final_appendOutputFileName
+        # ROSAA3D_plot(final_all_directory, type="f-power")
+
         return
 
     molecule = conditions["main_parameters"]["molecule"]
@@ -656,9 +661,9 @@ def functionOfVariable(
 
     fOf_appendOutputFileName = None
     if changeVariable == "k3_branch":
-        fOf_appendOutputFileName = f"f-{changeVariable}_{len(dataList)}-files_{dataList[0]:.2f}-{dataList[-1]:.2f}"
+        fOf_appendOutputFileName = f"f-{changeVariable}_{dataList[0]:.2f}-{dataList[-1]:.2f}"
     elif changeVariable == "numberDensity" or changeVariable == "power":
-        fOf_appendOutputFileName = f"f-{changeVariable}_{len(dataList)}-files_{dataList[0]:.0e}-{dataList[-1]:.0e}"
+        fOf_appendOutputFileName = f"f-{changeVariable}_{dataList[0]:.0e}-{dataList[-1]:.0e}"
 
     final_output_location = (save_location or datas_location) / fOf_appendOutputFileName
 
