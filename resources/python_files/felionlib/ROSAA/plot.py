@@ -16,8 +16,19 @@ def read_json(directory, type="f-power") -> tuple[np.ndarray, np.ndarray, np.nda
     constant_name = "numberDensity" if type == "f-power" else "power"
 
     X = np.array([data[f"variable ({variable_name})"] for data in datas], dtype=float)
-    Y = np.array([[data["constant"][f"{constant_name}"][0]] * len(data["signalChange"]) for data in datas], dtype=float)
+    Y = np.array(
+        [
+            [data["constant"][f"{constant_name}"][0]] * len(data[f"variable ({variable_name})"]) 
+            for data in datas
+        ],
+        dtype=float
+    )
+    
     Z = np.array([data["signalChange"] for data in datas], dtype=float)
+    # if "signalChange" in datas[0]:
+    #     Z = np.array([data["signalChange"] for data in datas], dtype=float)
+    # else:
+    #     Z = np.array([data["populationChange"] for data in datas], dtype=float)
 
     if type == "f-power":
         return X, Y, Z
@@ -40,7 +51,6 @@ def main(directory: pt, type="f-power") -> None:
     )
 
     ax = widget.fig.add_subplot(111, projection="3d")
-
     # fig = plt.figure(figsize=(12, 8))
     # ax = fig.add_subplot(111, projection="3d")
     X, Y, Z = read_json(directory, type=type)
