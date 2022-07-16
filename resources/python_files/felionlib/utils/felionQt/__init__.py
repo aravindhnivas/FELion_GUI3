@@ -116,7 +116,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         figureArgs = {"dpi": figDPI}
 
         if "figureArgs" in kwargs:
-            figureArgs = figureArgs | self.kwargs["figureArgs"]
+            figureArgs = figureArgs | kwargs["figureArgs"]
 
         self.init_attributes()
 
