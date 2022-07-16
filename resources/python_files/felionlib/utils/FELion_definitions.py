@@ -212,46 +212,49 @@ def profile_func(func):
     return profiled_func
 
 
-try:
+def get_profiler():
+    try:
+        from line_profiler import LineProfiler
 
-    from line_profiler import LineProfiler
+        print("LineProfiler imported")
 
-    print("LineProfiler imported")
+        def profile_line(func):
+            def profiled_line(*args, **kwargs):
+                try:
+                    profiler = LineProfiler()
+                    profiler.add_function(func)
+                    profiler.enable_by_count()
+                    return func(*args, **kwargs)
 
-    def profile_line(func):
-        def profiled_line(*args, **kwargs):
-            try:
+                finally:
+                    with stdoutIO() as result:
+                        profiler.print_stats()
+                        output = result.getvalue()
 
-                profiler = LineProfiler()
-                profiler.add_function(func)
-                profiler.enable_by_count()
+                        # Save profile
+                        frm = inspect.stack()[1]
+                        mod = inspect.getmodule(frm[0])
+                        filename = pt(mod.__file__)
+                        print(f"{save_location=}")
+
+                        with open(save_location / f"{filename.stem}_{func.__name__}.lprof", "w+") as f:
+                            f.write(output)
+
+            return profiled_line
+
+        return profile_line
+
+    except ImportError:
+
+        def profile_line(func):
+            "Helpful if you accidentally leave in production!"
+
+            def nothing(*args, **kwargs):
                 return func(*args, **kwargs)
 
-            finally:
-                with stdoutIO() as result:
-                    profiler.print_stats()
-                    output = result.getvalue()
+            return nothing
 
-                    # Save profile
-                    frm = inspect.stack()[1]
-                    mod = inspect.getmodule(frm[0])
-                    filename = pt(mod.__file__)
-                    print(f"{save_location=}")
-
-                    with open(save_location / f"{filename.stem}_{func.__name__}.lprof", "w+") as f:
-                        f.write(output)
-
-        return profiled_line
-
-except ImportError:
-
-    def profile_line(func):
-        "Helpful if you accidentally leave in production!"
-
-        def nothing(*args, **kwargs):
-            return func(*args, **kwargs)
-
-        return nothing
+        return profile_line
 
 
 @contextlib.contextmanager
