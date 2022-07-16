@@ -1,13 +1,28 @@
-<script>
+<script lang="ts">
+    import LinearProgress from '@smui/linear-progress'
     export let id = window.getID()
+    export let progress = 0
+    export let showProgress = false
 </script>
 
 <div {id} class="main_content__div">
     <div class="header_content"><slot name="header_content__slot" /></div>
     <div class="main_content"><slot name="main_content__slot" /></div>
     <div class="footer_content">
-        <div class="left align"><slot name="left_footer_content__slot" /></div>
-        <div class="right align"><slot name="footer_content__slot" /></div>
+        <div class="align">
+            <div class="footer-components">
+                <div class="left align"><slot name="left_footer_content__slot" /></div>
+                <div class="right align"><slot name="footer_content__slot" /></div>
+            </div>
+            {#if progress > 0}
+                <div class="loading">
+                    <LinearProgress {progress} buffer={0.75} />
+                    {#if showProgress}
+                        <div>{Number(progress * 100).toFixed(0)}%</div>
+                    {/if}
+                </div>
+            {/if}
+        </div>
     </div>
 </div>
 
@@ -30,6 +45,18 @@
         }
 
         .footer_content {
+            .footer-components {
+                display: flex;
+                justify-content: space-around;
+                width: 100%;
+            }
+            .loading {
+                display: grid;
+                width: 100%;
+                grid-template-columns: 10fr 1fr;
+                justify-items: center;
+                align-items: center;
+            }
             display: flex;
             gap: 1em;
             justify-content: flex-end;

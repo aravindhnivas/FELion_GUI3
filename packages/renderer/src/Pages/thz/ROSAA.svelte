@@ -1,4 +1,5 @@
 <script lang="ts">
+    // import { activePage } from '$src/sveltewritables'
     import Textfield from '@smui/textfield'
     import { parse as Yml } from 'yaml'
     import { browse } from '$components/Layout.svelte'
@@ -24,6 +25,8 @@
     } from '$src/js/constants'
     import computePy_func from '$src/Pages/general/computePy'
     import { persistentWritable } from '$src/js/persistentStore'
+    import { onMount, tick } from 'svelte'
+    import LinearProgress from '@smui/linear-progress'
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     let electronSpin = false
@@ -47,6 +50,7 @@
     let einsteinB_rateComputed = false
 
     const simulation = async (e) => {
+        progress = 0.5
         if (!window.fs.existsSync(currentLocation)) return window.createToast("Location doesn't exist", 'danger')
         if (!configLoaded) return window.createToast('Config file not loaded', 'danger')
         if (!transitionFrequency) return window.createToast('Transition frequency is not defined', 'danger')
@@ -125,6 +129,7 @@
         }
         statusReport = ''
         await computePy_func({ e, pyfile: 'ROSAA', args, general: true })
+        progress = 0
     }
 
     let currentLocation = window.fs.existsSync(window.db.get('ROSAA_config_location'))
@@ -134,10 +139,15 @@
     let moleculeName = ''
     let tagName = 'He'
 
-    $: savefilename = `${moleculeName}_${tagName}_${variable.split('(')[0]}_${excitedFrom} - ${excitedTo}`.replaceAll(
-        '$',
-        ''
-    )
+    $: savefilename = `${moleculeName}_${tagName}_f-${variable.split('(')[0]}__transition_${excitedFrom}-${excitedTo}`
+        .replaceAll('$', '')
+        .replaceAll('^', '')
+
+    // onMount(async () => {
+    //     if ($activePage === 'Kinetics' && window.fs.isFile(configFile)) {
+    //         await loadConfig()
+    //     }
+    // })
 
     $: if (window.fs.isDirectory(currentLocation)) {
         window.db.set('ROSAA_config_location', currentLocation)
@@ -203,8 +213,10 @@
     async function loadConfig() {
         try {
             console.log({ configFile })
-            if (window.fs.existsSync(configFile)) {
-                return setConfig()
+            if (window.fs.isFile(configFile)) {
+                await setConfig()
+                await tick()
+                return
             }
             browse_folder()
         } catch (error) {
@@ -239,7 +251,7 @@
     let ionTemp = 12
     let trapTemp = 5
     let gaussian = 0
-    let collisionalTemp = 0
+    let collisionalTemp: number = null
     let Cg = 0 // doppler-broadening proportionality constant
 
     // Lorrentz linewidth parameters
@@ -265,18 +277,18 @@
 
     const updateDoppler = () => {
         console.log('Changing doppler parameters')
-        ;[ionMass, RGmass, ionTemp, trapTemp] = dopplerLineshape.map((f) => f.value)
+        ;[ionMass, RGmass, ionTemp, trapTemp] = dopplerLineshape.map((f) => Number(f.value))
 
-        collisionalTemp = Number((RGmass * ionTemp + ionMass * trapTemp) / (ionMass + RGmass)).toFixed(1)
+        collisionalTemp = Number(Number((RGmass * ionTemp + ionMass * trapTemp) / (ionMass + RGmass)).toFixed(1))
         const sqrtTerm = (8 * boltzmanConstant * Math.log(2) * ionTemp) / (ionMass * amuToKG * SpeedOfLight ** 2)
         Cg = Math.sqrt(sqrtTerm)
-        gaussian = Number(transitionFrequency * Cg).toFixed(3) // in MHz
+        gaussian = Number(Number(transitionFrequency * Cg).toFixed(3)) // in MHz
     }
     const updatePower = () => {
-        ;[dipole, power] = powerBroadening.map((f) => f.value)
+        ;[dipole, power] = powerBroadening.map((f) => Number(f.value))
         trapArea = mainParameters?.filter((params) => params.label === 'trap_area (sq-meter)')?.[0]?.value || ''
         Cp = ((2 * dipole * DebyeToCm) / PlanksConstant) * Math.sqrt(1 / (trapArea * SpeedOfLight * VaccumPermitivity))
-        lorrentz = Number(Cp * Math.sqrt(power) * 1e-6).toFixed(3)
+        lorrentz = Number(Number(Cp * Math.sqrt(Number(power)) * 1e-6).toFixed(3))
     }
 
     $: {
@@ -372,11 +384,13 @@
                 einsteinCoefficientA,
             })
             updatePower()
-            updateDoppler()
             updateEnergyLevels()
+            // updateDoppler()
             configLoaded = true
+            return Promise.resolve('config loaded')
         } catch (error) {
             window.handleError(error)
+            return Promise.reject(error)
         }
     }
 
@@ -397,6 +411,7 @@
 
     $: energyLevels = energyInfos[`${energyUnit}`]
     let toggle_modal = false
+    let progress = 0
 </script>
 
 <BoltzmanDistribution
@@ -406,7 +421,7 @@
     {currentLocation}
 />
 
-<LayoutDiv id="ROSAA__modal">
+<LayoutDiv id="ROSAA__modal" {progress}>
     <svelte:fragment slot="header_content__slot">
         <div class="locationColumn box v-center" style="border: solid 1px #fff9;">
             <button class="button is-link" id="thz_modal_filebrowser_btn" on:click={browse_folder}>Browse</button>
@@ -545,7 +560,12 @@
                             {#each dopplerLineshape as { label, value, id } (id)}
                                 <CustomTextSwitch step={0.5} bind:value {label} />
                             {/each}
-                            <Textfield bind:value={collisionalTemp} label="collisionalTemp(K)" />
+                            <Textfield
+                                bind:value={collisionalTemp}
+                                label="collisionalTemp(K)"
+                                type="number"
+                                input$step="0.1"
+                            />
                             <Textfield bind:value={gaussian} label="gaussian - FWHM (MHz)" />
                         </CustomPanel>
 
@@ -606,8 +626,6 @@
 
                         <!-- Figure config -->
                         <CustomPanel label="Figure config" loaded={true}>
-                            <Textfield bind:value={figure.size} label="Dimention (width, height)" />
-                            <Textfield bind:value={figure.dpi} label="DPI" />
                             <CustomCheckbox bind:value={figure.show} label="show figure" />
                         </CustomPanel>
                     </Accordion>
@@ -630,7 +648,6 @@
                 statusReport = ''
             }}>clear</button
         >
-
         <button
             style="align-self:end;"
             class="button is-warning"
@@ -638,7 +655,6 @@
                 showreport = !showreport
             }}>{showreport ? 'Go back' : 'Show report'}</button
         >
-
         <div style="display: flex; gap: 1em;" class:hide={showreport}>
             <CustomSelect options={simulationMethods} bind:value={simulationMethod} label="simulationMethod" />
             <ButtonBadge

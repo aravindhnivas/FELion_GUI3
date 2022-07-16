@@ -17,7 +17,7 @@
 
     export let numberDensity = '4e14'
     export let collisionalRates = []
-    export let collisionalTemp
+    export let collisionalTemp: number = null
     export let collisionalFilename = ''
     export let collisionalCoefficient = []
     export let collisionalCoefficient_balance = []

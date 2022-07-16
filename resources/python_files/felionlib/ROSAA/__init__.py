@@ -17,9 +17,19 @@ qapp = None
 
 
 class ROSAA:
-    def __init__(self, nHe: float, power: float, k3_branch: float, plotGraph=False, writefile=None, verbose=False):
+    def __init__(
+        self,
+        nHe: float,
+        power: float,
+        k3_branch: float,
+        plotGraph=False,
+        writefile=None,
+        verbose=False,
+        save_location: pt = None,
+    ):
 
         self.verbose = verbose
+        self.save_location = save_location
 
         self.energyUnit = conditions["energyUnit"]
         self.numberOfLevels = int(conditions["numberOfLevels"])
@@ -378,9 +388,9 @@ class ROSAA:
         }
 
         if self.writefile:
-            # fmtFloatFn = np.format_float_scientific
+
             name_append = f"__k3_branch_{self.k3_branch:.1f}__numberDensity_{nHe:.1e}__power_{self.power:.1e}"
-            WriteData(name_append, dataToSend)
+            self.WriteData(name_append, dataToSend)
 
         end_time = time.perf_counter()
 
@@ -464,24 +474,21 @@ class ROSAA:
             widget1.optimize_figure()
             widget1.fig.tight_layout()
 
+    def WriteData(self, name: str, dataToSend: dict):
+        fulloutput_location = self.save_location or datas_location
+        fulloutput_location: pt = fulloutput_location / "full_output"
+        if not fulloutput_location.exists():
+            fulloutput_location.mkdir()
 
-def WriteData(name: str, dataToSend: dict):
-    fulloutput_location = datas_location / "full_output"
+        addText = ""
+        if not includeAttachmentRate:
+            addText = "__no-attachement"
 
-    if isinstance(fOf_appendOutputFileName, str):
-        fulloutput_location = datas_location / fOf_appendOutputFileName / "full_output"
-        
-    if not fulloutput_location.exists():
-        fulloutput_location.mkdir()
-
-    addText = ""
-    if not includeAttachmentRate:
-        addText = "_no-attachement"
-
-    with open(fulloutput_location / f"{savefilename}{addText}__{name}.json", "w+") as f:
-        data = json.dumps(dataToSend, sort_keys=True, indent=4, separators=(",", ": "))
-        f.write(data)
-        logger(f"{savefilename} file written in {location} folder.")
+        with open(fulloutput_location / f"{savefilename}{addText}__{name}.output.full.json", "w+") as f:
+            data = json.dumps(dataToSend, sort_keys=True, indent=4, separators=(",", ": "))
+            f.write(data)
+            if self.verbose:
+                logger(f"{savefilename} file written in {fulloutput_location} folder.")
 
 
 figure = None
@@ -494,27 +501,28 @@ savefilename = None
 includeAttachmentRate = False
 fOf_appendOutputFileName = None
 
+
 def main(arguments):
 
     global conditions, figure, savefilename, location, output_dir, datas_location, includeAttachmentRate
 
     conditions = arguments
-    
+
     savefilename = conditions["savefilename"]
     location = pt(conditions["currentLocation"])
-    
+
     output_dir = location / "output"
     if not output_dir.exists():
         output_dir.mkdir()
-        
+
     datas_location = output_dir / "datas"
-    
+
     if not datas_location.exists():
         datas_location.mkdir()
 
     figure = conditions["figure"]
-    figure["size"] = [int(i) for i in figure["size"].split(",")]
-    
+    # figure["size"] = [int(i) for i in figure["size"].split(",")]
+
     includeAttachmentRate = conditions["includeAttachmentRate"]
     variable = conditions["variable"]
 
@@ -524,12 +532,7 @@ def main(arguments):
 
     if variable == "time":
 
-        ROSAA(
-            nHe=current_nHe, 
-            power=current_Power, 
-            k3_branch=current_k3_branch,
-            plotGraph=figure["show"], verbose=True
-        )
+        ROSAA(nHe=current_nHe, power=current_Power, k3_branch=current_k3_branch, plotGraph=figure["show"], verbose=True)
 
     elif variable == "He density(cm3)":
 
@@ -568,74 +571,110 @@ def make_stepsizes_equally_spaced(changeVariable: Literal["numberDensity", "powe
 
 
 def functionOfVariable(
-    changeVariable: Literal["numberDensity", "power", "k3_branch", "all"] = "numberDensity", 
-    currentConstants=None, 
-    plot=True
+    changeVariable: Literal["numberDensity", "power", "k3_branch", "all"] = "numberDensity",
+    currentConstants=None,
+    plot=True,
+    save_location: pt = None,
+    dataList: list[float] = None,
+    verbose=True,
 ):
     global qapp, fOf_appendOutputFileName
 
-    if changeVariable == "k3_branch" or changeVariable == "all":
-        variableRange: str = conditions["$variableRange"]["k3_branch"]
-        _start, _end, _steps = variableRange.split(",")
-        dataList = np.arange(float(_start), float(_end), float(_steps))
-    else:
-        dataList = make_stepsizes_equally_spaced(changeVariable)
-        variableRange: str = conditions["$variableRange"][changeVariable]
+    if dataList is None:
+        if changeVariable == "k3_branch" or changeVariable == "all":
+            variableRange: str = conditions["$variableRange"]["k3_branch"]
+            _start, _end, _steps = variableRange.split(",")
+            dataList = np.arange(float(_start), float(_end), float(_steps))
+        else:
+            # variableRange: str = conditions["$variableRange"][changeVariable]
+            dataList = make_stepsizes_equally_spaced(changeVariable)
 
     if changeVariable == "all":
+        simulation_time_start = time.perf_counter()
+        save_folder = datas_location / "f-all"
+        if not save_folder.exists():
+            save_folder.mkdir()
+
+        process_completed = 0
         for _k3_branch in dataList:
-            logger(f"k3_branch: {_k3_branch}")
+
+            current_save_dir = save_folder / f"k3_branch_{_k3_branch:.2f}"
+            if not current_save_dir.exists():
+                current_save_dir.mkdir()
+
+            logger(f"k3_branch: {_k3_branch:.2f}")
             power_values = make_stepsizes_equally_spaced("power")
-            for _power in power_values:
-                logger(f"Current power: {_power}")
-                functionOfVariable(
-                    "numberDensity", currentConstants={"k3_branch": [_k3_branch, ""], "power": [_power, "W"]}, plot=False
-                )
-                logger(f"Completed current {_power} power value")
-
-            logger(f"Completed k3_branch: {_k3_branch} with {len(power_values)} power values")
-
             numberDensity_values = make_stepsizes_equally_spaced("numberDensity")
-            for _nHe in numberDensity_values:
-                logger(f"Current nHe: {_nHe}")
+
+            for _power in power_values:
+
+                logger(f"Current power: {_power:.2e}")
+
                 functionOfVariable(
-                    "power", currentConstants={"k3_branch": [_k3_branch, ""], "numberDensity": [_nHe, "cm$^3$"]}, plot=False
+                    "numberDensity",
+                    currentConstants={"k3_branch": [_k3_branch, ""], "power": [_power, "W"]},
+                    plot=False,
+                    save_location=current_save_dir,
+                    dataList=numberDensity_values,
+                    verbose=False,
                 )
-                logger(f"Completed current {_nHe} number density value")
+                logger(f"Completed current {_power:.1e} power value")
 
-            logger(f"Completed k3_branch: {_k3_branch} with {len(numberDensity_values)} number density values")
+            logger(f"Completed k3_branch: {_k3_branch:.2f} with {len(power_values)} power values")
 
+            for _nHe in numberDensity_values:
+
+                logger(f"Current nHe: {_nHe:.2e}")
+                functionOfVariable(
+                    "power",
+                    currentConstants={"k3_branch": [_k3_branch, ""], "numberDensity": [_nHe, "cm$^3$"]},
+                    plot=False,
+                    save_location=current_save_dir,
+                    dataList=power_values,
+                    verbose=False,
+                )
+
+                logger(f"Completed current {_nHe:.1e} number density value")
+
+            # logger(f"Completed k3_branch: {_k3_branch:.2f} with {len(numberDensity_values)} number density values")
+            process_completed += 1
+            logger(f"Completed {process_completed / len(dataList) :.0f} k3_branch values")
+        simulation_time_end = time.perf_counter()
+        logger(f"Total time {simulation_time_end - simulation_time_start:.2f} seconds")
         logger("Process COMPLETED")
         return
 
     molecule = conditions["main_parameters"]["molecule"]
     taggingPartner = conditions["main_parameters"]["tagging partner"]
-    
     excitedFrom = str(conditions["excitedFrom"])
     excitedTo = str(conditions["excitedTo"])
 
     outputFileName = f"{molecule}-{taggingPartner}__{excitedFrom}-{excitedTo}"
+
+    fOf_appendOutputFileName = None
     if changeVariable == "k3_branch":
-        fOf_appendOutputFileName = f"f-{changeVariable}_{dataList[0]:.2f}-{dataList[-1]:.2f}"
-    else:
-        fOf_appendOutputFileName = f"f-{changeVariable}_{dataList[0]:.0e}-{dataList[-1]:.0e}"
-    
-    final_output_location = datas_location / fOf_appendOutputFileName
+        fOf_appendOutputFileName = f"f-{changeVariable}_{len(dataList)}-files_{dataList[0]:.2f}-{dataList[-1]:.2f}"
+    elif changeVariable == "numberDensity" or changeVariable == "power":
+        fOf_appendOutputFileName = f"f-{changeVariable}_{len(dataList)}-files_{dataList[0]:.0e}-{dataList[-1]:.0e}"
+
+    final_output_location = (save_location or datas_location) / fOf_appendOutputFileName
+
     if not final_output_location.exists():
         final_output_location.mkdir()
-            
+
     variable_appendFileName = ""
     if isinstance(currentConstants, dict):
         for key, value in currentConstants.items():
             if key == "numberDensity" or key == "power":
-                variable_appendFileName += f"_{key}_{float(value[0]):.1e}{value[1]}"
+                variable_appendFileName += f"_{key}_{value[0]:.1e}{value[1]}"
             elif key == "k3_branch":
-                variable_appendFileName += f"_{key}_{float(value[0]):.2f}{value[1]}"
+                variable_appendFileName += f"_{key}_{value[0]:.2f}{value[1]}"
 
-    outputFileName += "__at_constant__"+ variable_appendFileName
+    outputFileName += "__at_constant__" + variable_appendFileName
     outputFileName = outputFileName.replace("$", "").replace("^", "")
 
-    logger(f"Output file name: {outputFileName}")
+    if verbose:
+        logger(f"Output file name: {outputFileName}")
 
     energyKeys = list(conditions["energy_levels"].keys())
 
@@ -646,28 +685,30 @@ def functionOfVariable(
     signalChange = []
 
     for variable in dataList:
-        
         if changeVariable == "numberDensity":
             currentData = ROSAA(
-                nHe=variable, 
-                power=currentConstants["power"][0], 
-                k3_branch=currentConstants["k3_branch"][0]
+                nHe=variable,
+                power=currentConstants["power"][0],
+                k3_branch=currentConstants["k3_branch"][0],
+                save_location=final_output_location,
             )
-            
+
         elif changeVariable == "power":
-            
+
             currentData = ROSAA(
-                nHe=currentConstants["numberDensity"][0], 
-                power=variable, 
-                k3_branch=currentConstants["k3_branch"][0]
+                nHe=currentConstants["numberDensity"][0],
+                power=variable,
+                k3_branch=currentConstants["k3_branch"][0],
+                save_location=final_output_location,
             )
 
         elif changeVariable == "k3_branch":
-            
+
             currentData = ROSAA(
                 nHe=currentConstants["numberDensity"][0],
-                power=currentConstants["power"][0], 
-                k3_branch=variable
+                power=currentConstants["power"][0],
+                k3_branch=variable,
+                save_location=final_output_location,
             )
 
         on = currentData.lightON_distribution
@@ -682,20 +723,20 @@ def functionOfVariable(
             signalChange.append(changeInSignal)
 
     if plot:
-        
+
         if changeVariable == "numberDensity":
             xlabel = currentData.taggingPartner + "number density (cm$^{-3})$"
-        
+
         elif changeVariable == "power":
             xlabel = "Power (W)"
-        
+
         elif changeVariable == "k3_branch":
             xlabel = "a (k_up / k_down)"
 
         title = currentData.transitionTitleLabel
         ylabel = title.split(":")[-1].replace("$", "")
         ylabel = f"${ylabel.split('-')[1]}$ / ${ylabel.split('-')[0]}$"
-        
+
         widget = felionQtWindow(
             title=f"Population ratio",
             figDPI=200,
@@ -721,7 +762,7 @@ def functionOfVariable(
 
     dataToSend = {
         f"variable ({changeVariable})": list(map(lambda num: np.format_float_scientific(num, 3), dataList)),
-        "populationChange": np.around(populationChange, 3).tolist(),
+        "populationChange(up/down)": np.around(populationChange, 3).tolist(),
         "constant": currentConstants,
     }
 
@@ -744,8 +785,8 @@ def functionOfVariable(
         dataToSend["signalChange"] = np.around(signalChange, 3).tolist()
 
     if conditions["writefile"]:
-        savefileJSON = final_output_location / f"{outputFileName}.json"
+        savefileJSON = final_output_location / f"{outputFileName}.output.json"
         with open(savefileJSON, "w+") as f:
             json.dump(dataToSend, f, indent=4)
-            logger(f"{savefileJSON} file written in {location}")
-        
+            if verbose:
+                logger(f"{savefileJSON} file written in {location}")
