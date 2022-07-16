@@ -94,15 +94,18 @@
         einsteinB_rateComputed = einsteinCoefficientB.length > 0
     }
 
+    let computing_lineshape = false
     async function computeLineshape(e = null) {
+        if (computing_lineshape) return
         if (!lorrentz || !gaussian) return createToast('Compute gaussian and lorrentz parameters')
+        computing_lineshape = true
         const dataFromPython = await computePy_func({
             e,
             pyfile: 'ROSAA.voigt',
             args: { lorrentz, gaussian },
         })
+        computing_lineshape = false
         if (!dataFromPython) return
-
         const lineshape = dataFromPython?.lineShape?.toExponential(2)
         return lineshape
     }
@@ -112,11 +115,6 @@
     }
 </script>
 
-<!-- <CustomPanel
-    label="Einstein Co-efficients"
-    loaded={einsteinCoefficientA.length > 0 && einsteinCoefficientB.length > 0 && einsteinB_rateComputed}
-> -->
-<!-- <hr> -->
 <div class="align h-center subtitle">Einstein A Co-efficients</div>
 
 <div class="align h-center mb-5">
@@ -156,4 +154,3 @@
         {/each}
     </div>
 {/if}
-<!-- </CustomPanel> -->

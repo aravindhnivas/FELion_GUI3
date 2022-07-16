@@ -144,7 +144,7 @@ export default async function ({
                 dataReceived += dataString
             }
             console.log(dataString.trim())
-            dispatchEvent(target, { py, pyfile, dataReceived }, 'pyEventData')
+            dispatchEvent(target, { py, pyfile, dataReceived, stdout: dataString }, 'pyEventData')
         })
 
         if (pyfile === 'server') {

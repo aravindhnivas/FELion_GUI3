@@ -16,7 +16,7 @@
             </div>
             {#if progress > 0}
                 <div class="loading">
-                    <LinearProgress {progress} buffer={0.75} />
+                    <LinearProgress {progress} buffer={0} />
                     {#if showProgress}
                         <div>{Number(progress * 100).toFixed(0)}%</div>
                     {/if}

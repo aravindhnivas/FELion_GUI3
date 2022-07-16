@@ -1,5 +1,4 @@
 <script lang="ts">
-    // import { activePage } from '$src/sveltewritables'
     import Textfield from '@smui/textfield'
     import { parse as Yml } from 'yaml'
     import { browse } from '$components/Layout.svelte'
@@ -25,8 +24,7 @@
     } from '$src/js/constants'
     import computePy_func from '$src/Pages/general/computePy'
     import { persistentWritable } from '$src/js/persistentStore'
-    import { onMount, tick } from 'svelte'
-    import LinearProgress from '@smui/linear-progress'
+    import { tick } from 'svelte'
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     let electronSpin = false
@@ -42,7 +40,6 @@
     $: deexcitation = collisionalRateType === 'deexcitation'
 
     let showreport = false
-    // let pyProcesses = []
     let statusReport = ''
 
     let collisionalRates = []
@@ -50,7 +47,7 @@
     let einsteinB_rateComputed = false
 
     const simulation = async (e) => {
-        progress = 0.5
+        // progress = 0
         if (!window.fs.existsSync(currentLocation)) return window.createToast("Location doesn't exist", 'danger')
         if (!configLoaded) return window.createToast('Config file not loaded', 'danger')
         if (!transitionFrequency) return window.createToast('Transition frequency is not defined', 'danger')
@@ -142,12 +139,6 @@
     $: savefilename = `${moleculeName}_${tagName}_f-${variable.split('(')[0]}__transition_${excitedFrom}-${excitedTo}`
         .replaceAll('$', '')
         .replaceAll('^', '')
-
-    // onMount(async () => {
-    //     if ($activePage === 'Kinetics' && window.fs.isFile(configFile)) {
-    //         await loadConfig()
-    //     }
-    // })
 
     $: if (window.fs.isDirectory(currentLocation)) {
         window.db.set('ROSAA_config_location', currentLocation)
@@ -245,7 +236,6 @@
     let lowerLevelEnergy
     let transitionFrequency = 0
 
-    // Doppler linewidth parameters
     let ionMass = 14
     let RGmass = 4
     let ionTemp = 12
@@ -254,7 +244,6 @@
     let collisionalTemp: number = null
     let Cg = 0 // doppler-broadening proportionality constant
 
-    // Lorrentz linewidth parameters
     let power = '2e-5'
     let dipole = 1
     let lorrentz = 0
@@ -385,7 +374,6 @@
             })
             updatePower()
             updateEnergyLevels()
-            // updateDoppler()
             configLoaded = true
             return Promise.resolve('config loaded')
         } catch (error) {
@@ -421,7 +409,7 @@
     {currentLocation}
 />
 
-<LayoutDiv id="ROSAA__modal" {progress}>
+<LayoutDiv id="ROSAA__modal" {progress} showProgress={true}>
     <svelte:fragment slot="header_content__slot">
         <div class="locationColumn box v-center" style="border: solid 1px #fff9;">
             <button class="button is-link" id="thz_modal_filebrowser_btn" on:click={browse_folder}>Browse</button>
@@ -481,12 +469,16 @@
             mainContent$style=""
         >
             <svelte:fragment slot="main_content__slot">
-                <div class="align status_report__div p-5" style="user-select: text;" class:hide={!showreport}>
+                <div
+                    class="align status_report__div p-5"
+                    id="THz_simulation_status"
+                    style="user-select: text;"
+                    class:hide={!showreport}
+                >
                     {statusReport}
                 </div>
                 <div class="main_container__div" class:hide={showreport}>
                     <!-- Main Parameters -->
-
                     <Accordion multiple style="width: 100%;">
                         <CustomPanel label="Main Parameters" loaded={mainParameters.length > 0}>
                             <div class="align h-center">
@@ -497,7 +489,6 @@
                         </CustomPanel>
 
                         <!-- Energy levels -->
-
                         <CustomPanel label="Energy Levels" loaded={energyLevels.length > 0}>
                             <div class="align h-center">
                                 <Textfield
@@ -555,7 +546,6 @@
                         </CustomPanel>
 
                         <!-- Doppler lineshape -->
-
                         <CustomPanel label="Doppler lineshape" loaded={dopplerLineshape.length > 0}>
                             {#each dopplerLineshape as { label, value, id } (id)}
                                 <CustomTextSwitch step={0.5} bind:value {label} />
@@ -570,7 +560,6 @@
                         </CustomPanel>
 
                         <!-- Lorrentz lineshape -->
-
                         <CustomPanel label="Lorrentz lineshape" loaded={powerBroadening.length > 0}>
                             {#each powerBroadening as { label, value, id } (id)}
                                 <Textfield bind:value {label} />
@@ -623,11 +612,6 @@
                         >
                             <AttachmentCoefficients bind:k3 bind:kCID bind:numberDensity bind:attachmentCoefficients />
                         </CustomPanel>
-
-                        <!-- Figure config -->
-                        <CustomPanel label="Figure config" loaded={true}>
-                            <CustomCheckbox bind:value={figure.show} label="show figure" />
-                        </CustomPanel>
                     </Accordion>
                 </div>
             </svelte:fragment>
@@ -637,6 +621,7 @@
     <svelte:fragment slot="left_footer_content__slot">
         <CustomCheckbox bind:value={writefile} label="writefile" />
         <Textfield bind:value={savefilename} label="savefilename" />
+        <CustomCheckbox bind:value={figure.show} label="show figure" />
     </svelte:fragment>
 
     <svelte:fragment slot="footer_content__slot">
@@ -658,7 +643,20 @@
         <div style="display: flex; gap: 1em;" class:hide={showreport}>
             <CustomSelect options={simulationMethods} bind:value={simulationMethod} label="simulationMethod" />
             <ButtonBadge
-                on:pyEventData={(e) => (statusReport += e.detail.dataReceived)}
+                on:pyEventData={async (e) => {
+                    const { stdout } = e.detail
+                    statusReport += stdout
+                    if (stdout.includes('%')) {
+                        const percent = parseFloat(stdout.split('%')[0].trim())
+                        // console.log(percent)
+
+                        if (percent > 0) {
+                            progress = percent / 100
+                        }
+                    }
+                    await tick()
+                    document.getElementById('THz_simulation_status').scrollIntoView(false)
+                }}
                 on:click={simulation}
                 style="align-self:end;"
             />

@@ -1,4 +1,5 @@
 import json
+from multiprocessing import current_process
 import time
 from typing import Literal
 import numpy as np
@@ -596,20 +597,21 @@ def functionOfVariable(
             save_folder.mkdir()
 
         process_completed = 0
-        for _k3_branch in dataList:
+        power_values = make_stepsizes_equally_spaced("power")
+        numberDensity_values = make_stepsizes_equally_spaced("numberDensity")
+        total_processes_count = len(dataList) * (len(power_values) + len(numberDensity_values))
+        current_process_count = 0
+        for mainCounter, _k3_branch in enumerate(dataList):
 
             current_save_dir = save_folder / f"k3_branch_{_k3_branch:.2f}"
             if not current_save_dir.exists():
                 current_save_dir.mkdir()
 
             logger(f"k3_branch: {_k3_branch:.2f}")
-            power_values = make_stepsizes_equally_spaced("power")
-            numberDensity_values = make_stepsizes_equally_spaced("numberDensity")
 
-            for _power in power_values:
+            for counter, _power in enumerate(power_values):
 
-                logger(f"Current power: {_power:.2e}")
-
+                current_process_count += 1
                 functionOfVariable(
                     "numberDensity",
                     currentConstants={"k3_branch": [_k3_branch, ""], "power": [_power, "W"]},
@@ -618,13 +620,13 @@ def functionOfVariable(
                     dataList=numberDensity_values,
                     verbose=False,
                 )
-                logger(f"Completed current {_power:.1e} power value")
+                current_variableRange = f"{numberDensity_values[0]:.2e} to {numberDensity_values[-1]:.2e}"
+                logger(
+                    f"{current_process_count / total_processes_count :.1%}: [a={_k3_branch:.2f}] completed {counter+1} out of {len(power_values)} cycles for numberDensity - {current_variableRange} at {_power:.2e} W"
+                )
 
-            logger(f"Completed k3_branch: {_k3_branch:.2f} with {len(power_values)} power values")
-
-            for _nHe in numberDensity_values:
-
-                logger(f"Current nHe: {_nHe:.2e}")
+            for counter, _nHe in enumerate(numberDensity_values):
+                current_process_count += 1
                 functionOfVariable(
                     "power",
                     currentConstants={"k3_branch": [_k3_branch, ""], "numberDensity": [_nHe, "cm$^3$"]},
@@ -634,11 +636,12 @@ def functionOfVariable(
                     verbose=False,
                 )
 
-                logger(f"Completed current {_nHe:.1e} number density value")
-
-            # logger(f"Completed k3_branch: {_k3_branch:.2f} with {len(numberDensity_values)} number density values")
+                current_variableRange = f"{numberDensity_values[0]:.2e} to {numberDensity_values[-1]:.2e}"
+                logger(
+                    f"{current_process_count / total_processes_count :.1%}: [a={_k3_branch:.2f}] completed {counter+1} out of {len(numberDensity_values)} cycles for power - {current_variableRange} at {_nHe:.2e} cm3"
+                )
             process_completed += 1
-            logger(f"Completed {process_completed / len(dataList) :.0f} k3_branch values")
+
         simulation_time_end = time.perf_counter()
         logger(f"Total time {simulation_time_end - simulation_time_start:.2f} seconds")
         logger("Process COMPLETED")
