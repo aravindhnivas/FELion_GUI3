@@ -558,8 +558,8 @@ def main(arguments):
 
 
 def make_stepsizes_equally_spaced(changeVariable: Literal["numberDensity", "power"]):
-
     variableRange: str = conditions["$variableRange"][changeVariable]
+
     _start, _end, _steps = variableRange.split(",")
     _start = int(_start.split("e")[-1])
     _end = int(_end.split("e")[-1])
@@ -599,7 +599,9 @@ def functionOfVariable(
 
         process_completed = 0
         power_values = make_stepsizes_equally_spaced("power")
+        logger(f"{len(power_values)} power values to be simulated.\n{power_values=}")
         numberDensity_values = make_stepsizes_equally_spaced("numberDensity")
+        logger(f"{len(numberDensity_values)} number density values to be simulated.\n{numberDensity_values=}")
         total_processes_count = len(dataList) * len(numberDensity_values)
         current_process_count = 0
 
@@ -609,23 +611,8 @@ def functionOfVariable(
                 current_save_dir.mkdir()
 
             logger(f"k3_branch: {_k3_branch:.2f}")
-            # for counter, _power in enumerate(power_values):
-
-            #     current_process_count += 1
-            #     functionOfVariable(
-            #         "numberDensity",
-            #         currentConstants={"k3_branch": [_k3_branch, ""], "power": [_power, "W"]},
-            #         plot=False,
-            #         save_location=current_save_dir,
-            #         dataList=numberDensity_values,
-            #         verbose=False,
-            #     )
-            #     current_variableRange = f"{numberDensity_values[0]:.2e} to {numberDensity_values[-1]:.2e}"
-            #     logger(
-            #         f"{current_process_count / total_processes_count :.1%}: [a={_k3_branch:.2f}] completed {counter+1} out of {len(power_values)} cycles for numberDensity => {current_variableRange} at {_power:.2e} W"
-            #     )
-
             for counter, _nHe in enumerate(numberDensity_values):
+
                 current_process_count += 1
                 functionOfVariable(
                     "power",
@@ -646,8 +633,10 @@ def functionOfVariable(
         simulation_time_end = time.perf_counter()
         logger(f"Total time {simulation_time_end - simulation_time_start:.2f} seconds")
         logger("Process COMPLETED")
-        # final_appendOutputFileName = f"f-power_{power_values[0]:.0e}-{power_values[-1]:.0e}"
-        # final_all_directory = current_save_dir / final_appendOutputFileName
+        final_appendOutputFileName = f"f-power_{power_values[0]:.0e}-{power_values[-1]:.0e}"
+        final_all_directory = current_save_dir / final_appendOutputFileName
+        logger(f"Saving data to {final_all_directory}")
+
         # ROSAA3D_plot(final_all_directory, type="f-power")
 
         return
