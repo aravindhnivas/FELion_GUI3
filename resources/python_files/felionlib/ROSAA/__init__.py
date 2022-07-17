@@ -501,7 +501,7 @@ datas_location: pt = None
 conditions = None
 savefilename = None
 includeAttachmentRate = False
-fOf_appendOutputFileName = None
+# fOf_appendOutputFileName = None
 
 
 def main(arguments):
@@ -562,7 +562,6 @@ def make_stepsizes_equally_spaced_log(changeVariable: Literal["numberDensity", "
 
     _start, _end, _steps = variableRange.split(",")
     dataList = np.logspace(np.log10(float(_start)), np.log10(float(_end)), int(_steps), endpoint=True)
-
     return dataList
 
 
@@ -571,11 +570,12 @@ def functionOfVariable(
     currentConstants=None,
     plot=None,
     save_location: pt = None,
-    dataList: list[float] = None,
+    dataList: np.ndarray = None,
     verbose=True,
+    # append_name=None
 ):
 
-    global qapp, fOf_appendOutputFileName
+    global qapp
 
     if verbose:
         logger(f"Running {changeVariable} function of variable...")
@@ -593,15 +593,26 @@ def functionOfVariable(
 
     if changeVariable == "all":
         simulation_time_start = time.perf_counter()
+
         save_folder = datas_location / "f-all"
         if not save_folder.exists():
             save_folder.mkdir()
 
-        process_completed = 0
         power_values = make_stepsizes_equally_spaced_log("power")
         logger(f"{len(power_values)} power values to be simulated.\n{power_values=}")
         numberDensity_values = make_stepsizes_equally_spaced_log("numberDensity")
         logger(f"{len(numberDensity_values)} number density values to be simulated.\n{numberDensity_values=}")
+
+        json.dump(
+            {
+                "numberDensity": numberDensity_values.tolist(),
+                "power": power_values.tolist(),
+                "k3_branch": dataList.tolist(),
+            },
+            open(save_folder / "info.json", "w+"),
+            indent=4,
+        )
+
         total_processes_count = len(dataList) * len(numberDensity_values)
         current_process_count = 0
 
@@ -610,9 +621,14 @@ def functionOfVariable(
             if not current_save_dir.exists():
                 current_save_dir.mkdir()
 
+            append_name_to_current_save_dir = f"f-power_{power_values[0]:.0e}-{power_values[-1]:.0e}"
+            current_save_dir = current_save_dir / append_name_to_current_save_dir
+
+            if not current_save_dir.exists():
+                current_save_dir.mkdir()
+
             logger(f"k3_branch: {_k3_branch:.2f}")
             for counter, _nHe in enumerate(numberDensity_values):
-
                 current_process_count += 1
                 functionOfVariable(
                     "power",
@@ -627,8 +643,6 @@ def functionOfVariable(
                     f"{current_process_count / total_processes_count :.1%}: [a={_k3_branch:.2f}] completed {counter+1} out of {len(numberDensity_values)} cycles for power => {current_variableRange} at {_nHe:.2e} cm-3"
                 )
 
-            process_completed += 1
-
         simulation_time_end = time.perf_counter()
         logger(f"Total time {simulation_time_end - simulation_time_start:.2f} seconds")
         logger("Process COMPLETED")
@@ -636,31 +650,27 @@ def functionOfVariable(
         final_all_directory = current_save_dir / final_appendOutputFileName
         logger(f"Saving data to {final_all_directory}")
 
-        # ROSAA3D_plot(final_all_directory, type="f-power")
-
         return
 
-    # molecule = conditions["main_parameters"]["molecule"]
-    # taggingPartner = conditions["main_parameters"]["tagging partner"]
     excitedFrom = str(conditions["excitedFrom"])
     excitedTo = str(conditions["excitedTo"])
 
-    # outputFileName = f"{molecule}-{taggingPartner}__{excitedFrom}-{excitedTo}"
+    if save_location is None:
 
-    fOf_appendOutputFileName = None
-    if changeVariable == "k3_branch":
-        fOf_appendOutputFileName = f"f-{changeVariable}_{dataList[0]:.2f}-{dataList[-1]:.2f}"
-    elif changeVariable == "numberDensity" or changeVariable == "power":
-        fOf_appendOutputFileName = f"f-{changeVariable}_{dataList[0]:.0e}-{dataList[-1]:.0e}"
+        if changeVariable == "k3_branch":
+            append_name = f"f-{changeVariable}_{dataList[0]:.2f}-{dataList[-1]:.2f}"
+        elif changeVariable == "numberDensity" or changeVariable == "power":
+            append_name = f"f-{changeVariable}_{dataList[0]:.0e}-{dataList[-1]:.0e}"
+        save_location = datas_location / append_name
 
-    final_output_location = (save_location or datas_location) / fOf_appendOutputFileName
-
-    if not final_output_location.exists():
-        final_output_location.mkdir()
+        if not save_location.exists():
+            save_location.mkdir()
 
     variable_appendFileName = ""
+
     if isinstance(currentConstants, dict):
         for key, value in currentConstants.items():
+
             if key == "numberDensity" or key == "power":
                 variable_appendFileName += f"_{key}_{value[0]:.1e}"
             elif key == "k3_branch":
@@ -685,7 +695,7 @@ def functionOfVariable(
                 nHe=variable,
                 power=currentConstants["power"][0],
                 k3_branch=currentConstants["k3_branch"][0],
-                save_location=final_output_location,
+                save_location=save_location,
             )
 
         elif changeVariable == "power":
@@ -694,7 +704,7 @@ def functionOfVariable(
                 nHe=currentConstants["numberDensity"][0],
                 power=variable,
                 k3_branch=currentConstants["k3_branch"][0],
-                save_location=final_output_location,
+                save_location=save_location,
             )
 
         elif changeVariable == "k3_branch":
@@ -703,7 +713,7 @@ def functionOfVariable(
                 nHe=currentConstants["numberDensity"][0],
                 power=currentConstants["power"][0],
                 k3_branch=variable,
-                save_location=final_output_location,
+                save_location=save_location,
             )
 
         on = currentData.lightON_distribution
@@ -788,7 +798,7 @@ def functionOfVariable(
     if verbose:
         logger("Compuation completed.")
     if conditions["writefile"]:
-        savefileJSON = final_output_location / f"{outputFileName}.output.json"
+        savefileJSON = save_location / f"{outputFileName}.output.json"
         with open(savefileJSON, "w+") as f:
             json.dump(dataToSend, f, indent=4)
             if verbose:
