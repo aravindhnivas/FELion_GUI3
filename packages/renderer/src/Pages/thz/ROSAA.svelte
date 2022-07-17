@@ -635,7 +635,7 @@
         display: grid;
         grid-auto-flow: column;
         grid-gap: 1em;
-        grid-template-columns: 0.5fr 4fr 1fr;
+        grid-template-columns: auto 1fr auto;
     }
     .main_container__div {
         display: grid;
