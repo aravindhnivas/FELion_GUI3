@@ -1,1 +1,6 @@
-hiddenimports = ["felionlib.ROSAA.collisionalSimulation", "felionlib.ROSAA.voigt", "felionlib.ROSAA.collisionalFit"]
+hiddenimports = [
+    "felionlib.ROSAA.plot", 
+    "felionlib.ROSAA.voigt", 
+    "felionlib.ROSAA.collisionalFit",
+    "felionlib.ROSAA.collisionalSimulation", 
+]
