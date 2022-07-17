@@ -14,12 +14,17 @@
                 <div class="left align"><slot name="left_footer_content__slot" /></div>
                 <div class="right align"><slot name="footer_content__slot" /></div>
             </div>
-            {#if progress > 0}
+            {#if showProgress && progress > 0}
                 <div class="loading">
                     <LinearProgress {progress} buffer={0} />
-                    {#if showProgress}
-                        <div>{Number(progress * 100).toFixed(0)}%</div>
-                    {/if}
+                    <div class="progess_number__div">{Number(progress * 100).toFixed(0)}%</div>
+                    <span
+                        style="cursor: pointer;"
+                        class="tag is-danger"
+                        on:click={() => {
+                            showProgress = false
+                        }}>X</span
+                    >
                 </div>
             {/if}
         </div>
@@ -53,9 +58,15 @@
             .loading {
                 display: grid;
                 width: 100%;
-                grid-template-columns: 10fr 1fr;
+                grid-template-columns: 1fr auto auto;
+                gap: 1em;
                 justify-items: center;
                 align-items: center;
+                .progess_number__div {
+                    border: solid 1px;
+                    padding: 0 1em;
+                    border-radius: 1em;
+                }
             }
             display: flex;
             gap: 1em;

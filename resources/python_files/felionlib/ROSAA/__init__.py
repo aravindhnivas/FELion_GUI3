@@ -6,7 +6,7 @@ from pathlib import Path as pt
 from scipy.integrate import solve_ivp
 from .definitions import boltzman_distribution
 from .voigt import main as getLineShape
-from felionlib.utils import logger
+from felionlib.utils import logger, remove_special_chars_in_string
 from felionlib.utils.FELion_constants import pltColors
 from felionlib.utils.felionQt import felionQtWindow
 from scipy.constants import speed_of_light
@@ -449,7 +449,7 @@ class ROSAA:
         # widget.makeLegendToggler(legend_handler, edit_legend=True)
 
         widget.ax.legend(title="- ON -- OFF")
-        widget.optimize_figure()
+        widget.optimize_figure(setBound=False)
         widget.fig.tight_layout()
 
         if self.includeAttachmentRate:
@@ -473,7 +473,7 @@ class ROSAA:
 
             if self.verbose:
                 logger(f"Signal: {round(signal[-1])} (%)")
-            widget1.optimize_figure()
+            widget1.optimize_figure(setBound=False)
             widget1.fig.tight_layout()
 
     def WriteData(self, name: str, dataToSend: dict):
@@ -481,12 +481,12 @@ class ROSAA:
         fulloutput_location: pt = fulloutput_location / "full_output"
         if not fulloutput_location.exists():
             fulloutput_location.mkdir()
-
         addText = ""
         if not includeAttachmentRate:
             addText = "__no-attachement"
-
-        with open(fulloutput_location / f"{savefilename}{addText}__{name}.output.full.json", "w+") as f:
+        full_output_filename = f"{savefilename}{addText}__{name}.output.full.json"
+        full_output_filename = remove_special_chars_in_string(full_output_filename)
+        with open(fulloutput_location / full_output_filename, "w+") as f:
             data = json.dumps(dataToSend, sort_keys=True, indent=4, separators=(",", ": "))
             f.write(data)
             if self.verbose:
@@ -536,18 +536,18 @@ def main(arguments):
 
         ROSAA(nHe=current_nHe, power=current_Power, k3_branch=current_k3_branch, plotGraph=figure["show"], verbose=True)
 
-    elif variable == "He density(cm3)":
+    elif variable == "He density(cm-3)":
 
         currentConstants = {"k3_branch": [current_k3_branch, ""], "power": [current_Power, "W"]}
         functionOfVariable("numberDensity", currentConstants)
 
     elif variable == "Power(W)":
 
-        currentConstants = {"k3_branch": [current_k3_branch, ""], "numberDensity": [current_nHe, "cm$^3$"]}
+        currentConstants = {"k3_branch": [current_k3_branch, ""], "numberDensity": [current_nHe, "cm$^{-3}$"]}
         functionOfVariable("power", currentConstants)
 
     elif variable == "a(k_up/k_down)":
-        currentConstants = {"power": [current_Power, "W"], "numberDensity": [current_nHe, "cm$^3$"]}
+        currentConstants = {"power": [current_Power, "W"], "numberDensity": [current_nHe, "cm$^{-3}$"]}
         functionOfVariable("k3_branch", currentConstants)
 
     elif variable == "all":
@@ -557,30 +557,31 @@ def main(arguments):
         qapp.exec()
 
 
-def make_stepsizes_equally_spaced(changeVariable: Literal["numberDensity", "power"]):
+def make_stepsizes_equally_spaced_log(changeVariable: Literal["numberDensity", "power"]):
     variableRange: str = conditions["$variableRange"][changeVariable]
 
     _start, _end, _steps = variableRange.split(",")
-    _start = int(_start.split("e")[-1])
-    _end = int(_end.split("e")[-1])
-    counter = _start
-    dataList = []
-    while counter < _end:
-        appendDataList = np.linspace(float(f"1e{counter}"), float(f"1e{counter+1}"), int(_steps))
-        dataList = np.append(dataList, appendDataList)
-        counter += 1
+    dataList = np.logspace(np.log10(float(_start)), np.log10(float(_end)), int(_steps), endpoint=True)
+
     return dataList
 
 
 def functionOfVariable(
     changeVariable: Literal["numberDensity", "power", "k3_branch", "all"] = "numberDensity",
     currentConstants=None,
-    plot=True,
+    plot=None,
     save_location: pt = None,
     dataList: list[float] = None,
     verbose=True,
 ):
+
     global qapp, fOf_appendOutputFileName
+
+    if verbose:
+        logger(f"Running {changeVariable} function of variable...")
+
+    if plot is None:
+        plot = figure["show"]
 
     if dataList is None:
         if changeVariable == "k3_branch" or changeVariable == "all":
@@ -588,8 +589,7 @@ def functionOfVariable(
             _start, _end, _steps = variableRange.split(",")
             dataList = np.arange(float(_start), float(_end), float(_steps))
         else:
-            # variableRange: str = conditions["$variableRange"][changeVariable]
-            dataList = make_stepsizes_equally_spaced(changeVariable)
+            dataList = make_stepsizes_equally_spaced_log(changeVariable)
 
     if changeVariable == "all":
         simulation_time_start = time.perf_counter()
@@ -598,9 +598,9 @@ def functionOfVariable(
             save_folder.mkdir()
 
         process_completed = 0
-        power_values = make_stepsizes_equally_spaced("power")
+        power_values = make_stepsizes_equally_spaced_log("power")
         logger(f"{len(power_values)} power values to be simulated.\n{power_values=}")
-        numberDensity_values = make_stepsizes_equally_spaced("numberDensity")
+        numberDensity_values = make_stepsizes_equally_spaced_log("numberDensity")
         logger(f"{len(numberDensity_values)} number density values to be simulated.\n{numberDensity_values=}")
         total_processes_count = len(dataList) * len(numberDensity_values)
         current_process_count = 0
@@ -616,16 +616,15 @@ def functionOfVariable(
                 current_process_count += 1
                 functionOfVariable(
                     "power",
-                    currentConstants={"k3_branch": [_k3_branch, ""], "numberDensity": [_nHe, "cm$^3$"]},
+                    currentConstants={"k3_branch": [_k3_branch, ""], "numberDensity": [_nHe, "cm$^{-3}$"]},
                     plot=False,
                     save_location=current_save_dir,
                     dataList=power_values,
                     verbose=False,
                 )
-
                 current_variableRange = f"{power_values[0]:.2e} to {power_values[-1]:.2e}"
                 logger(
-                    f"{current_process_count / total_processes_count :.1%}: [a={_k3_branch:.2f}] completed {counter+1} out of {len(numberDensity_values)} cycles for power => {current_variableRange} at {_nHe:.2e} cm3"
+                    f"{current_process_count / total_processes_count :.1%}: [a={_k3_branch:.2f}] completed {counter+1} out of {len(numberDensity_values)} cycles for power => {current_variableRange} at {_nHe:.2e} cm-3"
                 )
 
             process_completed += 1
@@ -641,12 +640,12 @@ def functionOfVariable(
 
         return
 
-    molecule = conditions["main_parameters"]["molecule"]
-    taggingPartner = conditions["main_parameters"]["tagging partner"]
+    # molecule = conditions["main_parameters"]["molecule"]
+    # taggingPartner = conditions["main_parameters"]["tagging partner"]
     excitedFrom = str(conditions["excitedFrom"])
     excitedTo = str(conditions["excitedTo"])
 
-    outputFileName = f"{molecule}-{taggingPartner}__{excitedFrom}-{excitedTo}"
+    # outputFileName = f"{molecule}-{taggingPartner}__{excitedFrom}-{excitedTo}"
 
     fOf_appendOutputFileName = None
     if changeVariable == "k3_branch":
@@ -663,13 +662,12 @@ def functionOfVariable(
     if isinstance(currentConstants, dict):
         for key, value in currentConstants.items():
             if key == "numberDensity" or key == "power":
-                variable_appendFileName += f"_{key}_{value[0]:.1e}{value[1]}"
+                variable_appendFileName += f"_{key}_{value[0]:.1e}"
             elif key == "k3_branch":
-                variable_appendFileName += f"_{key}_{value[0]:.2f}{value[1]}"
+                variable_appendFileName += f"_{key}_{value[0]:.2f}"
 
-    outputFileName += "__at_constant__" + variable_appendFileName
-    outputFileName = outputFileName.replace("$", "").replace("^", "")
-
+    outputFileName = f"{savefilename}__at_constant__{variable_appendFileName}"
+    outputFileName = remove_special_chars_in_string(outputFileName)
     if verbose:
         logger(f"Output file name: {outputFileName}")
 
@@ -681,7 +679,7 @@ def functionOfVariable(
     populationChange = []
     signalChange = []
 
-    for variable in dataList:
+    for variable_counter, variable in enumerate(dataList):
         if changeVariable == "numberDensity":
             currentData = ROSAA(
                 nHe=variable,
@@ -719,6 +717,12 @@ def functionOfVariable(
             changeInSignal = np.around(np.nan_to_num(changeInSignal).clip(min=0), 1)
             signalChange.append(changeInSignal)
 
+        if verbose:
+            current_variable_counter = variable_counter + 1
+            logger(
+                f"{current_variable_counter / len(dataList) :.1%}: completed {current_variable_counter} out of {len(dataList)} cycles for {changeVariable} => {variable:.2e}"
+            )
+
     if plot:
 
         if changeVariable == "numberDensity":
@@ -752,7 +756,7 @@ def functionOfVariable(
                     constantLabel += f"a={value[0]:.2f} {value[1]}\n"
 
         widget.ax.plot(dataList, populationChange, "-k", label=constantLabel)
-        widget.optimize_figure()
+        widget.optimize_figure(setBound=False)
         widget.fig.tight_layout()
         if qapp is None:
             qapp = widget.qapp
@@ -776,14 +780,17 @@ def functionOfVariable(
             )
 
             widget1.ax.plot(dataList, signalChange, "-k", label=constantLabel)
-            widget1.optimize_figure()
+            widget1.optimize_figure(setBound=False)
             widget1.fig.tight_layout()
 
         dataToSend["signalChange"] = np.around(signalChange, 3).tolist()
 
+    if verbose:
+        logger("Compuation completed.")
     if conditions["writefile"]:
         savefileJSON = final_output_location / f"{outputFileName}.output.json"
         with open(savefileJSON, "w+") as f:
             json.dump(dataToSend, f, indent=4)
             if verbose:
-                logger(f"{savefileJSON} file written in {location}")
+                logger(f"file saved to {savefileJSON}")
+                logger("Completed")
