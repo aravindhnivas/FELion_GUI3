@@ -1,6 +1,6 @@
 <script lang="ts">
-    import ButtonBadge from '$src/components/ButtonBadge.svelte'
-    import CustomSelect from '$src/components/CustomSelect.svelte'
+    import ButtonBadge from '$components/ButtonBadge.svelte'
+    import CustomSelect from '$components/CustomSelect.svelte'
     import { tick } from 'svelte'
 
     export let progress = 0
