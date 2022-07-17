@@ -485,7 +485,7 @@
                 >
                     {statusReport}
                 </div>
-                <div class=" pr-5" class:hide={showreport}>
+                <div class="pr-5" class:hide={showreport}>
                     <Accordion multiple style="width: 100%;">
                         <CustomPanel label="Main Parameters" loaded={mainParameters.length > 0}>
                             <div class="align h-center">
@@ -622,9 +622,11 @@
 
     <svelte:fragment slot="left_footer_content__slot">
         <CustomCheckbox bind:value={writefile} label="writefile" />
+
         <Textfield bind:value={savefilename} label="savefilename" />
         <CustomCheckbox bind:value={figure.show} label="show figure" />
     </svelte:fragment>
+
     <svelte:fragment slot="footer_content__slot">
         <ROSAA_Footer bind:showreport bind:statusReport bind:progress bind:simulationMethod {simulation} />
     </svelte:fragment>
@@ -633,18 +635,15 @@
 <style lang="scss">
     .locationColumn {
         display: grid;
-        grid-auto-flow: column;
         grid-gap: 1em;
+        grid-auto-flow: column;
         grid-template-columns: auto 1fr auto;
     }
-    .main_container__div {
-        display: grid;
-        grid-row-gap: 1em;
-    }
+
     .variable__div {
+        display: grid;
         gap: 1em;
         width: 100%;
-        display: grid;
         grid-auto-flow: column;
     }
 </style>
