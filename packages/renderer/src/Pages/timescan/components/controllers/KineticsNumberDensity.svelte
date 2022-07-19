@@ -1,5 +1,5 @@
 <script>
-    import { onMount } from 'svelte'
+    import { onMount, tick } from 'svelte'
     import Modal from '$components/modal/Modal.svelte'
     import CustomSelect from '$components/CustomSelect.svelte'
     import NumberDensity from '$src/Pages/misc/NumberDensity.svelte'
@@ -15,7 +15,7 @@
     $: savefilename = window.path.join(configDir, filename)
 
     let contents = {}
-    const readConfigFile = () => {
+    const readConfigFile = async (toast = true) => {
         if (!window.fs.isFile(savefilename)) {
             if ($activePage === 'Kinetics') {
                 return window.createToast('No config file found. Just compute and press save to create one', 'danger')
@@ -23,34 +23,45 @@
             return
         }
         ;[contents] = window.fs.readJsonSync(savefilename)
-        if (active) {
-            window.createToast('file read: ' + window.path.basename(savefilename))
-            compute()
-        }
+        if (toast) window.createToast('file read: ' + window.path.basename(savefilename))
+        return await compute()
     }
 
-    onMount(readConfigFile)
+    onMount(async () => {
+        await readConfigFile(false)
+    })
 
     let updateCurrentConfig
     let get_datas
-    const save_datas = () => {
+    const save_datas = async () => {
         try {
-            const datas = get_datas()
+            const datas = await get_datas()
+            if (datas === null) return window.createToast('Data is not yet full computed')
             if (Object.keys(datas).length === 0) return
+
+            console.log(selectedFile)
+            console.log(datas.added_pressure)
+            console.log(datas.trap_temperature)
+            // return
+
             contents[selectedFile] = datas
-            console.log(contents[selectedFile])
+            console.log(selectedFile, contents[selectedFile])
+            // await tick()
             window.fs.outputJsonSync(savefilename, contents)
-            window.createToast('file saved: ' + window.path.basename(savefilename))
+            ;[contents] = window.fs.readJsonSync(savefilename)
+            window.createToast(`File saved to ${window.path.basename(savefilename)} for ${selectedFile}`)
         } catch (error) {
             window.handleError(error)
         }
     }
-
-    const compute = () => {
+    const compute = async () => {
         if (!updateCurrentConfig) return
         const currentConfig = contents?.[selectedFile]
         if (active && !currentConfig) return
-        updateCurrentConfig(currentConfig)
+        return await updateCurrentConfig(currentConfig)
+    }
+    $: if (selectedFile) {
+        compute()
     }
 </script>
 
@@ -81,12 +92,7 @@
                     />
                     <button class="button is-link" on:click={readConfigFile}>Read file</button>
 
-                    <CustomSelect
-                        on:change={compute}
-                        bind:value={selectedFile}
-                        label="Filename"
-                        options={fileCollections}
-                    />
+                    <CustomSelect bind:value={selectedFile} label="Filename" options={fileCollections} />
                     <span class="tag is-success" class:is-danger={!contents?.[selectedFile]}>
                         config {contents?.[selectedFile] ? 'found' : 'not found'}
                     </span>

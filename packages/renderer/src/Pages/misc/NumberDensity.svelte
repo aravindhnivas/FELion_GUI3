@@ -2,7 +2,7 @@
     import Textfield from '@smui/textfield';
     import CustomSwitch from '$components/CustomSwitch.svelte'
     import computePy_func from '$src/Pages/general/computePy'
-    import { createEventDispatcher } from 'svelte';
+    import { createEventDispatcher, tick } from 'svelte';
 
     let args = {};
     
@@ -16,10 +16,10 @@
         TakaishiSensuiConstants.C.value = C
     }
     
-    export const updateCurrentConfig = (config) => {
+    export const updateCurrentConfig = async (config) => {
         if(!config || Object.keys(config).length === 0) return
         set_config(config)
-        computeNumberDensity()
+        return await computeNumberDensity()
     }
 
     let includeTranspiration = true
@@ -47,31 +47,26 @@
     let rt_std_dev = 1
     $: window.db.set('calibration_factor', Number(calibration_factor[0]))
     
-    export const computeNumberDensity = async (e?: Event) => {
-    
+    export const computeNumberDensity = async (e?: Event): Promise<string | void> => {
+        
+        datafromPython = null
+        args = null
+
         const room_temperature = [rt, rt_std_dev]
+        
         if(Number(trap_temperature[0]) <= 0) return window.createToast("Invalid temperature", "danger")
+        
         const changeInPressure = Number(added_pressure[0]) - Number(background_pressure[0])
         if(changeInPressure < 0) return window.createToast("Negative pressure! correct background pressure!!", "danger")
         if(!changeInPressure) return window.createToast("Invalid pressures", "danger")
-
         const TkConstants = {
             A: TakaishiSensuiConstants.A.value.map(Number),
             B: TakaishiSensuiConstants.B.value.map(Number),
             C: TakaishiSensuiConstants.C.value.map(Number),
         }
 
-        // args = {
-        //     srgMode,
-        //     tube_diameter: tube_diameter.map(Number), 
-        //     added_pressure: added_pressure.map(Number),
-        //     room_temperature: room_temperature.map(Number),
-        //     trap_temperature: trap_temperature.map(Number),
-        //     background_pressure: background_pressure.map(Number),
-        //     TakaishiSensuiConstants: TkConstants,
-        //     calibration_factor: calibration_factor.map(Number),
-        // }
-
+        await tick()
+        
         args = {
             srgMode,
             tube_diameter, 
@@ -87,20 +82,20 @@
         datafromPython = await computePy_func(
             {e, pyfile: 'numberDensity', args}
         )
-        const nHe = dispatch_current_numberdensity()
-        return Promise.resolve(nHe)
-
+        if(!datafromPython) return Promise.reject('Computation failed')
+        return Promise.resolve(dispatch_current_numberdensity())
     }
 
-    export const get_datas = () => {
-        return {...args, ...datafromPython }
+    export const get_datas = async () => {
+        await tick()
+        if(!(args && datafromPython)) return Promise.resolve(null)
+        return Promise.resolve({...args, ...datafromPython })
     }
+
 
     const dispatch = createEventDispatcher();
-
     const dispatch_current_numberdensity = () => {
-
-        if(!datafromPython) return
+        if(!datafromPython) return null
         const nHe = includeTranspiration ? datafromPython?.['nHe_transpiration'] : datafromPython?.['nHe']
         dispatch('getValue', {nHe})
         return nHe
@@ -112,9 +107,9 @@
 
     <slot name="header" />
     
-    <CustomSwitch on:change={({detail: {selected}})=>{
+    <CustomSwitch on:change={async ({detail: {selected}})=>{
         calibration_factor = selected ? [1, 0] : [200, 10]
-        computeNumberDensity()
+        return await computeNumberDensity()
     }}
         tooltip="Spinning Rotor Gauge"
         bind:selected={srgMode}
@@ -129,7 +124,11 @@
     <button class="button is-link" on:click={computeNumberDensity}>Compute</button>
 </div>
 
-<div class="align scroll mt-2 pb-5" on:keypress="{(e)=>{if(e.key==="Enter") {computeNumberDensity()}}}">
+<div class="align scroll mt-2 pb-5" on:keypress="{async (e)=>{
+    if(e.key==="Enter") {
+        await computeNumberDensity()
+    }
+}}">
 
     <div style="display: flex; flex-direction: column; padding: 0 1em;">
         
