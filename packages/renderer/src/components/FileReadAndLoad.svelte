@@ -66,13 +66,14 @@
     }
 
     const notify = (info: string = 'saved') => {
-        data_loaded = true
         console.log({ dataToSave })
         window.createToast(`${filename} ${info} for ${selectedFile}`, 'success', toastOpts)
     }
 
-    const load_data = () => {
+    const load_data = (toast = true) => {
+        data_loaded = false
         const loadfilename = window.path.join(configDir, filename)
+
         if (!window.fs.isFile(loadfilename)) {
             return window.createToast(`File does not exists`, 'danger', toastOpts)
         }
@@ -84,31 +85,42 @@
             if (!data.default) return window.createToast(`default-mode: No data found`, 'danger', toastOpts)
             dataToSave = data.default
             data_loaded = true
-            return notify('loaded')
+            if (toast) notify('loaded')
+            return
         }
 
         if (!data?.[selectedFile]) {
             return window.createToast(`No data found for ${selectedFile} file`, 'danger', toastOpts)
         }
         if (useTaggedFile) {
-            if (!tagFile) return window.createToast(`Invalid tagFile name`, 'danger', toastOpts)
-            if (!data[selectedFile]?.['tags'])
+            if (!tagFile) {
+                return window.createToast(`Invalid tagFile name`, 'danger', toastOpts)
+            }
+            if (!data[selectedFile]?.['tags']) {
                 return window.createToast('No tag column created for this file', 'danger', toastOpts)
-            if (!data[selectedFile]['tags'][tagFile])
+            }
+            if (!data[selectedFile]['tags'][tagFile]) {
                 return window.createToast(`tag-mode: No data found for ${selectedFile} file`, 'danger', toastOpts)
+            }
 
+            data_loaded = true
             dataToSave = data[selectedFile]['tags'][tagFile]
-            return notify('loaded')
+            if (toast) notify('loaded')
+            return
         }
-        if (!data[selectedFile]['default'])
+
+        if (!data[selectedFile]['default']) {
             return window.createToast(`default-mode: No data found for ${selectedFile} file`, 'danger', toastOpts)
+        }
+
         dataToSave = data[selectedFile]['default']
         data_loaded = true
-        return notify('loaded')
+        if (toast) notify('loaded')
+        return
     }
-
-    $: if (!singleFilemode && selectedFile) {
-        data_loaded = false
+    // $: console.log({ data_loaded })
+    $: if (selectedFile) {
+        load_data(false)
     }
 </script>
 
