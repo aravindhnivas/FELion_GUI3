@@ -646,9 +646,9 @@ def functionOfVariable(
         simulation_time_end = time.perf_counter()
         logger(f"Total time {simulation_time_end - simulation_time_start:.2f} seconds")
         logger("Process COMPLETED")
-        final_appendOutputFileName = f"f-power_{power_values[0]:.0e}-{power_values[-1]:.0e}"
-        final_all_directory = current_save_dir / final_appendOutputFileName
-        logger(f"Saving data to {final_all_directory}")
+        # final_appendOutputFileName = f"f-power_{power_values[0]:.0e}-{power_values[-1]:.0e}"
+        # final_all_directory = current_save_dir / final_appendOutputFileName
+        logger(f"Saving data to {save_folder}")
 
         return
 
