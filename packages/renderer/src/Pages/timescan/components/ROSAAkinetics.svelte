@@ -420,27 +420,6 @@
                     >
                 </CustomPanel>
 
-                <!-- <CustomPanel label="Basic info" loaded={params_found} class="align">
-                    <CustomTextSwitch
-                        max={maxTimeIndex}
-                        bind:value={timestartIndexScan}
-                        label="Time Index"
-                        on:change={() => sliceData(true)}
-                    />
-                    <Textfield bind:value={molecule} label="Molecule" />
-                    <Textfield bind:value={tag} label="tag" />
-                    <div class="parm_save__div">
-                        <button class="button is-warning" on:click={() => computeOtherParameters()}>load</button>
-                        <TextAndSelectOptsToggler
-                            bind:value={$kinetics_params_file}
-                            label="fit-config file (*.params.json)"
-                            lookFor=".params.json"
-                            lookIn={configDir}
-                        />
-                        <button class="button is-link" on:click={updateParamsFile}>update</button>
-                    </div>
-                </CustomPanel> -->
-
                 <RateInitialise
                     loaded={params_found}
                     {totalMassKey}
@@ -468,7 +447,7 @@
                                     lookFor=".params.json"
                                     lookIn={configDir}
                                 />
-                                <button class="button is-link" on:click={updateParamsFile}>update</button>
+                                <button class="button is-link" on:click={updateParamsFile}>save</button>
                             </div>
                         </div>
                     </svelte:fragment>
