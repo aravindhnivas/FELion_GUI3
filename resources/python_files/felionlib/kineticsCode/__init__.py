@@ -73,17 +73,19 @@ def main(args):
     print(f"{expDataError.shape=}", flush=True)
 
     selectedFile = args["selectedFile"]
-    numberDensity = ufloat_fromstr(args["numberDensity"])
-    print(f"{numberDensity=}", flush=True)
+
+    try:
+        numberDensity = ufloat_fromstr(args["numberDensity"])
+        print(f"{numberDensity=}", flush=True)
+    except Exception as error:
+        print(f"Could not read number density", error, flush=True)
+
     initialValues = [float(i) for i in args["initialValues"]]
     totalAttachmentLevels = len(initialValues) - 1
 
     outdir = kinetic_file_location.parent / "OUT"
     fit_config_file = config_files_location / args["$fit_config_filename"]
 
-    k3Guess: list[float, float] = [float(i) for i in args["k3Guess"].split(",")]
-    kCIDGuess: list[float, float] = [float(i) for i in args["kCIDGuess"].split(",")]
-    print(f"{k3Guess=}\n{kCIDGuess=}", flush=True)
     legends = [lg.strip() for lg in args["legends"].split(",")]
     read_config(fit_config_file, selectedFile, kineticCodeContents, useTaggedFile, tagFile)
 
@@ -95,7 +97,6 @@ def main(args):
 
     widget = felionQtWindow(title=f"kinetics : {selectedFile}", windowGeometry=(1200, 600), location=outdir)
     KineticMain()
-    # widget.ax.set_xbound(lower=-0.1)
     widget.ax.set_ybound(lower=1)
     widget.optimize_figure()
     widget.qapp.exec()
