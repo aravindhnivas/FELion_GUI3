@@ -61,7 +61,7 @@
 
         ;[, error] = window.fs.outputJsonSync(savefilename, data)
         if (error) return window.handleError(`Error writing ${filename}\n${error}`)
-
+        data_loaded = true
         return notify()
     }
 
