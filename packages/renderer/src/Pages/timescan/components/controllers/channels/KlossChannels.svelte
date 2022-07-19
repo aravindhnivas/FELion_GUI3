@@ -105,6 +105,7 @@
     }
 
     let data_loaded = false
+    $: console.log({ data_loaded })
 </script>
 
 <CustomPanel loaded={data_loaded} label="Channels" style="display: flex; flex-direction: column;">

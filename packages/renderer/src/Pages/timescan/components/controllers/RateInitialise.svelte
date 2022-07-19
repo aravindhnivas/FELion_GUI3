@@ -12,6 +12,7 @@
 </script>
 
 <CustomPanel label="Labels" style="display: flex; flex-direction: column; gap: 1em;" {loaded}>
+    <slot name="basic-infos" />
     <div class="align h-center">
         <Textfield bind:value={nameOfReactants} label="nameOfReactants" style="width:30%" />
         <Textfield bind:value={legends} label="legends" style="width:30%" />
@@ -37,4 +38,5 @@
     {#if totalMassKey.filter((m) => m.included).length < 2}
         <span class="tag is-danger"> atleast two reactants are required for kinetics </span>
     {/if}
+    <slot name="rate-constants" />
 </CustomPanel>

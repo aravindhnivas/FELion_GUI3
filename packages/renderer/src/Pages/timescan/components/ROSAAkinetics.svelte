@@ -1,11 +1,11 @@
 <script lang="ts">
     import { persistentWritable } from '$src/js/persistentStore'
-    import { onMount, tick } from 'svelte'
-    import { boltzmanConstant } from '$src/js/constants'
+    import { onMount } from 'svelte'
+    // import { boltzmanConstant } from '$src/js/constants'
     import { cloneDeep } from 'lodash-es'
     import Textfield from '@smui/textfield'
 
-    import CustomSwitch from '$components/CustomSwitch.svelte'
+    // import CustomSwitch from '$components/CustomSwitch.svelte'
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
     import CustomSelect from '$components/CustomSelect.svelte'
     import CustomCheckbox from '$components/CustomCheckbox.svelte'
@@ -13,7 +13,7 @@
 
     import LayoutDiv from '$components/LayoutDiv.svelte'
     import computePy_func from '$src/Pages/general/computePy'
-    import KineticConfigTable from './KineticConfigTable.svelte'
+    // import KineticConfigTable from './KineticConfigTable.svelte'
 
     import KineticEditor from './KineticEditor.svelte'
     import MatplotlibDialog from './MatplotlibDialog.svelte'
@@ -24,7 +24,7 @@
     import RateInitialise from './controllers/RateInitialise.svelte'
     import KlossChannels from './controllers/channels/KlossChannels.svelte'
     import KineticsNumberDensity from './controllers/KineticsNumberDensity.svelte'
-    import { activePage } from '$src/sveltewritables'
+    // import { activePage } from '$src/sveltewritables'
     import type { mainDataType, dataType, totalMassKeyType, loss_channelsType } from '$src/Pages/timescan/types/types'
 
     import Accordion from '@smui-extra/accordion'
@@ -38,12 +38,12 @@
     let molecule = 'CD'
     let tag = 'He'
     let nameOfReactants = ''
-    let ratek3 = 'k31'
-    let ratekCID = 'kCID1'
+    // let ratek3 = 'k31'
+    // let ratekCID = 'kCID1'
     let selectedFile = ''
     let totalMassKey: totalMassKeyType = []
-    let k3Guess = '0, 0.5, 1e-3'
-    let kCIDGuess = '0, 2, 1e-3'
+    // let k3Guess = '0, 0.5, 1e-3'
+    // let kCIDGuess = '0, 2, 1e-3'
 
     async function browse_folder() {
         const [result] = await browse()
@@ -140,10 +140,10 @@
     const kinetics_params_file = persistentWritable('kinetics_params_file', 'kinetics.params.json')
     $: paramsFile = window.path.join(configDir, $kinetics_params_file || '')
     $: paramsData = {
-        ratek3,
-        k3Guess,
-        ratekCID,
-        kCIDGuess,
+        // ratek3,
+        // k3Guess,
+        // ratekCID,
+        // kCIDGuess,
         legends,
         totalMassKey,
         initialValues,
@@ -151,23 +151,23 @@
         timestartIndexScan,
         $fit_config_filename,
         kineticEditorFilename,
-        loss_channels,
+        // loss_channels,
         tagFile,
     }
 
     const params_load = (data) => {
         ;({
-            ratek3,
-            k3Guess,
-            ratekCID,
-            kCIDGuess,
+            // ratek3,
+            // k3Guess,
+            // ratekCID,
+            // kCIDGuess,
             legends,
             totalMassKey,
             initialValues,
             nameOfReactants,
             timestartIndexScan,
             kineticEditorFilename,
-            loss_channels,
+            // loss_channels,
         } = data)
         if (data['$fit_config_filename']) {
             $fit_config_filename = data['$fit_config_filename']
@@ -257,11 +257,11 @@
 
         nameOfReactants = `${molecule}, ${molecule}${tag}`
         legends = `${molecule}$^+$, ${molecule}$^+$${tag}`
-        ;(ratek3 = 'k31'), (ratekCID = 'kCID1')
+        // ;(ratek3 = 'k31'), (ratekCID = 'kCID1')
 
         for (let index = 2; index < masses.length; index++) {
-            ratek3 += `, k3${index}`
-            ratekCID += `, kCID${index}`
+            // ratek3 += `, k3${index}`
+            // ratekCID += `, kCID${index}`
             nameOfReactants += `, ${molecule}${tag}${index}`
             legends += `, ${molecule}$^+$${tag}$_${index}$`
         }
@@ -329,20 +329,20 @@
                 kinetic_plot_adjust_configs_obj = {}
             }
 
-            let modified_rate_constants = [ratek3, ratekCID]
-            loss_channels.forEach(({ type, name }) => {
-                if (type === 'forwards') return (modified_rate_constants[0] += `, ${name}`)
-                modified_rate_constants[1] += `, ${name}`
-            })
+            // let modified_rate_constants = [ratek3, ratekCID]
+            // loss_channels.forEach(({ type, name }) => {
+            //     if (type === 'forwards') return (modified_rate_constants[0] += `, ${name}`)
+            //     modified_rate_constants[1] += `, ${name}`
+            // })
             const args = {
                 tag,
                 data,
-                ratek3: modified_rate_constants[0],
-                k3Guess,
                 molecule,
-                ratekCID: modified_rate_constants[1],
                 legends,
-                kCIDGuess,
+                // ratek3: modified_rate_constants[0],
+                // k3Guess,
+                // ratekCID: modified_rate_constants[1],
+                // kCIDGuess,
                 selectedFile,
                 numberDensity: nHe,
                 $fit_config_filename,
@@ -410,7 +410,7 @@
     <svelte:fragment slot="main_content__slot">
         <div class="main_container__div">
             <Accordion multiple style="width: 100%;">
-                <CustomPanel loaded={nHe.length > 0} label="Number density">
+                <CustomPanel loaded={nHe?.length > 0} label="Number density">
                     <Textfield value={nHe || ''} label="numberDensity" disabled />
                     <button
                         class="button is-link"
@@ -420,7 +420,7 @@
                     >
                 </CustomPanel>
 
-                <CustomPanel label="Basic info" loaded={params_found} class="align">
+                <!-- <CustomPanel label="Basic info" loaded={params_found} class="align">
                     <CustomTextSwitch
                         max={maxTimeIndex}
                         bind:value={timestartIndexScan}
@@ -439,7 +439,7 @@
                         />
                         <button class="button is-link" on:click={updateParamsFile}>update</button>
                     </div>
-                </CustomPanel>
+                </CustomPanel> -->
 
                 <RateInitialise
                     loaded={params_found}
@@ -448,18 +448,39 @@
                     bind:nameOfReactants
                     bind:legends
                     {computeOtherParameters}
-                />
-                <RateConstants
-                    loaded={params_found}
-                    {configDir}
-                    bind:defaultInitialValues
-                    bind:initialValues
-                    bind:kinetics_fitfile={$fit_config_filename}
-                    bind:ratek3
-                    bind:k3Guess
-                    bind:ratekCID
-                    bind:kCIDGuess
-                />
+                >
+                    <svelte:fragment slot="basic-infos">
+                        <div class="align v-center">
+                            <CustomTextSwitch
+                                max={maxTimeIndex}
+                                bind:value={timestartIndexScan}
+                                label="Time Index"
+                                on:change={() => sliceData(true)}
+                            />
+                            <Textfield bind:value={molecule} label="Molecule" />
+                            <Textfield bind:value={tag} label="tag" />
+                            <div class="parm_save__div">
+                                <button class="button is-warning" on:click={() => computeOtherParameters()}>load</button
+                                >
+                                <TextAndSelectOptsToggler
+                                    bind:value={$kinetics_params_file}
+                                    label="fit-config file (*.params.json)"
+                                    lookFor=".params.json"
+                                    lookIn={configDir}
+                                />
+                                <button class="button is-link" on:click={updateParamsFile}>update</button>
+                            </div>
+                        </div>
+                    </svelte:fragment>
+                    <svelte:fragment slot="rate-constants">
+                        <RateConstants
+                            {configDir}
+                            bind:defaultInitialValues
+                            bind:initialValues
+                            bind:kinetics_fitfile={$fit_config_filename}
+                        />
+                    </svelte:fragment>
+                </RateInitialise>
 
                 <KlossChannels
                     bind:loss_channels
