@@ -11,7 +11,7 @@
         srgMode: '',
         pbefore: '',
         pafter: '',
-        calibrationFactor: '',
+        C_factor: '',
         temp: '',
     }
 
