@@ -1,16 +1,14 @@
 <script>
-    import { onMount } from 'svelte'
+    import { onMount, tick } from 'svelte'
     import Modal from '$components/modal/Modal.svelte'
-    import KineticConfigTable from './KineticConfigTable.svelte'
     import CustomSelect from '$components/CustomSelect.svelte'
     import NumberDensity from '$src/Pages/misc/NumberDensity.svelte'
     import TextAndSelectOptsToggler from '$src/components/TextAndSelectOptsToggler.svelte'
     import { activePage } from '$src/sveltewritables'
-
+    import { browse } from '$components/Layout.svelte'
     export let nHe = ''
     export let selectedFile = ''
     export let active = false
-
     export let configDir = ''
     export let fileCollections = []
 
@@ -38,15 +36,10 @@
     let get_datas
     const save_datas = async () => {
         try {
-            const datas = await get_datas()
-            if (datas === null) return window.createToast('Data is not yet full computed')
-            if (Object.keys(datas).length === 0) return
-
-            // console.log(selectedFile)
-            // console.log(datas.added_pressure)
-            // console.log(datas.trap_temperature)
-            contents[selectedFile] = datas
-            // console.log(selectedFile, contents[selectedFile])
+            if (!get_datas) return window.createToast('No datas computed', 'danger')
+            if (get_datas === null) return window.createToast('Data is not yet full computed')
+            if (Object.keys(get_datas).length === 0) return
+            contents[selectedFile] = get_datas
             window.fs.outputJsonSync(savefilename, contents)
             ;[contents] = window.fs.readJsonSync(savefilename)
             window.createToast(`File saved to ${window.path.basename(savefilename)} for ${selectedFile}`)
@@ -54,15 +47,48 @@
             window.handleError(error)
         }
     }
+
     const compute = async () => {
         if (!updateCurrentConfig) return
         const currentConfig = contents?.[selectedFile]
         if (active && !currentConfig) return
         return await updateCurrentConfig(currentConfig)
     }
+
     $: if (selectedFile) {
         compute()
     }
+
+    let config_file = ''
+    const browseFromConfigFile = async () => {
+        config_file = ''
+        const [result] = await browse({ filetype: 'config.json', dir: false })
+        if (!result) return
+        config_file = result
+    }
+
+    const loadFromConfigFile = async () => {
+        if (!config_file) return window.createToast('No config file loaded')
+        const [config_contents] = window.fs.readJsonSync(config_file)
+        window.createToast(`File read: ${window.path.basename(config_file)}`)
+        console.log(config_contents)
+
+        const keys = Object.keys(config_contents)
+
+        const contents = {}
+        for (const key of keys) {
+            const config = config_contents[key]
+            set_minimal_config?.(config)
+            const datas = await computeNumberDensity(null, true)
+            contents[key] = datas
+        }
+
+        window.fs.outputJsonSync(savefilename, contents)
+        await readConfigFile()
+    }
+
+    let computeNumberDensity = null
+    let set_minimal_config = null
 </script>
 
 <svelte:window
@@ -75,10 +101,14 @@
 <Modal bind:active title="{selectedFile}: {nHe} cm-3" id="kinetis-number-density" on:mounted={compute}>
     <svelte:fragment slot="content">
         <NumberDensity
+            bind:computeNumberDensity
+            bind:set_minimal_config
             bind:updateCurrentConfig
-            bind:get_datas
             on:getValue={(e) => {
                 nHe = e.detail.nHe
+            }}
+            on:fullargs={(e) => {
+                get_datas = e.detail.datas
             }}
         >
             <svelte:fragment slot="header">
@@ -100,6 +130,8 @@
         </NumberDensity>
     </svelte:fragment>
     <svelte:fragment slot="footer">
-        <button class="button is-link" on:click={save_datas}>Save</button>
+        <button class="button is-warning" on:click={browseFromConfigFile}>browse config file</button>
+        <button class="button is-warning" on:click={loadFromConfigFile}>load config file</button>
+        <button class="button is-success has-green-background" on:click={save_datas}>Save</button>
     </svelte:fragment>
 </Modal>

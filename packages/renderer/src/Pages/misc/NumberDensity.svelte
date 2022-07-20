@@ -3,8 +3,9 @@
     import CustomSwitch from '$components/CustomSwitch.svelte'
     import computePy_func from '$src/Pages/general/computePy'
     import { createEventDispatcher, tick } from 'svelte';
+    import { cloneDeep } from 'lodash-es';
 
-    let args = {};
+    // let args = {};
     
     const set_config = (config) => {
         ;({trap_temperature, background_pressure, added_pressure, calibration_factor, srgMode, tube_diameter} = config)
@@ -15,11 +16,19 @@
         TakaishiSensuiConstants.B.value = B
         TakaishiSensuiConstants.C.value = C
     }
+
+    export const set_minimal_config = (config) => {
+        trap_temperature[0] = config.temp
+        background_pressure[0] = config.pbefore
+        added_pressure[0] = config.pafter
+        calibration_factor[0] = config.C_factor
+        srgMode = config.srgMode
+    }
     
     export const updateCurrentConfig = async (config) => {
         if(!config || Object.keys(config).length === 0) return
         set_config(config)
-        return await computeNumberDensity()
+        return await computeNumberDensity(null, true)
     }
 
     let includeTranspiration = true
@@ -30,7 +39,7 @@
         nHe: string
         nHe_transpiration: string
     }
-    let datafromPython: DataFromPython
+    // let datafromPython: DataFromPython
     let rt = <number>window.db.get('RT') || 300
     let trap_temperature = [4, 0.3]
     let background_pressure = ["1e-8", 0]
@@ -47,11 +56,13 @@
     let rt_std_dev = 1
     $: window.db.set('calibration_factor', Number(calibration_factor[0]))
     
-    export const computeNumberDensity = async (e?: Event): Promise<string | void> => {
-        
-        datafromPython = null
-        args = null
+    let numberDensity = null
+    let [X, F] = [null, null];
 
+    export const computeNumberDensity = async (e?: Event, get_data=false) => {
+        // datafromPython = null
+        // args = null
+        numberDensity = null
         const room_temperature = [rt, rt_std_dev]
         
         if(Number(trap_temperature[0]) <= 0) return window.createToast("Invalid temperature", "danger")
@@ -64,10 +75,9 @@
             B: TakaishiSensuiConstants.B.value.map(Number),
             C: TakaishiSensuiConstants.C.value.map(Number),
         }
-
         await tick()
         
-        args = {
+        const args = {
             srgMode,
             tube_diameter, 
             added_pressure,
@@ -78,27 +88,24 @@
             calibration_factor,
         }
 
-
-        datafromPython = await computePy_func(
+        const datafromPython: DataFromPython = await computePy_func(
             {e, pyfile: 'numberDensity', args}
         )
+        
         if(!datafromPython) return Promise.reject('Computation failed')
-        return Promise.resolve(dispatch_current_numberdensity())
-    }
 
-    export const get_datas = async () => {
-        await tick()
-        if(!(args && datafromPython)) return Promise.resolve(null)
-        return Promise.resolve({...args, ...datafromPython })
+        numberDensity = {nHe: datafromPython.nHe, nHe_transpiration: datafromPython.nHe_transpiration}
+        ;({X, F} = datafromPython)
+        if(get_data) return Promise.resolve(cloneDeep({...args, ...datafromPython }))
+        return Promise.resolve(dispatch_current_numberdensity(cloneDeep({...args, ...datafromPython })))
     }
 
 
     const dispatch = createEventDispatcher();
-    const dispatch_current_numberdensity = () => {
-        if(!datafromPython) return null
-        const nHe = includeTranspiration ? datafromPython?.['nHe_transpiration'] : datafromPython?.['nHe']
-        dispatch('getValue', {nHe})
-        return nHe
+    const dispatch_current_numberdensity = (datas=null) => {
+        const {nHe, nHe_transpiration} = numberDensity
+        dispatch('getValue', {nHe: includeTranspiration ? nHe_transpiration : nHe })
+        if(datas) dispatch('fullargs', {datas})
     }
 
 </script>
@@ -236,12 +243,12 @@
             <div class="border__div">
                 <Textfield
                     disabled
-                    value={datafromPython?.X || ''}
+                    value={X || ''}
                     label="X [mm.Pa / K]"
                 />
                 <Textfield
                     disabled
-                    value={datafromPython?.F || ''}
+                    value={F || ''}
                     label="F (Degree of thermal transpiration)"
                 />
             </div>
