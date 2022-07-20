@@ -15,16 +15,25 @@
     export let sortable = false
     export let configDir: string = null
     export let options_filter: string = '.json'
+    export let filename: string = ''
     export let maxHeight: string = '25em'
+    export let fileReadProps = {}
 
     let mounted = false
     onMount(() => {
-        rows = uniqBy(rows, idKey)
-        if (rowKeys === null) {
-            rowKeys = Object.keys(rows[0])
+        if (!headKeys && rowKeys) {
+            headKeys = rowKeys
         }
-        if (headKeys === null) {
-            headKeys = Object.keys(rows[0])
+
+        if (rows.length > 0) {
+            rows = uniqBy(rows, idKey)
+
+            if (rowKeys === null) {
+                rowKeys = Object.keys(rows[0])
+            }
+            if (headKeys === null) {
+                headKeys = Object.keys(rows[0])
+            }
         }
         mounted = true
     })
@@ -41,7 +50,14 @@
 {#if mounted}
     <div class="align">
         {#if configDir}
-            <FileReadAndLoad bind:dataToSave={rows} {configDir} singleFilemode={true} {options_filter} />
+            <FileReadAndLoad
+                bind:dataToSave={rows}
+                {configDir}
+                singleFilemode={true}
+                {options_filter}
+                bind:filename
+                {...fileReadProps}
+            />
         {/if}
         <DataTable style="width: 100%; user-select:text; max-height: {maxHeight}">
             <Head>

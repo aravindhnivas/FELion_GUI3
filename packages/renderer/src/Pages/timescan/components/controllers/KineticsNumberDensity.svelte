@@ -1,13 +1,16 @@
 <script>
-    import { onMount, tick } from 'svelte'
+    import { onMount } from 'svelte'
     import Modal from '$components/modal/Modal.svelte'
+    import KineticConfigTable from './KineticConfigTable.svelte'
     import CustomSelect from '$components/CustomSelect.svelte'
     import NumberDensity from '$src/Pages/misc/NumberDensity.svelte'
     import TextAndSelectOptsToggler from '$src/components/TextAndSelectOptsToggler.svelte'
     import { activePage } from '$src/sveltewritables'
+
     export let nHe = ''
     export let selectedFile = ''
     export let active = false
+
     export let configDir = ''
     export let fileCollections = []
 
@@ -39,14 +42,11 @@
             if (datas === null) return window.createToast('Data is not yet full computed')
             if (Object.keys(datas).length === 0) return
 
-            console.log(selectedFile)
-            console.log(datas.added_pressure)
-            console.log(datas.trap_temperature)
-            // return
-
+            // console.log(selectedFile)
+            // console.log(datas.added_pressure)
+            // console.log(datas.trap_temperature)
             contents[selectedFile] = datas
-            console.log(selectedFile, contents[selectedFile])
-            // await tick()
+            // console.log(selectedFile, contents[selectedFile])
             window.fs.outputJsonSync(savefilename, contents)
             ;[contents] = window.fs.readJsonSync(savefilename)
             window.createToast(`File saved to ${window.path.basename(savefilename)} for ${selectedFile}`)
@@ -72,7 +72,6 @@
         }
     }}
 />
-<!-- {#if active} -->
 <Modal bind:active title="{selectedFile}: {nHe} cm-3" id="kinetis-number-density" on:mounted={compute}>
     <svelte:fragment slot="content">
         <NumberDensity

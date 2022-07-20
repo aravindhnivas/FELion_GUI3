@@ -13,7 +13,7 @@
 
     import LayoutDiv from '$components/LayoutDiv.svelte'
     import computePy_func from '$src/Pages/general/computePy'
-    // import KineticConfigTable from './KineticConfigTable.svelte'
+    import KineticConfigTable from './controllers/KineticConfigTable.svelte'
 
     import KineticEditor from './KineticEditor.svelte'
     import MatplotlibDialog from './MatplotlibDialog.svelte'
@@ -391,6 +391,7 @@
 
     let kinetic_plot_adjust_dialog_active = false
     let show_numberDensity = false
+    let show_fileConfigs = false
     let nHe = ''
     const kinetic_plot_adjust_configs = persistentWritable(
         'kinetic_plot_adjust_configs',
@@ -399,8 +400,8 @@
 </script>
 
 <MatplotlibDialog bind:open={kinetic_plot_adjust_dialog_active} bind:value={$kinetic_plot_adjust_configs} />
-
 <KineticsNumberDensity bind:active={show_numberDensity} bind:nHe {selectedFile} {fileCollections} {configDir} />
+<KineticConfigTable bind:active={show_fileConfigs} {configDir} />
 
 <LayoutDiv id="ROSAA-kinetics">
     <svelte:fragment slot="header_content__slot">
@@ -429,6 +430,12 @@
                         on:click={() => {
                             show_numberDensity = true
                         }}>Open number density modal</button
+                    >
+                    <button
+                        class="button is-link"
+                        on:click={() => {
+                            show_fileConfigs = true
+                        }}>Show file configs</button
                     >
                 </CustomPanel>
 

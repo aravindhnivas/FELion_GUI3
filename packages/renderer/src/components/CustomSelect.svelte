@@ -11,10 +11,6 @@
     export let lookIn: string = ''
     export let lookFor: string = '*'
 
-    $: if (auto_init && !value && options.length > 0) {
-        value = options[0]
-    }
-
     onMount(() => {
         if (lookIn) {
             update = (toast = true) => {
@@ -29,8 +25,12 @@
                 options = window.fs.readdirSync(lookIn).filter((n) => n.endsWith(lookFor))
                 if (toast) window.createToast(`Found ${options.length} files`, 'success')
                 console.log(options)
+                if (auto_init && value && options.length === 0) {
+                    options[0] = value
+                }
             }
             update(false)
+
             value ||= options[0] || ''
         }
     })

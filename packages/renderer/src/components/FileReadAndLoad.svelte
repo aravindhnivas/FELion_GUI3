@@ -1,6 +1,6 @@
 <script lang="ts">
     import TextAndSelectOptsToggler from '$components/TextAndSelectOptsToggler.svelte'
-    import { isEmpty } from 'lodash-es'
+    import { isEmpty, uniqBy } from 'lodash-es'
     import Textfield from '@smui/textfield'
     import MenuSurface from '@smui/menu-surface'
     import type { MenuSurfaceComponentDev } from '@smui/menu-surface'
@@ -16,6 +16,8 @@
     export let data_loaded = false
     export let dataToSave
     export let singleFilemode = false
+    export let singleFilemode_ObjectKey = null
+    export let uniqFilter = null
 
     let surface: MenuSurfaceComponentDev
 
@@ -36,8 +38,23 @@
         const savefilename = window.path.join(configDir, filename)
 
         if (singleFilemode) {
-            const data = { default: dataToSave }
-            const [, error] = window.fs.outputJsonSync(savefilename, data)
+            let saveDataForFile = null
+            if (singleFilemode_ObjectKey) {
+                saveDataForFile = {}
+                dataToSave.forEach((data) => {
+                    saveDataForFile[data[singleFilemode_ObjectKey]] = {}
+                    for (const key in data) {
+                        if (key !== singleFilemode_ObjectKey) {
+                            saveDataForFile[data[singleFilemode_ObjectKey]] = {
+                                [key]: data[key],
+                                ...saveDataForFile[data[singleFilemode_ObjectKey]],
+                            }
+                        }
+                    }
+                })
+            }
+            saveDataForFile ??= { default: dataToSave }
+            const [, error] = window.fs.outputJsonSync(savefilename, saveDataForFile)
             if (error) return window.handleError(`Error writing ${filename}\n${error}`)
             return notify()
         }
@@ -68,6 +85,9 @@
 
     const notify = (info: string = 'saved') => {
         console.log({ dataToSave })
+        if (singleFilemode) {
+            return window.createToast(`${filename} ${info}`, 'success', toastOpts)
+        }
         window.createToast(`${filename} ${info} for ${selectedFile}`, 'success', toastOpts)
     }
 
@@ -78,20 +98,35 @@
         const loadfilename = window.path.join(configDir, filename)
 
         if (!window.fs.isFile(loadfilename)) {
-            return window.createToast(`File does not exists`, 'danger', toastOpts)
+            return window.createToast(`File does not exists. Save it first.`, 'danger', toastOpts)
         }
 
         const [data, error] = window.fs.readJsonSync(loadfilename)
         if (error) return window.handleError(`Error reading ${filename}\n${error}`)
 
         if (singleFilemode) {
+            if (singleFilemode_ObjectKey) {
+                const keys = Object.keys(data)
+
+                if (keys.length === 0) return window.createToast(`No data found`, 'danger', toastOpts)
+
+                for (const key of keys) {
+                    dataToSave = [{ [singleFilemode_ObjectKey]: key, ...data[key] }, ...dataToSave]
+                }
+
+                if (uniqFilter) {
+                    dataToSave = uniqBy(dataToSave, uniqFilter)
+                }
+                if (toast) notify('loaded')
+                return
+            }
+
             if (!data.default) return window.createToast(`default-mode: No data found`, 'danger', toastOpts)
             dataToSave = data.default
             data_loaded = true
             if (toast) notify('loaded')
             return
         }
-
         if (!data?.[selectedFile]) {
             return window.createToast(`No data found for ${selectedFile} file`, 'danger', toastOpts)
         }
@@ -105,7 +140,6 @@
             if (!data[selectedFile]['tags'][tagFile]) {
                 return window.createToast(`tag-mode: No data found for ${selectedFile} file`, 'danger', toastOpts)
             }
-
             data_loaded = true
             dataToSave = data[selectedFile]['tags'][tagFile]
             if (toast) notify('loaded')
@@ -115,14 +149,12 @@
         if (!data[selectedFile]['default']) {
             return window.createToast(`default-mode: No data found for ${selectedFile} file`, 'danger', toastOpts)
         }
-
         dataToSave = data[selectedFile]['default']
         data_loaded = true
         if (toast) notify('loaded')
         return
     }
-    // $: console.log({ data_loaded })
-    $: if (selectedFile && (useParamsFile || useTaggedFile)) {
+    $: if (!singleFilemode && selectedFile && (useParamsFile || useTaggedFile)) {
         load_data(false)
     }
 </script>
@@ -134,6 +166,7 @@
         label={`config file (*${options_filter})`}
         lookFor={options_filter}
         lookIn={configDir}
+        auto_init={true}
     />
     <button class="button is-link" on:click={save_data}>Save</button>
     <MenuSurface
