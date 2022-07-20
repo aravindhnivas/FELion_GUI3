@@ -12,20 +12,24 @@ from felionlib.kineticsCode import (
     tspan,
     simulateTime,
     kinetics_equation_file,
-    numberDensity as He
 )
+
+try:
+    from felionlib.kineticsCode import numberDensity as He
+except ImportError:
+    print("Could not import numberDensity")
+    He = None
+
 from felionlib.kineticsCode.utils.widgets.checkboxes import checkboxes
 from .configfile import ratek3, ratekCID, k_err as k_err_config
-
 from felionlib.utils.FELion_definitions import readCodeFromFile
 from felionlib.kineticsCode.utils.rateSliders import k3Sliders, kCIDSliders, update_sliders
 from .plotWidgets import fitStatus_label_widget, fit_methods_widget, solve_ivp_methods_widget
 
+
 k_err = k_err_config
 rateCoefficientArgs: tuple[list[float], list[float]] = (ratek3, ratekCID)
 k_fit: np.ndarray = None
-
-
 fit_method = "lm"
 solve_ivp_method = "Radau"
 
@@ -49,6 +53,7 @@ solve_ivp_methods_widget.currentTextChanged.connect(update_solve_ivp_method)
 
 # bounds_percent = 10
 
+
 def codeToRun(code: str):
     exec(code)
     return locals()
@@ -62,7 +67,11 @@ compute_attachment_process = codeOutput["compute_attachment_process"]
 
 def intialize_fit_plot() -> None:
     results = solve_ivp(
-        compute_attachment_process, tspan, initialValues, method=solve_ivp_method, t_eval=simulateTime,
+        compute_attachment_process,
+        tspan,
+        initialValues,
+        method=solve_ivp_method,
+        t_eval=simulateTime,
     )
 
     dNdtSol = results.y
@@ -154,17 +163,16 @@ def fit_kinetic_data() -> None:
             raise ValueError("Fitted values are not finite")
 
         if not np.all(np.isfinite(k_err)):
-            
+
             widget.showdialog(
                 "Warning", "Non-finite error values\nTry fitting with higher different timeStartIndex", "warning"
             )
             fitStatus_label_widget.setText("Non-finite error values")
-        
+
         fitStatus_label_widget.setText("Fitted")
 
     except Exception as err:
-        
+
         print(f"error: {err}")
         widget.showErrorDialog()
         fitStatus_label_widget.setText("Failed")
-        
