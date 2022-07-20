@@ -88,7 +88,7 @@
 
         totalMassKey.forEach(({ mass }) => {
             const newData: dataType = cloneDeep(currentDataBackup)[mass]
-            console.log({ newData })
+            if (!newData) return window.createToast(`${mass} not found`, 'danger', { target: 'left' })
             newData.x = newData.x.slice(timestartIndexScan)
             newData.y = newData.y.slice(timestartIndexScan)
             newData['error_y']['array'] = newData['error_y']['array'].slice(timestartIndexScan)
@@ -114,9 +114,8 @@
     let maxTimeIndex = 5
 
     function computeParameters() {
-        // includeTrapLoss = false
+        console.log('compute parameters')
         tagFile = ''
-
         timestartIndexScan = 0
         loss_channels = []
 
@@ -447,7 +446,9 @@
                                 max={maxTimeIndex}
                                 bind:value={timestartIndexScan}
                                 label="Time Index"
-                                on:change={() => sliceData(true)}
+                                on:change={() => {
+                                    sliceData(true)
+                                }}
                             />
                             <Textfield bind:value={molecule} label="Molecule" />
                             <Textfield bind:value={tag} label="tag" />
