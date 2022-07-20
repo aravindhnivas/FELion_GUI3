@@ -4,11 +4,13 @@
     import Textfield from '@smui/textfield'
     import MenuSurface from '@smui/menu-surface'
     import type { MenuSurfaceComponentDev } from '@smui/menu-surface'
+    import { tick } from 'svelte'
 
     export let configDir: string = ''
     export let selectedFile: string = ''
     export let options_filter: string = '.json'
     export let useTaggedFile: boolean = false
+    export let useParamsFile: boolean = false
     export let tagFile: string = ''
     export let filename = ''
     export let data_loaded = false
@@ -49,7 +51,6 @@
 
         data ??= {}
         if (!selectedFile) return window.createToast('No file selected', 'danger', toastOpts)
-
         data[selectedFile] ??= { tags: {}, default: {} }
 
         if (useTaggedFile) {
@@ -70,7 +71,9 @@
         window.createToast(`${filename} ${info} for ${selectedFile}`, 'success', toastOpts)
     }
 
-    const load_data = (toast = true) => {
+    export const load_data = (toast = true) => {
+        // await tick()
+
         data_loaded = false
         const loadfilename = window.path.join(configDir, filename)
 
@@ -119,7 +122,7 @@
         return
     }
     // $: console.log({ data_loaded })
-    $: if (selectedFile) {
+    $: if (selectedFile && (useParamsFile || useTaggedFile)) {
         load_data(false)
     }
 </script>

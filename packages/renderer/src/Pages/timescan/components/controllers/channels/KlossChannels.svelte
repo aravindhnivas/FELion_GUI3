@@ -17,8 +17,10 @@
 
     export let configDir: string = ''
     export let useTaggedFile: boolean = false
+    export let useParamsFile: boolean = false
     export let tagFile: string = ''
     export let selectedFile: string = ''
+    export let load_data
 
     let channelCounter = 0
     let maxGuess = '0.5'
@@ -103,22 +105,20 @@
             return channel
         })
     }
-
-    let data_loaded = false
-    $: console.log({ data_loaded })
 </script>
 
-<CustomPanel loaded={data_loaded} label="Channels" style="display: flex; flex-direction: column;">
+<CustomPanel loaded={loss_channels.length > 0} label="Channels" style="display: flex; flex-direction: column;">
     <FileReadAndLoad
         bind:filename={channels_file}
         bind:dataToSave={loss_channels}
-        bind:data_loaded
+        bind:load_data
         options_filter=".channels.json"
         {...{
             configDir,
             selectedFile,
             tagFile,
             useTaggedFile,
+            useParamsFile,
         }}
     />
     <div class="align h-center">

@@ -88,6 +88,7 @@
 
         totalMassKey.forEach(({ mass }) => {
             const newData: dataType = cloneDeep(currentDataBackup)[mass]
+            console.log({ newData })
             newData.x = newData.x.slice(timestartIndexScan)
             newData.y = newData.y.slice(timestartIndexScan)
             newData['error_y']['array'] = newData['error_y']['array'].slice(timestartIndexScan)
@@ -147,6 +148,8 @@
         legends,
         totalMassKey,
         initialValues,
+        molecule,
+        tag,
         nameOfReactants,
         timestartIndexScan,
         $fit_config_filename,
@@ -154,7 +157,7 @@
         // loss_channels,
         tagFile,
     }
-
+    let load_data_loss_channels
     const params_load = (data) => {
         ;({
             // ratek3,
@@ -164,11 +167,20 @@
             legends,
             totalMassKey,
             initialValues,
+            molecule,
+            tag,
             nameOfReactants,
             timestartIndexScan,
             kineticEditorFilename,
             // loss_channels,
         } = data)
+
+        if (!(molecule && tag)) {
+            if (nameOfReactants) {
+                molecule = nameOfReactants.split(',').at(0)
+                tag = nameOfReactants.split(',').at(1).split(molecule).at(-1)
+            }
+        }
         if (data['$fit_config_filename']) {
             $fit_config_filename = data['$fit_config_filename']
         }
@@ -176,6 +188,7 @@
         if (data['tagFile']) {
             tagFile = data['tagFile']
         }
+        load_data_loss_channels?.(false)
         params_found = true
     }
 
@@ -462,6 +475,7 @@
                 </RateInitialise>
 
                 <KlossChannels
+                    bind:load_data={load_data_loss_channels}
                     bind:loss_channels
                     {nameOfReactants}
                     bind:rateConstantMode
@@ -470,6 +484,7 @@
                         useTaggedFile,
                         tagFile,
                         configDir,
+                        useParamsFile,
                     }}
                 />
             </Accordion>
@@ -489,7 +504,7 @@
     </svelte:fragment>
 
     <svelte:fragment slot="left_footer_content__slot">
-        <CustomCheckbox on:change={() => computeOtherParameters()} bind:value={useParamsFile} label="useParams" />
+        <CustomCheckbox on:change={computeParameters} bind:value={useParamsFile} label="useParams" />
         <CustomCheckbox bind:value={useTaggedFile} label="useTag" />
         <TextAndSelectOptsToggler
             bind:value={tagFile}

@@ -2,34 +2,21 @@
     import Editor from '$components/Editor.svelte'
     import { computeKineticCodeScipy } from '../functions/computeKineticCode'
     import type { loss_channelsType } from '$src/Pages/timescan/types/types'
-
-    // export let ratek3: string
-    // export let k3Guess: string
-    // export let kCIDGuess: string
-    // export let ratekCID = ''
-
     export let location = ''
     export let savefilename = ''
-
     export let reportRead = false
     export let reportSaved = false
     export let nameOfReactants = ''
     export let loss_channels: loss_channelsType[] = []
     export let selectedFile = ''
-    // export let includeTrapLoss = false
     export let rateConstantMode = false
 
     let editor
     let computedCode: computeKineticCodeScipy
 
     $: maindata = {
-        // ratek3,
-        // ratekCID,
         nameOfReactants,
-        // k3Guess,
-        // kCIDGuess,
         loss_channels,
-        // includeTrapLoss,
         rateConstantMode,
     }
     const computeSliders = () => {

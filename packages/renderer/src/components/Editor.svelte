@@ -19,7 +19,7 @@
     export let reportSaved = false
     export let showReport = false
     export let enable_location_browser = true
-    export let filenameOpts = []
+    export let filenameOpts: string[] = []
     export let filenameUpdate = () => {}
 
     async function mountEditorFn(node) {
@@ -69,14 +69,14 @@
         window.createToast('Location updated')
     }
 
-    const writeReport = async () => {
+    const writeReport = async (info = 'saved') => {
         const contents = editor.getData()
         const [, error] = await window.fs.writeFile(reportFile, contents, 'utf8')
         if (error) {
             return window.createToast("Report couldn't be saved.", 'danger')
         }
-
-        window.createToast('Report saved', 'success')
+        const type = info === 'saved' ? 'success' : 'warning'
+        window.createToast(`${window.path.basename(reportFile)}: report ${info}`, type)
         console.log('report writted: ', window.path.basename(reportFile))
         reportSaved = true
     }
@@ -85,13 +85,17 @@
         if (!location) {
             return window.createToast('Invalid location', 'danger')
         }
-        if (!window.fs.existsSync(reportFile) || overwrite) return writeReport()
+        if (!window.fs.isFile(reportFile)) {
+            return writeReport('saved')
+        } else if (overwrite) {
+            return writeReport('overwritten')
+        }
         return showConfirm.push({
             title: 'Overwrite?',
             content: `Do you want to overwrite ${window.path.basename(reportFile)}?`,
             callback: (response) => {
                 if (response?.toLowerCase() === 'cancel') return
-                writeReport()
+                writeReport('overwritten')
             },
         })
     }
@@ -142,16 +146,19 @@
 <div class="report_main__div align">
     <div class="notice__div">
         {mainTitle}
+
         <div
             style="display: flex; font-size: large; font-weight: 400; padding-right: 1em;"
             on:click={() => (showReport = !showReport)}
         >
             {showReport ? 'hideReport' : 'showReport'}
         </div>
+
         {#if reportWindowClosed}
             <i class="material-icons" on:click={openReport}>zoom_out_map</i>
         {/if}
     </div>
+
     {#if showReport}
         <div class="report_controler__div box" style="border: solid 1px #fff7;">
             <div class="report_location__div">
@@ -164,8 +171,10 @@
                     label="report name"
                     update={filenameUpdate}
                     options={filenameOpts}
+                    auto_init={true}
                 />
             </div>
+
             <div class="btn-row">
                 <slot name="btn-row" />
                 <button class="button is-warning" on:click={() => readFromFile()}>read</button>
